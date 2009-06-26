@@ -22,7 +22,7 @@
 </tr>
 <tr>
   <td><label>ファイルの説明</label></td>
-  <td><input type="text" name="caption" maxlength="60" size="60"></td>
+  <td><input type="text" name="caption" maxlength="80" size="80"></td>
 </tr>
 <tr>
   <td><label>作成者名</label></td>

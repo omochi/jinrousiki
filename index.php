@@ -37,13 +37,13 @@
       <li><a href="src/">開発版ソースダウンロード</a></li>
       <li><a href="src/diff.txt">更新履歴 (テキストファイル)</a></li>
     </ul>
-
+<!-- さとり鯖用
     <div class="menu">交流用サイト</div>
     <ul>
       <li><a href="http://jbbs.livedoor.jp/netgame/2829/">ウミガメ人狼掲示板</a></li>
       <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">ウミガメ雑談村</a></li>
     </ul>
-
+-->
     <div class="menu">外部リンク</div>
     <ul>
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1241277178/l50">本スレ</a></li>
@@ -51,6 +51,7 @@
       <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
       <li><a href="http://jinro.s369.xrea.com/">ニコ生専用鯖</a></li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>
+      <li><a href="http://www13.atpages.jp/yaranai/">薔薇姉妹鯖</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>
@@ -181,8 +182,9 @@
 [PHP4 + MYSQLスクリプト　<a href="http://p45.aaacafe.ne.jp/~netfilms/" target="_blank">配布ホームページ</a>]
 [システム　<a href="http://sourceforge.jp/projects/mbemulator/" target="_blank">mbstringエミュレータ</a>]<br>
 [写真素材　<a href="http://keppen.web.infoseek.co.jp/" target="_blank">天の欠片</a>
-　<a href="http://moineau.fc2web.com/" target="_blank">Le moineau - すずめのおやど -</a>]
+]
 [フォント素材　<a href="http://azukifont.mints.ne.jp/" target="_blank">あずきフォント</a>]<br>
+<!-- さとり鯖用
 [アイコン素材　
  <a href="http://natuhotaru.yukihotaru.com/" target="_blank">夏蛍</a>
  <a href="http://jigizagi.s57.xrea.com/" target="_blank">ジギザギのさいはて</a>
@@ -191,7 +193,8 @@
  <a href="http://kukyo.hp.infoseek.co.jp/" target="_blank">ぶらんけっと</a>
  <a href="http://www8.plala.or.jp/denpa/indexdon.html" target="_blank">神楽丼</a>
 ]<br>
-<?php echo $script_version . ', LastUpdate: ' . $script_lastupdate; ?>
+-->
+<?php echo 'PHP Ver. ' . PHP_VERSION . ', ' . $script_version . ', LastUpdate: ' . $script_lastupdate; ?>
 </div>
 </body>
 </html>

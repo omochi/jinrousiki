@@ -15,10 +15,10 @@ $server_comment = '〜東方ウミガメ村＠チルノ鯖〜';
 $db_host = 'localhost';
 
 //データベースのユーザ名
-$db_uname = 'grayran';
+$db_uname = 'xxxxxx';
 
 //データベースサーバのパスワード
-$db_pass = 'satorituri';
+$db_pass = 'xxxxxx';
 
 //データベース名
 $db_name = 'jinrou';
@@ -33,8 +33,8 @@ $src_upload_password = 'upload';
 $back_page = '';
 
 //デバッグモードのオン/オフ
-$DEBUG_MODE = true;
+$DEBUG_MODE = false;
 
 //時差 (秒数)
-$OFFSET_SECONDS = 9 * 60 * 60;
+$OFFSET_SECONDS = 32400; //9時間
 ?>

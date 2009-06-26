@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . '/include/functions.php');
 if(! $dbHandle = ConnectDatabase(true, false)) return false; //DB 接続
 
 MaintenanceRoom();
-ToEUC_PostData();
+EncodePostData();
 
 if($_POST['command'] == 'CREATE_ROOM'){
   if(in_array($_POST['max_user'], $ROOM_CONF->max_user_list))
@@ -59,10 +59,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
     OutputRoomAction('empty');
     return false;
   }
-  if(CheckForbiddenStrings($room_name) || CheckForbiddenStrings($room_comment)){
-    OutputRoomAction('forbidden');
-    return false;
-  }
 
   if($_POST['game_option_real_time'] == 'real_time'){
     $day   = $_POST['game_option_real_time_day'];
@@ -97,7 +93,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //エスケープ処理
   EscapeStrings(&$room_name);
-  EscapeStrings(&$room_commnet);
+  EscapeStrings(&$room_comment);
 
   //登録
   $time = TZTime();
@@ -107,7 +103,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
 			'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time')");
 
   //身代わり君を入村させる
-  if(strstr($game_option, 'dummy_boy')){
+  if(strpos($game_option, 'dummy_boy') !== false){
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no,
 		   profile, sex, password, live, last_words, ip_address)
 		   VALUES($room_no, 1, 'dummy_boy', '身代わり君', 0, '{$MESSAGE->dummy_boy_comment}',
@@ -115,7 +111,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
   }
 
   if($entry && mysql_query('COMMIT')){ //一応コミット
-    OutputRoomAction('success');
+    OutputRoomAction('success', $room_name);
   }
   else{
     OutputRoomAction('busy');
@@ -124,7 +120,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
 }
 
 //結果出力 (CreateRoom() 用)
-function OutputRoomAction($type){
+function OutputRoomAction($type, $room_name = ''){
   switch($type){
     case 'empty':
       OutputActionResultHeader('村作成 [入力エラー]');
@@ -133,12 +129,6 @@ function OutputRoomAction($type){
       echo '<ul><li>村の名前が記入されていない。</li>';
       echo '<li>村の説明が記入されていない。</li>';
       echo '<li>最大人数が数字ではない、または異常な文字列。</li></ul>';
-      break;
-
-    case 'forbidden':
-      OutputActionResultHeader('村作成 [入力エラー]');
-      echo "半角シングルクォーテーション ( ' )<br>";
-      echo "半角円マーク ( \\ ) その他特殊文字は使用不可です";
       break;
 
     case 'time':
@@ -195,33 +185,33 @@ function OutputRoomList(){
     }
 
     $option_img_str = ''; //ゲームオプションの画像
-    if(strstr($game_option, 'wish_role'))
+    if(strpos($game_option, 'wish_role') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->wish_role, '役割希望制');
-    if(strstr($game_option, 'real_time')){
+    if(strpos($game_option, 'real_time') !== false){
       //実時間の制限時間を取得
       $real_time_str = strstr($game_option, 'real_time');
       sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
       AddImgTag(&$option_img_str, $ROOM_IMG->real_time,
 		"リアルタイム制　昼： $day 分　夜： $night 分");
     }
-    if(strstr($game_option, 'dummy_boy'))
+    if(strpos($game_option, 'dummy_boy') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->dummy_boy, '初日の夜は身代わり君');
-    if(strstr($game_option, 'open_vote'))
+    if(strpos($game_option, 'open_vote') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->open_vote, '投票した票数を公表する');
-    if(strstr($game_option, 'not_open_cast'))
+    if(strpos($game_option, 'not_open_cast') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->not_open_cast, '霊界で配役を公開しない');
-    if(strstr($option_role, 'decide'))
+    if(strpos($option_role, 'decide') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->decide, '16人以上で決定者登場');
-    if(strstr($option_role, 'authority'))
+    if(strpos($option_role, 'authority') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->authority, '16人以上で権力者登場');
-    if(strstr($option_role, 'poison'))
+    if(strpos($option_role, 'poison') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->poison, '20人以上で埋毒者登場');
-    if(strstr($option_role, 'cupid'))
+    if(strpos($option_role, 'cupid') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->cupid, 'キューピッド登場');
 
     $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
 
-    echo <<< EOF
+    echo <<<EOF
 <a href="login.php?room_no=$room_no">
 <img src="$status_img"><span>[{$room_no}番地]</span>{$room_name}村<br>
 <div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>

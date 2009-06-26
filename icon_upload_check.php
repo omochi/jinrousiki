@@ -7,7 +7,7 @@ session_start();
 session_regenerate_id(); //セッションを新しく作る
 $session_id = session_id();
 
-ToEUC_PostData(); //ポストされた文字列を全てEUC-JPにエンコードする
+EncodePostData(); //ポストされた文字列を全てエンコードする
 
 //アイコン名が空白かチェック
 $title = 'アイコン登録エラー';
@@ -16,22 +16,13 @@ if($name == '') OutputActionResult($title, 'アイコン名を入力してください。');
 
 //アイコン名の文字列長のチェック
 $name_length = strlen($name);
-if($name_length > $USER_ICON -> name){
+if($name_length > $USER_ICON->name){
   OutputActionResult($title, IconNameMaxLength());
 }
 
-//禁止文字チェック
-//入力データのエラーチェック
-if(CheckForbiddenStrings($name)){
-  OutputActionResult($title,
-		     'アイコン名に不正な文字があります。<br>'."\n".
-		     "半角シングルクォーテーション ( ' )、".
-		     '半角円マーク ( \\ )、その他特殊文字は使用不可です。');
-}
-
 //ファイルサイズのチェック
-if(($_FILES['file']['size'] == 0) || ($_FILES['file']['size'] > $USER_ICON -> size)){
-  OutputActionResult($title, 'ファイルサイズは ' . IconFileSizeMax($USER_ICON -> size));
+if($_FILES['file']['size'] == 0 || $_FILES['file']['size'] > $USER_ICON->size){
+  OutputActionResult($title, 'ファイルサイズは ' . IconFileSizeMax());
 }
 
 //ファイルの種類のチェック
@@ -67,7 +58,7 @@ if(strlen($color) != 7 && ! preg_match('/^#[0123456789abcdefABCDEF]{6}/', $color
 
 //アイコンの高さと幅をチェック
 list($width, $height) = getimagesize($_FILES['file']['tmp_name']);
-if($width > $USER_ICON -> width || $height > $USER_ICON -> height){
+if($width > $USER_ICON->width || $height > $USER_ICON->height){
   OutputActionResult($title, 'アイコンは ' . IconSizeMax() . ' しか登録できません。<br>'."\n" .
 		     '送信されたファイル → <span class="color">幅 ' . $width .
 		     ', 高さ ' . $height . '</span>');
@@ -92,7 +83,7 @@ if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon テーブルをロック
 $sql = mysql_query('SELECT icon_no FROM user_icon ORDER BY icon_no DESC');
 $array = mysql_fetch_assoc($sql);
 $icon_no = $array['icon_no'] + 1; //一番大きなNo + 1
-if($icon_no >= $USER_ICON -> number) OutputActionResult($title, 'これ以上登録できません', '', true);
+if($icon_no >= $USER_ICON->number) OutputActionResult($title, 'これ以上登録できません', '', true);
 
 //ファイル名の桁をそろえる
 $file_name = sprintf("%03s%s", $icon_no, $ext);
@@ -104,7 +95,7 @@ if($_FILES['upfile']['error'][$i] != 0){
 }
 
 //ファイルをテンポラリからコピー
-if(! move_uploaded_file($_FILES['file']['tmp_name'], $ICON_CONF -> path . '/' . $file_name)){
+if(! move_uploaded_file($_FILES['file']['tmp_name'], $ICON_CONF->path . '/' . $file_name)){
   OutputActionResult($title, '登録に失敗しました。<br>'."\n" .
 		     '再度実行してください。', '', true);
 }
@@ -119,11 +110,11 @@ DisconnectDatabase($dbHandle);
 
 //確認ページを出力
 OutputHTMLHeader('ユーザアイコンアップロード処理[確認]', 'icon_upload_check');
-echo <<< EOF
+echo <<<EOF
 </head>
 <body>
 <p>ファイルをアップロードしました。<br>今だけやりなおしできます</p>
-<img src="{$ICON_CONF -> path}/$file_name" width="$width" height="$height"><br>
+<img src="{$ICON_CONF->path}/$file_name" width="$width" height="$height"><br>
 <table>
 <tr><td>No. $icon_no <font color="$color">◆</font>$color<br></td></tr>
 <tr><td>よろしいですか？</td></tr>

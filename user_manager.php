@@ -1,8 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
 
-//ポストされた文字列を全てEUC-JPにエンコードする
-ToEUC_PostData();
+EncodePostData();//ポストされた文字列をエンコードする
 
 if($_GET['room_no'] == ''){
   OutputActionResult('村人登録 [村番号エラー]',
@@ -35,19 +34,13 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
 		       '全部入力してください。');
   }
 
-  //禁止文字チェック
-  //入力データのエラーチェック
-  if(CheckForbiddenStrings($uname)   || CheckForbiddenStrings($handle_name) ||
-     CheckForbiddenStrings($profile) || CheckForbiddenStrings($password)){
-    OutputActionResul('村人登録 [入力エラー]',
-		      "半角シングルクォーテーション ( ' )<br>"."\n" .
-		      '半角円マーク ( \\ ) その他特殊文字は使用不可です。');
-  }
-  EscapeStrings(&$uname);
-  EscapeStrings(&$handle_name);
+  //トリップ＆エスケープ処理
+  ConvertTrip(&$uname);
+  ConvertTrip(&$handle_name);
   EscapeStrings(&$profile);
+  EscapeStrings(&$password);
 
-  //記入漏れチェック
+  //システムユーザチェック
   if($uname == 'dummy_boy' || $uname == 'system' ||
      $handle_name == '身代わり君' || $handle_name == 'システム'){
     OutputActionResult('村人登録 [入力エラー]',
@@ -92,9 +85,11 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   }
 
   //クッキーの削除
-  setcookie ('day_night',  '', time() - 3600);
-  setcookie ('vote_times', '', time() - 3600);
-  setcookie ('objection',  '', time() - 3600);
+  $system_time = TZTime(); //現在時刻を取得
+  $cookie_time = $system_time - 3600;
+  setcookie('day_night',  '', $cookie_time);
+  setcookie('vote_times', '', $cookie_time);
+  setcookie('objection',  '', $cookie_time);
 
   //DBからユーザNoを降順に取得
   $sql = mysql_query("SELECT user_no FROM user_entry WHERE room_no = $room_no
@@ -138,7 +133,7 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
 			'$session_id', '', '$ip_address', 'beforegame')");
 
   //入村メッセージ
-  InsertTalk($room_no, 0, 'beforegame system', 'system', TZTime(),
+  InsertTalk($room_no, 0, 'beforegame system', 'system', $system_time,
 	     $handle_name . ' ' . $MESSAGE->entry_user, NULL, 0);
 
   mysql_query('COMMIT'); //一応コミット
@@ -147,7 +142,7 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   //   mysql_query("update room set status = 'playing' where room_no = $room_no");
 
   if($entry){
-    $url = "game_frame.php?room_no=$room_no&auto_reload=0&play_sound=off";
+    $url = "game_frame.php?room_no=$room_no";
     OutputActionResult('村人登録',
 		       $user_no . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
 		       '切り替わらないなら <a href="' . $url. '">ここ</a> 。',
@@ -159,6 +154,25 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
 		       '時間を置いて再度登録してください。', '', true);
   }
   mysql_query('UNLOCK TABLES'); //ロック解除
+}
+
+//トリップ変換処理
+function ConvertTrip(&$str){
+  global $GAME_CONF;
+
+  if($GAME_CONF->trip){ //まだ実装されていません
+    OutputActionResult('村人登録 [入力エラー]',
+		       'トリップ変換処理は実装されていません。<br>'."\n" .
+		       '管理者に問い合わせてください。');
+  }
+  else{
+    if(strrpos($str, '#') !== false || strrpos($str, '＃') !== false){
+      OutputActionResult('村人登録 [入力エラー]',
+			 'トリップは使用不可です。<br>'."\n" .
+			 '"#" の文字も使用不可です。');
+    }
+  }
+  EscapeStrings(&$str);
 }
 
 //ユーザ登録画面表示
@@ -184,15 +198,10 @@ function OutputEntryUserPage($room_no){
   $sql_icon = mysql_query("select icon_no, icon_name, icon_filename, icon_width, icon_height, color
 				from user_icon where icon_no > 0 order by icon_no");
   $count  = mysql_num_rows($sql_icon); //アイテムの個数を取得
+  $trip_str = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
-  echo <<< HEADER
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<link rel="stylesheet" href="css/entry_user.css">
-<title>汝は人狼なりや？[村人登録]</title>
+  OutputHTMLHeader('汝は人狼なりや？[村人登録]', 'entry_user');
+  echo <<<HEADER
 </head>
 <body>
 <a href="index.php">←戻る</a><br>
@@ -208,7 +217,7 @@ function OutputEntryUserPage($room_no){
 <tr>
 <td class="img"><img src="img/user_regist_uname.gif"></td>
 <td><input type="text" name="uname" size="30" maxlength="30"></td>
-<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです</td>
+<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip_str}</td>
 </tr>
 <tr>
 <td class="img"><img src="img/user_regist_handle_name.gif"></td>
@@ -226,7 +235,7 @@ function OutputEntryUserPage($room_no){
 <label for="male"><img src="img/user_regist_sex_male.gif"><input type="radio" id="male" name="sex" value="male"></label>
 <label for="female"><img src="img/user_regist_sex_female.gif"><input type="radio" id="female" name="sex" value="female"></label>
 </td>
-<td class="explain">特に意味は無いかも・・</td>
+<td class="explain">特に意味は無いかも……</td>
 </tr>
 <tr>
 <td class="img"><img src="img/user_regist_profile.gif"></td>
@@ -238,8 +247,8 @@ function OutputEntryUserPage($room_no){
 
 HEADER;
 
-  if(strstr($game_option, 'wish_role')){
-    echo <<< IMAGE
+  if(strpos($game_option, 'wish_role') !== false){
+    echo <<<IMAGE
 <tr>
 <td class="role"><img src="img/user_regist_role.gif"></td>
 <td>
@@ -254,17 +263,17 @@ HEADER;
 <label for="fox"><img src="img/user_regist_role_fox.gif"><input type="radio" id="fox" name="role" value="fox"></label>
 
 IMAGE;
-    if(strstr($option_role, 'poison')){
+    if(strpos($option_role, 'poison') !== false){
       echo '<label for="poison"><img src="img/user_regist_role_poison.gif">' .
 	'<input type="radio" id="poison" name="role" value="poison"></label><br>';
     }
-    elseif(strstr($option_role, 'cupid')){
+    elseif(strpos($option_role, 'cupid') !== false){
       ;
     }
     else{
       echo '<br>';
     }
-    if(strstr($option_role, 'cupid')){
+    if(strpos($option_role, 'cupid') !== false){
       echo '<label for="cupid"><img src="img/user_regist_role_cupid.gif">' .
 	'<input type="radio" id="cupid" name="role" value="cupid"></label><br>';
     }
@@ -274,7 +283,7 @@ IMAGE;
     echo '<input type="hidden" name="role" value="none">';
   }
 
-  echo <<< BODY
+  echo <<<BODY
   </tr>
   <tr>
     <td class="submit" colspan="3"><input type="submit" value="村人登録申請"></td>
@@ -291,24 +300,24 @@ BODY;
 
   //表の出力
   for($i=0; $i < $count; $i++){
-    if($i > 0 && (($i % 5) == 0)) echo '</tr><tr>'; //5個ごとに改行
-    $icon_arr = mysql_fetch_assoc($sql_icon);
-    $icon_no       = $icon_arr['icon_no'];
-    $icon_name     = $icon_arr['icon_name'];
-    $icon_filename = $icon_arr['icon_filename'];
-    $icon_width    = $icon_arr['icon_width'];
-    $icon_height   = $icon_arr['icon_height'];
-    $color         = $icon_arr['color'];
-    $icon_location = $ICON_CONF -> path . '/' . $icon_filename;
+    if($i > 0 && ($i % 5) == 0) echo '</tr><tr>'; //5個ごとに改行
+    $array = mysql_fetch_assoc($sql_icon);
+    $icon_no       = $array['icon_no'];
+    $icon_name     = $array['icon_name'];
+    $icon_filename = $array['icon_filename'];
+    $icon_width    = $array['icon_width'];
+    $icon_height   = $array['icon_height'];
+    $color         = $array['color'];
+    $icon_location = $ICON_CONF->path . '/' . $icon_filename;
 
-    echo <<< ICON
+    echo <<<ICON
 <td><label for="$icon_no"><img src="$icon_location" width="$icon_width" height="$icon_height" style="border-color:$color;">
 $icon_name<br><font color="$color">◆</font><input type="radio" id="$icon_no" name="icon_no" value="$icon_no"></label></td>
 
 ICON;
   }
 
-  echo <<< FOOTER
+  echo <<<FOOTER
 </tr></table>
 </fieldset>
 </td></tr>

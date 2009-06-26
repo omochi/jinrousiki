@@ -1,32 +1,26 @@
 <?php
 require_once(dirname(__FILE__) . '/../include/functions.php');
-ToEUC_PostData();
+
+EncodePostData();
 
 //変数をセット
-$argv = array('name'     => $_POST['name'],
+$post = array('name'     => $_POST['name'],
 	      'caption'  => $_POST['caption'],
 	      'user'     => $_POST['user'],
 	      'password' => $_POST['password']);
 $label = array('name'     => 'ファイル名',
-		 'caption'  => 'ファイルの説明',
-		 'user'     => '作成者名',
-		 'password' => 'パスワード');
+	       'caption'  => 'ファイルの説明',
+	       'user'     => '作成者名',
+	       'password' => 'パスワード');
 $size = array('name'     => 20,
-	      'caption'  => 60,
+	      'caption'  => 80,
 	      'user'     => 20,
 	      'password' => 20);
 
 //引数のエラーチェック
-foreach($argv as $key => $value){
+foreach($post as $key => $value){
   //未入力チェック
   if($value == '') OutputUploadResult('<span>' . $label[$key] . '</span> が未入力です。');
-
-  //禁止文字チェック
-  if(CheckForbiddenStrings($value)){
-    OutputUploadResult('<span>' . $label[$key] . '</span> に不正な文字があります。<br>'."\n".
-		       "半角シングルクォーテーション ( ' )、".
-		       '半角円マーク ( \\ )、その他特殊文字は使用不可です。');
-  }
 
   //文字列長チェック
   if(strlen($value) > $size[$key]){
@@ -35,11 +29,11 @@ foreach($argv as $key => $value){
   }
 
   //エスケープ処理
-  EscapeStrings(&$value, 'full');
+  EscapeStrings(&$value);
 }
 
 //パスワードのチェック
-if($argv['password'] != $src_upload_password) OutputUploadResult('パスワード認証エラー。');
+if($post['password'] != $src_upload_password) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
 $file_name = strtolower(trim($_FILES['file']['name']));
@@ -79,7 +73,7 @@ fclose($io); //ファイルのクローズ
 //HTMLソースを出力
 $number = sprintf("%04d", $number); //桁揃え
 $ext    = substr($file_name, -3); //拡張子
-$time   = gmdate('Y/m/d (D) G:i:s', TZTime()); //日時
+$time   = gmdate('Y/m/d (D) H:i:s', TZTime()); //日時
 if($file_size > 1024 * 1024) // Mbyte
   $file_size = sprintf('%.2f', $file_size / (1024 * 1024)) . ' Mbyte';
 elseif($file_size > 1024) // Kbyte
@@ -87,12 +81,12 @@ elseif($file_size > 1024) // Kbyte
 else
   $file_size = sprintf('%.2f', $file_size) . ' byte';
 
-$html = <<< EOF
-<td class="link"><a href="file/{$number}.{$ext}">{$argv['name']}</a></td>
+$html = <<<EOF
+<td class="link"><a href="file/{$number}.{$ext}">{$post['name']}</a></td>
 <td class="type">$ext</td>
 <td class="size">$file_size</td>
-<td class="explain">{$argv['caption']}</td>
-<td class="name">{$argv['user']}</td>
+<td class="explain">{$post['caption']}</td>
+<td class="name">{$post['user']}</td>
 <td class="date">$time</td>
 
 EOF;

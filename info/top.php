@@ -3,7 +3,7 @@
 </p>
 
 <p>
-<a href="http://satori.crz.jp/">現さとり鯖</a> (Ver. 1.2.2) との主な違いは以下です。<br>
+<a href="http://satori.crz.jp/">現さとり鯖</a> (Ver. 1.2.2a) との主な違いは以下です。<br>
 <ol>
   <li>改善点</li>
   <ul>

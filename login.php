@@ -38,8 +38,8 @@ function LoginManually($room_no){
   //セッションを失った場合、ユーザ名とパスワードでログインする
   $uname    = $_POST['uname'];
   $password = $_POST['password'];
-  EscapeStrings(&$uname, 'single');
-  EscapeStrings(&$password, 'backslash');
+  EscapeStrings(&$uname);
+  EscapeStrings(&$password);
 
   if($uname == '' || $password == '') return false;
 

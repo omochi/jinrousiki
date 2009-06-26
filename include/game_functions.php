@@ -142,9 +142,7 @@ function OutputPlayerList(){
 			user_entry.role,
 			user_entry.user_no,
 			user_icon.icon_filename,
-			user_icon.color,
-			user_icon.icon_width,
-			user_icon.icon_height
+			user_icon.color
 			FROM user_entry, user_icon
 			WHERE user_entry.room_no = $room_no
 			AND user_entry.icon_no = user_icon.icon_no
@@ -171,9 +169,6 @@ function OutputPlayerList(){
     $this_user_no = $array['user_no'];
     $this_file    = $array['icon_filename'];
     $this_color   = $array['color'];
-    //アイコンのサイズは参照する変数を変える(採用されればクエリも不要)
-    //$this_width   = $array['icon_width'];
-    //$this_height  = $array['icon_height'];
     $profile_alt  = str_replace("\n", $replace, $this_profile);
     if($DEBUG_MODE) $this_handle .= ' (' . $this_user_no . ')';
 
@@ -274,7 +269,7 @@ function OutputVictory(){
       $winner = 'victory_none';
       break;
   }
-  echo <<< EOF
+  echo <<<EOF
 <table class="victory victory-{$class}">
 <tr><td>{$MESSAGE->$winner}</td></tr>
 </table>
@@ -310,7 +305,7 @@ EOF;
     $result = 'lose';
   }
 
-  echo <<< EOF
+  echo <<<EOF
 <table class="victory victory-{$class}">
 <tr><td>{$MESSAGE->$result}</td></tr>
 </table>
@@ -367,32 +362,29 @@ EOF;
 
 //会話ログ出力
 function OutputTalkLog(){
-  global $room_no, $role, $uname, $live, $date, $day_night, $game_option, $status, $MESSAGE;
+  global $MESSAGE, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  $sql = mysql_query("select user_entry.uname as talk_uname,
-			user_entry.handle_name as talk_handle_name,
-			user_entry.sex as talk_sex,
-			user_icon.color as talk_color,
-			talk.sentence as sentence,
-			talk.font_type as font_type,
-			talk.location as location
-			from user_entry,talk,user_icon
-			where talk.room_no = $room_no
-			and talk.location like '$day_night%'
-			and talk.date = $date
-			and ( ( user_entry.room_no = $room_no and user_entry.uname = talk.uname
-			and user_entry.icon_no = user_icon.icon_no)
-			or ( user_entry.room_no = 0 and talk.uname = 'system'
-			and user_entry.icon_no = user_icon.icon_no) )
-			order by time DESC");
+  $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
+			user_entry.handle_name AS talk_handle_name,
+			user_entry.sex AS talk_sex,
+			user_icon.color AS talk_color,
+			talk.sentence AS sentence,
+			talk.font_type AS font_type,
+			talk.location AS location
+			FROM user_entry,talk,user_icon
+			WHERE talk.room_no = $room_no
+			AND talk.location LIKE '$day_night%'
+			AND talk.date = $date
+			AND ((user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND user_entry.icon_no = user_icon.icon_no)
+			OR (user_entry.room_no = 0 AND talk.uname = 'system'
+			AND user_entry.icon_no = user_icon.icon_no))
+			ORDER BY time DESC");
   $count = mysql_num_rows($sql);
 
   echo '<table class="talk">'."\n";
-  for($i=0; $i < $count; $i++){
-    $array   = mysql_fetch_assoc($sql);
-    OutputTalk($array); //会話出力
-  }
+  for($i=0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql)); //会話出力
   echo '</table>'."\n";
 }
 
@@ -628,7 +620,7 @@ function OutputLastWords(){
   $count = mysql_num_rows($sql);
   if($count < 1) return false;
 
-  echo <<< EOF
+  echo <<<EOF
 <table class="system-lastwords"><tr>
 <td>{$MESSAGE->lastwords}</td>
 </tr></table>
@@ -641,7 +633,7 @@ EOF;
     LineToBR(&$result);
     list($handle, $str) = ParseStrings($result);
 
-    echo <<< EOF
+    echo <<<EOF
 <tr>
 <td class="lastwords-title">{$handle}<span>さんの遺言</span></td>
 <td class="lastwords-body">{$str}</td>
@@ -660,12 +652,16 @@ function OutputDeadMan(){
 
   $yesterday = $date - 1;
 
+  //共通クエリ
+  $query_header = "SELECT message, type, MD5(RAND()*NOW()) AS MyRand FROM system_message " .
+    "WHERE room_no = $room_no AND date =";
+
   //処刑メッセージ、毒死メッセージ(昼)
-  $type_day = "type = 'VOTE_KILLED' or type = 'POISON_DEAD_day' or type = 'LOVERS_FOLLOWED_day'";
+  $type_day = "type = 'VOTE_KILLED' OR type = 'POISON_DEAD_day' OR type = 'LOVERS_FOLLOWED_day'";
 
   //前の日の夜に起こった死亡メッセージ
-  $type_night = "type = 'WOLF_KILLED' or type = 'FOX_DEAD' or " .
-    "type = 'POISON_DEAD_night' or type = 'LOVERS_FOLLOWED_night'";
+  $type_night = "type = 'WOLF_KILLED' OR type = 'FOX_DEAD' OR " .
+    "type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night'";
 
   if($day_night == 'day'){
     $set_date = $yesterday;
@@ -676,13 +672,10 @@ function OutputDeadMan(){
     $type = $type_day;
   }
 
-  $result = mysql_query("select message,type,MD5(RAND()*NOW()) as MyRand
-			 from system_message where room_no = $room_no and date = $set_date
-			 and ( $type ) order by MyRand");
-  $count = mysql_num_rows($result); //死亡者の人数
-
-  for($i=0 ; $i < $count ;$i++){
-    $array = mysql_fetch_assoc($result);
+  $sql = mysql_query("$query_header $set_date AND ( $type ) ORDER BY MyRand");
+  $count = mysql_num_rows($sql); //死亡者の人数
+  for($i=0; $i < $count; $i++){
+    $array = mysql_fetch_assoc($sql);
     OutputDeadManType($array['message'], $array['type']); //死者のハンドルネームとタイプ
   }
 
@@ -691,13 +684,10 @@ function OutputDeadMan(){
   $set_date = $yesterday;
   $type = ($day_night == 'day' ? $type_day : $type_night);
 
-  $result = mysql_query("select message,type,MD5(RAND()*NOW()) as MyRand
-			   from system_message where room_no = $room_no and date = $set_date
-			   and ( $type ) order by MyRand");
-  $count = mysql_num_rows($result); //死亡者の人数
-
+  $sql = mysql_query("$query_header $set_date AND ( $type ) ORDER BY MyRand");
+  $count = mysql_num_rows($sql); //死亡者の人数
   for($i=0 ; $i < $count ;$i++){
-    $array = mysql_fetch_assoc($result);
+    $array = mysql_fetch_assoc($sql);
     OutputDeadManType($array['message'], $array['type']);
   }
 }
@@ -706,46 +696,36 @@ function OutputDeadMan(){
 function OutputDeadManType($name, $type){
   global $live, $game_option, $day_night, $status, $MESSAGE;
 
-  $show_reason = ($status == 'finished') ||
-    (($live == 'dead') && ! (strstr($game_option, 'not_open_cast')));
+  $deadman = '<tr><td>' . $name . ' ' . $MESSAGE->deadman . '</td>'; //基本メッセージ
+  $reason_header = '</tr>'."\n" . '<tr><td>(' . $name . ' '; //追加共通ヘッダ
+  $show_reason = ($status == 'finished' ||
+		  ($live == 'dead' && ! strstr($game_option, 'not_open_cast')));
 
   echo '<table class="dead-type">'."\n";
   switch($type){
-    case('WOLF_KILLED'):
-      echo '<tr><td>' . $name . ' ' . $MESSAGE->deadman . '</td>';
-
-      if($show_reason){
- 	echo '</tr>'."\n";
- 	echo '<tr><td>(' . $name . ' ' . $MESSAGE->wolf_killed . ')</td>';
-      }
+    case 'WOLF_KILLED':
+      echo $deadman;
+      if($show_reason) echo $reason_header . $MESSAGE->wolf_killed . ')</td>';
       break;
 
-    case('FOX_DEAD'):
-      echo '<tr><td>' . $name . ' ' . $MESSAGE->deadman . '</td>';
-
-      if($show_reason){
-	echo '</tr>'."\n";
-	echo '<tr><td>(' . $name .' ' . $MESSAGE->fox_dead . ')</td>';
-      }
+    case 'FOX_DEAD':
+      echo $deadman;
+      if($show_reason) echo $reason_header . $MESSAGE->fox_dead . ')</td>';
       break;
 
-    case('POISON_DEAD_day'):
-    case('POISON_DEAD_night'):
-      echo '<tr><td>' . $name . ' ' . $MESSAGE->deadman . '</td>';
-
-      if($show_reason){
-	echo '</tr>'."\n";
-	echo '<tr><td>(' . $name . ' ' . $MESSAGE->poison_dead . ')</td>';
-      }
+    case 'POISON_DEAD_day':
+    case 'POISON_DEAD_night':
+      echo $deadman;
+      if($show_reason) echo $reason_header . $MESSAGE->poison_dead . ')</td>';
       break;
 
-    case('VOTE_KILLED'):
+    case 'VOTE_KILLED':
       echo '<tr class="dead-type-vote">';
       echo '<td>' . $name . ' ' . $MESSAGE->vote_killed . '</td>';
       break;
 
-    case('LOVERS_FOLLOWED_day'):
-    case('LOVERS_FOLLOWED_night'):
+    case 'LOVERS_FOLLOWED_day':
+    case 'LOVERS_FOLLOWED_night':
       echo '<tr><td>' . $name . ' ' . $MESSAGE->lovers_followed . '</td>';
       break;
   }
@@ -756,9 +736,10 @@ function OutputDeadManType($name, $type){
 function OutputVoteList(){
   global $date, $day_night, $log_mode;
 
-  if(($day_night == 'beforegame') || ($day_night == 'aftergame' )) return false;
+  //出力条件をチェック
+  if($day_night == 'beforegame' || $day_night == 'aftergame' ) return false;
 
-  if(($day_night == 'day') && ($log_mode != 'on')) //昼だったら前の日の集計を取得
+  if($day_night == 'day' && $log_mode != 'on') //昼だったら前の日の集計を取得
     OutputVoteListDay($date - 1);
   else //夜だったら今日の集計を取得
     OutputVoteListDay($date);
@@ -799,7 +780,7 @@ function OutputVoteListDay($set_date){
       $table_count++;
     }
 
-    if((strstr($game_option, 'open_vote') || ($live == 'dead')) && ($view_mode != 'on'))
+    if((strstr($game_option, 'open_vote') || $live == 'dead') && $view_mode != 'on')
       $vote_number_str = '投票先 ' . $vote_number . ' 票 →';
     else
       $vote_number_str = '投票先→';
@@ -817,18 +798,14 @@ function OutputVoteListDay($set_date){
     //配列に格納されたデータを出力
     for($i=1; $i <= $table_count; $i++){
       $this_vote_count = (int)count($result_array[$i]);
-      for($j=0; $j < $this_vote_count; $j++){
-	echo $result_array[$i][$j];
-      }
+      for($j=0; $j < $this_vote_count; $j++) echo $result_array[$i][$j];
     }
   }
   else{
     //配列に格納されたデータを出力
-    for($i=$table_count; $i>0; $i--){
+    for($i=$table_count; $i > 0; $i--){
       $this_vote_count = (int)count($result_array[$i]);
-      for($j=0; $j < $this_vote_count; $j++){
-	echo $result_array[$i][$j];
-      }
+      for($j=0; $j < $this_vote_count; $j++) echo $result_array[$i][$j];
     }
   }
 }
@@ -876,14 +853,13 @@ function OutputAbilityAction(){
 
 //リアルタイムの経過時間
 function GetRealPassTime(&$left_time, $flag = false){
-  global $room_no, $game_option, $date, $day_night;
+  global $system_time, $room_no, $game_option, $date, $day_night;
 
   $time_str = strstr($game_option, 'real_time');
   //実時間の制限時間を取得
   sscanf($time_str, 'real_time:%d:%d', &$day_minutes, &$night_minutes);
   $day_time   = $day_minutes   * 60; //秒になおす
   $night_time = $night_minutes * 60; //秒になおす
-  $time = TZTime(); //現在時刻
 
   //最も小さな時間(場面の最初の時間)を取得
   $sql = mysql_query("SELECT MIN(time) FROM talk WHERE room_no = $room_no
@@ -891,11 +867,11 @@ function GetRealPassTime(&$left_time, $flag = false){
   $start_time = (int)mysql_result($sql, 0, 0);
 
   if($start_time != NULL){
-    $pass_time = $time - $start_time; //経過した時間
+    $pass_time = $system_time - $start_time; //経過した時間
   }
   else{
     $pass_time = 0;
-    $start_time = $time;
+    $start_time = $system_time;
   }
   $base_time = ($day_night == 'day' ? $day_time : $night_time);
   $left_time = $base_time - $pass_time;
@@ -1003,11 +979,9 @@ function DeadUser($target, $handle = false){
 }
 
 //最終書き込み時刻を更新
-function UpdateTime($time = ''){
-  global $room_no;
-
-  if($time == '') $time = TZTime();
-  mysql_query("UPDATE room SET last_updated = '$time' WHERE room_no = $room_no");
+function UpdateTime(){
+  global $system_time, $room_no;
+  mysql_query("UPDATE room SET last_updated = '$system_time' WHERE room_no = $room_no");
 }
 
 //今までの投票を全部削除
@@ -1036,7 +1010,7 @@ function InsertSystemMessage($sentence, $type, $target_date = ''){
 
 //恋人の後追い死処理
 function LoversFollowed($sudden_death = false){
-  global $MESSAGE, $room_no, $date, $day_night;
+  global $MESSAGE, $system_time, $room_no, $date, $day_night;
 
   //生きているもう一人の恋人を取得
   $sql = mysql_query("SELECT uname, handle_name, last_words FROM user_entry
@@ -1052,7 +1026,7 @@ function LoversFollowed($sudden_death = false){
   DeadUser($target_uname);  //後追い死
 
   if($sudden_death){ //突然死の処理
-    InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, TZTime());
+    InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, ++$system_time);
     return;
   }
 

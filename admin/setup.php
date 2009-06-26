@@ -1,9 +1,15 @@
 <?php
 require_once(dirname(__FILE__) . '/../include/functions.php');
 
-$dbHandle = ConnectDatabase(); //DB 接続
 OutputHTMLHeader('汝は人狼なりや？[初期設定]', 'action', '../css'); //HTMLヘッダ
+
+if(! ($dbHandle = ConnectDatabase(true, false))){ //DB 接続
+  mysql_query("CREATE DATABASE $db_name DEFAULT CHARSET ujis");
+  echo "データベース $db_name を作成しました。<br>";
+  $dbHandle = ConnectDatabase(true); //改めて DB 接続
+}
 echo '</head><body>'."\n";
+
 CheckTable(); //テーブル作成
 OutputHTMLFooter(); //HTMLフッタ
 DisconnectDatabase($dbHandle); //DB 接続解除
@@ -81,6 +87,13 @@ function CheckTable(){
 		icon_width int, icon_height int, color text, session_id text)");
     echo 'テーブル(user_icon)を作成しました<br>'."\n";
 
+    //身代わり君のアイコンを登録(アイコンNo：0)
+    $class = new DummyBoyIcon(); //身代わり君アイコンの設定をロード
+    mysql_query("INSERT INTO user_icon(icon_no, icon_name, icon_filename, icon_width,
+		 icon_height,color)
+		 VALUES(0, '{$class->name}', '{$class->path}', {$class->width},
+		 {$class->height}, '{$class->color}')");
+
     //初期のアイコンのファイル名と色データを DB に登録する
     $icon_no = 1;
     $class = new DefaultIcon(); //ユーザアイコンの初期設定をロード
@@ -104,13 +117,6 @@ function CheckTable(){
       }
       closedir($handle);
     }
-
-    //身代わり君のアイコンを登録(アイコンNo：0)
-    $class = new DummyBoyIcon(); //身代わり君アイコンの設定をロード
-    mysql_query("INSERT INTO user_icon(icon_no, icon_name, icon_filename, icon_width,
-		 icon_height,color)
-		 VALUES(0, '{$class->name}', '{$class->path}', {$class->width},
-		 {$class->height}, '{$class->color}')");
   }
 
   if(! in_array('admin_manage', $table)){
@@ -118,6 +124,7 @@ function CheckTable(){
     mysql_query("INSERT INTO admin_manage VALUES('')");
     echo 'テーブル(admin_manage)を作成しました<br>'."\n";
   }
+  mysql_query("GRANT ALL ON {$db_name}.* TO $db_uname");
   mysql_query('COMMIT'); //一応コミット
   echo '初期設定は無事完了しました。<br>'."\n";
 }

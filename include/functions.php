@@ -92,12 +92,14 @@ function ConvertTime($seconds){
   return $sentence;
 }
 
-//POSTされたデータをEUC-JPに統一する
-function ToEUC_PostData(){
+//POSTされたデータの文字コードを統一する
+function EncodePostData(){
+  global $ENCODE;
+
   foreach($_POST as $key => $value){
     $encode_type = mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-    if($encode_type != '' && $encode_type != 'EUC-JP')
-      $_POST[$key] = mb_convert_encoding($value, 'EUC-JP', $encode_type);
+    if($encode_type != '' && $encode_type != $ENCODE)
+      $_POST[$key] = mb_convert_encoding($value, $ENCODE, $encode_type);
   }
 }
 
@@ -107,14 +109,16 @@ function CheckForbiddenStrings($str){
 }
 
 //特殊文字のエスケープ処理
-function EscapeStrings(&$str, $type = ''){
-  if($type == 'full' || $type == 'backslash') $str = str_replace('\\', '\\\\', $str);
-  if($type != 'backslash'){
-    $str = str_replace('&', '&amp;', $str);
-    $str = str_replace('<', '&lt;',  $str);
-    $str = str_replace('>', '&gt;',  $str);
-    if($type == 'full' || $type != 'single') $str = str_replace("'", "\\'", $str);
-  }
+//htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
+function EscapeStrings(&$str){
+  if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
+  // $str = htmlentities($str, ENT_QUOTES); //UTF に移行したら機能する？
+  $str = str_replace('&' , '&amp;' , $str);
+  $str = str_replace('<' , '&lt;'  , $str);
+  $str = str_replace('>' , '&gt;'  , $str);
+  $str = str_replace('\\', '&yen;' , $str);
+  $str = str_replace('"' , '&quot;', $str);
+  $str = str_replace("'" , "&#039;", $str);
 }
 
 //改行コードを LF に統一する
@@ -131,10 +135,12 @@ function LineToBR(&$str){
 //共通 HTML ヘッダ出力
 //$path は $CSS_PATH みたいなグローバル変数設定できると楽かな？
 function OutputHTMLHeader($title, $css = 'action', $path = 'css'){
+  global $ENCODE;
+
   echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<meta http-equiv="Content-Type" content="text/html; charset={$ENCODE}">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <title>{$title}</title>

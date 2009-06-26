@@ -23,6 +23,9 @@ class GameConfig{
   var $entry_one_ip_address = true;
   // var $entry_one_ip_address = false; //デバッグ用
 
+  //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
+  var $trip = false; //まだ実装されていません
+
   //-- 投票 --//
   var $kick = 3; //何票で KICK 処理を行うか
   var $draw = 5; //再投票何回目で引き分けとするか
@@ -46,12 +49,12 @@ class GameConfig{
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
-     // 4 => array('wolf' => 1, 'mage' => 3), //複数占いテスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
+     // 5 => array('wolf' => 1, 'mage' => 3, 'poison' => 1), //複数占いテスト用
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1, 'cupid' => 1),
      // 6 => array('wolf' => 2, 'necromancer' => 2, 'guard' => 2), //複数霊能＆狩人テスト用
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     // 7 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'guard' => 2, 'fox' => 2), //狐関連テスト用
+     // 7 => array('wolf' => 1, 'mage' => 2, 'guard' => 2, 'fox' => 2), //狐関連テスト用
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),

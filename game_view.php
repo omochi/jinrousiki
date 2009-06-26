@@ -21,7 +21,8 @@ $day_night    = $array['day_night'];
 $room_name    = $array['room_name'];
 $room_comment = $array['room_comment'];
 $game_option  = $array['game_option'];
-$real_time    = strstr($game_option, 'real_time');
+$real_time    = (strpos($game_option, 'real_time') !== false);
+$system_time  = TZTime(); //現在時刻を取得
 switch($day_night){
   case 'day': //昼
     $time_message = '　日没まで ';
@@ -35,7 +36,7 @@ switch($day_night){
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 
 if($GAME_CONF->auto_reload && $auto_reload != 0) //自動更新
-  echo '<meta http-equiv="refresh" content="' . $auto_reload . '">'."\n";
+  echo '<meta http-equiv="Refresh" content="' . $auto_reload . '">'."\n";
 
 //シーンに合わせた文字色と背景色 CSS をロード
 echo '<link rel="stylesheet" href="css/game_' . $day_night . '.css">'."\n";
