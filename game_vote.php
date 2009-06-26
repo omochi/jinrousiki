@@ -417,9 +417,9 @@ function CheckVoteKick($target){
   DeleteVote(); //今までの投票を全部削除
 
   //キックされて空いた場所を詰める
-  for($i = $target_no; $i < $user_count ; $i++){
+  for($i = $target_no; $i < $user_count;  $i++){
     $next = $i + 1;
-    mysql_query("UPDATE user_entry SET user_no = $i WHERE user_no = $next");
+    mysql_query("UPDATE user_entry SET user_no = $i WHERE room_no $room_no AND user_no = $next");
   }
 
   //最終書き込み時刻を更新

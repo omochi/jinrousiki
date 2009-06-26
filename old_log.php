@@ -5,7 +5,7 @@ $log_mode    = $_GET['log_mode'];
 $reverse_log = $_GET['reverse_log'];
 $heaven_talk = $_GET['heaven_talk'];
 $heaven_only = $_GET['heaven_only'];
-$page        = $_GET['page'];
+$page        = (int)$_GET['page'];
 
 $dbHandle = ConnectDatabase(); //DB 接続
 
@@ -49,11 +49,11 @@ echo <<< EOF
 EOF;
 
   $config = new OldLogConfig(); //設定をロード
-  if($reverse == NULL) $reverse = $config->reverse ? 'on' : 'off';
+  if($reverse == NULL) $reverse = $config -> reverse ? 'on' : 'off';
 
   //ページリンクの出力
-  if(! $page) $page = 1;
-  $num_pages = ceil($num_rooms / $config->one_page) + 1; //[all] の為に + 1 しておく
+  if($page == 0) $page++;
+  $num_pages = ceil($num_rooms / $config -> one_page) + 1; //[all] の為に + 1 しておく
   $reverse_option = $reverse == 'on' ? 'on' : 'off';
   for($page_number = 1; $page_number <= $num_pages; $page_number++){
     $page_title = $page_number == $num_pages ? 'all' : $page_number;
@@ -83,8 +83,8 @@ EOF;
     $limit_statement = '';
   }
   else{
-    $start_number = $config->one_page * ($page - 1);
-    $limit_statement = sprintf('LIMIT %d, %d', $start_number, $config->one_page);
+    $start_number = $config -> one_page * ($page - 1);
+    $limit_statement = sprintf('LIMIT %d, %d', $start_number, $config -> one_page);
   }
 
   //表示する行の取得
@@ -235,9 +235,10 @@ ROOM_ROW;
 FOOTER;
 }
 
+
 //指定の部屋Noのログを出力する
 function OutputOldLog($room_no){
-  global $reverse_log, $heaven_only, $status, $last_date, $day_night, $live;
+  global $reverse_log, $heaven_only, $status, $day_night, $last_date, $live;
 
   $title = '汝は人狼なりや？[過去ログ]';
   $url   = '<br>' . "\n" . '<a href="old_log.php">←戻る</a>'."\n";
@@ -248,7 +249,7 @@ function OutputOldLog($room_no){
   $sql = mysql_query("SELECT date, day_night, room_name, room_comment, status
 			FROM room WHERE room_no = $room_no");
   $array = mysql_fetch_assoc($sql);
-  $last_date    = $array['date'];
+  static $last_date; $last_date   = $array['date'];
   $day_night    = $array['day_night'];
   $room_name    = $array['room_name'];
   $room_comment = $array['room_comment'];
@@ -277,10 +278,10 @@ EOF;
       for($i=1; $i <= $last_date; $i++) OutputDateTalkLog($i, 'heaven_only');
     }
     else{
-      OutputDateTalkLog(0, 'beforegame');
-      for($i=1; $i <= $last_date; $i++) OutputDateTalkLog($i);
+      OutputDateTalkLog($date, 'beforegame');
+      for($i=1; $i <= $last_date; $i++) OutputDateTalkLog($i, '');
       OutputVictory();
-      OutputDateTalkLog($last_date, 'aftergame');
+      OutputDateTalkLog($date, 'aftergame');
     }
   }
   else{ //最終日から最初まで
@@ -288,141 +289,140 @@ EOF;
       for($i = $last_date; $i > 0; $i--) OutputDateTalkLog($i, 'heaven_only');
     }
     else{
-      OutputDateTalkLog($last_date, 'aftergame');
+      OutputDateTalkLog($date, 'aftergame');
       OutputVictory();
-      for($i = $last_date; $i > 0; $i--) OutputDateTalkLog($i);
-      OutputDateTalkLog(0, 'beforegame');
+      for($i = $last_date; $i > 0; $i--) OutputDateTalkLog($i, '');
+      OutputDateTalkLog($date,'beforegame');
     }
   }
 }
 
 //指定の日付の会話ログを出力
-function OutputDateTalkLog($set_date, $set_location = ''){
-  global $reverse_log, $heaven_only, $room_no, $status, $last_date, $date, $day_night, $live;
+function OutputDateTalkLog($set_date, $set_location){
+  global $reverse_log, $heaven_talk, $heaven_only, $room_no, $status, $date, $day_night, $live;
 
   if($reverse_log == 'on') //逆順、初日から最終日まで
     $select_order = 'ORDER BY time';
   else //最終日から初日まで
     $select_order = 'ORDER BY time DESC';
 
-  //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  switch($set_location){
-    case 'heaven_only':
-      $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-				user_entry.handle_name AS talk_handle_name,
-				user_entry.sex AS talk_sex,
-				user_icon.color AS talk_color,
-				talk.sentence AS sentence,
-				talk.font_type AS font_type,
-				talk.location AS location
-				FROM user_entry, talk, user_icon
-				WHERE talk.room_no = $room_no
-				AND talk.date = $set_date
-				AND ( (talk.location = 'heaven') OR (talk.uname = 'system') )
-				AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-				AND user_entry.icon_no = user_icon.icon_no)
-				OR ( user_entry.room_no = 0 AND talk.uname = 'system'
-				AND user_entry.icon_no = user_icon.icon_no) )
-				$select_order");
-      if($reverse_log == 'on' && $set_date != 1) //二日目以降は昼から始まる
-	$table_class = 'day';
-      else
-	$table_class = 'night';
-      break;
-
-    case 'beforegame':
-    case 'aftergame':
-      $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-				user_entry.handle_name AS talk_handle_name,
-				user_entry.sex AS talk_sex,
-				user_icon.color AS talk_color,
-				talk.sentence AS sentence,
-				talk.font_type AS font_type,
-				talk.location AS location
-				FROM user_entry, talk, user_icon
-				WHERE talk.room_no = $room_no
-				AND talk.location like '$set_location%'
-				AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-				AND user_entry.icon_no = user_icon.icon_no)
-				OR (user_entry.room_no = 0 AND talk.uname = 'system'
-				AND user_entry.icon_no = user_icon.icon_no) )
-				$select_order");
-      $day_night   = $set_location;
-      $table_class = $set_location;
-      break;
-
-    default:
-      $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-				user_entry.handle_name AS talk_handle_name,
-				user_entry.sex AS talk_sex,
-				user_icon.color AS talk_color,
-				talk.sentence AS sentence,
-				talk.font_type AS font_type,
-				talk.location AS location
-				FROM user_entry, talk, user_icon
-				WHERE talk.room_no = $room_no
-				AND talk.date = $set_date
-				AND talk.location <> 'aftergame'
-				AND talk.location <> 'beforegame'
-				AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-				AND user_entry.icon_no = user_icon.icon_no)
-				OR (user_entry.room_no = 0 AND talk.uname = 'system'
-				AND user_entry.icon_no = user_icon.icon_no) )
-				$select_order");
-      if($reverse_log == 'on' && $set_date != 1) //二日目以降は昼から始まる
-	$table_class = 'day';
-      else
-	$table_class = 'night';
-      break;
+  if($set_location == 'heaven_only'){
+    //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
+    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
+			user_entry.handle_name AS talk_handle_name,
+			user_entry.sex AS talk_sex,
+			user_icon.color AS talk_color,
+			talk.sentence AS sentence,
+			talk.font_type AS font_type,
+			talk.location AS location
+			FROM user_entry, talk, user_icon
+			WHERE talk.room_no = $room_no
+			AND talk.date = $set_date
+			AND ( (talk.location = 'heaven') OR (talk.uname = 'system') )
+			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND user_entry.icon_no = user_icon.icon_no)
+			OR ( user_entry.room_no = 0 AND talk.uname = 'system'
+			AND user_entry.icon_no = user_icon.icon_no) )
+			$select_order");
+    if($reverse_log == 'on' && $set_date != 1) //二日目以降は昼から始まる
+      $table_class = 'day';
+    else
+      $table_class = 'night';
   }
-  $count = mysql_num_rows($sql);
-  $date  = $set_date;
-  $table_header = '<table class="old-log-talk ';
+  elseif($set_location == 'beforegame' || $set_location == 'aftergame'){
+    //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
+    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
+			user_entry.handle_name AS talk_handle_name,
+			user_entry.sex AS talk_sex,
+			user_icon.color AS talk_color,
+			talk.sentence AS sentence,
+			talk.font_type AS font_type,
+			talk.location AS location
+			FROM user_entry, talk, user_icon
+			WHERE talk.room_no = $room_no
+			AND talk.location like '$set_location%'
+			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND user_entry.icon_no = user_icon.icon_no)
+			OR (user_entry.room_no = 0 AND talk.uname = 'system'
+			AND user_entry.icon_no = user_icon.icon_no) )
+			$select_order");
+    $table_class = $set_location;
+  }
+  else{
+    //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
+    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
+			user_entry.handle_name AS talk_handle_name,
+			user_entry.sex AS talk_sex,
+			user_icon.color AS talk_color,
+			talk.sentence AS sentence,
+			talk.font_type AS font_type,
+			talk.location AS location
+			FROM user_entry, talk, user_icon
+			WHERE talk.room_no = $room_no
+			AND talk.date = $set_date
+			AND talk.location <> 'aftergame'
+			AND talk.location <> 'beforegame'
+			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND user_entry.icon_no = user_icon.icon_no)
+			OR (user_entry.room_no = 0 AND talk.uname = 'system'
+			AND user_entry.icon_no = user_icon.icon_no) )
+			$select_order");
 
-  //最終日の処理
+    if($reverse_log == 'on' && $set_date != 1) //二日目以降は昼から始まる
+      $table_class = 'day';
+    else
+      $table_class = 'night';
+  }
+  $talk_count = mysql_num_rows($sql);
+  //print(mysql_result($sql,1,6));
+
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
-     $set_date == $last_date && $reverse_log != 'on' && $heaven_only != 'on'){
-    $date++;
-    $day_night = 'night';
+     $set_date != $last_date && $reverse_log != 'on' && $heaven_only != 'on'){
+    $date = $set_date + 1;
+    $day_night = 'day';
     OutputLastWords(); //遺言を出力
     OutputDeadMan();   //死亡者を出力
-    $date = $set_date;
   }
 
+  if($reverse_log == 'on' && $set_date != 1)
+    $day_night = 'day';
+  else
+    $day_night = 'night';
+
   //出力
-  echo $table_header . $table_class . '">'."\n";
-  for($i=0; $i < $count; $i++){
+  echo '<table class="old-log-talk ' . $table_class . '">'."\n";
+  for($i=0 ; $i < $talk_count ; $i++){
     $array = mysql_fetch_assoc($sql);
     $location = $array['location'];
-    if(strstr($location, 'day') && $day_night != 'day'){
+    if(strstr($location, 'day') && $day_night == 'night'){
       OutputScenceChange($set_date);
       $day_night = 'day';
-      echo $table_header . $day_night . '">'."\n";
+      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
     }
-    elseif(strstr($location, 'night') && $day_night != 'night'){
-      OutputScenceChange();
+    elseif(strstr($location, 'night') && $day_night == 'day'){
+      OutputScenceChange($set_date);
       $day_night = 'night';
-      echo $table_header . $day_night . '">'."\n";
+      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
     }
     OutputTalk($array); //会話出力
   }
-  echo '</table>'."\n";
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
-     $set_date == $last_date && $reverse_log == 'on' && $heaven_only != 'on'){
-    $date++;
-    $day_night = 'night';
+     $set_date != $last_date && $reverse_log == 'on' && $heaven_only != 'on'){
+    $day_night = 'day';
+    $date = $set_date + 1;
     OutputDeadMan();   //死亡者を出力
     OutputLastWords(); //遺言を出力
   }
 }
 
 //シーン切り替え時のログ出力
-function OutputScenceChange(){
+function OutputScenceChange($set_date){
   global $reverse_log, $heaven_only, $date, $day_night;
 
   echo '</table>'."\n";
   if($heaven_only == 'on') return;
+  $date = $set_date;
   if($reverse_log == 'on'){
     OutputVoteList(); //投票結果出力
     $day_night = 'night';
