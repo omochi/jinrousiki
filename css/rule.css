@@ -1,3 +1,4 @@
+@import url(role.css);
 body {
   background-color: #FFFFFF;
   background-image: url("../img/rule_bg.jpg");
@@ -33,14 +34,6 @@ ul{
   margin-bottom: 1em;
   margin-left: -5px;
 }
-.mage{color: #CC00CC;}
-.necromancer{color: #008BAF;}
-.guard{color: #3399CC;}
-.common{color: #FF9966;}
-.poison{color: #009966;}
-.wolf{color: #FF0000;}
-.fox{color: #D4008F;}
-.lovers{color: #FF3366;}
 .member{
   border: 1px solid;
   margin: 20px 20px;
@@ -63,5 +56,9 @@ h2{
   margin: 0;
   font-size:110%;
 }
-view{border: 1px solid;}
-view td{ border: 1px solid; }
+.view{
+  border: 0;
+  border-collapse: collapse;
+}
+.view td{ border: 1px solid; }
+.view img{margin: 0;}

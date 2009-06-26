@@ -57,26 +57,11 @@
 <th>链客眶</th><th>录客</th><th class="wolf">客系</th><th class="mage">狸い徽</th><th class="necromancer">晤墙荚</th><th class="wolf">陡客</th><th class="guard">柬客</th><th class="common">鼎铜荚</th><th class="fox">团秆</th><th class="poison">虽魄荚</th><th class="lovers">キュ〖ピッド</th>
 </tr>
 <?php
-for($i=4; $i <= 22; $i++){
-  $count_list = array_count_values($role_list[$i]);
-
-  $human       = (int)$count_list['human'];
-  $wolf        = (int)$count_list['wolf'];
-  $mage        = (int)$count_list['mage'];
-  $necromancer = (int)$count_list['necromancer'];
-  $mad         = (int)$count_list['mad'];
-  $guard       = (int)$count_list['guard'];
-  $common      = (int)$count_list['common'];
-  $fox         = (int)$count_list['fox'];
-  $poison      = (int)$count_list['poison'];
-  $cupid       = (int)$count_list['cupid'];
-
-echo <<< EOF
-<tr>
-<td><strong>$i</strong></td><td>$human</td><td>$wolf</td><td>$mage</td><td>$necromancer</td><td>$mad</td><td>$guard</td><td>$common</td><td>$fox</td><td>$poison</td><td>$cupid</td>
-</tr>
-
-EOF;
+$role_list = array('human', 'wolf', 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox', 'poison', 'cupid');
+foreach($GAME_CONF->role_list as $key => $value){
+  $tag = "<td><strong>$key</strong></td>";
+  foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
+  echo '<tr>' . $tag . '</tr>'."\n";
 }
 ?>
 </tr></table>
@@ -375,7 +360,7 @@ EOF;
 <tr>
 <td class="mage">狸い徽</td><td><img src="<?php echo $ROLE_IMG->mage; ?>"><br>
 <table class="view"><tr><td><img src="<?php echo $ROLE_IMG->mage_result; ?>"></td><td>录客办规</td><td><img src="<?php echo $ROLE_IMG->result_human; ?>"></td></tr></table>
-<table ><tr><td><img src="<?php echo $ROLE_IMG->mage_result; ?>"></td><td>客系办规</td><td><img src="<?php echo $ROLE_IMG->result_wolf; ?>"></td></tr></table>
+<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->mage_result; ?>"></td><td>客系办规</td><td><img src="<?php echo $ROLE_IMG->result_wolf; ?>"></td></tr></table>
 </td>
 </tr>
 

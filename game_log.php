@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . '/include/game_functions.php');
 session_start();
 $session_id = session_id();
 
-//部屋No取得
+//引数を取得
 $room_no       = $_GET['room_no'];
 $log_mode      = $_GET['log_mode'];
 $get_date      = $_GET['date'];
@@ -14,7 +14,7 @@ $get_day_night = $_GET['day_night'];
 $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
-//日付と昼か夜かを取得
+//日付とシーンを取得
 $sql = mysql_query("SELECT date, day_night, room_name, room_comment, game_option, status
 			FROM room WHERE room_no = $room_no");
 $array   = mysql_fetch_assoc($sql);
@@ -35,7 +35,7 @@ $sex         = $array['sex'];
 $role        = $array['role'];
 $live        = $array['live'];
 
-if(! ($live == 'dead' || $day_night == 'aftergame')){ //死者かゲーム終了後だけ
+if($live != 'dead' && $day_night != 'aftergame'){ //死者かゲーム終了後だけ
   OutputActionResult('ユーザ認証エラー',
 		     'ログ閲覧許可エラー<br>' .
 		     '<a href="index.php" target="_top">トップページ</a>' .

@@ -19,6 +19,7 @@
       <li><a href="script_info.php">特徴と仕様</a></li>
       <li><a href="rule.php">ゲームのルール</a></li>
       <li><a href="old_log.php">ログ閲覧</a></li>
+<!-- さとり鯖用
       <li><a href="old_log2.php">役職表示ログ閲覧</a></li>
       <li>★☆★☆★☆★</li>
       <li class="log">HTML化ログ</li>
@@ -27,6 +28,7 @@
       <li><a href="log3_2/index.html">379村〜</a></li>
       <li><a href="log2/index.html">さとり鯖V2ログ</a></li>
       <li><a href="log1/index.html">さとり鯖V1ログ</a></li>
+-->
       <li>★☆★☆★☆★</li>
       <li><a href="icon_view.php">アイコン一覧</a></li>
       <li><a href="icon_upload.php">アイコン登録</a></li>
@@ -105,8 +107,8 @@
          <td class="explain">
            <input id="real_time" type="checkbox" name="game_option_real_time" value="real_time" checked>
            (制限時間が実時間で消費されます　昼：
-           <input type="text" name="game_option_real_time_day" value="<?php echo $TIME_CONF -> default_day; ?>" size="2" maxlength="2">分 夜：
-           <input type="text" name="game_option_real_time_night" value="<?php echo $TIME_CONF -> default_night; ?>" size="2" maxlength="2">分)
+           <input type="text" name="game_option_real_time_day" value="<?php echo $TIME_CONF->default_day; ?>" size="2" maxlength="2">分 夜：
+           <input type="text" name="game_option_real_time_night" value="<?php echo $TIME_CONF->default_night; ?>" size="2" maxlength="2">分)
          </td>
        </tr>
 

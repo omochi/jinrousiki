@@ -12,7 +12,10 @@ DisconnectDatabase($dbHandle); //DB 接続解除
 //ユーザアイコンの初期設定
 //アイコンイメージをPHP設置時に追加する場合はここも必ず追加してください。
 class DefaultIcon{
-  //アイコン名のリスト
+  //ユーザアイコンディレクトリ：setup.php からの相対パス
+  //実際に運用する際は TOP からの相対パス (IconConfig->path) を参照する点に注意
+  var $path   = '../user_icon';  //アイコン名のリスト
+
   var $name = array('明灰', '暗灰', '黄色', 'オレンジ', '赤', '水色', '青', '緑', '紫', 'さくら色');
 
   //アイコンの色 (アイコンのファイル名は必ず001〜の数字にしてください), 幅, 高さ
@@ -83,14 +86,14 @@ function CheckTable(){
     $class = new DefaultIcon(); //ユーザアイコンの初期設定をロード
 
     //ディレクトリ内のファイル一覧を取得
-    if($handle = opendir($ICON_CONF->path)){
+    if($handle = opendir($class->path)){
       while (($file = readdir($handle)) !== false){
 	if($file != '.' && $file != '..'){
 	  //初期データの読み込み
-	  $name   = $class -> name[  $icon_no - 1];
-	  $width  = $class -> width[ $icon_no - 1];
-	  $height = $class -> height[$icon_no - 1];
-	  $color  = $class -> color[ $icon_no - 1];
+	  $name   = $class->name[  $icon_no - 1];
+	  $width  = $class->width[ $icon_no - 1];
+	  $height = $class->height[$icon_no - 1];
+	  $color  = $class->color[ $icon_no - 1];
 
 	  mysql_query("INSERT INTO user_icon(icon_no, icon_name, icon_filename, icon_width,
 			icon_height, color)
@@ -106,8 +109,8 @@ function CheckTable(){
     $class = new DummyBoyIcon(); //身代わり君アイコンの設定をロード
     mysql_query("INSERT INTO user_icon(icon_no, icon_name, icon_filename, icon_width,
 		 icon_height,color)
-		 VALUES(0, '{$class -> name}', '{$class -> path}', {$class -> width},
-		 {$class -> height}, '{$class -> color}')");
+		 VALUES(0, '{$class->name}', '{$class->path}', {$class->width},
+		 {$class->height}, '{$class->color}')");
   }
 
   if(! in_array('admin_manage', $table)){

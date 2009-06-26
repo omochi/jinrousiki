@@ -4,8 +4,8 @@ require_once(dirname(__FILE__) . '/include/game_functions.php');
 //引数を取得
 $room_no = $_GET['room_no']; //部屋 No
 $auto_reload = (int)$_GET['auto_reload']; //オートリロードの間隔
-if($auto_reload != 0 && $auto_reload < $GAME_CONF -> auto_reload_list[0])
-  $auto_reload = $GAME_CONF -> auto_reload_list[0];
+if($auto_reload != 0 && $auto_reload < $GAME_CONF->auto_reload_list[0])
+  $auto_reload = $GAME_CONF->auto_reload_list[0];
 
 $view_mode = 'on';
 $url = 'game_view.php?room_no=' . $room_no . '&view_mode=on';
@@ -52,7 +52,7 @@ else{ //会話で時間経過制
   $left_talk_time = GetTalkPassTime(&$left_time);
 }
 
-echo <<< EOF
+echo <<<EOF
 </head>
 <body{$on_load}>
 <a name="#game_top"></a>
@@ -70,7 +70,7 @@ else{
   echo '<a href="' . $url . '">[更新]</a>'."\n";
 }
 
-echo <<< EOF
+echo <<<EOF
 <a href="index.php">[戻る]</a>
 </td></tr>
 <tr><td><form method="POST" action="login.php?room_no=$room_no">

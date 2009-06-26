@@ -1,3 +1,4 @@
+@import url(role.css);
 /* game_view.php & OutputGameHeader() */
 .room{text-decoration:underline;} /* 村のタイトル */
 .room span{
@@ -45,19 +46,6 @@
 .player table td{vertical-align: top;}
 .player table img{border: 2px solid;} /* 枠の色はアイコン毎 */
 .player table td span{font-weight: bold;} /* 役職名 */
-.human{      color: #000000;} /* 村人 */
-.wolf{       color: #FF0000;} /* 人狼 */
-.mage{       color: #9933FF;} /* 占い師 */
-.necromancer{color: #009900;} /* 霊能者 */
-.mad{        color: #FF0000;} /* 狂人 */
-.guard{      color: #3399FF;} /* 狩人 */
-.common{     color: #CC9966;} /* 共有者 */
-.fox{        color: #CC0099;} /* 妖狐 */
-.poison{     color: #006633;} /* 埋毒者 */
-.cupid{      color: #FF66CC;} /* キューピッド */
-.authority{  color: #999999;} /* 権力者 */
-.decide{     color: #999999;} /* 決定者 */
-.lovers{     color: #FF66CC;} /* 恋人 */
 .already-vote{background-color: #FFDDFF;} /* ゲーム開始投票済み */
 /* OutputVictory() */
 .victory{ /* 勝敗結果全体の table */
@@ -271,11 +259,11 @@
   vertical-align: middle;
 }
 .ability-result{ /* 能力の結果表示 */
-  border: 1px solid;
+  border: 1px solid #000000;
   border-collapse: collapse;
 }
 .ability-result td{
-  border: 0px solid;
+  border: 0px solid #000000;
   vertical-align: middle;
 }
 .ability-wolf-eat{ /* 人狼の投票 */

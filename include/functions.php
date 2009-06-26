@@ -6,6 +6,8 @@ if(! extension_loaded('mbstring')){
 require_once(dirname(__FILE__) .  '/setting.php');
 
 //データベース接続
+//$header : すでに HTMLヘッダが出力されて [いる / いない]
+//$exit   : エラー時に [HTML を閉じて exit を返す / false で終了]
 function ConnectDatabase($header = false, $exit = true){
   global $db_host, $db_uname, $db_pass, $db_name;
 
@@ -63,22 +65,27 @@ if(! function_exists('session_regenerate_id')){
   }
 }
 
-//TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定)
+//TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
   global $OFFSET_SECONDS;
   return time() + $OFFSET_SECONDS;
 }
 
 //時間(秒)を変換する
-function ConvertTime($time){
-  $minutes = floor($time / 60);
-  if($minutes >= 60){
-    $hours   = floor($minutes / 60);
-    $minutes = $minutes % 60;
-  }
-  $seconds = $minutes % 60;
-
+function ConvertTime($seconds){
   $sentence = '';
+  $hours    = 0;
+  $minutes  = 0;
+
+  if($seconds >= 60){
+    $minutes = floor($seconds / 60);
+    $seconds %= 60;
+  }
+  if($minutes >= 60){
+    $hours = floor($minutes / 60);
+    $minutes %= 60;
+  }
+
   if($hours   > 0) $sentence .= $hours   . '時間';
   if($minutes > 0) $sentence .= $minutes . '分';
   if($seconds > 0) $sentence .= $seconds . '秒';
@@ -89,7 +96,7 @@ function ConvertTime($time){
 function ToEUC_PostData(){
   foreach($_POST as $key => $value){
     $encode_type = mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-    if(($encode_type != '') && ($encode_type != 'EUC-JP'))
+    if($encode_type != '' && $encode_type != 'EUC-JP')
       $_POST[$key] = mb_convert_encoding($value, 'EUC-JP', $encode_type);
   }
 }
@@ -122,8 +129,9 @@ function LineToBR(&$str){
 }
 
 //共通 HTML ヘッダ出力
+//$path は $CSS_PATH みたいなグローバル変数設定できると楽かな？
 function OutputHTMLHeader($title, $css = 'action', $path = 'css'){
-  echo <<< EOF
+  echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">

@@ -12,8 +12,10 @@ $caption = <<< EOF
 </tr>
 
 EOF;
-
 echo <<< EOF
+<br>
+※betaがついているバージョンは開発チーム内の情報交換用です。<br>
+　基本的に安定性は保証されません。<br><br>
 $caption
 <tr>
   <td class="link"><a href="fix/jinro_php_1.2.2.zip">Ver. 1.2.2</a></td>

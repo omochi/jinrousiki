@@ -18,26 +18,70 @@ class RoomConfig{
 
 //ゲーム設定
 class GameConfig{
-  // 住人登録 //
+  //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
   var $entry_one_ip_address = true;
   // var $entry_one_ip_address = false; //デバッグ用
 
-  // 投票 //
+  //-- 投票 --//
   var $kick = 3; //何票で KICK 処理を行うか
   var $draw = 5; //再投票何回目で引き分けとするか
 
-  // 役職 //
+  //-- 役職 --//
+  //配役テーブル
+  /* 設定の見方
+    [ゲーム参加人数] => array([配役名1] => [配役名1の人数], [配役名2] => [配役名2の人数], ...),
+    ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
+      human       : 村人
+      wolf        : 人狼
+      mage        : 占い師
+      necromancer : 霊能者
+      mad         : 狂人
+      guard       : 狩人
+      common      : 共有者
+      fox         : 妖狐
+      poison      : 埋毒者
+      cupid       : キューピッド
+  */
+  var $role_list = array(
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
+     // 4 => array('wolf' => 1, 'mage' => 3), //複数占いテスト用
+     5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
+     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1, 'cupid' => 1),
+     // 6 => array('wolf' => 2, 'necromancer' => 2, 'guard' => 2), //複数霊能＆狩人テスト用
+     7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
+     // 7 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'guard' => 2, 'fox' => 2), //狐関連テスト用
+     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
+    10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
+    11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
+    12 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
+    13 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common'=> 2),
+    14 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2),
+    15 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    16 => array('human' =>  5, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    17 => array('human' =>  7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    18 => array('human' =>  8, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    20 => array('human' => 10, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    21 => array('human' => 11, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1)
+                         );
+
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-  // var $poison_only_voter = false; // まだ実装されていません
-  var $poison_only_eater = true; //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
+  // var $poison_only_voter = false; //まだ実装されていません
+
+  //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
+  var $poison_only_eater = true;
+
   var $cupid_self_shoot  = 10; //キューピッドが他人打ち可能となる最低村人数
 
-  // 「異議」あり //
+  //-- 「異議」あり --//
   var $objection = 5; //最大回数
   var $objection_image = 'img/objection.gif'; //「異議」ありボタンの画像パス
 
-  // 自動更新 //
+  //-- 自動更新 --//
   var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
   var $auto_reload_list = array(30, 45, 60); //自動更新モードの更新間隔(秒)のリスト
 }
@@ -46,12 +90,13 @@ class GameConfig{
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
   var $sudden_death = 180;
+  // var $sudden_death = 30; //デバッグ用
 
-  // --リアルタイム制-- //
-  var $default_day   = 5; //デフォルトのリアルタイム制の場合の昼の制限時間(分)
-  var $default_night = 3; //デフォルトのリアルタイム制の場合の夜の制限時間(分)
+  //-- リアルタイム制 --//
+  var $default_day   = 5; //デフォルトの昼の制限時間(分)
+  var $default_night = 3; //デフォルトの夜の制限時間(分)
 
-  // --会話を用いた仮想時間制-- //
+  //-- 会話を用いた仮想時間制 --//
   //昼の制限時間(昼は12時間、spend_time=1(半角100文字以内) で 12時間 ÷ $day 進みます)
   var $day = 48;
 
@@ -65,40 +110,16 @@ class TimeConfig{
   var $silence_pass = 4;
 }
 
-//ゲームプレイ時のアイコン情報
+//ゲームプレイ時のアイコン表示設定
 class IconConfig{
-  var $path   = './user_icon';   //ユーザアイコンディレクトリ
+  var $path   = './user_icon';   //ユーザアイコンのパス
   var $width  = 45;              //表示サイズ(幅)
   var $height = 45;              //表示サイズ(高さ)
   var $dead   = 'img/grave.jpg'; //死者
   var $wolf   = 'img/wolf.gif';  //狼
 }
 
-//開始時の役割リスト・決定者、権力者、埋毒者オプションがあるときは先頭の方から上書きされます
-$role_list = array(
-	  4 => array('human','wolf','mage','mad') ,
-	 // 4 => array('human','wolf','poison','cupid') ,  //毒・恋人連鎖テスト用
-	 5 => array('human','wolf','mage','mad','poison') ,
-	 6 => array('human','mage','poison','wolf','mad','cupid') ,
-	 7 => array('human','human','human','wolf','mage','guard','fox') ,
-	 8 => array('human','human','human','human','human','wolf','wolf','mage') ,
-	 9 => array('human','human','human','human','human','wolf','wolf','mage','necromancer') ,
-	10 => array('human','human','human','human','human','wolf','wolf','mage','necromancer','mad') ,
-	11 => array('human','human','human','human','human','wolf','wolf','mage','necromancer','mad','guard') ,
-	12 => array('human','human','human','human','human','human','wolf','wolf','mage','necromancer','mad','guard') ,
-	13 => array('human','human','human','human','human','wolf','wolf','mage','necromancer','mad','guard','common','common') ,
-	14 => array('human','human','human','human','human','human','wolf','wolf','mage','necromancer','mad','guard','common','common') ,
-	15 => array('human','human','human','human','human','human','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	16 => array('human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	17 => array('human','human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	18 => array('human','human','human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	19 => array('human','human','human','human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	20 => array('human','human','human','human','human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	21 => array('human','human','human','human','human','human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox') ,
-	22 => array('human','human','human','human','human','human','human','human','human','human','human','human','wolf','wolf','wolf','mage','necromancer','mad','guard','common','common','fox')
-	);
-
-// アイコン登録設定 //
+//アイコン登録設定
 class UserIcon{
   var $name   = 20;    //アイコン名につけられる文字数(半角)
   var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
@@ -107,13 +128,13 @@ class UserIcon{
   var $number = 1000;  //登録できるアイコンの最大数
 }
 
-// 過去ログ表示設定 //
+//過去ログ表示設定
 class OldLogConfig{
   var $one_page = 20;   //過去ログ一覧で1ページでいくつの村を表示するか
-  var $reverse  = true; //デフォルトの村番号の表示順 (on:逆にする / off:しない)
+  var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }
 
-// データ格納クラスをロード //
+//データ格納クラスをロード
 $ROOM_CONF   = new RoomConfig();   //部屋メンテナンス設定
 $GAME_CONF   = new GameConfig();   //ゲーム設定
 $TIME_CONF   = new TimeConfig();   //ゲームの時間設定

@@ -11,12 +11,12 @@
 <body onLoad="set_focus(); reload_game();">
 <a name="game_top"></a>
 <?php
-$argv = '?room_no=' . $_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
-if($_GET['play_sound']  != '') $argv .= '&play_sound='   . $_GET['play_sound'];
-if($_GET['dead_mode']   != '') $argv .= '&dead_mode='    . $_GET['dead_mode'];
-if($_GET['heaven_mode'] != '') $argv .= '&heaven_mode='  . $_GET['heaven_mode'];
-if($_GET['list_down']   != '') $argv .= '&list_down='    . $_GET['list_down'];
-$header = '<form method="POST" action="game_play.php' . $argv . '#game_top" target="bottom" ';
+$url_argv = '?room_no=' . $_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
+if($_GET['play_sound']  != '') $url_argv .= '&play_sound='   . $_GET['play_sound'];
+if($_GET['dead_mode']   != '') $url_argv .= '&dead_mode='    . $_GET['dead_mode'];
+if($_GET['heaven_mode'] != '') $url_argv .= '&heaven_mode='  . $_GET['heaven_mode'];
+if($_GET['list_down']   != '') $url_argv .= '&list_down='    . $_GET['list_down'];
+$header = '<form method="POST" action="game_play.php' . $url_argv . '#game_top" target="bottom" ';
 
 //ページ読み込み時に自動でリロードするダミー送信フォーム
 echo $header . 'name="reload_game"></form>'."\n";
@@ -37,7 +37,7 @@ echo $header . 'class="input-say" name="send" onSubmit="' . $submit . '">'."\n";
 <option value="weak">弱く発言する</option>
 <option value="last_words">遺言を残す</option>
 </select><br>
-<?php echo '[<a class="vote" href="game_vote.php' . $argv . '#game_top">投票/占う/護衛</a>]'; ?>
+<?php echo '[<a class="vote" href="game_vote.php' . $url_argv . '#game_top">投票/占う/護衛</a>]'; ?>
 <a class="top-link" href="index.php" target="_top">TOP</a>
 </td>
 </tr></table>

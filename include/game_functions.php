@@ -32,8 +32,8 @@ function OutputGamePageHeader(){
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . $room_no . '&auto_reload=' . $auto_reload;
+  // if($day_night  != '') $url_header .= '&day_night='  . $day_night; //現在は不要のはず
   if($play_sound != '') $url_header .= '&play_sound=' . $play_sound;
-  if($day_night  != '') $url_header .= '&day_night='  . $day_night;
   if($list_down  != '') $url_header .= '&list_down='  . $list_down;
 
   $title = '汝は人狼なりか？[プレイ]';
@@ -53,8 +53,8 @@ function OutputGamePageHeader(){
   }
 
   //ゲーム中、死んで霊話モードに行くとき
-  if($day_night != 'aftergame' && $live == 'dead' && $log_mode != 'on' &&
-     $view_mode != 'on' && $dead_mode != 'on' && $heaven_mode != 'on'){
+  if($day_night != 'aftergame' && $live == 'dead' && $view_mode != 'on' &&
+     $log_mode != 'on' && $dead_mode != 'on' && $heaven_mode != 'on'){
     $url =  $url_header . '&dead_mode=on';
     OutputActionResult($title, $location . '天国モードに切り替えます。' .
 		       $body . $url . $body_footer, $url);
@@ -72,7 +72,7 @@ function OutputGamePageHeader(){
 
   OutputHTMLHeader($title, 'game');
   echo '<link rel="stylesheet" href="css/game_' . $day_night . '.css">'."\n";
-  if($_GET['date'] == ''){ //過去ログ閲覧時は不要
+  if($log_mode != 'on'){ //過去ログ閲覧時は不要
     echo '<script type="text/javascript" src="javascript/change_css.js"></script>'."\n";
     $on_load  = "change_css('$day_night');";
   }
@@ -81,9 +81,9 @@ function OutputGamePageHeader(){
   if($auto_reload != 0 && $day_night != 'aftergame')
     echo '<meta http-equiv="Refresh" content="' . $auto_reload . '">'."\n";
 
-  if(($day_night == 'day' || $day_night == 'night') && $heaven_mode != 'on' &&
-     strstr($game_option, 'real_time') && $_GET['date'] == ''){
-    //経過時間をJavascriptでリアルタイム表示
+  //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
+  if(($day_night == 'day' || $day_night == 'night') && strstr($game_option, 'real_time') &&
+     $heaven_mode != 'on' && $log_mode != 'on'){
     list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
     $on_load .= 'output_realtime();';
     OutputRealTimer($start_time, $end_time);
@@ -109,15 +109,10 @@ function OutputRealTimer($start_time, $end_time){
 function OutputAutoReloadLink($url){
   global $GAME_CONF, $auto_reload;
 
-  $list = $GAME_CONF->auto_reload_list;
-  echo '[自動更新](';
-  echo ($auto_reload != 0 ? $url . '0">手動</a>'  :  '手動');
-
-  $count = count($list);
-  for($i=0; $i < $count; $i++){
-    $time = $list[$i];
+  echo '[自動更新](' . ($auto_reload == 0 ? '手動' : $url . '0">手動</a>');
+  foreach($GAME_CONF->auto_reload_list as $time){
     $name = $time . '秒';
-    echo  ' ' . ($auto_reload != $time ? $url . $time . '">' . $name . '</a>' :  $name);
+    echo  ' ' . ($auto_reload == $time ? $name : $url . $time . '">' . $name . '</a>');
   }
   echo ')'."\n";
 }
@@ -138,22 +133,23 @@ function OutputTimeTable(){
 
 //プレイヤー一覧出力
 function OutputPlayerList(){
-  global $ICON_CONF, $room_no, $game_option, $day_night, $live;
+  global $DEBUG_MODE, $ICON_CONF, $room_no, $game_option, $day_night, $live;
 
-  $sql = mysql_query("select user_entry.uname,
+  $sql = mysql_query("SELECT user_entry.uname,
 			user_entry.handle_name,
 			user_entry.profile,
 			user_entry.live,
 			user_entry.role,
+			user_entry.user_no,
 			user_icon.icon_filename,
 			user_icon.color,
 			user_icon.icon_width,
 			user_icon.icon_height
-			from user_entry, user_icon
-			where user_entry.room_no = $room_no
-			and user_entry.icon_no = user_icon.icon_no
-			and user_entry.user_no > 0
-			order by user_entry.user_no");
+			FROM user_entry, user_icon
+			WHERE user_entry.room_no = $room_no
+			AND user_entry.icon_no = user_icon.icon_no
+			AND user_entry.user_no > 0
+			ORDER BY user_entry.user_no");
   $count  = mysql_num_rows($sql);
   $width  = $ICON_CONF->width;
   $height = $ICON_CONF->height;
@@ -172,12 +168,14 @@ function OutputPlayerList(){
     $this_profile = $array['profile'];
     $this_live    = $array['live'];
     $this_role    = $array['role'];
+    $this_user_no = $array['user_no'];
     $this_file    = $array['icon_filename'];
     $this_color   = $array['color'];
     //アイコンのサイズは参照する変数を変える(採用されればクエリも不要)
     //$this_width   = $array['icon_width'];
     //$this_height  = $array['icon_height'];
     $profile_alt  = str_replace("\n", $replace, $this_profile);
+    if($DEBUG_MODE) $this_handle .= ' (' . $this_user_no . ')';
 
     //アイコン
     $path = $ICON_CONF->path . '/' . $this_file;
@@ -1044,8 +1042,7 @@ function LoversFollowed($sudden_death = false){
   $sql = mysql_query("SELECT uname, handle_name, last_words FROM user_entry
 			WHERE room_no = $room_no AND live = 'live'
 			AND role LIKE '%lovers%' AND user_no > 0");
-  $count = mysql_num_rows($sql);
-  if($count < 1) return;
+  if(mysql_num_rows($sql) < 1) return;
 
   $array = mysql_fetch_assoc($sql);
   $target_uname  = $array['uname'];
@@ -1055,7 +1052,7 @@ function LoversFollowed($sudden_death = false){
   DeadUser($target_uname);  //後追い死
 
   if($sudden_death){ //突然死の処理
-    InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, $TZTime());
+    InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, TZTime());
     return;
   }
 
