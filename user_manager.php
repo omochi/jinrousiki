@@ -12,6 +12,7 @@ if($_GET['room_no'] == ''){
 $dbHandle = ConnectDatabase(); //DB 接続
 
 if($_POST['command'] == 'entry'){
+  // if($GAME_CONF->trip) require_once(dirname(__FILE__) . '/include/convert_trip.php');
   EntryUser($_GET['room_no'], $_POST['uname'], $_POST['handle_name'], $_POST['icon_no'],
 	     $_POST['profile'], $_POST['password'], $_POST['sex'], $_POST['role']);
 }
@@ -162,8 +163,14 @@ function ConvertTrip(&$str){
 
   if($GAME_CONF->trip){ //まだ実装されていません
     OutputActionResult('村人登録 [入力エラー]',
-		       'トリップ変換処理は実装されていません。<br>'."\n" .
-		       '管理者に問い合わせてください。');
+                       'トリップ変換処理は実装されていません。<br>'."\n" .
+                       '管理者に問い合わせてください。');
+    // if(strrpos($str, '＃') !== false){
+    //   OutputActionResult('村人登録 [入力エラー]',
+    // 			 '全角 "＃" を用いたトリップには未対応です。<br>'."\n" .
+    // 			 '半角 "#" を使用して下さい。');
+    // }
+    // $str = filterKey2Trip($str, 'cp51932'); //文字コードは convert_trip.php 参照
   }
   else{
     if(strrpos($str, '#') !== false || strrpos($str, '＃') !== false){

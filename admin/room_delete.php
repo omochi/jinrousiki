@@ -27,7 +27,7 @@ DisconnectDatabase($connection); //DB 接続解除
 
 OutputHTMLHeader('部屋削除', 'action', '../css');
 echo <<< EOF
-<meta http-equiv="Refresh" content="1;URL='../index.php">
+<meta http-equiv="Refresh" content="1;URL='../index.php'">
 </head><body>
 $room_no 番地を削除しました。トップページに戻ります。<br>
 切り替わらないなら <a href="../index.php">ここ</a> 。

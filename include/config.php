@@ -24,11 +24,12 @@ class GameConfig{
   // var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
-  var $trip = false; //まだ実装されていません
+  // var $trip = true; //まだ実装されていません
+  var $trip = false;
 
   //-- 投票 --//
   var $kick = 3; //何票で KICK 処理を行うか
-  var $draw = 5; //再投票何回目で引き分けとするか
+  var $draw = 3; //再投票何回目で引き分けとするか
 
   //-- 役職 --//
   //配役テーブル
@@ -63,7 +64,7 @@ class GameConfig{
     13 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common'=> 2),
     14 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2),
     15 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    16 => array('human' =>  5, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    16 => array('human' =>  6, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
     17 => array('human' =>  7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
     18 => array('human' =>  8, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
     19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),

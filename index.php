@@ -37,13 +37,13 @@
       <li><a href="src/">開発版ソースダウンロード</a></li>
       <li><a href="src/diff.txt">更新履歴 (テキストファイル)</a></li>
     </ul>
-<!-- さとり鯖用
+
     <div class="menu">交流用サイト</div>
     <ul>
       <li><a href="http://jbbs.livedoor.jp/netgame/2829/">ウミガメ人狼掲示板</a></li>
       <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">ウミガメ雑談村</a></li>
     </ul>
--->
+
     <div class="menu">外部リンク</div>
     <ul>
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1241277178/l50">本スレ</a></li>
@@ -182,6 +182,9 @@
 [PHP4 + MYSQLスクリプト　<a href="http://p45.aaacafe.ne.jp/~netfilms/" target="_blank">配布ホームページ</a>]
 [システム　<a href="http://sourceforge.jp/projects/mbemulator/" target="_blank">mbstringエミュレータ</a>]<br>
 [写真素材　<a href="http://keppen.web.infoseek.co.jp/" target="_blank">天の欠片</a>
+<!-- チルノ鯖のみで使用
+　<a href="http://moineau.fc2web.com/" target="_blank">Le moineau - すずめのおやど -</a>
+-->
 ]
 [フォント素材　<a href="http://azukifont.mints.ne.jp/" target="_blank">あずきフォント</a>]<br>
 <!-- さとり鯖用

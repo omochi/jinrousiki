@@ -391,12 +391,12 @@ function OutputDateTalkLog($set_date, $set_location){
     $array = mysql_fetch_assoc($sql);
     $location = $array['location'];
     if(strpos($location, 'day') !== false && $day_night != 'day'){
-      OutputScenceChange($set_date);
+      OutputSceneChange($set_date);
       $day_night = 'day';
       echo '<table class="old-log-talk ' . $day_night . '">'."\n";
     }
     elseif(strpos($location, 'night') !== false && $day_night != 'night'){
-      OutputScenceChange($set_date);
+      OutputSceneChange($set_date);
       $day_night = 'night';
       echo '<table class="old-log-talk ' . $day_night . '">'."\n";
     }
@@ -414,7 +414,7 @@ function OutputDateTalkLog($set_date, $set_location){
 }
 
 //シーン切り替え時のログ出力
-function OutputScenceChange($set_date){
+function OutputSceneChange($set_date){
   global $reverse_log, $heaven_only, $date, $day_night;
 
   echo '</table>'."\n";
