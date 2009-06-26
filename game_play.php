@@ -307,7 +307,7 @@ function CheckSilence(){
 	mysql_query("CREATE TEMPORARY TABLE tmp_sd SELECT uname FROM vote
 			WHERE room_no = $room_no AND date = $date
 			AND (situation = 'WOLF_EAT' or situation = 'MAGE_DO'
-			or situation = 'GUARD_DO' or situation = 'GUARD_DO')");
+			or situation = 'GUARD_DO' or situation = 'CUPID_DO')");
 
 	//投票していない人を取得 (役職のみ)
 	$query .= " AND (user_entry.role LIKE 'wolf%' or user_entry.role LIKE 'mage%' ".
