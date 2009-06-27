@@ -1,9 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/config.php');          //高度な設定
-require_once(dirname(__FILE__) . '/version.php');         //バージョン情報
-require_once(dirname(__FILE__) . '/contenttype_set.php'); //ヘッダの文字コード設定
-require_once(dirname(__FILE__) . '/../paparazzi.php');    //デバッグ用
-
 //サーバのURL
 $site_root = "http://localhost/jinro/";
 
@@ -24,7 +19,7 @@ $db_pass = 'xxxxxx';
 $db_name = 'jinrou';
 
 //管理者用パスワード
-$system_password = 'pass';
+$system_password = 'xxxxxx';
 
 //ソースアップロードフォームのパスワード
 $src_upload_password = 'upload';
@@ -37,4 +32,10 @@ $DEBUG_MODE = false;
 
 //時差 (秒数)
 $OFFSET_SECONDS = 32400; //9時間
+
+//外部ファイルの読み込み
+require_once(dirname(__FILE__) . '/config.php');          //高度な設定
+require_once(dirname(__FILE__) . '/version.php');         //バージョン情報
+require_once(dirname(__FILE__) . '/contenttype_set.php'); //ヘッダの文字コード設定
+require_once(dirname(__FILE__) . '/../paparazzi.php');    //デバッグ用
 ?>

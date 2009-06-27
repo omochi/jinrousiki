@@ -25,7 +25,7 @@ OutputHTMLFooter();
 // 関数 //
 //過去ログ一覧表示
 function OutputFinishedRooms($page, $reverse = NULL){
-  global $ROOM_IMG, $VICTORY_IMG;
+  global $ROOM_IMG, $VICTORY_IMG, $DEBUG_MODE;
 
   //村数の確認
   $sql = mysql_query("SELECT COUNT(*) FROM room WHERE status = 'finished'");
@@ -89,7 +89,8 @@ EOF;
 
   //表示する行の取得
   $room_order = ($reverse == 'on' ? 'DESC' : '');
-  $res_oldlog_list = mysql_query("SELECT
+  $res_oldlog_list = mysql_query("
+    SELECT
       room_no,
       room_name,
       room_comment,
@@ -99,7 +100,11 @@ EOF;
       max_user AS room_max_user,
       (SELECT COUNT(*) FROM user_entry user WHERE user.room_no = room.room_no AND user.user_no > 0) AS room_num_user,
       victory_role AS room_victory_role
-    FROM room WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
+    FROM room 
+    WHERE status = 'finished' 
+    ORDER BY room_no $room_order 
+    $limit_statement"
+  );
   while (($oldlog_list_arr = mysql_fetch_assoc($res_oldlog_list)) !== false){
     extract($oldlog_list_arr, EXTR_PREFIX_ALL, 'log');
     //オプションと勝敗の解析
@@ -191,11 +196,9 @@ EOF;
     $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
     $user_count = intval($log_room_num_user);
 
-    /*
     if ($DEBUG_MODE){
       $debug_anchor = "<a href=\"old_log.php?log_mode=on&room_no=$log_room_no&debug=on\" $dead_room_color >録</a>";
     }
-     */
 
     echo <<<ROOM_ROW
 <tr>
