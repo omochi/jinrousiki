@@ -27,6 +27,12 @@ DisconnectDatabase($dbHandle); //DB 接続解除
 function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password, $sex, $role){
   global $GAME_CONF, $MESSAGE;
 
+  //トリップ＆エスケープ処理
+  ConvertTrip(&$uname);
+  ConvertTrip(&$handle_name);
+  EscapeStrings(&$profile, false);
+  EscapeStrings(&$password);
+
   //記入漏れチェック
   if($uname == '' || $handle_name == '' || $icon_no == '' || $profile == '' ||
      $password == '' || $sex == '' || $role == ''){
@@ -34,12 +40,6 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
 		       '記入漏れがあります。<br>'."\n" .
 		       '全部入力してください。');
   }
-
-  //トリップ＆エスケープ処理
-  ConvertTrip(&$uname);
-  ConvertTrip(&$handle_name);
-  EscapeStrings(&$profile);
-  EscapeStrings(&$password);
 
   //システムユーザチェック
   if($uname == 'dummy_boy' || $uname == 'system' ||
@@ -122,8 +122,6 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
 			WHERE user_entry.session_id = '$session_id'
 			OR admin_manage.session_id = '$session_id'");
   }while(mysql_result($sql, 0, 0) != 0);
-
-  ConvertLF(&$profile); //改行コードを統一
 
   //DB にユーザデータ登録
   $entry = mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name,

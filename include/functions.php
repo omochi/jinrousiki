@@ -110,7 +110,7 @@ function CheckForbiddenStrings($str){
 
 //特殊文字のエスケープ処理
 //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
-function EscapeStrings(&$str){
+function EscapeStrings(&$str, $trim = true){
   if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
   // $str = htmlentities($str, ENT_QUOTES); //UTF に移行したら機能する？
   $str = str_replace('&' , '&amp;' , $str);
@@ -118,13 +118,11 @@ function EscapeStrings(&$str){
   $str = str_replace('>' , '&gt;'  , $str);
   $str = str_replace('\\', '&yen;' , $str);
   $str = str_replace('"' , '&quot;', $str);
-  $str = str_replace("'" , "&#039;", $str);
-}
-
-//改行コードを LF に統一する
-function ConvertLF(&$str){
-  $str = str_replace("\r\n", "\n", $str);
-  $str = str_replace("\r"  , "\n", $str);
+  $str = str_replace("'" , '&#039;', $str);
+  if($trim)
+    $str = trim($str); //前後の空白と改行コードを削除
+  else
+    $str = str_replace(array("\r\n", "\r", "\n"), "\n", $str); //改行コードを統一
 }
 
 //改行コードを <br> に変換する (nl2br() だと <br /> なので HTML 4.01 だと不向き)

@@ -7,7 +7,7 @@ $session_id = session_id();
 
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
-$room_no = $_GET['room_no']; //部屋 No
+$room_no     = (int)$_GET['room_no']; //部屋 No
 $auto_reload = (int)$_GET['auto_reload']; //オートリロードの間隔
 $dead_mode   = $_GET['dead_mode'];   //死亡者モード
 $heaven_mode = $_GET['heaven_mode']; //霊話モード
@@ -59,14 +59,13 @@ SendCookie();
 $sql = mysql_query("SELECT victory_role FROM room WHERE room_no = $room_no");
 $victory_flag = (mysql_result($sql, 0, 0) != NULL);
 
-//特殊な文字を変換
-EscapeStrings(&$say, 'full');
-
-//発言したかリロードか(最後にリロードしたときの部屋の状態と同じだったら書き込む)
+//発言の有無をチェック
+EscapeStrings(&$say, false); //エスケープ処理
 if($say != '' && $font_type == 'last_words' && $live == 'live')
-  EntryLastWords($say);
-elseif($say != '' && ($last_load_day_night == $day_night || $live == 'dead'))
-  Say($say);
+  EntryLastWords($say);  //生きていれば遺言登録
+elseif($say != '' && ($last_load_day_night == $day_night ||
+		      $live == 'dead' || $uname == 'dummy_boy'))
+  Say($say); //死んでいるか、最後にリロードした時とシーンが一致しているか身代わり君なら書き込む
 else
   CheckSilence(); //ゲーム停滞のチェック(沈黙、突然死)
 
@@ -78,7 +77,7 @@ mysql_query('COMMIT');
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
 
-if($heaven_mode == ''){
+if($heaven_mode != 'on'){
   if($list_down != 'on') OutputPlayerList(); //プレイヤーリスト
   OutputAbility(); //自分の役割の説明
   if($day_night == 'day' && $live == 'live') CheckSelfVote(); //投票済みチェック
@@ -91,7 +90,7 @@ if($live == 'dead' && $heaven_mode == 'on')
 else
   OutputTalkLog();
 
-if($heaven_mode == ''){
+if($heaven_mode != 'on'){
   if($live == 'dead') OutputAbilityAction(); //能力発揮
   OutputLastWords(); //遺言
   OutputDeadMan();   //死亡者
@@ -161,18 +160,16 @@ function SendCookie(){
   }
   else{
     //クッキーから削除（有効期限一時間）
-    setcookie('vote_times', '', $system_time - 3600); //なぜマイナス？
+    setcookie('vote_times', '', $system_time - 3600);
   }
 }
 
 //遺言登録
 function EntryLastWords($say){
-  global $room_no, $uname, $live;
+  global $room_no, $day_night, $uname, $live;
 
   //ゲームが終了しているか、死んでいたら登録しない
   if($day_night == 'aftergame' || $live != 'live') return false;
-
-  ConvertLF(&$say); //改行コードを統一
 
   //遺言を残す
   mysql_query("UPDATE user_entry SET last_words = '$say' WHERE room_no = $room_no
@@ -182,9 +179,8 @@ function EntryLastWords($say){
 
 //発言
 function Say($say){
-  global $room_no, $game_option, $date, $day_night, $uname, $role, $live;
+  global $room_no, $game_option, $day_night, $uname, $role, $live;
 
-  ConvertLF(&$say); //改行コードを統一
   if(strpos($game_option, 'real_time') !== false){ //リアルタイム制
     GetRealPassTime(&$left_time);
     $spend_time = 0; //会話で時間経過制の方は無効にする
@@ -201,16 +197,16 @@ function Say($say){
       $spend_time = 4;
   }
 
-  //ゲーム開始前、終了後と身代わり君
-  if($day_night == 'beforegame' || $day_night == 'aftergame' || $uname == 'dummy_boy')
+  if($day_night == 'beforegame' || $day_night == 'aftergame') //ゲーム開始前後はそのまま発言
     Write($say, $day_night, 0, true);
+  elseif($uname == 'dummy_boy') //身代わり君 (仮想 GM 対応)
+    Write($say, $day_night, 0, false); //発言時間を更新しない
   elseif($live == 'dead') //死亡者の霊話
     Write($say, 'heaven', 0, true);
   elseif($live == 'live' && $left_time > 0){ //生存者で制限時間内
-    if($day_night == 'day'){ //昼
+    if($day_night == 'day') //昼はそのまま発言
       Write($say, 'day', $spend_time, true);
-    }
-    elseif($day_night == 'night'){ //夜
+    elseif($day_night == 'night'){ //夜は役職毎に分ける
       if(strpos($role, 'wolf') !== false) //狼
 	Write($say, 'night wolf', $spend_time, true);
       elseif(strpos($role, 'common') !== false) //共有者
@@ -219,7 +215,6 @@ function Say($say){
 	Write($say, 'night self_talk', 0);
     }
   }
-  mysql_query('COMMIT'); //一応コミット
 }
 
 //発言を DB に登録する
@@ -228,15 +223,19 @@ function Write($say, $location, $spend_time, $update = false){
 
   InsertTalk($room_no, $date, $location, $uname, $system_time, $say, $font_type, $spend_time);
   if($update) UpdateTime();
+  mysql_query('COMMIT'); //一応コミット
 }
 
 //ゲーム停滞のチェック
 function CheckSilence(){
   global $TIME_CONF, $MESSAGE, $system_time, $room_no, $date, $game_option, $day_night;
 
-  if(! (($day_night == 'day' || $day_night == 'night') &&
-	mysql_query("LOCK TABLES room WRITE, talk WRITE, vote WRITE,
-			user_entry WRITE, system_message WRITE"))){
+  //ゲーム中以外は処理をしない
+  if($day_night != 'day' && $day_night != 'night') return false;
+
+  //テーブルロック
+  if(! mysql_query("LOCK TABLES room WRITE, talk WRITE, vote WRITE,
+			user_entry WRITE, system_message WRITE")){
     return false;
   }
 
@@ -490,19 +489,19 @@ function OutputGameHeader(){
     $left_talk_time = GetTalkPassTime(&$left_time);
   }
 
-  if($day_night == 'beforegame' && strpos($game_option, 'real_time') !== false){
-    //実時間の制限時間を取得
-    sscanf(strstr($game_option, 'time'), 'time:%d:%d', &$day_minutes, &$night_minutes);
+  if($day_night == 'beforegame'){
+    if(strpos($game_option, 'real_time') !== false){
+      //実時間の制限時間を取得
+      sscanf(strstr($game_option, 'time'), 'time:%d:%d', &$day_minutes, &$night_minutes);
+      echo '<td class="real-time">';
+      echo "設定時間： 昼 <span>{$day_minutes}</span>分 / 夜 <span>{$night_minutes}</span>分";
 
-    echo '<td class="real-time">';
-    echo "設定時間： 昼 <span>{$day_minutes}</span>分 / 夜 <span>{$night_minutes}</span>分";
-
-    //開始前、サーバとの時間ズレを表示
-    echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
-    $date_str = gmdate('Y, m, j, G, i, s', $system_time);
-    echo ' サーバとローカルPCの時間ズレ(ラグ含)： ';
-    echo '<span><script type="text/javascript">' . "output_diff_time('$date_str');" . '</script></span>';
-    echo '秒</td>'."\n";
+      //開始前、サーバとの時間ズレを表示
+      $date_str = gmdate('Y, m, j, G, i, s', $system_time);
+      echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
+      echo ' サーバとローカルPCの時間ズレ(ラグ含)： ' . '<span><script type="text/javascript">' .
+	"output_diff_time('$date_str');" . '</script></span>' . '秒</td>'."\n";
+    }
   }
   elseif($day_night == 'day' || $day_night == 'night'){
     if(strpos($game_option, 'real_time') !== false){ //リアルタイム制
