@@ -32,11 +32,12 @@ $day_night = $array['day_night'];
 $status    = $array['status'];
 
 //自分のハンドルネーム、役割、生存状態を取得
-$sql = mysql_query("SELECT handle_name, role, live FROM user_entry WHERE room_no = $room_no
+$sql = mysql_query("SELECT handle_name, role, user_no, live FROM user_entry WHERE room_no = $room_no
 			AND uname = '$uname' AND user_no > 0");
 $array = mysql_fetch_assoc($sql);
 $handle_name = $array['handle_name'];
 $role        = $array['role'];
+$user_no     = $array['user_no'];
 $live        = $array['live'];
 
 $command = $_POST['command']; //投票ボタンを押した or 投票ページの表示の制御用
@@ -696,13 +697,13 @@ function VoteKill($target, $target_role, $live_list){
       InsertSystemMessage($poison_target . "\t" . $poison_last_words, 'LAST_WORDS');
 
     //毒死した人が恋人の場合
-    if(strpos($poison_role, 'lovers') !== false) LoversFollowed();
+    if(strpos($poison_role, 'lovers') !== false) LoversFollowed($poison_role);
   }
 
   //処刑された人が恋人の場合
   //処刑後すぐ後追いするのが筋だと思うけど
   //現状では埋毒者のターゲット選出処理が甘いのでここで処理
-  if(strpos($target_role, 'lovers') !== false) LoversFollowed();
+  if(strpos($target_role, 'lovers') !== false) LoversFollowed($target_role);
 
   //霊能者の結果(システムメッセージ)
   $necro_max_voted_role = (strpos($target_role, 'wolf') !== false ? 'wolf' : 'human');
@@ -718,7 +719,7 @@ function VoteKill($target, $target_role, $live_list){
 //夜の投票処理
 function VoteNight(){
   global $GAME_CONF, $system_time, $room_no, $situation, $date,
-    $uname, $handle_name, $role, $target_no;
+    $uname, $user_no, $handle_name, $role, $target_no;
 
   switch($situation){
     case 'WOLF_EAT':
@@ -814,7 +815,7 @@ function VoteNight(){
       $target_handle_str .= $target_handle . ' ';
 
       //役職に恋人を追加
-      $target_role .= ' lovers';
+      $target_role .= ' lovers[' . strval($user_no) . ']';
       mysql_query("UPDATE user_entry SET role = '$target_role' WHERE room_no = $room_no
 			AND uname = '$target_uname' AND user_no > 0");
     }
@@ -847,7 +848,7 @@ function VoteNight(){
 //夜の集計処理
 function CheckVoteNight(){
   global $GAME_CONF, $system_time, $room_no, $situation, $date, $day_night, $vote_times,
-    $uname, $handle_name, $target_no;
+    $uname, $user_no, $handle_name, $target_no;
 
   //ゲームオプション取得
   $game_option = GetGameOption();
@@ -972,9 +973,9 @@ function CheckVoteNight(){
       DeadUser($poison_target_uname); //死亡処理
       InsertSystemMessage($poison_target_handle, 'POISON_DEAD_night'); //システムメッセージ
       SaveLastWords($poison_target_handle); //遺言処理
-      if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed(); //毒死した狼が恋人の場合
+      if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed($poison_target_role); //毒死した狼が恋人の場合
     }
-    if(strpos($wolf_target_role, 'lovers') !== false) LoversFollowed(); //食べられた人が恋人の場合
+    if(strpos($wolf_target_role, 'lovers') !== false) LoversFollowed($wolf_target_role); //食べられた人が恋人の場合
   }
 
   //占い師のユーザ名、ハンドルネームと、占い師の生存、占い師が占ったユーザ名取得
@@ -1007,7 +1008,7 @@ function CheckVoteNight(){
       DeadUser($mage_target_uname);
       InsertSystemMessage($mage_target_handle, 'FOX_DEAD');
       SaveLastWords($mage_target_handle); //占われた狐の遺言を残す
-      if(strpos($mage_target_role, 'lovers') !== false) LoversFollowed(); //占われた狐が恋人の場合
+      if(strpos($mage_target_role, 'lovers') !== false) LoversFollowed($mage_target_role); //占われた狐が恋人の場合
     }
 
     //占い結果を出力

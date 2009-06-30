@@ -902,9 +902,7 @@ function GetTalkPassTime(&$left_time, $flag = false){
   $left_time = $base_time - $spend_time;
   if($left_time < 0){ //マイナスになったらゼロにする
     $left_time = 0;
-    if(! $flag) return;
   }
-  if($flag == NULL) return;
 
   //仮想時間の計算
   $base_left_time = ($flag ? $TIME_CONF->silence_pass : $left_time);
@@ -1008,34 +1006,54 @@ function InsertSystemMessage($sentence, $type, $target_date = ''){
 		VALUES($room_no, '$sentence', '$type', $target_date)");
 }
 
+//恋人を調べるクエリ文字列を出力
+function GetLoversConditionString($role) {
+  $match_count = preg_match_all("/lovers\[\d+\]/", $role, $matches, PREG_PATTERN_ORDER);
+  if ($match_count <= 0) return "";
+  
+  $val = $matches[0];
+  $str = "( role LIKE '%$val[0]%'";
+  for ($i = 1; $i < $match_count; $i++) {
+    $str .= " OR role LIKE '%$val[$i]%'";
+  }
+  $str .= " )";
+  return $str;
+}
+
 //恋人の後追い死処理
-function LoversFollowed($sudden_death = false){
+function LoversFollowed($role, $sudden_death = false){
   global $MESSAGE, $system_time, $room_no, $date, $day_night;
 
-  //生きているもう一人の恋人を取得
-  $sql = mysql_query("SELECT uname, handle_name, last_words FROM user_entry
-			WHERE room_no = $room_no AND live = 'live'
-			AND role LIKE '%lovers%' AND user_no > 0");
-  if(mysql_num_rows($sql) < 1) return;
+  // 後追いさせる必要がある恋人を取得
+  $str_sql = "SELECT uname, role, handle_name, last_words FROM user_entry
+			WHERE room_no = $room_no AND live = 'live' AND user_no > 0 AND ";
+  $str_sql .= GetLoversConditionString($role);
+  $sql = mysql_query($str_sql);
+  
+  $num_lovers = mysql_num_rows($sql);
+  for ($i = 0; $i < $num_lovers; $i++) {
+    $array = mysql_fetch_assoc($sql);
+    $target_uname  = $array['uname'];
+    $target_handle = $array['handle_name'];
+    $target_last_words = $array['last_words'];
+    $target_role  = $array['role'];
 
-  $array = mysql_fetch_assoc($sql);
-  $target_uname  = $array['uname'];
-  $target_handle = $array['handle_name'];
-  $target_last_words = $array['last_words'];
+    DeadUser($target_uname);  //後追い死
 
-  DeadUser($target_uname);  //後追い死
+    if ($sudden_death){ //突然死の処理
+      InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, ++$system_time);
+    }
+    else {
+      //後追い死(システムメッセージ)
+      InsertSystemMessage($target_handle, 'LOVERS_FOLLOWED_' . $day_night);
 
-  if($sudden_death){ //突然死の処理
-    InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, ++$system_time);
-    return;
-  }
-
-  //後追い死(システムメッセージ)
-  InsertSystemMessage($target_handle, 'LOVERS_FOLLOWED_' . $day_night);
-
-  //後追いした人の遺言を残す
-  if($target_last_words != ''){
-    InsertSystemMessage($target_handle . "\t" . $target_last_words, 'LAST_WORDS');
+      //後追いした人の遺言を残す
+      if($target_last_words != ''){
+	InsertSystemMessage($target_handle . "\t" . $target_last_words, 'LAST_WORDS');
+      }
+    }
+    //後追い連鎖処理
+    LoversFollowed($target_role, $sudden_death);
   }
 }
 

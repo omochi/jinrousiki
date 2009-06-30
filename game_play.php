@@ -186,7 +186,7 @@ function Say($say){
     $spend_time = 0; //会話で時間経過制の方は無効にする
   }
   else{ //会話で時間経過制
-    GetTalkPassTime(&$left_time, NULL); //経過時間の和
+    GetTalkPassTime(&$left_time); //経過時間の和
     if(strlen($say) <= 100) //経過時間
       $spend_time = 1;
     elseif(strlen($say) <= 200)
@@ -256,7 +256,7 @@ function CheckSilence(){
   if(strpos($game_option, 'real_time') === false && $left_time > 0){
     if($last_update_diff_sec > $TIME_CONF->silence){
       $sentence = "・・・・・・・・・・ " . $silence_pass_time . ' ' . $MESSAGE->silence;
-      InsertTalk($date, "$day_night system", $system_time, 'system', $sentence, $silence_pass_time);
+      InsertTalk($room_no, $date, "$day_night system", 'system', $system_time, $sentence, NULL, $TIME_CONF->silence_pass);
       UpdateTime();
     }
   }
@@ -328,7 +328,7 @@ function CheckSilence(){
 	InsertSystemTalk($this_handle . $MESSAGE->sudden_death, ++$system_time); //システムメッセージ
 
 	//恋人の後追い処理
-	if(strpos($this_role, 'lovers') !== false) LoversFollowed(true);
+	if(strpos($this_role, 'lovers') !== false) LoversFollowed($this_role, true);
       }
       InsertSystemTalk($MESSAGE->vote_reset, ++$system_time); //投票リセットメッセージ
       InsertSystemTalk($sudden_death_announce, ++$system_time); //突然死告知メッセージ
@@ -593,7 +593,7 @@ function OutputHeavenTalkLog(){
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $ROLE_IMG, $MESSAGE, $room_no, $date, $day_night, $uname, $handle_name, $role, $live;
+  global $ROLE_IMG, $MESSAGE, $room_no, $date, $day_night, $uname, $handle_name, $user_no, $role, $live;
 
   //出力条件をチェック
   if($day_night == 'beforegame' || $day_night == 'aftergame') return false;
@@ -738,8 +738,9 @@ function OutputAbility(){
     echo '<img src="' . $ROLE_IMG->cupid . '"><br>'."\n";
 
     //自分が矢を打った恋人 (自分自身含む) を表示する
+    $str_user_no = strval($user_no);
     $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
- 			AND role LIKE '%lovers%' AND user_no > 0");
+ 			AND role LIKE '%lovers[$str_user_no]%' AND user_no > 0");
     $count = mysql_num_rows($sql);
     if($count > 0){
       echo '<table class="ability-partner"><tr>'."\n";
@@ -763,8 +764,9 @@ function OutputAbility(){
   // if(strpos($role, 'decide') !== false) echo '<img src="' . $ROLE_IMG->human . '"><br>'."\n";
   if(strpos($role, 'lovers') !== false){
     //恋人を表示する
+    $lovers_str = GetLoversConditionString($role);
     $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
- 			AND role LIKE '%lovers%' AND uname <> '$uname' AND user_no > 0");
+ 			AND $lovers_str AND uname <> '$uname' AND user_no > 0");
     $count = mysql_num_rows($sql);
     if($count > 0){
       echo '<table class="ability-partner"><tr>'."\n";

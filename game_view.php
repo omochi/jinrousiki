@@ -99,7 +99,7 @@ if($day_night == 'day' || $day_night == 'night'){
     echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
     echo '</form></td>'."\n";
   }
-  elseif($left_talk_time){ //発言による仮想時間
+  elseif($left_time){ //発言による仮想時間
     echo '<td>' . $time_message . $left_talk_time . '</td>'."\n";
   }
 
