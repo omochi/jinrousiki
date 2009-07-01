@@ -46,6 +46,7 @@ class RoleImage extends ImageManager{
   var $common             = 'img/role_common.jpg';             //共有者の説明
   var $common_partner     = 'img/role_common_partner.jpg';     //共有者の仲間表示
   var $fox                = 'img/role_fox.jpg';                //妖狐の説明
+  var $fox_partner        = 'img/role_fox_partner.jpg';        //妖狐の仲間表示
   var $fox_target         = 'img/role_fox_targeted.jpg';       //妖狐が狙われた画像
   var $poison             = 'img/role_poison.jpg';             //埋毒者の説明
   var $cupid              = 'img/role_cupid.jpg';              //キューピッドの説明

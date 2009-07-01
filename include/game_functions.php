@@ -489,6 +489,16 @@ function OutputTalk($array){
     }
     echo '</tr>'."\n";
   }
+  //ゲーム中、生きている人の夜の妖狐
+  elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
+    if(strpos($role, 'fox') !== false){
+      echo '<tr class="user-talk">'."\n";
+      echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
+	$talk_handle_name . '</td>'."\n";
+      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
+      echo '</tr>'."\n";
+    }
+  }
   //ゲーム中、生きている人の夜の独り言
   elseif($live == 'live' && $day_night == 'night' && $location == 'night self_talk'){
     if($uname == $talk_uname){
@@ -553,6 +563,12 @@ function OutputTalk($array){
 	  $font_type   .= ' night-common';
 	  break;
 
+	case 'night fox':
+	  $talk_handle_name .= '<span>(妖狐)</span>';
+	  $talk_class  .= ' night-fox';
+	  $font_type   .= ' night-fox';
+	  break;
+
 	case 'heaven':
 	  $base_class  .= ' heaven';
 	  break;
@@ -590,6 +606,18 @@ function OutputTalk($array){
 	echo '<td class="say say-common">' . $MESSAGE->common_talk . '</td>'."\n";
       }
       echo '</tr>'."\n";
+    }
+    elseif($day_night == 'night' && $location == 'night fox'){
+      if(strpos($role, 'fox') !== false){
+	echo '<tr class="user-talk">'."\n";
+	echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
+	  $talk_handle_name . '</td>'."\n";
+	echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
+	echo '</tr>'."\n";
+      }
+      else{
+	//狐以外なら表示しない
+      }
     }
     elseif(! (($day_night == 'night' && $location == 'night self_talk') ||
 	      (strstr($location, 'system') &&
