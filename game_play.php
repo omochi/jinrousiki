@@ -211,6 +211,8 @@ function Say($say){
 	Write($say, 'night wolf', $spend_time, true);
       elseif(strpos($role, 'common') !== false) //共有者
 	Write($say, 'night common', 0);
+      elseif(strpos($role, 'fox') !== false) //妖狐
+	Write($say, 'night fox', 0);
       else //独り言
 	Write($say, 'night self_talk', 0);
     }
@@ -425,7 +427,7 @@ function OutputGameHeader(){
   //夜明けを音でお知らせする
   if($play_sound == 'on'){
     //夜明けの場合
-    if($cookie_day_night != $day_night && $day_night == 'day') OutputSound($SOUND->mornig);
+    if($cookie_day_night != $day_night && $day_night == 'day') OutputSound($SOUND->morning);
 
     //異議あり、を音で知らせる
     //クッキーの値を配列に格納する
