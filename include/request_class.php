@@ -1,25 +1,26 @@
 <?php
 class RequestBase{
+  var $log;
+  var $argc;
+
   function GetGameVariables(){
     $this->GetItems('get.room_no', 'get.auto_reload', 'get.dead_mode', 'get.heaven_mode', 'get.list_down', 'get.play_sound');
   }
 
   function GetItems(){
+    $this->argc = func_num_args();
     foreach (func_get_args() as $spec){
-      $src = strtok($item, '.');
+      $src = strtok($spec, '.');
       $item = strtok('.');
       switch(strtolower($src)){
       case 'get':
         $this->$item = $_GET[$item];
-        $this->log .= sprintf('$_GET['.$item.']='.$this->$item;
         break;
       case 'post':
         $this->$item = $_POST[$item];
-        $this->log .= sprintf('$_POST['.$item.']='.$this->$item;
         break;
       default:
         $this->$spec = $_REQUEST[$spec];
-        $this->log .= sprintf('$_REQUEST['.$spec.']='.$this->$spec;
         break;
       }
     }
