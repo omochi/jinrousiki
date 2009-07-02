@@ -94,6 +94,7 @@ class GameConfig{
 			      'fox'          => 'ÍÅ¸Ñ',
 			      'child_fox'    => '»Ò¸Ñ',
 			      'poison'       => 'ËäÆÇ¼Ô',
+			      'suspect'      => 'ÉÔ¿³¼Ô',
 			      'cupid'        => '¥­¥å¡¼¥Ô¥Ã¥É',
 			      'quiz'         => 'GM');
 

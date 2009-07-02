@@ -617,11 +617,12 @@ function OutputAbility(){
   }
 
   $yesterday = $date - 1;
-  if(strpos($role, 'human') !== false) OutputRoleComment('human');
+  if(strpos($role, 'human') !== false || strpos($role, 'suspect') !== false)
+    OutputRoleComment('human');
   elseif(strpos($role, 'wolf') !== false){
     if(strpos($role, 'boss_wolf') !== false)
       // OutputRoleComment('boss_wolf');
-      echo '[役割]<br>　あなたは「白狼」です。占い師をも騙す事ができますが、霊能者には見抜かれてしまいます。<br>'."\n";
+      echo '[役割]<br>　あなたは「白狼」です。もう占いを恐れる必要はありません。全てを欺き通して村人達を皆殺しにするのです！<br>'."\n";
     else
       OutputRoleComment('wolf');
 
@@ -639,7 +640,7 @@ function OutputAbility(){
   elseif(strpos($role, 'mage') !== false){
     if(strpos($role, 'soul_mage') !== false)
       // OutputRoleComment('soul_mage');
-      echo '[役割]<br>　あなたは「魂の占い師」です。占った人の役職を知ることが出来ます。素直に名乗るか普通の占い師として振舞うかはあなた次第です。<br>'."\n";
+      echo '[役割]<br>　あなたは「魂の占い師」です。占った人の役職を知ることが出来ます。自らの運命をも、その魂で切り開くことができるはずです。<br>'."\n";
     else
       OutputRoleComment('mage');
 
@@ -679,7 +680,7 @@ function OutputAbility(){
   }
   elseif(strpos($role, 'medium') !== false){
     // OutputRoleComment('meduium');
-    echo '[役割]<br>　あなたは「巫女」です。突然死した人の所属陣営を知ることが出来ます。活用するのが難しい能力ですが、頑張って下さい。<br>'."\n";
+    echo '[役割]<br>　あなたは「巫女」です。突然死した人の所属陣営を知ることが出来ます。不慮の死を遂げた者の正体を知らせ、村の推理に貢献するのです！<br>'."\n";
 
     //判定結果を表示
     $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
@@ -693,7 +694,7 @@ function OutputAbility(){
   }
   elseif(strpos($role, 'fanatic_mad') !== false){
     // OutputRoleComment('fanatic_mad');
-    echo '[役割]<br>　あなたは「狂信者」です。仕えるべき人狼が誰かを知ることが出来ます。あなたは出来る限り狂って場をかき乱すのです！<br>'."\n";
+    echo '[役割]<br>　あなたは「狂信者」です。仕えるべき人狼が誰なのかを知ることが出来ます。あなたの持てる全てを狼に捧げ尽くしましょう。<br>'."\n";
     //狼を表示
     $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
 			AND role LIKE '%wolf%' AND uname <> '$uname' AND user_no > 0");

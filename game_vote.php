@@ -690,6 +690,29 @@ function GetRoleList($user_count, $option_role){
       $human_count -= $poison_count; //村人陣営の残り人数
     }
 
+    //不審者の人数を決定
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 15){ //0:1 = 95:5
+      if($rand <= 95) $suspect_count = 0;
+      else $suspect_count = 1;
+    }
+    elseif($user_count < 19){ //0:1 = 85:15
+      if($rand <= 85) $suspect_count = 0;
+      else $suspect_count = 1;
+    }
+    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
+      $base_count = floor($user_count / 20);
+      if($rand <= 10) $suspect_count = $base_count - 1;
+      elseif($rand <= 90) $suspect_count = $base_count;
+      else $suspect_count = $base_count + 1;
+    }
+
+    //不審者の配役を決定
+    if($suspect_count > 0 && $human_count >= $suspect_count){
+      $role_list['suspect'] = $suspect_count;
+      $human_count -= $suspect_count; //村人陣営の残り人数
+    }
+
     //出題者の人数を決定
     $rand = mt_rand(1, 100); //人数決定用乱数
     if($user_count < 30){ //0:1 = 99:1
@@ -1423,7 +1446,8 @@ function CheckVoteNight(){
     else{
       if(strpos($mage_target_role, 'boss_wolf') !== false)
 	$mage_result = 'human';
-      elseif(strpos($mage_target_role, 'wolf') !== false)
+      elseif(strpos($mage_target_role, 'wolf') !== false ||
+	     strpos($mage_target_role, 'suspect') !== false)
 	$mage_result = 'wolf';
       else
 	$mage_result = 'human';

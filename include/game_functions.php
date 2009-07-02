@@ -223,6 +223,8 @@ function OutputPlayerList(){
 	$role_str = '<span class="fox">[Õ≈∏—]</span>';
       elseif(strpos($this_role, 'poison') !== false)
 	$role_str = '<span class="poison">[À‰∆«º‘]</span>';
+      elseif(strpos($this_role, 'suspect') !== false)
+	$role_str = '<span class="human">[…‘ø≥º‘]</span>';
       elseif(strpos($this_role, 'cupid') !== false)
 	$role_str = '<span class="cupid">[•≠•Â°º•‘•√•…]</span>';
       elseif(strpos($this_role, 'quiz') !== false)
