@@ -545,7 +545,7 @@ function GetRoleList($user_count, $option_role){
       elseif($rand <= 90) $medium_count = $base_count;
       else $medium_count = $base_count + 1;
     }
-    if($cupid_count > 0 && $medium_count == 0) && $medium_count++;
+    if($cupid_count > 0 && $medium_count == 0) $medium_count++;
 
     //巫女の配役を決定
     if($medium_count > 0 && $human_count >= $medium_count){
