@@ -1031,8 +1031,12 @@ function SuddenDeath($uname, $handle_name, $role, $type = NULL){
   if(mysql_num_rows($sql) < 1) return false;
 
   KillUser($uname); //突然死実行
-  InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time); //システムメッセージ
-  if($type) InsertSystemMessage($handle_name, 'SUDDEN_DEATH_' . $type);
+  if($type){
+    InsertSystemTalk($handle_name . $MESSAGE->vote_sudden_death, ++$system_time); //システムメッセージ
+    InsertSystemMessage($handle_name, 'SUDDEN_DEATH_' . $type);
+  }
+  else
+    InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time); //システムメッセージ
 
   //恋人の後追い処理
   if(strpos($role, 'lovers') !== false) LoversFollowed($role, true);
@@ -1085,6 +1089,10 @@ function LoversFollowed($role, $sudden_death = false){
 	InsertSystemMessage($target_handle . "\t" . $target_last_words, 'LAST_WORDS');
       }
     }
+
+    //巫女の判定結果(システムメッセージ)
+    InsertSystemMessage($target_handle . "\t" . DistinguishCamp($target_role), 'MEDIUM_RESULT');
+
     //後追い連鎖処理
     LoversFollowed($target_role, $sudden_death);
   }
