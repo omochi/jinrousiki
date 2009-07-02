@@ -20,7 +20,8 @@ if($_POST['login_type'] == 'manually'){ //ユーザ名とパスワードで手動ログイン
   if(LoginManually($room_no))
     OutputActionResult('ログインしました', 'ログインしました' . $anchor, $url);
   else
-    OutputActionResult('ログイン失敗', 'ユーザ名とパスワードが一致しません。');
+    OutputActionResult('ログイン失敗', 'ユーザ名とパスワードが一致しません。<br>' .
+		       '(空白と改行コードは登録時に自動で削除されている事に注意してください)');
 }
 elseif(CheckSession($session_id, false)){ //セッションIDから自動ログイン
   OutputActionResult('ログインしています', 'ログインしています' . $anchor, $url);

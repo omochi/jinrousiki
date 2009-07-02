@@ -38,7 +38,7 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
      $password == '' || $sex == '' || $role == ''){
     OutputActionResult('村人登録 [入力エラー]',
 		       '記入漏れがあります。<br>'."\n" .
-		       '全部入力してください。');
+		       '全部入力してください (空白と改行コードは自動で削除されます)。');
   }
 
   //システムユーザチェック
@@ -214,36 +214,36 @@ function OutputEntryUserPage($room_no){
 <input type="hidden" name="command" value="entry">
 <div align="center">
 <table class="main">
-<tr><td><img src="img/user_regist_title.gif"></td></tr>
-<tr><td class="title">$room_name 村<img src="img/user_regist_top.gif"></td></tr>
+<tr><td><img src="img/entry_user/title.gif"></td></tr>
+<tr><td class="title">$room_name 村<img src="img/entry_user/top.gif"></td></tr>
 <tr><td class="number">〜{$room_comment}〜 [{$room_no} 番地]</td></tr>
 <tr><td>
 <table class="input">
 <tr>
-<td class="img"><img src="img/user_regist_uname.gif"></td>
+<td class="img"><img src="img/entry_user/uname.gif"></td>
 <td><input type="text" name="uname" size="30" maxlength="30"></td>
 <td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip_str}</td>
 </tr>
 <tr>
-<td class="img"><img src="img/user_regist_handle_name.gif"></td>
+<td class="img"><img src="img/entry_user/handle_name.gif"></td>
 <td><input type="text" name="handle_name" size="30" maxlength="30"></td>
 <td class="explain">村で表示される名前です</td>
 </tr>
 <tr>
-<td class="img"><img src="img/user_regist_password.gif"></td>
+<td class="img"><img src="img/entry_user/password.gif"></td>
 <td><input type="password" name="password" size="30" maxlength="30"></td>
 <td class="explain">セッションが切れた場合にログイン時に使います<br> (暗号化されていないので要注意)</td>
 </tr>
 <tr>
-<td class="img"><img src="img/user_regist_sex.gif"></td>
+<td class="img"><img src="img/entry_user/sex.gif"></td>
 <td class="img">
-<label for="male"><img src="img/user_regist_sex_male.gif"><input type="radio" id="male" name="sex" value="male"></label>
-<label for="female"><img src="img/user_regist_sex_female.gif"><input type="radio" id="female" name="sex" value="female"></label>
+<label for="male"><img src="img/entry_user/sex_male.gif"><input type="radio" id="male" name="sex" value="male"></label>
+<label for="female"><img src="img/entry_user/sex_female.gif"><input type="radio" id="female" name="sex" value="female"></label>
 </td>
 <td class="explain">特に意味は無いかも……</td>
 </tr>
 <tr>
-<td class="img"><img src="img/user_regist_profile.gif"></td>
+<td class="img"><img src="img/entry_user/profile.gif"></td>
 <td colspan="2">
 <textarea name="profile" cols="30" rows="2"></textarea>
 <input type="hidden" name="role" value="none">
@@ -255,21 +255,21 @@ HEADER;
   if(strpos($game_option, 'wish_role') !== false){
     echo <<<IMAGE
 <tr>
-<td class="role"><img src="img/user_regist_role.gif"></td>
+<td class="role"><img src="img/entry_user/role.gif"></td>
 <td>
-<label for="none"><img src="img/user_regist_role_none.gif"><input type="radio" id="none" name="role" value="none"></label>
-<label for="human"><img src="img/user_regist_role_human.gif"><input type="radio" id="human" name="role" value="human"></label><br>
-<label for="wolf"><img src="img/user_regist_role_wolf.gif"><input type="radio" id="wolf" name="role" value="wolf"></label>
-<label for="mage"><img src="img/user_regist_role_mage.gif"><input type="radio" id="mange" name="role" value="mage"></label><br>
-<label for="necromancer"><img src="img/user_regist_role_necromancer.gif"><input type="radio" id="necromancer" name="role" value="necromancer"></label>
-<label for="mad"><img src="img/user_regist_role_mad.gif"><input type="radio" id="mand" name="role" value="mad"></label><br>
-<label for="guard"><img src="img/user_regist_role_guard.gif"><input type="radio" id="guard" name="role" value="guard"></label>
-<label for="common"><img src="img/user_regist_role_common.gif"><input type="radio" id="common" name="role" value="common"></label><br>
-<label for="fox"><img src="img/user_regist_role_fox.gif"><input type="radio" id="fox" name="role" value="fox"></label>
+<label for="none"><img src="img/entry_user/role_none.gif"><input type="radio" id="none" name="role" value="none"></label>
+<label for="human"><img src="img/entry_user/role_human.gif"><input type="radio" id="human" name="role" value="human"></label><br>
+<label for="wolf"><img src="img/entry_user/role_wolf.gif"><input type="radio" id="wolf" name="role" value="wolf"></label>
+<label for="mage"><img src="img/entry_user/role_mage.gif"><input type="radio" id="mange" name="role" value="mage"></label><br>
+<label for="necromancer"><img src="img/entry_user/role_necromancer.gif"><input type="radio" id="necromancer" name="role" value="necromancer"></label>
+<label for="mad"><img src="img/entry_user/role_mad.gif"><input type="radio" id="mand" name="role" value="mad"></label><br>
+<label for="guard"><img src="img/entry_user/role_guard.gif"><input type="radio" id="guard" name="role" value="guard"></label>
+<label for="common"><img src="img/entry_user/role_common.gif"><input type="radio" id="common" name="role" value="common"></label><br>
+<label for="fox"><img src="img/entry_user/role_fox.gif"><input type="radio" id="fox" name="role" value="fox"></label>
 
 IMAGE;
     if(strpos($option_role, 'poison') !== false){
-      echo '<label for="poison"><img src="img/user_regist_role_poison.gif">' .
+      echo '<label for="poison"><img src="img/entry_user/role_poison.gif">' .
 	'<input type="radio" id="poison" name="role" value="poison"></label><br>';
     }
     elseif(strpos($option_role, 'cupid') !== false){
@@ -279,7 +279,7 @@ IMAGE;
       echo '<br>';
     }
     if(strpos($option_role, 'cupid') !== false){
-      echo '<label for="cupid"><img src="img/user_regist_role_cupid.gif">' .
+      echo '<label for="cupid"><img src="img/entry_user/role_cupid.gif">' .
 	'<input type="radio" id="cupid" name="role" value="cupid"></label><br>';
     }
     echo '</td><td></td>';
@@ -289,15 +289,19 @@ IMAGE;
   }
 
   echo <<<BODY
-  </tr>
-  <tr>
-    <td class="submit" colspan="3"><input type="submit" value="村人登録申請"></td>
-  </tr>
+</tr>
+<tr>
+<td class="submit" colspan="3">
+<span class="explain">
+ユーザ名、村人の名前、パスワードの前後の空白および改行コードは自動で削除されます
+</span>
+<input type="submit" value="村人登録申請"></td>
+</tr>
 </table>
 </td></tr>
 
 <tr><td>
-<fieldset><legend><img src="img/user_regist_icon.gif"></legend>
+<fieldset><legend><img src="img/entry_user/icon.gif"></legend>
 <table class="icon">
 <tr>
 

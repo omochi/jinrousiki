@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/include/game_functions.php');
 
 //引数を取得
-$room_no = $_GET['room_no']; //部屋 No
+$room_no     = (int)$_GET['room_no']; //部屋 No
 $auto_reload = (int)$_GET['auto_reload']; //オートリロードの間隔
 if($auto_reload != 0 && $auto_reload < $GAME_CONF->auto_reload_list[0])
   $auto_reload = $GAME_CONF->auto_reload_list[0];
@@ -83,7 +83,7 @@ echo <<<EOF
 
 EOF;
 
-if($day_night == 'beforegame'){
+if($day_night == 'beforegame'){ //ゲーム開始前なら登録画面のリンクを表示
   echo '<td class="login-link">';
   echo '<a href="user_manager.php?room_no=' . $room_no . '"><span>[住民登録]</span></a>';
   echo '</td>'."\n";
@@ -99,7 +99,7 @@ if($day_night == 'day' || $day_night == 'night'){
     echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
     echo '</form></td>'."\n";
   }
-  elseif($left_time){ //発言による仮想時間
+  elseif($left_time){ //会話で時間経過制
     echo '<td>' . $time_message . $left_talk_time . '</td>'."\n";
   }
 
@@ -112,7 +112,7 @@ echo '</tr></table>'."\n";
 
 OutputPlayerList(); //プレイヤーリスト
 if($day_night == 'aftergame') OutputVictory(); //勝敗結果
-OutputReVoteList(); //再投票メッセージ
+OutputRevoteList(); //再投票メッセージ
 OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者

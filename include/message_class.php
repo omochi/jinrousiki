@@ -13,8 +13,8 @@ class Message{
   //EntryUser() : ユーザ登録
   //入村メッセージ
   // var $entry_user = 'さんが村の集会場にやってきました'
-  // var $entry_user = 'が幻想郷入りしました';
-  var $entry_user = 'が村の寺子屋にやってきました';
+  var $entry_user = 'が幻想郷入りしました';
+  // var $entry_user = 'が村の寺子屋にやってきました';
 
   //-- game_view.php & OutputGameHTMLHeader() --//
   var $vote_announce = '時間がありません。投票してください'; //会話の制限時間切れ
@@ -36,6 +36,12 @@ class Message{
   //恋人・キューピッド勝利
   var $victory_lovers = '[恋人・キューピッド勝利] 愛の前には何者も無力だったのでした';
 
+  //クイズ GM 勝利
+  var $victory_quiz = '[GM 勝利] 真の回答者にはまだ遠い……修行あるのみ';
+
+  //クイズ GM 死亡
+  var $victory_quiz_dead = '[引き分け] 何という事だ！このままでは決着が付かないぞ！';
+
   //引き分け
   var $victory_draw = '[引き分け] 引き分けとなりました';
 
@@ -49,7 +55,7 @@ class Message{
   var $lose = 'あなたは敗北しました'; //本人敗北
   var $draw = '引き分けとなりました'; //引き分け
 
-  //OutputReVoteList() : 再投票アナウンス
+  //OutputRevoteList() : 再投票アナウンス
   var $revote = '再投票となりました'; //投票結果
   var $draw_announce = '再投票となると引き分けになります'; //引き分け告知
 
@@ -69,18 +75,25 @@ class Message{
   var $dummy_boy = '身代わり君：'; //仮想GMモード用ヘッダー
 
   var $wolf_howl = 'アオォーン・・・'; //狼の遠吠え
-  var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
+  // var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
+  var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の小声
 
   //OutputLastWords() : 遺言の表示
   var $lastwords = '夜が明けると前の日に亡くなった方の遺言書が見つかりました';
 
   //OutoutDeadManType() : 死因の表示
-  var $deadman         = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
-  var $wolf_killed     = 'は狼の餌食になったようです'; //狼の襲撃
-  var $fox_dead        = '(妖狐) は占い師に呪い殺されたようです'; //狐呪殺
-  var $poison_dead     = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
-  var $vote_killed     = 'は投票の結果処刑されました'; //吊り
-  var $lovers_followed = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
+  // var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
+  var $deadman           = 'は無残な負け犬の姿で発見されました';
+  var $wolf_killed       = 'は狼の餌食になったようです'; //狼の襲撃
+  var $fox_dead          = '(妖狐) は占い師に呪い殺されたようです'; //狐呪殺
+  var $poison_dead       = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
+  // var $vote_killed      = 'は投票の結果処刑されました'; //吊り
+  var $vote_killed       = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
+  var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
+  var $vote_sudden_death = 'はショック死しました'; //投票系サブ役職
+  var $chicken           = 'は小心者だったようです'; //小心者
+  var $rabbit            = 'はウサギだったようです'; //ウサギ
+  var $perverseness      = 'は天邪鬼だったようです'; //天邪鬼
 
   //OutputAbility() : 能力の表示
   var $ability_dead     = 'アナタは息絶えました・・・';     //死んでいる場合
@@ -95,8 +108,10 @@ class Message{
   //突然死の警告メッセージ
   // var $sudden_death_announce = '投票完了されない方は死して地獄へ堕ちてしまいます';
   var $sudden_death_announce = '投票完了されない方はスキマ送りされてしまいます';
+  // var $sudden_death_time = '突然死になるまで後：'; //突然死発動まで
+  var $sudden_death_time = 'スキマ送りされるまで後：';
   // var $sudden_death = 'さんは突然お亡くなりになられました'; //突然死
-  var $sudden_death = 'さんは紫に連れ去られました'; //突然死
+  var $sudden_death = 'さんは紫に連れ去られました';
 
   //投票リセット
   var $vote_reset = '＜投票がリセットされました　再度投票してください＞';
@@ -104,6 +119,10 @@ class Message{
   //-- game_vote.php --//
   //Kick で村から去った人
   var $kick_out = 'さんは席をあけわたし、村から去りました';
+
+  //CheckVoteGameStart()
+  // var $chaos = '闇鍋モードでは配役は明かされません'; //闇鍋村の配役通知
+  var $chaos = '闇鍋モードだから配役は秘密☆カオスを楽しんでね♪';
 
   //OutputVoteBeforeGame()
   var $submit_kick_do    = '対象をキックするに一票'; //Kick 投票ボタン

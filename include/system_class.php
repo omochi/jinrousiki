@@ -10,61 +10,80 @@ class ImageManager{
 
 //村のオプション画像パス
 class RoomImage extends ImageManager{
-  var $waiting = 'img/waiting.gif'; //村リストの募集中の画像
-  var $playing = 'img/playing.gif'; //村リストのゲーム中の画像
+  var $waiting = 'img/room_option/waiting.gif'; //村リストの募集中の画像
+  var $playing = 'img/room_option/playing.gif'; //村リストのゲーム中の画像
 
-  var $wish_role     = 'img/room_option_wish_role.gif';     //役割希望制
-  var $real_time     = 'img/room_option_real_time.gif';     //役割希望制
-  var $dummy_boy     = 'img/room_option_dummy_boy.gif';     //身代わり君使用
-  var $open_vote     = 'img/room_option_open_vote.gif';     //票数公開
-  var $not_open_cast = 'img/room_option_not_open_cast.gif'; //配役非公開
-  var $decide        = 'img/room_option_decide.gif';        //決定者
-  var $authority     = 'img/room_option_authority.gif';     //権力者
-  var $poison        = 'img/room_option_poison.gif';        //埋毒者
-  var $cupid         = 'img/room_option_cupid.gif';         //キューピッド
+  var $wish_role     = 'img/room_option/wish_role.gif';     //役割希望制
+  var $real_time     = 'img/room_option/real_time.gif';     //役割希望制
+  var $dummy_boy     = 'img/room_option/dummy_boy.gif';     //身代わり君使用
+  var $open_vote     = 'img/room_option/open_vote.gif';     //票数公開
+  var $not_open_cast = 'img/room_option/not_open_cast.gif'; //配役非公開
+  var $decide        = 'img/room_option/decide.gif';        //決定者
+  var $authority     = 'img/room_option/authority.gif';     //権力者
+  var $poison        = 'img/room_option/poison.gif';        //埋毒者
+  var $cupid         = 'img/room_option/cupid.gif';         //キューピッド
+  var $chaos         = 'img/room_option/chaos.gif';         //闇鍋
+  var $chaosfull     = 'img/room_option/chaosfull.gif';     //真・闇鍋
 
   //村の最大人数リスト (RoomConfig -> max_user_list と連動させる)
   var $max_user_list = array(
-			      8 => 'img/max8.gif',   // 8人
-			     16 => 'img/max16.gif',  //16人
-			     22 => 'img/max22.gif'   //22人
+			      8 => 'img/room_option/max8.gif',   // 8人
+			     16 => 'img/room_option/max16.gif',  //16人
+			     22 => 'img/room_option/max22.gif'   //22人
 			     );
 }
 
 //役職の画像パス
 class RoleImage extends ImageManager{
-  var $human              = 'img/role_human.jpg';              //村人の説明
-  var $wolf               = 'img/role_wolf.jpg';               //人狼の説明
-  var $wolf_partner       = 'img/role_wolf_partner.jpg';       //人狼の仲間表示
-  var $mage               = 'img/role_mage.jpg';               //占い師の説明
-  var $mage_result        = 'img/role_mage_result.jpg';        //占い師の結果
-  var $necromancer        = 'img/role_necromancer.jpg';        //霊能者の説明
-  var $necromancer_result = 'img/role_necromancer_result.jpg'; //霊能者の結果
-  var $mad                = 'img/role_mad.jpg';                //狂人の説明
-  var $guard              = 'img/role_guard.jpg';              //狩人の説明
-  var $guard_success      = 'img/role_guard_success.jpg';      //狩人の護衛成功
-  var $common             = 'img/role_common.jpg';             //共有者の説明
-  var $common_partner     = 'img/role_common_partner.jpg';     //共有者の仲間表示
-  var $fox                = 'img/role_fox.jpg';                //妖狐の説明
-  var $fox_partner        = 'img/role_fox_partner.jpg';        //妖狐の仲間表示
-  var $fox_target         = 'img/role_fox_targeted.jpg';       //妖狐が狙われた画像
-  var $poison             = 'img/role_poison.jpg';             //埋毒者の説明
-  var $cupid              = 'img/role_cupid.jpg';              //キューピッドの説明
-  var $cupid_pair         = 'img/role_cupid_pair.jpg';         //キューピッドが結びつけた恋人表示
-  var $lovers_header      = 'img/role_lovers_header.jpg';      //恋人の説明(前)
-  var $lovers_footer      = 'img/role_lovers_footer.jpg';      //恋人の説明(後)
-  var $authority          = 'img/role_authority.jpg';          //権力者の説明
-  var $result_human       = 'img/role_result_human.jpg';       //占い師、霊能者の結果(村人)
-  var $result_wolf        = 'img/role_result_wolf.jpg';        //占い師、霊能者の結果(人狼)
+  //役職の説明
+  var $human              = 'img/role/human.jpg';              //村人
+  var $wolf               = 'img/role/wolf.jpg';               //人狼
+  var $wolf_partner       = 'img/role/wolf_partner.jpg';       //人狼の仲間
+  var $mage               = 'img/role/mage.jpg';               //占い師
+  var $mage_result        = 'img/role/mage_result.jpg';        //占い結果
+  var $necromancer        = 'img/role/necromancer.jpg';        //霊能者
+  var $necromancer_result = 'img/role/necromancer_result.jpg'; //霊能結果
+  var $mad                = 'img/role/mad.jpg';                //狂人
+  var $guard              = 'img/role/guard.jpg';              //狩人
+  var $guard_success      = 'img/role/guard_success.jpg';      //狩人の護衛成功
+  var $common             = 'img/role/common.jpg';             //共有者
+  var $common_partner     = 'img/role/common_partner.jpg';     //共有者の仲間
+  var $fox                = 'img/role/fox.jpg';                //妖狐
+  var $fox_partner        = 'img/role/fox_partner.jpg';        //妖狐の仲間
+  var $fox_target         = 'img/role/fox_targeted.jpg';       //妖狐が狙われた
+  var $poison             = 'img/role/poison.jpg';             //埋毒者
+  var $cupid              = 'img/role/cupid.jpg';              //キューピッド
+  var $cupid_pair         = 'img/role/cupid_pair.jpg';         //キューピッドが結びつけた恋人
+  var $lovers_header      = 'img/role/lovers_header.jpg';      //恋人(前)
+  var $lovers_footer      = 'img/role/lovers_footer.jpg';      //恋人(後)
+  var $authority          = 'img/role/authority.jpg';          //権力者
+  //占い・霊能・巫女判定
+  var $result_human        = 'img/role/result_human.jpg';        //村人
+  var $result_wolf         = 'img/role/result_wolf.jpg';         //人狼
+  var $result_boss_wolf    = 'img/role/result_boss_wolf.jpg';    //白狼
+  var $result_mage         = 'img/role/result_mage.jpg';         //占い師
+  var $result_soul_mage    = 'img/role/result_soul_mage.jpg';    //魂の占い師
+  var $result_necromancer  = 'img/role/result_necromancer.jpg';  //霊能者
+  var $result_medium       = 'img/role/result_medium.jpg';       //巫女
+  var $result_mad          = 'img/role/result_mad.jpg';          //狂人
+  var $result_fanatic_mad  = 'img/role/result_fanatic_mad.jpg';  //狂信者
+  var $result_guard        = 'img/role/result_guard.jpg';        //狩人
+  var $result_poison_guard = 'img/role/result_poison_guard.jpg'; //騎士
+  var $result_common       = 'img/role/result_common.jpg';       //共有者
+  var $result_fox          = 'img/role/result_fox.jpg';          //妖狐
+  var $result_child_fox    = 'img/role/result_child_fox.jpg';    //子狐
+  var $result_poison       = 'img/role/result_poison.jpg';       //埋毒者
+  var $result_cupid        = 'img/role/result_cupid.jpg';        //キューピッド
+  var $result_quiz         = 'img/role/result_quiz.jpg';         //出題者
 }
 
 //勝利陣営の画像パス
 class VictoryImage extends ImageManager{
-  var $human  = 'img/victory_role_human.jpg';  //村人
-  var $wolf   = 'img/victory_role_wolf.jpg';   //人狼
-  var $fox    = 'img/victory_role_fox.jpg';    //妖狐
-  var $lovers = 'img/victory_role_lovers.jpg'; //恋人
-  var $draw   = 'img/victory_role_draw.jpg';   //引き分け
+  var $human  = 'img/victory_role/human.jpg';  //村人
+  var $wolf   = 'img/victory_role/wolf.jpg';   //人狼
+  var $fox    = 'img/victory_role/fox.jpg';    //妖狐
+  var $lovers = 'img/victory_role/lovers.jpg'; //恋人
+  var $draw   = 'img/victory_role/draw.jpg';   //引き分け
 }
 
 //音源パス

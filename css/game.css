@@ -76,6 +76,10 @@
   background-color: #FFFAFA;
   color: #FF69B4; /* hotpink */
 }
+.victory-quiz{ /* クイズ GM 勝利 */
+  background-color: #9999CC;
+  color: #FFFF99;
+}
 .victory-none{ /* 引き分け・廃村 */
   background-color: #000000;
   color: #FFFAFA;

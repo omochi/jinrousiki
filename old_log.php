@@ -25,7 +25,7 @@ OutputHTMLFooter();
 // 関数 //
 //過去ログ一覧表示
 function OutputFinishedRooms($page, $reverse = NULL){
-  global $ROOM_IMG, $VICTORY_IMG, $DEBUG_MODE;
+  global $ROOM_IMG, $VICTORY_IMG;
 
   //村数の確認
   $sql = mysql_query("SELECT COUNT(*) FROM room WHERE status = 'finished'");
@@ -74,7 +74,7 @@ EOF;
 <!--村一覧 ここから-->
 <tr><td>
 <table border="1" align="center" cellspacing="1" bgcolor="#CCCCCC">
-<tr class="column"><th>村No</th><th>村名</th><th>村について</th><th colspan="2">人数</th><th>勝</th><th colspan="9">オプション</th></tr>
+<tr class="column"><th>村No</th><th>村名</th><th>村について</th><th colspan="2">人数</th><th>勝</th><th colspan="11">オプション</th></tr>
 
 EOF;
 
@@ -89,8 +89,7 @@ EOF;
 
   //表示する行の取得
   $room_order = ($reverse == 'on' ? 'DESC' : '');
-  $res_oldlog_list = mysql_query("
-    SELECT
+  $res_oldlog_list = mysql_query("SELECT
       room_no,
       room_name,
       room_comment,
@@ -100,11 +99,7 @@ EOF;
       max_user AS room_max_user,
       (SELECT COUNT(*) FROM user_entry user WHERE user.room_no = room.room_no AND user.user_no > 0) AS room_num_user,
       victory_role AS room_victory_role
-    FROM room 
-    WHERE status = 'finished' 
-    ORDER BY room_no $room_order 
-    $limit_statement"
-  );
+    FROM room WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
   while (($oldlog_list_arr = mysql_fetch_assoc($res_oldlog_list)) !== false){
     extract($oldlog_list_arr, EXTR_PREFIX_ALL, 'log');
     //オプションと勝敗の解析
@@ -163,6 +158,18 @@ EOF;
     else
       $log_cupid_str = "<br>";
 
+    if(strpos($log_room_game_option,"quiz") !== false)
+      $log_quiz_str = 'Qz';
+    else
+      $log_quiz_str = "<br>";
+
+    if(strpos($log_room_game_option,"chaosfull") !== false)
+      $log_chaos_str = $ROOM_IMG->GenerateTag('chaosfull', '真・闇鍋');
+    elseif(strpos($log_room_game_option,"chaos") !== false)
+      $log_chaos_str = $ROOM_IMG->GenerateTag('chaos', '闇鍋');
+    else
+      $log_chaos_str = "<br>";
+
     switch($log_room_victory_role){
       case 'human':
         $voctory_role_str = $VICTORY_IMG->GenerateTag('human', '村人勝利', 'winner');
@@ -178,8 +185,12 @@ EOF;
       case 'lovers':
         $voctory_role_str = $VICTORY_IMG->GenerateTag('lovers', '恋人勝利', 'winner');
 	break;
+      case 'quiz':
+        $voctory_role_str = 'Qz';
+	break;
       case 'draw':
       case 'vanish':
+      case 'quiz_dead':
         $voctory_role_str = $VICTORY_IMG->GenerateTag('draw', '引き分け', 'winner');
 	break;
       default:
@@ -196,9 +207,11 @@ EOF;
     $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
     $user_count = intval($log_room_num_user);
 
+    /*
     if ($DEBUG_MODE){
       $debug_anchor = "<a href=\"old_log.php?log_mode=on&room_no=$log_room_no&debug=on\" $dead_room_color >録</a>";
     }
+     */
 
     echo <<<ROOM_ROW
 <tr>
@@ -225,6 +238,8 @@ $debug_anchor
 <td valign="middle" width="16" class="row">$log_authority_str </td> 
 <td valign="middle" width="16" class="row">$log_poison_str </td> 
 <td valign="middle" width="16" class="row">$log_cupid_str </td> 
+<td valign="middle" width="16" class="row">$log_quiz_str </td> 
+<td valign="middle" width="16" class="row">$log_chaos_str </td> 
 </tr>
 
 ROOM_ROW;
@@ -424,8 +439,8 @@ function OutputSceneChange($set_date){
   if($heaven_only == 'on') return;
   $date = $set_date;
   if($reverse_log == 'on'){
-    OutputVoteList(); //投票結果出力
     $day_night = 'night';
+    OutputVoteList(); //投票結果出力
     OutputDeadMan();  //死亡者を出力
   }
   else{
