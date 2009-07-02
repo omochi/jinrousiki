@@ -619,7 +619,7 @@ function OutputTalk($array){
 
 	case 'night fox':
 	  $talk_handle_name .= '<span>(ме╦я)</span>';
-	  $talk_class  .= ' night-self-talk';
+	  $talk_class  .= ' night-fox';
 	  $font_type   .= ' night-fox';
 	  break;
 
