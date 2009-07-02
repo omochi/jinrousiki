@@ -247,6 +247,8 @@ function OutputPlayerList(){
 	$role_str .= '<br><span class="decide">[…‘¥ÔÕ—]</span>';
       elseif(strpos($this_role, 'weak_voice') !== false)
 	$role_str .= '<br><span class="decide">[æÆ¿º]</span>';
+      elseif(strpos($this_role, 'no_last_words') !== false)
+	$role_str .= '<br><span class="decide">[…Æ…‘¿∫]</span>';
 
       echo "<td>${img_tag}</td>"."\n";
       echo "<td><font color=\"$this_color\">¢°</font>$this_handle<br>"."\n";
@@ -602,29 +604,29 @@ function OutputTalk($array){
       switch($location){
         case 'night self_talk':
 	  $talk_handle_name .= '<span>§Œ∆»§Í∏¿</span>';
-	  $talk_class  .= ' night-self-talk';
+	  $talk_class .= ' night-self-talk';
 	  break;
 
 	case 'night wolf':
 	  $talk_handle_name .= '<span>(øÕœµ)</span>';
-	  $talk_class  .= ' night-wolf';
-	  $font_type   .= ' night-wolf';
+	  $talk_class .= ' night-wolf';
+	  $font_type  .= ' night-wolf';
 	  break;
 
 	case 'night common':
 	  $talk_handle_name .= '<span>(∂¶Õ≠º‘)</span>';
-	  $talk_class  .= ' night-common';
-	  $font_type   .= ' night-common';
+	  $talk_class .= ' night-common';
+	  $font_type  .= ' night-common';
 	  break;
 
 	case 'night fox':
 	  $talk_handle_name .= '<span>(Õ≈∏—)</span>';
-	  $talk_class  .= ' night-fox';
-	  $font_type   .= ' night-fox';
+	  $talk_class .= ' night-fox';
+	  $font_type  .= ' night-fox';
 	  break;
 
 	case 'heaven':
-	  $base_class  .= ' heaven';
+	  $base_class .= ' heaven';
 	  break;
       }
       echo '<tr class="' . $base_class . '">'."\n";

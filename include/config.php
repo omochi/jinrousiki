@@ -99,14 +99,15 @@ class GameConfig{
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
-  var $sub_role_list = array('decite'       => '決定者',
-			     'authority'    => '権力者',
-			     'strong_voice' => '大声',
-			     'normal_voice' => '不器用',
-			     'weak_voice'   => '小声',
-			     'chicken'      => '小心者',
-			     'rabbit'       => 'ウサギ',
-			     'perverseness' => '天邪鬼');
+  var $sub_role_list = array('decite'        => '決定者',
+			     'authority'     => '権力者',
+			     'strong_voice'  => '大声',
+			     'normal_voice'  => '不器用',
+			     'weak_voice'    => '小声',
+			     'no_last_words' => '筆不精',
+			     'chicken'       => '小心者',
+			     'rabbit'        => 'ウサギ',
+			     'perverseness'  => '天邪鬼');
 
   //配役テーブル
   /* 設定の見方

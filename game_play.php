@@ -168,10 +168,11 @@ function SendCookie(){
 
 //遺言登録
 function EntryLastWords($say){
-  global $room_no, $day_night, $uname, $live;
+  global $room_no, $day_night, $uname, $role, $live;
 
-  //ゲームが終了しているか、死んでいたら登録しない
-  if($day_night == 'aftergame' || $live != 'live') return false;
+  //ゲームが終了しているか、死んでいるか、筆不精なら登録しない
+  if($day_night == 'aftergame' || $live != 'live' ||
+     strpos($role, 'no_last_words') !== false) return false;
 
   //遺言を残す
   mysql_query("UPDATE user_entry SET last_words = '$say' WHERE room_no = $room_no
@@ -807,6 +808,10 @@ function OutputAbility(){
   elseif(strpos($role, 'weak_voice') !== false){
     // OutputRoleComment('weak_voice');
     echo 'あなたは「小声」の持ち主です。説得に苦労するかも知れませんが頑張って下さい。';
+  }
+  elseif(strpos($role, 'no_last_words') !== false){
+    // OutputRoleComment('no_last_words');
+    echo 'あなたは「筆不精」なので遺言を遺す事が出来ません。言いたい事は全て昼間に言い切りましょう。';
   }
 
   //投票系

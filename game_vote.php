@@ -258,47 +258,25 @@ function CheckVoteGameStart(){
   $rand_keys = array_rand($role_array, $user_count); //ランダムキーを取得
 
   //兼任となるオプション役割(決定者、権力者)
+  $option_subrole = array();
   $option_subrole_count = 0;
   if(strpos($option_role, 'decide') !== false && $user_count >= $GAME_CONF->decide){
     $role_array[$rand_keys[$option_subrole_count]] .= ' decide';
     $option_subrole_count++;
-    $decide_count++;
+    $option_subrole['decide']++;
   }
   if(strpos($option_role, 'authority') !== false && $user_count >= $GAME_CONF->authority){
     $role_array[$rand_keys[$option_subrole_count]] .= ' authority';
     $option_subrole_count++;
-    $authority_count++;
+    $option_subrole['authority']++;
   }
   if($chaos){
-    if($user_count > $option_subrole_count){ //大声
-      $role_array[$rand_keys[$option_subrole_count]] .= ' strong_voice';
-      $option_subrole_count++;
-      $authority_count++;
-    }
-    if($user_count > $option_subrole_count){ //不器用
-      $role_array[$rand_keys[$option_subrole_count]] .= ' normal_voice';
-      $option_subrole_count++;
-      $authority_count++;
-    }
-    if($user_count > $option_subrole_count){ //小声
-      $role_array[$rand_keys[$option_subrole_count]] .= ' weak_voice';
-      $option_subrole_count++;
-      $authority_count++;
-    }
-    if($user_count > $option_subrole_count){ //小心者
-      $role_array[$rand_keys[$option_subrole_count]] .= ' chicken';
-      $option_subrole_count++;
-      $authority_count++;
-    }
-    if($user_count > $option_subrole_count){ //ウサギ
-      $role_array[$rand_keys[$option_subrole_count]] .= ' rabbit';
-      $option_subrole_count++;
-      $authority_count++;
-    }
-    if($user_count > $option_subrole_count){ //天邪鬼
-      $role_array[$rand_keys[$option_subrole_count]] .= ' perverseness';
-      $option_subrole_count++;
-      $authority_count++;
+    foreach($GAME_CONF->sub_role_list as $key => $value){
+      if($user_count < $option_subrole_count) break;
+      if($key == 'decite' || $key == 'authority') continue; //決定者と権力者はオプションで制御する
+      if((int)$option_subrole[$key] > 0) continue; //既に誰かに渡していればスキップ
+      $role_array[$rand_keys[$option_subrole_count]] .= ' ' . $key;
+      $option_subrole[$key]++;
     }
   }
 
@@ -341,14 +319,15 @@ function CheckVoteGameStart(){
     mysql_query("UPDATE user_entry SET role = '$entry_role' WHERE room_no = $room_no
 			AND uname = '$entry_uname' AND user_no > 0");
     $role_count_list[GetMainRole($entry_role)]++;
-    if(strpos($entry_role, 'decide')       !== false) $role_count_list['decide']++;
-    if(strpos($entry_role, 'authority')    !== false) $role_count_list['authority']++;
-    if(strpos($entry_role, 'strong_voice') !== false) $role_count_list['strong_voice']++;
-    if(strpos($entry_role, 'normal_voice') !== false) $role_count_list['normal_voice']++;
-    if(strpos($entry_role, 'weak_voice')   !== false) $role_count_list['weak_voice']++;
-    if(strpos($entry_role, 'chicken')      !== false) $role_count_list['chicken']++;
-    if(strpos($entry_role, 'rabbit')       !== false) $role_count_list['rabbit']++;
-    if(strpos($entry_role, 'perverseness') !== false) $role_count_list['perverseness']++;
+    if(strpos($entry_role, 'decide')        !== false) $role_count_list['decide']++;
+    if(strpos($entry_role, 'authority')     !== false) $role_count_list['authority']++;
+    if(strpos($entry_role, 'strong_voice')  !== false) $role_count_list['strong_voice']++;
+    if(strpos($entry_role, 'normal_voice')  !== false) $role_count_list['normal_voice']++;
+    if(strpos($entry_role, 'weak_voice')    !== false) $role_count_list['weak_voice']++;
+    if(strpos($entry_role, 'no_last_words') !== false) $role_count_list['no_last_words']++;
+    if(strpos($entry_role, 'chicken')       !== false) $role_count_list['chicken']++;
+    if(strpos($entry_role, 'rabbit')        !== false) $role_count_list['rabbit']++;
+    if(strpos($entry_role, 'perverseness' ) !== false) $role_count_list['perverseness']++;
   }
 
   //それぞれの役割が何人ずつなのかシステムメッセージ
