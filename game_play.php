@@ -209,7 +209,7 @@ function Say($say){
       Write($say, "$day_night dummy_boy", 0, false); //発言時間を更新しない
   }
   elseif($live == 'dead') //死亡者の霊話
-    Write($say, 'heaven', 0, true);
+    Write($say, 'heaven', 0, false); //発言時間を更新しない
   elseif($live == 'live' && $left_time > 0){ //生存者で制限時間内
     if($day_night == 'day') //昼はそのまま発言
       Write($say, 'day', $spend_time, true);
