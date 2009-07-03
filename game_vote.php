@@ -321,6 +321,8 @@ function CheckVoteGameStart(){
     $role_count_list[GetMainRole($entry_role)]++;
     if(strpos($entry_role, 'decide')        !== false) $role_count_list['decide']++;
     if(strpos($entry_role, 'authority')     !== false) $role_count_list['authority']++;
+    if(strpos($entry_role, 'watcher')       !== false) $role_count_list['watcher']++;
+    if(strpos($entry_role, 'plague')        !== false) $role_count_list['plague']++;
     if(strpos($entry_role, 'strong_voice')  !== false) $role_count_list['strong_voice']++;
     if(strpos($entry_role, 'normal_voice')  !== false) $role_count_list['normal_voice']++;
     if(strpos($entry_role, 'weak_voice')    !== false) $role_count_list['weak_voice']++;
@@ -912,13 +914,17 @@ function VoteDay(){
 			AND uname = '$uname' AND user_no > 0");
   $role = mysql_result($sql, 0, 0);
 
-  //権力者なら投票数が２
-  $vote_number = (strpos($role, 'authority') !== false ? 2 : 1);
+  //役職に応じて票数を決定
+  $vote_number = 1;
+  if(strpos($role, 'authority') !== false) $vote_number++; //権力者
+  elseif(strpos($role, 'watcher') !== false) $vote_number = 0; //傍観者
 
-  //投票
-  $sql = mysql_query("INSERT INTO vote(room_no,date,uname,target_uname,vote_number,vote_times,situation)
-		VALUES($room_no,$date,'$uname','$target_uname',$vote_number,$vote_times,'$situation')");
-  InsertSystemTalk("VOTE_DO\t" . $target_handle, $system_time, 'day system', '', $uname); //投票しました通知
+  //投票＆システムメッセージ
+  $sql = mysql_query("INSERT INTO vote(room_no, date, uname, target_uname, vote_number,
+			vote_times, situation)
+			VALUES($room_no, $date, '$uname', '$target_uname', $vote_number,
+			$vote_times, '$situation')");
+  InsertSystemTalk("VOTE_DO\t" . $target_handle, $system_time, 'day system', '', $uname);
 
   //登録成功
   if($sql && mysql_query('COMMIT')){
@@ -945,17 +951,16 @@ function CheckVoteDay(){
   $sql_user = mysql_query("SELECT uname, handle_name, role FROM user_entry WHERE room_no = $room_no
 		AND live = 'live' AND user_no > 0 ORDER BY user_no");
   $user_count = mysql_num_rows($sql_user);
+  if($vote_count != $user_count) return false;  //全員が投票していなければ処理スキップ
 
-  //全員が投票していた場合
-  if($vote_count != $user_count) return false;
-
-  $check_draw = true; //引き分け判定実行フラグ
   $max_voted_number = 0; //最多得票数
   $handle_list = array(); //ユーザ名とハンドルネームの対応表
   $role_list   = array(); //ユーザ名と役職の対応表
   $live_list   = array(); //生きている人のユーザ名リスト
   $vote_target_list = array(); //投票リスト (ユーザ名 => 投票先ハンドルネーム)
   $vote_count_list  = array(); //得票リスト (ユーザ名 => 投票数)
+  $decide_target = ''; //決定者の投票先ハンドルネーム
+  $plague_target = ''; //疫病神の投票先ハンドルネーム
 
   //一人ずつ自分に投票された数を調べて処刑すべき人を決定する
   for($i = 0; $i < $user_count; $i++){ //ユーザ No 順に処理
@@ -984,11 +989,10 @@ function CheckVoteDay(){
 			AND user_entry.uname = vote.target_uname AND user_entry.user_no > 0");
     $this_vote_target = mysql_result($sql, 0, 0);
 
-    //投票結果をタブ区切りで出力 (誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
+    //投票結果をタブ区切りで生成してシステムメッセージに登録
+    //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
     $sentence = $this_handle . "\t" .  $this_vote_target . "\t" .
       $this_voted_number ."\t" . $this_vote_number . "\t" . (int)$vote_times ;
-
-    //投票情報をシステムメッセージに登録
     InsertSystemMessage($sentence, $situation);
 
     //最大得票数を更新
@@ -1000,142 +1004,125 @@ function CheckVoteDay(){
     $vote_target_list[$this_uname] = $this_vote_target;
     $vote_count_list[$this_uname]  = $this_voted_number;
     array_push($live_list, $this_uname);
+    if(strpos($this_role, 'decide') !== false) //決定者なら投票先を記録
+      $decide_target = $this_vote_target;
+    elseif(strpos($this_role, 'plague') !== false) //疫病神なら投票先を記録
+      $plague_target = $this_vote_target;
   }
+
+  //ハンドルネーム => ユーザ名 の配列を生成
+  $uname_list = array_flip($handle_list);
 
   //最大得票数を集めた人の数を取得
   $voted_member_list = array_count_values($vote_count_list); //得票数 => 人数 の配列を生成
   $max_voted_member = $voted_member_list[$max_voted_number]; //最大得票数を集めた人の数
 
-  //最大得票数のユーザ名のリストを取得
+  //最大得票数のユーザ名(処刑候補者) のリストを取得
   $max_voted_uname_list = array_keys($vote_count_list, $max_voted_number);
 
-  if($max_voted_member == 1){ //一人だけの場合、処刑して夜にする
-    VoteKill($max_voted_uname_list[0], $vote_count_list, $vote_target_list,
-	     $handle_list, $role_list, $live_list);
-    $check_draw = false;
-  }
-  else{ //複数いたばあい、決定者が居なければ再投票
-    $revote_flag = true; //再投票フラグを初期化
-    $target_uname = '';
-
-    foreach($max_voted_uname_list as $max_voted_uname){
-      //投票者に決定者がいるか探す
-      $sql = mysql_query("SELECT user_entry.role FROM user_entry, vote
-				WHERE user_entry.room_no = $room_no
-				AND user_entry.role LIKE '%decide&'
-				AND vote.room_no = $room_no AND vote.date = $date
-				AND vote.situation = '$situation'
-				AND vote.vote_times = $vote_times
-				AND vote.uname = user_entry.uname
-				AND vote.target_uname = '$max_voted_uname'
-				AND user_entry.user_no > 0");
-      if(mysql_num_rows($sql) > 0){ //決定者がいれば処刑
-	$revote_flag = false;
-	$target_uname = $max_voted_uname; //処刑対象者をセット
-	break;
-      }
-    }
-
-    if($revote_flag){ //再投票
-      //特殊サブ役職の突然死処理
-      VoteSuddenDeath($vote_count_list, $vote_target_list, $handle_list, $role_list);
-
-      $next_vote_times = $vote_times + 1; //投票回数を増やす
-      mysql_query("UPDATE system_message SET message = $next_vote_times WHERE room_no = $room_no
-			AND date = $date AND type = 'VOTE_TIMES'");
-
-      //システムメッセージ
-      InsertSystemMessage($vote_times, 'RE_VOTE');
-      InsertSystemTalk("再投票になりました( $vote_times 回目)", ++$system_time);
-      UpdateTime(); //最終書き込みを更新
-    }
-    else{ //処刑して夜にする
-      VoteKill($target_uname, $vote_count_list, $vote_target_list,
-	       $handle_list, $role_list, $live_list);
-      $check_draw = false;
+  $vote_kill_target = ''; //処刑される人のユーザ名
+  if($max_voted_member == 1) //一人だけなら処刑者決定
+    $vote_kill_target = $max_voted_uname_list[0];
+  else{ //複数いた場合、サブ役職をチェックする
+    $decide_uname = $uname_list[$decide_target]; //決定者の投票先ユーザ名
+    if(in_array($decide_uname, $max_voted_uname_list)) //最多投票者に投票していれば処刑者決定
+      $vote_kill_target = $decide_uname;
+    elseif(count($max_voted_uname_list) < 3){ //疫病神は一人しか出現しない
+      //疫病神の投票先を決定者候補から除いて一人になれば処刑者決定
+      $plague_uname = $uname_list[$plague_target]; //疫病神の投票先ユーザ名
+      $max_voted_uname_list = array_diff($max_voted_uname_list, array($plague_uname));
+      if($max_voted_member == 1) $vote_kill_target = $max_voted_uname_list[0];
     }
   }
-  CheckVictory($check_draw);
-}
 
-//投票で処刑する
-function VoteKill($target_uname, $vote_count_list, $vote_target_list,
-		  $handle_list, $role_list, $live_list){
-  global $system_time, $room_no, $date;
+  if($vote_kill_target != ''){ //処刑処理実行
+    //ユーザ情報を取得
+    $target_handle = $handle_list[$vote_kill_target];
+    $target_role   = $role_list[$vote_kill_target];
 
-  //ユーザ情報を取得
-  $target_handle = $handle_list[$target_uname];
-  $target_role   = $role_list[$target_uname];
+    //処刑処理
+    KillUser($vote_kill_target); //死亡処理
+    InsertSystemMessage($target_handle, 'VOTE_KILLED'); //システムメッセージ
+    SaveLastWords($target_handle); //処刑者の遺言
 
-  //処刑処理
-  KillUser($target_uname); //死亡処理
-  InsertSystemMessage($target_handle, 'VOTE_KILLED'); //システムメッセージ
-  SaveLastWords($target_handle); //処刑者の遺言
+    //処刑された人が埋毒者の場合
+    if(strpos($target_role, 'poison') !== false &&
+       strpos($target_role, 'poison_guard') === false){ //騎士は対象外
+      //他の人からランダムに一人選ぶ
+      //恋人後追い処理を先にすると後追いした恋人も含めてしまうので
+      //改めて「現在の生存者」を DB に問い合わせるべきじゃないかな？
+      $array = array_diff($live_list, array($vote_kill_target));
+      $rand_key = array_rand($array, 1);
+      $poison_target_uname  = $array[$rand_key];
+      $poison_target_handle = $handle_list[$target_uname];
+      $poison_target_role   = $role_list[$target_uname];
 
-  //処刑された人が埋毒者の場合
-  if(strpos($target_role, 'poison') !== false &&
-     strpos($target_role, 'poison_guard') === false){ //騎士は対象外
-    //他の人からランダムに一人選ぶ
-    //恋人後追い処理を先にすると後追いした恋人も含めてしまうので
-    //改めて「現在の生存者」を DB に問い合わせるべきじゃないかな？
-    $array = array_diff($live_list, array($target_uname));
-    $rand_key = array_rand($array, 1);
-    $poison_target_uname  = $array[$rand_key];
-    $poison_target_handle = $handle_list[$target_uname];
-    $poison_target_role   = $role_list[$target_uname];
+      KillUser($poison_target_uname); //死亡処理
+      InsertSystemMessage($poison_target_handle, 'POISON_DEAD_day'); //システムメッセージ
+      SaveLastWords($poison_target_handle); //遺言処理
 
-    KillUser($poison_target_uname); //死亡処理
-    InsertSystemMessage($poison_target_handle, 'POISON_DEAD_day'); //システムメッセージ
-    SaveLastWords($poison_target_handle); //遺言処理
+      //毒死した人が恋人の場合
+      if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed($poison_target_role);
+    }
 
-    //毒死した人が恋人の場合
-    if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed($poison_target_role);
+    //処刑された人が恋人の場合
+    //処刑後すぐ後追いするのが筋だと思うけど
+    //現状では埋毒者のターゲット選出処理が甘いのでここで処理
+    if(strpos($target_role, 'lovers') !== false) LoversFollowed($target_role);
+
+    //霊能者の結果(システムメッセージ)
+    if(strpos($target_role, 'boss_wolf') !== false)
+      $necromancer_result = 'boss_wolf';
+    elseif(strpos($target_role, 'wolf') !== false)
+      $necromancer_result = 'wolf';
+    elseif(strpos($target_role, 'child_fox') !== false)
+      $necromancer_result = 'child_fox';
+    else
+      $necromancer_result = 'human';
+
+    InsertSystemMessage($target_handle . "\t" . $necromancer_result, 'NECROMANCER_RESULT');
   }
-
-  //処刑された人が恋人の場合
-  //処刑後すぐ後追いするのが筋だと思うけど
-  //現状では埋毒者のターゲット選出処理が甘いのでここで処理
-  if(strpos($target_role, 'lovers') !== false) LoversFollowed($target_role);
-
-  //霊能者の結果(システムメッセージ)
-  if(strpos($target_role, 'boss_wolf') !== false)
-    $necro_max_voted_role = 'boss_wolf';
-  elseif(strpos($target_role, 'wolf') !== false)
-    $necro_max_voted_role = 'wolf';
-  else
-    $necro_max_voted_role = 'human';
-
-  InsertSystemMessage($target_handle . "\t" . $necro_max_voted_role, 'NECROMANCER_RESULT');
 
   //特殊サブ役職の突然死処理
-  VoteSuddenDeath($vote_count_list, $vote_target_list, $handle_list, $role_list);
-
-  mysql_query("UPDATE room SET day_night = 'night' WHERE room_no = $room_no"); //夜にする
-  InsertSystemTalk('NIGHT', ++$system_time, 'night system'); //夜がきた通知
-  UpdateTime(); //最終書き込みを更新
-  DeleteVote(); //今までの投票を全部削除
-  mysql_query('COMMIT'); //一応コミット
-}
-
-//投票による特殊サブ役職の突然死処理
-function VoteSuddenDeath($vote_count_list, $vote_target_list, $handle_list, $role_list){
-  $uname_list = array_flip($handle_list); //ハンドルネーム => ユーザ名
-  foreach($vote_count_list as $key => $value){
-    $this_role = $role_list[$key];
-    if($value > 0){
+  //投票者対象ハンドルネーム => 人数 の配列を生成
+  $voted_target_member_list = array_count_values($vote_target_list);
+  foreach($uname_list as $this_uname => $this_handle){
+    $this_role = $role_list[$this_uname];
+    if($voted_target_member_list[$this_handle] > 0){ //投票されていたら小心者はショック死
       if(strpos($this_role, 'chicken') !== false)
-	SuddenDeath($key, $handle_list[$key], $this_role, 'CHICKEN');
+	SuddenDeath($this_uname, $this_handle, $this_role, 'CHICKEN');
     }
-    else{
+    else{ //投票されていなかったらウサギはショック死
       if(strpos($this_role, 'rabbit') !== false)
-	SuddenDeath($key, $handle_list[$key], $this_role, 'RABBIT');
+	SuddenDeath($this_uname, $this_handle, $this_role, 'RABBIT');
     }
     if(strpos($this_role, 'perverseness') !== false){
-      $target_value = $vote_count_list[$uname_list[$vote_target_list[$key]]]; //投票対象者の得票
-      if($target_value > 1 || (strpos($this_role, 'authority') !== false && $target_value > 2))
-	SuddenDeath($key, $handle_list[$key], $this_role, 'PERVERSENESS');
+      //自分の投票先に複数の人が投票していたら天邪鬼はショック死
+      if($voted_target_member_list[$vote_target_list[$this_uname]] > 1)
+	SuddenDeath($this_uname, $this_handle, $this_role, 'PERVERSENESS');
     }
   }
+
+  if($vote_kill_target != ''){ //夜に切り替え
+    $check_draw = false; //引き分け判定実行フラグをオフ
+    mysql_query("UPDATE room SET day_night = 'night' WHERE room_no = $room_no"); //夜にする
+    InsertSystemTalk('NIGHT', ++$system_time, 'night system'); //夜がきた通知
+    UpdateTime(); //最終書き込みを更新
+    DeleteVote(); //今までの投票を全部削除
+    mysql_query('COMMIT'); //一応コミット
+  }
+  else{ //再投票処理
+    $check_draw = true; //引き分け判定実行フラグをオン
+    $next_vote_times = $vote_times + 1; //投票回数を増やす
+    mysql_query("UPDATE system_message SET message = $next_vote_times WHERE room_no = $room_no
+			AND date = $date AND type = 'VOTE_TIMES'");
+
+    //システムメッセージ
+    InsertSystemMessage($vote_times, 'RE_VOTE');
+    InsertSystemTalk("再投票になりました( $vote_times 回目)", ++$system_time);
+    UpdateTime(); //最終書き込みを更新
+  }
+  CheckVictory($check_draw);
 }
 
 //夜の投票処理

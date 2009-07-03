@@ -481,6 +481,9 @@ EOF;
 <tr>
 <td><label>闇鍋モード：</label></td>
 <td class="explain">
+<input type="radio" name="game_option_chaos" value="" checked>
+通常人狼<br>
+
 <input type="radio" name="game_option_chaos" value="chaos">
 狼、狐以外全ての役職がランダムとなる闇鍋モードです<br>
 

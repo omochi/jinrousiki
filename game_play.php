@@ -787,8 +787,18 @@ function OutputAbility(){
   }
 
   //ここから兼任役職
+  //投票系
   if(strpos($role, 'authority') !== false) OutputRoleComment('authority');
-  // if(strpos($role, 'decide') !== false) OutputRoleComment('decite'); //現在は決定者は通知しない (仕様)
+  elseif(strpos($role, 'decide') !== false) // OutputRoleComment('decite'); //現在は決定者は通知しない仕様
+  elseif(strpos($role, 'watcher') !== false){
+    // OutputRoleComment('watcher');
+    echo 'あなたは「傍観者」です。投票には参加するふりだけをしてこの村の行く末を眺めましょう。'
+  }
+  elseif(strpos($role, 'plague') !== false){ //決定者同様分からないほうが面白いかな？
+    // OutputRoleComment('plague');
+    // echo 'あなたは「疫病神」です。あなたの投票は軽視されてしまいます。'
+  }
+
   if(strpos($role, 'lovers') !== false){
     //恋人を表示する
     $lovers_str = GetLoversConditionString($role);

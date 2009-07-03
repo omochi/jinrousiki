@@ -133,7 +133,7 @@ function OutputTimeTable(){
 
 //プレイヤー一覧出力
 function OutputPlayerList(){
-  global $DEBUG_MODE, $ICON_CONF, $room_no, $game_option, $day_night, $live;
+  global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $room_no, $game_option, $day_night, $live;
 
   $sql = mysql_query("SELECT user_entry.uname,
 			user_entry.handle_name,
@@ -193,64 +193,53 @@ function OutputPlayerList(){
     if($day_night == 'aftergame' ||
        ($live == 'dead' && strpos($game_option, 'not_open_cast') === false)){
       $role_str = '';
-      if(strpos($this_role, 'human') !== false)
-	$role_str = '<span class="human">[村人]</span>';
-      elseif(strpos($this_role, 'boss_wolf') !== false)
-        $role_str = '<span class="wolf">[白狼]</span>';
-      elseif(strpos($this_role, 'wolf') !== false)
-        $role_str = '<span class="wolf">[人狼]</span>';
-      elseif(strpos($this_role, 'soul_mage') !== false)
-        $role_str = '<span class="mage">[魂の占い師]</span>';
-      elseif(strpos($this_role, 'mage') !== false)
-        $role_str = '<span class="mage">[占い師]</span>';
-      elseif(strpos($this_role, 'necromancer') !== false)
-	$role_str = '<span class="necromancer">[霊能者]</span>';
-      elseif(strpos($this_role, 'medium') !== false)
-	$role_str = '<span class="necromancer">[巫女]</span>';
-      elseif(strpos($this_role, 'fanatic_mad') !== false)
-	$role_str = '<span class="mad">[狂信者]</span>';
-      elseif(strpos($this_role, 'mad') !== false)
-	$role_str = '<span class="mad">[狂人]</span>';
-      elseif(strpos($this_role, 'poison_guard') !== false)
-	$role_str = '<span class="guard">[騎士]</span>';
-      elseif(strpos($this_role, 'guard') !== false)
-	$role_str = '<span class="guard">[狩人]</span>';
-      elseif(strpos($this_role, 'common') !== false)
-	$role_str = '<span class="common">[共有者]</span>';
-      elseif(strpos($this_role, 'child_fox') !== false)
-	$role_str = '<span class="fox">[子狐]</span>';
-      elseif(strpos($this_role, 'fox') !== false)
-	$role_str = '<span class="fox">[妖狐]</span>';
-      elseif(strpos($this_role, 'poison') !== false)
-	$role_str = '<span class="poison">[埋毒者]</span>';
-      elseif(strpos($this_role, 'suspect') !== false)
-	$role_str = '<span class="human">[不審者]</span>';
-      elseif(strpos($this_role, 'cupid') !== false)
-	$role_str = '<span class="cupid">[キューピッド]</span>';
-      elseif(strpos($this_role, 'quiz') !== false)
-	$role_str = '<span class="quiz">[GM]</span>';
+      if(strpos($this_role, 'human')            !== false) $role_str = MakeRoleName('human');
+      elseif(strpos($this_role, 'boss_wolf')    !== false) $role_str = MakeRoleName('boss_wolf', 'wolf');
+      elseif(strpos($this_role, 'wolf')         !== false) $role_str = MakeRoleName('wolf');
+      elseif(strpos($this_role, 'soul_mage')    !== false) $role_str = MakeRoleName('soul_mage', 'mage');
+      elseif(strpos($this_role, 'mage')         !== false) $role_str = MakeRoleName('mage');
+      elseif(strpos($this_role, 'necromancer')  !== false) $role_str = MakeRoleName('necromancer');
+      elseif(strpos($this_role, 'medium')       !== false) $role_str = MakeRoleName('medium', 'necromancer');
+      elseif(strpos($this_role, 'fanatic_mad')  !== false) $role_str = MakeRoleName('fanatic_mad', 'mad');
+      elseif(strpos($this_role, 'mad')          !== false) $role_str = MakeRoleName('mad');
+      elseif(strpos($this_role, 'poison_guard') !== false) $role_str = MakeRoleName('poison_guard', 'guard');
+      elseif(strpos($this_role, 'guard')        !== false) $role_str = MakeRoleName('guard');
+      elseif(strpos($this_role, 'common')       !== false) $role_str = MakeRoleName('common');
+      elseif(strpos($this_role, 'child_fox')    !== false) $role_str = MakeRoleName('child_fox', 'fox');
+      elseif(strpos($this_role, 'fox')          !== false) $role_str = MakeRoleName('fox');
+      elseif(strpos($this_role, 'poison')       !== false) $role_str = MakeRoleName('poison');
+      elseif(strpos($this_role, 'suspect')      !== false) $role_str = MakeRoleName('suspect', 'human');
+      elseif(strpos($this_role, 'cupid')        !== false) $role_str = MakeRoleName('cupid');
+      elseif(strpos($this_role, 'quiz')         !== false) $role_str = MakeRoleName('quiz');
 
       //ここから兼任役職
-      if(strpos($this_role, 'authority') !== false)
-	$role_str .= '<br><span class="authority">[権力者]</span>';
-      if(strpos($this_role, 'decide') !== false)
-	$role_str .= '<br><span class="decide">[決定者]</span>';
       if(strpos($this_role, 'lovers') !== false)
 	$role_str .= '<br><span class="lovers">[恋人]</span>';
+
+      if(strpos($this_role, 'authority') !== false)
+	$role_str .= MakeRoleName('authority', '', true);
+      elseif(strpos($this_role, 'decide') !== false)
+	$role_str .= MakeRoleName('decide', '', true);
+      elseif(strpos($this_role, 'plague') !== false)
+	$role_str .= MakeRoleName('plague', 'decide', true);
+      elseif(strpos($this_role, 'watcher') !== false)
+	$role_str .= MakeRoleName('watcher', 'decide', true);
+
       if(strpos($this_role, 'chicken') !== false)
-	$role_str .= '<br><span class="decide">[小心者]</span>';
+	$role_str .= MakeRoleName('chicken', 'decide', true);
       elseif(strpos($this_role, 'rabbit') !== false)
-	$role_str .= '<br><span class="decide">[ウサギ]</span>';
-      if(strpos($this_role, 'perverseness') !== false)
-	$role_str .= '<br><span class="decide">[天邪鬼]</span>';
+	$role_str .= MakeRoleName('rabbit', 'decide', true);
+      elseif(strpos($this_role, 'perverseness') !== false)
+	$role_str .= MakeRoleName('perverseness', 'decide', true);
+
       if(strpos($this_role, 'strong_voice') !== false)
-	$role_str .= '<br><span class="decide">[大声]</span>';
+	$role_str .= MakeRoleName('strong_voice', 'decide', true);
       elseif(strpos($this_role, 'normal_voice') !== false)
-	$role_str .= '<br><span class="decide">[不器用]</span>';
+	$role_str .= MakeRoleName('normal_voice', 'decide', true);
       elseif(strpos($this_role, 'weak_voice') !== false)
-	$role_str .= '<br><span class="decide">[小声]</span>';
+	$role_str .= MakeRoleName('weak_voice', 'decide', true);
       elseif(strpos($this_role, 'no_last_words') !== false)
-	$role_str .= '<br><span class="decide">[筆不精]</span>';
+	$role_str .= MakeRoleName('no_last_words', 'decide', true);
 
       echo "<td>${img_tag}</td>"."\n";
       echo "<td><font color=\"$this_color\">◆</font>$this_handle<br>"."\n";
@@ -276,6 +265,21 @@ function OutputPlayerList(){
     echo '<br>'."\n" . $this_live_str . '</td>'."\n";
   }
   echo '</tr></table></div>'."\n";
+}
+
+//役職名のタグを作成する //game_format.php に似たような関数があるかな？
+function MakeRoleName($role, $css = '', $sub_role = false){
+  global $GAME_CONF;
+
+  $str = '';
+  if($css == '') $css = $role;
+  if($sub_role) $str .= '<br>';
+  $str .= '<span class="' . $css . '">[';
+  if($sub_role) $str .= $GAME_CONF->sub_role_list[$role];
+  else $str .= $GAME_CONF->main_role_list[$role];
+  $str .= ']</span>';
+
+  return $str;
 }
 
 //所属陣営判別
