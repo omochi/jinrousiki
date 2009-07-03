@@ -483,7 +483,7 @@ function GetRoleList($user_count, $option_role){
     }
     else{
       $role_list['boss_wolf'] = $boss_wolf_count;
-      $role_list['wolf'] = $boss_wolf_count - $wolf_count;
+      $role_list['wolf'] = $wolf_count - $boss_wolf_count;
     }
 
     //ÍÅ¸Ñ·Ï¤ÎÇÛÌò¤ò·èÄê
