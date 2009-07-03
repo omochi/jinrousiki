@@ -38,13 +38,18 @@ class RoleImage extends ImageManager{
   //役職の説明
   var $human              = 'img/role/human.jpg';              //村人
   var $wolf               = 'img/role/wolf.jpg';               //人狼
+  var $boss_wolf          = 'img/role/boss_wolf.jpg';          //白狼
   var $wolf_partner       = 'img/role/wolf_partner.jpg';       //人狼の仲間
   var $mage               = 'img/role/mage.jpg';               //占い師
+  var $soul_mage          = 'img/role/soul_mage.jpg';          //魂の占い師
   var $mage_result        = 'img/role/mage_result.jpg';        //占い結果
   var $necromancer        = 'img/role/necromancer.jpg';        //霊能者
+  var $medium             = 'img/role/medium.jpg';             //巫女
   var $necromancer_result = 'img/role/necromancer_result.jpg'; //霊能結果
   var $mad                = 'img/role/mad.jpg';                //狂人
+  var $fanatic_mad        = 'img/role/fanatic_mad.jpg';        //狂信者
   var $guard              = 'img/role/guard.jpg';              //狩人
+  var $poison_guard       = 'img/role/poison_guard.jpg';       //騎士
   var $guard_success      = 'img/role/guard_success.jpg';      //狩人の護衛成功
   var $common             = 'img/role/common.jpg';             //共有者
   var $common_partner     = 'img/role/common_partner.jpg';     //共有者の仲間
@@ -56,7 +61,15 @@ class RoleImage extends ImageManager{
   var $cupid_pair         = 'img/role/cupid_pair.jpg';         //キューピッドが結びつけた恋人
   var $lovers_header      = 'img/role/lovers_header.jpg';      //恋人(前)
   var $lovers_footer      = 'img/role/lovers_footer.jpg';      //恋人(後)
+  var $quiz               = 'img/role/quiz.jpg';               //出題者
   var $authority          = 'img/role/authority.jpg';          //権力者
+  var $strong_voice       = 'img/role/strong_voice.jpg';       //大声
+  var $normal_voice       = 'img/role/normal_voice.jpg';       //不器用
+  var $weak_voice         = 'img/role/weak_voice.jpg';         //小声
+  var $no_last_words      = 'img/role/no_last_words.jpg';      //筆不精
+  var $chicken            = 'img/role/chicken.jpg';            //小心者
+  var $rabbit             = 'img/role/rabbit.jpg';             //ウサギ
+  var $perverseness       = 'img/role/perverseness.jpg';       //天邪鬼
   //占い・霊能・巫女判定
   var $result_human        = 'img/role/result_human.jpg';        //村人
   var $result_wolf         = 'img/role/result_wolf.jpg';         //人狼

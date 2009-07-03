@@ -621,8 +621,7 @@ function OutputAbility(){
     OutputRoleComment('human');
   elseif(strpos($role, 'wolf') !== false){
     if(strpos($role, 'boss_wolf') !== false)
-      // OutputRoleComment('boss_wolf');
-      echo '[役割]<br>　あなたは「白狼」です。もう占いを恐れる必要はありません。全てを欺き通して村人達を皆殺しにするのです！<br>'."\n";
+      OutputRoleComment('boss_wolf');
     else
       OutputRoleComment('wolf');
 
@@ -639,8 +638,7 @@ function OutputAbility(){
   }
   elseif(strpos($role, 'mage') !== false){
     if(strpos($role, 'soul_mage') !== false)
-      // OutputRoleComment('soul_mage');
-      echo '[役割]<br>　あなたは「魂の占い師」です。占った人の役職を知ることが出来ます。自らの運命をも、その魂で切り開くことができるはずです。<br>'."\n";
+      OutputRoleComment('soul_mage');
     else
       OutputRoleComment('mage');
 
@@ -679,8 +677,7 @@ function OutputAbility(){
     }
   }
   elseif(strpos($role, 'medium') !== false){
-    // OutputRoleComment('meduium');
-    echo '[役割]<br>　あなたは「巫女」です。突然死した人の所属陣営を知ることが出来ます。不慮の死を遂げた者の正体を知らせ、村の推理に貢献するのです！<br>'."\n";
+    OutputRoleComment('meduium');
 
     //判定結果を表示
     $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
@@ -693,8 +690,8 @@ function OutputAbility(){
     }
   }
   elseif(strpos($role, 'fanatic_mad') !== false){
-    // OutputRoleComment('fanatic_mad');
-    echo '[役割]<br>　あなたは「狂信者」です。仕えるべき人狼が誰なのかを知ることが出来ます。あなたの持てる全てを狼に捧げ尽くしましょう。<br>'."\n";
+    OutputRoleComment('fanatic_mad');
+
     //狼を表示
     $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
 			AND role LIKE '%wolf%' AND uname <> '$uname' AND user_no > 0");
@@ -703,8 +700,7 @@ function OutputAbility(){
   elseif(strpos($role, 'mad') !== false) OutputRoleComment('mad');
   elseif(strpos($role, 'guard') !== false){
     if(strpos($role, 'poison_guard') !== false)
-      // OutputRoleComment('poison_guard');
-      echo '[役割]<br>　あなたは「騎士」です。夜の間に村人一人を人狼から護ることが出来ます。もし、あなたが人狼に襲われた際には刺し違えてでも倒すのです！<br>'."\n";
+      OutputRoleComment('poison_guard');
     else
       OutputRoleComment('guard');
 
@@ -777,8 +773,7 @@ function OutputAbility(){
     }
   }
   elseif(strpos($role, 'quiz') !== false){
-    // OutputRoleComment('quiz');
-    echo '[役割]<br>　あなたは「出題者」です。この村の難易度はあなたの口先三寸で決まります。頑張って皆を楽しまれば、それがあなたの勝利です。<br>'."\n";
+    OutputRoleComment('quiz');
     if(strpos($game_option, 'chaos') !== false){
       // OutputRoleComment('quiz_chaos');
       echo '闇鍋モードではあなたの最大の能力である噛み無効がありません。<br>'."\n";
@@ -789,10 +784,10 @@ function OutputAbility(){
   //ここから兼任役職
   //投票系
   if(strpos($role, 'authority') !== false) OutputRoleComment('authority');
-  elseif(strpos($role, 'decide') !== false) // OutputRoleComment('decite'); //現在は決定者は通知しない仕様
+  // elseif(strpos($role, 'decide') !== false) OutputRoleComment('decite'); //現在は決定者は通知しない仕様
   elseif(strpos($role, 'watcher') !== false){
     // OutputRoleComment('watcher');
-    echo 'あなたは「傍観者」です。投票には参加するふりだけをしてこの村の行く末を眺めましょう。'
+    echo 'あなたは「傍観者」です。投票には参加するふりだけをしてこの村の行く末を眺めましょう。';
   }
   elseif(strpos($role, 'plague') !== false){ //決定者同様分からないほうが面白いかな？
     // OutputRoleComment('plague');
@@ -808,36 +803,15 @@ function OutputAbility(){
   }
 
   //声固定系
-  if(strpos($role, 'strong_voice') !== false){
-    // OutputRoleComment('strong_voice');
-    echo 'あなたは「大声」の持ち主です。上手く活用して皆を説得しましょう！';
-  }
-  elseif(strpos($role, 'normal_voice') !== false){
-    // OutputRoleComment('normal_voice');
-    echo 'あなたは「不器用」なので、声の大きさを変えられません。';
-  }
-  elseif(strpos($role, 'weak_voice') !== false){
-    // OutputRoleComment('weak_voice');
-    echo 'あなたは「小声」の持ち主です。説得に苦労するかも知れませんが頑張って下さい。';
-  }
-  elseif(strpos($role, 'no_last_words') !== false){
-    // OutputRoleComment('no_last_words');
-    echo 'あなたは「筆不精」なので遺言を遺す事が出来ません。言いたい事は全て昼間に言い切りましょう。';
-  }
+  if(strpos($role, 'strong_voice')      !== false) OutputRoleComment('strong_voice');
+  elseif(strpos($role, 'normal_voice')  !== false) OutputRoleComment('normal_voice');
+  elseif(strpos($role, 'weak_voice')    !== false) OutputRoleComment('weak_voice');
+  elseif(strpos($role, 'no_last_words') !== false) OutputRoleComment('no_last_words');
 
   //投票系
-  if(strpos($role, 'chicken') !== false){
-    // OutputRoleComment('chicken');
-    echo 'あなたは「小心者」です。処刑投票時に一票でも貰うとショックで死んでしまいます。';
-  }
-  elseif(strpos($role, 'rabbit') !== false){
-    // OutputRoleComment('rabbit');
-    echo 'あなたは「ウサギ」です。処刑投票時に一票も貰えないと寂しくて死んでしまいます。';
-  }
-  if(strpos($role, 'perverseness') !== false){
-    // OutputRoleComment('perverseness');
-    echo 'あなたは「天邪鬼」です。処刑投票時に自分と同じ投票先の人がいるとショックで死んでしまいます。';
-  }
+  if(strpos($role, 'chicken')          !== false) OutputRoleComment('chicken');
+  elseif(strpos($role, 'rabbit')       !== false) OutputRoleComment('rabbit');
+  elseif(strpos($role, 'perverseness') !== false) OutputRoleComment('perverseness');
 }
 
 //役職説明を表示する
