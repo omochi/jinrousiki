@@ -214,7 +214,7 @@ function OutputPlayerList(){
 
       //¤³¤³¤«¤é·óÇ¤Ìò¿¦
       if(strpos($this_role, 'lovers') !== false)
-	$role_str .= '<br><span class="lovers">[Îø¿Í]</span>';
+	$role_str .= MakeRoleName('lovers', '', true);
 
       if(strpos($this_role, 'authority') !== false)
 	$role_str .= MakeRoleName('authority', '', true);

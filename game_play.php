@@ -677,7 +677,7 @@ function OutputAbility(){
     }
   }
   elseif(strpos($role, 'medium') !== false){
-    OutputRoleComment('meduium');
+    OutputRoleComment('medium');
 
     //判定結果を表示
     $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no

@@ -87,6 +87,7 @@ class RoleImage extends ImageManager{
   var $result_child_fox    = 'img/role/result_child_fox.jpg';    //子狐
   var $result_poison       = 'img/role/result_poison.jpg';       //埋毒者
   var $result_cupid        = 'img/role/result_cupid.jpg';        //キューピッド
+  var $result_lovers       = 'img/role/result_lovers.jpg';       //恋人
   var $result_quiz         = 'img/role/result_quiz.jpg';         //出題者
 }
 

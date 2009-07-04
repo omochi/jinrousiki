@@ -211,6 +211,15 @@ function CheckVoteGameStart(){
 					WHERE room_no = $room_no AND uname <> 'dummy_boy'
 					AND user_no > 0 ORDER BY MyRand");
   }
+  elseif($DEBUG_MODE){ //ゲルト君
+    array_push($uname_array, 'dummy_boy');
+    array_push($role_array, 'human'); //村人がいない場合はエラーになるので注意
+    $now_role_list = array_diff($now_role_list, $role_array);
+
+    $sql_user_list = mysql_query("SELECT uname, role, MD5(RAND()*NOW()) AS MyRand FROM user_entry
+					WHERE room_no = $room_no AND uname <> 'dummy_boy'
+					AND user_no > 0 ORDER BY MyRand");
+  }
   else{
     $sql_user_list = mysql_query("SELECT uname, role, MD5(RAND()*NOW()) AS MyRand FROM user_entry
 					WHERE room_no = $room_no AND user_no > 0 ORDER BY MyRand");
@@ -247,25 +256,27 @@ function CheckVoteGameStart(){
   $rand_keys = array_rand($role_array, $user_count); //ランダムキーを取得
 
   //兼任となるオプション役割(決定者、権力者)
-  $option_subrole = array();
-  $option_subrole_count = 0;
+  $sub_role_index = 0;
+  $sub_role_count_list = array();
   if(strpos($option_role, 'decide') !== false && $user_count >= $GAME_CONF->decide){
-    $role_array[$rand_keys[$option_subrole_count]] .= ' decide';
-    $option_subrole_count++;
-    $option_subrole['decide']++;
+    $role_array[$rand_keys[$sub_role_index]] .= ' decide';
+    $sub_role_index++;
+    $sub_role_count_list['decide']++;
   }
   if(strpos($option_role, 'authority') !== false && $user_count >= $GAME_CONF->authority){
-    $role_array[$rand_keys[$option_subrole_count]] .= ' authority';
-    $option_subrole_count++;
-    $option_subrole['authority']++;
+    $role_array[$rand_keys[$sub_role_index]] .= ' authority';
+    $sub_role_index++;
+    $sub_role_count_list['authority']++;
   }
   if($chaos){
     foreach($GAME_CONF->sub_role_list as $key => $value){
-      if($user_count < $option_subrole_count) break;
+      if($user_count < $sub_role_index) break;
       if($key == 'decite' || $key == 'authority') continue; //決定者と権力者はオプションで制御する
-      if((int)$option_subrole[$key] > 0) continue; //既に誰かに渡していればスキップ
-      $role_array[$rand_keys[$option_subrole_count]] .= ' ' . $key;
-      $option_subrole[$key]++;
+      if($key == 'lovers') continue; //恋人は現在は対象外
+      if((int)$sub_role_count_list[$key] > 0) continue; //既に誰かに渡していればスキップ
+      $role_array[$rand_keys[$sub_role_index]] .= ' ' . $key;
+      $sub_role_index++;
+      $sub_role_count_list[$key]++;
     }
   }
 
@@ -308,17 +319,9 @@ function CheckVoteGameStart(){
     mysql_query("UPDATE user_entry SET role = '$entry_role' WHERE room_no = $room_no
 			AND uname = '$entry_uname' AND user_no > 0");
     $role_count_list[GetMainRole($entry_role)]++;
-    if(strpos($entry_role, 'decide')        !== false) $role_count_list['decide']++;
-    if(strpos($entry_role, 'authority')     !== false) $role_count_list['authority']++;
-    if(strpos($entry_role, 'watcher')       !== false) $role_count_list['watcher']++;
-    if(strpos($entry_role, 'plague')        !== false) $role_count_list['plague']++;
-    if(strpos($entry_role, 'strong_voice')  !== false) $role_count_list['strong_voice']++;
-    if(strpos($entry_role, 'normal_voice')  !== false) $role_count_list['normal_voice']++;
-    if(strpos($entry_role, 'weak_voice')    !== false) $role_count_list['weak_voice']++;
-    if(strpos($entry_role, 'no_last_words') !== false) $role_count_list['no_last_words']++;
-    if(strpos($entry_role, 'chicken')       !== false) $role_count_list['chicken']++;
-    if(strpos($entry_role, 'rabbit')        !== false) $role_count_list['rabbit']++;
-    if(strpos($entry_role, 'perverseness' ) !== false) $role_count_list['perverseness']++;
+    foreach($GAME_CONF->sub_role_list as $key => $value){
+      if(strpos($entry_role, $key) !== false) $role_count_list[$key]++;
+    }
   }
 
   //それぞれの役割が何人ずつなのかシステムメッセージ

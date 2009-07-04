@@ -110,7 +110,8 @@ class GameConfig{
 			     'no_last_words' => '筆不精',
 			     'chicken'       => '小心者',
 			     'rabbit'        => 'ウサギ',
-			     'perverseness'  => '天邪鬼');
+			     'perverseness'  => '天邪鬼',
+			     'lovers'        => '恋人');
 
   //配役テーブル
   /* 設定の見方
@@ -122,7 +123,8 @@ class GameConfig{
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      // 5 => array('wolf' => 1, 'mage' => 3, 'poison' => 1), //複数占いテスト用
-     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1, 'cupid' => 1),
+     // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1, 'cupid' => 1),
+     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
      // 6 => array('wolf' => 2, 'necromancer' => 2, 'guard' => 2), //複数霊能＆狩人テスト用
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      // 7 => array('wolf' => 1, 'fox' => 2, 'child_fox' => 1, 'mage' => 2, 'soul_mage' => 1),
