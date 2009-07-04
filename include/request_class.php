@@ -1,8 +1,5 @@
 <?php
 class RequestBase{
-  var $log;
-  var $argc;
-
   function GetGameVariables(){
     $this->GetItems('get.room_no', 'get.auto_reload', 'get.dead_mode', 'get.heaven_mode', 'get.list_down', 'get.play_sound');
   }
@@ -31,6 +28,8 @@ class Say extends RequestBase{
   function Say(){
     $this->GetGameVariables();
     $this->GetItems('post.say', 'post.font_type');
+    #現在のサニタイジング仕様と適合しないため保留中。
+    #$this->say = htmlspecialchars($this->say, ENT_QUOTES);
   }
 }
 
@@ -44,7 +43,7 @@ class Objection extends RequestBase{
 class LogView extends RequestBase{
   function LogView(){
     if ($this->is_room = isset($_GET['room_no'])){
-      $this->GetItems('get.room_no', 'get.log_mode', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only');
+      $this->GetItems('get.room_no', 'get.log_mode', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only', 'get.debug');
     }
     else {
       $this->GetItems('get.page', 'get.reverse');

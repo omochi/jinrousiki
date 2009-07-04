@@ -1,15 +1,21 @@
 <?php
 require_once(dirname(__FILE__) . '/functions.php');
+require_once(dirname(__FILE__) . '/include/user_class.php');
+require_once(dirname(__FILE__) . '/include/talk_class.php');
 
 class GameFormat extends GameFormatBase {
   var $userTag_cache = array();
+  var $you = null
 
   function GameFormat(){
+    global $USERS, $uname;
+    $this->LoadUsers();
+    $you = empty($uname) ? 'watcher' : $USERS->ByUname[$uname];
   }
 
-  function LoadUsers($users){
-    $this->users = $users;
-    foreach ($this->users->rows as $user) {
+  function LoadUsers(){
+    global $USERS;
+    foreach ($USERS->rows as $user) {
       //ユーザー情報のキャッシュを作成します。
       $this->handle_cache[$user->uname] = $user->handle_name;
       $this->userTag_cache[$user->uname] = sprintf(
@@ -21,12 +27,15 @@ class GameFormat extends GameFormatBase {
     }
   }
 
-  function ExtractOptionalUserText($user){ return ''; }
+  function ExtractOptionalUserText($user){
+    return '';
+  }
   
   //ユーザー固有スタイルの指定
   function ExtractUserStyle(){
+    global $USERS;
     $style = '';
-    foreach($this->users->rows as $user){
+    foreach($USERS->rows as $user){
       $style.=".u{$user->user_no}:first-letter { color:{$user->color}; } ";
     }
     return $style;
@@ -83,6 +92,7 @@ class GameFormat extends GameFormatBase {
   
     OutputHTMLHeader($title, 'game');
     echo '<link rel="stylesheet" href="css/game_' . $day_night . '.css">'."\n";
+    printf("<style>\n%s\n</style>", $this->ExtractUserStyle());
     if($log_mode != 'on'){ //過去ログ閲覧時は不要
       echo '<script type="text/javascript" src="javascript/change_css.js"></script>'."\n";
       $on_load  = "change_css('$day_night');";
@@ -97,7 +107,7 @@ class GameFormat extends GameFormatBase {
        $heaven_mode != 'on' && $log_mode != 'on'){
       list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
       $on_load .= 'output_realtime();';
-      OutputRealTimer($start_time, $end_time);
+      $this->OutputRealTimer($start_time, $end_time);
     }
     echo '</head>'."\n";
     echo '<body onLoad="' . $on_load . '">'."\n";
@@ -130,7 +140,7 @@ class GameFormat extends GameFormatBase {
   
   //日付と生存者の人数を出力
   function OutputTimeTable(){
-    global $USERS, $room_no, $date;
+    global $USERS, $date;
   
     //出力条件をチェック
     if($date < 1) return false;
@@ -141,15 +151,19 @@ class GameFormat extends GameFormatBase {
   			AND live = 'live' AND user_no > 0");
     $count = mysql_result($sql, 0, 0);
     */
-    foreach($USERS->
+    $count = 0;
+    foreach($USERS->rows as $user){
+      if ($user->IsLiving()) $count++;
+    }
     echo '<td>' . $date . ' 日目<span>(生存者' . $count . '人)</span></td>'."\n";
   }
   
   //プレイヤー一覧出力
   function OutputPlayerList(){
+    global $USERS, $GAME_CONF, $day_night, $live, $game_option;
     echo '<table id="players"><tr>';
     $col = 0;
-    foreach ($this->users->rows as $user) {
+    foreach ($USERS->rows as $user) {
       //ユーザーテーブルのセルを生成します。
       //頻用するメンバ変数のロード
       $this_uname = $user->uname;
@@ -166,7 +180,7 @@ class GameFormat extends GameFormatBase {
       if($day_night == 'aftergame' || ($live == 'dead' && ! strstr($game_option, 'not_open_cast'))){
         $user_details = "<li>({$this_uname})</li>$role_list";
         foreach($user->roles as $role){
-          $user_details.="<li class=\"role $role\">[".User::GetRoleName($role).']</li>';
+          $user_details.="<li class=\"role $role\">[".$GAME_CONF->GetRoleName($role).']</li>';
         }
       }
       if($day_night == 'beforegame'){ //ゲーム前
@@ -277,7 +291,7 @@ EOF;
   
     //音を鳴らす
     if($play_sound == 'on' && $view_mode != 'on' && $last_vote_times > $cookie_vote_times)
-      OutputSound($SOUND->revote);
+      $this->OutputSound($SOUND->revote);
   
     $this_vote_times = $last_vote_times + 1;
     $sql = mysql_query("SELECT COUNT(uname) FROM vote WHERE room_no = $room_no AND date = $date
@@ -288,7 +302,7 @@ EOF;
       echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
         $MESSAGE->draw_announce . ')</div><br>';
     }
-    OutputVoteListDay($date);
+    $this->OutputVoteListDay($date);
   }
   
   //音を鳴らす
@@ -308,51 +322,65 @@ EOF;
   
   //会話ログ出力
   function OutputTalkLog(){
-    global $MESSAGE, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
+    global $room_no, $date, $day_night;
   
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-  			user_entry.handle_name AS talk_handle_name,
-  			user_entry.sex AS talk_sex,
-  			user_icon.color AS talk_color,
+    $sql = mysql_unbuffered_query("SELECT talk.uname AS talk_uname,
   			talk.sentence AS sentence,
   			talk.font_type AS font_type,
   			talk.location AS location
-  			FROM user_entry,talk,user_icon
+  			FROM talk
   			WHERE talk.room_no = $room_no
   			AND talk.location LIKE '$day_night%'
   			AND talk.date = $date
-  			AND ((user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-  			AND user_entry.icon_no = user_icon.icon_no)
-  			OR (user_entry.room_no = 0 AND talk.uname = 'system'
-  			AND user_entry.icon_no = user_icon.icon_no))
   			ORDER BY time DESC");
-    $count = mysql_num_rows($sql);
   
-    echo '<table class="talk">'."\n";
-    for($i=0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql)); //会話出力
-    echo '</table>'."\n";
+    echo '<dl class="talk">'."\n";
+    while (($say = mysql_fetch_assoc($sql))) $this->OutputTalk($say); //会話出力
+    echo '</dl>'."\n";
   }
   
   //会話出力
   function OutputTalk($array){
-    global $MESSAGE, $game_option, $status, $day_night, $uname, $live, $role;
-  
-    $talk_uname       = $array['talk_uname'];
-    $talk_handle_name = $array['talk_handle_name'];
-    $talk_sex         = $array['talk_sex'];
-    $talk_color       = $array['talk_color'];
-    $sentence         = $array['sentence'];
-    $font_type        = $array['font_type'];
-    $location         = $array['location'];
-  
+    global $MESSAGE, $USERS, $game_option, $status, $day_night, $uname, $live, $role;
+    /*
+    extract($array);
+    $player = $USERS[$talk_uname];
     LineToBR(&$sentence); //改行コードを <br> に変換
+    */
   
-    if(strstr($location, 'system') && $sentence == 'OBJECTION'){ //異議あり
+    #if(strstr($location, 'system') && $sentence == 'OBJECTION'){ //異議あり
+    $say->ParseParameters();
+    $sentence = $say->ParseSentence();
+    if ($say->is_system){
+      switch ($say->action){
+      case 'objection':
+        $system_class .= ' objection-'.$say->player->sex;
+        break;
+      case 'vote_do':
+      case 'guard_do':
+      case 'mage_do':
+      case 'cupid_do':
+      case 'wolf_eat':
+        if ($live == 'live')
+          return; //生存中は表示しない。
+        break;
+      }
+      echo <<<EOF
+<dt class="system_message"></dt>
+<dl class="system_message$system_class">$sentence</dl>
+EOF;
+    }
+    else {
+
+    }
+    if ($say->action == 'objection'){
+      /*
       echo '<tr class="system-message">'."\n";
-      echo '<td class="objection-' . $talk_sex . '" colspan="2">' .
+      echo '<td class="objection-' . $player->sex . '" colspan="2">' .
         $talk_handle_name . ' ' . $MESSAGE->objection . '</td>'."\n";
       echo '</tr>'."\n";
+      */
     }
     elseif(strstr($location, 'system') && $sentence == 'GAMESTART_DO'){ //ゲーム開始投票
       /*
@@ -578,7 +606,7 @@ EOF;
   </tr></table>
   <table class="lastwords">
   
-  EOF;
+EOF;
   
     for($i=0; $i < $count; $i++){
       $result = mysql_result($sql, $i, 0);
@@ -628,7 +656,7 @@ EOF;
     $count = mysql_num_rows($sql); //死亡者の人数
     for($i=0; $i < $count; $i++){
       $array = mysql_fetch_assoc($sql);
-      OutputDeadManType($array['message'], $array['type']); //死者のハンドルネームとタイプ
+      $this->OutputDeadManType($array['message'], $array['type']); //死者のハンドルネームとタイプ
     }
   
     //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
@@ -640,7 +668,7 @@ EOF;
     $count = mysql_num_rows($sql); //死亡者の人数
     for($i=0 ; $i < $count ;$i++){
       $array = mysql_fetch_assoc($sql);
-      OutputDeadManType($array['message'], $array['type']);
+      $this->OutputDeadManType($array['message'], $array['type']);
     }
   }
   
@@ -806,6 +834,10 @@ EOF;
       }
     }
   }
+<<<<<<< .mine
+}
+?>
+=======
   
   //リアルタイムの経過時間
   function GetRealPassTime(&$left_time, $flag = false){
@@ -1044,4 +1076,4 @@ EOF;
         break;
       }
   }
-  ?>
+?>

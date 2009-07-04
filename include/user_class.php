@@ -1,14 +1,24 @@
 <?php
 class User{
+  function ParseCompoundParameters(){
+    $this->ParseRoles();
+  }
   function IsLiving(){
     return $this->live == 'live';
   }
   function Kill(){
     $this->live = 'dead';
+    $this->updated[] = 'live';
   }
-  function ParseCompoundParameters(){
+  function ParseRoles(){
     $this->roles = explode(' ', $this->role);
   }
+<<<<<<< .mine
+  function AddRole($role){
+    $this->role .= " $role";
+    $this->updated[] = 'role';
+    $this->ParseRoles();
+=======
   //役職名の翻訳。一ユーザーあたり複数の役職が当たる可能性が高いため、この関数はオブジェクトメソッドではなく静的関数として扱っている。
   function GetRoleName($role, $short = false){
     static $role_names = array(
@@ -46,6 +56,25 @@ class User{
       'copied'=>'神'
     );
     return $short ? $short_role_names[$role] : $role_names[$role];
+>>>>>>> .r59
+  }
+  function RemoveRole($role){
+/* このメソッドは橋姫実装時のために予約されています。
+    //スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
+    //本来はParseRole側でpreg_split()などを使用するべきですが、役職が減る状況の方が少ないため、削除側で調節するものとします。(2009-07-05 enogu)
+    $this->role = str_replace('  ', ' ', str_replace($role, '', $this->role));
+    $this->updated[] = 'role';
+    $this->ParseRoles();
+*/
+  }
+  function Save(){
+    if (isset($this->updated){
+      foreach($this->updated as $item){
+        $update_list[] = "$item = '{$this->item}'"
+      }
+      $update = implode(', ', $update_list)
+      mysql_query("UPDATE user_entry SET $update WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'");
+    }
   }
 }
 
@@ -62,6 +91,7 @@ class Users {
   function Load(){
     $result = mysql_query(
       "SELECT
+        users.room_no,
       	users.user_no,
       	users.uname,
       	users.handle_name,
@@ -70,7 +100,7 @@ class Users {
 	users.role,
 	users.live,
 	users.last_load_day_night,
-	users.last_words,
+        users.ip_address = '' AS is_system,
       	icons.icon_filename,
       	icons.color,
       	icons.icon_width,
@@ -86,6 +116,12 @@ class Users {
       $user->ParseCompoundParameters();
       $this->rows[$user->user_no] = $user;
       $this->names[$user->uname] = $user->user_no;
+    }
+  }
+
+  function Save(){
+    foreach ($this->rows as $user){
+      $user->save();
     }
   }
 
@@ -133,7 +169,7 @@ class Users {
 
 
 //グローバルオブジェクトと操作関数
-$USERS = new Users($room_no);
+$USERS =& new Users($room_no);
 
 function GetNumber($user){
   return is_integer($user) ? $user : $USERS->UnameToNumber($user);

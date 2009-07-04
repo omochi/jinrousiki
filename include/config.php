@@ -173,6 +173,47 @@ class GameConfig{
   //-- 自動更新 --//
   var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
   var $auto_reload_list = array(30, 45, 60); //自動更新モードの更新間隔(秒)のリスト
+  
+  //-- 役職名の翻訳 --//
+  function GetRoleName($role, $short = false){
+    if (!$short){
+      return $this->main_role_list[$role] || $this->sub_role_list[$role];
+    }
+    else {
+      static $short_role_names = array('human'        => '村',
+				       'wolf'         => '狼',
+				       'boss_wolf'    => '白狼',
+				       'mage'         => '占',
+				       'soul_mage'    => '魂',
+				       'necromancer'  => '霊',
+				       'medium'       => '巫',
+				       'mad'          => '狂',
+				       'fanatic_mad'  => '狂信',
+				       'guard'        => '狩',
+				       'poison_guard' => '騎',
+				       'common'       => '共',
+				       'fox'          => '狐',
+				       'child_fox'    => '子狐',
+				       'poison'       => '毒'
+				       'suspect'      => '不審',
+				       'cupid'        => 'QP',
+				       'quiz'         => 'GM'
+				       'decide'        => '決',
+				       'authority'     => '権',
+				       'plague'        => '疫',
+				       'watcher'       => '傍',
+				       'strong_voice'  => '大',
+				       'normal_voice'  => '不',
+				       'weak_voice'    => '小',
+				       'no_last_words' => '不精',
+				       'chicken'       => '酉',
+				       'rabbit'        => '卯',
+				       'perverseness'  => '邪',
+				       'lovers'        => '恋',
+				       );
+      return $short_role_list[$role];
+    }
+  }
 }
 
 //ゲームの時間設定
