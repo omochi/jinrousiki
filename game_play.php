@@ -328,13 +328,13 @@ function CheckSilence(){
 			OR situation = 'GUARD_DO' OR situation = 'CUPID_DO' OR situation = 'MANIA_DO')");
 
 	//投票していない人を取得 (役職のみ)
-+	$query .= " AND (user_entry.role LIKE '%wolf%' OR user_entry.role LIKE '%mage%'";
-+	if ($date == 1) {
-+	  $query .= " OR user_entry.role LIKE 'cupid%' OR user_entry.role LIKE 'mania%')";
-+	}
-+	else {
-+	  $query .= " OR user_entry.role LIKE 'guard%')";
-+	}
+	$query .= " AND (user_entry.role LIKE '%wolf%' OR user_entry.role LIKE '%mage%'";
+	if ($date == 1) {
+	  $query .= " OR user_entry.role LIKE 'cupid%' OR user_entry.role LIKE 'mania%')";
+	}
+	else {
+	  $query .= " OR user_entry.role LIKE 'guard%')";
+	}
 	$sql_novote = mysql_query($query);
       }
 
@@ -803,16 +803,6 @@ function OutputAbility(){
     // OutputRoleComment('mania');
     echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます（仕様は変更される可能性があります） <br>'."\n";
 
-    //コピー結果を表示
-    $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
-			AND type = 'MANIA_RESULT'");
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($mania, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), 'MANIA_RESULT');
-      if($handle_name != $mania) continue; //自分の結果のみ表示
-      $result_role = 'result_' . $target_role;
-      OutputAbilityResult(NULL, $target, $result_role);
-    }
     if($day_night == 'night'){ //夜のコピー投票
       $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no
 				AND uname = '$uname' AND situation = 'MANIA_DO'");
@@ -850,6 +840,19 @@ function OutputAbility(){
     OutputPartner($sql, 'lovers_header', 'lovers_footer');
   }
 
+  if(strpos($role, 'copied') !== false) {
+    // OutputRoleComment('copied');
+    //コピー結果を表示
+    $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+			AND type = 'MANIA_RESULT'");
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($mania, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), 'MANIA_RESULT');
+      if($handle_name != $mania) continue; //自分の結果のみ表示
+      $result_role = 'result_' . $target_role;
+      OutputAbilityResult(NULL, $target, $result_role);
+    }
+  }
   //声固定系
   if(strpos($role, 'strong_voice')      !== false) OutputRoleComment('strong_voice');
   elseif(strpos($role, 'normal_voice')  !== false) OutputRoleComment('normal_voice');

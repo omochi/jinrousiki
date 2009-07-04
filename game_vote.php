@@ -1082,17 +1082,14 @@ function CheckVoteNight(){
     $mania_target_role   = $array['role'];
     $mania_target_live   = $array['live'];
 
-    echo $mania_role;
     // 役職コピー処理：神話マニアを指定した場合は村人にする
     $mania_result = GetMainRole($mania_target_role);
-    echo $mania_result;
     if ($mania_result == 'mania') $mania_result = 'human';
-    $mania_role = str_replace('mania', $mania_result, $mania_role);
-    echo $mania_role;
+    $mania_role = str_replace('mania', $mania_result, $mania_role) . ' copied';
     mysql_query("UPDATE user_entry SET role = '$mania_role' WHERE room_no = $room_no
 		 AND uname = '$mania_uname' AND user_no > 0");
 
-    $sentence = $mage_handle . "\t" . $mage_target_handle . "\t" . $mage_result;
+    $sentence = $mania_handle . "\t" . $mania_target_handle . "\t" . $mania_result;
     InsertSystemMessage($sentence, 'MANIA_RESULT');
   }
 

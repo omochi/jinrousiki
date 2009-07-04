@@ -216,6 +216,8 @@ function OutputPlayerList(){
       //¤³¤³¤«¤é·óÇ¤Ìò¿¦
       if(strpos($this_role, 'lovers') !== false)
 	$role_str .= MakeRoleName('lovers', '', true);
+      if(strpos($this_role, 'copied') !== false)
+	$role_str .= MakeRoleName('copied', 'mania', true);
 
       if(strpos($this_role, 'authority') !== false)
 	$role_str .= MakeRoleName('authority', '', true);

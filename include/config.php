@@ -112,7 +112,8 @@ class GameConfig{
 			     'chicken'       => '小心者',
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
-			     'lovers'        => '恋人');
+			     'lovers'        => '恋人',
+			     'copied'        => '元神話マニア',);
 
   //配役テーブル
   /* 設定の見方
@@ -121,6 +122,7 @@ class GameConfig{
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     // 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mania' => 1), // 神話マニアテスト用
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      // 5 => array('wolf' => 1, 'mage' => 3, 'poison' => 1), //複数占いテスト用
