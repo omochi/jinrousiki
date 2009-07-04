@@ -100,7 +100,7 @@ class GameConfig{
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
-  var $sub_role_list = array('decite'        => '決定者',
+  var $sub_role_list = array('decide'        => '決定者',
 			     'authority'     => '権力者',
 			     'plague'        => '疫病神',
 			     'watcher'       => '傍観者',
