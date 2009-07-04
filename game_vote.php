@@ -509,7 +509,7 @@ function CheckVoteDay(){
   if($vote_count != $user_count) return false;  //全員が投票していなければ処理スキップ
 
   $max_voted_number = 0; //最多得票数
-  $handle_list = array(); //ユーザ名とハンドルネームの対応表
+  $uname_to_handle_list = array(); //ユーザ名とハンドルネームの対応表
   $role_list   = array(); //ユーザ名と役職の対応表
   $live_list   = array(); //生きている人のユーザ名リスト
   $vote_target_list = array(); //投票リスト (ユーザ名 => 投票先ハンドルネーム)
@@ -553,8 +553,9 @@ function CheckVoteDay(){
     //最大得票数を更新
     if($this_voted_number > $max_voted_number) $max_voted_number = $this_voted_number;
 
+    //echo "($this_handle, $this_role, $this_vote_target, $this_voted_number)<br>\n";
     //リストにデータを追加
-    $handle_list[$this_uname] = $this_handle;
+    $uname_to_handle_list[$this_uname] = $this_handle;
     $role_list[$this_uname]   = $this_role;
     $vote_target_list[$this_uname] = $this_vote_target;
     $vote_count_list[$this_uname]  = $this_voted_number;
@@ -566,7 +567,7 @@ function CheckVoteDay(){
   }
 
   //ハンドルネーム => ユーザ名 の配列を生成
-  $uname_list = array_flip($handle_list);
+  $handle_to_uname_list = array_flip($uname_to_handle_list);
 
   //最大得票数を集めた人の数を取得
   $voted_member_list = array_count_values($vote_count_list); //得票数 => 人数 の配列を生成
@@ -579,12 +580,12 @@ function CheckVoteDay(){
   if($max_voted_member == 1) //一人だけなら処刑者決定
     $vote_kill_target = $max_voted_uname_list[0];
   else{ //複数いた場合、サブ役職をチェックする
-    $decide_uname = $uname_list[$decide_target]; //決定者の投票先ユーザ名
+    $decide_uname = $handle_to_uname_list[$decide_target]; //決定者の投票先ユーザ名
     if(in_array($decide_uname, $max_voted_uname_list)) //最多投票者に投票していれば処刑者決定
       $vote_kill_target = $decide_uname;
     elseif(count($max_voted_uname_list) < 3){ //疫病神は一人しか出現しない
       //疫病神の投票先を決定者候補から除いて一人になれば処刑者決定
-      $plague_uname = $uname_list[$plague_target]; //疫病神の投票先ユーザ名
+      $plague_uname = $handle_to_uname_list[$plague_target]; //疫病神の投票先ユーザ名
       $max_voted_uname_list = array_diff($max_voted_uname_list, array($plague_uname));
       if($max_voted_member == 1) $vote_kill_target = $max_voted_uname_list[0];
     }
@@ -592,7 +593,7 @@ function CheckVoteDay(){
 
   if($vote_kill_target != ''){ //処刑処理実行
     //ユーザ情報を取得
-    $target_handle = $handle_list[$vote_kill_target];
+    $target_handle = $uname_to_handle_list[$vote_kill_target];
     $target_role   = $role_list[$vote_kill_target];
 
     //処刑処理
@@ -609,7 +610,7 @@ function CheckVoteDay(){
       $array = array_diff($live_list, array($vote_kill_target));
       $rand_key = array_rand($array, 1);
       $poison_target_uname  = $array[$rand_key];
-      $poison_target_handle = $handle_list[$poison_target_uname];
+      $poison_target_handle = $uname_to_handle_list[$poison_target_uname];
       $poison_target_role   = $role_list[$poison_target_uname];
 
       KillUser($poison_target_uname); //死亡処理
@@ -640,9 +641,12 @@ function CheckVoteDay(){
 
   //特殊サブ役職の突然死処理
   //投票者対象ハンドルネーム => 人数 の配列を生成
+  //echo "sub<br>\n"; print_r($vote_target_list); echo "<br>\n";
+  //print_r($role_list); echo "<br>\n";
   $voted_target_member_list = array_count_values($vote_target_list);
-  foreach($uname_list as $this_uname => $this_handle){
+  foreach($uname_to_handle_list as $this_uname => $this_handle){
     $this_role = $role_list[$this_uname];
+    //echo "$this_uname, $this_handle, $this_role, $voted_target_member_list[$this_handle]<br>\n";
     if($voted_target_member_list[$this_handle] > 0){ //投票されていたら小心者はショック死
       if(strpos($this_role, 'chicken') !== false)
 	SuddenDeath($this_uname, $this_handle, $this_role, 'CHICKEN');
