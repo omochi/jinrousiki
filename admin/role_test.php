@@ -9,7 +9,7 @@ echo <<<EOF
 <form method="POST" action="role_test.php">
 <input type="hidden" name="command" value="role_test">
 <label>人数</label><input type="text" name="user_count" size="3" value="20">
-<label>試行回数</label><input type="text" name="try_count" size="2" value="20">
+<label>試行回数</label><input type="text" name="try_count" size="2" value="100">
 <input type="submit" value=" 実 行 "></form>
 </form>
 

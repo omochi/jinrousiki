@@ -606,8 +606,8 @@ function CheckVoteDay(){
       $array = array_diff($live_list, array($vote_kill_target));
       $rand_key = array_rand($array, 1);
       $poison_target_uname  = $array[$rand_key];
-      $poison_target_handle = $handle_list[$target_uname];
-      $poison_target_role   = $role_list[$target_uname];
+      $poison_target_handle = $handle_list[$poison_target_uname];
+      $poison_target_role   = $role_list[$poison_target_uname];
 
       KillUser($poison_target_uname); //死亡処理
       InsertSystemMessage($poison_target_handle, 'POISON_DEAD_day'); //システムメッセージ

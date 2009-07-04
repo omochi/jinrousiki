@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__) . '/../include/functions.php');
 
 EncodePostData();
+$CSS_PATH = '../css'; //CSSのパスをセット
 
 //変数をセット
 $post = array('name'     => $_POST['name'],
@@ -120,7 +121,7 @@ else{
 // 関数 //
 //結果出力
 function OutputUploadResult($body){
-  OutputHTMLHeader('ファイルアップロード処理', 'src', '../css');
+  OutputHTMLHeader('ファイルアップロード処理', 'src');
   echo '</head><body>'."\n" . $body . '<br><br>'."\n" .
     '<a href="index.php">←戻る</a>'."\n";
   OutputHTMLFooter(true);

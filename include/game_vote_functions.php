@@ -63,6 +63,8 @@ function GetRoleList($user_count, $option_role){
   elseif(strpos($game_option, 'chaos') !== false){ //闇鍋
     if(strpos($game_option, 'chaosfull') !== false){ //真・闇鍋
       //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
+      $role_list = array(); //配列をリセット
+
       //人狼陣営
       $rand = mt_rand(1, 100); //人数決定用乱数
       if($user_count < 8){ //1:2 = 80:20
@@ -135,6 +137,8 @@ function GetRoleList($user_count, $option_role){
       $wolf_count   = $role_list['wolf'] + $role_list['boss_wolf'];
       $fox_count    = $role_list['fox'] + $role_list['child_fox'];
       $lovers_count = $role_list['cupid'];
+
+      $role_list = array(); //配列をリセット
     }
     //村人陣営の人数を算出
     $human_count = $user_count - $wolf_count - $fox_count - $lovers_count;
@@ -269,7 +273,7 @@ function GetRoleList($user_count, $option_role){
     }
 
     //狂人系の配役を決定
-    if($human_count > 0 && $human_count >= $mad_count){
+    if($mad_count > 0 && $human_count >= $mad_count){
       if($user_count < 16){ //全人口が16人未満の場合は狂信者は出現しない
 	$role_list['mad'] = $mad_count;
 	$role_list['fanatic_mad'] = 0;
@@ -300,7 +304,7 @@ function GetRoleList($user_count, $option_role){
     }
 
     //狩人系の配役を決定
-    if($human_count > 0 && $human_count >= $guard_count){
+    if($guard_count > 0 && $human_count >= $guard_count){
       if($user_count < 20){ //全人口が20人未満の場合は騎士は出現しない
 	$role_list['guard'] = $guard_count;
 	$role_list['poison_guard'] = 0;
@@ -416,11 +420,9 @@ function GetRoleList($user_count, $option_role){
   }
   $role_count = count($now_role_list);
 
-  $diff = $user_count- $role_count;
-  for($i = 0; $i < $diff; $i++) array_push($now_role_list, 'human');
-  $role_count = count($now_role_list);
-
   if($role_count != $user_count){ //配列長をチェック
+    // echo 'エラー：配役数：' . $role_count;
+    // return $now_role_list;
     OutputVoteResult($error_header . '村人 (' . $user_count . ') と配役の数 (' . $role_count .
                      ') が一致していません' . $error_footer, true, true);
   }
