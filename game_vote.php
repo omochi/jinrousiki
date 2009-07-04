@@ -882,7 +882,7 @@ function CheckVoteNight(){
 
   //狼と狩人・ブン屋は同時に処理
   //共通クエリ
-  $query_vote_header = "SELECT vote.target_uname, user_entry.uname user_entry.handle_name
+  $query_vote_header = "SELECT vote.target_uname, user_entry.uname, user_entry.handle_name
 				FROM vote, user_entry
 				WHERE vote.room_no = $room_no AND user_entry.room_no = $room_no
 				AND vote.date = $date AND vote.situation = '";
