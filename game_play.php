@@ -325,11 +325,16 @@ function CheckSilence(){
 	mysql_query("CREATE TEMPORARY TABLE tmp_sd SELECT uname FROM vote
 			WHERE room_no = $room_no AND date = $date
 			AND (situation = 'WOLF_EAT' OR situation = 'MAGE_DO'
-			OR situation = 'GUARD_DO' OR situation = 'CUPID_DO')");
+			OR situation = 'GUARD_DO' OR situation = 'CUPID_DO' OR situation = 'MANIA_DO')");
 
 	//投票していない人を取得 (役職のみ)
-	$query .= " AND (user_entry.role LIKE '%wolf%' OR user_entry.role LIKE '%mage%' ".
-	  " OR  user_entry.role LIKE '" . ($date == 1 ? 'cupid' : 'guard') . "%')";
++	$query .= " AND (user_entry.role LIKE '%wolf%' OR user_entry.role LIKE '%mage%'";
++	if ($date == 1) {
++	  $query .= " OR user_entry.role LIKE 'cupid%' OR user_entry.role LIKE 'mania%')";
++	}
++	else {
++	  $query .= " OR user_entry.role LIKE 'guard%')";
++	}
 	$sql_novote = mysql_query($query);
       }
 
@@ -792,6 +797,27 @@ function OutputAbility(){
 				AND situation = 'CUPID_DO'");
       if(mysql_num_rows($sql) == 0)
 	echo '<span class="ability-cupid-do">' . $MESSAGE->ability_cupid_do . '</span><br>'."\n";
+    }
+  }
+  elseif(strpos($role, 'mania') !== false){
+    // OutputRoleComment('mania');
+    echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます（仕様は変更される可能性があります） <br>'."\n";
+
+    //コピー結果を表示
+    $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+			AND type = 'MANIA_RESULT'");
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($mania, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), 'MANIA_RESULT');
+      if($handle_name != $mania) continue; //自分の結果のみ表示
+      $result_role = 'result_' . $target_role;
+      OutputAbilityResult(NULL, $target, $result_role);
+    }
+    if($day_night == 'night'){ //夜のコピー投票
+      $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no
+				AND uname = '$uname' AND situation = 'MANIA_DO'");
+      if(mysql_num_rows($sql) == 0)
+	echo '<span class="ability-mania-do">' . $MESSAGE->ability_mania_do . '</span><br>'."\n";
     }
   }
   elseif(strpos($role, 'quiz') !== false){

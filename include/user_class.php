@@ -24,6 +24,8 @@ class User{
       'authority'=>'権力者',
       'decide'=>'決定者',
       'poison'=>'埋毒者'
+      'cupid'=>'キューピッド',
+      'mania'=>'神話マニア'
     );
     static $short_role_names = array(
       'human'=>'村', 
@@ -38,6 +40,8 @@ class User{
       'authority'=>'権',
       'decide'=>'決',
       'poison'=>'毒'
+      'cupid'=>'Ｑ',
+      'mania'=>'神'
     );
     return $short ? $short_role_names[$role] : $role_names[$role];
   }

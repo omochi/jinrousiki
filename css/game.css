@@ -141,6 +141,7 @@
 .mage-do{         background-color: #990099;} /* 占い師 */
 .guard-do{        background-color: #0099FF;} /* 狩人 */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */
+.mania-do{        background-color: #00CC00;} /* 神話マニア */
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;
   padding-left: 6em;
@@ -295,6 +296,13 @@
 .ability-cupid-do{ /* 狩人の投票 */
   padding: 0 3em;
   background-color: #FF66CC;
+  color: #FFFAFA;
+  font-size: 14pt;
+  font-weight:bold;
+}
+.ability-mania-do{ /* 神話マニアの投票 */
+  padding: 0 3em;
+  background-color: #00CC00;
   color: #FFFAFA;
   font-size: 14pt;
   font-weight:bold;

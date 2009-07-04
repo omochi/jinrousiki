@@ -210,6 +210,7 @@ function OutputPlayerList(){
       elseif(strpos($this_role, 'poison')       !== false) $role_str = MakeRoleName('poison');
       elseif(strpos($this_role, 'suspect')      !== false) $role_str = MakeRoleName('suspect', 'human');
       elseif(strpos($this_role, 'cupid')        !== false) $role_str = MakeRoleName('cupid');
+      elseif(strpos($this_role, 'mania')        !== false) $role_str = MakeRoleName('mania');
       elseif(strpos($this_role, 'quiz')         !== false) $role_str = MakeRoleName('quiz');
 
       //ここから兼任役職
@@ -458,8 +459,9 @@ function OutputTalk($array){
   $flag_mage   = (strpos($sentence, 'MAGE_DO')  === 0);
   $flag_guard  = (strpos($sentence, 'GUARD_DO') === 0);
   $flag_cupid  = (strpos($sentence, 'CUPID_DO') === 0);
+  $flag_mania  = (strpos($sentence, 'MANIA_DO') === 0);
   $flag_system = ($location_system && ($flag_vote  || $flag_wolf || $flag_mage ||
-				       $flag_guard || $flag_cupid));
+				       $flag_guard || $flag_cupid || $flag_mania));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     echo '<tr class="system-message">'."\n";
@@ -603,6 +605,12 @@ function OutputTalk($array){
       echo '<tr class="system-message">'."\n";
       echo '<td class="cupid-do" colspan="2">' . $talk_handle_name . ' は ' .
 	$target_handle_name . ' ' . $MESSAGE->cupid_do . '</td>'."\n";
+    }
+    elseif($location_system && $flag_mania){ //神話マニアの投票
+      $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
+      echo '<tr class="system-message">'."\n";
+      echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
+	$target_handle_name . ' ' . $MESSAGE->mania_do . '</td>'."\n";
     }
     else{ //その他の全てを表示(死者の場合)
       $base_class = 'user-talk';
@@ -924,7 +932,7 @@ function OutputAbilityAction(){
   $yesterday = $date - 1;
   $result = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
 			 AND date = $yesterday AND ( type = 'MAGE_DO' OR type = 'WOLF_EAT'
-			 OR type = 'GUARD_DO' OR type = 'CUPID_DO')");
+			 OR type = 'GUARD_DO' OR type = 'CUPID_DO' OR type = 'MANIA_DO')");
   $count = mysql_num_rows($result);
   $header = '<strong>前日の夜、';
   $footer = 'ました</strong><br>'."\n";
@@ -950,6 +958,10 @@ function OutputAbilityAction(){
 
       case 'CUPID_DO':
 	echo $header . 'キューピッド ' . $handle_name . ' は ' . $target_name . 'に愛の矢を放ち' . $footer;
+	break;
+
+      case 'MANIA_DO':
+	echo $header . '神話マニア ' . $handle_name . ' は ' . $target_name . 'を真似' . $footer;
 	break;
     }
   }
@@ -1209,12 +1221,14 @@ function ParseStrings($str, $type = NULL){
     case 'MAGE_DO':
     case 'GUARD_DO':
     case 'CUPID_DO':
+    case 'MANIA_DO':
       sscanf($str, "{$type}\t%s", &$target);
       DecodeSpace(&$target);
       return $target;
       break;
 
     case 'MAGE_RESULT':
+    case 'MANIA_RESULT':
       sscanf($str, "%s\t%s\t%s", &$first, &$second, &$third);
       DecodeSpace(&$first);
       DecodeSpace(&$second);

@@ -373,7 +373,7 @@ EOF;
     elseif($live == 'live' && strstr($location, 'system') &&
   	 (strstr($sentence, 'VOTE_DO') || strstr($sentence, 'GUARD_DO') ||
   	  strstr($sentence, 'MAGE_DO') || strstr($sentence, 'WOLF_EAT') ||
-  	  strstr($sentence, 'CUPID_DO'))){
+  	  strstr($sentence, 'CUPID_DO') || strstr($sentence, 'MANIA_DO'))){
     }
     elseif($talk_uname == 'system'){ //システムメッセージ
       echo '<tr>'."\n";
@@ -478,6 +478,12 @@ EOF;
         echo '<td class="cupid-do" colspan="2">' . $talk_handle_name . ' は ' .
   	$target_handle_name . ' ' . $MESSAGE->cupid_do . '</td>'."\n";
       }
+      elseif(strstr($location, 'system') && strstr($sentence, 'MANIA_DO')){ //神話マニアの投票
+        $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
+        echo '<tr class="system-message">'."\n";
+        echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
+  	$target_handle_name . ' ' . $MESSAGE->mania_do . '</td>'."\n";
+      }
       else{ //その他の全てを表示(死者の場合)
         $base_class = 'user-talk';
         $talk_class = 'user-name';
@@ -541,7 +547,7 @@ EOF;
   	      (strstr($location, 'system') &&
   	       (strstr($sentence, 'VOTE_DO') || strstr($sentence, 'WOLF_EAT') ||
   		strstr($sentence, 'MAGE_DO') || strstr($sentence, 'GUARD_DO') ||
-  		strstr($sentence, 'CUPID_DO'))))){
+  		strstr($sentence, 'CUPID_DO') || strstr($sentence, 'MANIA_DO'))))){
         echo '<tr class="user-talk">'."\n";
         echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
   	$talk_handle_name . '</td>'."\n";
@@ -766,7 +772,7 @@ EOF;
     $yesterday = $date - 1;
     $result = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
   			 AND date = $yesterday AND ( type = 'MAGE_DO' OR type = 'WOLF_EAT'
-  			 OR type = 'GUARD_DO' OR type = 'CUPID_DO')");
+  			 OR type = 'GUARD_DO' OR type = 'CUPID_DO' OR type = 'MANIA_DO')");
     $count = mysql_num_rows($result);
     $header = '<strong>前日の夜、';
     $footer = 'ました</strong><br>'."\n";
@@ -793,6 +799,10 @@ EOF;
         case 'CUPID_DO':
   	echo $header . 'キューピッド ' . $handle_name . ' は ' . $target_name . 'に愛の矢を放ち' . $footer;
   	break;
+
+      case 'MANIA_DO':
+	echo $header . '神話マニア ' . $handle_name . ' は ' . $target_name . 'を真似' . $footer;
+	break;
       }
     }
   }
@@ -1000,12 +1010,14 @@ EOF;
       case 'MAGE_DO':
       case 'GUARD_DO':
       case 'CUPID_DO':
+      case 'MANIA_DO':
         sscanf($str, "{$type}\t%s", &$target);
         DecodeSpace(&$target);
         return $target;
         break;
   
       case 'MAGE_RESULT':
+      case 'MANIA_RESULT':
         sscanf($str, "%s\t%s\t%s", &$first, &$second, &$third);
         DecodeSpace(&$first);
         DecodeSpace(&$second);

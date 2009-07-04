@@ -96,6 +96,7 @@ class GameConfig{
 			      'poison'       => '埋毒者',
 			      'suspect'      => '不審者',
 			      'cupid'        => 'キューピッド',
+			      'mania'        => '神話マニア',
 			      'quiz'         => 'GM');
 
   //サブ役職のリスト (コード名 => 表示名)

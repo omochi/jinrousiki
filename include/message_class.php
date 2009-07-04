@@ -68,6 +68,7 @@ class Message{
   var $mage_do  = 'を占います';           //占い師の投票
   var $guard_do = 'の護衛に付きました';   //狩人の投票
   var $cupid_do = 'に愛の矢を放ちました'; //キューピッドの投票
+  var $mania_do = 'の能力を真似ることにしました'; //神話マニアの投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -102,6 +103,7 @@ class Message{
   var $ability_guard_do = '護衛する人を選択してください';   //狩人の投票
   var $ability_reporter_do = '尾行する人を選択してください';  //ブン屋の投票
   var $ability_cupid_do = '結びつける二人を選んでください'; //キューピッドの投票
+  var $ability_mania_do = '能力を真似る人を選択してください';//神話マニアの投票
 
   //-- game_play.php --//
   //CheckSilence()
@@ -138,5 +140,6 @@ class Message{
   var $submit_guard_do = '対象を護衛する'; //狩人の投票ボタン
   var $submit_reporter_do = '対象を尾行する'; //ブン屋の投票ボタン
   var $submit_cupid_do = '対象に愛の矢を放つ'; //キューピッドの投票ボタン
+  var $submit_mania_do =    '対象を真似る';	     //狩人の投票ボタン
 }
 ?>

@@ -707,6 +707,10 @@ function VoteNight(){
       if(strpos($role, 'cupid') === false) OutputVoteResult('夜：キューピッド以外は投票できません');
       break;
 
+    case 'MANIA_DO':
+      if(strpos($role, 'mania') === false) OutputVoteResult('夜：神話マニア以外は投票できません');
+      break;
+
     default:
       OutputVoteResult('夜：あなたは投票できません');
       break;
@@ -823,7 +827,7 @@ function CheckVoteNight(){
     $date, $day_night, $vote_times, $user_no, $uname, $handle_name, $target_no;
 
   if(! ($situation == 'WOLF_EAT' || $situation == 'MAGE_DO' || $situation == 'GUARD_DO' ||
-	$situation == 'REPORTER_DO' || $situation == 'CUPID_DO')){
+	$situation == 'REPORTER_DO' || $situation == 'CUPID_DO' || $situation == 'MANIA_DO')){
     OutputVoteResult('夜：投票エラー');
   }
 
@@ -855,7 +859,8 @@ function CheckVoteNight(){
   $guard_count    = 0;
   $reporter_count = 0;
   $cupid_count    = 0;
-  if($date == 1){ //初日のみキューピッドの投票チェック
+  $mania_count    = 0;
+  if($date == 1){ //初日のみキューピッド・神話マニアの投票チェック
     $sql = mysql_query($query_vote . "'CUPID_DO'");
     $vote_count = mysql_result($sql, 0, 0);
 
@@ -863,6 +868,22 @@ function CheckVoteNight(){
     $sql = mysql_query($query_role . "'cupid%'");
     $cupid_count = mysql_result($sql, 0, 0);
     if($vote_count != $cupid_count) return false;
+    
+    $sql = mysql_query($query_vote . "'MANIA_DO'");
+    $vote_count = mysql_result($sql, 0, 0);
+
+    //生きている神話マニアの数を取得
+    $sql = mysql_query($query_role . "'mania%'");
+    $mania_count = mysql_result($sql, 0, 0);
+
+    // 暫定処理。占い師の処理とまとめたい
+    if($date == 1 && strpos($game_option, 'dummy_boy') !== false){
+      //初日、身代わり君の役割が神話マニアの場合は数に入れない
+      $sql = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
+			  AND uname = 'dummy_boy' AND user_no > 0");
+      if(strpos(mysql_result($sql, 0, 0), 'mania') !== false) $mania_count--;
+    }
+    if($vote_count != $mania_count) return false;
   }
   else{ //初日以外の狩人・ブン屋の投票チェック
     $sql = mysql_query($query_vote . "'GUARD_DO'");
@@ -984,13 +1005,15 @@ function CheckVoteNight(){
       LoversFollowed($wolf_target_role); //食べられた人が恋人の場合
   }
 
-  //占い師のユーザ名、ハンドルネームと、占い師の生存、占い師が占ったユーザ名取得
-  $sql_mage = mysql_query("SELECT user_entry.uname, user_entry.handle_name, user_entry.role,
+  // その他の能力者の投票処理
+  $query_action_header = "SELECT user_entry.uname, user_entry.handle_name, user_entry.role,
 				user_entry.live, vote.target_uname FROM vote, user_entry
 				WHERE vote.room_no = $room_no AND user_entry.room_no = $room_no
-				AND vote.date = $date AND vote.situation = 'MAGE_DO'
-				AND vote.uname = user_entry.uname AND user_entry.user_no > 0");
-
+				AND vote.date = $date AND vote.uname = user_entry.uname AND user_entry.user_no > 0
+				AND vote.situation = ";
+  //占い師のユーザ名、ハンドルネームと、占い師の生存、占い師が占ったユーザ名取得
+  $sql_mage = mysql_query($query_action_header . "'MAGE_DO'");
+ 
   //占い師の人数分、処理
   for($i = 0; $i < $mage_count; $i++){
     $array = mysql_fetch_assoc($sql_mage);
@@ -1034,6 +1057,43 @@ function CheckVoteNight(){
     }
     $sentence = $mage_handle . "\t" . $mage_target_handle . "\t" . $mage_result;
     InsertSystemMessage($sentence, 'MAGE_RESULT');
+  }
+
+  //神話マニアのユーザ名、ハンドルネームと、占い師の生存、占い師が占ったユーザ名取得
+  $sql_mania = mysql_query($query_action_header . "'MANIA_DO'");
+
+  //神話マニアの人数分、処理
+  for($i = 0; $i < $mania_count; $i++){
+    $array = mysql_fetch_assoc($sql_mania);
+    $mania_uname  = $array['uname'];
+    $mania_handle = $array['handle_name'];
+    $mania_role   = $array['role'];
+    $mania_live   = $array['live'];
+    $mania_target_uname = $array['target_uname'];
+
+    //直前に死んでいたらコピー無効
+    if($mania_live == 'dead') continue;
+
+    //神話マニアのターゲットとなった人のハンドルネームと生存、役割を取得
+    $sql = mysql_query("SELECT handle_name, role, live FROM user_entry WHERE room_no = $room_no
+			AND uname = '$mania_target_uname' AND user_no > 0");
+    $array = mysql_fetch_assoc($sql);
+    $mania_target_handle = $array['handle_name'];
+    $mania_target_role   = $array['role'];
+    $mania_target_live   = $array['live'];
+
+    echo $mania_role;
+    // 役職コピー処理：神話マニアを指定した場合は村人にする
+    $mania_result = GetMainRole($mania_target_role);
+    echo $mania_result;
+    if ($mania_result == 'mania') $mania_result = 'human';
+    $mania_role = str_replace('mania', $mania_result, $mania_role);
+    echo $mania_role;
+    mysql_query("UPDATE user_entry SET role = '$mania_role' WHERE room_no = $room_no
+		 AND uname = '$mania_uname' AND user_no > 0");
+
+    $sentence = $mage_handle . "\t" . $mage_target_handle . "\t" . $mage_result;
+    InsertSystemMessage($sentence, 'MANIA_RESULT');
   }
 
   //次の日にする
@@ -1223,6 +1283,10 @@ function OutputVoteNight(){
     if($date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('CUPID_DO');
   }
+  elseif($role_mania = (strpos($role, 'mania') !== false)){
+    if($date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    CheckAlreadyVote('MANIA_DO');
+  }
   else{
     OutputVoteResult('夜：あなたは投票できません');
   }
@@ -1329,6 +1393,10 @@ EOF;
     $type   = 'CUPID_DO';
     $submit = 'submit_cupid_do';
   }
+  elseif($role_mania){
+    $type   = 'MANIA_DO';
+    $submit = 'submit_mania_do';
+  }
 
   echo <<<EOF
 <input type="hidden" name="situation" value="{$type}">
@@ -1391,7 +1459,7 @@ function GetMainRole($target_role){
   //闇鍋用に 役職 => 出現率 と config に定義するのはどうかな？
   $role_list = array('human', 'boss_wolf', 'wolf', 'soul_mage', 'mage', 'necromancer',
 		     'medium', 'fanatic_mad', 'mad', 'poison_guard', 'guard', 'common',
-		     'child_fox', 'fox', 'poison', 'cupid', 'quiz');
+		     'child_fox', 'fox', 'poison', 'cupid', 'mania', 'quiz');
 
   foreach($role_list as $this_role){
     if(strpos($target_role, $this_role) !== false) return $this_role;
