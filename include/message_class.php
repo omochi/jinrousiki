@@ -100,6 +100,7 @@ class Message{
   var $ability_wolf_eat = '喰い殺す人を選択してください';   //狼の投票
   var $ability_mage_do  = '占う人を選択してください';       //占い師の投票
   var $ability_guard_do = '護衛する人を選択してください';   //狩人の投票
+  var $ability_reporter_do = '尾行する人を選択してください';  //ブン屋の投票
   var $ability_cupid_do = '結びつける二人を選んでください'; //キューピッドの投票
 
   //-- game_play.php --//
@@ -133,8 +134,9 @@ class Message{
 
   //OutputVoteNight()
   var $submit_wolf_eat = '対象を喰い殺す (先着)'; //狼の襲撃ボタン
-  var $submit_mage_do  = '対象を占う'; //占い師の投票ボタン
+  var $submit_mage_do = '対象を占う'; //占い師の投票ボタン
   var $submit_guard_do = '対象を護衛する'; //狩人の投票ボタン
+  var $submit_reporter_do = '対象を尾行する'; //ブン屋の投票ボタン
   var $submit_cupid_do = '対象に愛の矢を放つ'; //キューピッドの投票ボタン
 }
 ?>

@@ -131,10 +131,10 @@ function LineToBR(&$str){
 }
 
 //共通 HTML ヘッダ出力
-//$path は $CSS_PATH みたいなグローバル変数設定できると楽かな？
-function OutputHTMLHeader($title, $css = 'action', $path = 'css'){
-  global $ENCODE;
+function OutputHTMLHeader($title, $css = 'action'){
+  global $ENCODE, $CSS_PATH;
 
+  $path = ($CSS_PATH == '' ? 'css' : $CSS_PATH);
   echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>

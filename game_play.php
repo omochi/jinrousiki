@@ -755,6 +755,28 @@ function OutputAbility(){
       if($handle_name == mysql_result($sql, $i, 0)) OutputAbilityResult('fox_target', NULL);
     }
   }
+  elseif(strpos($role, 'reporter') !== false){
+    // OutputRoleComment('reporter');
+    echo '[役割]<br>　あなたは「ブン屋」です。スクープをものにできれば大活躍できますが、狼に気付かれると殺されてしまいます。 <br>'."\n";
+
+    //尾行結果を表示
+    $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+			AND date = $yesterday AND type = 'REPORTER_RESULT'");
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($reporter, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), 'REPORTER_RESULT');
+      if($handle_name != $reporter) continue; //自分の尾行結果のみ表示
+      $result_role = 'result_' . ($target_role == 'human' ? 'human' : 'wolf');
+      OutputAbilityResult('reporter_result', $target, $result_role);
+    }
+
+    if($day_night == 'night'){ //夜の尾行投票
+      $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no
+				AND uname = '$uname' AND situation = 'REPORTER_DO'");
+      if(mysql_num_rows($sql) == 0)
+	echo '<span class="ability-reporter-do">' . $MESSAGE->ability_reporter_do . '</span><br>'."\n";
+    }
+  }
   elseif(strpos($role, 'poison') !== false) OutputRoleComment('poison');
   elseif(strpos($role, 'cupid') !== false){
     OutputRoleComment('cupid');

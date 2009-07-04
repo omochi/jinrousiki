@@ -1,7 +1,8 @@
 <?php
 require_once(dirname(__FILE__) . '/../include/functions.php');
 
-OutputHTMLHeader('汝は人狼なりや？[初期設定]', 'action', '../css'); //HTMLヘッダ
+$CSS_PATH = '../css'; //CSS のパス
+OutputHTMLHeader('汝は人狼なりや？[初期設定]'); //HTMLヘッダ
 
 if(! ($dbHandle = ConnectDatabase(true, false))){ //DB 接続
   mysql_query("CREATE DATABASE $db_name DEFAULT CHARSET ujis");
