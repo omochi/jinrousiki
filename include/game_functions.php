@@ -1157,9 +1157,7 @@ function GetTalkPassTime(&$left_time, $flag = false){
   $left_time = $base_time - $spend_time;
   if($left_time < 0){ //マイナスになったらゼロにする
     $left_time = 0;
-    if(! $flag) return;
   }
-  if($flag == NULL) return;
 
   //仮想時間の計算
   $base_left_time = ($flag ? $TIME_CONF->silence_pass : $left_time);

@@ -273,8 +273,8 @@ function CheckSilence(){
   if(strpos($game_option, 'real_time') === false && $left_time > 0){
     if($last_updated_pass_time > $TIME_CONF->silence){
       $sentence = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      InsertTalk($date, "$day_night system", $system_time, 'system',
-		 $sentence, NULL, $TIME_CONF->$silence_pass);
+      InsertTalk($room_no, $date, "$day_night system", 'system', $system_time,
+		 $sentence, NULL, $TIME_CONF->silence_pass);
       UpdateTime();
     }
   }
