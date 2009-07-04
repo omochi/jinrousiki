@@ -686,7 +686,7 @@ function OutputAbility(){
     for($i = 0; $i < $count; $i++){
       list($target, $target_role) = ParseStrings(mysql_result($sql, $i, 0));
       $result_role = 'result_' . $target_role;
-      OutputAbilityResult('meduium_result', $target, $result_role);
+      OutputAbilityResult('medium_result', $target, $result_role);
     }
   }
   elseif(strpos($role, 'fanatic_mad') !== false){
