@@ -446,7 +446,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($array){
-  global $MESSAGE, $game_option, $status, $day_night, $uname, $live, $role;
+  global $MESSAGE, $game_option, $add_role, $status, $day_night, $uname, $live, $role;
 
   $talk_uname       = $array['talk_uname'];
   $talk_handle_name = $array['talk_handle_name'];
@@ -455,6 +455,9 @@ function OutputTalk($array){
   $sentence         = $array['sentence'];
   $font_type        = $array['font_type'];
   $location         = $array['location'];
+
+  if($add_role == 'on')
+    $talk_handle_name .= ' (' . $talk_uname . ') [' . GetMainRole($array['talk_role']) . '] ';
 
   LineToBR(&$sentence); //改行コードを <br> に変換
   $location_system = (strpos($location, 'system') !== false);
@@ -1178,6 +1181,22 @@ function GetTalkPassTime(&$left_time, $flag = false){
   //仮想時間の計算
   $base_left_time = ($flag ? $TIME_CONF->silence_pass : $left_time);
   return ConvertTime($full_time * $base_left_time * 60 * 60 / $base_time);
+}
+
+//基本役職を抜き出して返す
+function GetMainRole($target_role){
+  global $GAME_CONF;
+
+  //基本役職リスト (strpos() を使うので判定順に注意)
+  //闇鍋用に 役職 => 出現率 と config に定義するのはどうかな？
+  $role_list = array('human', 'boss_wolf', 'wolf', 'soul_mage', 'mage', 'necromancer',
+		     'medium', 'fanatic_mad', 'mad', 'poison_guard', 'guard', 'common',
+		     'child_fox', 'fox', 'poison', 'cupid', 'mania', 'quiz');
+
+  foreach($GAME_CONF->main_role_list as $this_role => $this_role_name){
+    if(strpos($target_role, $this_role) === 0) return $this_role_name;
+  }
+  return NULL;
 }
 
 //システムメッセージ挿入 (talk Table)

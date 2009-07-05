@@ -1472,18 +1472,4 @@ function SaveLastWords($target){
     InsertSystemMessage($target . "\t" . $last_words, 'LAST_WORDS');
   }
 }
-
-//基本役職を抜き出して返す
-function GetMainRole($target_role){
-  //基本役職リスト (strpos() を使うので判定順に注意)
-  //闇鍋用に 役職 => 出現率 と config に定義するのはどうかな？
-  $role_list = array('human', 'boss_wolf', 'wolf', 'soul_mage', 'mage', 'necromancer',
-		     'medium', 'fanatic_mad', 'mad', 'poison_guard', 'guard', 'common',
-		     'child_fox', 'fox', 'poison', 'cupid', 'mania', 'quiz');
-
-  foreach($role_list as $this_role){
-    if(strpos($target_role, $this_role) !== false) return $this_role;
-  }
-  return NULL;
-}
 ?>

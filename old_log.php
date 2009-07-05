@@ -5,6 +5,7 @@ $log_mode    = $_GET['log_mode'];
 $reverse_log = $_GET['reverse_log'];
 $heaven_talk = $_GET['heaven_talk'];
 $heaven_only = $_GET['heaven_only'];
+$add_role    = $_GET['add_role'];
 $page        = (int)$_GET['page'];
 
 $dbHandle = ConnectDatabase(); //DB 接続
@@ -25,7 +26,7 @@ OutputHTMLFooter();
 // 関数 //
 //過去ログ一覧表示
 function OutputFinishedRooms($page, $reverse = NULL){
-  global $ROOM_IMG, $VICTORY_IMG;
+  global $ROOM_IMG, $VICTORY_IMG, $add_role;
 
   //村数の確認
   $sql = mysql_query("SELECT COUNT(*) FROM room WHERE status = 'finished'");
@@ -207,9 +208,12 @@ EOF;
     $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
     $user_count = intval($log_room_num_user);
 
+    $base_url = "old_log.php?log_mode=on&room_no=$log_room_no";
+    if($add_role == 'on') $base_url .= '&add_role=on';
+
     /*
     if ($DEBUG_MODE){
-      $debug_anchor = "<a href=\"old_log.php?log_mode=on&room_no=$log_room_no&debug=on\" $dead_room_color >録</a>";
+      $debug_anchor = "<a href=\"$base_url&debug=on\" $dead_room_color >録</a>";
     }
      */
 
@@ -217,12 +221,12 @@ EOF;
 <tr>
 <td align=right valign=middle class=row>$log_room_no</td> 
 <td align=right valign=middle class=row> 
-<a href="old_log.php?log_mode=on&room_no=$log_room_no" $dead_room_color >$log_room_name 村</a>
-<small>(<a href="old_log.php?log_mode=on&room_no=$log_room_no&reverse_log=on" $dead_room_color >逆</a>
-<a href="old_log.php?log_mode=on&room_no=$log_room_no&heaven_talk=on" $dead_room_color >霊</a>
-<a href="old_log.php?log_mode=on&room_no=$log_room_no&reverse_log=on&heaven_talk=on" $dead_room_color >逆&amp;霊</a>
-<a href="old_log.php?log_mode=on&room_no=$log_room_no&heaven_only=on" $dead_room_color ><small>逝</small></a>
-<a href="old_log.php?log_mode=on&room_no=$log_room_no&reverse_log=on&heaven_only=on" $dead_room_color ><small>逆&amp;逝</small></a>
+<a href="$base_url" $dead_room_color >$log_room_name 村</a>
+<small>(<a href="$base_url&reverse_log=on" $dead_room_color >逆</a>
+<a href="$base_url&heaven_talk=on" $dead_room_color >霊</a>
+<a href="$base_url&reverse_log=on&heaven_talk=on" $dead_room_color >逆&amp;霊</a>
+<a href="$base_url&heaven_only=on" $dead_room_color ><small>逝</small></a>
+<a href="$base_url&reverse_log=on&heaven_only=on" $dead_room_color ><small>逆&amp;逝</small></a>
 $debug_anchor
 )</small></td> 
 <td align="right" valign="middle" class="row"><small>〜 $log_room_comment 〜</small></td> 
@@ -328,6 +332,7 @@ function OutputDateTalkLog($set_date, $set_location){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
 			user_entry.handle_name AS talk_handle_name,
+			user_entry.role AS talk_role,
 			user_entry.sex AS talk_sex,
 			user_icon.color AS talk_color,
 			talk.sentence AS sentence,
@@ -351,6 +356,7 @@ function OutputDateTalkLog($set_date, $set_location){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
 			user_entry.handle_name AS talk_handle_name,
+			user_entry.role AS talk_role,
 			user_entry.sex AS talk_sex,
 			user_icon.color AS talk_color,
 			talk.sentence AS sentence,
@@ -370,6 +376,7 @@ function OutputDateTalkLog($set_date, $set_location){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
 			user_entry.handle_name AS talk_handle_name,
+			user_entry.role AS talk_role,
 			user_entry.sex AS talk_sex,
 			user_icon.color AS talk_color,
 			talk.sentence AS sentence,

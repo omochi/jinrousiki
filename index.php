@@ -19,8 +19,8 @@
       <li><a href="script_info.php">特徴と仕様</a></li>
       <li><a href="rule.php">ゲームのルール</a></li>
       <li><a href="old_log.php">ログ閲覧</a></li>
+      <li><a href="old_log.php?add_role=on">役職表示ログ閲覧</a></li>
 <!-- さとり鯖用
-      <li><a href="old_log2.php">役職表示ログ閲覧</a></li>
       <li>★☆★☆★☆★</li>
       <li class="log">HTML化ログ</li>
       <li>さとり鯖V3ログ</li>
