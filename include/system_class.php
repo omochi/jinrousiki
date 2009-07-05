@@ -44,8 +44,9 @@ class RoleImage extends ImageManager{
   var $soul_mage          = 'img/role/soul_mage.jpg';          //∫≤§Œ¿Í§§ª’
   var $mage_result        = 'img/role/mage_result.jpg';        //¿Í§§∑Î≤Ã
   var $necromancer        = 'img/role/necromancer.jpg';        //ŒÓ«Ωº‘
-  var $medium             = 'img/role/medium.jpg';             //÷‡Ω˜
   var $necromancer_result = 'img/role/necromancer_result.jpg'; //ŒÓ«Ω∑Î≤Ã
+  var $medium             = 'img/role/medium.jpg';             //÷‡Ω˜
+  var $medium_result      = 'img/role/medium_result.jpg';      //÷‡Ω˜∑Î≤Ã
   var $mad                = 'img/role/mad.jpg';                //∂∏øÕ
   var $fanatic_mad        = 'img/role/fanatic_mad.jpg';        //∂∏øÆº‘
   var $guard              = 'img/role/guard.jpg';              //ºÌøÕ
@@ -53,6 +54,7 @@ class RoleImage extends ImageManager{
   var $guard_success      = 'img/role/guard_success.jpg';      //ºÌøÕ§Œ∏Ó±“¿Æ∏˘
   var $common             = 'img/role/common.jpg';             //∂¶Õ≠º‘
   var $common_partner     = 'img/role/common_partner.jpg';     //∂¶Õ≠º‘§Œ√Á¥÷
+  var $child_fox          = 'img/role/child_fox.jpg';          //ª“∏—
   var $fox                = 'img/role/fox.jpg';                //Õ≈∏—
   var $fox_partner        = 'img/role/fox_partner.jpg';        //Õ≈∏—§Œ√Á¥÷
   var $fox_target         = 'img/role/fox_targeted.jpg';       //Õ≈∏—§¨¡¿§Ô§Ï§ø

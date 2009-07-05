@@ -10,6 +10,10 @@ echo <<<EOF
 <input type="hidden" name="command" value="role_test">
 <label>人数</label><input type="text" name="user_count" size="3" value="20">
 <label>試行回数</label><input type="text" name="try_count" size="2" value="100">
+<input type="radio" name="game_option" value="chaos" checked>
+闇鍋
+<input type="radio" name="game_option" value="chaosfull">
+真・闇鍋
 <input type="submit" value=" 実 行 "></form>
 </form>
 
@@ -18,7 +22,7 @@ EOF;
 if($_POST['command'] == 'role_test'){
   $user_count = (int)$_POST['user_count'];
   $try_count  = (int)$_POST['try_count'];
-  $game_option = 'chaosfull';
+  $game_option = $_POST['game_option'];
   for($i = 1; $i <= $try_count; $i++){
     echo "$i 回目";
     $role_list = GetRoleList($user_count, '');

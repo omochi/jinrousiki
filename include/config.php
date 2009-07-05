@@ -176,7 +176,7 @@ class GameConfig{
 
   //-- 自動更新 --//
   var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
-  var $auto_reload_list = array(30, 45, 60); //自動更新モードの更新間隔(秒)のリスト
+  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //自動更新モードの更新間隔(秒)のリスト
 
   //-- 役職名の翻訳 --//
   function GetRoleName($role, $short = false){

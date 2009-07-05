@@ -63,11 +63,13 @@ SendCookie();
 
 //発言の有無をチェック
 EscapeStrings(&$say, false); //エスケープ処理
-if(strpos($role, 'liar') !== false){ //狼少年の発言内容を置換
-  $liar_replace_list = array('人' => '狼', '狼' => '人',
-			     '白' => '黒', '黒' => '白',
-			     '○' => '●', '●' => '○');
-  $say = strtr($say, $liar_replace_list);
+if($day_night == 'day' || $day_night == 'night'){
+  if(strpos($role, 'liar') !== false){ //狼少年の発言内容を置換
+    $liar_replace_list = array('人' => '狼', '狼' => '人',
+			       '白' => '黒', '黒' => '白',
+			       '○' => '●', '●' => '○');
+    $say = strtr($say, $liar_replace_list);
+  }
 }
 
 if($say != '' && $font_type == 'last_words' && $live == 'live')

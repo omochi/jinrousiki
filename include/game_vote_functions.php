@@ -61,86 +61,105 @@ function GetRoleList($user_count, $option_role){
     $temp_role_list['quiz'] = 1;
     $role_list = $temp_role_list;
   }
+  elseif(strpos($game_option, 'chaosfull') !== false){ //真・闇鍋
+    $role_list = array(); //配列をリセット
+    $role_list['wolf'] = 1; //狼1確保
+    $role_list['mage'] = 1; //占い師1確保
+    for($i = 2; $i < $user_count; $i++){
+      $rand = mt_rand(1, 100);
+      if($rand < 10)     $role_list['wolf']++;
+      elseif($rand < 15) $role_list['boss_wolf']++;
+      elseif($rand < 18) $role_list['fox']++;
+      elseif($rand < 20) $role_list['child_fox']++;
+      elseif($rand < 27) $role_list['human']++;
+      elseif($rand < 34) $role_list['mage']++;
+      elseif($rand < 37) $role_list['soul_mage']++;
+      elseif($rand < 47) $role_list['necromancer']++;
+      elseif($rand < 54) $role_list['medium']++;
+      elseif($rand < 60) $role_list['mad']++;
+      elseif($rand < 64) $role_list['fanatic_mad']++;
+      elseif($rand < 74) $role_list['common']++;
+      elseif($rand < 81) $role_list['guard']++;
+      elseif($rand < 84) $role_list['poison_guard']++;
+      elseif($rand < 88) $role_list['poison']++;
+      elseif($rand < 92) $role_list['suspect']++;
+      elseif($rand < 96) $role_list['cupid']++;
+      elseif($rand < 99) $role_list['mania']++;
+      else               $role_list['quiz']++;
+    }
+  }
   elseif(strpos($game_option, 'chaos') !== false){ //闇鍋
-    if(strpos($game_option, 'chaosfull') !== false){ //真・闇鍋
-      //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
-      $role_list = array(); //配列をリセット
+    //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
+    $role_list = array(); //配列をリセット
 
-      //人狼陣営
-      $rand = mt_rand(1, 100); //人数決定用乱数
-      if($user_count < 8){ //1:2 = 80:20
-	if($rand <= 80) $wolf_count = 1;
-	else $wolf_count = 2;
-      }
-      elseif($user_count < 16){ //1:2:3 = 15:70:15
-	if($rand <= 15) $wolf_count = 1;
-	elseif($rand <= 85) $wolf_count = 2;
-	else $wolf_count = 3;
-      }
-      elseif($user_count < 21){ //1:2:3:4:5 = 5:10:70:10:5
-	if($rand <= 5) $wolf_count = 1;
-	elseif($rand <= 15) $wolf_count = 2;
-	elseif($rand <= 85) $wolf_count = 3;
-	elseif($rand <= 95) $wolf_count = 4;
-	else $wolf_count = 5;
-      }
-      else{ //以後、5人増えるごとに 1人ずつ増加
-	$base_count = floor(($user_count - 20) / 5) + 3;
-	if($rand <= 5) $wolf_count = $base_count - 2;
-	elseif($rand <= 15) $wolf_count = $base_count - 1;
-	elseif($rand <= 85) $wolf_count = $base_count;
-	elseif($rand <= 95) $wolf_count = $base_count + 1;
-	else $wolf_count = $base_count + 2;
-      }
-
-      //妖狐陣営
-      $rand = mt_rand(1, 100); //人数決定用乱数
-      if($user_count < 15){ //0:1 = 90:10
-	if($rand <= 90) $fox_count = 0;
-	else $fox_count = 1;
-      }
-      elseif($user_count < 23){ //1:2 = 90:10
-	if($rand <= 90) $fox_count = 1;
-	else $fox_count = 2;
-      }
-      else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-	$base_count = ceil($user_count / 20);
-	if($rand <= 10) $fox_count = $base_count - 1;
-	elseif($rand <= 90) $fox_count = $base_count;
-	else $fox_count = $base_count + 1;
-      }
-
-      //恋人陣営 (実質キューピッド)
-      $rand = mt_rand(1, 100); //人数決定用乱数
-      if($user_count < 10){ //0:1 = 95:5
-	if($rand <= 95) $lovers_count = 0;
-	else $lovers_count = 1;
-      }
-      elseif($user_count < 16){ //0:1 = 70:30
-	if($rand <= 70) $lovers_count = 0;
-	else $lovers_count = 1;
-      }
-      elseif($user_count < 23){ //0:1:2 = 5:90:5
-	if($rand <= 5) $lovers_count = 0;
-	elseif($rand <= 95) $lovers_count = 1;
-	else $lovers_count = 2;
-      }
-      else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-	//基礎-1:基礎:基礎+1 = 5:90:5
-	$base_count = floor($user_count / 20);
-	if($rand <= 5) $lovers_count = $base_count - 1;
-	elseif($rand <= 95) $lovers_count = $base_count;
-	else $lovers_count = $base_count + 1;
-      }
-      $role_list['cupid'] = $lovers_count;
+    //人狼陣営
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 8){ //1:2 = 80:20
+      if($rand <= 80) $wolf_count = 1;
+      else $wolf_count = 2;
     }
-    else{ //通常闇鍋
-      $wolf_count   = $role_list['wolf'] + $role_list['boss_wolf'];
-      $fox_count    = $role_list['fox'] + $role_list['child_fox'];
-      $lovers_count = $role_list['cupid'];
-
-      $role_list = array(); //配列をリセット
+    elseif($user_count < 16){ //1:2:3 = 15:70:15
+      if($rand <= 15) $wolf_count = 1;
+      elseif($rand <= 85) $wolf_count = 2;
+      else $wolf_count = 3;
     }
+    elseif($user_count < 21){ //1:2:3:4:5 = 5:10:70:10:5
+      if($rand <= 5) $wolf_count = 1;
+      elseif($rand <= 15) $wolf_count = 2;
+      elseif($rand <= 85) $wolf_count = 3;
+      elseif($rand <= 95) $wolf_count = 4;
+      else $wolf_count = 5;
+    }
+    else{ //以後、5人増えるごとに 1人ずつ増加
+      $base_count = floor(($user_count - 20) / 5) + 3;
+      if($rand <= 5) $wolf_count = $base_count - 2;
+      elseif($rand <= 15) $wolf_count = $base_count - 1;
+      elseif($rand <= 85) $wolf_count = $base_count;
+      elseif($rand <= 95) $wolf_count = $base_count + 1;
+      else $wolf_count = $base_count + 2;
+    }
+
+    //妖狐陣営
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 15){ //0:1 = 90:10
+      if($rand <= 90) $fox_count = 0;
+      else $fox_count = 1;
+    }
+    elseif($user_count < 23){ //1:2 = 90:10
+      if($rand <= 90) $fox_count = 1;
+      else $fox_count = 2;
+    }
+    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
+      $base_count = ceil($user_count / 20);
+      if($rand <= 10) $fox_count = $base_count - 1;
+      elseif($rand <= 90) $fox_count = $base_count;
+      else $fox_count = $base_count + 1;
+    }
+
+    //恋人陣営 (実質キューピッド)
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 10){ //0:1 = 95:5
+      if($rand <= 95) $lovers_count = 0;
+      else $lovers_count = 1;
+    }
+    elseif($user_count < 16){ //0:1 = 70:30
+      if($rand <= 70) $lovers_count = 0;
+      else $lovers_count = 1;
+    }
+    elseif($user_count < 23){ //0:1:2 = 5:90:5
+      if($rand <= 5) $lovers_count = 0;
+      elseif($rand <= 95) $lovers_count = 1;
+      else $lovers_count = 2;
+    }
+    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
+      //基礎-1:基礎:基礎+1 = 5:90:5
+      $base_count = floor($user_count / 20);
+      if($rand <= 5) $lovers_count = $base_count - 1;
+      elseif($rand <= 95) $lovers_count = $base_count;
+      else $lovers_count = $base_count + 1;
+    }
+    $role_list['cupid'] = $lovers_count;
+
     //村人陣営の人数を算出
     $human_count = $user_count - $wolf_count - $fox_count - $lovers_count;
 
