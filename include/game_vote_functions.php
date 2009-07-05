@@ -32,11 +32,12 @@ function GetRoleList($user_count, $option_role){
     $role_list['wolf']++;
   }
 
-  //キューピッド (14人はハードコード / 村人 → キューピッド)
+  //キューピッド (14人はハードコード / 村人２ → キューピッド１、巫女１)
   if(strpos($option_role, 'cupid') !== false &&
      ($user_count == 14 || $user_count >= $GAME_CONF->cupid)){
-    $role_list['human']--;
+    $role_list['human'] -= 2;
     $role_list['cupid']++;
+    $role_list['medium']++;
   }
 
   //白狼 (人狼 → 白狼)

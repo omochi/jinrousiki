@@ -77,6 +77,9 @@ class GameConfig{
   var $draw = 3; //再投票何回目で引き分けとするか
 
   //-- 役職 --//
+ //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
+  var $wish_role_success = 100;
+
   //メイン役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
   var $main_role_list = array('human'        => '村人',
@@ -109,6 +112,7 @@ class GameConfig{
 			     'normal_voice'  => '不器用',
 			     'weak_voice'    => '小声',
 			     'no_last_words' => '筆不精',
+			     'liar'          => '狼少年',
 			     'chicken'       => '小心者',
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
@@ -173,7 +177,7 @@ class GameConfig{
   //-- 自動更新 --//
   var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
   var $auto_reload_list = array(30, 45, 60); //自動更新モードの更新間隔(秒)のリスト
-  
+
   //-- 役職名の翻訳 --//
   function GetRoleName($role, $short = false){
     if (!$short){
@@ -194,7 +198,7 @@ class GameConfig{
 				       'common'       => '共',
 				       'fox'          => '狐',
 				       'child_fox'    => '子狐',
-				       'poison'       => '毒'
+				       'poison'       => '毒',
 				       'suspect'      => '不審',
 				       'cupid'        => 'QP',
 				       'quiz'         => 'GM',
@@ -209,8 +213,7 @@ class GameConfig{
 				       'chicken'       => '酉',
 				       'rabbit'        => '卯',
 				       'perverseness'  => '邪',
-				       'lovers'        => '恋'
-				       );
+				       'lovers'        => '恋');
       return $short_role_list[$role];
     }
   }

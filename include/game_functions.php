@@ -243,6 +243,8 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('weak_voice', 'decide', true);
       elseif(strpos($this_role, 'no_last_words') !== false)
 	$role_str .= MakeRoleName('no_last_words', 'decide', true);
+      elseif(strpos($this_role, 'liar') !== false)
+	$role_str .= MakeRoleName('liar', 'decide', true);
 
       echo "<td>${img_tag}</td>"."\n";
       echo "<td><font color=\"$this_color\">¢¡</font>$this_handle<br>"."\n";

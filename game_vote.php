@@ -190,119 +190,136 @@ function CheckVoteGameStart(){
 
   //役職リストを取得
   $now_role_list = GetRoleList($user_count, $option_role);
+  shuffle($now_role_list); //配列をシャッフル
 
-  $uname_array    = array(); //役割の決定したユーザ名を格納する
-  $role_array     = array(); //ユーザ名に対応する役割
-  $re_uname_array = array(); //希望の役割になれなかったユーザ名を一時的に格納
+  $fix_uname_list    = array(); //役割の決定したユーザ名を格納する
+  $fix_role_list     = array(); //ユーザ名に対応する役割
+  $remain_uname_list = array(); //希望の役割になれなかったユーザ名を一時的に格納
 
   //フラグセット
   $quiz      = (strpos($game_option, 'quiz')      !== false);
   $chaos     = (strpos($game_option, 'chaos')     !== false); //chaosfull も含む
   $chaosfull = (strpos($game_option, 'chaosfull') !== false);
 
-  //ユーザリストをランダムに取得
-  //クイズ村対応 //同じ方法でゲルト君実装できそう
-  if($quiz){
-    array_push($uname_array, 'dummy_boy');
-    array_push($role_array, 'quiz');
-    $now_role_list = array_diff($now_role_list, $role_array);
+  //エラーメッセージ
+  $error_header = 'ゲームスタート[配役設定エラー]：';
+  $error_footer = '。<br>管理者に問い合わせて下さい。';
 
-    $sql_user_list = mysql_query("SELECT uname, role, MD5(RAND()*NOW()) AS MyRand FROM user_entry
-					WHERE room_no = $room_no AND uname <> 'dummy_boy'
-					AND user_no > 0 ORDER BY MyRand");
-  }
-  elseif($DEBUG_MODE){ //ゲルト君
-    array_push($uname_array, 'dummy_boy');
-    array_push($role_array, 'human'); //村人がいない場合はエラーになるので注意
-    $now_role_list = array_diff($now_role_list, $role_array);
+  //ユーザリストを取得
+  //身代わり君の役職を決定
+  if(strpos($game_option, 'dummy_boy') !== false){
+    if($quiz) array_push($fix_role_list, 'quiz'); //クイズ村
+    elseif(strpos($game_option, 'gerd') !== false){ //ゲルト君を仮実装
+      array_push($fix_role_list, 'human'); //村人がいない場合は配役がおかしくなるので注意
+    }
+    else{
+      foreach($now_role_list as $this_role){
+	if(! CheckRole($this_role)){ //身代わり君がなれる役職かチェック
+	  array_push($fix_role_list, $this_role);
+	  break;
+	}
+      }
+    }
+    if(count($fix_role_list) < 1){ //身代わり君に役が与えられているかチェック
+      OutputVoteResult($error_header . '身代わり君に役が与えられていません' .
+		       $error_footer, true, true);
+    }
+    array_push($fix_uname_list, 'dummy_boy'); //決定済みリストに身代わり君を追加
+    $now_role_list = array_diff($now_role_list, $fix_role_list); //身代わり君の役職をリストから除く
+    shuffle($now_role_list); //念のためもう一度配列をシャッフル
 
-    $sql_user_list = mysql_query("SELECT uname, role, MD5(RAND()*NOW()) AS MyRand FROM user_entry
-					WHERE room_no = $room_no AND uname <> 'dummy_boy'
-					AND user_no > 0 ORDER BY MyRand");
+    $sql_user_list = mysql_query("SELECT uname, role FROM user_entry WHERE room_no = $room_no
+					AND uname <> 'dummy_boy' AND user_no > 0 ORDER BY user_no");
   }
   else{
-    $sql_user_list = mysql_query("SELECT uname, role, MD5(RAND()*NOW()) AS MyRand FROM user_entry
-					WHERE room_no = $room_no AND user_no > 0 ORDER BY MyRand");
+    $sql_user_list = mysql_query("SELECT uname, role FROM user_entry WHERE room_no = $room_no
+					AND user_no > 0 ORDER BY user_no");
   }
 
-  for($i = 0; $i < $user_count; $i++){ //希望の役割を選別
-    $user_list_array = mysql_fetch_assoc($sql_user_list); //ランダムなユーザ情報を取得
+  //希望役職を参照して一次配役を行う
+  while(($user_list_array = mysql_fetch_assoc($sql_user_list)) !== false){
     $this_uname = $user_list_array['uname'];
+    $this_role  = array_shift($now_role_list); //配役リストから先頭を抜き出す
 
-    //役割希望制の場合、希望を取得
-    if(strpos($game_option, 'wish_role') !== false && ! $chaos)
-      $this_role = $user_list_array['role'];
-    else
-      $this_role = 'none';
-
-    if(($this_index = array_search($this_role, $now_role_list)) != false){ //希望どおり
-      array_push($uname_array, $this_uname);
-      array_push($role_array,  $this_role);
-
-      array_splice($now_role_list, $this_index, 1); //割り振った役割は削除する
+    //役割希望制の場合 (闇鍋は希望を無視)
+    if(strpos($game_option, 'wish_role') !== false && ! $chaos){
+      $this_wish_role = $user_list_array['role']; //希望役職を取得
+      $rand = mt_rand(1, 100); //成功判定用乱数
+      if($this_role == $this_wish_role && $rand <= $GAME_CONF->wish_role_success){ //希望通り
+	array_push($fix_uname_list, $this_uname);
+	array_push($fix_role_list,  $this_role);
+      }
+      else{ //決まらなかった場合は未決定リスト行き
+	array_push($remain_uname_list, $this_uname);
+	array_push($now_role_list,  $this_role); //配役リストの末尾に戻す
+      }
     }
-    else{ //希望の役割がない
-      array_push($re_uname_array, $this_uname);
+    else{ //それ以外はそのまま配役決定
+      array_push($fix_uname_list, $this_uname);
+      array_push($fix_role_list,  $this_role);
     }
   }
 
-  $re_count = count($re_uname_array); //役割が決まらなかった人の数
-  for($i = 0; $i < $re_count; $i++){ //余った役割を割り当てる
-    array_push($uname_array, $re_uname_array[$i]);
-    array_push($role_array,  $now_role_list[$i]);
+  //一次配役の結果を検証
+  $remain_uname_list_count = count($remain_uname_list); //未決定者の人数
+  $now_role_list_count = count($now_role_list); //残り配役数
+  if($remain_uname_list_count != $now_role_list_count){
+    OutputVoteResult($error_header . '配役未決定者の人数 (' . $remain_uname_list_count .
+		     ') と配役の数 (' . $now_role_list_count . ') が一致していません' .
+		     $error_footer, true, true);
+  }
+
+  //未決定者を二次配役
+  foreach($remain_uname_list as $this_uname){
+    array_push($fix_uname_list, $this_uname);
+    array_push($fix_role_list, array_shift($now_role_list));
+  }
+
+  //二次配役の結果を検証
+  $fix_uname_list_count = count($fix_uname_list); //決定者の人数
+  if($fix_uname_list_count != $user_count){
+    OutputVoteResult($error_header . '村人 (' . $user_count . ') と配役決定者の人数 (' .
+		     $fix_uname_list_count . ') が一致していません' .
+		     $error_footer, true, true);
+  }
+
+  $now_role_list_count = count($now_role_list); //残り配役数
+  if($now_role_list_count > 0){
+    OutputVoteResult($error_header . '配役リストに余り (' . $now_role_list_count .
+		     ') があります' . $error_footer, true, true);
   }
 
   //兼任となる役割の設定
-  $rand_keys = array_rand($role_array, $user_count); //ランダムキーを取得
+  $rand_keys = array_rand($fix_role_list, $user_count); //ランダムキーを取得
 
   //兼任となるオプション役割(決定者、権力者)
   $sub_role_index = 0;
   $sub_role_count_list = array();
+
+  // //サブ役職テスト用
+  // $fix_role_list[$rand_keys[$sub_role_index]] .= ' liar';
+  // $sub_role_index++;
+  // $sub_role_count_list['liar']++;
+
   if(strpos($option_role, 'decide') !== false && $user_count >= $GAME_CONF->decide){
-    $role_array[$rand_keys[$sub_role_index]] .= ' decide';
+    $fix_role_list[$rand_keys[$sub_role_index]] .= ' decide';
     $sub_role_index++;
     $sub_role_count_list['decide']++;
   }
   if(strpos($option_role, 'authority') !== false && $user_count >= $GAME_CONF->authority){
-    $role_array[$rand_keys[$sub_role_index]] .= ' authority';
+    $fix_role_list[$rand_keys[$sub_role_index]] .= ' authority';
     $sub_role_index++;
     $sub_role_count_list['authority']++;
   }
   if($chaos){
     foreach($GAME_CONF->sub_role_list as $key => $value){
       if($user_count < $sub_role_index) break;
-      if($key == 'decite' || $key == 'authority') continue; //決定者と権力者はオプションで制御する
-      if($key == 'lovers') continue; //恋人は現在は対象外
+      //ランダム割り振り対象外役職をスキップ
+      if($key == 'decide' || $key == 'authority' || $key == 'lovers' || $key == 'copied') continue;
       if((int)$sub_role_count_list[$key] > 0) continue; //既に誰かに渡していればスキップ
-      $role_array[$rand_keys[$sub_role_index]] .= ' ' . $key;
+      $fix_role_list[$rand_keys[$sub_role_index]] .= ' ' . $key;
       $sub_role_index++;
       $sub_role_count_list[$key]++;
-    }
-  }
-
-  //身代わり君使用の場合、身代わり君は狼、狐、埋毒者、キューピッド以外にする
-  if(strpos($game_option, 'dummy_boy') !== false){
-    $dummy_boy_index = array_search('dummy_boy', $uname_array); //身代わり君の配列インデックスを取得
-    if(CheckRole($role_array[$dummy_boy_index])){
-      for($i = 0; $i < $user_count; $i++){
-	//狼、狐、埋毒者、キューピッド以外が見つかったら入れ替える
-	if(! CheckRole($role_array[$i])){
-	  $tmp_role = $role_array[$dummy_boy_index];
-	  $role_array[$dummy_boy_index] = $role_array[$i];
-	  $role_array[$i] = $tmp_role;
-	  break;
-	}
-      }
-      if(CheckRole($role_array[$dummy_boy_index])){ //身代わり君の役職を再度チェック
-	if($chaosfull){ //真・闇鍋の時は強制入れ替え
-	  $role_array[$dummy_boy_index] = 'human';
-	}
-	else{
-	  OutputVoteResult('ゲームスタート[配役設定エラー]：' .
-			   '身代わり君が狼、狐、埋毒者、キューピッドのいずれかになっています。<br>' .
-			   '管理者に問い合わせて下さい。', true, true);
-	}
-      }
     }
   }
 
@@ -314,8 +331,8 @@ function CheckVoteGameStart(){
   //役割をDBに更新
   $role_count_list = array();
   for($i = 0; $i < $user_count; $i++){
-    $entry_uname = $uname_array[$i];
-    $entry_role  = $role_array[$i];
+    $entry_uname = $fix_uname_list[$i];
+    $entry_role  = $fix_role_list[$i];
     mysql_query("UPDATE user_entry SET role = '$entry_role' WHERE room_no = $room_no
 			AND uname = '$entry_uname' AND user_no > 0");
     $role_count_list[GetMainRole($entry_role)]++;

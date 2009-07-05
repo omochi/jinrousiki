@@ -63,6 +63,13 @@ SendCookie();
 
 //発言の有無をチェック
 EscapeStrings(&$say, false); //エスケープ処理
+if(strpos($role, 'liar') !== false){ //狼少年の発言内容を置換
+  $liar_replace_list = array('人' => '狼', '狼' => '人',
+			     '白' => '黒', '黒' => '白',
+			     '○' => '●', '●' => '○');
+  $say = strtr($say, $liar_replace_list);
+}
+
 if($say != '' && $font_type == 'last_words' && $live == 'live')
   EntryLastWords($say);  //生きていれば遺言登録
 elseif($say != '' && ($last_load_day_night == $day_night ||
@@ -820,18 +827,6 @@ function OutputAbility(){
   }
 
   //ここから兼任役職
-  //投票系
-  if(strpos($role, 'authority') !== false) OutputRoleComment('authority');
-  // elseif(strpos($role, 'decide') !== false) OutputRoleComment('decite'); //現在は決定者は通知しない仕様
-  elseif(strpos($role, 'watcher') !== false){
-    // OutputRoleComment('watcher');
-    echo 'あなたは「傍観者」です。投票には参加するふりだけをしてこの村の行く末を眺めましょう。';
-  }
-  elseif(strpos($role, 'plague') !== false){ //決定者同様分からないほうが面白いかな？
-    // OutputRoleComment('plague');
-    // echo 'あなたは「疫病神」です。あなたの投票は軽視されてしまいます。'
-  }
-
   if(strpos($role, 'lovers') !== false){
     //恋人を表示する
     $lovers_str = GetLoversConditionString($role);
@@ -853,13 +848,33 @@ function OutputAbility(){
       OutputAbilityResult(NULL, $target, $result_role);
     }
   }
-  //声固定系
+
+  //これ以降は真・闇鍋時は表示しない
+  if(strpos($game_option, 'chaosfull') !== false) return;
+
+  //投票系
+  if(strpos($role, 'authority') !== false) OutputRoleComment('authority');
+  // elseif(strpos($role, 'decide') !== false) OutputRoleComment('decite'); //現在は決定者は通知しない仕様
+  elseif(strpos($role, 'watcher') !== false){
+    // OutputRoleComment('watcher');
+    echo 'あなたは「傍観者」です。投票には参加するふりだけをしてこの村の行く末を眺めましょう。';
+  }
+  elseif(strpos($role, 'plague') !== false){ //決定者同様分からないほうが面白いかな？
+    // OutputRoleComment('plague');
+    // echo 'あなたは「疫病神」です。あなたの投票は軽視されてしまいます。'
+  }
+
+  //発言操作系
   if(strpos($role, 'strong_voice')      !== false) OutputRoleComment('strong_voice');
   elseif(strpos($role, 'normal_voice')  !== false) OutputRoleComment('normal_voice');
   elseif(strpos($role, 'weak_voice')    !== false) OutputRoleComment('weak_voice');
   elseif(strpos($role, 'no_last_words') !== false) OutputRoleComment('no_last_words');
+  elseif(strpos($role, 'liar') !== false){
+    // OutputRoleComment('liar');
+    echo 'あなたは「狼少年」です。人と狼をわざと取り違えて発言します。';
+  }
 
-  //投票系
+  //投票ショック死系
   if(strpos($role, 'chicken')          !== false) OutputRoleComment('chicken');
   elseif(strpos($role, 'rabbit')       !== false) OutputRoleComment('rabbit');
   elseif(strpos($role, 'perverseness') !== false) OutputRoleComment('perverseness');

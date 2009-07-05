@@ -257,12 +257,13 @@ function OutputRoomList(){
     if(strpos($game_option, 'chaosfull') !== false)
       AddImgTag(&$option_img_str, $ROOM_IMG->chaosfull, '真・闇鍋');
 
-    $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
+    // $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
+//<div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
 <img src="$status_img"><span>[{$room_no}番地]</span>{$room_name}村<br>
-<div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>
+<div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
 </a><br>
 
 EOF;
@@ -437,7 +438,8 @@ EOF;
 <td><label for="role_cupid">14人もしくは{$GAME_CONF->cupid}人以上で<br>　キューピッド登場：</label></td>
 <td class="explain">
 <input id="role_cupid" type="checkbox" name="option_role_cupid" value="cupid"{$checked}>
-(初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します)
+(初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します)<br>
+　　　(村人二人→キューピッド1 巫女1)
 </td>
 </tr>
 
