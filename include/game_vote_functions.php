@@ -388,6 +388,28 @@ function GetRoleList($user_count, $option_role){
       $human_count -= $suspect_count; //村人陣営の残り人数
     }
 
+    //神話マニアの人数を決定
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 16){ //16人未満では出現しない
+      $mania_count = 0;
+    }
+    elseif($user_count < 23){ //0:1 = 40:60
+      if($rand <= 40) $mania_count = 0;
+      else $mania_count = 1;
+    }
+    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
+      $base_count = floor($user_count / 20);
+      if($rand <= 10) $mania_count = $base_count - 1;
+      elseif($rand <= 90) $mania_count = $base_count;
+      else $mania_count = $base_count + 1;
+    }
+
+    //神話マニアの配役を決定
+    if($mania_count > 0 && $human_count >= $mania_count){
+      $role_list['mania'] = $mania_count;
+      $human_count -= $mania_count; //村人陣営の残り人数
+    }
+
     //出題者の人数を決定
     $rand = mt_rand(1, 100); //人数決定用乱数
     if($user_count < 30){ //0:1 = 99:1

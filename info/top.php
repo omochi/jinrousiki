@@ -25,7 +25,8 @@
   <li>追加機能 (1.4 系)</li>
   <ul>
     <li>クイズ村モードの実装 (画像以外はほぼ完成)</li>
-    <li>闇鍋モードの実装 (調整中) → <a href="info/chaos.php">闇鍋村について</a></li>
+    <li>闇鍋モードの実装 (調整中) → <a href="info/chaos.php">闇鍋村について</a><br>
+        Ver. 1.4.0 alpha11 よりゲームオプションが一部強制的にオフになります</li>
     <li>役職を大量に追加 → <a href="info/new_role.php">新役職について</a></li>
     <li>複数キューピッドの実装</li>
   </ul>

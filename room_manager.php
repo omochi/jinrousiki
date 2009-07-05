@@ -65,10 +65,11 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //ゲームオプションをセット
   $game_option = '';
-  $quiz = false;
-  if($ROOM_CONF->quiz && $_POST['game_option_quiz'] == 'quiz'){
+  $chaos     = ($ROOM_CONF->chaos     && $_POST['game_option_chaos'] == 'chaos');
+  $chaosfull = ($ROOM_CONF->chaosfull && $_POST['game_option_chaos'] == 'chaosfull');
+  $quiz      = ($ROOM_CONF->quiz      && $_POST['game_option_quiz']  == 'quiz');
+  if($quiz){
     $game_option .= 'quiz ';
-    $quiz = true;
 
     //GM ログインパスワードをチェック
     $quiz_password = $_POST['quiz_password'];
@@ -85,18 +86,16 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $dummy_boy_password    = $system_password;
   }
 
-  if($ROOM_CONF->wish_role && $_POST['game_option_wish_role'] == 'wish_role')
+  if($ROOM_CONF->wish_role && $_POST['game_option_wish_role'] == 'wish_role' && ! $chaos)
     $game_option .= 'wish_role ';
   if(($ROOM_CONF->dummy_boy && $_POST['game_option_dummy_boy'] == 'dummy_boy') || $quiz)
     $game_option .= 'dummy_boy ';
-  if($ROOM_CONF->open_vote && $_POST['game_option_open_vote'] == 'open_vote')
+  if($ROOM_CONF->open_vote && $_POST['game_option_open_vote'] == 'open_vote' && ! $chaosfull)
     $game_option .= 'open_vote ';
   if($ROOM_CONF->not_open_cast && $_POST['game_option_not_open_cast'] == 'not_open_cast')
     $game_option .= 'not_open_cast ';
-  if($ROOM_CONF->chaos && $_POST['game_option_chaos'] == 'chaos')
-    $game_option .= 'chaos ';
-  if($ROOM_CONF->chaosfull && $_POST['game_option_chaos'] == 'chaosfull')
-    $game_option .= 'chaosfull ';
+  if($chaos) $game_option .= 'chaos ';
+  if($chaosfull) $game_option .= 'chaosfull ';
   if($ROOM_CONF->real_time && $_POST['game_option_real_time'] == 'real_time'){
     $day   = $_POST['game_option_real_time_day'];
     $night = $_POST['game_option_real_time_night'];
