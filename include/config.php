@@ -113,7 +113,7 @@ class GameConfig{
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
 			     'lovers'        => '恋人',
-			     'copied'        => '元神話マニア',);
+			     'copied'        => '元神話マニア');
 
   //配役テーブル
   /* 設定の見方
@@ -197,7 +197,7 @@ class GameConfig{
 				       'poison'       => '毒'
 				       'suspect'      => '不審',
 				       'cupid'        => 'QP',
-				       'quiz'         => 'GM'
+				       'quiz'         => 'GM',
 				       'decide'        => '決',
 				       'authority'     => '権',
 				       'plague'        => '疫',
@@ -209,7 +209,7 @@ class GameConfig{
 				       'chicken'       => '酉',
 				       'rabbit'        => '卯',
 				       'perverseness'  => '邪',
-				       'lovers'        => '恋',
+				       'lovers'        => '恋'
 				       );
       return $short_role_list[$role];
     }
