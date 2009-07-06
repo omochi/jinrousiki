@@ -621,10 +621,19 @@ function CheckVoteDay(){
     //処刑された人が埋毒者の場合
     if(strpos($target_role, 'poison') !== false &&
        strpos($target_role, 'poison_guard') === false){ //騎士は対象外
-      //他の人からランダムに一人選ぶ
       //恋人後追い処理を先にすると後追いした恋人も含めてしまうので
       //改めて「現在の生存者」を DB に問い合わせるべきじゃないかな？
-      $array = array_diff($live_list, array($vote_kill_target));
+      //print_r($uname_to_handle_list); print_r($vote_target_list); print_r($vote_kill_target);
+      $array = array();
+      if ($GAME_CONF->poison_only_eater) {
+        //投票者の中から選ぶ
+        $array = array_keys($vote_target_list, $uname_to_handle_list[$vote_kill_target]);
+      } else {
+        //生存者の中から選ぶ
+        $array = array_diff($live_list, array($vote_kill_target));
+      }
+      //print_r($array);
+      //ランダムに一人選ぶ
       $rand_key = array_rand($array, 1);
       $poison_target_uname  = $array[$rand_key];
       $poison_target_handle = $uname_to_handle_list[$poison_target_uname];

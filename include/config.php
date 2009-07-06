@@ -159,7 +159,7 @@ class GameConfig{
   var $boss_wolf = 20;  //白狼出現に必要な人数
 
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-  // var $poison_only_voter = false; //まだ実装されていません
+  var $poison_only_voter = false;
 
   //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
   var $poison_only_eater = true;
