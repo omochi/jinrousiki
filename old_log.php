@@ -8,7 +8,7 @@ $reverse_log = $_GET['reverse_log'];
 $heaven_talk = $_GET['heaven_talk'];
 $heaven_only = $_GET['heaven_only'];
 $add_role    = $_GET['add_role'];
-$page        = (int)$_GET['page'];
+//$page        = (int)$_GET['page'];
 
 $dbHandle = ConnectDatabase(); //DB 接続
 
@@ -427,6 +427,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 			$select_order");
   }
   else{
+    $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? "" : "AND talk.location <> 'heaven'";
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT 
 			room_users.uname AS talk_uname,
@@ -449,6 +450,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 			AND talk.date = $set_date
 			AND talk.location <> 'aftergame'
 			AND talk.location <> 'beforegame'
+			$hide_heaven_query
 			$select_order");
   }
 
