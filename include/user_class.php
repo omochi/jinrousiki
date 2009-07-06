@@ -13,50 +13,10 @@ class User{
   function ParseRoles(){
     $this->roles = explode(' ', $this->role);
   }
-<<<<<<< .mine
   function AddRole($role){
     $this->role .= " $role";
     $this->updated[] = 'role';
     $this->ParseRoles();
-=======
-  //役職名の翻訳。一ユーザーあたり複数の役職が当たる可能性が高いため、この関数はオブジェクトメソッドではなく静的関数として扱っている。
-  function GetRoleName($role, $short = false){
-    static $role_names = array(
-      'human'=>'村人', 
-      'wolf'=>'人狼',
-      'mage'=>'占い師', 
-      'necromancer'=>'霊能者', 
-      'mad'=>'狂人', 
-      'guard'=>'狩人', 
-      'common'=>'共有者',
-      'fox'=>'妖狐',
-      'lovers'=>'恋人',
-      'authority'=>'権力者',
-      'decide'=>'決定者',
-      'poison'=>'埋毒者'
-      'cupid'=>'キューピッド',
-      'mania'=>'神話マニア'
-      'copied'=>'元神話マニア'
-    );
-    static $short_role_names = array(
-      'human'=>'村', 
-      'wolf'=>'狼',
-      'mage'=>'占', 
-      'necromancer'=>'霊', 
-      'mad'=>'狂', 
-      'guard'=>'狩', 
-      'common'=>'共',
-      'fox'=>'狐',
-      'lovers'=>'恋',
-      'authority'=>'権',
-      'decide'=>'決',
-      'poison'=>'毒'
-      'cupid'=>'Ｑ',
-      'mania'=>'神'
-      'copied'=>'神'
-    );
-    return $short ? $short_role_names[$role] : $role_names[$role];
->>>>>>> .r59
   }
   function RemoveRole($role){
 /* このメソッドは橋姫実装時のために予約されています。
@@ -112,6 +72,7 @@ class Users {
     if ($result === false) {
       return;
     }
+    $this->rows = array();
     while(($user = mysql_fetch_object($result, 'User')) !== false){
       $user->ParseCompoundParameters();
       $this->rows[$user->user_no] = $user;
@@ -163,7 +124,7 @@ class Users {
 	(SELECT MAX(user_no) + 1 FROM user_entry WHERE room_no = {$this->room_no}),
 	'$uname', '$password', '$handle_name', '$sex', '$profile', $icon_no, '$role'"
     );
-    Users::Load();
+    $USERS->Load();
   }
 }
 
