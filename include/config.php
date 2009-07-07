@@ -160,12 +160,8 @@ class GameConfig{
   var $boss_wolf = 20;  //白狼出現に必要な人数
 
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-<<<<<<< .mine
   // var $poison_only_voter = false; //1.3 系のデフォルト
   var $poison_only_voter = true;
-=======
-  var $poison_only_voter = false;
->>>>>>> .r69
 
   //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
   var $poison_only_eater = true;
@@ -186,9 +182,9 @@ class GameConfig{
 
   //-- 役職名の翻訳 --//
   function GetRoleName($role, $short = false){
-    if(! $short) return $this->main_role_list[$role] || $this->sub_role_list[$role];
+    if(! $short) return ($this->main_role_list[$role] || $this->sub_role_list[$role]);
 
-    static $short_role_names = array('human'         => '村',
+    static $short_role_list = array('human'         => '村',
 				     'wolf'          => '狼',
 				     'boss_wolf'     => '白狼',
 				     'poison_wolf'   => '毒狼',
@@ -221,6 +217,7 @@ class GameConfig{
 				     'chicken'       => '酉',
 				     'rabbit'        => '卯',
 				     'perverseness'  => '邪',
+				     'copied'        => '元マ',
 				     'lovers'        => '恋');
     return $short_role_list[$role];
   }

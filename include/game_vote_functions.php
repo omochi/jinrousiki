@@ -184,6 +184,12 @@ function GetRoleList($user_count, $option_role){
       }
       $boss_wolf_count = $special_wolf_count - $poison_wolf_count;
     }
+    //Ä´À°
+    if($wolf_count > 0){
+      $wolf_count--;
+      $poison_wolf_count++;
+    }
+
     $role_list['wolf'] = $wolf_count;
     $role_list['boss_wolf'] = $boss_wolf_count;
     $role_list['poison_wolf'] = $poison_wolf_count;

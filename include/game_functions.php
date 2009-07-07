@@ -32,7 +32,6 @@ function OutputGamePageHeader(){
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . $room_no . '&auto_reload=' . $auto_reload;
-  // if($day_night  != '') $url_header .= '&day_night='  . $day_night; //現在は不要のはず
   if($play_sound != '') $url_header .= '&play_sound=' . $play_sound;
   if($list_down  != '') $url_header .= '&list_down='  . $list_down;
 
@@ -49,7 +48,7 @@ function OutputGamePageHeader(){
       'if(top != self){ top.location.href = self.location.href; }'."\n" .
       '--></script>'."\n";
     $body .= '切り替わらないなら <a href="';
-    $body_footer = '"  target="_top">ここ</a>';
+    $body_footer = '" target="_top">ここ</a>';
   }
 
   //ゲーム中、死んで霊話モードに行くとき
@@ -121,8 +120,7 @@ function OutputAutoReloadLink($url){
 function OutputTimeTable(){
   global $room_no, $date;
 
-  //出力条件をチェック
-  if($date < 1) return false;
+  if($date < 1) return false; //ゲームが始まっていなければ表示しない
 
   //生存者の数を取得
   $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no
@@ -156,7 +154,7 @@ function OutputPlayerList(){
   $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
 
   echo '<div class="player"><table cellspacing="5"><tr>'."\n";
-  for($i=0; $i < $count; $i++){
+  for($i = 0; $i < $count; $i++){
     //5個ごとに段落改行
     if($i > 0 && ($i % 5) == 0) echo '</tr>'."\n".'<tr>'."\n";
 
@@ -174,12 +172,10 @@ function OutputPlayerList(){
 
     //アイコン
     $path = $ICON_CONF->path . '/' . $this_file;
-    $img_tag = '<img title="' . $profile_alt . '" alt="' . $profile_alt . '"' .
-      ' style="border-color: ' . $this_color . ';"';
-    if($this_live == 'live'){ //生きていればユーザアイコン
-      // $img_tag .= ' width="' . $this_width . '" height="' . $this_height . '"'; //サイズは固定
-      $this_live_str   = '(生存中)';
-    }
+    $img_tag = '<img title="' . $profile_alt . '" alt="' . $profile_alt .
+      '" style="border-color: ' . $this_color . ';"';
+    if($this_live == 'live') //生きていればユーザアイコン
+      $this_live_str = '(生存中)';
     else{ //死んでれば死亡アイコン
       $this_live_path = $path; //アイコンのパスを入れ替え
       $path           = $ICON_CONF->dead;
@@ -442,7 +438,7 @@ function OutputTalkLog(){
   $count = mysql_num_rows($sql);
 
   echo '<table class="talk">'."\n";
-  for($i=0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql)); //会話出力
+  for($i = 0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql)); //会話出力
   echo '</table>'."\n";
 }
 
@@ -458,8 +454,10 @@ function OutputTalk($array){
   $font_type        = $array['font_type'];
   $location         = $array['location'];
 
-  if($add_role == 'on')
-    $talk_handle_name .= ' (' . $talk_uname . ') [' . GetMainRole($array['talk_role']) . '] ';
+  if($add_role == 'on'){ //役職表示モード対応
+    $talk_handle_name .= '<span class="add-role"> [' . ParseRole($array['talk_role']) .
+      '] (' . $talk_uname . ')</span>';
+  }
 
   LineToBR(&$sentence); //改行コードを <br> に変換
   $location_system = (strpos($location, 'system') !== false);
@@ -513,18 +511,12 @@ function OutputTalk($array){
     }
     echo '</tr>'."\n";
   }
-  //身代わり君専用システムメッセージ (Ver. 1.4 系)
+  //身代わり君専用システムメッセージ
   elseif(strpos($location, 'dummy_boy') !== false){
     echo '<tr>'."\n";
     echo '<td class="system-user" colspan="2">' . $MESSAGE->dummy_boy . $sentence . '</td>'."\n";
     echo '</tr>'."\n";
   }
-  // //身代わり君はゲーム中はシステムメッセージ相当 (Ver. 1.3 系)
-  // elseif($talk_uname == 'dummy_boy' && ($day_night == 'day' || $day_night == 'night')){
-  //   echo '<tr>'."\n";
-  //   echo '<td class="system-user" colspan="2">' . $MESSAGE->dummy_boy . $sentence . '</td>'."\n";
-  //   echo '</tr>'."\n";
-  // }
   //開始前と終了後 || ゲーム中、生きている人の昼
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
 	 ($live == 'live' && $day_night == 'day' && $location == 'day')){
@@ -584,7 +576,7 @@ function OutputTalk($array){
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
   elseif($status == 'finished' || $uname == 'dummy_boy' ||
-	 ($live == 'dead' && ! strpos($game_option, 'not_open_cast') !== false)){
+	 ($live == 'dead' && strpos($game_option, 'not_open_cast') === false)){
     if($location_system && $flag_vote){ //処刑投票
       $target_handle_name = ParseStrings($sentence, 'VOTE_DO');
       echo '<tr class="system-message">'."\n";
@@ -625,32 +617,32 @@ function OutputTalk($array){
       $base_class = 'user-talk';
       $talk_class = 'user-name';
       switch($location){
-        case 'night self_talk':
-	  $talk_handle_name .= '<span>の独り言</span>';
-	  $talk_class .= ' night-self-talk';
-	  break;
+      case 'night self_talk':
+	$talk_handle_name .= '<span>の独り言</span>';
+	$talk_class .= ' night-self-talk';
+	break;
 
-	case 'night wolf':
-	  $talk_handle_name .= '<span>(人狼)</span>';
-	  $talk_class .= ' night-wolf';
-	  $font_type  .= ' night-wolf';
-	  break;
+      case 'night wolf':
+	$talk_handle_name .= '<span>(人狼)</span>';
+	$talk_class .= ' night-wolf';
+	$font_type  .= ' night-wolf';
+	break;
 
-	case 'night common':
-	  $talk_handle_name .= '<span>(共有者)</span>';
-	  $talk_class .= ' night-common';
-	  $font_type  .= ' night-common';
-	  break;
+      case 'night common':
+	$talk_handle_name .= '<span>(共有者)</span>';
+	$talk_class .= ' night-common';
+	$font_type  .= ' night-common';
+	break;
 
-	case 'night fox':
-	  $talk_handle_name .= '<span>(妖狐)</span>';
-	  $talk_class .= ' night-fox';
-	  $font_type  .= ' night-fox';
-	  break;
+      case 'night fox':
+	$talk_handle_name .= '<span>(妖狐)</span>';
+	$talk_class .= ' night-fox';
+	$font_type  .= ' night-fox';
+	break;
 
-	case 'heaven':
-	  $base_class .= ' heaven';
-	  break;
+      case 'heaven':
+	$base_class .= ' heaven';
+	break;
       }
       echo '<tr class="' . $base_class . '">'."\n";
       echo '<td class="' . $talk_class . '"><font color="' . $talk_color . '">◆</font>' .
@@ -694,10 +686,8 @@ function OutputTalk($array){
 	echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
 	echo '</tr>'."\n";
       }
-      else{
-	//狐以外なら表示しない
-      }
-    }elseif(! (($day_night == 'night' && $location == 'night self_talk') || $flag_system)){
+    }
+    elseif(! (($day_night == 'night' && $location == 'night self_talk') || $flag_system)){
       echo '<tr class="user-talk">'."\n";
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
 	$talk_handle_name . '</td>'."\n";
@@ -1187,17 +1177,44 @@ function GetTalkPassTime(&$left_time, $flag = false){
 
 //基本役職を抜き出して返す
 function GetMainRole($target_role){
-  //基本役職リスト (strpos() を使うので判定順に注意)
-  //闇鍋用に 役職 => 出現率 と config に定義するのはどうかな？
-  $role_list = array('human', 'boss_wolf', 'poison_wolf', 'wolf', 'soul_mage', 'mage',
-		     'necromancer', 'medium', 'fanatic_mad', 'mad', 'poison_guard', 'guard',
-		     'common', 'child_fox', 'fox', 'poison', 'pharmacist', 'cupid', 'suspect',
-		     'mania', 'quiz');
+  global $GAME_CONF;
 
-  foreach($role_list as $this_role){
-    if(strpos($target_role, $this_role) !== false) return $this_role;
+  foreach($GAME_CONF->main_role_list as $this_role => $this_name){
+    if(ereg("^{$this_role}([[:space:]]+[^[[:space:]]]*)?", $target_role)) return $this_name;
   }
   return NULL;
+}
+
+//役職をパースして省略名を返す
+function ParseRole($target_role){
+  global $GAME_CONF;
+
+  //メイン役職を取得
+  foreach($GAME_CONF->main_role_list as $this_role => $this_name){
+    if(ereg("^{$this_role}([[:space:]]+[^[[:space:]]]*)?", $target_role)){
+      $main_role = $this_role;
+      break;
+    }
+  }
+  $camp = DistinguishCamp($main_role);
+  $main_role_name = $GAME_CONF->GetRoleName($main_role, true);
+  if($camp != 'human')
+    $role_str = '<span class="' . $camp . '">' . $main_role_name . '</span>';
+  else
+    $role_str = $main_role_name;
+
+  //サブ役職を追加
+  foreach($GAME_CONF->sub_role_list as $this_role => $this_name){
+    if(strpos($target_role, $this_role) !== false){
+      $sub_role_name = $GAME_CONF->GetRoleName($this_role, true);
+      if($sub_role_name == '恋')
+	$role_str .= '<span class="lovers">' . $sub_role_name . '</span>';
+      else
+	$role_str .= $sub_role_name;
+    }
+  }
+
+  return $role_str;
 }
 
 //システムメッセージ挿入 (talk Table)

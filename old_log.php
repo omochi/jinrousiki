@@ -232,22 +232,22 @@ EOF;
 <a href="$base_url&heaven_only=on" $dead_room_color ><small>逝</small></a>
 <a href="$base_url&reverse_log=on&heaven_only=on" $dead_room_color ><small>逆&amp;逝</small></a>
 $debug_anchor
-)</small></td> 
-<td align="right" valign="middle" class="row"><small>〜 $log_room_comment 〜</small></td> 
-<td align="center" valign="middle" class="row"><img src="$str_max_users"></td> 
-<td align="center" valign="middle" class="row">$user_count</td> 
-<td align="center" valign="middle" class="row">$voctory_role_str</td> 
-<td valign="middle" width="16" class="row">$log_wish_role_str </td> 
-<td valign="middle" width="16" class="row">$log_real_time_str </td> 
-<td valign="middle" width="16" class="row">$log_dummy_boy_str </td> 
-<td valign="middle" width="16" class="row">$log_open_vote_str </td> 
-<td valign="middle" width="16" class="row">$log_not_open_cast_str </td> 
-<td valign="middle" width="16" class="row">$log_decide_str </td> 
-<td valign="middle" width="16" class="row">$log_authority_str </td> 
-<td valign="middle" width="16" class="row">$log_poison_str </td> 
-<td valign="middle" width="16" class="row">$log_cupid_str </td> 
-<td valign="middle" width="16" class="row">$log_quiz_str </td> 
-<td valign="middle" width="16" class="row">$log_chaos_str </td> 
+)</small></td>
+<td align="right" valign="middle" class="row"><small>〜 $log_room_comment 〜</small></td>
+<td align="center" valign="middle" class="row"><img src="$str_max_users"></td>
+<td align="center" valign="middle" class="row">$user_count</td>
+<td align="center" valign="middle" class="row">$voctory_role_str</td>
+<td valign="middle" width="16" class="row">$log_wish_role_str</td>
+<td valign="middle" width="16" class="row">$log_real_time_str</td>
+<td valign="middle" width="16" class="row">$log_dummy_boy_str</td>
+<td valign="middle" width="16" class="row">$log_open_vote_str</td>
+<td valign="middle" width="16" class="row">$log_not_open_cast_str</td>
+<td valign="middle" width="16" class="row">$log_decide_str</td>
+<td valign="middle" width="16" class="row">$log_authority_str</td>
+<td valign="middle" width="16" class="row">$log_poison_str</td>
+<td valign="middle" width="16" class="row">$log_cupid_str</td>
+<td valign="middle" width="16" class="row">$log_quiz_str</td>
+<td valign="middle" width="16" class="row">$log_chaos_str</td>
 </tr>
 
 ROOM_ROW;
@@ -309,15 +309,15 @@ function LayoutTalkLog($last_date, $is_reverse){
   if ($is_reverse) {
     OutputDateTalkLog($date,'beforegame',$is_reverse);
     echo("</tr><tr>\r\n");
-    
-    for($i=1; $i<=$last_date; $i++) {
+
+    for($i = 1; $i<=$last_date; $i++) {
       OutputDateTalkLog($i,'',$is_reverse);
       echo("</tr><tr>\r\n");
     }
-    
+
     OutputVictory();
     echo("</tr><tr>\r\n");
-    
+
     OutputDateTalkLog($date,'aftergame',$is_reverse);
     echo("</tr><tr>\r\n");
   }
@@ -328,7 +328,7 @@ function LayoutTalkLog($last_date, $is_reverse){
     OutputVictory();
     echo("</tr><tr>\r\n");
 
-    for($i=$last_date; $i>0; $i--) {
+    for($i = $last_date; $i > 0; $i--) {
       OutputDateTalkLog($i,'',$is_reverse);
       echo("</tr><tr>\r\n");
     }
@@ -341,13 +341,13 @@ function LayoutTalkLog($last_date, $is_reverse){
 //霊界のみのログ表示順を表現します。
 function LayoutHeaven($last_date, $is_reverse){
   if($is_reverse) {
-    for($i=$last_date; $i>0; $i--) {
+    for($i = $last_date; $i > 0; $i--) {
       OutputDateTalkLog($i,'heaven_only',$is_reverse);
       echo("</tr><tr>\r\n");
     }
   }
   else {
-    for($i=1; $i<=$last_date; $i++) {
+    for($i = 1; $i <= $last_date; $i++) {
       OutputDateTalkLog($i,'heaven_only',$is_reverse);
       echo("</tr><tr>\r\n");
     }
@@ -385,22 +385,16 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   if($set_location == 'heaven_only'){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-<<<<<<< .mine
-			room_users.handle_name AS talk_handle_name,
-			room_users.sex AS talk_sex,
-			room_users.color AS talk_color,
-=======
 			user_entry.handle_name AS talk_handle_name,
 			user_entry.role AS talk_role,
 			user_entry.sex AS talk_sex,
 			user_icon.color AS talk_color,
->>>>>>> .r69
 			talk.sentence AS sentence,
 			talk.font_type AS font_type,
 			talk.location AS location
-			FROM talk, 
+			FROM talk,
 			  (SELECT * FROM user_entry users LEFT JOIN user_icon USING (icon_no)
-			  WHERE users.room_no IN ($room_no, 0)) room_users 
+			  WHERE users.room_no IN ($room_no, 0)) room_users
 			WHERE talk.room_no = $room_no
 			AND talk.uname = room_users.uname
 			AND talk.date = $set_date
@@ -429,22 +423,24 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   else{
     $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? "" : "AND talk.location <> 'heaven'";
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT 
+    $sql = mysql_query("SELECT
 			room_users.uname AS talk_uname,
 			room_users.handle_name AS talk_handle_name,
+			room_users.role AS talk_role,
 			room_users.sex AS talk_sex,
 			room_users.color AS talk_color,
 			talk.sentence AS sentence,
 			talk.font_type AS font_type,
 			talk.location AS location
 			FROM talk,
-			  (SELECT 
+			  (SELECT
 			  users.uname,
 			  users.handle_name,
+			  users.role,
 			  users.sex,
 			  user_icon.color
 			  FROM user_entry users LEFT JOIN user_icon USING (icon_no)
-			  WHERE users.room_no IN ($room_no, 0)) room_users 
+			  WHERE users.room_no IN ($room_no, 0)) room_users
 			WHERE talk.room_no = $room_no
 			AND room_users.uname = talk.uname
 			AND talk.date = $set_date

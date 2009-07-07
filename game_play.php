@@ -512,6 +512,13 @@ EOF;
   }
 
   echo '<table class="time-table"><tr>'."\n";
+  if($day_night != 'aftergame'){ //ゲーム終了後以外なら、サーバとの時間ズレを表示
+    $date_str = gmdate('Y, m, j, G, i, s', $system_time);
+    echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
+    echo '<td>サーバとローカルPCの時間ズレ(ラグ含)： ' . '<span><script type="text/javascript">' .
+      "output_diff_time('$date_str');" . '</script></span>' . '秒</td></td>'."\n";
+    echo '<tr>';
+  }
   OutputTimeTable(); //経過日数と生存人数を出力
 
   $left_time = 0;
@@ -521,21 +528,14 @@ EOF;
   else //会話で時間経過制
     $left_talk_time = GetTalkPassTime(&$left_time);
 
-  if($day_night == 'beforegame'){
-    if($real_time){
-      //実時間の制限時間を取得
-      sscanf(strstr($game_option, 'time'), 'time:%d:%d', &$day_minutes, &$night_minutes);
-      echo '<td class="real-time">';
-      echo "設定時間： 昼 <span>{$day_minutes}</span>分 / 夜 <span>{$night_minutes}</span>分";
-
-      //開始前、サーバとの時間ズレを表示
-      $date_str = gmdate('Y, m, j, G, i, s', $system_time);
-      echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
-      echo ' サーバとローカルPCの時間ズレ(ラグ含)： ' . '<span><script type="text/javascript">' .
-	"output_diff_time('$date_str');" . '</script></span>' . '秒</td>'."\n";
-    }
+  if($day_night == 'beforegame' && $real_time){
+    //実時間の制限時間を取得
+    sscanf(strstr($game_option, 'time'), 'time:%d:%d', &$day_minutes, &$night_minutes);
+    echo '<td class="real-time">';
+    echo "設定時間： 昼 <span>{$day_minutes}</span>分 / 夜 <span>{$night_minutes}</span>分";
+    echo '</td>';
   }
-  elseif($day_night == 'day' || $day_night == 'night'){
+  if($day_night == 'day' || $day_night == 'night'){
     if($real_time){ //リアルタイム制
       echo '<td class="real-time"><form name="realtime_form">'."\n";
       echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";

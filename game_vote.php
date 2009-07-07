@@ -627,27 +627,7 @@ function CheckVoteDay(){
     //処刑された人が毒をもっていた持っていた場合
     if(strpos($target_role, 'poison') !== false &&
        strpos($target_role, 'poison_guard') === false){ //騎士は対象外
-<<<<<<< .mine
       $poison_target_list = array_keys($vote_target_list, $target_handle); //投票した人を取得
-=======
-      //恋人後追い処理を先にすると後追いした恋人も含めてしまうので
-      //改めて「現在の生存者」を DB に問い合わせるべきじゃないかな？
-      //print_r($uname_to_handle_list); print_r($vote_target_list); print_r($vote_kill_target);
-      $array = array();
-      if ($GAME_CONF->poison_only_eater) {
-        //投票者の中から選ぶ
-        $array = array_keys($vote_target_list, $uname_to_handle_list[$vote_kill_target]);
-      } else {
-        //生存者の中から選ぶ
-        $array = array_diff($live_list, array($vote_kill_target));
-      }
-      //print_r($array);
-      //ランダムに一人選ぶ
-      $rand_key = array_rand($array, 1);
-      $poison_target_uname  = $array[$rand_key];
-      $poison_target_handle = $uname_to_handle_list[$poison_target_uname];
-      $poison_target_role   = $role_list[$poison_target_uname];
->>>>>>> .r69
 
       $poison_dead = true; //毒発動フラグを初期化
       foreach($poison_target_list as $voter_uname){ //薬師のチェック
