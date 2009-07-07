@@ -44,11 +44,11 @@ class Talk{
         }
       case 'dummy_boy':
         //この式はtalk.locationの値が'beforegame', 'aftergame', 'day', 'night'の４つのみであるという仕様に依存する。
-        $this->is_system = strstr($this->day_night, 'game') === false; 
+        $this->is_system = strpos($this->day_night, 'game') === false; 
         return $this->sentence;
       }
     } 
-    if (strstr($this->location, 'system') && isset($MESSAGE->$action)){
+    if (strpos($this->location, 'system') !== false && isset($MESSAGE->$action)){
       $this->is_system = true;
       $this->action = $action;
       switch ($action){

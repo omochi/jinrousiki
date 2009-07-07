@@ -103,7 +103,7 @@ class GameFormat extends GameFormatBase {
       echo '<meta http-equiv="Refresh" content="' . $auto_reload . '">'."\n";
   
     //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
-    if(($day_night == 'day' || $day_night == 'night') && strstr($game_option, 'real_time') &&
+    if(($day_night == 'day' || $day_night == 'night') && strpos($game_option, 'real_time') !== false &&
        $heaven_mode != 'on' && $log_mode != 'on'){
       list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
       $on_load .= 'output_realtime();';
@@ -177,7 +177,7 @@ class GameFormat extends GameFormatBase {
         $icon_overlay = " onMouseover=\"this.src='{$user->icon_filename}'\" onMouseout=\"this.src='$this_icon'\"";
       }
       //ゲーム終了後か死亡後かつ霊界役職公開の場合は、役職・ユーザネームも表示
-      if($day_night == 'aftergame' || ($live == 'dead' && ! strstr($game_option, 'not_open_cast'))){
+      if($day_night == 'aftergame' || ($live == 'dead' && strpos($game_option, 'not_open_cast') === false)){
         $user_details = "<li>({$this_uname})</li>$role_list";
         foreach($user->roles as $role){
           $user_details.="<li class=\"role $role\">[".$GAME_CONF->GetRoleName($role).']</li>';
@@ -241,16 +241,16 @@ EOF;
     if($victory == NULL || $view_mode == 'on' || $log_mode == 'on') return;
   
     $result = 'win';
-    $lovers = (strstr($role, 'lovers') || strstr($role, 'cupid'));
+    $lovers = (strpos($role, 'lovers') !== false || strpos($role, 'cupid') !== false);
     if($victory == 'human' && ! $lovers &&
-       (strstr($role, 'human') || strstr($role, 'mage')   || strstr($role, 'necromancer') ||
-        strstr($role, 'guard') || strstr($role, 'common') || strstr($role, 'poison'))){
+       (strpos($role, 'human') !== false || strpos($role, 'mage') !== false   || strpos($role, 'necromancer') !== false ||
+        strpos($role, 'guard') !== false || strpos($role, 'common') !== false || strpos($role, 'poison') !== false)){
       $class = 'human';
     }
-    elseif($victory == 'wolf' && (strstr($role, 'wolf') || strstr($role, 'mad')) && ! $lovers){
+    elseif($victory == 'wolf' && (strpos($role, 'wolf') !== false || strpos($role, 'mad') !== false) && ! $lovers){
       $class = 'wolf';
     }
-    elseif(strstr($victory, 'fox') && strstr($role, 'fox') && ! $lovers){
+    elseif(strpos($victory, 'fox') !== false && strpos($role, 'fox') !== false && ! $lovers){
       $class = 'fox';
     }
     elseif($victory == 'lovers' && $lovers){
@@ -349,7 +349,7 @@ EOF;
     LineToBR(&$sentence); //改行コードを <br> に変換
     */
   
-    #if(strstr($location, 'system') && $sentence == 'OBJECTION'){ //異議あり
+    #if(strpos($location, 'system') !== false && $sentence == 'OBJECTION'){ //異議あり
     $say->ParseParameters();
     $sentence = $say->ParseSentence();
     if ($say->is_system){
@@ -382,7 +382,7 @@ EOF;
       echo '</tr>'."\n";
       */
     }
-    elseif(strstr($location, 'system') && $sentence == 'GAMESTART_DO'){ //ゲーム開始投票
+    elseif(strpos($location, 'system') !== false && $sentence == 'GAMESTART_DO'){ //ゲーム開始投票
       /*
         echo '<tr class="system-message">'."\n";
         echo '<td class="game-start" colspan="2">' . $talk_handle_name . ' ' .
@@ -390,7 +390,7 @@ EOF;
         echo '</tr>'."\n";
       */
     }
-    elseif(strstr($location, 'system') && strstr($sentence, 'KICK_DO')){ //KICK 投票
+    elseif(strpos($location, 'system') !== false && strpos($sentence, 'KICK_DO') !== false){ //KICK 投票
       $target_handle_name = ParseStrings($sentence, 'KICK_DO');
       echo '<tr class="system-message">'."\n";
       echo '<td class="kick" colspan="2">' . $talk_handle_name . ' は ' .
@@ -398,20 +398,20 @@ EOF;
       echo '</tr>'."\n";
       }
     //生存中は投票情報は非表示
-    elseif($live == 'live' && strstr($location, 'system') &&
-  	 (strstr($sentence, 'VOTE_DO') || strstr($sentence, 'GUARD_DO') ||
-  	  strstr($sentence, 'MAGE_DO') || strstr($sentence, 'WOLF_EAT') ||
-  	  strstr($sentence, 'CUPID_DO') || strstr($sentence, 'MANIA_DO'))){
+    elseif($live == 'live' && strpos($location, 'system') !== false &&
+  	 (strpos($sentence, 'VOTE_DO') !== false || strpos($sentence, 'GUARD_DO') !== false ||
+  	  strpos($sentence, 'MAGE_DO') !== false || strpos($sentence, 'WOLF_EAT') !== false ||
+  	  strpos($sentence, 'CUPID_DO') !== false || strpos($sentence, 'MANIA_DO') !== false)){
     }
     elseif($talk_uname == 'system'){ //システムメッセージ
       echo '<tr>'."\n";
-      if(strstr($sentence, 'MORNING')){
+      if(strpos($sentence, 'MORNING') !== false){
         sscanf($sentence, "MORNING\t%d", &$morning_date);
         echo '<td class="system-user" width="1000" colspan="2">&lt; &lt; ' .
   	$MESSAGE->morning_header . ' ' . $morning_date . $MESSAGE->morning_footer .
   	' &gt; &gt;</td>'."\n";
       }
-      elseif(strstr($sentence, 'NIGHT')){
+      elseif(strpos($sentence, 'NIGHT') !== false){
         echo '<td class="system-user" colspan="2">' .
   	'&lt; &lt; ' . $MESSAGE->night . ' &gt; &gt;</td>'."\n";
       }
@@ -437,7 +437,7 @@ EOF;
     }
     //ゲーム中、生きている人の夜の狼
     elseif($live == 'live' && $day_night == 'night' && $location == 'night wolf'){
-      if(strstr($role, 'wolf')){
+      if(strpos($role, 'wolf') !== false){
         $talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
       }
       else{
@@ -452,7 +452,7 @@ EOF;
     //ゲーム中、生きている人の夜の共有者
     elseif($live == 'live' && $day_night == 'night' && $location == 'night common'){
       echo '<tr class="user-talk">'."\n";
-      if(strstr($role, 'common')){
+      if(strpos($role, 'common') !== false){
         echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
   	$talk_handle_name . '</td>'."\n";
         echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
@@ -475,38 +475,38 @@ EOF;
     }
     //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
     elseif($status == 'finished' || $uname == 'dummy_boy' ||
-  	 ($live == 'dead' && ! strstr($game_option, 'not_open_cast'))){
-      if(strstr($location, 'system') && strstr($sentence, 'VOTE_DO')){ //処刑投票
+  	 ($live == 'dead' && strpos($game_option, 'not_open_cast') === false)){
+      if(strpos($location, 'system') !== false && strpos($sentence, 'VOTE_DO') !== false){ //処刑投票
         $target_handle_name = ParseStrings($sentence, 'VOTE_DO');
         echo '<tr class="system-message">'."\n";
         echo '<td class="vote" colspan="2">' . $talk_handle_name . ' は ' .
   	$target_handle_name . ' ' . $MESSAGE->vote_do . '</td>'."\n";
       }
-      elseif(strstr($location, 'system') && strstr($sentence, 'WOLF_EAT')){ //狼の投票
+      elseif(strpos($location, 'system') !== false && strpos($sentence, 'WOLF_EAT') !== false){ //狼の投票
         $target_handle_name = ParseStrings($sentence, 'WOLF_EAT');
         echo '<tr class="system-message">'."\n";
         echo '<td class="wolf-eat" colspan="2">' . $talk_handle_name . ' たち人狼は ' .
   	$target_handle_name . ' ' . $MESSAGE->wolf_eat . '</td>'."\n";
       }
-      elseif(strstr($location, 'system') && strstr($sentence, 'MAGE_DO')){ //占い師の投票
+      elseif(strpos($location, 'system') !== false && strpos($sentence, 'MAGE_DO') !== false){ //占い師の投票
         $target_handle_name = ParseStrings($sentence, 'MAGE_DO');
         echo '<tr class="system-message">'."\n";
         echo '<td class="mage-do" colspan="2">' . $talk_handle_name . ' は ' .
   	$target_handle_name . ' ' . $MESSAGE->mage_do . '</td>'."\n";
       }
-      elseif(strstr($location, 'system') && strstr($sentence, 'GUARD_DO')){ //狩人の投票
+      elseif(strpos($location, 'system') !== false && strpos($sentence, 'GUARD_DO') !== false){ //狩人の投票
         $target_handle_name = ParseStrings($sentence, 'GUARD_DO');
         echo '<tr class="system-message">'."\n";
         echo '<td class="guard-do" colspan="2">' . $talk_handle_name . ' は ' .
   	$target_handle_name . ' ' . $MESSAGE->guard_do . '</td>'."\n";
       }
-      elseif(strstr($location, 'system') && strstr($sentence, 'CUPID_DO')){ //キューピッドの投票
+      elseif(strpos($location, 'system') !== false && strpos($sentence, 'CUPID_DO') !== false){ //キューピッドの投票
         $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
         echo '<tr class="system-message">'."\n";
         echo '<td class="cupid-do" colspan="2">' . $talk_handle_name . ' は ' .
   	$target_handle_name . ' ' . $MESSAGE->cupid_do . '</td>'."\n";
       }
-      elseif(strstr($location, 'system') && strstr($sentence, 'MANIA_DO')){ //神話マニアの投票
+      elseif(strpos($location, 'system') !== false && strpos($sentence, 'MANIA_DO') !== false){ //神話マニアの投票
         $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
         echo '<tr class="system-message">'."\n";
         echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
@@ -546,7 +546,7 @@ EOF;
     }
     else{ //観戦者
       if($day_night == 'night' && $location == 'night wolf'){
-        if(strstr($role, 'wolf')){
+        if(strpos($role, 'wolf') !== false){
   	$talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
         }
         else{
@@ -560,7 +560,7 @@ EOF;
       }
       elseif($day_night == 'night' && $location == 'night common'){
         echo '<tr class="user-talk">'."\n";
-        if(strstr($role, 'common')){
+        if(strpos($role, 'common') !== false){
   	echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
   	  $talk_handle_name . '</td>'."\n";
   	echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
@@ -572,10 +572,10 @@ EOF;
         echo '</tr>'."\n";
       }
       elseif(! (($day_night == 'night' && $location == 'night self_talk') ||
-  	      (strstr($location, 'system') &&
-  	       (strstr($sentence, 'VOTE_DO') || strstr($sentence, 'WOLF_EAT') ||
-  		strstr($sentence, 'MAGE_DO') || strstr($sentence, 'GUARD_DO') ||
-  		strstr($sentence, 'CUPID_DO') || strstr($sentence, 'MANIA_DO'))))){
+  	      (strpos($location, 'system') !== false &&
+  	       (strpos($sentence, 'VOTE_DO') !== false || strpos($sentence, 'WOLF_EAT') !== false ||
+  		strpos($sentence, 'MAGE_DO') !== false || strpos($sentence, 'GUARD_DO') !== false ||
+  		strpos($sentence, 'CUPID_DO') !== false || strpos($sentence, 'MANIA_DO') !== false)))){
         echo '<tr class="user-talk">'."\n";
         echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
   	$talk_handle_name . '</td>'."\n";
@@ -679,7 +679,7 @@ EOF;
     $deadman = '<tr><td>' . $name . ' ' . $MESSAGE->deadman . '</td>'; //基本メッセージ
     $reason_header = '</tr>'."\n" . '<tr><td>(' . $name . ' '; //追加共通ヘッダ
     $show_reason = ($status == 'finished' ||
-  		  ($live == 'dead' && ! strstr($game_option, 'not_open_cast')));
+  		  ($live == 'dead' && strpos($game_option, 'not_open_cast') === false));
   
     echo '<table class="dead-type">'."\n";
     switch($type){
@@ -760,7 +760,7 @@ EOF;
         $table_count++;
       }
   
-      if((strstr($game_option, 'open_vote') || $live == 'dead') && $view_mode != 'on')
+      if((strpos($game_option, 'open_vote') !== false || $live == 'dead') && $view_mode != 'on')
         $vote_number_str = '投票先 ' . $vote_number . ' 票 →';
       else
         $vote_number_str = '投票先→';
@@ -795,7 +795,7 @@ EOF;
     global $room_no, $date, $day_night, $game_option;
   
     //出力条件をチェック
-    if(strstr($game_option, 'not_open_cast') || $day_night != 'day') return false;
+    if(strpos($game_option, 'not_open_cast') !== false || $day_night != 'day') return false;
   
     $yesterday = $date - 1;
     $result = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
