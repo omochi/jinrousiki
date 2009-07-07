@@ -63,9 +63,13 @@ SendCookie();
 
 //発言の有無をチェック
 EscapeStrings(&$say, false); //エスケープ処理
-if($day_night == 'day' || $day_night == 'night'){
+if($live == 'live' && ($day_night == 'day' || $day_night == 'night')){
   if(strpos($role, 'liar') !== false){ //狼少年の発言内容を置換
-    $liar_replace_list = array('人' => '狼', '狼' => '人',
+    $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
+			       'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
+			       'ムラビト' => 'オオカミ', 'オオカミ' => 'ムラビト',
+			       '真' => '偽', '偽' => '真',
+			       '人' => '狼', '狼' => '人',
 			       '白' => '黒', '黒' => '白',
 			       '○' => '●', '●' => '○');
     $say = strtr($say, $liar_replace_list);
@@ -619,7 +623,7 @@ function OutputHeavenTalkLog(){
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $ROLE_IMG, $MESSAGE, $room_no, $date, $day_night,
+  global $ROLE_IMG, $MESSAGE, $room_no, $game_option, $date, $day_night,
     $user_no, $uname, $handle_name, $role, $live;
 
   //ゲーム中のみ表示する
@@ -636,6 +640,10 @@ function OutputAbility(){
   elseif(strpos($role, 'wolf') !== false){
     if(strpos($role, 'boss_wolf') !== false)
       OutputRoleComment('boss_wolf');
+    elseif(strpos($role, 'poison_wolf') !== false){
+      // OutputRoleComment('poison_wolf');
+      echo '[役割]<br>　あなたは「毒狼 (仮称)」です。たとえ処刑されても体内に流れる猛毒で村人一人を道連れにできます。<br>'."\n";
+    }
     else
       OutputRoleComment('wolf');
 
@@ -792,6 +800,20 @@ function OutputAbility(){
     }
   }
   elseif(strpos($role, 'poison') !== false) OutputRoleComment('poison');
+  elseif(strpos($role, 'pharmacist') !== false){
+    // OutputRoleComment('pharmacist');
+    echo '[役割]<br>　あなたは「薬師」、処刑対象者に投票していた場合に限りその人を無毒化させることができます。<br>'."\n";
+
+    //解毒結果を表示
+    $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+			AND date = $yesterday and type = 'PHARMACIST_SUCCESS'");
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($pharmacist, $target) = ParseStrings(mysql_result($sql, $i, 0));
+      //自分の解毒結果のみ表示する
+      if($handle_name == $pharmacist) OutputAbilityResult(NULL, $target, 'pharmacist_success');
+    }
+  }
   elseif(strpos($role, 'cupid') !== false){
     OutputRoleComment('cupid');
 

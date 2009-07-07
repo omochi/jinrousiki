@@ -195,6 +195,7 @@ function OutputPlayerList(){
       $role_str = '';
       if(strpos($this_role, 'human')            !== false) $role_str = MakeRoleName('human');
       elseif(strpos($this_role, 'boss_wolf')    !== false) $role_str = MakeRoleName('boss_wolf', 'wolf');
+      elseif(strpos($this_role, 'poison_wolf')  !== false) $role_str = MakeRoleName('poison_wolf', 'wolf');
       elseif(strpos($this_role, 'wolf')         !== false) $role_str = MakeRoleName('wolf');
       elseif(strpos($this_role, 'soul_mage')    !== false) $role_str = MakeRoleName('soul_mage', 'mage');
       elseif(strpos($this_role, 'mage')         !== false) $role_str = MakeRoleName('mage');
@@ -208,6 +209,7 @@ function OutputPlayerList(){
       elseif(strpos($this_role, 'child_fox')    !== false) $role_str = MakeRoleName('child_fox', 'fox');
       elseif(strpos($this_role, 'fox')          !== false) $role_str = MakeRoleName('fox');
       elseif(strpos($this_role, 'poison')       !== false) $role_str = MakeRoleName('poison');
+      elseif(strpos($this_role, 'pharmacist')   !== false) $role_str = MakeRoleName('pharmacist', 'poison');
       elseif(strpos($this_role, 'suspect')      !== false) $role_str = MakeRoleName('suspect', 'human');
       elseif(strpos($this_role, 'cupid')        !== false) $role_str = MakeRoleName('cupid');
       elseif(strpos($this_role, 'mania')        !== false) $role_str = MakeRoleName('mania');
@@ -1185,16 +1187,15 @@ function GetTalkPassTime(&$left_time, $flag = false){
 
 //基本役職を抜き出して返す
 function GetMainRole($target_role){
-  global $GAME_CONF;
-
   //基本役職リスト (strpos() を使うので判定順に注意)
   //闇鍋用に 役職 => 出現率 と config に定義するのはどうかな？
-  $role_list = array('human', 'boss_wolf', 'wolf', 'soul_mage', 'mage', 'necromancer',
-		     'medium', 'fanatic_mad', 'mad', 'poison_guard', 'guard', 'common',
-		     'child_fox', 'fox', 'poison', 'cupid', 'mania', 'quiz');
+  $role_list = array('human', 'boss_wolf', 'poison_wolf', 'wolf', 'soul_mage', 'mage',
+		     'necromancer', 'medium', 'fanatic_mad', 'mad', 'poison_guard', 'guard',
+		     'common', 'child_fox', 'fox', 'poison', 'pharmacist', 'cupid', 'suspect',
+		     'mania', 'quiz');
 
-  foreach($GAME_CONF->main_role_list as $this_role => $this_role_name){
-    if(strpos($target_role, $this_role) === 0) return $this_role_name;
+  foreach($role_list as $this_role){
+    if(strpos($target_role, $this_role) !== false) return $this_role;
   }
   return NULL;
 }

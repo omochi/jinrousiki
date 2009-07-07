@@ -66,26 +66,28 @@ function GetRoleList($user_count, $option_role){
     $role_list['wolf'] = 1; //狼1確保
     $role_list['mage'] = 1; //占い師1確保
     for($i = 2; $i < $user_count; $i++){
-      $rand = mt_rand(1, 100);
-      if($rand < 10)     $role_list['wolf']++;
-      elseif($rand < 15) $role_list['boss_wolf']++;
-      elseif($rand < 18) $role_list['fox']++;
-      elseif($rand < 20) $role_list['child_fox']++;
-      elseif($rand < 27) $role_list['human']++;
-      elseif($rand < 34) $role_list['mage']++;
-      elseif($rand < 37) $role_list['soul_mage']++;
-      elseif($rand < 47) $role_list['necromancer']++;
-      elseif($rand < 54) $role_list['medium']++;
-      elseif($rand < 60) $role_list['mad']++;
-      elseif($rand < 64) $role_list['fanatic_mad']++;
-      elseif($rand < 74) $role_list['common']++;
-      elseif($rand < 81) $role_list['guard']++;
-      elseif($rand < 84) $role_list['poison_guard']++;
-      elseif($rand < 88) $role_list['poison']++;
-      elseif($rand < 92) $role_list['suspect']++;
-      elseif($rand < 96) $role_list['cupid']++;
-      elseif($rand < 99) $role_list['mania']++;
-      else               $role_list['quiz']++;
+      $rand = mt_rand(1, 1000);
+      if($rand < 100)     $role_list['wolf']++;
+      elseif($rand < 150) $role_list['boss_wolf']++;
+      elseif($rand < 180) $role_list['poison_wolf']++;
+      elseif($rand < 210) $role_list['fox']++;
+      elseif($rand < 230) $role_list['child_fox']++;
+      elseif($rand < 280) $role_list['human']++;
+      elseif($rand < 330) $role_list['mage']++;
+      elseif($rand < 360) $role_list['soul_mage']++;
+      elseif($rand < 430) $role_list['necromancer']++;
+      elseif($rand < 480) $role_list['medium']++;
+      elseif($rand < 550) $role_list['mad']++;
+      elseif($rand < 580) $role_list['fanatic_mad']++;
+      elseif($rand < 680) $role_list['common']++;
+      elseif($rand < 750) $role_list['guard']++;
+      elseif($rand < 780) $role_list['poison_guard']++;
+      elseif($rand < 810) $role_list['poison']++;
+      elseif($rand < 860) $role_list['pharmacist']++;
+      elseif($rand < 910) $role_list['suspect']++;
+      elseif($rand < 960) $role_list['cupid']++;
+      elseif($rand < 997) $role_list['mania']++;
+      else                $role_list['quiz']++;
     }
   }
   elseif(strpos($game_option, 'chaos') !== false){ //闇鍋
@@ -164,19 +166,27 @@ function GetRoleList($user_count, $option_role){
     $human_count = $user_count - $wolf_count - $fox_count - $lovers_count;
 
     //人狼系の配役を決定
-    $boss_wolf_count = 0; //白狼の人数
+    $special_wolf_count = 0; //特殊狼の人数
+    $boss_wolf_count = 0;  //白狼
+    $poison_wolf_count = 0; //毒狼
     $base_count = ceil($user_count / 15); //特殊狼判定回数を算出
     for(; $base_count > 0; $base_count--){
-      if(mt_rand(1, 100) <= $user_count) $boss_wolf_count++; //参加人数 % の確率で白狼出現
+      if(mt_rand(1, 100) <= $user_count) $special_wolf_count++; //参加人数 % の確率で特殊狼出現
     }
-    if($boss_wolf_count > $wolf_count){ //狼の総数を超えたら人狼は 0 にする
-      $role_list['boss_wolf'] = $wolf_count;
-      $role_list['wolf'] = 0;
+    if($special_wolf_count > 0){ //特殊狼の割り当て
+      //狼の総数を超えていたら補正する
+      if($special_wolf_count > $wolf_count) $special_wolf_count = $wolf_count;
+      $wolf_count -= $special_wolf_count; //特殊狼の数だけ通常狼を減らす
+
+      //全人口が20人未満の場合は毒狼は出現しない
+      if($user_count >= 20){ //参加人数 % で毒狼が一人出現
+	if(mt_rand(1, 100) <= $user_count) $poison_wolf_count = 1;
+      }
+      $boss_wolf_count = $special_wolf_count - $poison_wolf_count;
     }
-    else{
-      $role_list['boss_wolf'] = $boss_wolf_count;
-      $role_list['wolf'] = $wolf_count - $boss_wolf_count;
-    }
+    $role_list['wolf'] = $wolf_count;
+    $role_list['boss_wolf'] = $boss_wolf_count;
+    $role_list['poison_wolf'] = $poison_wolf_count;
 
     //妖狐系の配役を決定
     if($user_count < 20){ //全人口が20人未満の場合は子狐は出現しない
@@ -382,6 +392,30 @@ function GetRoleList($user_count, $option_role){
     if($poison_count > 0 && $human_count >= $poison_count){
       $role_list['poison'] = $poison_count;
       $human_count -= $poison_count; //村人陣営の残り人数
+    }
+
+    //薬師の人数を決定
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 15){ //0:1 = 95:5
+      if($rand <= 95) $pharmacist_count = 0;
+      else $pharmacist_count = 1;
+    }
+    elseif($user_count < 19){ //0:1 = 85:15
+      if($rand <= 85) $pharmacist_count = 0;
+      else $pharmacist_count = 1;
+    }
+    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
+      $base_count = floor($user_count / 20);
+      if($rand <= 10) $pharmacist_count = $base_count - 1;
+      elseif($rand <= 90) $pharmacist_count = $base_count;
+      else $pharmacist_count = $base_count + 1;
+    }
+    if($poison_wolf_count > 0 && $pharmacist_count == 0) $pharmacist_count++;
+
+    //薬師の配役を決定
+    if($pharmacist_count > 0 && $human_count >= $pharmacist_count){
+      $role_list['pharmacist'] = $pharmacist_count;
+      $human_count -= $pharmacist_count; //村人陣営の残り人数
     }
 
     //不審者の人数を決定

@@ -39,6 +39,7 @@ class RoleImage extends ImageManager{
   var $human              = 'img/role/human.jpg';              //Â¼¿Í
   var $wolf               = 'img/role/wolf.jpg';               //¿ÍÏµ
   var $boss_wolf          = 'img/role/boss_wolf.jpg';          //ÇòÏµ
+  var $poison_wolf        = 'img/role/poison_wolf.jpg';        //ÆÇÏµ (²¾¾Î)
   var $wolf_partner       = 'img/role/wolf_partner.jpg';       //¿ÍÏµ¤ÎÃç´Ö
   var $mage               = 'img/role/mage.jpg';               //Àê¤¤»Õ
   var $soul_mage          = 'img/role/soul_mage.jpg';          //º²¤ÎÀê¤¤»Õ
@@ -57,8 +58,10 @@ class RoleImage extends ImageManager{
   var $child_fox          = 'img/role/child_fox.jpg';          //»Ò¸Ñ
   var $fox                = 'img/role/fox.jpg';                //ÍÅ¸Ñ
   var $fox_partner        = 'img/role/fox_partner.jpg';        //ÍÅ¸Ñ¤ÎÃç´Ö
-  var $fox_target         = 'img/role/fox_targeted.jpg';       //ÍÅ¸Ñ¤¬ÁÀ¤ï¤ì¤¿
+  var $fox_target         = 'img/role/fox_targeted.jpg';       //ÍÅ¸Ñ½±·â
   var $poison             = 'img/role/poison.jpg';             //ËäÆÇ¼Ô
+  var $pharmacist         = 'img/role/pharmacist.jpg';         //Ìô»Õ
+  var $pharmacist_success = 'img/role/pharmacist_success.jpg'; //Ìô»Õ¤Î²òÆÇÀ®¸ù
   var $cupid              = 'img/role/cupid.jpg';              //¥­¥å¡¼¥Ô¥Ã¥É
   var $cupid_pair         = 'img/role/cupid_pair.jpg';         //¥­¥å¡¼¥Ô¥Ã¥É¤¬·ë¤Ó¤Ä¤±¤¿Îø¿Í
   var $lovers_header      = 'img/role/lovers_header.jpg';      //Îø¿Í(Á°)
@@ -76,6 +79,7 @@ class RoleImage extends ImageManager{
   var $result_human        = 'img/role/result_human.jpg';        //Â¼¿Í
   var $result_wolf         = 'img/role/result_wolf.jpg';         //¿ÍÏµ
   var $result_boss_wolf    = 'img/role/result_boss_wolf.jpg';    //ÇòÏµ
+  var $result_poison_wolf  = 'img/role/result_poison_wolf.jpg';  //ÆÇÏµ (²¾¾Î)
   var $result_mage         = 'img/role/result_mage.jpg';         //Àê¤¤»Õ
   var $result_soul_mage    = 'img/role/result_soul_mage.jpg';    //º²¤ÎÀê¤¤»Õ
   var $result_necromancer  = 'img/role/result_necromancer.jpg';  //ÎîÇ½¼Ô
@@ -88,6 +92,7 @@ class RoleImage extends ImageManager{
   var $result_fox          = 'img/role/result_fox.jpg';          //ÍÅ¸Ñ
   var $result_child_fox    = 'img/role/result_child_fox.jpg';    //»Ò¸Ñ
   var $result_poison       = 'img/role/result_poison.jpg';       //ËäÆÇ¼Ô
+  var $result_pharmacist   = 'img/role/result_pharmacist.jpg';   //¼í¿Í
   var $result_cupid        = 'img/role/result_cupid.jpg';        //¥­¥å¡¼¥Ô¥Ã¥É
   var $result_lovers       = 'img/role/result_lovers.jpg';       //Îø¿Í
   var $result_quiz         = 'img/role/result_quiz.jpg';         //½ÐÂê¼Ô

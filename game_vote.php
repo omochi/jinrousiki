@@ -197,9 +197,11 @@ function CheckVoteGameStart(){
   $remain_uname_list = array(); //希望の役割になれなかったユーザ名を一時的に格納
 
   //フラグセット
+  $gerd      = (strpos($game_option, 'gerd')      !== false);
   $quiz      = (strpos($game_option, 'quiz')      !== false);
   $chaos     = (strpos($game_option, 'chaos')     !== false); //chaosfull も含む
   $chaosfull = (strpos($game_option, 'chaosfull') !== false);
+  $wish_role = (strpos($game_option, 'wish_role') !== false);
 
   //エラーメッセージ
   $error_header = 'ゲームスタート[配役設定エラー]：';
@@ -208,24 +210,29 @@ function CheckVoteGameStart(){
   //ユーザリストを取得
   //身代わり君の役職を決定
   if(strpos($game_option, 'dummy_boy') !== false){
-    if($quiz) array_push($fix_role_list, 'quiz'); //クイズ村
-    elseif(strpos($game_option, 'gerd') !== false){ //ゲルト君を仮実装
-      array_push($fix_role_list, 'human'); //村人がいない場合は配役がおかしくなるので注意
-    }
-    else{
-      foreach($now_role_list as $this_role){
-	if(! CheckRole($this_role)){ //身代わり君がなれる役職かチェック
-	  array_push($fix_role_list, $this_role);
-	  break;
-	}
+    // $gerd = true; //デバッグ用
+    $count = count($now_role_list);
+    for($i = 0; $i < $count; $i++){
+      $this_role = array_shift($now_role_list); //配役リストから先頭を抜き出す
+      if($gerd) //ゲルト君
+	$fit_role = ($this_role == 'human');
+      elseif($quiz) //クイズ村
+	$fit_role = ($this_role == 'quiz');
+      else
+	$fit_role = (! CheckRole($this_role));
+
+      if($fit_role){
+	array_push($fix_role_list, $this_role);
+	break;
       }
+      array_push($now_role_list, $this_role); //配役リストの末尾に戻す
     }
+
     if(count($fix_role_list) < 1){ //身代わり君に役が与えられているかチェック
       OutputVoteResult($error_header . '身代わり君に役が与えられていません' .
 		       $error_footer, true, true);
     }
     array_push($fix_uname_list, 'dummy_boy'); //決定済みリストに身代わり君を追加
-    $now_role_list = array_diff($now_role_list, $fix_role_list); //身代わり君の役職をリストから除く
     shuffle($now_role_list); //念のためもう一度配列をシャッフル
 
     $sql_user_list = mysql_query("SELECT uname, role FROM user_entry WHERE room_no = $room_no
@@ -241,8 +248,7 @@ function CheckVoteGameStart(){
     $this_uname = $user_list_array['uname'];
     $this_role  = array_shift($now_role_list); //配役リストから先頭を抜き出す
 
-    //役割希望制の場合 (闇鍋は希望を無視)
-    if(strpos($game_option, 'wish_role') !== false && ! $chaos){
+    if($wish_role && ! $chaos){ //役割希望制の場合 (闇鍋は希望を無視)
       $this_wish_role = $user_list_array['role']; //希望役職を取得
       $rand = mt_rand(1, 100); //成功判定用乱数
       if($this_role == $this_wish_role && $rand <= $GAME_CONF->wish_role_success){ //希望通り
@@ -618,9 +624,12 @@ function CheckVoteDay(){
     InsertSystemMessage($target_handle, 'VOTE_KILLED'); //システムメッセージ
     SaveLastWords($target_handle); //処刑者の遺言
 
-    //処刑された人が埋毒者の場合
+    //処刑された人が毒をもっていた持っていた場合
     if(strpos($target_role, 'poison') !== false &&
        strpos($target_role, 'poison_guard') === false){ //騎士は対象外
+<<<<<<< .mine
+      $poison_target_list = array_keys($vote_target_list, $target_handle); //投票した人を取得
+=======
       //恋人後追い処理を先にすると後追いした恋人も含めてしまうので
       //改めて「現在の生存者」を DB に問い合わせるべきじゃないかな？
       //print_r($uname_to_handle_list); print_r($vote_target_list); print_r($vote_kill_target);
@@ -638,13 +647,44 @@ function CheckVoteDay(){
       $poison_target_uname  = $array[$rand_key];
       $poison_target_handle = $uname_to_handle_list[$poison_target_uname];
       $poison_target_role   = $role_list[$poison_target_uname];
+>>>>>>> .r69
 
-      KillUser($poison_target_uname); //死亡処理
-      InsertSystemMessage($poison_target_handle, 'POISON_DEAD_day'); //システムメッセージ
-      SaveLastWords($poison_target_handle); //遺言処理
+      $poison_dead = true; //毒発動フラグを初期化
+      foreach($poison_target_list as $voter_uname){ //薬師のチェック
+	if(strpos($role_list[$voter_uname], 'pharmacist') !== false){ //解毒成功
+	  InsertSystemMessage($uname_to_handle_list[$voter_uname] . "\t" . $target_handle,
+			      'PHARMACIST_SUCCESS');
+	  $poison_dead = false;
+	}
+      }
 
-      //毒死した人が恋人の場合
-      if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed($poison_target_role);
+      if($poison_dead){
+	if(! $GAME_CONF->poison_only_voter){ //投票者固定でない場合はリストを再取得
+	  //他の人からランダムに一人選ぶ
+	  //恋人後追い処理を先にすると後追いした恋人も含めてしまうので
+	  //改めて「現在の生存者」を DB に問い合わせるべきじゃないかな？
+	  $poison_target_list = array_diff($live_list, array($vote_kill_target));
+	}
+	$rand_key = array_rand($poison_target_list, 1);
+	$poison_target_uname  = $poison_target_list[$rand_key];
+	$poison_target_handle = $uname_to_handle_list[$poison_target_uname];
+	$poison_target_role   = $role_list[$poison_target_uname];
+
+	if(strpos($target_role, 'poison_wolf') !== false &&
+	   strpos($poison_target_role, 'wolf') !== false){ //毒狼の毒は狼には無効
+	  InsertSystemMessage($poison_target_handle, 'POISON_WOLF_TARGET');
+	  $poison_dead = false;
+	}
+
+	if($poison_dead){
+	  KillUser($poison_target_uname); //死亡処理
+	  InsertSystemMessage($poison_target_handle, 'POISON_DEAD_day'); //システムメッセージ
+	  SaveLastWords($poison_target_handle); //遺言処理
+
+	  //毒死した人が恋人の場合
+	  if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed($poison_target_role);
+	}
+      }
     }
 
     //処刑された人が恋人の場合

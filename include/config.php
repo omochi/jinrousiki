@@ -85,6 +85,7 @@ class GameConfig{
   var $main_role_list = array('human'        => '村人',
 			      'wolf'         => '人狼',
 			      'boss_wolf'    => '白狼',
+			      'poison_wolf'  => '毒狼',
 			      'mage'         => '占い師',
 			      'soul_mage'    => '魂の占い師',
 			      'necromancer'  => '霊能者',
@@ -97,6 +98,7 @@ class GameConfig{
 			      'fox'          => '妖狐',
 			      'child_fox'    => '子狐',
 			      'poison'       => '埋毒者',
+			      'pharmacist'   => '薬師',
 			      'suspect'      => '不審者',
 			      'cupid'        => 'キューピッド',
 			      'mania'        => '神話マニア',
@@ -126,15 +128,14 @@ class GameConfig{
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     // 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mania' => 1), // 神話マニアテスト用
+     // 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mania' => 1), //神話マニアテスト用
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      // 5 => array('wolf' => 1, 'mage' => 3, 'poison' => 1), //複数占いテスト用
-     // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1, 'cupid' => 1),
-     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
+     6 => array('human' => 1, 'wolf' => 1, 'mage' => 1, 'pharmacist' => 1, 'suspect' => 1, 'poison' => 1),
+     // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
      // 6 => array('wolf' => 2, 'necromancer' => 2, 'guard' => 2), //複数霊能＆狩人テスト用
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     // 7 => array('wolf' => 1, 'fox' => 2, 'child_fox' => 1, 'mage' => 2, 'soul_mage' => 1),
      // 7 => array('wolf' => 1, 'mage' => 2, 'guard' => 2, 'fox' => 2), //狐関連テスト用
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
      9 => array('human' =>  5, 'wolf' => 1, 'cupid' => 2, 'necromancer' => 1),
@@ -159,7 +160,12 @@ class GameConfig{
   var $boss_wolf = 20;  //白狼出現に必要な人数
 
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
+<<<<<<< .mine
+  // var $poison_only_voter = false; //1.3 系のデフォルト
+  var $poison_only_voter = true;
+=======
   var $poison_only_voter = false;
+>>>>>>> .r69
 
   //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
   var $poison_only_eater = true;
@@ -180,42 +186,43 @@ class GameConfig{
 
   //-- 役職名の翻訳 --//
   function GetRoleName($role, $short = false){
-    if (!$short){
-      return $this->main_role_list[$role] || $this->sub_role_list[$role];
-    }
-    else {
-      static $short_role_names = array('human'        => '村',
-				       'wolf'         => '狼',
-				       'boss_wolf'    => '白狼',
-				       'mage'         => '占',
-				       'soul_mage'    => '魂',
-				       'necromancer'  => '霊',
-				       'medium'       => '巫',
-				       'mad'          => '狂',
-				       'fanatic_mad'  => '狂信',
-				       'guard'        => '狩',
-				       'poison_guard' => '騎',
-				       'common'       => '共',
-				       'fox'          => '狐',
-				       'child_fox'    => '子狐',
-				       'poison'       => '毒',
-				       'suspect'      => '不審',
-				       'cupid'        => 'QP',
-				       'quiz'         => 'GM',
-				       'decide'        => '決',
-				       'authority'     => '権',
-				       'plague'        => '疫',
-				       'watcher'       => '傍',
-				       'strong_voice'  => '大',
-				       'normal_voice'  => '不',
-				       'weak_voice'    => '小',
-				       'no_last_words' => '不精',
-				       'chicken'       => '酉',
-				       'rabbit'        => '卯',
-				       'perverseness'  => '邪',
-				       'lovers'        => '恋');
-      return $short_role_list[$role];
-    }
+    if(! $short) return $this->main_role_list[$role] || $this->sub_role_list[$role];
+
+    static $short_role_names = array('human'         => '村',
+				     'wolf'          => '狼',
+				     'boss_wolf'     => '白狼',
+				     'poison_wolf'   => '毒狼',
+				     'mage'          => '占',
+				     'soul_mage'     => '魂',
+				     'necromancer'   => '霊',
+				     'medium'        => '巫',
+				     'mad'           => '狂',
+				     'fanatic_mad'   => '狂信',
+				     'guard'         => '狩',
+				     'poison_guard'  => '騎',
+				     'common'        => '共',
+				     'fox'           => '狐',
+				     'child_fox'     => '子狐',
+				     'poison'        => '毒',
+				     'pharmacist'    => '薬',
+				     'suspect'       => '不審',
+				     'cupid'         => 'QP',
+				     'mania'         => 'マ',
+				     'quiz'          => 'GM',
+				     'decide'        => '決',
+				     'authority'     => '権',
+				     'plague'        => '疫',
+				     'watcher'       => '傍',
+				     'strong_voice'  => '大',
+				     'normal_voice'  => '不',
+				     'weak_voice'    => '小',
+				     'no_last_words' => '不精',
+				     'liar'          => '嘘',
+				     'chicken'       => '酉',
+				     'rabbit'        => '卯',
+				     'perverseness'  => '邪',
+				     'lovers'        => '恋');
+    return $short_role_list[$role];
   }
 }
 
