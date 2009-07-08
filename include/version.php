@@ -3,5 +3,5 @@
 $script_version = 'Ver. 1.4.0 alpha12';
 
 // スクリプト群の最終更新日
-$script_lastupdate = '2009/07/06 (Mon) 20:46';
+$script_lastupdate = '2009/07/08 (Wed) 03:34';
 ?>

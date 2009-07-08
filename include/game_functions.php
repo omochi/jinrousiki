@@ -455,8 +455,8 @@ function OutputTalk($array){
   $location         = $array['location'];
 
   if($add_role == 'on'){ //役職表示モード対応
-    $talk_handle_name .= '<span class="add-role"> [' . ParseRole($array['talk_role']) .
-      '] (' . $talk_uname . ')</span>';
+    $talk_handle_name .= '<span class="add-role"> [' .
+      MakeShortRoleName($array['talk_role']) . '] (' . $talk_uname . ')</span>';
   }
 
   LineToBR(&$sentence); //改行コードを <br> に変換
@@ -1180,22 +1180,17 @@ function GetMainRole($target_role){
   global $GAME_CONF;
 
   foreach($GAME_CONF->main_role_list as $this_role => $this_name){
-    if(ereg("^{$this_role}([[:space:]]+[^[[:space:]]]*)?", $target_role)) return $this_name;
+    if(ereg("^{$this_role}([[:space:]]+[^[[:space:]]]*)?", $target_role)) return $this_role;
   }
   return NULL;
 }
 
 //役職をパースして省略名を返す
-function ParseRole($target_role){
+function MakeShortRoleName($target_role){
   global $GAME_CONF;
 
   //メイン役職を取得
-  foreach($GAME_CONF->main_role_list as $this_role => $this_name){
-    if(ereg("^{$this_role}([[:space:]]+[^[[:space:]]]*)?", $target_role)){
-      $main_role = $this_role;
-      break;
-    }
-  }
+  $main_role = GetMainRole($target_role);
   $camp = DistinguishCamp($main_role);
   $main_role_name = $GAME_CONF->GetRoleName($main_role, true);
   if($camp != 'human')

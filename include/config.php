@@ -131,14 +131,10 @@ class GameConfig{
      // 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mania' => 1), //神話マニアテスト用
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
-     // 5 => array('wolf' => 1, 'mage' => 3, 'poison' => 1), //複数占いテスト用
-     6 => array('human' => 1, 'wolf' => 1, 'mage' => 1, 'pharmacist' => 1, 'suspect' => 1, 'poison' => 1),
-     // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
-     // 6 => array('wolf' => 2, 'necromancer' => 2, 'guard' => 2), //複数霊能＆狩人テスト用
+     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     // 7 => array('wolf' => 1, 'mage' => 2, 'guard' => 2, 'fox' => 2), //狐関連テスト用
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
-     9 => array('human' =>  5, 'wolf' => 1, 'cupid' => 2, 'necromancer' => 1),
+     9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
     12 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -160,8 +156,8 @@ class GameConfig{
   var $boss_wolf = 20;  //白狼出現に必要な人数
 
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-  // var $poison_only_voter = false; //1.3 系のデフォルト
-  var $poison_only_voter = true;
+  var $poison_only_voter = false; //1.3 系のデフォルト
+  // var $poison_only_voter = true;
 
   //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
   var $poison_only_eater = true;

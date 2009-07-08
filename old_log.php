@@ -372,7 +372,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
     break;
   default:
     //二日目以降は昼から始まる
-    $table_class = ($is_reverse == on && $set_date != 1) ? 'day' : 'night';
+    $table_class = ($is_reverse == 'on' && $set_date != 1) ? 'day' : 'night';
     $date_select = "AND talk.date = $set_date";
     if ($set_location == 'heaven_only') {
       $location_select = "AND ((talk.location = 'heaven') OR (talk.uname = 'system'))";
@@ -488,7 +488,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
 //シーン切り替え時のログ出力
 function OutputSceneChange($set_date){
-  global $reverse_log, $heaven_only, $date, $day_night;
+  global $RQ_ARGS, $reverse_log, $heaven_only, $date, $day_night;
 
   echo '</table>'."\n";
   if($RQ_ARGS->heaven_only == 'on') return;
