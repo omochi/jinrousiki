@@ -69,7 +69,8 @@ function GetRoleList($user_count, $option_role){
       $rand = mt_rand(1, 1000);
       if($rand < 100)     $role_list['wolf']++;
       elseif($rand < 150) $role_list['boss_wolf']++;
-      elseif($rand < 180) $role_list['poison_wolf']++;
+      elseif($rand < 165) $role_list['poison_wolf']++;
+      elseif($rand < 180) $role_list['tongue_wolf']++;
       elseif($rand < 210) $role_list['fox']++;
       elseif($rand < 230) $role_list['child_fox']++;
       elseif($rand < 280) $role_list['human']++;
@@ -168,8 +169,6 @@ function GetRoleList($user_count, $option_role){
 
     //人狼系の配役を決定
     $special_wolf_count = 0; //特殊狼の人数
-    $boss_wolf_count = 0;  //白狼
-    $poison_wolf_count = 0; //毒狼
     $base_count = ceil($user_count / 15); //特殊狼判定回数を算出
     for(; $base_count > 0; $base_count--){
       if(mt_rand(1, 100) <= $user_count) $special_wolf_count++; //参加人数 % の確率で特殊狼出現
@@ -179,11 +178,24 @@ function GetRoleList($user_count, $option_role){
       if($special_wolf_count > $wolf_count) $special_wolf_count = $wolf_count;
       $wolf_count -= $special_wolf_count; //特殊狼の数だけ通常狼を減らす
 
-      //全人口が20人未満の場合は毒狼は出現しない
-      if($user_count >= 20){ //参加人数 % で毒狼が一人出現
-	if(mt_rand(1, 100) <= $user_count) $poison_wolf_count = 1;
+      if($user_count <= 16){ //16人未満の場合は白狼のみ
+	$role_list['boss_wolf'] = $special_wolf_count;
       }
-      $boss_wolf_count = $special_wolf_count - $poison_wolf_count;
+      if($user_count < 20){ //20人未満で舌禍狼出現
+	if(mt_rand(1, 100) <= 40) $role_list['tongue_wolf']++;
+	$role_list['boss_wolf'] = $special_wolf_count - $role_list['tongue_wolf'];
+      }
+      else{ //20人以上なら毒狼を先に判定してやや出やすくする
+	if(mt_rand(1, 100) <= $user_count){
+	  $role_list['poison_wolf']++;
+	  $special_wolf_count--;
+	}
+	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
+	  $role_list['tongue_wolf']++;
+	  $special_wolf_count--;
+	}
+	$role_list['boss_wolf'] = $special_wolf_count;
+      }
     }
     // //調整
     // if($wolf_count > 0){
@@ -192,8 +204,6 @@ function GetRoleList($user_count, $option_role){
     // }
 
     $role_list['wolf'] = $wolf_count;
-    $role_list['boss_wolf'] = $boss_wolf_count;
-    $role_list['poison_wolf'] = $poison_wolf_count;
 
     //妖狐系の配役を決定
     if($user_count < 20){ //全人口が20人未満の場合は子狐は出現しない

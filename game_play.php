@@ -657,10 +657,11 @@ function OutputAbility(){
 			AND role LIKE '%wolf%' AND uname <> '$uname' AND user_no > 0");
     OutputPartner($sql, 'wolf_partner');
 
-    //無意識を表示
-    $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
-			AND role LIKE 'unconscious%' AND user_no > 0");
-    OutputPartner($sql, 'unconscious_list');
+    if($day_night == 'night'){ //夜だけ無意識を表示
+      $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
+				AND role LIKE 'unconscious%' AND user_no > 0");
+      OutputPartner($sql, 'unconscious_list');
+    }
 
     //舌禍狼の噛み結果を表示
     if(strpos($role, 'tongue_wolf') !== false && strpos($role, 'lost_ability') === false){
@@ -673,14 +674,10 @@ function OutputAbility(){
 
 	//噛んだ人の役職を取得
 	$sql_target = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
-					AND handle_name = $target AND user_no > 0");
+					AND handle_name = '$target' AND user_no > 0");
 	$target_role = mysql_result($sql_target, 0, 0);
-	if($target_role == 'human'){
-	  $result_role = 'lost_tongue_wolf'; //村人なら能力失効
-	  $role .= ' lost_ability';
-	  mysql_query("UPDATE user_entry SET role = '$role' WHERE room_no = $room_no
-			AND uname = '$uname' AND user_no > 0");
-	}
+	if($target_role == 'human')
+	  $result_role = 'lost_ability'; //村人なら能力失効
 	else
 	  $result_role = 'result_' . $target_role;
 	OutputAbilityResult('wolf_result', $target, $result_role);
@@ -691,6 +688,27 @@ function OutputAbility(){
       $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no AND situation = 'WOLF_EAT'");
       if(mysql_num_rows($sql) == 0)
 	echo '<span class="ability-wolf-eat">' . $MESSAGE->ability_wolf_eat . '</span><br>'."\n";
+
+      //舌禍狼の能力失効判定
+      if(strpos($role, 'tongue_wolf') !== false && strpos($role, 'lost_ability') === false){
+	$sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+				AND date = $yesterday AND type = 'WOLF_EAT'");
+	$count = mysql_num_rows($sql);
+	for($i = 0; $i < $count; $i++){
+	  list($wolf, $target) = ParseStrings(mysql_result($sql, $i, 0));
+	  if($handle_name != $wolf) continue; //自分の噛み結果のみ表示
+
+	  //噛んだ人の役職を取得
+	  $sql_target = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
+					AND handle_name = '$target' AND user_no > 0");
+	  $target_role = mysql_result($sql_target, 0, 0);
+	  if($target_role == 'human'){
+	    $role .= ' lost_ability';
+	    mysql_query("UPDATE user_entry SET role = '$role' WHERE room_no = $room_no
+				AND uname = '$uname' AND user_no > 0");
+	  }
+	}
+      }
     }
   }
   elseif(strpos($role, 'mage') !== false){

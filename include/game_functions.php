@@ -108,10 +108,11 @@ function OutputRealTimer($start_time, $end_time){
 function OutputAutoReloadLink($url){
   global $GAME_CONF, $auto_reload;
 
-  echo '[自動更新](' . ($auto_reload == 0 ? '手動' : $url . '0">手動</a>');
+  echo '[自動更新](' . ($auto_reload == 0 ? $url . '0">【手動】</a>' : $url . '0">手動</a>');
   foreach($GAME_CONF->auto_reload_list as $time){
     $name = $time . '秒';
-    echo  ' ' . ($auto_reload == $time ? $name : $url . $time . '">' . $name . '</a>');
+    echo  ' ' . ($auto_reload == $time ? $url . $time . '">【' . $name . '】</a>' :
+		 $url . $time . '">' . $name . '</a>');
   }
   echo ')'."\n";
 }
@@ -195,6 +196,8 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName('boss_wolf', 'wolf');
       elseif(strpos($this_role, 'poison_wolf') !== false)
 	$role_str = MakeRoleName('poison_wolf', 'wolf');
+      elseif(strpos($this_role, 'tongue_wolf') !== false)
+	$role_str = MakeRoleName('tongue_wolf', 'wolf');
       elseif(strpos($this_role, 'wolf') !== false)
 	$role_str = MakeRoleName('wolf');
       elseif(strpos($this_role, 'soul_mage') !== false)

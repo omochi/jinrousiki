@@ -210,7 +210,7 @@ function CheckVoteGameStart(){
   //ユーザリストを取得
   //身代わり君の役職を決定
   if(strpos($game_option, 'dummy_boy') !== false){
-    // $gerd = true; //デバッグ用
+     $gerd = true; //デバッグ用
     $count = count($now_role_list);
     for($i = 0; $i < $count; $i++){
       $this_role = array_shift($now_role_list); //配役リストから先頭を抜き出す
@@ -918,7 +918,7 @@ function CheckVoteNight(){
     $sql = mysql_query($query_role . "'cupid%'");
     $cupid_count = mysql_result($sql, 0, 0);
     if($vote_count != $cupid_count) return false;
-    
+
     $sql = mysql_query($query_vote . "'MANIA_DO'");
     $vote_count = mysql_result($sql, 0, 0);
 
@@ -945,7 +945,7 @@ function CheckVoteNight(){
 
     // $sql = mysql_query($query_vote . "'REPORTER_DO'");
     // $vote_count = mysql_result($sql, 0, 0);
-    // 
+    //
     // $sql = mysql_query($query_role . "'%reporter%'");
     // $reporter_count = mysql_result($sql, 0, 0);
     // if($vote_count != $reporter_count) return false;

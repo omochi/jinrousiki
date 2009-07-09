@@ -40,7 +40,9 @@ class RoleImage extends ImageManager{
   var $wolf                 = 'img/role/wolf.jpg';                 //人狼
   var $boss_wolf            = 'img/role/boss_wolf.jpg';            //白狼
   var $poison_wolf          = 'img/role/poison_wolf.jpg';          //毒狼
+  var $tongue_wolf          = 'img/role/tongue_wolf.jpg';          //舌禍狼
   var $wolf_partner         = 'img/role/wolf_partner.jpg';         //人狼の仲間
+  var $wolf_result          = 'img/role/wolf_result.jpg';          //噛み結果
   var $mage                 = 'img/role/mage.jpg';                 //占い師
   var $soul_mage            = 'img/role/soul_mage.jpg';            //魂の占い師
   var $mage_result          = 'img/role/mage_result.jpg';          //占い結果
@@ -62,7 +64,7 @@ class RoleImage extends ImageManager{
   var $poison               = 'img/role/poison.jpg';               //埋毒者
   var $pharmacist           = 'img/role/pharmacist.jpg';           //薬師
   var $pharmacist_success   = 'img/role/pharmacist_success.jpg';   //薬師の解毒成功
-  var $unconsciousness_list = 'img/role/unconsciousness_list.jpg'; //無意識の一覧
+  var $unconscious_list     = 'img/role/unconscious_list.jpg';     //無意識の一覧
   var $cupid                = 'img/role/cupid.jpg';                //キューピッド
   var $cupid_pair           = 'img/role/cupid_pair.jpg';           //キューピッドが結びつけた恋人
   var $lovers_header        = 'img/role/lovers_header.jpg';        //恋人(前)
@@ -80,7 +82,8 @@ class RoleImage extends ImageManager{
   var $result_human        = 'img/role/result_human.jpg';        //村人
   var $result_wolf         = 'img/role/result_wolf.jpg';         //人狼
   var $result_boss_wolf    = 'img/role/result_boss_wolf.jpg';    //白狼
-  var $result_poison_wolf  = 'img/role/result_poison_wolf.jpg';  //毒狼 (仮称)
+  var $result_poison_wolf  = 'img/role/result_poison_wolf.jpg';  //毒狼
+  var $result_tongue_wolf  = 'img/role/result_tongue_wolf.jpg';  //舌禍狼
   var $result_mage         = 'img/role/result_mage.jpg';         //占い師
   var $result_soul_mage    = 'img/role/result_soul_mage.jpg';    //魂の占い師
   var $result_necromancer  = 'img/role/result_necromancer.jpg';  //霊能者
@@ -99,6 +102,7 @@ class RoleImage extends ImageManager{
   var $result_cupid        = 'img/role/result_cupid.jpg';        //キューピッド
   var $result_lovers       = 'img/role/result_lovers.jpg';       //恋人
   var $result_quiz         = 'img/role/result_quiz.jpg';         //出題者
+  var $lost_ability        = 'img/role/lost_ability.jpg';        //能力失効
 }
 
 //勝利陣営の画像パス
