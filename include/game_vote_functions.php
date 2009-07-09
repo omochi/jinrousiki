@@ -83,8 +83,9 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 750) $role_list['guard']++;
       elseif($rand < 780) $role_list['poison_guard']++;
       elseif($rand < 810) $role_list['poison']++;
-      elseif($rand < 860) $role_list['pharmacist']++;
-      elseif($rand < 910) $role_list['suspect']++;
+      elseif($rand < 855) $role_list['pharmacist']++;
+      elseif($rand < 885) $role_list['suspect']++;
+      elseif($rand < 910) $role_list['unconscious']++;
       elseif($rand < 960) $role_list['cupid']++;
       elseif($rand < 997) $role_list['mania']++;
       else                $role_list['quiz']++;
@@ -184,11 +185,11 @@ function GetRoleList($user_count, $option_role){
       }
       $boss_wolf_count = $special_wolf_count - $poison_wolf_count;
     }
-    //調整
-    if($wolf_count > 0){
-      $wolf_count--;
-      $poison_wolf_count++;
-    }
+    // //調整
+    // if($wolf_count > 0){
+    //   $wolf_count--;
+    //   $poison_wolf_count++;
+    // }
 
     $role_list['wolf'] = $wolf_count;
     $role_list['boss_wolf'] = $boss_wolf_count;
@@ -424,29 +425,6 @@ function GetRoleList($user_count, $option_role){
       $human_count -= $pharmacist_count; //村人陣営の残り人数
     }
 
-    //不審者の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 15){ //0:1 = 95:5
-      if($rand <= 95) $suspect_count = 0;
-      else $suspect_count = 1;
-    }
-    elseif($user_count < 19){ //0:1 = 85:15
-      if($rand <= 85) $suspect_count = 0;
-      else $suspect_count = 1;
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      $base_count = floor($user_count / 20);
-      if($rand <= 10) $suspect_count = $base_count - 1;
-      elseif($rand <= 90) $suspect_count = $base_count;
-      else $suspect_count = $base_count + 1;
-    }
-
-    //不審者の配役を決定
-    if($suspect_count > 0 && $human_count >= $suspect_count){
-      $role_list['suspect'] = $suspect_count;
-      $human_count -= $suspect_count; //村人陣営の残り人数
-    }
-
     //神話マニアの人数を決定
     $rand = mt_rand(1, 100); //人数決定用乱数
     if($user_count < 16){ //16人未満では出現しない
@@ -467,6 +445,42 @@ function GetRoleList($user_count, $option_role){
     if($mania_count > 0 && $human_count >= $mania_count){
       $role_list['mania'] = $mania_count;
       $human_count -= $mania_count; //村人陣営の残り人数
+    }
+
+    //不審者系の人数を決定
+    $rand = mt_rand(1, 100); //人数決定用乱数
+    if($user_count < 15){ //0:1 = 90:10
+      if($rand <= 90) $strangers_count = 0;
+      else $strangers_count = 1;
+    }
+    elseif($user_count < 19){ //0:1 = 80:20
+      if($rand <= 80) $strangers_count = 0;
+      else $strangers_count = 1;
+    }
+    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
+      $base_count = floor($user_count / 20);
+      if($rand <= 10) $strangers_count = $base_count - 1;
+      elseif($rand <= 90) $strangers_count = $base_count;
+      else $strangers_count = $base_count + 1;
+    }
+
+    //不審者系の配役を決定
+    if($strangers_count > 0 && $human_count >= $strangers_count){
+      if($user_count < 20){ //全人口が20人未満の場合は無意識を出やすくする
+	for($i = 0; $i < $strangers_count; $i++){
+	  $rand = mt_rand(1, 100);
+	  if($rand <= 80) $role_list['unconscious']++;
+	  else $role_list['suspect']++;
+	}
+      }
+      else{ //20人以上ならやや不審者を出やすくする
+	for($i = 0; $i < $strangers_count; $i++){
+	  $rand = mt_rand(1, 100);
+	  if($rand <= 40) $role_list['unconscious']++;
+	  else $role_list['suspect']++;
+	}
+      }
+      $human_count -= $strangers_count; //村人陣営の残り人数
     }
 
     //出題者の人数を決定

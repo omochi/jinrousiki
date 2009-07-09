@@ -189,27 +189,50 @@ function OutputPlayerList(){
     if($day_night == 'aftergame' ||
        ($live == 'dead' && strpos($game_option, 'not_open_cast') === false)){
       $role_str = '';
-      if(strpos($this_role, 'human')            !== false) $role_str = MakeRoleName('human');
-      elseif(strpos($this_role, 'boss_wolf')    !== false) $role_str = MakeRoleName('boss_wolf', 'wolf');
-      elseif(strpos($this_role, 'poison_wolf')  !== false) $role_str = MakeRoleName('poison_wolf', 'wolf');
-      elseif(strpos($this_role, 'wolf')         !== false) $role_str = MakeRoleName('wolf');
-      elseif(strpos($this_role, 'soul_mage')    !== false) $role_str = MakeRoleName('soul_mage', 'mage');
-      elseif(strpos($this_role, 'mage')         !== false) $role_str = MakeRoleName('mage');
-      elseif(strpos($this_role, 'necromancer')  !== false) $role_str = MakeRoleName('necromancer');
-      elseif(strpos($this_role, 'medium')       !== false) $role_str = MakeRoleName('medium', 'necromancer');
-      elseif(strpos($this_role, 'fanatic_mad')  !== false) $role_str = MakeRoleName('fanatic_mad', 'mad');
-      elseif(strpos($this_role, 'mad')          !== false) $role_str = MakeRoleName('mad');
-      elseif(strpos($this_role, 'poison_guard') !== false) $role_str = MakeRoleName('poison_guard', 'guard');
-      elseif(strpos($this_role, 'guard')        !== false) $role_str = MakeRoleName('guard');
-      elseif(strpos($this_role, 'common')       !== false) $role_str = MakeRoleName('common');
-      elseif(strpos($this_role, 'child_fox')    !== false) $role_str = MakeRoleName('child_fox', 'fox');
-      elseif(strpos($this_role, 'fox')          !== false) $role_str = MakeRoleName('fox');
-      elseif(strpos($this_role, 'poison')       !== false) $role_str = MakeRoleName('poison');
-      elseif(strpos($this_role, 'pharmacist')   !== false) $role_str = MakeRoleName('pharmacist', 'poison');
-      elseif(strpos($this_role, 'suspect')      !== false) $role_str = MakeRoleName('suspect', 'human');
-      elseif(strpos($this_role, 'cupid')        !== false) $role_str = MakeRoleName('cupid');
-      elseif(strpos($this_role, 'mania')        !== false) $role_str = MakeRoleName('mania');
-      elseif(strpos($this_role, 'quiz')         !== false) $role_str = MakeRoleName('quiz');
+      if(strpos($this_role, 'human') !== false)
+	$role_str = MakeRoleName('human');
+      elseif(strpos($this_role, 'boss_wolf') !== false)
+	$role_str = MakeRoleName('boss_wolf', 'wolf');
+      elseif(strpos($this_role, 'poison_wolf') !== false)
+	$role_str = MakeRoleName('poison_wolf', 'wolf');
+      elseif(strpos($this_role, 'wolf') !== false)
+	$role_str = MakeRoleName('wolf');
+      elseif(strpos($this_role, 'soul_mage') !== false)
+	$role_str = MakeRoleName('soul_mage', 'mage');
+      elseif(strpos($this_role, 'mage') !== false)
+	$role_str = MakeRoleName('mage');
+      elseif(strpos($this_role, 'necromancer') !== false)
+	$role_str = MakeRoleName('necromancer');
+      elseif(strpos($this_role, 'medium') !== false)
+	$role_str = MakeRoleName('medium', 'necromancer');
+      elseif(strpos($this_role, 'fanatic_mad') !== false)
+	$role_str = MakeRoleName('fanatic_mad', 'mad');
+      elseif(strpos($this_role, 'mad') !== false)
+	$role_str = MakeRoleName('mad');
+      elseif(strpos($this_role, 'poison_guard') !== false)
+	$role_str = MakeRoleName('poison_guard', 'guard');
+      elseif(strpos($this_role, 'guard') !== false)
+	$role_str = MakeRoleName('guard');
+      elseif(strpos($this_role, 'common') !== false)
+	$role_str = MakeRoleName('common');
+      elseif(strpos($this_role, 'child_fox') !== false)
+	$role_str = MakeRoleName('child_fox', 'fox');
+      elseif(strpos($this_role, 'fox') !== false)
+	$role_str = MakeRoleName('fox');
+      elseif(strpos($this_role, 'poison') !== false)
+	$role_str = MakeRoleName('poison');
+      elseif(strpos($this_role, 'pharmacist') !== false)
+	$role_str = MakeRoleName('pharmacist', 'poison');
+      elseif(strpos($this_role, 'suspect') !== false)
+	$role_str = MakeRoleName('suspect', 'human');
+      elseif(strpos($this_role, 'unconscious') !== false)
+	$role_str = MakeRoleName('unconscious', 'human');
+      elseif(strpos($this_role, 'cupid') !== false)
+	$role_str = MakeRoleName('cupid');
+      elseif(strpos($this_role, 'mania') !== false)
+	$role_str = MakeRoleName('mania');
+      elseif(strpos($this_role, 'quiz') !== false)
+	$role_str = MakeRoleName('quiz');
 
       //¤³¤³¤«¤é·óÇ¤Ìò¿¦
       if(strpos($this_role, 'lovers') !== false)

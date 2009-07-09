@@ -635,14 +635,19 @@ function OutputAbility(){
   }
 
   $yesterday = $date - 1;
-  if(strpos($role, 'human') !== false || strpos($role, 'suspect') !== false)
+  if(strpos($role, 'human') !== false || strpos($role, 'suspect') !== false ||
+     strpos($role, 'unconscious') !== false)
     OutputRoleComment('human');
   elseif(strpos($role, 'wolf') !== false){
     if(strpos($role, 'boss_wolf') !== false)
       OutputRoleComment('boss_wolf');
     elseif(strpos($role, 'poison_wolf') !== false){
       // OutputRoleComment('poison_wolf');
-      echo '[役割]<br>　あなたは「毒狼 (仮称)」です。たとえ処刑されても体内に流れる猛毒で村人一人を道連れにできます。<br>'."\n";
+      echo '[役割]<br>　あなたは「毒狼」です。たとえ処刑されても体内に流れる猛毒で村人一人を道連れにできます。<br>'."\n";
+    }
+    elseif(strpos($role, 'tongue_wolf') !== false){
+      // OutputRoleComment('tongue_wolf');
+      echo '[役割]<br>　あなたは「舌禍狼」、噛んだ人の役職を知ることができます。ただし、村人を噛んだらその力を失ってしまいます。<br>'."\n";
     }
     else
       OutputRoleComment('wolf');
@@ -651,6 +656,36 @@ function OutputAbility(){
     $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
 			AND role LIKE '%wolf%' AND uname <> '$uname' AND user_no > 0");
     OutputPartner($sql, 'wolf_partner');
+
+    //無意識を表示
+    $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
+			AND role LIKE 'unconscious%' AND user_no > 0");
+    OutputPartner($sql, 'unconscious_list');
+
+    //舌禍狼の噛み結果を表示
+    if(strpos($role, 'tongue_wolf') !== false && strpos($role, 'lost_ability') === false){
+      $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+				AND date = $yesterday AND type = 'WOLF_EAT'");
+      $count = mysql_num_rows($sql);
+      for($i = 0; $i < $count; $i++){
+	list($wolf, $target) = ParseStrings(mysql_result($sql, $i, 0));
+	if($handle_name != $wolf) continue; //自分の噛み結果のみ表示
+
+	//噛んだ人の役職を取得
+	$sql_target = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
+					AND handle_name = $target AND user_no > 0");
+	$target_role = mysql_result($sql_target, 0, 0);
+	if($target_role == 'human'){
+	  $result_role = 'lost_tongue_wolf'; //村人なら能力失効
+	  $role .= ' lost_ability';
+	  mysql_query("UPDATE user_entry SET role = '$role' WHERE room_no = $room_no
+			AND uname = '$uname' AND user_no > 0");
+	}
+	else
+	  $result_role = 'result_' . $target_role;
+	OutputAbilityResult('wolf_result', $target, $result_role);
+      }
+    }
 
     if($day_night == 'night'){ //夜の噛み投票
       $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no AND situation = 'WOLF_EAT'");

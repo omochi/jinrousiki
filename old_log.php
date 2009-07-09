@@ -264,7 +264,7 @@ FOOTER;
 
 //指定の部屋Noのログを出力する
 function OutputOldLog($room_no){
-  #global $reverse_log, $heaven_only, $status, $day_night, $last_date, $live;
+  // global $reverse_log, $heaven_only, $status, $day_night, $last_date, $live;
   global $RQ_ARGS, $status, $day_night, $last_date, $live;
 
   $title = '汝は人狼なりや？[過去ログ]';
@@ -307,34 +307,20 @@ EOF;
 //通常のログ表示順を表現します。
 function LayoutTalkLog($last_date, $is_reverse){
   if ($is_reverse) {
-    OutputDateTalkLog($date,'beforegame',$is_reverse);
-    echo("</tr><tr>\r\n");
-
-    for($i = 1; $i<=$last_date; $i++) {
-      OutputDateTalkLog($i,'',$is_reverse);
-      echo("</tr><tr>\r\n");
+    OutputDateTalkLog(0, 'beforegame', $is_reverse);
+    for($i = 1; $i <= $last_date; $i++) {
+      OutputDateTalkLog($i, '', $is_reverse);
     }
-
     OutputVictory();
-    echo("</tr><tr>\r\n");
-
-    OutputDateTalkLog($date,'aftergame',$is_reverse);
-    echo("</tr><tr>\r\n");
+    OutputDateTalkLog($last_date, 'aftergame', $is_reverse);
   }
   else {
-    OutputDateTalkLog($date,'aftergame',$is_reverse);
-    echo("</tr><tr>\r\n");
-
+    OutputDateTalkLog($last_date, 'aftergame', $is_reverse);
     OutputVictory();
-    echo("</tr><tr>\r\n");
-
     for($i = $last_date; $i > 0; $i--) {
-      OutputDateTalkLog($i,'',$is_reverse);
-      echo("</tr><tr>\r\n");
+      OutputDateTalkLog($i, '', $is_reverse);
     }
-
-    OutputDateTalkLog($date,'beforegame',$is_reverse);
-    echo("</tr><tr>\r\n");
+    OutputDateTalkLog(0, 'beforegame', $is_reverse);
   }
 }
 
@@ -342,14 +328,12 @@ function LayoutTalkLog($last_date, $is_reverse){
 function LayoutHeaven($last_date, $is_reverse){
   if($is_reverse) {
     for($i = $last_date; $i > 0; $i--) {
-      OutputDateTalkLog($i,'heaven_only',$is_reverse);
-      echo("</tr><tr>\r\n");
+      OutputDateTalkLog($i, 'heaven_only', $is_reverse);
     }
   }
   else {
     for($i = 1; $i <= $last_date; $i++) {
-      OutputDateTalkLog($i,'heaven_only',$is_reverse);
-      echo("</tr><tr>\r\n");
+      OutputDateTalkLog($i, 'heaven_only', $is_reverse);
     }
   }
 }
@@ -451,7 +435,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   }
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
-     $set_date != $last_date && !$is_reverse && $RQ_ARGS->heaven_only != 'on'){
+     $set_date != $last_date && ! $is_reverse && $RQ_ARGS->heaven_only != 'on'){
     $date = $set_date + 1;
     $day_night = 'day';
     OutputLastWords(); //遺言を出力
@@ -475,10 +459,10 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
     }
     OutputTalk($array); //会話出力
   }
-  echo '</table>';
+  echo '</table>'."\n";
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
-     $set_date != $last_date && $reverse_log == 'on' && $RQ_ARGS->heaven_only != 'on'){
+     $set_date != $last_date && $is_reverse && $RQ_ARGS->heaven_only != 'on'){
     $day_night = 'day';
     $date = $set_date + 1;
     OutputDeadMan();   //死亡者を出力
