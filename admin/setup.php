@@ -102,7 +102,7 @@ function CheckTable(){
     //ディレクトリ内のファイル一覧を取得
     if($handle = opendir($class->path)){
       while (($file = readdir($handle)) !== false){
-	if($file != '.' && $file != '..'){
+	if($file != '.' && $file != '..' && $file != 'index.html'){
 	  //初期データの読み込み
 	  $name   = $class->name[  $icon_no - 1];
 	  $width  = $class->width[ $icon_no - 1];
