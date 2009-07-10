@@ -140,42 +140,40 @@ function SendCookie(){
     mysql_query('COMMIT');
   }
 
-  //異議あり、のクッキーを構築する user_no 1〜22まで
-  $objection_array = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); //クッキーに送信するデータの作成
-  //message:異議ありをしたユーザNo とその回数を取得
+  //ユーザ総数を取得して人数分の「異議あり」のクッキーを構築する
+  $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0");
+  // //配列をリセット (0 番目に変な値が入らない事が保証されていれば不要かな？)
+  // $objection_array = array();
+  // unset($objection_array[0]);
+  $objection_array = array_fill(1, mysql_result($sql, 0, 0), 0); //index は 1 から
+
+  //message:異議ありをしたユーザ No とその回数を取得
   $sql = mysql_query("SELECT message, COUNT(message) AS message_count FROM system_message
 			WHERE room_no = $room_no AND type = 'OBJECTION' GROUP BY message");
-  $count = mysql_num_rows($sql);
-  for($i=0 ; $i < $count; $i++){
-    $array = mysql_fetch_assoc($sql);
-    $objection_user_no    = (int)$array['message'];
-    $objection_user_count = (int)$array['message_count'];
-    $objection_array[$objection_user_no -1] = $objection_user_count;
+  while(($array = mysql_fetch_assoc($sql)) !== false){
+    $this_user_no = (int)$array['message'];
+    $this_count   = (int)$array['message_count'];
+    $objection_array[$this_user_no] = $this_count;
   }
 
-  //クッキーに格納（有効期限一時間）
-  for($i=0; $i < 22; $i++){
-    $setcookie_objection_str .= $objection_array[$i] . ","; //カンマ区切り
-  }
-  setcookie('objection', $setcookie_objection_str, $system_time + 3600);
+  //クッキーに格納 (有効期限一時間)
+  $str = array_shift($objection_array);
+  foreach($objection_array as $value) $str .= ',' . $value; //カンマ区切り
+  setcookie('objection', $str, $system_time + 3600);
 
   //残り異議ありの回数
-  $objection_left_count = $GAME_CONF->objection - $objection_array[$user_no - 1];
+  $objection_left_count = $GAME_CONF->objection - $objection_array[$user_no];
 
   //<再投票を音でお知らせ用>
   //再投票の回数を取得
   $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
 			AND date = $date AND type = 'RE_VOTE' ORDER BY message DESC");
   if(mysql_num_rows($sql) != 0){
-    //何回目の再投票なのか取得
-    $last_vote_times = (int)mysql_result($sql, 0, 0);
-
-    //クッキーに格納（有効期限一時間）
-    setcookie('vote_times', $last_vote_times, $system_time + 3600);
+    $last_vote_times = (int)mysql_result($sql, 0, 0); //何回目の再投票なのか取得
+    setcookie('vote_times', $last_vote_times, $system_time + 3600); //クッキーに格納 (有効期限一時間)
   }
   else{
-    //クッキーから削除（有効期限一時間）
-    setcookie('vote_times', '', $system_time - 3600);
+    setcookie('vote_times', '', $system_time - 3600); //クッキーから削除 (有効期限一時間)
   }
 }
 
@@ -462,30 +460,16 @@ EOF;
     if($cookie_day_night != $day_night && $day_night == 'day') OutputSound($SOUND->morning);
 
     //異議あり、を音で知らせる
-    //クッキーの値を配列に格納する
-    sscanf($cookie_objection, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,",
-	   &$tmp[0],&$tmp[1],&$tmp[2],&$tmp[3],&$tmp[4],&$tmp[5],&$tmp[6],&$tmp[7],&$tmp[8],&$tmp[9],
-	   &$tmp[10],&$tmp[11],&$tmp[12],&$tmp[13],&$tmp[14],&$tmp[15],&$tmp[16],&$tmp[17],&$tmp[18],
-	   &$tmp[19],&$tmp[20],&$tmp[21]);
+    $cookie_objection_array = explode(',', $cookie_objection); //クッキーの値を配列に格納する
 
-    $objection_sex = array();
-    for($i=0; $i < 22; $i++){ //差分を計算
-      if($objection_array[$i] > (int)$tmp[$i]){ //差分があればその性別を確認、合計もカウント
-	$num = $i + 1;
-	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $num");
-	$array = mysql_fetch_assoc($sql); //返り値を参照していないので DB の中身の確認？
-
-	if(mysql_result($sql, 0, 0) == 'male') //ここで鳴らせば良いような・・・？
-	  array_push($objection_sex, $SOUND->objection_male);
-	else
-	  array_push($objection_sex, $SOUND->objection_female);
-
-	$objection_count++; //合計
+    $count = count($objection_array);
+    for($i = 1; $i <= $count; $i++){ //差分を計算 (index は 1 から)
+      //差分があれば性別を確認して音を鳴らす
+      if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
+	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $i");
+	$objection_sound = 'objection_' . mysql_result($sql, 0, 0);
+	OutputSound($SOUND->$objection_sound, true);
       }
-    }
-
-    for($i=0; $i < $objection_count; $i++){ //差分があればその回数だけ音を鳴らす
-      OutputSound($objection_sex[$i], true);
     }
   }
   echo '</td></tr>'."\n" . '</table>'."\n";
