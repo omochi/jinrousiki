@@ -267,7 +267,7 @@ function OutputOldLog($room_no){
   // global $reverse_log, $heaven_only, $status, $day_night, $last_date, $live;
   global $RQ_ARGS, $status, $day_night, $last_date, $live;
 
-  $title = '汝は人狼なりや？[過去ログ]';
+  $base_title = '汝は人狼なりや？[過去ログ]';
   $url   = '<br>' . "\n" . '<a href="old_log.php">←戻る</a>'."\n";
 
   if($room_no == NULL) OutputActionResult($title, '村を指定してください。' . $url);
@@ -283,10 +283,11 @@ function OutputOldLog($room_no){
   $status       = $array['status'];
 
   if($status != 'finished' || $day_night != 'aftergame'){
-    OutputActionResult($title, 'まだこの部屋のログは閲覧できません。' . $url);
+    OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
 
   $live = 'dead'; //他の関数に影響、すべて表示するため
+  $title = '[' . $room_no . '番地]' . $room_name . ' - ' . $base_title;
 
   //戻る先を前のページにする
   $referer_page_str = strstr($_SERVER['HTTP_REFERER'], 'page');

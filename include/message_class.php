@@ -9,6 +9,24 @@ class Message{
   //身代わり君の遺言
   var $dummy_boy_last_words = '僕はおいしくないって言ったのに……';
 
+  var $game_option_dummy_boy = '初日の夜は身代わり君';
+
+  var $game_option_open_vote     = '投票した票数を公表する';
+  var $game_option_not_open_cast = '霊界で配役を公開しない';
+  var $game_option_decide        = '決定者登場';
+  var $game_option_authority     = '権力者登場';
+  var $game_option_poison        = '埋毒者登場';
+  var $game_option_cupid         = 'キューピッド登場';
+  var $game_option_boss_wolf     = '白狼登場';
+  var $game_option_poison_wolf   = '毒狼登場';
+  var $game_option_mania         = '神話マニア登場';
+  var $game_option_medium        = '巫女登場';
+  var $game_option_liar          = '狼少年村';
+  var $game_option_sudden_death  = '虚弱体質村';
+  var $game_option_quiz          = 'クイズ村';
+  var $game_option_chaos         = '闇鍋モード';
+  var $game_option_chaosfull     = '真・闇鍋モード';
+
   //-- user_manager.php --//
   //EntryUser() : ユーザ登録
   //入村メッセージ
@@ -69,6 +87,7 @@ class Message{
   var $guard_do = 'の護衛に付きました';   //狩人の投票
   var $cupid_do = 'に愛の矢を放ちました'; //キューピッドの投票
   var $mania_do = 'の能力を真似ることにしました'; //神話マニアの投票
+  var $reporter_do = 'を尾行しました'; //ブン屋の投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -91,6 +110,7 @@ class Message{
   // var $vote_killed      = 'は投票の結果処刑されました'; //吊り
   var $vote_killed       = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
   var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
+  var $reporter_duty     = '(ブン屋) は人外に襲われたようです'; //ブン屋の殉職
   var $vote_sudden_death = 'はショック死しました'; //投票系サブ役職
   var $chicken           = 'は小心者だったようです'; //小心者
   var $rabbit            = 'はウサギだったようです'; //ウサギ
@@ -140,6 +160,6 @@ class Message{
   var $submit_guard_do = '対象を護衛する'; //狩人の投票ボタン
   var $submit_reporter_do = '対象を尾行する'; //ブン屋の投票ボタン
   var $submit_cupid_do = '対象に愛の矢を放つ'; //キューピッドの投票ボタン
-  var $submit_mania_do =    '対象を真似る';	     //狩人の投票ボタン
+  var $submit_mania_do = '対象を真似る'; //神話マニアの投票ボタン
 }
 ?>

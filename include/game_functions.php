@@ -118,6 +118,37 @@ function OutputAutoReloadLink($url){
 }
 
 //日付と生存者の人数を出力
+function OutputGameOption(){
+  global $MESSAGE, $room_no, $game_option;
+
+  $real_time  = (strpos($game_option, 'real_time') !== false);
+  $sql = mysql_query("SELECT option_role FROM room WHERE room_no = $room_no");
+  $option_role = mysql_result($sql, 0, 0);
+  echo '<table class="time-table"><tr>'."\n";
+  echo '<td>ゲームオプション (テスト表示中) (誰かデザイン考えて)<br>';
+  if($real_time){
+    //実時間の制限時間を取得
+    sscanf(strstr($game_option, 'time'), 'time:%d:%d', &$day_minutes, &$night_minutes);
+    echo '<div class="real-time">';
+    echo "設定時間： 昼 <span>{$day_minutes}</span>分 / 夜 <span>{$night_minutes}</span>分";
+    echo '</div>';
+  }
+  $option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide', 'authority',
+		       'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'mania', 'medium',
+		       'liar', 'sudden_death', 'quiz', 'chaos', 'chaosfull');
+  foreach($option_list as $this_option){
+    if(strpos($game_option, $this_option) !== false || strpos($option_role, $this_option) !== false){
+      $str = 'game_option_' . $this_option;
+      echo $MESSAGE->$str . '　';
+    }
+  }
+  // echo "$game_option $option_role";
+
+  echo '</td>';
+  echo '</tr></table>'."\n";
+}
+
+//日付と生存者の人数を出力
 function OutputTimeTable(){
   global $room_no, $date;
 
@@ -204,6 +235,8 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName('soul_mage', 'mage');
       elseif(strpos($this_role, 'mage') !== false)
 	$role_str = MakeRoleName('mage');
+      elseif(strpos($this_role, 'reporter') !== false)
+	$role_str = MakeRoleName('reporter', 'mage');
       elseif(strpos($this_role, 'necromancer') !== false)
 	$role_str = MakeRoleName('necromancer');
       elseif(strpos($this_role, 'medium') !== false)
@@ -265,6 +298,8 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('normal_voice', 'decide', true);
       elseif(strpos($this_role, 'weak_voice') !== false)
 	$role_str .= MakeRoleName('weak_voice', 'decide', true);
+      elseif(strpos($this_role, 'random_voice') !== false)
+	$role_str .= MakeRoleName('random_voice', 'decide', true);
       elseif(strpos($this_role, 'no_last_words') !== false)
 	$role_str .= MakeRoleName('no_last_words', 'decide', true);
       elseif(strpos($this_role, 'liar') !== false)
@@ -470,7 +505,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($array){
-  global $MESSAGE, $game_option, $add_role, $status, $day_night, $uname, $live, $role;
+  global $GAME_CONF, $MESSAGE, $game_option, $add_role, $status, $day_night, $uname, $live, $role;
 
   $talk_uname       = $array['talk_uname'];
   $talk_handle_name = $array['talk_handle_name'];
@@ -487,14 +522,15 @@ function OutputTalk($array){
 
   LineToBR(&$sentence); //改行コードを <br> に変換
   $location_system = (strpos($location, 'system') !== false);
-  $flag_vote   = (strpos($sentence, 'VOTE_DO')  === 0);
-  $flag_wolf   = (strpos($sentence, 'WOLF_EAT') === 0);
-  $flag_mage   = (strpos($sentence, 'MAGE_DO')  === 0);
-  $flag_guard  = (strpos($sentence, 'GUARD_DO') === 0);
-  $flag_cupid  = (strpos($sentence, 'CUPID_DO') === 0);
-  $flag_mania  = (strpos($sentence, 'MANIA_DO') === 0);
+  $flag_vote     = (strpos($sentence, 'VOTE_DO')  === 0);
+  $flag_wolf     = (strpos($sentence, 'WOLF_EAT') === 0);
+  $flag_mage     = (strpos($sentence, 'MAGE_DO')  === 0);
+  $flag_guard    = (strpos($sentence, 'GUARD_DO') === 0);
+  $flag_cupid    = (strpos($sentence, 'CUPID_DO') === 0);
+  $flag_mania    = (strpos($sentence, 'MANIA_DO') === 0);
+  $flag_reporter = (strpos($sentence, 'REPORTER_DO') === 0);
   $flag_system = ($location_system && ($flag_vote  || $flag_wolf || $flag_mage ||
-				       $flag_guard || $flag_cupid || $flag_mania));
+				       $flag_guard || $flag_cupid || $flag_mania || $flag_reporter));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     echo '<tr class="system-message">'."\n";
@@ -546,6 +582,7 @@ function OutputTalk($array){
   //開始前と終了後 || ゲーム中、生きている人の昼
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
 	 ($live == 'live' && $day_night == 'day' && $location == 'day')){
+    if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     echo '<tr class="user-talk">'."\n";
     echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
       $talk_handle_name . '</td>'."\n";
@@ -554,6 +591,7 @@ function OutputTalk($array){
   }
   //ゲーム中、生きている人の夜の狼
   elseif($live == 'live' && $day_night == 'night' && $location == 'night wolf'){
+    if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'wolf') !== false){
       $talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
     }
@@ -568,6 +606,7 @@ function OutputTalk($array){
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($live == 'live' && $day_night == 'night' && $location == 'night common'){
+    if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     echo '<tr class="user-talk">'."\n";
     if(strpos($role, 'common') !== false){
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
@@ -583,6 +622,7 @@ function OutputTalk($array){
   //ゲーム中、生きている人の夜の妖狐
   elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
     if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
+      if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
       echo '<tr class="user-talk">'."\n";
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
 	$talk_handle_name . '</td>'."\n";
@@ -593,6 +633,7 @@ function OutputTalk($array){
   //ゲーム中、生きている人の夜の独り言
   elseif($live == 'live' && $day_night == 'night' && $location == 'night self_talk'){
     if($uname == $talk_uname){
+      if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
       echo '<tr class="user-talk">'."\n";
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
 	$talk_handle_name . '<span>の独り言</span></td>'."\n";
@@ -639,7 +680,14 @@ function OutputTalk($array){
       echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
 	$target_handle_name . ' ' . $MESSAGE->mania_do . '</td>'."\n";
     }
+    elseif($location_system && $flag_reporter){ //ブン屋の投票
+      $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
+      echo '<tr class="system-message">'."\n";
+      echo '<td class="mage-do" colspan="2">' . $talk_handle_name . ' は ' .
+	$target_handle_name . ' ' . $MESSAGE->reporter_do . '</td>'."\n";
+    }
     else{ //その他の全てを表示(死者の場合)
+      if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
       $base_class = 'user-talk';
       $talk_class = 'user-name';
       switch($location){
@@ -678,6 +726,7 @@ function OutputTalk($array){
     echo '</tr>'."\n";
   }
   else{ //観戦者
+    if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if($day_night == 'night' && $location == 'night wolf'){
       if(strpos($role, 'wolf') !== false){
 	$talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
@@ -780,8 +829,8 @@ function OutputDeadMan(){
     "OR type LIKE 'SUDDEN_DEATH%'";
 
   //前の日の夜に起こった死亡メッセージ
-  $type_night = "type = 'WOLF_KILLED' OR type = 'FOX_DEAD' OR " .
-    "type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night'";
+  $type_night = "type = 'WOLF_KILLED' OR type = 'FOX_DEAD' OR type = 'REPORTER_DUTY' " .
+    "OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night'";
 
   if($day_night == 'day'){
     $set_date = $yesterday;
@@ -844,6 +893,11 @@ function OutputDeadManType($name, $type){
     case 'VOTE_KILLED':
       echo '<tr class="dead-type-vote">';
       echo '<td>' . $name . ' ' . $MESSAGE->vote_killed . '</td>';
+      break;
+
+    case 'REPORTER_DUTY':
+      echo $deadman;
+      if($show_reason) echo $reason_header . $MESSAGE->reporter_duty . ')</td>';
       break;
 
     case 'LOVERS_FOLLOWED_day':
@@ -957,7 +1011,8 @@ function OutputAbilityAction(){
   $yesterday = $date - 1;
   $result = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
 			 AND date = $yesterday AND ( type = 'MAGE_DO' OR type = 'WOLF_EAT'
-			 OR type = 'GUARD_DO' OR type = 'CUPID_DO' OR type = 'MANIA_DO')");
+			 OR type = 'GUARD_DO' OR type = 'CUPID_DO' OR type = 'MANIA_DO' 
+			 OR type = 'REPORTER_DO')");
   $count = mysql_num_rows($result);
   $header = '<strong>前日の夜、';
   $footer = 'ました</strong><br>'."\n";
@@ -987,6 +1042,10 @@ function OutputAbilityAction(){
 
       case 'MANIA_DO':
 	echo $header . '神話マニア ' . $handle_name . ' は ' . $target_name . 'を真似' . $footer;
+	break;
+
+      case 'REPORTER_DO':
+	echo $header . 'ブン屋 ' . $handle_name . ' は ' . $target_name . 'を尾行' . $footer;
 	break;
     }
   }
@@ -1066,9 +1125,21 @@ function KillUser($uname){
 		AND uname = '$uname' AND user_no > 0");
 }
 
+//遺言を取得して保存する ($target : HN)
+function SaveLastWords($target){
+  global $room_no;
+
+  $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = $room_no
+			AND handle_name = '$target' AND user_no > 0");
+  $last_words = mysql_result($sql, 0, 0);
+  if($last_words != ''){
+    InsertSystemMessage($target . "\t" . $last_words, 'LAST_WORDS');
+  }
+}
+
 //突然死処理
 function SuddenDeath($uname, $handle_name, $role, $type = NULL){
-  global $MESSAGE, $system_time, $room_no;
+  global $MESSAGE, $system_time, $room_no, $game_option;
 
   //生死を確認
   $sql = mysql_query("SELECT live FROM user_entry WHERE room_no = $room_no
@@ -1079,6 +1150,7 @@ function SuddenDeath($uname, $handle_name, $role, $type = NULL){
   if($type){
     InsertSystemTalk($handle_name . $MESSAGE->vote_sudden_death, ++$system_time); //システムメッセージ
     InsertSystemMessage($handle_name, 'SUDDEN_DEATH_' . $type);
+    if(strpos($game_option, 'sudden_death') === false) SaveLastWords($handle_name);
   }
   else
     InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time); //システムメッセージ
@@ -1088,6 +1160,7 @@ function SuddenDeath($uname, $handle_name, $role, $type = NULL){
 
   //巫女の判定結果(システムメッセージ)
   InsertSystemMessage($handle_name . "\t" . DistinguishCamp($role), 'MEDIUM_RESULT');
+  mysql_query('COMMIT'); //一応コミット
 }
 
 //恋人を調べるクエリ文字列を出力
@@ -1284,6 +1357,7 @@ function ParseStrings($str, $type = NULL){
     case 'GUARD_DO':
     case 'CUPID_DO':
     case 'MANIA_DO':
+    case 'REPORTER_DO':
       sscanf($str, "{$type}\t%s", &$target);
       DecodeSpace(&$target);
       return $target;
@@ -1291,6 +1365,7 @@ function ParseStrings($str, $type = NULL){
 
     case 'MAGE_RESULT':
     case 'MANIA_RESULT':
+    case 'REPORTER_RESULT':
       sscanf($str, "%s\t%s\t%s", &$first, &$second, &$third);
       DecodeSpace(&$first);
       DecodeSpace(&$second);

@@ -13,7 +13,7 @@ class RoomConfig{
   var $clear_session_id = 1200;
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる)
-  var $max_user_list = array(8, 16, 22);
+  var $max_user_list = array(8, 16, 22, 32);
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list に含むこと)
 
   //-- OutputCreateRoom() --//
@@ -51,6 +51,21 @@ class RoomConfig{
   var $boss_wolf = true; //白狼出現 (必要人数は GameConfig->boss_wolf 参照)
   var $default_boss_wolf = false;
 
+  var $poison_wolf = true; //白狼出現 (必要人数は GameConfig->poison_wolf 参照)
+  var $default_poison_wolf = false;
+
+  var $mania = true; //神話マニア出現 (必要人数は GameConfig->mania 参照)
+  var $default_mania = false;
+
+  var $medium = true; //巫女出現 (必要人数は GameConfig->medium 参照)
+  var $default_medium = false;
+
+  var $liar = true; //狼少年村
+  var $default_liar = false;
+
+  var $sudden_death = true; //虚弱体質村
+  var $default_sudden_death = false;
+
   // var $quiz = true; //クイズ村 //現在調整中
   var $quiz = false; //クイズ村
   var $default_quiz = false;
@@ -72,6 +87,9 @@ class GameConfig{
   // var $trip = true; //まだ実装されていません
   var $trip = false;
 
+  //発言を「」で括る
+  var $quote_words = false;
+
   //-- 投票 --//
   var $kick = 3; //何票で KICK 処理を行うか
   var $draw = 3; //再投票何回目で引き分けとするか
@@ -89,6 +107,7 @@ class GameConfig{
 			      'tongue_wolf'  => '舌禍狼',
 			      'mage'         => '占い師',
 			      'soul_mage'    => '魂の占い師',
+			      'reporter'     => 'ブン屋',
 			      'necromancer'  => '霊能者',
 			      'medium'       => '巫女',
 			      'mad'          => '狂人',
@@ -115,6 +134,7 @@ class GameConfig{
 			     'strong_voice'  => '大声',
 			     'normal_voice'  => '不器用',
 			     'weak_voice'    => '小声',
+			     'random_voice'  => '臆病者',
 			     'no_last_words' => '筆不精',
 			     'liar'          => '狼少年',
 			     'chicken'       => '小心者',
@@ -135,7 +155,8 @@ class GameConfig{
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     // 8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     8 => array('human' =>  1, 'wolf' => 1, 'reporter' => 2, 'guard' => 1, 'fox' => 1, 'mania' => 1, 'soul_mage' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -149,13 +170,26 @@ class GameConfig{
     19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
     20 => array('human' => 10, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
     21 => array('human' => 11, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1)
+    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    23 => array('human' => 12, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    24 => array('human' => 13, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    25 => array('human' => 14, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    26 => array('human' => 15, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    27 => array('human' => 15, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 2),
+    28 => array('human' => 14, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    29 => array('human' => 14, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    30 => array('human' => 15, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    31 => array('human' => 16, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    32 => array('human' => 16, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2)
                          );
 
-  var $decide    = 16;  //決定者出現に必要な人数
-  var $authority = 16;  //権力者出現に必要な人数
-  var $poison    = 20;  //埋毒者出現に必要な人数
-  var $boss_wolf = 20;  //白狼出現に必要な人数
+  var $decide      = 16;  //決定者出現に必要な人数
+  var $authority   = 16;  //権力者出現に必要な人数
+  var $poison      = 20;  //埋毒者出現に必要な人数
+  var $boss_wolf   = 18;  //白狼出現に必要な人数
+  var $poison_wolf = 20;  //毒狼出現に必要な人数
+  var $mania       = 16;  //神話マニア出現に必要な人数
+  var $medium      = 16;  //巫女出現に必要な人数
 
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
   var $poison_only_voter = false; //1.3 系のデフォルト
@@ -189,6 +223,7 @@ class GameConfig{
 				    'tongue_wolf'     => '舌狼',
 				    'mage'            => '占',
 				    'soul_mage'       => '魂',
+				    'reporter'        => '聞',
 				    'necromancer'     => '霊',
 				    'medium'          => '巫',
 				    'mad'             => '狂',
@@ -201,7 +236,7 @@ class GameConfig{
 				    'poison'          => '毒',
 				    'pharmacist'      => '薬',
 				    'suspect'         => '不審',
-				    'unconsciousness' => '無',
+				    'unconscious'     => '無',
 				    'cupid'           => 'QP',
 				    'mania'           => 'マ',
 				    'quiz'            => 'GM',
@@ -212,6 +247,7 @@ class GameConfig{
 				    'strong_voice'    => '大',
 				    'normal_voice'    => '不',
 				    'weak_voice'      => '小',
+				    'random_voice'    => '臆',
 				    'no_last_words'   => '不精',
 				    'liar'            => '嘘',
 				    'chicken'         => '酉',

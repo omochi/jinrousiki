@@ -90,6 +90,8 @@ if($day_night == 'beforegame'){ //ゲーム開始前なら登録画面のリンクを表示
 }
 echo '</tr></table>'."\n";
 
+OutputGameOption(); //ゲームオプションを説明
+
 echo '<table class="time-table"><tr>'."\n";
 OutputTimeTable(); //経過日数と生存人数
 

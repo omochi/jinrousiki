@@ -210,7 +210,7 @@ function CheckVoteGameStart(){
   //ユーザリストを取得
   //身代わり君の役職を決定
   if(strpos($game_option, 'dummy_boy') !== false){
-     $gerd = true; //デバッグ用
+    $gerd = true; //デバッグ用
     $count = count($now_role_list);
     for($i = 0; $i < $count; $i++){
       $this_role = array_shift($now_role_list); //配役リストから先頭を抜き出す
@@ -297,34 +297,44 @@ function CheckVoteGameStart(){
 
   //兼任となる役割の設定
   $rand_keys = array_rand($fix_role_list, $user_count); //ランダムキーを取得
-
-  //兼任となるオプション役割(決定者、権力者)
-  $sub_role_index = 0;
+  $rand_keys_index = 0;
   $sub_role_count_list = array();
 
   // //サブ役職テスト用
-  // $fix_role_list[$rand_keys[$sub_role_index]] .= ' liar';
-  // $sub_role_index++;
+  // $fix_role_list[$rand_keys[$rand_keys_index]] .= ' liar';
+  // $rand_keys_index++;
   // $sub_role_count_list['liar']++;
 
+  if(strpos($option_role, 'liar') !== false){ //狼少年村
+    for($i = 0; $i < $user_count; $i++){ //全員に一定確率で狼少年をつける
+      if(mt_rand(1, 100) <= 70) $fix_role_list[$i] .= ' liar';
+    }
+  }
+  if(strpos($game_option, 'sudden_death') !== false){ //虚弱体質村
+    $sudden_death_list = array('chicken', 'rabbit', 'perverseness');
+    for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
+      $rand_key = array_rand($sudden_death_list);
+      $fix_role_list[$i] .= ' ' . $sudden_death_list[$rand_key];
+    }
+  }
   if(strpos($option_role, 'decide') !== false && $user_count >= $GAME_CONF->decide){
-    $fix_role_list[$rand_keys[$sub_role_index]] .= ' decide';
-    $sub_role_index++;
+    $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' decide';
     $sub_role_count_list['decide']++;
   }
   if(strpos($option_role, 'authority') !== false && $user_count >= $GAME_CONF->authority){
-    $fix_role_list[$rand_keys[$sub_role_index]] .= ' authority';
-    $sub_role_index++;
+    $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' authority';
     $sub_role_count_list['authority']++;
   }
   if($chaos){
-    foreach($GAME_CONF->sub_role_list as $key => $value){
-      if($user_count < $sub_role_index) break;
+    //ランダムなサブ役職のコードリストを作成
+    $sub_role_keys = array_keys($GAME_CONF->sub_role_list);
+    shuffle($sub_role_keys);
+    foreach($sub_role_keys as $key){
+      if($rand_keys_index > $user_count) break;
       //ランダム割り振り対象外役職をスキップ
       if($key == 'decide' || $key == 'authority' || $key == 'lovers' || $key == 'copied') continue;
       if((int)$sub_role_count_list[$key] > 0) continue; //既に誰かに渡していればスキップ
-      $fix_role_list[$rand_keys[$sub_role_index]] .= ' ' . $key;
-      $sub_role_index++;
+      $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $key;
       $sub_role_count_list[$key]++;
     }
   }
@@ -665,6 +675,7 @@ function CheckVoteDay(){
 	  if(strpos($poison_target_role, 'lovers') !== false) LoversFollowed($poison_target_role);
 	}
       }
+      mysql_query('COMMIT'); //一応コミット
     }
 
     //処刑された人が恋人の場合
@@ -906,10 +917,10 @@ function CheckVoteNight(){
   }
   if($vote_count != $mage_count) return false;
 
-  $guard_count    = 0;
-  $reporter_count = 0;
   $cupid_count    = 0;
   $mania_count    = 0;
+  $guard_count    = 0;
+  $reporter_count = 0;
   if($date == 1){ //初日のみキューピッド・神話マニアの投票チェック
     $sql = mysql_query($query_vote . "'CUPID_DO'");
     $vote_count = mysql_result($sql, 0, 0);
@@ -926,7 +937,7 @@ function CheckVoteNight(){
     $sql = mysql_query($query_role . "'mania%'");
     $mania_count = mysql_result($sql, 0, 0);
 
-    // 暫定処理。占い師の処理とまとめたい
+    //暫定処理。占い師の処理とまとめたい
     if($date == 1 && strpos($game_option, 'dummy_boy') !== false){
       //初日、身代わり君の役割が神話マニアの場合は数に入れない
       $sql = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
@@ -943,12 +954,12 @@ function CheckVoteNight(){
     $guard_count = mysql_result($sql, 0, 0);
     if($vote_count != $guard_count) return false;
 
-    // $sql = mysql_query($query_vote . "'REPORTER_DO'");
-    // $vote_count = mysql_result($sql, 0, 0);
-    //
-    // $sql = mysql_query($query_role . "'%reporter%'");
-    // $reporter_count = mysql_result($sql, 0, 0);
-    // if($vote_count != $reporter_count) return false;
+    $sql = mysql_query($query_vote . "'REPORTER_DO'");
+    $vote_count = mysql_result($sql, 0, 0);
+
+    $sql = mysql_query($query_role . "'%reporter%'");
+    $reporter_count = mysql_result($sql, 0, 0);
+    if($vote_count != $reporter_count) return false;
   }
 
   //狼と狩人・ブン屋は同時に処理
@@ -962,7 +973,7 @@ function CheckVoteNight(){
 
   //狩人・ブン屋のハンドルネームと投票先ユーザ名を取得
   $sql_guard    = mysql_query($query_vote_header . 'GUARD_DO'    . $query_vote_footer);
-  // $sql_reporter = mysql_query($query_vote_header . 'REPORTER_DO' . $query_vote_footer);
+  $sql_reporter = mysql_query($query_vote_header . 'REPORTER_DO' . $query_vote_footer);
 
   //狼の投票先ユーザ名とその役割を取得
   $sql_wolf = mysql_query("SELECT vote.target_uname, user_entry.handle_name, user_entry.role
@@ -976,31 +987,25 @@ function CheckVoteNight(){
   $wolf_target_role   = $wolf_target_array['role'];
   // $wolf_target_live   = $wolf_target_array['live'];//DBから引いてないような？？？
 
-  // //ブン屋の尾行リストを作成
-  // $reporter_target_list = array(); //尾行対象ユーザ名 => 尾行したブン屋のハンドルネーム
-  // for($i = 0; $i < $reporter_count; $i++ ){
-  //   $reporter_array  = mysql_fetch_assoc($sql_reporter);
-  //   $reporter_target = $reporter_array['target_uname'];
-  //   $reporter_handle = $reporter_array['handle_name'];
-  //   $reporter_target_list[$reporter_target] = $reporter_handle;
-  // }
+  //ブン屋の尾行リストを作成
+  $reporter_target_list = array(); //尾行対象ユーザ名 => 尾行したブン屋のハンドルネーム
+  while(($reporter_array = mysql_fetch_assoc($sql_reporter)) !== false){
+    $reporter_target = $reporter_array['target_uname'];
+    $reporter_handle = $reporter_array['handle_name'];
+    $reporter_target_list[$reporter_target] = $reporter_handle;
+  }
 
   $guard_success_flag = false;
-  for($i = 0; $i < $guard_count; $i++ ){ //護衛成功かチェック
-    $guard_array  = mysql_fetch_assoc($sql_guard);
-    $guard_uname  = $guard_array['target_uname'];
+  while(($guard_array = mysql_fetch_assoc($sql_guard)) !== false){ //護衛成功かチェック
+    $guard_target = $guard_array['target_uname'];
     $guard_handle = $guard_array['handle_name'];
 
-    if($guard_uname == $wolf_target_uname){ //護衛成功
+    if($guard_target == $wolf_target_uname){ //護衛成功
       //護衛成功のメッセージ
       InsertSystemMessage($guard_handle . "\t" . $wolf_target_handle, 'GUARD_SUCCESS');
-      $guard_success_flag = true;
 
-      // //尾行成功チェック
-      // foreach($reporter_target_list as $reporter_target => $repoter_handle){
-      // 	if($reporter_target != $guard_uname) continue;
-      // 	InsertSystemMessage($reporter_handle . "\t" . $wolf_target_handle, 'REPORT_SUCCESS');
-      // }
+      //護衛された人がブン屋の場合は成功メッセージは出るがブン屋は噛まれる
+      if(strpos($wolf_target_role, 'reporter') === false) $guard_success_flag = true;
     }
   }
 
@@ -1011,15 +1016,37 @@ function CheckVoteNight(){
 	 strpos($wolf_target_role, 'child_fox') === false){ //食べる先が狐の場合食べれない
     InsertSystemMessage($wolf_target_handle, 'FOX_EAT');
 
-    // //ブン屋が尾行していた場合はとばっちりで狼に殺される
-    // foreach($reporter_target_list as $reporter_target => $repoter_handle){
-    //   if($reporter_target == $wolf_target_uname) ReporterDuty($reporter_handle);
-    // }
+    //ブン屋が尾行していた場合はとばっちりで狼に殺される
+    foreach($reporter_target_list as $reporter_target => $repoter_handle){
+      if($reporter_target == $wolf_target_uname) ReporterDuty($reporter_handle);
+    }
   }
   else{ //護衛されてなければ食べる
     KillUser($wolf_target_uname); //食べられた人死亡
     InsertSystemMessage($wolf_target_handle, 'WOLF_KILLED'); //システムメッセージ
     SaveLastWords($wolf_target_handle); //食べられた人の遺言を残す
+
+    //尾行成功チェック
+    foreach($reporter_target_list as $reporter_target => $repoter_handle){
+      if($reporter_target == $wolf_target_uname){ //尾行成功
+	//噛んだ狼を取得
+	$sql = mysql_query("SELECT user_entry.handle_name FROM user_entry, vote
+				WHERE user_entry.room_no = $room_no
+				AND user_entry.uname = vote.uname AND vote.date = $date
+				AND vote.situation = 'WOLF_EAT' AND user_no > 0");
+	InsertSystemMessage($reporter_handle . "\t" . $wolf_target_handle . "\t" .
+			    mysql_result($sql, 0, 0), 'REPORTER_SUCCESS');
+      }
+      else{ //尾行した人の役職をチェック
+	$sql = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
+				AND uname = '$reporter_target' AND user_no > 0");
+	$reporter_target_role = mysql_result($sql, 0, 0);
+	if(strpos($reporter_target_role, 'wolf') !== false ||
+	   strpos($reporter_target_role, 'fox') !== false){
+	  ReporterDuty($reporter_handle); //狼か狐なら殺される
+	}
+      }
+    }
 
     //食べられた人が埋毒者の場合
     if(strpos($wolf_target_role, 'poison') !== false){
@@ -1039,7 +1066,7 @@ function CheckVoteNight(){
 	array_push($wolf_list, $wolf);
       }
 
-      $rand_key = array_rand($wolf_list, 1);
+      $rand_key = array_rand($wolf_list);
       $poison_target_array  = $wolf_list[$rand_key];
       $poison_target_uname  = $poison_target_array['uname'];
       $poison_target_handle = $poison_target_array['handle_name'];
@@ -1059,14 +1086,14 @@ function CheckVoteNight(){
   $query_action_header = "SELECT user_entry.uname, user_entry.handle_name, user_entry.role,
 				user_entry.live, vote.target_uname FROM vote, user_entry
 				WHERE vote.room_no = $room_no AND user_entry.room_no = $room_no
-				AND vote.date = $date AND vote.uname = user_entry.uname AND user_entry.user_no > 0
-				AND vote.situation = ";
+				AND vote.date = $date AND vote.uname = user_entry.uname
+				AND user_entry.user_no > 0 AND vote.situation = ";
+
   //占い師のユーザ名、ハンドルネームと、占い師の生存、占い師が占ったユーザ名取得
   $sql_mage = mysql_query($query_action_header . "'MAGE_DO'");
- 
+
   //占い師の人数分、処理
-  for($i = 0; $i < $mage_count; $i++){
-    $array = mysql_fetch_assoc($sql_mage);
+  while(($array = mysql_fetch_assoc($sql_mage)) !== false){
     $mage_uname  = $array['uname'];
     $mage_handle = $array['handle_name'];
     $mage_role   = $array['role'];
@@ -1113,8 +1140,7 @@ function CheckVoteNight(){
   $sql_mania = mysql_query($query_action_header . "'MANIA_DO'");
 
   //神話マニアの人数分、処理
-  for($i = 0; $i < $mania_count; $i++){
-    $array = mysql_fetch_assoc($sql_mania);
+  while(($array = mysql_fetch_assoc($sql_mania)) !== false){
     $mania_uname  = $array['uname'];
     $mania_handle = $array['handle_name'];
     $mania_role   = $array['role'];
@@ -1132,9 +1158,9 @@ function CheckVoteNight(){
     $mania_target_role   = $array['role'];
     $mania_target_live   = $array['live'];
 
-    // 役職コピー処理：神話マニアを指定した場合は村人にする
-    if (strpos($mania_target_role, 'copied') !== false ||
-        ($mania_result = GetMainRole($mania_target_role)) == 'mania') {
+    //役職コピー処理：神話マニアを指定した場合は村人にする
+    if(strpos($mania_target_role, 'copied') !== false ||
+       ($mania_result = GetMainRole($mania_target_role)) == 'mania') {
       $mania_result = 'human';
     }
     $mania_role = str_replace('mania', $mania_result, $mania_role) . ' copied';
@@ -1159,6 +1185,22 @@ function CheckVoteNight(){
 
   CheckVictory(); //勝敗のチェック
   mysql_query('COMMIT'); //一応コミット
+}
+
+//ブン屋の死亡処理 ($target : HN)
+function ReporterDuty($target){
+  global $room_no;
+
+  //ユーザ名、生死を取得
+  $sql = mysql_query("SELECT uname, live FROM user_entry WHERE room_no = $room_no
+			AND handle_name = '$target' AND user_no > 0");
+  $array = mysql_fetch_assoc($sql);
+  $target_uname = $array['uname'];
+  $target_live  = $array['live'];
+  if($target_live == 'dead') return false;
+
+  KillUser($target_uname);
+  InsertSystemMessage($target, 'REPORTER_DUTY'); //システムメッセージ
 }
 
 //開始前の投票ページ出力
@@ -1488,17 +1530,5 @@ function CheckAlreadyVote($situation){
     $count = mysql_result($sql, 0, 0);
   }
   if($count != 0) OutputVoteResult('夜：投票済み');
-}
-
-//遺言を取得して保存する ($target : HN)
-function SaveLastWords($target){
-  global $room_no;
-
-  $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = $room_no
-			AND handle_name = '$target' AND user_no > 0");
-  $last_words = mysql_result($sql, 0, 0);
-  if($last_words != ''){
-    InsertSystemMessage($target . "\t" . $last_words, 'LAST_WORDS');
-  }
 }
 ?>

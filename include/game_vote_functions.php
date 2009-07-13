@@ -25,37 +25,14 @@ function GetRoleList($user_count, $option_role){
                      $error_footer, true, true);
   }
 
-  //埋毒者 (村人２ → 毒１、狼１)
-  if(strpos($option_role, 'poison') !== false && $user_count >= $GAME_CONF->poison){
-    $role_list['human'] -= 2;
-    $role_list['poison']++;
-    $role_list['wolf']++;
-  }
-
-  //キューピッド (14人はハードコード / 村人２ → キューピッド１、巫女１)
-  if(strpos($option_role, 'cupid') !== false &&
-     ($user_count == 14 || $user_count >= $GAME_CONF->cupid)){
-    $role_list['human'] -= 2;
-    $role_list['cupid']++;
-    $role_list['medium']++;
-  }
-
-  //白狼 (人狼 → 白狼)
-  if(strpos($option_role, 'boss_wolf') !== false && $user_count >= $GAME_CONF->boss_wolf){
-    $role_list['wolf']--; //マイナスのチェックしてないので注意
-    $role_list['boss_wolf']++;
-  }
-
-  if(strpos($game_option, 'quiz') !== false){  //クイズ村
+  if(strpos($game_option, 'quiz') !== false){ //クイズ村
     $temp_role_list = array();
     $temp_role_list['human'] = $role_list['human'];
     foreach($role_list as $key => $value){
-      if($key == 'wolf' || $key == 'mad' || $key == 'common' || $key == 'fox'){
+      if($key == 'wolf' || $key == 'mad' || $key == 'common' || $key == 'fox')
 	$temp_role_list[$key] = (int)$value;
-      }
-      elseif($key != 'human'){
+      elseif($key != 'human')
 	$temp_role_list['human'] += (int)$value;
-      }
     }
     $temp_role_list['human']--;
     $temp_role_list['quiz'] = 1;
@@ -513,9 +490,55 @@ function GetRoleList($user_count, $option_role){
 
     $role_list['human'] = $human_count; //村人の人数
   }
+  else{ //通常村
+    //埋毒者 (村人2 → 埋毒者1、人狼1)
+    if(strpos($option_role, 'poison') !== false && $user_count >= $GAME_CONF->poison){
+      $role_list['human'] -= 2;
+      $role_list['poison']++;
+      $role_list['wolf']++;
+    }
+
+    //キューピッド (14人はハードコード / 村人 → キューピッド)
+    if(strpos($option_role, 'cupid') !== false &&
+       ($user_count == 14 || $user_count >= $GAME_CONF->cupid)){
+      $role_list['human']--;
+      $role_list['cupid']++;
+    }
+
+    //白狼 (人狼 → 白狼)
+    if(strpos($option_role, 'boss_wolf') !== false && $user_count >= $GAME_CONF->boss_wolf){
+      $role_list['wolf']--;
+      $role_list['boss_wolf']++;
+    }
+
+    //毒狼 (人狼 → 毒狼、村人 → 薬師)
+    if(strpos($option_role, 'poison_wolf') !== false && $user_count >= $GAME_CONF->poison_wolf){
+      $role_list['wolf']--;
+      $role_list['poison_wolf']++;
+      $role_list['human']--;
+      $role_list['pharmacist']++;
+    }
+
+    //神話マニア (村人 → 神話マニア)
+    if(strpos($option_role, 'mania') !== false && $user_count >= $GAME_CONF->mania){
+      $role_list['human']--;
+      $role_list['mania']++;
+    }
+
+    //巫女 (村人 → 巫女1、狂人1)
+    if(strpos($option_role, 'medium') !== false && $user_count >= $GAME_CONF->medium){
+      $role_list['human'] -= 2;
+      $role_list['medium']++;
+      $role_list['mad']++;
+    }
+  }
 
   if($role_list['human'] < 0){ //"村人" の人数をチェック
     OutputVoteResult($error_header . '"村人" の人数がマイナスになってます' .
+                     $error_footer, true, true);
+  }
+  if($role_list['wolf'] < 0){ //"人狼" の人数をチェック
+    OutputVoteResult($error_header . '"人狼" の人数がマイナスになってます' .
                      $error_footer, true, true);
   }
 

@@ -243,9 +243,14 @@ function Write($say, $location, $spend_time, $update = false){
 
   //声の大きさを決定
   if($live == 'live' && ($day_night == 'day' || $day_night == 'night')){
-    if(strpos($role, 'strong_voice') !== false) $voice = 'strong';
+    if(    strpos($role, 'strong_voice') !== false) $voice = 'strong';
     elseif(strpos($role, 'normal_voice') !== false) $voice = 'normal';
-    elseif(strpos($role, 'weak_voice') !== false) $voice = 'weak';
+    elseif(strpos($role, 'weak_voice')   !== false) $voice = 'weak';
+    elseif(strpos($role, 'random_voice') !== false){
+      $voice_list = array('strong', 'normal', 'weak');
+      $rand_key = array_rand($voice_list);
+      $voice = $voice_list[$rand_key];
+    }
     else $voice = $font_type;
   }
   else $voice = $font_type;
@@ -468,7 +473,7 @@ EOF;
       if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
 	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $i");
 	$objection_sound = 'objection_' . mysql_result($sql, 0, 0);
-	OutputSound($SOUND->$objection_sound, true);
+	// OutputSound($SOUND->$objection_sound, false); //ループをいったん切る
       }
     }
   }
@@ -495,6 +500,7 @@ EOF;
       return;
   }
 
+  if($day_night == 'beforegame') OutputGameOption(); //ゲームオプションを説明
   echo '<table class="time-table"><tr>'."\n";
   if($day_night != 'aftergame'){ //ゲーム終了後以外なら、サーバとの時間ズレを表示
     $date_str = gmdate('Y, m, j, G, i, s', $system_time);
@@ -722,6 +728,28 @@ function OutputAbility(){
 	echo '<span class="ability-mage-do">' . $MESSAGE->ability_mage_do . '</span><br>'."\n";
     }
   }
+  elseif(strpos($role, 'reporter') !== false){
+    // OutputRoleComment('reporter');
+    echo '[役割]<br>　あなたは「ブン屋」です。スクープをものにできれば大活躍できますが、人狼や妖狐に気付かれると殺されてしまいます。 <br>'."\n";
+
+    //尾行結果を表示
+    $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+			AND date = $yesterday AND type = 'REPORTER_RESULT'");
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($reporter, $target, $wolf_handle) = ParseStrings(mysql_result($sql, $i, 0), 'REPORTER_RESULT');
+      if($handle_name != $reporter) continue; //自分の尾行結果のみ表示
+      $target .= ' さんは ' . $wolf_handle;
+      OutputAbilityResult('reporter_result_header', $target, 'reporter_result_footer');
+    }
+
+    if($day_night == 'night' && $date != 1){ //夜の尾行投票
+      $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no
+				AND uname = '$uname' AND situation = 'REPORTER_DO'");
+      if(mysql_num_rows($sql) == 0)
+	echo '<span class="ability-mage-do">' . $MESSAGE->ability_reporter_do . '</span><br>'."\n";
+    }
+  }
   elseif(strpos($role, 'necromancer') !== false){
     OutputRoleComment('necromancer');
 
@@ -814,26 +842,25 @@ function OutputAbility(){
       if($handle_name == mysql_result($sql, $i, 0)) OutputAbilityResult('fox_target', NULL);
     }
   }
-  elseif(strpos($role, 'reporter') !== false){
-    // OutputRoleComment('reporter');
-    echo '[役割]<br>　あなたは「ブン屋」です。スクープをものにできれば大活躍できますが、狼に気付かれると殺されてしまいます。 <br>'."\n";
+  elseif(strpos($role, 'poison_cat') !== false){
+    // OutputRoleComment('poison_cat');
+    echo '[役割]<br>　あなたは「猫又」、毒をもっています。また、死んだ人を誰か一人蘇らせる事ができます。<br>'."\n";
 
-    //尾行結果を表示
+    //蘇生結果を表示
     $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
-			AND date = $yesterday AND type = 'REPORTER_RESULT'");
+			AND date = $yesterday AND type = 'POISON_CAT_RESULT'");
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
-      list($reporter, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), 'REPORTER_RESULT');
-      if($handle_name != $reporter) continue; //自分の尾行結果のみ表示
-      $result_role = 'result_' . ($target_role == 'human' ? 'human' : 'wolf');
-      OutputAbilityResult('reporter_result', $target, $result_role);
+      list($poison_cat, $target) = ParseStrings(mysql_result($sql, $i, 0));
+      //自分の蘇生結果のみ表示する
+      if($handle_name == $poison_cat) OutputAbilityResult(NULL, $target, 'poison_cat_success');
     }
 
-    if($day_night == 'night'){ //夜の尾行投票
+    if($day_night == 'night'){ //夜の蘇生投票
       $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no
-				AND uname = '$uname' AND situation = 'REPORTER_DO'");
+				AND uname = '$uname' AND situation = 'POISON_CAT_DO'");
       if(mysql_num_rows($sql) == 0)
-	echo '<span class="ability-reporter-do">' . $MESSAGE->ability_reporter_do . '</span><br>'."\n";
+	echo '<span class="ability-poison_cat-do">' . $MESSAGE->ability_poison_cat_do . '</span><br>'."\n";
     }
   }
   elseif(strpos($role, 'poison') !== false) OutputRoleComment('poison');
@@ -869,7 +896,7 @@ function OutputAbility(){
   }
   elseif(strpos($role, 'mania') !== false){
     // OutputRoleComment('mania');
-    echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます（仕様は変更される可能性があります） <br>'."\n";
+    echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます (仕様は変更される可能性があります)<br>'."\n";
 
     if($day_night == 'night'){ //夜のコピー投票
       $sql = mysql_query("SELECT uname FROM vote WHERE room_no = $room_no
@@ -925,10 +952,14 @@ function OutputAbility(){
     // echo 'あなたは「疫病神」です。あなたの投票は軽視されてしまいます。'
   }
 
-  //発言操作系
+  //発言変化系
   if(strpos($role, 'strong_voice')      !== false) OutputRoleComment('strong_voice');
   elseif(strpos($role, 'normal_voice')  !== false) OutputRoleComment('normal_voice');
   elseif(strpos($role, 'weak_voice')    !== false) OutputRoleComment('weak_voice');
+  elseif(strpos($role, 'random_voice')  !== false){
+    // OutputRoleComment('random_voice');
+    echo 'あなたは「臆病者」です。この事態に混乱するあなたは声の大きさが安定しません。';
+  }
   elseif(strpos($role, 'no_last_words') !== false) OutputRoleComment('no_last_words');
   elseif(strpos($role, 'liar') !== false){
     // OutputRoleComment('liar');
