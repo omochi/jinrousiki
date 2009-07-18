@@ -34,15 +34,14 @@ function MaintenanceRoom(){
 			AND !(user_entry.session_id is NULL) GROUP BY room_no");
   $query = "UPDATE user_entry SET session_id = NULL WHERE room_no = ";
   MaintenanceRoomAction($list, $query, $ROOM_CONF->clear_session_id);
+
+  mysql_query('COMMIT'); //一応コミット
 }
 
 //村のメンテナンス処理 (実体)
 function MaintenanceRoomAction($list, $query, $base_time){
-  $count = mysql_num_rows($list);
   $time  = TZTime();
-
-  for($i=0; $i < $count; $i++){
-    $array = mysql_fetch_assoc($list);
+  while(($array = mysql_fetch_assoc($list)) !== false){
     $room_no      = $array['room_no'];
     $last_updated = $array['last_updated'];
     $diff_time    = $time - $last_updated;
@@ -65,9 +64,12 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //ゲームオプションをセット
   $game_option = '';
-  $chaos     = ($ROOM_CONF->chaos     && $_POST['game_option_chaos'] == 'chaos');
-  $chaosfull = ($ROOM_CONF->chaosfull && $_POST['game_option_chaos'] == 'chaosfull');
-  $quiz      = ($ROOM_CONF->quiz      && $_POST['game_option_quiz']  == 'quiz');
+  $option_role = '';
+  $chaos     = ($ROOM_CONF->chaos     && $_POST['chaos'] == 'chaos');
+  $chaosfull = ($ROOM_CONF->chaosfull && $_POST['chaos'] == 'chaosfull');
+  $quiz      = ($ROOM_CONF->quiz      && $_POST['quiz']  == 'on');
+  $game_option_list = array('wish_role', 'open_vote', 'not_open_cast');
+  $option_role_list = array();
   if($quiz){
     $game_option .= 'quiz ';
 
@@ -78,27 +80,37 @@ function CreateRoom($room_name, $room_comment, $max_user){
       return false;
     }
     EscapeStrings(&$quiz_password);
+    $game_option .= 'dummy_boy ';
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
   }
   else{
-    $dummy_boy_handle_name = '身代わり君';
-    $dummy_boy_password    = $system_password;
+    if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
+      $game_option .= 'dummy_boy ';
+      $dummy_boy_handle_name = '身代わり君';
+      $dummy_boy_password    = $system_password;
+    }
+    if($chaos || $chaosfull){
+      if($chaos) $game_option .= 'chaos ';
+      if($chaosfull) $game_option .= 'chaosfull ';
+      array_push($game_option_list, 'secret_sub_role');
+      array_push($option_role_list, 'chaos_open_cast', 'no_sub_role');
+    }
+    else{
+      array_push($game_option_list, 'sudden_death');
+      array_push($option_role_list, 'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
+		 'poison_wolf', 'mania', 'medium', 'liar');
+    }
   }
 
-  if($ROOM_CONF->wish_role && $_POST['game_option_wish_role'] == 'wish_role' && ! $chaos)
-    $game_option .= 'wish_role ';
-  if(($ROOM_CONF->dummy_boy && $_POST['game_option_dummy_boy'] == 'dummy_boy') || $quiz)
-    $game_option .= 'dummy_boy ';
-  if($ROOM_CONF->open_vote && $_POST['game_option_open_vote'] == 'open_vote' && ! $chaosfull)
-    $game_option .= 'open_vote ';
-  if($ROOM_CONF->not_open_cast && $_POST['game_option_not_open_cast'] == 'not_open_cast')
-    $game_option .= 'not_open_cast ';
-  if($chaos) $game_option .= 'chaos ';
-  if($chaosfull) $game_option .= 'chaosfull ';
-  if($ROOM_CONF->real_time && $_POST['game_option_real_time'] == 'real_time'){
-    $day   = $_POST['game_option_real_time_day'];
-    $night = $_POST['game_option_real_time_night'];
+  foreach($game_option_list as $this_option)
+    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on') $game_option .= $this_option . ' ';
+  foreach($option_role_list as $this_option)
+    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on') $option_role .= $this_option . ' ';
+
+  if($ROOM_CONF->real_time && $_POST['real_time'] == 'on'){
+    $day   = $_POST['real_time_day'];
+    $night = $_POST['real_time_night'];
 
     //制限時間が0から99以内の数字かチェック
     if($day   != '' && ! preg_match('/[^0-9]/', $day)   && $day   > 0 && $day   < 99 &&
@@ -111,38 +123,14 @@ function CreateRoom($room_name, $room_comment, $max_user){
     }
   }
 
-  $option_role = '';
-  if(! $quiz){
-    if($ROOM_CONF->decide && $_POST['option_role_decide'] == 'decide')
-      $option_role .= 'decide ';
-    if($ROOM_CONF->authority && $_POST['option_role_authority'] == 'authority')
-      $option_role .= 'authority ';
-    if($ROOM_CONF->poison && $_POST['option_role_poison'] == 'poison')
-      $option_role .= 'poison ';
-    if($ROOM_CONF->cupid && $_POST['option_role_cupid'] == 'cupid')
-      $option_role .= 'cupid ';
-    if($ROOM_CONF->boss_wolf && $_POST['option_role_boss_wolf'] == 'boss_wolf')
-      $option_role .= 'boss_wolf ';
-    if($ROOM_CONF->poison_wolf && $_POST['option_role_poison_wolf'] == 'poison_wolf')
-      $option_role .= 'poison_wolf ';
-    if($ROOM_CONF->mania && $_POST['option_role_mania'] == 'mania')
-      $option_role .= 'mania ';
-    if($ROOM_CONF->medium && $_POST['option_role_medium'] == 'medium')
-      $option_role .= 'medium ';
-    if($ROOM_CONF->liar && $_POST['option_role_liar'] == 'liar')
-      $option_role .= 'liar ';
-    if($ROOM_CONF->sudden_death && $_POST['game_option_sudden_death'] == 'sudden_death')
-      $game_option .= 'sudden_death ';
-  }
-
   //テーブルをロック
   if(! mysql_query('LOCK TABLES room WRITE, user_entry WRITE, vote WRITE, talk WRITE')){
     OutputRoomAction('busy');
     return false;
   }
 
-  $result = mysql_query('SELECT room_no FROM room ORDER BY room_no DESC'); //降順にルームNoを取得
-  $room_no_array = mysql_fetch_assoc($result); //一行目(最も大きなNo)を取得
+  $result = mysql_query('SELECT room_no FROM room ORDER BY room_no DESC'); //降順にルーム No を取得
+  $room_no_array = mysql_fetch_assoc($result); //一行目(最も大きな No)を取得
   $room_no = $room_no_array['room_no'] + 1;
 
   //登録
@@ -161,12 +149,10 @@ function CreateRoom($room_name, $room_comment, $max_user){
 			'live', '{$MESSAGE->dummy_boy_last_words}', '')");
   }
 
-  if($entry && mysql_query('COMMIT')){ //一応コミット
+  if($entry && mysql_query('COMMIT')) //一応コミット
     OutputRoomAction('success', $room_name);
-  }
-  else{
+  else
     OutputRoomAction('busy');
-  }
   mysql_query('UNLOCK TABLES');
 }
 
@@ -226,13 +212,13 @@ function OutputRoomList(){
     $status       = $array['status'];
 
     switch($status){
-      case 'waiting':
-	$status_img = $ROOM_IMG->waiting;
-	break;
+    case 'waiting':
+      $status_img = $ROOM_IMG->waiting;
+      break;
 
-      case 'playing':
-	$status_img = $ROOM_IMG->playing;
-	break;
+    case 'playing':
+      $status_img = $ROOM_IMG->playing;
+      break;
     }
 
     $option_img_str = ''; //ゲームオプションの画像
@@ -245,38 +231,38 @@ function OutputRoomList(){
       AddImgTag(&$option_img_str, $ROOM_IMG->real_time,
 		"リアルタイム制　昼： $day 分　夜： $night 分");
     }
-    if(strpos($game_option, 'dummy_boy') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->dummy_boy, $MESSAGE->game_option_dummy_boy);
-    if(strpos($game_option, 'open_vote') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->open_vote, $MESSAGE->game_option_open_vote);
-    if(strpos($game_option, 'not_open_cast') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->not_open_cast, $MESSAGE->game_option_not_open_cast);
-    if(strpos($option_role, 'decide') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->decide, $MESSAGE->game_option_decide);
-    if(strpos($option_role, 'authority') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->authority, $MESSAGE->game_option_authority);
-    if(strpos($option_role, 'poison') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->poison, $MESSAGE->game_option_poison);
-    if(strpos($option_role, 'cupid') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->cupid, $MESSAGE->game_option_cupid);
-    if(strpos($option_role, 'boss_wolf') !== false)
-      $option_img_str .= '[白狼]';
-    if(strpos($option_role, 'poison_wolf') !== false)
-      $option_img_str .= '[毒狼]';
-    if(strpos($option_role, 'mania') !== false)
-      $option_img_str .= '[神話マニア]';
-    if(strpos($option_role, 'medium') !== false)
-      $option_img_str .= '[巫女]';
-    if(strpos($option_role, 'liar') !== false)
-      $option_img_str .= '[狼少年]';
-    if(strpos($game_option, 'sudden_death') !== false)
-      $option_img_str .= '[虚弱体質]';
-    if(strpos($game_option, 'quiz') !== false)
-      $option_img_str .= '[Qz]';
-    if(strpos($game_option, 'chaos ') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->chaos, $MESSAGE->game_option_chaos);
-    if(strpos($game_option, 'chaosfull') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->chaosfull, $MESSAGE->game_option_chaosfull);
+    $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'chaos', 'chaosfull');
+    foreach($game_option_list as $this_option){
+      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $game_option)){
+	$message_str = 'game_option_' . $this_option;
+	AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
+      }
+    }
+
+    $option_role_list = array('decide', 'authority', 'poison', 'cupid');
+    foreach($option_role_list as $this_option){
+      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
+	$message_str = 'game_option_' . $this_option;
+	AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
+      }
+    }
+
+    $text_game_option_list = array('quiz', 'sudden_death', 'secret_sub_role');
+    foreach($text_game_option_list as $this_option){
+      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $game_option)){
+	$message_str = 'game_option_' . $this_option;
+	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
+      }
+    }
+
+    $text_option_role_list = array('boss_wolf', 'poison_wolf', 'mania', 'medium', 'liar',
+				   'chaos_open_cast', 'no_sub_role', 'open_sub_role');
+    foreach($text_option_role_list as $this_option){
+      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
+	$message_str = 'game_option_' . $this_option;
+	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
+      }
+    }
 
     // $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
     //<div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>
@@ -344,7 +330,7 @@ EOF;
 <tr>
 <td><label for="wish_role">役割希望制：</label></td>
 <td class="explain">
-<input id="wish_role" type="checkbox" name="game_option_wish_role" value="wish_role"{$checked}>
+<input id="wish_role" type="checkbox" name="wish_role" value="on"{$checked}>
 (希望の役割を指定できますが、なれるかは運です)
 </td>
 </tr>
@@ -358,10 +344,10 @@ EOF;
 <tr>
 <td><label for="real_time">リアルタイム制：</label></td>
 <td class="explain">
-<input id="real_time" type="checkbox" name="game_option_real_time" value="real_time"{$checked}>
+<input id="real_time" type="checkbox" name="real_time" value="on"{$checked}>
 (制限時間が実時間で消費されます　昼：
-<input type="text" name="game_option_real_time_day" value="{$TIME_CONF->default_day}" size="2" maxlength="2">分 夜：
-<input type="text" name="game_option_real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">分)
+<input type="text" name="real_time_day" value="{$TIME_CONF->default_day}" size="2" maxlength="2">分 夜：
+<input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">分)
 </td>
 </tr>
 
@@ -374,7 +360,7 @@ EOF;
 <tr>
 <td><label for="dummy_boy">{$MESSAGE->game_option_dummy_boy}：</label></td>
 <td class="explain">
-<input id="dummy_boy" type="checkbox" name="game_option_dummy_boy" value="dummy_boy"{$checked}>
+<input id="dummy_boy" type="checkbox" name="dummy_boy" value="on"{$checked}>
 (初日の夜、身代わり君が狼に食べられます)
 </td>
 </tr>
@@ -388,7 +374,7 @@ EOF;
 <tr>
 <td><label for="open_vote">{$MESSAGE->game_option_open_vote}：</label></td>
 <td class="explain">
-<input id="open_vote" type="checkbox" name="game_option_open_vote" value="open_vote"{$checked}>
+<input id="open_vote" type="checkbox" name="open_vote" value="on"{$checked}>
 (権力者が投票でバレます)
 </td>
 </tr>
@@ -402,7 +388,7 @@ EOF;
 <tr>
 <td><label for="not_open_cast">{$MESSAGE->game_option_not_open_cast}：</label></td>
 <td class="explain">
-<input id="not_open_cast" type="checkbox" name="game_option_not_open_cast" value="not_open_cast"{$checked}>
+<input id="not_open_cast" type="checkbox" name="not_open_cast" value="on"{$checked}>
 (霊界でも誰がどの役職なのかが公開されません)
 </td>
 </tr>
@@ -416,7 +402,7 @@ EOF;
 <tr>
 <td><label for="role_decide">{$GAME_CONF->decide}人以上で{$MESSAGE->game_option_decide}：</label></td>
 <td class="explain">
-<input id="role_decide" type="checkbox" name="option_role_decide" value="decide"{$checked}>
+<input id="role_decide" type="checkbox" name="decide" value="on"{$checked}>
 (投票が同数の時、決定者の投票先が優先されます・兼任)
 </td>
 </tr>
@@ -430,7 +416,7 @@ EOF;
 <tr>
 <td><label for="role_authority">{$GAME_CONF->authority}人以上で{$MESSAGE->game_option_authority}：</label></td>
 <td class="explain">
-<input id="role_authority" type="checkbox" name="option_role_authority" value="authority"{$checked}>
+<input id="role_authority" type="checkbox" name="authority" value="on"{$checked}>
 (投票の票数が２票になります・兼任)
 </td>
 </tr>
@@ -444,7 +430,7 @@ EOF;
 <tr>
 <td><label for="role_poison">{$GAME_CONF->poison}人以上で{$MESSAGE->game_option_poison}：</label></td>
 <td class="explain">
-<input id="role_poison" type="checkbox" name="option_role_poison" value="poison"{$checked}>
+<input id="role_poison" type="checkbox" name="poison" value="on"{$checked}>
 (処刑されたり狼に食べられた場合、道連れにします・村人2→埋毒1、人狼1)
 </td>
 </tr>
@@ -458,7 +444,7 @@ EOF;
 <tr>
 <td><label for="role_cupid">14人もしくは{$GAME_CONF->cupid}人以上で<br>　{$MESSAGE->game_option_cupid}：</label></td>
 <td class="explain">
-<input id="role_cupid" type="checkbox" name="option_role_cupid" value="cupid"{$checked}>
+<input id="role_cupid" type="checkbox" name="cupid" value="on"{$checked}>
 (初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します)<br>
 　　　(村人1→キューピッド1)
 </td>
@@ -473,7 +459,7 @@ EOF;
 <tr>
 <td><label for="role_boss_wolf">{$GAME_CONF->boss_wolf}人以上で{$MESSAGE->game_option_boss_wolf}：</label></td>
 <td class="explain">
-<input id="role_boss_wolf" type="checkbox" name="option_role_boss_wolf" value="boss_wolf"{$checked}>
+<input id="role_boss_wolf" type="checkbox" name="boss_wolf" value="on"{$checked}>
 (占い結果が「村人」、霊能結果が「白狼」と表示される狼です。 人狼1→白狼1)
 </td>
 </tr>
@@ -487,7 +473,7 @@ EOF;
 <tr>
 <td><label for="role_poison_wolf">{$GAME_CONF->poison_wolf}人以上で{$MESSAGE->game_option_poison_wolf}：</label></td>
 <td class="explain">
-<input id="role_poison_wolf" type="checkbox" name="option_role_poison_wolf" value="poison_wolf"{$checked}>
+<input id="role_poison_wolf" type="checkbox" name="poison_wolf" value="on"{$checked}>
 (吊られた時にランダムで村人一人を巻き添えにする狼です。 人狼1→毒狼1、村人1→薬師1)
 </td>
 </tr>
@@ -501,7 +487,7 @@ EOF;
 <tr>
 <td><label for="role_mania">{$GAME_CONF->mania}人以上で{$MESSAGE->game_option_mania}：</label></td>
 <td class="explain">
-<input id="role_mania" type="checkbox" name="option_role_mania" value="mania"{$checked}>
+<input id="role_mania" type="checkbox" name="mania" value="on"{$checked}>
 (初日夜に他の村人の役職をコピーする特殊な役職です。村人1→神話マニア1)
 </td>
 </tr>
@@ -515,8 +501,8 @@ EOF;
 <tr>
 <td><label for="role_medium">{$GAME_CONF->medium}人以上で{$MESSAGE->game_option_medium}：</label></td>
 <td class="explain">
-<input id="role_medium" type="checkbox" name="option_role_medium" value="medium"{$checked}>
-(突然死した人の所属陣営が分かる特殊な霊能者です。村人2→巫女1、狂人1)
+<input id="role_medium" type="checkbox" name="medium" value="on"{$checked}>
+(突然死した人の所属陣営が分かる特殊な霊能者です。村人2→巫女1、狂信者1)
 </td>
 </tr>
 
@@ -529,7 +515,7 @@ EOF;
 <tr>
 <td><label for="role_liar">{$MESSAGE->game_option_liar}：</label></td>
 <td class="explain">
-<input id="role_liar" type="checkbox" name="option_role_liar" value="liar"{$checked}>
+<input id="role_liar" type="checkbox" name="liar" value="on"{$checked}>
 (ランダムで「狼少年」がつきます)
 </td>
 </tr>
@@ -543,7 +529,7 @@ EOF;
 <tr>
 <td><label for="role_sudden_death">{$MESSAGE->game_option_sudden_death}：</label></td>
 <td class="explain">
-<input id="role_sudden_death" type="checkbox" name="game_option_sudden_death" value="sudden_death"{$checked}>
+<input id="role_sudden_death" type="checkbox" name="sudden_death" value="on"{$checked}>
 (ランダムで「小心者」「ウサギ」「天邪鬼」のどれかがつきます)
 </td>
 </tr>
@@ -557,7 +543,7 @@ EOF;
 <tr>
 <td><label for="quiz">{$MESSAGE->game_option_quiz}：</label></td>
 <td class="explain">
-<input id="quiz" type="checkbox" name="game_option_quiz" value="quiz"{$checked}>
+<input id="quiz" type="checkbox" name="quiz" value="on"{$checked}>
 (誰か説明文考えて)<br>
 <label for="quiz_password">GM ログインパスワード：</label>
 <input id="quiz_password" type="password" name="quiz_password" size="20">
@@ -574,17 +560,56 @@ EOF;
 <tr>
 <td><label>{$MESSAGE->game_option_chaos}：</label></td>
 <td class="explain">
-<input type="radio" name="game_option_chaos" value="" checked>
+<input type="radio" name="chaos" value="" checked>
 通常人狼<br>
 
-<input type="radio" name="game_option_chaos" value="chaos">
+<input type="radio" name="chaos" value="chaos">
 通常村＋α程度に配役がぶれる闇鍋モードです<br>
 
-<input type="radio" name="game_option_chaos" value="chaosfull">
+<input type="radio" name="chaos" value="chaosfull">
 人狼1、占い師1以外の全ての役職がランダムとなる真・闇鍋モードです
 </td>
 </tr>
+
 EOF;
+    if($ROOM_CONF->chaos_open_cast){
+      echo <<<EOF
+<tr>
+<td><label for="chaos_open_cast">{$MESSAGE->game_option_chaos_open_cast}：</label></td>
+<td class="explain">
+<input id="chaos_open_cast" type="checkbox" name="chaos_open_cast" value="on">
+(配役を通知します：闇鍋モード専用オプション)
+</td>
+</tr>
+
+EOF;
+    }
+
+    if($ROOM_CONF->secret_sub_role){
+      echo <<<EOF
+<tr>
+<td><label for="secret_sub_role">{$MESSAGE->game_option_secret_sub_role}：</label></td>
+<td class="explain">
+<input id="secret_sub_role" type="checkbox" name="secret_sub_role" value="on">
+(サブ役職が分からなくなります：闇鍋モード専用オプション)
+</td>
+</tr>
+
+EOF;
+    }
+
+    if($ROOM_CONF->no_sub_role){
+      echo <<<EOF
+<tr>
+<td><label for="no_sub_role">{$MESSAGE->game_option_no_sub_role}：</label></td>
+<td class="explain">
+<input id="no_sub_role" type="checkbox" name="no_sub_role" value="on">
+(サブ配役をつけません：闇鍋モード専用オプション)
+</td>
+</tr>
+
+EOF;
+    }
   }
 
   echo <<<EOF

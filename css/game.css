@@ -43,7 +43,10 @@
   border: 1px dotted #000000;
   boder-collapse: collapse;
 }
-.player table td{vertical-align: top;}
+.player table td{
+  vertical-align: top;
+  font-size: 10pt;
+}
 .player table img{border: 2px solid;} /* 枠の色はアイコン毎 */
 .player table td span{font-weight: bold;} /* 役職名 */
 .already-vote{background-color: #FFDDFF;} /* ゲーム開始投票済み */

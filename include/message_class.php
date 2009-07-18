@@ -25,7 +25,10 @@ class Message{
   var $game_option_sudden_death  = '虚弱体質村';
   var $game_option_quiz          = 'クイズ村';
   var $game_option_chaos         = '闇鍋モード';
-  var $game_option_chaosfull     = '真・闇鍋モード';
+  // var $game_option_chaosfull     = '真・闇鍋モード';
+  var $game_option_chaos_open_cast = '配役を通知する';
+  var $game_option_secret_sub_role = 'サブ役職を通知しない';
+  var $game_option_no_sub_role = 'サブ役職をつけない';
 
   //-- user_manager.php --//
   //EntryUser() : ユーザ登録
@@ -138,6 +141,12 @@ class Message{
 
   //投票リセット
   var $vote_reset = '＜投票がリセットされました　再度投票してください＞';
+
+  //発言置換系役職
+  var $gentleman_header = "お待ち下さい。\nあぁ……";  //紳士 (前半)
+  var $gentleman_footer = '様の残り湯、美味にございます……。'; //紳士 (後半)
+  var $lady_header = "こんなのがいいの！？\n"; //淑女 (前半)
+  var $lady_footer = '！　そこに直って！　わたくしの足をなめなさい！！'; //淑女 (後半)
 
   //-- game_vote.php --//
   //Kick で村から去った人

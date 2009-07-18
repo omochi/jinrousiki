@@ -135,9 +135,11 @@ function OutputGameOption(){
   }
   $option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide', 'authority',
 		       'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'mania', 'medium',
-		       'liar', 'sudden_death', 'quiz', 'chaos', 'chaosfull');
+		       'liar', 'sudden_death', 'quiz', 'chaos', 'chaosfull', 'chaos_open_cast',
+		       'secret_sub_role', 'no_sub_role');
   foreach($option_list as $this_option){
-    if(strpos($game_option, $this_option) !== false || strpos($option_role, $this_option) !== false){
+    if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $game_option) ||
+       ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
       $str = 'game_option_' . $this_option;
       echo $MESSAGE->$str . '　';
     }
@@ -229,14 +231,16 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName('poison_wolf', 'wolf');
       elseif(strpos($this_role, 'tongue_wolf') !== false)
 	$role_str = MakeRoleName('tongue_wolf', 'wolf');
+      elseif(strpos($this_role, 'cute_wolf') !== false)
+	$role_str = MakeRoleName('cute_wolf', 'wolf');
       elseif(strpos($this_role, 'wolf') !== false)
 	$role_str = MakeRoleName('wolf');
       elseif(strpos($this_role, 'soul_mage') !== false)
 	$role_str = MakeRoleName('soul_mage', 'mage');
+      elseif(strpos($this_role, 'dummy_mage') !== false)
+	$role_str = MakeRoleName('dummy_mage', 'mage');
       elseif(strpos($this_role, 'mage') !== false)
 	$role_str = MakeRoleName('mage');
-      elseif(strpos($this_role, 'reporter') !== false)
-	$role_str = MakeRoleName('reporter', 'mage');
       elseif(strpos($this_role, 'necromancer') !== false)
 	$role_str = MakeRoleName('necromancer');
       elseif(strpos($this_role, 'medium') !== false)
@@ -249,6 +253,8 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName('poison_guard', 'guard');
       elseif(strpos($this_role, 'guard') !== false)
 	$role_str = MakeRoleName('guard');
+      elseif(strpos($this_role, 'reporter') !== false)
+	$role_str = MakeRoleName('reporter', 'guard');
       elseif(strpos($this_role, 'common') !== false)
 	$role_str = MakeRoleName('common');
       elseif(strpos($this_role, 'child_fox') !== false)
@@ -278,19 +284,28 @@ function OutputPlayerList(){
 
       if(strpos($this_role, 'authority') !== false)
 	$role_str .= MakeRoleName('authority', '', true);
+      elseif(strpos($this_role, 'random_voter') !== false)
+	$role_str .= MakeRoleName('random_voter', 'authority', true);
+      elseif(strpos($this_role, 'rebel') !== false)
+	$role_str .= MakeRoleName('rebel', 'authority', true);
+      elseif(strpos($this_role, 'watcher') !== false)
+	$role_str .= MakeRoleName('watcher', 'authority', true);
       elseif(strpos($this_role, 'decide') !== false)
 	$role_str .= MakeRoleName('decide', '', true);
       elseif(strpos($this_role, 'plague') !== false)
 	$role_str .= MakeRoleName('plague', 'decide', true);
-      elseif(strpos($this_role, 'watcher') !== false)
-	$role_str .= MakeRoleName('watcher', 'decide', true);
-
-      if(strpos($this_role, 'chicken') !== false)
-	$role_str .= MakeRoleName('chicken', 'decide', true);
-      elseif(strpos($this_role, 'rabbit') !== false)
-	$role_str .= MakeRoleName('rabbit', 'decide', true);
-      elseif(strpos($this_role, 'perverseness') !== false)
-	$role_str .= MakeRoleName('perverseness', 'decide', true);
+      elseif(strpos($this_role, 'good_luck') !== false)
+	$role_str .= MakeRoleName('good_luck', 'decide', true);
+      elseif(strpos($this_role, 'bad_luck') !== false)
+	$role_str .= MakeRoleName('bad_luck', 'decide', true);
+      elseif(strpos($this_role, 'upper_luck') !== false)
+	$role_str .= MakeRoleName('upper_luck', 'decide', true);
+      elseif(strpos($this_role, 'downer_luck') !== false)
+	$role_str .= MakeRoleName('downer_luck', 'decide', true);
+      elseif(strpos($this_role, 'star') !== false)
+	$role_str .= MakeRoleName('star', 'decide', true);
+      elseif(strpos($this_role, 'disfavor') !== false)
+	$role_str .= MakeRoleName('disfavor', 'decide', true);
 
       if(strpos($this_role, 'strong_voice') !== false)
 	$role_str .= MakeRoleName('strong_voice', 'decide', true);
@@ -300,10 +315,31 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('weak_voice', 'decide', true);
       elseif(strpos($this_role, 'random_voice') !== false)
 	$role_str .= MakeRoleName('random_voice', 'decide', true);
-      elseif(strpos($this_role, 'no_last_words') !== false)
+      if(strpos($this_role, 'no_last_words') !== false)
 	$role_str .= MakeRoleName('no_last_words', 'decide', true);
-      elseif(strpos($this_role, 'liar') !== false)
+
+      if(strpos($this_role, 'blinder') !== false)
+	$role_str .= MakeRoleName('blinder', 'decide', true);
+      if(strpos($this_role, 'earplug') !== false)
+	$role_str .= MakeRoleName('earplug', 'decide', true);
+      if(strpos($this_role, 'silent') !== false)
+	$role_str .= MakeRoleName('silent', 'decide', true);
+
+      if(strpos($this_role, 'liar') !== false)
 	$role_str .= MakeRoleName('liar', 'decide', true);
+      if(strpos($this_role, 'invisible') !== false)
+	$role_str .= MakeRoleName('invisible', 'decide', true);
+      if(strpos($this_role, 'gentleman') !== false)
+	$role_str .= MakeRoleName('gentleman', 'decide', true);
+      elseif(strpos($this_role, 'lady') !== false)
+	$role_str .= MakeRoleName('lady', 'decide', true);
+
+      if(strpos($this_role, 'chicken') !== false)
+	$role_str .= MakeRoleName('chicken', 'decide', true);
+      elseif(strpos($this_role, 'rabbit') !== false)
+	$role_str .= MakeRoleName('rabbit', 'decide', true);
+      elseif(strpos($this_role, 'perverseness') !== false)
+	$role_str .= MakeRoleName('perverseness', 'decide', true);
 
       echo "<td>${img_tag}</td>"."\n";
       echo "<td><font color=\"$this_color\">◆</font>$this_handle<br>"."\n";
@@ -522,15 +558,15 @@ function OutputTalk($array){
 
   LineToBR(&$sentence); //改行コードを <br> に変換
   $location_system = (strpos($location, 'system') !== false);
-  $flag_vote     = (strpos($sentence, 'VOTE_DO')  === 0);
-  $flag_wolf     = (strpos($sentence, 'WOLF_EAT') === 0);
-  $flag_mage     = (strpos($sentence, 'MAGE_DO')  === 0);
-  $flag_guard    = (strpos($sentence, 'GUARD_DO') === 0);
-  $flag_cupid    = (strpos($sentence, 'CUPID_DO') === 0);
-  $flag_mania    = (strpos($sentence, 'MANIA_DO') === 0);
+  $flag_vote     = (strpos($sentence, 'VOTE_DO')     === 0);
+  $flag_wolf     = (strpos($sentence, 'WOLF_EAT')    === 0);
+  $flag_mage     = (strpos($sentence, 'MAGE_DO')     === 0);
+  $flag_guard    = (strpos($sentence, 'GUARD_DO')    === 0);
+  $flag_cupid    = (strpos($sentence, 'CUPID_DO')    === 0);
+  $flag_mania    = (strpos($sentence, 'MANIA_DO')    === 0);
   $flag_reporter = (strpos($sentence, 'REPORTER_DO') === 0);
-  $flag_system = ($location_system && ($flag_vote  || $flag_wolf || $flag_mage ||
-				       $flag_guard || $flag_cupid || $flag_mania || $flag_reporter));
+  $flag_system = ($location_system && ($flag_vote  || $flag_wolf || $flag_mage || $flag_guard ||
+				       $flag_cupid || $flag_mania || $flag_reporter));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     echo '<tr class="system-message">'."\n";
@@ -582,6 +618,13 @@ function OutputTalk($array){
   //開始前と終了後 || ゲーム中、生きている人の昼
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
 	 ($live == 'live' && $day_night == 'day' && $location == 'day')){
+    if($day_night == 'day' || $day_night == 'night'){ //ゲーム中だけ一部のサブ役職発動
+      if(strpos($role, 'blinder') !== false && $uname != $talk_uname){
+	$talk_color = '#000000';
+	$talk_handle_name = '';
+      }
+      if(strpos($role, 'earplug') !== false && $font_type == 'weak') $sentence = '';
+    }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     echo '<tr class="user-talk">'."\n";
     echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
@@ -591,8 +634,13 @@ function OutputTalk($array){
   }
   //ゲーム中、生きている人の夜の狼
   elseif($live == 'live' && $day_night == 'night' && $location == 'night wolf'){
+    if(strpos($role, 'earplug') !== false && $font_type == 'weak') $sentence = '';
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'wolf') !== false){
+      if(strpos($role, 'blinder') !== false && $uname != $talk_uname){
+	$talk_color = '#000000';
+	$talk_handle_name = '';
+      }
       $talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
     }
     else{
@@ -606,9 +654,14 @@ function OutputTalk($array){
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($live == 'live' && $day_night == 'night' && $location == 'night common'){
+    if(strpos($role, 'earplug') !== false && $font_type == 'weak') $sentence = '';
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     echo '<tr class="user-talk">'."\n";
     if(strpos($role, 'common') !== false){
+      if(strpos($role, 'blinder') !== false && $uname != $talk_uname){
+	$talk_color = '#000000';
+	$talk_handle_name = '';
+      }
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
 	$talk_handle_name . '</td>'."\n";
       echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
@@ -622,6 +675,11 @@ function OutputTalk($array){
   //ゲーム中、生きている人の夜の妖狐
   elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
     if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
+      if(strpos($role, 'blinder') !== false && $uname != $talk_uname){
+	$talk_color = '#000000';
+	$talk_handle_name = '';
+      }
+      if(strpos($role, 'earplug') !== false && $font_type == 'weak') $sentence = '';
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
       echo '<tr class="user-talk">'."\n";
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
@@ -633,6 +691,7 @@ function OutputTalk($array){
   //ゲーム中、生きている人の夜の独り言
   elseif($live == 'live' && $day_night == 'night' && $location == 'night self_talk'){
     if($uname == $talk_uname){
+      if(strpos($role, 'earplug') !== false && $font_type == 'weak') $sentence = '';
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
       echo '<tr class="user-talk">'."\n";
       echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
@@ -668,6 +727,12 @@ function OutputTalk($array){
       echo '<td class="guard-do" colspan="2">' . $talk_handle_name . ' は ' .
 	$target_handle_name . ' ' . $MESSAGE->guard_do . '</td>'."\n";
     }
+    elseif($location_system && $flag_reporter){ //ブン屋の投票
+      $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
+      echo '<tr class="system-message">'."\n";
+      echo '<td class="guard-do" colspan="2">' . $talk_handle_name . ' は ' .
+	$target_handle_name . ' ' . $MESSAGE->reporter_do . '</td>'."\n";
+    }
     elseif($location_system && $flag_cupid){ //キューピッドの投票
       $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
       echo '<tr class="system-message">'."\n";
@@ -679,12 +744,6 @@ function OutputTalk($array){
       echo '<tr class="system-message">'."\n";
       echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
 	$target_handle_name . ' ' . $MESSAGE->mania_do . '</td>'."\n";
-    }
-    elseif($location_system && $flag_reporter){ //ブン屋の投票
-      $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="mage-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->reporter_do . '</td>'."\n";
     }
     else{ //その他の全てを表示(死者の場合)
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
@@ -726,6 +785,11 @@ function OutputTalk($array){
     echo '</tr>'."\n";
   }
   else{ //観戦者
+    if(strpos($role, 'blinder') !== false && $uname != $talk_uname){
+      $talk_color = '#000000';
+      $talk_handle_name = '';
+    }
+    if(strpos($role, 'earplug') !== false && $font_type == 'weak') $sentence = '';
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if($day_night == 'night' && $location == 'night wolf'){
       if(strpos($role, 'wolf') !== false){
@@ -1010,8 +1074,8 @@ function OutputAbilityAction(){
 
   $yesterday = $date - 1;
   $result = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
-			 AND date = $yesterday AND ( type = 'MAGE_DO' OR type = 'WOLF_EAT'
-			 OR type = 'GUARD_DO' OR type = 'CUPID_DO' OR type = 'MANIA_DO' 
+			 AND date = $yesterday AND (type = 'MAGE_DO' OR type = 'WOLF_EAT'
+			 OR type = 'GUARD_DO' OR type = 'CUPID_DO' OR type = 'MANIA_DO'
 			 OR type = 'REPORTER_DO')");
   $count = mysql_num_rows($result);
   $header = '<strong>前日の夜、';
@@ -1045,7 +1109,7 @@ function OutputAbilityAction(){
 	break;
 
       case 'REPORTER_DO':
-	echo $header . 'ブン屋 ' . $handle_name . ' は ' . $target_name . 'を尾行' . $footer;
+	echo $header . 'ブン屋 ' . $handle_name . ' は ' . $target_name . 'を尾行し' . $footer;
 	break;
     }
   }
@@ -1123,6 +1187,7 @@ function KillUser($uname){
 
   mysql_query("UPDATE user_entry SET live = 'dead' WHERE room_no = $room_no
 		AND uname = '$uname' AND user_no > 0");
+  mysql_query('COMMIT'); //コミット
 }
 
 //遺言を取得して保存する ($target : HN)
@@ -1179,33 +1244,29 @@ function GetLoversConditionString($role){
 function LoversFollowed($role, $sudden_death = false){
   global $MESSAGE, $system_time, $room_no, $date, $day_night;
 
-  // 後追いさせる必要がある恋人を取得
-  $str_sql = "SELECT uname, role, handle_name, last_words FROM user_entry
+  //後追いさせる必要がある恋人を取得
+  $query = "SELECT uname, handle_name, role, last_words FROM user_entry
 		WHERE room_no = $room_no AND live = 'live' AND user_no > 0 AND ";
-  $str_sql .= GetLoversConditionString($role);
-  $sql = mysql_query($str_sql);
+  $query .= GetLoversConditionString($role);
+  $sql = mysql_query($query);
 
-  $num_lovers = mysql_num_rows($sql);
-  for($i = 0; $i < $num_lovers; $i++){
-    $array = mysql_fetch_assoc($sql);
+  while(($array = mysql_fetch_assoc($sql)) !== false){
     $target_uname      = $array['uname'];
     $target_handle     = $array['handle_name'];
-    $target_last_words = $array['last_words'];
     $target_role       = $array['role'];
+    $target_last_words = $array['last_words'];
 
     KillUser($target_uname); //後追い死
 
-    if($sudden_death){ //突然死の処理
+    if($sudden_death) //突然死の処理
       InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, ++$system_time);
-    }
     else {
       //後追い死(システムメッセージ)
       InsertSystemMessage($target_handle, 'LOVERS_FOLLOWED_' . $day_night);
 
       //後追いした人の遺言を残す
-      if($target_last_words != ''){
+      if($target_last_words != '')
 	InsertSystemMessage($target_handle . "\t" . $target_last_words, 'LAST_WORDS');
-      }
     }
 
     //巫女の判定結果(システムメッセージ)
@@ -1365,7 +1426,7 @@ function ParseStrings($str, $type = NULL){
 
     case 'MAGE_RESULT':
     case 'MANIA_RESULT':
-    case 'REPORTER_RESULT':
+    case 'REPORTER_SUCCESS':
       sscanf($str, "%s\t%s\t%s", &$first, &$second, &$third);
       DecodeSpace(&$first);
       DecodeSpace(&$second);

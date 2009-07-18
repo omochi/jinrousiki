@@ -74,14 +74,18 @@ class RoomConfig{
   // var $default_chaos = false; //現在未対応
 
   var $chaosfull = true; //真・闇鍋
+
+  var $chaos_open_cast = true; //闇鍋村でも配役内訳を表示する
+  var $secret_sub_role = true; //サブ役職を本人に通知しない
+  var $no_sub_role = true; //サブ役職をつけない
 }
 
 //ゲーム設定
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  // var $entry_one_ip_address = true;
-  var $entry_one_ip_address = false; //デバッグ用
+  var $entry_one_ip_address = true;
+  // var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -105,15 +109,17 @@ class GameConfig{
 			      'boss_wolf'    => '白狼',
 			      'poison_wolf'  => '毒狼',
 			      'tongue_wolf'  => '舌禍狼',
+			      'cute_wolf'    => '萌狼',
 			      'mage'         => '占い師',
 			      'soul_mage'    => '魂の占い師',
-			      'reporter'     => 'ブン屋',
+			      'dummy_mage'   => '夢見人',
 			      'necromancer'  => '霊能者',
 			      'medium'       => '巫女',
 			      'mad'          => '狂人',
 			      'fanatic_mad'  => '狂信者',
 			      'guard'        => '狩人',
 			      'poison_guard' => '騎士',
+			      'reporter'     => 'ブン屋',
 			      'common'       => '共有者',
 			      'fox'          => '妖狐',
 			      'child_fox'    => '子狐',
@@ -127,16 +133,30 @@ class GameConfig{
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
-  var $sub_role_list = array('decide'        => '決定者',
-			     'authority'     => '権力者',
-			     'plague'        => '疫病神',
+  var $sub_role_list = array('authority'     => '権力者',
+			     'random_voter'  => '気分屋',
+			     'rebel'         => '反逆者',
 			     'watcher'       => '傍観者',
+			     'decide'        => '決定者',
+			     'plague'        => '疫病神',
+			     'good_luck'     => '幸運',
+			     'bad_luck'      => '不運',
+			     'upper_luck'    => '雑草魂',
+			     'downer_luck'   => '一発屋',
+			     'star'          => '人気者',
+			     'disfavor'      => '不人気',
 			     'strong_voice'  => '大声',
 			     'normal_voice'  => '不器用',
 			     'weak_voice'    => '小声',
 			     'random_voice'  => '臆病者',
 			     'no_last_words' => '筆不精',
+			     'blinder'       => '目隠し',
+			     'earplug'       => '耳栓',
 			     'liar'          => '狼少年',
+			     'invisible'     => '光学迷彩',
+			     'gentleman'     => '紳士',
+			     'lady'          => '淑女',
+			     'silent'        => '無口',
 			     'chicken'       => '小心者',
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
@@ -150,13 +170,12 @@ class GameConfig{
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     // 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mania' => 1), //神話マニアテスト用
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
-     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
+     // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
+     6 => array('human' =>  2, 'wolf' => 1, 'reporter' => 2, 'fox' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     // 8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
-     8 => array('human' =>  1, 'wolf' => 1, 'reporter' => 2, 'guard' => 1, 'fox' => 1, 'mania' => 1, 'soul_mage' => 1),
+     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -189,7 +208,7 @@ class GameConfig{
   var $boss_wolf   = 18;  //白狼出現に必要な人数
   var $poison_wolf = 20;  //毒狼出現に必要な人数
   var $mania       = 16;  //神話マニア出現に必要な人数
-  var $medium      = 16;  //巫女出現に必要な人数
+  var $medium      = 20;  //巫女出現に必要な人数
 
   //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
   var $poison_only_voter = false; //1.3 系のデフォルト
@@ -201,8 +220,29 @@ class GameConfig{
   var $cupid = 16; //キューピッド出現に必要な人数 (14人の方は現在ハードコード)
   var $cupid_self_shoot = 18; //キューピッドが他人打ち可能となる最低村人数
 
-  var $chaos_open_role = false; //闇鍋村でも配役内訳を表示する (闇鍋村の意味がなくなるのでデバッグ専用)
-  // var $chaos_open_role = true; //デバッグ用
+  var $cute_wolf_rate = 1; //萌狼の発動率
+  var $gentleman_rate = 15; //紳士・淑女の発動率
+  var $liar_rate = 95; //狼少年の発動率
+
+  //狼少年の変換テーブル
+  var $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
+				 'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
+				 'ムラビト' => 'オオカミ', 'オオカミ' => 'ムラビト',
+				 '真' => '偽', '偽' => '真',
+				 '人' => '狼', '狼' => '人',
+				 '白' => '黒', '黒' => '白',
+				 '○' => '●', '●' => '○',
+				 'CO' => '潜伏', '潜伏' => 'CO',
+				 'GJ' => 'BJ', 'BJ' => 'GJ',
+				 '吊り' => '噛み', '噛み' => '吊り',
+				 'グレラン' => 'ローラー', 'ローラー'  => 'グレラン',
+				 '少年' => '少女', '少女' => '少年',
+				 '対応済み' => '未対応', '未対応' => '対応済み',
+				 'おはよう' => 'おあひょう', 'おあひょう' => 'おはよう'
+				 );
+
+  var $invisible_rate = 30; //光学迷彩の発言が空白に入れ替わる確率
+  var $silent_length = 20; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//
   var $objection = 5; //最大回数
@@ -221,8 +261,10 @@ class GameConfig{
 				    'boss_wolf'       => '白狼',
 				    'poison_wolf'     => '毒狼',
 				    'tongue_wolf'     => '舌狼',
+				    'cute_wolf'       => '萌狼',
 				    'mage'            => '占',
 				    'soul_mage'       => '魂',
+				    'dummy_mage'      => '夢',
 				    'reporter'        => '聞',
 				    'necromancer'     => '霊',
 				    'medium'          => '巫',
@@ -240,16 +282,30 @@ class GameConfig{
 				    'cupid'           => 'QP',
 				    'mania'           => 'マ',
 				    'quiz'            => 'GM',
-				    'decide'          => '決',
 				    'authority'       => '権',
-				    'plague'          => '疫',
+				    'random_voter'    => '気',
+				    'rebel'           => '反',
 				    'watcher'         => '傍',
+				    'decide'          => '決',
+				    'plague'          => '疫',
+				    'good_luck'       => '幸',
+				    'bad_luck'        => '不運',
+				    'upper_luck'      => '雑草',
+				    'downer_luck'     => '一発',
+				    'star'            => '人気',
+				    'disfavor'        => '不人',
 				    'strong_voice'    => '大',
 				    'normal_voice'    => '不',
 				    'weak_voice'      => '小',
 				    'random_voice'    => '臆',
-				    'no_last_words'   => '不精',
+				    'no_last_words'   => '筆',
+				    'blinder'         => '目',
+				    'earplug'         => '耳',
+				    'silent'          => '無口',
 				    'liar'            => '嘘',
+				    'invisible'       => '迷彩',
+				    'gentleman'       => '紳',
+				    'lady'            => '淑',
 				    'chicken'         => '酉',
 				    'rabbit'          => '卯',
 				    'perverseness'    => '邪',

@@ -42,28 +42,33 @@ function GetRoleList($user_count, $option_role){
     $role_list = array(); //配列をリセット
     $role_list['wolf'] = 1; //狼1確保
     $role_list['mage'] = 1; //占い師1確保
+    // $role_list['reporter'] = 1; //ブン屋1確保
+    // $role_list['mad'] = 1; //狂人1確保
     for($i = 2; $i < $user_count; $i++){
       $rand = mt_rand(1, 1000);
-      if($rand < 100)     $role_list['wolf']++;
-      elseif($rand < 150) $role_list['boss_wolf']++;
+      if($rand < 80)     $role_list['wolf']++;
+      elseif($rand < 130) $role_list['boss_wolf']++;
+      elseif($rand < 150) $role_list['cute_wolf']++;
       elseif($rand < 165) $role_list['poison_wolf']++;
       elseif($rand < 180) $role_list['tongue_wolf']++;
       elseif($rand < 210) $role_list['fox']++;
       elseif($rand < 230) $role_list['child_fox']++;
       elseif($rand < 280) $role_list['human']++;
-      elseif($rand < 330) $role_list['mage']++;
-      elseif($rand < 360) $role_list['soul_mage']++;
-      elseif($rand < 430) $role_list['necromancer']++;
-      elseif($rand < 480) $role_list['medium']++;
-      elseif($rand < 550) $role_list['mad']++;
-      elseif($rand < 580) $role_list['fanatic_mad']++;
-      elseif($rand < 680) $role_list['common']++;
-      elseif($rand < 750) $role_list['guard']++;
-      elseif($rand < 780) $role_list['poison_guard']++;
-      elseif($rand < 810) $role_list['poison']++;
-      elseif($rand < 855) $role_list['pharmacist']++;
-      elseif($rand < 885) $role_list['suspect']++;
-      elseif($rand < 910) $role_list['unconscious']++;
+      elseif($rand < 320) $role_list['mage']++;
+      elseif($rand < 340) $role_list['soul_mage']++;
+      elseif($rand < 410) $role_list['necromancer']++;
+      elseif($rand < 460) $role_list['medium']++;
+      elseif($rand < 530) $role_list['mad']++;
+      elseif($rand < 560) $role_list['fanatic_mad']++;
+      elseif($rand < 660) $role_list['common']++;
+      elseif($rand < 710) $role_list['guard']++;
+      elseif($rand < 730) $role_list['poison_guard']++;
+      elseif($rand < 760) $role_list['reporter']++;
+      elseif($rand < 800) $role_list['poison']++;
+      elseif($rand < 830) $role_list['pharmacist']++;
+      elseif($rand < 870) $role_list['suspect']++;
+      elseif($rand < 890) $role_list['unconscious']++;
+      elseif($rand < 920) $role_list['dummy_mage']++;
       elseif($rand < 960) $role_list['cupid']++;
       elseif($rand < 997) $role_list['mania']++;
       else                $role_list['quiz']++;
@@ -215,15 +220,14 @@ function GetRoleList($user_count, $option_role){
 
     //占い系の配役を決定
     if($mage_count > 0 && $human_count >= $mage_count){
-      if($user_count < 16){ //全人口が16人未満の場合は魂の占い師は出現しない
+      $human_count -= $mage_count; //村人陣営の残り人数
+      if($user_count < 16){ //16人未満の場合は特殊占い師はなし
 	$role_list['mage'] = $mage_count;
-	$role_list['soul_mage'] = 0;
       }
       else{ //参加人数 % で魂の占い師が一人出現
 	if(mt_rand(1, 100) <= $user_count) $role_list['soul_mage'] = 1;
 	$role_list['mage'] = $mage_count - (int)$role_list['soul_mage'];
       }
-      $human_count -= $mage_count; //村人陣営の残り人数
     }
 
     //巫女の人数を決定
@@ -247,8 +251,8 @@ function GetRoleList($user_count, $option_role){
 
     //巫女の配役を決定
     if($medium_count > 0 && $human_count >= $medium_count){
-      $role_list['medium'] = $medium_count;
       $human_count -= $medium_count; //村人陣営の残り人数
+      $role_list['medium'] = $medium_count;
     }
 
     //霊能系の人数を決定
@@ -274,8 +278,8 @@ function GetRoleList($user_count, $option_role){
 
     //霊能系の配役を決定
     if($necromancer_count > 0 && $human_count >= $necromancer_count){
-      $role_list['necromancer'] = $necromancer_count;
       $human_count -= $necromancer_count; //村人陣営の残り人数
+      $role_list['necromancer'] = $necromancer_count;
     }
 
     //狂人系の人数を決定
@@ -298,6 +302,7 @@ function GetRoleList($user_count, $option_role){
 
     //狂人系の配役を決定
     if($mad_count > 0 && $human_count >= $mad_count){
+      $human_count -= $mad_count; //村人陣営の残り人数
       if($user_count < 16){ //全人口が16人未満の場合は狂信者は出現しない
 	$role_list['mad'] = $mad_count;
 	$role_list['fanatic_mad'] = 0;
@@ -306,7 +311,6 @@ function GetRoleList($user_count, $option_role){
 	if(mt_rand(1, 100) <= $user_count) $role_list['fanatic_mad'] = 1;
 	$role_list['mad'] = $mad_count - (int)$role_list['fanatic_mad'];
       }
-      $human_count -= $mad_count; //村人陣営の残り人数
     }
 
     //狩人系の人数を決定
@@ -329,15 +333,31 @@ function GetRoleList($user_count, $option_role){
 
     //狩人系の配役を決定
     if($guard_count > 0 && $human_count >= $guard_count){
-      if($user_count < 20){ //全人口が20人未満の場合は騎士は出現しない
-	$role_list['guard'] = $guard_count;
-	$role_list['poison_guard'] = 0;
-      }
-      else{ //参加人数 % で騎士が一人出現
-	if(mt_rand(1, 100) <= $user_count) $role_list['poison_guard'] = 1;
-	$role_list['guard'] = $guard_count - (int)$role_list['poison_guard'];
-      }
       $human_count -= $guard_count; //村人陣営の残り人数
+      $special_guard_count = 0; //特殊狩人の人数
+      if($user_count < 16) $base_count = 0; //16人未満では出現しない
+      else $base_count = ceil($user_count / 15); //特殊狩人判定回数を算出
+      for(; $base_count > 0; $base_count--){
+	if(mt_rand(1, 100) <= $user_count) $special_guard_count++; //参加人数 % の確率で特殊狩人出現
+      }
+
+      if($special_guard_count > 0){ //特殊狩人の割り当て
+	//狩人の総数を超えていたら補正する
+	if($special_guard_count > $guard_count) $special_guard_count = $guard_count;
+	$guard_count -= $special_guard_count; //特殊狩人の数だけ狩人を減らす
+	
+	if($user_count < 20){ //20人未満の場合はブン屋のみ
+	  $role_list['reporter'] = $special_guard_count;
+	}
+	else{
+	  if(mt_rand(1, 100) <= $user_count){ //騎士は最大一人
+	    $role_list['poison_guard']++;
+	    $special_guard_count--;
+	  }
+	  $role_list['reporter'] = $special_guard_count;
+	}
+      }
+      $role_list['guard'] = $guard_count;
     }
 
     //共有者の人数を決定
@@ -456,15 +476,17 @@ function GetRoleList($user_count, $option_role){
       if($user_count < 20){ //全人口が20人未満の場合は無意識を出やすくする
 	for($i = 0; $i < $strangers_count; $i++){
 	  $rand = mt_rand(1, 100);
-	  if($rand <= 80) $role_list['unconscious']++;
-	  else $role_list['suspect']++;
+	  if($rand <= 60) $role_list['unconscious']++;
+	  elseif($rand <= 90) $role_list['suspect']++;
+	  else $role_list['dummy_mage']++;
 	}
       }
       else{ //20人以上ならやや不審者を出やすくする
 	for($i = 0; $i < $strangers_count; $i++){
 	  $rand = mt_rand(1, 100);
 	  if($rand <= 40) $role_list['unconscious']++;
-	  else $role_list['suspect']++;
+	  elseif($rand <= 85) $role_list['suspect']++;
+	  else $role_list['dummy_mage']++;
 	}
       }
       $human_count -= $strangers_count; //村人陣営の残り人数
@@ -525,11 +547,11 @@ function GetRoleList($user_count, $option_role){
       $role_list['mania']++;
     }
 
-    //巫女 (村人 → 巫女1、狂人1)
+    //巫女 (村人 → 巫女1、狂信者1)
     if(strpos($option_role, 'medium') !== false && $user_count >= $GAME_CONF->medium){
       $role_list['human'] -= 2;
       $role_list['medium']++;
-      $role_list['mad']++;
+      $role_list['fanatic_mad']++;
     }
   }
 
