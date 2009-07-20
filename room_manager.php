@@ -68,7 +68,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
   $chaos     = ($ROOM_CONF->chaos     && $_POST['chaos'] == 'chaos');
   $chaosfull = ($ROOM_CONF->chaosfull && $_POST['chaos'] == 'chaosfull');
   $quiz      = ($ROOM_CONF->quiz      && $_POST['quiz']  == 'on');
-  $game_option_list = array('wish_role', 'open_vote', 'not_open_cast');
+  $game_option_list = array('open_vote', 'not_open_cast');
   $option_role_list = array();
   if($quiz){
     $game_option .= 'quiz ';
@@ -83,6 +83,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $game_option .= 'dummy_boy ';
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
+    array_push($game_option_list, 'wish_role');
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
@@ -97,10 +98,12 @@ function CreateRoom($room_name, $room_comment, $max_user){
       array_push($option_role_list, 'chaos_open_cast', 'no_sub_role');
     }
     else{
-      array_push($game_option_list, 'sudden_death');
+      array_push($game_option_list, 'wish_role');
       array_push($option_role_list, 'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
-		 'poison_wolf', 'mania', 'medium', 'liar');
+		 'poison_wolf', 'mania', 'medium');
     }
+    array_push($game_option_list, 'sudden_death');
+    array_push($option_role_list, 'liar');
   }
 
   foreach($game_option_list as $this_option)

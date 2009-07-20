@@ -58,21 +58,23 @@ EOF;
   //ページリンクの出力
   if($page == NULL) $page = 1;
   $num_pages = ceil($num_rooms / $config->one_page) + 1; //[all] の為に + 1 しておく
-  $reverse_option = ($is_reverse ? 'on' : 'off');
+  $url_option = '&reverse='.($is_reverse ? 'on' : 'off');
+  if($add_role == 'on') $url_option .= '&add_role=on';
   for($page_number = 1; $page_number <= $num_pages; $page_number++){
     $page_title = $page_number == $num_pages ? 'all' : $page_number;
     if($page != $page_title){
-      echo " <a href=\"old_log.php?page=$page_title&reverse=$reverse_option\">[$page_title]</a> ";
+      echo " <a href=\"old_log.php?page=$page_title$url_option\">[$page_title]</a> ";
     }
     else{
       echo " [$page_title] ";
     }
   }
   $reverse_text = ($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える';
+  $base_url = 'old_log.php?'.($add_role == 'on' ? '&add_role=on' : '').'reverse=';
   if($is_reverse)
-    echo '表示順:新↓古 <a href="old_log.php?reverse=off">'.$reverse_text.'</a>';
+    echo '表示順:新↓古 <a href="{$base_url}off">'.$reverse_text.'</a>';
   else
-    echo '表示順:古↓新 <a href="old_log.php?reverse=on">'.$reverse_text.'</a>';
+    echo '表示順:古↓新 <a href="{$base_url}on">'.$reverse_text.'</a>';
 
   echo <<<EOF
 </td></tr>

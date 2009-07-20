@@ -1,15 +1,20 @@
-.human{      color: #000000;} /* 村人 */
-.wolf{       color: #FF0000;} /* 人狼 */
-.mage{       color: #9933FF;} /* 占い師 */
-.necromancer{color: #006699;} /* 霊能者 */
-.mad{        color: #FF0000;} /* 狂人 */
-.guard{      color: #3399FF;} /* 狩人 */
-.common{     color: #CC6633;} /* 共有者 */
-.fox{        color: #CC0099;} /* 妖狐 */
-.poison{     color: #009966;} /* 埋毒者 */
-.cupid{      color: #FF66CC;} /* キューピッド */
-.mania{      color: #00CC00;} /* 神話マニア */
-.authority{  color: #666633;} /* 権力者 */
-.decide{     color: #999999;} /* 決定者 */
-.lovers{     color: #FF66CC;} /* 恋人 */
-.quiz{       color: #9999CC;} /* クイズ GM */
+.human{       color: #000000;} /* 村人 */
+.wolf{        color: #FF0000;} /* 人狼 */
+.mage{        color: #9933FF;} /* 占い師 */
+.necromancer{ color: #006699;} /* 霊能者 */
+.mad{         color: #FF0000;} /* 狂人 */
+.guard{       color: #3399FF;} /* 狩人 */
+.common{      color: #CC6633;} /* 共有者 */
+.fox{         color: #CC0099;} /* 妖狐 */
+.poison{      color: #009966;} /* 埋毒者 */
+.cupid{       color: #FF66CC;} /* キューピッド */
+.mania{       color: #00CC00;} /* 神話マニア */
+.quiz{        color: #9999CC;} /* クイズ GM */
+.lovers{      color: #FF66CC;} /* 恋人 */
+.authority{   color: #666633;} /* 権力者 */
+.decide{      color: #999999;} /* 決定者 */
+.luck{        color: #66CC99;} /* 得票数変化形 */
+.voice{       color: #FF9900;} /* 声変化系 */
+.seal{        color: #DD2222;} /* 封印系 */
+.convert{     color: #660099;} /* 発言変換系 */
+.sudden-death{color: #33CCFF;} /* ショック死系 */

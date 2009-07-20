@@ -21,6 +21,14 @@ echo <<<EOF
 　基本的に安定性は保証されません。<br><br>
 $caption
 <tr>
+  <td class="link"><a href="fix/jinro_php_1.3.0.zip">Ver. 1.3.0</a></td>
+  <td class="type">zip</td>
+  <td class="size">1.25 Mbyte</td>
+  <td class="explain">Ver. 1.3.0　正式リリース。過去ログのTITLE変更、「」追加オプション実装</td>
+  <td class="name">お肉</td>
+  <td class="date">2009/07/11</td>
+</tr>
+<tr>
   <td class="link"><a href="fix/jinro_php_1.2.3.UTF-8.zip">Ver. 1.2.3.UTF-8</a></td>
   <td class="type">zip</td>
   <td class="size">1.19 Mbyte</td>
@@ -51,7 +59,7 @@ EOF;
 $array = array();
 if($handle = opendir('html')){
   while (false !== ($file = readdir($handle))){
-    if($file != '.' && $file != '..') array_push($array, $file);
+    if($file != '.' && $file != '..' && file != 'index.html') array_push($array, $file);
   }
   closedir($handle);
 }

@@ -44,15 +44,38 @@ function GetRoleList($user_count, $option_role){
     $role_list['mage'] = 1; //¿Í§§ª’1≥Œ ›
     // $role_list['reporter'] = 1; //•÷•Û≤∞1≥Œ ›
     // $role_list['mad'] = 1; //∂∏øÕ1≥Œ ›
-    for($i = 2; $i < $user_count; $i++){
+    $start_count = 2;
+
+    //∫«ƒ„∏¬øÕœµœ»
+    $wolf_count = ceil($user_count / 10) - 1;
+    if($wolf_count > 0) $start_count += $wolf_count;
+    for($i = 0; $i < $wolf_count; $i++){
+      $rand = mt_rand(1, 100);
+      if($rand < 5)      $role_list['boss_wolf']++;
+      elseif($rand < 10) $role_list['poison_wolf']++;
+      elseif($rand < 15) $role_list['tongue_wolf']++;
+      elseif($rand < 45) $role_list['cute_wolf']++;
+      else               $role_list['wolf']++;
+    }
+
+    //∫«ƒ„∏¬Õ≈∏—œ»
+    $fox_count = ceil($user_count / 20);
+    if($fox_count > 0) $start_count += $fox_count;
+    for($i = 0; $i < $fox_count; $i++){
+      $rand = mt_rand(1, 100);
+      if($rand < 15) $role_list['child_fox']++;
+      else           $role_list['fox']++;
+    }
+
+    for($i = $start_count; $i < $user_count; $i++){
       $rand = mt_rand(1, 1000);
-      if($rand < 80)     $role_list['wolf']++;
+      if($rand < 80)      $role_list['wolf']++;
       elseif($rand < 130) $role_list['boss_wolf']++;
       elseif($rand < 150) $role_list['cute_wolf']++;
       elseif($rand < 165) $role_list['poison_wolf']++;
       elseif($rand < 180) $role_list['tongue_wolf']++;
-      elseif($rand < 210) $role_list['fox']++;
-      elseif($rand < 230) $role_list['child_fox']++;
+      elseif($rand < 200) $role_list['fox']++;
+      elseif($rand < 215) $role_list['child_fox']++;
       elseif($rand < 280) $role_list['human']++;
       elseif($rand < 320) $role_list['mage']++;
       elseif($rand < 340) $role_list['soul_mage']++;
@@ -72,6 +95,90 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 960) $role_list['cupid']++;
       elseif($rand < 997) $role_list['mania']++;
       else                $role_list['quiz']++;
+    }
+
+    //∫«ƒ„∏¬ ‰¿µ
+    $wolf_count_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'wolf') !== false) $wolf_count_list[$key] = $value;
+    }
+    $over_wolf_count = array_sum($wolf_count_list) - ceil($user_count * 0.3);
+    for(; $over_wolf_count > 0; $over_wolf_count--){
+      arsort($wolf_count_list);
+      $this_key = key($wolf_count_list);
+      $wolf_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['human']++;
+    }
+
+    $fox_count_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'fox') !== false) $fox_count_list[$key] = $value;
+    }
+    $over_fox_count = array_sum($fox_count_list) - floor($user_count * 0.15);
+    for(; $over_fox_count > 0; $over_fox_count--){
+      arsort($fox_count_list);
+      $this_key = key($fox_count_list);
+      $fox_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['human']++;
+    }
+
+    $over_cupid_count = $role_list['cupid'] - floor($user_count * 0.15);
+    if($over_cupid_count > 0){
+      $role_list['cupid'] -= $over_cupid_count;
+      $role_list['human'] += $over_cupid_count;;
+    }
+
+    $mage_count_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'mage') !== false) $mage_count_list[$key] = $value;
+    }
+    $over_mage_count = array_sum($mage_count_list) - floor($user_count * 0.25);
+    for(; $over_mage_count > 0; $over_mage_count--){
+      arsort($mage_count_list);
+      $this_key = key($mage_count_list);
+      $mage_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['human']++;
+    }
+
+    $guard_count_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'guard') !== false) $guard_count_list[$key] = $value;
+    }
+    $over_guard_count = array_sum($guard_count_list) - floor($user_count * 0.15);
+    for(; $over_guard_count > 0; $over_guard_count--){
+      arsort($guard_count_list);
+      $this_key = key($guard_count_list);
+      $guard_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['human']++;
+    }
+
+    $over_common_count = $role_list['common'] - floor($user_count * 0.2);
+    if($over_common_count > 0){
+      $role_list['common'] -= $over_common_count;
+      $role_list['human'] += $over_common_count;;
+    }
+
+    $over_poison_count = $role_list['poison'] - floor($user_count * 0.2);
+    if($over_poison_count > 0){
+      $role_list['poison'] -= $over_poison_count;
+      $role_list['human'] += $over_poison_count;;
+    }
+
+    $mad_count_list = array();
+    foreach($role_list as $key => $value){
+      if($key == 'mad') $mad_count_list[$key] = $value;
+    }
+    $over_mad_count = array_sum($mad_count_list) - floor($user_count * 0.15);
+    for(; $over_mad_count > 0; $over_mad_count--){
+      arsort($mad_count_list);
+      $this_key = key($mad_count_list);
+      $mad_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['human']++;
     }
   }
   elseif(strpos($game_option, 'chaos') !== false){ //∞«∆È

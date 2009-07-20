@@ -86,6 +86,7 @@ if($say != '' && $live == 'live' && ($day_night == 'day' || $day_night == 'night
     $count = mb_strlen($say);
     for($i = 0; $i < $count; $i++){
       $this_str = mb_substr($say, $i, 1);
+      if($this_str == "\n" || $this_str == "\t") continue; //改行コード、タブは対象外
       if(mt_rand(1, 100) <= $GAME_CONF->invisible_rate)
 	$new_say .= (strlen($this_str) == 2 ? '　' : ' ');
       else
@@ -814,15 +815,16 @@ function OutputAbility(){
     echo '[役割]<br>　あなたは「猫又」、毒をもっています。また、死んだ人を誰か一人蘇らせる事ができます。<br>'."\n";
 
     //蘇生結果を表示
-    $sql = GetAbilityActionResult('POISON_CAT_RESULT');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){ //自分の蘇生結果のみ表示する
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'poison_cat_success');
+    $action = 'POISON_CAT_RESULT';
+    $sql    = GetAbilityActionResult($action);
+    $count  = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){ //自分の結果のみ表示
+      list($actor, $target, $result) = ParseStrings(mysql_result($sql, $i, 0), $action);
+      if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'poison_cat_' . $result);
     }
 
     //夜の蘇生投票
-    if($day_night == 'night' && $date != 1) CheckNightVote('POISON_CAT_DO', 'poison-cat-do');
+    if($day_night == 'night' && $date != 1) CheckNightVote('POISON_CAT_DO', 'mania-do');
   }
   elseif(strpos($role, 'poison') !== false) OutputRoleComment('poison');
   elseif(strpos($role, 'pharmacist') !== false){
@@ -893,6 +895,7 @@ function OutputAbility(){
   elseif(strpos($role, 'bad_luck')     !== false);
   elseif(strpos($role, 'upper_luck')   !== false) OutputRoleComment('upper_luck');
   elseif(strpos($role, 'downer_luck' ) !== false) OutputRoleComment('downer_luck');
+  elseif(strpos($role, 'random_luck' ) !== false) OutputRoleComment('random_luck');
   elseif(strpos($role, 'star')         !== false) OutputRoleComment('star');
   elseif(strpos($role, 'disfavor')     !== false) OutputRoleComment('disfaver');
 
@@ -918,6 +921,8 @@ function OutputAbility(){
   if(    strpos($role, 'chicken')      !== false) OutputRoleComment('chicken');
   elseif(strpos($role, 'rabbit')       !== false) OutputRoleComment('rabbit');
   elseif(strpos($role, 'perverseness') !== false) OutputRoleComment('perverseness');
+  elseif(strpos($role, 'flattery')     !== false) OutputRoleComment('flattery');
+  elseif(strpos($role, 'impatience')   !== false) OutputRoleComment('impatience');
 }
 
 //役職説明を表示する

@@ -96,7 +96,7 @@ class GameConfig{
 
   //-- 投票 --//
   var $kick = 3; //何票で KICK 処理を行うか
-  var $draw = 3; //再投票何回目で引き分けとするか
+  var $draw = 5; //再投票何回目で引き分けとするか
 
   //-- 役職 --//
  //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
@@ -124,6 +124,7 @@ class GameConfig{
 			      'fox'          => '妖狐',
 			      'child_fox'    => '子狐',
 			      'poison'       => '埋毒者',
+			      'poison_cat'   => '猫又',
 			      'pharmacist'   => '薬師',
 			      'suspect'      => '不審者',
 			      'unconscious'  => '無意識',
@@ -143,6 +144,7 @@ class GameConfig{
 			     'bad_luck'      => '不運',
 			     'upper_luck'    => '雑草魂',
 			     'downer_luck'   => '一発屋',
+			     'random_luck'   => '波乱万丈',
 			     'star'          => '人気者',
 			     'disfavor'      => '不人気',
 			     'strong_voice'  => '大声',
@@ -160,6 +162,8 @@ class GameConfig{
 			     'chicken'       => '小心者',
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
+			     'flattery'      => 'ゴマすり',
+			     'impatience'    => '短気',
 			     'lovers'        => '恋人',
 			     'copied'        => '元神話マニア');
 
@@ -171,7 +175,7 @@ class GameConfig{
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
-     5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
+     5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison_cat' => 1),
      // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
      6 => array('human' =>  2, 'wolf' => 1, 'reporter' => 2, 'fox' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -229,20 +233,20 @@ class GameConfig{
 				 'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
 				 'ムラビト' => 'オオカミ', 'オオカミ' => 'ムラビト',
 				 '真' => '偽', '偽' => '真',
+				 '本物' => '騙り', '騙り' => '本物',
 				 '人' => '狼', '狼' => '人',
 				 '白' => '黒', '黒' => '白',
 				 '○' => '●', '●' => '○',
-				 'CO' => '潜伏', '潜伏' => 'CO',
-				 'GJ' => 'BJ', 'BJ' => 'GJ',
+				 '暫定' => '確定', '確定' => '暫定',
+				 'CO' => '潜伏', 'ＣＯ' => '潜伏', '潜伏' => 'CO',
 				 '吊り' => '噛み', '噛み' => '吊り',
 				 'グレラン' => 'ローラー', 'ローラー'  => 'グレラン',
 				 '少年' => '少女', '少女' => '少年',
-				 '対応済み' => '未対応', '未対応' => '対応済み',
-				 'おはよう' => 'おあひょう', 'おあひょう' => 'おはよう'
+				 'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう'
 				 );
 
-  var $invisible_rate = 30; //光学迷彩の発言が空白に入れ替わる確率
-  var $silent_length = 20; //無口が発言できる最大文字数
+  var $invisible_rate = 20; //光学迷彩の発言が空白に入れ替わる確率
+  var $silent_length  = 20; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//
   var $objection = 5; //最大回数
@@ -276,6 +280,7 @@ class GameConfig{
 				    'fox'             => '狐',
 				    'child_fox'       => '子狐',
 				    'poison'          => '毒',
+				    'poison_cat'      => '猫',
 				    'pharmacist'      => '薬',
 				    'suspect'         => '不審',
 				    'unconscious'     => '無',
@@ -292,6 +297,7 @@ class GameConfig{
 				    'bad_luck'        => '不運',
 				    'upper_luck'      => '雑草',
 				    'downer_luck'     => '一発',
+				    'random_luck'     => '波乱',
 				    'star'            => '人気',
 				    'disfavor'        => '不人',
 				    'strong_voice'    => '大',
@@ -309,6 +315,8 @@ class GameConfig{
 				    'chicken'         => '酉',
 				    'rabbit'          => '卯',
 				    'perverseness'    => '邪',
+				    'flattery'        => '胡麻',
+				    'impatience'      => '短',
 				    'copied'          => '元マ',
 				    'lovers'          => '恋');
     return $short_role_list[$role];

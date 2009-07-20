@@ -67,6 +67,8 @@ class RoleImage extends ImageManager{
   var $fox_partner            = 'img/role/fox_partner.jpg';            //ÍÅ¸Ñ¤ÎÃç´Ö
   var $fox_target             = 'img/role/fox_targeted.jpg';           //ÍÅ¸Ñ½±·â
   var $poison                 = 'img/role/poison.jpg';                 //ËäÆÇ¼Ô
+  var $poison_cat_success     = 'img/role/poison_cat_success.jpg';     //ËäÆÇ¼Ô
+  var $poison_cat_failed      = 'img/role/poison_cat_failed.jpg';      //ËäÆÇ¼Ô
   var $pharmacist             = 'img/role/pharmacist.jpg';             //Ìô»Õ
   var $pharmacist_success     = 'img/role/pharmacist_success.jpg';     //Ìô»Õ¤Î²òÆÇÀ®¸ù
   var $unconscious_list       = 'img/role/unconscious_list.jpg';       //Ìµ°Õ¼±¤Î°ìÍ÷
@@ -81,6 +83,7 @@ class RoleImage extends ImageManager{
   var $watcher                = 'img/role/watcher.jpg';                //Ëµ´Ñ¼Ô
   var $upper_luck             = 'img/role/upper_luck.jpg';             //»¨Áðº²
   var $downer_luck            = 'img/role/downer_luck.jpg';            //°ìÈ¯²°
+  var $random_luck            = 'img/role/random_luck.jpg';            //ÇÈÍðËü¾æ
   var $strong_voice           = 'img/role/strong_voice.jpg';           //ÂçÀ¼
   var $star                   = 'img/role/star.jpg';                   //¿Íµ¤¼Ô
   var $disfavor               = 'img/role/disfavor.jpg';               //ÉÔ¿Íµ¤
@@ -98,6 +101,9 @@ class RoleImage extends ImageManager{
   var $chicken                = 'img/role/chicken.jpg';                //¾®¿´¼Ô
   var $rabbit                 = 'img/role/rabbit.jpg';                 //¥¦¥µ¥®
   var $perverseness           = 'img/role/perverseness.jpg';           //Å·¼Ùµ´
+  var $flattery               = 'img/role/flattery.jpg';               //¥´¥Þ¤¹¤ê
+  var $impatience             = 'img/role/impatience.jpg';             //Ã»µ¤
+
   //Àê¤¤¡¦ÎîÇ½¡¦Öà½÷È½Äê
   var $result_human        = 'img/role/result_human.jpg';        //Â¼¿Í
   var $result_wolf         = 'img/role/result_wolf.jpg';         //¿ÍÏµ

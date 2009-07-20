@@ -28,7 +28,7 @@ class Message{
   // var $game_option_chaosfull     = '真・闇鍋モード';
   var $game_option_chaos_open_cast = '配役を通知する';
   var $game_option_secret_sub_role = 'サブ役職を通知しない';
-  var $game_option_no_sub_role = 'サブ役職をつけない';
+  var $game_option_no_sub_role     = 'サブ役職をつけない';
 
   //-- user_manager.php --//
   //EntryUser() : ユーザ登録
@@ -83,14 +83,15 @@ class Message{
   //OutputTalkLog() : 会話、システムメッセージ出力
   var $objection = 'が「異議」を申し立てました'; //異議あり
   //var $game_start = 'はゲーム開始に投票しました' //ゲーム開始投票 //現在は不使用
-  var $kick_do  = 'に KICK 投票しました'; //KICK 投票
-  var $vote_do  = 'に処刑投票しました';   //処刑投票
-  var $wolf_eat = 'に狙いをつけました';   //人狼の投票
-  var $mage_do  = 'を占います';           //占い師の投票
-  var $guard_do = 'の護衛に付きました';   //狩人の投票
-  var $cupid_do = 'に愛の矢を放ちました'; //キューピッドの投票
-  var $mania_do = 'の能力を真似ることにしました'; //神話マニアの投票
-  var $reporter_do = 'を尾行しました'; //ブン屋の投票
+  var $kick_do        = 'に KICK 投票しました';         //KICK 投票
+  var $vote_do        = 'に処刑投票しました';           //処刑投票
+  var $wolf_eat       = 'に狙いをつけました';           //人狼の投票
+  var $mage_do        = 'を占います';                   //占い師の投票
+  var $guard_do       = 'の護衛に付きました';           //狩人の投票
+  var $reporter_do    = 'を尾行しました';               //ブン屋の投票
+  var $cupid_do       = 'に愛の矢を放ちました';         //キューピッドの投票
+  var $mania_do       = 'の能力を真似ることにしました'; //神話マニアの投票
+  var $poison_cat_do  = 'に蘇生処置をしました';         //猫又の投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -115,18 +116,23 @@ class Message{
   var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
   var $reporter_duty     = '(ブン屋) は人外に襲われたようです'; //ブン屋の殉職
   var $vote_sudden_death = 'はショック死しました'; //投票系サブ役職
-  var $chicken           = 'は小心者だったようです'; //小心者
-  var $rabbit            = 'はウサギだったようです'; //ウサギ
-  var $perverseness      = 'は天邪鬼だったようです'; //天邪鬼
+  var $chicken           = 'は小心者だったようです';   //小心者
+  var $rabbit            = 'はウサギだったようです';   //ウサギ
+  var $perverseness      = 'は天邪鬼だったようです';   //天邪鬼
+  var $flattery          = 'はゴマすりだったようです'; //ゴマすり
+  var $impatience        = 'は短気だったようです';     //短気
 
   //OutputAbility() : 能力の表示
-  var $ability_dead     = 'アナタは息絶えました・・・';     //死んでいる場合
-  var $ability_wolf_eat = '喰い殺す人を選択してください';   //狼の投票
-  var $ability_mage_do  = '占う人を選択してください';       //占い師の投票
-  var $ability_guard_do = '護衛する人を選択してください';   //狩人の投票
-  var $ability_reporter_do = '尾行する人を選択してください';  //ブン屋の投票
-  var $ability_cupid_do = '結びつける二人を選んでください'; //キューピッドの投票
-  var $ability_mania_do = '能力を真似る人を選択してください';//神話マニアの投票
+  var $ability_dead     = 'アナタは息絶えました・・・'; //死んでいる場合
+
+  //CheckNightVote() : 夜の投票
+  var $ability_wolf_eat      = '喰い殺す人を選択してください';     //人狼の投票
+  var $ability_mage_do       = '占う人を選択してください';         //占い師の投票
+  var $ability_guard_do      = '護衛する人を選択してください';     //狩人の投票
+  var $ability_reporter_do   = '尾行する人を選択してください';     //ブン屋の投票
+  var $ability_cupid_do      = '結びつける二人を選択してください'; //キューピッドの投票
+  var $ability_mania_do      = '能力を真似る人を選択してください'; //神話マニアの投票
+  var $ability_poison_cat_do = '蘇生する人を選択してください';     //猫又の投票
 
   //-- game_play.php --//
   //CheckSilence()
@@ -164,11 +170,12 @@ class Message{
   var $submit_vote_do = '対象を処刑するに一票'; //処刑投票ボタン
 
   //OutputVoteNight()
-  var $submit_wolf_eat = '対象を喰い殺す (先着)'; //狼の襲撃ボタン
-  var $submit_mage_do = '対象を占う'; //占い師の投票ボタン
-  var $submit_guard_do = '対象を護衛する'; //狩人の投票ボタン
-  var $submit_reporter_do = '対象を尾行する'; //ブン屋の投票ボタン
-  var $submit_cupid_do = '対象に愛の矢を放つ'; //キューピッドの投票ボタン
-  var $submit_mania_do = '対象を真似る'; //神話マニアの投票ボタン
+  var $submit_wolf_eat      = '対象を喰い殺す (先着)'; //人狼の襲撃ボタン
+  var $submit_mage_do       = '対象を占う';            //占い師の投票ボタン
+  var $submit_guard_do      = '対象を護衛する';        //狩人の投票ボタン
+  var $submit_reporter_do   = '対象を尾行する';        //ブン屋の投票ボタン
+  var $submit_cupid_do      = '対象に愛の矢を放つ';    //キューピッドの投票ボタン
+  var $submit_mania_do      = '対象を真似る';          //神話マニアの投票ボタン
+  var $submit_poison_cat_do = '対象を蘇生する';        //猫又の投票ボタン
 }
 ?>
