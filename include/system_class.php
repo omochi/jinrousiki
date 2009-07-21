@@ -4,7 +4,7 @@ class ImageManager{
   function GenerateTag($name, $alt, $class='icon'){
     $alt = htmlspecialchars($alt, ENT_QUOTES);
     $class = htmlspecialchars($class, ENT_QUOTES);
-    return "<img class='$class' src='{$this->$name}' alt='$alt' title='$alt'>";
+    return "<img class=\"$class\" src=\"{$this->$name}\" alt=\"$alt\" title=\"$alt\">";
   }
 }
 
@@ -13,17 +13,27 @@ class RoomImage extends ImageManager{
   var $waiting = 'img/room_option/waiting.gif'; //村リストの募集中の画像
   var $playing = 'img/room_option/playing.gif'; //村リストのゲーム中の画像
 
-  var $wish_role     = 'img/room_option/wish_role.gif';     //役割希望制
-  var $real_time     = 'img/room_option/real_time.gif';     //役割希望制
-  var $dummy_boy     = 'img/room_option/dummy_boy.gif';     //身代わり君使用
-  var $open_vote     = 'img/room_option/open_vote.gif';     //票数公開
-  var $not_open_cast = 'img/room_option/not_open_cast.gif'; //配役非公開
-  var $decide        = 'img/room_option/decide.gif';        //決定者
-  var $authority     = 'img/room_option/authority.gif';     //権力者
-  var $poison        = 'img/room_option/poison.gif';        //埋毒者
-  var $cupid         = 'img/room_option/cupid.gif';         //キューピッド
-  var $chaos         = 'img/room_option/chaos.gif';         //闇鍋
-  var $chaosfull     = 'img/room_option/chaosfull.gif';     //真・闇鍋
+  var $wish_role       = 'img/room_option/wish_role.gif';       //役割希望制
+  var $real_time       = 'img/room_option/real_time.gif';       //役割希望制
+  var $dummy_boy       = 'img/room_option/dummy_boy.gif';       //身代わり君使用
+  var $open_vote       = 'img/room_option/open_vote.gif';       //票数公開
+  var $not_open_cast   = 'img/room_option/not_open_cast.gif';   //配役非公開
+  var $decide          = 'img/room_option/decide.gif';          //決定者
+  var $authority       = 'img/room_option/authority.gif';       //権力者
+  var $poison          = 'img/room_option/poison.gif';          //埋毒者
+  var $cupid           = 'img/room_option/cupid.gif';           //キューピッド
+  var $boss_wolf       = 'img/room_option/boss_wolf.gif';       //白狼
+  var $poison_wolf     = 'img/room_option/poison_wolf.gif';     //毒狼
+  var $mania           = 'img/room_option/mania.gif';           //神話マニア
+  var $medium          = 'img/room_option/medium.gif';          //巫女
+  var $liar            = 'img/room_option/liar.gif';            //狼少年
+  var $gentleman       = 'img/room_option/gentleman.gif';       //紳士・淑女
+  var $sudden_death    = 'img/room_option/sudden_death.gif';    //虚弱体質
+  var $chaos           = 'img/room_option/chaos.gif';           //闇鍋
+  var $chaosfull       = 'img/room_option/chaosfull.gif';       //真・闇鍋
+  var $chaos_open_cast = 'img/room_option/chaos_open_cast.gif'; //配役公開
+  var $secret_sub_role = 'img/room_option/secret_sub_role.gif'; //サブ役職非表示
+  var $no_sub_role     = 'img/room_option/no_sub_role.gif';     //サブ役職無し
 
   //村の最大人数リスト (RoomConfig -> max_user_list と連動させる)
   var $max_user_list = array(

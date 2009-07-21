@@ -14,28 +14,20 @@ function ConnectDatabase($header = false, $exit = true){
   if(! ($db_handle = mysql_connect($db_host, $db_uname, $db_pass))){
     if($header){
       echo "<font color=\"#FF0000\">MySQL接続失敗: $db_host</font><br>";
-      if($exit)
-	OutputHTMLFooter($exit);
-      else
-	return false;
+      if($exit) OutputHTMLFooter($exit);
+      else return false;
     }
-    else{
-      OutputActionResult('MySQL接続失敗', "MySQL接続失敗: $db_host");
-    }
+    else OutputActionResult('MySQL接続失敗', "MySQL接続失敗: $db_host");
   }
 
   mysql_set_charset('ujis');
   if(! mysql_select_db($db_name, $db_handle)){
     if($header){
       echo "<font color=\"#FF0000\">データベース接続失敗: $db_name</font><br>";
-      if($exit)
-	OutputHTMLFooter($exit);
-      else
-	return false;
+      if($exit) OutputHTMLFooter($exit);
+      else return false;
     }
-    else{
-      OutputActionResult('データベース接続失敗', "データベース接続失敗: $db_name");
-    }
+    else OutputActionResult('データベース接続失敗', "データベース接続失敗: $db_name");
   }
 
   return $db_handle;

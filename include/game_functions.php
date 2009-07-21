@@ -135,11 +135,21 @@ function OutputGameOption(){
   }
   $option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide', 'authority',
 		       'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'mania', 'medium',
-		       'liar', 'sudden_death', 'quiz', 'chaos', 'chaosfull', 'chaos_open_cast',
-		       'secret_sub_role', 'no_sub_role');
+		       'liar', 'gentleman', 'sudden_death', 'quiz', 'chaosfull');
   foreach($option_list as $this_option){
-    if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $game_option) ||
-       ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
+    if(strpos($game_option, $this_option) !== false ||
+       strpos($option_role, $this_option) !== false){
+      $str = 'game_option_' . $this_option;
+      echo $MESSAGE->$str . '　';
+    }
+  }
+  if(strpos($game_option, 'chaos') !== false && strpos($game_option, 'chaosfull') === false){
+    AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->chaos);
+  }
+  $option_list = array('chaos_open_cast', 'secret_sub_role', 'no_sub_role');
+  foreach($option_list as $this_option){
+    if(strpos($game_option, $this_option) !== false ||
+       strpos($option_role, $this_option) !== false){
       $str = 'game_option_' . $this_option;
       echo $MESSAGE->$str . '　';
     }
@@ -598,7 +608,7 @@ function OutputTalk($array){
     echo '<td class="kick" colspan="2">' . $talk_handle_name . ' は ' .
       $target_handle_name . ' ' . $MESSAGE->kick_do . '</td>'."\n";
     echo '</tr>'."\n";
-    }
+  }
   //生存中は投票情報は非表示
   elseif($live == 'live' && $flag_system){
   }
@@ -1291,21 +1301,20 @@ function SaveLastWords($target){
 
 //突然死処理
 function SuddenDeath($uname, $handle_name, $role, $type = NULL){
-  global $MESSAGE, $system_time, $room_no, $game_option;
+  global $MESSAGE, $system_time, $room_no;
 
   //生死を確認
   $sql = mysql_query("SELECT live FROM user_entry WHERE room_no = $room_no
 			AND uname = '$uname' AND user_no > 0");
-  if(mysql_num_rows($sql) < 1) return false;
+  if(mysql_result($sql, 0, 0) != 'live') return false;
 
   KillUser($uname); //突然死実行
-  if($type){
-    InsertSystemTalk($handle_name . $MESSAGE->vote_sudden_death, ++$system_time); //システムメッセージ
+  if($type){ //ショック死は専用の処理を行う
+    InsertSystemTalk($handle_name . $MESSAGE->vote_sudden_death, ++$system_time);
     InsertSystemMessage($handle_name, 'SUDDEN_DEATH_' . $type);
-    if(strpos($game_option, 'sudden_death') === false) SaveLastWords($handle_name);
+    SaveLastWords($handle_name);
   }
-  else
-    InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time); //システムメッセージ
+  else InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time);
 
   //恋人の後追い処理
   if(strpos($role, 'lovers') !== false) LoversFollowed($role, true);

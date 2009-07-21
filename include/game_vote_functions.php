@@ -102,7 +102,7 @@ function GetRoleList($user_count, $option_role){
     foreach($role_list as $key => $value){
       if(strpos($key, 'wolf') !== false) $wolf_count_list[$key] = $value;
     }
-    $over_wolf_count = array_sum($wolf_count_list) - ceil($user_count * 0.3);
+    $over_wolf_count = array_sum($wolf_count_list) - floor($user_count * 0.3);
     for(; $over_wolf_count > 0; $over_wolf_count--){
       arsort($wolf_count_list);
       $this_key = key($wolf_count_list);

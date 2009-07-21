@@ -66,6 +66,9 @@ class RoomConfig{
   var $sudden_death = true; //虚弱体質村
   var $default_sudden_death = false;
 
+  var $gentleman = true; //紳士・淑女村
+  var $default_gentleman = false;
+
   // var $quiz = true; //クイズ村 //現在調整中
   var $quiz = false; //クイズ村
   var $default_quiz = false;
@@ -84,8 +87,8 @@ class RoomConfig{
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  var $entry_one_ip_address = true;
-  // var $entry_one_ip_address = false; //デバッグ用
+  // var $entry_one_ip_address = true;
+  var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -225,28 +228,28 @@ class GameConfig{
   var $cupid_self_shoot = 18; //キューピッドが他人打ち可能となる最低村人数
 
   var $cute_wolf_rate = 1; //萌狼の発動率
-  var $gentleman_rate = 15; //紳士・淑女の発動率
+  var $gentleman_rate = 13; //紳士・淑女の発動率
   var $liar_rate = 95; //狼少年の発動率
 
   //狼少年の変換テーブル
   var $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
 				 'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
 				 'ムラビト' => 'オオカミ', 'オオカミ' => 'ムラビト',
+				 '本当' => '嘘', '嘘' => '本当',
 				 '真' => '偽', '偽' => '真',
-				 '本物' => '騙り', '騙り' => '本物',
 				 '人' => '狼', '狼' => '人',
 				 '白' => '黒', '黒' => '白',
 				 '○' => '●', '●' => '○',
-				 '暫定' => '確定', '確定' => '暫定',
 				 'CO' => '潜伏', 'ＣＯ' => '潜伏', '潜伏' => 'CO',
 				 '吊り' => '噛み', '噛み' => '吊り',
 				 'グレラン' => 'ローラー', 'ローラー'  => 'グレラン',
 				 '少年' => '少女', '少女' => '少年',
+				 'しょうねん' => 'しょうじょ', 'しょうじょ' => 'しょうねん',
 				 'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう'
 				 );
 
   var $invisible_rate = 20; //光学迷彩の発言が空白に入れ替わる確率
-  var $silent_length  = 20; //無口が発言できる最大文字数
+  var $silent_length  = 25; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//
   var $objection = 5; //最大回数

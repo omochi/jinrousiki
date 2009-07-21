@@ -324,11 +324,22 @@ function CheckVoteGameStart(){
     }
   }
   if(strpos($game_option, 'sudden_death') !== false){ //虚弱体質村
-    $sudden_death_list = array('chicken', 'rabbit', 'perverseness');
+    $sudden_death_list = array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience');
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
       $rand_key = array_rand($sudden_death_list);
-      $fix_role_list[$i] .= ' ' . $sudden_death_list[$rand_key];
-      $sub_role_count_list[$sudden_death_list[$rand_key]]++;
+      $this_role = $sudden_death_list[$rand_key];
+      $fix_role_list[$i] .= ' ' . $this_role;
+      $sub_role_count_list[$this_role]++;
+      if($this_role == 'impatience') //短気は一人だけ
+	$sudden_death_list = array_diff($sudden_death_list, array('impatience'));
+    }
+  }
+  if(strpos($option_role, 'gentleman') !== false){ //紳士・淑女村
+    $gentleman_list = array('gentleman', 'lady');
+    for($i = 0; $i < $user_count; $i++){ //全員に紳士か淑女をつける
+      $rand_key = array_rand($gentleman_list);
+      $fix_role_list[$i] .= ' ' . $gentleman_list[$rand_key];
+      $sub_role_count_list[$gentleman_list[$rand_key]]++;
     }
   }
   if(strpos($option_role, 'decide') !== false && $user_count >= $GAME_CONF->decide){
@@ -782,7 +793,7 @@ function CheckVoteDay(){
   //投票者対象ハンドルネーム => 人数 の配列を生成
   $voted_target_member_list = array_count_values($vote_target_list);
   foreach($uname_to_handle_list as $this_uname => $this_handle){
-    if($vote_kill_target == $this_handle) continue; //吊られていたらスキップ
+    if($vote_kill_target == $this_uname) continue; //吊られていたらスキップ
     $this_role = $uname_to_role_list[$this_uname];
     $this_type = '';
     if(strpos($this_role, 'chicken') !== false){ //小心者は投票されていたらショック死

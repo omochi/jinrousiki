@@ -86,8 +86,7 @@ if($say != '' && $live == 'live' && ($day_night == 'day' || $day_night == 'night
     $count = mb_strlen($say);
     for($i = 0; $i < $count; $i++){
       $this_str = mb_substr($say, $i, 1);
-      if($this_str == "\n" || $this_str == "\t") continue; //改行コード、タブは対象外
-      if(mt_rand(1, 100) <= $GAME_CONF->invisible_rate)
+      if(mt_rand(1, 100) <= $GAME_CONF->invisible_rate && $this_str != "\n" && $this_str != "\t")
 	$new_say .= (strlen($this_str) == 2 ? '　' : ' ');
       else
 	$new_say .= $this_str;
@@ -897,7 +896,7 @@ function OutputAbility(){
   elseif(strpos($role, 'downer_luck' ) !== false) OutputRoleComment('downer_luck');
   elseif(strpos($role, 'random_luck' ) !== false) OutputRoleComment('random_luck');
   elseif(strpos($role, 'star')         !== false) OutputRoleComment('star');
-  elseif(strpos($role, 'disfavor')     !== false) OutputRoleComment('disfaver');
+  elseif(strpos($role, 'disfavor')     !== false) OutputRoleComment('disfavor');
 
   //発言変化系
   if(    strpos($role, 'strong_voice')  !== false) OutputRoleComment('strong_voice');

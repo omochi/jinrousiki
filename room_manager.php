@@ -12,9 +12,7 @@ if($_POST['command'] == 'CREATE_ROOM'){
   else
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
 }
-else{
-  OutputRoomList();
-}
+else OutputRoomList();
 
 DisconnectDatabase($dbHandle); //DB 接続解除
 
@@ -40,7 +38,7 @@ function MaintenanceRoom(){
 
 //村のメンテナンス処理 (実体)
 function MaintenanceRoomAction($list, $query, $base_time){
-  $time  = TZTime();
+  $time = TZTime();
   while(($array = mysql_fetch_assoc($list)) !== false){
     $room_no      = $array['room_no'];
     $last_updated = $array['last_updated'];
@@ -102,8 +100,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
       array_push($option_role_list, 'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
 		 'poison_wolf', 'mania', 'medium');
     }
-    array_push($game_option_list, 'sudden_death');
-    array_push($option_role_list, 'liar');
+    array_push($option_role_list, 'liar', 'gentleman', 'sudden_death');
   }
 
   foreach($game_option_list as $this_option)
@@ -162,36 +159,36 @@ function CreateRoom($room_name, $room_comment, $max_user){
 //結果出力 (CreateRoom() 用)
 function OutputRoomAction($type, $room_name = ''){
   switch($type){
-    case 'empty':
-      OutputActionResultHeader('村作成 [入力エラー]');
-      echo 'エラーが発生しました。<br>';
-      echo '以下の項目を再度ご確認ください。<br>';
-      echo '<ul><li>村の名前が記入されていない。</li>';
-      echo '<li>村の説明が記入されていない。</li>';
-      echo '<li>最大人数が数字ではない、または異常な文字列。</li></ul>';
-      break;
+  case 'empty':
+    OutputActionResultHeader('村作成 [入力エラー]');
+    echo 'エラーが発生しました。<br>';
+    echo '以下の項目を再度ご確認ください。<br>';
+    echo '<ul><li>村の名前が記入されていない。</li>';
+    echo '<li>村の説明が記入されていない。</li>';
+    echo '<li>最大人数が数字ではない、または異常な文字列。</li></ul>';
+    break;
 
-    case 'time':
-      OutputActionResultHeader('村作成 [入力エラー]');
-      echo 'エラーが発生しました。<br>';
-      echo '以下の項目を再度ご確認ください。<br>';
-      echo '<ul><li>リアルタイム制の昼、夜の時間を記入していない。</li>';
-      echo '<li>リアルタイム制の昼、夜の時間を全角で入力している</li>';
-      echo '<li>リアルタイム制の昼、夜の時間が0以下、または99以上である</li>';
-      echo '<li>リアルタイム制の昼、夜の時間が数字ではない、または異常な文字列</li></ul>';
-      break;
+  case 'time':
+    OutputActionResultHeader('村作成 [入力エラー]');
+    echo 'エラーが発生しました。<br>';
+    echo '以下の項目を再度ご確認ください。<br>';
+    echo '<ul><li>リアルタイム制の昼、夜の時間を記入していない。</li>';
+    echo '<li>リアルタイム制の昼、夜の時間を全角で入力している</li>';
+    echo '<li>リアルタイム制の昼、夜の時間が0以下、または99以上である</li>';
+    echo '<li>リアルタイム制の昼、夜の時間が数字ではない、または異常な文字列</li></ul>';
+    break;
 
-    case 'success':
-      OutputActionResultHeader('村作成', 'index.php');
-      echo "$room_name 村を作成しました。トップページに飛びます。";
-      echo '切り替わらないなら <a href="index.php">ここ</a> 。';
-      break;
+  case 'success':
+    OutputActionResultHeader('村作成', 'index.php');
+    echo "$room_name 村を作成しました。トップページに飛びます。";
+    echo '切り替わらないなら <a href="index.php">ここ</a> 。';
+    break;
 
-    case 'busy':
-      OutputActionResultHeader('村作成 [データベースエラー]');
-      echo 'データベースサーバが混雑しています。<br>'."\n";
-      echo '時間を置いて再度登録してください。';
-      break;
+  case 'busy':
+    OutputActionResultHeader('村作成 [データベースエラー]');
+    echo 'データベースサーバが混雑しています。<br>'."\n";
+    echo '時間を置いて再度登録してください。';
+    break;
   }
   OutputHTMLFooter(); //フッタ出力
 }
@@ -234,38 +231,44 @@ function OutputRoomList(){
       AddImgTag(&$option_img_str, $ROOM_IMG->real_time,
 		"リアルタイム制　昼： $day 分　夜： $night 分");
     }
-    $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'chaos', 'chaosfull');
+    $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'quiz',
+			      'chaos', 'chaosfull', 'secret_sub_role');
     foreach($game_option_list as $this_option){
-      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $game_option)){
-	$message_str = 'game_option_' . $this_option;
-	AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
+      if($this_option == 'chaos'){
+	if(strpos($game_option, 'chaos') === false ||
+	   strpos($game_option, 'chaosfull') !== false) continue;
       }
+      elseif(strpos($game_option, $this_option) === false) continue;
+
+      $message_str = 'game_option_' . $this_option;
+      AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
     }
 
-    $option_role_list = array('decide', 'authority', 'poison', 'cupid');
+    $option_role_list = array('decide', 'authority', 'poison', 'cupid','boss_wolf', 'poison_wolf',
+			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
+			      'chaos_open_cast', 'no_sub_role');
     foreach($option_role_list as $this_option){
-      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
+      if(strpos($option_role, $this_option) !== false){
 	$message_str = 'game_option_' . $this_option;
 	AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
       }
     }
 
-    $text_game_option_list = array('quiz', 'sudden_death', 'secret_sub_role');
-    foreach($text_game_option_list as $this_option){
-      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $game_option)){
-	$message_str = 'game_option_' . $this_option;
-	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
-      }
-    }
+    // $text_game_option_list = array();
+    // foreach($text_game_option_list as $this_option){
+    //   if(strpos($game_option, $this_option) !== false){
+    // 	$message_str = 'game_option_' . $this_option;
+    // 	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
+    //   }
+    // }
 
-    $text_option_role_list = array('boss_wolf', 'poison_wolf', 'mania', 'medium', 'liar',
-				   'chaos_open_cast', 'no_sub_role', 'open_sub_role');
-    foreach($text_option_role_list as $this_option){
-      if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
-	$message_str = 'game_option_' . $this_option;
-	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
-      }
-    }
+    // $text_option_role_list = array(, 'open_sub_role');
+    // foreach($text_option_role_list as $this_option){
+    //   if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
+    // 	$message_str = 'game_option_' . $this_option;
+    // 	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
+    //   }
+    // }
 
     // $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
     //<div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>
@@ -288,6 +291,37 @@ EOF;
 //オプション画像タグ追加 (OutputRoomList() 用)
 function AddImgTag(&$tag, $src, $title){
   $tag .= "<img class=\"option\" src=\"$src\" title=\"$title\" alt=\"$title\">";
+}
+
+//他のサーバの部屋画面を出力
+function OutputSharedServerRoom(){
+  global $SHARED_SERVER;
+
+  return; //テスト中
+  foreach($SHARED_SERVER as $server => $array){
+    $this_url = $array['url'];
+    $this_raw_data = file_get_contents($this_url.'room_manager.php');
+    if($this_raw_data == '') continue;
+    print_r($this_raw_data);
+    if($array['separator'] != ''){
+      $this_split_list = mb_split($array['separator'], $this_raw_data);
+      print_r($this_split_list);
+
+      $this_data = $this_split_list[0];
+    }
+    else
+      $this_data = $this_raw_data;
+
+    $this_data = strtr($this_data, array('href=' => 'href='.$this_url, 'src=' => 'src='.$this_url));
+    if($this_data == '') continue;
+    echo <<<EOF
+    <fieldset>
+      <legend>ゲーム一覧 ({$array['name']})</legend>
+      <div class="game-list">$this_data</div>
+    </fieldset>
+
+EOF;
+  }
 }
 
 //部屋作成画面を出力
@@ -526,6 +560,20 @@ EOF;
 EOF;
   }
 
+  if($ROOM_CONF->gentleman){
+    $checked = ($ROOM_CONF->default_gentleman ? ' checked' : '');
+    echo <<<EOF
+<tr>
+<td><label for="role_gentleman">{$MESSAGE->game_option_gentleman}：</label></td>
+<td class="explain">
+<input id="role_gentleman" type="checkbox" name="gentleman" value="on"{$checked}>
+(ランダムで「紳士」「淑女」のどちらかがつきます)
+</td>
+</tr>
+
+EOF;
+  }
+
   if($ROOM_CONF->sudden_death){
     $checked = ($ROOM_CONF->default_sudden_death ? ' checked' : '');
     echo <<<EOF
@@ -533,7 +581,7 @@ EOF;
 <td><label for="role_sudden_death">{$MESSAGE->game_option_sudden_death}：</label></td>
 <td class="explain">
 <input id="role_sudden_death" type="checkbox" name="sudden_death" value="on"{$checked}>
-(ランダムで「小心者」「ウサギ」「天邪鬼」のどれかがつきます)
+(ランダムで投票でショック死するサブ役職のどれかがつきます)
 </td>
 </tr>
 

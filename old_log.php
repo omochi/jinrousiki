@@ -1,5 +1,7 @@
-<?php require_once(dirname(__FILE__) . '/include/game_functions.php');
+<?php
+require_once(dirname(__FILE__) . '/include/game_functions.php');
 require_once(dirname(__FILE__) . '/include/request_class.php');
+
 //部屋No取得
 $RQ_ARGS = new LogView();
 $room_no     = $_GET['room_no'];
@@ -12,12 +14,10 @@ $add_role    = $_GET['add_role'];
 
 $dbHandle = ConnectDatabase(); //DB 接続
 
-if ($RQ_ARGS->is_room){
+if($RQ_ARGS->is_room)
   OutputOldLog($RQ_ARGS->room_no);
-}
-else {
+else
   OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
-}
 
 DisconnectDatabase($dbHandle); //DB 接続解除
 
@@ -26,7 +26,7 @@ OutputHTMLFooter();
 // 関数 //
 //過去ログ一覧表示
 function OutputFinishedRooms($page, $reverse = NULL){
-  global $ROOM_IMG, $VICTORY_IMG, $add_role;
+  global $MESSAGE, $ROOM_IMG, $VICTORY_IMG, $add_role;
 
   //村数の確認
   $sql = mysql_query("SELECT COUNT(*) FROM room WHERE status = 'finished'");
@@ -36,7 +36,7 @@ function OutputFinishedRooms($page, $reverse = NULL){
 		       '<a href="index.php">←戻る</a>'."\n");
   }
 
-  OutputHTMLHeader('汝は人狼なりや?[過去ログ一覧]', 'old_log_list');
+  OutputHTMLHeader('汝は人狼なりや？[過去ログ一覧]', 'old_log_list');
 echo <<<EOF
 <body id="room_list">
 <p><a href="index.php">←戻る</a></p>
@@ -62,12 +62,10 @@ EOF;
   if($add_role == 'on') $url_option .= '&add_role=on';
   for($page_number = 1; $page_number <= $num_pages; $page_number++){
     $page_title = $page_number == $num_pages ? 'all' : $page_number;
-    if($page != $page_title){
+    if($page != $page_title)
       echo " <a href=\"old_log.php?page=$page_title$url_option\">[$page_title]</a> ";
-    }
-    else{
+    else
       echo " [$page_title] ";
-    }
   }
   $reverse_text = ($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える';
   $base_url = 'old_log.php?'.($add_role == 'on' ? '&add_role=on' : '').'reverse=';
@@ -76,12 +74,20 @@ EOF;
   else
     echo '表示順:古↓新 <a href="{$base_url}on">'.$reverse_text.'</a>';
 
+    $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast',
+			      'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
+			      'poison_wolf', 'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
+			      'chaos', 'chaos_open_cast', 'secret_sub_role', 'no_sub_role');
+
+    $option_column = count($game_option_list) + 2;
   echo <<<EOF
 </td></tr>
 <!--村一覧 ここから-->
 <tr><td>
-<table border="1" align="center" cellspacing="1" bgcolor="#CCCCCC">
-<tr class="column"><th>村No</th><th>村名</th><th>村について</th><th colspan="2">人数</th><th>勝</th><th colspan="11">オプション</th></tr>
+<table class="main">
+<tr class="column">
+<th>村No</th><th>村名</th><th>村について</th><th>人数</th><th>勝</th><th colspan="{$option_column}">オプション</th>
+</tr>
 
 EOF;
 
@@ -96,86 +102,36 @@ EOF;
 
   //表示する行の取得
   $room_order = ($is_reverse ? 'DESC' : '');
-  $res_oldlog_list = mysql_query("SELECT
-      room_no,
-      room_name,
-      room_comment,
-      date AS room_date,
-      game_option AS room_game_option,
-      option_role AS room_option_role,
-      max_user AS room_max_user,
-      (SELECT COUNT(*) FROM user_entry user WHERE user.room_no = room.room_no AND user.user_no > 0) AS room_num_user,
-      victory_role AS room_victory_role
-    FROM room WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
-  while (($oldlog_list_arr = mysql_fetch_assoc($res_oldlog_list)) !== false){
-    extract($oldlog_list_arr, EXTR_PREFIX_ALL, 'log');
+  $sql = mysql_query("SELECT room_no, room_name, room_comment, date AS room_date,
+			game_option AS room_game_option, option_role AS room_option_role,
+			max_user AS room_max_user, (SELECT COUNT(*) FROM user_entry user
+			WHERE user.room_no = room.room_no AND user.user_no > 0)
+			AS room_num_user, victory_role AS room_victory_role FROM room
+			WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
+
+  while (($array = mysql_fetch_assoc($sql)) !== false){
+    extract($array, EXTR_PREFIX_ALL, 'log');
+    $log_room_game_option .= ' ' . $log_room_option_role;
+
     //オプションと勝敗の解析
     if(strpos($log_room_game_option,'wish_role') !== false)
-      $log_wish_role_str = $ROOM_IMG->GenerateTag('wish_role', '役割希望制');
+      $log_wish_role_str = $ROOM_IMG->GenerateTag('wish_role', $MESSAGE->wish_role);
     else
       $log_wish_role_str = "<br>";
 
     if(strpos($log_room_game_option, 'real_time') !== false){
-      if(strpos($log_room_game_option, 'real_time:' !== false)){
+      if(strpos($log_room_game_option, 'real_time:') !== false){
         //実時間の制限時間を取得
         $real_time_str = strstr($log_room_game_option, 'real_time');
-        sscanf($real_time_str,"real_time:%d:%d",&$day_real_limit_minutes,&$night_real_limit_minutes);
-        $real_time_alt_str = "リアルタイム制　昼： $day_real_limit_minutes 分　夜： $night_real_limit_minutes 分";
+        sscanf(&$real_time_str, "real_time:%d:%d", &$day_minutes, &$night_minutes);
+        $real_time_alt_str = $MESSAGE->game_option_real_time . "　昼： $day_minutes 分" .
+	  "　夜： $night_minutes 分";
       }
-      else {
-        $real_time_alt_str = "リアルタイム制";
-      }
+      else $real_time_alt_str = $MESSAGE->game_option_real_time;
       $log_real_time_str = $ROOM_IMG->GenerateTag('real_time', $real_time_alt_str);
     }
     else
       $log_real_time_str = "<br>";
-
-    if(strpos($log_room_game_option,"dummy_boy") !== false)
-      $log_dummy_boy_str = $ROOM_IMG->GenerateTag('dummy_boy', '初日の夜は身代わり君');
-    else
-      $log_dummy_boy_str = "<br>";
-
-    if(strpos($log_room_game_option,"open_vote") !== false)
-      $log_open_vote_str = $ROOM_IMG->GenerateTag('open_vote', '投票した票数を公表する');
-    else
-      $log_open_vote_str = "<br>";
-
-    if(strpos($log_room_game_option,"not_open_cast") !== false)
-      $log_not_open_cast_str = $ROOM_IMG->GenerateTag('not_open_cast', '霊界で配役を公表しない');
-    else
-      $log_not_open_cast_str = "<br>";
-
-    if(strpos($log_room_option_role,"decide") !== false)
-      $log_decide_str = $ROOM_IMG->GenerateTag('decide', '16人以上で決定者登場');
-    else
-      $log_decide_str = "<br>";
-
-    if(strpos($log_room_option_role,"authority") !== false)
-      $log_authority_str = $ROOM_IMG->GenerateTag('authority', '16人以上で権力者登場');
-    else
-      $log_authority_str = "<br>";
-
-    if(strpos($log_room_option_role,"poison") !== false)
-      $log_poison_str = $ROOM_IMG->GenerateTag('poison', '20人以上で埋毒者登場');
-    else
-      $log_poison_str = "<br>";
-
-    if(strpos($log_room_option_role,"cupid") !== false)
-      $log_cupid_str = $ROOM_IMG->GenerateTag('cupid', '14人、または16人以上でキューピッド登場');
-    else
-      $log_cupid_str = "<br>";
-
-    if(strpos($log_room_game_option,"quiz") !== false)
-      $log_quiz_str = 'Qz';
-    else
-      $log_quiz_str = "<br>";
-
-    if(strpos($log_room_game_option,"chaosfull") !== false)
-      $log_chaos_str = $ROOM_IMG->GenerateTag('chaosfull', '真・闇鍋');
-    elseif(strpos($log_room_game_option,"chaos") !== false)
-      $log_chaos_str = $ROOM_IMG->GenerateTag('chaos', '闇鍋');
-    else
-      $log_chaos_str = "<br>";
 
     switch($log_room_victory_role){
       case 'human':
@@ -193,6 +149,7 @@ EOF;
         $voctory_role_str = $VICTORY_IMG->GenerateTag('lovers', '恋人勝利', 'winner');
 	break;
       case 'quiz':
+        // $voctory_role_str = $VICTORY_IMG->GenerateTag('Qz', '恋人勝利', 'winner');
         $voctory_role_str = 'Qz';
 	break;
       case 'draw':
@@ -211,7 +168,7 @@ EOF;
       $dead_room_color = '';
 
     //ユーザ総数を取得
-    $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
+    // $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
     $user_count = intval($log_room_num_user);
 
     $base_url = "old_log.php?log_mode=on&room_no=$log_room_no";
@@ -225,35 +182,50 @@ EOF;
 
     echo <<<ROOM_ROW
 <tr>
-<td align=right valign=middle class=row>$log_room_no</td> 
-<td align=right valign=middle class=row> 
-<a href="$base_url" $dead_room_color >$log_room_name 村</a>
-<small>(<a href="$base_url&reverse_log=on" $dead_room_color >逆</a>
-<a href="$base_url&heaven_talk=on" $dead_room_color >霊</a>
-<a href="$base_url&reverse_log=on&heaven_talk=on" $dead_room_color >逆&amp;霊</a>
-<a href="$base_url&heaven_only=on" $dead_room_color ><small>逝</small></a>
-<a href="$base_url&reverse_log=on&heaven_only=on" $dead_room_color ><small>逆&amp;逝</small></a>
-$debug_anchor
-)</small></td>
-<td align="right" valign="middle" class="row"><small>〜 $log_room_comment 〜</small></td>
-<td align="center" valign="middle" class="row"><img src="$str_max_users"></td>
-<td align="center" valign="middle" class="row">$user_count</td>
-<td align="center" valign="middle" class="row">$voctory_role_str</td>
-<td valign="middle" width="16" class="row">$log_wish_role_str</td>
-<td valign="middle" width="16" class="row">$log_real_time_str</td>
-<td valign="middle" width="16" class="row">$log_dummy_boy_str</td>
-<td valign="middle" width="16" class="row">$log_open_vote_str</td>
-<td valign="middle" width="16" class="row">$log_not_open_cast_str</td>
-<td valign="middle" width="16" class="row">$log_decide_str</td>
-<td valign="middle" width="16" class="row">$log_authority_str</td>
-<td valign="middle" width="16" class="row">$log_poison_str</td>
-<td valign="middle" width="16" class="row">$log_cupid_str</td>
-<td valign="middle" width="16" class="row">$log_quiz_str</td>
-<td valign="middle" width="16" class="row">$log_chaos_str</td>
-</tr>
+<td class="text">$log_room_no</td>
+<td class="text">
+  <a href="$base_url" $dead_room_color >$log_room_name 村</a><br>
+<span class="room-link">(<a href="$base_url&reverse_log=on" $dead_room_color>逆</a>
+<a href="$base_url&heaven_talk=on" $dead_room_color>霊</a>
+<a href="$base_url&reverse_log=on&heaven_talk=on" $dead_room_color>逆&amp;霊</a>
+<a href="$base_url&heaven_only=on" $dead_room_color >逝</a>
+<a href="$base_url&reverse_log=on&heaven_only=on" $dead_room_color>逆&amp;逝</a>
+$debug_anchor)
+</span>
+</td>
+<td align="right" valign="middle"><small>〜 $log_room_comment 〜</small></td>
+<td align="center" valign="middle">$user_count</td>
+<td align="center" valign="middle">$voctory_role_str</td>
+<td align="center" valign="middle">$log_wish_role_str</td>
+<td align="center" valign="middle">$log_real_time_str</td>
 
 ROOM_ROW;
+    $wide_pict_list = array('boss_wolf', 'poison_wolf', 'secret_sub_role', 'no_sub_role');
+    foreach($game_option_list as $this_option){
+      if($this_option == 'chaos'){
+	if(strpos($log_room_game_option, 'chaosfull') !== false){
+	  $this_flag = true;
+	  $this_option = 'chaosfull';
+	}
+	elseif(strpos($log_room_game_option, 'chaos') !== false)
+	  $this_flag = true;
+	else
+	  $this_flag = false;
+      }
+      else
+	$this_flag = (strpos($log_room_game_option, $this_option) !== false);
+
+      if($this_flag){
+	$message_str = 'game_option_' . $this_option;
+	$this_str = $ROOM_IMG->GenerateTag($this_option, $MESSAGE->$message_str);
+      }
+      else
+	$this_str = "<br>";
+      echo '<td valign="middle">' . $this_str . '</td>'."\n";
+    }
+    echo '</tr>'."\n";
   }
+
   echo <<<FOOTER
 </table>
 </td></tr>
@@ -379,11 +351,12 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 			talk.sentence AS sentence,
 			talk.font_type AS font_type,
 			talk.location AS location
-			FROM talk,
-			  (SELECT * FROM user_entry users LEFT JOIN user_icon USING (icon_no)
-			  WHERE users.room_no IN ($room_no, 0)) room_users
+			FROM user_entry, talk, user_icon
 			WHERE talk.room_no = $room_no
-			AND talk.uname = room_users.uname
+			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND user_entry.icon_no = user_icon.icon_no)
+			OR ( user_entry.room_no = 0 AND talk.uname = 'system'
+			AND user_entry.icon_no = user_icon.icon_no) )
 			AND talk.date = $set_date
 			AND ( (talk.location = 'heaven') OR (talk.uname = 'system') )
 			$select_order");

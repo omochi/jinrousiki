@@ -36,7 +36,7 @@ table.main td{vertical-align: top;}
 ul{ /* ƒƒjƒ…[‚ÌƒŠƒ“ƒN */
   list-style-type: none;
   margin-left: -32px;
-  _margin-left: 8px; /* IE6 ‘Î‰ */
+  *margin-left: 8px; /* IE6 ‘Î‰ */
   line-height: 150%;
   font-size: 95%;
 }
