@@ -343,20 +343,19 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   }
   if($set_location == 'heaven_only'){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-			user_entry.handle_name AS talk_handle_name,
-			user_entry.role AS talk_role,
-			user_entry.sex AS talk_sex,
-			user_icon.color AS talk_color,
+    $sql = mysql_query("SELECT
+      room_users.uname AS talk_uname,
+			room_users.handle_name AS talk_handle_name,
+			room_users.role AS talk_role,
+			room_users.sex AS talk_sex,
+			room_users.color AS talk_color,
 			talk.sentence AS sentence,
 			talk.font_type AS font_type,
 			talk.location AS location
-			FROM user_entry, talk, user_icon
+			FROM talk,
+			  (SELECT * FROM user_entry users LEFT JOIN user_icon USING (icon_no)
+			  WHERE users.room_no IN ($room_no, 0)) room_users
 			WHERE talk.room_no = $room_no
-			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-			AND user_entry.icon_no = user_icon.icon_no)
-			OR ( user_entry.room_no = 0 AND talk.uname = 'system'
-			AND user_entry.icon_no = user_icon.icon_no) )
 			AND talk.date = $set_date
 			AND ( (talk.location = 'heaven') OR (talk.uname = 'system') )
 			$select_order");
@@ -420,22 +419,25 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   $day_night = $table_class;
 
   //出力
-  echo '<table class="old-log-talk ' . $table_class . '">'."\n";
-  while(($array = mysql_fetch_assoc($sql)) !== false){
-    $location = $array['location'];
-    if(strpos($location, 'day') !== false && $day_night != 'day'){
-      OutputSceneChange($set_date);
-      $day_night = 'day';
-      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
+  $builder = new DocumentBuilder();
+  do {
+    $builder->BeginTalk("old-log-talk {$day_night}");
+    while(($array = mysql_fetch_assoc($sql)) !== false){
+      $location = $array['location'];
+      if(strpos($location, $day_night) === false){
+        OutputSceneChange($set_date);
+        if ($day_night == 'day'){
+          $day_night = 'night';
+        }
+        else if ($day_night == 'night'){
+          $day_night = 'day';
+        }
+        break;
+      }
+      OutputTalk($array, $builder); //会話出力
     }
-    elseif(strpos($location, 'night') !== false && $day_night != 'night'){
-      OutputSceneChange($set_date);
-      $day_night = 'night';
-      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
-    }
-    OutputTalk($array); //会話出力
-  }
-  echo '</table>'."\n";
+    $builder->EndTalk();
+  } while ($array !== false);
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
      $set_date != $last_date && $is_reverse && $RQ_ARGS->heaven_only != 'on'){
@@ -450,7 +452,6 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 function OutputSceneChange($set_date){
   global $RQ_ARGS, $reverse_log, $heaven_only, $date, $day_night;
 
-  echo '</table>'."\n";
   if($RQ_ARGS->heaven_only == 'on') return;
   $date = $set_date;
   if($reverse_log == 'on'){

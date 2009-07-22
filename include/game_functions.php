@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/functions.php');
+require_once(dirname(__FILE__) . '/game_format.php');
 
 //セッション認証 返り値 OK:ユーザ名 / NG: false
 function CheckSession($session_id, $exit = true){
@@ -552,13 +553,14 @@ function OutputTalkLog(){
 			ORDER BY time DESC");
   $count = mysql_num_rows($sql);
 
-  echo '<table class="talk">'."\n";
-  for($i = 0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql)); //会話出力
-  echo '</table>'."\n";
+  $builder = new DocumentBuilder();
+  $builder->BeginTalk('talk');
+  for($i = 0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql), $builder); //会話出力
+  $builder->EndTalk();
 }
 
 //会話出力
-function OutputTalk($array){
+function OutputTalk($array, &$builder){
   global $GAME_CONF, $MESSAGE, $game_option, $add_role, $status, $day_night, $uname, $live, $role;
 
   $talk_uname       = $array['talk_uname'];
@@ -589,10 +591,10 @@ function OutputTalk($array){
 		   $flag_cupid || $flag_mania || $flag_poison_cat));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
-    echo '<tr class="system-message">'."\n";
-    echo '<td class="objection-' . $talk_sex . '" colspan="2">' .
-      $talk_handle_name . ' ' . $MESSAGE->objection . '</td>'."\n";
-    echo '</tr>'."\n";
+    $builder->AddSystemTalk(
+      $talk_handle_name . ' ' . $MESSAGE->objection,
+      'objection-'.$talk_sex
+    );
   }
   elseif($location_system && $sentence == 'GAMESTART_DO'){ //ゲーム開始投票
     /*
@@ -604,36 +606,27 @@ function OutputTalk($array){
   }
   elseif($location_system && strpos($sentence, 'KICK_DO') === 0){ //KICK 投票
     $target_handle_name = ParseStrings($sentence, 'KICK_DO');
-    echo '<tr class="system-message">'."\n";
-    echo '<td class="kick" colspan="2">' . $talk_handle_name . ' は ' .
-      $target_handle_name . ' ' . $MESSAGE->kick_do . '</td>'."\n";
-    echo '</tr>'."\n";
+    $builder->AddSystemMessage(
+      'kick',
+      "{$talk_handle_name} は {$target_handle_name} {$MESSAGE->kick_do}"
+    );
   }
   //生存中は投票情報は非表示
   elseif($live == 'live' && $flag_system){
   }
   elseif($talk_uname == 'system'){ //システムメッセージ
-    echo '<tr>'."\n";
     if(strpos($sentence, 'MORNING') === 0){
-      sscanf($sentence, "MORNING\t%d", &$morning_date);
-      echo '<td class="system-user" width="1000" colspan="2">&lt; &lt; ' .
-	$MESSAGE->morning_header . ' ' . $morning_date . $MESSAGE->morning_footer .
-	' &gt; &gt;</td>'."\n";
+      sscanf($sentence, "MORNING\t%d", $morning_date);
+      $sentence = "{$MESSAGE->morning_header} {$morning_date} {$MESSAGE->morning_footer}";
     }
     elseif(strpos($sentence, 'NIGHT') === 0){
-      echo '<td class="system-user" colspan="2">' .
-	'&lt; &lt; ' . $MESSAGE->night . ' &gt; &gt;</td>'."\n";
+      $sentence = $MESSAGE->night;
     }
-    else{
-      echo '<td class="system-user" colspan="2">' . $sentence . '</td>'."\n";
-    }
-    echo '</tr>'."\n";
+    $builder->AddSystemTalk($sentence);
   }
   //身代わり君専用システムメッセージ
   elseif(strpos($location, 'dummy_boy') !== false){
-    echo '<tr>'."\n";
-    echo '<td class="system-user" colspan="2">' . $MESSAGE->dummy_boy . $sentence . '</td>'."\n";
-    echo '</tr>'."\n";
+    $builder->AddSystemTalk($MESSAGE->dummy_boy . $sentence);
   }
   //開始前と終了後 || ゲーム中、生きている人の昼
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
@@ -641,70 +634,61 @@ function OutputTalk($array){
     if($day_night == 'day' || $day_night == 'night'){ //ゲーム中だけ一部のサブ役職発動
       if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
       if(strpos($role, 'earplug') !== false){
-	switch($font_type){
-	case 'strong':
-	  $font_type = 'normal';
-	  break;
+      	switch($font_type){
+      	case 'strong':
+      	  $font_type = 'normal';
+      	  break;
 
-	case 'normal':
-	  $font_type = 'weak';
-	  break;
+      	case 'normal':
+      	  $font_type = 'weak';
+      	  break;
 
-	case 'weak':
-	  $sentence = '';
-	  break;
-	}
+      	case 'weak':
+      	  $sentence = '';
+      	  break;
+      	}
       }
     }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-    echo '<tr class="user-talk">'."\n";
-    echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-      $talk_handle_name . '</td>'."\n";
-    echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-    echo '</tr>'."\n";
+    $builder->AddTalk("<font color=\"{$talk_color}\">◆</font>{$talk_handle_name}", $sentence, $font_type);
   }
   //ゲーム中、生きている人の夜の狼
   elseif($live == 'live' && $day_night == 'night' && $location == 'night wolf'){
     if(strpos($role, 'earplug') !== false){
       switch($font_type){
       case 'strong':
-	$font_type = 'normal';
-	break;
+      	$font_type = 'normal';
+      	break;
 
       case 'normal':
-	$font_type = 'weak';
-	break;
+      	$font_type = 'weak';
+      	break;
 
       case 'weak':
-	$sentence = '';
-	break;
+      	$sentence = '';
+      	break;
       }
     }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'wolf') !== false){
       if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
-      $talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
+      $builder->AddTalk("<font color=\"$talk_color\">◆</font>$talk_handle_name", $sentence, $font_type);
     }
     else{
-      $talk_handle_name = '狼の遠吠え';
-      $sentence = $MESSAGE->wolf_howl;
+      $builder->AddWhisper('狼の遠吠え', $MESSAGE->wolf_howl, $font_type);
     }
-    echo '<tr class="user-talk">'."\n";
-    echo '<td class="user-name">' . $talk_handle_name . '</td>'."\n";
-    echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-    echo '</tr>'."\n";
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($live == 'live' && $day_night == 'night' && $location == 'night common'){
     if(strpos($role, 'earplug') !== false){
       switch($font_type){
       case 'strong':
-	$font_type = 'normal';
-	break;
+      	$font_type = 'normal';
+      	break;
 
       case 'normal':
-	$font_type = 'weak';
-	break;
+      	$font_type = 'weak';
+      	break;
 
       case 'weak':
 	$sentence = '';
@@ -712,70 +696,57 @@ function OutputTalk($array){
       }
     }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-    echo '<tr class="user-talk">'."\n";
     if(strpos($role, 'common') !== false){
       if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
-      echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-	$talk_handle_name . '</td>'."\n";
-      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
+      $builder->AddTalk("<font color=\"{$talk_color}\">◆</font>$talk_handle_name");
     }
     else{
-      echo '<td class="user-name talk-common">共有者の小声</td>'."\n";
-      echo '<td class="say say-common">' . $MESSAGE->common_talk . '</td>'."\n";
+      $builder->AddWhisper('共有者の小声', $MESSAGE->common_talk, '', 'talk-common', 'say-common');
     }
-    echo '</tr>'."\n";
   }
   //ゲーム中、生きている人の夜の妖狐
   elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
     if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
       if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
       if(strpos($role, 'earplug') !== false){
-	switch($font_type){
-	case 'strong':
-	  $font_type = 'normal';
-	  break;
+      	switch($font_type){
+      	case 'strong':
+      	  $font_type = 'normal';
+      	  break;
 
-	case 'normal':
-	  $font_type = 'weak';
-	  break;
+      	case 'normal':
+      	  $font_type = 'weak';
+       	  break;
 
-	case 'weak':
-	  $sentence = '';
-	  break;
-	}
+      	case 'weak':
+      	  $sentence = '';
+      	  break;
+      	}
       }
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      echo '<tr class="user-talk">'."\n";
-      echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-	$talk_handle_name . '</td>'."\n";
-      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-      echo '</tr>'."\n";
+      $builder->AddTalk("<font color=\"{$talk_color}\">◆</font>{$talk_handle_name}", $sentence, $font_type);
     }
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($live == 'live' && $day_night == 'night' && $location == 'night self_talk'){
     if($uname == $talk_uname){
       if(strpos($role, 'earplug') !== false){
-	switch($font_type){
-	case 'strong':
-	  $font_type = 'normal';
-	  break;
+      	switch($font_type){
+      	case 'strong':
+      	  $font_type = 'normal';
+      	  break;
 
-	case 'normal':
-	  $font_type = 'weak';
-	  break;
+      	case 'normal':
+      	  $font_type = 'weak';
+      	  break;
 
-	case 'weak':
-	  $sentence = '';
-	  break;
-	}
+      	case 'weak':
+      	  $sentence = '';
+          break;
+      	}
       }
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      echo '<tr class="user-talk">'."\n";
-      echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-	$talk_handle_name . '<span>の独り言</span></td>'."\n";
-      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-      echo '</tr>'."\n";
+      $builder->AddTalk("<font color=\"$talk_color\">◆</font>$talk_handle_name<span>の独り言</span>", $sentence, $font_type);
     }
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
@@ -783,51 +754,43 @@ function OutputTalk($array){
 	 ($live == 'dead' && strpos($game_option, 'not_open_cast') === false)){
     if($location_system && $flag_vote){ //処刑投票
       $target_handle_name = ParseStrings($sentence, 'VOTE_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="vote" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->vote_do . '</td>'."\n";
+      $action = 'vote';
+      $sentence =  $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->vote_do;
     }
     elseif($location_system && $flag_wolf){ //狼の投票
       $target_handle_name = ParseStrings($sentence, 'WOLF_EAT');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="wolf-eat" colspan="2">' . $talk_handle_name . ' たち人狼は ' .
-	$target_handle_name . ' ' . $MESSAGE->wolf_eat . '</td>'."\n";
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name . ' たち人狼は ' .  $target_handle_name . ' ' . $MESSAGE->wolf_eat;
     }
     elseif($location_system && $flag_mage){ //占い師の投票
       $target_handle_name = ParseStrings($sentence, 'MAGE_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="mage-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->mage_do . '</td>'."\n";
+      $action = 'mage-do';
+      $sentence =  $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->mage_do;
     }
     elseif($location_system && $flag_guard){ //狩人の投票
       $target_handle_name = ParseStrings($sentence, 'GUARD_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="guard-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->guard_do . '</td>'."\n";
+      $action = 'guard-do';
+      $sentence =  $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->guard_do;
     }
     elseif($location_system && $flag_reporter){ //ブン屋の投票
       $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="guard-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->reporter_do . '</td>'."\n";
+      $action = 'guard-do';
+      $sentence = $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->reporter_do;
     }
     elseif($location_system && $flag_cupid){ //キューピッドの投票
       $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="cupid-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->cupid_do . '</td>'."\n";
+      $action = 'cupid-do';
+      $sentence = $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->cupid_do;
     }
     elseif($location_system && $flag_mania){ //神話マニアの投票
       $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->mania_do . '</td>'."\n";
+      $action = 'mania-do';
+      $sentence = $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->mania_do;
     }
     elseif($location_system && $flag_poison_cat){ //猫又の投票
       $target_handle_name = ParseStrings($sentence, 'POISON_CAT_DO');
-      echo '<tr class="system-message">'."\n";
-      echo '<td class="mania-do" colspan="2">' . $talk_handle_name . ' は ' .
-	$target_handle_name . ' ' . $MESSAGE->poison_cat_do . '</td>'."\n";
+      $action = 'mania-do';
+      $sentence = $talk_handle_name . ' は ' .  $target_handle_name . ' ' . $MESSAGE->poison_cat_do;
     }
     else{ //その他の全てを表示(死者の場合)
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
@@ -835,38 +798,45 @@ function OutputTalk($array){
       $talk_class = 'user-name';
       switch($location){
       case 'night self_talk':
-	$talk_handle_name .= '<span>の独り言</span>';
-	$talk_class .= ' night-self-talk';
-	break;
+      	$talk_handle_name .= '<span>の独り言</span>';
+      	$talk_class .= ' night-self-talk';
+      	break;
 
       case 'night wolf':
-	$talk_handle_name .= '<span>(人狼)</span>';
-	$talk_class .= ' night-wolf';
-	$font_type  .= ' night-wolf';
-	break;
+      	$talk_handle_name .= '<span>(人狼)</span>';
+      	$talk_class .= ' night-wolf';
+      	$font_type  .= ' night-wolf';
+      	break;
 
       case 'night common':
-	$talk_handle_name .= '<span>(共有者)</span>';
-	$talk_class .= ' night-common';
-	$font_type  .= ' night-common';
-	break;
+      	$talk_handle_name .= '<span>(共有者)</span>';
+      	$talk_class .= ' night-common';
+      	$font_type  .= ' night-common';
+      	break;
 
       case 'night fox':
-	$talk_handle_name .= '<span>(妖狐)</span>';
-	$talk_class .= ' night-fox';
-	$font_type  .= ' night-fox';
-	break;
+      	$talk_handle_name .= '<span>(妖狐)</span>';
+      	$talk_class .= ' night-fox';
+      	$font_type  .= ' night-fox';
+      	break;
 
       case 'heaven':
-	$base_class .= ' heaven';
-	break;
+      	$base_class .= ' heaven';
+      	break;
       }
-      echo '<tr class="' . $base_class . '">'."\n";
-      echo '<td class="' . $talk_class . '"><font color="' . $talk_color . '">◆</font>' .
-	$talk_handle_name . '</td>'."\n";
-      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
     }
-    echo '</tr>'."\n";
+    if (isset($action)){
+      $builder->AddSystemMessage($action, $sentence);
+    }
+    else {
+      $builder->AddTalk(
+        "<font color=\"{$talk_color}\">◆</font>{$talk_handle_name}",
+        $sentence,
+        $font_type,
+        $base_class,
+        $talk_class
+      );
+    }
   }
   else{ //観戦者
     if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
@@ -888,45 +858,29 @@ function OutputTalk($array){
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if($day_night == 'night' && $location == 'night wolf'){
       if(strpos($role, 'wolf') !== false){
-	$talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
+      	$talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
       }
       else{
-	$talk_handle_name = '狼の遠吠え';
-	$sentence = $MESSAGE->wolf_howl;
+      	$talk_handle_name = '狼の遠吠え';
+      	$sentence = $MESSAGE->wolf_howl;
       }
-      echo '<tr class="user-talk">'."\n";
-      echo '<td class="user-name">' . $talk_handle_name . '</td>'."\n";
-      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-      echo '</tr>'."\n";
+      $builder->AddTalk($talk_handle_name, $sentence, $font_type);
     }
     elseif($day_night == 'night' && $location == 'night common'){
-      echo '<tr class="user-talk">'."\n";
       if(strpos($role, 'common') !== false){
-	echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-	  $talk_handle_name . '</td>'."\n";
-	echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
+        $builder->AddTalk("<font color=\"$talk_color\">◆</font>$talk_handle_name", $sentence, $font_type);
       }
       else{
-	echo '<td class="user-name talk-common">共有者の小声</td>'."\n";
-	echo '<td class="say say-common">' . $MESSAGE->common_talk . '</td>'."\n";
+        $builder->AddWhisper('共有者の小声', $MESSAGE->common_talk, '', 'talk-common', 'say-common');
       }
-      echo '</tr>'."\n";
     }
     elseif($day_night == 'night' && $location == 'night fox'){
       if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-	echo '<tr class="user-talk">'."\n";
-	echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-	  $talk_handle_name . '</td>'."\n";
-	echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-	echo '</tr>'."\n";
+        $builder->AddTalk("<font color=\"$talk_color\">◆</font>$talk_handle_name", $sentence, $font_type);
       }
     }
     elseif(! (($day_night == 'night' && $location == 'night self_talk') || $flag_system)){
-      echo '<tr class="user-talk">'."\n";
-      echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-	$talk_handle_name . '</td>'."\n";
-      echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-      echo '</tr>'."\n";
+      $builder->AddTalk("<font color=\"$talk_color\">◆</font>$talk_handle_name", $sentence, $font_type);
     }
   }
 }
