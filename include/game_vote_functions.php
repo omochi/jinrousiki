@@ -54,7 +54,7 @@ function GetRoleList($user_count, $option_role){
       if($rand < 5)      $role_list['boss_wolf']++;
       elseif($rand < 10) $role_list['poison_wolf']++;
       elseif($rand < 15) $role_list['tongue_wolf']++;
-      elseif($rand < 45) $role_list['cute_wolf']++;
+      elseif($rand < 25) $role_list['cute_wolf']++;
       else               $role_list['wolf']++;
     }
 

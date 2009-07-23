@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/include/icon_data_check.php');
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <link rel="stylesheet" href="css/script_info.css">
 <script type="text/javascript" src="javascript/output_diff_time.js"></script>
-<title>汝は人狼なりや？<?php echo $server_comment; ?></title>
+<title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?> [仕様]</title>
 </head>
 
 <body onLoad="time_PC_diff_output();">

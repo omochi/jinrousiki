@@ -81,6 +81,39 @@ class RoomConfig{
   var $chaos_open_cast = true; //闇鍋村でも配役内訳を表示する
   var $secret_sub_role = true; //サブ役職を本人に通知しない
   var $no_sub_role = true; //サブ役職をつけない
+
+  //表示する他のサーバのリスト
+  var $shared_server_list = array(
+	'satori' => array('name' => 'さとり鯖',
+			  'url' => 'http://satori.crz.jp/'),
+
+	'sakuya' => array('name' => '咲夜鯖',
+			  'url' => 'http://www7.atpages.jp/izayoi398/',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</div></small></a><br>'),
+
+	'cirno' => array('name' => 'チルノ鯖',
+			 'url' => 'http://www12.atpages.jp/cirno/',
+			 'separator' => '<!-- atpages banner tag -->',
+			 'footer' => '</a><br>'),
+
+	'nico' => array('name' => 'ニコ生鯖',
+			'url' => 'http://jinro.ebb.jp/'),
+
+	'nico_test' => array('name' => 'ニコ生テスト鯖',
+			     'url' => 'http://jinro.s369.xrea.com/'),
+
+	'sasuga' => array('name' => '流石兄弟鯖',
+			  'url' => 'http://www12.atpages.jp/yaruo/jinro/',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</div></small></a><br>'),
+
+	'bara' => array('name' => '薔薇姉妹鯖',
+			'url' => 'http://www13.atpages.jp/yaranai/',
+			'separator' => '<!-- atpages banner tag -->',
+			'footer' => '</div></small></a><br>')
+				  );
+
 }
 
 //ゲーム設定
@@ -102,9 +135,99 @@ class GameConfig{
   var $draw = 5; //再投票何回目で引き分けとするか
 
   //-- 役職 --//
- //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
+  //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
   var $wish_role_success = 100;
 
+  //配役テーブル
+  /* 設定の見方
+    [ゲーム参加人数] => array([配役名1] => [配役名1の人数], [配役名2] => [配役名2の人数], ...),
+    ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
+  */
+  var $role_list = array(
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
+     5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
+     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
+     // 6 => array('human' =>  2, 'wolf' => 1, 'reporter' => 2, 'fox' => 1),
+     7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
+     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
+    10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
+    11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
+    12 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
+    13 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common'=> 2),
+    14 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2),
+    15 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    16 => array('human' =>  6, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    17 => array('human' =>  7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    18 => array('human' =>  8, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    20 => array('human' => 10, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    21 => array('human' => 11, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    23 => array('human' => 12, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    24 => array('human' => 13, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    25 => array('human' => 14, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    26 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    27 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 2),
+    28 => array('human' => 14, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    29 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    30 => array('human' => 16, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    31 => array('human' => 17, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    32 => array('human' => 16, 'wolf' => 5, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2)
+                         );
+
+  var $decide      = 16;  //決定者出現に必要な人数
+  var $authority   = 16;  //権力者出現に必要な人数
+  var $poison      = 20;  //埋毒者出現に必要な人数
+  var $boss_wolf   = 18;  //白狼出現に必要な人数
+  var $poison_wolf = 20;  //毒狼出現に必要な人数
+  var $mania       = 16;  //神話マニア出現に必要な人数
+  var $medium      = 20;  //巫女出現に必要な人数
+
+  //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
+  var $poison_only_voter = false; //1.3 系のデフォルト
+  // var $poison_only_voter = true;
+
+  //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
+  var $poison_only_eater = true;
+
+  var $cupid = 16; //キューピッド出現に必要な人数 (14人の方は現在ハードコード)
+  var $cupid_self_shoot = 18; //キューピッドが他人打ち可能となる最低村人数
+
+  var $cute_wolf_rate = 1; //萌狼の発動率
+  var $gentleman_rate = 13; //紳士・淑女の発動率
+  var $liar_rate = 95; //狼少年の発動率
+
+  //狼少年の変換テーブル
+  var $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
+				 'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
+				 'ムラビト' => 'オオカミ', 'オオカミ' => 'ムラビト',
+				 '本当' => '嘘', '嘘' => '本当',
+				 '真' => '偽', '偽' => '真',
+				 '人' => '狼', '狼' => '人',
+				 '白' => '黒', '黒' => '白',
+				 '○' => '●', '●' => '○',
+				 'CO' => '潜伏', 'ＣＯ' => '潜伏', '潜伏' => 'CO',
+				 '吊り' => '噛み', '噛み' => '吊り',
+				 'グレラン' => 'ローラー', 'ローラー'  => 'グレラン',
+				 '少年' => '少女', '少女' => '少年',
+				 'しょうねん' => 'しょうじょ', 'しょうじょ' => 'しょうねん',
+				 'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう'
+				 );
+
+  var $invisible_rate = 20; //光学迷彩の発言が空白に入れ替わる確率
+  var $silent_length  = 25; //無口が発言できる最大文字数
+
+  //-- 「異議」あり --//
+  var $objection = 5; //最大回数
+  var $objection_image = 'img/objection.gif'; //「異議」ありボタンの画像パス
+
+  //-- 自動更新 --//
+  var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
+  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //自動更新モードの更新間隔(秒)のリスト
+
+  //-- 役職名の翻訳 --//
   //メイン役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
   var $main_role_list = array('human'        => '村人',
@@ -170,96 +293,6 @@ class GameConfig{
 			     'lovers'        => '恋人',
 			     'copied'        => '元神話マニア');
 
-  //配役テーブル
-  /* 設定の見方
-    [ゲーム参加人数] => array([配役名1] => [配役名1の人数], [配役名2] => [配役名2の人数], ...),
-    ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
-  */
-  var $role_list = array(
-     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
-     5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison_cat' => 1),
-     // 6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'medium' => 1, 'fox' => 1, 'cupid' => 1),
-     6 => array('human' =>  2, 'wolf' => 1, 'reporter' => 2, 'fox' => 1),
-     7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
-     9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
-    10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
-    11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
-    12 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
-    13 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common'=> 2),
-    14 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2),
-    15 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    16 => array('human' =>  6, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    17 => array('human' =>  7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    18 => array('human' =>  8, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    20 => array('human' => 10, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    21 => array('human' => 11, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    23 => array('human' => 12, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    24 => array('human' => 13, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    25 => array('human' => 14, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    26 => array('human' => 15, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    27 => array('human' => 15, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 2),
-    28 => array('human' => 14, 'wolf' => 3, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    29 => array('human' => 14, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    30 => array('human' => 15, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    31 => array('human' => 16, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    32 => array('human' => 16, 'wolf' => 4, 'boss_wolf' => 1 , 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2)
-                         );
-
-  var $decide      = 16;  //決定者出現に必要な人数
-  var $authority   = 16;  //権力者出現に必要な人数
-  var $poison      = 20;  //埋毒者出現に必要な人数
-  var $boss_wolf   = 18;  //白狼出現に必要な人数
-  var $poison_wolf = 20;  //毒狼出現に必要な人数
-  var $mania       = 16;  //神話マニア出現に必要な人数
-  var $medium      = 20;  //巫女出現に必要な人数
-
-  //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-  var $poison_only_voter = false; //1.3 系のデフォルト
-  // var $poison_only_voter = true;
-
-  //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
-  var $poison_only_eater = true;
-
-  var $cupid = 16; //キューピッド出現に必要な人数 (14人の方は現在ハードコード)
-  var $cupid_self_shoot = 18; //キューピッドが他人打ち可能となる最低村人数
-
-  var $cute_wolf_rate = 1; //萌狼の発動率
-  var $gentleman_rate = 13; //紳士・淑女の発動率
-  var $liar_rate = 95; //狼少年の発動率
-
-  //狼少年の変換テーブル
-  var $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
-				 'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
-				 'ムラビト' => 'オオカミ', 'オオカミ' => 'ムラビト',
-				 '本当' => '嘘', '嘘' => '本当',
-				 '真' => '偽', '偽' => '真',
-				 '人' => '狼', '狼' => '人',
-				 '白' => '黒', '黒' => '白',
-				 '○' => '●', '●' => '○',
-				 'CO' => '潜伏', 'ＣＯ' => '潜伏', '潜伏' => 'CO',
-				 '吊り' => '噛み', '噛み' => '吊り',
-				 'グレラン' => 'ローラー', 'ローラー'  => 'グレラン',
-				 '少年' => '少女', '少女' => '少年',
-				 'しょうねん' => 'しょうじょ', 'しょうじょ' => 'しょうねん',
-				 'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう'
-				 );
-
-  var $invisible_rate = 20; //光学迷彩の発言が空白に入れ替わる確率
-  var $silent_length  = 25; //無口が発言できる最大文字数
-
-  //-- 「異議」あり --//
-  var $objection = 5; //最大回数
-  var $objection_image = 'img/objection.gif'; //「異議」ありボタンの画像パス
-
-  //-- 自動更新 --//
-  var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
-  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //自動更新モードの更新間隔(秒)のリスト
-
-  //-- 役職名の翻訳 --//
   function GetRoleName($role, $short = false){
     if(! $short) return ($this->main_role_list[$role] || $this->sub_role_list[$role]);
 

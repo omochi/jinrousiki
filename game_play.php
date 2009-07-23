@@ -64,8 +64,10 @@ SendCookie();
 //発言の有無をチェック
 EscapeStrings(&$say, false); //エスケープ処理
 if($say != '' && $live == 'live' && ($day_night == 'day' || $day_night == 'night')){ //発言置換系
-  if(strpos($role, 'cute_wolf') !== false && mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate)
-    $say = $MESSAGE->wolf_howl; //萌狼は低確率で発言が遠吠えになる
+  if((strpos($role, 'cute_wolf') !== false || strpos($role, 'suspect') !== false) &&
+     mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
+    $say = $MESSAGE->wolf_howl; //不審者と萌狼は低確率で発言が遠吠えになる
+  }
   elseif((strpos($role, 'gentleman') !== false || strpos($role, 'lady') !== false) &&
 	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){ //紳士・淑女の発言内容を置換
     $role_name = (strpos($role, 'gentleman') !== false ? 'gentleman' : 'lady');
@@ -99,13 +101,16 @@ if($say != '' && $live == 'live' && ($day_night == 'day' || $day_night == 'night
   }
 }
 
-if($say != '' && $font_type == 'last_words' && $live == 'live')
+if($say != '' && $font_type == 'last_words' && $live == 'live'){
   EntryLastWords($say);  //生きていれば遺言登録
+}
 elseif($say != '' && ($last_load_day_night == $day_night ||
-		      $live == 'dead' || $uname == 'dummy_boy'))
+		      $live == 'dead' || $uname == 'dummy_boy')){
   Say($say); //死んでいるか、最後にリロードした時とシーンが一致しているか身代わり君なら書き込む
-else
+}
+else{
   CheckSilence(); //ゲーム停滞のチェック(沈黙、突然死)
+}
 
 //最後にリロードした時のシーンを更新
 mysql_query("UPDATE user_entry SET last_load_day_night = '$day_night'

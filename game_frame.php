@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html lang="ja"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
-<title>汝は人狼なりや？[プレイ]</title>
+<title>汝は人狼なりや？ [プレイ]</title>
 </head>
 <?php
 $option = 'frameborder="1" framespacing="1" bordercolor="#C0C0C0"';

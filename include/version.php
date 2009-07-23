@@ -1,7 +1,7 @@
 <?php
 //スクリプト群のバージョン
-$script_version = 'Ver. 1.4.0 alpha15';
+$script_version = 'Ver. 1.4.0 alpha16';
 
 // スクリプト群の最終更新日
-$script_lastupdate = '2009/07/20 (Mon) 12:14';
+$script_lastupdate = '2009/07/23 (Thu) 12:25';
 ?>

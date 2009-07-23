@@ -151,6 +151,8 @@ class Message{
   var $vote_reset = '＜投票がリセットされました　再度投票してください＞';
 
   //発言置換系役職
+  // var $gentleman_header = "俺は遥か昔からいる通りすがりのナイト。\n";  //紳士 (前半)
+  // var $gentleman_footer = 'はわかってるようだな。見込みあるからジュースおごってやろう'; //紳士 (後半)
   var $gentleman_header = "お待ち下さい。\nあぁ……";  //紳士 (前半)
   var $gentleman_footer = '様の残り湯、美味にございます……。'; //紳士 (後半)
   var $lady_header = "こんなのがいいの！？\n"; //淑女 (前半)

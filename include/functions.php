@@ -9,28 +9,31 @@ require_once(dirname(__FILE__) .  '/setting.php');
 //$header : すでに HTMLヘッダが出力されて [いる / いない]
 //$exit   : エラー時に [HTML を閉じて exit を返す / false で終了]
 function ConnectDatabase($header = false, $exit = true){
-  global $db_host, $db_uname, $db_pass, $db_name;
+  global $DB_CONF;
 
-  if(! ($db_handle = mysql_connect($db_host, $db_uname, $db_pass))){
-    if($header){
-      echo "<font color=\"#FF0000\">MySQL接続失敗: $db_host</font><br>";
-      if($exit) OutputHTMLFooter($exit);
-      else return false;
+  //データベースサーバにアクセス
+  $db_handle = mysql_connect($DB_CONF->host, $DB_CONF->user, $DB_CONF->password);
+  if($db_handle){ //アクセス成功
+    mysql_set_charset('ujis');
+    if(mysql_select_db($DB_CONF->name, $db_handle)) //データベース接続
+      return $db_handle; //成功したらハンドルを返して処理終了
+    else{
+      $error_title = 'データベース接続失敗';
+      $error_name  =$DB_CONF->name;
     }
-    else OutputActionResult('MySQL接続失敗', "MySQL接続失敗: $db_host");
+  }
+  else{
+    $error_title = 'MySQLサーバ接続失敗';
+    $error_name  = $DB_CONF->host;
   }
 
-  mysql_set_charset('ujis');
-  if(! mysql_select_db($db_name, $db_handle)){
-    if($header){
-      echo "<font color=\"#FF0000\">データベース接続失敗: $db_name</font><br>";
-      if($exit) OutputHTMLFooter($exit);
-      else return false;
-    }
-    else OutputActionResult('データベース接続失敗', "データベース接続失敗: $db_name");
+  $error_message = $error_title . ': ' . $error_name; //エラーメッセージ作成
+  if($header){
+    echo '<font color="#FF0000">' . $error_message . '</font><br>';
+    if($exit) OutputHTMLFooter($exit);
+    return false;
   }
-
-  return $db_handle;
+  OutputActionResult($error_title, $error_message);
 }
 
 //データベースとの接続を閉じる
@@ -59,8 +62,8 @@ if(! function_exists('session_regenerate_id')){
 
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
-  global $OFFSET_SECONDS;
-  return time() + $OFFSET_SECONDS;
+  global $SERVER_CONF;
+  return time() + $SERVER_CONF->offset_seconds;
 }
 
 //時間(秒)を変換する
@@ -120,6 +123,74 @@ function EscapeStrings(&$str, $trim = true){
 //改行コードを <br> に変換する (nl2br() だと <br /> なので HTML 4.01 だと不向き)
 function LineToBR(&$str){
   $str = str_replace("\n", '<br>', $str);
+}
+
+//ゲームオプションの画像タグを作成する
+function MakeGameOptionImage($game_option, $option_role = ''){
+  global $GAME_CONF, $ROOM_IMG, $MESSAGE;
+
+  $str = '';
+  if(strpos($game_option, 'wish_role') !== false){
+    AddImgTag(&$str, $ROOM_IMG->wish_role, '役割希望制');
+  }
+  if(strpos($game_option, 'real_time') !== false){ //実時間の制限時間を取得
+    $real_time_str = strstr($game_option, 'real_time');
+    sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
+    $sentence = "リアルタイム制　昼： $day 分　夜： $night 分";
+    AddImgTag(&$str, $ROOM_IMG->real_time, $sentence);
+  }
+
+  $option_list = explode(' ', $game_option . ' ' .$option_role);
+  // print_r($option_list);
+  $display_order_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide',
+			      'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
+			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
+			      'quiz', 'chaos', 'chaosfull', 'chaos_open_cast',
+			      'secret_sub_role', 'no_sub_role');
+
+  foreach($display_order_list as $this_option){
+    if(! in_array($this_option, $option_list)) continue;
+    $this_str = 'game_option_' . $this_option;
+    if($MESSAGE->$this_str == '') continue;
+
+    $sentence = '';
+    if($this_option == 'cupid'){
+      $sentence = '14人または' . $GAME_CONF->$this_option . '人以上で';
+    }
+    elseif(is_integer($GAME_CONF->$this_option)){
+      $sentence = $GAME_CONF->$this_option . '人以上で';
+    }
+    $sentence .= $MESSAGE->$this_str;
+
+    AddImgTag(&$str, $ROOM_IMG->$this_option, $sentence);
+  }
+
+  /*
+  $text_game_option_list = array();
+  foreach($text_game_option_list as $this_option){
+    if(strpos($game_option, $this_option) !== false){
+      $message_str = 'game_option_' . $this_option;
+      $str .= '[' . $MESSAGE->$message_str . ']';
+    }
+  }
+  */
+
+  /*
+  $text_option_role_list = array(, 'open_sub_role');
+  foreach($text_option_role_list as $this_option){
+    if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
+      $message_str = 'game_option_' . $this_option;
+      $str .= '[' . $MESSAGE->$message_str . ']';
+    }
+  }
+  */
+
+  return $str;
+}
+
+//オプション画像タグ追加 (OutputRoomList() 用)
+function AddImgTag(&$tag, $src, $title){
+  $tag .= "<img class=\"option\" src=\"$src\" title=\"$title\" alt=\"$title\">";
 }
 
 //共通 HTML ヘッダ出力

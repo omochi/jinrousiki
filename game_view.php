@@ -24,19 +24,20 @@ $game_option  = $array['game_option'];
 $real_time    = (strpos($game_option, 'real_time') !== false);
 $system_time  = TZTime(); //現在時刻を取得
 switch($day_night){
-  case 'day': //昼
-    $time_message = '　日没まで ';
-    break;
+case 'day': //昼
+  $time_message = '　日没まで ';
+  break;
 
-  case 'night': //夜
-    $time_message = '　夜明けまで ';
-    break;
+case 'night': //夜
+  $time_message = '　夜明けまで ';
+  break;
 }
 
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 
-if($GAME_CONF->auto_reload && $auto_reload != 0) //自動更新
+if($GAME_CONF->auto_reload && $auto_reload != 0){ //自動更新
   echo '<meta http-equiv="Refresh" content="' . $auto_reload . '">'."\n";
+}
 
 //シーンに合わせた文字色と背景色 CSS をロード
 echo '<link rel="stylesheet" href="css/game_' . $day_night . '.css">'."\n";
@@ -90,7 +91,7 @@ if($day_night == 'beforegame'){ //ゲーム開始前なら登録画面のリンクを表示
 }
 echo '</tr></table>'."\n";
 
-OutputGameOption(); //ゲームオプションを説明
+if($day_night != 'aftergame') OutputGameOption(); //ゲームオプションを表示
 
 echo '<table class="time-table"><tr>'."\n";
 OutputTimeTable(); //経過日数と生存人数

@@ -1,10 +1,10 @@
 <?php
-class DocumentBuilderBase {
+class DocumentBuilderBase{
   function BeginTalk(){ }
-  function AddTalk($userinfo, $sentence, $volume) { }
-  function AddWhisper($useralias, $sentence, $volume, $user_extension='', $say_extension='') { }
+  function AddTalk($user_info, $sentence, $volume) { }
+  function AddWhisper($user_info, $sentence, $volume, $user_extension='', $say_extension='') { }
   function AddSystemTalk($sentence) { }
-  function AddSystemMessage($class, $message, $additional='') { }
+  function AddSystemMessage($class, $sentence, $additional='') { }
   function EndTalk() { }
 }
 
@@ -14,27 +14,27 @@ class DocumentBuilder extends DocumentBuilderBase {
     $this->cache .= "<table class=\"{$class}\">\n";
   }
 
-  function AddTalk($userinfo, $sentence, $volume, $row_class = 'user-talk', $user_class = 'user-name'){
+  function AddTalk($user_info, $sentence, $volume, $row_class = 'user-talk', $user_class = 'user-name'){
     $this->cache .= <<<WORDS
 <tr class="{$row_class}">
-<td class="{$user_class}">{$userinfo}</td>
+<td class="{$user_class}">{$user_info}</td>
 <td class="say {$volume}">{$sentence}</td>
 </tr>
 
 WORDS;
   }
 
-  function AddWhisper($useralias, $sentence, $volume = 'normal', $user_class = '', $say_class = ''){
+  function AddWhisper($user_info, $sentence, $volume = 'normal', $user_class = '', $say_class = ''){
     $this->cache .= <<<WORDS
 <tr class="user-talk">
-<td class="user-name {$user_class}">{$useralias}</td>
+<td class="user-name {$user_class}">{$user_info}</td>
 <td class="say {$volume} {$say_class}">{$sentence}</td>
 </tr>
 
 WORDS;
   }
 
-  function AddSystemTalk($sentence, $class='system-user'){
+  function AddSystemTalk($sentence, $class = 'system-user'){
     $this->cache .= <<<WORDS
 <tr>
 <td class="{$class}" colspan="2">{$sentence}</td>
@@ -43,10 +43,10 @@ WORDS;
 WORDS;
   }
 
-  function AddSystemMessage($class, $message, $additional=''){
+  function AddSystemMessage($class, $sentence, $additional=''){
     $this->cache .= <<<WORDS
 <tr class="system-message {$additional}">
-<td class="{$class}" colspan="2">{$message}</td>
+<td class="{$class}" colspan="2">{$sentence}</td>
 </tr>
 
 WORDS;

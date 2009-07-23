@@ -34,7 +34,7 @@ foreach($post as $key => $value){
 }
 
 //パスワードのチェック
-if($post['password'] != $src_upload_password) OutputUploadResult('パスワード認証エラー。');
+if($post['password'] != $SERVER_CONF->src_upload_password) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
 $file_name = strtolower(trim($_FILES['file']['name']));

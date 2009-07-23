@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <link rel="stylesheet" href="css/rule.css">
-<title>汝は人狼なりや？ <?php echo $server_comment; ?> ルール</title>
+<title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?> [ルール]</title>
 </head>
 <body>
 <a href="index.php">←戻る</a><br>
@@ -54,10 +54,10 @@
 </ul>
 
 <table class="member"><tr>
-<th>全人数</th><th>村人</th><th class="wolf">人狼</th><th class="wolf">白狼</th><th class="mage">占い師</th><th class="necromancer">霊能者</th><th class="wolf">狂人</th><th class="guard">狩人</th><th class="common">共有者</th><th class="fox">妖狐</th><th class="poison">埋毒者</th><th class="lovers">キューピッド</th>
+<th>全人数</th><th>村人</th><th class="wolf">人狼</th><th class="mage">占い師</th><th class="necromancer">霊能者</th><th class="wolf">狂人</th><th class="guard">狩人</th><th class="common">共有者</th><th class="fox">妖狐</th><th class="poison">埋毒者</th><th class="lovers">キューピッド</th>
 </tr>
 <?php
-$role_list = array('human', 'wolf', 'boss_wolf', 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox', 'poison', 'cupid');
+$role_list = array('human', 'wolf', 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox', 'poison', 'cupid');
 foreach($GAME_CONF->role_list as $key => $value){
   $tag = "<td><strong>$key</strong></td>";
   foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';

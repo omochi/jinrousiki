@@ -5,12 +5,12 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="css/index.css">
-<title>汝は人狼なりや？<?php echo $server_comment; ?></title>
+<title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?></title>
 </head>
 <body>
-<?php if($back_page != '') echo "<a href=\"$back_page\">←戻る</a>"; ?>
+<?php if($SERVER_CONF->back_page != '') echo "<a href=\"$SERVER_CONF->back_page\">←戻る</a>"; ?>
 <a href="index.php"><img src="img/top_title.jpg"></a>
-<div class="comment"><?php echo $server_comment; ?></div>
+<div class="comment"><?php echo $SERVER_CONF->comment; ?></div>
 <noscript>＜＜ JavaScriptを有効にしてください ＞＞</noscript>
 <table class="main">
   <tr><td>
@@ -18,8 +18,12 @@
     <ul>
       <li><a href="script_info.php">特徴と仕様</a></li>
       <li><a href="rule.php">ゲームのルール</a></li>
+      <li><a href="info/history.php">更新履歴</a></li>
       <li><a href="old_log.php">ログ閲覧</a></li>
       <li><a href="old_log.php?add_role=on">役職表示ログ閲覧</a></li>
+      <li>★☆★☆★☆★</li>
+      <li><a href="info/new_role.php">新役職について</a></li>
+      <li><a href="info/chaos.php">闇鍋モードについて</a></li>
 <!-- さとり鯖用
       <li>★☆★☆★☆★</li>
       <li class="log">HTML化ログ</li>
@@ -35,9 +39,8 @@
       <li>★☆★☆★☆★</li>
       <!-- <li><a href="paparazzi.php">デバッグモード</a></li> -->
       <li><a href="src/">開発版ソースダウンロード</a></li>
-      <li>更新履歴 <a href="src/diff.txt">1.4 系</a>
-          <a href="src/diff-1.3.txt">1.3 系</a><br>(テキストファイル)</li>
-      <li><a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</li>
+      <li><a href="src/diff.txt">開発履歴</a></li>
+      <li><a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a></li>
     </ul>
 
     <div class="menu">交流用サイト</div>
@@ -51,6 +54,9 @@
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1241277178/l50">本スレ</a></li>
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">反省・議論用スレ</a></li>
       <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
+      <li><a href="http://satori.crz.jp/">さとり鯖</a></li>
+      <li><a href="http://www7.atpages.jp/izayoi398/">咲夜鯖</a></li>
+      <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖（開発チーム）</a></li>
       <li><a href="http://jinro.ebb.jp/">ニコ生専用鯖</a></li>
       <li><a href="http://jinro.s369.xrea.com/">ニコ生専用テスト鯖</a></li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>

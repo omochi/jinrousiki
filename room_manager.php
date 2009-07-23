@@ -49,7 +49,7 @@ function MaintenanceRoomAction($list, $query, $base_time){
 
 //村(room)の作成
 function CreateRoom($room_name, $room_comment, $max_user){
-  global $ROOM_CONF, $MESSAGE, $system_password;
+  global $SERVER_CONF, $ROOM_CONF, $MESSAGE;
 
   //入力データのエラーチェック
   if($room_name == '' || $room_comment == '' || ! ctype_digit($max_user)){
@@ -87,7 +87,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
       $game_option .= 'dummy_boy ';
       $dummy_boy_handle_name = '身代わり君';
-      $dummy_boy_password    = $system_password;
+      $dummy_boy_password    = $SERVER_CONF->system_password;
     }
     if($chaos || $chaosfull){
       if($chaos) $game_option .= 'chaos ';
@@ -221,54 +221,7 @@ function OutputRoomList(){
       break;
     }
 
-    $option_img_str = ''; //ゲームオプションの画像
-    if(strpos($game_option, 'wish_role') !== false)
-      AddImgTag(&$option_img_str, $ROOM_IMG->wish_role, '役割希望制');
-    if(strpos($game_option, 'real_time') !== false){
-      //実時間の制限時間を取得
-      $real_time_str = strstr($game_option, 'real_time');
-      sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
-      AddImgTag(&$option_img_str, $ROOM_IMG->real_time,
-		"リアルタイム制　昼： $day 分　夜： $night 分");
-    }
-    $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'quiz',
-			      'chaos', 'chaosfull', 'secret_sub_role');
-    foreach($game_option_list as $this_option){
-      if($this_option == 'chaos'){
-	if(strpos($game_option, 'chaos') === false ||
-	   strpos($game_option, 'chaosfull') !== false) continue;
-      }
-      elseif(strpos($game_option, $this_option) === false) continue;
-
-      $message_str = 'game_option_' . $this_option;
-      AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
-    }
-
-    $option_role_list = array('decide', 'authority', 'poison', 'cupid','boss_wolf', 'poison_wolf',
-			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
-			      'chaos_open_cast', 'no_sub_role');
-    foreach($option_role_list as $this_option){
-      if(strpos($option_role, $this_option) !== false){
-	$message_str = 'game_option_' . $this_option;
-	AddImgTag(&$option_img_str, $ROOM_IMG->$this_option, $MESSAGE->$message_str);
-      }
-    }
-
-    // $text_game_option_list = array();
-    // foreach($text_game_option_list as $this_option){
-    //   if(strpos($game_option, $this_option) !== false){
-    // 	$message_str = 'game_option_' . $this_option;
-    // 	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
-    //   }
-    // }
-
-    // $text_option_role_list = array(, 'open_sub_role');
-    // foreach($text_option_role_list as $this_option){
-    //   if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
-    // 	$message_str = 'game_option_' . $this_option;
-    // 	$option_img_str .= '[' . $MESSAGE->$message_str . ']';
-    //   }
-    // }
+    $option_img_str = MakeGameOptionImage($game_option, $option_role); //ゲームオプションの画像
 
     // $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
     //<div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>
@@ -288,32 +241,31 @@ EOF;
   }
 }
 
-//オプション画像タグ追加 (OutputRoomList() 用)
-function AddImgTag(&$tag, $src, $title){
-  $tag .= "<img class=\"option\" src=\"$src\" title=\"$title\" alt=\"$title\">";
-}
-
 //他のサーバの部屋画面を出力
 function OutputSharedServerRoom(){
-  global $SHARED_SERVER;
+  global $SERVER_CONF, $ROOM_CONF;
 
-  return; //テスト中
-  foreach($SHARED_SERVER as $server => $array){
+  if(! $SERVER_CONF->shared_server) return false;
+
+  foreach($ROOM_CONF->shared_server_list as $server => $array){
     $this_url = $array['url'];
-    $this_raw_data = file_get_contents($this_url.'room_manager.php');
-    if($this_raw_data == '') continue;
-    print_r($this_raw_data);
-    if($array['separator'] != ''){
-      $this_split_list = mb_split($array['separator'], $this_raw_data);
-      print_r($this_split_list);
-
-      $this_data = $this_split_list[0];
-    }
-    else
-      $this_data = $this_raw_data;
-
-    $this_data = strtr($this_data, array('href=' => 'href='.$this_url, 'src=' => 'src='.$this_url));
+    $this_data = file_get_contents($this_url.'room_manager.php');
     if($this_data == '') continue;
+    // echo $this_data; //デバッグ用
+    if($array['separator'] != ''){
+      $this_split_list = mb_split($array['separator'], $this_data);
+      // print_r($this_split_list); //デバッグ用
+      $this_data = array_pop($this_split_list);
+    }
+    if($array['footer'] != ''){
+      $this_position = mb_strrpos($this_data, $array['footer']);
+      if($this_position === false) continue;
+      $this_data = mb_substr($this_data, 0, $this_position + mb_strlen($array['footer']));
+    }
+    if($this_data == '') continue;
+
+    $this_data = strtr($this_data, array('href="' => 'href="'.$this_url,
+					 'src="'  => 'src="'.$this_url));
     echo <<<EOF
     <fieldset>
       <legend>ゲーム一覧 ({$array['name']})</legend>

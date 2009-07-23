@@ -4,12 +4,8 @@ require_once(dirname(__FILE__) . '/include/request_class.php');
 
 //部屋No取得
 $RQ_ARGS = new LogView();
-$room_no     = $_GET['room_no'];
-$log_mode    = $_GET['log_mode'];
-$reverse_log = $_GET['reverse_log'];
-$heaven_talk = $_GET['heaven_talk'];
-$heaven_only = $_GET['heaven_only'];
-$add_role    = $_GET['add_role'];
+$room_no  = $_GET['room_no'];
+$log_mode = $_GET['log_mode'];
 //$page        = (int)$_GET['page'];
 
 $dbHandle = ConnectDatabase(); //DB 接続
@@ -26,25 +22,23 @@ OutputHTMLFooter();
 // 関数 //
 //過去ログ一覧表示
 function OutputFinishedRooms($page, $reverse = NULL){
-  global $MESSAGE, $ROOM_IMG, $VICTORY_IMG, $add_role;
+  global $SERVER_CONF, $MESSAGE, $ROOM_IMG, $VICTORY_IMG, $RQ_ARGS;
 
   //村数の確認
   $sql = mysql_query("SELECT COUNT(*) FROM room WHERE status = 'finished'");
   $num_rooms = mysql_result($sql, 0);
   if($num_rooms == 0){
-    OutputActionResult('汝は人狼なりや？[過去ログ]', 'ログはありません。<br>' . "\n" .
+    OutputActionResult($SERVER_CONF->title . ' [過去ログ]', 'ログはありません。<br>' . "\n" .
 		       '<a href="index.php">←戻る</a>'."\n");
   }
 
-  OutputHTMLHeader('汝は人狼なりや？[過去ログ一覧]', 'old_log_list');
+  OutputHTMLHeader($SERVER_CONF->title . ' [過去ログ]', 'old_log_list');
 echo <<<EOF
 <body id="room_list">
 <p><a href="index.php">←戻る</a></p>
 <img src="img/old_log_title.jpg"><br>
 <div align="center">
-<table border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td align="right">
+<table><tr><td class="list">
 [ページ]
 
 EOF;
@@ -59,7 +53,7 @@ EOF;
   if($page == NULL) $page = 1;
   $num_pages = ceil($num_rooms / $config->one_page) + 1; //[all] の為に + 1 しておく
   $url_option = '&reverse='.($is_reverse ? 'on' : 'off');
-  if($add_role == 'on') $url_option .= '&add_role=on';
+  if($RQ_ARGS->add_role == 'on') $url_option .= '&add_role=on';
   for($page_number = 1; $page_number <= $num_pages; $page_number++){
     $page_title = $page_number == $num_pages ? 'all' : $page_number;
     if($page != $page_title)
@@ -68,33 +62,29 @@ EOF;
       echo " [$page_title] ";
   }
   $reverse_text = ($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える';
-  $base_url = 'old_log.php?'.($add_role == 'on' ? '&add_role=on' : '').'reverse=';
+  $base_url = 'old_log.php?'.($RQ_ARGS->add_role == 'on' ? '&add_role=on' : '').'reverse=';
   if($is_reverse)
     echo '表示順:新↓古 <a href="{$base_url}off">'.$reverse_text.'</a>';
   else
     echo '表示順:古↓新 <a href="{$base_url}on">'.$reverse_text.'</a>';
 
-    $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast',
-			      'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
-			      'poison_wolf', 'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
-			      'chaos', 'chaos_open_cast', 'secret_sub_role', 'no_sub_role');
+  $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide',
+			    'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
+			    'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
+			    'chaos', 'chaos_open_cast', 'secret_sub_role', 'no_sub_role');
 
-    $option_column = count($game_option_list) + 2;
   echo <<<EOF
 </td></tr>
 <!--村一覧 ここから-->
 <tr><td>
 <table class="main">
-<tr class="column">
-<th>村No</th><th>村名</th><th>村について</th><th>人数</th><th>勝</th><th colspan="{$option_column}">オプション</th>
-</tr>
+<tr><th>村No</th><th>村名</th><th>村について</th><th>人数</th><th>日数</th><th>勝</th></tr>
 
 EOF;
 
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数ごと表示
-  if($page == 'all'){
+  if($page == 'all')
     $limit_statement = '';
-  }
   else{
     $start_number = $config->one_page * ($page - 1);
     $limit_statement = sprintf('LIMIT %d, %d', $start_number, $config->one_page);
@@ -109,57 +99,44 @@ EOF;
 			AS room_num_user, victory_role AS room_victory_role FROM room
 			WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
 
-  while (($array = mysql_fetch_assoc($sql)) !== false){
+  while(($array = mysql_fetch_assoc($sql)) !== false){
     extract($array, EXTR_PREFIX_ALL, 'log');
-    $log_room_game_option .= ' ' . $log_room_option_role;
 
     //オプションと勝敗の解析
-    if(strpos($log_room_game_option,'wish_role') !== false)
-      $log_wish_role_str = $ROOM_IMG->GenerateTag('wish_role', $MESSAGE->wish_role);
-    else
-      $log_wish_role_str = "<br>";
-
-    if(strpos($log_room_game_option, 'real_time') !== false){
-      if(strpos($log_room_game_option, 'real_time:') !== false){
-        //実時間の制限時間を取得
-        $real_time_str = strstr($log_room_game_option, 'real_time');
-        sscanf(&$real_time_str, "real_time:%d:%d", &$day_minutes, &$night_minutes);
-        $real_time_alt_str = $MESSAGE->game_option_real_time . "　昼： $day_minutes 分" .
-	  "　夜： $night_minutes 分";
-      }
-      else $real_time_alt_str = $MESSAGE->game_option_real_time;
-      $log_real_time_str = $ROOM_IMG->GenerateTag('real_time', $real_time_alt_str);
-    }
-    else
-      $log_real_time_str = "<br>";
-
+    $game_option_str = MakeGameOptionImage($log_room_game_option, $log_room_option_role);
     switch($log_room_victory_role){
-      case 'human':
-        $voctory_role_str = $VICTORY_IMG->GenerateTag('human', '村人勝利', 'winner');
-	break;
-      case 'wolf':
-        $voctory_role_str = $VICTORY_IMG->GenerateTag('wolf', '人狼勝利', 'winner');
-	break;
-	// case 'fox': //現在は fox1 or fox2 のみなので不要
-      case 'fox1':
-      case 'fox2':
-        $voctory_role_str = $VICTORY_IMG->GenerateTag('fox', '妖狐勝利', 'winner');
-	break;
-      case 'lovers':
-        $voctory_role_str = $VICTORY_IMG->GenerateTag('lovers', '恋人勝利', 'winner');
-	break;
-      case 'quiz':
-        // $voctory_role_str = $VICTORY_IMG->GenerateTag('Qz', '恋人勝利', 'winner');
-        $voctory_role_str = 'Qz';
-	break;
-      case 'draw':
-      case 'vanish':
-      case 'quiz_dead':
-        $voctory_role_str = $VICTORY_IMG->GenerateTag('draw', '引き分け', 'winner');
-	break;
-      default:
-	$voctory_role_str = "-";
-	break;
+    case 'human':
+      $voctory_role_str = $VICTORY_IMG->GenerateTag('human', '村人勝利', 'winner');
+      break;
+
+    case 'wolf':
+      $voctory_role_str = $VICTORY_IMG->GenerateTag('wolf', '人狼勝利', 'winner');
+      break;
+
+      // case 'fox': //現在は fox1 or fox2 のみなので不要
+    case 'fox1':
+    case 'fox2':
+      $voctory_role_str = $VICTORY_IMG->GenerateTag('fox', '妖狐勝利', 'winner');
+      break;
+
+    case 'lovers':
+      $voctory_role_str = $VICTORY_IMG->GenerateTag('lovers', '恋人勝利', 'winner');
+      break;
+
+    case 'quiz':
+      //$voctory_role_str = $VICTORY_IMG->GenerateTag('quiz', '出題者勝利', 'winner');
+      $voctory_role_str = 'Qz';
+      break;
+
+    case 'draw':
+    case 'vanish':
+    case 'quiz_dead':
+      $voctory_role_str = $VICTORY_IMG->GenerateTag('draw', '引き分け', 'winner');
+      break;
+
+    default:
+      $voctory_role_str = "-";
+      break;
     }
 
     if($log_room_date == 0) //廃村の場合、色を灰色にする
@@ -172,77 +149,54 @@ EOF;
     $user_count = intval($log_room_num_user);
 
     $base_url = "old_log.php?log_mode=on&room_no=$log_room_no";
-    if($add_role == 'on') $base_url .= '&add_role=on';
+    if($RQ_ARGS->add_role == 'on') $base_url .= '&add_role=on';
 
     /*
     if ($DEBUG_MODE){
       $debug_anchor = "<a href=\"$base_url&debug=on\" $dead_room_color >録</a>";
     }
-     */
+    */
 
-    echo <<<ROOM_ROW
-<tr>
-<td class="text">$log_room_no</td>
-<td class="text">
-  <a href="$base_url" $dead_room_color >$log_room_name 村</a><br>
-<span class="room-link">(<a href="$base_url&reverse_log=on" $dead_room_color>逆</a>
+    echo <<<EOF
+<tr class="list upper">
+<td rowspan="2">$log_room_no</td>
+<td><a href="$base_url" $dead_room_color>$log_room_name 村</a></td>
+<td class="comment">〜 $log_room_comment 〜</td>
+<td>$user_count ($log_room_max_user)</td>
+<td>$log_room_date</td>
+<td>$voctory_role_str</td>
+</tr>
+<tr class="list lower">
+<td class="comment">(
+<a href="$base_url&reverse_log=on" $dead_room_color>逆</a>
 <a href="$base_url&heaven_talk=on" $dead_room_color>霊</a>
 <a href="$base_url&reverse_log=on&heaven_talk=on" $dead_room_color>逆&amp;霊</a>
 <a href="$base_url&heaven_only=on" $dead_room_color >逝</a>
 <a href="$base_url&reverse_log=on&heaven_only=on" $dead_room_color>逆&amp;逝</a>
-$debug_anchor)
-</span>
+$debug_anchor
+)
 </td>
-<td align="right" valign="middle"><small>〜 $log_room_comment 〜</small></td>
-<td align="center" valign="middle">$user_count</td>
-<td align="center" valign="middle">$voctory_role_str</td>
-<td align="center" valign="middle">$log_wish_role_str</td>
-<td align="center" valign="middle">$log_real_time_str</td>
+<td colspan="4">$game_option_str</td>
+</tr>
 
-ROOM_ROW;
-    $wide_pict_list = array('boss_wolf', 'poison_wolf', 'secret_sub_role', 'no_sub_role');
-    foreach($game_option_list as $this_option){
-      if($this_option == 'chaos'){
-	if(strpos($log_room_game_option, 'chaosfull') !== false){
-	  $this_flag = true;
-	  $this_option = 'chaosfull';
-	}
-	elseif(strpos($log_room_game_option, 'chaos') !== false)
-	  $this_flag = true;
-	else
-	  $this_flag = false;
+EOF;
       }
-      else
-	$this_flag = (strpos($log_room_game_option, $this_option) !== false);
-
-      if($this_flag){
-	$message_str = 'game_option_' . $this_option;
-	$this_str = $ROOM_IMG->GenerateTag($this_option, $MESSAGE->$message_str);
-      }
-      else
-	$this_str = "<br>";
-      echo '<td valign="middle">' . $this_str . '</td>'."\n";
-    }
-    echo '</tr>'."\n";
-  }
-
-  echo <<<FOOTER
+  echo <<<EOF
 </table>
 </td></tr>
 </table>
 </div>
 
-FOOTER;
+EOF;
 }
 
 
 //指定の部屋Noのログを出力する
 function OutputOldLog($room_no){
-  // global $reverse_log, $heaven_only, $status, $day_night, $last_date, $live;
-  global $RQ_ARGS, $status, $day_night, $last_date, $live;
+  global $SERVER_CONF, $RQ_ARGS, $status, $day_night, $last_date, $live;
 
-  $base_title = '汝は人狼なりや？[過去ログ]';
-  $url   = '<br>' . "\n" . '<a href="old_log.php">←戻る</a>'."\n";
+  $base_title = $SERVER_CONF->title . ' [過去ログ]';
+  $url = "<br>\n<a href=\"old_log.php\">←戻る</a>\n";
 
   if($room_no == NULL) OutputActionResult($title, '村を指定してください。' . $url);
 
@@ -250,7 +204,7 @@ function OutputOldLog($room_no){
   $sql = mysql_query("SELECT date, day_night, room_name, room_comment, status
 			FROM room WHERE room_no = $room_no");
   $array = mysql_fetch_assoc($sql);
-  static $last_date; $last_date   = $array['date'];
+  static $last_date; $last_date = $array['date'];
   $day_night    = $array['day_night'];
   $room_name    = $array['room_name'];
   $room_comment = $array['room_comment'];
@@ -261,7 +215,7 @@ function OutputOldLog($room_no){
   }
 
   $live = 'dead'; //他の関数に影響、すべて表示するため
-  $title = '[' . $room_no . '番地]' . $room_name . ' - ' . $base_title;
+  $title = '[' . $room_no . '番地] ' . $room_name . ' - ' . $base_title;
 
   //戻る先を前のページにする
   $referer_page_str = strstr($_SERVER['HTTP_REFERER'], 'page');
@@ -281,18 +235,18 @@ EOF;
 
 //通常のログ表示順を表現します。
 function LayoutTalkLog($last_date, $is_reverse){
-  if ($is_reverse) {
+  if($is_reverse){
     OutputDateTalkLog(0, 'beforegame', $is_reverse);
-    for($i = 1; $i <= $last_date; $i++) {
+    for($i = 1; $i <= $last_date; $i++){
       OutputDateTalkLog($i, '', $is_reverse);
     }
     OutputVictory();
     OutputDateTalkLog($last_date, 'aftergame', $is_reverse);
   }
-  else {
+  else{
     OutputDateTalkLog($last_date, 'aftergame', $is_reverse);
     OutputVictory();
-    for($i = $last_date; $i > 0; $i--) {
+    for($i = $last_date; $i > 0; $i--){
       OutputDateTalkLog($i, '', $is_reverse);
     }
     OutputDateTalkLog(0, 'beforegame', $is_reverse);
@@ -301,13 +255,13 @@ function LayoutTalkLog($last_date, $is_reverse){
 
 //霊界のみのログ表示順を表現します。
 function LayoutHeaven($last_date, $is_reverse){
-  if($is_reverse) {
-    for($i = $last_date; $i > 0; $i--) {
+  if($is_reverse){
+    for($i = 1; $i <= $last_date; $i++){
       OutputDateTalkLog($i, 'heaven_only', $is_reverse);
     }
   }
-  else {
-    for($i = 1; $i <= $last_date; $i++) {
+  else{
+    for($i = $last_date; $i > 0; $i--){
       OutputDateTalkLog($i, 'heaven_only', $is_reverse);
     }
   }
@@ -329,33 +283,33 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
     $date_select = '';
     $location_select = "AND talk.location LIKE '$set_location%'";
     break;
+
   default:
     //二日目以降は昼から始まる
     $table_class = ($is_reverse == 'on' && $set_date != 1) ? 'day' : 'night';
     $date_select = "AND talk.date = $set_date";
-    if ($set_location == 'heaven_only') {
+    if($set_location == 'heaven_only')
       $location_select = "AND ((talk.location = 'heaven') OR (talk.uname = 'system'))";
-    }
-    else {
+    else
       $location_select = "AND talk.location <> 'aftergame' AND talk.location <> 'beforegame'";
-    }
     break;
   }
   if($set_location == 'heaven_only'){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT
-      room_users.uname AS talk_uname,
-			room_users.handle_name AS talk_handle_name,
-			room_users.role AS talk_role,
-			room_users.sex AS talk_sex,
-			room_users.color AS talk_color,
+    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
+			user_entry.handle_name AS talk_handle_name,
+			user_entry.role AS talk_role,
+			user_entry.sex AS talk_sex,
+			user_icon.color AS talk_color,
 			talk.sentence AS sentence,
 			talk.font_type AS font_type,
 			talk.location AS location
-			FROM talk,
-			  (SELECT * FROM user_entry users LEFT JOIN user_icon USING (icon_no)
-			  WHERE users.room_no IN ($room_no, 0)) room_users
+			FROM user_entry, talk, user_icon
 			WHERE talk.room_no = $room_no
+			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND user_entry.icon_no = user_icon.icon_no)
+			OR ( user_entry.room_no = 0 AND talk.uname = 'system'
+			AND user_entry.icon_no = user_icon.icon_no) )
 			AND talk.date = $set_date
 			AND ( (talk.location = 'heaven') OR (talk.uname = 'system') )
 			$select_order");
@@ -380,7 +334,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 			$select_order");
   }
   else{
-    $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? "" : "AND talk.location <> 'heaven'";
+    $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? '' : "AND talk.location <> 'heaven'";
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT
 			room_users.uname AS talk_uname,
@@ -420,24 +374,24 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
   //出力
   $builder = new DocumentBuilder();
-  do {
-    $builder->BeginTalk("old-log-talk {$day_night}");
-    while(($array = mysql_fetch_assoc($sql)) !== false){
-      $location = $array['location'];
-      if(strpos($location, $day_night) === false){
-        OutputSceneChange($set_date);
-        if ($day_night == 'day'){
-          $day_night = 'night';
-        }
-        else if ($day_night == 'night'){
-          $day_night = 'day';
-        }
-        break;
-      }
-      OutputTalk($array, $builder); //会話出力
+  $builder->BeginTalk("old-log-talk {$table_class}");
+  while(($array = mysql_fetch_assoc($sql)) !== false){
+    $location = $array['location'];
+    if(strpos($location, 'day') !== false && $day_night != 'day'){
+      $builder->EndTalk();
+      OutputSceneChange($set_date);
+      $day_night = 'day';
+      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
     }
-    $builder->EndTalk();
-  } while ($array !== false);
+    elseif(strpos($location, 'night') !== false && $day_night != 'night'){
+      $builder->EndTalk();
+      OutputSceneChange($set_date);
+      $day_night = 'night';
+      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
+    }
+    OutputTalk($array, &$builder); //会話出力
+  }
+  $builder->EndTalk();
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
      $set_date != $last_date && $is_reverse && $RQ_ARGS->heaven_only != 'on'){
@@ -450,11 +404,11 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
 //シーン切り替え時のログ出力
 function OutputSceneChange($set_date){
-  global $RQ_ARGS, $reverse_log, $heaven_only, $date, $day_night;
+  global $RQ_ARGS, $date, $day_night;
 
   if($RQ_ARGS->heaven_only == 'on') return;
   $date = $set_date;
-  if($reverse_log == 'on'){
+  if($RQ_ARGS->reverse_log == 'on'){
     $day_night = 'night';
     OutputVoteList(); //投票結果出力
     OutputDeadMan();  //死亡者を出力

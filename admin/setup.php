@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/../include/functions.php');
 
 $CSS_PATH = '../css'; //CSS のパス
-OutputHTMLHeader('汝は人狼なりや？[初期設定]'); //HTMLヘッダ
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment ' [初期設定]'); //HTMLヘッダ
 
 if(! ($dbHandle = ConnectDatabase(true, false))){ //DB 接続
   mysql_query("CREATE DATABASE $db_name DEFAULT CHARSET ujis");
@@ -44,10 +44,10 @@ class DummyBoyIcon{
 //-- 関数 --//
 //必要なテーブルがあるか確認する
 function CheckTable(){
-  global $ICON_CONF, $db_name, $system_password;
+  global $SERVER_CONF, $DB_CONF, $ICON_CONF;
 
   //テーブルのリストを配列に取得
-  $sql   = mysql_list_tables($db_name);
+  $sql   = mysql_list_tables($DB_CONF->name);
   $count = mysql_num_rows($sql);
   $table = array();
   for($i=0; $i < $count; $i++) array_push($table, mysql_tablename($sql, $i));
@@ -66,8 +66,8 @@ function CheckTable(){
     echo 'テーブル(user_entry)を作成しました<br>'."\n";
 
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no, profile,
-		password, role, live)
-		VALUES(0, 0, 'system', 'システム', 1, 'ゲームマスター', '$system_password', 'GM', 'live')");
+		password, role, live) VALUES(0, 0, 'system', 'システム', 1, 'ゲームマスター',
+		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
   if(! in_array('talk', $table)){
     mysql_query("CREATE TABLE talk(room_no int, date int, location text, uname text, time text,
