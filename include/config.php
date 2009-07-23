@@ -120,8 +120,8 @@ class RoomConfig{
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  // var $entry_one_ip_address = true;
-  var $entry_one_ip_address = false; //デバッグ用
+  var $entry_one_ip_address = true;
+  // var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません

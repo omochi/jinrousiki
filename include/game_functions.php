@@ -61,7 +61,6 @@ function OutputGamePageHeader(){
   elseif($day_night == 'aftergame' && $dead_mode == 'on'){ //ゲームが終了して霊話から戻るとき
     $jump_url = $url_header;
     $sentence .= 'ゲーム終了後のお部屋に飛びます。';
-    OutputActionResult($title, $sentence, $url);
   }
   elseif($live == 'live' && ($dead_mode == 'on' || $heaven_mode == 'on')){
     $jump_url = $url_header;
@@ -70,7 +69,7 @@ function OutputGamePageHeader(){
 
   if($jump_url != ''){ //移動先が設定されていたら画面切り替え
     $sentence .= $anchor_header . $jump_url . $anchor_footer;
-    OutputActionResult($title, $sentence, $url);
+    OutputActionResult($title, $sentence, $jump_url);
   }
 
   OutputHTMLHeader($title, 'game');
@@ -551,6 +550,7 @@ function OutputTalk($array, &$builder){
   $flag_vote       = (strpos($sentence, 'VOTE_DO')       === 0);
   $flag_wolf       = (strpos($sentence, 'WOLF_EAT')      === 0);
   $flag_mage       = (strpos($sentence, 'MAGE_DO')       === 0);
+  $flag_child_fox  = (strpos($sentence, 'CHILD_FOX_DO')  === 0);
   $flag_guard      = (strpos($sentence, 'GUARD_DO')      === 0);
   $flag_reporter   = (strpos($sentence, 'REPORTER_DO')   === 0);
   $flag_cupid      = (strpos($sentence, 'CUPID_DO')      === 0);
@@ -727,6 +727,11 @@ function OutputTalk($array, &$builder){
     }
     elseif($location_system && $flag_mage){ //占い師の投票
       $target_handle_name = ParseStrings($sentence, 'MAGE_DO');
+      $action = 'mage-do';
+      $sentence =  $talk_handle_name.' は '. $target_handle_name.' '.$MESSAGE->mage_do;
+    }
+    elseif($location_system && $flag_child_fox){ //子狐の投票
+      $target_handle_name = ParseStrings($sentence, 'CHILD_FOX_DO');
       $action = 'mage-do';
       $sentence =  $talk_handle_name.' は '. $target_handle_name.' '.$MESSAGE->mage_do;
     }
@@ -1102,7 +1107,7 @@ function OutputAbilityAction(){
   $result = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
 			 AND date = $yesterday AND (type = 'MAGE_DO' OR type = 'WOLF_EAT'
 			 OR type = 'GUARD_DO' OR type = 'REPORTER_DO' OR type = 'CUPID_DO'
-			 OR type = 'MANIA_DO' OR type = 'POISON_CAT_DO')");
+			 OR type = 'CHILD_FOX_DO' OR type = 'MANIA_DO' OR type = 'POISON_CAT_DO')");
   $count = mysql_num_rows($result);
   $header = '<strong>前日の夜、';
   $footer = 'ました</strong><br>'."\n";
@@ -1120,6 +1125,10 @@ function OutputAbilityAction(){
 
     case 'MAGE_DO':
       echo $header.'占い師 '.$handle_name.'は '.$target_name.' を占い'.$footer;
+      break;
+
+    case 'CHILD_FOX_DO':
+      echo $header.'子狐 '.$handle_name.'は '.$target_name.' を占い'.$footer;
       break;
 
     case 'GUARD_DO':
@@ -1432,6 +1441,7 @@ function ParseStrings($str, $type = NULL){
   case 'VOTE_DO':
   case 'WOLF_EAT':
   case 'MAGE_DO':
+  case 'CHILD_FOX_DO':
   case 'GUARD_DO':
   case 'REPORTER_DO':
   case 'CUPID_DO':
@@ -1443,6 +1453,7 @@ function ParseStrings($str, $type = NULL){
     break;
 
   case 'MAGE_RESULT':
+  case 'CHILD_FOX_RESULT':
   case 'MANIA_RESULT':
   case 'REPORTER_SUCCESS':
   case 'POISON_CAT_RESULT':

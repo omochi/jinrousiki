@@ -158,15 +158,15 @@ EOF;
     */
 
     echo <<<EOF
-<tr class="list upper">
-<td rowspan="2">$log_room_no</td>
-<td><a href="$base_url" $dead_room_color>$log_room_name Â¼</a></td>
-<td class="comment">¡Á $log_room_comment ¡Á</td>
-<td>$user_count ($log_room_max_user)</td>
-<td>$log_room_date</td>
-<td>$voctory_role_str</td>
+<tr class="list">
+<td class="number" rowspan="2">$log_room_no</td>
+<td class="title"><a href="$base_url" $dead_room_color>$log_room_name Â¼</a></td>
+<td class="upper comment">¡Á $log_room_comment ¡Á</td>
+<td class="upper">$user_count ($log_room_max_user)</td>
+<td class="upper">$log_room_date</td>
+<td class="side">$voctory_role_str</td>
 </tr>
-<tr class="list lower">
+<tr class="lower list">
 <td class="comment">(
 <a href="$base_url&reverse_log=on" $dead_room_color>µÕ</a>
 <a href="$base_url&heaven_talk=on" $dead_room_color>Îî</a>

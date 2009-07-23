@@ -28,8 +28,9 @@ table{
   border-collapse:collapse;
 }
 td{border-width: 0;}
-.list{text-align: right;}
+.list{   text-align: right;}
 .list td{text-align: right;}
+.icon{text-align: left;}
 .main{
   background-color: #CCCCCC;
   border: 1px solid #FFFFFF;
@@ -38,7 +39,7 @@ td{border-width: 0;}
 th{
   margin: 0px;
   padding : 3px 3px 3px 6px;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #000000;
   background-color: #526CD6;
   color: #FFFFFF;
   white-space: nowrap;
@@ -50,16 +51,24 @@ th{
   color: #333333;
   vertical-align: middle;
 }
-.number{border: 1px solid #FFFFFF;}
-.upper td{
-  border-top:    1px solid  #FFFFFF;
-  border-right:  1px solid  #FFFFFF;
-  border-left:   1px solid  #FFFFFF;
+.number{border: 1px solid  #000000;}
+.title{
+  border-top:    1px solid  #000000;
+  border-right:  1px solid  #000000;
+  border-left:   1px solid  #000000;
+  border-bottom: 1px dotted #CCCCCC;
+}
+.upper{
+  border-right:  1px dotted #CCCCCC;
+  border-bottom: 1px dotted #CCCCCC;
+}
+.side{
+  border-right:  1px solid  #000000;
   border-bottom: 1px dotted #CCCCCC;
 }
 .lower td{
-  border-width: 0px 1px 1px 1px;
-  border-color: #FFFFFF;
-  border-style: solid;
+  border-right:  1px solid  #000000;
+  border-left:   1px solid  #000000;
+  border-bottom: 1px solid  #000000;
 }
 .comment{font-size: 75%;}

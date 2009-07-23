@@ -239,19 +239,22 @@ function Say($say){
       $spend_time = 4;
   }
 
-  if($day_night == 'beforegame' || $day_night == 'aftergame') //ゲーム開始前後はそのまま発言
+  if($day_night == 'beforegame' || $day_night == 'aftergame'){ //ゲーム開始前後はそのまま発言
     Write($say, $day_night, 0, true);
+  }
   elseif($uname == 'dummy_boy'){ //身代わり君 (仮想 GM 対応)
     if($live == 'live' && $day_night == 'day' && $left_time > 0) //生きていて制限時間内の昼
       Write($say, 'day', $spend_time, true); //通常通り発言
     else //それ以外は専用のシステムメッセージに切り替え
       Write($say, "$day_night dummy_boy", 0, false); //発言時間を更新しない
   }
-  elseif($live == 'dead') //死亡者の霊話
+  elseif($live == 'dead'){ //死亡者の霊話
     Write($say, 'heaven', 0, false); //発言時間を更新しない
+  }
   elseif($live == 'live' && $left_time > 0){ //生存者で制限時間内
-    if($day_night == 'day') //昼はそのまま発言
+    if($day_night == 'day'){ //昼はそのまま発言
       Write($say, 'day', $spend_time, true);
+    }
     elseif($day_night == 'night'){ //夜は役職毎に分ける
       if(strpos($role, 'wolf') !== false) //狼
 	Write($say, 'night wolf', $spend_time, true);
@@ -373,31 +376,22 @@ function CheckSilence(){
 
 	//投票していない人を取得 (役職のみ)
 	$query .= " AND (user_entry.role LIKE '%wolf%' OR user_entry.role LIKE '%mage%'";
-	if ($date == 1) {
+	if($date == 1){
 	  $query .= " OR user_entry.role LIKE 'cupid%' OR user_entry.role LIKE 'mania%')";
 	}
-	else {
+	else{
 	  $query .= " OR user_entry.role LIKE 'guard%')";
 	}
 	$sql_novote = mysql_query($query);
       }
 
-      //未投票者の数
-      $novote_count = mysql_num_rows($sql_novote);
-
       //未投票者を全員突然死させる
-      for($i = 0; $i < $novote_count; $i++){
-	$array = mysql_fetch_assoc($sql_novote);
-	$this_uname  = $array['uname'];
-	$this_handle = $array['handle_name'];
-	$this_role   = $array['role'];
-
-	SuddenDeath($this_uname, $this_handle, $this_role); //突然死実行
+      while(($array = mysql_fetch_assoc($sql_novote)) !== false){
+	SuddenDeath($array['uname'], $array['handle_name'], $array['role']);
       }
       InsertSystemTalk($MESSAGE->vote_reset, ++$system_time); //投票リセットメッセージ
       InsertSystemTalk($sudden_death_announce, ++$system_time); //突然死告知メッセージ
       UpdateTime(); //制限時間リセット
-
       DeleteVote(); //投票リセット
       CheckVictory(); //勝敗チェック
     }
@@ -508,24 +502,24 @@ EOF;
   echo '</td></tr>'."\n" . '</table>'."\n";
 
   switch($day_night){
-    case 'beforegame': //開始前の注意を出力
-      echo '<div class="caution">'."\n";
-      echo 'ゲームを開始するには全員がゲーム開始に投票する必要があります';
-      echo '<span>(投票した人は村人リストの背景が赤くなります)</span>'."\n";
-      echo '</div>'."\n";
-      break;
+  case 'beforegame': //開始前の注意を出力
+    echo '<div class="caution">'."\n";
+    echo 'ゲームを開始するには全員がゲーム開始に投票する必要があります';
+    echo '<span>(投票した人は村人リストの背景が赤くなります)</span>'."\n";
+    echo '</div>'."\n";
+    break;
 
-    case 'day':
-      $time_message = '　日没まで ';
-      break;
+  case 'day':
+    $time_message = '　日没まで ';
+    break;
 
-    case 'night':
-      $time_message = '　夜明けまで ';
-      break;
+  case 'night':
+    $time_message = '　夜明けまで ';
+    break;
 
-    case 'aftergame': //勝敗結果を出力して処理終了
-      OutputVictory();
-      return;
+  case 'aftergame': //勝敗結果を出力して処理終了
+    OutputVictory();
+    return;
   }
 
   if($day_night == 'beforegame') OutputGameOption(); //ゲームオプションを説明
@@ -796,10 +790,22 @@ function OutputAbility(){
   }
   elseif(strpos($role, 'child_fox') !== false){
     // OutputRoleComment('child_fox');
-    echo '[役割]<br>　あなたは「子狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。<br>'."\n";
+    echo '[役割]<br>　あなたは「子狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。また、時々失敗しますが占いの真似事もできます。<br>'."\n";
 
     //仲間を表示
     OutputPartner("role LIKE '%fox%' AND uname <> '$uname'", 'fox_partner');
+
+    //占い結果を表示
+    $action = 'CHILD_FOX_RESULT';
+    $sql    = GetAbilityActionResult($action);
+    $count  = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
+      if($handle_name == $actor) //自分の占い結果のみ表示
+	OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
+    }
+
+    if($day_night == 'night') CheckNightVote('CHILD_FOX_DO', 'mage-do'); //夜の占い投票
   }
   elseif(strpos($role, 'fox') !== false){
     OutputRoleComment('fox');
