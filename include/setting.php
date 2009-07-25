@@ -1,40 +1,53 @@
 <?php
-//サーバのURL
-$site_root = "http://localhost/jinro/";
+//データベース設定
+class DatabaseConfig{
+  //データベースサーバのホスト名 hostname:port
+  //ポート番号を省略するとデフォルトポートがセットされます。(MySQL:3306)
+  var $host = 'localhost';
 
-//サーバのコメント
-$server_comment = '〜東方ウミガメ村＠チルノ鯖〜';
+  //データベースのユーザ名
+  #var $user = 'xxxxxx';
+  var $user = 'grayran';
 
-//データベースサーバのホスト名 hostname:port
-//ポート番号を省略するとデフォルトポートがセットされます。(MySQL:3306)
-$db_host = 'localhost';
+  //データベースサーバのパスワード
+  #var $password = 'xxxxxx';
+  var $password = 'satorituri';
 
-//データベースのユーザ名
-#$db_uname = 'xxxxxx';
-$db_uname = 'grayran';
+  //データベース名
+  var $name = 'jinrou';
+}
+$DB_CONF = new DatabaseConfig();
 
-//データベースサーバのパスワード
-#$db_pass = 'xxxxxx';
-$db_pass = 'satorituri';
+//サーバ設定
+class ServerConfig{
+  //サーバのURL
+  var $site_root = 'http://localhost/jinro/';
 
-//データベース名
-$db_name = 'jinrou';
+  //タイトル
+  var $title = '汝は人狼なりや？';
 
-//管理者用パスワード
-#$system_password = 'xxxxxx';
-$system_password = 'pass';
+  //サーバのコメント
+  var $server_comment = '〜東方ウミガメ村＠チルノ鯖〜';
 
-//ソースアップロードフォームのパスワード
-$src_upload_password = 'upload';
+  //戻り先のページ
+  var $back_page = '';
 
-//戻り先のページ
-$back_page = '';
+  //管理者用パスワード
+  var $system_password = 'xxxxxx';
+
+  //ソースアップロードフォームのパスワード
+  var $src_upload_password = 'upload';
+
+  //時差 (秒数)
+  var $offset_seconds = 32400; //9時間
+
+  //他の人狼サーバの村情報を表示する
+  var $shared_server = false;
+}
+$SERVER_CONF = new ServerConfig();
 
 //デバッグモードのオン/オフ
-$DEBUG_MODE = true;
-
-//時差 (秒数)
-$OFFSET_SECONDS = 32400; //9時間
+$DEBUG_MODE = false;
 
 //外部ファイルの読み込み
 require_once(dirname(__FILE__) . '/config.php');          //高度な設定
