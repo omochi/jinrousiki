@@ -75,9 +75,9 @@
       <legend>ゲーム一覧</legend>
       <div class="game-list"><?php include 'room_manager.php'; ?></div>
     </fieldset>
-    <? OutputSharedServerRoom(); ?>
+    <?php OutputSharedServerRoom(); ?>
     <fieldset>
-      <legend>村の作成</legend><? OutputCreateRoom(); ?>
+      <legend>村の作成</legend><?php OutputCreateRoom(); ?>
     </fieldset>
   </td></tr>
 </table>

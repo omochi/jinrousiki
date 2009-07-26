@@ -28,11 +28,11 @@ class User{
 */
   }
   function Save(){
-    if (isset($this->updated){
+    if (isset($this->updated)){
       foreach($this->updated as $item){
-        $update_list[] = "$item = '{$this->item}'"
+        $update_list[] = "$item = '{$this->item}'";
       }
-      $update = implode(', ', $update_list)
+      $update = implode(', ', $update_list);
       mysql_query("UPDATE user_entry SET $update WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'");
     }
   }
@@ -117,6 +117,7 @@ class Users {
   }
   //ユーザー情報を指定して新しいユーザーをデータベースに登録します。(ドラフト：この機能はテストされていません)
   function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role, $ip_address = '', $session_id = ''){
+    global $USERS;
     mysql_query(
       "INSERT INTO user_entry (room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role)
       VALUES (
@@ -127,28 +128,37 @@ class Users {
     $USERS->Load();
   }
 }
-
-
 //グローバルオブジェクトと操作関数
-$USERS =& new Users($room_no);
+function LoadUsers(){
+  global $USERS, $room_no;
+  if (empty($USERS)){
+    $USERS = new Users($room_no);
+  }
+}
 
 function GetNumber($user){
+  global $USERS;
+  LoadUsers();
   return is_integer($user) ? $user : $USERS->UnameToNumber($user);
 }
 
 function GetHandleName($user){
   global $USERS;
+  LoadUsers();
   return $USERS->rows[GetNumber($user)]->handle_name;
 }
 
 function IsLiving($user){
   global $USERS;
+  LoadUsers();
   return $USERS->rows[GetNumber($user)]->handle_name;
 }
 
+/*
 function KillUser($user){
   global $USERS;
+  LoadUsers();
   return $USERS->rows[GetNumber($user)]->Kill();
 }
-
+*/
 ?>

@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__) . '/functions.php');
 require_once(dirname(__FILE__) . '/game_format.php');
+require_once(dirname(__FILE__) . '/user_class.php');
+require_once(dirname(__FILE__) . '/role/roles_class.php');
 
 //セッション認証 返り値 OK:ユーザ名 / NG: false
 function CheckSession($session_id, $exit = true){
@@ -501,7 +503,7 @@ EOF;
 
 //会話ログ出力
 function OutputTalkLog(){
-  global $MESSAGE, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
+  global $MESSAGE, $ROLES, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
   $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
@@ -522,7 +524,7 @@ function OutputTalkLog(){
 			ORDER BY time DESC");
   $count = mysql_num_rows($sql);
 
-  $builder = new DocumentBuilder();
+  $builder = DocumentBuilder::Generate();
   $builder->BeginTalk('talk');
   for($i = 0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql), $builder); //会話出力
   $builder->EndTalk();
@@ -590,7 +592,6 @@ function OutputTalk($array, &$builder){
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
 	 ($live == 'live' && $day_night == 'day' && $location == 'day')){
     if($day_night == 'day'){ //ゲーム中だけ一部のサブ役職発動
-      if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
       if(strpos($role, 'earplug') !== false){
 	switch($font_type){
 	case 'strong':
@@ -630,12 +631,11 @@ function OutputTalk($array, &$builder){
     }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'wolf') !== false){
-      if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
       $user_info = "<font color=\"$talk_color\">◆</font>$talk_handle_name";
       $builder->AddTalk($user_info, $sentence, $font_type);
     }
     else{
-      $builder->AddWhisper('狼の遠吠え', $MESSAGE->wolf_howl, $font_type);
+      $builder->AddWhisper('狼の遠吠え', 'wolf_howl', $font_type);
     }
   }
   //ゲーム中、生きている人の夜の共有者
@@ -657,18 +657,16 @@ function OutputTalk($array, &$builder){
     }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'common') !== false){
-      if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
       $user_info = "<font color=\"{$talk_color}\">◆</font>$talk_handle_name";
       $builder->AddTalk($user_info, $sentence, $font_type);
     }
     else{
-      $builder->AddWhisper('共有者の小声', $MESSAGE->common_talk, '', 'talk-common', 'say-common');
+      $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
     }
   }
   //ゲーム中、生きている人の夜の妖狐
   elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
     if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-      if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
       if(strpos($role, 'earplug') !== false){
 	switch($font_type){
 	case 'strong':
@@ -805,7 +803,6 @@ function OutputTalk($array, &$builder){
   elseif($flag_system){ //投票情報は非表示
   }
   else{ //観戦者
-    if(strpos($role, 'blinder') !== false && $uname != $talk_uname) $talk_handle_name = '';
     if(strpos($role, 'earplug') !== false){
       switch($font_type){
       case 'strong':
@@ -839,7 +836,7 @@ function OutputTalk($array, &$builder){
 	  $builder->AddTalk($user_info, $sentence, $font_type);
 	}
 	else{
-	  $builder->AddWhisper('共有者の小声', $MESSAGE->common_talk, '', 'talk-common', 'say-common');
+	  $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
 	}
       }
       elseif($location == 'night fox'){

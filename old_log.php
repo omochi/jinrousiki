@@ -269,7 +269,7 @@ function LayoutHeaven($last_date, $is_reverse){
 
 //指定の日付の会話ログを出力
 function OutputDateTalkLog($set_date, $set_location, $is_reverse){
-  global $RQ_ARGS, $room_no, $status, $date, $day_night, $live;
+  global $RQ_ARGS, $ROLES, $room_no, $status, $date, $day_night, $live;
 
   if($is_reverse) //逆順、初日から最終日まで
     $select_order = 'ORDER BY time';
@@ -373,7 +373,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   $day_night = $table_class;
 
   //出力
-  $builder = new DocumentBuilder();
+  $builder = DocumentBuilder::Generate();
   $builder->BeginTalk("old-log-talk {$table_class}");
   while(($array = mysql_fetch_assoc($sql)) !== false){
     $location = $array['location'];
