@@ -1,8 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/functions.php');
 require_once(dirname(__FILE__) . '/game_format.php');
-require_once(dirname(__FILE__) . '/user_class.php');
-require_once(dirname(__FILE__) . '/role/roles_class.php');
 
 //セッション認証 返り値 OK:ユーザ名 / NG: false
 function CheckSession($session_id, $exit = true){
