@@ -12,9 +12,8 @@ if($_GET['room_no'] == ''){
 $dbHandle = ConnectDatabase(); //DB 接続
 
 if($_POST['command'] == 'entry'){
-  // if($GAME_CONF->trip) require_once(dirname(__FILE__) . '/include/convert_trip.php');
   EntryUser($_GET['room_no'], $_POST['uname'], $_POST['handle_name'], $_POST['icon_no'],
-	     $_POST['profile'], $_POST['password'], $_POST['sex'], $_POST['role']);
+	    $_POST['profile'], $_POST['password'], $_POST['sex'], $_POST['role']);
 }
 else{
   OutputEntryUserPage($_GET['room_no']);
@@ -155,36 +154,66 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   mysql_query('UNLOCK TABLES'); //ロック解除
 }
 
-//トリップ変換処理
+//トリップ変換
+/*
+  変換テスト結果＠2ch (2009/07/26)
+  [入力文字列] => [変換結果] (ConvetTrip()の結果)
+  test#test                     => test ◆.CzKQna1OU (test◆.CzKQna1OU)
+  テスト#テスト                 => テスト ◆SQ2Wyjdi7M (テスト◆SQ2Wyjdi7M)
+  てすと＃てすと                => てすと ◆ZUNa78GuQc (てすと◆ZUNa78GuQc)
+  てすとテスト#てすと＃テスト   => てすとテスト ◆TBYWAU/j2qbJ (てすとテスト◆sXitOlnF0g)
+  テストてすと＃テストてすと    => テストてすと ◆RZ9/PhChteSA (テストてすと◆XuUGgmt7XI)
+  テストてすと＃テストてすと#   => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
+  テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
+*/
 function ConvertTrip(&$str){
-  global $GAME_CONF;
+  global $ENCODE, $GAME_CONF;
 
   if($GAME_CONF->trip){ //まだ実装されていません
     OutputActionResult('村人登録 [入力エラー]',
                        'トリップ変換処理は実装されていません。<br>'."\n" .
                        '管理者に問い合わせてください。');
-    // if(strrpos($str, '＃') !== false){
-    //   OutputActionResult('村人登録 [入力エラー]',
-    // 			 '全角 "＃" を用いたトリップには未対応です。<br>'."\n" .
-    // 			 '半角 "#" を使用して下さい。');
-    // }
-    // $str = filterKey2Trip($str, 'cp51932'); //文字コードは convert_trip.php 参照
-  }
-  else{
-    if(strrpos($str, '#') !== false || strrpos($str, '＃') !== false){
-      OutputActionResult('村人登録 [入力エラー]',
-			 'トリップは使用不可です。<br>'."\n" .
-			 '"#" の文字も使用不可です。');
+
+    //トリップ関連のキーワードを置換
+    $str = str_replace(array('◆', '＃'), array('◇', '#'), $str);
+    if(($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
+      $name = mb_substr($str, 0, $trip_start);
+      $key  = mb_substr($str, $trip_start + 1);
+      #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>';
+
+      //文字コードを変換
+      $key  = mb_convert_encoding($key, 'SJIS', $ENCODE);
+      $salt = substr($key.'H.', 1, 2);
+
+      //$salt =~ s/[^\.-z]/\./go;にあたる箇所
+      $pattern = '/[\x00-\x20\x7B-\xFF]/';
+      $salt = preg_replace($pattern, '.', $salt);
+
+      //特殊文字の置換
+      $from_list = array(':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`');
+      $to_list   = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f');
+      $salt = str_replace($from_list, $to_list, $salt);
+
+      $trip = crypt($key, $salt);
+      $str = $name.'◆'.substr($trip, -10);
     }
+    #echo 'result: '.$str.'<br>';
   }
-  EscapeStrings(&$str);
+  elseif(strpos($str, '#') !== false || strpos($str, '＃') !== false){
+    OutputActionResult('村人登録 [入力エラー]',
+		       'トリップは使用不可です。<br>'."\n" .
+		       '"#" 又は "＃" の文字も使用不可です。');
+  }
+
+  EscapeStrings(&$str); //特殊文字のエスケープ
 }
 
 //ユーザ登録画面表示
 function OutputEntryUserPage($room_no){
-  global $ICON_CONF;
-  $sql = mysql_query("select room_name, room_comment, status, game_option, option_role
-			from room where room_no = $room_no");
+  global $SERVER_CONF, $ICON_CONF;
+
+  $sql = mysql_query("SELECT room_name, room_comment, status, game_option, option_role
+			FROM room WHERE room_no = $room_no");
   if(mysql_num_rows($sql) == 0){
     OutputActionResult('村人登録 [村番号エラー]', "No.$room_no 番地の村は存在しません。");
   }
@@ -200,12 +229,11 @@ function OutputEntryUserPage($room_no){
   }
 
   //ユーザアイコン一覧
-  $sql_icon = mysql_query("select icon_no, icon_name, icon_filename, icon_width, icon_height, color
-				from user_icon where icon_no > 0 order by icon_no");
-  $count  = mysql_num_rows($sql_icon); //アイテムの個数を取得
+  $sql_icon = mysql_query("SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color
+				FROM user_icon WHERE icon_no > 0 ORDER BY icon_no");
   $trip_str = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
-  OutputHTMLHeader('汝は人狼なりや？[村人登録]', 'entry_user');
+  OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
   echo <<<HEADER
 </head>
 <body>
@@ -256,33 +284,34 @@ HEADER;
     echo <<<IMAGE
 <tr>
 <td class="role"><img src="img/entry_user/role.gif"></td>
-<td>
-<label for="none"><img src="img/entry_user/role_none.gif"><input type="radio" id="none" name="role" value="none"></label>
-<label for="human"><img src="img/entry_user/role_human.gif"><input type="radio" id="human" name="role" value="human"></label><br>
-<label for="wolf"><img src="img/entry_user/role_wolf.gif"><input type="radio" id="wolf" name="role" value="wolf"></label>
-<label for="mage"><img src="img/entry_user/role_mage.gif"><input type="radio" id="mange" name="role" value="mage"></label><br>
-<label for="necromancer"><img src="img/entry_user/role_necromancer.gif"><input type="radio" id="necromancer" name="role" value="necromancer"></label>
-<label for="mad"><img src="img/entry_user/role_mad.gif"><input type="radio" id="mand" name="role" value="mad"></label><br>
-<label for="guard"><img src="img/entry_user/role_guard.gif"><input type="radio" id="guard" name="role" value="guard"></label>
-<label for="common"><img src="img/entry_user/role_common.gif"><input type="radio" id="common" name="role" value="common"></label><br>
-<label for="fox"><img src="img/entry_user/role_fox.gif"><input type="radio" id="fox" name="role" value="fox"></label>
+<td colspan="2">
 
 IMAGE;
-    if(strpos($option_role, 'poison') !== false){
-      echo '<label for="poison"><img src="img/entry_user/role_poison.gif">' .
-	'<input type="radio" id="poison" name="role" value="poison"></label><br>';
+
+    $wish_role_list = array('none', 'human', 'wolf', 'mage', 'necromancer',
+			    'mad', 'guard', 'common', 'fox');
+    if(strpos($option_role, 'poison')      !== false) array_push($wish_role_list, 'poison');
+    if(strpos($option_role, 'cupid')       !== false) array_push($wish_role_list, 'cupid');
+    if(strpos($option_role, 'boss_wolf')   !== false) array_push($wish_role_list, 'boss_wolf');
+    if(strpos($option_role, 'poison_wolf') !== false){
+      array_push($wish_role_list, 'poison_wolf');
+      array_push($wish_role_list, 'pharmacist');
     }
-    elseif(strpos($option_role, 'cupid') !== false){
-      ;
+    if(strpos($option_role, 'mania')       !== false) array_push($wish_role_list, 'mania');
+    if(strpos($option_role, 'medium')      !== false){
+      array_push($wish_role_list, 'medium');
+      array_push($wish_role_list, 'fanatic_mad');
     }
-    else{
-      echo '<br>';
+
+    $count = 0;
+    foreach($wish_role_list as $this_role){
+      echo <<<TAG
+<label for="{$this_role}"><img src="img/entry_user/role_{$this_role}.gif"><input type="radio" id="{$this_role}" name="role" value="{$this_role}"></label>
+
+TAG;
+      if(++$count % 4 == 0) echo '<br>'; //4個ごとに改行
     }
-    if(strpos($option_role, 'cupid') !== false){
-      echo '<label for="cupid"><img src="img/entry_user/role_cupid.gif">' .
-	'<input type="radio" id="cupid" name="role" value="cupid"></label><br>';
-    }
-    echo '</td><td></td>';
+    echo '</td>';
   }
   else{
     echo '<input type="hidden" name="role" value="none">';
@@ -307,10 +336,9 @@ IMAGE;
 
 BODY;
 
-  //表の出力
-  for($i=0; $i < $count; $i++){
-    if($i > 0 && ($i % 5) == 0) echo '</tr><tr>'; //5個ごとに改行
-    $array = mysql_fetch_assoc($sql_icon);
+  //アイコンの出力
+  $count = 0;
+  while(($array = mysql_fetch_assoc($sql_icon)) !== false){
     $icon_no       = $array['icon_no'];
     $icon_name     = $array['icon_name'];
     $icon_filename = $array['icon_filename'];
@@ -324,6 +352,7 @@ BODY;
 $icon_name<br><font color="$color">◆</font><input type="radio" id="$icon_no" name="icon_no" value="$icon_no"></label></td>
 
 ICON;
+    if(++$count % 5 == 0) echo '</tr><tr>'; //5個ごとに改行
   }
 
   echo <<<FOOTER
