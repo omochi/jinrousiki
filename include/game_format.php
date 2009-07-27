@@ -50,7 +50,7 @@ WORDS;
     $this->cache .= <<<WORDS
 <tr class="user-talk">
 <td class="user-name {$user_class}">{$user_info}</td>
-<td class="say {$volume} {$say_class}">{$MESSAGE->sentence}</td>
+<td class="say {$volume} {$say_class}">{$MESSAGE->$message}</td>
 </tr>
 
 WORDS;

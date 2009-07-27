@@ -43,8 +43,16 @@ class Objection extends RequestBase{
 
 class LogView extends RequestBase{
   function LogView(){
-    if($this->is_room = isset($_GET['room_no'])){
-      $this->GetItems('get.room_no', 'get.log_mode', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only', 'get.debug', 'get.add_role');
+    if ($this->is_room = isset($_GET['room_no'])){
+      $this->GetItems(
+        'get.room_no',
+        'get.log_mode',
+        'get.reverse_log',
+        'get.heaven_talk',
+        'get.heaven_only',
+        'get.debug',
+        'get.add_role'
+      );
     }
     else{
       $this->GetItems('get.page', 'get.reverse', 'get.add_role');

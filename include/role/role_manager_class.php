@@ -17,7 +17,6 @@ class Roles {
     while (($file = readdir($dir)) !== false){
       shot(sprintf("ファイルの一覧:{$file}(拡張子 %s)", substr($file, -4, 4)));
       if (substr($file, -4, 4) == '.php'){
-        include_once($file);
         $this->AddRoleFrom($file);
       }
     }
@@ -30,6 +29,7 @@ class Roles {
       shot(">>>失敗:既知のファイルです。");
       return false;
     }
+    include_once($file);
     $role = substr($filename, 0, -4);
     $classname = "Role_{$role}";
     $this->class[$role] = $classname;

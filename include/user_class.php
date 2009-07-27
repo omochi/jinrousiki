@@ -117,7 +117,6 @@ class Users {
   }
   //ユーザー情報を指定して新しいユーザーをデータベースに登録します。(ドラフト：この機能はテストされていません)
   function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role, $ip_address = '', $session_id = ''){
-    global $USERS;
     mysql_query(
       "INSERT INTO user_entry (room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role)
       VALUES (
@@ -128,13 +127,9 @@ class Users {
     $USERS->Load();
   }
 }
+
+
 //グローバルオブジェクトと操作関数
-function LoadUsers(){
-  global $USERS, $room_no;
-  if (empty($USERS)){
-    $USERS = new Users($room_no);
-  }
-}
 
 function GetNumber($user){
   global $USERS;

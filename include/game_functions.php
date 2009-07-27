@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__) . '/functions.php');
 require_once(dirname(__FILE__) . '/game_format.php');
+require_once(dirname(__FILE__) . '/user_class.php');
+require_once(dirname(__FILE__) . '/role/role_manager_class.php');
 
 //セッション認証 返り値 OK:ユーザ名 / NG: false
 function CheckSession($session_id, $exit = true){
@@ -501,7 +503,7 @@ EOF;
 
 //会話ログ出力
 function OutputTalkLog(){
-  global $MESSAGE, $ROLES, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
+  global $MESSAGE, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
   $sql = mysql_query("SELECT user_entry.uname AS talk_uname,

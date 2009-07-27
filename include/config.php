@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/role/role_manager.php'); //役職情報格納クラス
-require_once(dirname(__FILE__) . '/user_class.php'); //ユーザー情報アクセスクラス
 require_once(dirname(__FILE__) . '/message_class.php'); //システムメッセージ格納クラス
 require_once(dirname(__FILE__) . '/system_class.php');  //システム情報格納クラス
 
