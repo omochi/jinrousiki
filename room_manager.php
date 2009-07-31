@@ -12,7 +12,9 @@ if($_POST['command'] == 'CREATE_ROOM'){
   else
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
 }
-else OutputRoomList();
+else{
+  OutputRoomList();
+}
 
 DisconnectDatabase($dbHandle); //DB 接続解除
 
@@ -103,10 +105,16 @@ function CreateRoom($room_name, $room_comment, $max_user){
     array_push($option_role_list, 'liar', 'gentleman', 'sudden_death');
   }
 
-  foreach($game_option_list as $this_option)
-    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on') $game_option .= $this_option . ' ';
-  foreach($option_role_list as $this_option)
-    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on') $option_role .= $this_option . ' ';
+  foreach($game_option_list as $this_option){
+    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on'){
+      $game_option .= $this_option . ' ';
+    }
+  }
+  foreach($option_role_list as $this_option){
+    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on'){
+      $option_role .= $this_option . ' ';
+    }
+  }
 
   if($ROOM_CONF->real_time && $_POST['real_time'] == 'on'){
     $day   = $_POST['real_time_day'];
@@ -200,9 +208,7 @@ function OutputRoomList(){
   //ルームNo、ルーム名、コメント、最大人数、状態を取得
   $sql = mysql_query("SELECT room_no, room_name, room_comment, game_option, option_role, max_user,
 			status FROM room WHERE status <> 'finished' ORDER BY room_no DESC ");
-  if($sql == NULL) return false;
-
-  while($array = mysql_fetch_assoc($sql)){
+  while(($array = mysql_fetch_assoc($sql)) !== false){
     $room_no      = $array['room_no'];
     $room_name    = $array['room_name'];
     $room_comment = $array['room_comment'];
@@ -211,24 +217,12 @@ function OutputRoomList(){
     $max_user     = $array['max_user'];
     $status       = $array['status'];
 
-    switch($status){
-    case 'waiting':
-      $status_img = $ROOM_IMG->waiting;
-      break;
-
-    case 'playing':
-      $status_img = $ROOM_IMG->playing;
-      break;
-    }
-
     $option_img_str = MakeGameOptionImage($game_option, $option_role); //ゲームオプションの画像
-
-    // $max_user_img = $ROOM_IMG -> max_user_list[$max_user]; //最大人数
-    //<div>〜{$room_comment}〜 {$option_img_str}<img src="$max_user_img"></div>
+    // $option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
-<img src="$status_img"><span>[{$room_no}番地]</span>{$room_name}村<br>
+<img src="{$ROOM_IMG->$status}"><span>[{$room_no}番地]</span>{$room_name}村<br>
 <div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
 </a><br>
 
@@ -243,32 +237,38 @@ EOF;
 
 //他のサーバの部屋画面を出力
 function OutputSharedServerRoom(){
-  global $SERVER_CONF, $ROOM_CONF;
+  global $SERVER_CONF, $ROOM_CONF, $ENCODE;
 
   if(! $SERVER_CONF->shared_server) return false;
 
   foreach($ROOM_CONF->shared_server_list as $server => $array){
-    $this_url = $array['url'];
-    $this_data = file_get_contents($this_url.'room_manager.php');
-    if($this_data == '') continue;
-    // echo $this_data; //デバッグ用
-    if($array['separator'] != ''){
-      $this_split_list = mb_split($array['separator'], $this_data);
-      // print_r($this_split_list); //デバッグ用
+    $this_name      = $array['name'];
+    $this_url       = $array['url'];
+    $this_encode    = $array['encode'];
+    $this_separator = $array['separator'];
+    $this_footer    = $array['footer'];
+
+    if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
+    #echo $this_data; //デバッグ用
+    if($this_encode != '' && $this_encode != $ENCODE){
+      $this_data = mb_convert_encoding($this_data, $ENCODE, $this_encode);
+    }
+    if($this_separator != ''){
+      $this_split_list = mb_split($this_separator, $this_data);
+      #print_r($this_split_list); //デバッグ用
       $this_data = array_pop($this_split_list);
     }
-    if($array['footer'] != ''){
-      $this_position = mb_strrpos($this_data, $array['footer']);
-      if($this_position === false) continue;
-      $this_data = mb_substr($this_data, 0, $this_position + mb_strlen($array['footer']));
+    if($this_footer != ''){
+      if(($this_position = mb_strrpos($this_data, $this_footer)) === false) continue;
+      $this_data = mb_substr($this_data, 0, $this_position + mb_strlen($this_footer));
     }
     if($this_data == '') continue;
 
-    $this_data = strtr($this_data, array('href="' => 'href="'.$this_url,
-					 'src="'  => 'src="'.$this_url));
+    $this_replace_list = array('href="' => 'href="' . $this_url, 'src="'  => 'src="' . $this_url);
+    $this_data = strtr($this_data, $this_replace_list);
     echo <<<EOF
     <fieldset>
-      <legend>ゲーム一覧 ({$array['name']})</legend>
+      <legend>ゲーム一覧 (<a href="$this_url">$this_name</a>)</legend>
       <div class="game-list">$this_data</div>
     </fieldset>
 

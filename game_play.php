@@ -51,6 +51,7 @@ $last_load_day_night = $array['last_load_day_night'];
 
 $system_time = TZTime(); //現在時刻を取得
 $sudden_death_time = 0; //突然死実行までの残り時間
+$USERS = new Users($room_no); //ユーザ情報をロード
 
 //必要なクッキーをセットする
 $objection_array = array(); //SendCookie();で格納される・異議ありの情報
@@ -76,8 +77,7 @@ if($say != '' && $live == 'live' && ($day_night == 'day' || $day_night == 'night
 
     $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
 			AND live = 'live' AND uname <> '$uname' AND user_no > 0");
-    $count = mysql_num_rows($sql) - 1;
-    $rand_key = mt_rand(0, $count);
+    $rand_key = mt_rand(0, mysql_num_rows($sql) - 1);
     $say = $MESSAGE->$message_header . mysql_result($sql, $rand_key, 0) . $MESSAGE->$message_footer;
   }
   elseif(strpos($role, 'liar') !== false){ //狼少年の発言内容を置換
@@ -185,8 +185,10 @@ function SendCookie(){
   }
 
   //クッキーに格納 (有効期限一時間)
-  $str = array_shift($objection_array);
-  foreach($objection_array as $value) $str .= ',' . $value; //カンマ区切り
+  foreach($objection_array as $value){
+    if($str != '') $str .= ','; //カンマ区切り
+    $str .= $value;
+  }
   setcookie('objection', $str, $system_time + 3600);
 
   //残り異議ありの回数
@@ -246,10 +248,10 @@ function Say($say){
     if($live == 'live' && $day_night == 'day' && $left_time > 0) //生きていて制限時間内の昼
       Write($say, 'day', $spend_time, true); //通常通り発言
     else //それ以外は専用のシステムメッセージに切り替え
-      Write($say, "$day_night dummy_boy", 0, false); //発言時間を更新しない
+      Write($say, "$day_night dummy_boy", 0); //発言時間を更新しない
   }
   elseif($live == 'dead'){ //死亡者の霊話
-    Write($say, 'heaven', 0, false); //発言時間を更新しない
+    Write($say, 'heaven', 0); //発言時間を更新しない
   }
   elseif($live == 'live' && $left_time > 0){ //生存者で制限時間内
     if($day_night == 'day'){ //昼はそのまま発言
@@ -258,7 +260,9 @@ function Say($say){
     elseif($day_night == 'night'){ //夜は役職毎に分ける
       if(strpos($role, 'wolf') !== false) //狼
 	Write($say, 'night wolf', $spend_time, true);
-      elseif(strpos($role, 'common') !== false) //共有者
+      elseif(strpos($role, 'whisper_mad') !== false) //囁き狂人
+	Write($say, 'night mad', 0);
+      elseif(strpos($role, 'common') !== false && strpos($role, 'dummy_common') === false) //共有者
 	Write($say, 'night common', 0);
       elseif(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false) //妖狐
 	Write($say, 'night fox', 0);
@@ -333,7 +337,7 @@ function CheckSilence(){
       $sudden_death_base_time = $TIME_CONF->sudden_death;
 
     $left_time_str = ConvertTime($sudden_death_base_time); //表示用に変換
-    $sudden_death_announce = "あと" . $left_time_str . "で" . $MESSAGE->sudden_death_announce;
+    $sudden_death_announce = 'あと' . $left_time_str . 'で' . $MESSAGE->sudden_death_announce;
 
     //既に警告を出しているかチェック
     $sql = mysql_query("SELECT COUNT(uname) FROM talk WHERE room_no = $room_no
@@ -348,12 +352,17 @@ function CheckSilence(){
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($sudden_death_time <= 0){
+      //投票済みの人のテンポラリテーブルを作成するための基本 SQL 文
+      $query_temporary = "CREATE TEMPORARY TABLE tmp_sd SELECT uname FROM vote
+				WHERE room_no = $room_no AND date = $date AND ";
+
       //投票していない人を取得するための基本 SQL 文
       //(投票済みの人を左結合して、「投票済み=NULL・投票していない」を取得)
-      $query = "SELECT user_entry.uname, user_entry.handle_name, user_entry.role
-		FROM user_entry left join tmp_sd on user_entry.uname = tmp_sd.uname
-		WHERE user_entry.room_no = $room_no AND user_entry.live = 'live'
-		AND user_entry.user_no > 0 AND tmp_sd.uname is NULL";
+      $query_novote = "SELECT user_entry.uname, user_entry.handle_name, user_entry.role
+			FROM user_entry left join tmp_sd on user_entry.uname = tmp_sd.uname
+			WHERE user_entry.room_no = $room_no AND user_entry.live = 'live'
+			AND user_entry.user_no > 0 AND tmp_sd.uname is NULL";
+
       if($day_night == 'day'){
 	//投票回数を取得
 	$sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
@@ -361,34 +370,48 @@ function CheckSilence(){
 	$vote_times = mysql_result($sql, 0, 0);
 
 	//投票済みの人のテンポラリテーブルを作成
-	mysql_query("CREATE TEMPORARY TABLE tmp_sd SELECT uname FROM vote
-			WHERE room_no = $room_no AND date = $date
-			AND situation = 'VOTE_KILL' AND vote_times = $vote_times");
-	//投票していない人を取得
-	$sql_novote = mysql_query($query);
+	mysql_query($query_temporary . "situation = 'VOTE_KILL' AND vote_times = $vote_times");
+	$sql_novote = mysql_query($query_novote); //投票していない人を取得
       }
       elseif($day_night == 'night'){
-	//投票済みの人のテンポラリテーブルを作成
-	mysql_query("CREATE TEMPORARY TABLE tmp_sd SELECT uname FROM vote
-			WHERE room_no = $room_no AND date = $date
-			AND (situation = 'WOLF_EAT' OR situation = 'MAGE_DO'
-			OR situation = 'GUARD_DO' OR situation = 'CUPID_DO' OR situation = 'MANIA_DO')");
+	//対象役職のデータを作成
+	$action_list = array('WOLF_EAT', 'MAGE_DO', 'CHILD_FOX_DO');
+	$actor_list  = array('%wolf', '%mage', 'child_fox');
 
-	//投票していない人を取得 (役職のみ)
-	$query .= " AND (user_entry.role LIKE '%wolf%' OR user_entry.role LIKE '%mage%'";
 	if($date == 1){
-	  $query .= " OR user_entry.role LIKE 'cupid%' OR user_entry.role LIKE 'mania%')";
+	  array_push($action_list, 'CUPID_DO', 'MANIA_DO');
+	  array_push($actor_list, 'cupid', 'mania');
 	}
 	else{
-	  $query .= " OR user_entry.role LIKE 'guard%')";
+	  array_push($action_list, 'GUARD_DO', 'REPORTER_DO', 'POISON_CAT_DO');
+	  array_push($actor_list, '%guard', 'reporter', 'poison_cat');
 	}
-	$sql_novote = mysql_query($query);
+
+	foreach($action_list as $this_action){
+	  if($add_action != '') $add_action .= ' OR ';
+	  $add_action .= "situation = '$this_action'";
+	}
+	foreach($actor_list as $this_actor){
+	  if($add_actor != '') $add_actor .= ' OR ';
+	  $add_actor .= "user_entry.role LIKE '{$this_actor}%'";
+	}
+
+	//投票済みの人のテンポラリテーブルを作成
+	mysql_query($query_temporary . '(' . $add_action . ')');
+
+	//投票していない人を取得 (役職のみ)
+	$sql_novote = mysql_query($query_novote . ' AND (' . $add_actor. ')');
       }
 
       //未投票者を全員突然死させる
+      $dead_lovers_list = array(); //恋人後追い対象者リスト
       while(($array = mysql_fetch_assoc($sql_novote)) !== false){
 	SuddenDeath($array['uname'], $array['handle_name'], $array['role']);
+	if(strpos($array['role'], 'lovers') !== false){ //恋人なら後でまとめて後追い処理を行う
+	  array_push($dead_lovers_list, $array['role']);
+	}
       }
+      foreach($dead_lovers_list as $this_role) LoversFollowed($this_role, true); //恋人後追い処理
       InsertSystemTalk($MESSAGE->vote_reset, ++$system_time); //投票リセットメッセージ
       InsertSystemTalk($sudden_death_announce, ++$system_time); //突然死告知メッセージ
       UpdateTime(); //制限時間リセット
@@ -495,11 +518,11 @@ EOF;
       if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
 	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $i");
 	$objection_sound = 'objection_' . mysql_result($sql, 0, 0);
-	// OutputSound($SOUND->$objection_sound, false); //ループをいったん切る
+	OutputSound($SOUND->$objection_sound, true);
       }
     }
   }
-  echo '</td></tr>'."\n" . '</table>'."\n";
+  echo '</td></tr>'."\n".'</table>'."\n";
 
   switch($day_night){
   case 'beforegame': //開始前の注意を出力
@@ -650,63 +673,30 @@ function OutputAbility(){
      strpos($role, 'unconscious') !== false) OutputRoleComment('human');
   elseif(strpos($role, 'wolf') !== false){
     if(    strpos($role, 'boss_wolf')   !== false) OutputRoleComment('boss_wolf');
-    elseif(strpos($role, 'poison_wolf') !== false) OutputRoleComment('poison_wolf');
-    elseif(strpos($role, 'tongue_wolf') !== false) OutputRoleComment('tongue_wolf');
+    elseif(strpos($role, 'cursed_wolf') !== false) OutputRoleComment('cursed_wolf');
     elseif(strpos($role, 'cute_wolf')   !== false) OutputRoleComment('cute_wolf');
+    elseif(strpos($role, 'poison_wolf') !== false) OutputRoleComment('poison_wolf');
+    elseif(strpos($role, 'resist_wolf') !== false) OutputRoleComment('resist_wolf');
+    elseif(strpos($role, 'tongue_wolf') !== false) OutputRoleComment('tongue_wolf');
     else OutputRoleComment('wolf');
 
-    //仲間を表示
-    OutputPartner("role LIKE '%wolf%' AND uname <> '$uname'", 'wolf_partner');
+    OutputPartner("role LIKE '%wolf%' AND uname <> '$uname'", 'wolf_partner'); //仲間を表示
+    OutputPartner("role LIKE 'whisper_mad%'", 'mad_partner'); //囁き狂人を表示
 
     //夜だけ無意識を表示
     if($day_night == 'night') OutputPartner("role LIKE 'unconscious%'", 'unconscious_list');
 
     //舌禍狼の噛み結果を表示
-    $action = 'WOLF_EAT';
-    $active_tongue_wolf = (strpos($role, 'tongue_wolf') !== false &&
-			   strpos($role, 'lost_ability') === false);
-    if($active_tongue_wolf){
-      $sql = GetAbilityActionResult($action);
-      $count = mysql_num_rows($sql);
-      for($i = 0; $i < $count; $i++){
-	list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-	if($handle_name != $actor) continue; //自分の噛み結果のみ表示
-
-	//噛んだ人の役職を取得
-	$sql_target = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
-					AND handle_name = '$target' AND user_no > 0");
-	$target_role = GetMainRole(mysql_result($sql_target, 0, 0));
-	if($target_role == 'human')
-	  $result_role = 'lost_ability'; //村人なら能力失効
-	else
-	  $result_role = 'result_' . $target_role;
-	OutputAbilityResult('wolf_result', $target, $result_role);
-      }
+    $action = 'TONGUE_WOLF_RESULT';
+    $sql    = GetAbilityActionResult($action);
+    $count  = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
+      if($handle_name == $actor) //自分の噛み結果のみ表示
+	OutputAbilityResult('wolf_result', $target, 'result_' . $target_role);
     }
 
-    if($day_night == 'night'){ //夜の噛み投票
-      CheckNightVote($action, 'wolf-eat');
-
-      //舌禍狼の能力失効判定
-      if($active_tongue_wolf){ //ここで処理するのは無駄が多いので TONGUE_WOLF_RESULT を作るべき
-	$sql = GetAbilityActionResult($action);
-	$count = mysql_num_rows($sql);
-	for($i = 0; $i < $count; $i++){
-	  list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-	  if($handle_name != $actor) continue; //自分の噛み結果のみ表示
-
-	  //噛んだ人の役職を取得
-	  $sql_target = mysql_query("SELECT role FROM user_entry WHERE room_no = $room_no
-					AND handle_name = '$target' AND user_no > 0");
-	  $target_role = GetMainRole(mysql_result($sql_target, 0, 0));
-	  if($target_role == 'human'){
-	    $role .= ' lost_ability';
-	    mysql_query("UPDATE user_entry SET role = '$role' WHERE room_no = $room_no
-				AND uname = '$uname' AND user_no > 0");
-	  }
-	}
-      }
-    }
+    if($day_night == 'night') CheckNightVote('WOLF_EAT', 'wolf-eat'); //夜の噛み投票
   }
   elseif(strpos($role, 'mage') !== false){
     if(strpos($role, 'soul_mage') !== false) OutputRoleComment('soul_mage');
@@ -725,7 +715,17 @@ function OutputAbility(){
     if($day_night == 'night') CheckNightVote('MAGE_DO', 'mage-do'); //夜の占い投票
   }
   elseif(strpos($role, 'necromancer') !== false || strpos($role, 'medium') !== false){
-    if(strpos($role, 'necromancer') !== false){
+    if(strpos($role, 'dummy_necromancer') !== false){
+      $role_name = 'necromancer';
+      $action    = 'DUMMY_NECROMANCER_RESULT';
+      $result    = 'necromancer_result';
+    }
+    elseif(strpos($role, 'soul_necromancer') !== false){
+      $role_name = 'soul_necromancer';
+      $action    = 'SOUL_NECROMANCER_RESULT';
+      $result    = 'necromancer_result';
+    }
+    elseif(strpos($role, 'necromancer') !== false){
       $role_name = 'necromancer';
       $action    = 'NECROMANCER_RESULT';
       $result    = 'necromancer_result';
@@ -747,14 +747,17 @@ function OutputAbility(){
   }
   elseif(strpos($role, 'fanatic_mad') !== false){
     OutputRoleComment('fanatic_mad');
-
-    //狼を表示 //仲間じゃないから専用の画像を作るべき
-    OutputPartner("role LIKE '%wolf%'", 'wolf_partner');
+    OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
+  }
+  elseif(strpos($role, 'whisper_mad') !== false){
+    OutputRoleComment('whisper_mad');
+    OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
+    OutputPartner("role LIKE 'whisper_mad%' AND uname <> '$uname'", 'mad_partner'); //囁き狂人を表示
   }
   elseif(strpos($role, 'mad') !== false) OutputRoleComment('mad');
   elseif(strpos($role, 'guard') !== false){
     if(strpos($role, 'poison_guard') !== false) OutputRoleComment('poison_guard');
-    else OutputRoleComment('guard');
+    else OutputRoleComment('guard'); //夢守人 (dummy_guard) を含む
 
     //護衛結果を表示
     $sql = GetAbilityActionResult('GUARD_SUCCESS');
@@ -762,6 +765,14 @@ function OutputAbility(){
     for($i = 0; $i < $count; $i++){
       list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
       if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'guard_success');
+    }
+
+    //狩り結果を表示
+    $sql = GetAbilityActionResult('GUARD_HUNTED');
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
+      if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'guard_hunted');
     }
 
     if($day_night == 'night' && $date != 1) CheckNightVote('GUARD_DO', 'guard-do'); //夜の護衛投票
@@ -786,7 +797,12 @@ function OutputAbility(){
     OutputRoleComment('common');
 
     //仲間を表示
-    OutputPartner("role LIKE 'common%' AND uname <> '$uname'", 'common_partner');
+    if(strpos($role, 'dummy_common') !== false){
+      OutputPartner("uname = 'dummy_boy' AND uname <> '$uname'", 'common_partner');
+    }
+    else{
+      OutputPartner("role LIKE 'common%' AND uname <> '$uname'", 'common_partner');
+    }
   }
   elseif(strpos($role, 'child_fox') !== false){
     // OutputRoleComment('child_fox');
@@ -808,7 +824,16 @@ function OutputAbility(){
     if($day_night == 'night') CheckNightVote('CHILD_FOX_DO', 'mage-do'); //夜の占い投票
   }
   elseif(strpos($role, 'fox') !== false){
-    OutputRoleComment('fox');
+    if(    strpos($role, 'cursed_fox') !== false) OutputRoleComment('cursed_fox');
+    elseif(strpos($role, 'poison_fox') !== false){
+      // OutputRoleComment('poison_fox');
+      echo '[役割]<br>　あなたは「管狐」、毒を持っています。(細かい能力は調整中です)<br>'."\n";
+    }
+    elseif(strpos($role, 'white_fox')  !== false){
+      // OutputRoleComment('white_fox');
+      echo '[役割]<br>　あなたは「白狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。(細かい能力は調整中です)<br>'."\n";
+    }
+    else OutputRoleComment('fox');
 
     //子狐以外の仲間を表示
     OutputPartner("role LIKE 'fox%' AND uname <> '$uname'", 'fox_partner');
@@ -836,10 +861,13 @@ function OutputAbility(){
     //夜の蘇生投票
     if($day_night == 'night' && $date != 1) CheckNightVote('POISON_CAT_DO', 'mania-do');
   }
+  elseif(strpos($role, 'incubate_poison') !== false){
+    OutputRoleComment('incubate_poison');
+    if($date > 5) OutputAbilityResult('ability_poison', NULL);
+  }
   elseif(strpos($role, 'poison') !== false) OutputRoleComment('poison');
   elseif(strpos($role, 'pharmacist') !== false){
-    // OutputRoleComment('pharmacist');
-    echo '[役割]<br>　あなたは「薬師」、処刑対象者に投票していた場合に限りその人を無毒化させることができます。<br>'."\n";
+    OutputRoleComment('pharmacist');
 
     //解毒結果を表示
     $sql = GetAbilityActionResult('PHARMACIST_SUCCESS');
@@ -874,14 +902,13 @@ function OutputAbility(){
   }
 
   //ここから兼任役職
-  if(strpos($role, 'lovers') !== false){
-    //恋人を表示する
+  if(strpos($role, 'lost_ability') !== false) OutputRoleComment('lost_ability'); //能力失効
+  if(strpos($role, 'lovers') !== false){ //恋人を表示する
     $lovers_str = GetLoversConditionString($role);
     OutputPartner("$lovers_str AND uname <> '$uname'", 'lovers_header', 'lovers_footer');
   }
 
-  if(strpos($role, 'copied') !== false) {
-    //コピー結果を表示
+  if(strpos($role, 'copied') !== false) { //神話マニアのコピー結果を表示
     $action = 'MANIA_RESULT';
     $sql    = GetAbilityActionResult($action);
     $count  = mysql_num_rows($sql);
@@ -967,6 +994,7 @@ function GetAbilityActionResult($action){
   return mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
 			AND date = $yesterday AND type = '$action'");
 }
+
 //能力発動結果を表示する
 function OutputAbilityResult($header, $target, $footer = NULL){
   global $ROLE_IMG;

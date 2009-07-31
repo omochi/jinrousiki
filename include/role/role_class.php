@@ -1,5 +1,5 @@
 <?php
-class Role extends DocumentBuilder {
+class Role extends DocumentBuilder{
   var $actor;
 
   function Role($user){
@@ -10,15 +10,15 @@ class Role extends DocumentBuilder {
     $this->Role($user);
   }
 
-  function Ignored(){
-    global $day_night;
-    return $day_night == 'beforegame' || $day_night == 'aftergame';
+  function Ignored(){ //$live をここで参照してまずいのなら書き換え願います
+    global $day_night, $live;
+    return ($live == 'live') && ($day_night == 'beforegame' || $day_night == 'aftergame');
   }
 
   function SameUser($userinfo){
     $result = strpos($userinfo, $this->actor->handle_name);
     shot ("<p>{$userinfo}から{$this->actor->handle_name}を探します。-> 結果:{$result}</p>");
-    return ($result !== false) && (0 < $result);
+    return ($result !== false) && ($result >= 0);
   }
 
   function Say($words, $volume){
@@ -26,7 +26,7 @@ class Role extends DocumentBuilder {
   }
 
   function WriteLastWords($content){
-    //TODO: 以下に発言用のコードを記述してください。
+    //TODO: 以下に発言用のコードを記述してください。 //EntryLastWords() じゃないの？
   }
 
   function Object(){

@@ -209,12 +209,16 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName('human');
       elseif(strpos($this_role, 'boss_wolf') !== false)
 	$role_str = MakeRoleName('boss_wolf', 'wolf');
-      elseif(strpos($this_role, 'poison_wolf') !== false)
-	$role_str = MakeRoleName('poison_wolf', 'wolf');
-      elseif(strpos($this_role, 'tongue_wolf') !== false)
-	$role_str = MakeRoleName('tongue_wolf', 'wolf');
+      elseif(strpos($this_role, 'cursed_wolf') !== false)
+	$role_str = MakeRoleName('cursed_wolf', 'wolf');
       elseif(strpos($this_role, 'cute_wolf') !== false)
 	$role_str = MakeRoleName('cute_wolf', 'wolf');
+      elseif(strpos($this_role, 'poison_wolf') !== false)
+	$role_str = MakeRoleName('poison_wolf', 'wolf');
+      elseif(strpos($this_role, 'resist_wolf') !== false)
+	$role_str = MakeRoleName('resist_wolf', 'wolf');
+      elseif(strpos($this_role, 'tongue_wolf') !== false)
+	$role_str = MakeRoleName('tongue_wolf', 'wolf');
       elseif(strpos($this_role, 'wolf') !== false)
 	$role_str = MakeRoleName('wolf');
       elseif(strpos($this_role, 'soul_mage') !== false)
@@ -223,28 +227,50 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName('dummy_mage', 'mage');
       elseif(strpos($this_role, 'mage') !== false)
 	$role_str = MakeRoleName('mage');
+      elseif(strpos($this_role, 'soul_necromancer') !== false)
+	$role_str = MakeRoleName('soul_necromancer', 'necromancer');
+      elseif(strpos($this_role, 'dummy_necromancer') !== false)
+	$role_str = MakeRoleName('dummy_necromancer', 'necromancer');
       elseif(strpos($this_role, 'necromancer') !== false)
 	$role_str = MakeRoleName('necromancer');
       elseif(strpos($this_role, 'medium') !== false)
 	$role_str = MakeRoleName('medium', 'necromancer');
       elseif(strpos($this_role, 'fanatic_mad') !== false)
 	$role_str = MakeRoleName('fanatic_mad', 'mad');
+      elseif(strpos($this_role, 'whisper_mad') !== false)
+	$role_str = MakeRoleName('whisper_mad', 'mad');
       elseif(strpos($this_role, 'mad') !== false)
 	$role_str = MakeRoleName('mad');
       elseif(strpos($this_role, 'poison_guard') !== false)
 	$role_str = MakeRoleName('poison_guard', 'guard');
+      elseif(strpos($this_role, 'dummy_guard') !== false)
+	$role_str = MakeRoleName('dummy_guard', 'guard');
       elseif(strpos($this_role, 'guard') !== false)
 	$role_str = MakeRoleName('guard');
       elseif(strpos($this_role, 'reporter') !== false)
 	$role_str = MakeRoleName('reporter', 'guard');
+      elseif(strpos($this_role, 'dummy_common') !== false)
+	$role_str = MakeRoleName('dummy_common', 'common');
       elseif(strpos($this_role, 'common') !== false)
 	$role_str = MakeRoleName('common');
       elseif(strpos($this_role, 'child_fox') !== false)
 	$role_str = MakeRoleName('child_fox', 'fox');
+      elseif(strpos($this_role, 'cursed_fox') !== false)
+	$role_str = MakeRoleName('cursed_fox', 'fox');
+      elseif(strpos($this_role, 'poison_fox') !== false)
+	$role_str = MakeRoleName('poison_fox', 'fox');
+      elseif(strpos($this_role, 'white_fox') !== false)
+	$role_str = MakeRoleName('white_fox', 'fox');
       elseif(strpos($this_role, 'fox') !== false)
 	$role_str = MakeRoleName('fox');
       elseif(strpos($this_role, 'poison_cat') !== false)
 	$role_str = MakeRoleName('poison_cat', 'poison');
+      elseif(strpos($this_role, 'strong_poison') !== false)
+	$role_str = MakeRoleName('strong_poison', 'poison');
+      elseif(strpos($this_role, 'incubate_poison') !== false)
+	$role_str = MakeRoleName('incubate_poison', 'poison');
+      elseif(strpos($this_role, 'dummy_poison') !== false)
+	$role_str = MakeRoleName('dummy_poison', 'poison');
       elseif(strpos($this_role, 'poison') !== false)
 	$role_str = MakeRoleName('poison');
       elseif(strpos($this_role, 'pharmacist') !== false)
@@ -563,7 +589,8 @@ function OutputTalk($array, &$builder){
 		   $flag_cupid || $flag_mania || $flag_poison_cat));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
-    $builder->AddSystemTalk($talk_handle_name . ' ' . $MESSAGE->objection, 'objection-'.$talk_sex);
+    $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
+    $builder->AddSystemMessage('objection-' . $talk_sex, $sentence);
   }
   elseif($location_system && $sentence == 'GAMESTART_DO'){ //ゲーム開始投票 (現在は何も表示しない仕様)
   }
@@ -591,74 +618,36 @@ function OutputTalk($array, &$builder){
   //ゲーム開始前後とゲーム中、生きている人の昼
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
 	 ($live == 'live' && $day_night == 'day' && $location == 'day')){
-    if($day_night == 'day'){ //ゲーム中だけ一部のサブ役職発動
-      if(strpos($role, 'earplug') !== false){
-	switch($font_type){
-	case 'strong':
-	  $font_type = 'normal';
-	  break;
-
-	case 'normal':
-	  $font_type = 'weak';
-	  break;
-
-	case 'weak':
-	  $sentence = '';
-	  break;
-	}
-      }
-    }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-    $user_info = "<font color=\"{$talk_color}\">◆</font>{$talk_handle_name}";
-    $builder->AddTalk($user_info, $sentence, $font_type);
+    $symbol = "<font color=\"{$talk_color}\">◆</font>";
+    $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
   }
   //ゲーム中、生きている人の夜の狼
   elseif($live == 'live' && $day_night == 'night' && $location == 'night wolf'){
-    if(strpos($role, 'earplug') !== false){
-      switch($font_type){
-      case 'strong':
-	$font_type = 'normal';
-	break;
-
-      case 'normal':
-	$font_type = 'weak';
-	break;
-
-      case 'weak':
-	$sentence = '';
-	break;
-      }
-    }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-    if(strpos($role, 'wolf') !== false){
-      $user_info = "<font color=\"$talk_color\">◆</font>$talk_handle_name";
-      $builder->AddTalk($user_info, $sentence, $font_type);
+    if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
     }
     else{
       $builder->AddWhisper('狼の遠吠え', 'wolf_howl', $font_type);
     }
   }
+  //ゲーム中、生きている人の夜の囁き狂人
+  elseif($live == 'live' && $day_night == 'night' && $location == 'night mad'){
+    if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
+      if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+    }
+  }
   //ゲーム中、生きている人の夜の共有者
   elseif($live == 'live' && $day_night == 'night' && $location == 'night common'){
-    if(strpos($role, 'earplug') !== false){
-      switch($font_type){
-      case 'strong':
-	$font_type = 'normal';
-	break;
-
-      case 'normal':
-	$font_type = 'weak';
-	break;
-
-      case 'weak':
-	$sentence = '';
-	break;
-      }
-    }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-    if(strpos($role, 'common') !== false){
-      $user_info = "<font color=\"{$talk_color}\">◆</font>$talk_handle_name";
-      $builder->AddTalk($user_info, $sentence, $font_type);
+    if(strpos($role, 'dummy_common') !== false); //夢共有者には何も見えない
+    elseif(strpos($role, 'common') !== false){
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
     }
     else{
       $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
@@ -667,47 +656,18 @@ function OutputTalk($array, &$builder){
   //ゲーム中、生きている人の夜の妖狐
   elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
     if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-      if(strpos($role, 'earplug') !== false){
-	switch($font_type){
-	case 'strong':
-	  $font_type = 'normal';
-	  break;
-
-	case 'normal':
-	  $font_type = 'weak';
-	  break;
-
-	case 'weak':
-	  $sentence = '';
-	  break;
-	}
-      }
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      $user_info = "<font color=\"{$talk_color}\">◆</font>{$talk_handle_name}";
-      $builder->AddTalk($user_info, $sentence, $font_type);
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
     }
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($live == 'live' && $day_night == 'night' && $location == 'night self_talk'){
     if($uname == $talk_uname){
-      if(strpos($role, 'earplug') !== false){
-	switch($font_type){
-	case 'strong':
-	  $font_type = 'normal';
-	  break;
-
-	case 'normal':
-	  $font_type = 'weak';
-	  break;
-
-	case 'weak':
-	  $sentence = '';
-	  break;
-	}
-      }
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      $user_info = "<font color=\"$talk_color\">◆</font>$talk_handle_name<span>の独り言</span>";
-      $builder->AddTalk($user_info, $sentence, $font_type);
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $talk_handle_name .= '<span>の独り言</span>';
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
     }
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
@@ -774,6 +734,12 @@ function OutputTalk($array, &$builder){
 	$font_type  .= ' night-wolf';
 	break;
 
+      case 'night mad':
+	$talk_handle_name .= '<span>(囁き狂人)</span>';
+	$talk_class .= ' night-wolf';
+	$font_type  .= ' night-wolf';
+	break;
+
       case 'night common':
 	$talk_handle_name .= '<span>(共有者)</span>';
 	$talk_class .= ' night-common';
@@ -795,45 +761,38 @@ function OutputTalk($array, &$builder){
       $builder->AddSystemMessage($action, $sentence);
     }
     else{
-      $user_info = "<font color=\"{$talk_color}\">◆</font>{$talk_handle_name}";
-      $builder->AddTalk($user_info, $sentence, $font_type, $base_class, $talk_class);
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
     }
   }
   //ここからは観戦者と役職非公開モード
   elseif($flag_system){ //投票情報は非表示
   }
   else{ //観戦者
-    if(strpos($role, 'earplug') !== false){
-      switch($font_type){
-      case 'strong':
-	$font_type = 'normal';
-	break;
-
-      case 'normal':
-	$font_type = 'weak';
-	break;
-
-      case 'weak':
-	$sentence = '';
-	break;
-      }
-    }
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if($day_night == 'night'){
       if($location == 'night wolf'){
-	if(strpos($role, 'wolf') !== false){
-	  $talk_handle_name = '<font color="' . $talk_color . '">◆</font>' . $talk_handle_name;
+	if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
+	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
 	}
 	else{
+	  $symbol = '';
 	  $talk_handle_name = '狼の遠吠え';
 	  $sentence = $MESSAGE->wolf_howl;
 	}
-	$builder->AddTalk($talk_handle_name, $sentence, $font_type);
+	$builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      }
+      elseif($location == 'night mad'){
+	if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
+	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+	}
       }
       elseif($location == 'night common'){
-	if(strpos($role, 'common') !== false){
-	  $user_info = "<font color=\"$talk_color\">◆</font>$talk_handle_name";
-	  $builder->AddTalk($user_info, $sentence, $font_type);
+	if(strpos($role, 'dummy_common') !== false); //夢共有者には何も見えない
+	elseif(strpos($role, 'common') !== false){
+	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
 	}
 	else{
 	  $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
@@ -841,15 +800,15 @@ function OutputTalk($array, &$builder){
       }
       elseif($location == 'night fox'){
 	if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-	  $user_info = "<font color=\"$talk_color\">◆</font>$talk_handle_name";
-	  $builder->AddTalk($user_info, $sentence, $font_type);
+	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
 	}
       }
       // elseif($location == 'night self_talk'); //独り言は非表示
     }
     else{
-      $user_info = "<font color=\"$talk_color\">◆</font>$talk_handle_name";
-      $builder->AddTalk($user_info, $sentence, $font_type);
+      $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
     }
   }
 }
@@ -911,8 +870,9 @@ function OutputDeadMan(){
     "OR type LIKE 'SUDDEN_DEATH%'";
 
   //前の日の夜に起こった死亡メッセージ
-  $type_night = "type = 'WOLF_KILLED' OR type = 'FOX_DEAD' OR type = 'REPORTER_DUTY' " .
-    "OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night'";
+  $type_night = "type = 'WOLF_KILLED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
+    "OR type = 'HUNTED_FOX' OR type = 'REPORTER_DUTY' OR type = 'POISON_DEAD_night' " .
+    "OR type = 'LOVERS_FOLLOWED_night'";
 
   if($day_night == 'day'){
     $set_date = $yesterday;
@@ -961,9 +921,19 @@ function OutputDeadManType($name, $type){
     if($show_reason) echo $reason_header.$MESSAGE->wolf_killed.')</td>';
     break;
 
+  case 'CURSED':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->cursed.')</td>';
+    break;
+
   case 'FOX_DEAD':
     echo $deadman;
     if($show_reason) echo $reason_header.$MESSAGE->fox_dead.')</td>';
+    break;
+
+  case 'HUNTED_FOX':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->hunted_fox.')</td>';
     break;
 
   case 'POISON_DEAD_day':
@@ -1243,9 +1213,6 @@ function SuddenDeath($uname, $handle_name, $role, $type = NULL){
   }
   else InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time);
 
-  //恋人の後追い処理
-  if(strpos($role, 'lovers') !== false) LoversFollowed($role, true);
-
   //巫女の判定結果(システムメッセージ)
   InsertSystemMessage($handle_name . "\t" . DistinguishCamp($role), 'MEDIUM_RESULT');
   mysql_query('COMMIT'); //一応コミット
@@ -1283,13 +1250,12 @@ function LoversFollowed($role, $sudden_death = false){
 
     if($sudden_death) //突然死の処理
       InsertSystemTalk($target_handle . $MESSAGE->lovers_followed, ++$system_time);
-    else {
-      //後追い死(システムメッセージ)
+    else //後追い死(システムメッセージ)
       InsertSystemMessage($target_handle, 'LOVERS_FOLLOWED_' . $day_night);
 
-      //後追いした人の遺言を残す
-      if($target_last_words != '')
-	InsertSystemMessage($target_handle . "\t" . $target_last_words, 'LAST_WORDS');
+    //後追いした人の遺言を残す
+    if($target_last_words != ''){
+      InsertSystemMessage($target_handle . "\t" . $target_last_words, 'LAST_WORDS');
     }
 
     //巫女の判定結果(システムメッセージ)
@@ -1449,6 +1415,7 @@ function ParseStrings($str, $type = NULL){
     return $target;
     break;
 
+  case 'TONGUE_WOLF_RESULT':
   case 'MAGE_RESULT':
   case 'CHILD_FOX_RESULT':
   case 'MANIA_RESULT':

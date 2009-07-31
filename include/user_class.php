@@ -39,7 +39,7 @@ class User{
 }
 
 
-class Users {
+class Users{
   var $room_no;
   var $rows = array();
 
@@ -51,27 +51,25 @@ class Users {
   function Load(){
     $result = mysql_query(
       "SELECT
-        users.room_no,
-      	users.user_no,
-      	users.uname,
-      	users.handle_name,
-      	users.sex,
-      	users.profile,
+	users.room_no,
+	users.user_no,
+	users.uname,
+	users.handle_name,
+	users.sex,
+	users.profile,
 	users.role,
 	users.live,
 	users.last_load_day_night,
-        users.ip_address = '' AS is_system,
-      	icons.icon_filename,
-      	icons.color,
-      	icons.icon_width,
-      	icons.icon_height
+	users.ip_address = '' AS is_system,
+	icons.icon_filename,
+	icons.color,
+	icons.icon_width,
+	icons.icon_height
       FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
       WHERE users.room_no = {$this->room_no}
       AND users.user_no >= 0"
     );
-    if ($result === false) {
-      return;
-    }
+    if($result === false) return;
     $this->rows = array();
     while(($user = mysql_fetch_object($result, 'User')) !== false){
       $user->ParseCompoundParameters();
@@ -81,14 +79,11 @@ class Users {
   }
 
   function Save(){
-    foreach ($this->rows as $user){
-      $user->save();
-    }
+    foreach ($this->rows as $user) $user->save();
   }
 
   function ParseCompoundParameters(){
-    foreach($this->rows as $user)
-      $user->ParseCompoundParameters();
+    foreach($this->rows as $user) $user->ParseCompoundParameters();
   }
 
   function UnameToNumber($uname){
@@ -97,6 +92,18 @@ class Users {
 
   function ByUname($uname){
     return $this->rows[$this->UnameToNumber($uname)];
+  }
+
+  function GetHandleName($uname){
+    return $this->rows[$this->UnameToNumber($uname)]->handle_name;
+  }
+
+  function GetRole($uname){
+    return $this->rows[$this->UnameToNumber($uname)]->role;
+  }
+
+  function GetLive($uname){
+    return $this->rows[$this->UnameToNumber($uname)]->live;
   }
 
   //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。
@@ -115,6 +122,7 @@ class Users {
       session_id()
     );
   }
+
   //ユーザー情報を指定して新しいユーザーをデータベースに登録します。(ドラフト：この機能はテストされていません)
   function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role, $ip_address = '', $session_id = ''){
     mysql_query(
@@ -128,25 +136,21 @@ class Users {
   }
 }
 
-
 //グローバルオブジェクトと操作関数
 
 function GetNumber($user){
   global $USERS;
-  LoadUsers();
   return is_integer($user) ? $user : $USERS->UnameToNumber($user);
 }
 
 function GetHandleName($user){
   global $USERS;
-  LoadUsers();
   return $USERS->rows[GetNumber($user)]->handle_name;
 }
 
 function IsLiving($user){
   global $USERS;
-  LoadUsers();
-  return $USERS->rows[GetNumber($user)]->handle_name;
+  return $USERS->rows[GetNumber($user)]->live == 'live';
 }
 
 /*

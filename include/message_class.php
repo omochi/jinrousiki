@@ -112,11 +112,13 @@ class Message{
   var $deadman           = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed       = 'は狼の餌食になったようです'; //狼の襲撃
   var $fox_dead          = '(妖狐) は占い師に呪い殺されたようです'; //狐呪殺
+  var $cursed            = '(占い師) は呪詛に呪い殺されたようです'; //占い師呪殺
+  var $hunted_fox        = '(天狐) は狩人に狩られたようです'; //天狐狩り
   var $poison_dead       = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
   // var $vote_killed      = 'は投票の結果処刑されました'; //吊り
   var $vote_killed       = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
   var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
-  var $reporter_duty     = '(ブン屋) は人外に襲われたようです'; //ブン屋の殉職
+  var $reporter_duty     = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
   var $vote_sudden_death = 'はショック死しました'; //投票系サブ役職
   var $chicken           = 'は小心者だったようです';   //小心者
   var $rabbit            = 'はウサギだったようです';   //ウサギ
@@ -151,6 +153,8 @@ class Message{
   var $vote_reset = '＜投票がリセットされました　再度投票してください＞';
 
   //発言置換系役職
+  // var $gentleman_header = "お待ち下さい。\n";  //紳士 (前半)
+  // var $gentleman_footer = 'さん、ハンケチーフを落としておりますぞ。'; //紳士 (後半)
   // var $gentleman_header = "俺は遥か昔からいる通りすがりのナイト。\n";  //紳士 (前半)
   // var $gentleman_footer = 'はわかってるようだな。見込みあるからジュースおごってやろう'; //紳士 (後半)
   var $gentleman_header = "お待ち下さい。\nあぁ……";  //紳士 (前半)

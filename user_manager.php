@@ -179,7 +179,7 @@ function ConvertTrip(&$str){
     if(($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
       $name = mb_substr($str, 0, $trip_start);
       $key  = mb_substr($str, $trip_start + 1);
-      #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>';
+      #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>'; //デバッグ用
 
       //文字コードを変換
       $key  = mb_convert_encoding($key, 'SJIS', $ENCODE);
@@ -197,7 +197,7 @@ function ConvertTrip(&$str){
       $trip = crypt($key, $salt);
       $str = $name.'◆'.substr($trip, -10);
     }
-    #echo 'result: '.$str.'<br>';
+    #echo 'result: '.$str.'<br>'; //デバッグ用
   }
   elseif(strpos($str, '#') !== false || strpos($str, '＃') !== false){
     OutputActionResult('村人登録 [入力エラー]',

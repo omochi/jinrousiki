@@ -4,8 +4,13 @@ class DocumentBuilder {
     global $ROLES, $role, $handle_name;
 
     $result = new DocumentBuilder();
-    if (strpos($role, 'blinder') !== false) {
+    if(strpos($role, 'blinder') !== false){
       $wrapper = $ROLES->Instantiate('blinder');
+      $wrapper->Wrap($result);
+      $result = $wrapper;
+    }
+    if(strpos($role, 'earplug') !== false){
+      $wrapper = $ROLES->Instantiate('earplug');
       $wrapper->Wrap($result);
       $result = $wrapper;
     }
@@ -31,26 +36,27 @@ class DocumentBuilder {
     $this->cache .= "<table class=\"{$class}\">\n";
   }
 
-  function AddTalk($user_info, $sentence, $volume, $row_class = 'user-talk', $user_class = 'user-name'){
-    if ($this->Deligate('AddTalk', $user_info, $sentence, $volume, $row_class, $user_class))
+  function AddTalk($symbol, $user_info, $sentence, $volume,
+		   $row_class = 'user-talk', $user_class = 'user-name'){
+    if ($this->Deligate('AddTalk', $symbol, $user_info, $sentence, $volume, $row_class, $user_class))
       return;
     $this->cache .= <<<WORDS
 <tr class="{$row_class}">
-<td class="{$user_class}">{$user_info}</td>
+<td class="{$user_class}">{$symbol}{$user_info}</td>
 <td class="say {$volume}">{$sentence}</td>
 </tr>
 
 WORDS;
   }
 
-  function AddWhisper($user_info, $message, $volume = 'normal', $user_class = '', $say_class = ''){
+  function AddWhisper($user_info, $sentence, $volume = 'normal', $user_class = '', $say_class = ''){
     global $MESSAGE;
-    if ($this->Deligate('AddWhisper', $user_info, $message, $volume, $user_class, $say_class))
+    if ($this->Deligate('AddWhisper', $user_info, $sentence, $volume, $user_class, $say_class))
       return;
     $this->cache .= <<<WORDS
 <tr class="user-talk">
 <td class="user-name {$user_class}">{$user_info}</td>
-<td class="say {$volume} {$say_class}">{$MESSAGE->$message}</td>
+<td class="say {$volume} {$say_class}">{$MESSAGE->$sentence}</td>
 </tr>
 
 WORDS;

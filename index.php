@@ -51,16 +51,17 @@
 
     <div class="menu">外部リンク</div>
     <ul>
-      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1241277178/l50">本スレ</a></li>
+      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1246632234/l50">本スレ</a></li>
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">反省・議論用スレ</a></li>
       <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
       <li><a href="http://satori.crz.jp/">さとり鯖</a></li>
       <li><a href="http://www7.atpages.jp/izayoi398/">咲夜鯖</a></li>
-      <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖（開発チーム）</a></li>
+      <!-- <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖（開発チーム）</a></li> -->
       <li><a href="http://jinro.ebb.jp/">ニコ生専用鯖</a></li>
       <li><a href="http://jinro.s369.xrea.com/">ニコ生専用テスト鯖</a></li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>
       <li><a href="http://www13.atpages.jp/yaranai/">薔薇姉妹鯖</a></li>
+      <li><a href="http://www13.atpages.jp/suigintou/">水銀鯖</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>

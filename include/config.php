@@ -7,12 +7,12 @@ class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
   var $die_room = 1200;
-  // var $die_room = 12000; //デバッグ用に長くしておく
+  #var $die_room = 12000; //デバッグ用に長くしておく
 
   //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
 
-  //最大人数のリスト (RoomImage->max_user_list と連動させる)
+  //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は連動は不要)
   var $max_user_list = array(8, 16, 22, 32);
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list に含むこと)
 
@@ -91,18 +91,18 @@ class RoomConfig{
 			  'url' => 'http://www7.atpages.jp/izayoi398/',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>'),
-
+	/*
 	'cirno' => array('name' => 'チルノ鯖',
 			 'url' => 'http://www12.atpages.jp/cirno/',
 			 'separator' => '<!-- atpages banner tag -->',
 			 'footer' => '</a><br>'),
-
+	*/
 	'nico' => array('name' => 'ニコ生鯖',
 			'url' => 'http://jinro.ebb.jp/'),
-
+	/*
 	'nico_test' => array('name' => 'ニコ生テスト鯖',
 			     'url' => 'http://jinro.s369.xrea.com/'),
-
+	*/
 	'sasuga' => array('name' => '流石兄弟鯖',
 			  'url' => 'http://www12.atpages.jp/yaruo/jinro/',
 			  'separator' => '<!-- atpages banner tag -->',
@@ -110,8 +110,15 @@ class RoomConfig{
 
 	'bara' => array('name' => '薔薇姉妹鯖',
 			'url' => 'http://www13.atpages.jp/yaranai/',
+			'encode' => 'UTF-8',
 			'separator' => '<!-- atpages banner tag -->',
-			'footer' => '</div></small></a><br>')
+			'footer' => '</a><br>'),
+
+	'suigin' => array('name' => '水銀鯖',
+			  'url' => 'http://www13.atpages.jp/suigintou/',
+			  'encode' => 'UTF-8',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</a><br>')
 				  );
 
 }
@@ -120,8 +127,8 @@ class RoomConfig{
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  var $entry_one_ip_address = true;
-  // var $entry_one_ip_address = false; //デバッグ用
+  #var $entry_one_ip_address = true;
+  var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -136,7 +143,7 @@ class GameConfig{
 
   //-- 役職 --//
   //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
-  var $wish_role_success = 100;
+  var $wish_role_rate = 100;
 
   //配役テーブル
   /* 設定の見方
@@ -148,7 +155,6 @@ class GameConfig{
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
-     // 6 => array('human' =>  2, 'wolf' => 1, 'reporter' => 2, 'fox' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
@@ -195,9 +201,9 @@ class GameConfig{
   var $cupid = 16; //キューピッド出現に必要な人数 (14人の方は現在ハードコード)
   var $cupid_self_shoot = 18; //キューピッドが他人打ち可能となる最低村人数
 
-  var $cute_wolf_rate = 1; //萌狼の発動率
-  var $gentleman_rate = 13; //紳士・淑女の発動率
-  var $liar_rate = 95; //狼少年の発動率
+  var $cute_wolf_rate = 1; //萌狼の発動率 (%)
+  var $gentleman_rate = 13; //紳士・淑女の発動率 (%)
+  var $liar_rate = 95; //狼少年の発動率 (%)
 
   //狼少年の変換テーブル
   var $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
@@ -230,33 +236,46 @@ class GameConfig{
   //-- 役職名の翻訳 --//
   //メイン役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
-  var $main_role_list = array('human'        => '村人',
-			      'wolf'         => '人狼',
-			      'boss_wolf'    => '白狼',
-			      'poison_wolf'  => '毒狼',
-			      'tongue_wolf'  => '舌禍狼',
-			      'cute_wolf'    => '萌狼',
-			      'mage'         => '占い師',
-			      'soul_mage'    => '魂の占い師',
-			      'dummy_mage'   => '夢見人',
-			      'necromancer'  => '霊能者',
-			      'medium'       => '巫女',
-			      'mad'          => '狂人',
-			      'fanatic_mad'  => '狂信者',
-			      'guard'        => '狩人',
-			      'poison_guard' => '騎士',
-			      'reporter'     => 'ブン屋',
-			      'common'       => '共有者',
-			      'fox'          => '妖狐',
-			      'child_fox'    => '子狐',
-			      'poison'       => '埋毒者',
-			      'poison_cat'   => '猫又',
-			      'pharmacist'   => '薬師',
-			      'suspect'      => '不審者',
-			      'unconscious'  => '無意識',
-			      'cupid'        => 'キューピッド',
-			      'mania'        => '神話マニア',
-			      'quiz'         => 'GM');
+  var $main_role_list = array('human'             => '村人',
+			      'wolf'              => '人狼',
+			      'boss_wolf'         => '白狼',
+			      'cursed_wolf'       => '呪狼',
+			      'cute_wolf'         => '萌狼',
+			      'poison_wolf'       => '毒狼',
+			      'resist_wolf'       => '抗毒狼',
+			      'tongue_wolf'       => '舌禍狼',
+			      'mage'              => '占い師',
+			      'soul_mage'         => '魂の占い師',
+			      'dummy_mage'        => '夢見人',
+			      'necromancer'       => '霊能者',
+			      'soul_necromancer'  => '雲外鏡',
+			      'dummy_necromancer' => '夢枕人',
+			      'medium'            => '巫女',
+			      'mad'               => '狂人',
+			      'fanatic_mad'       => '狂信者',
+			      'whisper_mad'       => '囁き狂人',
+			      'guard'             => '狩人',
+			      'poison_guard'      => '騎士',
+			      'dummy_guard'       => '夢守人',
+			      'reporter'          => 'ブン屋',
+			      'common'            => '共有者',
+			      'dummy_common'      => '夢共有者',
+			      'fox'               => '妖狐',
+			      'child_fox'         => '子狐',
+			      'cursed_fox'        => '天狐',
+			      'poison_fox'        => '管狐',
+			      'white_fox'         => '白狐',
+			      'poison'            => '埋毒者',
+			      'strong_poison'     => '強毒者',
+			      'incubate_poison'   => '潜毒者',
+			      'dummy_poison'      => '夢毒者',
+			      'poison_cat'        => '猫又',
+			      'pharmacist'        => '薬師',
+			      'suspect'           => '不審者',
+			      'unconscious'       => '無意識',
+			      'cupid'             => 'キューピッド',
+			      'mania'             => '神話マニア',
+			      'quiz'              => 'GM');
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -296,65 +315,77 @@ class GameConfig{
   function GetRoleName($role, $short = false){
     if(! $short) return ($this->main_role_list[$role] || $this->sub_role_list[$role]);
 
-    static $short_role_list = array('human'           => '村',
-				    'wolf'            => '狼',
-				    'boss_wolf'       => '白狼',
-				    'poison_wolf'     => '毒狼',
-				    'tongue_wolf'     => '舌狼',
-				    'cute_wolf'       => '萌狼',
-				    'mage'            => '占',
-				    'soul_mage'       => '魂',
-				    'dummy_mage'      => '夢',
-				    'reporter'        => '聞',
-				    'necromancer'     => '霊',
-				    'medium'          => '巫',
-				    'mad'             => '狂',
-				    'fanatic_mad'     => '狂信',
-				    'guard'           => '狩',
-				    'poison_guard'    => '騎',
-				    'common'          => '共',
-				    'fox'             => '狐',
-				    'child_fox'       => '子狐',
-				    'poison'          => '毒',
-				    'poison_cat'      => '猫',
-				    'pharmacist'      => '薬',
-				    'suspect'         => '不審',
-				    'unconscious'     => '無',
-				    'cupid'           => 'QP',
-				    'mania'           => 'マ',
-				    'quiz'            => 'GM',
-				    'authority'       => '権',
-				    'random_voter'    => '気',
-				    'rebel'           => '反',
-				    'watcher'         => '傍',
-				    'decide'          => '決',
-				    'plague'          => '疫',
-				    'good_luck'       => '幸',
-				    'bad_luck'        => '不運',
-				    'upper_luck'      => '雑草',
-				    'downer_luck'     => '一発',
-				    'random_luck'     => '波乱',
-				    'star'            => '人気',
-				    'disfavor'        => '不人',
-				    'strong_voice'    => '大',
-				    'normal_voice'    => '不',
-				    'weak_voice'      => '小',
-				    'random_voice'    => '臆',
-				    'no_last_words'   => '筆',
-				    'blinder'         => '目',
-				    'earplug'         => '耳',
-				    'silent'          => '無口',
-				    'liar'            => '嘘',
-				    'invisible'       => '迷彩',
-				    'gentleman'       => '紳',
-				    'lady'            => '淑',
-				    'chicken'         => '酉',
-				    'rabbit'          => '卯',
-				    'perverseness'    => '邪',
-				    'flattery'        => '胡麻',
-				    'impatience'      => '短',
-				    'copied'          => '元マ',
-				    'lovers'          => '恋');
+    static $short_role_list = array('human'             => '村',
+				    'wolf'              => '狼',
+				    'boss_wolf'         => '白狼',
+				    'cursed_wolf'       => '呪狼',
+				    'cute_wolf'         => '萌狼',
+				    'poison_wolf'       => '毒狼',
+				    'resist_wolf'       => '抗狼',
+				    'tongue_wolf'       => '舌狼',
+				    'mage'              => '占',
+				    'soul_mage'         => '魂',
+				    'dummy_mage'        => '夢見',
+				    'reporter'          => '聞',
+				    'necromancer'       => '霊',
+				    'soul_necromancer'  => '雲',
+				    'dummy_necromancer' => '夢枕',
+				    'medium'            => '巫',
+				    'mad'               => '狂',
+				    'fanatic_mad'       => '狂信',
+				    'whisper_mad'       => '囁狂',
+				    'guard'             => '狩',
+				    'poison_guard'      => '騎',
+				    'dummy_guard'       => '夢守',
+				    'common'            => '共',
+				    'dummy_common'      => '夢共',
+				    'fox'               => '狐',
+				    'child_fox'         => '子狐',
+				    'cursed_fox'        => '天狐',
+				    'poison_fox'        => '管狐',
+				    'white_fox'         => '白狐',
+				    'poison'            => '毒',
+				    'strong_poison'     => '強毒',
+				    'dummy_poison'      => '夢毒',
+				    'poison_cat'        => '猫',
+				    'pharmacist'        => '薬',
+				    'suspect'           => '不審',
+				    'unconscious'       => '無',
+				    'cupid'             => 'QP',
+				    'mania'             => 'マ',
+				    'quiz'              => 'GM',
+				    'authority'         => '権',
+				    'random_voter'      => '気',
+				    'rebel'             => '反',
+				    'watcher'           => '傍',
+				    'decide'            => '決',
+				    'plague'            => '疫',
+				    'good_luck'         => '幸',
+				    'bad_luck'          => '不運',
+				    'upper_luck'        => '雑草',
+				    'downer_luck'       => '一発',
+				    'random_luck'       => '波乱',
+				    'star'              => '人気',
+				    'disfavor'          => '不人',
+				    'strong_voice'      => '大',
+				    'normal_voice'      => '不',
+				    'weak_voice'        => '小',
+				    'random_voice'      => '臆',
+				    'no_last_words'     => '筆',
+				    'blinder'           => '目',
+				    'earplug'           => '耳',
+				    'silent'            => '無口',
+				    'liar'              => '嘘',
+				    'invisible'         => '迷彩',
+				    'gentleman'         => '紳',
+				    'lady'              => '淑',
+				    'chicken'           => '酉',
+				    'rabbit'            => '卯',
+				    'perverseness'      => '邪',
+				    'flattery'          => '胡麻',
+				    'impatience'        => '短',
+				    'copied'            => '元マ',
+				    'lovers'            => '恋');
     return $short_role_list[$role];
   }
 }
@@ -363,9 +394,9 @@ class GameConfig{
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
   var $sudden_death = 180;
-  // var $sudden_death = 30; //デバッグ用
+  #var $sudden_death = 30; //デバッグ用
 
-  //クイズ村は専用の突然死発動時間を設定する
+  //クイズ村は専用の突然死発動時間を設定する (秒)
   var $sudden_death_quiz = 90;
 
   //-- リアルタイム制 --//
