@@ -26,9 +26,11 @@ class RoomImage extends ImageManager{
   var $poison_wolf     = 'img/room_option/poison_wolf.gif';     //ÆÇÏµ
   var $mania           = 'img/room_option/mania.gif';           //¿ÀÏÃ¥Þ¥Ë¥¢
   var $medium          = 'img/room_option/medium.gif';          //Öà½÷
-  var $liar            = 'img/room_option/liar.gif';            //Ïµ¾¯Ç¯
-  var $gentleman       = 'img/room_option/gentleman.gif';       //¿Â»Î¡¦½Ê½÷
-  var $sudden_death    = 'img/room_option/sudden_death.gif';    //µõ¼åÂÎ¼Á
+  var $liar            = 'img/room_option/liar.gif';            //Ïµ¾¯Ç¯Â¼
+  var $gentleman       = 'img/room_option/gentleman.gif';       //¿Â»Î¡¦½Ê½÷Â¼
+  var $sudden_death    = 'img/room_option/sudden_death.gif';    //µõ¼åÂÎ¼ÁÂ¼
+  var $full_mania      = 'img/room_option/full_mania.gif';      //¿ÀÏÃ¥Þ¥Ë¥¢Â¼
+  var $quiz            = 'img/room_option/quiz.gif';            //¥¯¥¤¥ºÂ¼
   var $chaos           = 'img/room_option/chaos.gif';           //°ÇÆé
   var $chaosfull       = 'img/room_option/chaosfull.gif';       //¿¿¡¦°ÇÆé
   var $chaos_open_cast = 'img/room_option/chaos_open_cast.gif'; //ÇÛÌò¸ø³«
@@ -102,18 +104,22 @@ class RoleImage extends ImageManager{
   var $upper_luck             = 'img/role/upper_luck.jpg';             //»¨Áðº²
   var $downer_luck            = 'img/role/downer_luck.jpg';            //°ìÈ¯²°
   var $random_luck            = 'img/role/random_luck.jpg';            //ÇÈÍðËü¾æ
-  var $strong_voice           = 'img/role/strong_voice.jpg';           //ÂçÀ¼
   var $star                   = 'img/role/star.jpg';                   //¿Íµ¤¼Ô
   var $disfavor               = 'img/role/disfavor.jpg';               //ÉÔ¿Íµ¤
+  var $strong_voice           = 'img/role/strong_voice.jpg';           //ÂçÀ¼
   var $normal_voice           = 'img/role/normal_voice.jpg';           //ÉÔ´ïÍÑ
   var $weak_voice             = 'img/role/weak_voice.jpg';             //¾®À¼
+  var $upper_voice            = 'img/role/upper_voice.jpg';            //¥á¥¬¥Û¥ó
+  var $downer_voice           = 'img/role/downer_voice.jpg';           //¥Þ¥¹¥¯
   var $random_voice           = 'img/role/random_voice.jpg';           //²²ÉÂ¼Ô
   var $no_last_words          = 'img/role/no_last_words.jpg';          //É®ÉÔÀº
   var $blinder                = 'img/role/blinder.jpg';                //ÌÜ±£¤·
   var $earplug                = 'img/role/earplug.jpg';                //¼ªÀò
+  var $speaker                = 'img/role/speaker.jpg';                //¥¹¥Ô¡¼¥«¡¼
   var $silent                 = 'img/role/silent.jpg';                 //Ìµ¸ý
   var $liar                   = 'img/role/liar.jpg';                   //Ïµ¾¯Ç¯
   var $invisible              = 'img/role/invisible.jpg';              //¸÷³ØÌÂºÌ
+  var $rainbow                = 'img/role/rainbow.jpg';                //Æú¿§ÌÂºÌ
   var $gentleman              = 'img/role/gentleman.jpg';              //¿Â»Î
   var $lady                   = 'img/role/lady.jpg';                   //½Ê½÷
   var $chicken                = 'img/role/chicken.jpg';                //¾®¿´¼Ô
@@ -121,6 +127,7 @@ class RoleImage extends ImageManager{
   var $perverseness           = 'img/role/perverseness.jpg';           //Å·¼Ùµ´
   var $flattery               = 'img/role/flattery.jpg';               //¥´¥Þ¤¹¤ê
   var $impatience             = 'img/role/impatience.jpg';             //Ã»µ¤
+  var $panelist               = 'img/role/panelist.jpg';               //²òÅú¼Ô
 
   //Àê¤¤¡¦ÎîÇ½¡¦Öà½÷È½Äê
   var $result_human             = 'img/role/result_human.jpg';              //Â¼¿Í
@@ -170,6 +177,7 @@ class VictoryImage extends ImageManager{
   var $wolf   = 'img/victory_role/wolf.jpg';   //¿ÍÏµ
   var $fox    = 'img/victory_role/fox.jpg';    //ÍÅ¸Ñ
   var $lovers = 'img/victory_role/lovers.jpg'; //Îø¿Í
+  var $quiz   = 'img/victory_role/quiz.jpg';   //½ÐÂê¼Ô
   var $draw   = 'img/victory_role/draw.jpg';   //°ú¤­Ê¬¤±
 }
 

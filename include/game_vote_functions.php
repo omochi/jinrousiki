@@ -694,6 +694,12 @@ function GetRoleList($user_count, $option_role){
     }
   }
 
+  //神話マニア村
+  if(strpos($option_role, 'full_mania') !== false){
+    $role_list['mania'] += $role_list['human'];
+    $role_list['human'] = 0;
+  }
+
   if($role_list['human'] < 0){ //"村人" の人数をチェック
     OutputVoteResult($error_header . '"村人" の人数がマイナスになってます' .
                      $error_footer, true, true);

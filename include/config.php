@@ -63,14 +63,17 @@ class RoomConfig{
   var $liar = true; //狼少年村
   var $default_liar = false;
 
-  var $sudden_death = true; //虚弱体質村
-  var $default_sudden_death = false;
-
   var $gentleman = true; //紳士・淑女村
   var $default_gentleman = false;
 
-  // var $quiz = true; //クイズ村 //現在調整中
-  var $quiz = false; //クイズ村
+  var $sudden_death = true; //虚弱体質村
+  var $default_sudden_death = false;
+
+  var $full_mania = true; //神話マニア村
+  var $default_full_mania = false;
+
+  var $quiz = true; //クイズ村 //現在調整中
+  //var $quiz = false; //クイズ村
   var $default_quiz = false;
 
   var $chaos = true; //闇鍋
@@ -151,7 +154,8 @@ class GameConfig{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   var $role_list = array(
-     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     #4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     4 => array('human' =>  3, 'wolf' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
@@ -222,7 +226,11 @@ class GameConfig{
 				 'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう'
 				 );
 
-  var $invisible_rate = 20; //光学迷彩の発言が空白に入れ替わる確率
+  //虹色迷彩の変換テーブル
+  var $rainbow_replace_list = array('赤' => '橙', '橙' => '黄', '黄' => '緑', '緑' => '青',
+				    '青' => '藍', '藍' => '紫', '紫' => '赤');
+
+  var $invisible_rate = 15; //光学迷彩の発言が空白に入れ替わる確率
   var $silent_length  = 25; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//
@@ -295,20 +303,25 @@ class GameConfig{
 			     'strong_voice'  => '大声',
 			     'normal_voice'  => '不器用',
 			     'weak_voice'    => '小声',
+			     'upper_voice'   => 'メガホン',
+			     'downer_voice'  => 'マスク',
 			     'random_voice'  => '臆病者',
 			     'no_last_words' => '筆不精',
 			     'blinder'       => '目隠し',
 			     'earplug'       => '耳栓',
+			     'speaker'       => 'スピーカー',
+			     'silent'        => '無口',
 			     'liar'          => '狼少年',
 			     'invisible'     => '光学迷彩',
+			     'rainbow'       => '虹色迷彩',
 			     'gentleman'     => '紳士',
 			     'lady'          => '淑女',
-			     'silent'        => '無口',
 			     'chicken'       => '小心者',
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
 			     'flattery'      => 'ゴマすり',
 			     'impatience'    => '短気',
+			     'panelist'      => '解答者',
 			     'lovers'        => '恋人',
 			     'copied'        => '元神話マニア');
 
@@ -370,13 +383,17 @@ class GameConfig{
 				    'strong_voice'      => '大',
 				    'normal_voice'      => '不',
 				    'weak_voice'        => '小',
+				    'upper_voice'       => '拡声',
+				    'downer_voice'      => '覆',
 				    'random_voice'      => '臆',
 				    'no_last_words'     => '筆',
 				    'blinder'           => '目',
 				    'earplug'           => '耳',
+				    'speaker'           => '集音',
 				    'silent'            => '無口',
 				    'liar'              => '嘘',
 				    'invisible'         => '迷彩',
+				    'rainbow'           => '虹',
 				    'gentleman'         => '紳',
 				    'lady'              => '淑',
 				    'chicken'           => '酉',
@@ -384,6 +401,7 @@ class GameConfig{
 				    'perverseness'      => '邪',
 				    'flattery'          => '胡麻',
 				    'impatience'        => '短',
+				    'panelist'          => '解',
 				    'copied'            => '元マ',
 				    'lovers'            => '恋');
     return $short_role_list[$role];
@@ -395,9 +413,6 @@ class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
   var $sudden_death = 180;
   #var $sudden_death = 30; //デバッグ用
-
-  //クイズ村は専用の突然死発動時間を設定する (秒)
-  var $sudden_death_quiz = 90;
 
   //-- リアルタイム制 --//
   var $default_day   = 5; //デフォルトの昼の制限時間(分)

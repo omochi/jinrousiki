@@ -64,42 +64,7 @@ SendCookie();
 
 //発言の有無をチェック
 EscapeStrings(&$say, false); //エスケープ処理
-if($say != '' && $live == 'live' && ($day_night == 'day' || $day_night == 'night')){ //発言置換系
-  if((strpos($role, 'cute_wolf') !== false || strpos($role, 'suspect') !== false) &&
-     mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
-    $say = $MESSAGE->wolf_howl; //不審者と萌狼は低確率で発言が遠吠えになる
-  }
-  elseif((strpos($role, 'gentleman') !== false || strpos($role, 'lady') !== false) &&
-	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){ //紳士・淑女の発言内容を置換
-    $role_name = (strpos($role, 'gentleman') !== false ? 'gentleman' : 'lady');
-    $message_header = $role_name . '_header';
-    $message_footer = $role_name . '_footer';
-
-    $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
-			AND live = 'live' AND uname <> '$uname' AND user_no > 0");
-    $rand_key = mt_rand(0, mysql_num_rows($sql) - 1);
-    $say = $MESSAGE->$message_header . mysql_result($sql, $rand_key, 0) . $MESSAGE->$message_footer;
-  }
-  elseif(strpos($role, 'liar') !== false){ //狼少年の発言内容を置換
-    if(mt_rand(1, 100) <= $GAME_CONF->liar_rate) $say = strtr($say, $GAME_CONF->liar_replace_list);
-  }
-  if(strpos($role, 'invisible') !== false){ //光学迷彩の処理
-    $new_say = '';
-    $count = mb_strlen($say);
-    for($i = 0; $i < $count; $i++){
-      $this_str = mb_substr($say, $i, 1);
-      if(mt_rand(1, 100) <= $GAME_CONF->invisible_rate && $this_str != "\n" && $this_str != "\t")
-	$new_say .= (strlen($this_str) == 2 ? '　' : ' ');
-      else
-	$new_say .= $this_str;
-    }
-    $say = $new_say;
-  }
-  if(strpos($role, 'silent') !== false){ //無口の処理
-    if(mb_strlen($say) > $GAME_CONF->silent_length)
-      $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
-  }
-}
+ConvertSay(&$say); //発言置換処理
 
 if($say != '' && $font_type == 'last_words' && $live == 'live'){
   EntryLastWords($say);  //生きていれば遺言登録
@@ -207,6 +172,65 @@ function SendCookie(){
   }
 }
 
+//発言置換処理
+function ConvertSay(&$say){
+  global $GAME_CONF, $MESSAGE, $room_no, $day_night, $uname, $role, $live;
+
+  //リロード時、死者、ゲームプレイ中以外なら処理スキップ
+  if($say == '' || $live != 'live' || ($day_night != 'day' && $day_night != 'night')) return false;
+
+  //萌狼・不審者は一定確率で発言が遠吠えになる
+  if((strpos($role, 'cute_wolf') !== false || strpos($role, 'suspect') !== false) &&
+     mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
+    $say = $MESSAGE->wolf_howl;
+  }
+  //紳士・淑女は一定確率で発言が入れ替わる
+  elseif((strpos($role, 'gentleman') !== false || strpos($role, 'lady') !== false) &&
+	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
+    $role_name = (strpos($role, 'gentleman') !== false ? 'gentleman' : 'lady');
+    $message_header = $role_name . '_header';
+    $message_footer = $role_name . '_footer';
+
+    $sql = mysql_query("SELECT handle_name FROM user_entry WHERE room_no = $room_no
+			AND live = 'live' AND uname <> '$uname' AND user_no > 0");
+    $rand_key = mt_rand(0, mysql_num_rows($sql) - 1);
+    $say = $MESSAGE->$message_header . mysql_result($sql, $rand_key, 0) . $MESSAGE->$message_footer;
+  }
+  //狼少年は一定確率で発言内容が反転される
+  elseif(strpos($role, 'liar') !== false && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
+    $say = strtr($say, $GAME_CONF->liar_replace_list);
+  }
+
+  if(strpos($role, 'invisible') !== false){ //光学迷彩の処理
+    $invisible_say = '';
+    $count = mb_strlen($say);
+    $rate = $GAME_CONF->invisible_rate;
+    for($i = 0; $i < $count; $i++){
+      $this_str = mb_substr($say, $i, 1);
+      if($this_str == "\n" || $this_str == "\t" || $this_str == ' ' || $this_str == '　'){
+	$invisible_say .= $this_str;
+	continue;
+      }
+      if(mt_rand(1, 100) <= $rate)
+	$invisible_say .= (strlen($this_str) == 2 ? '　' : '&nbsp;');
+      else
+	$invisible_say .= $this_str;
+      if($rate++ > 100) break;
+    }
+    $say = $invisible_say;
+  }
+
+  if(strpos($role, 'rainbow') !== false){ //虹色迷彩の処理
+    $say = strtr($say, $GAME_CONF->rainbow_replace_list);
+  }
+
+  if(strpos($role, 'silent') !== false){ //無口の処理
+    if(mb_strlen($say) > $GAME_CONF->silent_length){
+      $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
+    }
+  }
+}
+
 //遺言登録
 function EntryLastWords($say){
   global $room_no, $day_night, $uname, $role, $live;
@@ -274,21 +298,30 @@ function Say($say){
 
 //発言を DB に登録する
 function Write($say, $location, $spend_time, $update = false){
-  global $system_time, $room_no, $date, $day_night, $uname, $role, $live, $font_type;
+  global $MESSAGE, $system_time, $room_no, $date, $day_night, $uname, $role, $live, $font_type;
 
   //声の大きさを決定
+  $voice = $font_type;
   if($live == 'live' && ($day_night == 'day' || $day_night == 'night')){
+    $voice_list = array('strong', 'normal', 'weak');
     if(    strpos($role, 'strong_voice') !== false) $voice = 'strong';
     elseif(strpos($role, 'normal_voice') !== false) $voice = 'normal';
     elseif(strpos($role, 'weak_voice')   !== false) $voice = 'weak';
     elseif(strpos($role, 'random_voice') !== false){
-      $voice_list = array('strong', 'normal', 'weak');
       $rand_key = array_rand($voice_list);
       $voice = $voice_list[$rand_key];
     }
-    else $voice = $font_type;
+    elseif(strpos($role, 'upper_voice') !== false){
+      $voice_key = array_search($font_type, $voice_list);
+      if($voice_key == 0) $say = $MESSAGE->howling;
+      else $voice = $voice_list[$voice_key - 1];
+    }
+    elseif(strpos($role, 'downer_voice') !== false){
+      $voice_key = array_search($font_type, $voice_list);
+      if($voice_key >= count($voice_list) - 1) $say = $MESSAGE->common_talk;
+      else $voice = $voice_list[$voice_key + 1];
+    }
   }
-  else $voice = $font_type;
 
   InsertTalk($room_no, $date, $location, $uname, $system_time, $say, $voice, $spend_time);
   if($update) UpdateTime();
@@ -297,7 +330,7 @@ function Write($say, $location, $spend_time, $update = false){
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $TIME_CONF, $MESSAGE, $system_time, $sudden_death_time,
+  global $TIME_CONF, $MESSAGE, $USERS, $system_time, $sudden_death_time,
     $room_no, $game_option, $date, $day_night;
 
   //ゲーム中以外は処理をしない
@@ -331,12 +364,7 @@ function CheckSilence(){
   }
   elseif($left_time == 0){ //制限時間を過ぎていたら警告を出す
     //突然死発動までの時間を取得
-    if(strpos($game_option, 'quiz') !== false)
-      $sudden_death_base_time = $TIME_CONF->sudden_death_quiz;
-    else
-      $sudden_death_base_time = $TIME_CONF->sudden_death;
-
-    $left_time_str = ConvertTime($sudden_death_base_time); //表示用に変換
+    $left_time_str = ConvertTime($TIME_CONF->sudden_death); //表示用に変換
     $sudden_death_announce = 'あと' . $left_time_str . 'で' . $MESSAGE->sudden_death_announce;
 
     //既に警告を出しているかチェック
@@ -348,7 +376,7 @@ function CheckSilence(){
       UpdateTime(); //更新時間を更新
       $last_updated_pass_time = 0;
     }
-    $sudden_death_time = $sudden_death_base_time - $last_updated_pass_time;
+    $sudden_death_time = $TIME_CONF->sudden_death - $last_updated_pass_time;
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($sudden_death_time <= 0){
@@ -358,8 +386,8 @@ function CheckSilence(){
 
       //投票していない人を取得するための基本 SQL 文
       //(投票済みの人を左結合して、「投票済み=NULL・投票していない」を取得)
-      $query_novote = "SELECT user_entry.uname, user_entry.handle_name, user_entry.role
-			FROM user_entry left join tmp_sd on user_entry.uname = tmp_sd.uname
+      $query_novote = "SELECT user_entry.uname FROM user_entry LEFT JOIN tmp_sd
+			on user_entry.uname = tmp_sd.uname
 			WHERE user_entry.room_no = $room_no AND user_entry.live = 'live'
 			AND user_entry.user_no > 0 AND tmp_sd.uname is NULL";
 
@@ -405,10 +433,13 @@ function CheckSilence(){
 
       //未投票者を全員突然死させる
       $dead_lovers_list = array(); //恋人後追い対象者リスト
-      while(($array = mysql_fetch_assoc($sql_novote)) !== false){
-	SuddenDeath($array['uname'], $array['handle_name'], $array['role']);
-	if(strpos($array['role'], 'lovers') !== false){ //恋人なら後でまとめて後追い処理を行う
-	  array_push($dead_lovers_list, $array['role']);
+      $count = mysql_num_rows($sql_novote);
+      for($i = 0; $i < $count; $i++){
+	$this_uname = mysql_result($sql_novote, $i, 0);
+	$this_role  = $USERS->GetRole($this_uname);
+	SuddenDeath($this_uname);
+	if(strpos($this_role, 'lovers') !== false){ //恋人なら後でまとめて後追い処理を行う
+	  array_push($dead_lovers_list, $this_role);
 	}
       }
       foreach($dead_lovers_list as $this_role) LoversFollowed($this_role, true); //恋人後追い処理
@@ -937,20 +968,24 @@ function OutputAbility(){
   elseif(strpos($role, 'disfavor')     !== false) OutputRoleComment('disfavor');
 
   //発言変化系
-  if(    strpos($role, 'strong_voice')  !== false) OutputRoleComment('strong_voice');
-  elseif(strpos($role, 'normal_voice')  !== false) OutputRoleComment('normal_voice');
-  elseif(strpos($role, 'weak_voice')    !== false) OutputRoleComment('weak_voice');
-  elseif(strpos($role, 'random_voice')  !== false) OutputRoleComment('random_voice');
+  if(    strpos($role, 'strong_voice') !== false) OutputRoleComment('strong_voice');
+  elseif(strpos($role, 'normal_voice') !== false) OutputRoleComment('normal_voice');
+  elseif(strpos($role, 'weak_voice')   !== false) OutputRoleComment('weak_voice');
+  elseif(strpos($role, 'upper_voice')  !== false) OutputRoleComment('upper_voice');
+  elseif(strpos($role, 'downer_voice') !== false) OutputRoleComment('downer_voice');
+  elseif(strpos($role, 'random_voice') !== false) OutputRoleComment('random_voice');
 
   //発言封印系
   if(strpos($role, 'no_last_words') !== false) OutputRoleComment('no_last_words');
   if(strpos($role, 'blinder')       !== false) OutputRoleComment('blinder');
   if(strpos($role, 'earplug')       !== false) OutputRoleComment('earplug');
+  if(strpos($role, 'speaker')       !== false) OutputRoleComment('speaker');
   if(strpos($role, 'silent')        !== false) OutputRoleComment('silent');
 
   //発言変換系
   if(strpos($role, 'liar')      !== false) OutputRoleComment('liar');
   if(strpos($role, 'invisible') !== false) OutputRoleComment('invisible');
+  if(strpos($role, 'rainbow')   !== false) OutputRoleComment('rainbow');
   if(strpos($role, 'gentleman') !== false) OutputRoleComment('gentleman');
   elseif(strpos($role, 'lady')  !== false) OutputRoleComment('lady');
 
@@ -960,6 +995,7 @@ function OutputAbility(){
   elseif(strpos($role, 'perverseness') !== false) OutputRoleComment('perverseness');
   elseif(strpos($role, 'flattery')     !== false) OutputRoleComment('flattery');
   elseif(strpos($role, 'impatience')   !== false) OutputRoleComment('impatience');
+  elseif(strpos($role, 'panelist')     !== false) OutputRoleComment('panelist');
 }
 
 //役職説明を表示する

@@ -288,8 +288,13 @@ HEADER;
 
 IMAGE;
 
-    $wish_role_list = array('none', 'human', 'wolf', 'mage', 'necromancer',
-			    'mad', 'guard', 'common', 'fox');
+    if(strpos($game_option, 'quiz') !== false){
+      $wish_role_list = array('none', 'human', 'wolf', 'mad', 'common', 'fox');
+    }
+    else{
+      $wish_role_list = array('none', 'human', 'wolf', 'mage', 'necromancer',
+			      'mad', 'guard', 'common', 'fox');
+    }
     if(strpos($option_role, 'poison')      !== false) array_push($wish_role_list, 'poison');
     if(strpos($option_role, 'cupid')       !== false) array_push($wish_role_list, 'cupid');
     if(strpos($option_role, 'boss_wolf')   !== false) array_push($wish_role_list, 'boss_wolf');

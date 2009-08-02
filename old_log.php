@@ -9,12 +9,13 @@ $log_mode = $_GET['log_mode'];
 //$page        = (int)$_GET['page'];
 
 $dbHandle = ConnectDatabase(); //DB 接続
-
-if($RQ_ARGS->is_room)
+if($RQ_ARGS->is_room){
+  $USERS = new Users($room_no);
   OutputOldLog($RQ_ARGS->room_no);
-else
+}
+else{
   OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
-
+}
 DisconnectDatabase($dbHandle); //DB 接続解除
 
 OutputHTMLFooter();
@@ -124,8 +125,7 @@ EOF;
       break;
 
     case 'quiz':
-      //$voctory_role_str = $VICTORY_IMG->GenerateTag('quiz', '出題者勝利', 'winner');
-      $voctory_role_str = 'Qz';
+      $voctory_role_str = $VICTORY_IMG->GenerateTag('quiz', '出題者勝利', 'winner');
       break;
 
     case 'draw':

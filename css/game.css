@@ -124,6 +124,10 @@
 .say{ /* 発言の中身 */
   margin-left: 1px;
   width: 1000px;
+ /* 草対策：ブラウザ依存があるのでひとまず不使用
+  word-wrap: break-word;
+  word-break:break-all;
+*/
 }
 /* OutputTalkLog() */
 .system-message{ /* システムメッセージ */

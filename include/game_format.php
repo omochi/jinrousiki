@@ -14,6 +14,11 @@ class DocumentBuilder {
       $wrapper->Wrap($result);
       $result = $wrapper;
     }
+    if(strpos($role, 'speaker') !== false){
+      $wrapper = $ROLES->Instantiate('speaker');
+      $wrapper->Wrap($result);
+      $result = $wrapper;
+    }
     return $result;
   }
 

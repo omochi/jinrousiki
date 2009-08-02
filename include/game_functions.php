@@ -147,22 +147,8 @@ function OutputTimeTable(){
 
 //プレイヤー一覧出力
 function OutputPlayerList(){
-  global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $room_no, $game_option, $day_night, $live;
+  global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $USERS, $room_no, $game_option, $day_night, $live;
 
-  $sql = mysql_query("SELECT user_entry.uname,
-			user_entry.handle_name,
-			user_entry.profile,
-			user_entry.live,
-			user_entry.role,
-			user_entry.user_no,
-			user_icon.icon_filename,
-			user_icon.color
-			FROM user_entry, user_icon
-			WHERE user_entry.room_no = $room_no
-			AND user_entry.icon_no = user_icon.icon_no
-			AND user_entry.user_no > 0
-			ORDER BY user_entry.user_no");
-  $count  = mysql_num_rows($sql);
   $width  = $ICON_CONF->width;
   $height = $ICON_CONF->height;
   //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
@@ -170,19 +156,16 @@ function OutputPlayerList(){
   $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
 
   echo '<div class="player"><table cellspacing="5"><tr>'."\n";
-  for($i = 0; $i < $count; $i++){
-    //5個ごとに段落改行
-    if($i > 0 && ($i % 5) == 0) echo '</tr>'."\n".'<tr>'."\n";
+  $count = 0;
+  foreach($USERS->rows as $this_user_no => $this_object){
+    $this_uname   = $this_object->uname;
+    $this_handle  = $this_object->handle_name;
+    $this_profile = $this_object->profile;
+    $this_live    = $this_object->live;
+    $this_role    = $this_object->role;
+    $this_file    = $this_object->icon_filename;
+    $this_color   = $this_object->color;
 
-    $array = mysql_fetch_assoc($sql);
-    $this_uname   = $array['uname'];
-    $this_handle  = $array['handle_name'];
-    $this_profile = $array['profile'];
-    $this_live    = $array['live'];
-    $this_role    = $array['role'];
-    $this_user_no = $array['user_no'];
-    $this_file    = $array['icon_filename'];
-    $this_color   = $array['color'];
     $profile_alt  = str_replace("\n", $replace, $this_profile);
     if($DEBUG_MODE) $this_handle .= ' (' . $this_user_no . ')';
 
@@ -325,6 +308,10 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('normal_voice', 'voice', true);
       elseif(strpos($this_role, 'weak_voice') !== false)
 	$role_str .= MakeRoleName('weak_voice', 'voice', true);
+      elseif(strpos($this_role, 'upper_voice') !== false)
+	$role_str .= MakeRoleName('upper_voice', 'voice', true);
+      elseif(strpos($this_role, 'downer_voice') !== false)
+	$role_str .= MakeRoleName('downer_voice', 'voice', true);
       elseif(strpos($this_role, 'random_voice') !== false)
 	$role_str .= MakeRoleName('random_voice', 'voice', true);
 
@@ -334,13 +321,17 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('blinder', 'seal', true);
       if(strpos($this_role, 'earplug') !== false)
 	$role_str .= MakeRoleName('earplug', 'seal', true);
-
+      if(strpos($this_role, 'speaker') !== false)
+	$role_str .= MakeRoleName('speaker', 'seal', true);
       if(strpos($this_role, 'silent') !== false)
-	$role_str .= MakeRoleName('silent', 'convert', true);
+	$role_str .= MakeRoleName('silent', 'seal', true);
+
       if(strpos($this_role, 'liar') !== false)
 	$role_str .= MakeRoleName('liar', 'convert', true);
       if(strpos($this_role, 'invisible') !== false)
 	$role_str .= MakeRoleName('invisible', 'convert', true);
+      if(strpos($this_role, 'rainbow') !== false)
+	$role_str .= MakeRoleName('rainbow', 'convert', true);
       if(strpos($this_role, 'gentleman') !== false)
 	$role_str .= MakeRoleName('gentleman', 'convert', true);
       elseif(strpos($this_role, 'lady') !== false)
@@ -356,6 +347,8 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('flattery', 'sudden-death', true);
       elseif(strpos($this_role, 'impatience') !== false)
 	$role_str .= MakeRoleName('impatience', 'sudden-death', true);
+      elseif(strpos($this_role, 'panelist') !== false)
+	$role_str .= MakeRoleName('panelist', 'sudden-death', true);
 
       echo "<td>${img_tag}</td>"."\n";
       echo "<td><font color=\"$this_color\">◆</font>$this_handle<br>"."\n";
@@ -366,7 +359,8 @@ function OutputPlayerList(){
       $sql_start = mysql_query("select count(uname) from vote where room_no = $room_no
 				and situation = 'GAMESTART' and uname = '$this_uname'");
 
-      if(mysql_result($sql_start, 0, 0) == 1 || $this_uname == 'dummy_boy')
+      if((strpos($game_option, 'quiz') === false && $this_uname == 'dummy_boy') ||
+	 mysql_result($sql_start, 0, 0) == 1)
 	$already_vote_class = ' class="already-vote"';
       else
 	$already_vote_class = '';
@@ -379,6 +373,8 @@ function OutputPlayerList(){
       echo "<td><font color=\"$this_color\">◆</font>$this_handle";
     }
     echo '<br>'."\n" . $this_live_str . '</td>'."\n";
+
+    if(++$count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
   }
   echo '</tr></table></div>'."\n";
 }
@@ -762,7 +758,7 @@ function OutputTalk($array, &$builder){
     }
     else{
       $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type, $base_class, $talk_class);
     }
   }
   //ここからは観戦者と役職非公開モード
@@ -981,6 +977,11 @@ function OutputDeadManType($name, $type){
     echo $sudden_death;
     if($show_reason) echo $reason_header.$MESSAGE->impatience.')</td>';
     break;
+
+  case 'SUDDEN_DEATH_PANELIST':
+    echo $sudden_death;
+    if($show_reason) echo $reason_header.$MESSAGE->panelist.')</td>';
+    break;
   }
   echo "</tr>\n</table>\n";
 }
@@ -1132,21 +1133,22 @@ function CheckVictory($check_draw = false){
   $sql = mysql_query($query_count . "role LIKE '%wolf%'");
   $wolf = (int)mysql_result($sql, 0, 0);
 
-  //狼、狐以外の数を取得
-  $sql = mysql_query($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')");
+  //狼・狐・出題者以外の数を取得
+  $sql = mysql_query($query_count .
+		     "!(role LIKE '%wolf%') AND !(role LIKE '%fox%') AND !(role LIKE 'quiz%')");
   $human = (int)mysql_result($sql, 0, 0);
 
   //狐の数を取得
   $sql = mysql_query($query_count . "role LIKE '%fox%'");
   $fox = (int)mysql_result($sql, 0, 0);
 
+  //出題者の数を取得
+  $sql = mysql_query($query_count . "role LIKE 'quiz%'");
+  $quiz = (int)mysql_result($sql, 0, 0);
+
   //恋人の数を取得
   $sql = mysql_query($query_count . "role LIKE '%lovers%'");
   $lovers = (int)mysql_result($sql, 0, 0);
-
-  //クイズ村 GM の数を取得
-  $sql = mysql_query($query_count . "role LIKE 'quiz%'");
-  $quiz = (int)mysql_result($sql, 0, 0);
 
   $victory_role = ''; //勝利陣営
   if($wolf == 0 && $human == 0 && $fox == 0){ //全滅
@@ -1158,7 +1160,7 @@ function CheckVictory($check_draw = false){
     elseif($fox > 0) $victory_role = 'fox1';
     else             $victory_role = 'human';
   }
-  elseif($wolf >= $human){ //村全滅
+  elseif($wolf >= $human + $quiz){ //村全滅
     if($lovers > 1)  $victory_role = 'lovers';
     elseif($fox > 0) $victory_role = 'fox2';
     else             $victory_role = 'wolf';
@@ -1197,24 +1199,29 @@ function SaveLastWords($target){
 }
 
 //突然死処理
-function SuddenDeath($uname, $handle_name, $role, $type = NULL){
-  global $MESSAGE, $system_time, $room_no;
+function SuddenDeath($uname, $type = NULL){
+  global $MESSAGE, $USERS, $system_time, $room_no;
 
   //生死を確認
   $sql = mysql_query("SELECT live FROM user_entry WHERE room_no = $room_no
 			AND uname = '$uname' AND user_no > 0");
   if(mysql_result($sql, 0, 0) != 'live') return false;
 
+  $target_handle = $USERS->GetHandleName($uname);
   KillUser($uname); //突然死実行
+
   if($type){ //ショック死は専用の処理を行う
-    InsertSystemTalk($handle_name . $MESSAGE->vote_sudden_death, ++$system_time);
-    InsertSystemMessage($handle_name, 'SUDDEN_DEATH_' . $type);
-    SaveLastWords($handle_name);
+    InsertSystemTalk($target_handle . $MESSAGE->vote_sudden_death, ++$system_time);
+    InsertSystemMessage($target_handle, 'SUDDEN_DEATH_' . $type);
+    SaveLastWords($target_handle);
   }
-  else InsertSystemTalk($handle_name . $MESSAGE->sudden_death, ++$system_time);
+  else{
+    InsertSystemTalk($target_handle . $MESSAGE->sudden_death, ++$system_time);
+  }
 
   //巫女の判定結果(システムメッセージ)
-  InsertSystemMessage($handle_name . "\t" . DistinguishCamp($role), 'MEDIUM_RESULT');
+  $target_camp = DistinguishCamp($USERS->GetRole($uname));
+  InsertSystemMessage($target_handle . "\t" . $target_camp, 'MEDIUM_RESULT');
   mysql_query('COMMIT'); //一応コミット
 }
 
@@ -1232,19 +1239,19 @@ function GetLoversConditionString($role){
 
 //恋人の後追い死処理
 function LoversFollowed($role, $sudden_death = false){
-  global $MESSAGE, $system_time, $room_no, $date, $day_night;
+  global $MESSAGE, $USERS, $system_time, $room_no, $date, $day_night;
 
   //後追いさせる必要がある恋人を取得
-  $query = "SELECT uname, handle_name, role, last_words FROM user_entry
-		WHERE room_no = $room_no AND live = 'live' AND user_no > 0 AND ";
+  $query = "SELECT uname, last_words FROM user_entry WHERE room_no = $room_no
+		AND live = 'live' AND user_no > 0 AND ";
   $query .= GetLoversConditionString($role);
   $sql = mysql_query($query);
 
   while(($array = mysql_fetch_assoc($sql)) !== false){
     $target_uname      = $array['uname'];
-    $target_handle     = $array['handle_name'];
-    $target_role       = $array['role'];
     $target_last_words = $array['last_words'];
+    $target_handle     = $USERS->GetHandleName($target_uname);
+    $target_role       = $USERS->GetRole($target_uname);
 
     KillUser($target_uname); //後追い死
 

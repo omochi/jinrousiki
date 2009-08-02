@@ -67,7 +67,7 @@ class Users{
 	icons.icon_height
       FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
       WHERE users.room_no = {$this->room_no}
-      AND users.user_no >= 0"
+      AND users.user_no >= 0 ORDER BY users.user_no"
     );
     if($result === false) return;
     $this->rows = array();
@@ -86,6 +86,10 @@ class Users{
     foreach($this->rows as $user) $user->ParseCompoundParameters();
   }
 
+  function NumberToUname($user_no){
+    return $this->rows[$user_no]->uname;
+  }
+
   function UnameToNumber($uname){
     return $this->names[$uname];
   }
@@ -98,6 +102,10 @@ class Users{
     return $this->rows[$this->UnameToNumber($uname)]->handle_name;
   }
 
+  function GetSex($uname){
+    return $this->rows[$this->UnameToNumber($uname)]->sex;
+  }
+
   function GetRole($uname){
     return $this->rows[$this->UnameToNumber($uname)]->role;
   }
@@ -105,6 +113,12 @@ class Users{
   function GetLive($uname){
     return $this->rows[$this->UnameToNumber($uname)]->live;
   }
+
+  /* 汎用性を見て採用する
+  function GetUserCount(){
+    return count($this->rows);
+  }
+  */
 
   //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。
   function RegisterByRequest(){

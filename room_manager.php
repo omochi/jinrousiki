@@ -102,7 +102,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
       array_push($option_role_list, 'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
 		 'poison_wolf', 'mania', 'medium');
     }
-    array_push($option_role_list, 'liar', 'gentleman', 'sudden_death');
+    array_push($option_role_list, 'liar', 'gentleman', 'sudden_death', 'full_mania');
   }
 
   foreach($game_option_list as $this_option){
@@ -519,7 +519,7 @@ EOF;
 <td><label for="role_gentleman">{$MESSAGE->game_option_gentleman}：</label></td>
 <td class="explain">
 <input id="role_gentleman" type="checkbox" name="gentleman" value="on"{$checked}>
-(ランダムで「紳士」「淑女」のどちらかがつきます)
+(全員に性別に応じた「紳士」「淑女」がつきます)
 </td>
 </tr>
 
@@ -533,7 +533,21 @@ EOF;
 <td><label for="role_sudden_death">{$MESSAGE->game_option_sudden_death}：</label></td>
 <td class="explain">
 <input id="role_sudden_death" type="checkbox" name="sudden_death" value="on"{$checked}>
-(ランダムで投票でショック死するサブ役職のどれかがつきます)
+(全員に投票でショック死するサブ役職のどれかがつきます)
+</td>
+</tr>
+
+EOF;
+  }
+
+  if($ROOM_CONF->full_mania){
+    $checked = ($ROOM_CONF->default_full_mania ? ' checked' : '');
+    echo <<<EOF
+<tr>
+<td><label for="role_full_mania">{$MESSAGE->game_option_full_mania}：</label></td>
+<td class="explain">
+<input id="role_full_mania" type="checkbox" name="full_mania" value="on"{$checked}>
+(「村人」が全員「神話マニア」に入れ替わります)
 </td>
 </tr>
 

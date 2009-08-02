@@ -33,6 +33,9 @@ case 'night': //夜
   break;
 }
 
+//ユーザ情報をロード
+$USERS = new Users($room_no);
+
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 
 if($GAME_CONF->auto_reload && $auto_reload != 0){ //自動更新

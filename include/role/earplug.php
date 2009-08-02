@@ -10,6 +10,7 @@ class Role_earplug extends Role{
 
   function AddTalk($symbol, $user_info, $sentence, $volume,
 		   $row_class = 'user-talk', $user_class = 'user-name'){
+    global $MESSAGE;
     if(! $this->Ignored()){
       switch($volume){
       case 'strong':
@@ -21,7 +22,7 @@ class Role_earplug extends Role{
 	break;
 
       case 'weak':
-	$sentence = '';
+	$sentence = $MESSAGE->common_talk;
 	break;
       }
     }
@@ -29,6 +30,7 @@ class Role_earplug extends Role{
   }
 
   function AddWhisper($user_info, $sentence, $volume = 'normal', $user_class = '', $say_class = ''){
+    global $MESSAGE;
     if(! $this->Ignored()){
       switch($volume){
       case 'strong':
@@ -40,7 +42,7 @@ class Role_earplug extends Role{
 	break;
 
       case 'weak':
-	$sentence = '';
+	$sentence = $MESSAGE->common_talk;
 	break;
       }
     }

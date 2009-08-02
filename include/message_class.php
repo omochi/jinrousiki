@@ -23,8 +23,9 @@ class Message{
   var $game_option_mania         = '神話マニア登場';
   var $game_option_medium        = '巫女登場';
   var $game_option_liar          = '狼少年村';
-  var $game_option_sudden_death  = '虚弱体質村';
   var $game_option_gentleman     = '紳士・淑女村';
+  var $game_option_sudden_death  = '虚弱体質村';
+  var $game_option_full_mania    = '神話マニア村';
   var $game_option_quiz          = 'クイズ村';
   var $game_option_chaos         = '闇鍋モード';
   var $game_option_chaosfull     = '真・闇鍋モード';
@@ -103,6 +104,7 @@ class Message{
   var $wolf_howl = 'アオォーン・・・'; //狼の遠吠え
   // var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
   var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の小声
+  var $howling = 'キィーーン・・・'; //スピーカーの音割れ効果音
 
   //OutputLastWords() : 遺言の表示
   var $lastwords = '夜が明けると前の日に亡くなった方の遺言書が見つかりました';
@@ -125,6 +127,7 @@ class Message{
   var $perverseness      = 'は天邪鬼だったようです';   //天邪鬼
   var $flattery          = 'はゴマすりだったようです'; //ゴマすり
   var $impatience        = 'は短気だったようです';     //短気
+  var $panelist          = 'は解答者 (不正解) だったようです'; //解答者
 
   //OutputAbility() : 能力の表示
   var $ability_dead     = 'アナタは息絶えました・・・'; //死んでいる場合
