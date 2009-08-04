@@ -66,7 +66,7 @@ SendCookie();
 EscapeStrings(&$say, false); //エスケープ処理
 ConvertSay(&$say); //発言置換処理
 
-if($say != '' && $font_type == 'last_words' && $live == 'live'){
+if($say != '' && $font_type == 'last_words' && $live == 'live' && $uname != 'dummy_boy'){
   EntryLastWords($say);  //生きていれば遺言登録
 }
 elseif($say != '' && ($last_load_day_night == $day_night ||
@@ -88,7 +88,7 @@ OutputGameHeader(); //部屋のタイトルなど
 if($heaven_mode != 'on'){
   if($list_down != 'on') OutputPlayerList(); //プレイヤーリスト
   OutputAbility(); //自分の役割の説明
-  if($day_night == 'day' && $live == 'live') CheckSelfVote(); //投票済みチェック
+  if($day_night == 'day' && $live == 'live') CheckSelfVoteDay(); //昼の投票済みチェック
   OutputRevoteList(); //再投票の時、メッセージを表示する
 }
 
@@ -247,7 +247,7 @@ function EntryLastWords($say){
 
 //発言
 function Say($say){
-  global $room_no, $game_option, $day_night, $uname, $role, $live;
+  global $room_no, $game_option, $day_night, $uname, $role, $live, $font_type;
 
   if(strpos($game_option, 'real_time') !== false){ //リアルタイム制
     GetRealPassTime(&$left_time);
@@ -268,12 +268,20 @@ function Say($say){
   if($day_night == 'beforegame' || $day_night == 'aftergame'){ //ゲーム開始前後はそのまま発言
     Write($say, $day_night, 0, true);
   }
+  //身代わり君 (仮想 GM 対応) は遺言を専用のシステムメッセージに切り替え
+  elseif($uname == 'dummy_boy' && ($font_type == 'last_words' || ($live == 'live' && $left_time == 0))){
+    Write($say, "$day_night dummy_boy", 0); //発言時間を更新しない
+  }
+  /*
   elseif($uname == 'dummy_boy'){ //身代わり君 (仮想 GM 対応)
-    if($live == 'live' && $day_night == 'day' && $left_time > 0) //生きていて制限時間内の昼
+    if($font_type == 'last_words') //遺言を専用のシステムメッセージに切り替え
+      Write($say, "$day_night dummy_boy", 0); //発言時間を更新しない
+    elseif($live == 'live' && $day_night == 'day' && $left_time > 0) //生きていて制限時間内の昼
       Write($say, 'day', $spend_time, true); //通常通り発言
     else //それ以外は専用のシステムメッセージに切り替え
       Write($say, "$day_night dummy_boy", 0); //発言時間を更新しない
   }
+  */
   elseif($live == 'dead'){ //死亡者の霊話
     Write($say, 'heaven', 0); //発言時間を更新しない
   }
@@ -411,7 +419,7 @@ function CheckSilence(){
 	  array_push($actor_list, 'cupid', 'mania');
 	}
 	else{
-	  array_push($action_list, 'GUARD_DO', 'REPORTER_DO', 'POISON_CAT_DO');
+	  array_push($action_list, 'GUARD_DO', 'REPORTER_DO', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
 	  array_push($actor_list, '%guard', 'reporter', 'poison_cat');
 	}
 
@@ -543,6 +551,7 @@ EOF;
     //異議あり、を音で知らせる
     $cookie_objection_array = explode(',', $cookie_objection); //クッキーの値を配列に格納する
 
+    /*
     $count = count($objection_array);
     for($i = 1; $i <= $count; $i++){ //差分を計算 (index は 1 から)
       //差分があれば性別を確認して音を鳴らす
@@ -552,6 +561,7 @@ EOF;
 	OutputSound($SOUND->$objection_sound, true);
       }
     }
+    */
   }
   echo '</td></tr>'."\n".'</table>'."\n";
 
@@ -700,38 +710,37 @@ function OutputAbility(){
     return;
   }
 
-  if(strpos($role, 'human') !== false || strpos($role, 'suspect') !== false ||
-     strpos($role, 'unconscious') !== false) OutputRoleComment('human');
-  elseif(strpos($role, 'wolf') !== false){
-    if(    strpos($role, 'boss_wolf')   !== false) OutputRoleComment('boss_wolf');
-    elseif(strpos($role, 'cursed_wolf') !== false) OutputRoleComment('cursed_wolf');
-    elseif(strpos($role, 'cute_wolf')   !== false) OutputRoleComment('cute_wolf');
-    elseif(strpos($role, 'poison_wolf') !== false) OutputRoleComment('poison_wolf');
-    elseif(strpos($role, 'resist_wolf') !== false) OutputRoleComment('resist_wolf');
-    elseif(strpos($role, 'tongue_wolf') !== false) OutputRoleComment('tongue_wolf');
-    else OutputRoleComment('wolf');
+  $role_list = explode(' ', $role);
+  $main_role = array_shift($role_list);
 
+  if($main_role == 'human' || $main_role == 'suspect' || $main_role == 'unconscious'){
+    $ROLE_IMG->DisplayImage('human');
+  }
+  elseif(strpos($main_role, 'wolf') !== false){
+    $ROLE_IMG->DisplayImage($main_role);
     OutputPartner("role LIKE '%wolf%' AND uname <> '$uname'", 'wolf_partner'); //仲間を表示
     OutputPartner("role LIKE 'whisper_mad%'", 'mad_partner'); //囁き狂人を表示
 
     //夜だけ無意識を表示
     if($day_night == 'night') OutputPartner("role LIKE 'unconscious%'", 'unconscious_list');
 
-    //舌禍狼の噛み結果を表示
-    $action = 'TONGUE_WOLF_RESULT';
-    $sql    = GetAbilityActionResult($action);
-    $count  = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($handle_name == $actor) //自分の噛み結果のみ表示
-	OutputAbilityResult('wolf_result', $target, 'result_' . $target_role);
+    if($main_role == 'tongue_wolf'){ //舌禍狼の噛み結果を表示
+      $action = 'TONGUE_WOLF_RESULT';
+      $sql    = GetAbilityActionResult($action);
+      $count  = mysql_num_rows($sql);
+      for($i = 0; $i < $count; $i++){
+	list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
+	if($handle_name == $actor) //自分の噛み結果のみ表示
+	  OutputAbilityResult('wolf_result', $target, 'result_' . $target_role);
+      }
     }
-
-    if($day_night == 'night') CheckNightVote('WOLF_EAT', 'wolf-eat'); //夜の噛み投票
+    if($day_night == 'night') OutputVoteMessage('wolf-eat', 'WOLF_EAT'); //夜の噛み投票
   }
-  elseif(strpos($role, 'mage') !== false){
-    if(strpos($role, 'soul_mage') !== false) OutputRoleComment('soul_mage');
-    else OutputRoleComment('mage'); //夢見人 (dummy_mage) も含む
+  elseif(strpos($main_role, 'mage') !== false){
+    if($main_role == 'mage' || $main_role == 'dummy_mage')
+      $ROLE_IMG->DisplayImage('mage');
+    else
+      $ROLE_IMG->DisplayImage($main_role);
 
     //占い結果を表示
     $action = 'MAGE_RESULT';
@@ -743,30 +752,32 @@ function OutputAbility(){
 	OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
     }
 
-    if($day_night == 'night') CheckNightVote('MAGE_DO', 'mage-do'); //夜の占い投票
+    if($day_night == 'night') OutputVoteMessage('mage-do', 'MAGE_DO'); //夜の占い投票
   }
-  elseif(strpos($role, 'necromancer') !== false || strpos($role, 'medium') !== false){
-    if(strpos($role, 'dummy_necromancer') !== false){
-      $role_name = 'necromancer';
-      $action    = 'DUMMY_NECROMANCER_RESULT';
+  elseif(strpos($main_role, 'necromancer') !== false || $main_role == 'medium'){
+    if(strpos($role, 'necromancer') !== false){
+      $role_name = ($main_role == 'soul_necromancer' ? $main_role : 'necromancer');
       $result    = 'necromancer_result';
-    }
-    elseif(strpos($role, 'soul_necromancer') !== false){
-      $role_name = 'soul_necromancer';
-      $action    = 'SOUL_NECROMANCER_RESULT';
-      $result    = 'necromancer_result';
-    }
-    elseif(strpos($role, 'necromancer') !== false){
-      $role_name = 'necromancer';
-      $action    = 'NECROMANCER_RESULT';
-      $result    = 'necromancer_result';
+      switch($main_role){
+      case 'necromancer':
+	$action = 'NECROMANCER_RESULT';
+	break;
+
+      case 'soul_necromancer':
+	$action = 'SOUL_NECROMANCER_RESULT';
+	break;
+
+      case 'dummy_necromancer':
+	$action = 'DUMMY_NECROMANCER_RESULT';
+	break;
+      }
     }
     else{
       $role_name = 'medium';
-      $action    = 'MEDIUM_RESULT';
       $result    = 'medium_result';
+      $action    = 'MEDIUM_RESULT';
     }
-    OutputRoleComment($role_name);
+    $ROLE_IMG->DisplayImage($role_name);
 
     //判定結果を表示
     $sql = GetAbilityActionResult($action);
@@ -776,19 +787,20 @@ function OutputAbility(){
       OutputAbilityResult($result, $target, 'result_' . $target_role);
     }
   }
-  elseif(strpos($role, 'fanatic_mad') !== false){
-    OutputRoleComment('fanatic_mad');
-    OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
+  elseif(strpos($main_role, 'mad') !== false){
+    $ROLE_IMG->DisplayImage($main_role);
+    if($main_role != 'mad'){
+      OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
+      if($main_role == 'whisper_mad'){ //囁き狂人を表示
+	OutputPartner("role LIKE 'whisper_mad%' AND uname <> '$uname'", 'mad_partner');
+      }
+    }
   }
-  elseif(strpos($role, 'whisper_mad') !== false){
-    OutputRoleComment('whisper_mad');
-    OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
-    OutputPartner("role LIKE 'whisper_mad%' AND uname <> '$uname'", 'mad_partner'); //囁き狂人を表示
-  }
-  elseif(strpos($role, 'mad') !== false) OutputRoleComment('mad');
-  elseif(strpos($role, 'guard') !== false){
-    if(strpos($role, 'poison_guard') !== false) OutputRoleComment('poison_guard');
-    else OutputRoleComment('guard'); //夢守人 (dummy_guard) を含む
+  elseif(strpos($main_role, 'guard') !== false){
+    if($main_role == 'guard' || $main_role == 'dummy_guard')
+      $ROLE_IMG->DisplayImage('guard');
+    else
+      $ROLE_IMG->DisplayImage($main_role);
 
     //護衛結果を表示
     $sql = GetAbilityActionResult('GUARD_SUCCESS');
@@ -798,18 +810,19 @@ function OutputAbility(){
       if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'guard_success');
     }
 
-    //狩り結果を表示
-    $sql = GetAbilityActionResult('GUARD_HUNTED');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'guard_hunted');
+    if($main_role != 'dummy_guard'){ //狩り結果を表示
+      $sql = GetAbilityActionResult('GUARD_HUNTED');
+      $count = mysql_num_rows($sql);
+      for($i = 0; $i < $count; $i++){
+	list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
+	if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'guard_hunted');
+      }
     }
 
-    if($day_night == 'night' && $date != 1) CheckNightVote('GUARD_DO', 'guard-do'); //夜の護衛投票
+    if($day_night == 'night' && $date != 1) OutputVoteMessage('guard-do', 'GUARD_DO'); //夜の護衛投票
   }
-  elseif(strpos($role, 'reporter') !== false){
-    OutputRoleComment('reporter');
+  elseif($main_role == 'reporter'){
+    $ROLE_IMG->DisplayImage($main_role);
 
     //尾行結果を表示
     $action = 'REPORTER_SUCCESS';
@@ -822,21 +835,21 @@ function OutputAbility(){
       OutputAbilityResult('reporter_result_header', $target, 'reporter_result_footer');
     }
 
-    if($day_night == 'night' && $date != 1) CheckNightVote('REPORTER_DO', 'guard-do'); //夜の尾行投票
+    if($day_night == 'night' && $date != 1) OutputVoteMessage('guard-do', 'REPORTER_DO'); //夜の尾行投票
   }
-  elseif(strpos($role, 'common') !== false){
-    OutputRoleComment('common');
+  elseif(strpos($main_role, 'common') !== false){
+    $ROLE_IMG->DisplayImage('common');
 
     //仲間を表示
-    if(strpos($role, 'dummy_common') !== false){
+    if($main_role == 'dummy_common'){
       OutputPartner("uname = 'dummy_boy' AND uname <> '$uname'", 'common_partner');
     }
     else{
       OutputPartner("role LIKE 'common%' AND uname <> '$uname'", 'common_partner');
     }
   }
-  elseif(strpos($role, 'child_fox') !== false){
-    // OutputRoleComment('child_fox');
+  elseif($main_role == 'child_fox'){
+    // $ROLE_IMG->DisplayImage('child_fox');
     echo '[役割]<br>　あなたは「子狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。また、時々失敗しますが占いの真似事もできます。<br>'."\n";
 
     //仲間を表示
@@ -852,19 +865,17 @@ function OutputAbility(){
 	OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
     }
 
-    if($day_night == 'night') CheckNightVote('CHILD_FOX_DO', 'mage-do'); //夜の占い投票
+    if($day_night == 'night') OutputVoteMessage('mage-do', 'CHILD_FOX_DO'); //夜の占い投票
   }
-  elseif(strpos($role, 'fox') !== false){
-    if(    strpos($role, 'cursed_fox') !== false) OutputRoleComment('cursed_fox');
-    elseif(strpos($role, 'poison_fox') !== false){
-      // OutputRoleComment('poison_fox');
+  elseif(strpos($main_role, 'fox') !== false){
+    if($main_role == 'poison_fox'){
       echo '[役割]<br>　あなたは「管狐」、毒を持っています。(細かい能力は調整中です)<br>'."\n";
     }
-    elseif(strpos($role, 'white_fox')  !== false){
-      // OutputRoleComment('white_fox');
+    elseif($main_role == 'white_fox'){
       echo '[役割]<br>　あなたは「白狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。(細かい能力は調整中です)<br>'."\n";
     }
-    else OutputRoleComment('fox');
+    else
+      $ROLE_IMG->DisplayImage($main_role);
 
     //子狐以外の仲間を表示
     OutputPartner("role LIKE 'fox%' AND uname <> '$uname'", 'fox_partner');
@@ -873,11 +884,11 @@ function OutputAbility(){
     $sql = GetAbilityActionResult('FOX_EAT');
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){ //自分が狙われた場合のみ表示
-      if($handle_name == mysql_result($sql, $i, 0)) OutputAbilityResult('fox_target', NULL);
+      if($handle_name == mysql_result($sql, $i, 0)) OutputAbilityResult('fox_targeted', NULL);
     }
   }
-  elseif(strpos($role, 'poison_cat') !== false){
-    // OutputRoleComment('poison_cat');
+  elseif($main_role == 'poison_cat'){
+    // $ROLE_IMG->DisplayImage('poison_cat');
     echo '[役割]<br>　あなたは「猫又」、毒をもっています。また、死んだ人を誰か一人蘇らせる事ができます。<br>'."\n";
 
     //蘇生結果を表示
@@ -890,15 +901,17 @@ function OutputAbility(){
     }
 
     //夜の蘇生投票
-    if($day_night == 'night' && $date != 1) CheckNightVote('POISON_CAT_DO', 'mania-do');
+    if($day_night == 'night' && $date != 1){
+      OutputVoteMessage('poison-cat-do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+    }
   }
-  elseif(strpos($role, 'incubate_poison') !== false){
-    OutputRoleComment('incubate_poison');
+  elseif($main_role == 'incubate_poison'){
+    $ROLE_IMG->DisplayImage($main_role);
     if($date > 5) OutputAbilityResult('ability_poison', NULL);
   }
-  elseif(strpos($role, 'poison') !== false) OutputRoleComment('poison');
-  elseif(strpos($role, 'pharmacist') !== false){
-    OutputRoleComment('pharmacist');
+  elseif(strpos($main_role, 'poison') !== false) $ROLE_IMG->DisplayImage('poison');
+  elseif($main_role == 'pharmacist'){
+    $ROLE_IMG->DisplayImage($main_role);
 
     //解毒結果を表示
     $sql = GetAbilityActionResult('PHARMACIST_SUCCESS');
@@ -908,32 +921,32 @@ function OutputAbility(){
       if($handle_name == $actor) OutputAbilityResult(NULL, $target, 'pharmacist_success');
     }
   }
-  elseif(strpos($role, 'cupid') !== false){
-    OutputRoleComment('cupid');
+  elseif($main_role == 'cupid'){
+    $ROLE_IMG->DisplayImage($main_role);
 
     //自分が矢を打った恋人 (自分自身含む) を表示する
     $cupid_id = strval($user_no);
     OutputPartner("role LIKE '%lovers[$cupid_id]%'", 'cupid_pair');
 
-    if($day_night == 'night' && $date == 1) CheckNightVote('CUPID_DO', 'cupid-do'); //初日夜の投票
+    if($day_night == 'night' && $date == 1) OutputVoteMessage('cupid-do', 'CUPID_DO'); //初日夜の投票
   }
-  elseif(strpos($role, 'mania') !== false){
-    // OutputRoleComment('mania');
+  elseif($main_role == 'mania'){
+    // $ROLE_IMG->DisplayImage($main_role);
     echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます (仕様は変更される可能性があります)<br>'."\n";
 
-    if($day_night == 'night') CheckNightVote('MANIA_DO', 'mania-do'); //夜のコピー投票
+    if($day_night == 'night') OutputVoteMessage('mania-do', 'MANIA_DO'); //夜のコピー投票
   }
-  elseif(strpos($role, 'quiz') !== false){
-    OutputRoleComment('quiz');
+  elseif($main_role == 'quiz'){
+    $ROLE_IMG->DisplayImage($main_role);
     if(strpos($game_option, 'chaos') !== false){
-      // OutputRoleComment('quiz_chaos');
+      // $ROLE_IMG->DisplayImage('quiz_chaos');
       echo '闇鍋モードではあなたの最大の能力である噛み無効がありません。<br>'."\n";
       echo 'はっきり言って無理ゲーなので好き勝手にクイズでも出して遊ぶと良いでしょう。<br>'."\n";
     }
   }
 
   //ここから兼任役職
-  if(strpos($role, 'lost_ability') !== false) OutputRoleComment('lost_ability'); //能力失効
+  if(strpos($role, 'lost_ability') !== false) $ROLE_IMG->DisplayImage('lost_ability'); //能力失効
   if(strpos($role, 'lovers') !== false){ //恋人を表示する
     $lovers_str = GetLoversConditionString($role);
     OutputPartner("$lovers_str AND uname <> '$uname'", 'lovers_header', 'lovers_footer');
@@ -953,55 +966,49 @@ function OutputAbility(){
   if(strpos($game_option, 'secret_sub_role') !== false) return;
 
   //投票系
-  if(    strpos($role, 'authority')    !== false) OutputRoleComment('authority');
-  elseif(strpos($role, 'rebel')        !== false) OutputRoleComment('rebel');
-  elseif(strpos($role, 'random_voter') !== false) OutputRoleComment('random_voter');
-  elseif(strpos($role, 'watcher')      !== false) OutputRoleComment('watcher');
+  if(    strpos($role, 'authority')    !== false) $ROLE_IMG->DisplayImage('authority');
+  elseif(strpos($role, 'rebel')        !== false) $ROLE_IMG->DisplayImage('rebel');
+  elseif(strpos($role, 'random_voter') !== false) $ROLE_IMG->DisplayImage('random_voter');
+  elseif(strpos($role, 'watcher')      !== false) $ROLE_IMG->DisplayImage('watcher');
   elseif(strpos($role, 'decide')       !== false); //決定者＆疫病神は通知しない
   elseif(strpos($role, 'plague')       !== false);
   elseif(strpos($role, 'good_luck')    !== false); //幸運＆不運は通知しない
   elseif(strpos($role, 'bad_luck')     !== false);
-  elseif(strpos($role, 'upper_luck')   !== false) OutputRoleComment('upper_luck');
-  elseif(strpos($role, 'downer_luck' ) !== false) OutputRoleComment('downer_luck');
-  elseif(strpos($role, 'random_luck' ) !== false) OutputRoleComment('random_luck');
-  elseif(strpos($role, 'star')         !== false) OutputRoleComment('star');
-  elseif(strpos($role, 'disfavor')     !== false) OutputRoleComment('disfavor');
+  elseif(strpos($role, 'upper_luck')   !== false) $ROLE_IMG->DisplayImage('upper_luck');
+  elseif(strpos($role, 'downer_luck' ) !== false) $ROLE_IMG->DisplayImage('downer_luck');
+  elseif(strpos($role, 'random_luck' ) !== false) $ROLE_IMG->DisplayImage('random_luck');
+  elseif(strpos($role, 'star')         !== false) $ROLE_IMG->DisplayImage('star');
+  elseif(strpos($role, 'disfavor')     !== false) $ROLE_IMG->DisplayImage('disfavor');
 
   //発言変化系
-  if(    strpos($role, 'strong_voice') !== false) OutputRoleComment('strong_voice');
-  elseif(strpos($role, 'normal_voice') !== false) OutputRoleComment('normal_voice');
-  elseif(strpos($role, 'weak_voice')   !== false) OutputRoleComment('weak_voice');
-  elseif(strpos($role, 'upper_voice')  !== false) OutputRoleComment('upper_voice');
-  elseif(strpos($role, 'downer_voice') !== false) OutputRoleComment('downer_voice');
-  elseif(strpos($role, 'random_voice') !== false) OutputRoleComment('random_voice');
+  if(    strpos($role, 'strong_voice') !== false) $ROLE_IMG->DisplayImage('strong_voice');
+  elseif(strpos($role, 'normal_voice') !== false) $ROLE_IMG->DisplayImage('normal_voice');
+  elseif(strpos($role, 'weak_voice')   !== false) $ROLE_IMG->DisplayImage('weak_voice');
+  elseif(strpos($role, 'upper_voice')  !== false) $ROLE_IMG->DisplayImage('upper_voice');
+  elseif(strpos($role, 'downer_voice') !== false) $ROLE_IMG->DisplayImage('downer_voice');
+  elseif(strpos($role, 'random_voice') !== false) $ROLE_IMG->DisplayImage('random_voice');
 
   //発言封印系
-  if(strpos($role, 'no_last_words') !== false) OutputRoleComment('no_last_words');
-  if(strpos($role, 'blinder')       !== false) OutputRoleComment('blinder');
-  if(strpos($role, 'earplug')       !== false) OutputRoleComment('earplug');
-  if(strpos($role, 'speaker')       !== false) OutputRoleComment('speaker');
-  if(strpos($role, 'silent')        !== false) OutputRoleComment('silent');
+  if(strpos($role, 'no_last_words') !== false) $ROLE_IMG->DisplayImage('no_last_words');
+  if(strpos($role, 'blinder')       !== false) $ROLE_IMG->DisplayImage('blinder');
+  if(strpos($role, 'earplug')       !== false) $ROLE_IMG->DisplayImage('earplug');
+  if(strpos($role, 'speaker')       !== false) $ROLE_IMG->DisplayImage('speaker');
+  if(strpos($role, 'silent')        !== false) $ROLE_IMG->DisplayImage('silent');
 
   //発言変換系
-  if(strpos($role, 'liar')      !== false) OutputRoleComment('liar');
-  if(strpos($role, 'invisible') !== false) OutputRoleComment('invisible');
-  if(strpos($role, 'rainbow')   !== false) OutputRoleComment('rainbow');
-  if(strpos($role, 'gentleman') !== false) OutputRoleComment('gentleman');
-  elseif(strpos($role, 'lady')  !== false) OutputRoleComment('lady');
+  if(strpos($role, 'liar')      !== false) $ROLE_IMG->DisplayImage('liar');
+  if(strpos($role, 'invisible') !== false) $ROLE_IMG->DisplayImage('invisible');
+  if(strpos($role, 'rainbow')   !== false) $ROLE_IMG->DisplayImage('rainbow');
+  if(strpos($role, 'gentleman') !== false) $ROLE_IMG->DisplayImage('gentleman');
+  elseif(strpos($role, 'lady')  !== false) $ROLE_IMG->DisplayImage('lady');
 
   //投票ショック死系
-  if(    strpos($role, 'chicken')      !== false) OutputRoleComment('chicken');
-  elseif(strpos($role, 'rabbit')       !== false) OutputRoleComment('rabbit');
-  elseif(strpos($role, 'perverseness') !== false) OutputRoleComment('perverseness');
-  elseif(strpos($role, 'flattery')     !== false) OutputRoleComment('flattery');
-  elseif(strpos($role, 'impatience')   !== false) OutputRoleComment('impatience');
-  elseif(strpos($role, 'panelist')     !== false) OutputRoleComment('panelist');
-}
-
-//役職説明を表示する
-function OutputRoleComment($role){
-  global $ROLE_IMG;
-  echo '<img src="' . $ROLE_IMG->$role . '"><br>'."\n";
+  if(    strpos($role, 'chicken')      !== false) $ROLE_IMG->DisplayImage('chicken');
+  elseif(strpos($role, 'rabbit')       !== false) $ROLE_IMG->DisplayImage('rabbit');
+  elseif(strpos($role, 'perverseness') !== false) $ROLE_IMG->DisplayImage('perverseness');
+  elseif(strpos($role, 'flattery')     !== false) $ROLE_IMG->DisplayImage('flattery');
+  elseif(strpos($role, 'impatience')   !== false) $ROLE_IMG->DisplayImage('impatience');
+  elseif(strpos($role, 'panelist')     !== false) $ROLE_IMG->DisplayImage('panelist');
 }
 
 //仲間を表示する
@@ -1014,11 +1021,11 @@ function OutputPartner($query, $header, $footer = NULL){
   if($count < 1) return false; //仲間がいなければ表示しない
 
   echo '<table class="ability-partner"><tr>'."\n";
-  echo '<td><img src="' . $ROLE_IMG->$header . '"></td>'."\n";
+  echo '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n";
   echo '<td>　';
   for($i = 0; $i < $count; $i++) echo mysql_result($sql, $i, 0) . 'さん　　';
   echo '</td>'."\n";
-  if($footer) echo '<td><img src="' . $ROLE_IMG->$footer . '"></td>'."\n";
+  if($footer) echo '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
   echo '</tr></table>'."\n";
 }
 
@@ -1036,14 +1043,14 @@ function OutputAbilityResult($header, $target, $footer = NULL){
   global $ROLE_IMG;
 
   echo '<table class="ability-result"><tr>'."\n";
-  if($header) echo '<td><img src="' . $ROLE_IMG->$header . '"></td>'."\n";
+  if($header) echo '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n";
   if($target) echo '<td>' . $target . '</td>';
-  if($footer) echo '<td><img src="' . $ROLE_IMG->$footer . '"></td>'."\n";
+  if($footer) echo '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
   echo '</tr></table>'."\n";
 }
 
-//自分の未投票チェック
-function CheckSelfVote(){
+//昼の自分の未投票チェック
+function CheckSelfVoteDay(){
   global $room_no, $date, $uname;
 
   //投票回数を取得(再投票なら $vote_times は増える)
@@ -1059,17 +1066,15 @@ function CheckSelfVote(){
   echo (mysql_result($sql, 0, 0) ? '投票済み' : 'まだ投票していません') . '</div>'."\n";
 }
 
-//夜の未投票チェック
-function CheckNightVote($action, $class){
-  global $MESSAGE, $room_no, $uname;
+//夜の未投票メッセージ出力
+function OutputVoteMessage($class, $situation, $not_situation = ''){
+  global $MESSAGE;
 
-  $query = "SELECT uname FROM vote WHERE room_no = $room_no "; //共有クエリ
-  if($action != 'WOLF_EAT') $query .= "AND uname = '$uname' "; //人狼は誰でも OK
-  $sql = mysql_query($query . "AND situation = '$action'");
+  //投票済みならメッセージを表示しない
+  if(CheckSelfVoteNight($situation, $not_situation)) return false;
 
-  if(mysql_num_rows($sql) != 0) return false; //投票済みならメッセージを表示しない
   $class_str   = 'ability-' . $class; //クラス名はアンダースコアを使わないでおく
-  $message_str = 'ability_' . strtolower($action);
+  $message_str = 'ability_' . strtolower($situation);
   echo '<span class="' . $class_str . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
 }
 

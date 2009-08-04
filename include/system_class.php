@@ -1,52 +1,44 @@
 <?php
-// ²èÁü´ÉÍı¥¯¥é¥¹¤Î´ğÄì¥¯¥é¥¹¤òÄêµÁ¤·¤Ş¤¹¡£
+//²èÁü´ÉÍı¥¯¥é¥¹¤Î´ğÄì¥¯¥é¥¹
 class ImageManager{
-  function GenerateTag($name, $alt, $class='icon'){
-    $alt = htmlspecialchars($alt, ENT_QUOTES);
-    $class = htmlspecialchars($class, ENT_QUOTES);
-    return "<img class=\"$class\" src=\"{$this->$name}\" alt=\"$alt\" title=\"$alt\">";
+  function GenerateTag($name, $alt = ''){
+    $str = '<img';
+    if($this->class != '') $str .= ' class="' . $this->class . '"';
+    $str .= ' src="' . $this->path . '/' . $name . '.' . $this->extention . '"';
+    if($alt != ''){
+      EscapeStrings(&$alt);
+      $str .= ' alt="' . $alt . '" title="' . $alt . '"';
+    }
+    return $str . '>';
   }
 }
 
-//Â¼¤Î¥ª¥×¥·¥ç¥ó²èÁü¥Ñ¥¹
+//Â¼¤Î¥ª¥×¥·¥ç¥ó²èÁü¾ğÊó
 class RoomImage extends ImageManager{
-  var $waiting = 'img/room_option/waiting.gif'; //Â¼¥ê¥¹¥È¤ÎÊç½¸Ãæ¤Î²èÁü
-  var $playing = 'img/room_option/playing.gif'; //Â¼¥ê¥¹¥È¤Î¥²¡¼¥àÃæ¤Î²èÁü
-
-  var $wish_role       = 'img/room_option/wish_role.gif';       //Ìò³ä´õË¾À©
-  var $real_time       = 'img/room_option/real_time.gif';       //Ìò³ä´õË¾À©
-  var $dummy_boy       = 'img/room_option/dummy_boy.gif';       //¿ÈÂå¤ï¤ê·¯»ÈÍÑ
-  var $open_vote       = 'img/room_option/open_vote.gif';       //É¼¿ô¸ø³«
-  var $not_open_cast   = 'img/room_option/not_open_cast.gif';   //ÇÛÌòÈó¸ø³«
-  var $decide          = 'img/room_option/decide.gif';          //·èÄê¼Ô
-  var $authority       = 'img/room_option/authority.gif';       //¸¢ÎÏ¼Ô
-  var $poison          = 'img/room_option/poison.gif';          //ËäÆÇ¼Ô
-  var $cupid           = 'img/room_option/cupid.gif';           //¥­¥å¡¼¥Ô¥Ã¥É
-  var $boss_wolf       = 'img/room_option/boss_wolf.gif';       //ÇòÏµ
-  var $poison_wolf     = 'img/room_option/poison_wolf.gif';     //ÆÇÏµ
-  var $mania           = 'img/room_option/mania.gif';           //¿ÀÏÃ¥Ş¥Ë¥¢
-  var $medium          = 'img/room_option/medium.gif';          //Öà½÷
-  var $liar            = 'img/room_option/liar.gif';            //Ïµ¾¯Ç¯Â¼
-  var $gentleman       = 'img/room_option/gentleman.gif';       //¿Â»Î¡¦½Ê½÷Â¼
-  var $sudden_death    = 'img/room_option/sudden_death.gif';    //µõ¼åÂÎ¼ÁÂ¼
-  var $full_mania      = 'img/room_option/full_mania.gif';      //¿ÀÏÃ¥Ş¥Ë¥¢Â¼
-  var $quiz            = 'img/room_option/quiz.gif';            //¥¯¥¤¥ºÂ¼
-  var $chaos           = 'img/room_option/chaos.gif';           //°ÇÆé
-  var $chaosfull       = 'img/room_option/chaosfull.gif';       //¿¿¡¦°ÇÆé
-  var $chaos_open_cast = 'img/room_option/chaos_open_cast.gif'; //ÇÛÌò¸ø³«
-  var $secret_sub_role = 'img/room_option/secret_sub_role.gif'; //¥µ¥ÖÌò¿¦ÈóÉ½¼¨
-  var $no_sub_role     = 'img/room_option/no_sub_role.gif';     //¥µ¥ÖÌò¿¦Ìµ¤·
-
+  var $path      = 'img/room_option';
+  var $extention = 'gif';
+  var $class     = 'option';
+  /*
   //Â¼¤ÎºÇÂç¿Í¿ô¥ê¥¹¥È (RoomConfig -> max_user_list ¤ÈÏ¢Æ°¤µ¤»¤ë)
   var $max_user_list = array(
 			      8 => 'img/room_option/max8.gif',   // 8¿Í
 			     16 => 'img/room_option/max16.gif',  //16¿Í
 			     22 => 'img/room_option/max22.gif'   //22¿Í
 			     );
+  */
 }
+$ROOM_IMG = new RoomImage();
 
-//Ìò¿¦¤Î²èÁü¥Ñ¥¹
+//Ìò¿¦¤Î²èÁü¾ğÊó
 class RoleImage extends ImageManager{
+  var $path      = 'img/role';
+  var $extention = 'jpg';
+  var $class     = '';
+
+  function DisplayImage($name){
+    echo $this->GenerateTag($name) . '<br>'."\n";
+  }
+
   //Ìò¿¦¤ÎÀâÌÀ
   var $human                  = 'img/role/human.jpg';                  //Â¼¿Í
   var $wolf                   = 'img/role/wolf.jpg';                   //¿ÍÏµ
@@ -64,6 +56,7 @@ class RoleImage extends ImageManager{
   var $mage_result            = 'img/role/mage_result.jpg';            //Àê¤¤·ë²Ì
   var $necromancer            = 'img/role/necromancer.jpg';            //ÎîÇ½¼Ô
   var $necromancer_result     = 'img/role/necromancer_result.jpg';     //ÎîÇ½·ë²Ì
+  var $soul_necromancer       = 'img/role/soul_necromancer.jpg';       //±À³°¶À
   var $medium                 = 'img/role/medium.jpg';                 //Öà½÷
   var $medium_result          = 'img/role/medium_result.jpg';          //Öà½÷·ë²Ì
   var $mad                    = 'img/role/mad.jpg';                    //¶¸¿Í
@@ -83,7 +76,7 @@ class RoleImage extends ImageManager{
   var $cursed_fox             = 'img/role/cursed_fox.jpg';             //Å·¸Ñ
   var $fox                    = 'img/role/fox.jpg';                    //ÍÅ¸Ñ
   var $fox_partner            = 'img/role/fox_partner.jpg';            //ÍÅ¸Ñ¤ÎÃç´Ö
-  var $fox_target             = 'img/role/fox_targeted.jpg';           //ÍÅ¸Ñ½±·â
+  var $fox_targeted           = 'img/role/fox_targeted.jpg';           //ÍÅ¸Ñ½±·â
   var $poison                 = 'img/role/poison.jpg';                 //ËäÆÇ¼Ô
   var $incubate_poison        = 'img/role/incubate_poison.jpg';        //ÀøÆÇ¼Ô
   var $ability_poison         = 'img/role/ability_poison.jpg';         //ÆÇÇ½ÎÏ
@@ -171,15 +164,52 @@ class RoleImage extends ImageManager{
   var $lost_ability             = 'img/role/lost_ability.jpg';              //Ç½ÎÏ¼º¸ú
 }
 
-//¾¡Íø¿Ø±Ä¤Î²èÁü¥Ñ¥¹
+//¾¡Íø¿Ø±Ä¤Î²èÁü¾ğÊó
 class VictoryImage extends ImageManager{
-  var $human  = 'img/victory_role/human.jpg';  //Â¼¿Í
-  var $wolf   = 'img/victory_role/wolf.jpg';   //¿ÍÏµ
-  var $fox    = 'img/victory_role/fox.jpg';    //ÍÅ¸Ñ
-  var $lovers = 'img/victory_role/lovers.jpg'; //Îø¿Í
-  var $quiz   = 'img/victory_role/quiz.jpg';   //½ĞÂê¼Ô
-  var $draw   = 'img/victory_role/draw.jpg';   //°ú¤­Ê¬¤±
+  var $path      = 'img/victory_role';
+  var $extention = 'jpg';
+  var $class     = 'winner';
+
+  function MakeVictoryImage($victory_role){
+    $name = $victory_role;
+    switch($victory_role){
+    case 'human':
+      $alt = 'Â¼¿Í¾¡Íø';
+      break;
+
+    case 'wolf':
+      $alt = '¿ÍÏµ¾¡Íø';
+      break;
+
+    case 'fox1':
+    case 'fox2':
+      $name = 'fox';
+      $alt = 'ÍÅ¸Ñ¾¡Íø';
+      break;
+
+    case 'lovers':
+      $alt = 'Îø¿Í¾¡Íø';
+      break;
+
+    case 'quiz':
+      $alt = '½ĞÂê¼Ô¾¡Íø';
+      break;
+
+    case 'draw':
+    case 'vanish':
+    case 'quiz_dead':
+      $name = 'draw';
+      $alt = '°ú¤­Ê¬¤±';
+      break;
+
+    default:
+      return '-';
+      break;
+    }
+    return $this->GenerateTag($name, $alt);
+  }
 }
+$VICTORY_IMG = new VictoryImage();
 
 //²»¸»¥Ñ¥¹
 class Sound{
@@ -188,4 +218,5 @@ class Sound{
   var $objection_male   = 'swf/sound_objection_male.swf';   //°ÛµÄ¤¢¤ê(ÃË)
   var $objection_female = 'swf/sound_objection_female.swf'; //°ÛµÄ¤¢¤ê(½÷)
 }
+$SOUND = new Sound();
 ?>

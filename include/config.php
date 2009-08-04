@@ -6,8 +6,8 @@ require_once(dirname(__FILE__) . '/system_class.php');  //システム情報格納クラス
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //デバッグ用に長くしておく
+  #var $die_room = 1200;
+  var $die_room = 12000; //デバッグ用に長くしておく
 
   //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
@@ -31,10 +31,10 @@ class RoomConfig{
   var $default_dummy_boy = true;
 
   var $open_vote = true; //投票した票数を公表する
-  var $default_open_vote = true;
+  var $default_open_vote = false;
 
   var $not_open_cast = true; //霊界で配役を公開しない
-  var $default_not_open_cast = false;
+  var $default_not_open_cast = true;
 
   var $decide = true; //決定者出現 (必要人数は GameConfig->decide 参照)
   var $default_decide = true;
@@ -72,42 +72,53 @@ class RoomConfig{
   var $full_mania = true; //神話マニア村
   var $default_full_mania = false;
 
-  var $quiz = true; //クイズ村 //現在調整中
-  //var $quiz = false; //クイズ村
+  var $quiz = true; //クイズ村
   var $default_quiz = false;
 
-  var $chaos = true; //闇鍋
-  // var $default_chaos = false; //現在未対応
+  var $chaos = true; //闇鍋モード
+  var $default_chaos = false;
 
-  var $chaosfull = true; //真・闇鍋
+  var $chaosfull = true; //真・闇鍋モード
+  var $default_chaosfull = false;
 
-  var $chaos_open_cast = true; //闇鍋村でも配役内訳を表示する
-  var $secret_sub_role = true; //サブ役職を本人に通知しない
-  var $no_sub_role = true; //サブ役職をつけない
+  var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
+  var $default_chaos_open_cast = false;
+
+  var $secret_sub_role = true; //サブ役職を本人に通知しない (闇鍋モード専用オプション)
+  var $default_secret_sub_role = false;
+
+  var $no_sub_role = true; //サブ役職をつけない (闇鍋モード専用オプション)
+  var $default_no_sub_role = false;
 
   //表示する他のサーバのリスト
   var $shared_server_list = array(
 	'satori' => array('name' => 'さとり鯖',
-			  'url' => 'http://satori.crz.jp/'),
+			  'url' => 'http://satori.crz.jp/',
+			  'encode' => 'EUC-JP'),
 
 	'sakuya' => array('name' => '咲夜鯖',
 			  'url' => 'http://www7.atpages.jp/izayoi398/',
+			  'encode' => 'EUC-JP',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>'),
 	/*
 	'cirno' => array('name' => 'チルノ鯖',
 			 'url' => 'http://www12.atpages.jp/cirno/',
+			  'encode' => 'EUC-JP',
 			 'separator' => '<!-- atpages banner tag -->',
 			 'footer' => '</a><br>'),
 	*/
 	'nico' => array('name' => 'ニコ生鯖',
-			'url' => 'http://jinro.ebb.jp/'),
+			'url' => 'http://jinro.ebb.jp/',
+			  'encode' => 'EUC-JP'),
 	/*
 	'nico_test' => array('name' => 'ニコ生テスト鯖',
-			     'url' => 'http://jinro.s369.xrea.com/'),
+			     'url' => 'http://jinro.s369.xrea.com/',
+			  'encode' => 'EUC-JP'),
 	*/
 	'sasuga' => array('name' => '流石兄弟鯖',
 			  'url' => 'http://www12.atpages.jp/yaruo/jinro/',
+			  'encode' => 'EUC-JP',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>'),
 
@@ -154,13 +165,13 @@ class GameConfig{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   var $role_list = array(
-     #4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     4 => array('human' =>  3, 'wolf' => 1),
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     #8 => array('human' =>  4, 'wolf' => 2, 'mage' => 1, 'poison_cat' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -228,7 +239,9 @@ class GameConfig{
 
   //虹色迷彩の変換テーブル
   var $rainbow_replace_list = array('赤' => '橙', '橙' => '黄', '黄' => '緑', '緑' => '青',
-				    '青' => '藍', '藍' => '紫', '紫' => '赤');
+				    '青' => '藍', '藍' => '紫', '紫' => '赤',
+				    '月' => '火', '火' => '水', '水' => '木', '木' => '金',
+				    '金' => '土', '土' => '日', '日' => '月');
 
   var $invisible_rate = 15; //光学迷彩の発言が空白に入れ替わる確率
   var $silent_length  = 25; //無口が発言できる最大文字数
@@ -283,7 +296,7 @@ class GameConfig{
 			      'unconscious'       => '無意識',
 			      'cupid'             => 'キューピッド',
 			      'mania'             => '神話マニア',
-			      'quiz'              => 'GM');
+			      'quiz'              => '出題者');
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -359,6 +372,7 @@ class GameConfig{
 				    'white_fox'         => '白狐',
 				    'poison'            => '毒',
 				    'strong_poison'     => '強毒',
+				    'incubate_poison'   => '潜毒',
 				    'dummy_poison'      => '夢毒',
 				    'poison_cat'        => '猫',
 				    'pharmacist'        => '薬',
@@ -461,9 +475,6 @@ $ROOM_CONF   = new RoomConfig();   //部屋メンテナンス設定
 $GAME_CONF   = new GameConfig();   //ゲーム設定
 $TIME_CONF   = new TimeConfig();   //ゲームの時間設定
 $ICON_CONF   = new IconConfig();   //ユーザアイコン情報
-$ROOM_IMG    = new RoomImage();    //村情報の画像パス
 $ROLE_IMG    = new RoleImage();    //役職の画像パス
-$VICTORY_IMG = new VictoryImage(); //勝利陣営の画像パス
-$SOUND       = new Sound();        //音でお知らせ機能用音源パス
 $MESSAGE     = new Message();      //システムメッセージ
 ?>

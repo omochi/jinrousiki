@@ -69,8 +69,8 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   }
 
   //IPアドレスチェック
+  $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
   if($GAME_CONF->entry_one_ip_address){
-    $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
     $sql = mysql_query("$query AND ip_address = '$ip_address' AND user_no > 0");
     if(mysql_result($sql, 0, 0) != 0){
       OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');

@@ -91,6 +91,18 @@ function CreateRoom($room_name, $room_comment, $max_user){
       $dummy_boy_handle_name = '身代わり君';
       $dummy_boy_password    = $SERVER_CONF->system_password;
     }
+    elseif($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'gm_login'){
+      //GM ログインパスワードをチェック
+      $gm_password = $_POST['gm_password'];
+      if($gm_password == ''){
+	OutputRoomAction('empty');
+	return false;
+      }
+      EscapeStrings(&$gm_password);
+      $game_option .= 'dummy_boy gm_login ';
+      $dummy_boy_handle_name = 'GM';
+      $dummy_boy_password    = $gm_password;
+    }
     if($chaos || $chaosfull){
       if($chaos) $game_option .= 'chaos ';
       if($chaosfull) $game_option .= 'chaosfull ';
@@ -150,11 +162,12 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //身代わり君を入村させる
   if(strpos($game_option, 'dummy_boy') !== false){
+    $ip_address = $_SERVER['REMOTE_ADDR'];
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no,
 			profile, sex, password, live, last_words, ip_address)
 			VALUES($room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0,
 			'{$MESSAGE->dummy_boy_comment}', 'male', '$dummy_boy_password',
-			'live', '{$MESSAGE->dummy_boy_last_words}', '')");
+			'live', '{$MESSAGE->dummy_boy_last_words}', '$ip_address')");
   }
 
   if($entry && mysql_query('COMMIT')) //一応コミット
@@ -222,7 +235,7 @@ function OutputRoomList(){
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
-<img src="{$ROOM_IMG->$status}"><span>[{$room_no}番地]</span>{$room_name}村<br>
+{$ROOM_IMG->GenerateTag($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
 <div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
 </a><br>
 
@@ -344,15 +357,38 @@ EOF;
   }
 
   if($ROOM_CONF->dummy_boy){
-    $checked = ($ROOM_CONF->default_dummy_boy ? ' checked' : '');
+    if($ROOM_CONF->default_dummy_boy)
+      $checked_dummy_boy = ' checked';
+    elseif($ROOM_CONF->default_gerd)
+      $checked_gerd = ' checked';
+    elseif($ROOM_CONF->default_gm_login)
+      $checked_gm = ' checked';
+    else
+      $checked_nothing = ' checked';
+
+    /*
+<input type="radio" name="dummy_boy" value="gerd"{$checked_gerd}>
+身代わり君はゲルト君(村人確定の身代わり君です)<br>
+*/
     echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label for="dummy_boy">{$MESSAGE->game_option_dummy_boy}：</label></td>
+<td><label>{$MESSAGE->game_option_dummy_boy}：</label></td>
 <td class="explain">
-<input id="dummy_boy" type="checkbox" name="dummy_boy" value="on"{$checked}>
-(初日の夜、身代わり君が狼に食べられます)
+<input type="radio" name="dummy_boy" value=""{$checked_nothing}>
+身代わり君なし<br>
+
+<input type="radio" name="dummy_boy" value="on"{$checked_dummy_boy}>
+身代わり君あり(初日の夜、身代わり君が狼に食べられます)<br>
+
+<input type="radio" name="dummy_boy" value="gm_login"{$checked_gm_login}>
+身代わり君は GM (仮想 GM が身代わり君としてログインします)<br>
+<label for="gm_password">GM ログインパスワード：</label>
+<input id="gm_password" type="password" name="gm_password" size="20"><br>
+　　ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。
 </td>
 </tr>
+<tr><td colspan="2"><hr></td></tr>
 
 EOF;
   }
@@ -385,6 +421,7 @@ EOF;
 EOF;
   }
 
+  echo '<tr><td colspan ="2"><hr></td></tr>';
   if($ROOM_CONF->decide){
     $checked = ($ROOM_CONF->default_decide ? ' checked' : '');
     echo <<<EOF
@@ -498,6 +535,7 @@ EOF;
 EOF;
   }
 
+  echo '<tr><td colspan ="2"><hr></td></tr>';
   if($ROOM_CONF->liar){
     $checked = ($ROOM_CONF->default_liar ? ' checked' : '');
     echo <<<EOF
@@ -554,47 +592,38 @@ EOF;
 EOF;
   }
 
-  if($ROOM_CONF->quiz){
-    $checked = ($ROOM_CONF->default_quiz ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="quiz">{$MESSAGE->game_option_quiz}：</label></td>
-<td class="explain">
-<input id="quiz" type="checkbox" name="quiz" value="on"{$checked}>
-(誰か説明文考えて)<br>
-<label for="quiz_password">GM ログインパスワード：</label>
-<input id="quiz_password" type="password" name="quiz_password" size="20">
-</td>
-</tr>
-
-EOF;
-  }
-
-
   if($ROOM_CONF->chaos){
-    $checked = ($ROOM_CONF->default_chaos ? ' checked' : '');
+    if($ROOM_CONF->default_chaos)
+      $checked_chaos = ' checked';
+    elseif($ROOM_CONF->default_chaosfull)
+      $checked_chaosfull = ' checked';
+    else
+      $checked_normal = ' checked';
+
     echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
 <tr>
 <td><label>{$MESSAGE->game_option_chaos}：</label></td>
 <td class="explain">
-<input type="radio" name="chaos" value="" checked>
+<input type="radio" name="chaos" value=""{$checked_normal}>
 通常人狼<br>
 
-<input type="radio" name="chaos" value="chaos">
+<input type="radio" name="chaos" value="chaos"{$checked_chaos}>
 通常村＋α程度に配役がぶれる闇鍋モードです<br>
 
-<input type="radio" name="chaos" value="chaosfull">
+<input type="radio" name="chaos" value="chaosfull"{$checked_chaosfull}>
 人狼1、占い師1以外の全ての役職がランダムとなる真・闇鍋モードです
 </td>
 </tr>
 
 EOF;
     if($ROOM_CONF->chaos_open_cast){
+      $checked = ($ROOM_CONF->default_chaos_open_cast ? ' checked' : '');
       echo <<<EOF
 <tr>
 <td><label for="chaos_open_cast">{$MESSAGE->game_option_chaos_open_cast}：</label></td>
 <td class="explain">
-<input id="chaos_open_cast" type="checkbox" name="chaos_open_cast" value="on">
+<input id="chaos_open_cast" type="checkbox" name="chaos_open_cast" value="on"{$checked}>
 (配役を通知します：闇鍋モード専用オプション)
 </td>
 </tr>
@@ -603,11 +632,12 @@ EOF;
     }
 
     if($ROOM_CONF->secret_sub_role){
+      $checked = ($ROOM_CONF->default_secret_sub_role ? ' checked' : '');
       echo <<<EOF
 <tr>
 <td><label for="secret_sub_role">{$MESSAGE->game_option_secret_sub_role}：</label></td>
 <td class="explain">
-<input id="secret_sub_role" type="checkbox" name="secret_sub_role" value="on">
+<input id="secret_sub_role" type="checkbox" name="secret_sub_role" value="on"{$checked}>
 (サブ役職が分からなくなります：闇鍋モード専用オプション)
 </td>
 </tr>
@@ -616,12 +646,13 @@ EOF;
     }
 
     if($ROOM_CONF->no_sub_role){
+      $checked = ($ROOM_CONF->default_no_sub_role ? ' checked' : '');
       echo <<<EOF
 <tr>
 <td><label for="no_sub_role">{$MESSAGE->game_option_no_sub_role}：</label></td>
 <td class="explain">
-<input id="no_sub_role" type="checkbox" name="no_sub_role" value="on">
-(サブ配役をつけません：闇鍋モード専用オプション)
+<input id="no_sub_role" type="checkbox" name="no_sub_role" value="on"{$checked}>
+(サブ役職をつけません：闇鍋モード専用オプション)
 </td>
 </tr>
 
@@ -629,7 +660,27 @@ EOF;
     }
   }
 
+
+  if($ROOM_CONF->quiz){
+    $checked = ($ROOM_CONF->default_quiz ? ' checked' : '');
+    echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><label for="quiz">{$MESSAGE->game_option_quiz}：</label></td>
+<td class="explain">
+<input id="quiz" type="checkbox" name="quiz" value="on"{$checked}>
+(身代わり君が「出題者」になってクイズを出します)<br>
+<label for="quiz_password">GM ログインパスワード：</label>
+<input id="quiz_password" type="password" name="quiz_password" size="20"><br>
+　　ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。
+</td>
+</tr>
+
+EOF;
+  }
+
   echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
 <tr><td class="make" colspan="2"><input type="submit" value=" 作成 "></td></tr>
 </table>
 </form>

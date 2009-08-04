@@ -348,55 +348,55 @@ foreach($GAME_CONF->role_list as $key => $value){
 </tr>
 
 <tr>
-<td>录客</td><td><img src="<?php echo $ROLE_IMG->human; ?>"></td>
+<td>录客</td><td><?php echo $ROLE_IMG->GenerateTag('human'); ?></td>
 </tr>
 
 <tr>
-<td class="wolf">客系</td><td><img src="<?php echo $ROLE_IMG->wolf; ?>"><br>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->wolf_partner; ?>"></td><td>客系办规</td></tr></table>
+<td class="wolf">客系</td><td><?php $ROLE_IMG->DisplayImage('wolf'); ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('wolf_partner'); ?></td><td>客系办规</td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="mage">狸い徽</td><td><img src="<?php echo $ROLE_IMG->mage; ?>"><br>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->mage_result; ?>"></td><td>录客办规</td><td><img src="<?php echo $ROLE_IMG->result_human; ?>"></td></tr></table>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->mage_result; ?>"></td><td>客系办规</td><td><img src="<?php echo $ROLE_IMG->result_wolf; ?>"></td></tr></table>
+<td class="mage">狸い徽</td><td><?php $ROLE_IMG->DisplayImage('mage'); ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('mage_result'); ?></td><td>录客办规</td><td><?php echo $ROLE_IMG->GenerateTag('result_human'); ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('mage_result'); ?></td><td>客系办规</td><td><?php echo $ROLE_IMG->GenerateTag('result_wolf'); ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="necromancer">晤墙荚</td><td><img src="<?php echo $ROLE_IMG->necromancer; ?>"><br>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->necromancer_result; ?>"></td><td>录客办规</td><td><img src="<?php echo $ROLE_IMG->result_human; ?>"></td></tr></table>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->necromancer_result; ?>"></td><td>客系办规</td><td><img src="<?php echo $ROLE_IMG->result_wolf; ?>"></td></tr></table>
+<td class="necromancer">晤墙荚</td><td><?php $ROLE_IMG->DisplayImage('necromancer'); ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('necromancer_result'); ?></td><td>录客办规</td><td><?php echo $ROLE_IMG->GenerateTag('result_human'); ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('necromancer_result'); ?></td><td>客系办规</td><td><?php echo $ROLE_IMG->GenerateTag('result_wolf'); ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="wolf">陡客</td><td><img src="<?php echo $ROLE_IMG->mad; ?>"></td>
+<td class="wolf">陡客</td><td><?php echo $ROLE_IMG->GenerateTag('mad'); ?></td>
 </tr>
 
 <tr>
-<td class="guard">柬客</td><td><img src="<?php echo $ROLE_IMG->guard; ?>"><br>
-<table class="view"><tr><td>狸い徽办规</td><td><img src="<?php echo $ROLE_IMG->guard_success; ?>"></td></tr></table></td>
+<td class="guard">柬客</td><td><?php $ROLE_IMG->DisplayImage('guard'); ?>
+<table class="view"><tr><td>狸い徽办规</td><td><?php echo $ROLE_IMG->GenerateTag('guard_success'); ?></td></tr></table></td>
 </tr>
 
 <tr>
-<td class="common">鼎铜荚</td><td><img src="<?php echo $ROLE_IMG->common; ?>"><br>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->common_partner; ?>"></td><td>鼎铜荚办规</td></tr></table></td>
+<td class="common">鼎铜荚</td><td><?php $ROLE_IMG->DisplayImage('common'); ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('common_partner'); ?></td><td>鼎铜荚办规</td></tr></table></td>
 </tr>
 
 <tr>
-<td class="fox">团秆</td><td><img src="<?php echo $ROLE_IMG->fox; ?>"><br>
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->fox_target; ?>"></td></tr></table></td>
+<td class="fox">团秆</td><td><?php $ROLE_IMG->DisplayImage('fox'); ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('fox_targeted'); ?></td></tr></table></td>
 </tr>
 
 <tr>
-<td class="poison">虽魄荚</td><td><img src="<?php echo $ROLE_IMG->poison; ?>"></td>
+<td class="poison">虽魄荚</td><td><?php echo $ROLE_IMG->GenerateTag('poison'); ?></td>
 </tr>
 
 <tr>
-<td class="lovers">キュ〖ピッド</td><td><img src="<?php echo $ROLE_IMG->cupid; ?>">
-<table class="view"><tr><td><img src="<?php echo $ROLE_IMG->cupid_pair; ?>"></td><td>硒客办规 硒客企规</td></tr></table></td>
+<td class="lovers">キュ〖ピッド</td><td><?php $ROLE_IMG->DisplayImage('cupid'); ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('cupid_pair'); ?></td><td>硒客办规 硒客企规</td></tr></table></td>
 </tr>
 
 <tr>
@@ -404,13 +404,13 @@ foreach($GAME_CONF->role_list as $key => $value){
 </tr>
 
 <tr>
-<td>涪蜗荚</td><td><img src="<?php echo $ROLE_IMG->authority; ?>"></td>
+<td>涪蜗荚</td><td><?php echo $ROLE_IMG->GenerateTag('authority'); ?></td>
 </tr>
 
 <tr>
 <td class="lovers">硒客</td>
-<td><table class="view"><tr><td><img src="<?php echo $ROLE_IMG->lovers_header; ?>"></td><td>硒客办规</td>
-<td><img src="<?php echo $ROLE_IMG->lovers_footer; ?>"></td></tr></table></td>
+<td><table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('lovers_header'); ?></td><td>硒客办规</td>
+<td><?php echo $ROLE_IMG->GenerateTag('lovers_footer'); ?></td></tr></table></td>
 </tr>
 </table>
 <br>

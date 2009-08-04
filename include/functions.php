@@ -108,12 +108,17 @@ function CheckForbiddenStrings($str){
 function EscapeStrings(&$str, $trim = true){
   if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
   // $str = htmlentities($str, ENT_QUOTES); //UTF に移行したら機能する？
+  $replace_list = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;',
+			'\\' => '&yen;', '"' => '&quot;', "'" => '&#039;');
+  $str = strtr($str, $replace_list);
+  /*
   $str = str_replace('&' , '&amp;' , $str);
   $str = str_replace('<' , '&lt;'  , $str);
   $str = str_replace('>' , '&gt;'  , $str);
   $str = str_replace('\\', '&yen;' , $str);
   $str = str_replace('"' , '&quot;', $str);
   $str = str_replace("'" , '&#039;', $str);
+  */
   if($trim)
     $str = trim($str); //前後の空白と改行コードを削除
   else
@@ -131,18 +136,18 @@ function MakeGameOptionImage($game_option, $option_role = ''){
 
   $str = '';
   if(strpos($game_option, 'wish_role') !== false){
-    AddImgTag(&$str, $ROOM_IMG->wish_role, '役割希望制');
+    $str .= $ROOM_IMG->GenerateTag('wish_role', '役割希望制');
   }
   if(strpos($game_option, 'real_time') !== false){ //実時間の制限時間を取得
     $real_time_str = strstr($game_option, 'real_time');
     sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
     $sentence = "リアルタイム制　昼： $day 分　夜： $night 分";
-    AddImgTag(&$str, $ROOM_IMG->real_time, $sentence);
+    $str .= $ROOM_IMG->GenerateTag('real_time', $sentence) . '['. $day . '：' . $night . ']';
   }
 
   $option_list = explode(' ', $game_option . ' ' .$option_role);
   // print_r($option_list);
-  $display_order_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide',
+  $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'decide',
 			      'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
 			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
 			      'full_mania', 'quiz', 'chaos', 'chaosfull', 'chaos_open_cast',
@@ -162,7 +167,7 @@ function MakeGameOptionImage($game_option, $option_role = ''){
     }
     $sentence .= $MESSAGE->$this_str;
 
-    AddImgTag(&$str, $ROOM_IMG->$this_option, $sentence);
+    $str .= $ROOM_IMG->GenerateTag($this_option, $sentence);
   }
 
   /*
@@ -186,11 +191,6 @@ function MakeGameOptionImage($game_option, $option_role = ''){
   */
 
   return $str;
-}
-
-//オプション画像タグ追加 (OutputRoomList() 用)
-function AddImgTag(&$tag, $src, $title){
-  $tag .= "<img class=\"option\" src=\"$src\" title=\"$title\" alt=\"$title\">";
 }
 
 //共通 HTML ヘッダ出力

@@ -58,7 +58,7 @@
       <li><a href="http://www7.atpages.jp/izayoi398/">咲夜鯖</a></li>
       <!-- <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖（開発チーム）</a></li> -->
       <li><a href="http://jinro.ebb.jp/">ニコ生専用鯖</a></li>
-      <li><a href="http://jinro.s369.xrea.com/">ニコ生専用テスト鯖</a></li>
+      <!-- <li><a href="http://jinro.s369.xrea.com/">ニコ生専用テスト鯖</a></li> -->
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>
       <li><a href="http://www13.atpages.jp/yaranai/">薔薇姉妹鯖</a></li>
       <li><a href="http://www13.atpages.jp/suigintou/">水銀鯖</a></li>

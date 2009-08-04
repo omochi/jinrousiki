@@ -12,6 +12,7 @@ class Message{
   var $game_option_wish_role     = '役割希望制';
   var $game_option_real_time     = 'リアルタイム制';
   var $game_option_dummy_boy     = '初日の夜は身代わり君';
+  var $game_option_gm_login      = '身代わり君は GM';
   var $game_option_open_vote     = '投票した票数を公表する';
   var $game_option_not_open_cast = '霊界で配役を公開しない';
   var $game_option_decide        = '決定者登場';
@@ -86,15 +87,16 @@ class Message{
   //OutputTalkLog() : 会話、システムメッセージ出力
   var $objection = 'が「異議」を申し立てました'; //異議あり
   //var $game_start = 'はゲーム開始に投票しました' //ゲーム開始投票 //現在は不使用
-  var $kick_do        = 'に KICK 投票しました';         //KICK 投票
-  var $vote_do        = 'に処刑投票しました';           //処刑投票
-  var $wolf_eat       = 'に狙いをつけました';           //人狼の投票
-  var $mage_do        = 'を占います';                   //占い師の投票
-  var $guard_do       = 'の護衛に付きました';           //狩人の投票
-  var $reporter_do    = 'を尾行しました';               //ブン屋の投票
-  var $cupid_do       = 'に愛の矢を放ちました';         //キューピッドの投票
-  var $mania_do       = 'の能力を真似ることにしました'; //神話マニアの投票
-  var $poison_cat_do  = 'に蘇生処置をしました';         //猫又の投票
+  var $kick_do           = 'に KICK 投票しました';         //KICK 投票
+  var $vote_do           = 'に処刑投票しました';           //処刑投票
+  var $wolf_eat          = 'に狙いをつけました';           //人狼の投票
+  var $mage_do           = 'を占います';                   //占い師の投票
+  var $guard_do          = 'の護衛に付きました';           //狩人の投票
+  var $reporter_do       = 'を尾行しました';               //ブン屋の投票
+  var $cupid_do          = 'に愛の矢を放ちました';         //キューピッドの投票
+  var $mania_do          = 'の能力を真似ることにしました'; //神話マニアの投票
+  var $poison_cat_do     = 'に蘇生処置をしました';         //猫又の投票
+  var $poison_cat_not_do = 'は蘇生処置をしませんでした';   //猫又の投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -110,18 +112,20 @@ class Message{
   var $lastwords = '夜が明けると前の日に亡くなった方の遺言書が見つかりました';
 
   //OutoutDeadManType() : 死因の表示
+  // var $vote_killed      = 'は投票の結果処刑されました'; //吊り
+  var $vote_killed       = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
   // var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
   var $deadman           = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed       = 'は狼の餌食になったようです'; //狼の襲撃
   var $fox_dead          = '(妖狐) は占い師に呪い殺されたようです'; //狐呪殺
-  var $cursed            = '(占い師) は呪詛に呪い殺されたようです'; //占い師呪殺
-  var $hunted_fox        = '(天狐) は狩人に狩られたようです'; //天狐狩り
+  var $cursed            = 'は呪詛に呪い殺されたようです'; //呪い返し
   var $poison_dead       = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
-  // var $vote_killed      = 'は投票の結果処刑されました'; //吊り
-  var $vote_killed       = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
-  var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
+  var $hunted            = 'は狩人に狩られたようです'; //狩人の狩り
   var $reporter_duty     = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
-  var $vote_sudden_death = 'はショック死しました'; //投票系サブ役職
+  var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
+  var $revive_success    = 'は生き返りました'; //蘇生成功
+  var $revive_failed     = 'の蘇生に失敗したようです'; //蘇生失敗
+  var $vote_sudden_death = 'はショック死しました'; //投票系ショック死
   var $chicken           = 'は小心者だったようです';   //小心者
   var $rabbit            = 'はウサギだったようです';   //ウサギ
   var $perverseness      = 'は天邪鬼だったようです';   //天邪鬼
@@ -181,12 +185,13 @@ class Message{
   var $submit_vote_do = '対象を処刑するに一票'; //処刑投票ボタン
 
   //OutputVoteNight()
-  var $submit_wolf_eat      = '対象を喰い殺す (先着)'; //人狼の襲撃ボタン
-  var $submit_mage_do       = '対象を占う';            //占い師の投票ボタン
-  var $submit_guard_do      = '対象を護衛する';        //狩人の投票ボタン
-  var $submit_reporter_do   = '対象を尾行する';        //ブン屋の投票ボタン
-  var $submit_cupid_do      = '対象に愛の矢を放つ';    //キューピッドの投票ボタン
-  var $submit_mania_do      = '対象を真似る';          //神話マニアの投票ボタン
-  var $submit_poison_cat_do = '対象を蘇生する';        //猫又の投票ボタン
+  var $submit_wolf_eat          = '対象を喰い殺す (先着)'; //人狼の襲撃ボタン
+  var $submit_mage_do           = '対象を占う';            //占い師の投票ボタン
+  var $submit_guard_do          = '対象を護衛する';        //狩人の投票ボタン
+  var $submit_reporter_do       = '対象を尾行する';        //ブン屋の投票ボタン
+  var $submit_cupid_do          = '対象に愛の矢を放つ';    //キューピッドの投票ボタン
+  var $submit_mania_do          = '対象を真似る';          //神話マニアの投票ボタン
+  var $submit_poison_cat_do     = '対象を蘇生する';        //猫又の投票ボタン
+  var $submit_poison_cat_not_do = '誰も蘇生しない';        //猫又の投票ボタン(キャンセル)
 }
 ?>

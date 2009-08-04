@@ -150,6 +150,7 @@
 .guard-do{        background-color: #0099FF;} /* 狩人 */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */
 .mania-do{        background-color: #00CC00;} /* 神話マニア */
+.poison-cat-do{   background-color: #009966;} /* 猫又 */
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;
   padding-left: 6em;
@@ -218,6 +219,10 @@
 .dead-type-vote{
   height: 35px;
   color: #666600;
+}
+.dead-type-revive{
+  height: 35px;
+  color: #009966;
 }
 /* OutputVoteListDay() */
 .vote-list{ /* 投票結果の table */
@@ -311,6 +316,13 @@
 .ability-mania-do{ /* 神話マニアの投票 */
   padding: 0 3em;
   background-color: #00CC00;
+  color: #FFFAFA;
+  font-size: 14pt;
+  font-weight:bold;
+}
+.ability-poison-cat-do{ /* 猫又の投票 */
+  padding: 0 3em;
+  background-color: #009966;
   color: #FFFAFA;
   font-size: 14pt;
   font-weight:bold;

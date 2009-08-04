@@ -105,40 +105,7 @@ EOF;
 
     //オプションと勝敗の解析
     $game_option_str = MakeGameOptionImage($log_room_game_option, $log_room_option_role);
-    switch($log_room_victory_role){
-    case 'human':
-      $voctory_role_str = $VICTORY_IMG->GenerateTag('human', '村人勝利', 'winner');
-      break;
-
-    case 'wolf':
-      $voctory_role_str = $VICTORY_IMG->GenerateTag('wolf', '人狼勝利', 'winner');
-      break;
-
-      // case 'fox': //現在は fox1 or fox2 のみなので不要
-    case 'fox1':
-    case 'fox2':
-      $voctory_role_str = $VICTORY_IMG->GenerateTag('fox', '妖狐勝利', 'winner');
-      break;
-
-    case 'lovers':
-      $voctory_role_str = $VICTORY_IMG->GenerateTag('lovers', '恋人勝利', 'winner');
-      break;
-
-    case 'quiz':
-      $voctory_role_str = $VICTORY_IMG->GenerateTag('quiz', '出題者勝利', 'winner');
-      break;
-
-    case 'draw':
-    case 'vanish':
-    case 'quiz_dead':
-      $voctory_role_str = $VICTORY_IMG->GenerateTag('draw', '引き分け', 'winner');
-      break;
-
-    default:
-      $voctory_role_str = "-";
-      break;
-    }
-
+    $victory_role_str = $VICTORY_IMG->MakeVictoryImage($log_room_victory_role);
     if($log_room_date == 0) //廃村の場合、色を灰色にする
       $dead_room_color = ' style="color:silver"';
     else
@@ -164,7 +131,7 @@ EOF;
 <td class="upper comment">〜 $log_room_comment 〜</td>
 <td class="upper">$user_count ($log_room_max_user)</td>
 <td class="upper">$log_room_date</td>
-<td class="side">$voctory_role_str</td>
+<td class="side">$victory_role_str</td>
 </tr>
 <tr class="lower list">
 <td class="comment">(
