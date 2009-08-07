@@ -12,13 +12,13 @@ class RequestBase{
       $item = strtok('.');
       switch(strtolower($src)){
       case 'get':
-        $this->$item = $_GET[$item];
+        $this->$item = EscapeString($_GET[$item]);
         break;
       case 'post':
-        $this->$item = $_POST[$item];
+        $this->$item = EscapeString($_POST[$item]);
         break;
       default:
-        $this->$spec = $_REQUEST[$spec];
+        $this->$spec = EscapeString($_REQUEST[$spec]);
         break;
       }
     }
