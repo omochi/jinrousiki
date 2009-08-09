@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__) . '/functions.php');
 require_once(dirname(__FILE__) . '/game_format.php');
 require_once(dirname(__FILE__) . '/user_class.php');
+require_once(dirname(__FILE__) . '/talk_class.php');
 require_once(dirname(__FILE__) . '/role/role_manager_class.php');
 
 //セッション認証 返り値 OK:ユーザ名 / NG: false
@@ -536,41 +537,38 @@ function OutputTalkLog(){
   global $MESSAGE, $room_no, $game_option, $status, $date, $day_night, $uname, $role, $live;
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-			user_entry.handle_name AS talk_handle_name,
-			user_entry.sex AS talk_sex,
-			user_icon.color AS talk_color,
-			talk.sentence AS sentence,
-			talk.font_type AS font_type,
-			talk.location AS location
-			FROM user_entry,talk,user_icon
+  $sql = mysql_query("SELECT
+      talk.uname,
+			talk.sentence,
+			talk.font_type,
+			talk.location
+			FROM talk
 			WHERE talk.room_no = $room_no
 			AND talk.location LIKE '$day_night%'
 			AND talk.date = $date
-			AND ((user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-			AND user_entry.icon_no = user_icon.icon_no)
-			OR (user_entry.room_no = 0 AND talk.uname = 'system'
-			AND user_entry.icon_no = user_icon.icon_no))
 			ORDER BY time DESC");
-  $count = mysql_num_rows($sql);
 
   $builder = DocumentBuilder::Generate();
   $builder->BeginTalk('talk');
-  for($i = 0; $i < $count; $i++) OutputTalk(mysql_fetch_assoc($sql), $builder); //会話出力
+  while(($row = mysql_fetch_object($sql, 'Talk')) !== false) {
+    OutputTalk($row, $builder); //会話出力
+  }
   $builder->EndTalk();
 }
 
 //会話出力
-function OutputTalk($array, &$builder){
-  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $game_option, $status, $day_night, $uname, $live, $role;
+function OutputTalk($talk, &$builder){
+  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $USERS, $game_option, $status, $day_night, $uname, $live, $role;
 
-  $talk_uname       = $array['talk_uname'];
-  $talk_handle_name = $array['talk_handle_name'];
-  $talk_sex         = $array['talk_sex'];
-  $talk_color       = $array['talk_color'];
-  $sentence         = $array['sentence'];
-  $font_type        = $array['font_type'];
-  $location         = $array['location'];
+  $said_user = $USERS->ByUname($talk->uname);
+  //$talk_uname は必ず$talkから取得すること。$USERSにはシステムユーザー'system'が存在しないため、$said_userは常にnullになっている。
+  $talk_uname       =  $talk->uname; # $array['talk_uname'];
+  $talk_handle_name = $said_user->handle_name; # $array['talk_handle_name'];
+  $talk_sex         = $said_user->sex; # $array['talk_sex'];
+  $talk_color       = $said_user->color; # $array['talk_color'];
+  $sentence         = $talk->sentence; # $array['sentence'];
+  $font_type        = $talk->font_type; # $array['font_type'];
+  $location         = $talk->location; # $array['location'];
 
   if($RQ_ARGS->add_role == 'on'){ //役職表示モード対応
     $talk_handle_name .= '<span class="add-role"> [' .
@@ -625,26 +623,30 @@ function OutputTalk($array, &$builder){
   elseif($day_night == 'beforegame' || $day_night == 'aftergame' ||
 	 ($live == 'live' && $day_night == 'day' && $location == 'day')){
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-    $symbol = "<font color=\"{$talk_color}\">◆</font>";
-    $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+    # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+    # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+    $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の狼
   elseif($live == 'live' && $day_night == 'night' && $location == 'night wolf'){
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($said_user, $talk);
     }
     else{
-      $builder->AddWhisper('狼の遠吠え', 'wolf_howl', $font_type);
+      # $builder->AddWhisper('狼の遠吠え', 'wolf_howl', $font_type);
+      $builder->AddWhisper('wolf', $talk);
     }
   }
   //ゲーム中、生きている人の夜の囁き狂人
   elseif($live == 'live' && $day_night == 'night' && $location == 'night mad'){
     if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($said_user, $talk);
     }
   }
   //ゲーム中、生きている人の夜の共有者
@@ -652,28 +654,32 @@ function OutputTalk($array, &$builder){
     if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     if(strpos($role, 'dummy_common') !== false); //夢共有者には何も見えない
     elseif(strpos($role, 'common') !== false){
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($said_user, $talk);
     }
     else{
-      $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
+      #$builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
+      $builder->AddWhisper('common', $talk);
     }
   }
   //ゲーム中、生きている人の夜の妖狐
   elseif($live == 'live' && $day_night == 'night' && $location == 'night fox'){
     if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($said_user, $talk);
     }
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($live == 'live' && $day_night == 'night' && $location == 'night self_talk'){
     if($uname == $talk_uname){
       if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $talk_handle_name .= '<span>の独り言</span>';
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      # $talk_handle_name .= '<span>の独り言</span>';
+      # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($said_user, $talk);
     }
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
@@ -772,7 +778,7 @@ function OutputTalk($array, &$builder){
     }
     else{
       $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type, $base_class, $talk_class);
+      $builder->RawAddTalk($symbol, $talk_handle_name, $sentence, $font_type, $base_class, $talk_class);
     }
   }
   //ここからは観戦者と役職非公開モード
@@ -783,42 +789,49 @@ function OutputTalk($array, &$builder){
     if($day_night == 'night'){
       if($location == 'night wolf'){
 	if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
-	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+    $builder->AddTalk($said_user, $talk);
 	}
 	else{
-	  $symbol = '';
-	  $talk_handle_name = '狼の遠吠え';
-	  $sentence = $MESSAGE->wolf_howl;
+	  # $symbol = '';
+	  # $talk_handle_name = '狼の遠吠え';
+	  # $sentence = $MESSAGE->wolf_howl;
+    $builder->AddWhisper('wolf', $talk);
 	}
-	$builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+	# $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
       }
       elseif($location == 'night mad'){
 	if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
-	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
-	  $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+	  # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+    $builder->AddTalk($said_user, $talk);
 	}
       }
       elseif($location == 'night common'){
 	if(strpos($role, 'dummy_common') !== false); //夢共有者には何も見えない
 	elseif(strpos($role, 'common') !== false){
-	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
-	  $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+	  # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+    $builder->AddTalk($said_user, $talk);
 	}
 	else{
-	  $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
+	  # $builder->AddWhisper('共有者の小声', 'common_talk', '', 'talk-common', 'say-common');
+    $builder->AddWhisper('wolf', $talk);
 	}
       }
       elseif($location == 'night fox'){
 	if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-	  $symbol = "<font color=\"{$talk_color}\">◆</font>";
-	  $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+	  # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+	  # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+    $builder->AddTalk($said_user, $talk);
 	}
       }
       // elseif($location == 'night self_talk'); //独り言は非表示
     }
     else{
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      # $symbol = "<font color=\"{$talk_color}\">◆</font>";
+      # $builder->AddTalk($symbol, $talk_handle_name, $sentence, $font_type);
+      $builder->AddTalk($said_user, $talk);
     }
   }
 }

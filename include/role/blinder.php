@@ -8,14 +8,13 @@ class Role_blinder extends Role {
     parent::__construct($user);
   }
 
-  function AddTalk($symbol, $user_info, $sentence, $volume,
-		   $row_class = 'user-talk', $user_class = 'user-name'){
+  function OnAddTalk($user, $talk, &$user_info, &$sentence, &$volume){
     if($this->Ignored() || $this->SameUser($user_info)){
     }
     else{
-      $user_info = '';
+      //ハンドル名を非表示
+      $user_info = '<font style="color:'.$user->color.'">◆</font>';
     }
-    parent::AddTalk($symbol, $user_info, $sentence, $volume, $row_class, $user_class);
   }
 }
 ?>

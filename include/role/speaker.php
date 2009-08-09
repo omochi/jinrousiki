@@ -8,45 +8,38 @@ class Role_speaker extends Role{
     parent::__construct($user);
   }
 
-  function AddTalk($symbol, $user_info, $sentence, $volume,
-		   $row_class = 'user-talk', $user_class = 'user-name'){
+  function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){
     global $MESSAGE;
     if(! $this->Ignored()){
       switch($volume){
       case 'strong':
-	$sentence = $MESSAGE->howling;
-	break;
-
+        $sentence = $MESSAGE->howling;
+        break;
       case 'normal':
-	$volume = 'strong';
-	break;
-
+        $volume = 'strong';
+        break;
       case 'weak':
-	$volume = 'normal';
-	break;
+        $volume = 'normal';
+        break;
       }
     }
-    parent::AddTalk($symbol, $user_info, $sentence, $volume, $row_class, $user_class);
   }
 
-  function AddWhisper($user_info, $sentence, $volume = 'normal', $user_class = '', $say_class = ''){
+  function OnAddWhisper($role, $talk, &$user_info, &$volume, &$message){
     global $MESSAGE;
     if(! $this->Ignored()){
       switch($volume){
       case 'strong':
-	$sentence = $MESSAGE->howling;
-	break;
-
+        $sentence = $MESSAGE->howling;
+        break;
       case 'normal':
-	$volume = 'strong';
-	break;
-
+        $volume = 'strong';
+        break;
       case 'weak':
-	$volume = 'normal';
-	break;
+        $volume = 'normal';
+        break;
       }
     }
-    parent::AddWhisper($user_info, $sentence, $volume, $user_class, $say_class);
   }
 }
 ?>

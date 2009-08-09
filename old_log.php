@@ -263,66 +263,39 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   }
   if($set_location == 'heaven_only'){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-			user_entry.handle_name AS talk_handle_name,
-			user_entry.role AS talk_role,
-			user_entry.sex AS talk_sex,
-			user_icon.color AS talk_color,
-			talk.sentence AS sentence,
-			talk.font_type AS font_type,
-			talk.location AS location
-			FROM user_entry, talk, user_icon
+    $sql = mysql_query("SELECT
+      talk.uname,
+			talk.sentence,
+			talk.font_type,
+			talk.location
+			FROM talk
 			WHERE talk.room_no = $room_no
-			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-			AND user_entry.icon_no = user_icon.icon_no)
-			OR ( user_entry.room_no = 0 AND talk.uname = 'system'
-			AND user_entry.icon_no = user_icon.icon_no) )
 			AND talk.date = $set_date
 			AND ( (talk.location = 'heaven') OR (talk.uname = 'system') )
 			$select_order");
   }
   elseif($set_location == 'beforegame' || $set_location == 'aftergame'){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-			user_entry.handle_name AS talk_handle_name,
-			user_entry.role AS talk_role,
-			user_entry.sex AS talk_sex,
-			user_icon.color AS talk_color,
-			talk.sentence AS sentence,
-			talk.font_type AS font_type,
-			talk.location AS location
-			FROM user_entry, talk, user_icon
+    $sql = mysql_query("SELECT
+      talk.uname,
+			talk.sentence,
+			talk.font_type,
+			talk.location
+			FROM talk
 			WHERE talk.room_no = $room_no
 			AND talk.location like '$set_location%'
-			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
-			AND user_entry.icon_no = user_icon.icon_no)
-			OR (user_entry.room_no = 0 AND talk.uname = 'system'
-			AND user_entry.icon_no = user_icon.icon_no) )
 			$select_order");
   }
   else{
     $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? '' : "AND talk.location <> 'heaven'";
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT
-			room_users.uname AS talk_uname,
-			room_users.handle_name AS talk_handle_name,
-			room_users.role AS talk_role,
-			room_users.sex AS talk_sex,
-			room_users.color AS talk_color,
-			talk.sentence AS sentence,
-			talk.font_type AS font_type,
-			talk.location AS location
-			FROM talk,
-			  (SELECT
-			  users.uname,
-			  users.handle_name,
-			  users.role,
-			  users.sex,
-			  user_icon.color
-			  FROM user_entry users LEFT JOIN user_icon USING (icon_no)
-			  WHERE users.room_no IN ($room_no, 0)) room_users
+      talk.uname,
+			talk.sentence,
+			talk.font_type,
+			talk.location
+			FROM talk
 			WHERE talk.room_no = $room_no
-			AND room_users.uname = talk.uname
 			AND talk.date = $set_date
 			AND talk.location <> 'aftergame'
 			AND talk.location <> 'beforegame'
@@ -342,8 +315,8 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   //出力
   $builder = DocumentBuilder::Generate();
   $builder->BeginTalk("old-log-talk {$table_class}");
-  while(($array = mysql_fetch_assoc($sql)) !== false){
-    $location = $array['location'];
+  while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
+    $location = $talk->location; # $talk['location'];
     if(strpos($location, 'day') !== false && $day_night != 'day'){
       $builder->EndTalk();
       OutputSceneChange($set_date);
@@ -356,7 +329,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
       $day_night = 'night';
       echo '<table class="old-log-talk ' . $day_night . '">'."\n";
     }
-    OutputTalk($array, &$builder); //会話出力
+    OutputTalk($talk, &$builder); //会話出力
   }
   $builder->EndTalk();
 

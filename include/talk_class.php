@@ -1,30 +1,8 @@
 <?php
-class SystemMessage {
-  var $kick_do = '%s は %s にKick投票しました。';
-  var $vote_do = '%s は %s に処刑投票しました。';
-  var $wolf_eat = '%s ら人狼は %s に狙いをつけました。';
-  var $mage_do = '%s は %s を占います。';
-  var $guard_do = '%s は %s を護衛します。';
-  var $cupid_do = '%s は %s に処刑投票しました。';
-
-  var $morning = '朝日が昇り、%d日目の朝がやってきました。';
-  var $night = '日が落ち、暗く静かな夜がやってきました。';
-}
-
-$MESSAGES =& new SystemMessage();
-
 class Talk{
-  function ParseParameters(){
-    global $USERS;
-    $this->player = $USERS->ByUname($this->uname);
-    $this->day_night = $day_night = strtok($this->location, ' ');
-    $this->role = $role = strtok(' ');
-    $is_night = $day_night == 'night';
-    $this->is_wolf = $is_night && $role == 'wolf' ;
-    $this->is_common = $is_night && $role == 'common'; 
-    LineToBR($this->sentence);
-  }
+  var $is_system;
 
+/* このコードはgame_functions.phpのOutputTalkのリファクタリングが進行するまで一時的に凍結されています。(2009-08-02 enogu)
   function ParseSentence(){
     global $USERS, $MESSAGE;
     $action = strtolower(strtok($this->sentence, "\t"));
@@ -66,5 +44,6 @@ class Talk{
     }
     return $this->sentence;
   }
+*/
 }
 ?>

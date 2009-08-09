@@ -64,6 +64,9 @@ if(! function_exists('session_regenerate_id')){
 function TZTime(){
   global $SERVER_CONF;
   return time() + $SERVER_CONF->offset_seconds;
+  /* // ミリ秒対応のコード(案) 2009-08-08 enogu
+  return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ミリ秒対応のコード(案) 2009-08-08 enogu
+  */
 }
 
 //時間(秒)を変換する

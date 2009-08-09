@@ -1,5 +1,5 @@
 <?php
-class Role extends DocumentBuilder{
+class Role extends DocumentBuilderExtension{
   var $actor;
 
   function Role($user){

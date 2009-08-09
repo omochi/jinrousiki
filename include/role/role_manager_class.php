@@ -42,6 +42,26 @@ class Roles{
     #$USERS->Load();
     return new $this->class[$role_name](isset($user) ? $user : $USERS->ByUname($uname));
   }
+
+  function GetWhisperingUserInfo($role_name, &$class_attr){
+    if (strpos($role_name, 'common') !== false)
+      $class_attr = 'talk-common';
+      return '共有者の小声';
+    if (strpos($role_name, 'wolf') !== false)
+      return '狼の遠吠え';
+    return false;
+  }
+
+  function GetWhisperingSound($role_name, $talk, &$class_attr){
+    global $MESSAGE;
+    switch ($role_name){
+    case 'common':
+      $class_attr = 'say-common';
+      return $MESSAGE->common_talk;
+    case 'wolf':
+      return $MESSAGE->wolf_howl;
+    }
+  }
 }
 
 shot('$ROLESを初期化します。');
