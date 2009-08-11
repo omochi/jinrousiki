@@ -6,7 +6,7 @@ $CSS_PATH = '../css'; //CSS のパス設定
 if(! $DEBUG_MODE)
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 
-$icon_no = $_GET['icon_no'];
+$icon_no = (int)$_GET['icon_no'];
 $dbHandle = ConnectDatabase(); //DB 接続
 $sql = mysql_query("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
 $array = mysql_fetch_assoc($sql);

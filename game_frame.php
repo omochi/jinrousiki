@@ -5,7 +5,7 @@
 </head>
 <?php
 $option = 'frameborder="1" framespacing="1" bordercolor="#C0C0C0"';
-$header = '?room_no=' . $_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
+$header = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
 if($_GET['play_sound'] != '') $header .= '&play_sound=' . $_GET['play_sound'];
 if($_GET['list_down']  != '') $header .= '&list_down='  . $_GET['list_down'];
 

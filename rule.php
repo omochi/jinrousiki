@@ -1,4 +1,7 @@
-<?php require_once(dirname(__FILE__) . '/include/time_calc.php'); ?>
+<?php
+require_once(dirname(__FILE__) . '/include/time_calc.php');
+$ROLE_IMG = new RoleImage();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">

@@ -62,7 +62,7 @@ class Message{
   var $victory_lovers = '[恋人・キューピッド勝利] 愛の前には何者も無力だったのでした';
 
   //クイズ GM 勝利
-  var $victory_quiz = '[GM 勝利] 真の回答者にはまだ遠い……修行あるのみ';
+  var $victory_quiz = '[GM 勝利] 真の解答者にはまだ遠い……修行あるのみ';
 
   //クイズ GM 死亡
   var $victory_quiz_dead = '[引き分け] 何という事だ！このままでは決着が付かないぞ！';
@@ -96,7 +96,11 @@ class Message{
   var $cupid_do          = 'に愛の矢を放ちました';         //キューピッドの投票
   var $mania_do          = 'の能力を真似ることにしました'; //神話マニアの投票
   var $poison_cat_do     = 'に蘇生処置をしました';         //猫又の投票
-  var $poison_cat_not_do = 'は蘇生処置をしませんでした';   //猫又の投票
+  var $poison_cat_not_do = 'は蘇生処置をしませんでした';   //猫又のキャンセル投票
+  var $assassin_do       = 'に狙いをつけました';           //暗殺者の投票
+  var $assassin_not_do   = 'は暗殺を行いませんでした';     //暗殺者のキャンセル投票
+  var $trap_mad_do       = 'の周辺に罠を仕掛けました';     //罠師の投票
+  var $trap_mad_not_do   = 'は罠設置を行いませんでした';   //罠師のキャンセル投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -122,6 +126,8 @@ class Message{
   var $poison_dead       = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
   var $hunted            = 'は狩人に狩られたようです'; //狩人の狩り
   var $reporter_duty     = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
+  var $assassin_killed   = 'は暗殺されたようです'; //暗殺者の襲撃
+  var $trapped           = 'は罠にかかって死亡したようです'; //罠
   var $lovers_followed   = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
   var $revive_success    = 'は生き返りました'; //蘇生成功
   var $revive_failed     = 'の蘇生に失敗したようです'; //蘇生失敗
@@ -144,6 +150,8 @@ class Message{
   var $ability_cupid_do      = '結びつける二人を選択してください'; //キューピッドの投票
   var $ability_mania_do      = '能力を真似る人を選択してください'; //神話マニアの投票
   var $ability_poison_cat_do = '蘇生する人を選択してください';     //猫又の投票
+  var $ability_assassin_do   = '暗殺する人を選択してください';     //暗殺者の投票
+  var $ability_trap_mad_do   = '罠を設置する人を選択してください'; //罠師の投票
 
   //-- game_play.php --//
   //CheckSilence()
@@ -185,13 +193,18 @@ class Message{
   var $submit_vote_do = '対象を処刑するに一票'; //処刑投票ボタン
 
   //OutputVoteNight()
-  var $submit_wolf_eat          = '対象を喰い殺す (先着)'; //人狼の襲撃ボタン
-  var $submit_mage_do           = '対象を占う';            //占い師の投票ボタン
-  var $submit_guard_do          = '対象を護衛する';        //狩人の投票ボタン
-  var $submit_reporter_do       = '対象を尾行する';        //ブン屋の投票ボタン
-  var $submit_cupid_do          = '対象に愛の矢を放つ';    //キューピッドの投票ボタン
-  var $submit_mania_do          = '対象を真似る';          //神話マニアの投票ボタン
-  var $submit_poison_cat_do     = '対象を蘇生する';        //猫又の投票ボタン
-  var $submit_poison_cat_not_do = '誰も蘇生しない';        //猫又の投票ボタン(キャンセル)
+  var $submit_wolf_eat          = '対象を喰い殺す (先着)';    //人狼の襲撃ボタン
+  var $submit_mage_do           = '対象を占う';               //占い師の投票ボタン
+  var $submit_guard_do          = '対象を護衛する';           //狩人の投票ボタン
+  var $submit_reporter_do       = '対象を尾行する';           //ブン屋の投票ボタン
+  var $submit_cupid_do          = '対象に愛の矢を放つ';       //キューピッドの投票ボタン
+  var $submit_mania_do          = '対象を真似る';             //神話マニアの投票ボタン
+  var $submit_poison_cat_do     = '対象を蘇生する';           //猫又の投票ボタン
+  var $submit_poison_cat_not_do = '誰も蘇生しない';           //猫又の投票ボタン(キャンセル)
+  var $submit_assassin_do       = '対象を暗殺する';           //暗殺者の投票ボタン
+  var $submit_assassin_not_do   = '誰も暗殺しない';           //暗殺者の投票ボタン(キャンセル)
+  var $submit_trap_mad_do       = '対象の周辺に罠を設置する'; //罠師の投票ボタン
+  var $submit_trap_mad_not_do   = '罠を設置しない';           //罠師の投票ボタン(キャンセル)
 }
+$MESSAGE = new Message();
 ?>

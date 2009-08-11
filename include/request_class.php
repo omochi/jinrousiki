@@ -59,7 +59,7 @@ class LogView extends RequestBase{
       );
     }
     else{
-      $this->GetItems(null, 'get.page', 'get.reverse');
+      $this->GetItems(null, 'get.page', 'get.reverse', 'get.add_role');
     }
   }
 }

@@ -92,10 +92,11 @@ class RoomConfig{
 
   //表示する他のサーバのリスト
   var $shared_server_list = array(
+				  /*
 	'satori' => array('name' => 'さとり鯖',
 			  'url' => 'http://satori.crz.jp/',
 			  'encode' => 'EUC-JP'),
-
+			  */
 	'sakuya' => array('name' => '咲夜鯖',
 			  'url' => 'http://www7.atpages.jp/izayoi398/',
 			  'encode' => 'EUC-JP',
@@ -136,6 +137,7 @@ class RoomConfig{
 				  );
 
 }
+$ROOM_CONF = new RoomConfig();
 
 //ゲーム設定
 class GameConfig{
@@ -165,13 +167,14 @@ class GameConfig{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   var $role_list = array(
-     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     # 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
+     4 => array('wolf' => 1, 'mage' => 1, 'reporter' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
-     #8 => array('human' =>  4, 'wolf' => 2, 'mage' => 1, 'poison_cat' => 1),
+     // 8 => array('human' =>  3, 'wolf' => 2, 'guard' => 1, 'trap_mad' => 2),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -267,6 +270,7 @@ class GameConfig{
 			      'tongue_wolf'       => '舌禍狼',
 			      'mage'              => '占い師',
 			      'soul_mage'         => '魂の占い師',
+			      'psycho_mage'       => '精神鑑定士',
 			      'dummy_mage'        => '夢見人',
 			      'necromancer'       => '霊能者',
 			      'soul_necromancer'  => '雲外鏡',
@@ -274,6 +278,7 @@ class GameConfig{
 			      'medium'            => '巫女',
 			      'mad'               => '狂人',
 			      'fanatic_mad'       => '狂信者',
+			      'trap_mad'          => '罠師',
 			      'whisper_mad'       => '囁き狂人',
 			      'guard'             => '狩人',
 			      'poison_guard'      => '騎士',
@@ -296,6 +301,7 @@ class GameConfig{
 			      'unconscious'       => '無意識',
 			      'cupid'             => 'キューピッド',
 			      'mania'             => '神話マニア',
+			      'assassin'          => '暗殺者',
 			      'quiz'              => '出題者');
 
   //サブ役職のリスト (コード名 => 表示名)
@@ -351,6 +357,7 @@ class GameConfig{
 				    'tongue_wolf'       => '舌狼',
 				    'mage'              => '占',
 				    'soul_mage'         => '魂',
+				    'psycho_mage'       => '心占',
 				    'dummy_mage'        => '夢見',
 				    'reporter'          => '聞',
 				    'necromancer'       => '霊',
@@ -359,6 +366,7 @@ class GameConfig{
 				    'medium'            => '巫',
 				    'mad'               => '狂',
 				    'fanatic_mad'       => '狂信',
+				    'trap_mad'          => '罠',
 				    'whisper_mad'       => '囁狂',
 				    'guard'             => '狩',
 				    'poison_guard'      => '騎',
@@ -380,6 +388,7 @@ class GameConfig{
 				    'unconscious'       => '無',
 				    'cupid'             => 'QP',
 				    'mania'             => 'マ',
+				    'assassin'          => '暗',
 				    'quiz'              => 'GM',
 				    'authority'         => '権',
 				    'random_voter'      => '気',
@@ -416,11 +425,12 @@ class GameConfig{
 				    'flattery'          => '胡麻',
 				    'impatience'        => '短',
 				    'panelist'          => '解',
-				    'copied'            => '元マ',
-				    'lovers'            => '恋');
+				    'lovers'            => '恋',
+				    'copied'            => '元マ');
     return $short_role_list[$role];
   }
 }
+$GAME_CONF = new GameConfig();
 
 //ゲームの時間設定
 class TimeConfig{
@@ -445,15 +455,17 @@ class TimeConfig{
   //沈黙経過時間 (12時間 ÷ $day(昼) or 6時間 ÷ $night (夜) の $silence_pass 倍の時間が進みます)
   var $silence_pass = 4;
 }
+$TIME_CONF = new TimeConfig();
 
 //ゲームプレイ時のアイコン表示設定
 class IconConfig{
   var $path   = './user_icon';   //ユーザアイコンのパス
   var $width  = 45;              //表示サイズ(幅)
   var $height = 45;              //表示サイズ(高さ)
-  var $dead   = 'img/grave.jpg'; //死者
+  var $dead   = 'img/grave.gif'; //死者
   var $wolf   = 'img/wolf.gif';  //狼
 }
+$ICON_CONF = new IconConfig();
 
 //アイコン登録設定
 class UserIcon{
@@ -469,12 +481,4 @@ class OldLogConfig{
   var $one_page = 20;   //過去ログ一覧で1ページでいくつの村を表示するか
   var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }
-
-//データ格納クラスをロード
-$ROOM_CONF   = new RoomConfig();   //部屋メンテナンス設定
-$GAME_CONF   = new GameConfig();   //ゲーム設定
-$TIME_CONF   = new TimeConfig();   //ゲームの時間設定
-$ICON_CONF   = new IconConfig();   //ユーザアイコン情報
-$ROLE_IMG    = new RoleImage();    //役職の画像パス
-$MESSAGE     = new Message();      //システムメッセージ
 ?>

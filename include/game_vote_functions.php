@@ -2,14 +2,14 @@
 require_once(dirname(__FILE__) . '/game_functions.php');
 
 //投票結果出力
-function OutputVoteResult($str, $unlock = false, $reset_vote = false){
+function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
   global $back_url;
 
   if($reset_vote) DeleteVote(); //今までの投票を全部削除
-  OutputActionResult('汝は人狼なりや？[投票結果]',
-		     '<div align="center">' .
-		     '<a name="#game_top"></a>' . $str . '<br>'."\n" .
-		     $back_url . '</div>', '', $unlock);
+  $title  = '汝は人狼なりや？[投票結果]';
+  $header = '<div align="center"><a name="#game_top"></a>';
+  $footer = '<br>'."\n" . $back_url . '</div>';
+  OutputActionResult($title, $header . $sentence . $footer, '', $unlock);
 }
 
 //人数とゲームオプションに応じた役職テーブルを返す (エラー処理は暫定)
@@ -21,17 +21,22 @@ function GetRoleList($user_count, $option_role){
 
   $role_list = $GAME_CONF->role_list[$user_count]; //人数に応じた設定リストを取得
   if($role_list == NULL){ //リストの有無をチェック
-    OutputVoteResult($error_header . $user_count . '人は設定されていません' .
-                     $error_footer, true, true);
+    $sentence = $user_count . '人は設定されていません';
+    OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
   if(strpos($game_option, 'quiz') !== false){ //クイズ村
     $temp_role_list = array();
-    $temp_role_list['human'] = $role_list['human'];
     foreach($role_list as $key => $value){
-      if($key == 'wolf' || $key == 'mad' || $key == 'common' || $key == 'fox')
-	$temp_role_list[$key] = (int)$value;
-      elseif($key != 'human')
+      if(strpos($key, 'wolf') !== false)
+	$temp_role_list['wolf'] += (int)$value;
+      elseif(strpos($key, 'mad') !== false)
+	$temp_role_list['mad'] += (int)$value;
+      elseif(strpos($key, 'common') !== false)
+	$temp_role_list['common'] += (int)$value;
+      elseif(strpos($key, 'fox') !== false)
+	$temp_role_list['fox'] += (int)$value;
+      else
 	$temp_role_list['human'] += (int)$value;
     }
     $temp_role_list['human']--;
@@ -40,17 +45,9 @@ function GetRoleList($user_count, $option_role){
   }
   elseif(strpos($game_option, 'chaosfull') !== false){ //真・闇鍋
     $role_list = array(); //配列をリセット
-    //$role_list['wolf'] = 1; //狼1確保
+    $role_list['wolf'] = 1; //狼1確保
     $role_list['mage'] = 1; //占い師1確保
-    $role_list['resist_wolf'] = 1; //狼1確保
-    $role_list['poison_cat'] = 1; //猫又1確保
-    $role_list['cursed_fox'] = 1; //狼1確保
-    //$role_list['soul_mage'] = 1; //占い師1確保
-    $role_list['guard'] = 1;
-
-    // $role_list['reporter'] = 1; //ブン屋1確保
-    // $role_list['mad'] = 1; //狂人1確保
-    $start_count = 5;
+    $start_count = 2;
 
     //最低限人狼枠
     $wolf_count = ceil($user_count / 10) - 1;
@@ -67,11 +64,11 @@ function GetRoleList($user_count, $option_role){
     }
 
     //最低限妖狐枠
-    $fox_count = ceil($user_count / 20);
+    $fox_count = ceil($user_count / 15) - 1;
     if($fox_count > 0) $start_count += $fox_count;
     for($i = 0; $i < $fox_count; $i++){
       $rand = mt_rand(1, 100);
-      if($rand < 2)       $role_list['cursed_fox']++;
+      if($rand < 1)       $role_list['cursed_fox']++;
       // elseif($rand <  5)  $role_list['poison_fox']++;
       // elseif($rand <  8)  $role_list['white_fox']++;
       elseif($rand < 15)  $role_list['child_fox']++;
@@ -80,45 +77,48 @@ function GetRoleList($user_count, $option_role){
 
     for($i = $start_count; $i < $user_count; $i++){
       $rand = mt_rand(1, 1000);
-      if($rand < 80)      $role_list['wolf']++;
-      elseif($rand <  90) $role_list['cursed_wolf']++;
-      elseif($rand < 115) $role_list['cute_wolf']++;
-      elseif($rand < 130) $role_list['boss_wolf']++;
-      elseif($rand < 155) $role_list['poison_wolf']++;
-      elseif($rand < 165) $role_list['resist_wolf']++;
-      elseif($rand < 180) $role_list['tongue_wolf']++;
-      elseif($rand < 195) $role_list['fox']++;
-      elseif($rand < 200) $role_list['cursed_fox']++;
-      // elseif($rand < 210) $role_list['poison_fox']++;
-      // elseif($rand < 220) $role_list['white_fox']++;
-      elseif($rand < 235) $role_list['child_fox']++;
-      elseif($rand < 260) $role_list['human']++;
-      elseif($rand < 300) $role_list['mage']++;
-      elseif($rand < 320) $role_list['soul_mage']++;
-      elseif($rand < 350) $role_list['dummy_mage']++;
-      elseif($rand < 390) $role_list['necromancer']++;
-      elseif($rand < 410) $role_list['soul_necromancer']++;
-      elseif($rand < 440) $role_list['dummy_necromancer']++;
-      elseif($rand < 480) $role_list['medium']++;
-      elseif($rand < 520) $role_list['mad']++;
-      elseif($rand < 545) $role_list['fanatic_mad']++;
-      elseif($rand < 560) $role_list['whisper_mad']++;
-      elseif($rand < 630) $role_list['common']++;
-      elseif($rand < 650) $role_list['dummy_common']++;
-      elseif($rand < 690) $role_list['guard']++;
-      elseif($rand < 715) $role_list['poison_guard']++;
-      elseif($rand < 750) $role_list['dummy_guard']++;
-      elseif($rand < 780) $role_list['reporter']++;
-      elseif($rand < 800) $role_list['poison']++;
-      elseif($rand < 810) $role_list['strong_poison']++;
-      elseif($rand < 830) $role_list['incubate_poison']++;
-      elseif($rand < 840) $role_list['dummy_poison']++;
-      //elseif($rand < 850) $role_list['poison_cat']++;
-      elseif($rand < 890) $role_list['pharmacist']++;
-      elseif($rand < 910) $role_list['suspect']++;
-      elseif($rand < 930) $role_list['unconscious']++;
-      elseif($rand < 970) $role_list['cupid']++;
-      elseif($rand < 997) $role_list['mania']++;
+      if($rand < 100)     $role_list['wolf']++;
+      elseif($rand < 110) $role_list['boss_wolf']++;
+      elseif($rand < 115) $role_list['cursed_wolf']++;
+      elseif($rand < 145) $role_list['cute_wolf']++;
+      elseif($rand < 160) $role_list['poison_wolf']++;
+      elseif($rand < 170) $role_list['resist_wolf']++;
+      elseif($rand < 200) $role_list['tongue_wolf']++;
+      elseif($rand < 230) $role_list['fox']++;
+      elseif($rand < 235) $role_list['cursed_fox']++;
+      // elseif($rand < 240) $role_list['poison_fox']++;
+      // elseif($rand < 245) $role_list['white_fox']++;
+      elseif($rand < 250) $role_list['child_fox']++;
+      elseif($rand < 280) $role_list['mage']++;
+      elseif($rand < 290) $role_list['soul_mage']++;
+      elseif($rand < 300) $role_list['psycho_mage']++;
+      elseif($rand < 320) $role_list['dummy_mage']++;
+      elseif($rand < 360) $role_list['necromancer']++;
+      elseif($rand < 370) $role_list['soul_necromancer']++;
+      elseif($rand < 390) $role_list['dummy_necromancer']++;
+      elseif($rand < 430) $role_list['medium']++;
+      elseif($rand < 470) $role_list['mad']++;
+      elseif($rand < 480) $role_list['fanatic_mad']++;
+      elseif($rand < 500) $role_list['trap_mad']++;
+      elseif($rand < 510) $role_list['whisper_mad']++;
+      elseif($rand < 590) $role_list['common']++;
+      elseif($rand < 600) $role_list['dummy_common']++;
+      elseif($rand < 630) $role_list['guard']++;
+      elseif($rand < 640) $role_list['poison_guard']++;
+      elseif($rand < 650) $role_list['dummy_guard']++;
+      elseif($rand < 670) $role_list['reporter']++;
+      elseif($rand < 690) $role_list['poison']++;
+      elseif($rand < 700) $role_list['strong_poison']++;
+      elseif($rand < 710) $role_list['incubate_poison']++;
+      elseif($rand < 720) $role_list['dummy_poison']++;
+      elseif($rand < 730) $role_list['poison_cat']++;
+      elseif($rand < 760) $role_list['pharmacist']++;
+      elseif($rand < 790) $role_list['cupid']++;
+      elseif($rand < 810) $role_list['mania']++;
+      elseif($rand < 830) $role_list['assassin']++;
+      elseif($rand < 850) $role_list['suspect']++;
+      elseif($rand < 870) $role_list['unconscious']++;
+      elseif($rand < 997) $role_list['human']++;
       else                $role_list['quiz']++;
     }
 
@@ -219,6 +219,19 @@ function GetRoleList($user_count, $option_role){
       $role_list[$this_key]--;
       $role_list['human']++;
     }
+
+    $assassin_count_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'assassin') !== false) $assassin_count_list[$key] = $value;
+    }
+    $over_assassin_count = array_sum($assassin_count_list) - floor($user_count * 0.2);
+    for(; $over_assassin_count > 0; $over_assassin_count--){
+      arsort($assassin_count_list);
+      $this_key = key($assassin_count_list);
+      $assassin_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['human']++;
+    }
   }
   elseif(strpos($game_option, 'chaos') !== false){ //闇鍋
     //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
@@ -307,11 +320,22 @@ function GetRoleList($user_count, $option_role){
       $wolf_count -= $special_wolf_count; //特殊狼の数だけ通常狼を減らす
 
       if($user_count <= 16){ //16人未満の場合は白狼のみ
+	if(mt_rand(1, 100) <= $user_count){
+	  $role_list['cute_wolf']++;
+	  $special_wolf_count--;
+	}
 	$role_list['boss_wolf'] = $special_wolf_count;
       }
       if($user_count < 20){ //20人未満で舌禍狼出現
-	if(mt_rand(1, 100) <= 40) $role_list['tongue_wolf']++;
-	$role_list['boss_wolf'] = $special_wolf_count - $role_list['tongue_wolf'];
+	if(mt_rand(1, 100) <= 40){
+	  $role_list['tongue_wolf']++;
+	  $special_wolf_count--;
+	}
+	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
+	  $role_list['cute_wolf']++;
+	  $special_wolf_count--;
+	}
+	$role_list['boss_wolf'] = $special_wolf_count;
       }
       else{ //20人以上なら毒狼を先に判定してやや出やすくする
 	if(mt_rand(1, 100) <= $user_count){
@@ -320,6 +344,10 @@ function GetRoleList($user_count, $option_role){
 	}
 	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
 	  $role_list['tongue_wolf']++;
+	  $special_wolf_count--;
+	}
+	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
+	  $role_list['cute_wolf']++;
 	  $special_wolf_count--;
 	}
 	$role_list['boss_wolf'] = $special_wolf_count;
@@ -623,37 +651,17 @@ function GetRoleList($user_count, $option_role){
 	for($i = 0; $i < $strangers_count; $i++){
 	  $rand = mt_rand(1, 100);
 	  if($rand <= 60) $role_list['unconscious']++;
-	  elseif($rand <= 90) $role_list['suspect']++;
-	  else $role_list['dummy_mage']++;
+	  else $role_list['suspect']++;
 	}
       }
       else{ //20人以上ならやや不審者を出やすくする
 	for($i = 0; $i < $strangers_count; $i++){
 	  $rand = mt_rand(1, 100);
 	  if($rand <= 40) $role_list['unconscious']++;
-	  elseif($rand <= 85) $role_list['suspect']++;
-	  else $role_list['dummy_mage']++;
+	  else $role_list['suspect']++;
 	}
       }
       $human_count -= $strangers_count; //村人陣営の残り人数
-    }
-
-    //出題者の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 30){ //0:1 = 99:1
-      if($rand <= 99) $quiz_count = 0;
-      else $quiz_count = 1;
-    }
-    else{ //以後、参加人数が30人増えるごとに 1人ずつ増加
-      $base_count = floor($user_count / 30) - 1;
-      if($rand <= 99) $quiz_count = 0;
-      else $quiz_count = 1;
-    }
-
-    //出題者の配役を決定
-    if($quiz_count > 0 && $human_count >= $quiz_count){
-      $role_list['quiz'] = $quiz_count;
-      $human_count -= $quiz_count; //村人陣営の残り人数
     }
 
     $role_list['human'] = $human_count; //村人の人数
@@ -708,12 +716,12 @@ function GetRoleList($user_count, $option_role){
   }
 
   if($role_list['human'] < 0){ //"村人" の人数をチェック
-    OutputVoteResult($error_header . '"村人" の人数がマイナスになってます' .
-                     $error_footer, true, true);
+    $sentence = '"村人" の人数がマイナスになってます';
+    OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
   if($role_list['wolf'] < 0){ //"人狼" の人数をチェック
-    OutputVoteResult($error_header . '"人狼" の人数がマイナスになってます' .
-                     $error_footer, true, true);
+    $sentence = '"人狼" の人数がマイナスになってます';
+    OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
   //役職名を格納した配列を生成
@@ -726,25 +734,32 @@ function GetRoleList($user_count, $option_role){
   if($role_count != $user_count){ //配列長をチェック
     // echo 'エラー：配役数：' . $role_count;
     // return $now_role_list;
-    OutputVoteResult($error_header . '村人 (' . $user_count . ') と配役の数 (' . $role_count .
-                     ') が一致していません' . $error_footer, true, true);
+    $sentence = '村人 (' . $user_count . ') と配役の数 (' . $role_count . ') が一致していません';
+    OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
   return $now_role_list;
 }
 
 //役職の人数通知リストを作成する
-function MakeRoleNameList($role_count_list){
+function MakeRoleNameList($role_count_list, $chaos = false){
   global $GAME_CONF;
 
-  $sentence = '';
+  $sentence = ($chaos ? '出現役職：' : '');
   foreach($GAME_CONF->main_role_list as $key => $value){
     $count = (int)$role_count_list[$key];
-    if($count > 0) $sentence .= '　' . $value . $count;
+    if($count > 0){
+      $sentence .= '　' . $value;
+      if(! $chaos) $sentence .= $count;
+    }
   }
   foreach($GAME_CONF->sub_role_list as $key => $value){
     $count = (int)$role_count_list[$key];
-    if($count > 0) $sentence .= '　(' . $value . $count . ')';
+    if($count > 0){
+      $sentence .= '　(' . $value;
+      if(! $chaos) $sentence .= $count;
+      $sentence .= ')';
+    }
   }
   return $sentence;
 }

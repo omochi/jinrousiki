@@ -11,7 +11,7 @@
 <body onLoad="set_focus(); reload_game();">
 <a name="game_top"></a>
 <?php
-$url_argv = '?room_no=' . $_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
+$url_argv = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
 if($_GET['play_sound']  != '') $url_argv .= '&play_sound='   . $_GET['play_sound'];
 if($_GET['dead_mode']   != '') $url_argv .= '&dead_mode='    . $_GET['dead_mode'];
 if($_GET['heaven_mode'] != '') $url_argv .= '&heaven_mode='  . $_GET['heaven_mode'];

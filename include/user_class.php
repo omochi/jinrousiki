@@ -39,17 +39,17 @@ class User{
 }
 
 
-class Users{
+class UserDataSet{
   var $room_no;
   var $rows = array();
 
-  function Users($room_no){
+  function UserDataSet($room_no){
     $this->room_no = intval($room_no);
     $this->Load();
   }
 
   function Load(){
-    $result = mysql_query(
+    $sql = mysql_query(
       "SELECT
 	users.room_no,
 	users.user_no,
@@ -69,9 +69,9 @@ class Users{
       WHERE users.room_no = {$this->room_no}
       AND users.user_no >= 0 ORDER BY users.user_no"
     );
-    if($result === false) return;
+    if($sql === false) return;
     $this->rows = array();
-    while(($user = mysql_fetch_object($result, 'User')) !== false){
+    while(($user = mysql_fetch_object($sql, 'User')) !== false){
       $user->ParseCompoundParameters();
       $this->rows[$user->user_no] = $user;
       $this->names[$user->uname] = $user->user_no;
@@ -79,7 +79,7 @@ class Users{
   }
 
   function Save(){
-    foreach ($this->rows as $user) $user->save();
+    foreach($this->rows as $user) $user->save();
   }
 
   function ParseCompoundParameters(){
@@ -114,17 +114,15 @@ class Users{
     return $this->rows[$this->UnameToNumber($uname)]->live;
   }
 
-  /* 汎用性を見て採用する
   function GetUserCount(){
     return count($this->rows);
   }
-  */
 
   //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。
   function RegisterByRequest(){
     extract($_REQUEST, EXTR_PREFIX_ALL, 'unsafe');
     session_regenerate_id();
-    Users::Register(
+    UserDataSet::Register(
       mysql_real_escape_string($unsafe_uname),
       mysql_real_escape_string($unsafe_password),
       mysql_real_escape_string($unsafe_handle_name),
@@ -138,10 +136,11 @@ class Users{
   }
 
   //ユーザー情報を指定して新しいユーザーをデータベースに登録します。(ドラフト：この機能はテストされていません)
-  function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role, $ip_address = '', $session_id = ''){
+  function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role,
+		    $ip_address = '', $session_id = ''){
     mysql_query(
       "INSERT INTO user_entry (room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role)
-      VALUES (
+       VALUES (
 	$this->room_no,
 	(SELECT MAX(user_no) + 1 FROM user_entry WHERE room_no = {$this->room_no}),
 	'$uname', '$password', '$handle_name', '$sex', '$profile', $icon_no, '$role'"
@@ -151,7 +150,7 @@ class Users{
 }
 
 //グローバルオブジェクトと操作関数
-
+/*
 function GetNumber($user){
   global $USERS;
   return is_integer($user) ? $user : $USERS->UnameToNumber($user);
@@ -165,13 +164,6 @@ function GetHandleName($user){
 function IsLiving($user){
   global $USERS;
   return $USERS->rows[GetNumber($user)]->live == 'live';
-}
-
-/*
-function KillUser($user){
-  global $USERS;
-  LoadUsers();
-  return $USERS->rows[GetNumber($user)]->Kill();
 }
 */
 ?>

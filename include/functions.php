@@ -65,7 +65,8 @@ function TZTime(){
   global $SERVER_CONF;
   return time() + $SERVER_CONF->offset_seconds;
   /* // ミリ秒対応のコード(案) 2009-08-08 enogu
-  return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ミリ秒対応のコード(案) 2009-08-08 enogu
+     return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ミリ秒
+     対応のコード(案) 2009-08-08 enogu
   */
 }
 
@@ -114,23 +115,14 @@ function EscapeStrings(&$str, $trim = true){
   $replace_list = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;',
 			'\\' => '&yen;', '"' => '&quot;', "'" => '&#039;');
   $str = strtr($str, $replace_list);
-  /*
-  $str = str_replace('&' , '&amp;' , $str);
-  $str = str_replace('<' , '&lt;'  , $str);
-  $str = str_replace('>' , '&gt;'  , $str);
-  $str = str_replace('\\', '&yen;' , $str);
-  $str = str_replace('"' , '&quot;', $str);
-  $str = str_replace("'" , '&#039;', $str);
-  */
-  if($trim)
-    $str = trim($str); //前後の空白と改行コードを削除
-  else
-    $str = str_replace(array("\r\n", "\r", "\n"), "\n", $str); //改行コードを統一
+  $str = ($trim ? trim($str) : str_replace(array("\r\n", "\r", "\n"), "\n", $str));
+  return $str;
 }
 
 //改行コードを <br> に変換する (nl2br() だと <br /> なので HTML 4.01 だと不向き)
 function LineToBR(&$str){
   $str = str_replace("\n", '<br>', $str);
+  return $str;
 }
 
 //ゲームオプションの画像タグを作成する

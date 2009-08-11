@@ -84,6 +84,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
     array_push($game_option_list, 'wish_role');
+    $ip_address = $_SERVER['REMOTE_ADDR'];
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
@@ -102,6 +103,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
       $game_option .= 'dummy_boy gm_login ';
       $dummy_boy_handle_name = 'GM';
       $dummy_boy_password    = $gm_password;
+      $ip_address = $_SERVER['REMOTE_ADDR'];
     }
     if($chaos || $chaosfull){
       if($chaos) $game_option .= 'chaos ';
@@ -162,7 +164,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //身代わり君を入村させる
   if(strpos($game_option, 'dummy_boy') !== false){
-    $ip_address = $_SERVER['REMOTE_ADDR'];
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no,
 			profile, sex, password, live, last_words, ip_address)
 			VALUES($room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0,

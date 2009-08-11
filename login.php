@@ -8,7 +8,7 @@ session_start();
 $session_id = session_id();
 
 //変数をセット
-$room_no = $_GET['room_no'];
+$room_no = (int)$_GET['room_no'];
 $url     = 'game_frame.php?room_no=' . $room_no;
 $header  = '。<br>' . "\n" . '切り替わらないなら <a href="';
 $footer  = '" target="_top">ここ</a> 。';

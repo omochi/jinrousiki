@@ -68,16 +68,26 @@ WORDS;
   }
 
   function AddTalk($user, $talk){
+    global $GAME_CONF, $RQ_ARGS, $USERS;
+
+    $talk_handle_name = $user->handle_name;
+    if($RQ_ARGS->add_role == 'on'){ //役職表示モード対応
+      $talk_handle_name .= '<span class="add-role"> [' .
+	MakeShortRoleName($USERS->GetRole($talk->uname)) . '] (' . $talk->uname . ')</span>';
+    }
+
     # if ($this->Deligate('AddTalk', $user, $talk)){ return; }
-    $user_info = '<font style="color:'.$user->color.'">◆</font>'.$user->handle_name;
-    if (strpos($talk->location, 'self_talk') !== false) {
-      $user_info.= '<span>の独り言</span>';
+    $user_info = '<font style="color:'.$user->color.'">◆</font>'.$talk_handle_name;
+    if(strpos($talk->location, 'self_talk') !== false){
+      $user_info .= '<span>の独り言</span>';
     }
     $volume = $talk->font_type;
     $sentence = $talk->sentence;
-    foreach ($this->extensions as $ext) {
+    LineToBR($sentence);
+    foreach($this->extensions as $ext){
       $ext->OnAddTalk($user, $talk, $user_info, $volume, $sentence);
     }
+    if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
     $this->cache .= <<<WORDS
 <tr class="user-talk">
 <td class="user-name">{$user_info}</td>
@@ -88,18 +98,20 @@ WORDS;
   }
 
   function AddWhisper($role, $talk){
-    global $ROLES;
+    global $GAME_CONF, $ROLES;
     # if ($this->Deligate('AddWhisper', $user_info, $sentence, $volume, $user_class, $say_class)) return;
-    if (($user_info = $ROLES->GetWhisperingUserInfo($role, $user_class)) !== false) {
+    if(($user_info = $ROLES->GetWhisperingUserInfo($role, $user_class)) !== false){
       $volume = $talk->font_type;
-      $message = $ROLES->GetWhisperingSound($role, $talk, $say_class);
-      foreach ($this->extensions as $ext){
-        $ext->OnAddWhisper($role, $talk, $user_info, $volume, $message);
+      $sentence = $ROLES->GetWhisperingSound($role, $talk, $say_class);
+      foreach($this->extensions as $ext){
+        $ext->OnAddWhisper($role, $talk, $user_info, $volume, $sentence);
       }
+      LineToBR($sentence);
+      if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
       $this->cache .= <<<WORDS
 <tr class="user-talk">
 <td class="user-name {$user_class}">{$user_info}</td>
-<td class="say {$say_class} {$volume}">{$message}</td>
+<td class="say {$say_class} {$volume}">{$sentence}</td>
 </tr>
 
 WORDS;

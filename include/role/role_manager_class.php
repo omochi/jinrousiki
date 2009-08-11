@@ -44,11 +44,13 @@ class Roles{
   }
 
   function GetWhisperingUserInfo($role_name, &$class_attr){
-    if (strpos($role_name, 'common') !== false)
+    if(strpos($role_name, 'common') !== false){
       $class_attr = 'talk-common';
       return '共有者の小声';
-    if (strpos($role_name, 'wolf') !== false)
+    }
+    elseif(strpos($role_name, 'wolf') !== false){
       return '狼の遠吠え';
+    }
     return false;
   }
 

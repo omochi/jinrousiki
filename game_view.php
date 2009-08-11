@@ -13,14 +13,10 @@ $url = 'game_view.php?room_no=' . $room_no . '&view_mode=on';
 $dbHandle = ConnectDatabase(); // DB 接続
 
 //日付とシーンを取得
-$sql = mysql_query("SELECT date, day_night, room_name, room_comment, game_option
-			FROM room WHERE room_no = $room_no");
-$array = mysql_fetch_assoc($sql);
-$date         = $array['date'];
-$day_night    = $array['day_night'];
-$room_name    = $array['room_name'];
-$room_comment = $array['room_comment'];
-$game_option  = $array['game_option'];
+$ROOM = new RoomDataSet($room_no);
+$date        = $ROOM->date;
+$day_night   = $ROOM->day_night;
+$game_option = $ROOM->game_option;
 $real_time    = (strpos($game_option, 'real_time') !== false);
 $system_time  = TZTime(); //現在時刻を取得
 switch($day_night){
@@ -34,7 +30,7 @@ case 'night': //夜
 }
 
 //ユーザ情報をロード
-$USERS = new Users($room_no);
+$USERS = new UserDataSet($room_no);
 
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 
@@ -62,7 +58,7 @@ echo <<<EOF
 <body{$on_load}>
 <a name="#game_top"></a>
 <table class="login"><tr>
-<td classs="room"><span>{$room_name}村</span>　〜{$room_comment}〜[{$room_no}番地]</td>
+<td classs="room"><span>{$ROOM->name}村</span>　〜{$ROOM->comment}〜[{$room_no}番地]</td>
 <td class="login-link">
 
 EOF;

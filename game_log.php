@@ -6,34 +6,30 @@ session_start();
 $session_id = session_id();
 
 //引数を取得
-$room_no       = $_GET['room_no'];
+$room_no       = (int)$_GET['room_no'];
 $log_mode      = $_GET['log_mode'];
-$get_date      = $_GET['date'];
+$get_date      = (int)$_GET['date'];
 $get_day_night = $_GET['day_night'];
+if($get_day_night != 'day' && $get_day_night != 'night'){
+  OutputActionResult('引数エラー', '引数エラー<br>無効な引数です');
+}
 
 $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
 //日付とシーンを取得
-$sql = mysql_query("SELECT date, day_night, room_name, room_comment, game_option, status
-			FROM room WHERE room_no = $room_no");
-$array   = mysql_fetch_assoc($sql);
-$date         = $array['date'];
-$day_night    = $array['day_night'];
-$room_name    = $array['room_name'];
-$room_comment = $array['room_comment'];
-$game_option  = $array['game_option'];
-$status       = $array['status'];
+$ROOM = new RoomDataSet($room_no);
+$date        = $ROOM->date;
+$day_night   = $ROOM->day_night;
+$game_option = $ROOM->game_option;
 
 //自分のハンドルネーム、役割、生存を取得
-$sql = mysql_query("SELECT user_no, handle_name, sex, role, live FROM user_entry
-			WHERE room_no = $room_no AND uname = '$uname' AND user_no > 0");
-$array  = mysql_fetch_assoc($sql);
-$user_no     = $array['user_no'];
-$handle_name = $array['handle_name'];
-$sex         = $array['sex'];
-$role        = $array['role'];
-$live        = $array['live'];
+$USERS = new UserDataSet($room_no); //ユーザ情報をロード
+$user_no     = $USERS->UnameToNumber($uname);
+$handle_name = $USERS->rows[$user_no]->handle_name;
+$sex         = $USERS->rows[$user_no]->sex;
+$role        = $USERS->rows[$user_no]->role;
+$live        = $USERS->rows[$user_no]->live;
 
 if($live != 'dead' && $day_night != 'aftergame'){ //死者かゲーム終了後だけ
   OutputActionResult('ユーザ認証エラー',

@@ -4,15 +4,14 @@ require_once(dirname(__FILE__) . '/include/functions.php');
 EncodePostData();//ポストされた文字列をエンコードする
 
 if($_GET['room_no'] == ''){
-  OutputActionResult('村人登録 [村番号エラー]',
-		     'エラー：村の番号が正常ではありません。<br>'."\n" .
-		     '<a href="index.php">←戻る</a>');
+  $sentence = 'エラー：村の番号が正常ではありません。<br>'."\n".'<a href="index.php">←戻る</a>';
+  OutputActionResult('村人登録 [村番号エラー]', $sentence);
 }
 
 $dbHandle = ConnectDatabase(); //DB 接続
 
 if($_POST['command'] == 'entry'){
-  EntryUser($_GET['room_no'], $_POST['uname'], $_POST['handle_name'], $_POST['icon_no'],
+  EntryUser((int)$_GET['room_no'], $_POST['uname'], $_POST['handle_name'], (int)$_POST['icon_no'],
 	    $_POST['profile'], $_POST['password'], $_POST['sex'], $_POST['role']);
 }
 else{
