@@ -7,10 +7,14 @@ MaintenanceRoom();
 EncodePostData();
 
 if($_POST['command'] == 'CREATE_ROOM'){
-  if(in_array($_POST['max_user'], $ROOM_CONF->max_user_list))
-    CreateRoom($_POST['room_name'], $_POST['room_comment'], $_POST['max_user']);
+  // リファラチェック
+  if (strncmp(@$_SERVER['HTTP_REFERER'], $SERVER_CONF->site_root, strlen($SERVER_CONF->site_root)) != 0)
+    OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
+  // 指定された人数の配役があるかチェック
+  elseif (!in_array($_POST['max_user'], $ROOM_CONF->max_user_list))
+     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   else
-    OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
+    CreateRoom($_POST['room_name'], $_POST['room_comment'], $_POST['max_user']);
 }
 else{
   OutputRoomList();

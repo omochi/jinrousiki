@@ -6,8 +6,9 @@
 <?php
 $option = 'frameborder="1" framespacing="1" bordercolor="#C0C0C0"';
 $header = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
-if($_GET['play_sound'] != '') $header .= '&play_sound=' . $_GET['play_sound'];
-if($_GET['list_down']  != '') $header .= '&list_down='  . $_GET['list_down'];
+if ($_GET['play_sound'] == 'on') $header .= '&play_sound=on';
+if ($_GET['list_down'] == 'on')  $header .= '&list_down=on';
+ 
 
 if($_GET['dead_mode'] == 'on'){
   $url = $header . '&dead_mode=on';

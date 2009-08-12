@@ -7,10 +7,17 @@ session_start();
 session_regenerate_id(); //セッションを新しく作る
 $session_id = session_id();
 
+// エラーページ用タイトル
+$title = 'アイコン登録エラー';
+
+// リファラチェック
+$icon_upload_page_url = $SERVER_CONF->site_root . 'icon_upload.php';
+if (strncmp(@$_SERVER['HTTP_REFERER'], $icon_upload_page_url , strlen($icon_upload_page_url)) != 0)
+  OutputActionResult($title, '無効なアクセスです。');
+
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
 //アイコン名が空白かチェック
-$title = 'アイコン登録エラー';
 $name = $_POST['name'];
 if($name == '') OutputActionResult($title, 'アイコン名を入力してください。');
 

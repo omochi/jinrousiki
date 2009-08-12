@@ -555,7 +555,7 @@ EOF;
       //差分があれば性別を確認して音を鳴らす
       if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
 	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $i");
-	$objection_sound = 'objection_' . mysql_result($sql, 0, 0);
+	$objection_sound = 'objection_' . (mysql_result($sql, 0, 0) == 'male') ? 'male' : 'female';
 	OutputSound($objection_sound, true);
       }
     }

@@ -55,7 +55,7 @@ if($live == 'dead'){ //死んでます
 }
 
 if($command == 'vote'){ //投票処理
-  $target_no = $_POST['target_no']; //投票先の user_no
+  $target_no = $_POST['target_no']; //投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
   $situation = $_POST['situation']; //投票の分類 (Kick、処刑、占い、狼など) //SQL インジェクション注意
 
   if($date == 0){ //ゲーム開始 or Kick 投票処理
@@ -696,7 +696,7 @@ function AggregateVoteDay(){
 
     //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
     $sentence = $this_handle . "\t" . $this_target . "\t" .
-      $this_voted_number ."\t" . $this_vote_number . "\t" . (int)$vote_times;
+      (int)$this_voted_number ."\t" . (int)$this_vote_number . "\t" . (int)$vote_times;
     InsertSystemMessage($sentence, $situation);
   }
 

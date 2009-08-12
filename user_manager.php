@@ -15,7 +15,7 @@ if($_POST['command'] == 'entry'){
 	    $_POST['profile'], $_POST['password'], $_POST['sex'], $_POST['role']);
 }
 else{
-  OutputEntryUserPage($_GET['room_no']);
+  OutputEntryUserPage((int)$_GET['room_no']);
 }
 
 DisconnectDatabase($dbHandle); //DB 接続解除

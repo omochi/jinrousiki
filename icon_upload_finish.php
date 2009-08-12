@@ -1,7 +1,12 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
 
-$icon_no = $_POST['icon_no'];
+// リファラチェック
+$icon_upload_check_page_url = $SERVER_CONF->site_root . 'icon_upload_check.php';
+if (strncmp(@$_SERVER['HTTP_REFERER'], $icon_upload_check_page_url , strlen($icon_upload_check_page_url)) != 0)
+  OutputActionResult('アイコン登録完了ページ[エラー]', '無効なアクセスです。');
+
+$icon_no = (int)$_POST['icon_no'];
 switch($_POST['entry']){
   case 'success': //セッションID情報をDBから削除
     $dbHandle = ConnectDatabase(); //DB 接続
