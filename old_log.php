@@ -171,9 +171,9 @@ function OutputOldLog($room_no){
   //日付とシーンを取得
   $ROOM = new RoomDataSet($room_no);
   static $last_date; $last_date = $ROOM->date;
-  $day_night = $ROOM->day_night;
+  // $day_night = $ROOM->day_night;
 
-  if($ROOM->status != 'finished' || $day_night != 'aftergame'){
+  if(! $ROOM->is_finished() || ! $ROOM->is_aftergame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
 
@@ -299,11 +299,11 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
       $ROOM->day_night = 'day';
       echo '<table class="old-log-talk ' . $ROOM->day_night . '">'."\n";
     }
-    elseif(strpos($location, 'night') !== false && $ROOM->is_night()){
+    elseif(strpos($location, 'night') !== false && ! $ROOM->is_night()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
-      $day_night = 'night';
-      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
+      $ROOM->day_night = 'night';
+      echo '<table class="old-log-talk ' . $ROOM->day_night . '">'."\n";
     }
     OutputTalk($talk, &$builder); //会話出力
   }
