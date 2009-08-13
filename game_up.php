@@ -12,10 +12,10 @@
 <a name="game_top"></a>
 <?php
 $url_argv = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
-if ($_GET['play_sound'] == 'on')  $url_argv .= '&play_sound=on';
-if ($_GET['dead_mode'] == 'on')   $url_argv .= '&dead_mode=on';
-if ($_GET['heaven_mode'] == 'on') $url_argv .= '&heaven_mode=on';
-if ($_GET['list_down'] == 'on')   $url_argv .= '&list_down=on';
+if($_GET['play_sound']  == 'on') $url_argv .= '&play_sound=on';
+if($_GET['dead_mode']   == 'on') $url_argv .= '&dead_mode=on';
+if($_GET['heaven_mode'] == 'on') $url_argv .= '&heaven_mode=on';
+if($_GET['list_down']   == 'on') $url_argv .= '&list_down=on';
 $header = '<form method="POST" action="game_play.php' . $url_argv . '#game_top" target="bottom" ';
 
 //ページ読み込み時に自動でリロードするダミー送信フォーム

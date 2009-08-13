@@ -12,20 +12,18 @@ $title = 'アイコン登録エラー';
 
 // リファラチェック
 $icon_upload_page_url = $SERVER_CONF->site_root . 'icon_upload.php';
-if (strncmp(@$_SERVER['HTTP_REFERER'], $icon_upload_page_url , strlen($icon_upload_page_url)) != 0)
+if(strncmp(@$_SERVER['HTTP_REFERER'], $icon_upload_page_url, strlen($icon_upload_page_url)) != 0){
   OutputActionResult($title, '無効なアクセスです。');
+}
 
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
 //アイコン名が空白かチェック
-$name = $_POST['name'];
-if($name == '') OutputActionResult($title, 'アイコン名を入力してください。');
+if(($name = $_POST['name']) == '') OutputActionResult($title, 'アイコン名を入力してください。');
+EscapeStrings(&$name);
 
 //アイコン名の文字列長のチェック
-$name_length = strlen($name);
-if($name_length > $USER_ICON->name){
-  OutputActionResult($title, IconNameMaxLength());
-}
+if(($name_length = strlen($name)) > $USER_ICON->name) OutputActionResult($title, IconNameMaxLength());
 
 //ファイルサイズのチェック
 if($_FILES['file']['size'] == 0 || $_FILES['file']['size'] > $USER_ICON->size){
@@ -34,24 +32,24 @@ if($_FILES['file']['size'] == 0 || $_FILES['file']['size'] > $USER_ICON->size){
 
 //ファイルの種類のチェック
 switch($_FILES['file']['type']){
-  case 'image/jpeg':
-  case 'image/pjpeg':
-    $ext = '.jpg';
-    break;
+case 'image/jpeg':
+case 'image/pjpeg':
+  $ext = '.jpg';
+  break;
 
-  case 'image/gif':
-    $ext = '.gif';
-    break;
+case 'image/gif':
+  $ext = '.gif';
+  break;
 
-  case 'image/png':
-  case 'image/x-png':
-    $ext = '.png';
-    break;
+case 'image/png':
+case 'image/x-png':
+  $ext = '.png';
+  break;
 
-  default:
-    OutputActionResult($title, $_FILES['file']['type'] .
-		       ' : jpg, gif, png 以外のファイルは登録できません。');
-    break;
+default:
+  OutputActionResult($title, $_FILES['file']['type'] .
+		     ' : jpg, gif, png 以外のファイルは登録できません。');
+  break;
 }
 
 //色指定のチェック
@@ -74,11 +72,9 @@ if($width > $USER_ICON->width || $height > $USER_ICON->height){
 $dbHandle = ConnectDatabase(); //DB 接続
 
 //アイコンの名前が既に登録されていないかチェック
-$sql = mysql_query('SELECT icon_name FROM user_icon');
-if(in_array($name, mysql_fetch_assoc($sql))){
+if(FetchResult("SELECT COUNT(*) FROM user_icon WHERE icon_name = '$name'") > 0){
   OutputActionResult($title, 'そのアイコン名は既に登録されています');
 }
-EscapeStrings(&$name);
 
 if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon テーブルをロック
   OutputActionResult($title, 'サーバが混雑しています。<br>'."\n" .
@@ -87,9 +83,7 @@ if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon テーブルをロック
 
 //アイコン登録数が最大値を超えてないかチェック
 //現在登録されているアイコンナンバーを降順に取得
-$sql = mysql_query('SELECT icon_no FROM user_icon ORDER BY icon_no DESC');
-$array = mysql_fetch_assoc($sql);
-$icon_no = $array['icon_no'] + 1; //一番大きなNo + 1
+$icon_no = FetchResult('SELECT icon_no FROM user_icon ORDER BY icon_no DESC') + 1; //一番大きなNo + 1
 if($icon_no >= $USER_ICON->number) OutputActionResult($title, 'これ以上登録できません', '', true);
 
 //ファイル名の桁をそろえる

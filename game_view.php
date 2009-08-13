@@ -4,8 +4,9 @@ require_once(dirname(__FILE__) . '/include/game_functions.php');
 //引数を取得
 $room_no     = (int)$_GET['room_no']; //部屋 No
 $auto_reload = (int)$_GET['auto_reload']; //オートリロードの間隔
-if($auto_reload != 0 && $auto_reload < $GAME_CONF->auto_reload_list[0])
+if($auto_reload != 0 && $auto_reload < $GAME_CONF->auto_reload_list[0]){
   $auto_reload = $GAME_CONF->auto_reload_list[0];
+}
 
 $view_mode = 'on';
 $url = 'game_view.php?room_no=' . $room_no . '&view_mode=on';
@@ -17,9 +18,8 @@ $ROOM = new RoomDataSet($room_no);
 $date        = $ROOM->date;
 $day_night   = $ROOM->day_night;
 $game_option = $ROOM->game_option;
-$real_time    = (strpos($game_option, 'real_time') !== false);
 $system_time  = TZTime(); //現在時刻を取得
-switch($day_night){
+switch($ROOM->day_night){
 case 'day': //昼
   $time_message = '　日没まで ';
   break;
@@ -39,12 +39,12 @@ if($GAME_CONF->auto_reload && $auto_reload != 0){ //自動更新
 }
 
 //シーンに合わせた文字色と背景色 CSS をロード
-echo '<link rel="stylesheet" href="css/game_' . $day_night . '.css">'."\n";
+echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
 
 //経過時間を取得
-if($real_time){ //リアルタイム制
+if($ROOM->is_real_time()){ //リアルタイム制
   list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
-  if($day_night == 'day' || $day_night == 'night'){
+  if($ROOM->is_playing()){
     $on_load = ' onLoad="output_realtime();"';
     OutputRealTimer($start_time, $end_time);
   }
@@ -83,20 +83,20 @@ echo <<<EOF
 
 EOF;
 
-if($day_night == 'beforegame'){ //ゲーム開始前なら登録画面のリンクを表示
+if($ROOM->is_beforegame()){ //ゲーム開始前なら登録画面のリンクを表示
   echo '<td class="login-link">';
   echo '<a href="user_manager.php?room_no=' . $room_no . '"><span>[住民登録]</span></a>';
   echo '</td>'."\n";
 }
 echo '</tr></table>'."\n";
 
-if($day_night != 'aftergame') OutputGameOption(); //ゲームオプションを表示
+if(! $ROOM->is_finished()) OutputGameOption(); //ゲームオプションを表示
 
 echo '<table class="time-table"><tr>'."\n";
 OutputTimeTable(); //経過日数と生存人数
 
-if($day_night == 'day' || $day_night == 'night'){
-  if($real_time){ //リアルタイム制
+if($ROOM->is_playing()){
+  if($ROOM->is_real_time()){ //リアルタイム制
     echo '<td class="real-time"><form name="realtime_form">'."\n";
     echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
     echo '</form></td>'."\n";
@@ -113,7 +113,7 @@ if($day_night == 'day' || $day_night == 'night'){
 echo '</tr></table>'."\n";
 
 OutputPlayerList(); //プレイヤーリスト
-if($day_night == 'aftergame') OutputVictory(); //勝敗結果
+if($ROOM->is_finished()) OutputVictory(); //勝敗結果
 OutputRevoteList(); //再投票メッセージ
 OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言

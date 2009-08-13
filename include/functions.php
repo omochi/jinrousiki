@@ -60,6 +60,25 @@ if(! function_exists('session_regenerate_id')){
   }
 }
 
+//DB から単体の値を取得する処理のラッパー関数
+function FetchResult($query){
+  return mysql_result(mysql_query($query), 0, 0);
+}
+
+//DB から該当するデータの行数を取得する処理のラッパー関数
+function FetchCount($query){
+  return mysql_num_rows(mysql_query($query));
+}
+
+//DB から一次元の配列を取得する処理のラッパー関数
+function FetchArray($query){
+  $array = array();
+  $sql   = mysql_query($query);
+  $count = mysql_num_rows($sql);
+  for($i = 0; $i < $count; $i++) array_push($array, mysql_result($sql, $i, 0));
+  return $array;
+}
+
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
   global $SERVER_CONF;
@@ -207,11 +226,13 @@ EOF;
 
 //結果ページ HTML ヘッダ出力
 function OutputActionResultHeader($title, $url = ''){
-  global $day_night;
+  global $ROOM;
 
   OutputHTMLHeader($title);
   if($url != '') echo '<meta http-equiv="Refresh" content="1;URL=' . $url . '">'."\n";
-  if($day_night != '')  echo '<link rel="stylesheet" href="css/game_' . $day_night . '.css">'."\n";
+  if($ROOM->day_night != ''){
+    echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
+  }
   echo '</head><body>'."\n";
 }
 

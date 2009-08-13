@@ -218,6 +218,7 @@ function LayoutTalkLog($last_date, $is_reverse){
 
 //霊界のみのログ表示順を表現します。
 function LayoutHeaven($last_date, $is_reverse){
+  global $ROOM;
   if($is_reverse){
     for($i = 1; $i <= $last_date; $i++){
       OutputDateTalkLog($i, 'heaven_only', $is_reverse);
@@ -280,25 +281,25 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
      $set_date != $last_date && ! $is_reverse && $RQ_ARGS->heaven_only != 'on'){
-    $date = $set_date + 1;
-    $day_night = 'day';
+    $ROOM->date = $set_date + 1;
+    $ROOM->day_night = 'day';
     OutputLastWords(); //遺言を出力
     OutputDeadMan();   //死亡者を出力
   }
-  $day_night = $table_class;
+  $ROOM->day_night = $table_class;
 
   //出力
   $builder = DocumentBuilder::Generate();
   $builder->BeginTalk("old-log-talk {$table_class}");
   while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
     $location = $talk->location;
-    if(strpos($location, 'day') !== false && $day_night != 'day'){
+    if(strpos($location, 'day') !== false && ! $ROOM->is_day()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
-      $day_night = 'day';
-      echo '<table class="old-log-talk ' . $day_night . '">'."\n";
+      $ROOM->day_night = 'day';
+      echo '<table class="old-log-talk ' . $ROOM->day_night . '">'."\n";
     }
-    elseif(strpos($location, 'night') !== false && $day_night != 'night'){
+    elseif(strpos($location, 'night') !== false && $ROOM->is_night()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $day_night = 'night';
@@ -310,8 +311,8 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
   if($set_location != 'beforegame' && $set_location != 'aftergame' &&
      $set_date != $last_date && $is_reverse && $RQ_ARGS->heaven_only != 'on'){
-    $day_night = 'day';
-    $date = $set_date + 1;
+    $ROOM->day_night = 'day';
+    $ROOM->date = $set_date + 1;
     OutputDeadMan();   //死亡者を出力
     OutputLastWords(); //遺言を出力
   }
@@ -319,12 +320,12 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
 //シーン切り替え時のログ出力
 function OutputSceneChange($set_date){
-  global $RQ_ARGS, $date, $day_night;
+  global $RQ_ARGS, $ROOM;
 
   if($RQ_ARGS->heaven_only == 'on') return;
-  $date = $set_date;
+  $ROOM->date = $set_date;
   if($RQ_ARGS->reverse_log == 'on'){
-    $day_night = 'night';
+    $ROOM->day_night = 'night';
     OutputVoteList(); //投票結果出力
     OutputDeadMan();  //死亡者を出力
   }

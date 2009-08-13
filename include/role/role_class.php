@@ -11,8 +11,8 @@ class Role extends DocumentBuilderExtension{
   }
 
   function Ignored(){ //$live をここで参照してまずいのなら書き換え願います
-    global $day_night, $live;
-    return ($live == 'live') && ($day_night == 'beforegame' || $day_night == 'aftergame');
+    global $ROOM, $live;
+    return ($live == 'live' || ! $ROOM->is_playing());
   }
 
   function SameUser($userinfo){

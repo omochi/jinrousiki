@@ -23,6 +23,18 @@ class RoomDataSet{
     return (strpos($this->game_option, 'real_time') !== false);
   }
 
+  function is_dummy_boy(){
+    return (strpos($this->game_option, 'dummy_boy') !== false);
+  }
+
+  function is_open_cast(){
+    return (strpos($this->game_option, 'not_open_cast') === false);
+  }
+
+  function is_quiz(){
+    return (strpos($this->game_option, 'quiz') !== false);
+  }
+
   function is_beforegame(){
     return $this->day_night == 'beforegame';
   }
@@ -35,16 +47,16 @@ class RoomDataSet{
     return $this->day_night == 'night';
   }
 
+  function is_aftergame(){
+    return $this->day_night == 'aftergame';
+  }
+
   function is_first_night(){
     return ($this->is_night() && $this->date == 1);
   }
 
   function is_after_first_night(){
     return ($this->is_night() && $this->date > 1);
-  }
-
-  function is_aftergame(){
-    return $this->day_night == 'aftergame';
   }
 
   function is_playing(){

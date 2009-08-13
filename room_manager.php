@@ -7,14 +7,18 @@ MaintenanceRoom();
 EncodePostData();
 
 if($_POST['command'] == 'CREATE_ROOM'){
-  // リファラチェック
-  if (strncmp(@$_SERVER['HTTP_REFERER'], $SERVER_CONF->site_root, strlen($SERVER_CONF->site_root)) != 0)
+  //リファラチェック
+  if(strncmp(@$_SERVER['HTTP_REFERER'], $SERVER_CONF->site_root, strlen($SERVER_CONF->site_root)) != 0){
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
+  }
+
   // 指定された人数の配役があるかチェック
-  elseif (!in_array($_POST['max_user'], $ROOM_CONF->max_user_list))
-     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
-  else
+  if(in_array($_POST['max_user'], $ROOM_CONF->max_user_list)){
     CreateRoom($_POST['room_name'], $_POST['room_comment'], $_POST['max_user']);
+  }
+  else{
+    OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
+  }
 }
 else{
   OutputRoomList();
@@ -33,7 +37,7 @@ function MaintenanceRoom(){
   MaintenanceRoomAction($list, $query, $ROOM_CONF->die_room);
 
   //終了した部屋のセッションIDのデータをクリアする
-  $list = mysql_query("SELECT room.room_no, last_updated from room, user_entry
+  $list = mysql_query("SELECT room.room_no, last_updated FROM room, user_entry
 			WHERE room.room_no = user_entry.room_no
 			AND !(user_entry.session_id is NULL) GROUP BY room_no");
   $query = "UPDATE user_entry SET session_id = NULL WHERE room_no = ";
@@ -46,8 +50,7 @@ function MaintenanceRoom(){
 function MaintenanceRoomAction($list, $query, $base_time){
   $time = TZTime();
   while(($array = mysql_fetch_assoc($list)) !== false){
-    $room_no      = $array['room_no'];
-    $last_updated = $array['last_updated'];
+    extract($array);
     $diff_time    = $time - $last_updated;
     if($diff_time > $base_time) mysql_query($query . $room_no);
   }
@@ -155,9 +158,8 @@ function CreateRoom($room_name, $room_comment, $max_user){
     return false;
   }
 
-  $result = mysql_query('SELECT room_no FROM room ORDER BY room_no DESC'); //降順にルーム No を取得
-  $room_no_array = mysql_fetch_assoc($result); //一行目(最も大きな No)を取得
-  $room_no = $room_no_array['room_no'] + 1;
+  //降順にルーム No を取得して最も大きな No を取得
+  $room_no = FetchResult('SELECT room_no FROM room ORDER BY room_no DESC') + 1;
 
   //登録
   $time = TZTime();
@@ -227,14 +229,7 @@ function OutputRoomList(){
   $sql = mysql_query("SELECT room_no, room_name, room_comment, game_option, option_role, max_user,
 			status FROM room WHERE status <> 'finished' ORDER BY room_no DESC ");
   while(($array = mysql_fetch_assoc($sql)) !== false){
-    $room_no      = $array['room_no'];
-    $room_name    = $array['room_name'];
-    $room_comment = $array['room_comment'];
-    $game_option  = $array['game_option'];
-    $option_role  = $array['option_role'];
-    $max_user     = $array['max_user'];
-    $status       = $array['status'];
-
+    extract($array);
     $option_img_str = MakeGameOptionImage($game_option, $option_role); //ゲームオプションの画像
     // $option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
 
@@ -260,11 +255,7 @@ function OutputSharedServerRoom(){
   if(! $SERVER_CONF->shared_server) return false;
 
   foreach($ROOM_CONF->shared_server_list as $server => $array){
-    $this_name      = $array['name'];
-    $this_url       = $array['url'];
-    $this_encode    = $array['encode'];
-    $this_separator = $array['separator'];
-    $this_footer    = $array['footer'];
+    extract($array, EXTR_PREFIX_ALL, 'this');
 
     if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
     #echo $this_data; //デバッグ用

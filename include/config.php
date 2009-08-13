@@ -6,8 +6,8 @@ require_once(dirname(__FILE__) . '/system_class.php');  //システム情報格納クラス
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  #var $die_room = 1200;
-  var $die_room = 12000; //デバッグ用に長くしておく
+  var $die_room = 1200;
+  #var $die_room = 12000; //デバッグ用に長くしておく
 
   //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
@@ -92,11 +92,10 @@ class RoomConfig{
 
   //表示する他のサーバのリスト
   var $shared_server_list = array(
-				  /*
 	'satori' => array('name' => 'さとり鯖',
 			  'url' => 'http://satori.crz.jp/',
 			  'encode' => 'EUC-JP'),
-			  */
+
 	'sakuya' => array('name' => '咲夜鯖',
 			  'url' => 'http://www7.atpages.jp/izayoi398/',
 			  'encode' => 'EUC-JP',
@@ -143,8 +142,8 @@ $ROOM_CONF = new RoomConfig();
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  #var $entry_one_ip_address = true;
-  var $entry_one_ip_address = false; //デバッグ用
+  var $entry_one_ip_address = true;
+  #var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -167,9 +166,8 @@ class GameConfig{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   var $role_list = array(
-     # 4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
-     4 => array('wolf' => 1, 'mage' => 1, 'reporter' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),

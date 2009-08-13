@@ -31,7 +31,7 @@ $sex         = $USERS->rows[$user_no]->sex;
 $role        = $USERS->rows[$user_no]->role;
 $live        = $USERS->rows[$user_no]->live;
 
-if($live != 'dead' && $day_night != 'aftergame'){ //死者かゲーム終了後だけ
+if($live != 'dead' && ! $ROOM->is_aftergame()){ //死者かゲーム終了後だけ
   OutputActionResult('ユーザ認証エラー',
 		     'ログ閲覧許可エラー<br>' .
 		     '<a href="index.php" target="_top">トップページ</a>' .
@@ -39,17 +39,17 @@ if($live != 'dead' && $day_night != 'aftergame'){ //死者かゲーム終了後だけ
 }
 
 $live = 'dead';
-$date = $get_date;
-$day_night = $get_day_night;
+$ROOM->date = $get_date;
+$ROOM->day_night = $get_day_night;
 
 OutputGamePageHeader(); //HTMLヘッダ
-echo '<table><tr><td width="1000" align="right">ログ閲覧 ' . $date . ' 日目 (' .
-  ($day_night == 'day' ? '昼' : '夜') . ')</td></tr></table>'."\n";
+echo '<table><tr><td width="1000" align="right">ログ閲覧 ' . $ROOM->date . ' 日目 (' .
+  ($ROOM->is_day() ? '昼' : '夜') . ')</td></tr></table>'."\n";
 //OutputPlayerList();    //プレイヤーリスト
 OutputTalkLog();       //会話ログ
 OutputAbilityAction(); //能力発揮
 OutputDeadMan();       //死亡者
-if($day_night == 'night') OutputVoteList(); //投票結果
+if($ROOM->is_night()) OutputVoteList(); //投票結果
 OutputHTMLFooter();
 DisconnectDatabase($dbHandle); //DB 接続解除
 ?>

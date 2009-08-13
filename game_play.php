@@ -61,7 +61,7 @@ ConvertSay(&$say); //発言置換処理
 if($say != '' && $font_type == 'last_words' && $live == 'live' && $uname != 'dummy_boy'){
   EntryLastWords($say);  //生きていれば遺言登録
 }
-elseif($say != '' && ($last_load_day_night == $day_night ||
+elseif($say != '' && ($last_load_day_night == $ROOM->day_night ||
 		      $live == 'dead' || $uname == 'dummy_boy')){
   Say($say); //死んでいるか、最後にリロードした時とシーンが一致しているか身代わり君なら書き込む
 }
@@ -70,7 +70,7 @@ else{
 }
 
 //最後にリロードした時のシーンを更新
-mysql_query("UPDATE user_entry SET last_load_day_night = '$day_night'
+mysql_query("UPDATE user_entry SET last_load_day_night = '{$ROOM->day_night}'
 		WHERE room_no = $room_no AND uname = '$uname' AND user_no > 0");
 mysql_query('COMMIT');
 
@@ -80,7 +80,7 @@ OutputGameHeader(); //部屋のタイトルなど
 if($heaven_mode != 'on'){
   if($list_down != 'on') OutputPlayerList(); //プレイヤーリスト
   OutputAbility(); //自分の役割の説明
-  if($day_night == 'day' && $live == 'live') CheckSelfVoteDay(); //昼の投票済みチェック
+  if($ROOM->is_day() && $live == 'live') CheckSelfVoteDay(); //昼の投票済みチェック
   OutputRevoteList(); //再投票の時、メッセージを表示する
 }
 
@@ -119,7 +119,7 @@ function SendCookie(){
   $self_objection_count = FetchResult($query);
 
   //生きていて(ゲーム終了後は死者でもOK)「異議」あり、のセット要求があればセットする(最大回数以内の場合)
-  if($live == 'live' && $ROOM->day_night != 'night' && $set_objection == 'set' &&
+  if($live == 'live' && ! $ROOM->is_night() && $set_objection == 'set' &&
      $self_objection_count < $GAME_CONF->objection){
     InsertSystemMessage($user_no, 'OBJECTION');
     InsertSystemTalk('OBJECTION', $system_time, '', '', $uname);
@@ -173,10 +173,10 @@ function ConvertSay(&$say){
   //リロード時、死者、ゲームプレイ中以外なら処理スキップ
   if($say == '' || $live != 'live' || ! $ROOM->is_playing()) return false;
 
-  //萌狼・不審者は一定確率で発言が遠吠えになる
+  //萌狼・不審者は一定確率で発言が遠吠え(デフォルト時)になる
   if((strpos($role, 'cute_wolf') !== false || strpos($role, 'suspect') !== false) &&
      mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
-    $say = $MESSAGE->wolf_howl;
+    $say = ($MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl);
   }
   //紳士・淑女は一定確率で発言が入れ替わる
   elseif((strpos($role, 'gentleman') !== false || strpos($role, 'lady') !== false) &&
@@ -408,7 +408,7 @@ function CheckSilence(){
 	  array_push($action_list, 'GUARD_DO', 'REPORTER_DO', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
 		     'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
 	  array_push($actor_list, '%guard', 'reporter', 'assassin', 'trap_mad');
-	  if(strpos($ROOM->game_option, 'not_open_cast') !== false){
+	  if(! $ROOM->is_open_cast()){
 	    array_push($action_list, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
 	    array_push($actor_list, 'poison_cat');
 	  }
@@ -462,7 +462,7 @@ function CheckSilence(){
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $TIME_CONF, $MESSAGE, $ROOM, $system_time, $sudden_death_time, $room_no,
+  global $GAME_CONF, $TIME_CONF, $MESSAGE, $system_time, $sudden_death_time, $room_no,
     $ROOM, $dead_mode, $heaven_mode, $live, $handle_name, $auto_reload, $play_sound, $list_down,
     $cookie_day_night, $cookie_objection, $objection_array, $objection_left_count;
 
@@ -502,7 +502,9 @@ function OutputGameHeader(){
     elseif($ROOM->is_aftergame()){
       $query = "SELECT COUNT(uname) FROM talk WHERE room_no = $room_no " .
 	"AND date = $ROOM->date AND location = 'day'";
-      if(FetchResult($query) > 0) echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
+      if(FetchResult($query) > 0){
+	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
+      }
     }
 
     if($heaven_mode == 'on'){
@@ -555,7 +557,7 @@ EOF;
       //差分があれば性別を確認して音を鳴らす
       if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
 	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $i");
-	$objection_sound = 'objection_' . (mysql_result($sql, 0, 0) == 'male') ? 'male' : 'female';
+	$objection_sound = 'objection_' . mysql_result($sql, 0, 0);
 	OutputSound($objection_sound, true);
       }
     }
@@ -683,8 +685,7 @@ function OutputHeavenTalkLog(){
     LineToBR(&$sentence); //改行を<br>タグに置換
 
     //霊界で役職が公開されている場合のみ HN を追加
-    if(strpos($ROOM->game_option, 'not_open_cast') === false)
-      $talk_handle .= '<span>(' . $talk_uname . ')</span>';
+    if($ROOM->is_open_cast()) $talk_handle .= '<span>(' . $talk_uname . ')</span>';
 
     //会話出力
     echo '<tr class="user-talk">'."\n";
@@ -909,7 +910,7 @@ function OutputAbility(){
     // $ROLE_IMG->DisplayImage('poison_cat');
     echo '[役割]<br>　あなたは「猫又」、毒をもっています。また、死んだ人を誰か一人蘇らせる事ができます。<br>'."\n";
 
-    if(strpos($ROOM->game_option, 'not_open_cast') !== false){
+    if(! $ROOM->is_open_cast()){
       //蘇生結果を表示
       $action = 'POISON_CAT_RESULT';
       $sql    = GetAbilityActionResult($action);
@@ -929,7 +930,7 @@ function OutputAbility(){
   }
   elseif($main_role == 'incubate_poison'){
     $ROLE_IMG->DisplayImage($main_role);
-    if($ROOM->date > 5) OutputAbilityResult('ability_poison', NULL);
+    if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
   }
   elseif(strpos($main_role, 'poison') !== false) $ROLE_IMG->DisplayImage('poison');
   elseif($main_role == 'pharmacist'){
@@ -951,7 +952,6 @@ function OutputAbility(){
 
     //自分が矢を打った恋人 (自分自身含む) を表示する
     $cupid_id = strval($user_no);
-    //OutputPartner("role LIKE '%reporter%'", 'cupid_pair');
     OutputPartner("role LIKE '%lovers[$cupid_id]%'", 'cupid_pair');
 
     if($ROOM->is_first_night()) OutputVoteMessage('cupid-do', 'CUPID_DO'); //初日夜の投票
@@ -1044,7 +1044,7 @@ function OutputAbilityResult($header, $target, $footer = NULL){
 
   echo '<table class="ability-result"><tr>'."\n";
   if($header) echo '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n";
-  if($target) echo '<td>' . $target . '</td>';
+  if($target) echo '<td>' . $target . '</td>'."\n";
   if($footer) echo '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
   echo '</tr></table>'."\n";
 }
