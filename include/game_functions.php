@@ -36,8 +36,8 @@ function OutputGamePageHeader(){
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . $room_no . '&auto_reload=' . $auto_reload;
-  if($play_sound != '') $url_header .= '&play_sound=' . $play_sound;
-  if($list_down  != '') $url_header .= '&list_down='  . $list_down;
+  if($play_sound == 'on') $url_header .= '&play_sound=on';
+  if($list_down  == 'on') $url_header .= '&list_down=on';
 
   $title = '汝は人狼なりや？ [プレイ]';
   $anchor_header = '<br>'."\n";
@@ -122,7 +122,7 @@ function OutputAutoReloadLink($url){
 
 //ゲームオプション画像を出力
 function OutputGameOption(){
-  global $GAME_CONF, $MESSAGE, $room_no, $ROOM;
+  global $GAME_CONF, $room_no, $ROOM;
 
   $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = $room_no");
   echo '<table class="time-table"><tr>'."\n";
@@ -596,19 +596,21 @@ function OutputTalk($talk, &$builder){
 		   $flag_not_poison_cat || $flag_assassin || $flag_not_assassin ||
 		   $flag_trap_mad || $flag_not_trap_mad));
 
+  $flag_live_night = ($live == 'live' && $ROOM->is_night());
+  $flag_group_wolf = (strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false);
+  $flag_group_fox  = (strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false);
+
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
     $builder->AddSystemMessage('objection-' . $talk_sex, $sentence);
   }
-  elseif($location_system && $sentence == 'GAMESTART_DO'){ //ゲーム開始投票 (現在は何も表示しない仕様)
-  }
+  elseif($location_system && $sentence == 'GAMESTART_DO'); //ゲーム開始投票 (現在は何も表示しない仕様)
   elseif($location_system && strpos($sentence, 'KICK_DO') === 0){ //KICK 投票
     $target_handle_name = ParseStrings($sentence, 'KICK_DO');
     $sentence = "{$talk_handle_name} は {$target_handle_name} {$MESSAGE->kick_do}";
     $builder->AddSystemMessage('kick', $sentence);
   }
-  elseif($live == 'live' && $flag_system){ //生存中は投票情報は非表示
-  }
+  elseif($live == 'live' && $flag_system); //生存中は投票情報は非表示
   elseif($talk_uname == 'system'){ //システムメッセージ
     if(strpos($sentence, 'MORNING') === 0){
       sscanf($sentence, "MORNING\t%d", $morning_date);
@@ -619,18 +621,16 @@ function OutputTalk($talk, &$builder){
     }
     $builder->AddSystemTalk($sentence);
   }
-  //身代わり君専用システムメッセージ
-  elseif(strpos($location, 'dummy_boy') !== false){
+  elseif(strpos($location, 'dummy_boy') !== false){ //身代わり君専用システムメッセージ
     $builder->AddSystemTalk($MESSAGE->dummy_boy . $sentence);
   }
   //ゲーム開始前後とゲーム中、生きている人の昼
-  elseif($ROOM->is_beforegame() || $ROOM->is_aftergame() ||
-	 ($live == 'live' && $ROOM_is_day() && $location == 'day')){
+  elseif(! $ROOM->is_playing() || ($live == 'live' && $ROOM->is_day() && $location == 'day')){
     $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の狼
-  elseif($live == 'live' && $ROOM->is_night() && $location == 'night wolf'){
-    if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
+  elseif($flag_live_night && $location == 'night wolf'){
+    if($flag_group_wolf){
       $builder->AddTalk($said_user, $talk);
     }
     else{
@@ -638,13 +638,11 @@ function OutputTalk($talk, &$builder){
     }
   }
   //ゲーム中、生きている人の夜の囁き狂人
-  elseif($live == 'live' && $ROOM->is_night() && $location == 'night mad'){
-    if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
-      $builder->AddTalk($said_user, $talk);
-    }
+  elseif($flag_live_night && $location == 'night mad'){
+    if($flag_group_wolf) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の共有者
-  elseif($live == 'live' && $ROOM->is_night() && $location == 'night common'){
+  elseif($flag_live_night && $location == 'night common'){
     if(strpos($role, 'dummy_common') !== false); //夢共有者には何も見えない
     elseif(strpos($role, 'common') !== false){
       $builder->AddTalk($said_user, $talk);
@@ -654,16 +652,12 @@ function OutputTalk($talk, &$builder){
     }
   }
   //ゲーム中、生きている人の夜の妖狐
-  elseif($live == 'live' && $ROOM->is_night() && $location == 'night fox'){
-    if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-      $builder->AddTalk($said_user, $talk);
-    }
+  elseif($flag_live_night && $location == 'night fox'){
+    if($flag_group_fox) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の独り言
-  elseif($live == 'live' && $ROOM->is_night() && $location == 'night self_talk'){
-    if($uname == $talk_uname){
-      $builder->AddTalk($said_user, $talk);
-    }
+  elseif($flag_live_night && $location == 'night self_talk'){
+    if($uname == $talk_uname) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
   elseif($ROOM->is_finished() || $uname == 'dummy_boy' || ($live == 'dead' && $ROOM->is_open_cast())){
@@ -782,38 +776,41 @@ function OutputTalk($talk, &$builder){
     }
   }
   //ここからは観戦者と役職非公開モード
-  elseif($flag_system){ //投票情報は非表示
-  }
+  elseif($flag_system); //投票情報は非表示
   else{ //観戦者
     if($ROOM->is_night()){
-      if($location == 'night wolf'){
-	if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
+      switch($location){
+      case 'night wolf':
+	if($flag_group_wolf){
 	  $builder->AddTalk($said_user, $talk);
 	}
 	else{
 	  $builder->AddWhisper('wolf', $talk);
 	}
-      }
-      elseif($location == 'night mad'){
-	if(strpos($role, 'wolf') !== false || strpos($role, 'whisper_mad') !== false){
-	  $builder->AddTalk($said_user, $talk);
-	}
-      }
-      elseif($location == 'night common'){
+	break;
+
+      case 'night mad':
+	if($flag_group_wolf) $builder->AddTalk($said_user, $talk);
+	break;
+
+      case 'night common':
 	if(strpos($role, 'dummy_common') !== false); //夢共有者には何も見えない
 	elseif(strpos($role, 'common') !== false){
 	  $builder->AddTalk($said_user, $talk);
 	}
 	else{
-	  $builder->AddWhisper('wolf', $talk);
+	  $builder->AddWhisper('common', $talk);
 	}
+	break;
+
+      case 'night fox':
+	if($flag_group_fox) $builder->AddTalk($said_user, $talk);
+	break;
+
+      case 'night self_talk':
+	if($uname == $talk_uname) $builder->AddTalk($said_user, $talk);
+	break;
       }
-      elseif($location == 'night fox'){
-	if(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false){
-	  $builder->AddTalk($said_user, $talk);
-	}
-      }
-      // elseif($location == 'night self_talk'); //独り言は非表示
     }
     else{
       $builder->AddTalk($said_user, $talk);

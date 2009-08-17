@@ -675,6 +675,20 @@ EOF;
 EOF;
   }
 
+  if($ROOM_CONF->duel){
+    $checked = ($ROOM_CONF->default_duel ? ' checked' : '');
+    echo <<<EOF
+<tr>
+<td><label for="duel">{$MESSAGE->game_option_duel}：</label></td>
+<td class="explain">
+<input id="duel" type="checkbox" name="duel" value="on"{$checked}>
+(「人狼」「罠師」「暗殺者」のみしか登場しない村です)
+</td>
+</tr>
+
+EOF;
+  }
+
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr><td class="make" colspan="2"><input type="submit" value=" 作成 "></td></tr>

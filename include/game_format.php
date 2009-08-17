@@ -1,13 +1,13 @@
 <?php
-class DocumentBuilderExtension {
+class DocumentBuilderExtension{
   function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){
   }
-  function OnAddWhisper($role, $talk, &$user_info, &$volume, &$message){
+  function OnAddWhisper($role, $talk, &$user_info, &$volume, &$sentence){
   }
 }
 
 
-class DocumentBuilder {
+class DocumentBuilder{
   var $extensions = array();
 
   function Generate(){
@@ -37,7 +37,7 @@ class DocumentBuilder {
   }
 
   function Deligate($function){
-    if (isset($this->implementor)){
+    if(isset($this->implementor)){
       $args = func_get_args();
       call_user_func_array(array($this->implementor, $function), array_slice($args, 1));
       return true;
@@ -55,9 +55,10 @@ class DocumentBuilder {
   }
 
   function RawAddTalk($symbol, $user_info, $sentence, $volume,
-		   $row_class = 'user-talk', $user_class = 'user-name'){
-    if ($this->Deligate('AddTalk', $symbol, $user_info, $sentence, $volume, $row_class, $user_class))
+		      $row_class = 'user-talk', $user_class = 'user-name'){
+    if($this->Deligate('AddTalk', $symbol, $user_info, $sentence, $volume, $row_class, $user_class)){
       return;
+    }
     $this->cache .= <<<WORDS
 <tr class="{$row_class}">
 <td class="{$user_class}">{$symbol}{$user_info}</td>
@@ -78,7 +79,8 @@ WORDS;
 
     # if ($this->Deligate('AddTalk', $user, $talk)){ return; }
     $user_info = '<font style="color:'.$user->color.'">¢¡</font>'.$talk_handle_name;
-    if(strpos($talk->location, 'self_talk') !== false){
+    if(strpos($talk->location, 'self_talk') !== false &&
+       strpos($user->role, 'dummy_common') === false){
       $user_info .= '<span>¤ÎÆÈ¤ê¸À</span>';
     }
     $volume = $talk->font_type;

@@ -1,7 +1,14 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
 require_once(dirname(__FILE__) . '/include/icon_data_check.php');
-OutputHTMLHeader('ユーザアイコンアップロード', 'icon_upload')
+OutputHTMLHeader('ユーザアイコンアップロード', 'icon_upload');
+echo <<<EOF
+<body>
+現在アップロードは停止しています
+</body>
+</html>
+EOF;
+exit;
 ?>
 </head>
 <body>

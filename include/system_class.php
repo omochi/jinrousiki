@@ -3,9 +3,10 @@ class RoomDataSet{
   var $name;
   var $comment;
   var $game_option;
-  var $data;
+  var $date;
   var $day_night;
   var $status;
+  var $view_mode;
 
   function RoomDataSet($room_no){
     $sql = mysql_query("SELECT room_name, room_comment, game_option, date, day_night, status
@@ -17,6 +18,7 @@ class RoomDataSet{
     $this->date        = $array['date'];
     $this->day_night   = $array['day_night'];
     $this->status      = $array['status'];
+    $this->view_mode   = ($_GET['view_mode'] == 'on');
   }
 
   function is_real_time(){

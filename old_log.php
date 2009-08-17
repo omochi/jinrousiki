@@ -161,7 +161,7 @@ EOF;
 
 //指定の部屋Noのログを出力する
 function OutputOldLog($room_no){
-  global $SERVER_CONF, $RQ_ARGS, $ROOM, $room_no, $day_night, $last_date, $live;
+  global $SERVER_CONF, $RQ_ARGS, $ROOM, $room_no, $live, $last_date;
 
   $base_title = $SERVER_CONF->title . ' [過去ログ]';
   $url = "<br>\n<a href=\"old_log.php\">←戻る</a>\n";
@@ -170,9 +170,7 @@ function OutputOldLog($room_no){
 
   //日付とシーンを取得
   $ROOM = new RoomDataSet($room_no);
-  static $last_date; $last_date = $ROOM->date;
-  // $day_night = $ROOM->day_night;
-
+  $last_date = $ROOM->date;
   if(! $ROOM->is_finished() || ! $ROOM->is_aftergame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
@@ -218,7 +216,6 @@ function LayoutTalkLog($last_date, $is_reverse){
 
 //霊界のみのログ表示順を表現します。
 function LayoutHeaven($last_date, $is_reverse){
-  global $ROOM;
   if($is_reverse){
     for($i = 1; $i <= $last_date; $i++){
       OutputDateTalkLog($i, 'heaven_only', $is_reverse);
@@ -233,7 +230,7 @@ function LayoutHeaven($last_date, $is_reverse){
 
 //指定の日付の会話ログを出力
 function OutputDateTalkLog($set_date, $set_location, $is_reverse){
-  global $RQ_ARGS, $ROLES, $room_no, $ROOM, $date, $day_night, $live;
+  global $RQ_ARGS, $ROLES, $room_no, $ROOM, $live, $last_date;
 
   if($is_reverse) //逆順、初日から最終日まで
     $select_order = 'ORDER BY time';
@@ -258,6 +255,8 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
       $location_select = "AND location <> 'aftergame' AND location <> 'beforegame'";
     break;
   }
+
+  $flag_border_game = false;
   if($set_location == 'heaven_only'){
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
@@ -271,6 +270,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 			$select_order");
   }
   else{
+    $flag_border_game = true;
     $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? '' : "AND location <> 'heaven'";
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
@@ -279,8 +279,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 			$hide_heaven_query $select_order");
   }
 
-  if($set_location != 'beforegame' && $set_location != 'aftergame' &&
-     $set_date != $last_date && ! $is_reverse && $RQ_ARGS->heaven_only != 'on'){
+  if($flag_border_game && ! $is_reverse && $set_date != $last_date){
     $ROOM->date = $set_date + 1;
     $ROOM->day_night = 'day';
     OutputLastWords(); //遺言を出力
@@ -292,27 +291,28 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   $builder = DocumentBuilder::Generate();
   $builder->BeginTalk("old-log-talk {$table_class}");
   while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
-    $location = $talk->location;
-    if(strpos($location, 'day') !== false && ! $ROOM->is_day()){
+    if(strpos($talk->location, 'day') !== false && ! $ROOM->is_day()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $ROOM->day_night = 'day';
-      echo '<table class="old-log-talk ' . $ROOM->day_night . '">'."\n";
+      $builder->BeginTalk('old-log-talk day');
     }
-    elseif(strpos($location, 'night') !== false && ! $ROOM->is_night()){
+    elseif(strpos($talk->location, 'night') !== false && ! $ROOM->is_night()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $ROOM->day_night = 'night';
-      echo '<table class="old-log-talk ' . $ROOM->day_night . '">'."\n";
+      $builder->BeginTalk('old-log-talk night');
     }
     OutputTalk($talk, &$builder); //会話出力
   }
   $builder->EndTalk();
 
-  if($set_location != 'beforegame' && $set_location != 'aftergame' &&
-     $set_date != $last_date && $is_reverse && $RQ_ARGS->heaven_only != 'on'){
-    $ROOM->day_night = 'day';
+  if($flag_border_game && $is_reverse){
+    if($set_date == $last_date && $ROOM->is_day()){
+      OutputVoteList(); //突然死で勝敗が決定したケース
+    }
     $ROOM->date = $set_date + 1;
+    $ROOM->day_night = 'day';
     OutputDeadMan();   //死亡者を出力
     OutputLastWords(); //遺言を出力
   }

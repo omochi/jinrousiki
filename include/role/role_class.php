@@ -10,15 +10,15 @@ class Role extends DocumentBuilderExtension{
     $this->Role($user);
   }
 
-  function Ignored(){ //$live をここで参照してまずいのなら書き換え願います
+  function Ignored(){
     global $ROOM, $live;
-    return ($live == 'live' || ! $ROOM->is_playing());
+    return ! ($live == 'live' && $ROOM->is_playing());
   }
 
   function SameUser($userinfo){
     $result = strpos($userinfo, $this->actor->handle_name);
     shot ("<p>{$userinfo}から{$this->actor->handle_name}を探します。-> 結果:{$result}</p>");
-    return ($result !== false) && ($result >= 0);
+    return ($result !== false && $result >= 0);
   }
 
   function Say($words, $volume){

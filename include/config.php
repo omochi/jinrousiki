@@ -172,7 +172,6 @@ class GameConfig{
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
-     // 8 => array('human' =>  3, 'wolf' => 2, 'guard' => 1, 'trap_mad' => 2),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -240,11 +239,14 @@ class GameConfig{
 
   //虹色迷彩の変換テーブル
   var $rainbow_replace_list = array('赤' => '橙', '橙' => '黄', '黄' => '緑', '緑' => '青',
-				    '青' => '藍', '藍' => '紫', '紫' => '赤',
-				    '月' => '火', '火' => '水', '水' => '木', '木' => '金',
-				    '金' => '土', '土' => '日', '日' => '月');
+				    '青' => '藍', '藍' => '紫', '紫' => '赤');
 
-  var $invisible_rate = 15; //光学迷彩の発言が空白に入れ替わる確率
+  /*
+  var $week_replace_list = array('月' => '火', '火' => '水', '水' => '木', '木' => '金',
+				    '金' => '土', '土' => '日', '日' => '月');
+  */
+
+  var $invisible_rate = 10; //光学迷彩の発言が空白に入れ替わる確率
   var $silent_length  = 25; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//

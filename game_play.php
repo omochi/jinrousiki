@@ -373,7 +373,7 @@ function CheckSilence(){
     if($sudden_death_time <= 0){
       //生存者を取得するための基本 SQL 文
       $query_live = "SELECT uname FROM user_entry WHERE room_no = $room_no " .
-	"AND live = 'live' AND user_no > 0";
+	"AND live = 'live' AND user_no > 0 AND uname <> 'dummy_boy'";
 
       //投票済みの人を取得するための基本 SQL 文
       $query_vote = "SELECT uname FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} AND ";
@@ -863,8 +863,7 @@ function OutputAbility(){
     }
   }
   elseif($main_role == 'child_fox'){
-    // $ROLE_IMG->DisplayImage('child_fox');
-    echo '[役割]<br>　あなたは「子狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。また、時々失敗しますが占いの真似事もできます。<br>'."\n";
+    $ROLE_IMG->DisplayImage('child_fox');
 
     //仲間を表示
     OutputPartner("role LIKE '%fox%' AND uname <> '$uname'", 'fox_partner');

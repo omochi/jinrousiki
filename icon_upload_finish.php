@@ -1,5 +1,12 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
+echo <<<EOF
+<body>
+現在アップロードは停止しています
+</body>
+</html>
+EOF;
+exit;
 
 //リファラチェック
 $icon_upload_check_page_url = $SERVER_CONF->site_root . 'icon_upload_check.php';

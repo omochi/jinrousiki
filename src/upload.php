@@ -39,6 +39,7 @@ if($post['password'] != $SERVER_CONF->src_upload_password) OutputUploadResult('•
 //•’•°•§•Î§ŒºÔŒ‡§Œ•¡•ß•√•Ø
 $file_name = strtolower(trim($_FILES['file']['name']));
 $file_type = $_FILES['file']['type'];
+
 if(! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', $file_type) &&
       preg_match('/^.*\.(zip|lzh)$/', $file_name))){
   OutputUploadResult('<span>' . $file_name . '</span> : <span>' . $file_type . '</span><br>'."\n".
