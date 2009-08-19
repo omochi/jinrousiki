@@ -3,21 +3,54 @@ class User{
   function ParseCompoundParameters(){
     $this->ParseRoles();
   }
-  function IsLiving(){
-    return $this->live == 'live';
+
+  function is_live(){
+    return ($this->live == 'live');
   }
+
+  function is_dead(){
+    return ($this->live == 'dead');
+  }
+
+  function is_dummy_boy(){
+    return ($this->uname == 'dummy_boy');
+  }
+
+  function is_role($role){
+    return (is_array($this->role_list) && in_array($role, $this->role_list));
+  }
+
+  function is_role_group($role){
+    return (strpos($this->role, $role) !== false);
+  }
+
+  function is_wolf(){
+    return $this->is_role_group('wolf');
+  }
+
+  function is_fox(){
+    return ($this->is_role_group('fox') && ! $this->is_role('child_fox'));
+  }
+
+  function is_lovers(){
+    return $this->is_role_group('lovers');
+  }
+
   function Kill(){
     $this->live = 'dead';
     $this->updated[] = 'live';
   }
+
   function ParseRoles(){
-    $this->roles = explode(' ', $this->role);
+    $this->role_list = explode(' ', $this->role);
   }
+
   function AddRole($role){
     $this->role .= " $role";
     $this->updated[] = 'role';
     $this->ParseRoles();
   }
+
   function RemoveRole($role){
 /* このメソッドは橋姫実装時のために予約されています。
     //スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
@@ -27,6 +60,7 @@ class User{
     $this->ParseRoles();
 */
   }
+
   function Save(){
     if (isset($this->updated)){
       foreach($this->updated as $item){
@@ -37,7 +71,6 @@ class User{
     }
   }
 }
-
 
 class UserDataSet{
   var $room_no;
@@ -146,6 +179,23 @@ class UserDataSet{
 	'$uname', '$password', '$handle_name', '$sex', '$profile', $icon_no, '$role'"
     );
     $USERS->Load();
+  }
+}
+
+class SelfDataSet{
+  var $rows;
+
+  function SelfDataSet($uname){
+    global $USERS;
+    $this->rows = $USERS->ByUname($uname);
+  }
+
+  function is_live(){
+    return ($this->live == 'live');
+  }
+
+  function is_dead(){
+    return ($this->live == 'dead');
   }
 }
 

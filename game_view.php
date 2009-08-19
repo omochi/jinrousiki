@@ -1,24 +1,17 @@
 <?php
 require_once(dirname(__FILE__) . '/include/game_functions.php');
+require_once(dirname(__FILE__) . '/include/request_class.php');
 
 //引数を取得
-$room_no     = (int)$_GET['room_no']; //部屋 No
-$auto_reload = (int)$_GET['auto_reload']; //オートリロードの間隔
-if($auto_reload != 0 && $auto_reload < $GAME_CONF->auto_reload_list[0]){
-  $auto_reload = $GAME_CONF->auto_reload_list[0];
-}
-
-$view_mode = 'on';
+$RQ_ARGS = new RequestGameView();
+$room_no = $RQ_ARGS->room_no;
 $url = 'game_view.php?room_no=' . $room_no . '&view_mode=on';
 
 $dbHandle = ConnectDatabase(); // DB 接続
 
-//日付とシーンを取得
-$ROOM = new RoomDataSet($room_no);
-$date        = $ROOM->date;
-$day_night   = $ROOM->day_night;
-$game_option = $ROOM->game_option;
-$system_time  = TZTime(); //現在時刻を取得
+$ROOM = new RoomDataSet($room_no); //村情報をロード
+$ROOM->view_mode = true;
+$ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
 case 'day': //昼
   $time_message = '　日没まで ';
@@ -28,14 +21,12 @@ case 'night': //夜
   $time_message = '　夜明けまで ';
   break;
 }
-
-//ユーザ情報をロード
-$USERS = new UserDataSet($room_no);
+$USERS = new UserDataSet($room_no); //ユーザ情報をロード
 
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 
-if($GAME_CONF->auto_reload && $auto_reload != 0){ //自動更新
-  echo '<meta http-equiv="Refresh" content="' . $auto_reload . '">'."\n";
+if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //自動更新
+  echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
 }
 
 //シーンに合わせた文字色と背景色 CSS をロード
@@ -64,7 +55,7 @@ echo <<<EOF
 EOF;
 
 if($GAME_CONF->auto_reload){ //自動更新設定が有効ならリンクを表示
-  echo '<a href="' . $url . '&auto_reload=' . $auto_reload . '">[更新]</a>'."\n";
+  echo '<a href="' . $url . '&auto_reload=' . $RQ_ARGS->auto_reload . '">[更新]</a>'."\n";
   OutputAutoReloadLink('<a href="' . $url . '&auto_reload=');
 }
 else{

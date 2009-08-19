@@ -1,8 +1,17 @@
 <?php
 class RequestBase{
-  function GetGameVariables(){
+  function RequestBaseGame(){
+    global $GAME_CONF;
+
     $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
-    $this->GetItems(null, 'get.dead_mode', 'get.heaven_mode', 'get.list_down', 'get.play_sound');
+    if($this->auto_reload != 0 && $this->auto_reload < $GAME_CONF->auto_reload_list[0]){
+      $this->auto_reload = $GAME_CONF->auto_reload_list[0];
+    }
+  }
+
+  function RequestBaseGamePlay(){
+    $this->RequestBaseGame();
+    $this->GetItems("$this->CheckOn", 'get.list_down', 'get.play_sound');
   }
 
   function GetItems($processor){
@@ -23,34 +32,65 @@ class RequestBase{
       }
     }
   }
-}
 
-class Say extends RequestBase{
-  function Say(){
-    $this->GetGameVariables();
-    $this->GetItems('EscapeString', 'post.say', 'post.font_type');
-    #$B8=:_$N%5%K%?%$%8%s%0;EMM$HE,9g$7$J$$$?$aJ]N1Cf!#(B
-    #$this->say = htmlspecialchars($this->say, ENT_QUOTES);
+  function CheckOn($arg){
+    return ($arg == 'on');
   }
 }
 
-class Objection extends RequestBase{
-  function Objection(){
-    $this->GetGameVariables();
-    $this->GetItems('post.set_objection');
+class RequestGameView extends RequestBase{
+  function RequestGameView(){
+    $this->RequestBaseGame();
+  }
+}
+
+class RequestGamePlay extends RequestBase{
+  function RequestGamePlay(){
+    $this->RequestBaseGamePlay();
+    $this->GetItems("$this->CheckOn", 'get.view_mode', 'get.dead_mode', 'get.heaven_mode',
+		    'post.set_objection');
+    $this->GetItems('EscapeStrings', 'post.font_type');
+    $this->GetItems(NULL, 'post.say');
+    EscapeStrings($this->say, false);
+  }
+
+  function is_last_words(){
+    return ($this->font_type == 'last_words');
+  }
+}
+
+class RequestGameVote extends RequestBase{
+  //•Ï”‚Ì—p“r
+  /*
+    vote : “Š•[ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½ or “Š•[ƒy[ƒW‚Ì•\Ž¦‚Ì§Œä—p
+    vote_times : ’‹‚Ì“Š•[‰ñ”
+    target_no : “Š•[æ‚Ì user_no (ƒLƒ…[ƒsƒbƒh‚ª‚¢‚é‚½‚ß’Pƒ‚É®”Œ^‚ÉƒLƒƒƒXƒg‚µ‚Ä‚Í‚¾‚ß)
+    situation : “Š•[‚Ì•ª—Þ (KickAˆŒYAè‚¢A˜T‚È‚Ç)
+    target_handle_name :
+    target_no ‚Íƒ^ƒCƒ~ƒ“ƒO‚Å“ü‚ê‘Ö‚í‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å Kick ‚Ì‚Ý target_handle_name ‚ðŽQÆ‚·‚é
+  */
+  function RequestGameVote(){
+    $this->RequestBaseGamePlay();
+    $this->GetItems('intval', 'post.vote_times');
+    $this->GetItems("$this->CheckOn", 'post.vote');
+    $this->GetItems(NULL, 'post.target_no', 'post.situation', 'post.target_handle_name');
+    EscapeStrings($this->target_handle_name);
+  }
+}
+
+class RequestGameLog extends RequestBase{
+  function RequestGameLog(){
+    $this->GetItems('intval', 'get.room_no', 'get.date');
+    $this->GetItems(NULL, 'get.day_night');
   }
 }
 
 class LogView extends RequestBase{
   function LogView(){
-    if ($this->is_room = isset($_GET['room_no'])){
+    if($this->is_room = isset($_GET['room_no'])){
+      $this->GetItems('intval', 'get.room_no');
       $this->GetItems(
-        'intval',
-        'get.room_no'
-      );
-      $this->GetItems(
-        null,
-        'get.log_mode',
+        "$this->CheckOn",
         'get.reverse_log',
         'get.heaven_talk',
         'get.heaven_only',
@@ -59,7 +99,8 @@ class LogView extends RequestBase{
       );
     }
     else{
-      $this->GetItems(null, 'get.page', 'get.reverse', 'get.add_role');
+      $this->GetItems(NULL, 'get.page', 'get.reverse');
+      $this->GetItems("$this->CheckOn", 'get.add_role');
     }
   }
 }

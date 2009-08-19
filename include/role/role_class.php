@@ -11,8 +11,8 @@ class Role extends DocumentBuilderExtension{
   }
 
   function Ignored(){
-    global $ROOM, $live;
-    return ! ($live == 'live' && $ROOM->is_playing());
+    global $ROOM, $SELF;
+    return ! ($SELF->is_live() && $ROOM->is_playing());
   }
 
   function SameUser($userinfo){

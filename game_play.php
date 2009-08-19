@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/include/game_functions.php');
+require_once(dirname(__FILE__) . '/include/request_class.php');
 
 //セッション開始
 session_start();
@@ -8,46 +9,28 @@ $session_id = session_id();
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
 //引数を取得
-$room_no     = (int)$_GET['room_no']; //部屋 No
-$auto_reload = (int)$_GET['auto_reload']; //オートリロードの間隔
-$dead_mode   = $_GET['dead_mode'];   //死亡者モード
-$heaven_mode = $_GET['heaven_mode']; //霊話モード
-// $view_mode   = $_GET['view_mode'];   //観戦モード
-$list_down  = $_GET['list_down']; //プレイヤーリストを下にする
-$play_sound = $_GET['play_sound'];//音でお知らせ
-if($play_sound == 'on'){
+$RQ_ARGS = new RequestGamePlay();
+$room_no = $RQ_ARGS->room_no; //部屋 No
+if($RQ_ARGS->play_sound){//音でお知らせ
   $SOUND = new Sound(); //音源情報をロード
   $cookie_day_night  = $_COOKIE['day_night'];       //夜明けを音でしらせるため
   $cookie_vote_times = (int)$_COOKIE['vote_times']; //再投票を音で知らせるため
   $cookie_objection  = $_COOKIE['objection'];       //「異議あり」を音で知らせるため
 }
 
-$say = $_POST['say']; //発言
-$font_type = $_POST['font_type']; //フォントタイプ
-$set_objection = $_POST['set_objection']; //「異議」あり、のセット
-
 $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
-//日付とシーンを取得
-$ROOM = new RoomDataSet($room_no);
-$date        = $ROOM->date;
-$day_night   = $ROOM->day_night;
-$game_option = $ROOM->game_option;
+$ROOM = new RoomDataSet($room_no); //村情報をロード
+$ROOM->view_mode    = $RQ_ARGS->view_mode; //観戦モード
+$ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
+$ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
+$ROOM->system_time  = TZTime(); //現在時刻を取得
+$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 $USERS = new UserDataSet($room_no); //ユーザ情報をロード
+$SELF = $USERS->ByUname($uname); //自分の情報をロード
 $ROLE_IMG = new RoleImage();
-
-//自分のハンドルネーム、役割、生存を取得
-$user_no             = $USERS->UnameToNumber($uname);
-$handle_name         = $USERS->rows[$user_no]->handle_name;
-$sex                 = $USERS->rows[$user_no]->sex;
-$role                = $USERS->rows[$user_no]->role;
-$live                = $USERS->rows[$user_no]->live;
-$last_load_day_night = $USERS->rows[$user_no]->last_load_day_night;
-
-$system_time = TZTime(); //現在時刻を取得
-$sudden_death_time = 0; //突然死実行までの残り時間
 
 //必要なクッキーをセットする
 $objection_array = array(); //SendCookie();で格納される・異議ありの情報
@@ -55,15 +38,14 @@ $objection_left_count = 0;  //SendCookie();で格納される・異議ありの残り回数
 SendCookie();
 
 //発言の有無をチェック
-EscapeStrings(&$say, false); //エスケープ処理
-ConvertSay(&$say); //発言置換処理
+ConvertSay(&$RQ_ARGS->say); //発言置換処理
 
-if($say != '' && $font_type == 'last_words' && $live == 'live' && $uname != 'dummy_boy'){
-  EntryLastWords($say);  //生きていれば遺言登録
+if($RQ_ARGS->say != '' && $RQ_ARGS->is_last_words() && $SELF->is_live() && ! $SELF->is_dummy_boy()){
+  EntryLastWords($RQ_ARGS->say);  //生きていれば遺言登録
 }
-elseif($say != '' && ($last_load_day_night == $ROOM->day_night ||
-		      $live == 'dead' || $uname == 'dummy_boy')){
-  Say($say); //死んでいるか、最後にリロードした時とシーンが一致しているか身代わり君なら書き込む
+elseif($RQ_ARGS->say != '' && ($ROOM->day_night == $SELF->last_load_day_night ||
+			       $SELF->is_dead() || $SELF->is_dummy_boy())){
+  Say($RQ_ARGS->say); //死んでいるか、最後にリロードした時とシーンが一致しているか身代わり君なら書き込む
 }
 else{
   CheckSilence(); //ゲーム停滞のチェック(沈黙、突然死)
@@ -71,32 +53,32 @@ else{
 
 //最後にリロードした時のシーンを更新
 mysql_query("UPDATE user_entry SET last_load_day_night = '{$ROOM->day_night}'
-		WHERE room_no = $room_no AND uname = '$uname' AND user_no > 0");
+		WHERE room_no = $room_no AND uname = '{$SELF->uname}' AND user_no > 0");
 mysql_query('COMMIT');
 
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
 
-if($heaven_mode != 'on'){
-  if($list_down != 'on') OutputPlayerList(); //プレイヤーリスト
+if(! $ROOM->heaven_mode){
+  if(! $RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
   OutputAbility(); //自分の役割の説明
-  if($ROOM->is_day() && $live == 'live') CheckSelfVoteDay(); //昼の投票済みチェック
+  if($ROOM->is_day() && $SELF->is_live()) CheckSelfVoteDay(); //昼の投票済みチェック
   OutputRevoteList(); //再投票の時、メッセージを表示する
 }
 
 //会話ログを出力
-if($live == 'dead' && $heaven_mode == 'on')
+if($SELF->is_dead() && $ROOM->heaven_mode)
   OutputHeavenTalkLog();
 else
   OutputTalkLog();
 
-if($heaven_mode != 'on'){
-  if($live == 'dead') OutputAbilityAction(); //能力発揮
+if(! $ROOM->heaven_mode){
+  if($SELF->is_dead()) OutputAbilityAction(); //能力発揮
   OutputLastWords(); //遺言
   OutputDeadMan();   //死亡者
   OutputVoteList();  //投票結果
-  if($dead_mode != 'on') OutputSelfLastWords(); //自分の遺言
-  if($list_down == 'on') OutputPlayerList(); //プレイヤーリスト
+  if(! $ROOM->dead_mode) OutputSelfLastWords(); //自分の遺言
+  if($RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
 }
 OutputHTMLFooter();
 
@@ -105,24 +87,23 @@ DisconnectDatabase($dbHandle); //DB 接続解除
 //-- 関数 --//
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(){
-  global $GAME_CONF, $system_time, $room_no, $ROOM, $user_no, $live, $uname,
-    $set_objection, $objection_array, $objection_left_count;
+  global $GAME_CONF, $RQ_ARGS, $room_no, $ROOM, $SELF, $objection_array, $objection_left_count;
 
   //<夜明けを音でお知らせ用>
   //クッキーに格納 (夜明けに音でお知らせで使う・有効期限一時間)
-  setcookie('day_night', $ROOM->day_night, $system_time + 3600);
+  setcookie('day_night', $ROOM->day_night, $ROOM->system_time + 3600);
 
   //-- 「異議」ありを音でお知らせ用 --//
   //今までに自分が「異議」ありをした回数を取得
   $query = "SELECT COUNT(message) FROM system_message WHERE room_no = $room_no " .
-    "AND type = 'OBJECTION' AND message = '$user_no'";
+    "AND type = 'OBJECTION' AND message = '{$SELF->user_no}'";
   $self_objection_count = FetchResult($query);
 
   //生きていて(ゲーム終了後は死者でもOK)「異議」あり、のセット要求があればセットする(最大回数以内の場合)
-  if($live == 'live' && ! $ROOM->is_night() && $set_objection == 'set' &&
+  if($SELF->is_live() && ! $ROOM->is_night() && $RQ_ARGS->set_objection &&
      $self_objection_count < $GAME_CONF->objection){
-    InsertSystemMessage($user_no, 'OBJECTION');
-    InsertSystemTalk('OBJECTION', $system_time, '', '', $uname);
+    InsertSystemMessage($SELF->user_no, 'OBJECTION');
+    InsertSystemTalk('OBJECTION', $ROOM->system_time, '', '', $SELF->uname);
     mysql_query('COMMIT');
   }
 
@@ -148,55 +129,55 @@ function SendCookie(){
     if($str != '') $str .= ','; //カンマ区切り
     $str .= $value;
   }
-  setcookie('objection', $str, $system_time + 3600);
+  setcookie('objection', $str, $ROOM->system_time + 3600);
 
   //残り異議ありの回数
-  $objection_left_count = $GAME_CONF->objection - $objection_array[$user_no];
+  $objection_left_count = $GAME_CONF->objection - $objection_array[$SELF->user_no];
 
   //<再投票を音でお知らせ用>
   //再投票の回数を取得
   $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
 			AND date = {$ROOM->date} AND type = 'RE_VOTE' ORDER BY message DESC");
-  if(mysql_num_rows($sql) != 0){
+  if(mysql_num_rows($sql) != 0){ //クッキーに格納 (有効期限一時間)
     $last_vote_times = (int)mysql_result($sql, 0, 0); //何回目の再投票なのか取得
-    setcookie('vote_times', $last_vote_times, $system_time + 3600); //クッキーに格納 (有効期限一時間)
+    setcookie('vote_times', $last_vote_times, $ROOM->system_time + 3600);
   }
-  else{
-    setcookie('vote_times', '', $system_time - 3600); //クッキーから削除 (有効期限一時間)
+  else{ //クッキーから削除 (有効期限一時間)
+    setcookie('vote_times', '', $ROOM->system_time - 3600);
   }
 }
 
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $MESSAGE, $room_no, $ROOM, $uname, $role, $live;
+  global $GAME_CONF, $MESSAGE, $room_no, $ROOM, $SELF;
 
   //リロード時、死者、ゲームプレイ中以外なら処理スキップ
-  if($say == '' || $live != 'live' || ! $ROOM->is_playing()) return false;
+  if($say == '' || $SELF->is_dead() || ! $ROOM->is_playing()) return false;
 
   //萌狼・不審者は一定確率で発言が遠吠え(デフォルト時)になる
-  if((strpos($role, 'cute_wolf') !== false || strpos($role, 'suspect') !== false) &&
+  if(($SELF->is_role('cute_wolf') || $SELF->is_role('suspect')) &&
      mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
     $say = ($MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl);
   }
   //紳士・淑女は一定確率で発言が入れ替わる
-  elseif((strpos($role, 'gentleman') !== false || strpos($role, 'lady') !== false) &&
+  elseif(($SELF->is_role('gentleman') || $SELF->is_role('lady')) &&
 	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
-    $role_name = (strpos($role, 'gentleman') !== false ? 'gentleman' : 'lady');
+    $role_name = ($SELF->is_role('gentleman') ? 'gentleman' : 'lady');
     $message_header = $role_name . '_header';
     $message_footer = $role_name . '_footer';
 
     $query = "SELECT handle_name FROM user_entry WHERE room_no = $room_no " .
-      "AND uname <> '$uname' AND live = 'live' AND user_no > 0";
+      "AND uname <> '{$SELF->uname}' AND live = 'live' AND user_no > 0";
     $target_list = FetchArray($query);
     $rand_key    = array_rand($target_list);
     $say = $MESSAGE->$message_header . $target_list[$rand_key] . $MESSAGE->$message_footer;
   }
   //狼少年は一定確率で発言内容が反転される
-  elseif(strpos($role, 'liar') !== false && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
+  elseif($SELF->is_role('liar') && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
     $say = strtr($say, $GAME_CONF->liar_replace_list);
   }
 
-  if(strpos($role, 'invisible') !== false){ //光学迷彩の処理
+  if($SELF->is_role('invisible')){ //光学迷彩の処理
     $invisible_say = '';
     $count = mb_strlen($say);
     $rate = $GAME_CONF->invisible_rate;
@@ -215,11 +196,11 @@ function ConvertSay(&$say){
     $say = $invisible_say;
   }
 
-  if(strpos($role, 'rainbow') !== false){ //虹色迷彩の処理
+  if($SELF->is_role('rainbow')){ //虹色迷彩の処理
     $say = strtr($say, $GAME_CONF->rainbow_replace_list);
   }
 
-  if(strpos($role, 'silent') !== false){ //無口の処理
+  if($SELF->is_role('silent')){ //無口の処理
     if(mb_strlen($say) > $GAME_CONF->silent_length){
       $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
     }
@@ -228,21 +209,21 @@ function ConvertSay(&$say){
 
 //遺言登録
 function EntryLastWords($say){
-  global $room_no, $ROOM, $uname, $role, $live;
+  global $room_no, $ROOM, $SELF;
 
   //ゲーム終了後、死者、ブン屋、筆不精なら登録しない
-  if($ROOM->is_finished() || $live != 'live' || strpos($role, 'reporter') !== false ||
-     strpos($role, 'no_last_words') !== false) return false;
+  if($ROOM->is_finished() || $SELF->is_dead() || $SELF->is_role('reporter') ||
+     $SELF->is_role('no_last_words')) return false;
 
   //遺言を残す
   mysql_query("UPDATE user_entry SET last_words = '$say' WHERE room_no = $room_no
-		AND uname = '$uname' AND user_no > 0");
+		AND uname = '{$SELF->uname}' AND user_no > 0");
   mysql_query('COMMIT'); //一応コミット
 }
 
 //発言
 function Say($say){
-  global $room_no, $ROOM, $uname, $role, $live, $font_type;
+  global $RQ_ARGS, $room_no, $ROOM, $SELF;
 
   if($ROOM->is_real_time()){ //リアルタイム制
     GetRealPassTime(&$left_time);
@@ -264,24 +245,24 @@ function Say($say){
     Write($say, $ROOM->day_night, 0, true);
   }
   //身代わり君 (仮想 GM 対応) は遺言を専用のシステムメッセージに切り替え
-  elseif($uname == 'dummy_boy' && ($font_type == 'last_words' || ($live == 'live' && $left_time == 0))){
+  elseif($SELF->is_dummy_boy() && ($RQ_ARGS->is_last_words() || ($SELF->is_live() && $left_time == 0))){
     Write($say, "{$ROOM->day_night} dummy_boy", 0); //発言時間を更新しない
   }
-  elseif($live == 'dead'){ //死亡者の霊話
+  elseif($SELF->is_dead()){ //死亡者の霊話
     Write($say, 'heaven', 0); //発言時間を更新しない
   }
-  elseif($live == 'live' && $left_time > 0){ //生存者で制限時間内
+  elseif($SELF->is_live() && $left_time > 0){ //生存者で制限時間内
     if($ROOM->is_day()){ //昼はそのまま発言
       Write($say, 'day', $spend_time, true);
     }
     elseif($ROOM->is_night()){ //夜は役職毎に分ける
-      if(strpos($role, 'wolf') !== false) //狼
+      if($SELF->is_wolf()) //人狼
 	Write($say, 'night wolf', $spend_time, true);
-      elseif(strpos($role, 'whisper_mad') !== false) //囁き狂人
+      elseif($SELF->is_role('whisper_mad')) //囁き狂人
 	Write($say, 'night mad', 0);
-      elseif(strpos($role, 'common') !== false && strpos($role, 'dummy_common') === false) //共有者
+      elseif($SELF->is_role('common')) //共有者
 	Write($say, 'night common', 0);
-      elseif(strpos($role, 'fox') !== false && strpos($role, 'child_fox') === false) //妖狐
+      elseif($SELF->is_fox()) //妖狐
 	Write($say, 'night fox', 0);
       else //独り言
 	Write($say, 'night self_talk', 0);
@@ -291,39 +272,40 @@ function Say($say){
 
 //発言を DB に登録する
 function Write($say, $location, $spend_time, $update = false){
-  global $MESSAGE, $system_time, $room_no, $ROOM, $uname, $role, $live, $font_type;
+  global $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF;
 
   //声の大きさを決定
-  $voice = $font_type;
-  if($live == 'live' && $ROOM->is_playing()){
+  $voice = $RQ_ARGS->font_type;
+  if($SELF->is_live() && $ROOM->is_playing()){
     $voice_list = array('strong', 'normal', 'weak');
-    if(    strpos($role, 'strong_voice') !== false) $voice = 'strong';
-    elseif(strpos($role, 'normal_voice') !== false) $voice = 'normal';
-    elseif(strpos($role, 'weak_voice')   !== false) $voice = 'weak';
-    elseif(strpos($role, 'random_voice') !== false){
-      $rand_key = array_rand($voice_list);
-      $voice = $voice_list[$rand_key];
-    }
-    elseif(strpos($role, 'upper_voice') !== false){
-      $voice_key = array_search($font_type, $voice_list);
+    if(    $SELF->is_role('strong_voice')) $voice = 'strong';
+    elseif($SELF->is_role('normal_voice')) $voice = 'normal';
+    elseif($SELF->is_role('weak_voice'))   $voice = 'weak';
+    elseif($SELF->is_role('upper_voice')){
+      $voice_key = array_search($RQ_ARGS->font_type, $voice_list);
       if($voice_key == 0) $say = $MESSAGE->howling;
       else $voice = $voice_list[$voice_key - 1];
     }
-    elseif(strpos($role, 'downer_voice') !== false){
-      $voice_key = array_search($font_type, $voice_list);
+    elseif($SELF->is_role('downer_voice')){
+      $voice_key = array_search($RQ_ARGS->font_type, $voice_list);
       if($voice_key >= count($voice_list) - 1) $say = $MESSAGE->common_talk;
       else $voice = $voice_list[$voice_key + 1];
     }
+    elseif($SELF->is_role('random_voice')){
+      $rand_key = array_rand($voice_list);
+      $voice = $voice_list[$rand_key];
+    }
   }
 
-  InsertTalk($room_no, $ROOM->date, $location, $uname, $system_time, $say, $voice, $spend_time);
+  InsertTalk($room_no, $ROOM->date, $location, $SELF->uname,
+	     $ROOM->system_time, $say, $voice, $spend_time);
   if($update) UpdateTime();
   mysql_query('COMMIT'); //一応コミット
 }
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $TIME_CONF, $MESSAGE, $USERS, $system_time, $sudden_death_time, $room_no, $ROOM;
+  global $TIME_CONF, $MESSAGE, $room_no, $ROOM, $USERS;
 
   //ゲーム中以外は処理をしない
   if(! $ROOM->is_playing()) return false;
@@ -336,7 +318,7 @@ function CheckSilence(){
 
   //最後に発言された時間を取得
   $last_updated_time = FetchResult("SELECT last_updated FROM room WHERE room_no = $room_no");
-  $last_updated_pass_time = $system_time - $last_updated_time;
+  $last_updated_pass_time = $ROOM->system_time - $last_updated_time;
 
   //経過時間を取得
   if($ROOM->is_real_time()) //リアルタイム制
@@ -348,8 +330,8 @@ function CheckSilence(){
   if(! $ROOM->is_real_time() && $left_time > 0){
     if($last_updated_pass_time > $TIME_CONF->silence){
       $sentence = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      InsertTalk($room_no, $ROOM->date, "{$ROOM->day_night} system", 'system', $system_time,
-		 $sentence, NULL, $TIME_CONF->silence_pass);
+      InsertTalk($room_no, $ROOM->date, "{$ROOM->day_night} system", 'system',
+		 $ROOM->system_time, $sentence, NULL, $TIME_CONF->silence_pass);
       UpdateTime();
     }
   }
@@ -363,17 +345,17 @@ function CheckSilence(){
       "AND date = {$ROOM->date} AND location = '{$ROOM->day_night} system' " .
       "AND uname = 'system' AND sentence = '$sudden_death_announce'";
     if(FetchResult($query) == 0){ //警告を出していなかったら出す
-      InsertSystemTalk($sudden_death_announce, ++$system_time); //全会話の後に出るように
+      InsertSystemTalk($sudden_death_announce, ++$ROOM->system_time); //全会話の後に出るように
       UpdateTime(); //更新時間を更新
       $last_updated_pass_time = 0;
     }
-    $sudden_death_time = $TIME_CONF->sudden_death - $last_updated_pass_time;
+    $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
 
     //制限時間を過ぎていたら未投票の人を突然死させる
-    if($sudden_death_time <= 0){
+    if($ROOM->sudden_death <= 0){
       //生存者を取得するための基本 SQL 文
       $query_live = "SELECT uname FROM user_entry WHERE room_no = $room_no " .
-	"AND live = 'live' AND user_no > 0 AND uname <> 'dummy_boy'";
+	"AND live = 'live' AND user_no > 0";
 
       //投票済みの人を取得するための基本 SQL 文
       $query_vote = "SELECT uname FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} AND ";
@@ -431,7 +413,7 @@ function CheckSilence(){
 	    $add_actor .= "role LIKE '{$this_actor}%'";
 	  }
 	}
-	$live_uname_list = FetchArray($query_live . ' AND (' . $add_actor . ')');
+	$live_uname_list = FetchArray("$query_live AND uname <> 'dummy_boy' AND ($add_actor)");
 
 	//未投票の人狼のリストを追加
 	$novote_uname_list = array_merge($wolf_list, array_diff($live_uname_list, $vote_uname_list));
@@ -450,8 +432,8 @@ function CheckSilence(){
       foreach($dead_lovers_list as $this_role){ //恋人後追い処理
 	LoversFollowed($this_role, $flag_medium, true);
       }
-      InsertSystemTalk($MESSAGE->vote_reset, ++$system_time); //投票リセットメッセージ
-      InsertSystemTalk($sudden_death_announce, ++$system_time); //突然死告知メッセージ
+      InsertSystemTalk($MESSAGE->vote_reset, ++$ROOM->system_time); //投票リセットメッセージ
+      InsertSystemTalk($sudden_death_announce, ++$ROOM->system_time); //突然死告知メッセージ
       UpdateTime(); //制限時間リセット
       DeleteVote(); //投票リセット
       CheckVictory(); //勝敗チェック
@@ -462,23 +444,22 @@ function CheckSilence(){
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $TIME_CONF, $MESSAGE, $system_time, $sudden_death_time, $room_no,
-    $ROOM, $dead_mode, $heaven_mode, $live, $handle_name, $auto_reload, $play_sound, $list_down,
+  global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF,
     $cookie_day_night, $cookie_objection, $objection_array, $objection_left_count;
 
   $room_message = '<td class="room"><span>' . $ROOM->name . '村</span>　〜' . $ROOM->comment .
     '〜[' . $room_no . '番地]</td>'."\n";
   $url_room   = '?room_no=' . $room_no;
-  $url_reload = ($auto_reload > 0 ? '&auto_reload=' . $auto_reload : '');
-  $url_sound  = ($play_sound  == 'on' ? '&play_sound=on'  : '');
-  $url_list   = ($list_down   == 'on' ? '&list_down=on'   : '');
-  $url_dead   = ($dead_mode   == 'on' ? '&dead_mode=on'   : '');
-  $url_heaven = ($heaven_mode == 'on' ? '&heaven_mode=on' : '');
+  $url_reload = ($RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '');
+  $url_sound  = ($RQ_ARGS->play_sound ? '&play_sound=on'  : '');
+  $url_list   = ($RQ_ARGS->list_down  ? '&list_down=on'   : '');
+  $url_dead   = ($ROOM->dead_mode     ? '&dead_mode=on'   : '');
+  $url_heaven = ($ROOM->heaven_mode   ? '&heaven_mode=on' : '');
   $real_time  = $ROOM->is_real_time();
 
   echo '<table class="game-header"><tr>'."\n";
-  if(($live == 'dead' && $heaven_mode == 'on') || $ROOM->is_aftergame()){ //霊界とログ閲覧時
-    if($live == 'dead' && $heaven_mode == 'on')
+  if(($SELF->is_dead() && $ROOM->heaven_mode) || $ROOM->is_aftergame()){ //霊界とログ閲覧時
+    if($SELF->is_dead() && $ROOM->heaven_mode)
       echo '<td>&lt;&lt;&lt;幽霊の間&gt;&gt;&gt;</td>'."\n";
     else
       echo $room_message;
@@ -486,7 +467,7 @@ function OutputGameHeader(){
     //過去の日のログへのリンク生成
     echo '<td class="view-option">ログ';
 
-    $url_header ='<a href="game_log.php' . $url_room . '&log_mode=on&date=';
+    $url_header ='<a href="game_log.php' . $url_room . '&date=';
     $url_footer = '#game_top" target="_blank">';
     $url_day    = '&day_night=day'   . $url_footer;
     $url_night  = '&day_night=night' . $url_footer;
@@ -496,25 +477,25 @@ function OutputGameHeader(){
       echo $url_header . $i . $url_day   . $i . '(昼)</a>'."\n";
       echo $url_header . $i . $url_night . $i . '(夜)</a>'."\n";
     }
-    if($ROOM->is_night() && $heaven_mode == 'on'){
+    if($ROOM->is_night() && $ROOM->heaven_mode){
       echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
     }
     elseif($ROOM->is_aftergame()){
       $query = "SELECT COUNT(uname) FROM talk WHERE room_no = $room_no " .
-	"AND date = $ROOM->date AND location = 'day'";
+	"AND date = {$ROOM->date} AND location = 'day'";
       if(FetchResult($query) > 0){
 	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
       }
     }
 
-    if($heaven_mode == 'on'){
+    if($ROOM->heaven_mode){
       echo '</td>'."\n" . '</tr></table>'."\n";
       return;
     }
   }
   else{
     echo $room_message . '<td class="view-option">'."\n";
-    if($live == 'dead' && $dead_mode == 'on'){ //死亡者の場合の、真ん中の全表示地上モード
+    if($SELF->is_dead() && $ROOM->dead_mode){ //死亡者の場合の、真ん中の全表示地上モード
       $url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload .
 	$url_sound . $url_list . '#game_top';
 
@@ -534,17 +515,17 @@ EOF;
 
     $url = $url_header . $url_reload . '&play_sound=';
     echo ' [音でお知らせ](' .
-      ($play_sound == 'on' ?  'on ' . $url . 'off">off</a>' : $url . 'on">on</a> off') .
+      ($RQ_ARGS->play_sound ?  'on ' . $url . 'off">off</a>' : $url . 'on">on</a> off') .
       ')'."\n";
   }
 
   //プレイヤーリストの表示位置
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
-    $url_reload . $url_sound  . '&list_down=' . ($list_down == 'on' ? 'off">↑' : 'on">↓') .
+    $url_reload . $url_sound  . '&list_down=' . ($RQ_ARGS->list_down ? 'off">↑' : 'on">↓') .
     'リスト</a>'."\n";
 
   //夜明けを音でお知らせする
-  if($play_sound == 'on'){
+  if($RQ_ARGS->play_sound){
     //夜明けの場合
     if($cookie_day_night != $ROOM->day_night && $ROOM->is_day()) OutputSound('morning');
 
@@ -589,7 +570,7 @@ EOF;
   if($ROOM->is_beforegame()) OutputGameOption(); //ゲームオプションを説明
   echo '<table class="time-table"><tr>'."\n";
   if(! $ROOM->is_aftergame()){ //ゲーム終了後以外なら、サーバとの時間ズレを表示
-    $date_str = gmdate('Y, m, j, G, i, s', $system_time);
+    $date_str = gmdate('Y, m, j, G, i, s', $ROOM->system_time);
     echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
     echo '<td>サーバとローカルPCの時間ズレ(ラグ含)： ' . '<span><script type="text/javascript">' .
       "output_diff_time('$date_str');" . '</script>' . '秒</span></td></td>'."\n";
@@ -625,11 +606,11 @@ EOF;
 
   //異議あり、のボタン(夜と死者モード以外)
   if($ROOM->is_beforegame() ||
-     ($ROOM->is_day() && $dead_mode != 'on' && $heaven_mode != 'on' && $left_time > 0)){
+     ($ROOM->is_day() && ! $ROOM->dead_mode && ! $ROOM->heaven_mode && $left_time > 0)){
     $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list . '#game_top';
     echo <<<EOF
 <td class="objection"><form method="POST" action="$url">
-<input type="hidden" name="set_objection" value="set">
+<input type="hidden" name="set_objection" value="on">
 <input type="image" name="objimage" src="{$GAME_CONF->objection_image}" border="0">
 </form></td>
 <td>($objection_left_count)</td>
@@ -640,18 +621,18 @@ EOF;
 
   if($ROOM->is_playing() && $left_time == 0){
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
-    if($sudden_death_time > 0){
-      echo $MESSAGE->sudden_death_time . ConvertTime($sudden_death_time) . '<br>'."\n";
+    if($ROOM->sudden_death > 0){
+      echo $MESSAGE->sudden_death_time . ConvertTime($ROOM->sudden_death) . '<br>'."\n";
     }
   }
 }
 
 //天国の霊話ログ出力
 function OutputHeavenTalkLog(){
-  global $room_no, $ROOM, $heaven_mode;
+  global $room_no, $ROOM;
 
   //出力条件をチェック
-  // if($live != 'dead') return false; //呼び出し側でチェックするので現在は不要
+  // if($SELF->is_dead()) return false; //呼び出し側でチェックするので現在は不要
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
   $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
@@ -699,25 +680,27 @@ function OutputHeavenTalkLog(){
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $GAME_CONF, $ROLE_IMG, $MESSAGE, $room_no, $ROOM, $user_no, $uname, $handle_name, $role, $live;
+  global $GAME_CONF, $ROLE_IMG, $MESSAGE, $room_no, $ROOM, $SELF;
 
   //ゲーム中のみ表示する
   if(! $ROOM->is_playing()) return false;
 
-  if($live == 'dead'){ //死亡したら能力を表示しない
+  if($SELF->is_dead){ //死亡したら能力を表示しない
     echo '<span class="ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
     return;
   }
 
-  $role_list = explode(' ', $role);
+  $role_list = $SELF->role_list;
   $main_role = array_shift($role_list);
+  $is_first_night = ($ROOM->is_night() && $ROOM->date == 1);
+  $is_after_first_night = ($ROOM->is_night() && $ROOM->date > 1);
 
   if($main_role == 'human' || $main_role == 'suspect' || $main_role == 'unconscious'){
     $ROLE_IMG->DisplayImage('human');
   }
   elseif(strpos($main_role, 'wolf') !== false){
     $ROLE_IMG->DisplayImage($main_role);
-    OutputPartner("role LIKE '%wolf%' AND uname <> '$uname'", 'wolf_partner'); //仲間を表示
+    OutputPartner("role LIKE '%wolf%' AND uname <> '{$SELF->uname}'", 'wolf_partner'); //仲間を表示
     OutputPartner("role LIKE 'whisper_mad%'", 'mad_partner'); //囁き狂人を表示
 
     //夜だけ無意識を表示
@@ -729,7 +712,7 @@ function OutputAbility(){
       $count  = mysql_num_rows($sql);
       for($i = 0; $i < $count; $i++){
 	list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-	if($handle_name == $actor){
+	if($SELF->handle_name == $actor){
 	  OutputAbilityResult('wolf_result', $target, 'result_' . $target_role);
 	  break;
 	}
@@ -749,7 +732,7 @@ function OutputAbility(){
     $header = ($main_role == 'psycho_mage' ? $main_role : 'result') . '_';
     for($i = 0; $i < $count; $i++){
       list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($handle_name == $actor){
+      if($SELF->handle_name == $actor){
 	OutputAbilityResult('mage_result', $target, $header . $target_role);
 	break;
       }
@@ -791,7 +774,7 @@ function OutputAbility(){
   elseif($main_role == 'trap_mad'){
     $ROLE_IMG->DisplayImage($main_role);
 
-    if(strpos($role, 'lost_ability') === false && $ROOM->is_after_first_night()){ //夜の投票
+    if(strpos($role, 'lost_ability') === false && $is_after_first_night){ //夜の投票
       OutputVoteMessage('wolf-eat', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
     }
   }
@@ -800,7 +783,7 @@ function OutputAbility(){
     if($main_role != 'mad'){
       OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
       if($main_role == 'whisper_mad'){ //囁き狂人を表示
-	OutputPartner("role LIKE 'whisper_mad%' AND uname <> '$uname'", 'mad_partner');
+	OutputPartner("role LIKE 'whisper_mad%' AND uname <> '{SELF->uname}'", 'mad_partner');
       }
     }
   }
@@ -813,7 +796,7 @@ function OutputAbility(){
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
       list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($handle_name == $actor){
+      if($SELF->handle_name == $actor){
 	OutputAbilityResult(NULL, $target, 'guard_success');
 	break;
       }
@@ -824,14 +807,14 @@ function OutputAbility(){
       $count = mysql_num_rows($sql);
       for($i = 0; $i < $count; $i++){
 	list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-	if($handle_name == $actor){
+	if($SELF->handle_name == $actor){
 	  OutputAbilityResult(NULL, $target, 'guard_hunted');
 	  break;
 	}
       }
     }
 
-    if($ROOM->is_after_first_night()) OutputVoteMessage('guard-do', 'GUARD_DO'); //夜の投票
+    if($is_after_first_night) OutputVoteMessage('guard-do', 'GUARD_DO'); //夜の投票
   }
   elseif($main_role == 'reporter'){
     $ROLE_IMG->DisplayImage($main_role);
@@ -842,31 +825,31 @@ function OutputAbility(){
     $count  = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
       list($actor, $target, $wolf_handle) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($handle_name == $actor){
+      if($SELF->handle_name == $actor){
 	$target .= ' さんは ' . $wolf_handle;
 	OutputAbilityResult('reporter_result_header', $target, 'reporter_result_footer');
 	break;
       }
     }
 
-    if($ROOM->is_after_first_night()) OutputVoteMessage('guard-do', 'REPORTER_DO'); //夜の投票
+    if($is_after_first_night) OutputVoteMessage('guard-do', 'REPORTER_DO'); //夜の投票
   }
   elseif(strpos($main_role, 'common') !== false){
     $ROLE_IMG->DisplayImage('common');
 
     //仲間を表示
     if($main_role == 'dummy_common'){
-      OutputPartner("uname = 'dummy_boy' AND uname <> '$uname'", 'common_partner');
+      OutputPartner("uname = 'dummy_boy' AND uname <> '{SELF->uname}'", 'common_partner');
     }
     else{
-      OutputPartner("role LIKE 'common%' AND uname <> '$uname'", 'common_partner');
+      OutputPartner("role LIKE 'common%' AND uname <> '{SELF->uname}'", 'common_partner');
     }
   }
   elseif($main_role == 'child_fox'){
     $ROLE_IMG->DisplayImage('child_fox');
 
     //仲間を表示
-    OutputPartner("role LIKE '%fox%' AND uname <> '$uname'", 'fox_partner');
+    OutputPartner("role LIKE '%fox%' AND uname <> '{SELF->uname}'", 'fox_partner');
 
     //占い結果を表示
     $action = 'CHILD_FOX_RESULT';
@@ -874,7 +857,7 @@ function OutputAbility(){
     $count  = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
       list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($handle_name == $actor){
+      if($SELF->handle_name == $actor){
 	OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
 	break;
       }
@@ -893,13 +876,13 @@ function OutputAbility(){
       $ROLE_IMG->DisplayImage($main_role);
 
     //子狐以外の仲間を表示
-    OutputPartner("role LIKE 'fox%' AND uname <> '$uname'", 'fox_partner');
+    OutputPartner("role LIKE 'fox%' AND uname <> '{SELF->uname}'", 'fox_partner');
 
     //狐が狙われたメッセージを表示
     $sql = GetAbilityActionResult('FOX_EAT');
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
-      if($handle_name == mysql_result($sql, $i, 0)){
+      if($SELF->handle_name == mysql_result($sql, $i, 0)){
 	OutputAbilityResult('fox_targeted', NULL);
 	break;
       }
@@ -916,13 +899,13 @@ function OutputAbility(){
       $count  = mysql_num_rows($sql);
       for($i = 0; $i < $count; $i++){
 	list($actor, $target, $result) = ParseStrings(mysql_result($sql, $i, 0), $action);
-	if($handle_name == $actor){
+	if($SELF->handle_name == $actor){
 	  OutputAbilityResult(NULL, $target, 'poison_cat_' . $result);
 	  break;
 	}
       }
 
-      if($ROOM->is_after_first_night()){ //夜の投票
+      if($is_after_first_night){ //夜の投票
 	OutputVoteMessage('poison-cat-do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
@@ -940,7 +923,7 @@ function OutputAbility(){
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
       list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($handle_name == $actor){
+      if($SELF->handle_name == $actor){
 	OutputAbilityResult(NULL, $target, 'pharmacist_success');
 	break;
       }
@@ -950,22 +933,22 @@ function OutputAbility(){
     $ROLE_IMG->DisplayImage($main_role);
 
     //自分が矢を打った恋人 (自分自身含む) を表示する
-    $cupid_id = strval($user_no);
+    $cupid_id = strval($SELF->user_no);
     OutputPartner("role LIKE '%lovers[$cupid_id]%'", 'cupid_pair');
 
-    if($ROOM->is_first_night()) OutputVoteMessage('cupid-do', 'CUPID_DO'); //初日夜の投票
+    if($is_first_night) OutputVoteMessage('cupid-do', 'CUPID_DO'); //初日夜の投票
   }
   elseif($main_role == 'mania'){
     // $ROLE_IMG->DisplayImage($main_role);
     echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます。<br>'."\n";
 
-    if($ROOM->is_first_night()) OutputVoteMessage('mania-do', 'MANIA_DO'); //初日夜の投票
+    if($is_first_night) OutputVoteMessage('mania-do', 'MANIA_DO'); //初日夜の投票
   }
   elseif($main_role == 'assassin'){
     // $ROLE_IMG->DisplayImage($main_role);
     echo '[役割]<br>　あなたは「暗殺者」です。夜に村人一人を暗殺することができます。<br>'."\n";
 
-    if($ROOM->is_after_first_night()){ //夜の投票
+    if($is_after_first_night){ //夜の投票
       OutputVoteMessage('assassin-do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
   }
@@ -980,9 +963,9 @@ function OutputAbility(){
 
   //ここから兼任役職
   if(in_array('lost_ability', $role_list)) $ROLE_IMG->DisplayImage('lost_ability'); //能力失効
-  if(strpos($role, 'lovers') !== false){ //恋人を表示する
+  if($SELF->is_lovers()){ //恋人を表示する
     $lovers_str = GetLoversConditionString($role);
-    OutputPartner("$lovers_str AND uname <> '$uname'", 'lovers_header', 'lovers_footer');
+    OutputPartner("$lovers_str AND uname <> '{SELF->uname}'", 'lovers_header', 'lovers_footer');
   }
 
   if(in_array('copied', $role_list)){ //神話マニアのコピー結果を表示
@@ -991,7 +974,7 @@ function OutputAbility(){
     $count  = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
       list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($handle_name == $actor){
+      if($SELF->handle_name == $actor){
 	OutputAbilityResult(NULL, $target, 'result_' . $target_role);
 	break;
       }
@@ -1030,9 +1013,9 @@ function OutputPartner($query, $header, $footer = NULL){
 
 //能力発動結果をデータベースに問い合わせる
 function GetAbilityActionResult($action){
-  global $room_no, $date;
+  global $room_no, $ROOM;
 
-  $yesterday = $date - 1;
+  $yesterday = $ROOM->date - 1;
   return mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
 			AND date = $yesterday AND type = '$action'");
 }
@@ -1062,7 +1045,7 @@ function OutputVoteMessage($class, $situation, $not_situation = ''){
 
 //昼の自分の未投票チェック
 function CheckSelfVoteDay(){
-  global $room_no, $ROOM, $uname;
+  global $room_no, $ROOM, $SELF;
 
   //投票回数を取得
   $vote_times = GetVoteTimes();
@@ -1070,20 +1053,20 @@ function CheckSelfVoteDay(){
 
   //投票済みかどうか
   $sql = mysql_query("SELECT COUNT(uname) FROM vote WHERE room_no = $room_no
-			AND uname = '$uname' AND date = {$ROOM->date} AND vote_times = $vote_times
+			AND uname = '{SELF->uname}' AND date = {$ROOM->date} AND vote_times = $vote_times
 			AND situation = 'VOTE_KILL'");
   echo (mysql_result($sql, 0, 0) ? '投票済み' : 'まだ投票していません') . '</div>'."\n";
 }
 
 //自分の遺言を出力
 function OutputSelfLastWords(){
-  global $room_no, $ROOM, $uname;
+  global $room_no, $ROOM, $SELF;
 
   //ゲーム終了後は表示しない
   if($ROOM->is_aftergame()) return false;
 
   $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = $room_no
-			AND uname = '$uname' AND user_no > 0");
+			AND uname = '{SELF->uname}' AND user_no > 0");
 
   //まだ入力してなければ表示しない
   if(mysql_num_rows($sql) == 0) return false;

@@ -36,11 +36,11 @@ class Roles{
     shot(">>>成功({$class_name})");
   }
 
-  function Instantiate($role_name, $user = null){
-    global $USERS, $uname;
+  function Instantiate($role_name, $user = NULL){
+    global $USERS, $SELF;
     shot("{$role_name}の新しいインスタンスを初期化します。");
     #$USERS->Load();
-    return new $this->class[$role_name](isset($user) ? $user : $USERS->ByUname($uname));
+    return new $this->class[$role_name](isset($user) ? $user : $SELF);
   }
 
   function GetWhisperingUserInfo($role_name, &$class_attr){

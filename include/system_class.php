@@ -1,24 +1,35 @@
 <?php
 class RoomDataSet{
+  var $id;
   var $name;
   var $comment;
   var $game_option;
   var $date;
   var $day_night;
   var $status;
+  var $system_time;
+  var $sudden_death;
   var $view_mode;
+  var $dead_mode;
+  var $heaven_mode;
+  var $log_mode;
 
-  function RoomDataSet($room_no){
+  function RoomDataSet($room_no, $debug = false){
+    if($debug) return;
     $sql = mysql_query("SELECT room_name, room_comment, game_option, date, day_night, status
 			FROM room WHERE room_no = $room_no");
     $array = mysql_fetch_assoc($sql);
+    $this->id          = $room_no;
     $this->name        = $array['room_name'];
     $this->comment     = $array['room_comment'];
     $this->game_option = $array['game_option'];
     $this->date        = $array['date'];
     $this->day_night   = $array['day_night'];
     $this->status      = $array['status'];
-    $this->view_mode   = ($_GET['view_mode'] == 'on');
+    $this->view_mode   = false;
+    $this->dead_mode   = false;
+    $this->heaven_mode = false;
+    $this->log_mode    = false;
   }
 
   function is_real_time(){
@@ -51,14 +62,6 @@ class RoomDataSet{
 
   function is_aftergame(){
     return $this->day_night == 'aftergame';
-  }
-
-  function is_first_night(){
-    return ($this->is_night() && $this->date == 1);
-  }
-
-  function is_after_first_night(){
-    return ($this->is_night() && $this->date > 1);
   }
 
   function is_playing(){

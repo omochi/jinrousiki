@@ -14,7 +14,7 @@ function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
 
 //人数とゲームオプションに応じた役職テーブルを返す (エラー処理は暫定)
 function GetRoleList($user_count, $option_role){
-  global $GAME_CONF, $game_option;
+  global $GAME_CONF, $ROOM;
 
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
@@ -25,7 +25,7 @@ function GetRoleList($user_count, $option_role){
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
-  if(strpos($game_option, 'quiz') !== false){ //クイズ村
+  if($ROOM->is_quiz()){ //クイズ村
     $temp_role_list = array();
     foreach($role_list as $key => $value){
       if(strpos($key, 'wolf') !== false)
@@ -43,7 +43,7 @@ function GetRoleList($user_count, $option_role){
     $temp_role_list['quiz'] = 1;
     $role_list = $temp_role_list;
   }
-  elseif(strpos($game_option, 'chaosfull') !== false){ //真・闇鍋
+  elseif(strpos($ROOM->game_option, 'chaosfull') !== false){ //真・闇鍋
     $role_list = array(); //配列をリセット
     $role_list['wolf'] = 1; //狼1確保
     $role_list['mage'] = 1; //占い師1確保
@@ -233,7 +233,7 @@ function GetRoleList($user_count, $option_role){
       $role_list['human']++;
     }
   }
-  elseif(strpos($game_option, 'chaos') !== false){ //闇鍋
+  elseif(strpos($ROOM->game_option, 'chaos') !== false){ //闇鍋
     //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
     $role_list = array(); //配列をリセット
 

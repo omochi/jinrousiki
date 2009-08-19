@@ -4,13 +4,12 @@ require_once(dirname(__FILE__) . '/include/request_class.php');
 
 //部屋No取得
 $RQ_ARGS = new LogView();
-$room_no  = (int)$_GET['room_no'];
-$log_mode = $_GET['log_mode'];
-//$page        = (int)$_GET['page'];
+$room_no = $RQ_ARGS->room_no;
 
 $dbHandle = ConnectDatabase(); //DB 接続
 if($RQ_ARGS->is_room){
   $USERS = new UserDataSet($room_no);
+  $SELF  = new User();
   OutputOldLog($RQ_ARGS->room_no);
 }
 else{
@@ -45,25 +44,22 @@ echo <<<EOF
 EOF;
 
   $config = new OldLogConfig(); //設定をロード
-  if(empty($reverse))
-    $is_reverse = $config->reverse;
-  else
-    $is_reverse = $reverse == 'on';
+  $is_reverse = (empty($reverse) ? $config->reverse : ($reverse == 'on'));
 
   //ページリンクの出力
   if($page == NULL) $page = 1;
   $num_pages = ceil($num_rooms / $config->one_page) + 1; //[all] の為に + 1 しておく
   $url_option = '&reverse='.($is_reverse ? 'on' : 'off');
-  if($RQ_ARGS->add_role == 'on') $url_option .= '&add_role=on';
+  if($RQ_ARGS->add_role) $url_option .= '&add_role=on';
   for($page_number = 1; $page_number <= $num_pages; $page_number++){
-    $page_title = $page_number == $num_pages ? 'all' : $page_number;
-    if($page != $page_title)
-      echo " <a href=\"old_log.php?page=$page_title$url_option\">[$page_title]</a> ";
-    else
+    $page_title = ($page_number == $num_pages ? 'all' : $page_number);
+    if($page == $page_title)
       echo " [$page_title] ";
+    else
+      echo " <a href=\"old_log.php?page=$page_title$url_option\">[$page_title]</a> ";
   }
   $reverse_text = ($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える';
-  $base_url = 'old_log.php?'.($RQ_ARGS->add_role == 'on' ? '&add_role=on' : '').'reverse=';
+  $base_url = 'old_log.php?'.($RQ_ARGS->add_role ? '&add_role=on' : '').'&reverse=';
   if($is_reverse)
     echo '表示順:新↓古 <a href="'.$base_url.'off">'.$reverse_text.'</a>';
   else
@@ -116,8 +112,8 @@ EOF;
     // $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
     $user_count = intval($log_room_num_user);
 
-    $base_url = "old_log.php?log_mode=on&room_no=$log_room_no";
-    if($RQ_ARGS->add_role == 'on') $base_url .= '&add_role=on';
+    $base_url = "old_log.php?room_no=$log_room_no";
+    if($RQ_ARGS->add_role) $base_url .= '&add_role=on';
 
     /*
     if ($DEBUG_MODE){
@@ -161,7 +157,7 @@ EOF;
 
 //指定の部屋Noのログを出力する
 function OutputOldLog($room_no){
-  global $SERVER_CONF, $RQ_ARGS, $ROOM, $room_no, $live, $last_date;
+  global $SERVER_CONF, $RQ_ARGS, $ROOM, $room_no, $last_date;
 
   $base_title = $SERVER_CONF->title . ' [過去ログ]';
   $url = "<br>\n<a href=\"old_log.php\">←戻る</a>\n";
@@ -170,12 +166,13 @@ function OutputOldLog($room_no){
 
   //日付とシーンを取得
   $ROOM = new RoomDataSet($room_no);
+  $ROOM->log_mode = true;
   $last_date = $ROOM->date;
+
   if(! $ROOM->is_finished() || ! $ROOM->is_aftergame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
 
-  $live = 'dead'; //他の関数に影響、すべて表示するため
   $title = '[' . $room_no . '番地] ' . $ROOM->name . ' - ' . $base_title;
 
   //戻る先を前のページにする
@@ -190,8 +187,8 @@ function OutputOldLog($room_no){
 EOF;
   OutputPlayerList();   //プレイヤーリストを出力
 
-  $layout = 'Layout'.($RQ_ARGS->heaven_only == 'on' ? 'Heaven' : 'TalkLog');
-  $layout($last_date, $RQ_ARGS->reverse_log == 'on');
+  $layout = 'Layout'.($RQ_ARGS->heaven_only ? 'Heaven' : 'TalkLog');
+  $layout($last_date, $RQ_ARGS->reverse_log);
 }
 
 //通常のログ表示順を表現します。
@@ -230,7 +227,7 @@ function LayoutHeaven($last_date, $is_reverse){
 
 //指定の日付の会話ログを出力
 function OutputDateTalkLog($set_date, $set_location, $is_reverse){
-  global $RQ_ARGS, $ROLES, $room_no, $ROOM, $live, $last_date;
+  global $RQ_ARGS, $ROLES, $room_no, $ROOM, $last_date;
 
   if($is_reverse) //逆順、初日から最終日まで
     $select_order = 'ORDER BY time';
@@ -247,7 +244,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 
   default:
     //二日目以降は昼から始まる
-    $table_class = ($is_reverse == 'on' && $set_date != 1) ? 'day' : 'night';
+    $table_class = ($is_reverse && $set_date != 1) ? 'day' : 'night';
     $date_select = "AND date = $set_date";
     if($set_location == 'heaven_only')
       $location_select = "AND (location = 'heaven' OR uname = 'system')";
@@ -271,7 +268,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   }
   else{
     $flag_border_game = true;
-    $hide_heaven_query = ($RQ_ARGS->heaven_talk == 'on') ? '' : "AND location <> 'heaven'";
+    $hide_heaven_query = ($RQ_ARGS->heaven_talk ? '' : "AND location <> 'heaven'");
     //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
     $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
 			WHERE room_no = $room_no AND date = $set_date
@@ -322,9 +319,9 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
 function OutputSceneChange($set_date){
   global $RQ_ARGS, $ROOM;
 
-  if($RQ_ARGS->heaven_only == 'on') return;
+  if($RQ_ARGS->heaven_only) return;
   $ROOM->date = $set_date;
-  if($RQ_ARGS->reverse_log == 'on'){
+  if($RQ_ARGS->reverse_log){
     $ROOM->day_night = 'night';
     OutputVoteList(); //投票結果出力
     OutputDeadMan();  //死亡者を出力

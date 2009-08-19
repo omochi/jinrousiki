@@ -11,20 +11,20 @@ class DocumentBuilder{
   var $extensions = array();
 
   function Generate(){
-    global $ROLES, $role, $handle_name;
+    global $ROLES, $SELF;
 
     $result = new DocumentBuilder();
-    if(strpos($role, 'blinder') !== false){
+    if($SELF->is_role('blinder')){
       $wrapper = $ROLES->Instantiate('blinder');
       #$wrapper->Wrap($result);
       $result->Extend('blinder', $wrapper);
     }
-    if(strpos($role, 'earplug') !== false){
+    if($SELF->is_role('earplug')){
       $wrapper = $ROLES->Instantiate('earplug');
       #$wrapper->Wrap($result);
       $result->Extend('earplug', $wrapper);
     }
-    if(strpos($role, 'speaker') !== false){
+    if($SELF->is_role('speaker')){
       $wrapper = $ROLES->Instantiate('speaker');
       #$wrapper->Wrap($result);
       $result->Extend('speaker', $wrapper);
@@ -72,7 +72,7 @@ WORDS;
     global $GAME_CONF, $RQ_ARGS, $USERS;
 
     $talk_handle_name = $user->handle_name;
-    if($RQ_ARGS->add_role == 'on'){ //役職表示モード対応
+    if($RQ_ARGS->add_role){ //役職表示モード対応
       $talk_handle_name .= '<span class="add-role"> [' .
 	MakeShortRoleName($USERS->GetRole($talk->uname)) . '] (' . $talk->uname . ')</span>';
     }

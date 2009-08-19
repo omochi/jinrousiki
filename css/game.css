@@ -36,10 +36,11 @@
 }
 /* OutputPlayerList() */
 .player{ /* プレイヤーリスト全体の div */
-  width: 700px;
+  width: 750px;
   font-size: 10pt;
 }
 .player table{
+  width: 100%;
   border: 1px dotted #000000;
   boder-collapse: collapse;
 }
