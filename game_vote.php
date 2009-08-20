@@ -7,7 +7,7 @@ session_start();
 $session_id = session_id();
 
 //引数を取得
-EncodePostData(); //ポストされた文字列を全てエンコードする
+if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
 $RQ_ARGS = new RequestGameVote();
 $room_no = $RQ_ARGS->room_no;
 
@@ -125,14 +125,14 @@ function VoteGameStart(){
 
   //投票済みチェック
   $query = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no AND date = 0 " .
-    "AND uname = '{SELF->uname}' AND situation = 'GAMESTART'";
+    "AND uname = '{$SELF->uname}' AND situation = 'GAMESTART'";
   if(FetchResult($query) > 0) OutputVoteResult('ゲームスタート：投票済みです');
 
   LockTable(); //テーブルを排他的ロック
 
   //投票処理
   $sql = mysql_query("INSERT INTO vote(room_no, date, uname, situation)
-			VALUES($room_no, 0, '{SELF->uname}', 'GAMESTART')");
+			VALUES($room_no, 0, '{$SELF->uname}', 'GAMESTART')");
   if($sql && mysql_query('COMMIT')){//一応コミット
     AggregateVoteGameStart(); //集計処理
     OutputVoteResult('投票完了', true);
@@ -186,7 +186,7 @@ function AggregateVoteGameStart(){
   $error_footer = '。<br>管理者に問い合わせて下さい。';
 
   if($ROOM->is_dummy_boy()){ //身代わり君の役職を決定
-    #$gerd = true; //デバッグ用
+    $gerd = true; //デバッグ用
     if($gerd || $quiz){ //身代わり君の役職固定オプションをチェック
       if($gerd)     $fit_role = 'human'; //ゲルト君
       elseif($quiz) $fit_role = 'quiz';  //クイズ村
@@ -311,12 +311,11 @@ function AggregateVoteGameStart(){
   $add_sub_role = 'perverseness';
   array_push($delete_role_list, $add_sub_role);
   for($i = 0; $i < $user_count; $i++){
-    if(mt_rand(1, 100) <= 70){
+    #if(mt_rand(1, 100) <= 70){
       $fix_role_list[$i] .= ' ' . $add_sub_role;
-    }
+    #}
   }
   */
-
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
   foreach($now_sub_role_list as $this_role){
@@ -1675,6 +1674,7 @@ function OutputVoteNight(){
   elseif($role_cupid = $SELF->is_role('cupid')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('CUPID_DO');
+    $cupid_self_shoot = ($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot);
   }
   elseif($role_mania = $SELF->is_role('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
@@ -1709,7 +1709,6 @@ function OutputVoteNight(){
   $count  = 0;
   $width  = $ICON_CONF->width;
   $height = $ICON_CONF->height;
-  $cupid_self_shoot = ($count < $GAME_CONF->cupid_self_shoot);
 
   OutputVotePageHeader();
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
@@ -1883,10 +1882,12 @@ function KillUser($uname, $reason, &$dead_lovers_list){
 function CheckSituation($applay_situation){
   global $RQ_ARGS;
 
-  if((is_array($applay_situation) && ! in_array($RQ_ARGS->situation, $applay_situation)) ||
-     $RQ_ARGS->situation != $applay_situation){
-    OutputVoteResult('無効な投票です');
+  if(is_array($applay_situation)){
+    if(in_array($RQ_ARGS->situation, $applay_situation)) return;
   }
+  elseif($RQ_ARGS->situation == $applay_situation) return;
+
+  OutputVoteResult('無効な投票です');
 }
 
 //投票する状況があっているかチェック

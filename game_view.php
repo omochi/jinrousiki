@@ -22,6 +22,7 @@ case 'night': //夜
   break;
 }
 $USERS = new UserDataSet($room_no); //ユーザ情報をロード
+$SELF = new User();
 
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 

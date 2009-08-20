@@ -6,8 +6,8 @@ require_once(dirname(__FILE__) . '/system_class.php');  //システム情報格納クラス
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //デバッグ用に長くしておく
+  #var $die_room = 1200;
+  var $die_room = 12000; //デバッグ用に長くしておく
 
   //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
@@ -69,11 +69,11 @@ class RoomConfig{
   var $sudden_death = true; //虚弱体質村
   var $default_sudden_death = false;
 
+  var $perverseness = false; //天邪鬼村 //作成中
+  var $default_perverseness = false;
+
   var $full_mania = true; //神話マニア村
   var $default_full_mania = false;
-
-  var $quiz = true; //クイズ村
-  var $default_quiz = false;
 
   var $chaos = true; //闇鍋モード
   var $default_chaos = false;
@@ -89,6 +89,12 @@ class RoomConfig{
 
   var $no_sub_role = true; //サブ役職をつけない (闇鍋モード専用オプション)
   var $default_no_sub_role = false;
+
+  var $quiz = true; //クイズ村
+  var $default_quiz = false;
+
+  var $duel = false; //決闘村 //作成中
+  var $default_duel = false;
 
   //表示する他のサーバのリスト
   var $shared_server_list = array(
@@ -142,8 +148,8 @@ $ROOM_CONF = new RoomConfig();
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  var $entry_one_ip_address = true;
-  #var $entry_one_ip_address = false; //デバッグ用
+  #var $entry_one_ip_address = true;
+  var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません

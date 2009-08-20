@@ -4,6 +4,7 @@ class RoomDataSet{
   var $name;
   var $comment;
   var $game_option;
+  var $option_role;
   var $date;
   var $day_night;
   var $status;
@@ -16,13 +17,14 @@ class RoomDataSet{
 
   function RoomDataSet($room_no, $debug = false){
     if($debug) return;
-    $sql = mysql_query("SELECT room_name, room_comment, game_option, date, day_night, status
-			FROM room WHERE room_no = $room_no");
+    $sql = mysql_query("SELECT room_name, room_comment, game_option, option_role,
+			date, day_night, status FROM room WHERE room_no = $room_no");
     $array = mysql_fetch_assoc($sql);
     $this->id          = $room_no;
     $this->name        = $array['room_name'];
     $this->comment     = $array['room_comment'];
     $this->game_option = $array['game_option'];
+    $this->option_role = $array['option_role'];
     $this->date        = $array['date'];
     $this->day_night   = $array['day_night'];
     $this->status      = $array['status'];

@@ -685,7 +685,7 @@ function OutputAbility(){
   //ゲーム中のみ表示する
   if(! $ROOM->is_playing()) return false;
 
-  if($SELF->is_dead){ //死亡したら能力を表示しない
+  if($SELF->is_dead()){ //死亡したら能力を表示しない
     echo '<span class="ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
     return;
   }
@@ -783,7 +783,7 @@ function OutputAbility(){
     if($main_role != 'mad'){
       OutputPartner("role LIKE '%wolf%'", 'wolf_partner'); //狼を表示
       if($main_role == 'whisper_mad'){ //囁き狂人を表示
-	OutputPartner("role LIKE 'whisper_mad%' AND uname <> '{SELF->uname}'", 'mad_partner');
+	OutputPartner("role LIKE 'whisper_mad%' AND uname <> '{$SELF->uname}'", 'mad_partner');
       }
     }
   }
@@ -839,17 +839,17 @@ function OutputAbility(){
 
     //仲間を表示
     if($main_role == 'dummy_common'){
-      OutputPartner("uname = 'dummy_boy' AND uname <> '{SELF->uname}'", 'common_partner');
+      OutputPartner("uname = 'dummy_boy' AND uname <> '{$SELF->uname}'", 'common_partner');
     }
     else{
-      OutputPartner("role LIKE 'common%' AND uname <> '{SELF->uname}'", 'common_partner');
+      OutputPartner("role LIKE 'common%' AND uname <> '{$SELF->uname}'", 'common_partner');
     }
   }
   elseif($main_role == 'child_fox'){
     $ROLE_IMG->DisplayImage('child_fox');
 
     //仲間を表示
-    OutputPartner("role LIKE '%fox%' AND uname <> '{SELF->uname}'", 'fox_partner');
+    OutputPartner("role LIKE '%fox%' AND uname <> '{$SELF->uname}'", 'fox_partner');
 
     //占い結果を表示
     $action = 'CHILD_FOX_RESULT';
@@ -876,7 +876,7 @@ function OutputAbility(){
       $ROLE_IMG->DisplayImage($main_role);
 
     //子狐以外の仲間を表示
-    OutputPartner("role LIKE 'fox%' AND uname <> '{SELF->uname}'", 'fox_partner');
+    OutputPartner("role LIKE 'fox%' AND uname <> '{$SELF->uname}'", 'fox_partner');
 
     //狐が狙われたメッセージを表示
     $sql = GetAbilityActionResult('FOX_EAT');
@@ -964,8 +964,8 @@ function OutputAbility(){
   //ここから兼任役職
   if(in_array('lost_ability', $role_list)) $ROLE_IMG->DisplayImage('lost_ability'); //能力失効
   if($SELF->is_lovers()){ //恋人を表示する
-    $lovers_str = GetLoversConditionString($role);
-    OutputPartner("$lovers_str AND uname <> '{SELF->uname}'", 'lovers_header', 'lovers_footer');
+    $lovers_str = GetLoversConditionString($SELF->role);
+    OutputPartner("$lovers_str AND uname <> '{$SELF->uname}'", 'lovers_header', 'lovers_footer');
   }
 
   if(in_array('copied', $role_list)){ //神話マニアのコピー結果を表示
@@ -1053,7 +1053,7 @@ function CheckSelfVoteDay(){
 
   //投票済みかどうか
   $sql = mysql_query("SELECT COUNT(uname) FROM vote WHERE room_no = $room_no
-			AND uname = '{SELF->uname}' AND date = {$ROOM->date} AND vote_times = $vote_times
+			AND uname = '{$SELF->uname}' AND date = {$ROOM->date} AND vote_times = $vote_times
 			AND situation = 'VOTE_KILL'");
   echo (mysql_result($sql, 0, 0) ? '投票済み' : 'まだ投票していません') . '</div>'."\n";
 }
@@ -1066,7 +1066,7 @@ function OutputSelfLastWords(){
   if($ROOM->is_aftergame()) return false;
 
   $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = $room_no
-			AND uname = '{SELF->uname}' AND user_no > 0");
+			AND uname = '{$SELF->uname}' AND user_no > 0");
 
   //まだ入力してなければ表示しない
   if(mysql_num_rows($sql) == 0) return false;

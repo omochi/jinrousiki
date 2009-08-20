@@ -396,7 +396,7 @@ EOF;
 <td><label for="open_vote">{$MESSAGE->game_option_open_vote}：</label></td>
 <td class="explain">
 <input id="open_vote" type="checkbox" name="open_vote" value="on"{$checked}>
-(権力者が投票でバレます)
+(「権力者」などのサブ役職が分かりやすくなります)
 </td>
 </tr>
 
@@ -410,7 +410,7 @@ EOF;
 <td><label for="not_open_cast">{$MESSAGE->game_option_not_open_cast}：</label></td>
 <td class="explain">
 <input id="not_open_cast" type="checkbox" name="not_open_cast" value="on"{$checked}>
-(霊界でも誰がどの役職なのかが公開されません)
+(霊界でも誰がどの役職なのかが公開されません。猫又は蘇生できます)
 </td>
 </tr>
 
@@ -574,6 +574,20 @@ EOF;
 EOF;
   }
 
+  if($ROOM_CONF->perverseness){
+    $checked = ($ROOM_CONF->default_perverseness ? ' checked' : '');
+    echo <<<EOF
+<tr>
+<td><label for="role_perverseness">{$MESSAGE->game_option_perverseness}：</label></td>
+<td class="explain">
+<input id="role_perverseness" type="checkbox" name="perverseness" value="on"{$checked}>
+(全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります)
+</td>
+</tr>
+
+EOF;
+  }
+
   if($ROOM_CONF->full_mania){
     $checked = ($ROOM_CONF->default_full_mania ? ' checked' : '');
     echo <<<EOF
@@ -655,7 +669,6 @@ EOF;
 EOF;
     }
   }
-
 
   if($ROOM_CONF->quiz){
     $checked = ($ROOM_CONF->default_quiz ? ' checked' : '');

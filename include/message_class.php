@@ -9,30 +9,32 @@ class Message{
   //身代わり君の遺言
   var $dummy_boy_last_words = '僕はおいしくないって言ったのに……';
 
-  var $game_option_wish_role     = '役割希望制';
-  var $game_option_real_time     = 'リアルタイム制';
-  var $game_option_dummy_boy     = '初日の夜は身代わり君';
-  var $game_option_gm_login      = '身代わり君は GM';
-  var $game_option_open_vote     = '投票した票数を公表する';
-  var $game_option_not_open_cast = '霊界で配役を公開しない';
-  var $game_option_decide        = '決定者登場';
-  var $game_option_authority     = '権力者登場';
-  var $game_option_poison        = '埋毒者登場';
-  var $game_option_cupid         = 'キューピッド登場';
-  var $game_option_boss_wolf     = '白狼登場';
-  var $game_option_poison_wolf   = '毒狼登場';
-  var $game_option_mania         = '神話マニア登場';
-  var $game_option_medium        = '巫女登場';
-  var $game_option_liar          = '狼少年村';
-  var $game_option_gentleman     = '紳士・淑女村';
-  var $game_option_sudden_death  = '虚弱体質村';
-  var $game_option_full_mania    = '神話マニア村';
-  var $game_option_quiz          = 'クイズ村';
-  var $game_option_chaos         = '闇鍋モード';
-  var $game_option_chaosfull     = '真・闇鍋モード';
+  var $game_option_wish_role       = '役割希望制';
+  var $game_option_real_time       = 'リアルタイム制';
+  var $game_option_dummy_boy       = '初日の夜は身代わり君';
+  var $game_option_gm_login        = '身代わり君は GM';
+  var $game_option_open_vote       = '投票した票数を公表する';
+  var $game_option_not_open_cast   = '霊界で配役を公開しない';
+  var $game_option_decide          = '決定者登場';
+  var $game_option_authority       = '権力者登場';
+  var $game_option_poison          = '埋毒者登場';
+  var $game_option_cupid           = 'キューピッド登場';
+  var $game_option_boss_wolf       = '白狼登場';
+  var $game_option_poison_wolf     = '毒狼登場';
+  var $game_option_mania           = '神話マニア登場';
+  var $game_option_medium          = '巫女登場';
+  var $game_option_liar            = '狼少年村';
+  var $game_option_gentleman       = '紳士・淑女村';
+  var $game_option_sudden_death    = '虚弱体質村';
+  var $game_option_perverseness    = '天邪鬼村';
+  var $game_option_full_mania      = '神話マニア村';
+  var $game_option_chaos           = '闇鍋モード';
+  var $game_option_chaosfull       = '真・闇鍋モード';
   var $game_option_chaos_open_cast = '配役を通知する';
   var $game_option_secret_sub_role = 'サブ役職を表示しない';
   var $game_option_no_sub_role     = 'サブ役職をつけない';
+  var $game_option_quiz            = 'クイズ村';
+  var $game_option_duel            = '決闘村';
 
   //-- user_manager.php --//
   //EntryUser() : ユーザ登録

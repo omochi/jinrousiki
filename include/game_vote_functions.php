@@ -43,6 +43,23 @@ function GetRoleList($user_count, $option_role){
     $temp_role_list['quiz'] = 1;
     $role_list = $temp_role_list;
   }
+  elseif(false){ //決闘村
+    $temp_role_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'wolf') !== false)
+	$temp_role_list['wolf'] += (int)$value;
+      elseif(strpos($key, 'mad') !== false)
+	$temp_role_list['trap_mad'] += (int)$value;
+      else
+	$temp_role_list['assassin'] += (int)$value;
+    }
+    if($user_count > 15){
+      $temp_role_list['assassin'] -= 2;
+      $temp_role_list['trap_mad']++;
+      $temp_role_list['wolf']++;
+    }
+    $role_list = $temp_role_list;
+  }
   elseif(strpos($ROOM->game_option, 'chaosfull') !== false){ //真・闇鍋
     $role_list = array(); //配列をリセット
     $role_list['wolf'] = 1; //狼1確保
