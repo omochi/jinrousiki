@@ -43,22 +43,11 @@ function GetRoleList($user_count, $option_role){
     $temp_role_list['quiz'] = 1;
     $role_list = $temp_role_list;
   }
-  elseif(false){ //決闘村
-    $temp_role_list = array();
-    foreach($role_list as $key => $value){
-      if(strpos($key, 'wolf') !== false)
-	$temp_role_list['wolf'] += (int)$value;
-      elseif(strpos($key, 'mad') !== false)
-	$temp_role_list['trap_mad'] += (int)$value;
-      else
-	$temp_role_list['assassin'] += (int)$value;
-    }
-    if($user_count > 15){
-      $temp_role_list['assassin'] -= 2;
-      $temp_role_list['trap_mad']++;
-      $temp_role_list['wolf']++;
-    }
-    $role_list = $temp_role_list;
+  elseif(strpos($option_role, 'duel') !== false){ //決闘村
+    $role_list = array(); //配列をリセット
+    $role_list['wolf'] = round($user_count / 5);
+    $role_list['trap_mad'] = round(($user_count - $role_list['wolf']) / 3);
+    $role_list['assassin'] = $user_count - ($role_list['wolf'] + $role_list['trap_mad']);
   }
   elseif(strpos($ROOM->game_option, 'chaosfull') !== false){ //真・闇鍋
     $role_list = array(); //配列をリセット
@@ -86,8 +75,8 @@ function GetRoleList($user_count, $option_role){
     for($i = 0; $i < $fox_count; $i++){
       $rand = mt_rand(1, 100);
       if($rand < 1)       $role_list['cursed_fox']++;
-      // elseif($rand <  5)  $role_list['poison_fox']++;
-      // elseif($rand <  8)  $role_list['white_fox']++;
+      elseif($rand <  5)  $role_list['poison_fox']++;
+      elseif($rand <  8)  $role_list['white_fox']++;
       elseif($rand < 15)  $role_list['child_fox']++;
       else                $role_list['fox']++;
     }
@@ -101,40 +90,42 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 160) $role_list['poison_wolf']++;
       elseif($rand < 170) $role_list['resist_wolf']++;
       elseif($rand < 200) $role_list['tongue_wolf']++;
-      elseif($rand < 230) $role_list['fox']++;
-      elseif($rand < 235) $role_list['cursed_fox']++;
-      // elseif($rand < 240) $role_list['poison_fox']++;
-      // elseif($rand < 245) $role_list['white_fox']++;
+      elseif($rand < 220) $role_list['fox']++;
+      elseif($rand < 225) $role_list['cursed_fox']++;
+      elseif($rand < 235) $role_list['poison_fox']++;
+      elseif($rand < 240) $role_list['white_fox']++;
       elseif($rand < 250) $role_list['child_fox']++;
       elseif($rand < 280) $role_list['mage']++;
       elseif($rand < 290) $role_list['soul_mage']++;
       elseif($rand < 300) $role_list['psycho_mage']++;
+      elseif($rand < 305) $role_list['sex_mage']++;
       elseif($rand < 320) $role_list['dummy_mage']++;
       elseif($rand < 360) $role_list['necromancer']++;
       elseif($rand < 370) $role_list['soul_necromancer']++;
       elseif($rand < 390) $role_list['dummy_necromancer']++;
       elseif($rand < 430) $role_list['medium']++;
-      elseif($rand < 470) $role_list['mad']++;
-      elseif($rand < 480) $role_list['fanatic_mad']++;
+      elseif($rand < 460) $role_list['mad']++;
+      elseif($rand < 470) $role_list['fanatic_mad']++;
+      elseif($rand < 480) $role_list['jammer_mad']++;
       elseif($rand < 500) $role_list['trap_mad']++;
       elseif($rand < 510) $role_list['whisper_mad']++;
       elseif($rand < 590) $role_list['common']++;
       elseif($rand < 600) $role_list['dummy_common']++;
-      elseif($rand < 630) $role_list['guard']++;
-      elseif($rand < 640) $role_list['poison_guard']++;
-      elseif($rand < 650) $role_list['dummy_guard']++;
-      elseif($rand < 670) $role_list['reporter']++;
-      elseif($rand < 690) $role_list['poison']++;
-      elseif($rand < 700) $role_list['strong_poison']++;
-      elseif($rand < 710) $role_list['incubate_poison']++;
-      elseif($rand < 720) $role_list['dummy_poison']++;
-      elseif($rand < 730) $role_list['poison_cat']++;
-      elseif($rand < 760) $role_list['pharmacist']++;
-      elseif($rand < 790) $role_list['cupid']++;
-      elseif($rand < 810) $role_list['mania']++;
-      elseif($rand < 830) $role_list['assassin']++;
-      elseif($rand < 850) $role_list['suspect']++;
-      elseif($rand < 870) $role_list['unconscious']++;
+      elseif($rand < 635) $role_list['guard']++;
+      elseif($rand < 645) $role_list['poison_guard']++;
+      elseif($rand < 655) $role_list['dummy_guard']++;
+      elseif($rand < 680) $role_list['reporter']++;
+      elseif($rand < 700) $role_list['poison']++;
+      elseif($rand < 710) $role_list['strong_poison']++;
+      elseif($rand < 720) $role_list['incubate_poison']++;
+      elseif($rand < 730) $role_list['dummy_poison']++;
+      elseif($rand < 740) $role_list['poison_cat']++;
+      elseif($rand < 770) $role_list['pharmacist']++;
+      elseif($rand < 800) $role_list['cupid']++;
+      elseif($rand < 820) $role_list['mania']++;
+      elseif($rand < 840) $role_list['assassin']++;
+      elseif($rand < 860) $role_list['suspect']++;
+      elseif($rand < 880) $role_list['unconscious']++;
       elseif($rand < 997) $role_list['human']++;
       else                $role_list['quiz']++;
     }
@@ -209,6 +200,19 @@ function GetRoleList($user_count, $option_role){
       $common_count_list[$this_key]--;
       $role_list[$this_key]--;
       $role_list['human']++;
+    }
+
+    $reviver_count_list = array();
+    foreach($role_list as $key => $value){
+      if(strpos($key, 'poison_cat') !== false) $revivier_count_list[$key] = $value;
+    }
+    $over_reviver_count = array_sum($reviver_count_list) - round($user_count * 0.1);
+    for(; $over_reviver_count > 0; $over_reviver_count--){
+      arsort($reviver_count_list);
+      $this_key = key($reviver_count_list);
+      $reviver_count_list[$this_key]--;
+      $role_list[$this_key]--;
+      $role_list['poison']++;
     }
 
     $poison_count_list = array();

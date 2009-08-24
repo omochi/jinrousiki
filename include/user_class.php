@@ -1,7 +1,11 @@
 <?php
 class User{
+  var $role_list = array();
+  var $main_role;
+
   function ParseCompoundParameters(){
     $this->ParseRoles();
+    $this->main_role = $this->role_list[0];
   }
 
   function is_live(){
@@ -17,11 +21,27 @@ class User{
   }
 
   function is_role($role){
-    return (is_array($this->role_list) && in_array($role, $this->role_list));
+    if(! is_array($this->role_list)) return false;
+    $arg = func_get_args();
+    if(is_array($arg[0])) $arg = array_shift($arg);
+    if(count($arg) > 1){
+      return (count(array_intersect($arg, $this->role_list)) > 0);
+    }
+    else{
+      return (in_array($arg[0], $this->role_list));
+    }
+  }
+
+  function is_active_role($role){
+    return ($this->is_role($role) && ! $this->is_role('lost_ability'));
   }
 
   function is_role_group($role){
-    return (strpos($this->role, $role) !== false);
+    $arg = func_get_args();
+    foreach($arg as $this_role){
+      if(strpos($this->role, $this_role) !== false) return true;
+    }
+    return false;
   }
 
   function is_wolf(){
@@ -29,7 +49,7 @@ class User{
   }
 
   function is_fox(){
-    return ($this->is_role_group('fox') && ! $this->is_role('child_fox'));
+    return $this->is_role_group('fox');
   }
 
   function is_lovers(){
@@ -181,39 +201,4 @@ class UserDataSet{
     $USERS->Load();
   }
 }
-
-class SelfDataSet{
-  var $rows;
-
-  function SelfDataSet($uname){
-    global $USERS;
-    $this->rows = $USERS->ByUname($uname);
-  }
-
-  function is_live(){
-    return ($this->live == 'live');
-  }
-
-  function is_dead(){
-    return ($this->live == 'dead');
-  }
-}
-
-//グローバルオブジェクトと操作関数
-/*
-function GetNumber($user){
-  global $USERS;
-  return is_integer($user) ? $user : $USERS->UnameToNumber($user);
-}
-
-function GetHandleName($user){
-  global $USERS;
-  return $USERS->rows[GetNumber($user)]->handle_name;
-}
-
-function IsLiving($user){
-  global $USERS;
-  return $USERS->rows[GetNumber($user)]->live == 'live';
-}
-*/
 ?>

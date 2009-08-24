@@ -200,6 +200,10 @@ function ConvertSay(&$say){
     $say = strtr($say, $GAME_CONF->rainbow_replace_list);
   }
 
+  if($SELF->is_role('weekly')){ //七曜迷彩の処理
+    $say = strtr($say, $GAME_CONF->weekly_replace_list);
+  }
+
   if($SELF->is_role('silent')){ //無口の処理
     if(mb_strlen($say) > $GAME_CONF->silent_length){
       $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
@@ -262,7 +266,7 @@ function Say($say){
 	Write($say, 'night mad', 0);
       elseif($SELF->is_role('common')) //共有者
 	Write($say, 'night common', 0);
-      elseif($SELF->is_fox()) //妖狐
+      elseif($SELF->is_fox() && ! $SELF->is_role('child_fox')) //妖狐
 	Write($say, 'night fox', 0);
       else //独り言
 	Write($say, 'night self_talk', 0);
@@ -379,8 +383,8 @@ function CheckSilence(){
 	$wolf_list = ($wolf_vote_count == 0 ? GetLiveWolves() : array());
 
 	//対象役職のデータを作成
-	$action_list = array('MAGE_DO', 'CHILD_FOX_DO');
-	$actor_list  = array('%mage', 'child_fox');
+	$action_list = array('MAGE_DO', 'JAMMER_MAD_DO', 'CHILD_FOX_DO');
+	$actor_list  = array('%mage', 'jammer_mad', 'child_fox');
 
 	if($ROOM->date == 1){
 	  array_push($action_list, 'CUPID_DO', 'MANIA_DO');
@@ -729,11 +733,10 @@ function OutputAbility(){
     $action = 'MAGE_RESULT';
     $sql    = GetAbilityActionResult($action);
     $count  = mysql_num_rows($sql);
-    $header = ($main_role == 'psycho_mage' ? $main_role : 'result') . '_';
     for($i = 0; $i < $count; $i++){
       list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
       if($SELF->handle_name == $actor){
-	OutputAbilityResult('mage_result', $target, $header . $target_role);
+	OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
 	break;
       }
     }
@@ -741,7 +744,7 @@ function OutputAbility(){
     if($ROOM->is_night()) OutputVoteMessage('mage-do', 'MAGE_DO'); //夜の投票
   }
   elseif(strpos($main_role, 'necromancer') !== false || $main_role == 'medium'){
-    if(strpos($role, 'necromancer') !== false){
+    if(strpos($main_role, 'necromancer') !== false){
       $role_name = 'necromancer';
       $result    = 'necromancer_result';
       $action    = 'NECROMANCER_RESULT';
@@ -770,6 +773,11 @@ function OutputAbility(){
       list($target, $target_role) = ParseStrings(mysql_result($sql, $i, 0));
       OutputAbilityResult($result, $target, 'result_' . $target_role);
     }
+  }
+  elseif($main_role == 'jammer_mad'){
+    $ROLE_IMG->DisplayImage($main_role);
+
+    if($ROOM->is_night()) OutputVoteMessage('wolf-eat', 'JAMMER_MAD_DO'); //夜の投票
   }
   elseif($main_role == 'trap_mad'){
     $ROLE_IMG->DisplayImage($main_role);
@@ -848,8 +856,11 @@ function OutputAbility(){
   elseif($main_role == 'child_fox'){
     $ROLE_IMG->DisplayImage('child_fox');
 
-    //仲間を表示
-    OutputPartner("role LIKE '%fox%' AND uname <> '{$SELF->uname}'", 'fox_partner');
+    //妖狐の仲間を表示
+    OutputPartner("role LIKE '%fox%' AND !(role LIKE 'child_fox%')", 'fox_partner');
+
+    //子狐の仲間を表示
+    OutputPartner("role LIKE 'child_fox%' AND uname <> '{$SELF->uname}'", 'child_fox_partner');
 
     //占い結果を表示
     $action = 'CHILD_FOX_RESULT';
@@ -866,17 +877,14 @@ function OutputAbility(){
     if($ROOM->is_night()) OutputVoteMessage('mage-do', 'CHILD_FOX_DO'); //夜の投票
   }
   elseif(strpos($main_role, 'fox') !== false){
-    if($main_role == 'poison_fox'){
-      echo '[役割]<br>　あなたは「管狐」、毒を持っています。(細かい能力は調整中です)<br>'."\n";
-    }
-    elseif($main_role == 'white_fox'){
-      echo '[役割]<br>　あなたは「白狐」です。占われても死にませんが、人狼に襲われると死んでしまいます。(細かい能力は調整中です)<br>'."\n";
-    }
-    else
-      $ROLE_IMG->DisplayImage($main_role);
+    $ROLE_IMG->DisplayImage($main_role);
 
-    //子狐以外の仲間を表示
-    OutputPartner("role LIKE 'fox%' AND uname <> '{$SELF->uname}'", 'fox_partner');
+    //妖狐の仲間を表示
+    $query = "role LIKE '%fox%' AND !(role LIKE 'child_fox%') AND uname <> '{$SELF->uname}'";
+    OutputPartner($query, 'fox_partner');
+
+    //子狐の仲間を表示
+    OutputPartner("role LIKE 'child_fox%'", 'child_fox_partner');
 
     //狐が狙われたメッセージを表示
     $sql = GetAbilityActionResult('FOX_EAT');
@@ -889,8 +897,7 @@ function OutputAbility(){
     }
   }
   elseif($main_role == 'poison_cat'){
-    // $ROLE_IMG->DisplayImage('poison_cat');
-    echo '[役割]<br>　あなたは「猫又」、毒をもっています。また、死んだ人を誰か一人蘇らせる事ができます。<br>'."\n";
+    $ROLE_IMG->DisplayImage($main_role);
 
     if(! $ROOM->is_open_cast()){
       //蘇生結果を表示
@@ -939,15 +946,11 @@ function OutputAbility(){
     if($is_first_night) OutputVoteMessage('cupid-do', 'CUPID_DO'); //初日夜の投票
   }
   elseif($main_role == 'mania'){
-    // $ROLE_IMG->DisplayImage($main_role);
-    echo '[役割]<br>　あなたは「神話マニア」です。1日目の夜に指定した人のメイン役職をコピーすることができます。<br>'."\n";
-
+    $ROLE_IMG->DisplayImage($main_role);
     if($is_first_night) OutputVoteMessage('mania-do', 'MANIA_DO'); //初日夜の投票
   }
   elseif($main_role == 'assassin'){
-    // $ROLE_IMG->DisplayImage($main_role);
-    echo '[役割]<br>　あなたは「暗殺者」です。夜に村人一人を暗殺することができます。<br>'."\n";
-
+    $ROLE_IMG->DisplayImage($main_role);
     if($is_after_first_night){ //夜の投票
       OutputVoteMessage('assassin-do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
@@ -955,9 +958,7 @@ function OutputAbility(){
   elseif($main_role == 'quiz'){
     $ROLE_IMG->DisplayImage($main_role);
     if(strpos($ROOM->game_option, 'chaos') !== false){
-      // $ROLE_IMG->DisplayImage('quiz_chaos');
-      echo '闇鍋モードではあなたの最大の能力である噛み無効がありません。<br>'."\n";
-      echo 'はっきり言って無理ゲーなので好き勝手にクイズでも出して遊ぶと良いでしょう。<br>'."\n";
+      $ROLE_IMG->DisplayImage('quiz_chaos');
     }
   }
 
@@ -1055,7 +1056,8 @@ function CheckSelfVoteDay(){
   $sql = mysql_query("SELECT COUNT(uname) FROM vote WHERE room_no = $room_no
 			AND uname = '{$SELF->uname}' AND date = {$ROOM->date} AND vote_times = $vote_times
 			AND situation = 'VOTE_KILL'");
-  echo (mysql_result($sql, 0, 0) ? '投票済み' : 'まだ投票していません') . '</div>'."\n";
+  $sentence = '<font color="red">まだ投票していません</font>';
+  echo (mysql_result($sql, 0, 0) ? '投票済み' : $sentence) . '</div>'."\n";
 }
 
 //自分の遺言を出力

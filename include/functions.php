@@ -164,8 +164,8 @@ function MakeGameOptionImage($game_option, $option_role = ''){
   $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'decide',
 			      'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
 			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
-			      'full_mania', 'quiz', 'chaos', 'chaosfull', 'chaos_open_cast',
-			      'secret_sub_role', 'no_sub_role');
+			      'perverseness', 'full_mania', 'quiz', 'duel', 'chaos', 'chaosfull',
+			      'chaos_open_cast', 'secret_sub_role', 'no_sub_role');
 
   foreach($display_order_list as $this_option){
     if(! in_array($this_option, $option_list)) continue;

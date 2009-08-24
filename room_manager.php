@@ -60,21 +60,25 @@ function MaintenanceRoomAction($list, $query, $base_time){
 function CreateRoom($room_name, $room_comment, $max_user){
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE;
 
+  //エスケープ処理
+  EscapeStrings(&$room_name);
+  EscapeStrings(&$room_comment);
+
   //入力データのエラーチェック
   if($room_name == '' || $room_comment == '' || ! ctype_digit($max_user)){
     OutputRoomAction('empty');
     return false;
   }
-  //エスケープ処理
-  EscapeStrings(&$room_name);
-  EscapeStrings(&$room_comment);
 
   //ゲームオプションをセット
   $game_option = '';
   $option_role = '';
-  $chaos     = ($ROOM_CONF->chaos     && $_POST['chaos'] == 'chaos');
-  $chaosfull = ($ROOM_CONF->chaosfull && $_POST['chaos'] == 'chaosfull');
-  $quiz      = ($ROOM_CONF->quiz      && $_POST['quiz']  == 'on');
+  $chaos        = ($ROOM_CONF->chaos        && $_POST['chaos'] == 'chaos');
+  $chaosfull    = ($ROOM_CONF->chaosfull    && $_POST['chaos'] == 'chaosfull');
+  $perverseness = ($ROOM_CONF->perverseness && $_POST['perverseness']  == 'on');
+  $full_mania   = ($ROOM_CONF->full_mania   && $_POST['full_mania']  == 'on');
+  $quiz         = ($ROOM_CONF->quiz         && $_POST['quiz']  == 'on');
+  $duel         = ($ROOM_CONF->duel         && $_POST['duel']  == 'on');
   $game_option_list = array('open_vote', 'not_open_cast');
   $option_role_list = array();
   if($quiz){
@@ -82,11 +86,11 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
     //GM ログインパスワードをチェック
     $quiz_password = $_POST['quiz_password'];
+    EscapeStrings(&$quiz_password);
     if($quiz_password == ''){
       OutputRoomAction('empty');
       return false;
     }
-    EscapeStrings(&$quiz_password);
     $game_option .= 'dummy_boy ';
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
@@ -116,14 +120,34 @@ function CreateRoom($room_name, $room_comment, $max_user){
       if($chaos) $game_option .= 'chaos ';
       if($chaosfull) $game_option .= 'chaosfull ';
       array_push($game_option_list, 'secret_sub_role');
-      array_push($option_role_list, 'chaos_open_cast', 'no_sub_role');
+      array_push($option_role_list, 'chaos_open_cast');
+      if($perverseness){
+	$option_role .= 'no_sub_role ';
+	array_push($option_role_list, 'perverseness');
+      }
+      else{
+	array_push($option_role_list, 'no_sub_role');
+      }
     }
     else{
       array_push($game_option_list, 'wish_role');
-      array_push($option_role_list, 'decide', 'authority', 'poison', 'cupid', 'boss_wolf',
-		 'poison_wolf', 'mania', 'medium');
+      if($duel){
+	$option_role .= 'duel ';
+      }
+      else{
+	if(! $perverseness) array_push($option_role_list, 'decide', 'authority');
+	array_push($option_role_list, 'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'medium');
+	if(! $full_mania) array_push($option_role_list, 'mania');
+      }
     }
-    array_push($option_role_list, 'liar', 'gentleman', 'sudden_death', 'full_mania');
+    array_push($option_role_list, 'liar', 'gentleman');
+    if($perverseness){
+      array_push($option_role_list, 'perverseness');
+    }
+    else{
+      array_push($option_role_list, 'sudden_death');
+    }
+    if(! $duel) array_push($option_role_list, 'full_mania');
   }
 
   foreach($game_option_list as $this_option){

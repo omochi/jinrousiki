@@ -287,12 +287,19 @@ HEADER;
 
 IMAGE;
 
-    if(strpos($game_option, 'quiz') !== false){
-      $wish_role_list = array('none', 'human', 'wolf', 'mad', 'common', 'fox');
+    $wish_role_list = array('none');
+    if(strpos($option_role, 'duel') !== false){
+      array_push($wish_role_list, 'wolf', 'trap_mad', 'assassin');
     }
     else{
-      $wish_role_list = array('none', 'human', 'wolf', 'mage', 'necromancer',
-			      'mad', 'guard', 'common', 'fox');
+      if(strpos($option_role, 'full_mania') === false) array_push($wish_role_list, 'human');
+      array_push($wish_role_list, 'wolf');
+      if(strpos($game_option, 'quiz') !== false){
+	array_push($wish_role_list, 'mad', 'common', 'fox');
+      }
+      else{
+	array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox');
+      }
     }
     if(strpos($option_role, 'poison')      !== false) array_push($wish_role_list, 'poison');
     if(strpos($option_role, 'cupid')       !== false) array_push($wish_role_list, 'cupid');

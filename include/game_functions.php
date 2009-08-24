@@ -154,7 +154,6 @@ function OutputPlayerList(){
     $this_uname   = $this_user->uname;
     $this_handle  = $this_user->handle_name;
     $this_profile = $this_user->profile;
-    $this_live    = $this_user->live;
     $this_role    = $this_user->role;
     $this_file    = $this_user->icon_filename;
     $this_color   = $this_user->color;
@@ -179,100 +178,33 @@ function OutputPlayerList(){
     $img_tag .= ' src="' . $path . '">';
 
     //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
-    if($ROOM->is_aftergame() || ($SELF->is_dead() && $ROOM->is_open_cast())){
+    if($ROOM->is_aftergame() || ($SELF->is_dead && $ROOM->is_open_cast()) ||
+       (! $ROOM->is_quiz() && $SELF->is_dummy_boy)){
       $role_str = '';
-      if(strpos($this_role, 'human') !== false)
-	$role_str = MakeRoleName('human');
-      elseif(strpos($this_role, 'boss_wolf') !== false)
-	$role_str = MakeRoleName('boss_wolf', 'wolf');
-      elseif(strpos($this_role, 'cursed_wolf') !== false)
-	$role_str = MakeRoleName('cursed_wolf', 'wolf');
-      elseif(strpos($this_role, 'cute_wolf') !== false)
-	$role_str = MakeRoleName('cute_wolf', 'wolf');
-      elseif(strpos($this_role, 'poison_wolf') !== false)
-	$role_str = MakeRoleName('poison_wolf', 'wolf');
-      elseif(strpos($this_role, 'resist_wolf') !== false)
-	$role_str = MakeRoleName('resist_wolf', 'wolf');
-      elseif(strpos($this_role, 'tongue_wolf') !== false)
-	$role_str = MakeRoleName('tongue_wolf', 'wolf');
-      elseif(strpos($this_role, 'wolf') !== false)
-	$role_str = MakeRoleName('wolf');
-      elseif(strpos($this_role, 'soul_mage') !== false)
-	$role_str = MakeRoleName('soul_mage', 'mage');
-      elseif(strpos($this_role, 'psycho_mage') !== false)
-	$role_str = MakeRoleName('psycho_mage', 'mage');
-      elseif(strpos($this_role, 'dummy_mage') !== false)
-	$role_str = MakeRoleName('dummy_mage', 'mage');
-      elseif(strpos($this_role, 'mage') !== false)
-	$role_str = MakeRoleName('mage');
-      elseif(strpos($this_role, 'soul_necromancer') !== false)
-	$role_str = MakeRoleName('soul_necromancer', 'necromancer');
-      elseif(strpos($this_role, 'dummy_necromancer') !== false)
-	$role_str = MakeRoleName('dummy_necromancer', 'necromancer');
-      elseif(strpos($this_role, 'necromancer') !== false)
-	$role_str = MakeRoleName('necromancer');
-      elseif(strpos($this_role, 'medium') !== false)
-	$role_str = MakeRoleName('medium', 'necromancer');
-      elseif(strpos($this_role, 'fanatic_mad') !== false)
-	$role_str = MakeRoleName('fanatic_mad', 'mad');
-      elseif(strpos($this_role, 'trap_mad') !== false)
-	$role_str = MakeRoleName('trap_mad', 'mad');
-      elseif(strpos($this_role, 'whisper_mad') !== false)
-	$role_str = MakeRoleName('whisper_mad', 'mad');
-      elseif(strpos($this_role, 'mad') !== false)
-	$role_str = MakeRoleName('mad');
-      elseif(strpos($this_role, 'poison_guard') !== false)
-	$role_str = MakeRoleName('poison_guard', 'guard');
-      elseif(strpos($this_role, 'dummy_guard') !== false)
-	$role_str = MakeRoleName('dummy_guard', 'guard');
-      elseif(strpos($this_role, 'guard') !== false)
-	$role_str = MakeRoleName('guard');
-      elseif(strpos($this_role, 'reporter') !== false)
-	$role_str = MakeRoleName('reporter', 'guard');
-      elseif(strpos($this_role, 'dummy_common') !== false)
-	$role_str = MakeRoleName('dummy_common', 'common');
-      elseif(strpos($this_role, 'common') !== false)
-	$role_str = MakeRoleName('common');
-      elseif(strpos($this_role, 'child_fox') !== false)
-	$role_str = MakeRoleName('child_fox', 'fox');
-      elseif(strpos($this_role, 'cursed_fox') !== false)
-	$role_str = MakeRoleName('cursed_fox', 'fox');
-      elseif(strpos($this_role, 'poison_fox') !== false)
-	$role_str = MakeRoleName('poison_fox', 'fox');
-      elseif(strpos($this_role, 'white_fox') !== false)
-	$role_str = MakeRoleName('white_fox', 'fox');
-      elseif(strpos($this_role, 'fox') !== false)
-	$role_str = MakeRoleName('fox');
-      elseif(strpos($this_role, 'poison_cat') !== false)
-	$role_str = MakeRoleName('poison_cat', 'poison');
-      elseif(strpos($this_role, 'strong_poison') !== false)
-	$role_str = MakeRoleName('strong_poison', 'poison');
-      elseif(strpos($this_role, 'incubate_poison') !== false)
-	$role_str = MakeRoleName('incubate_poison', 'poison');
-      elseif(strpos($this_role, 'dummy_poison') !== false)
-	$role_str = MakeRoleName('dummy_poison', 'poison');
-      elseif(strpos($this_role, 'poison') !== false)
-	$role_str = MakeRoleName('poison');
-      elseif(strpos($this_role, 'pharmacist') !== false)
-	$role_str = MakeRoleName('pharmacist', 'poison');
-      elseif(strpos($this_role, 'suspect') !== false)
-	$role_str = MakeRoleName('suspect', 'human');
-      elseif(strpos($this_role, 'unconscious') !== false)
-	$role_str = MakeRoleName('unconscious', 'human');
-      elseif(strpos($this_role, 'cupid') !== false)
-	$role_str = MakeRoleName('cupid');
-      elseif(strpos($this_role, 'mania') !== false)
-	$role_str = MakeRoleName('mania');
-      elseif(strpos($this_role, 'assassin') !== false)
-	$role_str = MakeRoleName('assassin');
-      elseif(strpos($this_role, 'quiz') !== false)
-	$role_str = MakeRoleName('quiz');
+      if($this_user->is_role('human', 'suspect', 'unconscious'))
+	$role_str = MakeRoleName($this_user->main_role, 'human');
+      elseif($this_user->is_role_group('wolf'))
+	$role_str = MakeRoleName($this_user->main_role, 'wolf');
+      elseif($this_user->is_role_group('mage'))
+	$role_str = MakeRoleName($this_user->main_role, 'mage');
+      elseif($this_user->is_role_group('necromancer') || $this_user->is_role('medium'))
+	$role_str = MakeRoleName($this_user->main_role, 'necromancer');
+      elseif($this_user->is_role_group('mad'))
+	$role_str = MakeRoleName($this_user->main_role, 'mad');
+      elseif($this_user->is_role_group('guard') || $this_user->is_role('reporter'))
+	$role_str = MakeRoleName($this_user->main_role, 'guard');
+      elseif($this_user->is_role_group('common'))
+	$role_str = MakeRoleName($this_user->main_role, 'common');
+      elseif($this_user->is_role_group('fox'))
+	$role_str = MakeRoleName($this_user->main_role, 'fox');
+      elseif($this_user->is_role_group('poison') || $this_user->is_role('pharmacist'))
+	$role_str = MakeRoleName($this_user->main_role, 'poison');
+      elseif($this_user->is_role('assassin', 'mania', 'cupid', 'quiz'))
+	$role_str = MakeRoleName($this_user->main_role);
 
       //ここから兼任役職
-      if(strpos($this_role, 'lovers') !== false)
-	$role_str .= MakeRoleName('lovers', '', true);
-      if(strpos($this_role, 'copied') !== false)
-	$role_str .= MakeRoleName('copied', 'mania', true);
+      if($this_user->is_lovers()) $role_str .= MakeRoleName('lovers', '', true);
+      if($this_user->is_role('copied')) $role_str .= MakeRoleName('copied', 'mania', true);
 
       if(strpos($this_role, 'authority') !== false)
 	$role_str .= MakeRoleName('authority', '', true);
@@ -331,6 +263,8 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('invisible', 'convert', true);
       if(strpos($this_role, 'rainbow') !== false)
 	$role_str .= MakeRoleName('rainbow', 'convert', true);
+      if(strpos($this_role, 'weekly') !== false)
+	$role_str .= MakeRoleName('weekly', 'convert', true);
       if(strpos($this_role, 'gentleman') !== false)
 	$role_str .= MakeRoleName('gentleman', 'convert', true);
       elseif(strpos($this_role, 'lady') !== false)
@@ -575,26 +509,28 @@ function OutputTalk($talk, &$builder){
   $flag_vote           = (strpos($sentence, 'VOTE_DO')           === 0);
   $flag_wolf           = (strpos($sentence, 'WOLF_EAT')          === 0);
   $flag_mage           = (strpos($sentence, 'MAGE_DO')           === 0);
-  $flag_child_fox      = (strpos($sentence, 'CHILD_FOX_DO')      === 0);
+  $flag_jammer_mad     = (strpos($sentence, 'JAMMER_MAD_DO')     === 0);
+  $flag_trap_mad       = (strpos($sentence, 'TRAP_MAD_DO')       === 0);
+  $flag_not_trap_mad   = (strpos($sentence, 'TRAP_MAD_NOT_DO')   === 0);
   $flag_guard          = (strpos($sentence, 'GUARD_DO')          === 0);
   $flag_reporter       = (strpos($sentence, 'REPORTER_DO')       === 0);
-  $flag_cupid          = (strpos($sentence, 'CUPID_DO')          === 0);
-  $flag_mania          = (strpos($sentence, 'MANIA_DO')          === 0);
   $flag_poison_cat     = (strpos($sentence, 'POISON_CAT_DO')     === 0);
   $flag_not_poison_cat = (strpos($sentence, 'POISON_CAT_NOT_DO') === 0);
   $flag_assassin       = (strpos($sentence, 'ASSASSIN_DO')       === 0);
   $flag_not_assassin   = (strpos($sentence, 'ASSASSIN_NOT_DO')   === 0);
-  $flag_trap_mad       = (strpos($sentence, 'TRAP_MAD_DO')       === 0);
-  $flag_not_trap_mad   = (strpos($sentence, 'TRAP_MAD_NOT_DO')   === 0);
+  $flag_mania          = (strpos($sentence, 'MANIA_DO')          === 0);
+  $flag_child_fox      = (strpos($sentence, 'CHILD_FOX_DO')      === 0);
+  $flag_cupid          = (strpos($sentence, 'CUPID_DO')          === 0);
   $flag_system = ($location_system &&
-		  ($flag_vote  || $flag_wolf || $flag_mage || $flag_child_fox || $flag_guard ||
-		   $flag_reporter || $flag_cupid || $flag_mania || $flag_poison_cat ||
-		   $flag_not_poison_cat || $flag_assassin || $flag_not_assassin ||
-		   $flag_trap_mad || $flag_not_trap_mad));
+		  ($flag_vote  || $flag_wolf || $flag_mage || $flag_jammer_mad ||
+		   $flag_trap_mad || $flag_not_trap_mad || $flag_guard || $flag_reporter ||
+		   $flag_poison_cat || $flag_not_poison_cat || $flag_assassin || $flag_not_assassin ||
+		   $flag_mania || $flag_child_fox || $flag_cupid
+		   ));
 
   $flag_live_night = ($SELF->is_live && $ROOM->is_night());
-  $flag_group_wolf = ($SELF->is_wolf() || $SELF->is_role('whisper_mad'));
-  $flag_group_fox  = $SELF->is_fox();
+  $flag_wolf_group = ($SELF->is_wolf() || $SELF->is_role('whisper_mad'));
+  $flag_fox_group  = ($SELF->is_fox() && ! $SELF->is_role('child_fox'));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
@@ -626,7 +562,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の狼
   elseif($flag_live_night && $location == 'night wolf'){
-    if($flag_group_wolf){
+    if($flag_wolf_group){
       $builder->AddTalk($said_user, $talk);
     }
     else{
@@ -635,7 +571,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の囁き狂人
   elseif($flag_live_night && $location == 'night mad'){
-    if($flag_group_wolf) $builder->AddTalk($said_user, $talk);
+    if($flag_wolf_group) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($flag_live_night && $location == 'night common'){
@@ -648,14 +584,15 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の妖狐
   elseif($flag_live_night && $location == 'night fox'){
-    if($flag_group_fox) $builder->AddTalk($said_user, $talk);
+    if($flag_fox_group) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($flag_live_night && $location == 'night self_talk'){
     if($SELF->uname == $talk_uname) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
-  elseif($ROOM->is_finished() || $SELF->is_dummy_boy() || ($SELF->is_dead() && $ROOM->is_open_cast())){
+  elseif($ROOM->is_finished() || (! $ROOM->is_quiz() && $SELF->is_dummy_boy()) ||
+	 ($SELF->is_dead() && $ROOM->is_open_cast())){
     if($location_system && $flag_vote){ //処刑投票
       $target_handle_name = ParseStrings($sentence, 'VOTE_DO');
       $action = 'vote';
@@ -671,10 +608,19 @@ function OutputTalk($talk, &$builder){
       $action = 'mage-do';
       $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
     }
-    elseif($location_system && $flag_child_fox){ //子狐の投票
-      $target_handle_name = ParseStrings($sentence, 'CHILD_FOX_DO');
-      $action = 'mage-do';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
+    elseif($location_system && $flag_jammer_mad){ //邪魔狂人の投票
+      $target_handle_name = ParseStrings($sentence, 'JAMMER_MAD_DO');
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->jammer_mad_do;
+    }
+    elseif($location_system && $flag_trap_mad){ //罠師の投票
+      $target_handle_name = ParseStrings($sentence, 'TRAP_MAD_DO');
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->trap_mad_do;
+    }
+    elseif($location_system && $flag_not_trap_mad){ //罠師のキャンセル投票
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name.' '.$MESSAGE->trap_mad_not_do;
     }
     elseif($location_system && $flag_guard){ //狩人の投票
       $target_handle_name = ParseStrings($sentence, 'GUARD_DO');
@@ -685,16 +631,6 @@ function OutputTalk($talk, &$builder){
       $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
       $action = 'guard-do';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->reporter_do;
-    }
-    elseif($location_system && $flag_cupid){ //キューピッドの投票
-      $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
-      $action = 'cupid-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->cupid_do;
-    }
-    elseif($location_system && $flag_mania){ //神話マニアの投票
-      $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
-      $action = 'mania-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mania_do;
     }
     elseif($location_system && $flag_poison_cat){ //猫又の投票
       $target_handle_name = ParseStrings($sentence, 'POISON_CAT_DO');
@@ -714,14 +650,20 @@ function OutputTalk($talk, &$builder){
       $action = 'assassin-do';
       $sentence = $talk_handle_name.' '.$MESSAGE->assassin_not_do;
     }
-    elseif($location_system && $flag_trap_mad){ //暗殺者の投票
-      $target_handle_name = ParseStrings($sentence, 'TRAP_MAD_DO');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->trap_mad_do;
+    elseif($location_system && $flag_mania){ //神話マニアの投票
+      $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
+      $action = 'mania-do';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mania_do;
     }
-    elseif($location_system && $flag_not_trap_mad){ //暗殺者のキャンセル投票
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' '.$MESSAGE->trap_mad_not_do;
+    elseif($location_system && $flag_child_fox){ //子狐の投票
+      $target_handle_name = ParseStrings($sentence, 'CHILD_FOX_DO');
+      $action = 'mage-do';
+      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
+    }
+    elseif($location_system && $flag_cupid){ //キューピッドの投票
+      $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
+      $action = 'cupid-do';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->cupid_do;
     }
     else{ //その他の全てを表示(死者の場合)
       $base_class = 'user-talk';
@@ -776,7 +718,7 @@ function OutputTalk($talk, &$builder){
     if($ROOM->is_night()){
       switch($location){
       case 'night wolf':
-	if($flag_group_wolf){
+	if($flag_wolf_group){
 	  $builder->AddTalk($said_user, $talk);
 	}
 	else{
@@ -785,7 +727,7 @@ function OutputTalk($talk, &$builder){
 	break;
 
       case 'night mad':
-	if($flag_group_wolf) $builder->AddTalk($said_user, $talk);
+	if($flag_wolf_group) $builder->AddTalk($said_user, $talk);
 	break;
 
       case 'night common':
@@ -798,7 +740,7 @@ function OutputTalk($talk, &$builder){
 	break;
 
       case 'night fox':
-	if($flag_group_fox) $builder->AddTalk($said_user, $talk);
+	if($flag_fox_group) $builder->AddTalk($said_user, $talk);
 	break;
 
       case 'night self_talk':
@@ -1090,19 +1032,21 @@ function OutputVoteListDay($set_date){
 
 //占う、狼が狙う、護衛する等、能力を使うメッセージ
 function OutputAbilityAction(){
-  global $room_no, $ROOM;
+  global $MESSAGE, $room_no, $ROOM;
 
   //昼間で役職公開が許可されているときのみ表示
+  //(猫又は役職公開時は行動できないので不要)
   if(! ($ROOM->is_day() && $ROOM->is_open_cast())) return false;
 
   $yesterday = $ROOM->date - 1;
   $sql = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
 			AND date = $yesterday AND (type = 'MAGE_DO' OR type = 'WOLF_EAT'
-			OR type = 'GUARD_DO' OR type = 'REPORTER_DO' OR type = 'CUPID_DO'
-			OR type = 'CHILD_FOX_DO' OR type = 'MANIA_DO' OR type = 'ASSASSIN_DO'
-			OR type = 'TRAP_MAD_DO')");
+			OR type = 'JAMMER_MAD_DO' OR type = 'TRAP_MAD_DO' OR type = 'TRAP_MAD_NOT_DO'
+			OR type = 'GUARD_DO' OR type = 'REPORTER_DO' OR type = 'ASSASSIN_DO'
+			OR type = 'ASSASSIN_NOT_DO' OR type = 'MANIA_DO' OR type = 'CHILD_FOX_DO'
+			OR type = 'CUPID_DO')");
   $header = '<strong>前日の夜、';
-  $footer = 'ました</strong><br>'."\n";
+  $footer = '</strong><br>'."\n";
 
   while(($array = mysql_fetch_assoc($sql)) !== false){
     $sentence = $array['message'];
@@ -1112,39 +1056,51 @@ function OutputAbilityAction(){
     echo $header.$actor.' ';
     switch($type){
     case 'WOLF_EAT':
-      echo '(人狼) たちは '.$target.' を狙い';
+      echo '(人狼) たちは '.$target.' を狙いました';
       break;
 
     case 'MAGE_DO':
-      echo '(占い師) は '.$target.' を占い';
+      echo '(占い師) は '.$target.' を占いました';
       break;
 
-    case 'CHILD_FOX_DO':
-      echo '(子狐) は '.$target.' を占い';
-      break;
-
-    case 'GUARD_DO':
-      echo '(狩人) は '.$target.' を護衛し';
-      break;
-
-    case 'REPORTER_DO':
-      echo '(ブン屋) は '.$target.' を尾行し';
-      break;
-
-    case 'CUPID_DO':
-      echo '(キューピッド) は '.$target.' に愛の矢を放ち';
-      break;
-
-    case 'MANIA_DO':
-      echo '(神話マニア) は '.$target.' を真似';
-      break;
-
-    case 'ASSASSIN_DO':
-      echo '(暗殺者) は '.$target.' を狙い';
+    case 'JAMMER_MAD_DO':
+      echo '(邪魔狂人) は '.$target.' の占いを妨害しました';
       break;
 
     case 'TRAP_MAD_DO':
-      echo '(罠師) は '.$target.' の周辺に罠を仕掛け';
+      echo '(罠師) は '.$target.' '.$MESSAGE->trap_mad_do;
+      break;
+
+    case 'TRAP_MAD_NOT_DO':
+      echo '(罠師) '.$MESSAGE->trap_mad_not_do;
+      break;
+
+    case 'GUARD_DO':
+      echo '(狩人) は '.$target.' '.$MESSAGE->guard_do;
+      break;
+
+    case 'REPORTER_DO':
+      echo '(ブン屋) は '.$target.' '.$MESSAGE->reporter_do;
+      break;
+
+    case 'ASSASSIN_DO':
+      echo '(暗殺者) は '.$target.' を狙いました';
+      break;
+
+    case 'ASSASSIN_NOT_DO':
+      echo '(暗殺者) '.$MESSAGE->assassin_not_do;
+      break;
+
+    case 'MANIA_DO':
+      echo '(神話マニア) は '.$target.' を真似しました';
+      break;
+
+    case 'CHILD_FOX_DO':
+      echo '(子狐) は '.$target.' を占いました';
+      break;
+
+    case 'CUPID_DO':
+      echo '(キューピッド) は '.$target.' '.$MESSAGE->cupid_do;
       break;
     }
     echo $footer;
@@ -1488,25 +1444,26 @@ function ParseStrings($str, $type = NULL){
   case 'VOTE_DO':
   case 'WOLF_EAT':
   case 'MAGE_DO':
-  case 'CHILD_FOX_DO':
+  case 'JAMMER_MAD_DO':
+  case 'TRAP_MAD_DO':
   case 'GUARD_DO':
   case 'REPORTER_DO':
-  case 'CUPID_DO':
-  case 'MANIA_DO':
   case 'POISON_CAT_DO':
   case 'ASSASSIN_DO':
-  case 'TRAP_MAD_DO':
+  case 'MANIA_DO':
+  case 'CHILD_FOX_DO':
+  case 'CUPID_DO':
     sscanf($str, "{$type}\t%s", &$target);
     DecodeSpace(&$target);
     return $target;
     break;
 
-  case 'TONGUE_WOLF_RESULT':
   case 'MAGE_RESULT':
-  case 'CHILD_FOX_RESULT':
-  case 'MANIA_RESULT':
+  case 'TONGUE_WOLF_RESULT':
   case 'REPORTER_SUCCESS':
   case 'POISON_CAT_RESULT':
+  case 'MANIA_RESULT':
+  case 'CHILD_FOX_RESULT':
     sscanf($str, "%s\t%s\t%s", &$first, &$second, &$third);
     DecodeSpace(&$first);
     DecodeSpace(&$second);

@@ -6,8 +6,8 @@ require_once(dirname(__FILE__) . '/system_class.php');  //¥·¥¹¥Æ¥à¾ðÊó³ÊÇ¼¥¯¥é¥¹
 class RoomConfig{
   //Éô²°ºÇ¸å¤Î²ñÏÃ¤«¤éÇÑÂ¼¤Ë¤Ê¤ë¤Þ¤Ç¤Î»þ´Ö (ÉÃ)
   //(¤¢¤Þ¤êÃ»¤¯¤¹¤ë¤ÈÄÀÌÛÅù¤È¶¥¹ç¤¹¤ë²ÄÇ½À­¤¢¤ê)
-  #var $die_room = 1200;
-  var $die_room = 12000; //¥Ç¥Ð¥Ã¥°ÍÑ¤ËÄ¹¤¯¤·¤Æ¤ª¤¯
+  var $die_room = 1200;
+  #var $die_room = 12000; //¥Ç¥Ð¥Ã¥°ÍÑ¤ËÄ¹¤¯¤·¤Æ¤ª¤¯
 
   //½ªÎ»¤·¤¿Éô²°¤Î¥æ¡¼¥¶¤Î¥»¥Ã¥·¥ç¥ó ID ¥Ç¡¼¥¿¤ò¥¯¥ê¥¢¤¹¤ë¤Þ¤Ç¤Î»þ´Ö (ÉÃ)
   var $clear_session_id = 1200;
@@ -69,7 +69,7 @@ class RoomConfig{
   var $sudden_death = true; //µõ¼åÂÎ¼ÁÂ¼
   var $default_sudden_death = false;
 
-  var $perverseness = false; //Å·¼Ùµ´Â¼ //ºîÀ®Ãæ
+  var $perverseness = true; //Å·¼Ùµ´Â¼
   var $default_perverseness = false;
 
   var $full_mania = true; //¿ÀÏÃ¥Þ¥Ë¥¢Â¼
@@ -93,7 +93,7 @@ class RoomConfig{
   var $quiz = true; //¥¯¥¤¥ºÂ¼
   var $default_quiz = false;
 
-  var $duel = false; //·èÆ®Â¼ //ºîÀ®Ãæ
+  var $duel = true; //·èÆ®Â¼
   var $default_duel = false;
 
   //É½¼¨¤¹¤ëÂ¾¤Î¥µ¡¼¥Ð¤Î¥ê¥¹¥È
@@ -148,8 +148,8 @@ $ROOM_CONF = new RoomConfig();
 class GameConfig{
   //-- ½»¿ÍÅÐÏ¿ --//
   //ÆþÂ¼À©¸Â (Æ±¤¸Éô²°¤ËÆ±¤¸ IP ¤ÇÊ£¿ôÅÐÏ¿) (true¡§µö²Ä¤·¤Ê¤¤ / false¡§µö²Ä¤¹¤ë)
-  #var $entry_one_ip_address = true;
-  var $entry_one_ip_address = false; //¥Ç¥Ð¥Ã¥°ÍÑ
+  var $entry_one_ip_address = true;
+  #var $entry_one_ip_address = false; //¥Ç¥Ð¥Ã¥°ÍÑ
 
   //¥È¥ê¥Ã¥×ÂÐ±þ (true¡§ÊÑ´¹¤¹¤ë / false¡§ "#" ¤¬´Þ¤Þ¤ì¤Æ¤¤¤¿¤é¥¨¥é¡¼¤òÊÖ¤¹)
   // var $trip = true; //¤Þ¤À¼ÂÁõ¤µ¤ì¤Æ¤¤¤Þ¤»¤ó
@@ -247,10 +247,9 @@ class GameConfig{
   var $rainbow_replace_list = array('ÀÖ' => 'Üô', 'Üô' => '²«', '²«' => 'ÎÐ', 'ÎÐ' => 'ÀÄ',
 				    'ÀÄ' => 'Íõ', 'Íõ' => '»ç', '»ç' => 'ÀÖ');
 
-  /*
+  //¼·ÍËÌÂºÌ¤ÎÊÑ´¹¥Æ¡¼¥Ö¥ë
   var $week_replace_list = array('·î' => '²Ð', '²Ð' => '¿å', '¿å' => 'ÌÚ', 'ÌÚ' => '¶â',
-				    '¶â' => 'ÅÚ', 'ÅÚ' => 'Æü', 'Æü' => '·î');
-  */
+				 '¶â' => 'ÅÚ', 'ÅÚ' => 'Æü', 'Æü' => '·î');
 
   var $invisible_rate = 10; //¸÷³ØÌÂºÌ¤ÎÈ¯¸À¤¬¶õÇò¤ËÆþ¤ìÂØ¤ï¤ë³ÎÎ¨
   var $silent_length  = 25; //Ìµ¸ý¤¬È¯¸À¤Ç¤­¤ëºÇÂçÊ¸»ú¿ô
@@ -277,6 +276,7 @@ class GameConfig{
 			      'mage'              => 'Àê¤¤»Õ',
 			      'soul_mage'         => 'º²¤ÎÀê¤¤»Õ',
 			      'psycho_mage'       => 'Àº¿À´ÕÄê»Î',
+			      'sex_mage'          => '¤Ò¤è¤³´ÕÄê»Î',
 			      'dummy_mage'        => 'Ì´¸«¿Í',
 			      'necromancer'       => 'ÎîÇ½¼Ô',
 			      'soul_necromancer'  => '±À³°¶À',
@@ -284,6 +284,7 @@ class GameConfig{
 			      'medium'            => 'Öà½÷',
 			      'mad'               => '¶¸¿Í',
 			      'fanatic_mad'       => '¶¸¿®¼Ô',
+			      'jammer_mad'        => '¼ÙËâ¶¸¿Í',
 			      'trap_mad'          => 'æ«»Õ',
 			      'whisper_mad'       => 'Óñ¤­¶¸¿Í',
 			      'guard'             => '¼í¿Í',
@@ -293,10 +294,10 @@ class GameConfig{
 			      'common'            => '¶¦Í­¼Ô',
 			      'dummy_common'      => 'Ì´¶¦Í­¼Ô',
 			      'fox'               => 'ÍÅ¸Ñ',
-			      'child_fox'         => '»Ò¸Ñ',
 			      'cursed_fox'        => 'Å·¸Ñ',
 			      'poison_fox'        => '´É¸Ñ',
 			      'white_fox'         => 'Çò¸Ñ',
+			      'child_fox'         => '»Ò¸Ñ',
 			      'poison'            => 'ËäÆÇ¼Ô',
 			      'strong_poison'     => '¶¯ÆÇ¼Ô',
 			      'incubate_poison'   => 'ÀøÆÇ¼Ô',
@@ -339,6 +340,7 @@ class GameConfig{
 			     'liar'          => 'Ïµ¾¯Ç¯',
 			     'invisible'     => '¸÷³ØÌÂºÌ',
 			     'rainbow'       => 'Æú¿§ÌÂºÌ',
+			     'weekly'        => '¼·ÍËÌÂºÌ',
 			     'gentleman'     => '¿Â»Î',
 			     'lady'          => '½Ê½÷',
 			     'chicken'       => '¾®¿´¼Ô',
@@ -364,6 +366,7 @@ class GameConfig{
 				    'mage'              => 'Àê',
 				    'soul_mage'         => 'º²',
 				    'psycho_mage'       => '¿´Àê',
+				    'sex_mage'          => '¿÷Àê',
 				    'dummy_mage'        => 'Ì´¸«',
 				    'reporter'          => 'Ê¹',
 				    'necromancer'       => 'Îî',
@@ -372,6 +375,7 @@ class GameConfig{
 				    'medium'            => 'Öà',
 				    'mad'               => '¶¸',
 				    'fanatic_mad'       => '¶¸¿®',
+				    'jammer_mad'        => '¼Ù¶¸',
 				    'trap_mad'          => 'æ«',
 				    'whisper_mad'       => 'Óñ¶¸',
 				    'guard'             => '¼í',
@@ -421,8 +425,9 @@ class GameConfig{
 				    'speaker'           => '½¸²»',
 				    'silent'            => 'Ìµ¸ý',
 				    'liar'              => '±³',
-				    'invisible'         => 'ÌÂºÌ',
-				    'rainbow'           => 'Æú',
+				    'invisible'         => '¸÷ÌÂ',
+				    'rainbow'           => 'ÆúÌÂ',
+				    'weekly'            => 'ÍËÌÂ',
 				    'gentleman'         => '¿Â',
 				    'lady'              => '½Ê',
 				    'chicken'           => 'ÆÓ',
