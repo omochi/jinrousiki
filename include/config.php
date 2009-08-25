@@ -480,11 +480,27 @@ $ICON_CONF = new IconConfig();
 
 //アイコン登録設定
 class UserIcon{
+  var $disable_upload = false; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
   var $name   = 20;    //アイコン名につけられる文字数(半角)
   var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
   var $width  = 45;    //アップロードできるアイコンの最大幅
   var $height = 45;    //アップロードできるアイコンの最大高さ
   var $number = 1000;  //登録できるアイコンの最大数
+
+  // アイコンの文字数
+  function IconNameMaxLength(){
+    return 'アイコン名は半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
+  }
+
+  // アイコンのファイルサイズ
+  function IconFileSizeMax(){
+    return ($this->size > 1024 ? floor($this->size / 1024) . 'k' : $this->size) . 'Byte まで';
+  }
+
+  // アイコンの縦横のサイズ
+  function IconSizeMax(){
+    return '幅' . $this->width . 'ピクセル × 高さ' . $this->height . 'ピクセルまで';
+  }
 }
 
 //過去ログ表示設定

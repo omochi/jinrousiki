@@ -47,8 +47,7 @@ class RequestGameView extends RequestBase{
 class RequestGamePlay extends RequestBase{
   function RequestGamePlay(){
     $this->RequestBaseGamePlay();
-    $this->GetItems("$this->CheckOn", 'get.view_mode', 'get.dead_mode', 'get.heaven_mode',
-		    'post.set_objection');
+    $this->GetItems("$this->CheckOn", 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
     $this->GetItems('EscapeStrings', 'post.font_type');
     $this->GetItems(NULL, 'post.say');
     EscapeStrings($this->say, false);

@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/include/time_calc.php');
-require_once(dirname(__FILE__) . '/include/icon_data_check.php');
+$USER_ICON = new UserIcon(); //еведе│еє┼╨╧┐└▀─ъдЄеэб╝е╔
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
@@ -45,7 +45,7 @@ Perl длдщ PHP д╦д╣дыд│д╚д╟╞░║юдЄ╣т┬од╦д╖бв╟╙┬╛└й╕цдЄ MySQL д╦╟дд╗дыд│д╚д╟еэе├епе
 
 
 <h2>ецб╝е╢д╬╗ў┤щ│ид╩д╔дЄ╔╜д╣ецб╝е╢еведе│еєдЄ╝л═│д╦еве├е╫еэб╝е╔д╟днд▐д╣</h2>
-<div class="diff">└ь═╤д╬е┌б╝е╕длдщ<?php echo IconSizeMax() . "бв═╞╬╠ ", IconFileSizeMax(); ?>
+<div class="diff">└ь═╤д╬е┌б╝е╕длдщ<?php echo $USER_ICON->IconSizeMax() . "бв═╞╬╠ ", $USER_ICON->IconFileSizeMax(); ?>
 д╬е╒ебедеыдЄеве├е╫еэб╝е╔д╟днд▐д╣бг</div>
 
 

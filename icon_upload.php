@@ -1,14 +1,12 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
-require_once(dirname(__FILE__) . '/include/icon_data_check.php');
+$USER_ICON = new UserIcon(); //アイコン登録設定をロード
+
+if($USER_ICON->disable_upload){
+  OutputActionResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
+}
+
 OutputHTMLHeader('ユーザアイコンアップロード', 'icon_upload');
-echo <<<EOF
-<body>
-現在アップロードは停止しています
-</body>
-</html>
-EOF;
-exit;
 ?>
 </head>
 <body>
@@ -16,23 +14,23 @@ exit;
 <img class="title" src="img/icon_upload_title.jpg"><br>
 <table align="center">
 <tr><td class="link"><a href="icon_view.php">→アイコン一覧</a></td><tr>
-<tr><td class="caution">＊あらかじめ指定する大きさ (<?php echo IconSizeMax(); ?>
+<tr><td class="caution">＊あらかじめ指定する大きさ (<?php echo $USER_ICON->IconSizeMax(); ?>
  ) にリサイズしてからアップロードしてください。</td></tr>
 <tr><td>
 <fieldset><legend>アイコン指定
-<?php echo '(jpg, gif, png 画像を登録して下さい。' . IconFileSizeMax() . ')'; ?>
+<?php echo '(jpg, gif, png 画像を登録して下さい。' . $USER_ICON->IconFileSizeMax() . ')'; ?>
 </legend>
 <form method="POST" action="icon_upload_check.php" enctype="multipart/form-data">
 <table>
 <tr><td><label>ファイル選択</label>
-<?php echo '<input type="hidden" name="max_file_size" value="' . $USER_ICON -> size . '">'; ?>
+<?php echo '<input type="hidden" name="max_file_size" value="' . $USER_ICON->size . '">'; ?>
 <input type="file" name="file" size="80">
 <input type="submit" value="登録">
 </td></tr>
 
 <tr><td><label>アイコンの名前</label>
 <input type="text" name="name" maxlength="20" size="20">
-<?php echo IconNameMaxLength(); ?>
+<?php echo $USER_ICON->IconNameMaxLength(); ?>
 </td></tr>
 
 <tr><td><label>アイコンに合った色を選択してください</label></td></tr>

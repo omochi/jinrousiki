@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . '/include/request_class.php');
 //引数を取得
 $RQ_ARGS = new RequestGameView();
 $room_no = $RQ_ARGS->room_no;
-$url = 'game_view.php?room_no=' . $room_no . '&view_mode=on';
+$url = 'game_view.php?room_no=' . $room_no;
 
 $dbHandle = ConnectDatabase(); // DB 接続
 

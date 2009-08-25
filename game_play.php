@@ -22,7 +22,6 @@ $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
 $ROOM = new RoomDataSet($room_no); //村情報をロード
-$ROOM->view_mode    = $RQ_ARGS->view_mode; //観戦モード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
 $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得

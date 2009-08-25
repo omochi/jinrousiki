@@ -1,6 +1,11 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
-require_once(dirname(__FILE__) . '/include/icon_data_check.php');
+
+$USER_ICON = new UserIcon(); //¥¢¥¤¥³¥óÅÐÏ¿ÀßÄê¤ò¥í¡¼¥É
+
+if($USER_ICON->disable_upload){
+  OutputActionResult('¥æ¡¼¥¶¥¢¥¤¥³¥ó¥¢¥Ã¥×¥í¡¼¥É', '¸½ºß¥¢¥Ã¥×¥í¡¼¥É¤ÏÄä»ß¤·¤Æ¤¤¤Þ¤¹');
+}
 
 //¥»¥Ã¥·¥ç¥ó³«»Ï(¥Ø¥Ã¥À¤òÁ÷¤ëÁ°¤Ë³«»Ï¤·¤Æ¤ª¤¯)
 session_start();
@@ -23,11 +28,13 @@ if(($name = $_POST['name']) == '') OutputActionResult($title, '¥¢¥¤¥³¥óÌ¾¤òÆþÎÏ¤
 EscapeStrings(&$name);
 
 //¥¢¥¤¥³¥óÌ¾¤ÎÊ¸»úÎóÄ¹¤Î¥Á¥§¥Ã¥¯
-if(($name_length = strlen($name)) > $USER_ICON->name) OutputActionResult($title, IconNameMaxLength());
+if(($name_length = strlen($name)) > $USER_ICON->name){
+  OutputActionResult($title, $USER_ICON->IconNameMaxLength());
+}
 
 //¥Õ¥¡¥¤¥ë¥µ¥¤¥º¤Î¥Á¥§¥Ã¥¯
 if($_FILES['file']['size'] == 0 || $_FILES['file']['size'] > $USER_ICON->size){
-  OutputActionResult($title, '¥Õ¥¡¥¤¥ë¥µ¥¤¥º¤Ï ' . IconFileSizeMax());
+  OutputActionResult($title, '¥Õ¥¡¥¤¥ë¥µ¥¤¥º¤Ï ' . $USER_ICON->IconFileSizeMax());
 }
 
 //¥Õ¥¡¥¤¥ë¤Î¼ïÎà¤Î¥Á¥§¥Ã¥¯
@@ -64,7 +71,7 @@ if(strlen($color) != 7 && ! preg_match('/^#[0123456789abcdefABCDEF]{6}/', $color
 //¥¢¥¤¥³¥ó¤Î¹â¤µ¤ÈÉý¤ò¥Á¥§¥Ã¥¯
 list($width, $height) = getimagesize($_FILES['file']['tmp_name']);
 if($width > $USER_ICON->width || $height > $USER_ICON->height){
-  OutputActionResult($title, '¥¢¥¤¥³¥ó¤Ï ' . IconSizeMax() . ' ¤·¤«ÅÐÏ¿¤Ç¤­¤Þ¤»¤ó¡£<br>'."\n" .
+  OutputActionResult($title, '¥¢¥¤¥³¥ó¤Ï ' . $USER_ICON->IconSizeMax() . ' ¤·¤«ÅÐÏ¿¤Ç¤­¤Þ¤»¤ó¡£<br>'."\n" .
 		     'Á÷¿®¤µ¤ì¤¿¥Õ¥¡¥¤¥ë ¢ª <span class="color">Éý ' . $width .
 		     ', ¹â¤µ ' . $height . '</span>');
 }

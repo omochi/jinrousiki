@@ -49,8 +49,8 @@ function OutputGamePageHeader(){
   }
 
   //ゲーム中、死んで霊話モードに行くとき
-  if(! $ROOM->is_aftergame() && $SELF->is_dead() && ! $ROOM->view_mode &&
-     ! $ROOM->log_mode && ! $ROOM->dead_mode && ! $ROOM->heaven_mode){
+  if(! $ROOM->is_aftergame() && $SELF->is_dead() && ! $ROOM->log_mode &&
+     ! $ROOM->dead_mode && ! $ROOM->heaven_mode){
     $jump_url =  $url_header . '&dead_mode=on';
     $sentence .= '天国モードに切り替えます。';
   }
