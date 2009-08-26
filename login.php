@@ -46,10 +46,11 @@ function LoginManually($room_no){
 
   // //IPアドレス取得
   // $ip_address = $_SERVER['REMOTE_ADDR']; //特に参照してないようだけど…？
+  $crypt_password = CryptPassword($password);
 
   //該当するユーザ名とパスワードがあるか確認
   $sql = mysql_query("SELECT uname FROM user_entry WHERE room_no = $room_no
-			AND uname = '$uname' AND password = '$password' AND user_no > 0");
+			AND uname = '$uname' AND password = '$crypt_password' AND user_no > 0");
   if(mysql_num_rows($sql) != 1) return false;
 
   // //特に参照してないようだけど…？

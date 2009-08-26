@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/../include/functions.php');
 
 $CSS_PATH = '../css'; //CSS のパス
-OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment ' [初期設定]'); //HTMLヘッダ
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ
 
 if(! ($dbHandle = ConnectDatabase(true, false))){ //DB 接続
   mysql_query("CREATE DATABASE $db_name DEFAULT CHARSET ujis");
@@ -55,9 +55,30 @@ function CheckTable(){
   //チェックしてテーブルが存在しなければ作成する
   if(! in_array('room', $table)){
     mysql_query("CREATE TABLE room(room_no int primary key, room_name text, room_comment text,
-		max_user int, game_option text, option_role text, status text,
+		establisher_ip text, max_user int, game_option text, option_role text, status text,
 		date int, day_night text,last_updated text,victory_role text)");
     echo 'テーブル(room)を作成しました<br>'."\n";
+  }
+  else{
+    // establisher_ipフィールドがなければ追加する
+    $sql = mysql_query("SHOW COLUMNS FROM room");
+    $found = false;
+    if (mysql_num_rows($sql) > 0) {
+      while ($row = mysql_fetch_assoc($sql)) {
+	if ($row['Field'] == 'establisher_ip') {
+	  $found = true;
+	  break;
+	}
+      }
+    }
+    if (!$found) {
+      if (mysql_query("ALTER TABLE room ADD establisher_ip text")) {
+	echo 'テーブル(room)にフィールド(establisher_ip)を追加しました<br>'."\n";
+      }
+      else {
+	echo 'テーブル(room)にフィールド(establisher_ip)を追加できませんでした<br>'."\n";
+      }
+    }
   }
   if(! in_array('user_entry', $table)){
     mysql_query("CREATE TABLE user_entry(room_no int, user_no int, uname text, handle_name text,

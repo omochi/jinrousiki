@@ -35,6 +35,10 @@ class ServerConfig{
   //管理者用パスワード
   var $system_password = 'xxxxxx';
 
+  //パスワードハッシュ化用salt文字列
+  //パスワードを平文でDBに記録しないようにする
+  var $hash_salt = 'hash';
+
   //ソースアップロードフォームのパスワード
   var $src_upload_password = 'upload';
 

@@ -9,6 +9,9 @@ class RoomConfig{
   var $die_room = 1200;
   #var $die_room = 12000; //デバッグ用に長くしておく
 
+  //最大並列プレイ可能村数
+  var $max_active_room = 10;
+
   //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
 

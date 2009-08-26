@@ -253,4 +253,10 @@ function OutputHTMLFooter($exit = false){
   echo '</body></html>'."\n";
   if($exit) exit;
 }
+
+//パスワード暗号化
+function CryptPassword($raw_password) {
+  global $SERVER_CONF;
+  return sha1($SERVER_CONF->hash_salt . $raw_password);
+}
 ?>

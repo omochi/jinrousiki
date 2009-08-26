@@ -122,11 +122,12 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   }while(mysql_result($sql, 0, 0) != 0);
 
   //DB にユーザデータ登録
+   $crypt_password = CryptPassword($password);
   $entry = mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name,
 			icon_no, profile, sex, password, role, live, session_id,
 			last_words, ip_address, last_load_day_night)
 			VALUES($room_no, $user_no, '$uname', '$handle_name', $icon_no,
-			'$profile', '$sex', '$password', '$role', 'live',
+			'$profile', '$sex', '$crypt_password', '$role', 'live',
 			'$session_id', '', '$ip_address', 'beforegame')");
 
   //入村メッセージ
