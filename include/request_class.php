@@ -59,14 +59,14 @@ class RequestGamePlay extends RequestBase{
 }
 
 class RequestGameVote extends RequestBase{
-  //•Ï”‚Ì—p“r
+  //ÊÑ¿ô¤ÎÍÑÅÓ
   /*
-    vote : “Š•[ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½ or “Š•[ƒy[ƒW‚Ì•\Ž¦‚Ì§Œä—p
-    vote_times : ’‹‚Ì“Š•[‰ñ”
-    target_no : “Š•[æ‚Ì user_no (ƒLƒ…[ƒsƒbƒh‚ª‚¢‚é‚½‚ß’Pƒ‚É®”Œ^‚ÉƒLƒƒƒXƒg‚µ‚Ä‚Í‚¾‚ß)
-    situation : “Š•[‚Ì•ª—Þ (KickAˆŒYAè‚¢A˜T‚È‚Ç)
+    vote : ÅêÉ¼¥Ü¥¿¥ó¤ò²¡¤·¤¿ or ÅêÉ¼¥Ú¡¼¥¸¤ÎÉ½¼¨¤ÎÀ©¸æÍÑ
+    vote_times : Ãë¤ÎÅêÉ¼²ó¿ô
+    target_no : ÅêÉ¼Àè¤Î user_no (¥­¥å¡¼¥Ô¥Ã¥É¤¬¤¤¤ë¤¿¤áÃ±½ã¤ËÀ°¿ô·¿¤Ë¥­¥ã¥¹¥È¤·¤Æ¤Ï¤À¤á)
+    situation : ÅêÉ¼¤ÎÊ¬Îà (Kick¡¢½è·º¡¢Àê¤¤¡¢Ïµ¤Ê¤É)
     target_handle_name :
-    target_no ‚Íƒ^ƒCƒ~ƒ“ƒO‚Å“ü‚ê‘Ö‚í‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å Kick ‚Ì‚Ý target_handle_name ‚ðŽQÆ‚·‚é
+    target_no ¤Ï¥¿¥¤¥ß¥ó¥°¤ÇÆþ¤ìÂØ¤ï¤ë²ÄÇ½À­¤¬¤¢¤ë¤Î¤Ç Kick ¤Î¤ß target_handle_name ¤ò»²¾È¤¹¤ë
   */
   function RequestGameVote(){
     $this->RequestBaseGamePlay();
@@ -74,6 +74,8 @@ class RequestGameVote extends RequestBase{
     $this->GetItems("$this->CheckOn", 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation', 'post.target_handle_name');
     EscapeStrings($this->target_handle_name);
+    //¥Æ¥¹¥ÈÍÑ°ú¿ô¤Î¥í¡¼¥É
+    AttachTestParameters($this);
   }
 }
 
@@ -96,6 +98,7 @@ class LogView extends RequestBase{
         'get.debug',
         'get.add_role'
       );
+      AttachTestParameters($this);
     }
     else{
       $this->GetItems(NULL, 'get.page', 'get.reverse');
@@ -103,4 +106,6 @@ class LogView extends RequestBase{
     }
   }
 }
+
+include_once(dirname(__FILE__).'/test_initiator.php');
 ?>

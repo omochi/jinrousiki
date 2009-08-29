@@ -95,40 +95,94 @@ class User{
 class UserDataSet{
   var $room_no;
   var $rows = array();
+  var $kicked = array();
+  var $names = array();
 
   function UserDataSet($room_no){
-    $this->room_no = intval($room_no);
-    $this->Load();
+    global $RQ_ARGS;
+    $this->room_no = $room_no;
+    if (isset($RQ_ARGS->TestItems) && $RQ_ARGS->TestItems->is_virtual_room){
+      $this->LoadVirtualRoom($RQ_ARGS->TestItems->test_users);
+    }
+    else{
+      $this->LoadRoom($this->room_no);
+    }
   }
 
-  function Load(){
-    $sql = mysql_query(
+  function LoadRoom($room_no){
+    $this->LoadQueryResponse(UserDataSet::RetriveByRoom($room_no));
+  }
+  
+  function LoadVirtualRoom($user_count){
+    $this->LoadQueryResponse(UserDataSet::RetrieveByUserCount($user_count));
+  }
+
+  function RetriveByRoom($room_no){
+    return mysql_query(
       "SELECT
-	users.room_no,
-	users.user_no,
-	users.uname,
-	users.handle_name,
-	users.sex,
-	users.profile,
-	users.role,
-	users.live,
-	users.last_load_day_night,
-	users.ip_address = '' AS is_system,
-	icons.icon_filename,
-	icons.color,
-	icons.icon_width,
-	icons.icon_height
+      users.room_no,
+      users.user_no,
+    	users.uname,
+    	users.handle_name,
+    	users.sex,
+    	users.profile,
+    	users.role,
+    	users.live,
+    	users.last_load_day_night,
+    	users.ip_address = '' AS is_system,
+    	icons.icon_filename,
+    	icons.color,
+    	icons.icon_width,
+    	icons.icon_height
       FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
-      WHERE users.room_no = {$this->room_no}
-      AND users.user_no >= 0 ORDER BY users.user_no"
+      WHERE users.room_no = {$room_no}"
     );
-    if($sql === false) return;
+  }
+
+  function RetrieveByUserCount($user_count){
+    mysql_query('SET @new_user_no := 0');
+    return mysql_query(
+      "SELECT
+      users.room_no,
+      (@new_user_no := @new_user_no + 1) AS user_no,
+    	users.uname,
+    	users.handle_name,
+    	users.sex,
+    	users.profile,
+    	users.role,
+    	users.live,
+    	users.last_load_day_night,
+    	users.ip_address = '' AS is_system,
+    	icons.icon_filename,
+    	icons.color,
+    	icons.icon_width,
+    	icons.icon_height
+      FROM (SELECT room_no, uname FROM user_entry WHERE 0 < room_no GROUP BY uname) finder
+        LEFT JOIN user_entry users USING (room_no, uname)
+        LEFT JOIN user_icon icons USING(icon_no)
+      ORDER BY RAND()
+      LIMIT $user_count
+      "
+    );
+  }
+
+  function LoadQueryResponse($response){
+    if ($response === false){
+      return false;
+    }
     $this->rows = array();
-    while(($user = mysql_fetch_object($sql, 'User')) !== false){
+    while(($user = mysql_fetch_object($response, 'User')) !== false){
+      $num_users++;
       $user->ParseCompoundParameters();
-      $this->rows[$user->user_no] = $user;
+      if (0 <= $user->user_no) {
+        $this->rows[$user->user_no] = $user;
+      }
+      else {
+        $this->kicked[$user->user_no = --$kicked_user_no] = $user;
+      }
       $this->names[$user->uname] = $user->user_no;
     }
+    return num_users; //¤Þ¤¿¤Ï count($this->names)
   }
 
   function Save(){
@@ -148,23 +202,35 @@ class UserDataSet{
   }
 
   function ByUname($uname){
-    return $this->rows[$this->UnameToNumber($uname)];
+    $user_no = $this->UnameToNumber($uname);
+    return 0 < $user_no ? $this->rows[$user_no] : $this->kicked[$user_no];
   }
 
   function GetHandleName($uname){
-    return $this->rows[$this->UnameToNumber($uname)]->handle_name;
+    return $this->ByUname($uname)->handle_name;
   }
 
   function GetSex($uname){
-    return $this->rows[$this->UnameToNumber($uname)]->sex;
+    return $this->ByUname($uname)->sex;
   }
 
   function GetRole($uname){
-    return $this->rows[$this->UnameToNumber($uname)]->role;
+    return $this->ByUname($uname)->role;
+  }
+
+  function GetPartners($uname, $strict=false){
+    $role = $this->GetRole($uname);
+    $partners = array();
+    foreach ($this->rows as $user){
+      if ($strict ? ($user->is_role($role)) : (strpos($role, $user->role) !== false)){
+        $partners[] = $user;
+      }
+    }
+    return $partners;
   }
 
   function GetLive($uname){
-    return $this->rows[$this->UnameToNumber($uname)]->live;
+    return $this->ByUname($uname)->live;
   }
 
   function GetUserCount(){
