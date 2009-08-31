@@ -2,10 +2,6 @@
 require_once(dirname(__FILE__) . '/include/game_functions.php');
 require_once(dirname(__FILE__) . '/include/request_class.php');
 
-//セッション開始
-session_start();
-$session_id = session_id();
-
 //引数を取得
 $RQ_ARGS = new RequestGameLog();
 if($RQ_ARGS->day_night != 'day' && $RQ_ARGS->day_night != 'night'){
@@ -13,14 +9,18 @@ if($RQ_ARGS->day_night != 'day' && $RQ_ARGS->day_night != 'night'){
 }
 $room_no = $RQ_ARGS->room_no;
 
+//セッション開始
+session_start();
+$session_id = session_id();
+
 $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
-$ROOM = new RoomDataSet($RQ_ARGS->room_no); //部屋情報を取得
+$ROOM = new RoomDataSet($RQ_ARGS); //部屋情報を取得
 $ROOM->log_mode = true;
 
 //自分のハンドルネーム、役割、生存を取得
-$USERS = new UserDataSet($RQ_ARGS->room_no); //ユーザ情報をロード
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  = $USERS->ByUname($uname);
 
 if(! ($SELF->is_dead() || $ROOM->is_aftergame())){ //死者かゲーム終了後だけ

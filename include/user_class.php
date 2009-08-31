@@ -90,6 +90,23 @@ class User{
       mysql_query("UPDATE user_entry SET $update WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'");
     }
   }
+
+  //占い師の判定
+  function DistinguishMage($reverse = false){
+    //白狼以外の狼と不審者は人狼判定
+    $result = (($this->is_wolf() && ! $this->is_role('boss_wolf')) || $this->is_role('suspect'));
+    if($reverse) $result = (! $result);
+    return ($result ? 'wolf' : 'human');
+  }
+
+  //所属陣営判別
+  function DistinguishCamp(){
+    if($this->is_wolf() || $this->is_role_group('mad')) return 'wolf';
+    if($this->is_fox()) return 'fox';
+    if($this->is_role('cupid')) return 'lovers';
+    if($this->is_role('quiz')) return 'quiz';
+    return 'human';
+  }
 }
 
 class UserDataSet{
@@ -98,11 +115,15 @@ class UserDataSet{
   var $kicked = array();
   var $names = array();
 
-  function UserDataSet($room_no){
-    global $RQ_ARGS;
-    $this->room_no = $room_no;
-    if (isset($RQ_ARGS->TestItems) && $RQ_ARGS->TestItems->is_virtual_room){
-      $this->LoadVirtualRoom($RQ_ARGS->TestItems->test_users);
+  function UserDataSet($request){
+    $this->room_no = $request->room_no;
+    if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
+      if(is_int($request->TestItems->test_users)){
+	$this->LoadVirtualRoom($request->TestItems->test_users);
+      }
+      else{
+	$this->LoadUsers($request->TestItems->test_users);
+      }
     }
     else{
       $this->LoadRoom($this->room_no);
@@ -112,7 +133,7 @@ class UserDataSet{
   function LoadRoom($room_no){
     $this->LoadQueryResponse(UserDataSet::RetriveByRoom($room_no));
   }
-  
+
   function LoadVirtualRoom($user_count){
     $this->LoadQueryResponse(UserDataSet::RetrieveByUserCount($user_count));
   }
@@ -122,20 +143,21 @@ class UserDataSet{
       "SELECT
       users.room_no,
       users.user_no,
-    	users.uname,
-    	users.handle_name,
-    	users.sex,
-    	users.profile,
-    	users.role,
-    	users.live,
-    	users.last_load_day_night,
-    	users.ip_address = '' AS is_system,
-    	icons.icon_filename,
-    	icons.color,
-    	icons.icon_width,
-    	icons.icon_height
+	users.uname,
+	users.handle_name,
+	users.sex,
+	users.profile,
+	users.role,
+	users.live,
+	users.last_load_day_night,
+	users.ip_address = '' AS is_system,
+	icons.icon_filename,
+	icons.color,
+	icons.icon_width,
+	icons.icon_height
       FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
-      WHERE users.room_no = {$room_no}"
+      WHERE users.room_no = {$room_no}
+      ORDER BY users.user_no"
     );
   }
 
@@ -145,21 +167,21 @@ class UserDataSet{
       "SELECT
       users.room_no,
       (@new_user_no := @new_user_no + 1) AS user_no,
-    	users.uname,
-    	users.handle_name,
-    	users.sex,
-    	users.profile,
-    	users.role,
-    	users.live,
-    	users.last_load_day_night,
-    	users.ip_address = '' AS is_system,
-    	icons.icon_filename,
-    	icons.color,
-    	icons.icon_width,
-    	icons.icon_height
+	users.uname,
+	users.handle_name,
+	users.sex,
+	users.profile,
+	users.role,
+	users.live,
+	users.last_load_day_night,
+	users.ip_address = '' AS is_system,
+	icons.icon_filename,
+	icons.color,
+	icons.icon_width,
+	icons.icon_height
       FROM (SELECT room_no, uname FROM user_entry WHERE 0 < room_no GROUP BY uname) finder
-        LEFT JOIN user_entry users USING (room_no, uname)
-        LEFT JOIN user_icon icons USING(icon_no)
+	LEFT JOIN user_entry users USING (room_no, uname)
+	LEFT JOIN user_icon icons USING(icon_no)
       ORDER BY RAND()
       LIMIT $user_count
       "
@@ -167,14 +189,12 @@ class UserDataSet{
   }
 
   function LoadQueryResponse($response){
-    if ($response === false){
-      return false;
-    }
+    if($response === false) return false;
     $this->rows = array();
     while(($user = mysql_fetch_object($response, 'User')) !== false){
       $num_users++;
       $user->ParseCompoundParameters();
-      if (0 <= $user->user_no) {
+      if($user->user_no >= 0){
         $this->rows[$user->user_no] = $user;
       }
       else {
@@ -182,7 +202,24 @@ class UserDataSet{
       }
       $this->names[$user->uname] = $user->user_no;
     }
-    return num_users; //または count($this->names)
+    return $num_users; //または count($this->names)
+  }
+
+  function LoadUsers($user_list){
+    if($user_list === false) return false;
+    $this->rows = array();
+    foreach($user_list as $user){
+      $num_users++;
+      $user->ParseCompoundParameters();
+      if($user->user_no >= 0){
+        $this->rows[$user->user_no] = $user;
+      }
+      else {
+        $this->kicked[$user->user_no = --$kicked_user_no] = $user;
+      }
+      $this->names[$user->uname] = $user->user_no;
+    }
+    return $num_users; //または count($this->names)
   }
 
   function Save(){
@@ -202,8 +239,7 @@ class UserDataSet{
   }
 
   function ByUname($uname){
-    $user_no = $this->UnameToNumber($uname);
-    return 0 < $user_no ? $this->rows[$user_no] : $this->kicked[$user_no];
+    return $this->rows[$this->UnameToNumber($uname)];
   }
 
   function GetHandleName($uname){
@@ -218,11 +254,11 @@ class UserDataSet{
     return $this->ByUname($uname)->role;
   }
 
-  function GetPartners($uname, $strict=false){
+  function GetPartners($uname, $strict = false){
     $role = $this->GetRole($uname);
     $partners = array();
-    foreach ($this->rows as $user){
-      if ($strict ? ($user->is_role($role)) : (strpos($role, $user->role) !== false)){
+    foreach($this->rows as $user){
+      if($strict ? ($user->is_role($role)) : ($user->is_role_group($role))){
         $partners[] = $user;
       }
     }
@@ -235,6 +271,21 @@ class UserDataSet{
 
   function GetUserCount(){
     return count($this->rows);
+  }
+
+  function is_appear($role){
+    foreach($this->rows as $this_user){
+      if($this_user->main_role == $role) return true;
+    }
+    return false;
+  }
+
+  function GetLiveUsers(){
+    $array = array();
+    foreach($this->rows as $this_user){
+      if($this_user->is_live()) array_push($array, $this_user->uname);
+    }
+    return $array;
   }
 
   //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。

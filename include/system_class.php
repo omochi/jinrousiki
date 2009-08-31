@@ -7,45 +7,61 @@ class RoomDataSet{
   var $date;
   var $day_night;
   var $status;
+  var $option_list = array();
   var $system_time;
   var $sudden_death;
   var $view_mode;
   var $dead_mode;
   var $heaven_mode;
   var $log_mode;
+  var $test_mode;
 
-  function RoomDataSet($room_no, $debug = false){
-    if($debug) return;
-    $sql = mysql_query("SELECT room_name, room_comment, game_option, date, day_night, status
-			FROM room WHERE room_no = $room_no");
-    $array = mysql_fetch_assoc($sql);
-    $this->id          = $room_no;
+  function RoomDataSet($request){
+    $this->test_mode = isset($request->TestItems);
+    if($this->test_mode && $request->TestItems->is_virtual_room){
+      $array = $request->TestItems->test_room;
+    }
+    else{
+      $query = "SELECT room_name, room_comment, game_option, date, day_night, status " .
+	"FROM room WHERE room_no = {$request->room_no}";
+      $array = FetchNameArray($query);
+    }
+    $this->id          = $request->room_no;
     $this->name        = $array['room_name'];
     $this->comment     = $array['room_comment'];
     $this->game_option = $array['game_option'];
     $this->date        = $array['date'];
     $this->day_night   = $array['day_night'];
     $this->status      = $array['status'];
+    $this->option_list = explode(' ', $this->game_option);
     $this->view_mode   = false;
     $this->dead_mode   = false;
     $this->heaven_mode = false;
     $this->log_mode    = false;
   }
 
+  function is_option($option){
+    return (in_array($option, $this->option_list));
+  }
+
+  function is_option_group($option){
+    return (strpos($this->game_option, $option) !== false);
+  }
+
   function is_real_time(){
-    return (strpos($this->game_option, 'real_time') !== false);
+    return $this->is_option_group('real_time');
   }
 
   function is_dummy_boy(){
-    return (strpos($this->game_option, 'dummy_boy') !== false);
+    return $this->is_option('dummy_boy');
   }
 
   function is_open_cast(){
-    return (strpos($this->game_option, 'not_open_cast') === false);
+    return ! $this->is_option('not_open_cast');
   }
 
   function is_quiz(){
-    return (strpos($this->game_option, 'quiz') !== false);
+    return $this->is_option('quiz');
   }
 
   function is_beforegame(){
@@ -166,5 +182,20 @@ class Sound{
   var $revote           = 'swf/sound_revote.swf';           //再投票
   var $objection_male   = 'swf/sound_objection_male.swf';   //異議あり(男)
   var $objection_female = 'swf/sound_objection_female.swf'; //異議あり(女)
+
+  //音を鳴らす
+  function Output($type, $loop = false){
+    if($loop) $loop_tag = "\n".'<param name="loop" value="true">';
+
+    echo <<< EOF
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0" width="0" height="0">
+<param name="movie" value="{$this->$type}">
+<param name="quality" value="high">{$loop_tag}
+<embed src="{$this->$type}" type="application/x-shockwave-flash" quality="high" width="0" height="0" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+</embed>
+</object>
+
+EOF;
+  }
 }
 ?>

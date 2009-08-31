@@ -8,9 +8,9 @@ $room_no = $RQ_ARGS->room_no;
 
 $dbHandle = ConnectDatabase(); //DB 接続
 if($RQ_ARGS->is_room){
-  $USERS = new UserDataSet($room_no);
+  $USERS = new UserDataSet($RQ_ARGS);
   $SELF  = new User();
-  OutputOldLog($RQ_ARGS->room_no);
+  OutputOldLog();
 }
 else{
   OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
@@ -156,7 +156,7 @@ EOF;
 
 
 //指定の部屋Noのログを出力する
-function OutputOldLog($room_no){
+function OutputOldLog(){
   global $SERVER_CONF, $RQ_ARGS, $ROOM, $room_no, $last_date;
 
   $base_title = $SERVER_CONF->title . ' [過去ログ]';
@@ -165,7 +165,7 @@ function OutputOldLog($room_no){
   if($room_no == NULL) OutputActionResult($title, '村を指定してください。' . $url);
 
   //日付とシーンを取得
-  $ROOM = new RoomDataSet($room_no);
+  $ROOM = new RoomDataSet($RQ_ARGS);
   $ROOM->log_mode = true;
   $last_date = $ROOM->date;
 

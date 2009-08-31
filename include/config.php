@@ -151,8 +151,8 @@ $ROOM_CONF = new RoomConfig();
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  var $entry_one_ip_address = true;
-  #var $entry_one_ip_address = false; //デバッグ用
+  #var $entry_one_ip_address = true;
+  var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -251,8 +251,8 @@ class GameConfig{
 				    '青' => '藍', '藍' => '紫', '紫' => '赤');
 
   //七曜迷彩の変換テーブル
-  var $week_replace_list = array('月' => '火', '火' => '水', '水' => '木', '木' => '金',
-				 '金' => '土', '土' => '日', '日' => '月');
+  var $weekly_replace_list = array('月' => '火', '火' => '水', '水' => '木', '木' => '金',
+				   '金' => '土', '土' => '日', '日' => '月');
 
   var $invisible_rate = 10; //光学迷彩の発言が空白に入れ替わる確率
   var $silent_length  = 25; //無口が発言できる最大文字数
@@ -483,7 +483,7 @@ $ICON_CONF = new IconConfig();
 
 //アイコン登録設定
 class UserIcon{
-  var $disable_upload = false; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
+  var $disable_upload = true; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
   var $name   = 20;    //アイコン名につけられる文字数(半角)
   var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
   var $width  = 45;    //アップロードできるアイコンの最大幅

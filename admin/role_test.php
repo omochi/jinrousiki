@@ -22,8 +22,8 @@ EOF;
 if($_POST['command'] == 'role_test'){
   $user_count = (int)$_POST['user_count'];
   $try_count  = (int)$_POST['try_count'];
-  $ROOM = new RoomDataSet(0, true);
-  $ROOM->game_option = $_POST['game_option'];
+  $RQ_ARGS->test_mode = true;
+  $ROOM = new RoomDataSet($RQ_ARGS, array('game_option' => $_POST['game_option']));
   for($i = 1; $i <= $try_count; $i++){
     echo "$i ²óÌÜ";
     $role_list = GetRoleList($user_count, '');

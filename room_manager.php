@@ -58,23 +58,25 @@ function MaintenanceRoomAction($list, $query, $base_time){
 
 //村(room)の作成
 function CreateRoom($room_name, $room_comment, $max_user){
-  global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $DEBUG_MODE;
+  global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $MESSAGE;
 
   //村立てを行ったユーザのIPを取得
   $ip_address = $_SERVER['REMOTE_ADDR'];
 
   // 同じユーザが立てた村が終了していなければ新しい村を作らない
-  if (!$DEBUG_MODE) {
-    $sql = mysql_query("SELECT COUNT(room_no) FROM room WHERE establisher_ip = '$ip_address' AND status <> 'finished'");
-    if(mysql_result($sql, 0, 0) > 0) {
+  if(! $DEBUG_MODE){
+    $query = "SELECT COUNT(room_no) FROM room WHERE establisher_ip = '$ip_address' " .
+      "AND status <> 'finished'";
+
+    if(FetchResult($query) > 0){
       OutputRoomAction('over_establish');
       return false;
     }
   }
 
   //最大並列村数を超えているようであれば新しい村を作らない
-  $sql = mysql_query("SELECT COUNT(room_no) FROM room WHERE status <> 'finished'");
-  if(mysql_result($sql, 0, 0) >= $ROOM_CONF->max_active_room) {
+  $query = "SELECT COUNT(room_no) FROM room WHERE status <> 'finished'";
+  if(FetchResult($query) >= $ROOM_CONF->max_active_room) {
     OutputRoomAction('full');
     return false;
   }
@@ -114,7 +116,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
     array_push($game_option_list, 'wish_role');
-    $ip_address = $_SERVER['REMOTE_ADDR'];
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
@@ -133,7 +134,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
       $game_option .= 'dummy_boy gm_login ';
       $dummy_boy_handle_name = 'GM';
       $dummy_boy_password    = $gm_password;
-      $ip_address = $_SERVER['REMOTE_ADDR'];
     }
     if($chaos || $chaosfull){
       if($chaos) $game_option .= 'chaos ';
@@ -215,10 +215,10 @@ function CreateRoom($room_name, $room_comment, $max_user){
   if(strpos($game_option, 'dummy_boy') !== false){
     $crypt_dummy_boy_password = CryptPassword($dummy_boy_password);
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no,
-			profile, sex, password, live, last_words, ip_address)
+			profile, sex, password, live, last_words)
 			VALUES($room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0,
 			'{$MESSAGE->dummy_boy_comment}', 'male', '$crypt_dummy_boy_password',
-			'live', '{$MESSAGE->dummy_boy_last_words}', '$ip_address')");
+			'live', '{$MESSAGE->dummy_boy_last_words}')");
   }
 
   if($entry && mysql_query('COMMIT')) //一応コミット

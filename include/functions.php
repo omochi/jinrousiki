@@ -62,7 +62,8 @@ if(! function_exists('session_regenerate_id')){
 
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
-  return mysql_result(mysql_query($query), 0, 0);
+  $sql = mysql_query($query);
+  return (mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false);
 }
 
 //DB から該当するデータの行数を取得する処理のラッパー関数
@@ -76,6 +77,28 @@ function FetchArray($query){
   $sql   = mysql_query($query);
   $count = mysql_num_rows($sql);
   for($i = 0; $i < $count; $i++) array_push($array, mysql_result($sql, $i, 0));
+  return $array;
+}
+
+//DB から単体の連想配列を取得する処理のラッパー関数
+function FetchNameArray($query){
+  $sql = mysql_query($query);
+  return (mysql_num_rows($sql) > 0 ? mysql_fetch_assoc($sql) : false);
+}
+
+//DB から連想配列を取得する処理のラッパー関数
+function FetchAssoc($query){
+  $array = array();
+  $sql   = mysql_query($query);
+  while(($this_array = mysql_fetch_assoc($sql)) !== false) array_push($array, $this_array);
+  return  $array;
+}
+
+//DB からオブジェクト形式の配列を取得する処理のラッパー関数
+function FetchObjectArray($query, $class){
+  $array = array();
+  $sql   = mysql_query($query);
+  while(($user = mysql_fetch_object($sql, $class)) !== false) array_push($array, $user);
   return $array;
 }
 
@@ -142,6 +165,12 @@ function EscapeStrings(&$str, $trim = true){
 function LineToBR(&$str){
   $str = str_replace("\n", '<br>', $str);
   return $str;
+}
+
+//パスワード暗号化
+function CryptPassword($raw_password){
+  global $SERVER_CONF;
+  return sha1($SERVER_CONF->hash_salt . $raw_password);
 }
 
 //ゲームオプションの画像タグを作成する
@@ -252,11 +281,5 @@ function OutputActionResult($title, $body, $url = '', $unlock = false){
 function OutputHTMLFooter($exit = false){
   echo '</body></html>'."\n";
   if($exit) exit;
-}
-
-//パスワード暗号化
-function CryptPassword($raw_password) {
-  global $SERVER_CONF;
-  return sha1($SERVER_CONF->hash_salt . $raw_password);
 }
 ?>

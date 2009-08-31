@@ -2,32 +2,29 @@
 require_once(dirname(__FILE__) . '/include/game_functions.php');
 require_once(dirname(__FILE__) . '/include/request_class.php');
 
+EncodePostData(); //ポストされた文字列を全てエンコードする
+
+$RQ_ARGS = new RequestGamePlay(); //引数を取得
+$room_no = $RQ_ARGS->room_no;
+if($RQ_ARGS->play_sound){//音でお知らせ
+  $SOUND  = new Sound(); //音源情報をロード
+  $COOKIE = new CookieDataSet(); //クッキー情報をロード
+}
+
 //セッション開始
 session_start();
 $session_id = session_id();
 
-EncodePostData(); //ポストされた文字列を全てエンコードする
-
-//引数を取得
-$RQ_ARGS = new RequestGamePlay();
-$room_no = $RQ_ARGS->room_no; //部屋 No
-if($RQ_ARGS->play_sound){//音でお知らせ
-  $SOUND = new Sound(); //音源情報をロード
-  $cookie_day_night  = $_COOKIE['day_night'];       //夜明けを音でしらせるため
-  $cookie_vote_times = (int)$_COOKIE['vote_times']; //再投票を音で知らせるため
-  $cookie_objection  = $_COOKIE['objection'];       //「異議あり」を音で知らせるため
-}
-
 $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
-$ROOM = new RoomDataSet($room_no); //村情報をロード
+$ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
 $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
-$USERS = new UserDataSet($room_no); //ユーザ情報をロード
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByUname($uname); //自分の情報をロード
 $ROLE_IMG = new RoleImage();
 
@@ -84,6 +81,18 @@ OutputHTMLFooter();
 DisconnectDatabase($dbHandle); //DB 接続解除
 
 //-- 関数 --//
+class CookieDataSet{
+  var $day_night;  //夜明けを音でしらせるため
+  var $vote_times; //再投票を音で知らせるため
+  var $objection;  //「異議あり」を音で知らせるため
+
+  function CookieDataSet(){
+    $this->day_night  = $_COOKIE['day_night'];
+    $this->vote_times = (int)$_COOKIE['vote_times'];
+    $this->objection  = $_COOKIE['objection'];
+  }
+}
+
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(){
   global $GAME_CONF, $RQ_ARGS, $room_no, $ROOM, $SELF, $objection_array, $objection_left_count;
@@ -115,11 +124,12 @@ function SendCookie(){
   $objection_array = array_fill(1, $user_count, 0); //index は 1 から
 
   //message:異議ありをしたユーザ No とその回数を取得
-  $sql = mysql_query("SELECT message, COUNT(message) AS message_count FROM system_message
-			WHERE room_no = $room_no AND type = 'OBJECTION' GROUP BY message");
-  while(($array = mysql_fetch_assoc($sql)) !== false){
-    $this_user_no = (int)$array['message'];
-    $this_count   = (int)$array['message_count'];
+  $query = "SELECT message, COUNT(message) AS message_count FROM system_message " .
+    "WHERE room_no = $room_no AND type = 'OBJECTION' GROUP BY message";
+  $array = FetchAssoc($query);
+  foreach($array as $this_array){
+    $this_user_no = (int)$this_array['message'];
+    $this_count   = (int)$this_array['message_count'];
     $objection_array[$this_user_no] = $this_count;
   }
 
@@ -135,10 +145,9 @@ function SendCookie(){
 
   //<再投票を音でお知らせ用>
   //再投票の回数を取得
-  $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
-			AND date = {$ROOM->date} AND type = 'RE_VOTE' ORDER BY message DESC");
-  if(mysql_num_rows($sql) != 0){ //クッキーに格納 (有効期限一時間)
-    $last_vote_times = (int)mysql_result($sql, 0, 0); //何回目の再投票なのか取得
+  $query = "SELECT message FROM system_message WHERE room_no = $room_no " .
+    "AND date = {$ROOM->date} AND type = 'RE_VOTE' ORDER BY message DESC";
+  if(($last_vote_times = FetchResult($query)) > 0){ //クッキーに格納 (有効期限一時間)
     setcookie('vote_times', $last_vote_times, $ROOM->system_time + 3600);
   }
   else{ //クッキーから削除 (有効期限一時間)
@@ -215,8 +224,9 @@ function EntryLastWords($say){
   global $room_no, $ROOM, $SELF;
 
   //ゲーム終了後、死者、ブン屋、筆不精なら登録しない
-  if($ROOM->is_finished() || $SELF->is_dead() || $SELF->is_role('reporter') ||
-     $SELF->is_role('no_last_words')) return false;
+  if($ROOM->is_finished() || $SELF->is_dead() || $SELF->is_role('reporter', 'no_last_words')){
+    return false;
+  }
 
   //遺言を残す
   mysql_query("UPDATE user_entry SET last_words = '$say' WHERE room_no = $room_no
@@ -423,7 +433,7 @@ function CheckSilence(){
       }
 
       //未投票者を全員突然死させる
-      $flag_medium = CheckMedium(); //巫女の出現チェック
+      $flag_medium = $USERS->is_appear('medium'); //巫女の出現チェック
       $dead_lovers_list = array(); //恋人後追い対象者リスト
       foreach($novote_uname_list as $this_uname){
 	SuddenDeath($this_uname, $flag_medium);
@@ -447,8 +457,8 @@ function CheckSilence(){
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF,
-    $cookie_day_night, $cookie_objection, $objection_array, $objection_left_count;
+  global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF, $COOKIE,
+    $SOUND, $objection_array, $objection_left_count;
 
   $room_message = '<td class="room"><span>' . $ROOM->name . '村</span>　〜' . $ROOM->comment .
     '〜[' . $room_no . '番地]</td>'."\n";
@@ -530,11 +540,11 @@ EOF;
   //夜明けを音でお知らせする
   if($RQ_ARGS->play_sound){
     //夜明けの場合
-    if($cookie_day_night != $ROOM->day_night && $ROOM->is_day()) OutputSound('morning');
+    if($COOKIE->day_night != $ROOM->day_night && $ROOM->is_day()) $SOUND->Output('morning');
 
     /*
     //異議あり、を音で知らせる
-    $cookie_objection_array = explode(',', $cookie_objection); //クッキーの値を配列に格納する
+    $cookie_objection_array = explode(',', $COOKIE->objection); //クッキーの値を配列に格納する
 
     $count = count($objection_array);
     for($i = 1; $i <= $count; $i++){ //差分を計算 (index は 1 から)
@@ -542,7 +552,7 @@ EOF;
       if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
 	$sql = mysql_query("SELECT sex FROM user_entry WHERE room_no = $room_no AND user_no = $i");
 	$objection_sound = 'objection_' . mysql_result($sql, 0, 0);
-	OutputSound($objection_sound, true);
+	$Sound->Output($objection_sound, true);
       }
     }
     */
@@ -956,9 +966,7 @@ function OutputAbility(){
   }
   elseif($main_role == 'quiz'){
     $ROLE_IMG->DisplayImage($main_role);
-    if(strpos($ROOM->game_option, 'chaos') !== false){
-      $ROLE_IMG->DisplayImage('quiz_chaos');
-    }
+    if($ROOM->is_option_group('chaos')) $ROLE_IMG->DisplayImage('quiz_chaos');
   }
 
   //ここから兼任役職
@@ -982,7 +990,7 @@ function OutputAbility(){
   }
 
   //これ以降はサブ役職非公開オプションの影響を受ける
-  if(strpos($ROOM->game_option, 'secret_sub_role') !== false) return;
+  if($ROOM->is_option('secret_sub_role')) return;
 
   $role_keys_list   = array_keys($GAME_CONF->sub_role_list);
   $not_display_list = array('decide', 'plague', 'good_luck', 'bad_luck', 'lovers', 'copied');

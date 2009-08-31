@@ -11,9 +11,10 @@ function CheckSession($session_id, $exit = true){
   // $ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
 
   //セッション ID による認証
-  $sql = mysql_query("SELECT uname FROM user_entry WHERE room_no = $room_no
-			AND session_id ='$session_id' AND user_no > 0");
-  if(mysql_num_rows($sql) == 1) return mysql_result($sql, 0, 0);
+  $query = "SELECT uname FROM user_entry WHERE room_no = $room_no " .
+    "AND session_id ='$session_id' AND user_no > 0";
+  $array = FetchArray($query);
+  if(count($array) == 1) return $array[0];
 
   if($exit){ //エラー処理
     OutputActionResult('セッション認証エラー',
@@ -131,11 +132,9 @@ function OutputTimeTable(){
 
   if($ROOM->is_beforegame()) return false; //ゲームが始まっていなければ表示しない
 
-  //生存者の数を取得
-  $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no
-			AND live = 'live' AND user_no > 0");
-  $count = mysql_result($sql, 0, 0);
-  echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . $count . '人)</span></td>'."\n";
+  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no " .
+    "AND live = 'live' AND user_no > 0";
+  echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
 }
 
 //プレイヤー一覧出力
@@ -178,8 +177,8 @@ function OutputPlayerList(){
     $img_tag .= ' src="' . $path . '">';
 
     //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
-    if($ROOM->is_aftergame() || ($SELF->is_dead && $ROOM->is_open_cast()) ||
-       (! $ROOM->is_quiz() && $SELF->is_dummy_boy)){
+    if($ROOM->is_aftergame() || ($SELF->is_dead() && $ROOM->is_open_cast()) ||
+       (! $ROOM->is_quiz() && $SELF->is_dummy_boy())){
       $role_str = '';
       if($this_user->is_role('human', 'suspect', 'unconscious'))
 	$role_str = MakeRoleName($this_user->main_role, 'human');
@@ -336,14 +335,6 @@ function DistinguishCamp($role){
   return 'human';
 }
 
-//占い師の判定
-function DistinguishMage($role){
-  if(strpos($role, 'boss_wolf') !== false) return 'human'; //白狼は村人判定
-  //狼と不審者は人狼判定
-  if(strpos($role, 'wolf') !== false || strpos($role, 'suspect') !== false) return 'wolf';
-  return 'human';
-}
-
 //勝敗の出力
 function OutputVictory(){
   global $MESSAGE, $room_no, $ROOM, $SELF;
@@ -384,7 +375,7 @@ EOF;
   if($victory == NULL || $ROOM->view_mode || $ROOM->log_mode) return;
 
   $result = 'win';
-  $camp   = DistinguishCamp($SELF->role); //所属陣営を取得
+  $camp   = $SELF->DistinguishCamp(); //所属陣営を取得
   $lovers = $SELF->is_lovers();
   if($victory == 'human' && $camp == 'human' && ! $lovers)
     $class = 'human';
@@ -419,21 +410,16 @@ EOF;
 
 //再投票の時、メッセージを表示
 function OutputReVoteList(){
-  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF, $cookie_vote_times;
+  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF, $COOKIE, $SOUND;
 
   if(! $ROOM->is_day()) return false; //昼以外は出力しない
 
   //再投票の回数を取得
-  $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
-			AND date = {$ROOM->date} AND type = 'RE_VOTE' ORDER BY message DESC");
-  if(mysql_num_rows($sql) == 0) return false;
-
-  //何回目の再投票なのか取得
-  $last_vote_times = (int)mysql_result($sql, 0, 0);
+  if(($last_vote_times = GetVoteTimes(true)) == 0) return false;
 
   //音を鳴らす
-  if($RQ_ARGS->play_sound && ! $ROOM->view_mode && $last_vote_times > $cookie_vote_times){
-    OutputSound('revote');
+  if($RQ_ARGS->play_sound && ! $ROOM->view_mode && $last_vote_times > $COOKIE->vote_times){
+    $SOUND->Output('revote');
   }
 
   //投票済みチェック
@@ -446,23 +432,6 @@ function OutputReVoteList(){
   }
 
   OutputVoteListDay($ROOM->date); //投票結果を出力
-}
-
-//音を鳴らす
-function OutputSound($type, $loop = false){
-  global $SOUND;
-
-  if($loop) $loop_tag = "\n".'<param name="loop" value="true">';
-
-echo <<< EOF
-<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0" width="0" height="0">
-<param name="movie" value="{$SOUND->type}">
-<param name="quality" value="high">{$loop_tag}
-<embed src="{$SOUND->type}" type="application/x-shockwave-flash" quality="high" width="0" height="0" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
-</embed>
-</object>
-
-EOF;
 }
 
 //会話ログ出力
@@ -823,11 +792,9 @@ function OutputDeadMan(){
     $type = $type_day;
   }
 
-  $sql = mysql_query("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
-  $count = mysql_num_rows($sql); //死亡者の人数
-  for($i=0; $i < $count; $i++){
-    $array = mysql_fetch_assoc($sql);
-    OutputDeadManType($array['message'], $array['type']); //死者のハンドルネームとタイプ
+  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
+  foreach($array as $this_array){
+    OutputDeadManType($this_array['message'], $this_array['type']);
   }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
@@ -835,11 +802,9 @@ function OutputDeadMan(){
   $set_date = $yesterday;
   $type = ($ROOM->is_day() ? $type_day : $type_night);
 
-  $sql = mysql_query("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
-  $count = mysql_num_rows($sql); //死亡者の人数
-  for($i=0 ; $i < $count ;$i++){
-    $array = mysql_fetch_assoc($sql);
-    OutputDeadManType($array['message'], $array['type']);
+  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
+  foreach($array as $this_array){
+    OutputDeadManType($this_array['message'], $this_array['type']);
   }
 }
 
@@ -969,19 +934,16 @@ function OutputVoteListDay($set_date){
   global $RQ_ARGS, $room_no, $ROOM, $SELF;
 
   //指定された日付の投票結果を取得
-  $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
-		      AND date = $set_date and type = 'VOTE_KILL'");
-  if(mysql_num_rows($sql) == 0) return false;
+  $query = "SELECT message FROM system_message WHERE room_no = $room_no " .
+    "AND date = $set_date and type = 'VOTE_KILL'";
+  $vote_message_list = FetchArray($query);
+  if(count($vote_message_list) == 0) return false; //投票総数
 
   $result_array = array(); //投票結果を格納する
   $this_vote_times = -1; //出力する投票回数を記録
-  $this_vote_count = mysql_num_rows($sql); //投票総数
   $table_count = 0; //表の個数
 
-  for($i = 0; $i < $this_vote_count; $i++){ //いったん配列に格納する
-    $vote_array = mysql_fetch_assoc($sql);
-    $vote_message = $vote_array['message'];
-
+  foreach($vote_message_list as $vote_message){ //いったん配列に格納する
     //タブ区切りのデータを分割する
     list($handle_name, $target_name, $voted_number,
 	 $vote_number, $vote_times) = ParseStrings($vote_message, 'VOTE');
@@ -999,8 +961,7 @@ function OutputVoteListDay($set_date){
       $table_count++;
     }
 
-    if((strpos($ROOM->game_option, 'open_vote') !== false || $SELF->is_dead() || $ROOM->log_mode) &&
-       ! $ROOM->view_mode)
+    if(($ROOM->is_option('open_vote') || $SELF->is_dead() || $ROOM->log_mode) && ! $ROOM->view_mode)
       $vote_number_str = '投票先 ' . $vote_number . ' 票 →';
     else
       $vote_number_str = '投票先→';
@@ -1014,18 +975,15 @@ function OutputVoteListDay($set_date){
   }
   array_push($result_array[$this_vote_times], '</table>'."\n");
 
-  if($RQ_ARGS->reverse_log == 'on'){ //逆順表示
-    //配列に格納されたデータを出力
+  //配列に格納されたデータを出力
+  if($RQ_ARGS->reverse_log){ //逆順表示
     for($i = 1; $i <= $table_count; $i++){
-      $this_vote_count = (int)count($result_array[$i]);
-      for($j = 0; $j < $this_vote_count; $j++) echo $result_array[$i][$j];
+      foreach($result_array[$i] as $this_data) echo $this_data;
     }
   }
   else{
-    //配列に格納されたデータを出力
     for($i = $table_count; $i > 0; $i--){
-      $this_vote_count = (int)count($result_array[$i]);
-      for($j = 0; $j < $this_vote_count; $j++) echo $result_array[$i][$j];
+      foreach($result_array[$i] as $this_data) echo $this_data;
     }
   }
 }
@@ -1039,16 +997,27 @@ function OutputAbilityAction(){
   if(! ($ROOM->is_day() && $ROOM->is_open_cast())) return false;
 
   $yesterday = $ROOM->date - 1;
-  $sql = mysql_query("SELECT message,type FROM system_message WHERE room_no = $room_no
-			AND date = $yesterday AND (type = 'MAGE_DO' OR type = 'WOLF_EAT'
-			OR type = 'JAMMER_MAD_DO' OR type = 'TRAP_MAD_DO' OR type = 'TRAP_MAD_NOT_DO'
-			OR type = 'GUARD_DO' OR type = 'REPORTER_DO' OR type = 'ASSASSIN_DO'
-			OR type = 'ASSASSIN_NOT_DO' OR type = 'MANIA_DO' OR type = 'CHILD_FOX_DO'
-			OR type = 'CUPID_DO')");
-  $header = '<strong>前日の夜、';
-  $footer = '</strong><br>'."\n";
+  $header = '<b>前日の夜、';
+  $footer = '</b><br>'."\n";
+  $action_list = array('WOLF_EAT', 'MAGE_DO', 'JAMMER_MAD_DO', 'CHILD_FOX_DO');
+  if($yesterday == 1){
+    array_push($action_list, 'MANIA_DO', 'CUPID_DO');
+  }
+  else{
+    array_push($action_list, 'GUARD_DO', 'REPORTER_DO', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
+	       'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+  }
 
-  while(($array = mysql_fetch_assoc($sql)) !== false){
+  $action = '';
+  foreach($action_list as $this_action){
+    if($action != '') $action .= ' OR ';
+    $action .= "type = '$this_action'";
+  }
+
+  $query = "SELECT message, type FROM system_message WHERE room_no = $room_no " .
+    "AND date = $yesterday AND ( $action )";
+  $message_list = FetchAssoc($query);
+  foreach($message_list as $array){
     $sentence = $array['message'];
     $type     = $array['type'];
 
@@ -1115,28 +1084,22 @@ function CheckVictory($check_draw = false){
     "AND live = 'live' AND user_no > 0 AND ";
 
   //狼の数を取得
-  $sql = mysql_query($query_count . "role LIKE '%wolf%'");
-  $wolf = (int)mysql_result($sql, 0, 0);
+  $wolf = FetchResult($query_count . "role LIKE '%wolf%'");
 
-  //狼・狐・出題者以外の数を取得
-  $sql = mysql_query($query_count .
-		     "!(role LIKE '%wolf%') AND !(role LIKE '%fox%') AND !(role LIKE 'quiz%')");
-  $human = (int)mysql_result($sql, 0, 0);
+  //狼・狐以外の数を取得
+  $human = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')");
 
   //狐の数を取得
-  $sql = mysql_query($query_count . "role LIKE '%fox%'");
-  $fox = (int)mysql_result($sql, 0, 0);
+  $fox = FetchResult($query_count . "role LIKE '%fox%'");
 
   //出題者の数を取得
-  $sql = mysql_query($query_count . "role LIKE 'quiz%'");
-  $quiz = (int)mysql_result($sql, 0, 0);
+  $quiz = FetchResult($query_count . "role LIKE 'quiz%'");
 
   //恋人の数を取得
-  $sql = mysql_query($query_count . "role LIKE '%lovers%'");
-  $lovers = (int)mysql_result($sql, 0, 0);
+  $lovers = FetchResult($query_count . "role LIKE '%lovers%'");
 
   $victory_role = ''; //勝利陣営
-  if($wolf == 0 && $human == 0 && $fox == 0){ //全滅
+  if($wolf == 0 && $human == $quiz && $fox == 0){ //全滅
     if($quiz > 0) $victory_role = 'quiz';
     else          $victory_role = 'vanish';
   }
@@ -1145,7 +1108,7 @@ function CheckVictory($check_draw = false){
     elseif($fox > 0) $victory_role = 'fox1';
     else             $victory_role = 'human';
   }
-  elseif($wolf >= $human + $quiz){ //村全滅
+  elseif($wolf >= $human){ //村全滅
     if($lovers > 1)  $victory_role = 'lovers';
     elseif($fox > 0) $victory_role = 'fox2';
     else             $victory_role = 'wolf';
@@ -1164,8 +1127,9 @@ function CheckVictory($check_draw = false){
 
 //生死変更処理
 function UpdateLive($uname, $revive = false){
-  global $room_no;
+  global $room_no, $ROOM;
 
+  if($ROOM->test_mode) return;
   $target_live = ($revive ? 'live' : 'dead');
   mysql_query("UPDATE user_entry SET live = '$target_live' WHERE room_no = $room_no
 		AND uname = '$uname' AND user_no > 0");
@@ -1174,8 +1138,9 @@ function UpdateLive($uname, $revive = false){
 
 //遺言を取得して保存する ($target : HN)
 function SaveLastWords($target){
-  global $room_no;
+  global $room_no, $ROOM;
 
+  if($ROOM->test_mode) return;
   $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = $room_no
 			AND handle_name = '$target' AND user_no > 0");
   $last_words = mysql_result($sql, 0, 0);
@@ -1189,25 +1154,24 @@ function SuddenDeath($uname, $medium, $type = NULL){
   global $MESSAGE, $room_no, $ROOM, $USERS;
 
   //生死を確認
-  $sql = mysql_query("SELECT live FROM user_entry WHERE room_no = $room_no
-			AND uname = '$uname' AND user_no > 0");
-  if(mysql_result($sql, 0, 0) != 'live') return false;
+  $query = "SELECT live FROM user_entry WHERE room_no = $room_no " .
+    "AND uname = '$uname' AND user_no > 0";
+  if(FetchResult($query) != 'live') return false;
 
-  $target_handle = $USERS->GetHandleName($uname);
+  $target = $USERS->ByUname($uname);
   UpdateLive($uname); //突然死実行
 
   if($type){ //ショック死は専用の処理を行う
-    InsertSystemTalk($target_handle . $MESSAGE->vote_sudden_death, ++$ROOM->system_time);
-    InsertSystemMessage($target_handle, 'SUDDEN_DEATH_' . $type);
-    SaveLastWords($target_handle);
+    InsertSystemTalk($target->handle_name . $MESSAGE->vote_sudden_death, ++$ROOM->system_time);
+    InsertSystemMessage($target->handle_name, 'SUDDEN_DEATH_' . $type);
+    SaveLastWords($target->handle_name);
   }
   else{
-    InsertSystemTalk($target_handle . $MESSAGE->sudden_death, ++$ROOM->system_time);
+    InsertSystemTalk($target->handle_name . $MESSAGE->sudden_death, ++$ROOM->system_time);
   }
 
   if($medium){ //巫女の判定結果(システムメッセージ)
-    $target_camp = DistinguishCamp($USERS->GetRole($uname));
-    InsertSystemMessage($target_handle . "\t" . $target_camp, 'MEDIUM_RESULT');
+    InsertSystemMessage($target->handle_name . "\t" . $target->DistinguishCamp(), 'MEDIUM_RESULT');
   }
   mysql_query('COMMIT'); //一応コミット
 }
@@ -1354,17 +1318,6 @@ function MakeShortRoleName($target_role){
   return $role_str;
 }
 
-//巫女の出現チェック
-function CheckMedium(){
-  global $USERS;
-
-  foreach($USERS->rows as $object){
-    $this_main_role = GetMainRole($object->role);
-    if($this_main_role == 'medium') return true;
-  }
-  return false;
-}
-
 //生きている狼のユーザ名の配列を取得する
 function GetLiveWolves(){
   global $room_no;
@@ -1387,6 +1340,10 @@ function InsertSystemTalk($sentence, $time, $location = '', $target_date = '', $
 function InsertSystemMessage($sentence, $type, $target_date = ''){
   global $room_no, $ROOM;
 
+  if($ROOM->test_mode){
+    echo "System Message: $type : $sentence <br>";
+    return;
+  }
   if($target_date == '') $target_date = $ROOM->date;
   mysql_query("INSERT INTO system_message(room_no, message, type, date)
 		VALUES($room_no, '$sentence', '$type', $target_date)");
@@ -1405,11 +1362,13 @@ function DeleteVote(){
 }
 
 //昼の投票回数を取得する
-function GetVoteTimes(){
+function GetVoteTimes($revote = false){
   global $room_no, $ROOM;
 
   $query = "SELECT message FROM system_message WHERE room_no = $room_no " .
-    "AND date = {$ROOM->date} AND type = 'VOTE_TIMES'";
+    "AND date = {$ROOM->date} AND type = ";
+  $query .= ($revote ?  "'RE_VOTE' ORDER BY message DESC" : "'VOTE_TIMES'");
+
   return (int)FetchResult($query);
 }
 
@@ -1418,17 +1377,16 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
   global $room_no, $ROOM, $SELF;
 
   $query = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} AND ";
-  if($not_situation != ''){
-    $sql = mysql_query("$query uname = '{$SELF->uname}' AND (situation = '$situation'
-			OR situation = '$not_situation')");
+  if($situation == 'WOLF_EAT'){
+    $query .= "situation = '$situation'";
   }
-  elseif($situation == 'WOLF_EAT'){
-    $sql = mysql_query("$query situation = '$situation'");
+  elseif($not_situation != ''){
+    $query .= "uname = '{$SELF->uname}' AND (situation = '$situation' OR situation = '$not_situation')";
   }
   else{
-    $sql = mysql_query("$query uname = '{$SELF->uname}' AND situation = '$situation'");
+    $query .= "uname = '{$SELF->uname}' AND situation = '$situation'";
   }
-  return (mysql_result($sql, 0, 0) != 0);
+  return (FetchResult($query) > 0);
 }
 
 //スペースを復元する

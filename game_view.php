@@ -9,7 +9,7 @@ $url = 'game_view.php?room_no=' . $room_no;
 
 $dbHandle = ConnectDatabase(); // DB 接続
 
-$ROOM = new RoomDataSet($room_no); //村情報をロード
+$ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
@@ -21,8 +21,8 @@ case 'night': //夜
   $time_message = '　夜明けまで ';
   break;
 }
-$USERS = new UserDataSet($room_no); //ユーザ情報をロード
-$SELF = new User();
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$SELF  = new User();
 
 OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
 

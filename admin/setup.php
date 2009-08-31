@@ -50,7 +50,7 @@ function CheckTable(){
   $sql   = mysql_list_tables($DB_CONF->name);
   $count = mysql_num_rows($sql);
   $table = array();
-  for($i=0; $i < $count; $i++) array_push($table, mysql_tablename($sql, $i));
+  for($i = 0; $i < $count; $i++) array_push($table, mysql_tablename($sql, $i));
 
   //チェックしてテーブルが存在しなければ作成する
   if(! in_array('room', $table)){
@@ -63,19 +63,19 @@ function CheckTable(){
     // establisher_ipフィールドがなければ追加する
     $sql = mysql_query("SHOW COLUMNS FROM room");
     $found = false;
-    if (mysql_num_rows($sql) > 0) {
-      while ($row = mysql_fetch_assoc($sql)) {
-	if ($row['Field'] == 'establisher_ip') {
+    if(mysql_num_rows($sql) > 0){
+      while(($row = mysql_fetch_assoc($sql)) !== false){
+	if($row['Field'] == 'establisher_ip'){
 	  $found = true;
 	  break;
 	}
       }
     }
-    if (!$found) {
-      if (mysql_query("ALTER TABLE room ADD establisher_ip text")) {
+    if(! $found){
+      if(mysql_query("ALTER TABLE room ADD establisher_ip text")){
 	echo 'テーブル(room)にフィールド(establisher_ip)を追加しました<br>'."\n";
       }
-      else {
+      else{
 	echo 'テーブル(room)にフィールド(establisher_ip)を追加できませんでした<br>'."\n";
       }
     }
@@ -122,7 +122,7 @@ function CheckTable(){
 
     //ディレクトリ内のファイル一覧を取得
     if($handle = opendir($class->path)){
-      while (($file = readdir($handle)) !== false){
+      while(($file = readdir($handle)) !== false){
 	if($file != '.' && $file != '..'){
 	  //初期データの読み込み
 	  $name   = $class->name[  $icon_no - 1];
