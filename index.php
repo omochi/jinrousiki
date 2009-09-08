@@ -41,6 +41,7 @@
       <li><a href="src/">開発版ソースダウンロード</a></li>
       <li><a href="src/diff.txt">開発履歴</a></li>
       <li><a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a></li>
+      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50">開発者用スレッド</a></li>
     </ul>
 
     <div class="menu">交流用サイト</div>
@@ -93,6 +94,16 @@
 -->
 ]
 [フォント素材　<a href="http://azukifont.mints.ne.jp/" target="_blank">あずきフォント</a>]<br>
+[アイコン素材　
+ <a href="http://natuhotaru.yukihotaru.com/" target="_blank">夏蛍</a>
+ <a href="http://jigizagi.s57.xrea.com/" target="_blank">ジギザギのさいはて</a>
+]<br>
+<!-- チルノ鯖で使用
+[アイコン素材　
+ <a href="http://natuhotaru.yukihotaru.com/" target="_blank">夏蛍</a>
+ <a href="http://jigizagi.s57.xrea.com/" target="_blank">ジギザギのさいはて</a>
+]<br>
+-->
 <!-- さとり鯖用
 [アイコン素材　
  <a href="http://natuhotaru.yukihotaru.com/" target="_blank">夏蛍</a>

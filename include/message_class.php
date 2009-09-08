@@ -87,7 +87,8 @@ class Message{
   var $draw_announce = '再投票となると引き分けになります'; //引き分け告知
 
   //OutputTalkLog() : 会話、システムメッセージ出力
-  var $objection = 'が「異議」を申し立てました'; //「異議」あり
+  // var $objection = 'が「異議」を申し立てました'; //「異議」あり
+  var $objection = '「た、頼む！殺さないでくれ！」'; //「異議」あり
   //var $game_start = 'はゲーム開始に投票しました' //ゲーム開始投票 //現在は不使用
   var $kick_do           = 'に KICK 投票しました'; //KICK 投票
   var $vote_do           = 'に処刑投票しました'; //処刑投票

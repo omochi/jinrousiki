@@ -14,17 +14,17 @@ class DocumentBuilder{
     global $ROLES, $SELF;
 
     $result = new DocumentBuilder();
-    if($SELF->is_role('blinder')){
+    if($SELF->IsRole('blinder')){
       $wrapper = $ROLES->Instantiate('blinder');
       #$wrapper->Wrap($result);
       $result->Extend('blinder', $wrapper);
     }
-    if($SELF->is_role('earplug')){
+    if($SELF->IsRole('earplug')){
       $wrapper = $ROLES->Instantiate('earplug');
       #$wrapper->Wrap($result);
       $result->Extend('earplug', $wrapper);
     }
-    if($SELF->is_role('speaker')){
+    if($SELF->IsRole('speaker')){
       $wrapper = $ROLES->Instantiate('speaker');
       #$wrapper->Wrap($result);
       $result->Extend('speaker', $wrapper);
@@ -73,8 +73,7 @@ WORDS;
 
     $talk_handle_name = $user->handle_name;
     if($RQ_ARGS->add_role){ //役職表示モード対応
-      $talk_handle_name .= '<span class="add-role"> [' .
-	MakeShortRoleName($USERS->GetRole($talk->uname)) . '] (' . $talk->uname . ')</span>';
+      $talk_handle_name .= $user->MakeShortRoleName();
     }
 
     # if ($this->Deligate('AddTalk', $user, $talk)){ return; }

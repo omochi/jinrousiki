@@ -10,6 +10,7 @@ $url = 'game_view.php?room_no=' . $room_no;
 $dbHandle = ConnectDatabase(); // DB 接続
 
 $ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
+if((int)$ROOM->id < 1) OutputActionResult('エラー', '無効な村番号です');
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
@@ -24,7 +25,7 @@ case 'night': //夜
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  = new User();
 
-OutputHTMLHeader('汝は人狼なりや？[観戦]', 'game_view'); //HTMLヘッダ
+OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
 if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //自動更新
   echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
@@ -34,9 +35,9 @@ if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //自動更新
 echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
 
 //経過時間を取得
-if($ROOM->is_real_time()){ //リアルタイム制
+if($ROOM->IsRealTime()){ //リアルタイム制
   list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
-  if($ROOM->is_playing()){
+  if($ROOM->IsPlaying()){
     $on_load = ' onLoad="output_realtime();"';
     OutputRealTimer($start_time, $end_time);
   }
@@ -75,25 +76,25 @@ echo <<<EOF
 
 EOF;
 
-if($ROOM->is_beforegame()){ //ゲーム開始前なら登録画面のリンクを表示
+if($ROOM->IsBeforeGame()){ //ゲーム開始前なら登録画面のリンクを表示
   echo '<td class="login-link">';
   echo '<a href="user_manager.php?room_no=' . $room_no . '"><span>[住民登録]</span></a>';
   echo '</td>'."\n";
 }
 echo '</tr></table>'."\n";
 
-if(! $ROOM->is_finished()) OutputGameOption(); //ゲームオプションを表示
+if(! $ROOM->IsFinished()) OutputGameOption(); //ゲームオプションを表示
 
 echo '<table class="time-table"><tr>'."\n";
 OutputTimeTable(); //経過日数と生存人数
 
-if($ROOM->is_playing()){
-  if($ROOM->is_real_time()){ //リアルタイム制
+if($ROOM->IsPlaying()){
+  if($ROOM->IsRealTime()){ //リアルタイム制
     echo '<td class="real-time"><form name="realtime_form">'."\n";
     echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
     echo '</form></td>'."\n";
   }
-  elseif($left_time){ //会話で時間経過制
+  elseif($left_talk_time){ //会話で時間経過制
     echo '<td>' . $time_message . $left_talk_time . '</td>'."\n";
   }
 
@@ -105,7 +106,7 @@ if($ROOM->is_playing()){
 echo '</tr></table>'."\n";
 
 OutputPlayerList(); //プレイヤーリスト
-if($ROOM->is_finished()) OutputVictory(); //勝敗結果
+if($ROOM->IsFinished()) OutputVictory(); //勝敗結果
 OutputRevoteList(); //再投票メッセージ
 OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言

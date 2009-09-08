@@ -212,7 +212,8 @@ function CreateRoom($room_name, $room_comment, $max_user){
 			'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time')");
 
   //身代わり君を入村させる
-  if(strpos($game_option, 'dummy_boy') !== false){
+  if(strpos($game_option, 'dummy_boy') !== false &&
+     FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
     $crypt_dummy_boy_password = CryptPassword($dummy_boy_password);
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no,
 			profile, sex, password, live, last_words)

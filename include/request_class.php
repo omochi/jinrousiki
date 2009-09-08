@@ -38,6 +38,24 @@ class RequestBase{
   }
 }
 
+class RequestLogin extends RequestBase{
+  function RequestLogin(){
+    $this->GetItems('intval', 'get.room_no');
+    $this->GetItems('EscapeStrings', 'post.uname', 'post.password');
+    $this->GetItems(NULL, 'post.login_type');
+  }
+}
+
+class RequestUserManager extends RequestBase{
+  function RequestUserManager(){
+    $this->GetItems('intval', 'get.room_no', 'post.icon_no');
+    $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
+    $this->GetItems('EscapeStrings', 'post.password');
+    $this->GetItems(NULL, 'post.command', 'post.profile', 'post.sex', 'post.role');
+    $this->profile = EscapeStrings($this->profile, false);
+  }
+}
+
 class RequestGameView extends RequestBase{
   function RequestGameView(){
     $this->RequestBaseGame();
@@ -53,8 +71,15 @@ class RequestGamePlay extends RequestBase{
     EscapeStrings($this->say, false);
   }
 
-  function is_last_words(){
+  function IsLastWords(){
     return ($this->font_type == 'last_words');
+  }
+}
+
+class RequestGameLog extends RequestBase{
+  function RequestGameLog(){
+    $this->GetItems('intval', 'get.room_no', 'get.date');
+    $this->GetItems(NULL, 'get.day_night');
   }
 }
 
@@ -73,16 +98,8 @@ class RequestGameVote extends RequestBase{
     $this->GetItems('intval', 'post.vote_times');
     $this->GetItems("$this->CheckOn", 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation', 'post.target_handle_name');
-    EscapeStrings($this->target_handle_name);
-    //テスト用引数のロード
-    AttachTestParameters($this);
-  }
-}
-
-class RequestGameLog extends RequestBase{
-  function RequestGameLog(){
-    $this->GetItems('intval', 'get.room_no', 'get.date');
-    $this->GetItems(NULL, 'get.day_night');
+    $this->GetItems('EscapeStrings', 'post.target_handle_name');
+    AttachTestParameters($this); //テスト用引数のロード
   }
 }
 

@@ -19,11 +19,10 @@ $uname = CheckSession($session_id); //セッション ID をチェック
 $ROOM = new RoomDataSet($RQ_ARGS); //部屋情報を取得
 $ROOM->log_mode = true;
 
-//自分のハンドルネーム、役割、生存を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  = $USERS->ByUname($uname);
 
-if(! ($SELF->is_dead() || $ROOM->is_aftergame())){ //死者かゲーム終了後だけ
+if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //死者かゲーム終了後だけ
   OutputActionResult('ユーザ認証エラー',
 		     'ログ閲覧許可エラー<br>' .
 		     '<a href="index.php" target="_top">トップページ</a>' .
@@ -34,11 +33,11 @@ $ROOM->day_night = $RQ_ARGS->day_night;
 
 OutputGamePageHeader(); //HTMLヘッダ
 echo '<table><tr><td width="1000" align="right">ログ閲覧 ' . $ROOM->date . ' 日目 (' .
-  ($ROOM->is_day() ? '昼' : '夜') . ')</td></tr></table>'."\n";
+  ($ROOM->IsDay() ? '昼' : '夜') . ')</td></tr></table>'."\n";
 OutputTalkLog();       //会話ログ
 OutputAbilityAction(); //能力発揮
 OutputDeadMan();       //死亡者
-if($ROOM->is_night()) OutputVoteList(); //投票結果
+if($ROOM->IsNight()) OutputVoteList(); //投票結果
 OutputHTMLFooter();
 DisconnectDatabase($dbHandle); //DB 接続解除
 ?>

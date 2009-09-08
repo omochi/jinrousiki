@@ -1,38 +1,43 @@
 <?php
 require_once(dirname(__FILE__) . '/include/functions.php');
+require_once(dirname(__FILE__) . '/include/request_class.php');
 
 EncodePostData();//ポストされた文字列をエンコードする
+$RQ_ARGS = new RequestUserManager();
 
-if($_GET['room_no'] == ''){
+if($RQ_ARGS->room_no < 1){
   $sentence = 'エラー：村の番号が正常ではありません。<br>'."\n".'<a href="index.php">←戻る</a>';
   OutputActionResult('村人登録 [村番号エラー]', $sentence);
 }
 
 $dbHandle = ConnectDatabase(); //DB 接続
 
-if($_POST['command'] == 'entry'){
-  EntryUser((int)$_GET['room_no'], $_POST['uname'], $_POST['handle_name'], (int)$_POST['icon_no'],
-	    $_POST['profile'], $_POST['password'], $_POST['sex'], $_POST['role']);
+if($RQ_ARGS->command == 'entry'){
+  EntryUser($RQ_ARGS);
 }
 else{
-  OutputEntryUserPage((int)$_GET['room_no']);
+  OutputEntryUserPage($RQ_ARGS->room_no);
 }
 
 DisconnectDatabase($dbHandle); //DB 接続解除
 
-// 関数 //
+//-- 関数 --//
 //ユーザを登録する
-function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password, $sex, $role){
+function EntryUser($request){
   global $GAME_CONF, $MESSAGE;
 
-  //トリップ＆エスケープ処理
-  ConvertTrip(&$uname);
-  ConvertTrip(&$handle_name);
-  EscapeStrings(&$profile, false);
-  EscapeStrings(&$password);
+  //引数を取得
+  $room_no     = $request->room_no;
+  $uname       = $request->uname;
+  $handle_name = $request->handle_name;
+  $icon_no     = $request->icon_no;
+  $profile     = $request->profile;
+  $password    = $request->password;
+  $sex         = $request->sex;
+  $role        = $request->role;
 
   //記入漏れチェック
-  if($uname == '' || $handle_name == '' || $icon_no == '' || $profile == '' ||
+  if($uname == '' || $handle_name == '' || $icon_no < 1 || $profile == '' ||
      $password == '' || $sex == '' || $role == ''){
     OutputActionResult('村人登録 [入力エラー]',
 		       '記入漏れがあります。<br>'."\n" .
@@ -49,19 +54,17 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   }
 
   //項目被りチェック
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no";
+  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND";
 
   //ユーザ名、村人名
-  $sql = mysql_query("$query AND (uname = '$uname' OR handle_name = '$handle_name') AND user_no > 0");
-  if(mysql_result($sql, 0, 0) != 0){
+  if(FetchResult("$query (uname = '$uname' OR handle_name = '$handle_name') AND user_no > 0") > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
 		       '別の名前にしてください。');
   }
 
   //キックされた人と同じユーザ名
-  $sql = mysql_query("$query AND uname = '$uname' AND user_no = -1");
-  if(mysql_result($sql, 0, 0) != 0){
+  if(FetchResult("$query uname = '$uname' AND user_no = -1") > 0){
     OutputActionResult('村人登録 [キックされたユーザ]',
 		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
 		       '別の名前にしてください。');
@@ -69,11 +72,9 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-  if($GAME_CONF->entry_one_ip_address){
-    $sql = mysql_query("$query AND ip_address = '$ip_address' AND user_no > 0");
-    if(mysql_result($sql, 0, 0) != 0){
-      OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
-    }
+  if($GAME_CONF->entry_one_ip_address &&
+     FetchResult("$query ip_address = '$ip_address' AND user_no > 0") > 0){
+    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
   }
 
   //テーブルをロック
@@ -91,14 +92,12 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   setcookie('objection',  '', $cookie_time);
 
   //DBからユーザNoを降順に取得
-  $sql = mysql_query("SELECT user_no FROM user_entry WHERE room_no = $room_no
-			AND user_no > 0 ORDER BY user_no DESC");
-  $array = mysql_fetch_assoc($sql);
-  $user_no = (int)$array['user_no'] + 1; //最も大きい No + 1
+  $query_no = "SELECT user_no FROM user_entry WHERE room_no = $room_no " .
+    "AND user_no > 0 ORDER BY user_no DESC";
+  $user_no = (int)FetchResult($query_no) + 1; //最も大きい No + 1
 
   //DBから最大人数を取得
-  $sql = mysql_query("SELECT day_night, status, max_user FROM room WHERE room_no = $room_no");
-  $array  = mysql_fetch_assoc($sql);
+  $array = FetchNameArray("SELECT day_night, status, max_user FROM room WHERE room_no = $room_no");
   $day_night = $array['day_night'];
   $status    = $array['status'];
   $max_user  = $array['max_user'];
@@ -110,16 +109,8 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   }
 
   //セッション開始
-  session_start();
-  $session_id = '';
-
-  do{ //DB に登録されているセッション ID と被らないようにする
-    session_regenerate_id();
-    $session_id = session_id();
-    $sql = mysql_query("SELECT COUNT(room_no) FROM user_entry, admin_manage
-			WHERE user_entry.session_id = '$session_id'
-			OR admin_manage.session_id = '$session_id'");
-  }while(mysql_result($sql, 0, 0) != 0);
+  // session_start();
+  $session_id = GetUniqSessionID();
 
   //DB にユーザデータ登録
   $crypt_password = CryptPassword($password);
@@ -166,7 +157,7 @@ function EntryUser($room_no, $uname, $handle_name, $icon_no, $profile, $password
   テストてすと＃テストてすと#   => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
   テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
 */
-function ConvertTrip(&$str){
+function ConvertTrip($str){
   global $ENCODE, $GAME_CONF;
 
   if($GAME_CONF->trip){ //まだ実装されていません
@@ -205,32 +196,24 @@ function ConvertTrip(&$str){
 		       '"#" 又は "＃" の文字も使用不可です。');
   }
 
-  EscapeStrings(&$str); //特殊文字のエスケープ
+  return EscapeStrings($str); //特殊文字のエスケープ
 }
 
 //ユーザ登録画面表示
 function OutputEntryUserPage($room_no){
-  global $SERVER_CONF, $ICON_CONF;
+  global $SERVER_CONF, $GAME_CONF, $ICON_CONF;
 
-  $sql = mysql_query("SELECT room_name, room_comment, status, game_option, option_role
-			FROM room WHERE room_no = $room_no");
-  if(mysql_num_rows($sql) == 0){
+  $query = "SELECT room_name, room_comment, status, game_option, option_role " .
+    "FROM room WHERE room_no = $room_no";
+  if(($array = FetchNameArray($query)) === false){
     OutputActionResult('村人登録 [村番号エラー]', "No.$room_no 番地の村は存在しません。");
   }
+  extract($array);
 
-  $array = mysql_fetch_assoc($sql);
-  $room_name    = $array['room_name'];
-  $room_comment = $array['room_comment'];
-  $status       = $array['status'];
-  $game_option  = $array['game_option'];
-  $option_role  = $array['option_role'];
   if($status != 'waiting'){
     OutputActionResult('村人登録 [入村不可]', '村が既に満員か、ゲームが開始されています。');
   }
-
-  //ユーザアイコン一覧
-  $sql_icon = mysql_query("SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color
-				FROM user_icon WHERE icon_no > 0 ORDER BY icon_no");
+  $game_option_list = explode(' ', $game_option);
   $trip_str = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
@@ -280,7 +263,7 @@ function OutputEntryUserPage($room_no){
 
 HEADER;
 
-  if(strpos($game_option, 'wish_role') !== false){
+  if(in_array('wish_role', $game_option_list)){
     echo <<<IMAGE
 <tr>
 <td class="role"><img src="img/entry_user/role.gif"></td>
@@ -288,32 +271,29 @@ HEADER;
 
 IMAGE;
 
+    $option_role_list = explode(' ', $option_role);
     $wish_role_list = array('none');
-    if(strpos($option_role, 'duel') !== false){
+    if(in_array('duel', $option_role_list)){
       array_push($wish_role_list, 'wolf', 'trap_mad', 'assassin');
     }
     else{
-      if(strpos($option_role, 'full_mania') === false) array_push($wish_role_list, 'human');
-      array_push($wish_role_list, 'wolf');
-      if(strpos($game_option, 'quiz') !== false){
+      if(in_array('full_mania', $option_role_list)) $wish_role_list[] = 'human';
+      $wish_role_list[] = 'wolf';
+      if(in_array('quiz', $game_option_list)){
 	array_push($wish_role_list, 'mad', 'common', 'fox');
       }
       else{
 	array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox');
       }
     }
-    if(strpos($option_role, 'poison')      !== false) array_push($wish_role_list, 'poison');
-    if(strpos($option_role, 'cupid')       !== false) array_push($wish_role_list, 'cupid');
-    if(strpos($option_role, 'boss_wolf')   !== false) array_push($wish_role_list, 'boss_wolf');
-    if(strpos($option_role, 'poison_wolf') !== false){
-      array_push($wish_role_list, 'poison_wolf');
-      array_push($wish_role_list, 'pharmacist');
+    if(in_array('poison', $option_role_list)) $wish_role_list[] = 'poison';
+    if(in_array('cupid', $option_role_list)) $wish_role_list[] = 'cupid';
+    if(in_array('boss_wolf', $option_role_list)) $wish_role_list[] = 'boss_wolf';
+    if(in_array('poison_wolf', $option_role_list)){
+      array_push($wish_role_list, 'poison_wolf', 'pharmacist');
     }
-    if(strpos($option_role, 'mania')       !== false) array_push($wish_role_list, 'mania');
-    if(strpos($option_role, 'medium')      !== false){
-      array_push($wish_role_list, 'medium');
-      array_push($wish_role_list, 'fanatic_mad');
-    }
+    if(in_array('mania', $option_role_list)) $wish_role_list[] = 'mania';
+    if(in_array('medium', $option_role_list)) array_push($wish_role_list, 'medium', 'fanatic_mad');
 
     $count = 0;
     foreach($wish_role_list as $this_role){
@@ -349,14 +329,11 @@ TAG;
 BODY;
 
   //アイコンの出力
+  $sql_icon = mysql_query("SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color
+				FROM user_icon WHERE icon_no > 0 ORDER BY icon_no");
   $count = 0;
   while(($array = mysql_fetch_assoc($sql_icon)) !== false){
-    $icon_no       = $array['icon_no'];
-    $icon_name     = $array['icon_name'];
-    $icon_filename = $array['icon_filename'];
-    $icon_width    = $array['icon_width'];
-    $icon_height   = $array['icon_height'];
-    $color         = $array['color'];
+    extract($array);
     $icon_location = $ICON_CONF->path . '/' . $icon_filename;
 
     echo <<<ICON

@@ -169,7 +169,7 @@ function OutputOldLog(){
   $ROOM->log_mode = true;
   $last_date = $ROOM->date;
 
-  if(! $ROOM->is_finished() || ! $ROOM->is_aftergame()){
+  if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
 
@@ -288,13 +288,13 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   $builder = DocumentBuilder::Generate();
   $builder->BeginTalk("old-log-talk {$table_class}");
   while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
-    if(strpos($talk->location, 'day') !== false && ! $ROOM->is_day()){
+    if(strpos($talk->location, 'day') !== false && ! $ROOM->IsDay()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $ROOM->day_night = 'day';
       $builder->BeginTalk('old-log-talk day');
     }
-    elseif(strpos($talk->location, 'night') !== false && ! $ROOM->is_night()){
+    elseif(strpos($talk->location, 'night') !== false && ! $ROOM->IsNight()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $ROOM->day_night = 'night';
@@ -305,7 +305,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   $builder->EndTalk();
 
   if($flag_border_game && $is_reverse){
-    if($set_date == $last_date && $ROOM->is_day()){
+    if($set_date == $last_date && $ROOM->IsDay()){
       OutputVoteList(); //突然死で勝敗が決定したケース
     }
     $ROOM->date = $set_date + 1;

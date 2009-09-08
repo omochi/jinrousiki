@@ -27,22 +27,22 @@ $ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  = $USERS->ByUname($uname); //自分の情報をロード
 
-if($ROOM->is_finished()){ //ゲームは終了しました
+if($ROOM->IsFinished()){ //ゲームは終了しました
   OutputActionResult('投票エラー',
 		     '<div align="center">' .
 		     '<a name="#game_top"></a>ゲームは終了しました<br>'."\n" .
 		     $back_url . '</div>');
 }
 
-if($SELF->is_dead()){ //死んでます
+if(! $SELF->IsLive()){ //生存者以外は無効
   OutputActionResult('投票エラー',
 		     '<div align="center">' .
-		     '<a name="#game_top"></a>死者は投票できません<br>'."\n" .
+		     '<a name="#game_top"></a>生存者以外は投票できません<br>'."\n" .
 		     $back_url . '</div>');
 }
 
 if($RQ_ARGS->vote){ //投票処理
-  if($ROOM->is_beforegame()){ //ゲーム開始 or Kick 投票処理
+  if($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票処理
     if($RQ_ARGS->situation == 'GAMESTART'){
       VoteGameStart();
     }
@@ -63,10 +63,10 @@ if($RQ_ARGS->vote){ //投票処理
 		       '<a name="#game_top"></a>投票先を指定してください<br>'."\n" .
 		       $back_url . '</div>');
   }
-  elseif($ROOM->is_day()){ //昼の処刑投票処理
+  elseif($ROOM->IsDay()){ //昼の処刑投票処理
     VoteDay();
   }
-  elseif($ROOM->is_night()){ //夜の投票処理
+  elseif($ROOM->IsNight()){ //夜の投票処理
     VoteNight();
   }
   else{ //ここに来たらロジックエラー
@@ -76,13 +76,13 @@ if($RQ_ARGS->vote){ //投票処理
 		       $back_url . '</div>');
   }
 }
-elseif($ROOM->is_beforegame()){ //ゲーム開始 or Kick 投票ページ出力
+elseif($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票ページ出力
   OutputVoteBeforeGame();
 }
-elseif($ROOM->is_day()){ //昼の処刑投票ページ出力
+elseif($ROOM->IsDay()){ //昼の処刑投票ページ出力
   OutputVoteDay();
 }
-elseif($ROOM->is_night()){ //夜の投票ページ出力
+elseif($ROOM->IsNight()){ //夜の投票ページ出力
   OutputVoteNight();
 }
 else{ //既に投票されております //ここに来たらロジックエラーじゃないかな？
@@ -119,7 +119,7 @@ function VoteGameStart(){
   global $room_no, $ROOM, $SELF;
 
   CheckSituation('GAMESTART');
-  if($SELF->is_dummy_boy() && ! $ROOM->is_quiz()){
+  if($SELF->IsDummyBoy() && ! $ROOM->IsQuiz()){
     OutputVoteResult('ゲームスタート：身代わり君は投票不要です');
   }
 
@@ -154,11 +154,12 @@ function AggregateVoteGameStart(){
   $vote_count = FetchResult($query);
 
   //身代わり君使用なら身代わり君の分を加算
-  if($ROOM->is_dummy_boy() && ! $ROOM->is_quiz()) $vote_count++;
+  if($ROOM->IsDummyBoy() && ! $ROOM->IsQuiz()) $vote_count++;
 
   //ユーザ総数を取得
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0";
-  $user_count = FetchResult($query);
+  // $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0";
+  // $user_count = FetchResult($query);
+  $user_count = $USERS->GetUserCount();
 
   //規定人数に足りないか、全員投票していなければ処理終了
   if($vote_count < min(array_keys($GAME_CONF->role_list)) || $vote_count != $user_count) return false;
@@ -168,22 +169,22 @@ function AggregateVoteGameStart(){
   $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = $room_no");
 
   //配役決定用変数をセット
-  $uname_list        = $USERS->names; //ユーザ名 => user_no の配列
+  $uname_list        = $USERS->GetLivingUsers(); //ユーザ名の配列
   $role_list         = GetRoleList($user_count, $option_role); //役職リストを取得
   $fix_uname_list    = array(); //役割の決定したユーザ名を格納する
   $fix_role_list     = array(); //ユーザ名に対応する役割
   $remain_uname_list = array(); //希望の役割になれなかったユーザ名を一時的に格納
 
   //フラグセット
-  $gerd  = $ROOM->is_option('gerd');
-  $chaos = $ROOM->is_option_group('chaos'); //chaosfull も含む
-  $quiz  = $ROOM->is_quiz();
+  $gerd  = $ROOM->IsOption('gerd');
+  $chaos = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
+  $quiz  = $ROOM->IsQuiz();
 
   //エラーメッセージ
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
 
-  if($ROOM->is_dummy_boy()){ //身代わり君の役職を決定
+  if($ROOM->IsDummyBoy()){ //身代わり君の役職を決定
     #$gerd = true; //デバッグ用
     if($gerd || $quiz){ //身代わり君の役職固定オプションをチェック
       if($gerd)     $fit_role = 'human'; //ゲルト君
@@ -214,15 +215,14 @@ function AggregateVoteGameStart(){
       OutputVoteResult($error_header . $sentence . $error_footer, true, true);
     }
     array_push($fix_uname_list, 'dummy_boy'); //決定済みリストに身代わり君を追加
-    unset($uname_list['dummy_boy']); //身代わり君を削除
+    unset($uname_list[array_search('dummy_boy', $uname_list)]); //身代わり君を削除
   }
 
   //ユーザリストをランダムに取得
-  $uname_list = array_keys($uname_list);
   shuffle($uname_list);
 
   //希望役職を参照して一次配役を行う
-  if($ROOM->is_option('wish_role') && ! $chaos){ //役割希望制の場合 (闇鍋は希望を無視)
+  if($ROOM->IsOption('wish_role') && ! $chaos){ //役割希望制の場合 (闇鍋は希望を無視)
     foreach($uname_list as $this_uname){
       $this_role = $USERS->GetRole($this_uname); //希望役職を取得
       $role_key  = array_search($this_role, $role_list); //希望役職の存在チェック
@@ -341,8 +341,7 @@ function AggregateVoteGameStart(){
     $sub_role_list = array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience');
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
-      $rand_key = array_rand($sub_role_list);
-      $this_role = $sub_role_list[$rand_key];
+      $this_role = GetRandom($sub_role_list);
       $fix_role_list[$i] .= ' ' . $this_role;
       if($this_role == 'impatience'){ //短気は一人だけ
 	$sub_role_list = array_diff($sub_role_list, array('impatience'));
@@ -385,10 +384,10 @@ function AggregateVoteGameStart(){
   //役割をDBに更新
   $role_count_list = array();
   for($i = 0; $i < $user_count; $i++){
-    $entry_uname = $fix_uname_list[$i];
-    $entry_role  = $fix_role_list[$i];
-    UpdateRole($entry_uname, $entry_role);
-    $this_role_list = explode(' ', $entry_role);
+    $this_user = $USERS->ByUname($fix_uname_list[$i]);
+    $this_role = $fix_role_list[$i];
+    $this_user->ChangeRole($this_role);
+    $this_role_list = explode(' ', $this_role);
     foreach($this_role_list as $this_role) $role_count_list[$this_role]++;
   }
 
@@ -403,7 +402,7 @@ function AggregateVoteGameStart(){
   InsertSystemTalk($sentence, $ROOM->system_time, 'night system', 1);  //役割リスト通知
   InsertSystemMessage('1', 'VOTE_TIMES', 1); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   UpdateTime(); //最終書き込み時刻を更新
-  if($ROOM->is_option('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
+  if($ROOM->IsOption('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
   mysql_query('COMMIT'); //一応コミット
 }
 
@@ -415,7 +414,7 @@ function VoteKick($target){
   CheckSituation('KICK_DO');
   if($target == '') OutputVoteResult('Kick：投票先を指定してください');
   if($target == '身代わり君') OutputVoteResult('Kick：身代わり君には投票できません');
-  if(($ROOM->is_quiz() || $ROOM->is_option('gm_login')) && $target == 'GM'){
+  if(($ROOM->IsQuiz() || $ROOM->IsOption('gm_login')) && $target == 'GM'){
     OutputVoteResult('Kick：GM には投票できません'); //仮想 GM 対応
   }
 
@@ -477,7 +476,7 @@ function AggregateVoteKick($target){
   $vote_count = mysql_result($sql, 0, 0); //投票総数を取得
 
   //規定数以上の投票があったかキッカーが身代わり君の場合に処理
-  if($vote_count < $GAME_CONF->kick && ! $SELF->is_dummy_boy()) return $vote_count;
+  if($vote_count < $GAME_CONF->kick && ! $SELF->IsDummyBoy()) return $vote_count;
 
   //ユーザ総数を取得
   $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0");
@@ -520,34 +519,32 @@ function VoteDay(){
     "AND uname = '{$SELF->uname}' AND situation = 'VOTE_KILL' AND vote_times = {$RQ_ARGS->vote_times}";
   if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
 
-  $target_uname = $USERS->NumberToUname($RQ_ARGS->target_no); //投票先のユーザ名を取得
-  if($target_uname == '') OutputVoteResult('処刑：投票先が指定されていません');
-  if($target_uname == $SELF->uname) OutputVoteResult('処刑：自分には投票できません');
-
-  $target_user = $USERS->ByUname($target_uname); //投票先のユーザ情報を取得
-  if($target_user->is_dead()) OutputVoteResult('処刑：死者には投票できません');
+  $target = $USERS->ByID($RQ_ARGS->target_no); //投票先のユーザ情報を取得
+  if($target->uname == '') OutputVoteResult('処刑：投票先が指定されていません');
+  if($target->IsSelf()) OutputVoteResult('処刑：自分には投票できません');
+  if(! $target->IsLive()) OutputVoteResult('処刑：生存者以外には投票できません');
 
   LockTable(); //テーブルを排他的ロック
 
   //-- 投票処理 --//
   //役職に応じて票数を決定
   $vote_number = 1;
-  if($SELF->is_role('authority')){
+  if($SELF->IsRole('authority')){
     $vote_number++; //権力者
   }
-  elseif($SELF->is_role('watcher', 'panelist')){
+  elseif($SELF->IsRole('watcher', 'panelist')){
     $vote_number = 0; //傍観者・解答者
   }
-  elseif($SELF->is_role('random_voter')){
+  elseif($SELF->IsRole('random_voter')){
     $vote_number = mt_rand(0, 2); //気分屋
   }
 
   //投票＆システムメッセージ
   $sql = mysql_query("INSERT INTO vote(room_no, date, uname, target_uname, vote_number,
 			vote_times, situation)
-			VALUES($room_no, {$ROOM->date}, '{$SELF->uname}', '$target_uname', $vote_number,
+			VALUES($room_no, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', $vote_number,
 			{$RQ_ARGS->vote_times}, 'VOTE_KILL')");
-  $sentence = "VOTE_DO\t" . $target_user->handle_name;
+  $sentence = "VOTE_DO\t" . $target->handle_name;
   InsertSystemTalk($sentence, $ROOM->system_time, 'day system', '', $SELF->uname);
 
   //登録成功
@@ -564,39 +561,39 @@ function VoteDay(){
 function VoteNight(){
   global $GAME_CONF, $RQ_ARGS, $room_no, $ROOM, $USERS, $SELF;
 
-  if($SELF->is_dummy_boy()) OutputVoteResult('夜：身代わり君の投票は無効です');
+  if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
   switch($RQ_ARGS->situation){
   case 'WOLF_EAT':
-    if(! $SELF->is_wolf()) OutputVoteResult('夜：人狼以外は投票できません');
+    if(! $SELF->IsWolf()) OutputVoteResult('夜：人狼以外は投票できません');
     break;
 
   case 'MAGE_DO':
-    if(! $SELF->is_role_group('mage')) OutputVoteResult('夜：占い師以外は投票できません');
+    if(! $SELF->IsRoleGroup('mage')) OutputVoteResult('夜：占い師以外は投票できません');
     break;
 
   case 'JAMMER_MAD_DO':
-    if(! $SELF->is_role('jammer_mad')) OutputVoteResult('夜：邪魔狂人以外は投票できません');
+    if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：邪魔狂人以外は投票できません');
     break;
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
-    if(! $SELF->is_role('trap_mad')) OutputVoteResult('夜：罠師以外は投票できません');
-    if($SELF->is_role('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
+    if(! $SELF->IsRole('trap_mad')) OutputVoteResult('夜：罠師以外は投票できません');
+    if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
     $not_type = ($RQ_ARGS->situation == 'TRAP_MAD_NOT_DO');
     break;
 
   case 'GUARD_DO':
-    if(! $SELF->is_role_group('guard')) OutputVoteResult('夜：狩人以外は投票できません');
+    if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：狩人以外は投票できません');
     break;
 
   case 'REPORTER_DO':
-    if(! $SELF->is_role('reporter')) OutputVoteResult('夜：ブン屋以外は投票できません');
+    if(! $SELF->IsRole('reporter')) OutputVoteResult('夜：ブン屋以外は投票できません');
     break;
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
-    if(! $SELF->is_role('poison_cat')) OutputVoteResult('夜：猫又以外は投票できません');
-    if($ROOM->is_open_cast()){
+    if(! $SELF->IsRole('poison_cat')) OutputVoteResult('夜：猫又以外は投票できません');
+    if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
     $not_type = ($RQ_ARGS->situation == 'POISON_CAT_NOT_DO');
@@ -604,20 +601,20 @@ function VoteNight(){
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
-    if(! $SELF->is_role('assassin')) OutputVoteResult('夜：暗殺者以外は投票できません');
+    if(! $SELF->IsRole('assassin')) OutputVoteResult('夜：暗殺者以外は投票できません');
     $not_type = ($RQ_ARGS->situation == 'ASSASSIN_NOT_DO');
     break;
 
   case 'MANIA_DO':
-    if(! $SELF->is_role('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
+    if(! $SELF->IsRole('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
     break;
 
   case 'CHILD_FOX_DO':
-    if(! $SELF->is_role('child_fox')) OutputVoteResult('夜：子狐以外は投票できません');
+    if(! $SELF->IsRole('child_fox')) OutputVoteResult('夜：子狐以外は投票できません');
     break;
 
   case 'CUPID_DO':
-    if(! $SELF->is_role('cupid')) OutputVoteResult('夜：キューピッド以外は投票できません');
+    if(! $SELF->IsRole('cupid')) OutputVoteResult('夜：キューピッド以外は投票できません');
     break;
 
   default:
@@ -630,58 +627,57 @@ function VoteNight(){
   $error_header = '夜：投票先が正しくありません<br>';
 
   if($not_type); //投票キャンセルタイプは何もしない
-  elseif($SELF->is_role('cupid')){  //キューピッドの場合の投票処理
+  elseif($SELF->IsRole('cupid')){  //キューピッドの場合の投票処理
     if(count($RQ_ARGS->target_no) != 2) OutputVoteResult('夜：指定人数が２人ではありません');
+    $target_list = array();
     $self_shoot = false; //自分撃ちフラグを初期化
-    foreach($RQ_ARGS->target_no as $lovers_target_no){
+    foreach($RQ_ARGS->target_no as $this_target_no){
       //投票相手のユーザ情報取得
-      $target_uname = $USERS->NumberToUname($lovers_target_no);
-      $target_live  = $USERS->GetLive($target_uname);
+      $this_target = $USERS->ByID($this_target_no);
 
-      //死者、身代わり君への投票は無効
-      if($target_live == 'dead' || $target_uname == 'dummy_boy')
-	OutputVoteResult('死者、身代わり君へは投票できません');
+      //生存者以外と身代わり君への投票は無効
+      if(! $this_target->IsLive() || $this_target->IsDummyBoy()){
+	OutputVoteResult('生存者以外と身代わり君へは投票できません');
+      }
 
-      if($target_uname == $SELF->uname) $self_shoot = true; //自分撃ちかどうかチェック
+      array_push($target_list, $this_target);
+      if($this_target->IsSelf()) $self_shoot = true; //自分撃ちかどうかチェック
     }
 
-    //ユーザ総数を取得
-    $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0";
-    if(FetchResult($query) < $GAME_CONF->cupid_self_shoot && ! $self_shoot){
+    //参加人数をチェック
+    if($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot && ! $self_shoot){
       OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
     }
   }
   else{ //キューピッド以外の投票処理
-    //投票相手のユーザ情報取得
-    $target_uname  = $USERS->NumberToUname($RQ_ARGS->target_no);
-    $target_handle = $USERS->GetHandleName($target_uname);
-    $target_role   = $USERS->GetRole($target_uname);
-    $target_live   = $USERS->GetLive($target_uname);
+    $target = $USERS->ByID($RQ_ARGS->target_no); //投票相手のユーザ情報取得
 
-    if($SELF->is_role('poison_cat')){ //猫又は自分宛、正者への投票は無効
-      if($target_name == $SELF->uname || $target_live == 'live'){
-	OutputVoteResult($error_header . '自分と生者には投票できません');
-      }
-    }
-    elseif($SELF->is_role('trap_mad')){//罠師は死者宛の投票は無効
-      if($target_live == 'dead'){
-	OutputVoteResult($error_header . '死者には投票できません');
-      }
-    }
-    else{//自分宛、死者宛、狼同士の投票は無効
-      if($target_uname == $SELF->uname || $target_live == 'dead' ||
-	 ($SELF->is_wolf() && strpos($target_role, 'wolf') !== false))
-	OutputVoteResult($error_header . '自分、死者、狼同士へは投票できません');
+    if($target->IsSelf() && ! $SELF->IsRole('trap_mad')){ //罠師以外は自分への投票は無効
+      OutputVoteResult($error_header . '自分には投票できません');
     }
 
-    if($RQ_ARGS->situation == 'WOLF_EAT'){
-      //クイズ村は GM 以外無効
-      if($ROOM->is_quiz() && $target_uname != 'dummy_boy')
+    if($SELF->IsRole('poison_cat')){ //猫又は死者以外への投票は無効
+      if(! $target->IsDead()){
+	OutputVoteResult($error_header . '死者以外には投票できません');
+      }
+    }
+    elseif(! $target->IsLive()){
+      OutputVoteResult($error_header . '生存者以外には投票できません');
+    }
+
+    if($RQ_ARGS->situation == 'WOLF_EAT'){ //人狼の投票
+      if($SELF->IsWolf() && $target->IsWolf()){ //狼同士への投票は無効
+	OutputVoteResult($error_header . '狼同士には投票できません');
+      }
+
+      if($ROOM->IsQuiz() && ! $target->IsDummyBoy()){ //クイズ村は GM 以外無効
 	OutputVoteResult($error_header . 'クイズ村では GM 以外に投票できません');
+      }
 
-      //狼の初日の投票は身代わり君使用の場合は身代わり君以外無効
-      if($ROOM->is_dummy_boy() && $target_uname != 'dummy_boy' && $ROOM->date == 1)
+      //身代わり君使用の場合は、初日は身代わり君以外無効
+      if($ROOM->IsDummyBoy() && $ROOM->date == 1 && ! $target->IsDummyBoy()){
 	OutputVoteResult($error_header . '身代わり君使用の場合は、身代わり君以外に投票できません');
+      }
     }
   }
 
@@ -694,26 +690,24 @@ function VoteNight(){
     InsertSystemTalk($RQ_ARGS->situation, $ROOM->system_time, 'night system', '', $SELF->uname);
   }
   else{
-    if($SELF->is_role('cupid')){ // キューピッドの処理
+    if($SELF->IsRole('cupid')){ // キューピッドの処理
       $target_uname_str  = '';
       $target_handle_str = '';
-      foreach ($RQ_ARGS->target_no as $lovers_target_no){
-	//投票相手のユーザ情報取得
-	$target_uname  = $USERS->NumberToUname($lovers_target_no);
-	$target_handle = $USERS->GetHandleName($target_uname);
-	$target_role   = $USERS->GetRole($target_uname);
-	$target_uname_str  .= $target_uname  . ' ';
-	$target_handle_str .= $target_handle . ' ';
+      foreach($target_list as $this_target){
+	if($target_uname_str != ''){
+	  $target_uname_str  .= ' ';
+	  $target_handle_str .= ' ';
+	}
+	$target_uname_str  .= $this_target->uname;
+	$target_handle_str .= $this_target->handle_name;
 
 	//役職に恋人を追加
-	UpdateRole($target_uname, $target_role . ' lovers[' . strval($SELF->user_no) . ']');
+	$this_target->AddRole('lovers[' . strval($SELF->user_no) . ']');
       }
-      $target_uname_str  = rtrim($target_uname_str);
-      $target_handle_str = rtrim($target_handle_str);
     }
     else{ // キューピッド以外の処理
-      $target_uname_str  = $target_uname;
-      $target_handle_str = $target_handle;
+      $target_uname_str  = $target->uname;
+      $target_handle_str = $target->handle_name;
     }
     //投票処理
     $sql = mysql_query("INSERT INTO vote(room_no, date, uname, target_uname, vote_number, situation)
@@ -756,7 +750,7 @@ function OutputVoteBeforeGame(){
 
 EOF;
 
-    if(! $this_user->is_dummy_boy() && $this_user->uname != $SELF->uname){
+    if(! $this_user->IsDummyBoy() && $this_user->uname != $SELF->uname){
       echo '<input type="radio" id="' . $this_handle . '" name="target_handle_name" value="' .
 	$this_handle . '">'."\n";
     }
@@ -813,7 +807,7 @@ EOF;
     $this_handle = $this_user->handle_name;
     $this_color  = $this_user->color;
 
-    if($this_user->is_live()) //生きていればユーザアイコン
+    if($this_user->IsLive()) //生きていればユーザアイコン
       $path = $ICON_CONF->path . '/' . $this_user->icon_filename;
     else //死んでれば死亡アイコン
       $path = $ICON_CONF->dead;
@@ -825,7 +819,7 @@ EOF;
 
 EOF;
 
-    if($this_user->is_live() && $this_user->uname != $SELF->uname){
+    if($this_user->IsLive() && $this_user->uname != $SELF->uname){
       echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	$this_user_no . '">'."\n";
     }
@@ -853,48 +847,48 @@ function OutputVoteNight(){
   CheckDayNight();
 
   //投票済みチェック
-  if($SELF->is_dummy_boy()) OutputVoteResult('夜：身代わり君の投票は無効です');
-  if($role_wolf = $SELF->is_wolf()){
+  if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
+  if($role_wolf = $SELF->IsWolf()){
     CheckAlreadyVote('WOLF_EAT');
   }
-  elseif($role_mage = $SELF->is_role_group('mage')){
+  elseif($role_mage = $SELF->IsRoleGroup('mage')){
     CheckAlreadyVote('MAGE_DO');
   }
-  elseif($role_jammer_mad = $SELF->is_role('jammer_mad')){
+  elseif($role_jammer_mad = $SELF->IsRole('jammer_mad')){
     CheckAlreadyVote('JAMMER_MAD_DO');
   }
-  elseif($role_trap_mad = $SELF->is_role('trap_mad')){
+  elseif($role_trap_mad = $SELF->IsRole('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
-    if($SELF->is_role('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
+    if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
     CheckAlreadyVote('TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
   }
-  elseif($role_guard = $SELF->is_role_group('guard')){
+  elseif($role_guard = $SELF->IsRoleGroup('guard')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の護衛はできません');
     CheckAlreadyVote('GUARD_DO');
   }
-  elseif($role_reporter = $SELF->is_role('reporter')){
+  elseif($role_reporter = $SELF->IsRole('reporter')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の尾行はできません');
     CheckAlreadyVote('REPORTER_DO');
   }
-  elseif($role_poison_cat = $SELF->is_role('poison_cat')){
+  elseif($role_poison_cat = $SELF->IsRole('poison_cat')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の蘇生はできません');
-    if($ROOM->is_open_cast()){
+    if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
     CheckAlreadyVote('POISON_CAT_DO', 'POISON_CAT_NOT_DO');
   }
-  elseif($role_assassin = $SELF->is_role('assassin')){
+  elseif($role_assassin = $SELF->IsRole('assassin')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
     CheckAlreadyVote('ASSASSIN_DO', 'ASSASSIN_NOT_DO');
   }
-  elseif($role_mania = $SELF->is_role('mania')){
+  elseif($role_mania = $SELF->IsRole('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('MANIA_DO');
   }
-  elseif($role_child_fox = $SELF->is_role('child_fox')){
+  elseif($role_child_fox = $SELF->IsRole('child_fox')){
     CheckAlreadyVote('CHILD_FOX_DO');
   }
-  elseif($role_cupid = $SELF->is_role('cupid')){
+  elseif($role_cupid = $SELF->IsRole('cupid')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('CUPID_DO');
     $cupid_self_shoot = ($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot);
@@ -902,7 +896,7 @@ function OutputVoteNight(){
   else OutputVoteResult('夜：あなたは投票できません');
 
   //身代わり君使用 or クイズ村の時は身代わり君だけしか選べない
-  if($role_wolf && ($ROOM->is_dummy_boy() && $ROOM->date == 1 || $ROOM->is_quiz())){
+  if($role_wolf && ($ROOM->IsDummyBoy() && $ROOM->date == 1 || $ROOM->IsQuiz())){
     //身代わり君のユーザ情報
     $this_rows = array(1 => $USERS->rows[1]); //dummy_boy = 1番は保証されている？
   }
@@ -917,10 +911,10 @@ function OutputVoteNight(){
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
   foreach($this_rows as $this_user_no => $this_user){
     $this_color = $this_user->color;
-    $this_wolf  = ($role_wolf && $this_user->is_wolf());
-    $is_self    = ($this_user->uname == $SELF->uname);
+    $this_wolf  = ($role_wolf && $this_user->IsWolf());
+    $is_self    = $this_user->IsSelf();
 
-    if($this_user->is_live() || $role_poison_cat){ //猫又は死亡アイコンにしない
+    if($this_user->IsLive() || $role_poison_cat){ //猫又は死亡アイコンにしない
       if($this_wolf) //狼同士なら狼アイコン
 	$path = $ICON_CONF->wolf;
       else //生きていればユーザアイコン
@@ -938,25 +932,25 @@ function OutputVoteNight(){
 EOF;
 
     if($role_cupid){
-      if(! $this_user->is_dummy_boy()){
+      if(! $this_user->IsDummyBoy()){
 	$checked = (($cupid_self_shoot && $is_self) ? ' checked' : '');
 	echo '<input type="checkbox" id="' . $this_user_no . '" name="target_no[]" value="' .
 	  $this_user_no . '"' . $checked . '>'."\n";
       }
     }
     elseif($role_poison_cat){
-      if($this_user->is_dead() && ! $is_self && ! $this_user->is_dummy_boy()){
+      if($this_user->IsDead() && ! $is_self && ! $this_user->IsDummyBoy()){
 	echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	  $this_user_no . '">'."\n";
       }
     }
     elseif($role_trap_mad){
-      if($this_user->is_live()){
+      if($this_user->IsLive()){
 	echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	  $this_user_no . '">'."\n";
       }
     }
-    elseif($this_user->is_live() && ! $is_self && ! $this_wolf){
+    elseif($this_user->IsLive() && ! $is_self && ! $this_wolf){
       echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	$this_user_no . '">'."\n";
     }

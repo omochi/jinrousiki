@@ -10,21 +10,20 @@ class RoomDataSet{
   var $option_list = array();
   var $system_time;
   var $sudden_death;
-  var $view_mode;
-  var $dead_mode;
-  var $heaven_mode;
-  var $log_mode;
-  var $test_mode;
+  var $view_mode = false;
+  var $dead_mode = false;
+  var $heaven_mode = false;
+  var $log_mode = false;
+  var $test_mode = false;
 
   function RoomDataSet($request){
-    $this->test_mode = isset($request->TestItems);
-    if($this->test_mode && $request->TestItems->is_virtual_room){
+    if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
       $array = $request->TestItems->test_room;
     }
     else{
       $query = "SELECT room_name, room_comment, game_option, date, day_night, status " .
 	"FROM room WHERE room_no = {$request->room_no}";
-      $array = FetchNameArray($query);
+      if(($array = FetchNameArray($query)) === false) return false;
     }
     $this->id          = $request->room_no;
     $this->name        = $array['room_name'];
@@ -34,58 +33,67 @@ class RoomDataSet{
     $this->day_night   = $array['day_night'];
     $this->status      = $array['status'];
     $this->option_list = explode(' ', $this->game_option);
-    $this->view_mode   = false;
-    $this->dead_mode   = false;
-    $this->heaven_mode = false;
-    $this->log_mode    = false;
   }
 
-  function is_option($option){
+  function IsOption($option){
     return (in_array($option, $this->option_list));
   }
 
-  function is_option_group($option){
+  function IsOptionGroup($option){
     return (strpos($this->game_option, $option) !== false);
   }
 
-  function is_real_time(){
-    return $this->is_option_group('real_time');
+  function IsRealTime(){
+    return $this->IsOptionGroup('real_time');
   }
 
-  function is_dummy_boy(){
-    return $this->is_option('dummy_boy');
+  function IsDummyBoy(){
+    return $this->IsOption('dummy_boy');
   }
 
-  function is_open_cast(){
-    return ! $this->is_option('not_open_cast');
+  function IsOpenCast(){
+    return ! $this->IsOption('not_open_cast');
   }
 
-  function is_quiz(){
-    return $this->is_option('quiz');
+  function IsQuiz(){
+    return $this->IsOption('quiz');
   }
 
-  function is_beforegame(){
+  function IsBeforeGame(){
     return $this->day_night == 'beforegame';
   }
 
-  function is_day(){
+  function IsDay(){
     return $this->day_night == 'day';
   }
 
-  function is_night(){
+  function IsNight(){
     return $this->day_night == 'night';
   }
 
-  function is_aftergame(){
+  function IsAfterGame(){
     return $this->day_night == 'aftergame';
   }
 
-  function is_playing(){
-    return ($this->is_day() || $this->is_night());
+  function IsPlaying(){
+    return ($this->IsDay() || $this->IsNight());
   }
 
-  function is_finished(){
+  function IsFinished(){
     return $this->status == 'finished';
+  }
+}
+
+//クッキーデータのロード
+class CookieDataSet{
+  var $day_night;  //夜明けを音でしらせるため
+  var $vote_times; //再投票を音で知らせるため
+  var $objection;  //「異議あり」を音で知らせるため
+
+  function CookieDataSet(){
+    $this->day_night  = $_COOKIE['day_night'];
+    $this->vote_times = (int)$_COOKIE['vote_times'];
+    $this->objection  = $_COOKIE['objection'];
   }
 }
 

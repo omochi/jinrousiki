@@ -1,26 +1,53 @@
 <?php
 class User{
-  var $role_list = array();
   var $main_role;
+  var $role_list = array();
+  var $partner_list = array();
+  var $dead_flag = false;
+  var $suicide_flag = false;
+  var $revive_flag = false;
 
   function ParseCompoundParameters(){
     $this->ParseRoles();
     $this->main_role = $this->role_list[0];
   }
 
-  function is_live(){
+  function ParseRoles(){
+    $role_list = explode(' ', $this->role);
+    $regex = "/([^\[]*)\[(\d+)\]/";
+    foreach($role_list as $role){
+      if(preg_match($regex, $role, $matches)){
+	$this->role_list[] = $matches[1];
+	$this->partner_list[$matches[1]][] = $matches[2];
+      }
+      else{
+	$this->role_list[] = $role;
+      }
+    }
+  }
+
+  function IsLive(){
     return ($this->live == 'live');
   }
 
-  function is_dead(){
+  function IsDead(){
     return ($this->live == 'dead');
   }
 
-  function is_dummy_boy(){
-    return ($this->uname == 'dummy_boy');
+  function IsSameUser($uname){
+    return ($this->uname == $uname);
   }
 
-  function is_role($role){
+  function IsSelf(){
+    global $SELF;
+    return $this->IsSameUser($SELF->uname);
+  }
+
+  function IsDummyBoy(){
+    return $this->IsSameUser('dummy_boy');
+  }
+
+  function IsRole($role){
     if(! is_array($this->role_list)) return false;
     $arg = func_get_args();
     if(is_array($arg[0])) $arg = array_shift($arg);
@@ -32,11 +59,11 @@ class User{
     }
   }
 
-  function is_active_role($role){
-    return ($this->is_role($role) && ! $this->is_role('lost_ability'));
+  function IsActiveRole($role){
+    return ($this->IsRole($role) && ! $this->IsRole('lost_ability'));
   }
 
-  function is_role_group($role){
+  function IsRoleGroup($role){
     $arg = func_get_args();
     foreach($arg as $this_role){
       if(strpos($this->role, $this_role) !== false) return true;
@@ -44,31 +71,73 @@ class User{
     return false;
   }
 
-  function is_wolf(){
-    return $this->is_role_group('wolf');
+  function IsWolf(){
+    return $this->IsRoleGroup('wolf');
   }
 
-  function is_fox(){
-    return $this->is_role_group('fox');
+  function IsFox(){
+    return $this->IsRoleGroup('fox');
   }
 
-  function is_lovers(){
-    return $this->is_role_group('lovers');
+  function IsLovers(){
+    return $this->IsRole('lovers');
   }
 
-  function Kill(){
-    $this->live = 'dead';
-    $this->updated[] = 'live';
+  function ChangeLive($live){
+    $this->Update('live', "$live");
   }
 
-  function ParseRoles(){
-    $this->role_list = explode(' ', $this->role);
+  function ToDead(){
+    if((! ($this->IsLive() || $this->revive_flag)) || $this->dead_flag) return false;
+    $this->ChangeLive('dead');
+    $this->dead_flag = true;
+    return true;
+  }
+
+  //死亡処理
+  function Kill($reason){
+    if(! $this->ToDead()) return false;
+    InsertSystemMessage($this->handle_name, $reason);
+    if(! $this->IsRole('reporter', 'no_last_words')) SaveLastWords($this->handle_name);
+  }
+
+  //突然死処理
+  function SuddenDeath($reason = NULL){
+    global $MESSAGE, $ROOM;
+
+    if(! $this->ToDead()) return false;
+    $this->suicide_flag = true;
+
+    if($reason){ //ショック死は専用の処理を行う
+      InsertSystemTalk($this->handle_name . $MESSAGE->vote_sudden_death, ++$ROOM->system_time);
+      InsertSystemMessage($this->handle_name, 'SUDDEN_DEATH_' . $reason);
+      if(! $this->IsRole('reporter', 'no_last_words')) SaveLastWords($this->handle_name);
+    }
+    else{
+      InsertSystemTalk($this->handle_name . $MESSAGE->sudden_death, ++$ROOM->system_time);
+    }
+    mysql_query('COMMIT'); //一応コミット
+  }
+
+  //蘇生処理
+  function Revive(){
+    if(! $this->IsDead() || $this->revive_flag) return false;
+    $this->ChangeLive('live');
+    InsertSystemMessage($this->handle_name, 'REVIVE_SUCCESS');
+    $this->revive_flag = true;
+  }
+
+  function ChangeRole($role){
+    $this->Update('role', "$role");
   }
 
   function AddRole($role){
-    $this->role .= " $role";
-    $this->updated[] = 'role';
-    $this->ParseRoles();
+    $this->Update('role', $this->role . " $role");
+    /* キャッシュの更新は行わないでおく
+      $this->role .= " $role";
+      $this->updated[] = 'role';
+      $this->ParseRoles();
+    */
   }
 
   function RemoveRole($role){
@@ -79,6 +148,18 @@ class User{
     $this->updated[] = 'role';
     $this->ParseRoles();
 */
+  }
+
+  function Update($item, $value){
+    global $ROOM;
+
+    if($ROOM->test_mode){
+      echo "User : {$this->uname} : Change $item : $value <br>";
+      return;
+    }
+    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
+    mysql_query("UPDATE user_entry SET $item = '$value' $query");
+    mysql_query('COMMIT');
   }
 
   function Save(){
@@ -94,18 +175,39 @@ class User{
   //占い師の判定
   function DistinguishMage($reverse = false){
     //白狼以外の狼と不審者は人狼判定
-    $result = (($this->is_wolf() && ! $this->is_role('boss_wolf')) || $this->is_role('suspect'));
+    $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) || $this->IsRole('suspect'));
     if($reverse) $result = (! $result);
     return ($result ? 'wolf' : 'human');
   }
 
   //所属陣営判別
   function DistinguishCamp(){
-    if($this->is_wolf() || $this->is_role_group('mad')) return 'wolf';
-    if($this->is_fox()) return 'fox';
-    if($this->is_role('cupid')) return 'lovers';
-    if($this->is_role('quiz')) return 'quiz';
+    if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
+    if($this->IsFox()) return 'fox';
+    if($this->IsRole('cupid')) return 'lovers';
+    if($this->IsRole('quiz')) return 'quiz';
     return 'human';
+  }
+
+  //役職をパースして省略名を返す
+  function MakeShortRoleName(){
+    global $GAME_CONF;
+
+    //メイン役職を取得
+    $camp = $this->DistinguishCamp();
+    $name = $GAME_CONF->short_role_list[$this->main_role];
+    $role_str = '<span class="add-role"> [';
+    $role_str .= ($camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>');
+
+    //サブ役職を追加
+    $sub_role_list = array_slice($this->role_list, 1);
+    foreach($GAME_CONF->short_role_list as $role => $name){
+      if(in_array($role, $sub_role_list)){
+	$role_str .= ($role == 'lovers' ? '<span class="lovers">' . $name . '</span>' : $name);
+      }
+    }
+
+    return $role_str . '] (' . $this->uname . ')</span>';
   }
 }
 
@@ -191,14 +293,15 @@ class UserDataSet{
   function LoadQueryResponse($response){
     if($response === false) return false;
     $this->rows = array();
+    $kicked_user_no = 0;
     while(($user = mysql_fetch_object($response, 'User')) !== false){
       $num_users++;
       $user->ParseCompoundParameters();
       if($user->user_no >= 0){
-        $this->rows[$user->user_no] = $user;
+	$this->rows[$user->user_no] = $user;
       }
       else {
-        $this->kicked[$user->user_no = --$kicked_user_no] = $user;
+	$this->kicked[$user->user_no = --$kicked_user_no] = $user;
       }
       $this->names[$user->uname] = $user->user_no;
     }
@@ -208,14 +311,15 @@ class UserDataSet{
   function LoadUsers($user_list){
     if($user_list === false) return false;
     $this->rows = array();
+    $kicked_user_no = 0;
     foreach($user_list as $user){
       $num_users++;
       $user->ParseCompoundParameters();
       if($user->user_no >= 0){
-        $this->rows[$user->user_no] = $user;
+	$this->rows[$user->user_no] = $user;
       }
-      else {
-        $this->kicked[$user->user_no = --$kicked_user_no] = $user;
+      else{
+	$this->kicked[$user->user_no] = $user;
       }
       $this->names[$user->uname] = $user->user_no;
     }
@@ -238,8 +342,13 @@ class UserDataSet{
     return $this->names[$uname];
   }
 
+  function ByID($user_no){
+    return $this->rows[$user_no];
+  }
+
   function ByUname($uname){
-    return $this->rows[$this->UnameToNumber($uname)];
+    $user_no = $this->UnameToNumber($uname);
+    return ($user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no]);
   }
 
   function GetHandleName($uname){
@@ -258,7 +367,7 @@ class UserDataSet{
     $role = $this->GetRole($uname);
     $partners = array();
     foreach($this->rows as $user){
-      if($strict ? ($user->is_role($role)) : ($user->is_role_group($role))){
+      if($strict ? ($user->IsRole($role)) : ($user->IsRoleGroup($role))){
         $partners[] = $user;
       }
     }
@@ -280,10 +389,18 @@ class UserDataSet{
     return false;
   }
 
-  function GetLiveUsers(){
+  function GetLivingUsers(){
     $array = array();
     foreach($this->rows as $this_user){
-      if($this_user->is_live()) array_push($array, $this_user->uname);
+      if($this_user->IsLive()) $array[] = $this_user->uname;
+    }
+    return $array;
+  }
+
+  function GetLivingWolves(){
+    $array = array();
+    foreach($this->rows as $this_user){
+      if($this_user->IsLive() && $this_user->IsWolf()) $array[] = $this_user->uname;
     }
     return $array;
   }

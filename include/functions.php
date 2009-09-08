@@ -43,10 +43,9 @@ function DisconnectDatabase($dbHandle){
 
 //発言を DB に登録する (talk Table)
 function InsertTalk($room_no, $date, $location, $uname, $time, $sentence, $font_type, $spend_time){
-  mysql_query("INSERT INTO talk(room_no, date, location, uname, time,
-				sentence, font_type, spend_time)
-		VALUES($room_no, $date, '$location', '$uname', '$time',
-				'$sentence', '$font_type', $spend_time)");
+  $items  = "room_no, date, location, uname, time, sentence, font_type, spend_time";
+  $values = "$room_no, $date, '$location', '$uname', '$time', '$sentence', '$font_type', $spend_time";
+  mysql_query("INSERT INTO talk($items) VALUES($values)");
 }
 
 //セッションIDを新しくする(PHPのバージョンが古いとこの関数が無いので定義する)
@@ -58,6 +57,41 @@ if(! function_exists('session_regenerate_id')){
     session_start();
     $_SESSION = unserialize($QQ);
   }
+}
+
+//セッション認証 返り値 OK:ユーザ名 / NG: false
+function CheckSession($session_id, $exit = true){
+  global $room_no;
+  // $ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
+
+  //セッション ID による認証
+  $query = "SELECT uname FROM user_entry WHERE room_no = $room_no " .
+    "AND session_id ='$session_id' AND user_no > 0";
+  $array = FetchArray($query);
+  if(count($array) == 1) return $array[0];
+
+  if($exit){ //エラー処理
+    OutputActionResult('セッション認証エラー',
+		       'セッション認証エラー<br>'."\n" .
+		       '<a href="index.php" target="_top">トップページ</a>から' .
+		       'ログインしなおしてください');
+  }
+  return false;
+}
+
+//DBに登録されているセッションIDと被らないようにする
+function GetUniqSessionID(){
+  //セッション開始
+  session_start();
+  $session_id = '';
+
+  do{
+    session_regenerate_id();
+    $session_id = session_id();
+    $query = "SELECT COUNT(room_no) FROM user_entry, admin_manage " .
+      "WHERE user_entry.session_id = '$session_id' OR admin_manage.session_id = '$session_id'";
+  }while(FetchResult($query) > 0);
+  return $session_id;
 }
 
 //DB から単体の値を取得する処理のラッパー関数
@@ -76,7 +110,7 @@ function FetchArray($query){
   $array = array();
   $sql   = mysql_query($query);
   $count = mysql_num_rows($sql);
-  for($i = 0; $i < $count; $i++) array_push($array, mysql_result($sql, $i, 0));
+  for($i = 0; $i < $count; $i++) $array[] = mysql_result($sql, $i, 0);
   return $array;
 }
 
@@ -90,7 +124,7 @@ function FetchNameArray($query){
 function FetchAssoc($query){
   $array = array();
   $sql   = mysql_query($query);
-  while(($this_array = mysql_fetch_assoc($sql)) !== false) array_push($array, $this_array);
+  while(($this_array = mysql_fetch_assoc($sql)) !== false) $array[] = $this_array;
   return  $array;
 }
 
@@ -98,7 +132,7 @@ function FetchAssoc($query){
 function FetchObjectArray($query, $class){
   $array = array();
   $sql   = mysql_query($query);
-  while(($user = mysql_fetch_object($sql, $class)) !== false) array_push($array, $user);
+  while(($user = mysql_fetch_object($sql, $class)) !== false) $array[] = $user;
   return $array;
 }
 
