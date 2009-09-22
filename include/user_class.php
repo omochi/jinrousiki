@@ -24,6 +24,7 @@ class User{
 	$this->role_list[] = $role;
       }
     }
+    array_unique($this->role_list);
   }
 
   function IsLive(){
@@ -50,12 +51,12 @@ class User{
   function IsRole($role){
     if(! is_array($this->role_list)) return false;
     $arg = func_get_args();
-    if(is_array($arg[0])) $arg = array_shift($arg);
+    if(is_array($arg[0])) $arg = $arg[0];
     if(count($arg) > 1){
       return (count(array_intersect($arg, $this->role_list)) > 0);
     }
     else{
-      return (in_array($arg[0], $this->role_list));
+      return in_array($arg[0], $this->role_list);
     }
   }
 
@@ -83,48 +84,42 @@ class User{
     return $this->IsRole('lovers');
   }
 
-  function ChangeLive($live){
-    $this->Update('live', "$live");
-  }
-
   function ToDead(){
-    if((! ($this->IsLive() || $this->revive_flag)) || $this->dead_flag) return false;
-    $this->ChangeLive('dead');
+    if(!($this->IsLive() || $this->revive_flag) || $this->dead_flag) return false;
+    $this->Update('live', 'dead');
     $this->dead_flag = true;
     return true;
   }
 
   //死亡処理
-  function Kill($reason){
+  function Kill($reason = NULL){
     if(! $this->ToDead()) return false;
-    InsertSystemMessage($this->handle_name, $reason);
-    if(! $this->IsRole('reporter', 'no_last_words')) SaveLastWords($this->handle_name);
+    if($reason){
+      InsertSystemMessage($this->handle_name, $reason);
+      $this->SaveLastWords();
+    }
+    return true;
   }
 
   //突然死処理
   function SuddenDeath($reason = NULL){
     global $MESSAGE, $ROOM;
 
-    if(! $this->ToDead()) return false;
+    if(! $this->Kill($reason)) return false;
     $this->suicide_flag = true;
 
-    if($reason){ //ショック死は専用の処理を行う
-      InsertSystemTalk($this->handle_name . $MESSAGE->vote_sudden_death, ++$ROOM->system_time);
-      InsertSystemMessage($this->handle_name, 'SUDDEN_DEATH_' . $reason);
-      if(! $this->IsRole('reporter', 'no_last_words')) SaveLastWords($this->handle_name);
-    }
-    else{
-      InsertSystemTalk($this->handle_name . $MESSAGE->sudden_death, ++$ROOM->system_time);
-    }
-    mysql_query('COMMIT'); //一応コミット
+    $sentence = ($reason ? 'vote_sudden_death' : 'sudden_death');
+    InsertSystemTalk($this->handle_name . $MESSAGE->$sentence, ++$ROOM->system_time);
+    return true;
   }
 
   //蘇生処理
   function Revive(){
     if(! $this->IsDead() || $this->revive_flag) return false;
-    $this->ChangeLive('live');
+    $this->Update('live', 'live');
     InsertSystemMessage($this->handle_name, 'REVIVE_SUCCESS');
     $this->revive_flag = true;
+    return true;
   }
 
   function ChangeRole($role){
@@ -140,14 +135,32 @@ class User{
     */
   }
 
+  /*
+    このメソッドは橋姫実装時のために予約されています。
+     スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
+     本来はParseRole側でpreg_split()などを使用するべきですが、役職が減る状況の方が少ないため、
+     削除側で調節するものとします。(2009-07-05 enogu)
+  */
+  /*
   function RemoveRole($role){
-/* このメソッドは橋姫実装時のために予約されています。
-    //スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
-    //本来はParseRole側でpreg_split()などを使用するべきですが、役職が減る状況の方が少ないため、削除側で調節するものとします。(2009-07-05 enogu)
     $this->role = str_replace('  ', ' ', str_replace($role, '', $this->role));
     $this->updated[] = 'role';
     $this->ParseRoles();
-*/
+  }
+  */
+
+  //遺言を取得して保存する
+  function SaveLastWords(){
+    global $ROOM;
+
+    if($ROOM->test_mode || (! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words'))){
+      return;
+    }
+    $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
+      "AND uname = '{$this->uname}' AND user_no > 0";
+    if(($last_words = FetchResult($query)) != ''){
+      InsertSystemMessage($this->handle_name . "\t" . $last_words, 'LAST_WORDS');
+    }
   }
 
   function Update($item, $value){
@@ -163,7 +176,7 @@ class User{
   }
 
   function Save(){
-    if (isset($this->updated)){
+    if(isset($this->updated)){
       foreach($this->updated as $item){
         $update_list[] = "$item = '{$this->item}'";
       }
@@ -425,13 +438,11 @@ class UserDataSet{
   //ユーザー情報を指定して新しいユーザーをデータベースに登録します。(ドラフト：この機能はテストされていません)
   function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role,
 		    $ip_address = '', $session_id = ''){
-    mysql_query(
-      "INSERT INTO user_entry (room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role)
-       VALUES (
-	$this->room_no,
-	(SELECT MAX(user_no) + 1 FROM user_entry WHERE room_no = {$this->room_no}),
-	'$uname', '$password', '$handle_name', '$sex', '$profile', $icon_no, '$role'"
-    );
+    $items = 'room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role';
+    $values = "$this->room_no, " .
+      "(SELECT MAX(user_no) + 1 FROM user_entry WHERE room_no = {$this->room_no}), " .
+      "'$uname', '$password', '$handle_name', '$sex', '$profile', $icon_no, '$role'";
+    InsertDatabase('user_entry', $items, $value);
     $USERS->Load();
   }
 }

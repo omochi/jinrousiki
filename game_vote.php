@@ -125,15 +125,15 @@ function VoteGameStart(){
 
   //投票済みチェック
   $query = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no AND date = 0 " .
-    "AND uname = '{$SELF->uname}' AND situation = 'GAMESTART'";
+    "AND situation = 'GAMESTART' AND uname = '{$SELF->uname}'";
   if(FetchResult($query) > 0) OutputVoteResult('ゲームスタート：投票済みです');
 
   LockTable(); //テーブルを排他的ロック
 
   //投票処理
-  $sql = mysql_query("INSERT INTO vote(room_no, date, uname, situation)
-			VALUES($room_no, 0, '{$SELF->uname}', 'GAMESTART')");
-  if($sql && mysql_query('COMMIT')){//一応コミット
+  $items = 'room_no, date, uname, situation';
+  $values = "$room_no, 0, '{$SELF->uname}', 'GAMESTART'";
+  if(InsertDatabase('vote', $items, $values) && mysql_query('COMMIT')){//一応コミット
     AggregateVoteGameStart(); //集計処理
     OutputVoteResult('投票完了', true);
   }
@@ -157,8 +157,6 @@ function AggregateVoteGameStart(){
   if($ROOM->IsDummyBoy() && ! $ROOM->IsQuiz()) $vote_count++;
 
   //ユーザ総数を取得
-  // $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0";
-  // $user_count = FetchResult($query);
   $user_count = $USERS->GetUserCount();
 
   //規定人数に足りないか、全員投票していなければ処理終了
@@ -381,6 +379,10 @@ function AggregateVoteGameStart(){
 		WHERE room_no = $room_no");
   DeleteVote(); //今までの投票を全部削除
 
+  //ゲーム開始時間を通知
+  $start_time = gmdate('Y/m/j (D) G:i:s', $ROOM->system_time);
+  InsertSystemTalk('ゲーム開始：' . $start_time, $ROOM->system_time, 'night system', 1);
+
   //役割をDBに更新
   $role_count_list = array();
   for($i = 0; $i < $user_count; $i++){
@@ -391,15 +393,26 @@ function AggregateVoteGameStart(){
     foreach($this_role_list as $this_role) $role_count_list[$this_role]++;
   }
 
-  //それぞれの役割が何人ずつなのかシステムメッセージ
-  if($chaos && strpos($option_role, 'chaos_open_cast') === false){
-    $sentence = $MESSAGE->chaos;
-    // $sentence = MakeRoleNameList($role_count_list, true);
+  //役割リスト通知
+  if($chaos){
+    if(strpos($option_role, 'chaos_open_cast_camp') !== false){
+      $sentence = MakeRoleNameList($role_count_list, 'camp');
+    }
+    elseif(strpos($option_role, 'chaos_open_cast_role') !== false){
+      $sentence = MakeRoleNameList($role_count_list, 'role');
+    }
+    elseif(strpos($option_role, 'chaos_open_cast') !== false){
+      $sentence = MakeRoleNameList($role_count_list);
+    }
+    else{
+      $sentence = $MESSAGE->chaos;
+    }
   }
   else{
     $sentence = MakeRoleNameList($role_count_list);
   }
-  InsertSystemTalk($sentence, $ROOM->system_time, 'night system', 1);  //役割リスト通知
+  InsertSystemTalk($sentence, ++$ROOM->system_time, 'night system', 1);
+
   InsertSystemMessage('1', 'VOTE_TIMES', 1); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   UpdateTime(); //最終書き込み時刻を更新
   if($ROOM->IsOption('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
@@ -446,8 +459,9 @@ function VoteKick($target){
   if($target_uname == '') OutputVoteResult('Kick：'. $target . ' はすでに Kick されています', true);
 
   //投票処理
-  $sql = mysql_query("INSERT INTO vote(room_no, date, uname, target_uname, situation)
-			VALUES($room_no, 0, '{$SELF->uname}', '$target_uname', 'KICK_DO')");
+  $items = 'room_no, date, uname, target_uname, situation';
+  $values = "$room_no, 0, '{$SELF->uname}', '$target_uname', 'KICK_DO'";
+  $sql = InsertDatabase('vote', $items, $values);
   InsertSystemTalk("KICK_DO\t" . $target, $ROOM->system_time, '', 0, $SELF->uname); //投票しました通知
 
   //投票成功
@@ -540,10 +554,10 @@ function VoteDay(){
   }
 
   //投票＆システムメッセージ
-  $sql = mysql_query("INSERT INTO vote(room_no, date, uname, target_uname, vote_number,
-			vote_times, situation)
-			VALUES($room_no, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', $vote_number,
-			{$RQ_ARGS->vote_times}, 'VOTE_KILL')");
+  $items = 'room_no, date, uname, target_uname, vote_number, vote_times, situation';
+  $values = "$room_no, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', $vote_number, " .
+    "{$RQ_ARGS->vote_times}, 'VOTE_KILL'";
+  $sql = InsertDatabase('vote', $items, $values);
   $sentence = "VOTE_DO\t" . $target->handle_name;
   InsertSystemTalk($sentence, $ROOM->system_time, 'day system', '', $SELF->uname);
 
@@ -571,6 +585,10 @@ function VoteNight(){
     if(! $SELF->IsRoleGroup('mage')) OutputVoteResult('夜：占い師以外は投票できません');
     break;
 
+  case 'VOODOO_KILLER_DO':
+    if(! $SELF->IsRoleGroup('voodoo_killer')) OutputVoteResult('夜：陰陽師以外は投票できません');
+    break;
+
   case 'JAMMER_MAD_DO':
     if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：邪魔狂人以外は投票できません');
     break;
@@ -582,8 +600,16 @@ function VoteNight(){
     $not_type = ($RQ_ARGS->situation == 'TRAP_MAD_NOT_DO');
     break;
 
+  case 'VOODOO_MAD_DO':
+    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：呪術師以外は投票できません');
+    break;
+
   case 'GUARD_DO':
     if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：狩人以外は投票できません');
+    break;
+
+  case 'ANTI_VOODOO_DO':
+    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：厄神以外は投票できません');
     break;
 
   case 'REPORTER_DO':
@@ -607,6 +633,10 @@ function VoteNight(){
 
   case 'MANIA_DO':
     if(! $SELF->IsRole('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
+    break;
+
+  case 'VOODOO_FOX_DO':
+    if(! $SELF->IsRole('voodoo_fox')) OutputVoteResult('夜：九尾以外は投票できません');
     break;
 
   case 'CHILD_FOX_DO':
@@ -684,8 +714,9 @@ function VoteNight(){
   LockTable(); //テーブルを排他的ロック
   if($not_type){
     //投票処理
-    $sql = mysql_query("INSERT INTO vote(room_no, date, uname, vote_number, situation)
-			VALUES($room_no, {$ROOM->date}, '{$SELF->uname}', 1, '{$RQ_ARGS->situation}')");
+    $items = 'room_no, date, uname, vote_number, situation';
+    $values = "$room_no, {$ROOM->date}, '{$SELF->uname}', 1, '{$RQ_ARGS->situation}'";
+    $sql = InsertDatabase('vote', $items, $values);
     InsertSystemMessage($SELF->handle_name, $RQ_ARGS->situation);
     InsertSystemTalk($RQ_ARGS->situation, $ROOM->system_time, 'night system', '', $SELF->uname);
   }
@@ -710,9 +741,9 @@ function VoteNight(){
       $target_handle_str = $target->handle_name;
     }
     //投票処理
-    $sql = mysql_query("INSERT INTO vote(room_no, date, uname, target_uname, vote_number, situation)
-			VALUES($room_no, {$ROOM->date}, '{$SELF->uname}', '$target_uname_str',
-			1, '{$RQ_ARGS->situation}')");
+    $items = 'room_no, date, uname, target_uname, vote_number, situation';
+    $values = "$room_no, {$ROOM->date}, '{$SELF->uname}', '$target_uname_str', 1, '{$RQ_ARGS->situation}'";
+    $sql = InsertDatabase('vote', $items, $values);
     InsertSystemMessage($SELF->handle_name . "\t" . $target_handle_str, $RQ_ARGS->situation);
     $sentence = $RQ_ARGS->situation . "\t" . $target_handle_str;
     InsertSystemTalk($sentence, $ROOM->system_time, 'night system', '', $SELF->uname);
@@ -854,13 +885,23 @@ function OutputVoteNight(){
   elseif($role_mage = $SELF->IsRoleGroup('mage')){
     CheckAlreadyVote('MAGE_DO');
   }
+  elseif($role_voodoo_killer = $SELF->IsRole('voodoo_killer')){
+    CheckAlreadyVote('VOODOO_KILLER_DO');
+  }
   elseif($role_jammer_mad = $SELF->IsRole('jammer_mad')){
     CheckAlreadyVote('JAMMER_MAD_DO');
+  }
+  elseif($role_voodoo_mad = $SELF->IsRole('voodoo_mad')){
+    CheckAlreadyVote('VOODOO_MAD_DO');
   }
   elseif($role_trap_mad = $SELF->IsRole('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
     if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
     CheckAlreadyVote('TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+  }
+  elseif($role_anti_voodoo = $SELF->IsRole('anti_voodoo')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の厄払いはできません');
+    CheckAlreadyVote('ANTI_VOODOO_DO');
   }
   elseif($role_guard = $SELF->IsRoleGroup('guard')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の護衛はできません');
@@ -884,6 +925,9 @@ function OutputVoteNight(){
   elseif($role_mania = $SELF->IsRole('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('MANIA_DO');
+  }
+  elseif($role_voodoo_fox = $SELF->IsRole('voodoo_fox')){
+    CheckAlreadyVote('VOODOO_FOX_DO');
   }
   elseif($role_child_fox = $SELF->IsRole('child_fox')){
     CheckAlreadyVote('CHILD_FOX_DO');
@@ -912,7 +956,6 @@ function OutputVoteNight(){
   foreach($this_rows as $this_user_no => $this_user){
     $this_color = $this_user->color;
     $this_wolf  = ($role_wolf && $this_user->IsWolf());
-    $is_self    = $this_user->IsSelf();
 
     if($this_user->IsLive() || $role_poison_cat){ //猫又は死亡アイコンにしない
       if($this_wolf) //狼同士なら狼アイコン
@@ -933,13 +976,13 @@ EOF;
 
     if($role_cupid){
       if(! $this_user->IsDummyBoy()){
-	$checked = (($cupid_self_shoot && $is_self) ? ' checked' : '');
+	$checked = (($cupid_self_shoot && $this_user->IsSelf()) ? ' checked' : '');
 	echo '<input type="checkbox" id="' . $this_user_no . '" name="target_no[]" value="' .
 	  $this_user_no . '"' . $checked . '>'."\n";
       }
     }
     elseif($role_poison_cat){
-      if($this_user->IsDead() && ! $is_self && ! $this_user->IsDummyBoy()){
+      if($this_user->IsDead() && ! $this_user->IsSelf() && ! $this_user->IsDummyBoy()){
 	echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	  $this_user_no . '">'."\n";
       }
@@ -950,7 +993,7 @@ EOF;
 	  $this_user_no . '">'."\n";
       }
     }
-    elseif($this_user->IsLive() && ! $is_self && ! $this_wolf){
+    elseif($this_user->IsLive() && ! $this_user->IsSelf() && ! $this_wolf){
       echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	$this_user_no . '">'."\n";
     }
@@ -974,15 +1017,27 @@ EOF;
     $type   = 'MAGE_DO';
     $submit = 'submit_mage_do';
   }
+  elseif($role_voodoo_killer){
+    $type   = 'VOODOO_KILLER_DO';
+    $submit = 'submit_voodoo_killer_do';
+  }
   elseif($role_jammer_mad){
     $type   = 'JAMMER_MAD_DO';
-    $submit = 'submit_jammer_mad_do';
+    $submit = 'submit_jammer_do';
+  }
+  elseif($role_voodoo_mad){
+    $type   = 'VOODOO_MAD_DO';
+    $submit = 'submit_voodoo_do';
   }
   elseif($role_trap_mad){
     $type   = 'TRAP_MAD_DO';
-    $submit = 'submit_trap_mad_do';
+    $submit = 'submit_trap_do';
     $not_type   = 'TRAP_MAD_NOT_DO';
-    $not_submit = 'submit_trap_mad_not_do';
+    $not_submit = 'submit_trap_not_do';
+  }
+  elseif($role_anti_voodoo){
+    $type   = 'ANTI_VOODOO_DO';
+    $submit = 'submit_anti_voodoo_do';
   }
   elseif($role_guard){
     $type   = 'GUARD_DO';
@@ -994,9 +1049,9 @@ EOF;
   }
   elseif($role_poison_cat){
     $type   = 'POISON_CAT_DO';
-    $submit = 'submit_poison_cat_do';
+    $submit = 'submit_revive_do';
     $not_type   = 'POISON_CAT_NOT_DO';
-    $not_submit = 'submit_poison_cat_not_do';
+    $not_submit = 'submit_revive_not_do';
   }
   elseif($role_assassin){
     $type   = 'ASSASSIN_DO';
@@ -1007,6 +1062,10 @@ EOF;
   elseif($role_mania){
     $type   = 'MANIA_DO';
     $submit = 'submit_mania_do';
+  }
+  elseif($role_voodoo_fox){
+    $type   = 'VOODOO_FOX_DO';
+    $submit = 'submit_voodoo_do';
   }
   elseif($role_child_fox){
     $type   = 'CHILD_FOX_DO';

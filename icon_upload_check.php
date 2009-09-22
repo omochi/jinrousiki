@@ -109,9 +109,9 @@ if(! move_uploaded_file($_FILES['file']['tmp_name'], $ICON_CONF->path . '/' . $f
 }
 
 //データベースに登録
-mysql_query("INSERT INTO user_icon(icon_no, icon_name, icon_filename, icon_width, icon_height,
-		color, session_id)
-		VALUES($icon_no, '$name', '$file_name', $width, $height, '$color', '$session_id')");
+$items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, session_id';
+$values = "$icon_no, '$name', '$file_name', $width, $height, '$color', '$session_id'";
+InsertDatabase('user_icon', $items, $values);
 mysql_query('COMMIT'); //一応コミット
 mysql_query('UNLOCK TABLES'); //ロック解除
 DisconnectDatabase($dbHandle);

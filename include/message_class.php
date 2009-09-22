@@ -9,32 +9,34 @@ class Message{
   //身代わり君の遺言
   var $dummy_boy_last_words = '僕はおいしくないって言ったのに……';
 
-  var $game_option_wish_role       = '役割希望制';
-  var $game_option_real_time       = 'リアルタイム制';
-  var $game_option_dummy_boy       = '初日の夜は身代わり君';
-  var $game_option_gm_login        = '身代わり君は GM';
-  var $game_option_open_vote       = '投票した票数を公表する';
-  var $game_option_not_open_cast   = '霊界で配役を公開しない';
-  var $game_option_decide          = '決定者登場';
-  var $game_option_authority       = '権力者登場';
-  var $game_option_poison          = '埋毒者登場';
-  var $game_option_cupid           = 'キューピッド登場';
-  var $game_option_boss_wolf       = '白狼登場';
-  var $game_option_poison_wolf     = '毒狼登場';
-  var $game_option_mania           = '神話マニア登場';
-  var $game_option_medium          = '巫女登場';
-  var $game_option_liar            = '狼少年村';
-  var $game_option_gentleman       = '紳士・淑女村';
-  var $game_option_sudden_death    = '虚弱体質村';
-  var $game_option_perverseness    = '天邪鬼村';
-  var $game_option_full_mania      = '神話マニア村';
-  var $game_option_chaos           = '闇鍋モード';
-  var $game_option_chaosfull       = '真・闇鍋モード';
-  var $game_option_chaos_open_cast = '配役を通知する';
-  var $game_option_secret_sub_role = 'サブ役職を表示しない';
-  var $game_option_no_sub_role     = 'サブ役職をつけない';
-  var $game_option_quiz            = 'クイズ村';
-  var $game_option_duel            = '決闘村';
+  var $game_option_wish_role            = '役割希望制';
+  var $game_option_real_time            = 'リアルタイム制';
+  var $game_option_dummy_boy            = '初日の夜は身代わり君';
+  var $game_option_gm_login             = '身代わり君は GM';
+  var $game_option_open_vote            = '投票した票数を公表する';
+  var $game_option_not_open_cast        = '霊界で配役を公開しない';
+  var $game_option_decide               = '決定者登場';
+  var $game_option_authority            = '権力者登場';
+  var $game_option_poison               = '埋毒者登場';
+  var $game_option_cupid                = 'キューピッド登場';
+  var $game_option_boss_wolf            = '白狼登場';
+  var $game_option_poison_wolf          = '毒狼登場';
+  var $game_option_mania                = '神話マニア登場';
+  var $game_option_medium               = '巫女登場';
+  var $game_option_liar                 = '狼少年村';
+  var $game_option_gentleman            = '紳士・淑女村';
+  var $game_option_sudden_death         = '虚弱体質村';
+  var $game_option_perverseness         = '天邪鬼村';
+  var $game_option_full_mania           = '神話マニア村';
+  var $game_option_chaos                = '闇鍋モード';
+  var $game_option_chaosfull            = '真・闇鍋モード';
+  var $game_option_chaos_open_cast      = '配役を通知する';
+  var $game_option_chaos_open_cast_camp = '陣営を通知する';
+  var $game_option_chaos_open_cast_role = '役職を通知する';
+  var $game_option_secret_sub_role      = 'サブ役職を表示しない';
+  var $game_option_no_sub_role          = 'サブ役職をつけない';
+  var $game_option_quiz                 = 'クイズ村';
+  var $game_option_duel                 = '決闘村';
 
   //-- user_manager.php --//
   //EntryUser() : ユーザ登録
@@ -87,24 +89,26 @@ class Message{
   var $draw_announce = '再投票となると引き分けになります'; //引き分け告知
 
   //OutputTalkLog() : 会話、システムメッセージ出力
-  // var $objection = 'が「異議」を申し立てました'; //「異議」あり
-  var $objection = '「た、頼む！殺さないでくれ！」'; //「異議」あり
-  //var $game_start = 'はゲーム開始に投票しました' //ゲーム開始投票 //現在は不使用
-  var $kick_do           = 'に KICK 投票しました'; //KICK 投票
-  var $vote_do           = 'に処刑投票しました'; //処刑投票
-  var $wolf_eat          = 'に狙いをつけました'; //人狼の投票
-  var $mage_do           = 'を占います'; //占い師の投票
-  var $jammer_mad_do     = 'の占いを妨害します'; //邪魔狂人の投票
-  var $trap_mad_do       = 'の周辺に罠を仕掛けました'; //罠師の投票
-  var $trap_mad_not_do   = 'は罠設置を行いませんでした'; //罠師のキャンセル投票
-  var $guard_do          = 'の護衛に付きました'; //狩人の投票
-  var $reporter_do       = 'を尾行しました'; //ブン屋の投票
-  var $poison_cat_do     = 'に蘇生処置をしました'; //猫又の投票
-  var $poison_cat_not_do = 'は蘇生処置をしませんでした'; //猫又のキャンセル投票
-  var $assassin_do       = 'に狙いをつけました'; //暗殺者の投票
-  var $assassin_not_do   = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
-  var $mania_do          = 'の能力を真似ることにしました'; //神話マニアの投票
-  var $cupid_do          = 'に愛の矢を放ちました'; //キューピッドの投票
+  var $objection = 'が「異議」を申し立てました'; //「異議」あり
+  // var $game_start = 'はゲーム開始に投票しました' //ゲーム開始投票 //現在は不使用
+  var $kick_do          = 'に KICK 投票しました'; //KICK 投票
+  var $vote_do          = 'に処刑投票しました'; //処刑投票
+  var $wolf_eat         = 'に狙いをつけました'; //人狼の投票
+  var $mage_do          = 'を占います'; //占い師の投票
+  var $voodoo_killer_do = 'の呪いを祓います'; //陰陽師の投票
+  var $jammer_do        = 'の占いを妨害します'; //邪魔狂人の投票
+  var $trap_do          = 'の周辺に罠を仕掛けました'; //罠師の投票
+  var $trap_not_do      = 'は罠設置を行いませんでした'; //罠師のキャンセル投票
+  var $voodoo_do        = 'に呪いをかけます'; //呪術師の投票
+  var $guard_do         = 'の護衛に付きました'; //狩人の投票
+  var $anti_voodoo_do   = 'の厄を祓います'; //厄神の投票
+  var $reporter_do      = 'を尾行しました'; //ブン屋の投票
+  var $revive_do        = 'に蘇生処置をしました'; //猫又の投票
+  var $revive_not_do    = 'は蘇生処置をしませんでした'; //猫又のキャンセル投票
+  var $assassin_do      = 'に狙いをつけました'; //暗殺者の投票
+  var $assassin_not_do  = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
+  var $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
+  var $cupid_do         = 'に愛の矢を放ちました'; //キューピッドの投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -147,16 +151,19 @@ class Message{
   var $ability_dead     = 'アナタは息絶えました・・・'; //死んでいる場合
 
   //CheckNightVote() : 夜の投票
-  var $ability_wolf_eat      = '喰い殺す人を選択してください'; //人狼の投票
-  var $ability_mage_do       = '占う人を選択してください'; //占い師の投票
-  var $ability_jammer_mad_do = '占いを妨害する人を選択してください'; //罠師の投票
-  var $ability_trap_mad_do   = '罠を設置する人を選択してください'; //罠師の投票
-  var $ability_guard_do      = '護衛する人を選択してください'; //狩人の投票
-  var $ability_reporter_do   = '尾行する人を選択してください'; //ブン屋の投票
-  var $ability_poison_cat_do = '蘇生する人を選択してください'; //猫又の投票
-  var $ability_assassin_do   = '暗殺する人を選択してください'; //暗殺者の投票
-  var $ability_mania_do      = '能力を真似る人を選択してください'; //神話マニアの投票
-  var $ability_cupid_do      = '結びつける二人を選択してください'; //キューピッドの投票
+  var $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
+  var $ability_mage_do          = '占う人を選択してください'; //占い師系
+  var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
+  var $ability_jammer_do        = '占いを妨害する人を選択してください'; //邪魔狂人
+  var $ability_trap_do          = '罠を設置する人を選択してください'; //罠師
+  var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師・九尾
+  var $ability_guard_do         = '護衛する人を選択してください'; //狩人系
+  var $ability_anti_voodoo_do   = '厄を祓う人を選択してください'; //厄神
+  var $ability_reporter_do      = '尾行する人を選択してください'; //ブン屋
+  var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
+  var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
+  var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
+  var $ability_cupid_do         = '結びつける二人を選択してください'; //キューピッド
 
   //-- game_play.php --//
   //CheckSilence()
@@ -199,19 +206,39 @@ class Message{
   var $submit_vote_do = '対象を処刑するに一票'; //処刑投票ボタン
 
   //OutputVoteNight()
-  var $submit_wolf_eat          = '対象を喰い殺す (先着)'; //人狼の襲撃ボタン
-  var $submit_mage_do           = '対象を占う'; //占い師の投票ボタン
-  var $submit_jammer_mad_do     = '対象の占いを妨害する'; //邪魔狂人の投票ボタン
-  var $submit_trap_mad_do       = '対象の周辺に罠を設置する'; //罠師の投票ボタン
-  var $submit_trap_mad_not_do   = '罠を設置しない'; //罠師の投票ボタン(キャンセル)
-  var $submit_guard_do          = '対象を護衛する'; //狩人の投票ボタン
-  var $submit_reporter_do       = '対象を尾行する'; //ブン屋の投票ボタン
-  var $submit_poison_cat_do     = '対象を蘇生する'; //猫又の投票ボタン
-  var $submit_poison_cat_not_do = '誰も蘇生しない'; //猫又の投票ボタン(キャンセル)
-  var $submit_assassin_do       = '対象を暗殺する'; //暗殺者の投票ボタン
-  var $submit_assassin_not_do   = '誰も暗殺しない'; //暗殺者の投票ボタン(キャンセル)
-  var $submit_mania_do          = '対象を真似る'; //神話マニアの投票ボタン
-  var $submit_cupid_do          = '対象に愛の矢を放つ'; //キューピッドの投票ボタン
+  //投票ボタン
+  var $submit_wolf_eat         = '対象を喰い殺す (先着)'; //人狼
+  var $submit_mage_do          = '対象を占う'; //占い師系
+  var $submit_voodoo_killer_do = '対象の呪いを祓う'; //陰陽師
+  var $submit_jammer_do        = '対象の占いを妨害する'; //邪魔狂人
+  var $submit_trap_do          = '対象の周辺に罠を設置する'; //罠師
+  var $submit_trap_not_do      = '罠を設置しない'; //罠師(キャンセル)
+  var $submit_voodoo_do        = '対象に呪いをかける'; //呪術師
+  var $submit_guard_do         = '対象を護衛する'; //狩人系
+  var $submit_anti_voodoo_do   = '対象の厄を祓う'; //厄神
+  var $submit_reporter_do      = '対象を尾行する'; //ブン屋
+  var $submit_revive_do        = '対象を蘇生する'; //猫又
+  var $submit_revive_not_do    = '誰も蘇生しない'; //猫又(キャンセル)
+  var $submit_assassin_do      = '対象を暗殺する'; //暗殺者系
+  var $submit_assassin_not_do  = '誰も暗殺しない'; //暗殺者系(キャンセル)
+  var $submit_mania_do         = '対象を真似る'; //神話マニア
+  var $submit_cupid_do         = '対象に愛の矢を放つ'; //キューピッド系
+
+  //InsertRandomMessage()
+  var $random_message_list = array(
+    '開発者からのどうでもいい話：実は式神研発足当初に PHP をまともに書いたことある人はいませんでした。',
+    '開発者からのどうでもいい話：実は式神研発足当初に mysql をまともに扱える人はほとんどいませんでした。',
+    '開発者からのどうでもいい話：式神研の開発元のコードを書いた人を我々は「剛毅な人」と評価しています。理由？ソースを見たらきっと分かります。',
+    '開発者からのどうでもいい話：闇鍋のコードは流石鯖のGMさんより頂いたものです。',
+    '開発者からのどうでもいい話：式神研の闇鍋のコンセプトは「理不尽」「推理なんてさせない」「楽しんだ者勝ち」です。',
+    '開発者からのどうでもいい話：「魂の占い師」にはモデルがいます。「魂」で次々人外を当てる凄い占い師を何度も演じたプレイヤーさんです。',
+    '開発者からのどうでもいい話：「騎士」にはモデルがいます。多くの人狼を泣かせた高性能狩人を何度も演じたプレイヤーさんです。',
+    '開発者からのどうでもいい話：「萌狼」にはモデルがいます。2日目の朝一に「はい、では喰いましょうか」と発言してしまった可愛い人狼さんです。',
+    '開発者からのどうでもいい話：「雲外鏡」にはモデルがいます。圧倒的信用度を誇る霊能者を何度も演じたプレイヤーさんです。',
+    '開発者からのどうでもいい話：「強毒者」にはモデルがいます。吊られた時に高精度で人外を巻き込む埋毒者を何度も演じたプレイヤーさんです。',
+    '開発者からのどうでもいい話：「潜毒者」にはモデルがいます。潜伏を続けて人狼の噛みを引き寄せる埋毒者を何度も演じたプレイヤーさんです。',
+    '開発者からのどうでもいい話：一部で大人気の「ひよこ鑑定士」のアイディアは流石鯖のGMさんより頂いたものです。',
+			      );
 }
 $MESSAGE = new Message();
 ?>

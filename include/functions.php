@@ -41,11 +41,16 @@ function DisconnectDatabase($dbHandle){
   mysql_close($dbHandle);
 }
 
-//発言を DB に登録する (talk Table)
+//データベース登録のラッパー関数
+function InsertDatabase($table, $items, $values){
+  return mysql_query("INSERT INTO $table($items) VALUES($values)");
+}
+
+//発言をデータベースに登録する (talk Table)
 function InsertTalk($room_no, $date, $location, $uname, $time, $sentence, $font_type, $spend_time){
-  $items  = "room_no, date, location, uname, time, sentence, font_type, spend_time";
+  $items  = 'room_no, date, location, uname, time, sentence, font_type, spend_time';
   $values = "$room_no, $date, '$location', '$uname', '$time', '$sentence', '$font_type', $spend_time";
-  mysql_query("INSERT INTO talk($items) VALUES($values)");
+  return InsertDatabase('talk', $items, $values);
 }
 
 //セッションIDを新しくする(PHPのバージョンが古いとこの関数が無いので定義する)
@@ -228,7 +233,8 @@ function MakeGameOptionImage($game_option, $option_role = ''){
 			      'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
 			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
 			      'perverseness', 'full_mania', 'quiz', 'duel', 'chaos', 'chaosfull',
-			      'chaos_open_cast', 'secret_sub_role', 'no_sub_role');
+			      'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role',
+			      'secret_sub_role', 'no_sub_role');
 
   foreach($display_order_list as $this_option){
     if(! in_array($this_option, $option_list)) continue;

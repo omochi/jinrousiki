@@ -36,7 +36,7 @@ class RoomDataSet{
   }
 
   function IsOption($option){
-    return (in_array($option, $this->option_list));
+    return in_array($option, $this->option_list);
   }
 
   function IsOptionGroup($option){

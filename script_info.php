@@ -12,7 +12,7 @@ $USER_ICON = new UserIcon(); //еведе│еє┼╨╧┐└▀─ъдЄеэб╝е╔
 <title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?> [╗┼══]</title>
 </head>
 
-<body onLoad="time_PC_diff_output();">
+<body>
 <a href="index.php">вл╠сды</a><br>
 <img src="img/script_info_title.jpg">
 
@@ -97,6 +97,8 @@ Perl длдщ PHP д╦д╣дыд│д╚д╟╞░║юдЄ╣т┬од╦д╖бв╟╙┬╛└й╕цдЄ MySQL д╦╟дд╗дыд│д╚д╟еэе├епе
 <?php
   $date_str = gmdate('Y, m, j, G, i, s', TZTime());
   echo "output_diff_time('$date_str');";
+  //$time_str = time();
+  //echo "output_diff_time('$time_str');";
 ?>
 </script>╔├</span>
 </div>

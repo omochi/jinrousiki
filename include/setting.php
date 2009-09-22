@@ -6,12 +6,10 @@ class DatabaseConfig{
   var $host = 'localhost';
 
   //データベースのユーザ名
-  #var $user = 'xxxxxx';
-  var $user = 'grayran';
+  var $user = 'xxxx';
 
   //データベースサーバのパスワード
-  #var $password = 'xxxxxx';
-  var $password = 'satorituri';
+  var $password = 'xxxxxxxx';
 
   //データベース名
   var $name = 'jinrou';
@@ -27,17 +25,16 @@ class ServerConfig{
   var $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  var $server_comment = '〜東方ウミガメ村＠チルノ鯖〜';
+  var $comment = '';
 
   //戻り先のページ
   var $back_page = '';
 
   //管理者用パスワード
-  var $system_password = 'xxxxxx';
+  var $system_password = 'xxxxxxxx';
 
-  //パスワードハッシュ化用salt文字列
-  //パスワードを平文でDBに記録しないようにする
-  var $hash_salt = 'hash';
+  //パスワード暗号化用 salt
+  var $salt = 'xxxx';
 
   //ソースアップロードフォームのパスワード
   var $src_upload_password = 'upload';
@@ -47,6 +44,57 @@ class ServerConfig{
 
   //他の人狼サーバの村情報を表示する
   var $shared_server = false;
+
+  //表示する他のサーバのリスト
+  var $shared_server_list = array(
+	'sanae' => array('name' => '早苗鯖',
+			  'url' => 'http://alicegame.dip.jp/sanae/',
+			  'encode' => 'UTF-8'),
+
+	'satori' => array('name' => 'さとり鯖',
+			  'url' => 'http://satori.crz.jp/',
+			  'encode' => 'EUC-JP'),
+
+	'sakuya' => array('name' => '咲夜鯖',
+			  'url' => 'http://www7.atpages.jp/izayoi398/',
+			  'encode' => 'EUC-JP',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</div></small></a><br>'),
+
+	'cirno' => array('name' => 'チルノ鯖',
+			 'url' => 'http://www12.atpages.jp/cirno/',
+			  'encode' => 'EUC-JP',
+			 'separator' => '<!-- atpages banner tag -->',
+			 'footer' => '</a><br>'),
+
+	'sasuga' => array('name' => '流石兄弟鯖',
+			  'url' => 'http://www12.atpages.jp/yaruo/jinro/',
+			  'encode' => 'EUC-JP',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</div></small></a><br>'),
+
+	'suise' => array('name' => '翠星石鯖',
+			  'url' => 'http://alicegame.dip.jp/suisei/',
+			  'encode' => 'UTF-8'),
+
+	'bara' => array('name' => '薔薇姉妹鯖',
+			'url' => 'http://www13.atpages.jp/yaranai/',
+			'encode' => 'UTF-8',
+			'separator' => '<!-- atpages banner tag -->',
+			'footer' => '</a><br>'),
+
+	'suigin' => array('name' => '水銀鯖',
+			  'url' => 'http://www13.atpages.jp/suigintou/',
+			  'encode' => 'UTF-8',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</a><br>'),
+
+	'mohican' => array('name' => '世紀末鯖',
+			   'url' => 'http://www12.atpages.jp/yagio/jinro_php_files/jinro_php/',
+			   'encode' => 'EUC-JP',
+			   'separator' => '<!-- atpages banner tag -->',
+			   'footer' => '</div></small></a><br>')
+				  );
 }
 $SERVER_CONF = new ServerConfig();
 

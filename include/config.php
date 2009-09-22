@@ -79,13 +79,22 @@ class RoomConfig{
   var $default_full_mania = false;
 
   var $chaos = true; //°ÇÆé¥â¡¼¥É
-  var $default_chaos = false;
-
   var $chaosfull = true; //¿¿¡¦°ÇÆé¥â¡¼¥É
-  var $default_chaosfull = false;
+
+  //°ÇÆé¥â¡¼¥É¤Î¥Ç¥Õ¥©¥ë¥È
+  var $default_chaos = NULL; //ÄÌ¾ï¿ÍÏµ
+  // var $default_chaos = 'chaos'; //ÄÌ¾ï°ÇÆé
+  // var $default_chaos = 'chosfull'; //¿¿¡¦°ÇÆé
+
 
   var $chaos_open_cast = true; //ÇÛÌòÆâÌõ¤òÉ½¼¨¤¹¤ë (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
-  var $default_chaos_open_cast = false;
+  var $chaos_open_cast_camp = true; //¿Ø±ÄËè¤ÎÁí¿ô¤òÉ½¼¨¤¹¤ë (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
+  var $chaos_open_cast_role = true; //Ìò¿¦¤Î¼ïÎàËè¤ÎÁí¿ô¤òÉ½¼¨¤¹¤ë (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
+  //ÄÌÃÎ¥â¡¼¥É¤Î¥Ç¥Õ¥©¥ë¥È
+  // var $default_chaos_open_cast = NULL; //ÄÌÃÎÌµ¤·
+  var $default_chaos_open_cast = 'camp'; //¿Ø±ÄÄÌÃÎ
+  // var $default_chaos_open_cast = 'role'; //Ìò¿¦ÄÌÃÎ
+  // var $default_chaos_open_cast = 'full'; //´°Á´ÄÌÃÎ
 
   var $secret_sub_role = true; //¥µ¥ÖÌò¿¦¤òËÜ¿Í¤ËÄÌÃÎ¤·¤Ê¤¤ (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
   var $default_secret_sub_role = false;
@@ -98,52 +107,6 @@ class RoomConfig{
 
   var $duel = true; //·èÆ®Â¼
   var $default_duel = false;
-
-  //É½¼¨¤¹¤ëÂ¾¤Î¥µ¡¼¥Ð¤Î¥ê¥¹¥È
-  var $shared_server_list = array(
-	'satori' => array('name' => '¤µ¤È¤ê»ª',
-			  'url' => 'http://satori.crz.jp/',
-			  'encode' => 'EUC-JP'),
-
-	'sakuya' => array('name' => 'ºéÌë»ª',
-			  'url' => 'http://www7.atpages.jp/izayoi398/',
-			  'encode' => 'EUC-JP',
-			  'separator' => '<!-- atpages banner tag -->',
-			  'footer' => '</div></small></a><br>'),
-	/*
-	'cirno' => array('name' => '¥Á¥ë¥Î»ª',
-			 'url' => 'http://www12.atpages.jp/cirno/',
-			  'encode' => 'EUC-JP',
-			 'separator' => '<!-- atpages banner tag -->',
-			 'footer' => '</a><br>'),
-	*/
-	'nico' => array('name' => '¥Ë¥³À¸»ª',
-			'url' => 'http://jinro.ebb.jp/',
-			  'encode' => 'EUC-JP'),
-	/*
-	'nico_test' => array('name' => '¥Ë¥³À¸¥Æ¥¹¥È»ª',
-			     'url' => 'http://jinro.s369.xrea.com/',
-			  'encode' => 'EUC-JP'),
-	*/
-	'sasuga' => array('name' => 'Î®ÀÐ·»Äï»ª',
-			  'url' => 'http://www12.atpages.jp/yaruo/jinro/',
-			  'encode' => 'EUC-JP',
-			  'separator' => '<!-- atpages banner tag -->',
-			  'footer' => '</div></small></a><br>'),
-
-	'bara' => array('name' => 'é¬é¯»ÐËå»ª',
-			'url' => 'http://www13.atpages.jp/yaranai/',
-			'encode' => 'UTF-8',
-			'separator' => '<!-- atpages banner tag -->',
-			'footer' => '</a><br>'),
-
-	'suigin' => array('name' => '¿å¶ä»ª',
-			  'url' => 'http://www13.atpages.jp/suigintou/',
-			  'encode' => 'UTF-8',
-			  'separator' => '<!-- atpages banner tag -->',
-			  'footer' => '</a><br>')
-				  );
-
 }
 $ROOM_CONF = new RoomConfig();
 
@@ -280,26 +243,32 @@ class GameConfig{
 			      'soul_mage'         => 'º²¤ÎÀê¤¤»Õ',
 			      'psycho_mage'       => 'Àº¿À´ÕÄê»Î',
 			      'sex_mage'          => '¤Ò¤è¤³´ÕÄê»Î',
+			      'voodoo_killer'     => '±¢ÍÛ»Õ',
 			      'dummy_mage'        => 'Ì´¸«¿Í',
 			      'necromancer'       => 'ÎîÇ½¼Ô',
 			      'soul_necromancer'  => '±À³°¶À',
+			      'yama_necromancer'  => 'ïåËâ',
 			      'dummy_necromancer' => 'Ì´Ëí¿Í',
 			      'medium'            => 'Öà½÷',
 			      'mad'               => '¶¸¿Í',
 			      'fanatic_mad'       => '¶¸¿®¼Ô',
 			      'jammer_mad'        => '¼ÙËâ¶¸¿Í',
 			      'trap_mad'          => 'æ«»Õ',
+			      'voodoo_mad'        => '¼ö½Ñ»Õ',
 			      'whisper_mad'       => 'Óñ¤­¶¸¿Í',
 			      'guard'             => '¼í¿Í',
 			      'poison_guard'      => 'µ³»Î',
-			      'dummy_guard'       => 'Ì´¼é¿Í',
+			      'anti_voodoo'       => 'Ìñ¿À',
 			      'reporter'          => '¥Ö¥ó²°',
+			      'dummy_guard'       => 'Ì´¼é¿Í',
 			      'common'            => '¶¦Í­¼Ô',
 			      'dummy_common'      => 'Ì´¶¦Í­¼Ô',
 			      'fox'               => 'ÍÅ¸Ñ',
-			      'cursed_fox'        => 'Å·¸Ñ',
-			      'poison_fox'        => '´É¸Ñ',
 			      'white_fox'         => 'Çò¸Ñ',
+			      'silver_fox'        => '¶ä¸Ñ',
+			      'poison_fox'        => '´É¸Ñ',
+			      'voodoo_fox'        => '¶åÈø',
+			      'cursed_fox'        => 'Å·¸Ñ',
 			      'child_fox'         => '»Ò¸Ñ',
 			      'poison'            => 'ËäÆÇ¼Ô',
 			      'strong_poison'     => '¶¯ÆÇ¼Ô',
@@ -367,27 +336,33 @@ class GameConfig{
 			       'soul_mage'         => 'º²',
 			       'psycho_mage'       => '¿´Àê',
 			       'sex_mage'          => '¿÷Àê',
+			       'voodoo_killer'     => '±¢ÍÛ',
 			       'dummy_mage'        => 'Ì´¸«',
-			       'reporter'          => 'Ê¹',
 			       'necromancer'       => 'Îî',
 			       'soul_necromancer'  => '±À',
+			       'yama_necromancer'  => 'ïå',
 			       'dummy_necromancer' => 'Ì´Ëí',
 			       'medium'            => 'Öà',
 			       'mad'               => '¶¸',
 			       'fanatic_mad'       => '¶¸¿®',
 			       'jammer_mad'        => '¼Ù¶¸',
 			       'trap_mad'          => 'æ«',
+			       'voodoo_mad'        => '¼ö¶¸',
 			       'whisper_mad'       => 'Óñ¶¸',
 			       'guard'             => '¼í',
 			       'poison_guard'      => 'µ³',
+			       'anti_voodoo'       => 'Ìñ',
+			       'reporter'          => 'Ê¹',
 			       'dummy_guard'       => 'Ì´¼é',
 			       'common'            => '¶¦',
 			       'dummy_common'      => 'Ì´¶¦',
 			       'fox'               => '¸Ñ',
-			       'child_fox'         => '»Ò¸Ñ',
-			       'cursed_fox'        => 'Å·¸Ñ',
-			       'poison_fox'        => '´É¸Ñ',
 			       'white_fox'         => 'Çò¸Ñ',
+			       'silver_fox'        => '¶ä¸Ñ',
+			       'poison_fox'        => '´É¸Ñ',
+			       'voodoo_fox'        => '¶åÈø',
+			       'cursed_fox'        => 'Å·¸Ñ',
+			       'child_fox'         => '»Ò¸Ñ',
 			       'poison'            => 'ÆÇ',
 			       'strong_poison'     => '¶¯ÆÇ',
 			       'incubate_poison'   => 'ÀøÆÇ',
@@ -439,6 +414,10 @@ class GameConfig{
 			       'lovers'            => 'Îø',
 			       'copied'            => '¸µ¥Þ');
 
+  //-- ¤½¤ÎÂ¾ --//
+  var $random_message = true; //¥é¥ó¥À¥à¥á¥Ã¥»¡¼¥¸¤ÎÁÞÆþ (¤¹¤ë¡§true / ¤·¤Ê¤¤¡§false)
+
+  //-- ´Ø¿ô --//
   function GetRoleName($role, $short = false){
     if($short) return $this->short_role_list[$role];
     return ($this->main_role_list[$role] || $this->sub_role_list[$role]);

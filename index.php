@@ -41,28 +41,34 @@
       <li><a href="src/">開発版ソースダウンロード</a></li>
       <li><a href="src/diff.txt">開発履歴</a></li>
       <li><a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a></li>
-      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50">開発者用スレッド</a></li>
+      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50">開発・バグ報告スレ</a></li>
+      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50">新役職提案スレ</a></li>
     </ul>
 
     <div class="menu">交流用サイト</div>
     <ul>
+      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1252065305/l50">本スレ</a>(告知はここ)</li>
+      <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
       <li><a href="http://jbbs.livedoor.jp/netgame/2829/">ウミガメ人狼掲示板</a></li>
       <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">ウミガメ雑談村</a></li>
+      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">反省・議論用スレ</a></li>
     </ul>
 
     <div class="menu">外部リンク</div>
     <ul>
-      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1246632234/l50">本スレ</a></li>
-      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">反省・議論用スレ</a></li>
-      <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
+      <li>東方ウミガメ系</li>
+      <li><a href="http://alicegame.dip.jp/sanae/">早苗鯖</a></li>
       <li><a href="http://satori.crz.jp/">さとり鯖</a></li>
       <li><a href="http://www7.atpages.jp/izayoi398/">咲夜鯖</a></li>
       <!-- <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖（開発チーム）</a></li> -->
-      <li><a href="http://jinro.ebb.jp/">ニコ生専用鯖</a></li>
-      <!-- <li><a href="http://jinro.s369.xrea.com/">ニコ生専用テスト鯖</a></li> -->
+      <li>やる夫系</li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>
+      <li><a href="http://alicegame.dip.jp/suisei/">翠星石鯖</a></li>
       <li><a href="http://www13.atpages.jp/yaranai/">薔薇姉妹鯖</a></li>
       <li><a href="http://www13.atpages.jp/suigintou/">水銀鯖</a></li>
+      <li><a href="http://www15.atpages.jp/kanaria/">金糸雀保管庫</a></li>
+      <li><a href="http://www12.atpages.jp/yagio/jinro_php_files/jinro_php/">世紀末鯖（テスト鯖）</a></li>
+      <li><a href="http://www37.atwiki.jp/yaruomura/">やる夫wiki</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>

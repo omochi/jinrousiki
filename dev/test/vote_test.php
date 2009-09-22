@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../../include/game_functions.php');
+require_once(dirname(__FILE__) . '/../../include/game_play_functions.php');
 require_once(dirname(__FILE__) . '/../../include/game_vote_functions.php');
 require_once(dirname(__FILE__) . '/../../include/request_class.php');
 
@@ -10,10 +10,15 @@ $RQ_ARGS->room_no = 94;
 $RQ_ARGS->TestItems->test_room = array(
   'room_name'    => '【水銀69】やる夫達の真闇鍋村',
   'room_comment' => 'クイズが苦手なんで鍋でも食べよう',
-  'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 not_open_cast',
-  'date'         => 9,
-  'day_night'    => 'aftergame',
-  'status'       => 'finished');
+  // 'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 not_open_cast',
+  'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4',
+  // 'date'         => 9,
+  'date'         => 1,
+  //'day_night'    => 'aftergame',
+  'day_night'    => 'night',
+  // 'status'       => 'finished'
+  'status'       => 'playing'
+);
 $RQ_ARGS->TestItems->is_virtual_room = true;
 
 $RQ_ARGS->TestItems->test_users[1] = new User();
@@ -37,8 +42,8 @@ $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[2]->profile = '';
-$RQ_ARGS->TestItems->test_users[2]->role = 'human lovers[4]';
-$RQ_ARGS->TestItems->test_users[2]->live = 'dead';
+$RQ_ARGS->TestItems->test_users[2]->role = 'voodoo_mad';
+$RQ_ARGS->TestItems->test_users[2]->live = 'live';
 $RQ_ARGS->TestItems->test_users[2]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[2]->is_system = false;
 $RQ_ARGS->TestItems->test_users[2]->icon_filename = '001.gif';
@@ -51,7 +56,7 @@ $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
 $RQ_ARGS->TestItems->test_users[3]->handle_name = '暗灰';
 $RQ_ARGS->TestItems->test_users[3]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[3]->profile = '';
-$RQ_ARGS->TestItems->test_users[3]->role = 'fox authority';
+$RQ_ARGS->TestItems->test_users[3]->role = 'silver_fox authority';
 $RQ_ARGS->TestItems->test_users[3]->live = 'live';
 $RQ_ARGS->TestItems->test_users[3]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[3]->is_system = false;
@@ -65,8 +70,8 @@ $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[4]->profile = '';
-$RQ_ARGS->TestItems->test_users[4]->role = 'cupid rabbit lovers[4]';
-$RQ_ARGS->TestItems->test_users[4]->live = 'dead';
+$RQ_ARGS->TestItems->test_users[4]->role = 'mage rabbit';
+$RQ_ARGS->TestItems->test_users[4]->live = 'live';
 $RQ_ARGS->TestItems->test_users[4]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[4]->is_system = false;
 $RQ_ARGS->TestItems->test_users[4]->icon_filename = '003.gif';
@@ -79,7 +84,7 @@ $RQ_ARGS->TestItems->test_users[5]->uname = 'orange';
 $RQ_ARGS->TestItems->test_users[5]->handle_name = 'オレンジ';
 $RQ_ARGS->TestItems->test_users[5]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[5]->profile = '';
-$RQ_ARGS->TestItems->test_users[5]->role = 'boss_wolf decide';
+$RQ_ARGS->TestItems->test_users[5]->role = 'cursed_wolf decide';
 $RQ_ARGS->TestItems->test_users[5]->live = 'live';
 $RQ_ARGS->TestItems->test_users[5]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[5]->is_system = false;
@@ -93,7 +98,7 @@ $RQ_ARGS->TestItems->test_users[6]->uname = 'red';
 $RQ_ARGS->TestItems->test_users[6]->handle_name = '赤';
 $RQ_ARGS->TestItems->test_users[6]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[6]->profile = '';
-$RQ_ARGS->TestItems->test_users[6]->role = 'necromancer upper_luck';
+$RQ_ARGS->TestItems->test_users[6]->role = 'fox upper_luck';
 $RQ_ARGS->TestItems->test_users[6]->live = 'live';
 $RQ_ARGS->TestItems->test_users[6]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[6]->is_system = false;
@@ -107,7 +112,7 @@ $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[7]->profile = '';
-$RQ_ARGS->TestItems->test_users[7]->role = 'poison_cat';
+$RQ_ARGS->TestItems->test_users[7]->role = 'cursed_fox';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 $RQ_ARGS->TestItems->test_users[7]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[7]->is_system = false;
@@ -121,7 +126,7 @@ $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[8]->profile = '';
-$RQ_ARGS->TestItems->test_users[8]->role = 'medium disfavor';
+$RQ_ARGS->TestItems->test_users[8]->role = 'child_fox disfavor';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 $RQ_ARGS->TestItems->test_users[8]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[8]->is_system = false;
@@ -149,7 +154,7 @@ $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[10]->profile = '';
-$RQ_ARGS->TestItems->test_users[10]->role = 'assassin random_luck';
+$RQ_ARGS->TestItems->test_users[10]->role = 'trap_mad random_luck';
 $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[10]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[10]->is_system = false;
@@ -163,7 +168,7 @@ $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[11]->profile = '';
-$RQ_ARGS->TestItems->test_users[11]->role = 'reporter rebel';
+$RQ_ARGS->TestItems->test_users[11]->role = 'anti_voodoo rebel';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[11]->is_system = false;
@@ -191,31 +196,43 @@ $RQ_ARGS->TestItems->vote_day_count_list = array_count_values($test_voted_uname_
 
 $RQ_ARGS->TestItems->vote_night->wolf = array('uname' => 'light_blue', 'target_uname' => 'dark_gray');
 $RQ_ARGS->TestItems->vote_night->mage = array(
-  #array('uname' => 'yellow', 'target_uname' => 'blue')
+  array('uname' => 'yellow', 'target_uname' => 'blue')
+);
+$RQ_ARGS->TestItems->vote_night->voodoo_killer = array(
+  array('uname' => 'red', 'target_uname' => 'blue')
 );
 $RQ_ARGS->TestItems->vote_night->jammer_mad = array(
-  #array('uname' => 'light_grey', 'target_uname' => 'yellow')
+  #array('uname' => 'light_gray', 'target_uname' => 'light_blue')
 );
-$RQ_ARGS->TestItems->vote_night->child_fox = array(
-  #array('uname' => 'yellow', 'target_uname' => 'dummy_boy')
-);
-$RQ_ARGS->TestItems->vote_night->mania = array(
-  #array('uname' => 'light_blue', 'target_uname' => 'orange')
+$RQ_ARGS->TestItems->vote_night->voodoo_mad = array(
+  array('uname' => 'light_gray', 'target_uname' => 'blue')
 );
 $RQ_ARGS->TestItems->vote_night->trap_mad = array(
-  #array('uname' => 'blue', 'target_uname' => 'blue')
+  #array('uname' => 'purple', 'target_uname' => 'dark_gray')
 );
 $RQ_ARGS->TestItems->vote_night->guard = array(
-  #array('uname' => 'green', 'target_uname' => 'cherry')
+  #array('uname' => 'green', 'target_uname' => 'purple')
+);
+$RQ_ARGS->TestItems->vote_night->anti_voodoo = array(
+  #array('uname' => 'cherry', 'target_uname' => 'yellow')
 );
 $RQ_ARGS->TestItems->vote_night->reporter = array(
   #array('uname' => 'cherry', 'target_uname' => 'light_blue')
 );
 $RQ_ARGS->TestItems->vote_night->poison_cat = array(
-  array('uname' => 'light_blue', 'target_uname' => 'light_gray')
+  #array('uname' => 'light_blue', 'target_uname' => 'light_gray')
 );
 $RQ_ARGS->TestItems->vote_night->assassin = array(
   #array('uname' => 'purple', 'target_uname' => 'orange')
+);
+$RQ_ARGS->TestItems->vote_night->mania = array(
+  #array('uname' => 'light_blue', 'target_uname' => 'orange')
+);
+$RQ_ARGS->TestItems->vote_night->voodoo_fox = array(
+  #array('uname' => 'light_blue', 'target_uname' => 'orange')
+);
+$RQ_ARGS->TestItems->vote_night->child_fox = array(
+  #array('uname' => 'light_blue', 'target_uname' => 'red')
 );
 
 $dbHandle = ConnectDatabase(); // DB 接続
@@ -224,12 +241,19 @@ $room_no = $RQ_ARGS->room_no;
 $ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
+$ROOM->date = 2;
+// $ROOM->day_night = 'day';
+$ROOM->day_night = 'night';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF = new User();
-$ROOM_IMG->path = '../../img/room_option';
-$ICON_CONF->path = '../../user_icon';
-$ICON_CONF->dead = '../../img/grave.gif';
+#$SELF = new User();
+#$SELF = $USERS->ByID(1);
+$SELF = $USERS->ByID(7);
+$ROLE_IMG = new RoleImage();
+$ROLE_IMG->path = '../../' . $ROLE_IMG->path;
+$ROOM_IMG->path = '../../' . $ROOM_IMG->path;
+$ICON_CONF->path = '../../' . $ICON_CONF->path;
+$ICON_CONF->dead = '../../' . $ICON_CONF->dead;
 $CSS_PATH = '../../css';
 
 OutputHTMLHeader('汝は人狼なりや？[テスト]', 'game'); //HTMLヘッダ
@@ -239,9 +263,10 @@ OutputHTMLHeader('汝は人狼なりや？[テスト]', 'game'); //HTMLヘッダ
 #OutputGameOption($ROOM->game_option, '');
 OutputPlayerList(); //プレイヤーリスト
 #print_r($RQ_ARGS->TestItems->vote_night); echo "<br>";
+OutputAbility();
+
 /*
-$ROOM->date = 2;
-$ROOM->day_night = 'day';
+// 昼の投票テスト
 $vote_times = 1;
 $vote_message_list = AggregateVoteDay();
 echo <<<EOF
@@ -261,7 +286,7 @@ EOF;
 echo '</table>';
 */
 
-$ROOM->day_night = 'night';
+// 夜の投票テスト
 AggregateVoteNight();
 
 /*

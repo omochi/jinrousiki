@@ -139,7 +139,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
       if($chaos) $game_option .= 'chaos ';
       if($chaosfull) $game_option .= 'chaosfull ';
       array_push($game_option_list, 'secret_sub_role');
-      array_push($option_role_list, 'chaos_open_cast');
+      array_push($option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role');
       if($perverseness){
 	$option_role .= 'no_sub_role ';
 	array_push($option_role_list, 'perverseness');
@@ -175,7 +175,27 @@ function CreateRoom($room_name, $room_comment, $max_user){
     }
   }
   foreach($option_role_list as $this_option){
-    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on'){
+    if(! $ROOM_CONF->$this_option) continue;
+    if($this_option == 'chaos_open_cast'){
+      switch($_POST[$this_option]){
+      case 'full':
+	$add_option = 'chaos_open_cast';
+	break;
+
+      case 'camp':
+	$add_option = 'chaos_open_cast_camp';
+	break;
+
+      case 'role':
+	$add_option = 'chaos_open_cast_role';
+	break;
+
+      default:
+	continue;
+      }
+      $option_role .= $add_option . ' ';
+    }
+    elseif($_POST[$this_option] == 'on'){
       $option_role .= $this_option . ' ';
     }
   }
@@ -206,20 +226,20 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //登録
   $time = TZTime();
-  $entry = mysql_query("INSERT INTO room(room_no, room_name, room_comment, establisher_ip, game_option,
-			option_role, max_user, status, date, day_night, last_updated)
-			VALUES($room_no, '$room_name', '$room_comment', '$ip_address', '$game_option',
-			'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time')");
+  $items = 'room_no, room_name, room_comment, establisher_ip, game_option, ' .
+    'option_role, max_user, status, date, day_night, last_updated';
+  $values = "$room_no, '$room_name', '$room_comment', '$ip_address', '$game_option', " .
+    "'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time'";
+  $entry = InsertDatabase('room', $items, $values);
 
   //身代わり君を入村させる
   if(strpos($game_option, 'dummy_boy') !== false &&
      FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
     $crypt_dummy_boy_password = CryptPassword($dummy_boy_password);
-    mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no,
-			profile, sex, password, live, last_words)
-			VALUES($room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0,
-			'{$MESSAGE->dummy_boy_comment}', 'male', '$crypt_dummy_boy_password',
-			'live', '{$MESSAGE->dummy_boy_last_words}')");
+    $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, live, last_words';
+    $values = "$room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0, '{$MESSAGE->dummy_boy_comment}', " .
+      "'male', '$crypt_dummy_boy_password', 'live', '{$MESSAGE->dummy_boy_last_words}'";
+    InsertDatabase('user_entry', $items, $values);
   }
 
   if($entry && mysql_query('COMMIT')) //一応コミット
@@ -307,13 +327,14 @@ EOF;
 
 //他のサーバの部屋画面を出力
 function OutputSharedServerRoom(){
-  global $SERVER_CONF, $ROOM_CONF, $ENCODE;
+  global $SERVER_CONF, $ENCODE;
 
   if(! $SERVER_CONF->shared_server) return false;
 
-  foreach($ROOM_CONF->shared_server_list as $server => $array){
+  foreach($SERVER_CONF->shared_server_list as $server => $array){
     extract($array, EXTR_PREFIX_ALL, 'this');
 
+    if($this_url == $SERVER_CONF->site_root) continue;
     if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
     #echo $this_data; //デバッグ用
     if($this_encode != '' && $this_encode != $ENCODE){
@@ -660,12 +681,21 @@ EOF;
   }
 
   if($ROOM_CONF->chaos){
-    if($ROOM_CONF->default_chaos)
+    switch($ROOM_CONF->default_chaos){
+    case 'chaos':
       $checked_chaos = ' checked';
-    elseif($ROOM_CONF->default_chaosfull)
-      $checked_chaosfull = ' checked';
-    else
+      break;
+
+    case 'chaosfull':
+      if($ROOM_CONF->chaosfull){
+	$checked_chaosfull = ' checked';
+	break;
+      }
+
+    default:
       $checked_normal = ' checked';
+      break;
+    }
 
     echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
@@ -678,20 +708,52 @@ EOF;
 <input type="radio" name="chaos" value="chaos"{$checked_chaos}>
 通常村＋α程度に配役がぶれる闇鍋モードです<br>
 
+EOF;
+
+    if($ROOM_CONF->chaosfull){
+      echo <<<EOF
 <input type="radio" name="chaos" value="chaosfull"{$checked_chaosfull}>
 人狼1、占い師1以外の全ての役職がランダムとなる真・闇鍋モードです
 </td>
-</tr>
 
 EOF;
+    }
+    echo '</tr>'."\n";
+
     if($ROOM_CONF->chaos_open_cast){
-      $checked = ($ROOM_CONF->default_chaos_open_cast ? ' checked' : '');
+      switch($ROOM_CONF->default_chaos_open_cast){
+      case 'full':
+	$checked_chaos_open_cast_full = ' checked';
+	break;
+
+      case 'camp':
+	$checked_chaos_open_cast_camp = ' checked';
+	break;
+
+      case 'role':
+	$checked_chaos_open_cast_role = ' checked';
+	break;
+
+      default:
+	$checked_chaos_open_cast_none = ' checked';
+	break;
+      }
+
       echo <<<EOF
 <tr>
-<td><label for="chaos_open_cast">{$MESSAGE->game_option_chaos_open_cast}：</label></td>
+<td><label>{$MESSAGE->game_option_chaos_open_cast}：</label></td>
 <td class="explain">
-<input id="chaos_open_cast" type="checkbox" name="chaos_open_cast" value="on"{$checked}>
-(配役を通知します：闇鍋モード専用オプション)
+<input type="radio" name="chaos_open_cast" value=""{$checked_chaos_open_cast_none}>
+通知無し<br>
+
+<input type="radio" name="chaos_open_cast" value="camp"{$checked_chaos_open_cast_camp}>
+陣営通知 (陣営毎の合計を通知)<br>
+
+<input type="radio" name="chaos_open_cast" value="role"{$checked_chaos_open_cast_role}>
+役職通知 (役職の種類別に合計を通知)<br>
+
+<input type="radio" name="chaos_open_cast" value="full"{$checked_chaos_open_cast_full}>
+完全通知 (通常村相当)
 </td>
 </tr>
 

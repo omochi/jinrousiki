@@ -114,23 +114,17 @@ function EntryUser($request){
 
   //DB にユーザデータ登録
   $crypt_password = CryptPassword($password);
-  $entry = mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name,
-			icon_no, profile, sex, password, role, live, session_id,
-			last_words, ip_address, last_load_day_night)
-			VALUES($room_no, $user_no, '$uname', '$handle_name', $icon_no,
-			'$profile', '$sex', '$crypt_password', '$role', 'live',
-			'$session_id', '', '$ip_address', 'beforegame')");
+  $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, role, live, ' .
+    'session_id, last_words, ip_address, last_load_day_night';
+  $values = "$room_no, $user_no, '$uname', '$handle_name', $icon_no, '$profile', '$sex', " .
+    "'$crypt_password', '$role', 'live', '$session_id', '', '$ip_address', 'beforegame'";
 
-  //入村メッセージ
-  InsertTalk($room_no, 0, 'beforegame system', 'system', $system_time,
-	     $handle_name . ' ' . $MESSAGE->entry_user, NULL, 0);
+  if(InsertDatabase('user_entry', $items, $values)){
+    //入村メッセージ
+    InsertTalk($room_no, 0, 'beforegame system', 'system', $system_time,
+	       $handle_name . ' ' . $MESSAGE->entry_user, NULL, 0);
+    mysql_query('COMMIT'); //一応コミット
 
-  mysql_query('COMMIT'); //一応コミット
-  //登録が成功していて、今回のユーザが最後のユーザなら募集を終了する
-  // if($entry && ($user_no == $max_user))
-  //   mysql_query("update room set status = 'playing' where room_no = $room_no");
-
-  if($entry){
     $url = "game_frame.php?room_no=$room_no";
     OutputActionResult('村人登録',
 		       $user_no . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
