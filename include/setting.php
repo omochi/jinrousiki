@@ -45,6 +45,9 @@ class ServerConfig{
   //他の人狼サーバの村情報を表示する
   var $shared_server = false;
 
+  // GM権限強化するか否か(強化時は即時開始、突然死が使用可能)
+  var $power_gm = false;
+
   //表示する他のサーバのリスト
   var $shared_server_list = array(
 	'sanae' => array('name' => '早苗鯖',

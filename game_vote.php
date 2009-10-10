@@ -116,11 +116,18 @@ EOF;
 
 //ゲーム開始投票の処理
 function VoteGameStart(){
-  global $room_no, $ROOM, $SELF;
+  global $room_no, $ROOM, $SELF, $SERVER_CONF;
 
   CheckSituation('GAMESTART');
   if($SELF->IsDummyBoy() && ! $ROOM->IsQuiz()){
-    OutputVoteResult('ゲームスタート：身代わり君は投票不要です');
+  	if($SERVER_CONF->power_gm){ // 強権GM時は強制開始モード
+  		if(!AggregateVoteGameStart(true)){
+  			// 強制開始させたが人数が足りない場合。
+  			OutputVoteResult('ゲームスタート：開始人数に達していません。');
+  		}
+  	}else{
+    	OutputVoteResult('ゲームスタート：身代わり君は投票不要です');
+  	}
   }
 
   //投票済みチェック
@@ -143,7 +150,7 @@ function VoteGameStart(){
 }
 
 //ゲーム開始投票集計処理
-function AggregateVoteGameStart(){
+function AggregateVoteGameStart($force_start=false){
   global $GAME_CONF, $MESSAGE, $room_no, $ROOM, $USERS;
 
   CheckSituation('GAMESTART');
@@ -160,6 +167,9 @@ function AggregateVoteGameStart(){
   $user_count = $USERS->GetUserCount();
 
   //規定人数に足りないか、全員投票していなければ処理終了
+  if($force_start){
+  	$vote_count = $user_count; // 強制開始時は全員投票済み扱い
+  }
   if($vote_count < min(array_keys($GAME_CONF->role_list)) || $vote_count != $user_count) return false;
 
   //-- 配役決定ルーチン --//
@@ -417,6 +427,7 @@ function AggregateVoteGameStart(){
   UpdateTime(); //最終書き込み時刻を更新
   if($ROOM->IsOption('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
   mysql_query('COMMIT'); //一応コミット
+  return true; // 正常終了
 }
 
 //開始前の Kick 投票の処理 ($target : HN)
@@ -442,7 +453,12 @@ function VoteKick($target){
   //自分に投票できません
   $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no
 			AND uname = '{$SELF->uname}' AND handle_name ='$target' AND user_no > 0");
-  if(mysql_result($sql, 0, 0) != 0) OutputVoteResult('Kick：自分には投票できません');
+  if(mysql_result($sql, 0, 0) != 0){
+  	// 自殺処理
+  	//OutputVoteResult('Kick：自分には投票できません');
+	AggregateVoteKick($target, true); // 自分への投票は1票でKickさせる
+	OutputVoteResult('Kick：またのお越しをお待ちしております。', true);
+  }
 
   LockTable(); //テーブルを排他的ロック
 
@@ -476,7 +492,7 @@ function VoteKick($target){
 }
 
 //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
-function AggregateVoteKick($target){
+function AggregateVoteKick($target, $force_kick=false){
   global $GAME_CONF, $MESSAGE, $room_no, $ROOM, $SELF;
 
   CheckSituation('KICK_DO');
@@ -490,7 +506,9 @@ function AggregateVoteKick($target){
   $vote_count = mysql_result($sql, 0, 0); //投票総数を取得
 
   //規定数以上の投票があったかキッカーが身代わり君の場合に処理
-  if($vote_count < $GAME_CONF->kick && ! $SELF->IsDummyBoy()) return $vote_count;
+  if(!$force_kick){ // 強制キックじゃなければ票数を数える
+  	if($vote_count < $border_count && ! $SELF->IsDummyBoy()) return $vote_count;
+  }
 
   //ユーザ総数を取得
   $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0");
@@ -781,7 +799,8 @@ function OutputVoteBeforeGame(){
 
 EOF;
 
-    if(! $this_user->IsDummyBoy() && $this_user->uname != $SELF->uname){
+    //if(! $this_user->IsDummyBoy() && $this_user->uname != $SELF->uname){
+    if(! $this_user->IsDummyBoy()){ // 自殺用に自分への投票を表示
       echo '<input type="radio" id="' . $this_handle . '" name="target_handle_name" value="' .
 	$this_handle . '">'."\n";
     }
