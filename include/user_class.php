@@ -12,6 +12,40 @@ class User{
     $this->main_role = $this->role_list[0];
   }
 
+  //指定したユーザーデータのセットを名前つき配列にして返します。
+  //このメソッドはextract関数を使用してオブジェクトのプロパティを
+  //迅速にローカルに展開するために使用できます。
+  function ToArray($mode = ''){
+    $result = array (
+      'user_no' => $this->user_no,
+      'uname' => $this->uname,
+      'handle_name' => $this->handle_name,
+      'role' => $this->role,
+      'sex' => $this->sex,
+      'live' => $this->live
+      );
+    if (empty($mode))
+      return $result;
+    //モード適用
+    if (strpos($mode, 'profiles') !== false){
+      $result['profile'] = $this->profile;
+      $result['color'] = $this->color;
+      $result['icon_width'] = $this->icon_width;
+      $result['icon_height'] = $this->icon_height;
+    }
+    if (strpos($mode, 'flags') !== false){
+      $result['dead_flag'] = $this->dead_flag;
+      $result['suicide_flag'] = $this->suicide_flag;
+      $result['revive_flag'] = $this->revive_flag;
+    }
+    if (strpos($mode, 'roles') !== false){
+      $result['main_role'] = $this->main_role;
+      $result['role_list'] = $this->role_list;
+      $result['partner_list'] = $this->partner_list;
+    }
+    return $result;
+  }
+
   function ParseRoles(){
     $role_list = explode(' ', $this->role);
     $regex = "/([^\[]*)\[(\d+)\]/";

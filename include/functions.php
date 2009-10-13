@@ -15,8 +15,9 @@ function ConnectDatabase($header = false, $exit = true){
   $db_handle = mysql_connect($DB_CONF->host, $DB_CONF->user, $DB_CONF->password);
   if($db_handle){ //アクセス成功
     mysql_set_charset('ujis');
-    if(mysql_select_db($DB_CONF->name, $db_handle)) //データベース接続
+    if(mysql_select_db($DB_CONF->name, $db_handle)) { //データベース接続
       return $db_handle; //成功したらハンドルを返して処理終了
+    }
     else{
       $error_title = 'データベース接続失敗';
       $error_name  =$DB_CONF->name;

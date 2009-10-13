@@ -1,49 +1,62 @@
 <?php
 class Talk{
-  var $is_system;
-
-/* このコードはgame_functions.phpのOutputTalkのリファクタリングが進行するまで一時的に凍結されています。(2009-08-02 enogu)
-  function ParseSentence(){
-    global $USERS, $MESSAGE;
+  function ParseCompoundParameters(){
+    $result = array('name'=>'say');
     $action = strtolower(strtok($this->sentence, "\t"));
-    if ($this->player->is_system){
-      switch ($this->uname){
-      case 'system':
-        $this->is_system = true;
-        $this->action = $action;
-        switch ($action){
-        case 'morning':
-          $morning_date = strtok("\t");
-          return '&lt; &lt; ' . $MESSAGE->morning_header . ' ' . $morning_date . $MESSAGE->morning_footer . ' &gt; &gt;';
-        case 'night':
-          return '&lt; &lt; '.$MESSAGE->$action . ' &gt; &gt;';
-        default:
-          return $this->sentence;
-        }
-      case 'dummy_boy':
-        //この式はtalk.locationの値が'beforegame', 'aftergame', 'day', 'night'の４つのみであるという仕様に依存する。
-        $this->is_system = strpos($this->day_night, 'game') === false; 
-        return $this->sentence;
-      }
-    } 
-    if (strpos($this->location, 'system') !== false && isset($MESSAGE->$action)){
-      $this->is_system = true;
-      $this->action = $action;
+    switch ($this->uname){
+    case 'system':
       switch ($action){
-      case 'objection':
-	return $this->player->handle_name . ' ' . $MESSAGE->$action;
-      case 'kick_do':
-      case 'vote_do':
-      case 'wolf_eat':
-      case 'mage_do':
-      case 'guard_do':
-      case 'cupid_do':
-        $target = strtok("");
-	return $this->player->handle_name . 'は' . $target . $MESSAGE->$action;
+      case 'morning':
+        $result['name'] = 'daybreak';
+        $result['date'] = strtok("\t");
+        $result['situation'] = 'day';
+        break;
+      case 'night':
+        $result['name'] = 'sunset';
+        $result['date'] = strtok("\t");
+        $result['situation'] = 'night';
+        break;
+      default:
+        $result['name'] = 'system_message';
+        break;
       }
+      break;
+    case 'dummy_boy':
+      $result['name'] = 'system_talk';
+      break;
+    default:
+      list($day_night, $type) = explode(' ', $this->location);
+      if ($type == 'system'){
+        global $USERS, $MESSAGE;
+        $player = $USERS->ByUname($this->uname);
+        $result['from'] = $player->handle_name;
+        switch ($action){
+        case 'objection':
+          $result['name'] = 'objection';
+          break;
+        case 'kick_do':
+        case 'vote_do':
+        case 'wolf_eat':
+        case 'mage_do':
+        case 'guard_do':
+        case 'cupid_do':
+          $result['name'] = 'vote';
+          $result['type'] = $action;
+          $result['to'] = strtok("");
+          break;
+        }
+      }
+      else {
+        $this->day_night = $day_night;
+        $this->type = $type;
+      }
+      break;
     }
-    return $this->sentence;
+    $this->event = $result;
   }
-*/
+
+  function GetEvent(){
+    return $this->event;
+  }
 }
 ?>

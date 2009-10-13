@@ -1349,10 +1349,12 @@ function ParseStrings($str, $type = NULL){
   case 'VOODOO_FOX_DO':
   case 'CHILD_FOX_DO':
   case 'CUPID_DO':
-    sscanf($str, "{$type}\t%s", &$target);
-    DecodeSpace(&$target);
-    return $target;
-    break;
+    list($msg, $target) = explode("\t", $str);
+    if ($msg == $type){
+      DecodeSpace(&$target);
+      return $target;
+    }
+    return false;
 
   case 'MAGE_RESULT':
   case 'TONGUE_WOLF_RESULT':
@@ -1360,30 +1362,27 @@ function ParseStrings($str, $type = NULL){
   case 'POISON_CAT_RESULT':
   case 'MANIA_RESULT':
   case 'CHILD_FOX_RESULT':
-    sscanf($str, "%s\t%s\t%s", &$first, &$second, &$third);
+    list($first, $second, $third) = explode("\t", $str);
     DecodeSpace(&$first);
     DecodeSpace(&$second);
     DecodeSpace(&$third);
 
     return array($first, $second, $third);
-    break;
 
   case 'VOTE':
-    sscanf($str, "%s\t%s\t%d\t%d\t%d", &$self, &$target, &$voted, &$vote, &$times);
+    list($self, $target, $voted, $vote, $times) = explode("\t", $str);
     DecodeSpace(&$self);
     DecodeSpace(&$target);
 
     //%d で取得してるんだから (int)要らないような気がするんだけど……しかもなぜ一つだけ？
     return array($self, $target, $voted, $vote, (int)$times);
-    break;
 
   default:
-    sscanf($str, "%s\t%s", &$header, &$footer);
+    list($header, $footer) = explode("\t", $str, 2);
     DecodeSpace(&$header);
     DecodeSpace(&$footer);
 
     return array($header, $footer);
-    break;
   }
 }
 ?>

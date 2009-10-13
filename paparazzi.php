@@ -30,6 +30,13 @@ if ($DEBUG_MODE && !isset($paparazzi)){
 		$paparazzi->insertLog();
 	}
 
+	//collectLog
+	//トレースログの出力文字列を取得します。
+  function collectLog($force = false){
+		global $paparazzi;
+		return $paparazzi->collectLog($force);
+  }
+
 	//saveLog
 	//トレースログをデータベースに書き込みます。
 	function saveLog($room_no, $uname, $action){
@@ -42,6 +49,7 @@ else {
 	function shot($comment,$category='general'){return $comment;}
 	function insertBenchResult(){}
 	function insertLog(){}
+  function collectLog(){}
 	function save(){}
 	return;
 }
