@@ -155,7 +155,7 @@ CELL;
     $sentence = '<div class="self-vote">≈Í…º ' . $vote_times . ' ≤ÛÃ‹°ß';
   
     //≈Í…º¬–æ›º‘§ÚºË∆¿
-    $query = "SELECT target_uname FROM vote WHERE room_no = $room_no AND date = {$this->room->date} " .
+    $query = "SELECT target_uname FROM vote WHERE room_no = {$this->room->id} AND date = {$this->room->date} " .
       "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$this->self->uname}'";
     $target_uname = FetchResult($query);
     $sentence .= ($target_uname === false ? '<font color="red">§ﬁ§¿≈Í…º§∑§∆§§§ﬁ§ª§Û</font>' :
@@ -229,7 +229,7 @@ HEADER;
 
 
   function OutputRoleNotice() {
-    global $ROLE_IMG;
+    global $ROLE_IMG, $GAME_CONF;
     $self = & $this->self;
 
     //•≤°º•‡√Ê§Œ§ﬂ…Ωº®§π§Î
@@ -247,7 +247,7 @@ HEADER;
     elseif($self->IsRole('voodoo_killer')){ //±¢Õ€ª’
       $this->OutputRole_VoodooKiller();
     }
-    elseif($self->IsRole('yama_necromancer')) $this->output .= $ROLE_IMG->GenerateTag($SELF->main_role); //ÔÂÀ‚
+    elseif($self->IsRole('yama_necromancer')) $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role); //ÔÂÀ‚
     elseif($self->IsRole( 'necromancer') || $self->IsRole( 'medium') !== false){
       $this->OutputRole_Necromancer();
     }
@@ -313,7 +313,8 @@ HEADER;
   }
 
   function OutputRole_Human(){
-    $this->OutputRoleComment('human');
+    global $ROLE_IMG;
+    $this->output .= $ROLE_IMG->GenerateTag('human');
   }
 
   function OutputRole_Wolf(){
@@ -454,7 +455,7 @@ HEADER;
 
   function OutputRole_Guard(){
     global $ROLE_IMG;
-    $this->output .= $ROLE_IMG->GenerateTag($this->self->IsRole('dummy_guard') ? 'guard' : $SELF->main_role);
+    $this->output .= $ROLE_IMG->GenerateTag($this->self->IsRole('dummy_guard') ? 'guard' : $this->self->main_role);
 
     //∏Ó±“∑Î≤Ã§Ú…Ωº®
     $sql = $this->GetAbilityActionResult('GUARD_SUCCESS');

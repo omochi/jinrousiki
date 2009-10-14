@@ -28,7 +28,7 @@ class ChatEngineTestCore extends RequestBase {
 
     default:
       $this->initiate = 'test_nothing';
-      $this->run = 'test_nothing';
+      $this->run = 'outputTestPanel';
       break;
     }
     $RQ_ARGS = $this;
@@ -66,46 +66,12 @@ class ChatEngineTestCore extends RequestBase {
     return ($selected ? '<option selected="selected">(none)</option>' : '') . $options;
   }
 
-  function init_playing(){
-    shot("init_playing\r\n");
-    shot(serialize($this), 'TestCore');
-    global $ROOM, $USERS, $SELF, $ROLE_IMG, $game_root;
-
-    require_once($game_root . '/include/user_class.php');
-
-    $this->connection = ConnectDatabase(true, true); //DB 接続
-
-    $ROOM = new RoomDataSet($this); //村情報をロード
-    $ROOM->status = 'playing';
-    $ROOM->date = $this->date;
-    $ROOM->day_night = $this->day_night;
-    $ROOM->dead_mode    = $this->dead_mode; //死亡者モード
-    $ROOM->heaven_mode  = $this->heaven_mode; //霊話モード
-    $ROOM->system_time  = TZTime() - $this->time; //現在時刻を取得
-    $ROOM->sudden_death = 0; //突然死実行までの残り時間
-
-    $USERS = new UserDataSet($this); //ユーザ情報をロード
-    $SELF = $USERS->rows[$this->uno]; //自分の情報をロード
-    $ROLE_IMG = new RoleImage();
-    $uname = $SELF->uname;
+  function outputTestPanel(){
+    echo $this->generateTestPanel();
   }
-
-  function terminate(){
-    shot("terminate\r\n");
-    if( isset($this->connection)){
-      DisconnectDatabase($this->connection);
-    }
-  }
-
-  function test_nothing(){ shot('pass'); }
-
-  function test_view() {
+  function generateTestPanel(){
     $options = $this->generateModeOptions();
-    shot("test_view\r\n");
-    $target = new GamePlayFormat();
-    $target->OutputDocumentHeader();
-    $target->Flush();
-    echo <<<FORM
+    return <<<FORM
 <form name="request" method="GET">
 <table>
 <th><label for="test_mode">test_mode</label></th>
@@ -147,6 +113,49 @@ $options
 </form>
 
 FORM;
+  }
+
+  function init_playing(){
+    shot("init_playing\r\n");
+    shot(serialize($this), 'TestCore');
+    global $ROOM, $USERS, $SELF, $ROLE_IMG, $game_root, $room_no;
+
+    require_once($game_root . '/include/user_class.php');
+
+    $this->connection = ConnectDatabase(true, true); //DB 接続
+
+    $room_no = $this->room_no;
+
+    $ROOM = new RoomDataSet($this); //村情報をロード
+    $ROOM->status = 'playing';
+    $ROOM->date = $this->date;
+    $ROOM->day_night = $this->day_night;
+    $ROOM->dead_mode    = $this->dead_mode; //死亡者モード
+    $ROOM->heaven_mode  = $this->heaven_mode; //霊話モード
+    $ROOM->system_time  = TZTime() - $this->time; //現在時刻を取得
+    $ROOM->sudden_death = 0; //突然死実行までの残り時間
+
+    $USERS = new UserDataSet($this); //ユーザ情報をロード
+    $SELF = $USERS->rows[$this->uno]; //自分の情報をロード
+    $ROLE_IMG = new RoleImage();
+    $uname = $SELF->uname;
+  }
+
+  function terminate(){
+    shot("terminate\r\n");
+    if( isset($this->connection)){
+      DisconnectDatabase($this->connection);
+    }
+  }
+
+  function test_nothing(){ shot('pass'); }
+
+  function test_view() {
+    shot("test_view\r\n");
+    $target = new GamePlayFormat();
+    $target->OutputDocumentHeader();
+    $target->output .= $this->generateTestPanel();
+    $target->Flush(); //ここでフラッシュしないとエラーで落ちた際にフォームがでない。
     $target->OutputContentHeader();
     $target->OutputContent();
     $target->OutputContentFooter();
@@ -157,8 +166,6 @@ FORM;
 register_shutdown_function('insertLog');
 
 $test = & new ChatEngineTestCore();
-echo <<<FORM
-FORM;
 call_user_func(array($test, $test->initiate));
 call_user_func(array($test, $test->run));
 call_user_func(array($test, 'terminate'));

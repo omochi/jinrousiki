@@ -1,5 +1,5 @@
 <?php
-include_once(dirname(__FILE__).'/include/talk_class.php');
+include_once(dirname(__FILE__).'/talk_class.php');
 
 class ChatEngine {
   var $room;
@@ -213,7 +213,10 @@ LINE;
 <dl class="talk">
 
 EOF;
-    while (($result = mysql_result($sql, $i++, 0)) !== false) {
+    $num_row = mysql_num_rows($sql);
+    $i = 0;
+    while ($i < $num_row) {
+      $result = mysql_result($sql, $i++, 0);
       LineToBR(&$result);
       list($handle, $str) = ParseStrings($result);
 

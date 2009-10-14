@@ -28,17 +28,21 @@ class Paparazzi {
 		echo ($label ? $label.':' : '').sprintf('%f[s]', $this->getTimeElapsed());
 	}
 
-	function insertLog(){
-		if ($this->written) return;
-		echo '<dl>';
+  function collectLog($force=false){
+		if (!$force && $this->written) return;
+		$this->written |= !$force;
+		$output = '<dl>';
 		foreach ($this->log as $item){
 			extract($item, EXTR_PREFIX_ALL, 'unsafe');
 			$category = htmlspecialchars($unsafe_category);
 			$comment = htmlspecialchars($unsafe_comment);
-			echo "<dt>($unsafe_time)</dt><dd>$category : $comment</dd>";
+			$output .= "<dt>($unsafe_time)</dt><dd>$category : $comment</dd>";
 		}
-		echo '</dl>';
-		$this->written = true;
+		return $output . '</dl>';
+  }
+
+	function insertLog(){
+    echo $this->collectLog();
 	}
 
 	function save($room_no, $uname, $action){
