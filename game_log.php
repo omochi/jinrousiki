@@ -8,7 +8,6 @@ if($RQ_ARGS->day_night != 'day' && $RQ_ARGS->day_night != 'night' &&
    ! ($RQ_ARGS->day_night == 'beforegame' && $RQ_ARGS->date == 0)){
   OutputActionResult('引数エラー', '引数エラー：無効な引数です');
 }
-$room_no = $RQ_ARGS->room_no;
 
 //セッション開始
 session_start();
@@ -31,8 +30,6 @@ if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //死者かゲーム終了後だけ
 }
 $ROOM->date      = $RQ_ARGS->date;
 $ROOM->day_night = $RQ_ARGS->day_night;
-
-$day_night_str = 
 
 OutputGamePageHeader(); //HTMLヘッダ
 echo '<table><tr><td width="1000" align="right">ログ閲覧 ' . $ROOM->date . ' 日目 (' .

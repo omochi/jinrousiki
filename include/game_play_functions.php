@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/game_functions.php');
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $GAME_CONF, $ROLE_IMG, $MESSAGE, $room_no, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $ROLE_IMG, $MESSAGE, $ROOM, $USERS, $SELF;
 
   //ゲーム中のみ表示する
   if(! $ROOM->IsPlaying()) return false;
@@ -319,8 +319,8 @@ function OutputAbility(){
     $ROLE_IMG->DisplayImage($SELF->main_role);
     if($is_first_night) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO'); //初日夜の投票
   }
-  elseif($SELF->IsRole('cupid')){
-    $ROLE_IMG->DisplayImage($main_role);
+  elseif($SELF->IsRoleGroup('cupid')){ //キューピッド系
+    $ROLE_IMG->DisplayImage($SELF->main_role);
 
     //自分が矢を打った恋人 (自分自身含む) を表示する
     foreach($USERS->rows as $user){
@@ -391,10 +391,10 @@ function OutputPartner($partner_list, $header, $footer = NULL){
 
 //能力発動結果をデータベースに問い合わせる
 function GetAbilityActionResult($action){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   $yesterday = $ROOM->date - 1;
-  return mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+  return mysql_query("SELECT message FROM system_message WHERE room_no = {$ROOM->id}
 			AND date = $yesterday AND type = '$action'");
 }
 

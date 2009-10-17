@@ -67,7 +67,7 @@
       <li><a href="http://www13.atpages.jp/yaranai/">薔薇姉妹鯖</a></li>
       <li><a href="http://www13.atpages.jp/suigintou/">水銀鯖</a></li>
       <li><a href="http://www15.atpages.jp/kanaria/">金糸雀保管庫</a></li>
-      <li><a href="http://www12.atpages.jp/yagio/jinro_php_files/jinro_php/">世紀末鯖（テスト鯖）</a></li>
+      <li><a href="http://www15.atpages.jp/seikima2/jinro_php/">世紀末鯖（テスト鯖）</a></li>
       <li><a href="http://www37.atwiki.jp/yaruomura/">やる夫wiki</a></li>
       <li>リンク希望募集中</li>
     </ul>

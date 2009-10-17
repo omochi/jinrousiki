@@ -5,7 +5,6 @@ require_once(dirname(__FILE__) . '/include/request_class.php');
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
 $RQ_ARGS = new RequestGamePlay(); //引数を取得
-$room_no = $RQ_ARGS->room_no;
 if($RQ_ARGS->play_sound){//音でお知らせ
   $SOUND  = new Sound(); //音源情報をロード
   $COOKIE = new CookieDataSet(); //クッキー情報をロード
@@ -49,7 +48,7 @@ else{
 
 //最後にリロードした時のシーンを更新
 mysql_query("UPDATE user_entry SET last_load_day_night = '{$ROOM->day_night}'
-		WHERE room_no = $room_no AND uname = '{$SELF->uname}' AND user_no > 0");
+		WHERE room_no = {$ROOM->id} AND uname = '{$SELF->uname}' AND user_no > 0");
 mysql_query('COMMIT');
 
 OutputGamePageHeader(); //HTMLヘッダ
@@ -83,7 +82,7 @@ DisconnectDatabase($dbHandle); //DB 接続解除
 //-- 関数 --//
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(){
-  global $GAME_CONF, $RQ_ARGS, $room_no, $ROOM, $SELF, $objection_array, $objection_left_count;
+  global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF, $objection_array, $objection_left_count;
 
   //<夜明けを音でお知らせ用>
   //クッキーに格納 (夜明けに音でお知らせで使う・有効期限一時間)
@@ -91,7 +90,7 @@ function SendCookie(){
 
   //-- 「異議」ありを音でお知らせ用 --//
   //今までに自分が「異議」ありをした回数を取得
-  $query = "SELECT COUNT(message) FROM system_message WHERE room_no = $room_no " .
+  $query = "SELECT COUNT(message) FROM system_message WHERE room_no = {$ROOM->id} " .
     "AND type = 'OBJECTION' AND message = '{$SELF->user_no}'";
   $self_objection_count = FetchResult($query);
 
@@ -104,7 +103,7 @@ function SendCookie(){
   }
 
   //ユーザ総数を取得して人数分の「異議あり」のクッキーを構築する
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND user_no > 0";
+  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} AND user_no > 0";
   $user_count = FetchResult($query);
   // 配列をリセット (0 番目に変な値が入らない事が保証されていれば不要かな？)
   // キックで欠番が出ると色々面倒な事になりそう
@@ -114,7 +113,7 @@ function SendCookie(){
 
   //message:異議ありをしたユーザ No とその回数を取得
   $query = "SELECT message, COUNT(message) AS message_count FROM system_message " .
-    "WHERE room_no = $room_no AND type = 'OBJECTION' GROUP BY message";
+    "WHERE room_no = {$ROOM->id} AND type = 'OBJECTION' GROUP BY message";
   $array = FetchAssoc($query);
   foreach($array as $this_array){
     $this_user_no = (int)$this_array['message'];
@@ -144,7 +143,7 @@ function SendCookie(){
 
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $MESSAGE, $room_no, $ROOM, $SELF;
+  global $GAME_CONF, $MESSAGE, $ROOM, $SELF;
 
   //リロード時、死者、ゲームプレイ中以外なら処理スキップ
   if($say == '' || $SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
@@ -161,8 +160,8 @@ function ConvertSay(&$say){
     $message_header = $role_name . '_header';
     $message_footer = $role_name . '_footer';
 
-    $query = "SELECT handle_name FROM user_entry WHERE room_no = $room_no " .
-      "AND uname <> '{$SELF->uname}' AND live = 'live' AND user_no > 0 ORDER BY MD5(RAND()*NOW())";
+    $query = "SELECT handle_name FROM user_entry WHERE room_no = {$ROOM->id} " .
+      "AND uname <> '{$SELF->uname}' AND live = 'live' AND user_no > 0 ORDER BY RAND()";
     $say = $MESSAGE->$message_header . FetchResult($query) . $MESSAGE->$message_footer;
   }
   //狼少年は一定確率で発言内容が反転される
@@ -266,7 +265,7 @@ function Say($say){
 
 //発言を DB に登録する
 function Write($say, $location, $spend_time, $update = false){
-  global $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF;
+  global $MESSAGE, $RQ_ARGS, $ROOM, $SELF;
 
   //声の大きさを決定
   $voice = $RQ_ARGS->font_type;
@@ -290,27 +289,25 @@ function Write($say, $location, $spend_time, $update = false){
     }
   }
 
-  InsertTalk($room_no, $ROOM->date, $location, $SELF->uname,
-	     $ROOM->system_time, $say, $voice, $spend_time);
+  InsertTalk($ROOM->id, $ROOM->date, $location, $SELF->uname, $ROOM->system_time,
+	     $say, $voice, $spend_time);
   if($update) UpdateTime();
   mysql_query('COMMIT'); //一応コミット
 }
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $TIME_CONF, $MESSAGE, $room_no, $ROOM, $USERS;
+  global $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
   //ゲーム中以外は処理をしない
   if(! $ROOM->IsPlaying()) return false;
 
   //テーブルロック
-  if(! mysql_query("LOCK TABLES room WRITE, talk WRITE, vote WRITE,
-			user_entry WRITE, system_message WRITE")){
-    return false;
-  }
+  $query = 'LOCK TABLES room WRITE, talk WRITE, vote WRITE, user_entry WRITE, system_message WRITE';
+  if(! mysql_query($query)) return false;
 
   //最後に発言された時間を取得
-  $last_updated_time = FetchResult("SELECT last_updated FROM room WHERE room_no = $room_no");
+  $last_updated_time = FetchResult("SELECT last_updated FROM room WHERE room_no = {$ROOM->id}");
   $last_updated_pass_time = $ROOM->system_time - $last_updated_time;
 
   //経過時間を取得
@@ -323,7 +320,7 @@ function CheckSilence(){
   if(! $ROOM->IsRealTime() && $left_time > 0){
     if($last_updated_pass_time > $TIME_CONF->silence){
       $sentence = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      InsertTalk($room_no, $ROOM->date, "{$ROOM->day_night} system", 'system',
+      InsertTalk($ROOM->id, $ROOM->date, "{$ROOM->day_night} system", 'system',
 		 $ROOM->system_time, $sentence, NULL, $TIME_CONF->silence_pass);
       UpdateTime();
     }
@@ -334,7 +331,7 @@ function CheckSilence(){
     $sudden_death_announce = 'あと' . $left_time_str . 'で' . $MESSAGE->sudden_death_announce;
 
     //既に警告を出しているかチェック
-    $query = "SELECT COUNT(uname) FROM talk WHERE room_no = $room_no " .
+    $query = "SELECT COUNT(uname) FROM talk WHERE room_no = {$ROOM->id} " .
       "AND date = {$ROOM->date} AND location = '{$ROOM->day_night} system' " .
       "AND uname = 'system' AND sentence = '$sudden_death_announce'";
     if(FetchResult($query) == 0){ //警告を出していなかったら出す
@@ -347,11 +344,11 @@ function CheckSilence(){
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($ROOM->sudden_death <= 0){
       //生存者を取得するための基本 SQL 文
-      $query_live = "SELECT uname FROM user_entry WHERE room_no = $room_no " .
+      $query_live = "SELECT uname FROM user_entry WHERE room_no = {$ROOM->id} " .
 	"AND live = 'live' AND user_no > 0";
 
       //投票済みの人を取得するための基本 SQL 文
-      $query_vote = "SELECT uname FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} AND ";
+      $query_vote = "SELECT uname FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} AND ";
 
       if($ROOM->IsDay()){
 	//投票回数を取得
@@ -375,7 +372,7 @@ function CheckSilence(){
 
 	if($ROOM->date == 1){
 	  array_push($action_list, 'CUPID_DO', 'MANIA_DO');
-	  array_push($actor_list, 'cupid', 'mania');
+	  array_push($actor_list, '%cupid', 'mania');
 	}
 	else{
 	  array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'ASSASSIN_DO',
@@ -431,12 +428,12 @@ function CheckSilence(){
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $USERS, $SELF, $COOKIE,
-    $SOUND, $objection_array, $objection_left_count;
+  global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF, $COOKIE, $SOUND,
+    $objection_array, $objection_left_count;
 
   $room_message = '<td class="room"><span>' . $ROOM->name . '村</span>　〜' . $ROOM->comment .
-    '〜[' . $room_no . '番地]</td>'."\n";
-  $url_room   = '?room_no=' . $room_no;
+    '〜[' . $ROOM->id . '番地]</td>'."\n";
+  $url_room   = '?room_no=' . $ROOM->id;
   $url_reload = ($RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '');
   $url_sound  = ($RQ_ARGS->play_sound ? '&play_sound=on'  : '');
   $url_list   = ($RQ_ARGS->list_down  ? '&list_down=on'   : '');
@@ -469,7 +466,7 @@ function OutputGameHeader(){
       echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
     }
     elseif($ROOM->IsAfterGame()){
-      $query = "SELECT COUNT(uname) FROM talk WHERE room_no = $room_no " .
+      $query = "SELECT COUNT(uname) FROM talk WHERE room_no = {$ROOM->id} " .
 	"AND date = {$ROOM->date} AND location = 'day'";
       if(FetchResult($query) > 0){
 	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
@@ -612,7 +609,7 @@ EOF;
 
 //天国の霊話ログ出力
 function OutputHeavenTalkLog(){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   //出力条件をチェック
   // if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
@@ -627,9 +624,9 @@ function OutputHeavenTalkLog(){
 			talk.font_type AS font_type,
 			talk.location AS location
 			FROM user_entry, talk, user_icon
-			WHERE talk.room_no = $room_no
+			WHERE talk.room_no = {$ROOM->id}
 			AND talk.location LIKE 'heaven'
-			AND ( (user_entry.room_no = $room_no AND user_entry.uname = talk.uname
+			AND ( (user_entry.room_no = {$ROOM->id} AND user_entry.uname = talk.uname
 			AND user_entry.icon_no = user_icon.icon_no)
 			OR (user_entry.room_no = 0 AND talk.uname = 'system'
 			AND user_entry.icon_no = user_icon.icon_no) )
@@ -663,14 +660,14 @@ function OutputHeavenTalkLog(){
 
 //昼の自分の未投票チェック
 function CheckSelfVoteDay(){
-  global $room_no, $ROOM, $USERS, $SELF;
+  global $ROOM, $USERS, $SELF;
 
   //投票回数を取得
   $vote_times = GetVoteTimes();
   $sentence = '<div class="self-vote">投票 ' . $vote_times . ' 回目：';
 
   //投票対象者を取得
-  $query = "SELECT target_uname FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} " .
+  $query = "SELECT target_uname FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} " .
     "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
   $sentence .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
@@ -680,12 +677,12 @@ function CheckSelfVoteDay(){
 
 //自分の遺言を出力
 function OutputSelfLastWords(){
-  global $room_no, $ROOM, $SELF;
+  global $ROOM, $SELF;
 
   //ゲーム終了後は表示しない
   if($ROOM->IsAfterGame()) return false;
 
-  $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = $room_no
+  $sql = mysql_query("SELECT last_words FROM user_entry WHERE room_no = {$ROOM->id}
 			AND uname = '{$SELF->uname}' AND user_no > 0");
 
   //まだ入力してなければ表示しない

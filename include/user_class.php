@@ -17,13 +17,13 @@ class User{
   //迅速にローカルに展開するために使用できます。
   function ToArray($mode = ''){
     $result = array (
-      'user_no' => $this->user_no,
-      'uname' => $this->uname,
-      'handle_name' => $this->handle_name,
-      'role' => $this->role,
-      'sex' => $this->sex,
-      'live' => $this->live
-      );
+		     'user_no' => $this->user_no,
+		     'uname' => $this->uname,
+		     'handle_name' => $this->handle_name,
+		     'role' => $this->role,
+		     'sex' => $this->sex,
+		     'live' => $this->live
+		     );
     if (empty($mode))
       return $result;
     //モード適用
@@ -231,7 +231,7 @@ class User{
   function DistinguishCamp(){
     if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
     if($this->IsFox()) return 'fox';
-    if($this->IsRole('cupid')) return 'lovers';
+    if($this->IsRoleGroup('cupid')) return 'lovers';
     if($this->IsRole('quiz')) return 'quiz';
     return 'human';
   }

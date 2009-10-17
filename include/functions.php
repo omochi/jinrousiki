@@ -9,13 +9,14 @@ require_once(dirname(__FILE__) .  '/setting.php');
 //$header : すでに HTMLヘッダが出力されて [いる / いない]
 //$exit   : エラー時に [HTML を閉じて exit を返す / false で終了]
 function ConnectDatabase($header = false, $exit = true){
-  global $DB_CONF;
+  global $DB_CONF, $ENCODE;
 
   //データベースサーバにアクセス
   $db_handle = mysql_connect($DB_CONF->host, $DB_CONF->user, $DB_CONF->password);
   if($db_handle){ //アクセス成功
     mysql_set_charset('ujis');
-    if(mysql_select_db($DB_CONF->name, $db_handle)) { //データベース接続
+    if(mysql_select_db($DB_CONF->name, $db_handle)){ //データベース接続
+      // mysql_query("SET NAMES utf8");
       return $db_handle; //成功したらハンドルを返して処理終了
     }
     else{
@@ -67,11 +68,11 @@ if(! function_exists('session_regenerate_id')){
 
 //セッション認証 返り値 OK:ユーザ名 / NG: false
 function CheckSession($session_id, $exit = true){
-  global $room_no;
+  global $RQ_ARGS;
   // $ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
 
   //セッション ID による認証
-  $query = "SELECT uname FROM user_entry WHERE room_no = $room_no " .
+  $query = "SELECT uname FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
     "AND session_id ='$session_id' AND user_no > 0";
   $array = FetchArray($query);
   if(count($array) == 1) return $array[0];
@@ -100,45 +101,64 @@ function GetUniqSessionID(){
   return $session_id;
 }
 
+//DB 問い合わせ処理のラッパー関数
+function SendQuery($query){
+  $sql = mysql_query($query);
+  if($sql) return $sql;
+  $backtrace = debug_backtrace();
+  echo "SQLエラー：{$backtrace[1]['function']}()：{$backtrace[0]['line']}：$query <br>";
+  return false;
+}
+
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
-  $sql = mysql_query($query);
-  return (mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false);
+  if(($sql = SendQuery($query)) === false) return false;
+  $data = (mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false);
+  mysql_free_result($sql);
+  return $data;
 }
 
 //DB から該当するデータの行数を取得する処理のラッパー関数
 function FetchCount($query){
-  return mysql_num_rows(mysql_query($query));
+  if(($sql = SendQuery($query)) === false) return false;
+  $data = mysql_num_rows($sql);
+  mysql_free_result($sql);
+  return $data;
 }
 
 //DB から一次元の配列を取得する処理のラッパー関数
 function FetchArray($query){
   $array = array();
-  $sql   = mysql_query($query);
+  if(($sql = SendQuery($query)) === false) return $array;
   $count = mysql_num_rows($sql);
   for($i = 0; $i < $count; $i++) $array[] = mysql_result($sql, $i, 0);
+  mysql_free_result($sql);
   return $array;
 }
 
 //DB から単体の連想配列を取得する処理のラッパー関数
 function FetchNameArray($query){
-  $sql = mysql_query($query);
-  return (mysql_num_rows($sql) > 0 ? mysql_fetch_assoc($sql) : false);
+  if(($sql = SendQuery($query)) === false) return false;
+  $array = (mysql_num_rows($sql) > 0 ? mysql_fetch_assoc($sql) : false);
+  mysql_free_result($sql);
+  return $array;
 }
 
 //DB から連想配列を取得する処理のラッパー関数
 function FetchAssoc($query){
   $array = array();
-  $sql   = mysql_query($query);
-  while(($this_array = mysql_fetch_assoc($sql)) !== false) $array[] = $this_array;
-  return  $array;
+  if(($sql = SendQuery($query)) === false) return $array;
+  while(($assoc = mysql_fetch_assoc($sql)) !== false) $array[] = $assoc;
+  mysql_free_result($sql);
+  return $array;
 }
 
 //DB からオブジェクト形式の配列を取得する処理のラッパー関数
 function FetchObjectArray($query, $class){
   $array = array();
-  $sql   = mysql_query($query);
-  while(($user = mysql_fetch_object($sql, $class)) !== false) $array[] = $user;
+  if(($sql = SendQuery($query)) === false) return $array;
+  while(($object = mysql_fetch_object($sql, $class)) !== false) $array[] = $object;
+  mysql_free_result($sql);
   return $array;
 }
 

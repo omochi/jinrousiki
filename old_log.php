@@ -126,7 +126,7 @@ EOF;
 <td class="number" rowspan="2">$log_room_no</td>
 <td class="title"><a href="$base_url" $dead_room_color>$log_room_name Â¼</a></td>
 <td class="upper comment">¡Á $log_room_comment ¡Á</td>
-<td class="upper">$user_count ($log_room_max_user)</td>
+<td class="upper">$user_count (ºÇÂç{$log_room_max_user})</td>
 <td class="upper">$log_room_date</td>
 <td class="side">$victory_role_str</td>
 </tr>

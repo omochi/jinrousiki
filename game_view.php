@@ -4,8 +4,7 @@ require_once(dirname(__FILE__) . '/include/request_class.php');
 
 //引数を取得
 $RQ_ARGS = new RequestGameView();
-$room_no = $RQ_ARGS->room_no;
-$url = 'game_view.php?room_no=' . $room_no;
+$url = 'game_view.php?room_no=' . $ROOM->id;
 
 $dbHandle = ConnectDatabase(); // DB 接続
 
@@ -51,7 +50,7 @@ echo <<<EOF
 <body{$on_load}>
 <a name="#game_top"></a>
 <table class="login"><tr>
-<td classs="room"><span>{$ROOM->name}村</span>　〜{$ROOM->comment}〜[{$room_no}番地]</td>
+<td classs="room"><span>{$ROOM->name}村</span>　〜{$ROOM->comment}〜[{$ROOM->id}番地]</td>
 <td class="login-link">
 
 EOF;
@@ -67,7 +66,7 @@ else{
 echo <<<EOF
 <a href="index.php">[戻る]</a>
 </td></tr>
-<tr><td><form method="POST" action="login.php?room_no=$room_no">
+<tr><td><form method="POST" action="login.php?room_no={$ROOM->id}">
 <label>ユーザ名</label><input type="text" name="uname" size="20">
 <label>パスワード</label><input type="password" class="login-password" name="password" size="20">
 <input type="hidden" name="login_type" value="manually">
@@ -78,7 +77,7 @@ EOF;
 
 if($ROOM->IsBeforeGame()){ //ゲーム開始前なら登録画面のリンクを表示
   echo '<td class="login-link">';
-  echo '<a href="user_manager.php?room_no=' . $room_no . '"><span>[住民登録]</span></a>';
+  echo '<a href="user_manager.php?room_no=' . $ROOM->id . '"><span>[住民登録]</span></a>';
   echo '</td>'."\n";
 }
 echo '</tr></table>'."\n";

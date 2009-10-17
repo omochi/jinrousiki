@@ -11,7 +11,6 @@ $session_id = session_id();
 $RQ_ARGS = new RequestLogin(); //引数を取得
 
 //変数をセット
-$room_no = $RQ_ARGS->room_no;
 $url     = 'game_frame.php?room_no=' . $RQ_ARGS->room_no;
 $header  = '。<br>' . "\n" . '切り替わらないなら <a href="';
 $footer  = '" target="_top">ここ</a> 。';

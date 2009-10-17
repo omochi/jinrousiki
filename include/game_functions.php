@@ -7,10 +7,10 @@ require_once(dirname(__FILE__) . '/role/role_manager_class.php');
 
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $GAME_CONF, $RQ_ARGS, $room_no, $ROOM, $SELF;
+  global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF;
 
   //引数を格納
-  $url_header = 'game_frame.php?room_no=' . $room_no . '&auto_reload=' . $RQ_ARGS->auto_reload;
+  $url_header = 'game_frame.php?room_no=' . $ROOM->id . '&auto_reload=' . $RQ_ARGS->auto_reload;
   if($RQ_ARGS->play_sound) $url_header .= '&play_sound=on';
   if($RQ_ARGS->list_down)  $url_header .= '&list_down=on';
 
@@ -98,28 +98,29 @@ function OutputAutoReloadLink($url){
 
 //ゲームオプション画像を出力
 function OutputGameOption(){
-  global $GAME_CONF, $room_no, $ROOM;
+  global $GAME_CONF, $ROOM;
 
-  $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = $room_no");
-  echo '<table class="time-table"><tr>'."\n";
-  echo '<td>ゲームオプション：' . MakeGameOptionImage($ROOM->game_option, $option_role) . '</td>'."\n";
-  echo '</tr></table>'."\n";
+  $array = FetchNameArray("SELECT option_role, max_user FROM room WHERE room_no = {$ROOM->id}");
+  $str = '<table class="time-table"><tr>'."\n" .
+    '<td>ゲームオプション：' . MakeGameOptionImage($ROOM->game_option, $array['option_role']) .
+    ' 最大' . $array['max_user'] . '人</td>'."\n" . '</tr></table>'."\n";
+  echo $str;
 }
 
 //日付と生存者の人数を出力
 function OutputTimeTable(){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   if($ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければ表示しない
 
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no " .
+  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} " .
     "AND live = 'live' AND user_no > 0";
   echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
 }
 
 //プレイヤー一覧出力
 function OutputPlayerList(){
-  global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $room_no, $ROOM, $USERS, $SELF;
+  global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $ROOM, $USERS, $SELF;
 
   $width  = $ICON_CONF->width;
   $height = $ICON_CONF->height;
@@ -178,7 +179,7 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName($this_user->main_role, 'fox');
       elseif($this_user->IsRoleGroup('poison') || $this_user->IsRole('pharmacist'))
 	$role_str = MakeRoleName($this_user->main_role, 'poison');
-      elseif($this_user->IsRole('assassin', 'mania', 'cupid', 'quiz'))
+      elseif($this_user->IsRoleGroup('cupid') || $this_user->IsRole('assassin', 'mania', 'quiz'))
 	$role_str = MakeRoleName($this_user->main_role);
 
       //ここから兼任役職
@@ -263,7 +264,7 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('panelist', 'sudden-death', true);
 
       if($SELF->IsDummyBoy() && $ROOM->IsBeforeGame()){
-	$query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no " .
+	$query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
 	  "AND situation = 'GAMESTART' AND uname = '$this_uname'";
 	if(($this_user->IsDummyBoy() && ! $ROOM->IsQuiz()) || FetchResult($query_game_start) > 0){
 	  $already_vote_class = ' class="already-vote"';
@@ -278,7 +279,7 @@ function OutputPlayerList(){
     }
     elseif($ROOM->IsBeforeGame()){ //ゲーム前
       //ゲームスタートに投票していれば色を変える
-      $query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no " .
+      $query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
 	"AND situation = 'GAMESTART' AND uname = '$this_uname'";
       if(($this_user->IsDummyBoy() && ! $ROOM->IsQuiz()) || FetchResult($query_game_start) > 0){
 	$already_vote_class = ' class="already-vote"';
@@ -318,10 +319,10 @@ function MakeRoleName($role, $css = '', $sub_role = false){
 
 //勝敗の出力
 function OutputVictory(){
-  global $MESSAGE, $room_no, $ROOM, $SELF;
+  global $MESSAGE, $ROOM, $SELF;
 
   //勝利陣営を取得
-  $victory = FetchResult("SELECT victory_role FROM room WHERE room_no = $room_no");
+  $victory = FetchResult("SELECT victory_role FROM room WHERE room_no = {$ROOM->id}");
   $class   = $victory;
   $winner  = 'victory_' . $victory;
 
@@ -391,7 +392,7 @@ EOF;
 
 //再投票の時、メッセージを表示
 function OutputReVoteList(){
-  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $room_no, $ROOM, $SELF, $COOKIE, $SOUND;
+  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $SELF, $COOKIE, $SOUND;
 
   if(! $ROOM->IsDay()) return false; //昼以外は出力しない
   if(($revote_times = GetVoteTimes(true)) == 0) return false; //再投票の回数を取得
@@ -402,7 +403,7 @@ function OutputReVoteList(){
 
   //投票済みチェック
   $vote_times = $revote_times + 1;
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} " .
+  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} " .
     "AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
   if(FetchResult($query) == 0){
     echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
@@ -414,11 +415,11 @@ function OutputReVoteList(){
 
 //会話ログ出力
 function OutputTalkLog(){
-  global $MESSAGE, $room_no, $ROOM, $SELF;
+  global $MESSAGE, $ROOM, $SELF;
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
   $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
-			WHERE room_no = $room_no AND location LIKE '{$ROOM->day_night}%'
+			WHERE room_no = {$ROOM->id} AND location LIKE '{$ROOM->day_night}%'
 			AND date = {$ROOM->date} ORDER BY time DESC");
 
   $builder = DocumentBuilder::Generate();
@@ -727,14 +728,14 @@ function OutputTalk($talk, &$builder){
 
 //死亡者の遺言を出力
 function OutputLastWords(){
-  global $MESSAGE, $room_no, $ROOM;
+  global $MESSAGE, $ROOM;
 
   //ゲーム中以外は出力しない
   if(! ($ROOM->IsPlaying() || $ROOM->log_mode)) return false;
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;
-  $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
+  $sql = mysql_query("SELECT message FROM system_message WHERE room_no = {$ROOM->id}
 			AND date = $set_date AND type = 'LAST_WORDS' ORDER BY MD5(RAND()*NOW())");
   $count = mysql_num_rows($sql);
   if($count < 1) return false;
@@ -765,7 +766,7 @@ EOF;
 
 //前の日の 狼が食べた、狐が占われて死亡、投票結果で死亡のメッセージ
 function OutputDeadMan(){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   //ゲーム中以外は出力しない
   if(! $ROOM->IsPlaying()) return false;
@@ -773,7 +774,7 @@ function OutputDeadMan(){
   $yesterday = $ROOM->date - 1;
 
   //共通クエリ
-  $query_header = "SELECT message, type FROM system_message WHERE room_no = $room_no AND date =";
+  $query_header = "SELECT message, type FROM system_message WHERE room_no = {$ROOM->id} AND date =";
 
   //処刑メッセージ、毒死メッセージ(昼)
   $type_day = "type = 'VOTE_KILLED' OR type = 'POISON_DEAD_day' OR type = 'LOVERS_FOLLOWED_day' " .
@@ -932,10 +933,10 @@ function OutputVoteList(){
 
 //指定した日付の投票結果を出力する
 function OutputVoteListDay($set_date){
-  global $RQ_ARGS, $room_no, $ROOM, $SELF;
+  global $RQ_ARGS, $ROOM, $SELF;
 
   //指定された日付の投票結果を取得
-  $query = "SELECT message FROM system_message WHERE room_no = $room_no " .
+  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
     "AND date = $set_date and type = 'VOTE_KILL'";
   $vote_message_list = FetchArray($query);
   if(count($vote_message_list) == 0) return false; //投票総数
@@ -989,7 +990,7 @@ function OutputVoteListDay($set_date){
 
 //占う、狼が狙う、護衛する等、能力を使うメッセージ
 function OutputAbilityAction(){
-  global $MESSAGE, $room_no, $ROOM;
+  global $MESSAGE, $ROOM;
 
   //昼間で役職公開が許可されているときのみ表示
   //(猫又は役職公開時は行動できないので不要)
@@ -1014,7 +1015,7 @@ function OutputAbilityAction(){
     $action .= "type = '$this_action'";
   }
 
-  $query = "SELECT message, type FROM system_message WHERE room_no = $room_no " .
+  $query = "SELECT message, type FROM system_message WHERE room_no = {$ROOM->id} " .
     "AND date = $yesterday AND ( $action )";
   $message_list = FetchAssoc($query);
   foreach($message_list as $array){
@@ -1041,11 +1042,11 @@ function OutputAbilityAction(){
       break;
 
     case 'TRAP_MAD_DO':
-      echo '(罠師) は '.$target.' '.$MESSAGE->trap_mad_do;
+      echo '(罠師) は '.$target.' '.$MESSAGE->trap_do;
       break;
 
     case 'TRAP_MAD_NOT_DO':
-      echo '(罠師) '.$MESSAGE->trap_mad_not_do;
+      echo '(罠師) '.$MESSAGE->trap_not_do;
       break;
 
     case 'VOODOO_MAD_DO':
@@ -1094,9 +1095,9 @@ function OutputAbilityAction(){
 
 //勝敗をチェック
 function CheckVictory($check_draw = false){
-  global $GAME_CONF, $room_no, $ROOM;
+  global $GAME_CONF, $ROOM;
 
-  $query_count = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no " .
+  $query_count = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} " .
     "AND live = 'live' AND user_no > 0 AND ";
 
   $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
@@ -1126,17 +1127,18 @@ function CheckVictory($check_draw = false){
     $victory_role = 'quiz_dead';
   }
 
-  if($victory_role == '') return;
+  if($victory_role == '') return false;
 
   //ゲーム終了
   mysql_query("UPDATE room SET status = 'finished', day_night = 'aftergame',
-		victory_role = '$victory_role' WHERE room_no = $room_no");
+		victory_role = '$victory_role' WHERE room_no = {$ROOM->id}");
 
   //ゲーム終了時間を通知
-  $end_time = gmdate('Y/m/j (D) G:i:s', $ROOM->system_time);
-  InsertSystemTalk('ゲーム終了：' . $end_time, ++$ROOM->system_time, 'aftergame system');
+  $sentence = 'ゲーム終了：' . gmdate('Y/m/d (D) H:i:s', $ROOM->system_time);
+  InsertSystemTalk($sentence, ++$ROOM->system_time, 'aftergame system');
 
   mysql_query('COMMIT'); //一応コミット
+  return true;
 }
 
 //恋人の後追い死処理
@@ -1196,7 +1198,7 @@ function InsertMediumMessage(){
 
 //リアルタイムの経過時間
 function GetRealPassTime(&$left_time, $flag = false){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   $time_str = strstr($ROOM->game_option, 'real_time');
   //実時間の制限時間を取得
@@ -1205,8 +1207,9 @@ function GetRealPassTime(&$left_time, $flag = false){
   $night_time = $night_minutes * 60; //秒になおす
 
   //最も小さな時間(場面の最初の時間)を取得
-  $sql = mysql_query("SELECT MIN(time) FROM talk WHERE room_no = $room_no
-			AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'");
+  $query = "SELECT MIN(time) FROM talk WHERE room_no = {$ROOM->id} " .
+    "AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'";
+  $sql = SendQuery($query);
   $start_time = (int)mysql_result($sql, 0, 0);
 
   if($start_time != NULL){
@@ -1228,9 +1231,9 @@ function GetRealPassTime(&$left_time, $flag = false){
 
 //会話で時間経過制の経過時間
 function GetTalkPassTime(&$left_time, $flag = false){
-  global $TIME_CONF, $room_no, $ROOM;
+  global $TIME_CONF, $ROOM;
 
-  $sql = mysql_query("SELECT SUM(spend_time) FROM talk WHERE room_no = $room_no
+  $sql = mysql_query("SELECT SUM(spend_time) FROM talk WHERE room_no = {$ROOM->id}
 			AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'");
   $spend_time = (int)mysql_result($sql, 0, 0);
 
@@ -1254,7 +1257,7 @@ function GetTalkPassTime(&$left_time, $flag = false){
 
 //システムメッセージ挿入 (talk Table)
 function InsertSystemTalk($sentence, $time, $location = '', $date = '', $uname = 'system'){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   if($location == '') $location = "{$ROOM->day_night} system";
   if($date == '') $date = $ROOM->date;
@@ -1262,39 +1265,39 @@ function InsertSystemTalk($sentence, $time, $location = '', $date = '', $uname =
     echo "System Talk: $location : $sentence <br>";
     return;
   }
-  InsertTalk($room_no, $date, $location, $uname, $time, $sentence, NULL, 0);
+  InsertTalk($ROOM->id, $date, $location, $uname, $time, $sentence, NULL, 0);
 }
 
 //システムメッセージ挿入 (system_message Table)
 function InsertSystemMessage($sentence, $type, $date = ''){
-  global $room_no, $ROOM;
+  global $ROOM;
 
   if($ROOM->test_mode){
     echo "System Message: $type : $sentence <br>";
     return;
   }
   if($date == '') $date = $ROOM->date;
-  $values = "$room_no, '$sentence', '$type', $date";
+  $values = "{$ROOM->id}, '$sentence', '$type', $date";
   InsertDatabase('system_message', 'room_no, message, type, date', $values);
 }
 
 //最終書き込み時刻を更新
 function UpdateTime(){
-  global $room_no, $ROOM;
-  mysql_query("UPDATE room SET last_updated = '{$ROOM->system_time}' WHERE room_no = $room_no");
+  global $ROOM;
+  mysql_query("UPDATE room SET last_updated = '{$ROOM->system_time}' WHERE room_no = {$ROOM->id}");
 }
 
 //今までの投票を全部削除
 function DeleteVote(){
-  global $room_no;
-  mysql_query("DELETE FROM vote WHERE room_no = $room_no");
+  global $ROOM;
+  mysql_query("DELETE FROM vote WHERE room_no = {$ROOM->id}");
 }
 
 //昼の投票回数を取得する
 function GetVoteTimes($revote = false){
-  global $room_no, $ROOM;
+  global $ROOM;
 
-  $query = "SELECT message FROM system_message WHERE room_no = $room_no " .
+  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
     "AND date = {$ROOM->date} AND type = ";
   $query .= ($revote ?  "'RE_VOTE' ORDER BY message DESC" : "'VOTE_TIMES'");
 
@@ -1303,9 +1306,9 @@ function GetVoteTimes($revote = false){
 
 //夜の自分の投票済みチェック
 function CheckSelfVoteNight($situation, $not_situation = ''){
-  global $room_no, $ROOM, $SELF;
+  global $ROOM, $SELF;
 
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = $room_no AND date = {$ROOM->date} AND ";
+  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} AND ";
   if($situation == 'WOLF_EAT'){
     $query .= "situation = '$situation'";
   }
@@ -1350,7 +1353,7 @@ function ParseStrings($str, $type = NULL){
   case 'CHILD_FOX_DO':
   case 'CUPID_DO':
     list($msg, $target) = explode("\t", $str);
-    if ($msg == $type){
+    if($msg == $type){
       DecodeSpace(&$target);
       return $target;
     }
@@ -1366,7 +1369,6 @@ function ParseStrings($str, $type = NULL){
     DecodeSpace(&$first);
     DecodeSpace(&$second);
     DecodeSpace(&$third);
-
     return array($first, $second, $third);
 
   case 'VOTE':

@@ -24,7 +24,7 @@ DisconnectDatabase($dbHandle); //DB 接続解除
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser($request){
-  global $GAME_CONF, $MESSAGE, $DEBUG_MODE;
+  global $DEBUG_MODE, $GAME_CONF, $MESSAGE;
 
   //引数を取得
   $room_no     = $request->room_no;
@@ -72,11 +72,9 @@ function EntryUser($request){
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-  if(!$DEBUG_MODE){
-	  if($GAME_CONF->entry_one_ip_address &&
-	     FetchResult("$query ip_address = '$ip_address' AND user_no > 0") > 0){
-	    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
-	  }
+  if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
+     FetchResult("$query ip_address = '$ip_address' AND user_no > 0") > 0){
+    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
   }
 
   //テーブルをロック

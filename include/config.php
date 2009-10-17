@@ -6,24 +6,25 @@ require_once(dirname(__FILE__) . '/system_class.php');  //システム情報格納クラス
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //デバッグ用に長くしておく
+  #var $die_room = 1200;
+  var $die_room = 12000; //デバッグ用に長くしておく
 
   //最大並列プレイ可能村数
-  var $max_active_room = 10;
+  var $max_active_room = 4;
 
   //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
 
-  //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は連動は不要)
+  //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
   var $max_user_list = array(8, 16, 22, 32);
-  var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list に含むこと)
+  var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
   //-- OutputCreateRoom() --//
   var $room_name = 45; //村名の最大文字数
   var $room_comment = 50; //村の説明の最大文字数
 
-  //各オプションを有効に[する / しない]、デフォルトでチェックを [つける / つけない]
+  //各オプションを有効に [true:する / false:しない]
+  //デフォルトでチェックを [true:つける / false:つけない]
   var $wish_role = true; //役割希望制
   var $default_wish_role = false;
 
@@ -81,20 +82,15 @@ class RoomConfig{
   var $chaos = true; //闇鍋モード
   var $chaosfull = true; //真・闇鍋モード
 
-  //闇鍋モードのデフォルト
+  //闇鍋モードのデフォルト [NULL:通常人狼 / 'chaos':通常闇鍋 / 'chaosfull':真・闇鍋]
   var $default_chaos = NULL; //通常人狼
-  // var $default_chaos = 'chaos'; //通常闇鍋
-  // var $default_chaos = 'chosfull'; //真・闇鍋
-
 
   var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
   var $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)
   var $chaos_open_cast_role = true; //役職の種類毎の総数を表示する (闇鍋モード専用オプション)
-  //通知モードのデフォルト
-  // var $default_chaos_open_cast = NULL; //通知無し
+
+  //通知モードのデフォルト [NULL:無し / 'camp':陣営 / 'role':役職 / 'full':完全]
   var $default_chaos_open_cast = 'camp'; //陣営通知
-  // var $default_chaos_open_cast = 'role'; //役職通知
-  // var $default_chaos_open_cast = 'full'; //完全通知
 
   var $secret_sub_role = true; //サブ役職を本人に通知しない (闇鍋モード専用オプション)
   var $default_secret_sub_role = false;
@@ -115,7 +111,6 @@ class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
   var $entry_one_ip_address = true;
-  #var $entry_one_ip_address = false; //デバッグ用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -125,6 +120,7 @@ class GameConfig{
   var $quote_words = false;
 
   //-- 投票 --//
+  var $self_kick = false; //自分への KICK (true：有効 / false：無効)
   var $kick = 3; //何票で KICK 処理を行うか
   var $draw = 5; //再投票何回目で引き分けとするか
 
@@ -140,7 +136,7 @@ class GameConfig{
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
-     5 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1, 'poison' => 1),
+     5 => array('wolf' => 1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
@@ -252,7 +248,7 @@ class GameConfig{
 			      'medium'            => '巫女',
 			      'mad'               => '狂人',
 			      'fanatic_mad'       => '狂信者',
-			      'jammer_mad'        => '邪魔狂人',
+			      'jammer_mad'        => '月兎',
 			      'trap_mad'          => '罠師',
 			      'voodoo_mad'        => '呪術師',
 			      'whisper_mad'       => '囁き狂人',
@@ -281,6 +277,7 @@ class GameConfig{
 			      'assassin'          => '暗殺者',
 			      'mania'             => '神話マニア',
 			      'cupid'             => 'キューピッド',
+			      'self_cupid'        => '求愛者',
 			      'quiz'              => '出題者');
 
   //サブ役職のリスト (コード名 => 表示名)
@@ -345,7 +342,7 @@ class GameConfig{
 			       'medium'            => '巫',
 			       'mad'               => '狂',
 			       'fanatic_mad'       => '狂信',
-			       'jammer_mad'        => '邪狂',
+			       'jammer_mad'        => '月兎',
 			       'trap_mad'          => '罠',
 			       'voodoo_mad'        => '呪狂',
 			       'whisper_mad'       => '囁狂',
@@ -372,6 +369,7 @@ class GameConfig{
 			       'suspect'           => '不審',
 			       'unconscious'       => '無',
 			       'cupid'             => 'QP',
+			       'self_cupid'        => '求愛',
 			       'mania'             => 'マ',
 			       'assassin'          => '暗',
 			       'quiz'              => 'GM',
@@ -414,7 +412,15 @@ class GameConfig{
 			       'lovers'            => '恋',
 			       'copied'            => '元マ');
 
+  //-- 真・闇鍋の配役設定 --//
+  //固定配役
+  var $chaos_fix_role_list = array('wolf'=> 1, 'mage' => 1);
+
+  var $min_wolf_rate = 10; //人狼の最低限出現率 (総人口/N)
+  var $min_fox_rate  = 15; //妖狐の最低限出現率 (総人口/N)
+
   //-- その他 --//
+  var $power_gm = true; //強権 GM モード (ON：true / OFF：false)
   var $random_message = true; //ランダムメッセージの挿入 (する：true / しない：false)
 
   //-- 関数 --//
@@ -429,7 +435,6 @@ $GAME_CONF = new GameConfig();
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
   var $sudden_death = 180;
-  #var $sudden_death = 30; //デバッグ用
 
   //-- リアルタイム制 --//
   var $default_day   = 5; //デフォルトの昼の制限時間(分)

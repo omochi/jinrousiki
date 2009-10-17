@@ -8,7 +8,13 @@ EncodePostData();
 
 if($_POST['command'] == 'CREATE_ROOM'){
   //リファラチェック
-  if(strncmp(@$_SERVER['HTTP_REFERER'], $SERVER_CONF->site_root, strlen($SERVER_CONF->site_root)) != 0){
+  $white_list = array('127.', '192.168.');
+  foreach($white_list as $host){ //ホワイトリストチェック
+    $trusted |= (strpos($_SERVER['REMOTE_ADDR'], $host) === 0);
+  }
+  if(! $trusted &&
+     strncmp(@$_SERVER['HTTP_REFERER'], $SERVER_CONF->site_root,
+	     strlen($SERVER_CONF->site_root)) != 0){
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
 
@@ -75,8 +81,8 @@ function CreateRoom($room_name, $room_comment, $max_user){
   }
 
   //最大並列村数を超えているようであれば新しい村を作らない
-  $query = "SELECT COUNT(room_no) FROM room WHERE status <> 'finished'";
-  if(FetchResult($query) >= $ROOM_CONF->max_active_room) {
+  $room_count = FetchResult("SELECT COUNT(room_no) FROM room WHERE status <> 'finished'");
+  if($room_count >= $ROOM_CONF->max_active_room){
     OutputRoomAction('full');
     return false;
   }
@@ -225,27 +231,35 @@ function CreateRoom($room_name, $room_comment, $max_user){
   $room_no = FetchResult('SELECT room_no FROM room ORDER BY room_no DESC') + 1;
 
   //登録
-  $time = TZTime();
-  $items = 'room_no, room_name, room_comment, establisher_ip, game_option, ' .
-    'option_role, max_user, status, date, day_night, last_updated';
-  $values = "$room_no, '$room_name', '$room_comment', '$ip_address', '$game_option', " .
-    "'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time'";
-  $entry = InsertDatabase('room', $items, $values);
+  $status = false;
+  do{
+    //村作成
+    $time = TZTime();
+    $items = 'room_no, room_name, room_comment, establisher_ip, game_option, ' .
+      'option_role, max_user, status, date, day_night, last_updated';
+    $values = "$room_no, '$room_name', '$room_comment', '$ip_address', '$game_option', " .
+      "'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time'";
+    if(! InsertDatabase('room', $items, $values)) break;
 
-  //身代わり君を入村させる
-  if(strpos($game_option, 'dummy_boy') !== false &&
-     FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
-    $crypt_dummy_boy_password = CryptPassword($dummy_boy_password);
-    $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, live, last_words';
-    $values = "$room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0, '{$MESSAGE->dummy_boy_comment}', " .
-      "'male', '$crypt_dummy_boy_password', 'live', '{$MESSAGE->dummy_boy_last_words}'";
-    InsertDatabase('user_entry', $items, $values);
-  }
+    //村立て時間を挿入
+    $sentence = '村作成：' . gmdate('Y/m/d (D) H:i:s', $time);
+    if(! InsertTalk($room_no, 0, 'beforegame system', 'system', $time,  $sentence, NULL, 0)) break;
 
-  if($entry && mysql_query('COMMIT')) //一応コミット
+    //身代わり君を入村させる
+    if(strpos($game_option, 'dummy_boy') !== false &&
+       FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
+      $crypt_dummy_boy_password = CryptPassword($dummy_boy_password);
+      $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, live, last_words';
+      $values = "$room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0, '{$MESSAGE->dummy_boy_comment}', " .
+	"'male', '$crypt_dummy_boy_password', 'live', '{$MESSAGE->dummy_boy_last_words}'";
+      if(! InsertDatabase('user_entry', $items, $values)) break;
+    }
+
+    if(! mysql_query('COMMIT')) break; //一応コミット
     OutputRoomAction('success', $room_name);
-  else
-    OutputRoomAction('busy');
+    $status = true;
+  }while(false);
+  if(! $status) OutputRoomAction('busy');
   mysql_query('UNLOCK TABLES');
 }
 
@@ -333,10 +347,10 @@ function OutputSharedServerRoom(){
 
   foreach($SERVER_CONF->shared_server_list as $server => $array){
     extract($array, EXTR_PREFIX_ALL, 'this');
-
+    // echo "$this_url <br>"; //デバッグ用
     if($this_url == $SERVER_CONF->site_root) continue;
     if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
-    #echo $this_data; //デバッグ用
+    //echo $this_url.$this_data; //デバッグ用
     if($this_encode != '' && $this_encode != $ENCODE){
       $this_data = mb_convert_encoding($this_data, $ENCODE, $this_encode);
     }
