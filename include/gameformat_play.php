@@ -10,13 +10,20 @@ class GamePlayFormat extends ChatEngine {
 
   function ParseUsers(){
     $user_cache = array();
-    $user_cache['wolf'] = array( 'display_name' => '狼の遠吠え' );
-    $user_cache['common'] = array( 'display_name' => '<span class="weak">共有者の小声</span>' );
+    if ($this->room->IsNight()){
+      $user_cache['wolf'] = array( 'display_name' => '狼の遠吠え' );
+      $user_cache['common'] = array( 'display_name' => '<span class="weak">共有者の小声</span>' );
+      $user_cache['self'] = array(
+        'class_attr' => 'u'.$this->self->user_no,
+        'color' => $this->self->color,
+        'display_name' => '◆'.$this->self->handle_name.'の独り言'
+        );
+    }
     foreach ($this->users->rows as $user){
       $user_cache[$user->uname] = array (
         'class_attr' => 'u'.$user->user_no,
         'color' => $user->color,
-        'display_name' => '◆'.$user->handle_name . ($this->room->IsNight() ? 'の独り言' : '')
+        'display_name' => '◆'.$user->handle_name
       );
     }
     $this->user_cache = $user_cache;
@@ -293,10 +300,9 @@ HEADER;
     }
 
     //ここから兼任役職
-    if($self->IsRole( 'lovers')){
-      //恋人を表示する
-      $lovers_str = GetLoversConditionString($role);
-      $this->OutputPartner("$lovers_str AND uname <> '$uname'", 'lovers_header', 'lovers_footer');
+    if($this->self->IsRole('lost_ability')) $ROLE_IMG->DisplayImage('lost_ability'); //能力失効
+    if($this->self->IsLovers()){ //恋人を表示する
+      $this->OutputRole_Lovers();
     }
 
     //これ以降はサブ役職非公開オプションの影響を受ける
@@ -643,7 +649,7 @@ HEADER;
 
   function OutputRole_Cupid() {
     global $ROLE_IMG;
-    $this->output .= $ROLE_IMG->GenerateTag($main_role);
+    $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
     //自分が矢を打った恋人 (自分自身含む) を表示する
     foreach($this->users->rows as $user){
@@ -830,11 +836,15 @@ LINE;
       if($this->room->IsDay()) {
         return true;
       }
-      else {
+      elseif($this->room->IsNight()) {
         global $MESSAGE;
         switch ($talk->type){
         case 'self_talk':
-          return $talk->uname == $this->self->uname;
+          if($talk->uname == $this->self->uname){
+            $talk->uname = 'self';
+            return true;
+          }
+          return false;
         case 'wolf':
           if (!$this->self->IsRole('wolf', 'whisper_mad')){
             $talk->uname = 'wolf';

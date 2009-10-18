@@ -43,9 +43,12 @@ class ChatEngine {
   function GetRequiredScripts(){}
   function GenerateStyle(){
     foreach($this->user_cache as $user){
-      $style .= "*.{$user['class_attr']}:first-letter { color:{$user['color']} }\n";
+      extract($user);
+      if (!empty($class_attr)){
+        $style[$class_attr] = "*.{$class_attr}:first-letter { color:{$color} }";
+      }
     }
-    return $style;
+    return implode("\n", $style);
   }
   function GenerateScript(){}
 
