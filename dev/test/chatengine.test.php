@@ -1,27 +1,34 @@
 <?php
-$game_root = dirname(dirname(dirname(__FILE__)));
-require_once($game_root.'/include/functions.php');
-require_once($game_root.'/paparazzi.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/include/init.php');
 
 if (!$DEBUG_MODE){
   die('デバッグ機能の使用は許可されていません。');
 }
 
-require_once($game_root.'/include/request_class.php');
-require_once($game_root.'/include/chatengine.php');
+loadModule(
+  PLAY_FUNCTIONS,
+  SYSTEM_CLASSES,
+  PLAY_CLASSES,
+  MESSAGE,
+  ROOM_IMG,
+  ROOM_CONF,
+  GAME_CONF,
+  TIME_CONF,
+  ICON_CONF
+  );
 
 // テスト対象のロードと実行を制御します。
 class ChatEngineTestCore extends RequestBase {
   var $all_mode = array('view_playing');
 
   function ChatEngineTestCore(){
-    global $RQ_ARGS, $game_root;
+    global $RQ_ARGS;
     AttachTestParameters($this);
     switch ($this->TestItems->test_mode) {
     case 'view_playing':
       $this->RequestBaseGamePlay();
       $this->GetItems(null, 'date', 'day_night', 'uno', 'time');
-      include_once($game_root.'/include/gameformat_play.php');
+      include_once(JINRO_INC.'/gameformat_play.php');
       $this->initiate = 'init_playing';
       $this->run = 'test_view';
       break; //view_playingの初期化 ここまで
@@ -118,9 +125,9 @@ FORM;
   function init_playing(){
     shot("init_playing\r\n");
     shot(serialize($this), 'TestCore');
-    global $ROOM, $USERS, $SELF, $ROLE_IMG, $game_root, $room_no;
+    global $ROOM, $USERS, $SELF, $ROLE_IMG, $room_no;
 
-    require_once($game_root . '/include/user_class.php');
+    require_once(JINRO_INC . '/user_class.php');
 
     $this->connection = ConnectDatabase(true, true); //DB 接続
 
@@ -136,7 +143,11 @@ FORM;
     $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
     $USERS = new UserDataSet($this); //ユーザ情報をロード
-    $SELF = $USERS->rows[$this->uno]; //自分の情報をロード
+    //自分の情報をロード
+    if (array_key_exists($this->uno, $USERS->rows))
+      $SELF = $USERS->rows[$this->uno];
+    else
+      $SELF = $USERS->rows[2];
     $ROLE_IMG = new RoleImage();
     $uname = $SELF->uname;
   }
