@@ -1,4 +1,4 @@
-<?php require_once('include/setting.php'); ?>
+<?php require_once(dirname(__FILE__) . '/include/init.php'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">

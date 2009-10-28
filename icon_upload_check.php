@@ -1,4 +1,26 @@
 <?php
+require_once(dirname(__FILE__) . '/include/init.php');
+loadModule(
+  CONFIG,
+  #IMAGE_CLASSES,
+  #ROLE_CLASSES,
+  MESSAGE_CLASSES,
+  #GAME_FORMAT_CLASSES,
+  SYSTEM_CLASSES,
+  #USER_CLASSES,
+  #TALK_CLASSES,
+  #GAME_FUNCTIONS,
+  #PLAY_FUNCTIONS,
+  #VOTE_FUNCTIONS,
+  #ROOM_IMG,
+  #ROLE_IMG,
+  #ROOM_CONF,
+  #GAME_CONF,
+  #TIME_CONF,
+  ICON_CONF,
+  #ROLES,
+  MESSAGE
+  );
 require_once(dirname(__FILE__) . '/include/functions.php');
 
 $USER_ICON = new UserIcon(); //アイコン登録設定をロード

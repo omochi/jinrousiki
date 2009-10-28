@@ -125,7 +125,6 @@ class RoomImage extends ImageManager{
 			     );
   */
 }
-$ROOM_IMG = new RoomImage();
 
 //Ìò¿¦¤Î²èÁü¾ğÊó
 class RoleImage extends ImageManager{

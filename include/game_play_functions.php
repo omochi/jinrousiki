@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/game_functions.php');
-
 //能力の種類とその説明を出力
 function OutputAbility(){
   global $GAME_CONF, $ROLE_IMG, $MESSAGE, $ROOM, $USERS, $SELF;

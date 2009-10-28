@@ -21,6 +21,10 @@ class Role extends DocumentBuilderExtension{
     return ($result !== false && $result >= 0);
   }
 
+  function OutputRoleNotification($writer){ return 'not implemented'; }
+  function OutputVoteNotification($writer){ return 'not implemented'; }
+  function FilterWords($talk, $date, $situation){ return false; }
+
   function Say($words, $volume){
     //TODO: 以下に発言用のコードを記述してください。
   }

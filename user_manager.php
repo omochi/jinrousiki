@@ -1,6 +1,26 @@
 <?php
-require_once(dirname(__FILE__) . '/include/functions.php');
-require_once(dirname(__FILE__) . '/include/request_class.php');
+require_once(dirname(__FILE__) . '/include/init.php');
+loadModule(
+  CONFIG,
+  #IMAGE_CLASSES,
+  ROLE_CLASSES,
+  MESSAGE_CLASSES,
+  #GAME_FORMAT_CLASSES,
+  #SYSTEM_CLASSES,
+  USER_CLASSES,
+  #TALK_CLASSES,
+  #GAME_FUNCTIONS,
+  #PLAY_FUNCTIONS,
+  #VOTE_FUNCTIONS,
+  #ROOM_IMG,
+  #ROLE_IMG,
+  ROOM_CONF,
+  GAME_CONF,
+  #TIME_CONF,
+  #ICON_CONF,
+  ROLES,
+  MESSAGE
+  );
 
 EncodePostData();//ポストされた文字列をエンコードする
 $RQ_ARGS = new RequestUserManager();

@@ -1,15 +1,16 @@
 <?php
-require_once(dirname(__FILE__).'/role_class.php');
+require_once(JINRO_INC . '/role/role_class.php');
 
 class Roles{
   var $class = array();
 
   function Roles(){
+    shot('$ROLESを初期化します。');
     $this->LoadRoles();
   }
 
   function __construct(){
-    $this->LoadRoles();
+    self::Roles();
   }
 
   function LoadRoles(){
@@ -65,7 +66,4 @@ class Roles{
     }
   }
 }
-
-shot('$ROLESを初期化します。');
-$ROLES = new Roles();
 ?>

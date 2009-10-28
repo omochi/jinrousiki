@@ -1,6 +1,27 @@
 <?php
-require_once(dirname(__FILE__) . '/include/time_calc.php');
-$ROLE_IMG = new RoleImage();
+require_once(dirname(__FILE__) . '/include/init.php');
+include(JINRO_INC . '/time_calc.php');
+loadModule(
+  #CONFIG,
+  IMAGE_CLASSES,
+  #ROLE_CLASSES,
+  #MESSAGE_CLASSES,
+  #GAME_FORMAT_CLASSES,
+  #SYSTEM_CLASSES,
+  #USER_CLASSES,
+  #TALK_CLASSES,
+  #GAME_FUNCTIONS,
+  #PLAY_FUNCTIONS,
+  #VOTE_FUNCTIONS,
+  #ROOM_IMG,
+  ROLE_IMG,
+  #ROOM_CONF,
+  #GAME_CONF,
+  #TIME_CONF,
+  #ICON_CONF,
+  #ROLES,
+  MESSAGE
+  );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>

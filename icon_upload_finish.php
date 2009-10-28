@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__FILE__) . '/include/init.php');
 require_once(dirname(__FILE__) . '/include/functions.php');
 echo <<<EOF
 <body>

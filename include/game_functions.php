@@ -1,10 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/functions.php');
-require_once(dirname(__FILE__) . '/game_format.php');
-require_once(dirname(__FILE__) . '/user_class.php');
-require_once(dirname(__FILE__) . '/talk_class.php');
-require_once(dirname(__FILE__) . '/role/role_manager_class.php');
-
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF;
@@ -1223,7 +1217,6 @@ function GetRealPassTime(&$left_time, $flag = false){
   $left_time = $base_time - $pass_time;
   if($left_time < 0) $left_time = 0; //マイナスになったらゼロにする
   if(! $flag) return;
-
   $start_date_str = gmdate('Y, m, j, G, i, s', $start_time);
   $end_date_str   = gmdate('Y, m, j, G, i, s', $start_time + $base_time);
   return array($start_date_str, $end_date_str);

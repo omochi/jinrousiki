@@ -24,6 +24,7 @@ require_once(JINRO_INC . '/functions.php');
 
 define('MESSAGE', 'MESSAGE');
 define('ROOM_IMG', 'ROOM_IMG');
+define('ROLE_IMG', 'ROLE_IMG');
 define('ROOM_CONF', 'ROOM_CONF');
 define('GAME_CONF', 'GAME_CONF');
 define('TIME_CONF', 'TIME_CONF');
@@ -32,19 +33,22 @@ define('ROLES', 'ROLES');
 
 define('CONFIG', 'CONFIG');
 define('PLAY_FUNCTIONS', 'PLAY_FUNCTIONS');
+define('GAME_FUNCTIONS', 'GAME_FUNCTIONS');
+define('GAME_FORMAT_CLASSES', 'GAME_FORMAT_CLASSES');
 define('VOTE_FUNCTIONS', 'VOTE_FUNCTIONS');
 define('SYSTEM_CLASSES', 'SYSTEM_CLASSES');
 define('IMAGE_CLASSES', 'IMAGE_CLASSES');
 define('ROLE_CLASSES', 'ROLE_CLASSES');
 define('MESSAGE_CLASSES', 'MESSAGE_CLASSES');
-define('PLAY_CLASSES', 'PLAY_CLASSES');
-define('CHATENGINE', 'CHATENGINE');
+define('USER_CLASSES', 'USER_CLASSES');
+define('TALK_CLASSES', 'TALK_CLASSES');
+define('CHATENGINE_CLASSES', 'CHATENGINE_CLASSES');
 
 function loadModule($name) {
   if (func_num_args() == 1){
-    shot("loading $name...", 'loadModule');
     if (!empty($GLOBALS[$name]))
       return true;
+    shot("loading $name...", 'loadModule');
     switch($name){
     case MESSAGE:
       if (loadModule(MESSAGE_CLASSES)) { //システムメッセージ格納クラス
@@ -55,6 +59,12 @@ function loadModule($name) {
     case ROOM_IMG:
       if (loadModule(SYSTEM_CLASSES)) {
         $GLOBALS[$name] = new RoomImage();
+        return true;
+      }
+      return false;
+    case ROLE_IMG:
+      if (loadModule(SYSTEM_CLASSES)) {
+        $GLOBALS[$name] = new RoleImage();
         return true;
       }
       return false;
@@ -91,21 +101,27 @@ function loadModule($name) {
     case MESSAGE_CLASSES:
       return $GLOBALS[$name] = include(JINRO_INC . '/message_class.php');
     case ROLE_CLASSES:
-      return $GLOBALS[$name] = include(JINRO_INC . '/role/role_manager_class.php');
+      if (GAME_FUNCTION_CLASSES) {
+        return $GLOBALS[$name] = include(JINRO_INC . '/role/role_manager_class.php');
+      }
     case SYSTEM_CLASSES:
       return $GLOBALS[$name] = include(JINRO_INC . '/system_class.php');  //システム情報格納クラス
     case CONFIG:
       return $GLOBALS[$name] = include(JINRO_INC . '/config.php');          //高度な設定
     case PLAY_FUNCTIONS:
-      return $GLOBALS[$name] = include(JINRO_INC . '/game_format.php')
-        && include(JINRO_INC . '/game_play_functions.php');
+      return $GLOBALS[$name] = include(JINRO_INC . '/game_play_functions.php');
+    case GAME_FUNCTIONS:
+      return $GLOBALS[$name] = include(JINRO_INC . '/game_functions.php');
+    case GAME_FORMAT_CLASSES:
+      return $GLOBALS[$name] = include(JINRO_INC . '/game_format.php');
     case VOTE_FUNCTIONS:
       return $GLOBALS[$name] = include(JINRO_INC . '/game_vote_functions.php');
-    case PLAY_CLASSES:
-      return $GLOBALS[$name] = include(JINRO_INC . '/user_class.php')
-        && include(JINRO_INC . '/talk_class.php');
-    case CHATENGINE:
-      return $GLOBALS[$name] = include(JINRO_INC . '/chatengine.php');
+    case USER_CLASSES:
+      return $GLOBALS[$name] = include(JINRO_INC . '/user_class.php');
+    case TALK_CLASSES:
+      return $GLOBALS[$name] = include(JINRO_INC . '/talk_class.php');
+    case CHATENGINE_CLASSES:
+      return $GLOBALS[$name] = include(JINRO_INC . '/chatengine/chatengine.php');
     }
     return false;
   }

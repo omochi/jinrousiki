@@ -1,10 +1,4 @@
 <?php
-//mbstring非対応の場合、エミュレータを使用する
-if(! extension_loaded('mbstring')){
-  require_once(dirname(__FILE__) . '/../module/mb-emulator.php');
-}
-require_once(dirname(__FILE__) .  '/setting.php');
-
 //データベース接続
 //$header : すでに HTMLヘッダが出力されて [いる / いない]
 //$exit   : エラー時に [HTML を閉じて exit を返す / false で終了]

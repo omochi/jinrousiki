@@ -6,20 +6,22 @@ class DatabaseConfig{
   var $host = 'localhost';
 
   //データベースのユーザ名
-  var $user = 'xxxx';
+  #var $user = 'xxxx';
+  var $user = 'grayran';
 
   //データベースサーバのパスワード
-  var $password = 'xxxxxxxx';
+  #var $password = 'xxxxxxxx';
+  var $password = 'satorituri';
 
   //データベース名
   var $name = 'jinrou';
 }
-$DB_CONF = new DatabaseConfig();
 
 //サーバ設定
 class ServerConfig{
   //サーバのURL
-  var $site_root = 'http://localhost/jinro/';
+  #var $site_root = 'http://localhost/jinro/';
+  var $site_root = 'http://localhost/jinrou/';
 
   //タイトル
   var $title = '汝は人狼なりや？';
@@ -99,14 +101,4 @@ class ServerConfig{
 			   'footer' => '</div></small></a><br>')
 				  );
 }
-$SERVER_CONF = new ServerConfig();
-
-//デバッグモードのオン/オフ
-$DEBUG_MODE = false;
-
-//外部ファイルの読み込み
-require_once(dirname(__FILE__) . '/config.php');          //高度な設定
-require_once(dirname(__FILE__) . '/version.php');         //バージョン情報
-require_once(dirname(__FILE__) . '/contenttype_set.php'); //ヘッダの文字コード設定
-require_once(dirname(__FILE__) . '/../paparazzi.php');    //デバッグ用
 ?>

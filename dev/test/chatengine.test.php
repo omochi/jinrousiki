@@ -5,17 +5,7 @@ if (!$DEBUG_MODE){
   die('デバッグ機能の使用は許可されていません。');
 }
 
-loadModule(
-  PLAY_FUNCTIONS,
-  SYSTEM_CLASSES,
-  PLAY_CLASSES,
-  MESSAGE,
-  ROOM_IMG,
-  ROOM_CONF,
-  GAME_CONF,
-  TIME_CONF,
-  ICON_CONF
-  );
+loadModule(CHATENGINE_CLASSES);
 
 // テスト対象のロードと実行を制御します。
 class ChatEngineTestCore extends RequestBase {
@@ -28,7 +18,7 @@ class ChatEngineTestCore extends RequestBase {
     case 'view_playing':
       $this->RequestBaseGamePlay();
       $this->GetItems(null, 'date', 'day_night', 'uno', 'time');
-      include_once(JINRO_INC.'/gameformat_play.php');
+      //include_once(JINRO_INC.'/chatengine/game_play.php');
       $this->initiate = 'init_playing';
       $this->run = 'test_view';
       break; //view_playingの初期化 ここまで
@@ -127,9 +117,24 @@ FORM;
     shot(serialize($this), 'TestCore');
     global $ROOM, $USERS, $SELF, $ROLE_IMG, $room_no;
 
-    require_once(JINRO_INC . '/user_class.php');
-
     $this->connection = ConnectDatabase(true, true); //DB 接続
+
+    loadModule(
+      CONFIG,
+      SYSTEM_CLASSES,
+      USER_CLASSES,
+      TALK_CLASSES,
+      GAME_FORMAT_CLASSES,
+      GAME_FUNCTIONS,
+      PLAY_FUNCTIONS,
+      ROOM_IMG,
+      ROLE_IMG,
+      ROOM_CONF,
+      GAME_CONF,
+      TIME_CONF,
+      ICON_CONF,
+      MESSAGE
+      );
 
     $room_no = $this->room_no;
 
@@ -148,7 +153,6 @@ FORM;
       $SELF = $USERS->rows[$this->uno];
     else
       $SELF = $USERS->rows[2];
-    $ROLE_IMG = new RoleImage();
     $uname = $SELF->uname;
   }
 
@@ -163,8 +167,8 @@ FORM;
 
   function test_view() {
     shot("test_view\r\n");
-    $target = new GamePlayFormat();
-    $target->OutputDocumentHeader();
+    $target = ChatEngine::Initialize('game_play.php');
+    shot($target->OutputDocumentHeader(), 'ChatEngine::OutputDocumentHeader');
     $target->output .= $this->generateTestPanel();
     $target->Flush(); //ここでフラッシュしないとエラーで落ちた際にフォームがでない。
     $target->OutputContentHeader();

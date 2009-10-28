@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/functions.php');
+loadModule(TIME_CONF);
 
 //非リアルタイム制の発言で消費される時間　昼
 $day_seconds = floor(12 * 60 * 60 / $TIME_CONF->day);

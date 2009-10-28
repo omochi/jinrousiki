@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/game_functions.php');
-
 //ÅêÉ¼·ë²Ì½ÐÎÏ
 function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
   global $back_url;

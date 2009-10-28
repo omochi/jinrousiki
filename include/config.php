@@ -1,7 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/message_class.php'); //システムメッセージ格納クラス
-require_once(dirname(__FILE__) . '/system_class.php');  //システム情報格納クラス
-
 //部屋メンテナンス・作成設定
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
@@ -104,7 +101,6 @@ class RoomConfig{
   var $duel = true; //決闘村
   var $default_duel = false;
 }
-$ROOM_CONF = new RoomConfig();
 
 //ゲーム設定
 class GameConfig{
@@ -429,7 +425,6 @@ class GameConfig{
     return ($this->main_role_list[$role] || $this->sub_role_list[$role]);
   }
 }
-$GAME_CONF = new GameConfig();
 
 //ゲームの時間設定
 class TimeConfig{
@@ -453,7 +448,6 @@ class TimeConfig{
   //沈黙経過時間 (12時間 ÷ $day(昼) or 6時間 ÷ $night (夜) の $silence_pass 倍の時間が進みます)
   var $silence_pass = 4;
 }
-$TIME_CONF = new TimeConfig();
 
 //ゲームプレイ時のアイコン表示設定
 class IconConfig{
@@ -463,7 +457,6 @@ class IconConfig{
   var $dead   = 'img/grave.gif'; //死者
   var $wolf   = 'img/wolf.gif';  //狼
 }
-$ICON_CONF = new IconConfig();
 
 //アイコン登録設定
 class UserIcon{

@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/include/functions.php');
+require_once(dirname(__FILE__) . '/include/init.php');
 
 if(! $dbHandle = ConnectDatabase(true, false)) return false; //DB 接続
 
@@ -7,6 +7,10 @@ MaintenanceRoom();
 EncodePostData();
 
 if($_POST['command'] == 'CREATE_ROOM'){
+  $white_list = array('127.', '192.168.');
+  foreach($white_list as $host){
+    $trusted |= (strpos($_SERVER['REMOTE_ADDR'] ,$host) === 0);
+  }
   //リファラチェック
   $white_list = array('127.', '192.168.');
   foreach($white_list as $host){ //ホワイトリストチェック

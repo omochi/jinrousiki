@@ -1,6 +1,6 @@
 <?php
 if ($DEBUG_MODE && !isset($paparazzi)){
-	require_once(dirname(__FILE__) . '/paparazzi/paparazzi.class.php');
+	require_once(JINRO_ROOT . '/paparazzi/paparazzi.class.php');
 	$paparazzi = new Paparazzi();
 
 	//shot
