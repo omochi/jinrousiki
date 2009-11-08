@@ -1,4 +1,6 @@
 <?php
+define('CHEN_DIR', dirname(__FILE__));
+
 class ChatEngine {
   var $room;
   var $users;
@@ -313,9 +315,6 @@ HEADER;
   
     $width  = $ICON_CONF->width;
     $height = $ICON_CONF->height;
-    //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
-    //IE の場合改行を \r\n に統一、その他のブラウザはスペースにする(画像のAlt属性)
-    $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
   
     $this->output .= '<table id="players" cellspacing="5">'."\n";
     $count = 0;

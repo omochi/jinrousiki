@@ -37,6 +37,19 @@ body {
   float: left;
 }
 
+#wayback_links {
+  text-align: right;
+}
+#wayback_links *{
+  display: inline;
+  list-style: none;
+  font-size: small;
+}
+#wayback_links a {
+  margin: 0 0.2ex;
+  padding: 0 0.3ex;
+}
+
 #players ul {
   list-style: none;
   float: left;
@@ -47,6 +60,43 @@ body {
   display: inline;
   line-height: 120%;
   vertical-align: bottom;
+}
+
+#winner {
+  margin: 5px 0px;
+  width: 100%;
+  list-style: none;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+#winner li {
+  padding: 0.5ex 0;
+}
+.victory-human{
+  background-color: #FFFF99;
+  color: #000000;
+}
+.victory-wolf{
+  background-color: #CC0000;
+  color: #FFFAFA;
+}
+.victory-fox{
+  background-color: #993399;
+  color: #FFFAFA;
+}
+.victory-lovers{
+  background-color: #FFFAFA;
+  color: #FF69B4; /* hotpink */
+}
+.victory-quiz{
+  background-color: #9999CC;
+  color: #FFFF99;
+}
+.victory-none{
+  background-color: #000000;
+  color: #FFFAFA;
 }
 
 .vote-list,  .vote-list * {

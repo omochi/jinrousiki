@@ -9,16 +9,16 @@ loadModule(CHATENGINE_CLASSES);
 
 // テスト対象のロードと実行を制御します。
 class ChatEngineTestCore extends RequestBase {
-  var $all_mode = array('view_playing');
+  var $all_mode = array('game_play', 'game_after');
 
   function ChatEngineTestCore(){
     global $RQ_ARGS;
     AttachTestParameters($this);
     switch ($this->TestItems->test_mode) {
-    case 'view_playing':
+    case 'game_play':
+    case 'game_after':
       $this->RequestBaseGamePlay();
       $this->GetItems(null, 'date', 'day_night', 'uno', 'time');
-      //include_once(JINRO_INC.'/chatengine/game_play.php');
       $this->initiate = 'init_playing';
       $this->run = 'test_view';
       break; //view_playingの初期化 ここまで
@@ -52,7 +52,7 @@ class ChatEngineTestCore extends RequestBase {
 
   function generateModeOptions(){
     foreach ($this->all_mode as $mode){
-      if($mode == $this->test_mode) {
+      if($mode == $this->TestItems->test_mode) {
         $selected = true;
         $options .= '<option selected="selected">'.$mode."</option>\n";
       }
@@ -167,7 +167,7 @@ FORM;
 
   function test_view() {
     shot("test_view\r\n");
-    $target = ChatEngine::Initialize('game_play.php');
+    $target = ChatEngine::Initialize($this->TestItems->test_mode . '.php');
     shot($target->OutputDocumentHeader(), 'ChatEngine::OutputDocumentHeader');
     $target->output .= $this->generateTestPanel();
     $target->Flush(); //ここでフラッシュしないとエラーで落ちた際にフォームがでない。

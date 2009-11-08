@@ -63,18 +63,17 @@ SCRIPT;
 
 NOTICE;
     }
-    if(! $this->room->IsAfterGame()){ //ゲーム終了後以外なら、サーバとの時間ズレを表示
-      $date_str = gmdate('Y, m, j, G, i, s', $this->room->system_time);
-      $this->output .= <<<NOTICE
+    //時間ずれの表示
+    $date_str = gmdate('Y, m, j, G, i, s', $this->room->system_time);
+    $this->output .= <<<NOTICE
 <div>
 サーバとローカルPCの時間ズレ(ラグ含)： <span>
 <script type="text/javascript"><!--
 output_diff_time('$date_str');
 //--></script>秒</span>
-<div>
+</div>
 
 NOTICE;
-    }
     //計測の結果、このクエリはパフォーマンスに大きな影響を与えないことが確認されました。
     $living_users = FetchResult(
       "SELECT COUNT(uname) FROM user_entry
@@ -101,26 +100,15 @@ LIST;
   }
 
   function OutputPlayerCell($user){
-    global $DEBUG_MODE, $ICON_CONF;
+    global $DEBUG_MODE;
     $this_uname   = $user->uname;
     $this_info = $this->user_cache[$this_uname];
     $this_handle  = $this_info['display_name'];
 
-    $display_profile  = str_replace("\n", $replace, $user->profile);
     if($DEBUG_MODE) $this_handle .= ' (' . $user->user_no . ')';
 
     //アイコン
-    //生死の確認と表示の切り替え
-    if($user->IsLive()){
-      $icon_src = $ICON_CONF->path . '/' . $user->icon_filename;
-      $display_live = '(生存中)';
-    }
-    else{
-      $icon_src = $ICON_CONF->dead;
-      $rollover_path = $ICON_CONF->path . '/' . $user->icon_filename;
-      $display_live  = '(死亡)';
-      $rollover_handlers = " onMouseover=\"this.src='{$rollover_path}'\" onMouseout=\"this.src='{$icon_src}'\"";
-    }
+    $icon = $this->GenerateUserIcon($user);
 
     if($this->room->IsBeforeGame()){ //ゲームスタートに投票していれば色を変える
       $query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$this->room->id} " .
@@ -132,8 +120,7 @@ LIST;
     $class_attr = count($this_classes) ? ' class="'.implode(' ', $this_classes).'"' : '';
     $this->output .= <<<CELL
 <td{$class_attr}>
-<img src="{$icon_src}" class="icon" title="{$display_profile}" alt="{$display_profile}"
-  width="{$ICON_CONF->width}" height="{$ICON_CONF->height}" style="border-color:{$this_info['color']};"{$rollover_handlers}>
+{$icon}
 <ul>
 <li class="{$this_info['class_attr']}">$this_handle</li>
 <li>$display_live</li>
@@ -142,6 +129,30 @@ LIST;
 
 CELL;
     return 'success';
+  }
+
+  //ユーザーを指定してアイコン表示用のimg要素を生成します。
+  function GenerateUserIcon(&$user) {
+    global $ICON_CONF;
+    //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
+    //IE の場合改行を \r\n に統一、その他のブラウザはスペースにする(画像のAlt属性)
+    if($user->IsLive()){
+      $icon_src = $ICON_CONF->path . '/' . $user->icon_filename;
+      $display_live = '(生存中)';
+    }
+    else{
+      $icon_src = $ICON_CONF->dead;
+      $rollover_path = $ICON_CONF->path . '/' . $user->icon_filename;
+      $display_live  = '(死亡)';
+      $rollover_handlers = " onMouseover=\"this.src='{$rollover_path}'\" onMouseout=\"this.src='{$icon_src}'\"";
+    }
+    $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
+    $display_profile  = str_replace("\n", $replace, $user->profile);
+    return <<<ELEMENT
+<img src="{$icon_src}" class="icon" title="{$display_profile}" alt="{$display_profile}"
+  width="{$ICON_CONF->width}" height="{$ICON_CONF->height}" style="border-color:{$this_info['color']};"{$rollover_handlers}>
+
+ELEMENT;
   }
 
   function OutputNotice(){
