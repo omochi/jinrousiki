@@ -1,7 +1,7 @@
 <?php
-require_once(CHEN_DIR.'/game_play.php');
+require_once(CHEN_DIR.'/game_base.php');
 
-class GameAfterFormat extends GamePlayFormat {
+class GameAfterFormat extends GameBaseFormat {
   function ParseUsers(){
     $user_cache = array();
     foreach ($this->users->rows as $user){
@@ -43,24 +43,8 @@ CELL;
   }
 
   function OutputGameInfo(){
-    //過去の日のログへのリンク生成
-
-    $link_format ='<li><a href="game_log.php?room_no=' . $this->room->id .
-      '&date=%d&day_night=%s#game_top" target="_blank">%s</a></li>';
-
-    $this->output .= '<div id="wayback_links"><h2>ログ</h2><ul>';
-    $this->output .= sprintf($link_format, 0, 'beforegame', "0(開始前)");
-    $this->output .= sprintf($link_format, 1, 'night', "1(夜)");
-    for($day = 2; $day < $this->room->date; $day++){
-      $this->output .= sprintf($link_format, 1, 'day', "{$day}(昼)");
-      $this->output .= sprintf($link_format, 1, 'night', "{$day}(夜)");
-    }
-    $query = "SELECT COUNT(uname) FROM talk WHERE room_no = {$this->room->id} " .
-      "AND date = {$this->room->date} AND location = 'day'";
-    if(FetchResult($query) > 0){
-      $this->output .= sprintf($link_format, $this->room->date, 'day', "{$this->room->date}(昼)");
-    }
-    $this->output .= "</ul></div>\n";
+    $this->OutputWaybackLinks();
+    return 'success';
   }
 
   function OutputNotice(){
@@ -113,10 +97,10 @@ EOF;
     return 'success';
   }
 
-  function OutputDeadList(){
-  }
-
-  function OutputLastWords(){
+  function OutputEndTalk($date, $situation){
+    $this->output .= '<dt class="bottom"></dt></dl>';
+    $this->output .= "</div>\n";
+    return 'success';
   }
 
   function FilterWords($category, &$talk, $date, $situation){

@@ -15,8 +15,22 @@ body {
   border-style: solid;
 }
 
+#title {
+  position: relative;
+  padding: 0.5ex 0;
+}
 #title * {
   display: inline;
+}
+.heaven #title h1 {
+  font-size: inherit;
+}
+.heaven #wayback_links {
+  display: block;
+  width: 100%;
+  top: 0;
+  position:absolute;
+  text-align: right;
 }
 
 #game_info {

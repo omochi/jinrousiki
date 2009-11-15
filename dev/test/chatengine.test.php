@@ -9,7 +9,7 @@ loadModule(CHATENGINE_CLASSES);
 
 // テスト対象のロードと実行を制御します。
 class ChatEngineTestCore extends RequestBase {
-  var $all_mode = array('game_play', 'game_after');
+  var $all_mode = array('game_play', 'game_after', 'game_heaven');
 
   function ChatEngineTestCore(){
     global $RQ_ARGS;
@@ -17,6 +17,7 @@ class ChatEngineTestCore extends RequestBase {
     switch ($this->TestItems->test_mode) {
     case 'game_play':
     case 'game_after':
+    case 'game_heaven':
       $this->RequestBaseGamePlay();
       $this->GetItems(null, 'date', 'day_night', 'uno', 'time');
       $this->initiate = 'init_playing';
