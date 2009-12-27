@@ -96,7 +96,7 @@ class Message{
   var $wolf_eat         = 'に狙いをつけました'; //人狼の投票
   var $mage_do          = 'を占います'; //占い師の投票
   var $voodoo_killer_do = 'の呪いを祓います'; //陰陽師の投票
-  var $jammer_do        = 'の占いを妨害します'; //邪魔狂人の投票
+  var $jammer_do        = 'の占いを妨害します'; //月兎の投票
   var $trap_do          = 'の周辺に罠を仕掛けました'; //罠師の投票
   var $trap_not_do      = 'は罠設置を行いませんでした'; //罠師のキャンセル投票
   var $voodoo_do        = 'に呪いをかけます'; //呪術師の投票
@@ -107,8 +107,9 @@ class Message{
   var $revive_not_do    = 'は蘇生処置をしませんでした'; //猫又のキャンセル投票
   var $assassin_do      = 'に狙いをつけました'; //暗殺者の投票
   var $assassin_not_do  = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
-  var $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
+  var $mind_scanner_do  = 'の心を読みます'; //さとりの投票
   var $cupid_do         = 'に愛の矢を放ちました'; //キューピッドの投票
+  var $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -135,6 +136,7 @@ class Message{
   var $hunted            = 'は狩人に狩られたようです'; //狩人の狩り
   var $reporter_duty     = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
   var $poison_dead       = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
+  var $dream_killed      = 'は獏の餌食になったようです'; //獏の襲撃
   var $assassin_killed   = 'は暗殺されたようです'; //暗殺者の襲撃
   var $revive_success    = 'は生き返りました'; //蘇生成功
   var $revive_failed     = 'の蘇生に失敗したようです'; //蘇生失敗
@@ -156,14 +158,16 @@ class Message{
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
   var $ability_jammer_do        = '占いを妨害する人を選択してください'; //邪魔狂人
   var $ability_trap_do          = '罠を設置する人を選択してください'; //罠師
+  var $ability_dream_eat        = '夢を喰べる人を選択してください'; //獏
   var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師・九尾
   var $ability_guard_do         = '護衛する人を選択してください'; //狩人系
   var $ability_anti_voodoo_do   = '厄を祓う人を選択してください'; //厄神
   var $ability_reporter_do      = '尾行する人を選択してください'; //ブン屋
   var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
-  var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
+  var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
   var $ability_cupid_do         = '結びつける二人を選択してください'; //キューピッド
+  var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
 
   //-- game_play.php --//
   //CheckSilence()
@@ -211,6 +215,7 @@ class Message{
   var $submit_mage_do          = '対象を占う'; //占い師系
   var $submit_voodoo_killer_do = '対象の呪いを祓う'; //陰陽師
   var $submit_jammer_do        = '対象の占いを妨害する'; //邪魔狂人
+  var $submit_dream_eat        = '対象の夢を喰う'; //獏
   var $submit_trap_do          = '対象の周辺に罠を設置する'; //罠師
   var $submit_trap_not_do      = '罠を設置しない'; //罠師(キャンセル)
   var $submit_voodoo_do        = '対象に呪いをかける'; //呪術師
@@ -221,8 +226,9 @@ class Message{
   var $submit_revive_not_do    = '誰も蘇生しない'; //猫又(キャンセル)
   var $submit_assassin_do      = '対象を暗殺する'; //暗殺者系
   var $submit_assassin_not_do  = '誰も暗殺しない'; //暗殺者系(キャンセル)
-  var $submit_mania_do         = '対象を真似る'; //神話マニア
+  var $submit_mind_scanner_do  = '対象の心を読む'; //さとり
   var $submit_cupid_do         = '対象に愛の矢を放つ'; //キューピッド系
+  var $submit_mania_do         = '対象を真似る'; //神話マニア
 
   //InsertRandomMessage()
   var $random_message_list = array(

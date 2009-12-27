@@ -24,21 +24,21 @@ class User{
 		     'sex' => $this->sex,
 		     'live' => $this->live
 		     );
-    if (empty($mode))
-      return $result;
+    if(empty($mode)) return $result;
+
     //モード適用
-    if (strpos($mode, 'profiles') !== false){
+    if(strpos($mode, 'profiles') !== false){
       $result['profile'] = $this->profile;
       $result['color'] = $this->color;
       $result['icon_width'] = $this->icon_width;
       $result['icon_height'] = $this->icon_height;
     }
-    if (strpos($mode, 'flags') !== false){
+    if(strpos($mode, 'flags') !== false){
       $result['dead_flag'] = $this->dead_flag;
       $result['suicide_flag'] = $this->suicide_flag;
       $result['revive_flag'] = $this->revive_flag;
     }
-    if (strpos($mode, 'roles') !== false){
+    if(strpos($mode, 'roles') !== false){
       $result['main_role'] = $this->main_role;
       $result['role_list'] = $this->role_list;
       $result['partner_list'] = $this->partner_list;
@@ -106,12 +106,14 @@ class User{
     return false;
   }
 
-  function IsWolf(){
-    return $this->IsRoleGroup('wolf');
+  function IsWolf($talk_flag = false){
+    if(! $this->IsRoleGroup('wolf')) return false;
+    return ($talk_flag ? ! $this->IsRole('silver_wolf') : true);
   }
 
-  function IsFox(){
-    return $this->IsRoleGroup('fox');
+  function IsFox($talk_flag = false){
+    if(! $this->IsRoleGroup('fox')) return false;
+    return ($talk_flag ? ! $this->IsRole('silver_fox', 'child_fox') : true);
   }
 
   function IsLovers(){
@@ -233,6 +235,7 @@ class User{
     if($this->IsFox()) return 'fox';
     if($this->IsRoleGroup('cupid')) return 'lovers';
     if($this->IsRole('quiz')) return 'quiz';
+    if($this->IsRoleGroup('chiroptera')) return 'chiroptera';
     return 'human';
   }
 

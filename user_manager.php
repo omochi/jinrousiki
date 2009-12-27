@@ -17,7 +17,7 @@ loadModule(
   ROOM_CONF,
   GAME_CONF,
   #TIME_CONF,
-  #ICON_CONF,
+  ICON_CONF,
   ROLES,
   MESSAGE
   );

@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__FILE__) . '/include/init.php');
 require_once(dirname(__FILE__) . '/include/time_calc.php');
 $USER_ICON = new UserIcon(); //アイコン登録設定をロード
 ?>

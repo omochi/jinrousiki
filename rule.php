@@ -1,25 +1,13 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
-include(JINRO_INC . '/time_calc.php');
+include_once(JINRO_INC . '/time_calc.php');
 loadModule(
-  #CONFIG,
+  CONFIG,
   IMAGE_CLASSES,
-  #ROLE_CLASSES,
-  #MESSAGE_CLASSES,
-  #GAME_FORMAT_CLASSES,
-  #SYSTEM_CLASSES,
-  #USER_CLASSES,
-  #TALK_CLASSES,
-  #GAME_FUNCTIONS,
-  #PLAY_FUNCTIONS,
-  #VOTE_FUNCTIONS,
-  #ROOM_IMG,
   ROLE_IMG,
   #ROOM_CONF,
-  #GAME_CONF,
-  #TIME_CONF,
-  #ICON_CONF,
-  #ROLES,
+  GAME_CONF,
+  TIME_CONF,
   MESSAGE
   );
 ?>

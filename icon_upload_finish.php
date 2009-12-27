@@ -1,13 +1,10 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
-require_once(dirname(__FILE__) . '/include/functions.php');
-echo <<<EOF
-<body>
-現在アップロードは停止しています
-</body>
-</html>
-EOF;
-exit;
+loadModule(ICON_CONF, USER_ICON);
+
+if($USER_ICON->disable_upload){
+  OutputActionResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
+}
 
 //リファラチェック
 $icon_upload_check_page_url = $SERVER_CONF->site_root . 'icon_upload_check.php';
@@ -35,9 +32,6 @@ case 'cancel': //DBからアイコンのファイル名と登録時のセッションIDを取得
   $dbHandle = ConnectDatabase(); //DB 接続
 
   $array = FetchArray("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
-
-  $sql = mysql_query("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
-  $array = mysql_fetch_assoc($sql);
   $file       = $array['icon_filename'];
   $session_id = $array['session_id'];
 

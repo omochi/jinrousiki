@@ -11,7 +11,6 @@ loadModule(
   TALK_CLASSES,
   GAME_FUNCTIONS,
   PLAY_FUNCTIONS,
-  #VOTE_FUNCTIONS,
   ROOM_IMG,
   ROLE_IMG,
   ROOM_CONF,
@@ -270,13 +269,13 @@ function Say($say){
       Write($say, 'day', $spend_time, true);
     }
     elseif($ROOM->IsNight()){ //Ìë¤ÏÌò¿¦Ëè¤ËÊ¬¤±¤ë
-      if($SELF->IsWolf()) //¿ÍÏµ
+      if($SELF->IsWolf(true)) //¿ÍÏµ
 	Write($say, 'night wolf', $spend_time, true);
       elseif($SELF->IsRole('whisper_mad')) //Óñ¤­¶¸¿Í
 	Write($say, 'night mad', 0);
       elseif($SELF->IsRole('common')) //¶¦Í­¼Ô
 	Write($say, 'night common', 0);
-      elseif($SELF->IsFox() && ! $SELF->IsRole('silver_fox', 'child_fox')) //ÍÅ¸Ñ
+      elseif($SELF->IsFox(true)) //ÍÅ¸Ñ
 	Write($say, 'night fox', 0);
       else //ÆÈ¤ê¸À
 	Write($say, 'night self_talk', 0);
@@ -387,13 +386,13 @@ function CheckSilence(){
       elseif($ROOM->IsNight()){
 	//ÂÐ¾ÝÌò¿¦¤Î¥Ç¡¼¥¿¤òºîÀ®
 	$action_list = array('MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO', 'VOODOO_MAD_DO',
-			     'VOODOO_FOX_DO', 'CHILD_FOX_DO');
+			     'DREAM_EAT', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
 	$actor_list  = array('%mage', 'voodoo_killer', 'jammer_mad', 'voodoo_mad',
-			     'voodoo_fox', 'child_fox');
+			     'dream_eater_mad', 'voodoo_fox', 'child_fox');
 
 	if($ROOM->date == 1){
-	  array_push($action_list, 'CUPID_DO', 'MANIA_DO');
-	  array_push($actor_list, '%cupid', 'mania');
+	  array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
+	  array_push($actor_list, 'mind_scanner', '%cupid', 'mania');
 	}
 	else{
 	  array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'ASSASSIN_DO',

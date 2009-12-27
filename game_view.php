@@ -24,7 +24,7 @@ loadModule(
 
 //引数を取得
 $RQ_ARGS = new RequestGameView();
-$url = 'game_view.php?room_no=' . $ROOM->id;
+$url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 
 $dbHandle = ConnectDatabase(); // DB 接続
 

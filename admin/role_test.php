@@ -1,5 +1,13 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/game_vote_functions.php');
+require_once(dirname(__FILE__) . '/../include/init.php');
+loadModule(
+   CONFIG,
+   SYSTEM_CLASSES,
+   ROOM_CONF,
+   GAME_CONF,
+   VOTE_FUNCTIONS
+   );
+// require_once(dirname(__FILE__) . '/../include/game_vote_functions.php');
 
 $CSS_PATH = '../css'; //CSS のパス設定
 

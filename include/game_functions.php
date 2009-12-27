@@ -171,12 +171,19 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName($this_user->main_role, 'common');
       elseif($this_user->IsRoleGroup('fox'))
 	$role_str = MakeRoleName($this_user->main_role, 'fox');
+      elseif($this_user->IsRoleGroup('chiroptera'))
+	$role_str = MakeRoleName($this_user->main_role, 'chiroptera');
       elseif($this_user->IsRoleGroup('poison') || $this_user->IsRole('pharmacist'))
 	$role_str = MakeRoleName($this_user->main_role, 'poison');
-      elseif($this_user->IsRoleGroup('cupid') || $this_user->IsRole('assassin', 'mania', 'quiz'))
+      elseif($this_user->IsRoleGroup('cupid'))
+	$role_str = MakeRoleName($this_user->main_role, 'cupid');
+      elseif($this_user->IsRole('mind_scanner'))
+	$role_str = MakeRoleName($this_user->main_role, 'mind');
+      elseif($this_user->IsRole('assassin', 'mania', 'quiz'))
 	$role_str = MakeRoleName($this_user->main_role);
 
       //ここから兼任役職
+      if($this_user->IsRole('mind_read')) $role_str .= MakeRoleName('mind_read', 'mind', true);
       if($this_user->IsLovers()) $role_str .= MakeRoleName('lovers', '', true);
       if($this_user->IsRole('copied')) $role_str .= MakeRoleName('copied', 'mania', true);
 
@@ -371,6 +378,9 @@ EOF;
     $class  = 'none';
     $result = 'draw';
   }
+  elseif($camp == 'chiroptera' && $SELF->IsLive()){
+    $class  = 'chiroptera';
+  }
   else{
     $class  = 'none';
     $result = 'lose';
@@ -447,37 +457,36 @@ function OutputTalk($talk, &$builder){
 
   LineToBR($sentence); //改行コードを <br> に変換
   $location_system     = (strpos($location, 'system') !== false);
-  $flag_vote           = (strpos($sentence, 'VOTE_DO')           === 0);
-  $flag_wolf           = (strpos($sentence, 'WOLF_EAT')          === 0);
-  $flag_mage           = (strpos($sentence, 'MAGE_DO')           === 0);
-  $flag_voodoo_killer  = (strpos($sentence, 'VOODOO_KILLER_DO')  === 0);
-  $flag_jammer_mad     = (strpos($sentence, 'JAMMER_MAD_DO')     === 0);
-  $flag_trap_mad       = (strpos($sentence, 'TRAP_MAD_DO')       === 0);
-  $flag_not_trap_mad   = (strpos($sentence, 'TRAP_MAD_NOT_DO')   === 0);
-  $flag_voodoo_mad     = (strpos($sentence, 'VOODOO_MAD_DO')     === 0);
-  $flag_guard          = (strpos($sentence, 'GUARD_DO')          === 0);
-  $flag_anti_voodoo    = (strpos($sentence, 'ANTI_VOODOO_DO')    === 0);
-  $flag_reporter       = (strpos($sentence, 'REPORTER_DO')       === 0);
-  $flag_poison_cat     = (strpos($sentence, 'POISON_CAT_DO')     === 0);
-  $flag_not_poison_cat = (strpos($sentence, 'POISON_CAT_NOT_DO') === 0);
-  $flag_assassin       = (strpos($sentence, 'ASSASSIN_DO')       === 0);
-  $flag_not_assassin   = (strpos($sentence, 'ASSASSIN_NOT_DO')   === 0);
-  $flag_mania          = (strpos($sentence, 'MANIA_DO')          === 0);
-  $flag_voodoo_fox     = (strpos($sentence, 'VOODOO_FOX_DO')     === 0);
-  $flag_child_fox      = (strpos($sentence, 'CHILD_FOX_DO')      === 0);
-  $flag_cupid          = (strpos($sentence, 'CUPID_DO')          === 0);
-  $flag_system = ($location_system &&
-		  ($flag_vote  || $flag_wolf || $flag_mage || $flag_voodoo_killer || $flag_jammer_mad ||
-		   $flag_trap_mad || $flag_not_trap_mad || $flag_voodoo_mad || $flag_guard ||
-		   $flag_anti_voodoo || $flag_reporter || $flag_poison_cat || $flag_not_poison_cat ||
-		   $flag_assassin || $flag_not_assassin || $flag_mania || $flag_voodoo_fox ||
-		   $flag_child_fox || $flag_cupid
-		   ));
 
-  $flag_live_night = ($SELF->IsLive() && $ROOM->IsNight());
-  $flag_wolf_group = ($SELF->IsWolf() || $SELF->IsRole('whisper_mad') || $SELF->IsDummyBoy());
-  $flag_fox_group  = (($SELF->IsFox() && ! $SELF->IsRole('silver_fox', 'child_fox')) ||
-		      $SELF->IsDummyBoy());
+  //投票情報をチェック
+  $vote_action_list = array(
+    'vote' => 'VOTE_DO',
+    'wolf' => 'WOLF_EAT',
+    'mage' => 'MAGE_DO', 'voodoo_killer' => 'VOODOO_KILLER_DO',
+    'jammer_mad' => 'JAMMER_MAD_DO', 'voodoo_mad' => 'VOODOO_MAD_DO', 'dream_eat' => 'DREAM_EAT',
+    'trap_mad' => 'TRAP_MAD_DO', 'not_trap_mad' => 'TRAP_MAD_NOT_DO',
+    'guard' => 'GUARD_DO', 'reporter' => 'REPORTER_DO', 'anti_voodoo' => 'ANTI_VOODOO_DO',
+    'poison_cat' => 'POISON_CAT_DO', 'not_poison_cat' => 'POISON_CAT_NOT_DO',
+    'assassin' => 'ASSASSIN_DO', 'not_assassin' => 'ASSASSIN_NOT_DO',
+    'mind_scanner' => 'MIND_SCANNER_DO',
+    'voodoo_fox' => 'VOODOO_FOX_DO', 'child_fox' => 'CHILD_FOX_DO',
+    'cupid' => 'CUPID_DO',
+    'mania' => 'MANIA_DO'
+			    );
+  $flag_vote_action = false;
+  foreach($vote_action_list as $this_role => $this_action){
+    $flag_action->$this_role = (strpos($sentence, $this_action) === 0);
+    $flag_vote_action |= $flag_action->$this_role;
+  }
+
+  $flag_system = ($location_system && $flag_vote_action && ! $ROOM->IsFinished());
+  $flag_live_night = ($SELF->IsLive() && $ROOM->IsNight() && ! $ROOM->IsFinished());
+  $flag_mind_read  = ($SELF->IsRole('mind_scanner') && $SELF->IsLive() && $said_user !== NULL &&
+		      $said_user->IsRole('mind_read') && ! $said_user->IsRole('unconscious') &&
+		      in_array($SELF->user_no, $said_user->partner_list['mind_read']));
+  $flag_wolf_group = ($SELF->IsWolf(true) || $SELF->IsRole('whisper_mad') ||
+		      $SELF->IsDummyBoy() || $flag_mind_read);
+  $flag_fox_group  = ($SELF->IsFox(true) || $SELF->IsDummyBoy() || $flag_mind_read);
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
@@ -489,7 +498,7 @@ function OutputTalk($talk, &$builder){
     $sentence = "{$talk_handle_name} は {$target_handle_name} {$MESSAGE->kick_do}";
     $builder->AddSystemMessage('kick', $sentence);
   }
-  elseif($SELF->IsLive() && $flag_system); //生存中は投票情報は非表示
+  elseif($SELF->IsLive() && ! $SELF->IsDummyBoy() && $flag_system); //生存中は投票情報は非表示
   elseif($talk_uname == 'system'){ //システムメッセージ
     if(strpos($sentence, 'MORNING') === 0){
       sscanf($sentence, "MORNING\t%d", $morning_date);
@@ -522,7 +531,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($flag_live_night && $location == 'night common'){
-    if($SELF->IsRole('common') || $SELF->IsDummyBoy()){
+    if($SELF->IsRole('common') || $SELF->IsDummyBoy() || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
     }
     elseif(! $SELF->IsRole('dummy_common')){ //夢共有者には何も見えない
@@ -535,101 +544,113 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($flag_live_night && $location == 'night self_talk'){
-    if($SELF->IsSameUser($talk_uname) || $SELF->IsDummyBoy()) $builder->AddTalk($said_user, $talk);
+    if($SELF->IsSameUser($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
+      $builder->AddTalk($said_user, $talk);
+    }
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
   elseif($ROOM->IsFinished() || $SELF->IsDummyBoy() || ($SELF->IsDead() && $ROOM->IsOpenCast())){
-    if($location_system && $flag_vote){ //処刑投票
+    if($location_system && $flag_action->vote){ //処刑投票
       $target_handle_name = ParseStrings($sentence, 'VOTE_DO');
       $action = 'vote';
       $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->vote_do;
     }
-    elseif($location_system && $flag_wolf){ //狼の投票
+    elseif($location_system && $flag_action->wolf){ //狼の投票
       $target_handle_name = ParseStrings($sentence, 'WOLF_EAT');
       $action = 'wolf-eat';
       $sentence = $talk_handle_name.' たち人狼は '.$target_handle_name.' '.$MESSAGE->wolf_eat;
     }
-    elseif($location_system && $flag_mage){ //占い師の投票
+    elseif($location_system && $flag_action->mage){ //占い師の投票
       $target_handle_name = ParseStrings($sentence, 'MAGE_DO');
       $action = 'mage-do';
       $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
     }
-    elseif($location_system && $flag_voodoo_killer){ //陰陽師の投票
+    elseif($location_system && $flag_action->voodoo_killer){ //陰陽師の投票
       $target_handle_name = ParseStrings($sentence, 'VOODOO_KILLER_DO');
       $action = 'mage-do';
       $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->voodoo_killer_do;
     }
-    elseif($location_system && $flag_jammer_mad){ //邪魔狂人の投票
+    elseif($location_system && $flag_action->jammer_mad){ //月兎の投票
       $target_handle_name = ParseStrings($sentence, 'JAMMER_MAD_DO');
       $action = 'wolf-eat';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->jammer_do;
     }
-    elseif($location_system && $flag_trap_mad){ //罠師の投票
-      $target_handle_name = ParseStrings($sentence, 'TRAP_MAD_DO');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->trap_do;
-    }
-    elseif($location_system && $flag_not_trap_mad){ //罠師のキャンセル投票
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' '.$MESSAGE->trap_not_do;
-    }
-    elseif($location_system && $flag_voodoo_mad){ //呪術師の投票
+    elseif($location_system && $flag_action->voodoo_mad){ //呪術師の投票
       $target_handle_name = ParseStrings($sentence, 'VOODOO_MAD_DO');
       $action = 'wolf-eat';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->voodoo_do;
     }
-    elseif($location_system && $flag_guard){ //狩人の投票
+    elseif($location_system && $flag_action->dream_eat){ //獏の投票
+      $target_handle_name = ParseStrings($sentence, 'DREAM_EAT');
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->wolf_eat;
+    }
+    elseif($location_system && $flag_action->trap_mad){ //罠師の投票
+      $target_handle_name = ParseStrings($sentence, 'TRAP_MAD_DO');
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->trap_do;
+    }
+    elseif($location_system && $flag_action->not_trap_mad){ //罠師のキャンセル投票
+      $action = 'wolf-eat';
+      $sentence = $talk_handle_name.' '.$MESSAGE->trap_not_do;
+    }
+    elseif($location_system && $flag_action->guard){ //狩人の投票
       $target_handle_name = ParseStrings($sentence, 'GUARD_DO');
       $action = 'guard-do';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->guard_do;
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->guard_do;
     }
-    elseif($location_system && $flag_anti_voodoo){ //厄神の投票
-      $target_handle_name = ParseStrings($sentence, 'ANTI_VOODOO_DO');
-      $action = 'guard-do';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->anti_voodoo_do;
-    }
-    elseif($location_system && $flag_reporter){ //ブン屋の投票
+    elseif($location_system && $flag_action->reporter){ //ブン屋の投票
       $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
       $action = 'guard-do';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->reporter_do;
     }
-    elseif($location_system && $flag_poison_cat){ //猫又の投票
+    elseif($location_system && $flag_action->anti_voodoo){ //厄神の投票
+      $target_handle_name = ParseStrings($sentence, 'ANTI_VOODOO_DO');
+      $action = 'guard-do';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->anti_voodoo_do;
+    }
+    elseif($location_system && $flag_action->poison_cat){ //猫又の投票
       $target_handle_name = ParseStrings($sentence, 'POISON_CAT_DO');
       $action = 'poison-cat-do';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->revive_do;
     }
-    elseif($location_system && $flag_not_poison_cat){ //猫又のキャンセル投票
+    elseif($location_system && $flag_action->not_poison_cat){ //猫又のキャンセル投票
       $action = 'poison-cat-do';
       $sentence = $talk_handle_name.' '.$MESSAGE->revive_not_do;
     }
-    elseif($location_system && $flag_assassin){ //暗殺者の投票
+    elseif($location_system && $flag_action->assassin){ //暗殺者の投票
       $target_handle_name = ParseStrings($sentence, 'ASSASSIN_DO');
       $action = 'assassin-do';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->assassin_do;
     }
-    elseif($location_system && $flag_not_assassin){ //暗殺者のキャンセル投票
+    elseif($location_system && $flag_action->not_assassin){ //暗殺者のキャンセル投票
       $action = 'assassin-do';
       $sentence = $talk_handle_name.' '.$MESSAGE->assassin_not_do;
     }
-    elseif($location_system && $flag_mania){ //神話マニアの投票
-      $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
-      $action = 'mania-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mania_do;
+    elseif($location_system && $flag_action->mind_scanner){ //さとりの投票
+      $target_handle_name = ParseStrings($sentence, 'MIND_SCANNER_DO');
+      $action = 'mind-scanner-do';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mind_scanner_do;
     }
-    elseif($location_system && $flag_voodoo_fox){ //九尾の投票
+    elseif($location_system && $flag_action->voodoo_fox){ //九尾の投票
       $target_handle_name = ParseStrings($sentence, 'VOODOO_FOX_DO');
       $action = 'wolf-eat';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->voodoo_do;
     }
-    elseif($location_system && $flag_child_fox){ //子狐の投票
+    elseif($location_system && $flag_action->child_fox){ //子狐の投票
       $target_handle_name = ParseStrings($sentence, 'CHILD_FOX_DO');
       $action = 'mage-do';
       $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
     }
-    elseif($location_system && $flag_cupid){ //キューピッドの投票
+    elseif($location_system && $flag_action->cupid){ //キューピッドの投票
       $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
       $action = 'cupid-do';
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->cupid_do;
+    }
+    elseif($location_system && $flag_action->mania){ //神話マニアの投票
+      $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
+      $action = 'mania-do';
+      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mania_do;
     }
     else{ //その他の全てを表示(死者の場合)
       $base_class = 'user-talk';
@@ -777,8 +798,8 @@ function OutputDeadMan(){
   //前の日の夜に起こった死亡メッセージ
   $type_night = "type = 'WOLF_KILLED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
     "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
-    "OR type = 'TRAPPED' OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' " .
-    "OR type LIKE 'REVIVE%'";
+    "OR type = 'DREAM_KILLED' OR type = 'TRAPPED' OR type = 'POISON_DEAD_night' " .
+    "OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE%'";
 
   if($ROOM->IsDay()){
     $set_date = $yesterday;
@@ -831,6 +852,11 @@ function OutputDeadManType($name, $type){
   case 'FOX_DEAD':
     echo $deadman;
     if($show_reason) echo $reason_header.$MESSAGE->fox_dead.')</td>';
+    break;
+
+  case 'DREAM_KILLED':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->dream_killed.')</td>';
     break;
 
   case 'CURSED':
@@ -994,9 +1020,9 @@ function OutputAbilityAction(){
   $header = '<b>前日の夜、';
   $footer = '</b><br>'."\n";
   $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
-		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
+		       'VOODOO_MAD_DO', 'DREAM_EAT', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
   if($yesterday == 1){
-    array_push($action_list, 'MANIA_DO', 'CUPID_DO');
+    array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
   }
   else{
     array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'ASSASSIN_DO',
@@ -1032,7 +1058,7 @@ function OutputAbilityAction(){
       break;
 
     case 'JAMMER_MAD_DO':
-      echo '(邪魔狂人) は '.$target.' の占いを妨害しました';
+      echo '(月兎) は '.$target.' の占いを妨害しました';
       break;
 
     case 'TRAP_MAD_DO':
@@ -1045,6 +1071,10 @@ function OutputAbilityAction(){
 
     case 'VOODOO_MAD_DO':
       echo '(呪術師) は '.$target.' に呪いをかけました';
+      break;
+
+    case 'DREAM_EAT':
+      echo '(獏) は '.$target.' を狙いました';
       break;
 
     case 'GUARD_DO':
@@ -1067,8 +1097,8 @@ function OutputAbilityAction(){
       echo '(暗殺者) '.$MESSAGE->assassin_not_do;
       break;
 
-    case 'MANIA_DO':
-      echo '(神話マニア) は '.$target.' を真似しました';
+    case 'MIND_SCANNER_DO':
+      echo '(さとり) は '.$target.' の心を読みました';
       break;
 
     case 'VOODOO_FOX_DO':
@@ -1081,6 +1111,10 @@ function OutputAbilityAction(){
 
     case 'CUPID_DO':
       echo '(キューピッド) は '.$target.' '.$MESSAGE->cupid_do;
+      break;
+
+    case 'MANIA_DO':
+      echo '(神話マニア) は '.$target.' を真似しました';
       break;
     }
     echo $footer;
@@ -1114,11 +1148,14 @@ function CheckVictory($check_draw = false){
     elseif($fox > 0) $victory_role = 'fox2';
     else             $victory_role = 'wolf';
   }
-  elseif($check_draw && GetVoteTimes() > $GAME_CONF->draw){ //引き分け
-    $victory_role = 'draw';
+  elseif($human + $wolf + $fox == $lovers){ //生存者全員恋人
+    $victory_role = 'lovers';
   }
   elseif($ROOM->IsQuiz() && $quiz == 0){ //クイズ村 GM 死亡
     $victory_role = 'quiz_dead';
+  }
+  elseif($check_draw && GetVoteTimes() > $GAME_CONF->draw){ //引き分け
+    $victory_role = 'draw';
   }
 
   if($victory_role == '') return false;
@@ -1139,9 +1176,9 @@ function CheckVictory($check_draw = false){
 function LoversFollowed($sudden_death = false){
   global $MESSAGE, $ROOM, $USERS;
 
-  $cupid_list = array(); //キューピッドのID => 恋人のID
+  $cupid_list      = array(); //キューピッドのID => 恋人のID
   $lost_cupid_list = array(); //恋人が死亡したキューピッドのリスト
-  $checked_list = array(); //処理済キューピッドのID
+  $checked_list    = array(); //処理済キューピッドのID
 
   foreach($USERS->rows as $user){ //キューピッドと死んだ恋人のリストを作成
     if(! $user->IsLovers()) continue;
@@ -1336,15 +1373,17 @@ function ParseStrings($str, $type = NULL){
   case 'JAMMER_MAD_DO':
   case 'TRAP_MAD_DO':
   case 'VOODOO_MAD_DO':
+  case 'DREAM_EAT':
   case 'GUARD_DO':
   case 'ANTI_VOODOO_DO':
   case 'REPORTER_DO':
   case 'POISON_CAT_DO':
   case 'ASSASSIN_DO':
-  case 'MANIA_DO':
+  case 'MIND_SCANNER_DO':
   case 'VOODOO_FOX_DO':
   case 'CHILD_FOX_DO':
   case 'CUPID_DO':
+  case 'MANIA_DO':
     list($msg, $target) = explode("\t", $str);
     if($msg == $type){
       DecodeSpace(&$target);

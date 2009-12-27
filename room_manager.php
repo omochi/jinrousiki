@@ -1,5 +1,16 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
+loadModule(
+   CONFIG,
+   IMAGE_CLASSES,
+   SYSTEM_CLASSES,
+   ROOM_IMG,
+   ROOM_CONF,
+   GAME_CONF,
+   TIME_CONF,
+   ICON_CONF,
+   MESSAGE
+   );
 
 if(! $dbHandle = ConnectDatabase(true, false)) return false; //DB ÀÜÂ³
 

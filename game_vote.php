@@ -8,16 +8,12 @@ loadModule(
   #GAME_FORMAT_CLASSES,
   SYSTEM_CLASSES,
   USER_CLASSES,
-  #TALK_CLASSES,
   GAME_FUNCTIONS,
-  #PLAY_FUNCTIONS,
   VOTE_FUNCTIONS,
-  #ROOM_IMG,
-  #ROLE_IMG,
   ROOM_CONF,
   GAME_CONF,
   TIME_CONF,
-  #ICON_CONF,
+  ICON_CONF,
   ROLES,
   MESSAGE
   );
@@ -31,7 +27,7 @@ if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
 $RQ_ARGS = new RequestGameVote();
 
 //PHP の引数を作成
-$php_argv = 'room_no=' . $ROOM->id;
+$php_argv = 'room_no=' . $RQ_ARGS->room_no;
 if($RQ_ARGS->auto_reload > 0) $php_argv .= '&auto_reload=' . $RQ_ARGS->auto_reload;
 if($RQ_ARGS->play_sound) $php_argv .= '&play_sound=on';
 if($RQ_ARGS->list_down)  $php_argv .= '&list_down=on';
@@ -629,7 +625,11 @@ function VoteNight(){
     break;
 
   case 'JAMMER_MAD_DO':
-    if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：邪魔狂人以外は投票できません');
+    if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：月兎以外は投票できません');
+    break;
+
+  case 'DREAM_EAT':
+    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：獏以外は投票できません');
     break;
 
   case 'TRAP_MAD_DO':
@@ -670,8 +670,8 @@ function VoteNight(){
     $not_type = ($RQ_ARGS->situation == 'ASSASSIN_NOT_DO');
     break;
 
-  case 'MANIA_DO':
-    if(! $SELF->IsRole('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
+  case 'MIND_SCANNER_DO':
+    if(! $SELF->IsRole('mind_scanner')) OutputVoteResult('夜：さとり以外は投票できません');
     break;
 
   case 'VOODOO_FOX_DO':
@@ -684,6 +684,10 @@ function VoteNight(){
 
   case 'CUPID_DO':
     if(! $SELF->IsRoleGroup('cupid')) OutputVoteResult('夜：キューピッド以外は投票できません');
+    break;
+
+  case 'MANIA_DO':
+    if(! $SELF->IsRole('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
     break;
 
   default:
@@ -739,7 +743,8 @@ function VoteNight(){
     }
 
     if($RQ_ARGS->situation == 'WOLF_EAT'){ //人狼の投票
-      if($SELF->IsWolf() && $target->IsWolf()){ //狼同士への投票は無効
+      //仲間だと分かっている狼同士への投票は無効
+      if($SELF->IsWolf(true) && $target->IsWolf(true)){
 	OutputVoteResult($error_header . '狼同士には投票できません');
       }
 
@@ -937,6 +942,9 @@ function OutputVoteNight(){
   elseif($role_voodoo_mad = $SELF->IsRole('voodoo_mad')){
     CheckAlreadyVote('VOODOO_MAD_DO');
   }
+  elseif($role_dream_eater_mad = $SELF->IsRole('dream_eater_mad')){
+    CheckAlreadyVote('DREAM_EAT');
+  }
   elseif($role_trap_mad = $SELF->IsRole('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
     if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
@@ -965,9 +973,9 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
     CheckAlreadyVote('ASSASSIN_DO', 'ASSASSIN_NOT_DO');
   }
-  elseif($role_mania = $SELF->IsRole('mania')){
+  elseif($role_mind_scanner = $SELF->IsRole('mind_scanner')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
-    CheckAlreadyVote('MANIA_DO');
+    CheckAlreadyVote('MIND_SCANNER_DO');
   }
   elseif($role_voodoo_fox = $SELF->IsRole('voodoo_fox')){
     CheckAlreadyVote('VOODOO_FOX_DO');
@@ -980,6 +988,10 @@ function OutputVoteNight(){
     CheckAlreadyVote('CUPID_DO');
     $cupid_self_shoot = ($SELF->IsRole('self_cupid') ||
 			 $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot);
+  }
+  elseif($role_mania = $SELF->IsRole('mania')){
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    CheckAlreadyVote('MANIA_DO');
   }
   else OutputVoteResult('夜：あなたは投票できません');
 
@@ -999,7 +1011,7 @@ function OutputVoteNight(){
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
   foreach($this_rows as $this_user_no => $this_user){
     $this_color = $this_user->color;
-    $this_wolf  = ($role_wolf && $this_user->IsWolf());
+    $this_wolf  = ($role_wolf && ! $SELF->IsRole('silver_wolf') && $this_user->IsWolf(true));
 
     if($this_user->IsLive() || $role_poison_cat){ //猫又は死亡アイコンにしない
       if($this_wolf) //狼同士なら狼アイコン
@@ -1073,6 +1085,10 @@ EOF;
     $type   = 'VOODOO_MAD_DO';
     $submit = 'submit_voodoo_do';
   }
+  elseif($role_dream_eater_mad){
+    $type   = 'DREAM_EAT';
+    $submit = 'submit_dream_eat';
+  }
   elseif($role_trap_mad){
     $type   = 'TRAP_MAD_DO';
     $submit = 'submit_trap_do';
@@ -1103,9 +1119,9 @@ EOF;
     $not_type   = 'ASSASSIN_NOT_DO';
     $not_submit = 'submit_assassin_not_do';
   }
-  elseif($role_mania){
-    $type   = 'MANIA_DO';
-    $submit = 'submit_mania_do';
+  elseif($role_mind_scanner){
+    $type   = 'MIND_SCANNER_DO';
+    $submit = 'submit_mind_scanner_do';
   }
   elseif($role_voodoo_fox){
     $type   = 'VOODOO_FOX_DO';
@@ -1118,6 +1134,10 @@ EOF;
   elseif($role_cupid){
     $type   = 'CUPID_DO';
     $submit = 'submit_cupid_do';
+  }
+  elseif($role_mania){
+    $type   = 'MANIA_DO';
+    $submit = 'submit_mania_do';
   }
 
   echo <<<EOF

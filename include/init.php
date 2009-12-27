@@ -29,6 +29,7 @@ define('ROOM_CONF', 'ROOM_CONF');
 define('GAME_CONF', 'GAME_CONF');
 define('TIME_CONF', 'TIME_CONF');
 define('ICON_CONF', 'ICON_CONF');
+define('USER_ICON', 'USER_ICON');
 define('ROLES', 'ROLES');
 
 define('CONFIG', 'CONFIG');
@@ -45,6 +46,7 @@ define('TALK_CLASSES', 'TALK_CLASSES');
 define('CHATENGINE_CLASSES', 'CHATENGINE_CLASSES');
 
 function loadModule($name) {
+  #print_r($GLOBALS); echo "\n $name \n";
   if (func_num_args() == 1){
     if (!empty($GLOBALS[$name]))
       return true;
@@ -92,6 +94,12 @@ function loadModule($name) {
         return true;
       }
       return false;
+    case USER_ICON:
+      if (loadModule(CONFIG)) {
+        $GLOBALS[$name] = new UserIcon();
+        return true;
+      }
+      return false;
     case ROLES:
       if (loadModule(ROLE_CLASSES)) {
         $GLOBALS[$name] = new Roles();
@@ -101,7 +109,7 @@ function loadModule($name) {
     case MESSAGE_CLASSES:
       return $GLOBALS[$name] = include(JINRO_INC . '/message_class.php');
     case ROLE_CLASSES:
-      if (GAME_FUNCTION_CLASSES) {
+      if (loadModule(GAME_FORMAT_CLASSES)) {
         return $GLOBALS[$name] = include(JINRO_INC . '/role/role_manager_class.php');
       }
     case SYSTEM_CLASSES:
@@ -115,7 +123,9 @@ function loadModule($name) {
     case GAME_FORMAT_CLASSES:
       return $GLOBALS[$name] = include(JINRO_INC . '/game_format.php');
     case VOTE_FUNCTIONS:
-      return $GLOBALS[$name] = include(JINRO_INC . '/game_vote_functions.php');
+      if(loadModule(GAME_FUNCTIONS)){
+	return $GLOBALS[$name] = include(JINRO_INC . '/game_vote_functions.php');
+      }
     case USER_CLASSES:
       return $GLOBALS[$name] = include(JINRO_INC . '/user_class.php');
     case TALK_CLASSES:
