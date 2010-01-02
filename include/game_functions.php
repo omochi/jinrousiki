@@ -157,34 +157,38 @@ function OutputPlayerList(){
       $role_str = '';
       if($this_user->IsRole('human', 'suspect', 'unconscious'))
 	$role_str = MakeRoleName($this_user->main_role, 'human');
-      elseif($this_user->IsRoleGroup('wolf'))
-	$role_str = MakeRoleName($this_user->main_role, 'wolf');
       elseif($this_user->IsRoleGroup('mage') || $this_user->IsRole('voodoo_killer'))
 	$role_str = MakeRoleName($this_user->main_role, 'mage');
       elseif($this_user->IsRoleGroup('necromancer') || $this_user->IsRole('medium'))
 	$role_str = MakeRoleName($this_user->main_role, 'necromancer');
-      elseif($this_user->IsRoleGroup('mad'))
-	$role_str = MakeRoleName($this_user->main_role, 'mad');
       elseif($this_user->IsRoleGroup('guard') || $this_user->IsRole('reporter', 'anti_voodoo'))
 	$role_str = MakeRoleName($this_user->main_role, 'guard');
       elseif($this_user->IsRoleGroup('common'))
 	$role_str = MakeRoleName($this_user->main_role, 'common');
+      elseif($this_user->IsRole('mind_scanner'))
+	$role_str = MakeRoleName($this_user->main_role, 'mind');
+      elseif($this_user->IsRoleGroup('jealousy'))
+	$role_str = MakeRoleName($this_user->main_role, 'jealousy');
+      elseif($this_user->IsRole('assassin', 'mania', 'quiz'))
+	$role_str = MakeRoleName($this_user->main_role);
+      elseif($this_user->IsRoleGroup('wolf'))
+	$role_str = MakeRoleName($this_user->main_role, 'wolf');
+      elseif($this_user->IsRoleGroup('mad'))
+	$role_str = MakeRoleName($this_user->main_role, 'mad');
       elseif($this_user->IsRoleGroup('fox'))
 	$role_str = MakeRoleName($this_user->main_role, 'fox');
       elseif($this_user->IsRoleGroup('chiroptera'))
 	$role_str = MakeRoleName($this_user->main_role, 'chiroptera');
-      elseif($this_user->IsRoleGroup('poison') || $this_user->IsRole('pharmacist'))
-	$role_str = MakeRoleName($this_user->main_role, 'poison');
       elseif($this_user->IsRoleGroup('cupid'))
 	$role_str = MakeRoleName($this_user->main_role, 'cupid');
-      elseif($this_user->IsRole('mind_scanner'))
-	$role_str = MakeRoleName($this_user->main_role, 'mind');
-      elseif($this_user->IsRole('assassin', 'mania', 'quiz'))
-	$role_str = MakeRoleName($this_user->main_role);
+      elseif($this_user->IsRoleGroup('poison') || $this_user->IsRole('pharmacist'))
+	$role_str = MakeRoleName($this_user->main_role, 'poison');
 
       //ここから兼任役職
-      if($this_user->IsRole('mind_read')) $role_str .= MakeRoleName('mind_read', 'mind', true);
       if($this_user->IsLovers()) $role_str .= MakeRoleName('lovers', '', true);
+      if($this_user->IsRole('mind_read')) $role_str .= MakeRoleName('mind_read', 'mind', true);
+      if($this_user->IsRole('mind_open')) $role_str .= MakeRoleName('mind_open', 'mind', true);
+      if($this_user->IsRole('mind_receiver')) $role_str .= MakeRoleName('mind_receiver', 'mind', true);
       if($this_user->IsRole('copied')) $role_str .= MakeRoleName('copied', 'mania', true);
 
       if(strpos($this_role, 'authority') !== false)
@@ -253,7 +257,7 @@ function OutputPlayerList(){
 
       if(strpos($this_role, 'chicken') !== false)
 	$role_str .= MakeRoleName('chicken', 'sudden-death', true);
-      elseif(strpos($this_role, 'rabbit') !== false)
+      if(strpos($this_role, 'rabbit') !== false)
 	$role_str .= MakeRoleName('rabbit', 'sudden-death', true);
       elseif(strpos($this_role, 'perverseness') !== false)
 	$role_str .= MakeRoleName('perverseness', 'sudden-death', true);
@@ -261,6 +265,8 @@ function OutputPlayerList(){
 	$role_str .= MakeRoleName('flattery', 'sudden-death', true);
       elseif(strpos($this_role, 'impatience') !== false)
 	$role_str .= MakeRoleName('impatience', 'sudden-death', true);
+      elseif(strpos($this_role, 'celibacy') !== false)
+	$role_str .= MakeRoleName('celibacy', 'sudden-death', true);
       elseif(strpos($this_role, 'panelist') !== false)
 	$role_str .= MakeRoleName('panelist', 'sudden-death', true);
 
@@ -481,12 +487,16 @@ function OutputTalk($talk, &$builder){
 
   $flag_system = ($location_system && $flag_vote_action && ! $ROOM->IsFinished());
   $flag_live_night = ($SELF->IsLive() && $ROOM->IsNight() && ! $ROOM->IsFinished());
-  $flag_mind_read  = ($SELF->IsRole('mind_scanner') && $SELF->IsLive() && $said_user !== NULL &&
-		      $said_user->IsRole('mind_read') && ! $said_user->IsRole('unconscious') &&
-		      in_array($SELF->user_no, $said_user->partner_list['mind_read']));
-  $flag_wolf_group = ($SELF->IsWolf(true) || $SELF->IsRole('whisper_mad') ||
-		      $SELF->IsDummyBoy() || $flag_mind_read);
-  $flag_fox_group  = ($SELF->IsFox(true) || $SELF->IsDummyBoy() || $flag_mind_read);
+  $flag_mind_read  = ($said_user !== NULL &&
+		      (($ROOM->date > 1 && $SELF->IsLive() &&
+			((is_array($said_user->partner_list['mind_read']) &&
+			  in_array($SELF->user_no, $said_user->partner_list['mind_read']) &&
+			  ! $said_user->IsRole('unconscious')) ||
+			 (is_array($SELF->partner_list['mind_receiver']) &&
+			  in_array($said_user->user_no, $SELF->partner_list['mind_receiver'])))
+			) || $said_user->IsRole('mind_open')));
+  $flag_wolf_group = ($SELF->IsWolf(true) || $SELF->IsRole('whisper_mad') || $SELF->IsDummyBoy());
+  $flag_fox_group  = ($SELF->IsFox(true) || $SELF->IsDummyBoy());
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
@@ -518,7 +528,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の狼
   elseif($flag_live_night && $location == 'night wolf'){
-    if($flag_wolf_group){
+    if($flag_wolf_group || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
     }
     else{
@@ -527,7 +537,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の囁き狂人
   elseif($flag_live_night && $location == 'night mad'){
-    if($flag_wolf_group) $builder->AddTalk($said_user, $talk);
+    if($flag_wolf_group || $flag_mind_read) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($flag_live_night && $location == 'night common'){
@@ -540,7 +550,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の妖狐
   elseif($flag_live_night && $location == 'night fox'){
-    if($flag_fox_group) $builder->AddTalk($said_user, $talk);
+    if($flag_fox_group || $flag_mind_read) $builder->AddTalk($said_user, $talk);
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($flag_live_night && $location == 'night self_talk'){
@@ -793,13 +803,13 @@ function OutputDeadMan(){
 
   //処刑メッセージ、毒死メッセージ(昼)
   $type_day = "type = 'VOTE_KILLED' OR type = 'POISON_DEAD_day' OR type = 'LOVERS_FOLLOWED_day' " .
-    "OR type LIKE 'SUDDEN_DEATH%'";
+    "OR type LIKE 'SUDDEN_DEATH_%'";
 
   //前の日の夜に起こった死亡メッセージ
   $type_night = "type = 'WOLF_KILLED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
     "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
     "OR type = 'DREAM_KILLED' OR type = 'TRAPPED' OR type = 'POISON_DEAD_night' " .
-    "OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE%'";
+    "OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE_%'";
 
   if($ROOM->IsDay()){
     $set_date = $yesterday;
@@ -820,6 +830,7 @@ function OutputDeadMan(){
   $set_date = $yesterday;
   $type = ($ROOM->IsDay() ? $type_day : $type_night);
 
+  echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合は $array の中身をチェックする
   $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
   foreach($array as $this_array){
     OutputDeadManType($this_array['message'], $this_array['type']);
@@ -930,6 +941,16 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_IMPATIENCE':
     echo $sudden_death;
     if($show_reason) echo $reason_header.$MESSAGE->impatience.')</td>';
+    break;
+
+  case 'SUDDEN_DEATH_JEALOUSY':
+    echo $sudden_death;
+    if($show_reason) echo $reason_header.$MESSAGE->jealousy.')</td>';
+    break;
+
+  case 'SUDDEN_DEATH_CELIBACY':
+    echo $sudden_death;
+    if($show_reason) echo $reason_header.$MESSAGE->celibacy.')</td>';
     break;
 
   case 'SUDDEN_DEATH_PANELIST':
@@ -1054,7 +1075,7 @@ function OutputAbilityAction(){
       break;
 
     case 'VOODOO_KILLER_DO':
-      echo '(陰陽師) は '.$target.' を呪いを祓いました';
+      echo '(陰陽師) は '.$target.' の呪いを祓いました';
       break;
 
     case 'JAMMER_MAD_DO':

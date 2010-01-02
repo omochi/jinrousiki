@@ -18,9 +18,9 @@ echo <<<EOF
 <input type="hidden" name="command" value="role_test">
 <label>¿Í¿ô</label><input type="text" name="user_count" size="3" value="20">
 <label>»î¹Ô²ó¿ô</label><input type="text" name="try_count" size="2" value="100">
-<input type="radio" name="game_option" value="chaos" checked>
+<input type="radio" name="game_option" value="chaos">
 °ÇÆé
-<input type="radio" name="game_option" value="chaosfull">
+<input type="radio" name="game_option" value="chaosfull" checked>
 ¿¿¡¦°ÇÆé
 <input type="submit" value=" ¼Â ¹Ô "></form>
 </form>

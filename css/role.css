@@ -1,18 +1,19 @@
 .human{       color: #606060;} /* 村人 */
-.wolf{        color: #FF0000;} /* 人狼 */
 .mage{        color: #9933FF;} /* 占い師 */
 .necromancer{ color: #006699;} /* 霊能者 */
-.mad{         color: #FF0000;} /* 狂人 */
 .guard{       color: #3399FF;} /* 狩人 */
 .common{      color: #CC6633;} /* 共有者 */
-.fox{         color: #CC0099;} /* 妖狐 */
 .poison{      color: #009966;} /* 埋毒者 */
-.cupid{       color: #FF66CC;} /* キューピッド */
-.mania{       color: #00CC00;} /* 神話マニア */
 .assassin{    color: #904040;} /* 暗殺者 */
 .mind{        color: #A0A000;} /* さとり */
-.quiz{        color: #9999CC;} /* クイズ GM */
+.jealousy{    color: #00CC00;} /* 橋姫 */
+.wolf{        color: #FF0000;} /* 人狼 */
+.mad{         color: #FF0000;} /* 狂人 */
+.fox{         color: #CC0099;} /* 妖狐 */
+.cupid{       color: #FF66CC;} /* キューピッド */
+.quiz{        color: #9999CC;} /* 出題者 */
 .chiroptera{  color: #888888;} /* 蝙蝠 */
+.mania{       color: #C0A060;} /* 神話マニア */
 .lovers{      color: #FF66CC;} /* 恋人 */
 .authority{   color: #666633;} /* 権力者 */
 .decide{      color: #999999;} /* 決定者 */

@@ -5,6 +5,22 @@
    </font>
 </p>
 
+<p>Ver. 1.4.0 α21 デバッグ情報 (2009/12/29 (Tue) 04:00)<br>
+・admin/setup.php @ 2行目<br>
+× require_once(dirname(__FILE__) . '/../include/functions.php');<br>
+○ require_once(dirname(__FILE__) . '/../include/init.php');<br>
+<br>
+・include/init.php @ 7行目<br>
+× $DEBUG_MODE = true;<br>
+○ $DEBUG_MODE = false;<br>
+<br>
+・include/game_play_functions.php @ 172行目、183行目を削除<br>
+×    if(! $SELF->IsRole('dummy_guard')){ //狩り結果を表示<br>
+×    }<br>
+<br>
+・さとりが複数の時の挙動の確認 (蒼鯖のログ的にバグがあるっぽいです)
+</p>
+
 <ol>
   <li>テスト用の仕様変更点</li>
   <ul>

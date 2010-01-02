@@ -1,7 +1,7 @@
 @import url(role.css);
 /* game_view.php & OutputGameHeader() */
 body{ /* AA 用 */
-  font-family: 'ＭＳ Ｐゴシック', 'ＭＳＰゴシック', 'MSPゴシック', 'MS Pゴシック';
+  font-family: "ＭＳ Ｐゴシック", "ＭＳＰゴシック", "MSPゴシック", "MS Pゴシック";
 }
 .room{text-decoration:underline;} /* 村のタイトル */
 .room span{
@@ -107,7 +107,7 @@ body{ /* AA 用 */
   border: 0;
   border-collapse: collapse;
   width: 100%
-  font-family: "ＭＳ Ｐゴシック";
+  font-family: "ＭＳ Ｐゴシック", "ＭＳＰゴシック", "MSPゴシック", "MS Pゴシック";
 }
 .normal{font-size:12pt;} /* 通常の発言 */
 .strong{  /* 大声 */
@@ -115,6 +115,7 @@ body{ /* AA 用 */
   font-weight: bold;
 }
 .weak{ /* 小声 */
+  /* color: #1E90FF; */ /* 青文字 */
   font-size: 8pt;
   font-weight: lighter;
 }
@@ -131,10 +132,10 @@ body{ /* AA 用 */
 .say{ /* 発言の中身 */
   margin-left: 1px;
   width: 1000px;
- /* 草対策：ブラウザ依存があるのでひとまず不使用
+  /* 草対策：ブラウザ依存があるのでひとまず不使用
   word-wrap: break-word;
   word-break:break-all;
-*/
+  */
 }
 /* OutputTalkLog() */
 .system-message{ /* システムメッセージ */
@@ -155,11 +156,11 @@ body{ /* AA 用 */
 .wolf-eat{        background-color: #CC3300;} /* 狼の襲撃 */
 .mage-do{         background-color: #990099;} /* 占い師 */
 .guard-do{        background-color: #0099FF;} /* 狩人 */
-.cupid-do{        background-color: #FF66CC;} /* キューピッド */
-.mania-do{        background-color: #00CC00;} /* 神話マニア */
 .poison-cat-do{   background-color: #009966;} /* 猫又 */
 .assassin-do{     background-color: #904040;} /* 暗殺者 */
 .mind-scanner-do{ background-color: #A0A000;} /* さとり */
+.cupid-do{        background-color: #FF66CC;} /* キューピッド */
+.mania-do{        background-color: #C0A060;} /* 神話マニア */
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;
   padding-left: 6em;
@@ -296,7 +297,7 @@ body{ /* AA 用 */
 }
 .ability-wolf-eat{ /* 人狼の投票 */
   padding: 0 3em;
-  background-color: #CC0000;
+  background-color: #CC3300;
   color: #FFFAFA;
   font-size: 14pt;
   font-weight:bold;
@@ -315,20 +316,6 @@ body{ /* AA 用 */
   font-size: 14pt;
   font-weight:bold;
 }
-.ability-cupid-do{ /* 狩人の投票 */
-  padding: 0 3em;
-  background-color: #FF66CC;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-mania-do{ /* 神話マニアの投票 */
-  padding: 0 3em;
-  background-color: #00CC00;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
 .ability-poison-cat-do{ /* 猫又の投票 */
   padding: 0 3em;
   background-color: #009966;
@@ -343,9 +330,23 @@ body{ /* AA 用 */
   font-size: 14pt;
   font-weight:bold;
 }
-.ability-mind-scanner-do{ /* 暗殺者の投票 */
+.ability-mind-scanner-do{ /* さとりの投票 */
   padding: 0 3em;
   background-color: #A0A000;
+  color: #FFFAFA;
+  font-size: 14pt;
+  font-weight:bold;
+}
+.ability-cupid-do{ /* キューピッドの投票 */
+  padding: 0 3em;
+  background-color: #FF66CC;
+  color: #FFFAFA;
+  font-size: 14pt;
+  font-weight:bold;
+}
+.ability-mania-do{ /* 神話マニアの投票 */
+  padding: 0 3em;
+  background-color: #C0A060;
   color: #FFFAFA;
   font-size: 14pt;
   font-weight:bold;

@@ -316,11 +316,12 @@ function AggregateVoteGameStart($force_start = false){
   $rand_keys = array_rand($fix_role_list, $user_count); //ランダムキーを取得
   $rand_keys_index = 0;
   $sub_role_count_list = array();
-  $delete_role_list = array('lovers', 'copied', 'panelist'); //割り振り対象外役職のリスト
+  //割り振り対象外役職のリスト
+  $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_receiver');
 
   //サブ役職テスト用
   /*
-  $test_role_list = array('blinder', 'speaker');
+  $test_role_list = array('mind_open');
   $delete_role_list = array_merge($delete_role_list, $test_role_list);
   for($i = 0; $i < $user_count; $i++){
     $this_test_role = array_shift($test_role_list);
@@ -341,6 +342,7 @@ function AggregateVoteGameStart($force_start = false){
     #}
   }
   */
+
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
   foreach($now_sub_role_list as $this_role){
@@ -366,7 +368,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   if(strpos($option_role, 'sudden_death') !== false){ //虚弱体質村
-    $sub_role_list = array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience');
+    $sub_role_list = array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'celibacy');
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
       $this_role = GetRandom($sub_role_list);
@@ -769,7 +771,7 @@ function VoteNight(){
     InsertSystemTalk($RQ_ARGS->situation, $ROOM->system_time, 'night system', '', $SELF->uname);
   }
   else{
-    if($SELF->IsRoleGroup('cupid')){ // キューピッドの処理
+    if($SELF->IsRoleGroup('cupid')){ //キューピッドの処理
       $target_uname_str  = '';
       $target_handle_str = '';
       foreach($target_list as $this_target){
@@ -781,12 +783,20 @@ function VoteNight(){
 	$target_handle_str .= $this_target->handle_name;
 
 	//役職に恋人を追加
-	$this_target->AddRole('lovers[' . strval($SELF->user_no) . ']');
+	$add_role = 'lovers[' . strval($SELF->user_no) . ']';
+	if($SELF->IsRole('self_cupid') && ! $this_target->IsSelf()){ //求愛者なら受信者も追加
+	  $add_role .= ' mind_receiver['. strval($SELF->user_no) . ']';
+	}
+	$this_target->AddRole($add_role);
       }
     }
     else{ // キューピッド以外の処理
       $target_uname_str  = $target->uname;
       $target_handle_str = $target->handle_name;
+
+      if($SELF->IsRole('mind_scanner')){ //さとりの場合は、対象の役職にサトラレを追加
+	$target->AddRole('mind_read[' . strval($SELF->user_no) . ']');
+      }
     }
     //投票処理
     $items = 'room_no, date, uname, target_uname, vote_number, situation';

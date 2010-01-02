@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/functions.php');
+require_once(dirname(__FILE__) . '/../include/init.php');
 
 $CSS_PATH = '../css'; //CSS のパス
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ

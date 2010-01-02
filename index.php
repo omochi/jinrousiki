@@ -68,6 +68,7 @@
       <li><a href="http://www37.atwiki.jp/yaruomura/">支月屺wiki</a></li>
       <li>支月屺煙芺��/忡棟裝貌</li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">峸檗溶矓貌</a></li>
+      <li><a href="http://alicegame.dip.jp/sousei/">闆彌檗氾旦玄貌</a></li>
       <li><a href="http://www13.atpages.jp/yaranai/">擛攳鉼呬貌</a></li>
       <li><a href="http://www13.atpages.jp/suigintou/">踹嗡貌</a></li>
       <li><a href="http://www15.atpages.jp/kanaria/">嗯餃錄忡棟裝</a></li>

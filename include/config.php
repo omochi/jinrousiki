@@ -35,7 +35,7 @@ class RoomConfig{
   var $default_open_vote = false;
 
   var $not_open_cast = true; //霊界で配役を公開しない
-  var $default_not_open_cast = false;
+  var $default_not_open_cast = true;
 
   var $decide = true; //決定者出現 (必要人数は GameConfig->decide 参照)
   var $default_decide = true;
@@ -224,14 +224,6 @@ class GameConfig{
   //メイン役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
   var $main_role_list = array('human'              => '村人',
-			      'wolf'               => '人狼',
-			      'boss_wolf'          => '白狼',
-			      'cursed_wolf'        => '呪狼',
-			      'cute_wolf'          => '萌狼',
-			      'poison_wolf'        => '毒狼',
-			      'resist_wolf'        => '抗毒狼',
-			      'tongue_wolf'        => '舌禍狼',
-			      'silver_wolf'        => '銀狼',
 			      'mage'               => '占い師',
 			      'soul_mage'          => '魂の占い師',
 			      'psycho_mage'        => '精神鑑定士',
@@ -243,6 +235,32 @@ class GameConfig{
 			      'yama_necromancer'   => '閻魔',
 			      'dummy_necromancer'  => '夢枕人',
 			      'medium'             => '巫女',
+			      'guard'              => '狩人',
+			      'poison_guard'       => '騎士',
+			      'reporter'           => 'ブン屋',
+			      'anti_voodoo'        => '厄神',
+			      'dummy_guard'        => '夢守人',
+			      'common'             => '共有者',
+			      'dummy_common'       => '夢共有者',
+			      'poison'             => '埋毒者',
+			      'strong_poison'      => '強毒者',
+			      'incubate_poison'    => '潜毒者',
+			      'dummy_poison'       => '夢毒者',
+			      'poison_cat'         => '猫又',
+			      'assassin'           => '暗殺者',
+			      'mind_scanner'       => 'さとり',
+			      'jealousy'           => '橋姫',
+			      'pharmacist'         => '薬師',
+			      'suspect'            => '不審者',
+			      'unconscious'        => '無意識',
+			      'wolf'               => '人狼',
+			      'boss_wolf'          => '白狼',
+			      'tongue_wolf'        => '舌禍狼',
+			      'poison_wolf'        => '毒狼',
+			      'resist_wolf'        => '抗毒狼',
+			      'cursed_wolf'        => '呪狼',
+			      'cute_wolf'          => '萌狼',
+			      'silver_wolf'        => '銀狼',
 			      'mad'                => '狂人',
 			      'fanatic_mad'        => '狂信者',
 			      'whisper_mad'        => '囁き狂人',
@@ -251,13 +269,6 @@ class GameConfig{
 			      'corpse_courier_mad' => '火車',
 			      'dream_eater_mad'    => '獏',
 			      'trap_mad'           => '罠師',
-			      'guard'              => '狩人',
-			      'poison_guard'       => '騎士',
-			      'anti_voodoo'        => '厄神',
-			      'reporter'           => 'ブン屋',
-			      'dummy_guard'        => '夢守人',
-			      'common'             => '共有者',
-			      'dummy_common'       => '夢共有者',
 			      'fox'                => '妖狐',
 			      'white_fox'          => '白狐',
 			      'poison_fox'         => '管狐',
@@ -265,16 +276,6 @@ class GameConfig{
 			      'cursed_fox'         => '天狐',
 			      'silver_fox'         => '銀狐',
 			      'child_fox'          => '子狐',
-			      'poison'             => '埋毒者',
-			      'strong_poison'      => '強毒者',
-			      'incubate_poison'    => '潜毒者',
-			      'dummy_poison'       => '夢毒者',
-			      'poison_cat'         => '猫又',
-			      'pharmacist'         => '薬師',
-			      'suspect'            => '不審者',
-			      'unconscious'        => '無意識',
-			      'assassin'           => '暗殺者',
-			      'mind_scanner'       => 'さとり',
 			      'cupid'              => 'キューピッド',
 			      'self_cupid'         => '求愛者',
 			      'quiz'               => '出題者',
@@ -319,21 +320,16 @@ class GameConfig{
 			     'rabbit'        => 'ウサギ',
 			     'perverseness'  => '天邪鬼',
 			     'flattery'      => 'ゴマすり',
+			     'celibacy'      => '独身貴族',
 			     'impatience'    => '短気',
 			     'panelist'      => '解答者',
 			     'mind_read'     => 'サトラレ',
+			     'mind_open'     => '公開者',
+			     'mind_receiver' => '受信者',
 			     'lovers'        => '恋人',
 			     'copied'        => '元神話マニア');
 
   var $short_role_list = array('human'              => '村',
-			       'wolf'               => '狼',
-			       'boss_wolf'          => '白狼',
-			       'cursed_wolf'        => '呪狼',
-			       'cute_wolf'          => '萌狼',
-			       'poison_wolf'        => '毒狼',
-			       'resist_wolf'        => '抗狼',
-			       'tongue_wolf'        => '舌狼',
-			       'silver_wolf'        => '銀狼',
 			       'mage'               => '占',
 			       'soul_mage'          => '魂',
 			       'psycho_mage'        => '心占',
@@ -345,6 +341,32 @@ class GameConfig{
 			       'yama_necromancer'   => '閻',
 			       'dummy_necromancer'  => '夢枕',
 			       'medium'             => '巫',
+			       'guard'              => '狩',
+			       'poison_guard'       => '騎',
+			       'reporter'           => '聞',
+			       'anti_voodoo'        => '厄',
+			       'dummy_guard'        => '夢守',
+			       'common'             => '共',
+			       'dummy_common'       => '夢共',
+			       'poison'             => '毒',
+			       'strong_poison'      => '強毒',
+			       'incubate_poison'    => '潜毒',
+			       'dummy_poison'       => '夢毒',
+			       'poison_cat'         => '猫',
+			       'assassin'           => '暗',
+			       'mind_scanner'       => '悟',
+			       'jealousy'           => '橋',
+			       'pharmacist'         => '薬',
+			       'suspect'            => '不審',
+			       'unconscious'        => '無',
+			       'wolf'               => '狼',
+			       'boss_wolf'          => '白狼',
+			       'tongue_wolf'        => '舌狼',
+			       'poison_wolf'        => '毒狼',
+			       'resist_wolf'        => '抗狼',
+			       'cursed_wolf'        => '呪狼',
+			       'cute_wolf'          => '萌狼',
+			       'silver_wolf'        => '銀狼',
 			       'mad'                => '狂',
 			       'fanatic_mad'        => '狂信',
 			       'whisper_mad'        => '囁狂',
@@ -353,13 +375,6 @@ class GameConfig{
 			       'corpse_courier_mad' => '火車',
 			       'dream_eater_mad'    => '獏',
 			       'trap_mad'           => '罠',
-			       'guard'              => '狩',
-			       'poison_guard'       => '騎',
-			       'anti_voodoo'        => '厄',
-			       'reporter'           => '聞',
-			       'dummy_guard'        => '夢守',
-			       'common'             => '共',
-			       'dummy_common'       => '夢共',
 			       'fox'                => '狐',
 			       'white_fox'          => '白狐',
 			       'poison_fox'         => '管狐',
@@ -367,18 +382,8 @@ class GameConfig{
 			       'cursed_fox'         => '天狐',
 			       'silver_fox'         => '銀狐',
 			       'child_fox'          => '子狐',
-			       'poison'             => '毒',
-			       'strong_poison'      => '強毒',
-			       'incubate_poison'    => '潜毒',
-			       'dummy_poison'       => '夢毒',
-			       'poison_cat'         => '猫',
-			       'pharmacist'         => '薬',
-			       'suspect'            => '不審',
-			       'unconscious'        => '無',
 			       'cupid'              => 'QP',
 			       'self_cupid'         => '求愛',
-			       'assassin'           => '暗',
-			       'mind_scanner'       => '悟',
 			       'quiz'               => 'GM',
 			       'chiroptera'         => '蝙',
 			       'poison_chiroptera'  => '毒蝙',
@@ -418,9 +423,12 @@ class GameConfig{
 			       'rabbit'             => '卯',
 			       'perverseness'       => '邪',
 			       'flattery'           => '胡麻',
+			       'celibacy'           => '独',
 			       'impatience'         => '短',
 			       'panelist'           => '解',
 			       'mind_read'          => '漏',
+			       'mind_open'          => '公',
+			       'mind_receiver'      => '受',
 			       'lovers'             => '恋',
 			       'copied'             => '元マ');
 
@@ -453,7 +461,7 @@ class TimeConfig{
 
   //-- 会話を用いた仮想時間制 --//
   //昼の制限時間(昼は12時間、spend_time=1(半角100文字以内) で 12時間 ÷ $day 進みます)
-  var $day = 48;
+  var $day = 96;
 
   //夜の制限時間(夜は 6時間、spend_time=1(半角100文字以内) で  6時間 ÷ $night 進みます)
   var $night = 24;
@@ -462,7 +470,7 @@ class TimeConfig{
   var $silence = 60;
 
   //沈黙経過時間 (12時間 ÷ $day(昼) or 6時間 ÷ $night (夜) の $silence_pass 倍の時間が進みます)
-  var $silence_pass = 4;
+  var $silence_pass = 8;
 }
 
 //ゲームプレイ時のアイコン表示設定

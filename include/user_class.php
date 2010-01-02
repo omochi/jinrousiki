@@ -58,7 +58,7 @@ class User{
 	$this->role_list[] = $role;
       }
     }
-    array_unique($this->role_list);
+    $this->role_list = array_unique($this->role_list);
   }
 
   function IsLive(){
@@ -163,6 +163,7 @@ class User{
   }
 
   function AddRole($role){
+    if($this->IsRole($role)) return false; //同じ役職は追加しない
     $this->Update('role', $this->role . " $role");
     /* キャッシュの更新は行わないでおく
       $this->role .= " $role";
