@@ -5,20 +5,8 @@
    </font>
 </p>
 
-<p>Ver. 1.4.0 α21 デバッグ情報 (2009/12/29 (Tue) 04:00)<br>
-・admin/setup.php @ 2行目<br>
-× require_once(dirname(__FILE__) . '/../include/functions.php');<br>
-○ require_once(dirname(__FILE__) . '/../include/init.php');<br>
-<br>
-・include/init.php @ 7行目<br>
-× $DEBUG_MODE = true;<br>
-○ $DEBUG_MODE = false;<br>
-<br>
-・include/game_play_functions.php @ 172行目、183行目を削除<br>
-×    if(! $SELF->IsRole('dummy_guard')){ //狩り結果を表示<br>
-×    }<br>
-<br>
-・さとりが複数の時の挙動の確認 (蒼鯖のログ的にバグがあるっぽいです)
+<p>Ver. 1.4.0 α22 アップロード (2010/01/03 (Sun) 08:03:58) → <a href="src/">ダウンロード</a><br>
+・さとりのデバッグ、橋姫の実装など<br>
 </p>
 
 <ol>
@@ -47,7 +35,7 @@
     <li>トリップ対応 (現在は # を含む文字列に対してエラーを返すだけ)</li>
     <li>過去ログ HTML 化の自動化</li>
     <li>クォートモード時のGM発言対応</li>
-    <li>初日に突然死が発生した場合のキューピッドの投票処理の対応</li>
     <li>自動投票機能</li>
+    <li>アイコン選択画面の改訂</li>
   </ul>
 </ol>

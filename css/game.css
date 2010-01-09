@@ -168,6 +168,13 @@ body{ /* AA 用 */
   color: #000000;
   font-weight: bold;
 }
+.dummy-boy{ /* 身代わり君の発言 */
+  width: 1000px;
+  /* padding-left: 6em; */
+  background-color: #F0F8FF;
+  color: #000000;
+  font-weight: bold;
+}
 .talk-common{font-size: 8pt;} /* 共有者の名前 (共有者以外用) */
 .say-common{ font-size: 6pt;} /* 共有者の発言 (共有者以外用) */
 .night-self-talk{color: #FFFAFA;} /* 夜の独り言 */
@@ -272,12 +279,14 @@ body{ /* AA 用 */
 .caution span{font-size: 80%;}
 .objection{text-align: right;}/* 「異議あり」ボタン */
 /* OutputAbility() */
-.ability-dead{ /* 死んでいる場合 */
-  margin: 0 3em;
-  background-color:#CC0000;
+.ability{ /* 共通デザイン */
+  padding: 0 3em;
   color: #FFFAFA;
   font-size: 14pt;
   font-weight: bold;
+}
+.ability-dead{ /* 死んでいる場合 */
+  background-color:#CC0000;
 }
 .ability-partner{ /* 仲間の表示 */
   border: 1px solid;
@@ -294,62 +303,6 @@ body{ /* AA 用 */
 .ability-result td{
   border: 0px solid #000000;
   vertical-align: middle;
-}
-.ability-wolf-eat{ /* 人狼の投票 */
-  padding: 0 3em;
-  background-color: #CC3300;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-mage-do{ /* 占い師の投票 */
-  padding: 0 3em;
-  background-color: #990099;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-guard-do{ /* 狩人の投票 */
-  padding: 0 3em;
-  background-color: #0099FF;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-poison-cat-do{ /* 猫又の投票 */
-  padding: 0 3em;
-  background-color: #009966;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-assassin-do{ /* 暗殺者の投票 */
-  padding: 0 3em;
-  background-color: #904040;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-mind-scanner-do{ /* さとりの投票 */
-  padding: 0 3em;
-  background-color: #A0A000;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-cupid-do{ /* キューピッドの投票 */
-  padding: 0 3em;
-  background-color: #FF66CC;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
-}
-.ability-mania-do{ /* 神話マニアの投票 */
-  padding: 0 3em;
-  background-color: #C0A060;
-  color: #FFFAFA;
-  font-size: 14pt;
-  font-weight:bold;
 }
 /* CheckSelfVote() */
 .self-vote{

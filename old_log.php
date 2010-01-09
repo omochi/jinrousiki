@@ -47,6 +47,7 @@ function OutputFinishedRooms($page, $reverse = NULL){
 
   OutputHTMLHeader($SERVER_CONF->title . ' [²áµî¥í¥°]', 'old_log_list');
 echo <<<EOF
+</head>
 <body id="room_list">
 <p><a href="index.php">¢«Ìá¤ë</a></p>
 <img src="img/old_log_title.jpg"><br>
@@ -194,6 +195,8 @@ function OutputOldLog(){
 
   OutputHTMLHeader($title, 'old_log');
   echo <<<EOF
+</head>
+<body>
 <a href="old_log.php?page=$referer_page">¢«Ìá¤ë</a><br>
 <div class="room"><span>{$ROOM->name}Â¼</span>¡¡¡Á{$ROOM->comment}¡Á [{$room_no}ÈÖÃÏ]</td></div>
 

@@ -1,11 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
 loadModule(
-  CONFIG,
-  #IMAGE_CLASSES,
-  ROLE_CLASSES,
-  MESSAGE_CLASSES,
-  #GAME_FORMAT_CLASSES,
   SYSTEM_CLASSES,
   USER_CLASSES,
   GAME_FUNCTIONS,
@@ -42,18 +37,16 @@ $ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  = $USERS->ByUname($uname); //自分の情報をロード
 
-if($ROOM->IsFinished()){ //ゲームは終了しました
+if($ROOM->IsFinished()){ //ゲーム終了
   OutputActionResult('投票エラー',
-		     '<div align="center">' .
-		     '<a name="#game_top"></a>ゲームは終了しました<br>'."\n" .
-		     $back_url . '</div>');
+		     '<div align="center"><a name="#game_top"></a>' .
+		     'ゲームは終了しました<br>'."\n" . $back_url . '</div>');
 }
 
 if(! $SELF->IsLive()){ //生存者以外は無効
   OutputActionResult('投票エラー',
-		     '<div align="center">' .
-		     '<a name="#game_top"></a>生存者以外は投票できません<br>'."\n" .
-		     $back_url . '</div>');
+		     '<div align="center"><a name="#game_top"></a>' .
+		     '生存者以外は投票できません<br>'."\n" . $back_url . '</div>');
 }
 
 if($RQ_ARGS->vote){ //投票処理
@@ -66,17 +59,15 @@ if($RQ_ARGS->vote){ //投票処理
     }
     else{ //ここに来たらロジックエラー
       OutputActionResult('投票エラー[ゲーム開始前投票]',
-			 '<div align="center">' .
-			 '<a name="#game_top"></a>プログラムエラーです。'.
-			 '管理者に問い合わせてください<br>'."\n" .
+			 '<div align="center"><a name="#game_top"></a>' .
+			 'プログラムエラーです。管理者に問い合わせてください<br>'."\n" .
 			 $back_url . '</div>');
     }
   }
   elseif($RQ_ARGS->target_no == 0){
     OutputActionResult('投票エラー',
-		       '<div align="center">' .
-		       '<a name="#game_top"></a>投票先を指定してください<br>'."\n" .
-		       $back_url . '</div>');
+		       '<div align="center"><a name="#game_top"></a>' .
+		       '投票先を指定してください<br>'."\n" . $back_url . '</div>');
   }
   elseif($ROOM->IsDay()){ //昼の処刑投票処理
     VoteDay();
@@ -86,8 +77,8 @@ if($RQ_ARGS->vote){ //投票処理
   }
   else{ //ここに来たらロジックエラー
     OutputActionResult('投票エラー',
-		       '<div align="center">' .
-		       '<a name="#game_top"></a>プログラムエラーです。管理者に問い合わせてください<br>'."\n" .
+		       '<div align="center"><a name="#game_top"></a>' .
+		       'プログラムエラーです。管理者に問い合わせてください<br>'."\n" .
 		       $back_url . '</div>');
   }
 }
@@ -100,11 +91,10 @@ elseif($ROOM->IsDay()){ //昼の処刑投票ページ出力
 elseif($ROOM->IsNight()){ //夜の投票ページ出力
   OutputVoteNight();
 }
-else{ //既に投票されております //ここに来たらロジックエラーじゃないかな？
+else{ //投票済み //ここに来たらロジックエラーじゃないかな？
   OutputActionResult('投票エラー',
-		     '<div align="center">' .
-		     '<a name="#game_top"></a>既に投票されております<br>'."\n" .
-		     $back_url . '</div>');
+		     '<div align="center"><a name="#game_top"></a>' .
+		     '既に投票されております<br>'."\n" . $back_url . '</div>');
 }
 
 DisconnectDatabase($dbHandle); //DB 接続解除
@@ -317,7 +307,8 @@ function AggregateVoteGameStart($force_start = false){
   $rand_keys_index = 0;
   $sub_role_count_list = array();
   //割り振り対象外役職のリスト
-  $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_receiver');
+  $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_receiver',
+			    'mind_friend');
 
   //サブ役職テスト用
   /*
@@ -368,7 +359,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   if(strpos($option_role, 'sudden_death') !== false){ //虚弱体質村
-    $sub_role_list = array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'celibacy');
+    $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
       $this_role = GetRandom($sub_role_list);
@@ -394,7 +385,7 @@ function AggregateVoteGameStart($force_start = false){
     $sub_role_keys = array_diff($sub_role_keys, $delete_role_list);
     shuffle($sub_role_keys);
     foreach($sub_role_keys as $key){
-      if($rand_keys_index > $user_count) break;
+      if($rand_keys_index > $user_count - 1) break; //$rand_keys_index は 0 から
       // if(strpos($key, 'voice') !== false || $key == 'earplug') continue; //声変化形をスキップ
       $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $key;
     }
@@ -630,6 +621,10 @@ function VoteNight(){
     if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：月兎以外は投票できません');
     break;
 
+  case 'VOODOO_MAD_DO':
+    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：呪術師以外は投票できません');
+    break;
+
   case 'DREAM_EAT':
     if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：獏以外は投票できません');
     break;
@@ -641,20 +636,16 @@ function VoteNight(){
     $not_type = ($RQ_ARGS->situation == 'TRAP_MAD_NOT_DO');
     break;
 
-  case 'VOODOO_MAD_DO':
-    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：呪術師以外は投票できません');
-    break;
-
   case 'GUARD_DO':
     if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：狩人以外は投票できません');
     break;
 
-  case 'ANTI_VOODOO_DO':
-    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：厄神以外は投票できません');
-    break;
-
   case 'REPORTER_DO':
     if(! $SELF->IsRole('reporter')) OutputVoteResult('夜：ブン屋以外は投票できません');
+    break;
+
+  case 'ANTI_VOODOO_DO':
+    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：厄神以外は投票できません');
     break;
 
   case 'POISON_CAT_DO':
@@ -689,7 +680,7 @@ function VoteNight(){
     break;
 
   case 'MANIA_DO':
-    if(! $SELF->IsRole('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
+    if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：神話マニア以外は投票できません');
     break;
 
   default:
@@ -702,21 +693,20 @@ function VoteNight(){
   $error_header = '夜：投票先が正しくありません<br>';
 
   if($not_type); //投票キャンセルタイプは何もしない
-  elseif($SELF->IsRoleGroup('cupid')){  //キューピッドの場合の投票処理
+  elseif($SELF->IsRoleGroup('cupid')){  //キューピッド系
     if(count($RQ_ARGS->target_no) != 2) OutputVoteResult('夜：指定人数が２人ではありません');
     $target_list = array();
     $self_shoot = false; //自分撃ちフラグを初期化
     foreach($RQ_ARGS->target_no as $this_target_no){
-      //投票相手のユーザ情報取得
-      $this_target = $USERS->ByID($this_target_no);
+      $this_target = $USERS->ByID($this_target_no); //投票先のユーザ情報を取得
 
       //生存者以外と身代わり君への投票は無効
       if(! $this_target->IsLive() || $this_target->IsDummyBoy()){
 	OutputVoteResult('生存者以外と身代わり君へは投票できません');
       }
 
-      array_push($target_list, $this_target);
-      $self_shoot |= $this_target->IsSelf(); //自分撃ちかどうかチェック
+      $target_list[] = $this_target;
+      $self_shoot |= $this_target->IsSelf(); //自分撃ち判定
     }
 
     if(! $self_shoot){ //自分撃ちでは無い場合は特定のケースでエラーを返す
@@ -728,8 +718,8 @@ function VoteNight(){
       }
     }
   }
-  else{ //キューピッド以外の投票処理
-    $target = $USERS->ByID($RQ_ARGS->target_no); //投票相手のユーザ情報取得
+  else{ //キューピッド系以外
+    $target = $USERS->ByID($RQ_ARGS->target_no); //投票先のユーザ情報を取得
 
     if($target->IsSelf() && ! $SELF->IsRole('trap_mad')){ //罠師以外は自分への投票は無効
       OutputVoteResult($error_header . '自分には投票できません');
@@ -771,7 +761,7 @@ function VoteNight(){
     InsertSystemTalk($RQ_ARGS->situation, $ROOM->system_time, 'night system', '', $SELF->uname);
   }
   else{
-    if($SELF->IsRoleGroup('cupid')){ //キューピッドの処理
+    if($SELF->IsRoleGroup('cupid')){ //キューピッド系の処理
       $target_uname_str  = '';
       $target_handle_str = '';
       foreach($target_list as $this_target){
@@ -784,8 +774,13 @@ function VoteNight(){
 
 	//役職に恋人を追加
 	$add_role = 'lovers[' . strval($SELF->user_no) . ']';
-	if($SELF->IsRole('self_cupid') && ! $this_target->IsSelf()){ //求愛者なら受信者も追加
+	if($SELF->IsRole('self_cupid') && ! $this_target->IsSelf()){ //求愛者なら受信者を追加
 	  $add_role .= ' mind_receiver['. strval($SELF->user_no) . ']';
+	}
+	elseif($SELF->IsRole('mind_cupid')){ //女神なら共鳴者を追加
+	  $add_role .= ' mind_friend['. strval($SELF->user_no) . ']';
+	  //他人撃ちなら受信者を本人に追加する
+	  if(! $self_shoot) $SELF->AddRole('mind_receiver[' . $this_target->user_no . ']');
 	}
 	$this_target->AddRole($add_role);
       }
@@ -793,14 +788,10 @@ function VoteNight(){
     else{ // キューピッド以外の処理
       $target_uname_str  = $target->uname;
       $target_handle_str = $target->handle_name;
-
-      if($SELF->IsRole('mind_scanner')){ //さとりの場合は、対象の役職にサトラレを追加
-	$target->AddRole('mind_read[' . strval($SELF->user_no) . ']');
-      }
     }
     //投票処理
-    $items = 'room_no, date, uname, target_uname, vote_number, situation';
-    $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '$target_uname_str', 1, '{$RQ_ARGS->situation}'";
+    $items = 'room_no, date, uname, target_uname, situation';
+    $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '$target_uname_str', '{$RQ_ARGS->situation}'";
     $sql = InsertDatabase('vote', $items, $values);
     InsertSystemMessage($SELF->handle_name . "\t" . $target_handle_str, $RQ_ARGS->situation);
     $sentence = $RQ_ARGS->situation . "\t" . $target_handle_str;
@@ -953,16 +944,13 @@ function OutputVoteNight(){
     CheckAlreadyVote('VOODOO_MAD_DO');
   }
   elseif($role_dream_eater_mad = $SELF->IsRole('dream_eater_mad')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
     CheckAlreadyVote('DREAM_EAT');
   }
   elseif($role_trap_mad = $SELF->IsRole('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
     if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
     CheckAlreadyVote('TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
-  }
-  elseif($role_anti_voodoo = $SELF->IsRole('anti_voodoo')){
-    if($ROOM->date == 1) OutputVoteResult('夜：初日の厄払いはできません');
-    CheckAlreadyVote('ANTI_VOODOO_DO');
   }
   elseif($role_guard = $SELF->IsRoleGroup('guard')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の護衛はできません');
@@ -971,6 +959,10 @@ function OutputVoteNight(){
   elseif($role_reporter = $SELF->IsRole('reporter')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の尾行はできません');
     CheckAlreadyVote('REPORTER_DO');
+  }
+  elseif($role_anti_voodoo = $SELF->IsRole('anti_voodoo')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の厄払いはできません');
+    CheckAlreadyVote('ANTI_VOODOO_DO');
   }
   elseif($role_poison_cat = $SELF->IsRole('poison_cat')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の蘇生はできません');
@@ -999,7 +991,7 @@ function OutputVoteNight(){
     $cupid_self_shoot = ($SELF->IsRole('self_cupid') ||
 			 $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot);
   }
-  elseif($role_mania = $SELF->IsRole('mania')){
+  elseif($role_mania = $SELF->IsRoleGroup('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('MANIA_DO');
   }
@@ -1105,10 +1097,6 @@ EOF;
     $not_type   = 'TRAP_MAD_NOT_DO';
     $not_submit = 'submit_trap_not_do';
   }
-  elseif($role_anti_voodoo){
-    $type   = 'ANTI_VOODOO_DO';
-    $submit = 'submit_anti_voodoo_do';
-  }
   elseif($role_guard){
     $type   = 'GUARD_DO';
     $submit = 'submit_guard_do';
@@ -1116,6 +1104,10 @@ EOF;
   elseif($role_reporter){
     $type   = 'REPORTER_DO';
     $submit = 'submit_reporter_do';
+  }
+  elseif($role_anti_voodoo){
+    $type   = 'ANTI_VOODOO_DO';
+    $submit = 'submit_anti_voodoo_do';
   }
   elseif($role_poison_cat){
     $type   = 'POISON_CAT_DO';

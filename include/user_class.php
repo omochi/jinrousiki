@@ -120,6 +120,18 @@ class User{
     return $this->IsRole('lovers');
   }
 
+  function IsPartner($type, $target){
+    $array = $this->partner_list[$type];
+    if(! is_array($array)) return false;
+    if(is_array($target)){
+      if(! is_array($target[$type])) return false;
+      return (count(array_intersect($array, $target[$type])) > 0);
+    }
+    else{
+      return in_array($target, $array);
+    }
+  }
+
   function ToDead(){
     if(!($this->IsLive() || $this->revive_flag) || $this->dead_flag) return false;
     $this->Update('live', 'dead');
@@ -160,16 +172,21 @@ class User{
 
   function ChangeRole($role){
     $this->Update('role', "$role");
+
+    //$this->role .= " $role"; //キャッシュ本体の更新は行わない
+    $this->updated['role'] = $role;
   }
 
   function AddRole($role){
-    if($this->IsRole($role)) return false; //同じ役職は追加しない
-    $this->Update('role', $this->role . " $role");
-    /* キャッシュの更新は行わないでおく
-      $this->role .= " $role";
-      $this->updated[] = 'role';
-      $this->ParseRoles();
-    */
+    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
+    if(strpos($base_role, $role) !== false) return false; //同じ役職は追加しない
+    $this->ChangeRole($base_role . " $role");
+  }
+
+  function ReplaceRole($target, $replace){
+    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
+    $new_role = str_replace($target, $replace, $base_role);
+    $this->ChangeRole($new_role);
   }
 
   /*

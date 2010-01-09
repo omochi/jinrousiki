@@ -7,7 +7,7 @@ function OutputAbility(){
   if(! $ROOM->IsPlaying()) return false;
 
   if($SELF->IsDead()){ //死亡したら能力を表示しない
-    echo '<span class="ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
+    echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
     return;
   }
 
@@ -167,10 +167,9 @@ function OutputAbility(){
   elseif($SELF->IsRole('mind_scanner')){ //さとり
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
-    if($ROOM->date > 1){
-      //自分が心を読んでいる相手を表示
+    if($ROOM->date > 1){ //2日目以降、自分が心を読んでいる相手を表示
       foreach($USERS->rows as $user){
-	if($user->IsRole('mind_read') && in_array($SELF->user_no, $user->partner_list['mind_read'])){
+	if($user->IsPartner('mind_read', $SELF->user_no)){
 	  $mind_scanner_target[] = $user->handle_name;
 	}
       }
@@ -248,7 +247,7 @@ function OutputAbility(){
       OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_MAD_DO');
     }
     elseif($SELF->IsRole('dream_eater_mad') && $ROOM->IsNight()){ //獏
-      OutputVoteMessage('wolf-eat', 'dream_eat', 'DREAM_EAT');
+      if($is_after_first_night) OutputVoteMessage('wolf-eat', 'dream_eat', 'DREAM_EAT');
     }
     elseif($SELF->IsActiveRole('trap_mad') && $is_after_first_night){ //罠師
       OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
@@ -333,12 +332,13 @@ function OutputAbility(){
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
     //解毒結果を表示
-    $sql = GetAbilityActionResult('PHARMACIST_SUCCESS');
-    $count = mysql_num_rows($sql);
+    $action = 'PHARMACIST_RESULT';
+    $sql    = GetAbilityActionResult($action);
+    $count  = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
+      list($actor, $target, $result) = ParseStrings(mysql_result($sql, $i, 0), $action);
       if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'pharmacist_success');
+	OutputAbilityResult(NULL, $target, 'pharmacist_' . $result);
 	break;
       }
     }
@@ -348,7 +348,7 @@ function OutputAbility(){
 
     //自分が矢を打った恋人 (自分自身含む) を表示
     foreach($USERS->rows as $user){
-      if($user->IsLovers() && in_array($SELF->user_no, $user->partner_list['lovers'])){
+      if($user->IsPartner('lovers', $SELF->user_no)){
 	$cupid_pair[] = $user->handle_name;
       }
     }
@@ -360,7 +360,7 @@ function OutputAbility(){
     $ROLE_IMG->DisplayImage($SELF->main_role);
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->DisplayImage('quiz_chaos');
   }
-  elseif($SELF->IsRole('mania')){ //神話マニア
+  elseif($SELF->IsRoleGroup('mania')){ //神話マニア
     $ROLE_IMG->DisplayImage($SELF->main_role);
     if($is_first_night) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO'); //初日夜の投票
   }
@@ -373,8 +373,7 @@ function OutputAbility(){
 
   if($SELF->IsLovers()){ //恋人
     foreach($USERS->rows as $user){
-      if($user->IsLovers() && ! $user->IsSelf() &&
-	 (count(array_intersect($SELF->partner_list['lovers'], $user->partner_list['lovers'])) > 0)){
+      if(! $user->IsSelf() && $user->IsPartner('lovers', $SELF->partner_list)){
 	$lovers_partner[] = $user->handle_name;
       }
     }
@@ -409,8 +408,20 @@ function OutputAbility(){
       }
       OutputPartner($mind_scanner_target, 'mind_scanner_target');
     }
+
+    if($SELF->IsRole('mind_friend')){
+      $ROLE_IMG->DisplayImage('mind_friend');
+
+      $mind_friend = array();
+      foreach($USERS->rows as $user){
+	if(! $user->IsSelf() && $user->IsPartner('mind_friend', $SELF->partner_list)){
+	  $mind_friend[] = $user->handle_name;
+	}
+      }
+      OutputPartner($mind_friend, 'mind_friend_list');
+    }
   }
-  array_push($fix_display_list, 'mind_read', 'mind_receiver');
+  array_push($fix_display_list, 'mind_read', 'mind_receiver', 'mind_friend');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -464,13 +475,10 @@ function OutputAbilityResult($header, $target, $footer = NULL){
 function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   global $MESSAGE, $ROOM;
 
-  if(! $ROOM->test_mode){
-    //投票済みならメッセージを表示しない
-    if(CheckSelfVoteNight($situation, $not_situation)) return false;
-  }
+  //投票済みならメッセージを表示しない
+  if(! $ROOM->test_mode && CheckSelfVoteNight($situation, $not_situation)) return false;
 
-  $class_str   = 'ability-' . $class; //クラス名はアンダースコアを使わないでおく
   $message_str = 'ability_' . $sentence;
-  echo '<span class="' . $class_str . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
+  echo '<span class="ability ' . $class . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
 }
 ?>

@@ -54,59 +54,64 @@ function CheckTable(){
 
   //チェックしてテーブルが存在しなければ作成する
   if(! in_array('room', $table)){
-    mysql_query("CREATE TABLE room(room_no int primary key, room_name text, room_comment text,
-		establisher_ip text, max_user int, game_option text, option_role text, status text,
-		date int, day_night text,last_updated text,victory_role text)");
+    mysql_query("CREATE TABLE room(room_no INT PRIMARY KEY, room_name TEXT, room_comment TEXT,
+		establisher_ip TEXT, max_user INT, game_option TEXT, option_role TEXT, status TEXT,
+		date INT, day_night TEXT,last_updated TEXT,victory_role TEXT)");
     echo 'テーブル(room)を作成しました<br>'."\n";
   }
   else{
-    // establisher_ipフィールドがなければ追加する
-    $sql = mysql_query("SHOW COLUMNS FROM room");
-    $found = false;
-    if(mysql_num_rows($sql) > 0){
-      while(($row = mysql_fetch_assoc($sql)) !== false){
-	if($row['Field'] == 'establisher_ip'){
-	  $found = true;
-	  break;
+    do{ // establisher_ipフィールドがなければ追加する
+      $sql = mysql_query("SHOW COLUMNS FROM room");
+      if(mysql_num_rows($sql) > 0){
+	while(($row = mysql_fetch_assoc($sql)) !== false){
+	  if($row['Field'] == 'establisher_ip') break 2;
 	}
       }
-    }
-    if(! $found){
-      if(mysql_query("ALTER TABLE room ADD establisher_ip text")){
+      if(mysql_query("ALTER TABLE room ADD establisher_ip TEXT")){
 	echo 'テーブル(room)にフィールド(establisher_ip)を追加しました<br>'."\n";
       }
       else{
 	echo 'テーブル(room)にフィールド(establisher_ip)を追加できませんでした<br>'."\n";
       }
-    }
+    }while(false);
   }
+
   if(! in_array('user_entry', $table)){
-    mysql_query("CREATE TABLE user_entry(room_no int, user_no int, uname text, handle_name text,
-		icon_no int, profile text, sex text, password text, role text, live text,
-		session_id char(32) unique, last_words text, ip_address text, last_load_day_night text)");
+    mysql_query("CREATE TABLE user_entry(room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT,
+		icon_no INT, profile TEXT, sex TEXT, password TEXT, role TEXT, live TEXT,
+		session_id CHAR(32) UNIQUE, last_words TEXT, ip_address TEXT, last_load_day_night TEXT)");
     echo 'テーブル(user_entry)を作成しました<br>'."\n";
 
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no, profile,
 		password, role, live) VALUES(0, 0, 'system', 'システム', 1, 'ゲームマスター',
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
+  mysql_query("ALTER TABLE user_entry ADD INDEX user_entry_index(room_no, user_no)");
+
   if(! in_array('talk', $table)){
-    mysql_query("CREATE TABLE talk(room_no int, date int, location text, uname text, time text,
-		 sentence text, font_type text, spend_time int)");
+    mysql_query("CREATE TABLE talk(room_no INT NOT NULL, date INT, location TEXT, uname TEXT,
+		 time INT NOT NULL, sentence TEXT, font_type TEXT, spend_time INT)");
     echo 'テーブル(talk)を作成しました<br>'."\n";
   }
+  mysql_query("ALTER TABLE talk MODIFY time INT NOT NULL");
+  mysql_query("ALTER TABLE talk ADD INDEX talk_index (room_no, date, time)");
+
   if(! in_array('vote', $table)){
-    mysql_query("CREATE TABLE vote(room_no int NOT NULL, date int, uname text, target_uname text,
-		 vote_number int, vote_times int, situation text)");
+    mysql_query("CREATE TABLE vote(room_no INT NOT NULL, date INT, uname TEXT, target_uname TEXT,
+		 vote_number INT, vote_times INT, situation TEXT)");
     echo 'テーブル(vote)を作成しました<br>'."\n";
   }
+  mysql_query("ALTER TABLE vote ADD INDEX vote_index(room_no, date)");
+
   if(! in_array('system_message', $table)){
-    mysql_query("CREATE TABLE system_message(room_no int, message text, type text, date int)");
+    mysql_query("CREATE TABLE system_message(room_no INT NOT NULL, message TEXT, type TEXT, date INT)");
     echo 'テーブル(system_message)を作成しました<br>'."\n";
   }
+  mysql_query("ALTER TABLE system_message ADD INDEX system_message_index(room_no, date)");
+
   if(! in_array('user_icon', $table)){
-    mysql_query("CREATE TABLE user_icon(icon_no int primary key, icon_name text, icon_filename text,
-		icon_width int, icon_height int, color text, session_id text)");
+    mysql_query("CREATE TABLE user_icon(icon_no INT PRIMARY KEY, icon_name TEXT, icon_filename TEXT,
+		icon_width INT, icon_height INT, color TEXT, session_id TEXT)");
     echo 'テーブル(user_icon)を作成しました<br>'."\n";
 
     //身代わり君のアイコンを登録(アイコンNo：0)
@@ -142,7 +147,7 @@ function CheckTable(){
   }
 
   if(! in_array('admin_manage', $table)){
-    mysql_query("CREATE TABLE admin_manage(session_id text)");
+    mysql_query("CREATE TABLE admin_manage(session_id TEXT)");
     mysql_query("INSERT INTO admin_manage VALUES('')");
     echo 'テーブル(admin_manage)を作成しました<br>'."\n";
   }

@@ -1,17 +1,11 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
 loadModule(
-  CONFIG,
   IMAGE_CLASSES,
-  ROLE_CLASSES,
-  MESSAGE_CLASSES,
   GAME_FORMAT_CLASSES,
-  SYSTEM_CLASSES,
   USER_CLASSES,
   TALK_CLASSES,
   GAME_FUNCTIONS,
-  #PLAY_FUNCTIONS,
-  #VOTE_FUNCTIONS,
   ROOM_IMG,
   ROLE_IMG,
   ROOM_CONF,
@@ -29,7 +23,7 @@ $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 $dbHandle = ConnectDatabase(); // DB 接続
 
 $ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
-if((int)$ROOM->id < 1) OutputActionResult('エラー', '無効な村番号です');
+if($ROOM->id < 1) OutputActionResult('エラー', '無効な村番号です');
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){

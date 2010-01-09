@@ -1,5 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/functions.php');
+require_once(dirname(__FILE__) . '/../include/init.php');
+loadModule(CONFIG);
 
 EncodePostData();
 $CSS_PATH = '../css'; //CSSのパスをセット

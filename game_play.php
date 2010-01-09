@@ -1,12 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
 loadModule(
-  CONFIG,
   IMAGE_CLASSES,
-  ROLE_CLASSES,
-  MESSAGE_CLASSES,
-  GAME_FORMAT_CLASSES,
-  SYSTEM_CLASSES,
   USER_CLASSES,
   TALK_CLASSES,
   GAME_FUNCTIONS,
@@ -55,21 +50,19 @@ SendCookie();
 //発言の有無をチェック
 ConvertSay(&$RQ_ARGS->say); //発言置換処理
 
-if($RQ_ARGS->say != '' && $RQ_ARGS->IsLastWords() && $SELF->IsLive() && ! $SELF->IsDummyBoy()){
+if($RQ_ARGS->say == ''){
+  CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
+}
+elseif($RQ_ARGS->IsLastWords() && $SELF->IsLive() && ! $SELF->IsDummyBoy()){
   EntryLastWords($RQ_ARGS->say);  //生きていれば遺言登録
 }
-elseif($RQ_ARGS->say != '' && ($ROOM->day_night == $SELF->last_load_day_night ||
-			       $SELF->IsDead() || $SELF->IsDummyBoy())){
-  Say($RQ_ARGS->say); //死んでいるか、最後にリロードした時とシーンが一致しているか身代わり君なら書き込む
+elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
+  Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
 }
 else{
-  CheckSilence(); //ゲーム停滞のチェック(沈黙、突然死)
+  CheckSilence(); //発言ができない状態ならゲーム停滞チェック
 }
-
-//最後にリロードした時のシーンを更新
-mysql_query("UPDATE user_entry SET last_load_day_night = '{$ROOM->day_night}'
-		WHERE room_no = {$ROOM->id} AND uname = '{$SELF->uname}' AND user_no > 0");
-mysql_query('COMMIT');
+UpdateLastLoadScene(); //ゲームシーンを更新
 
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
@@ -163,63 +156,109 @@ function SendCookie(){
 
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $MESSAGE, $ROOM, $SELF;
+  global $GAME_CONF, $MESSAGE, $ROOM, $USERS, $SELF;
 
   //リロード時、死者、ゲームプレイ中以外なら処理スキップ
   if($say == '' || $SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
+  #if($say == '' || $SELF->IsDead()) return false; //テスト用
 
   //萌狼・不審者は一定確率で発言が遠吠え(デフォルト時)になる
-  if(($SELF->IsRole('cute_wolf') || $SELF->IsRole('suspect')) &&
-     mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
+  if($SELF->IsRole('cute_wolf', 'suspect') && mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
     $say = ($MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl);
   }
   //紳士・淑女は一定確率で発言が入れ替わる
-  elseif(($SELF->IsRole('gentleman') || $SELF->IsRole('lady')) &&
-	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
+  elseif($SELF->IsRole('gentleman', 'lady') && mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
     $role_name = ($SELF->IsRole('gentleman') ? 'gentleman' : 'lady');
     $message_header = $role_name . '_header';
     $message_footer = $role_name . '_footer';
 
-    $query = "SELECT handle_name FROM user_entry WHERE room_no = {$ROOM->id} " .
-      "AND uname <> '{$SELF->uname}' AND live = 'live' AND user_no > 0 ORDER BY RAND()";
-    $say = $MESSAGE->$message_header . FetchResult($query) . $MESSAGE->$message_footer;
+    $target_list = array();
+    foreach($USERS->rows as $user){ //自分以外の生存者の HN を取得
+      if($user->IsLive() && ! $user->IsSelf()) $target_list[] = $user->handle_name;
+    }
+    $say = $MESSAGE->$message_header . GetRandom($target_list) . $MESSAGE->$message_footer;
   }
   //狼少年は一定確率で発言内容が反転される
   elseif($SELF->IsRole('liar') && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
     $say = strtr($say, $GAME_CONF->liar_replace_list);
   }
 
+  if($SELF->IsRole('grassy')){ //草原迷彩の処理
+    $convert_say = '';
+    $count = mb_strlen($say);
+    for($i = 0; $i < $count; $i++){
+      $this_str = mb_substr($say, $i, 1);
+      $convert_say .= $this_str;
+      if($this_str != "\n") $convert_say .= 'w ';
+    }
+    $say = $convert_say;
+  }
+
   if($SELF->IsRole('invisible')){ //光学迷彩の処理
-    $invisible_say = '';
+    $convert_say = '';
     $count = mb_strlen($say);
     $rate = $GAME_CONF->invisible_rate;
     for($i = 0; $i < $count; $i++){
       $this_str = mb_substr($say, $i, 1);
       if($this_str == "\n" || $this_str == "\t" || $this_str == ' ' || $this_str == '　'){
-	$invisible_say .= $this_str;
+	$convert_say .= $this_str;
 	continue;
       }
       if(mt_rand(1, 100) <= $rate)
-	$invisible_say .= (strlen($this_str) == 2 ? '　' : '&nbsp;');
+	$convert_say .= (strlen($this_str) == 2 ? '　' : '&nbsp;');
       else
-	$invisible_say .= $this_str;
+	$convert_say .= $this_str;
       if($rate++ > 100) break;
     }
-    $say = $invisible_say;
+    $say = $convert_say;
   }
 
-  if($SELF->IsRole('rainbow')){ //虹色迷彩の処理
-    $say = strtr($say, $GAME_CONF->rainbow_replace_list);
+  //虹色迷彩の処理
+  if($SELF->IsRole('rainbow')) $say = strtr($say, $GAME_CONF->rainbow_replace_list);
+
+  //七曜迷彩の処理
+  if($SELF->IsRole('weekly')) $say = strtr($say, $GAME_CONF->weekly_replace_list);
+
+  if($SELF->IsRole('silent') && mb_strlen($say) > $GAME_CONF->silent_length){ //無口の処理
+    $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
   }
 
-  if($SELF->IsRole('weekly')){ //七曜迷彩の処理
-    $say = strtr($say, $GAME_CONF->weekly_replace_list);
-  }
+  //草刈りの処理
+  if($SELF->IsRole('mower')) $say = strtr($say, array('w' => '', 'ｗ' => '', 'W' => '', 'Ｗ' => ''));
 
-  if($SELF->IsRole('silent')){ //無口の処理
-    if(mb_strlen($say) > $GAME_CONF->silent_length){
-      $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
+  if($SELF->IsRole('side_reverse')){ //鏡迷彩の処理
+    $convert_say = '';
+    $count = mb_strlen($say);
+    $this_line = array();
+    for($i = 0; $i < $count; $i++){
+      $this_str = mb_substr($say, $i, 1);
+      if($this_str == "\n"){
+	if(count($this_line) > 0){
+	  $this_line = array_reverse($this_line);
+	  foreach($this_line as $this_line_str) $convert_say .= $this_line_str;
+	}
+	$convert_say .= $this_str;
+	$this_line = array();
+      }
+      else{
+	$this_line[] = $this_str;
+      }
     }
+    if(count($this_line) > 0){
+      $this_line = array_reverse($this_line);
+      foreach($this_line as $this_line_str) $convert_say .= $this_line_str;
+    }
+    $say = $convert_say;
+  }
+
+  if($SELF->IsRole('line_reverse')){ //天地迷彩の処理
+    $convert_say = '';
+    while(($line_break = mb_strrpos($say, "\n")) !== false){
+      $convert_say .= mb_substr($say, $line_break + 1);
+      $say = mb_substr($say, 0, $line_break);
+      if($say != '') $convert_say .= "\n";
+    }
+    if($convert_say != '') $say = $convert_say . $say;
   }
 }
 
@@ -258,7 +297,7 @@ function Say($say){
     Write($say, $ROOM->day_night, 0, true);
   }
   //身代わり君 (仮想 GM 対応) は遺言を専用のシステムメッセージに切り替え
-  elseif($SELF->IsDummyBoy() && ($RQ_ARGS->IsLastWords() || ($SELF->IsLive() && $left_time == 0))){
+  elseif($SELF->IsDummyBoy() && $RQ_ARGS->IsLastWords()){
     Write($say, "{$ROOM->day_night} dummy_boy", 0); //発言時間を更新しない
   }
   elseif($SELF->IsDead()){ //死亡者の霊話
@@ -291,16 +330,18 @@ function Write($say, $location, $spend_time, $update = false){
   $voice = $RQ_ARGS->font_type;
   if($SELF->IsLive() && $ROOM->IsPlaying()){
     $voice_list = array('strong', 'normal', 'weak');
-    if(    $SELF->IsRole('strong_voice')) $voice = 'strong';
-    elseif($SELF->IsRole('normal_voice')) $voice = 'normal';
-    elseif($SELF->IsRole('weak_voice'))   $voice = 'weak';
+    if(    $SELF->IsRole('strong_voice'))  $voice = 'strong';
+    elseif($SELF->IsRole('normal_voice'))  $voice = 'normal';
+    elseif($SELF->IsRole('weak_voice'))    $voice = 'weak';
+    elseif($SELF->IsRole('inside_voice'))  $voice = ($ROOM->IsDay() ? 'weak' : 'strong');
+    elseif($SELF->IsRole('outside_voice')) $voice = ($ROOM->IsDay() ? 'strong' : 'weak');
     elseif($SELF->IsRole('upper_voice')){
-      $voice_key = array_search($RQ_ARGS->font_type, $voice_list);
+      $voice_key = array_search($voice, $voice_list);
       if($voice_key == 0) $say = $MESSAGE->howling;
       else $voice = $voice_list[$voice_key - 1];
     }
     elseif($SELF->IsRole('downer_voice')){
-      $voice_key = array_search($RQ_ARGS->font_type, $voice_list);
+      $voice_key = array_search($voice, $voice_list);
       if($voice_key >= count($voice_list) - 1) $say = $MESSAGE->common_talk;
       else $voice = $voice_list[$voice_key + 1];
     }
@@ -386,18 +427,19 @@ function CheckSilence(){
       elseif($ROOM->IsNight()){
 	//対象役職のデータを作成
 	$action_list = array('MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO', 'VOODOO_MAD_DO',
-			     'DREAM_EAT', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
+			     'VOODOO_FOX_DO', 'CHILD_FOX_DO');
 	$actor_list  = array('%mage', 'voodoo_killer', 'jammer_mad', 'voodoo_mad',
-			     'dream_eater_mad', 'voodoo_fox', 'child_fox');
+			     'voodoo_fox', 'child_fox');
 
 	if($ROOM->date == 1){
 	  array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
-	  array_push($actor_list, 'mind_scanner', '%cupid', 'mania');
+	  array_push($actor_list, 'mind_scanner', '%cupid', '%mania');
 	}
 	else{
-	  array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'ASSASSIN_DO',
-		     'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
-	  array_push($actor_list, '%guard', 'anti_voodoo', 'reporter', 'assassin', 'trap_mad');
+	  array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'DREAM_EAT',
+		     'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+	  array_push($actor_list, '%guard', 'anti_voodoo', 'reporter', 'dream_eater_mad',
+		     'assassin', 'trap_mad');
 	  if(! $ROOM->IsOpenCast()){
 	    array_push($action_list, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
 	    array_push($actor_list, 'poison_cat');
@@ -444,6 +486,18 @@ function CheckSilence(){
     }
   }
   mysql_query('UNLOCK TABLES'); //テーブルロック解除
+}
+
+//ゲームシーン更新関数
+function UpdateLastLoadScene(){
+  global $ROOM, $SELF;
+
+  //シーンが切り替わっていなければスキップ
+  if($ROOM->day_night == $SELF->last_load_day_night) return;
+
+  mysql_query("UPDATE user_entry SET last_load_day_night = '{$ROOM->day_night}'
+		WHERE room_no = {$ROOM->id} AND uname = '{$SELF->uname}' AND user_no > 0");
+  mysql_query('COMMIT');
 }
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)

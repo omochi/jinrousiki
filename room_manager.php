@@ -1,16 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-   CONFIG,
-   IMAGE_CLASSES,
-   SYSTEM_CLASSES,
-   ROOM_IMG,
-   ROOM_CONF,
-   GAME_CONF,
-   TIME_CONF,
-   ICON_CONF,
-   MESSAGE
-   );
+loadModule(ROOM_IMG, ROOM_CONF, GAME_CONF, TIME_CONF, ICON_CONF, MESSAGE);
 
 if(! $dbHandle = ConnectDatabase(true, false)) return false; //DB 接続
 
@@ -18,10 +8,6 @@ MaintenanceRoom();
 EncodePostData();
 
 if($_POST['command'] == 'CREATE_ROOM'){
-  $white_list = array('127.', '192.168.');
-  foreach($white_list as $host){
-    $trusted |= (strpos($_SERVER['REMOTE_ADDR'] ,$host) === 0);
-  }
   //リファラチェック
   $white_list = array('127.', '192.168.');
   foreach($white_list as $host){ //ホワイトリストチェック
@@ -72,7 +58,7 @@ function MaintenanceRoomAction($list, $query, $base_time){
   $time = TZTime();
   while(($array = mysql_fetch_assoc($list)) !== false){
     extract($array);
-    $diff_time    = $time - $last_updated;
+    $diff_time = $time - $last_updated;
     if($diff_time > $base_time) mysql_query($query . $room_no);
   }
 }
@@ -84,7 +70,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
   //村立てを行ったユーザのIPを取得
   $ip_address = $_SERVER['REMOTE_ADDR'];
 
-  // 同じユーザが立てた村が終了していなければ新しい村を作らない
+  //同じユーザが立てた村が終了していなければ新しい村を作らない
   if(! $DEBUG_MODE){
     $query = "SELECT COUNT(room_no) FROM room WHERE establisher_ip = '$ip_address' " .
       "AND status <> 'finished'";

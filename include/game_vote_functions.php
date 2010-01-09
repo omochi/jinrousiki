@@ -70,7 +70,7 @@ function GetRoleList($user_count, $option_role){
     }
 
     //妖狐
-    $add_count = round($user_count / $GAME_CONF->min_fox_rate) - $fix_role_group_list['fox'];
+    $add_count = floor($user_count / $GAME_CONF->min_fox_rate) - $fix_role_group_list['fox'];
     for(; $add_count > 0; $add_count--){
       $rand = mt_rand(1, 100);
       if($rand < 1)       $random_role_list['cursed_fox']++;
@@ -139,13 +139,15 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 875) $random_role_list['cursed_fox']++;
       elseif($rand < 880) $random_role_list['silver_fox']++;
       elseif($rand < 890) $random_role_list['child_fox']++;
-      elseif($rand < 920) $random_role_list['cupid']++;
-      elseif($rand < 930) $random_role_list['self_cupid']++;
+      elseif($rand < 915) $random_role_list['cupid']++;
+      elseif($rand < 925) $random_role_list['self_cupid']++;
+      elseif($rand < 930) $random_role_list['mind_cupid']++;
       elseif($rand < 950) $random_role_list['chiroptera']++;
       elseif($rand < 955) $random_role_list['poison_chiroptera']++;
       elseif($rand < 960) $random_role_list['cursed_chiroptera']++;
       elseif($rand < 980) $random_role_list['mania']++;
-      elseif($rand < 983) $random_role_list['quiz']++;
+      elseif($rand < 990) $random_role_list['unknown_mania']++;
+      elseif($rand < 993) $random_role_list['quiz']++;
       else                $random_role_list['human']++;
     }
 
@@ -745,7 +747,7 @@ function MakeRoleNameList($role_count_list, $chaos = NULL){
   switch($chaos){
   case 'camp':
     $header = '出現陣営：';
-    $type = '陣営';
+    $main_type = '陣営';
     $main_role_list = array();
     foreach($role_count_list as $key => $value){
       if(! in_array($key, $main_role_key_list)) continue;
@@ -768,7 +770,7 @@ function MakeRoleNameList($role_count_list, $chaos = NULL){
 
   case 'role':
     $header = '出現役職種：';
-    $type = '系';
+    $main_type = '系';
     $main_role_list = array();
     foreach($role_count_list as $key => $value){
       if(! in_array($key, $main_role_key_list)) continue;
@@ -782,17 +784,37 @@ function MakeRoleNameList($role_count_list, $chaos = NULL){
     break;
   }
 
+  $sub_role_key_list = array_keys($GAME_CONF->sub_role_list);
+  switch($chaos){
+  case 'camp':
+  case 'role':
+    $sub_type = '系';
+    $sub_role_list = array();
+    foreach($role_count_list as $key => $value){
+      if(! in_array($key, $sub_role_key_list)) continue;
+      foreach($GAME_CONF->sub_role_group_list as $class => $list){
+	if(! in_array($key, $list)) continue;
+	$sub_role_list[$list[0]] += $value;
+      }
+    }
+    break;
+
+  default:
+    $sub_role_list = $role_count_list;
+    break;
+  }
+
   $sentence = '';
   foreach($GAME_CONF->main_role_list as $key => $value){
     $count = (int)$main_role_list[$key];
     if($count < 1) continue;
     if($sentence != '') $sentence .= '　';
-    $sentence .= $value . $type . $count;
+    $sentence .= $value . $main_type . $count;
   }
 
   foreach($GAME_CONF->sub_role_list as $key => $value){
-    $count = (int)$role_count_list[$key];
-    if($count > 0) $sentence .= '　(' . $value . $count . ')';
+    $count = (int)$sub_role_list[$key];
+    if($count > 0) $sentence .= '　(' . $value . $sub_type . $count . ')';
   }
   return $header . $sentence;
 }
@@ -911,10 +933,10 @@ function AggregateVoteDay(){
     InsertSystemMessage($sentence, 'VOTE_KILL');
   }
 
-  //最大得票数のユーザ名(処刑候補者) のリストを取得
+  //最大得票数のユーザ名 (処刑候補者) のリストを取得
   $max_voted_uname_list = array_keys($vote_count_list, $max_voted_number);
-  do{
-    if(count($max_voted_uname_list) == 1){ //一人だけなら処刑者決定
+  do{ //処刑者決定ルーチン
+    if(count($max_voted_uname_list) == 1){ //一人だけなら決定
       $vote_kill_uname = array_shift($max_voted_uname_list);
       break;
     }
@@ -955,23 +977,41 @@ function AggregateVoteDay(){
     unset($live_uname_list[$vote_target->user_no]); //処刑者を生存者リストから除く
     $voter_list = array_keys($vote_target_list, $vote_target->uname); //投票した人を取得
 
+    $pharmacist_success = false; //解毒成功フラグを初期化
+    foreach($user_list as $this_uname){ //薬師の処理
+      $user = $USERS->ByUname($this_uname);
+      if(! $user->IsRole('pharmacist')) continue;
+
+      $this_target = $USERS->ByUname($vote_target_list[$user->uname]); //投票先の情報を取得
+      if(! $this_target->IsRoleGroup('poison') || $this_target->IsRole('dummy_poison')){
+	$this_result = 'nothing'; //非毒能力者か夢毒者
+      }
+      elseif($this_target->IsRole('poison_guard')) $this_result = 'limited'; //騎士は対象外
+      else{
+	if($this_target->IsRole('strong_poison')) $this_result = 'strong'; //強毒者
+	elseif($this_target->IsRole('incubate_poison')){ //潜毒者は 5 日目以降に強毒を持つ
+	  $this_result = ($ROOM->date >= 5 ? 'strong' : 'nothing');
+	}
+	else $this_result = 'poison';
+
+	//処刑者なら解毒する
+	if($this_target == $vote_target && ($this_result == 'strong' || $this_result == 'poison')){
+	  $this_result = 'success';
+	  $pharmacist_success = true;
+	}
+      }
+
+      //鑑定結果を登録
+      $sentence = $user->handle_name . "\t" . $this_target->handle_name . "\t" . $this_result;
+      InsertSystemMessage($sentence, 'PHARMACIST_RESULT');
+    }
+
     //処刑された人が毒を持っていた場合
     do{
+      if($pharmacist_success) break; //解毒されていればスキップ
       if(! $vote_target->IsRoleGroup('poison')) break; //毒を持っていなければ発動しない
       if($vote_target->IsRole('dummy_poison', 'poison_guard')) break; //夢毒者・騎士は対象外
       if($vote_target->IsRole('incubate_poison') && $ROOM->date < 5) break; //潜毒者は 5 日目以降
-
-      $pharmacist_success = false; //解毒成功フラグを初期化
-      foreach($voter_list as $this_uname){ //薬師の判定
-	$user = $USERS->ByUname($this_uname);
-	if(! $user->IsRole('pharmacist')) continue;
-
-	//解毒成功
-	$sentence = $user->handle_name . "\t" . $vote_target->handle_name;
-	InsertSystemMessage($sentence, 'PHARMACIST_SUCCESS');
-	$pharmacist_success = true;
-      }
-      if($pharmacist_success) break;
 
       //毒の対象オプションをチェックして候補者リストを作成
       $poison_target_list = ($GAME_CONF->poison_only_voter ? $voter_list : $live_uname_list);
@@ -979,29 +1019,31 @@ function AggregateVoteDay(){
 
       if($vote_target->IsRole('strong_poison', 'incubate_poison')){ //強毒者・潜毒者
 	foreach($poison_target_list as $this_uname){
-	  $user = $USERS->ByUname($this_uname);
-	  if($user->IsRoleGroup('wolf', 'fox')) $limited_poison_target_list[] = $this_uname;
+	  if($USERS->ByUname($this_uname)->IsRoleGroup('wolf', 'fox')){
+	    $limited_poison_target_list[] = $this_uname;
+	  }
 	}
 	$poison_target_list = $limited_poison_target_list;
       }
       elseif($vote_target->IsRole('poison_wolf')){ //毒狼
 	foreach($poison_target_list as $this_uname){
-	  $user = $USERS->ByUname($this_uname);
-	  if(! $user->IsWolf()) $limited_poison_target_list[] = $this_uname;
+	  if(! $USERS->ByUname($this_uname)->IsWolf()){
+	    $limited_poison_target_list[] = $this_uname;
+	  }
 	}
 	$poison_target_list = $limited_poison_target_list;
       }
       elseif($vote_target->IsRole('poison_fox')){ //管狐
 	foreach($poison_target_list as $this_uname){
-	  $user = $USERS->ByUname($this_uname);
-	  if(! $user->IsFox()) $limited_poison_target_list[] = $this_uname;
+	  if(! $USERS->ByUname($this_uname)->IsFox()){
+	    $limited_poison_target_list[] = $this_uname;
+	  }
 	}
 	$poison_target_list = $limited_poison_target_list;
       }
       elseif($vote_target->IsRole('poison_chiroptera')){ //毒蝙蝠
 	foreach($poison_target_list as $this_uname){
-	  $user = $USERS->ByUname($this_uname);
-	  if($user->IsRoleGroup('wolf', 'fox', 'chiroptera')){
+	  if($USERS->ByUname($this_uname)->IsRoleGroup('wolf', 'fox', 'chiroptera')){
 	    $limited_poison_target_list[] = $this_uname;
 	  }
 	}
@@ -1201,7 +1243,7 @@ function AggregateVoteNight(){
       $this_dummy_boy_role = $USERS->GetRole('dummy_boy');
       //カウント対象外役職リスト
       $exclude_role_list   = array('mage', 'voodoo_killer', 'jammer_mad', 'voodoo_mad',
-				   'dream_eater_mad', 'mind_scanner', 'cupid', 'mania');
+				   'mind_scanner', 'cupid', 'mania');
 
       foreach($exclude_role_list as $this_role){
 	if(strpos($this_dummy_boy_role, $this_role) !== false){
@@ -1224,9 +1266,6 @@ function AggregateVoteNight(){
     $vote_data->voodoo_mad = CheckVoteNight('VOODOO_MAD_DO', 'voodoo_mad', $dummy_boy_role);
     if($vote_data->voodoo_mad === false) return false;
 
-    $vote_data->dream_eater_mad = CheckVoteNight('DREAM_EAT', 'dream_eater_mad', $dummy_boy_role);
-    if($vote_data->dream_eater_mad === false) return false;
-
     $vote_data->voodoo_fox = CheckVoteNight('VOODOO_FOX_DO', 'voodoo_fox');
     if($vote_data->voodoo_fox === false) return false;
 
@@ -1234,13 +1273,18 @@ function AggregateVoteNight(){
     if($vote_data->child_fox === false) return false;
 
     if($ROOM->date == 1){ //初日のみ投票できる役職をチェック
-      $vote_data->mania = CheckVoteNight('MANIA_DO', 'mania', $dummy_boy_role);
+      $vote_data->mania = CheckVoteNight('MANIA_DO', '%mania', $dummy_boy_role);
       if($vote_data->mania === false) return false;
 
-      if(CheckVoteNight('MIND_SCANNER_DO', 'mind_scanner', $dummy_boy_role) === false) return false;
+      $vote_data->mind_scanner = CheckVoteNight('MIND_SCANNER_DO', 'mind_scanner', $dummy_boy_role);
+      if($vote_data->mind_scanner === false) return false;
+
       if(CheckVoteNight('CUPID_DO', '%cupid', $dummy_boy_role) === false) return false;
     }
     else{ //二日目以降投票できる役職をチェック
+      $vote_data->dream_eater_mad = CheckVoteNight('DREAM_EAT', 'dream_eater_mad', $dummy_boy_role);
+      if($vote_data->dream_eater_mad === false) return false;
+
       $vote_data->trap_mad = CheckVoteNight('TRAP_MAD_DO', 'trap_mad', '', 'TRAP_MAD_NOT_DO');
       if($vote_data->trap_mad === false) return false;
 
@@ -1424,6 +1468,29 @@ function AggregateVoteNight(){
 	$anti_voodoo_target_list[$this_user->uname] = $array['target_uname'];
       }
     }
+
+    foreach($vote_data->dream_eater_mad as $array){ //獏の処理
+      $this_user = $USERS->ByUname($array['uname']);
+      if($this_user->dead_flag) continue; //直前に死んでいたら無効
+
+      $this_target = $USERS->ByUname($array['target_uname']); //対象者の情報を取得
+      if($this_target->IsRole('dummy_guard')){ //夢守人が対象なら返り討ちに合う
+	$this_user->Kill('HUNTED');
+	$sentence = $this_target->handle_name . "\t" . $this_user->handle_name;
+	InsertSystemMessage($sentence, 'GUARD_HUNTED');
+      }
+      elseif(in_array($this_target->uname, $dummy_guard_target_list)){ //夢守人の護衛判定
+	$this_user->Kill('HUNTED');
+	$hunted_dummy_guard_list = array_keys($dummy_guard_target_list, $this_target->uname);
+	foreach($hunted_dummy_guard_list as $this_dummy_guard_uname){
+	  $sentence = $USERS->GetHandleName($this_dummy_guard_uname);
+	  InsertSystemMessage($sentence . "\t" . $this_user->handle_name, 'GUARD_HUNTED');
+	}
+      }
+      elseif($this_target->IsRoleGroup('dummy')){
+	$this_target->Kill('DREAM_KILLED');
+      }
+    }
   }
 
   $voodoo_killer_target_list = array(); //陰陽師の対象リスト
@@ -1497,29 +1564,6 @@ function AggregateVoteNight(){
       else{
 	$USERS->ByUname($this_uname)->Kill('CURSED');
       }
-    }
-  }
-
-  foreach($vote_data->dream_eater_mad as $array){ //獏の処理
-    $this_user = $USERS->ByUname($array['uname']);
-    if($this_user->dead_flag) continue; //直前に死んでいたら無効
-
-    $this_target = $USERS->ByUname($array['target_uname']); //対象者の情報を取得
-    if($this_target->IsRole('dummy_guard')){ //夢守人が対象なら返り討ちに合う
-      $this_user->Kill('HUNTED');
-      $sentence = $this_target->handle_name . "\t" . $this_user->handle_name;
-      InsertSystemMessage($sentence, 'GUARD_HUNTED');
-    }
-    elseif(in_array($this_target->uname, $dummy_guard_target_list)){ //夢守人の護衛判定
-      $this_user->Kill('HUNTED');
-      $hunted_dummy_guard_list = array_keys($dummy_guard_target_list, $this_target->uname);
-      foreach($hunted_dummy_guard_list as $this_dummy_guard_uname){
-	$sentence = $USERS->GetHandleName($this_dummy_guard_uname);
-	InsertSystemMessage($sentence . "\t" . $this_user->handle_name, 'GUARD_HUNTED');
-      }
-    }
-    elseif($this_target->IsRoleGroup('dummy')){
-      $this_target->Kill('DREAM_KILLED');
     }
   }
 
@@ -1643,19 +1687,35 @@ function AggregateVoteNight(){
   }
 
   if($ROOM->date == 1){
-    foreach($vote_data->mania as $array){ //神話マニアの処理
+    foreach($vote_data->mind_scanner as $array){ //さとりの処理
+      $this_user = $USERS->ByUname($array['uname']);
+      if($this_user->dead_flag) continue; //直前に死んでいたら無効
+
+      //対象者にサトラレを追加
+      $add_role = 'mind_read[' . strval($this_user->user_no) . ']';
+      $USERS->ByUname($array['target_uname'])->AddRole($add_role);
+    }
+
+    foreach($vote_data->mania as $array){ //神話マニア系の処理
       $this_user = $USERS->ByUname($array['uname']);
       if($this_user->dead_flag) continue; //直前に死んでいたら無効
 
       $this_target = $USERS->ByUname($array['target_uname']); //対象者の情報を取得
 
-      //コピー処理 (神話マニアを指定した場合は村人にする)
-      $this_result = ($this_target->IsRole('mania', 'copied') ? 'human' : $this_target->main_role);
-      $this_new_role = str_replace('mania', $this_result, $this_user->role) . ' copied';
-      $this_user->ChangeRole($this_new_role);
+      if($this_user->IsRole('unknown_mania')){ //鵺
+	$this_user->ReplaceRole('unknown_mania', 'unknown_mania[' . $this_target->user_no . ']');
+	$this_user->AddRole('mind_friend[' . $this_user->user_no . ']');
+	$this_target->AddRole('mind_friend[' . $this_user->user_no . ']');
+      }
+      else{ //神話マニア
+	//コピー処理 (神話マニア系を指定した場合は村人にする)
+	$this_result = ($this_target->IsRoleGroup('mania') ? 'human' : $this_target->main_role);
+	$this_user->ReplaceRole('mania', $this_result);
+	$this_user->AddRole('copied');
 
-      $sentence = $this_user->handle_name . "\t" . $this_target->handle_name . "\t" . $this_result;
-      InsertSystemMessage($sentence, 'MANIA_RESULT');
+	$sentence = $this_user->handle_name . "\t" . $this_target->handle_name . "\t" . $this_result;
+	InsertSystemMessage($sentence, 'MANIA_RESULT');
+      }
     }
   }
   else{
@@ -1763,6 +1823,7 @@ function DistinguishRoleGroup($role){
 			   'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
 			   'common' => 'common',
 			   'poison' => 'poison',
+			   'pharmacist' => 'pharmacist',
 			   'assassin' => 'assassin',
 			   'mind_scanner' => 'mind_scanner',
 			   'jealousy' => 'jealousy',

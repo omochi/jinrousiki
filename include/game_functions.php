@@ -169,7 +169,9 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName($this_user->main_role, 'mind');
       elseif($this_user->IsRoleGroup('jealousy'))
 	$role_str = MakeRoleName($this_user->main_role, 'jealousy');
-      elseif($this_user->IsRole('assassin', 'mania', 'quiz'))
+      elseif($this_user->IsRoleGroup('mania'))
+	$role_str = MakeRoleName($this_user->main_role, 'mania');
+      elseif($this_user->IsRole('assassin', 'quiz'))
 	$role_str = MakeRoleName($this_user->main_role);
       elseif($this_user->IsRoleGroup('wolf'))
 	$role_str = MakeRoleName($this_user->main_role, 'wolf');
@@ -184,91 +186,19 @@ function OutputPlayerList(){
       elseif($this_user->IsRoleGroup('poison') || $this_user->IsRole('pharmacist'))
 	$role_str = MakeRoleName($this_user->main_role, 'poison');
 
-      //ここから兼任役職
-      if($this_user->IsLovers()) $role_str .= MakeRoleName('lovers', '', true);
-      if($this_user->IsRole('mind_read')) $role_str .= MakeRoleName('mind_read', 'mind', true);
-      if($this_user->IsRole('mind_open')) $role_str .= MakeRoleName('mind_open', 'mind', true);
-      if($this_user->IsRole('mind_receiver')) $role_str .= MakeRoleName('mind_receiver', 'mind', true);
-      if($this_user->IsRole('copied')) $role_str .= MakeRoleName('copied', 'mania', true);
+      do{ //兼任役職の表示
+	if(($this_role_count = count($this_user->role_list)) < 2) break; //無ければスキップ
 
-      if(strpos($this_role, 'authority') !== false)
-	$role_str .= MakeRoleName('authority', '', true);
-      elseif(strpos($this_role, 'random_voter') !== false)
-	$role_str .= MakeRoleName('random_voter', 'authority', true);
-      elseif(strpos($this_role, 'rebel') !== false)
-	$role_str .= MakeRoleName('rebel', 'authority', true);
-      elseif(strpos($this_role, 'watcher') !== false)
-	$role_str .= MakeRoleName('watcher', 'authority', true);
-      elseif(strpos($this_role, 'decide') !== false)
-	$role_str .= MakeRoleName('decide', '', true);
-      elseif(strpos($this_role, 'plague') !== false)
-	$role_str .= MakeRoleName('plague', 'decide', true);
-      elseif(strpos($this_role, 'good_luck') !== false)
-	$role_str .= MakeRoleName('good_luck', 'decide', true);
-      elseif(strpos($this_role, 'bad_luck') !== false)
-	$role_str .= MakeRoleName('bad_luck', 'decide', true);
-      elseif(strpos($this_role, 'upper_luck') !== false)
-	$role_str .= MakeRoleName('upper_luck', 'luck', true);
-      elseif(strpos($this_role, 'downer_luck') !== false)
-	$role_str .= MakeRoleName('downer_luck', 'luck', true);
-      elseif(strpos($this_role, 'random_luck') !== false)
-	$role_str .= MakeRoleName('random_luck', 'luck', true);
-      elseif(strpos($this_role, 'star') !== false)
-	$role_str .= MakeRoleName('star', 'luck', true);
-      elseif(strpos($this_role, 'disfavor') !== false)
-	$role_str .= MakeRoleName('disfavor', 'luck', true);
-
-      if(strpos($this_role, 'strong_voice') !== false)
-	$role_str .= MakeRoleName('strong_voice', 'voice', true);
-      elseif(strpos($this_role, 'normal_voice') !== false)
-	$role_str .= MakeRoleName('normal_voice', 'voice', true);
-      elseif(strpos($this_role, 'weak_voice') !== false)
-	$role_str .= MakeRoleName('weak_voice', 'voice', true);
-      elseif(strpos($this_role, 'upper_voice') !== false)
-	$role_str .= MakeRoleName('upper_voice', 'voice', true);
-      elseif(strpos($this_role, 'downer_voice') !== false)
-	$role_str .= MakeRoleName('downer_voice', 'voice', true);
-      elseif(strpos($this_role, 'random_voice') !== false)
-	$role_str .= MakeRoleName('random_voice', 'voice', true);
-
-      if(strpos($this_role, 'no_last_words') !== false)
-	$role_str .= MakeRoleName('no_last_words', 'seal', true);
-      if(strpos($this_role, 'blinder') !== false)
-	$role_str .= MakeRoleName('blinder', 'seal', true);
-      if(strpos($this_role, 'earplug') !== false)
-	$role_str .= MakeRoleName('earplug', 'seal', true);
-      if(strpos($this_role, 'speaker') !== false)
-	$role_str .= MakeRoleName('speaker', 'seal', true);
-      if(strpos($this_role, 'silent') !== false)
-	$role_str .= MakeRoleName('silent', 'seal', true);
-
-      if(strpos($this_role, 'liar') !== false)
-	$role_str .= MakeRoleName('liar', 'convert', true);
-      if(strpos($this_role, 'invisible') !== false)
-	$role_str .= MakeRoleName('invisible', 'convert', true);
-      if(strpos($this_role, 'rainbow') !== false)
-	$role_str .= MakeRoleName('rainbow', 'convert', true);
-      if(strpos($this_role, 'weekly') !== false)
-	$role_str .= MakeRoleName('weekly', 'convert', true);
-      if(strpos($this_role, 'gentleman') !== false)
-	$role_str .= MakeRoleName('gentleman', 'convert', true);
-      elseif(strpos($this_role, 'lady') !== false)
-	$role_str .= MakeRoleName('lady', 'convert', true);
-
-      if(strpos($this_role, 'chicken') !== false)
-	$role_str .= MakeRoleName('chicken', 'sudden-death', true);
-      if(strpos($this_role, 'rabbit') !== false)
-	$role_str .= MakeRoleName('rabbit', 'sudden-death', true);
-      elseif(strpos($this_role, 'perverseness') !== false)
-	$role_str .= MakeRoleName('perverseness', 'sudden-death', true);
-      elseif(strpos($this_role, 'flattery') !== false)
-	$role_str .= MakeRoleName('flattery', 'sudden-death', true);
-      elseif(strpos($this_role, 'impatience') !== false)
-	$role_str .= MakeRoleName('impatience', 'sudden-death', true);
-      elseif(strpos($this_role, 'celibacy') !== false)
-	$role_str .= MakeRoleName('celibacy', 'sudden-death', true);
-      elseif(strpos($this_role, 'panelist') !== false)
-	$role_str .= MakeRoleName('panelist', 'sudden-death', true);
+	$display_role_count = 1;
+	foreach($GAME_CONF->sub_role_group_list as $class => $role_list){
+	  foreach($role_list as $this_sub_role){
+	    if($this_user->IsRole($this_sub_role)){
+	      $role_str .= MakeRoleName($this_sub_role, $class, true);
+	      if(++$display_role_count >= $this_role_count) break 3;
+	    }
+	  }
+	}
+      }while(false);
 
       if($SELF->IsDummyBoy() && $ROOM->IsBeforeGame()){
 	$query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
@@ -326,9 +256,9 @@ function MakeRoleName($role, $css = '', $sub_role = false){
 
 //勝敗の出力
 function OutputVictory(){
-  global $MESSAGE, $ROOM, $SELF;
+  global $MESSAGE, $ROOM, $USERS, $SELF;
 
-  //勝利陣営を取得
+  //-- 村の勝敗結果 --//
   $victory = FetchResult("SELECT victory_role FROM room WHERE room_no = {$ROOM->id}");
   $class   = $victory;
   $winner  = 'victory_' . $victory;
@@ -359,37 +289,46 @@ function OutputVictory(){
 
 EOF;
 
-  //個々の勝敗を出力
+  //-- 個々の勝敗結果 --//
   //勝敗未決定、観戦モード、ログ閲覧モードなら非表示
   if($victory == NULL || $ROOM->view_mode || $ROOM->log_mode) return;
 
   $result = 'win';
-  $camp   = $SELF->DistinguishCamp(); //所属陣営を取得
-  $lovers = $SELF->IsLovers();
-  if($victory == 'human' && $camp == 'human' && ! $lovers)
-    $class = 'human';
-  elseif($victory == 'wolf' && $camp == 'wolf' && ! $lovers)
-    $class = 'wolf';
-  elseif(strpos($victory, 'fox') !== false && $camp == 'fox' && ! $lovers)
-    $class = 'fox';
-  elseif($victory == 'lovers' && ($camp == 'lovers' || $lovers))
-    $class = 'lovers';
-  elseif($victory == 'quiz' && $camp == 'quiz')
-    $class = 'quiz';
-  elseif($victory == 'quiz_dead'){
-    $class  = 'none';
-    $result = ($camp == 'quiz' ? 'lose' : 'draw');
+  $target_user = $SELF;
+  while($target_user->IsRole('unknown_mania')){
+    $target_user = $USERS->ByID($target_user->partner_list['unknown_mania'][0]);
+    if($target_user->IsSelf()) break;
   }
-  elseif($victory == 'draw' || $victory == 'vanish'){
+  $camp = $target_user->DistinguishCamp(); //所属陣営を取得
+
+  if($victory == 'draw' || $victory == 'vanish'){ //引き分け系
     $class  = 'none';
     $result = 'draw';
   }
-  elseif($camp == 'chiroptera' && $SELF->IsLive()){
-    $class  = 'chiroptera';
+  elseif($victory == 'quiz_dead'){ //出題者死亡
+    $class  = 'none';
+    $result = ($camp == 'quiz' ? 'lose' : 'draw');
+  }
+  elseif($camp == 'chiroptera' && $SELF->IsLive()){ //蝙蝠陣営は生きていれば勝利
+    $class = 'chiroptera';
   }
   else{
-    $class  = 'none';
-    $result = 'lose';
+    if($SELF->IsLovers()) $camp = 'lovers'; //恋人なら所属陣営を上書き
+
+    if($victory == 'human' && $camp == 'human')
+      $class = 'human';
+    elseif($victory == 'wolf' && $camp == 'wolf')
+      $class = 'wolf';
+    elseif(strpos($victory, 'fox') !== false && $camp == 'fox')
+      $class = 'fox';
+    elseif($victory == 'lovers' && $camp == 'lovers')
+      $class = 'lovers';
+    elseif($victory == 'quiz' && $camp == 'quiz')
+      $class = 'quiz';
+    else{
+      $class  = 'none';
+      $result = 'lose';
+    }
   }
 
   echo <<<EOF
@@ -446,8 +385,8 @@ function OutputTalk($talk, &$builder){
 
   $said_user = $USERS->ByUname($talk->uname);
   /*
-    $talk_uname は必ず$talkから取得すること。
-    $USERSにはシステムユーザー'system'が存在しないため、$said_userは常にnullになっている。
+    $talk_uname は必ず $talk から取得すること。
+    $USERS にはシステムユーザー 'system' が存在しないため、$said_user は常に NULL になっている。
   */
   $talk_uname       = $talk->uname;
   $talk_handle_name = $said_user->handle_name;
@@ -456,13 +395,13 @@ function OutputTalk($talk, &$builder){
   $sentence         = $talk->sentence;
   $font_type        = $talk->font_type;
   $location         = $talk->location;
+  if($said_user === NULL) $said_user = new User();
 
-  if($RQ_ARGS->add_role && $said_user !== NULL){ //役職表示モード対応
+  if($RQ_ARGS->add_role && $said_user->main_role != ''){ //役職表示モード対応
     $talk_handle_name .= $said_user->MakeShortRoleName();
   }
 
   LineToBR($sentence); //改行コードを <br> に変換
-  $location_system     = (strpos($location, 'system') !== false);
 
   //投票情報をチェック
   $vote_action_list = array(
@@ -477,24 +416,22 @@ function OutputTalk($talk, &$builder){
     'mind_scanner' => 'MIND_SCANNER_DO',
     'voodoo_fox' => 'VOODOO_FOX_DO', 'child_fox' => 'CHILD_FOX_DO',
     'cupid' => 'CUPID_DO',
-    'mania' => 'MANIA_DO'
-			    );
+    'mania' => 'MANIA_DO');
   $flag_vote_action = false;
   foreach($vote_action_list as $this_role => $this_action){
     $flag_action->$this_role = (strpos($sentence, $this_action) === 0);
     $flag_vote_action |= $flag_action->$this_role;
   }
 
+  $location_system = (strpos($location, 'system') !== false);
   $flag_system = ($location_system && $flag_vote_action && ! $ROOM->IsFinished());
   $flag_live_night = ($SELF->IsLive() && $ROOM->IsNight() && ! $ROOM->IsFinished());
-  $flag_mind_read  = ($said_user !== NULL &&
-		      (($ROOM->date > 1 && $SELF->IsLive() &&
-			((is_array($said_user->partner_list['mind_read']) &&
-			  in_array($SELF->user_no, $said_user->partner_list['mind_read']) &&
-			  ! $said_user->IsRole('unconscious')) ||
-			 (is_array($SELF->partner_list['mind_receiver']) &&
-			  in_array($said_user->user_no, $SELF->partner_list['mind_receiver'])))
-			) || $said_user->IsRole('mind_open')));
+  $flag_mind_read  = (($ROOM->date > 1 && $SELF->IsLive() &&
+		       (($said_user->IsPartner('mind_read', $SELF->user_no) &&
+			 ! $said_user->IsRole('unconscious')) ||
+			$SELF->IsPartner('mind_receiver', $said_user->user_no) ||
+			$said_user->IsPartner('mind_friend', $SELF->partner_list))
+		       ) || $said_user->IsRole('mind_open'));
   $flag_wolf_group = ($SELF->IsWolf(true) || $SELF->IsRole('whisper_mad') || $SELF->IsDummyBoy());
   $flag_fox_group  = ($SELF->IsFox(true) || $SELF->IsDummyBoy());
 
@@ -520,7 +457,7 @@ function OutputTalk($talk, &$builder){
     $builder->AddSystemTalk($sentence);
   }
   elseif(strpos($location, 'dummy_boy') !== false){ //身代わり君専用システムメッセージ
-    $builder->AddSystemTalk($MESSAGE->dummy_boy . $sentence);
+    $builder->AddSystemTalk($MESSAGE->dummy_boy . $sentence, 'dummy-boy');
   }
   //ゲーム開始前後とゲーム中、生きている人の昼
   elseif(! $ROOM->IsPlaying() || ($SELF->IsLive() && $ROOM->IsDay() && $location == 'day')){
@@ -531,7 +468,7 @@ function OutputTalk($talk, &$builder){
     if($flag_wolf_group || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
     }
-    else{
+    elseif(! $SELF->IsRole('mind_scanner')){ //さとりには遠吠えは見えない
       $builder->AddWhisper('wolf', $talk);
     }
   }
@@ -556,6 +493,9 @@ function OutputTalk($talk, &$builder){
   elseif($flag_live_night && $location == 'night self_talk'){
     if($SELF->IsSameUser($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
+    }
+    elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
+      $builder->AddWhisper('wolf', $talk); //銀狼の独り言はさとり以外には遠吠えに見える
     }
   }
   //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
@@ -718,7 +658,7 @@ function OutputTalk($talk, &$builder){
 	if($flag_wolf_group){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	else{
+	elseif(! $SELF->IsRole('mind_scanner')){ //さとりには遠吠えは見えない
 	  $builder->AddWhisper('wolf', $talk);
 	}
 	break;
@@ -741,7 +681,12 @@ function OutputTalk($talk, &$builder){
 	break;
 
       case 'night self_talk':
-	if($SELF->uname == $talk_uname) $builder->AddTalk($said_user, $talk);
+	if($SELF->IsSameUser($talk_uname)){
+	  $builder->AddTalk($said_user, $talk);
+	}
+	elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
+	  $builder->AddWhisper('wolf', $talk); //銀狼の独り言はさとり以外には遠吠えに見える
+	}
 	break;
       }
     }
@@ -846,7 +791,7 @@ function OutputDeadManType($name, $type){
   $sudden_death   = $deadman_header.$MESSAGE->vote_sudden_death.'</td>'; //突然死用
   $reason_header  = "</tr>\n<tr><td>(".$name.' '; //追加共通ヘッダ
   $show_reason = ($ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast()) ||
-		  $SELF->IsDummyBoy() || $SELF->IsRole('yama_necromancer'));
+		  $SELF->IsDummyBoy() || ($SELF->IsRole('yama_necromancer') && $SELF->IsLive()));
 
   echo '<table class="dead-type">'."\n";
   switch($type){
@@ -1041,13 +986,13 @@ function OutputAbilityAction(){
   $header = '<b>前日の夜、';
   $footer = '</b><br>'."\n";
   $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
-		       'VOODOO_MAD_DO', 'DREAM_EAT', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
+		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
   if($yesterday == 1){
     array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
   }
   else{
-    array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'ASSASSIN_DO',
-	       'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+    array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'DREAM_EAT',
+	       'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
   }
 
   $action = '';
@@ -1341,7 +1286,22 @@ function UpdateTime(){
 //今までの投票を全部削除
 function DeleteVote(){
   global $ROOM;
-  mysql_query("DELETE FROM vote WHERE room_no = {$ROOM->id}");
+
+  $query = "DELETE FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date}";
+  if($ROOM->IsDay()){
+    $vote_times = GetVoteTimes();
+    $query .= " AND vote_times = $vote_times AND situation = 'VOTE_KILL'";
+  }
+  elseif($ROOM->IsNight()){
+    if($ROOM->date == 1){
+      $query .= " AND situation <> 'CUPID_DO'";
+    }
+    else{
+      $query .= " AND situation <> 'VOTE_KILL'";
+    }
+  }
+  mysql_query($query);
+  mysql_query("OPTIMIZE TABLE vote");
 }
 
 //昼の投票回数を取得する
@@ -1416,6 +1376,7 @@ function ParseStrings($str, $type = NULL){
   case 'TONGUE_WOLF_RESULT':
   case 'REPORTER_SUCCESS':
   case 'POISON_CAT_RESULT':
+  case 'PHARMACIST_RESULT':
   case 'MANIA_RESULT':
   case 'CHILD_FOX_RESULT':
     list($first, $second, $third) = explode("\t", $str);

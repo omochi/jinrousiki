@@ -22,6 +22,10 @@ echo <<<EOF
 闇鍋
 <input type="radio" name="game_option" value="chaosfull" checked>
 真・闇鍋
+<input type="radio" name="game_option" value="duel">
+決闘
+<input type="radio" name="game_option" value="full_mania">
+神話マニア
 <input type="submit" value=" 実 行 "></form>
 </form>
 
@@ -30,12 +34,13 @@ EOF;
 if($_POST['command'] == 'role_test'){
   $user_count = (int)$_POST['user_count'];
   $try_count  = (int)$_POST['try_count'];
+  $option_role = $_POST['game_option'];
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $RQ_ARGS->TestItems->test_room = array('game_option' => $_POST['game_option']);
   $ROOM = new RoomDataSet($RQ_ARGS);
   for($i = 1; $i <= $try_count; $i++){
     echo "$i 回目";
-    $role_list = GetRoleList($user_count, '');
+    $role_list = GetRoleList($user_count, $option_role);
     if($role_list == '') break;
     $role_count_list = array_count_values($role_list);
     echo MakeRoleNameList($role_count_list) .'<br>';

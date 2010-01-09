@@ -47,61 +47,60 @@ define('CHATENGINE_CLASSES', 'CHATENGINE_CLASSES');
 
 function loadModule($name) {
   #print_r($GLOBALS); echo "\n $name \n";
-  if (func_num_args() == 1){
-    if (!empty($GLOBALS[$name]))
-      return true;
+  if(func_num_args() == 1){
+    if(! empty($GLOBALS[$name])) return true;
     shot("loading $name...", 'loadModule');
     switch($name){
     case MESSAGE:
-      if (loadModule(MESSAGE_CLASSES)) { //システムメッセージ格納クラス
+      if(loadModule(MESSAGE_CLASSES)){ //システムメッセージ格納クラス
         $GLOBALS[$name] = new Message();
         return true;
       }
       return false;
     case ROOM_IMG:
-      if (loadModule(SYSTEM_CLASSES)) {
+      if(loadModule(SYSTEM_CLASSES)){
         $GLOBALS[$name] = new RoomImage();
         return true;
       }
       return false;
     case ROLE_IMG:
-      if (loadModule(SYSTEM_CLASSES)) {
+      if(loadModule(SYSTEM_CLASSES)){
         $GLOBALS[$name] = new RoleImage();
         return true;
       }
       return false;
     case ROOM_CONF:
-      if (loadModule(CONFIG)) {
+      if(loadModule(CONFIG)){
         $GLOBALS[$name] = new RoomConfig();
         return true;
       }
       return false;
     case GAME_CONF:
-      if (loadModule(CONFIG)) {
+      if(loadModule(CONFIG)){
         $GLOBALS[$name] = new GameConfig();
         return true;
       }
       return false;
     case TIME_CONF:
-      if (loadModule(CONFIG)) {
+      if(loadModule(CONFIG)){
         $GLOBALS[$name] = new TimeConfig();
         return true;
       }
       return false;
     case ICON_CONF:
-      if (loadModule(CONFIG)) {
+      if(loadModule(CONFIG)){
         $GLOBALS[$name] = new IconConfig();
         return true;
       }
       return false;
     case USER_ICON:
-      if (loadModule(CONFIG)) {
+      if(loadModule(CONFIG)){
         $GLOBALS[$name] = new UserIcon();
         return true;
       }
       return false;
     case ROLES:
-      if (loadModule(ROLE_CLASSES)) {
+      if(loadModule(ROLE_CLASSES)){
         $GLOBALS[$name] = new Roles();
         return true;
       }
@@ -109,7 +108,7 @@ function loadModule($name) {
     case MESSAGE_CLASSES:
       return $GLOBALS[$name] = include(JINRO_INC . '/message_class.php');
     case ROLE_CLASSES:
-      if (loadModule(GAME_FORMAT_CLASSES)) {
+      if(loadModule(GAME_FORMAT_CLASSES)){
         return $GLOBALS[$name] = include(JINRO_INC . '/role/role_manager_class.php');
       }
     case SYSTEM_CLASSES:
@@ -137,7 +136,7 @@ function loadModule($name) {
   }
   else {
     $name_list = func_get_args();
-    foreach($name_list as $name) {
+    foreach($name_list as $name){
       $result[$name] = loadModule($name);
     }
     return $result;
