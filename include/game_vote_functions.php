@@ -59,13 +59,14 @@ function GetRoleList($user_count, $option_role){
     $add_count = round($user_count / $GAME_CONF->min_wolf_rate) - $fix_role_group_list['wolf'];
     for(; $add_count > 0; $add_count--){
       $rand = mt_rand(1, 100);
-      if($rand < 3)      $random_role_list['boss_wolf']++;
-      elseif($rand <  4) $random_role_list['cursed_wolf']++;
-      elseif($rand < 14) $random_role_list['cute_wolf']++;
-      elseif($rand < 17) $random_role_list['poison_wolf']++;
-      elseif($rand < 21) $random_role_list['resist_wolf']++;
-      elseif($rand < 24) $random_role_list['tongue_wolf']++;
-      elseif($rand < 26) $random_role_list['silver_wolf']++;
+      if(    $rand <  3) $random_role_list['boss_wolf']++;
+      elseif($rand <  6) $random_role_list['tongue_wolf']++;
+      elseif($rand <  8) $random_role_list['wise_wolf']++;
+      elseif($rand < 11) $random_role_list['poison_wolf']++;
+      elseif($rand < 15) $random_role_list['resist_wolf']++;
+      elseif($rand < 16) $random_role_list['cursed_wolf']++;
+      elseif($rand < 26) $random_role_list['cute_wolf']++;
+      elseif($rand < 28) $random_role_list['silver_wolf']++;
       else               $random_role_list['wolf']++;
     }
 
@@ -77,8 +78,9 @@ function GetRoleList($user_count, $option_role){
       elseif($rand <  3)  $random_role_list['voodoo_fox']++;
       elseif($rand <  6)  $random_role_list['poison_fox']++;
       elseif($rand <  9)  $random_role_list['white_fox']++;
-      elseif($rand < 10)  $random_role_list['silver_fox']++;
-      elseif($rand < 15)  $random_role_list['child_fox']++;
+      elseif($rand < 10)  $random_role_list['scarlet_fox']++;
+      elseif($rand < 11)  $random_role_list['silver_fox']++;
+      elseif($rand < 16)  $random_role_list['child_fox']++;
       else                $random_role_list['fox']++;
     }
 
@@ -93,11 +95,12 @@ function GetRoleList($user_count, $option_role){
       elseif($rand <  50) $random_role_list['sex_mage']++;
       elseif($rand <  58) $random_role_list['voodoo_killer']++;
       elseif($rand <  70) $random_role_list['dummy_mage']++;
-      elseif($rand < 110) $random_role_list['necromancer']++;
-      elseif($rand < 115) $random_role_list['soul_necromancer']++;
-      elseif($rand < 125) $random_role_list['yama_necromancer']++;
-      elseif($rand < 150) $random_role_list['dummy_necromancer']++;
-      elseif($rand < 180) $random_role_list['medium']++;
+      elseif($rand < 105) $random_role_list['necromancer']++;
+      elseif($rand < 110) $random_role_list['soul_necromancer']++;
+      elseif($rand < 120) $random_role_list['yama_necromancer']++;
+      elseif($rand < 140) $random_role_list['dummy_necromancer']++;
+      elseif($rand < 170) $random_role_list['medium']++;
+      elseif($rand < 180) $random_role_list['priest']++;
       elseif($rand < 260) $random_role_list['common']++;
       elseif($rand < 270) $random_role_list['dummy_common']++;
       elseif($rand < 310) $random_role_list['guard']++;
@@ -110,15 +113,16 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 395) $random_role_list['incubate_poison']++;
       elseif($rand < 410) $random_role_list['dummy_poison']++;
       elseif($rand < 420) $random_role_list['poison_cat']++;
-      elseif($rand < 440) $random_role_list['assassin']++;
-      elseif($rand < 460) $random_role_list['mind_scanner']++;
-      elseif($rand < 475) $random_role_list['jealousy']++;
-      elseif($rand < 505) $random_role_list['pharmacist']++;
+      elseif($rand < 450) $random_role_list['pharmacist']++;
+      elseif($rand < 470) $random_role_list['assassin']++;
+      elseif($rand < 490) $random_role_list['mind_scanner']++;
+      elseif($rand < 505) $random_role_list['jealousy']++;
       elseif($rand < 520) $random_role_list['suspect']++;
       elseif($rand < 540) $random_role_list['unconscious']++;
-      elseif($rand < 610) $random_role_list['wolf']++;
-      elseif($rand < 620) $random_role_list['boss_wolf']++;
-      elseif($rand < 650) $random_role_list['tongue_wolf']++;
+      elseif($rand < 600) $random_role_list['wolf']++;
+      elseif($rand < 610) $random_role_list['boss_wolf']++;
+      elseif($rand < 640) $random_role_list['tongue_wolf']++;
+      elseif($rand < 650) $random_role_list['wise_wolf']++;
       elseif($rand < 665) $random_role_list['poison_wolf']++;
       elseif($rand < 680) $random_role_list['resist_wolf']++;
       elseif($rand < 685) $random_role_list['cursed_wolf']++;
@@ -132,11 +136,12 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 800) $random_role_list['corpse_courier_mad']++;
       elseif($rand < 810) $random_role_list['dream_eater_mad']++;
       elseif($rand < 820) $random_role_list['trap_mad']++;
-      elseif($rand < 850) $random_role_list['fox']++;
-      elseif($rand < 860) $random_role_list['white_fox']++;
-      elseif($rand < 867) $random_role_list['poison_fox']++;
-      elseif($rand < 872) $random_role_list['voodoo_fox']++;
-      elseif($rand < 875) $random_role_list['cursed_fox']++;
+      elseif($rand < 845) $random_role_list['fox']++;
+      elseif($rand < 855) $random_role_list['white_fox']++;
+      elseif($rand < 862) $random_role_list['poison_fox']++;
+      elseif($rand < 867) $random_role_list['voodoo_fox']++;
+      elseif($rand < 870) $random_role_list['cursed_fox']++;
+      elseif($rand < 875) $random_role_list['scarlet_fox']++;
       elseif($rand < 880) $random_role_list['silver_fox']++;
       elseif($rand < 890) $random_role_list['child_fox']++;
       elseif($rand < 915) $random_role_list['cupid']++;
@@ -170,11 +175,12 @@ function GetRoleList($user_count, $option_role){
 
     //-- 最大補正 --//
     //補正対象グループ
-    $role_group_rate_list = array('wolf' => 0.25, 'mad' => 0.15, 'fox' => 0.12,
-				  'mage' => 0.2, 'necromancer' => 0.15, 'guard' => 0.15,
-				  'common' => 0.2, 'poison' => 0.15, 'assassin' => 0.15,
-				  'mind_scanner' => 0.15, 'jealousy' => 0.1,
-				  'cupid' => 0.1, 'chiroptera' => 0.15);
+    $role_group_rate_list = array('wolf' => 0.25, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1,
+				  'chiroptera' => 0.15, 'mage' => 0.2, 'necromancer' => 0.15,
+				  'priest' => 0.1, 'guard' => 0.15, 'common' => 0.2, 'poison' => 0.15,
+				  'pharmacist' => 0.15, 'assassin' => 0.15, 'mind_scanner' => 0.15,
+				  'jealousy' => 0.1,
+				  );
 
     foreach($role_group_rate_list as $name => $rate){
       if(! (is_array($role_group_list->$name) && is_array($random_role_group_list->$name))){
@@ -1374,7 +1380,8 @@ function AggregateVoteNight(){
       InsertSystemMessage($sentence . $wolf_target->handle_name, 'GUARD_SUCCESS');
 
       //騎士でない場合、一部の役職は護衛されていても人狼に襲撃される
-      if($this_user->IsRole('poison_guard') || ! $wolf_target->IsRole('reporter', 'assassin')){
+      if($this_user->IsRole('poison_guard') ||
+	 ! $wolf_target->IsRole('reporter', 'assassin', 'priest')){
 	$guarded_uname = $this_target->uname;
       }
     }
@@ -1792,6 +1799,18 @@ function AggregateVoteNight(){
 
   LoversFollowed(); //恋人後追い処理
   InsertMediumMessage(); //巫女のシステムメッセージ
+
+  if($ROOM->date > 3 && ($ROOM->date % 2) == 0 && $USERS->is_appear('priest')){ //司祭の判定
+    $live_count = 0;
+    foreach($USERS->rows as $this_user){
+      if($this_user->IsLive() && ! $this_user->dead_flag &&
+	 $this_user->DistinguishCamp() == 'human'){
+	$live_count++;
+      }
+    }
+    InsertSystemMessage($live_count, 'PRIEST_RESULT');
+  }
+
   if($ROOM->test_mode) return;
 
   //次の日にする
@@ -1820,6 +1839,7 @@ function DistinguishRoleGroup($role){
 			   'chiroptera' => 'chiroptera',
 			   'mage' => 'mage', 'voodoo_killer' => 'mage',
 			   'necromancer' => 'necromancer', 'medium' => 'necromancer',
+			   'priest' => 'priest',
 			   'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
 			   'common' => 'common',
 			   'poison' => 'poison',

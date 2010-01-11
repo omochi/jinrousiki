@@ -89,7 +89,7 @@ EOF;
 <!--Â¼°ìÍ÷ ¤³¤³¤«¤é-->
 <tr><td>
 <table class="main">
-<tr><th>Â¼No</th><th>Â¼Ì¾</th><th>Â¼¤Ë¤Ä¤¤¤Æ</th><th>¿Í¿ô</th><th>Æü¿ô</th><th>¾¡</th></tr>
+<tr><th>Â¼No</th><th>Â¼Ì¾</th><th>¿Í¿ô</th><th>Æü¿ô</th><th>¾¡</th></tr>
 
 EOF;
 
@@ -107,7 +107,8 @@ EOF;
 			game_option AS room_game_option, option_role AS room_option_role,
 			max_user AS room_max_user, (SELECT COUNT(*) FROM user_entry user
 			WHERE user.room_no = room.room_no AND user.user_no > 0)
-			AS room_num_user, victory_role AS room_victory_role FROM room
+			AS room_num_user, victory_role AS room_victory_role,
+			establish_time, start_time, finish_time FROM room
 			WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
 
   $victory_img = new VictoryImage();
@@ -135,14 +136,18 @@ EOF;
     }
     */
 
+    if($log_establish_time != '') $log_establish_time = ConvertTimeStamp($log_establish_time);
     echo <<<EOF
 <tr class="list">
-<td class="number" rowspan="2">$log_room_no</td>
+<td class="number" rowspan="3">$log_room_no</td>
 <td class="title"><a href="$base_url" $dead_room_color>$log_room_name Â¼</a></td>
-<td class="upper comment">¡Á $log_room_comment ¡Á</td>
 <td class="upper">$user_count (ºÇÂç{$log_room_max_user})</td>
 <td class="upper">$log_room_date</td>
 <td class="side">$victory_role_str</td>
+</tr>
+<tr class="list middle">
+<td class="comment side">¡Á $log_room_comment ¡Á</td>
+<td class="time comment" colspan="3">$log_establish_time</td>
 </tr>
 <tr class="lower list">
 <td class="comment">(
@@ -154,7 +159,7 @@ EOF;
 $debug_anchor
 )
 </td>
-<td colspan="4">$game_option_str</td>
+<td colspan="3">$game_option_str</td>
 </tr>
 
 EOF;

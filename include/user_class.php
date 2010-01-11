@@ -207,13 +207,12 @@ class User{
   function SaveLastWords(){
     global $ROOM;
 
-    if($ROOM->test_mode || (! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words'))){
-      return;
-    }
+    if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
+
     $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
       "AND uname = '{$this->uname}' AND user_no > 0";
-    if(($last_words = FetchResult($query)) != ''){
-      InsertSystemMessage($this->handle_name . "\t" . $last_words, 'LAST_WORDS');
+    if($ROOM->test_mode || FetchResult($query) != ''){
+      InsertSystemMessage($this->handle_name, 'LAST_WORDS');
     }
   }
 
@@ -408,6 +407,13 @@ class UserDataSet{
 
   function UnameToNumber($uname){
     return $this->names[$uname];
+  }
+
+  function HandleNametoUname($handle_name){
+    foreach($this->rows as $user){
+      if($handle_name == $user->handle_name) return $user->uname;
+    }
+    return false;
   }
 
   function ByID($user_no){

@@ -236,15 +236,11 @@ function CreateRoom($room_name, $room_comment, $max_user){
   do{
     //村作成
     $time = TZTime();
-    $items = 'room_no, room_name, room_comment, establisher_ip, game_option, ' .
+    $items = 'room_no, room_name, room_comment, establisher_ip, establish_time, game_option, ' .
       'option_role, max_user, status, date, day_night, last_updated';
-    $values = "$room_no, '$room_name', '$room_comment', '$ip_address', '$game_option', " .
+    $values = "$room_no, '$room_name', '$room_comment', '$ip_address', NOW(), '$game_option', " .
       "'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time'";
     if(! InsertDatabase('room', $items, $values)) break;
-
-    //村立て時間を挿入
-    $sentence = '村作成：' . gmdate('Y/m/d (D) H:i:s', $time);
-    if(! InsertTalk($room_no, 0, 'beforegame system', 'system', $time,  $sentence, NULL, 0)) break;
 
     //身代わり君を入村させる
     if(strpos($game_option, 'dummy_boy') !== false &&

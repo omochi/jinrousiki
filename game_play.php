@@ -734,7 +734,7 @@ function OutputHeavenTalkLog(){
 
 //昼の自分の未投票チェック
 function CheckSelfVoteDay(){
-  global $ROOM, $USERS, $SELF;
+  global $MESSAGE, $ROOM, $USERS, $SELF;
 
   //投票回数を取得
   $vote_times = GetVoteTimes();
@@ -746,7 +746,11 @@ function CheckSelfVoteDay(){
   $target_uname = FetchResult($query);
   $sentence .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
 		$USERS->GetHandleName($target_uname) . 'に投票済み');
-  echo $sentence . '</div>'."\n";
+  $sentence .= '</div>'."\n";
+  if($target_uname === false){
+    $sentence .= '<span class="ability vote">' . $MESSAGE->ability_vote . '</span><br>'."\n";
+  }
+  echo $sentence;
 }
 
 //自分の遺言を出力

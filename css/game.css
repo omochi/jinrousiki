@@ -96,7 +96,7 @@ body{ /* AA 用 */
 }
 /* OutputRevoteList() */
 .revote{ /* 再投票メッセージ */
-  margin: 0px 3em;
+  padding: 0px 3em;
   background-color: #FF0000;
   color: #FFFAFA; /* snow */
   font-size: 14pt;

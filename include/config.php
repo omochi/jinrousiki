@@ -3,8 +3,8 @@
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //デバッグ用に長くしておく
+  #var $die_room = 1200;
+  var $die_room = 12000; //デバッグ用に長くしておく
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -236,6 +236,7 @@ class GameConfig{
     'yama_necromancer'   => '閻魔',
     'dummy_necromancer'  => '夢枕人',
     'medium'             => '巫女',
+    'priest'             => '司祭',
     'guard'              => '狩人',
     'poison_guard'       => '騎士',
     'reporter'           => 'ブン屋',
@@ -248,15 +249,16 @@ class GameConfig{
     'incubate_poison'    => '潜毒者',
     'dummy_poison'       => '夢毒者',
     'poison_cat'         => '猫又',
+    'pharmacist'         => '薬師',
     'assassin'           => '暗殺者',
     'mind_scanner'       => 'さとり',
     'jealousy'           => '橋姫',
-    'pharmacist'         => '薬師',
     'suspect'            => '不審者',
     'unconscious'        => '無意識',
     'wolf'               => '人狼',
     'boss_wolf'          => '白狼',
     'tongue_wolf'        => '舌禍狼',
+    'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗毒狼',
     'cursed_wolf'        => '呪狼',
@@ -275,6 +277,7 @@ class GameConfig{
     'poison_fox'         => '管狐',
     'voodoo_fox'         => '九尾',
     'cursed_fox'         => '天狐',
+    'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
     'child_fox'          => '子狐',
     'cupid'              => 'キューピッド',
@@ -355,6 +358,7 @@ class GameConfig{
     'yama_necromancer'   => '閻',
     'dummy_necromancer'  => '夢枕',
     'medium'             => '巫',
+    'priest'             => '司',
     'guard'              => '狩',
     'poison_guard'       => '騎',
     'reporter'           => '聞',
@@ -367,15 +371,16 @@ class GameConfig{
     'incubate_poison'    => '潜毒',
     'dummy_poison'       => '夢毒',
     'poison_cat'         => '猫',
+    'pharmacist'         => '薬',
     'assassin'           => '暗',
     'mind_scanner'       => '悟',
     'jealousy'           => '橋',
-    'pharmacist'         => '薬',
     'suspect'            => '不審',
     'unconscious'        => '無',
     'wolf'               => '狼',
     'boss_wolf'          => '白狼',
     'tongue_wolf'        => '舌狼',
+    'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗狼',
     'cursed_wolf'        => '呪狼',
@@ -394,6 +399,7 @@ class GameConfig{
     'poison_fox'         => '管狐',
     'voodoo_fox'         => '九尾',
     'cursed_fox'         => '天狐',
+    'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
     'child_fox'          => '子狐',
     'cupid'              => 'QP',
@@ -469,6 +475,9 @@ class GameConfig{
     'voice'        => array('strong_voice', 'normal_voice', 'weak_voice', 'upper_voice',
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'));
+
+  //身代わり君がならない役職グループのリスト
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役

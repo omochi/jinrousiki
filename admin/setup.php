@@ -60,20 +60,48 @@ function CheckTable(){
     echo 'テーブル(room)を作成しました<br>'."\n";
   }
   else{
-    do{ // establisher_ipフィールドがなければ追加する
-      $sql = mysql_query("SHOW COLUMNS FROM room");
-      if(mysql_num_rows($sql) > 0){
-	while(($row = mysql_fetch_assoc($sql)) !== false){
-	  if($row['Field'] == 'establisher_ip') break 2;
-	}
+    //追加フィールド処理
+    $sql = mysql_query("SHOW COLUMNS FROM room");
+    if(mysql_num_rows($sql) > 0){
+      while(($row = mysql_fetch_assoc($sql)) !== false){
+	if($row['Field'] == 'establisher_ip') $flag->establisher_ip = true;
+	if($row['Field'] == 'establish_time') $flag->establish_time = true;
+	if($row['Field'] == 'start_time') $flag->start_time = true;
+	if($row['Field'] == 'finish_time') $flag->finish_time = true;
       }
+    }
+    if(! $flag->establisher_ip){
       if(mysql_query("ALTER TABLE room ADD establisher_ip TEXT")){
 	echo 'テーブル(room)にフィールド(establisher_ip)を追加しました<br>'."\n";
       }
       else{
 	echo 'テーブル(room)にフィールド(establisher_ip)を追加できませんでした<br>'."\n";
       }
-    }while(false);
+    }
+    if(! $flag->establish_time){
+      if(mysql_query("ALTER TABLE room ADD establish_time DATETIME")){
+	echo 'テーブル(room)にフィールド(establish_time)を追加しました<br>'."\n";
+      }
+      else{
+	echo 'テーブル(room)にフィールド(establish_time)を追加できませんでした<br>'."\n";
+      }
+    }
+    if(! $flag->start_time){
+      if(mysql_query("ALTER TABLE room ADD start_time DATETIME")){
+	echo 'テーブル(room)にフィールド(start_time)を追加しました<br>'."\n";
+      }
+      else{
+	echo 'テーブル(room)にフィールド(start_time)を追加できませんでした<br>'."\n";
+      }
+    }
+    if(! $flag->finish_time){
+      if(mysql_query("ALTER TABLE room ADD finish_time DATETIME")){
+	echo 'テーブル(room)にフィールド(finish_time)を追加しました<br>'."\n";
+      }
+      else{
+	echo 'テーブル(room)にフィールド(finish_time)を追加できませんでした<br>'."\n";
+      }
+    }
   }
 
   if(! in_array('user_entry', $table)){

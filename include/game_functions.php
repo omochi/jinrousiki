@@ -159,7 +159,7 @@ function OutputPlayerList(){
 	$role_str = MakeRoleName($this_user->main_role, 'human');
       elseif($this_user->IsRoleGroup('mage') || $this_user->IsRole('voodoo_killer'))
 	$role_str = MakeRoleName($this_user->main_role, 'mage');
-      elseif($this_user->IsRoleGroup('necromancer') || $this_user->IsRole('medium'))
+      elseif($this_user->IsRoleGroup('necromancer') || $this_user->IsRole('medium', 'priest'))
 	$role_str = MakeRoleName($this_user->main_role, 'necromancer');
       elseif($this_user->IsRoleGroup('guard') || $this_user->IsRole('reporter', 'anti_voodoo'))
 	$role_str = MakeRoleName($this_user->main_role, 'guard');
@@ -296,6 +296,7 @@ EOF;
   $result = 'win';
   $target_user = $SELF;
   while($target_user->IsRole('unknown_mania')){
+    if(! is_array($target_user->partner_list['unknown_mania'])) break;
     $target_user = $USERS->ByID($target_user->partner_list['unknown_mania'][0]);
     if($target_user->IsSelf()) break;
   }
@@ -375,6 +376,24 @@ function OutputTalkLog(){
   $builder->BeginTalk('talk');
   while(($row = mysql_fetch_object($sql, 'Talk')) !== false){
     OutputTalk($row, $builder); //会話出力
+  }
+  if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
+    $time = FetchResult("SELECT establish_time FROM room WHERE room_no = {$ROOM->id}");
+    $row->sentence = '村作成';
+  }
+  elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
+    $time = FetchResult("SELECT start_time FROM room WHERE room_no = {$ROOM->id}");
+    $row->sentence = 'ゲーム開始';
+  }
+  elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
+    $time = FetchResult("SELECT finish_time FROM room WHERE room_no = {$ROOM->id}");
+    $row->sentence = 'ゲーム終了';
+  }
+  if($time != ''){
+    $row->uname = 'system';
+    $row->sentence .= '：' . ConvertTimeStamp($time);
+    $row->location = $ROOM->day_night . 'system';
+    OutputTalk($row, $builder);
   }
   $builder->EndTalk();
 }
@@ -487,7 +506,12 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の妖狐
   elseif($flag_live_night && $location == 'night fox'){
-    if($flag_fox_group || $flag_mind_read) $builder->AddTalk($said_user, $talk);
+    if($flag_fox_group || $flag_mind_read){
+      $builder->AddTalk($said_user, $talk);
+    }
+    elseif($SELF->IsRole('wise_wolf')){
+      $builder->AddWhisper('common', $talk);
+    }
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($flag_live_night && $location == 'night self_talk'){
@@ -677,7 +701,12 @@ function OutputTalk($talk, &$builder){
 	break;
 
       case 'night fox':
-	if($flag_fox_group) $builder->AddTalk($said_user, $talk);
+	if($flag_fox_group){
+	  $builder->AddTalk($said_user, $talk);
+	}
+	elseif($SELF->IsRole('wise_wolf')){
+	  $builder->AddWhisper('common', $talk);
+	}
 	break;
 
       case 'night self_talk':
@@ -698,17 +727,17 @@ function OutputTalk($talk, &$builder){
 
 //死亡者の遺言を出力
 function OutputLastWords(){
-  global $MESSAGE, $ROOM;
+  global $MESSAGE, $ROOM, $USERS;
 
   //ゲーム中以外は出力しない
   if(! ($ROOM->IsPlaying() || $ROOM->log_mode)) return false;
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;
-  $sql = mysql_query("SELECT message FROM system_message WHERE room_no = {$ROOM->id}
-			AND date = $set_date AND type = 'LAST_WORDS' ORDER BY MD5(RAND()*NOW())");
-  $count = mysql_num_rows($sql);
-  if($count < 1) return false;
+  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
+    "AND date = $set_date AND type = 'LAST_WORDS' ORDER BY RAND()";
+  $array = FetchArray($query);
+  if(count($array) < 1) return false;
 
   echo <<<EOF
 <table class="system-lastwords"><tr>
@@ -718,14 +747,17 @@ function OutputLastWords(){
 
 EOF;
 
-  for($i = 0; $i < $count; $i++){
-    $result = mysql_result($sql, $i, 0);
-    LineToBR(&$result);
-    list($handle, $str) = ParseStrings($result);
+  $query = "SELECT last_words FROM user_entry WHERE room_no = {$ROOM->id} " .
+    "AND user_no > 0 AND uname =";
+  foreach($array as $result){
+    list($handle_name, $str) = ParseStrings($result);
+    $uname = $USERS->HandleNameToUname($handle_name);
+    $str = FetchResult("$query '$uname'");
+    LineToBR(&$str);
 
     echo <<<EOF
 <tr>
-<td class="lastwords-title">{$handle}<span>さんの遺言</span></td>
+<td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
 <td class="lastwords-body">{$str}</td>
 </tr>
 
@@ -773,6 +805,7 @@ function OutputDeadMan(){
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
   if($ROOM->log_mode) return;
   $set_date = $yesterday;
+  if($set_date < 2) return;
   $type = ($ROOM->IsDay() ? $type_day : $type_night);
 
   echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合は $array の中身をチェックする
@@ -1128,12 +1161,7 @@ function CheckVictory($check_draw = false){
 
   //ゲーム終了
   mysql_query("UPDATE room SET status = 'finished', day_night = 'aftergame',
-		victory_role = '$victory_role' WHERE room_no = {$ROOM->id}");
-
-  //ゲーム終了時間を通知
-  $sentence = 'ゲーム終了：' . gmdate('Y/m/d (D) H:i:s', $ROOM->system_time);
-  InsertSystemTalk($sentence, ++$ROOM->system_time, 'aftergame system');
-
+		victory_role = '$victory_role', finish_time = NOW() WHERE room_no = {$ROOM->id}");
   mysql_query('COMMIT'); //一応コミット
   return true;
 }
@@ -1346,6 +1374,7 @@ function DecodeSpace(&$str){
 function ParseStrings($str, $type = NULL){
   $str = str_replace(' ', "\\space;", $str); //スペースを退避する
   switch($type){
+  case 'LAST_WORDS':
   case 'KICK_DO':
   case 'VOTE_DO':
   case 'WOLF_EAT':

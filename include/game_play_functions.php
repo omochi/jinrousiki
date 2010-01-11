@@ -32,6 +32,13 @@ function OutputAbility(){
       }
     }
 
+    if($is_after_first_night && $SELF->IsRole('mage', 'dummy_mage')){
+      foreach($USERS->rows as $user){ //紅狐を表示
+	if($user->IsRole('scarlet_fox')) $scarlet_fox_list[] = $user->handle_name;
+      }
+      OutputPartner($scarlet_fox_list, 'scarlet_fox_list');
+    }
+
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //夜の投票
   }
   elseif($SELF->IsRole('voodoo_killer')){ //陰陽師
@@ -81,6 +88,17 @@ function OutputAbility(){
     for($i = 0; $i < $count; $i++){
       list($target, $target_role) = ParseStrings(mysql_result($sql, $i, 0));
       OutputAbilityResult($result, $target, 'result_' . $target_role);
+    }
+  }
+  elseif($SELF->IsRole('priest')){ //司祭
+    $ROLE_IMG->DisplayImage($SELF->main_role);
+
+    //判定結果を表示
+    $sql = GetAbilityActionResult('PRIEST_RESULT');
+    $count = mysql_num_rows($sql);
+    for($i = 0; $i < $count; $i++){
+      $result = mysql_result($sql, $i, 0);
+      OutputAbilityResult('priest_header', $result, 'priest_footer');
     }
   }
   elseif($SELF->IsRoleGroup('guard')){ //狩人系
@@ -195,12 +213,18 @@ function OutputAbility(){
       elseif($user->IsRole('unconscious')){
 	$unconscious_list[] = $user->handle_name;
       }
+      elseif($user->IsRole('scarlet_fox')){
+	$scarlet_fox_list[] = $user->handle_name;
+      }
     }
     if(! $SELF->IsRole('silver_wolf')){
       OutputPartner($wolf_partner, 'wolf_partner'); //仲間を表示
       OutputPartner($mad_partner, 'mad_partner'); //囁き狂人を表示
     }
-    if($ROOM->IsNight()) OutputPartner($unconscious_list, 'unconscious_list'); //夜だけ無意識を表示
+    if($ROOM->IsNight()){ //夜だけ無意識と紅狐を表示
+      OutputPartner($unconscious_list, 'unconscious_list');
+      OutputPartner($scarlet_fox_list, 'scarlet_fox_list');
+    }
 
     if($SELF->IsRole('tongue_wolf')){ //舌禍狼の噛み結果を表示
       $action = 'TONGUE_WOLF_RESULT';

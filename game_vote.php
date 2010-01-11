@@ -218,13 +218,14 @@ function AggregateVoteGameStart($force_start = false){
       $count = count($role_list);
       for($i = 0; $i < $count; $i++){
 	$this_role = array_shift($role_list); //配役リストから先頭を抜き出す
-	if(strpos($this_role, 'wolf')   === false &&
-	   strpos($this_role, 'fox')    === false &&
-	   strpos($this_role, 'poison') === false){
-	  array_push($fix_role_list, $this_role);
-	  break;
+	foreach($GAME_CONF->disable_dummy_boy_role_list as $this_disable_role){
+	  if(strpos($this_role, $this_disable_role) !== false){
+	    array_push($role_list, $this_role); //配役リストの末尾に戻す
+	    continue 2;
+	  }
 	}
-	array_push($role_list, $this_role); //配役リストの末尾に戻す
+	array_push($fix_role_list, $this_role);
+	break;
       }
     }
 
@@ -397,14 +398,14 @@ function AggregateVoteGameStart($force_start = false){
     }
   }
 
-  //ゲーム開始
-  mysql_query("UPDATE room SET status = 'playing', date = 1, day_night = 'night'
-		WHERE room_no = {$ROOM->id}");
-  DeleteVote(); //今までの投票を全部削除
+  //デバッグ用
+  //print_r($fix_uname_list); echo "<br>";
+  //print_r($fix_role_list); DeleteVote(); return false;
 
-  //ゲーム開始時間を通知
-  $start_time = gmdate('Y/m/j (D) H:i:s', $ROOM->system_time);
-  InsertSystemTalk('ゲーム開始：' . $start_time, $ROOM->system_time, 'night system', 1);
+  //ゲーム開始
+  mysql_query("UPDATE room SET status = 'playing', date = 1, day_night = 'night',
+		start_time = NOW() WHERE room_no = {$ROOM->id}");
+  DeleteVote(); //今までの投票を全部削除
 
   //役割をDBに更新
   $role_count_list = array();

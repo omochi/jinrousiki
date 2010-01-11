@@ -166,6 +166,15 @@ function TZTime(){
   */
 }
 
+//TIMESTAMP 形式の時刻を変換する
+function ConvertTimeStamp($time, $offset = true){
+  global $SERVER_CONF;
+
+  $str = strtotime($time);
+  if($offset) $str += $SERVER_CONF->offset_seconds;
+  return gmdate('Y/m/d (D) H:i:s', $str);
+}
+
 //時間(秒)を変換する
 function ConvertTime($seconds){
   $sentence = '';

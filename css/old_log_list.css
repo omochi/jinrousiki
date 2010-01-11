@@ -66,9 +66,16 @@ th{
   border-right:  1px solid  #000000;
   border-bottom: 1px dotted #CCCCCC;
 }
+.middle{
+  border-bottom: 1px dotted #CCCCCC;
+}
 .lower td{
   border-right:  1px solid  #000000;
   border-left:   1px solid  #000000;
   border-bottom: 1px solid  #000000;
 }
 .comment{font-size: 75%;}
+.time{
+  text-align: center;
+  border-right:  1px solid  #000000;
+}
