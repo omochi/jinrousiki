@@ -4,7 +4,28 @@
   MessageImageGenerator.php
   Ver. 1.0 作成
   Ver. 1.1 #の処理を追加
+  Ver. 1.9 デリミタを登録制に変更。入れ子に対応
  */
+
+class Delimiter {
+  var $c; // デリミタ文字
+  var $r; // RGB色指定の赤成分値
+  var $g; // RGB色指定の緑成分値
+  var $b; // RGB色指定の青成分値
+  /*
+    コンストラクタ
+    $c_ デリミタ文字
+    $r_ RGB色指定の赤成分値
+    $g_ RGB色指定の緑成分値
+    $b_ RGB色指定の青成分値
+  */
+  function Delimiter($c_, $r_, $g_, $b_) {
+    $this->c = $c_;
+    $this->r = $r_;
+    $this->g = $g_;
+    $this->b = $b_;
+  }
+}
 
 class MessageImageGenerator {
   var $font;   // フォントパス
@@ -13,7 +34,10 @@ class MessageImageGenerator {
   var $height; // 半角1文字あたりの高さ
   var $x_margin; // マージン幅
   var $y_margin; // マージン高さ
+  var $def_col;  // デフォルト文字色のRGB値
+  var $def_bgc;  // デフォルト背景色のRGB値
   var $is_trans; // 背景色を透明にするかどうか
+  var $delimiters; // デリミタ情報、色を格納する配列
 
   /*
     コンストラクタ
@@ -27,7 +51,10 @@ class MessageImageGenerator {
     $this->size = $size_;
     $this->x_margin = $x_margin_;
     $this->y_margin = $y_margin_;
+    $this->def_col = array(0, 0, 0);
+    $this->def_bgc = array(255, 255, 255);
     $this->is_trans = $is_trans_;
+    $this->delimiters = array();
 
     // フォント幅・高さの測定。もっといい定跡があればそちらに変更する予定。
     $r_a = imagettfbbox($this->size, 0, $this->font, "A");
@@ -36,55 +63,122 @@ class MessageImageGenerator {
     $this->width = $r_a2[2] - $r_a[2];
     $this->height = $r_a2v[1] - $r_a[1];
   }
-
+  /*
+    新規デリミタを追加する関数
+    $nd 新しいデリミタと使用色を定義したDelimiterクラス
+  */
+  function AddDelimiter($nd) {
+    // 既に登録されているデリミタかどうか調べる
+    foreach ($this->delimiters as &$d) {
+      if ($d->c == $nd->c) {
+        //登録済みのデリミタを上書きする
+        $d = $nd;
+        return;
+      }
+    }
+    // 新しいデリミタを追加する
+    array_push($this->delimiters, $nd);
+  }
+  /*
+    登録されているデリミタを削除する関数
+    $c デリミタ文字
+  */
+  function DeleteDelimiter($c) {
+    for ($i=0 ; $i<count($this->delimiters) ; $i++) {
+      if ($this->delimiters[$i]->c == $c) {
+        //登録されているデリミタを削除する
+        array_splice($this->delimiters, $i, 1);
+        return;
+      }
+    }
+  }
+  /*
+    登録されているデリミタクラスを取得する関数
+    $c デリミタ文字
+    返り値 対応するデリミタクラス。登録されていない場合はデフォルトのデリミタクラス
+  */
+  function GetDelimiter($c) {
+    for ($i=0 ; $i<count($this->delimiters) ; $i++) {
+      if ($this->delimiters[$i]->c == $c) {
+        return $this->delimiters[$i];
+      }
+    }
+    return new Delimiter("",0,0,0);
+  }
+  /*
+    登録されているデリミタから分割用の正規表現文字列を作成する関数
+    返り値 正規表現文字列
+  */
+  function makeDelimiterRegEx() {
+    if (count($this->delimiters) == 0) return '';
+    $regex_str = '/[';
+    foreach ($this->delimiters as $d) {
+      // 正規表現で特別な意味を持つ文字をデリミタとして使う場合は、ここで\を挿入する必要あり
+      if ($d->c == '|') {
+        $regex_str .= '\|';
+      }
+      elseif ($d->c == '/') {
+        $regex_str .= '\/';
+      }
+      else {
+        $regex_str .= $d->c;
+      }
+    }
+    $regex_str .= ']/';
+    
+    return $regex_str;
+  }
   /*
     役職説明、能力実行結果などのメッセージ用画像ファイルを生成する関数
     $msg 作成したいメッセージ文。改行有効。||で囲んだ部分を指定した色で書く
-    $cr,$cb,$cg 強調部分の表示に使用する色
     返り値 画像データ
   */
-  function GetImage($msg, $cr = 0, $cg = 0, $cb = 0, $cr2 = 0, $cg2 = 0, $cb2 = 0,
-		    $cr3 = 0, $cg3 = 0, $cb3 = 0, $cr4 = 0, $cg4 = 0, $cb4 = 0) {
+  function GetImage($msg) {
+    $d_stack = array("default"); // スタック用配列。一番下にどのデリミタともマッチしない文字列をセットしておく
+    
     //$plain_msg_len = strlen($plain_msg);
     //echo "plain_r: $plain_msg_len ";
-    $plain_msg = mb_convert_encoding(preg_replace('/[\|#_^]/', '', $msg), "UTF-8", "auto");
+    $regex_str = $this->makeDelimiterRegEx();
+    $plain_msg = $regex_str == '' ? mb_convert_encoding($msg, "UTF-8", "auto")
+                                  : mb_convert_encoding(preg_replace($regex_str, '', $msg), "UTF-8", "auto");
+    //print $plain_msg;
     $plain_r = imagettfbbox($this->size, 0, $this->font, $plain_msg);
     //print_r($plain_r);
     //echo "<br>";
 
     // 画像の生成
     $img = imagecreatetruecolor($plain_r[2] - $plain_r[6] + $this->x_margin * 2, $plain_r[3] - $plain_r[7] + $this->y_margin * 2);
-    $col_black = imagecolorallocate($img, 0, 0, 0);
-    $col_white = imagecolorallocate($img, 255, 255, 255);
-    $col_appeal = imagecolorallocate($img, $cr, $cg, $cb);
-    $col_appeal2 = imagecolorallocate($img, $cr2, $cg2, $cb2);
-    $col_appeal3 = imagecolorallocate($img, $cr3, $cg3, $cb3);
-    $col_appeal4 = imagecolorallocate($img, $cr4, $cg4, $cb4);
+    $col_char = imagecolorallocate($img, $this->def_col[0], $this->def_col[1], $this->def_col[2]);
+    $col_back = imagecolorallocate($img, $this->def_bgc[0], $this->def_bgc[1], $this->def_bgc[2]);
     // 背景を透明色に設定する場合
-    if ($this->is_trans) imagecolortransparent($img, $col_white);
-    imagefill($img, 0, 0, $col_white);
+    if ($this->is_trans) imagecolortransparent($img, $col_back);
+    imagefill($img, 0, 0, $col_back);
 
     // 各行ごとに処理
     $msg_lines = preg_split('/\n/', $msg, -1, PREG_SPLIT_NO_EMPTY);
     $y_disp = $this->y_margin;
-    $col_flag = false;
     foreach ($msg_lines as $line) {
       // この行でどれだけ消費するか計算
+      //print $line;
       $line_len = strlen($line);
-      $line_plain = mb_convert_encoding(preg_replace('/[\|#_^]/', '', $line), "UTF-8", "auto");
+      $line_plain = $regex_str == '' ? mb_convert_encoding($line, "UTF-8", "auto")
+                                     : mb_convert_encoding(preg_replace($regex_str, '', $line), "UTF-8", "auto");
       $r = imagettfbbox($this->size, 0, $this->font, $line_plain);
       //echo "line_r: $line_len ";
       //print_r($r);
       //echo "<br>";
 
       // 強調部分の色を変えつつ表示
-      $array_msg = preg_split('/[\|#_^]/', $line, -1, PREG_SPLIT_OFFSET_CAPTURE);
+      $array_msg = $regex_str == '' ? array(array($line, 0))
+                                    : preg_split($regex_str, $line, -1, PREG_SPLIT_OFFSET_CAPTURE);
       //$x_disp = $this->x_margin;
+      //print_r ($array_msg);
       $str_total = "";
       for ($i = 0 ; $i < count($array_msg) ; $i++) {
 	$str_len = strlen($array_msg[$i][0]);
 	//echo "str_r: $str_len ";
 	$str = mb_convert_encoding($array_msg[$i][0], "UTF-8", "auto");
+	//print $str;
 	$str_total .= $str;
 	$r_str = imagettfbbox($this->size, 0, $this->font, $str);
 	$r_str_total = imagettfbbox($this->size, 0, $this->font, $str_total);
@@ -92,12 +186,19 @@ class MessageImageGenerator {
 	//echo "<br>";
 
 	// 文字色の決定
-	$color = $col_black;
+	$color = $col_char;
 	if ($array_msg[$i][1] > 0 && $array_msg[$i][1] + $str_len < $line_len) {
-	  if ($line[$array_msg[$i][1] - 1] == '|' && $line[$array_msg[$i][1] + $str_len] == '|') $color = $col_appeal;
-	  elseif ($line[$array_msg[$i][1] - 1] == '#' && $line[$array_msg[$i][1] + $str_len] == '#') $color = $col_appeal2;
-	  elseif ($line[$array_msg[$i][1] - 1] == '_' && $line[$array_msg[$i][1] + $str_len] == '_') $color = $col_appeal3;
-	  elseif ($line[$array_msg[$i][1] - 1] == '^' && $line[$array_msg[$i][1] + $str_len] == '^') $color = $col_appeal4;
+	  $c_d = $this->GetDelimiter($line[$array_msg[$i][1] - 1]);
+	  if ($d_stack[0] == $c_d->c) {
+	    // 既に同じデリミタがスタックにある→現在の色指定を解除
+	    array_shift($d_stack);
+	    $c_d = $this->GetDelimiter($d_stack[0]);
+	  }
+	  else {
+	    // 現在のデリミタをスタックに追加
+	    array_unshift($d_stack, $c_d->c);
+	  }
+	  $color = imagecolorallocate($img, $c_d->r, $c_d->g, $c_d->b);
 	}
 	
 	// 文字列の描画
@@ -106,10 +207,8 @@ class MessageImageGenerator {
 //	imagettftext($img, $this->size, 0, $this->x_margin + $r_str_total[2] - $r_str[2] + 1, 0 - $r[5] + $y_disp, $color, $this->font, $str);
 
 //	$x_disp += $str_len * $this->width + $r[0];
-	$col_flag = !$col_flag;
       }
       $y_disp += $this->height;
-      $col_flag = false;
     }
 
     return $img;
@@ -128,16 +227,13 @@ function drawboldtext($image, $size, $angle, $x_cord, $y_cord, $color, $fontfile
 }*/
 /*
 header("Content-Type: image/png");
+$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\uzura.ttf", 12, 5, 2, false);
+$gen->AddDelimiter(new Delimiter("|",255,0,0));
+$gen->AddDelimiter(new Delimiter("#",0,0,255));
 
-$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\uzura.ttf", 20, 5, 2, false);
-
-$image = $gen->GetImage("[役割]\n　#あなたは#|人狼|#です#。夜の間に他の人狼と協力し村人一人を殺害できます。" .
-		"あなたはその強力な力で村人を喰い殺すのです！",
-		255, 0, 0,
-		0, 0, 255);
-
-$image = $gen->GetImage("t|e|s#t#", 255, 0, 0, 0, 0, 255);
+$image = $gen->GetImage("[役割]\n　あなたは|人狼|です。#夜の間に他の|人狼|と協力し村人一人を殺害できます。#" .
+		"あなたはその強力な力で村人を喰い殺すのです！");
+//$image = $gen->GetImage("t|e|s#t#", 255, 0, 0, 0, 0, 255);
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-imagegif($image);
-*/
+imagegif($image);*/
 ?>
