@@ -5,6 +5,7 @@
   Ver. 1.0 作成
   Ver. 1.1 #の処理を追加
   Ver. 1.9 デリミタを登録制に変更。入れ子に対応
+  Ver. 1.91 色が変化しない不具合を修正
  */
 
 class Delimiter {
@@ -150,6 +151,8 @@ class MessageImageGenerator {
     $img = imagecreatetruecolor($plain_r[2] - $plain_r[6] + $this->x_margin * 2, $plain_r[3] - $plain_r[7] + $this->y_margin * 2);
     $col_char = imagecolorallocate($img, $this->def_col[0], $this->def_col[1], $this->def_col[2]);
     $col_back = imagecolorallocate($img, $this->def_bgc[0], $this->def_bgc[1], $this->def_bgc[2]);
+    // 文字描画色をデフォルト文字色に設定
+    $color = $col_char;
     // 背景を透明色に設定する場合
     if ($this->is_trans) imagecolortransparent($img, $col_back);
     imagefill($img, 0, 0, $col_back);
@@ -176,9 +179,11 @@ class MessageImageGenerator {
       $str_total = "";
       for ($i = 0 ; $i < count($array_msg) ; $i++) {
 	$str_len = strlen($array_msg[$i][0]);
-	//echo "str_r: $str_len ";
+	//echo "str_r: $str_len -> ";
+	//echo $array_msg[$i][0];
+	//echo "<br>";
 	$str = mb_convert_encoding($array_msg[$i][0], "UTF-8", "auto");
-	//print $str;
+	//print "$str <br>";
 	$str_total .= $str;
 	$r_str = imagettfbbox($this->size, 0, $this->font, $str);
 	$r_str_total = imagettfbbox($this->size, 0, $this->font, $str_total);
@@ -186,8 +191,9 @@ class MessageImageGenerator {
 	//echo "<br>";
 
 	// 文字色の決定
-	$color = $col_char;
-	if ($array_msg[$i][1] > 0 && $array_msg[$i][1] + $str_len < $line_len) {
+	if ($array_msg[$i][1] > 0) {
+	  //echo $str_len;
+	  //echo "<br>";
 	  $c_d = $this->GetDelimiter($line[$array_msg[$i][1] - 1]);
 	  if ($d_stack[0] == $c_d->c) {
 	    // 既に同じデリミタがスタックにある→現在の色指定を解除
@@ -198,6 +204,7 @@ class MessageImageGenerator {
 	    // 現在のデリミタをスタックに追加
 	    array_unshift($d_stack, $c_d->c);
 	  }
+	  //echo "$d_stack[0] <br>";
 	  $color = imagecolorallocate($img, $c_d->r, $c_d->g, $c_d->b);
 	}
 	
@@ -225,15 +232,15 @@ function drawboldtext($image, $size, $angle, $x_cord, $y_cord, $color, $fontfile
      ImageTTFText($image, $size, $angle, $x_cord+$_x[$n], $y_cord+$_y[$n], $color, $fontfile, $text);
    }
 }*/
-/*
+
 header("Content-Type: image/png");
 $gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\uzura.ttf", 12, 5, 2, false);
 $gen->AddDelimiter(new Delimiter("|",255,0,0));
 $gen->AddDelimiter(new Delimiter("#",0,0,255));
 
-$image = $gen->GetImage("[役割]\n　あなたは|人狼|です。#夜の間に他の|人狼|と協力し村人一人を殺害できます。#" .
-		"あなたはその強力な力で村人を喰い殺すのです！");
+$image = $gen->GetImage("[役割]\n　あなたは|人狼|です。\n　夜の間に他の|人狼|と協力し村人一人を殺害できます。" .
+                        "あなたはその|強力|な力で村人を喰い殺すのです！");
 //$image = $gen->GetImage("t|e|s#t#", 255, 0, 0, 0, 0, 255);
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-imagegif($image);*/
+imagegif($image);
 ?>
