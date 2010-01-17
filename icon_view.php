@@ -15,11 +15,13 @@ OutputHTMLHeader('ユーザアイコン一覧', 'icon_view')
 $dbHandle = ConnectDatabase(true); //DB 接続
 
 //ユーザアイコンのテーブルから一覧を取得
-$sql = mysql_query("SELECT icon_name, icon_filename, icon_width, icon_height, color
- 			FROM user_icon WHERE icon_no > 0 ORDER BY icon_no");
+$query = "SELECT icon_name, icon_filename, icon_width, icon_height, color " .
+  "FROM user_icon WHERE icon_no > 0 ORDER BY icon_no";
+$icon_list = FetchAssoc($query);
+
 //表の出力
 $count = 0;
-while(($array = mysql_fetch_assoc($sql)) !== false){
+foreach($icon_list as $array){
   extract($array);
   $location = $ICON_CONF->path . '/' . $icon_filename;
 

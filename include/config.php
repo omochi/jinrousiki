@@ -3,8 +3,8 @@
 class RoomConfig{
   //部屋最後の会話から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  #var $die_room = 1200;
-  var $die_room = 12000; //デバッグ用に長くしておく
+  var $die_room = 1200;
+  #var $die_room = 12000; //デバッグ用に長くしておく
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -106,7 +106,7 @@ class RoomConfig{
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  var $entry_one_ip_address = true;
+  var $entry_one_ip_address = false;
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   // var $trip = true; //まだ実装されていません
@@ -262,7 +262,9 @@ class GameConfig{
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗毒狼',
     'cursed_wolf'        => '呪狼',
+    'possessed_wolf'     => '憑狼',
     'cute_wolf'          => '萌狼',
+    'scarlet_wolf'       => '紅狼',
     'silver_wolf'        => '銀狼',
     'mad'                => '狂人',
     'fanatic_mad'        => '狂信者',
@@ -274,9 +276,11 @@ class GameConfig{
     'trap_mad'           => '罠師',
     'fox'                => '妖狐',
     'white_fox'          => '白狐',
+    'black_fox'          => '黒狐',
     'poison_fox'         => '管狐',
     'voodoo_fox'         => '九尾',
     'cursed_fox'         => '天狐',
+    'cute_fox'           => '萌狐',
     'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
     'child_fox'          => '子狐',
@@ -287,6 +291,7 @@ class GameConfig{
     'chiroptera'         => '蝙蝠',
     'poison_chiroptera'  => '毒蝙蝠',
     'cursed_chiroptera'  => '呪蝙蝠',
+    'dummy_chiroptera'   => '夢求愛者',
     'mania'              => '神話マニア',
     'unknown_mania'      => '鵺');
 
@@ -384,7 +389,9 @@ class GameConfig{
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗狼',
     'cursed_wolf'        => '呪狼',
+    'possessed_wolf'     => '憑狼',
     'cute_wolf'          => '萌狼',
+    'scarlet_wolf'       => '紅狼',
     'silver_wolf'        => '銀狼',
     'mad'                => '狂',
     'fanatic_mad'        => '狂信',
@@ -396,9 +403,11 @@ class GameConfig{
     'trap_mad'           => '罠',
     'fox'                => '狐',
     'white_fox'          => '白狐',
+    'black_fox'          => '黒狐',
     'poison_fox'         => '管狐',
     'voodoo_fox'         => '九尾',
     'cursed_fox'         => '天狐',
+    'cute_fox'           => '萌狐',
     'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
     'child_fox'          => '子狐',
@@ -409,6 +418,7 @@ class GameConfig{
     'chiroptera'         => '蝙',
     'poison_chiroptera'  => '毒蝙',
     'cursed_chiroptera'  => '呪蝙',
+    'dummy_chiroptera'   => '夢愛',
     'mania'              => 'マ',
     'unknown_mania'      => '鵺',
     'chicken'            => '酉',
@@ -461,6 +471,27 @@ class GameConfig{
     'lovers'             => '恋',
     'copied'             => '元マ');
 
+  //メイン役職のグループリスト (役職 => 所属グループ)
+  // このリストの並び順に strpos で判別する (毒系など、順番依存の役職があるので注意)
+  var $main_role_group_list = array(
+    'wolf' => 'wolf',
+    'mad' => 'mad',
+    'fox' => 'fox',
+    'cupid' => 'cupid',
+    'quiz' => 'quiz',
+    'chiroptera' => 'chiroptera',
+    'mage' => 'mage', 'voodoo_killer' => 'mage',
+    'necromancer' => 'necromancer', 'medium' => 'necromancer',
+    'priest' => 'priest',
+    'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
+    'common' => 'common',
+    'poison' => 'poison',
+    'pharmacist' => 'pharmacist',
+    'assassin' => 'assassin',
+    'mind_scanner' => 'mind_scanner',
+    'jealousy' => 'jealousy',
+    'mania' => 'mania');
+
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
   var $sub_role_group_list = array(
     'lovers'       => array('lovers'),
@@ -488,7 +519,7 @@ class GameConfig{
 
   //-- その他 --//
   var $power_gm = false; //強権 GM モード (ON：true / OFF：false)
-  var $random_message = true; //ランダムメッセージの挿入 (する：true / しない：false)
+  var $random_message = false; //ランダムメッセージの挿入 (する：true / しない：false)
 
   //-- 関数 --//
   function GetRoleName($role, $short = false){

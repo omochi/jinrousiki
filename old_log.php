@@ -16,13 +16,13 @@ loadModule(
   );
 
 //部屋No取得
-$RQ_ARGS = new LogView();
+$RQ_ARGS =& new LogView();
 $room_no = $RQ_ARGS->room_no;
 
 $dbHandle = ConnectDatabase(); //DB 接続
 if($RQ_ARGS->is_room){
-  $USERS = new UserDataSet($RQ_ARGS);
-  $SELF  = new User();
+  $USERS =& new UserDataSet($RQ_ARGS);
+  $SELF  =& new User();
   OutputOldLog();
 }
 else{
@@ -38,10 +38,9 @@ function OutputFinishedRooms($page, $reverse = NULL){
   global $SERVER_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
-  $sql = mysql_query("SELECT COUNT(*) FROM room WHERE status = 'finished'");
-  $num_rooms = mysql_result($sql, 0);
+  $num_rooms = FetchResult("SELECT COUNT(*) FROM room WHERE status = 'finished'");
   if($num_rooms == 0){
-    OutputActionResult($SERVER_CONF->title . ' [過去ログ]', 'ログはありません。<br>' . "\n" .
+    OutputActionResult($SERVER_CONF->title . $num_rooms . ' [過去ログ]', 'ログはありません。<br>' . "\n" .
 		       '<a href="index.php">←戻る</a>'."\n");
   }
 
@@ -57,11 +56,11 @@ echo <<<EOF
 
 EOF;
 
-  $config = new OldLogConfig(); //設定をロード
+  $config =& new OldLogConfig(); //設定をロード
   $is_reverse = (empty($reverse) ? $config->reverse : ($reverse == 'on'));
 
   //ページリンクの出力
-  if($page == NULL) $page = 1;
+  if(is_null($page)) $page = 1;
   $num_pages = ceil($num_rooms / $config->one_page) + 1; //[all] の為に + 1 しておく
   $url_option = '&reverse='.($is_reverse ? 'on' : 'off');
   if($RQ_ARGS->add_role) $url_option .= '&add_role=on';
@@ -111,17 +110,15 @@ EOF;
 			establish_time, start_time, finish_time FROM room
 			WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
 
-  $victory_img = new VictoryImage();
+  $victory_img =& new VictoryImage();
   while(($array = mysql_fetch_assoc($sql)) !== false){
     extract($array, EXTR_PREFIX_ALL, 'log');
 
     //オプションと勝敗の解析
     $game_option_str = MakeGameOptionImage($log_room_game_option, $log_room_option_role);
     $victory_role_str = $victory_img->MakeVictoryImage($log_room_victory_role);
-    if($log_room_date == 0) //廃村の場合、色を灰色にする
-      $dead_room_color = ' style="color:silver"';
-    else
-      $dead_room_color = '';
+    //廃村の場合、色を灰色にする
+    $dead_room_color = ($log_room_date == 0 ? ' style="color:silver"' : '');
 
     //ユーザ総数を取得
     // $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
@@ -181,7 +178,7 @@ function OutputOldLog(){
   $base_title = $SERVER_CONF->title . ' [過去ログ]';
   $url = "<br>\n<a href=\"old_log.php\">←戻る</a>\n";
 
-  if($room_no == NULL) OutputActionResult($title, '村を指定してください。' . $url);
+  if(is_null($room_no)) OutputActionResult($title, '村を指定してください。' . $url);
 
   //日付とシーンを取得
   $ROOM = new RoomDataSet($RQ_ARGS);
@@ -275,27 +272,20 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   }
 
   $flag_border_game = false;
+  //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
+  $query = "SELECT uname, sentence, font_type, location FROM talk WHERE room_no = $room_no AND ";
   if($set_location == 'heaven_only'){
-    //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
-			WHERE room_no = $room_no AND date = $set_date
-			AND (location = 'heaven' OR uname = 'system') $select_order");
+    $query .= "date = $set_date AND (location = 'heaven' OR uname = 'system')";
   }
   elseif($set_location == 'beforegame' || $set_location == 'aftergame'){
-    //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
-			WHERE room_no = $room_no AND location like '$set_location%'
-			$select_order");
+    $query .= "location like '$set_location%'";
   }
   else{
     $flag_border_game = true;
-    $hide_heaven_query = ($RQ_ARGS->heaven_talk ? '' : "AND location <> 'heaven'");
-    //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-    $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
-			WHERE room_no = $room_no AND date = $set_date
-			AND location <> 'aftergame' AND location <> 'beforegame'
-			$hide_heaven_query $select_order");
+    $query .= "date = $set_date AND location <> 'beforegame' AND location <> 'aftergame'";
+    if(! $RQ_ARGS->heaven_talk) $query .= " AND location <> 'heaven'";
   }
+  $sql = mysql_query("$query $select_order");
 
   if($flag_border_game && ! $is_reverse && $set_date != $last_date){
     $ROOM->date = $set_date + 1;
@@ -303,6 +293,7 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
     OutputLastWords(); //遺言を出力
     OutputDeadMan();   //死亡者を出力
   }
+  $ROOM->date = $set_date;
   $ROOM->day_night = $table_class;
 
   //出力

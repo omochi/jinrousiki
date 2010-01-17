@@ -107,7 +107,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
   $full_mania   = ($ROOM_CONF->full_mania   && $_POST['full_mania']  == 'on');
   $quiz         = ($ROOM_CONF->quiz         && $_POST['quiz']  == 'on');
   $duel         = ($ROOM_CONF->duel         && $_POST['duel']  == 'on');
-  $game_option_list = array('open_vote', 'not_open_cast');
+  $game_option_list = array('wish_role', 'open_vote', 'not_open_cast');
   $option_role_list = array();
   if($quiz){
     $game_option .= 'quiz ';
@@ -122,7 +122,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $game_option .= 'dummy_boy ';
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
-    array_push($game_option_list, 'wish_role');
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
@@ -156,7 +155,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
       }
     }
     else{
-      array_push($game_option_list, 'wish_role');
       if($duel){
 	$option_role .= 'duel ';
       }

@@ -233,6 +233,7 @@ function drawboldtext($image, $size, $angle, $x_cord, $y_cord, $color, $fontfile
    }
 }*/
 
+/*
 header("Content-Type: image/png");
 $gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\uzura.ttf", 12, 5, 2, false);
 $gen->AddDelimiter(new Delimiter("|",255,0,0));
@@ -243,4 +244,5 @@ $image = $gen->GetImage("[役割]\n　あなたは|人狼|です。\n　夜の�
 //$image = $gen->GetImage("t|e|s#t#", 255, 0, 0, 0, 0, 255);
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
 imagegif($image);
+*/
 ?>

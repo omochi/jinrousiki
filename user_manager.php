@@ -291,13 +291,20 @@ IMAGE;
       array_push($wish_role_list, 'wolf', 'trap_mad', 'assassin');
     }
     else{
-      if(in_array('full_mania', $option_role_list)) $wish_role_list[] = 'human';
-      $wish_role_list[] = 'wolf';
-      if(in_array('quiz', $game_option_list)){
-	array_push($wish_role_list, 'mad', 'common', 'fox');
+      if(! in_array('full_mania', $option_role_list)) $wish_role_list[] = 'human';
+      if(in_array('chaosfull', $game_option_list)){
+	array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'common', 'poison',
+		   'pharmacist', 'assassin', 'mind_scanner', 'jealousy', 'wolf', 'mad',
+		   'fox', 'cupid', 'quiz', 'chiroptera', 'mania');
       }
       else{
-	array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox');
+	$wish_role_list[] = 'wolf';
+	if(in_array('quiz', $game_option_list)){
+	  array_push($wish_role_list, 'mad', 'common', 'fox');
+	}
+	else{
+	  array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox');
+	}
       }
     }
     if(in_array('poison', $option_role_list)) $wish_role_list[] = 'poison';

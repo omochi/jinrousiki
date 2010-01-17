@@ -126,6 +126,7 @@ function OutputPlayerList(){
   $count = 0;
   $is_open_role = ($ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
 		   ($SELF->IsDead() && $ROOM->IsOpenCast()));
+
   foreach($USERS->rows as $this_user_no => $this_user){
     $this_uname   = $this_user->uname;
     $this_handle  = $this_user->handle_name;
@@ -133,15 +134,20 @@ function OutputPlayerList(){
     $this_role    = $this_user->role;
     $this_file    = $this_user->icon_filename;
     $this_color   = $this_user->color;
+    $this_live    = $USERS->IsVirtualLive($this_user_no);
 
     $profile_alt  = str_replace("\n", $replace, $this_profile);
     if($DEBUG_MODE) $this_handle .= ' (' . $this_user_no . ')';
+    $this_real_user = $USERS->ByReal($this_user_no);
+    if($this_real_user->user_no != $this_user_no){
+      $this_uname .= '<br>[' . $this_real_user->uname . ']';
+    }
 
     //アイコン
     $path = $ICON_CONF->path . '/' . $this_file;
     $img_tag = '<img title="' . $profile_alt . '" alt="' . $profile_alt .
       '" style="border-color: ' . $this_color . ';"';
-    if($this_user->IsLive()){ //生きていればユーザアイコン
+    if($ROOM->IsBeforeGame() || $this_live){ //生きていればユーザアイコン
       $this_live_str = '(生存中)';
     }
     else{ //死んでれば死亡アイコン
@@ -402,22 +408,33 @@ function OutputTalkLog(){
 function OutputTalk($talk, &$builder){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  $said_user = $USERS->ByUname($talk->uname);
+  $said_user = $USERS->ByVirtualUname($talk->uname);
+  $real_user = $USERS->ByRealUname($talk->uname);
+  $virtual_self = $USERS->ByVirtual($SELF->user_no);
   /*
     $talk_uname は必ず $talk から取得すること。
     $USERS にはシステムユーザー 'system' が存在しないため、$said_user は常に NULL になっている。
   */
-  $talk_uname       = $talk->uname;
+  $talk_uname = $talk->uname;
+  if($said_user->IsRole('possessed_wolf')){
+    #echo "$ROOM->day_night : $ROOM->date : ";
+    #echo $said_user->GetPossessedTarget($ROOM->date);
+  }
+
   $talk_handle_name = $said_user->handle_name;
   $talk_sex         = $said_user->sex;
   $talk_color       = $said_user->color;
   $sentence         = $talk->sentence;
   $font_type        = $talk->font_type;
   $location         = $talk->location;
-  if($said_user === NULL) $said_user = new User();
 
-  if($RQ_ARGS->add_role && $said_user->main_role != ''){ //役職表示モード対応
-    $talk_handle_name .= $said_user->MakeShortRoleName();
+  if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
+    #$talk_handle_name .= $said_user->MakeShortRoleName();
+    if(strpos($location, 'heaven') === false)
+      $real_user = $USERS->ByReal($said_user->user_no);
+    else
+      $real_user = $said_user;
+    $talk_handle_name .= $real_user->MakeShortRoleName();
   }
 
   LineToBR($sentence); //改行コードを <br> に変換
@@ -445,14 +462,16 @@ function OutputTalk($talk, &$builder){
   $location_system = (strpos($location, 'system') !== false);
   $flag_system = ($location_system && $flag_vote_action && ! $ROOM->IsFinished());
   $flag_live_night = ($SELF->IsLive() && $ROOM->IsNight() && ! $ROOM->IsFinished());
+  $flag_wolf_group = ($SELF->IsWolf(true) || $virtual_self->IsRole('whisper_mad') ||
+		      $SELF->IsDummyBoy());
+  $flag_fox_group  = ($virtual_self->IsFox(true) || $SELF->IsDummyBoy());
   $flag_mind_read  = (($ROOM->date > 1 && $SELF->IsLive() &&
-		       (($said_user->IsPartner('mind_read', $SELF->user_no) &&
+		       (($said_user->IsPartner('mind_read', $virtual_self->user_no) &&
 			 ! $said_user->IsRole('unconscious')) ||
-			$SELF->IsPartner('mind_receiver', $said_user->user_no) ||
-			$said_user->IsPartner('mind_friend', $SELF->partner_list))
-		       ) || $said_user->IsRole('mind_open'));
-  $flag_wolf_group = ($SELF->IsWolf(true) || $SELF->IsRole('whisper_mad') || $SELF->IsDummyBoy());
-  $flag_fox_group  = ($SELF->IsFox(true) || $SELF->IsDummyBoy());
+			$virtual_self->IsPartner('mind_receiver', $said_user->user_no) ||
+			$said_user->IsPartner('mind_friend', $virtual_self->partner_list))
+		       ) || $said_user->IsRole('mind_open') ||
+		      ($real_user->IsRole('possessed_wolf') && $flag_wolf_group));
 
   if($location_system && $sentence == 'OBJECTION'){ //異議あり
     $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
@@ -497,7 +516,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の共有者
   elseif($flag_live_night && $location == 'night common'){
-    if($SELF->IsRole('common') || $SELF->IsDummyBoy() || $flag_mind_read){
+    if($virtual_self->IsRole('common') || $SELF->IsDummyBoy() || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
     }
     elseif(! $SELF->IsRole('dummy_common')){ //夢共有者には何も見えない
@@ -515,7 +534,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($flag_live_night && $location == 'night self_talk'){
-    if($SELF->IsSameUser($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
+    if($virtual_self->IsSameUser($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
     }
     elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
@@ -692,7 +711,7 @@ function OutputTalk($talk, &$builder){
 	break;
 
       case 'night common':
-	if($SELF->IsRole('common')){
+	if($virtual_self->IsRole('common')){
 	  $builder->AddTalk($said_user, $talk);
 	}
 	elseif(! $SELF->IsRole('dummy_common')){ //夢共有者には何も見えない
@@ -704,13 +723,13 @@ function OutputTalk($talk, &$builder){
 	if($flag_fox_group){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($SELF->IsRole('wise_wolf')){
+	elseif($pseud_self->IsRole('wise_wolf')){
 	  $builder->AddWhisper('common', $talk);
 	}
 	break;
 
       case 'night self_talk':
-	if($SELF->IsSameUser($talk_uname)){
+	if($virtual_self->IsSameUser($talk_uname)){
 	  $builder->AddTalk($said_user, $talk);
 	}
 	elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
@@ -747,12 +766,8 @@ function OutputLastWords(){
 
 EOF;
 
-  $query = "SELECT last_words FROM user_entry WHERE room_no = {$ROOM->id} " .
-    "AND user_no > 0 AND uname =";
   foreach($array as $result){
     list($handle_name, $str) = ParseStrings($result);
-    $uname = $USERS->HandleNameToUname($handle_name);
-    $str = FetchResult("$query '$uname'");
     LineToBR(&$str);
 
     echo <<<EOF
@@ -783,10 +798,10 @@ function OutputDeadMan(){
     "OR type LIKE 'SUDDEN_DEATH_%'";
 
   //前の日の夜に起こった死亡メッセージ
-  $type_night = "type = 'WOLF_KILLED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
+  $type_night = "type = 'WOLF_KILLED' OR type = 'POSSESSED' OR type = 'POSSESSED_TARGETED' " .
+    "OR type = 'DREAM_KILLED' OR type = 'TRAPPED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
     "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
-    "OR type = 'DREAM_KILLED' OR type = 'TRAPPED' OR type = 'POISON_DEAD_night' " .
-    "OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE_%'";
+    "OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE_%'";
 
   if($ROOM->IsDay()){
     $set_date = $yesterday;
@@ -797,7 +812,7 @@ function OutputDeadMan(){
     $type = $type_day;
   }
 
-  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
+  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY RAND()");
   foreach($array as $this_array){
     OutputDeadManType($this_array['message'], $this_array['type']);
   }
@@ -809,7 +824,7 @@ function OutputDeadMan(){
   $type = ($ROOM->IsDay() ? $type_day : $type_night);
 
   echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合は $array の中身をチェックする
-  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY MD5(RAND()*NOW())");
+  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY RAND()");
   foreach($array as $this_array){
     OutputDeadManType($this_array['message'], $this_array['type']);
   }
@@ -823,8 +838,9 @@ function OutputDeadManType($name, $type){
   $deadman        = $deadman_header.$MESSAGE->deadman.'</td>'; //基本メッセージ
   $sudden_death   = $deadman_header.$MESSAGE->vote_sudden_death.'</td>'; //突然死用
   $reason_header  = "</tr>\n<tr><td>(".$name.' '; //追加共通ヘッダ
-  $show_reason = ($ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast()) ||
-		  $SELF->IsDummyBoy() || ($SELF->IsRole('yama_necromancer') && $SELF->IsLive()));
+  $open_reason = ($ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast()) ||
+		  $SELF->IsDummyBoy());
+  $show_reason = ($open_reason || ($SELF->IsRole('yama_necromancer') && $SELF->IsLive()));
 
   echo '<table class="dead-type">'."\n";
   switch($type){
@@ -838,14 +854,33 @@ function OutputDeadManType($name, $type){
     if($show_reason) echo $reason_header.$MESSAGE->wolf_killed.')</td>';
     break;
 
-  case 'FOX_DEAD':
+  case 'POSSESSED':
     echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->fox_dead.')</td>';
+    if($show_reason) echo $reason_header.$MESSAGE->possessed.')</td>';
+    break;
+
+  case 'POSSESSED_TARGETED':
+    if($open_reason) echo $deadman.$reason_header.$MESSAGE->possessed_targeted.')</td>';
+    break;
+
+  case 'WOLF_KILLED':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->wolf_killed.')</td>';
     break;
 
   case 'DREAM_KILLED':
     echo $deadman;
     if($show_reason) echo $reason_header.$MESSAGE->dream_killed.')</td>';
+    break;
+
+  case 'TRAPPED':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->trapped.')</td>';
+    break;
+
+  case 'FOX_DEAD':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->fox_dead.')</td>';
     break;
 
   case 'CURSED':
@@ -872,11 +907,6 @@ function OutputDeadManType($name, $type){
   case 'ASSASSIN_KILLED':
     echo $deadman;
     if($show_reason) echo $reason_header.$MESSAGE->assassin_killed.')</td>';
-    break;
-
-  case 'TRAPPED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->trapped.')</td>';
     break;
 
   case 'LOVERS_FOLLOWED_day':
@@ -1195,7 +1225,7 @@ function LoversFollowed($sudden_death = false){
 	InsertSystemTalk($user->handle_name . $MESSAGE->lovers_followed, ++$ROOM->system_time);
 	$user->SaveLastWords();
       }
-      elseif(! $user->Kill('LOVERS_FOLLOWED_' . $ROOM->day_night)){ //通常処理
+      elseif(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->day_night)){ //通常処理
 	continue;
       }
       $user->suicide_flag = true;
@@ -1213,11 +1243,11 @@ function LoversFollowed($sudden_death = false){
 function InsertMediumMessage(){
   global $USERS;
 
-  if(! $USERS->is_appear('medium')) return false; //巫女の出現チェック
+  if(! $USERS->IsAppear('medium')) return false; //巫女の出現チェック
   foreach($USERS->rows as $user){
-    if($user->suicide_flag){
-      InsertSystemMessage($user->handle_name . "\t" . $user->DistinguishCamp(), 'MEDIUM_RESULT');
-    }
+    if(! $user->suicide_flag) continue;
+    $handle_name = $USERS->GetVirtualHandleName($user->uname);
+    InsertSystemMessage($handle_name . "\t" . $user->DistinguishCamp(), 'MEDIUM_RESULT');
   }
 }
 

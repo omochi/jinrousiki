@@ -1,16 +1,9 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
 loadModule(
-  CONFIG,
-  IMAGE_CLASSES,
-  ROLE_CLASSES,
-  MESSAGE_CLASSES,
-  GAME_FORMAT_CLASSES,
-  SYSTEM_CLASSES,
   USER_CLASSES,
   TALK_CLASSES,
   GAME_FUNCTIONS,
-  #PLAY_FUNCTIONS,
   ROOM_IMG,
   ROLE_IMG,
   ROOM_CONF,
@@ -22,7 +15,7 @@ loadModule(
   );
 
 //°ú¿ô¤ò¼èÆÀ
-$RQ_ARGS = new RequestGameLog();
+$RQ_ARGS =& new RequestGameLog();
 if($RQ_ARGS->day_night != 'day' && $RQ_ARGS->day_night != 'night' &&
    ! ($RQ_ARGS->day_night == 'beforegame' && $RQ_ARGS->date == 0)){
   OutputActionResult('°ú¿ô¥¨¥é¡¼', '°ú¿ô¥¨¥é¡¼¡§Ìµ¸ú¤Ê°ú¿ô¤Ç¤¹');
@@ -35,11 +28,11 @@ $session_id = session_id();
 $dbHandle = ConnectDatabase(); //DB ÀÜÂ³
 $uname = CheckSession($session_id); //¥»¥Ã¥·¥ç¥ó ID ¤ò¥Á¥§¥Ã¥¯
 
-$ROOM = new RoomDataSet($RQ_ARGS); //Éô²°¾ðÊó¤ò¼èÆÀ
+$ROOM =& new RoomDataSet($RQ_ARGS); //Éô²°¾ðÊó¤ò¼èÆÀ
 $ROOM->log_mode = true;
 
-$USERS = new UserDataSet($RQ_ARGS); //¥æ¡¼¥¶¾ðÊó¤ò¥í¡¼¥É
-$SELF  = $USERS->ByUname($uname);
+$USERS =& new UserDataSet($RQ_ARGS); //¥æ¡¼¥¶¾ðÊó¤ò¥í¡¼¥É
+$SELF = $USERS->ByUname($uname);
 
 if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //»à¼Ô¤«¥²¡¼¥à½ªÎ»¸å¤À¤±
   OutputActionResult('¥æ¡¼¥¶Ç§¾Ú¥¨¥é¡¼',
@@ -55,6 +48,7 @@ echo '<table><tr><td width="1000" align="right">¥í¥°±ÜÍ÷ ' . $ROOM->date . ' ÆüÌ
   ($ROOM->IsBeforeGame() ? '³«»ÏÁ°' : ($ROOM->IsDay() ? 'Ãë' : 'Ìë')) . ')</td></tr></table>'."\n";
 OutputTalkLog();       //²ñÏÃ¥í¥°
 OutputAbilityAction(); //Ç½ÎÏÈ¯´ø
+OutputLastWords();     //°ä¸À
 OutputDeadMan();       //»àË´¼Ô
 if($ROOM->IsNight()) OutputVoteList(); //ÅêÉ¼·ë²Ì
 OutputHTMLFooter();

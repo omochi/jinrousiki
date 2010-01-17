@@ -48,11 +48,17 @@ class User{
 
   function ParseRoles(){
     $role_list = explode(' ', $this->role);
-    $regex = "/([^\[]*)\[(\d+)\]/";
+    $regex_partner = '/([^\[]+)\[([^\]]+)\]/';
+    $regex_status  = '/([^-]+)-(.+)/';
     foreach($role_list as $role){
-      if(preg_match($regex, $role, $matches)){
-	$this->role_list[] = $matches[1];
-	$this->partner_list[$matches[1]][] = $matches[2];
+      if(preg_match($regex_partner, $role, $match_partner)){
+	$this->role_list[] = $match_partner[1];
+	if(preg_match($regex_status, $match_partner[2], $match_status)){
+	  $this->partner_list[$match_partner[1]][$match_status[1]] = $match_status[2];
+	}
+	else{
+	  $this->partner_list[$match_partner[1]][] = $match_partner[2];
+	}
       }
       else{
 	$this->role_list[] = $role;
@@ -100,8 +106,10 @@ class User{
 
   function IsRoleGroup($role){
     $arg = func_get_args();
-    foreach($arg as $this_role){
-      if(strpos($this->role, $this_role) !== false) return true;
+    foreach($arg as $this_target_role){
+      foreach($this->role_list as $this_role){
+	if(strpos($this_role, $this_target_role) !== false) return true;
+      }
     }
     return false;
   }
@@ -132,32 +140,24 @@ class User{
     }
   }
 
+  //日数に応じた憑依先の ID を取得
+  function GetPossessedTarget($type, $date){
+    $target_list = $this->partner_list[$type];
+    if(! is_array($target_list)) return false;
+
+    $date_list = array_keys($target_list);
+    krsort($date_list);
+    foreach($date_list as $this_date){
+      if($this_date <= $date) return $target_list[$this_date];
+    }
+    return false;
+  }
+
+  //基幹死亡処理
   function ToDead(){
-    if(!($this->IsLive() || $this->revive_flag) || $this->dead_flag) return false;
+    if(! ($this->IsLive() || $this->revive_flag) || $this->dead_flag) return false;
     $this->Update('live', 'dead');
     $this->dead_flag = true;
-    return true;
-  }
-
-  //死亡処理
-  function Kill($reason = NULL){
-    if(! $this->ToDead()) return false;
-    if($reason){
-      InsertSystemMessage($this->handle_name, $reason);
-      $this->SaveLastWords();
-    }
-    return true;
-  }
-
-  //突然死処理
-  function SuddenDeath($reason = NULL){
-    global $MESSAGE, $ROOM;
-
-    if(! $this->Kill($reason)) return false;
-    $this->suicide_flag = true;
-
-    $sentence = ($reason ? 'vote_sudden_death' : 'sudden_death');
-    InsertSystemTalk($this->handle_name . $MESSAGE->$sentence, ++$ROOM->system_time);
     return true;
   }
 
@@ -204,15 +204,20 @@ class User{
   */
 
   //遺言を取得して保存する
-  function SaveLastWords(){
+  function SaveLastWords($handle_name = NULL){
     global $ROOM;
 
     if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
+    if(! $handle_name) $handle_name = $this->handle_name;
+    if($ROOM->test_mode){
+      InsertSystemMessage($handle_name, 'LAST_WORDS');
+      return;
+    }
 
     $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
       "AND uname = '{$this->uname}' AND user_no > 0";
-    if($ROOM->test_mode || FetchResult($query) != ''){
-      InsertSystemMessage($this->handle_name, 'LAST_WORDS');
+    if(($last_words = FetchResult($query)) != ''){
+      InsertSystemMessage($handle_name . "\t" . $last_words, 'LAST_WORDS');
     }
   }
 
@@ -224,7 +229,7 @@ class User{
       return;
     }
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
-    mysql_query("UPDATE user_entry SET $item = '$value' $query");
+    mysql_query("UPDATE user_entry SET $item = '$value' $query AND user_no > 0");
     mysql_query('COMMIT');
   }
 
@@ -240,8 +245,9 @@ class User{
 
   //占い師の判定
   function DistinguishMage($reverse = false){
-    //白狼以外の狼と不審者は人狼判定
-    $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) || $this->IsRole('suspect'));
+    //白狼以外の狼、黒狐、不審者は人狼判定
+    $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) ||
+	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
     return ($result ? 'wolf' : 'human');
   }
@@ -376,7 +382,7 @@ class UserDataSet{
   }
 
   function LoadUsers($user_list){
-    if($user_list === false) return false;
+    if(! is_array($user_list)) return false;
     $this->rows = array();
     $kicked_user_no = 0;
     foreach($user_list as $user){
@@ -409,24 +415,55 @@ class UserDataSet{
     return $this->names[$uname];
   }
 
-  function HandleNametoUname($handle_name){
+  function HandleNameToUname($handle_name){
     foreach($this->rows as $user){
       if($handle_name == $user->handle_name) return $user->uname;
     }
-    return false;
+    return NULL;
   }
 
   function ByID($user_no){
-    return $this->rows[$user_no];
+    if(is_null($user_no)) return new User();
+    return ($user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no]);
   }
 
   function ByUname($uname){
-    $user_no = $this->UnameToNumber($uname);
-    return ($user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no]);
+    return $this->ByID($this->UnameToNumber($uname));
+  }
+
+  function TraceVirtual($user_no, $role, $type){
+    global $ROOM;
+
+    $user = $this->ByID($user_no);
+    if(! $ROOM->IsPlaying() || ! $user->IsRole($role)) return $user;
+
+    $virtual_id = $user->GetPossessedTarget($type, $ROOM->date);
+    if($virtual_id === false) return $user;
+    return $this->ByID($virtual_id);
+  }
+
+  function ByVirtual($user_no){
+    return $this->TraceVirtual($user_no, 'possessed_wolf', 'possessed_target');
+  }
+
+  function ByReal($user_no){
+    return $this->TraceVirtual($user_no, 'possessed', 'possessed');
+  }
+
+  function ByVirtualUname($uname){
+    return $this->ByVirtual($this->UnameToNumber($uname));
+  }
+
+  function ByRealUname($uname){
+    return $this->ByReal($this->UnameToNumber($uname));
   }
 
   function GetHandleName($uname){
     return $this->ByUname($uname)->handle_name;
+  }
+
+  function GetVirtualHandleName($uname){
+    return $this->ByVirtualUname($uname)->handle_name;
   }
 
   function GetSex($uname){
@@ -437,17 +474,6 @@ class UserDataSet{
     return $this->ByUname($uname)->role;
   }
 
-  function GetPartners($uname, $strict = false){
-    $role = $this->GetRole($uname);
-    $partners = array();
-    foreach($this->rows as $user){
-      if($strict ? ($user->IsRole($role)) : ($user->IsRoleGroup($role))){
-        $partners[] = $user;
-      }
-    }
-    return $partners;
-  }
-
   function GetLive($uname){
     return $this->ByUname($uname)->live;
   }
@@ -456,11 +482,25 @@ class UserDataSet{
     return count($this->rows);
   }
 
-  function is_appear($role){
+  //役職の出現判定関数
+  function IsAppear($role){
     foreach($this->rows as $this_user){
       if($this_user->main_role == $role) return true;
     }
     return false;
+  }
+
+  //仮想的な生死状態を返す
+  function IsVirtualLive($user_no){
+    //憑依されている場合は憑依者の生死を返す
+    $real_user = $this->ByReal($user_no);
+    if($real_user->user_no != $user_no) return $real_user->IsLive();
+
+    //憑依先に移動している場合は常に死亡扱い
+    if($this->ByVirtual($user_no)->user_no != $user_no) return false;
+
+    //憑依が無ければ本人の生死を返す
+    return $this->ByID($user_no)->IsLive();
   }
 
   function GetLivingUsers(){
@@ -477,6 +517,33 @@ class UserDataSet{
       if($this_user->IsLive() && $this_user->IsWolf()) $array[] = $this_user->uname;
     }
     return $array;
+  }
+
+  //死亡処理
+  function Kill($user_no, $reason = NULL){
+    $user = $this->ByReal($user_no);
+    if(! $user->ToDead()) return false;
+
+    if($reason){
+      $handle_name = $this->GetVirtualHandleName($user->uname);
+      InsertSystemMessage($handle_name, $reason);
+      if($reason != 'POSSESSED_TARGETED') $user->SaveLastWords($handle_name);
+    }
+    return true;
+  }
+
+  //突然死処理
+  function SuddenDeath($user_no, $reason = NULL){
+    global $MESSAGE, $ROOM;
+
+    $user = $this->ByReal($user_no);
+    if(! $this->Kill($user_no, $reason)) return false;
+    $user->suicide_flag = true;
+
+    $sentence = ($reason ? 'vote_sudden_death' : 'sudden_death');
+    $handle_name =  $this->GetVirtualHandleName($user->uname);
+    InsertSystemTalk($handle_name . $MESSAGE->$sentence, ++$ROOM->system_time);
+    return true;
   }
 
   //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。
