@@ -32,8 +32,10 @@ NOTICE;
   }
 
   function OutputTimelag() {
+    global $SERVER_CONF;
     //時間ずれの表示
-    $date_str = gmdate('Y, m, j, G, i, s', $this->room->system_time);
+    $date_str = $SERVER_CONF->adjust_time_difference ?
+                gmdate('Y, m, j, G, i, s', $this->room->system_time) : date('Y, m, j, G, i, s', $this->room->system_time);
     $this->output .= <<<NOTICE
 <div>
 サーバとローカルPCの時間ズレ(ラグ含)： <span>

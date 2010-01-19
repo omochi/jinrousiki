@@ -49,6 +49,7 @@ SCRIPT;
   }
 
   function OutputGameInfo(){
+    global $SERVER_CONF;
     if ($this->room->IsBeforeGame()){
       $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = {$this->room->id}");
       $option_image = MakeGameOptionImage($this->room->game_option, $option_role);
@@ -64,7 +65,8 @@ SCRIPT;
 NOTICE;
     }
     //時間ずれの表示
-    $date_str = gmdate('Y, m, j, G, i, s', $this->room->system_time);
+    $date_str = $SERVER_CONF->adjust_time_difference ?
+                gmdate('Y, m, j, G, i, s', $this->room->system_time) : date('Y, m, j, G, i, s', $this->room->system_time);
     $this->output .= <<<NOTICE
 <div>
 サーバとローカルPCの時間ズレ(ラグ含)： <span>

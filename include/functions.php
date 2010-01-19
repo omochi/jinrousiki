@@ -159,7 +159,9 @@ function FetchObjectArray($query, $class){
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
   global $SERVER_CONF;
-  return time() + $SERVER_CONF->offset_seconds;
+  $cur_time = time();
+  if ($SERVER_CONF->adjust_time_difference) $curtime += $SERVER_CONF->offset_seconds;
+  return $cur_time;
   /* // ミリ秒対応のコード(案) 2009-08-08 enogu
      return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ミリ秒
      対応のコード(案) 2009-08-08 enogu
@@ -167,12 +169,16 @@ function TZTime(){
 }
 
 //TIMESTAMP 形式の時刻を変換する
-function ConvertTimeStamp($time, $offset = true){
+function ConvertTimeStamp($time){
   global $SERVER_CONF;
 
   $str = strtotime($time);
-  if($offset) $str += $SERVER_CONF->offset_seconds;
-  return gmdate('Y/m/d (D) H:i:s', $str);
+  if ($SERVER_CONF->adjust_time_difference) {
+    $str += $SERVER_CONF->offset_seconds;
+    return gmdate('Y/m/d (D) H:i:s', $str);
+  }
+  // else
+  return date('Y/m/d (D) H:i:s', $str);
 }
 
 //時間(秒)を変換する

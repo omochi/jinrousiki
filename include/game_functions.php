@@ -1253,7 +1253,7 @@ function InsertMediumMessage(){
 
 //リアルタイムの経過時間
 function GetRealPassTime(&$left_time, $flag = false){
-  global $ROOM;
+  global $ROOM, $SERVER_CONF;
 
   $time_str = strstr($ROOM->game_option, 'real_time');
   //実時間の制限時間を取得
@@ -1278,8 +1278,10 @@ function GetRealPassTime(&$left_time, $flag = false){
   $left_time = $base_time - $pass_time;
   if($left_time < 0) $left_time = 0; //マイナスになったらゼロにする
   if(! $flag) return;
-  $start_date_str = gmdate('Y, m, j, G, i, s', $start_time);
-  $end_date_str   = gmdate('Y, m, j, G, i, s', $start_time + $base_time);
+  $start_date_str = $SERVER_CONF->adjust_time_difference ?
+                    gmdate('Y, m, j, G, i, s', $start_time) : date('Y, m, j, G, i, s', $start_time);
+  $end_date_str   = $SERVER_CONF->adjust_time_difference ?
+                    gmdate('Y, m, j, G, i, s', $start_time + $base_time) : date('Y, m, j, G, i, s', $start_time + $base_time);
   return array($start_date_str, $end_date_str);
 }
 

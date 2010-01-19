@@ -104,7 +104,8 @@ echo $ROOM_IMG->GenerateTag('real_time', $alt);
 下記の計測結果で明らかに大きなズレがある場合は、<a href="http://www.vector.co.jp/soft/win95/personal/se050672.html" target="_blank">桜時計</a>などを使用してPCの時計を合わせてください。<br>
 <span class="diff-time">サーバとローカルPCの時間ズレ(ラグ含)：<script type="text/javascript">
 <?php
-  $date_str = gmdate('Y, m, j, G, i, s', TZTime());
+  $date_str = $SERVER_CONF->adjust_time_difference ?
+              gmdate('Y, m, j, G, i, s', TZTime()) : date('Y, m, j, G, i, s', TZTime());
   echo "output_diff_time('$date_str');";
   //$time_str = time();
   //echo "output_diff_time('$time_str');";

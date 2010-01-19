@@ -41,7 +41,10 @@ class ServerConfig{
   //ソースアップロードフォームのパスワード
   var $src_upload_password = 'upload';
 
-  //時差 (秒数)
+  //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
+  var $adjust_time_difference = true;
+  
+  //$adjust_time_differenceが有効な時の時差 (秒数)
   var $offset_seconds = 32400; //9時間
 
   //他の人狼サーバの村情報を表示する

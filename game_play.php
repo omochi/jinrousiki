@@ -633,7 +633,8 @@ EOF;
   if($ROOM->IsBeforeGame()) OutputGameOption(); //ゲームオプションを説明
   echo '<table class="time-table"><tr>'."\n";
   if(! $ROOM->IsAfterGame()){ //ゲーム終了後以外なら、サーバとの時間ズレを表示
-    $date_str = gmdate('Y, m, j, G, i, s', $ROOM->system_time);
+    $date_str = $SERVER_CONF->adjust_time_difference ?
+                gmdate('Y, m, j, G, i, s', $ROOM->system_time) : date('Y, m, j, G, i, s', $ROOM->system_time);
     echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
     echo '<td>サーバとローカルPCの時間ズレ(ラグ含)： ' . '<span><script type="text/javascript">' .
       "output_diff_time('$date_str');" . '</script>' . '秒</span></td></td>'."\n";
