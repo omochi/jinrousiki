@@ -35,7 +35,7 @@ class RoomConfig{
   var $default_open_vote = false;
 
   var $not_open_cast = true; //霊界で配役を公開しない
-  var $default_not_open_cast = true;
+  var $default_not_open_cast = false;
 
   var $decide = true; //決定者出現 (必要人数は GameConfig->decide 参照)
   var $default_decide = true;
@@ -237,6 +237,7 @@ class GameConfig{
     'dummy_necromancer'  => '夢枕人',
     'medium'             => '巫女',
     'priest'             => '司祭',
+    'crisis_priest'      => '預言者',
     'guard'              => '狩人',
     'poison_guard'       => '騎士',
     'reporter'           => 'ブン屋',
@@ -287,6 +288,7 @@ class GameConfig{
     'cupid'              => 'キューピッド',
     'self_cupid'         => '求愛者',
     'mind_cupid'         => '女神',
+    //'possessed_cupid'    => 'QP',
     'quiz'               => '出題者',
     'chiroptera'         => '蝙蝠',
     'poison_chiroptera'  => '毒蝙蝠',
@@ -364,6 +366,7 @@ class GameConfig{
     'dummy_necromancer'  => '夢枕',
     'medium'             => '巫',
     'priest'             => '司',
+    'crisis_priest'      => '預',
     'guard'              => '狩',
     'poison_guard'       => '騎',
     'reporter'           => '聞',
@@ -508,7 +511,7 @@ class GameConfig{
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'));
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'anti_voodoo', 'priest');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役

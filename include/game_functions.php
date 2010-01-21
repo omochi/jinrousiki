@@ -116,133 +116,121 @@ function OutputTimeTable(){
 function OutputPlayerList(){
   global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $ROOM, $USERS, $SELF;
 
+  //アイコンの設定を取得
   $width  = $ICON_CONF->width;
   $height = $ICON_CONF->height;
+
   //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
   //IE の場合改行を \r\n に統一、その他のブラウザはスペースにする(画像のAlt属性)
   $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
 
-  echo '<div class="player"><table cellspacing="5"><tr>'."\n";
-  $count = 0;
+  $count = 0; //改行カウントを初期化
+
+  //配役公開フラグを設定
   $is_open_role = ($ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
 		   ($SELF->IsDead() && $ROOM->IsOpenCast()));
 
-  foreach($USERS->rows as $this_user_no => $this_user){
-    $this_uname   = $this_user->uname;
-    $this_handle  = $this_user->handle_name;
-    $this_profile = $this_user->profile;
-    $this_role    = $this_user->role;
-    $this_file    = $this_user->icon_filename;
-    $this_color   = $this_user->color;
-    $this_live    = $USERS->IsVirtualLive($this_user_no);
+  //ゲーム開始投票チェック用クエリ
+  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
+    "AND situation = 'GAMESTART' AND uname = ";
 
-    $profile_alt  = str_replace("\n", $replace, $this_profile);
-    if($DEBUG_MODE) $this_handle .= ' (' . $this_user_no . ')';
-    $this_real_user = $USERS->ByReal($this_user_no);
-    if($this_real_user->user_no != $this_user_no){
-      $this_uname .= '<br>[' . $this_real_user->uname . ']';
+  $str = '<div class="player"><table cellspacing="5"><tr>'."\n";
+  foreach($USERS->rows as $user_no => $user){
+    if($count > 0 && ($count % 5) == 0) $str .= "</tr>\n<tr>\n"; //5個ごとに改行
+    $count++;
+
+    //ゲーム開始投票をしていたら背景色を変える
+    $td_header = '<td>';
+    if($ROOM->IsBeforeGame() &&
+       (($user->IsDummyBoy() && ! $ROOM->IsQuiz()) ||
+	FetchResult($query . "'{$user->uname}'") > 0)){
+      $td_header = '<td class="already-vote">';
     }
 
-    //アイコン
-    $path = $ICON_CONF->path . '/' . $this_file;
-    $img_tag = '<img title="' . $profile_alt . '" alt="' . $profile_alt .
-      '" style="border-color: ' . $this_color . ';"';
-    if($ROOM->IsBeforeGame() || $this_live){ //生きていればユーザアイコン
-      $this_live_str = '(生存中)';
+    //ユーザプロフィールと枠線の色を追加
+    $profile = str_replace("\n", $replace, $user->profile);
+    $str .= $td_header . '<img title="' . $profile . '" alt="' . $profile .
+      '" style="border-color: ' . $user->color . ';"';
+
+    //生死情報に応じたアイコンを設定
+    $path = $ICON_CONF->path . '/' . $user->icon_filename;
+    if($ROOM->IsBeforeGame() || $USERS->IsVirtualLive($user_no)){
+      $live = '(生存中)';
     }
-    else{ //死んでれば死亡アイコン
-      $this_live_path = $path; //アイコンのパスを入れ替え
-      $path           = $ICON_CONF->dead;
-      $this_live_str  = '(死亡)';
-      $img_tag .= " onMouseover=\"this.src='$this_live_path'\" onMouseout=\"this.src='$path'\"";
+    else{
+      $live = '(死亡)';
+      $str .= ' onMouseover="this.src=' . "'$path'" . '"'; //元のアイコン
+
+      $path = $ICON_CONF->dead; //アイコンを死亡アイコンに入れ替え
+      $str .= ' onMouseout="this.src=' . "'$path'" . '"';
     }
-    $img_tag .= ' width="' . $width . '" height="' . $height . '" src="' . $path . '">';
+    $str .= ' width="' . $width . '" height="' . $height . '" src="' . $path . '"></td>'."\n";
+
+    //HN を追加
+    $str .= $td_header . '<font color="' . $user->color . '">◆</font>' . $user->handle_name;
+    if($DEBUG_MODE) $str .= ' (' . $user_no . ')';
+    $str .= '<br>'."\n";
 
     //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
     if($is_open_role){
-      $role_str = '';
-      if($this_user->IsRole('human', 'suspect', 'unconscious'))
-	$role_str = MakeRoleName($this_user->main_role, 'human');
-      elseif($this_user->IsRoleGroup('mage') || $this_user->IsRole('voodoo_killer'))
-	$role_str = MakeRoleName($this_user->main_role, 'mage');
-      elseif($this_user->IsRoleGroup('necromancer') || $this_user->IsRole('medium', 'priest'))
-	$role_str = MakeRoleName($this_user->main_role, 'necromancer');
-      elseif($this_user->IsRoleGroup('guard') || $this_user->IsRole('reporter', 'anti_voodoo'))
-	$role_str = MakeRoleName($this_user->main_role, 'guard');
-      elseif($this_user->IsRoleGroup('common'))
-	$role_str = MakeRoleName($this_user->main_role, 'common');
-      elseif($this_user->IsRole('mind_scanner'))
-	$role_str = MakeRoleName($this_user->main_role, 'mind');
-      elseif($this_user->IsRoleGroup('jealousy'))
-	$role_str = MakeRoleName($this_user->main_role, 'jealousy');
-      elseif($this_user->IsRoleGroup('mania'))
-	$role_str = MakeRoleName($this_user->main_role, 'mania');
-      elseif($this_user->IsRole('assassin', 'quiz'))
-	$role_str = MakeRoleName($this_user->main_role);
-      elseif($this_user->IsRoleGroup('wolf'))
-	$role_str = MakeRoleName($this_user->main_role, 'wolf');
-      elseif($this_user->IsRoleGroup('mad'))
-	$role_str = MakeRoleName($this_user->main_role, 'mad');
-      elseif($this_user->IsRoleGroup('fox'))
-	$role_str = MakeRoleName($this_user->main_role, 'fox');
-      elseif($this_user->IsRoleGroup('chiroptera'))
-	$role_str = MakeRoleName($this_user->main_role, 'chiroptera');
-      elseif($this_user->IsRoleGroup('cupid'))
-	$role_str = MakeRoleName($this_user->main_role, 'cupid');
-      elseif($this_user->IsRoleGroup('poison') || $this_user->IsRole('pharmacist'))
-	$role_str = MakeRoleName($this_user->main_role, 'poison');
+      $str .= '　(' . $user->uname; //ユーザ名を追加
 
-      do{ //兼任役職の表示
-	if(($this_role_count = count($this_user->role_list)) < 2) break; //無ければスキップ
+      //憑依状態なら憑依しているユーザを追加
+      $real_user = $USERS->ByReal($user_no);
+      if(! $real_user->IsSameID($user_no) && $real_user->IsLive()){
+	$str .= '<br>[' . $real_user->uname . ']';
+      }
+      $str .= ')<br>';
 
+      //メイン役職を追加
+      if($user->IsRole('human', 'suspect', 'unconscious'))
+	$str .= MakeRoleName($user->main_role, 'human');
+      elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
+	$str .= MakeRoleName($user->main_role, 'mage');
+      elseif($user->IsRoleGroup('necromancer', 'priest') || $user->IsRole('medium'))
+	$str .= MakeRoleName($user->main_role, 'necromancer');
+      elseif($user->IsRoleGroup('guard') || $user->IsRole('reporter', 'anti_voodoo'))
+	$str .= MakeRoleName($user->main_role, 'guard');
+      elseif($user->IsRoleGroup('common'))
+	$str .= MakeRoleName($user->main_role, 'common');
+      elseif($user->IsRole('mind_scanner'))
+	$str .= MakeRoleName($user->main_role, 'mind');
+      elseif($user->IsRoleGroup('jealousy'))
+	$str .= MakeRoleName($user->main_role, 'jealousy');
+      elseif($user->IsRoleGroup('mania'))
+	$str .= MakeRoleName($user->main_role, 'mania');
+      elseif($user->IsRole('assassin', 'quiz'))
+	$str .= MakeRoleName($user->main_role);
+      elseif($user->IsRoleGroup('wolf'))
+	$str .= MakeRoleName($user->main_role, 'wolf');
+      elseif($user->IsRoleGroup('mad'))
+	$str .= MakeRoleName($user->main_role, 'mad');
+      elseif($user->IsRoleGroup('fox'))
+	$str .= MakeRoleName($user->main_role, 'fox');
+      elseif($user->IsRoleGroup('chiroptera'))
+	$str .= MakeRoleName($user->main_role, 'chiroptera');
+      elseif($user->IsRoleGroup('cupid'))
+	$str .= MakeRoleName($user->main_role, 'cupid');
+      elseif($user->IsRoleGroup('poison') || $user->IsRole('pharmacist'))
+	$str .= MakeRoleName($user->main_role, 'poison');
+
+      if(($role_count = count($user->role_list)) > 1){ //兼任役職の表示
 	$display_role_count = 1;
 	foreach($GAME_CONF->sub_role_group_list as $class => $role_list){
-	  foreach($role_list as $this_sub_role){
-	    if($this_user->IsRole($this_sub_role)){
-	      $role_str .= MakeRoleName($this_sub_role, $class, true);
-	      if(++$display_role_count >= $this_role_count) break 3;
+	  foreach($role_list as $sub_role){
+	    if($user->IsRole($sub_role)){
+	      $str .= MakeRoleName($sub_role, $class, true);
+	      if(++$display_role_count >= $role_count) break 2;
 	    }
 	  }
 	}
-      }while(false);
-
-      if($SELF->IsDummyBoy() && $ROOM->IsBeforeGame()){
-	$query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
-	  "AND situation = 'GAMESTART' AND uname = '$this_uname'";
-	if(($this_user->IsDummyBoy() && ! $ROOM->IsQuiz()) || FetchResult($query_game_start) > 0){
-	  $already_vote_class = ' class="already-vote"';
-	}
-	else{
-	  $already_vote_class = '';
-	}
-      }
-      echo "<td${already_vote_class}>{$img_tag}</td>"."\n";
-      echo "<td${already_vote_class}><font color=\"$this_color\">◆</font>$this_handle<br>"."\n";
-      echo "　($this_uname)<br> $role_str";
-    }
-    elseif($ROOM->IsBeforeGame()){ //ゲーム前
-      //ゲームスタートに投票していれば色を変える
-      $query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
-	"AND situation = 'GAMESTART' AND uname = '$this_uname'";
-      if(($this_user->IsDummyBoy() && ! $ROOM->IsQuiz()) || FetchResult($query_game_start) > 0){
-	$already_vote_class = ' class="already-vote"';
-      }
-      else{
-	$already_vote_class = '';
       }
 
-      echo "<td${already_vote_class}>{$img_tag}</td>"."\n";
-      echo "<td${already_vote_class}><font color=\"$this_color\">◆</font>$this_handle";
+      $str .= '<br>'."\n";
     }
-    else{ //生きていてゲーム中
-      echo "<td>{$img_tag}</td>"."\n";
-      echo "<td><font color=\"$this_color\">◆</font>$this_handle";
-    }
-    echo '<br>'."\n" . $this_live_str . '</td>'."\n";
-
-    if(++$count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+    $str .= $live . '</td>'."\n";
   }
-  echo '</tr></table></div>'."\n";
+  echo $str . '</tr></table></div>'."\n";
 }
 
 //役職名のタグを作成する //game_format.php に似たような関数があるかな？
@@ -297,7 +285,7 @@ EOF;
 
   //-- 個々の勝敗結果 --//
   //勝敗未決定、観戦モード、ログ閲覧モードなら非表示
-  if($victory == NULL || $ROOM->view_mode || $ROOM->log_mode) return;
+  if(is_null($victory) || $ROOM->view_mode || $ROOM->log_mode) return;
 
   $result = 'win';
   $target_user = $SELF;
@@ -416,11 +404,6 @@ function OutputTalk($talk, &$builder){
     $USERS にはシステムユーザー 'system' が存在しないため、$said_user は常に NULL になっている。
   */
   $talk_uname = $talk->uname;
-  if($said_user->IsRole('possessed_wolf')){
-    #echo "$ROOM->day_night : $ROOM->date : ";
-    #echo $said_user->GetPossessedTarget($ROOM->date);
-  }
-
   $talk_handle_name = $said_user->handle_name;
   $talk_sex         = $said_user->sex;
   $talk_color       = $said_user->color;
@@ -429,14 +412,12 @@ function OutputTalk($talk, &$builder){
   $location         = $talk->location;
 
   if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
-    #$talk_handle_name .= $said_user->MakeShortRoleName();
     if(strpos($location, 'heaven') === false)
       $real_user = $USERS->ByReal($said_user->user_no);
     else
       $real_user = $said_user;
     $talk_handle_name .= $real_user->MakeShortRoleName();
   }
-
   LineToBR($sentence); //改行コードを <br> に変換
 
   //投票情報をチェック
@@ -798,8 +779,8 @@ function OutputDeadMan(){
     "OR type LIKE 'SUDDEN_DEATH_%'";
 
   //前の日の夜に起こった死亡メッセージ
-  $type_night = "type = 'WOLF_KILLED' OR type = 'POSSESSED' OR type = 'POSSESSED_TARGETED' " .
-    "OR type = 'DREAM_KILLED' OR type = 'TRAPPED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
+  $type_night = "type = 'WOLF_KILLED' OR type LIKE 'POSSESSED%' OR type = 'DREAM_KILLED' " .
+    "OR type = 'TRAPPED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
     "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
     "OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE_%'";
 
@@ -859,8 +840,13 @@ function OutputDeadManType($name, $type){
     if($show_reason) echo $reason_header.$MESSAGE->possessed.')</td>';
     break;
 
+  case 'POSSESSED_RESET':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->possessed_reset.')</td>';
+    break;
+
   case 'POSSESSED_TARGETED':
-    if($open_reason) echo $deadman.$reason_header.$MESSAGE->possessed_targeted.')</td>';
+    if($open_reason) echo '<tr><td>'.$name.' '.$MESSAGE->possessed_targeted.'</td>';
     break;
 
   case 'WOLF_KILLED':
@@ -1253,7 +1239,7 @@ function InsertMediumMessage(){
 
 //リアルタイムの経過時間
 function GetRealPassTime(&$left_time, $flag = false){
-  global $ROOM, $SERVER_CONF;
+  global $ROOM;
 
   $time_str = strstr($ROOM->game_option, 'real_time');
   //実時間の制限時間を取得
@@ -1278,10 +1264,10 @@ function GetRealPassTime(&$left_time, $flag = false){
   $left_time = $base_time - $pass_time;
   if($left_time < 0) $left_time = 0; //マイナスになったらゼロにする
   if(! $flag) return;
-  $start_date_str = $SERVER_CONF->adjust_time_difference ?
-                    gmdate('Y, m, j, G, i, s', $start_time) : date('Y, m, j, G, i, s', $start_time);
-  $end_date_str   = $SERVER_CONF->adjust_time_difference ?
-                    gmdate('Y, m, j, G, i, s', $start_time + $base_time) : date('Y, m, j, G, i, s', $start_time + $base_time);
+
+  $format = 'Y, m, j, G, i, s';
+  $start_date_str = TZDate($format, $start_time);
+  $end_date_str   = TZDate($format, $start_time + $base_time);
   return array($start_date_str, $end_date_str);
 }
 

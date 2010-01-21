@@ -42,27 +42,28 @@ class ServerConfig{
   var $src_upload_password = 'upload';
 
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
-  var $adjust_time_difference = true;
-  
+  var $adjust_time_difference = false;
+
   //$adjust_time_differenceが有効な時の時差 (秒数)
   var $offset_seconds = 32400; //9時間
 
   //他の人狼サーバの村情報を表示する
   var $shared_server = false;
 
-  // GM権限強化するか否か(強化時は即時開始、突然死が使用可能)
-  var $power_gm = false;
-
   //表示する他のサーバのリスト
   var $shared_server_list = array(
 	'sanae' => array('name' => '早苗鯖',
 			  'url' => 'http://alicegame.dip.jp/sanae/',
-			  'encode' => 'UTF-8'),
-
+			  'encode' => 'UTF-8',
+			  'separator' => '',
+			  'footer' => ''),
+	/*
 	'satori' => array('name' => 'さとり鯖',
 			  'url' => 'http://satori.crz.jp/',
-			  'encode' => 'EUC-JP'),
-
+			  'encode' => 'EUC-JP',
+			  'separator' => '',
+			  'footer' => ''),
+	*/
 	'sakuya' => array('name' => '咲夜鯖',
 			  'url' => 'http://www7.atpages.jp/izayoi398/',
 			  'encode' => 'EUC-JP',
@@ -71,19 +72,27 @@ class ServerConfig{
 
 	'cirno' => array('name' => 'チルノ鯖',
 			 'url' => 'http://www12.atpages.jp/cirno/',
-			  'encode' => 'EUC-JP',
+			 'encode' => 'EUC-JP',
 			 'separator' => '<!-- atpages banner tag -->',
 			 'footer' => '</a><br>'),
-
+	/*
 	'sasuga' => array('name' => '流石兄弟鯖',
 			  'url' => 'http://www12.atpages.jp/yaruo/jinro/',
 			  'encode' => 'EUC-JP',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>'),
+	*/
+	'sasugabros' => array('name' => '流石弟者鯖',
+			  'url' => 'http://www16.atpages.jp/sasugabros/',
+			  'encode' => 'UTF-8',
+			  'separator' => '<!-- atpages banner tag -->',
+			  'footer' => '</div></small></a><br>'),
 
-	'suise' => array('name' => '翠星石鯖',
+	'suisei' => array('name' => '翠星石鯖',
 			  'url' => 'http://alicegame.dip.jp/suisei/',
-			  'encode' => 'UTF-8'),
+			  'encode' => 'UTF-8',
+			  'separator' => '',
+			  'footer' => ''),
 
 	'bara' => array('name' => '薔薇姉妹鯖',
 			'url' => 'http://www13.atpages.jp/yaranai/',
@@ -97,11 +106,36 @@ class ServerConfig{
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</a><br>'),
 
+	'sousei' => array('name' => '蒼星石テスト鯖',
+			  'url' => 'http://alicegame.dip.jp/sousei/',
+			  'encode' => 'UTF-8',
+			  'separator' => '',
+			  'footer' => ''),
+	/*
 	'mohican' => array('name' => '世紀末鯖',
-			   'url' => 'http://www12.atpages.jp/yagio/jinro_php_files/jinro_php/',
-			   'encode' => 'EUC-JP',
+			   'url' => 'http://www15.atpages.jp/seikima2/jinro_php/',
+			   'encode' => 'UTF-8',
 			   'separator' => '<!-- atpages banner tag -->',
-			   'footer' => '</div></small></a><br>')
+			   'footer' => '</div></small></a><br>'),
+
+	'mmr' => array('name' => '世紀末鯖',
+			'url' => 'http://www14.atpages.jp/mmr1/',
+			'encode' => 'UTF-8',
+			'separator' => '<!-- atpages banner tag -->',
+			'footer' => '</div></small></a><br>'),
+	*/
+	/*
+	'bourbon_test' => array('name' => 'バーボンハウス鯖（仮）',
+			   'url' => 'http://www16.atpages.jp/bourbonjinro/',
+			   'encode' => 'UTF-8',
+			   'separator' => '<!-- atpages banner tag -->',
+			   'footer' => '</div></small></a><br>'),
+	*/
+	'bourbonhouse' => array('name' => 'バーボンハウス鯖',
+			   'url' => 'http://bourbonhouse.xsrv.jp/jinro/',
+			   'encode' => 'EUC-JP',
+			   'separator' => '',
+			   'footer' => '')
 				  );
 }
 ?>

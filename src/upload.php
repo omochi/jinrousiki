@@ -76,8 +76,7 @@ fclose($io); //ファイルのクローズ
 //HTMLソースを出力
 $number = sprintf("%04d", $number); //桁揃え
 $ext    = substr($file_name, -3); //拡張子
-$time   = $SERVER_CONF->adjust_time_difference ?
-          gmdate('Y/m/d (D) H:i:s', TZTime()) : date('Y/m/d (D) H:i:s', TZTime()); //日時
+$time   = TZDate('Y/m/d (D) H:i:s', TZTime()); //日時
 if($file_size > 1024 * 1024) // Mbyte
   $file_size = sprintf('%.2f', $file_size / (1024 * 1024)) . ' Mbyte';
 elseif($file_size > 1024) // Kbyte

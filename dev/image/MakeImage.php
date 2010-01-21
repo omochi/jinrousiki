@@ -418,6 +418,13 @@ class SubRoleList{
   var $medium_result = array('message' => "神託結果： ", 'R' => 0, 'G' => 0, 'B' => 0);
   var $priest_header = array('message' => "神託結果： 現在、生存している村人陣営は", 'R' => 0, 'G' => 0, 'B' => 0);
   var $priest_footer = array('message' => "人です", 'R' => 0, 'G' => 0, 'B' => 0);
+  var $crisis_priest_result = array('message' => "陣営が勝利目前です", 'delimiter' => array());
+  var $side_wolf = array('message' => "|人狼|",
+			 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $side_fox = array('message' => "|妖狐|",
+			'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+  var $side_lovers = array('message' => "|恋人|",
+			   'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
   var $necromancer_result = array('message' => "霊能結果： ", 'R' => 0, 'G' => 0, 'B' => 0);
   var $pharmacist_nothing = array('message' => "さんは毒を持っていません", 'R' => 0, 'G' => 0, 'B' => 0);
   var $pharmacist_poison = array('message' => "さんは|毒|を持っています", 'R' => 0, 'G' => 153, 'B' => 102);
@@ -453,6 +460,8 @@ class ResultList{
   var $result_dummy_necromancer = array('message' => "さんは|夢枕人|でした", 'R' => 0, 'G' => 102, 'B' => 153);
   var $result_medium = array('message' => "さんは|巫女|でした", 'R' => 0, 'G' => 102, 'B' => 153);
   var $result_priest = array('message' => "さんは|司祭|でした", 'R' => 0, 'G' => 102, 'B' => 153);
+  var $result_crisis_priest = array('message' => "さんは|預言者|でした",
+				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_guard = array('message' => "さんは|狩人|でした", 'R' => 51, 'G' => 153, 'B' => 255);
   var $result_poison_guard = array('message' => "さんは|騎士|でした", 'R' => 51, 'G' => 153, 'B' => 255);
   var $result_reporter = array('message' => "さんは|ブン屋|でした", 'R' => 51, 'G' => 153, 'B' => 255);
@@ -545,8 +554,8 @@ class WishRoleList {
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-$list =& new MainRoleList();
-#$list =& new SubRoleList();
+#$list =& new MainRoleList();
+$list =& new SubRoleList();
 #$list =& new ResultList();
 
 #$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
@@ -563,7 +572,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->human_new);
+$image = MakeImage($gen, $list->crisis_priest_result);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

@@ -66,13 +66,9 @@ Perl ¤«¤é PHP ¤Ë¤¹¤ë¤³¤È¤ÇÆ°ºî¤ò¹âÂ®¤Ë¤·¡¢ÇÓÂ¾À©¸æ¤ò MySQL ¤ËÇ¤¤»¤ë¤³¤È¤Ç¥í¥Ã¥¯¥
 <h2>Â¼¤ÎºÇÂç¿Í¿ô¤òÀ©¸Â¤Ç¤­¤Þ¤¹</h2>
 <div class="diff">
 <?php
-$str = '';
-foreach($ROOM_CONF->max_user_list as $user){
-  if($str != '') $str .= '¡¢';
-  $str .= $user . '¿Í';
-}
+$str = implode('¿Í¡¢', $ROOM_CONF->max_user_list);
 $min_user = min(array_keys($GAME_CONF->role_list));
-$str .= '¤Î¤É¤ì¤«¤òÂ¼¤ËÅÐÏ¿¤Ç¤­¤ëÂ¼¿Í¤ÎºÇÂç¿Í¿ô¤È¤·¤ÆÀßÄê¤¹¤ë¤³¤È¤¬¤Ç¤­¤Þ¤¹¡£<br>';
+$str .= '¿Í¤Î¤É¤ì¤«¤òÂ¼¤ËÅÐÏ¿¤Ç¤­¤ëÂ¼¿Í¤ÎºÇÂç¿Í¿ô¤È¤·¤ÆÀßÄê¤¹¤ë¤³¤È¤¬¤Ç¤­¤Þ¤¹¡£<br>';
 $str .= "¤¿¤À¤·¥²¡¼¥à¤ò³«»Ï¤¹¤ë¤Ë¤ÏºÇÄã{$min_user}¿Í¤ÎÂ¼¿Í¤¬É¬Í×¤Ç¤¹¡£";
 echo $str;
 ?>
@@ -104,8 +100,7 @@ echo $ROOM_IMG->GenerateTag('real_time', $alt);
 ²¼µ­¤Î·×Â¬·ë²Ì¤ÇÌÀ¤é¤«¤ËÂç¤­¤Ê¥º¥ì¤¬¤¢¤ë¾ì¹ç¤Ï¡¢<a href="http://www.vector.co.jp/soft/win95/personal/se050672.html" target="_blank">ºù»þ·×</a>¤Ê¤É¤ò»ÈÍÑ¤·¤ÆPC¤Î»þ·×¤ò¹ç¤ï¤»¤Æ¤¯¤À¤µ¤¤¡£<br>
 <span class="diff-time">¥µ¡¼¥Ð¤È¥í¡¼¥«¥ëPC¤Î»þ´Ö¥º¥ì(¥é¥°´Þ)¡§<script type="text/javascript">
 <?php
-  $date_str = $SERVER_CONF->adjust_time_difference ?
-              gmdate('Y, m, j, G, i, s', TZTime()) : date('Y, m, j, G, i, s', TZTime());
+  $date_str = TZDate('Y, m, j, G, i, s', TZTime());
   echo "output_diff_time('$date_str');";
   //$time_str = time();
   //echo "output_diff_time('$time_str');";

@@ -1,237 +1,237 @@
 -----------------------------------------------------------------------------
-  恖楾幃 乣擆偼恖楾側傝傗丠幃恄僄僨傿僔儑儞 version 1.4.0 README 2009/08/27
+  客系及 ×乞は客系なりや々及坷エディション version 1.4.0 README 2009/08/27
 -----------------------------------------------------------------------------
 
-僟僂儞儘乕僪偁傝偑偲偆偛偞偄傑偡丅
-恖楾幃 乣擆偼恖楾側傝傗丠幃恄僄僨傿僔儑儞乮埲壓杮僗僋儕僾僩乯偼丄
-恖楾僗僋儕僾僩乽擆偼恖楾側傝傗丠偺PHP+MySQL堏怉斉(from 傆偨偽) 乿偺僐乕僪傪婎偵
-夵椙丒怴婡擻傪捛壛偟偨丄PHP偱婰弎偝傟偨恖楾僗僋儕僾僩偱偡丅
+ダウンロ〖ドありがとうございます。
+客系及 ×乞は客系なりや々及坷エディション∈笆布塑スクリプト∷は、
+客系スクリプト≈乞は客系なりや々のPHP+MySQL败竣惹(from ふたば) ∽のコ〖ドを答に
+猖紊ˇ糠怠墙を纳裁した、PHPで淡揭された客系スクリプトです。
 
-擆偼恖楾側傝傗丠偺PHP+MySQL堏怉斉(from 傆偨偽)偺奐敪尦偼偙偪傜偱偡丅
+乞は客系なりや々のPHP+MySQL败竣惹(from ふたば)の倡券傅はこちらです。
 http://f45.aaa.livedoor.jp/~netfilms/
 
 ----------------------------------------
-  廳梫丗媽僶乕僕儑儞偐傜偺峏怴偵偮偄偰
+  脚妥¨奠バ〖ジョンからの构糠について
 ----------------------------------------
-埲壓偺媽僶乕僕儑儞偵奩摉偡傞僗僋儕僾僩傪壱摦偝偣偰偄偨曽偼丄
-嵟怴斉偺admin/setup.php傪幚峴偟偰偔偩偝偄丅
-媽僶乕僕儑儞偱巊梡偝傟偰偄偨僨乕僞儀乕僗偵IP婰榐梡僼傿乕儖僪傪捛壛偟傑偡丅
-丒Ver. 1.4.0 兛19乮僷僢働乕僕僶乕僕儑儞乯
-丒Ver. 1.4.0 Rev. 122乮SourceForge儕價僕儑儞斣崋乯
+笆布の奠バ〖ジョンに澈碰するスクリプトを苍瓢させていた数は、
+呵糠惹のadmin/setup.phpを悸乖してください。
+奠バ〖ジョンで蝗脱されていたデ〖タベ〖スにIP淡峡脱フィ〖ルドを纳裁します。
+ˇVer. 1.4.0 α19∈パッケ〖ジバ〖ジョン∷
+ˇVer. 1.4.0 Rev. 122∈SourceForgeリビジョン戎规∷
 
 ------------------
-  僷僢働乕僕撪梕
+  パッケ〖ジ柒推
 ------------------
-杮僗僋儕僾僩偺僨傿儗僋僩儕峔惉偼埲壓偺偲偍傝偱偡丅
-<top>          : 杮懱僐乕僪
-劌劅admin      : 娗棟梡僐乕僪
-劌劅css        : 昞帵梡CSS僼傽僀儖
-劌劅img        : 僔僗僥儉夋憸僼傽僀儖
-劌劅include    : 僀儞僋儖乕僪僼傽僀儖
-劌劅info       : 僩僢僾夋柺偵昞帵偡傞僀儞僼僅儊乕僔儑儞暥僐乕僪
-劌劅javascript : Javascript僼傽僀儖
-劌劅module     : mbstring僄儈儏儗乕僞梡僼傽僀儖
-劌劅swf        : 壒惡僼傽僀儖
-劋劅user_icon  : 傾僀僐儞夋憸僼傽僀儖
+塑スクリプトのディレクトリ菇喇は笆布のとおりです。
+<top>          : 塑挛コ〖ド
+ěāadmin      : 瓷妄脱コ〖ド
+ěācss        : 山绩脱CSSファイル
+ěāimg        : システム茶咙ファイル
+ěāinclude    : インクル〖ドファイル
+ěāinfo       : トップ茶烫に山绩するインフォメ〖ション矢コ〖ド
+ěājavascript : Javascriptファイル
+ěāmodule     : mbstringエミュレ〖タ脱ファイル
+ěāswf        : 不兰ファイル
+éāuser_icon  : アイコン茶咙ファイル
 
 ------------
-  摦嶌娐嫬
+  瓢侯茨董
 ------------
-杮僗僋儕僾僩偼丄PHP4亄MySQL4.0娐嫬壓偱偺摦嶌傪憐掕偟偰偄傑偡丅
-MySQL埲奜偺RDBS娐嫬傪梡偄傞応崌丄MySQL梡僋僄儕娭悢傪彂偒捈偡昁梫偑偁傝傑偡丅
+塑スクリプトは、PHP4≤MySQL4.0茨董布での瓢侯を鳞年しています。
+MySQL笆嘲のRDBS茨董を脱いる眷圭、MySQL脱クエリ簇眶を今き木す涩妥があります。
 
 ------------
-  愝抲曽朄
+  肋弥数恕
 ------------
-1. MySQL僒乕僶撪偵愱梡僨乕僞儀乕僗偲傾僇僂儞僩傪嶌惉
-   暥帤僐乕僪丄徠崌弴彉偼ujis_japanese_ci傪巊梡偡傞偙偲
-2. include/setting.php傪曇廤偟丄僨乕僞儀乕僗僒乕僶傗儐乕僓柤丄僷僗儚乕僪傪愝掕
-3. 僷僢働乕僕傪僒乕僶偵傾僢僾儘乕僪乮僐乕僪柍曄姺丄傑偨偼僶僀僫儕儌乕僪乯
-4. 僒乕僶忋偺user_icon/僨傿儗僋僩儕偵彂偒崬傒懏惈傪晅梌
-5. admin/僨傿儗僋僩儕偵傾僋僙僗惂尷傪愝掕
-6. 弶婜僙僢僩傾僢僾嶌嬈乮帺摦乯偺偨傔偵admin/setup.php偵傾僋僙僗
-7. index.php偵傾僋僙僗偟丄摦嶌傪妋擣
+1. MySQLサ〖バ柒に漓脱デ〖タベ〖スとアカウントを侯喇
+   矢机コ〖ド、救圭界进はujis_japanese_ciを蝗脱すること
+2. include/setting.phpを试礁し、デ〖タベ〖スサ〖バやユ〖ザ叹、パスワ〖ドを肋年
+3. パッケ〖ジをサ〖バにアップロ〖ド∈コ〖ド痰恃垂、またはバイナリモ〖ド∷
+4. サ〖バ惧のuser_icon/ディレクトリに今き哈み掳拉を烧涂
+5. admin/ディレクトリにアクセス扩嘎を肋年
+6. 介袋セットアップ侯度∈极瓢∷のためにadmin/setup.phpにアクセス
+7. index.phpにアクセスし、瓢侯を澄千
 
 ----------------------------
-  娗棟梡僗僋儕僾僩偵偮偄偰
+  瓷妄脱スクリプトについて
 ----------------------------
-杮僗僋儕僾僩偱娗棟梡偺僗僋儕僾僩偼埲壓偺捠傝偱偡丅
-慡偰admin/僨傿儗僋僩儕撪偵懚嵼偟傑偡丅
-  setup.php       : 弶婜愝掕傪峴偆僗僋儕僾僩丅
-                    怴偟偔僒乕僶偵愝抲偟偨嵺偵丄弶傔偵幚峴偡傞偙偲丅
-  room_delete.php : 壱摥拞偺懞傪嶍彍偡傞偨傔偺僗僋儕僾僩丅
-                    include/setting.php拞偺$DEBUG_MODE偑true偺帪偺傒桳岠
+塑スクリプトで瓷妄脱のスクリプトは笆布の奶りです。
+链てadmin/ディレクトリ柒に赂哼します。
+  setup.php       : 介袋肋年を乖うスクリプト。
+                    糠しくサ〖バに肋弥した狠に、介めに悸乖すること。
+  room_delete.php : 苍漂面の录を猴近するためのスクリプト。
+                    include/setting.php面の$DEBUG_MODEがtrueの箕のみ铜跟
 
-room_delete.php偵偮偄偰偼捈愙屇傃弌偡傕偺偱偼側偔丄壱摥拞偺懞堦棗偵昞帵偝傟傞
-嶍彍梡儕儞僋偐傜屇傃弌偝傟傞傕偺偱偡丅
-偨偩偟丄admin/僨傿儗僋僩儕偵傾僋僙僗惂尷傪偐偗偰偄側偄応崌丄
-偐偮$DEBUG_MODE偑true偺帪偵偼捈愙傾僪儗僗擖椡偡傞偙偲偱丄
-壱摥拞偺懞偺嶍彍偑扤偵偱傕壜擻偲側傝傑偡丅
-偦偺偨傔丄捠忢壱摦帪偵偼$DEBUG_MODE傪false偵愝掕偟偰偍偔傛偆偵偟偰偔偩偝偄丅
-僨僼僅儖僩偱偼false偵愝掕偝傟偰偄傑偡丅
+room_delete.phpについては木儡钙び叫すものではなく、苍漂面の录办枉に山绩される
+猴近脱リンクから钙び叫されるものです。
+ただし、admin/ディレクトリにアクセス扩嘎をかけていない眷圭、
+かつ$DEBUG_MODEがtrueの箕には木儡アドレス掐蜗することで、
+苍漂面の录の猴近が茂にでも材墙となります。
+そのため、奶撅苍瓢箕には$DEBUG_MODEをfalseに肋年しておくようにしてください。
+デフォルトではfalseに肋年されています。
 
 ------------------------
-  愝掕僼傽僀儖偵偮偄偰
+  肋年ファイルについて
 ------------------------
-杮僗僋儕僾僩偺愝掕僼傽僀儖偼埲壓偺捠傝偱偡丅
-慡偰include/僨傿儗僋僩儕撪偵懚嵼偟傑偡丅
-  setting.php       : 杮僗僋儕僾僩傪僒乕僶忋偱摦嶌偝偣傞偨傔偺愝掕僼傽僀儖
-  config.php        : 攝栶丄惂尷帪娫側偳丄僎乕儉僷儔儊乕僞偺愝掕僼傽僀儖
-  system_class.php  : 杮僗僋儕僾僩拞偱巊梡偝傟傞夋憸僼傽僀儖偺僷僗愝掕僼傽僀儖
-  message_class.php : 僎乕儉拞偱昞帵偝傟傞僔僗僥儉儊僢僙乕僕偺愝掕僼傽僀儖
-  version.php       : 僩僢僾儁乕僕偱昞帵偝傟傞僶乕僕儑儞忣曬偺愝掕僼傽僀儖
+塑スクリプトの肋年ファイルは笆布の奶りです。
+链てinclude/ディレクトリ柒に赂哼します。
+  setting.php       : 塑スクリプトをサ〖バ惧で瓢侯させるための肋年ファイル
+  config.php        : 芹舔、扩嘎箕粗など、ゲ〖ムパラメ〖タの肋年ファイル
+  system_class.php  : 塑スクリプト面で蝗脱される茶咙ファイルのパス肋年ファイル
+  message_class.php : ゲ〖ム面で山绩されるシステムメッセ〖ジの肋年ファイル
+  version.php       : トップペ〖ジで山绩されるバ〖ジョン攫鼠の肋年ファイル
 
-偙偺偆偪丄昁偢愝掕偑昁梫偵側傞偺偼setting.php偺傒偱偡丅
-懠偺僼傽僀儖偵偮偄偰偼昁梫偵墳偠偰曄峏偟偰偔偩偝偄丅
-徻嵶偼奺僼傽僀儖偺僐儊儞僩傪嶲徠偟偰偔偩偝偄丅
+このうち、涩ず肋年が涩妥になるのはsetting.phpのみです。
+戮のファイルについては涩妥に炳じて恃构してください。
+拒嘿は称ファイルのコメントを徊救してください。
 
 ----------------
-  婛抦偺晄嬶崌
+  贷梦の稍恶圭
 ----------------
-尰嵼丄埲壓偺晄嬶崌偑敪惗偡傞壜擻惈偑偁傝傑偡丅
-偙傟傜偺晄嬶崌偼丄僒乕僶偺忬懺傗晧壸偺搙崌偄偵傛傞傕偺偲傒傜傟偰偄傑偡丅
+附哼、笆布の稍恶圭が券栏する材墙拉があります。
+これらの稍恶圭は、サ〖バの觉轮や砷操の刨圭いによるものとみられています。
 
-丒搳昜姰椆偟偨偺偵撍慠巰偡傞応崌偑偁傞
-丂搳昜姰椆偟偨偵傕娭傢傜偢丄撍慠巰張棟偑峴傢傟傞応崌偑曬崘偝傟偰偍傝傑偡丅
-丂尨場偼晄柧偱偡丅懳嶔偲偟偰丄憗傔憗傔偺搳昜傪屇傃偐偗偰偔偩偝偄丅
+ˇ抨杉窗位したのに仆脸秽する眷圭がある
+　抨杉窗位したにも簇わらず、仆脸秽借妄が乖われる眷圭が鼠桂されております。
+　付傍は稍汤です。滦忽として、玲め玲めの抨杉を钙びかけてください。
 
-丒嵞搳昜帪偺搳昜寢壥昞帵偑堦晹偟偐昞帵偝傟側偄
-丂MySQL僒乕僶偺儘僢僋婡峔偑壗傜偐偺尨場偱岠偄偰偄側偄尰徾偱偡丅
-丂僒乕僶埶懚偺栤戣偺傛偆偱偡丅昿斏偵敪惗偡傞傛偆偱偁傟偽丄MySQL傪峏怴偡傞偐丄
-丂僒乕僶傪暿偺傕偺偵曄峏偡傞偙偲傪帋傒偰偔偩偝偄丅
+ˇ浩抨杉箕の抨杉冯蔡山绩が办婶しか山绩されない
+　MySQLサ〖バのロック怠菇が部らかの付傍で跟いていない附据です。
+　サ〖バ巴赂の啼玛のようです。裳人に券栏するようであれば、MySQLを构糠するか、
+　サ〖バを侍のものに恃构することを活みてください。
 
-丒搳昜帪偵戝検撍慠巰偑敪惗偡傞応崌偑偁傞
-丂搳昜張棟拞偵撍慠巰張棟偑壗傜偐偺尨場偱屇傃弌偝傟偨偙偲偵傛傞晄嬶崌偱偡丅
-丂尰嵼偺僶乕僕儑儞偱偼敪惗偼妋擣偝傟偰偍傝傑偣傫丅
+ˇ抨杉箕に络翁仆脸秽が券栏する眷圭がある
+　抨杉借妄面に仆脸秽借妄が部らかの付傍で钙び叫されたことによる稍恶圭です。
+　附哼のバ〖ジョンでは券栏は澄千されておりません。
 
 ------------
-  娗棟TIPS
+  瓷妄TIPS
 ------------
-丒夁嫀儘僌偑DB偵偨傑偭偰偔傞偲丄僒乕僶偺摦嶌偑廳偔側傞応崌偑偁傝傑偡丅
-偦偺応崌丄夁嫀儘僌傪HTML宍幃偱曐懚偟偨忋偱DB偐傜懞僨乕僞偺嶍彍傪峴偭偰偔偩偝偄丅
-X斣抧懞偺僨乕僞傪徚偡応崌偼room, system_message, talk, user_entry奺僥乕僽儖拞偺
-room_no = X偵奩摉偡傞儗僐乕僪傪嶍彍偟偰偔偩偝偄丅
+ˇ册殿ログがDBにたまってくると、サ〖バの瓢侯が脚くなる眷圭があります。
+その眷圭、册殿ログをHTML妨及で瘦赂した惧でDBから录デ〖タの猴近を乖ってください。
+X戎孟录のデ〖タを久す眷圭はroom, system_message, talk, user_entry称テ〖ブル面の
+room_no = Xに澈碰するレコ〖ドを猴近してください。
 
-丒搊榐偝傟偨傾僀僐儞傪壗傜偐偺棟桼偱嶍彍偡傞応崌偼丄
-user_icon僥乕僽儖拞偺奩摉儗僐乕僪丄user_icon/僨傿儗僋僩儕撪偺奩摉傾僀僐儞夋憸傪
-嶍彍偟偰偔偩偝偄丅
-偨偩偟丄奩摉傾僀僐儞偑夁嫀儘僌偱巊梡偝傟偰偄傞応崌偼丄僨乕僞儀乕僗偐傜嶍彍偣偢偵
-壗傜偐偺暿偺傾僀僐儞夋憸偱抲偒姺偊傞曽朄傪偲偭偰偔偩偝偄丅
-傑偨丄儗僐乕僪嶍彍屻偵icon_no偺挷惍傪峴偭偰偔偩偝偄丅
+ˇ判峡されたアイコンを部らかの妄统で猴近する眷圭は、
+user_iconテ〖ブル面の澈碰レコ〖ド、user_icon/ディレクトリ柒の澈碰アイコン茶咙を
+猴近してください。
+ただし、澈碰アイコンが册殿ログで蝗脱されている眷圭は、デ〖タベ〖スから猴近せずに
+部らかの侍のアイコン茶咙で弥き垂える数恕をとってください。
+また、レコ〖ド猴近稿にicon_noの拇腊を乖ってください。
 
-丒僷僗儚乕僪僴僢僔儏壔偺偨傔偺salt暥帤楍偼掕婜揑偵曄峏偡傞傛偆偵偟偰偔偩偝偄丅
-傑偨丄懞偑壱摦偟偰偄傞娫丄懞廔椆屻傕夛榖偟偰偄傞僾儗僀儎乕偑偄傞娫偼丄salt暥帤楍
-傪曄峏偟側偄傛偆偵偟偰偔偩偝偄丅搑拞偱salt暥帤楍偑曄峏偝傟傞偲儘僌僀儞偑偱偒側偔
-側傝傑偡丅
+ˇパスワ〖ドハッシュ步のためのsalt矢机误は年袋弄に恃构するようにしてください。
+また、录が苍瓢している粗、录姜位稿も柴厦しているプレイヤ〖がいる粗は、salt矢机误
+を恃构しないようにしてください。庞面でsalt矢机误が恃构されるとログインができなく
+なります。
 
 -------
   FAQ
 -------
 
-Q. 摦偄偨偗偳暥帤壔偗偟偰傞
-A. MySQL僒乕僶偺愝掕丄僨乕僞儀乕僗偺愝掕丄僽儔僂僓偺僄儞僐乕僪丄
-   偳傟偐偑EUC-JP乮ujis_japanese_ci乯傪巊梡偟偰偄側偄側偄壜擻惈偑崅偄偱偡丅
-   堦搙僠僃僢僋偟偰傒偰偔偩偝偄丅
+Q. 瓢いたけど矢机步けしてる
+A. MySQLサ〖バの肋年、デ〖タベ〖スの肋年、ブラウザのエンコ〖ド、
+   どれかがEUC-JP∈ujis_japanese_ci∷を蝗脱していないない材墙拉が光いです。
+   办刨チェックしてみてください。
 
 ----------------------
-  巊梡丄夵曄偵偮偄偰
+  蝗脱、猖恃について
 ----------------------
-夵曄丄嵞攝晍偼帺桼偱偡丅
-偟偐偟丄怉暔偺攚宨夋憸丄嵍忋偵偁傞暥帤偺擖偭偨僞僀僩儖夋憸偼揤偺寚曅偝傫偺慺嵽傪巊梡偟偰偄傑偡丅
-偙偺夋憸傪偦偺傑傑巊偆応崌偼 index.php 偺揤偺寚曅偝傫傊偺儕儞僋傪嶍彍偟側偄傛偆偵偍婅偄偟傑偡丅
+猖恃、浩芹邵は极统です。
+しかし、竣湿の秦肥茶咙、焊惧にある矢机の掐ったタイトル茶咙は欧の风室さんの燎亨を蝗脱しています。
+この茶咙をそのまま蝗う眷圭は index.php の欧の风室さんへのリンクを猴近しないようにお搓いします。
 http://keppen.web.infoseek.co.jp/
-傑偨偙偺夋憸偺挊嶌尃偼揤偺寚曅偝傫偺暔側偺偱丄帺暘偱嶣塭偟偨偲偐帺暘偱嶌偭偨偲偐尵傢側偄傛偆偵偟偰偔偩偝偄丅 
-version1.2.0埲崀偱捛壛偟偨夋憸偵偮偄偰偼丄 偁偢偒傆偋傫偲偝傫偺僼僅儞僩傪棙梡偝偣偰偄偨偩偄偰偄傑偡丅
-偙偺夋憸傪偦偺傑傑巊偆応崌偼 index.php 偺偁偢偒傆偋傫偲偝傫傊偺儕儞僋傪嶍彍偟側偄傛偆偵偍婅偄偟傑偡丅
+またこの茶咙の螟侯涪は欧の风室さんの湿なので、极尸で唬逼したとか极尸で侯ったとか咐わないようにしてください。 
+version1.2.0笆惯で纳裁した茶咙については、 あずきふぉんとさんのフォントを网脱させていただいています。
+この茶咙をそのまま蝗う眷圭は index.php のあずきふぉんとさんへのリンクを猴近しないようにお搓いします。
 http://azukifont.mints.ne.jp/
-module僼僅儖僟偺拞偼mbstring僄儈儏儗乕僞偑擖偭偰偄傑偡丅
+moduleフォルダの面はmbstringエミュレ〖タが掐っています。
 http://www.matsubarafamily.com/blog/mbemu.php
-偙傟偼mbstring偑巊偊側偄娐嫬偱傕暥帤僐乕僪娭楢偺張棟傪偡傞偨傔偱偡丅
-挊嶌尃偼mbstring偺嶌幰偝傫偺傕偺偱偡丅
-index.php 偺儕儞僋傪嶍彍偟側偄傛偆偵偍婅偄偟傑偡丅
+これはmbstringが蝗えない茨董でも矢机コ〖ド簇息の借妄をするためです。
+螟侯涪はmbstringの侯荚さんのものです。
+index.php のリンクを猴近しないようにお搓いします。
 
 --------------------
-  僒億乕僩偵偮偄偰
+  サポ〖トについて
 --------------------
-杮僗僋儕僾僩偵娭偡傞僶僌曬崘丒梫朷偵偮偄偰偼埲壓偺偳偙偐偵偍婅偄偄偨偟傑偡丅
-側偍丄尰嵼Sourceforge偺儁乕僕偵僼僅乕儔儉偼梡堄偝傟偰偍傝傑偣傫丅
-Sourceforge偺曽偵曬崘偝傟傞応崌偵偼丄僠働僢僩傪捠偟偰偍婅偄偄偨偟傑偡丅
+塑スクリプトに簇するバグ鼠桂ˇ妥司については笆布のどこかにお搓いいたします。
+なお、附哼Sourceforgeのペ〖ジにフォ〖ラムは脱罢されておりません。
+Sourceforgeの数に鼠桂される眷圭には、チケットを奶してお搓いいたします。
 
-幃恄尋媶摨岲夛乮尰峴僗儗乯
+及坷甫垫票攻柴∈附乖スレ∷
 http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/
 
-僂儈僈儊恖楾愱梡宖帵斅乮忋婰僗儗偑懚嵼偟側偄応崌偵偼偙偪傜偐傜乯
+ウミガメ客系漓脱非绩饶∈惧淡スレが赂哼しない眷圭にはこちらから∷
 http://jbbs.livedoor.jp/netgame/2829/
 
-恖楾幃 乣擆偼恖楾側傝傗丠幃恄僄僨傿僔儑儞乮Sourceforge僾儘僕僃僋僩儁乕僕乯
+客系及 ×乞は客系なりや々及坷エディション∈Sourceforgeプロジェクトペ〖ジ∷
 http://sourceforge.jp/projects/jinrousiki/
 
 --------------
-  僋儗僕僢僩
+  クレジット
 --------------
 enogu
-杽傔僠儖
-偍擏
-愒偄偒偮偹
-忔寧
+虽めチル
+お迄
+乐いきつね
+捐奉
 Kei
 atari
 
-懠丄懡悢偺僥僗僩僾儗僀儎乕丄嫤椡偟偰偄偨偩偄偨曽乆
+戮、驴眶のテストプレイヤ〖、定蜗していただいた数」
 
 ------------
-  曄峏棜楌
+  恃构旺悟
 ------------
 version 1.3.0:
-丒暋悢偺摨堦栶怑傪懞偵搊応偝偣傞偙偲偑壜擻
-丂乮僨僼僅儖僩愝掕偱偼搊応偟側偄丅曇惉傪娗棟幰偑曄峏偟偨応崌偺傒搊応乯
-丒屜偺擮榖丒拠娫昞帵婡擻傪捛壛
-丒杽撆幰傪姎傫偱姫偒崬傑傟傞楾偺懳徾寛掕曽朄傪擟堄偱曄峏偱偒傞婡擻傪捛壛
-丂乮楾偐傜儔儞僟儉 or 姎傫偩楾屌掕乯
-丒夁嫀儘僌傪媡弴偱昞帵偱偒傞婡擻幚憰
-丂(僨僼僅儖僩偼愝掕僼傽僀儖偱曄峏壜擻)
-丒搳昜夋柺偺僨僓僀儞曄峏
-丂乮忢偵嶲壛幰慡堳偑昞帵偝傟丄搳昜偱偒傞幰偩偗儔僕僆儃僞儞傪晅偗傞曽幃偵曄峏乯
-丒堚尵偼拫/栭偺愗傝懼偊偺塭嬁傪庴偗偢偵曐懚偱偒傞傛偆曄峏
-丒恎戙傢傝孨偺拫乛栭偺敪尵傪僔僗僥儉儊僢僙乕僕偲偟偰昞帵偱偒傞婡擻傪捛壛
-丂乮娗棟幰岦偗婡擻乯
-丒敪尵偵乽乿傪偮偗傞僆僾僔儑儞傪捛壛
-丂乮愝掕僼傽僀儖偱ON/OFF壜擻乯
-丒楾丒嫟桳幰偺拠娫昞帵傪夵慞
-丒堷偒暘偗敾掕張棟偺夵慞
-丒撍慠巰張棟偺夵慞
-丒撍慠巰側偳偺惂尷帪娫昞帵偺僶僌廋惓
-丒Kick 張棟偑慡偰偺懞偵塭嬁偡傞僶僌廋惓
-丒攝栶僥乕僽儖偺巇條曄峏
-丒僩儕僢僾偵壖懳墳 (# 偑娷傑傟偰偄偨傜僄儔乕傪曉偡偩偗)
-丒僜乕僗僐乕僪僼傽僀儖偺惍棟丒暘妱丒嵟揔壔
-丒偦偺懠嵶偐偄曄峏揰丒僶僌廋惓
+ˇ剩眶の票办舔喀を录に判眷させることが材墙
+　∈デフォルト肋年では判眷しない。试喇を瓷妄荚が恃构した眷圭のみ判眷∷
+ˇ秆の前厦ˇ苗粗山绩怠墙を纳裁
+ˇ虽魄荚を锄んで船き哈まれる系の滦据疯年数恕を扦罢で恃构できる怠墙を纳裁
+　∈系からランダム or 锄んだ系盖年∷
+ˇ册殿ログを嫡界で山绩できる怠墙悸刘
+　(デフォルトは肋年ファイルで恃构材墙)
+ˇ抨杉茶烫のデザイン恃构
+　∈撅に徊裁荚链镑が山绩され、抨杉できる荚だけラジオボタンを烧ける数及に恃构∷
+ˇ颁咐は秒/屉の磊り仑えの逼读を减けずに瘦赂できるよう恃构
+ˇ咳洛わり矾の秒】屉の券咐をシステムメッセ〖ジとして山绩できる怠墙を纳裁
+　∈瓷妄荚羹け怠墙∷
+ˇ券咐に≈∽をつけるオプションを纳裁
+　∈肋年ファイルでON/OFF材墙∷
+ˇ系ˇ鼎铜荚の苗粗山绩を猖帘
+ˇ苞き尸け冉年借妄の猖帘
+ˇ仆脸秽借妄の猖帘
+ˇ仆脸秽などの扩嘎箕粗山绩のバグ饯赖
+ˇKick 借妄が链ての录に逼读するバグ饯赖
+ˇ芹舔テ〖ブルの慌屯恃构
+ˇトリップに簿滦炳 (# が崔まれていたらエラ〖を手すだけ)
+ˇソ〖スコ〖ドファイルの腊妄ˇ尸充ˇ呵努步
+ˇその戮嘿かい恃构爬ˇバグ饯赖
 
 version 1.2.2:
-丒HTML弌椡偵CSS傪巊梡偡傞傛偆偵曄峏
-丒傾僀僐儞僒僀僘偺嵟戝抣傪僒乕僶懁偱惂尷偡傞婡擻傪捛壛
-丒僜乕僗僐乕僪偺嵟揔壔
-丒僨傿儗僋僩儕偺惍棟
+ˇHTML叫蜗にCSSを蝗脱するように恃构
+ˇアイコンサイズの呵络猛をサ〖バ娄で扩嘎する怠墙を纳裁
+ˇソ〖スコ〖ドの呵努步
+ˇディレクトリの腊妄
 
 version 1.2.1:
-丒恎戙傢傝偑楾丄屜丄僉儏乕僺僢僪偵側傞壜擻惈偑偁傞晄嬶崌傪廋惓
-丒垽偺栴偺僔僗僥儉儊僢僙乕僕偱懞恖柤偱偼側偔儐乕僓柤偑昞帵偝傟傞晄嬶崌傪廋惓
-丒楈奅栶怑旕昞帵帪偵傕儐乕僓柤偑楈榖偵昞帵偝傟傞晄嬶崌傪廋惓
-丒壱摥拞偺懞偺楈奅栶怑旕昞帵傾僀僐儞偑昞帵偝傟側偄晄嬶崌傪廋惓
+ˇ咳洛わりが系、秆、キュ〖ピッドになる材墙拉がある稍恶圭を饯赖
+ˇ唉の甜のシステムメッセ〖ジで录客叹ではなくユ〖ザ叹が山绩される稍恶圭を饯赖
+ˇ晤肠舔喀润山绩箕にもユ〖ザ叹が晤厦に山绩される稍恶圭を饯赖
+ˇ苍漂面の录の晤肠舔喀润山绩アイコンが山绩されない稍恶圭を饯赖
 
 version 1.2.0:
-丒怴栶怑捛壛乮僉儏乕僺僢僪丒楒恖乯
-丒婓朷栶怑偵杽撆幰傪捛壛
-丒楈奅栶怑旕昞帵僆僾僔儑儞傪捛壛
-丒夁嫀儘僌偵懞偺嶲壛恖悢傪昞帵偡傞傛偆偵廋惓
-丒4-7恖懞偺攝栶捛壛丄嵟掅僎乕儉奐巒壜擻恖悢傪4恖偵愝掕
-丒偦偺懠嵶偐偄廋惓
+ˇ糠舔喀纳裁∈キュ〖ピッドˇ硒客∷
+ˇ歹司舔喀に虽魄荚を纳裁
+ˇ晤肠舔喀润山绩オプションを纳裁
+ˇ册殿ログに录の徊裁客眶を山绩するように饯赖
+ˇ4-7客录の芹舔纳裁、呵你ゲ〖ム倡幌材墙客眶を4客に肋年
+ˇその戮嘿かい饯赖
 
---- 偙偙偐傜乽擆偼恖楾側傝傗丠偺PHP+MySQL堏怉斉(from 傆偨偽) 乿偺曄峏棜楌 ---
-version1.1.5 Kick偺張棟偱Kick偝傟偰嬻偄偨儐乕僓No傪愗傝媗傔傞張棟偑偆傑偔偄偭偰側偐偭偨偺傪廋惓
-version1.1.4 setting.php埲奜偺傎傏慡偰廋惓丅Kick偝傟偨恖偺敪尵偑徚偊傞偺傪廋惓丅堚尵偺昞帵弴偑屌掕偝傟偰偄偨偺傪儔儞僟儉偵廋惓丅
-version1.1.3 game_play.php,game_functions.php,game_view.php偱尰嵼偺惗懚幰偺悢傪昞帵偡傞傛偆偵丄傑偨懡彮偺昞帵廋惓
-version1.1.2 old_log.php偱梔屜偺彑棙傾僀僐儞偑昞帵偝傟側偄偺傪廋惓
-version1.1.1 game_view.php偱堚尵偑弌椡偝傟側偄偺傪廋惓
-version1.1.0 game_functions.php偺LastWordOutput()偱 global $day_night偑敳偗偰偄偨偺傪廋惓
-version1.0.0 攝晍奐巒
+--- ここから≈乞は客系なりや々のPHP+MySQL败竣惹(from ふたば) ∽の恃构旺悟 ---
+version1.1.5 Kickの借妄でKickされて鄂いたユ〖ザNoを磊り低める借妄がうまくいってなかったのを饯赖
+version1.1.4 setting.php笆嘲のほぼ链て饯赖。Kickされた客の券咐が久えるのを饯赖。颁咐の山绩界が盖年されていたのをランダムに饯赖。
+version1.1.3 game_play.php,game_functions.php,game_view.phpで附哼の栏赂荚の眶を山绩するように、また驴警の山绩饯赖
+version1.1.2 old_log.phpで团秆の尽网アイコンが山绩されないのを饯赖
+version1.1.1 game_view.phpで颁咐が叫蜗されないのを饯赖
+version1.1.0 game_functions.phpのLastWordOutput()で global $day_nightが却けていたのを饯赖
+version1.0.0 芹邵倡幌

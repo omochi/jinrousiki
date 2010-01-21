@@ -813,6 +813,15 @@ function VoteNight(){
 	    $SELF->AddRole('mind_receiver[' . strval($this_target->user_no) . ']');
 	  }
 	}
+	/*
+	//入れ替えQPなら自分と入れ替える
+	elseif($SELF->IsRole('possessed_cupid') && ! $this_target->IsSelf()){
+	  $SELF->AddRole('possessed_target[2-' . $this_target->user_no . '] ' .
+			 'possessed[2-' . $this_target->user_no . ']');
+	  $this_target->AddRole('possessed_target[2-' . $SELF->user_no . '] ' .
+				'possessed[2-' . $SELF->user_no . ']');
+	}
+	*/
 	$this_target->AddRole($add_role);
       }
     }

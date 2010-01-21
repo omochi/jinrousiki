@@ -132,6 +132,7 @@ class Message{
   var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃
   var $possessed          = 'は誰かに憑依したようです'; //憑狼の憑依
   var $possessed_targeted = 'は憑狼に憑依されたようです'; //憑狼の襲撃
+  var $possessed_reset    = 'は憑依から開放されたようです'; //憑依リセット
   var $dream_killed       = 'は獏の餌食になったようです'; //獏の襲撃
   var $trapped            = 'は罠にかかって死亡したようです'; //罠
   var $fox_dead           = '(妖狐) は占い師に呪い殺されたようです'; //狐呪殺

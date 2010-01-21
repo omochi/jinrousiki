@@ -159,26 +159,29 @@ function FetchObjectArray($query, $class){
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
   global $SERVER_CONF;
-  $cur_time = time();
-  if ($SERVER_CONF->adjust_time_difference) $curtime += $SERVER_CONF->offset_seconds;
-  return $cur_time;
+
+  $time = time();
+  if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
+  return $time;
   /* // ミリ秒対応のコード(案) 2009-08-08 enogu
      return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ミリ秒
      対応のコード(案) 2009-08-08 enogu
   */
 }
 
+//TZ 補正をかけた日時を返す
+function TZDate($format, $time){
+  global $SERVER_CONF;
+  return ($SERVER_CONF->adjust_time_difference ? gmdate($format, $time) : date($format, $time));
+}
+
 //TIMESTAMP 形式の時刻を変換する
-function ConvertTimeStamp($time){
+function ConvertTimeStamp($time_stamp){
   global $SERVER_CONF;
 
-  $str = strtotime($time);
-  if ($SERVER_CONF->adjust_time_difference) {
-    $str += $SERVER_CONF->offset_seconds;
-    return gmdate('Y/m/d (D) H:i:s', $str);
-  }
-  // else
-  return date('Y/m/d (D) H:i:s', $str);
+  $time = strtotime($time_stamp);
+  if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
+  return TZDate('Y/m/d (D) H:i:s', $time);
 }
 
 //時間(秒)を変換する
@@ -211,11 +214,6 @@ function EncodePostData(){
     if($encode_type != '' && $encode_type != $ENCODE)
       $_POST[$key] = mb_convert_encoding($value, $ENCODE, $encode_type);
   }
-}
-
-//入力禁止文字のチェック
-function CheckForbiddenStrings($str){
-  return (strstr($str, "'") || strstr($str, "\\"));
 }
 
 //特殊文字のエスケープ処理

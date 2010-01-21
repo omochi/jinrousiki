@@ -17,141 +17,49 @@ function OutputAbility(){
   if($SELF->IsRole('human', 'suspect', 'unconscious')){ //村人・不審者・無意識
     $ROLE_IMG->DisplayImage('human');
   }
-  elseif($SELF->IsRoleGroup('mage')){ //占い系
+  elseif($SELF->IsRoleGroup('mage')){ //占い師系
     $ROLE_IMG->DisplayImage($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);
-
-    //占い結果を表示
-    $action = 'MAGE_RESULT';
-    $sql    = GetAbilityActionResult($action);
-    $count  = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
-	break;
-      }
-    }
-
+    OutputSelfAbilityResult('MAGE_RESULT'); //占い結果を表示
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //夜の投票
   }
   elseif($SELF->IsRole('voodoo_killer')){ //陰陽師
     $ROLE_IMG->DisplayImage($SELF->main_role);
-
-    //護衛結果を表示
-    $sql = GetAbilityActionResult('VOODOO_KILLER_SUCCESS');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'voodoo_killer_success');
-	break;
-      }
-    }
-
+    OutputSelfAbilityResult('VOODOO_KILLER_SUCCESS'); //占い結果を表示
     //夜の投票
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'voodoo_killer_do', 'VOODOO_KILLER_DO');
   }
-  elseif($SELF->IsRole('yama_necromancer')) $ROLE_IMG->DisplayImage($SELF->main_role); //閻魔
-  elseif($SELF->IsRoleGroup('necromancer') || $SELF->IsRole('medium')){ //霊能系
-    if($SELF->IsRoleGroup('necromancer')){
-      $role_name = 'necromancer';
-      $result    = 'necromancer_result';
-      $action    = 'NECROMANCER_RESULT';
-      switch($SELF->main_role){
-      case 'soul_necromancer':
-	$role_name = $SELF->main_role;
-	$action    = 'SOUL_' . $action;
-	break;
-
-      case 'dummy_necromancer':
-	$action = 'DUMMY_' . $action;
-	break;
-      }
+  elseif($SELF->IsRoleGroup('necromancer')){ //霊能者系
+    $ROLE_IMG->DisplayImage($SELF->IsRole('dummy_necromancer') ? 'necromancer' : $SELF->main_role);
+    if(! $SELF->IsRole('yama_necromancer')){ //霊能結果を表示
+      OutputSelfAbilityResult(strtoupper($SELF->main_role) . '_RESULT');
     }
-    else{
-      $role_name = 'medium';
-      $result    = 'medium_result';
-      $action    = 'MEDIUM_RESULT';
-    }
-    $ROLE_IMG->DisplayImage($role_name);
-
-    //判定結果を表示
-    $sql = GetAbilityActionResult($action);
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($target, $target_role) = ParseStrings(mysql_result($sql, $i, 0));
-      OutputAbilityResult($result, $target, 'result_' . $target_role);
-    }
+  }
+  elseif($SELF->IsRole('medium')){ //巫女
+    $ROLE_IMG->DisplayImage($SELF->main_role);
+    OutputSelfAbilityResult('MEDIUM_RESULT'); //神託結果を表示
   }
   elseif($SELF->IsRole('priest')){ //司祭
     $ROLE_IMG->DisplayImage($SELF->main_role);
-
-    //判定結果を表示
-    $sql = GetAbilityActionResult('PRIEST_RESULT');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      $result = mysql_result($sql, $i, 0);
-      OutputAbilityResult('priest_header', $result, 'priest_footer');
-    }
+    OutputSelfAbilityResult('PRIEST_RESULT'); //神託結果を表示
+  }
+  elseif($SELF->IsRole('crisis_priest')){ //預言者
+    $ROLE_IMG->DisplayImage('human');
+    OutputSelfAbilityResult('CRISIS_PRIEST_RESULT'); //神託結果を表示
   }
   elseif($SELF->IsRoleGroup('guard')){ //狩人系
     $ROLE_IMG->DisplayImage($SELF->IsRole('dummy_guard') ? 'guard' : $SELF->main_role);
-
-    //護衛結果を表示
-    $sql = GetAbilityActionResult('GUARD_SUCCESS');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'guard_success');
-	break;
-      }
-    }
-
-    $sql = GetAbilityActionResult('GUARD_HUNTED');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'guard_hunted');
-	break;
-      }
-    }
-
+    OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果を表示
+    OutputSelfAbilityResult('GUARD_HUNTED'); //狩り結果を表示
     if($is_after_first_night) OutputVoteMessage('guard-do', 'guard_do', 'GUARD_DO'); //夜の投票
   }
   elseif($SELF->IsRole('reporter')){ //ブン屋
     $ROLE_IMG->DisplayImage($SELF->main_role);
-
-    //尾行結果を表示
-    $action = 'REPORTER_SUCCESS';
-    $sql    = GetAbilityActionResult($action);
-    $count  = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target, $wolf_handle) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($SELF->handle_name == $actor){
-	$target .= ' さんは ' . $wolf_handle;
-	OutputAbilityResult('reporter_result_header', $target, 'reporter_result_footer');
-	break;
-      }
-    }
-
+    OutputSelfAbilityResult('REPORTER_SUCCESS'); //尾行結果を表示
     if($is_after_first_night) OutputVoteMessage('guard-do', 'reporter_do', 'REPORTER_DO'); //夜の投票
   }
   elseif($SELF->IsRole('anti_voodoo')){ //厄神
     $ROLE_IMG->DisplayImage($SELF->main_role);
-
-    //護衛結果を表示
-    $sql = GetAbilityActionResult('ANTI_VOODOO_SUCCESS');
-    $count = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target) = ParseStrings(mysql_result($sql, $i, 0));
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'anti_voodoo_success');
-	break;
-      }
-    }
-
+    OutputSelfAbilityResult('ANTI_VOODOO_SUCCESS'); //護衛結果を表示
     if($is_after_first_night){
       OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO'); //夜の投票
     }
@@ -159,15 +67,16 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('common')){ //共有者
     $ROLE_IMG->DisplayImage('common');
 
-    //仲間を表示
+    //仲間情報を取得
+    $parter = array();
     foreach($USERS->rows as $user){
       if($user->IsSelf()) continue;
       if(($SELF->IsRole('common') && $user->IsRole('common')) ||
 	 ($SELF->IsRole('dummy_common') && $user->IsDummyBoy())){
-	$common_partner[] = $user->handle_name;
+	$partner[] = $user->handle_name;
       }
     }
-    OutputPartner($common_partner, 'common_partner');
+    OutputPartner($partner, 'common_partner'); //仲間を表示
   }
   elseif($SELF->IsRole('assassin')){ //暗殺者
     $ROLE_IMG->DisplayImage($SELF->main_role);
@@ -178,24 +87,27 @@ function OutputAbility(){
   elseif($SELF->IsRole('mind_scanner')){ //さとり
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
-    if($ROOM->date > 1){ //2日目以降、自分が心を読んでいる相手を表示
+    if($ROOM->date > 1){ //二日目以降、自分が心を読んでいる相手を表示
+      $target = array();
       foreach($USERS->rows as $user){
-	if($user->IsPartner('mind_read', $SELF->user_no)){
-	  $mind_scanner_target[] = $user->handle_name;
-	}
+	if($user->IsPartner('mind_read', $SELF->user_no)) $target[] = $user->handle_name;
       }
-      OutputPartner($mind_scanner_target, 'mind_scanner_target');
+      OutputPartner($target, 'mind_scanner_target');
     }
 
     if($is_first_night){ //初日夜の投票
       OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
     }
   }
-  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->DisplayImage($SELF->main_role); //橋姫系
+  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->DisplayImage($SELF->main_role); //橋姫
   elseif($SELF->IsWolf()){ //人狼系
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
-    foreach($USERS->rows as $user){ //仲間情報を収集
+    //仲間情報を収集
+    $wolf_partner = array();
+    $mad_partner = array();
+    $unconscious_list = array();
+    foreach($USERS->rows as $user){
       if($user->IsSelf() || $user->IsRole('silver_wolf')) continue;
       if($user->IsWolf()){
 	$wolf_partner[] = $USERS->GetVirtualHandleName($user->uname);
@@ -216,27 +128,16 @@ function OutputAbility(){
     }
 
     if($SELF->IsRole('tongue_wolf')){ //舌禍狼の噛み結果を表示
-      $action = 'TONGUE_WOLF_RESULT';
-      $sql    = GetAbilityActionResult($action);
-      $count  = mysql_num_rows($sql);
-      for($i = 0; $i < $count; $i++){
-	list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-	if($SELF->handle_name == $actor){
-	  OutputAbilityResult('wolf_result', $target, 'result_' . $target_role);
-	  break;
-	}
-      }
+      OutputSelfAbilityResult('TONGUE_WOLF_RESULT');
     }
 
-    if($SELF->IsRole('possessed_wolf')){
-      $possessed_target = $SELF->partner_list['possessed_target'];
-      do{
-	if(! is_array($possessed_target)) break;
-	$date = max(array_keys($possessed_target));
-	$target = $USERS->ByID($possessed_target[$date])->handle_name;
-	if($target == '') break;
-	OutputAbilityResult('partner_header', $target, 'possessed_target');
-      }while(false);
+    if($SELF->IsRole('possessed_wolf')){ //憑狼の現在の憑依先を表示
+      $target_list = $SELF->partner_list['possessed_target'];
+      if(is_array($target_list)){
+	$date = max(array_keys($target_list));
+	$target = $USERS->ByID($target_list[$date])->handle_name;
+	if($target != '') OutputAbilityResult('partner_header', $target, 'possessed_target');
+      }
     }
 
     if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //夜の投票
@@ -297,18 +198,7 @@ function OutputAbility(){
     }
 
     if($SELF->IsRole('child_fox')){
-      //占い結果を表示
-      $action = 'CHILD_FOX_RESULT';
-      $sql    = GetAbilityActionResult($action);
-      $count  = mysql_num_rows($sql);
-      for($i = 0; $i < $count; $i++){
-	list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-	if($SELF->handle_name == $actor){
-	  OutputAbilityResult('mage_result', $target, 'result_' . $target_role);
-	  break;
-	}
-      }
-
+      OutputSelfAbilityResult('CHILD_FOX_RESULT'); //占い結果を表示
       if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //夜の投票
     }
     elseif($SELF->IsRole('voodoo_fox') && $ROOM->IsNight()){ //九尾
@@ -316,15 +206,7 @@ function OutputAbility(){
     }
 
     if(! $SELF->IsRole('white_fox', 'poison_fox', 'child_fox')){
-      //狐が狙われたメッセージを表示
-      $sql = GetAbilityActionResult('FOX_EAT');
-      $count = mysql_num_rows($sql);
-      for($i = 0; $i < $count; $i++){
-	if($SELF->handle_name == mysql_result($sql, $i, 0)){
-	  OutputAbilityResult('fox_targeted', NULL);
-	  break;
-	}
-      }
+      OutputSelfAbilityResult('FOX_EAT'); //襲撃メッセージを表示
     }
   }
   elseif($SELF->IsRoleGroup('chiroptera')){ //蝙蝠系
@@ -355,18 +237,7 @@ function OutputAbility(){
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
     if(! $ROOM->IsOpenCast()){
-      //蘇生結果を表示
-      $action = 'POISON_CAT_RESULT';
-      $sql    = GetAbilityActionResult($action);
-      $count  = mysql_num_rows($sql);
-      for($i = 0; $i < $count; $i++){
-	list($actor, $target, $result) = ParseStrings(mysql_result($sql, $i, 0), $action);
-	if($SELF->handle_name == $actor){
-	  OutputAbilityResult(NULL, $target, 'poison_cat_' . $result);
-	  break;
-	}
-      }
-
+      OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果を表示
       if($is_after_first_night){ //夜の投票
 	OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
@@ -375,18 +246,7 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->DisplayImage('poison'); //埋毒者系
   elseif($SELF->IsRole('pharmacist')){ //薬師
     $ROLE_IMG->DisplayImage($SELF->main_role);
-
-    //解毒結果を表示
-    $action = 'PHARMACIST_RESULT';
-    $sql    = GetAbilityActionResult($action);
-    $count  = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target, $result) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'pharmacist_' . $result);
-	break;
-      }
-    }
+    OutputSelfAbilityResult('PHARMACIST_RESULT'); //鑑定結果を表示
   }
   elseif($SELF->IsRoleGroup('cupid')){ //キューピッド系
     $ROLE_IMG->DisplayImage($SELF->main_role);
@@ -413,19 +273,8 @@ function OutputAbility(){
   //-- ここから兼任役職 --//
   $fix_display_list = array(); //常時表示する役職リスト
 
-  if($SELF->IsRole('copied')){ //元神話マニア
-    //コピー結果を表示
-    $action = 'MANIA_RESULT';
-    $sql    = GetAbilityActionResult($action);
-    $count  = mysql_num_rows($sql);
-    for($i = 0; $i < $count; $i++){
-      list($actor, $target, $target_role) = ParseStrings(mysql_result($sql, $i, 0), $action);
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult(NULL, $target, 'result_' . $target_role);
-	break;
-      }
-    }
-  }
+  //元神話マニアのコピー結果を表示
+  if($SELF->IsRole('copied')) OutputSelfAbilityResult('MANIA_RESULT');
   $fix_display_list[] = 'copied';
 
   //能力喪失 (舌禍狼、罠師)
@@ -439,7 +288,7 @@ function OutputAbility(){
       if(! $user->IsSelf() &&
 	 ($user->IsPartner('lovers', $SELF->partner_list) ||
 	  $user->user_no == $dummy_lovers_id)){
-	$lovers_partner[] = $user->handle_name;
+	$lovers_partner[] = $USERS->GetVirtualHandleName($user->uname);
       }
     }
     OutputPartner($lovers_partner, 'partner_header', 'lovers_footer');
@@ -506,6 +355,167 @@ function OutputPartner($partner_list, $header, $footer = NULL){
   $str .= '</td>'."\n";
   if($footer) $str .= '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
   echo $str . '</tr></table>'."\n";
+}
+
+//個々の能力発動結果を表示する
+function OutputSelfAbilityResult($action){
+  global $ROOM, $SELF;
+
+  $header = NULL;
+  $footer = 'result_';
+  switch($action){
+  case 'MAGE_RESULT':
+    $type = 'mage';
+    $header = 'mage_result';
+    break;
+
+  case 'VOODOO_KILLER_SUCCESS':
+    $type = 'guard';
+    $footer = 'voodoo_killer_success';
+    break;
+
+  case 'NECROMANCER_RESULT':
+  case 'DUMMY_NECROMANCER_RESULT':
+  case 'SOUL_NECROMANCER_RESULT':
+    $type = 'necromancer';
+    break;
+
+  case 'MEDIUM_RESULT':
+    $type = 'necromancer';
+    $header = 'medium';
+    break;
+
+  case 'PRIEST_RESULT':
+    $type = 'priest';
+    $header = 'priest_header';
+    $footer = 'priest_footer';
+    break;
+
+  case 'CRISIS_PRIEST_RESULT':
+    $type = 'crisis_priest';
+    $header = 'side_';
+    $footer = 'crisis_priest_result';
+    break;
+
+  case 'GUARD_SUCCESS':
+    $type = 'guard';
+    $footer = 'guard_success';
+    break;
+
+  case 'GUARD_HUNTED':
+    $type = 'guard';
+    $footer = 'guard_hunted';
+    break;
+
+  case 'REPORTER_SUCCESS':
+    $type = 'reporter';
+    $header = 'reporter_result_header';
+    $footer = 'reporter_result_footer';
+    break;
+
+  case 'ANTI_VOODOO_SUCCESS':
+    $type = 'guard';
+    $footer = 'anti_voodoo_success';
+    break;
+
+  case 'TONGUE_WOLF_RESULT':
+    $type = 'mage';
+    $header = 'wolf_result';
+    break;
+
+  case 'CHILD_FOX_RESULT':
+    $type = 'mage';
+    $header = 'mage_result';
+    break;
+
+  case 'FOX_EAT':
+    $type = 'fox';
+    $header = 'fox_targeted';
+    break;
+
+  case 'POISON_CAT_RESULT':
+    $type = 'mage';
+    $footer = 'poison_cat_';
+    break;
+
+  case 'PHARMACIST_RESULT':
+    $type = 'mage';
+    $footer = 'pharmacist_';
+    break;
+
+  case 'MANIA_RESULT':
+    $type = 'mage';
+    break;
+
+  default:
+    return false;
+  }
+
+  $yesterday = $ROOM->date - 1;
+  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
+    "AND date = $yesterday AND type = '$action'";
+  $result_list = FetchArray($query);
+
+  switch($type){
+  case 'mage':
+    foreach($result_list as $result){
+      list($actor, $target, $target_role) = ParseStrings($result, $action);
+      if($SELF->handle_name == $actor){
+	OutputAbilityResult($header, $target, $footer . $target_role);
+	break;
+      }
+    }
+    break;
+
+  case 'necromancer':
+    if(is_null($header)) $header = 'necromancer';
+    foreach($result_list as $result){
+      list($target, $target_role) = ParseStrings($result);
+      OutputAbilityResult($header . '_result', $target, $footer . $target_role);
+    }
+    break;
+
+  case 'priest':
+    foreach($result_list as $result){
+      OutputAbilityResult($header, $result, $footer);
+    }
+    break;
+
+  case 'crisis_priest':
+    foreach($result_list as $result){
+      OutputAbilityResult($header . $result, NULL, $footer);
+    }
+    break;
+
+  case 'guard':
+    foreach($result_list as $result){
+      list($actor, $target) = ParseStrings($result);
+      if($SELF->handle_name == $actor){
+	OutputAbilityResult(NULL, $target, $footer);
+	break;
+      }
+    }
+    break;
+
+  case 'reporter':
+    foreach($result_list as $result){
+      list($actor, $target, $wolf_handle) = ParseStrings($result, $action);
+      if($SELF->handle_name == $actor){
+	OutputAbilityResult($header, $target . ' さんは ' . $wolf_handle, $footer);
+	break;
+      }
+    }
+    break;
+
+  case 'fox':
+    foreach($result_list as $result){
+      if($SELF->handle_name == $result){
+	OutputAbilityResult($header, NULL);
+	break;
+      }
+    }
+    break;
+  }
 }
 
 //能力発動結果をデータベースに問い合わせる

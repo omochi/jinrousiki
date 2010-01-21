@@ -1429,8 +1429,12 @@ function AggregateVoteNight(){
       break;
     }
 
-    if($voted_wolf->IsRole('possessed_wolf') && ! $wolf_target->IsDummyBoy()){ //憑狼の処理
-      $possessed_target_list[$wolf_target->user_no] = true;
+    if($voted_wolf->IsRole('possessed_wolf') && ! $wolf_target->IsDummyBoy() &&
+       ! $wolf_target->IsFox()){ //憑狼の処理
+      //襲撃先が厄神なら憑依リセット
+      $status = ($wolf_target->IsRole('anti_voodoo') ? 'reset' : NULL);
+      $possessed_target_list[$voted_wolf->user_no] = array('target' => $wolf_target->user_no,
+							   'status' => $status);
       $wolf_target->dead_flag = true;
     }
     else{
@@ -1460,11 +1464,13 @@ function AggregateVoteNight(){
       }
 
       $USERS->Kill($poison_target->user_no, 'POISON_DEAD_night'); //毒死処理
-      if(is_array($possessed_target_list) && $voted_wolf == $poison_target){
-	$possessed_target_list[$wolf_target->user_no] = false;
-      }
     }while(false);
   }while(false);
+
+  $possessed_target_id_list= array();
+  foreach($possessed_target_list as $id => $array){
+    $possessed_target_id_list[] = $array['target'];
+  }
 
   //その他の能力者の投票処理
   /*
@@ -1504,10 +1510,27 @@ function AggregateVoteNight(){
 
     foreach($vote_data->anti_voodoo as $array){ //厄神の処理
       $this_user = $USERS->ByUname($array['uname']);
-      if(! $this_user->dead_flag){ //直前に死んでいたら無効
-	$anti_voodoo_target_list[$this_user->uname] = $array['target_uname'];
+      if($this_user->dead_flag) continue; //直前に死んでいたら無効
+
+      $this_target = $USERS->ByUname($array['target_uname']);
+      $anti_voodoo_target_list[$this_user->uname] = $this_target->uname;
+
+      if($this_target == $wolf_target &&
+	 in_array($this_target->user_no, $possessed_target_id_list)){
+	if($possessed_target_list[$voted_wolf->user_no]['status'] != 'reset'){
+	  $possessed_target_list[$voted_wolf->user_no]['status'] = 'cancel';
+	}
       }
+      elseif($this_target->IsRole('possessed_wolf') &&
+	     ! $this_target->IsSameID($USERS->ByVirtual($this_target->user_no))){
+	$possessed_target_list[$this_target->user_no]['status'] = 'reset';
+      }
+      else{
+	continue;
+      }
+      $anti_voodoo_success_list[] = $this_target->uname;
     }
+    //print_r($possessed_target_list); テスト用
 
     foreach($vote_data->dream_eater_mad as $array){ //獏の処理
       $this_user = $USERS->ByUname($array['uname']);
@@ -1540,8 +1563,15 @@ function AggregateVoteNight(){
     if($this_user->dead_flag) continue; //直前に死んでいたら無効
 
     $this_target = $USERS->ByUname($array['target_uname']); //対象者の情報を取得
-    if($this_target->IsRoleGroup('cursed')){ //呪い持ちなら呪殺
+    if($this_target->IsRoleGroup('cursed', 'possessed_wolf')){ //呪い持ちか憑狼なら呪殺
       $USERS->Kill($this_target->user_no, 'CURSED');
+      $voodoo_killer_success_list[] = $this_target->uname;
+    }
+    elseif($this_target == $wolf_target &&
+	   in_array($this_target->user_no, $possessed_target_id_list)){
+      if($possessed_target_list[$voted_wolf->user_no]['status'] != 'reset'){
+	$possessed_target_list[$voted_wolf->user_no]['status'] = 'cancel';
+      }
       $voodoo_killer_success_list[] = $this_target->uname;
     }
     $voodoo_killer_target_list[$this_user->uname] = $this_target->uname; //解呪リストに追加
@@ -1683,8 +1713,8 @@ function AggregateVoteNight(){
 	$this_result = $this_target->DistinguishMage(); //判定結果を取得
       }
 
-      if($this_target == $voted_wolf && in_array($wolf_target->user_no, $possessed_target_list)){
-	$possessed_target_list[$wolf_target->user_no] = false;
+      if(in_array($this_target->user_no, $possessed_target_list)){
+	$possessed_target_list[$this_target->user_no]['status'] = 'cancel';
       }
     }
     $sentence = $this_user->handle_name . "\t";;
@@ -1801,6 +1831,7 @@ function AggregateVoteNight(){
 
 	//蘇生判定
 	$this_rand = mt_rand(1, 100); //蘇生判定用乱数
+	//$this_rand = 1; //テスト用
 	$this_result = 'failed';
 	if($ROOM->test_mode) echo "revive rand : $this_rand <br>";
 	do{
@@ -1809,7 +1840,7 @@ function AggregateVoteNight(){
 	    if($ROOM->test_mode){
 	      $new_target_list = array();
 	      foreach($USERS->rows as $this_new_target){
-		if($this_new_target->IsDead() && ! $this_new_target->IsDummyBoy()){
+		if(! $this_new_target->IsLive(true) && ! $this_new_target->IsDummyBoy()){
 		  $new_target_list[] = $this_new_target->uname;
 		}
 	      }
@@ -1840,32 +1871,51 @@ function AggregateVoteNight(){
   }
 
   //憑依処理
-  foreach($possessed_target_list as $this_user_no => $this_flag){
-    $this_user = $USERS->ByID($this_user_no); //憑依先のユーザ情報を取得
+  foreach($possessed_target_list as $this_user_no => $this_array){
+    $this_user = $USERS->ByID($this_user_no); //憑依者のユーザ情報を取得
+    $this_target = $USERS->ByID($this_array['target']); //憑依先のユーザ情報を取得
+    $this_target->dead_flag = false; //死亡フラグを元に戻す
 
-    $this_user->dead_flag = false; //死亡フラグを元に戻す
-    if($this_flag && ! $voted_wolf->dead_flag){ //憑依成功
-      $USERS->Kill($this_user->user_no, 'POSSESSED_TARGETED'); //憑依先の死亡処理
-      $possessed_date = $ROOM->date + 1;
-      $wolf_target->AddRole("possessed[{$possessed_date}-{$voted_wolf->user_no}]");
+    if($this_array['status'] == 'cancel'){ //憑依失敗
+      $USERS->Kill($this_target->user_no, 'WOLF_KILLED');
+      continue;
+    }
 
-      //現在の憑依情報を取得
-      $virtual_voted_wolf = $USERS->ByVirtual($voted_wolf->user_no);
-      if($virtual_voted_wolf != $voted_wolf){
-	$virtual_voted_wolf->AddRole("possessed[{$possessed_date}-{$virtual_voted_wolf->user_no}]");
+    $possessed_date = $ROOM->date + 1; //憑依する日を取得
+    $this_virtual_user = $USERS->ByVirtual($this_user->user_no); //現在の憑依先を取得
+
+    if(! $this_user->IsLive(true)){ //憑依者死亡
+      $USERS->Kill($this_target->user_no, 'WOLF_KILLED');
+    }
+    elseif($this_array['status'] == 'reset'){ //憑依リセット
+      $USERS->Kill($this_target->user_no, 'WOLF_KILLED');
+      if(! $this_user->IsSameID($this_virtual_user->user_no)){ //憑依中なら元の体に戻される
+	//憑依先のリセット処理
+	$this_virtual_user->AddRole("possessed[{$possessed_date}-{$this_virtual_user->user_no}]");
+	$this_virtual_user->SaveLastWords();
+	InsertSystemMessage($this_virtual_user->handle_name, 'POSSESSED_RESET');
+
+	//見かけ上の蘇生処理
+	$this_user->AddRole("possessed_target[{$possessed_date}-{$this_user->user_no}]");
+	$this_user->SaveLastWords($this_virtual_user->handle_name);
+	InsertSystemMessage($this_user->handle_name, 'REVIVE_SUCCESS');
       }
+      continue;
+    }
+    else{ //憑依成功
+      $USERS->Kill($this_target->user_no, 'POSSESSED_TARGETED'); //憑依先の死亡処理
+      $this_target->AddRole("possessed[{$possessed_date}-{$this_user->user_no}]");
 
       //憑依処理
-      $voted_wolf->AddRole("possessed_target[{$possessed_date}-{$wolf_target->user_no}]");
-      InsertSystemMessage($virtual_voted_wolf->handle_name, 'POSSESSED');
-      $voted_wolf->SaveLastWords($virtual_voted_wolf->handle_name);
-      $voted_wolf->Update('last_words', '');
-      if($voted_wolf != $virtual_voted_wolf){
-	$virtual_voted_wolf->SaveLastWords();
-      }
+      $this_user->AddRole("possessed_target[{$possessed_date}-{$this_target->user_no}]");
+      InsertSystemMessage($this_virtual_user->handle_name, 'POSSESSED');
+      $this_user->SaveLastWords($this_virtual_user->handle_name);
+      $this_user->Update('last_words', '');
     }
-    else{ //憑依失敗
-      $USERS->Kill($this_user->user_no, 'WOLF_KILLED');
+
+    if(! $this_user->IsSameID($this_virtual_user->user_no)){
+      $this_virtual_user->AddRole("possessed[{$possessed_date}-{$this_virtual_user->user_no}]");
+      $this_virtual_user->SaveLastWords();
     }
   }
 
@@ -1875,12 +1925,42 @@ function AggregateVoteNight(){
   if($ROOM->date > 2 && ($ROOM->date % 2) == 1 && $USERS->IsAppear('priest')){ //司祭の判定
     $live_count = 0;
     foreach($USERS->rows as $this_user){
-      if($this_user->IsLive() && ! $this_user->dead_flag &&
-	 $this_user->DistinguishCamp() == 'human'){
+      if($this_user->IsLive(true) && $this_user->DistinguishCamp() == 'human'){
 	$live_count++;
       }
     }
     InsertSystemMessage($live_count, 'PRIEST_RESULT');
+  }
+
+  if($USERS->IsAppear('crisis_priest')){ //預言者の判定
+    $live_count = array();
+    foreach($USERS->rows as $this_user){
+      if(! $this_user->IsLive(true)) continue;
+
+      $live_count['total']++;
+      if($this_user->IsWolf())
+	$live_count['wolf']++;
+      elseif($this_user->IsFox())
+	$live_count['fox']++;
+      else
+	$live_count['human']++;
+
+      if($this_user->IsLovers()) $live_count['lovers']++;
+    }
+    //print_r($live_count);
+
+    $crisis_priest_result = '';
+    if($live_count['wolf'] >= $live_count['human'] - 1 || $live_count['wolf'] == 1){
+      if($live_count['lovers'] > 1)
+	$crisis_priest_result = 'lovers';
+      elseif($live_count['fox'] > 0)
+	$crisis_priest_result = 'fox';
+      elseif($live_count['wolf'] >= $live_count['human'] - 1)
+	$crisis_priest_result = 'wolf';
+    }
+    if($crisis_priest_result != ''){
+      InsertSystemMessage($crisis_priest_result, 'CRISIS_PRIEST_RESULT');
+    }
   }
 
   if($ROOM->test_mode) return;

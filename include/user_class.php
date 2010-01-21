@@ -15,33 +15,35 @@ class User{
   //指定したユーザーデータのセットを名前つき配列にして返します。
   //このメソッドはextract関数を使用してオブジェクトのプロパティを
   //迅速にローカルに展開するために使用できます。
-  function ToArray($mode = ''){
-    $result = array (
-		     'user_no' => $this->user_no,
-		     'uname' => $this->uname,
-		     'handle_name' => $this->handle_name,
-		     'role' => $this->role,
-		     'sex' => $this->sex,
-		     'live' => $this->live
-		     );
-    if(empty($mode)) return $result;
+  function ToArray($type = NULL){
+    switch($type){
+      case 'profiles':
+	$result['profile'] = $this->profile;
+	$result['color'] = $this->color;
+	$result['icon_width'] = $this->icon_width;
+	$result['icon_height'] = $this->icon_height;
+	break;
 
-    //モード適用
-    if(strpos($mode, 'profiles') !== false){
-      $result['profile'] = $this->profile;
-      $result['color'] = $this->color;
-      $result['icon_width'] = $this->icon_width;
-      $result['icon_height'] = $this->icon_height;
-    }
-    if(strpos($mode, 'flags') !== false){
+    case 'flags':
       $result['dead_flag'] = $this->dead_flag;
       $result['suicide_flag'] = $this->suicide_flag;
       $result['revive_flag'] = $this->revive_flag;
-    }
-    if(strpos($mode, 'roles') !== false){
+      break;
+
+    case 'roles':
       $result['main_role'] = $this->main_role;
       $result['role_list'] = $this->role_list;
       $result['partner_list'] = $this->partner_list;
+      break;
+
+    default:
+      return array ('user_no'     => $this->user_no,
+		    'uname'       => $this->uname,
+		    'handle_name' => $this->handle_name,
+		    'role'        => $this->role,
+		    'profile'     => $this->profile,
+		    'icon'        => $this->icon_filename,
+		    'color'       => $this->color);
     }
     return $result;
   }
@@ -67,12 +69,21 @@ class User{
     $this->role_list = array_unique($this->role_list);
   }
 
-  function IsLive(){
+  function IsLive($strict = false){
+    if($strict){
+      if($this->suicide_flag) return false;
+      if($this->revive_flag) return true;
+      if($this->dead_flag) return false;
+    }
     return ($this->live == 'live');
   }
 
   function IsDead(){
     return ($this->live == 'dead');
+  }
+
+  function IsSameID($user_no){
+    return ($this->user_no == $user_no);
   }
 
   function IsSameUser($uname){
@@ -81,7 +92,7 @@ class User{
 
   function IsSelf(){
     global $SELF;
-    return $this->IsSameUser($SELF->uname);
+    return $this->IsSameID($SELF->user_no);
   }
 
   function IsDummyBoy(){
@@ -208,7 +219,7 @@ class User{
     global $ROOM;
 
     if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
-    if(! $handle_name) $handle_name = $this->handle_name;
+    if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       InsertSystemMessage($handle_name, 'LAST_WORDS');
       return;
@@ -503,10 +514,10 @@ class UserDataSet{
     return $this->ByID($user_no)->IsLive();
   }
 
-  function GetLivingUsers(){
+  function GetLivingUsers($strict = false){
     $array = array();
     foreach($this->rows as $this_user){
-      if($this_user->IsLive()) $array[] = $this_user->uname;
+      if($this_user->IsLive($strict)) $array[] = $this_user->uname;
     }
     return $array;
   }
