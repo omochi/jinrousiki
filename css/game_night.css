@@ -1,19 +1,19 @@
 body{
-  background-color: #000030; /* 攚宨怓 */
-  color: #FFFAFA; /* 暥帤怓 */
+  background-color: #000030; /* 秦肥咖 */
+  color: #FFFAFA; /* 矢机咖 */
 }
 a:link{   color: #8080FF;}
 a:visited{color: #8080FF;}
 a:active{ color: #FF0000;}
 a:hover{  color: #FF0000;}
 .real-time input{
-  background-color: #000030; /* body 偺攚宨怓偲懙偊偰偔偩偝偄 */
-  color: #FFFAFA; /* body 偺暥帤怓偲懙偊偰偔偩偝偄 */
+  background-color: #000030; /* body の秦肥咖と路えてください */
+  color: #FFFAFA; /* body の矢机咖と路えてください */
 }
 .vote-page{border-color: #FFFAFA;}
 .vote-page td{
   border-color: #FFFAFA;
-  color: #FFFAFA; /* body 偺暥帤怓偲懙偊偰偔偩偝偄 */
+  color: #FFFAFA; /* body の矢机咖と路えてください */
 }
 .vote-list{   border-color: #FFFAFA;}
 .vote-list td{border-color: #FFFAFA;}

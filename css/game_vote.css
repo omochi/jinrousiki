@@ -12,10 +12,10 @@
 }
 .vote-page img{
   margin-right: 5px;
-  border: 2px solid; /* ˜g‚ÌF‚ÍƒAƒCƒRƒ“–ˆ */
+  border: 2px solid; /* ÏÈ¤Î¿§¤Ï¥¢¥¤¥³¥óËè */
   float: left;
 }
-.vote-message{font-size:8pt;} /* ƒƒbƒZ[ƒW */
+.vote-message{font-size:8pt;} /* ¥á¥Ã¥»¡¼¥¸ */
 .vote-page-link table{
   border: 0;
   boder-collapse: collapse;

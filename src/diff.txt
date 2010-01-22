@@ -1,88 +1,88 @@
-XV—š—ðF1.4 Œn
+¹¹¿·ÍúÎò¡§1.4 ·Ï
 
 Ver. 1.4.0 alpha23
-E“Ë‘RŽ€‚ª‚ç‚Ý‚ÌƒoƒO‚ðC³
-E–ðE‚ð‚¢‚­‚Â‚©’Ç‰Á
+¡¦ÆÍÁ³»à¤¬¤é¤ß¤Î¥Ð¥°¤ò½¤Àµ
+¡¦Ìò¿¦¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
 
 Ver. 1.4.0 alpha22
-E‚³‚Æ‚èŒn‚ÌƒoƒO‚ðC³
-E–ðE‚ð‚¢‚­‚Â‚©’Ç‰Á
+¡¦¤µ¤È¤ê·Ï¤Î¥Ð¥°¤ò½¤Àµ
+¡¦Ìò¿¦¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
 
 Ver. 1.4.0 alpha21
-E‰Šú‰»ƒ‹[ƒ`ƒ“‚ðÄ\’z
-E–ðE‚ð‚¢‚­‚Â‚©’Ç‰Á
-EƒoƒO‚ð‚¢‚­‚Â‚©C³
+¡¦½é´ü²½¥ë¡¼¥Á¥ó¤òºÆ¹½ÃÛ
+¡¦Ìò¿¦¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
+¡¦¥Ð¥°¤ò¤¤¤¯¤Ä¤«½¤Àµ
 
 Ver. 1.4.0 alpha20
-EƒVƒXƒeƒ€ƒƒbƒZ[ƒWŽü‚è‚Ì‰ü’ù
-E–ðE‚ð‚¢‚­‚Â‚©’Ç‰Á
-EƒoƒO‚ð‚¢‚­‚Â‚©C³
+¡¦¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸¼þ¤ê¤Î²þÄû
+¡¦Ìò¿¦¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
+¡¦¥Ð¥°¤ò¤¤¤¯¤Ä¤«½¤Àµ
 
 Ver. 1.4.0 alpha19
-Eg‘ã‚í‚èŒN‚ªƒLƒ…[ƒsƒbƒh‚É‚È‚Á‚Ä‚à‹@”\‚·‚é‚æ‚¤•ÏX
-E–ðE‚ð‚¢‚­‚Â‚©’Ç‰Á
-EƒoƒO‚ð‚¢‚­‚Â‚©C³
-EƒQ[ƒ€ƒIƒvƒVƒ‡ƒ“‚ð‚¢‚­‚Â‚©’Ç‰Á
+¡¦¿ÈÂå¤ï¤ê·¯¤¬¥­¥å¡¼¥Ô¥Ã¥É¤Ë¤Ê¤Ã¤Æ¤âµ¡Ç½¤¹¤ë¤è¤¦ÊÑ¹¹
+¡¦Ìò¿¦¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
+¡¦¥Ð¥°¤ò¤¤¤¯¤Ä¤«½¤Àµ
+¡¦¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
 
 Ver. 1.4.0 alpha18
-E–²Œn‚ÌŽd—l•ÏX
-E–ðE‚ð‚¢‚­‚Â‚©’Ç‰Á
-EƒoƒO‚ð‚¢‚­‚Â‚©C³
+¡¦Ì´·Ï¤Î»ÅÍÍÊÑ¹¹
+¡¦Ìò¿¦¤ò¤¤¤¯¤Ä¤«ÄÉ²Ã
+¡¦¥Ð¥°¤ò¤¤¤¯¤Ä¤«½¤Àµ
 
 Ver. 1.4.0 alpha17
-EƒNƒCƒY‘º’²®
-EV–ðE‘å—Ê’Ç‰Á
+¡¦¥¯¥¤¥ºÂ¼Ä´À°
+¡¦¿·Ìò¿¦ÂçÎÌÄÉ²Ã
 
 Ver. 1.4.0 alpha16
-E‰ß‹ŽƒƒO‚Ì•\Ž¦‚ð’²®
+¡¦²áµî¥í¥°¤ÎÉ½¼¨¤òÄ´À°
 
 Ver. 1.4.0 alpha15
-EƒQ[ƒ€ƒIƒvƒVƒ‡ƒ“‚Ì‰æ‘œ‚ð’Ç‰Á
-EV–ðEF”g—–œäAƒSƒ}‚·‚èA’Z‹C
-EƒoƒO‚ð‚¢‚­‚Â‚©C³
+¡¦¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤Î²èÁü¤òÄÉ²Ã
+¡¦¿·Ìò¿¦¡§ÇÈÍðËü¾æ¡¢¥´¥Þ¤¹¤ê¡¢Ã»µ¤
+¡¦¥Ð¥°¤ò¤¤¤¯¤Ä¤«½¤Àµ
 
 Ver. 1.4.0 alpha14
-EV–ðE‚ð‘å—Ê‚É’Ç‰Á
+¡¦¿·Ìò¿¦¤òÂçÎÌ¤ËÄÉ²Ã
 
 Ver. 1.4.0 alpha13
-EV–ðEFã‰Ð˜TA–³ˆÓŽ¯‚ðŽÀ‘•
-EƒoƒO‚ðFXC³
+¡¦¿·Ìò¿¦¡§Àå²ÒÏµ¡¢Ìµ°Õ¼±¤ò¼ÂÁõ
+¡¦¥Ð¥°¤ò¿§¡¹½¤Àµ
 
 Ver. 1.4.0 alpha12
-EV–ðEF–òŽtA“Å˜T‚ðŽÀ‘•
-EƒoƒO‚ðFXC³
+¡¦¿·Ìò¿¦¡§Ìô»Õ¡¢ÆÇÏµ¤ò¼ÂÁõ
+¡¦¥Ð¥°¤ò¿§¡¹½¤Àµ
 
 Ver. 1.4.0 alpha11
-EV–ðEF_˜bƒ}ƒjƒAA˜T­”N‚ðŽÀ‘•
-EƒoƒO‚ðFXC³
+¡¦¿·Ìò¿¦¡§¿ÀÏÃ¥Þ¥Ë¥¢¡¢Ïµ¾¯Ç¯¤ò¼ÂÁõ
+¡¦¥Ð¥°¤ò¿§¡¹½¤Àµ
 
 Ver. 1.4.0 alpha10
-EˆÅ“çƒ‚[ƒh‚Ì”z–ðƒ‹[ƒ`ƒ“‚ÌƒoƒOC³
-E—ìŠE‚Ì”­Œ¾‚Å“Ë‘RŽ€ƒ^ƒCƒ}[‚ªƒŠƒZƒbƒg‚³‚ê‚éƒoƒOC³
-E›Þ—”»’è—p‚Ì‰æ‘œ”²‚¯‚É‘Î‰ž
-E‘¼AƒoƒO‚ðFXC³
+¡¦°ÇÆé¥â¡¼¥É¤ÎÇÛÌò¥ë¡¼¥Á¥ó¤Î¥Ð¥°½¤Àµ
+¡¦Îî³¦¤ÎÈ¯¸À¤ÇÆÍÁ³»à¥¿¥¤¥Þ¡¼¤¬¥ê¥»¥Ã¥È¤µ¤ì¤ë¥Ð¥°½¤Àµ
+¡¦Öà½÷È½ÄêÍÑ¤Î²èÁüÈ´¤±¤ËÂÐ±þ
+¡¦Â¾¡¢¥Ð¥°¤ò¿§¡¹½¤Àµ
 
 Ver. 1.4.0 alpha9
-E›Þ—F—ölŒã’Ç‚¢‚É‚à‘Î‰ž
-EƒVƒ‡ƒbƒNŽ€‚ÌƒVƒXƒeƒ€ƒƒbƒZ[ƒW‚ð•ÏX
-EŽqŒÏ‚Ì—ì”\Œ‹‰Ê‚ª‘ºl‚É‚È‚Á‚Ä‚¢‚½ƒoƒOC³
-EV–ðEF•sRŽÒA–TŠÏŽÒA‰u•a_‚ðŽÀ‘•
+¡¦Öà½÷¡§Îø¿Í¸åÄÉ¤¤¤Ë¤âÂÐ±þ
+¡¦¥·¥ç¥Ã¥¯»à¤Î¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸¤òÊÑ¹¹
+¡¦»Ò¸Ñ¤ÎÎîÇ½·ë²Ì¤¬Â¼¿Í¤Ë¤Ê¤Ã¤Æ¤¤¤¿¥Ð¥°½¤Àµ
+¡¦¿·Ìò¿¦¡§ÉÔ¿³¼Ô¡¢Ëµ´Ñ¼Ô¡¢±ÖÉÂ¿À¤ò¼ÂÁõ
 
 Ver. 1.4.0 alpha8
-E°‚Ìè‚¢Žt‚ÌŒ‹‰Ê‚ª³‚µ‚­o‚È‚¢ƒoƒOC³
-EE°‚Ìè‚¢ŽtAo‘èŽÒ‚à³‚µ‚­o‚Ü‚·
-EE‹RŽmE‹¶MŽÒE›Þ—‚à•\Ž¦‚³‚ê‚Ü‚·
+¡¦º²¤ÎÀê¤¤»Õ¤Î·ë²Ì¤¬Àµ¤·¤¯½Ð¤Ê¤¤¥Ð¥°½¤Àµ
+¡¦¡¦º²¤ÎÀê¤¤»Õ¡¢½ÐÂê¼Ô¤âÀµ¤·¤¯½Ð¤Þ¤¹
+¡¦¡¦µ³»Î¡¦¶¸¿®¼Ô¡¦Öà½÷¤âÉ½¼¨¤µ¤ì¤Þ¤¹
 
-EˆÅ“ç‚Ì”z–ðŒˆ’èƒ‹[ƒ`ƒ“‚ð‘g‚Ý’¼‚µ (info/chaos.php ŽQÆ)
-Eroom_manager.php (QP ‚ÌƒfƒtƒHƒ‹ƒgƒ`ƒFƒbƒN‚Ì”²‚¯‚ðC³)
+¡¦°ÇÆé¤ÎÇÛÌò·èÄê¥ë¡¼¥Á¥ó¤òÁÈ¤ßÄ¾¤· (info/chaos.php »²¾È)
+¡¦room_manager.php (QP ¤Î¥Ç¥Õ¥©¥ë¥È¥Á¥§¥Ã¥¯¤ÎÈ´¤±¤ò½¤Àµ)
 
-Ver. 1.4.0 alpah3`7
-EFX–ðEŽÀ‘• (—š—ðŽc‚·‚Ì–Y‚ê‚½)
+Ver. 1.4.0 alpah3¡Á7
+¡¦¿§¡¹Ìò¿¦¼ÂÁõ (ÍúÎò»Ä¤¹¤ÎËº¤ì¤¿)
 
 Ver. 1.4.0 alpha2
-EƒNƒCƒY‘º‰¼ŽÀ‘•
-EˆÅ“çƒ‚[ƒh‰¼ŽÀ‘•
+¡¦¥¯¥¤¥ºÂ¼²¾¼ÂÁõ
+¡¦°ÇÆé¥â¡¼¥É²¾¼ÂÁõ
 
 Ver. 1.4.0 alpha1
-EƒNƒCƒY‘ºŽÀ‘•ŠJŽn
-EˆÅ“çƒ‚[ƒhŽÀ‘•ŠJŽn
+¡¦¥¯¥¤¥ºÂ¼¼ÂÁõ³«»Ï
+¡¦°ÇÆé¥â¡¼¥É¼ÂÁõ³«»Ï

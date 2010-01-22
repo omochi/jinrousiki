@@ -16,7 +16,7 @@ class Role_blinder extends Role{
 
   function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){
     if($this->Ignored() || $this->SameUser($user_info)) return;
-    $user_info = '<font style="color:'.$user->color.'">¢¡</font>';
+    $user_info = '<font style="color:' . $user->color . '">¢¡</font>';
   }
 }
 ?>

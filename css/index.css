@@ -10,22 +10,22 @@ body{
   background-attachment: fixed;
 }
 img{border: 0;}
-.comment{ /* ƒT[ƒo–¼ */
+.comment{ /* ¥µ¡¼¥ĞÌ¾ */
   text-align: right;
   font-weight: bold;
 }
-noscript{ /* JavaScript ‚ª–³Œø‚Ìê‡‚Ìƒ[ƒjƒ“ƒO */
+noscript{ /* JavaScript ¤¬Ìµ¸ú¤Î¾ì¹ç¤Î¥ï¡¼¥Ë¥ó¥° */
   color: #FF0000;
   font-size: 15pt;
   font-weight: bold;
 }
-table.main{ /* ‘S‘Ì‚Ì table */
+table.main{ /* Á´ÂÎ¤Î table */
   border: 0;
   width: 100%;
   padding: 5px;
 }
 table.main td{vertical-align: top;}
-.menu{ /* ƒƒjƒ…[ */
+.menu{ /* ¥á¥Ë¥å¡¼ */
   border: 1px solid #CC3300;
   width: 140px;
   padding: 5px 1px;
@@ -33,45 +33,45 @@ table.main td{vertical-align: top;}
   text-align: center;
   font-weight: bold;
 }
-ul{ /* ƒƒjƒ…[‚ÌƒŠƒ“ƒN */
+ul{ /* ¥á¥Ë¥å¡¼¤Î¥ê¥ó¥¯ */
   list-style-type: none;
   margin-left: -32px;
-  *margin-left: 8px; /* IE6 ‘Î‰ */
+  *margin-left: 8px; /* IE6 ÂĞ±ş */
   line-height: 150%;
   font-size: 95%;
 }
-.log{ /* HTML‰»ƒƒO */
+.log{ /* HTML²½¥í¥° */
  color: #3333CC;
  font-weight: bold;
 }
-fieldset{margin-bottom: 10px;} /* ‰E‘¤‚Ì˜g */
-legend{font-weight: bold;} /* fieldset(‰E‘¤‚Ì˜g) ‚Ìƒ^ƒCƒgƒ‹ */
-.information{ /* Information (’†g‚Í info/index.html) */
+fieldset{margin-bottom: 10px;} /* ±¦Â¦¤ÎÏÈ */
+legend{font-weight: bold;} /* fieldset(±¦Â¦¤ÎÏÈ) ¤Î¥¿¥¤¥È¥ë */
+.information{ /* Information (Ãæ¿È¤Ï info/index.html) */
   margin: 20px 20px;
   line-height: 135%;
 }
 .information ul{list-style-type: circle;}
-.game-list{ /* ƒQ[ƒ€ˆê—— (’†g‚Í game_manager.php) */
+.game-list{ /* ¥²¡¼¥à°ìÍ÷ (Ãæ¿È¤Ï game_manager.php) */
   margin: 20px 20px 30px;
   line-height: 135%;
   font-weight: bold;
 }
 .game-list div{text-align: right;}
-form{margin-top: 10px;} /* ‘º‚Ìì¬ƒtƒH[ƒ€ */
-label{ /* ‘ºì¬‚ÌƒIƒvƒVƒ‡ƒ“–¼ */
+form{margin-top: 10px;} /* Â¼¤ÎºîÀ®¥Õ¥©¡¼¥à */
+label{ /* Â¼ºîÀ®¤Î¥ª¥×¥·¥ç¥óÌ¾ */
   margin-left: 1em;
   font-weight: bold;
 }
-input, select{ /* İ’è€–Ú */
+input, select{ /* ÀßÄê¹àÌÜ */
   background-color: #F0F8FF;
   border:1px solid #C0C0C0;
 }
-.text{border:1px solid #C0C0C0;} /* ‘º‚Ì–¼‘O, à–¾‚È‚Ç */
-.explain{font-size: 80%;} /* ƒIƒvƒVƒ‡ƒ“‚Ìà–¾ */
-.explain input{border: 0px solid #000000;} /* ’‹, –é‚ÌŠÔ */
-.make{text-align: right;} /* ì¬ƒ{ƒ^ƒ“ */
+.text{border:1px solid #C0C0C0;} /* Â¼¤ÎÌ¾Á°, ÀâÌÀ¤Ê¤É */
+.explain{font-size: 80%;} /* ¥ª¥×¥·¥ç¥ó¤ÎÀâÌÀ */
+.explain input{border: 0px solid #000000;} /* Ãë, Ìë¤Î»ş´Ö */
+.make{text-align: right;} /* ºîÀ®¥Ü¥¿¥ó */
 .make input{border: 1px solid #000000;}
-.footer{ /* ƒtƒbƒ^[ (‘fŞ‚ÌƒŠƒ“ƒN‚È‚Ç) */
+.footer{ /* ¥Õ¥Ã¥¿¡¼ (ÁÇºà¤Î¥ê¥ó¥¯¤Ê¤É) */
   margin-bottom: 5px;
   text-align:right;
   font-size: 80%;

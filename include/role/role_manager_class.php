@@ -16,10 +16,9 @@ class Roles{
   function LoadRoles(){
     $dir = opendir(dirname(__FILE__));
     while(($file = readdir($dir)) !== false){
-      shot(sprintf("ファイルの一覧:{$file}(拡張子 %s)", substr($file, -4, 4)));
-      if(substr($file, -4, 4) == '.php'){
-        $this->AddRoleFrom($file);
-      }
+      $str = substr($file, -4, 4);
+      shot(sprintf("ファイルの一覧:{$file}(拡張子 %s)", $str));
+      if($str == '.php') $this->AddRoleFrom($file);
     }
     closedir($dir);
   }

@@ -12,12 +12,12 @@ class Role extends DocumentBuilderExtension{
 
   function Ignored(){
     global $ROOM, $SELF;
-    return ! ($SELF->IsLive() && $ROOM->IsPlaying());
+    return ! ($ROOM->IsPlaying() && $SELF->IsLive());
   }
 
   function SameUser($userinfo){
     $result = strpos($userinfo, $this->actor->handle_name);
-    shot ("<p>{$userinfo}から{$this->actor->handle_name}を探します。-> 結果:{$result}</p>");
+    shot("<p>{$userinfo}から{$this->actor->handle_name}を探します。-> 結果:{$result}</p>");
     return ($result !== false && $result >= 0);
   }
 

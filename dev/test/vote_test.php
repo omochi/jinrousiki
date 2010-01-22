@@ -81,7 +81,7 @@ $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '≤´øß';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[4]->profile = '';
-$RQ_ARGS->TestItems->test_users[4]->role = 'mage disfavor possessed[4-10]';
+$RQ_ARGS->TestItems->test_users[4]->role = 'mage rebel possessed[4-10]';
 $RQ_ARGS->TestItems->test_users[4]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[4]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[4]->is_system = false;
@@ -289,7 +289,6 @@ OutputAbility();
 #print_r($USERS->rows[8]); echo "<br>";
 
 // √Î§Œ≈Í…º•∆•π•»
-/*
 $vote_times = 1;
 $vote_message_list = AggregateVoteDay();
 echo <<<EOF
@@ -307,10 +306,11 @@ foreach($vote_message_list as $this_user => $this_array){
 EOF;
 }
 echo '</table>';
+/*
 */
 
 // ÃÎ§Œ≈Í…º•∆•π•»
-AggregateVoteNight();
+#AggregateVoteNight();
 /*
 if($ROOM->IsFinished()) OutputVictory(); //æ°«‘∑Î≤Ã
 OutputRevoteList(); //∫∆≈Í…º•·•√•ª°º•∏
