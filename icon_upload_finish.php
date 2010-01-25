@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(ICON_CONF, USER_ICON);
+require_once('include/init.php');
+$INIT_CONF->LoadClass('ICON_CONF', 'USER_ICON');
 
 if($USER_ICON->disable_upload){
   OutputActionResult('ユーザアイコンアップロード', '現在アップロードは停止しています');

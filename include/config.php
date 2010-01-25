@@ -511,7 +511,7 @@ class GameConfig{
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'));
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'anti_voodoo', 'priest');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
@@ -534,7 +534,7 @@ class GameConfig{
 //ゲームの時間設定
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
-  var $sudden_death = 180;
+  var $sudden_death = 120;
 
   //-- リアルタイム制 --//
   var $default_day   = 5; //デフォルトの昼の制限時間(分)
@@ -556,11 +556,17 @@ class TimeConfig{
 
 //ゲームプレイ時のアイコン表示設定
 class IconConfig{
-  var $path   = './user_icon';   //ユーザアイコンのパス
-  var $width  = 45;              //表示サイズ(幅)
-  var $height = 45;              //表示サイズ(高さ)
+  var $width  = 45; //表示サイズ(幅)
+  var $height = 45; //表示サイズ(高さ)
+  var $path   = 'user_icon'; //ユーザアイコンのパス
   var $dead   = 'img/grave.gif'; //死者
   var $wolf   = 'img/wolf.gif';  //狼
+
+  function IconConfig(){
+    $this->path = JINRO_ROOT . '/' . $this->path;
+    $this->dead = JINRO_ROOT . '/' . $this->dead;
+    $this->wolf = JINRO_ROOT . '/' . $this->wolf;
+  }
 }
 
 //アイコン登録設定

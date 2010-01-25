@@ -102,7 +102,7 @@ class ImageManager{
   function GenerateTag($name, $alt = ''){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
-    $str .= ' src="' . $this->path . '/' . $name . '.' . $this->extention . '"';
+    $str .= ' src="' . JINRO_ROOT . '/' . $this->path . '/' . $name . '.' . $this->extention . '"';
     if($alt != ''){
       EscapeStrings(&$alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';

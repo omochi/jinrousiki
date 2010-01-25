@@ -1,6 +1,4 @@
 <?php
-require_once(JINRO_INC . '/role/role_class.php');
-
 class Roles{
   var $class = array();
 

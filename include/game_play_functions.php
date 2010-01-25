@@ -110,7 +110,7 @@ function OutputAbility(){
     foreach($USERS->rows as $user){
       if($user->IsSelf() || $user->IsRole('silver_wolf')) continue;
       if($user->IsWolf()){
-	$wolf_partner[] = $USERS->GetVirtualHandleName($user->uname);
+	$wolf_partner[] = $USERS->GetHandleName($user->uname, true);
       }
       elseif($user->IsRole('whisper_mad')){
 	$mad_partner[] = $user->handle_name;
@@ -148,7 +148,7 @@ function OutputAbility(){
       //Ïµ¤òÉ½¼¨
       foreach($USERS->rows as $user){
 	if($user->IsWolf(true)){
-	  $wolf_partner[] = $USERS->GetVirtualHandleName($user->uname);
+	  $wolf_partner[] = $USERS->GetHandleName($user->uname, true);
 	}
       }
       OutputPartner($wolf_partner, 'wolf_partner');
@@ -158,7 +158,7 @@ function OutputAbility(){
       foreach($USERS->rows as $user){
 	if($user->IsSelf() || $user->IsRole('silver_wolf')) continue;
 	if($user->IsWolf()){
-	  $wolf_partner[] = $USERS->GetVirtualHandleName($user->uname);
+	  $wolf_partner[] = $USERS->GetHandleName($user->uname, true);
 	}
 	elseif($user->IsRole('whisper_mad')){
 	  $mad_partner[] = $user->handle_name;
@@ -288,7 +288,7 @@ function OutputAbility(){
       if(! $user->IsSelf() &&
 	 ($user->IsPartner('lovers', $SELF->partner_list) ||
 	  $user->user_no == $dummy_lovers_id)){
-	$lovers_partner[] = $USERS->GetVirtualHandleName($user->uname);
+	$lovers_partner[] = $USERS->GetHandleName($user->uname, true);
       }
     }
     OutputPartner($lovers_partner, 'partner_header', 'lovers_footer');
@@ -319,7 +319,7 @@ function OutputAbility(){
 
       $mind_friend = array();
       foreach($USERS->rows as $user){
-	if(! $user->IsSameUser($virtual_self->uname) &&
+	if(! $user->IsSame($virtual_self->uname) &&
 	   $user->IsPartner('mind_friend', $virtual_self->partner_list)){
 	  $mind_friend[] = $user->handle_name;
 	}

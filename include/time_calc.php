@@ -1,23 +1,27 @@
 <?php
-loadModule(TIME_CONF);
+class TimeCalculation{
+  var $spend_day;     //非リアルタイム制の発言で消費される時間 (昼)
+  var $spend_night;   //非リアルタイム制の発言で消費される時間 (夜)
+  var $silence_day;   //非リアルタイム制の沈黙で経過する時間 (昼)
+  var $silence_night; //非リアルタイム制の沈黙で経過する時間 (夜)
+  var $silence;       //非リアルタイム制の沈黙になるまでの時間
+  var $sudden_death;  //制限時間を消費後に突然死するまでの時間
+  var $die_room;      //自動廃村になるまでの時間
 
-//非リアルタイム制の発言で消費される時間　昼
-$day_seconds = floor(12 * 60 * 60 / $TIME_CONF->day);
-$spend_day = ConvertTime($day_seconds);
+  function TimeCalculation(){
+    global $ROOM_CONF, $TIME_CONF;
 
-//非リアルタイム制の発言で消費される時間　夜
-$night_seconds = floor(6 * 60 * 60 / $TIME_CONF->night);
-$spend_night = ConvertTime($night_seconds);
+    $day_seconds = floor(12 * 60 * 60 / $TIME_CONF->day);
+    $this->spend_day = ConvertTime($day_seconds);
 
-//非リアルタイム制の沈黙で経過する時間　昼
-$silence_day = ConvertTime($day_seconds * $TIME_CONF->silence_pass);
+    $night_seconds = floor(6 * 60 * 60 / $TIME_CONF->night);
+    $this->spend_night = ConvertTime($night_seconds);
 
-//非リアルタイム制の沈黙で経過する時間　夜
-$silence_night = ConvertTime($night_seconds * $TIME_CONF->silence_pass);
-
-//非リアルタイム制の沈黙になるまでの時間
-$silence = ConvertTime($TIME_CONF->silence);
-
-//制限時間を消費後に突然死するまでの時間
-$sudden_death = ConvertTime($TIME_CONF->sudden_death);
+    $this->silence_day   = ConvertTime($day_seconds   * $TIME_CONF->silence_pass);
+    $this->silence_night = ConvertTime($night_seconds * $TIME_CONF->silence_pass);
+    $this->silence       = ConvertTime($TIME_CONF->silence);
+    $this->sudden_death  = ConvertTime($TIME_CONF->sudden_death);
+    $this->die_room      = ConvertTime($ROOM_CONF->die_room);
+  }
+}
 ?>

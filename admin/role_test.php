@@ -1,16 +1,8 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/init.php');
-loadModule(
-   CONFIG,
-   SYSTEM_CLASSES,
-   ROOM_CONF,
-   GAME_CONF,
-   VOTE_FUNCTIONS
-   );
-// require_once(dirname(__FILE__) . '/../include/game_vote_functions.php');
-
-$CSS_PATH = '../css'; //CSS のパス設定
-
+define('JINRO_ROOT', '..');
+require_once(JINRO_ROOT . '/include/init.php');
+$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF');
+$INIT_CONF->LoadFile('game_vote_functions');
 OutputHTMLHeader('闇鍋モード配役テスト');
 
 echo <<<EOF

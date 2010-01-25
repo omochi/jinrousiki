@@ -29,6 +29,13 @@ class ServerConfig{
   //サーバのコメント
   var $comment = '';
 
+  //サーバの文字コード
+  /*
+    変更する場合は全てのファイル自体の文字コードを自前で変更してください
+    include/contenttyep.php も参照してください
+  */
+  var $encode = 'EUC-JP';
+
   //戻り先のページ
   var $back_page = '';
 

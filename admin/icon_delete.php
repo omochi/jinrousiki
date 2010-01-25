@@ -1,17 +1,18 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/functions.php');
+define('JINRO_ROOT', '..');
+require_once(JINRO_ROOT . '/include/init.php');
 
-$CSS_PATH = '../css'; //CSS のパス設定
-
-if(! $DEBUG_MODE)
+if(! $DEBUG_MODE){
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
+}
+$INIT_CONF->LoadClass('ICON_CONF');
 
-$icon_no = (int)$_GET['icon_no'];
 $dbHandle = ConnectDatabase(); //DB 接続
-$sql = mysql_query("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
-$array = mysql_fetch_assoc($sql);
+$icon_no = (int)$_GET['icon_no'];
+$array = FetchNameArray("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
 $file  = $array['icon_filename'];
-unlink('../' . $ICON_CONF->path . '/' . $file);
+
+unlink($ICON_CONF->path . '/' . $file); //ファイルの存在をチェックしていないので要注意
 mysql_query("DELETE FROM user_icon WHERE icon_no = $icon_no");
 mysql_query('COMMIT'); //一応コミット
 

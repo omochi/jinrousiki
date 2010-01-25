@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(ICON_CONF);
+require_once('include/init.php');
+$INIT_CONF->LoadClass('ICON_CONF');
 OutputHTMLHeader('ユーザアイコン一覧', 'icon_view')
 ?>
 </head>

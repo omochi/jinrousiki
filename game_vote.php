@@ -1,17 +1,7 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-  SYSTEM_CLASSES,
-  USER_CLASSES,
-  GAME_FUNCTIONS,
-  VOTE_FUNCTIONS,
-  ROOM_CONF,
-  GAME_CONF,
-  TIME_CONF,
-  ICON_CONF,
-  ROLES,
-  MESSAGE
-  );
+require_once('include/init.php');
+$INIT_CONF->LoadFile('game_vote_functions', 'user_class');
+$INIT_CONF->LoadClass('ICON_CONF');
 
 //セッション開始
 session_start();
@@ -370,7 +360,7 @@ function AggregateVoteGameStart($force_start = false){
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員に性別に応じて紳士か淑女をつける
       $this_uname = $fix_uname_list[$i];
-      $this_role  = $sub_role_list[$USERS->GetSex($this_uname)];
+      $this_role  = $sub_role_list[$USERS->ByUname($this_uname)->sex];
       $fix_role_list[$i] .= ' ' . $this_role;
     }
   }
@@ -604,7 +594,7 @@ function VoteDay(){
   $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', $vote_number, " .
     "{$RQ_ARGS->vote_times}, 'VOTE_KILL'";
   $sql = InsertDatabase('vote', $items, $values);
-  $sentence = "VOTE_DO\t" . $USERS->GetVirtualHandleName($target->uname);
+  $sentence = "VOTE_DO\t" . $USERS->GetHandleName($target->uname, true);
   InsertSystemTalk($sentence, $ROOM->system_time, 'day system', '', $SELF->uname);
 
   //登録成功
@@ -939,7 +929,7 @@ EOF;
 
 EOF;
 
-    if($this_live && ! $this_user->IsSameUser($virtual_self->uname)){
+    if($this_live && ! $this_user->IsSame($virtual_self->uname)){
       echo '<input type="radio" id="' . $this_user_no . '" name="target_no" value="' .
 	$this_user_no . '">'."\n";
     }

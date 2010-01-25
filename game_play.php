@@ -1,28 +1,14 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-  IMAGE_CLASSES,
-  USER_CLASSES,
-  TALK_CLASSES,
-  GAME_FUNCTIONS,
-  PLAY_FUNCTIONS,
-  ROOM_IMG,
-  ROLE_IMG,
-  ROOM_CONF,
-  GAME_CONF,
-  TIME_CONF,
-  ICON_CONF,
-  ROLES,
-  MESSAGE
-  );
-
+require_once('include/init.php');
+$INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
-$RQ_ARGS = new RequestGamePlay(); //引数を取得
+$RQ_ARGS =& new RequestGamePlay(); //引数を取得
 if($RQ_ARGS->play_sound){//音でお知らせ
-  $SOUND  = new Sound(); //音源情報をロード
-  $COOKIE = new CookieDataSet(); //クッキー情報をロード
+  $SOUND  =& new Sound(); //音源情報をロード
+  $COOKIE =& new CookieDataSet(); //クッキー情報をロード
 }
 
 //セッション開始
@@ -32,7 +18,7 @@ $session_id = session_id();
 $dbHandle = ConnectDatabase(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
-$ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
+$ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
 $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得
@@ -40,7 +26,6 @@ $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByUname($uname); //自分の情報をロード
-$ROLE_IMG =& new RoleImage();
 
 //必要なクッキーをセットする
 $objection_array = array(); //SendCookie();で格納される・異議ありの情報
@@ -62,7 +47,10 @@ elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $
 else{
   CheckSilence(); //発言ができない状態ならゲーム停滞チェック
 }
-UpdateLastLoadScene(); //ゲームシーンを更新
+
+if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
+  $SELF->Update('last_load_day_night', $ROOM->day_night);
+}
 
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
@@ -178,7 +166,7 @@ function ConvertSay(&$say){
 
     $target_list = array();
     foreach($USERS->rows as $user){ //自分以外の生存者の HN を取得
-      if($user->IsLive() && ! $user->IsSelf()) $target_list[] = $user->handle_name;
+      if(! $user->IsSelf() && $user->IsLive()) $target_list[] = $user->handle_name;
     }
     $say = $MESSAGE->$message_header . GetRandom($target_list) . $MESSAGE->$message_footer;
   }
@@ -479,7 +467,9 @@ function CheckSilence(){
       }
 
       //未投票者を全員突然死させる
-      foreach($novote_uname_list as $uname) $USERS->ByUname($uname)->SuddenDeath();
+      foreach($novote_uname_list as $uname){
+	$USERS->SuddenDeath($USERS->ByUname($uname)->user_no);
+      }
       LoversFollowed(true);
       InsertMediumMessage();
 
@@ -491,18 +481,6 @@ function CheckSilence(){
     }
   }
   mysql_query('UNLOCK TABLES'); //テーブルロック解除
-}
-
-//ゲームシーン更新関数
-function UpdateLastLoadScene(){
-  global $ROOM, $SELF;
-
-  //シーンが切り替わっていなければスキップ
-  if($ROOM->day_night == $SELF->last_load_day_night) return;
-
-  mysql_query("UPDATE user_entry SET last_load_day_night = '{$ROOM->day_night}'
-		WHERE room_no = {$ROOM->id} AND uname = '{$SELF->uname}' AND user_no > 0");
-  mysql_query('COMMIT');
 }
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
@@ -750,7 +728,7 @@ function CheckSelfVoteDay(){
     "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
   $sentence .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
-		$USERS->GetHandleName($target_uname) . 'に投票済み');
+		$USERS->GetHandleName($target_uname) . 'さんに投票済み');
   $sentence .= '</div>'."\n";
   if($target_uname === false){
     $sentence .= '<span class="ability vote">' . $MESSAGE->ability_vote . '</span><br>'."\n";

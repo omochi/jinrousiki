@@ -1,28 +1,15 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-  IMAGE_CLASSES,
-  GAME_FORMAT_CLASSES,
-  USER_CLASSES,
-  TALK_CLASSES,
-  GAME_FUNCTIONS,
-  ROOM_IMG,
-  ROLE_IMG,
-  ROOM_CONF,
-  GAME_CONF,
-  TIME_CONF,
-  ICON_CONF,
-  ROLES,
-  MESSAGE
-  );
+require_once('include/init.php');
+$INIT_CONF->LoadFile('user_class', 'talk_class');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
 //引数を取得
-$RQ_ARGS = new RequestGameView();
+$RQ_ARGS =& new RequestGameView();
 $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 
 $dbHandle = ConnectDatabase(); // DB 接続
 
-$ROOM = new RoomDataSet($RQ_ARGS); //村情報をロード
+$ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
 if($ROOM->id < 1) OutputActionResult('エラー', '無効な村番号です');
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
@@ -35,8 +22,8 @@ case 'night': //夜
   $time_message = '　夜明けまで ';
   break;
 }
-$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF  = new User();
+$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$SELF  =& new User();
 
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
@@ -56,6 +43,7 @@ if($ROOM->IsRealTime()){ //リアルタイム制
   }
 }
 else{ //会話で時間経過制
+  $INIT_CONF->LoadClass('TIME_CONF');
   $left_talk_time = GetTalkPassTime(&$left_time);
 }
 
@@ -96,7 +84,10 @@ if($ROOM->IsBeforeGame()){ //ゲーム開始前なら登録画面のリンクを表示
 }
 echo '</tr></table>'."\n";
 
-if(! $ROOM->IsFinished()) OutputGameOption(); //ゲームオプションを表示
+if(! $ROOM->IsFinished()){
+  $INIT_CONF->LoadClass('ROOM_IMG');
+  OutputGameOption(); //ゲームオプションを表示
+}
 
 echo '<table class="time-table"><tr>'."\n";
 OutputTimeTable(); //経過日数と生存人数

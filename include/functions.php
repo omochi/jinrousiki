@@ -3,7 +3,7 @@
 //$header : すでに HTMLヘッダが出力されて [いる / いない]
 //$exit   : エラー時に [HTML を閉じて exit を返す / false で終了]
 function ConnectDatabase($header = false, $exit = true){
-  global $DB_CONF, $ENCODE;
+  global $DB_CONF;
 
   //データベースサーバにアクセス
   $db_handle = mysql_connect($DB_CONF->host, $DB_CONF->user, $DB_CONF->password);
@@ -15,7 +15,7 @@ function ConnectDatabase($header = false, $exit = true){
     }
     else{
       $error_title = 'データベース接続失敗';
-      $error_name  =$DB_CONF->name;
+      $error_name  = $DB_CONF->name;
     }
   }
   else{
@@ -207,12 +207,13 @@ function ConvertTime($seconds){
 
 //POSTされたデータの文字コードを統一する
 function EncodePostData(){
-  global $ENCODE;
+  global $SERVER_CONF;
 
   foreach($_POST as $key => $value){
     $encode_type = mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-    if($encode_type != '' && $encode_type != $ENCODE)
-      $_POST[$key] = mb_convert_encoding($value, $ENCODE, $encode_type);
+    if($encode_type != '' && $encode_type != $SERVER_CONF->encode){
+      $_POST[$key] = mb_convert_encoding($value, $SERVER_CONF->encode, $encode_type);
+    }
   }
 }
 
@@ -238,6 +239,13 @@ function LineToBR(&$str){
 function CryptPassword($raw_password){
   global $SERVER_CONF;
   return sha1($SERVER_CONF->hash_salt . $raw_password);
+}
+
+//変数表示関数 (デバッグ用)
+function PrintData($data, $name = NULL){
+  $str = (is_null($name) ? '' : $name . ': ');
+  $str .= ((is_array($data) || is_object($data)) ? print_r($data, true) : $data);
+  echo $str . '<br>';
 }
 
 //ゲームオプションの画像タグを作成する
@@ -306,17 +314,18 @@ function MakeGameOptionImage($game_option, $option_role = ''){
 
 //共通 HTML ヘッダ出力
 function OutputHTMLHeader($title, $css = 'action'){
-  global $ENCODE, $CSS_PATH;
+  global $SERVER_CONF;
 
-  $path = ($CSS_PATH == '' ? 'css' : $CSS_PATH);
+  $encode = $SERVER_CONF->encode;
+  $css_path = JINRO_CSS . '/' . $css . '.css';
   echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={$ENCODE}">
+<meta http-equiv="Content-Type" content="text/html; charset={$encode}">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <title>{$title}</title>
-<link rel="stylesheet" href="{$path}/{$css}.css">
+<link rel="stylesheet" href="{$css_path}">
 
 EOF;
 }

@@ -51,6 +51,11 @@ class RequestBase{
   function CheckOn($arg){
     return ($arg == 'on');
   }
+
+  function AttachTestParameters(){
+    global $DEBUG_MODE;
+    if($DEBUG_MODE) $this->TestItems = new TestParams();
+  }
 }
 
 class RequestLogin extends RequestBase{
@@ -114,7 +119,7 @@ class RequestGameVote extends RequestBase{
     $this->GetItems("$this->CheckOn", 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation', 'post.target_handle_name');
     $this->GetItems('EscapeStrings', 'post.target_handle_name');
-    AttachTestParameters($this); //テスト用引数のロード
+    $this->AttachTestParameters(); //テスト用引数のロード
   }
 }
 
@@ -130,7 +135,7 @@ class LogView extends RequestBase{
         'get.debug',
         'get.add_role'
       );
-      AttachTestParameters($this);
+      $this->AttachTestParameters();
     }
     else{
       $this->GetItems(NULL, 'get.page', 'get.reverse');
@@ -139,5 +144,13 @@ class LogView extends RequestBase{
   }
 }
 
-include_once(dirname(__FILE__).'/test_initiator.php');
+class TestParams extends RequestBase{
+  function TestParams(){
+    $this->GetItems(NULL, 'test_users', 'test_room', 'test_mode');
+    $this->is_virtual_room = isset($this->test_users);
+  }
+  function __construct(){
+    $this->TestParams();
+  }
+}
 ?>

@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
+require_once('include/init.php');
 
 $dbHandle = ConnectDatabase(); //DB 接続
 
@@ -7,7 +7,7 @@ $dbHandle = ConnectDatabase(); //DB 接続
 session_start();
 $session_id = session_id();
 
-$RQ_ARGS = new RequestLogin(); //引数を取得
+$RQ_ARGS =& new RequestLogin(); //引数を取得
 
 //変数をセット
 $url     = 'game_frame.php?room_no=' . $RQ_ARGS->room_no;

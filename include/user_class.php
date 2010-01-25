@@ -9,7 +9,6 @@ class User{
 
   function ParseCompoundParameters(){
     $this->ParseRoles();
-    $this->main_role = $this->role_list[0];
   }
 
   //指定したユーザーデータのセットを名前つき配列にして返します。
@@ -48,10 +47,13 @@ class User{
     return $result;
   }
 
+  //役職情報の展開処理
   function ParseRoles(){
+    $this->role_list = array(); //初期化
+    $regex_partner = '/([^\[]+)\[([^\]]+)\]/'; //恋人型 (lovers[id])
+    $regex_status  = '/([^-]+)-(.+)/'; //憑狼型 (possessed[date-id])
+
     $role_list = explode(' ', $this->role);
-    $regex_partner = '/([^\[]+)\[([^\]]+)\]/';
-    $regex_status  = '/([^-]+)-(.+)/';
     foreach($role_list as $role){
       if(preg_match($regex_partner, $role, $match_partner)){
 	$this->role_list[] = $match_partner[1];
@@ -67,47 +69,49 @@ class User{
       }
     }
     $this->role_list = array_unique($this->role_list);
+    $this->main_role = $this->role_list[0];
+  }
+
+  //現在の仮想的な生死情報
+  function IsDeadFlag($strict = false){
+    if(! $strict) return NULL;
+    if($this->suicide_flag) return true;
+    if($this->revive_flag)  return false;
+    if($this->dead_flag)    return true;
+    return NULL;
   }
 
   function IsLive($strict = false){
-    if($strict){
-      if($this->suicide_flag) return false;
-      if($this->revive_flag) return true;
-      if($this->dead_flag) return false;
-    }
-    return ($this->live == 'live');
+    $dead = $this->IsDeadFlag($strict);
+    return (is_null($dead) ? ($this->live == 'live') : ! $dead);
   }
 
-  function IsDead(){
-    return ($this->live == 'dead');
+  function IsDead($strict = false){
+    $dead = $this->IsDeadFlag($strict);
+    return (is_null($dead) ? ($this->live == 'dead') : $dead);
   }
 
-  function IsSameID($user_no){
-    return ($this->user_no == $user_no);
-  }
-
-  function IsSameUser($uname){
+  function IsSame($uname){
     return ($this->uname == $uname);
   }
 
   function IsSelf(){
     global $SELF;
-    return $this->IsSameID($SELF->user_no);
+    return $this->IsSame($SELF->uname);
   }
 
   function IsDummyBoy(){
-    return $this->IsSameUser('dummy_boy');
+    return $this->IsSame('dummy_boy');
   }
 
   function IsRole($role){
-    if(! is_array($this->role_list)) return false;
-    $arg = func_get_args();
-    if(is_array($arg[0])) $arg = $arg[0];
-    if(count($arg) > 1){
-      return (count(array_intersect($arg, $this->role_list)) > 0);
+    $role_list = func_get_args();
+    if(is_array($role_list[0])) $role_list = $role_list[0];
+    if(count($role_list) > 1){
+      return (count(array_intersect($role_list, $this->role_list)) > 0);
     }
     else{
-      return in_array($arg[0], $this->role_list);
+      return in_array($role_list[0], $this->role_list);
     }
   }
 
@@ -116,10 +120,10 @@ class User{
   }
 
   function IsRoleGroup($role){
-    $arg = func_get_args();
-    foreach($arg as $this_target_role){
+    $role_list = func_get_args();
+    foreach($role_list as $target_role){
       foreach($this->role_list as $this_role){
-	if(strpos($this_role, $this_target_role) !== false) return true;
+	if(strpos($this_role, $target_role) !== false) return true;
       }
     }
     return false;
@@ -164,94 +168,14 @@ class User{
     return false;
   }
 
-  //基幹死亡処理
-  function ToDead(){
-    if(! ($this->IsLive() || $this->revive_flag) || $this->dead_flag) return false;
-    $this->Update('live', 'dead');
-    $this->dead_flag = true;
-    return true;
-  }
-
-  //蘇生処理
-  function Revive(){
-    if(! $this->IsDead() || $this->revive_flag) return false;
-    $this->Update('live', 'live');
-    InsertSystemMessage($this->handle_name, 'REVIVE_SUCCESS');
-    $this->revive_flag = true;
-    return true;
-  }
-
-  function ChangeRole($role){
-    $this->Update('role', "$role");
-
-    //$this->role .= " $role"; //キャッシュ本体の更新は行わない
-    $this->updated['role'] = $role;
-  }
-
-  function AddRole($role){
-    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
-    if(strpos($base_role, $role) !== false) return false; //同じ役職は追加しない
-    $this->ChangeRole($base_role . " $role");
-  }
-
-  function ReplaceRole($target, $replace){
-    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
-    $new_role = str_replace($target, $replace, $base_role);
-    $this->ChangeRole($new_role);
-  }
-
-  /*
-    このメソッドは橋姫実装時のために予約されています。
-     スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
-     本来はParseRole側でpreg_split()などを使用するべきですが、役職が減る状況の方が少ないため、
-     削除側で調節するものとします。(2009-07-05 enogu)
-  */
-  /*
-  function RemoveRole($role){
-    $this->role = str_replace('  ', ' ', str_replace($role, '', $this->role));
-    $this->updated[] = 'role';
-    $this->ParseRoles();
-  }
-  */
-
-  //遺言を取得して保存する
-  function SaveLastWords($handle_name = NULL){
-    global $ROOM;
-
-    if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
-    if(is_null($handle_name)) $handle_name = $this->handle_name;
-    if($ROOM->test_mode){
-      InsertSystemMessage($handle_name, 'LAST_WORDS');
-      return;
-    }
-
-    $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
-      "AND uname = '{$this->uname}' AND user_no > 0";
-    if(($last_words = FetchResult($query)) != ''){
-      InsertSystemMessage($handle_name . "\t" . $last_words, 'LAST_WORDS');
-    }
-  }
-
-  function Update($item, $value){
-    global $ROOM;
-
-    if($ROOM->test_mode){
-      echo "User : {$this->uname} : Change $item : $value <br>";
-      return;
-    }
-    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
-    mysql_query("UPDATE user_entry SET $item = '$value' $query AND user_no > 0");
-    mysql_query('COMMIT');
-  }
-
-  function Save(){
-    if(isset($this->updated)){
-      foreach($this->updated as $item){
-        $update_list[] = "$item = '{$this->item}'";
-      }
-      $update = implode(', ', $update_list);
-      mysql_query("UPDATE user_entry SET $update WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'");
-    }
+  //所属陣営判別
+  function DistinguishCamp(){
+    if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
+    if($this->IsFox()) return 'fox';
+    if($this->IsRoleGroup('cupid')) return 'lovers';
+    if($this->IsRole('quiz')) return 'quiz';
+    if($this->IsRoleGroup('chiroptera')) return 'chiroptera';
+    return 'human';
   }
 
   //占い師の判定
@@ -261,16 +185,6 @@ class User{
 	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
     return ($result ? 'wolf' : 'human');
-  }
-
-  //所属陣営判別
-  function DistinguishCamp(){
-    if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
-    if($this->IsFox()) return 'fox';
-    if($this->IsRoleGroup('cupid')) return 'lovers';
-    if($this->IsRole('quiz')) return 'quiz';
-    if($this->IsRoleGroup('chiroptera')) return 'chiroptera';
-    return 'human';
   }
 
   //役職をパースして省略名を返す
@@ -292,6 +206,108 @@ class User{
     }
 
     return $role_str . '] (' . $this->uname . ')</span>';
+  }
+
+  //個別 DB 更新処理
+  function Update($item, $value){
+    global $ROOM;
+
+    if($ROOM->test_mode){
+      PrintData($value, 'Change [' . $item . '] (' . $this->uname . ')');
+      return;
+    }
+    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
+    mysql_query("UPDATE user_entry SET $item = '$value' $query");
+    mysql_query('COMMIT');
+  }
+
+  //総合 DB 更新処理 (この関数はまだ実用されていません)
+  function Save(){
+    if(! isset($this->updated)) return false;
+    foreach($this->updated as $item){
+      $update_list[] = "$item = '{$this->item}'";
+    }
+    $update = implode(', ', $update_list);
+    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
+    mysql_query("UPDATE user_entry SET $update $query");
+    mysql_query('COMMIT');
+  }
+
+  //基幹死亡処理
+  function ToDead(){
+    if($this->IsDead(true)) return false;
+    $this->Update('live', 'dead');
+    $this->dead_flag = true;
+    return true;
+  }
+
+  //蘇生処理
+  function Revive($virtual = false){
+    if(! $this->IsDead() || $this->revive_flag) return false;
+    $this->Update('live', 'live');
+    $this->revive_flag = true;
+    if(! $virtual) InsertSystemMessage($this->handle_name, 'REVIVE_SUCCESS');
+    return true;
+  }
+
+  //役職更新処理
+  function ChangeRole($role){
+    $this->Update('role', "$role");
+
+    //$this->role .= " $role"; //キャッシュ本体の更新は行わない
+    $this->updated['role'] = $role;
+  }
+
+  //役職追加処理
+  function AddRole($role){
+    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
+    if(strpos($base_role, $role) !== false) return false; //同じ役職は追加しない
+    $this->ChangeRole($base_role . " $role");
+  }
+
+  //役職置換処理
+  function ReplaceRole($target, $replace){
+    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
+    $new_role = str_replace($target, $replace, $base_role);
+    $this->ChangeRole($new_role);
+  }
+
+  /*
+    このメソッドは橋姫実装時のために予約されています。
+     スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
+     本来はParseRole側でpreg_split()などを使用するべきですが、役職が減る状況の方が少ないため、
+     削除側で調節するものとします。(2009-07-05 enogu)
+  */
+  /*
+  function RemoveRole($role){
+    $this->role = str_replace('  ', ' ', str_replace($role, '', $this->role));
+    $this->updated[] = 'role';
+    $this->ParseRoles();
+  }
+  */
+
+  function ReturnPossessed($type, $date){
+    $this->AddRole("${type}[{$date}-{$this->user_no}]");
+    #$this->Revive();
+    return true;
+  }
+
+  //遺言を取得して保存する
+  function SaveLastWords($handle_name = NULL){
+    global $ROOM;
+
+    if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
+    if(is_null($handle_name)) $handle_name = $this->handle_name;
+    if($ROOM->test_mode){
+      InsertSystemMessage($handle_name, 'LAST_WORDS');
+      return;
+    }
+
+    $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
+      "AND uname = '{$this->uname}' AND user_no > 0";
+    if(($last_words = FetchResult($query)) != ''){
+      InsertSystemMessage($handle_name . "\t" . $last_words, 'LAST_WORDS');
+    }
   }
 }
 
@@ -327,8 +343,8 @@ class UserDataSet{
   function RetriveByRoom($room_no){
     return mysql_query(
       "SELECT
-      users.room_no,
-      users.user_no,
+	users.room_no,
+	users.user_no,
 	users.uname,
 	users.handle_name,
 	users.sex,
@@ -351,8 +367,8 @@ class UserDataSet{
     mysql_query('SET @new_user_no := 0');
     return mysql_query(
       "SELECT
-      users.room_no,
-      (@new_user_no := @new_user_no + 1) AS user_no,
+	users.room_no,
+	(@new_user_no := @new_user_no + 1) AS user_no,
 	users.uname,
 	users.handle_name,
 	users.sex,
@@ -369,8 +385,7 @@ class UserDataSet{
 	LEFT JOIN user_entry users USING (room_no, uname)
 	LEFT JOIN user_icon icons USING(icon_no)
       ORDER BY RAND()
-      LIMIT $user_count
-      "
+      LIMIT $user_count"
     );
   }
 
@@ -469,39 +484,28 @@ class UserDataSet{
     return $this->ByReal($this->UnameToNumber($uname));
   }
 
-  function GetHandleName($uname){
-    return $this->ByUname($uname)->handle_name;
-  }
-
-  function GetVirtualHandleName($uname){
-    return $this->ByVirtualUname($uname)->handle_name;
-  }
-
-  function GetSex($uname){
-    return $this->ByUname($uname)->sex;
+  function GetHandleName($uname, $virtual = false){
+    $user = ($virtual ? $this->ByVirtualUname($uname) : $this->ByUname($uname));
+    return $user->handle_name;
   }
 
   function GetRole($uname){
     return $this->ByUname($uname)->role;
   }
 
-  function GetLive($uname){
-    return $this->ByUname($uname)->live;
-  }
-
   function GetUserCount(){
     return count($this->rows);
   }
 
-  //役職の出現判定関数
+  //役職の出現判定関数 (現在はメイン役職のみ対応)
   function IsAppear($role){
-    foreach($this->rows as $this_user){
-      if($this_user->main_role == $role) return true;
+    foreach($this->rows as $user){
+      if($user->main_role == $role) return true;
     }
     return false;
   }
 
-  //仮想的な生死状態を返す
+  //仮想的な生死を返す
   function IsVirtualLive($user_no){
     //憑依されている場合は憑依者の生死を返す
     $real_user = $this->ByReal($user_no);
@@ -516,16 +520,16 @@ class UserDataSet{
 
   function GetLivingUsers($strict = false){
     $array = array();
-    foreach($this->rows as $this_user){
-      if($this_user->IsLive($strict)) $array[] = $this_user->uname;
+    foreach($this->rows as $user){
+      if($user->IsLive($strict)) $array[] = $user->uname;
     }
     return $array;
   }
 
   function GetLivingWolves(){
     $array = array();
-    foreach($this->rows as $this_user){
-      if($this_user->IsLive() && $this_user->IsWolf()) $array[] = $this_user->uname;
+    foreach($this->rows as $user){
+      if($user->IsLive() && $user->IsWolf()) $array[] = $user->uname;
     }
     return $array;
   }
@@ -536,7 +540,7 @@ class UserDataSet{
     if(! $user->ToDead()) return false;
 
     if($reason){
-      $handle_name = $this->GetVirtualHandleName($user->uname);
+      $handle_name = $this->GetHandleName($user->uname, true);
       InsertSystemMessage($handle_name, $reason);
       if($reason != 'POSSESSED_TARGETED') $user->SaveLastWords($handle_name);
     }
@@ -552,8 +556,19 @@ class UserDataSet{
     $user->suicide_flag = true;
 
     $sentence = ($reason ? 'vote_sudden_death' : 'sudden_death');
-    $handle_name =  $this->GetVirtualHandleName($user->uname);
+    $handle_name =  $this->GetHandleName($user->uname, true);
     InsertSystemTalk($handle_name . $MESSAGE->$sentence, ++$ROOM->system_time);
+    return true;
+  }
+
+  //蘇生処理
+  function Revive($user_no){
+
+    $user = $this->ByID($user_no);
+    if(! $user->IsDead() || $user->revive_flag) return false;
+    $user->Update('live', 'live');
+    InsertSystemMessage($user->handle_name, 'REVIVE_SUCCESS');
+    $user->revive_flag = true;
     return true;
   }
 

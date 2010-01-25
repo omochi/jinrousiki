@@ -1,19 +1,7 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-  CONFIG,
-  GAME_FORMAT_CLASSES,
-  ROLE_CLASSES,
-  SYSTEM_CLASSES,
-  USER_CLASSES,
-  TALK_CLASSES,
-  GAME_FUNCTIONS,
-  PLAY_FUNCTIONS,
-  ROOM_IMG,
-  GAME_CONF,
-  ICON_CONF,
-  MESSAGE
-  );
+require_once('include/init.php');
+$INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'ROOM_IMG');
 
 //部屋No取得
 $RQ_ARGS =& new LogView();

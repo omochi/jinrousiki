@@ -1,14 +1,12 @@
-<?php require_once(dirname(__FILE__) . '/../include/setting.php'); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../css/src.css">
-<title>開発版ソースダウンロード</title>
+<?php
+define('JINRO_ROOT', '..');
+require_once(JINRO_ROOT . '/include/init.php');
+OutputHTMLHeader('開発版ソースダウンロード', 'src');
+?>
 </head>
 <body>
 <a href="../index.php">←戻る</a><br>
-<?php include_once(dirname(__FILE__) . '/download.php'); ?>
+<?php include_once('download.php'); ?>
 
 <form method="POST" action="upload.php" enctype="multipart/form-data">
 <table id="upload">

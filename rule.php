@@ -1,15 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
-include_once(JINRO_INC . '/time_calc.php');
-loadModule(
-  CONFIG,
-  IMAGE_CLASSES,
-  ROLE_IMG,
-  #ROOM_CONF,
-  GAME_CONF,
-  TIME_CONF,
-  MESSAGE
-  );
+$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'ROOM_IMG', 'ROLE_IMG');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
@@ -260,10 +251,8 @@ foreach($GAME_CONF->role_list as $key => $value){
 
 　　(ゲーム一覧のオプションの部分にあるリアルタイム制の画像
 <?php
-  echo '(<img src="' . $ROOM_IMG->real_time . '" alt="リアルタイム制　昼：' .
-     $TIME_CONF->default_day . '分　夜： ' . $TIME_CONF->default_night .
-     '分" title="リアルタイム制　昼：' . $TIME_CONF->default_day . '分　夜： ' .
-     $TIME_CONF->default_night . '分">)';
+$alt = 'リアルタイム制　昼：' . $TIME_CONF->default_day . '分　夜： ' . $TIME_CONF->default_night . '分';
+echo $ROOM_IMG->GenerateTag('real_time', $alt);
 ?>
 にマウスポインタを乗せると表示されます)<br>
 　　ゲーム中は仮想時間と実時間の両方が表示され、仮想時間は12時間、もしくは6時間から徐々に減っていき、<br>
@@ -274,11 +263,11 @@ foreach($GAME_CONF->role_list as $key => $value){
 <span class="caption2">・リアルタイム制でない場合<br></span><div class="info">
 　　村作成のオプションで「リアルタイム制」にチェックを入れない場合はこちらになります。<br>
 　　非リアルタイム制では発言することで時間が消費されます。<br>
-  　　半角100文字(全角50文字)の発言で、仮想時間が昼: <?php echo $spend_day; ?> 夜: <?php echo $spend_night; ?> ずつ消費されていきます。<br>
+  　　半角100文字(全角50文字)の発言で、仮想時間が昼: <?php echo $TIME_CALC->spend_day; ?> 夜: <?php echo $TIME_CALC->spend_night; ?> ずつ消費されていきます。<br>
 　　（夜は人狼の発言だけ仮想時間に加算されていきます）<br>
 　　たくさんの文字を使って発言するとそれだけ仮想時間の消費量が多くなります。<br>
 　　しかし、半角400字以上は消費時間は加算されず半角400字の消費量と同じです。<br>
-  　　一定時間( 実時間 <?php echo $silence; ?> )発言が無いと皆沈黙したこととなり、昼： <?php echo$silence_day; ?> 夜： <?php echo $silence_night; ?> が消費されてしまいます。<br>
+  　　一定時間( 実時間 <?php echo $TIME_CALC->silence; ?> )発言が無いと皆沈黙したこととなり、昼： <?php echo $TIME_CALC->silence_day; ?> 夜： <?php echo $TIME_CALC->silence_night; ?> が消費されてしまいます。<br>
 　　黙っているとどんどん時間が消費されていきます、積極的に発言しましょう。<br>
 </div>
 
@@ -289,7 +278,7 @@ foreach($GAME_CONF->role_list as $key => $value){
 　　処刑するための投票は毎日、昼に行われます。<br>
 　　投票は議論中いつでも可能ですが投票をやり直すことはできません、慎重に投票先を決めてください。<br>
 　　また全員が投票した場合、その時点で残り時間に関係なく即処刑が実行され夜になります。<br>
-　　昼の仮想時間12時間を使いきり、それでも投票してない人は <?php echo $sudden_death; ?> 以内に投票を完了しないと突然死となり<br>
+　　昼の仮想時間12時間を使いきり、それでも投票してない人は <?php echo $TIME_CALC->sudden_death; ?> 以内に投票を完了しないと突然死となり<br>
 　　無条件で死亡してしまいます。<br>
 　　時間がなくなってきたらすみやかに投票してください。
 </div>
@@ -301,7 +290,7 @@ foreach($GAME_CONF->role_list as $key => $value){
 　　占い師、狩人は個人でそれぞれ指定できます。<br>
 　　キューピッドは１日目のみ、結び付けたい二人を指定してください。<br>
 　　ただし、村の総人数が <?php echo $GAME_CONF->cupid_self_shoot; ?> 人に満たない場合は、必ず自分と誰かを指定してください。<br>
-　　夜の仮想時間6時間を使いきり、それでも投票してない人は<?php echo $sudden_death; ?>以内に投票を完了しないと突然死となり<br>
+　　夜の仮想時間6時間を使いきり、それでも投票してない人は<?php echo $TIME_CALC->sudden_death; ?>以内に投票を完了しないと突然死となり<br>
 　　無条件で死亡します。<br>
 </div>
 
@@ -310,7 +299,7 @@ foreach($GAME_CONF->role_list as $key => $value){
 <div class="info">
 昼12時間、夜6時間の制限時間が過ぎると発言できなくなります。<br>
 村の住人達はこれまでの情報を元に投票しなくてはなりません。<br>
-投票せずに<?php echo $sudden_death; ?> 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
+投票せずに<?php echo $TIME_CALC->sudden_death; ?> 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
 誰かが突然死になってしまうと投票がリセットされてしまいますので注意してください。<br>
 投票は時間に余裕を持って早めにしましょう。<br>
 また、制限時間が来なくても全員の投票が完了していた場合はその時点で即、次の場面（昼→夜、夜→次の日の朝）になります。<br>
@@ -421,7 +410,7 @@ foreach($GAME_CONF->role_list as $key => $value){
 
 <tr>
 <td class="lovers">恋人</td>
-<td><table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('lovers_header'); ?></td><td>恋人一号</td>
+<td><table class="view"><tr><td><?php echo $ROLE_IMG->GenerateTag('partner_header'); ?></td><td>恋人一号</td>
 <td><?php echo $ROLE_IMG->GenerateTag('lovers_footer'); ?></td></tr></table></td>
 </tr>
 </table>

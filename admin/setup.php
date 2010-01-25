@@ -1,7 +1,7 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/init.php');
+define('JINRO_ROOT', '..');
+require_once(JINRO_ROOT . '/include/init.php');
 
-$CSS_PATH = '../css'; //CSS のパス
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ
 
 if(! ($dbHandle = ConnectDatabase(true, false))){ //DB 接続
@@ -64,10 +64,10 @@ function CheckTable(){
     $sql = mysql_query("SHOW COLUMNS FROM room");
     if(mysql_num_rows($sql) > 0){
       while(($row = mysql_fetch_assoc($sql)) !== false){
-	if($row['Field'] == 'establisher_ip') $flag->establisher_ip = true;
-	if($row['Field'] == 'establish_time') $flag->establish_time = true;
-	if($row['Field'] == 'start_time') $flag->start_time = true;
-	if($row['Field'] == 'finish_time') $flag->finish_time = true;
+	$flag->establisher_ip |= ($row['Field'] == 'establisher_ip');
+	$flag->establish_time |= ($row['Field'] == 'establish_time');
+	$flag->start_time     |= ($row['Field'] == 'start_time');
+	$flag->finish_time    |= ($row['Field'] == 'finish_time');
       }
     }
     if(! $flag->establisher_ip){

@@ -1,18 +1,7 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-  USER_CLASSES,
-  TALK_CLASSES,
-  GAME_FUNCTIONS,
-  ROOM_IMG,
-  ROLE_IMG,
-  ROOM_CONF,
-  GAME_CONF,
-  TIME_CONF,
-  ICON_CONF,
-  ROLES,
-  MESSAGE
-  );
+require_once('include/init.php');
+$INIT_CONF->LoadFile('user_class', 'talk_class');
+$INIT_CONF->LoadClass('ROLES');
 
 //引数を取得
 $RQ_ARGS =& new RequestGameLog();

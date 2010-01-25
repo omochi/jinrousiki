@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(ROOM_IMG, ROOM_CONF, GAME_CONF, TIME_CONF, ICON_CONF, MESSAGE);
+require_once('include/init.php');
+$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE');
 
 if(! $dbHandle = ConnectDatabase(true, false)) return false; //DB 接続
 
@@ -336,7 +336,7 @@ EOF;
 
 //他のサーバの部屋画面を出力
 function OutputSharedServerRoom(){
-  global $SERVER_CONF, $ENCODE;
+  global $SERVER_CONF;
 
   if(! $SERVER_CONF->shared_server) return false;
 
@@ -346,8 +346,8 @@ function OutputSharedServerRoom(){
     if($this_url == $SERVER_CONF->site_root) continue;
     if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
     //echo $this_url.$this_data; //デバッグ用
-    if($this_encode != '' && $this_encode != $ENCODE){
-      $this_data = mb_convert_encoding($this_data, $ENCODE, $this_encode);
+    if($this_encode != '' && $this_encode != $SERVER_CONF->encode){
+      $this_data = mb_convert_encoding($this_data, $SERVER_CONF->encode, $this_encode);
     }
     if($this_separator != ''){
       $this_split_list = mb_split($this_separator, $this_data);

@@ -1,29 +1,9 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-loadModule(
-  CONFIG,
-  #IMAGE_CLASSES,
-  ROLE_CLASSES,
-  MESSAGE_CLASSES,
-  #GAME_FORMAT_CLASSES,
-  #SYSTEM_CLASSES,
-  USER_CLASSES,
-  #TALK_CLASSES,
-  #GAME_FUNCTIONS,
-  #PLAY_FUNCTIONS,
-  #VOTE_FUNCTIONS,
-  #ROOM_IMG,
-  #ROLE_IMG,
-  ROOM_CONF,
-  GAME_CONF,
-  #TIME_CONF,
-  ICON_CONF,
-  ROLES,
-  MESSAGE
-  );
+require_once('include/init.php');
+$INIT_CONF->LoadClass('GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
 EncodePostData();//ポストされた文字列をエンコードする
-$RQ_ARGS = new RequestUserManager();
+$RQ_ARGS =& new RequestUserManager();
 
 if($RQ_ARGS->room_no < 1){
   $sentence = 'エラー：村の番号が正常ではありません。<br>'."\n".'<a href="index.php">←戻る</a>';
@@ -172,7 +152,7 @@ function EntryUser($request){
   テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
 */
 function ConvertTrip($str){
-  global $ENCODE, $GAME_CONF;
+  global $SERVER_CONF, $GAME_CONF;
 
   if($GAME_CONF->trip){ //まだ実装されていません
     OutputActionResult('村人登録 [入力エラー]',
@@ -187,7 +167,7 @@ function ConvertTrip($str){
       #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>'; //デバッグ用
 
       //文字コードを変換
-      $key  = mb_convert_encoding($key, 'SJIS', $ENCODE);
+      $key  = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode);
       $salt = substr($key.'H.', 1, 2);
 
       //$salt =~ s/[^\.-z]/\./go;にあたる箇所

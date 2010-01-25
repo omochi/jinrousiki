@@ -177,9 +177,7 @@ function OutputPlayerList(){
 
       //憑依状態なら憑依しているユーザを追加
       $real_user = $USERS->ByReal($user_no);
-      if(! $real_user->IsSameID($user_no) && $real_user->IsLive()){
-	$str .= '<br>[' . $real_user->uname . ']';
-      }
+      if($real_user != $user && $real_user->IsLive()) $str .= '<br>[' . $real_user->uname . ']';
       $str .= ')<br>';
 
       //メイン役職を追加
@@ -515,7 +513,7 @@ function OutputTalk($talk, &$builder){
   }
   //ゲーム中、生きている人の夜の独り言
   elseif($flag_live_night && $location == 'night self_talk'){
-    if($virtual_self->IsSameUser($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
+    if($virtual_self->IsSame($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
       $builder->AddTalk($said_user, $talk);
     }
     elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
@@ -710,7 +708,7 @@ function OutputTalk($talk, &$builder){
 	break;
 
       case 'night self_talk':
-	if($virtual_self->IsSameUser($talk_uname)){
+	if($virtual_self->IsSame($talk_uname)){
 	  $builder->AddTalk($said_user, $talk);
 	}
 	elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
@@ -1232,7 +1230,7 @@ function InsertMediumMessage(){
   if(! $USERS->IsAppear('medium')) return false; //巫女の出現チェック
   foreach($USERS->rows as $user){
     if(! $user->suicide_flag) continue;
-    $handle_name = $USERS->GetVirtualHandleName($user->uname);
+    $handle_name = $USERS->GetHandleName($user->uname, true);
     InsertSystemMessage($handle_name . "\t" . $user->DistinguishCamp(), 'MEDIUM_RESULT');
   }
 }
@@ -1304,7 +1302,7 @@ function InsertSystemTalk($sentence, $time, $location = '', $date = '', $uname =
   if($location == '') $location = "{$ROOM->day_night} system";
   if($date == '') $date = $ROOM->date;
   if($ROOM->test_mode){
-    echo "System Talk: $location : $sentence <br>";
+    PrintData($sentence, 'System Talk: ' . $location);
     return;
   }
   InsertTalk($ROOM->id, $date, $location, $uname, $time, $sentence, NULL, 0);
@@ -1315,7 +1313,7 @@ function InsertSystemMessage($sentence, $type, $date = ''){
   global $ROOM;
 
   if($ROOM->test_mode){
-    echo "System Message: $type : $sentence <br>";
+    PrintData($sentence, 'System Message: ' . $type);
     return;
   }
   if($date == '') $date = $ROOM->date;

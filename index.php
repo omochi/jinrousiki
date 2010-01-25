@@ -1,4 +1,7 @@
-<?php require_once(dirname(__FILE__) . '/include/init.php'); ?>
+<?php
+require_once(dirname(__FILE__) . '/include/init.php');
+$INIT_CONF->LoadClass('SCRIPT_INFO');
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
@@ -127,7 +130,7 @@
  <a href="http://www8.plala.or.jp/denpa/indexdon.html" target="_blank">神楽丼</a>
 ]<br>
 -->
-<?php echo 'PHP Ver. ' . PHP_VERSION . ', ' . $script_version . ', LastUpdate: ' . $script_lastupdate; ?>
+<?php $SCRIPT_INFO->OutputVersion(); ?>
 </div>
 </body>
 </html>

@@ -1,9 +1,8 @@
 <?php
-require_once(dirname(__FILE__) . '/../include/init.php');
-loadModule(CONFIG);
+define('JINRO_ROOT', '..');
+require_once(JINRO_ROOT  . '/include/init.php');
 
 EncodePostData();
-$CSS_PATH = '../css'; //CSSのパスをセット
 
 //変数をセット
 $post = array('name'     => $_POST['name'],
