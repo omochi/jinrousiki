@@ -1,19 +1,19 @@
 <?php
-require_once(dirname(dirname(dirname(__FILE__))) . '/include/init.php');
+define('JINRO_ROOT', '../..');
+require_once(JINRO_ROOT . '/include/init.php');
 
-if (!$DEBUG_MODE){
-  die('デバッグ機能の使用は許可されていません。');
+$INIT_CONF->LoadFile('chatengine');
+if(! $DEBUG_MODE){
+  OutputActionResult('ChatEngine [テスト]', 'デバッグ機能の使用は許可されていません。');
 }
 
-loadModule(CHATENGINE_CLASSES);
-
 // テスト対象のロードと実行を制御します。
-class ChatEngineTestCore extends RequestBase {
+class ChatEngineTestCore extends RequestBase{
   var $all_mode = array('game_play', 'game_after', 'game_heaven');
 
   function ChatEngineTestCore(){
     global $RQ_ARGS;
-    AttachTestParameters($this);
+    $this->AttachTestParameters($this);
     switch ($this->TestItems->test_mode) {
     case 'game_play':
     case 'game_after':

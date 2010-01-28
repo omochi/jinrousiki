@@ -27,8 +27,8 @@ define('TALK_CLASSES', 'TALK_CLASSES');
 define('CHATENGINE_CLASSES', 'CHATENGINE_CLASSES');
 
 //デバッグモードのオン/オフ
-$DEBUG_MODE = false;
-#$DEBUG_MODE = true;
+#$DEBUG_MODE = false;
+$DEBUG_MODE = true;
 $INIT_CONF =& new InitializeConfig();
 
 $INIT_CONF->LoadFile('paparazzi', 'request_class', 'functions');
@@ -184,14 +184,14 @@ class InitializeConfig{
     'ROOM_IMG' => 'system_class',
     'ROLE_IMG' => 'system_class',
     'MESSAGE' => 'message_class',
-    'ROLES' => 'role/role_manager_class',
+    'ROLES' => 'role_manager_class',
     'TIME_CALC' => 'time_calc',
     'game_vote_functions' => 'game_functions',
     'game_play_functions' => 'user_class',
     'game_functions' => 'system_class',
     'user_class' => 'game_functions',
-    'role/role_manager_class' => 'role/role_class',
-    'role/role_class' => 'game_format'
+    'role_manager_class' => 'role_class',
+    'role_class' => 'game_format'
   );
 
   var $depend_class = array(
@@ -234,6 +234,11 @@ class InitializeConfig{
 
     case 'mb-emulator':
       $path = $this->path->root . '/module';
+      break;
+
+    case 'role_manager_class':
+    case 'role_class':
+      $path = $this->path->include . '/role';
       break;
 
     case 'chatengine':

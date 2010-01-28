@@ -1,17 +1,12 @@
 <?php
 require_once(dirname(__FILE__) . '/include/init.php');
 $INIT_CONF->LoadClass('SCRIPT_INFO');
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'index');
+echo '</head>'."\n".'<body>'."\n";
+if($SERVER_CONF->back_page != ''){
+  echo '<a href="' . $SERVER_CONF->back_page . '">←戻る</a><br>'."\n";
+}
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="css/index.css">
-<title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?></title>
-</head>
-<body>
-<?php if($SERVER_CONF->back_page != '') echo "<a href=\"$SERVER_CONF->back_page\">←戻る</a>"; ?>
 <a href="index.php"><img src="img/top_title.jpg"></a>
 <div class="comment"><?php echo $SERVER_CONF->comment; ?></div>
 <noscript>＜＜ JavaScriptを有効にしてください ＞＞</noscript>
@@ -78,7 +73,10 @@ $INIT_CONF->LoadClass('SCRIPT_INFO');
       <li><a href="http://www15.atpages.jp/seikima2/jinro_php/">世紀末鯖（テスト鯖）</a></li>
       <li>東方陰陽鉄系</li>
       <li><a href="http://bourbonhouse.xsrv.jp/jinro/">バーボンハウス鯖</a></li>
+      <li><a href="http://dynamis.xsrv.jp/jinro/">裏世界鯖</a></li>
       <li><a href="http://www16.atpages.jp/bourbonjinro/">旧バーボンハウス鯖</a></li>
+      <li>iM@S系</li>
+      <li><a href="http://kiterew.tv/jinro/">小鳥鯖</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>

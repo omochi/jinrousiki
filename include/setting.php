@@ -20,8 +20,8 @@ class DatabaseConfig{
 //サーバ設定
 class ServerConfig{
   //サーバのURL
-  #var $site_root = 'http://localhost/jinro/';
-  var $site_root = 'http://localhost/jinrou/';
+  #var $site_root = 'http://localhost/jinrou/';
+  var $site_root = 'http://localhost/jinro/';
 
   //タイトル
   var $title = '汝は人狼なりや？';
@@ -51,7 +51,7 @@ class ServerConfig{
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
   var $adjust_time_difference = false;
 
-  //$adjust_time_differenceが有効な時の時差 (秒数)
+  //$adjust_time_difference が有効な時の時差 (秒数)
   var $offset_seconds = 32400; //9時間
 
   //他の人狼サーバの村情報を表示する

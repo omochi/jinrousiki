@@ -3,6 +3,7 @@ class User{
   var $main_role;
   var $role_list = array();
   var $partner_list = array();
+  var $vote_flag = false;
   var $dead_flag = false;
   var $suicide_flag = false;
   var $revive_flag = false;
@@ -48,15 +49,22 @@ class User{
   }
 
   //役職情報の展開処理
-  function ParseRoles(){
-    $this->role_list = array(); //初期化
-    $regex_partner = '/([^\[]+)\[([^\]]+)\]/'; //恋人型 (lovers[id])
-    $regex_status  = '/([^-]+)-(.+)/'; //憑狼型 (possessed[date-id])
+  function ParseRoles($role = NULL){
+    //初期化処理
+    if($role != NULL) $this->role = $role;
+    $this->role_list = array();
+    $this->partner_list = array();
 
-    $role_list = explode(' ', $this->role);
-    foreach($role_list as $role){
+    //展開用の正規表現をセット
+    $regex_partner = '/([^\[]+)\[([^\]]+)\]/'; //恋人型 (role[id])
+    $regex_status  = '/([^-]+)-(.+)/';         //憑狼型 (role[date-id])
+
+    //展開処理
+    $role_list = array();
+    $explode_list = explode(' ', $this->role);
+    foreach($explode_list as $role){
       if(preg_match($regex_partner, $role, $match_partner)){
-	$this->role_list[] = $match_partner[1];
+	$role_list[] = $match_partner[1];
 	if(preg_match($regex_status, $match_partner[2], $match_status)){
 	  $this->partner_list[$match_partner[1]][$match_status[1]] = $match_status[2];
 	}
@@ -65,10 +73,12 @@ class User{
 	}
       }
       else{
-	$this->role_list[] = $role;
+	$role_list[] = $role;
       }
     }
-    $this->role_list = array_unique($this->role_list);
+
+    //代入処理
+    $this->role_list = array_unique($role_list);
     $this->main_role = $this->role_list[0];
   }
 
@@ -76,8 +86,8 @@ class User{
   function IsDeadFlag($strict = false){
     if(! $strict) return NULL;
     if($this->suicide_flag) return true;
-    if($this->revive_flag)  return false;
-    if($this->dead_flag)    return true;
+    if($this->revive_flag) return false;
+    if($this->dead_flag) return true;
     return NULL;
   }
 
@@ -155,6 +165,17 @@ class User{
     }
   }
 
+  //毒能力の発動判定
+  function IsPoison(){
+    global $ROOM;
+
+    if(! $this->IsRoleGroup('poison')) return false;
+    if($this->IsRole('dummy_poison')) return false; //夢毒者
+    if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //騎士
+    if($this->IsRole('incubate_poison')) return ($ROOM->date >= 5); //潜毒者は 5 日目以降
+    return true;
+  }
+
   //日数に応じた憑依先の ID を取得
   function GetPossessedTarget($type, $date){
     $target_list = $this->partner_list[$type];
@@ -223,7 +244,7 @@ class User{
 
   //総合 DB 更新処理 (この関数はまだ実用されていません)
   function Save(){
-    if(! isset($this->updated)) return false;
+    if(empty($this->updated)) return false;
     foreach($this->updated as $item){
       $update_list[] = "$item = '{$this->item}'";
     }
@@ -243,7 +264,7 @@ class User{
 
   //蘇生処理
   function Revive($virtual = false){
-    if(! $this->IsDead() || $this->revive_flag) return false;
+    if($this->IsLive(true)) return false;
     $this->Update('live', 'live');
     $this->revive_flag = true;
     if(! $virtual) InsertSystemMessage($this->handle_name, 'REVIVE_SUCCESS');
@@ -299,7 +320,7 @@ class User{
     if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
-      InsertSystemMessage($handle_name, 'LAST_WORDS');
+      InsertSystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
       return;
     }
 
@@ -319,30 +340,22 @@ class UserDataSet{
 
   function UserDataSet($request){
     $this->room_no = $request->room_no;
+    $this->LoadRoom($request);
+  }
+
+  function LoadRoom($request){
     if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
-      if(is_int($request->TestItems->test_users)){
-	$this->LoadVirtualRoom($request->TestItems->test_users);
-      }
-      else{
-	$this->LoadUsers($request->TestItems->test_users);
-      }
+      $user_list = $request->TestItems->test_users;
+      if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
     else{
-      $this->LoadRoom($this->room_no);
+      $user_list = $this->RetriveByRoom($request->room_no);
     }
-  }
-
-  function LoadRoom($room_no){
-    $this->LoadQueryResponse(UserDataSet::RetriveByRoom($room_no));
-  }
-
-  function LoadVirtualRoom($user_count){
-    $this->LoadQueryResponse(UserDataSet::RetrieveByUserCount($user_count));
+    $this->LoadUsers($user_list);
   }
 
   function RetriveByRoom($room_no){
-    return mysql_query(
-      "SELECT
+    $query = "SELECT
 	users.room_no,
 	users.user_no,
 	users.uname,
@@ -359,14 +372,13 @@ class UserDataSet{
 	icons.icon_height
       FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
       WHERE users.room_no = {$room_no}
-      ORDER BY users.user_no"
-    );
+      ORDER BY users.user_no";
+    return FetchObjectArray($query, 'User');
   }
 
-  function RetrieveByUserCount($user_count){
+  function RetriveByUserCount($user_count){
     mysql_query('SET @new_user_no := 0');
-    return mysql_query(
-      "SELECT
+    $query = "SELECT
 	users.room_no,
 	(@new_user_no := @new_user_no + 1) AS user_no,
 	users.uname,
@@ -381,48 +393,68 @@ class UserDataSet{
 	icons.color,
 	icons.icon_width,
 	icons.icon_height
-      FROM (SELECT room_no, uname FROM user_entry WHERE 0 < room_no GROUP BY uname) finder
-	LEFT JOIN user_entry users USING (room_no, uname)
+      FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) finder
+	LEFT JOIN user_entry users USING(room_no, uname)
 	LEFT JOIN user_icon icons USING(icon_no)
       ORDER BY RAND()
-      LIMIT $user_count"
-    );
-  }
-
-  function LoadQueryResponse($response){
-    if($response === false) return false;
-    $this->rows = array();
-    $kicked_user_no = 0;
-    while(($user = mysql_fetch_object($response, 'User')) !== false){
-      $num_users++;
-      $user->ParseCompoundParameters();
-      if($user->user_no >= 0){
-	$this->rows[$user->user_no] = $user;
-      }
-      else {
-	$this->kicked[$user->user_no = --$kicked_user_no] = $user;
-      }
-      $this->names[$user->uname] = $user->user_no;
-    }
-    return $num_users; //または count($this->names)
+      LIMIT $user_count";
+    return FetchObjectArray($query, 'User');
   }
 
   function LoadUsers($user_list){
     if(! is_array($user_list)) return false;
+
+    //初期化処理
     $this->rows = array();
+    $this->kicked = array();
+    $this->names = array();
     $kicked_user_no = 0;
+
     foreach($user_list as $user){
-      $num_users++;
       $user->ParseCompoundParameters();
       if($user->user_no >= 0){
 	$this->rows[$user->user_no] = $user;
       }
       else{
-	$this->kicked[$user->user_no] = $user;
+	$this->kicked[$user->user_no = --$kicked_user_no] = $user;
       }
       $this->names[$user->uname] = $user->user_no;
     }
-    return $num_users; //または count($this->names)
+    return count($this->names);
+  }
+
+  function LoadVote(){
+    global $ROOM;
+    switch($ROOM->day_night){
+    case 'beforegame':
+      break;
+
+    case 'day':
+      $data = "uname, target_uname, vote_number";
+      $action = "situation = 'VOTE_KILL'";
+      $vote_times = GetVoteTimes();
+      $add_query = " AND vote_times = $vote_times";
+      break;
+
+    case 'night':
+      $data = "uname, target_uname, situation";
+      $action = "situation <> 'VOTE_KILL'";
+      break;
+
+    default:
+      return false;
+    }
+    $query = "SELECT {$data} FROM vote WHERE room_no = {$ROOM->id} " .
+      "AND date = {$ROOM->date} AND ";
+    $vote_list = FetchAssoc($query . $action . $add_query);
+
+    $this->vote_data = array();
+    foreach($vote_list as $array){
+      $id = $this->ByUname($array['uname'])->user_no;
+      unset($array['uname']);
+      $this->vote_data[$id] = $array;
+    }
+    ksort($this->vote_data);
   }
 
   function Save(){
@@ -506,16 +538,16 @@ class UserDataSet{
   }
 
   //仮想的な生死を返す
-  function IsVirtualLive($user_no){
+  function IsVirtualLive($user_no, $strict = false){
     //憑依されている場合は憑依者の生死を返す
     $real_user = $this->ByReal($user_no);
-    if($real_user->user_no != $user_no) return $real_user->IsLive();
+    if($real_user->user_no != $user_no) return $real_user->IsLive($strict);
 
     //憑依先に移動している場合は常に死亡扱い
     if($this->ByVirtual($user_no)->user_no != $user_no) return false;
 
     //憑依が無ければ本人の生死を返す
-    return $this->ByID($user_no)->IsLive();
+    return $this->ByID($user_no)->IsLive($strict);
   }
 
   function GetLivingUsers($strict = false){
@@ -540,9 +572,13 @@ class UserDataSet{
     if(! $user->ToDead()) return false;
 
     if($reason){
-      $handle_name = $this->GetHandleName($user->uname, true);
-      InsertSystemMessage($handle_name, $reason);
-      if($reason != 'POSSESSED_TARGETED') $user->SaveLastWords($handle_name);
+      $virtual_user = $this->ByVirtual($user->user_no);
+      InsertSystemMessage($virtual_user->handle_name, $reason);
+
+      //遺言処理
+      if($reason == 'POSSESSED_TARGETED') return true;
+      $user->SaveLastWords($virtual_user->handle_name);
+      if($user != $virtual_user) $virtual_user->SaveLastWords();
     }
     return true;
   }

@@ -260,6 +260,8 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
 //結果出力 (CreateRoom() 用)
 function OutputRoomAction($type, $room_name = ''){
+  global $SERVER_CONF;
+
   switch($type){
   case 'empty':
     OutputActionResultHeader('村作成 [入力エラー]');
@@ -281,9 +283,9 @@ function OutputRoomAction($type, $room_name = ''){
     break;
 
   case 'success':
-    OutputActionResultHeader('村作成', 'index.php');
+    OutputActionResultHeader('村作成', $SERVER_CONF->site_root);
     echo "$room_name 村を作成しました。トップページに飛びます。";
-    echo '切り替わらないなら <a href="index.php">ここ</a> 。';
+    echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
     break;
 
   case 'busy':
