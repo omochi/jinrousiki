@@ -7,7 +7,7 @@ if(! $DEBUG_MODE){
 }
 $INIT_CONF->LoadClass('ICON_CONF');
 
-$dbHandle = ConnectDatabase(); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 $icon_no = (int)$_GET['icon_no'];
 $array = FetchNameArray("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
 $file  = $array['icon_filename'];

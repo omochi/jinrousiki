@@ -1,23 +1,23 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
-$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'ROOM_IMG');
 
 //部屋No取得
 $RQ_ARGS =& new LogView();
 $room_no = $RQ_ARGS->room_no;
 
-$dbHandle = ConnectDatabase(); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 if($RQ_ARGS->is_room){
+  $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
+  $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
   $USERS =& new UserDataSet($RQ_ARGS);
   $SELF  =& new User();
   OutputOldLog();
 }
 else{
+  $INIT_CONF->LoadFile('game_config');
+  $INIT_CONF->LoadClass('ROOM_IMG', 'GAME_OPT_MESS');
   OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
 }
-DisconnectDatabase($dbHandle); //DB 接続解除
-
 OutputHTMLFooter();
 
 // 関数 //

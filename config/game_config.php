@@ -1,19 +1,15 @@
 <?php
-/*
-  このファイルは消去予定です。
-  新しい情報を定義する場合は config/game_config.php を編集してください。
-*/
-//部屋メンテナンス・作成設定
+//-- 村メンテナンス・作成設定 --//
 class RoomConfig{
-  //部屋最後の会話から廃村になるまでの時間 (秒)
+  //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //デバッグ用に長くしておく
+  #var $die_room = 1200;
+  var $die_room = 12000; //デバッグ用設定
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
 
-  //終了した部屋のユーザのセッション ID データをクリアするまでの時間 (秒)
+  //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
@@ -41,28 +37,28 @@ class RoomConfig{
   var $not_open_cast = true; //霊界で配役を公開しない
   var $default_not_open_cast = false;
 
-  var $decide = true; //決定者出現 (必要人数は GameConfig->decide 参照)
+  var $decide = true; //決定者出現 (必要人数は CastConfig->decide 参照)
   var $default_decide = true;
 
-  var $authority = true; //権力者出現 (必要人数は GameConfig->authority 参照)
+  var $authority = true; //権力者出現 (必要人数は CastConfig->authority 参照)
   var $default_authority = true;
 
-  var $poison = true; //埋毒者出現 (必要人数は GameConfig->poison 参照)
+  var $poison = true; //埋毒者出現 (必要人数は CastConfig->poison 参照)
   var $default_poison = true;
 
-  var $cupid = true; //キューピッド出現 (必要人数は GameConfig->cupid 参照)
+  var $cupid = true; //キューピッド出現 (必要人数は CastConfig->cupid 参照)
   var $default_cupid = false;
 
-  var $boss_wolf = true; //白狼出現 (必要人数は GameConfig->boss_wolf 参照)
+  var $boss_wolf = true; //白狼出現 (必要人数は CastConfig->boss_wolf 参照)
   var $default_boss_wolf = false;
 
-  var $poison_wolf = true; //白狼出現 (必要人数は GameConfig->poison_wolf 参照)
+  var $poison_wolf = true; //白狼出現 (必要人数は CastConfig->poison_wolf 参照)
   var $default_poison_wolf = false;
 
-  var $mania = true; //神話マニア出現 (必要人数は GameConfig->mania 参照)
+  var $mania = true; //神話マニア出現 (必要人数は CastConfig->mania 参照)
   var $default_mania = false;
 
-  var $medium = true; //巫女出現 (必要人数は GameConfig->medium 参照)
+  var $medium = true; //巫女出現 (必要人数は CastConfig->medium 参照)
   var $default_medium = false;
 
   var $liar = true; //狼少年村
@@ -106,84 +102,34 @@ class RoomConfig{
   var $default_duel = false;
 }
 
-//ゲーム設定
+//-- ゲーム設定 --//
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
+  #var $entry_one_ip_address = true;
   var $entry_one_ip_address = false;
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
-  // var $trip = true; //まだ実装されていません
+  //var $trip = true; //まだ実装されていません
   var $trip = false;
 
   //発言を「」で括る
   var $quote_words = false;
 
   //-- 投票 --//
-  var $self_kick = false; //自分への KICK (true：有効 / false：無効)
+  var $self_kick = true; //自分への KICK (true：有効 / false：無効)
   var $kick = 3; //何票で KICK 処理を行うか
   var $draw = 5; //再投票何回目で引き分けとするか
 
-  //-- 役職 --//
-  //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
-  var $wish_role_rate = 100;
-
-  //配役テーブル
-  /* 設定の見方
-    [ゲーム参加人数] => array([配役名1] => [配役名1の人数], [配役名2] => [配役名2の人数], ...),
-    ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
-  */
-  var $role_list = array(
-     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
-     5 => array('wolf' => 1, 'mage' => 2, 'mad' => 2),
-     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
-     7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
-     9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
-    10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
-    11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
-    12 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
-    13 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common'=> 2),
-    14 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2),
-    15 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    16 => array('human' =>  6, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    17 => array('human' =>  7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    18 => array('human' =>  8, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    20 => array('human' => 10, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    21 => array('human' => 11, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    23 => array('human' => 12, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    24 => array('human' => 13, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    25 => array('human' => 14, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    26 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
-    27 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 2),
-    28 => array('human' => 14, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    29 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    30 => array('human' => 16, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    31 => array('human' => 17, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    32 => array('human' => 16, 'wolf' => 5, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2)
-                         );
-
-  var $decide      = 16;  //決定者出現に必要な人数
-  var $authority   = 16;  //権力者出現に必要な人数
-  var $poison      = 20;  //埋毒者出現に必要な人数
-  var $boss_wolf   = 18;  //白狼出現に必要な人数
-  var $poison_wolf = 20;  //毒狼出現に必要な人数
-  var $mania       = 16;  //神話マニア出現に必要な人数
-  var $medium      = 20;  //巫女出現に必要な人数
-
-  //埋毒者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
+  //-- 役職の能力設定 --//
+  //毒能力者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
   var $poison_only_voter = false; //1.3 系のデフォルト
-  // var $poison_only_voter = true;
 
-  //狼が埋毒者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
+  //狼が毒能力者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
+  #var $poison_only_eater = false;
   var $poison_only_eater = true;
 
-  var $cupid = 16; //キューピッド出現に必要な人数 (14人の方は現在ハードコード)
-  var $cupid_self_shoot = 18; //キューピッドが他人打ち可能となる最低村人数
-
+  var $cupid_self_shoot = 18; //キューピッドが他人撃ち可能となる最低村人数
   var $cute_wolf_rate = 1; //萌狼の発動率 (%)
   var $gentleman_rate = 13; //紳士・淑女の発動率 (%)
   var $liar_rate = 95; //狼少年の発動率 (%)
@@ -514,16 +460,6 @@ class GameConfig{
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'));
 
-  //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
-
-  //-- 真・闇鍋の配役設定 --//
-  //固定配役
-  var $chaos_fix_role_list = array('wolf' => 1, 'mage' => 1);
-
-  var $min_wolf_rate = 10; //人狼の最低限出現率 (総人口/N)
-  var $min_fox_rate  = 15; //妖狐の最低限出現率 (総人口/N)
-
   //-- その他 --//
   var $power_gm = false; //強権 GM モード (ON：true / OFF：false)
   var $random_message = false; //ランダムメッセージの挿入 (する：true / しない：false)
@@ -558,6 +494,111 @@ class TimeConfig{
   var $silence_pass = 8;
 }
 
+//-- 配役設定 --//
+class CastConfig{
+  //-- 配役テーブル --//
+  /* 設定の見方
+    [ゲーム参加人数] => array([配役名1] => [配役名1の人数], [配役名2] => [配役名2の人数], ...),
+    ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
+  */
+  var $role_list = array(
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
+     5 => array('wolf' => 1, 'mage' => 2, 'mad' => 2),
+     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
+     7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
+     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
+    10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
+    11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
+    12 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
+    13 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common'=> 2),
+    14 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2),
+    15 => array('human' =>  6, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    16 => array('human' =>  6, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    17 => array('human' =>  7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    18 => array('human' =>  8, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    19 => array('human' =>  9, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    20 => array('human' => 10, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    21 => array('human' => 11, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    22 => array('human' => 12, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    23 => array('human' => 12, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    24 => array('human' => 13, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    25 => array('human' => 14, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    26 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    27 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 2),
+    28 => array('human' => 14, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    29 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    30 => array('human' => 16, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    31 => array('human' => 17, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
+    32 => array('human' => 16, 'wolf' => 5, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2)
+                         );
+  //-- 役職出現人数 --//
+  //各役職の出現に必要な人数を設定する
+  var $medium      = 20; //巫女 (+ 狂信者) (村人2 → 巫女1、狂信者1)
+  var $poison      = 20; //埋毒者 (村人2 → 埋毒者1、人狼1)
+  var $boss_wolf   = 18; //白狼 (人狼1 → 白狼)
+  var $poison_wolf = 20; //毒狼 (+ 薬師) (人狼1 → 毒狼1、村人1 → 薬師1)
+  var $cupid       = 16; //キューピッド (14人の方は現在ハードコード) (村人1 → キューピッド1)
+  var $mania       = 16; //神話マニア (村人1 → 神話マニア1)
+  var $decide      = 16; //決定者 (サブ役職なので兼任)
+  var $authority   = 16; //権力者 (サブ役職なので兼任)
+
+  //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
+  var $wish_role_rate = 100;
+
+  //身代わり君がならない役職グループのリスト
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'priest');
+
+  //-- 真・闇鍋の配役設定 --//
+  //固定配役
+  var $chaos_fix_role_list = array('wolf' => 1, 'mage' => 1);
+
+  var $min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
+  var $min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)
+
+  //役職グループの最大出現率 (グループ => 最大人口比)
+  var $chaos_role_group_rate_list = array(
+    'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1, 'chiroptera' => 0.15,
+    'mage' => 0.18, 'necromancer' => 0.15, 'priest' => 0.1, 'guard' => 0.15,
+    'common' => 0.18, 'poison' => 0.15, 'pharmacist' => 0.15, 'assassin' => 0.15,
+    'mind_scanner' => 0.15, 'jealousy' => 0.1);
+
+  //村人の出現上限補正
+  var $max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
+  var $chaos_replace_human_role = 'mania'; //村人から振り返る役職
+}
+
+//-- 村のオプション画像 --//
+class RoomImage extends ImageManager{
+  var $path      = 'room_option';
+  var $extention = 'gif';
+  var $class     = 'option';
+  /*
+  //村の最大人数リスト (RoomConfig->max_user_list と連動させる)
+  //現在は不使用
+  var $max_user_list = array(
+			      8 => 'img/room_option/max8.gif',   // 8人
+			     16 => 'img/room_option/max16.gif',  //16人
+			     22 => 'img/room_option/max22.gif'   //22人
+			     );
+  */
+}
+
+//-- 役職の画像 --//
+class RoleImage extends RoleImageBase{
+  var $path      = 'role';
+  var $extention = 'gif';
+  var $class     = '';
+}
+
+//-- 勝利陣営の画像 --//
+class VictoryImage extends VictoryImageBase{
+  var $path      = 'victory_role';
+  var $extention = 'jpg';
+  var $class     = 'winner';
+}
+
 //ゲームプレイ時のアイコン表示設定
 class IconConfig{
   var $width  = 45; //表示サイズ(幅)
@@ -566,7 +607,9 @@ class IconConfig{
   var $dead   = 'img/grave.gif'; //死者
   var $wolf   = 'img/wolf.gif';  //狼
 
-  function IconConfig(){
+  function IconConfig(){ $this->__construct(); }
+
+  function __construct(){
     $this->path = JINRO_ROOT . '/' . $this->path;
     $this->dead = JINRO_ROOT . '/' . $this->dead;
     $this->wolf = JINRO_ROOT . '/' . $this->wolf;
@@ -596,6 +639,17 @@ class UserIcon{
   function IconSizeMax(){
     return '幅' . $this->width . 'ピクセル × 高さ' . $this->height . 'ピクセルまで';
   }
+}
+
+//-- 音源設定 --//
+class Sound extends SoundBase{
+  var $path      = 'swf'; //音源のパス
+  var $extention = 'swf'; //拡張子
+
+  var $morning          = 'sound_morning';          //夜明け
+  var $revote           = 'sound_revote';           //再投票
+  var $objection_male   = 'sound_objection_male';   //異議あり(男)
+  var $objection_female = 'sound_objection_female'; //異議あり(女)
 }
 
 //過去ログ表示設定

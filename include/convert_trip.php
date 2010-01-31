@@ -1,4 +1,8 @@
 <?php
+/*
+  このファイルは消去予定です。
+  新しい情報を定義する場合は user_manager.php を編集してください。
+*/
  /**
   * filterKey2Trip
   *

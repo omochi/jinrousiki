@@ -4,16 +4,15 @@ require_once(JINRO_ROOT . '/include/init.php');
 
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ
 
-if(! ($dbHandle = ConnectDatabase(true, false))){ //DB 接続
-  mysql_query("CREATE DATABASE $db_name DEFAULT CHARSET ujis");
-  echo "データベース $db_name を作成しました。<br>";
-  $dbHandle = ConnectDatabase(true); //改めて DB 接続
+if(! $DB_CONF->Connect(true, false)){ //DB 接続
+  mysql_query("CREATE DATABASE {$DB_CONF->name} DEFAULT CHARSET ujis");
+  echo "データベース {$DB_CONF->name} を作成しました。<br>";
+  $DB_CONF->Connect(true); //改めて DB 接続
 }
 echo '</head><body>'."\n";
 
 CheckTable(); //テーブル作成
 OutputHTMLFooter(); //HTMLフッタ
-DisconnectDatabase($dbHandle); //DB 接続解除
 
 //-- クラス定義 --//
 //ユーザアイコンの初期設定

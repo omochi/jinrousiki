@@ -3,38 +3,30 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT  . '/include/init.php');
 
 EncodePostData();
+$post   =& new RequestSrcUpload(); //引数をセット
+$config =& new SourceUploadConfig(); //設定をロード
 
-//変数をセット
-$post = array('name'     => $_POST['name'],
-	      'caption'  => $_POST['caption'],
-	      'user'     => $_POST['user'],
-	      'password' => $_POST['password']);
-$label = array('name'     => 'ファイル名',
-	       'caption'  => 'ファイルの説明',
-	       'user'     => '作成者名',
-	       'password' => 'パスワード');
-$size = array('name'     => 20,
-	      'caption'  => 80,
-	      'user'     => 20,
-	      'password' => 20);
+if($config->disable){
+  OutputActionResult('ファイルアップロード', '現在アップロードは停止しています');
+}
 
 //引数のエラーチェック
 foreach($post as $key => $value){
+  $label = $config->form_list[$key]['label'];
+  $size  = $config->form_list[$key]['size'];
+
   //未入力チェック
-  if($value == '') OutputUploadResult('<span>' . $label[$key] . '</span> が未入力です。');
+  if($value == '') OutputUploadResult('<span>' . $label . '</span> が未入力です。');
 
   //文字列長チェック
-  if(strlen($value) > $size[$key]){
-    OutputUploadResult('<span>' . $label[$key] . '</span> は ' .
-		       '<span>' . $size[$key] . '</span> 文字以下にしてください。');
+  if(strlen($value) > $size){
+    OutputUploadResult('<span>' . $label . '</span> は ' .
+		       '<span>' . $size . '</span> 文字以下にしてください。');
   }
-
-  //エスケープ処理
-  EscapeStrings(&$value);
 }
 
 //パスワードのチェック
-if($post['password'] != $SERVER_CONF->src_upload_password) OutputUploadResult('パスワード認証エラー。');
+if($post->password != $config->password) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
 $file_name = strtolower(trim($_FILES['file']['name']));
@@ -48,8 +40,8 @@ if(! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', 
 
 //ファイルサイズのチェック
 $file_size = $_FILES['file']['size'];
-if($file_size == 0 || $file_size > 10 * 1024 * 1024){ //setting.php で設定できるようにする
-  OutputUploadResult('ファイルサイズは <span>10 Mbyte</span> まで。');
+if($file_size == 0 || $file_size > $config->max_size){
+  OutputUploadResult('ファイルサイズは <span>' . $config->max_size . 'byte</span> まで。');
 }
 
 
@@ -84,11 +76,11 @@ else
   $file_size = sprintf('%.2f', $file_size) . ' byte';
 
 $html = <<<EOF
-<td class="link"><a href="file/{$number}.{$ext}">{$post['name']}</a></td>
+<td class="link"><a href="file/{$number}.{$ext}">{$post->name}</a></td>
 <td class="type">$ext</td>
 <td class="size">$file_size</td>
-<td class="explain">{$post['caption']}</td>
-<td class="name">{$post['user']}</td>
+<td class="explain">{$post->caption}</td>
+<td class="name">{$post->user}</td>
 <td class="date">$time</td>
 
 EOF;
@@ -124,7 +116,7 @@ else{
 function OutputUploadResult($body){
   OutputHTMLHeader('ファイルアップロード処理', 'src');
   echo '</head><body>'."\n" . $body . '<br><br>'."\n" .
-    '<a href="index.php">←戻る</a>'."\n";
+    '<a href="./">←戻る</a>'."\n";
   OutputHTMLFooter(true);
 }
 ?>

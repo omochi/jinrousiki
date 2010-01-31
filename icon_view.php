@@ -12,7 +12,7 @@ OutputHTMLHeader('ユーザアイコン一覧', 'icon_view')
 <fieldset><legend>ユーザアイコン一覧</legend>
 <table><tr>
 <?php
-$dbHandle = ConnectDatabase(true); //DB 接続
+$DB_CONF->Connect(true); //DB 接続
 
 //ユーザアイコンのテーブルから一覧を取得
 $query = "SELECT icon_name, icon_filename, icon_width, icon_height, color " .
@@ -33,7 +33,7 @@ EOF;
   if(++$count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
 }
 
-DisconnectDatabase($dbHandle);
+$DB_CONF->Disconnect(); //DB 接続解除
 ?>
 </tr></table>
 </fieldset>

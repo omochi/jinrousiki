@@ -92,7 +92,7 @@ function OutputAutoReloadLink($url){
 
 //¥²¡¼¥à¥ª¥×¥·¥ç¥ó²èÁü¤ò½ÐÎÏ
 function OutputGameOption(){
-  global $GAME_CONF, $ROOM;
+  global $ROOM;
 
   $array = FetchNameArray("SELECT option_role, max_user FROM room WHERE room_no = {$ROOM->id}");
   $str = '<table class="time-table"><tr>'."\n" .
@@ -248,12 +248,12 @@ function MakeRoleName($role, $css = '', $sub_role = false){
 
 //¾¡ÇÔ¤Î½ÐÎÏ
 function OutputVictory(){
-  global $MESSAGE, $ROOM, $USERS, $SELF;
+  global $VICT_MESS, $ROOM, $USERS, $SELF;
 
   //-- Â¼¤Î¾¡ÇÔ·ë²Ì --//
   $victory = FetchResult("SELECT victory_role FROM room WHERE room_no = {$ROOM->id}");
   $class   = $victory;
-  $winner  = 'victory_' . $victory;
+  $winner  = $victory;
 
   switch($victory){ //ÆÃ¼ì¥±¡¼¥¹ÂÐ±þ
     //¸Ñ¾¡Íø·Ï
@@ -271,12 +271,12 @@ function OutputVictory(){
 
     case NULL: //ÇÑÂ¼
       $class  = 'none';
-      $winner = 'victory_none';
+      $winner = 'none';
       break;
   }
   echo <<<EOF
 <table class="victory victory-{$class}"><tr>
-<td>{$MESSAGE->$winner}</td>
+<td>{$VICT_MESS->$winner}</td>
 </tr></table>
 
 EOF;
@@ -323,10 +323,11 @@ EOF;
       $result = 'lose';
     }
   }
+  $result = 'self_' . $result;
 
   echo <<<EOF
 <table class="victory victory-{$class}"><tr>
-<td>{$MESSAGE->$result}</td>
+<td>{$VICT_MESS->$result}</td>
 </tr></table>
 
 EOF;
@@ -394,7 +395,10 @@ function OutputTalkLog(){
 function OutputTalk($talk, &$builder){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  $said_user = $USERS->ByVirtualUname($talk->uname);
+  if(strpos($talk->location, 'heaven') === false)
+    $said_user = $USERS->ByVirtualUname($talk->uname);
+  else
+    $said_user = $USERS->ByUname($talk->uname);
   $real_user = $USERS->ByRealUname($talk->uname);
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
   /*
@@ -702,7 +706,7 @@ function OutputTalk($talk, &$builder){
 	if($flag_fox_group){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($pseud_self->IsRole('wise_wolf')){
+	elseif($virtual_self->IsRole('wise_wolf')){
 	  $builder->AddWhisper('common', $talk);
 	}
 	break;

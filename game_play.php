@@ -6,23 +6,25 @@ $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 EncodePostData(); //ポストされた文字列を全てエンコードする
 
 $RQ_ARGS =& new RequestGamePlay(); //引数を取得
-if($RQ_ARGS->play_sound){//音でお知らせ
-  $SOUND  =& new Sound(); //音源情報をロード
-  $COOKIE =& new CookieDataSet(); //クッキー情報をロード
-}
+if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
-//セッション開始
-session_start();
-$session_id = session_id();
-
-$dbHandle = ConnectDatabase(); //DB 接続
-$uname = CheckSession($session_id); //セッション ID をチェック
+$DB_CONF->Connect(); //DB 接続
+session_start(); //セッション開始
+$uname = CheckSession(session_id()); //セッション ID をチェック
 
 $ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
 $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
+
+//シーンに応じた追加クラスをロード
+if($ROOM->IsBeforeGame()){
+  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //ゲームオプション表示用
+}
+elseif($ROOM->IsFinished()){
+  $INIT_CONF->LoadClass('VICT_MESS'); //勝敗結果表示用
+}
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByUname($uname); //自分の情報をロード
@@ -77,8 +79,6 @@ if(! $ROOM->heaven_mode){
   if($RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
 }
 OutputHTMLFooter();
-
-DisconnectDatabase($dbHandle); //DB 接続解除
 
 //-- 関数 --//
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
@@ -728,7 +728,7 @@ function CheckSelfVoteDay(){
     "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
   $sentence .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
-		$USERS->GetHandleName($target_uname) . 'さんに投票済み');
+		$USERS->GetHandleName($target_uname, true) . 'さんに投票済み');
   $sentence .= '</div>'."\n";
   if($target_uname === false){
     $sentence .= '<span class="ability vote">' . $MESSAGE->ability_vote . '</span><br>'."\n";

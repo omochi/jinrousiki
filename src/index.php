@@ -5,7 +5,7 @@ OutputHTMLHeader('開発版ソースダウンロード', 'src');
 ?>
 </head>
 <body>
-<a href="../index.php">←戻る</a><br>
+<a href="../">←戻る</a><br>
 <?php include_once('download.php'); ?>
 
 <form method="POST" action="upload.php" enctype="multipart/form-data">

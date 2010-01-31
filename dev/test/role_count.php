@@ -4,7 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'MESSAGE');
 
-$dbHandle = ConnectDatabase(); // DB 接続
+$DB_CONF->Connect(); // DB 接続
 OutputHTMLHeader('汝は人狼なりや？[配役統計]', 'game'); //HTMLヘッダ
 $SELF =& new User();
 
@@ -32,5 +32,4 @@ echo MakeRoleNameList($role_count_list, 'camp') . '<br><br>';
 echo MakeRoleNameList($role_count_list, 'role') . '<br><br>';
 echo MakeRoleNameList($role_count_list) . '<br>';
 OutputHTMLFooter(); //HTMLフッタ
-DisconnectDatabase($dbHandle); //DB 接続解除
 ?>

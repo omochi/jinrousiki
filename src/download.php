@@ -59,19 +59,23 @@ EOF;
 $array = array();
 if($handle = opendir('html')){
   while(($file = readdir($handle)) !== false){
-    if($file != '.' && $file != '..' && $file != 'index.html') array_push($array, $file);
+    if($file != '.' && $file != '..' && $file != 'index.html') $array[] = $file;
   }
   closedir($handle);
 }
 if(count($array) < 1) return;
 rsort($array);
 
-echo '<table id="download">'."\n" . '<caption>アップロードされたファイル</caption>' . $caption;
+$str = '<table id="download">'."\n" . '<caption>アップロードされたファイル</caption>' . $caption;
 foreach($array as $key => $file){
-  echo '<tr>'."\n";
-  if($html = file_get_contents('html/' . $file)) echo $html;
-  else echo '<td colspan="6">読み込み失敗: ' . $file . '</td>'."\n";
-  echo '<tr>'."\n";
+  $str .= '<tr>'."\n";
+  if($html = file_get_contents('html/' . $file)){
+    $str .= $html;
+  }
+  else{
+    $str .= '<td colspan="6">読み込み失敗: ' . $file . '</td>'."\n";
+  }
+  $str .= '<tr>'."\n";
 }
-echo '</table>'."\n";
+echo $str . '</table>'."\n";
 ?>

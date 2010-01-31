@@ -16,7 +16,7 @@ if(strncmp(@$_SERVER['HTTP_REFERER'], $icon_upload_check_page_url,
 $icon_no = (int)$_POST['icon_no'];
 switch($_POST['entry']){
 case 'success': //セッションID情報をDBから削除
-  $dbHandle = ConnectDatabase(); //DB 接続
+  $DB_CONF->Connect(); //DB 接続
 
   //セッションIDをクリア
   mysql_query("UPDATE user_icon SET session_id = NULL WHERE icon_no = $icon_no");
@@ -29,7 +29,7 @@ case 'success': //セッションID情報をDBから削除
   break;
 
 case 'cancel': //DBからアイコンのファイル名と登録時のセッションIDを取得
-  $dbHandle = ConnectDatabase(); //DB 接続
+  $DB_CONF->Connect(); //DB 接続
 
   $array = FetchArray("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
   $file       = $array['icon_filename'];

@@ -1,4 +1,8 @@
 <?php
+/*
+  このファイルは消去予定です。
+  新しい情報を定義する場合は config/message.php を編集してください。
+*/
 // システムメッセージ格納クラス
 class Message{
   //-- room_manger.php --//

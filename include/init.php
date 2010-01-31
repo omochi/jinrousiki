@@ -1,9 +1,21 @@
 <?php
+//-- 定数を定義 --//
+/*
+  ServerConfig->site_root を使って CSS や画像等をロードする仕様にすると
+  ローカルに保存する場合や、ログを別のサーバに移す場合に手間がかかるので
+  JINRO_ROOT で相対パスを定義して共通で使用する仕様に変更しました。
+  絶対パスが返る dirname() を使ったパスの定義を行わないで下さい。
+*/
 if(! defined('JINRO_ROOT')) define('JINRO_ROOT', '.');
-//define('JINRO_ROOT', dirname(dirname(__FILE__))); css や画像パスの処理の都合で絶対パスを使用しない
-define('JINRO_INC', JINRO_ROOT.'/include');
-define('JINRO_CSS', JINRO_ROOT.'/css');
+define('JINRO_CONF', JINRO_ROOT . '/config');
+define('JINRO_INC',  JINRO_ROOT . '/include');
+define('JINRO_CSS',  JINRO_ROOT . '/css');
+define('JINRO_IMG',  JINRO_ROOT . '/img');
 
+/*
+  これ以降の定数は消去予定の loadModule() 用です。
+  新しい情報を定義する場合は InitializeConfig() を使ってください。
+*/
 define('MESSAGE', 'MESSAGE');
 define('ROOM_IMG', 'ROOM_IMG');
 define('ROLE_IMG', 'ROLE_IMG');
@@ -26,12 +38,168 @@ define('USER_CLASSES', 'USER_CLASSES');
 define('TALK_CLASSES', 'TALK_CLASSES');
 define('CHATENGINE_CLASSES', 'CHATENGINE_CLASSES');
 
-//デバッグモードのオン/オフ
+//-- デバッグモードのオン/オフ --//
+//ServerConfig に移植する予定
 #$DEBUG_MODE = false;
 $DEBUG_MODE = true;
-$INIT_CONF =& new InitializeConfig();
 
-$INIT_CONF->LoadFile('paparazzi', 'request_class', 'functions');
+//-- クラスを定義 --//
+class InitializeConfig{
+  var $path; //パス情報格納変数
+  var $loaded; //ロード情報格納変数
+
+  //依存ファイル情報 (読み込むデータ => 依存するファイル)
+  var $depend_file = array(
+    'DB_CONF' => 'server_config',
+    'SERVER_CONF' => 'server_config',
+    'SCRIPT_INFO' => 'version',
+    'ROOM_CONF' => 'game_config',
+    'GAME_CONF' => 'game_config',
+    'CAST_CONF' => 'game_config',
+    'TIME_CONF' => 'game_config',
+    'ICON_CONF' => 'game_config',
+    'USER_ICON' => 'game_config',
+    'ROOM_IMG' => 'game_config',
+    'ROLE_IMG' => 'game_config',
+    'SOUND' => 'game_config',
+    'MESSAGE' => 'message',
+    'GAME_OPT_MESS' => 'message',
+    'VICT_MESS' => 'message',
+    'VOTE_MESS' => 'message',
+    'ROLES' => 'role_manager_class',
+    'TIME_CALC' => 'time_calc',
+    'server_config' => 'system_class',
+    'game_config' => 'system_class',
+    'game_vote_functions' => 'game_functions',
+    'game_play_functions' => 'user_class',
+    'game_functions' => 'system_class',
+    'system_class' => 'functions',
+    'user_class' => 'game_functions',
+    'role_manager_class' => 'role_class',
+    'role_class' => 'game_format'
+  );
+
+  //依存クラス情報 (読み込むデータ => 依存するクラス)
+  var $depend_class = array(
+    'GAME_OPT_CAPT' => 'GAME_OPT_MESS',
+    'TIME_CALC' => array('TIME_CONF', 'ROOM_CONF'),
+    'game_play_functions' => 'ROLE_IMG',
+    'user_class' => array('GAME_CONF', 'MESSAGE')
+  );
+
+  //クラス名情報 (グローバル変数名 => 読み込むクラス)
+  var $class_list = array(
+    'DB_CONF'=> 'DatabaseConfig',
+    'SERVER_CONF'=> 'ServerConfig',
+    'SCRIPT_INFO'=> 'ScriptInfo',
+    'ROOM_CONF'=> 'RoomConfig',
+    'GAME_CONF'=> 'GameConfig',
+    'CAST_CONF'=> 'CastConfig',
+    'TIME_CONF'=> 'TimeConfig',
+    'ICON_CONF'=> 'IconConfig',
+    'USER_ICON'=> 'UserIcon',
+    'ROOM_IMG'=> 'RoomImage',
+    'ROLE_IMG'=> 'RoleImage',
+    'SOUND'=> 'Sound',
+    'COOKIE'=> 'CookieDataSet',
+    'MESSAGE'=> 'Message',
+    'GAME_OPT_MESS'=> 'GameOptionMessage',
+    'GAME_OPT_CAPT'=> 'GameOptionCaptionMessage',
+    'VICT_MESS'=> 'VictoryMessage',
+    'VOTE_MESS'=> 'VoteMessage',
+    'ROLES'=> 'Roles',
+    'TIME_CALC'=> 'TimeCalculation'
+  );
+
+  function InitializeConfig(){ $this->__construct(); }
+
+  function __construct(){
+    $this->path->root    = JINRO_ROOT;
+    $this->path->config  = JINRO_CONF;
+    $this->path->include = JINRO_INC;
+    $this->loaded->file  = array();
+    $this->loaded->class = array();
+  }
+
+  //依存解決処理関数
+  function LoadDependence($name){
+    $depend_file = $this->depend_file[$name];
+    if(! is_null($depend_file)) $this->LoadFile($depend_file);
+
+    $depend_class = $this->depend_class[$name];
+    if(! is_null($depend_class)) $this->LoadClass($depend_class);
+  }
+
+  //ファイルロード関数
+  function LoadFile($name){
+    $name_list = func_get_args();
+    if(is_array($name_list[0])) $name_list = $name_list[0];
+    if(count($name_list) > 1){
+      foreach($name_list as $name) $this->LoadFile($name);
+      return;
+    }
+
+    if(is_null($name)) return false;
+    if(in_array($name, $this->loaded->file)) return false;
+    $this->LoadDependence($name);
+
+    switch($name){
+    case 'server_config':
+    case 'game_config':
+    case 'message':
+    case 'version':
+      $path = $this->path->config;
+      break;
+
+    case 'paparazzi':
+      $path = $this->path->root;
+      break;
+
+    case 'mb-emulator':
+      $path = $this->path->root . '/module';
+      break;
+
+    case 'role_manager_class':
+    case 'role_class':
+      $path = $this->path->include . '/role';
+      break;
+
+    case 'chatengine':
+      $path = $this->path->include . '/' . $name;
+      break;
+
+    default:
+      $path = $this->path->include;
+      break;
+    }
+
+    require_once($path . '/' . $name . '.php');
+    $this->loaded->file[] = $name;
+    return true;
+  }
+
+  function LoadClass($name){
+    $name_list = func_get_args();
+    if(is_array($name_list[0])) $name_list = $name_list[0];
+    if(count($name_list) > 1){
+      foreach($name_list as $name) $this->LoadClass($name);
+      return;
+    }
+
+    if(is_null($name)) return false;
+    if(in_array($name, $this->loaded->class)) return false;
+    $this->LoadDependence($name);
+
+    if(is_null($class_name = $this->class_list[$name])) return false;
+    $GLOBALS[$name] =& new $class_name();
+    $this->loaded->class[] = $name;
+    return true;
+  }
+}
+
+//-- 初期化処理 --//
+$INIT_CONF =& new InitializeConfig();
+$INIT_CONF->LoadFile('paparazzi', 'request_class');
 
 //mbstring非対応の場合、エミュレータを使用する
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
@@ -62,12 +230,18 @@ if(extension_loaded('mbstring')){
 
 //-- 海外のサーバでも動くようにヘッダ強制指定 --//
 //海外サーバ等で文字化けする場合に指定します
-//ヘッダがまだ何も送信されていない場合送信する
-if(! headers_sent()){
+/*
+if(! headers_sent()){ //ヘッダがまだ何も送信されていない場合送信する
   header("Content-type: text/html; charset={$SERVER_CONF->encode}");
   header('Content-Language: ja');
 }
+*/
 
+//-- 関数定義 --//
+/*
+  この関数は消去する予定です
+  新しい情報を定義する場合は InitializeConfig() を使ってください
+*/
 function loadModule($name) {
   #print_r($GLOBALS); echo "\n $name \n";
   if(func_num_args() == 1){
@@ -165,163 +339,6 @@ function loadModule($name) {
       $result[$name] = loadModule($name);
     }
     return $result;
-  }
-}
-
-
-class InitializeConfig{
-  var $path;
-  var $loaded;
-  var $depend_file = array(
-    'DB_CONF' => 'setting',
-    'SERVER_CONF' => 'setting',
-    'SCRIPT_INFO' => 'version',
-    'ROOM_CONF' => 'config',
-    'GAME_CONF' => 'config',
-    'TIME_CONF' => 'config',
-    'ICON_CONF' => 'config',
-    'USER_ICON' => 'config',
-    'ROOM_IMG' => 'system_class',
-    'ROLE_IMG' => 'system_class',
-    'MESSAGE' => 'message_class',
-    'ROLES' => 'role_manager_class',
-    'TIME_CALC' => 'time_calc',
-    'game_vote_functions' => 'game_functions',
-    'game_play_functions' => 'user_class',
-    'game_functions' => 'system_class',
-    'user_class' => 'game_functions',
-    'role_manager_class' => 'role_class',
-    'role_class' => 'game_format'
-  );
-
-  var $depend_class = array(
-    'TIME_CALC' => array('TIME_CONF', 'ROOM_CONF'),
-    'game_play_functions' => 'ROLE_IMG',
-    'user_class' => array('GAME_CONF', 'MESSAGE')
-  );
-
-  function InitializeConfig(){
-    $this->path->root = JINRO_ROOT;
-    $this->path->include = JINRO_INC;
-    $this->loaded->file  = array();
-    $this->loaded->class = array();
-  }
-
-  function LoadDependence($name){
-    $depend_file = $this->depend_file[$name];
-    if(! is_null($depend_file)) $this->LoadFile($depend_file);
-
-    $depend_class = $this->depend_class[$name];
-    if(! is_null($depend_class)) $this->LoadClass($depend_class);
-  }
-
-  function LoadFile($name){
-    $name_list = func_get_args();
-    if(is_array($name_list[0])) $name_list = $name_list[0];
-    if(count($name_list) > 1){
-      foreach($name_list as $name) $this->LoadFile($name);
-      return;
-    }
-
-    if(is_null($name)) return false;
-    if(in_array($name, $this->loaded->file)) return false;
-    $this->LoadDependence($name);
-
-    switch($name){
-    case 'paparazzi':
-      $path = $this->path->root;
-      break;
-
-    case 'mb-emulator':
-      $path = $this->path->root . '/module';
-      break;
-
-    case 'role_manager_class':
-    case 'role_class':
-      $path = $this->path->include . '/role';
-      break;
-
-    case 'chatengine':
-      $path = $this->path->include . '/' . $name;
-      break;
-
-    default:
-      $path = $this->path->include;
-      break;
-    }
-
-    require_once($path . '/' . $name . '.php');
-    $this->loaded->file[] = $name;
-    return true;
-  }
-
-  function LoadClass($name){
-    $name_list = func_get_args();
-    if(is_array($name_list[0])) $name_list = $name_list[0];
-    if(count($name_list) > 1){
-      foreach($name_list as $name) $this->LoadClass($name);
-      return;
-    }
-
-    if(is_null($name)) return false;
-    if(in_array($name, $this->loaded->class)) return false;
-    $this->LoadDependence($name);
-
-    switch($name){
-    case 'DB_CONF':
-      $GLOBALS[$name] = new DatabaseConfig();
-      break;
-
-    case 'SERVER_CONF':
-      $GLOBALS[$name] = new ServerConfig();
-      break;
-
-    case 'SCRIPT_INFO':
-      $GLOBALS[$name] = new ScriptInformation();
-      break;
-
-    case 'ROOM_CONF':
-      $GLOBALS[$name] = new RoomConfig();
-      break;
-
-    case 'GAME_CONF':
-      $GLOBALS[$name] = new GameConfig();
-      break;
-
-    case 'TIME_CONF':
-      $GLOBALS[$name] = new TimeConfig();
-      break;
-
-    case 'ICON_CONF':
-      $GLOBALS[$name] = new IconConfig();
-      break;
-
-    case 'USER_ICON':
-      $GLOBALS[$name] = new UserIcon();
-      break;
-
-    case 'ROOM_IMG':
-      $GLOBALS[$name] = new RoomImage();
-      break;
-
-    case 'ROLE_IMG':
-      $GLOBALS[$name] = new RoleImage();
-      break;
-
-    case 'MESSAGE':
-      $GLOBALS[$name] = new Message();
-      break;
-
-    case 'ROLES':
-      $GLOBALS[$name] = new Roles();
-      break;
-
-    case 'TIME_CALC':
-      $GLOBALS[$name] = new TimeCalculation();
-      break;
-    }
-    $this->loaded->class[] = $name;
-    return true;
   }
 }
 ?>

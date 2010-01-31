@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('ROOM_CONF', 'ICON_CONF');
 $INIT_CONF->LoadFile('game_vote_functions', 'game_play_functions');
 
 //-- 仮想村データをセット --//
-$RQ_ARGS =& new RequestGameView();
+$RQ_ARGS =& new RequestBaseGame();
 $RQ_ARGS->room_no = 186; #94;
 $RQ_ARGS->TestItems->test_room = array(
   'room_name'    => '【水銀69】やる夫達の真闇鍋村',
@@ -43,7 +43,7 @@ $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[2]->profile = '';
-$RQ_ARGS->TestItems->test_users[2]->role = 'poison_cat';
+$RQ_ARGS->TestItems->test_users[2]->role = 'mind_scanner';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 $RQ_ARGS->TestItems->test_users[2]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[2]->is_system = false;
@@ -85,7 +85,7 @@ $RQ_ARGS->TestItems->test_users[5]->uname = 'orange';
 $RQ_ARGS->TestItems->test_users[5]->handle_name = 'オレンジ';
 $RQ_ARGS->TestItems->test_users[5]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[5]->profile = '';
-$RQ_ARGS->TestItems->test_users[5]->role = 'wolf';
+$RQ_ARGS->TestItems->test_users[5]->role = 'poison_wolf';
 $RQ_ARGS->TestItems->test_users[5]->live = 'live';
 $RQ_ARGS->TestItems->test_users[5]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[5]->is_system = false;
@@ -127,7 +127,7 @@ $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[8]->profile = '';
-$RQ_ARGS->TestItems->test_users[8]->role = 'possessed_wolf possessed_target[3-9]';
+$RQ_ARGS->TestItems->test_users[8]->role = 'possessed_wolf possessed_target[4-9]';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 $RQ_ARGS->TestItems->test_users[8]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[8]->is_system = false;
@@ -141,7 +141,7 @@ $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[9]->profile = '';
-$RQ_ARGS->TestItems->test_users[9]->role = 'poison perverseness possessed[3-8]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'quiz possessed[4-8]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[9]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[9]->is_system = false;
@@ -155,8 +155,8 @@ $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[10]->profile = '';
-$RQ_ARGS->TestItems->test_users[10]->role = 'possessed_wolf';
-$RQ_ARGS->TestItems->test_users[10]->live = 'dead';
+$RQ_ARGS->TestItems->test_users[10]->role = 'possessed_wolf mind_read[2]';
+$RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[10]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[10]->is_system = false;
 $RQ_ARGS->TestItems->test_users[10]->icon_filename = '009.gif';
@@ -169,7 +169,7 @@ $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[11]->profile = '';
-$RQ_ARGS->TestItems->test_users[11]->role = 'priest';
+$RQ_ARGS->TestItems->test_users[11]->role = 'child_fox';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[11]->is_system = false;
@@ -198,7 +198,7 @@ foreach($RQ_ARGS->TestItems->vote_day as $this_array){
 }
 $RQ_ARGS->TestItems->vote_day_count_list = $test_voted_uname_list;
 
-$RQ_ARGS->TestItems->vote_night->wolf = array('uname' => 'blue', 'target_uname' => 'cherry');
+$RQ_ARGS->TestItems->vote_night->wolf = array('uname' => 'blue', 'target_uname' => 'red');
 $RQ_ARGS->TestItems->vote_night->mage = array(
   #array('uname' => 'yellow', 'target_uname' => 'blue'),
   #array('uname' => 'orange', 'target_uname' => 'cherry')
@@ -230,7 +230,7 @@ $RQ_ARGS->TestItems->vote_night->anti_voodoo = array(
   array('uname' => 'light_blue', 'target_uname' => 'blue')
 );
 $RQ_ARGS->TestItems->vote_night->poison_cat = array(
-  array('uname' => 'dark_gray', 'target_uname' => 'purple'),
+  #array('uname' => 'dark_gray', 'target_uname' => 'purple'),
   #array('uname' => 'light_gray', 'target_uname' => 'purple')
 );
 $RQ_ARGS->TestItems->vote_night->assassin = array(
@@ -240,7 +240,7 @@ $RQ_ARGS->TestItems->vote_night->voodoo_fox = array(
   #array('uname' => 'red', 'target_uname' => 'cherry')
 );
 $RQ_ARGS->TestItems->vote_night->child_fox = array(
-  #array('uname' => 'light_blue', 'target_uname' => 'blue')
+  array('uname' => 'cherry', 'target_uname' => 'light_gray')
 );
 $RQ_ARGS->TestItems->vote_night->mind_scanner = array(
   #array('uname' => 'light_gray', 'target_uname' => 'yellow')
@@ -251,20 +251,20 @@ $RQ_ARGS->TestItems->vote_night->mania = array(
 );
 
 //-- データ収集 --//
-$dbHandle = ConnectDatabase(); // DB 接続
+$DB_CONF->Connect(); // DB 接続
 $ROOM =& new RoomDataSet($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 2; #5;
+$ROOM->date = 5;
 #$ROOM->day_night = 'beforegame';
-$ROOM->day_night = 'day';
+#$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(5);
+$SELF = $USERS->ByID(10);
 
 //-- データ出力 --//
 OutputHTMLHeader('汝は人狼なりや？[テスト]', 'game'); //HTMLヘッダ
@@ -278,42 +278,34 @@ OutputPlayerList(); //プレイヤーリスト
 //$USERS->LoadVote();
 //PrintData($USERS->vote_data);
 #PrintData(FetchAssoc("SELECT uname, situation FROM vote WHERE room_no = {$ROOM->id}"));
-
+#PrintData($INIT_CONF->loaded);
 OutputAbility();
 
-// 昼の投票テスト
-/*
-$vote_times = 1;
-$vote_message_list = AggregateVoteDay();
-echo <<<EOF
+if($ROOM->IsDay()){ //昼の投票テスト
+  $vote_times = 1;
+  $vote_message_list = AggregateVoteDay();
+  echo <<<EOF
 <table class="vote-list">
 <td class="vote-times" colspan="4">$ROOM->date 日目 ($vote_times 回目)</td>
 
 EOF;
 
-foreach($vote_message_list as $this_uname => $this_array){
-  echo <<<EOF
+  foreach($vote_message_list as $this_uname => $this_array){
+    echo <<<EOF
 <tr><td class="vote-name">{$USERS->GetHandleName($this_uname)}</td>
 <td>{$this_array['voted_number']} 票</td><td>投票先 {$this_array['vote_number']} 票 →</td>
 <td class="vote-name">{$this_array['target']}</td>
 </tr>
 
 EOF;
+  }
+  echo '</table>';
 }
-echo '</table>';
-*/
-
-// 夜の投票テスト
-AggregateVoteNight();
-/*
-if($ROOM->IsFinished()) OutputVictory(); //勝敗結果
-OutputRevoteList(); //再投票メッセージ
-OutputTalkLog();    //会話ログ
-OutputLastWords();  //遺言
-OutputDeadMan();    //死亡者
-OutputVoteList();   //投票結果
-*/
+elseif($ROOM->IsNight()){ // 夜の投票テスト
+  foreach($RQ_ARGS->TestItems->vote_night as $role => $target){
+    if(count($target) > 0) PrintData($target, $role);
+  }
+  AggregateVoteNight();
+}
 OutputHTMLFooter(); //HTMLフッタ
-
-DisconnectDatabase($dbHandle); //DB 接続解除
 ?>

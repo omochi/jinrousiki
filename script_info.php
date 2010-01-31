@@ -1,19 +1,13 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'ROOM_IMG', 'USER_ICON', 'MESSAGE');
+require_once('include/init.php');
+$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROOM_IMG',
+		      'USER_ICON', 'GAME_OPT_MESS');
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [仕様]', 'script_info');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<link rel="stylesheet" href="css/script_info.css">
 <script type="text/javascript" src="javascript/output_diff_time.js"></script>
-<title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?> [仕様]</title>
 </head>
-
 <body>
-<a href="index.php">←戻る</a><br>
+<a href="./">←戻る</a><br>
 <img src="img/script_info_title.jpg">
 
 <h1>＜ゲームに参加するために必要な環境＞</h1>
@@ -66,7 +60,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL に任せることでロック�
 <div class="diff">
 <?php
 $str = implode('人、', $ROOM_CONF->max_user_list);
-$min_user = min(array_keys($GAME_CONF->role_list));
+$min_user = min(array_keys($CAST_CONF->role_list));
 $str .= '人のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
 $str .= "ただしゲームを開始するには最低{$min_user}人の村人が必要です。";
 echo $str;
@@ -112,7 +106,7 @@ echo $ROOM_IMG->GenerateTag('real_time', $alt);
 身代わり君はプレイヤーが操作するのではなく、初日に襲われる為だけに存在します。<br>
 割り当てられる役割は<?php
 $str = '';
-foreach($GAME_CONF->disable_dummy_boy_role_list as $role){
+foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
   #$str .= '「' . $GAME_CONF->GetRoleName($role) . '」';
   $str .= '「' . $GAME_CONF->main_role_list[$role] . '」';
 }
@@ -121,30 +115,30 @@ echo $str;
 </div>
 
 
-<h2>投票した票数を公表する</h2>
-<div class="diff">村を作成するときに「投票した票数を公表する」にチェックを入れると、昼の処刑が終了した後開票するときに誰が誰に「何票分」投票されたかを表示するようになります。<br>
+<h2><? echo $GAME_OPT_MESS->open_vote; ?></h2>
+<div class="diff">村を作成するときに「<? echo $GAME_OPT_MESS->open_vote; ?>」にチェックを入れると、昼の処刑が終了した後開票するときに誰が誰に「何票分」投票されたかを表示するようになります。<br>
 これは権力者が存在する村だけに効果のあるオプションです。
 </div>
 
 
-<h2><? echo $GAME_CONF->decide; ?>人以上で決定者登場</h2>
-<div class="diff">村を作成するときに「<? echo $GAME_CONF->decide; ?>人以上で<? echo $MESSAGE->game_option_decide; ?>」にチェックを入れると、村人全員の人数が<? echo $GAME_CONF->decide; ?>人以上になった場合に決定者が登場します。<br>
+<h2><? echo $CAST_CONF->decide . '人以上で' . $GAME_OPT_MESS->decide; ?></h2>
+<div class="diff">村を作成するときに「<? echo $CAST_CONF->decide . '人以上で' . $GAME_OPT_MESS->decide; ?>」にチェックを入れると、村人全員の人数が<? echo $CAST_CONF->decide; ?>人以上になった場合に決定者が登場します。<br>
 昼の投票が同数で分かれた場合に決定者の投票が優先されるようになります。<br>
 決定者は自分が決定者であることはわかりません。<br>
 兼任となり、他の役割のオプションとして付きます。
 </div>
 
 
-<h2><? echo $GAME_CONF->authority; ?>人以上で権力者登場</h2>
-<div class="diff">村を作成するときに「<? echo $GAME_CONF->authority; ?>人以上で<? echo $MESSAGE->game_option_authority; ?>」にチェックを入れると、村人全員の人数が<? echo $GAME_CONF->authority; ?>人以上になった場合に権力者が登場します。<br>
+<h2><? echo $CAST_CONF->authority . '人以上で' . $GAME_OPT_MESS->authority; ?></h2>
+<div class="diff">村を作成するときに「<? echo $CAST_CONF->authority . '人以上で' . $GAME_OPT_MESS->authority; ?>」にチェックを入れると、村人全員の人数が<? echo $CAST_CONF->authority; ?>人以上になった場合に権力者が登場します。<br>
 権力により、昼の投票が二票分の効果を発揮します。<br>
 自分が権力者であることはわかります。<br>
 兼任となり、他の役割のオプションとして付きます。
 </div>
 
 
-<h2><? echo $GAME_CONF->poison; ?>人以上で埋毒者登場</h2>
-<div class="diff">村を作成するときに「<? echo $GAME_CONF->poison; ?>人以上で<? echo $MESSAGE->game_option_poison; ?>」にチェックを入れると、村人全員の人数が<? echo $GAME_CONF->poison; ?>人以上になった場合に埋毒者が登場します。<br>
+<h2><? echo $CAST_CONF->poison . '人以上で' . $GAME_OPT_MESS->poison; ?></h2>
+<div class="diff">村を作成するときに「<? echo $CAST_CONF->poison . '人以上で' . $GAME_OPT_MESS->poison; ?>」にチェックを入れると、村人全員の人数が<? echo $CAST_CONF->poison; ?>人以上になった場合に埋毒者が登場します。<br>
 昼に処刑されると生きている人からランダムに一人、夜に人狼に襲われると人狼からランダムに一人道連れにします。<br>
 自分が埋毒者であることはわかります。<br>
 兼任ではなく、村人一人の代わりに埋毒者が入ります。<br>
@@ -152,8 +146,8 @@ echo $str;
 </div>
 
 
-<h2>14人もしくは<? echo $GAME_CONF->cupid; ?>人以上でキューピッド登場</h2>
-<div class="diff">村を作成するときに「14人もしくは<? echo $GAME_CONF->cupid; ?>人以上で<? echo $MESSAGE->game_option_cupid; ?>」にチェックを入れると、村人全員の人数が14人もしくは<? echo $GAME_CONF->cupid; ?>人以上になった場合にキューピッドが登場します。<br>
+<h2>14人もしくは<? echo $CAST_CONF->cupid . '人以上で' . $GAME_OPT_MESS->cupid; ?></h2>
+<div class="diff">村を作成するときに「14人もしくは<? echo $CAST_CONF->cupid . '人以上で' . $GAME_OPT_MESS->cupid; ?>」にチェックを入れると、村人全員の人数が14人もしくは<? echo $CAST_CONF->cupid; ?>人以上になった場合にキューピッドが登場します。<br>
 １日目の夜に任意の二人（少人数村の場合は自分ともう一人）を恋人に結び付けます。<br>
 恋人となった二人は勝利条件が変化します。<br>
 兼任ではなく、村人一人の代わりにキューピッドが入ります。

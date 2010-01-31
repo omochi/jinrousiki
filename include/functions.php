@@ -1,5 +1,9 @@
 <?php
 //データベース接続
+/*
+  この関数は消去する予定です
+  DatabaseConfigBase->Connect() @ system_class.php を使ってください
+*/
 //$header : すでに HTMLヘッダが出力されて [いる / いない]
 //$exit   : エラー時に [HTML を閉じて exit を返す / false で終了]
 function ConnectDatabase($header = false, $exit = true){
@@ -33,6 +37,10 @@ function ConnectDatabase($header = false, $exit = true){
 }
 
 //データベースとの接続を閉じる
+/*
+  この関数は消去する予定です
+  DatabaseConfigBase->Disconnect() @ system_class.php を使ってください
+*/
 function DisconnectDatabase($dbHandle){
   mysql_close($dbHandle);
 }
@@ -250,21 +258,21 @@ function PrintData($data, $name = NULL){
 
 //ゲームオプションの画像タグを作成する
 function MakeGameOptionImage($game_option, $option_role = ''){
-  global $GAME_CONF, $ROOM_IMG, $MESSAGE;
+  global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;
 
   $str = '';
   if(strpos($game_option, 'wish_role') !== false){
-    $str .= $ROOM_IMG->GenerateTag('wish_role', '役割希望制');
+    $str .= $ROOM_IMG->GenerateTag('wish_role', $GAME_OPT_MESS->wish_role);
   }
   if(strpos($game_option, 'real_time') !== false){ //実時間の制限時間を取得
     $real_time_str = strstr($game_option, 'real_time');
     sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
-    $sentence = "リアルタイム制　昼： $day 分　夜： $night 分";
+    $sentence = "{$GAME_OPT_MESS->real_time}　昼： $day 分　夜： $night 分";
     $str .= $ROOM_IMG->GenerateTag('real_time', $sentence) . '['. $day . '：' . $night . ']';
   }
 
-  $option_list = explode(' ', $game_option . ' ' .$option_role);
-  // print_r($option_list);
+  $option_list = explode(' ', $game_option . ' ' . $option_role);
+  //PrintData($option_list);
   $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'decide',
 			      'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
 			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
@@ -274,40 +282,19 @@ function MakeGameOptionImage($game_option, $option_role = ''){
 
   foreach($display_order_list as $this_option){
     if(! in_array($this_option, $option_list)) continue;
-    $this_str = 'game_option_' . $this_option;
-    if($MESSAGE->$this_str == '') continue;
+    if($GAME_OPT_MESS->$this_option == '') continue;
 
     $sentence = '';
     if($this_option == 'cupid'){
-      $sentence = '14人または' . $GAME_CONF->$this_option . '人以上で';
+      $sentence = '14人または' . $CAST_CONF->$this_option . '人以上で';
     }
-    elseif(is_integer($GAME_CONF->$this_option)){
-      $sentence = $GAME_CONF->$this_option . '人以上で';
+    elseif(is_integer($CAST_CONF->$this_option)){
+      $sentence = $CAST_CONF->$this_option . '人以上で';
     }
-    $sentence .= $MESSAGE->$this_str;
+    $sentence .= $GAME_OPT_MESS->$this_option;
 
     $str .= $ROOM_IMG->GenerateTag($this_option, $sentence);
   }
-
-  /*
-  $text_game_option_list = array();
-  foreach($text_game_option_list as $this_option){
-    if(strpos($game_option, $this_option) !== false){
-      $message_str = 'game_option_' . $this_option;
-      $str .= '[' . $MESSAGE->$message_str . ']';
-    }
-  }
-  */
-
-  /*
-  $text_option_role_list = array(, 'open_sub_role');
-  foreach($text_option_role_list as $this_option){
-    if(ereg("{$this_option}([[:space:]]+[^[[:space:]]]*)?", $option_role)){
-      $message_str = 'game_option_' . $this_option;
-      $str .= '[' . $MESSAGE->$message_str . ']';
-    }
-  }
-  */
 
   return $str;
 }
@@ -344,10 +331,9 @@ function OutputActionResultHeader($title, $url = ''){
 
 //結果ページ出力
 function OutputActionResult($title, $body, $url = '', $unlock = false){
-  global $dbHandle;
+  global $DB_CONF;
 
-  if($unlock) mysql_query('UNLOCK TABLES'); //ロック解除
-  if($dbHandle != '') DisconnectDatabase($dbHandle); //DB 接続解除
+  $DB_CONF->Disconnect($unlock); //DB 接続解除
 
   OutputActionResultHeader($title, $url);
   echo $body . "\n";
@@ -356,6 +342,9 @@ function OutputActionResult($title, $body, $url = '', $unlock = false){
 
 //HTML フッタ出力
 function OutputHTMLFooter($exit = false){
+  global $DB_CONF;
+
+  $DB_CONF->Disconnect(); //DB 接続解除
   echo '</body></html>'."\n";
   if($exit) exit;
 }

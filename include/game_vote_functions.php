@@ -12,12 +12,12 @@ function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
 
 //人数とゲームオプションに応じた役職テーブルを返す (エラー処理は暫定)
 function GetRoleList($user_count, $option_role){
-  global $GAME_CONF, $ROOM;
+  global $GAME_CONF, $CAST_CONF, $ROOM;
 
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
 
-  $role_list = $GAME_CONF->role_list[$user_count]; //人数に応じた設定リストを取得
+  $role_list = $CAST_CONF->role_list[$user_count]; //人数に応じた設定リストを取得
   if($role_list == NULL){ //リストの有無をチェック
     $sentence = $user_count . '人は設定されていません';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
@@ -51,12 +51,12 @@ function GetRoleList($user_count, $option_role){
     $random_role_list = array();
 
     //-- 最小補正 --//
-    foreach($GAME_CONF->chaos_fix_role_list as $key => $value){ //最小補正用リスト
+    foreach($CAST_CONF->chaos_fix_role_list as $key => $value){ //最小補正用リスト
       $fix_role_group_list[DistinguishRoleGroup($key)] = $value;
     }
 
     //人狼
-    $add_count = round($user_count / $GAME_CONF->min_wolf_rate) - $fix_role_group_list['wolf'];
+    $add_count = round($user_count / $CAST_CONF->min_wolf_rate) - $fix_role_group_list['wolf'];
     for(; $add_count > 0; $add_count--){
       $rand = mt_rand(1, 100);
       if(    $rand <  3) $random_role_list['boss_wolf']++;
@@ -73,7 +73,7 @@ function GetRoleList($user_count, $option_role){
     }
 
     //妖狐
-    $add_count = floor($user_count / $GAME_CONF->min_fox_rate) - $fix_role_group_list['fox'];
+    $add_count = floor($user_count / $CAST_CONF->min_fox_rate) - $fix_role_group_list['fox'];
     for(; $add_count > 0; $add_count--){
       $rand = mt_rand(1, 100);
       if($rand < 1)       $random_role_list['cursed_fox']++;
@@ -90,7 +90,7 @@ function GetRoleList($user_count, $option_role){
 
     //-- ランダム配役 --//
     $add_count = $user_count - (array_sum($random_role_list) +
-				array_sum($GAME_CONF->chaos_fix_role_list));
+				array_sum($CAST_CONF->chaos_fix_role_list));
     for(; $add_count > 0; $add_count--){
       $rand = mt_rand(1, 1000);
       if(    $rand <  20) $random_role_list['mage']++;
@@ -167,7 +167,7 @@ function GetRoleList($user_count, $option_role){
 
     //ランダムと固定を合計
     $role_list = $random_role_list;
-    foreach($GAME_CONF->chaos_fix_role_list as $key => $value){
+    foreach($CAST_CONF->chaos_fix_role_list as $key => $value){
       $role_list[$key] += (int)$value;
     }
     //PrintData($role_list, '1st_list'); //テスト用
@@ -183,15 +183,7 @@ function GetRoleList($user_count, $option_role){
     }
 
     //-- 最大補正 --//
-    //補正対象グループ
-    $role_group_rate_list = array('wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1,
-				  'chiroptera' => 0.15, 'mage' => 0.2, 'necromancer' => 0.15,
-				  'priest' => 0.1, 'guard' => 0.15, 'common' => 0.2, 'poison' => 0.15,
-				  'pharmacist' => 0.15, 'assassin' => 0.15, 'mind_scanner' => 0.15,
-				  'jealousy' => 0.1,
-				  );
-
-    foreach($role_group_rate_list as $name => $rate){
+    foreach($CAST_CONF->chaos_role_group_rate_list as $name => $rate){
       if(! (is_array($role_group_list->$name) && is_array($random_role_group_list->$name))){
 	continue;
       }
@@ -218,12 +210,11 @@ function GetRoleList($user_count, $option_role){
     }
     //PrintData($role_list, '2nd_list'); //テスト用
 
-    //神話マニア村以外なら一定数以上の村人を神話マニアに入れ替える
+    //神話マニア村以外なら一定数以上の村人を別の役職に振り返る
     if(strpos($option_role, 'full_mania') === false){
-      $max_human_rate = 0.1;
-      $over_count = $role_list['human'] - round($user_count * $max_human_rate);
+      $over_count = $role_list['human'] - round($user_count * $CAST_CONF->max_human_rate);
       if($over_count > 0){
-	$role_list['mania'] += $over_count;
+	$role_list[$CAST_CONF->chaos_replace_human_role] += $over_count;
 	$role_list['human'] -= $over_count;
 	//PrintData($role_list, '3rd_list'); //テスト用
       }
@@ -624,7 +615,7 @@ function GetRoleList($user_count, $option_role){
   }
   else{ //通常村
     //埋毒者 (村人2 → 埋毒者1、人狼1)
-    if(strpos($option_role, 'poison') !== false && $user_count >= $GAME_CONF->poison){
+    if(strpos($option_role, 'poison') !== false && $user_count >= $CAST_CONF->poison){
       $role_list['human'] -= 2;
       $role_list['poison']++;
       $role_list['wolf']++;
@@ -632,19 +623,19 @@ function GetRoleList($user_count, $option_role){
 
     //キューピッド (14人はハードコード / 村人 → キューピッド)
     if(strpos($option_role, 'cupid') !== false &&
-       ($user_count == 14 || $user_count >= $GAME_CONF->cupid)){
+       ($user_count == 14 || $user_count >= $CAST_CONF->cupid)){
       $role_list['human']--;
       $role_list['cupid']++;
     }
 
     //白狼 (人狼 → 白狼)
-    if(strpos($option_role, 'boss_wolf') !== false && $user_count >= $GAME_CONF->boss_wolf){
+    if(strpos($option_role, 'boss_wolf') !== false && $user_count >= $CAST_CONF->boss_wolf){
       $role_list['wolf']--;
       $role_list['boss_wolf']++;
     }
 
     //毒狼 (人狼 → 毒狼、村人 → 薬師)
-    if(strpos($option_role, 'poison_wolf') !== false && $user_count >= $GAME_CONF->poison_wolf){
+    if(strpos($option_role, 'poison_wolf') !== false && $user_count >= $CAST_CONF->poison_wolf){
       $role_list['wolf']--;
       $role_list['poison_wolf']++;
       $role_list['human']--;
@@ -652,13 +643,13 @@ function GetRoleList($user_count, $option_role){
     }
 
     //神話マニア (村人 → 神話マニア)
-    if(strpos($option_role, 'mania') !== false && $user_count >= $GAME_CONF->mania){
+    if(strpos($option_role, 'mania') !== false && $user_count >= $CAST_CONF->mania){
       $role_list['human']--;
       $role_list['mania']++;
     }
 
     //巫女 (村人 → 巫女1、狂信者1)
-    if(strpos($option_role, 'medium') !== false && $user_count >= $GAME_CONF->medium){
+    if(strpos($option_role, 'medium') !== false && $user_count >= $CAST_CONF->medium){
       $role_list['human'] -= 2;
       $role_list['medium']++;
       $role_list['fanatic_mad']++;
@@ -688,8 +679,8 @@ function GetRoleList($user_count, $option_role){
   $role_count = count($now_role_list);
 
   if($role_count != $user_count){ //配列長をチェック
-    // echo 'エラー：配役数：' . $role_count;
-    // return $now_role_list;
+    //PrintData($role_count, 'エラー：配役数');
+    //return $now_role_list;
     $sentence = '村人 (' . $user_count . ') と配役の数 (' . $role_count . ') が一致していません';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
@@ -1870,9 +1861,11 @@ function AggregateVoteNight(){
       if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
     }
     elseif($array['status'] == 'reset'){ //憑依リセット
-      $target->dead_flag = false; //死亡フラグをリセット
-      $USERS->Kill($target->user_no, 'WOLF_KILLED');
-      if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
+      if(isset($target->user_no)){
+	$target->dead_flag = false; //死亡フラグをリセット
+	$USERS->Kill($target->user_no, 'WOLF_KILLED');
+	if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
+      }
 
       if($user != $virtual_user){ //憑依中なら元の体に戻される
 	//憑依先のリセット処理

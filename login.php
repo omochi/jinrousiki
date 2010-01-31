@@ -1,41 +1,44 @@
 <?php
 require_once('include/init.php');
 
-$dbHandle = ConnectDatabase(); //DB 接続
-
-//セッション開始
-session_start();
-$session_id = session_id();
-
 $RQ_ARGS =& new RequestLogin(); //引数を取得
-
-//変数をセット
-$url     = 'game_frame.php?room_no=' . $RQ_ARGS->room_no;
-$header  = '。<br>' . "\n" . '切り替わらないなら <a href="';
-$footer  = '" target="_top">ここ</a> 。';
-$anchor  = $header . $url . $footer;
+$DB_CONF->Connect(); //DB 接続
+session_start(); //セッション開始
 
 //ログイン処理
 //DB 接続解除は OutputActionResult() が行う
 if($RQ_ARGS->login_type == 'manually'){ //ユーザ名とパスワードで手動ログイン
   if(LoginManually()){
-    OutputActionResult('ログインしました', 'ログインしました' . $anchor, $url);
+    OutputLoginResult('ログインしました', 'game_frame');
   }
   else{
-    OutputActionResult('ログイン失敗', 'ユーザ名とパスワードが一致しません。<br>' .
-		       '(空白と改行コードは登録時に自動で削除されている事に注意してください)');
+    OutputLoginResult('ログイン失敗', NULL, 'ユーザ名とパスワードが一致しません。<br>' .
+		      '(空白と改行コードは登録時に自動で削除されている事に注意してください)');
   }
 }
-elseif(CheckSession($session_id, false)){ //セッションIDから自動ログイン
-  OutputActionResult('ログインしています', 'ログインしています' . $anchor, $url);
+elseif(CheckSession(session_id(), false)){ //セッションIDから自動ログイン
+  OutputLoginResult('ログインしています', 'game_frame');
 }
 else{ //単に呼ばれただけなら観戦ページに移動させる
-  $url    = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
-  $anchor = $header . $url . $footer;
-  OutputActionResult('観戦ページにジャンプ', '観戦ページに移動します' . $anchor, $url);
+  OutputLoginResult('観戦ページにジャンプ', 'game_view', '観戦ページに移動します');
 }
 
 //-- 関数 --//
+//結果出力関数
+function OutputLoginResult($title, $jump, $body = NULL){
+  global $RQ_ARGS;
+
+  if(is_null($body)) $body = $title;
+  if(is_null($jump)){
+    $url = '';
+  }
+  else{
+    $url = $jump . '.php?room_no=' . $RQ_ARGS->room_no;
+    $body .= '。<br>' . "\n" . '切り替わらないなら <a href="' . $url . '" target="_top">ここ</a> 。';
+  }
+  OutputActionResult($title, $body, $url);
+}
+
 //ユーザ名とパスワードでログイン
 //返り値：ログインできた true / できなかった false
 function LoginManually(){

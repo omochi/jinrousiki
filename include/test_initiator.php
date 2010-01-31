@@ -1,4 +1,8 @@
 <?php
+/*
+  このファイルは消去予定です。
+  新しい情報を定義する場合は request_class.php を編集してください。
+*/
 if ($DEBUG_MODE){
   class TestParams extends RequestBase {
     function TestParams(){

@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF');
+$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF');
 $INIT_CONF->LoadFile('game_vote_functions');
 OutputHTMLHeader('闇鍋モード配役テスト');
 

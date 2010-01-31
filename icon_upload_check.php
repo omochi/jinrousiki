@@ -75,7 +75,7 @@ if($width > $USER_ICON->width || $height > $USER_ICON->height){
 		     ', 高さ ' . $height . '</span>');
 }
 
-$dbHandle = ConnectDatabase(); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 
 //アイコンの名前が既に登録されていないかチェック
 if(FetchResult("SELECT COUNT(*) FROM user_icon WHERE icon_name = '$name'") > 0){
@@ -112,8 +112,7 @@ $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ses
 $values = "$icon_no, '$name', '$file_name', $width, $height, '$color', '$session_id'";
 InsertDatabase('user_icon', $items, $values);
 mysql_query('COMMIT'); //一応コミット
-mysql_query('UNLOCK TABLES'); //ロック解除
-DisconnectDatabase($dbHandle);
+$DB_CONF->Disconnect(true); //DB 接続解除
 
 //確認ページを出力
 OutputHTMLHeader('ユーザアイコンアップロード処理[確認]', 'icon_upload_check');

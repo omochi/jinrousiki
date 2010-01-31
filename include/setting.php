@@ -1,4 +1,8 @@
 <?php
+/*
+  このファイルは消去予定です。
+  新しい情報を定義する場合は config/server_config.php を編集してください。
+*/
 //データベース設定
 class DatabaseConfig{
   //データベースサーバのホスト名 hostname:port
@@ -20,8 +24,7 @@ class DatabaseConfig{
 //サーバ設定
 class ServerConfig{
   //サーバのURL
-  #var $site_root = 'http://localhost/jinrou/';
-  var $site_root = 'http://localhost/jinro/';
+  var $site_root = 'http://localhost/jinrou/';
 
   //タイトル
   var $title = '汝は人狼なりや？';
@@ -126,10 +129,10 @@ class ServerConfig{
 			   'footer' => '</div></small></a><br>'),
 
 	'mmr' => array('name' => '世紀末鯖',
-			'url' => 'http://www14.atpages.jp/mmr1/',
-			'encode' => 'UTF-8',
-			'separator' => '<!-- atpages banner tag -->',
-			'footer' => '</div></small></a><br>'),
+		       'url' => 'http://www14.atpages.jp/mmr1/',
+		       'encode' => 'UTF-8',
+		       'separator' => '<!-- atpages banner tag -->',
+		       'footer' => '</div></small></a><br>'),
 	*/
 	/*
 	'bourbon_test' => array('name' => 'バーボンハウス鯖（仮）',

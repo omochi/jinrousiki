@@ -3,14 +3,12 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('user_class', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
-//引数を取得
-$RQ_ARGS =& new RequestGameView();
+$RQ_ARGS =& new RequestBaseGame(); //引数を取得
 $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 
-$dbHandle = ConnectDatabase(); // DB 接続
+$DB_CONF->Connect(); // DB 接続
 
 $ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
-if($ROOM->id < 1) OutputActionResult('エラー', '無効な村番号です');
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
@@ -22,6 +20,14 @@ case 'night': //夜
   $time_message = '　夜明けまで ';
   break;
 }
+
+if($ROOM->IsFinished()){
+  $INIT_CONF->LoadClass('VICT_MESS');
+}
+else{
+  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
+}
+
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  =& new User();
 
@@ -84,8 +90,8 @@ if($ROOM->IsBeforeGame()){ //ゲーム開始前なら登録画面のリンクを表示
 }
 echo '</tr></table>'."\n";
 
+
 if(! $ROOM->IsFinished()){
-  $INIT_CONF->LoadClass('ROOM_IMG');
   OutputGameOption(); //ゲームオプションを表示
 }
 
@@ -117,6 +123,4 @@ OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者
 OutputVoteList();   //投票結果
 OutputHTMLFooter(); //HTMLフッタ
-
-DisconnectDatabase($dbHandle); //DB 接続解除
 ?>

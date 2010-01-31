@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('ROLES');
 
 //-- データ収集 --//
 $RQ_ARGS =& new RequestGameLog(); //引数を取得
-$dbHandle = ConnectDatabase(); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 
 session_start(); //セッション開始
 $uname = CheckSession(session_id()); //セッション ID からユーザ名を取得
@@ -37,5 +37,4 @@ OutputLastWords();     //遺言
 OutputDeadMan();       //死亡者
 if($ROOM->IsNight()) OutputVoteList(); //投票結果
 OutputHTMLFooter(); //HTMLフッタ
-DisconnectDatabase($dbHandle); //DB 接続解除
 ?>

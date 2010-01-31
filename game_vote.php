@@ -18,7 +18,7 @@ if($RQ_ARGS->play_sound) $php_argv .= '&play_sound=on';
 if($RQ_ARGS->list_down)  $php_argv .= '&list_down=on';
 $back_url = '<a href="game_up.php?' . $php_argv . '#game_top">←戻る &amp; reload</a>';
 
-$dbHandle = ConnectDatabase(); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
 $ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
@@ -42,6 +42,7 @@ if(! $SELF->IsLive()){ //生存者以外は無効
 if($RQ_ARGS->vote){ //投票処理
   if($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票処理
     if($RQ_ARGS->situation == 'GAMESTART'){
+      $INIT_CONF->LoadClass('CAST_CONF'); //配役情報をロード
       VoteGameStart();
     }
     elseif($RQ_ARGS->situation == 'KICK_DO'){
@@ -73,12 +74,15 @@ if($RQ_ARGS->vote){ //投票処理
   }
 }
 elseif($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票ページ出力
+  $INIT_CONF->LoadClass('VOTE_MESS');
   OutputVoteBeforeGame();
 }
 elseif($ROOM->IsDay()){ //昼の処刑投票ページ出力
+  $INIT_CONF->LoadClass('VOTE_MESS');
   OutputVoteDay();
 }
 elseif($ROOM->IsNight()){ //夜の投票ページ出力
+  $INIT_CONF->LoadClass('VOTE_MESS');
   OutputVoteNight();
 }
 else{ //投票済み //ここに来たらロジックエラーじゃないかな？
@@ -87,7 +91,7 @@ else{ //投票済み //ここに来たらロジックエラーじゃないかな？
 		     '既に投票されております<br>'."\n" . $back_url . '</div>');
 }
 
-DisconnectDatabase($dbHandle); //DB 接続解除
+$DB_CONF->Disconnect(); //DB 接続解除
 
 // 関数 //
 //投票ページ HTML ヘッダ出力
@@ -149,7 +153,7 @@ function VoteGameStart(){
 
 //ゲーム開始投票集計処理
 function AggregateVoteGameStart($force_start = false){
-  global $GAME_CONF, $MESSAGE, $ROOM, $USERS;
+  global $GAME_CONF, $CAST_CONF, $MESSAGE, $ROOM, $USERS;
 
   CheckSituation('GAMESTART');
 
@@ -170,7 +174,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   //規定人数に足りないか、全員投票していなければ処理終了
-  if($vote_count < min(array_keys($GAME_CONF->role_list)) || $vote_count != $user_count) return false;
+  if($vote_count < min(array_keys($CAST_CONF->role_list)) || $vote_count != $user_count) return false;
 
   //-- 配役決定ルーチン --//
   //配役設定オプションの情報を取得
@@ -208,7 +212,7 @@ function AggregateVoteGameStart($force_start = false){
       $count = count($role_list);
       for($i = 0; $i < $count; $i++){
 	$this_role = array_shift($role_list); //配役リストから先頭を抜き出す
-	foreach($GAME_CONF->disable_dummy_boy_role_list as $this_disable_role){
+	foreach($CAST_CONF->disable_dummy_boy_role_list as $this_disable_role){
 	  if(strpos($this_role, $this_disable_role) !== false){
 	    array_push($role_list, $this_role); //配役リストの末尾に戻す
 	    continue 2;
@@ -235,7 +239,7 @@ function AggregateVoteGameStart($force_start = false){
     foreach($uname_list as $this_uname){
       do{
 	$this_role = $USERS->GetRole($this_uname); //希望役職を取得
-	if($this_role  == '' || mt_rand(1, 100) > $GAME_CONF->wish_role_rate) break;
+	if($this_role  == '' || mt_rand(1, 100) > $CAST_CONF->wish_role_rate) break;
 	$this_fit_role = $this_role;
 
 	if($chaos){ //闇鍋モード
@@ -344,7 +348,7 @@ function AggregateVoteGameStart($force_start = false){
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
   foreach($now_sub_role_list as $this_role){
-    if(strpos($option_role, $this_role) !== false && $user_count >= $GAME_CONF->$this_role){
+    if(strpos($option_role, $this_role) !== false && $user_count >= $CAST_CONF->$this_role){
       $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $this_role;
     }
   }
@@ -838,7 +842,7 @@ function VoteNight(){
 
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
-  global $GAME_CONF, $ICON_CONF, $MESSAGE, $USERS, $ROOM, $SELF, $php_argv;
+  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
   OutputVotePageHeader();
   echo '<input type="hidden" name="situation" value="KICK_DO">'."\n";
@@ -873,12 +877,12 @@ EOF;
 <span class="vote-message">* Kick するには {$GAME_CONF->kick} 人の投票が必要です</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td><a href="game_up.php?$php_argv#game_top">←戻る &amp; reload</a></td>
-<td><input type="submit" value="{$MESSAGE->submit_kick_do}"></form></td>
+<td><input type="submit" value="{$VOTE_MESS->kick_do}"></form></td>
 <td>
 <form method="POST" action="game_vote.php?$php_argv#game_top">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">
-<input type="submit" value="{$MESSAGE->submit_game_start}"></form>
+<input type="submit" value="{$VOTE_MESS->game_start}"></form>
 </td>
 </tr></table></div>
 </body></html>
@@ -888,7 +892,7 @@ EOF;
 
 //昼の投票ページを出力する
 function OutputVoteDay(){
-  global $MESSAGE, $ICON_CONF, $USERS, $ROOM, $SELF, $php_argv;
+  global $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
   //投票する状況があっているかチェック
   CheckDayNight();
@@ -942,7 +946,7 @@ EOF;
 <span class="vote-message">* 投票先の変更はできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td><a href="game_up.php?$php_argv#game_top">←戻る &amp; reload</a></td>
-<td><input type="submit" value="{$MESSAGE->submit_vote_do}"></td>
+<td><input type="submit" value="{$VOTE_MESS->vote_do}"></td>
 </tr></table></div>
 </form></body></html>
 
@@ -951,7 +955,7 @@ EOF;
 
 //夜の投票ページを出力する
 function OutputVoteNight(){
-  global $GAME_CONF, $ICON_CONF, $MESSAGE, $ROOM, $USERS, $SELF, $php_argv;
+  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
   //投票する状況があっているかチェック
   CheckDayNight();
@@ -1102,82 +1106,82 @@ EOF;
 
   if($role_wolf){
     $type   = 'WOLF_EAT';
-    $submit = 'submit_wolf_eat';
+    $submit = 'wolf_eat';
   }
   elseif($role_mage){
     $type   = 'MAGE_DO';
-    $submit = 'submit_mage_do';
+    $submit = 'mage_do';
   }
   elseif($role_voodoo_killer){
     $type   = 'VOODOO_KILLER_DO';
-    $submit = 'submit_voodoo_killer_do';
+    $submit = 'voodoo_killer_do';
   }
   elseif($role_jammer_mad){
     $type   = 'JAMMER_MAD_DO';
-    $submit = 'submit_jammer_do';
+    $submit = 'jammer_do';
   }
   elseif($role_voodoo_mad){
     $type   = 'VOODOO_MAD_DO';
-    $submit = 'submit_voodoo_do';
+    $submit = 'voodoo_do';
   }
   elseif($role_dream_eater_mad){
     $type   = 'DREAM_EAT';
-    $submit = 'submit_dream_eat';
+    $submit = 'dream_eat';
   }
   elseif($role_trap_mad){
     $type   = 'TRAP_MAD_DO';
-    $submit = 'submit_trap_do';
+    $submit = 'trap_do';
     $not_type   = 'TRAP_MAD_NOT_DO';
-    $not_submit = 'submit_trap_not_do';
+    $not_submit = 'trap_not_do';
   }
   elseif($role_guard){
     $type   = 'GUARD_DO';
-    $submit = 'submit_guard_do';
+    $submit = 'guard_do';
   }
   elseif($role_reporter){
     $type   = 'REPORTER_DO';
-    $submit = 'submit_reporter_do';
+    $submit = 'reporter_do';
   }
   elseif($role_anti_voodoo){
     $type   = 'ANTI_VOODOO_DO';
-    $submit = 'submit_anti_voodoo_do';
+    $submit = 'anti_voodoo_do';
   }
   elseif($role_poison_cat){
     $type   = 'POISON_CAT_DO';
-    $submit = 'submit_revive_do';
+    $submit = 'revive_do';
     $not_type   = 'POISON_CAT_NOT_DO';
-    $not_submit = 'submit_revive_not_do';
+    $not_submit = 'revive_not_do';
   }
   elseif($role_assassin){
     $type   = 'ASSASSIN_DO';
-    $submit = 'submit_assassin_do';
+    $submit = 'assassin_do';
     $not_type   = 'ASSASSIN_NOT_DO';
-    $not_submit = 'submit_assassin_not_do';
+    $not_submit = 'assassin_not_do';
   }
   elseif($role_mind_scanner){
     $type   = 'MIND_SCANNER_DO';
-    $submit = 'submit_mind_scanner_do';
+    $submit = 'mind_scanner_do';
   }
   elseif($role_voodoo_fox){
     $type   = 'VOODOO_FOX_DO';
-    $submit = 'submit_voodoo_do';
+    $submit = 'voodoo_do';
   }
   elseif($role_child_fox){
     $type   = 'CHILD_FOX_DO';
-    $submit = 'submit_mage_do';
+    $submit = 'mage_do';
   }
   elseif($role_cupid){
     $type   = 'CUPID_DO';
-    $submit = 'submit_cupid_do';
+    $submit = 'cupid_do';
   }
   elseif($role_mania){
     $type   = 'MANIA_DO';
-    $submit = 'submit_mania_do';
+    $submit = 'mania_do';
   }
 
   echo <<<EOF
 <input type="hidden" name="situation" value="{$type}">
-<td><input type="submit" value="{$MESSAGE->$submit}"></td></form>
+<td><input type="submit" value="{$VOTE_MESS->$submit}"></td></form>
 
 EOF;
 
@@ -1188,7 +1192,7 @@ EOF;
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="{$not_type}">
 <input type="hidden" name="target_no" value="{$SELF->user_no}">
-<input type="submit" value="{$MESSAGE->$not_submit}"></form>
+<input type="submit" value="{$VOTE_MESS->$not_submit}"></form>
 </td>
 
 EOF;

@@ -1,4 +1,51 @@
 <?php
+//-- データベース処理の規定クラス --//
+class DatabaseConfigBase{
+  //データベース接続
+  /*
+    $header : HTMLヘッダ出力情報 [true: 出力済み / false: 未出力]
+    $exit   : エラー処理 [true: exit を返す / false で終了]
+  */
+  function Connect($header = false, $exit = true){
+    //データベースサーバにアクセス
+    $db_handle = mysql_connect($this->host, $this->user, $this->password);
+    if($db_handle){ //アクセス成功
+      mysql_set_charset('ujis');
+      if(mysql_select_db($this->name, $db_handle)){ //データベース接続
+	//mysql_query("SET NAMES utf8");
+	//成功したらハンドルを返して処理終了
+	$this->db_handle = $db_handle;
+	return $db_handle;
+      }
+      else{
+	$error_title = 'データベース接続失敗';
+	$error_name  = $this->name;
+      }
+    }
+    else{
+      $error_title = 'MySQLサーバ接続失敗';
+      $error_name  = $this->host;
+    }
+
+    $error_message = $error_title . ': ' . $error_name; //エラーメッセージ作成
+    if($header){
+      echo '<font color="#FF0000">' . $error_message . '</font><br>';
+      if($exit) OutputHTMLFooter($exit);
+      return false;
+    }
+    OutputActionResult($error_title, $error_message);
+  }
+
+  //データベースとの接続を閉じる
+  function Disconnect($unlock = false){
+    if(is_null($this->db_handle)) return;
+
+    if($unlock) mysql_query('UNLOCK TABLES'); //ロック解除
+    mysql_close($this->db_handle);
+    $this->db_handle = NULL; //ハンドルをクリア
+  }
+}
+
 class RoomDataSet{
   var $id;
   var $name;
@@ -17,13 +64,19 @@ class RoomDataSet{
   var $test_mode = false;
 
   function RoomDataSet($request){
+    $this->__construct($request);
+  }
+
+  function __construct($request){
     if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
       $array = $request->TestItems->test_room;
     }
     else{
       $query = "SELECT room_name, room_comment, game_option, date, day_night, status " .
 	"FROM room WHERE room_no = {$request->room_no}";
-      if(($array = FetchNameArray($query)) === false) return false;
+      if(($array = FetchNameArray($query)) === false){
+	OutputActionResult('エラー', '無効な村番号です：' . $request->room_no);
+      }
     }
     $this->id          = $request->room_no;
     $this->name        = $array['room_name'];
@@ -84,25 +137,27 @@ class RoomDataSet{
   }
 }
 
-//クッキーデータのロード
+//-- クッキーデータのロード処理 --//
 class CookieDataSet{
   var $day_night;  //夜明けを音でしらせるため
   var $vote_times; //再投票を音で知らせるため
   var $objection;  //「異議あり」を音で知らせるため
 
-  function CookieDataSet(){
+  function CookieDataSet(){ $this->__construct(); }
+
+  function __construct(){
     $this->day_night  = $_COOKIE['day_night'];
     $this->vote_times = (int)$_COOKIE['vote_times'];
     $this->objection  = $_COOKIE['objection'];
   }
 }
 
-//画像管理クラスの基底クラス
+//-- 画像管理クラスの基底クラス --//
 class ImageManager{
   function GenerateTag($name, $alt = ''){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
-    $str .= ' src="' . JINRO_ROOT . '/' . $this->path . '/' . $name . '.' . $this->extention . '"';
+    $str .= ' src="' . JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extention . '"';
     if($alt != ''){
       EscapeStrings(&$alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
@@ -111,38 +166,15 @@ class ImageManager{
   }
 }
 
-//村のオプション画像情報
-class RoomImage extends ImageManager{
-  var $path      = 'img/room_option';
-  var $extention = 'gif';
-  var $class     = 'option';
-  /*
-  //村の最大人数リスト (RoomConfig -> max_user_list と連動させる)
-  var $max_user_list = array(
-			      8 => 'img/room_option/max8.gif',   // 8人
-			     16 => 'img/room_option/max16.gif',  //16人
-			     22 => 'img/room_option/max22.gif'   //22人
-			     );
-  */
-}
-
-//役職の画像情報
-class RoleImage extends ImageManager{
-  var $path      = 'img/role';
-  var $extention = 'gif';
-  var $class     = '';
-
+//-- 役職の画像処理の基底クラス --//
+class RoleImageBase extends ImageManager{
   function DisplayImage($name){
     echo $this->GenerateTag($name) . '<br>'."\n";
   }
 }
 
-//勝利陣営の画像情報
-class VictoryImage extends ImageManager{
-  var $path      = 'img/victory_role';
-  var $extention = 'jpg';
-  var $class     = 'winner';
-
+//-- 勝利陣営の画像処理の基底クラス --//
+class VictoryImageBase extends ImageManager{
   function MakeVictoryImage($victory_role){
     $name = $victory_role;
     switch($victory_role){
@@ -183,22 +215,18 @@ class VictoryImage extends ImageManager{
   }
 }
 
-//音源パス
-class Sound{
-  var $morning          = 'swf/sound_morning.swf';          //夜明け
-  var $revote           = 'swf/sound_revote.swf';           //再投票
-  var $objection_male   = 'swf/sound_objection_male.swf';   //異議あり(男)
-  var $objection_female = 'swf/sound_objection_female.swf'; //異議あり(女)
-
+//-- 音源処理の基底クラス --//
+class SoundBase{
   //音を鳴らす
   function Output($type, $loop = false){
+    $path = JINRO_ROOT . '/' . $this->path . '/' . $this->$type . '.' . $this->extention;
     if($loop) $loop_tag = "\n".'<param name="loop" value="true">';
 
     echo <<< EOF
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0" width="0" height="0">
-<param name="movie" value="{$this->$type}">
+<param name="movie" value="{$path}">
 <param name="quality" value="high">{$loop_tag}
-<embed src="{$this->$type}" type="application/x-shockwave-flash" quality="high" width="0" height="0" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+<embed src="{$path}" type="application/x-shockwave-flash" quality="high" width="0" height="0" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
 </embed>
 </object>
 

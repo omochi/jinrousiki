@@ -3,14 +3,8 @@ require_once('include/init.php');
 $INIT_CONF->LoadClass('GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
 EncodePostData();//ポストされた文字列をエンコードする
-$RQ_ARGS =& new RequestUserManager();
-
-if($RQ_ARGS->room_no < 1){
-  $sentence = 'エラー：村の番号が正常ではありません。<br>'."\n".'<a href="index.php">←戻る</a>';
-  OutputActionResult('村人登録 [村番号エラー]', $sentence);
-}
-
-$dbHandle = ConnectDatabase(); //DB 接続
+$RQ_ARGS =& new RequestUserManager(); //引数を取得
+$DB_CONF->Connect(); //DB 接続
 
 if($RQ_ARGS->command == 'entry'){
   EntryUser($RQ_ARGS);
@@ -19,7 +13,7 @@ else{
   OutputEntryUserPage($RQ_ARGS->room_no);
 }
 
-DisconnectDatabase($dbHandle); //DB 接続解除
+$DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
 //ユーザを登録する
@@ -273,9 +267,9 @@ IMAGE;
     else{
       if(! in_array('full_mania', $option_role_list)) $wish_role_list[] = 'human';
       if(in_array('chaosfull', $game_option_list)){
-	array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'common', 'poison',
-		   'pharmacist', 'assassin', 'mind_scanner', 'jealousy', 'wolf', 'mad',
-		   'fox', 'cupid', 'quiz', 'chiroptera', 'mania');
+	array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'guard', 'common',
+		   'poison', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
+		   'wolf', 'mad', 'fox', 'cupid', 'quiz', 'chiroptera', 'mania');
       }
       else{
 	$wish_role_list[] = 'wolf';

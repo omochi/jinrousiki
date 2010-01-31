@@ -1,17 +1,11 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
-$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'ROOM_IMG', 'ROLE_IMG');
+require_once('include/init.php');
+$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROLE_IMG');
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [ルール]', 'rule');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<link rel="stylesheet" href="css/rule.css">
-<title><?php echo $SERVER_CONF->title . $SERVER_CONF->comment; ?> [ルール]</title>
 </head>
 <body>
-<a href="index.php">←戻る</a><br>
+<a href="./">←戻る</a><br>
 <img src="img/rule_title.jpg">
 
 <hr>
@@ -61,7 +55,7 @@ $INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'ROOM_IMG', 'ROLE_IMG');
 </tr>
 <?php
 $role_list = array('human', 'wolf', 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox', 'poison', 'cupid');
-foreach($GAME_CONF->role_list as $key => $value){
+foreach($CAST_CONF->role_list as $key => $value){
   $tag = "<td><strong>$key</strong></td>";
   foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
   echo '<tr>' . $tag . '</tr>'."\n";

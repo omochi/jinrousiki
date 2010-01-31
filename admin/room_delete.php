@@ -10,7 +10,7 @@ extract($_GET, EXTR_PREFIX_ALL, 'unsafe');
 $room_no = intval($unsafe_room_no);
 if($room_no < 1) OutputActionResult('部屋削除[エラー]', '無効な村番号です。');
 
-$dbHandle = ConnectDatabase(); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 mysql_query(sprintf("DELETE FROM room WHERE room_no=%d", $room_no));
 mysql_query(sprintf("DELETE FROM system_message WHERE room_no=%d", $room_no));
 mysql_query(sprintf("DELETE FROM talk WHERE room_no=%d", $room_no));

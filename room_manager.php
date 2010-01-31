@@ -1,8 +1,8 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE');
+$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE', 'GAME_OPT_CAPT');
 
-if(! $dbHandle = ConnectDatabase(true, false)) return false; //DB 接続
+if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 
 MaintenanceRoom();
 EncodePostData();
@@ -31,7 +31,7 @@ else{
   OutputRoomList();
 }
 
-DisconnectDatabase($dbHandle); //DB 接続解除
+$DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
 //村のメンテナンス処理
@@ -340,20 +340,21 @@ EOF;
 function OutputSharedServerRoom(){
   global $SERVER_CONF;
 
-  if(! $SERVER_CONF->shared_server) return false;
+  $config =& new SharedServerConfig();
+  if($config->disable) return false;
 
-  foreach($SERVER_CONF->shared_server_list as $server => $array){
+  foreach($config->server_list as $server => $array){
     extract($array, EXTR_PREFIX_ALL, 'this');
-    // echo "$this_url <br>"; //デバッグ用
-    if($this_url == $SERVER_CONF->site_root) continue;
+    //PrintData($this_url, 'URL'); //テスト用
+    if($this_disable || $this_url == $SERVER_CONF->site_root) continue;
     if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
-    //echo $this_url.$this_data; //デバッグ用
-    if($this_encode != '' && $this_encode != $SERVER_CONF->encode){
-      $this_data = mb_convert_encoding($this_data, $SERVER_CONF->encode, $this_encode);
+    //PrintData($this_data, 'Data'); //テスト用
+    if($this_encode != '' && $this_encode != $config->encode){
+      $this_data = mb_convert_encoding($this_data, $config->encode, $this_encode);
     }
     if($this_separator != ''){
       $this_split_list = mb_split($this_separator, $this_data);
-      #print_r($this_split_list); //デバッグ用
+      //PrintData($this_split_list, 'Split'); //テスト用
       $this_data = array_pop($this_split_list);
     }
     if($this_footer != ''){
@@ -376,22 +377,22 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoom(){
-  global $GAME_CONF, $ROOM_CONF, $TIME_CONF, $MESSAGE;
+  global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
   echo <<<EOF
 <form method="POST" action="room_manager.php">
 <input type="hidden" name="command" value="CREATE_ROOM">
 <table>
 <tr>
-<td><label>村の名前：</label></td>
+<td><label>{$GAME_OPT_MESS->room_name}：</label></td>
 <td><input type="text" name="room_name" size="{$ROOM_CONF->room_name}"> 村</td>
 </tr>
 <tr>
-<td><label>村についての説明：</label></td>
+<td><label>{$GAME_OPT_MESS->room_comment}：</label></td>
 <td><input type="text" name="room_comment" size="{$ROOM_CONF->room_comment}"></td>
 </tr>
 <tr>
-<td><label>最大人数：</label></td>
+<td><label>{$GAME_OPT_MESS->max_user}：</label></td>
 <td>
 <select name="max_user">
 <optgroup label="最大人数">
@@ -406,7 +407,7 @@ EOF;
   echo <<<EOF
 </optgroup>
 </select>
-<span class="explain">(配役は <a href="rule.php">ルール</a> を確認して下さい)</span></td>
+<span class="explain">({$GAME_OPT_CAPT->max_user})</span></td>
 </tr>
 
 EOF;
@@ -415,10 +416,10 @@ EOF;
     $checked = ($ROOM_CONF->default_wish_role ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="wish_role">役割希望制：</label></td>
+<td><label for="wish_role">{$GAME_OPT_MESS->wish_role}：</label></td>
 <td class="explain">
 <input id="wish_role" type="checkbox" name="wish_role" value="on"{$checked}>
-(希望の役割を指定できますが、なれるかは運です)
+({$GAME_OPT_CAPT->wish_role})
 </td>
 </tr>
 
@@ -432,7 +433,7 @@ EOF;
 <td><label for="real_time">リアルタイム制：</label></td>
 <td class="explain">
 <input id="real_time" type="checkbox" name="real_time" value="on"{$checked}>
-(制限時間が実時間で消費されます　昼：
+({$GAME_OPT_CAPT->real_time}　昼：
 <input type="text" name="real_time_day" value="{$TIME_CONF->default_day}" size="2" maxlength="2">分 夜：
 <input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">分)
 </td>
@@ -458,19 +459,19 @@ EOF;
     echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label>{$MESSAGE->game_option_dummy_boy}：</label></td>
+<td><label>{$GAME_OPT_MESS->dummy_boy}：</label></td>
 <td class="explain">
 <input type="radio" name="dummy_boy" value=""{$checked_nothing}>
-身代わり君なし<br>
+{$GAME_OPT_CAPT->no_dummy_boy}<br>
 
 <input type="radio" name="dummy_boy" value="on"{$checked_dummy_boy}>
-身代わり君あり(初日の夜、身代わり君が狼に食べられます)<br>
+{$GAME_OPT_CAPT->dummy_boy}<br>
 
 <input type="radio" name="dummy_boy" value="gm_login"{$checked_gm_login}>
-身代わり君は GM (仮想 GM が身代わり君としてログインします)<br>
+{$GAME_OPT_MESS->gm_login} ({$GAME_OPT_CAPT->gm_login_header})<br>
 <label for="gm_password">GM ログインパスワード：</label>
 <input id="gm_password" type="password" name="gm_password" size="20"><br>
-　　ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。
+　　{$GAME_OPT_CAPT->gm_login_footer}
 </td>
 </tr>
 <tr><td colspan="2"><hr></td></tr>
@@ -482,10 +483,10 @@ EOF;
     $checked = ($ROOM_CONF->default_open_vote ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="open_vote">{$MESSAGE->game_option_open_vote}：</label></td>
+<td><label for="open_vote">{$GAME_OPT_MESS->open_vote}：</label></td>
 <td class="explain">
 <input id="open_vote" type="checkbox" name="open_vote" value="on"{$checked}>
-(「権力者」などのサブ役職が分かりやすくなります)
+({$GAME_OPT_CAPT->open_vote})
 </td>
 </tr>
 
@@ -496,10 +497,10 @@ EOF;
     $checked = ($ROOM_CONF->default_not_open_cast ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="not_open_cast">{$MESSAGE->game_option_not_open_cast}：</label></td>
+<td><label for="not_open_cast">{$GAME_OPT_MESS->not_open_cast}：</label></td>
 <td class="explain">
 <input id="not_open_cast" type="checkbox" name="not_open_cast" value="on"{$checked}>
-(霊界でも誰がどの役職なのかが公開されません。猫又は蘇生できます)
+({$GAME_OPT_CAPT->not_open_cast})
 </td>
 </tr>
 
@@ -511,10 +512,10 @@ EOF;
     $checked = ($ROOM_CONF->default_decide ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_decide">{$GAME_CONF->decide}人以上で{$MESSAGE->game_option_decide}：</label></td>
+<td><label for="role_decide">{$CAST_CONF->decide}人以上で{$GAME_OPT_MESS->decide}：</label></td>
 <td class="explain">
 <input id="role_decide" type="checkbox" name="decide" value="on"{$checked}>
-(投票が同数の時、決定者の投票先が優先されます・兼任)
+({$GAME_OPT_CAPT->decide})
 </td>
 </tr>
 
@@ -525,10 +526,10 @@ EOF;
     $checked = ($ROOM_CONF->default_authority ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_authority">{$GAME_CONF->authority}人以上で{$MESSAGE->game_option_authority}：</label></td>
+<td><label for="role_authority">{$CAST_CONF->authority}人以上で{$GAME_OPT_MESS->authority}：</label></td>
 <td class="explain">
 <input id="role_authority" type="checkbox" name="authority" value="on"{$checked}>
-(投票の票数が２票になります・兼任)
+({$GAME_OPT_CAPT->authority})
 </td>
 </tr>
 
@@ -539,10 +540,10 @@ EOF;
     $checked = ($ROOM_CONF->default_poison ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_poison">{$GAME_CONF->poison}人以上で{$MESSAGE->game_option_poison}：</label></td>
+<td><label for="role_poison">{$CAST_CONF->poison}人以上で{$GAME_OPT_MESS->poison}：</label></td>
 <td class="explain">
 <input id="role_poison" type="checkbox" name="poison" value="on"{$checked}>
-(処刑されたり狼に食べられた場合、道連れにします・村人2→埋毒1、人狼1)
+({$GAME_OPT_CAPT->poison})
 </td>
 </tr>
 
@@ -553,11 +554,10 @@ EOF;
     $checked = ($ROOM_CONF->default_cupid ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_cupid">14人もしくは{$GAME_CONF->cupid}人以上で<br>　{$MESSAGE->game_option_cupid}：</label></td>
+<td><label for="role_cupid">14人もしくは{$CAST_CONF->cupid}人以上で<br>　{$GAME_OPT_MESS->cupid}：</label></td>
 <td class="explain">
 <input id="role_cupid" type="checkbox" name="cupid" value="on"{$checked}>
-(初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します)<br>
-　　　(村人1→キューピッド1)
+({$GAME_OPT_CAPT->cupid})
 </td>
 </tr>
 
@@ -568,10 +568,10 @@ EOF;
     $checked = ($ROOM_CONF->default_boss_wolf ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_boss_wolf">{$GAME_CONF->boss_wolf}人以上で{$MESSAGE->game_option_boss_wolf}：</label></td>
+<td><label for="role_boss_wolf">{$CAST_CONF->boss_wolf}人以上で{$GAME_OPT_MESS->boss_wolf}：</label></td>
 <td class="explain">
 <input id="role_boss_wolf" type="checkbox" name="boss_wolf" value="on"{$checked}>
-(占い結果が「村人」、霊能結果が「白狼」と表示される狼です。 人狼1→白狼1)
+({$GAME_OPT_CAPT->boss_wolf})
 </td>
 </tr>
 
@@ -582,10 +582,10 @@ EOF;
     $checked = ($ROOM_CONF->default_poison_wolf ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_poison_wolf">{$GAME_CONF->poison_wolf}人以上で{$MESSAGE->game_option_poison_wolf}：</label></td>
+<td><label for="role_poison_wolf">{$CAST_CONF->poison_wolf}人以上で{$GAME_OPT_MESS->poison_wolf}：</label></td>
 <td class="explain">
 <input id="role_poison_wolf" type="checkbox" name="poison_wolf" value="on"{$checked}>
-(吊られた時にランダムで村人一人を巻き添えにする狼です。 人狼1→毒狼1、村人1→薬師1)
+({$GAME_OPT_CAPT->poison_wolf})
 </td>
 </tr>
 
@@ -596,10 +596,10 @@ EOF;
     $checked = ($ROOM_CONF->default_mania ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_mania">{$GAME_CONF->mania}人以上で{$MESSAGE->game_option_mania}：</label></td>
+<td><label for="role_mania">{$CAST_CONF->mania}人以上で{$GAME_OPT_MESS->mania}：</label></td>
 <td class="explain">
 <input id="role_mania" type="checkbox" name="mania" value="on"{$checked}>
-(初日夜に他の村人の役職をコピーする特殊な役職です。村人1→神話マニア1)
+({$GAME_OPT_CAPT->mania})
 </td>
 </tr>
 
@@ -610,10 +610,10 @@ EOF;
     $checked = ($ROOM_CONF->default_medium ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_medium">{$GAME_CONF->medium}人以上で{$MESSAGE->game_option_medium}：</label></td>
+<td><label for="role_medium">{$CAST_CONF->medium}人以上で{$GAME_OPT_MESS->medium}：</label></td>
 <td class="explain">
 <input id="role_medium" type="checkbox" name="medium" value="on"{$checked}>
-(突然死した人の所属陣営が分かる特殊な霊能者です。村人2→巫女1、狂信者1)
+({$GAME_OPT_CAPT->medium})
 </td>
 </tr>
 
@@ -625,10 +625,10 @@ EOF;
     $checked = ($ROOM_CONF->default_liar ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_liar">{$MESSAGE->game_option_liar}：</label></td>
+<td><label for="role_liar">{$GAME_OPT_MESS->liar}：</label></td>
 <td class="explain">
 <input id="role_liar" type="checkbox" name="liar" value="on"{$checked}>
-(ランダムで「狼少年」がつきます)
+({$GAME_OPT_CAPT->liar})
 </td>
 </tr>
 
@@ -639,10 +639,10 @@ EOF;
     $checked = ($ROOM_CONF->default_gentleman ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_gentleman">{$MESSAGE->game_option_gentleman}：</label></td>
+<td><label for="role_gentleman">{$GAME_OPT_MESS->gentleman}：</label></td>
 <td class="explain">
 <input id="role_gentleman" type="checkbox" name="gentleman" value="on"{$checked}>
-(全員に性別に応じた「紳士」「淑女」がつきます)
+({$GAME_OPT_CAPT->gentleman})
 </td>
 </tr>
 
@@ -653,10 +653,10 @@ EOF;
     $checked = ($ROOM_CONF->default_sudden_death ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_sudden_death">{$MESSAGE->game_option_sudden_death}：</label></td>
+<td><label for="role_sudden_death">{$GAME_OPT_MESS->sudden_death}：</label></td>
 <td class="explain">
 <input id="role_sudden_death" type="checkbox" name="sudden_death" value="on"{$checked}>
-(全員に投票でショック死するサブ役職のどれかがつきます)
+({$GAME_OPT_CAPT->sudden_death})
 </td>
 </tr>
 
@@ -667,10 +667,10 @@ EOF;
     $checked = ($ROOM_CONF->default_perverseness ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_perverseness">{$MESSAGE->game_option_perverseness}：</label></td>
+<td><label for="role_perverseness">{$GAME_OPT_MESS->perverseness}：</label></td>
 <td class="explain">
 <input id="role_perverseness" type="checkbox" name="perverseness" value="on"{$checked}>
-(全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります)
+({$GAME_OPT_CAPT->perverseness})
 </td>
 </tr>
 
@@ -681,10 +681,10 @@ EOF;
     $checked = ($ROOM_CONF->default_full_mania ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="role_full_mania">{$MESSAGE->game_option_full_mania}：</label></td>
+<td><label for="role_full_mania">{$GAME_OPT_MESS->full_mania}：</label></td>
 <td class="explain">
 <input id="role_full_mania" type="checkbox" name="full_mania" value="on"{$checked}>
-(「村人」が全員「神話マニア」に入れ替わります)
+({$GAME_OPT_CAPT->full_mania})
 </td>
 </tr>
 
@@ -711,20 +711,20 @@ EOF;
     echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label>{$MESSAGE->game_option_chaos}：</label></td>
+<td><label>{$GAME_OPT_MESS->chaos}：</label></td>
 <td class="explain">
 <input type="radio" name="chaos" value=""{$checked_normal}>
-通常人狼<br>
+{$GAME_OPT_CAPT->no_chaos}<br>
 
 <input type="radio" name="chaos" value="chaos"{$checked_chaos}>
-通常村＋α程度に配役がぶれる闇鍋モードです<br>
+{$GAME_OPT_CAPT->chaos}<br>
 
 EOF;
 
     if($ROOM_CONF->chaosfull){
       echo <<<EOF
 <input type="radio" name="chaos" value="chaosfull"{$checked_chaosfull}>
-人狼1、占い師1以外の全ての役職がランダムとなる真・闇鍋モードです
+{$GAME_OPT_CAPT->chaosfull}
 </td>
 
 EOF;
@@ -752,19 +752,19 @@ EOF;
 
       echo <<<EOF
 <tr>
-<td><label>{$MESSAGE->game_option_chaos_open_cast}：</label></td>
+<td><label>{$GAME_OPT_MESS->chaos_open_cast}：</label></td>
 <td class="explain">
 <input type="radio" name="chaos_open_cast" value=""{$checked_chaos_open_cast_none}>
-通知無し<br>
+{$GAME_OPT_CAPT->chaos_not_open_cast}<br>
 
 <input type="radio" name="chaos_open_cast" value="camp"{$checked_chaos_open_cast_camp}>
-陣営通知 (陣営毎の合計を通知)<br>
+{$GAME_OPT_CAPT->chaos_open_cast_camp}<br>
 
 <input type="radio" name="chaos_open_cast" value="role"{$checked_chaos_open_cast_role}>
-役職通知 (役職の種類別に合計を通知)<br>
+{$GAME_OPT_CAPT->chaos_open_cast_role}<br>
 
 <input type="radio" name="chaos_open_cast" value="full"{$checked_chaos_open_cast_full}>
-完全通知 (通常村相当)
+{$GAME_OPT_CAPT->chaos_open_cast_full}
 </td>
 </tr>
 
@@ -775,10 +775,10 @@ EOF;
       $checked = ($ROOM_CONF->default_secret_sub_role ? ' checked' : '');
       echo <<<EOF
 <tr>
-<td><label for="secret_sub_role">{$MESSAGE->game_option_secret_sub_role}：</label></td>
+<td><label for="secret_sub_role">{$GAME_OPT_MESS->secret_sub_role}：</label></td>
 <td class="explain">
 <input id="secret_sub_role" type="checkbox" name="secret_sub_role" value="on"{$checked}>
-(サブ役職が分からなくなります：闇鍋モード専用オプション)
+({$GAME_OPT_CAPT->secret_sub_role})
 </td>
 </tr>
 
@@ -789,10 +789,10 @@ EOF;
       $checked = ($ROOM_CONF->default_no_sub_role ? ' checked' : '');
       echo <<<EOF
 <tr>
-<td><label for="no_sub_role">{$MESSAGE->game_option_no_sub_role}：</label></td>
+<td><label for="no_sub_role">{$GAME_OPT_MESS->no_sub_role}：</label></td>
 <td class="explain">
 <input id="no_sub_role" type="checkbox" name="no_sub_role" value="on"{$checked}>
-(サブ役職をつけません：闇鍋モード専用オプション)
+({$GAME_OPT_CAPT->no_sub_role})
 </td>
 </tr>
 
@@ -805,13 +805,13 @@ EOF;
     echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label for="quiz">{$MESSAGE->game_option_quiz}：</label></td>
+<td><label for="quiz">{$GAME_OPT_MESS->quiz}：</label></td>
 <td class="explain">
 <input id="quiz" type="checkbox" name="quiz" value="on"{$checked}>
-(身代わり君が「出題者」になってクイズを出します)<br>
+({$GAME_OPT_CAPT->quiz})<br>
 <label for="quiz_password">GM ログインパスワード：</label>
 <input id="quiz_password" type="password" name="quiz_password" size="20"><br>
-　　ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。
+　　{$GAME_OPT_CAPT->gm_login_footer}
 </td>
 </tr>
 
@@ -822,10 +822,10 @@ EOF;
     $checked = ($ROOM_CONF->default_duel ? ' checked' : '');
     echo <<<EOF
 <tr>
-<td><label for="duel">{$MESSAGE->game_option_duel}：</label></td>
+<td><label for="duel">{$GAME_OPT_MESS->duel}：</label></td>
 <td class="explain">
 <input id="duel" type="checkbox" name="duel" value="on"{$checked}>
-(「人狼」「罠師」「暗殺者」のみしか登場しない村です)
+({$GAME_OPT_CAPT->duel})
 </td>
 </tr>
 
