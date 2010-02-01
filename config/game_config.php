@@ -9,6 +9,9 @@ class RoomConfig{
   //最大並列プレイ可能村数
   var $max_active_room = 4;
 
+  //次の村を立てられるまでの待ち時間 (秒)
+  var $establish_wait = 120;
+
   //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
   var $clear_session_id = 1200;
 

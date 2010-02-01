@@ -271,7 +271,7 @@ function OutputVictory(){
 
     case NULL: //ÇÑÂ¼
       $class  = 'none';
-      $winner = 'none';
+      $winner = ($ROOM->date > 0 ? 'unfinished' : 'none');
       break;
   }
   echo <<<EOF

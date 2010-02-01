@@ -67,30 +67,30 @@ function MaintenanceRoomAction($list, $query, $base_time){
 function CreateRoom($room_name, $room_comment, $max_user){
   global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $MESSAGE;
 
-  //村立てを行ったユーザのIPを取得
-  $ip_address = $_SERVER['REMOTE_ADDR'];
+  $query = "FROM room WHERE status <> 'finished'"; //チェック用の共通クエリ
+  $ip_address = $_SERVER['REMOTE_ADDR']; //村立てを行ったユーザの IP を取得
 
   //同じユーザが立てた村が終了していなければ新しい村を作らない
-  if(! $DEBUG_MODE){
-    $query = "SELECT COUNT(room_no) FROM room WHERE establisher_ip = '$ip_address' " .
-      "AND status <> 'finished'";
-
-    if(FetchResult($query) > 0){
-      OutputRoomAction('over_establish');
-      return false;
-    }
+  if(! $DEBUG_MODE &&
+     FetchResult("SELECT COUNT(room_no) $query AND establisher_ip = '$ip_address'") > 0){
+    OutputRoomAction('over_establish');
+    return false;
   }
 
   //最大並列村数を超えているようであれば新しい村を作らない
-  $room_count = FetchResult("SELECT COUNT(room_no) FROM room WHERE status <> 'finished'");
-  if($room_count >= $ROOM_CONF->max_active_room){
+  if(FetchResult("SELECT COUNT(room_no) $query") >= $ROOM_CONF->max_active_room){
     OutputRoomAction('full');
     return false;
   }
 
-  //エスケープ処理
-  EscapeStrings(&$room_name);
-  EscapeStrings(&$room_comment);
+  //連続村立て制限チェック
+  $time_stamp = FetchResult("SELECT establish_time $query ORDER BY room_no DESC");
+  if(isset($time_stamp)){
+    if(TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
+      OutputRoomAction('establish_wait');
+      return false;
+    }
+  }
 
   //入力データのエラーチェック
   if($room_name == '' || $room_comment == '' || ! ctype_digit($max_user)){
@@ -284,7 +284,7 @@ function OutputRoomAction($type, $room_name = ''){
 
   case 'success':
     OutputActionResultHeader('村作成', $SERVER_CONF->site_root);
-    echo "$room_name 村を作成しました。トップページに飛びます。";
+    echo $room_name . ' 村を作成しました。トップページに飛びます。';
     echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
     break;
 
@@ -296,14 +296,20 @@ function OutputRoomAction($type, $room_name = ''){
 
   case 'full':
     OutputActionResultHeader('村作成 [データベースエラー]');
-    echo '現在プレイ中の村の数がこのサーバで設定されている最大値を超えています<br>'."\n";
+    echo '現在プレイ中の村の数がこのサーバで設定されている最大値を超えています。<br>'."\n";
     echo 'どこかの村で決着がつくのを待ってから再度登録してください。';
     break;
 
   case 'over_establish':
     OutputActionResultHeader('村作成 [データベースエラー]');
-    echo 'あなたが立てた村が現在稼働中です<br>'."\n";
+    echo 'あなたが立てた村が現在稼働中です。<br>'."\n";
     echo '立てた村で決着がつくのを待ってから再度登録してください。';
+    break;
+
+  case 'establish_wait':
+    OutputActionResultHeader('村作成 [データベースエラー]');
+    echo 'サーバで設定されている村立て時間間隔を経過していません。<br>'."\n";
+    echo 'しばらく時間を開けてから再度登録してください。';
     break;
   }
   OutputHTMLFooter(); //フッタ出力
@@ -311,15 +317,16 @@ function OutputRoomAction($type, $room_name = ''){
 
 //村(room)のwaitingとplayingのリストを出力する
 function OutputRoomList(){
-  global $DEBUG_MODE, $MESSAGE, $ROOM_IMG;
+  global $DEBUG_MODE, $ROOM_IMG;
 
   //ルームNo、ルーム名、コメント、最大人数、状態を取得
-  $sql = mysql_query("SELECT room_no, room_name, room_comment, game_option, option_role, max_user,
-			status FROM room WHERE status <> 'finished' ORDER BY room_no DESC ");
-  while(($array = mysql_fetch_assoc($sql)) !== false){
+  $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
+    "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
+  $list = FetchAssoc($query);
+  foreach($list as $array){
     extract($array);
     $option_img_str = MakeGameOptionImage($game_option, $option_role); //ゲームオプションの画像
-    // $option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
+    //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
@@ -330,8 +337,8 @@ function OutputRoomList(){
 EOF;
 
     if($DEBUG_MODE){
-      echo '<a href="admin/room_delete.php?room_no=' . $room_no . '">' . $room_no .
-	' 番地を削除 (緊急用)</a><br>'."\n";
+      echo '<a href="admin/room_delete.php?room_no=' . $room_no . '">' .
+	$room_no . ' 番地を削除 (緊急用)</a><br>'."\n";
     }
   }
 }

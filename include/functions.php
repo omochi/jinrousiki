@@ -184,12 +184,12 @@ function TZDate($format, $time){
 }
 
 //TIMESTAMP 形式の時刻を変換する
-function ConvertTimeStamp($time_stamp){
+function ConvertTimeStamp($time_stamp, $convert_date = true){
   global $SERVER_CONF;
 
   $time = strtotime($time_stamp);
   if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
-  return TZDate('Y/m/d (D) H:i:s', $time);
+  return ($convert_date ? TZDate('Y/m/d (D) H:i:s', $time) : $time);
 }
 
 //時間(秒)を変換する
@@ -253,7 +253,7 @@ function CryptPassword($raw_password){
 function PrintData($data, $name = NULL){
   $str = (is_null($name) ? '' : $name . ': ');
   $str .= ((is_array($data) || is_object($data)) ? print_r($data, true) : $data);
-  echo $str . '<br>';
+  echo $str . '<br>', $name;
 }
 
 //ゲームオプションの画像タグを作成する
@@ -299,13 +299,13 @@ function MakeGameOptionImage($game_option, $option_role = ''){
   return $str;
 }
 
-//共通 HTML ヘッダ出力
-function OutputHTMLHeader($title, $css = 'action'){
+//共通 HTML ヘッダ生成
+function MakeHTMLHeader($title, $css = 'action'){
   global $SERVER_CONF;
 
   $encode = $SERVER_CONF->encode;
   $css_path = JINRO_CSS . '/' . $css . '.css';
-  echo <<<EOF
+  return <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
 <meta http-equiv="Content-Type" content="text/html; charset={$encode}">
@@ -315,6 +315,11 @@ function OutputHTMLHeader($title, $css = 'action'){
 <link rel="stylesheet" href="{$css_path}">
 
 EOF;
+}
+
+//共通 HTML ヘッダ出力
+function OutputHTMLHeader($title, $css = 'action'){
+  echo MakeHTMLHeader($title, $css);
 }
 
 //結果ページ HTML ヘッダ出力

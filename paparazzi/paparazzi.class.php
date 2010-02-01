@@ -1,70 +1,76 @@
 <?php
-class Paparazzi {
-	var $version = 'paparazzi v1 beta / build 03';
-	var $dateTime;
-	var $startTime;
-	var $log;
+class Paparazzi{
+  var $version = 'paparazzi Ver. 2.0 beta1';
+  var $date;
+  var $time;
+  var $log;
 
-	function Paparazzi(){
-		$this->dateTime = date('Y-m-d H:i:s');
-		$this->startTime = microtime();
-		$this->log = array();
-	}
+  function Paparazzi(){ $this->__construct(); }
 
-	function getTimeElapsed(){
-		return microtime() - $this->startTime;
-	}
-
-	function shot($comment,$category='general'){
-		$this->log[] = array(
-			'time' => $this->getTimeElapsed(), 
-			'category' => $category, 
-			'comment' => $comment
-		);
-		return $comment;
-	}
-
-	function insertBenchResult($label=false){
-		echo ($label ? $label.':' : '').sprintf('%f[s]', $this->getTimeElapsed());
-	}
-
-  function collectLog($force=false){
-		if (!$force && $this->written) return;
-		$this->written |= !$force;
-		$output = '<dl>';
-		foreach ($this->log as $item){
-			extract($item, EXTR_PREFIX_ALL, 'unsafe');
-			$category = htmlspecialchars($unsafe_category);
-			$comment = htmlspecialchars($unsafe_comment);
-			$output .= "<dt>($unsafe_time)</dt><dd>$category : $comment</dd>";
-		}
-		return $output . '</dl>';
+  function __construct(){
+    $this->date = date('Y-m-d H:i:s');
+    $this->time = microtime();
+    $this->log  = array();
   }
 
-	function insertLog(){
-    echo $this->collectLog();
-	}
+  function GetElapsedTime(){
+    return microtime() - $this->time;
+  }
 
-	function save($room_no, $uname, $action){
-		if ($this->serialized) return;
-		Paparazzi::modifySchema();
-		//シーンの登録
-		mysql_query(shot("INSERT INTO pp_articles (room_no, reported_time, uname, action) VALUES ($room_no,'{$this->dateTime}','$uname','$action')"));
-		$article_id = mysql_insert_id();
-		//ログの記録
-		$records = array();
-		foreach ($this->log as $i => $item){
-			extract($item, EXTR_PREFIX_ALL, 'unsafe');
-			$category = mysql_real_escape_string($unsafe_category);
-			$comment = mysql_real_escape_string($unsafe_comment);
-			$records[] = "($article_id,$i,$unsafe_time,'$category','$comment')";
-		}
-		mysql_query(shot('INSERT INTO pp_album (article_id, step_no, elapsed_time, category, note) VALUES '.join(',', $records).''));
-		$this->serialized = true;
-	}
+  function shot($comment, $category = 'general'){
+    $this->log[] = array('time' => $this->GetElapsedTime(),
+			 'category' => $category,
+			 'comment' => $comment);
+    return $comment;
+  }
 
-	function modifySchema(){
-		mysql_query('CREATE TABLE IF NOT EXISTS pp_articles (
+  function InsertBenchResult($label = NULL){
+    echo (is_null($label) ? '' : $label . ':') . sprintf('%f[s]', $this->GetElapsedTime());
+  }
+
+  function CollectLog($force = false){
+    if(! $force && $this->written) return;
+    $this->written |= ! $force;
+
+    $output = '<dl>';
+    foreach ($this->log as $item){
+      extract($item, EXTR_PREFIX_ALL, 'unsafe');
+      $category = EscapeStrings($unsafe_category);
+      $comment  = EscapeStrings($unsafe_comment);
+      $output .= "<dt>($unsafe_time)</dt><dd>$category : $comment</dd>";
+    }
+    return $output . '</dl>';
+  }
+
+  function InsertLog(){
+    echo $this->CollectLog();
+  }
+
+  function Save($room_no, $uname, $action){
+    if($this->serialized) return;
+
+    $this->ModifySchema();
+
+    //シーンの登録
+    $items  = 'room_no, reported_time, uname, action';
+    $values = "$room_no, '{$this->date}', '$uname', '$action'";
+    shot(InsetDataBase('pp_articles', $items, $values));
+    $article_id = mysql_insert_id();
+
+    //ログの記録
+    $items = 'article_id, step_no, elapsed_time, category, note';
+    foreach ($this->log as $i => $item){
+      extract($item, EXTR_PREFIX_ALL, 'unsafe');
+      $category = mysql_real_escape_string($unsafe_category);
+      $comment  = mysql_real_escape_string($unsafe_comment);
+      $values = "$article_id, $i, $unsafe_time, '$category', '$comment'";
+      shot(InsetDataBase('pp_album', $items, $values));
+    }
+    $this->serialized = true;
+  }
+
+  function ModifySchema(){
+    mysql_query('CREATE TABLE IF NOT EXISTS pp_articles (
 			article_id INT AUTO_INCREMENT PRIMARY KEY,
 			room_no INT NOT NULL,
 			reported_time DATETIME NOT NULL,
@@ -72,7 +78,7 @@ class Paparazzi {
 			action TINYTEXT NOT NULL,
 			INDEX room (room_no)
 		) TYPE = MYISAM');
-		mysql_query('CREATE TABLE IF NOT EXISTS pp_album (
+    mysql_query('CREATE TABLE IF NOT EXISTS pp_album (
 			article_id INT NOT NULL,
 			step_no INT NOT NULL,
 			elapsed_time DOUBLE NOT NULL,
@@ -80,6 +86,6 @@ class Paparazzi {
 			note TEXT NOT NULL,
 			PRIMARY KEY(article_id, step_no)
 		) TYPE = MYISAM');
-	}
+  }
 }
 ?>

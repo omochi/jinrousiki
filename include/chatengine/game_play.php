@@ -1,6 +1,8 @@
 <?php
-class GamePlayFormat extends ChatEngine {
-  function GamePlayFormat(){
+class GamePlayFormat extends ChatEngine{
+  function GamePlayFormat(){ $this->__construct(); }
+
+  function __construct(){
     parent::__construct();
   }
 
@@ -26,7 +28,7 @@ class GamePlayFormat extends ChatEngine {
   }
 
   function GetStylePath(){
-    return 'css/game_layout.css';
+    return 'game_layout';
   }
 
   function GetRequiredScripts(){

@@ -338,7 +338,9 @@ class UserDataSet{
   var $kicked = array();
   var $names = array();
 
-  function UserDataSet($request){
+  function UserDataSet($request){ $this->__construct($request); }
+
+  function __construct($request){
     $this->room_no = $request->room_no;
     $this->LoadRoom($request);
   }

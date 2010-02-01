@@ -8,21 +8,21 @@ class RequestBase{
       $item = strtok('.');
       switch(strtolower($src)){
       case 'get':
-	$value = shot($_GET[$item], $spec);
+	$value = $_GET[$item];
 	if(array_key_exists($item, $_GET) || $this->TryGetDefault($item, $value)){
 	  $this->$item = empty($processor) ? $value : $processor($value);
 	}
 	break;
 
       case 'post':
-	$value = shot($_POST[$item], $spec);
+	$value = $_POST[$item];
 	if(array_key_exists($item, $_POST) || $this->TryGetDefault($item, $value)){
 	  $this->$item = empty($processor) ? $value : $processor($value);
 	}
 	break;
 
       default:
-	$value = shot($_REQUEST[$spec], $spec);
+	$value = $_REQUEST[$spec];
 	if(array_key_exists($spec, $_REQUEST) || $this->TryGetDefault($spec, $value)){
 	  $this->$spec = empty($processor) ? $value : $processor($value);
 	}
@@ -177,18 +177,15 @@ class RequestGameVote extends RequestBaseGamePlay{
   }
 }
 
+//-- old_log.php --//
 class LogView extends RequestBase{
-  function LogView(){
+  function LogView(){ $this->__construct(); }
+
+  function __construct(){
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no');
-      $this->GetItems(
-        "$this->CheckOn",
-        'get.reverse_log',
-        'get.heaven_talk',
-        'get.heaven_only',
-        'get.debug',
-        'get.add_role'
-      );
+      $this->GetItems("$this->CheckOn", 'get.reverse_log', 'get.heaven_talk',
+        'get.heaven_only','get.debug', 'get.add_role');
       $this->AttachTestParameters();
     }
     else{

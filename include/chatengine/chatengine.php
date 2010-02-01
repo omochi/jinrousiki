@@ -1,7 +1,7 @@
 <?php
 define('CHEN_DIR', dirname(__FILE__));
 
-class ChatEngine {
+class ChatEngine{
   var $room;
   var $users;
   var $self;
@@ -9,17 +9,15 @@ class ChatEngine {
   var $user_cache;
   var $output;
 
-  function ChatEngine(){
+  function ChatEngine(){ $this->__construct(); }
+
+  function __construct(){
     shot('starting ChatEngine...');
     global $ROOM, $USERS, $SELF;
     $this->room = $ROOM;
     $this->users = $USERS;
     $this->self = $SELF;
     $this->ParseUsers();
-  }
-
-  function __construct(){
-    $this->ChatEngine();
   }
 
   function Initialize($filename){
@@ -62,18 +60,41 @@ class ChatEngine {
   }
   function GenerateScript(){}
 
+  function OutputDocumentHeader(){
+    global $SERVER_CONF;
+
+    $style_path = $this->GetStylePath();
+    foreach($this->GetRequiredScripts() as $src){
+      $load_scripts .= '<script type="text/javascript" src="'.$src.'"></script>'."\n";
+    }
+    $additional_style = $this->GenerateStyle();
+    $additional_script = $this->GenerateScript();
+    $this->output .= MakeHTMLHeader($this->room->name . 'Â¼', $style_path);
+    $this->output .= <<<HEADER
+<style>
+{$additional_style}
+</style>
+{$load_scripts}
+<script language="JavaScript"><!--
+{$additional_script}
+//--></script>
+</head>
+HEADER;
+    return 'success';
+  }
+
   function OutputRoomTitle(){
     $room = $this->room;
     $this->output .= '<div id="title"><h1>'.$room->name.'Â¼</h1>'.
       '<p>¡Á' . $room->comment .  '¡Á [' . $room->id . 'ÈÖÃÏ]</p></div>'."\n";
     return 'success';
   }
-  function OutputGameInfo(){ }
-  function OutputPlayerInfo(){ 
+  function OutputGameInfo(){}
+  function OutputPlayerInfo(){
     $this->OutputPlayerTable();
     return 'success';
   }
-  function OutputNotice(){ 
+  function OutputNotice(){
     return 'not implemented.';
   }
 
@@ -257,38 +278,6 @@ EOF;
   }
   function OutputTermChanged($date, $situation, $new_date, $new_situation){
     return 'not implemented.';
-  }
-
-  function OutputDocumentHeader(){
-    global $SERVER_CONF;
-    $lang = 'ja';
-    $charset = 'EUC-JP';
-    $style_path = $this->GetStylePath();
-    foreach ($this->GetRequiredScripts() as $src) {
-      $load_scripts .= '<script type="text/javascript" src="'.$src.'"></script>'."\n";
-    }
-    $additional_style = $this->GenerateStyle();
-    $additional_script = $this->GenerateScript();
-    $this->output .= <<<HEADER
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="{$lang}">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset={$charset}">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>{$this->room->name}Â¼ ¡Á Æò¤Ï¿ÍÏµ¤Ê¤ê¤ä¡©</title>
-<base href="{$SERVER_CONF->site_root}">
-<link rel="StyleSheet" href="{$style_path}">
-<style>
-{$additional_style}
-</style>
-{$load_scripts}
-<script language="JavaScript"><!--
-{$additional_script}
-//--></script>
-</head>
-HEADER;
-    return 'success';
   }
 
   function OutputContentHeader(){

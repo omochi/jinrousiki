@@ -63,9 +63,7 @@ class RoomDataSet{
   var $log_mode = false;
   var $test_mode = false;
 
-  function RoomDataSet($request){
-    $this->__construct($request);
-  }
+  function RoomDataSet($request){ $this->__construct($request); }
 
   function __construct($request){
     if(isset($request->TestItems) && $request->TestItems->is_virtual_room){

@@ -2,23 +2,27 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
+$INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 $INIT_CONF->LoadFile('chatengine');
 if(! $DEBUG_MODE){
   OutputActionResult('ChatEngine [テスト]', 'デバッグ機能の使用は許可されていません。');
 }
 
 // テスト対象のロードと実行を制御します。
-class ChatEngineTestCore extends RequestBase{
+class ChatEngineTestCore extends RequestBaseGamePlay{
   var $all_mode = array('game_play', 'game_after', 'game_heaven');
 
-  function ChatEngineTestCore(){
+  function ChatEngineTestCore(){ $this->__construct(); }
+
+  function __construct(){
     global $RQ_ARGS;
     $this->AttachTestParameters($this);
     switch ($this->TestItems->test_mode) {
     case 'game_play':
     case 'game_after':
     case 'game_heaven':
-      $this->RequestBaseGamePlay();
+      parent::__construct();
       $this->GetItems(null, 'date', 'day_night', 'uno', 'time');
       $this->initiate = 'init_playing';
       $this->run = 'test_view';
@@ -114,28 +118,11 @@ FORM;
   }
 
   function init_playing(){
+    global $DB_CONF, $ROOM, $USERS, $SELF, $ROLE_IMG, $room_no;
     shot("init_playing\r\n");
     shot(serialize($this), 'TestCore');
-    global $ROOM, $USERS, $SELF, $ROLE_IMG, $room_no;
 
-    $this->connection = ConnectDatabase(true, true); //DB 接続
-
-    loadModule(
-      CONFIG,
-      SYSTEM_CLASSES,
-      USER_CLASSES,
-      TALK_CLASSES,
-      GAME_FORMAT_CLASSES,
-      GAME_FUNCTIONS,
-      PLAY_FUNCTIONS,
-      ROOM_IMG,
-      ROLE_IMG,
-      ROOM_CONF,
-      GAME_CONF,
-      TIME_CONF,
-      ICON_CONF,
-      MESSAGE
-      );
+    $DB_CONF->Connect(true, true); //DB 接続
 
     $room_no = $this->room_no;
 
@@ -158,10 +145,9 @@ FORM;
   }
 
   function terminate(){
+    global $DB_CONF;
     shot("terminate\r\n");
-    if( isset($this->connection)){
-      DisconnectDatabase($this->connection);
-    }
+    $DB_CONF->Disconnect();
   }
 
   function test_nothing(){ shot('pass'); }
@@ -182,6 +168,7 @@ FORM;
 register_shutdown_function('insertLog');
 
 $test = & new ChatEngineTestCore();
+PrintData($test->TestItems);
 call_user_func(array($test, $test->initiate));
 call_user_func(array($test, $test->run));
 call_user_func(array($test, 'terminate'));

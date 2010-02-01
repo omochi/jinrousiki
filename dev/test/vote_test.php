@@ -307,5 +307,7 @@ elseif($ROOM->IsNight()){ // 夜の投票テスト
   }
   AggregateVoteNight();
 }
+
+#InsertLog();
 OutputHTMLFooter(); //HTMLフッタ
 ?>

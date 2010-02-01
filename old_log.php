@@ -287,6 +287,27 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
   //出力
   $builder = DocumentBuilder::Generate();
   $builder->BeginTalk("old-log-talk {$table_class}");
+  if($is_reverse){
+    if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
+      $time = FetchResult("SELECT establish_time FROM room WHERE room_no = {$ROOM->id}");
+      $row->sentence = '村作成';
+    }
+    elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
+      $time = FetchResult("SELECT start_time FROM room WHERE room_no = {$ROOM->id}");
+      $row->sentence = 'ゲーム開始';
+    }
+    elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
+      $time = FetchResult("SELECT finish_time FROM room WHERE room_no = {$ROOM->id}");
+      $row->sentence = 'ゲーム終了';
+    }
+    if($time != ''){
+      $row->uname = 'system';
+      $row->sentence .= '：' . ConvertTimeStamp($time);
+      $row->location = $ROOM->day_night . 'system';
+      OutputTalk($row, $builder);
+    }
+  }
+
   while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
     if(strpos($talk->location, 'day') !== false && ! $ROOM->IsDay()){
       $builder->EndTalk();
@@ -301,6 +322,27 @@ function OutputDateTalkLog($set_date, $set_location, $is_reverse){
       $builder->BeginTalk('old-log-talk night');
     }
     OutputTalk($talk, &$builder); //会話出力
+  }
+
+  if(! $is_reverse){
+    if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
+      $time = FetchResult("SELECT establish_time FROM room WHERE room_no = {$ROOM->id}");
+      $row->sentence = '村作成';
+    }
+    elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
+      $time = FetchResult("SELECT start_time FROM room WHERE room_no = {$ROOM->id}");
+      $row->sentence = 'ゲーム開始';
+    }
+    elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
+      $time = FetchResult("SELECT finish_time FROM room WHERE room_no = {$ROOM->id}");
+      $row->sentence = 'ゲーム終了';
+    }
+    if(isset($time)){
+      $row->uname = 'system';
+      $row->sentence .= '：' . ConvertTimeStamp($time);
+      $row->location = $ROOM->day_night . 'system';
+      OutputTalk($row, $builder);
+    }
   }
   $builder->EndTalk();
 
