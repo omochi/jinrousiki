@@ -182,7 +182,7 @@ if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
 $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
 
-#PrintData($INIT_CONF);
+#PrintData($INIT_CONF); //テスト用
 
 //-- スクリプト群の文字コード --//
 //変更する場合は全てのファイル自体の文字コードを自前で変更してください

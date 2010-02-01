@@ -1,6 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
+$INIT_CONF->LoadClass('SCRIPT_INFO');
 
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ
 
@@ -43,23 +44,36 @@ class DummyBoyIcon{
 //-- 関数 --//
 //必要なテーブルがあるか確認する
 function CheckTable(){
-  global $SERVER_CONF, $DB_CONF, $ICON_CONF;
+  global $SERVER_CONF, $DB_CONF, $SCRIPT_INFO;
+
+  //前回のパッケージのリビジョン番号を取得
+  $revision = $SERVER_CONF->last_updated_revision;
+  if($revision >= $SCRIPT_INFO->revision){
+    echo '初期設定はすでに完了しています。';
+    return;
+  }
 
   //テーブルのリストを配列に取得
   $sql   = mysql_list_tables($DB_CONF->name);
   $count = mysql_num_rows($sql);
   $table = array();
-  for($i = 0; $i < $count; $i++) array_push($table, mysql_tablename($sql, $i));
+  for($i = 0; $i < $count; $i++) $table[] = mysql_tablename($sql, $i);
 
   //チェックしてテーブルが存在しなければ作成する
+  $header = 'テーブル';
+  $footer = '<br>'."\n";
+  $str = 'を作成しました' . $footer;
+
+  $title = $header . '(room)';
   if(! in_array('room', $table)){
     mysql_query("CREATE TABLE room(room_no INT PRIMARY KEY, room_name TEXT, room_comment TEXT,
-		establisher_ip TEXT, max_user INT, game_option TEXT, option_role TEXT, status TEXT,
-		date INT, day_night TEXT,last_updated TEXT,victory_role TEXT)");
-    echo 'テーブル(room)を作成しました<br>'."\n";
+		max_user INT, game_option TEXT, option_role TEXT, status TEXT, date INT,
+		day_night TEXT, last_updated TEXT, victory_role TEXT, establisher_ip TEXT,
+		establisher_ip TEXT, establish_time DATETIME, start_time DATETIME,
+		finish_time DATETIME)");
+    echo $title . $str;
   }
-  else{
-    //追加フィールド処理
+  elseif($revision > 0){ //追加フィールド処理
     $sql = mysql_query("SHOW COLUMNS FROM room");
     if(mysql_num_rows($sql) > 0){
       while(($row = mysql_fetch_assoc($sql)) !== false){
@@ -69,77 +83,109 @@ function CheckTable(){
 	$flag->finish_time    |= ($row['Field'] == 'finish_time');
       }
     }
+
+    $query   = "ALTER TABLE room ADD ";
+    $titile .= 'にフィールド(';
+    $success = ')を追加しました';
+    $failed  = ')を追加できませんでした';
+
     if(! $flag->establisher_ip){
-      if(mysql_query("ALTER TABLE room ADD establisher_ip TEXT")){
-	echo 'テーブル(room)にフィールド(establisher_ip)を追加しました<br>'."\n";
-      }
-      else{
-	echo 'テーブル(room)にフィールド(establisher_ip)を追加できませんでした<br>'."\n";
-      }
+      $status = (mysql_query("$add_query establisher_ip TEXT") ? $success : $failed);
+      echo $header . 'establisher_ip' . $status . $footer;
     }
     if(! $flag->establish_time){
-      if(mysql_query("ALTER TABLE room ADD establish_time DATETIME")){
-	echo 'テーブル(room)にフィールド(establish_time)を追加しました<br>'."\n";
-      }
-      else{
-	echo 'テーブル(room)にフィールド(establish_time)を追加できませんでした<br>'."\n";
-      }
+      $status = (mysql_query("$add_query establish_time DATETIME") ? $success : $failed);
+      echo $header . 'establish_time' . $status . $footer;
     }
     if(! $flag->start_time){
-      if(mysql_query("ALTER TABLE room ADD start_time DATETIME")){
-	echo 'テーブル(room)にフィールド(start_time)を追加しました<br>'."\n";
-      }
-      else{
-	echo 'テーブル(room)にフィールド(start_time)を追加できませんでした<br>'."\n";
-      }
+      $status = (mysql_query("$add_query start_time DATETIME") ? $success : $failed);
+      echo $header . 'start_time' . $status . $footer;
     }
     if(! $flag->finish_time){
-      if(mysql_query("ALTER TABLE room ADD finish_time DATETIME")){
-	echo 'テーブル(room)にフィールド(finish_time)を追加しました<br>'."\n";
-      }
-      else{
-	echo 'テーブル(room)にフィールド(finish_time)を追加できませんでした<br>'."\n";
-      }
+      $status = (mysql_query("$add_query finish_time DATETIME") ? $success : $failed);
+      echo $header . 'finish_time' . $status . $footer;
     }
   }
 
+  $title = $header . '(user_entry)';
   if(! in_array('user_entry', $table)){
-    mysql_query("CREATE TABLE user_entry(room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT,
-		icon_no INT, profile TEXT, sex TEXT, password TEXT, role TEXT, live TEXT,
-		session_id CHAR(32) UNIQUE, last_words TEXT, ip_address TEXT, last_load_day_night TEXT)");
-    echo 'テーブル(user_entry)を作成しました<br>'."\n";
+    mysql_query("CREATE TABLE user_entry(room_no INT NOT NULL, user_no INT, uname TEXT,
+		handle_name TEXT, icon_no INT, profile TEXT, sex TEXT, password TEXT,
+		role TEXT, live TEXT, session_id CHAR(32) UNIQUE, last_words TEXT, ip_address TEXT,
+		last_load_day_night TEXT, INDEX user_entry_index(room_no, user_no))");
+    echo $title . $str;
 
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no, profile,
 		password, role, live) VALUES(0, 0, 'system', 'システム', 1, 'ゲームマスター',
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
-  mysql_query("ALTER TABLE user_entry ADD INDEX user_entry_index(room_no, user_no)");
+  elseif($revision > 0 && $revision < 152){
+    mysql_query("ALTER TABLE user_entry MODIFY room_no INT NOT NULL"); //room_no の型を変更
+    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
 
+    if($revision < 140){ //INDEX を設定
+      mysql_query("ALTER TABLE user_entry ADD INDEX user_entry_index(room_no, user_no)");
+      echo $title . 'に INDEX (room_no, user_no) を設定しました' . $footer;
+    }
+  }
+
+  $title = $header . '(talk)';
   if(! in_array('talk', $table)){
     mysql_query("CREATE TABLE talk(room_no INT NOT NULL, date INT, location TEXT, uname TEXT,
-		 time INT NOT NULL, sentence TEXT, font_type TEXT, spend_time INT)");
-    echo 'テーブル(talk)を作成しました<br>'."\n";
+		time INT NOT NULL, sentence TEXT, font_type TEXT, spend_time INT,
+		INDEX talk_index(room_no, date, time))");
+    echo $title . $str;
   }
-  mysql_query("ALTER TABLE talk MODIFY time INT NOT NULL");
-  mysql_query("ALTER TABLE talk ADD INDEX talk_index (room_no, date, time)");
+  elseif($revision > 0 && $revision < 152){
+    mysql_query("ALTER TABLE talk MODIFY room_no INT NOT NULL"); //room_no の型を変更
+    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
 
+    if($revision < 140){ //time の型を変更、INDEX を設定
+      mysql_query("ALTER TABLE talk MODIFY time INT NOT NULL");
+      echo $title . 'の time の型を "INT NOT NULL" に変更しました' . $footer;
+
+      mysql_query("ALTER TABLE talk ADD INDEX talk_index(room_no, date, time)");
+      echo $title . 'に INDEX (room_no, date, time) を設定しました' . $footer;
+    }
+  }
+
+  $title = $header . '(vote)';
   if(! in_array('vote', $table)){
     mysql_query("CREATE TABLE vote(room_no INT NOT NULL, date INT, uname TEXT, target_uname TEXT,
-		 vote_number INT, vote_times INT, situation TEXT)");
-    echo 'テーブル(vote)を作成しました<br>'."\n";
+		vote_number INT, vote_times INT, situation TEXT, INDEX vote_index(room_no, date))");
+    echo $title . $str;
   }
-  mysql_query("ALTER TABLE vote ADD INDEX vote_index(room_no, date)");
+  elseif($revision > 0 && $revision < 152){
+    mysql_query("ALTER TABLE vote MODIFY room_no INT NOT NULL"); //room_no の型を変更
+    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
 
+    if($revision < 140){ //INDEX を設定
+      mysql_query("ALTER TABLE vote ADD INDEX vote_index(room_no, date)");
+      echo $title . 'に INDEX (room_no, date) を設定しました' . $footer;
+    }
+  }
+
+  $title = $header . '(system_message)';
   if(! in_array('system_message', $table)){
-    mysql_query("CREATE TABLE system_message(room_no INT NOT NULL, message TEXT, type TEXT, date INT)");
-    echo 'テーブル(system_message)を作成しました<br>'."\n";
+    mysql_query("CREATE TABLE system_message(room_no INT NOT NULL, message TEXT, type TEXT, date INT,
+		INDEX system_message_index(room_no, date))");
+    echo $title . $str;
   }
-  mysql_query("ALTER TABLE system_message ADD INDEX system_message_index(room_no, date)");
+  elseif($revision > 0 && $revision < 152){
+    mysql_query("ALTER TABLE system_message MODIFY room_no INT NOT NULL"); //room_no の型を変更
+    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
 
+    if($revision < 140){ //INDEX を設定
+      mysql_query("ALTER TABLE system_message ADD INDEX system_message_index(room_no, date)");
+      echo $title . 'に INDEX (room_no, date) を設定しました' . $footer;
+    }
+  }
+
+  $title = $header . '(user_icon)';
   if(! in_array('user_icon', $table)){
     mysql_query("CREATE TABLE user_icon(icon_no INT PRIMARY KEY, icon_name TEXT, icon_filename TEXT,
 		icon_width INT, icon_height INT, color TEXT, session_id TEXT)");
-    echo 'テーブル(user_icon)を作成しました<br>'."\n";
+    echo $title . $str;
 
     //身代わり君のアイコンを登録(アイコンNo：0)
     $class = new DummyBoyIcon(); //身代わり君アイコンの設定をロード
@@ -166,20 +212,22 @@ function CheckTable(){
 			icon_height, color)
 			VALUES($icon_no, '$name', '$file', $width, $height, '$color')");
 	  $icon_no++;
-	  echo "ユーザアイコン($file $name $width × $height $color)を登録しました<br>"."\n";
+	  echo "ユーザアイコン($file $name $width × $height $color)を登録しました" . $footer;
 	}
       }
       closedir($handle);
     }
   }
 
+  $title = $header . '(admin_manage)';
   if(! in_array('admin_manage', $table)){
     mysql_query("CREATE TABLE admin_manage(session_id TEXT)");
     mysql_query("INSERT INTO admin_manage VALUES('')");
-    echo 'テーブル(admin_manage)を作成しました<br>'."\n";
+    echo $title . $str;
   }
+
   mysql_query("GRANT ALL ON {$db_name}.* TO $db_uname");
   mysql_query('COMMIT'); //一応コミット
-  echo '初期設定は無事完了しました。<br>'."\n";
+  echo '初期設定は無事完了しました' . $footer;
 }
 ?>

@@ -31,7 +31,7 @@ class ServerConfig{
   //サーバの文字コード
   /*
     変更する場合は全てのファイル自体の文字コードを自前で変更してください
-    include/contenttyep.php も参照してください
+    include/init.php も参照してください
   */
   var $encode = 'EUC-JP';
 
@@ -49,6 +49,25 @@ class ServerConfig{
 
   //$adjust_time_difference が有効な時の時差 (秒数)
   var $offset_seconds = 32400; //9時間
+
+  //更新前のスクリプトのリビジョン番号
+  /*
+    ※ この機能は Ver. 1.4.0 beta1 (revision 152) で実装されました。
+
+    更新前のスクリプトの class ScriptInfo (config/version.php) で
+    定義されている $revision を設定することで admin/setup.php で
+    行われる処理が最適化されます。
+
+    初めて当スクリプトを設置する場合や、データベースを一度完全消去して
+    再設置する場合は 0 を設定して下さい。
+
+    更新前のスクリプトに該当ファイルや変数がない場合や、
+    バージョンが分からない場合は 1 を設定してください。
+
+    更新後のリビジョン番号と同じか、それより大きな値を設定すると
+    admin/setup.php の処理は常時スキップされます。
+  */
+  var $last_updated_revision = 0;
 }
 
 //-- 村情報共有サーバの設定 --//

@@ -252,7 +252,7 @@ class VictoryMessage{
   var $vanish = '[引き分け] そして誰も居なくなった……';
 
   //途中廃村
-  var $unfinished = '[引き分け] 霧が濃くなって誰も見えなくなりました';
+  var $unfinished = '[引き分け] 霧が濃くなって何も見えなくなりました……';
 
   //廃村
   var $none = '過疎が進行して人がいなくなりました';
