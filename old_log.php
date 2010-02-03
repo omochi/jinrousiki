@@ -15,7 +15,7 @@ if($RQ_ARGS->is_room){
 }
 else{
   $INIT_CONF->LoadFile('game_config');
-  $INIT_CONF->LoadClass('ROOM_IMG', 'GAME_OPT_MESS');
+  $INIT_CONF->LoadClass('ROOM_IMG', 'GAME_OPT_MESS', 'ROOM_CONF');
   OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
 }
 OutputHTMLFooter();
@@ -23,7 +23,7 @@ OutputHTMLFooter();
 // 関数 //
 //過去ログ一覧表示
 function OutputFinishedRooms($page, $reverse = NULL){
-  global $SERVER_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
+  global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
   $num_rooms = FetchResult("SELECT COUNT(*) FROM room WHERE status = 'finished'");
@@ -46,6 +46,7 @@ EOF;
 
   $config =& new OldLogConfig(); //設定をロード
   $is_reverse = (empty($reverse) ? $config->reverse : ($reverse == 'on'));
+  $current_time = TZTime(); // 現在時刻の取得
 
   //ページリンクの出力
   if(is_null($page)) $page = 1;
@@ -125,7 +126,22 @@ EOF;
     echo <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">$log_room_no</td>
+EOF;
+    $diff_time = $current_time - strtotime($log_finish_time);
+    if($diff_time > $ROOM_CONF->clear_session_id) {
+    echo <<<EOF
 <td class="title"><a href="$base_url" $dead_room_color>$log_room_name 村</a></td>
+EOF;
+    }
+    else {
+    echo <<<EOF
+<td class="title"><a href="$base_url" $dead_room_color>$log_room_name 村</a>
+<a href="game_frame.php?room_no=$log_room_no" $dead_room_color>[再入村]</a>
+<a href="game_view.php?room_no=$log_room_no" $dead_room_color>[観戦]</a>
+</td>
+EOF;
+    }
+    echo <<<EOF
 <td class="upper">$user_count (最大{$log_room_max_user})</td>
 <td class="upper">$log_room_date</td>
 <td class="side">$victory_role_str</td>

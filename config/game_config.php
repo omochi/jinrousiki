@@ -13,7 +13,7 @@ class RoomConfig{
   var $establish_wait = 120;
 
   //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
-  var $clear_session_id = 1200;
+  var $clear_session_id = 12000;
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
   var $max_user_list = array(8, 16, 22, 32);

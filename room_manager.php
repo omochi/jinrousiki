@@ -41,24 +41,25 @@ function MaintenanceRoom(){
   //一定時間更新の無い村は廃村にする
   $list  = mysql_query("SELECT room_no, last_updated FROM room WHERE status <> 'finished'");
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' WHERE room_no = ";
-  MaintenanceRoomAction($list, $query, $ROOM_CONF->die_room);
+  MaintenanceRoomAction($list, $query, false, $ROOM_CONF->die_room);
 
   //終了した部屋のセッションIDのデータをクリアする
-  $list = mysql_query("SELECT room.room_no, last_updated FROM room, user_entry
+  $list = mysql_query("SELECT room.room_no, finish_time FROM room, user_entry
 			WHERE room.room_no = user_entry.room_no
 			AND !(user_entry.session_id is NULL) GROUP BY room_no");
   $query = "UPDATE user_entry SET session_id = NULL WHERE room_no = ";
-  MaintenanceRoomAction($list, $query, $ROOM_CONF->clear_session_id);
+  MaintenanceRoomAction($list, $query, true, $ROOM_CONF->clear_session_id);
 
   mysql_query('COMMIT'); //一応コミット
 }
 
 //村のメンテナンス処理 (実体)
-function MaintenanceRoomAction($list, $query, $base_time){
+function MaintenanceRoomAction($list, $query, $is_based_finish_time, $base_time){
   $time = TZTime();
   while(($array = mysql_fetch_assoc($list)) !== false){
     extract($array);
-    $diff_time = $time - $last_updated;
+    $diff_time = $is_based_finish_time ?
+                 $time - strtotime(finish_time) : $time - $last_updated;
     if($diff_time > $base_time) mysql_query($query . $room_no);
   }
 }
