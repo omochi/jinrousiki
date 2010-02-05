@@ -8,7 +8,7 @@ $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 
 $DB_CONF->Connect(); // DB 接続
 
-$ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
+$ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
@@ -123,4 +123,3 @@ OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者
 OutputVoteList();   //投票結果
 OutputHTMLFooter(); //HTMLフッタ
-?>

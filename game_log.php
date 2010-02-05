@@ -10,7 +10,7 @@ $DB_CONF->Connect(); //DB 接続
 session_start(); //セッション開始
 $uname = CheckSession(session_id()); //セッション ID からユーザ名を取得
 
-$ROOM =& new RoomDataSet($RQ_ARGS); //村情報を取得
+$ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->log_mode = true;
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報を取得

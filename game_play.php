@@ -12,7 +12,7 @@ $DB_CONF->Connect(); //DB 接続
 session_start(); //セッション開始
 $uname = CheckSession(session_id()); //セッション ID をチェック
 
-$ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
+$ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
 $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得
@@ -761,4 +761,3 @@ function OutputSelfLastWords(){
 
 EOF;
 }
-?>

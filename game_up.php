@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>汝は人狼なりか？[発言]</title>
+<title>汝は人狼なりや？[発言]</title>
 <link rel="stylesheet" href="css/game_up.css">
 <link rel="stylesheet" id="day_night">
-<script type="text/javascript" src="javascript/game_up.js"></SCRIPT>
+<script type="text/javascript" src="javascript/game_up.js"></script>
 </head>
 <body onLoad="set_focus(); reload_game();">
 <a name="game_top"></a>

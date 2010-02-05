@@ -21,7 +21,7 @@ $back_url = '<a href="game_up.php?' . $php_argv . '#game_top">←戻る &amp; reloa
 $DB_CONF->Connect(); //DB 接続
 $uname = CheckSession($session_id); //セッション ID をチェック
 
-$ROOM =& new RoomDataSet($RQ_ARGS); //村情報をロード
+$ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
