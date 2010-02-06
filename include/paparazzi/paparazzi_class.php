@@ -1,6 +1,6 @@
 <?php
 class Paparazzi{
-  var $version = 'paparazzi Ver. 2.0 beta1';
+  var $version = 'paparazzi Ver. 2.0 beta2';
   var $date;
   var $time;
   var $log;
@@ -88,4 +88,3 @@ class Paparazzi{
 		) TYPE = MYISAM');
   }
 }
-?>

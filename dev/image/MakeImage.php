@@ -105,8 +105,15 @@ class MainRoleList{
     'R' => 0, 'G' => 153, 'B' => 102, 'R2' => 0, 'G2' => 0, 'B2' => 0);
 
   var $poison_cat = array(
-    'message' => "[役割] [#村人#陣営] [|埋毒者|系]\n　あなたは|猫又|、毒をもっています。また、死んだ人を誰か一人蘇らせる事ができます。",
-    'R' => 0, 'G' => 153, 'B' => 102, 'R2' => 0, 'G2' => 0, 'B2' => 0);
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#猫又#、_毒_をもっています。また、死んだ人を誰か一人蘇らせる事ができます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 153, 'B' => 102),
+			 '_' => array('R' => 0, 'G' => 153, 'B' => 102)));
+
+  var $revive_cat = array(
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#仙狸#です。死んだ人を誰か一人蘇らせる事ができます。\n　何回でも蘇生できますが、成功するたびに成功率が大幅に下がるので計画的に行動しましょう。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
 
   var $pharmacist = array(
     'message' => "[役割] [#村人#陣営] [|薬師|系]\n　あなたは|薬師|です。前日に投票した人が毒を持っているか翌朝に知ることができます。\n　また、投票した人が処刑された場合はその人を無毒化させることができます。村人への二次被害を未然に防ぐのです！",
@@ -234,6 +241,10 @@ class MainRoleList{
   var $voodoo_fox = array(
     'message' => "[役割] [|妖狐|##陣営] [|妖狐|系]\n　あなたは|九尾|です。夜の間に誰か一人に呪いをかけることができます。##|妖狐|の天敵、#占い師#を呪返しで葬るのです！",
     'R' => 204, 'G' => 0, 'B' => 153, 'R2' => 153, 'G2' => 51, 'B2' => 255);
+
+  var $revive_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|仙狐|です。死んだ人を誰か一人蘇らせる事ができます。\n　確実に成功しますが一度しかできないのでじっくり機をうかがいましょう。",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
 
   var $cursed_fox = array(
     'message' => "[役割] [|妖狐|##陣営] [|妖狐|系]\n　あなたは|天狐|です。##|妖狐|の天敵、_占い師_を呪返しで殺すことができます。#人狼#の襲撃すら跳ね返すことができますが、^狩人^には殺されてしまいます。",
@@ -489,6 +500,8 @@ class ResultList{
   var $result_incubate_poison = array('message' => "さんは|潜毒者|でした", 'R' => 0, 'G' => 153, 'B' => 102);
   var $result_dummy_poison = array('message' => "さんは|夢毒者|でした", 'R' => 0, 'G' => 153, 'B' => 102);
   var $result_poison_cat = array('message' => "さんは|猫又|でした", 'R' => 0, 'G' => 153, 'B' => 102);
+  var $result_revive_cat = array('message' => "さんは|仙狸|でした",
+				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_pharmacist = array('message' => "さんは|薬師|でした", 'R' => 0, 'G' => 153, 'B' => 102);
   var $result_assassin = array('message' => "さんは|暗殺者|でした", 'R' => 144, 'G' => 64, 'B' => 64);
   var $result_mind_scanner = array('message' => "さんは|さとり|でした", 'R' => 160, 'G' => 160, 'B' => 0);
@@ -521,6 +534,8 @@ class ResultList{
   var $result_black_fox = array('message' => "さんは|黒狐|でした", 'R' => 204, 'G' => 0, 'B' => 153);
   var $result_poison_fox = array('message' => "さんは|管狐|でした", 'R' => 204, 'G' => 0, 'B' => 153);
   var $result_voodoo_fox = array('message' => "さんは|九尾|でした", 'R' => 204, 'G' => 0, 'B' => 153);
+  var $result_revive_fox = array('message' => "さんは|仙狐|でした",
+				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_cursed_fox = array('message' => "さんは|天狐|でした", 'R' => 204, 'G' => 0, 'B' => 153);
   var $result_scarlet_fox = array('message' => "さんは|紅狐|でした", 'R' => 204, 'G' => 0, 'B' => 153);
   var $result_cute_fox = array('message' => "さんは|萌狐|でした", 'R' => 204, 'G' => 0, 'B' => 153);
@@ -565,6 +580,8 @@ class WishRoleList {
   var $role_quiz = array('message' => "出題者→", 'R' => 0, 'G' => 0, 'B' => 0);
   var $role_priest = array('message' => "司祭→", 'R' => 0, 'G' => 0, 'B' => 0);
   var $role_mind_scanner = array('message' => "さとり→", 'R' => 0, 'G' => 0, 'B' => 0);
+  var $role_poison_cat = array('message' => "猫又→",
+			       'delimiter' => array('|' => array('R' => 4, 'G' => 0, 'B' => 0)));
   var $role_jealousy = array('message' => "橋姫→", 'R' => 0, 'G' => 0, 'B' => 0);
 }
 
@@ -572,11 +589,11 @@ class WishRoleList {
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
 #$list =& new MainRoleList();
-$list =& new SubRoleList();
+#$list =& new SubRoleList();
 #$list =& new ResultList();
 
-#$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
-#$list =& new WishRoleList();
+$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
+$list =& new WishRoleList();
 
 //まとめて画像ファイル生成
 /*
@@ -589,8 +606,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->mind_evoke);
+$image = MakeImage($gen, $list->role_poison_cat);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);
-?>

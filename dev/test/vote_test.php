@@ -44,7 +44,7 @@ $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[2]->profile = '';
-$RQ_ARGS->TestItems->test_users[2]->role = 'poison_cat';
+$RQ_ARGS->TestItems->test_users[2]->role = 'revive_fox lost_ability';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 $RQ_ARGS->TestItems->test_users[2]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[2]->is_system = false;
@@ -194,8 +194,8 @@ $RQ_ARGS->TestItems->vote_day = array(
 );
 
 $RQ_ARGS->TestItems->vote_night = array(
-  #array('uname' => 'light_gray',  'target_uname' => 'blue',  'situation' => 'POISON_CAT_DO'),
-  array('uname' => 'light_gray',  'target_uname' => NULL,  'situation' => 'POISON_CAT_NOT_DO'),
+  array('uname' => 'light_gray',  'target_uname' => 'blue',  'situation' => 'POISON_CAT_DO'),
+  #array('uname' => 'light_gray',  'target_uname' => NULL,  'situation' => 'POISON_CAT_NOT_DO'),
   #array('uname' => 'light_gray', 'target_uname' => 'purple',     'situation' => 'MIND_SCANNER_DO'),
   #array('uname' => 'light_gray', 'target_uname' => 'light_blue',     'situation' => 'VOODOO_KILLER_DO'),
   #array('uname' => 'light_gray', 'target_uname' => 'orange',     'situation' => 'ANTI_VOODOO_DO'),
@@ -242,7 +242,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 //foreach($USERS->rows as $user) $user->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(11);
+$SELF = $USERS->ByID(2);
 
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ
@@ -296,4 +296,3 @@ if($view_after){
 }
 #InsertLog();
 OutputHTMLFooter(); //HTMLフッタ
-?>

@@ -14,7 +14,6 @@ define('JINRO_IMG',  JINRO_ROOT . '/img');
 define('JINRO_MOD',  JINRO_ROOT . '/module');
 
 //-- デバッグモードのオン/オフ --//
-//ServerConfig に移植する予定
 #$DEBUG_MODE = false;
 $DEBUG_MODE = true;
 
@@ -43,6 +42,7 @@ class InitializeConfig{
     'VOTE_MESS' => 'message',
     'ROLES' => 'role_manager_class',
     'TIME_CALC' => 'time_calc',
+    'PAPARAZZI' => 'paparazzi_class',
     'server_config' => 'system_class',
     'game_config' => 'system_class',
     'game_vote_functions' => 'game_functions',
@@ -64,26 +64,27 @@ class InitializeConfig{
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   var $class_list = array(
-    'DB_CONF'=> 'DatabaseConfig',
-    'SERVER_CONF'=> 'ServerConfig',
-    'SCRIPT_INFO'=> 'ScriptInfo',
-    'ROOM_CONF'=> 'RoomConfig',
-    'GAME_CONF'=> 'GameConfig',
-    'CAST_CONF'=> 'CastConfig',
-    'TIME_CONF'=> 'TimeConfig',
-    'ICON_CONF'=> 'IconConfig',
-    'USER_ICON'=> 'UserIcon',
-    'ROOM_IMG'=> 'RoomImage',
-    'ROLE_IMG'=> 'RoleImage',
-    'SOUND'=> 'Sound',
-    'COOKIE'=> 'CookieDataSet',
-    'MESSAGE'=> 'Message',
-    'GAME_OPT_MESS'=> 'GameOptionMessage',
-    'GAME_OPT_CAPT'=> 'GameOptionCaptionMessage',
-    'VICT_MESS'=> 'VictoryMessage',
-    'VOTE_MESS'=> 'VoteMessage',
-    'ROLES'=> 'Roles',
-    'TIME_CALC'=> 'TimeCalculation'
+    'DB_CONF' => 'DatabaseConfig',
+    'SERVER_CONF' => 'ServerConfig',
+    'SCRIPT_INFO' => 'ScriptInfo',
+    'ROOM_CONF' => 'RoomConfig',
+    'GAME_CONF' => 'GameConfig',
+    'CAST_CONF' => 'CastConfig',
+    'TIME_CONF' => 'TimeConfig',
+    'ICON_CONF' => 'IconConfig',
+    'USER_ICON' => 'UserIcon',
+    'ROOM_IMG' => 'RoomImage',
+    'ROLE_IMG' => 'RoleImage',
+    'SOUND' => 'Sound',
+    'COOKIE' => 'CookieDataSet',
+    'MESSAGE' => 'Message',
+    'GAME_OPT_MESS' => 'GameOptionMessage',
+    'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
+    'VICT_MESS' => 'VictoryMessage',
+    'VOTE_MESS' => 'VoteMessage',
+    'ROLES' => 'Roles',
+    'TIME_CALC' => 'TimeCalculation',
+    'PAPARAZZI' => 'Paparazzi'
   );
 
   function InitializeConfig(){ $this->__construct(); }
@@ -115,8 +116,7 @@ class InitializeConfig{
       return;
     }
 
-    if(is_null($name)) return false;
-    if(in_array($name, $this->loaded->file)) return false;
+    if(is_null($name) || in_array($name, $this->loaded->file)) return false;
     $this->LoadDependence($name);
 
     switch($name){
@@ -125,10 +125,6 @@ class InitializeConfig{
     case 'message':
     case 'version':
       $path = $this->path->config;
-      break;
-
-    case 'paparazzi':
-      $path = $this->path->root;
       break;
 
     case 'mb-emulator':
@@ -142,6 +138,10 @@ class InitializeConfig{
 
     case 'chatengine':
       $path = $this->path->include . '/' . $name;
+      break;
+
+    case 'paparazzi_class':
+      $path = $this->path->include . '/paparazzi';
       break;
 
     default:
@@ -162,8 +162,7 @@ class InitializeConfig{
       return;
     }
 
-    if(is_null($name)) return false;
-    if(in_array($name, $this->loaded->class)) return false;
+    if(is_null($name) || in_array($name, $this->loaded->class)) return false;
     $this->LoadDependence($name);
 
     if(is_null($class_name = $this->class_list[$name])) return false;
@@ -174,17 +173,18 @@ class InitializeConfig{
 }
 
 //-- 初期化処理 --//
-require_once(JINRO_ROOT . '/paparazzi.php');
+require_once(JINRO_INC . '/paparazzi/paparazzi.php');
 
 $INIT_CONF =& new InitializeConfig();
-$INIT_CONF->LoadFile('request_class');
+if($DEBUG_MODE) $INIT_CONF->LoadClass('PAPARAZZI');
 
-//mbstring非対応の場合、エミュレータを使用する
+//mbstring 非対応の場合、エミュレータを使用する
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
 $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
+$INIT_CONF->LoadFile('request_class');
 
-#PrintData($INIT_CONF); //テスト用
+//PrintData($INIT_CONF); //テスト用
 
 //-- スクリプト群の文字コード --//
 //変更する場合は全てのファイル自体の文字コードを自前で変更してください

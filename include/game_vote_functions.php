@@ -1179,7 +1179,7 @@ function AggregateVoteNight(){
     extract($list);
     $vote_data[$situation][$uname] = $target_uname;
   }
-  PrintData($vote_data, 'Vote Data');
+  //PrintData($vote_data, 'Vote Data');
 
   foreach($USERS->rows as $user){ //未投票チェック
     //PrintData($user->uname);
@@ -1240,18 +1240,19 @@ function AggregateVoteNight(){
 	   ! (is_array($vote_data['ASSASSIN_NOT_DO']) &&
 	      array_key_exists($user->uname, $vote_data['ASSASSIN_NOT_DO']))) return false;
       }
-      elseif($user->IsRole('poison_cat')){
-	if(! $ROOM->IsOpenCast() &&
-	   is_null($vote_data['POISON_CAT_DO'][$user->uname]) &&
-	   ! (is_array($vote_data['POISON_CAT_NOT_DO']) &&
-	      array_key_exists($user->uname, $vote_data['POISON_CAT_NOT_DO']))) return false;
+      elseif(! $ROOM->IsOpenCast()){
+	if($user->IsRoleGroup('cat') || $user->IsActiveRole('revive_fox')){
+	  if(is_null($vote_data['POISON_CAT_DO'][$user->uname]) &&
+	     ! (is_array($vote_data['POISON_CAT_NOT_DO']) &&
+		array_key_exists($user->uname, $vote_data['POISON_CAT_NOT_DO']))) return false;
+	}
       }
     }
   }
 
   //処理対象コマンドチェック
   $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
-		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO');
+		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
   if($ROOM->date == 1){
     array_push($action_list , 'MIND_SCANNER_DO', 'MANIA_DO');
   }
@@ -1417,7 +1418,7 @@ function AggregateVoteNight(){
   if($ROOM->date > 1){
     //狩人系の狩り対象リスト
     $hunt_target_list = array('jammer_mad', 'voodoo_mad', 'corpse_courier_mad',
-			      'dream_eater_mad', 'trap_mad', 'cursed_fox', 'voodoo_fox',
+			      'dream_eater_mad', 'trap_mad', 'cursed_fox', 'voodoo_fox', 'revive_fox',
 			      'poison_chiroptera', 'cursed_chiroptera');
     foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
       $user = $USERS->ByUname($uname);
@@ -1787,20 +1788,32 @@ function AggregateVoteNight(){
 
     //-- 蘇生系レイヤー --//
     if(! $ROOM->IsOpenCast()){
-      foreach($vote_data['POISON_CAT_DO'] as $uname => $target_uname){ //猫又の処理
+      foreach($vote_data['POISON_CAT_DO'] as $uname => $target_uname){ //蘇生能力者の処理
 	$user = $USERS->ByUname($uname);
 	if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
 	$target = $USERS->ByUname($target_uname); //対象者の情報を取得
 
 	//蘇生判定
+	if($user->IsRole('poison_cat')){
+	  $revive_rate = 25;
+	}
+	elseif($user->IsRole('revive_cat')){
+	  $revive_times = (int)$user->partner_list['revive_cat'][0];
+	  $revive_rate = ceil(80 / pow(4, $revive_times));
+	}
+	elseif($user->IsRole('revive_fox')){
+	  $revive_rate = 100;
+	}
 	$rate = mt_rand(1, 100); //蘇生判定用乱数
-	$rate = 5; //mt_rand(1, 10); //テスト用
-	PrintData($rate, 'Revive Rate: ' . $user->uname . ' => ' . $target->uname);
+	//$rate = 5; //mt_rand(1, 10); //テスト用
+	//PrintData($revive_rate, 'Revive Info: ' . $user->uname . ' => ' . $target->uname);
+	//PrintData($rate, 'Revive Rate');
+
 	$result = 'failed';
 	do{
-	  if($rate > 25) break; //蘇生失敗
-	  if($rate <= 5){ //誤爆蘇生
+	  if($rate > $revive_rate) break; //蘇生失敗
+	  if($rate <= floor($revive_rate / 5)){ //誤爆蘇生
 	    $revive_target_list = array();
 	    //現時点の身代わり君と猫又が選んだ人以外の死者と憑依者を検出
 	    foreach($USERS->rows as $revive_target){
@@ -1812,14 +1825,14 @@ function AggregateVoteNight(){
 		$revive_target_list[] = $revive_target->uname;
 	      }
 	    }
-	    if($ROOM->test_mode) PrintData($revive_target_list, 'Revive Target');
+	    //if($ROOM->test_mode) PrintData($revive_target_list, 'Revive Target');
 	    if(count($revive_target_list) > 0){ //候補がいる時だけ入れ替える
 	      $target = $USERS->ByUname(GetRandom($revive_target_list));
 	    }
 	  }
 	  //$target = $USERS->ByID(8); //テスト用
-	  PrintData($target->uname, 'Revive User');
-	  if($target->IsRole('poison_cat', 'revive_priest') || $target->IsLovers()){
+	  //PrintData($target->uname, 'Revive User');
+	  if($target->IsRoleGroup('cat', 'revive') || $target->IsLovers()){
 	    break; //蘇生能力者、天人、恋人なら蘇生失敗
 	  }
 
@@ -1859,7 +1872,7 @@ function AggregateVoteNight(){
 	      }
 
 	      //憑依予定者が居たらキャンセル
-  	      if(array_key_exists($target->uname, $possessed_target_list)){
+	      if(array_key_exists($target->uname, $possessed_target_list)){
 		$target->possessed_reset  = false;
 		$target->possessed_cancel = true;
 	      }
@@ -1874,7 +1887,22 @@ function AggregateVoteNight(){
 	  $target->Revive(); //蘇生処理
 	}while(false);
 
-	if($result == 'failed') InsertSystemMessage($target->handle_name, 'REVIVE_FAILED');
+	if($result == 'success'){
+	  if($user->IsRole('revive_cat')){
+	    $revive_times = (int)$user->partner_list['revive_cat'][0];
+	    $base_role = $user->main_role;
+	    if($revive_times > 0) $base_role .= '[' . strval($revive_times) . ']';
+
+	    $new_role = $user->main_role . '[' . strval($revive_times + 1) . ']';
+	    $user->ReplaceRole($base_role, $new_role);
+	  }
+	  elseif($user->IsRole('revive_fox')){
+	    $user->AddRole('lost_ability');
+	  }
+	}
+	else{
+	  InsertSystemMessage($target->handle_name, 'REVIVE_FAILED');
+	}
 	$sentence = $user->handle_name . "\t";
 	$sentence .= $USERS->GetHandleName($target->uname) . "\t" . $result;
 	InsertSystemMessage($sentence, 'POISON_CAT_RESULT');
@@ -1883,7 +1911,7 @@ function AggregateVoteNight(){
   }
 
   //-- 憑依処理 --//
-  PrintData($possessed_target_list, 'Possessed Target');
+  //PrintData($possessed_target_list, 'Possessed Target');
   $possessed_date = $ROOM->date + 1; //憑依する日を取得
   foreach($possessed_target_list as $uname => $target_uname){
     $user         = $USERS->ByUname($uname); //憑依者
@@ -1977,7 +2005,7 @@ function AggregateVoteNight(){
 
       if($this_user->IsLovers()) $live_count['lovers']++;
     }
-    PrintData($live_count, 'Live Count');
+    //PrintData($live_count, 'Live Count');
 
     //「鉄火場」判定
     $crisis_priest_result = '';
@@ -1999,7 +2027,7 @@ function AggregateVoteNight(){
 
     //天人の蘇生判定処理
     if(! $ROOM->IsOpenCast() &&
-       ($ROOM->date > 3 || $crisis_priest_result != '' ||
+       ($ROOM->date == 4 || $crisis_priest_result != '' ||
 	count($USERS->rows) >= $live_count['total'] * 2)){
       foreach($USERS->rows as $user){
 	if($user->IsDead(true) && $user->IsActiveRole('revive_priest') &&

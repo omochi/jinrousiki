@@ -230,4 +230,3 @@ function CheckTable(){
   mysql_query('COMMIT'); //一応コミット
   echo '初期設定は無事完了しました' . $footer;
 }
-?>

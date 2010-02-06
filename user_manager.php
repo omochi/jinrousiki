@@ -268,7 +268,7 @@ IMAGE;
       if(! in_array('full_mania', $option_role_list)) $wish_role_list[] = 'human';
       if(in_array('chaosfull', $game_option_list)){
 	array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'guard', 'common',
-		   'poison', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
+		   'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
 		   'wolf', 'mad', 'fox', 'cupid', 'quiz', 'chiroptera', 'mania');
       }
       else{

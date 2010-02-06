@@ -1,9 +1,11 @@
 .human{       color: #606060;} /* Â¼¿Í */
 .mage{        color: #9933FF;} /* Àê¤¤»Õ */
 .necromancer{ color: #006699;} /* ÎîÇ½¼Ô */
+.priest{      color: #006699;} /* »Êº× */
 .guard{       color: #3399FF;} /* ¼í¿Í */
 .common{      color: #CC6633;} /* ¶¦Í­¼Ô */
 .poison{      color: #009966;} /* ËäÆÇ¼Ô */
+.cat{         color: #009966;} /* Ç­Ëô */
 .assassin{    color: #904040;} /* °Å»¦¼Ô */
 .mind{        color: #A0A000;} /* ¤µ¤È¤ê */
 .jealousy{    color: #00CC00;} /* ¶¶É± */

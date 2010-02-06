@@ -206,4 +206,3 @@ class SourceUploadConfig{
   //最大ファイルサイズ (バイト)
   var $max_size = 10485760; //10 Mbyte
 }
-?>

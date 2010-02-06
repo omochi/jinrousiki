@@ -6,6 +6,8 @@ $INIT_CONF->LoadFile('game_vote_functions');
 OutputHTMLHeader('闇鍋モード配役テスト');
 
 echo <<<EOF
+</head>
+<body>
 <form method="POST" action="role_test.php">
 <input type="hidden" name="command" value="role_test">
 <label>人数</label><input type="text" name="user_count" size="3" value="20">
@@ -35,9 +37,8 @@ if($_POST['command'] == 'role_test'){
     $role_list = GetRoleList($user_count, $option_role);
     if($role_list == '') break;
     $role_count_list = array_count_values($role_list);
-    echo MakeRoleNameList($role_count_list) .'<br>';
+    PrintData(MakeRoleNameList($role_count_list));
   }
 }
 
 OutputHTMLFooter(true);
-?>

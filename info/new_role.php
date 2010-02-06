@@ -604,36 +604,51 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
-    <td><a href="#crisis_priest">預言者</a></td>
+    <td><a href="#crisis_priest" name="140beta2">預言者</a></td>
     <td><a href="#human_side">村人</td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">※調整中つき、まだ出現しません。<br>
-      「鉄火場」が分かる特殊な司祭 (表示は「村人」)。<br>
+    <td class="ability">「鉄火場」が分かる特殊な司祭 (表示は「村人」)。<br>
       「鉄火場である」と判定された場合は、どの陣営が有利なのか<br>
       メッセージが表示される。</td>
-    <td>調整中</td>
+    <td>Ver. 1.4.0 β2</td>
   </tr>
   <tr>
     <td><a href="#revive_priest">天人</a></td>
     <td><a href="#human_side">村人</td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">※調整中つき、まだ出現しません。<br>
-      二日目の朝にいきなり死亡して、「鉄火場」「5日目以降」<br>
+    <td class="ability">二日目の朝にいきなり死亡して、「鉄火場」「5日目以降」<br>
       「村の人口が半分」のどれかを満たすと生き返る特殊な司祭。</td>
-    <td>調整中</td>
+    <td>Ver. 1.4.0 β2</td>
   </tr>
   <tr>
     <td><a href="#evoke_scanner">イタコ</a></td>
     <td><a href="#human_side">村人</td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">※調整中つき、まだ出現しません。<br>
-      初日の夜に誰か一人を選んでその人を<a href="#mind_evoke">口寄せ</a>にする。<br>
+    <td class="ability">初日の夜に誰か一人を選んでその人を<a href="#mind_evoke">口寄せ</a>にする。<br>
       投票結果が出るのは 2 日目以降。<br>
       自分の遺言欄に何が表示されていても遺言は残らない。</td>
-    <td>調整中</td>
+    <td>Ver. 1.4.0 β2</td>
+  </tr>
+  <tr>
+    <td><a href="#revive_cat">仙狸</a></td>
+    <td><a href="#human_side">村人</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">毒能力を失った代わりに高い蘇生能力を持った猫又の上位種。<br>
+    蘇生成功率は 80% で蘇生に成功するたびに成功率が 1/4 になる。</td>
+    <td>Ver. 1.4.0 β20</td>
+  </tr>
+  <tr>
+    <td><a href="#revive_fox">仙狐</a></td>
+    <td><a href="#fox_side">妖狐</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>村人</td>
+    <td class="ability">蘇生能力を持った妖狐。成功率は 100% だが、一度成功すると能力を失う。<br>
+      人狼に襲撃されても死なないが、狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 α20</td>
   </tr>
 </table>
 

@@ -210,6 +210,12 @@ function OutputAbility(){
     elseif($SELF->IsRole('voodoo_fox') && $ROOM->IsNight()){ //¶åÈø
       OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
     }
+    elseif($SELF->IsRole('revive_fox') && ! $ROOM->IsOpenCast()){ //Àç¸Ñ
+      OutputSelfAbilityResult('POISON_CAT_RESULT'); //ÁÉÀ¸·ë²Ì¤òÉ½¼¨
+     if(! $SELF->IsRole('lost_ability') && $is_after_first_night){ //Ìë¤ÎÅêÉ¼
+	OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+      }
+    }
 
     if(! $SELF->IsRole('white_fox', 'poison_fox', 'child_fox')){
       OutputSelfAbilityResult('FOX_EAT'); //½±·â¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨
@@ -235,11 +241,7 @@ function OutputAbility(){
       $ROLE_IMG->DisplayImage($SELF->main_role);
     }
   }
-  elseif($SELF->IsRole('incubate_poison')){ //ÀøÆÇ¼Ô
-    $ROLE_IMG->DisplayImage($SELF->main_role);
-    if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
-  }
-  elseif($SELF->IsRole('poison_cat')){ //Ç­Ëô
+  elseif($SELF->IsRoleGroup('cat')){ //Ç­Ëô·Ï
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
     if(! $ROOM->IsOpenCast()){
@@ -248,6 +250,10 @@ function OutputAbility(){
 	OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
+  }
+  elseif($SELF->IsRole('incubate_poison')){ //ÀøÆÇ¼Ô
+    $ROLE_IMG->DisplayImage($SELF->main_role);
+    if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
   }
   elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->DisplayImage('poison'); //ËäÆÇ¼Ô·Ï
   elseif($SELF->IsRole('pharmacist')){ //Ìô»Õ

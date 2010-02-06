@@ -9,8 +9,7 @@ $INIT_CONF->LoadClass('ICON_CONF');
 
 $DB_CONF->Connect(); //DB 接続
 $icon_no = (int)$_GET['icon_no'];
-$array = FetchNameArray("SELECT icon_filename, session_id FROM user_icon WHERE icon_no = $icon_no");
-$file  = $array['icon_filename'];
+$file = FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = $icon_no");
 
 unlink($ICON_CONF->path . '/' . $file); //ファイルの存在をチェックしていないので要注意
 mysql_query("DELETE FROM user_icon WHERE icon_no = $icon_no");
@@ -21,4 +20,3 @@ OutputActionResult('アイコン削除完了',
 		   '削除完了：登録ページに飛びます。<br>'."\n" .
 		   '切り替わらないなら <a href="../icon_upload.php">ここ</a> 。',
 		   '../icon_upload.php');
-?>

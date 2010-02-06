@@ -662,9 +662,12 @@ function VoteNight(){
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
-    if(! $SELF->IsRole('poison_cat')) OutputVoteResult('夜：猫又以外は投票できません');
+    if(! $SELF->IsRoleGroup('cat', 'revive_fox')) OutputVoteResult('夜：猫又・仙狐以外は投票できません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+    }
+    if($SELF->IsRole('revive_fox') && $SELF->IsRole('lost_ability')){
+       OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
     }
     $not_type = ($RQ_ARGS->situation == 'POISON_CAT_NOT_DO');
     break;
@@ -740,7 +743,7 @@ function VoteNight(){
       OutputVoteResult($error_header . '自分には投票できません');
     }
 
-    if($SELF->IsRole('poison_cat')){ //猫又は死者以外への投票は無効
+    if($SELF->IsRoleGroup('cat', 'revive_fox')){ //蘇生能力者は死者以外への投票は無効
       if($virtual_live){
 	OutputVoteResult($error_header . '死者以外には投票できません');
       }
@@ -998,10 +1001,13 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の厄払いはできません');
     CheckAlreadyVote('ANTI_VOODOO_DO');
   }
-  elseif($role_poison_cat = $SELF->IsRole('poison_cat')){
+  elseif($role_poison_cat = $SELF->IsRoleGroup('cat', 'revive_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の蘇生はできません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+    }
+    if($SELF->IsRole('revive_fox') && $SELF->IsRole('lost_ability')){
+       OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
     }
     CheckAlreadyVote('POISON_CAT_DO', 'POISON_CAT_NOT_DO');
   }

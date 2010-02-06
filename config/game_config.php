@@ -204,6 +204,7 @@ class GameConfig{
     'incubate_poison'    => '潜毒者',
     'dummy_poison'       => '夢毒者',
     'poison_cat'         => '猫又',
+    'revive_cat'         => '仙狸',
     'pharmacist'         => '薬師',
     'assassin'           => '暗殺者',
     'mind_scanner'       => 'さとり',
@@ -235,6 +236,7 @@ class GameConfig{
     'black_fox'          => '黒狐',
     'poison_fox'         => '管狐',
     'voodoo_fox'         => '九尾',
+    'revive_fox'         => '仙狐',
     'cursed_fox'         => '天狐',
     'cute_fox'           => '萌狐',
     'scarlet_fox'        => '紅狐',
@@ -336,6 +338,7 @@ class GameConfig{
     'incubate_poison'    => '潜毒',
     'dummy_poison'       => '夢毒',
     'poison_cat'         => '猫',
+    'revive_cat'         => '仙狸',
     'pharmacist'         => '薬',
     'assassin'           => '暗',
     'mind_scanner'       => '悟',
@@ -367,6 +370,7 @@ class GameConfig{
     'black_fox'          => '黒狐',
     'poison_fox'         => '管狐',
     'voodoo_fox'         => '九尾',
+    'revive_fox'         => '仙狐',
     'cursed_fox'         => '天狐',
     'cute_fox'           => '萌狐',
     'scarlet_fox'        => '紅狐',
@@ -447,10 +451,11 @@ class GameConfig{
     'priest' => 'priest',
     'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
     'common' => 'common',
+    'cat' => 'poison_cat',
     'poison' => 'poison',
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
-    'scanner' => 'scanner',
+    'scanner' => 'mind_scanner',
     'jealousy' => 'jealousy',
     'mania' => 'mania');
 
@@ -543,14 +548,14 @@ class CastConfig{
                          );
   //-- 役職出現人数 --//
   //各役職の出現に必要な人数を設定する
-  var $medium      = 20; //巫女 (+ 狂信者) (村人2 → 巫女1、狂信者1)
-  var $poison      = 20; //埋毒者 (村人2 → 埋毒者1、人狼1)
-  var $boss_wolf   = 18; //白狼 (人狼1 → 白狼)
-  var $poison_wolf = 20; //毒狼 (+ 薬師) (人狼1 → 毒狼1、村人1 → 薬師1)
-  var $cupid       = 16; //キューピッド (14人の方は現在ハードコード) (村人1 → キューピッド1)
-  var $mania       = 16; //神話マニア (村人1 → 神話マニア1)
-  var $decide      = 16; //決定者 (サブ役職なので兼任)
-  var $authority   = 16; //権力者 (サブ役職なので兼任)
+  var $medium      = 20; //巫女 (+ 狂信者) [村人2 → 巫女1、狂信者1]
+  var $poison      = 20; //埋毒者 [村人2 → 埋毒者1、人狼1]
+  var $boss_wolf   = 18; //白狼 [人狼1 → 白狼]
+  var $poison_wolf = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
+  var $cupid       = 16; //キューピッド (14人の方は現在ハードコード) [村人1 → キューピッド1]
+  var $mania       = 16; //神話マニア [村人1 → 神話マニア1]
+  var $decide      = 16; //決定者 [兼任]
+  var $authority   = 16; //権力者 [兼任]
 
   //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
   var $wish_role_rate = 100;
@@ -560,7 +565,7 @@ class CastConfig{
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
-  var $chaos_fix_role_list = array('wolf' => 1, 'mage' => 1);
+  var $chaos_fix_role_list = array('possessed_wolf' => 1, 'mage' => 1);
 
   var $min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
   var $min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)
@@ -569,8 +574,8 @@ class CastConfig{
   var $chaos_role_group_rate_list = array(
     'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1, 'chiroptera' => 0.15,
     'mage' => 0.18, 'necromancer' => 0.15, 'priest' => 0.1, 'guard' => 0.15,
-    'common' => 0.18, 'poison' => 0.15, 'pharmacist' => 0.15, 'assassin' => 0.15,
-    'mind_scanner' => 0.15, 'jealousy' => 0.1);
+    'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1, 'pharmacist' => 0.15,
+    'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1);
 
   //村人の出現上限補正
   var $max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)

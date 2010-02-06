@@ -27,13 +27,13 @@ class Room{
 	$query = "SELECT room_name, room_comment, game_option, date, day_night, status " .
 	  "FROM room WHERE room_no = {$request->room_no}";
 	if(($array = FetchNameArray($query)) === false){
-	  OutputActionResult('ƒGƒ‰[', '–³Œø‚È‘º”Ô†‚Å‚·F' . $request->room_no);
+	  OutputActionResult('¥¨¥é¡¼', 'Ìµ¸ú¤ÊÂ¼ÈÖ¹æ¤Ç¤¹¡§' . $request->room_no);
 	}
       }
       $this->id = $request->room_no;
       $this->LoadArray($array);
     }
-    //$this->ParseCompoundParameters(); ‘¼‚Æ®‡‚ªŽæ‚ê‚È‚¢‚Ì‚ÅˆêŽžƒRƒƒ“ƒgƒAƒEƒg
+    //$this->ParseCompoundParameters(); Â¾¤ÈÀ°¹ç¤¬¼è¤ì¤Ê¤¤¤Î¤Ç°ì»þ¥³¥á¥ó¥È¥¢¥¦¥È
     $this->option_list = explode(' ', $this->game_option);
   }
 
@@ -65,7 +65,7 @@ class Room{
     $this->option_role = new OptionManager($this->role_option);
   }
 
-  //ƒV[ƒ“‚É‡‚í‚¹‚½“Š•[î•ñ‚ðŽæ“¾‚·‚é
+  //¥·¡¼¥ó¤Ë¹ç¤ï¤»¤¿ÅêÉ¼¾ðÊó¤ò¼èÆÀ¤¹¤ë
   function LoadVote($action = NULL){
     global $RQ_ARGS;
 

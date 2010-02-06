@@ -39,29 +39,20 @@ function MaintenanceRoom(){
   global $ROOM_CONF;
 
   //一定時間更新の無い村は廃村にする
-  $list  = mysql_query("SELECT room_no, last_updated FROM room WHERE status <> 'finished'");
-  $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' WHERE room_no = ";
-  MaintenanceRoomAction($list, $query, false, $ROOM_CONF->die_room);
+  $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
+    "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP(NOW()) - {$ROOM_CONF->die_room}";
+  mysql_query($query);
 
   //終了した部屋のセッションIDのデータをクリアする
-  $list = mysql_query("SELECT room.room_no, finish_time FROM room, user_entry
-			WHERE room.room_no = user_entry.room_no
-			AND !(user_entry.session_id is NULL) GROUP BY room_no");
-  $query = "UPDATE user_entry SET session_id = NULL WHERE room_no = ";
-  MaintenanceRoomAction($list, $query, true, $ROOM_CONF->clear_session_id);
-
+  $query = <<<EOF
+UPDATE room, user_entry SET user_entry.session_id = NULL
+WHERE room.room_no = user_entry.room_no
+AND room.status = 'finished' AND !(user_entry.session_id is NULL)
+AND (room.finish_time is NULL OR
+     room.finish_time < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
+EOF;
+  mysql_query($query);
   mysql_query('COMMIT'); //一応コミット
-}
-
-//村のメンテナンス処理 (実体)
-function MaintenanceRoomAction($list, $query, $is_based_finish_time, $base_time){
-  $time = TZTime();
-  while(($array = mysql_fetch_assoc($list)) !== false){
-    extract($array);
-    $diff_time = $is_based_finish_time ?
-                 $time - strtotime($finish_time) : $time - $last_updated;
-    if($diff_time > $base_time) mysql_query($query . $room_no);
-  }
 }
 
 //村(room)の作成
@@ -86,11 +77,10 @@ function CreateRoom($room_name, $room_comment, $max_user){
 
   //連続村立て制限チェック
   $time_stamp = FetchResult("SELECT establish_time $query ORDER BY room_no DESC");
-  if(isset($time_stamp)){
-    if(TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
-      OutputRoomAction('establish_wait');
-      return false;
-    }
+  if(isset($time_stamp) &&
+     TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
+    OutputRoomAction('establish_wait');
+    return false;
   }
 
   //入力データのエラーチェック
@@ -142,17 +132,17 @@ function CreateRoom($room_name, $room_comment, $max_user){
       $dummy_boy_handle_name = 'GM';
       $dummy_boy_password    = $gm_password;
     }
+
     if($chaos || $chaosfull){
-      if($chaos) $game_option .= 'chaos ';
-      if($chaosfull) $game_option .= 'chaosfull ';
-      array_push($game_option_list, 'secret_sub_role');
+      $game_option .= $chaos ? 'chaos ' : 'chaosfull ';
+      $game_option_list[] = 'secret_sub_role';
       array_push($option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role');
       if($perverseness){
 	$option_role .= 'no_sub_role ';
-	array_push($option_role_list, 'perverseness');
+	$option_role_list[] = 'perverseness';
       }
       else{
-	array_push($option_role_list, 'no_sub_role');
+	$option_role_list[] = 'no_sub_role';
       }
     }
     else{
@@ -162,17 +152,12 @@ function CreateRoom($room_name, $room_comment, $max_user){
       else{
 	if(! $perverseness) array_push($option_role_list, 'decide', 'authority');
 	array_push($option_role_list, 'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'medium');
-	if(! $full_mania) array_push($option_role_list, 'mania');
+	if(! $full_mania) $option_role_list[] = 'mania';
       }
     }
     array_push($option_role_list, 'liar', 'gentleman');
-    if($perverseness){
-      array_push($option_role_list, 'perverseness');
-    }
-    else{
-      array_push($option_role_list, 'sudden_death');
-    }
-    if(! $duel) array_push($option_role_list, 'full_mania');
+    $option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
+    if(! $duel) $option_role_list[] = 'full_mania';
   }
 
   foreach($game_option_list as $this_option){
@@ -256,7 +241,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $status = true;
   }while(false);
   if(! $status) OutputRoomAction('busy');
-  mysql_query('UNLOCK TABLES');
+  //mysql_query('UNLOCK TABLES'); 他でロック解除してる？
 }
 
 //結果出力 (CreateRoom() 用)
@@ -848,4 +833,3 @@ EOF;
 
 EOF;
 }
-?>

@@ -181,12 +181,16 @@ function OutputPlayerList(){
 	$str .= MakeRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
 	$str .= MakeRoleName($user->main_role, 'mage');
-      elseif($user->IsRoleGroup('necromancer', 'priest') || $user->IsRole('medium'))
+      elseif($user->IsRoleGroup('necromancer') || $user->IsRole('medium'))
 	$str .= MakeRoleName($user->main_role, 'necromancer');
+      elseif($user->IsRoleGroup('priest'))
+	$str .= MakeRoleName($user->main_role, 'priest');
       elseif($user->IsRoleGroup('guard') || $user->IsRole('reporter', 'anti_voodoo'))
 	$str .= MakeRoleName($user->main_role, 'guard');
       elseif($user->IsRoleGroup('common'))
 	$str .= MakeRoleName($user->main_role, 'common');
+      elseif($user->IsRoleGroup('cat'))
+	$str .= MakeRoleName($user->main_role, 'cat');
       elseif($user->IsRoleGroup('scanner'))
 	$str .= MakeRoleName($user->main_role, 'mind');
       elseif($user->IsRoleGroup('jealousy'))
@@ -1031,11 +1035,11 @@ function OutputVoteListDay($set_date){
 
 //占う、狼が狙う、護衛する等、能力を使うメッセージ
 function OutputAbilityAction(){
-  global $MESSAGE, $ROOM;
+  global $MESSAGE, $ROOM, $SELF;
 
   //昼間で役職公開が許可されているときのみ表示
   //(猫又は役職公開時は行動できないので不要)
-  if(! ($ROOM->IsDay() && $ROOM->IsOpenCast())) return false;
+  if(! $ROOM->IsDay() || ! ($SELF->IsDummyBoy() || $ROOM->IsOpenCast())) return false;
 
   $yesterday = $ROOM->date - 1;
   $header = '<b>前日の夜、';
@@ -1454,4 +1458,3 @@ function ParseStrings($str, $type = NULL){
     return array($header, $footer);
   }
 }
-?>
