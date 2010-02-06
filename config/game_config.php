@@ -13,7 +13,7 @@ class RoomConfig{
   var $establish_wait = 120;
 
   //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
-  var $clear_session_id = 12000;
+  var $clear_session_id = 86400;
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
   var $max_user_list = array(8, 16, 22, 32);
@@ -191,6 +191,7 @@ class GameConfig{
     'medium'             => '巫女',
     'priest'             => '司祭',
     'crisis_priest'      => '預言者',
+    'revive_priest'      => '天人',
     'guard'              => '狩人',
     'poison_guard'       => '騎士',
     'reporter'           => 'ブン屋',
@@ -206,6 +207,7 @@ class GameConfig{
     'pharmacist'         => '薬師',
     'assassin'           => '暗殺者',
     'mind_scanner'       => 'さとり',
+    'evoke_scanner'      => 'イタコ',
     'jealousy'           => '橋姫',
     'suspect'            => '不審者',
     'unconscious'        => '無意識',
@@ -301,6 +303,7 @@ class GameConfig{
     'mind_open'     => '公開者',
     'mind_receiver' => '受信者',
     'mind_friend'   => '共鳴者',
+    'mind_evoke'    => '口寄せ',
     'lovers'        => '恋人',
     'copied'        => '元神話マニア');
 
@@ -320,6 +323,7 @@ class GameConfig{
     'medium'             => '巫',
     'priest'             => '司',
     'crisis_priest'      => '預',
+    'revive_priest'      => '天人',
     'guard'              => '狩',
     'poison_guard'       => '騎',
     'reporter'           => '聞',
@@ -335,6 +339,7 @@ class GameConfig{
     'pharmacist'         => '薬',
     'assassin'           => '暗',
     'mind_scanner'       => '悟',
+    'evoke_scanner'      => 'イ',
     'jealousy'           => '橋',
     'suspect'            => '不審',
     'unconscious'        => '無',
@@ -421,6 +426,7 @@ class GameConfig{
     'silent'             => '無口',
     'mower'              => '草刈',
     'mind_read'          => '漏',
+    'mind_evoke'         => '口寄',
     'mind_open'          => '公',
     'mind_receiver'      => '受',
     'mind_friend'        => '鳴',
@@ -444,14 +450,14 @@ class GameConfig{
     'poison' => 'poison',
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
-    'mind_scanner' => 'mind_scanner',
+    'scanner' => 'scanner',
     'jealousy' => 'jealousy',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
   var $sub_role_group_list = array(
     'lovers'       => array('lovers'),
-    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend'),
+    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_evoke'),
     'mania'        => array('copied'),
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'celibacy'),
     'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
@@ -506,7 +512,6 @@ class CastConfig{
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     // 4 => array('wolf' => 1, 'mage' => 1, 'poison' => 1, 'cupid' => 1), //毒・恋人連鎖テスト用
      5 => array('wolf' => 1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -551,7 +556,7 @@ class CastConfig{
   var $wish_role_rate = 100;
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'priest');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
@@ -660,4 +665,3 @@ class OldLogConfig{
   var $one_page = 20;   //過去ログ一覧で1ページでいくつの村を表示するか
   var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }
-?>

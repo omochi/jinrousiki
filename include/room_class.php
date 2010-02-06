@@ -1,5 +1,5 @@
 <?php
-class Room {
+class Room{
   var $id;
   var $name;
   var $comment;
@@ -16,29 +16,48 @@ class Room {
   var $log_mode = false;
   var $test_mode = false;
 
-  function __construct($request = null){
-    if(!empty($request)) {
+  function Room($request){ $this->__construct($request); }
+
+  function __construct($request = NULL){
+    if(isset($request)){
       if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
-        $array = $request->TestItems->test_room;
+	$array = $request->TestItems->test_room;
       }
       else{
-        $query = "SELECT room_no, room_name, room_comment, game_option, date, day_night, status " .
-  	"FROM room WHERE room_no = {$request->room_no}";
-        if(($array = FetchNameArray($query)) === false) return false;
+	$query = "SELECT room_name, room_comment, game_option, date, day_night, status " .
+	  "FROM room WHERE room_no = {$request->room_no}";
+	if(($array = FetchNameArray($query)) === false){
+	  OutputActionResult('エラー', '無効な村番号です：' . $request->room_no);
+	}
       }
+      $this->id = $request->room_no;
       $this->LoadArray($array);
     }
-    $this->ParseCompoundParameters();
-  }
-  function Room($request = null){
-    self::__construct($request);
+    //$this->ParseCompoundParameters(); 他と整合が取れないので一時コメントアウト
+    $this->option_list = explode(' ', $this->game_option);
   }
 
   function LoadArray($array) {
     foreach($array as $name => $value){
-      $this->$name = $value;
+      switch($name){
+      case 'room_no':
+	$type = 'id';
+	continue;
+
+      case 'room_name':
+	$type = 'name';
+	break;
+
+      case 'room_comment':
+	$type = 'comment';
+	break;
+
+      default:
+	$type = $name;
+	break;
+      }
+      $this->$type = $value;
     }
-    $this->id = $this->room_no;
   }
 
   function ParseCompoundParameters() {
@@ -46,12 +65,66 @@ class Room {
     $this->option_role = new OptionManager($this->role_option);
   }
 
+  //シーンに合わせた投票情報を取得する
+  function LoadVote($action = NULL){
+    global $RQ_ARGS;
+
+    if(isset($RQ_ARGS->TestItems) && $RQ_ARGS->TestItems->is_virtual_room){
+      switch($this->day_night){
+      case 'day':
+	$vote_list = $RQ_ARGS->TestItems->vote_day;
+	break;
+
+      case 'night':
+	$vote_list = $RQ_ARGS->TestItems->vote_night;
+	break;
+
+      default:
+	return NULL;
+      }
+    }
+    else{
+      switch($this->day_night){
+      case 'beforegame':
+	$data = "uname, target_uname, situation";
+	$action = "situation = 'GAMESTART'";
+	break;
+
+      case 'day':
+	$data = "uname, target_uname, vote_number";
+	$action = "situation = 'VOTE_KILL' AND vote_times = " . GetVoteTimes();
+	break;
+
+      case 'night':
+	$data = "uname, target_uname, situation";
+	$action = "situation <> 'VOTE_KILL'";
+	break;
+
+      default:
+	return NULL;
+      }
+      $query = "SELECT {$data} FROM vote WHERE room_no = {$this->id} " .
+	"AND date = {$this->date} AND ";
+      $vote_list = FetchAssoc($query . $action);
+    }
+
+    $vote_data = array();
+    foreach($vote_list as $list){
+      $uname = $list['uname'];
+      unset($list['uname']);
+      $vote_data[$uname] = $list;
+    }
+    $this->vote = $vote_data;
+
+    return count($this->vote);
+  }
+
   function IsOption($option){
     return in_array($option, $this->option_list);
   }
 
   function IsOptionGroup($option){
-    return (strpos($this->game_option, $option) !== false);
+    return strpos($this->game_option, $option) !== false;
   }
 
   function IsRealTime(){
@@ -94,8 +167,6 @@ class Room {
     return $this->status == 'finished';
   }
 }
-
-
 
 class RoomDataSet {
   var $rows = array();

@@ -14,8 +14,7 @@ if($RQ_ARGS->is_room){
   OutputOldLog();
 }
 else{
-  $INIT_CONF->LoadFile('game_config');
-  $INIT_CONF->LoadClass('ROOM_IMG', 'GAME_OPT_MESS', 'ROOM_CONF');
+  $INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
   OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
 }
 OutputHTMLFooter();
@@ -126,22 +125,7 @@ EOF;
     echo <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">$log_room_no</td>
-EOF;
-    $diff_time = $current_time - strtotime($log_finish_time);
-    if($diff_time > $ROOM_CONF->clear_session_id) {
-    echo <<<EOF
-<td class="title"><a href="$base_url" $dead_room_color>$log_room_name 村</a></td>
-EOF;
-    }
-    else {
-    echo <<<EOF
 <td class="title"><a href="$base_url" $dead_room_color>$log_room_name 村</a>
-<a href="game_frame.php?room_no=$log_room_no" $dead_room_color>[再入村]</a>
-<a href="game_view.php?room_no=$log_room_no" $dead_room_color>[観戦]</a>
-</td>
-EOF;
-    }
-    echo <<<EOF
 <td class="upper">$user_count (最大{$log_room_max_user})</td>
 <td class="upper">$log_room_date</td>
 <td class="side">$victory_role_str</td>
@@ -151,7 +135,19 @@ EOF;
 <td class="time comment" colspan="3">$log_establish_time</td>
 </tr>
 <tr class="lower list">
-<td class="comment">(
+<td class="comment">
+
+EOF;
+
+    $diff_time = $current_time - strtotime($log_finish_time);
+    if($diff_time <= $ROOM_CONF->clear_session_id){
+      echo <<<EOF
+<a href="login.php?room_no=$log_room_no" $dead_room_color>[再入村]</a>
+
+EOF;
+    }
+    echo <<<EOF
+(
 <a href="$base_url&reverse_log=on" $dead_room_color>逆</a>
 <a href="$base_url&heaven_talk=on" $dead_room_color>霊</a>
 <a href="$base_url&reverse_log=on&heaven_talk=on" $dead_room_color>逆&amp;霊</a>
@@ -185,7 +181,7 @@ function OutputOldLog(){
   if(is_null($room_no)) OutputActionResult($title, '村を指定してください。' . $url);
 
   //日付とシーンを取得
-  $ROOM = new RoomDataSet($RQ_ARGS);
+  $ROOM = new Room($RQ_ARGS);
   $ROOM->log_mode = true;
   $last_date = $ROOM->date;
 
@@ -389,4 +385,3 @@ function OutputSceneChange($set_date){
     OutputVoteList(); //投票結果出力
   }
 }
-?>

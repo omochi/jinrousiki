@@ -50,18 +50,41 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [ルール]', 'rul
     （キューピッドはオプション指定時のみ登場します。また、恋人は兼任役職となります）</li>
 </ul>
 
-<table class="member"><tr>
-<th>全人数</th><th>村人</th><th class="wolf">人狼</th><th class="mage">占い師</th><th class="necromancer">霊能者</th><th class="wolf">狂人</th><th class="guard">狩人</th><th class="common">共有者</th><th class="fox">妖狐</th><th class="poison">埋毒者</th><th class="lovers">キューピッド</th>
-</tr>
+<table class="member">
 <?php
-$role_list = array('human', 'wolf', 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox', 'poison', 'cupid');
+$str = '<tr><th>全人数</th>';
+
+//設定されている役職名を取得
+$all_cast = array();
+foreach($CAST_CONF->role_list as $key => $value){
+  $all_cast = array_merge($all_cast, array_keys($value));
+}
+$all_cast = array_unique($all_cast);
+
+//表示順を決定
+$role_list = array_intersect(array_keys($GAME_CONF->main_role_list), $all_cast);
+foreach($role_list as $role){
+  $class = 'human';
+  foreach($GAME_CONF->main_role_group_list as $key => $value){
+    if(strpos($role, $key) !== false){
+      $class = $value;
+      break;
+    }
+  }
+  $str .= '<th class="' . $class . '">' . $GAME_CONF->main_role_list[$role] . '</th>';
+}
+$str .= '</tr>'."\n";
+echo $str;
+
+//人数毎の配役を表示
 foreach($CAST_CONF->role_list as $key => $value){
   $tag = "<td><strong>$key</strong></td>";
   foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
   echo '<tr>' . $tag . '</tr>'."\n";
+  if($key % 20 == 0) echo $str;
 }
 ?>
-</tr></table>
+</table>
 
 <span class="caption">[役割紹介]</span><br>
 <div class="info">　登場する役割について詳しく説明します。</div>

@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/include/init.php');
+require_once('include/init.php');
 $INIT_CONF->LoadClass('SCRIPT_INFO');
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'index');
 echo '</head>'."\n".'<body>'."\n";

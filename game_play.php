@@ -18,16 +18,17 @@ $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
+$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$SELF = $USERS->ByUname($uname); //自分の情報をロード
+
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
   $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //ゲームオプション表示用
+  $ROOM->LoadVote();
 }
 elseif($ROOM->IsFinished()){
   $INIT_CONF->LoadClass('VICT_MESS'); //勝敗結果表示用
 }
-
-$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF = $USERS->ByUname($uname); //自分の情報をロード
 
 //必要なクッキーをセットする
 $objection_array = array(); //SendCookie();で格納される・異議ありの情報
@@ -40,8 +41,8 @@ ConvertSay(&$RQ_ARGS->say); //発言置換処理
 if($RQ_ARGS->say == ''){
   CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
 }
-elseif($RQ_ARGS->IsLastWords() && $SELF->IsLive() && ! $SELF->IsDummyBoy()){
-  EntryLastWords($RQ_ARGS->say);  //生きていれば遺言登録
+elseif($RQ_ARGS->IsLastWords() && ! $SELF->IsDummyBoy()){
+  EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
 }
 elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
   Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
@@ -256,13 +257,20 @@ function ConvertSay(&$say){
 
 //遺言登録
 function EntryLastWords($say){
-  global $ROOM, $SELF;
+  global $ROOM, $USERS, $SELF;
 
-  //ゲーム終了後、死者、ブン屋、筆不精なら登録しない
-  if($ROOM->IsFinished() || ! $SELF->IsLive() || $SELF->IsRole('reporter', 'no_last_words')){
-    return false;
+  if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
+
+  if($SELF->IsLive()){ //ブン屋、イタコ、筆不精は登録しない
+    if($SELF->IsRole('reporter', 'evoke_scanner', 'no_last_words')) return false;
+    $SELF->Update('last_words', $say); //遺言を残す
   }
-  $SELF->Update('last_words', $say); //遺言を残す
+  elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){
+    //口寄せしているイタコすべての遺言を更新する
+    foreach($SELF->partner_list['mind_evoke'] as $target_id){
+      $USERS->ByID($target_id)->Update('last_words', $say);
+    }
+  }
 }
 
 //発言
@@ -426,7 +434,7 @@ function CheckSilence(){
 
 	if($ROOM->date == 1){
 	  array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
-	  array_push($actor_list, 'mind_scanner', '%cupid', '%mania');
+	  array_push($actor_list, '%scanner', '%cupid', '%mania');
 	}
 	else{
 	  array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'DREAM_EAT',

@@ -3,7 +3,6 @@ class User{
   var $main_role;
   var $role_list = array();
   var $partner_list = array();
-  var $vote_flag = false;
   var $dead_flag = false;
   var $suicide_flag = false;
   var $revive_flag = false;
@@ -52,7 +51,6 @@ class User{
   function ParseRoles($role = NULL){
     //初期化処理
     if($role != NULL) $this->role = $role;
-    $this->role_list = array();
     $this->partner_list = array();
 
     //展開用の正規表現をセット
@@ -82,6 +80,23 @@ class User{
     $this->main_role = $this->role_list[0];
   }
 
+  function GetPartner($type){
+    $list = $this->partner_list[$type];
+    return (is_array($list) ? $list : NULL);
+  }
+
+  //日数に応じた憑依先の ID を取得
+  function GetPossessedTarget($type, $date){
+    if(is_null($target_list = $this->GetPartner($type))) return false;
+
+    $date_list = array_keys($target_list);
+    krsort($date_list);
+    foreach($date_list as $this_date){
+      if($this_date <= $date) return $target_list[$this_date];
+    }
+    return false;
+  }
+
   //現在の仮想的な生死情報
   function IsDeadFlag($strict = false){
     if(! $strict) return NULL;
@@ -102,7 +117,7 @@ class User{
   }
 
   function IsSame($uname){
-    return ($this->uname == $uname);
+    return $this->uname == $uname;
   }
 
   function IsSelf(){
@@ -118,7 +133,7 @@ class User{
     $role_list = func_get_args();
     if(is_array($role_list[0])) $role_list = $role_list[0];
     if(count($role_list) > 1){
-      return (count(array_intersect($role_list, $this->role_list)) > 0);
+      return count(array_intersect($role_list, $this->role_list)) > 0;
     }
     else{
       return in_array($role_list[0], $this->role_list);
@@ -139,14 +154,14 @@ class User{
     return false;
   }
 
-  function IsWolf($talk_flag = false){
+  function IsWolf($talk = false){
     if(! $this->IsRoleGroup('wolf')) return false;
-    return ($talk_flag ? ! $this->IsRole('silver_wolf') : true);
+    return ($talk ? ! $this->IsRole('silver_wolf') : true);
   }
 
-  function IsFox($talk_flag = false){
+  function IsFox($talk = false){
     if(! $this->IsRoleGroup('fox')) return false;
-    return ($talk_flag ? ! $this->IsRole('silver_fox', 'child_fox') : true);
+    return ($talk ? ! $this->IsRole('silver_fox', 'child_fox') : true);
   }
 
   function IsLovers(){
@@ -154,14 +169,14 @@ class User{
   }
 
   function IsPartner($type, $target){
-    $array = $this->partner_list[$type];
-    if(! is_array($array)) return false;
+    if(is_null($partner = $this->GetPartner($type))) return false;
+
     if(is_array($target)){
-      if(! is_array($target[$type])) return false;
-      return (count(array_intersect($array, $target[$type])) > 0);
+      if(! is_array($target_list = $target[$type])) return false;
+      return count(array_intersect($partner, $target_list)) > 0;
     }
     else{
-      return in_array($target, $array);
+      return in_array($target, $partner);
     }
   }
 
@@ -172,21 +187,8 @@ class User{
     if(! $this->IsRoleGroup('poison')) return false;
     if($this->IsRole('dummy_poison')) return false; //夢毒者
     if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //騎士
-    if($this->IsRole('incubate_poison')) return ($ROOM->date >= 5); //潜毒者は 5 日目以降
+    if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //潜毒者は 5 日目以降
     return true;
-  }
-
-  //日数に応じた憑依先の ID を取得
-  function GetPossessedTarget($type, $date){
-    $target_list = $this->partner_list[$type];
-    if(! is_array($target_list)) return false;
-
-    $date_list = array_keys($target_list);
-    krsort($date_list);
-    foreach($date_list as $this_date){
-      if($this_date <= $date) return $target_list[$this_date];
-    }
-    return false;
   }
 
   //所属陣営判別
@@ -282,7 +284,7 @@ class User{
   //役職追加処理
   function AddRole($role){
     $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
-    if(strpos($base_role, $role) !== false) return false; //同じ役職は追加しない
+    if(in_array($role, explode(' ', $base_role))) return false; //同じ役職は追加しない
     $this->ChangeRole($base_role . " $role");
   }
 
@@ -317,7 +319,7 @@ class User{
   function SaveLastWords($handle_name = NULL){
     global $ROOM;
 
-    if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'no_last_words')) return;
+    if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'evoke_scanner', 'no_last_words')) return;
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       InsertSystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
@@ -356,6 +358,7 @@ class UserDataSet{
     $this->LoadUsers($user_list);
   }
 
+  //特定の村のユーザ情報を取得する
   function RetriveByRoom($room_no){
     $query = "SELECT
 	users.room_no,
@@ -378,6 +381,7 @@ class UserDataSet{
     return FetchObjectArray($query, 'User');
   }
 
+  //指定した人数分のユーザ情報を全村からランダムに取得する
   function RetriveByUserCount($user_count){
     mysql_query('SET @new_user_no := 0');
     $query = "SELECT
@@ -403,6 +407,7 @@ class UserDataSet{
     return FetchObjectArray($query, 'User');
   }
 
+  //取得したユーザ情報を User クラスでパースして登録する
   function LoadUsers($user_list){
     if(! is_array($user_list)) return false;
 
@@ -423,44 +428,6 @@ class UserDataSet{
       $this->names[$user->uname] = $user->user_no;
     }
     return count($this->names);
-  }
-
-  function LoadVote(){
-    global $ROOM;
-    switch($ROOM->day_night){
-    case 'beforegame':
-      break;
-
-    case 'day':
-      $data = "uname, target_uname, vote_number";
-      $action = "situation = 'VOTE_KILL'";
-      $vote_times = GetVoteTimes();
-      $add_query = " AND vote_times = $vote_times";
-      break;
-
-    case 'night':
-      $data = "uname, target_uname, situation";
-      $action = "situation <> 'VOTE_KILL'";
-      break;
-
-    default:
-      return false;
-    }
-    $query = "SELECT {$data} FROM vote WHERE room_no = {$ROOM->id} " .
-      "AND date = {$ROOM->date} AND ";
-    $vote_list = FetchAssoc($query . $action . $add_query);
-
-    $this->vote_data = array();
-    foreach($vote_list as $array){
-      $id = $this->ByUname($array['uname'])->user_no;
-      unset($array['uname']);
-      $this->vote_data[$id] = $array;
-    }
-    ksort($this->vote_data);
-  }
-
-  function Save(){
-    foreach($this->rows as $user) $user->save();
   }
 
   function ParseCompoundParameters(){
@@ -531,10 +498,11 @@ class UserDataSet{
     return count($this->rows);
   }
 
-  //役職の出現判定関数 (現在はメイン役職のみ対応)
+  //役職の出現判定関数
   function IsAppear($role){
+    $role_list = func_get_args();
     foreach($this->rows as $user){
-      if($user->main_role == $role) return true;
+      if($user->IsRole($role_list)) return true;
     }
     return false;
   }
@@ -599,18 +567,12 @@ class UserDataSet{
     return true;
   }
 
-  //蘇生処理
-  function Revive($user_no){
-
-    $user = $this->ByID($user_no);
-    if(! $user->IsDead() || $user->revive_flag) return false;
-    $user->Update('live', 'live');
-    InsertSystemMessage($user->handle_name, 'REVIVE_SUCCESS');
-    $user->revive_flag = true;
-    return true;
+  function Save(){
+    foreach($this->rows as $user) $user->Save();
   }
 
   //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。
+  //この関数は実用されていません
   function RegisterByRequest(){
     extract($_REQUEST, EXTR_PREFIX_ALL, 'unsafe');
     session_regenerate_id();
@@ -638,4 +600,3 @@ class UserDataSet{
     $USERS->Load();
   }
 }
-?>

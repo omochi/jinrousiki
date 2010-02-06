@@ -1,4 +1,51 @@
 <?php
+//-- データベース処理の規定クラス --//
+class DatabaseConfigBase{
+  //データベース接続
+  /*
+    $header : HTMLヘッダ出力情報 [true: 出力済み / false: 未出力]
+    $exit   : エラー処理 [true: exit を返す / false で終了]
+  */
+  function Connect($header = false, $exit = true){
+    //データベースサーバにアクセス
+    $db_handle = mysql_connect($this->host, $this->user, $this->password);
+    if($db_handle){ //アクセス成功
+      mysql_set_charset('ujis');
+      if(mysql_select_db($this->name, $db_handle)){ //データベース接続
+	//mysql_query("SET NAMES utf8");
+	//成功したらハンドルを返して処理終了
+	$this->db_handle = $db_handle;
+	return $db_handle;
+      }
+      else{
+	$error_title = 'データベース接続失敗';
+	$error_name  = $this->name;
+      }
+    }
+    else{
+      $error_title = 'MySQLサーバ接続失敗';
+      $error_name  = $this->host;
+    }
+
+    $error_message = $error_title . ': ' . $error_name; //エラーメッセージ作成
+    if($header){
+      echo '<font color="#FF0000">' . $error_message . '</font><br>';
+      if($exit) OutputHTMLFooter($exit);
+      return false;
+    }
+    OutputActionResult($error_title, $error_message);
+  }
+
+  //データベースとの接続を閉じる
+  function Disconnect($unlock = false){
+    if(is_null($this->db_handle)) return;
+
+    if($unlock) mysql_query('UNLOCK TABLES'); //ロック解除
+    mysql_close($this->db_handle);
+    $this->db_handle = NULL; //ハンドルをクリア
+  }
+}
+
 //-- クッキーデータのロード処理 --//
 class CookieDataSet{
   var $day_night;  //夜明けを音でしらせるため
@@ -95,4 +142,3 @@ class SoundBase{
 EOF;
   }
 }
-?>

@@ -70,6 +70,11 @@ class MainRoleList{
     'message' => "[役割] [#村人#陣営] [|司祭|系]\n　あなたは|司祭|です。一定日数おきに現在生きている村人陣営の総数を知ることができます。",
     'R' => 0, 'G' => 102, 'B' => 153, 'R2' => 0, 'G2' => 0, 'B2' => 0);
 
+  var $revive_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#天人#です。初日に一度天に帰って下界の様子を眺める事になります。\n　後で颯爽と降臨して華麗に村を勝利に導きましょう。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+
   var $guard = array(
     'message' => "[役割] [村人陣営] [|狩人|系]\n　あなたは|狩人|です。夜の間に村人一人を#人狼#から護ることができます。||#人狼#のココロを読むのです。",
     'R' => 51, 'G' => 153, 'B' => 255, 'R2' => 255, 'G2' => 0, 'B2' => 0);
@@ -114,6 +119,11 @@ class MainRoleList{
   var $mind_scanner = array(
     'message' => "[役割] [#村人#陣営] [|さとり|系]\n　あなたは|さとり|です。誰か一人の心を読むことができます。心を読んだ結果を活かして村を勝利に導きましょう。",
     'R' => 160, 'G' => 160, 'B' => 0, 'R2' => 0, 'G2' => 0, 'B2' => 0);
+
+  var $evoke_scanner = array(
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#イタコ#です。誰か一人の心を#口寄せ#を介して読むことができます。\n　霊界からの情報を活かして村を勝利に導きましょう。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 160, 'G' => 160, 'B' => 0)));
 
   var $mind_scanner_target = array(
     'message' => "あなたが心を読んでいるのは以下の人たちです： ", 'R' => 0, 'G' => 0, 'B' => 0, 'R2' => 0, 'G2' => 0, 'B2' => 0);
@@ -395,13 +405,16 @@ class SubRoleList{
 
   var $mower = array('message' => "　あなたは|草刈り|なので発言から草が刈り取られてしまいます。", 'R' => 221, 'G' => 34, 'B' => 34);
 
-  var $mind_read = array('message' => "　あなたは|サトラレ|です。夜の発言がさとりに読まれてしまいます。", 'R' => 160, 'G' => 160, 'B' => 0);
-
-  var $mind_receiver = array('message' => "　あなたは|受信者|です。夜の間だけ誰かの発言を読み取ることができます。", 'R' => 160, 'G' => 160, 'B' => 0);
-
-  var $mind_friend = array('message' => "　あなたは|共鳴者|です。夜の間だけ共鳴者同士で会話することができます。", 'R' => 160, 'G' => 160, 'B' => 0);
+  var $mind_read = array('message' => "　あなたは|サトラレ|です。夜の発言がさとりに読まれてしまいます。",
+			 'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+  var $mind_receiver = array('message' => "　あなたは|受信者|です。夜の間だけ誰かの発言を読み取ることができます。",
+			     'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+  var $mind_friend = array('message' => "　あなたは|共鳴者|です。夜の間だけ共鳴者同士で会話することができます。",
+			   'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
   var $mind_open = array('message' => "　あなたは|公開者|です。夜の発言が全員に見えます。気をつけましょう。",
-		    'R' => 160, 'G' => 160, 'B' => 0);
+			 'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+  var $mind_evoke = array('message' => "　あなたは|イタコ|に|口寄せ|されています。死んだ後に遺言を介して|イタコ|にメッセージを送ることができます。",
+			  'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
   var $ability_poison = array('message' => "　あなたは|毒|を持っています。処刑されたり、人狼に襲撃された時に誰か一人を道連れにします。",
 		    'R' => 0, 'G' => 153, 'B' => 102);
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ", 'R' => 204, 'G' => 102, 'B' => 51);
@@ -462,6 +475,8 @@ class ResultList{
   var $result_priest = array('message' => "さんは|司祭|でした", 'R' => 0, 'G' => 102, 'B' => 153);
   var $result_crisis_priest = array('message' => "さんは|預言者|でした",
 				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
+  var $result_revive_priest = array('message' => "さんは|天人|でした",
+				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_guard = array('message' => "さんは|狩人|でした", 'R' => 51, 'G' => 153, 'B' => 255);
   var $result_poison_guard = array('message' => "さんは|騎士|でした", 'R' => 51, 'G' => 153, 'B' => 255);
   var $result_reporter = array('message' => "さんは|ブン屋|でした", 'R' => 51, 'G' => 153, 'B' => 255);
@@ -477,6 +492,8 @@ class ResultList{
   var $result_pharmacist = array('message' => "さんは|薬師|でした", 'R' => 0, 'G' => 153, 'B' => 102);
   var $result_assassin = array('message' => "さんは|暗殺者|でした", 'R' => 144, 'G' => 64, 'B' => 64);
   var $result_mind_scanner = array('message' => "さんは|さとり|でした", 'R' => 160, 'G' => 160, 'B' => 0);
+  var $result_evoke_scanner = array('message' => "さんは|イタコ|でした",
+				    'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
   var $result_jealousy = array('message' => "さんは|橋姫|でした", 'R' => 0, 'G' => 204, 'B' => 0);
   var $result_suspect = array('message' => "さんは|不審者|でした", 'R' => 0, 'G' => 0, 'B' => 0);
   var $result_unconscious = array('message' => "さんは|無意識|でした", 'R' => 0, 'G' => 0, 'B' => 0);
@@ -572,7 +589,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->crisis_priest_result);
+$image = MakeImage($gen, $list->mind_evoke);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

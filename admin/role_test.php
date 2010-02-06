@@ -29,7 +29,7 @@ if($_POST['command'] == 'role_test'){
   $option_role = $_POST['game_option'];
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $RQ_ARGS->TestItems->test_room = array('game_option' => $_POST['game_option']);
-  $ROOM = new RoomDataSet($RQ_ARGS);
+  $ROOM = new Room($RQ_ARGS);
   for($i = 1; $i <= $try_count; $i++){
     echo "$i ²óÌÜ";
     $role_list = GetRoleList($user_count, $option_role);

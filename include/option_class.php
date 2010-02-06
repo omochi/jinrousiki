@@ -1,43 +1,44 @@
 <?php
-class Option {
+class OptionManager{
   var $options = array();
 
+  function OptionManager($value){ $this->__construct($value); }
+
   function __construct($value) {
-    foreach(explode(' ', $value) as $option) {
+    $list = explode(' ', $value);
+    foreach($list as $option){
       $items = explode(':', $option);
-      if (count($items) == 1) {
-        $this->options[$items[0]] = true;
-      }
-      else {
-        $this->options[$items[0]] = array_slice($items, 1);
-      }
-    }
-  }
-  function Option($value) {
-    self::__construct($value);
-    //キャッシュの生成
-    foreach($this->options as $name => $value) {
-      $this->__get($name);
+      $this->options[$items[0]] = count($items) > 1 ? array_slice($items, 1) : true;
     }
   }
 
   function __get($name) {
-    return $this->$name = $array_key_exists($name, $this->options) ? $this->options[$name] : false;
+    $this->$name = array_key_exists($name, $this->options) ? $this->options[$name] : false;
+    return $this->$name;
   }
+
   function __set($name, $value) {
-    if ($value === false) {
+    if($value === false){
       unset($this->options[$name]);
     }
-    else {
+    else{
       $this->options[$name] = $value;
     }
   }
 
   function __toString() {
     $result = '';
-    foreach($this->option as $name => $value) {
+    foreach($this->option as $name => $value){
       $result = ' ' . is_array($value) ? "{$name}:" . implode(':', $value) : $name;
     }
     return $result;
+  }
+
+  function Option($value) {
+    $this->__construct($value);
+    //キャッシュの生成
+    foreach($this->options as $name => $value) {
+      $this->__get($name);
+    }
   }
 }

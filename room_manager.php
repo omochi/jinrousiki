@@ -59,7 +59,7 @@ function MaintenanceRoomAction($list, $query, $is_based_finish_time, $base_time)
   while(($array = mysql_fetch_assoc($list)) !== false){
     extract($array);
     $diff_time = $is_based_finish_time ?
-                 $time - strtotime(finish_time) : $time - $last_updated;
+                 $time - strtotime($finish_time) : $time - $last_updated;
     if($diff_time > $base_time) mysql_query($query . $room_no);
   }
 }

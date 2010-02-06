@@ -37,4 +37,3 @@ OutputLastWords();     //°ä¸À
 OutputDeadMan();       //»àË´¼Ô
 if($ROOM->IsNight()) OutputVoteList(); //ÅêÉ¼·ë²Ì
 OutputHTMLFooter(); //HTML¥Õ¥Ã¥¿
-?>

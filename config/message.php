@@ -77,6 +77,7 @@ class Message{
   var $reporter_duty      = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
   var $poison_dead        = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
   var $assassin_killed    = 'は暗殺されたようです'; //暗殺者の襲撃
+  var $priest_returned    = 'は天に帰ったようです'; //天人の帰還
   var $revive_success     = 'は生き返りました'; //蘇生成功
   var $revive_failed      = 'の蘇生に失敗したようです'; //蘇生失敗
   var $lovers_followed    = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺

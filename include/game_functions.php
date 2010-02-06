@@ -1,14 +1,14 @@
 <?php
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF;
+  global $SERVER_CONF, $GAME_CONF, $RQ_ARGS, $ROOM, $SELF;
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . $ROOM->id . '&auto_reload=' . $RQ_ARGS->auto_reload;
   if($RQ_ARGS->play_sound) $url_header .= '&play_sound=on';
   if($RQ_ARGS->list_down)  $url_header .= '&list_down=on';
 
-  $title = '汝は人狼なりや？ [プレイ]';
+  $title = $SERVER_CONF->title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
   if(preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){ //MAC かどうか判別
     $sentence = '';  //MAC は JavaScript でエラー？
@@ -24,8 +24,8 @@ function OutputGamePageHeader(){
   }
 
   //ゲーム中、死んで霊話モードに行くとき
-  if(! $ROOM->IsAfterGame() && $SELF->IsDead() && ! $ROOM->log_mode &&
-     ! $ROOM->dead_mode && ! $ROOM->heaven_mode){
+  if($ROOM->IsPlaying() && $SELF->IsDead() &&
+     ! ($ROOM->log_mode || $ROOM->dead_mode || $ROOM->heaven_mode)){
     $jump_url =  $url_header . '&dead_mode=on';
     $sentence .= '天国モードに切り替えます。';
   }
@@ -55,14 +55,13 @@ function OutputGamePageHeader(){
   }
 
   //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
-  if($ROOM->IsPlaying() && $ROOM->IsRealTime() && ! $ROOM->heaven_mode && ! $ROOM->log_mode){
+  if($ROOM->IsPlaying() && $ROOM->IsRealTime() && ! ($ROOM->log_mode || $ROOM->heaven_mode)){
     list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
     $on_load .= 'output_realtime();';
     OutputRealTimer($start_time, $end_time);
   }
-  echo '</head>'."\n";
-  echo '<body onLoad="' . $on_load . '">'."\n";
-  echo '<a name="#game_top"></a>'."\n";
+  echo '</head>'."\n" . '<body onLoad="' . $on_load . '">'."\n" .
+    '<a name="#game_top"></a>'."\n";
 }
 
 //リアルタイム表示に使う JavaScript の変数を出力
@@ -130,21 +129,18 @@ function OutputPlayerList(){
   $is_open_role = ($ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
 		   ($SELF->IsDead() && $ROOM->IsOpenCast()));
 
-  //ゲーム開始投票チェック用クエリ
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
-    "AND situation = 'GAMESTART' AND uname = ";
-
   $str = '<div class="player"><table cellspacing="5"><tr>'."\n";
   foreach($USERS->rows as $user_no => $user){
     if($count > 0 && ($count % 5) == 0) $str .= "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
 
     //ゲーム開始投票をしていたら背景色を変える
-    $td_header = '<td>';
     if($ROOM->IsBeforeGame() &&
-       (($user->IsDummyBoy() && ! $ROOM->IsQuiz()) ||
-	FetchResult($query . "'{$user->uname}'") > 0)){
+       (($user->IsDummyBoy() && ! $ROOM->IsQuiz()) || isset($ROOM->vote[$user->uname]))){
       $td_header = '<td class="already-vote">';
+    }
+    else{
+      $td_header = '<td>';
     }
 
     //ユーザプロフィールと枠線の色を追加
@@ -191,7 +187,7 @@ function OutputPlayerList(){
 	$str .= MakeRoleName($user->main_role, 'guard');
       elseif($user->IsRoleGroup('common'))
 	$str .= MakeRoleName($user->main_role, 'common');
-      elseif($user->IsRole('mind_scanner'))
+      elseif($user->IsRoleGroup('scanner'))
 	$str .= MakeRoleName($user->main_role, 'mind');
       elseif($user->IsRoleGroup('jealousy'))
 	$str .= MakeRoleName($user->main_role, 'jealousy');
@@ -256,23 +252,24 @@ function OutputVictory(){
   $winner  = $victory;
 
   switch($victory){ //特殊ケース対応
-    //狐勝利系
-    case 'fox1':
-    case 'fox2':
-      $class = 'fox';
-      break;
+  //妖狐勝利系
+  case 'fox1':
+  case 'fox2':
+    $class = 'fox';
+    break;
 
-    //引き分け系
-    case 'draw': //引き分け
-    case 'vanish': //全滅
-    case 'quiz_dead': //クイズ村 GM 死亡
-      $class = 'none';
-      break;
+  //引き分け系
+  case 'draw': //引き分け
+  case 'vanish': //全滅
+  case 'quiz_dead': //クイズ村 GM 死亡
+    $class = 'none';
+    break;
 
-    case NULL: //廃村
-      $class  = 'none';
-      $winner = ($ROOM->date > 0 ? 'unfinished' : 'none');
-      break;
+  //廃村系
+  case NULL:
+    $class  = 'none';
+    $winner = ($ROOM->date > 0 ? 'unfinished' : 'none');
+    break;
   }
   echo <<<EOF
 <table class="victory victory-{$class}"><tr>
@@ -282,15 +279,17 @@ function OutputVictory(){
 EOF;
 
   //-- 個々の勝敗結果 --//
-  //勝敗未決定、観戦モード、ログ閲覧モードなら非表示
+  //勝敗未決定、観戦モード、ログ閲覧モードならスキップ
   if(is_null($victory) || $ROOM->view_mode || $ROOM->log_mode) return;
 
   $result = 'win';
   $target_user = $SELF;
-  while($target_user->IsRole('unknown_mania')){
-    if(! is_array($target_user->partner_list['unknown_mania'])) break;
-    $target_user = $USERS->ByID($target_user->partner_list['unknown_mania'][0]);
-    if($target_user->IsSelf()) break;
+  while($target_user->IsRole('unknown_mania')){ //鵺の処理
+    $target_list = $target_user->partner_list['unknown_mania'];
+    if(! is_array($target_list)) break; //コピー先が見つからなければスキップ
+
+    $target_user = $USERS->ByID($target_list[0]);
+    if($target_user->IsSelf()) break; //自分に戻ったらスキップ
   }
   $camp = $target_user->DistinguishCamp(); //所属陣営を取得
 
@@ -302,13 +301,12 @@ EOF;
     $class  = 'none';
     $result = ($camp == 'quiz' ? 'lose' : 'draw');
   }
-  elseif($camp == 'chiroptera' && $SELF->IsLive()){ //蝙蝠陣営は生きていれば勝利
-    $class = 'chiroptera';
-  }
   else{
     if($SELF->IsLovers()) $camp = 'lovers'; //恋人なら所属陣営を上書き
 
-    if($victory == 'human' && $camp == 'human')
+    if($camp == 'chiroptera' && $SELF->IsLive()) //蝙蝠陣営は生きていれば勝利
+      $class = 'chiroptera';
+    elseif($victory == 'human' && $camp == 'human')
       $class = 'human';
     elseif($victory == 'wolf' && $camp == 'wolf')
       $class = 'wolf';
@@ -784,7 +782,8 @@ function OutputDeadMan(){
   $type_night = "type = 'WOLF_KILLED' OR type LIKE 'POSSESSED%' OR type = 'DREAM_KILLED' " .
     "OR type = 'TRAPPED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
     "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
-    "OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' OR type LIKE 'REVIVE_%'";
+    "OR type = 'PRIEST_RETURNED' OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' " .
+    "OR type LIKE 'REVIVE_%'";
 
   if($ROOM->IsDay()){
     $set_date = $yesterday;
@@ -895,6 +894,11 @@ function OutputDeadManType($name, $type){
   case 'ASSASSIN_KILLED':
     echo $deadman;
     if($show_reason) echo $reason_header.$MESSAGE->assassin_killed.')</td>';
+    break;
+
+  case 'PRIEST_RETURNED':
+    echo $deadman;
+    if($show_reason) echo $reason_header.$MESSAGE->priest_returned.')</td>';
     break;
 
   case 'LOVERS_FOLLOWED_day':

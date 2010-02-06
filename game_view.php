@@ -30,6 +30,7 @@ else{
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  =& new User();
+if($ROOM->IsBeforeGame()) $ROOM->LoadVote();
 
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 

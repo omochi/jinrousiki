@@ -207,7 +207,7 @@ function CryptPassword($raw_password){
 function PrintData($data, $name = NULL){
   $str = (is_null($name) ? '' : $name . ': ');
   $str .= ((is_array($data) || is_object($data)) ? print_r($data, true) : $data);
-  echo $str . '<br>', $name;
+  echo $str . '<br>';
 }
 
 //ゲームオプションの画像タグを作成する

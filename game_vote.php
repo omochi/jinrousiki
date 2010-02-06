@@ -318,8 +318,8 @@ function AggregateVoteGameStart($force_start = false){
   $rand_keys_index = 0;
   $sub_role_count_list = array();
   //割り振り対象外役職のリスト
-  $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_receiver',
-			    'mind_friend');
+  $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_evoke',
+			    'mind_receiver', 'mind_friend');
 
   //サブ役職テスト用
   /*
@@ -626,7 +626,7 @@ function VoteNight(){
     break;
 
   case 'VOODOO_KILLER_DO':
-    if(! $SELF->IsRoleGroup('voodoo_killer')) OutputVoteResult('夜：陰陽師以外は投票できません');
+    if(! $SELF->IsRole('voodoo_killer')) OutputVoteResult('夜：陰陽師以外は投票できません');
     break;
 
   case 'JAMMER_MAD_DO':
@@ -676,7 +676,7 @@ function VoteNight(){
     break;
 
   case 'MIND_SCANNER_DO':
-    if(! $SELF->IsRole('mind_scanner')) OutputVoteResult('夜：さとり以外は投票できません');
+    if(! $SELF->IsRoleGroup('scanner')) OutputVoteResult('夜：さとり以外は投票できません');
     break;
 
   case 'VOODOO_FOX_DO':
@@ -1009,7 +1009,7 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
     CheckAlreadyVote('ASSASSIN_DO', 'ASSASSIN_NOT_DO');
   }
-  elseif($role_mind_scanner = $SELF->IsRole('mind_scanner')){
+  elseif($role_mind_scanner = $SELF->IsRoleGroup('scanner')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('MIND_SCANNER_DO');
   }
@@ -1226,4 +1226,3 @@ function CheckDayNight(){
 function CheckAlreadyVote($situation, $not_situation = ''){
   if(CheckSelfVoteNight($situation, $not_situation)) OutputVoteResult('夜：投票済み');
 }
-?>

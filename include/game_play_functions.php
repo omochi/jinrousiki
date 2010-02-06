@@ -6,8 +6,9 @@ function OutputAbility(){
   //ゲーム中のみ表示する
   if(! $ROOM->IsPlaying()) return false;
 
-  if($SELF->IsDead()){ //死亡したら能力を表示しない
+  if($SELF->IsDead()){ //死亡したら本人の能力を表示しない
     echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
+    if($SELF->IsRole('mind_evoke')) $ROLE_IMG->DisplayImage('mind_evoke');
     return;
   }
 
@@ -38,13 +39,17 @@ function OutputAbility(){
     $ROLE_IMG->DisplayImage($SELF->main_role);
     OutputSelfAbilityResult('MEDIUM_RESULT'); //神託結果を表示
   }
-  elseif($SELF->IsRole('priest')){ //司祭
-    $ROLE_IMG->DisplayImage($SELF->main_role);
-    OutputSelfAbilityResult('PRIEST_RESULT'); //神託結果を表示
-  }
-  elseif($SELF->IsRole('crisis_priest')){ //預言者
-    $ROLE_IMG->DisplayImage('human');
-    OutputSelfAbilityResult('CRISIS_PRIEST_RESULT'); //神託結果を表示
+  elseif($SELF->IsRoleGroup('priest')){ //司祭
+    $ROLE_IMG->DisplayImage($SELF->IsRole('crisis_priest') ? 'human' : $SELF->main_role);
+    switch($SELF->main_role){
+    case 'priest':
+      OutputSelfAbilityResult('PRIEST_RESULT'); //神託結果を表示
+      break;
+
+    case 'crisis_priest':
+      OutputSelfAbilityResult('CRISIS_PRIEST_RESULT'); //神託結果を表示
+      break;
+    }
   }
   elseif($SELF->IsRoleGroup('guard')){ //狩人系
     $ROLE_IMG->DisplayImage($SELF->IsRole('dummy_guard') ? 'guard' : $SELF->main_role);
@@ -84,13 +89,14 @@ function OutputAbility(){
       OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
   }
-  elseif($SELF->IsRole('mind_scanner')){ //さとり
+  elseif($SELF->IsRoleGroup('scanner')){ //さとり系
     $ROLE_IMG->DisplayImage($SELF->main_role);
 
     if($ROOM->date > 1){ //二日目以降、自分が心を読んでいる相手を表示
       $target = array();
+      $target_role = ($SELF->IsRole('mind_scanner') ? 'mind_read' : 'mind_evoke');
       foreach($USERS->rows as $user){
-	if($user->IsPartner('mind_read', $SELF->user_no)) $target[] = $user->handle_name;
+	if($user->IsPartner($target_role, $SELF->user_no)) $target[] = $user->handle_name;
       }
       OutputPartner($target, 'mind_scanner_target');
     }
@@ -303,6 +309,7 @@ function OutputAbility(){
 
   if($ROOM->date > 1){ //サトラレ系の表示は 2 日目以降
     if($virtual_self->IsRole('mind_read')) $ROLE_IMG->DisplayImage('mind_read');
+    if($virtual_self->IsRole('mind_evoke')) $ROLE_IMG->DisplayImage('mind_evoke');
 
     if($virtual_self->IsRole('mind_receiver')){
       $ROLE_IMG->DisplayImage('mind_receiver');
@@ -327,7 +334,7 @@ function OutputAbility(){
       OutputPartner($mind_friend, 'mind_friend_list');
     }
   }
-  array_push($fix_display_list, 'mind_read', 'mind_receiver', 'mind_friend');
+  array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_receiver', 'mind_friend');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -350,9 +357,8 @@ function OutputPartner($partner_list, $header, $footer = NULL){
   if(count($partner_list) < 1) return false; //仲間がいなければ表示しない
 
   $str = '<table class="ability-partner"><tr>'."\n" .
-    '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n" . '<td>　';
-  foreach($partner_list as $partner) $str .= $partner . 'さん　　';
-  $str .= '</td>'."\n";
+    '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n" .
+    '<td>　' . implode('さん　', $partner_list) . 'さん　</td>'."\n";
   if($footer) $str .= '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
   echo $str . '</tr></table>'."\n";
 }
@@ -519,6 +525,10 @@ function OutputSelfAbilityResult($action){
 }
 
 //能力発動結果をデータベースに問い合わせる
+/*
+  この関数は削除予定です。
+  新しい情報を定義する場合は OutputSelfAbilityResult() を使用してください。
+*/
 function GetAbilityActionResult($action){
   global $ROOM;
 
