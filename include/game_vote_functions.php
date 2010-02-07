@@ -76,15 +76,16 @@ function GetRoleList($user_count, $option_role){
     $add_count = floor($user_count / $CAST_CONF->min_fox_rate) - $fix_role_group_list['fox'];
     for(; $add_count > 0; $add_count--){
       $rand = mt_rand(1, 100);
-      if($rand < 1)       $random_role_list['cursed_fox']++;
-      elseif($rand <  3)  $random_role_list['voodoo_fox']++;
-      elseif($rand <  6)  $random_role_list['poison_fox']++;
-      elseif($rand <  9)  $random_role_list['white_fox']++;
-      elseif($rand < 10)  $random_role_list['black_fox']++;
-      elseif($rand < 12)  $random_role_list['cute_fox']++;
-      elseif($rand < 15)  $random_role_list['scarlet_fox']++;
-      elseif($rand < 16)  $random_role_list['silver_fox']++;
-      elseif($rand < 18)  $random_role_list['child_fox']++;
+      if(    $rand <  2)  $random_role_list['white_fox']++;
+      elseif($rand <  5)  $random_role_list['black_fox']++;
+      elseif($rand <  8)  $random_role_list['poison_fox']++;
+      elseif($rand < 10)  $random_role_list['voodoo_fox']++;
+      elseif($rand < 11)  $random_role_list['revive_fox']++;
+      elseif($rand < 12)  $random_role_list['cursed_fox']++;
+      elseif($rand < 15)  $random_role_list['cute_fox']++;
+      elseif($rand < 18)  $random_role_list['scarlet_fox']++;
+      elseif($rand < 20)  $random_role_list['silver_fox']++;
+      elseif($rand < 22)  $random_role_list['child_fox']++;
       else                $random_role_list['fox']++;
     }
 
@@ -96,15 +97,17 @@ function GetRoleList($user_count, $option_role){
       if(    $rand <  20) $random_role_list['mage']++;
       elseif($rand <  25) $random_role_list['soul_mage']++;
       elseif($rand <  35) $random_role_list['psycho_mage']++;
-      elseif($rand <  50) $random_role_list['sex_mage']++;
-      elseif($rand <  58) $random_role_list['voodoo_killer']++;
-      elseif($rand <  70) $random_role_list['dummy_mage']++;
-      elseif($rand < 105) $random_role_list['necromancer']++;
-      elseif($rand < 110) $random_role_list['soul_necromancer']++;
-      elseif($rand < 120) $random_role_list['yama_necromancer']++;
-      elseif($rand < 140) $random_role_list['dummy_necromancer']++;
-      elseif($rand < 170) $random_role_list['medium']++;
-      elseif($rand < 180) $random_role_list['priest']++;
+      elseif($rand <  45) $random_role_list['sex_mage']++;
+      elseif($rand <  55) $random_role_list['voodoo_killer']++;
+      elseif($rand <  65) $random_role_list['dummy_mage']++;
+      elseif($rand < 100) $random_role_list['necromancer']++;
+      elseif($rand < 105) $random_role_list['soul_necromancer']++;
+      elseif($rand < 115) $random_role_list['yama_necromancer']++;
+      elseif($rand < 130) $random_role_list['dummy_necromancer']++;
+      elseif($rand < 155) $random_role_list['medium']++;
+      elseif($rand < 165) $random_role_list['priest']++;
+      elseif($rand < 170) $random_role_list['crisis_priest']++;
+      elseif($rand < 180) $random_role_list['revive_priest']++;
       elseif($rand < 260) $random_role_list['common']++;
       elseif($rand < 270) $random_role_list['dummy_common']++;
       elseif($rand < 310) $random_role_list['guard']++;
@@ -117,11 +120,13 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 395) $random_role_list['incubate_poison']++;
       elseif($rand < 410) $random_role_list['dummy_poison']++;
       elseif($rand < 420) $random_role_list['poison_cat']++;
-      elseif($rand < 450) $random_role_list['pharmacist']++;
-      elseif($rand < 470) $random_role_list['assassin']++;
-      elseif($rand < 490) $random_role_list['mind_scanner']++;
-      elseif($rand < 505) $random_role_list['jealousy']++;
-      elseif($rand < 520) $random_role_list['suspect']++;
+      elseif($rand < 425) $random_role_list['revive_cat']++;
+      elseif($rand < 455) $random_role_list['pharmacist']++;
+      elseif($rand < 475) $random_role_list['assassin']++;
+      elseif($rand < 495) $random_role_list['mind_scanner']++;
+      elseif($rand < 505) $random_role_list['evoke_scanner']++;
+      elseif($rand < 520) $random_role_list['jealousy']++;
+      elseif($rand < 530) $random_role_list['suspect']++;
       elseif($rand < 540) $random_role_list['unconscious']++;
       elseif($rand < 590) $random_role_list['wolf']++;
       elseif($rand < 600) $random_role_list['boss_wolf']++;
@@ -142,14 +147,15 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 800) $random_role_list['corpse_courier_mad']++;
       elseif($rand < 810) $random_role_list['dream_eater_mad']++;
       elseif($rand < 820) $random_role_list['trap_mad']++;
-      elseif($rand < 835) $random_role_list['fox']++;
-      elseif($rand < 842) $random_role_list['white_fox']++;
-      elseif($rand < 849) $random_role_list['black_fox']++;
-      elseif($rand < 856) $random_role_list['poison_fox']++;
-      elseif($rand < 861) $random_role_list['voodoo_fox']++;
-      elseif($rand < 864) $random_role_list['cursed_fox']++;
-      elseif($rand < 870) $random_role_list['cute_fox']++;
-      elseif($rand < 875) $random_role_list['scarlet_fox']++;
+      elseif($rand < 830) $random_role_list['fox']++;
+      elseif($rand < 837) $random_role_list['white_fox']++;
+      elseif($rand < 842) $random_role_list['black_fox']++;
+      elseif($rand < 849) $random_role_list['poison_fox']++;
+      elseif($rand < 854) $random_role_list['voodoo_fox']++;
+      elseif($rand < 859) $random_role_list['revive_fox']++;
+      elseif($rand < 862) $random_role_list['cursed_fox']++;
+      elseif($rand < 869) $random_role_list['cute_fox']++;
+      elseif($rand < 874) $random_role_list['scarlet_fox']++;
       elseif($rand < 880) $random_role_list['silver_fox']++;
       elseif($rand < 890) $random_role_list['child_fox']++;
       elseif($rand < 915) $random_role_list['cupid']++;
@@ -1130,43 +1136,6 @@ function AggregateVoteDay(){
   mysql_query('COMMIT'); //一応コミット
 }
 
-//夜の役職の投票状況をチェックして投票結果を返す
-function CheckVoteNight($action, $role, $dummy_boy_role = '', $not_type = ''){
-  global $ROOM;
-
-  //投票情報を取得
-  $query_vote = "SELECT uname, target_uname FROM vote WHERE room_no = {$ROOM->id} " .
-    "AND date = {$ROOM->date} AND situation = '$action'";
-  $vote_data = FetchAssoc($query_vote);
-  $vote_count = count($vote_data); //投票人数を取得
-
-  if($not_type != ''){ //キャンセルタイプの投票情報を取得
-    $query_not_type = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
-      "AND date = {$ROOM->date} AND situation = '$not_type'";
-    $vote_count += FetchResult($query_not_type); //投票人数に追加
-  }
-
-  //狼の噛みは一人で OK
-  if($action == 'WOLF_EAT') return ($vote_count > 0 ? $vote_data[0] : false);
-
-  //生きている対象役職の人数をカウント
-  $query_role = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} ".
-    "AND live = 'live' AND user_no > 0 AND ";
-  if($action == 'CUPID_DO'){ //夢求愛者対応
-    $query_role .= "(role LIKE '{$role}%' OR role LIKE 'dummy_chiroptera%')";
-  }
-  else{
-    $query_role .= "role LIKE '{$role}%'";
-  }
-  if($action == 'TRAP_MAD_DO') $query_role .= " AND !(role LIKE '%lost_ability%')"; //罠師対応
-  $role_count = FetchResult($query_role);
-
-  //初日、身代わり君が特定の役職だった場合はカウントしない
-  if($dummy_boy_role != '' && strpos($role, $dummy_boy_role) !== false) $role_count--;
-
-  return ($vote_count == $role_count ? $vote_data : false);
-}
-
 //夜の集計処理
 function AggregateVoteNight(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
@@ -1207,7 +1176,7 @@ function AggregateVoteNight(){
       if(is_null($vote_data['CHILD_FOX_DO'][$user->uname])) return false;
     }
     elseif($ROOM->date == 1){
-      if($user->IsRoleGroup('scanner')){
+      if($user->IsRole('mind_scanner')){
 	if(is_null($vote_data['MIND_SCANNER_DO'][$user->uname])) return false;
       }
       elseif($user->IsRoleGroup('cupid')){
@@ -1215,6 +1184,9 @@ function AggregateVoteNight(){
       }
       elseif($user->IsRoleGroup('mania')){
 	if(is_null($vote_data['MANIA_DO'][$user->uname])) return false;
+      }
+      elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
+	if(is_null($vote_data['MIND_SCANNER_DO'][$user->uname])) return false;
       }
     }
     else{
@@ -1267,15 +1239,23 @@ function AggregateVoteNight(){
 
   //-- 能力判定の基本ルール --//
   /*
-    キューピッド系 → 接触系 → 祈祷系 (→ コピー系) → 蘇生系 → 憑依処理
-    + 接触系 (人狼、狩人、暗殺者、罠師)
+    + レイヤー (階層) 別の処理順序
+      - 恋人 → 接触 → 夢 → 占い → <日にち別処理> → 憑依 → 後追い → 司祭
+        <[初日] コピー → 帰還 / [二日目以降] 尾行 → 蘇生>
+
+    + 恋人 (キューピッド系)
+      - 相互作用はないので投票直後に処理を行う
+
+    + 接触 (人狼、狩人、暗殺者、罠師)
       - 罠 > 狩人護衛 > 人狼襲撃 → 狩人の狩り → 暗殺
 
-    + 祈祷系 (占い系、厄神、夢守人、月兎、呪術系、獏)
-      - 夢守人護衛 > 獏襲撃 → 夢守人の狩り→ 厄払い > 呪い > 占い妨害 > 占い (呪殺)
+    + 夢 (夢守人、獏)
+      - 夢守人護衛 > 獏襲撃 → 夢守人の狩り
+
+    + 占い (占い系、厄神、夢守人、月兎、呪術系)
+      → 厄払い > 呪い > 占い妨害 > 占い (呪殺)
 
     人狼、占い師、ブン屋など、行動結果で死者が出るタイプは判定順に注意
-
     例1) どちらの判定を先に行うかで妖狐の生死が決まる (基本的には人狼の襲撃を優先する)
     人狼 → 占い師 → 妖狐
 
@@ -1417,8 +1397,8 @@ function AggregateVoteNight(){
 
   if($ROOM->date > 1){
     //狩人系の狩り対象リスト
-    $hunt_target_list = array('jammer_mad', 'voodoo_mad', 'corpse_courier_mad',
-			      'dream_eater_mad', 'trap_mad', 'cursed_fox', 'voodoo_fox', 'revive_fox',
+    $hunt_target_list = array('jammer_mad', 'voodoo_mad', 'corpse_courier_mad', 'dream_eater_mad',
+			      'trap_mad', 'cursed_fox', 'voodoo_fox', 'revive_fox',
 			      'poison_chiroptera', 'cursed_chiroptera');
     foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
       $user = $USERS->ByUname($uname);
@@ -1760,6 +1740,15 @@ function AggregateVoteNight(){
 	InsertSystemMessage($sentence, 'MANIA_RESULT');
       }
     }
+
+    if(! $ROOM->IsOpenCast()){
+      foreach($USERS->rows as $user){ //天人の帰還処理
+	if($user->IsLive(true) && $user->IsRole('revive_priest') &&
+	   ! $user->IsDummyBoy() && ! $user->IsLovers()){
+	  $USERS->Kill($user->user_no, 'PRIEST_RETURNED');
+	}
+      }
+    }
   }
   else{
     //-- 尾行系レイヤー --//
@@ -1833,7 +1822,7 @@ function AggregateVoteNight(){
 	  //$target = $USERS->ByID(8); //テスト用
 	  //PrintData($target->uname, 'Revive User');
 	  if($target->IsRoleGroup('cat', 'revive') || $target->IsLovers()){
-	    break; //蘇生能力者、天人、恋人なら蘇生失敗
+	    break; //蘇生能力者か恋人なら蘇生失敗
 	  }
 
 	  $result = 'success';
@@ -1888,15 +1877,15 @@ function AggregateVoteNight(){
 	}while(false);
 
 	if($result == 'success'){
-	  if($user->IsRole('revive_cat')){
-	    $revive_times = (int)$user->partner_list['revive_cat'][0];
+	  if($user->IsRole('revive_cat')){ //仙狸の蘇生成功カウントを更新
+	    //$revive_times = (int)$user->partner_list['revive_cat'][0]; //取得済みのはず
 	    $base_role = $user->main_role;
 	    if($revive_times > 0) $base_role .= '[' . strval($revive_times) . ']';
 
 	    $new_role = $user->main_role . '[' . strval($revive_times + 1) . ']';
 	    $user->ReplaceRole($base_role, $new_role);
 	  }
-	  elseif($user->IsRole('revive_fox')){
+	  elseif($user->IsRole('revive_fox')){ //仙狐の能力失効処理
 	    $user->AddRole('lost_ability');
 	  }
 	}
@@ -1968,46 +1957,39 @@ function AggregateVoteNight(){
     }
   }
 
-  //天人の帰還処理
-  if(! $ROOM->IsOpenCast() && $ROOM->date == 1){
-    foreach($USERS->rows as $user){
-      if($user->IsLive(true) && $user->IsRole('revive_priest') &&
-	 ! $user->IsDummyBoy() && ! $user->IsLovers() ){
-	$USERS->Kill($user->user_no, 'PRIEST_RETURNED');
-      }
-    }
-  }
-
   LoversFollowed(); //恋人後追い処理
   InsertMediumMessage(); //巫女のシステムメッセージ
 
-  if($ROOM->date > 2 && ($ROOM->date % 2) == 1 && $USERS->IsAppear('priest')){ //司祭の判定
-    $live_count = 0;
-    foreach($USERS->rows as $user){
-      if($user->IsLive(true) && $user->DistinguishCamp() == 'human') $live_count++;
+  //-- 司祭系レイヤー --//
+  $priest_flag = false;
+  $crisis_priest_flag = false;
+  $revive_priest_list = array();
+  $live_count = array();
+  foreach($USERS->rows as $user){ //司祭系の情報収集
+    if(! $user->IsDummyBoy()){
+      $priest_flag        |= $user->IsRole('priest');
+      $crisis_priest_flag |= $user->IsRole('crisis_priest');
+      if($user->IsActiveRole('revive_priest')) $revive_priest_list[] = $user->uname;
     }
-    InsertSystemMessage($live_count, 'PRIEST_RESULT');
+    if($user->IsDead(true)) continue;
+
+    $live_count['total']++;
+    if($user->IsWolf()) $live_count['wolf']++;
+    elseif($user->IsFox()) $live_count['fox']++;
+    else{
+      $live_count['human']++;
+      if($user->DistinguishCamp() == 'human') $live_count['human_side']++;
+    }
+    if($user->IsLovers()) $live_count['lovers']++;
+  }
+  //PrintData($live_count, 'Live Count');
+
+  if($priest_flag && $ROOM->date > 2 && ($ROOM->date % 2) == 1){ //司祭の処理
+    InsertSystemMessage($live_count['human_side'], 'PRIEST_RESULT');
   }
 
-  if($USERS->IsAppear('crisis_priest', 'revive_priest')){ //司祭系の処理
-    //現在の生存カウントを取得
-    $live_count = array();
-    foreach($USERS->rows as $this_user){
-      if(! $this_user->IsLive(true)) continue;
-
-      $live_count['total']++;
-      if($this_user->IsWolf())
-	$live_count['wolf']++;
-      elseif($this_user->IsFox())
-	$live_count['fox']++;
-      else
-	$live_count['human']++;
-
-      if($this_user->IsLovers()) $live_count['lovers']++;
-    }
-    //PrintData($live_count, 'Live Count');
-
-    //「鉄火場」判定
+  if($crisis_priest_flag || count($revive_priest_list) > 0){ //預言者、天人の処理
+    //「人外勝利前日」判定
     $crisis_priest_result = '';
     if($live_count['total'] - $live_count['lovers'] <= 2){
       $crisis_priest_result = 'lovers';
@@ -2021,17 +2003,20 @@ function AggregateVoteNight(){
 	$crisis_priest_result = 'wolf';
     }
 
-    if($crisis_priest_result != ''){ //預言者の処理
+    if($crisis_priest_flag && $crisis_priest_result != ''){ //預言者の処理
       InsertSystemMessage($crisis_priest_result, 'CRISIS_PRIEST_RESULT');
     }
 
     //天人の蘇生判定処理
-    if(! $ROOM->IsOpenCast() &&
-       ($ROOM->date == 4 || $crisis_priest_result != '' ||
+    if(! $ROOM->IsOpenCast() && count($revive_priest_list) > 0 &&
+       ($ROOM->date == 4 || $crisis_priest_result != '' || $live_count['wolf'] == 1 ||
 	count($USERS->rows) >= $live_count['total'] * 2)){
-      foreach($USERS->rows as $user){
-	if($user->IsDead(true) && $user->IsActiveRole('revive_priest') &&
-	   ! $user->IsDummyBoy() && ! $user->IsLovers()){
+      foreach($revive_priest_list as $uname){
+	$user = $USERS->ByUname($uname);
+	if($user->IsLovers() || ($ROOM->date >= 4 && $user->IsLive(true))){
+	  $user->AddRole('lost_ability');
+	}
+	elseif($user->IsDead(true)){
 	  $user->Revive();
 	  $user->AddRole('lost_ability');
 	}

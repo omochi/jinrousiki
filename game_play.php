@@ -217,7 +217,9 @@ function ConvertSay(&$say){
   }
 
   //草刈りの処理
-  if($virtual_self->IsRole('mower')) $say = strtr($say, array('w' => '', 'ｗ' => '', 'W' => '', 'Ｗ' => ''));
+  if($virtual_self->IsRole('mower')){
+    $say = strtr($say, array('w' => '', 'ｗ' => '', 'W' => '', 'Ｗ' => ''));
+  }
 
   if($virtual_self->IsRole('side_reverse')){ //鏡迷彩の処理
     $convert_say = '';
@@ -268,7 +270,8 @@ function EntryLastWords($say){
   elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){
     //口寄せしているイタコすべての遺言を更新する
     foreach($SELF->partner_list['mind_evoke'] as $target_id){
-      $USERS->ByID($target_id)->Update('last_words', $say);
+      $target = $USERS->ByID($target_id);
+      if($target->IsLive()) $target->Update('last_words', $say);
     }
   }
 }
@@ -284,14 +287,9 @@ function Say($say){
   }
   else{ //会話で時間経過制
     GetTalkPassTime(&$left_time); //経過時間の和
-    if(strlen($say) <= 100) //経過時間
-      $spend_time = 1;
-    elseif(strlen($say) <= 200)
-      $spend_time = 2;
-    elseif(strlen($say) <= 300)
-      $spend_time = 3;
-    else
-      $spend_time = 4;
+    $spend_time = floor(strlen($say) / 100); //経過時間
+    if($spend_time < 1) $spend_time = 1; //最小は 1
+    elseif($spend_time > 4) $spend_time = 4; //最大は 4
   }
 
   if(! $ROOM->IsPlaying()){ //ゲーム開始前後はそのまま発言
@@ -309,16 +307,21 @@ function Say($say){
       Write($say, 'day', $spend_time, true);
     }
     elseif($ROOM->IsNight()){ //夜は役職毎に分ける
+      $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ
+      if(! $update) $spend_time = 0;
+
       if($virtual_self->IsWolf(true)) //人狼
-	Write($say, 'night wolf', $spend_time, true);
+	$location = 'wolf';
       elseif($virtual_self->IsRole('whisper_mad')) //囁き狂人
-	Write($say, 'night mad', 0);
+	$location = 'mad';
       elseif($virtual_self->IsRole('common')) //共有者
-	Write($say, 'night common', 0);
+	$location = 'common';
       elseif($virtual_self->IsFox(true)) //妖狐
-	Write($say, 'night fox', 0);
+	$location = 'fox';
       else //独り言
-	Write($say, 'night self_talk', 0);
+	$location = 'self_talk';
+
+      Write($say, 'night ' . $location, $spend_time, $update);
     }
   }
 }
@@ -334,8 +337,8 @@ function Write($say, $location, $spend_time, $update = false){
     if(    $SELF->IsRole('strong_voice'))  $voice = 'strong';
     elseif($SELF->IsRole('normal_voice'))  $voice = 'normal';
     elseif($SELF->IsRole('weak_voice'))    $voice = 'weak';
-    elseif($SELF->IsRole('inside_voice'))  $voice = ($ROOM->IsDay() ? 'weak' : 'strong');
-    elseif($SELF->IsRole('outside_voice')) $voice = ($ROOM->IsDay() ? 'strong' : 'weak');
+    elseif($SELF->IsRole('inside_voice'))  $voice = $ROOM->IsDay() ? 'weak' : 'strong';
+    elseif($SELF->IsRole('outside_voice')) $voice = $ROOM->IsDay() ? 'strong' : 'weak';
     elseif($SELF->IsRole('upper_voice')){
       $voice_key = array_search($voice, $voice_list);
       if($voice_key == 0) $say = $MESSAGE->howling;
@@ -499,11 +502,11 @@ function OutputGameHeader(){
   $room_message = '<td class="room"><span>' . $ROOM->name . '村</span>　〜' . $ROOM->comment .
     '〜[' . $ROOM->id . '番地]</td>'."\n";
   $url_room   = '?room_no=' . $ROOM->id;
-  $url_reload = ($RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '');
-  $url_sound  = ($RQ_ARGS->play_sound ? '&play_sound=on'  : '');
-  $url_list   = ($RQ_ARGS->list_down  ? '&list_down=on'   : '');
-  $url_dead   = ($ROOM->dead_mode     ? '&dead_mode=on'   : '');
-  $url_heaven = ($ROOM->heaven_mode   ? '&heaven_mode=on' : '');
+  $url_reload = $RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '';
+  $url_sound  = $RQ_ARGS->play_sound ? '&play_sound=on'  : '';
+  $url_list   = $RQ_ARGS->list_down  ? '&list_down=on'   : '';
+  $url_dead   = $ROOM->dead_mode     ? '&dead_mode=on'   : '';
+  $url_heaven = $ROOM->heaven_mode   ? '&heaven_mode=on' : '';
   $real_time  = $ROOM->IsRealTime();
 
   echo '<table class="game-header"><tr>'."\n";

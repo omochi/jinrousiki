@@ -565,7 +565,7 @@ class CastConfig{
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
-  var $chaos_fix_role_list = array('possessed_wolf' => 1, 'mage' => 1);
+  var $chaos_fix_role_list = array('wolf' => 1, 'mage' => 1);
 
   var $min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
   var $min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)

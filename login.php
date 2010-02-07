@@ -5,7 +5,7 @@ $RQ_ARGS =& new RequestLogin(); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 session_start(); //セッション開始
 
-//ログイン処理
+//-- ログイン処理 --//
 //DB 接続解除は OutputActionResult() が行う
 if($RQ_ARGS->login_type == 'manually'){ //ユーザ名とパスワードで手動ログイン
   if(LoginManually()){
@@ -50,23 +50,23 @@ function LoginManually(){
   $password = $RQ_ARGS->password;
   if($uname == '' || $password == '') return false;
 
+  //共通クエリ
+  $query = "WHERE room_no = $room_no AND uname = '$uname' AND user_no > 0";
+
   // //IPアドレス取得
   // $ip_address = $_SERVER['REMOTE_ADDR']; //特に参照してないようだけど…？
   $crypt_password = CryptPassword($password);
-  // $crypt_password = $password; //デバッグ用
+  //$crypt_password = $password; //デバッグ用
 
   //該当するユーザ名とパスワードがあるか確認
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no " .
-    "AND uname = '$uname' AND password = '$crypt_password' AND user_no > 0";
-  if(FetchResult($query) != 1) return false;
+  $query_password = "SELECT COUNT(uname) FROM user_entry $query AND password = '$crypt_password'";
+  if(FetchResult($query_password) != 1) return false;
 
   //セッションIDの再登録
   $session_id = GetUniqSessionID();
 
   //DBのセッションIDを更新
-  mysql_query("UPDATE user_entry SET session_id = '$session_id'
-		WHERE room_no = $room_no AND uname = '$uname' AND user_no > 0");
+  mysql_query("UPDATE user_entry SET session_id = '$session_id' $query");
   mysql_query('COMMIT'); //一応コミット
   return true;
 }
-?>

@@ -680,6 +680,9 @@ function VoteNight(){
 
   case 'MIND_SCANNER_DO':
     if(! $SELF->IsRoleGroup('scanner')) OutputVoteResult('夜：さとり以外は投票できません');
+    if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
+      OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+    }
     break;
 
   case 'VOODOO_FOX_DO':
@@ -1017,6 +1020,9 @@ function OutputVoteNight(){
   }
   elseif($role_mind_scanner = $SELF->IsRoleGroup('scanner')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
+      OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+    }
     CheckAlreadyVote('MIND_SCANNER_DO');
   }
   elseif($role_voodoo_fox = $SELF->IsRole('voodoo_fox')){
