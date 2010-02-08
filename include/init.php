@@ -40,6 +40,7 @@ class InitializeConfig{
     'GAME_OPT_MESS' => 'message',
     'VICT_MESS' => 'message',
     'VOTE_MESS' => 'message',
+    'RQ_ARGS' => 'request_class',
     'ROLES' => 'role_manager_class',
     'TIME_CALC' => 'time_calc',
     'PAPARAZZI' => 'paparazzi_class',
@@ -82,6 +83,7 @@ class InitializeConfig{
     'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
     'VICT_MESS' => 'VictoryMessage',
     'VOTE_MESS' => 'VoteMessage',
+    'RQ_ARGS' => 'RequestBase',
     'ROLES' => 'Roles',
     'TIME_CALC' => 'TimeCalculation',
     'PAPARAZZI' => 'Paparazzi'
@@ -98,7 +100,14 @@ class InitializeConfig{
     $this->loaded->class = array();
   }
 
-  //依存解決処理関数
+  //依存情報設定
+  function SetDepend($type, $name, $depend){
+    if(is_null($this->$type)) return false;
+    $this->{$type}[$name] = $depend;
+    return true;
+  }
+
+  //依存解決処理
   function LoadDependence($name){
     $depend_file = $this->depend_file[$name];
     if(! is_null($depend_file)) $this->LoadFile($depend_file);
@@ -107,7 +116,6 @@ class InitializeConfig{
     if(! is_null($depend_class)) $this->LoadClass($depend_class);
   }
 
-  //ファイルロード関数
   function LoadFile($name){
     $name_list = func_get_args();
     if(is_array($name_list[0])) $name_list = $name_list[0];
@@ -170,6 +178,12 @@ class InitializeConfig{
     $this->loaded->class[] = $name;
     return true;
   }
+
+  function LoadRequest($class = NULL){
+    $name = 'RQ_ARGS';
+    if(isset($class)) $this->SetDepend('class_list', $name, $class);
+    $this->LoadClass($name);
+  }
 }
 
 //-- 初期化処理 --//
@@ -182,7 +196,6 @@ if($DEBUG_MODE) $INIT_CONF->LoadClass('PAPARAZZI');
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
 $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
-$INIT_CONF->LoadFile('request_class');
 
 //PrintData($INIT_CONF); //テスト用
 

@@ -21,10 +21,17 @@ class RequestBase{
 	}
 	break;
 
+      case 'file':
+	$value = $_FILES['file'][$item];
+	if(array_key_exists($item, $_FILES['file']) || $this->TryGetDefault($item, $value)){
+	  $this->$item = empty($processor) ? $value : $processor($value);
+	}
+	break;
+
       default:
 	$value = $_REQUEST[$spec];
 	if(array_key_exists($spec, $_REQUEST) || $this->TryGetDefault($spec, $value)){
-	  $this->$spec = empty($processor) ? $value : $processor($value);
+	  $this->$item = empty($processor) ? $value : $processor($value);
 	}
 	break;
       }
@@ -36,7 +43,13 @@ class RequestBase{
   }
 
   function CheckOn($arg){
-    return ($arg == 'on');
+    return $arg == 'on';
+  }
+
+  function ToArray(){
+    $array = array();
+    foreach($this as $key => $value) $array[$key] = $value;
+    return $array;
   }
 
   function AttachTestParameters(){
@@ -99,7 +112,8 @@ class RequestUserManager extends RequestBase{
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
-    $this->GetItems(NULL, 'post.command', 'post.profile', 'post.sex', 'post.role');
+    $this->GetItems("$this->CheckOn", 'post.entry');
+    $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
     EscapeStrings($this->profile, false);
 
     if($this->room_no < 1){
@@ -178,8 +192,8 @@ class RequestGameVote extends RequestBaseGamePlay{
 }
 
 //-- old_log.php --//
-class LogView extends RequestBase{
-  function LogView(){ $this->__construct(); }
+class RequestOldLog extends RequestBase{
+  function RequestOldLog(){ $this->__construct(); }
 
   function __construct(){
     if($this->is_room = isset($_GET['room_no'])){
@@ -195,6 +209,17 @@ class LogView extends RequestBase{
   }
 }
 
+//-- icon_upload.php --//
+class RequestIconUpload extends RequestBase{
+  function RequestIconUpload(){ $this->__construct(); }
+
+  function __construct(){
+    $this->GetItems('EscapeStrings', 'post.name', 'post.color');
+    $this->GetItems('intval', 'file.size');
+    $this->GetItems(NULL, 'file.type', 'file.tmp_name');
+  }
+}
+
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase{
   function RequestSrcUpload(){ $this->__construct(); }
@@ -203,4 +228,3 @@ class RequestSrcUpload extends RequestBase{
     $this->GetItems('EscapeStrings', 'post.name', 'post.caption', 'post.user', 'post.password');
   }
 }
-?>

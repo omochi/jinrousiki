@@ -3,7 +3,7 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT  . '/include/init.php');
 
 EncodePostData();
-$post   =& new RequestSrcUpload(); //引数をセット
+$INIT_CONF->LoadRequest('RequestSrcUpload'); //引数をセット
 $config =& new SourceUploadConfig(); //設定をロード
 
 if($config->disable){
@@ -11,7 +11,7 @@ if($config->disable){
 }
 
 //引数のエラーチェック
-foreach($post as $key => $value){
+foreach($RQ_ARGS as $key => $value){
   $label = $config->form_list[$key]['label'];
   $size  = $config->form_list[$key]['size'];
 
@@ -26,7 +26,7 @@ foreach($post as $key => $value){
 }
 
 //パスワードのチェック
-if($post->password != $config->password) OutputUploadResult('パスワード認証エラー。');
+if($RQ_ARGS->password != $config->password) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
 $file_name = strtolower(trim($_FILES['file']['name']));
@@ -76,11 +76,11 @@ else
   $file_size = sprintf('%.2f', $file_size) . ' byte';
 
 $html = <<<EOF
-<td class="link"><a href="file/{$number}.{$ext}">{$post->name}</a></td>
+<td class="link"><a href="file/{$number}.{$ext}">{$RQ_ARGS->name}</a></td>
 <td class="type">$ext</td>
 <td class="size">$file_size</td>
-<td class="explain">{$post->caption}</td>
-<td class="name">{$post->user}</td>
+<td class="explain">{$RQ_ARGS->caption}</td>
+<td class="name">{$RQ_ARGS->user}</td>
 <td class="date">$time</td>
 
 EOF;
@@ -119,4 +119,3 @@ function OutputUploadResult($body){
     '<a href="./">←戻る</a>'."\n";
   OutputHTMLFooter(true);
 }
-?>

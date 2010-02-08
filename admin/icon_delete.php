@@ -13,6 +13,7 @@ $file = FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = $icon_n
 
 unlink($ICON_CONF->path . '/' . $file); //ファイルの存在をチェックしていないので要注意
 mysql_query("DELETE FROM user_icon WHERE icon_no = $icon_no");
+mysql_query("OPTIMIZE TABLE user_icon");
 mysql_query('COMMIT'); //一応コミット
 
 //DB 接続解除は OutputActionResult() 経由

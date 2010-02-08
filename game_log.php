@@ -4,7 +4,7 @@ $INIT_CONF->LoadFile('user_class', 'talk_class');
 $INIT_CONF->LoadClass('ROLES');
 
 //-- データ収集 --//
-$RQ_ARGS =& new RequestGameLog(); //引数を取得
+$INIT_CONF->LoadRequest('RequestGameLog'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 
 session_start(); //セッション開始

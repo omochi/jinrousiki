@@ -3,7 +3,8 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('user_class', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
-$RQ_ARGS =& new RequestBaseGame(); //引数を取得
+//-- データ収集 --//
+$INIT_CONF->LoadRequest('RequestBaseGame'); //引数を取得
 $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 
 $DB_CONF->Connect(); // DB 接続
@@ -21,6 +22,7 @@ case 'night': //夜
   break;
 }
 
+//シーンに応じた追加クラスをロード
 if($ROOM->IsFinished()){
   $INIT_CONF->LoadClass('VICT_MESS');
 }
@@ -32,6 +34,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF  =& new User();
 if($ROOM->IsBeforeGame()) $ROOM->LoadVote();
 
+//-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
 if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //自動更新

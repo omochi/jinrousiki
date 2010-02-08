@@ -822,7 +822,6 @@ function OutputDeadManType($name, $type){
 
   $deadman_header = '<tr><td>'.$name.' '; //基本メッセージヘッダ
   $deadman        = $deadman_header.$MESSAGE->deadman.'</td>'; //基本メッセージ
-  $sudden_death   = $deadman_header.$MESSAGE->vote_sudden_death.'</td>'; //突然死用
   $reason_header  = "</tr>\n<tr><td>(".$name.' '; //追加共通ヘッダ
   $open_reason = ($ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast()) ||
 		  $SELF->IsDummyBoy());
@@ -835,74 +834,10 @@ function OutputDeadManType($name, $type){
     echo '<td>'.$name.' '.$MESSAGE->vote_killed.'</td>';
     break;
 
-  case 'WOLF_KILLED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->wolf_killed.')</td>';
-    break;
-
-  case 'POSSESSED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->possessed.')</td>';
-    break;
-
-  case 'POSSESSED_RESET':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->possessed_reset.')</td>';
-    break;
-
-  case 'POSSESSED_TARGETED':
-    if($open_reason) echo '<tr><td>'.$name.' '.$MESSAGE->possessed_targeted.'</td>';
-    break;
-
-  case 'WOLF_KILLED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->wolf_killed.')</td>';
-    break;
-
-  case 'DREAM_KILLED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->dream_killed.')</td>';
-    break;
-
-  case 'TRAPPED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->trapped.')</td>';
-    break;
-
-  case 'FOX_DEAD':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->fox_dead.')</td>';
-    break;
-
-  case 'CURSED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->cursed.')</td>';
-    break;
-
   case 'POISON_DEAD_day':
   case 'POISON_DEAD_night':
     echo $deadman;
     if($show_reason) echo $reason_header.$MESSAGE->poison_dead.')</td>';
-    break;
-
-  case 'HUNTED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->hunted.')</td>';
-    break;
-
-  case 'REPORTER_DUTY':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->reporter_duty.')</td>';
-    break;
-
-  case 'ASSASSIN_KILLED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->assassin_killed.')</td>';
-    break;
-
-  case 'PRIEST_RETURNED':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->priest_returned.')</td>';
     break;
 
   case 'LOVERS_FOLLOWED_day':
@@ -922,44 +857,31 @@ function OutputDeadManType($name, $type){
     }
     break;
 
+  case 'POSSESSED_TARGETED':
+    if($open_reason) echo '<tr><td>'.$name.' '.$MESSAGE->possessed_targeted.'</td>';
+    break;
+
   case 'SUDDEN_DEATH_CHICKEN':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->chicken.')</td>';
-    break;
-
   case 'SUDDEN_DEATH_RABBIT':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->rabbit.')</td>';
-    break;
-
   case 'SUDDEN_DEATH_PERVERSENESS':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->perverseness.')</td>';
-    break;
-
   case 'SUDDEN_DEATH_FLATTERY':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->flattery.')</td>';
-    break;
-
   case 'SUDDEN_DEATH_IMPATIENCE':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->impatience.')</td>';
-    break;
-
   case 'SUDDEN_DEATH_JEALOUSY':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->jealousy.')</td>';
-    break;
-
-  case 'SUDDEN_DEATH_CELIBACY':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->celibacy.')</td>';
-    break;
-
   case 'SUDDEN_DEATH_PANELIST':
-    echo $sudden_death;
-    if($show_reason) echo $reason_header.$MESSAGE->panelist.')</td>';
+  case 'SUDDEN_DEATH_CELIBACY':
+    echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
+    if($show_reason){
+      $action = array_pop(explode('_', strtolower($type)));
+      echo $reason_header.$MESSAGE->$action.')</td>';
+    }
+    break;
+
+  default:
+    echo $deadman;
+    if($show_reason){
+      $action = strtolower($type);
+      echo $reason_header.$MESSAGE->$action.')</td>';
+    }
     break;
   }
   echo "</tr>\n</table>\n";

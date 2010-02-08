@@ -3,13 +3,10 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('ICON_CONF');
 
-//セッション開始
-session_start();
-$session_id = session_id();
-
+//-- データ収集 --//
 //引数を取得
 if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
-$RQ_ARGS =& new RequestGameVote();
+$INIT_CONF->LoadRequest('RequestGameVote');
 
 //PHP の引数を作成
 $php_argv = 'room_no=' . $RQ_ARGS->room_no;
@@ -19,7 +16,9 @@ if($RQ_ARGS->list_down)  $php_argv .= '&list_down=on';
 $back_url = '<a href="game_up.php?' . $php_argv . '#game_top">←戻る &amp; reload</a>';
 
 $DB_CONF->Connect(); //DB 接続
-$uname = CheckSession($session_id); //セッション ID をチェック
+
+session_start(); //セッション開始
+$uname = CheckSession(session_id()); //セッション ID をチェック
 
 $ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->system_time = TZTime(); //現在時刻を取得
@@ -39,6 +38,7 @@ if(! $SELF->IsLive()){ //生存者以外は無効
 		     '生存者以外は投票できません<br>'."\n" . $back_url . '</div>');
 }
 
+//-- メインルーチン --//
 if($RQ_ARGS->vote){ //投票処理
   if($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票処理
     if($RQ_ARGS->situation == 'GAMESTART'){
@@ -93,7 +93,7 @@ else{ //投票済み //ここに来たらロジックエラーじゃないかな？
 
 $DB_CONF->Disconnect(); //DB 接続解除
 
-// 関数 //
+//-- 関数 --//
 //投票ページ HTML ヘッダ出力
 function OutputVotePageHeader(){
   global $ROOM, $php_argv;

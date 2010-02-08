@@ -5,7 +5,7 @@ OutputHTMLHeader('ユーザアイコン一覧', 'icon_view')
 ?>
 </head>
 <body>
-<a href="index.php">←戻る</a><br>
+<a href="./">←戻る</a><br>
 <img class="title" src="img/icon_view_title.jpg"><br>
 <div class="link"><a href="icon_upload.php">→アイコン登録</a></div>
 
@@ -22,15 +22,16 @@ $icon_list = FetchAssoc($query);
 //表の出力
 $count = 0;
 foreach($icon_list as $array){
+  if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+  $count++;
+
   extract($array);
   $location = $ICON_CONF->path . '/' . $icon_filename;
-
   echo <<< EOF
 <td><img src="$location" width="$icon_width" height="$icon_height" style="border-color:$color;"></td>
 <td class="name">$icon_name<br><font color="$color">◆</font>$color</td>
 
 EOF;
-  if(++$count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
 }
 
 $DB_CONF->Disconnect(); //DB 接続解除

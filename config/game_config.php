@@ -13,6 +13,7 @@ class RoomConfig{
   var $establish_wait = 120;
 
   //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
+  //この時間内であれば、過去ログページに再入村のリンクが出現します
   var $clear_session_id = 86400;
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)

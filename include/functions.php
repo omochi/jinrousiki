@@ -1,16 +1,14 @@
 <?php
-//データベース登録のラッパー関数
-function InsertDatabase($table, $items, $values){
-  return mysql_query("INSERT INTO $table($items) VALUES($values)");
+//-- セキュリティ関連 --//
+//リファラチェック
+function CheckReferer($page){
+  global $SERVER_CONF;
+
+  $url = $SERVER_CONF->site_root . $page;
+  return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
 }
 
-//発言をデータベースに登録する (talk Table)
-function InsertTalk($room_no, $date, $location, $uname, $time, $sentence, $font_type, $spend_time){
-  $items  = 'room_no, date, location, uname, time, sentence, font_type, spend_time';
-  $values = "$room_no, $date, '$location', '$uname', '$time', '$sentence', '$font_type', $spend_time";
-  return InsertDatabase('talk', $items, $values);
-}
-
+//-- セッション関連 --//
 //セッションIDを新しくする(PHPのバージョンが古いとこの関数が無いので定義する)
 if(! function_exists('session_regenerate_id')){
   function session_regenerate_id(){
@@ -57,6 +55,7 @@ function GetUniqSessionID(){
   return $session_id;
 }
 
+//-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
 function SendQuery($query){
   $sql = mysql_query($query);
@@ -118,6 +117,19 @@ function FetchObjectArray($query, $class){
   return $array;
 }
 
+//データベース登録のラッパー関数
+function InsertDatabase($table, $items, $values){
+  return mysql_query("INSERT INTO $table($items) VALUES($values)");
+}
+
+//発言をデータベースに登録する (talk Table)
+function InsertTalk($room_no, $date, $location, $uname, $time, $sentence, $font_type, $spend_time){
+  $items  = 'room_no, date, location, uname, time, sentence, font_type, spend_time';
+  $values = "$room_no, $date, '$location', '$uname', '$time', '$sentence', '$font_type', $spend_time";
+  return InsertDatabase('talk', $items, $values);
+}
+
+//-- 日時関連 --//
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
   global $SERVER_CONF;
@@ -167,6 +179,7 @@ function ConvertTime($seconds){
   return $sentence;
 }
 
+//-- 文字処理関連 --//
 //POSTされたデータの文字コードを統一する
 function EncodePostData(){
   global $SERVER_CONF;
@@ -203,6 +216,7 @@ function CryptPassword($raw_password){
   return sha1($SERVER_CONF->hash_salt . $raw_password);
 }
 
+//-- 出力関連 --//
 //変数表示関数 (デバッグ用)
 function PrintData($data, $name = NULL){
   $str = (is_null($name) ? '' : $name . ': ');
@@ -257,12 +271,11 @@ function MakeGameOptionImage($game_option, $option_role = ''){
 function MakeHTMLHeader($title, $css = 'action'){
   global $SERVER_CONF;
 
-  $encode = $SERVER_CONF->encode;
   $css_path = JINRO_CSS . '/' . $css . '.css';
   return <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={$encode}">
+<meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <title>{$title}</title>
@@ -307,4 +320,3 @@ function OutputHTMLFooter($exit = false){
   echo '</body></html>'."\n";
   if($exit) exit;
 }
-?>

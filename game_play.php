@@ -3,9 +3,9 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 
+//-- データ収集 --//
 EncodePostData(); //ポストされた文字列を全てエンコードする
-
-$RQ_ARGS =& new RequestGamePlay(); //引数を取得
+$INIT_CONF->LoadRequest('RequestGamePlay'); //引数を取得
 if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
 $DB_CONF->Connect(); //DB 接続
@@ -35,7 +35,7 @@ $objection_array = array(); //SendCookie();で格納される・異議ありの情報
 $objection_left_count = 0;  //SendCookie();で格納される・異議ありの残り回数
 SendCookie();
 
-//発言の有無をチェック
+//-- 発言処理 --//
 ConvertSay(&$RQ_ARGS->say); //発言置換処理
 
 if($RQ_ARGS->say == ''){
@@ -55,6 +55,7 @@ if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
   $SELF->Update('last_load_day_night', $ROOM->day_night);
 }
 
+//-- データ出力 --//
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
 

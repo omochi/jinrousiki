@@ -3,32 +3,18 @@ require_once('include/init.php');
 $INIT_CONF->LoadClass('GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
 EncodePostData();//ポストされた文字列をエンコードする
-$RQ_ARGS =& new RequestUserManager(); //引数を取得
+$INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
+
 $DB_CONF->Connect(); //DB 接続
-
-if($RQ_ARGS->command == 'entry'){
-  EntryUser($RQ_ARGS);
-}
-else{
-  OutputEntryUserPage($RQ_ARGS->room_no);
-}
-
+$RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage($RQ_ARGS->room_no);
 $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
 //ユーザを登録する
-function EntryUser($request){
-  global $DEBUG_MODE, $GAME_CONF, $MESSAGE;
+function EntryUser(){
+  global $DEBUG_MODE, $GAME_CONF, $MESSAGE, $RQ_ARGS;
 
-  //引数を取得
-  $room_no     = $request->room_no;
-  $uname       = $request->uname;
-  $handle_name = $request->handle_name;
-  $icon_no     = $request->icon_no;
-  $profile     = $request->profile;
-  $password    = $request->password;
-  $sex         = $request->sex;
-  $role        = $request->role;
+  extract($RQ_ARGS->ToArray()); //引数を取得
 
   //記入漏れチェック
   if($uname == '' || $handle_name == '' || $icon_no < 1 || $profile == '' ||
@@ -210,7 +196,7 @@ function OutputEntryUserPage($room_no){
 <body>
 <a href="index.php">←戻る</a><br>
 <form method="POST" action="user_manager.php?room_no=$room_no">
-<input type="hidden" name="command" value="entry">
+<input type="hidden" name="entry" value="on">
 <div align="center">
 <table class="main">
 <tr><td><img src="img/entry_user/title.gif"></td></tr>
@@ -349,4 +335,3 @@ ICON;
 
 FOOTER;
 }
-?>

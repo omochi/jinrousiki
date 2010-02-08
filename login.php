@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 
-$RQ_ARGS =& new RequestLogin(); //引数を取得
+$INIT_CONF->LoadRequest('RequestLogin'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 session_start(); //セッション開始
 

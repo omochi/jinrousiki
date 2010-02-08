@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('ROOM_CONF', 'ICON_CONF');
 $INIT_CONF->LoadFile('game_vote_functions', 'game_play_functions');
 
 //-- 仮想村データをセット --//
-$RQ_ARGS =& new RequestBaseGame();
+$INIT_CONF->LoadRequest('RequestBaseGame');
 $RQ_ARGS->room_no = 461; #94;
 $RQ_ARGS->TestItems->test_room = array(
   'room_name'    => '【水銀69】やる夫達の真闇鍋村',
