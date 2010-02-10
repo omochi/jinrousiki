@@ -1185,7 +1185,7 @@ function AggregateVoteNight(){
       elseif($user->IsRoleGroup('mania')){
 	if(is_null($vote_data['MANIA_DO'][$user->uname])) return false;
       }
-      elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
+      elseif(! $ROOM->IsOpenCast() && $user->IsRole('evoke_scanner')){
 	if(is_null($vote_data['MIND_SCANNER_DO'][$user->uname])) return false;
       }
     }

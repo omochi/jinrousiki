@@ -66,7 +66,7 @@ class ImageManager{
   function GenerateTag($name, $alt = ''){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
-    $str .= ' src="' . JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extention . '"';
+    $str .= ' src="' . JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extension . '"';
     if($alt != ''){
       EscapeStrings(&$alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
@@ -128,7 +128,7 @@ class VictoryImageBase extends ImageManager{
 class SoundBase{
   //音を鳴らす
   function Output($type, $loop = false){
-    $path = JINRO_ROOT . '/' . $this->path . '/' . $this->$type . '.' . $this->extention;
+    $path = JINRO_ROOT . '/' . $this->path . '/' . $this->$type . '.' . $this->extension;
     if($loop) $loop_tag = "\n".'<param name="loop" value="true">';
 
     echo <<< EOF

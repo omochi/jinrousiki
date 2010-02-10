@@ -10,22 +10,22 @@
   ・観戦モードにすると普通に見えてしまう
 */
 class Role_earplug extends Role{
-  function Role_earplug($user){
-    parent::__construct($user);
-  }
+  function Role_earplug(){ $this->__construct(); }
+  function __construct(){ parent::__construct(); }
 
   function converter(&$volume, &$sentence){
     global $MESSAGE;
 
     if($this->Ignored()) return;
-
     switch($volume){
     case 'strong':
       $volume = 'normal';
       break;
+
     case 'normal':
       $volume = 'weak';
       break;
+
     case 'weak':
       $sentence = $MESSAGE->common_talk;
       break;
@@ -40,4 +40,3 @@ class Role_earplug extends Role{
     if($role == 'wolf') $this->converter($volume, $sentence);
   }
 }
-?>

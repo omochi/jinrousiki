@@ -10,13 +10,11 @@
   ・観戦モードにすると普通に見えてしまう
 */
 class Role_blinder extends Role{
-  function Role_blinder($user){
-    parent::__construct($user);
-  }
+  function Role_blinder(){ $this->__construct(); }
+  function __construct(){ parent::__construct(); }
 
   function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){
-    if($this->Ignored() || $this->SameUser($user_info)) return;
+    if($this->Ignored() || $this->IsSameUser($user->uname)) return;
     $user_info = '<font style="color:' . $user->color . '">◆</font>';
   }
 }
-?>

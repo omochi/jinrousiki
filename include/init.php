@@ -41,7 +41,7 @@ class InitializeConfig{
     'VICT_MESS' => 'message',
     'VOTE_MESS' => 'message',
     'RQ_ARGS' => 'request_class',
-    'ROLES' => 'role_manager_class',
+    'ROLES' => 'role_class',
     'TIME_CALC' => 'time_calc',
     'PAPARAZZI' => 'paparazzi_class',
     'server_config' => 'system_class',
@@ -51,7 +51,6 @@ class InitializeConfig{
     'game_functions' => 'system_class',
     'system_class' => array('functions', 'room_class'),
     'user_class' => 'game_functions',
-    'role_manager_class' => 'role_class',
     'role_class' => 'game_format'
   );
 
@@ -84,7 +83,7 @@ class InitializeConfig{
     'VICT_MESS' => 'VictoryMessage',
     'VOTE_MESS' => 'VoteMessage',
     'RQ_ARGS' => 'RequestBase',
-    'ROLES' => 'Roles',
+    'ROLES' => 'RoleManager',
     'TIME_CALC' => 'TimeCalculation',
     'PAPARAZZI' => 'Paparazzi'
   );
@@ -104,6 +103,13 @@ class InitializeConfig{
   function SetDepend($type, $name, $depend){
     if(is_null($this->$type)) return false;
     $this->{$type}[$name] = $depend;
+    return true;
+  }
+
+  //依存クラス情報設定 ＆ ロード
+  function SetClass($name, $class){
+    if(! $this->SetDepend('class_list', $name, $class)) return false;
+    $this->LoadClass($name);
     return true;
   }
 
@@ -139,17 +145,10 @@ class InitializeConfig{
       $path = $this->path->module . '/' . $name;
       break;
 
-    case 'role_manager_class':
-    case 'role_class':
-      $path = $this->path->include . '/role';
-      break;
-
     case 'chatengine':
-      $path = $this->path->include . '/' . $name;
-      break;
-
     case 'paparazzi_class':
-      $path = $this->path->include . '/paparazzi';
+    case 'role_class':
+      $path = $this->path->include . '/' . array_shift(explode('_', $name));
       break;
 
     default:
@@ -180,9 +179,7 @@ class InitializeConfig{
   }
 
   function LoadRequest($class = NULL){
-    $name = 'RQ_ARGS';
-    if(isset($class)) $this->SetDepend('class_list', $name, $class);
-    $this->LoadClass($name);
+    return $this->SetClass('RQ_ARGS', $class);
   }
 }
 

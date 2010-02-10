@@ -367,7 +367,7 @@ function OutputTalkLog(){
 			WHERE room_no = {$ROOM->id} AND location LIKE '{$ROOM->day_night}%'
 			AND date = {$ROOM->date} ORDER BY time DESC");
 
-  $builder = DocumentBuilder::Generate();
+  $builder = new DocumentBuilder();
   $builder->BeginTalk('talk');
   while(($row = mysql_fetch_object($sql, 'Talk')) !== false){
     OutputTalk($row, $builder); //会話出力
@@ -422,7 +422,6 @@ function OutputTalk($talk, &$builder){
       $real_user = $said_user;
     $talk_handle_name .= $real_user->MakeShortRoleName();
   }
-  LineToBR($sentence); //改行コードを <br> に変換
 
   //投票情報をチェック
   $vote_action_list = array(
@@ -631,40 +630,40 @@ function OutputTalk($talk, &$builder){
       $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mania_do;
     }
     else{ //その他の全てを表示(死者の場合)
-      $base_class = 'user-talk';
-      $talk_class = 'user-name';
+      $row_class = '';
+      $talk_class = '';
       switch($location){
       case 'night self_talk':
 	$talk_handle_name .= '<span>の独り言</span>';
-	$talk_class .= ' night-self-talk';
+	$talk_class = 'night-self-talk';
 	break;
 
       case 'night wolf':
 	$talk_handle_name .= '<span>(人狼)</span>';
-	$talk_class .= ' night-wolf';
+	$talk_class = 'night-wolf';
 	$font_type  .= ' night-wolf';
 	break;
 
       case 'night mad':
 	$talk_handle_name .= '<span>(囁き狂人)</span>';
-	$talk_class .= ' night-wolf';
+	$talk_class = 'night-wolf';
 	$font_type  .= ' night-wolf';
 	break;
 
       case 'night common':
 	$talk_handle_name .= '<span>(共有者)</span>';
-	$talk_class .= ' night-common';
+	$talk_class = 'night-common';
 	$font_type  .= ' night-common';
 	break;
 
       case 'night fox':
 	$talk_handle_name .= '<span>(妖狐)</span>';
-	$talk_class .= ' night-fox';
+	$talk_class = 'night-fox';
 	$font_type  .= ' night-fox';
 	break;
 
       case 'heaven':
-	$base_class .= ' heaven';
+	$row_class = 'heaven';
 	break;
       }
     }
@@ -673,8 +672,7 @@ function OutputTalk($talk, &$builder){
     }
     else{
       $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-      $builder->RawAddTalk($symbol, $talk_handle_name, $sentence, $font_type, $base_class, $talk_class);
+      $builder->RawAddTalk($symbol, $talk_handle_name, $sentence, $font_type, $row_class, $talk_class);
     }
   }
   //ここからは観戦者と役職非公開モード
