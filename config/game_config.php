@@ -518,7 +518,7 @@ class CastConfig{
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     5 => array('wolf' => 1, 'mage' => 2, 'mad' => 2),
+     5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
@@ -586,7 +586,7 @@ class CastConfig{
 //-- 村のオプション画像 --//
 class RoomImage extends ImageManager{
   var $path      = 'room_option';
-  var $extention = 'gif';
+  var $extension = 'gif';
   var $class     = 'option';
   /*
   //村の最大人数リスト (RoomConfig->max_user_list と連動させる)
@@ -602,14 +602,14 @@ class RoomImage extends ImageManager{
 //-- 役職の画像 --//
 class RoleImage extends RoleImageBase{
   var $path      = 'role';
-  var $extention = 'gif';
+  var $extension = 'gif';
   var $class     = '';
 }
 
 //-- 勝利陣営の画像 --//
 class VictoryImage extends VictoryImageBase{
   var $path      = 'victory_role';
-  var $extention = 'jpg';
+  var $extension = 'jpg';
   var $class     = 'winner';
 }
 
@@ -622,7 +622,6 @@ class IconConfig{
   var $wolf   = 'img/wolf.gif';  //狼
 
   function IconConfig(){ $this->__construct(); }
-
   function __construct(){
     $this->path = JINRO_ROOT . '/' . $this->path;
     $this->dead = JINRO_ROOT . '/' . $this->dead;
@@ -658,7 +657,7 @@ class UserIcon{
 //-- 音源設定 --//
 class Sound extends SoundBase{
   var $path      = 'swf'; //音源のパス
-  var $extention = 'swf'; //拡張子
+  var $extension = 'swf'; //拡張子
 
   var $morning          = 'sound_morning';          //夜明け
   var $revote           = 'sound_revote';           //再投票

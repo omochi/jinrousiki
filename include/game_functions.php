@@ -363,33 +363,20 @@ function OutputTalkLog(){
   global $MESSAGE, $ROOM, $SELF;
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  $sql = mysql_query("SELECT uname, sentence, font_type, location FROM talk
-			WHERE room_no = {$ROOM->id} AND location LIKE '{$ROOM->day_night}%'
-			AND date = {$ROOM->date} ORDER BY time DESC");
+  $query = <<<EOF
+SELECT uname, sentence, font_type, location
+FROM talk
+WHERE room_no = {$ROOM->id} AND location LIKE '{$ROOM->day_night}%' AND date = {$ROOM->date}
+ORDER BY time DESC
+EOF;
+  $sql = mysql_query($query);
 
-  $builder = new DocumentBuilder();
+  $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk');
   while(($row = mysql_fetch_object($sql, 'Talk')) !== false){
     OutputTalk($row, $builder); //会話出力
   }
-  if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
-    $time = FetchResult("SELECT establish_time FROM room WHERE room_no = {$ROOM->id}");
-    $row->sentence = '村作成';
-  }
-  elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
-    $time = FetchResult("SELECT start_time FROM room WHERE room_no = {$ROOM->id}");
-    $row->sentence = 'ゲーム開始';
-  }
-  elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
-    $time = FetchResult("SELECT finish_time FROM room WHERE room_no = {$ROOM->id}");
-    $row->sentence = 'ゲーム終了';
-  }
-  if($time != ''){
-    $row->uname = 'system';
-    $row->sentence .= '：' . ConvertTimeStamp($time);
-    $row->location = $ROOM->day_night . 'system';
-    OutputTalk($row, $builder);
-  }
+  OutputTimeStamp($builder);
   $builder->EndTalk();
 }
 
@@ -397,334 +384,198 @@ function OutputTalkLog(){
 function OutputTalk($talk, &$builder){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  if(strpos($talk->location, 'heaven') === false)
-    $said_user = $USERS->ByVirtualUname($talk->uname);
-  else
-    $said_user = $USERS->ByUname($talk->uname);
-  $real_user = $USERS->ByRealUname($talk->uname);
-  $virtual_self = $USERS->ByVirtual($SELF->user_no);
+  //PrintData($talk);
+  //発言ユーザを取得
   /*
-    $talk_uname は必ず $talk から取得すること。
+    $uname は必ず $talk から取得すること。
     $USERS にはシステムユーザー 'system' が存在しないため、$said_user は常に NULL になっている。
   */
-  $talk_uname = $talk->uname;
-  $talk_handle_name = $said_user->handle_name;
-  $talk_sex         = $said_user->sex;
-  $talk_color       = $said_user->color;
-  $sentence         = $talk->sentence;
-  $font_type        = $talk->font_type;
-  $location         = $talk->location;
+  $said_user = ($talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
+		$USERS->ByVirtualUname($talk->uname));
 
+  //基本パラメータを取得
+  $symbol      = '<font color="' . $said_user->color . '">◆</font>';
+  $handle_name = $said_user->handle_name;
+  $sentence    = $talk->sentence;
+  $font_type   = $talk->font_type;
+
+  //仮想ユーザを取得
+  $virtual_self = $builder->actor;
   if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
-    if(strpos($location, 'heaven') === false)
-      $real_user = $USERS->ByReal($said_user->user_no);
-    else
-      $real_user = $said_user;
-    $talk_handle_name .= $real_user->MakeShortRoleName();
+    $real_user = ($talk->scene == 'heaven' ? $said_user :
+		  $USERS->ByReal($said_user->user_no));
+    $handle_name .= $real_user->MakeShortRoleName();
+  }
+  else{
+    $real_user = $USERS->ByRealUname($talk->uname);
   }
 
-  //投票情報をチェック
-  $vote_action_list = array(
-    'vote' => 'VOTE_DO',
-    'wolf' => 'WOLF_EAT',
-    'mage' => 'MAGE_DO', 'voodoo_killer' => 'VOODOO_KILLER_DO',
-    'jammer_mad' => 'JAMMER_MAD_DO', 'voodoo_mad' => 'VOODOO_MAD_DO', 'dream_eat' => 'DREAM_EAT',
-    'trap_mad' => 'TRAP_MAD_DO', 'not_trap_mad' => 'TRAP_MAD_NOT_DO',
-    'guard' => 'GUARD_DO', 'reporter' => 'REPORTER_DO', 'anti_voodoo' => 'ANTI_VOODOO_DO',
-    'poison_cat' => 'POISON_CAT_DO', 'not_poison_cat' => 'POISON_CAT_NOT_DO',
-    'assassin' => 'ASSASSIN_DO', 'not_assassin' => 'ASSASSIN_NOT_DO',
-    'mind_scanner' => 'MIND_SCANNER_DO',
-    'voodoo_fox' => 'VOODOO_FOX_DO', 'child_fox' => 'CHILD_FOX_DO',
-    'cupid' => 'CUPID_DO',
-    'mania' => 'MANIA_DO');
-  $flag_vote_action = false;
-  foreach($vote_action_list as $this_role => $this_action){
-    $flag_action->$this_role = (strpos($sentence, $this_action) === 0);
-    $flag_vote_action |= $flag_action->$this_role;
-  }
+  //[サトラレ or 受信者 or 共鳴者] 判定
+  $is_mind_read = ($builder->flag->mind_read &&
+		   (($said_user->IsPartner('mind_read', $virtual_self->user_no) &&
+		     ! $said_user->IsRole('unconscious')) ||
+		    $virtual_self->IsPartner('mind_receiver', $said_user->user_no) ||
+		    $said_user->IsPartner('mind_friend', $virtual_self->partner_list)));
 
-  $location_system = (strpos($location, 'system') !== false);
-  $flag_system = ($location_system && $flag_vote_action && ! $ROOM->IsFinished());
-  $flag_live_night = ($SELF->IsLive() && $ROOM->IsNight() && ! $ROOM->IsFinished());
-  $flag_wolf_group = ($SELF->IsWolf(true) || $virtual_self->IsRole('whisper_mad') ||
-		      $SELF->IsDummyBoy());
-  $flag_fox_group  = ($virtual_self->IsFox(true) || $SELF->IsDummyBoy());
-  $flag_mind_read  = (($ROOM->date > 1 && $SELF->IsLive() &&
-		       (($said_user->IsPartner('mind_read', $virtual_self->user_no) &&
-			 ! $said_user->IsRole('unconscious')) ||
-			$virtual_self->IsPartner('mind_receiver', $said_user->user_no) ||
-			$said_user->IsPartner('mind_friend', $virtual_self->partner_list))
-		       ) || $said_user->IsRole('mind_open') ||
-		      ($real_user->IsRole('possessed_wolf') && $flag_wolf_group));
+  $flag_mind_read = ($is_mind_read || $said_user->IsRole('mind_open') ||
+		     ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf));
 
-  if($location_system && $sentence == 'OBJECTION'){ //異議あり
-    $sentence = $talk_handle_name . ' ' . $MESSAGE->objection;
-    $builder->AddSystemMessage('objection-' . $talk_sex, $sentence);
-  }
-  elseif($location_system && $sentence == 'GAMESTART_DO'); //ゲーム開始投票 (現在は何も表示しない仕様)
-  elseif($location_system && strpos($sentence, 'KICK_DO') === 0){ //KICK 投票
-    $target_handle_name = ParseStrings($sentence, 'KICK_DO');
-    $sentence = "{$talk_handle_name} は {$target_handle_name} {$MESSAGE->kick_do}";
-    $builder->AddSystemMessage('kick', $sentence);
-  }
-  elseif($SELF->IsLive() && ! $SELF->IsDummyBoy() && $flag_system); //生存中は投票情報は非表示
-  elseif($talk_uname == 'system'){ //システムメッセージ
-    if(strpos($sentence, 'MORNING') === 0){
-      sscanf($sentence, "MORNING\t%d", $morning_date);
-      $sentence = "{$MESSAGE->morning_header} {$morning_date} {$MESSAGE->morning_footer}";
+  //発言表示フラグ判定
+  $flag_dummy_boy = $builder->flag->dummy_boy;
+  $flag_common    = ($builder->flag->common || $flag_mind_read);
+  $flag_wolf      = ($builder->flag->wolf   || $flag_mind_read);
+  $flag_fox       = ($builder->flag->fox    || $flag_mind_read);
+  $flag_open_talk = $builder->flag->open_talk;
+
+  if($talk->type == 'system' && isset($talk->action)){ //投票情報
+    /*
+      + ゲーム開始前の投票 (KICK 等) は常時表示
+      + 「異議」ありは常時表示
+    */
+    switch($talk->action){
+    case 'OBJECTION':
+      $builder->AddSystemMessage('objection-' . $said_user->sex, $handle_name . $sentence);
+      break;
+
+    case 'GAMESTART_DO':
+      break;
+
+    default:
+      if($ROOM->IsBeforeGame() || $flag_open_talk){
+	$builder->AddSystemMessage($talk->class, $handle_name . $sentence);
+      }
+      break;
     }
-    elseif(strpos($sentence, 'NIGHT') === 0){
-      $sentence = $MESSAGE->night;
-    }
+    return;
+  }
+
+  if($talk->uname == 'system'){ //システムメッセージ
     $builder->AddSystemTalk($sentence);
+    return;
   }
-  elseif(strpos($location, 'dummy_boy') !== false){ //身代わり君専用システムメッセージ
-    $builder->AddSystemTalk($MESSAGE->dummy_boy . $sentence, 'dummy-boy');
+
+  if($talk->type == 'dummy_boy'){ //身代わり君専用システムメッセージ
+    $builder->AddSystemTalk($sentence, 'dummy-boy');
+    return;
   }
-  //ゲーム開始前後とゲーム中、生きている人の昼
-  elseif(! $ROOM->IsPlaying() || ($SELF->IsLive() && $ROOM->IsDay() && $location == 'day')){
-    $builder->AddTalk($said_user, $talk);
-  }
-  //ゲーム中、生きている人の夜の狼
-  elseif($flag_live_night && $location == 'night wolf'){
-    if($flag_wolf_group || $flag_mind_read){
-      $builder->AddTalk($said_user, $talk);
-    }
-    elseif(! $SELF->IsRole('mind_scanner')){ //さとりには遠吠えは見えない
-      $builder->AddWhisper('wolf', $talk);
-    }
-  }
-  //ゲーム中、生きている人の夜の囁き狂人
-  elseif($flag_live_night && $location == 'night mad'){
-    if($flag_wolf_group || $flag_mind_read) $builder->AddTalk($said_user, $talk);
-  }
-  //ゲーム中、生きている人の夜の共有者
-  elseif($flag_live_night && $location == 'night common'){
-    if($virtual_self->IsRole('common') || $SELF->IsDummyBoy() || $flag_mind_read){
-      $builder->AddTalk($said_user, $talk);
-    }
-    elseif(! $SELF->IsRole('dummy_common')){ //夢共有者には何も見えない
-      $builder->AddWhisper('common', $talk);
-    }
-  }
-  //ゲーム中、生きている人の夜の妖狐
-  elseif($flag_live_night && $location == 'night fox'){
-    if($flag_fox_group || $flag_mind_read){
-      $builder->AddTalk($said_user, $talk);
-    }
-    elseif($SELF->IsRole('wise_wolf')){
-      $builder->AddWhisper('common', $talk);
-    }
-  }
-  //ゲーム中、生きている人の夜の独り言
-  elseif($flag_live_night && $location == 'night self_talk'){
-    if($virtual_self->IsSame($talk_uname) || $SELF->IsDummyBoy() || $flag_mind_read){
-      $builder->AddTalk($said_user, $talk);
-    }
-    elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
-      $builder->AddWhisper('wolf', $talk); //銀狼の独り言はさとり以外には遠吠えに見える
-    }
-  }
-  //ゲーム終了 / 身代わり君(仮想GM用) / ゲーム中、死亡者(非公開オプション時は不可)
-  elseif($ROOM->IsFinished() || $SELF->IsDummyBoy() || ($SELF->IsDead() && $ROOM->IsOpenCast())){
-    if($location_system && $flag_action->vote){ //処刑投票
-      $target_handle_name = ParseStrings($sentence, 'VOTE_DO');
-      $action = 'vote';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->vote_do;
-    }
-    elseif($location_system && $flag_action->wolf){ //狼の投票
-      $target_handle_name = ParseStrings($sentence, 'WOLF_EAT');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' たち人狼は '.$target_handle_name.' '.$MESSAGE->wolf_eat;
-    }
-    elseif($location_system && $flag_action->mage){ //占い師の投票
-      $target_handle_name = ParseStrings($sentence, 'MAGE_DO');
-      $action = 'mage-do';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
-    }
-    elseif($location_system && $flag_action->voodoo_killer){ //陰陽師の投票
-      $target_handle_name = ParseStrings($sentence, 'VOODOO_KILLER_DO');
-      $action = 'mage-do';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->voodoo_killer_do;
-    }
-    elseif($location_system && $flag_action->jammer_mad){ //月兎の投票
-      $target_handle_name = ParseStrings($sentence, 'JAMMER_MAD_DO');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->jammer_do;
-    }
-    elseif($location_system && $flag_action->voodoo_mad){ //呪術師の投票
-      $target_handle_name = ParseStrings($sentence, 'VOODOO_MAD_DO');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->voodoo_do;
-    }
-    elseif($location_system && $flag_action->dream_eat){ //獏の投票
-      $target_handle_name = ParseStrings($sentence, 'DREAM_EAT');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->wolf_eat;
-    }
-    elseif($location_system && $flag_action->trap_mad){ //罠師の投票
-      $target_handle_name = ParseStrings($sentence, 'TRAP_MAD_DO');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->trap_do;
-    }
-    elseif($location_system && $flag_action->not_trap_mad){ //罠師のキャンセル投票
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' '.$MESSAGE->trap_not_do;
-    }
-    elseif($location_system && $flag_action->guard){ //狩人の投票
-      $target_handle_name = ParseStrings($sentence, 'GUARD_DO');
-      $action = 'guard-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->guard_do;
-    }
-    elseif($location_system && $flag_action->reporter){ //ブン屋の投票
-      $target_handle_name = ParseStrings($sentence, 'REPORTER_DO');
-      $action = 'guard-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->reporter_do;
-    }
-    elseif($location_system && $flag_action->anti_voodoo){ //厄神の投票
-      $target_handle_name = ParseStrings($sentence, 'ANTI_VOODOO_DO');
-      $action = 'guard-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->anti_voodoo_do;
-    }
-    elseif($location_system && $flag_action->poison_cat){ //猫又の投票
-      $target_handle_name = ParseStrings($sentence, 'POISON_CAT_DO');
-      $action = 'poison-cat-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->revive_do;
-    }
-    elseif($location_system && $flag_action->not_poison_cat){ //猫又のキャンセル投票
-      $action = 'poison-cat-do';
-      $sentence = $talk_handle_name.' '.$MESSAGE->revive_not_do;
-    }
-    elseif($location_system && $flag_action->assassin){ //暗殺者の投票
-      $target_handle_name = ParseStrings($sentence, 'ASSASSIN_DO');
-      $action = 'assassin-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->assassin_do;
-    }
-    elseif($location_system && $flag_action->not_assassin){ //暗殺者のキャンセル投票
-      $action = 'assassin-do';
-      $sentence = $talk_handle_name.' '.$MESSAGE->assassin_not_do;
-    }
-    elseif($location_system && $flag_action->mind_scanner){ //さとりの投票
-      $target_handle_name = ParseStrings($sentence, 'MIND_SCANNER_DO');
-      $action = 'mind-scanner-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mind_scanner_do;
-    }
-    elseif($location_system && $flag_action->voodoo_fox){ //九尾の投票
-      $target_handle_name = ParseStrings($sentence, 'VOODOO_FOX_DO');
-      $action = 'wolf-eat';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->voodoo_do;
-    }
-    elseif($location_system && $flag_action->child_fox){ //子狐の投票
-      $target_handle_name = ParseStrings($sentence, 'CHILD_FOX_DO');
-      $action = 'mage-do';
-      $sentence =  $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mage_do;
-    }
-    elseif($location_system && $flag_action->cupid){ //キューピッドの投票
-      $target_handle_name = ParseStrings($sentence, 'CUPID_DO');
-      $action = 'cupid-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->cupid_do;
-    }
-    elseif($location_system && $flag_action->mania){ //神話マニアの投票
-      $target_handle_name = ParseStrings($sentence, 'MANIA_DO');
-      $action = 'mania-do';
-      $sentence = $talk_handle_name.' は '.$target_handle_name.' '.$MESSAGE->mania_do;
-    }
-    else{ //その他の全てを表示(死者の場合)
-      $row_class = '';
+
+  switch($talk->scene){
+  case 'night':
+    if($flag_open_talk){
       $talk_class = '';
-      switch($location){
-      case 'night self_talk':
-	$talk_handle_name .= '<span>の独り言</span>';
+      switch($talk->type){
+      case 'self_talk':
+	$handle_name .= '<span>の独り言</span>';
 	$talk_class = 'night-self-talk';
 	break;
 
-      case 'night wolf':
-	$talk_handle_name .= '<span>(人狼)</span>';
+      case 'wolf':
+	$handle_name .= '<span>(人狼)</span>';
 	$talk_class = 'night-wolf';
 	$font_type  .= ' night-wolf';
 	break;
 
-      case 'night mad':
-	$talk_handle_name .= '<span>(囁き狂人)</span>';
+      case 'mad':
+	$handle_name .= '<span>(囁き狂人)</span>';
 	$talk_class = 'night-wolf';
 	$font_type  .= ' night-wolf';
 	break;
 
-      case 'night common':
-	$talk_handle_name .= '<span>(共有者)</span>';
+      case 'common':
+	$handle_name .= '<span>(共有者)</span>';
 	$talk_class = 'night-common';
 	$font_type  .= ' night-common';
 	break;
 
-      case 'night fox':
-	$talk_handle_name .= '<span>(妖狐)</span>';
+      case 'fox':
+	$handle_name .= '<span>(妖狐)</span>';
 	$talk_class = 'night-fox';
 	$font_type  .= ' night-fox';
 	break;
-
-      case 'heaven':
-	$row_class = 'heaven';
-	break;
       }
-    }
-    if($action != ''){
-      $builder->AddSystemMessage($action, $sentence);
+      $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, '', $talk_class);
     }
     else{
-      $symbol = "<font color=\"{$talk_color}\">◆</font>";
-      $builder->RawAddTalk($symbol, $talk_handle_name, $sentence, $font_type, $row_class, $talk_class);
-    }
-  }
-  //ここからは観戦者と役職非公開モード
-  elseif($flag_system); //投票情報は非表示
-  else{ //観戦者
-    if($ROOM->IsNight()){
-      switch($location){
-      case 'night wolf':
-	if($flag_wolf_group){
+      switch($talk->type){
+      case 'wolf': //人狼
+	if($flag_wolf){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif(! $SELF->IsRole('mind_scanner')){ //さとりには遠吠えは見えない
+	else{
 	  $builder->AddWhisper('wolf', $talk);
 	}
 	break;
 
-      case 'night mad':
-	if($flag_wolf_group) $builder->AddTalk($said_user, $talk);
+      case 'mad': //囁き狂人
+	if($flag_wolf) $builder->AddTalk($said_user, $talk);
 	break;
 
-      case 'night common':
-	if($virtual_self->IsRole('common')){
+      case 'common': //共有者
+	if($flag_common){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif(! $SELF->IsRole('dummy_common')){ //夢共有者には何も見えない
+	else{
 	  $builder->AddWhisper('common', $talk);
 	}
 	break;
 
-      case 'night fox':
-	if($flag_fox_group){
+      case 'fox': //妖狐
+	if($flag_fox){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($virtual_self->IsRole('wise_wolf')){
+	elseif($SELF->IsRole('wise_wolf')){
 	  $builder->AddWhisper('common', $talk);
 	}
 	break;
 
-      case 'night self_talk':
-	if($virtual_self->IsSame($talk_uname)){
+      case 'self_talk': //独り言
+	if($virtual_self->IsSame($talk->uname) || $flag_dummy_boy || $flag_mind_read){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($said_user->IsRole('silver_wolf') && ! $SELF->IsRole('mind_scanner')){
-	  $builder->AddWhisper('wolf', $talk); //銀狼の独り言はさとり以外には遠吠えに見える
+	elseif($said_user->IsRole('silver_wolf')){
+	  $builder->AddWhisper('wolf', $talk); //銀狼の独り言は遠吠えに見える
 	}
 	break;
       }
     }
-    else{
-      $builder->AddTalk($said_user, $talk);
-    }
+    break;
+
+  case 'heaven':
+    if(! $flag_open_talk) return;
+    $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, $talk->scene);
+    break;
+
+  default:
+    $builder->AddTalk($said_user, $talk);
+    break;
   }
+}
+
+//[村立て / ゲーム開始 / ゲーム終了] 時刻を出力
+function OutputTimeStamp($builder){
+  global $ROOM;
+
+  $talk =& new Talk();
+  $query = "FROM room WHERE room_no = {$ROOM->id}";
+  if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
+    $time = FetchResult("SELECT establish_time $query");
+    $talk->sentence = '村作成';
+  }
+  elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
+    $time = FetchResult("SELECT start_time $query");
+    $talk->sentence = 'ゲーム開始';
+  }
+  elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
+    $time = FetchResult("SELECT finish_time $query");
+    $talk->sentence = 'ゲーム終了';
+  }
+
+  if(is_null($time)) return false;
+  $talk->uname = 'system';
+  $talk->sentence .= '：' . ConvertTimeStamp($time);
+  $talk->location = $ROOM->day_night . ' system';
+  $talk->ParseLocation();
+  OutputTalk($talk, $builder);
 }
 
 //死亡者の遺言を出力
@@ -776,24 +627,32 @@ function OutputDeadMan(){
   //共通クエリ
   $query_header = "SELECT message, type FROM system_message WHERE room_no = {$ROOM->id} AND date =";
 
-  //処刑メッセージ、毒死メッセージ(昼)
-  $type_day = "type = 'VOTE_KILLED' OR type = 'POISON_DEAD_day' OR type = 'LOVERS_FOLLOWED_day' " .
-    "OR type LIKE 'SUDDEN_DEATH_%'";
+  //死亡タイプリスト
+  $dead_type_list = array(
+    'day' => array('VOTE_KILLED' => true, 'POISON_DEAD_day' => true,
+		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false),
 
-  //前の日の夜に起こった死亡メッセージ
-  $type_night = "type = 'WOLF_KILLED' OR type LIKE 'POSSESSED%' OR type = 'DREAM_KILLED' " .
-    "OR type = 'TRAPPED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
-    "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
-    "OR type = 'PRIEST_RETURNED' OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' " .
-    "OR type LIKE 'REVIVE_%'";
+    'night' => array('WOLF_KILLED' => true, 'POSSESSED%' => false, 'DREAM_KILLED' => true,
+		     'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
+		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
+		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
+		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false));
+
+  foreach($dead_type_list as $scene => $action_list){
+    $query_list = array();
+    foreach($action_list as $action => $type){
+      $query_list[] = 'type ' . ($type ? '=' : 'LIKE') . " '$action'";
+    }
+    $type_list->$scene = implode(' OR ', $query_list);
+  }
 
   if($ROOM->IsDay()){
     $set_date = $yesterday;
-    $type = $type_night;
+    $type = $type_list->night;
   }
   else{
     $set_date = $ROOM->date;
-    $type = $type_day;
+    $type = $type_list->day;
   }
 
   $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY RAND()");
@@ -805,7 +664,7 @@ function OutputDeadMan(){
   if($ROOM->log_mode) return;
   $set_date = $yesterday;
   if($set_date < 2) return;
-  $type = ($ROOM->IsDay() ? $type_day : $type_night);
+  $type = $type_list->{$ROOM->day_night};
 
   echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合は $array の中身をチェックする
   $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY RAND()");
@@ -869,7 +728,7 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_CELIBACY':
     echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){
-      $action = array_pop(explode('_', strtolower($type)));
+      $action = strtolower(array_pop(explode('_', $type)));
       echo $reason_header.$MESSAGE->$action.')</td>';
     }
     break;

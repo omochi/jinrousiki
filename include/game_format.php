@@ -1,17 +1,52 @@
 <?php
 //-- 発言処理の基底クラス --//
 class DocumentBuilder{
+  var $actor;
+  var $flag;
   var $extension_list = array();
 
   function DocumentBuilder(){ $this->__construct(); }
 
   function __construct(){
-    global $ROLES, $USERS, $SELF;
+    global $USERS, $SELF;
 
-    //フィルタ対象役職の情報をロード
-    $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
-    $ROLES->Load('talk');
-    $this->extension_list = $ROLES->loaded->class;
+    $this->actor = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
+    $this->LoadExtension();
+    $this->SetFlag();
+  }
+
+  //フィルタ対象役職の情報をロード
+  function LoadExtension(){
+    global $ROLES;
+
+    $ROLES->actor = $this->actor;
+    $this->extension_list = $ROLES->Load('talk');
+  }
+
+  //フィルタ用フラグをセット
+  function SetFlag(){
+    global $ROOM, $SELF;
+
+    //判定用変数をセット
+    $actor = $this->actor;
+    $dummy_boy = $SELF->IsDummyBoy();
+
+    //フラグをセット
+    $this->flag->dummy_boy = $dummy_boy;
+    $this->flag->common    = ($dummy_boy || $actor->IsRole('common'));
+    $this->flag->wolf      = ($dummy_boy || $SELF->IsWolf(true) || $actor->IsRole('whisper_mad'));
+    $this->flag->fox       = ($dummy_boy || $actor->IsFox(true));
+    $this->flag->mind_read = ($ROOM->date > 1 && $SELF->IsLive());
+
+    //発言完全公開フラグ
+    /*
+      + ゲーム終了後は全て表示
+      + 身代わり君には全て表示
+      + 霊界表示オン状態の死者には全て表示
+      + 霊界表示オフ状態は観戦者と同じ (投票情報は表示しない)
+    */
+    $this->flag->open_talk = ($dummy_boy || $ROOM->IsFinished() ||
+			      ($SELF->IsDead() && $ROOM->IsOpenCast()));
   }
 
   //発言テーブルヘッダ作成
@@ -48,7 +83,7 @@ WORDS;
     if($RQ_ARGS->add_role) $handle_name .= $user->MakeShortRoleName(); //役職表示モード対応
 
     $user_info = '<font style="color:'.$user->color.'">◆</font>'.$handle_name;
-    if(strpos($talk->location, 'self_talk') !== false && ! $user->IsRole('dummy_common')){
+    if($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')){
       $user_info .= '<span>の独り言</span>';
     }
     $volume = $talk->font_type;

@@ -151,12 +151,12 @@ body{ /* AA 用 */
 .objection-male{  background-color: #336699;} /* 異議あり(男) */
 .objection-female{background-color: #FF0099;} /* 異議あり(女) */
 .game-start{      background-color: #999900;} /* ゲーム開始投票(現在は使ってない模様) */
-.kick{            background-color: #AAAA33;} /* キック投票 */
-.vote{            background-color: #999900;} /* 処刑投票 */
+.kick-do{         background-color: #AAAA33;} /* キック投票 */
+.vote-do{         background-color: #999900;} /* 処刑投票 */
 .wolf-eat{        background-color: #CC3300;} /* 狼の襲撃 */
 .mage-do{         background-color: #990099;} /* 占い師 */
 .guard-do{        background-color: #0099FF;} /* 狩人 */
-.poison-cat-do{   background-color: #009966;} /* 猫又 */
+.revive-do{       background-color: #009966;} /* 猫又 */
 .assassin-do{     background-color: #904040;} /* 暗殺者 */
 .mind-scanner-do{ background-color: #A0A000;} /* さとり */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */

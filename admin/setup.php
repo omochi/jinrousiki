@@ -90,19 +90,19 @@ function CheckTable(){
     $failed  = ')を追加できませんでした';
 
     if(! $flag->establisher_ip){
-      $status = (mysql_query("$add_query establisher_ip TEXT") ? $success : $failed);
+      $status = (mysql_query("$query establisher_ip TEXT") ? $success : $failed);
       echo $header . 'establisher_ip' . $status . $footer;
     }
     if(! $flag->establish_time){
-      $status = (mysql_query("$add_query establish_time DATETIME") ? $success : $failed);
+      $status = (mysql_query("$query establish_time DATETIME") ? $success : $failed);
       echo $header . 'establish_time' . $status . $footer;
     }
     if(! $flag->start_time){
-      $status = (mysql_query("$add_query start_time DATETIME") ? $success : $failed);
+      $status = (mysql_query("$query start_time DATETIME") ? $success : $failed);
       echo $header . 'start_time' . $status . $footer;
     }
     if(! $flag->finish_time){
-      $status = (mysql_query("$add_query finish_time DATETIME") ? $success : $failed);
+      $status = (mysql_query("$query finish_time DATETIME") ? $success : $failed);
       echo $header . 'finish_time' . $status . $footer;
     }
   }
@@ -216,6 +216,39 @@ function CheckTable(){
 	}
       }
       closedir($handle);
+    }
+  }
+  elseif($revision > 0){ //追加フィールド処理
+    $sql = mysql_query("SHOW COLUMNS FROM user_icon");
+    if(mysql_num_rows($sql) > 0){
+      while(($row = mysql_fetch_assoc($sql)) !== false){
+	$flag->appearance  |= ($row['Field'] == 'appearance');
+	$flag->category    |= ($row['Field'] == 'category');
+	$flag->author      |= ($row['Field'] == 'author');
+	$flag->regist_date |= ($row['Field'] == 'regist_date');
+      }
+    }
+
+    $query   = "ALTER TABLE user_icon ADD ";
+    $titile .= 'にフィールド(';
+    $success = ')を追加しました';
+    $failed  = ')を追加できませんでした';
+
+    if(! $flag->appearance){
+      $status = (mysql_query("$query appearance TEXT") ? $success : $failed);
+      echo $header . 'appearance' . $status . $footer;
+    }
+    if(! $flag->category){
+      $status = (mysql_query("$query category TEXT") ? $success : $failed);
+      echo $header . 'category' . $status . $footer;
+    }
+    if(! $flag->author){
+      $status = (mysql_query("$query author TEXT") ? $success : $failed);
+      echo $header . 'author' . $status . $footer;
+    }
+    if(! $flag->regist_date){
+      $status = (mysql_query("$query regist_date DATETIME") ? $success : $failed);
+      echo $header . 'regist_date' . $status . $footer;
     }
   }
 

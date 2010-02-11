@@ -75,6 +75,8 @@ class RoleManager{
       $this->LoadFile($role);
       $this->LoadClass($role, $class);
     }
+
+    return array_intersect_key($this->loaded->class, array_flip($role_list));
   }
 
   function LoadFile($name){
@@ -85,16 +87,21 @@ class RoleManager{
 
   function LoadClass($name, $class){
     if(is_null($name) || in_array($name, $this->loaded->class)) return false;
-    $this->loaded->class[$name] = & new $class();
+    $this->loaded->class[$name] = & new $class($this->actor);
     return true;
   }
 
-  function GetWhisperingUserInfo($role_name, &$class_attr){
-    if(strpos($role_name, 'common') !== false){
-      $class_attr = 'talk-common';
+  function GetWhisperingUserInfo($role, &$class){
+    global $SELF;
+
+    switch($role){
+    case 'common': //共有者のささやき
+      if($SELF->IsRole('dummy_common')) return false; //夢共有者には見えない
+      $class = 'talk-common';
       return '共有者の小声';
-    }
-    elseif(strpos($role_name, 'wolf') !== false){
+
+    case 'wolf': //人狼の遠吠え
+      if($SELF->IsRole('mind_scanner')) return false; //さとりには見えない
       return '狼の遠吠え';
     }
     return false;

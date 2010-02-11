@@ -447,7 +447,7 @@ function CheckSilence(){
 		     'assassin', 'trap_mad');
 	  if(! $ROOM->IsOpenCast()){
 	    array_push($action_list, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
-	    array_push($actor_list, 'poison_cat');
+	    array_push($actor_list, '%cat', 'revive_fox');
 	  }
 	}
 
@@ -743,7 +743,7 @@ function CheckSelfVoteDay(){
 		$USERS->GetHandleName($target_uname, true) . '§µ§Û§À≈Í…º∫—§ﬂ');
   $sentence .= '</div>'."\n";
   if($target_uname === false){
-    $sentence .= '<span class="ability vote">' . $MESSAGE->ability_vote . '</span><br>'."\n";
+    $sentence .= '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>'."\n";
   }
   echo $sentence;
 }

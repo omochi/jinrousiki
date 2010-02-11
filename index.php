@@ -7,7 +7,7 @@ if($SERVER_CONF->back_page != ''){
   echo '<a href="' . $SERVER_CONF->back_page . '">提る</a><br>'."\n";
 }
 ?>
-<a href="index.php"><img src="img/top_title.jpg"></a>
+<a href="./"><img src="img/top_title.jpg"></a>
 <div class="comment"><?php echo $SERVER_CONF->comment; ?></div>
 <noscript>°° JavaScriptを铜跟にしてください ′′</noscript>
 <table class="main">
@@ -26,10 +26,10 @@ if($SERVER_CONF->back_page != ''){
       <li>→※→※→※→</li>
       <li class="log">HTML步ログ</li>
       <li>さとり华V3ログ</li>
-      <li><a href="log3/index.html">1×378录</a></li>
-      <li><a href="log3_2/index.html">379录×</a></li>
-      <li><a href="log2/index.html">さとり华V2ログ</a></li>
-      <li><a href="log1/index.html">さとり华V1ログ</a></li>
+      <li><a href="log3/">1×378录</a></li>
+      <li><a href="log3_2/">379录×</a></li>
+      <li><a href="log2/">さとり华V2ログ</a></li>
+      <li><a href="log1/">さとり华V1ログ</a></li>
 -->
       <li>→※→※→※→</li>
       <li><a href="icon_view.php">アイコン办枉</a></li>
@@ -48,7 +48,8 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1260623018/l50">塑スレ</a>(桂梦はここ)</li>
       <li><a href="http://www27.atwiki.jp/umigamejinnro/">澎数ウミガメwiki</a></li>
       <li><a href="http://jbbs.livedoor.jp/netgame/2829/">ウミガメ客系非绩饶</a></li>
-      <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">ウミガメ花锰录</a></li>
+      <li><a href="http://umigamejinrou.chatx2.whocares.jp/">ウミガメ花锰录</a></li>
+      <!-- <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">ウミガメ花锰录</a></li> -->
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">瓤臼ˇ的侠脱スレ</a></li>
     </ul>
 
@@ -77,13 +78,15 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="http://www16.atpages.jp/bourbonjinro/">奠バ〖ボンハウス华</a></li>
       <li>iM@S废</li>
       <li><a href="http://kiterew.tv/jinro/">井幕华</a></li>
+      <li>バ〖ボン华废</li>
+      <li><a href="http://jinro.blue-sky-server.com/">黔唆华</a></li>
       <li>リンク歹司淑礁面</li>
     </ul>
   </td>
 
   <td>
     <fieldset>
-      <legend>Information <a href="info/index.php">×册殿のinformationはこちら×</a></legend>
+      <legend>Information <a href="info/">×册殿のinformationはこちら×</a></legend>
       <div class="information"><?php include_once 'info/top.php'; ?></div>
     </fieldset>
 
@@ -130,5 +133,4 @@ if($SERVER_CONF->back_page != ''){
 -->
 <?php $SCRIPT_INFO->OutputVersion(); ?>
 </div>
-</body>
-</html>
+</body></html>

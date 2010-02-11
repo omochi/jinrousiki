@@ -15,8 +15,8 @@ OutputHTMLHeader('ユーザアイコン一覧', 'icon_view')
 $DB_CONF->Connect(true); //DB 接続
 
 //ユーザアイコンのテーブルから一覧を取得
-$query = "SELECT icon_name, icon_filename, icon_width, icon_height, color " .
-  "FROM user_icon WHERE icon_no > 0 ORDER BY icon_no";
+$query = "SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color, appearance, " .
+  "category, author FROM user_icon WHERE icon_no > 0 ORDER BY icon_no";
 $icon_list = FetchAssoc($query);
 
 //表の出力
@@ -27,9 +27,13 @@ foreach($icon_list as $array){
 
   extract($array);
   $location = $ICON_CONF->path . '/' . $icon_filename;
+  $data = '';
+  if(isset($appearance)) $data .= '<br>' . $appearance;
+  if(isset($category))   $data .= '<br>' . $category;
+  if(isset($author))     $data .= '<br>' . $author;
   echo <<< EOF
 <td><img src="$location" width="$icon_width" height="$icon_height" style="border-color:$color;"></td>
-<td class="name">$icon_name<br><font color="$color">◆</font>$color</td>
+<td class="name">No. $icon_no<br>$icon_name<br><font color="$color">◆</font>$color{$data}</td>
 
 EOF;
 }

@@ -243,7 +243,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(2);
+$SELF = $USERS->ByID(2);
 
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ

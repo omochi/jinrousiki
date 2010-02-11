@@ -14,6 +14,7 @@ if($RQ_ARGS->is_room){
 
   $USERS =& new UserDataSet($RQ_ARGS);
   $SELF  =& new User();
+
   OutputOldLog();
 }
 else{
@@ -289,6 +290,14 @@ function OutputDateTalkLog($set_date, $set_location){
   }
   $sql = mysql_query("$query $select_order");
 
+  //-- 仮想稼動モードテスト用 --//
+  //global $USERS, $SELF;
+  //$SELF = $USERS->rows[3];
+  //$SELF->ParseRoles('human earplug');
+  //$SELF->live = 'live';
+  //$ROOM->status = 'playing';
+  //$ROOM->option_list[] = 'not_open_cast';
+
   if($flag_border_game && ! $RQ_ARGS->reverse_log && $set_date != $ROOM->last_date){
     $ROOM->date = $set_date + 1;
     $ROOM->day_night = 'day';
@@ -299,28 +308,9 @@ function OutputDateTalkLog($set_date, $set_location){
   $ROOM->day_night = $table_class;
 
   //出力
-  $builder = DocumentBuilder::Generate();
+  $builder =& new DocumentBuilder();
   $builder->BeginTalk("old-log-talk {$table_class}");
-  if($RQ_ARGS->reverse_log){
-    if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
-      $time = FetchResult("SELECT establish_time FROM room WHERE room_no = {$ROOM->id}");
-      $row->sentence = '村作成';
-    }
-    elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
-      $time = FetchResult("SELECT start_time FROM room WHERE room_no = {$ROOM->id}");
-      $row->sentence = 'ゲーム開始';
-    }
-    elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
-      $time = FetchResult("SELECT finish_time FROM room WHERE room_no = {$ROOM->id}");
-      $row->sentence = 'ゲーム終了';
-    }
-    if($time != ''){
-      $row->uname = 'system';
-      $row->sentence .= '：' . ConvertTimeStamp($time);
-      $row->location = $ROOM->day_night . 'system';
-      OutputTalk($row, $builder);
-    }
-  }
+  if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
 
   while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
     if(strpos($talk->location, 'day') !== false && ! $ROOM->IsDay()){
@@ -338,26 +328,7 @@ function OutputDateTalkLog($set_date, $set_location){
     OutputTalk($talk, &$builder); //会話出力
   }
 
-  if(! $RQ_ARGS->reverse_log){
-    if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
-      $time = FetchResult("SELECT establish_time FROM room WHERE room_no = {$ROOM->id}");
-      $row->sentence = '村作成';
-    }
-    elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
-      $time = FetchResult("SELECT start_time FROM room WHERE room_no = {$ROOM->id}");
-      $row->sentence = 'ゲーム開始';
-    }
-    elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
-      $time = FetchResult("SELECT finish_time FROM room WHERE room_no = {$ROOM->id}");
-      $row->sentence = 'ゲーム終了';
-    }
-    if(isset($time)){
-      $row->uname = 'system';
-      $row->sentence .= '：' . ConvertTimeStamp($time);
-      $row->location = $ROOM->day_night . 'system';
-      OutputTalk($row, $builder);
-    }
-  }
+  if(! $RQ_ARGS->reverse_log) OutputTimeStamp($builder);
   $builder->EndTalk();
 
   if($flag_border_game && $RQ_ARGS->reverse_log){
