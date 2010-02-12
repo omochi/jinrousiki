@@ -3,40 +3,21 @@
   ◆スピーカー (speaker)
   ○仕様
   ・声の大きさが一段階大きくなり、大声は音割れしてしまう
-  ・生存時＆ゲームプレイ中のみ発動
-  ・共有者のヒソヒソ声は変換対象外
+  ・共有者の囁きは変換対象外
+  ・ゲームプレイ中で生存時のみ有効
 
   ○問題点
   ・観戦モードにすると普通に見えてしまう
 */
-class Role_speaker extends Role{
+class Role_speaker extends RoleTalkFilter{
   function Role_speaker(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
-  function converter(&$volume, &$sentence){
-    global $MESSAGE;
-
-    if($this->Ignored()) return;
-    switch($volume){
-    case 'strong':
-      $sentence = $MESSAGE->howling;
-      break;
-
-    case 'normal':
-      $volume = 'strong';
-      break;
-
-    case 'weak':
-      $volume = 'normal';
-      break;
-    }
+  function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
+    $this->ChangeVolume('up', $volume, $sentence);
   }
 
-  function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){
-    $this->converter($volume, $sentence);
-  }
-
-  function OnAddWhisper($role, $talk, &$user_info, &$volume, &$sentence){
-    if($role == 'wolf') $this->converter($volume, $sentence);
+  function AddWhisper($role, $talk, &$user_info, &$volume, &$sentence){
+    if($role == 'wolf') $this->ChangeVolume('up', $volume, $sentence);
   }
 }

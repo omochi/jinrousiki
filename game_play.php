@@ -21,6 +21,10 @@ $ROOM->sudden_death = 0; //突然死実行までの残り時間
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByUname($uname); //自分の情報をロード
 
+//-- テスト用 --//
+//$SELF->ChangeRole('side_reverse');
+//$SELF->AddRole('line_reverse');
+
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
   $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //ゲームオプション表示用
@@ -146,13 +150,14 @@ function SendCookie(){
 
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $MESSAGE, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
 
   //リロード時、死者、ゲームプレイ中以外なら処理スキップ
   if($say == '' || $SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
   #if($say == '' || $SELF->IsDead()) return false; //テスト用
 
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
+  $ROLES->actor = $virtual_self;
 
   //萌狼・萌狐・不審者は一定確率で発言が遠吠え(デフォルト時)になる
   if($virtual_self->IsRole('cute_wolf', 'cute_fox', 'suspect') &&
@@ -177,85 +182,8 @@ function ConvertSay(&$say){
     $say = strtr($say, $GAME_CONF->liar_replace_list);
   }
 
-  if($virtual_self->IsRole('grassy')){ //草原迷彩の処理
-    $convert_say = '';
-    $count = mb_strlen($say);
-    for($i = 0; $i < $count; $i++){
-      $this_str = mb_substr($say, $i, 1);
-      $convert_say .= $this_str;
-      if($this_str != "\n") $convert_say .= 'w ';
-    }
-    $say = $convert_say;
-  }
-
-  if($virtual_self->IsRole('invisible')){ //光学迷彩の処理
-    $convert_say = '';
-    $count = mb_strlen($say);
-    $rate = $GAME_CONF->invisible_rate;
-    for($i = 0; $i < $count; $i++){
-      $this_str = mb_substr($say, $i, 1);
-      if($this_str == "\n" || $this_str == "\t" || $this_str == ' ' || $this_str == '　'){
-	$convert_say .= $this_str;
-	continue;
-      }
-      if(mt_rand(1, 100) <= $rate)
-	$convert_say .= (strlen($this_str) == 2 ? '　' : '&nbsp;');
-      else
-	$convert_say .= $this_str;
-      if($rate++ > 100) break;
-    }
-    $say = $convert_say;
-  }
-
-  //虹色迷彩の処理
-  if($virtual_self->IsRole('rainbow')) $say = strtr($say, $GAME_CONF->rainbow_replace_list);
-
-  //七曜迷彩の処理
-  if($virtual_self->IsRole('weekly')) $say = strtr($say, $GAME_CONF->weekly_replace_list);
-
-  if($virtual_self->IsRole('silent') && mb_strlen($say) > $GAME_CONF->silent_length){ //無口の処理
-    $say = mb_substr($say, 0, $GAME_CONF->silent_length) . '……';
-  }
-
-  //草刈りの処理
-  if($virtual_self->IsRole('mower')){
-    $say = strtr($say, array('w' => '', 'ｗ' => '', 'W' => '', 'Ｗ' => ''));
-  }
-
-  if($virtual_self->IsRole('side_reverse')){ //鏡迷彩の処理
-    $convert_say = '';
-    $count = mb_strlen($say);
-    $this_line = array();
-    for($i = 0; $i < $count; $i++){
-      $this_str = mb_substr($say, $i, 1);
-      if($this_str == "\n"){
-	if(count($this_line) > 0){
-	  $this_line = array_reverse($this_line);
-	  foreach($this_line as $this_line_str) $convert_say .= $this_line_str;
-	}
-	$convert_say .= $this_str;
-	$this_line = array();
-      }
-      else{
-	$this_line[] = $this_str;
-      }
-    }
-    if(count($this_line) > 0){
-      $this_line = array_reverse($this_line);
-      foreach($this_line as $this_line_str) $convert_say .= $this_line_str;
-    }
-    $say = $convert_say;
-  }
-
-  if($virtual_self->IsRole('line_reverse')){ //天地迷彩の処理
-    $convert_say = '';
-    while(($line_break = mb_strrpos($say, "\n")) !== false){
-      $convert_say .= mb_substr($say, $line_break + 1);
-      $say = mb_substr($say, 0, $line_break);
-      if($say != '') $convert_say .= "\n";
-    }
-    if($convert_say != '') $say = $convert_say . $say;
-  }
+  $filter_list = $ROLES->Load('say_filter');
+  foreach($filter_list as $filter) $filter->FilterSay($say);
 }
 
 //遺言登録

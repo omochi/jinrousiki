@@ -2,41 +2,22 @@
 /*
   ◆耳栓 (earplug)
   ○仕様
-  ・声の大きさが一段階小さくなり、小声は共有者のヒソヒソ声に見える
-  ・生存時＆ゲームプレイ中のみ発動
-  ・共有者のヒソヒソ声は変換対象外
+  ・声の大きさが一段階小さくなり、小声は共有者の囁きに見える
+  ・共有者の囁きは変換対象外
+  ・ゲームプレイ中で生存時のみ有効
 
   ○問題点
   ・観戦モードにすると普通に見えてしまう
 */
-class Role_earplug extends Role{
+class Role_earplug extends RoleTalkFilter{
   function Role_earplug(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
-  function converter(&$volume, &$sentence){
-    global $MESSAGE;
-
-    if($this->Ignored()) return;
-    switch($volume){
-    case 'strong':
-      $volume = 'normal';
-      break;
-
-    case 'normal':
-      $volume = 'weak';
-      break;
-
-    case 'weak':
-      $sentence = $MESSAGE->common_talk;
-      break;
-    }
+  function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
+    $this->ChangeVolume('down', $volume, $sentence);
   }
 
-  function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){
-    $this->converter($volume, $sentence);
-  }
-
-  function OnAddWhisper($role, $talk, &$user_info, &$volume, &$sentence){
-    if($role == 'wolf') $this->converter($volume, $sentence);
+  function AddWhisper($role, $talk, &$user_info, &$volume, &$sentence){
+    if($role == 'wolf') $this->ChangeVolume('down', $volume, $sentence);
   }
 }

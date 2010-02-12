@@ -1,55 +1,16 @@
 <?php
-class Role extends DocumentBuilderExtension{
-  var $actor;
-
-  function Role($user = NULL){ $this->__construct($user); }
-
-  function __construct($user = NULL){
-    $this->actor = $user;
-  }
-
-  function Ignored(){
-    global $ROOM, $SELF;
-    return ! ($ROOM->IsPlaying() && $SELF->IsLive());
-  }
-
-  function IsSameUser($uname){
-    global $ROLES;
-    return $ROLES->actor->IsSame($uname);
-  }
-
-  function OutputRoleNotification($writer){ return 'not implemented'; }
-  function OutputVoteNotification($writer){ return 'not implemented'; }
-  function FilterWords($talk, $date, $situation){ return false; }
-
-  function Say($words, $volume){
-    //TODO: 以下に発言用のコードを記述してください。
-  }
-
-  function WriteLastWords($content){
-    //TODO: 以下に発言用のコードを記述してください。 //EntryLastWords() じゃないの？
-  }
-
-  function Object(){
-    //TODO: 以下に発言用のコードを記述してください。
-  }
-
-  function Vote($target){
-    //TODO: 以下に投票用のコードを記述してください。
-  }
-
-  function Action($target){
-    //TODO: 以下に投票用のコードを記述してください。
-  }
-}
-
+//-- 役職コントローラークラス --//
 class RoleManager{
   var $path;
   var $loaded;
   var $actor;
 
-  //発言にフィルタがかかるタイプ
-  var $filter_list = array('blinder', 'earplug', 'speaker');
+  //発言表示にフィルタがかかるタイプ
+  var $talk_list = array('blinder', 'earplug', 'speaker');
+
+  //発言登録時にフィルタがかかるタイプ
+  var $say_filter_list = array('rainbow', 'weekly', 'grassy', 'invisible', 'mower',
+			       'silent', 'side_reverse', 'line_reverse');
 
   function RoleManager(){ $this->__construct(); }
 
@@ -60,14 +21,9 @@ class RoleManager{
   }
 
   function Load($type){
-    switch($type){
-    case 'talk':
-      $role_list = $this->filter_list;
-      break;
-
-    default:
-      return;
-    }
+    $name = $type . '_list';
+    $role_list = $this->$name;
+    if(! (is_array($role_list) && count($role_list) > 0)) return;
 
     foreach($role_list as $role){
       if(! $this->actor->IsRole($role)) continue;
@@ -87,7 +43,7 @@ class RoleManager{
 
   function LoadClass($name, $class){
     if(is_null($name) || in_array($name, $this->loaded->class)) return false;
-    $this->loaded->class[$name] = & new $class($this->actor);
+    $this->loaded->class[$name] = & new $class();
     return true;
   }
 
@@ -115,6 +71,58 @@ class RoleManager{
       return $MESSAGE->common_talk;
     case 'wolf':
       return $MESSAGE->wolf_howl;
+    }
+  }
+}
+
+//-- 役職の基底クラス --//
+class Role{
+  function Role(){ $this->__construct(); }
+  function __construct(){}
+
+  //-- 判定用関数 --//
+  function Ignored(){
+    global $ROOM, $SELF;
+    //return false; //テスト用
+    return ! ($ROOM->IsPlaying() && $SELF->IsLive());
+  }
+
+  function IsSameUser($uname){
+    global $ROLES;
+    return $ROLES->actor->IsSame($uname);
+  }
+}
+
+//-- 発言フィルタリング用拡張クラス --//
+class RoleTalkFilter extends Role{
+  var $volume_list = array('weak', 'normal', 'strong');
+
+  function RoleTalkFilter(){ $this->__construct(); }
+  function __construct(){ parent::__construct(); }
+
+  function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){}
+  function AddWhisper($role, $talk, &$user_info, &$volume, &$sentence){}
+
+  function ChangeVolume($type, &$volume, &$sentence){
+    global $MESSAGE;
+
+    if($this->Ignored()) return;
+    switch($type){
+    case 'up':
+      if(($key = array_search($volume, $this->volume_list)) === false) return;
+      if(++$key >= count($this->volume_list))
+	$sentence = $MESSAGE->howling;
+      else
+	$volume = $this->volume_list[$key];
+      break;
+
+    case 'down':
+      if(($key = array_search($volume, $this->volume_list)) === false) return;
+      if(--$key < 0)
+	$sentence = $MESSAGE->common_talk;
+      else
+	$volume = $this->volume_list[$key];
+      break;
     }
   }
 }

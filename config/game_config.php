@@ -110,8 +110,8 @@ class RoomConfig{
 class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
-  #var $entry_one_ip_address = true;
-  var $entry_one_ip_address = false;
+  var $entry_one_ip_address = true;
+  #var $entry_one_ip_address = false;
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   //var $trip = true; //まだ実装されていません
@@ -489,7 +489,7 @@ class GameConfig{
 //ゲームの時間設定
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
-  var $sudden_death = 120;
+  var $sudden_death = 240; //120;
 
   //-- リアルタイム制 --//
   var $default_day   = 5; //デフォルトの昼の制限時間(分)
@@ -631,7 +631,7 @@ class IconConfig{
 
 //アイコン登録設定
 class UserIcon{
-  var $disable_upload = true; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
+  var $disable_upload = false; //true; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
   var $name   = 20;    //アイコン名につけられる文字数(半角)
   var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
   var $width  = 45;    //アップロードできるアイコンの最大幅

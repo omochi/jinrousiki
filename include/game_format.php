@@ -89,7 +89,7 @@ WORDS;
     $volume = $talk->font_type;
     $sentence = $talk->sentence;
     foreach($this->extension_list as $extension){ //フィルタリング処理
-      $extension->OnAddTalk($user, $talk, $user_info, $volume, $sentence);
+      $extension->AddTalk($user, $talk, $user_info, $volume, $sentence);
     }
     $this->RawAddTalk('', $user_info, $sentence, $volume);
   }
@@ -102,7 +102,7 @@ WORDS;
     $volume = $talk->font_type;
     $sentence = $ROLES->GetWhisperingSound($role, $talk, $say_class);
     foreach($this->extension_list as $extension){ //フィルタリング処理
-      $extension->OnAddWhisper($role, $talk, $user_info, $volume, $sentence);
+      $extension->AddWhisper($role, $talk, $user_info, $volume, $sentence);
     }
     $this->RawAddTalk('', $user_info, $sentence, $volume, '', $user_class, $say_class);
   }
@@ -130,11 +130,4 @@ WORDS;
     echo $this->cache.'</table>'."\n";
     $this->cache = '';
   }
-}
-
-//-- 発言フィルタリング用拡張クラス --//
-class DocumentBuilderExtension{
-  function OnAddTalk($user, $talk, &$user_info, &$volume, &$sentence){}
-
-  function OnAddWhisper($role, $talk, &$user_info, &$volume, &$sentence){}
 }

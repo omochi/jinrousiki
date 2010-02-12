@@ -43,9 +43,15 @@ function GetRoleList($user_count, $option_role){
   }
   elseif(strpos($option_role, 'duel') !== false){ //·èÆ®Â¼
     $role_list = array(); //ÇÛÎó¤ò¥ê¥»¥Ã¥È
+    //Ïµ1.5:°Å»¦2:µá°¦6.5 -> wolf:3 / assassin:4 / self_cupid:13 / Total:20
+    $role_list['wolf'] = round($user_count / 20 * 3);
+    $role_list['assassin'] = round($user_count / 20 * 4);
+    $role_list['self_cupid'] = $user_count - ($role_list['wolf'] + $role_list['assassin']);
+    /*
     $role_list['wolf'] = round($user_count / 5);
     $role_list['trap_mad'] = round(($user_count - $role_list['wolf']) / 3);
     $role_list['assassin'] = $user_count - ($role_list['wolf'] + $role_list['trap_mad']);
+    */
   }
   elseif($ROOM->IsOption('chaosfull')){ //¿¿¡¦°ÇÆé
     $random_role_list = array();
