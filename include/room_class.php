@@ -17,52 +17,20 @@ class Room{
   var $test_mode = false;
 
   function Room($request){ $this->__construct($request); }
-
   function __construct($request = NULL){
-    if(isset($request)){
-      if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
-	$array = $request->TestItems->test_room;
-      }
-      else{
-	$query = "SELECT room_name, room_comment, game_option, date, day_night, status " .
-	  "FROM room WHERE room_no = {$request->room_no}";
-	if(($array = FetchNameArray($query)) === false){
-	  OutputActionResult('エラー', '無効な村番号です：' . $request->room_no);
-	}
-      }
-      $this->id = $request->room_no;
-      $this->LoadArray($array);
+    if(is_null($request)) return;
+    if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
+      $array = $request->TestItems->test_room;
     }
-    //$this->ParseCompoundParameters(); 他と整合が取れないので一時コメントアウト
-    $this->option_list = explode(' ', $this->game_option);
-  }
-
-  function LoadArray($array) {
-    foreach($array as $name => $value){
-      switch($name){
-      case 'room_no':
-	$type = 'id';
-	continue;
-
-      case 'room_name':
-	$type = 'name';
-	break;
-
-      case 'room_comment':
-	$type = 'comment';
-	break;
-
-      default:
-	$type = $name;
-	break;
+    else{
+      $query = "SELECT room_no AS id, room_name AS name, room_comment AS comment, ".
+	"game_option, date, day_night, status FROM room WHERE room_no = {$request->room_no}";
+      if(($array = FetchNameArray($query)) === false){
+	OutputActionResult('エラー', '無効な村番号です：' . $request->room_no);
       }
-      $this->$type = $value;
     }
-  }
-
-  function ParseCompoundParameters() {
-    $this->game_option = new OptionManager($this->game_option);
-    $this->option_role = new OptionManager($this->role_option);
+    foreach($array as $name => $value) $this->$name = $value;
+    $this->ParseOption();
   }
 
   //シーンに合わせた投票情報を取得する
@@ -119,16 +87,30 @@ class Room{
     return count($this->vote);
   }
 
+  function ParseOption(){
+    $this->game_option = new OptionManager($this->game_option);
+    $this->option_role = new OptionManager($this->role_option);
+    $this->option_list = array_keys($this->game_option->options);
+    if($this->IsRealTime()){
+      $time_list = $this->game_option->options['real_time'];
+      $this->real_time->day   = $time_list[0];
+      $this->real_time->night = $time_list[1];
+    }
+  }
+
   function IsOption($option){
     return in_array($option, $this->option_list);
   }
 
   function IsOptionGroup($option){
-    return strpos($this->game_option, $option) !== false;
+    foreach($this->option_list as $this_option){
+      if(strpos($this_option, $option) !== false) return true;
+    }
+    return false;
   }
 
   function IsRealTime(){
-    return $this->IsOptionGroup('real_time');
+    return $this->IsOption('real_time');
   }
 
   function IsDummyBoy(){

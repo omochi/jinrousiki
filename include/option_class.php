@@ -3,7 +3,6 @@ class OptionManager{
   var $options = array();
 
   function OptionManager($value){ $this->__construct($value); }
-
   function __construct($value) {
     $list = explode(' ', $value);
     foreach($list as $option){
@@ -27,8 +26,9 @@ class OptionManager{
   }
 
   function __toString() {
+    return '';
     $result = '';
-    foreach($this->option as $name => $value){
+    foreach($this->options as $name => $value){
       $result = ' ' . is_array($value) ? "{$name}:" . implode(':', $value) : $name;
     }
     return $result;

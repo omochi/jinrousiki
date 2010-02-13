@@ -50,6 +50,7 @@ class InitializeConfig{
     'game_play_functions' => 'user_class',
     'game_functions' => 'system_class',
     'system_class' => array('functions', 'room_class'),
+    'room_class' => 'option_class',
     'user_class' => 'game_functions',
     'role_class' => 'game_format'
   );

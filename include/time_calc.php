@@ -9,21 +9,20 @@ class TimeCalculation{
   var $die_room;       //自動廃村になるまでの時間
   var $establish_wait; //次の村を立てられるまでの待ち時間
 
-  function TimeCalculation(){
+  function TimeCalculation(){ $this->__construct(); }
+  function __construct(){
     global $ROOM_CONF, $TIME_CONF;
 
-    $day_seconds = floor(12 * 60 * 60 / $TIME_CONF->day);
-    $this->spend_day = ConvertTime($day_seconds);
+    $day_seconds   = floor(12 * 60 * 60 / $TIME_CONF->day);
+    $night_seconds = floor( 6 * 60 * 60 / $TIME_CONF->night);
 
-    $night_seconds = floor(6 * 60 * 60 / $TIME_CONF->night);
-    $this->spend_night = ConvertTime($night_seconds);
-
-    $this->silence_day    = ConvertTime($day_seconds   * $TIME_CONF->silence_pass);
-    $this->silence_night  = ConvertTime($night_seconds * $TIME_CONF->silence_pass);
+    $this->spend_day      = ConvertTime($day_seconds);
+    $this->spend_night    = ConvertTime($night_seconds);
+    $this->silence_day    = ConvertTime($TIME_CONF->silence_pass * $day_seconds);
+    $this->silence_night  = ConvertTime($TIME_CONF->silence_pass * $night_seconds);
     $this->silence        = ConvertTime($TIME_CONF->silence);
     $this->sudden_death   = ConvertTime($TIME_CONF->sudden_death);
     $this->die_room       = ConvertTime($ROOM_CONF->die_room);
     $this->establish_wait = ConvertTime($ROOM_CONF->establish_wait);
   }
 }
-?>

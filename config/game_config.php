@@ -600,7 +600,7 @@ class RoomImage extends ImageManager{
 }
 
 //-- Ìò¿¦¤Î²èÁü --//
-class RoleImage extends RoleImageBase{
+class RoleImage extends ImageManager{
   var $path      = 'role';
   var $extension = 'gif';
   var $class     = '';

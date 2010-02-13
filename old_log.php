@@ -102,13 +102,13 @@ EOF;
 			establish_time, start_time, finish_time FROM room
 			WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
 
-  $victory_img =& new VictoryImage();
+  $VICT_IMG =& new VictoryImage();
   while(($array = mysql_fetch_assoc($sql)) !== false){
     extract($array, EXTR_PREFIX_ALL, 'log');
 
     //オプションと勝敗の解析
     $game_option_str = MakeGameOptionImage($log_room_game_option, $log_room_option_role);
-    $victory_role_str = $victory_img->MakeVictoryImage($log_room_victory_role);
+    $victory_role_str = $VICT_IMG->GenerateTag($log_room_victory_role);
     //廃村の場合、色を灰色にする
     $dead_room_color = ($log_room_date == 0 ? ' style="color:silver"' : '');
 

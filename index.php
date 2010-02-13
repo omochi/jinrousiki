@@ -8,7 +8,7 @@ if($SERVER_CONF->back_page != ''){
 }
 ?>
 <a href="./"><img src="img/top_title.jpg"></a>
-<div class="comment"><?php echo $SERVER_CONF->comment; ?></div>
+<div class="comment"><?= $SERVER_CONF->comment ?></div>
 <noscript>＜＜ JavaScriptを有効にしてください ＞＞</noscript>
 <table class="main">
   <tr><td>
@@ -35,7 +35,6 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="icon_view.php">アイコン一覧</a></li>
       <li><a href="icon_upload.php">アイコン登録</a></li>
       <li>★☆★☆★☆★</li>
-      <!-- <li><a href="paparazzi.php">デバッグモード</a></li> -->
       <li><a href="src/">開発版ソースダウンロード</a></li>
       <li><a href="src/diff.txt">開発履歴</a></li>
       <li><a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a></li>
@@ -49,7 +48,7 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
       <li><a href="http://jbbs.livedoor.jp/netgame/2829/">ウミガメ人狼掲示板</a></li>
       <li><a href="http://umigamejinrou.chatx2.whocares.jp/">ウミガメ雑談村</a></li>
-      <!-- <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">ウミガメ雑談村</a></li> -->
+      <!-- <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">旧ウミガメ雑談村</a></li> -->
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">反省・議論用スレ</a></li>
     </ul>
 
@@ -63,7 +62,6 @@ if($SERVER_CONF->back_page != ''){
       <li>やる夫系</li>
       <li><a href="http://www16.atpages.jp/sasugabros/">流石弟者鯖</a></li>
       <li><a href="http://alicegame.dip.jp/suisei/">翠星石鯖</a></li>
-      <li><a href="http://www14.atpages.jp/mmr1/">世紀末鯖</a></li>
       <li><a href="http://www37.atwiki.jp/yaruomura/">やる夫wiki</a></li>
       <li>やる夫系予備/保管庫鯖</li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>
@@ -71,7 +69,8 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="http://www13.atpages.jp/yaranai/">薔薇姉妹鯖</a></li>
       <li><a href="http://www13.atpages.jp/suigintou/">水銀鯖</a></li>
       <li><a href="http://www15.atpages.jp/kanaria/">金糸雀保管庫</a></li>
-      <li><a href="http://www15.atpages.jp/seikima2/jinro_php/">世紀末鯖（テスト鯖）</a></li>
+      <li><a href="http://www14.atpages.jp/mmr1/">世紀末鯖</a></li>
+      <!-- <li><a href="http://www15.atpages.jp/seikima2/jinro_php/">世紀末鯖（テスト鯖）</a></li> -->
       <li>東方陰陽鉄系</li>
       <li><a href="http://bourbonhouse.xsrv.jp/jinro/">バーボンハウス鯖</a></li>
       <li><a href="http://dynamis.xsrv.jp/jinro/">裏世界鯖</a></li>
@@ -80,6 +79,7 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="http://kiterew.tv/jinro/">小鳥鯖</a></li>
       <li>バーボン鯖系</li>
       <li><a href="http://jinro.blue-sky-server.com/">猫又鯖</a></li>
+      <li><a href="http://www.freedom.xii.jp/jinro/">バーボン鯖</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>
@@ -87,16 +87,16 @@ if($SERVER_CONF->back_page != ''){
   <td>
     <fieldset>
       <legend>Information <a href="info/">〜過去のinformationはこちら〜</a></legend>
-      <div class="information"><?php include_once 'info/top.php'; ?></div>
+      <div class="information"><?php include_once 'info/top.php' ?></div>
     </fieldset>
 
     <fieldset>
       <legend>ゲーム一覧</legend>
-      <div class="game-list"><?php include_once 'room_manager.php'; ?></div>
+      <div class="game-list"><?php include_once 'room_manager.php' ?></div>
     </fieldset>
-    <?php OutputSharedServerRoom(); ?>
+    <?php OutputSharedServerRoom() ?>
     <fieldset>
-      <legend>村の作成</legend><?php OutputCreateRoom(); ?>
+      <legend>村の作成</legend><?php OutputCreateRoom() ?>
     </fieldset>
   </td></tr>
 </table>
@@ -131,6 +131,6 @@ if($SERVER_CONF->back_page != ''){
  <a href="http://www8.plala.or.jp/denpa/indexdon.html" target="_blank">神楽丼</a>
 ]<br>
 -->
-<?php $SCRIPT_INFO->OutputVersion(); ?>
+<?php $SCRIPT_INFO->OutputVersion() ?>
 </div>
 </body></html>

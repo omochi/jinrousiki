@@ -1,22 +1,25 @@
 <?php
 class Talk{
   function Talk(){ $this->__construct(); }
-
   function __construct(){
     $this->ParseLocation();
     $this->ParseSentence();
   }
 
-  function ParseLocation(){
+  function ParseLocation($location = NULL){
+    if($location != NULL) $this->location = $location; //初期化処理
+
     list($scene, $type) = explode(' ', $this->location);
     $this->scene = $scene;
     $this->type  = $type;
   }
 
-  function ParseSentence(){
+  function ParseSentence($sentence = NULL){
     global $MESSAGE;
 
-    $sentence = $this->sentence;
+    //初期化処理
+    is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence;
+
     switch($this->uname){ //システムユーザ系の処理
     case 'system':
       $action = strtok($sentence, "\t");

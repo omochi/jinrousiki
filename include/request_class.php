@@ -61,7 +61,6 @@ class RequestBase{
 //-- テスト用パラメータ設定クラス --//
 class TestParams extends RequestBase{
   function TestParams(){ $this->__construct(); }
-
   function __construct(){
     $this->GetItems(NULL, 'test_users', 'test_room', 'test_mode');
     $this->is_virtual_room = isset($this->test_users);
@@ -71,7 +70,6 @@ class TestParams extends RequestBase{
 //-- game 用共通クラス --//
 class RequestBaseGame extends RequestBase{
   function RequestBaseGame(){ $this->__construct(); }
-
   function __construct(){
     global $GAME_CONF;
     $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
@@ -86,7 +84,6 @@ class RequestBaseGame extends RequestBase{
 //-- game play 用共通クラス --//
 class RequestBaseGamePlay extends RequestBaseGame{
   function RequestBaseGamePlay(){ $this->__construct(); }
-
   function __construct(){
     parent::__construct();
     $this->GetItems("$this->CheckOn", 'get.list_down', 'get.play_sound');
@@ -96,7 +93,6 @@ class RequestBaseGamePlay extends RequestBaseGame{
 //-- login.php --//
 class RequestLogin extends RequestBase{
   function RequestLogin(){ $this->__construct(); }
-
   function __construct(){
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('EscapeStrings', 'post.uname', 'post.password');
@@ -107,7 +103,6 @@ class RequestLogin extends RequestBase{
 //-- user_manager.php --//
 class RequestUserManager extends RequestBase{
   function RequestUserManager(){ $this->__construct(); }
-
   function __construct(){
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
@@ -126,24 +121,19 @@ class RequestUserManager extends RequestBase{
 //-- game_play.php --//
 class RequestGamePlay extends RequestBaseGamePlay{
   function RequestGamePlay(){ $this->__construct(); }
-
   function __construct(){
     parent::__construct();
     $this->GetItems("$this->CheckOn", 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
     $this->GetItems('EscapeStrings', 'post.font_type');
     $this->GetItems(NULL, 'post.say');
     EscapeStrings($this->say, false);
-  }
-
-  function IsLastWords(){
-    return ($this->font_type == 'last_words');
+    $this->last_words = ($this->font_type == 'last_words');
   }
 }
 
 //-- game_log.php --//
 class RequestGameLog extends RequestBase{
   function RequestGameLog(){ $this->__construct(); }
-
   function __construct(){
     $this->GetItems('intval', 'get.room_no', 'get.date');
     $this->GetItems(NULL, 'get.day_night');
@@ -156,11 +146,11 @@ class RequestGameLog extends RequestBase{
   function IsInvalidScene(){
     switch($this->day_night){
     case 'beforegame':
-      return ($this->date != 0);
+      return $this->date != 0;
 
     case 'day':
     case 'night':
-      return ($this->date < 1);
+      return $this->date < 1;
 
     default:
       return true;
@@ -180,7 +170,6 @@ class RequestGameVote extends RequestBaseGamePlay{
     target_no はタイミングで入れ替わる可能性があるので Kick のみ target_handle_name を参照する
   */
   function RequestGameVote(){ $this->__construct(); }
-
   function __construct(){
     parent::__construct();
     $this->GetItems('intval', 'post.vote_times');
@@ -194,12 +183,11 @@ class RequestGameVote extends RequestBaseGamePlay{
 //-- old_log.php --//
 class RequestOldLog extends RequestBase{
   function RequestOldLog(){ $this->__construct(); }
-
   function __construct(){
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no');
       $this->GetItems("$this->CheckOn", 'get.reverse_log', 'get.heaven_talk',
-        'get.heaven_only','get.debug', 'get.add_role');
+		      'get.heaven_only','get.debug', 'get.add_role');
       $this->AttachTestParameters();
     }
     else{
@@ -212,7 +200,6 @@ class RequestOldLog extends RequestBase{
 //-- icon_upload.php --//
 class RequestIconUpload extends RequestBase{
   function RequestIconUpload(){ $this->__construct(); }
-
   function __construct(){
     $this->GetItems('EscapeStrings', 'post.name', 'post.color');
     $this->GetItems('intval', 'file.size');
@@ -223,7 +210,6 @@ class RequestIconUpload extends RequestBase{
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase{
   function RequestSrcUpload(){ $this->__construct(); }
-
   function __construct(){
     $this->GetItems('EscapeStrings', 'post.name', 'post.caption', 'post.user', 'post.password');
   }

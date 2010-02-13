@@ -93,10 +93,11 @@ function OutputAutoReloadLink($url){
 function OutputGameOption(){
   global $ROOM;
 
-  $array = FetchNameArray("SELECT option_role, max_user FROM room WHERE room_no = {$ROOM->id}");
+  $query = "SELECT game_option, option_role, max_user FROM room WHERE room_no = {$ROOM->id}";
+  extract(FetchNameArray($query));
   $str = '<table class="time-table"><tr>'."\n" .
-    '<td>ゲームオプション：' . MakeGameOptionImage($ROOM->game_option, $array['option_role']) .
-    ' 最大' . $array['max_user'] . '人</td>'."\n" . '</tr></table>'."\n";
+    '<td>ゲームオプション：' . MakeGameOptionImage($game_option, $option_role) .
+    ' 最大' . $max_user . '人</td>'."\n" . '</tr></table>'."\n";
   echo $str;
 }
 
@@ -573,8 +574,7 @@ function OutputTimeStamp($builder){
   if(is_null($time)) return false;
   $talk->uname = 'system';
   $talk->sentence .= '：' . ConvertTimeStamp($time);
-  $talk->location = $ROOM->day_night . ' system';
-  $talk->ParseLocation();
+  $talk->ParseLocation($ROOM->day_night . ' system');
   OutputTalk($talk, $builder);
 }
 
@@ -1030,11 +1030,9 @@ function InsertMediumMessage(){
 function GetRealPassTime(&$left_time, $flag = false){
   global $ROOM;
 
-  $time_str = strstr($ROOM->game_option, 'real_time');
   //実時間の制限時間を取得
-  sscanf($time_str, 'real_time:%d:%d', &$day_minutes, &$night_minutes);
-  $day_time   = $day_minutes   * 60; //秒になおす
-  $night_time = $night_minutes * 60; //秒になおす
+  $day_time   = $ROOM->real_time->day   * 60; //秒になおす
+  $night_time = $ROOM->real_time->night * 60; //秒になおす
 
   //最も小さな時間(場面の最初の時間)を取得
   $query = "SELECT MIN(time) FROM talk WHERE room_no = {$ROOM->id} " .

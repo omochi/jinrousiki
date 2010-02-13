@@ -42,18 +42,17 @@ class DatabaseConfigBase{
 
     if($unlock) mysql_query('UNLOCK TABLES'); //ロック解除
     mysql_close($this->db_handle);
-    $this->db_handle = NULL; //ハンドルをクリア
+    unset($this->db_handle); //ハンドルをクリア
   }
 }
 
 //-- クッキーデータのロード処理 --//
 class CookieDataSet{
-  var $day_night;  //夜明けを音でしらせるため
-  var $vote_times; //再投票を音で知らせるため
-  var $objection;  //「異議あり」を音で知らせるため
+  var $day_night;  //夜明け
+  var $vote_times; //投票回数
+  var $objection;  //「異議あり」の情報
 
   function CookieDataSet(){ $this->__construct(); }
-
   function __construct(){
     $this->day_night  = $_COOKIE['day_night'];
     $this->vote_times = (int)$_COOKIE['vote_times'];
@@ -61,7 +60,7 @@ class CookieDataSet{
   }
 }
 
-//-- 画像管理クラスの基底クラス --//
+//-- 画像管理の基底クラス --//
 class ImageManager{
   function GenerateTag($name, $alt = ''){
     $str = '<img';
@@ -73,20 +72,16 @@ class ImageManager{
     }
     return $str . '>';
   }
-}
 
-//-- 役職の画像処理の基底クラス --//
-class RoleImageBase extends ImageManager{
-  function DisplayImage($name){
+  function Output($name){
     echo $this->GenerateTag($name) . '<br>'."\n";
   }
 }
 
 //-- 勝利陣営の画像処理の基底クラス --//
 class VictoryImageBase extends ImageManager{
-  function MakeVictoryImage($victory_role){
-    $name = $victory_role;
-    switch($victory_role){
+  function GenerateTag($name){
+    switch($name){
     case 'human':
       $alt = '村人勝利';
       break;
@@ -120,7 +115,7 @@ class VictoryImageBase extends ImageManager{
       return '-';
       break;
     }
-    return $this->GenerateTag($name, $alt);
+    return parent::GenerateTag($name, $alt);
   }
 }
 

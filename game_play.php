@@ -45,7 +45,7 @@ ConvertSay(&$RQ_ARGS->say); //発言置換処理
 if($RQ_ARGS->say == ''){
   CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
 }
-elseif($RQ_ARGS->IsLastWords() && ! $SELF->IsDummyBoy()){
+elseif($RQ_ARGS->last_words && ! $SELF->IsDummyBoy()){
   EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
 }
 elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
@@ -225,7 +225,7 @@ function Say($say){
     Write($say, $ROOM->day_night, 0, true);
   }
   //身代わり君 (仮想 GM 対応) は遺言を専用のシステムメッセージに切り替え
-  elseif($SELF->IsDummyBoy() && $RQ_ARGS->IsLastWords()){
+  elseif($SELF->IsDummyBoy() && $RQ_ARGS->last_words){
     Write($say, "{$ROOM->day_night} dummy_boy", 0); //発言時間を更新しない
   }
   elseif($SELF->IsDead()){ //死亡者の霊話
@@ -565,8 +565,8 @@ EOF;
   if($ROOM->IsBeforeGame()){
     echo '<td class="real-time">';
     if($real_time){ //実時間の制限時間を取得
-      sscanf(strstr($ROOM->game_option, 'time'), 'time:%d:%d', &$day_minutes, &$night_minutes);
-      echo "設定時間： 昼 <span>{$day_minutes}分</span> / 夜 <span>{$night_minutes}分</span>";
+      echo "設定時間： 昼 <span>{$ROOM->real_time->day}分</span> / " .
+	"夜 <span>{$ROOM->real_time->night}分</span>";
     }
     echo '　突然死：<span>' . ConvertTime($TIME_CONF->sudden_death) . '</span></td>';
   }

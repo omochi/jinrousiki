@@ -8,16 +8,17 @@ $INIT_CONF->LoadFile('game_vote_functions', 'game_play_functions');
 $INIT_CONF->LoadRequest('RequestBaseGame');
 $RQ_ARGS->room_no = 461; #94;
 $RQ_ARGS->TestItems->test_room = array(
-  'room_name'    => '【水銀69】やる夫達の真闇鍋村',
-  'room_comment' => 'クイズが苦手なんで鍋でも食べよう',
+  'id' => $RQ_ARGS->room_no,
+  'name' => '【水銀69】やる夫達の真闇鍋村',
+  'comment' => 'クイズが苦手なんで鍋でも食べよう',
   'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 not_open_cast',
   #'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4',
-  // 'date'         => 9,
-  'date'         => 1,
-  //'day_night'    => 'aftergame',
-  'day_night'    => 'night',
-  // 'status'       => 'finished'
-  'status'       => 'playing'
+  //'date' => 9,
+  'date' => 1,
+  //'day_night' => 'aftergame',
+  'day_night' => 'night',
+  //'status' => 'finished'
+  'status' => 'playing'
 );
 $RQ_ARGS->TestItems->is_virtual_room = true;
 $RQ_ARGS->vote_times = 1;
@@ -44,7 +45,7 @@ $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[2]->profile = '';
-$RQ_ARGS->TestItems->test_users[2]->role = 'revive_priest copied';
+$RQ_ARGS->TestItems->test_users[2]->role = 'quiz';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 $RQ_ARGS->TestItems->test_users[2]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[2]->is_system = false;
@@ -253,7 +254,6 @@ OutputPlayerList(); //プレイヤーリスト
 #PrintData($USERS);
 #PrintData($RQ_ARGS->TestItems->vote_night);
 #PrintData($USERS->ByID(8));
-
 //$ROOM->LoadVote();
 //PrintData($ROOM->vote);
 #PrintData(FetchAssoc("SELECT uname, situation FROM vote WHERE room_no = {$ROOM->id}"));
