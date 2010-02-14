@@ -62,25 +62,27 @@ function CreateRoom($room_name, $room_comment, $max_user){
   $query = "FROM room WHERE status <> 'finished'"; //チェック用の共通クエリ
   $ip_address = $_SERVER['REMOTE_ADDR']; //村立てを行ったユーザの IP を取得
 
-  //同じユーザが立てた村が終了していなければ新しい村を作らない
-  if(! $DEBUG_MODE &&
-     FetchResult("SELECT COUNT(room_no) $query AND establisher_ip = '$ip_address'") > 0){
-    OutputRoomAction('over_establish');
-    return false;
-  }
+  //デバッグモード時は村立て制限をしない
+  if(! $DEBUG_MODE){
+    //同じユーザが立てた村が終了していなければ新しい村を作らない
+    if(FetchResult("SELECT COUNT(room_no) $query AND establisher_ip = '$ip_address'") > 0){
+      OutputRoomAction('over_establish');
+      return false;
+    }
 
-  //最大並列村数を超えているようであれば新しい村を作らない
-  if(FetchResult("SELECT COUNT(room_no) $query") >= $ROOM_CONF->max_active_room){
-    OutputRoomAction('full');
-    return false;
-  }
+    //最大並列村数を超えているようであれば新しい村を作らない
+    if(FetchResult("SELECT COUNT(room_no) $query") >= $ROOM_CONF->max_active_room){
+      OutputRoomAction('full');
+      return false;
+    }
 
-  //連続村立て制限チェック
-  $time_stamp = FetchResult("SELECT establish_time $query ORDER BY room_no DESC");
-  if(isset($time_stamp) &&
-     TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
-    OutputRoomAction('establish_wait');
-    return false;
+    //連続村立て制限チェック
+    $time_stamp = FetchResult("SELECT establish_time $query ORDER BY room_no DESC");
+    if(isset($time_stamp) &&
+       TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
+      OutputRoomAction('establish_wait');
+      return false;
+    }
   }
 
   //入力データのエラーチェック
@@ -90,18 +92,18 @@ function CreateRoom($room_name, $room_comment, $max_user){
   }
 
   //ゲームオプションをセット
-  $game_option = '';
-  $option_role = '';
   $chaos        = ($ROOM_CONF->chaos        && $_POST['chaos'] == 'chaos');
   $chaosfull    = ($ROOM_CONF->chaosfull    && $_POST['chaos'] == 'chaosfull');
   $perverseness = ($ROOM_CONF->perverseness && $_POST['perverseness']  == 'on');
   $full_mania   = ($ROOM_CONF->full_mania   && $_POST['full_mania']  == 'on');
   $quiz         = ($ROOM_CONF->quiz         && $_POST['quiz']  == 'on');
   $duel         = ($ROOM_CONF->duel         && $_POST['duel']  == 'on');
-  $game_option_list = array('wish_role', 'open_vote', 'not_open_cast');
+  $game_option_list = array();
   $option_role_list = array();
+  $check_game_option_list = array('wish_role', 'open_vote', 'not_open_cast');
+  $check_option_role_list = array();
   if($quiz){
-    $game_option .= 'quiz ';
+    $game_option_list[] = 'quiz';
 
     //GM ログインパスワードをチェック
     $quiz_password = $_POST['quiz_password'];
@@ -110,13 +112,13 @@ function CreateRoom($room_name, $room_comment, $max_user){
       OutputRoomAction('empty');
       return false;
     }
-    $game_option .= 'dummy_boy ';
+    $game_option_list[]    = 'dummy_boy ';
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
-      $game_option .= 'dummy_boy ';
+      $game_option_list[]    = 'dummy_boy ';
       $dummy_boy_handle_name = '身代わり君';
       $dummy_boy_password    = $SERVER_CONF->system_password;
     }
@@ -128,67 +130,85 @@ function CreateRoom($room_name, $room_comment, $max_user){
 	return false;
       }
       EscapeStrings(&$gm_password);
-      $game_option .= 'dummy_boy gm_login ';
+      array_push($game_option_list, 'dummy_boy', 'gm_login');
       $dummy_boy_handle_name = 'GM';
       $dummy_boy_password    = $gm_password;
     }
 
     if($chaos || $chaosfull){
-      $game_option .= $chaos ? 'chaos ' : 'chaosfull ';
-      $game_option_list[] = 'secret_sub_role';
-      array_push($option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role');
+      $game_option_list[] = $chaos ? 'chaos' : 'chaosfull';
+      $check_game_option_list[] = 'secret_sub_role';
+      array_push($check_option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp',
+		 'chaos_open_cast_role');
       if($perverseness){
-	$option_role .= 'no_sub_role ';
-	$option_role_list[] = 'perverseness';
+	$option_role_list[] = 'no_sub_role';
+	$check_option_role_list[] = 'perverseness';
       }
       else{
-	$option_role_list[] = 'no_sub_role';
+	$check_option_role_list[] = 'no_sub_role';
       }
     }
     else{
       if($duel){
-	$option_role .= 'duel ';
+	$option_role_list[] = 'duel';
       }
       else{
-	if(! $perverseness) array_push($option_role_list, 'decide', 'authority');
-	array_push($option_role_list, 'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'medium');
-	if(! $full_mania) $option_role_list[] = 'mania';
+	if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
+	array_push($check_option_role_list, 'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'medium');
+	if(! $full_mania) $check_option_role_list[] = 'mania';
       }
     }
-    array_push($option_role_list, 'liar', 'gentleman');
-    $option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
-    if(! $duel) $option_role_list[] = 'full_mania';
+    array_push($check_option_role_list, 'liar', 'gentleman');
+    $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
+    if(! $duel) $check_option_role_list[] = 'full_mania';
   }
 
-  foreach($game_option_list as $this_option){
-    if($ROOM_CONF->$this_option && $_POST[$this_option] == 'on'){
-      $game_option .= $this_option . ' ';
-    }
-  }
-  foreach($option_role_list as $this_option){
-    if(! $ROOM_CONF->$this_option) continue;
-    if($this_option == 'chaos_open_cast'){
-      switch($_POST[$this_option]){
+  //PrintData($_POST); //テスト用
+  //PrintData($check_game_option_list, 'Check Game Option'); //テスト用
+  foreach($check_game_option_list as $option){
+    if(! $ROOM_CONF->$option) continue;
+    if($option == 'not_open_cast'){
+      switch($_POST[$option]){
       case 'full':
-	$add_option = 'chaos_open_cast';
+	$option = 'not_open_cast';
 	break;
 
-      case 'camp':
-	$add_option = 'chaos_open_cast_camp';
-	break;
-
-      case 'role':
-	$add_option = 'chaos_open_cast_role';
+      case 'auto':
+	$option = 'auto_open_cast';
 	break;
 
       default:
-	continue;
+	continue 2;
       }
-      $option_role .= $add_option . ' ';
     }
-    elseif($_POST[$this_option] == 'on'){
-      $option_role .= $this_option . ' ';
+    elseif($_POST[$option] != 'on') continue;
+    $game_option_list[] = $option;
+  }
+  //PrintData($game_option_list); //テスト用
+
+  //PrintData($check_option_role_list, 'Check Option Role'); //テスト用
+  foreach($check_option_role_list as $option){
+    if(! $ROOM_CONF->$option) continue;
+    if($option == 'chaos_open_cast'){
+      switch($_POST[$option]){
+      case 'full':
+	$option = 'chaos_open_cast';
+	break;
+
+      case 'camp':
+	$option = 'chaos_open_cast_camp';
+	break;
+
+      case 'role':
+	$option = 'chaos_open_cast_role';
+	break;
+
+      default:
+	continue 2;
+      }
     }
+    elseif($_POST[$option] != 'on') continue;
+    $option_role_list[] = $option;
   }
 
   if($ROOM_CONF->real_time && $_POST['real_time'] == 'on'){
@@ -198,13 +218,17 @@ function CreateRoom($room_name, $room_comment, $max_user){
     //制限時間が0から99以内の数字かチェック
     if($day   != '' && ! preg_match('/[^0-9]/', $day)   && $day   > 0 && $day   < 99 &&
        $night != '' && ! preg_match('/[^0-9]/', $night) && $night > 0 && $night < 99){
-      $game_option .= 'real_time:' . $day . ':' . $night;
+      $game_option_list[] = 'real_time:' . $day . ':' . $night;
     }
     else{
       OutputRoomAction('time');
       return false;
     }
   }
+
+  //PrintData($game_option_list, 'Game Option'); //テスト用
+  //PrintData($option_role_list, 'Option Role'); //テスト用
+  //OutputHTMLFooter(true); //テスト用
 
   //テーブルをロック
   if(! mysql_query('LOCK TABLES room WRITE, user_entry WRITE, vote WRITE, talk WRITE')){
@@ -216,6 +240,8 @@ function CreateRoom($room_name, $room_comment, $max_user){
   $room_no = FetchResult('SELECT room_no FROM room ORDER BY room_no DESC') + 1;
 
   //登録
+  $game_option = implode(' ', $game_option_list);
+  $option_role = implode(' ', $option_role_list);
   $status = false;
   do{
     //村作成
@@ -241,7 +267,7 @@ function CreateRoom($room_name, $room_comment, $max_user){
     $status = true;
   }while(false);
   if(! $status) OutputRoomAction('busy');
-  //mysql_query('UNLOCK TABLES'); 他でロック解除してる？
+  //mysql_query('UNLOCK TABLES'); ロック解除は OutputRoomAction() 経由で行う
 }
 
 //結果出力 (CreateRoom() 用)
@@ -370,7 +396,7 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoom(){
-  global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
   echo <<<EOF
 <form method="POST" action="room_manager.php">
@@ -405,51 +431,103 @@ EOF;
 
 EOF;
 
-  if($ROOM_CONF->wish_role){
-    $checked = ($ROOM_CONF->default_wish_role ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="wish_role">{$GAME_OPT_MESS->wish_role}：</label></td>
-<td class="explain">
-<input id="wish_role" type="checkbox" name="wish_role" value="on"{$checked}>
-({$GAME_OPT_CAPT->wish_role})
-</td>
-</tr>
+  OutputRoomOption(array('wish_role', 'real_time', 'open_vote'));
+  OutputRoomOptionDummyBoy();
+  OutputRoomOptionOpenCast();
+
+  $option_list = array('decide', 'authority', 'poison', 'cupid', 'boss_wolf',
+		       'poison_wolf', 'mania', 'medium');
+  OutputRoomOption($option_list, 'role');
+
+  $option_list = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania');
+  OutputRoomOption($option_list, 'role');
+
+  OutputRoomOptionChaos();
+  OutputRoomOption(array('quiz', 'duel'));
+
+  echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
+<tr><td class="make" colspan="2"><input type="submit" value=" 作成 "></td></tr>
+</table>
+</form>
 
 EOF;
-  }
+}
 
-  if($ROOM_CONF->real_time){
-    $checked = ($ROOM_CONF->default_real_time ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="real_time">リアルタイム制：</label></td>
-<td class="explain">
-<input id="real_time" type="checkbox" name="real_time" value="on"{$checked}>
-({$GAME_OPT_CAPT->real_time}　昼：
+function OutputRoomOption($option_list, $label = '', $border = true){
+  $tag_list = array();
+  foreach($option_list as $option) $tag_list[] = MakeRoomOptionTag($option, $label);
+  if(count($tag_list) < 1) return NULL;
+  if($border) array_unshift($tag_list, '<tr><td colspan="2"><hr></td></tr>');
+  echo implode('', $tag_list);
+}
+
+function MakeRoomOptionTag($option, $label = ''){
+  global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+
+  if(! $ROOM_CONF->$option) return NULL;
+
+  $default = 'default_' . $option;
+  $checked = ($ROOM_CONF->$default ? ' checked' : '');
+  if($label != '') $label .= '_';
+  $label .= $option;
+
+  $sentence = $CAST_CONF->$option;
+  if(isset($sentence)) $sentence .= '人以上で';
+  if($option == 'cupid') $sentence = '14人もしくは' . $sentence . '<br>　';
+  $sentence .= $GAME_OPT_MESS->$option;
+
+  $caption = $GAME_OPT_CAPT->$option;
+  switch($option){
+  case 'real_time':
+    $caption .= <<<EOF
+　昼：
 <input type="text" name="real_time_day" value="{$TIME_CONF->default_day}" size="2" maxlength="2">分 夜：
-<input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">分)
+<input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">分
+EOF;
+    break;
+
+  case 'quiz':
+    $add_caption = <<<EOF
+<br>
+<label for="quiz_password">GM ログインパスワード：</label>
+<input id="quiz_password" type="password" name="quiz_password" size="20"><br>
+　　{$GAME_OPT_CAPT->gm_login_footer}
+EOF;
+    break;
+  }
+
+  return <<<EOF
+<tr>
+<td><label for="{$label}">{$sentence}：</label></td>
+<td class="explain">
+<input id="{$label}" type="checkbox" name="{$option}" value="on"{$checked}>
+({$caption}){$add_caption}
 </td>
 </tr>
 
 EOF;
-  }
+}
 
-  if($ROOM_CONF->dummy_boy){
-    if($ROOM_CONF->default_dummy_boy)
-      $checked_dummy_boy = ' checked';
-    elseif($ROOM_CONF->default_gerd)
-      $checked_gerd = ' checked';
-    elseif($ROOM_CONF->default_gm_login)
-      $checked_gm = ' checked';
-    else
-      $checked_nothing = ' checked';
+function OutputRoomOptionDummyBoy(){
+  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+
+  if(! $ROOM_CONF->dummy_boy) return NULL;
+
+  if($ROOM_CONF->default_dummy_boy)
+    $checked_dummy_boy = ' checked';
+  elseif($ROOM_CONF->default_gerd)
+    $checked_gerd = ' checked';
+  elseif($ROOM_CONF->default_gm_login)
+    $checked_gm = ' checked';
+  else
+    $checked_nothing = ' checked';
 
     /*
 <input type="radio" name="dummy_boy" value="gerd"{$checked_gerd}>
 身代わり君はゲルト君(村人確定の身代わり君です)<br>
 */
-    echo <<<EOF
+  echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
 <td><label>{$GAME_OPT_MESS->dummy_boy}：</label></td>
@@ -467,241 +545,76 @@ EOF;
 　　{$GAME_OPT_CAPT->gm_login_footer}
 </td>
 </tr>
-<tr><td colspan="2"><hr></td></tr>
 
 EOF;
-  }
+}
 
-  if($ROOM_CONF->open_vote){
-    $checked = ($ROOM_CONF->default_open_vote ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="open_vote">{$GAME_OPT_MESS->open_vote}：</label></td>
-<td class="explain">
-<input id="open_vote" type="checkbox" name="open_vote" value="on"{$checked}>
-({$GAME_OPT_CAPT->open_vote})
-</td>
-</tr>
+function OutputRoomOptionOpenCast(){
+  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-EOF;
-  }
+  if(! $ROOM_CONF->not_open_cast) return NULL;
 
-  if($ROOM_CONF->not_open_cast){
-    $checked = ($ROOM_CONF->default_not_open_cast ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="not_open_cast">{$GAME_OPT_MESS->not_open_cast}：</label></td>
-<td class="explain">
-<input id="not_open_cast" type="checkbox" name="not_open_cast" value="on"{$checked}>
-({$GAME_OPT_CAPT->not_open_cast})
-</td>
-</tr>
+  switch($ROOM_CONF->default_not_open_cast){
+  case 'full':
+    $checked_close = ' checked';
+    break;
 
-EOF;
-  }
-
-  echo '<tr><td colspan ="2"><hr></td></tr>';
-  if($ROOM_CONF->decide){
-    $checked = ($ROOM_CONF->default_decide ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_decide">{$CAST_CONF->decide}人以上で{$GAME_OPT_MESS->decide}：</label></td>
-<td class="explain">
-<input id="role_decide" type="checkbox" name="decide" value="on"{$checked}>
-({$GAME_OPT_CAPT->decide})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->authority){
-    $checked = ($ROOM_CONF->default_authority ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_authority">{$CAST_CONF->authority}人以上で{$GAME_OPT_MESS->authority}：</label></td>
-<td class="explain">
-<input id="role_authority" type="checkbox" name="authority" value="on"{$checked}>
-({$GAME_OPT_CAPT->authority})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->poison){
-    $checked = ($ROOM_CONF->default_poison ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_poison">{$CAST_CONF->poison}人以上で{$GAME_OPT_MESS->poison}：</label></td>
-<td class="explain">
-<input id="role_poison" type="checkbox" name="poison" value="on"{$checked}>
-({$GAME_OPT_CAPT->poison})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->cupid){
-    $checked = ($ROOM_CONF->default_cupid ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_cupid">14人もしくは{$CAST_CONF->cupid}人以上で<br>　{$GAME_OPT_MESS->cupid}：</label></td>
-<td class="explain">
-<input id="role_cupid" type="checkbox" name="cupid" value="on"{$checked}>
-({$GAME_OPT_CAPT->cupid})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->boss_wolf){
-    $checked = ($ROOM_CONF->default_boss_wolf ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_boss_wolf">{$CAST_CONF->boss_wolf}人以上で{$GAME_OPT_MESS->boss_wolf}：</label></td>
-<td class="explain">
-<input id="role_boss_wolf" type="checkbox" name="boss_wolf" value="on"{$checked}>
-({$GAME_OPT_CAPT->boss_wolf})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->poison_wolf){
-    $checked = ($ROOM_CONF->default_poison_wolf ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_poison_wolf">{$CAST_CONF->poison_wolf}人以上で{$GAME_OPT_MESS->poison_wolf}：</label></td>
-<td class="explain">
-<input id="role_poison_wolf" type="checkbox" name="poison_wolf" value="on"{$checked}>
-({$GAME_OPT_CAPT->poison_wolf})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->mania){
-    $checked = ($ROOM_CONF->default_mania ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_mania">{$CAST_CONF->mania}人以上で{$GAME_OPT_MESS->mania}：</label></td>
-<td class="explain">
-<input id="role_mania" type="checkbox" name="mania" value="on"{$checked}>
-({$GAME_OPT_CAPT->mania})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->medium){
-    $checked = ($ROOM_CONF->default_medium ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_medium">{$CAST_CONF->medium}人以上で{$GAME_OPT_MESS->medium}：</label></td>
-<td class="explain">
-<input id="role_medium" type="checkbox" name="medium" value="on"{$checked}>
-({$GAME_OPT_CAPT->medium})
-</td>
-</tr>
-
-EOF;
-  }
-
-  echo '<tr><td colspan ="2"><hr></td></tr>';
-  if($ROOM_CONF->liar){
-    $checked = ($ROOM_CONF->default_liar ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_liar">{$GAME_OPT_MESS->liar}：</label></td>
-<td class="explain">
-<input id="role_liar" type="checkbox" name="liar" value="on"{$checked}>
-({$GAME_OPT_CAPT->liar})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->gentleman){
-    $checked = ($ROOM_CONF->default_gentleman ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_gentleman">{$GAME_OPT_MESS->gentleman}：</label></td>
-<td class="explain">
-<input id="role_gentleman" type="checkbox" name="gentleman" value="on"{$checked}>
-({$GAME_OPT_CAPT->gentleman})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->sudden_death){
-    $checked = ($ROOM_CONF->default_sudden_death ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_sudden_death">{$GAME_OPT_MESS->sudden_death}：</label></td>
-<td class="explain">
-<input id="role_sudden_death" type="checkbox" name="sudden_death" value="on"{$checked}>
-({$GAME_OPT_CAPT->sudden_death})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->perverseness){
-    $checked = ($ROOM_CONF->default_perverseness ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_perverseness">{$GAME_OPT_MESS->perverseness}：</label></td>
-<td class="explain">
-<input id="role_perverseness" type="checkbox" name="perverseness" value="on"{$checked}>
-({$GAME_OPT_CAPT->perverseness})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->full_mania){
-    $checked = ($ROOM_CONF->default_full_mania ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="role_full_mania">{$GAME_OPT_MESS->full_mania}：</label></td>
-<td class="explain">
-<input id="role_full_mania" type="checkbox" name="full_mania" value="on"{$checked}>
-({$GAME_OPT_CAPT->full_mania})
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->chaos){
-    switch($ROOM_CONF->default_chaos){
-    case 'chaos':
-      $checked_chaos = ' checked';
-      break;
-
-    case 'chaosfull':
-      if($ROOM_CONF->chaosfull){
-	$checked_chaosfull = ' checked';
-	break;
-      }
-
-    default:
-      $checked_normal = ' checked';
+  case 'auto':
+    if($ROOM_CONF->auto_open_cast){
+      $checked_auto = ' checked';
       break;
     }
 
+  default:
+    $checked_open = ' checked';
+    break;
+  }
+
+  echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><label>{$GAME_OPT_MESS->not_open_cast}：</label></td>
+<td class="explain">
+<input type="radio" name="not_open_cast" value=""{$checked_open}>
+{$GAME_OPT_CAPT->no_close_cast}<br>
+
+<input type="radio" name="not_open_cast" value="full"{$checked_full}>
+{$GAME_OPT_CAPT->not_open_cast}<br>
+
+EOF;
+
+  if($ROOM_CONF->auto_open_cast){
     echo <<<EOF
+<input type="radio" name="not_open_cast" value="auto"{$checked_auto}>
+{$GAME_OPT_CAPT->auto_open_cast}
+</td>
+
+EOF;
+  }
+}
+
+function OutputRoomOptionChaos(){
+  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+
+  if(! $ROOM_CONF->chaos) return NULL;
+
+  switch($ROOM_CONF->default_chaos){
+  case 'chaos':
+    $checked_chaos = ' checked';
+    break;
+
+  case 'chaosfull':
+    if($ROOM_CONF->chaosfull){
+      $checked_chaosfull = ' checked';
+      break;
+    }
+
+  default:
+    $checked_normal = ' checked';
+    break;
+  }
+
+  echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
 <td><label>{$GAME_OPT_MESS->chaos}：</label></td>
@@ -714,36 +627,36 @@ EOF;
 
 EOF;
 
-    if($ROOM_CONF->chaosfull){
-      echo <<<EOF
+  if($ROOM_CONF->chaosfull){
+    echo <<<EOF
 <input type="radio" name="chaos" value="chaosfull"{$checked_chaosfull}>
 {$GAME_OPT_CAPT->chaosfull}
 </td>
 
 EOF;
+  }
+  echo '</tr>'."\n";
+
+  if($ROOM_CONF->chaos_open_cast){
+    switch($ROOM_CONF->default_chaos_open_cast){
+    case 'full':
+      $checked_chaos_open_cast_full = ' checked';
+      break;
+
+    case 'camp':
+      $checked_chaos_open_cast_camp = ' checked';
+      break;
+
+    case 'role':
+      $checked_chaos_open_cast_role = ' checked';
+      break;
+
+    default:
+      $checked_chaos_open_cast_none = ' checked';
+      break;
     }
-    echo '</tr>'."\n";
 
-    if($ROOM_CONF->chaos_open_cast){
-      switch($ROOM_CONF->default_chaos_open_cast){
-      case 'full':
-	$checked_chaos_open_cast_full = ' checked';
-	break;
-
-      case 'camp':
-	$checked_chaos_open_cast_camp = ' checked';
-	break;
-
-      case 'role':
-	$checked_chaos_open_cast_role = ' checked';
-	break;
-
-      default:
-	$checked_chaos_open_cast_none = ' checked';
-	break;
-      }
-
-      echo <<<EOF
+    echo <<<EOF
 <tr>
 <td><label>{$GAME_OPT_MESS->chaos_open_cast}：</label></td>
 <td class="explain">
@@ -762,74 +675,6 @@ EOF;
 </tr>
 
 EOF;
-    }
-
-    if($ROOM_CONF->secret_sub_role){
-      $checked = ($ROOM_CONF->default_secret_sub_role ? ' checked' : '');
-      echo <<<EOF
-<tr>
-<td><label for="secret_sub_role">{$GAME_OPT_MESS->secret_sub_role}：</label></td>
-<td class="explain">
-<input id="secret_sub_role" type="checkbox" name="secret_sub_role" value="on"{$checked}>
-({$GAME_OPT_CAPT->secret_sub_role})
-</td>
-</tr>
-
-EOF;
-    }
-
-    if($ROOM_CONF->no_sub_role){
-      $checked = ($ROOM_CONF->default_no_sub_role ? ' checked' : '');
-      echo <<<EOF
-<tr>
-<td><label for="no_sub_role">{$GAME_OPT_MESS->no_sub_role}：</label></td>
-<td class="explain">
-<input id="no_sub_role" type="checkbox" name="no_sub_role" value="on"{$checked}>
-({$GAME_OPT_CAPT->no_sub_role})
-</td>
-</tr>
-
-EOF;
-    }
   }
-
-  if($ROOM_CONF->quiz){
-    $checked = ($ROOM_CONF->default_quiz ? ' checked' : '');
-    echo <<<EOF
-<tr><td colspan="2"><hr></td></tr>
-<tr>
-<td><label for="quiz">{$GAME_OPT_MESS->quiz}：</label></td>
-<td class="explain">
-<input id="quiz" type="checkbox" name="quiz" value="on"{$checked}>
-({$GAME_OPT_CAPT->quiz})<br>
-<label for="quiz_password">GM ログインパスワード：</label>
-<input id="quiz_password" type="password" name="quiz_password" size="20"><br>
-　　{$GAME_OPT_CAPT->gm_login_footer}
-</td>
-</tr>
-
-EOF;
-  }
-
-  if($ROOM_CONF->duel){
-    $checked = ($ROOM_CONF->default_duel ? ' checked' : '');
-    echo <<<EOF
-<tr>
-<td><label for="duel">{$GAME_OPT_MESS->duel}：</label></td>
-<td class="explain">
-<input id="duel" type="checkbox" name="duel" value="on"{$checked}>
-({$GAME_OPT_CAPT->duel})
-</td>
-</tr>
-
-EOF;
-  }
-
-  echo <<<EOF
-<tr><td colspan="2"><hr></td></tr>
-<tr><td class="make" colspan="2"><input type="submit" value=" 作成 "></td></tr>
-</table>
-</form>
-
-EOF;
+  OutputRoomOption(array('secret_sub_role', 'no_sub_role'), '', false);
 }

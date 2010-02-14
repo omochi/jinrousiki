@@ -162,6 +162,7 @@ class GameOptionMessage{
   var $gm_login             = '身代わり君は GM';
   var $open_vote            = '投票した票数を公表する';
   var $not_open_cast        = '霊界で配役を公開しない';
+  var $auto_open_cast       = '自動で霊界の配役を公開する';
   var $decide               = '決定者登場';
   var $authority            = '権力者登場';
   var $poison               = '埋毒者登場';
@@ -196,7 +197,9 @@ class GameOptionCaptionMessage{
   var $gm_login_header      = '仮想 GM が身代わり君としてログインします';
   var $gm_login_footer      = 'ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください';
   var $open_vote            = '「権力者」などのサブ役職が分かりやすくなります';
-  var $not_open_cast        = '霊界でも誰がどの役職なのかが公開されません。猫又は蘇生できます';
+  var $no_close_cast        = '常時公開 (蘇生能力は無効です)';
+  var $not_open_cast        = '常時非公開 (誰がどの役職なのかが公開されません。蘇生能力は有効です)';
+  var $auto_open_cast       = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
   var $decide               = '投票が同数の時、決定者の投票先が優先されます。[兼任]';
   var $authority            = '投票の票数が二票になります。[兼任]';
   var $poison               = '処刑されたり狼に食べられた場合、道連れにします。[村人2→埋毒1、人狼1]';

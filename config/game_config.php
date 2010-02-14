@@ -4,7 +4,7 @@ class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
   #var $die_room = 1200;
-  var $die_room = 12000; //デバッグ用設定
+  var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -14,7 +14,7 @@ class RoomConfig{
 
   //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
   //この時間内であれば、過去ログページに再入村のリンクが出現します
-  var $clear_session_id = 86400;
+  var $clear_session_id = 86400; //24時間
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
   var $max_user_list = array(8, 16, 22, 32);
@@ -32,14 +32,18 @@ class RoomConfig{
   var $real_time = true; //リアルタイム制 (初期設定は TimeConfig->default_day/night 参照)
   var $default_real_time = true;
 
-  var $dummy_boy = true; //初日の夜は身代わり君
-  var $default_dummy_boy = true;
-
   var $open_vote = true; //投票した票数を公表する
   var $default_open_vote = false;
 
+  var $dummy_boy = true; //初日の夜は身代わり君
+  var $default_dummy_boy = true;
+
   var $not_open_cast = true; //霊界で配役を公開しない
-  var $default_not_open_cast = false;
+  var $auto_open_cast = true; //霊界で配役を自動で公開する
+
+  //霊界オフモードのデフォルト [NULL:無し / 'auto':自動オフ / 'full': 完全オフ ]
+  #var $default_not_open_cast = NULL;
+  var $default_not_open_cast = 'auto'; //テスト用
 
   var $decide = true; //決定者出現 (必要人数は CastConfig->decide 参照)
   var $default_decide = true;
@@ -111,7 +115,7 @@ class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
   var $entry_one_ip_address = true;
-  #var $entry_one_ip_address = false;
+  #var $entry_one_ip_address = false; //テスト用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   //var $trip = true; //まだ実装されていません
@@ -130,7 +134,7 @@ class GameConfig{
   var $poison_only_voter = false; //1.3 系のデフォルト
 
   //狼が毒能力者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
-  #var $poison_only_eater = false;
+  #var $poison_only_eater = false; //1.3 系のデフォルト
   var $poison_only_eater = true;
 
   var $cupid_self_shoot = 18; //キューピッドが他人撃ち可能となる最低村人数
@@ -489,7 +493,7 @@ class GameConfig{
 //ゲームの時間設定
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
-  var $sudden_death = 240; //120;
+  var $sudden_death = 120;
 
   //-- リアルタイム制 --//
   var $default_day   = 5; //デフォルトの昼の制限時間(分)
@@ -667,6 +671,7 @@ class Sound extends SoundBase{
 
 //過去ログ表示設定
 class OldLogConfig{
-  var $one_page = 20;   //過去ログ一覧で1ページでいくつの村を表示するか
+  var $room = 10;  //一画面に表示する村の数
+  var $page = 5; //一画面に表示するページ数の数
   var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }

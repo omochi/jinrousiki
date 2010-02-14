@@ -22,8 +22,8 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByUname($uname); //自分の情報をロード
 
 //-- テスト用 --//
-//$SELF->ChangeRole('side_reverse');
-//$SELF->AddRole('line_reverse');
+//$SELF->ChangeRole('random_voice');
+//$SELF->AddRole('strong_voice');
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
@@ -257,30 +257,15 @@ function Say($say){
 
 //発言を DB に登録する
 function Write($say, $location, $spend_time, $update = false){
-  global $MESSAGE, $RQ_ARGS, $ROOM, $SELF;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //声の大きさを決定
   $voice = $RQ_ARGS->font_type;
-  if($SELF->IsLive() && $ROOM->IsPlaying()){
-    $voice_list = array('strong', 'normal', 'weak');
-    if(    $SELF->IsRole('strong_voice'))  $voice = 'strong';
-    elseif($SELF->IsRole('normal_voice'))  $voice = 'normal';
-    elseif($SELF->IsRole('weak_voice'))    $voice = 'weak';
-    elseif($SELF->IsRole('inside_voice'))  $voice = $ROOM->IsDay() ? 'weak' : 'strong';
-    elseif($SELF->IsRole('outside_voice')) $voice = $ROOM->IsDay() ? 'strong' : 'weak';
-    elseif($SELF->IsRole('upper_voice')){
-      $voice_key = array_search($voice, $voice_list);
-      if($voice_key == 0) $say = $MESSAGE->howling;
-      else $voice = $voice_list[$voice_key - 1];
-    }
-    elseif($SELF->IsRole('downer_voice')){
-      $voice_key = array_search($voice, $voice_list);
-      if($voice_key >= count($voice_list) - 1) $say = $MESSAGE->common_talk;
-      else $voice = $voice_list[$voice_key + 1];
-    }
-    elseif($SELF->IsRole('random_voice')){
-      $voice = GetRandom($voice_list);
-    }
+  $virtual_self = $USERS->ByVirtual($SELF->user_no);
+  if($ROOM->IsPlaying() && $virtual->IsLive()){
+    $ROLES->actor = $virtual_self;
+    $filter_list = $ROLES->Load('voice');
+    foreach($filter_list as $filter) $filter->FilterVoice($voice, $say);
   }
 
   InsertTalk($ROOM->id, $ROOM->date, $location, $SELF->uname, $ROOM->system_time,

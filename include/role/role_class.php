@@ -5,15 +5,18 @@ class RoleManager{
   var $loaded;
   var $actor;
 
-  //発言表示にフィルタがかかるタイプ
+  //発言表示フィルタ
   var $talk_list = array('blinder', 'earplug', 'speaker');
 
-  //発言登録時にフィルタがかかるタイプ
+  //発言フィルタ (登録時)
   var $say_filter_list = array('rainbow', 'weekly', 'grassy', 'invisible', 'mower',
 			       'silent', 'side_reverse', 'line_reverse');
 
-  function RoleManager(){ $this->__construct(); }
+  //声量フィルタ
+  var $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
+			  'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
+  function RoleManager(){ $this->__construct(); }
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded->file = array();
@@ -82,9 +85,9 @@ class Role{
 
   //-- 判定用関数 --//
   function Ignored(){
-    global $ROOM, $SELF;
+    global $ROOM, $ROLES;
     //return false; //テスト用
-    return ! ($ROOM->IsPlaying() && $SELF->IsLive());
+    return ! ($ROOM->IsPlaying() && $ROLES->actor->IsLive());
   }
 
   function IsSameUser($uname){

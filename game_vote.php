@@ -644,7 +644,7 @@ function VoteNight(){
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
     if(! $SELF->IsRole('trap_mad')) OutputVoteResult('夜：罠師以外は投票できません');
-    if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：罠は一度しか設置できません');
     $not_type = ($RQ_ARGS->situation == 'TRAP_MAD_NOT_DO');
     break;
 
@@ -666,7 +666,7 @@ function VoteNight(){
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
-    if($SELF->IsRole('revive_fox') && $SELF->IsRole('lost_ability')){
+    if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
        OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
     }
     $not_type = ($RQ_ARGS->situation == 'POISON_CAT_NOT_DO');
@@ -989,7 +989,7 @@ function OutputVoteNight(){
   }
   elseif($role_trap_mad = $SELF->IsRole('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
-    if($SELF->IsRole('lost_ability')) OutputVoteResult('夜：罠は一度しか設置できません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：罠は一度しか設置できません');
     CheckAlreadyVote('TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
   }
   elseif($role_guard = $SELF->IsRoleGroup('guard')){
@@ -1009,7 +1009,7 @@ function OutputVoteNight(){
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
-    if($SELF->IsRole('revive_fox') && $SELF->IsRole('lost_ability')){
+    if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
        OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
     }
     CheckAlreadyVote('POISON_CAT_DO', 'POISON_CAT_NOT_DO');

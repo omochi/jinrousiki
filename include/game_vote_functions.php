@@ -1008,8 +1008,8 @@ function AggregateVoteDay(){
       //PrintData($poison_target_list, 'Poison Target'); //テスト用
       $poison_target = $USERS->ByRealUname(GetRandom($poison_target_list)); //対象者を決定
 
-      if($poison_target->IsActiveRole('resist_wolf')){ //抗毒狼には無効
-	$poison_target->AddRole('lost_ability');
+      if($poison_target->IsActive('resist_wolf')){ //抗毒狼には無効
+	$poison_target->LostAbility();
 	break;
       }
 
@@ -1199,7 +1199,7 @@ function AggregateVoteNight(){
       if($user->IsRole('dream_eater_mad')){
 	if(is_null($vote_data['DREAM_EAT'][$user->uname])) return false;
       }
-      elseif($user->IsActiveRole('trap_mad')){
+      elseif($user->IsActive('trap_mad')){
 	if(is_null($vote_data['TRAP_MAD_DO'][$user->uname]) &&
 	   ! (is_array($vote_data['TRAP_MAD_NOT_DO']) &&
 	      array_key_exists($user->uname, $vote_data['TRAP_MAD_NOT_DO']))) return false;
@@ -1219,7 +1219,7 @@ function AggregateVoteNight(){
 	      array_key_exists($user->uname, $vote_data['ASSASSIN_NOT_DO']))) return false;
       }
       elseif(! $ROOM->IsOpenCast()){
-	if($user->IsRoleGroup('cat') || $user->IsActiveRole('revive_fox')){
+	if($user->IsRoleGroup('cat') || $user->IsActive('revive_fox')){
 	  if(is_null($vote_data['POISON_CAT_DO'][$user->uname]) &&
 	     ! (is_array($vote_data['POISON_CAT_NOT_DO']) &&
 		array_key_exists($user->uname, $vote_data['POISON_CAT_NOT_DO']))) return false;
@@ -1293,7 +1293,7 @@ function AggregateVoteNight(){
       $user   = $USERS->ByUname($uname);
       $target = $USERS->ByUname($target_uname);
 
-      $user->AddRole('lost_ability'); //一度設置したら能力失効
+      $user->LostAbility(); //一度設置したら能力失効
 
       //人狼に狙われていたら自分自身への設置以外は無効
       if($user != $wolf_target || $user == $target){
@@ -1375,8 +1375,8 @@ function AggregateVoteNight(){
       $USERS->Kill($wolf_target->user_no, 'WOLF_KILLED'); //通常狼の襲撃処理
     }
 
-    if($voted_wolf->IsActiveRole('tongue_wolf')){ //舌禍狼の処理
-      if($wolf_target->IsRole('human')) $voted_wolf->AddRole('lost_ability'); //村人なら能力失効
+    if($voted_wolf->IsActive('tongue_wolf')){ //舌禍狼の処理
+      if($wolf_target->IsRole('human')) $voted_wolf->LostAbility(); //村人なら能力失効
 
       $sentence = $voted_wolf->handle_name . "\t" . $wolf_target->handle_name . "\t";
       InsertSystemMessage($sentence . $wolf_target->main_role, 'TONGUE_WOLF_RESULT');
@@ -1391,8 +1391,8 @@ function AggregateVoteNight(){
 	$poison_target = $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
       }
 
-      if($poison_target->IsActiveRole('resist_wolf')){ //抗毒狼なら無効
-	$poison_target->AddRole('lost_ability');
+      if($poison_target->IsActive('resist_wolf')){ //抗毒狼なら無効
+	$poison_target->LostAbility();
       }
       else{
 	$USERS->Kill($poison_target->user_no, 'POISON_DEAD_night'); //毒死処理
@@ -1749,8 +1749,11 @@ function AggregateVoteNight(){
 
     if(! $ROOM->IsOpenCast()){
       foreach($USERS->rows as $user){ //天人の帰還処理
-	if($user->IsLive(true) && $user->IsRole('revive_priest') &&
-	   ! $user->IsDummyBoy() && ! $user->IsLovers()){
+	if($user->IsDummyBoy() || ! $user->IsRole('revive_priest')) continue;
+	if($user->IsLovers()){
+	  $user->LostAbility();
+	}
+	elseif($user->IsLive(true)){
 	  $USERS->Kill($user->user_no, 'PRIEST_RETURNED');
 	}
       }
@@ -1892,7 +1895,7 @@ function AggregateVoteNight(){
 	    $user->ReplaceRole($base_role, $new_role);
 	  }
 	  elseif($user->IsRole('revive_fox')){ //仙狐の能力失効処理
-	    $user->AddRole('lost_ability');
+	    $user->LostAbility();
 	  }
 	}
 	else{
@@ -1975,7 +1978,7 @@ function AggregateVoteNight(){
     if(! $user->IsDummyBoy()){
       $priest_flag        |= $user->IsRole('priest');
       $crisis_priest_flag |= $user->IsRole('crisis_priest');
-      if($user->IsActiveRole('revive_priest')) $revive_priest_list[] = $user->uname;
+      if($user->IsActive('revive_priest')) $revive_priest_list[] = $user->uname;
     }
     if($user->IsDead(true)) continue;
 
@@ -2020,11 +2023,11 @@ function AggregateVoteNight(){
       foreach($revive_priest_list as $uname){
 	$user = $USERS->ByUname($uname);
 	if($user->IsLovers() || ($ROOM->date >= 4 && $user->IsLive(true))){
-	  $user->AddRole('lost_ability');
+	  $user->LostAbility();
 	}
 	elseif($user->IsDead(true)){
 	  $user->Revive();
-	  $user->AddRole('lost_ability');
+	  $user->LostAbility();
 	}
       }
     }

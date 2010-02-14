@@ -118,7 +118,14 @@ class Room{
   }
 
   function IsOpenCast(){
-    return ! $this->IsOption('not_open_cast');
+    global $USERS;
+
+    if($this->IsOption('not_open_cast')) return false; //常時非公開
+    if(! $this->IsOption('auto_open_cast')) return true; //自動公開がオフなら常時公開
+
+    //役職をチェックしてフラグをキャッシュする
+    if(is_null($this->open_cast)) $this->open_cast = $USERS->IsOpenCast();
+    return $this->open_cast;
   }
 
   function IsQuiz(){

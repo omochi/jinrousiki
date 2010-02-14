@@ -241,8 +241,8 @@ function MakeGameOptionImage($game_option, $option_role = ''){
 
   $option_list = explode(' ', $game_option . ' ' . $option_role);
   //PrintData($option_list);
-  $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'decide',
-			      'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
+  $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'auto_open_cast',
+			      'decide', 'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
 			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
 			      'perverseness', 'full_mania', 'quiz', 'duel', 'chaos', 'chaosfull',
 			      'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role',

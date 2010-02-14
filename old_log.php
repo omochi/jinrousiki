@@ -29,8 +29,8 @@ function OutputFinishedRooms($page, $reverse = NULL){
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
-  $num_rooms = FetchResult("SELECT COUNT(*) FROM room WHERE status = 'finished'");
-  if($num_rooms == 0){
+  $room_count = FetchResult("SELECT COUNT(*) FROM room WHERE status = 'finished'");
+  if($room_count < 1){
     OutputActionResult($SERVER_CONF->title . ' [過去ログ]',
 		       'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }
@@ -43,32 +43,54 @@ echo <<<EOF
 <img src="img/old_log_title.jpg"><br>
 <div align="center">
 <table><tr><td class="list">
-[ページ]
 
 EOF;
 
   $config =& new OldLogConfig(); //設定をロード
-  $is_reverse = (empty($reverse) ? $config->reverse : ($reverse == 'on'));
+  $is_reverse = empty($reverse) ? $config->reverse : ($reverse == 'on');
   $current_time = TZTime(); // 現在時刻の取得
 
   //ページリンクの出力
   if(is_null($page)) $page = 1;
-  $num_pages = ceil($num_rooms / $config->one_page) + 1; //[all] の為に + 1 しておく
-  $url_option = '&reverse='.($is_reverse ? 'on' : 'off');
-  if($RQ_ARGS->add_role) $url_option .= '&add_role=on';
-  for($page_number = 1; $page_number <= $num_pages; $page_number++){
-    $page_title = ($page_number == $num_pages ? 'all' : $page_number);
-    if($page == $page_title)
-      echo " [$page_title] ";
-    else
-      echo " <a href=\"old_log.php?page=$page_title$url_option\">[$page_title]</a> ";
+  $page_count = ceil($room_count / $config->room);
+  $start_page = $page;
+  if($page_count - $page < $config->page){
+    $start_page = $page_count - $config->page + 1;
   }
-  $reverse_text = ($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える';
-  $base_url = 'old_log.php?'.($RQ_ARGS->add_role ? '&add_role=on' : '').'&reverse=';
-  if($is_reverse)
-    echo '表示順:新↓古 <a href="'.$base_url.'off">'.$reverse_text.'</a>';
-  else
-    echo '表示順:古↓新 <a href="'.$base_url.'on">'.$reverse_text.'</a>';
+  $end_page = $page + $config->page - 1;
+  if($end_page > $page_count) $end_page = $page_count;
+
+  $url_stack = array('[ページ]');
+  $url_header = '<a href="old_log.php?';
+  $url_option = array('reverse='. ($is_reverse ? 'on' : 'off'));
+  if($RQ_ARGS->add_role) $url_option[] = 'add_role=on';
+
+  if($page_count > $config->page && $page > 1){
+    $url_stack[] = GenerateLinkStack($url_option, 1, '[1]...');
+    $url_stack[] = GenerateLinkStack($url_option, $start_page - 1, '&lt;&lt;');
+  }
+
+  for($page_number = $start_page; $page_number <= $end_page; $page_number++){
+    if($page == $page_number)
+      $url_stack[] = "[$page_number]";
+    else
+      $url_stack[] = GenerateLinkStack($url_option, $page_number);
+  }
+
+  if($page_number <= $page_count){
+    $url_stack[] = GenerateLinkStack($url_option, $page_number, '&gt;&gt;');
+    $url_stack[] = GenerateLinkStack($url_option, $page_count, '...[' . $page_count . ']');
+  }
+  $url_stack[] = GenerateLinkStack($url_option, 'all');
+
+  $list = $url_option;
+  $list[] = 'reverse=' . ($is_reverse ? 'off' : 'on');
+  $url_stack[] = '[表示順]';
+  $url_stack[] = ($is_reverse ? '新↓古' : '古↓新');
+
+  $url = $url_header . implode('&', $list) . '">';
+  $url_stack[] =  $url . (($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える') . '</a>';
+  echo implode(' ', $url_stack);
 
   $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide',
 			    'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
@@ -88,8 +110,8 @@ EOF;
   if($page == 'all')
     $limit_statement = '';
   else{
-    $start_number = $config->one_page * ($page - 1);
-    $limit_statement = sprintf('LIMIT %d, %d', $start_number, $config->one_page);
+    $start_number = $config->room * ($page - 1);
+    $limit_statement = sprintf('LIMIT %d, %d', $start_number, $config->room);
   }
 
   //表示する行の取得
@@ -172,6 +194,13 @@ EOF;
 </div>
 
 EOF;
+}
+
+function GenerateLinkStack($list, $page, $title = NULL){
+  $header = '<a href="old_log.php?';
+  array_unshift($list, 'page=' . $page);
+  if(is_null($title)) $title = '[' . $page . ']';
+  return $header . implode('&', $list) . '">' . $title . '</a>';
 }
 
 //指定の部屋番号のログを出力する

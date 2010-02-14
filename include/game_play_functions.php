@@ -182,7 +182,7 @@ function OutputAbility(){
     elseif($SELF->IsRole('dream_eater_mad') && $ROOM->IsNight()){ //‡”
       if($is_after_first_night) OutputVoteMessage('wolf-eat', 'dream_eat', 'DREAM_EAT');
     }
-    elseif($SELF->IsActiveRole('trap_mad') && $is_after_first_night){ //Ê´ª’
+    elseif($SELF->IsActive('trap_mad') && $is_after_first_night){ //Ê´ª’
       OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
     }
   }
@@ -212,7 +212,7 @@ function OutputAbility(){
     }
     elseif($SELF->IsRole('revive_fox') && ! $ROOM->IsOpenCast()){ //¿Á∏—
       OutputSelfAbilityResult('POISON_CAT_RESULT'); //¡…¿∏∑Î≤Ã§Ú…Ωº®
-     if(! $SELF->IsRole('lost_ability') && $is_after_first_night){ //ÃÎ§Œ≈Í…º
+      if($SELF->IsActive() && $is_after_first_night){ //ÃÎ§Œ≈Í…º
 	OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }

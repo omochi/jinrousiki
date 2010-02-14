@@ -80,9 +80,10 @@ class User{
     $this->main_role = $this->role_list[0];
   }
 
+  //拡張情報を取得する
   function GetPartner($type){
     $list = $this->partner_list[$type];
-    return (is_array($list) ? $list : NULL);
+    return is_array($list) ? $list : NULL;
   }
 
   //日数に応じた憑依先の ID を取得
@@ -108,12 +109,12 @@ class User{
 
   function IsLive($strict = false){
     $dead = $this->IsDeadFlag($strict);
-    return (is_null($dead) ? ($this->live == 'live') : ! $dead);
+    return is_null($dead) ? ($this->live == 'live') : ! $dead;
   }
 
   function IsDead($strict = false){
     $dead = $this->IsDeadFlag($strict);
-    return (is_null($dead) ? ($this->live == 'dead') : $dead);
+    return is_null($dead) ? ($this->live == 'dead') : $dead;
   }
 
   function IsSame($uname){
@@ -140,8 +141,9 @@ class User{
     }
   }
 
-  function IsActiveRole($role){
-    return ($this->IsRole($role) && ! $this->IsRole('lost_ability'));
+  function IsActive($role = NULL){
+    $is_role = is_null($role) ? true : $this->IsRole($role);
+    return ($is_role && ! $this->IsRole('lost_ability'));
   }
 
   function IsRoleGroup($role){
@@ -161,7 +163,7 @@ class User{
 
   function IsFox($talk = false){
     if(! $this->IsRoleGroup('fox')) return false;
-    return ($talk ? ! $this->IsRole('silver_fox', 'child_fox') : true);
+    return $talk ? ! $this->IsRole('silver_fox', 'child_fox') : true;
   }
 
   function IsLovers(){
@@ -308,6 +310,10 @@ class User{
     $this->ParseRoles();
   }
   */
+
+  function LostAbility(){
+    $this->AddRole('lost_ability');
+  }
 
   function ReturnPossessed($type, $date){
     $this->AddRole("${type}[{$date}-{$this->user_no}]");
@@ -505,6 +511,26 @@ class UserDataSet{
       if($user->IsRole($role_list)) return true;
     }
     return false;
+  }
+
+  //霊界の配役公開判定
+  function IsOpenCast(){
+    foreach($this->rows as $user){
+      if($user->IsDummyBoy()) continue;
+      if($user->IsRoleGroup('cat')){
+	if($user->IsLive()) return false;
+      }
+      elseif($user->IsRole('revive_fox')){
+	if($user->IsLive() && $user->IsActive()) return false;
+      }
+      elseif($user->IsRole('revive_priest')){
+	if($user->IsActive()) return false;
+      }
+      elseif($user->IsRole('evoke_scanner')){
+	if($user->IsLive() && ! $user->IsRole('copied')) return false;
+      }
+    }
+    return true;
   }
 
   //仮想的な生死を返す
