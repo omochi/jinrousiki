@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
-$INIT_CONF->LoadClass('ICON_CONF');
+$INIT_CONF->LoadClass('SESSION', 'ICON_CONF');
 
 //-- データ収集 --//
 //引数を取得
@@ -16,15 +16,13 @@ if($RQ_ARGS->list_down)  $php_argv .= '&list_down=on';
 $back_url = '<a href="game_up.php?' . $php_argv . '#game_top">←戻る &amp; reload</a>';
 
 $DB_CONF->Connect(); //DB 接続
-
-session_start(); //セッション開始
-$uname = CheckSession(session_id()); //セッション ID をチェック
+$SESSION->Certify(); //セッション認証
 
 $ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF = $USERS->ByUname($uname); //自分の情報をロード
+$SELF = $USERS->BySession(); //自分の情報をロード
 
 if($ROOM->IsFinished()){ //ゲーム終了
   OutputActionResult('投票エラー',
@@ -430,25 +428,25 @@ function AggregateVoteGameStart($force_start = false){
   //役割リスト通知
   if($chaos){
     if(strpos($option_role, 'chaos_open_cast_camp') !== false){
-      $sentence = MakeRoleNameList($role_count_list, 'camp');
+      $sentence = GenerateRoleNameList($role_count_list, 'camp');
     }
     elseif(strpos($option_role, 'chaos_open_cast_role') !== false){
-      $sentence = MakeRoleNameList($role_count_list, 'role');
+      $sentence = GenerateRoleNameList($role_count_list, 'role');
     }
     elseif(strpos($option_role, 'chaos_open_cast') !== false){
-      $sentence = MakeRoleNameList($role_count_list);
+      $sentence = GenerateRoleNameList($role_count_list);
     }
     else{
       $sentence = $MESSAGE->chaos;
     }
   }
   else{
-    $sentence = MakeRoleNameList($role_count_list);
+    $sentence = GenerateRoleNameList($role_count_list);
   }
   InsertSystemTalk($sentence, ++$ROOM->system_time, 'night system', 1);
 
   InsertSystemMessage('1', 'VOTE_TIMES', 1); //初日の処刑投票のカウントを1に初期化(再投票で増える)
-  UpdateTime(); //最終書き込み時刻を更新
+  $ROOM->UpdateTime(); //最終書き込み時刻を更新
   if($ROOM->IsOption('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
   mysql_query('COMMIT'); //一応コミット
   return true;
@@ -555,7 +553,7 @@ function AggregateVoteKick($target){
 
   InsertSystemTalk($target . $MESSAGE->kick_out, ++$ROOM->system_time); //出て行ったメッセージ
   InsertSystemTalk($MESSAGE->vote_reset, ++$ROOM->system_time); //投票リセット通知
-  UpdateTime(); //最終書き込み時刻を更新
+  $ROOM->UpdateTime(); //最終書き込み時刻を更新
   DeleteVote(); //今までの投票を全部削除
   mysql_query('COMMIT'); //一応コミット
   return $vote_count;

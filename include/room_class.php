@@ -155,6 +155,12 @@ class Room{
   function IsFinished(){
     return $this->status == 'finished';
   }
+
+  //最終更新時刻を更新
+  function UpdateTime(){
+    if($this->test_mode) return;
+    mysql_query("UPDATE room SET last_updated = '{$this->system_time}' WHERE room_no = {$this->id}");
+  }
 }
 
 class RoomDataSet {

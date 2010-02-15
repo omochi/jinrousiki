@@ -129,8 +129,8 @@ EOF;
     extract($array, EXTR_PREFIX_ALL, 'log');
 
     //オプションと勝敗の解析
-    $game_option_str = MakeGameOptionImage($log_room_game_option, $log_room_option_role);
-    $victory_role_str = $VICT_IMG->GenerateTag($log_room_victory_role);
+    $game_option_str = GenerateGameOptionImage($log_room_game_option, $log_room_option_role);
+    $victory_role_str = $VICT_IMG->Generate($log_room_victory_role);
     //廃村の場合、色を灰色にする
     $dead_room_color = ($log_room_date == 0 ? ' style="color:silver"' : '');
 

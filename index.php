@@ -2,7 +2,7 @@
 require_once('include/init.php');
 $INIT_CONF->LoadClass('SCRIPT_INFO');
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'index');
-echo '</head>'."\n".'<body>'."\n";
+echo "</head>\n<body>\n";
 if($SERVER_CONF->back_page != ''){
   echo '<a href="' . $SERVER_CONF->back_page . '">←戻る</a><br>'."\n";
 }
@@ -96,7 +96,7 @@ if($SERVER_CONF->back_page != ''){
     </fieldset>
     <?php OutputSharedServerRoom() ?>
     <fieldset>
-      <legend>村の作成</legend><?php OutputCreateRoom() ?>
+      <legend>村の作成</legend><?php OutputCreateRoomPage() ?>
     </fieldset>
   </td></tr>
 </table>

@@ -27,6 +27,7 @@ class InitializeConfig{
     'DB_CONF' => 'server_config',
     'SERVER_CONF' => 'server_config',
     'SCRIPT_INFO' => 'version',
+    'SESSION' => 'system_class',
     'ROOM_CONF' => 'game_config',
     'GAME_CONF' => 'game_config',
     'CAST_CONF' => 'game_config',
@@ -68,6 +69,7 @@ class InitializeConfig{
     'DB_CONF' => 'DatabaseConfig',
     'SERVER_CONF' => 'ServerConfig',
     'SCRIPT_INFO' => 'ScriptInfo',
+    'SESSION' => 'Session',
     'ROOM_CONF' => 'RoomConfig',
     'GAME_CONF' => 'GameConfig',
     'CAST_CONF' => 'CastConfig',
@@ -90,7 +92,6 @@ class InitializeConfig{
   );
 
   function InitializeConfig(){ $this->__construct(); }
-
   function __construct(){
     $this->path->root    = JINRO_ROOT;
     $this->path->config  = JINRO_CONF;

@@ -701,7 +701,7 @@ function GetRoleList($user_count, $option_role){
 }
 
 //役職の人数通知リストを作成する
-function MakeRoleNameList($role_count_list, $chaos = NULL){
+function GenerateRoleNameList($role_count_list, $chaos = NULL){
   global $GAME_CONF;
 
   $main_role_key_list = array_keys($GAME_CONF->main_role_list);
@@ -1138,7 +1138,7 @@ function AggregateVoteDay(){
     InsertSystemTalk("再投票になりました( {$RQ_ARGS->vote_times} 回目)", ++$ROOM->system_time);
     CheckVictory(true); //勝敗判定
   }
-  UpdateTime(); //最終書き込みを更新
+  $ROOM->UpdateTime(); //最終書き込みを更新
   mysql_query('COMMIT'); //一応コミット
 }
 
@@ -2044,7 +2044,7 @@ function AggregateVoteNight(){
 
   //夜が明けた通知
   InsertSystemTalk("MORNING\t" . $next_date, ++$ROOM->system_time, 'day system', $next_date);
-  UpdateTime(); //最終書き込みを更新
+  $ROOM->UpdateTime(); //最終書き込みを更新
   //DeleteVote(); //今までの投票を全部削除
 
   CheckVictory(); //勝敗のチェック

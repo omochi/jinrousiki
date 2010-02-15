@@ -20,41 +20,6 @@ if(! function_exists('session_regenerate_id')){
   }
 }
 
-//セッション認証 返り値 OK:ユーザ名 / NG: false
-function CheckSession($session_id, $exit = true){
-  global $RQ_ARGS;
-  // $ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
-
-  //セッション ID による認証
-  $query = "SELECT uname FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
-    "AND session_id ='$session_id' AND user_no > 0";
-  $array = FetchArray($query);
-  if(count($array) == 1) return $array[0];
-
-  if($exit){ //エラー処理
-    OutputActionResult('セッション認証エラー',
-		       'セッション認証エラー<br>'."\n" .
-		       '<a href="index.php" target="_top">トップページ</a>から' .
-		       'ログインしなおしてください');
-  }
-  return false;
-}
-
-//DBに登録されているセッションIDと被らないようにする
-function GetUniqSessionID(){
-  //セッション開始
-  session_start();
-  $session_id = '';
-
-  do{
-    session_regenerate_id();
-    $session_id = session_id();
-    $query = "SELECT COUNT(room_no) FROM user_entry, admin_manage " .
-      "WHERE user_entry.session_id = '$session_id' OR admin_manage.session_id = '$session_id'";
-  }while(FetchResult($query) > 0);
-  return $session_id;
-}
-
 //-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
 function SendQuery($query){
@@ -225,18 +190,18 @@ function PrintData($data, $name = NULL){
 }
 
 //ゲームオプションの画像タグを作成する
-function MakeGameOptionImage($game_option, $option_role = ''){
+function GenerateGameOptionImage($game_option, $option_role = ''){
   global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;
 
   $str = '';
   if(strpos($game_option, 'wish_role') !== false){
-    $str .= $ROOM_IMG->GenerateTag('wish_role', $GAME_OPT_MESS->wish_role);
+    $str .= $ROOM_IMG->Generate('wish_role', $GAME_OPT_MESS->wish_role);
   }
   if(strpos($game_option, 'real_time') !== false){ //実時間の制限時間を取得
     $real_time_str = strstr($game_option, 'real_time');
     sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
     $sentence = "{$GAME_OPT_MESS->real_time}　昼： $day 分　夜： $night 分";
-    $str .= $ROOM_IMG->GenerateTag('real_time', $sentence) . '['. $day . '：' . $night . ']';
+    $str .= $ROOM_IMG->Generate('real_time', $sentence) . '['. $day . '：' . $night . ']';
   }
 
   $option_list = explode(' ', $game_option . ' ' . $option_role);
@@ -261,14 +226,14 @@ function MakeGameOptionImage($game_option, $option_role = ''){
     }
     $sentence .= $GAME_OPT_MESS->$this_option;
 
-    $str .= $ROOM_IMG->GenerateTag($this_option, $sentence);
+    $str .= $ROOM_IMG->Generate($this_option, $sentence);
   }
 
   return $str;
 }
 
 //共通 HTML ヘッダ生成
-function MakeHTMLHeader($title, $css = 'action'){
+function GenerateHTMLHeader($title, $css = 'action'){
   global $SERVER_CONF;
 
   $css_path = JINRO_CSS . '/' . $css . '.css';
@@ -286,7 +251,7 @@ EOF;
 
 //共通 HTML ヘッダ出力
 function OutputHTMLHeader($title, $css = 'action'){
-  echo MakeHTMLHeader($title, $css);
+  echo GenerateHTMLHeader($title, $css);
 }
 
 //結果ページ HTML ヘッダ出力

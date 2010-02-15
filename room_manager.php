@@ -337,12 +337,12 @@ function OutputRoomList(){
   $list = FetchAssoc($query);
   foreach($list as $array){
     extract($array);
-    $option_img_str = MakeGameOptionImage($game_option, $option_role); //ゲームオプションの画像
+    $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
     //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
-{$ROOM_IMG->GenerateTag($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
+{$ROOM_IMG->Generate($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
 <div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
 </a><br>
 
@@ -395,7 +395,7 @@ EOF;
 }
 
 //部屋作成画面を出力
-function OutputCreateRoom(){
+function OutputCreateRoomPage(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
   echo <<<EOF
@@ -454,15 +454,7 @@ EOF;
 EOF;
 }
 
-function OutputRoomOption($option_list, $label = '', $border = true){
-  $tag_list = array();
-  foreach($option_list as $option) $tag_list[] = MakeRoomOptionTag($option, $label);
-  if(count($tag_list) < 1) return NULL;
-  if($border) array_unshift($tag_list, '<tr><td colspan="2"><hr></td></tr>');
-  echo implode('', $tag_list);
-}
-
-function MakeRoomOptionTag($option, $label = ''){
+function GenerateRoomOption($option, $label = ''){
   global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
   if(! $ROOM_CONF->$option) return NULL;
@@ -507,6 +499,14 @@ EOF;
 </tr>
 
 EOF;
+}
+
+function OutputRoomOption($option_list, $label = '', $border = true){
+  $tag_list = array();
+  foreach($option_list as $option) $tag_list[] = GenerateRoomOption($option, $label);
+  if(count($tag_list) < 1) return NULL;
+  if($border) array_unshift($tag_list, '<tr><td colspan="2"><hr></td></tr>');
+  echo implode('', $tag_list);
 }
 
 function OutputRoomOptionDummyBoy(){

@@ -5,9 +5,9 @@ $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'MESSAGE');
 
 $DB_CONF->Connect(); // DB 接続
-OutputHTMLHeader('汝は人狼なりや？[配役統計]', 'game'); //HTMLヘッダ
-$SELF =& new User();
+OutputHTMLHeader($SERVER_CONF->title . '[配役統計]', 'game'); //HTMLヘッダ
 
+$SELF =& new User();
 $role_count_list = array();
 //$room_list = FetchArray("SELECT room_no FROM room");
 $room_list = FetchArray("SELECT room_no FROM room WHERE game_option LIKE '%chaos%'");
@@ -28,8 +28,7 @@ foreach($room_list as $id){
 PrintData($total_room, '村数');
 PrintData($total_user, '村人');
 //PrintData($role_count_list);
-echo MakeRoleNameList($role_count_list, 'camp') . '<br><br>';
-echo MakeRoleNameList($role_count_list, 'role') . '<br><br>';
-echo MakeRoleNameList($role_count_list) . '<br>';
+echo GenerateRoleNameList($role_count_list, 'camp') . '<br><br>';
+echo GenerateRoleNameList($role_count_list, 'role') . '<br><br>';
+echo GenerateRoleNameList($role_count_list) . '<br>';
 OutputHTMLFooter(); //HTMLフッタ
-?>

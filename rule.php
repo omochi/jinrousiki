@@ -266,12 +266,10 @@ foreach($CAST_CONF->role_list as $key => $value){
 　　村作成のオプションで「リアルタイム制」をチェック入れていると、実時間で経過していきます。<br>
 　　時間は部屋を作成した人が設定でき、トップページのゲーム一覧の「リアルタイム制」画像のAltテキストに表示されます。<br>
 
-　　(ゲーム一覧のオプションの部分にあるリアルタイム制の画像
-<?php
-$alt = 'リアルタイム制　昼：' . $TIME_CONF->default_day . '分　夜： ' . $TIME_CONF->default_night . '分';
-echo $ROOM_IMG->GenerateTag('real_time', $alt);
-?>
-にマウスポインタを乗せると表示されます)<br>
+　　(ゲーム一覧のオプションの部分にあるリアルタイム制の画像<?=
+$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
+		    '分　夜： ' . $TIME_CONF->default_night . '分')
+?>にマウスポインタを乗せると表示されます)<br>
 　　ゲーム中は仮想時間と実時間の両方が表示され、仮想時間は12時間、もしくは6時間から徐々に減っていき、<br>
 　　実時間が0になると同時に仮想時間も0になるように計算されています。<br>
 　　リアルタイム制の村に参加する場合、ご自分のPCの時計を合わせておかないと正しい残り時間が表示されません。
@@ -366,55 +364,55 @@ echo $ROOM_IMG->GenerateTag('real_time', $alt);
 </tr>
 
 <tr>
-<td>村人</td><td><?= $ROLE_IMG->GenerateTag('human') ?></td>
+<td>村人</td><td><?= $ROLE_IMG->Generate('human') ?></td>
 </tr>
 
 <tr>
 <td class="wolf">人狼</td><td><?php $ROLE_IMG->Output('wolf') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('wolf_partner') ?></td><td>人狼一号</td></tr></table>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('wolf_partner') ?></td><td>人狼一号</td></tr></table>
 </td>
 </tr>
 
 <tr>
 <td class="mage">占い師</td><td><?php $ROLE_IMG->Output('mage') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('mage_result') ?></td><td>村人一号</td><td><?= $ROLE_IMG->GenerateTag('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('mage_result') ?></td><td>人狼一号</td><td><?= $ROLE_IMG->GenerateTag('result_wolf') ?></td></tr></table>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('mage_result') ?></td><td>村人一号</td><td><?= $ROLE_IMG->Generate('result_human') ?></td></tr></table>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('mage_result') ?></td><td>人狼一号</td><td><?= $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
 <td class="necromancer">霊能者</td><td><?php $ROLE_IMG->Output('necromancer') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('necromancer_result') ?></td><td>村人一号</td><td><?= $ROLE_IMG->GenerateTag('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('necromancer_result') ?></td><td>人狼一号</td><td><?= $ROLE_IMG->GenerateTag('result_wolf') ?></td></tr></table>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('necromancer_result') ?></td><td>村人一号</td><td><?= $ROLE_IMG->Generate('result_human') ?></td></tr></table>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('necromancer_result') ?></td><td>人狼一号</td><td><?= $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="wolf">狂人</td><td><?= $ROLE_IMG->GenerateTag('mad') ?></td>
+<td class="wolf">狂人</td><td><?= $ROLE_IMG->Generate('mad') ?></td>
 </tr>
 
 <tr>
 <td class="guard">狩人</td><td><?php $ROLE_IMG->Output('guard') ?>
-<table class="view"><tr><td>占い師一号</td><td><?= $ROLE_IMG->GenerateTag('guard_success') ?></td></tr></table></td>
+<table class="view"><tr><td>占い師一号</td><td><?= $ROLE_IMG->Generate('guard_success') ?></td></tr></table></td>
 </tr>
 
 <tr>
 <td class="common">共有者</td><td><?php $ROLE_IMG->Output('common') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('common_partner') ?></td><td>共有者一号</td></tr></table></td>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('common_partner') ?></td><td>共有者一号</td></tr></table></td>
 </tr>
 
 <tr>
 <td class="fox">妖狐</td><td><?php $ROLE_IMG->Output('fox') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('fox_targeted') ?></td></tr></table></td>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('fox_targeted') ?></td></tr></table></td>
 </tr>
 
 <tr>
-<td class="poison">埋毒者</td><td><?= $ROLE_IMG->GenerateTag('poison') ?></td>
+<td class="poison">埋毒者</td><td><?= $ROLE_IMG->Generate('poison') ?></td>
 </tr>
 
 <tr>
 <td class="lovers">キューピッド</td><td><?php $ROLE_IMG->Output('cupid') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('cupid_pair') ?></td><td>恋人一号 恋人二号</td></tr></table></td>
+<table class="view"><tr><td><?= $ROLE_IMG->Generate('cupid_pair') ?></td><td>恋人一号 恋人二号</td></tr></table></td>
 </tr>
 
 <tr>
@@ -422,13 +420,13 @@ echo $ROOM_IMG->GenerateTag('real_time', $alt);
 </tr>
 
 <tr>
-<td>権力者</td><td><?= $ROLE_IMG->GenerateTag('authority') ?></td>
+<td>権力者</td><td><?= $ROLE_IMG->Generate('authority') ?></td>
 </tr>
 
 <tr>
 <td class="lovers">恋人</td>
-<td><table class="view"><tr><td><?= $ROLE_IMG->GenerateTag('partner_header') ?></td><td>恋人一号</td>
-<td><?= $ROLE_IMG->GenerateTag('lovers_footer') ?></td></tr></table></td>
+<td><table class="view"><tr><td><?= $ROLE_IMG->Generate('partner_header') ?></td><td>恋人一号</td>
+<td><?= $ROLE_IMG->Generate('lovers_footer') ?></td></tr></table></td>
 </tr>
 </table>
 <br>

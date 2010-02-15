@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
-$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
+$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 
 //-- データ収集 --//
 EncodePostData(); //ポストされた文字列を全てエンコードする
@@ -9,8 +9,7 @@ $INIT_CONF->LoadRequest('RequestGamePlay'); //引数を取得
 if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
 $DB_CONF->Connect(); //DB 接続
-session_start(); //セッション開始
-$uname = CheckSession(session_id()); //セッション ID をチェック
+$SESSION->Certify(); //セッション認証
 
 $ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
@@ -19,7 +18,7 @@ $ROOM->system_time  = TZTime(); //現在時刻を取得
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF = $USERS->ByUname($uname); //自分の情報をロード
+$SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- テスト用 --//
 //$SELF->ChangeRole('random_voice');
@@ -35,7 +34,7 @@ elseif($ROOM->IsFinished()){
 }
 
 //必要なクッキーをセットする
-$objection_array = array(); //SendCookie();で格納される・異議ありの情報
+$objection_list = array(); //SendCookie();で格納される・異議ありの情報
 $objection_left_count = 0;  //SendCookie();で格納される・異議ありの残り回数
 SendCookie();
 
@@ -89,7 +88,7 @@ OutputHTMLFooter();
 //-- 関数 --//
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF, $objection_array, $objection_left_count;
+  global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF, $objection_list, $objection_left_count;
 
   //<夜明けを音でお知らせ用>
   //クッキーに格納 (夜明けに音でお知らせで使う・有効期限一時間)
@@ -114,9 +113,9 @@ function SendCookie(){
   $user_count = FetchResult($query);
   // 配列をリセット (0 番目に変な値が入らない事が保証されていれば不要かな？)
   // キックで欠番が出ると色々面倒な事になりそう
-  // $objection_array = array();
-  // unset($objection_array[0]);
-  $objection_array = array_fill(0, $user_count, 0); //index は 0 から
+  // $objection_list = array();
+  // unset($objection_list[0]);
+  $objection_list = array_fill(0, $user_count, 0); //index は 0 から
 
   //message:異議ありをしたユーザ No とその回数を取得
   $query = "SELECT message, COUNT(message) AS message_count FROM system_message " .
@@ -125,18 +124,18 @@ function SendCookie(){
   foreach($array as $this_array){
     $this_user_no = (int)$this_array['message'];
     $this_count   = (int)$this_array['message_count'];
-    $objection_array[$this_user_no - 1] = $this_count;
+    $objection_list[$this_user_no - 1] = $this_count;
   }
 
   //クッキーに格納 (有効期限一時間)
-  foreach($objection_array as $value){
+  foreach($objection_list as $value){
     if($str != '') $str .= ','; //カンマ区切り
     $str .= $value;
   }
   setcookie('objection', $str, $ROOM->system_time + 3600);
 
   //残り異議ありの回数
-  $objection_left_count = $GAME_CONF->objection - $objection_array[$SELF->user_no - 1];
+  $objection_left_count = $GAME_CONF->objection - $objection_list[$SELF->user_no - 1];
 
   //<再投票を音でお知らせ用>
   //再投票の回数を取得
@@ -270,7 +269,7 @@ function Write($say, $location, $spend_time, $update = false){
 
   InsertTalk($ROOM->id, $ROOM->date, $location, $SELF->uname, $ROOM->system_time,
 	     $say, $voice, $spend_time);
-  if($update) UpdateTime();
+  if($update) $ROOM->UpdateTime();
   mysql_query('COMMIT'); //一応コミット
 }
 
@@ -301,7 +300,7 @@ function CheckSilence(){
       $sentence = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
       InsertTalk($ROOM->id, $ROOM->date, "{$ROOM->day_night} system", 'system',
 		 $ROOM->system_time, $sentence, NULL, $TIME_CONF->silence_pass);
-      UpdateTime();
+      $ROOM->UpdateTime();
     }
   }
   elseif($left_time == 0){ //制限時間を過ぎていたら警告を出す
@@ -315,7 +314,7 @@ function CheckSilence(){
       "AND uname = 'system' AND sentence = '$sudden_death_announce'";
     if(FetchResult($query) == 0){ //警告を出していなかったら出す
       InsertSystemTalk($sudden_death_announce, ++$ROOM->system_time); //全会話の後に出るように
-      UpdateTime(); //更新時間を更新
+      $ROOM->UpdateTime(); //更新時間を更新
       $last_updated_pass_time = 0;
     }
     $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
@@ -400,7 +399,7 @@ function CheckSilence(){
 
       InsertSystemTalk($MESSAGE->vote_reset, ++$ROOM->system_time); //投票リセットメッセージ
       InsertSystemTalk($sudden_death_announce, ++$ROOM->system_time); //突然死告知メッセージ
-      UpdateTime(); //制限時間リセット
+      $ROOM->UpdateTime(); //制限時間リセット
       DeleteVote(); //投票リセット
       CheckVictory(); //勝敗チェック
     }
@@ -411,7 +410,7 @@ function CheckSilence(){
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
-    $COOKIE, $SOUND, $objection_array, $objection_left_count;
+    $COOKIE, $SOUND, $objection_list, $objection_left_count;
 
   $room_message = '<td class="room"><span>' . $ROOM->name . '村</span>　〜' . $ROOM->comment .
     '〜[' . $ROOM->id . '番地]</td>'."\n";
@@ -497,11 +496,11 @@ EOF;
     if($COOKIE->day_night != $ROOM->day_night && $ROOM->IsDay()) $SOUND->Output('morning');
 
     //異議あり、を音で知らせる
-    $cookie_objection_array = explode(',', $COOKIE->objection); //クッキーの値を配列に格納する
-    $count = count($objection_array);
+    $cookie_objection_list = explode(',', $COOKIE->objection); //クッキーの値を配列に格納する
+    $count = count($objection_list);
     for($i = 0; $i < $count; $i++){ //差分を計算 (index は 0 から)
       //差分があれば性別を確認して音を鳴らす
-      if((int)$objection_array[$i] > (int)$cookie_objection_array[$i]){
+      if((int)$objection_list[$i] > (int)$cookie_objection_list[$i]){
 	$SOUND->Output('objection_' . $USERS->ByID($i + 1)->sex, true);
       }
     }

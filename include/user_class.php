@@ -213,7 +213,7 @@ class User{
   }
 
   //役職をパースして省略名を返す
-  function MakeShortRoleName(){
+  function GenarateShortRoleName(){
     global $GAME_CONF;
 
     //メイン役職を取得
@@ -462,6 +462,11 @@ class UserDataSet{
 
   function ByUname($uname){
     return $this->ByID($this->UnameToNumber($uname));
+  }
+
+  function BySession(){
+    global $SESSION;
+    return $this->ByID($SESSION->GetUser());
   }
 
   function TraceVirtual($user_no, $role, $type){

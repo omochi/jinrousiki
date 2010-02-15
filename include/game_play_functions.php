@@ -363,13 +363,19 @@ function OutputPartner($partner_list, $header, $footer = NULL){
   if(count($partner_list) < 1) return false; //仲間がいなければ表示しない
 
   $str = '<table class="ability-partner"><tr>'."\n" .
-    '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n" .
+    '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n" .
     '<td>　' . implode('さん　', $partner_list) . 'さん　</td>'."\n";
-  if($footer) $str .= '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
+  if($footer) $str .= '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
   echo $str . '</tr></table>'."\n";
 }
 
 //個々の能力発動結果を表示する
+/*
+  一部の処理は、HN にタブが入るとパースに失敗する
+  入村時に HN からタブを除く事で対応できるが、
+  そもそもこのようなパースをしないといけない DB 構造に
+  問題があるので、ここでは特に対応しない
+*/
 function OutputSelfAbilityResult($action){
   global $ROOM, $SELF;
 
@@ -471,7 +477,7 @@ function OutputSelfAbilityResult($action){
   switch($type){
   case 'mage':
     foreach($result_list as $result){
-      list($actor, $target, $target_role) = ParseStrings($result, $action);
+      list($actor, $target, $target_role) = explode("\t", $result);
       if($SELF->handle_name == $actor){
 	OutputAbilityResult($header, $target, $footer . $target_role);
 	break;
@@ -482,7 +488,7 @@ function OutputSelfAbilityResult($action){
   case 'necromancer':
     if(is_null($header)) $header = 'necromancer';
     foreach($result_list as $result){
-      list($target, $target_role) = ParseStrings($result);
+      list($target, $target_role) = explode("\t", $result);
       OutputAbilityResult($header . '_result', $target, $footer . $target_role);
     }
     break;
@@ -501,7 +507,7 @@ function OutputSelfAbilityResult($action){
 
   case 'guard':
     foreach($result_list as $result){
-      list($actor, $target) = ParseStrings($result);
+      list($actor, $target) = explode("\t", $result);
       if($SELF->handle_name == $actor){
 	OutputAbilityResult(NULL, $target, $footer);
 	break;
@@ -511,7 +517,7 @@ function OutputSelfAbilityResult($action){
 
   case 'reporter':
     foreach($result_list as $result){
-      list($actor, $target, $wolf_handle) = ParseStrings($result, $action);
+      list($actor, $target, $wolf_handle) = explode("\t", $result);
       if($SELF->handle_name == $actor){
 	OutputAbilityResult($header, $target . ' さんは ' . $wolf_handle, $footer);
 	break;
@@ -530,27 +536,14 @@ function OutputSelfAbilityResult($action){
   }
 }
 
-//能力発動結果をデータベースに問い合わせる
-/*
-  この関数は削除予定です。
-  新しい情報を定義する場合は OutputSelfAbilityResult() を使用してください。
-*/
-function GetAbilityActionResult($action){
-  global $ROOM;
-
-  $yesterday = $ROOM->date - 1;
-  return mysql_query("SELECT message FROM system_message WHERE room_no = {$ROOM->id}
-			AND date = $yesterday AND type = '$action'");
-}
-
 //能力発動結果を表示する
 function OutputAbilityResult($header, $target, $footer = NULL){
   global $ROLE_IMG;
 
   echo '<table class="ability-result"><tr>'."\n";
-  if($header) echo '<td>' . $ROLE_IMG->GenerateTag($header) . '</td>'."\n";
+  if($header) echo '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n";
   if($target) echo '<td>' . $target . '</td>'."\n";
-  if($footer) echo '<td>' . $ROLE_IMG->GenerateTag($footer) . '</td>'."\n";
+  if($footer) echo '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
   echo '</tr></table>'."\n";
 }
 
@@ -564,4 +557,3 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   $message_str = 'ability_' . $sentence;
   echo '<span class="ability ' . $class . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
 }
-?>

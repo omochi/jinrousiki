@@ -1,20 +1,18 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('user_class', 'talk_class');
-$INIT_CONF->LoadClass('ROLES');
+$INIT_CONF->LoadClass('SESSION', 'ROLES');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameLog'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
-
-session_start(); //セッション開始
-$uname = CheckSession(session_id()); //セッション ID からユーザ名を取得
+$SESSION->Certify(); //セッション認証
 
 $ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->log_mode = true;
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報を取得
-$SELF = $USERS->ByUname($uname);
+$SELF = $USERS->BySession(); //自分の情報をロード
 
 if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //死者かゲーム終了後だけ
   OutputActionResult('ユーザ認証エラー',

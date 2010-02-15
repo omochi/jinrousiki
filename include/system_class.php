@@ -46,6 +46,67 @@ class DatabaseConfigBase{
   }
 }
 
+//-- セッション管理クラス --//
+class Session{
+  var $id;
+  var $user_no;
+
+  function Session(){ $this->__construct(); }
+  function __construct(){
+    session_start();
+    $this->Set();
+  }
+
+  //ID セット
+  function Set($reset = false){
+    if($reset) session_regenerate_id();
+    $this->id = session_id();
+    return $this->id;
+  }
+
+  //ID 取得
+  function Get($uniq = false){
+    return $uniq ? $this->GetUniq() : $this->id;
+  }
+
+  //DB に登録されているセッション ID と被らないようにする
+  function GetUniq(){
+    $query = "SELECT COUNT(room_no) FROM user_entry, admin_manage WHERE " .
+      "user_entry.session_id =";
+    do{
+      $this->Set(true);
+    }while(FetchResult("$query '{$this->id}' OR admin_manage.session_id = '{$this->id}'") > 0);
+    return $this->id;
+  }
+
+  function GetUser(){
+    return $this->user_no;
+  }
+
+  //認証
+  function Certify($exit = true){
+    global $RQ_ARGS;
+    //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
+
+    //セッション ID による認証
+    $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
+      "AND session_id ='$this->id' AND user_no > 0";
+    $array = FetchArray($query);
+    if(count($array) == 1){
+      $this->user_no = $array[0];
+      return true;
+    }
+
+    if($exit){ //エラー処理
+      OutputActionResult('セッション認証エラー',
+			 'セッション認証エラー<br>'."\n" .
+			 '<a href="./" target="_top">トップページ</a>から' .
+			 'ログインしなおしてください');
+    }
+    return false;
+  }
+}
+
 //-- クッキーデータのロード処理 --//
 class CookieDataSet{
   var $day_night;  //夜明け
@@ -62,7 +123,7 @@ class CookieDataSet{
 
 //-- 画像管理の基底クラス --//
 class ImageManager{
-  function GenerateTag($name, $alt = ''){
+  function Generate($name, $alt = ''){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
     $str .= ' src="' . JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extension . '"';
@@ -74,13 +135,13 @@ class ImageManager{
   }
 
   function Output($name){
-    echo $this->GenerateTag($name) . '<br>'."\n";
+    echo $this->Generate($name) . "<br>\n";
   }
 }
 
 //-- 勝利陣営の画像処理の基底クラス --//
 class VictoryImageBase extends ImageManager{
-  function GenerateTag($name){
+  function Generate($name){
     switch($name){
     case 'human':
       $alt = '村人勝利';
@@ -115,7 +176,7 @@ class VictoryImageBase extends ImageManager{
       return '-';
       break;
     }
-    return parent::GenerateTag($name, $alt);
+    return parent::Generate($name, $alt);
   }
 }
 

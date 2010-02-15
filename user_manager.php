@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('GAME_CONF', 'ICON_CONF', 'MESSAGE');
+$INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
 EncodePostData();//ポストされた文字列をエンコードする
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
@@ -12,7 +12,7 @@ $DB_CONF->Disconnect(); //DB 接続解除
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $DEBUG_MODE, $GAME_CONF, $MESSAGE, $RQ_ARGS;
+  global $DEBUG_MODE, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
 
@@ -88,11 +88,8 @@ function EntryUser(){
 		       '村が既に満員か、ゲームが開始されています。', '', true);
   }
 
-  //セッション開始
-  // session_start();
-  $session_id = GetUniqSessionID();
-
-  //DB にユーザデータ登録
+  //DB にユーザデータを登録
+  $session_id = $SESSION->Get(true); //セッション ID を取得
   $crypt_password = CryptPassword($password);
   $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, role, live, ' .
     'session_id, last_words, ip_address, last_load_day_night';
@@ -217,7 +214,7 @@ function OutputEntryUserPage($room_no){
 <tr>
 <td class="img"><img src="img/entry_user/password.gif"></td>
 <td><input type="password" name="password" size="30" maxlength="30"></td>
-<td class="explain">セッションが切れた場合にログイン時に使います<br> (暗号化されていないので要注意)</td>
+<td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/sex.gif"></td>

@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('USER_ICON');
+$INIT_CONF->LoadClass('SESSION', 'USER_ICON');
 
 if($USER_ICON->disable_upload){
   OutputActionResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
@@ -54,12 +54,7 @@ default:
 //-- 関数 --//
 //投稿データチェック
 function CheckIconUpload(){
-  global $DB_CONF, $ICON_CONF, $USER_ICON, $RQ_ARGS;
-
-  //セッション開始(ヘッダを送る前に開始しておく)
-  session_start();
-  session_regenerate_id(); //セッションを新しく作る
-  $session_id = session_id();
+  global $DB_CONF, $ICON_CONF, $USER_ICON, $RQ_ARGS, $SESSION;
 
   // エラーページ用タイトル
   $title = 'アイコン登録エラー';
@@ -150,6 +145,7 @@ function CheckIconUpload(){
   }
 
   //データベースに登録
+  $session_id = $SESSION->Set(true); //セッション ID を取得
   $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, session_id';
   $values = "$icon_no, '$name', '$file_name', $width, $height, '$color', '$session_id'";
   InsertDatabase('user_icon', $items, $values);
@@ -182,7 +178,7 @@ EOF;
 }
 
 function DeleteUploadIcon(){
-  global $DB_CONF, $ICON_CONF;
+  global $DB_CONF, $ICON_CONF, $SESSION;
 
   //DBからアイコンのファイル名と登録時のセッションIDを取得
   $icon_no = (int)$_POST['icon_no'];
@@ -191,9 +187,8 @@ function DeleteUploadIcon(){
   $DB_CONF->Connect(); //DB 接続
   extract(FetchNameArray($query));
 
-  //セッションスタート
-  session_start();
-  if($session_id != session_id()){
+  //セッション ID 確認
+  if($session_id != $SESSION->Get()){
     OutputActionResult('アイコン削除失敗', '削除失敗：アップロードセッションが一致しません');
   }
   unlink($ICON_CONF->path . '/' . $file);

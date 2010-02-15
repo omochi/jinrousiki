@@ -37,7 +37,7 @@ if($_POST['command'] == 'role_test'){
     $role_list = GetRoleList($user_count, $option_role);
     if($role_list == '') break;
     $role_count_list = array_count_values($role_list);
-    PrintData(MakeRoleNameList($role_count_list));
+    PrintData(GenerateRoleNameList($role_count_list));
   }
 }
 

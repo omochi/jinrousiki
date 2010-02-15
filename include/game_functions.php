@@ -96,7 +96,7 @@ function OutputGameOption(){
   $query = "SELECT game_option, option_role, max_user FROM room WHERE room_no = {$ROOM->id}";
   extract(FetchNameArray($query));
   $str = '<table class="time-table"><tr>'."\n" .
-    '<td>ゲームオプション：' . MakeGameOptionImage($game_option, $option_role) .
+    '<td>ゲームオプション：' . GenerateGameOptionImage($game_option, $option_role) .
     ' 最大' . $max_user . '人</td>'."\n" . '</tr></table>'."\n";
   echo $str;
 }
@@ -179,46 +179,46 @@ function OutputPlayerList(){
 
       //メイン役職を追加
       if($user->IsRole('human', 'suspect', 'unconscious'))
-	$str .= MakeRoleName($user->main_role, 'human');
+	$str .= GenerateRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
-	$str .= MakeRoleName($user->main_role, 'mage');
+	$str .= GenerateRoleName($user->main_role, 'mage');
       elseif($user->IsRoleGroup('necromancer') || $user->IsRole('medium'))
-	$str .= MakeRoleName($user->main_role, 'necromancer');
+	$str .= GenerateRoleName($user->main_role, 'necromancer');
       elseif($user->IsRoleGroup('priest'))
-	$str .= MakeRoleName($user->main_role, 'priest');
+	$str .= GenerateRoleName($user->main_role, 'priest');
       elseif($user->IsRoleGroup('guard') || $user->IsRole('reporter', 'anti_voodoo'))
-	$str .= MakeRoleName($user->main_role, 'guard');
+	$str .= GenerateRoleName($user->main_role, 'guard');
       elseif($user->IsRoleGroup('common'))
-	$str .= MakeRoleName($user->main_role, 'common');
+	$str .= GenerateRoleName($user->main_role, 'common');
       elseif($user->IsRoleGroup('cat'))
-	$str .= MakeRoleName($user->main_role, 'cat');
+	$str .= GenerateRoleName($user->main_role, 'cat');
       elseif($user->IsRoleGroup('scanner'))
-	$str .= MakeRoleName($user->main_role, 'mind');
+	$str .= GenerateRoleName($user->main_role, 'mind');
       elseif($user->IsRoleGroup('jealousy'))
-	$str .= MakeRoleName($user->main_role, 'jealousy');
+	$str .= GenerateRoleName($user->main_role, 'jealousy');
       elseif($user->IsRoleGroup('mania'))
-	$str .= MakeRoleName($user->main_role, 'mania');
+	$str .= GenerateRoleName($user->main_role, 'mania');
       elseif($user->IsRole('assassin', 'quiz'))
-	$str .= MakeRoleName($user->main_role);
+	$str .= GenerateRoleName($user->main_role);
       elseif($user->IsRoleGroup('wolf'))
-	$str .= MakeRoleName($user->main_role, 'wolf');
+	$str .= GenerateRoleName($user->main_role, 'wolf');
       elseif($user->IsRoleGroup('mad'))
-	$str .= MakeRoleName($user->main_role, 'mad');
+	$str .= GenerateRoleName($user->main_role, 'mad');
       elseif($user->IsRoleGroup('fox'))
-	$str .= MakeRoleName($user->main_role, 'fox');
+	$str .= GenerateRoleName($user->main_role, 'fox');
       elseif($user->IsRoleGroup('chiroptera'))
-	$str .= MakeRoleName($user->main_role, 'chiroptera');
+	$str .= GenerateRoleName($user->main_role, 'chiroptera');
       elseif($user->IsRoleGroup('cupid'))
-	$str .= MakeRoleName($user->main_role, 'cupid');
+	$str .= GenerateRoleName($user->main_role, 'cupid');
       elseif($user->IsRoleGroup('poison') || $user->IsRole('pharmacist'))
-	$str .= MakeRoleName($user->main_role, 'poison');
+	$str .= GenerateRoleName($user->main_role, 'poison');
 
       if(($role_count = count($user->role_list)) > 1){ //兼任役職の表示
 	$display_role_count = 1;
 	foreach($GAME_CONF->sub_role_group_list as $class => $role_list){
 	  foreach($role_list as $sub_role){
 	    if($user->IsRole($sub_role)){
-	      $str .= MakeRoleName($sub_role, $class, true);
+	      $str .= GenerateRoleName($sub_role, $class, true);
 	      if(++$display_role_count >= $role_count) break 2;
 	    }
 	  }
@@ -232,8 +232,10 @@ function OutputPlayerList(){
   echo $str . '</tr></table></div>'."\n";
 }
 
-//役職名のタグを作成する //game_format.php に似たような関数があるかな？
-function MakeRoleName($role, $css = '', $sub_role = false){
+//役職名のタグを作成する
+//1. User->GenarateShortRoleName() との対応を考える
+//2. GenerateRoleNameList() @ game_vote_functions.php との対応を考える
+function GenerateRoleName($role, $css = '', $sub_role = false){
   global $GAME_CONF;
 
   $str = '';
@@ -405,7 +407,7 @@ function OutputTalk($talk, &$builder){
   if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
     $real_user = ($talk->scene == 'heaven' ? $said_user :
 		  $USERS->ByReal($said_user->user_no));
-    $handle_name .= $real_user->MakeShortRoleName();
+    $handle_name .= $real_user->GenarateShortRoleName();
   }
   else{
     $real_user = $USERS->ByRealUname($talk->uname);
@@ -601,13 +603,13 @@ function OutputLastWords(){
 EOF;
 
   foreach($array as $result){
-    list($handle_name, $str) = ParseStrings($result);
-    LineToBR(&$str);
+    list($handle_name, $sentence) = explode("\t", $result, 2);
+    LineToBR(&$sentence);
 
     echo <<<EOF
 <tr>
 <td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
-<td class="lastwords-body">{$str}</td>
+<td class="lastwords-body">{$sentence}</td>
 </tr>
 
 EOF;
@@ -773,7 +775,7 @@ function OutputVoteListDay($set_date){
   foreach($vote_message_list as $vote_message){ //いったん配列に格納する
     //タブ区切りのデータを分割する
     list($handle_name, $target_name, $voted_number,
-	 $vote_number, $vote_times) = ParseStrings($vote_message, 'VOTE');
+	 $vote_number, $vote_times) = explode("\t", $vote_message);
 
     if($this_vote_times != $vote_times){ //投票回数が違うデータだと別テーブルにする
       if($this_vote_times != -1) $result_array[$this_vote_times][] = '</table>'."\n";
@@ -839,14 +841,12 @@ function OutputAbilityAction(){
     $action .= "type = '$this_action'";
   }
 
-  $query = "SELECT message, type FROM system_message WHERE room_no = {$ROOM->id} " .
+  $query = "SELECT message AS sentence, type FROM system_message WHERE room_no = {$ROOM->id} " .
     "AND date = $yesterday AND ( $action )";
   $message_list = FetchAssoc($query);
   foreach($message_list as $array){
-    $sentence = $array['message'];
-    $type     = $array['type'];
-
-    list($actor, $target) = ParseStrings($sentence);
+    extract($array);
+    list($actor, $target) = explode("\t", $sentence);
     echo $header.$actor.' ';
     switch($type){
     case 'WOLF_EAT':
@@ -1110,12 +1110,6 @@ function InsertSystemMessage($sentence, $type, $date = ''){
   InsertDatabase('system_message', 'room_no, message, type, date', $values);
 }
 
-//最終書き込み時刻を更新
-function UpdateTime(){
-  global $ROOM;
-  mysql_query("UPDATE room SET last_updated = '{$ROOM->system_time}' WHERE room_no = {$ROOM->id}");
-}
-
 //今までの投票を全部削除
 function DeleteVote(){
   global $ROOM;
@@ -1168,70 +1162,4 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //配列からランダムに一つ取り出す
 function GetRandom($array){
   return $array[array_rand($array)];
-}
-
-//スペースを復元する
-function DecodeSpace(&$str){
-  $str = str_replace("\\space;", ' ', $str);
-}
-
-//メッセージを分割して必要な情報を返す
-function ParseStrings($str, $type = NULL){
-  $str = str_replace(' ', "\\space;", $str); //スペースを退避する
-  switch($type){
-  case 'LAST_WORDS':
-  case 'KICK_DO':
-  case 'VOTE_DO':
-  case 'WOLF_EAT':
-  case 'MAGE_DO':
-  case 'VOODOO_KILLER_DO':
-  case 'JAMMER_MAD_DO':
-  case 'TRAP_MAD_DO':
-  case 'VOODOO_MAD_DO':
-  case 'DREAM_EAT':
-  case 'GUARD_DO':
-  case 'ANTI_VOODOO_DO':
-  case 'REPORTER_DO':
-  case 'POISON_CAT_DO':
-  case 'ASSASSIN_DO':
-  case 'MIND_SCANNER_DO':
-  case 'VOODOO_FOX_DO':
-  case 'CHILD_FOX_DO':
-  case 'CUPID_DO':
-  case 'MANIA_DO':
-    list($msg, $target) = explode("\t", $str);
-    if($msg == $type){
-      DecodeSpace(&$target);
-      return $target;
-    }
-    return false;
-
-  case 'MAGE_RESULT':
-  case 'TONGUE_WOLF_RESULT':
-  case 'REPORTER_SUCCESS':
-  case 'POISON_CAT_RESULT':
-  case 'PHARMACIST_RESULT':
-  case 'MANIA_RESULT':
-  case 'CHILD_FOX_RESULT':
-    list($first, $second, $third) = explode("\t", $str);
-    DecodeSpace(&$first);
-    DecodeSpace(&$second);
-    DecodeSpace(&$third);
-    return array($first, $second, $third);
-
-  case 'VOTE':
-    list($self, $target, $voted, $vote, $times) = explode("\t", $str);
-    DecodeSpace(&$self);
-    DecodeSpace(&$target);
-
-    //%d で取得してるんだから (int)要らないような気がするんだけど……しかもなぜ一つだけ？
-    return array($self, $target, $voted, $vote, (int)$times);
-
-  default:
-    list($header, $footer) = explode("\t", $str, 2);
-    DecodeSpace(&$header);
-    DecodeSpace(&$footer);
-
-    return array($header, $footer);
-  }
 }

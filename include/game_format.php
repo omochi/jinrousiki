@@ -80,7 +80,7 @@ WORDS;
 
     //表示情報を抽出
     $handle_name = $user->handle_name;
-    if($RQ_ARGS->add_role) $handle_name .= $user->MakeShortRoleName(); //役職表示モード対応
+    if($RQ_ARGS->add_role) $handle_name .= $user->GenarateShortRoleName(); //役職表示モード対応
 
     $user_info = '<font style="color:'.$user->color.'">◆</font>'.$handle_name;
     if($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')){
