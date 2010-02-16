@@ -4,7 +4,6 @@ $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 
 //-- データ収集 --//
-EncodePostData(); //ポストされた文字列を全てエンコードする
 $INIT_CONF->LoadRequest('RequestGamePlay'); //引数を取得
 if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 

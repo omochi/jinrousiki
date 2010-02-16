@@ -189,7 +189,7 @@ $RQ_ARGS->TestItems->vote_day = array(
   array('uname' => 'red',        'target_uname' => 'purple',     'vote_number' => 1),
   array('uname' => 'light_blue', 'target_uname' => 'purple',     'vote_number' => 1),
   array('uname' => 'blue',       'target_uname' => 'purple',     'vote_number' => 1),
-  array('uname' => 'green',      'target_uname' => 'light_blue', 'vote_number' => 1),
+  #array('uname' => 'green',      'target_uname' => 'light_blue', 'vote_number' => 1),
   array('uname' => 'purple',     'target_uname' => 'blue',       'vote_number' => 1),
   array('uname' => 'cherry',     'target_uname' => 'blue',       'vote_number' => 1)
 );
@@ -234,7 +234,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 2;
+$ROOM->date = 3;
 #$ROOM->day_night = 'beforegame';
 #$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';
@@ -244,7 +244,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-$SELF = $USERS->ByID(2);
+#$SELF = $USERS->ByID(2);
 
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ

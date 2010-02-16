@@ -3,34 +3,9 @@ require_once('include/init.php');
 $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE', 'GAME_OPT_CAPT');
 
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
-
 MaintenanceRoom();
 EncodePostData();
-
-if($_POST['command'] == 'CREATE_ROOM'){
-  //リファラチェック
-  $white_list = array('127.', '192.168.');
-  foreach($white_list as $host){ //ホワイトリストチェック
-    $trusted |= (strpos($_SERVER['REMOTE_ADDR'], $host) === 0);
-  }
-  if(! $trusted &&
-     strncmp(@$_SERVER['HTTP_REFERER'], $SERVER_CONF->site_root,
-	     strlen($SERVER_CONF->site_root)) != 0){
-    OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
-  }
-
-  // 指定された人数の配役があるかチェック
-  if(in_array($_POST['max_user'], $ROOM_CONF->max_user_list)){
-    CreateRoom($_POST['room_name'], $_POST['room_comment'], $_POST['max_user']);
-  }
-  else{
-    OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
-  }
-}
-else{
-  OutputRoomList();
-}
-
+$_POST['command'] == 'CREATE_ROOM' ? CreateRoom() : OutputRoomList();
 $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
@@ -56,8 +31,26 @@ EOF;
 }
 
 //村(room)の作成
-function CreateRoom($room_name, $room_comment, $max_user){
+function CreateRoom(){
   global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $MESSAGE;
+
+  if(CheckReferer('', array('127.', '192.168.'))){ //リファラチェック
+    OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
+  }
+
+  //入力データのエラーチェック
+  $room_name    = $_POST['room_name'];
+  $room_comment = $_POST['room_comment'];
+  if($room_name == '' || $room_comment == ''){
+    OutputRoomAction('empty');
+    return false;
+  }
+
+  //指定された人数の配役があるかチェック
+  $max_user = (int)$_POST['max_user'];
+  if(! in_array($max_user, $ROOM_CONF->max_user_list)){
+    OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
+  }
 
   $query = "FROM room WHERE status <> 'finished'"; //チェック用の共通クエリ
   $ip_address = $_SERVER['REMOTE_ADDR']; //村立てを行ったユーザの IP を取得
@@ -83,12 +76,6 @@ function CreateRoom($room_name, $room_comment, $max_user){
       OutputRoomAction('establish_wait');
       return false;
     }
-  }
-
-  //入力データのエラーチェック
-  if($room_name == '' || $room_comment == '' || ! ctype_digit($max_user)){
-    OutputRoomAction('empty');
-    return false;
   }
 
   //ゲームオプションをセット
@@ -280,8 +267,7 @@ function OutputRoomAction($type, $room_name = ''){
     echo 'エラーが発生しました。<br>';
     echo '以下の項目を再度ご確認ください。<br>';
     echo '<ul><li>村の名前が記入されていない。</li>';
-    echo '<li>村の説明が記入されていない。</li>';
-    echo '<li>最大人数が数字ではない、または異常な文字列。</li></ul>';
+    echo '<li>村の説明が記入されていない。</li></ul>';
     break;
 
   case 'time':

@@ -338,7 +338,7 @@ function OutputDateTalkLog($set_date, $set_location){
 
   //出力
   $builder =& new DocumentBuilder();
-  $builder->BeginTalk("old-log-talk {$table_class}");
+  $builder->BeginTalk("talk {$table_class}");
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
 
   while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
@@ -346,13 +346,13 @@ function OutputDateTalkLog($set_date, $set_location){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $ROOM->day_night = 'day';
-      $builder->BeginTalk('old-log-talk day');
+      $builder->BeginTalk('talk day');
     }
     elseif(strpos($talk->location, 'night') !== false && ! $ROOM->IsNight()){
       $builder->EndTalk();
       OutputSceneChange($set_date);
       $ROOM->day_night = 'night';
-      $builder->BeginTalk('old-log-talk night');
+      $builder->BeginTalk('talk night');
     }
     OutputTalk($talk, &$builder); //会話出力
   }

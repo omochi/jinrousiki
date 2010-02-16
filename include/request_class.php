@@ -1,40 +1,26 @@
 <?php
 //-- 引数解析の基底クラス --//
 class RequestBase{
-  function GetItems($processor){
-    //$this->argc = func_num_args();
-    foreach(array_slice(func_get_args(), 1) as $spec){
-      $src = strtok($spec, '.');
-      $item = strtok('.');
-      switch(strtolower($src)){
-      case 'get':
-	$value = $_GET[$item];
-	if(array_key_exists($item, $_GET) || $this->TryGetDefault($item, $value)){
-	  $this->$item = empty($processor) ? $value : $processor($value);
-	}
-	break;
-
-      case 'post':
-	$value = $_POST[$item];
-	if(array_key_exists($item, $_POST) || $this->TryGetDefault($item, $value)){
-	  $this->$item = empty($processor) ? $value : $processor($value);
-	}
-	break;
-
-      case 'file':
-	$value = $_FILES['file'][$item];
-	if(array_key_exists($item, $_FILES['file']) || $this->TryGetDefault($item, $value)){
-	  $this->$item = empty($processor) ? $value : $processor($value);
-	}
-	break;
-
-      default:
-	$value = $_REQUEST[$spec];
-	if(array_key_exists($spec, $_REQUEST) || $this->TryGetDefault($spec, $value)){
-	  $this->$item = empty($processor) ? $value : $processor($value);
-	}
-	break;
+  function GetItems($items){
+    $spec_list = func_get_args();
+    $processor = array_shift($spec_list);
+    $src_list  = array('get' => $_GET, 'post' => $_POST, 'file' => $_FILES['file']);
+    foreach($spec_list as $spec){
+      list($src, $item) = explode('.', $spec);
+      if(array_key_exists($src, $src_list))
+	$value_list = $src_list[$src];
+      else{
+	$value_list = $_REQUEST;
+	$item = $spec;
       }
+
+      if(is_array($value_list) && array_key_exists($item, $value_list))
+	$value = $value_list[$item];
+      elseif(! $this->TryGetDefault($item, $value)){
+	$this->$item = NULL;
+	continue;
+      }
+      $this->$item = empty($processor) ? $value : $processor($value);
     }
   }
 
@@ -94,6 +80,7 @@ class RequestBaseGamePlay extends RequestBaseGame{
 class RequestLogin extends RequestBase{
   function RequestLogin(){ $this->__construct(); }
   function __construct(){
+    EncodePostData();
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('EscapeStrings', 'post.uname', 'post.password');
     $this->GetItems(NULL, 'post.login_type');
@@ -104,6 +91,7 @@ class RequestLogin extends RequestBase{
 class RequestUserManager extends RequestBase{
   function RequestUserManager(){ $this->__construct(); }
   function __construct(){
+    EncodePostData();
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
@@ -122,6 +110,7 @@ class RequestUserManager extends RequestBase{
 class RequestGamePlay extends RequestBaseGamePlay{
   function RequestGamePlay(){ $this->__construct(); }
   function __construct(){
+    EncodePostData();
     parent::__construct();
     $this->GetItems("$this->CheckOn", 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
     $this->GetItems('EscapeStrings', 'post.font_type');
@@ -171,10 +160,11 @@ class RequestGameVote extends RequestBaseGamePlay{
   */
   function RequestGameVote(){ $this->__construct(); }
   function __construct(){
+    if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
     parent::__construct();
     $this->GetItems('intval', 'post.vote_times');
     $this->GetItems("$this->CheckOn", 'post.vote');
-    $this->GetItems(NULL, 'post.target_no', 'post.situation', 'post.target_handle_name');
+    $this->GetItems(NULL, 'post.target_no', 'post.situation');
     $this->GetItems('EscapeStrings', 'post.target_handle_name');
     $this->AttachTestParameters(); //テスト用引数のロード
   }
@@ -201,9 +191,10 @@ class RequestOldLog extends RequestBase{
 class RequestIconUpload extends RequestBase{
   function RequestIconUpload(){ $this->__construct(); }
   function __construct(){
+    EncodePostData();
     $this->GetItems('EscapeStrings', 'post.name', 'post.color');
-    $this->GetItems('intval', 'file.size');
-    $this->GetItems(NULL, 'file.type', 'file.tmp_name');
+    $this->GetItems('intval', 'post.icon_no', 'file.size');
+    $this->GetItems(NULL, 'post.command', 'file.type', 'file.tmp_name');
   }
 }
 
@@ -211,6 +202,7 @@ class RequestIconUpload extends RequestBase{
 class RequestSrcUpload extends RequestBase{
   function RequestSrcUpload(){ $this->__construct(); }
   function __construct(){
+    EncodePostData();
     $this->GetItems('EscapeStrings', 'post.name', 'post.caption', 'post.user', 'post.password');
   }
 }

@@ -43,10 +43,23 @@ function GetRoleList($user_count, $option_role){
   }
   elseif(strpos($option_role, 'duel') !== false){ //·èÆ®Â¼
     $role_list = array(); //ÇÛÎó¤ò¥ê¥»¥Ã¥È
+    //¿ÍÏµ1.5:°Å»¦3:µá°¦3.5:½÷¿À2 (Öà½÷1¿Í:Ì´µá°¦1¿Í)
+    // -> wolf:2 / assassin:6 / self_cupid:7 / mind_cupid:4 / Total:19
+    $total_rate = 2 + 3.5 + 3 + 1.5;
+    $rest_user_count = $user_count - 2;
+    $role_list['medium'] = 1;
+    $role_list['dummy_chiroptera'] = 1;
+    $role_list['wolf'] = round($rest_user_count / $total_rate * 1.5);
+    $role_list['assassin'] = round($rest_user_count / $total_rate * 3);
+    $role_list['mind_cupid'] = round($rest_user_count / $total_rate * 2);
+    $role_list['self_cupid'] = $user_count - array_sum($role_list);
+
     //Ïµ1.5:°Å»¦2:µá°¦6.5 -> wolf:3 / assassin:4 / self_cupid:13 / Total:20
+    /*
     $role_list['wolf'] = round($user_count / 20 * 3);
     $role_list['assassin'] = round($user_count / 20 * 4);
     $role_list['self_cupid'] = $user_count - ($role_list['wolf'] + $role_list['assassin']);
+    */
     /*
     $role_list['wolf'] = round($user_count / 5);
     $role_list['trap_mad'] = round(($user_count - $role_list['wolf']) / 3);
@@ -1021,7 +1034,7 @@ function AggregateVoteDay(){
     $action = 'NECROMANCER_RESULT';
 
     //ÎîÇ½È½Äê
-    if($vote_target->IsRole('boss_wolf', 'possessed_wolf', 'child_fox')){
+    if($vote_target->IsRole('boss_wolf', 'cursed_wolf', 'possessed_wolf', 'child_fox')){
       $necromancer_result = $vote_target->main_role;
     }
     elseif($vote_target->IsRole('cursed_fox', 'white_fox', 'black_fox')){

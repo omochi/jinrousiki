@@ -2,9 +2,7 @@
 require_once('include/init.php');
 $INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
-EncodePostData();//ポストされた文字列をエンコードする
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
-
 $DB_CONF->Connect(); //DB 接続
 $RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage($RQ_ARGS->room_no);
 $DB_CONF->Disconnect(); //DB 接続解除

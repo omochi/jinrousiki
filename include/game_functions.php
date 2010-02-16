@@ -68,11 +68,25 @@ function OutputGamePageHeader(){
 function OutputRealTimer($start_time, $end_time){
   global $ROOM;
 
+  //JavaScript の Date() の為に Month をデクリメント
+  $start_time_list = explode(',', $start_time);
+  $start_time_list[1]--;
+  $start_date = 'new Date(' . implode(',', $start_time_list) . ')';
+
+  $end_time_list = explode(',', $end_time);
+  $end_time_list[1]--;
+  $end_date = 'new Date(' . implode(',', $end_time_list) . ')';
+
+  $server_time_list = explode(',', TZDate('Y, m, j, G, i, s', $ROOM->system_time));
+  $server_time_list[1]--;
+  $server_date = 'new Date(' . implode(',', $server_time_list) . ')';
+
   echo '<script type="text/javascript" src="javascript/output_realtime.js"></script>'."\n";
   echo '<script language="JavaScript"><!--'."\n";
-  echo 'var realtime_message = "　' . ($ROOM->IsDay() ? '日没' : '夜明け') . 'まで ";'."\n";
-  echo 'var start_time = "' . $start_time . '";'."\n";
-  echo 'var end_time = "'   . $end_time   . '";'."\n";
+  echo 'var sentence = "　' . ($ROOM->IsDay() ? '日没' : '夜明け') . 'まで ";'."\n";
+  echo "var end_date = {$end_date};\n";
+  echo "var diff_seconds = Math.floor((end_date - {$start_date}) / 1000);\n";
+  echo "var time_lag = Math.floor((new Date() - {$server_date}) / 1000);\n";
   echo '// --></script>'."\n";
 }
 
@@ -372,7 +386,7 @@ FROM talk
 WHERE room_no = {$ROOM->id} AND location LIKE '{$ROOM->day_night}%' AND date = {$ROOM->date}
 ORDER BY time DESC
 EOF;
-  $sql = mysql_query($query);
+  $sql = SendQuery($query);
 
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk');
@@ -1030,41 +1044,31 @@ function InsertMediumMessage(){
 function GetRealPassTime(&$left_time, $flag = false){
   global $ROOM;
 
-  //実時間の制限時間を取得
-  $day_time   = $ROOM->real_time->day   * 60; //秒になおす
-  $night_time = $ROOM->real_time->night * 60; //秒になおす
-
   //最も小さな時間(場面の最初の時間)を取得
   $query = "SELECT MIN(time) FROM talk WHERE room_no = {$ROOM->id} " .
     "AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'";
-  $sql = SendQuery($query);
-  $start_time = (int)mysql_result($sql, 0, 0);
+  $start_time = FetchResult($query);
+  if($start_time === false) $start_time = $ROOM->system_time;
 
-  if($start_time != NULL){
-    $pass_time = $ROOM->system_time - $start_time; //経過した時間
-  }
-  else{
-    $pass_time = 0;
-    $start_time = $ROOM->system_time;
-  }
-  $base_time = ($ROOM->IsDay() ? $day_time : $night_time);
+  $pass_time = $ROOM->system_time - $start_time; //経過した時間
+  $base_time = $ROOM->real_time->{$ROOM->day_night} * 60; //設定された制限時間
   $left_time = $base_time - $pass_time;
   if($left_time < 0) $left_time = 0; //マイナスになったらゼロにする
   if(! $flag) return;
 
   $format = 'Y, m, j, G, i, s';
-  $start_date_str = TZDate($format, $start_time);
-  $end_date_str   = TZDate($format, $start_time + $base_time);
-  return array($start_date_str, $end_date_str);
+  $start_date = TZDate($format, $start_time);
+  $end_date   = TZDate($format, $start_time + $base_time);
+  return array($start_date, $end_date);
 }
 
 //会話で時間経過制の経過時間
 function GetTalkPassTime(&$left_time, $flag = false){
   global $TIME_CONF, $ROOM;
 
-  $sql = mysql_query("SELECT SUM(spend_time) FROM talk WHERE room_no = {$ROOM->id}
-			AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'");
-  $spend_time = (int)mysql_result($sql, 0, 0);
+  $query = "SELECT SUM(spend_time) FROM talk WHERE room_no = {$ROOM->id} " .
+    "AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'";
+  $spend_time = (int)FetchResult($query);
 
   if($ROOM->IsDay()){ //昼は12時間
     $base_time = $TIME_CONF->day;
@@ -1075,12 +1079,10 @@ function GetTalkPassTime(&$left_time, $flag = false){
     $full_time = 6;
   }
   $left_time = $base_time - $spend_time;
-  if($left_time < 0){ //マイナスになったらゼロにする
-    $left_time = 0;
-  }
+  if($left_time < 0) $left_time = 0; //マイナスになったらゼロにする
 
   //仮想時間の計算
-  $base_left_time = ($flag ? $TIME_CONF->silence_pass : $left_time);
+  $base_left_time = $flag ? $TIME_CONF->silence_pass : $left_time;
   return ConvertTime($full_time * $base_left_time * 60 * 60 / $base_time);
 }
 
@@ -1127,7 +1129,7 @@ function DeleteVote(){
       $query .= " AND situation <> 'VOTE_KILL'";
     }
   }
-  mysql_query($query);
+  SendQuery($query);
   mysql_query("OPTIMIZE TABLE vote");
 }
 

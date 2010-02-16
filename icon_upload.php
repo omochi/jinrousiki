@@ -1,68 +1,70 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('SESSION', 'USER_ICON');
+$INIT_CONF->LoadClass('SESSION', 'ICON_CONF', 'USER_ICON');
 
 if($USER_ICON->disable_upload){
   OutputActionResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
 }
-
-switch($_POST['command']){
-case 'upload':
-  //リファラチェック
-  if(CheckReferer('icon_upload.php')){
-    OutputActionResult('ユーザアイコンアップロード', '無効なアクセスです。');
-  }
-  EncodePostData(); //ポストされた文字列を全てエンコードする
-  $INIT_CONF->LoadClass('ICON_CONF');
-  $INIT_CONF->LoadRequest('RequestIconUpload');
-
-  CheckIconUpload();
-  break;
-
-case 'success': //セッションID情報をDBから削除
-  //リファラチェック
-  if(CheckReferer('icon_upload.php')){
-    OutputActionResult('ユーザアイコンアップロード', '無効なアクセスです。');
-  }
-  $icon_no = (int)$_POST['icon_no'];
-  $DB_CONF->Connect(); //DB 接続
-
-  //セッションIDをクリア
-  mysql_query("UPDATE user_icon SET session_id = NULL WHERE icon_no = $icon_no");
-  mysql_query('COMMIT');
-
-  OutputActionResult('アイコン登録完了',
-		     '登録完了：アイコン一覧のページに飛びます。<br>'."\n" .
-		     '切り替わらないなら <a href="icon_view.php">ここ</a> 。',
-		     'icon_view.php');
-  break;
-
-case 'cancel':
-  //リファラチェック
-  if(CheckReferer('icon_upload.php')){
-    OutputActionResult('ユーザアイコンアップロード', '無効なアクセスです。');
-  }
-  $INIT_CONF->LoadClass('ICON_CONF');
-  DeleteUploadIcon();
-  break;
-
-default:
-  OutputIconUploadPage();
-  break;
-}
+$INIT_CONF->LoadRequest('RequestIconUpload'); //引数を取得
+$RQ_ARGS->command != '' ? UploadIcon() : OutputUploadIconPage();
 
 //-- 関数 --//
 //投稿データチェック
-function CheckIconUpload(){
+function UploadIcon(){
   global $DB_CONF, $ICON_CONF, $USER_ICON, $RQ_ARGS, $SESSION;
 
-  // エラーページ用タイトル
-  $title = 'アイコン登録エラー';
+  if(CheckReferer('icon_upload.php')){ //リファラチェック
+    OutputActionResult('ユーザアイコンアップロード', '無効なアクセスです');
+  }
+  $title = 'アイコン登録エラー'; // エラーページ用タイトル
+  $query_no = "WHERE icon_no = {$RQ_ARGS->icon_no}";
+
+  switch($RQ_ARGS->command){
+  case 'upload':
+    break;
+
+  case 'success': //セッション ID 情報を DB から削除
+    $DB_CONF->Connect(); //DB 接続
+
+    //セッション ID をクリア
+    mysql_query("UPDATE user_icon SET session_id = NULL $query_no");
+    mysql_query('COMMIT');
+
+    OutputActionResult('アイコン登録完了',
+		       '登録完了：アイコン一覧のページに飛びます。<br>'."\n" .
+		       '切り替わらないなら <a href="icon_view.php">ここ</a> 。',
+		       'icon_view.php');
+    break;
+
+  case 'cancel':
+    //DB からアイコンのファイル名と登録時のセッション ID を取得
+    $DB_CONF->Connect(); //DB 接続
+    extract(FetchNameArray("SELECT icon_filename, session_id FROM user_icon $query_no"));
+
+    //セッション ID 確認
+    if($session_id != $SESSION->Get()){
+      OutputActionResult('アイコン削除失敗', '削除失敗：アップロードセッションが一致しません');
+    }
+    unlink($ICON_CONF->path . '/' . $icon_filename);
+    mysql_query("DELETE FROM user_icon $query_no");
+    mysql_query("OPTIMIZE TABLE user_icon");
+    mysql_query('COMMIT'); //一応コミット
+
+    //DB 接続解除は OutputActionResult() 経由
+    $sentence = '削除完了：登録ページに飛びます。<br>'."\n" .
+      '切り替わらないなら <a href="icon_upload.php">ここ</a> 。';
+    OutputActionResult('アイコン削除完了', $sentence, 'icon_upload.php');
+    break;
+
+  default:
+    OutputActionResult($title, '無効なコマンドです');
+    break;
+  }
 
   //アップロードされたファイルのエラーチェック
   if($_FILES['upfile']['error'][$i] != 0){
     $sentence = "ファイルのアップロードエラーが発生しました。<br>\n再度実行してください。";
-    OutputActionResult($title, $sentence, '', true);
+    OutputActionResult($title, $sentence);
   }
 
   extract($RQ_ARGS->ToArray()); //引数を展開
@@ -109,6 +111,7 @@ function CheckIconUpload(){
       '送信された色指定 → <span class="color">' . $color . '</span>';
     OutputActionResult($title, $sentence);
   }
+  $color = strtoupper($color);
 
   //アイコンの高さと幅をチェック
   list($width, $height) = getimagesize($tmp_name);
@@ -177,33 +180,8 @@ function CheckIconUpload(){
 EOF;
 }
 
-function DeleteUploadIcon(){
-  global $DB_CONF, $ICON_CONF, $SESSION;
-
-  //DBからアイコンのファイル名と登録時のセッションIDを取得
-  $icon_no = (int)$_POST['icon_no'];
-  $query = "SELECT icon_filename AS file, session_id FROM user_icon WHERE icon_no = $icon_no";
-
-  $DB_CONF->Connect(); //DB 接続
-  extract(FetchNameArray($query));
-
-  //セッション ID 確認
-  if($session_id != $SESSION->Get()){
-    OutputActionResult('アイコン削除失敗', '削除失敗：アップロードセッションが一致しません');
-  }
-  unlink($ICON_CONF->path . '/' . $file);
-  mysql_query("DELETE FROM user_icon WHERE icon_no = $icon_no");
-  mysql_query("OPTIMIZE TABLE user_icon");
-  mysql_query('COMMIT'); //一応コミット
-
-  //DB 接続解除は OutputActionResult() 経由
-  $sentence = '削除完了：登録ページに飛びます。<br>'."\n" .
-    '切り替わらないなら <a href="icon_upload.php">ここ</a> 。';
-  OutputActionResult('アイコン削除完了', $sentence, 'icon_upload.php');
-}
-
 //アップロードフォーム出力
-function OutputIconUploadPage(){
+function OutputUploadIconPage(){
   global $USER_ICON;
 
   OutputHTMLHeader('ユーザアイコンアップロード', 'icon_upload');
@@ -275,7 +253,7 @@ EOF;
 </tr>
 </table>
 
-</td></tr></form></fieldset>
+</td></tr></table></form></fieldset>
 </td></tr></table>
 </body></html>
 

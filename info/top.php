@@ -5,24 +5,10 @@
    </font>
 </p>
 
-<p>Ver. 1.4.0 β2 アップロード (2010/02/08 (Mon) 03:41:23) → <a href="src/">ダウンロード</a><br>
-・預言者、天人、イタコ、仙狸、仙狐の実装<br>
-・猫又、出題者の仕様変更<br>
-・再入村リンク表示機能の実装 (設定された時間内、過去ログページに出現します)<br>
-<br>
-・バグ Fix<br>
-◆include/game_vote_functions.php % 1188行目<br>
-× elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){<br>
-○ elseif(! $ROOM->IsOpenCast() && $user->IsRole('evoke_scanner')){<br>
-<br>
-◆game_play.php % 449 行目<br>
-× array_push($actor_list, 'poison_cat');<br>
-○ array_push($actor_list, '%cat', 'revive_fox');<br>
-<br>
-</p>
-
-<p>Ver. 1.4.0 β1 アップロード (2010/02/02 (Tue) 04:25:52) → <a href="src/">ダウンロード</a><br>
-・Ver. 1.4.0 α24 のバグ Fix、設定ファイルの再配置など<br>
+<p>Ver. 1.4.0 β3 アップロード (2010/02/16 (Tue) 03:53:55) → <a href="src/">ダウンロード</a><br>
+・自動霊界オフオプションの実装<br>
+・呪狼の仕様変更<br>
+・色々バグ修正<br>
 </p>
 
 <ol>

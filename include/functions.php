@@ -1,9 +1,14 @@
 <?php
 //-- セキュリティ関連 --//
 //リファラチェック
-function CheckReferer($page){
+function CheckReferer($page, $white_list = NULL){
   global $SERVER_CONF;
 
+  if(is_array($white_list)){ //ホワイトリストチェック
+    foreach($white_list as $host){
+      if(strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
+    }
+  }
   $url = $SERVER_CONF->site_root . $page;
   return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
 }
@@ -150,9 +155,9 @@ function EncodePostData(){
   global $SERVER_CONF;
 
   foreach($_POST as $key => $value){
-    $encode_type = mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-    if($encode_type != '' && $encode_type != $SERVER_CONF->encode){
-      $_POST[$key] = mb_convert_encoding($value, $SERVER_CONF->encode, $encode_type);
+    $encode = mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+    if($encode != '' && $encode != $SERVER_CONF->encode){
+      $_POST[$key] = mb_convert_encoding($value, $SERVER_CONF->encode, $encode);
     }
   }
 }

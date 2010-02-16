@@ -4,9 +4,7 @@ $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('SESSION', 'ICON_CONF');
 
 //-- データ収集 --//
-//引数を取得
-if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
-$INIT_CONF->LoadRequest('RequestGameVote');
+$INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得
 
 //PHP の引数を作成
 $php_argv = 'room_no=' . $RQ_ARGS->room_no;

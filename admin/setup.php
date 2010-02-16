@@ -10,7 +10,7 @@ if(! $DB_CONF->Connect(true, false)){ //DB 接続
   echo "データベース {$DB_CONF->name} を作成しました。<br>";
   $DB_CONF->Connect(true); //改めて DB 接続
 }
-echo '</head><body>'."\n";
+echo "</head><body>\n";
 
 CheckTable(); //テーブル作成
 OutputHTMLFooter(); //HTMLフッタ
@@ -184,7 +184,8 @@ function CheckTable(){
   $title = $header . '(user_icon)';
   if(! in_array('user_icon', $table)){
     mysql_query("CREATE TABLE user_icon(icon_no INT PRIMARY KEY, icon_name TEXT, icon_filename TEXT,
-		icon_width INT, icon_height INT, color TEXT, session_id TEXT)");
+		icon_width INT, icon_height INT, color TEXT, session_id TEXT, appearance TEXT,
+		category TEXT, author TEXT, regist_date DATETIME)");
     echo $title . $str;
 
     //身代わり君のアイコンを登録(アイコンNo：0)
