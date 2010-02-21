@@ -1,5 +1,6 @@
 <?php
 require_once('include/init.php');
+$INIT_CONF->LoadFile('room_class');
 $INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
@@ -170,33 +171,29 @@ function ConvertTrip($str){
 function OutputEntryUserPage($room_no){
   global $SERVER_CONF, $GAME_CONF, $ICON_CONF;
 
-  $query = "SELECT room_name, room_comment, status, game_option, option_role " .
-    "FROM room WHERE room_no = $room_no";
-  $array = FetchAssoc($query);
-
-  if(count($array) < 1){
-    OutputActionResult('村人登録 [村番号エラー]', "No.$room_no 番地の村は存在しません。");
+  $ROOM = RoomDataSet::LoadEntryUser($room_no);
+  if(is_null($ROOM->id)){
+    OutputActionResult('村人登録 [村番号エラー]', "{$room_no} 番地の村は存在しません。");
   }
-  extract(array_shift($array));
 
-  if($status != 'waiting'){
+  if($ROOM->status != 'waiting'){
     OutputActionResult('村人登録 [入村不可]', '村が既に満員か、ゲームが開始されています。');
   }
-  $game_option_list = explode(' ', $game_option);
+  $ROOM->ParseOption(true);
   $trip_str = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
   echo <<<HEADER
 </head>
 <body>
-<a href="index.php">←戻る</a><br>
-<form method="POST" action="user_manager.php?room_no=$room_no">
+<a href="./">←戻る</a><br>
+<form method="POST" action="user_manager.php?room_no={$room_no}">
 <input type="hidden" name="entry" value="on">
 <div align="center">
 <table class="main">
 <tr><td><img src="img/entry_user/title.gif"></td></tr>
-<tr><td class="title">$room_name 村<img src="img/entry_user/top.gif"></td></tr>
-<tr><td class="number">〜{$room_comment}〜 [{$room_no} 番地]</td></tr>
+<tr><td class="title">{$ROOM->name} 村<img src="img/entry_user/top.gif"></td></tr>
+<tr><td class="number">〜{$ROOM->comment}〜 [{$ROOM->id} 番地]</td></tr>
 <tr><td>
 <table class="input">
 <tr>
@@ -232,7 +229,7 @@ function OutputEntryUserPage($room_no){
 
 HEADER;
 
-  if(in_array('wish_role', $game_option_list)){
+  if($ROOM->IsOption('wish_role')){
     echo <<<IMAGE
 <tr>
 <td class="role"><img src="img/entry_user/role.gif"></td>
@@ -240,21 +237,24 @@ HEADER;
 
 IMAGE;
 
-    $option_role_list = explode(' ', $option_role);
     $wish_role_list = array('none');
-    if(in_array('duel', $option_role_list)){
+    if($ROOM->IsOption('duel')){
       array_push($wish_role_list, 'wolf', 'trap_mad', 'assassin');
     }
     else{
-      if(! in_array('full_mania', $option_role_list)) $wish_role_list[] = 'human';
-      if(in_array('chaosfull', $game_option_list)){
-	array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'guard', 'common',
+      if($ROOM->IsOption('chaos')){
+	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'guard', 'common',
+		   'poison', 'pharmacist', 'wolf', 'mad', 'fox', 'cupid', 'mania');
+      }
+      elseif($ROOM->IsOption('chaosfull')){
+	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
 		   'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
 		   'wolf', 'mad', 'fox', 'cupid', 'quiz', 'chiroptera', 'mania');
       }
       else{
+	if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';
 	$wish_role_list[] = 'wolf';
-	if(in_array('quiz', $game_option_list)){
+	if($ROOM->IsQuiz()){
 	  array_push($wish_role_list, 'mad', 'common', 'fox');
 	}
 	else{
@@ -262,22 +262,25 @@ IMAGE;
 	}
       }
     }
-    if(in_array('poison', $option_role_list)) $wish_role_list[] = 'poison';
-    if(in_array('cupid', $option_role_list)) $wish_role_list[] = 'cupid';
-    if(in_array('boss_wolf', $option_role_list)) $wish_role_list[] = 'boss_wolf';
-    if(in_array('poison_wolf', $option_role_list)){
+    if($ROOM->IsOption('poison')) $wish_role_list[] = 'poison';
+    if($ROOM->IsOption('assassin')) $wish_role_list[] = 'assassin';
+    if($ROOM->IsOption('boss_wolf')) $wish_role_list[] = 'boss_wolf';
+    if($ROOM->IsOption('poison_wolf')){
       array_push($wish_role_list, 'poison_wolf', 'pharmacist');
     }
-    if(in_array('mania', $option_role_list)) $wish_role_list[] = 'mania';
-    if(in_array('medium', $option_role_list)) array_push($wish_role_list, 'medium', 'fanatic_mad');
+    if($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
+    if($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
+    if($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
+    if($ROOM->IsOptionGroup('mania')) $wish_role_list[] = 'mania';
 
     $count = 0;
-    foreach($wish_role_list as $this_role){
+    foreach($wish_role_list as $role){
+      if($count > 0 && $count % 4 == 0) echo '<br>'; //4個ごとに改行
+      $count++;
       echo <<<TAG
-<label for="{$this_role}"><img src="img/entry_user/role_{$this_role}.gif"><input type="radio" id="{$this_role}" name="role" value="{$this_role}"></label>
+<label for="{$role}"><img src="img/entry_user/role_{$role}.gif"><input type="radio" id="{$role}" name="role" value="{$role}"></label>
 
 TAG;
-      if(++$count % 4 == 0) echo '<br>'; //4個ごとに改行
     }
     echo '</td>';
   }

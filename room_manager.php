@@ -99,13 +99,13 @@ function CreateRoom(){
       OutputRoomAction('empty');
       return false;
     }
-    $game_option_list[]    = 'dummy_boy ';
+    $game_option_list[]    = 'dummy_boy';
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $quiz_password;
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
-      $game_option_list[]    = 'dummy_boy ';
+      $game_option_list[]    = 'dummy_boy';
       $dummy_boy_handle_name = '身代わり君';
       $dummy_boy_password    = $SERVER_CONF->system_password;
     }

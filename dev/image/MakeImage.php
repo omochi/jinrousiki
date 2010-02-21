@@ -579,45 +579,71 @@ class ResultList{
 }
 
 class WishRoleList {
-  var $role_none = array('message' => "無し→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_human = array('message' => "村人→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_mage = array('message' => "占い師→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_necromancer = array('message' => "霊能者→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_medium = array('message' => "巫女→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_guard = array('message' => "狩人→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_common = array('message' => "共有者→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_poison = array('message' => "埋毒者→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_pharmacist = array('message' => "薬師→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_assassin = array('message' => "暗殺者→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_wolf = array('message' => "人狼→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_boss_wolf = array('message' => "白狼→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_poison_wolf = array('message' => "毒狼→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_mad = array('message' => "狂人→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_fanatic_mad = array('message' => "狂信者→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_trap_mad = array('message' => "罠師→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_fox = array('message' => "妖狐→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_cupid = array('message' => "キューピッド→", 'R' => 0, 'G' => 0, 'B' => 0);
-
-  var $role_mania = array('message' => "神話マニア→", 'R' => 0, 'G' => 0, 'B' => 0);
-
-  var $role_chiroptera = array('message' => "蝙蝠→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_quiz = array('message' => "出題者→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_priest = array('message' => "司祭→", 'R' => 0, 'G' => 0, 'B' => 0);
-  var $role_mind_scanner = array('message' => "さとり→", 'R' => 0, 'G' => 0, 'B' => 0);
+  var $role_none = array('message' => "無し→",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_human = array('message' => "村人→",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mage = array('message' => "占い師→",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_necromancer = array('message' => "霊能者→",
+				'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_medium = array('message' => "巫女→",
+			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_guard = array('message' => "狩人→",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_common = array('message' => "共有者→",
+			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_poison = array('message' => "埋毒者→",
+			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_pharmacist = array('message' => "薬師→",
+			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_assassin = array('message' => "暗殺者→",
+			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_wolf = array('message' => "人狼→",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_boss_wolf = array('message' => "白狼→",
+			      'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_poison_wolf = array('message' => "毒狼→",
+				'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_possessed_wolf = array('message' => "憑狼→",
+				   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mad = array('message' => "狂人→",
+			'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_fanatic_mad = array('message' => "狂信者→",
+				'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_trap_mad = array('message' => "罠師→",
+			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_fox = array('message' => "妖狐→",
+			'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_cupid = array('message' => "キューピッド→",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mind_cupid = array('message' => "女神→",
+			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mania = array('message' => "神話マニア→",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_chiroptera = array('message' => "蝙蝠→",
+			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_quiz = array('message' => "出題者→",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_priest = array('message' => "司祭→",
+			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mind_scanner = array('message' => "さとり→",
+				 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_poison_cat = array('message' => "猫又→",
-			       'delimiter' => array('|' => array('R' => 4, 'G' => 0, 'B' => 0)));
-  var $role_jealousy = array('message' => "橋姫→", 'R' => 0, 'G' => 0, 'B' => 0);
+			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_jealousy = array('message' => "橋姫→",
+			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
 }
 
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-$list =& new MainRoleList();
+#$list =& new MainRoleList();
 #$list =& new SubRoleList();
 #$list =& new ResultList();
 
-#$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
-#$list =& new WishRoleList();
+$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
+$list =& new WishRoleList();
 
 //まとめて画像ファイル生成
 /*
@@ -630,7 +656,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->yama_necromancer);
+$image = MakeImage($gen, $list->role_mind_cupid);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

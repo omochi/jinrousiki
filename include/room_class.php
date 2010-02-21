@@ -89,10 +89,11 @@ class Room{
     return count($this->vote);
   }
 
-  function ParseOption(){
+  function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
-    $this->option_role = new OptionManager($this->role_option);
-    $this->option_list = array_keys($this->game_option->options);
+    $this->option_role = new OptionManager($this->option_role);
+    $this->option_list = array_merge(array_keys($this->game_option->options),
+				     $join ? array_keys($this->option_role->options) : array());
     if($this->IsRealTime()){
       $time_list = $this->game_option->options['real_time'];
       $this->real_time->day   = $time_list[0];
@@ -176,7 +177,14 @@ SELECT room_no AS id, room_name AS name, room_comment AS comment, date, game_opt
    AND user_entry.user_no > 0) AS user_count
 FROM room WHERE status = 'finished' AND room_no = {$room_no}
 EOF;
+    return FetchObject($query, 'Room', true);
+  }
 
+  function LoadEntryUser($room_no){
+    $query = <<<EOF
+SELECT room_no AS id, room_name AS name, room_comment AS comment, status,
+  game_option, option_role FROM room WHERE room_no = {$room_no}
+EOF;
     return FetchObject($query, 'Room', true);
   }
 
