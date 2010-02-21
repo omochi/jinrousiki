@@ -39,7 +39,7 @@ function UploadIcon(){
   case 'cancel':
     //DB からアイコンのファイル名と登録時のセッション ID を取得
     $DB_CONF->Connect(); //DB 接続
-    extract(FetchNameArray("SELECT icon_filename, session_id FROM user_icon $query_no"));
+    extract(FetchAssoc("SELECT icon_filename, session_id FROM user_icon $query_no", true));
 
     //セッション ID 確認
     if($session_id != $SESSION->Get()){

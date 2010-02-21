@@ -343,25 +343,24 @@ function AggregateVoteGameStart($force_start = false){
 
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
-  foreach($now_sub_role_list as $this_role){
-    if(strpos($option_role, $this_role) !== false && $user_count >= $CAST_CONF->$this_role){
-      $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $this_role;
+  foreach($now_sub_role_list as $role){
+    if(strpos($option_role, $role) !== false && $user_count >= $CAST_CONF->$role){
+      $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $role;
     }
   }
   if(strpos($option_role, 'liar') !== false){ //狼少年村
-    $this_role = 'liar';
-    array_push($delete_role_list, $this_role);
+    $role = 'liar';
+    array_push($delete_role_list, $role);
     for($i = 0; $i < $user_count; $i++){ //全員に一定確率で狼少年をつける
-      if(mt_rand(1, 100) <= 70) $fix_role_list[$i] .= ' ' . $this_role;
+      if(mt_rand(1, 100) <= 70) $fix_role_list[$i] .= ' ' . $role;
     }
   }
   if(strpos($option_role, 'gentleman') !== false){ //紳士・淑女村
     $sub_role_list = array('male' => 'gentleman', 'female' => 'lady');
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員に性別に応じて紳士か淑女をつける
-      $this_uname = $fix_uname_list[$i];
-      $this_role  = $sub_role_list[$USERS->ByUname($this_uname)->sex];
-      $fix_role_list[$i] .= ' ' . $this_role;
+      $role = $sub_role_list[$USERS->ByUname($fix_uname_list[$i])->sex];
+      $fix_role_list[$i] .= ' ' . $role;
     }
   }
 
@@ -369,18 +368,18 @@ function AggregateVoteGameStart($force_start = false){
     $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
-      $this_role = GetRandom($sub_role_list);
-      $fix_role_list[$i] .= ' ' . $this_role;
-      if($this_role == 'impatience'){ //短気は一人だけ
+      $role = GetRandom($sub_role_list);
+      $fix_role_list[$i] .= ' ' . $role;
+      if($role == 'impatience'){ //短気は一人だけ
 	$sub_role_list = array_diff($sub_role_list, array('impatience'));
       }
     }
   }
   elseif(strpos($option_role, 'perverseness') !== false){ //天邪鬼村
-    $this_role = 'perverseness';
-    array_push($delete_role_list, $this_role);
+    $role = 'perverseness';
+    array_push($delete_role_list, $role);
     for($i = 0; $i < $user_count; $i++){
-      $fix_role_list[$i] .= ' ' . $this_role;
+      $fix_role_list[$i] .= ' ' . $role;
     }
   }
 
@@ -398,15 +397,19 @@ function AggregateVoteGameStart($force_start = false){
     }
   }
   if($quiz){ //クイズ村
-    $this_role = 'panelist';
+    $role = 'panelist';
     for($i = 0; $i < $user_count; $i++){ //出題者以外に解答者をつける
-      if($fix_uname_list[$i] != 'dummy_boy') $fix_role_list[$i] .= ' ' . $this_role;
+      if($fix_uname_list[$i] != 'dummy_boy') $fix_role_list[$i] .= ' ' . $role;
     }
   }
 
   //デバッグ用
-  //print_r($fix_uname_list); echo "<br>";
-  //print_r($fix_role_list); DeleteVote(); return false;
+  /*
+  PrintData($option_role);
+  PrintData($fix_uname_list);
+  PrintData($fix_role_list);
+  DeleteVote(); return false;
+  */
 
   //ゲーム開始
   mysql_query("UPDATE room SET status = 'playing', date = 1, day_night = 'night',
@@ -416,11 +419,10 @@ function AggregateVoteGameStart($force_start = false){
   //役割をDBに更新
   $role_count_list = array();
   for($i = 0; $i < $user_count; $i++){
-    $this_user = $USERS->ByUname($fix_uname_list[$i]);
-    $this_role = $fix_role_list[$i];
-    $this_user->ChangeRole($this_role);
-    $this_role_list = explode(' ', $this_role);
-    foreach($this_role_list as $this_role) $role_count_list[$this_role]++;
+    $role = $fix_role_list[$i];
+    $USERS->ByUname($fix_uname_list[$i])->ChangeRole($role);
+    $role_list = explode(' ', $role);
+    foreach($role_list as $role) $role_count_list[$role]++;
   }
 
   //役割リスト通知
@@ -579,6 +581,7 @@ function VoteDay(){
   //-- 投票処理 --//
   //役職に応じて投票数を補正
   $vote_number = 1;
+  if($SELF->IsRoleGroup('elder')) $vote_number++; //長老系 (メイン役職)
   if($virtual_self->IsRole('authority')){ //権力者
     $vote_number++;
   }
@@ -591,7 +594,7 @@ function VoteDay(){
 
   //投票＆システムメッセージ
   $items = 'room_no, date, uname, target_uname, vote_number, vote_times, situation';
-  $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', $vote_number, " .
+  $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', {$vote_number}, " .
     "{$RQ_ARGS->vote_times}, 'VOTE_KILL'";
   $sql = InsertDatabase('vote', $items, $values);
   $sentence = "VOTE_DO\t" . $USERS->GetHandleName($target->uname, true);

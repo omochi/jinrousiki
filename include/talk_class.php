@@ -15,7 +15,7 @@ class Talk{
   }
 
   function ParseSentence($sentence = NULL){
-    global $MESSAGE;
+    global $GAME_CONF, $MESSAGE;
 
     //初期化処理
     is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence;
@@ -36,7 +36,9 @@ class Talk{
       return;
 
     case 'dummy_boy':
+      if($this->type == 'system') break;
       if($this->type == $this->uname){
+	if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
 	$this->sentence = $MESSAGE->dummy_boy . $sentence;
       }
       return;

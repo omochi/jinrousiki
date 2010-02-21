@@ -25,9 +25,11 @@ class Room{
     else{
       $query = "SELECT room_no AS id, room_name AS name, room_comment AS comment, ".
 	"game_option, date, day_night, status FROM room WHERE room_no = {$request->room_no}";
-      if(($array = FetchNameArray($query)) === false){
-	OutputActionResult('エラー', '無効な村番号です：' . $request->room_no);
+      $array = FetchAssoc($query);
+      if(count($array) < 1){
+	OutputActionResult('村番号エラー', '無効な村番号です: ' . $request->room_no);
       }
+      $array = array_shift($array);
     }
     foreach($array as $name => $value) $this->$name = $value;
     $this->ParseOption();
@@ -163,8 +165,20 @@ class Room{
   }
 }
 
-class RoomDataSet {
+class RoomDataSet{
   var $rows = array();
+
+  function LoadFinishedRoom($room_no){
+    $query = <<<EOF
+SELECT room_no AS id, room_name AS name, room_comment AS comment, date, game_option,
+  option_role, max_user, victory_role, establish_time, start_time, finish_time,
+  (SELECT COUNT(user_no) FROM user_entry WHERE user_entry.room_no = room.room_no
+   AND user_entry.user_no > 0) AS user_count
+FROM room WHERE status = 'finished' AND room_no = {$room_no}
+EOF;
+
+    return FetchObject($query, 'Room', true);
+  }
 
   function LoadClosedRooms($room_order, $limit_statement) {
     $sql = <<<SQL

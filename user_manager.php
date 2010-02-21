@@ -75,10 +75,8 @@ function EntryUser(){
   $user_no = (int)FetchResult($query_no) + 1; //最も大きい No + 1
 
   //DBから最大人数を取得
-  $array = FetchNameArray("SELECT day_night, status, max_user FROM room WHERE room_no = $room_no");
-  $day_night = $array['day_night'];
-  $status    = $array['status'];
-  $max_user  = $array['max_user'];
+  $query_status = "SELECT day_night, status, max_user FROM room WHERE room_no = {$room_no}";
+  extract(FetchAssoc($query_status, true));
 
   //定員オーバーしているとき
   if($user_no > $max_user || $day_night != 'beforegame' || $status != 'waiting'){
@@ -174,10 +172,12 @@ function OutputEntryUserPage($room_no){
 
   $query = "SELECT room_name, room_comment, status, game_option, option_role " .
     "FROM room WHERE room_no = $room_no";
-  if(($array = FetchNameArray($query)) === false){
+  $array = FetchAssoc($query);
+
+  if(count($array) < 1){
     OutputActionResult('村人登録 [村番号エラー]', "No.$room_no 番地の村は存在しません。");
   }
-  extract($array);
+  extract(array_shift($array));
 
   if($status != 'waiting'){
     OutputActionResult('村人登録 [入村不可]', '村が既に満員か、ゲームが開始されています。');

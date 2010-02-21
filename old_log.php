@@ -18,18 +18,18 @@ if($RQ_ARGS->is_room){
   OutputOldLog();
 }
 else{
-  $INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
-  OutputFinishedRooms($RQ_ARGS->page, $RQ_ARGS->reverse);
+  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
+  OutputFinishedRooms($RQ_ARGS->page);
 }
 OutputHTMLFooter();
 
 // 関数 //
 //過去ログ一覧表示
-function OutputFinishedRooms($page, $reverse = NULL){
+function OutputFinishedRooms($page){
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
-  $room_count = FetchResult("SELECT COUNT(*) FROM room WHERE status = 'finished'");
+  $room_count = FetchResult("SELECT COUNT(status) FROM room WHERE status = 'finished'");
   if($room_count < 1){
     OutputActionResult($SERVER_CONF->title . ' [過去ログ]',
 		       'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
@@ -39,25 +39,26 @@ function OutputFinishedRooms($page, $reverse = NULL){
 echo <<<EOF
 </head>
 <body id="room_list">
-<p><a href="index.php">←戻る</a></p>
+<p><a href="./">←戻る</a></p>
 <img src="img/old_log_title.jpg"><br>
 <div align="center">
 <table><tr><td class="list">
 
 EOF;
 
-  $config =& new OldLogConfig(); //設定をロード
-  $is_reverse = empty($reverse) ? $config->reverse : ($reverse == 'on');
+  $LOG_CONF =& new OldLogConfig(); //設定をロード
+  $is_reverse = empty($RQ_ARGS->reverse) ? $LOG_CONF->reverse : ($RQ_ARGS->reverse == 'on');
   $current_time = TZTime(); // 現在時刻の取得
 
   //ページリンクの出力
   if(is_null($page)) $page = 1;
-  $page_count = ceil($room_count / $config->room);
-  $start_page = $page;
-  if($page_count - $page < $config->page){
-    $start_page = $page_count - $config->page + 1;
+  $page_count = ceil($room_count / $LOG_CONF->room);
+  $start_page = $page == 'all' ? 1 : $page;
+  if($page_count - $page < $LOG_CONF->page){
+    $start_page = $page_count - $LOG_CONF->page + 1;
+    if($start_page < 1) $start_page = 1;
   }
-  $end_page = $page + $config->page - 1;
+  $end_page = $page + $LOG_CONF->page - 1;
   if($end_page > $page_count) $end_page = $page_count;
 
   $url_stack = array('[ページ]');
@@ -65,23 +66,23 @@ EOF;
   $url_option = array('reverse='. ($is_reverse ? 'on' : 'off'));
   if($RQ_ARGS->add_role) $url_option[] = 'add_role=on';
 
-  if($page_count > $config->page && $page > 1){
-    $url_stack[] = GenerateLinkStack($url_option, 1, '[1]...');
-    $url_stack[] = GenerateLinkStack($url_option, $start_page - 1, '&lt;&lt;');
+  if($page_count > $LOG_CONF->page && $page > 1){
+    $url_stack[] = GeneratePageLink($url_option, 1, '[1]...');
+    $url_stack[] = GeneratePageLink($url_option, $start_page - 1, '&lt;&lt;');
   }
 
   for($page_number = $start_page; $page_number <= $end_page; $page_number++){
     if($page == $page_number)
       $url_stack[] = "[$page_number]";
     else
-      $url_stack[] = GenerateLinkStack($url_option, $page_number);
+      $url_stack[] = GeneratePageLink($url_option, $page_number);
   }
 
   if($page_number <= $page_count){
-    $url_stack[] = GenerateLinkStack($url_option, $page_number, '&gt;&gt;');
-    $url_stack[] = GenerateLinkStack($url_option, $page_count, '...[' . $page_count . ']');
+    $url_stack[] = GeneratePageLink($url_option, $page_number, '&gt;&gt;');
+    $url_stack[] = GeneratePageLink($url_option, $page_count, '...[' . $page_count . ']');
   }
-  $url_stack[] = GenerateLinkStack($url_option, 'all');
+  $url_stack[] = GeneratePageLink($url_option, 'all');
 
   $list = $url_option;
   $list[] = 'reverse=' . ($is_reverse ? 'off' : 'on');
@@ -89,17 +90,11 @@ EOF;
   $url_stack[] = ($is_reverse ? '新↓古' : '古↓新');
 
   $url = $url_header . implode('&', $list) . '">';
-  $url_stack[] =  $url . (($is_reverse xor $config->reverse) ? '元に戻す' : '入れ替える') . '</a>';
+  $url_stack[] =  $url . (($is_reverse xor $LOG_CONF->reverse) ? '元に戻す' : '入れ替える') . '</a>';
   echo implode(' ', $url_stack);
-
-  $game_option_list = array('dummy_boy', 'open_vote', 'not_open_cast', 'decide',
-			    'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
-			    'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
-			    'chaos', 'chaos_open_cast', 'secret_sub_role', 'no_sub_role');
 
   echo <<<EOF
 </td></tr>
-<!--村一覧 ここから-->
 <tr><td>
 <table class="main">
 <tr><th>村No</th><th>村名</th><th>人数</th><th>日数</th><th>勝</th></tr>
@@ -107,86 +102,55 @@ EOF;
 EOF;
 
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数ごと表示
-  if($page == 'all')
-    $limit_statement = '';
-  else{
-    $start_number = $config->room * ($page - 1);
-    $limit_statement = sprintf('LIMIT %d, %d', $start_number, $config->room);
+  $query = "SELECT room_no FROM room ORDER BY room_no";
+  if($is_reverse) $query .=  ' DESC';
+  if($page != 'all'){
+    $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->room * ($page - 1), $LOG_CONF->room);
   }
-
-  //表示する行の取得
-  $room_order = ($is_reverse ? 'DESC' : '');
-  $sql = mysql_query("SELECT room_no, room_name, room_comment, date AS room_date,
-			game_option AS room_game_option, option_role AS room_option_role,
-			max_user AS room_max_user, (SELECT COUNT(*) FROM user_entry user
-			WHERE user.room_no = room.room_no AND user.user_no > 0)
-			AS room_num_user, victory_role AS room_victory_role,
-			establish_time, start_time, finish_time FROM room
-			WHERE status = 'finished' ORDER BY room_no $room_order $limit_statement");
+  $room_no_list = FetchArray($query);
 
   $VICT_IMG =& new VictoryImage();
-  while(($array = mysql_fetch_assoc($sql)) !== false){
-    extract($array, EXTR_PREFIX_ALL, 'log');
+  $ROOM_DATA =& new RoomDataSet();
+  foreach($room_no_list as $room_no){
+    $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
-    //オプションと勝敗の解析
-    $game_option_str = GenerateGameOptionImage($log_room_game_option, $log_room_option_role);
-    $victory_role_str = $VICT_IMG->Generate($log_room_victory_role);
-    //廃村の場合、色を灰色にする
-    $dead_room_color = ($log_room_date == 0 ? ' style="color:silver"' : '');
-
-    //ユーザ総数を取得
-    // $str_max_users = $ROOM_IMG->max_user_list[$log_room_max_user];
-    $user_count = intval($log_room_num_user);
-
-    $base_url = "old_log.php?room_no=$log_room_no";
+    $base_url = 'old_log.php?room_no=' . $ROOM->id;
     if($RQ_ARGS->add_role) $base_url .= '&add_role=on';
+    $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
+    //$max_user_str = $ROOM_IMG->max_user_list[$ROOM->max_user]; //ユーザ総数画像
+    $game_option_str = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
+    $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
+    $login = ($current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
+	      '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n");
 
-    /*
-    if ($DEBUG_MODE){
-      $debug_anchor = "<a href=\"$base_url&debug=on\" $dead_room_color >録</a>";
-    }
-    */
-
-    if($log_establish_time != '') $log_establish_time = ConvertTimeStamp($log_establish_time);
     echo <<<EOF
 <tr class="list">
-<td class="number" rowspan="3">$log_room_no</td>
-<td class="title"><a href="$base_url" $dead_room_color>$log_room_name 村</a>
-<td class="upper">$user_count (最大{$log_room_max_user})</td>
-<td class="upper">$log_room_date</td>
-<td class="side">$victory_role_str</td>
+<td class="number" rowspan="3">{$ROOM->id}</td>
+<td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} 村</a>
+<td class="upper">{$ROOM->user_count} (最大{$ROOM->max_user})</td>
+<td class="upper">{$ROOM->date}</td>
+<td class="side">{$VICT_IMG->Generate($ROOM->victory_role)}</td>
 </tr>
 <tr class="list middle">
-<td class="comment side">〜 $log_room_comment 〜</td>
-<td class="time comment" colspan="3">$log_establish_time</td>
+<td class="comment side">〜 {$ROOM->comment} 〜</td>
+<td class="time comment" colspan="3">{$establish_time}</td>
 </tr>
 <tr class="lower list">
 <td class="comment">
-
-EOF;
-
-    $diff_time = $current_time - strtotime($log_finish_time);
-    if($diff_time <= $ROOM_CONF->clear_session_id){
-      echo <<<EOF
-<a href="login.php?room_no=$log_room_no" $dead_room_color>[再入村]</a>
-
-EOF;
-    }
-    echo <<<EOF
-(
-<a href="$base_url&reverse_log=on" $dead_room_color>逆</a>
-<a href="$base_url&heaven_talk=on" $dead_room_color>霊</a>
-<a href="$base_url&reverse_log=on&heaven_talk=on" $dead_room_color>逆&amp;霊</a>
-<a href="$base_url&heaven_only=on" $dead_room_color >逝</a>
-<a href="$base_url&reverse_log=on&heaven_only=on" $dead_room_color>逆&amp;逝</a>
-$debug_anchor
+{$login}(
+<a href="{$base_url}&reverse_log=on"{$dead_room}>逆</a>
+<a href="{$base_url}&heaven_talk=on"{$dead_room}>霊</a>
+<a href="{$base_url}&reverse_log=on&heaven_talk=on"{$dead_room}>逆&amp;霊</a>
+<a href="{$base_url}&heaven_only=on"{$dead_room} >逝</a>
+<a href="{$base_url}&reverse_log=on&heaven_only=on"{$dead_room}>逆&amp;逝</a>
 )
 </td>
-<td colspan="3">$game_option_str</td>
+<td colspan="3">{$game_option_str}</td>
 </tr>
 
 EOF;
-      }
+  }
+
   echo <<<EOF
 </table>
 </td></tr>
@@ -196,7 +160,7 @@ EOF;
 EOF;
 }
 
-function GenerateLinkStack($list, $page, $title = NULL){
+function GeneratePageLink($list, $page, $title = NULL){
   $header = '<a href="old_log.php?';
   array_unshift($list, 'page=' . $page);
   if(is_null($title)) $title = '[' . $page . ']';

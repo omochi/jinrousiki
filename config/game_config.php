@@ -3,8 +3,8 @@
 class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //テスト用
+  #var $die_room = 1200;
+  var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -45,29 +45,35 @@ class RoomConfig{
   #var $default_not_open_cast = NULL;
   var $default_not_open_cast = 'auto'; //テスト用
 
+  var $poison = true; //埋毒者出現 (必要人数は CastConfig->poison 参照)
+  var $default_poison = true;
+
+  var $assassin = true; //暗殺者出現 (必要人数は CastConfig->assassin 参照)
+  var $default_assassin = false;
+
+  var $boss_wolf = true; //白狼出現 (必要人数は CastConfig->boss_wolf 参照)
+  var $default_boss_wolf = false;
+
+  var $poison_wolf = true; //毒狼出現 (必要人数は CastConfig->poison_wolf 参照)
+  var $default_poison_wolf = false;
+
+  var $possessed_wolf = true; //憑狼出現 (必要人数は CastConfig->possessed_wolf 参照)
+  var $default_possessed_wolf = false;
+
+  var $cupid = true; //キューピッド出現 (必要人数は CastConfig->cupid 参照)
+  var $default_cupid = false;
+
+  var $medium = true; //巫女出現 (必要人数は CastConfig->medium 参照)
+  var $default_medium = false;
+
+  var $mania = true; //神話マニア出現 (必要人数は CastConfig->mania 参照)
+  var $default_mania = false;
+
   var $decide = true; //決定者出現 (必要人数は CastConfig->decide 参照)
   var $default_decide = true;
 
   var $authority = true; //権力者出現 (必要人数は CastConfig->authority 参照)
   var $default_authority = true;
-
-  var $poison = true; //埋毒者出現 (必要人数は CastConfig->poison 参照)
-  var $default_poison = true;
-
-  var $cupid = true; //キューピッド出現 (必要人数は CastConfig->cupid 参照)
-  var $default_cupid = false;
-
-  var $boss_wolf = true; //白狼出現 (必要人数は CastConfig->boss_wolf 参照)
-  var $default_boss_wolf = false;
-
-  var $poison_wolf = true; //白狼出現 (必要人数は CastConfig->poison_wolf 参照)
-  var $default_poison_wolf = false;
-
-  var $mania = true; //神話マニア出現 (必要人数は CastConfig->mania 参照)
-  var $default_mania = false;
-
-  var $medium = true; //巫女出現 (必要人数は CastConfig->medium 参照)
-  var $default_medium = false;
 
   var $liar = true; //狼少年村
   var $default_liar = false;
@@ -217,6 +223,7 @@ class GameConfig{
     'jealousy'           => '橋姫',
     'suspect'            => '不審者',
     'unconscious'        => '無意識',
+    'elder'              => '長老',
     'wolf'               => '人狼',
     'boss_wolf'          => '白狼',
     'tongue_wolf'        => '舌禍狼',
@@ -351,6 +358,7 @@ class GameConfig{
     'jealousy'           => '橋',
     'suspect'            => '不審',
     'unconscious'        => '無',
+    'elder'              => '老',
     'wolf'               => '狼',
     'boss_wolf'          => '白狼',
     'tongue_wolf'        => '舌狼',
@@ -523,6 +531,7 @@ class CastConfig{
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     4 => array('human' =>  3, 'wolf' => 1),
      5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -554,14 +563,16 @@ class CastConfig{
                          );
   //-- 役職出現人数 --//
   //各役職の出現に必要な人数を設定する
-  var $medium      = 20; //巫女 (+ 狂信者) [村人2 → 巫女1、狂信者1]
-  var $poison      = 20; //埋毒者 [村人2 → 埋毒者1、人狼1]
-  var $boss_wolf   = 18; //白狼 [人狼1 → 白狼]
-  var $poison_wolf = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
-  var $cupid       = 16; //キューピッド (14人の方は現在ハードコード) [村人1 → キューピッド1]
-  var $mania       = 16; //神話マニア [村人1 → 神話マニア1]
-  var $decide      = 16; //決定者 [兼任]
-  var $authority   = 16; //権力者 [兼任]
+  var $poison         = 20; //埋毒者 [村人2 → 埋毒者1、人狼1]
+  var $assassin       = 22; //暗殺者 [村人2 → 暗殺者1、人狼1]
+  var $boss_wolf      = 18; //白狼 [人狼1 → 白狼]
+  var $poison_wolf    = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
+  var $possessed_wolf = 17; //憑狼 [人狼1 → 憑狼1]
+  var $cupid          = 16; //キューピッド (14人の方は現在ハードコード) [村人1 → キューピッド1]
+  var $medium         = 20; //巫女 (+ 女神) [村人2 → 巫女1、女神1]
+  var $mania          = 16; //神話マニア [村人1 → 神話マニア1]
+  var $decide         = 16; //決定者 [兼任]
+  var $authority      = 16; //権力者 [兼任]
 
   //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
   var $wish_role_rate = 100;
@@ -672,7 +683,7 @@ class Sound extends SoundBase{
 
 //過去ログ表示設定
 class OldLogConfig{
-  var $room = 10;  //一画面に表示する村の数
+  var $room = 20;  //一画面に表示する村の数
   var $page = 5; //一画面に表示するページ数の数
   var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }

@@ -140,8 +140,9 @@ function CreateRoom(){
 	$option_role_list[] = 'duel';
       }
       else{
+	array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
+		   'possessed_wolf', 'cupid', 'medium');
 	if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
-	array_push($check_option_role_list, 'poison', 'cupid', 'boss_wolf', 'poison_wolf', 'medium');
 	if(! $full_mania) $check_option_role_list[] = 'mania';
       }
     }
@@ -345,39 +346,64 @@ EOF;
 function OutputSharedServerRoom(){
   global $SERVER_CONF;
 
-  $config =& new SharedServerConfig();
-  if($config->disable) return false;
+  $SHARED_CONF =& new SharedServerConfig();
+  if($SHARED_CONF->disable) return false;
 
-  foreach($config->server_list as $server => $array){
-    extract($array, EXTR_PREFIX_ALL, 'this');
-    //PrintData($this_url, 'URL'); //テスト用
-    if($this_disable || $this_url == $SERVER_CONF->site_root) continue;
-    if(($this_data = file_get_contents($this_url.'room_manager.php')) == '') continue;
-    //PrintData($this_data, 'Data'); //テスト用
-    if($this_encode != '' && $this_encode != $config->encode){
-      $this_data = mb_convert_encoding($this_data, $config->encode, $this_encode);
-    }
-    if($this_separator != ''){
-      $this_split_list = mb_split($this_separator, $this_data);
-      //PrintData($this_split_list, 'Split'); //テスト用
-      $this_data = array_pop($this_split_list);
-    }
-    if($this_footer != ''){
-      if(($this_position = mb_strrpos($this_data, $this_footer)) === false) continue;
-      $this_data = mb_substr($this_data, 0, $this_position + mb_strlen($this_footer));
-    }
-    if($this_data == '') continue;
+  foreach($SHARED_CONF->server_list as $server => $array){
+    extract($array);
+    //PrintData($url, 'URL'); //テスト用
+    if($disable || $url == $SERVER_CONF->site_root) continue;
 
-    $this_replace_list = array('href="' => 'href="' . $this_url, 'src="'  => 'src="' . $this_url);
-    $this_data = strtr($this_data, $this_replace_list);
-    echo <<<EOF
-    <fieldset>
-      <legend>ゲーム一覧 (<a href="$this_url">$this_name</a>)</legend>
-      <div class="game-list">$this_data</div>
-    </fieldset>
+    //サーバ通信状態チェック
+    $url_stack = explode('/', $url);
+    $host = $url_stack[2];
+    $io = @fsockopen($host, 80, $err_no, $err_str, 3);
+    if(! $io){
+      echo GenerateSharedServerRoom($name, $url, $host . ': Connection timed out (3 seconds)');
+      continue;
+    }
+    stream_set_timeout($io, 3);
+    fwrite($io, "GET / HTTP/1.1\r\nHost: {$host}\r\nConnection: Close\r\n\r\n");
+    $data = fgets($io, 128);
+    $stream_stack = stream_get_meta_data($io);
+    fclose($io);
+    if($stream_stack['timed_out']){
+      echo GenerateSharedServerRoom($name, $url, 'Connection timed out (3 seconds)');
+      continue;
+    }
+    //PrintData($data, 'Connection');
+
+    //部屋情報を取得
+    if(($data = @file_get_contents($url.'room_manager.php')) == '') continue;
+    //PrintData($data, 'Data'); //テスト用
+    if($encode != '' && $encode != $SHARED_CONF->encode){
+      $data = mb_convert_encoding($data, $SHARED_CONF->encode, $encode);
+    }
+    if($separator != ''){
+      $split_list = mb_split($separator, $data);
+      //PrintData($split_list, 'Split'); //テスト用
+      $data = array_pop($split_list);
+    }
+    if($footer != ''){
+      if(($position = mb_strrpos($data, $footer)) === false) continue;
+      $data = mb_substr($data, 0, $position + mb_strlen($footer));
+    }
+    if($data == '') continue;
+
+    $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
+    $data = strtr($data, $replace_list);
+    echo GenerateSharedServerRoom($name, $url, $data);
+  }
+}
+
+function GenerateSharedServerRoom($name, $url, $data){
+  return <<<EOF
+<fieldset>
+<legend>ゲーム一覧 (<a href="{$url}">{$name}</a>)</legend>
+<div class="game-list">{$data}</div>
+</fieldset>
 
 EOF;
-  }
 }
 
 //部屋作成画面を出力
@@ -421,8 +447,8 @@ EOF;
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
 
-  $option_list = array('decide', 'authority', 'poison', 'cupid', 'boss_wolf',
-		       'poison_wolf', 'mania', 'medium');
+  $option_list = array('poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+		       'cupid', 'medium', 'mania', 'decide', 'authority');
   OutputRoomOption($option_list, 'role');
 
   $option_list = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania');

@@ -1,7 +1,7 @@
 <?php
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $GAME_CONF, $ROLE_IMG, $MESSAGE, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $MESSAGE, $ROLE_IMG, $ROOM, $USERS, $SELF;
 
   //ゲーム中のみ表示する
   if(! $ROOM->IsPlaying()) return false;
@@ -17,6 +17,9 @@ function OutputAbility(){
 
   if($SELF->IsRole('human', 'suspect', 'unconscious')){ //村人・不審者・無意識
     $ROLE_IMG->Output('human');
+  }
+  elseif($SELF->IsRole('elder')){
+    $ROLE_IMG->Output($SELF->main_role);
   }
   elseif($SELF->IsRoleGroup('mage')){ //占い師系
     $ROLE_IMG->Output($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);

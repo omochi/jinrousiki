@@ -6,7 +6,6 @@ class DocumentBuilder{
   var $extension_list = array();
 
   function DocumentBuilder(){ $this->__construct(); }
-
   function __construct(){
     global $USERS, $SELF;
 
@@ -57,7 +56,7 @@ class DocumentBuilder{
   //基礎発言処理
   function RawAddTalk($symbol, $user_info, $sentence, $volume, $row_class = '',
 		      $user_class = '', $say_class = ''){
-    global $RQ_ARGS;
+    global $GAME_CONF;
 
     if($row_class  != '') $row_class  = ' ' . $row_class;
     if($user_class != '') $user_class = ' ' . $user_class;
@@ -80,7 +79,10 @@ WORDS;
 
     //表示情報を抽出
     $handle_name = $user->handle_name;
-    if($RQ_ARGS->add_role) $handle_name .= $user->GenarateShortRoleName(); //役職表示モード対応
+    if($RQ_ARGS->add_role){ //役職表示モード対応
+      $real_user = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
+      $handle_name .= $real_user->GenerateShortRoleName();
+    }
 
     $user_info = '<font style="color:'.$user->color.'">◆</font>'.$handle_name;
     if($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')){
@@ -96,7 +98,7 @@ WORDS;
 
   //囁き処理
   function AddWhisper($role, $talk){
-    global $GAME_CONF, $ROLES;
+    global $ROLES;
 
     if(($user_info = $ROLES->GetWhisperingUserInfo($role, $user_class)) === false) return;
     $volume = $talk->font_type;

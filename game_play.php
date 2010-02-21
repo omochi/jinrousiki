@@ -69,10 +69,7 @@ if(! $ROOM->heaven_mode){
 }
 
 //会話ログを出力
-if($SELF->IsDead() && $ROOM->heaven_mode)
-  OutputHeavenTalkLog();
-else
-  OutputTalkLog();
+($SELF->IsDead() && $ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog();
 
 if(! $ROOM->heaven_mode){
   if($SELF->IsDead()) OutputAbilityAction(); //能力発揮
@@ -260,7 +257,7 @@ function Write($say, $location, $spend_time, $update = false){
   //声の大きさを決定
   $voice = $RQ_ARGS->font_type;
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
-  if($ROOM->IsPlaying() && $virtual->IsLive()){
+  if($ROOM->IsPlaying() && $virtual_self->IsLive()){
     $ROLES->actor = $virtual_self;
     $filter_list = $ROLES->Load('voice');
     foreach($filter_list as $filter) $filter->FilterVoice($voice, $say);
@@ -589,53 +586,33 @@ EOF;
 
 //天国の霊話ログ出力
 function OutputHeavenTalkLog(){
-  global $ROOM;
+  global $ROOM, $USERS;
 
   //出力条件をチェック
   // if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
   //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  $sql = mysql_query("SELECT user_entry.uname AS talk_uname,
-			user_entry.handle_name AS talk_handle_name,
-			user_entry.live AS talk_live,
-			user_entry.sex AS talk_sex,
-			user_icon.color AS talk_color,
-			talk.sentence AS sentence,
-			talk.font_type AS font_type,
-			talk.location AS location
-			FROM user_entry, talk, user_icon
-			WHERE talk.room_no = {$ROOM->id}
-			AND talk.location LIKE 'heaven'
-			AND ( (user_entry.room_no = {$ROOM->id} AND user_entry.uname = talk.uname
-			AND user_entry.icon_no = user_icon.icon_no)
-			OR (user_entry.room_no = 0 AND talk.uname = 'system'
-			AND user_entry.icon_no = user_icon.icon_no) )
-			ORDER BY time DESC");
+  $query = <<<EOF
+SELECT uname, sentence, font_type, location
+FROM talk
+WHERE room_no = {$ROOM->id} AND location LIKE 'heaven'
+ORDER BY time DESC
+EOF;
+  $sql = SendQuery($query);
 
-  echo '<table class="talk">'."\n";
-  while(($array = mysql_fetch_assoc($sql)) !== false){
-    $talk_uname  = $array['talk_uname'];
-    $talk_handle = $array['talk_handle_name'];
-    $talk_live   = $array['talk_live'];
-    // $talk_sex    = $array['talk_sex'];  //現在未使用
-    $talk_color  = $array['talk_color'];
-    $sentence    = $array['sentence'];
-    $font_type   = $array['font_type'];
-    // $location    = $array['location']; //現在未使用
+  $builder =& new DocumentBuilder();
+  $builder->BeginTalk('talk');
+  while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
+    $user = $USERS->ByUname($talk->uname); //ユーザを取得
 
-    LineToBR(&$sentence); //改行を<br>タグに置換
-
+    $symbol = '<font color="' . $user->color . '">◆</font>';
+    $handle_name = $user->handle_name;
     //霊界で役職が公開されている場合のみ HN を追加
-    if($ROOM->IsOpenCast()) $talk_handle .= '<span>(' . $talk_uname . ')</span>';
+    if($ROOM->IsOpenCast()) $handle_name .= '<span>(' . $talk->uname . ')</span>';
 
-    //会話出力
-    echo '<tr class="user-talk">'."\n";
-    echo '<td class="user-name"><font color="' . $talk_color . '">◆</font>' .
-      $talk_handle . '</td>'."\n";
-    echo '<td class="say ' . $font_type . '">' . $sentence . '</td>'."\n";
-    echo '</tr>'."\n";
+    $builder->RawAddTalk($symbol, $handle_name, $talk->sentence, $talk->font_type);
   }
-  echo '</table>'."\n";
+  $builder->EndTalk();
 }
 
 //昼の自分の未投票チェック

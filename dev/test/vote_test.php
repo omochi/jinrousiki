@@ -59,7 +59,7 @@ $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
 $RQ_ARGS->TestItems->test_users[3]->handle_name = '暗灰';
 $RQ_ARGS->TestItems->test_users[3]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[3]->profile = '';
-$RQ_ARGS->TestItems->test_users[3]->role = 'crisis_priest';
+$RQ_ARGS->TestItems->test_users[3]->role = 'elder';
 $RQ_ARGS->TestItems->test_users[3]->live = 'live';
 $RQ_ARGS->TestItems->test_users[3]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[3]->is_system = false;
@@ -73,7 +73,7 @@ $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[4]->profile = '';
-$RQ_ARGS->TestItems->test_users[4]->role = 'voodoo_killer authority';
+$RQ_ARGS->TestItems->test_users[4]->role = 'mage authority';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
 $RQ_ARGS->TestItems->test_users[4]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[4]->is_system = false;
@@ -207,8 +207,8 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'dark_gray',  'target_uname' => 'dark_gray',  'situation' => 'TRAP_MAD_DO'),
   #array('uname' => 'dark_gray',  'target_uname' => 'yellow',  'situation' => 'JAMMER_MAD_DO'),
   #array('uname' => 'dark_gray',  'target_uname' => 'blue',  'situation' => 'VOODOO_MAD_DO'),
-  array('uname' => 'yellow',     'target_uname' => 'cherry',     'situation' => 'VOODOO_KILLER_DO'),
-  #array('uname' => 'yellow',     'target_uname' => 'blue',     'situation' => 'MAGE_DO'),
+  #array('uname' => 'yellow',     'target_uname' => 'cherry',     'situation' => 'VOODOO_KILLER_DO'),
+  array('uname' => 'yellow',     'target_uname' => 'purple',     'situation' => 'MAGE_DO'),
   #array('uname' => 'orange',  'target_uname' => array(7, 5),  'situation' => 'CUPID_DO'),
   #array('uname' => 'orange',     'target_uname' => 'yellow',     'situation' => 'JAMMER_MAD_DO'),
   #array('uname' => 'orange',     'target_uname' => 'green',     'situation' => 'WOLF_EAT'),
@@ -221,7 +221,7 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'light_blue', 'target_uname' => 'blue',     'situation' => 'ANTI_VOODOO_DO'),
   #array('uname' => 'light_blue', 'target_uname' => 'cherry',     'situation' => 'MIND_SCANNER_DO'),
   #array('uname' => 'blue',       'target_uname' => 'dummy_boy',  'situation' => 'WOLF_EAT'),
-  array('uname' => 'blue',       'target_uname' => 'yellow',  'situation' => 'WOLF_EAT'),
+  array('uname' => 'blue',       'target_uname' => 'cherry',  'situation' => 'WOLF_EAT'),
   #array('uname' => 'green',      'target_uname' => 'blue', 'situation' => 'VOODOO_FOX_DO'),
   #array('uname' => 'green',      'target_uname' => 'light_blue', 'situation' => 'MANIA_DO'),
   #array('uname' => 'purple',     'target_uname' => 'red',       'situation' => 'WOLF_EAT'),
@@ -244,7 +244,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(2);
+$SELF = $USERS->ByID(3);
 
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ
@@ -262,22 +262,13 @@ OutputAbility();
 
 if($ROOM->IsDay()){ //昼の投票テスト
   $vote_message_list = AggregateVoteDay();
-  echo <<<EOF
-<table class="vote-list">
-<td class="vote-times" colspan="4">$ROOM->date 日目 ($RQ_ARGS->vote_times 回目)</td>
-
-EOF;
-
-  foreach($vote_message_list as $this_uname => $this_array){
-    echo <<<EOF
-<tr><td class="vote-name">{$USERS->GetHandleName($this_uname)}</td>
-<td>{$this_array['voted_number']} 票</td><td>投票先 {$this_array['vote_number']} 票 →</td>
-<td class="vote-name">{$this_array['target']}</td>
-</tr>
-
-EOF;
+  $stack = array();
+  foreach($vote_message_list as $uname => $vote_data){
+    array_unshift($vote_data, $USERS->GetHandleName($uname));
+    $vote_data[] = $RQ_ARGS->vote_times;
+    $stack[] = implode("\t", $vote_data);
   }
-  echo '</table>';
+  echo GenerateVoteList($stack, $ROOM->date);
   $ROOM->day_night = 'night';
 }
 elseif($ROOM->IsNight()){ // 夜の投票テスト

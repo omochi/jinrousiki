@@ -43,8 +43,12 @@ function GetRoleList($user_count, $option_role){
   }
   elseif(strpos($option_role, 'duel') !== false){ //·èÆ®Â¼
     $role_list = array(); //ÇÛÎó¤ò¥ê¥»¥Ã¥È
+    $role_list['wolf'] = round($user_count / 5);
+    $role_list['trap_mad'] = round(($user_count - $role_list['wolf']) / 3);
+    $role_list['assassin'] = $user_count - array_sum($role_list);
     //¿ÍÏµ1.5:°Å»¦3:µá°¦3.5:½÷¿À2 (Öà½÷1¿Í:Ì´µá°¦1¿Í)
     // -> wolf:2 / assassin:6 / self_cupid:7 / mind_cupid:4 / Total:19
+    /*
     $total_rate = 2 + 3.5 + 3 + 1.5;
     $rest_user_count = $user_count - 2;
     $role_list['medium'] = 1;
@@ -53,17 +57,12 @@ function GetRoleList($user_count, $option_role){
     $role_list['assassin'] = round($rest_user_count / $total_rate * 3);
     $role_list['mind_cupid'] = round($rest_user_count / $total_rate * 2);
     $role_list['self_cupid'] = $user_count - array_sum($role_list);
-
+    */
     //Ïµ1.5:°Å»¦2:µá°¦6.5 -> wolf:3 / assassin:4 / self_cupid:13 / Total:20
     /*
     $role_list['wolf'] = round($user_count / 20 * 3);
     $role_list['assassin'] = round($user_count / 20 * 4);
-    $role_list['self_cupid'] = $user_count - ($role_list['wolf'] + $role_list['assassin']);
-    */
-    /*
-    $role_list['wolf'] = round($user_count / 5);
-    $role_list['trap_mad'] = round(($user_count - $role_list['wolf']) / 3);
-    $role_list['assassin'] = $user_count - ($role_list['wolf'] + $role_list['trap_mad']);
+    $role_list['self_cupid'] = $user_count - array_sum($role_list);
     */
   }
   elseif($ROOM->IsOption('chaosfull')){ //¿¿¡¦°ÇÆé
@@ -646,11 +645,11 @@ function GetRoleList($user_count, $option_role){
       $role_list['wolf']++;
     }
 
-    //¥­¥å¡¼¥Ô¥Ã¥É (14¿Í¤Ï¥Ï¡¼¥É¥³¡¼¥É / Â¼¿Í ¢ª ¥­¥å¡¼¥Ô¥Ã¥É)
-    if(strpos($option_role, 'cupid') !== false &&
-       ($user_count == 14 || $user_count >= $CAST_CONF->cupid)){
-      $role_list['human']--;
-      $role_list['cupid']++;
+    //°Å»¦¼Ô (Â¼¿Í2 ¢ª °Å»¦¼Ô1¡¢¿ÍÏµ1)
+    if(strpos($option_role, 'assassin') !== false && $user_count >= $CAST_CONF->assassin){
+      $role_list['human'] -= 2;
+      $role_list['assassin']++;
+      $role_list['wolf']++;
     }
 
     //ÇòÏµ (¿ÍÏµ ¢ª ÇòÏµ)
@@ -667,17 +666,31 @@ function GetRoleList($user_count, $option_role){
       $role_list['pharmacist']++;
     }
 
-    //¿ÀÏÃ¥Þ¥Ë¥¢ (Â¼¿Í ¢ª ¿ÀÏÃ¥Þ¥Ë¥¢)
-    if(strpos($option_role, 'mania') !== false && $user_count >= $CAST_CONF->mania){
-      $role_list['human']--;
-      $role_list['mania']++;
+    //ØáÏµ (¿ÍÏµ ¢ª ØáÏµ)
+    if(strpos($option_role, 'possessed_wolf') !== false && $user_count >= $CAST_CONF->possessed_wolf){
+      $role_list['wolf']--;
+      $role_list['possessed_wolf']++;
     }
 
-    //Öà½÷ (Â¼¿Í ¢ª Öà½÷1¡¢¶¸¿®¼Ô1)
+    //¥­¥å¡¼¥Ô¥Ã¥É (14¿Í¤Ï¥Ï¡¼¥É¥³¡¼¥É / Â¼¿Í ¢ª ¥­¥å¡¼¥Ô¥Ã¥É)
+    if(strpos($option_role, 'cupid') !== false &&
+       ($user_count == 14 || $user_count >= $CAST_CONF->cupid)){
+      $role_list['human']--;
+      $role_list['cupid']++;
+    }
+
+    //Öà½÷ (Â¼¿Í ¢ª Öà½÷1¡¢½÷¿À1)
     if(strpos($option_role, 'medium') !== false && $user_count >= $CAST_CONF->medium){
       $role_list['human'] -= 2;
       $role_list['medium']++;
-      $role_list['fanatic_mad']++;
+      $role_list['mind_cupid']++;
+    }
+
+    //¿ÀÏÃ¥Þ¥Ë¥¢ (Â¼¿Í ¢ª ¿ÀÏÃ¥Þ¥Ë¥¢)
+    if(strpos($option_role, 'mania') !== false && strpos($option_role, 'full_mania') === false &&
+       $user_count >= $CAST_CONF->mania){
+      $role_list['human']--;
+      $role_list['mania']++;
     }
   }
 

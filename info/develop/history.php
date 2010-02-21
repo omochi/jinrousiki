@@ -1,5 +1,12 @@
-更新履歴：1.4 系
-
+<?php
+define('JINRO_ROOT', '../..');
+require_once(JINRO_ROOT . '/include/init.php');
+OutputHTMLHeader($SERVER_CONF->title . '[開発履歴]', 'info');
+?>
+</head>
+<body>
+<h1>開発履歴</h1>
+<pre>
 Ver. 1.4.0 beta3 (Rev. 164) : 2010/02/16 (Tue) 03:14
 ・自動霊界オフオプションの実装
 ・ユーザアイコンテーブルにカラムを追加 (入力インターフェイスは未実装)
@@ -106,3 +113,5 @@ Ver. 1.4.0 alpha2
 Ver. 1.4.0 alpha1 : 2009/06/26 (Fri) 05:08
 ・クイズ村実装開始
 ・闇鍋モード実装開始
+</pre>
+</body></html>

@@ -213,7 +213,7 @@ class User{
   }
 
   //役職をパースして省略名を返す
-  function GenarateShortRoleName(){
+  function GenerateShortRoleName(){
     global $GAME_CONF;
 
     //メイン役職を取得
@@ -384,7 +384,7 @@ class UserDataSet{
       FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
       WHERE users.room_no = {$room_no}
       ORDER BY users.user_no";
-    return FetchObjectArray($query, 'User');
+    return FetchObject($query, 'User');
   }
 
   //指定した人数分のユーザ情報を全村からランダムに取得する
@@ -410,7 +410,7 @@ class UserDataSet{
 	LEFT JOIN user_icon icons USING(icon_no)
       ORDER BY RAND()
       LIMIT $user_count";
-    return FetchObjectArray($query, 'User');
+    return FetchObject($query, 'User');
   }
 
   //取得したユーザ情報を User クラスでパースして登録する

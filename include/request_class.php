@@ -16,7 +16,7 @@ class RequestBase{
 
       if(is_array($value_list) && array_key_exists($item, $value_list))
 	$value = $value_list[$item];
-      elseif(! $this->TryGetDefault($item, $value)){
+      elseif(! $this->GetDefault($item, $value)){
 	$this->$item = NULL;
 	continue;
       }
@@ -24,11 +24,11 @@ class RequestBase{
     }
   }
 
-  function TryGetDefault($item, &$value){
+  function GetDefault($item, &$value){
     return false;
   }
 
-  function CheckOn($arg){
+  function IsOn($arg){
     return $arg == 'on';
   }
 
@@ -72,7 +72,7 @@ class RequestBaseGamePlay extends RequestBaseGame{
   function RequestBaseGamePlay(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
-    $this->GetItems("$this->CheckOn", 'get.list_down', 'get.play_sound');
+    $this->GetItems("$this->IsOn", 'get.list_down', 'get.play_sound');
   }
 }
 
@@ -95,7 +95,7 @@ class RequestUserManager extends RequestBase{
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
-    $this->GetItems("$this->CheckOn", 'post.entry');
+    $this->GetItems("$this->IsOn", 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
     EscapeStrings($this->profile, false);
 
@@ -112,7 +112,7 @@ class RequestGamePlay extends RequestBaseGamePlay{
   function __construct(){
     EncodePostData();
     parent::__construct();
-    $this->GetItems("$this->CheckOn", 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
+    $this->GetItems("$this->IsOn", 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
     $this->GetItems('EscapeStrings', 'post.font_type');
     $this->GetItems(NULL, 'post.say');
     EscapeStrings($this->say, false);
@@ -163,7 +163,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
     parent::__construct();
     $this->GetItems('intval', 'post.vote_times');
-    $this->GetItems("$this->CheckOn", 'post.vote');
+    $this->GetItems("$this->IsOn", 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
     $this->GetItems('EscapeStrings', 'post.target_handle_name');
     $this->AttachTestParameters(); //テスト用引数のロード
@@ -176,13 +176,13 @@ class RequestOldLog extends RequestBase{
   function __construct(){
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no');
-      $this->GetItems("$this->CheckOn", 'get.reverse_log', 'get.heaven_talk',
+      $this->GetItems("$this->IsOn", 'get.reverse_log', 'get.heaven_talk',
 		      'get.heaven_only','get.debug', 'get.add_role');
       $this->AttachTestParameters();
     }
     else{
       $this->GetItems(NULL, 'get.page', 'get.reverse');
-      $this->GetItems("$this->CheckOn", 'get.add_role');
+      $this->GetItems("$this->IsOn", 'get.add_role');
     }
   }
 }

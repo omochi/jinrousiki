@@ -28,17 +28,27 @@ if(! function_exists('session_regenerate_id')){
 //-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
 function SendQuery($query){
-  $sql = mysql_query($query);
-  if($sql) return $sql;
-  $backtrace = debug_backtrace();
-  echo "SQLエラー：{$backtrace[1]['function']}()：{$backtrace[0]['line']}：$query <br>";
+  if(($sql = mysql_query($query)) !== false) return $sql;
+  $backtrace = debug_backtrace(); //バックトレースを取得
+
+  //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
+  $trace_stack = array_shift($backtrace);
+  $stack = array($trace_stack['line'], $query);
+  $trace_stack = array_shift($backtrace);
+  array_unshift($stack, $trace_stack['function'] . '()');
+  PrintData(implode(': ', $stack), 'SQLエラー');
+
+  foreach($backtrace as $trace_stack){ //呼び出し元があるなら追加で出力
+    $stack = array($trace_stack['function'] . '()', $trace_stack['line']);
+    PrintData(implode(': ', $stack), 'Caller');
+  }
   return false;
 }
 
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
   if(($sql = SendQuery($query)) === false) return false;
-  $data = (mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false);
+  $data = mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false;
   mysql_free_result($sql);
   return $data;
 }
@@ -61,35 +71,27 @@ function FetchArray($query){
   return $array;
 }
 
-//DB から単体の連想配列を取得する処理のラッパー関数
-function FetchNameArray($query){
-  if(($sql = SendQuery($query)) === false) return false;
-  $array = (mysql_num_rows($sql) > 0 ? mysql_fetch_assoc($sql) : false);
-  mysql_free_result($sql);
-  return $array;
-}
-
 //DB から連想配列を取得する処理のラッパー関数
-function FetchAssoc($query){
+function FetchAssoc($query, $shift = false){
   $array = array();
   if(($sql = SendQuery($query)) === false) return $array;
-  while(($assoc = mysql_fetch_assoc($sql)) !== false) $array[] = $assoc;
+  while(($stack = mysql_fetch_assoc($sql)) !== false) $array[] = $stack;
   mysql_free_result($sql);
-  return $array;
+  return $shift ? array_shift($array) : $array;
 }
 
 //DB からオブジェクト形式の配列を取得する処理のラッパー関数
-function FetchObjectArray($query, $class){
+function FetchObject($query, $class, $shift = false){
   $array = array();
   if(($sql = SendQuery($query)) === false) return $array;
-  while(($object = mysql_fetch_object($sql, $class)) !== false) $array[] = $object;
+  while(($stack = mysql_fetch_object($sql, $class)) !== false) $array[] = $stack;
   mysql_free_result($sql);
-  return $array;
+  return $shift ? array_shift($array) : $array;
 }
 
 //データベース登録のラッパー関数
 function InsertDatabase($table, $items, $values){
-  return mysql_query("INSERT INTO $table($items) VALUES($values)");
+  return mysql_query("INSERT INTO {$table}({$items}) VALUES({$values})");
 }
 
 //発言をデータベースに登録する (talk Table)
@@ -116,7 +118,7 @@ function TZTime(){
 //TZ 補正をかけた日時を返す
 function TZDate($format, $time){
   global $SERVER_CONF;
-  return ($SERVER_CONF->adjust_time_difference ? gmdate($format, $time) : date($format, $time));
+  return $SERVER_CONF->adjust_time_difference ? gmdate($format, $time) : date($format, $time);
 }
 
 //TIMESTAMP 形式の時刻を変換する
@@ -125,7 +127,7 @@ function ConvertTimeStamp($time_stamp, $convert_date = true){
 
   $time = strtotime($time_stamp);
   if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
-  return ($convert_date ? TZDate('Y/m/d (D) H:i:s', $time) : $time);
+  return $convert_date ? TZDate('Y/m/d (D) H:i:s', $time) : $time;
 }
 
 //時間(秒)を変換する
@@ -189,8 +191,8 @@ function CryptPassword($raw_password){
 //-- 出力関連 --//
 //変数表示関数 (デバッグ用)
 function PrintData($data, $name = NULL){
-  $str = (is_null($name) ? '' : $name . ': ');
-  $str .= ((is_array($data) || is_object($data)) ? print_r($data, true) : $data);
+  $str = is_null($name) ? '' : $name . ': ';
+  $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
   echo $str . '<br>';
 }
 
@@ -210,28 +212,27 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   }
 
   $option_list = explode(' ', $game_option . ' ' . $option_role);
-  //PrintData($option_list);
+  //PrintData($option_list); //テスト用
   $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'auto_open_cast',
-			      'decide', 'authority', 'poison', 'cupid', 'boss_wolf', 'poison_wolf',
-			      'mania', 'medium', 'liar', 'gentleman', 'sudden_death',
-			      'perverseness', 'full_mania', 'quiz', 'duel', 'chaos', 'chaosfull',
-			      'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role',
-			      'secret_sub_role', 'no_sub_role');
+			      'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+			      'cupid', 'medium', 'mania', 'decide', 'authority', 'liar', 'gentleman',
+			      'sudden_death', 'perverseness', 'full_mania', 'quiz', 'duel',
+			      'chaos', 'chaosfull', 'chaos_open_cast', 'chaos_open_cast_camp',
+			      'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role');
 
-  foreach($display_order_list as $this_option){
-    if(! in_array($this_option, $option_list)) continue;
-    if($GAME_OPT_MESS->$this_option == '') continue;
-
+  foreach($display_order_list as $option){
+    if(! in_array($option, $option_list)) continue;
+    if($GAME_OPT_MESS->$option == '') continue;
     $sentence = '';
-    if($this_option == 'cupid'){
-      $sentence = '14人または' . $CAST_CONF->$this_option . '人以上で';
+    if($option == 'cupid'){
+      $sentence = '14人または' . $CAST_CONF->$option . '人以上で';
     }
-    elseif(is_integer($CAST_CONF->$this_option)){
-      $sentence = $CAST_CONF->$this_option . '人以上で';
+    elseif(is_integer($CAST_CONF->$option)){
+      $sentence = $CAST_CONF->$option . '人以上で';
     }
-    $sentence .= $GAME_OPT_MESS->$this_option;
+    $sentence .= $GAME_OPT_MESS->$option;
 
-    $str .= $ROOM_IMG->Generate($this_option, $sentence);
+    $str .= $ROOM_IMG->Generate($option, $sentence);
   }
 
   return $str;
@@ -289,4 +290,29 @@ function OutputHTMLFooter($exit = false){
   $DB_CONF->Disconnect(); //DB 接続解除
   echo '</body></html>'."\n";
   if($exit) exit;
+}
+
+//共有フレーム HTML ヘッダ出力
+function OutputFrameHTMLHeader($title){
+  global $SERVER_CONF;
+
+  echo <<<EOF
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<html lang="ja"><head>
+<meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
+<title>{$title}</title>
+</head>
+
+EOF;
+}
+
+//フレーム HTML フッタ出力
+function OutputFrameHTMLFooter(){
+  echo <<<EOF
+<noframes><body>
+フレーム非対応のブラウザの方は利用できません。
+</body></noframes>
+</frameset></html>
+
+EOF;
 }
