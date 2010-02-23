@@ -318,6 +318,7 @@ function OutputRoomAction($type, $room_name = ''){
 function OutputRoomList(){
   global $DEBUG_MODE, $ROOM_IMG;
 
+  //return; //シークレットテスト用
   //ルームNo、ルーム名、コメント、最大人数、状態を取得
   $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
     "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";

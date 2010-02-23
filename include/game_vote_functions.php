@@ -1,10 +1,22 @@
 <?php
+//投票コマンドがあっているかチェック
+function CheckSituation($applay_situation){
+  global $RQ_ARGS;
+
+  if(is_array($applay_situation)){
+    if(in_array($RQ_ARGS->situation, $applay_situation)) return true;
+  }
+  elseif($RQ_ARGS->situation == $applay_situation) return true;
+
+  OutputVoteResult('無効な投票です');
+}
+
 //投票結果出力
 function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
-  global $back_url;
+  global $SERVER_CONF, $back_url;
 
   if($reset_vote) DeleteVote(); //今までの投票を全部削除
-  $title  = '汝は人狼なりや？[投票結果]';
+  $title  = $SERVER_CONF->title . ' [投票結果]';
   $header = '<div align="center"><a name="#game_top"></a>';
   $footer = '<br>'."\n" . $back_url . '</div>';
   OutputActionResult($title, $header . $sentence . $footer, '', $unlock);
@@ -2085,18 +2097,6 @@ function DistinguishRoleGroup($role){
     if(strpos($role, $key) !== false) return $value;
   }
   return 'human';
-}
-
-//投票コマンドがあっているかチェック
-function CheckSituation($applay_situation){
-  global $RQ_ARGS;
-
-  if(is_array($applay_situation)){
-    if(in_array($RQ_ARGS->situation, $applay_situation)) return true;
-  }
-  if($RQ_ARGS->situation == $applay_situation) return true;
-
-  OutputVoteResult('無効な投票です');
 }
 
 //ランダムメッセージを挿入する

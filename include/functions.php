@@ -196,6 +196,59 @@ function PrintData($data, $name = NULL){
   echo $str . '<br>';
 }
 
+//ページ送り用のリンクタグを出力する
+function OutputPageLink($url, $CONFIG, $total_count, $url_option, $reverse = NULL){
+  global $RQ_ARGS;
+
+  $page_count = ceil($total_count / $CONFIG->view);
+  $start_page = $RQ_ARGS->page == 'all' ? 1 : $RQ_ARGS->page;
+  if($page_count - $RQ_ARGS->page < $CONFIG->page){
+    $start_page = $page_count - $CONFIG->page + 1;
+    if($start_page < 1) $start_page = 1;
+  }
+  $end_page = $RQ_ARGS->page + $CONFIG->page - 1;
+  if($end_page > $page_count) $end_page = $page_count;
+
+  $url_stack = array('[Page]');
+  $url_header = '<a href="' . $url . '.php?';
+
+  if($page_count > $CONFIG->page && $RQ_ARGS->page > 1){
+    $url_stack[] = GeneratePageLink($url_header, $url_option, 1, '[1]...');
+    $url_stack[] = GeneratePageLink($url_header, $url_option, $start_page - 1, '&lt;&lt;');
+  }
+
+  for($page_number = $start_page; $page_number <= $end_page; $page_number++){
+    $url_stack[] = GeneratePageLink($url_header, $url_option, $page_number);
+  }
+
+  if($page_number <= $page_count){
+    $url_stack[] = GeneratePageLink($url_header, $url_option, $page_number, '&gt;&gt;');
+    $url_stack[] = GeneratePageLink($url_header, $url_option, $page_count, '...[' . $page_count . ']');
+  }
+  $url_stack[] = GeneratePageLink($url_header, $url_option, 'all');
+
+  if($url == 'old_log'){
+    $list = $url_option;
+    $list['page'] = 'page=' . $RQ_ARGS->page;
+    $list['reverse'] = 'reverse=' . ($reverse ? 'off' : 'on');
+    $url_stack[] = '[表示順]';
+    $url_stack[] = ($reverse ? '新↓古' : '古↓新');
+
+    $url = $url_header . implode('&', $list) . '">';
+    $url_stack[] =  $url . (($reverse xor $CONFIG->reverse) ? '元に戻す' : '入れ替える') . '</a>';
+  }
+  echo implode(' ', $url_stack);
+}
+
+//ページ送り用のリンクタグを作成する
+function GeneratePageLink($url, $list, $page, $title = NULL){
+  global $RQ_ARGS;
+  if($page == $RQ_ARGS->page) return '[' . $page . ']';
+  array_unshift($list, 'page=' . $page);
+  if(is_null($title)) $title = '[' . $page . ']';
+  return $url . implode('&', $list) . '">' . $title . '</a>';
+}
+
 //ゲームオプションの画像タグを作成する
 function GenerateGameOptionImage($game_option, $option_role = ''){
   global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;

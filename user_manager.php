@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'ICON_CONF', 'MESSAGE');
 
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
-$RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage($RQ_ARGS->room_no);
+$RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
 $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
@@ -168,9 +168,10 @@ function ConvertTrip($str){
 }
 
 //ユーザ登録画面表示
-function OutputEntryUserPage($room_no){
-  global $SERVER_CONF, $GAME_CONF, $ICON_CONF;
+function OutputEntryUserPage(){
+  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $RQ_ARGS;
 
+  extract($RQ_ARGS->ToArray()); //引数を取得
   $ROOM = RoomDataSet::LoadEntryUser($room_no);
   if(is_null($ROOM->id)){
     OutputActionResult('村人登録 [村番号エラー]', "{$room_no} 番地の村は存在しません。");
@@ -303,24 +304,41 @@ TAG;
 <tr><td>
 <fieldset><legend><img src="img/entry_user/icon.gif"></legend>
 <table class="icon">
-<tr>
+<tr><td colspan="5">
+<input id="fix_number" type="radio" name="icon_no"><label for="fix_number">手入力</label>
+<input type="text" name="icon_no" size="10px">(半角英数で入力してください)
+</td></tr>
 
 BODY;
 
   //アイコンの出力
-  $sql_icon = mysql_query("SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color
-				FROM user_icon WHERE icon_no > 0 ORDER BY icon_no");
+  $url_option = array('room_no' => 'room_no='. $room_no);
+  $icon_count = FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0");
+  echo '<tr><td colspan="5">'."\n";
+  OutputPageLink('user_manager', $ICON_CONF, $icon_count, $url_option);
+  echo "</td></tr>\n<tr>\n";
+
+  //ユーザアイコンのテーブルから一覧を取得
+  $query_icon = "SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color " .
+    "FROM user_icon WHERE icon_no > 0 ORDER BY icon_no";
+  if($RQ_ARGS->page != 'all'){
+    $query_icon .= sprintf(' LIMIT %d, %d', $ICON_CONF->view * ($RQ_ARGS->page - 1), $ICON_CONF->view);
+  }
+  $icon_list = FetchAssoc($query_icon);
+
+  //表の出力
   $count = 0;
-  while(($array = mysql_fetch_assoc($sql_icon)) !== false){
+  foreach($icon_list as $array){
+    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+    $count++;
     extract($array);
     $icon_location = $ICON_CONF->path . '/' . $icon_filename;
 
     echo <<<ICON
-<td><label for="$icon_no"><img src="$icon_location" width="$icon_width" height="$icon_height" style="border-color:$color;">
-$icon_name<br><font color="$color">◆</font><input type="radio" id="$icon_no" name="icon_no" value="$icon_no"></label></td>
+<td><label for="{$icon_no}"><img src="{$icon_location}" width="{$icon_width}" height="{$icon_height}" style="border-color:{$color};"> No. {$icon_no}<br> {$icon_name}<br>
+<font color="{$color}">◆</font><input type="radio" id="{$icon_no}" name="icon_no" value="{$icon_no}"></label></td>
 
 ICON;
-    if(++$count % 5 == 0) echo '</tr><tr>'; //5個ごとに改行
   }
 
   echo <<<FOOTER

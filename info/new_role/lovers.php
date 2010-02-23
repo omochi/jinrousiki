@@ -6,9 +6,10 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 </head>
 <body>
 <h1>恋人陣営</h1>
-<a href="./" target="_top">←メニュー</a>
-<a href="summary.php">一覧表に戻る</a><br>
 <p>
+<a href="./" target="_top">&lt;-メニュー</a>
+<a href="summary.php">←一覧表</a>
+</p>
 <p>
 <a href="#cupid_group">キューピッド系</a>
 </p>
@@ -22,11 +23,13 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <h3><a name="self_cupid">求愛者</a> (占い結果：村人、霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <pre>
 自分撃ち確定のキューピッド。
-
-※Ver. 1.4.0 α22〜
+</pre>
+<h4>Ver. 1.4.0 α22〜</h4>
+<pre>
 矢を撃った相手に自分を対象にした「<a href="sub_role.php#mind_receiver">受信者</a>」がつきます。
-
-[作成者からのコメント]
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 他の国に実在する役職です。
 Ver. 1.4.0 α22 から矢を撃った相手に自分のメッセージを(一方的に)
 送ることができるようになりました。
@@ -37,8 +40,9 @@ Ver. 1.4.0 α22 から矢を撃った相手に自分のメッセージを(一方的に)
 <pre>
 矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にするキューピッド。
 他人撃ちの場合は、さらに自分が二人を対象にした<a href="sub_role.php#mind_receiver">受信者</a>になります。
-
-[作成者からのコメント]
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 会話能力を持った恋人を作る上位キューピッドです。
 自分撃ちの場合は<a href="#self_cupid">求愛者</a>の相互撃ちと同様の状態になります。
 また、他人撃ちでも受信者になるので、矢を撃った二人の発言が

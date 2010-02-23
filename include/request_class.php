@@ -17,10 +17,11 @@ class RequestBase{
       if(is_array($value_list) && array_key_exists($item, $value_list))
 	$value = $value_list[$item];
       elseif(! $this->GetDefault($item, $value)){
-	$this->$item = NULL;
-	continue;
+	$value = NULL;
       }
-      $this->$item = empty($processor) ? $value : $processor($value);
+
+      $this->$item = empty($processor) ? $value :
+	(method_exists($this, $processor) ? $this->$processor($value) : $processor($value));
     }
   }
 
@@ -30,6 +31,12 @@ class RequestBase{
 
   function IsOn($arg){
     return $arg == 'on';
+  }
+
+  function SetPage($arg){
+    if($arg == 'all') return $arg;
+    $int = intval($arg);
+    return $int > 0 ? $int : 1;
   }
 
   function ToArray(){
@@ -72,7 +79,7 @@ class RequestBaseGamePlay extends RequestBaseGame{
   function RequestBaseGamePlay(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
-    $this->GetItems("$this->IsOn", 'get.list_down', 'get.play_sound');
+    $this->GetItems('IsOn', 'get.list_down', 'get.play_sound');
   }
 }
 
@@ -93,9 +100,10 @@ class RequestUserManager extends RequestBase{
   function __construct(){
     EncodePostData();
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
+    $this->GetItems('SetPage', 'get.page');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
-    $this->GetItems("$this->IsOn", 'post.entry');
+    $this->GetItems('IsOn', 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
     EscapeStrings($this->profile, false);
 
@@ -112,7 +120,7 @@ class RequestGamePlay extends RequestBaseGamePlay{
   function __construct(){
     EncodePostData();
     parent::__construct();
-    $this->GetItems("$this->IsOn", 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
+    $this->GetItems('IsOn', 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
     $this->GetItems('EscapeStrings', 'post.font_type');
     $this->GetItems(NULL, 'post.say');
     EscapeStrings($this->say, false);
@@ -163,7 +171,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
     parent::__construct();
     $this->GetItems('intval', 'post.vote_times');
-    $this->GetItems("$this->IsOn", 'post.vote');
+    $this->GetItems('IsOn', 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
     $this->GetItems('EscapeStrings', 'post.target_handle_name');
     $this->AttachTestParameters(); //テスト用引数のロード
@@ -176,14 +184,23 @@ class RequestOldLog extends RequestBase{
   function __construct(){
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no');
-      $this->GetItems("$this->IsOn", 'get.reverse_log', 'get.heaven_talk',
+      $this->GetItems('IsOn', 'get.reverse_log', 'get.heaven_talk',
 		      'get.heaven_only','get.debug', 'get.add_role');
       $this->AttachTestParameters();
     }
     else{
-      $this->GetItems(NULL, 'get.page', 'get.reverse');
-      $this->GetItems("$this->IsOn", 'get.add_role');
+      $this->GetItems(NULL, 'get.reverse');
+      $this->GetItems('IsOn', 'get.add_role');
+      $this->GetItems('SetPage', 'get.page');
     }
+  }
+}
+
+//-- icon_view.php --//
+class RequestIconView extends RequestBase{
+  function RequestIconView(){ $this->__construct(); }
+  function __construct(){
+    $this->GetItems('SetPage', 'get.page');
   }
 }
 
@@ -192,7 +209,8 @@ class RequestIconUpload extends RequestBase{
   function RequestIconUpload(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
-    $this->GetItems('EscapeStrings', 'post.name', 'post.color');
+    $this->GetItems('EscapeStrings', 'post.name', 'post.appearance', 'post.category',
+		    'post.author', 'post.color');
     $this->GetItems('intval', 'post.icon_no', 'file.size');
     $this->GetItems(NULL, 'post.command', 'file.type', 'file.tmp_name');
   }

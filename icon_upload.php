@@ -69,12 +69,18 @@ function UploadIcon(){
 
   extract($RQ_ARGS->ToArray()); //引数を展開
 
-  //アイコン名が空白かチェック
+  //空白チェック
   if($name == '') OutputActionResult($title, 'アイコン名を入力してください');
 
   //アイコン名の文字列長のチェック
-  if(strlen($name) > $USER_ICON->name){
-    OutputActionResult($title, $USER_ICON->IconNameMaxLength());
+  $text_list = array('name' => 'アイコン名',
+		     'appearance' => '出典',
+		     'category' => 'カテゴリ',
+		     'author' => 'アイコンの作者');
+  foreach($text_list as $text => $value){
+    if(strlen($text) > $USER_ICON->name){
+      OutputActionResult($title, $value . ': ' . $USER_ICON->IconNameMaxLength());
+    }
   }
 
   //ファイルサイズのチェック
@@ -124,7 +130,7 @@ function UploadIcon(){
   $DB_CONF->Connect(); //DB 接続
 
   //アイコンの名前が既に登録されていないかチェック
-  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '$name'") > 0){
+  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$name}'") > 0){
     OutputActionResult($title, 'アイコン名 "' . $name . '" は既に登録されています');
   }
 
@@ -148,9 +154,29 @@ function UploadIcon(){
   }
 
   //データベースに登録
+  $data = '';
   $session_id = $SESSION->Set(true); //セッション ID を取得
-  $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, session_id';
-  $values = "$icon_no, '$name', '$file_name', $width, $height, '$color', '$session_id'";
+  $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
+    'session_id, regist_date';
+  $values = "{$icon_no}, '{$name}', '{$file_name}', {$width}, {$height}, '{$color}', " .
+    "'{$session_id}', NOW()";
+
+  if(isset($appearance)){
+    $data .= '<br>[S]' . $appearance;
+    $items .= ', appearance';
+    $values .= ", '{$appearance}'";
+  }
+  if(isset($category)){
+    $data .= '<br>[C]' . $category;
+    $items .= ', category';
+    $values .= ", '{$category}'";
+  }
+  if(isset($author)){
+    $data .= '<br>[A]' . $author;
+    $items .= ', author';
+    $values .= ", '{$author}'";
+  }
+
   InsertDatabase('user_icon', $items, $values);
   mysql_query('COMMIT'); //一応コミット
   $DB_CONF->Disconnect(true); //DB 接続解除
@@ -161,10 +187,12 @@ function UploadIcon(){
 </head>
 <body>
 <p>ファイルをアップロードしました。<br>今だけやりなおしできます</p>
-<img src="{$ICON_CONF->path}/{$file_name}" width="{$width}" height="{$height}"><br>
-<table>
-<tr><td>No. {$icon_no}<font color="{$color}">◆</font>{$color}</td></tr>
-<tr><td>よろしいですか？</td></tr>
+<p>[S] 出典 / [C] カテゴリ / [A] アイコンの作者</p>
+<table><tr>
+<td><img src="{$ICON_CONF->path}/{$file_name}" width="{$width}" height="{$height}"></td>
+<td class="name">No. {$icon_no} {$name}<br><font color="{$color}">◆</font>{$color}{$data}</td>
+</tr>
+<tr><td colspan="2">よろしいですか？</td></tr>
 <tr><td><form method="POST" action="icon_upload.php">
   <input type="hidden" name="command" value="cancel">
   <input type="hidden" name="icon_no" value="$icon_no">
@@ -201,23 +229,33 @@ function OutputUploadIconPage(){
 <fieldset><legend>アイコン指定 (jpg, gif, png 画像を登録して下さい。{$icon_file_size_max})</legend>
 <form method="POST" action="icon_upload.php" enctype="multipart/form-data">
 <table>
-<tr><td><label>ファイル選択</label>
+<tr><td><label>ファイル選択</label></td>
+<td>
 <input type="file" name="file" size="80">
 <input type="hidden" name="max_file_size" value="{$USER_ICON->size}">
 <input type="hidden" name="command" value="upload">
 <input type="submit" value="登録">
 </td></tr>
 
-<tr><td><label>アイコンの名前</label>
-<input type="text" name="name" maxlength="20" size="20">{$icon_name_length_max}</td></tr>
+<tr><td><label>アイコンの名前</label></td>
+<td><input type="text" name="name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
 
-<tr><td><label>アイコンに合った色を選択してください</label></td></tr>
-<tr><td>
-<input id="fix_color" type="radio" name="color"><label for="fix_color">色を指定する</label>
+<tr><td><label>出典</label></td>
+<td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+
+<tr><td><label>カテゴリ</label></td>
+<td><input type="text" name="category" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+
+<tr><td><label>アイコンの作者</label></td>
+<td><input type="text" name="author" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+
+<tr><td><label>アイコン枠の色</label></td>
+<td>
+<input id="fix_color" type="radio" name="color"><label for="fix_color">手入力</label>
 <input type="text" name="color" size="10px" maxlength="7">(例：#6699CC)
 </td></tr>
 
-<tr><td>
+<tr><td colspan="2">
 <table class="color" align="center">
 <tr>
 

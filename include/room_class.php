@@ -35,6 +35,13 @@ class Room{
     $this->ParseOption();
   }
 
+  //option_role を追加ロードする
+  function LoadOption(){
+    $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = {$this->id}");
+    $this->option_role = new OptionManager($option_role);
+    $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
+  }
+
   //シーンに合わせた投票情報を取得する
   function LoadVote($action = NULL){
     global $RQ_ARGS;
@@ -57,7 +64,7 @@ class Room{
       switch($this->day_night){
       case 'beforegame':
 	$data = "uname, target_uname, situation";
-	$action = "situation = 'GAMESTART'";
+	$action = "situation = '" . (is_null($action) ? 'GAMESTART' : $action) . "'";
 	break;
 
       case 'day':

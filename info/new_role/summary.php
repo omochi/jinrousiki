@@ -6,8 +6,16 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 </head>
 <body>
 
-<p>◆新役職について [Ver. 1.4.0 β4]<br>
+<h1>新役職情報 [Ver. 1.4.0 β4]</h1>
+<p>
 ・調整中なのでバージョンアップするたびに変わる可能性があります。
+</p>
+<p>
+<a href="../" target="_top">&lt;-TOP</a>
+<a href="./" target="_top">←メニュー</a>
+<a href="#table">早見表</a>
+<a href="#reference">参考リンク</a>
+<a href="#memo">作成予定メモ</a>
 </p>
 <p>
 <a href="human.php">村人陣営</a>
@@ -19,6 +27,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="sub_role.php">サブ役職</a>
 </p>
 
+<h2><a name="table">早見表</a></h2>
 <p>
 <a href="#main_role">メイン役職</a>
 Ver. 1.4.0
@@ -940,18 +949,19 @@ Ver. 1.4.0
   </tr>
 </table>
 
+<h2><a name="reference">参考リンク</a></h2>
 <pre>
-◆作って欲しい役職などがあったらこちらのスレへどうぞ
-【ネタ歓迎】あったらいいな、こんな役職【ガチ大歓迎】
-http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50
+作って欲しい役職などがあったらこちらのスレへどうぞ
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">【ネタ歓迎】あったらいいな、こんな役職【ガチ大歓迎】</a>
 
 参考スレッド
-新役職提案スレッド＠やる夫
-http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50" target="_top">新役職提案スレッド＠やる夫</a>
+</pre>
 
-
-◎ 採用予定・作成中役職リスト
-○ 採用予定 (レス 99までの状況)
+<h2><a name="memo">作成予定メモ</a></h2>
+<h3>役職</h3>
+<h4>採用予定</h4>
+<pre>
 ・泥棒 (レス 13)
 挙動は案募集中
 
@@ -969,8 +979,9 @@ http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50
 挙動は未定
 
 ・主人公 (レス 89)
-
-○ 採用思案中
+</pre>
+<h4>採用思案中</h4>
+<pre>
 ・降霊術師 (レス 13)
 
 ・従者 (レス 13)
@@ -979,11 +990,12 @@ http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50
 ・蟲師 (レス 68)
 
 ・怠惰な死神 (レス85)
+</pre>
 
 
-◎村編成案
-○採用予定
+<h3>村編成案</h3>
+<h4>採用予定</h4>
+<pre>
 グレラン村 (レス 65)
-
 </pre>
 </body></html>

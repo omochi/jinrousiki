@@ -50,6 +50,17 @@ case 'dummy_boy':
   if($this->type == $this->uname){
 </pre>
 
+<h3>include/game_functions.php % 236行目付近 (2010/02/22 (Mon) 23:00)</h3>
+<pre>
+× $handle_name .= $real_user->GenarateShortRoleName();
+○ $handle_name .= $real_user->GenerateShortRoleName();
+</pre>
+
+<h3>include/user_class.php % 216行目付近</h3>
+<pre>
+× function GenarateShortRoleName(){
+○ function GenerateShortRoleName(){
+</pre>
 
 <h2>Ver. 1.4.0 β2</h2>
 <h3>include/game_vote_functions.php % 1188行目</h3>

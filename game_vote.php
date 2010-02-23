@@ -17,44 +17,33 @@ $DB_CONF->Connect(); //DB 接続
 $SESSION->Certify(); //セッション認証
 
 $ROOM =& new Room($RQ_ARGS); //村情報をロード
+if($ROOM->IsFinished()) OutputVoteError('ゲーム終了', 'ゲームは終了しました');
 $ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
-
-if($ROOM->IsFinished()){ //ゲーム終了
-  OutputActionResult('投票エラー',
-		     '<div align="center"><a name="#game_top"></a>' .
-		     'ゲームは終了しました<br>'."\n" . $back_url . '</div>');
-}
-
-if(! $SELF->IsLive()){ //生存者以外は無効
-  OutputActionResult('投票エラー',
-		     '<div align="center"><a name="#game_top"></a>' .
-		     '生存者以外は投票できません<br>'."\n" . $back_url . '</div>');
-}
+if(! $SELF->IsLive()) OutputVoteError('非生存者', '生存者以外は投票できません');
 
 //-- メインルーチン --//
 if($RQ_ARGS->vote){ //投票処理
   if($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票処理
-    if($RQ_ARGS->situation == 'GAMESTART'){
+    switch($RQ_ARGS->situation){
+    case 'GAMESTART':
       $INIT_CONF->LoadClass('CAST_CONF'); //配役情報をロード
       VoteGameStart();
-    }
-    elseif($RQ_ARGS->situation == 'KICK_DO'){
+      break;
+
+    case 'KICK_DO':
       VoteKick($RQ_ARGS->target_handle_name);
-    }
-    else{ //ここに来たらロジックエラー
-      OutputActionResult('投票エラー[ゲーム開始前投票]',
-			 '<div align="center"><a name="#game_top"></a>' .
-			 'プログラムエラーです。管理者に問い合わせてください<br>'."\n" .
-			 $back_url . '</div>');
+      break;
+
+    default: //ここに来たらロジックエラー
+      OutputVoteError('ゲーム開始前投票');
+      break;
     }
   }
   elseif($RQ_ARGS->target_no == 0){
-    OutputActionResult('投票エラー',
-		       '<div align="center"><a name="#game_top"></a>' .
-		       '投票先を指定してください<br>'."\n" . $back_url . '</div>');
+    OutputVoteError('空投票', '投票先を指定してください');
   }
   elseif($ROOM->IsDay()){ //昼の処刑投票処理
     VoteDay();
@@ -63,50 +52,48 @@ if($RQ_ARGS->vote){ //投票処理
     VoteNight();
   }
   else{ //ここに来たらロジックエラー
-    OutputActionResult('投票エラー',
-		       '<div align="center"><a name="#game_top"></a>' .
-		       'プログラムエラーです。管理者に問い合わせてください<br>'."\n" .
-		       $back_url . '</div>');
+    OutputVoteError('投票コマンドエラー', '投票先を指定してください');
   }
 }
-elseif($ROOM->IsBeforeGame()){ //ゲーム開始 or Kick 投票ページ出力
+else{ //シーンに合わせた投票ページを出力
   $INIT_CONF->LoadClass('VOTE_MESS');
-  OutputVoteBeforeGame();
-}
-elseif($ROOM->IsDay()){ //昼の処刑投票ページ出力
-  $INIT_CONF->LoadClass('VOTE_MESS');
-  OutputVoteDay();
-}
-elseif($ROOM->IsNight()){ //夜の投票ページ出力
-  $INIT_CONF->LoadClass('VOTE_MESS');
-  OutputVoteNight();
-}
-else{ //投票済み //ここに来たらロジックエラーじゃないかな？
-  OutputActionResult('投票エラー',
-		     '<div align="center"><a name="#game_top"></a>' .
-		     '既に投票されております<br>'."\n" . $back_url . '</div>');
-}
+  switch($ROOM->day_night){
+  case 'beforegame':
+    OutputVoteBeforeGame();
+    break;
 
+  case 'day':
+    OutputVoteDay();
+    break;
+
+  case 'night':
+    OutputVoteNight();
+    break;
+
+  default: //ここに来たらロジックエラー
+    OutputVoteError('投票シーンエラー');
+    break;
+  }
+}
 $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
-//投票ページ HTML ヘッダ出力
-function OutputVotePageHeader(){
-  global $ROOM, $php_argv;
+//エラーページ出力
+function OutputVoteError($title, $sentence = NULL){
+  global $back_url;
 
-  OutputHTMLHeader('汝は人狼なりや？[投票]', 'game');
-  if($ROOM->day_night != ''){
-    echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
+  $header = '<div align="center"><a name="#game_top"></a>';
+  $footer = "<br>\n" . $back_url . '</div>';
+  if(is_null($sentence)) $sentence = 'プログラムエラーです。管理者に問い合わせてください。';
+  OutputActionResult('投票エラー [' . $title .']', $header . $sentence . $footer);
+}
+
+//テーブルを排他的ロック
+function LockTable(){
+  $query = "LOCK TABLES room WRITE, user_entry WRITE, vote WRITE, system_message WRITE, talk WRITE";
+  if(! mysql_query($query)){
+    OutputVoteResult('サーバが混雑しています。<br>再度投票をお願いします。');
   }
-  echo <<<EOF
-<link rel="stylesheet" href="css/game_vote.css">
-<link rel="stylesheet" id="day_night">
-</head><body>
-<a name="#game_top"></a>
-<form method="POST" action="game_vote.php?${php_argv}#game_top">
-<input type="hidden" name="vote" value="on">
-
-EOF;
 }
 
 //ゲーム開始投票の処理
@@ -130,9 +117,10 @@ function VoteGameStart(){
   }
 
   //投票済みチェック
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = 0 " .
-    "AND situation = 'GAMESTART' AND uname = '{$SELF->uname}'";
-  if(FetchResult($query) > 0) OutputVoteResult('ゲームスタート：投票済みです');
+  //DeleteVote(); //テスト用
+  $ROOM->LoadVote();
+  //PrintData($ROOM->vote);
+  if(isset($ROOM->vote[$SELF->uname])) OutputVoteResult('ゲームスタート：投票済みです');
   LockTable(); //テーブルを排他的ロック
 
   //投票処理
@@ -152,18 +140,14 @@ function AggregateVoteGameStart($force_start = false){
   global $GAME_CONF, $CAST_CONF, $MESSAGE, $ROOM, $USERS;
 
   CheckSituation('GAMESTART');
-
-  //ユーザ総数を取得
-  $user_count = $USERS->GetUserCount();
+  $user_count = $USERS->GetUserCount();  //ユーザ総数を取得
 
   //投票総数を取得
   if($force_start){ //強制開始モード時はスキップ
     $vote_count = $user_count;
   }
   else{
-    $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} " .
-      "AND date = 0 AND situation = 'GAMESTART'";
-    $vote_count = FetchResult($query);
+    $vote_count = count($ROOM->vote) + 1; //投票済み総数 + 自分の投票
 
     //身代わり君使用なら身代わり君の分を加算
     if($ROOM->IsDummyBoy() && ! $ROOM->IsQuiz()) $vote_count++;
@@ -173,12 +157,12 @@ function AggregateVoteGameStart($force_start = false){
   if($vote_count < min(array_keys($CAST_CONF->role_list)) || $vote_count != $user_count) return false;
 
   //-- 配役決定ルーチン --//
-  //配役設定オプションの情報を取得
-  $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = {$ROOM->id}");
+  $ROOM->LoadOption(); //配役設定オプションの情報を取得
+  //PrintData($ROOM->option_role);
 
   //配役決定用変数をセット
   $uname_list        = $USERS->GetLivingUsers(); //ユーザ名の配列
-  $role_list         = GetRoleList($user_count, $option_role); //役職リストを取得
+  $role_list         = GetRoleList($user_count, $ROOM->option_role->row); //役職リストを取得
   $fix_uname_list    = array(); //役割の決定したユーザ名を格納する
   $fix_role_list     = array(); //ユーザ名に対応する役割
   $remain_uname_list = array(); //希望の役割になれなかったユーザ名を一時的に格納
@@ -344,18 +328,18 @@ function AggregateVoteGameStart($force_start = false){
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
   foreach($now_sub_role_list as $role){
-    if(strpos($option_role, $role) !== false && $user_count >= $CAST_CONF->$role){
+    if($ROOM->IsOption($role) && $user_count >= $CAST_CONF->$role){
       $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $role;
     }
   }
-  if(strpos($option_role, 'liar') !== false){ //狼少年村
+  if($ROOM->IsOption('liar')){ //狼少年村
     $role = 'liar';
-    array_push($delete_role_list, $role);
+    $delete_role_list[] = $role;
     for($i = 0; $i < $user_count; $i++){ //全員に一定確率で狼少年をつける
       if(mt_rand(1, 100) <= 70) $fix_role_list[$i] .= ' ' . $role;
     }
   }
-  if(strpos($option_role, 'gentleman') !== false){ //紳士・淑女村
+  if($ROOM->IsOption('gentleman')){ //紳士・淑女村
     $sub_role_list = array('male' => 'gentleman', 'female' => 'lady');
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員に性別に応じて紳士か淑女をつける
@@ -364,7 +348,7 @@ function AggregateVoteGameStart($force_start = false){
     }
   }
 
-  if(strpos($option_role, 'sudden_death') !== false){ //虚弱体質村
+  if($ROOM->IsOption('sudden_death')){ //虚弱体質村
     $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
@@ -375,15 +359,15 @@ function AggregateVoteGameStart($force_start = false){
       }
     }
   }
-  elseif(strpos($option_role, 'perverseness') !== false){ //天邪鬼村
+  elseif($ROOM->IsOption('perverseness')){ //天邪鬼村
     $role = 'perverseness';
-    array_push($delete_role_list, $role);
+    $delete_role_list[] = $role;
     for($i = 0; $i < $user_count; $i++){
       $fix_role_list[$i] .= ' ' . $role;
     }
   }
 
-  if($chaos && strpos($option_role, 'no_sub_role') === false){
+  if($chaos && ! $ROOM->IsOption('no_sub_role')){
     //ランダムなサブ役職のコードリストを作成
     $sub_role_keys = array_keys($GAME_CONF->sub_role_list);
     // $sub_role_keys = array('authority', 'rebel', 'upper_luck', 'random_voter'); //デバッグ用
@@ -404,12 +388,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   //デバッグ用
-  /*
-  PrintData($option_role);
-  PrintData($fix_uname_list);
-  PrintData($fix_role_list);
-  DeleteVote(); return false;
-  */
+  //PrintData($fix_uname_list); PrintData($fix_role_list); DeleteVote(); return false;
 
   //ゲーム開始
   mysql_query("UPDATE room SET status = 'playing', date = 1, day_night = 'night',
@@ -427,13 +406,13 @@ function AggregateVoteGameStart($force_start = false){
 
   //役割リスト通知
   if($chaos){
-    if(strpos($option_role, 'chaos_open_cast_camp') !== false){
+    if($ROOM->IsOption('chaos_open_cast_camp')){
       $sentence = GenerateRoleNameList($role_count_list, 'camp');
     }
-    elseif(strpos($option_role, 'chaos_open_cast_role') !== false){
+    elseif($ROOM->IsOption('chaos_open_cast_role')){
       $sentence = GenerateRoleNameList($role_count_list, 'role');
     }
-    elseif(strpos($option_role, 'chaos_open_cast') !== false){
+    elseif($ROOM->IsOption('chaos_open_cast')){
       $sentence = GenerateRoleNameList($role_count_list);
     }
     else{
@@ -845,10 +824,39 @@ function VoteNight(){
   else OutputVoteResult('データベースエラー', true);
 }
 
+//投票ページ HTML ヘッダ出力
+function OutputVotePageHeader(){
+  global $SERVER_CONF, $ROOM, $php_argv;
+
+  OutputHTMLHeader($SERVER_CONF->title . ' [投票]', 'game');
+  if($ROOM->day_night != ''){
+    echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
+  }
+  echo <<<EOF
+<link rel="stylesheet" href="css/game_vote.css">
+<link rel="stylesheet" id="day_night">
+</head><body>
+<a name="#game_top"></a>
+<form method="POST" action="game_vote.php?{$php_argv}#game_top">
+<input type="hidden" name="vote" value="on">
+
+EOF;
+}
+
+//シーンの一致チェック
+function CheckScene(){
+  global $ROOM, $SELF;
+
+  if($ROOM->day_night != $SELF->last_load_day_night){
+    OutputVoteResult('戻ってリロードしてください');
+  }
+}
+
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
   global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
+  CheckScene(); //投票する状況があっているかチェック
   OutputVotePageHeader();
   echo '<input type="hidden" name="situation" value="KICK_DO">'."\n";
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
@@ -856,35 +864,35 @@ function OutputVoteBeforeGame(){
   $count  = 0;
   $width  = $ICON_CONF->width;
   $height = $ICON_CONF->height;
-  foreach($USERS->rows as $this_user_no => $this_user){
-    $this_handle = $this_user->handle_name;
-    $this_file   = $ICON_CONF->path . '/' . $this_user->icon_filename;
-    $this_color  = $this_user->color;
+  foreach($USERS->rows as $user_no => $user){
+    if($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+    $count++;
 
-    //HTML出力
+    $icon = $ICON_CONF->path . '/' . $user->icon_filename;
+    if(! $user->IsDummyBoy() && ($GAME_CONF->self_kick || ! $user->IsSelf())){
+      $radio = '<input type="radio" id="' . $user->handle_name .
+	'" name="target_handle_name" value="' . $user->handle_name . '">'."\n";
+    }
+    else
+      $radio = '';
+
     echo <<<EOF
-<td><label for="$this_handle">
-<img src="$this_file" width="$width" height="$height" style="border-color: $this_color;">
-<font color="$this_color">◆</font>$this_handle<br>
+<td><label for="{$user->handle_name}">
+<img src="{$icon}" width="{$width}" height="{$height}" style="border-color: {$user->color};">
+<font color="{$user->color}">◆</font>{$user->handle_name}<br>
+{$radio}</label></td>
 
 EOF;
-
-    if(! $this_user->IsDummyBoy() && ($GAME_CONF->self_kick || ! $this_user->IsSelf())){
-      echo '<input type="radio" id="' . $this_handle . '" name="target_handle_name" value="' .
-	$this_handle . '">'."\n";
-    }
-    echo '</label></td>'."\n";
-    if(++$count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
   }
 
   echo <<<EOF
 </tr></table>
 <span class="vote-message">* Kick するには {$GAME_CONF->kick} 人の投票が必要です</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td><a href="game_up.php?$php_argv#game_top">←戻る &amp; reload</a></td>
+<td><a href="game_up.php?{$php_argv}#game_top">←戻る &amp; reload</a></td>
 <td><input type="submit" value="{$VOTE_MESS->kick_do}"></form></td>
 <td>
-<form method="POST" action="game_vote.php?$php_argv#game_top">
+<form method="POST" action="game_vote.php?{$php_argv}#game_top">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">
 <input type="submit" value="{$VOTE_MESS->game_start}"></form>
@@ -900,7 +908,7 @@ function OutputVoteDay(){
   global $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
   //投票する状況があっているかチェック
-  CheckDayNight();
+  CheckScene();
 
   //投票回数を取得
   $vote_times = GetVoteTimes();
@@ -963,7 +971,7 @@ function OutputVoteNight(){
   global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
   //投票する状況があっているかチェック
-  CheckDayNight();
+  CheckScene();
 
   //投票済みチェック
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
@@ -1214,23 +1222,6 @@ EOF;
 </body></html>
 
 EOF;
-}
-
-//テーブルを排他的ロック
-function LockTable(){
-  if(! mysql_query("LOCK TABLES room WRITE, user_entry WRITE, vote WRITE,
-			system_message WRITE, talk WRITE")){
-    OutputVoteResult('サーバが混雑しています。<br>再度投票をお願いします。');
-  }
-}
-
-//投票する状況があっているかチェック
-function CheckDayNight(){
-  global $ROOM, $SELF;
-
-  if($ROOM->day_night != $SELF->last_load_day_night){
-    OutputVoteResult('戻ってリロードしてください');
-  }
 }
 
 //投票済みチェック

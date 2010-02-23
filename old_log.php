@@ -51,48 +51,9 @@ EOF;
   $current_time = TZTime(); // 現在時刻の取得
 
   //ページリンクの出力
-  if(is_null($page)) $page = 1;
-  $page_count = ceil($room_count / $LOG_CONF->room);
-  $start_page = $page == 'all' ? 1 : $page;
-  if($page_count - $page < $LOG_CONF->page){
-    $start_page = $page_count - $LOG_CONF->page + 1;
-    if($start_page < 1) $start_page = 1;
-  }
-  $end_page = $page + $LOG_CONF->page - 1;
-  if($end_page > $page_count) $end_page = $page_count;
-
-  $url_stack = array('[ページ]');
-  $url_header = '<a href="old_log.php?';
-  $url_option = array('reverse='. ($is_reverse ? 'on' : 'off'));
-  if($RQ_ARGS->add_role) $url_option[] = 'add_role=on';
-
-  if($page_count > $LOG_CONF->page && $page > 1){
-    $url_stack[] = GeneratePageLink($url_option, 1, '[1]...');
-    $url_stack[] = GeneratePageLink($url_option, $start_page - 1, '&lt;&lt;');
-  }
-
-  for($page_number = $start_page; $page_number <= $end_page; $page_number++){
-    if($page == $page_number)
-      $url_stack[] = "[$page_number]";
-    else
-      $url_stack[] = GeneratePageLink($url_option, $page_number);
-  }
-
-  if($page_number <= $page_count){
-    $url_stack[] = GeneratePageLink($url_option, $page_number, '&gt;&gt;');
-    $url_stack[] = GeneratePageLink($url_option, $page_count, '...[' . $page_count . ']');
-  }
-  $url_stack[] = GeneratePageLink($url_option, 'all');
-
-  $list = $url_option;
-  $list[] = 'reverse=' . ($is_reverse ? 'off' : 'on');
-  $url_stack[] = '[表示順]';
-  $url_stack[] = ($is_reverse ? '新↓古' : '古↓新');
-
-  $url = $url_header . implode('&', $list) . '">';
-  $url_stack[] =  $url . (($is_reverse xor $LOG_CONF->reverse) ? '元に戻す' : '入れ替える') . '</a>';
-  echo implode(' ', $url_stack);
-
+  $url_option = array('reverse' => 'reverse='. ($reverse ? 'on' : 'off'));
+  if($RQ_ARGS->add_role) $url_option['add_role'] = 'add_role=on';
+  OutputPageLink('old_log', $LOG_CONF, $room_count, $url_option, $is_reverse);
   echo <<<EOF
 </td></tr>
 <tr><td>
@@ -102,10 +63,10 @@ EOF;
 EOF;
 
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数ごと表示
-  $query = "SELECT room_no FROM room ORDER BY room_no";
+  $query = "SELECT room_no FROM room WHERE status = 'finished' ORDER BY room_no";
   if($is_reverse) $query .=  ' DESC';
-  if($page != 'all'){
-    $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->room * ($page - 1), $LOG_CONF->room);
+  if($RQ_ARGS->page != 'all'){
+    $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->view * ($RQ_ARGS->page - 1), $LOG_CONF->view);
   }
   $room_no_list = FetchArray($query);
 
@@ -158,13 +119,6 @@ EOF;
 </div>
 
 EOF;
-}
-
-function GeneratePageLink($list, $page, $title = NULL){
-  $header = '<a href="old_log.php?';
-  array_unshift($list, 'page=' . $page);
-  if(is_null($title)) $title = '[' . $page . ']';
-  return $header . implode('&', $list) . '">' . $title . '</a>';
 }
 
 //指定の部屋番号のログを出力する

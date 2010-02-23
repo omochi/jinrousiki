@@ -630,24 +630,26 @@ class VictoryImage extends VictoryImageBase{
 
 //ゲームプレイ時のアイコン表示設定
 class IconConfig{
+  var $path   = 'user_icon'; //ユーザアイコンのパス
+  var $dead   = 'grave.gif'; //死者
+  var $wolf   = 'wolf.gif';  //狼
   var $width  = 45; //表示サイズ(幅)
   var $height = 45; //表示サイズ(高さ)
-  var $path   = 'user_icon'; //ユーザアイコンのパス
-  var $dead   = 'img/grave.gif'; //死者
-  var $wolf   = 'img/wolf.gif';  //狼
+  var $view   = 50; //一画面に表示するアイコンの数
+  var $page   = 10; //一画面に表示するページ数の数
 
   function IconConfig(){ $this->__construct(); }
   function __construct(){
     $this->path = JINRO_ROOT . '/' . $this->path;
-    $this->dead = JINRO_ROOT . '/' . $this->dead;
-    $this->wolf = JINRO_ROOT . '/' . $this->wolf;
+    $this->dead = JINRO_IMG  . '/' . $this->dead;
+    $this->wolf = JINRO_IMG  . '/' . $this->wolf;
   }
 }
 
 //アイコン登録設定
 class UserIcon{
   var $disable_upload = false; //true; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
-  var $name   = 20;    //アイコン名につけられる文字数(半角)
+  var $name   = 30;    //アイコン名につけられる文字数(半角)
   var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
   var $width  = 45;    //アップロードできるアイコンの最大幅
   var $height = 45;    //アップロードできるアイコンの最大高さ
@@ -655,7 +657,7 @@ class UserIcon{
 
   // アイコンの文字数
   function IconNameMaxLength(){
-    return 'アイコン名は半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
+    return '半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
   }
 
   // アイコンのファイルサイズ
@@ -682,7 +684,7 @@ class Sound extends SoundBase{
 
 //過去ログ表示設定
 class OldLogConfig{
-  var $room = 20;  //一画面に表示する村の数
-  var $page = 5; //一画面に表示するページ数の数
+  var $view = 20; //一画面に表示する村の数
+  var $page =  5; //一画面に表示するページ数の数
   var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }

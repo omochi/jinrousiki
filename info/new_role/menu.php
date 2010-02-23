@@ -7,11 +7,11 @@ OutputHTMLHeader('糠舔喀攫鼠 - [メニュ〖]', 'info_menu');
 <body>
 <div class="menu">糠舔喀攫鼠</div>
 <ul>
-  <li><a href="summary.php" target="body">玲斧山</a></li>
+  <li><a href="summary.php" target="body">&lt; 玲斧山 &gt;</a></li>
   <li><a href="../" target="_top"> 攫鼠办枉</a></li>
   <li><a href="../../" target="_top"> TOP</a></li>
   <li>→※→※→※→</li>
-  <li><a href="human.php" target="body">录客控蹦</a></li>
+  <li><a href="human.php" target="body">&lt; 录客控蹦 &gt;</a></li>
   <li><a href="human.php#human_group" target="body">录客废</a></li>
   <li><a href="human.php#mage_group" target="body">狸い徽废</a></li>
   <li><a href="human.php#necromancer_group" target="body">晤墙荚废</a></li>
@@ -26,24 +26,24 @@ OutputHTMLHeader('糠舔喀攫鼠 - [メニュ〖]', 'info_menu');
   <li><a href="human.php#jealousy_group" target="body">抖杀废</a></li>
   <li><a href="human.php#mania_group" target="body">坷厦マニア废</a></li>
   <li>→※→※→※→</li>
-  <li><a href="wolf.php" target="body">客系控蹦</a></li>
+  <li><a href="wolf.php" target="body">&lt; 客系控蹦 &gt;</a></li>
   <li><a href="wolf.php#wolf_group" target="body">客系废</a></li>
   <li><a href="wolf.php#mad_group" target="body">陡客废</a></li>
   <li>→※→※→※→</li>
-  <li><a href="fox.php" target="body">团秆控蹦</a></li>
+  <li><a href="fox.php" target="body">&lt; 团秆控蹦 &gt;</a></li>
   <li><a href="fox.php#fox_group" target="body">团秆废</a></li>
   <li><a href="fox.php#child_fox_group" target="body">灰秆废</a></li>
   <li>→※→※→※→</li>
-  <li><a href="lovers.php" target="body">硒客控蹦</a></li>
+  <li><a href="lovers.php" target="body">&lt; 硒客控蹦 &gt;</a></li>
   <li><a href="lovers.php#cupid_group" target="body">キュ〖ピッド废</a></li>
   <li>→※→※→※→</li>
-  <li><a href="quiz.php" target="body">叫玛荚控蹦</a></li>
+  <li><a href="quiz.php" target="body">&lt; 叫玛荚控蹦 &gt;</a></li>
   <li><a href="quiz.php#quiz" target="body">叫玛荚废</a></li>
   <li>→※→※→※→</li>
-  <li><a href="chiroptera.php" target="body">辋轷控蹦</a></li>
+  <li><a href="chiroptera.php" target="body">&lt; 辋轷控蹦 &gt;</a></li>
   <li><a href="chiroptera.php#chiroptera_group" target="body">辋轷废</a></li>
   <li>→※→※→※→</li>
-  <li><a href="sub_role.php" target="body">サブ舔喀</a></li>
+  <li><a href="sub_role.php" target="body">&lt; サブ舔喀 &gt;</a></li>
   <li><a href="sub_role.php#chicken_group" target="body">井看荚废</a></li>
   <li><a href="sub_role.php#liar_group" target="body">系警钳废</a></li>
   <li><a href="sub_role.php#authority_group" target="body">涪蜗荚废</a></li>

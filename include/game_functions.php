@@ -298,15 +298,14 @@ function OutputRealTimer($start_time, $end_time){
   echo '<script type="text/javascript" src="javascript/output_realtime.js"></script>'."\n";
   echo '<script language="JavaScript"><!--'."\n";
   echo 'var sentence = "' . $sentence . '";'."\n";
-  echo "var end_date = {$end_date};\n";
-  echo "var diff_seconds = Math.floor((end_date - {$start_date}) / 1000);\n";
-  echo "var time_lag = Math.floor((new Date() - {$server_date}) / 1000);\n";
+  echo "var end_date = {$end_date} * 1 + (new Date() - {$server_date});\n";
+  echo "var diff_seconds = Math.floor(({$end_date} - {$start_date}) / 1000);\n";
   echo '// --></script>'."\n";
 }
 
 //JavaScript の Date() オブジェクト作成コードを生成する
 function GenerateJavaScriptDate($time){
-  $time_list = explode(',', TZDate('Y, m, j, G, i, s', $time));
+  $time_list = explode(',', TZDate('Y,m,j,G,i,s', $time));
   $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
   return 'new Date(' . implode(',', $time_list) . ')';
 }
@@ -468,7 +467,7 @@ function OutputPlayerList(){
 }
 
 //役職名のタグを作成する
-//1. User->GenarateShortRoleName() との対応を考える
+//1. User->GenerateShortRoleName() との対応を考える
 //2. GenerateRoleNameList() @ game_vote_functions.php との対応を考える
 function GenerateRoleName($role, $css = '', $sub_role = false){
   global $GAME_CONF;

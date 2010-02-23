@@ -11,13 +11,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 ・Ver. 1.3 〜 Ver. 1.4 に対応 (img/room_option をそのまま差し替えてください)
 </p>
 
-<p>Ver. 1.4.0 β3 アップロード (2010/02/16 (Tue) 03:53:55)
- → <a href="src/">ダウンロード</a>
- → <a href="info/develop/debug.php">デバッグ情報</a><br>
+<p>Ver. 1.4.0 β3 アップロード (2010/02/16 (Tue) 03:53:55) → <a href="src/">ダウンロード</a><br>
 ・自動霊界オフオプションの実装<br>
 ・呪狼の仕様変更<br>
 ・色々バグ修正<br>
-
+→ <a href="info/develop/debug.php">デバッグ情報</a> (2010/02/22 (Mon) 23:00 更新)
 </p>
 
 <p>開発状況</p>

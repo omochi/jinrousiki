@@ -1,6 +1,6 @@
 function output_realtime(){
   var seconds, time, value;
-  var left_seconds = Math.floor((end_date - new Date()) / 1000) - time_lag;
+  var left_seconds = Math.floor((end_date - new Date()) / 1000);
 
   if(left_seconds > 0){
     var left_time = new Date(0, 0, 0, 0, 0, left_seconds);
