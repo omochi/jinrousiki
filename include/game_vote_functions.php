@@ -923,7 +923,7 @@ function AggregateVoteDay(){
     //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
     $sentence = $USERS->GetHandleName($uname) . "\t" . $target . "\t" .
       $voted_number ."\t" . $vote_number . "\t" . $RQ_ARGS->vote_times;
-    InsertSystemMessage($sentence, 'VOTE_KILL');
+    $ROOM->SystemMessage($sentence, 'VOTE_KILL');
   }
 
   //最大得票数のユーザ名 (処刑候補者) のリストを取得
@@ -989,7 +989,7 @@ function AggregateVoteDay(){
       //鑑定結果を登録
       $virtual_handle_name = $USERS->ByVirtual($this_target->user_no)->handle_name;
       $sentence = $user->handle_name . "\t" . $virtual_handle_name . "\t" . $this_result;
-      InsertSystemMessage($sentence, 'PHARMACIST_RESULT');
+      $ROOM->SystemMessage($sentence, 'PHARMACIST_RESULT');
     }
 
     //処刑された人が毒を持っていた場合
@@ -1080,18 +1080,18 @@ function AggregateVoteDay(){
 
     if($USERS->IsAppear('necromancer')){ //霊能者の処理
       $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $necromancer_result);
-      InsertSystemMessage($sentence, $action);
+      $ROOM->SystemMessage($sentence, $action);
     }
 
     if($USERS->IsAppear('soul_necromancer')){ //雲外鏡の処理
       $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
-      InsertSystemMessage($sentence, 'SOUL_' . $action);
+      $ROOM->SystemMessage($sentence, 'SOUL_' . $action);
     }
 
     if($USERS->IsAppear('dummy_necromancer')){ //夢枕人は「村人」⇔「人狼」反転
       if($necromancer_result == 'human')    $necromancer_result = 'wolf';
       elseif($necromancer_result == 'wolf') $necromancer_result = 'human';
-      InsertSystemMessage($sentence_header . $necromancer_result, 'DUMMY_' . $action);
+      $ROOM->SystemMessage($sentence_header . $necromancer_result, 'DUMMY_' . $action);
     }
   }
 
@@ -1162,8 +1162,9 @@ function AggregateVoteDay(){
   if($ROOM->test_mode) return $vote_message_list;
 
   if($vote_kill_uname != ''){ //夜に切り替え
-    mysql_query("UPDATE room SET day_night = 'night' WHERE room_no = {$ROOM->id}"); //夜にする
-    InsertSystemTalk('NIGHT', ++$ROOM->system_time, 'night system'); //夜がきた通知
+    $ROOM->day_night = 'night';
+    SendQuery("UPDATE room SET day_night = '{$ROOM->day_night}' WHERE room_no = {$ROOM->id}"); //夜にする
+    $ROOM->Talk('NIGHT'); //夜がきた通知
     if(! CheckVictory()) InsertRandomMessage(); //ランダムメッセージ
   }
   else{ //再投票処理
@@ -1172,8 +1173,8 @@ function AggregateVoteDay(){
 			AND date = {$ROOM->date} AND type = 'VOTE_TIMES'");
 
     //システムメッセージ
-    InsertSystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
-    InsertSystemTalk("再投票になりました( {$RQ_ARGS->vote_times} 回目)", ++$ROOM->system_time);
+    $ROOM->SystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
+    $ROOM->Talk("再投票になりました( {$RQ_ARGS->vote_times} 回目)");
     CheckVictory(true); //勝敗判定
   }
   $ROOM->UpdateTime(); //最終書き込みを更新
@@ -1386,7 +1387,7 @@ function AggregateVoteNight(){
 
 	//護衛成功メッセージを作成
 	$sentence = $user->handle_name . "\t" . $USERS->GetHandleName($wolf_target->uname, true);
-	InsertSystemMessage($sentence, 'GUARD_SUCCESS');
+	$ROOM->SystemMessage($sentence, 'GUARD_SUCCESS');
       }
       if($guarded_uname != '') break;
     }
@@ -1396,7 +1397,7 @@ function AggregateVoteNight(){
 
     //襲撃先が妖狐の場合は失敗する
     if($wolf_target->IsFox() && ! $wolf_target->IsRole('poison_fox', 'white_fox', 'child_fox')){
-      InsertSystemMessage($wolf_target->handle_name, 'FOX_EAT');
+      $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
       break;
     }
 
@@ -1417,7 +1418,7 @@ function AggregateVoteNight(){
       if($wolf_target->IsRole('human')) $voted_wolf->LostAbility(); //村人なら能力失効
 
       $sentence = $voted_wolf->handle_name . "\t" . $wolf_target->handle_name . "\t";
-      InsertSystemMessage($sentence . $wolf_target->main_role, 'TONGUE_WOLF_RESULT');
+      $ROOM->SystemMessage($sentence . $wolf_target->main_role, 'TONGUE_WOLF_RESULT');
     }
 
     if($wolf_target->IsPoison()){ //毒死判定処理
@@ -1458,7 +1459,7 @@ function AggregateVoteNight(){
       if($target->IsRole($hunt_target_list)){
 	$USERS->Kill($target->user_no, 'HUNTED');
 	$sentence = $user->handle_name . "\t" . $target->handle_name;
-	InsertSystemMessage($sentence, 'GUARD_HUNTED');
+	$ROOM->SystemMessage($sentence, 'GUARD_HUNTED');
       }
     }
 
@@ -1493,7 +1494,7 @@ function AggregateVoteNight(){
 
       if($target->IsRole('dummy_guard') && $target->IsLive(true)){ //対象が夢守人なら返り討ちに合う
 	$USERS->Kill($user->user_no, 'HUNTED');
-	InsertSystemMessage($target->handle_name . $sentence, 'GUARD_HUNTED');
+	$ROOM->SystemMessage($target->handle_name . $sentence, 'GUARD_HUNTED');
 	continue;
       }
 
@@ -1504,7 +1505,7 @@ function AggregateVoteNight(){
 	  $guard_user = $USERS->ByUname($uname);
 	  if($guard_user->IsDead(true)) continue; //直前に死んでいたら無効
 	  $hunted_flag = true;
-	  InsertSystemMessage($guard_user->handle_name . $sentence, 'GUARD_HUNTED');
+	  $ROOM->SystemMessage($guard_user->handle_name . $sentence, 'GUARD_HUNTED');
 	}
 
 	if($hunted_flag){
@@ -1529,13 +1530,13 @@ function AggregateVoteNight(){
 
       //常時護衛成功メッセージだけが出る
       $sentence = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
-      InsertSystemMessage($sentence, 'GUARD_SUCCESS');
+      $ROOM->SystemMessage($sentence, 'GUARD_SUCCESS');
     }
 
     foreach($hunted_list as $handle_name => $target){ //獏狩り処理
       $USERS->Kill($target->user_no, 'HUNTED');
       $sentence = $handle_name . "\t" . $target->handle_uname; //憑依能力者は対象外
-      InsertSystemMessage($sentence, 'GUARD_HUNTED');
+      $ROOM->SystemMessage($sentence, 'GUARD_HUNTED');
     }
     unset($hunted_list);
 
@@ -1722,7 +1723,7 @@ function AggregateVoteNight(){
     }
     $sentence = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
     $action = $user->IsRole('child_fox') ? 'CHILD_FOX_RESULT' : 'MAGE_RESULT';
-    InsertSystemMessage($sentence . "\t" . $result, $action);
+    $ROOM->SystemMessage($sentence . "\t" . $result, $action);
   }
 
   //PrintData($voodoo_killer_success_list, 'SUCCESS [voodoo_killer]');
@@ -1732,7 +1733,7 @@ function AggregateVoteNight(){
 
     $voodoo_killer_list = array_keys($voodoo_killer_target_list, $target_uname); //成功者を検出
     foreach($voodoo_killer_list as $uname){
-      InsertSystemMessage($USERS->GetHandleName($uname) . $sentence, $action);
+      $ROOM->SystemMessage($USERS->GetHandleName($uname) . $sentence, $action);
     }
   }
 
@@ -1743,7 +1744,7 @@ function AggregateVoteNight(){
 
     $anti_voodoo_list = array_keys($anti_voodoo_target_list, $target_uname); //成功者を検出
     foreach($anti_voodoo_list as $uname){
-      InsertSystemMessage($USERS->GetHandleName($uname) . $sentence, $action);
+      $ROOM->SystemMessage($USERS->GetHandleName($uname) . $sentence, $action);
     }
   }
 
@@ -1781,7 +1782,7 @@ function AggregateVoteNight(){
 	$user->AddRole('copied');
 
 	$sentence = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
-	InsertSystemMessage($sentence, 'MANIA_RESULT');
+	$ROOM->SystemMessage($sentence, 'MANIA_RESULT');
       }
     }
 
@@ -1814,7 +1815,7 @@ function AggregateVoteNight(){
 	$sentence = $user->handle_name . "\t" .
 	  $USERS->GetHandleName($wolf_target->uname, true) . "\t" .
 	  $USERS->GetHandleName($voted_wolf->uname, true);
-	InsertSystemMessage($sentence, 'REPORTER_SUCCESS');
+	$ROOM->SystemMessage($sentence, 'REPORTER_SUCCESS');
       }
       elseif($target->IsRoleGroup('wolf', 'fox') && $target->IsLive(true)){
 	//尾行対象が人狼か妖狐なら殺される
@@ -1885,7 +1886,7 @@ function AggregateVoteNight(){
 	    elseif($target->IsLive(true)){ //生存者 (憑依状態確定)
 	      //見かけ上の蘇生処理
 	      $target->ReturnPossessed('possessed_target', $ROOM->date + 1);
-	      InsertSystemMessage($target->handle_name, 'REVIVE_SUCCESS');
+	      $ROOM->SystemMessage($target->handle_name, 'REVIVE_SUCCESS');
 
 	      //本当の死者の蘇生処理
 	      $virtual_target->Revive(true);
@@ -1937,11 +1938,11 @@ function AggregateVoteNight(){
 	  }
 	}
 	else{
-	  InsertSystemMessage($target->handle_name, 'REVIVE_FAILED');
+	  $ROOM->SystemMessage($target->handle_name, 'REVIVE_FAILED');
 	}
 	$sentence = $user->handle_name . "\t";
 	$sentence .= $USERS->GetHandleName($target->uname) . "\t" . $result;
-	InsertSystemMessage($sentence, 'POISON_CAT_RESULT');
+	$ROOM->SystemMessage($sentence, 'POISON_CAT_RESULT');
       }
     }
   }
@@ -1971,12 +1972,12 @@ function AggregateVoteNight(){
 	//憑依先のリセット処理
 	$virtual_user->ReturnPossessed('possessed', $possessed_date);
 	$virtual_user->SaveLastWords();
-	InsertSystemMessage($virtual_user->handle_name, 'POSSESSED_RESET');
+	$ROOM->SystemMessage($virtual_user->handle_name, 'POSSESSED_RESET');
 
 	//見かけ上の蘇生処理
 	$user->ReturnPossessed('possessed_target', $possessed_date);
 	$user->SaveLastWords($virtual_user->handle_name);
-	InsertSystemMessage($user->handle_name, 'REVIVE_SUCCESS');
+	$ROOM->SystemMessage($user->handle_name, 'REVIVE_SUCCESS');
       }
       continue;
     }
@@ -1993,7 +1994,7 @@ function AggregateVoteNight(){
 
       //憑依処理
       $user->AddRole("possessed_target[{$possessed_date}-{$target->user_no}]");
-      InsertSystemMessage($virtual_user->handle_name, 'POSSESSED');
+      $ROOM->SystemMessage($virtual_user->handle_name, 'POSSESSED');
       $user->SaveLastWords($virtual_user->handle_name);
       $user->Update('last_words', '');
     }
@@ -2032,7 +2033,7 @@ function AggregateVoteNight(){
   //PrintData($live_count, 'Live Count');
 
   if($priest_flag && $ROOM->date > 2 && ($ROOM->date % 2) == 1){ //司祭の処理
-    InsertSystemMessage($live_count['human_side'], 'PRIEST_RESULT');
+    $ROOM->SystemMessage($live_count['human_side'], 'PRIEST_RESULT');
   }
 
   if($crisis_priest_flag || count($revive_priest_list) > 0){ //預言者、天人の処理
@@ -2051,7 +2052,7 @@ function AggregateVoteNight(){
     }
 
     if($crisis_priest_flag && $crisis_priest_result != ''){ //預言者の処理
-      InsertSystemMessage($crisis_priest_result, 'CRISIS_PRIEST_RESULT');
+      $ROOM->SystemMessage($crisis_priest_result, 'CRISIS_PRIEST_RESULT');
     }
 
     //天人の蘇生判定処理
@@ -2074,14 +2075,13 @@ function AggregateVoteNight(){
   if($ROOM->test_mode) return;
 
   //次の日にする
-  $next_date = $ROOM->date + 1;
-  mysql_query("UPDATE room SET date = $next_date, day_night = 'day' WHERE room_no = {$ROOM->id}");
-
-  //次の日の処刑投票のカウントを 1 に初期化(再投票で増える)
-  InsertSystemMessage('1', 'VOTE_TIMES', $next_date);
+  $ROOM->date++;
+  $ROOM->day_night = 'day';
+  mysql_query("UPDATE room SET date = {$ROOM->date}, day_night = 'day' WHERE room_no = {$ROOM->id}");
 
   //夜が明けた通知
-  InsertSystemTalk("MORNING\t" . $next_date, ++$ROOM->system_time, 'day system', $next_date);
+  $ROOM->Talk("MORNING\t" . $ROOM->date);
+  $ROOM->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
   $ROOM->UpdateTime(); //最終書き込みを更新
   //DeleteVote(); //今までの投票を全部削除
 
@@ -2104,6 +2104,5 @@ function InsertRandomMessage(){
   global $MESSAGE, $GAME_CONF, $ROOM;
 
   if(! $GAME_CONF->random_message) return;
-  $sentence = GetRandom($MESSAGE->random_message_list);
-  InsertSystemTalk($sentence, ++$ROOM->system_time, 'night system');
+  $ROOM->Talk(GetRandom($MESSAGE->random_message_list));
 }

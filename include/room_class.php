@@ -23,8 +23,8 @@ class Room{
       $array = $request->TestItems->test_room;
     }
     else{
-      $query = "SELECT room_no AS id, room_name AS name, room_comment AS comment, ".
-	"game_option, date, day_night, status FROM room WHERE room_no = {$request->room_no}";
+      $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
+	'game_option, date, day_night, status FROM room WHERE room_no = ' . $request->room_no;
       $array = FetchAssoc($query);
       if(count($array) < 1){
 	OutputActionResult('村番号エラー', '無効な村番号です: ' . $request->room_no);
@@ -37,9 +37,18 @@ class Room{
 
   //option_role を追加ロードする
   function LoadOption(){
-    $option_role = FetchResult("SELECT option_role FROM room WHERE room_no = {$this->id}");
+    $option_role = FetchResult('SELECT option_role FROM room WHERE room_no = ' . $this->id);
     $this->option_role = new OptionManager($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
+  }
+
+  //発言を取得する
+  function LoadTalk($heaven = false){
+    $query = 'SELECT uname, sentence, font_type, location FROM talk WHERE room_no = ' .
+      $this->id . ' AND location LIKE ' .
+      ($heaven ? "'heaven'" : "'{$this->day_night}%' AND date = " . $this->date) .
+      ' ORDER BY talk_id DESC';
+    return FetchObject($query, 'Talk');
   }
 
   //シーンに合わせた投票情報を取得する
@@ -63,17 +72,17 @@ class Room{
     else{
       switch($this->day_night){
       case 'beforegame':
-	$data = "uname, target_uname, situation";
+	$data = 'uname, target_uname, situation';
 	$action = "situation = '" . (is_null($action) ? 'GAMESTART' : $action) . "'";
 	break;
 
       case 'day':
-	$data = "uname, target_uname, vote_number";
+	$data = 'uname, target_uname, vote_number';
 	$action = "situation = 'VOTE_KILL' AND vote_times = " . GetVoteTimes();
 	break;
 
       case 'night':
-	$data = "uname, target_uname, situation";
+	$data = 'uname, target_uname, situation';
 	$action = "situation <> 'VOTE_KILL'";
 	break;
 
@@ -169,7 +178,37 @@ class Room{
   //最終更新時刻を更新
   function UpdateTime(){
     if($this->test_mode) return;
-    mysql_query("UPDATE room SET last_updated = '{$this->system_time}' WHERE room_no = {$this->id}");
+    SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP() WHERE room_no = ' . $this->id);
+  }
+
+  //発言登録
+  function Talk($sentence, $uname = '', $location = '', $font_type = NULL, $spend_time = 0){
+    if(empty($uname)) $uname = 'system';
+    if(empty($location)) $location = $this->day_night . ' system';
+    if($this->test_mode){
+      PrintData($sentence, 'Talk: ' . $uname . ': '. $location);
+      return;
+    }
+
+    $items  = 'room_no, date, location, uname, sentence, spend_time, time';
+    $values = "{$this->id}, {$this->date}, '{$location}', '{$uname}', '{$sentence}', " .
+      "{$spend_time}, UNIX_TIMESTAMP()";
+    if(isset($font_type)){
+      $items .= ', font_type';
+      $values .= ", '{$font_type}'";
+    }
+    return InsertDatabase('talk', $items, $values);
+  }
+
+  //システムメッセージ登録
+  function SystemMessage($sentence, $type){
+    if($this->test_mode){
+      PrintData($sentence, 'SystemMessage: ' . $type);
+      return;
+    }
+    $items = 'room_no, date, message, type';
+    $values = "{$this->id}, {$this->date}, '{$sentence}', '{$type}'";
+    return InsertDatabase('system_message', $items, $values);
   }
 }
 
@@ -188,6 +227,13 @@ EOF;
   }
 
   function LoadEntryUser($room_no){
+    $query = <<<EOF
+SELECT room_no AS id, date, day_night, status, max_user FROM room WHERE room_no = {$room_no}
+EOF;
+    return FetchObject($query, 'Room', true);
+  }
+
+  function LoadEntryUserPage($room_no){
     $query = <<<EOF
 SELECT room_no AS id, room_name AS name, room_comment AS comment, status,
   game_option, option_role FROM room WHERE room_no = {$room_no}

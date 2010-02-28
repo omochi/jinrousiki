@@ -20,27 +20,51 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </p>
 
 <h2><a name="fox_partner">仲間表示</a></h2>
-<h3>Ver. 1.4.0 α19〜</h3>
 <pre>
 全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かります。
 <a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示されます (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>みたいなものです)。
 分けている基準は「<a href="#fox_talk">念話</a>ができるかどうか」です。
+<a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。
 </pre>
 <h3>Ver. 1.4.0 α24〜</h3>
 <pre>
 <a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。
 </pre>
+<h3>Ver. 1.4.0 α20〜</h3>
+<pre>
+<a href="#silver_fox">銀狐</a>は他の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>からも仲間であると分かりません。
+</pre>
+<h3>Ver. 1.4.0 α19〜</h3>
+<pre>
+<a href="#fox_group">妖狐系</a>から<a href="#child_fox">子狐</a>が誰か分かります。
+<a href="#fox_group">妖狐系</a>と<a href="#child_fox">子狐</a>は別枠で表示されます。
+</pre>
+<h3>Ver. 1.4.0 α3-7〜</h3>
+<pre>
+全ての妖狐は<a href="#child_fox">子狐</a>以外の<a href="#fox_group">妖狐系</a>が誰か分かります。
+<a href="#child_fox">子狐</a>は全ての妖狐が誰か分かります。
+同一の枠で表示されるので種類は不明です。
+</pre>
 
 <h2><a name="fox_talk">夜の会話 (念話)</a></h2>
-<h3>Ver. 1.4.0 α19〜</h3>
 <pre>
 <a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>は夜に会話(念話)できます。
 他人からはいっさい見えません。
 <a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
+<a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
 </pre>
 <h3>Ver. 1.4.0 α24〜</h3>
 <pre>
 <a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
+</pre>
+<h3>Ver. 1.4.0 α19〜</h3>
+<pre>
+<a href="#silver_fox">銀狐</a>は念話できません。
+</pre>
+<h3>Ver. 1.4.0 α3-7〜</h3>
+<pre>
+全ての<a href="#fox_group">妖狐系</a>は夜に会話(念話)できます。
+<a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
 </pre>
 
 
@@ -143,8 +167,8 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#cute_wolf">萌狼</a>の妖狐バージョンです。
-<a href="#suspect">不審者</a>と違い、占われたら呪殺されますが、いずれにしても
+<a href="wolf.php#cute_wolf">萌狼</a>の妖狐バージョンです。
+<a href="human.php#suspect">不審者</a>と違い、占われたら呪殺されますが、いずれにしても
 「村人判定された人が遠吠えをした」場合、占った人は偽者です。
 </pre>
 
@@ -168,7 +192,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#silver_wolf">銀狼</a>の妖狐バージョンです。
+<a href="wolf.php#silver_wolf">銀狼</a>の妖狐バージョンです。
 元々妖狐は出現人数が少なめなので仲間が分からなくてもさほど影響は無いと思います。
 占いを騙る仲間から人狼判定を出される可能性はありますが……
 </pre>
@@ -184,6 +208,10 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 判定結果は普通の<a href="human.php#mage_group">占い師</a>と同じで、呪殺は出来ませんが呪返しは受けます。
 占いの成功率は 70% です。
 </pre>
+<h4>Ver. 1.4.0 α17〜</h4>
+<pre>
+占い能力を持ちました。
+</pre>
 <h4>Ver. 1.4.0 α8〜</h4>
 <pre>
 通常闇鍋モードでは20人未満では出現しません。
@@ -191,10 +219,6 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 最大出現人数は1人です。
 つまり、子狐視点、子狐を名乗る人は偽者です。
 子狐が出現した場合は出現人数と同じだけ妖狐が減ります。
-</pre>
-<h4>Ver. 1.4.0 α17〜</h4>
-<pre>
-占い能力を持ちました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

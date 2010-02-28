@@ -15,19 +15,18 @@ function MaintenanceRoom(){
 
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
-    "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP(NOW()) - {$ROOM_CONF->die_room}";
-  mysql_query($query);
+    "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
+  SendQuery($query);
 
   //終了した部屋のセッションIDのデータをクリアする
   $query = <<<EOF
 UPDATE room, user_entry SET user_entry.session_id = NULL
 WHERE room.room_no = user_entry.room_no
-AND room.status = 'finished' AND !(user_entry.session_id is NULL)
-AND (room.finish_time is NULL OR
+AND room.status = 'finished' AND !(user_entry.session_id IS NULL)
+AND (room.finish_time IS NULL OR
      room.finish_time < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
 EOF;
-  mysql_query($query);
-  mysql_query('COMMIT'); //一応コミット
+  SendQuery($query, true);
 }
 
 //村(room)の作成
@@ -243,14 +242,8 @@ function CreateRoom(){
     //身代わり君を入村させる
     if(strpos($game_option, 'dummy_boy') !== false &&
        FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
-      $crypt_dummy_boy_password = CryptPassword($dummy_boy_password);
-      $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, live, last_words';
-      $values = "$room_no, 1, 'dummy_boy', '$dummy_boy_handle_name', 0, '{$MESSAGE->dummy_boy_comment}', " .
-	"'male', '$crypt_dummy_boy_password', 'live', '{$MESSAGE->dummy_boy_last_words}'";
-      if(! InsertDatabase('user_entry', $items, $values)) break;
+      if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
     }
-
-    if(! mysql_query('COMMIT')) break; //一応コミット
     OutputRoomAction('success', $room_name);
     $status = true;
   }while(false);

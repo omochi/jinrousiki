@@ -54,6 +54,7 @@ class Message{
 
   var $wolf_howl = 'アオォーン・・・'; //狼の遠吠え
   //var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
+  //var $common_talk = 'ですぅ・・・ですぅ・・・'; //共有者の小声
   var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の小声
   var $howling = 'キィーーン・・・'; //スピーカーの音割れ効果音
 

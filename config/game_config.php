@@ -3,8 +3,8 @@
 class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //テスト用
+  #var $die_room = 1200;
+  var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -42,8 +42,7 @@ class RoomConfig{
   var $auto_open_cast = true; //霊界で配役を自動で公開する
 
   //霊界オフモードのデフォルト [NULL:無し / 'auto':自動オフ / 'full': 完全オフ ]
-  #var $default_not_open_cast = NULL;
-  var $default_not_open_cast = 'auto'; //テスト用
+  var $default_not_open_cast = 'auto';
 
   var $poison = true; //埋毒者出現 (必要人数は CastConfig->poison 参照)
   var $default_poison = true;
@@ -137,11 +136,10 @@ class GameConfig{
 
   //-- 役職の能力設定 --//
   //毒能力者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-  var $poison_only_voter = false; //1.3 系のデフォルト
+  var $poison_only_voter = false; //1.3 系のデフォルトは false
 
   //狼が毒能力者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
-  #var $poison_only_eater = false; //1.3 系のデフォルト
-  var $poison_only_eater = true;
+  var $poison_only_eater = true; //1.3 系のデフォルトは false
 
   var $cupid_self_shoot = 18; //キューピッドが他人撃ち可能となる最低村人数
   var $cute_wolf_rate = 1; //萌狼の発動率 (%)
@@ -532,7 +530,8 @@ class CastConfig{
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
-     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
+     #6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
+     6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'revive_fox' => 1, 'mind_cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
@@ -577,7 +576,7 @@ class CastConfig{
   var $wish_role_rate = 100;
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'cupid');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
@@ -635,7 +634,7 @@ class IconConfig{
   var $wolf   = 'wolf.gif';  //狼
   var $width  = 45; //表示サイズ(幅)
   var $height = 45; //表示サイズ(高さ)
-  var $view   = 50; //一画面に表示するアイコンの数
+  var $view   = 100; //一画面に表示するアイコンの数
   var $page   = 10; //一画面に表示するページ数の数
 
   function IconConfig(){ $this->__construct(); }
@@ -686,5 +685,5 @@ class Sound extends SoundBase{
 class OldLogConfig{
   var $view = 20; //一画面に表示する村の数
   var $page =  5; //一画面に表示するページ数の数
-  var $reverse  = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
+  var $reverse = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }

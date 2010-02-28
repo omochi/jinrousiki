@@ -242,8 +242,7 @@ class User{
       return;
     }
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
-    mysql_query("UPDATE user_entry SET $item = '$value' $query");
-    mysql_query('COMMIT');
+    SendQuery("UPDATE user_entry SET {$item} = '{$value}' {$query}", true);
   }
 
   //総合 DB 更新処理 (この関数はまだ実用されていません)
@@ -254,8 +253,7 @@ class User{
     }
     $update = implode(', ', $update_list);
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
-    mysql_query("UPDATE user_entry SET $update $query");
-    mysql_query('COMMIT');
+    SendQuery("UPDATE user_entry SET {$update} {$query}", true);
   }
 
   //基幹死亡処理
@@ -268,10 +266,12 @@ class User{
 
   //蘇生処理
   function Revive($virtual = false){
+    global $ROOM;
+
     if($this->IsLive(true)) return false;
     $this->Update('live', 'live');
     $this->revive_flag = true;
-    if(! $virtual) InsertSystemMessage($this->handle_name, 'REVIVE_SUCCESS');
+    if(! $virtual) $ROOM->SystemMessage($this->handle_name, 'REVIVE_SUCCESS');
     return true;
   }
 
@@ -317,7 +317,6 @@ class User{
 
   function ReturnPossessed($type, $date){
     $this->AddRole("${type}[{$date}-{$this->user_no}]");
-    #$this->Revive();
     return true;
   }
 
@@ -328,15 +327,32 @@ class User{
     if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'evoke_scanner', 'no_last_words')) return;
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
-      InsertSystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
+      $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
       return;
     }
 
     $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
       "AND uname = '{$this->uname}' AND user_no > 0";
     if(($last_words = FetchResult($query)) != ''){
-      InsertSystemMessage($handle_name . "\t" . $last_words, 'LAST_WORDS');
+      $ROOM->SystemMessage($handle_name . "\t" . $last_words, 'LAST_WORDS');
     }
+  }
+
+  //投票処理
+  function Vote($action, $target = NULL, $vote_number = NULL){
+    global $RQ_ARGS, $ROOM;
+
+    $items = 'room_no, date, uname, situation';
+    $values = "{$ROOM->id}, $ROOM->date, '{$this->uname}', '{$action}'";
+    if(isset($target)){
+      $items .= ', target_uname';
+      $values .= ", '{$target}'";
+    }
+    if(isset($vote_number)){
+      $items .= ', vote_number, vote_times';
+      $values .= ", '{$vote_number}', '{$RQ_ARGS->vote_times}'";
+    }
+    return InsertDatabase('vote', $items, $values);
   }
 }
 
@@ -569,12 +585,14 @@ class UserDataSet{
 
   //死亡処理
   function Kill($user_no, $reason = NULL){
+    global $ROOM;
+
     $user = $this->ByReal($user_no);
     if(! $user->ToDead()) return false;
 
     if($reason){
       $virtual_user = $this->ByVirtual($user->user_no);
-      InsertSystemMessage($virtual_user->handle_name, $reason);
+      $ROOM->SystemMessage($virtual_user->handle_name, $reason);
 
       //遺言処理
       if($reason == 'POSSESSED_TARGETED') return true;
@@ -592,9 +610,8 @@ class UserDataSet{
     if(! $this->Kill($user_no, $reason)) return false;
     $user->suicide_flag = true;
 
-    $sentence = ($reason ? 'vote_sudden_death' : 'sudden_death');
-    $handle_name =  $this->GetHandleName($user->uname, true);
-    InsertSystemTalk($handle_name . $MESSAGE->$sentence, ++$ROOM->system_time);
+    $sentence = $reason ? 'vote_sudden_death' : 'sudden_death';
+    $ROOM->Talk($this->GetHandleName($user->uname, true) . $MESSAGE->$sentence);
     return true;
   }
 

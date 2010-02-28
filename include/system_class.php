@@ -58,10 +58,25 @@ class Session{
   }
 
   //ID セット
-  function Set($reset = false){
-    if($reset) session_regenerate_id();
+  function Set(){
     $this->id = session_id();
     return $this->id;
+  }
+
+  //ID リセット
+  function Reset(){
+    //PHP のバージョンが古い場合は関数がないので自前で処理する
+    if(function_exists('session_regenerate_id')){
+      session_regenerate_id();
+    }
+    else{
+      $id = serialize($_SESSION);
+      session_destroy();
+      session_id(md5(uniqid(rand(), 1)));
+      session_start();
+      $_SESSION = unserialize($id);
+    }
+    return $this->Set();
   }
 
   //ID 取得
@@ -71,11 +86,11 @@ class Session{
 
   //DB に登録されているセッション ID と被らないようにする
   function GetUniq(){
-    $query = "SELECT COUNT(room_no) FROM user_entry, admin_manage WHERE " .
-      "user_entry.session_id =";
+    $query = 'SELECT COUNT(room_no) FROM user_entry, admin_manage WHERE ' .
+      'user_entry.session_id =';
     do{
-      $this->Set(true);
-    }while(FetchResult("$query '{$this->id}' OR admin_manage.session_id = '{$this->id}'") > 0);
+      $this->Reset();
+    }while(FetchResult($query ."'{$this->id}' OR admin_manage.session_id = '{$this->id}'") > 0);
     return $this->id;
   }
 
@@ -90,7 +105,7 @@ class Session{
 
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
-      "AND session_id ='$this->id' AND user_no > 0";
+      "AND session_id ='{$this->id}' AND user_no > 0";
     $array = FetchArray($query);
     if(count($array) == 1){
       $this->user_no = $array[0];

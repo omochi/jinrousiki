@@ -216,7 +216,7 @@ function OutputAbility(){
     elseif($SELF->IsRole('revive_fox') && ! $ROOM->IsOpenCast()){ //¿Á∏—
       OutputSelfAbilityResult('POISON_CAT_RESULT'); //¡…¿∏∑Î≤Ã§Ú…Ωº®
       if($SELF->IsActive() && $is_after_first_night){ //ÃÎ§Œ≈Í…º
-	OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
 

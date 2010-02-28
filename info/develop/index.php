@@ -30,7 +30,6 @@ OutputHTMLHeader($SERVER_CONF->title . '[開発者向け情報]', 'info');
 <h2>改定案件</h2>
 <ul>
   <li>村名、コメントなどに NG ワードを設定できるようにする</li>
-  <li>アイコン選択画面の改訂</li>
   <li>前日に死んだ突然死者の表示対応</li>
   <li>過去ログ HTML 化の自動化</li>
   <li>I.E. の霊界モードの動作確認</li>

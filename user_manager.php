@@ -2,7 +2,6 @@
 require_once('include/init.php');
 $INIT_CONF->LoadFile('room_class');
 $INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'ICON_CONF', 'MESSAGE');
-
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 $RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
@@ -16,43 +15,49 @@ function EntryUser(){
   extract($RQ_ARGS->ToArray()); //引数を取得
 
   //記入漏れチェック
-  if($uname == '' || $handle_name == '' || $icon_no < 1 || $profile == '' ||
-     $password == '' || $sex == '' || $role == ''){
-    OutputActionResult('村人登録 [入力エラー]',
-		       '記入漏れがあります。<br>'."\n" .
-		       '全部入力してください (空白と改行コードは自動で削除されます)。');
-  }
+  $title = '村人登録 [入力エラー]';
+  $sentence = ' (空白と改行コードは自動で削除されます)';
+  if($uname == '') OutputActionResult($title, 'ユーザ名が空です' . $sentence);
+  if($handle_name == '') OutputActionResult($title, '村人の名前が空です' . $sentence);
+  if($password == '') OutputActionResult($title, 'パスワードが空です' . $sentence);
+  if($profile == '') OutputActionResult($title, 'プロフィールが空です' . $sentence);
+  if(empty($sex)) OutputActionResult($title, '性別が入力されていません');
+  if(empty($icon_no)) OutputActionResult($title, 'アイコン番号が入力されていません');
 
-  //システムユーザチェック
-  if($uname == 'dummy_boy' || $uname == 'system' ||
-     $handle_name == '身代わり君' || $handle_name == 'システム'){
-    OutputActionResult('村人登録 [入力エラー]',
-		       '下記の名前は登録できません。<br>'."\n" .
-		       'ユーザ名：dummy_boy or system<br>'."\n" .
-		       '村人の名前：身代わり君 or システム');
+  //例外チェック
+  if($uname == 'dummy_boy' || $uname == 'system'){
+    OutputActionResult($title, 'ユーザ名「' . $uname . '」は使用できません');
   }
+  if($handle_name == '身代わり君' || $handle_name == 'システム'){
+    OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません');
+  }
+  if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です');
+
+  $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no;
+  if($icon_no < 1 || FetchResult($query) < 1) OutputActionResult($title, '無効なアイコン番号です');
 
   //項目被りチェック
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no AND";
+  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
 
-  //ユーザ名、村人名
-  if(FetchResult("$query (uname = '$uname' OR handle_name = '$handle_name') AND user_no > 0") > 0){
-    OutputActionResult('村人登録 [重複登録エラー]',
-		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
+  //キックされた人と同じユーザ名
+  if(FetchResult($query . "uname = '{$uname}' AND user_no = -1") > 0){
+    OutputActionResult('村人登録 [キックされたユーザ]',
+		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
 		       '別の名前にしてください。');
   }
 
-  //キックされた人と同じユーザ名
-  if(FetchResult("$query uname = '$uname' AND user_no = -1") > 0){
-    OutputActionResult('村人登録 [キックされたユーザ]',
-		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
+  //ユーザ名、村人名
+  $query .= "user_no > 0 AND ";
+  if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
+    OutputActionResult('村人登録 [重複登録エラー]',
+		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
 		       '別の名前にしてください。');
   }
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
   if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
-     FetchResult("$query ip_address = '$ip_address' AND user_no > 0") > 0){
+     FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
     OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
   }
 
@@ -63,43 +68,34 @@ function EntryUser(){
 		       '再度登録してください');
   }
 
+  //DBからユーザNoを降順に取得
+  $query = "SELECT user_no FROM user_entry WHERE room_no = " . $room_no .
+    " AND user_no > 0 ORDER BY user_no DESC";
+  $user_no = (int)FetchResult($query) + 1; //最も大きい No + 1
+
+  //DBから最大人数を取得
+  $ROOM = RoomDataSet::LoadEntryUser($room_no);
+
+  //定員オーバーしているとき
+  if($user_no > $ROOM->max_user){
+    OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
+  }
+  if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){
+    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています', '', true);
+  }
+
   //クッキーの削除
-  $system_time = TZTime(); //現在時刻を取得
-  $cookie_time = $system_time - 3600;
+  $ROOM->system_time = TZTime(); //現在時刻を取得
+  $cookie_time = $ROOM->system_time - 3600;
   setcookie('day_night',  '', $cookie_time);
   setcookie('vote_times', '', $cookie_time);
   setcookie('objection',  '', $cookie_time);
 
-  //DBからユーザNoを降順に取得
-  $query_no = "SELECT user_no FROM user_entry WHERE room_no = $room_no " .
-    "AND user_no > 0 ORDER BY user_no DESC";
-  $user_no = (int)FetchResult($query_no) + 1; //最も大きい No + 1
-
-  //DBから最大人数を取得
-  $query_status = "SELECT day_night, status, max_user FROM room WHERE room_no = {$room_no}";
-  extract(FetchAssoc($query_status, true));
-
-  //定員オーバーしているとき
-  if($user_no > $max_user || $day_night != 'beforegame' || $status != 'waiting'){
-    OutputActionResult('村人登録 [入村不可]',
-		       '村が既に満員か、ゲームが開始されています。', '', true);
-  }
-
   //DB にユーザデータを登録
-  $session_id = $SESSION->Get(true); //セッション ID を取得
-  $crypt_password = CryptPassword($password);
-  $items = 'room_no, user_no, uname, handle_name, icon_no, profile, sex, password, role, live, ' .
-    'session_id, last_words, ip_address, last_load_day_night';
-  $values = "$room_no, $user_no, '$uname', '$handle_name', $icon_no, '$profile', '$sex', " .
-    "'$crypt_password', '$role', 'live', '$session_id', '', '$ip_address', 'beforegame'";
-
-  if(InsertDatabase('user_entry', $items, $values)){
-    //入村メッセージ
-    InsertTalk($room_no, 0, 'beforegame system', 'system', $system_time,
-	       $handle_name . ' ' . $MESSAGE->entry_user, NULL, 0);
-    mysql_query('COMMIT'); //一応コミット
-
-    $url = "game_frame.php?room_no=$room_no";
+  if(InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
+		$sex, $role, $SESSION->Get(true))){
+    $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
+    $url = 'game_frame.php?room_no=' . $room_no;
     OutputActionResult('村人登録',
 		       $user_no . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
 		       '切り替わらないなら <a href="' . $url. '">ここ</a> 。',
@@ -172,23 +168,22 @@ function OutputEntryUserPage(){
   global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $RQ_ARGS;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
-  $ROOM = RoomDataSet::LoadEntryUser($room_no);
-  if(is_null($ROOM->id)){
-    OutputActionResult('村人登録 [村番号エラー]', "{$room_no} 番地の村は存在しません。");
-  }
-
+  $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
+  $sentence = $room_no . ' 番地の村は';
+  if(is_null($ROOM->id)) OutputActionResult('村人登録 [村番号エラー]', $sentence . '存在しません');
+  if($ROOM->IsFinished()) OutputActionResult('村人登録 [入村不可]',  $sentence . '終了しました');
   if($ROOM->status != 'waiting'){
-    OutputActionResult('村人登録 [入村不可]', '村が既に満員か、ゲームが開始されています。');
+    OutputActionResult('村人登録 [入村不可]', $sentence . 'すでにゲームが開始されています。');
   }
   $ROOM->ParseOption(true);
-  $trip_str = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
+  $trip = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
   echo <<<HEADER
 </head>
 <body>
 <a href="./">←戻る</a><br>
-<form method="POST" action="user_manager.php?room_no={$room_no}">
+<form method="POST" action="user_manager.php?room_no={$ROOM->id}">
 <input type="hidden" name="entry" value="on">
 <div align="center">
 <table class="main">
@@ -200,7 +195,7 @@ function OutputEntryUserPage(){
 <tr>
 <td class="img"><img src="img/entry_user/uname.gif"></td>
 <td><input type="text" name="uname" size="30" maxlength="30"></td>
-<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip_str}</td>
+<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip}</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/handle_name.gif"></td>
@@ -272,7 +267,9 @@ IMAGE;
     if($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
     if($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
     if($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
-    if($ROOM->IsOptionGroup('mania')) $wish_role_list[] = 'mania';
+    if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
+      $wish_role_list[] = 'mania';
+    }
 
     $count = 0;
     foreach($wish_role_list as $role){

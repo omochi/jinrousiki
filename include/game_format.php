@@ -110,6 +110,7 @@ WORDS;
   }
 
   function AddSystemTalk($sentence, $class = 'system-user'){
+    LineToBR($sentence);
     $this->cache .= <<<WORDS
 <tr>
 <td class="{$class}" colspan="2">{$sentence}</td>

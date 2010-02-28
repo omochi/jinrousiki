@@ -99,9 +99,8 @@ function SendCookie(){
   //生きていて(ゲーム終了後は死者でもOK)「異議」あり、のセット要求があればセットする(最大回数以内の場合)
   if($SELF->IsLive() && ! $ROOM->IsNight() && $RQ_ARGS->set_objection &&
      $self_objection_count < $GAME_CONF->objection){
-    InsertSystemMessage($SELF->user_no, 'OBJECTION');
-    InsertSystemTalk('OBJECTION', $ROOM->system_time, '', '', $SELF->uname);
-    mysql_query('COMMIT');
+    $ROOM->SystemMessage($SELF->user_no, 'OBJECTION');
+    $ROOM->Talk('OBJECTION', $SELF->uname);
   }
 
   //ユーザ総数を取得して人数分の「異議あり」のクッキーを構築する
@@ -263,10 +262,9 @@ function Write($say, $location, $spend_time, $update = false){
     foreach($filter_list as $filter) $filter->FilterVoice($voice, $say);
   }
 
-  InsertTalk($ROOM->id, $ROOM->date, $location, $SELF->uname, $ROOM->system_time,
-	     $say, $voice, $spend_time);
+  $ROOM->Talk($say, $SELF->uname, $location, $voice, $spend_time);
   if($update) $ROOM->UpdateTime();
-  mysql_query('COMMIT'); //一応コミット
+  SendCommit(); //一応コミット
 }
 
 //ゲーム停滞のチェック
@@ -280,9 +278,9 @@ function CheckSilence(){
   $query = 'LOCK TABLES room WRITE, talk WRITE, vote WRITE, user_entry WRITE, system_message WRITE';
   if(! mysql_query($query)) return false;
 
-  //最後に発言された時間を取得
-  $last_updated_time = FetchResult("SELECT last_updated FROM room WHERE room_no = {$ROOM->id}");
-  $last_updated_pass_time = $ROOM->system_time - $last_updated_time;
+  //最終発言時刻からの差分を取得
+  $query = 'SELECT UNIX_TIMESTAMP() - last_updated FROM room WHERE room_no = ' . $ROOM->id;
+  $last_updated_pass_time = FetchResult($query);
 
   //経過時間を取得
   if($ROOM->IsRealTime()) //リアルタイム制
@@ -294,8 +292,7 @@ function CheckSilence(){
   if(! $ROOM->IsRealTime() && $left_time > 0){
     if($last_updated_pass_time > $TIME_CONF->silence){
       $sentence = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      InsertTalk($ROOM->id, $ROOM->date, "{$ROOM->day_night} system", 'system',
-		 $ROOM->system_time, $sentence, NULL, $TIME_CONF->silence_pass);
+      $ROOM->Talk($sentence, '', '', NULL, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
     }
   }
@@ -309,7 +306,7 @@ function CheckSilence(){
       "AND date = {$ROOM->date} AND location = '{$ROOM->day_night} system' " .
       "AND uname = 'system' AND sentence = '$sudden_death_announce'";
     if(FetchResult($query) == 0){ //警告を出していなかったら出す
-      InsertSystemTalk($sudden_death_announce, ++$ROOM->system_time); //全会話の後に出るように
+      $ROOM->Talk($sudden_death_announce);
       $ROOM->UpdateTime(); //更新時間を更新
       $last_updated_pass_time = 0;
     }
@@ -393,8 +390,8 @@ function CheckSilence(){
       LoversFollowed(true);
       InsertMediumMessage();
 
-      InsertSystemTalk($MESSAGE->vote_reset, ++$ROOM->system_time); //投票リセットメッセージ
-      InsertSystemTalk($sudden_death_announce, ++$ROOM->system_time); //突然死告知メッセージ
+      $ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
+      $ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
       $ROOM->UpdateTime(); //制限時間リセット
       DeleteVote(); //投票リセット
       CheckVictory(); //勝敗チェック
@@ -536,12 +533,6 @@ EOF;
   OutputTimeTable(); //経過日数と生存人数を出力
 
   $left_time = 0;
-  //経過時間を取得
-  if($real_time) //リアルタイム制
-    GetRealPassTime(&$left_time);
-  else //会話で時間経過制
-    $left_talk_time = GetTalkPassTime(&$left_time);
-
   if($ROOM->IsBeforeGame()){
     echo '<td class="real-time">';
     if($real_time){ //実時間の制限時間を取得
@@ -552,12 +543,13 @@ EOF;
   }
   if($ROOM->IsPlaying()){
     if($real_time){ //リアルタイム制
+      GetRealPassTime(&$left_time);
       echo '<td class="real-time"><form name="realtime_form">'."\n";
       echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
       echo '</form></td>'."\n";
     }
-    elseif($left_talk_time){ //発言による仮想時間
-      echo '<td>' . $time_message . $left_talk_time . '</td>'."\n";
+    else{ //発言による仮想時間
+      echo '<td>' . $time_message . GetTalkPassTime(&$left_time) . '</td>'."\n";
     }
   }
 
@@ -591,18 +583,10 @@ function OutputHeavenTalkLog(){
   //出力条件をチェック
   // if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
-  //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  $query = <<<EOF
-SELECT uname, sentence, font_type, location
-FROM talk
-WHERE room_no = {$ROOM->id} AND location LIKE 'heaven'
-ORDER BY time DESC
-EOF;
-  $sql = SendQuery($query);
-
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk');
-  while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
+  $talk_list = $ROOM->LoadTalk(true);
+  foreach($talk_list as $talk){
     $user = $USERS->ByUname($talk->uname); //ユーザを取得
 
     $symbol = '<font color="' . $user->color . '">◆</font>';

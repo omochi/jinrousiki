@@ -9,7 +9,7 @@ if($SERVER_CONF->back_page != ''){
 ?>
 <a href="./"><img src="img/top_title.jpg"></a>
 <div class="comment"><?= $SERVER_CONF->comment ?></div>
-<noscript>＜＜ JavaScriptを有効にしてください ＞＞</noscript>
+<noscript>&lt;&lt; JavaScriptを有効にしてください &gt;&gt;</noscript>
 <table class="main">
   <tr><td>
     <div class="menu">メニュー</div>

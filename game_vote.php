@@ -123,10 +123,7 @@ function VoteGameStart(){
   if(isset($ROOM->vote[$SELF->uname])) OutputVoteResult('ゲームスタート：投票済みです');
   LockTable(); //テーブルを排他的ロック
 
-  //投票処理
-  $items = 'room_no, date, uname, situation';
-  $values = "{$ROOM->id}, 0, '{$SELF->uname}', 'GAMESTART'";
-  if(InsertDatabase('vote', $items, $values) && mysql_query('COMMIT')){//一応コミット
+  if($SELF->Vote('GAMESTART')){ //投票処理
     AggregateVoteGameStart(); //集計処理
     OutputVoteResult('投票完了', true);
   }
@@ -349,7 +346,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   if($ROOM->IsOption('sudden_death')){ //虚弱体質村
-    $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
+    $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
       $role = GetRandom($sub_role_list);
@@ -390,11 +387,6 @@ function AggregateVoteGameStart($force_start = false){
   //デバッグ用
   //PrintData($fix_uname_list); PrintData($fix_role_list); DeleteVote(); return false;
 
-  //ゲーム開始
-  mysql_query("UPDATE room SET status = 'playing', date = 1, day_night = 'night',
-		start_time = NOW() WHERE room_no = {$ROOM->id}");
-  DeleteVote(); //今までの投票を全部削除
-
   //役割をDBに更新
   $role_count_list = array();
   for($i = 0; $i < $user_count; $i++){
@@ -422,12 +414,18 @@ function AggregateVoteGameStart($force_start = false){
   else{
     $sentence = GenerateRoleNameList($role_count_list);
   }
-  InsertSystemTalk($sentence, ++$ROOM->system_time, 'night system', 1);
 
-  InsertSystemMessage('1', 'VOTE_TIMES', 1); //初日の処刑投票のカウントを1に初期化(再投票で増える)
+  //ゲーム開始
+  $ROOM->date++;
+  $ROOM->day_night = 'night';
+  $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
+    "status = 'playing', start_time = NOW() WHERE room_no = {$ROOM->id}";
+  SendQuery($query);
+  $ROOM->Talk($sentence);
+  $ROOM->SystemMessage(1, 'VOTE_TIMES'); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
   if($ROOM->IsOption('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
-  mysql_query('COMMIT'); //一応コミット
+  DeleteVote(); //今までの投票を全部削除
   return true;
 }
 
@@ -471,14 +469,8 @@ function VoteKick($target){
   $target_uname = $array['uname'];
   if($target_uname == '') OutputVoteResult('Kick：'. $target . ' はすでに Kick されています', true);
 
-  //投票処理
-  $items = 'room_no, date, uname, target_uname, situation';
-  $values = "{$ROOM->id}, 0, '{$SELF->uname}', '$target_uname', 'KICK_DO'";
-  $sql = InsertDatabase('vote', $items, $values);
-  InsertSystemTalk("KICK_DO\t" . $target, $ROOM->system_time, '', 0, $SELF->uname); //投票しました通知
-
-  //投票成功
-  if($sql && mysql_query('COMMIT')){ //一応コミット
+  if($SELF->Vote('KICK_DO', $target_uname)){ //投票処理
+    $ROOM->Talk("KICK_DO\t" . $target, $SELF->uname); //投票しました通知
     $vote_count = AggregateVoteKick($target); //集計処理
     OutputVoteResult('投票完了：' . $target . '：' . $vote_count . '人目 (Kick するには ' .
 		     $GAME_CONF->kick . ' 人以上の投票が必要です)', true);
@@ -521,20 +513,16 @@ function AggregateVoteKick($target){
   mysql_query("UPDATE user_entry SET user_no = -1, live = 'dead', session_id = NULL
 		WHERE room_no = {$ROOM->id} AND handle_name = '$target' AND user_no > 0");
 
-  // //満員の場合、募集中に戻す //現在は満員時に表示を変えないのでこの処理は不要じゃないかな？
-  // mysql_query("UPDATE room SET status = 'waiting', day_night = 'beforegame' WHERE room_no = {$ROOM->id}");
-
   //キックされて空いた場所を詰める
   for($i = $target_no; $i < $user_count; $i++){
     $next = $i + 1;
     mysql_query("UPDATE user_entry SET user_no = $i WHERE room_no = {$ROOM->id} AND user_no = $next");
   }
 
-  InsertSystemTalk($target . $MESSAGE->kick_out, ++$ROOM->system_time); //出て行ったメッセージ
-  InsertSystemTalk($MESSAGE->vote_reset, ++$ROOM->system_time); //投票リセット通知
+  $ROOM->Talk($target . $MESSAGE->kick_out); //出て行ったメッセージ
+  $ROOM->Talk($MESSAGE->vote_reset); //投票リセット通知
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
   DeleteVote(); //今までの投票を全部削除
-  mysql_query('COMMIT'); //一応コミット
   return $vote_count;
 }
 
@@ -571,22 +559,15 @@ function VoteDay(){
     $vote_number = mt_rand(0, 2);
   }
 
-  //投票＆システムメッセージ
-  $items = 'room_no, date, uname, target_uname, vote_number, vote_times, situation';
-  $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '{$target->uname}', {$vote_number}, " .
-    "{$RQ_ARGS->vote_times}, 'VOTE_KILL'";
-  $sql = InsertDatabase('vote', $items, $values);
-  $sentence = "VOTE_DO\t" . $USERS->GetHandleName($target->uname, true);
-  InsertSystemTalk($sentence, $ROOM->system_time, 'day system', '', $SELF->uname);
-
-  //登録成功
-  if($sql && mysql_query('COMMIT')){
-    AggregateVoteDay(); //集計処理
-    OutputVoteResult('投票完了', true);
-  }
-  else{
+  if(! $SELF->Vote('VOTE_KILL', $target->uname, $vote_number)){ //投票処理
     OutputVoteResult('データベースエラー', true);
   }
+
+  //システムメッセージ
+  $ROOM->Talk("VOTE_DO\t" . $USERS->GetHandleName($target->uname, true), $SELF->uname);
+
+  AggregateVoteDay(); //集計処理
+  OutputVoteResult('投票完了', true);
 }
 
 //夜の投票処理
@@ -695,16 +676,16 @@ function VoteNight(){
     if(count($RQ_ARGS->target_no) != 2) OutputVoteResult('夜：指定人数が二人ではありません');
     $target_list = array();
     $self_shoot = false; //自分撃ちフラグを初期化
-    foreach($RQ_ARGS->target_no as $this_target_no){
-      $this_target = $USERS->ByID($this_target_no); //投票先のユーザ情報を取得
+    foreach($RQ_ARGS->target_no as $target_no){
+      $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
 
       //生存者以外と身代わり君への投票は無効
-      if(! $this_target->IsLive() || $this_target->IsDummyBoy()){
+      if(! $target->IsLive() || $target->IsDummyBoy()){
 	OutputVoteResult('生存者以外と身代わり君へは投票できません');
       }
 
-      $target_list[] = $this_target;
-      $self_shoot |= $this_target->IsSelf(); //自分撃ち判定
+      $target_list[] = $target;
+      $self_shoot |= $target->IsSelf(); //自分撃ち判定
     }
 
     if(! $self_shoot){ //自分撃ちでは無い場合は特定のケースでエラーを返す
@@ -752,29 +733,24 @@ function VoteNight(){
 
   LockTable(); //テーブルを排他的ロック
   if($not_type){
-    //投票処理
-    $items = 'room_no, date, uname, vote_number, situation';
-    $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', 1, '{$RQ_ARGS->situation}'";
-    $sql = InsertDatabase('vote', $items, $values);
-    InsertSystemMessage($SELF->handle_name, $RQ_ARGS->situation);
-    InsertSystemTalk($RQ_ARGS->situation, $ROOM->system_time, 'night system', '', $SELF->uname);
+    if(! $SELF->Vote($RQ_ARGS->situation)){ //投票処理
+      OutputVoteResult('データベースエラー', true);
+    }
+    $ROOM->SystemMessage($SELF->handle_name, $RQ_ARGS->situation);
+    $ROOM->Talk($RQ_ARGS->situation, $SELF->uname);
   }
   else{
     if($SELF->IsRoleGroup('cupid') || $SELF->IsRole('dummy_chiroptera')){ //キューピッド系の処理
-      $target_uname_str  = '';
-      $target_handle_str = '';
-      foreach($target_list as $this_target){
-	if($target_uname_str != ''){
-	  $target_uname_str  .= ' ';
-	  $target_handle_str .= ' ';
-	}
-	$target_uname_str  .= $this_target->uname;
-	$target_handle_str .= $this_target->handle_name;
+      $uname_stack = array();
+      $handle_stack = array();
+      foreach($target_list as $target){
+	$uname_stack[]  = $target->uname;
+	$handle_stack[] = $target->handle_name;
 
 	if($SELF->IsRole('dummy_chiroptera')){ //夢求愛者の処理
-	  if(! $this_target->IsSelf()){ //自分以外には何もしない
+	  if(! $target->IsSelf()){ //自分以外には何もしない
 	    $main_role = 'dummy_chiroptera';
-	    $change_role = $main_role . '[' . strval($this_target->user_no) . ']';
+	    $change_role = $main_role . '[' . strval($target->user_no) . ']';
 	    $SELF->ReplaceRole($main_role, $change_role);
 	  }
 	  continue;
@@ -782,46 +758,43 @@ function VoteNight(){
 
 	//役職に恋人を追加
 	$add_role = 'lovers[' . strval($SELF->user_no) . ']';
-	if($SELF->IsRole('self_cupid') && ! $this_target->IsSelf()){ //求愛者なら相手に受信者を追加
+	if($SELF->IsRole('self_cupid') && ! $target->IsSelf()){ //求愛者なら相手に受信者を追加
 	  $add_role .= ' mind_receiver['. strval($SELF->user_no) . ']';
 	}
 	elseif($SELF->IsRole('mind_cupid')){ //女神なら共鳴者を追加
 	  $add_role .= ' mind_friend['. strval($SELF->user_no) . ']';
 	  if(! $self_shoot){//他人撃ちなら本人に受信者を追加する
-	    $SELF->AddRole('mind_receiver[' . strval($this_target->user_no) . ']');
+	    $SELF->AddRole('mind_receiver[' . strval($target->user_no) . ']');
 	  }
 	}
 	/*
 	//入れ替えQPなら自分と入れ替える
-	elseif($SELF->IsRole('possessed_cupid') && ! $this_target->IsSelf()){
-	  $SELF->AddRole('possessed_target[2-' . $this_target->user_no . '] ' .
-			 'possessed[2-' . $this_target->user_no . ']');
-	  $this_target->AddRole('possessed_target[2-' . $SELF->user_no . '] ' .
+	elseif($SELF->IsRole('possessed_cupid') && ! $target->IsSelf()){
+	  $SELF->AddRole('possessed_target[2-' . $target->user_no . '] ' .
+			 'possessed[2-' . $target->user_no . ']');
+	  $target->AddRole('possessed_target[2-' . $SELF->user_no . '] ' .
 				'possessed[2-' . $SELF->user_no . ']');
 	}
 	*/
-	$this_target->AddRole($add_role);
+	$target->AddRole($add_role);
       }
+      $target_uname  = implode(' ', $uname_stack);
+      $target_handle = implode(' ', $handle_stack);
     }
     else{ // キューピッド以外の処理
-      $target_uname_str  = $USERS->ByReal($target->user_no)->uname;
-      $target_handle_str = $target->handle_name;
+      $target_uname  = $USERS->ByReal($target->user_no)->uname;
+      $target_handle = $target->handle_name;
     }
-    //投票処理
-    $items = 'room_no, date, uname, target_uname, situation';
-    $values = "{$ROOM->id}, {$ROOM->date}, '{$SELF->uname}', '$target_uname_str', '{$RQ_ARGS->situation}'";
-    $sql = InsertDatabase('vote', $items, $values);
-    InsertSystemMessage($SELF->handle_name . "\t" . $target_handle_str, $RQ_ARGS->situation);
-    $sentence = $RQ_ARGS->situation . "\t" . $target_handle_str;
-    InsertSystemTalk($sentence, $ROOM->system_time, 'night system', '', $SELF->uname);
+
+    if(! $SELF->Vote($RQ_ARGS->situation, $target_uname)){ //投票処理
+      OutputVoteResult('データベースエラー', true);
+    }
+    $ROOM->SystemMessage($SELF->handle_name . "\t" . $target_handle, $RQ_ARGS->situation);
+    $ROOM->Talk($RQ_ARGS->situation . "\t" . $target_handle, $SELF->uname);
   }
 
-  //登録成功
-  if($sql && mysql_query('COMMIT')){
-    AggregateVoteNight(); //集計処理
-    OutputVoteResult('投票完了', true);
-  }
-  else OutputVoteResult('データベースエラー', true);
+  AggregateVoteNight(); //集計処理
+  OutputVoteResult('投票完了', true);
 }
 
 //投票ページ HTML ヘッダ出力

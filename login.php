@@ -6,7 +6,7 @@ $DB_CONF->Connect(); //DB 接続
 
 //-- ログイン処理 --//
 //DB 接続解除は結果出力関数が行う
-if($RQ_ARGS->login_type == 'manually'){ //ユーザ名とパスワードで手動ログイン
+if($RQ_ARGS->login_manually){ //ユーザ名とパスワードで手動ログイン
   if(LoginManually()){
     OutputLoginResult('ログインしました', 'game_frame');
   }
@@ -56,17 +56,14 @@ function LoginManually(){
   //$crypt_password = $password; //デバッグ用
 
   //共通クエリ
-  $query = "WHERE room_no = $room_no AND uname = '$uname' AND user_no > 0";
+  $query_base = "WHERE room_no = {$room_no} AND uname = '{$uname}' AND user_no > 0";
 
   //該当するユーザ名とパスワードがあるか確認
-  $query_password = "SELECT COUNT(uname) FROM user_entry $query AND password = '$crypt_password'";
-  if(FetchResult($query_password) != 1) return false;
-
-  //セッションIDの再登録
-  $session_id = $SESSION->Get(true);
+  $query = "SELECT COUNT(uname) FROM user_entry {$query_base} AND password = '{$crypt_password}'";
+  if(FetchResult($query) != 1) return false;
 
   //DBのセッションIDを更新
-  mysql_query("UPDATE user_entry SET session_id = '$session_id' $query");
-  mysql_query('COMMIT'); //一応コミット
+  $session_id = $SESSION->Get(true); //セッションIDの再登録
+  SendQuery("UPDATE user_entry SET session_id = '{$session_id}' {$query_base}", true);
   return true;
 }

@@ -37,8 +37,8 @@ echo $header . 'class="input-say" name="send" onSubmit="' . $submit . '">'."\n";
 <option value="weak">ºÂ§Ø»Ø∏¿§π§Î</option>
 <option value="last_words">∞‰∏¿§Úªƒ§π</option>
 </select><br>
-<?php echo '[<a class="vote" href="game_vote.php' . $url_argv . '#game_top">≈Í…º/¿Í§¶/∏Ó±“</a>]'; ?>
-<a class="top-link" href="index.php" target="_top">TOP</a>
+<?= '[<a class="vote" href="game_vote.php' . $url_argv . '#game_top">≈Í…º/¿Í§¶/∏Ó±“</a>]' ?>
+<a class="top-link" href="./" target="_top">TOP</a>
 </td>
 </tr></table>
 </form>

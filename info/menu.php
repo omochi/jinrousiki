@@ -13,6 +13,7 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'info_menu');
   <li><a href="../rule.php" target="_top">ゲームのルール</a></li>
   <li><a href="chaos.php" target="body">闇鍋モード</a></li>
   <li><a href="new_role/" target="_top">新役職情報</a></li>
+  <li><a href="game_option.php" target="body">ゲームオプション</a></li>
   <li><a href="spec.php" target="body">詳細な仕様</a></li>
   <li>★☆★☆★☆★</li>
   <li><a href="history/" target="body">サーバ更新履歴</a></li>

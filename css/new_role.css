@@ -15,5 +15,10 @@ th, td{
   padding: 5px;
   border: 1px solid;
   text-align: center;
+  white-space: nowrap;
 }
-.ability{ text-align: left;}
+td{ font-size: 90%; }
+.ability{
+  text-align: left;
+  white-space: normal;
+}

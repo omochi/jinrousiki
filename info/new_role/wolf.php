@@ -11,9 +11,58 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="summary.php">←一覧表</a>
 </p>
 <p>
+<a href="#wolf_rule">基本ルール</a>
+<a href="#wolf_partner">仲間表示</a>
+<a href="#wolf_howl">遠吠え</a>
+</p>
+<p>
 <a href="#wolf_group">人狼系</a>
 <a href="#mad_group">狂人系</a>
 </p>
+
+<h2><a name="wolf_rule">基本ルール</a></h2>
+<pre>
+夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。
+(<a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない)
+人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
+</pre>
+<h3>Ver. 1.4.0 α21〜</h3>
+<pre>
+狼が狼を襲撃した場合は失敗扱いとなる。
+<a href="fox.php">妖狐</a>と違い、襲撃された方にも何も表示されない。
+</pre>
+
+<h2><a name="wolf_partner">仲間表示</a></h2>
+<pre>
+<a href="#fanatic_mad">狂信者</a>と全ての人狼は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。
+<a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。
+<a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かります。
+</pre>
+<h3>Ver. 1.4.0 α24〜</h3>
+<pre>
+<a href="human.php#unconscious">無意識</a>の枠に<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示されます。
+</pre>
+<h3>Ver. 1.4.0 α21〜</h3>
+<pre>
+<a href="#silver_wolf">銀狼</a>は仲間の人狼、<a href="#whisper_mad">囁き狂人</a>がいっさい分かりません。
+</pre>
+
+<h2><a name="wolf_howl">遠吠え</a></h2>
+<pre>
+1. 人狼視点の遠吠えは銀狼確定
+2. 銀狼視点の遠吠えは自分以外の狼(種類は不明)
+3. 村人視点の遠吠えは銀狼も含めた狼(種類は不明)
+</pre>
+<h3>Ver. 1.4.0 α23〜</h3>
+<pre>
+<a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見えます。
+<a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えません。
+</pre>
+<h3>Ver. 1.4.0 α21〜</h3>
+<pre>
+<a href="#silver_wolf">銀狼</a>の独り言は遠吠えになりません。
+</pre>
+
 
 <h2><a name="wolf_group">人狼系</a></h2>
 <p>
@@ -120,7 +169,7 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 </pre>
 <h4>Ver. 1.4.0 β3〜</h4>
 <pre>
-霊能結果を「人狼」から「呪狼」に変更しました (霊能の基本ルール対応抜け)
+霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">霊能の基本ルール</a>対応抜け)
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -262,7 +311,7 @@ C の恋人の相手が A から B に変わる (C 視点から憑依したことが分かる)
 死体：A が無残な死体で発見されました (死因：「誰かに憑依した」)
 死体：C が無残な死体で発見されました (死因：「暗殺された」)
 憑依：B[村人][恋人](A[憑狼])
-C の恋人が生存している状態になるが、C が<a href="chiroptera#dummy_chiroptera">夢求愛者</a>だった場合は
+C の恋人が生存している状態になるが、C が<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>だった場合は
 無関係の村人が恋人に憑依した憑狼扱いされる可能性がある。
 </pre>
 
@@ -460,24 +509,13 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 
 <h3><a name="silver_wolf">銀狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α21〜]</h3>
 <pre>
-仲間が分からない人狼。
+<a href="#wolf_partner">仲間</a>が分からない人狼。
 (他の人狼・<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>からも仲間であると分からない)
-人狼同士の会話もできず、発言は他の人からは遠吠えに見える。
-
-人狼/銀狼の夜の投票は共通。
-(銀狼が先に投票したら他の人狼は投票できない)
-互いに認識できないので、味方を襲撃する可能性がある。
-
-狼が狼を襲撃した場合は失敗扱いとなる。
-妖狐と違い、襲撃された方にも何も表示されない。
+人狼同士の会話もできず、発言は他の人からは<a href="#wolf_howl">遠吠え</a>に見える。
 </pre>
 <h4>Ver. 1.4.0 α23〜</h4>
 <pre>
-独り言が他の人から遠吠えに見える。
-
-1. 人狼視点の遠吠えは銀狼確定
-2. 銀狼視点の遠吠えは自分以外の狼(種類は不明)
-3. 村人視点の遠吠えは銀狼も含めた狼(種類は不明)
+独り言が他の人から<a href="#wolf_howl">遠吠え</a>に見える。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

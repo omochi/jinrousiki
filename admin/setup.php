@@ -63,6 +63,8 @@ function CheckTable(){
   $header = 'テーブル';
   $footer = '<br>'."\n";
   $str = 'を作成しました' . $footer;
+  $success = ')を追加しました';
+  $failed  = ')を追加できませんでした';
 
   $title = $header . '(room)';
   if(! in_array('room', $table)){
@@ -73,8 +75,9 @@ function CheckTable(){
 		finish_time DATETIME)");
     echo $title . $str;
   }
-  elseif($revision > 0){ //追加フィールド処理
-    $sql = mysql_query("SHOW COLUMNS FROM room");
+  elseif($revision > 0){
+    //追加フィールド処理
+    $sql = mysql_query('SHOW COLUMNS FROM room');
     if(mysql_num_rows($sql) > 0){
       while(($row = mysql_fetch_assoc($sql)) !== false){
 	$flag->establisher_ip |= ($row['Field'] == 'establisher_ip');
@@ -82,28 +85,26 @@ function CheckTable(){
 	$flag->start_time     |= ($row['Field'] == 'start_time');
 	$flag->finish_time    |= ($row['Field'] == 'finish_time');
       }
-    }
 
-    $query   = "ALTER TABLE room ADD ";
-    $titile .= 'にフィールド(';
-    $success = ')を追加しました';
-    $failed  = ')を追加できませんでした';
+      $query = 'ALTER TABLE room ADD ';
+      $title .= 'にフィールド(';
 
-    if(! $flag->establisher_ip){
-      $status = (mysql_query("$query establisher_ip TEXT") ? $success : $failed);
-      echo $header . 'establisher_ip' . $status . $footer;
-    }
-    if(! $flag->establish_time){
-      $status = (mysql_query("$query establish_time DATETIME") ? $success : $failed);
-      echo $header . 'establish_time' . $status . $footer;
-    }
-    if(! $flag->start_time){
-      $status = (mysql_query("$query start_time DATETIME") ? $success : $failed);
-      echo $header . 'start_time' . $status . $footer;
-    }
-    if(! $flag->finish_time){
-      $status = (mysql_query("$query finish_time DATETIME") ? $success : $failed);
-      echo $header . 'finish_time' . $status . $footer;
+      if(! $flag->establisher_ip){
+	$status = mysql_query($query . 'establisher_ip TEXT') ? $success : $failed;
+	echo $title . 'establisher_ip' . $status . $footer;
+      }
+      if(! $flag->establish_time){
+	$status = mysql_query($query . 'establish_time DATETIME' ? $success : $failed);
+	echo $title . 'establish_time' . $status . $footer;
+      }
+      if(! $flag->start_time){
+	$status = mysql_query($query . 'start_time DATETIME') ? $success : $failed;
+	echo $title . 'start_time' . $status . $footer;
+      }
+      if(! $flag->finish_time){
+	$status = mysql_query($query . 'finish_time DATETIME') ? $success : $failed;
+	echo $title . 'finish_time' . $status . $footer;
+      }
     }
   }
 
@@ -120,11 +121,11 @@ function CheckTable(){
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
   elseif($revision > 0 && $revision < 152){
-    mysql_query("ALTER TABLE user_entry MODIFY room_no INT NOT NULL"); //room_no の型を変更
+    mysql_query('ALTER TABLE user_entry MODIFY room_no INT NOT NULL'); //room_no の型を変更
     echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
 
     if($revision < 140){ //INDEX を設定
-      mysql_query("ALTER TABLE user_entry ADD INDEX user_entry_index(room_no, user_no)");
+      mysql_query('ALTER TABLE user_entry ADD INDEX user_entry_index(room_no, user_no)');
       echo $title . 'に INDEX (room_no, user_no) を設定しました' . $footer;
     }
   }
@@ -136,16 +137,35 @@ function CheckTable(){
 		INDEX talk_index(room_no, date, time))");
     echo $title . $str;
   }
-  elseif($revision > 0 && $revision < 152){
-    mysql_query("ALTER TABLE talk MODIFY room_no INT NOT NULL"); //room_no の型を変更
-    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
+  elseif($revision > 0){
+    //追加フィールド処理
+    $sql = mysql_query('SHOW COLUMNS FROM talk');
+    if(mysql_num_rows($sql) > 0){
+      while(($row = mysql_fetch_assoc($sql)) !== false){
+	$flag->talk_id  |= ($row['Field'] == 'talk_id');
+      }
+    }
 
-    if($revision < 140){ //time の型を変更、INDEX を設定
-      mysql_query("ALTER TABLE talk MODIFY time INT NOT NULL");
-      echo $title . 'の time の型を "INT NOT NULL" に変更しました' . $footer;
+    $query = 'ALTER TABLE talk ADD ';
+    $title .= 'にフィールド(';
 
-      mysql_query("ALTER TABLE talk ADD INDEX talk_index(room_no, date, time)");
-      echo $title . 'に INDEX (room_no, date, time) を設定しました' . $footer;
+    if(! $flag->talk_id){
+      $status = (mysql_query($query . 'talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY') ?
+		 $success : $failed);
+      echo $title . 'talk_id' . $status . $footer;
+    }
+
+    if($revision < 152){
+      mysql_query('ALTER TABLE talk MODIFY room_no INT NOT NULL'); //room_no の型を変更
+      echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
+
+      if($revision < 140){ //time の型を変更、INDEX を設定
+	mysql_query('ALTER TABLE talk MODIFY time INT NOT NULL');
+	echo $title . 'の time の型を "INT NOT NULL" に変更しました' . $footer;
+
+	mysql_query('ALTER TABLE talk ADD INDEX talk_index(room_no, date, time)');
+	echo $title . 'に INDEX (room_no, date, time) を設定しました' . $footer;
+      }
     }
   }
 
@@ -230,26 +250,24 @@ function CheckTable(){
       }
     }
 
-    $query   = "ALTER TABLE user_icon ADD ";
-    $titile .= 'にフィールド(';
-    $success = ')を追加しました';
-    $failed  = ')を追加できませんでした';
+    $query = 'ALTER TABLE user_icon ADD ';
+    $title .= 'にフィールド(';
 
     if(! $flag->appearance){
-      $status = (mysql_query("$query appearance TEXT") ? $success : $failed);
-      echo $header . 'appearance' . $status . $footer;
+      $status = (mysql_query($query . 'appearance TEXT') ? $success : $failed);
+      echo $title . 'appearance' . $status . $footer;
     }
     if(! $flag->category){
-      $status = (mysql_query("$query category TEXT") ? $success : $failed);
-      echo $header . 'category' . $status . $footer;
+      $status = (mysql_query($query . 'category TEXT') ? $success : $failed);
+      echo $title . 'category' . $status . $footer;
     }
     if(! $flag->author){
-      $status = (mysql_query("$query author TEXT") ? $success : $failed);
-      echo $header . 'author' . $status . $footer;
+      $status = (mysql_query($query . 'author TEXT') ? $success : $failed);
+      echo $title . 'author' . $status . $footer;
     }
     if(! $flag->regist_date){
-      $status = (mysql_query("$query regist_date DATETIME") ? $success : $failed);
-      echo $header . 'regist_date' . $status . $footer;
+      $status = (mysql_query($query . 'regist_date DATETIME') ? $success : $failed);
+      echo $title . 'regist_date' . $status . $footer;
     }
   }
 

@@ -115,7 +115,7 @@ $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[7]->profile = '';
-$RQ_ARGS->TestItems->test_users[7]->role = 'reporter plague lovers[5]';
+$RQ_ARGS->TestItems->test_users[7]->role = 'reporter plague';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 $RQ_ARGS->TestItems->test_users[7]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[7]->is_system = false;
@@ -143,7 +143,7 @@ $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[9]->profile = '';
-$RQ_ARGS->TestItems->test_users[9]->role = 'chiroptera upper_luck possessed[3-8]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'medium upper_luck possessed[3-8]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[9]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[9]->is_system = false;
@@ -171,7 +171,7 @@ $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[11]->profile = '';
-$RQ_ARGS->TestItems->test_users[11]->role = 'child_fox';
+$RQ_ARGS->TestItems->test_users[11]->role = 'child_fox lovers[5]';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[11]->is_system = false;
@@ -244,7 +244,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-$SELF = $USERS->ByID(3);
+#$SELF = $USERS->ByID(3);
 
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ

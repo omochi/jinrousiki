@@ -44,17 +44,16 @@ if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //自動更新
 //シーンに合わせた文字色と背景色 CSS をロード
 echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
 
-//経過時間を取得
-if($ROOM->IsRealTime()){ //リアルタイム制
-  list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
-  if($ROOM->IsPlaying()){
+if($ROOM->IsPlaying()){ //経過時間を取得
+  if($ROOM->IsRealTime()){ //リアルタイム制
+    list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
     $on_load = ' onLoad="output_realtime();"';
     OutputRealTimer($start_time, $end_time);
   }
-}
-else{ //会話で時間経過制
-  $INIT_CONF->LoadClass('TIME_CONF');
-  $left_talk_time = GetTalkPassTime(&$left_time);
+  else{ //会話で時間経過制
+    $INIT_CONF->LoadClass('TIME_CONF');
+    $left_talk_time = GetTalkPassTime(&$left_time);
+  }
 }
 
 echo <<<EOF
@@ -76,12 +75,12 @@ else{
 }
 
 echo <<<EOF
-<a href="index.php">[戻る]</a>
+<a href="./">[戻る]</a>
 </td></tr>
 <tr><td><form method="POST" action="login.php?room_no={$ROOM->id}">
 <label>ユーザ名</label><input type="text" name="uname" size="20">
 <label>パスワード</label><input type="password" class="login-password" name="password" size="20">
-<input type="hidden" name="login_type" value="manually">
+<input type="hidden" name="login_manually" value="on">
 <input type="submit" value="ログイン">
 </form></td>
 

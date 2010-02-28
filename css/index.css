@@ -47,10 +47,28 @@ ul{ /* メニューのリンク */
 fieldset{margin-bottom: 10px;} /* 右側の枠 */
 legend{font-weight: bold;} /* fieldset(右側の枠) のタイトル */
 .information{ /* Information (中身は info/index.html) */
-  margin: 20px 20px;
-  line-height: 135%;
+  margin: 10px 10px;
 }
-.information ul{list-style-type: circle;}
+.information h1 h2 h3 h4{
+  margin: 0px;
+  padding: 5px 0px;
+}
+.information h1{
+  background-color: #CCFFCC;
+  font-size: 120%;
+}
+.information h2{
+  background-color: #CCFFFF;
+  font-size: 100%;
+}
+.information h3{
+  background-color: #FFDDDD;
+  font-size: 100%;
+}
+.information h4{
+  background-color: #DDDDDD;
+  font-size: 100%;
+}
 .game-list{ /* ゲーム一覧 (中身は game_manager.php) */
   margin: 20px 20px 30px;
   line-height: 135%;

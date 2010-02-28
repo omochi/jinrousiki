@@ -10,8 +10,58 @@ OutputHTMLHeader($SERVER_CONF->title . '[デバッグ情報]', 'info');
 <a href="../../" target="_top">&lt;= TOP</a>
 <a href="../" target="_top">←情報一覧</a>
 </p>
+<p>
+Ver. 1.4.0
+<a href="#140alpha24">α24</a>
+<a href="#140beta2">β2</a>
+<a href="#140beta3">β3</a>
+<a href="#140beta4">β4</a>
+</p>
 
-<h2>Ver. 1.4.0 β3</h2>
+<h2><a name="140beta4">Ver. 1.4.0 β4</a></h2>
+<h3>user_manager.php % 35行目付近</h3>
+<h4>[before]</h4>
+<pre>
+  //項目被りチェック
+</pre>
+<h4>[after]</h4>
+<pre>
+  $query = "SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = " . $icon_no;
+  if(FetchResult($query) < 1) OutputActionResult('村人登録 [入力エラー]', '無効なアイコン番号です');
+
+  //項目被りチェック
+</pre>
+
+<h3>user_manager.php % 275行目付近 (2010/02/24 (Wed) 21:40)</h3>
+<h4>[before]</h4>
+<pre>
+if($ROOM->IsOptionGroup('mania')) $wish_role_list[] = 'mania';
+</pre>
+<h4>[after]</h4>
+<pre>
+if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
+  $wish_role_list[] = 'mania';
+}
+</pre>
+
+<h3>include/game_functons.php % 751行目付近 (2010/02/28 (Sun) 02:00)</h3>
+<h4>[before]</h4>
+<pre>
+$builder->AddSystemTalk($sentence, 'dummy-boy');
+</pre>
+<h4>[after]</h4>
+<pre>
+LineToBR($sentence);
+$builder->AddSystemTalk($sentence, 'dummy-boy');
+</pre>
+
+<h3>game_vote.php % 352行目付近 (2010/02/28 (Sun) 20:25)</h3>
+<pre>
+× $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
+○ $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
+</pre>
+
+<h2><a name="140beta3">Ver. 1.4.0 β3</a></h2>
 <h3>game_play.php % 259行目付近</h3>
 <pre>
 × if($ROOM->IsPlaying() && $virtual->IsLive()){
@@ -62,7 +112,19 @@ case 'dummy_boy':
 ○ function GenerateShortRoleName(){
 </pre>
 
-<h2>Ver. 1.4.0 β2</h2>
+<h3>include/game_functons.php % 461行目付近 (2010/02/28 (Sun) 02:00)</h3>
+<h4>[before]</h4>
+<pre>
+$builder->AddSystemTalk($sentence, 'dummy-boy');
+</pre>
+<h4>[after]</h4>
+<pre>
+LineToBR($sentence);
+$builder->AddSystemTalk($sentence, 'dummy-boy');
+</pre>
+
+
+<h2><a name="140beta2">Ver. 1.4.0 β2</a></h2>
 <h3>include/game_vote_functions.php % 1188行目</h3>
 <pre>
 × elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
@@ -75,7 +137,7 @@ case 'dummy_boy':
 ○ array_push($actor_list, '%cat', 'revive_fox');
 </pre>
 
-<h2>Ver. 1.4.0 α24</h2>
+<h2><a name="140alpha24">Ver. 1.4.0 α24</a></h2>
 <h3>game_play.php % 731 行目</h3>
 <pre>
 × $USERS->GetHandleName($target_uname) . 'さんに投票済み');
@@ -88,13 +150,13 @@ case 'dummy_boy':
 ○elseif($virtual_self->IsRole('wise_wolf')){
 </pre>
 
-<h3>user_manager.php % 276 行目 (2010/01/30 02:30 追記)</h3>
+<h3>user_manager.php % 276 行目 (2010/01/30 02:30)</h3>
 <pre>
 × array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'common', 'poison',
 ○ array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'guard', 'common', 'poison',
 </pre>
 
-<h3>include/game_functions.php % 400 行目付近 (2010/02/01 (Mon) 00:15 追記)</h3>
+<h3>include/game_functions.php % 400 行目付近 (2010/02/01 (Mon) 00:15)</h3>
 <h4>[before]</h4>
 <pre>
 $said_user = $USERS->ByVirtualUname($talk->uname);

@@ -1,6 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
+$INIT_CONF->LoadClass('MESSAGE');
 OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
 ?>
 </head>
@@ -10,7 +11,22 @@ OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
 <a href="../" target="_top">&lt;= TOP</a>
 <a href="./" target="_top">←情報一覧</a>
 </p>
-<h2>村配役決定ルーチン</h2>
+<p>
+<a href="#decide_role">配役決定ルーチン</a>
+<a href="#dummy_boy">身代わり君</a>
+<a href="#dead">死因一覧</a>
+<a href="#vote">投票</a>
+</p>
+
+<h2><a name="decide_role">配役決定ルーチン</a></h2>
+<p>
+<a href="#decide_role_room">村</a>
+<a href="#decide_role_dummy_boy">身代わり君</a>
+<a href="#decide_role_user">ユーザ</a>
+</p>
+
+<h3><a name="decide_role_room">村</a></h3>
+</p>
 <ol>
 <li>参加人数を取得</li>
 <li>人数毎に設定されている配役データを取得 (<a href="../rule.php" target="_top">ルール</a>参照)</li>
@@ -19,7 +35,7 @@ OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
 <li>配役決定</li>
 </ol>
 
-<h2>身代わり君配役決定ルーチン</h2>
+<h3><a name="decide_role_dummy_boy">身代わり君</a></h3>
 <ol>
 <li>配役を取得</li>
 <li>ランダムな配役リストを作る</li>
@@ -28,7 +44,7 @@ OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
 <li>配役決定
 </ol>
 
-<h2>配役決定ルーチン</h2>
+<h3><a name="decide_role_user">ユーザ</a></h3>
 <ol>
 <li>身代わり君の配役を決定してユーザリストから「決定済みリスト」へ移動</li>
 <li>ランダムなユーザリストを作る</li>
@@ -38,7 +54,7 @@ OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
 <li>全部振り終えたら「未決定リスト」の人に余りを割り振る</li>
 </ol>
 
-<h2>身代わり君 (GM) の仕様</h2>
+<h2><a name="dummy_boy">身代わり君 (GM) の仕様</a></h2>
 <ul>
 <li>常時、ゲーム終了後相当の情報が見えます</li>
 <li>ゲーム開始前のユーザの「役職」は「希望役職」です</li>
@@ -46,4 +62,95 @@ OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
 <li>ゲーム中は「遺言」発言をすると専用システムメッセージになります</li>
 <li>投票能力がある役職であっても投票することはできません</li>
 </ul>
+
+<h2><a name="dead">死因一覧</a></h2>
+<p>
+<a href="#dead_common">共通</a>
+<a href="#dead_day">昼</a>
+<a href="#dead_night">夜</a>
+</p>
+
+<h3><a name="dead_common">共通</a></h3>
+<h4>〜<?= $MESSAGE->sudden_death ?></h4>
+<ul>
+<li>突然死 (投票忘れ)</li>
+</ul>
+
+<h4>〜<?= $MESSAGE->lovers_followed ?></h4>
+<ul>
+<li>後追い (恋人)</li>
+</ul>
+
+
+<h3><a name="dead_day">昼</a></h3>
+<h4>〜<?= $MESSAGE->vote_killed ?></h4>
+<ul>
+<li>処刑 (昼の投票)</li>
+</ul>
+
+<h4>〜<?= $MESSAGE->deadman ?></h4>
+<ul>
+<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
+</ul>
+
+<h4>〜<?= $MESSAGE->vote_sudden_death ?></h4>
+<ul>
+<li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>、<a href="new_role/human.php#jealousy">橋姫</a>)</li>
+</ul>
+
+<h3><a name="dead_night">夜</a></h3>
+<h4>〜<?= $MESSAGE->deadman ?></h4>
+<ul>
+<li>襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
+<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
+<li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
+<li><a href="new_role/human.php#guard_hunt">狩り</a> (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
+<li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
+<li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
+<li>呪殺 (<a href="new_role/human.php#mage_group">占い師系</a>)</li>
+<li>呪返し (<a href="new_role/wolf.php#cursed_wolf">呪狼</a>などの呪い持ち、<a href="new_role/wolf.php#voodoo_mad">呪術師</a>などの呪い能力者)</li>
+<li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>)</li>
+<li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
+<li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
+<li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
+</ul>
+<h4>〜<?= $MESSAGE->revive_success ?></h4>
+<ul>
+<li>蘇生 (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>、<a href="new_role/human.php#revive_priest">天人</a>)</li>
+</ul>
+
+<h4>〜<?= $MESSAGE->revive_failed ?></h4>
+<ul>
+<li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>)</li>
+</ul>
+
+<h2><a name="vote">投票処理の仕様</a></h2>
+<p>
+<a href="#vote_day">昼</a>
+<a href="#vote_night">夜</a>
+</p>
+
+<h3><a name="vote_day">昼</a></h3>
+<pre>
++ 投票集計 → 得票補正 → 処刑者決定 → 橋姫判定 → ショック死判定 → 後追い
+</pre>
+
+<h3><a name="vote_night">夜</a></h3>
+<pre>
++ レイヤー (階層) 別の処理順序
+  - 恋人 → 接触 → 夢 → 占い → <日にち別処理> → 憑依 → 後追い → 司祭
+    <[初日] コピー → 帰還 / [二日目以降] 尾行 → 蘇生>
+
++ 恋人 (キューピッド系)
+  - 相互作用はないので投票直後に処理を行う
+
++ 接触 (人狼、狩人、暗殺者、罠師)
+  - 罠 > 狩人護衛 > 人狼襲撃 → 狩人の狩り → 暗殺
+
++ 夢 (夢守人、獏)
+  - 夢守人護衛 > 獏襲撃 → 夢守人の狩り
+
++ 占い (占い系、厄神、夢守人、月兎、呪術系)
+  - 厄払い > 呪い > 占い妨害 > 占い (呪殺)
+</pre>
 </body></html>

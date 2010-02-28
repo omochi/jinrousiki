@@ -10,15 +10,14 @@ function GetRandom($array){
 function GetRealPassTime(&$left_time){
   global $ROOM;
 
-  //最も小さな時間(場面の最初の時間)を取得
+  //シーンの最初の時刻を取得
   $query = "SELECT MIN(time) FROM talk WHERE room_no = {$ROOM->id} " .
     "AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'";
   $start_time = FetchResult($query);
   if($start_time === false) $start_time = $ROOM->system_time;
 
-  $pass_time = $ROOM->system_time - $start_time; //経過した時間
   $base_time = $ROOM->real_time->{$ROOM->day_night} * 60; //設定された制限時間
-  $left_time = $base_time - $pass_time;
+  $left_time = $base_time - ($ROOM->system_time - $start_time); //残り時間
   if($left_time < 0) $left_time = 0; //マイナスになったらゼロにする
   return array($start_time, $start_time + $base_time);
 }
@@ -47,43 +46,16 @@ function GetTalkPassTime(&$left_time, $silence = false){
   return ConvertTime($full_time * $base_left_time * 60 * 60 / $base_time);
 }
 
-//-- システムメッセージ関連 --//
-//システムメッセージ挿入 (talk Table)
-function InsertSystemTalk($sentence, $time, $location = '', $date = '', $uname = 'system'){
-  global $ROOM;
-
-  if($location == '') $location = $ROOM->day_night . ' system';
-  if($ROOM->test_mode){
-    PrintData($sentence, 'System Talk: ' . $location);
-    return;
-  }
-  if($date == '') $date = $ROOM->date;
-  InsertTalk($ROOM->id, $date, $location, $uname, $time, $sentence, NULL, 0);
-}
-
-//システムメッセージ挿入 (system_message Table)
-function InsertSystemMessage($sentence, $type, $date = ''){
-  global $ROOM;
-
-  if($ROOM->test_mode){
-    PrintData($sentence, 'System Message: ' . $type);
-    return;
-  }
-  if($date == '') $date = $ROOM->date;
-  $values = "{$ROOM->id}, '{$sentence}', '{$type}', {$date}";
-  InsertDatabase('system_message', 'room_no, message, type, date', $values);
-}
-
 //-- 役職関連 --//
 //巫女の判定結果 (システムメッセージ)
 function InsertMediumMessage(){
-  global $USERS;
+  global $ROOM, $USERS;
 
   if(! $USERS->IsAppear('medium')) return false; //巫女の出現チェック
   foreach($USERS->rows as $user){
     if(! $user->suicide_flag) continue;
     $handle_name = $USERS->GetHandleName($user->uname, true);
-    InsertSystemMessage($handle_name . "\t" . $user->DistinguishCamp(), 'MEDIUM_RESULT');
+    $ROOM->SystemMessage($handle_name . "\t" . $user->DistinguishCamp(), 'MEDIUM_RESULT');
   }
 }
 
@@ -113,7 +85,7 @@ function LoversFollowed($sudden_death = false){
 
       if($sudden_death){ //突然死の処理
 	if(! $user->ToDead()) continue;
-	InsertSystemTalk($user->handle_name . $MESSAGE->lovers_followed, ++$ROOM->system_time);
+	$ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed);
 	$user->SaveLastWords();
       }
       elseif(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->day_night)){ //通常処理
@@ -200,7 +172,7 @@ function DeleteVote(){
     $query .= " AND situation <> " . ($ROOM->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
   }
   SendQuery($query);
-  mysql_query("OPTIMIZE TABLE vote");
+  SendQuery("OPTIMIZE TABLE vote", true);
 }
 
 //夜の自分の投票済みチェック
@@ -656,20 +628,10 @@ function GenerateVoteList($raw_data, $date){
 function OutputTalkLog(){
   global $ROOM;
 
-  //会話のユーザ名、ハンドル名、発言、発言のタイプを取得
-  $query = <<<EOF
-SELECT uname, sentence, font_type, location
-FROM talk
-WHERE room_no = {$ROOM->id} AND location LIKE '{$ROOM->day_night}%' AND date = {$ROOM->date}
-ORDER BY time DESC
-EOF;
-  $sql = SendQuery($query);
-
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk');
-  while(($row = mysql_fetch_object($sql, 'Talk')) !== false){
-    OutputTalk($row, $builder); //会話出力
-  }
+  $talk_list = $ROOM->LoadTalk();
+  foreach($talk_list as $talk) OutputTalk($talk, $builder); //会話出力
   OutputTimeStamp($builder);
   $builder->EndTalk();
 }

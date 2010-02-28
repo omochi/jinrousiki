@@ -13,22 +13,12 @@ function CheckReferer($page, $white_list = NULL){
   return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
 }
 
-//-- セッション関連 --//
-//セッションIDを新しくする(PHPのバージョンが古いとこの関数が無いので定義する)
-if(! function_exists('session_regenerate_id')){
-  function session_regenerate_id(){
-    $QQ = serialize($_SESSION);
-    session_destroy();
-    session_id(md5(uniqid(rand(), 1)));
-    session_start();
-    $_SESSION = unserialize($QQ);
-  }
-}
-
 //-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
-function SendQuery($query){
-  if(($sql = mysql_query($query)) !== false) return $sql;
+function SendQuery($query, $commit = false){
+  if(($sql = mysql_query($query)) !== false){
+    return $commit ? SendCommit() : $sql;
+  }
   $backtrace = debug_backtrace(); //バックトレースを取得
 
   //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
@@ -43,6 +33,11 @@ function SendQuery($query){
     PrintData(implode(': ', $stack), 'Caller');
   }
   return false;
+}
+
+//コミット処理
+function SendCommit(){
+  return mysql_query('COMMIT');
 }
 
 //DB から単体の値を取得する処理のラッパー関数
@@ -91,14 +86,27 @@ function FetchObject($query, $class, $shift = false){
 
 //データベース登録のラッパー関数
 function InsertDatabase($table, $items, $values){
-  return mysql_query("INSERT INTO {$table}({$items}) VALUES({$values})");
+  return SendQuery("INSERT INTO {$table}({$items}) VALUES({$values})", true);
 }
 
-//発言をデータベースに登録する (talk Table)
-function InsertTalk($room_no, $date, $location, $uname, $time, $sentence, $font_type, $spend_time){
-  $items  = 'room_no, date, location, uname, time, sentence, font_type, spend_time';
-  $values = "$room_no, $date, '$location', '$uname', '$time', '$sentence', '$font_type', $spend_time";
-  return InsertDatabase('talk', $items, $values);
+//ユーザ登録処理
+function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $icon_no = 0,
+		    $profile = NULL, $sex = 'male', $role = NULL, $session_id = NULL){
+  global $MESSAGE;
+
+  $crypt_password = CryptPassword($password);
+  $items = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live, profile, last_words';
+  $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
+    "'{$crypt_password}', 'live', ";
+  if($uname == 'dummy_boy'){
+    $values .= "'{$MESSAGE->dummy_boy_comment}', '{$MESSAGE->dummy_boy_last_words}'";
+  }
+  else{
+    $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
+    $items .= ', role, session_id, ip_address, last_load_day_night';
+    $values .= "'$profile', '', '$role', '$session_id', '$ip_address', 'beforegame'";
+  }
+  return InsertDatabase('user_entry', $items, $values);
 }
 
 //-- 日時関連 --//

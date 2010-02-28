@@ -155,23 +155,23 @@ function UploadIcon(){
 
   //データベースに登録
   $data = '';
-  $session_id = $SESSION->Set(true); //セッション ID を取得
+  $session_id = $SESSION->Reset(); //セッション ID を取得
   $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
     'session_id, regist_date';
   $values = "{$icon_no}, '{$name}', '{$file_name}', {$width}, {$height}, '{$color}', " .
     "'{$session_id}', NOW()";
 
-  if(isset($appearance)){
+  if($appearance != ''){
     $data .= '<br>[S]' . $appearance;
     $items .= ', appearance';
     $values .= ", '{$appearance}'";
   }
-  if(isset($category)){
+  if($category != ''){
     $data .= '<br>[C]' . $category;
     $items .= ', category';
     $values .= ", '{$category}'";
   }
-  if(isset($author)){
+  if($author != ''){
     $data .= '<br>[A]' . $author;
     $items .= ', author';
     $values .= ", '{$author}'";

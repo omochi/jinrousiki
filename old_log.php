@@ -51,7 +51,7 @@ EOF;
   $current_time = TZTime(); // 現在時刻の取得
 
   //ページリンクの出力
-  $url_option = array('reverse' => 'reverse='. ($reverse ? 'on' : 'off'));
+  $url_option = array('reverse' => 'reverse='. ($is_reverse ? 'on' : 'off'));
   if($RQ_ARGS->add_role) $url_option['add_role'] = 'add_role=on';
   OutputPageLink('old_log', $LOG_CONF, $room_count, $url_option, $is_reverse);
   echo <<<EOF
@@ -198,9 +198,9 @@ function OutputDateTalkLog($set_date, $set_location){
   global $RQ_ARGS, $ROLES, $ROOM;
 
   if($RQ_ARGS->reverse_log) //逆順、初日から最終日まで
-    $select_order = 'ORDER BY time';
+    $select_order = 'ORDER BY talk_id';
   else //最終日から初日まで
-    $select_order = 'ORDER BY time DESC';
+    $select_order = 'ORDER BY talk_id DESC';
 
   switch($set_location){
   case 'beforegame':
@@ -235,7 +235,7 @@ function OutputDateTalkLog($set_date, $set_location){
     $query .= "date = $set_date AND location <> 'beforegame' AND location <> 'aftergame'";
     if(! $RQ_ARGS->heaven_talk) $query .= " AND location <> 'heaven'";
   }
-  $sql = mysql_query("$query $select_order");
+  $talk_list = FetchObject($query . ' ' . $select_order, 'Talk');
 
   //-- 仮想稼動モードテスト用 --//
   //global $USERS, $SELF;
@@ -256,21 +256,26 @@ function OutputDateTalkLog($set_date, $set_location){
 
   //出力
   $builder =& new DocumentBuilder();
-  $builder->BeginTalk("talk {$table_class}");
+  $builder->BeginTalk('talk ' . $table_class);
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
 
-  while(($talk = mysql_fetch_object($sql, 'Talk')) !== false){
-    if(strpos($talk->location, 'day') !== false && ! $ROOM->IsDay()){
+  foreach($talk_list as $talk){
+    switch($talk->scene){
+    case 'day':
+      if($ROOM->IsDay()) break;
       $builder->EndTalk();
       OutputSceneChange($set_date);
-      $ROOM->day_night = 'day';
-      $builder->BeginTalk('talk day');
-    }
-    elseif(strpos($talk->location, 'night') !== false && ! $ROOM->IsNight()){
+      $ROOM->day_night = $talk->scene;
+      $builder->BeginTalk('talk ' . $talk->scene);
+      break;
+
+    case 'night':
+      if($ROOM->IsNight()) break;
       $builder->EndTalk();
       OutputSceneChange($set_date);
-      $ROOM->day_night = 'night';
-      $builder->BeginTalk('talk night');
+      $ROOM->day_night = $talk->scene;
+      $builder->BeginTalk('talk ' . $talk->scene);
+      break;
     }
     OutputTalk($talk, &$builder); //会話出力
   }

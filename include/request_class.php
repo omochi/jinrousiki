@@ -89,8 +89,8 @@ class RequestLogin extends RequestBase{
   function __construct(){
     EncodePostData();
     $this->GetItems('intval', 'get.room_no');
+    $this->GetItems('IsOn', 'post.login_manually');
     $this->GetItems('EscapeStrings', 'post.uname', 'post.password');
-    $this->GetItems(NULL, 'post.login_type');
   }
 }
 
