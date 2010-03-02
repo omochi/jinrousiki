@@ -2,15 +2,8 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('MESSAGE');
-OutputHTMLHeader($SERVER_CONF->title . '[詳細な仕様]', 'info');
+OutputInfoPageHeader('詳細な仕様');
 ?>
-</head>
-<body>
-<h1>詳細な仕様</h1>
-<p>
-<a href="../" target="_top">&lt;= TOP</a>
-<a href="./" target="_top">←情報一覧</a>
-</p>
 <p>
 <a href="#decide_role">配役決定ルーチン</a>
 <a href="#dummy_boy">身代わり君</a>

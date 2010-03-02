@@ -1,4 +1,4 @@
-@import url(role.css);
+@import url(role_table.css);
 body {
   background-color: #FFFFFF;
   background-image: url("../img/rule_bg.jpg");
@@ -34,15 +34,6 @@ ul{
   margin-bottom: 1em;
   margin-left: -5px;
 }
-.member{
-  border: 1px solid;
-  margin: 20px 20px;
-  border-collapse:collapse;
-  text-align: right;
-  padding: 3px;
-}
-.member th{border: 1px solid;}
-.member td{border: 1px solid;}
 .role{
   border: 1px solid;
   margin-left: 20px;

@@ -1,31 +1,29 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . '[サーバ更新履歴]', 'info');
+OutputInfoPageHeader('サーバ更新履歴', 1);
 ?>
-</head>
-<body>
-<h1>サーバ更新履歴</h1>
-<p>
-<a href="../../" target="_top">&lt;= TOP</a>
-<a href="../" target="_top">←情報一覧</a>
-</p>
-
 <h2>Ver. 1.3.0 → Ver. 1.4.0</h2>
 <h3>改善点</h3>
 <ul>
   <li>多人数対応 (クッキーの処理の改善)</li>
+  <li>リアルタイム表示 JavaScript の自動補正処理 (時計合わせが不要になります)</li>
+  <li>ユーザアイコン表示/登録の機能強化</li>
+  <li>ユーザ入村画面の改訂</li>
+  <li>再入村リンクの表示機能実装 (過去ログ)</li>
 </ul>
 
 <h3>追加機能</h3>
 <ul>
-  <li>埋毒者を吊った際の巻き込まれる対象を変更できる</li>
-  <li>クイズ村モードの実装 (画像以外はほぼ完成)</li>
-  <li>闇鍋モードの実装 (調整中) → <a href="chaos.php">闇鍋村について</a><br>
-    Ver. 1.4.0 alpha11 よりゲームオプションが一部強制的にオフになります</li>
-  <li>役職を大量に追加 → <a href="new_role.php">新役職について</a></li>
-  <li>ゲームオプションを大量に追加</li>
-  <li>複数キューピッドの実装</li>
+  <li>埋毒者を吊った / 噛んだ際の巻き込まれる対象を限定できる</li>
+  <li>闇鍋モードの実装 (調整中) → <a href="../chaos.php">闇鍋モード</a></li>
+  <li>役職を大量に追加 → <a href="../new_role/" target="_top">新役職情報</a></li>
+  <li>ゲームオプションを大量に追加 → <a href="../game_option.php">ゲームオプション</a></li>
+</ul>
+
+<h3>仕様変更</h3>
+<ul>
+  <li>複数キューピッドに対応</li>
 </ul>
 
 <h2>Ver. 1.2.2a → Ver. 1.3.0</h2>

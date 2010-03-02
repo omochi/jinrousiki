@@ -2,15 +2,8 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('GAME_OPT_MESS');
-OutputHTMLHeader($SERVER_CONF->title . '[闇鍋モード]', 'info');
+OutputInfoPageHeader('闇鍋モード');
 ?>
-</head>
-<body>
-<h1>闇鍋モード</h1>
-<p>
-<a href="../" target="_top">&lt;= TOP</a>
-<a href="./" target="_top">←情報一覧</a>
-</p>
 <p>
 <a href="#wish_role"><?= $GAME_OPT_MESS->wish_role ?></a>
 <a href="#chaos"><?= $GAME_OPT_MESS->chaos ?></a>

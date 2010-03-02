@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader($SERVER_CONF->title . '[デバッグ情報]', 'info');
+OutputInfoPageHeader('デバッグ情報', 1);
 ?>
-</head>
-<body>
-<h1>デバッグ情報</h1>
-<p>
-<a href="../../" target="_top">&lt;= TOP</a>
-<a href="../" target="_top">←情報一覧</a>
-</p>
 <p>
 Ver. 1.4.0
 <a href="#140alpha24">α24</a>

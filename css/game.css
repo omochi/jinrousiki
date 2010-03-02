@@ -119,7 +119,7 @@ body{ /* AA 用 */
   font-size: 8pt;
   font-weight: lighter;
 }
-.add-role{font-size: 80%;} /* 役職表示オプション用 */
+.add-role{font-size: 8pt;} /* 役職表示オプション用 */
 .user-talk{ /* プレイヤーの発言 */
   text-align: left;
   vertical-align: middle;
@@ -128,7 +128,7 @@ body{ /* AA 用 */
   border-bottom: 1px dashed #C0C0C0;
 }
 .user-name{width: 200px;} /* プレイヤー名 */
-.user-name span{font-size: 80%;} /* 〜の独り言など */
+.user-name span{font-size: 8pt;} /* 〜の独り言など */
 .say{ /* 発言の中身 */
   margin-left: 1px;
   width: 1000px;

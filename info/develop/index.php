@@ -1,16 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader($SERVER_CONF->title . '[開発者向け情報]', 'info');
+OutputInfoPageHeader('開発者向け情報', 1);
 ?>
-</head>
-<body>
-<h1>開発者向け情報</h1>
-<p>
-<a href="../../" target="_top">&lt;= TOP</a>
-<a href="../" target="_top">←情報一覧</a>
-</p>
-
 <h2>デバッグモードについて</h2>
 <ul>
   <li>一部のセキュリティチェックがスキップされます</li>

@@ -23,7 +23,7 @@ else{
 }
 OutputHTMLFooter();
 
-// 関数 //
+//-- 関数 --//
 //過去ログ一覧表示
 function OutputFinishedRooms($page){
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;

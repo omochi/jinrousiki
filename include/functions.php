@@ -299,6 +299,48 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   return $str;
 }
 
+function OutputCastTable($min = 0, $max = NULL){
+  global $GAME_CONF, $CAST_CONF;
+
+  $header = '<table class="member">';
+  $str = '<tr><th>全人数</th>';
+
+  //設定されている役職名を取得
+  $all_cast = array();
+  foreach($CAST_CONF->role_list as $key => $value){
+    if($key < $min) continue;
+    $all_cast = array_merge($all_cast, array_keys($value));
+    if($key == $max) break;
+  }
+  $all_cast = array_unique($all_cast);
+
+  //表示順を決定
+  $role_list = array_intersect(array_keys($GAME_CONF->main_role_list), $all_cast);
+  foreach($role_list as $role){
+    $class = 'human';
+    foreach($GAME_CONF->main_role_group_list as $key => $value){
+      if(strpos($role, $key) !== false){
+	$class = $value;
+	break;
+      }
+    }
+    $str .= '<th class="' . $class . '">' . $GAME_CONF->main_role_list[$role] . '</th>';
+  }
+  $str .= '</tr>'."\n";
+  echo $header . $str;
+
+  //人数毎の配役を表示
+  foreach($CAST_CONF->role_list as $key => $value){
+    if($key < $min) continue;
+    $tag = "<td><strong>$key</strong></td>";
+    foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
+    echo '<tr>' . $tag . '</tr>'."\n";
+    if($key == $max) break;
+    if($key % 20 == 0) echo $str;
+  }
+  echo '</table>';
+}
+
 //共通 HTML ヘッダ生成
 function GenerateHTMLHeader($title, $css = 'action'){
   global $SERVER_CONF;
@@ -374,6 +416,25 @@ function OutputFrameHTMLFooter(){
 フレーム非対応のブラウザの方は利用できません。
 </body></noframes>
 </frameset></html>
+
+EOF;
+}
+
+//情報一覧ページ HTML ヘッダ出力
+function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
+  global $SERVER_CONF;
+
+  $info = $level == 0 ? './' : str_repeat('../', $level);
+  $top  = str_repeat('../', $level + 1);
+  OutputHTMLHeader($SERVER_CONF->title . '[' . $title . ']', $css);
+  echo <<<EOF
+</head>
+<body>
+<h1>{$title}</h1>
+<p>
+<a href="{$top}" target="_top">&lt;= TOP</a>
+<a href="{$info}" target="_top">←情報一覧</a>
+</p>
 
 EOF;
 }

@@ -80,7 +80,12 @@ class User{
     $this->main_role = $this->role_list[0];
   }
 
-  //拡張情報を取得する
+  //現在の役職を取得
+  function GetRole(){
+    return $this->updated['role'] ? $this->updated['role'] : $this->role;
+  }
+
+  //拡張情報を取得
   function GetPartner($type){
     $list = $this->partner_list[$type];
     return is_array($list) ? $list : NULL;
@@ -209,7 +214,7 @@ class User{
     $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) ||
 	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
-    return ($result ? 'wolf' : 'human');
+    return $result ? 'wolf' : 'human';
   }
 
   //役職をパースして省略名を返す
@@ -219,18 +224,18 @@ class User{
     //メイン役職を取得
     $camp = $this->DistinguishCamp();
     $name = $GAME_CONF->short_role_list[$this->main_role];
-    $role_str = '<span class="add-role"> [';
-    $role_str .= ($camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>');
+    $str = '<span class="add-role"> [';
+    $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
 
     //サブ役職を追加
     $sub_role_list = array_slice($this->role_list, 1);
     foreach($GAME_CONF->short_role_list as $role => $name){
       if(in_array($role, $sub_role_list)){
-	$role_str .= ($role == 'lovers' ? '<span class="lovers">' . $name . '</span>' : $name);
+	$str .= $role == 'lovers' ? '<span class="lovers">' . $name . '</span>' : $name;
       }
     }
 
-    return $role_str . '] (' . $this->uname . ')</span>';
+    return $str . '] (' . $this->uname . ')</span>';
   }
 
   //個別 DB 更新処理
@@ -277,24 +282,20 @@ class User{
 
   //役職更新処理
   function ChangeRole($role){
-    $this->Update('role', "$role");
-
-    //$this->role .= " $role"; //キャッシュ本体の更新は行わない
-    $this->updated['role'] = $role;
+    $this->Update('role', $role);
+    $this->updated['role'] = $role; //キャッシュ本体の更新は行わない
   }
 
   //役職追加処理
   function AddRole($role){
-    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
+    $base_role = $this->GetRole();
     if(in_array($role, explode(' ', $base_role))) return false; //同じ役職は追加しない
-    $this->ChangeRole($base_role . " $role");
+    $this->ChangeRole($base_role . ' ' . $role);
   }
 
   //役職置換処理
   function ReplaceRole($target, $replace){
-    $base_role = ($this->updated['role'] ? $this->updated['role'] : $this->role);
-    $new_role = str_replace($target, $replace, $base_role);
-    $this->ChangeRole($new_role);
+    $this->ChangeRole(str_replace($target, $replace, $this->GetRole()));
   }
 
   /*
