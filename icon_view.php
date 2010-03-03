@@ -15,22 +15,98 @@ OutputHTMLHeader('ユーザアイコン一覧', 'icon_view')
 $INIT_CONF->LoadRequest('RequestIconView'); //引数を取得
 $DB_CONF->Connect(true); //DB 接続
 $icon_count = FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0");
+$line_header = '<tr><td colspan="10">';
+$line_footer = '</td></tr>'."\n";
+$url_header  = '<a href="icon_view.php?';
+$url_option  = array();
+$query_stack = array();
+$category_list   = GetIconCategoryList('category');
+//PrintData($category_list);
+//PrintData($RQ_ARGS);
 
-//ページリンクの出力
-echo '<tr><td colspan="5">'."\n";
-OutputPageLink('icon_view', $ICON_CONF, $icon_count, array());
-echo "</td></tr>\n";
-echo '<tr><td colspan="5">[S] 出典 / [C] カテゴリ / [A] アイコンの作者</td></tr>'."\n";
+//カテゴリ
+$config->view =  5;
+$config->page = 5;
+$builder = new PageLinkBuilder('icon_view', $RQ_ARGS->category_page, count($category_list),
+			       $config, 'カテゴリ', 'category_page');
+$builder->header = '<tr><td colspan="10">';
+$builder->footer = '</td></tr>'."\n";
+$builder->Output();
+
+//PrintData($builder->query);
+$source_list = GetIconCategoryList('category', $builder->query);
+$count = count($source_list);
+$stack = array();
+for($i = 0; $i < $count; $i++){
+  $list = $builder->option;
+  $list[] = 'category=' . ($i + $builder->limit);
+  $name = $source_list[$i];
+  $stack[] = ($RQ_ARGS->category === $i ? $name :
+	      $url_header . implode('&', $list) . '">' . $name . '</a>');
+}
+$stack[] = $RQ_ARGS->category == 'all' ? 'all' : $url_header . 'category=all">all</a>';
+
+echo $line_header . implode(' / ', $stack) . $line_footer;
+if(is_int($RQ_ARGS->category)){
+  $type = $category_list[$RQ_ARGS->category];
+  $query_stack[] = "category = '{$type}'";
+  $builder->AddOption('category', $RQ_ARGS->category);
+}
+$builder->AddOption('category_page', $RQ_ARGS->category_page);
+
+//出典
+$appearance_list = GetIconCategoryList('appearance', '', $query_stack);
+$builder->view_total = count($appearance_list);
+$builder->title      = '出典';
+$builder->type       = 'appearance_page';
+$builder->SetPage($RQ_ARGS->appearance_page);
+$source_list = GetIconCategoryList('appearance', $builder->query, $query_stack);
+$builder->Output();
+$builder->AddOption('appearance_page', $RQ_ARGS->appearance_page);
+
+$count = count($source_list);
+$stack = array();
+for($i = 0; $i < $count; $i++){
+  $list = $builder->option;
+  $list[] = 'appearance=' . ($i + $builder->limit);
+  $name = $source_list[$i];
+  $stack[] = ($RQ_ARGS->appearance === $i ? $name :
+	      $url_header . implode('&', $list) . '">' . $name . '</a>');
+}
+$stack[] = $RQ_ARGS->appearance == 'all' ? 'all' : $url_header . 'appearance=all">all</a>';
+
+echo $line_header . implode(' / ', $stack) . $line_footer;
+if(is_int($RQ_ARGS->appearance)){
+  $type = $appearance_list[$RQ_ARGS->appearance];
+  $query_stack[] = "appearance = '{$type}'";
+  $url_option[] = "appearance={$RQ_ARGS->appearance}";
+}
 
 //ユーザアイコンのテーブルから一覧を取得
 $query = "SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color, appearance, " .
-  "category, author FROM user_icon WHERE icon_no > 0 ORDER BY icon_no";
-if($RQ_ARGS->page != 'all'){
-  $query .= sprintf(' LIMIT %d, %d', $ICON_CONF->view * ($RQ_ARGS->page - 1), $ICON_CONF->view);
-}
-$icon_list = FetchAssoc($query);
+  "category, author FROM user_icon WHERE ";
+$query_stack[] = 'icon_no > 0';
+$query .= implode(' AND ', $query_stack);
+$query .= ' ORDER BY icon_no';
+
+$PAGE_CONF = $ICON_CONF;
+$PAGE_CONF->count = count(FetchAssoc($query));
+$PAGE_CONF->url     = 'icon_view';
+$PAGE_CONF->current = $RQ_ARGS->page;
+$PAGE_CONF->option  = $url_option;
+echo $line_header . "\n";
+#PrintData($PAGE_CONF);
+OutputPageLink($PAGE_CONF);
+echo "</td></tr>\n";
+echo $line_header . '[S] 出典 / [C] カテゴリ / [A] アイコンの作者' . $line_footer;
 
 //表の出力
+if($RQ_ARGS->page != 'all'){
+  $limit_min = $ICON_CONF->view * ($RQ_ARGS->page - 1);
+  if($limit_min < 1) $limit_min = 0;
+  $query .= sprintf(' LIMIT %d, %d', $limit_min, $ICON_CONF->view);
+}
+$icon_list = FetchAssoc($query);
 $count = 0;
 foreach($icon_list as $array){
   if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
@@ -50,6 +126,17 @@ EOF;
 }
 
 $DB_CONF->Disconnect(); //DB 接続解除
+
+//-- 関数 --//
+function GetIconCategoryList($type, $limit = '', $query_stack = array()){
+  $stack = array('SELECT', 'FROM user_icon WHERE', 'IS NOT NULL GROUP BY', 'ORDER BY icon_no');
+  if(count($query_stack) > 0){
+    $list = $query_stack;
+    $list[] = '';
+    $stack[1] .= ' ' . implode(' AND ', $list);
+  }
+  return FetchArray(implode(" {$type} ", $stack) . $limit);
+}
 ?>
 </tr></table>
 </fieldset>

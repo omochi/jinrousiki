@@ -213,3 +213,85 @@ class SoundBase{
 EOF;
   }
 }
+
+//-- ページ送りリンク生成クラス --//
+class PageLinkBuilder{
+  function PageLinkBuilder($file, $page, $count, $config, $title = 'Page', $type = 'page'){
+    $this->__construct($file, $page, $count, $config, $title, $type);
+  }
+  function __construct($file, $page, $count, $config, $title = 'Page', $type = 'page'){
+    $this->view_total = $count;
+    $this->view_page  = $config->page;
+    $this->view_count = $config->view;
+    $this->reverse    = $config->reverse;
+
+    $this->file   = $file;
+    $this->url    = '<a href="' . $file . '.php?';
+    $this->title  = $title;
+    $this->type   = $type;
+    $this->option = array();
+    $this->SetPage($page);
+  }
+
+  //表示するページのアドレスをセット
+  function SetPage($page){
+    $total = ceil($this->view_total / $this->view_count);
+    $start = $page == 'all' ? 1 : $page;
+    if($total - $start < $this->view_page){ //残りページが少ない場合は表示開始位置をずらす
+      $start = $total - $this->view_page + 1;
+      if($start < 1) $start = 1;
+    }
+    $end = $start + $this->view_page - 1;
+    if($end > $total) $end = $total;
+
+    $this->page->set   = $page;
+    $this->page->total = $total;
+    $this->page->start = $start;
+    $this->page->end   = $end;
+
+    $this->limit = $page == 'all' ? '' : $this->view_count * ($page - 1);
+    $this->query = $page == 'all' ? '' : sprintf(' LIMIT %d, %d', $this->limit, $this->view_count);
+  }
+
+  //オプションを追加する
+  function AddOption($type, $value = 'on'){
+    $this->option[$type] = $type . '=' . $value;
+  }
+
+  //ページ送り用のリンクタグを作成する
+  function Generate($page, $title = NULL, $force = false){
+    if($page == $this->page->set && ! $force) return '[' . $page . ']';
+    $list = $this->option;
+    array_unshift($list, $this->type . '=' . $page);
+    if(is_null($title)) $title = '[' . $page . ']';
+    return $this->url . implode('&', $list) . '">' . $title . '</a>';
+  }
+
+  //ページリンクを出力する
+  function Output(){
+    $url_stack = array('[' . $this->title . ']');
+    if($this->page->start > 1 && $this->page->total > $this->view_page){
+      $url_stack[] = $this->Generate(1, '[1]...');
+      $url_stack[] = $this->Generate($this->page->start - 1, '&lt;&lt;');
+    }
+
+    for($i = $this->page->start; $i <= $this->page->end; $i++){
+      $url_stack[] = $this->Generate($i);
+    }
+
+    if($this->page->end < $this->page->total){
+      $url_stack[] = $this->Generate($this->page->end + 1, '&gt;&gt;');
+      $url_stack[] = $this->Generate($this->page->total, '...[' . $this->page->total . ']');
+    }
+    $url_stack[] = $this->Generate('all');
+
+    if($this->file == 'old_log'){
+      $this->AddOption('reverse', $this->set_reverse ? 'off' : 'on');
+      $url_stack[] = '[表示順]';
+      $url_stack[] = $this->set_reverse ? '新↓古' : '古↓新';
+      $name = ($this->set_reverse xor $this->reverse) ? '元に戻す' : '入れ替える';
+      $url_stack[] =  $this->Generate($this->page->set, $name, true);
+    }
+    echo $this->header . implode(' ', $url_stack) . $this->footer;
+  }
+}

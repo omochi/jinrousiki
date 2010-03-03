@@ -28,9 +28,23 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 
 <h2><a name="human_group">村人系</a></h2>
 <p>
+<a href="#elder">長老</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
+
+<h3><a name="elder">長老</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<pre>
+投票数が +1 される村人。
+権力者とセットになった場合はさらに +1 される (合計 3 票)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+権力者相当の能力を持った村人です。
+PP ラインの計算を難しくさせるために作成してみました。
+性質上、能力を隠蔽することが難しいので同じ能力を持った他陣営種が存在します。
+</pre>
+
 
 <h3><a name="suspect">不審者</a> (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9〜]</h3>
 <pre>
@@ -390,6 +404,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 </p>
 <p>
 <a href="#poison_guard">騎士</a>
+<a href="#fend_guard">忍者</a>
 <a href="#reporter">ブン屋</a>
 <a href="#anti_voodoo">厄神</a>
 <a href="#dummy_guard">夢守人</a>
@@ -398,7 +413,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 
 <h3><a name="guard_hunt">狩りルール</a></h3>
 <pre>
-1. 狩り能力があるのは狩人、<a href="#poison_guard">騎士</a>です
+1. 狩り能力があるのは狩人、<a href="#poison_guard">騎士</a>、<a href="#fend_guard">忍者</a>です
 2. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>の項目を参照してください
 3. 狩り対象は特殊狂人、特殊妖狐、特殊蝙蝠です
 3-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>、<a href="wolf.php#voodoo_mad">呪術師</a>、<a href="wolf.php#corpse_courier_mad">火車</a>、<a href="wolf.php#dream_eater_mad">獏</a>、<a href="wolf.php#trap_mad">罠師</a>)
@@ -427,6 +442,22 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 ウミガメ人狼のとあるプレイヤーさんがモデルです。
 技術的に簡単だったので軽い気持ちで作ってみましたがとんでもなく強いようです。
 Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
+</pre>
+
+
+<h3><a name="fend_guard">忍者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<pre>
+一度だけ人狼の襲撃に耐えることができる上位狩人。
+人狼に襲撃されると「あなたは能力を失いました」という趣旨のシスメが追加表示される。
+誰に噛まれたかは分からないが、「能力を失って」も護衛は通常通り行える。
+狩り能力は<a href="#guard_hunt">狩人系の狩りについて</a>を参照。
+身代わり君がこれになった場合は能力発動しない (普通に噛み殺される)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+裏世界鯖のプレイヤーさんの誕生日記念に作ってみました。
+狼視点では狐と区別がつかないのである意味で騎士以上に
+やっかいな存在になるでしょう。
 </pre>
 
 

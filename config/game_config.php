@@ -3,8 +3,8 @@
 class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  #var $die_room = 1200;
-  var $die_room = 12000; //テスト用
+  var $die_room = 1200;
+  #var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -203,6 +203,7 @@ class GameConfig{
     'revive_priest'      => '天人',
     'guard'              => '狩人',
     'poison_guard'       => '騎士',
+    'fend_guard'         => '忍者',
     'reporter'           => 'ブン屋',
     'anti_voodoo'        => '厄神',
     'dummy_guard'        => '夢守人',
@@ -219,17 +220,18 @@ class GameConfig{
     'mind_scanner'       => 'さとり',
     'evoke_scanner'      => 'イタコ',
     'jealousy'           => '橋姫',
+    'elder'              => '長老',
     'suspect'            => '不審者',
     'unconscious'        => '無意識',
-    'elder'              => '長老',
     'wolf'               => '人狼',
     'boss_wolf'          => '白狼',
-    'tongue_wolf'        => '舌禍狼',
     'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗毒狼',
     'cursed_wolf'        => '呪狼',
+    'tongue_wolf'        => '舌禍狼',
     'possessed_wolf'     => '憑狼',
+    'elder_wolf'         => '古狼',
     'cute_wolf'          => '萌狼',
     'scarlet_wolf'       => '紅狼',
     'silver_wolf'        => '銀狼',
@@ -248,6 +250,7 @@ class GameConfig{
     'voodoo_fox'         => '九尾',
     'revive_fox'         => '仙狐',
     'cursed_fox'         => '天狐',
+    'elder_fox'          => '古狐',
     'cute_fox'           => '萌狐',
     'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
@@ -260,6 +263,7 @@ class GameConfig{
     'chiroptera'         => '蝙蝠',
     'poison_chiroptera'  => '毒蝙蝠',
     'cursed_chiroptera'  => '呪蝙蝠',
+    'elder_chiroptera'   => '古蝙蝠',
     'dummy_chiroptera'   => '夢求愛者',
     'mania'              => '神話マニア',
     'unknown_mania'      => '鵺');
@@ -338,6 +342,7 @@ class GameConfig{
     'revive_priest'      => '天人',
     'guard'              => '狩',
     'poison_guard'       => '騎',
+    'fend_guard'         => '忍',
     'reporter'           => '聞',
     'anti_voodoo'        => '厄',
     'dummy_guard'        => '夢守',
@@ -354,17 +359,18 @@ class GameConfig{
     'mind_scanner'       => '悟',
     'evoke_scanner'      => 'イ',
     'jealousy'           => '橋',
+    'elder'              => '老',
     'suspect'            => '不審',
     'unconscious'        => '無',
-    'elder'              => '老',
     'wolf'               => '狼',
     'boss_wolf'          => '白狼',
-    'tongue_wolf'        => '舌狼',
     'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗狼',
     'cursed_wolf'        => '呪狼',
+    'tongue_wolf'        => '舌狼',
     'possessed_wolf'     => '憑狼',
+    'elder_wolf'         => '古狼',
     'cute_wolf'          => '萌狼',
     'scarlet_wolf'       => '紅狼',
     'silver_wolf'        => '銀狼',
@@ -383,6 +389,7 @@ class GameConfig{
     'voodoo_fox'         => '九尾',
     'revive_fox'         => '仙狐',
     'cursed_fox'         => '天狐',
+    'elder_fox'          => '古狐',
     'cute_fox'           => '萌狐',
     'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
@@ -394,6 +401,7 @@ class GameConfig{
     'chiroptera'         => '蝙',
     'poison_chiroptera'  => '毒蝙',
     'cursed_chiroptera'  => '呪蝙',
+    'elder_chiroptera'   => '古蝙',
     'dummy_chiroptera'   => '夢愛',
     'mania'              => 'マ',
     'unknown_mania'      => '鵺',
@@ -500,7 +508,7 @@ class GameConfig{
 //ゲームの時間設定
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
-  var $sudden_death = 120;
+  var $sudden_death = 180;
 
   //-- リアルタイム制 --//
   var $default_day   = 5; //デフォルトの昼の制限時間(分)
@@ -575,7 +583,7 @@ class CastConfig{
   var $wish_role_rate = 100;
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'cupid');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
@@ -588,7 +596,7 @@ class CastConfig{
   var $chaos_role_group_rate_list = array(
     'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1, 'chiroptera' => 0.15,
     'mage' => 0.18, 'necromancer' => 0.15, 'priest' => 0.1, 'guard' => 0.15,
-    'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1, 'pharmacist' => 0.15,
+    'common' => 0.18, 'poison' => 0.15, 'cat' => 0.12, 'pharmacist' => 0.15,
     'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1);
 
   //村人の出現上限補正

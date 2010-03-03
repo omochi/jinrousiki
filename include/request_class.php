@@ -39,6 +39,13 @@ class RequestBase{
     return $int > 0 ? $int : 1;
   }
 
+  function SetCategory($arg){
+    if($arg == '') return NULL;
+    if($arg == 'all') return $arg;
+    $int = intval($arg);
+    return $int < 0 ? 0 : $int;
+  }
+
   function ToArray(){
     $array = array();
     foreach($this as $key => $value) $array[$key] = $value;
@@ -200,7 +207,8 @@ class RequestOldLog extends RequestBase{
 class RequestIconView extends RequestBase{
   function RequestIconView(){ $this->__construct(); }
   function __construct(){
-    $this->GetItems('SetPage', 'get.page');
+    $this->GetItems('SetPage', 'get.page', 'get.appearance_page', 'get.category_page');
+    $this->GetItems('SetCategory', 'get.appearance', 'get.category');
   }
 }
 

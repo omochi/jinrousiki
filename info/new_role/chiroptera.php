@@ -30,6 +30,7 @@ OutputHTMLHeader('新役職情報 - [蝙蝠陣営]', 'new_role');
 <a href="#chiroptera">蝙蝠</a>
 <a href="#poison_chiroptera">毒蝙蝠</a>
 <a href="#cursed_chiroptera">呪蝙蝠</a>
+<a href="#elder_chiroptera">古蝙蝠</a>
 <a href="#dummy_chiroptera">夢求愛者</a>
 </p>
 
@@ -78,6 +79,17 @@ CO するとむしろ吊られるリスクが高まります。
 <a href="wolf.php#cursed_wolf">呪狼</a>の蝙蝠バージョンです。
 どちらかと言うと、これを騙る狼や狐が非常にやっかいですね。
 素直に CO しても信用を取るのは難しいでしょう。
+</pre>
+
+<h3><a name="elder_chiroptera">古蝙蝠</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<pre>
+投票数が +1 される蝙蝠。
+権力者とセットになった場合はさらに +1 される (合計 3 票)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#elder">長老</a>の蝙蝠バージョンです。
+性質上、能力を隠蔽することが難しいので同じ能力を持った他陣営種が存在します。
 </pre>
 
 <h3><a name="dummy_chiroptera">夢求愛者</a> (占い結果：村人、霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>

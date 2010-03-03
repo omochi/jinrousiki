@@ -1,8 +1,6 @@
 <?php
 require_once('include/init.php');
-
 $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
-
 $DB_CONF->Connect(); //DB 接続
 if($RQ_ARGS->is_room){
   $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
@@ -51,9 +49,11 @@ EOF;
   $current_time = TZTime(); // 現在時刻の取得
 
   //ページリンクの出力
-  $url_option = array('reverse' => 'reverse='. ($is_reverse ? 'on' : 'off'));
-  if($RQ_ARGS->add_role) $url_option['add_role'] = 'add_role=on';
-  OutputPageLink('old_log', $LOG_CONF, $room_count, $url_option, $is_reverse);
+  $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
+  $builder->set_reverse = $is_reverse;
+  $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
+  if($RQ_ARGS->add_role) $builder->AddOption('add_role');
+  $builder->Output();
   echo <<<EOF
 </td></tr>
 <tr><td>

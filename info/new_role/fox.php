@@ -76,6 +76,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
 <a href="#cursed_fox">天狐</a>
+<a href="#elder_fox">古狐</a>
 <a href="#cute_fox">萌狐</a>
 <a href="#scarlet_fox">紅狐</a>
 <a href="#silver_fox">銀狐</a>
@@ -158,6 +159,17 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <pre>
 <a href="wolf.php#cursed_wolf">呪狼</a>の妖狐バージョンで、妖狐族最上位種です。
 呪いに対抗できる役職が出現するまでは狐無双が見られそうですね。
+</pre>
+
+<h3><a name="elder_fox">古狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<pre>
+投票数が +1 される妖狐。
+権力者とセットになった場合はさらに +1 される (合計 3 票)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#elder">長老</a>の妖狐バージョンです。
+性質上、能力を隠蔽することが難しいので同じ能力を持った他陣営種が存在します。
 </pre>
 
 <h3><a name="cute_fox">萌狐</a> (占い結果：村人(呪殺)、霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>

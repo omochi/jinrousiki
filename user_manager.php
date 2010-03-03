@@ -311,9 +311,12 @@ BODY;
   //アイコンの出力
   $url_option = array('room_no' => 'room_no='. $room_no);
   $icon_count = FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0");
-  echo '<tr><td colspan="5">'."\n";
-  OutputPageLink('user_manager', $ICON_CONF, $icon_count, $url_option);
-  echo "</td></tr>\n<tr>\n";
+  $builder = new PageLinkBuilder('user_manager', $RQ_ARGS->page, $icon_count, $ICON_CONF);
+  $builder->header = '<tr><td colspan="5">'."\n";
+  $builder->footer = "</td></tr>\n<tr>\n";
+  $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
+  $builder->AddOption('room_no', $room_no);
+  $builder->Output();
 
   //ユーザアイコンのテーブルから一覧を取得
   $query_icon = "SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color " .

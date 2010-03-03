@@ -132,9 +132,10 @@ function CheckTable(){
 
   $title = $header . '(talk)';
   if(! in_array('talk', $table)){
-    mysql_query("CREATE TABLE talk(room_no INT NOT NULL, date INT, location TEXT, uname TEXT,
+    mysql_query("CREATE TABLE talk(talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		room_no INT NOT NULL, date INT, location TEXT, uname TEXT,
 		time INT NOT NULL, sentence TEXT, font_type TEXT, spend_time INT,
-		INDEX talk_index(room_no, date, time))");
+		INDEX talk_index(room_no, date))");
     echo $title . $str;
   }
   elseif($revision > 0){

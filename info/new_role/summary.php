@@ -47,6 +47,7 @@ Ver. 1.4.0
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 <a href="#140beta2">β2</a>
+<a href="#140beta5">β5</a>
 </p>
 
 <p>
@@ -710,6 +711,51 @@ Ver. 1.4.0
     <td class="ability">辽栏墙蜗を积った团秆。喇根唯は 100% だが、办刨喇根すると墙蜗を己う。<br>
       客系に奖封されても秽なないが、柬客に割币されると沪される。</td>
     <td>Ver. 1.4.0 β2</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#elder" name="140beta5">墓戏</a></td>
+    <td><a href="human.php">录客</td>
+    <td><a href="human.php#human_group">录客废</a></td>
+    <td>录客</td>
+    <td>录客</td>
+    <td class="ability">抨杉眶が +1 される录客</td>
+    <td>Ver. 1.4.0 β5</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#elder_wolf" name="140beta5">概系</a></td>
+    <td><a href="wolf.php">客系</td>
+    <td><a href="wolf.php#wolf_group">客系废</a></td>
+    <td>客系</td>
+    <td>客系</td>
+    <td class="ability">抨杉眶が +1 される客系</td>
+    <td>Ver. 1.4.0 β5</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#elder_fox">概秆</a></td>
+    <td><a href="fox.php">团秆</a></td>
+    <td><a href="fox.php#fox_group">团秆废</a></td>
+    <td>录客<br>(荐沪)</td>
+    <td>录客</td>
+    <td class="ability">抨杉眶が +1 される团秆</td>
+    <td>Ver. 1.4.0 β5</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#elder_chiroptera">概辋轷</a></td>
+    <td><a href="chiroptera.php">辋轷</a></td>
+    <td><a href="chiroptera.php#chiroptera_group">辋轷废</a></td>
+    <td>录客</td>
+    <td>录客</td>
+    <td class="ability">抨杉眶が +1 される辋轷</td>
+    <td>Ver. 1.4.0 β5</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#fend_guard">铅荚</a></td>
+    <td><a href="human.php">录客</td>
+    <td><a href="human.php#guard_group">柬客废</a></td>
+    <td>录客</td>
+    <td>录客</td>
+    <td class="ability">办刨だけ客系の奖封を卵える祸ができる柬客</td>
+    <td>Ver. 1.4.0 β5</td>
   </tr>
 </table>
 
