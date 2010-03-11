@@ -136,6 +136,24 @@ class CookieDataSet{
   }
 }
 
+//-- ユーザアイコン管理の基底クラス --//
+class UserIconBase{
+  // アイコンの文字数
+  function IconNameMaxLength(){
+    return '半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
+  }
+
+  // アイコンのファイルサイズ
+  function IconFileSizeMax(){
+    return ($this->size > 1024 ? floor($this->size / 1024) . 'k' : $this->size) . 'Byte まで';
+  }
+
+  // アイコンの縦横のサイズ
+  function IconSizeMax(){
+    return '幅' . $this->width . 'ピクセル × 高さ' . $this->height . 'ピクセルまで';
+  }
+}
+
 //-- 画像管理の基底クラス --//
 class ImageManager{
   function Generate($name, $alt = ''){

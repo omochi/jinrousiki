@@ -209,6 +209,18 @@ class RequestIconView extends RequestBase{
   function __construct(){
     $this->GetItems('SetPage', 'get.page', 'get.appearance_page', 'get.category_page');
     $this->GetItems('SetCategory', 'get.appearance', 'get.category');
+    $this->GetItems('intval', 'get.icon_no');
+  }
+}
+
+//-- icon_edit.php --//
+class RequestIconEdit extends RequestBase{
+  function RequestIconEdit(){ $this->__construct(); }
+  function __construct(){
+    EncodePostData();
+    $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance', 'post.category',
+		    'post.author', 'post.color', 'post.password');
+    $this->GetItems('intval', 'post.icon_no');
   }
 }
 

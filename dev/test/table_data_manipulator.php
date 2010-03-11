@@ -17,6 +17,7 @@ $INIT_CONF->LoadClass('ICON_CONF');
 
 $DB_CONF->Connect(); //DB 接続
 //UpdateIconInfo('category', '初期設定', 1, 10);
+//UpdateIconInfo('appearance', '初期設定', 1, 10);
 //UpdateIconInfo('category', '東方Project', 11, 78);
 //UpdateIconInfo('appearance', '東方紅魔郷', 13, 21);
 //UpdateIconInfo('appearance', '東方妖々夢', 22, 33);
@@ -50,8 +51,9 @@ $DB_CONF->Connect(); //DB 接続
 //ReconstructEstablishTime();
 //ReconstructStartTime();
 //ReconstructFinishTime();
-SendQuery("OPTIMIZE TABLE talk", true);
-OutputActionResult('処理完了', '処理完了。');
+//SendQuery("OPTIMIZE TABLE talk", true);
+//SqueezeIcon();
+//OutputActionResult('処理完了', '処理完了。');
 
 //-- 関数 --//
 /*
@@ -63,6 +65,32 @@ OutputActionResult('処理完了', '処理完了。');
 function UpdateIconInfo($type, $value, $from, $to = NULL){
   $query = isset($to) ? "{$from} <= icon_no AND icon_no <= {$to}" : "icon_no = {$from}";
   mysql_query("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
+}
+
+//アイコンの欠番を埋める
+function SqueezeIcon(){
+  OutputHTMLHeader('ユーザアイコン欠番処理');
+  $query = 'SELECT icon_no, icon_filename FROM user_icon WHERE icon_no > 0 ORDER BY icon_no';
+  $icon_list = FetchAssoc($query);
+
+  $path = JINRO_ROOT . '/user_icon/';
+  $query_icon = 'UPDATE user_icon SET icon_filename = ';
+  $query_user = 'UPDATE user_entry SET icon_no = ';
+  $icon_count = count($icon_list);
+  for($i = 1; $i <= $icon_count; $i++){
+    $icon = array_shift($icon_list);
+    if($i == $icon['icon_no']) continue;
+    $ext = array_pop(explode('.', $icon['icon_filename']));
+    $file_name = sprintf("%03s.%s", $i, $ext);
+    $footer = ' WHERE icon_no = ' . $icon['icon_no'];
+    SendQuery($query_user . $i . $footer);
+    SendQuery($query_icon . "'{$file_name}', icon_no = " . $i . $footer);
+    rename($path . $icon['icon_filename'], $path . $file_name);
+    PrintData($icon, $file_name);
+    //break;
+  }
+  SendQuery("OPTIMIZE TABLE user_icon", true);
+  OutputHTMLFooter();
 }
 
 function ReconstructEstablishTime($test = false){

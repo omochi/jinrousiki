@@ -26,6 +26,7 @@ class InitializeConfig{
   var $depend_file = array(
     'DB_CONF' => 'server_config',
     'SERVER_CONF' => 'server_config',
+    'USER_ICON' => 'server_config',
     'SCRIPT_INFO' => 'version',
     'SESSION' => 'system_class',
     'ROOM_CONF' => 'game_config',
@@ -33,7 +34,6 @@ class InitializeConfig{
     'CAST_CONF' => 'game_config',
     'TIME_CONF' => 'game_config',
     'ICON_CONF' => 'game_config',
-    'USER_ICON' => 'game_config',
     'ROOM_IMG' => 'game_config',
     'ROLE_IMG' => 'game_config',
     'SOUND' => 'game_config',

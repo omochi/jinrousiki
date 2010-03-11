@@ -190,6 +190,17 @@ class SharedServerConfig{
 			   );
 }
 
+//アイコン登録設定
+class UserIcon extends UserIconBase{
+  var $disable_upload = false; //true; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
+  var $name   = 30;    //アイコン名につけられる文字数(半角)
+  var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
+  var $width  = 45;    //アップロードできるアイコンの最大幅
+  var $height = 45;    //アップロードできるアイコンの最大高さ
+  var $number = 1000;  //登録できるアイコンの最大数
+  var $password = 'xxxxxxxx'; //アイコン編集パスワード
+}
+
 //-- 開発用ソースアップロード設定 --//
 class SourceUploadConfig{
   var $disable = true; //無効設定 <アップロードを [true:無効 / false:有効] にする>
