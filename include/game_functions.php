@@ -11,8 +11,8 @@ function GetRealPassTime(&$left_time){
   global $ROOM;
 
   //シーンの最初の時刻を取得
-  $query = "SELECT MIN(time) FROM talk WHERE room_no = {$ROOM->id} " .
-    "AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'";
+  $query = 'SELECT MIN(time) FROM talk' . $ROOM->GetQuery() .
+    " AND location LIKE '{$ROOM->day_night}%'";
   $start_time = FetchResult($query);
   if($start_time === false) $start_time = $ROOM->system_time;
 
@@ -26,8 +26,8 @@ function GetRealPassTime(&$left_time){
 function GetTalkPassTime(&$left_time, $silence = false){
   global $TIME_CONF, $ROOM;
 
-  $query = "SELECT SUM(spend_time) FROM talk WHERE room_no = {$ROOM->id} " .
-    "AND date = {$ROOM->date} AND location LIKE '{$ROOM->day_night}%'";
+  $query = 'SELECT SUM(spend_time) FROM talk' . $ROOM->GetQuery() .
+    " AND location LIKE '{$ROOM->day_night}%'";
   $spend_time = (int)FetchResult($query);
 
   if($ROOM->IsDay()){ //昼は12時間
@@ -54,8 +54,8 @@ function InsertMediumMessage(){
   if(! $USERS->IsAppear('medium')) return false; //巫女の出現チェック
   foreach($USERS->rows as $user){
     if(! $user->suicide_flag) continue;
-    $handle_name = $USERS->GetHandleName($user->uname, true);
-    $ROOM->SystemMessage($handle_name . "\t" . $user->DistinguishCamp(), 'MEDIUM_RESULT');
+    $sentence = $USERS->GetHandleName($user->uname, true). "\t" . $user->GetCamp();
+    $ROOM->SystemMessage($sentence , 'MEDIUM_RESULT');
   }
 }
 
@@ -106,9 +106,7 @@ function LoversFollowed($sudden_death = false){
 function CheckVictory($check_draw = false){
   global $GAME_CONF, $ROOM;
 
-  $query_count = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} " .
-    "AND live = 'live' AND user_no > 0 AND ";
-
+  $query_count = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0 AND ";
   $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
   $wolf   = FetchResult($query_count . "role LIKE '%wolf%'"); //人狼
   $fox    = FetchResult($query_count . "role LIKE '%fox%'"); //妖狐
@@ -135,38 +133,27 @@ function CheckVictory($check_draw = false){
   elseif($ROOM->IsQuiz() && $quiz == 0){ //クイズ村 GM 死亡
     $victory_role = 'quiz_dead';
   }
-  elseif($check_draw && GetVoteTimes() > $GAME_CONF->draw){ //引き分け
+  elseif($check_draw && $ROOM->GetVoteTimes() > $GAME_CONF->draw){ //引き分け
     $victory_role = 'draw';
   }
 
   if($victory_role == '') return false;
 
   //ゲーム終了
-  mysql_query("UPDATE room SET status = 'finished', day_night = 'aftergame',
-		victory_role = '{$victory_role}', finish_time = NOW() WHERE room_no = {$ROOM->id}");
-  mysql_query('COMMIT'); //一応コミット
+  $query = "UPDATE room SET status = 'finished', day_night = 'aftergame', " .
+    "victory_role = '{$victory_role}', finish_time = NOW() WHERE room_no = {$ROOM->id}";
+  SendQuery($query, true);
   return true;
 }
 
 //-- 投票関連 --//
-//昼の投票回数を取得する
-function GetVoteTimes($revote = false){
-  global $ROOM;
-
-  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = {$ROOM->date} AND type = " .
-    ($revote ?  "'RE_VOTE' ORDER BY message DESC" : "'VOTE_TIMES'");
-
-  return (int)FetchResult($query);
-}
-
 //今までの投票を全部削除
 function DeleteVote(){
   global $ROOM;
 
-  $query = "DELETE FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date}";
+  $query = 'DELETE FROM vote' . $ROOM->GetQuery();
   if($ROOM->IsDay()){
-    $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . GetVoteTimes();
+    $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . $ROOM->GetVoteTimes();
   }
   elseif($ROOM->IsNight()){
     $query .= " AND situation <> " . ($ROOM->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
@@ -179,15 +166,15 @@ function DeleteVote(){
 function CheckSelfVoteNight($situation, $not_situation = ''){
   global $ROOM, $SELF;
 
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} AND ";
+  $query = $ROOM->GetQuery(true, 'vote') . ' AND ';
   if($situation == 'WOLF_EAT'){
-    $query .= "situation = '$situation'";
+    $query .= "situation = '{$situation}'";
   }
   elseif($not_situation != ''){
-    $query .= "uname = '{$SELF->uname}' AND (situation = '$situation' OR situation = '$not_situation')";
+    $query .= "uname = '{$SELF->uname}' AND(situation = '{$situation}' OR situation = '{$not_situation}')";
   }
   else{
-    $query .= "uname = '{$SELF->uname}' AND situation = '$situation'";
+    $query .= "uname = '{$SELF->uname}' AND situation = '{$situation}'";
   }
   return (FetchResult($query) > 0);
 }
@@ -313,8 +300,7 @@ function OutputTimeTable(){
 
   if($ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければ表示しない
 
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} " .
-    "AND live = 'live' AND user_no > 0";
+  $query = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0";
   echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
 }
 
@@ -412,7 +398,7 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'mad');
       elseif($user->IsRoleGroup('fox'))
 	$str .= GenerateRoleName($user->main_role, 'fox');
-      elseif($user->IsRoleGroup('chiroptera'))
+      elseif($user->IsRoleGroup('chiroptera', 'fairy'))
 	$str .= GenerateRoleName($user->main_role, 'chiroptera');
       elseif($user->IsRoleGroup('cupid'))
 	$str .= GenerateRoleName($user->main_role, 'cupid');
@@ -496,15 +482,7 @@ EOF;
   if(is_null($victory) || $ROOM->view_mode || $ROOM->log_mode) return;
 
   $result = 'win';
-  $target_user = $SELF;
-  while($target_user->IsRole('unknown_mania')){ //鵺の処理
-    $target_list = $target_user->partner_list['unknown_mania'];
-    if(! is_array($target_list)) break; //コピー先が見つからなければスキップ
-
-    $target_user = $USERS->ByID($target_list[0]);
-    if($target_user->IsSelf()) break; //自分に戻ったらスキップ
-  }
-  $camp = $target_user->DistinguishCamp(); //所属陣営を取得
+  $camp = $SELF->GetCamp(true); //所属陣営を取得
 
   if($victory == 'draw' || $victory == 'vanish'){ //引き分け系
     $class  = 'none';
@@ -512,11 +490,9 @@ EOF;
   }
   elseif($victory == 'quiz_dead'){ //出題者死亡
     $class  = 'none';
-    $result = ($camp == 'quiz' ? 'lose' : 'draw');
+    $result = $camp == 'quiz' ? 'lose' : 'draw';
   }
   else{
-    if($SELF->IsLovers()) $camp = 'lovers'; //恋人なら所属陣営を上書き
-
     if($camp == 'chiroptera' && $SELF->IsLive()) //蝙蝠陣営は生きていれば勝利
       $class = 'chiroptera';
     elseif($victory == 'human' && $camp == 'human')
@@ -560,7 +536,7 @@ function OutputRevoteList(){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $SELF, $COOKIE, $SOUND;
 
   if(! $ROOM->IsDay()) return false; //昼以外は出力しない
-  if(($revote_times = GetVoteTimes(true)) == 0) return false; //再投票の回数を取得
+  if(($revote_times = $ROOM->GetVoteTimes(true)) == 0) return false; //再投票の回数を取得
 
   if($RQ_ARGS->play_sound && ! $ROOM->view_mode && $revote_times > $COOKIE->vote_times){
     $SOUND->Output('revote'); //音を鳴らす
@@ -568,8 +544,8 @@ function OutputRevoteList(){
 
   //投票済みチェック
   $vote_times = $revote_times + 1;
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} " .
-    "AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
+  $query = $ROOM->GetQuery(true, 'vote') . " AND vote_times = {$vote_times} " .
+    "AND uname = '{$SELF->uname}'";
   if(FetchResult($query) == 0){
     echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
       $MESSAGE->draw_announce . ')</div><br>';
@@ -584,7 +560,7 @@ function GetVoteList($date){
 
   //指定された日付の投票結果を取得
   $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = $date and type = 'VOTE_KILL'";
+    "AND date = {$date} and type = 'VOTE_KILL'";
   return GenerateVoteList(FetchArray($query), $date);
 }
 
@@ -844,7 +820,7 @@ function OutputAbilityAction(){
   $header = '<b>前日の夜、';
   $footer = '</b><br>'."\n";
   $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
-		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO');
+		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
   if($yesterday == 1){
     array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
   }
@@ -933,6 +909,10 @@ function OutputAbilityAction(){
 
     case 'CUPID_DO':
       echo '(キューピッド) は '.$target.' '.$MESSAGE->cupid_do;
+      break;
+
+    case 'FAIRY_DO':
+      echo '(妖精) は '.$target.' '.$MESSAGE->fairy_do;;
       break;
 
     case 'MANIA_DO':

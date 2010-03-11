@@ -71,8 +71,7 @@ function CheckTable(){
     mysql_query("CREATE TABLE room(room_no INT PRIMARY KEY, room_name TEXT, room_comment TEXT,
 		max_user INT, game_option TEXT, option_role TEXT, status TEXT, date INT,
 		day_night TEXT, last_updated TEXT, victory_role TEXT, establisher_ip TEXT,
-		establisher_ip TEXT, establish_time DATETIME, start_time DATETIME,
-		finish_time DATETIME)");
+		establish_time DATETIME, start_time DATETIME, finish_time DATETIME)");
     echo $title . $str;
   }
   elseif($revision > 0){

@@ -290,6 +290,13 @@ B に憑依している A は天邪鬼になります。
 例5-2) C[<a href="human.php#mind_scanner">さとり</a>] → A[憑狼][<a href="sub_role.php#mind_read">サトラレ</a>] → B[村人][<a href="sub_role.php#mind_read">サトラレ</a>] ← D[<a href="human.php#mind_scanner">さとり</a>]
 C は 「死亡した」 A の発言が見えなくなります。
 D は B になりすましている A の発言が見えます。
+
+例5-3) A[憑狼] → B[<a href="human.php#ghost_common">亡霊嬢</a>]
+死体：A が無残な死体で発見されました (死因：「誰かに憑依した」)
+憑依：B[亡霊嬢](A[憑狼])
+見かけ上の死体：A[憑狼][<a href="sub_role.php#chicken">小心者</a>]
+亡霊嬢の能力発動対象は憑狼本体なので、憑依中は適用されません。
+何らかの理由で本体に戻されたら有効になります。
 </pre>
 
 <h4><a name="possessed_wolf_lovers">6. 対恋人</a></h4>

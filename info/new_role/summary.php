@@ -6,7 +6,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 </head>
 <body>
 
-<h1>新役職情報 [Ver. 1.4.0 β4]</h1>
+<h1>新役職情報</h1>
 <p>
 ・調整中なのでバージョンアップするたびに変わる可能性があります。
 </p>
@@ -48,6 +48,7 @@ Ver. 1.4.0
 <a href="#140alpha24">α24</a>
 <a href="#140beta2">β2</a>
 <a href="#140beta5">β5</a>
+<a href="#140beta6">β6</a>
 </p>
 
 <p>
@@ -120,8 +121,8 @@ Ver. 1.4.0
     <td><a href="human.php#guard_group">狩人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">毒を持った狩人 (吊られても毒は発動しない)。<br>
-      <a href="human.php#reporter">ブン屋</a>や<a href="human.php#assassin">暗殺者</a>でも護衛可能。</td>
+    <td class="ability">毒を持った上位狩人 (吊られても毒は発動しない)。<br>
+      <a href="#guard_limit">護衛制限</a>の影響を受けない。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
@@ -130,7 +131,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">人狼が誰か分かる狂人 (人狼からは狂信者は分からない)。</td>
+    <td class="ability">人狼が誰か分かる上位狂人 (人狼からは狂信者は分からない)。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
@@ -323,7 +324,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">人狼の夜の相談に参加できる狂人。</td>
+    <td class="ability">人狼の夜の相談に参加できる上位狂人。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
@@ -484,7 +485,7 @@ Ver. 1.4.0
     <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">自分撃ち確定のキューピッド。矢を打った相手に<a href="sub_role.php#mind_receiver">受信者</a>が追加される。</td>
+    <td class="ability">自分撃ち固定のキューピッド。矢を打った相手に<a href="sub_role.php#mind_receiver">受信者</a>が追加される。</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
   <tr>
@@ -582,7 +583,7 @@ Ver. 1.4.0
     <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にするキューピッド。<br>
+    <td class="ability">矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。<br>
       他人撃ちの場合は、さらに自分が二人の<a href="sub_role.php#mind_receiver">受信者</a>になる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
@@ -621,7 +622,7 @@ Ver. 1.4.0
     <td>人狼</td>
     <td>憑狼</td>
     <td class="ability">襲撃が成功したら襲撃した人を乗っ取る人狼。<br>
-      身代わり君と妖狐は乗っ取れない。</td>
+      身代わり君・<a href="human.php#revive_priest">天人</a>・妖狐は乗っ取れない。</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
@@ -756,6 +757,88 @@ Ver. 1.4.0
     <td>村人</td>
     <td class="ability">一度だけ人狼の襲撃を耐える事ができる狩人</td>
     <td>Ver. 1.4.0 β5</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#trap_common" name="140beta6">策士</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#common_group">共有者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">村人陣営以外の人全てから投票されたらまとめて死亡させる上位共有者</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#fairy">妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先の発言の先頭に共有者の囁きを追加する。<br>
+      呪い・占い妨害・厄払いの影響を受ける。</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#spring_fairy">春妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先の発言の先頭に「春ですよー」を追加する妖精</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#summer_fairy">夏妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先の発言の先頭に「夏ですよー」を追加する妖精</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#autumn_fairy">秋妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先の発言の先頭に「秋ですよー」を追加する妖精</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#winter_fairy">冬妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先の発言の先頭に「冬ですよー」を追加する妖精</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#ghost_common">亡霊嬢</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#common_group">共有者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">噛まれたら噛んだ人狼に<a href="sub_role.php#chicken">小心者</a>を付加する上位共有者</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#poison_jealousy">毒橋姫</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#jealousy_group">橋姫系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">恋人のみに中る埋毒者。本人の表記は「埋毒者」。</td>
+    <td>Ver. 1.4.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#chain_poison">連毒者</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#poison_group">埋毒者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">他の毒能力者に中ったらさらに二人巻き込む埋毒者。本人の表記は「村人」。</td>
+    <td>Ver. 1.4.0 β6</td>
   </tr>
 </table>
 
@@ -968,35 +1051,35 @@ Ver. 1.4.0
     <td><a href="sub_role.php#speaker" name="sub_140alpha17">スピーカー</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
-    <td class="ability">発言が一段階大きく見えるようになり、大声が聞き取れなくなります。</td>
+    <td class="ability">発言が一段階大きく見えるようになり、大声が聞き取れなくなる</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#upper_voice">メガホン</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
-    <td class="ability">発言が一段階大きくなり、大声は音割れして聞き取れなくなります。</td>
+    <td class="ability">発言が一段階大きくなり、大声は音割れして聞き取れなくなる</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#downer_voice">マスク</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
-    <td class="ability">発言が一段階小さくなり、小声は聞き取れなくなります。</td>
+    <td class="ability">発言が一段階小さくなり、小声は聞き取れなくなる</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#rainbow">虹色迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
-    <td class="ability">発言に虹の色が含まれていたら虹の順番に合わせて入れ替えられてしまいます。</td>
+    <td class="ability">発言に虹の色が含まれていたら虹の順番に合わせて入れ替えられてしまう</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#panelist">解答者</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
-    <td class="ability">投票数が 0 になり、出題者に投票したらショック死する。<br>
+    <td class="ability">投票数が 0 になり、出題者に投票したらショック死する<br>
     クイズ村専用。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
@@ -1004,91 +1087,91 @@ Ver. 1.4.0
     <td><a href="sub_role.php#weekly" name="sub_140alpha19">七曜迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
-    <td class="ability">発言に曜日が含まれていたら曜日の順番に合わせて入れ替えられてしまいます。</td>
+    <td class="ability">発言に曜日が含まれていたら曜日の順番に合わせて入れ替えられてしまう</td>
     <td>Ver. 1.4.0 α19</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_read" name="sub_140alpha21">サトラレ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
-    <td class="ability"><a href="human.php#mind_scanner">さとり</a>に夜の発言が見られてしまいます。</td>
+    <td class="ability"><a href="human.php#mind_scanner">さとり</a>に夜の発言が見られてしまう</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_open" name="sub_140alpha22">公開者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
-    <td class="ability">夜の発言が参加者全員に見られてしまいます。</td>
+    <td class="ability">夜の発言が参加者全員に見られてしまう</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_receiver">受信者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
-    <td class="ability">特定の人の夜の発言が見えるようになります。</td>
+    <td class="ability">特定の人の夜の発言が見えるようになる</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#celibacy">独身貴族</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
-    <td class="ability">昼の投票時に恋人から一票でも貰うとショック死する。</td>
+    <td class="ability">昼の投票時に恋人から一票でも貰うとショック死する</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#inside_voice" name="sub_140alpha23">内弁慶</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
-    <td class="ability">昼は小声、夜は大声になります。</td>
+    <td class="ability">昼は小声、夜は大声になる</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#outside_voice">外弁慶</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
-    <td class="ability">昼は大声、夜は小声になります。</td>
+    <td class="ability">昼は大声、夜は小声になる</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mower">草刈り</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
-    <td class="ability">発言から「w」が削られます。</td>
+    <td class="ability">発言から「w」が削られる</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#grassy">草原迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
-    <td class="ability">発言の一文字毎に「w」が付け加えられます。</td>
+    <td class="ability">発言の一文字毎に「w」が付加される</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#side_reverse">鏡面迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
-    <td class="ability">発言の文字の並びが一行単位で逆になります。</td>
+    <td class="ability">発言の文字の並びが一行単位で逆になる</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#line_reverse">天地迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
-    <td class="ability">発言の行の並びの上下が入れ替わります。</td>
+    <td class="ability">発言の行の並びの上下が入れ替わる</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_friend">共鳴者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
-    <td class="ability">特定の人と夜に会話できるようになります。</td>
+    <td class="ability">特定の人と夜に会話できるようになる</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_evoke" name="sub_140beta2">口寄せ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
-    <td class="ability">死後に特定の人の遺言窓にメッセージを送れます。</td>
+    <td class="ability">死後に特定の人の遺言窓にメッセージを送れるようになる</td>
     <td>Ver. 1.4.0 β2</td>
   </tr>
 </table>
@@ -1104,6 +1187,57 @@ Ver. 1.4.0
 
 <h2><a name="memo">作成予定メモ</a></h2>
 <h3>役職</h3>
+<h4>作成予定</h4>
+<pre>
+○誘毒者 (村人陣営 / 村人系？)
+・毒が村に中った時だけ身代わりで死ぬ
+
+○連毒者 (村人陣営 / 埋毒者系)
+・毒に中ったらさらに二人巻き込む毒
+・薬師の判定は「限定的」
+
+○耐毒者 (村人陣営 / 薬師系？)
+・毒がいっさい効かない村人
+
+○死神 (村人陣営 / 暗殺系)
+・投票したら 3 日後に死ぬ
+・投票先に暗殺予告が表示される
+・再び投票したら寿命が延びる
+
+○仕事人 (村人陣営 / 暗殺系)
+・村人陣営を殺したら能力を失う (結果として人外を殺した事が自覚できる)
+
+○毒橋姫 (村人陣営 / 橋姫系)
+・恋人限定の毒 (表記は埋毒者)
+・薬師の判定は「限定的」
+
+○覚醒者 (村人陣営 / 神話マニア系)
+・5日目にコピー先の上位職に変化する
+・上位職の定義は役職が増えたら変更する
+
+○夢語部 (村人陣営 / 神話マニア系)
+・5日目にコピー先の夢・劣化職に変化する
+・夢・劣化職の定義は役職が増えたら変更する
+
+○天狼 (人狼陣営 / 人狼系)
+・LW になったら毒無効、護衛突破能力を持つ
+
+○対妖狐狼 (人狼陣営 / 人狼系)
+・妖狐を噛める人狼
+・何かしらの弱点をつける
+・妖狐陣営が人狼陣営に対して強力になってきたら実装する
+
+○嫉狐 (妖狐陣営 / 妖狐系？)
+・橋姫能力をもった妖狐
+
+○雛狐 (妖狐陣営 / 子狐)
+・ひよこ鑑定士の能力をもった子狐
+
+○大蝙蝠 (蝙蝠陣営 / 蝙蝠系)
+・噛まれたら他の蝙蝠に身代わりになってもらう
+・弱点や詳細な仕様は要検討
+</pre>
+
 <h4>採用予定</h4>
 <pre>
 ・泥棒 (レス 13)

@@ -45,6 +45,7 @@ class Message{
   var $assassin_not_do  = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
   var $mind_scanner_do  = 'の心を読みます'; //さとりの投票
   var $cupid_do         = 'に愛の矢を放ちました'; //キューピッドの投票
+  var $fairy_do         = 'に悪戯しました'; //妖精の投票
   var $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
@@ -111,6 +112,7 @@ class Message{
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
   var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
   var $ability_cupid_do         = '結びつける二人を選択してください'; //キューピッド
+  var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精
   var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
 
   //-- game_play.php --//
@@ -299,5 +301,6 @@ class VoteMessage{
   var $trap_do          = '対象の周辺に罠を設置する'; //罠師
   var $trap_not_do      = '罠を設置しない'; //罠師(キャンセル)
   var $cupid_do         = '対象に愛の矢を放つ'; //キューピッド
+  var $fairy_do         = '対象に悪戯する'; //妖精
   var $mania_do         = '対象を真似る'; //神話マニア
 }

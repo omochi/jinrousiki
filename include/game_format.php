@@ -32,7 +32,7 @@ class DocumentBuilder{
 
     //フラグをセット
     $this->flag->dummy_boy = $dummy_boy;
-    $this->flag->common    = ($dummy_boy || $actor->IsRole('common'));
+    $this->flag->common    = ($dummy_boy || $actor->IsCommon(true));
     $this->flag->wolf      = ($dummy_boy || $SELF->IsWolf(true) || $actor->IsRole('whisper_mad'));
     $this->flag->fox       = ($dummy_boy || $actor->IsFox(true));
     $this->flag->mind_read = ($ROOM->date > 1 && $SELF->IsLive());

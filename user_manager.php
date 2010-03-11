@@ -245,7 +245,7 @@ IMAGE;
       elseif($ROOM->IsOption('chaosfull')){
 	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
 		   'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
-		   'wolf', 'mad', 'fox', 'cupid', 'quiz', 'chiroptera', 'mania');
+		   'wolf', 'mad', 'fox', 'cupid', 'quiz', 'chiroptera', 'fairy', 'mania');
       }
       else{
 	if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';

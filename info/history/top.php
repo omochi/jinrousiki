@@ -3,6 +3,16 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
+<h2>Ver. 1.4.0 β4 アップロード (2010/02/24 (Wed) 04:02:36)</h2>
+<ul>
+  <li>リアルタイム表示 JavaScript の自動補正処理 (時計合わせが不要になります)</li>
+  <li>情報一覧ページの再編成</li>
+  <li>「暗殺者」「憑狼」登場オプション実装</li>
+  <li>「巫女」登場オプションの仕様変更 (狂信者 → 女神)</li>
+  <li>ユーザアイコン表示/登録の機能強化</li>
+  <li>ユーザ入村画面の改訂</li>
+</ul>
+
 <h2>ゲームオプション画像セットアップロード (2010/02/18 (Thu) 00:41:10)</h2>
 <ul>
 <li>Ver. 1.3 〜 Ver. 1.4.0 β3 に対応 (img/room_option をそのまま差し替えてください)</li>
@@ -12,7 +22,6 @@ OutputInfoPageHeader('過去の Information', 1);
 <ul>
 <li>自動霊界オフオプションの実装</li>
 <li>呪狼の仕様変更</li>
-<li>色々バグ修正</li>
 </ul>
 
 <h2>Ver. 1.4.0 β2 アップロード (2010/02/08 (Mon) 03:41:23)</h2>

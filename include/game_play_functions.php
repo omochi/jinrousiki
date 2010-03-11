@@ -72,15 +72,17 @@ function OutputAbility(){
       OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO'); //Ìë¤ÎÅêÉ¼
     }
   }
-  elseif($SELF->IsRoleGroup('common')){ //¶¦Í­¼Ô
-    $ROLE_IMG->Output('common');
+  elseif($SELF->IsCommon()){ //¶¦Í­¼Ô
+    $ROLE_IMG->Output($SELF->IsRole('dummy_common') ? 'common' : $SELF->main_role);
 
     //Ãç´Ö¾ðÊó¤ò¼èÆÀ
     $parter = array();
     foreach($USERS->rows as $user){
       if($user->IsSelf()) continue;
-      if(($SELF->IsRole('common') && $user->IsRole('common')) ||
-	 ($SELF->IsRole('dummy_common') && $user->IsDummyBoy())){
+      if($SELF->IsRole('dummy_common')){
+	if($user->IsDummyBoy()) $partner[] = $user->handle_name;
+      }
+      elseif($user->IsCommon(true)){
 	$partner[] = $user->handle_name;
       }
     }
@@ -108,7 +110,6 @@ function OutputAbility(){
       OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
     }
   }
-  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //¶¶É±
   elseif($SELF->IsWolf()){ //¿ÍÏµ·Ï
     $ROLE_IMG->Output($SELF->main_role);
 
@@ -244,6 +245,10 @@ function OutputAbility(){
       $ROLE_IMG->Output($SELF->main_role);
     }
   }
+  elseif($SELF->IsRoleGroup('fairy')){ //ÍÅÀº·Ï
+    $ROLE_IMG->Output($SELF->main_role);
+    if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //Ìë¤ÎÅêÉ¼
+  }
   elseif($SELF->IsRoleGroup('cat')){ //Ç­Ëô·Ï
     $ROLE_IMG->Output($SELF->main_role);
 
@@ -257,6 +262,9 @@ function OutputAbility(){
   elseif($SELF->IsRole('incubate_poison')){ //ÀøÆÇ¼Ô
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
+  }
+  elseif($SELF->IsRole('chain_poison')){ //Ï¢ÆÇ¼Ô
+    $ROLE_IMG->Output('human');
   }
   elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->Output('poison'); //ËäÆÇ¼Ô·Ï
   elseif($SELF->IsRole('pharmacist')){ //Ìô»Õ
@@ -276,6 +284,7 @@ function OutputAbility(){
 
     if($is_first_night) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //½éÆüÌë¤ÎÅêÉ¼
   }
+  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //¶¶É±
   elseif($SELF->IsRole('quiz')){ //½ÐÂê¼Ô
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');

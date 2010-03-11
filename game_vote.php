@@ -313,7 +313,8 @@ function AggregateVoteGameStart($force_start = false){
   }
   */
   /*
-  $add_sub_role = 'perverseness';
+  #$add_sub_role = 'perverseness';
+  $add_sub_role = 'mind_open';
   array_push($delete_role_list, $add_sub_role);
   for($i = 0; $i < $user_count; $i++){
     #if(mt_rand(1, 100) <= 70){
@@ -501,7 +502,7 @@ function AggregateVoteKick($target){
   }
 
   //ユーザ総数を取得
-  $sql = mysql_query("SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} AND user_no > 0");
+  $sql = mysql_query($ROOM->GetQuery(false, 'user_entry') . ' AND user_no > 0');
   $user_count = mysql_result($sql, 0, 0);
 
   //Kick する人の user_no を取得
@@ -533,8 +534,8 @@ function VoteDay(){
   CheckSituation('VOTE_KILL'); //コマンドチェック
 
   //投票済みチェック
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} " .
-    "AND situation = 'VOTE_KILL' AND vote_times = {$RQ_ARGS->vote_times} AND uname = '{$SELF->uname}'";
+  $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
+    "AND vote_times = {$RQ_ARGS->vote_times} AND uname = '{$SELF->uname}'";
   if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
 
   $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想投票者を取得
@@ -576,35 +577,12 @@ function VoteNight(){
 
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
   switch($RQ_ARGS->situation){
-  case 'WOLF_EAT':
-    if(! $SELF->IsWolf()) OutputVoteResult('夜：人狼以外は投票できません');
-    break;
-
   case 'MAGE_DO':
     if(! $SELF->IsRoleGroup('mage')) OutputVoteResult('夜：占い師以外は投票できません');
     break;
 
   case 'VOODOO_KILLER_DO':
     if(! $SELF->IsRole('voodoo_killer')) OutputVoteResult('夜：陰陽師以外は投票できません');
-    break;
-
-  case 'JAMMER_MAD_DO':
-    if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：月兎以外は投票できません');
-    break;
-
-  case 'VOODOO_MAD_DO':
-    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：呪術師以外は投票できません');
-    break;
-
-  case 'DREAM_EAT':
-    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：獏以外は投票できません');
-    break;
-
-  case 'TRAP_MAD_DO':
-  case 'TRAP_MAD_NOT_DO':
-    if(! $SELF->IsRole('trap_mad')) OutputVoteResult('夜：罠師以外は投票できません');
-    if(! $SELF->IsActive()) OutputVoteResult('夜：罠は一度しか設置できません');
-    $not_type = ($RQ_ARGS->situation == 'TRAP_MAD_NOT_DO');
     break;
 
   case 'GUARD_DO':
@@ -628,13 +606,13 @@ function VoteNight(){
     if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
        OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
     }
-    $not_type = ($RQ_ARGS->situation == 'POISON_CAT_NOT_DO');
+    $not_type = $RQ_ARGS->situation == 'POISON_CAT_NOT_DO';
     break;
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
     if(! $SELF->IsRole('assassin')) OutputVoteResult('夜：暗殺者以外は投票できません');
-    $not_type = ($RQ_ARGS->situation == 'ASSASSIN_NOT_DO');
+    $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
   case 'MIND_SCANNER_DO':
@@ -642,6 +620,29 @@ function VoteNight(){
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
+    break;
+
+  case 'WOLF_EAT':
+    if(! $SELF->IsWolf()) OutputVoteResult('夜：人狼以外は投票できません');
+    break;
+
+  case 'JAMMER_MAD_DO':
+    if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：月兎以外は投票できません');
+    break;
+
+  case 'VOODOO_MAD_DO':
+    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：呪術師以外は投票できません');
+    break;
+
+  case 'DREAM_EAT':
+    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：獏以外は投票できません');
+    break;
+
+  case 'TRAP_MAD_DO':
+  case 'TRAP_MAD_NOT_DO':
+    if(! $SELF->IsRole('trap_mad')) OutputVoteResult('夜：罠師以外は投票できません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：罠は一度しか設置できません');
+    $not_type = $RQ_ARGS->situation == 'TRAP_MAD_NOT_DO';
     break;
 
   case 'VOODOO_FOX_DO':
@@ -656,6 +657,10 @@ function VoteNight(){
     if(! $SELF->IsRoleGroup('cupid', 'dummy_chiroptera')){
       OutputVoteResult('夜：キューピッド以外は投票できません');
     }
+    break;
+
+  case 'FAIRY_DO':
+    if(! $SELF->IsRoleGroup('fairy')) OutputVoteResult('夜：妖精以外は投票できません');
     break;
 
   case 'MANIA_DO':
@@ -880,21 +885,18 @@ EOF;
 function OutputVoteDay(){
   global $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
 
-  //投票する状況があっているかチェック
-  CheckScene();
-
-  //投票回数を取得
-  $vote_times = GetVoteTimes();
+  CheckScene();  //投票する状況があっているかチェック
+  $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
 
   //投票済みチェック
-  $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} " .
-    "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
+  $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
+    "AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
   if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
 
   OutputVotePageHeader();
   echo <<<EOF
 <input type="hidden" name="situation" value="VOTE_KILL">
-<input type="hidden" name="vote_times" value="$vote_times">
+<input type="hidden" name="vote_times" value="{$vote_times}">
 <table class="vote-page" cellspacing="5"><tr>
 
 EOF;
@@ -1021,6 +1023,9 @@ function OutputVoteNight(){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     CheckAlreadyVote('MANIA_DO');
   }
+  elseif($role_fairy = $SELF->IsRoleGroup('fairy')){
+    CheckAlreadyVote('FAIRY_DO');
+  }
   else OutputVoteResult('夜：あなたは投票できません');
 
   //身代わり君使用 or クイズ村の時は身代わり君だけしか選べない
@@ -1039,6 +1044,8 @@ function OutputVoteNight(){
   OutputVotePageHeader();
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
   foreach($this_rows as $this_user_no => $this_user){
+    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+    $count++;
     $this_color = $this_user->color;
     $this_live = $USERS->IsVirtualLive($this_user_no);
     $this_wolf = ($role_wolf && ! $SELF->IsRole('silver_wolf') &&
@@ -1085,7 +1092,6 @@ EOF;
 	$this_user_no . '">'."\n";
     }
     echo '</label></td>'."\n";
-    if(++$count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
   }
 
   echo <<<EOF
@@ -1169,6 +1175,10 @@ EOF;
   elseif($role_mania){
     $type   = 'MANIA_DO';
     $submit = 'mania_do';
+  }
+  elseif($role_fairy){
+    $type   = 'FAIRY_DO';
+    $submit = 'fairy_do';
   }
 
   echo <<<EOF

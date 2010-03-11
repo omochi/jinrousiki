@@ -16,7 +16,7 @@ class Room{
   var $log_mode = false;
   var $test_mode = false;
 
-  function Room($request){ $this->__construct($request); }
+  function Room($request = NULL){ $this->__construct($request); }
   function __construct($request = NULL){
     if(is_null($request)) return;
     if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
@@ -37,16 +37,15 @@ class Room{
 
   //option_role を追加ロードする
   function LoadOption(){
-    $option_role = FetchResult('SELECT option_role FROM room WHERE room_no = ' . $this->id);
+    $option_role = FetchResult('SELECT option_role FROM room' . $this->GetQuery(false));
     $this->option_role = new OptionManager($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
   }
 
   //発言を取得する
   function LoadTalk($heaven = false){
-    $query = 'SELECT uname, sentence, font_type, location FROM talk WHERE room_no = ' .
-      $this->id . ' AND location LIKE ' .
-      ($heaven ? "'heaven'" : "'{$this->day_night}%' AND date = " . $this->date) .
+    $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
+      ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
       ' ORDER BY talk_id DESC';
     return FetchObject($query, 'Talk');
   }
@@ -78,7 +77,7 @@ class Room{
 
       case 'day':
 	$data = 'uname, target_uname, vote_number';
-	$action = "situation = 'VOTE_KILL' AND vote_times = " . GetVoteTimes();
+	$action = "situation = 'VOTE_KILL' AND vote_times = " . $this->GetVoteTimes();
 	break;
 
       case 'night':
@@ -89,9 +88,7 @@ class Room{
       default:
 	return NULL;
       }
-      $query = "SELECT {$data} FROM vote WHERE room_no = {$this->id} " .
-	"AND date = {$this->date} AND ";
-      $vote_list = FetchAssoc($query . $action);
+      $vote_list = FetchAssoc("SELECT {$data} FROM vote" . $this->GetQuery() . ' AND ' . $action);
     }
 
     $vote_data = array();
@@ -105,6 +102,13 @@ class Room{
     return count($this->vote);
   }
 
+  //投票回数を DB から取得する
+  function LoadVoteTimes($revote = false){
+    $query = 'SELECT message FROM system_message' . $this->GetQuery() . ' AND type = ' .
+      ($revote ?  "'RE_VOTE' ORDER BY message DESC" : "'VOTE_TIMES'");
+    return (int)FetchResult($query);
+  }
+
   function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
     $this->option_role = new OptionManager($this->option_role);
@@ -115,6 +119,30 @@ class Room{
       $this->real_time->day   = $time_list[0];
       $this->real_time->night = $time_list[1];
     }
+  }
+
+  //投票情報をコマンド毎に分割する
+  function ParseVote(){
+    $stack = array();
+    foreach($this->vote as $uname => $list){
+      extract($list);
+      $stack[$situation][$uname] = $target_uname;
+    }
+    return $stack;
+  }
+
+  //共通クエリを取得
+  function GetQuery($date = true, $count = NULL){
+    $query = (is_null($count) ? '' : 'SELECT COUNT(uname) FROM ' . $count) .
+      ' WHERE room_no = ' . $this->id;
+    return $date ? $query . ' AND date = ' . $this->date : $query;
+  }
+
+  //投票回数を取得する
+  function GetVoteTimes($revote = false){
+    $value = $revote ? 'revote_times' : 'vote_times';
+    if(is_null($this->$value)) $this->$value = $this->LoadVoteTimes($revote);
+    return $this->$value;
   }
 
   function IsOption($option){
@@ -178,7 +206,7 @@ class Room{
   //最終更新時刻を更新
   function UpdateTime(){
     if($this->test_mode) return;
-    SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP() WHERE room_no = ' . $this->id);
+    SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP()' . $this->GetQuery(false));
   }
 
   //発言登録

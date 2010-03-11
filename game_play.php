@@ -20,8 +20,8 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- テスト用 --//
-//$SELF->ChangeRole('random_voice');
-//$SELF->AddRole('strong_voice');
+#$SELF->ChangeRole('winter_fairy');
+#$SELF->AddRole('bad_status[1-0]');
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
@@ -104,7 +104,7 @@ function SendCookie(){
   }
 
   //ユーザ総数を取得して人数分の「異議あり」のクッキーを構築する
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$ROOM->id} AND user_no > 0";
+  $query = $ROOM->GetQuery(false, 'user_entry') . ' AND user_no > 0';
   $user_count = FetchResult($query);
   // 配列をリセット (0 番目に変な値が入らない事が保証されていれば不要かな？)
   // キックで欠番が出ると色々面倒な事になりそう
@@ -134,7 +134,7 @@ function SendCookie(){
 
   //<再投票を音でお知らせ用>
   //再投票の回数を取得
-  if(($last_vote_times = GetVoteTimes(true)) > 0){ //クッキーに格納 (有効期限一時間)
+  if(($last_vote_times = $ROOM->GetVoteTimes(true)) > 0){ //クッキーに格納 (有効期限一時間)
     setcookie('vote_times', $last_vote_times, $ROOM->system_time + 3600);
   }
   else{ //クッキーから削除 (有効期限一時間)
@@ -148,7 +148,7 @@ function ConvertSay(&$say){
 
   //リロード時、死者、ゲームプレイ中以外なら処理スキップ
   if($say == '' || $SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
-  #if($say == '' || $SELF->IsDead()) return false; //テスト用
+  //if($say == '' || $SELF->IsDead()) return false; //テスト用
 
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
   $ROLES->actor = $virtual_self;
@@ -174,6 +174,22 @@ function ConvertSay(&$say){
   //狼少年は一定確率で発言内容が反転される
   elseif($virtual_self->IsRole('liar') && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
     $say = strtr($say, $GAME_CONF->liar_replace_list);
+  }
+
+  if($virtual_self->IsRole('bad_status')){
+    $status_stack = $virtual_self->GetPartner('bad_status');
+    $season_list = array('spring_fairy' => '春', 'summer_fairy' => '夏',
+			 'autumn_fairy' => '秋', 'winter_fairy' => '冬');
+    foreach($status_stack as $id => $date){
+      if($date != $ROOM->date) continue;
+      $status_user = $USERS->ByID($id);
+      if($status_user->IsRole('fairy')){
+	$say = $MESSAGE->common_talk . $say;
+      }
+      elseif(isset($season_list[$status_user->main_role])){
+	$say = $season_list[$status_user->main_role] . 'ですよー' . $say;
+      }
+    }
   }
 
   $filter_list = $ROLES->Load('say_filter');
@@ -237,7 +253,7 @@ function Say($say){
 	$location = 'wolf';
       elseif($virtual_self->IsRole('whisper_mad')) //囁き狂人
 	$location = 'mad';
-      elseif($virtual_self->IsRole('common')) //共有者
+      elseif($virtual_self->IsCommon(true)) //共有者
 	$location = 'common';
       elseif($virtual_self->IsFox(true)) //妖狐
 	$location = 'fox';
@@ -302,9 +318,8 @@ function CheckSilence(){
     $sudden_death_announce = 'あと' . $left_time_str . 'で' . $MESSAGE->sudden_death_announce;
 
     //既に警告を出しているかチェック
-    $query = "SELECT COUNT(uname) FROM talk WHERE room_no = {$ROOM->id} " .
-      "AND date = {$ROOM->date} AND location = '{$ROOM->day_night} system' " .
-      "AND uname = 'system' AND sentence = '$sudden_death_announce'";
+    $query = $ROOM->GetQuery(true, 'talk') . " AND location = '{$ROOM->day_night} system' " .
+      "AND uname = 'system' AND sentence = '{$sudden_death_announce}'";
     if(FetchResult($query) == 0){ //警告を出していなかったら出す
       $ROOM->Talk($sudden_death_announce);
       $ROOM->UpdateTime(); //更新時間を更新
@@ -314,72 +329,18 @@ function CheckSilence(){
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($ROOM->sudden_death <= 0){
-      //生存者を取得するための基本 SQL 文
-      $query_live = "SELECT uname FROM user_entry WHERE room_no = {$ROOM->id} " .
-	"AND live = 'live' AND user_no > 0";
-
-      //投票済みの人を取得するための基本 SQL 文
-      $query_vote = "SELECT uname FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} AND ";
-
+      $ROOM->LoadVote(); //投票情報を取得
       if($ROOM->IsDay()){
-	//投票回数を取得
-	$vote_times = GetVoteTimes();
-
-	//投票済みの人のユーザ名を取得
-	$add_action = "situation = 'VOTE_KILL' AND vote_times = $vote_times";
-	$vote_uname_list = FetchArray($query_vote . $add_action);
-
-	//投票が必要な人のユーザ名を取得
-	$live_uname_list = FetchArray($query_live);
-
-	$novote_uname_list = array_diff($live_uname_list, $vote_uname_list);
+	//生存者と投票済みの人の差分を取る
+	$novote_uname_list = array_diff($USERS->GetLivingUsers(), array_keys($ROOM->vote));
       }
       elseif($ROOM->IsNight()){
-	//対象役職のデータを作成
-	$action_list = array('MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO', 'VOODOO_MAD_DO',
-			     'VOODOO_FOX_DO', 'CHILD_FOX_DO');
-	$actor_list  = array('%mage', 'voodoo_killer', 'jammer_mad', 'voodoo_mad',
-			     'voodoo_fox', 'child_fox');
+	$vote_data = $ROOM->ParseVote(); //投票情報をパース
+	//PrintData($vote_data, 'Vote Data');
 
-	if($ROOM->date == 1){
-	  array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
-	  array_push($actor_list, '%scanner', '%cupid', '%mania');
-	}
-	else{
-	  array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'DREAM_EAT',
-		     'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
-	  array_push($actor_list, '%guard', 'anti_voodoo', 'reporter', 'dream_eater_mad',
-		     'assassin', 'trap_mad');
-	  if(! $ROOM->IsOpenCast()){
-	    array_push($action_list, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
-	    array_push($actor_list, '%cat', 'revive_fox');
-	  }
-	}
-
-	//投票済みの人のユーザ名を取得
-	foreach($action_list as $this_action){
-	  if($add_action != '') $add_action .= ' OR ';
-	  $add_action .= "situation = '$this_action'";
-	}
-	$vote_uname_list = FetchArray($query_vote . '(' . $add_action . ')');
-
-	//投票が必要な人のユーザ名を取得
-	foreach($actor_list as $this_actor){
-	  if($add_actor != '') $add_actor .= ' OR ';
-	  if($this_actor == 'trap_mad'){
-	    $add_actor .= "(role LIKE '{$this_actor}%' AND !(role LIKE '%lost_ability%'))";
-	  }
-	  else{
-	    $add_actor .= "role LIKE '{$this_actor}%'";
-	  }
-	}
-	$live_uname_list = FetchArray("$query_live AND uname <> 'dummy_boy' AND ($add_actor)");
-
-	//未投票の人を取得
-	$novote_uname_list = array_diff($live_uname_list, $vote_uname_list);
-
-	if(FetchCount($query_vote . "situation = 'WOLF_EAT'") < 1){ //人狼の投票を確認
-	  $novote_uname_list = array_merge($novote_uname_list, $USERS->GetLivingWolves());
+	$novote_uname_list = array();
+	foreach($USERS->rows as $user){ //未投票チェック
+	  if($user->CheckVote($vote_data) === false) $novote_uname_list[] = $user->uname;
 	}
       }
 
@@ -440,9 +401,7 @@ function OutputGameHeader(){
       echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
     }
     elseif($ROOM->IsAfterGame()){
-      $query = "SELECT COUNT(uname) FROM talk WHERE room_no = {$ROOM->id} " .
-	"AND date = {$ROOM->date} AND location = 'day'";
-      if(FetchResult($query) > 0){
+      if(FetchResult($ROOM->GetQuery(true, 'talk') . " AND location = 'day'") > 0){
 	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)</a>'."\n";
       }
     }
@@ -604,12 +563,12 @@ function CheckSelfVoteDay(){
   global $MESSAGE, $ROOM, $USERS, $SELF;
 
   //投票回数を取得
-  $vote_times = GetVoteTimes();
+  $vote_times = $ROOM->GetVoteTimes();
   $sentence = '<div class="self-vote">投票 ' . $vote_times . ' 回目：';
 
   //投票対象者を取得
-  $query = "SELECT target_uname FROM vote WHERE room_no = {$ROOM->id} AND date = {$ROOM->date} " .
-    "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$SELF->uname}'";
+  $query = 'SELECT target_uname FROM vote' . $ROOM->GetQuery() .
+    " AND situation = 'VOTE_KILL' AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
   $sentence .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
 		$USERS->GetHandleName($target_uname, true) . 'さんに投票済み');

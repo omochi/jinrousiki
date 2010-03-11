@@ -42,6 +42,7 @@ OutputHTMLHeader('┐╖╠Є┐ж╛Ё╩є - [есе╦ехб╝]', 'info_menu');
   <li>б·б∙б·б∙б·б∙б·</li>
   <li><a href="chiroptera.php" target="body">&lt; щ■щї┐╪▒─ &gt;</a></li>
   <li><a href="chiroptera.php#chiroptera_group" target="body">щ■щї╖╧</a></li>
+  <li><a href="chiroptera.php#fairy_group" target="body">═┼└║╖╧</a></li>
   <li>б·б∙б·б∙б·б∙б·</li>
   <li><a href="sub_role.php" target="body">&lt; е╡е╓╠Є┐ж &gt;</a></li>
   <li><a href="sub_role.php#chicken_group" target="body">╛о┐┤╝╘╖╧</a></li>

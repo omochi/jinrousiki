@@ -208,10 +208,13 @@ class GameConfig{
     'anti_voodoo'        => '厄神',
     'dummy_guard'        => '夢守人',
     'common'             => '共有者',
+    'trap_common'        => '策士',
+    'ghost_common'       => '亡霊嬢',
     'dummy_common'       => '夢共有者',
     'poison'             => '埋毒者',
     'strong_poison'      => '強毒者',
     'incubate_poison'    => '潜毒者',
+    'chain_poison'       => '連毒者',
     'dummy_poison'       => '夢毒者',
     'poison_cat'         => '猫又',
     'revive_cat'         => '仙狸',
@@ -220,6 +223,7 @@ class GameConfig{
     'mind_scanner'       => 'さとり',
     'evoke_scanner'      => 'イタコ',
     'jealousy'           => '橋姫',
+    'poison_jealousy'    => '毒橋姫',
     'elder'              => '長老',
     'suspect'            => '不審者',
     'unconscious'        => '無意識',
@@ -265,6 +269,11 @@ class GameConfig{
     'cursed_chiroptera'  => '呪蝙蝠',
     'elder_chiroptera'   => '古蝙蝠',
     'dummy_chiroptera'   => '夢求愛者',
+    'fairy'              => '妖精',
+    'spring_fairy'       => '春妖精',
+    'summer_fairy'       => '夏妖精',
+    'autumn_fairy'       => '秋妖精',
+    'winter_fairy'       => '冬妖精',
     'mania'              => '神話マニア',
     'unknown_mania'      => '鵺');
 
@@ -347,10 +356,13 @@ class GameConfig{
     'anti_voodoo'        => '厄',
     'dummy_guard'        => '夢守',
     'common'             => '共',
+    'trap_common'        => '策',
+    'ghost_common'       => '亡',
     'dummy_common'       => '夢共',
     'poison'             => '毒',
     'strong_poison'      => '強毒',
     'incubate_poison'    => '潜毒',
+    'chain_poison'       => '連毒',
     'dummy_poison'       => '夢毒',
     'poison_cat'         => '猫',
     'revive_cat'         => '仙狸',
@@ -359,6 +371,7 @@ class GameConfig{
     'mind_scanner'       => '悟',
     'evoke_scanner'      => 'イ',
     'jealousy'           => '橋',
+    'poison_jealousy'    => '毒橋',
     'elder'              => '老',
     'suspect'            => '不審',
     'unconscious'        => '無',
@@ -403,6 +416,11 @@ class GameConfig{
     'cursed_chiroptera'  => '呪蝙',
     'elder_chiroptera'   => '古蝙',
     'dummy_chiroptera'   => '夢愛',
+    'fairy'              => '妖精',
+    'spring_fairy'       => '春精',
+    'summer_fairy'       => '夏精',
+    'autumn_fairy'       => '秋精',
+    'winter_fairy'       => '冬精',
     'mania'              => 'マ',
     'unknown_mania'      => '鵺',
     'chicken'            => '酉',
@@ -465,17 +483,18 @@ class GameConfig{
     'cupid' => 'cupid',
     'quiz' => 'quiz',
     'chiroptera' => 'chiroptera',
+    'fairy' => 'fairy',
     'mage' => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer', 'medium' => 'necromancer',
     'priest' => 'priest',
     'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
     'common' => 'common',
     'cat' => 'poison_cat',
+    'jealousy' => 'jealousy',
     'poison' => 'poison',
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
     'scanner' => 'mind_scanner',
-    'jealousy' => 'jealousy',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
@@ -588,15 +607,14 @@ class CastConfig{
   //-- 真・闇鍋の配役設定 --//
   //固定配役
   var $chaos_fix_role_list = array('wolf' => 1, 'mage' => 1);
-
   var $min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
   var $min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)
 
   //役職グループの最大出現率 (グループ => 最大人口比)
   var $chaos_role_group_rate_list = array(
-    'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1, 'chiroptera' => 0.15,
-    'mage' => 0.18, 'necromancer' => 0.15, 'priest' => 0.1, 'guard' => 0.15,
-    'common' => 0.18, 'poison' => 0.15, 'cat' => 0.12, 'pharmacist' => 0.15,
+    'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1, 'chiroptera' => 0.12,
+    'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'priest' => 0.1, 'guard' => 0.15,
+    'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1, 'pharmacist' => 0.15,
     'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1);
 
   //村人の出現上限補正

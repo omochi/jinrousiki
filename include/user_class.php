@@ -85,6 +85,14 @@ class User{
     return $this->updated['role'] ? $this->updated['role'] : $this->role;
   }
 
+  //現在の所属陣営を取得
+  function GetCamp($strict = false){
+    global $USERS;
+
+    if(is_null($this->camp)) $USERS->SetCamp($this, $strict);
+    return $this->camp;
+  }
+
   //拡張情報を取得
   function GetPartner($type){
     $list = $this->partner_list[$type];
@@ -148,7 +156,7 @@ class User{
 
   function IsActive($role = NULL){
     $is_role = is_null($role) ? true : $this->IsRole($role);
-    return ($is_role && ! $this->IsRole('lost_ability'));
+    return ($is_role && ! $this->IsRole('lost_ability') && ! $this->lost_flag);
   }
 
   function IsRoleGroup($role){
@@ -169,6 +177,11 @@ class User{
   function IsFox($talk = false){
     if(! $this->IsRoleGroup('fox')) return false;
     return $talk ? ! $this->IsRole('silver_fox', 'child_fox') : true;
+  }
+
+  function IsCommon($talk = false){
+    if(! $this->IsRoleGroup('common')) return false;
+    return ($talk ? ! $this->IsRole('dummy_common') : true);
   }
 
   function IsLovers(){
@@ -192,7 +205,7 @@ class User{
     global $ROOM;
 
     if(! $this->IsRoleGroup('poison')) return false;
-    if($this->IsRole('dummy_poison')) return false; //夢毒者
+    if($this->IsRole('chain_poison', 'dummy_poison')) return false; //連毒者・夢毒者
     if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //騎士
     if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //潜毒者は 5 日目以降
     return true;
@@ -204,7 +217,7 @@ class User{
     if($this->IsFox()) return 'fox';
     if($this->IsRoleGroup('cupid')) return 'lovers';
     if($this->IsRole('quiz')) return 'quiz';
-    if($this->IsRoleGroup('chiroptera')) return 'chiroptera';
+    if($this->IsRoleGroup('chiroptera', 'fairy')) return 'chiroptera';
     return 'human';
   }
 
@@ -217,12 +230,95 @@ class User{
     return $result ? 'wolf' : 'human';
   }
 
+  //未投票チェック
+  function CheckVote($vote_data){
+    global $ROOM;
+
+    if($this->IsDummyBoy() || $this->IsDead()) return true;
+
+    if($this->IsRoleGroup('mage')){
+      return isset($vote_data['MAGE_DO'][$this->uname]);
+    }
+    if($this->IsRole('voodoo_killer')){
+      return isset($vote_data['VOODOO_KILLER_DO'][$this->uname]);
+    }
+    if($this->IsWolf()){
+      return isset($vote_data['WOLF_EAT']);
+    }
+    if($this->IsRole('jammer_mad')){
+      return isset($vote_data['JAMMER_MAD_DO'][$this->uname]);
+    }
+    if($this->IsRole('voodoo_mad')){
+      return isset($vote_data['VOODOO_MAD_DO'][$this->uname]);
+    }
+    if($this->IsRole('voodoo_fox')){
+      return isset($vote_data['VOODOO_FOX_DO'][$this->uname]);
+    }
+    if($this->IsRole('child_fox')){
+      return isset($vote_data['CHILD_FOX_DO'][$this->uname]);
+    }
+    if($this->IsRoleGroup('fairy')){
+      return isset($vote_data['FAIRY_DO'][$this->uname]);
+    }
+
+    if($ROOM->date == 1){ //初日限定
+      if($this->IsRole('mind_scanner')){
+	return isset($vote_data['MIND_SCANNER_DO'][$this->uname]);
+      }
+      if($this->IsRoleGroup('mania')){
+	return isset($vote_data['MANIA_DO'][$this->uname]);
+      }
+      if($this->IsRoleGroup('cupid')){
+	return isset($vote_data['CUPID_DO'][$this->uname]);
+      }
+
+      if($ROOM->IsOpenCast()) return true;
+      if($this->IsRole('evoke_scanner')){
+	return isset($vote_data['MIND_SCANNER_DO'][$this->uname]);
+      }
+      return true;
+    }
+
+    //二日目以降
+    if($this->IsRoleGroup('guard')){
+      return isset($vote_data['GUARD_DO'][$this->uname]);
+    }
+    if($this->IsRole('reporter')){
+      return isset($vote_data['REPORTER_DO'][$this->uname]);
+    }
+    if($this->IsRole('anti_voodoo')){
+      return isset($vote_data['ANTI_VOODOO_DO'][$this->uname]);
+    }
+    if($this->IsRole('assassin')){
+      if(is_array($vote_data['ASSASSIN_NOT_DO']) &&
+	 array_key_exists($this->uname, $vote_data['ASSASSIN_NOT_DO'])) return true;
+      return isset($vote_data['ASSASSIN_DO'][$this->uname]);
+    }
+    if($this->IsRole('dream_eater_mad')){
+      return isset($vote_data['DREAM_EAT'][$this->uname]);
+    }
+    if($this->IsRole('trap_mad')){
+      if(! $this->IsActive()) return true;
+      if(is_array($vote_data['TRAP_MAD_NOT_DO']) &&
+	 array_key_exists($this->uname, $vote_data['TRAP_MAD_NOT_DO'])) return true;
+      return isset($vote_data['TRAP_MAD_DO'][$this->uname]);
+    }
+
+    if($ROOM->IsOpenCast()) return true;
+    if($this->IsRoleGroup('cat') || $this->IsActive('revive_fox')){
+      if(is_array($vote_data['POISON_CAT_NOT_DO']) &&
+	 array_key_exists($this->uname, $vote_data['POISON_CAT_NOT_DO'])) return true;
+      return isset($vote_data['POISON_CAT_DO'][$this->uname]);
+    }
+    return true;
+  }
+
   //役職をパースして省略名を返す
   function GenerateShortRoleName(){
     global $GAME_CONF;
 
     //メイン役職を取得
-    $camp = $this->DistinguishCamp();
+    $camp = $this->GetCamp();
     $name = $GAME_CONF->short_role_list[$this->main_role];
     $str = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
@@ -314,6 +410,7 @@ class User{
 
   function LostAbility(){
     $this->AddRole('lost_ability');
+    $this->lost_flag = true;
   }
 
   function ReturnPossessed($type, $date){
@@ -364,7 +461,6 @@ class UserDataSet{
   var $names = array();
 
   function UserDataSet($request){ $this->__construct($request); }
-
   function __construct($request){
     $this->room_no = $request->room_no;
     $this->LoadRoom($request);
@@ -524,6 +620,24 @@ class UserDataSet{
 
   function GetUserCount(){
     return count($this->rows);
+  }
+
+  //所属陣営を取得してキャッシュする
+  function SetCamp($user, $strict = false){
+    if($strict && $user->IsLovers()){
+      $user->camp = 'lovers';
+      return;
+    }
+
+    $target_user = $user;
+    while($target_user->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
+      $target_list = $target_user->GetPartner('unknown_mania');
+      if(is_null($target_list)) break; //コピー先が見つからなければスキップ
+
+      $target_user = $this->ByID($target_list[0]);
+      if($target_user->IsSelf()) break; //自分に戻ったらスキップ
+    }
+    $user->camp = $target_user->DistinguishCamp();
   }
 
   //役職の出現判定関数

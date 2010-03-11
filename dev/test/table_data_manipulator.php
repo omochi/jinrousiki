@@ -50,6 +50,7 @@ $DB_CONF->Connect(); //DB 接続
 //ReconstructEstablishTime();
 //ReconstructStartTime();
 //ReconstructFinishTime();
+SendQuery("OPTIMIZE TABLE talk", true);
 OutputActionResult('処理完了', '処理完了。');
 
 //-- 関数 --//
@@ -83,7 +84,6 @@ function ReconstructEstablishTime($test = false){
 	  "WHERE room_no = {$room_no}";
 	SendQuery($query);
 	SendQuery("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
-	SendQuery("OPTIMIZE TABLE talk", true);
       }
     }
     else{
@@ -125,7 +125,6 @@ function ReconstructStartTime($test = false){
 	  "WHERE room_no = {$room_no}";
 	SendQuery($query);
 	SendQuery("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
-	SendQuery("OPTIMIZE TABLE talk", true);
       }
     }
     else{
@@ -165,7 +164,6 @@ function ReconstructFinishTime($test = false){
 	  "WHERE room_no = {$room_no}";
 	SendQuery($query);
 	SendQuery("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
-	SendQuery("OPTIMIZE TABLE talk", true);
       }
     }
     else{

@@ -6,7 +6,7 @@ OutputInfoPageHeader('詳細な仕様');
 ?>
 <p>
 <a href="#decide_role">配役決定ルーチン</a>
-<a href="#dummy_boy">身代わり君</a>
+<a href="#dummy_boy">身代わり君 (GM)</a>
 <a href="#dead">死因一覧</a>
 <a href="#vote">投票</a>
 </p>
@@ -84,6 +84,7 @@ OutputInfoPageHeader('詳細な仕様');
 <h4>〜<?= $MESSAGE->deadman ?></h4>
 <ul>
 <li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
+<li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
 <h4>〜<?= $MESSAGE->vote_sudden_death ?></h4>
@@ -119,31 +120,46 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h2><a name="vote">投票処理の仕様</a></h2>
 <p>
+<a href="#vote_legend">判例</a>
 <a href="#vote_day">昼</a>
 <a href="#vote_night">夜</a>
 </p>
 
+<h3><a name="vote_legend">判例</a></h3>
+<ul>
+  <li>「→」死因決定の単位</li>
+  <li>「＞」判定優先順位 (判定上書き)</li>
+</ul>
+
 <h3><a name="vote_day">昼</a></h3>
 <pre>
-+ 投票集計 → 得票補正 → 処刑者決定 → 橋姫判定 → ショック死判定 → 後追い
++ 処理順序
+  - 投票集計 → 処刑者決定 → 役職判定 → 後追い
+
++ 処刑者決定法則
+  - 単独トップ ＞ 決定者 ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる
+
++ 役職判定順
+  - <a href="new_role/human.php#pharmacist">薬師</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
+
 </pre>
 
 <h3><a name="vote_night">夜</a></h3>
 <pre>
-+ レイヤー (階層) 別の処理順序
-  - 恋人 → 接触 → 夢 → 占い → <日にち別処理> → 憑依 → 後追い → 司祭
-    <[初日] コピー → 帰還 / [二日目以降] 尾行 → 蘇生>
++ 処理順序
+  - 恋人 → 接触 → 夢 → 占い → &lt;日にち別処理&gt; → 憑依 → 後追い → 司祭
+    &lt;[初日] コピー → 帰還 / [二日目以降] 尾行 → 蘇生&gt;
 
 + 恋人 (キューピッド系)
   - 相互作用はないので投票直後に処理を行う
 
 + 接触 (人狼、狩人、暗殺者、罠師)
-  - 罠 > 狩人護衛 > 人狼襲撃 → 狩人の狩り → 暗殺
+  - 罠 ＞ 狩人護衛 ＞ 人狼襲撃 → 狩人の狩り → 暗殺
 
 + 夢 (夢守人、獏)
-  - 夢守人護衛 > 獏襲撃 → 夢守人の狩り
+  - 夢守人護衛 ＞ 獏襲撃 → 夢守人の狩り
 
 + 占い (占い系、厄神、夢守人、月兎、呪術系)
-  - 厄払い > 呪い > 占い妨害 > 占い (呪殺)
+  - 厄払い ＞ 呪い ＞ 占い妨害 ＞ 占い (呪殺)
 </pre>
 </body></html>
