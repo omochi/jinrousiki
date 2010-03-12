@@ -211,9 +211,10 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 972) $random_role_list['summer_fairy']++;
       elseif($rand < 975) $random_role_list['autumn_fairy']++;
       elseif($rand < 978) $random_role_list['winter_fairy']++;
-      elseif($rand < 987) $random_role_list['mania']++;
-      elseif($rand < 997) $random_role_list['unknown_mania']++;
-      else                $random_role_list['quiz']++;
+      elseif($rand < 988) $random_role_list['mania']++;
+      elseif($rand < 996) $random_role_list['unknown_mania']++;
+      elseif($rand < 999) $random_role_list['quiz']++;
+      else                $random_role_list['human']++;
     }
 
     //ランダムと固定を合計

@@ -31,6 +31,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
   <li>亡霊嬢 (噛んだ人狼に小心者を付加する共有者)</li>
   <li>毒橋姫 (恋人にしか中らない埋毒者)</li>
   <li>連毒者 (毒に中った時のみ、さらに二人巻き込む埋毒者)</li>
+  <li>アイコン情報の編集機能を実装</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

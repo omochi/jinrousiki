@@ -2,13 +2,13 @@
 require_once('include/init.php');
 $INIT_CONF->LoadClass('ICON_CONF');
 $INIT_CONF->LoadRequest('RequestIconView'); //引数を取得
-OutputIconViewHeader();
-$DB_CONF->Connect(true); //DB 接続
+$DB_CONF->Connect(); //DB 接続
 OutputIconList();
-OutputHTMLFooter();
 
 //-- 関数 --//
-function OutputIconViewHeader(){
+function OutputIconList(){
+  global $ICON_CONF, $RQ_ARGS;
+
   OutputHTMLHeader('ユーザアイコン一覧', 'icon_view');
   echo <<<EOF
 </head>
@@ -16,14 +16,11 @@ function OutputIconViewHeader(){
 <a href="./">←戻る</a><br>
 <img class="title" src="img/icon_view_title.jpg"><br>
 <div class="link"><a href="icon_upload.php">→アイコン登録</a></div>
+<fieldset><legend>ユーザアイコン一覧</legend>
+<table>
 
 EOF;
-}
 
-function OutputIconList(){
-  global $ICON_CONF, $RQ_ARGS;
-
-  echo "<fieldset><legend>ユーザアイコン一覧</legend>\n<table>\n";
   $icon_count = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0');
   $line_header = '<tr><td colspan="10">';
   $line_footer = '</td></tr>'."\n";
@@ -173,6 +170,7 @@ EOF;
     }
   }
   echo "</tr></table>\n</fieldset>\n";
+  OutputHTMLFooter();
 }
 
 function GetIconCategoryList($type, $limit = '', $query_stack = array()){

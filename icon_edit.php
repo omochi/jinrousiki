@@ -67,5 +67,5 @@ function EditIcon(){
     OutputActionResult($title, $sentence);
   }
   SendQuery($query, true);
-  OutputActionResult($title, ' ‘Ω∏¥∞Œª', 'icon_view.php?icon_no=' . $icon_no);
+  OutputActionResult($title, ' ‘Ω∏¥∞Œª', 'icon_view.php?icon_no=' . $icon_no, true);
 }
