@@ -970,6 +970,48 @@ function AggregateVoteDay(){
 	break 2;
       }
     }
+
+    //-- 聖女判定 --//
+    //最多得票者を再取得
+    $max_voted_uname_list = array_keys($vote_count_list, $max_voted_number);
+    $stack = array();
+    $target_stack = array();
+    foreach($max_voted_uname_list as $uname){//最多得票者の情報を収集
+      $user = $USERS->ByRealUname($uname); //$uname は仮想ユーザ
+      if($user->IsRole('saint')) $stack[] = $uname;
+      if($user->GetCamp(true) != 'human') $target_stack[] = $uname;
+    }
+    //対象を一人に固定できる時のみ有効
+    if(count($stack) > 0 && count($target_stack) < 2){
+      if(isset($target_stack[0])){
+	$vote_kill_uname = $target_stack[0];
+	break;
+      }
+      elseif(count($stack) == 1){
+	$vote_kill_uname = $stack[0];
+	break;
+      }
+    }
+
+    //-- 扇動者判定 --//
+    $stack = array();
+    foreach($user_list as $uname){ //最多得票者に投票した扇動者の投票先を収集
+      $user = $USERS->ByUname($uname); //$uname は実ユーザ
+      if(! $user->IsRole('agitate_mad')) continue;
+      $target = $USERS->ByVirtualUname($ROOM->vote[$uname]['target_uname']);
+      if(in_array($target->uname, $max_voted_uname_list)){ //最多得票者リストは仮想ユーザ
+	$stack[$target->uname] = true;
+      }
+    }
+    //PrintData($stack);
+    if(count($stack) != 1) break; //対象を一人に固定できる時のみ有効
+
+    $vote_kill_uname = array_shift(array_keys($stack));
+    foreach($max_voted_uname_list as $uname){
+      if($uname == $vote_kill_uname) continue;
+      $user = $USERS->ByRealUname($uname); //$uname は仮想ユーザ
+      $USERS->SuddenDeath($user->user_no, 'SUDDEN_DEATH_AGITATED');
+    }
   }while(false);
 
   if($vote_kill_uname != ''){ //処刑処理実行
@@ -1021,7 +1063,8 @@ function AggregateVoteDay(){
       //PrintData($target_list); //テスト用
 
       foreach($target_list as $uname){ //常時対象外の役職を除く
-	if(! $USERS->ByRealUname($uname)->IsRole('quiz')){
+	$user = $USERS->ByRealUname($uname);
+	if($user->IsLive(true) && ! $user->IsRole('quiz')){
 	  $poison_target_list[] = $uname;
 	}
       }
@@ -1177,7 +1220,6 @@ function AggregateVoteDay(){
       $ROOM->SystemMessage($sentence_header . $necromancer_result, 'DUMMY_' . $action);
     }
   }
-
 
   //策士の処理
   foreach($user_list as $uname){ //非村人陣営の ID と仮想投票者名を収集
@@ -1488,8 +1530,8 @@ function AggregateVoteNight(){
 
   if($ROOM->date > 1){
     //狩人系の狩り対象リスト
-    $hunt_target_list = array('jammer_mad', 'voodoo_mad', 'corpse_courier_mad', 'dream_eater_mad',
-			      'trap_mad', 'cursed_fox', 'voodoo_fox', 'revive_fox',
+    $hunt_target_list = array('jammer_mad', 'voodoo_mad', 'corpse_courier_mad', 'agitate_mad',
+			      'dream_eater_mad', 'trap_mad', 'cursed_fox', 'voodoo_fox', 'revive_fox',
 			      'poison_chiroptera', 'cursed_chiroptera');
     foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
       $user = $USERS->ByUname($uname);
@@ -1712,10 +1754,17 @@ function AggregateVoteNight(){
   $psycho_mage_liar_list = array('mad', 'dummy', 'suspect', 'unconscious');
   $mage_list = array_merge($vote_data['MAGE_DO'], $vote_data['CHILD_FOX_DO'],
 			   $vote_data['FAIRY_DO']);
+  PrintData($vote_data['FAIRY_DO']);
   foreach($mage_list as $uname => $target_uname){ //占い師系の処理
     $user = $USERS->ByUname($uname);
     if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
+    if($user->IsRole('mirror_fairy')){ //鏡妖精の処理
+      $role = $user->main_role . '[' . implode('-', $target_uname) . ']';
+      //PrintData($role);
+      $user->ReplaceRole($user->main_role, $role);
+      continue;
+    }
     $target = $USERS->ByRealUname($target_uname); //対象者の情報を取得
     if($user->IsRole('dummy_mage')){ //夢見人の判定 (村人と人狼を反転させる)
       $result = $target->DistinguishMage(true);

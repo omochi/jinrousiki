@@ -3,6 +3,13 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
+<h2>Ver. 1.4.0 β5 アップロード (2010/03/04 (Thu) 08:10:26)</h2>
+<ul>
+  <li>長老/古狼/古狐/古蝙蝠 実装 (投票数が +1 にされる、村人/人狼/妖狐/蝙蝠)</li>
+  <li>忍者 実装(一度だけ人狼の襲撃に耐えられる狩人)</li>
+  <li>ユーザアイコン表示の機能強化</li>
+</ul>
+
 <h2>Ver. 1.4.0 β4 アップロード (2010/02/24 (Wed) 04:02:36)</h2>
 <ul>
   <li>リアルタイム表示 JavaScript の自動補正処理 (時計合わせが不要になります)</li>

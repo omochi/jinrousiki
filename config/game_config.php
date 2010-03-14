@@ -187,6 +187,10 @@ class GameConfig{
   //½éÆü¤ÎÌò¿¦ÄÌÃÎ¥ê¥¹¥È¤Ï¤³¤Î½çÈÖ¤ÇÉ½¼¨¤µ¤ì¤ë
   var $main_role_list = array(
     'human'              => 'Â¼¿Í',
+    'elder'              => 'Ä¹Ï·',
+    'saint'              => 'À»½÷',
+    'suspect'            => 'ÉÔ¿³¼Ô',
+    'unconscious'        => 'Ìµ°Õ¼±',
     'mage'               => 'Àê¤¤»Õ',
     'soul_mage'          => 'º²¤ÎÀê¤¤»Õ',
     'psycho_mage'        => 'Àº¿À´ÕÄê»Î',
@@ -224,9 +228,6 @@ class GameConfig{
     'evoke_scanner'      => '¥¤¥¿¥³',
     'jealousy'           => '¶¶É±',
     'poison_jealousy'    => 'ÆÇ¶¶É±',
-    'elder'              => 'Ä¹Ï·',
-    'suspect'            => 'ÉÔ¿³¼Ô',
-    'unconscious'        => 'Ìµ°Õ¼±',
     'wolf'               => '¿ÍÏµ',
     'boss_wolf'          => 'ÇòÏµ',
     'wise_wolf'          => '¸­Ïµ',
@@ -245,6 +246,7 @@ class GameConfig{
     'jammer_mad'         => '·îÅÆ',
     'voodoo_mad'         => '¼ö½Ñ»Õ',
     'corpse_courier_mad' => '²Ð¼Ö',
+    'agitate_mad'        => 'ÀðÆ°¼Ô',
     'dream_eater_mad'    => 'àÓ',
     'trap_mad'           => 'æ«»Õ',
     'fox'                => 'ÍÅ¸Ñ',
@@ -274,6 +276,7 @@ class GameConfig{
     'summer_fairy'       => '²ÆÍÅÀº',
     'autumn_fairy'       => '½©ÍÅÀº',
     'winter_fairy'       => 'ÅßÍÅÀº',
+    'mirror_fairy'       => '¶ÀÍÅÀº',
     'mania'              => '¿ÀÏÃ¥Þ¥Ë¥¢',
     'unknown_mania'      => 'ó¬');
 
@@ -335,6 +338,10 @@ class GameConfig{
   //Ìò¿¦¤Î¾ÊÎ¬Ì¾ (²áµî¥í¥°ÍÑ)
   var $short_role_list = array(
     'human'              => 'Â¼',
+    'elder'              => 'Ï·',
+    'saint'              => 'À»',
+    'suspect'            => 'ÉÔ¿³',
+    'unconscious'        => 'Ìµ',
     'mage'               => 'Àê',
     'soul_mage'          => 'º²',
     'psycho_mage'        => '¿´Àê',
@@ -372,9 +379,6 @@ class GameConfig{
     'evoke_scanner'      => '¥¤',
     'jealousy'           => '¶¶',
     'poison_jealousy'    => 'ÆÇ¶¶',
-    'elder'              => 'Ï·',
-    'suspect'            => 'ÉÔ¿³',
-    'unconscious'        => 'Ìµ',
     'wolf'               => 'Ïµ',
     'boss_wolf'          => 'ÇòÏµ',
     'wise_wolf'          => '¸­Ïµ',
@@ -393,6 +397,7 @@ class GameConfig{
     'jammer_mad'         => '·îÅÆ',
     'voodoo_mad'         => '¼ö¶¸',
     'corpse_courier_mad' => '²Ð¼Ö',
+    'agitate_mad'        => 'Àð',
     'dream_eater_mad'    => 'àÓ',
     'trap_mad'           => 'æ«',
     'fox'                => '¸Ñ',
@@ -421,6 +426,7 @@ class GameConfig{
     'summer_fairy'       => '²ÆÀº',
     'autumn_fairy'       => '½©Àº',
     'winter_fairy'       => 'ÅßÀº',
+    'mirror_fairy'       => '¶ÀÀº',
     'mania'              => '¥Þ',
     'unknown_mania'      => 'ó¬',
     'chicken'            => 'ÆÓ',

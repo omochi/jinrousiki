@@ -1024,6 +1024,10 @@ function OutputVoteNight(){
     CheckAlreadyVote('MANIA_DO');
   }
   elseif($role_fairy = $SELF->IsRoleGroup('fairy')){
+    $role_mirror_fairy = $SELF->IsRole('mirror_fairy');
+    if($role_mirror_fairy && $ROOM->date != 1){
+      OutputVoteResult('夜：初日以外は投票できません');
+    }
     CheckAlreadyVote('FAIRY_DO');
   }
   else OutputVoteResult('夜：あなたは投票できません');

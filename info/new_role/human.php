@@ -32,13 +32,14 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 </p>
 <p>
 <a href="#elder">長老</a>
+<a href="#saint">聖女</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
 
 <h3><a name="human_rule">村人表記役職</a></h3>
 <pre>
-本人の表示が「村人」になる役職は<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#chain_poison">連毒者</a>です。
+本人の表示が「村人」になる役職は<a href="#saint">聖女</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#chain_poison">連毒者</a>です。
 
 <a href="#suspect">不審者</a>の発言が遠吠えに変換される確率は 1% (管理者は設定ファイルで変更可能) です。
 変換されたかどうかは本人にしか分からず、客観的な証明は不可能なので
@@ -57,12 +58,38 @@ PP ラインの計算を難しくさせるために作成してみました。
 能力の特性上、これを騙るのはほぼ不可能なので同じ能力を持った他陣営種が存在します。
 </pre>
 
+<h3><a name="saint">聖女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
+<pre>
+再投票の最多得票者になった場合に、内訳によって吊られる人を変化させる村人。
+本人表記は「村人」。
+</pre>
+<ol>
+  <li>聖女の判定は<a href="../spec.php#vote_day">決定者系</a>の判定の後</li>
+  <li>非村人 (村人陣営以外 + 恋人) を一人だけ含む → 非村人が吊られる</li>
+  <li>非村人が複数含まれている → 再投票</li>
+  <li>全員村人 + 最多得票者の聖女は自分だけ → 自分が吊られる</li>
+  <li>全員村人 + 最多得票者の聖女が複数いる → 再投票</li>
+  <li>自分が恋人だった場合は自分も非村人扱い<br>
+    例1) 聖女・聖女[恋人]・村人 → 聖女[恋人] が吊られる<br>
+    例2) 聖女[恋人]・人狼 → 再投票
+  </li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+やる夫人狼のプレイヤーさんがモデルです。
+判定法則が少々複雑ですが、基本的には村人陣営が有利になる結果になります。
+通常の決定者同様、地味ですが勝負所で効いてくる存在になることでしょう。
+</pre>
 
 <h3><a name="suspect">不審者</a> (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9〜]</h3>
 <pre>
 不審なあまり、占い師に人狼と判定されてしまう村人。
 本人には「村人」と表示されているので偽黒を貰った様にしか感じない。
-また、低確率で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
+また、昼の間だけ、低確率で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
+</pre>
+<h4>Ver. 1.4.0 β7〜</h4>
+<pre>
+遠吠えの入れ替え発動を昼限定に変更しました。
 </pre>
 <h4>Ver. 1.4.0 α16〜</h4>
 <pre>
@@ -439,7 +466,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 1. 狩り能力があるのは狩人、<a href="#poison_guard">騎士</a>、<a href="#fend_guard">忍者</a>です
 2. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>の項目を参照してください
 3. 狩り対象は特殊狂人、特殊妖狐、特殊蝙蝠です
-3-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>、<a href="wolf.php#voodoo_mad">呪術師</a>、<a href="wolf.php#corpse_courier_mad">火車</a>、<a href="wolf.php#dream_eater_mad">獏</a>、<a href="wolf.php#trap_mad">罠師</a>)
+3-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>、<a href="wolf.php#voodoo_mad">呪術師</a>、<a href="wolf.php#corpse_courier_mad">火車</a>、<a href="wolf.php#agitate_mad">扇動者</a>、<a href="wolf.php#dream_eater_mad">獏</a>、<a href="wolf.php#trap_mad">罠師</a>)
 3-2. 特殊妖狐 (<a href="fox.php#voodoo_fox">九尾</a>、<a href="fox.php#revive_fox">仙狐</a>、<a href="fox.php#cursed_fox">天狐</a>)
 3-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>、<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>)
 </pre>
@@ -651,12 +678,13 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 
 <h3><a name="chain_poison">連毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
 <pre>
-他の毒能力者に中ったらさらに二人巻き込む埋毒者で、本人の表記は「村人」。
+他の毒能力者に巻き込まれたら、さらに二人巻き込む埋毒者。本人の表記は「村人」。
 <a href="#pharmacist">薬師</a>の判定は「限定的」で、投票されていたら解毒される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-発動率は低いですが、ひとたび発動すると大惨事を巻き起こします。
+裏世界鯖のとある村がモデルです。
+発動率は低いですが、ひとたび発動すると大惨事を引き起こします。
 連毒者を巻き添えにするとさらに連鎖するので一回の吊りで全滅する可能性もあります。
 </pre>
 

@@ -15,7 +15,7 @@ function OutputAbility(){
   $is_first_night = ($ROOM->IsNight() && $ROOM->date == 1);
   $is_after_first_night = ($ROOM->IsNight() && $ROOM->date > 1);
 
-  if($SELF->IsRole('human', 'suspect', 'unconscious')){ //村人・不審者・無意識
+  if($SELF->IsRole('human', 'suspect', 'unconscious', 'saint')){ //村人・不審者・無意識・聖女
     $ROLE_IMG->Output('human');
   }
   elseif($SELF->IsRole('elder')){

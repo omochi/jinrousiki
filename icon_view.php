@@ -27,7 +27,7 @@ EOF;
   $url_header  = '<a href="icon_view.php?';
   $url_option  = array();
   $query_stack = array();
-  $category_list   = GetIconCategoryList('category');
+  $category_list = GetIconCategoryList('category');
   //PrintData($category_list);
   //PrintData($RQ_ARGS);
 
@@ -39,6 +39,7 @@ EOF;
   $builder->header = '<tr><td colspan="10">';
   $builder->footer = '</td></tr>'."\n";
   $builder->Output();
+  $builder->AddOption('category_page', $RQ_ARGS->category_page);
 
   //PrintData($builder->query);
   $source_list = GetIconCategoryList('category', $builder->query);
@@ -59,7 +60,6 @@ EOF;
     $query_stack[] = "category = '{$type}'";
     $builder->AddOption('category', $RQ_ARGS->category);
   }
-  $builder->AddOption('category_page', $RQ_ARGS->category_page);
 
   //出典
   $appearance_list = GetIconCategoryList('appearance', '', $query_stack);
@@ -87,6 +87,34 @@ EOF;
     $type = $appearance_list[$RQ_ARGS->appearance];
     $query_stack[] = "appearance = '{$type}'";
     $url_option[] = "appearance={$RQ_ARGS->appearance}";
+  }
+
+  //出典
+  $author_list = GetIconCategoryList('author', '', $query_stack);
+  $builder->view_total = count($author_list);
+  $builder->title      = 'アイコンの作者';
+  $builder->type       = 'author_page';
+  $builder->SetPage($RQ_ARGS->author_page);
+  $source_list = GetIconCategoryList('author', $builder->query, $query_stack);
+  $builder->Output();
+  $builder->AddOption('author_page', $RQ_ARGS->author_page);
+
+  $count = count($source_list);
+  $stack = array();
+  for($i = 0; $i < $count; $i++){
+    $list = $builder->option;
+    $list[] = 'author=' . ($i + $builder->limit);
+    $name = $source_list[$i];
+    $stack[] = ($RQ_ARGS->author === $i ? $name :
+		$url_header . implode('&', $list) . '">' . $name . '</a>');
+  }
+  $stack[] = $RQ_ARGS->author == 'all' ? 'all' : $url_header . 'author=all">all</a>';
+
+  echo $line_header . implode(' / ', $stack) . $line_footer;
+  if(is_int($RQ_ARGS->author)){
+    $type = $author_list[$RQ_ARGS->author];
+    $query_stack[] = "author = '{$type}'";
+    $url_option[] = "author={$RQ_ARGS->author}";
   }
 
   //ユーザアイコンのテーブルから一覧を取得

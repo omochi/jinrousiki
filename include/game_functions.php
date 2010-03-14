@@ -370,7 +370,7 @@ function OutputPlayerList(){
       $str .= ')<br>';
 
       //メイン役職を追加
-      if($user->IsRole('human', 'suspect', 'unconscious', 'elder'))
+      if($user->IsRole('human', 'suspect', 'unconscious', 'elder', 'saint'))
 	$str .= GenerateRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
 	$str .= GenerateRoleName($user->main_role, 'mage');
@@ -1071,6 +1071,7 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_JEALOUSY':
   case 'SUDDEN_DEATH_PANELIST':
   case 'SUDDEN_DEATH_CELIBACY':
+  case 'SUDDEN_DEATH_AGITATED':
     echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){
       $action = strtolower(array_pop(explode('_', $type)));

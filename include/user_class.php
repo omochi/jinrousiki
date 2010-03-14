@@ -36,13 +36,13 @@ class User{
       break;
 
     default:
-      return array ('user_no'     => $this->user_no,
-		    'uname'       => $this->uname,
-		    'handle_name' => $this->handle_name,
-		    'role'        => $this->role,
-		    'profile'     => $this->profile,
-		    'icon'        => $this->icon_filename,
-		    'color'       => $this->color);
+      return array('user_no'     => $this->user_no,
+		   'uname'       => $this->uname,
+		   'handle_name' => $this->handle_name,
+		   'role'        => $this->role,
+		   'profile'     => $this->profile,
+		   'icon'        => $this->icon_filename,
+		   'color'       => $this->color);
     }
     return $result;
   }
@@ -50,7 +50,7 @@ class User{
   //役職情報の展開処理
   function ParseRoles($role = NULL){
     //初期化処理
-    if($role != NULL) $this->role = $role;
+    if(isset($role)) $this->role = $role;
     $this->partner_list = array();
 
     //展開用の正規表現をセット
@@ -89,8 +89,9 @@ class User{
   function GetCamp($strict = false){
     global $USERS;
 
-    if(is_null($this->camp)) $USERS->SetCamp($this, $strict);
-    return $this->camp;
+    $type = $strict ? 'win_camp' : 'main_camp';
+    if(is_null($this->$type)) $USERS->SetCamp($this, $type);
+    return $this->$type;
   }
 
   //拡張情報を取得
@@ -100,13 +101,13 @@ class User{
   }
 
   //日数に応じた憑依先の ID を取得
-  function GetPossessedTarget($type, $date){
+  function GetPossessedTarget($type, $today){
     if(is_null($target_list = $this->GetPartner($type))) return false;
 
     $date_list = array_keys($target_list);
     krsort($date_list);
-    foreach($date_list as $this_date){
-      if($this_date <= $date) return $target_list[$this_date];
+    foreach($date_list as $date){
+      if($date <= $today) return $target_list[$date];
     }
     return false;
   }
@@ -171,7 +172,7 @@ class User{
 
   function IsWolf($talk = false){
     if(! $this->IsRoleGroup('wolf')) return false;
-    return ($talk ? ! $this->IsRole('silver_wolf') : true);
+    return $talk ? ! $this->IsRole('silver_wolf') : true;
   }
 
   function IsFox($talk = false){
@@ -181,7 +182,7 @@ class User{
 
   function IsCommon($talk = false){
     if(! $this->IsRoleGroup('common')) return false;
-    return ($talk ? ! $this->IsRole('dummy_common') : true);
+    return $talk ? ! $this->IsRole('dummy_common') : true;
   }
 
   function IsLovers(){
@@ -189,14 +190,14 @@ class User{
   }
 
   function IsPartner($type, $target){
-    if(is_null($partner = $this->GetPartner($type))) return false;
+    if(is_null($partner_list = $this->GetPartner($type))) return false;
 
     if(is_array($target)){
       if(! is_array($target_list = $target[$type])) return false;
-      return count(array_intersect($partner, $target_list)) > 0;
+      return count(array_intersect($partner_list, $target_list)) > 0;
     }
     else{
-      return in_array($target, $partner);
+      return in_array($target, $partner_list);
     }
   }
 
@@ -215,9 +216,9 @@ class User{
   function DistinguishCamp(){
     if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
     if($this->IsFox()) return 'fox';
-    if($this->IsRoleGroup('cupid')) return 'lovers';
     if($this->IsRole('quiz')) return 'quiz';
     if($this->IsRoleGroup('chiroptera', 'fairy')) return 'chiroptera';
+    if($this->IsRoleGroup('cupid')) return 'lovers';
     return 'human';
   }
 
@@ -570,7 +571,7 @@ class UserDataSet{
 
   function ByID($user_no){
     if(is_null($user_no)) return new User();
-    return ($user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no]);
+    return $user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no];
   }
 
   function ByUname($uname){
@@ -610,7 +611,7 @@ class UserDataSet{
   }
 
   function GetHandleName($uname, $virtual = false){
-    $user = ($virtual ? $this->ByVirtualUname($uname) : $this->ByUname($uname));
+    $user = $virtual ? $this->ByVirtualUname($uname) : $this->ByUname($uname);
     return $user->handle_name;
   }
 
@@ -622,10 +623,10 @@ class UserDataSet{
     return count($this->rows);
   }
 
-  //所属陣営を取得してキャッシュする
-  function SetCamp($user, $strict = false){
-    if($strict && $user->IsLovers()){
-      $user->camp = 'lovers';
+  //所属陣営を判定してキャッシュする
+  function SetCamp($user, $type){
+    if($type == 'win_camp' && $user->IsLovers()){
+      $user->$type = 'lovers';
       return;
     }
 
@@ -637,7 +638,7 @@ class UserDataSet{
       $target_user = $this->ByID($target_list[0]);
       if($target_user->IsSelf()) break; //自分に戻ったらスキップ
     }
-    $user->camp = $target_user->DistinguishCamp();
+    $user->$type = $target_user->DistinguishCamp();
   }
 
   //役職の出現判定関数

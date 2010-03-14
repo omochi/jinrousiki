@@ -153,8 +153,8 @@ function ConvertSay(&$say){
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
   $ROLES->actor = $virtual_self;
 
-  //萌狼・萌狐・不審者は一定確率で発言が遠吠え(デフォルト時)になる
-  if($virtual_self->IsRole('cute_wolf', 'cute_fox', 'suspect') &&
+  //萌系変換 (昼限定)
+  if($ROOM->IsDay() && $virtual_self->IsRole('cute_wolf', 'cute_fox', 'suspect') &&
      mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
     $say = ($MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl);
   }

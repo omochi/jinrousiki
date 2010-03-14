@@ -17,19 +17,15 @@ function UploadIcon(){
     OutputActionResult('ユーザアイコンアップロード', '無効なアクセスです');
   }
   $title = 'アイコン登録エラー'; // エラーページ用タイトル
-  $query_no = "WHERE icon_no = {$RQ_ARGS->icon_no}";
+  $query_no = ' WHERE icon_no = ' . $RQ_ARGS->icon_no;
 
   switch($RQ_ARGS->command){
   case 'upload':
     break;
 
   case 'success': //セッション ID 情報を DB から削除
-    $DB_CONF->Connect(); //DB 接続
-
-    //セッション ID をクリア
-    mysql_query("UPDATE user_icon SET session_id = NULL $query_no");
-    mysql_query('COMMIT');
-
+    $DB_CONF->Connect();
+    SendQuery('UPDATE user_icon SET session_id = NULL' . $query_no, true);
     OutputActionResult('アイコン登録完了',
 		       '登録完了：アイコン一覧のページに飛びます。<br>'."\n" .
 		       '切り替わらないなら <a href="icon_view.php">ここ</a> 。',
@@ -39,16 +35,15 @@ function UploadIcon(){
   case 'cancel':
     //DB からアイコンのファイル名と登録時のセッション ID を取得
     $DB_CONF->Connect(); //DB 接続
-    extract(FetchAssoc("SELECT icon_filename, session_id FROM user_icon $query_no", true));
+    extract(FetchAssoc('SELECT icon_filename, session_id FROM user_icon' . $query_no, true));
 
     //セッション ID 確認
     if($session_id != $SESSION->Get()){
       OutputActionResult('アイコン削除失敗', '削除失敗：アップロードセッションが一致しません');
     }
     unlink($ICON_CONF->path . '/' . $icon_filename);
-    mysql_query("DELETE FROM user_icon $query_no");
-    mysql_query("OPTIMIZE TABLE user_icon");
-    mysql_query('COMMIT'); //一応コミット
+    SendQuery('DELETE FROM user_icon' . $query_no);
+    SendQuery('OPTIMIZE TABLE user_icon', true);
 
     //DB 接続解除は OutputActionResult() 経由
     $sentence = '削除完了：登録ページに飛びます。<br>'."\n" .
@@ -70,16 +65,17 @@ function UploadIcon(){
   extract($RQ_ARGS->ToArray()); //引数を展開
 
   //空白チェック
-  if($name == '') OutputActionResult($title, 'アイコン名を入力してください');
+  if($icon_name == '') OutputActionResult($title, 'アイコン名を入力してください');
 
   //アイコン名の文字列長のチェック
-  $text_list = array('name' => 'アイコン名',
+  $text_list = array('icon_name' => 'アイコン名',
 		     'appearance' => '出典',
 		     'category' => 'カテゴリ',
 		     'author' => 'アイコンの作者');
-  foreach($text_list as $text => $value){
-    if(strlen($text) > $USER_ICON->name){
-      OutputActionResult($title, $value . ': ' . $USER_ICON->IconNameMaxLength());
+  foreach($text_list as $text => $label){
+    $value = $RQ_ARGS->$text;
+    if(strlen($value) > $USER_ICON->name){
+      OutputActionResult($title, $label . ': ' . $USER_ICON->IconNameMaxLength());
     }
   }
 
@@ -130,8 +126,8 @@ function UploadIcon(){
   $DB_CONF->Connect(); //DB 接続
 
   //アイコンの名前が既に登録されていないかチェック
-  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$name}'") > 0){
-    OutputActionResult($title, 'アイコン名 "' . $name . '" は既に登録されています');
+  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
+    OutputActionResult($title, 'アイコン名 "' . $icon_name . '" は既に登録されています');
   }
 
   if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon テーブルをロック
@@ -158,7 +154,7 @@ function UploadIcon(){
   $session_id = $SESSION->Reset(); //セッション ID を取得
   $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
     'session_id, regist_date';
-  $values = "{$icon_no}, '{$name}', '{$file_name}', {$width}, {$height}, '{$color}', " .
+  $values = "{$icon_no}, '{$icon_name}', '{$file_name}', {$width}, {$height}, '{$color}', " .
     "'{$session_id}', NOW()";
 
   if($appearance != ''){
@@ -190,7 +186,7 @@ function UploadIcon(){
 <p>[S] 出典 / [C] カテゴリ / [A] アイコンの作者</p>
 <table><tr>
 <td><img src="{$ICON_CONF->path}/{$file_name}" width="{$width}" height="{$height}"></td>
-<td class="name">No. {$icon_no} {$name}<br><font color="{$color}">◆</font>{$color}{$data}</td>
+<td class="name">No. {$icon_no} {$icon_name}<br><font color="{$color}">◆</font>{$color}{$data}</td>
 </tr>
 <tr><td colspan="2">よろしいですか？</td></tr>
 <tr><td><form method="POST" action="icon_upload.php">
@@ -238,7 +234,7 @@ function OutputUploadIconPage(){
 </td></tr>
 
 <tr><td><label>アイコンの名前</label></td>
-<td><input type="text" name="name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+<td><input type="text" name="icon_name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
 
 <tr><td><label>出典</label></td>
 <td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>

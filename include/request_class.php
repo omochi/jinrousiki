@@ -39,13 +39,6 @@ class RequestBase{
     return $int > 0 ? $int : 1;
   }
 
-  function SetCategory($arg){
-    if($arg == '') return NULL;
-    if($arg == 'all') return $arg;
-    $int = intval($arg);
-    return $int < 0 ? 0 : $int;
-  }
-
   function ToArray(){
     $array = array();
     foreach($this as $key => $value) $array[$key] = $value;
@@ -90,6 +83,24 @@ class RequestBaseGamePlay extends RequestBaseGame{
   }
 }
 
+//-- icon 用共通クラス --//
+class RequestBaseIcon extends RequestBase{
+  function RequestBaseIcon(){ $this->__construct(); }
+  function __construct(){
+    EncodePostData();
+    $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance',
+		    'post.category', 'post.author', 'post.color');
+    $this->GetItems('intval', 'post.icon_no');
+  }
+
+  function SetCategory($arg){
+    if($arg == '') return NULL;
+    if($arg == 'all') return $arg;
+    $int = intval($arg);
+    return $int < 0 ? 0 : $int;
+  }
+}
+
 //-- login.php --//
 class RequestLogin extends RequestBase{
   function RequestLogin(){ $this->__construct(); }
@@ -131,7 +142,7 @@ class RequestGamePlay extends RequestBaseGamePlay{
     $this->GetItems('EscapeStrings', 'post.font_type');
     $this->GetItems(NULL, 'post.say');
     EscapeStrings($this->say, false);
-    $this->last_words = ($this->font_type == 'last_words');
+    $this->last_words = $this->font_type == 'last_words';
   }
 }
 
@@ -204,34 +215,31 @@ class RequestOldLog extends RequestBase{
 }
 
 //-- icon_view.php --//
-class RequestIconView extends RequestBase{
+class RequestIconView extends RequestBaseIcon{
   function RequestIconView(){ $this->__construct(); }
   function __construct(){
-    $this->GetItems('SetPage', 'get.page', 'get.appearance_page', 'get.category_page');
-    $this->GetItems('SetCategory', 'get.appearance', 'get.category');
+    $this->GetItems('SetPage', 'get.page', 'get.appearance_page',
+		    'get.category_page', 'get.author_page');
+    $this->GetItems('SetCategory', 'get.appearance', 'get.category', 'get.author');
     $this->GetItems('intval', 'get.icon_no');
   }
 }
 
 //-- icon_edit.php --//
-class RequestIconEdit extends RequestBase{
+class RequestIconEdit extends RequestBaseIcon{
   function RequestIconEdit(){ $this->__construct(); }
   function __construct(){
-    EncodePostData();
-    $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance', 'post.category',
-		    'post.author', 'post.color', 'post.password');
-    $this->GetItems('intval', 'post.icon_no');
+    parent::__construct();
+    $this->GetItems('EscapeStrings', 'post.password');
   }
 }
 
 //-- icon_upload.php --//
-class RequestIconUpload extends RequestBase{
+class RequestIconUpload extends RequestBaseIcon{
   function RequestIconUpload(){ $this->__construct(); }
   function __construct(){
-    EncodePostData();
-    $this->GetItems('EscapeStrings', 'post.name', 'post.appearance', 'post.category',
-		    'post.author', 'post.color');
-    $this->GetItems('intval', 'post.icon_no', 'file.size');
+    parent::__construct();
+    $this->GetItems('intval', 'file.size');
     $this->GetItems(NULL, 'post.command', 'file.type', 'file.tmp_name');
   }
 }
