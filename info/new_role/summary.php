@@ -7,9 +7,9 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <body>
 
 <h1>新役職情報</h1>
-<p>
-・調整中なのでバージョンアップするたびに変わる可能性があります。
-</p>
+<ul>
+  <li>バージョンアップするたびに仕様が変わる可能性があります</li>
+</ul>
 <p>
 <a href="../" target="_top">&lt;-TOP</a>
 <a href="./" target="_top">←メニュー</a>
@@ -856,8 +856,35 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">再投票の最多得票者に投票していた場合に、投票先を吊り、それ以外の人をまとめてショック死させる特殊な狂人。<br>
+    <td class="ability">再投票の最多得票者に投票していた場合に、投票先を吊り、それ以外の最多得票者をまとめてショック死させる特殊な狂人。<br>
       狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#light_fairy">光妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先が人狼に襲撃されたら、次の日の夜を「白夜」(全員<a href="sub_role.php#mind_open">公開者</a>) にする妖精。</td>
+    <td>Ver. 1.4.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#dark_fairy">闇妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票先が人狼に襲撃されたら、次の日の昼を「宵闇」(全員<a href="sub_role.php#blinder">目隠し</a>) にする妖精。</td>
+    <td>Ver. 1.4.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#mirror_fairy">鏡妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">本人が吊られたら、次の日の昼「決選投票」(初日に投票した二人にしか投票できない) にする妖精。</td>
     <td>Ver. 1.4.0 β7</td>
   </tr>
 </table>
@@ -1001,7 +1028,7 @@ Ver. 1.4.0
     <td><a href="sub_role.php#random_voter">気分屋</a></td>
     <td><a href="sub_role.php#authority_group">権力者系</a></td>
     <td>○</td>
-    <td class="ability">投票数が 0-2 の範囲でランダムになる</td>
+    <td class="ability">投票数に -1〜+1 の範囲でランダムに補正がかかる</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
@@ -1121,7 +1148,7 @@ Ver. 1.4.0
     <td><a href="sub_role.php#mind_open" name="sub_140alpha22">公開者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
-    <td class="ability">夜の発言が参加者全員に見られてしまう</td>
+    <td class="ability">二日目以降の夜の発言が参加者全員に見られてしまう</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
@@ -1211,6 +1238,9 @@ Ver. 1.4.0
 <pre>
 ○誘毒者 (村人陣営 / 村人系？)
 ・毒が村に中った時だけ身代わりで死ぬ
+
+○吉凶占い師 (村人陣営 / 占い師系)
+・対象がその村でどれくらい活躍できる可能性があるかを吉凶で判定する
 
 ○耐毒者 (村人陣営 / 薬師系？)
 ・毒がいっさい効かない村人

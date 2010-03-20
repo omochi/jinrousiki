@@ -247,7 +247,12 @@ function OutputAbility(){
   }
   elseif($SELF->IsRoleGroup('fairy')){ //Õ≈¿∫∑œ
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //ÃÎ§Œ≈Í…º
+    if($SELF->IsRole('mirror_fairy')){ //ΩÈ∆¸ÃÎ§Œ≈Í…º
+      if($is_first_night) OutputVoteMessage('fairy-do', 'fairy_do', 'CUPID_DO');
+    }
+    else{
+      if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //ÃÎ§Œ≈Í…º
+    }
   }
   elseif($SELF->IsRoleGroup('cat')){ //«≠ÀÙ∑œ
     $ROLE_IMG->Output($SELF->main_role);
@@ -255,7 +260,7 @@ function OutputAbility(){
     if(! $ROOM->IsOpenCast()){
       OutputSelfAbilityResult('POISON_CAT_RESULT'); //¡…¿∏∑Î≤Ã§Ú…Ωº®
       if($is_after_first_night){ //ÃÎ§Œ≈Í…º
-	OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
   }

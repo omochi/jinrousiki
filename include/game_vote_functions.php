@@ -1339,7 +1339,7 @@ function AggregateVoteNight(){
 
   foreach($USERS->rows as $user){ //未投票チェック
     if($user->CheckVote($vote_data) === false){
-      //PrintData($user->uname, $user->main_role);
+      //PrintData($user->uname, $user->main_role); //テスト用
       return false;
     }
   }
@@ -1754,17 +1754,10 @@ function AggregateVoteNight(){
   $psycho_mage_liar_list = array('mad', 'dummy', 'suspect', 'unconscious');
   $mage_list = array_merge($vote_data['MAGE_DO'], $vote_data['CHILD_FOX_DO'],
 			   $vote_data['FAIRY_DO']);
-  PrintData($vote_data['FAIRY_DO']);
   foreach($mage_list as $uname => $target_uname){ //占い師系の処理
     $user = $USERS->ByUname($uname);
     if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-    if($user->IsRole('mirror_fairy')){ //鏡妖精の処理
-      $role = $user->main_role . '[' . implode('-', $target_uname) . ']';
-      //PrintData($role);
-      $user->ReplaceRole($user->main_role, $role);
-      continue;
-    }
     $target = $USERS->ByRealUname($target_uname); //対象者の情報を取得
     if($user->IsRole('dummy_mage')){ //夢見人の判定 (村人と人狼を反転させる)
       $result = $target->DistinguishMage(true);
@@ -1970,8 +1963,8 @@ function AggregateVoteNight(){
 	  //$target = $USERS->ByID(8); //テスト用
 	  //PrintData($target->uname, 'Revive User');
 	  if($target->IsRoleGroup('cat', 'revive') || $target->IsLovers() ||
-	     $target->possessed_reset){
-	    break; //蘇生能力者か恋人なら蘇生失敗
+	     $target->possessed_reset || $target->IsDrop()){
+	    break; //蘇生能力者・恋人・蘇生辞退者なら蘇生失敗
 	  }
 
 	  $result = 'success';
@@ -2178,7 +2171,7 @@ function AggregateVoteNight(){
   //次の日にする
   $ROOM->date++;
   $ROOM->day_night = 'day';
-  mysql_query("UPDATE room SET date = {$ROOM->date}, day_night = 'day' WHERE room_no = {$ROOM->id}");
+  SendQuery("UPDATE room SET date = {$ROOM->date}, day_night = 'day' WHERE room_no = {$ROOM->id}");
 
   //夜が明けた通知
   $ROOM->Talk("MORNING\t" . $ROOM->date);

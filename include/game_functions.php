@@ -314,22 +314,20 @@ function OutputPlayerList(){
 
   //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
   //IE の場合改行を \r\n に統一、その他のブラウザはスペースにする(画像のAlt属性)
-  $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
+  $replace = preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ';
+
+  //配役公開フラグを判定
+  $is_open_role = $ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
+    ($SELF->IsDead() && $ROOM->IsOpenCast());
 
   $count = 0; //改行カウントを初期化
-
-  //配役公開フラグを設定
-  $is_open_role = ($ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
-		   ($SELF->IsDead() && $ROOM->IsOpenCast()));
-
   $str = '<div class="player"><table cellspacing="5"><tr>'."\n";
-  foreach($USERS->rows as $user_no => $user){
+  foreach($USERS->rows as $id => $user){
     if($count > 0 && ($count % 5) == 0) $str .= "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
 
     //ゲーム開始投票をしていたら背景色を変える
-    if($ROOM->IsBeforeGame() &&
-       (($user->IsDummyBoy() && ! $ROOM->IsQuiz()) || isset($ROOM->vote[$user->uname]))){
+    if($ROOM->IsBeforeGame() && ($user->IsDummyBoy(true) || isset($ROOM->vote[$user->uname]))){
       $td_header = '<td class="already-vote">';
     }
     else{
@@ -343,7 +341,7 @@ function OutputPlayerList(){
 
     //生死情報に応じたアイコンを設定
     $path = $ICON_CONF->path . '/' . $user->icon_filename;
-    if($ROOM->IsBeforeGame() || $USERS->IsVirtualLive($user_no)){
+    if($ROOM->IsBeforeGame() || $USERS->IsVirtualLive($id)){
       $live = '(生存中)';
     }
     else{
@@ -357,7 +355,7 @@ function OutputPlayerList(){
 
     //HN を追加
     $str .= $td_header . '<font color="' . $user->color . '">◆</font>' . $user->handle_name;
-    if($DEBUG_MODE) $str .= ' (' . $user_no . ')';
+    if($DEBUG_MODE) $str .= ' (' . $id . ')';
     $str .= '<br>'."\n";
 
     //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
@@ -365,7 +363,7 @@ function OutputPlayerList(){
       $str .= '　(' . $user->uname; //ユーザ名を追加
 
       //憑依状態なら憑依しているユーザを追加
-      $real_user = $USERS->ByReal($user_no);
+      $real_user = $USERS->ByReal($id);
       if($real_user != $user && $real_user->IsLive()) $str .= '<br>[' . $real_user->uname . ']';
       $str .= ')<br>';
 
@@ -622,8 +620,8 @@ function OutputTalk($talk, &$builder){
     $uname は必ず $talk から取得すること。
     $USERS にはシステムユーザー 'system' が存在しないため、$said_user は常に NULL になっている。
   */
-  $said_user = ($talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
-		$USERS->ByVirtualUname($talk->uname));
+  $said_user = $talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
+    $USERS->ByVirtualUname($talk->uname);
 
   //基本パラメータを取得
   $symbol      = '<font color="' . $said_user->color . '">◆</font>';
@@ -642,20 +640,20 @@ function OutputTalk($talk, &$builder){
   }
 
   //[サトラレ or 受信者 or 共鳴者] 判定
-  $is_mind_read = ($builder->flag->mind_read &&
-		   (($said_user->IsPartner('mind_read', $virtual_self->user_no) &&
-		     ! $said_user->IsRole('unconscious')) ||
-		    $virtual_self->IsPartner('mind_receiver', $said_user->user_no) ||
-		    $said_user->IsPartner('mind_friend', $virtual_self->partner_list)));
+  $is_mind_read = $builder->flag->mind_read &&
+    (($said_user->IsPartner('mind_read', $virtual_self->user_no) &&
+      ! $said_user->IsRole('unconscious')) ||
+     $virtual_self->IsPartner('mind_receiver', $said_user->user_no) ||
+     $said_user->IsPartner('mind_friend', $virtual_self->partner_list));
 
-  $flag_mind_read = ($is_mind_read || $said_user->IsRole('mind_open') ||
-		     ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf));
+  $flag_mind_read = $is_mind_read || ($said_user->IsRole('mind_open') && $ROOM->date > 1) ||
+    ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf);
 
   //発言表示フラグ判定
   $flag_dummy_boy = $builder->flag->dummy_boy;
-  $flag_common    = ($builder->flag->common || $flag_mind_read);
-  $flag_wolf      = ($builder->flag->wolf   || $flag_mind_read);
-  $flag_fox       = ($builder->flag->fox    || $flag_mind_read);
+  $flag_common    = $builder->flag->common || $flag_mind_read;
+  $flag_wolf      = $builder->flag->wolf   || $flag_mind_read;
+  $flag_fox       = $builder->flag->fox    || $flag_mind_read;
   $flag_open_talk = $builder->flag->open_talk;
 
   if($talk->type == 'system' && isset($talk->action)){ //投票情報
@@ -787,17 +785,17 @@ function OutputTimeStamp($builder){
   global $ROOM;
 
   $talk =& new Talk();
-  $query = "FROM room WHERE room_no = {$ROOM->id}";
+  $query = ' FROM room' . $ROOM->GetQuery(false);
   if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
-    $time = FetchResult("SELECT establish_time $query");
+    $time = FetchResult('SELECT establish_time' . $query);
     $talk->sentence = '村作成';
   }
   elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
-    $time = FetchResult("SELECT start_time $query");
+    $time = FetchResult('SELECT start_time' . $query);
     $talk->sentence = 'ゲーム開始';
   }
   elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
-    $time = FetchResult("SELECT finish_time $query");
+    $time = FetchResult('SELECT finish_time' . $query);
     $talk->sentence = 'ゲーム終了';
   }
 
@@ -1025,9 +1023,9 @@ function OutputDeadManType($name, $type){
   $deadman_header = '<tr><td>'.$name.' '; //基本メッセージヘッダ
   $deadman        = $deadman_header.$MESSAGE->deadman.'</td>'; //基本メッセージ
   $reason_header  = "</tr>\n<tr><td>(".$name.' '; //追加共通ヘッダ
-  $open_reason = ($ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast()) ||
-		  $SELF->IsDummyBoy());
-  $show_reason = ($open_reason || ($SELF->IsRole('yama_necromancer') && $SELF->IsLive()));
+  $open_reason = $ROOM->IsFinished() || $SELF->IsDummyBoy() ||
+    ($SELF->IsDead() && $ROOM->IsOpenCast());
+  $show_reason = $open_reason || ($SELF->IsRole('yama_necromancer') && $SELF->IsLive());
 
   echo '<table class="dead-type">'."\n";
   switch($type){
@@ -1068,9 +1066,9 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_PERVERSENESS':
   case 'SUDDEN_DEATH_FLATTERY':
   case 'SUDDEN_DEATH_IMPATIENCE':
-  case 'SUDDEN_DEATH_JEALOUSY':
-  case 'SUDDEN_DEATH_PANELIST':
   case 'SUDDEN_DEATH_CELIBACY':
+  case 'SUDDEN_DEATH_PANELIST':
+  case 'SUDDEN_DEATH_JEALOUSY':
   case 'SUDDEN_DEATH_AGITATED':
     echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){

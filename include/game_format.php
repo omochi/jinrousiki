@@ -7,9 +7,14 @@ class DocumentBuilder{
 
   function DocumentBuilder(){ $this->__construct(); }
   function __construct(){
-    global $USERS, $SELF;
+    global $ROOM, $USERS, $SELF;
 
     $this->actor = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
+    if($ROOM->IsEvent('blind_day') &&
+       (is_null($this->actor->live) || ! $ROOM->IsOpenCast())){
+      $this->actor->live = 'live';
+      $this->actor->role_list[] = 'blinder';
+    }
     $this->LoadExtension();
     $this->SetFlag();
   }
@@ -32,10 +37,10 @@ class DocumentBuilder{
 
     //フラグをセット
     $this->flag->dummy_boy = $dummy_boy;
-    $this->flag->common    = ($dummy_boy || $actor->IsCommon(true));
-    $this->flag->wolf      = ($dummy_boy || $SELF->IsWolf(true) || $actor->IsRole('whisper_mad'));
-    $this->flag->fox       = ($dummy_boy || $actor->IsFox(true));
-    $this->flag->mind_read = ($ROOM->date > 1 && $SELF->IsLive());
+    $this->flag->common    = $dummy_boy || $actor->IsCommon(true);
+    $this->flag->wolf      = $dummy_boy || $SELF->IsWolf(true) || $actor->IsRole('whisper_mad');
+    $this->flag->fox       = $dummy_boy || $actor->IsFox(true);
+    $this->flag->mind_read = $ROOM->date > 1 && $SELF->IsLive();
 
     //発言完全公開フラグ
     /*
@@ -44,8 +49,8 @@ class DocumentBuilder{
       + 霊界表示オン状態の死者には全て表示
       + 霊界表示オフ状態は観戦者と同じ (投票情報は表示しない)
     */
-    $this->flag->open_talk = ($dummy_boy || $ROOM->IsFinished() ||
-			      ($SELF->IsDead() && $ROOM->IsOpenCast()));
+    $this->flag->open_talk = $dummy_boy || $ROOM->IsFinished() ||
+      ($SELF->IsDead() && $ROOM->IsOpenCast());
   }
 
   //発言テーブルヘッダ作成
@@ -75,7 +80,7 @@ WORDS;
 
   //標準的な発言処理
   function AddTalk($user, $talk){
-    global $GAME_CONF, $RQ_ARGS, $USERS;
+    global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS;
 
     //表示情報を抽出
     $handle_name = $user->handle_name;
@@ -85,7 +90,8 @@ WORDS;
     }
 
     $user_info = '<font style="color:'.$user->color.'">◆</font>'.$handle_name;
-    if($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')){
+    if(($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')) ||
+       ($user->IsRole('mind_read', 'mind_open') && $ROOM->IsNight())){
       $user_info .= '<span>の独り言</span>';
     }
     $volume = $talk->font_type;

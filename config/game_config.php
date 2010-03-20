@@ -276,6 +276,8 @@ class GameConfig{
     'summer_fairy'       => '²ÆÍÅÀº',
     'autumn_fairy'       => '½©ÍÅÀº',
     'winter_fairy'       => 'ÅßÍÅÀº',
+    'light_fairy'        => '¸÷ÍÅÀº',
+    'dark_fairy'         => '°ÇÍÅÀº',
     'mirror_fairy'       => '¶ÀÍÅÀº',
     'mania'              => '¿ÀÏÃ¥Þ¥Ë¥¢',
     'unknown_mania'      => 'ó¬');
@@ -426,6 +428,8 @@ class GameConfig{
     'summer_fairy'       => '²ÆÀº',
     'autumn_fairy'       => '½©Àº',
     'winter_fairy'       => 'ÅßÀº',
+    'light_fairy'        => '¸÷Àº',
+    'dark_fairy'         => '°ÇÀº',
     'mirror_fairy'       => '¶ÀÀº',
     'mania'              => '¥Þ',
     'unknown_mania'      => 'ó¬',

@@ -20,8 +20,11 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- テスト用 --//
-#$SELF->ChangeRole('winter_fairy');
-#$SELF->AddRole('bad_status[1-0]');
+#$SELF->ChangeRole('fend_guard');
+#$SELF->Update('icon_no', 30);
+#$SELF->AddRole('mind_open');
+#PrintData($SELF);
+#DeleteVote();
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){

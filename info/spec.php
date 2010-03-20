@@ -9,6 +9,7 @@ OutputInfoPageHeader('詳細な仕様');
 <a href="#dummy_boy">身代わり君 (GM)</a>
 <a href="#dead">死因一覧</a>
 <a href="#vote">投票</a>
+<a href="#revive_refuse">蘇生辞退システム</a>
 </p>
 
 <h2><a name="decide_role">配役決定ルーチン</a></h2>
@@ -89,7 +90,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>〜<?= $MESSAGE->vote_sudden_death ?></h4>
 <ul>
-<li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>、<a href="new_role/human.php#jealousy">橋姫</a>)</li>
+<li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>)</li>
 </ul>
 
 <h3><a name="dead_night">夜</a></h3>
@@ -161,5 +162,18 @@ OutputInfoPageHeader('詳細な仕様');
 
 + 占い (占い系、厄神、夢守人、月兎、呪術系)
   - 厄払い ＞ 呪い ＞ 占い妨害 ＞ 占い (呪殺)
+</pre>
+
+<h2><a name="revive_refuse">蘇生辞退システム</a></h2>
+<pre>
+死亡後、霊界オフ状態の時に投票画面をクリックすると
+「蘇生を辞退する」(デフォルト) というボタンが出現します。
+それをクリックすると「システム：〜さんは蘇生を辞退しました」という
+霊界発言が挿入されます。
+
+この状態でその人が蘇生先に選ばれた場合は 100% 蘇生に失敗します。
+憑依に関するシステム情報となってしまうため、下界には告知しません。
+
+これは、死亡後に急な用事が入って抜けなければならない人の為の救済措置です。
 </pre>
 </body></html>

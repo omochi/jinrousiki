@@ -40,11 +40,12 @@ if($SERVER_CONF->back_page != ''){
     </ul>
 
     <div class="menu">交流用サイト</div>
+    <!-- 各サーバ毎に内容が入れ替わることを想定しています -->
     <ul>
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1260623018/l50">本スレ</a>(告知はここ)</li>
-      <li><a href="http://www27.atwiki.jp/umigamejinnro/">東方ウミガメwiki</a></li>
-      <li><a href="http://jbbs.livedoor.jp/netgame/2829/">ウミガメ人狼掲示板</a></li>
-      <li><a href="http://umigamejinrou.chatx2.whocares.jp/">ウミガメ雑談村</a></li>
+      <li><a href="http://www27.atwiki.jp/umigamejinnro/">Wiki</a></li>
+      <li><a href="http://jbbs.livedoor.jp/netgame/2829/">掲示板</a></li>
+      <li><a href="http://umigamejinrou.chatx2.whocares.jp/">チャットルーム</a></li>
       <!-- <li><a href="http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi">旧ウミガメ雑談村</a></li> -->
       <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50">反省・議論用スレ</a></li>
     </ul>
@@ -53,13 +54,18 @@ if($SERVER_CONF->back_page != ''){
     <ul>
       <li>東方ウミガメ系</li>
       <li><a href="http://alicegame.dip.jp/sanae/">早苗鯖</a></li>
+      <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖 (開発チーム)</a></li>
+      <li><a href="http://www27.atwiki.jp/umigamejinnro/">Wiki</a></li>
+      <li><a href="http://jbbs.livedoor.jp/netgame/2829/">掲示板</a></li>
+      <li><a href="http://umigamejinrou.chatx2.whocares.jp/">チャットルーム</a></li>
+      <li>東方ウミガメ系予備</li>
       <!-- <li><a href="http://satori.crz.jp/">さとり鯖</a></li> -->
       <li><a href="http://www7.atpages.jp/izayoi398/">咲夜鯖</a></li>
-      <li><a href="http://www12.atpages.jp/cirno/">チルノ鯖（開発チーム）</a></li>
       <li>やる夫系</li>
       <li><a href="http://www16.atpages.jp/sasugabros/">流石弟者鯖</a></li>
       <li><a href="http://alicegame.dip.jp/suisei/">翠星石鯖</a></li>
-      <li><a href="http://www37.atwiki.jp/yaruomura/">やる夫wiki</a></li>
+      <li><a href="http://www37.atwiki.jp/yaruomura/">Wiki</a></li>
+      <li><a href="http://jbbs.livedoor.jp/game/48159/">掲示板</a></li>
       <li>やる夫系予備/保管庫鯖</li>
       <li><a href="http://www12.atpages.jp/yaruo/jinro/">流石兄弟鯖</a></li>
       <li><a href="http://alicegame.dip.jp/sousei/">蒼星石テスト鯖</a></li>
@@ -71,12 +77,17 @@ if($SERVER_CONF->back_page != ''){
       <li>東方陰陽鉄系</li>
       <li><a href="http://bourbonhouse.xsrv.jp/jinro/">バーボンハウス鯖</a></li>
       <li><a href="http://dynamis.xsrv.jp/jinro/">裏世界鯖</a></li>
+      <li><a href="http://www29.atwiki.jp/onmyoutetu-jinro/">Wiki</a></li>
+      <li>東方陰陽鉄系予備鯖</li>
       <li><a href="http://www16.atpages.jp/bourbonjinro/">旧バーボンハウス鯖</a></li>
       <li>iM@S系</li>
       <li><a href="http://kiterew.tv/jinro/">小鳥鯖</a></li>
+      <li><a href="http://www38.atwiki.jp/ijinrou/">Wiki</a></li>
       <li>バーボン鯖系</li>
-      <li><a href="http://jinro.blue-sky-server.com/">猫又鯖</a></li>
       <li><a href="http://www.freedom.xii.jp/jinro/">バーボン鯖</a></li>
+      <li><a href="http://jinro.blue-sky-server.com/">猫又鯖</a></li>
+      <li><a href="http://wikiwiki.jp/jinro/">Wiki</a></li>
+      <li><a href="http://jbbs.livedoor.jp/netgame/4598/">掲示板</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>

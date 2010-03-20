@@ -21,18 +21,24 @@ class Room{
     if(is_null($request)) return;
     if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
       $array = $request->TestItems->test_room;
+      $this->event->rows = $request->TestItems->event;
     }
     else{
-      $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
-	'game_option, date, day_night, status FROM room WHERE room_no = ' . $request->room_no;
-      $array = FetchAssoc($query);
-      if(count($array) < 1){
-	OutputActionResult('村番号エラー', '無効な村番号です: ' . $request->room_no);
-      }
-      $array = array_shift($array);
+      $array = $this->LoadRoom($request->room_no);
     }
     foreach($array as $name => $value) $this->$name = $value;
     $this->ParseOption();
+  }
+
+  //指定した部屋番号の DB 情報を取得する
+  function LoadRoom($room_no){
+    $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
+      'game_option, date, day_night, status FROM room WHERE room_no = ' . $room_no;
+    $array = FetchAssoc($query, true);
+    if(count($array) < 1){
+      OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
+    }
+    return $array;
   }
 
   //option_role を追加ロードする
@@ -109,6 +115,13 @@ class Room{
     return (int)FetchResult($query);
   }
 
+  //特殊イベント判定用の情報を DB から取得する
+  function LoadEvent(){
+    $query = 'SELECT message, type FROM system_message' . $this->GetQuery(false) . ' AND date = '  .
+      ($this->date - 1) . " AND(type = 'WOLF_KILLED' OR type = 'VOTE_KILLED')";
+    $this->event->rows = FetchAssoc($query);
+  }
+
   function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
     $this->option_role = new OptionManager($this->option_role);
@@ -143,6 +156,13 @@ class Room{
     $value = $revote ? 'revote_times' : 'vote_times';
     if(is_null($this->$value)) $this->$value = $this->LoadVoteTimes($revote);
     return $this->$value;
+  }
+
+  //特殊イベント判定用の情報を取得する
+  function GetEvent($force = false){
+    if(! $this->IsPlaying()) return array();
+    if($force || is_null($this->event)) $this->LoadEvent();
+    return $this->event->rows;
   }
 
   function IsOption($option){
@@ -196,11 +216,15 @@ class Room{
   }
 
   function IsPlaying(){
-    return ($this->IsDay() || $this->IsNight());
+    return $this->IsDay() || $this->IsNight();
   }
 
   function IsFinished(){
     return $this->status == 'finished';
+  }
+
+  function IsEvent($type){
+    return $this->event->$type;
   }
 
   //最終更新時刻を更新

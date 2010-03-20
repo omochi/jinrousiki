@@ -7,7 +7,7 @@ OutputIconList();
 
 //-- 関数 --//
 function OutputIconList(){
-  global $ICON_CONF, $RQ_ARGS;
+  global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
   OutputHTMLHeader('ユーザアイコン一覧', 'icon_view');
   echo <<<EOF
@@ -138,7 +138,7 @@ EOF;
   #PrintData($PAGE_CONF);
   OutputPageLink($PAGE_CONF);
   echo "</td></tr>\n";
-  echo $line_header . '[S] 出典 / [C] カテゴリ / [A] アイコンの作者' . $line_footer;
+  echo $line_header . '[S] 出典 / [C] カテゴリ / [A] アイコンの作者 / [U] 使用回数' . $line_footer;
   echo $line_header . 'アイコンをクリックすると編集できます (要パスワード)' . $line_footer;
 
   //表の出力
@@ -149,6 +149,7 @@ EOF;
   }
   $icon_list = FetchAssoc($query);
   $count = 0;
+  $query_use_count = 'SELECT COUNT(uname) FROM user_entry WHERE icon_no = ';
   foreach($icon_list as $array){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
@@ -160,6 +161,7 @@ EOF;
     if(isset($appearance)) $data .= '<br>[S]' . $appearance;
     if(isset($category))   $data .= '<br>[C]' . $category;
     if(isset($author))     $data .= '<br>[A]' . $author;
+    $data .= '<br>[U]' . FetchResult($query_use_count . $icon_no);
     echo <<< EOF
 <td><a href="icon_view.php?icon_no={$icon_no}">
 <img src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border-color:{$color};">
@@ -167,6 +169,7 @@ EOF;
 <td class="name">No. {$icon_no}<br>{$icon_name}<br><font color="{$color}">◆</font>{$color}{$data}</td>
 
 EOF;
+
     if($RQ_ARGS->icon_no > 0){
       echo <<<EOF
 <td><form method="POST" action="icon_edit.php">
@@ -195,6 +198,9 @@ EOF;
 </form></td>
 
 EOF;
+    }
+    else{
+      echo "</td>\n";
     }
   }
   echo "</tr></table>\n</fieldset>\n";

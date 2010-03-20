@@ -203,7 +203,7 @@ class MainRoleList{
     'R' => 255, 'G' => 0, 'B' => 0, 'R2' => 0, 'G2' => 153, 'B2' => 102);
 
   var $resist_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|抗毒狼|、一度だけ#毒#に耐えることができます。\n　その特殊な肉体によって_騎士_の一撃を耐え抜き、#毒#すらも乗り越え、村人たちを恐怖に陥れるのです！",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|抗毒狼|、一度だけ#毒#に耐えることができます。\n　その特殊な肉体によって_騎士_の反撃を耐え抜き、#毒#すらも乗り越え、村人たちを恐怖に陥れるのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 0, 'G' => 153, 'B' => 102),
 			 '_' => array('R' => 51, 'G' => 153, 'B' => 255)));
@@ -407,6 +407,16 @@ class MainRoleList{
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|冬妖精|です。村人一人の発言に冬を告げるメッセージを追加してしまいます。\n　幻冬―雪が降り、全ての生き物が眠る季節を村人に告げ、|春妖精|へとバトンを繋ぐのです。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
+  var $light_fairy = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|光妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を白夜にしてしまいます。",
+    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
+  var $dark_fairy = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|闇妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を宵闇にしてしまいます。",
+    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
   var $mirror_fairy = array(
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人を指名して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
@@ -428,115 +438,143 @@ class MainRoleList{
 }
 
 class SubRoleList{
-  var $chicken = array('message' => "　あなたは|小心者|です。処刑投票時に一票でも貰うとショック死してしまいます。", 'R' => 51, 'G' => 204, 'B' => 255);
+  var $chicken = array('message' => "　あなたは|小心者|です。処刑投票時に一票でも貰うとショック死してしまいます。",
+		       'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
-  var $rabbit = array('message' => "　あなたは|ウサギ|です。処刑投票時に一票も貰えないと寂しくて死んでしまいます。", 'R' => 51, 'G' => 204, 'B' => 255);
+  var $rabbit = array('message' => "　あなたは|ウサギ|です。処刑投票時に一票も貰えないと寂しくて死んでしまいます。",
+		      'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
-  var $perverseness = array('message' => "　あなたは|天邪鬼|です。処刑投票時に自分と同じ投票先の人がいるとショック死してしまいます。", 'R' => 51, 'G' => 204, 'B' => 255);
+  var $perverseness = array('message' => "　あなたは|天邪鬼|です。処刑投票時に自分と同じ投票先の人がいるとショック死してしまいます。",
+			    'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
-  var $flattery = array('message' => "　あなたは|ゴマすり|です。処刑投票時に自分と同じ投票先の人がいないとショック死してしまいます。", 'R' => 51, 'G' => 204, 'B' => 255);
+  var $flattery = array('message' => "　あなたは|ゴマすり|です。処刑投票時に自分と同じ投票先の人がいないとショック死してしまいます。",
+			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
-  var $impatience = array('message' => "　あなたは|短気|です。決定力がありますが、再投票になるとショック死してしまいます。", 'R' => 51, 'G' => 204, 'B' => 255);
+  var $impatience = array('message' => "　あなたは|短気|です。決定力がありますが、再投票になるとショック死してしまいます。",
+			  'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
-  var $celibacy = array('message' => "　あなたは|独身貴族|です。恋人に投票されるとショック死してしまいます。", 'R' => 51, 'G' => 204, 'B' => 255);
+  var $celibacy = array('message' => "　あなたは|独身貴族|です。#恋人#に投票されるとショック死してしまいます。",
+			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
+					     '#' => array('R' => 255, 'G' => 51, 'B' => 153)));
 
-  var $panelist = array('message' => "　あなたは|解答者|です。不正解だったときは出題者に投票してください。",  'R' => 51, 'G' => 204, 'B' => 255);
+  var $panelist = array('message' => "　あなたは|解答者|です。不正解だったときは#出題者#に投票してください。",
+			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
+					     '#' => array('R' => 153, 'G' => 153, 'B' => 204)));
 
-  var $liar = array('message' => "　あなたは|狼少年|です。「人」と「狼」をわざと取り違えて発言してしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $liar = array('message' => "　あなたは|狼少年|です。「人」と「#狼#」をわざと取り違えて発言してしまいます。",
+		    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153),
+					 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $invisible = array('message' => "　あなたは|光学迷彩|を使っているので発言の一部が見えなくなります。",
-'R' => 102, 'G' => 0, 'B' => 153);
+			 'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $rainbow = array('message' => "　あなたは|虹色迷彩|を使っているので虹の順番に合わせて色を入れ替えて発言してしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $rainbow = array('message' => "　あなたは|虹色迷彩|を使っているので虹の順番に合わせて色を入れ替えて発言してしまいます。",
+		       'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $weekly = array('message' => "　あなたは|七曜迷彩|を使っているので曜日の順番に合わせて曜日を入れ替えて発言してしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $weekly = array('message' => "　あなたは|七曜迷彩|を使っているので曜日の順番に合わせて曜日を入れ替えて発言してしまいます。",
+		      'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $grassy = array('message' => "　あなたは|草原迷彩|を使っているので発言が草に埋もれてしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $grassy = array('message' => "　あなたは|草原迷彩|を使っているので発言が草に埋もれてしまいます。",
+		      'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $side_reverse = array('message' => "　あなたは|鏡面迷彩|を使っているので発言の左右が反転してしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $side_reverse = array('message' => "　あなたは|鏡面迷彩|を使っているので発言の左右が反転してしまいます。",
+			    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $line_reverse = array('message' => "　あなたは|天地迷彩|を使っているので発言の上下が反転してしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $line_reverse = array('message' => "　あなたは|天地迷彩|を使っているので発言の上下が反転してしまいます。",
+			    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $gentleman = array('message' => "　あなたは|紳士|です。時々紳士な発言をしてしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $gentleman = array('message' => "　あなたは|紳士|です。時々紳士な発言をしてしまいます。",
+			 'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
-  var $lady = array('message' => "　あなたは|淑女|です。時々淑女な発言をしてしまいます。", 'R' => 102, 'G' => 0, 'B' => 153);
+  var $lady = array('message' => "　あなたは|淑女|です。時々淑女な発言をしてしまいます。",
+		    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
   var $authority = array('message' => "　あなたは|権力者|です。あなたの投票は二票分の効果があります。",
-			 'R' => 102, 'G' => 102, 'B' => 51);
+			 'delimiter' => array('|' => array('R' => 102, 'G' => 102, 'B' => 51)));
+
+  var $rebel = array('message' => "　あなたは|反逆者|です。|権力者|と同じ人に投票した場合、あなたと|権力者|の投票数が０になります。",
+		     'delimiter' => array('|' => array('R' => 102, 'G' => 102, 'B' => 51)));
 
   var $random_voter = array('message' => "　あなたは|気分屋|です。あなたの投票数はその時の気分次第です。",
-			 'R' => 102, 'G' => 102, 'B' => 51);
-
-  var $rebel = array('message' => "　あなたは|反逆者|です。権力者と同じ人に投票した場合、あなたと権力者の投票数が０になります。",
-			 'R' => 102, 'G' => 102, 'B' => 51);
+			    'delimiter' => array('|' => array('R' => 102, 'G' => 102, 'B' => 51)));
 
   var $watcher = array('message' => "　あなたは|傍観者|です。投票には参加するふりだけして村の行く末を眺めましょう。",
-			 'R' => 102, 'G' => 102, 'B' => 51);
+		       'delimiter' => array('|' => array('R' => 102, 'G' => 102, 'B' => 51)));
 
   var $upper_luck = array('message' => "　あなたは|雑草魂|の持ち主です。最初の処刑投票を切り抜けられれば運が向いてくるでしょう。",
-			 'R' => 102, 'G' => 204, 'B' => 153);
+			  'delimiter' => array('|' => array('R' => 102, 'G' => 204, 'B' => 153)));
 
   var $downer_luck = array('message' => "　あなたは|一発屋|です。最初の処刑投票以降は得票が増えます。派手に立ち回りましょう！",
-			 'R' => 102, 'G' => 204, 'B' => 153);
-
-  var $random_luck = array('message' => "　あなたは|波乱万丈|の運命を辿ります。翻弄されるか、乗り切れるかはあなた次第です。",
-			 'R' => 102, 'G' => 204, 'B' => 153);
+			   'delimiter' => array('|' => array('R' => 102, 'G' => 204, 'B' => 153)));
 
   var $star = array('message' => "　あなたは|人気者|なので得票数が１減ります。",
-			 'R' => 102, 'G' => 204, 'B' => 153);
+		    'delimiter' => array('|' => array('R' => 102, 'G' => 204, 'B' => 153)));
 
   var $disfavor = array('message' => "　あなたは|不人気|なので得票数が１増えます。めげずに頑張ってください。",
-			 'R' => 102, 'G' => 204, 'B' => 153);
+			'delimiter' => array('|' => array('R' => 102, 'G' => 204, 'B' => 153)));
+
+  var $random_luck = array('message' => "　あなたは|波乱万丈|の運命を辿ります。翻弄されるか、乗り切れるかはあなた次第です。",
+			   'delimiter' => array('|' => array('R' => 102, 'G' => 204, 'B' => 153)));
 
   var $strong_voice = array('message' => "　あなたは|大声|の持ち主です。上手に活用して皆を説得しましょう！",
-			 'R' => 255, 'G' => 153, 'B' => 0);
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
   var $normal_voice = array('message' => "　あなたは|不器用|なので声の大きさを変えられません。",
-			 'R' => 255, 'G' => 153, 'B' => 0);
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
   var $weak_voice = array('message' => "　あなたは|小声|の持ち主です。説得に苦労するかもしれませんが頑張ってください。",
-			 'R' => 255, 'G' => 153, 'B' => 0);
+			  'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
-  var $inside_voice = array('message' => "　あなたは|内弁慶|なので昼は小声に、夜は大声になります。", 'R' => 255, 'G' => 153, 'B' => 0);
+  var $inside_voice = array('message' => "　あなたは|内弁慶|なので昼は|小声|に、夜は|大声|になります。",
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
-  var $outside_voice = array('message' => "　あなたは|外弁慶|なので昼は大声に、夜は小声になります。", 'R' => 255, 'G' => 153, 'B' => 0);
+  var $outside_voice = array('message' => "　あなたは|外弁慶|なので昼は|大声|に、夜は|小声|になります。",
+			     'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
-  var $upper_voice = array('message' => "　あなたは|メガホン|を使っているので声が一段階大きくなります。大声は音割れしてしまいます。",
-			 'R' => 255, 'G' => 153, 'B' => 0);
+  var $upper_voice = array('message' => "　あなたは|メガホン|を使っているので声が一段階大きくなります。|大声|は音割れしてしまいます。",
+			   'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
-  var $downer_voice = array('message' => "　あなたは|マスク|をつけているので声が一段階小さくなります。小声は聞き取れなくなってしまいます。",
-			 'R' => 255, 'G' => 153, 'B' => 0);
+  var $downer_voice = array('message' => "　あなたは|マスク|をつけているので声が一段階小さくなります。|小声|は聞き取れなくなってしまいます。",
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
   var $random_voice = array('message' => "　あなたは|臆病者|です。この事態に混乱するあなたは声の大きさが安定しません。",
-			 'R' => 255, 'G' => 153, 'B' => 0);
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
   var $no_last_words = array('message' => "　あなたは|筆不精|なので遺言を遺すことができません。言いたいことは全て昼間に言い切りましょう。",
-			 'R' => 221, 'G' => 34, 'B' => 34);
+			    'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34)));
 
   var $blinder = array('message' => "　あなたは|目隠し|をしているので発言者の名前が見えません。",
-			 'R' => 221, 'G' => 34, 'B' => 34);
+		       'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34)));
 
-  var $earplug = array('message' => "　あなたは|耳栓|をつけているので声が一段階小さく聞こえます。小声は聞き取れません。",
-			 'R' => 221, 'G' => 34, 'B' => 34);
+  var $earplug = array('message' => "　あなたは|耳栓|をつけているので声が一段階小さく聞こえます。#小声#は聞き取れません。",
+		       'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34),
+					    '#' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
-  var $speaker = array('message' => "　あなたは|スピーカー|を使っているので声が一段階大きく聞こえます。大声は音割れしてしまいます。",
-			 'R' => 221, 'G' => 34, 'B' => 34);
+  var $speaker = array('message' => "　あなたは|スピーカー|を使っているので声が一段階大きく聞こえます。#大声#は音割れしてしまいます。",
+		       'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34),
+					    '#' => array('R' => 255, 'G' => 153, 'B' => 0)));
 
   var $silent = array('message' => "　あなたは|無口|なのであまり多くの言葉を話せません。",
-			 'R' => 221, 'G' => 34, 'B' => 34);
+		      'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34)));
 
-  var $mower = array('message' => "　あなたは|草刈り|なので発言から草が刈り取られてしまいます。", 'R' => 221, 'G' => 34, 'B' => 34);
+  var $mower = array('message' => "　あなたは|草刈り|なので発言から草が刈り取られてしまいます。",
+		     'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34)));
 
-  var $mind_read = array('message' => "　あなたは|サトラレ|です。夜の発言がさとりに読まれてしまいます。",
+  var $mind_read = array('message' => "　あなたは|サトラレ|です。夜の発言が|さとり|に読まれてしまいます。",
 			 'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
   var $mind_receiver = array('message' => "　あなたは|受信者|です。夜の間だけ誰かの発言を読み取ることができます。",
 			     'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
-  var $mind_friend = array('message' => "　あなたは|共鳴者|です。夜の間だけ共鳴者同士で会話することができます。",
+
+  var $mind_friend = array('message' => "　あなたは|共鳴者|です。夜の間だけ|共鳴者|同士で会話することができます。",
 			   'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
-  var $mind_open = array('message' => "　あなたは|公開者|です。夜の発言が全員に見えます。気をつけましょう。",
+
+  var $mind_open = array('message' => "　あなたは|公開者|です。二日目以降、夜の発言が全員に見えます。気をつけましょう。",
 			 'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
   var $mind_evoke = array('message' => "　あなたは|イタコ|に|口寄せ|されています。死んだ後に遺言を介して|イタコ|にメッセージを送ることができます。",
 			  'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
   var $ability_poison = array('message' => "　あなたは|毒|を持っています。処刑されたり、人狼に襲撃された時に誰か一人を道連れにします。",
 		    'R' => 0, 'G' => 153, 'B' => 102);
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ", 'R' => 204, 'G' => 102, 'B' => 51);
@@ -762,6 +800,10 @@ class ResultList{
 			    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_winter_fairy = array('message' => "さんは|冬妖精|でした",
 			    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
+  var $result_light_fairy = array('message' => "さんは|光妖精|でした",
+				  'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
+  var $result_dark_fairy = array('message' => "さんは|闇妖精|でした",
+				 'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_mirror_fairy = array('message' => "さんは|鏡妖精|でした",
 				   'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_mania = array('message' => "さんは|神話マニア|でした",
@@ -833,8 +875,8 @@ class WishRoleList {
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
 #$list =& new MainRoleList();
-#$list =& new SubRoleList();
-$list =& new ResultList();
+$list =& new SubRoleList();
+#$list =& new ResultList();
 
 #$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
 #$list =& new WishRoleList();
@@ -850,7 +892,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->result_mirror_fairy);
+$image = MakeImage($gen, $list->mind_friend);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

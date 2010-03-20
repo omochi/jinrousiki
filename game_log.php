@@ -22,6 +22,7 @@ if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //死者かゲーム終了後だけ
 }
 $ROOM->date      = $RQ_ARGS->date;
 $ROOM->day_night = $RQ_ARGS->day_night;
+$USERS->SetEvent(true);
 
 //-- ログ出力 --//
 OutputGamePageHeader(); //HTMLヘッダ

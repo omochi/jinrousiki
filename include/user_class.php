@@ -116,8 +116,8 @@ class User{
   function IsDeadFlag($strict = false){
     if(! $strict) return NULL;
     if($this->suicide_flag) return true;
-    if($this->revive_flag) return false;
-    if($this->dead_flag) return true;
+    if($this->revive_flag)  return false;
+    if($this->dead_flag)    return true;
     return NULL;
   }
 
@@ -128,7 +128,11 @@ class User{
 
   function IsDead($strict = false){
     $dead = $this->IsDeadFlag($strict);
-    return is_null($dead) ? ($this->live == 'dead') : $dead;
+    return is_null($dead) ? ($this->live == 'dead' || $this->IsDrop()) : $dead;
+  }
+
+  function IsDrop(){
+    return $this->live == 'drop';
   }
 
   function IsSame($uname){
@@ -140,7 +144,10 @@ class User{
     return $this->IsSame($SELF->uname);
   }
 
-  function IsDummyBoy(){
+  function IsDummyBoy($strict = false){
+    global $ROOM;
+
+    if($strict && $ROOM->IsQuiz()) return false;
     return $this->IsSame('dummy_boy');
   }
 
@@ -258,7 +265,7 @@ class User{
     if($this->IsRole('child_fox')){
       return isset($vote_data['CHILD_FOX_DO'][$this->uname]);
     }
-    if($this->IsRoleGroup('fairy')){
+    if($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy')){
       return isset($vote_data['FAIRY_DO'][$this->uname]);
     }
 
@@ -266,11 +273,11 @@ class User{
       if($this->IsRole('mind_scanner')){
 	return isset($vote_data['MIND_SCANNER_DO'][$this->uname]);
       }
+      if($this->IsRoleGroup('cupid') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
+	return isset($vote_data['CUPID_DO'][$this->uname]);
+      }
       if($this->IsRoleGroup('mania')){
 	return isset($vote_data['MANIA_DO'][$this->uname]);
-      }
-      if($this->IsRoleGroup('cupid')){
-	return isset($vote_data['CUPID_DO'][$this->uname]);
       }
 
       if($ROOM->IsOpenCast()) return true;
@@ -344,7 +351,7 @@ class User{
       return;
     }
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
-    SendQuery("UPDATE user_entry SET {$item} = '{$value}' {$query}", true);
+    return SendQuery("UPDATE user_entry SET {$item} = '{$value}' {$query}", true);
   }
 
   //総合 DB 更新処理 (この関数はまだ実用されていません)
@@ -388,6 +395,11 @@ class User{
     $base_role = $this->GetRole();
     if(in_array($role, explode(' ', $base_role))) return false; //同じ役職は追加しない
     $this->ChangeRole($base_role . ' ' . $role);
+  }
+
+  //仮想役職追加処理 (キャッシュ限定)
+  function AddVirtualRole($role){
+    if(! in_array($role, $this->role_list)) $this->role_list[] = $role;
   }
 
   //役職置換処理
@@ -547,6 +559,7 @@ class UserDataSet{
       }
       $this->names[$user->uname] = $user->user_no;
     }
+    $this->SetEvent();
     return count($this->names);
   }
 
@@ -576,6 +589,10 @@ class UserDataSet{
 
   function ByUname($uname){
     return $this->ByID($this->UnameToNumber($uname));
+  }
+
+  function ByHandleName($handle_name){
+    return $this->ByUname($this->HandleNameToUname($handle_name));
   }
 
   function BySession(){
@@ -639,6 +656,47 @@ class UserDataSet{
       if($target_user->IsSelf()) break; //自分に戻ったらスキップ
     }
     $user->$type = $target_user->DistinguishCamp();
+  }
+
+  //特殊イベント情報を設定する
+  function SetEvent($force = false){
+    global $ROOM;
+
+    $event_rows = $ROOM->GetEvent($force);
+    if(! is_array($event_rows)) return;
+    foreach($event_rows as $event){
+      switch($event['type']){
+      case 'VOTE_KILLED':
+	$user = $this->ByHandleName($event['message']);
+	if(! $user->IsRole('mirror_fairy')) break;
+	if(is_null($status_stack = $user->GetPartner('mirror_fairy'))) break;
+	$duel_stack = array(); //決闘対象者の ID リスト
+	foreach($status_stack as $key => $value){ //生存確認
+	  if($this->IsVirtualLive($key))   $duel_stack[] = $key;
+	  if($this->IsVirtualLive($value)) $duel_stack[] = $value;
+	}
+	if(count($duel_stack) > 1) $ROOM->event->vote_duel = $duel_stack;
+	break;
+
+      case 'WOLF_KILLED':
+	$user = $this->ByHandleName($event['message']);
+	if(is_null($status_stack = $user->GetPartner('bad_status'))) break;
+	foreach($status_stack as $id => $date){
+	  if($date != $ROOM->date) continue;
+	  $status_user = $this->ByID($id);
+	  $ROOM->event->blind_day    |= $status_user->IsRole('dark_fairy') && $ROOM->IsDay();
+	  $ROOM->event->bright_night |= $status_user->IsRole('light_fairy');
+	}
+	break;
+      }
+    }
+
+    if($ROOM->IsEvent('blind_day')){
+      foreach($this->rows as $user) $user->AddVirtualRole('blinder');
+    }
+    if($ROOM->IsEvent('bright_night')){
+      foreach($this->rows as $user) $user->AddVirtualRole('mind_open');
+    }
   }
 
   //役職の出現判定関数
