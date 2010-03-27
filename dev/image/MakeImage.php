@@ -190,8 +190,15 @@ class MainRoleList{
     'R' => 255, 'G' => 0, 'B' => 0, 'R2' => 255, 'G2' => 0, 'B2' => 0);
 
   var $boss_wolf = array(
-    'message' => "[役割] [|人狼|##陣営] [|人狼|系]\n　あなたは|白狼|です。もう#占い師#を恐れる必要はありません。全てを欺き通して村人たちを皆殺しにするのです！",
-    'R' => 255, 'G' => 0, 'B' => 0, 'R2' => 153, 'G2' => 51, 'B2' => 255);
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|白狼|です。もう#占い師#を恐れる必要はありません。全てを欺き通して村人たちを皆殺しにするのです！",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
+
+  var $gold_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|金狼|です。#ひよこ鑑定士#に占われると_蝙蝠_と判定されます。\n　日和見の_蝙蝠_たちに疑惑の目を向けさせ、狼の勝利に貢献してもらうのです。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 153, 'G' => 51, 'B' => 255),
+			 '_' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
   var $wise_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|賢狼|です。|人狼|の宿敵である#妖狐#の存在を感知することができます。\n　人の中に潜む#狐#の吐息を正しく聞き分け、的確に仲間にそれを知らせるのです！",
@@ -212,10 +219,25 @@ class MainRoleList{
     'message' => "[役割] [|人狼|##陣営] [|人狼|系]\n　あなたは|呪狼|です。あなたを占った#占い師#を呪い殺すことができます。村を絶望の底に叩き落してやるのです！",
     'R' => 255, 'G' => 0, 'B' => 0, 'R2' => 153, 'G2' => 51, 'B2' => 255);
 
+  var $sex_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雛狼|、噛んだ人の性別を知ることができます。ただし、噛んだ人を殺すことはできません。\n　雛であるあなたが実際に活躍することは難しいかもしれません。しかし、居るというのがあなたの強みなのです。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 96, 'G' => 96, 'B' => 96)));
+
   var $tongue_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|舌禍狼|、噛んだ人の役職を知ることができます。ただし、#村人#を噛んだらその力を失ってしまいます。\n　能力者の血肉を知り、正体を暴くその舌の力で#村人#を避け、狼に情報をもたらすのです。",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 96, 'G' => 96, 'B' => 96)));
+
+  var $blue_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。噛んだ人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　念話を噛み切り連携を切り崩し、狐を烏合の衆へと変えるのです！",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '_' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
+  var $emerald_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|翠狼|です。噛んだ人が|人狼|だった場合は会話できるようになります。\n　孤立している仲間のもとへ赴き、思い通わす心の根を育てるのです！",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $possessed_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|憑狼|です。噛んだ人に憑依することができます。その幽幻の力で肉体を奪い、多くの魂を食い荒らすのです！",
@@ -266,7 +288,7 @@ class MainRoleList{
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
   var $agitate_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|扇動者|です。昼の自分の投票先が拮抗した場合に限り、まとめて死なせることができます。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|扇動者|です。昼の自分の投票先が拮抗した場合に限り、まとめて死なせることができます。\n　「人外を吊り殺せ！村に平和を！」夢想に熱狂する村人の熱意を煽り、巧みに策略を繰るのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
@@ -276,18 +298,21 @@ class MainRoleList{
 			 '#' => array('R' => 51, 'G' => 153, 'B' => 255)));
 
   var $trap_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|罠師|です。一度だけ夜に罠を仕掛けることができます。罠を仕掛けた人の元に訪れた能力者は全員死亡します。\n　|人狼|の襲撃先をかわしつつ、#狩人#を鮮やかに貴方の手中に誘うのです！",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|罠師|です。一度だけ夜に罠を仕掛けることができます。罠を仕掛けた人の元に訪れた能力者は全員死亡します。\n　|人狼|に害なす愚かさをその命を持って購わせるのです。",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 51, 'G' => 153, 'B' => 255)));
 
   var $fox = array(
-    'message' => "[役割] [|妖狐|##陣営] [|妖狐|系]\n　あなたは|妖狐|、#人狼#に殺されることはありません。ただし占われると死んでしまいます。\n　村人を騙し、#人狼#を騙し、村を|妖狐|のものにするのです！",
-    'R' => 204, 'G' => 0, 'B' => 153, 'R2' => 255, 'G2' => 0, 'B2' => 0);
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|妖狐|、#人狼#に殺されることはありません。ただし占われると死んでしまいます。\n　村人を騙し、#人狼#を騙し、村を|妖狐|のものにするのです！",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $white_fox = array(
-    'message' => "[役割] [|妖狐|##陣営] [|妖狐|系]\n　あなたは|白狐|です。_占い師_を騙すことができますが、^霊能者^には見抜かれてしまいます。\n　また、#人狼#に襲われると殺されてしまいます。巧みに||#人狼#を欺くのです。",
-    'R' => 204, 'G' => 0, 'B' => 153,  'R2' => 255, 'G2' => 0, 'B2' => 0,
-    'R3' => 153, 'G3' => 51, 'B3' => 255, 'R4' => 0, 'G4' => 102, 'B4' => 153);
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。_占い師_を騙すことができますが、^霊能者^には見抜かれてしまいます。\n　また、#人狼#に襲われると殺されてしまいます。巧みに#人狼#を欺くのです。",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '_' => array('R' => 153, 'G' => 51, 'B' => 255),
+			 '^' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
   var $black_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|黒狐|です。占われても呪殺されませんが、#人狼#判定が出されるうえに、_霊能者_には見抜かれてしまいます。\n　巧みな話術で劣勢を跳ね除け、村を|妖狐|の物とするのです！",
@@ -295,10 +320,27 @@ class MainRoleList{
 			 '#' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '_' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
+  var $gold_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|金狐|です。#ひよこ鑑定士#に占われると_蝙蝠_と判定されます。\n　_蝙蝠_に村や狼の矛先を向けさせ、その隙に狐の勝利を頂くのです！",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '#' => array('R' => 153, 'G' => 51, 'B' => 255),
+			 '_' => array('R' => 136, 'G' => 136, 'B' => 136)));
+
   var $poison_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|管狐|、#毒#を持っています。身に蓄えし災いを以てあなたを亡き者にしようとする者共に禍をもたらすのです！",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
+
+  var $blue_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|蒼狐|です。あなたを噛んだ#人狼#を_はぐれ者_にすることができます。\n　遠吠えを引き裂き仲間と切り離し、狼の群れを瓦解させるのです！",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '_' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
+  var $emerald_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|翠狐|です。占った人が会話できない|妖狐|だった場合は会話できるようになります。\n　孤立している仲間を見つけ出し、思い通わす心の根を育てるのです！",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $voodoo_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|九尾|です。夜の間に誰か一人に呪いをかけることができます。|妖狐|の天敵、#占い師#を呪返しで葬るのです！",
@@ -340,6 +382,12 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
+  var $sex_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|雛狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが_ひよこ鑑定士_の真似事もできます。\n　雛であるあなたが実際に活躍することは難しいかもしれません。しかし、居るというのがあなたの強みなのです。",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '_' => array('R' => 153, 'G' => 51, 'B' => 255)));
+
   var $cupid = array(
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|キューピッド|です。初日の夜に誰か二人を|恋人|同士にすることができます。\n　愛の使者として、|恋人|たちを何としても生き延びさせるのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
@@ -351,6 +399,30 @@ class MainRoleList{
   var $mind_cupid = array(
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|女神|です。初日の夜に誰か二人を会話ができる|恋人|にすることができます。\n　村を種族すら超えた愛で満たし、平和な村を創りだすのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+
+  var $triangle_cupid = array(
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|小悪魔|です。初日の夜に誰か三人を|恋人|にしてしまいます。恋とはまた盲目。盲目なる|恋人|に、災いと嘲りあれ。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+
+  var $angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|天使|です。初日の夜に誰か二人を|恋人|にすることができます。その二人が男女だった場合はさらに#共感者#にすることができます。\n　始まりの園にありし男女の愛を繋ぐように、男女の魂に秘蹟を授けるのがあなたの使命なのです。二人の人生の先に神の祝福と喜びあれ。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153),
+			 '#' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
+  var $rose_angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|薔薇天使|です。初日の夜に誰か二人を|恋人|にすることができます。その二人が男性同士だった場合はさらに#共感者#にすることができます。\n　紅を帯びし薔薇の蕾を手に、戦地に有りし男たちの魂を繋ぐ事こそがあなたの存在意義。兜が置かれるその時こそ、平和の鐘が響く時なのです。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153),
+			 '#' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
+  var $lily_angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|百合天使|です。初日の夜に誰か二人を|恋人|にすることができます。その二人が女性同士だった場合はさらに#共感者#にすることができます。\n　黄の山百合を手に、純潔なる乙女たちの魂を繋ぐのがあなたの使命。失われし楽園への道を示し、ともに歩むのです。乙女たちに神の祝福あれ。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153),
+			 '#' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
+  var $ark_angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|大天使|です。初日の夜に誰か二人を|恋人|にすることができます。また、他の|天使|たちが作った#共感者#を知ることができます。\n　秘蹟を統べる者――神に授けられたその力で村に神の存在を知らしめるのです。神を認める者には祝福を、認めぬ者には制裁を。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153),
+			 '#' => array('R' => 160, 'G' => 160, 'B' => 0)));
 
   var $cupid_pair = array(
     'message' => "あなたが愛の矢を放ったのは以下の人たちです： ", 'R' => 0, 'G' => 0, 'B' => 0, 'R2' => 0, 'G2' => 0, 'B2' => 0);
@@ -408,17 +480,17 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
   var $light_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|光妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を白夜にしてしまいます。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|光妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を白夜にしてしまいます。\n　光輝を身に宿し、それを人の身に宿すその力は|闇妖精|と相剋し、他の人外を駆逐する光となるのです。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
 			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $dark_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|闇妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を宵闇にしてしまいます。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|闇妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を宵闇にしてしまいます。\n　宵闇を身に宿し、それにて太陽を食むその力は|光妖精|と相克し、他の村人を狂わせる蝕となるのです。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
 			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $mirror_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人を指名して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人を指名して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。\n　鏡界――他の次元に佇みながら鏡の世界を体に埋め込むその力、姿見に自らを移しつつ、村人は何を思うのか。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
   var $mania = array(
@@ -569,14 +641,25 @@ class SubRoleList{
   var $mind_friend = array('message' => "　あなたは|共鳴者|です。夜の間だけ|共鳴者|同士で会話することができます。",
 			   'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
 
+  var $mind_sympathy = array('message' => "　あなたは|共感者|です。もう一人の|共感者|の役職を知ることができます",
+			     'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
   var $mind_open = array('message' => "　あなたは|公開者|です。二日目以降、夜の発言が全員に見えます。気をつけましょう。",
 			 'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
 
   var $mind_evoke = array('message' => "　あなたは|イタコ|に|口寄せ|されています。死んだ後に遺言を介して|イタコ|にメッセージを送ることができます。",
 			  'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
 
-  var $ability_poison = array('message' => "　あなたは|毒|を持っています。処刑されたり、人狼に襲撃された時に誰か一人を道連れにします。",
-		    'R' => 0, 'G' => 153, 'B' => 102);
+  var $mind_lonely = array('message' => "　あなたは|はぐれ者|なので仲間と会話できません",
+			   'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
+
+  var $sympathy_result = array('message' => "|共感|結果： ",
+			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+
+  var $ability_poison = array('message' => "　あなたは|毒|を持っています。処刑されたり、#人狼#に襲撃された時に誰か一人を道連れにします。",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102),
+					       '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ", 'R' => 204, 'G' => 102, 'B' => 51);
   var $fox_partner = array('message' => "深遠なる|妖狐|の智を持つ同胞は以下の人たちです： ", 'R' => 204, 'G' => 0, 'B' => 153);
   var $child_fox_partner = array('message' => "|妖狐|に与する仲間は以下の人たちです： ", 'R' => 204, 'G' => 0, 'B' => 153);
@@ -708,6 +791,8 @@ class ResultList{
 			   'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_boss_wolf = array('message' => "さんは|白狼|でした",
 				'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_gold_wolf = array('message' => "さんは|金狼|でした",
+				'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_wise_wolf = array('message' => "さんは|賢狼|でした",
 				'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_poison_wolf = array('message' => "さんは|毒狼|でした",
@@ -716,8 +801,14 @@ class ResultList{
 				  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_cursed_wolf = array('message' => "さんは|呪狼|でした",
 				  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_sex_wolf = array('message' => "さんは|雛狼|でした",
+			       'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_tongue_wolf = array('message' => "さんは|舌禍狼|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_emerald_wolf = array('message' => "さんは|翠狼|でした",
+				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_blue_wolf = array('message' => "さんは|蒼狼|でした",
+				'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_possessed_wolf = array('message' => "さんは|憑狼|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_elder_wolf = array('message' => "さんは|古狼|でした",
@@ -752,7 +843,13 @@ class ResultList{
 				'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_black_fox = array('message' => "さんは|黒狐|でした",
 				'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+  var $result_gold_fox = array('message' => "さんは|金狐|でした",
+			       'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_poison_fox = array('message' => "さんは|管狐|でした",
+				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+  var $result_blue_fox = array('message' => "さんは|蒼狐|でした",
+				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+  var $result_emerald_fox = array('message' => "さんは|翠狐|でした",
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_voodoo_fox = array('message' => "さんは|九尾|でした",
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
@@ -770,12 +867,24 @@ class ResultList{
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_child_fox = array('message' => "さんは|子狐|でした",
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+  var $result_sex_fox = array('message' => "さんは|雛狐|でした",
+			      'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_cupid = array('message' => "さんは|キューピッド|でした",
 			    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
   var $result_self_cupid = array('message' => "さんは|求愛者|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
   var $result_mind_cupid = array('message' => "さんは|女神|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+  var $result_triangle_cupid = array('message' => "さんは|小悪魔|でした",
+				     'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+  var $result_angel = array('message' => "さんは|天使|でした",
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+  var $result_rose_angel = array('message' => "さんは|薔薇天使|でした",
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+  var $result_lily_angel = array('message' => "さんは|百合天使|でした",
+			    'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
+  var $result_ark_angel = array('message' => "さんは|大天使|でした",
+				'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
   var $result_lovers = array('message' => "さんは|恋人|でした",
 			     'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
   var $result_quiz = array('message' => "さんは|出題者|でした",
@@ -849,7 +958,11 @@ class WishRoleList {
 			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_fox = array('message' => "妖狐→",
 			'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_child_fox = array('message' => "子狐→",
+			      'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_cupid = array('message' => "キューピッド→",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_angel = array('message' => "天使→",
 			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_mind_cupid = array('message' => "女神→",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
@@ -874,8 +987,8 @@ class WishRoleList {
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$list =& new MainRoleList();
-$list =& new SubRoleList();
+$list =& new MainRoleList();
+#$list =& new SubRoleList();
 #$list =& new ResultList();
 
 #$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
@@ -892,7 +1005,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->mind_friend);
+$image = MakeImage($gen, $list->triangle_cupid);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

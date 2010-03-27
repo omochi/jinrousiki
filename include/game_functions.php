@@ -398,7 +398,7 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'fox');
       elseif($user->IsRoleGroup('chiroptera', 'fairy'))
 	$str .= GenerateRoleName($user->main_role, 'chiroptera');
-      elseif($user->IsRoleGroup('cupid'))
+      elseif($user->IsRoleGroup('cupid', 'angel'))
 	$str .= GenerateRoleName($user->main_role, 'cupid');
       elseif($user->IsRoleGroup('poison') || $user->IsRole('pharmacist'))
 	$str .= GenerateRoleName($user->main_role, 'poison');
@@ -761,8 +761,8 @@ function OutputTalk($talk, &$builder){
 	if($virtual_self->IsSame($talk->uname) || $flag_dummy_boy || $flag_mind_read){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($said_user->IsRole('silver_wolf')){
-	  $builder->AddWhisper('wolf', $talk); //銀狼の独り言は遠吠えに見える
+	elseif($said_user->IsLonely('wolf')){
+	  $builder->AddWhisper('wolf', $talk); //孤立した狼の独り言は遠吠えに見える
 	}
 	break;
       }

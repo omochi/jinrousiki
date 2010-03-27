@@ -37,6 +37,11 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#fanatic_mad">狂信者</a>と全ての人狼は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。
 <a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。
 <a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かります。
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
+</pre>
+<h3>Ver. 1.4.0 β8〜</h3>
+<pre>
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
 </pre>
 <h3>Ver. 1.4.0 α24〜</h3>
 <pre>
@@ -49,10 +54,14 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h2><a name="wolf_howl">遠吠え</a></h2>
 <ol>
-  <li>人狼視点の遠吠えは銀狼確定</li>
-  <li>銀狼視点の遠吠えは自分以外の狼(種類は不明)</li>
-  <li>村人視点の遠吠えは銀狼も含めた狼(種類は不明)</li>
+  <li>人狼視点の遠吠えは<a href="silver_wolf">銀狼</a>か<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼</li>
+  <li><a href="silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明)</li>
+  <li>村人視点の遠吠えは<a href="silver_wolf">銀狼</a>も含めた狼 (種類は不明)</li>
 </ol>
+<h3>Ver. 1.4.0 β8〜</h3>
+<pre>
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になります (<a href="#silver_wolf">銀狼</a>と同じ)。
+</pre>
 <h3>Ver. 1.4.0 α23〜</h3>
 <pre>
 <a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見えます。
@@ -67,10 +76,14 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <h2><a name="wolf_group">人狼系</a></h2>
 <p>
 <a href="#boss_wolf">白狼</a>
+<a href="#gold_wolf">金狼</a>
 <a href="#wise_wolf">賢狼</a>
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
 <a href="#cursed_wolf">呪狼</a>
+<a href="#blue_wolf">蒼狼</a>
+<a href="#emerald_wolf">翠狼</a>
+<a href="#sex_wolf">雛狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
 <a href="#elder_wolf">古狼</a>
@@ -88,6 +101,17 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <pre>
 シンプルな能力ですが、効果は絶大です。
 占いが怖くないので LW を担うことを前提に立ち回ると効果的でしょう。
+</pre>
+
+<h3><a name="gold_wolf">金狼</a> (占い結果：村人 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる人狼。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ローゼンメイデンの金糸雀がモチーフです。
+一見地味ですが存在に気づかないと見事に騙される可能性があります。
+<a href="chiroptera.php">蝙蝠陣営</a>不在が確定している場合は逆に<a href="human.php#sex_mage">ひよこ鑑定士</a>が脅威となる事に気をつけましょう。
 </pre>
 
 <h3><a name="wise_wolf">賢狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24〜]</h3>
@@ -166,6 +190,44 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 死体の数や状況にもよりますが、残った村人がきっと仇を討ってくれるでしょう。
 </pre>
 
+<h3><a name="blue_wolf">蒼狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+噛んだ人が<a href="fox.php#silver_fox">銀狐</a>以外の噛み殺せない妖狐だった場合に<a href="sub_role.php#mind_lonely">はぐれ者</a>を付加する人狼。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ローゼンメイデンの蒼星石がモチーフです。
+<a href="#emerald_wolf">翠狼</a>と対になるように能力をデザインしてあります。
+妖狐のコンビプレーによる騙りを妨害するのが主眼ですが、
+妖狐は比較的単独行動が多いので活躍する機会を得るのが難しい能力だと思います。
+</pre>
+
+<h3><a name="emerald_wolf">翠狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+噛んだ人が狼だった場合に自分と噛んだ人を<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ローゼンメイデンの翠星石がモチーフです。
+<a href="#blue_wolf">蒼狼</a>と対になるように能力をデザインしてあります。
+<a href="#silver_wolf">銀狼</a>や<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼のフォローが主眼ですが
+噛みを失敗した時の情報が増えるという副次的効果もあります。
+</pre>
+
+<h3><a name="sex_wolf">雛狼</a> (占い結果：村人 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+噛みに成功した場合、次の日に噛んだ人の性別が分かる。ただし、噛んだ相手は死なない。
+</pre>
+<ol>
+  <li>性別判定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ</li>
+  <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="fox.php#sex_fox.php">雛狐</a>の人狼バージョンです。
+能力そのものよりも副次的効果の方が重要です (いわゆる空襲撃が可能になります)。
+この狼が LW になると非常に辛い事になるので気をつけましょう。
+</pre>
 
 <h3><a name="tongue_wolf">舌禍狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α13〜]</h3>
 <pre>
@@ -630,7 +692,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受けます</li>
   <li>呪われている役職を選んだ場合は本人が呪返しを受けます</li>
   <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受けます</li>
-  <li><a href="human.php#guard_hunt">狩人系</a>に護衛されると殺されすま</li>
+  <li><a href="human.php#guard_hunt">狩人系</a>に護衛されると殺されます</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>

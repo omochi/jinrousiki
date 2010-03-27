@@ -290,12 +290,8 @@ function Write($say, $location, $spend_time, $update = false){
 function CheckSilence(){
   global $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
-  //ゲーム中以外は処理をしない
-  if(! $ROOM->IsPlaying()) return false;
-
-  //テーブルロック
-  $query = 'LOCK TABLES room WRITE, talk WRITE, vote WRITE, user_entry WRITE, system_message WRITE';
-  if(! mysql_query($query)) return false;
+  if(! $ROOM->IsPlaying()) return false; //ゲーム中以外は処理をしない
+  if(! LockTable('game')) return false; //テーブルロック
 
   //最終発言時刻からの差分を取得
   $query = 'SELECT UNIX_TIMESTAMP() - last_updated FROM room WHERE room_no = ' . $ROOM->id;
@@ -361,7 +357,7 @@ function CheckSilence(){
       CheckVictory(); //勝敗チェック
     }
   }
-  mysql_query('UNLOCK TABLES'); //テーブルロック解除
+  UnlockTable(); //テーブルロック解除
 }
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)

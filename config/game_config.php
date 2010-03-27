@@ -123,11 +123,15 @@ class GameConfig{
   #var $entry_one_ip_address = false; //テスト用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
-  //var $trip = true; //まだ実装されていません
-  var $trip = false;
+  var $trip = true;
+  var $trip_2ch = true; //2ch 互換 (12桁対応) モード (true：有効 / false：無効)
 
   //発言を「」で括る
   var $quote_words = false;
+
+  //文字数制限
+  var $entry_uname_limit = 50; //ユーザ名と村人の名前
+  var $entry_profile_limit = 300; //プロフィール
 
   //-- 投票 --//
   var $self_kick = true; //自分への KICK (true：有効 / false：無効)
@@ -230,10 +234,14 @@ class GameConfig{
     'poison_jealousy'    => '毒橋姫',
     'wolf'               => '人狼',
     'boss_wolf'          => '白狼',
+    'gold_wolf'          => '金狼',
     'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗毒狼',
     'cursed_wolf'        => '呪狼',
+    'blue_wolf'          => '蒼狼',
+    'emerald_wolf'       => '翠狼',
+    'sex_wolf'           => '雛狼',
     'tongue_wolf'        => '舌禍狼',
     'possessed_wolf'     => '憑狼',
     'elder_wolf'         => '古狼',
@@ -252,7 +260,10 @@ class GameConfig{
     'fox'                => '妖狐',
     'white_fox'          => '白狐',
     'black_fox'          => '黒狐',
+    'gold_fox'           => '金狐',
     'poison_fox'         => '管狐',
+    'blue_fox'           => '蒼狐',
+    'emerald_fox'        => '翠狐',
     'voodoo_fox'         => '九尾',
     'revive_fox'         => '仙狐',
     'cursed_fox'         => '天狐',
@@ -261,10 +272,16 @@ class GameConfig{
     'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
     'child_fox'          => '子狐',
+    'sex_fox'            => '雛狐',
     'cupid'              => 'キューピッド',
     'self_cupid'         => '求愛者',
     'mind_cupid'         => '女神',
+    'triangle_cupid'     => '小悪魔',
     //'possessed_cupid'    => 'QP',
+    'angel'              => '天使',
+    'rose_angel'         => '薔薇天使',
+    'lily_angel'         => '百合天使',
+    'ark_angel'          => '大天使',
     'quiz'               => '出題者',
     'chiroptera'         => '蝙蝠',
     'poison_chiroptera'  => '毒蝙蝠',
@@ -333,7 +350,9 @@ class GameConfig{
     'mind_open'     => '公開者',
     'mind_receiver' => '受信者',
     'mind_friend'   => '共鳴者',
+    'mind_sympathy' => '共感者',
     'mind_evoke'    => '口寄せ',
+    'mind_lonely'   => 'はぐれ者',
     'lovers'        => '恋人',
     'copied'        => '元神話マニア');
 
@@ -383,10 +402,14 @@ class GameConfig{
     'poison_jealousy'    => '毒橋',
     'wolf'               => '狼',
     'boss_wolf'          => '白狼',
+    'gold_wolf'          => '金狼',
     'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗狼',
     'cursed_wolf'        => '呪狼',
+    'blue_wolf'          => '蒼狼',
+    'emerald_wolf'       => '翠狼',
+    'sex_wolf'           => '雛狼',
     'tongue_wolf'        => '舌狼',
     'possessed_wolf'     => '憑狼',
     'elder_wolf'         => '古狼',
@@ -405,7 +428,10 @@ class GameConfig{
     'fox'                => '狐',
     'white_fox'          => '白狐',
     'black_fox'          => '黒狐',
+    'gold_fox'           => '金狐',
     'poison_fox'         => '管狐',
+    'blue_fox'           => '蒼狐',
+    'emerald_fox'        => '翠狐',
     'voodoo_fox'         => '九尾',
     'revive_fox'         => '仙狐',
     'cursed_fox'         => '天狐',
@@ -414,9 +440,15 @@ class GameConfig{
     'scarlet_fox'        => '紅狐',
     'silver_fox'         => '銀狐',
     'child_fox'          => '子狐',
+    'sex_fox'            => '雛狐',
     'cupid'              => 'QP',
     'self_cupid'         => '求愛',
     'mind_cupid'         => '女神',
+    'triangle_cupid'     => '小悪',
+    'angel'              => '天使',
+    'rose_angel'         => '薔天',
+    'lily_angel'         => '百天',
+    'ark_angel'          => '大天',
     'quiz'               => 'GM',
     'chiroptera'         => '蝙',
     'poison_chiroptera'  => '毒蝙',
@@ -481,6 +513,8 @@ class GameConfig{
     'mind_open'          => '公',
     'mind_receiver'      => '受',
     'mind_friend'        => '鳴',
+    'mind_sympathy'      => '感',
+    'mind_lonely'        => '逸',
     'lovers'             => '恋',
     'copied'             => '元マ');
 
@@ -489,8 +523,10 @@ class GameConfig{
   var $main_role_group_list = array(
     'wolf' => 'wolf',
     'mad' => 'mad',
+    'child_fox' => 'child_fox', 'sex_fox' => 'child_fox',
     'fox' => 'fox',
     'cupid' => 'cupid',
+    'angel' => 'angel',
     'quiz' => 'quiz',
     'chiroptera' => 'chiroptera',
     'fairy' => 'fairy',
@@ -510,7 +546,8 @@ class GameConfig{
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
   var $sub_role_group_list = array(
     'lovers'       => array('lovers'),
-    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_evoke'),
+    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
+			    'mind_evoke', 'mind_lonely'),
     'mania'        => array('copied'),
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
 			    'celibacy', 'panelist'),
@@ -593,7 +630,25 @@ class CastConfig{
     29 => array('human' => 15, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
     30 => array('human' => 16, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
     31 => array('human' => 17, 'wolf' => 4, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 1, 'common' => 3, 'fox' => 2),
-    32 => array('human' => 16, 'wolf' => 5, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2)
+    32 => array('human' => 16, 'wolf' => 5, 'mage' => 1, 'necromancer' => 1, 'mad' => 2, 'guard' => 2, 'common' => 3, 'fox' => 2),
+    33 => array('human' => 32, 'wolf' => 1),
+    34 => array('human' => 33, 'wolf' => 1),
+    35 => array('human' => 34, 'wolf' => 1),
+    36 => array('human' => 35, 'wolf' => 1),
+    37 => array('human' => 36, 'wolf' => 1),
+    38 => array('human' => 37, 'wolf' => 1),
+    39 => array('human' => 38, 'wolf' => 1),
+    40 => array('human' => 39, 'wolf' => 1),
+    41 => array('human' => 40, 'wolf' => 1),
+    42 => array('human' => 41, 'wolf' => 1),
+    43 => array('human' => 42, 'wolf' => 1),
+    44 => array('human' => 43, 'wolf' => 1),
+    45 => array('human' => 44, 'wolf' => 1),
+    46 => array('human' => 45, 'wolf' => 1),
+    47 => array('human' => 46, 'wolf' => 1),
+    48 => array('human' => 47, 'wolf' => 1),
+    49 => array('human' => 48, 'wolf' => 1),
+    50 => array('human' => 49, 'wolf' => 1)
                          );
   //-- 役職出現人数 --//
   //各役職の出現に必要な人数を設定する
@@ -612,7 +667,7 @@ class CastConfig{
   var $wish_role_rate = 100;
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'cupid');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
@@ -622,10 +677,10 @@ class CastConfig{
 
   //役職グループの最大出現率 (グループ => 最大人口比)
   var $chaos_role_group_rate_list = array(
-    'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.12, 'cupid' => 0.1, 'chiroptera' => 0.12,
-    'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'priest' => 0.1, 'guard' => 0.15,
-    'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1, 'pharmacist' => 0.15,
-    'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1);
+    'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.1, 'child_fox' => 0.08, 'cupid' => 0.1, 'angel' => 0.07,
+    'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15,
+    'priest' => 0.1, 'guard' => 0.15, 'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1,
+    'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1);
 
   //村人の出現上限補正
   var $max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -658,7 +713,8 @@ class RoleImage extends ImageManager{
 //-- 勝利陣営の画像 --//
 class VictoryImage extends VictoryImageBase{
   var $path      = 'victory_role';
-  var $extension = 'jpg';
+  #var $extension = 'jpg';
+  var $extension = 'gif';
   var $class     = 'winner';
 }
 

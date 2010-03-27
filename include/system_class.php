@@ -40,7 +40,7 @@ class DatabaseConfigBase{
   function Disconnect($unlock = false){
     if(is_null($this->db_handle)) return;
 
-    if($unlock) mysql_query('UNLOCK TABLES'); //ロック解除
+    if($unlock) UnlockTable(); //ロック解除
     mysql_close($this->db_handle);
     unset($this->db_handle); //ハンドルをクリア
   }
@@ -86,11 +86,10 @@ class Session{
 
   //DB に登録されているセッション ID と被らないようにする
   function GetUniq(){
-    $query = 'SELECT COUNT(room_no) FROM user_entry, admin_manage WHERE ' .
-      'user_entry.session_id =';
+    $query = 'SELECT COUNT(room_no) FROM user_entry WHERE session_id = ';
     do{
       $this->Reset();
-    }while(FetchResult($query ."'{$this->id}' OR admin_manage.session_id = '{$this->id}'") > 0);
+    }while(FetchResult($query ."'{$this->id}'") > 0);
     return $this->id;
   }
 

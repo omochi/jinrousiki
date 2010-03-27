@@ -12,10 +12,9 @@ function OutputAbility(){
     return;
   }
 
-  $is_first_night = ($ROOM->IsNight() && $ROOM->date == 1);
-  $is_after_first_night = ($ROOM->IsNight() && $ROOM->date > 1);
-
-  if($SELF->IsRole('human', 'suspect', 'unconscious', 'saint')){ //村人・不審者・無意識・聖女
+  $is_first_night       = $ROOM->IsNight() && $ROOM->date == 1;
+  $is_after_first_night = $ROOM->IsNight() && $ROOM->date > 1;
+  if($SELF->IsRole('human', 'saint', 'suspect', 'unconscious')){ //村人・聖女・不審者・無意識
     $ROLE_IMG->Output('human');
   }
   elseif($SELF->IsRole('elder')){
@@ -118,8 +117,8 @@ function OutputAbility(){
     $mad_partner = array();
     $unconscious_list = array();
     foreach($USERS->rows as $user){
-      if($user->IsSelf() || $user->IsRole('silver_wolf')) continue;
-      if($user->IsWolf()){
+      if($user->IsSelf()) continue;
+      if($user->IsWolf(true)){
 	$wolf_partner[] = $USERS->GetHandleName($user->uname, true);
       }
       elseif($user->IsRole('whisper_mad')){
@@ -129,7 +128,7 @@ function OutputAbility(){
 	$unconscious_list[] = $user->handle_name;
       }
     }
-    if(! $SELF->IsRole('silver_wolf')){
+    if($SELF->IsWolf(true)){
       OutputPartner($wolf_partner, 'wolf_partner'); //仲間を表示
       OutputPartner($mad_partner, 'mad_partner'); //囁き狂人を表示
     }
@@ -139,6 +138,9 @@ function OutputAbility(){
 
     if($SELF->IsRole('tongue_wolf')){ //舌禍狼の噛み結果を表示
       OutputSelfAbilityResult('TONGUE_WOLF_RESULT');
+    }
+    elseif($SELF->IsRole('sex_wolf')){ //舌禍狼の噛み結果を表示
+      OutputSelfAbilityResult('SEX_WOLF_RESULT');
     }
 
     if($SELF->IsRole('possessed_wolf')){ //憑狼の現在の憑依先を表示
@@ -194,25 +196,24 @@ function OutputAbility(){
     $ROLE_IMG->Output($SELF->main_role);
 
     foreach($USERS->rows as $user){
-      if($user->IsSelf() || $user->IsRole('silver_fox')) continue;
-      if($user->IsRole('child_fox', 'scarlet_wolf')){
-	$child_fox_partner[] = $user->handle_name;
-      }
-      elseif($user->IsFox()){
+      if($user->IsSelf()) continue;
+      if($user->IsFox(true)){
 	$fox_partner[] = $user->handle_name;
       }
+      elseif($user->IsChildFox() || $user->IsRole('scarlet_wolf')){
+	$child_fox_partner[] = $user->handle_name;
+      }
     }
-    if(! $SELF->IsRole('silver_fox')){
+    if(! $SELF->IsRole('silver_fox', 'mind_lonely')){
       OutputPartner($fox_partner, 'fox_partner'); //妖狐の仲間を表示
       OutputPartner($child_fox_partner, 'child_fox_partner'); //子狐の仲間を表示
     }
 
-    if($SELF->IsRole('child_fox')){
-      OutputSelfAbilityResult('CHILD_FOX_RESULT'); //占い結果を表示
-      if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //夜の投票
+    if($SELF->IsRole('emerald_fox')){ //翠狐
+      if($SELF->IsActive() && $ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO');
     }
-    elseif($SELF->IsRole('voodoo_fox') && $ROOM->IsNight()){ //九尾
-      OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
+    elseif($SELF->IsRole('voodoo_fox')){ //九尾
+      if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
     }
     elseif($SELF->IsRole('revive_fox') && ! $ROOM->IsOpenCast()){ //仙狐
       OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果を表示
@@ -220,8 +221,12 @@ function OutputAbility(){
 	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
+    elseif($SELF->IsChildFox()){ //子狐
+      OutputSelfAbilityResult('CHILD_FOX_RESULT'); //占い結果を表示
+      if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //夜の投票
+    }
 
-    if(! $SELF->IsRole('white_fox', 'poison_fox', 'child_fox')){
+    if(! ($SELF->IsRole('white_fox', 'poison_fox') || $SELF->IsChildFox())){
       OutputSelfAbilityResult('FOX_EAT'); //襲撃メッセージを表示
     }
   }
@@ -276,7 +281,7 @@ function OutputAbility(){
     $ROLE_IMG->Output($SELF->main_role);
     OutputSelfAbilityResult('PHARMACIST_RESULT'); //鑑定結果を表示
   }
-  elseif($SELF->IsRoleGroup('cupid')){ //キューピッド系
+  elseif($SELF->IsRoleGroup('cupid', 'angel')){ //キューピッド系
     $ROLE_IMG->Output($SELF->main_role);
 
     //自分が矢を打った恋人 (自分自身含む) を表示
@@ -287,6 +292,7 @@ function OutputAbility(){
     }
     OutputPartner($cupid_pair, 'cupid_pair');
 
+    if($SELF->IsRole('ark_angel') && $ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
     if($is_first_night) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //初日夜の投票
   }
   elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //橋姫
@@ -333,6 +339,7 @@ function OutputAbility(){
   if($ROOM->date > 1){ //サトラレ系の表示は 2 日目以降
     if($virtual_self->IsRole('mind_read')) $ROLE_IMG->Output('mind_read');
     if($virtual_self->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
+    if($virtual_self->IsRole('mind_lonely')) $ROLE_IMG->Output('mind_lonely');
 
     if($virtual_self->IsRole('mind_receiver')){
       $ROLE_IMG->Output('mind_receiver');
@@ -356,8 +363,13 @@ function OutputAbility(){
       }
       OutputPartner($mind_friend, 'mind_friend_list');
     }
+    if($SELF->IsRole('mind_sympathy')){
+      $ROLE_IMG->Output('mind_sympathy');
+      if($ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
+    }
   }
-  array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_receiver', 'mind_friend');
+  array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
+	     'mind_friend', 'mind_sympathy');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -368,9 +380,7 @@ function OutputAbility(){
   $display_list      = array_diff($role_keys_list, $not_display_list);
   $target_list       = array_intersect($display_list, array_slice($virtual_self->role_list, 1));
 
-  foreach($target_list as $this_role){
-    $ROLE_IMG->Output($this_role);
-  }
+  foreach($target_list as $role) $ROLE_IMG->Output($role);
 }
 
 //仲間を表示する
@@ -454,6 +464,7 @@ function OutputSelfAbilityResult($action){
     break;
 
   case 'TONGUE_WOLF_RESULT':
+  case 'SEX_WOLF_RESULT':
     $type = 'mage';
     $header = 'wolf_result';
     break;
@@ -482,13 +493,18 @@ function OutputSelfAbilityResult($action){
     $type = 'mage';
     break;
 
+  case 'SYMPATHY_RESULT':
+    $type = 'sympathy';
+    $header = 'sympathy_result';
+    break;
+
   default:
     return false;
   }
 
   $yesterday = $ROOM->date - 1;
-  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = $yesterday AND type = '$action'";
+  $query = 'SELECT DISTINCT message FROM system_message WHERE room_no = ' .
+    "{$ROOM->id} AND date = {$yesterday} AND type = '{$action}'";
   $result_list = FetchArray($query);
 
   switch($type){
@@ -547,6 +563,15 @@ function OutputSelfAbilityResult($action){
       if($SELF->handle_name == $result){
 	OutputAbilityResult($header, NULL);
 	break;
+      }
+    }
+    break;
+
+  case 'sympathy':
+    foreach($result_list as $result){
+      list($actor, $target, $target_role) = explode("\t", $result);
+      if($SELF->IsRole('ark_angel') || $SELF->handle_name == $actor){
+	OutputAbilityResult($header, $target, $footer . $target_role);
       }
     }
     break;

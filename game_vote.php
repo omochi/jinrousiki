@@ -5,14 +5,6 @@ $INIT_CONF->LoadClass('SESSION', 'ICON_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得
-
-//PHP の引数を作成
-$php_argv = 'room_no=' . $RQ_ARGS->room_no;
-if($RQ_ARGS->auto_reload > 0) $php_argv .= '&auto_reload=' . $RQ_ARGS->auto_reload;
-if($RQ_ARGS->play_sound) $php_argv .= '&play_sound=on';
-if($RQ_ARGS->list_down)  $php_argv .= '&list_down=on';
-$back_url = '<a href="game_up.php?' . $php_argv . '#game_top">←戻る &amp; reload</a>';
-
 $DB_CONF->Connect(); //DB 接続
 $SESSION->Certify(); //セッション認証
 
@@ -87,20 +79,17 @@ $DB_CONF->Disconnect(); //DB 接続解除
 //-- 関数 --//
 //エラーページ出力
 function OutputVoteError($title, $sentence = NULL){
-  global $back_url;
+  global $RQ_ARGS;
 
-  $header = '<div align="center"><a name="#game_top"></a>';
-  $footer = "<br>\n" . $back_url . '</div>';
+  $header = '<div align="center"><a name="game_top"></a>';
+  $footer = "<br>\n" . $RQ_ARGS->back_url . '</div>';
   if(is_null($sentence)) $sentence = 'プログラムエラーです。管理者に問い合わせてください。';
   OutputActionResult('投票エラー [' . $title .']', $header . $sentence . $footer);
 }
 
 //テーブルを排他的ロック
-function LockTable(){
-  $query = 'LOCK TABLES room WRITE, user_entry WRITE, vote WRITE, system_message WRITE, talk WRITE';
-  if(! SendQuery($query)){
-    OutputVoteResult('サーバが混雑しています。<br>再度投票をお願いします。');
-  }
+function LockVote(){
+  if(! LockTable('game')) OutputVoteResult('サーバが混雑しています。<br>再度投票をお願いします。');
 }
 
 //ゲーム開始投票の処理
@@ -110,7 +99,7 @@ function VoteGameStart(){
   CheckSituation('GAMESTART');
   if($SELF->IsDummyBoy(true)){ //出題者以外の身代わり君
     if($GAME_CONF->power_gm){ //強権 GM による強制スタート処理
-      LockTable(); //テーブルを排他的ロック
+      LockVote(); //テーブルを排他的ロック
       $sentence = AggregateVoteGameStart(true) ? 'ゲーム開始' :
 	'ゲームスタート：開始人数に達していません。';
       OutputVoteResult($sentence, true);
@@ -125,7 +114,7 @@ function VoteGameStart(){
   //PrintData($ROOM->vote); //テスト用
   //DeleteVote(); //テスト用
   if(isset($ROOM->vote[$SELF->uname])) OutputVoteResult('ゲームスタート：投票済みです');
-  LockTable(); //テーブルを排他的ロック
+  LockVote(); //テーブルを排他的ロック
 
   if($SELF->Vote('GAMESTART')){ //投票処理
     AggregateVoteGameStart(); //集計処理
@@ -301,7 +290,7 @@ function AggregateVoteGameStart($force_start = false){
   $sub_role_count_list = array();
   //割り振り対象外役職のリスト
   $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_evoke',
-			    'mind_receiver', 'mind_friend');
+			    'mind_receiver', 'mind_friend', 'mind_lonely');
 
   //サブ役職テスト用
   /*
@@ -461,7 +450,7 @@ function VoteKick($target){
     if(mysql_result($sql, 0, 0) != 0) OutputVoteResult('Kick：自分には投票できません');
   }
 
-  LockTable(); //テーブルを排他的ロック
+  LockVote(); //テーブルを排他的ロック
 
   //ゲーム開始チェック
   if(FetchResult("SELECT day_night FROM room WHERE room_no = {$ROOM->id}") != 'beforegame'){
@@ -553,7 +542,7 @@ function VoteDay(){
   if(is_array($vote_duel) && ! in_array($RQ_ARGS->target_no, $vote_duel)){
     OutputVoteResult('処刑：決選投票対象者以外には投票できません');
   }
-  LockTable(); //テーブルを排他的ロック
+  LockVote(); //テーブルを排他的ロック
 
   //-- 投票処理 --//
   //役職に応じて投票数を補正
@@ -588,7 +577,7 @@ function VoteNight(){
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
   switch($RQ_ARGS->situation){
   case 'MAGE_DO':
-    if(! $SELF->IsRoleGroup('mage')) OutputVoteResult('夜：占い師系以外は投票できません');
+    if(! $SELF->IsRoleGroup('mage', 'emerald_fox')) OutputVoteResult('夜：占い師系以外は投票できません');
     break;
 
   case 'VOODOO_KILLER_DO':
@@ -662,11 +651,11 @@ function VoteNight(){
     break;
 
   case 'CHILD_FOX_DO':
-    if(! $SELF->IsRole('child_fox')) OutputVoteResult('夜：子狐以外は投票できません');
+    if(! $SELF->IsChildFox()) OutputVoteResult('夜：子狐以外は投票できません');
     break;
 
   case 'CUPID_DO':
-    if(! $SELF->IsRoleGroup('cupid', 'dummy_chiroptera')){
+    if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
       OutputVoteResult('夜：キューピッド系以外は投票できません');
     }
     $is_cupid = true;
@@ -692,7 +681,13 @@ function VoteNight(){
 
   if($not_type); //投票キャンセルタイプは何もしない
   elseif($is_cupid || $is_mirror_fairy){ //キューピッド系
-    if(count($RQ_ARGS->target_no) != 2) OutputVoteResult('夜：指定人数が二人ではありません');
+    if($SELF->IsRole('triangle_cupid')){
+      if(count($RQ_ARGS->target_no) != 3) OutputVoteResult('夜：指定人数が三人ではありません');
+    }
+    elseif(count($RQ_ARGS->target_no) != 2){
+      OutputVoteResult('夜：指定人数が二人ではありません');
+    }
+
     $target_list = array();
     $self_shoot = false; //自分撃ちフラグを初期化
     foreach($RQ_ARGS->target_no as $target_no){
@@ -752,7 +747,7 @@ function VoteNight(){
   }
 
   //-- 投票処理 --//
-  LockTable(); //テーブルを排他的ロック
+  LockVote(); //テーブルを排他的ロック
   if($not_type){
     if(! $SELF->Vote($RQ_ARGS->situation)){ //投票処理
       OutputVoteResult('データベースエラー', true);
@@ -762,7 +757,7 @@ function VoteNight(){
   }
   else{
     if($is_cupid){ //キューピッド系の処理
-      $uname_stack = array();
+      $uname_stack  = array();
       $handle_stack = array();
       $is_self  = $SELF->IsRole('self_cupid');
       $is_mind  = $SELF->IsRole('mind_cupid');
@@ -802,6 +797,22 @@ function VoteNight(){
 	*/
 	$target->AddRole($add_role);
       }
+      if($SELF->IsRoleGroup('angel')){
+	$lovers_a = $target_list[0];
+	$lovers_b = $target_list[1];
+	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) ||
+	   ($SELF->IsRole('rose_angel') && $lovers_a->sex == 'male' && $lovers_b->sex == 'male') ||
+	   ($SELF->IsRole('lily_angel') && $lovers_a->sex == 'female' && $lovers_b->sex == 'female')){
+	  $lovers_a->AddRole('mind_sympathy');
+	  $sentence = $lovers_a->handle_name . "\t" . $lovers_b->handle_name . "\t";
+	  $ROOM->SystemMessage($sentence . $lovers_b->main_role, 'SYMPATHY_RESULT');
+
+	  $lovers_b->AddRole('mind_sympathy');
+	  $sentence = $lovers_b->handle_name . "\t" . $lovers_a->handle_name . "\t";
+	  $ROOM->SystemMessage($sentence . $lovers_a->main_role, 'SYMPATHY_RESULT');
+	}
+      }
+
       $situation     = $RQ_ARGS->situation;
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
@@ -849,7 +860,7 @@ function VoteDeadUser(){
   //投票済みチェック
   if($SELF->IsDrop()) OutputVoteResult('蘇生辞退：投票済み');
   if($ROOM->IsOpenCast()) OutputVoteResult('蘇生辞退：投票不要です');
-  LockTable(); //テーブルを排他的ロック
+  LockVote(); //テーブルを排他的ロック
 
   //-- 投票処理 --//
   if(! $SELF->Update('live', 'drop')) OutputVoteResult('データベースエラー', true);
@@ -863,7 +874,7 @@ function VoteDeadUser(){
 
 //投票ページ HTML ヘッダ出力
 function OutputVotePageHeader(){
-  global $SERVER_CONF, $ROOM, $php_argv;
+  global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
   OutputHTMLHeader($SERVER_CONF->title . ' [投票]', 'game');
   if($ROOM->day_night != ''){
@@ -873,8 +884,8 @@ function OutputVotePageHeader(){
 <link rel="stylesheet" href="css/game_vote.css">
 <link rel="stylesheet" id="day_night">
 </head><body>
-<a name="#game_top"></a>
-<form method="POST" action="game_vote.php?{$php_argv}#game_top">
+<a name="game_top"></a>
+<form method="POST" action="{$RQ_ARGS->post_url}">
 <input type="hidden" name="vote" value="on">
 
 EOF;
@@ -891,7 +902,7 @@ function CheckScene(){
 
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
-  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
+  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   CheckScene(); //投票する状況があっているかチェック
   OutputVotePageHeader();
@@ -926,10 +937,10 @@ EOF;
 </tr></table>
 <span class="vote-message">* Kick するには {$GAME_CONF->kick} 人の投票が必要です</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td><a href="game_up.php?{$php_argv}#game_top">←戻る &amp; reload</a></td>
+<td>{$RQ_ARGS->back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->kick_do}"></form></td>
 <td>
-<form method="POST" action="game_vote.php?{$php_argv}#game_top">
+<form method="POST" action="{$RQ_ARGS->post_url}">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">
 <input type="submit" value="{$VOTE_MESS->game_start}"></form>
@@ -942,7 +953,7 @@ EOF;
 
 //昼の投票ページを出力する
 function OutputVoteDay(){
-  global $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
+  global $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   CheckScene();  //投票する状況があっているかチェック
   $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
@@ -990,7 +1001,7 @@ EOF;
 </tr></table>
 <span class="vote-message">* 投票先の変更はできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td><a href="game_up.php?$php_argv#game_top">←戻る &amp; reload</a></td>
+<td>{$RQ_ARGS->back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->vote_do}"></td>
 </tr></table></div>
 </form></body></html>
@@ -1000,7 +1011,7 @@ EOF;
 
 //夜の投票ページを出力する
 function OutputVoteNight(){
-  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF, $php_argv;
+  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   CheckScene(); //投票シーンチェック
 
@@ -1076,14 +1087,19 @@ function OutputVoteNight(){
     $type   = 'VOODOO_FOX_DO';
     $submit = 'voodoo_do';
   }
-  elseif($SELF->IsRole('child_fox')){
+  elseif($SELF->IsRole('emerald_fox')){
+    if(! $SELF->IsActive()) OutputVoteResult('夜：占いは一度しかできません');
+    $type   = 'MAGE_DO';
+    $submit = 'mage_do';
+  }
+  elseif($SELF->IsChildFox()){
     $type   = 'CHILD_FOX_DO';
     $submit = 'mage_do';
   }
-  elseif($SELF->IsRoleGroup('cupid') || $SELF->IsRole('dummy_chiroptera', 'mirror_fairy')){
+  elseif($SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera', 'mirror_fairy')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     $type = 'CUPID_DO';
-    $role_cupid = $SELF->IsRoleGroup('cupid') || $SELF->IsRole('dummy_chiroptera');
+    $role_cupid = $SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera');
     $role_mirror_fairy = $SELF->IsRole('mirror_fairy');
     $cupid_self_shoot  = $SELF->IsRole('self_cupid', 'dummy_chiroptera') ||
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
@@ -1165,7 +1181,7 @@ EOF;
 </tr></table>
 <span class="vote-message">* 投票先の変更はできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td><a href="game_up.php?{$php_argv}#game_top">←戻る &amp; reload</a></td>
+<td>{$RQ_ARGS->back_url}</td>
 <input type="hidden" name="situation" value="{$type}">
 <td><input type="submit" value="{$VOTE_MESS->$submit}"></td></form>
 
@@ -1175,7 +1191,7 @@ EOF;
     if(empty($not_submit)) $not_submit = strtolower($not_type);
     echo <<<EOF
 <td>
-<form method="POST" action="game_vote.php?{$php_argv}#game_top">
+<form method="POST" action="{$RQ_ARGS->post_url}">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="{$not_type}">
 <input type="hidden" name="target_no" value="{$SELF->user_no}">
@@ -1194,7 +1210,7 @@ EOF;
 
 //死者の投票ページ出力
 function OutputVoteDeadUser(){
-  global $VOTE_MESS, $ROOM, $SELF, $php_argv;
+  global $VOTE_MESS, $RQ_ARGS, $ROOM, $SELF;
 
   //投票済みチェック
   if($SELF->IsDummyBoy()) OutputVoteResult('蘇生辞退：身代わり君の投票は無効です');
@@ -1206,7 +1222,7 @@ function OutputVoteDeadUser(){
 <input type="hidden" name="situation" value="REVIVE_REFUSE">
 <span class="vote-message">* 投票の取り消しはできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td><a href="game_up.php?{$php_argv}#game_top">←戻る &amp; reload</a></td>
+<td>{$RQ_ARGS->back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->revive_refuse}"></form></td>
 </tr></table></div>
 </body></html>

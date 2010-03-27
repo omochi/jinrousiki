@@ -50,6 +50,7 @@ Ver. 1.4.0
 <a href="#140beta5">β5</a>
 <a href="#140beta6">β6</a>
 <a href="#140beta7">β7</a>
+<a href="#140beta8">β8</a>
 </p>
 
 <p>
@@ -66,6 +67,7 @@ Ver. 1.4.0
 <a href="#sub_140alpha22">α22</a>
 <a href="#sub_140alpha23">α23</a>
 <a href="#sub_140beta2">β2</a>
+<a href="#sub_140beta8">β8</a>
 </p>
 
 <table>
@@ -720,7 +722,7 @@ Ver. 1.4.0
     <td><a href="human.php#human_group">村人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票数が +1 される村人</td>
+    <td class="ability">投票数が +1 される村人。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -729,7 +731,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
-    <td class="ability">投票数が +1 される人狼</td>
+    <td class="ability">投票数が +1 される人狼。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -738,7 +740,7 @@ Ver. 1.4.0
     <td><a href="fox.php#fox_group">妖狐系</a></td>
     <td>村人<br>(呪殺)</td>
     <td>村人</td>
-    <td class="ability">投票数が +1 される妖狐</td>
+    <td class="ability">投票数が +1 される妖狐。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -747,7 +749,7 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票数が +1 される蝙蝠</td>
+    <td class="ability">投票数が +1 される蝙蝠。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -756,7 +758,7 @@ Ver. 1.4.0
     <td><a href="human.php#guard_group">狩人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">一度だけ人狼の襲撃を耐える事ができる狩人</td>
+    <td class="ability">一度だけ人狼の襲撃を耐える事ができる狩人。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -765,7 +767,7 @@ Ver. 1.4.0
     <td><a href="human.php#common_group">共有者系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">村人陣営以外の人全てから投票されたらまとめて死亡させる上位共有者</td>
+    <td class="ability">村人陣営以外の人全てから投票されたらまとめて死亡させる上位共有者。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -784,7 +786,7 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票先の発言の先頭に「春ですよー」を追加する妖精</td>
+    <td class="ability">投票先の発言の先頭に「春ですよー」を追加する妖精。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -793,7 +795,7 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票先の発言の先頭に「夏ですよー」を追加する妖精</td>
+    <td class="ability">投票先の発言の先頭に「夏ですよー」を追加する妖精。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -802,7 +804,7 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票先の発言の先頭に「秋ですよー」を追加する妖精</td>
+    <td class="ability">投票先の発言の先頭に「秋ですよー」を追加する妖精。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -811,7 +813,7 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票先の発言の先頭に「冬ですよー」を追加する妖精</td>
+    <td class="ability">投票先の発言の先頭に「冬ですよー」を追加する妖精。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -820,7 +822,7 @@ Ver. 1.4.0
     <td><a href="human.php#common_group">共有者系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">噛まれたら噛んだ人狼に<a href="sub_role.php#chicken">小心者</a>を付加する上位共有者</td>
+    <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼に<a href="sub_role.php#chicken">小心者</a>を付加する上位共有者。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -884,8 +886,46 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">本人が吊られたら、次の日の昼「決選投票」(初日に投票した二人にしか投票できない) にする妖精。</td>
+    <td class="ability">本人が吊られたら、次の日の昼を「決選投票」(初日に投票した二人にしか投票できない) にする妖精。</td>
     <td>Ver. 1.4.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#emerald_wolf" name="140beta8">翠狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability">噛んだ人が狼だった場合に自分と噛んだ人を<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#blue_wolf">蒼狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability">噛んだ人が<a href="fox.php#silver_fox">銀狐</a>以外の噛み殺せない妖狐だった場合に<a href="sub_role.php#mind_lonely">はぐれ者</a>を付加する人狼。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#emerald_fox">翠狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#fox_group">妖狐系</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>村人</td>
+    <td class="ability">占った人が会話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。<br>
+    一度発動すると能力を失う。
+    </td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#blue_fox">蒼狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#fox_group">妖狐系</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>村人</td>
+    <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。</td>
+    <td>Ver. 1.4.0 β8</td>
   </tr>
 </table>
 
@@ -1220,6 +1260,13 @@ Ver. 1.4.0
     <td>○</td>
     <td class="ability">死後に特定の人の遺言窓にメッセージを送れるようになる</td>
     <td>Ver. 1.4.0 β2</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#mind_lonely" name="sub_140beta8">はぐれ者</a></td>
+    <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
+    <td>○</td>
+    <td class="ability">仲間が分からなくなり、会話できなくなる</td>
+    <td>Ver. 1.4.0 β8</td>
   </tr>
 </table>
 

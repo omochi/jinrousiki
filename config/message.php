@@ -304,5 +304,5 @@ class VoteMessage{
   var $cupid_do         = '対象に愛の矢を放つ'; //キューピッド
   var $fairy_do         = '対象に悪戯する'; //妖精
   var $mania_do         = '対象を真似る'; //神話マニア
-  var $revive_refuse    = '蘇生を辞退する'; //神話マニア
+  var $revive_refuse    = '蘇生を辞退する'; //蘇生辞退
 }

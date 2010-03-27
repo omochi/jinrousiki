@@ -177,14 +177,23 @@ class User{
     return false;
   }
 
+  function IsLonely($role = NULL){
+    $is_role = is_null($role) ? true : $this->IsRoleGroup($role);
+    return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
+  }
+
   function IsWolf($talk = false){
     if(! $this->IsRoleGroup('wolf')) return false;
-    return $talk ? ! $this->IsRole('silver_wolf') : true;
+    return $talk ? ! $this->IsLonely() : true;
   }
 
   function IsFox($talk = false){
     if(! $this->IsRoleGroup('fox')) return false;
-    return $talk ? ! $this->IsRole('silver_fox', 'child_fox') : true;
+    return $talk ? ! ($this->IsChildFox() || $this->IsLonely()) : true;
+  }
+
+  function IsChildFox(){
+    return $this->IsRole('child_fox', 'sex_fox');
   }
 
   function IsCommon($talk = false){
@@ -225,7 +234,7 @@ class User{
     if($this->IsFox()) return 'fox';
     if($this->IsRole('quiz')) return 'quiz';
     if($this->IsRoleGroup('chiroptera', 'fairy')) return 'chiroptera';
-    if($this->IsRoleGroup('cupid')) return 'lovers';
+    if($this->IsRoleGroup('cupid', 'angel')) return 'lovers';
     return 'human';
   }
 
@@ -236,6 +245,11 @@ class User{
 	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
     return $result ? 'wolf' : 'human';
+  }
+
+  //¤Ò¤è¤³´ÕÄê»Î¤ÎÈ½Äê
+  function DistinguishSex(){
+    return $this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex;
   }
 
   //Ì¤ÅêÉ¼¥Á¥§¥Ã¥¯
@@ -259,10 +273,14 @@ class User{
     if($this->IsRole('voodoo_mad')){
       return isset($vote_data['VOODOO_MAD_DO'][$this->uname]);
     }
+    if($this->IsRole('emerald_fox')){
+      if(! $this->IsActive()) return true;
+      return isset($vote_data['MAGE_DO'][$this->uname]);
+    }
     if($this->IsRole('voodoo_fox')){
       return isset($vote_data['VOODOO_FOX_DO'][$this->uname]);
     }
-    if($this->IsRole('child_fox')){
+    if($this->IsChildFox()){
       return isset($vote_data['CHILD_FOX_DO'][$this->uname]);
     }
     if($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy')){
@@ -273,7 +291,7 @@ class User{
       if($this->IsRole('mind_scanner')){
 	return isset($vote_data['MIND_SCANNER_DO'][$this->uname]);
       }
-      if($this->IsRoleGroup('cupid') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
+      if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return isset($vote_data['CUPID_DO'][$this->uname]);
       }
       if($this->IsRoleGroup('mania')){

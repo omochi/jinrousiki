@@ -25,6 +25,11 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示されます (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>みたいなものです)。
 分けている基準は「<a href="#fox_talk">念話</a>ができるかどうか」です。
 <a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
+</pre>
+<h3>Ver. 1.4.0 β8〜</h3>
+<pre>
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
 </pre>
 <h3>Ver. 1.4.0 α24〜</h3>
 <pre>
@@ -52,6 +57,11 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 他人からはいっさい見えません。
 <a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
 <a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
+</pre>
+<h3>Ver. 1.4.0 β8〜</h3>
+<pre>
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
 </pre>
 <h3>Ver. 1.4.0 α24〜</h3>
 <pre>
@@ -72,7 +82,10 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <p>
 <a href="#white_fox">白狐</a>
 <a href="#black_fox">黒狐</a>
+<a href="#gold_fox">金狐</a>
 <a href="#poison_fox">管狐</a>
+<a href="#blue_fox">蒼狐</a>
+<a href="#emerald_fox">翠狐</a>
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
 <a href="#cursed_fox">天狐</a>
@@ -106,6 +119,16 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 事態になりかねないことの方が問題になりそうです。
 </pre>
 
+<h3><a name="gold_fox">金狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる妖狐。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#gold_wolf">金狼</a>の妖狐バージョンです。
+この役職でメイン役職の総数が既存のものと合わせてちょうど 100 になりました。
+</pre>
+
 <h3><a name="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <h4>[毒能力] 吊り：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
@@ -116,6 +139,34 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <pre>
 新役職考案スレ (最下参照) の 110 が原型です。「くだぎつね」と読みます。
 噛み無効の代わりに毒を持った妖狐です。仲間がいるときに真価を発揮します。
+</pre>
+
+<h3><a name="blue_fox">蒼狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#blue_wolf">蒼狼</a>の妖狐バージョンです。
+発動すると相手に正体がバレてしまうので、積極的に狙うというよりは
+「噛まれた相手に一矢報いる」タイプの能力ですね。
+</pre>
+
+<h3><a name="emerald_fox">翠狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
+<pre>
+占った人が会話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
+</pre>
+<ol>
+  <li>能力の発動対象は<a href="#silver_fox">銀狐</a>・<a href="#child_fox_group">子狐系</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>の妖狐のいずれかです。</li>
+  <li>インターフェイスは占いと同じですが結果は何も表示されません。</li>
+  <li><a href="sub_role.php#mind_friend">共鳴者</a>を作る事に成功すると能力を失います。</li>
+  <li><a href="wolf.php#blue_wolf">蒼狼</a>の襲撃先を占って、占い先が<a href="sub_role.php#mind_lonely">はぐれ者</a>になってもその夜には能力は発動しません。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#emerald_wolf">翠狼</a>の妖狐バージョンです。
+一度しか使えないので、発動するタイミングや相手の選択がポイントになるかもしれません。
 </pre>
 
 <h3><a name="voodoo_fox">九尾</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
@@ -132,7 +183,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <pre>
 <a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンです。
 新役職考案スレ (最下参照) の 58 が原型です。
-対占い、対噛み耐性は通常の妖狐と同じですが
+対占い・対噛み耐性は通常の妖狐と同じですが
 呪い能力を持った代わりに<a href="human.php#guard_hunt">狩人</a>にも弱くなっています。
 </pre>
 
@@ -194,7 +245,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-やる夫人狼の初日呪殺アイコンの代名詞の一つである、真紅がモデルです。
+やる夫人狼の初日呪殺アイコンの代名詞の一つである、ローゼンメイデンの真紅がモデルです。
 新役職考案スレ (最下参照) の 383 が原型です。
 始めは占い師に分かる狐にしましたがバランス取りが難しいのでこういう実装になりました。
 「<a href="human.php#unconscious">無意識</a>」が騙れば人狼視点でほぼ紅狐確定と見なされるので注意が必要です。
@@ -215,7 +266,9 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h2><a name="child_fox_group">子狐系</a></h2>
 <p>
 <a href="#child_fox">子狐</a>
+<a href="#sex_fox">雛狐</a>
 </p>
+
 <h3><a name="child_fox">子狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 α3-7〜]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
@@ -240,5 +293,20 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <pre>
 他の国に実在する役職です。
 妖狐陣営自体の出現数が少ないのでかなりのレア役職になりそうな予感。
+</pre>
+
+<h3><a name="sex_fox">雛狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β8〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
+<pre>
+呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺されます。
+妖狐と<a href="#fox_talk">念話</a>できない代わりに占いができます。
+判定結果は普通の<a href="human.php#sex_group">ひよこ鑑定士</a>と同じです。
+占いの成功率は 70% です。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#child_fox">子狐</a>の<a href="human.php#sex_group">ひよこ鑑定士</a>バージョンです。
+能力よりも、存在自体が脅威となるタイプですね。
+村や狼が疑心暗鬼になって<a href="human.php#sex_group">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
 </pre>
 </body></html>

@@ -93,6 +93,12 @@ class RequestBaseIcon extends RequestBase{
     $this->GetItems('intval', 'post.icon_no');
   }
 
+  function GetIconData(){
+    $this->GetItems('SetPage', 'get.page', 'get.appearance_page',
+		    'get.category_page', 'get.author_page');
+    $this->GetItems('SetCategory', 'get.appearance', 'get.category', 'get.author');
+  }
+
   function SetCategory($arg){
     if($arg == '') return NULL;
     if($arg == 'all') return $arg;
@@ -113,16 +119,16 @@ class RequestLogin extends RequestBase{
 }
 
 //-- user_manager.php --//
-class RequestUserManager extends RequestBase{
+class RequestUserManager extends RequestBaseIcon{
   function RequestUserManager(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
-    $this->GetItems('SetPage', 'get.page');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
     $this->GetItems('IsOn', 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
+    $this->GetIconData();
     EscapeStrings($this->profile, false);
 
     if($this->room_no < 1){
@@ -193,6 +199,17 @@ class RequestGameVote extends RequestBaseGamePlay{
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
     $this->GetItems('EscapeStrings', 'post.target_handle_name');
     $this->AttachTestParameters(); //テスト用引数のロード
+    $this->SetURL();
+  }
+
+  function SetURL(){
+    $url_option = 'room_no=' . $this->room_no;
+    if($this->auto_reload > 0) $url_option .= '&auto_reload=' . $this->auto_reload;
+    if($this->play_sound)      $url_option .= '&play_sound=on';
+    if($this->list_down)       $url_option .= '&list_down=on';
+    $url_option . '#game_top';
+    $this->post_url = 'game_vote.php?' . $url_option;
+    $this->back_url = '<a href="game_up.php?' . $url_option . '">←戻る &amp; reload</a>';
   }
 }
 
@@ -218,9 +235,7 @@ class RequestOldLog extends RequestBase{
 class RequestIconView extends RequestBaseIcon{
   function RequestIconView(){ $this->__construct(); }
   function __construct(){
-    $this->GetItems('SetPage', 'get.page', 'get.appearance_page',
-		    'get.category_page', 'get.author_page');
-    $this->GetItems('SetCategory', 'get.appearance', 'get.category', 'get.author');
+    $this->GetIconData();
     $this->GetItems('intval', 'get.icon_no');
   }
 }

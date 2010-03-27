@@ -16,7 +16,7 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [仕様]', 'scrip
 <ul>
   <li>JavaScript を有効にする</li>
   <li>Cookie を有効にする</li>
-  <li>PC の時計をサーバと合わせる</li>
+  <li>PC の時計をサーバと合わせる → Ver. 1.4.0 β4 から不要になりました</li>
 </ul>
 の三つの条件を満たしてください<br><br>
 動作確認しているブラウザは Windows Internet Explorer 6、FireFox、Opera です。<br>
@@ -71,12 +71,6 @@ echo $str;
 </div>
 
 
-<h2>役割希望制オプション</h2>
-<div class="diff">村を作成するときに「役割希望制」にチェックを入れると、村人登録 (プレイヤー登録) の際になりたい役割を選択することができます。<br>
-しかし実際になれるかどうかは運次第です。
-</div>
-
-
 <h2>リアルタイム制オプション</h2>
 <div class="diff">村を作成するときに「リアルタイム制」にチェックを入れると、ゲーム中の仮想時間 (昼12時間、夜6時間) が発言により消費されるのではなく固定された実時間で消費されていきます。<br>
 設定される時間は村を作成する人が決定することができます
@@ -104,45 +98,6 @@ foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
 }
 echo $str;
 ?>以外のどれかランダムに設定されます。<br>
-</div>
-
-
-<h2><?= $GAME_OPT_MESS->open_vote ?></h2>
-<div class="diff">村を作成するときに「<?= $GAME_OPT_MESS->open_vote ?>」にチェックを入れると、昼の処刑が終了した後開票するときに誰が誰に「何票分」投票されたかを表示するようになります。<br>
-これは権力者が存在する村だけに効果のあるオプションです。
-</div>
-
-
-<h2><?= $CAST_CONF->decide . '人以上で' . $GAME_OPT_MESS->decide ?></h2>
-<div class="diff">村を作成するときに「<?= $CAST_CONF->decide . '人以上で' . $GAME_OPT_MESS->decide ?>」にチェックを入れると、村人全員の人数が<?= $CAST_CONF->decide ?>人以上になった場合に決定者が登場します。<br>
-昼の投票が同数で分かれた場合に決定者の投票が優先されるようになります。<br>
-決定者は自分が決定者であることはわかりません。<br>
-兼任となり、他の役割のオプションとして付きます。
-</div>
-
-
-<h2><?= $CAST_CONF->authority . '人以上で' . $GAME_OPT_MESS->authority ?></h2>
-<div class="diff">村を作成するときに「<?= $CAST_CONF->authority . '人以上で' . $GAME_OPT_MESS->authority ?>」にチェックを入れると、村人全員の人数が<?= $CAST_CONF->authority ?>人以上になった場合に権力者が登場します。<br>
-権力により、昼の投票が二票分の効果を発揮します。<br>
-自分が権力者であることはわかります。<br>
-兼任となり、他の役割のオプションとして付きます。
-</div>
-
-
-<h2><?= $CAST_CONF->poison . '人以上で' . $GAME_OPT_MESS->poison ?></h2>
-<div class="diff">村を作成するときに「<?= $CAST_CONF->poison . '人以上で' . $GAME_OPT_MESS->poison ?>」にチェックを入れると、村人全員の人数が<?= $CAST_CONF->poison ?>人以上になった場合に埋毒者が登場します。<br>
-昼に処刑されると生きている人からランダムに一人、夜に人狼に襲われると人狼からランダムに一人道連れにします。<br>
-自分が埋毒者であることはわかります。<br>
-兼任ではなく、村人一人の代わりに埋毒者が入ります。<br>
-埋毒者が登場すると人狼にとって不利になりますので、さらに人狼が一人増え、村人が一人減ります。
-</div>
-
-
-<h2>14人もしくは<?= $CAST_CONF->cupid . '人以上で' . $GAME_OPT_MESS->cupid ?></h2>
-<div class="diff">村を作成するときに「14人もしくは<?= $CAST_CONF->cupid . '人以上で' . $GAME_OPT_MESS->cupid ?>」にチェックを入れると、村人全員の人数が14人もしくは<?= $CAST_CONF->cupid ?>人以上になった場合にキューピッドが登場します。<br>
-１日目の夜に任意の二人（少人数村の場合は自分ともう一人）を恋人に結び付けます。<br>
-恋人となった二人は勝利条件が変化します。<br>
-兼任ではなく、村人一人の代わりにキューピッドが入ります。
 </div>
 
 

@@ -13,12 +13,12 @@ function CheckSituation($applay_situation){
 
 //≈Í…º∑Î≤ÃΩ–Œœ
 function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
-  global $SERVER_CONF, $back_url;
+  global $SERVER_CONF, $RQ_ARGS;
 
   if($reset_vote) DeleteVote(); //∫£§ﬁ§«§Œ≈Í…º§Ú¡¥…Ù∫ÔΩ¸
   $title  = $SERVER_CONF->title . ' [≈Í…º∑Î≤Ã]';
   $header = '<div align="center"><a name="#game_top"></a>';
-  $footer = '<br>'."\n" . $back_url . '</div>';
+  $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
   OutputActionResult($title, $header . $sentence . $footer, '', $unlock);
 }
 
@@ -164,8 +164,9 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 510) $random_role_list['jealousy']++;
       elseif($rand < 515) $random_role_list['poison_jealousy']++;
       elseif($rand < 520) $random_role_list['elder']++;
-      elseif($rand < 530) $random_role_list['suspect']++;
-      elseif($rand < 540) $random_role_list['unconscious']++;
+      elseif($rand < 530) $random_role_list['saint']++;
+      elseif($rand < 540) $random_role_list['suspect']++;
+      elseif($rand < 550) $random_role_list['unconscious']++;
       elseif($rand < 580) $random_role_list['wolf']++;
       elseif($rand < 590) $random_role_list['boss_wolf']++;
       elseif($rand < 605) $random_role_list['wise_wolf']++;
@@ -183,7 +184,8 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 765) $random_role_list['whisper_mad']++;
       elseif($rand < 775) $random_role_list['jammer_mad']++;
       elseif($rand < 785) $random_role_list['voodoo_mad']++;
-      elseif($rand < 800) $random_role_list['corpse_courier_mad']++;
+      elseif($rand < 795) $random_role_list['corpse_courier_mad']++;
+      elseif($rand < 800) $random_role_list['agitate_mad']++;
       elseif($rand < 810) $random_role_list['dream_eater_mad']++;
       elseif($rand < 820) $random_role_list['trap_mad']++;
       elseif($rand < 827) $random_role_list['fox']++;
@@ -207,12 +209,15 @@ function GetRoleList($user_count, $option_role){
       elseif($rand < 953) $random_role_list['elder_chiroptera']++;
       elseif($rand < 963) $random_role_list['dummy_chiroptera']++;
       elseif($rand < 966) $random_role_list['fairy']++;
-      elseif($rand < 969) $random_role_list['spring_fairy']++;
-      elseif($rand < 972) $random_role_list['summer_fairy']++;
-      elseif($rand < 975) $random_role_list['autumn_fairy']++;
-      elseif($rand < 978) $random_role_list['winter_fairy']++;
-      elseif($rand < 988) $random_role_list['mania']++;
-      elseif($rand < 996) $random_role_list['unknown_mania']++;
+      elseif($rand < 968) $random_role_list['spring_fairy']++;
+      elseif($rand < 970) $random_role_list['summer_fairy']++;
+      elseif($rand < 972) $random_role_list['autumn_fairy']++;
+      elseif($rand < 974) $random_role_list['winter_fairy']++;
+      elseif($rand < 976) $random_role_list['light_fairy']++;
+      elseif($rand < 978) $random_role_list['dark_fairy']++;
+      elseif($rand < 981) $random_role_list['mirror_fairy']++;
+      elseif($rand < 986) $random_role_list['mania']++;
+      elseif($rand < 997) $random_role_list['unknown_mania']++;
       elseif($rand < 999) $random_role_list['quiz']++;
       else                $random_role_list['human']++;
     }
@@ -770,7 +775,7 @@ function GenerateRoleNameList($role_count_list, $chaos = NULL){
 	$main_role_list['wolf'] += $value;
       elseif(strpos($key, 'fox') !== false)
 	$main_role_list['fox'] += $value;
-      elseif(strpos($key, 'cupid') !== false)
+      elseif(strpos($key, 'cupid') !== false || strpos($key, 'angel') !== false)
 	$main_role_list['cupid'] += $value;
       elseif(strpos($key, 'mania') !== false)
 	$main_role_list['mania'] += $value;
@@ -1105,7 +1110,7 @@ function AggregateVoteDay(){
       }
       elseif($vote_target->IsRole('poison_chiroptera')){ //∆«È˛Èı
 	foreach($poison_target_list as $uname){
-	  if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox', 'chiroptera')){
+	  if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox', 'chiroptera', 'fairy')){
 	    $limited_list[] = $uname;
 	  }
 	}
@@ -1185,11 +1190,14 @@ function AggregateVoteDay(){
     $action = 'NECROMANCER_RESULT';
 
     //ŒÓ«Ω»ΩƒÍ
-    if($vote_target->IsRole('boss_wolf', 'cursed_wolf', 'possessed_wolf', 'child_fox')){
+    if($vote_target->IsRole('boss_wolf', 'cursed_wolf', 'possessed_wolf')){
       $necromancer_result = $vote_target->main_role;
     }
     elseif($vote_target->IsRole('cursed_fox', 'white_fox', 'black_fox')){
       $necromancer_result = 'fox';
+    }
+    elseif($vote_target->IsChildFox()){
+      $necromancer_result = 'child_fox';
     }
     elseif($vote_target->IsWolf()){
       $necromancer_result = 'wolf';
@@ -1470,10 +1478,22 @@ function AggregateVoteNight(){
     }
 
     //Ω±∑‚¿Ë§¨øÕœµ§ŒæÏπÁ§œº∫«‘§π§Î (∂‰œµ§¨Ω–∏Ω§∑§∆§§§ÎæÏπÁ§Œ§ﬂµØ§≠§Î)
-    if($wolf_target->IsWolf()) break;
-
+    if($wolf_target->IsWolf()){
+      if($voted_wolf->IsRole('emerald_wolf')){
+	$add_role = 'mind_friend[' . strval($voted_wolf->user_no) . ']';
+	$voted_wolf->AddRole($add_role);
+	$wolf_target->AddRole($add_role);
+      }
+      break;
+    }
     //Ω±∑‚¿Ë§¨Õ≈∏—§ŒæÏπÁ§œº∫«‘§π§Î
-    if($wolf_target->IsFox() && ! $wolf_target->IsRole('poison_fox', 'white_fox', 'child_fox')){
+    if($wolf_target->IsFox() && ! $wolf_target->IsRole('poison_fox', 'white_fox') &&
+       ! $wolf_target->IsChildFox()){
+      if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsRole('silver_fox')){ //¡Ûœµ§ŒΩËÕ˝
+	$wolf_target->AddRole('mind_lonely');
+      }
+      if($wolf_target->IsRole('blue_fox')) $voted_wolf->AddRole('mind_lonely'); //¡Û∏—§ŒΩËÕ˝
+
       $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
       break;
     }
@@ -1496,6 +1516,11 @@ function AggregateVoteNight(){
       if($wolf_target->IsRole('anti_voodoo')){ //Ω±∑‚¿Ë§¨ÃÒø¿§ §Èÿ·∞Õ•Í•ª•√•»
 	$voted_wolf->possessed_reset = true;
       }
+    }
+    elseif($voted_wolf->IsRole('sex_wolf') && ! $wolf_target->IsDummyBoy()){ //ø˜œµ§ŒΩËÕ˝
+      $sentence = $voted_wolf->handle_name . "\t" . $wolf_target->handle_name . "\t";
+      $ROOM->SystemMessage($sentence . $wolf_target->DistinguishSex(), 'SEX_WOLF_RESULT');
+      break;
     }
     else{
       $USERS->Kill($wolf_target->user_no, 'WOLF_KILLED'); //ƒÃæÔœµ§ŒΩ±∑‚ΩËÕ˝
@@ -1754,7 +1779,7 @@ function AggregateVoteNight(){
   $psycho_mage_liar_list = array('mad', 'dummy', 'suspect', 'unconscious');
   $mage_list = array_merge($vote_data['MAGE_DO'], $vote_data['CHILD_FOX_DO'],
 			   $vote_data['FAIRY_DO']);
-  foreach($mage_list as $uname => $target_uname){ //¿Í§§ª’∑œ§ŒΩËÕ˝
+  foreach($mage_list as $uname => $target_uname){ //¿Í§§∑œ§ŒΩËÕ˝
     $user = $USERS->ByUname($uname);
     if($user->IsDead(true)) continue; //ƒæ¡∞§Àª‡§Û§«§§§ø§ÈÃµ∏˙
 
@@ -1775,7 +1800,10 @@ function AggregateVoteNight(){
       }
     }
     elseif($user->IsRole('sex_mage')){ //§“§Ë§≥¥’ƒÍªŒ§Œ»ΩƒÍ (È˛Èı / ¿≠ Ã)
-      $result = $target->IsRoleGroup('chiroptera', 'fairy') ? 'chiroptera' : 'sex_' . $target->sex;
+      $result = $target->DistinguishSex();
+    }
+    elseif($user->IsRole('sex_fox')){ //ø˜∏—§Œ»ΩƒÍ (È˛Èı / ¿≠ Ã + ∞ÏƒÍ≥ŒŒ®§«º∫«‘)
+      $result = mt_rand(1, 100) > 30 ? $target->DistinguishSex() : 'failed';
     }
     else{
       //ºˆ ÷§∑»ΩƒÍ
@@ -1790,7 +1818,15 @@ function AggregateVoteNight(){
 	}
       }
 
-      if($user->IsRole('child_fox')){ //ª“∏—§Œ»ΩƒÍ (∞ÏƒÍ≥ŒŒ®§«º∫«‘§π§Î)
+      if($user->IsRole('emerald_fox')){ //øÈ∏—§ŒΩËÕ˝
+	if($target->IsChildFox() || $target->IsLonely('fox')){
+	  $add_role = 'mind_friend[' . strval($user->user_no) . ']';
+	  $user->LostAbility();
+	  $user->AddRole($add_role);
+	  $target->AddRole($add_role);
+	}
+      }
+      elseif($user->IsRole('child_fox')){ //ª“∏—§Œ»ΩƒÍ (∞ÏƒÍ≥ŒŒ®§«º∫«‘§π§Î)
 	$result = mt_rand(1, 100) > 30 ? $target->DistinguishMage() : 'failed';
       }
       elseif($user->IsRoleGroup('fairy')){ //Õ≈¿∫∑œ§ŒΩËÕ˝
@@ -1806,17 +1842,19 @@ function AggregateVoteNight(){
 	  $result = $target->main_role;
 	}
 	else{ //¿Í§§ª’§ŒΩËÕ˝
-	  if($target->IsLive(true) && $target->IsFox() &&
-	     ! $target->IsRole('white_fox', 'black_fox', 'child_fox')){ //ºˆª¶»ΩƒÍ
+	  if($target->IsLive(true) && $target->IsFox() && ! $target->IsChildFox() &&
+	     ! $target->IsRole('white_fox', 'black_fox')){ //ºˆª¶»ΩƒÍ
 	    $USERS->Kill($target->user_no, 'FOX_DEAD');
 	  }
 	  $result = $target->DistinguishMage(); //»ΩƒÍ∑Î≤Ã§ÚºË∆¿
 	}
       }
     }
-    if($user->IsRoleGroup('fairy')) continue; //Õ≈¿∫∑œ§œÀ‹øÕ§À•∑•π•·§¨Ω–§ §§
+
+    //¿Í§§∑Î≤Ã§Ú≈–œø (∆√ºÏ¿Í§§«ΩŒœº‘§œΩ¸≥∞)
+    if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')) continue;
     $sentence = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
-    $action = $user->IsRole('child_fox') ? 'CHILD_FOX_RESULT' : 'MAGE_RESULT';
+    $action = $user->IsChildFox() ? 'CHILD_FOX_RESULT' : 'MAGE_RESULT';
     $ROOM->SystemMessage($sentence . "\t" . $result, $action);
   }
 

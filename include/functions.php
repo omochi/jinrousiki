@@ -104,9 +104,33 @@ function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $ic
   else{
     $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
     $items .= ', role, session_id, ip_address, last_load_day_night';
-    $values .= "'$profile', '', '$role', '$session_id', '$ip_address', 'beforegame'";
+    $values .= "'{$profile}', '', '{$role}', '{$session_id}', '{$ip_address}', 'beforegame'";
   }
   return InsertDatabase('user_entry', $items, $values);
+}
+
+//テーブルを排他的ロック
+function LockTable($type = NULL){
+  $stack = array('room', 'user_entry', 'talk', 'vote');
+  switch($type){
+  case 'game':
+    $stack[] = 'system_message';
+    break;
+
+  case 'icon':
+    $stack = array('user_icon');
+  }
+
+  $query_stack = array();
+  foreach($stack as $table){
+    $query_stack[] = $table . ' WRITE';
+  }
+  return SendQuery('LOCK TABLES ' . implode(', ', $query_stack));
+}
+
+//テーブルロック解除
+function UnlockTable(){
+  return SendQuery('UNLOCK TABLES');
 }
 
 //-- 日時関連 --//
@@ -180,8 +204,75 @@ function EscapeStrings(&$str, $trim = true){
   $replace_list = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;',
 			'\\' => '&yen;', '"' => '&quot;', "'" => '&#039;');
   $str = strtr($str, $replace_list);
-  $str = ($trim ? trim($str) : str_replace(array("\r\n", "\r", "\n"), "\n", $str));
+  $str = $trim ? trim($str) : str_replace(array("\r\n", "\r", "\n"), "\n", $str);
   return $str;
+}
+
+//トリップ変換
+/*
+  変換テスト結果＠2ch (2009/07/26)
+  [入力文字列] => [変換結果] (ConvetTrip()の結果)
+  test#test                     => test ◆.CzKQna1OU (test◆.CzKQna1OU)
+  テスト#テスト                 => テスト ◆SQ2Wyjdi7M (テスト◆SQ2Wyjdi7M)
+  てすと＃てすと                => てすと ◆ZUNa78GuQc (てすと◆ZUNa78GuQc)
+  てすとテスト#てすと＃テスト   => てすとテスト ◆TBYWAU/j2qbJ (てすとテスト◆sXitOlnF0g)
+  テストてすと＃テストてすと    => テストてすと ◆RZ9/PhChteSA (テストてすと◆XuUGgmt7XI)
+  テストてすと＃テストてすと#   => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
+  テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
+*/
+function ConvertTrip($str){
+  global $SERVER_CONF, $GAME_CONF;
+
+  if($GAME_CONF->trip){
+    //トリップ関連のキーワードを置換
+    $str = str_replace(array('◆', '＃'), array('◇', '#'), $str);
+    if(($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
+      $name = mb_substr($str, 0, $trip_start);
+      $key  = mb_substr($str, $trip_start + 1);
+      #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>'; //デバッグ用
+
+      if($GAME_CONF->trip_2ch && strlen($key) >= 12){
+	//文字コードを変換
+	$key = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode);
+	$trip_mark = substr($key, 0, 1);
+	if($trip_mark == '#' || $trip_mark == '$'){
+	  if(preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})$|', $key, $stack)){
+	    $trip = substr(crypt(pack('H*', $stack[1]), "{$stack[2]}.."), -12);
+	  }
+	  else{
+	    $trip = '???';
+	  }
+	}
+	else{
+	  $trip = str_replace('+', '.', substr(base64_encode(sha1($key,TRUE)), 0, 12));
+	}
+      }
+      else{
+	//文字コードを変換
+	$key  = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode);
+	$salt = substr($key.'H.', 1, 2);
+
+	//$salt =~ s/[^\.-z]/\./go;にあたる箇所
+	$pattern = '/[\x00-\x20\x7B-\xFF]/';
+	$salt = preg_replace($pattern, '.', $salt);
+
+	//特殊文字の置換
+	$from_list = array(':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`');
+	$to_list   = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f');
+	$salt = str_replace($from_list, $to_list, $salt);
+
+	$trip = substr(crypt($key, $salt), -10);
+      }
+      $str = $name.'◆'.$trip;
+    }
+    #echo 'result: '.$str.'<br>'; //デバッグ用
+  }
+  elseif(strpos($str, '#') !== false || strpos($str, '＃') !== false){
+    $sentence = 'トリップは使用不可です。<br>' . "\n" . '"#" 又は "＃" の文字も使用不可です。';
+    OutputActionResult('村人登録 [入力エラー]', $sentence);
+  }
+
+  return EscapeStrings($str); //特殊文字のエスケープ
 }
 
 //改行コードを <br> に変換する (nl2br() だと <br /> なので HTML 4.01 だと不向き)

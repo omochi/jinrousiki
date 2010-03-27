@@ -51,6 +51,7 @@ class InitializeConfig{
     'game_play_functions' => 'user_class',
     'game_functions' => 'system_class',
     'system_class' => array('functions', 'room_class'),
+    'icon_functions' => 'system_class',
     'room_class' => 'option_class',
     'user_class' => 'game_functions',
     'role_class' => 'game_format'
@@ -61,7 +62,8 @@ class InitializeConfig{
     'GAME_OPT_CAPT' => 'GAME_OPT_MESS',
     'TIME_CALC' => array('TIME_CONF', 'ROOM_CONF'),
     'game_play_functions' => 'ROLE_IMG',
-    'user_class' => array('GAME_CONF', 'MESSAGE')
+    'user_class' => array('GAME_CONF', 'MESSAGE'),
+    'icon_functions' => array('ICON_CONF', 'USER_ICON')
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)

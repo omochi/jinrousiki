@@ -53,6 +53,7 @@ class Room{
     $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
       ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
       ' ORDER BY talk_id DESC';
+    if(! $this->IsPlaying()) $query .= ' LIMIT 0, 300';
     return FetchObject($query, 'Talk');
   }
 
@@ -261,6 +262,22 @@ class Room{
     $items = 'room_no, date, message, type';
     $values = "{$this->id}, {$this->date}, '{$sentence}', '{$type}'";
     return InsertDatabase('system_message', $items, $values);
+  }
+
+  //次の日にする
+  function ChangeDate(){
+    $this->date++;
+    $this->day_night = 'day';
+    SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day' WHERE room_no = {$this->id}");
+
+    //夜が明けた通知
+    $this->Talk("MORNING\t" . $this->date);
+    $this->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
+    $this->UpdateTime(); //最終書き込みを更新
+    //DeleteVote(); //今までの投票を全部削除
+
+    CheckVictory(); //勝敗のチェック
+    SendCommit(); //一応コミット
   }
 }
 

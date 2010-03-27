@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('room_class');
-$INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'ICON_CONF', 'MESSAGE');
+$INIT_CONF->LoadFile('room_class', 'icon_functions');
+$INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 $RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
@@ -23,6 +23,17 @@ function EntryUser(){
   if($profile == '') OutputActionResult($title, 'プロフィールが空です' . $sentence);
   if(empty($sex)) OutputActionResult($title, '性別が入力されていません');
   if(empty($icon_no)) OutputActionResult($title, 'アイコン番号が入力されていません');
+
+  //文字数制限チェック
+  if(strlen($uname) > $GAME_CONF->entry_uname_limit){
+    OutputActionResult($title, 'ユーザ名は' . $GAME_CONF->entry_uname_limit . '文字まで');
+  }
+  if(strlen($handle_name) > $GAME_CONF->entry_uname_limit){
+    OutputActionResult($title, '村人の名前は' . $GAME_CONF->entry_uname_limit . '文字まで');
+  }
+  if(strlen($profile) > $GAME_CONF->entry_profile_limit){
+    OutputActionResult($title, 'プロフィールは' . $GAME_CONF->entry_profile_limit . '文字まで');
+  }
 
   //例外チェック
   if($uname == 'dummy_boy' || $uname == 'system'){
@@ -47,12 +58,14 @@ function EntryUser(){
   }
 
   //ユーザ名、村人名
-  $query .= "user_no > 0 AND ";
+  $query .= 'user_no > 0 AND ';
   if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
 		       '別の名前にしてください。');
   }
+
+  //OutputActionResult('トリップテスト', $uname . '<br>' . $handle_name);
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
@@ -62,15 +75,15 @@ function EntryUser(){
   }
 
   //テーブルをロック
-  if(! mysql_query('LOCK TABLES room WRITE, user_entry WRITE, talk WRITE, admin_manage READ')){
+  if(! LockTable()){
     OutputActionResult('村人登録 [サーバエラー]',
 		       'サーバが混雑しています。<br>'."\n" .
 		       '再度登録してください');
   }
 
   //DBからユーザNoを降順に取得
-  $query = "SELECT user_no FROM user_entry WHERE room_no = " . $room_no .
-    " AND user_no > 0 ORDER BY user_no DESC";
+  $query = 'SELECT user_no FROM user_entry WHERE room_no = ' . $room_no .
+    ' AND user_no > 0 ORDER BY user_no DESC';
   $user_no = (int)FetchResult($query) + 1; //最も大きい No + 1
 
   //DBから最大人数を取得
@@ -107,60 +120,6 @@ function EntryUser(){
 		       '時間を置いて再度登録してください。', '', true);
   }
   mysql_query('UNLOCK TABLES'); //ロック解除
-}
-
-//トリップ変換
-/*
-  変換テスト結果＠2ch (2009/07/26)
-  [入力文字列] => [変換結果] (ConvetTrip()の結果)
-  test#test                     => test ◆.CzKQna1OU (test◆.CzKQna1OU)
-  テスト#テスト                 => テスト ◆SQ2Wyjdi7M (テスト◆SQ2Wyjdi7M)
-  てすと＃てすと                => てすと ◆ZUNa78GuQc (てすと◆ZUNa78GuQc)
-  てすとテスト#てすと＃テスト   => てすとテスト ◆TBYWAU/j2qbJ (てすとテスト◆sXitOlnF0g)
-  テストてすと＃テストてすと    => テストてすと ◆RZ9/PhChteSA (テストてすと◆XuUGgmt7XI)
-  テストてすと＃テストてすと#   => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
-  テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
-*/
-function ConvertTrip($str){
-  global $SERVER_CONF, $GAME_CONF;
-
-  if($GAME_CONF->trip){ //まだ実装されていません
-    OutputActionResult('村人登録 [入力エラー]',
-                       'トリップ変換処理は実装されていません。<br>'."\n" .
-                       '管理者に問い合わせてください。');
-
-    //トリップ関連のキーワードを置換
-    $str = str_replace(array('◆', '＃'), array('◇', '#'), $str);
-    if(($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
-      $name = mb_substr($str, 0, $trip_start);
-      $key  = mb_substr($str, $trip_start + 1);
-      #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>'; //デバッグ用
-
-      //文字コードを変換
-      $key  = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode);
-      $salt = substr($key.'H.', 1, 2);
-
-      //$salt =~ s/[^\.-z]/\./go;にあたる箇所
-      $pattern = '/[\x00-\x20\x7B-\xFF]/';
-      $salt = preg_replace($pattern, '.', $salt);
-
-      //特殊文字の置換
-      $from_list = array(':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`');
-      $to_list   = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f');
-      $salt = str_replace($from_list, $to_list, $salt);
-
-      $trip = crypt($key, $salt);
-      $str = $name.'◆'.substr($trip, -10);
-    }
-    #echo 'result: '.$str.'<br>'; //デバッグ用
-  }
-  elseif(strpos($str, '#') !== false || strpos($str, '＃') !== false){
-    OutputActionResult('村人登録 [入力エラー]',
-		       'トリップは使用不可です。<br>'."\n" .
-		       '"#" 又は "＃" の文字も使用不可です。');
-  }
-
-  return EscapeStrings($str); //特殊文字のエスケープ
 }
 
 //ユーザ登録画面表示
@@ -240,12 +199,13 @@ IMAGE;
     else{
       if($ROOM->IsOption('chaos')){
 	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'guard', 'common',
-		   'poison', 'pharmacist', 'wolf', 'mad', 'fox', 'cupid', 'mania');
+		   'poison', 'pharmacist', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'mania');
       }
       elseif($ROOM->IsOption('chaosfull')){
 	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
 		   'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
-		   'wolf', 'mad', 'fox', 'cupid', 'quiz', 'chiroptera', 'fairy', 'mania');
+		   'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz', 'chiroptera',
+		   'fairy', 'mania');
       }
       else{
 	if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';
@@ -307,40 +267,7 @@ TAG;
 </td></tr>
 
 BODY;
-
-  //アイコンの出力
-  $url_option = array('room_no' => 'room_no='. $room_no);
-  $icon_count = FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0");
-  $builder = new PageLinkBuilder('user_manager', $RQ_ARGS->page, $icon_count, $ICON_CONF);
-  $builder->header = '<tr><td colspan="5">'."\n";
-  $builder->footer = "</td></tr>\n<tr>\n";
-  $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
-  $builder->AddOption('room_no', $room_no);
-  $builder->Output();
-
-  //ユーザアイコンのテーブルから一覧を取得
-  $query_icon = "SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color " .
-    "FROM user_icon WHERE icon_no > 0 ORDER BY icon_no";
-  if($RQ_ARGS->page != 'all'){
-    $query_icon .= sprintf(' LIMIT %d, %d', $ICON_CONF->view * ($RQ_ARGS->page - 1), $ICON_CONF->view);
-  }
-  $icon_list = FetchAssoc($query_icon);
-
-  //表の出力
-  $count = 0;
-  foreach($icon_list as $array){
-    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
-    $count++;
-    extract($array);
-    $icon_location = $ICON_CONF->path . '/' . $icon_filename;
-
-    echo <<<ICON
-<td><label for="{$icon_no}"><img src="{$icon_location}" width="{$icon_width}" height="{$icon_height}" style="border-color:{$color};"> No. {$icon_no}<br> {$icon_name}<br>
-<font color="{$color}">◆</font><input type="radio" id="{$icon_no}" name="icon_no" value="{$icon_no}"></label></td>
-
-ICON;
-  }
-
+  OutputIconList('user_manager');
   echo <<<FOOTER
 </tr></table>
 </fieldset>

@@ -93,7 +93,7 @@ function CheckTable(){
 	echo $title . 'establisher_ip' . $status . $footer;
       }
       if(! $flag->establish_time){
-	$status = mysql_query($query . 'establish_time DATETIME' ? $success : $failed);
+	$status = mysql_query($query . 'establish_time DATETIME') ? $success : $failed;
 	echo $title . 'establish_time' . $status . $footer;
       }
       if(! $flag->start_time){
@@ -254,19 +254,19 @@ function CheckTable(){
     $title .= 'にフィールド(';
 
     if(! $flag->appearance){
-      $status = (mysql_query($query . 'appearance TEXT') ? $success : $failed);
+      $status = mysql_query($query . 'appearance TEXT') ? $success : $failed;
       echo $title . 'appearance' . $status . $footer;
     }
     if(! $flag->category){
-      $status = (mysql_query($query . 'category TEXT') ? $success : $failed);
+      $status = mysql_query($query . 'category TEXT') ? $success : $failed;
       echo $title . 'category' . $status . $footer;
     }
     if(! $flag->author){
-      $status = (mysql_query($query . 'author TEXT') ? $success : $failed);
+      $status = mysql_query($query . 'author TEXT') ? $success : $failed;
       echo $title . 'author' . $status . $footer;
     }
     if(! $flag->regist_date){
-      $status = (mysql_query($query . 'regist_date DATETIME') ? $success : $failed);
+      $status = mysql_query($query . 'regist_date DATETIME') ? $success : $failed;
       echo $title . 'regist_date' . $status . $footer;
     }
   }
