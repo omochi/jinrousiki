@@ -667,7 +667,7 @@ class CastConfig{
   var $wish_role_rate = 100;
 
   //身代わり君がならない役職グループのリスト
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'cupid');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役

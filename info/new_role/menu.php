@@ -36,6 +36,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
   <li>★☆★☆★☆★</li>
   <li><a href="lovers.php" target="body">&lt; 恋人陣営 &gt;</a></li>
   <li><a href="lovers.php#cupid_group" target="body">キューピッド系</a></li>
+  <li><a href="lovers.php#angel_group" target="body">天使系</a></li>
   <li>★☆★☆★☆★</li>
   <li><a href="quiz.php" target="body">&lt; 出題者陣営 &gt;</a></li>
   <li><a href="quiz.php#quiz" target="body">出題者系</a></li>

@@ -12,6 +12,7 @@ Ver. 1.4.0
 <a href="#140beta5">¦Â5</a>
 <a href="#140beta6">¦Â6</a>
 <a href="#140beta7">¦Â7</a>
+<a href="#140beta8">¦Â8</a>
 </p>
 
 <p>

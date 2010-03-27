@@ -53,7 +53,7 @@ class Room{
     $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
       ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
       ' ORDER BY talk_id DESC';
-    if(! $this->IsPlaying()) $query .= ' LIMIT 0, 300';
+    if(! $this->IsPlaying()) $query .= ' LIMIT 0, 500';
     return FetchObject($query, 'Talk');
   }
 

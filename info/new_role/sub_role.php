@@ -541,6 +541,7 @@ LW дм<a href="#strong_voice">┬ч└╝</a>бж<a href="#strong_voice">╛о└╝</a>д└д╚░╡┼▌┼
 <a href="#mind_receiver">╝ї┐о╝╘</a>
 <a href="#mind_open">╕°│л╝╘</a>
 <a href="#mind_friend">╢ж╠─╝╘</a>
+<a href="#mind_sympathy">╢ж┤╢╝╘</a>
 <a href="#mind_evoke">╕¤┤єд╗</a>
 <a href="#mind_lonely">д╧д░дь╝╘</a>
 </p>
@@ -627,6 +628,22 @@ LW дм<a href="#strong_voice">┬ч└╝</a>бж<a href="#strong_voice">╛о└╝</a>д└д╚░╡┼▌┼
 ╕▀ддд╦╟з╝▒д╟днды<a href="#mind_receiver">╝ї┐о╝╘</a>д╟д╣д═бг
 ╢ж═н╝╘дм<a href="human.php#unknown_mania">єм</a>д╚<a href="lovers.php#mind_cupid">╜ў┐└</a>д╦╞▒╗■д╦╠ЁдЄ╖тд┐дьд┐╛ь╣чд╧бв├пдм├пд╬╚п╕└дм
 ╕лдидыд╬длбв╚є╛яд╦дфдфд│д╖дд╛ї╢╖д╦д╩дъд▐д╣д═бг
+</pre>
+
+<h3><a name="mind_sympathy">╢ж┤╢╝╘</a> [Ver. 1.4.0 ж┬8б┴]</h3>
+<pre>
+дк╕▀ддд╬╠Є┐ждЄ├╬дыд│д╚дмд╟днд▐д╣бг
+</pre>
+
+<ol>
+  <li><a href="#mind_read_rule">е╡е╚ещеь╖╧д╬┤Ё╦▄еыб╝еы</a>дм┼м═╤д╡дьд▐д╣бг</li>
+  <li>╠Є┐ж╔╜╝идм╜╨дыд╬д╧╞є╞№╠▄д└д▒д╟д╣бг</li>
+  <li><a href="lovers.php#angel_group">┼╖╗╚╖╧</a>дм╞├─ъд╬┴╚д▀╣чдяд╗д╟╠ЁдЄ┬╟д├д┐╛ь╣чд╦д│дьдм╔╒днд▐д╣бг</li>
+</ol>
+<h4>[║ю└о╝╘длдщд╬е│есеєе╚]</h4>
+<pre>
+┬╛д╬╣ёд╦╝┬║▀д╣дые╡е╓╠Є┐жд╟д╣бг
+╟█├╓╝б┬шд╟д╧<a href="#mind_friend">╢ж╠─╝╘</a>░╩╛хд╬╕·▓╠дЄдвд▓дыд│д╚дм╜╨═шдыд╟д╖дчджбг
 </pre>
 
 <h3><a name="mind_evoke">╕¤┤єд╗</a> [Ver. 1.4.0 ж┬2б┴]</h3>

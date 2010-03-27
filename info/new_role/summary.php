@@ -927,6 +927,51 @@ Ver. 1.4.0
     <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
+  <tr>
+    <td><a href="lovers.php#angel">天使</a></td>
+    <td><a href="lovers.php">恋人</a></td>
+    <td><a href="lovers.php#angel_group">天使系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="lovers.php#rose_angel">薔薇天使</a></td>
+    <td><a href="lovers.php">恋人</a></td>
+    <td><a href="lovers.php#angel_group">天使系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">矢を撃った二人が男性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="lovers.php#lily_angel">百合天使</a></td>
+    <td><a href="lovers.php">恋人</a></td>
+    <td><a href="lovers.php#angel_group">天使系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">矢を撃った二人が女性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="lovers.php#ark_angel">大天使</a></td>
+    <td><a href="lovers.php">恋人</a></td>
+    <td><a href="lovers.php#angel_group">天使系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">他の<a href="#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="lovers.php#triangle_cupid">小悪魔</a></td>
+    <td><a href="lovers.php">恋人</a></td>
+    <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">矢を三本撃てるキューピッド。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
 </table>
 
 <table>
@@ -1268,6 +1313,13 @@ Ver. 1.4.0
     <td class="ability">仲間が分からなくなり、会話できなくなる</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#mind_sympathy">共感者</a></td>
+    <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
+    <td>○</td>
+    <td class="ability">お互いの役職が分かる</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
 </table>
 
 <h2><a name="reference">参考リンク</a></h2>
@@ -1318,9 +1370,6 @@ Ver. 1.4.0
 
 ○嫉狐 (妖狐陣営 / 妖狐系？)
 ・橋姫能力をもった妖狐
-
-○雛狐 (妖狐陣営 / 子狐)
-・ひよこ鑑定士の能力をもった子狐
 
 ○大蝙蝠 (蝙蝠陣営 / 蝙蝠系)
 ・噛まれたら他の蝙蝠に身代わりになってもらう

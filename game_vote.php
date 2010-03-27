@@ -290,7 +290,7 @@ function AggregateVoteGameStart($force_start = false){
   $sub_role_count_list = array();
   //割り振り対象外役職のリスト
   $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_evoke',
-			    'mind_receiver', 'mind_friend', 'mind_lonely');
+			    'mind_receiver', 'mind_friend', 'mind_lonely', 'mind_sympathy');
 
   //サブ役職テスト用
   /*
