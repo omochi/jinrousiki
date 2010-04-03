@@ -159,8 +159,23 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
 
+  var $cure_pharmacist = array(
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#河童#です。昼に投票した人を#解毒#しつつショック死を抑制することができます。\n　一族に伝わる膏薬は人の命を救う霊薬。苦しむ村人を救い、村に笑顔を取り戻すのです。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
+
   var $assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#暗殺者#です。夜に村人一人を暗殺することができます。闇の内に人外を消し、村の平和の為に暗躍するのです！",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 144, 'G' => 64, 'B' => 64)));
+
+  var $doom_assassin = array(
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#死神#です。夜に誰か一人に#死の宣告#を行うことができます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 144, 'G' => 64, 'B' => 64)));
+
+  var $reverse_assassin = array(
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#反魂師#です。夜に選んだ村人が生きていたら暗殺し、死んでいたら蘇生することができます。\n　生と死の狭間に佇み、操魂の秘術をもって、自分にとって活かすべき者をより分けるのです！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 144, 'G' => 64, 'B' => 64)));
 
@@ -291,6 +306,11 @@ class MainRoleList{
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|扇動者|です。昼の自分の投票先が拮抗した場合に限り、まとめて死なせることができます。\n　「人外を吊り殺せ！村に平和を！」夢想に熱狂する村人の熱意を煽り、巧みに策略を繰るのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+
+  var $miasma_mad = array(
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|土蜘蛛|です。昼の自分の投票先が死ななかった場合は#熱病#にさせることができます。\n　身に孕む怨念は悪疫へと変わり、村を地獄の釜の底へ叩き込む。悪夢となって村を苦しめなさい。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
   var $dream_eater_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵の#夢守人#に注意しながら、夢を全て食らい尽くすのです！",
@@ -525,6 +545,9 @@ class SubRoleList{
   var $impatience = array('message' => "　あなたは|短気|です。決定力がありますが、再投票になるとショック死してしまいます。",
 			  'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
+  var $nervy = array('message' => "　あなたは|自信家|です。自分と同じ陣営の人に投票にするとショック死してしまいます。",
+		     'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
   var $celibacy = array('message' => "　あなたは|独身貴族|です。#恋人#に投票されるとショック死してしまいます。",
 			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
 					     '#' => array('R' => 255, 'G' => 51, 'B' => 153)));
@@ -532,6 +555,12 @@ class SubRoleList{
   var $panelist = array('message' => "　あなたは|解答者|です。不正解だったときは#出題者#に投票してください。",
 			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
 					     '#' => array('R' => 153, 'G' => 153, 'B' => 204)));
+
+  var $febris_header = array('message' => "　あなたは|熱病|にかかっています。",
+		       'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
+  var $febris_footer = array('message' => "日目の昼にショック死してしまいます。",
+			     'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
   var $liar = array('message' => "　あなたは|狼少年|です。「人」と「#狼#」をわざと取り違えて発言してしまいます。",
 		    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153),
@@ -656,6 +685,9 @@ class SubRoleList{
   var $sympathy_result = array('message' => "|共感|結果： ",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
 
+  var $death_warrant = array('message' => "　あなたは|死の宣告|を受けているので、指定された日に死亡します。",
+			     'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
+
   var $ability_poison = array('message' => "　あなたは|毒|を持っています。処刑されたり、#人狼#に襲撃された時に誰か一人を道連れにします。",
 			  'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102),
 					       '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
@@ -687,6 +719,8 @@ class SubRoleList{
   var $pharmacist_strong = array('message' => "さんは|強い毒|を持っています", 'R' => 0, 'G' => 153, 'B' => 102);
   var $pharmacist_limited = array('message' => "さんは|限定的な毒|を持っています", 'R' => 0, 'G' => 153, 'B' => 102);
   var $pharmacist_success = array('message' => "さんの|解毒|に成功しました", 'R' => 0, 'G' => 153, 'B' => 102);
+  var $pharmacist_cured = array('message' => "さんの|治療|に成功しました",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $poison_cat_failed = array('message' => "さん蘇生失敗", 'R' => 0, 'G' => 0, 'B' => 0);
   var $poison_cat_success = array('message' => "さん蘇生成功！", 'R' => 0, 'G' => 0, 'B' => 0);
   var $result_mage_failed = array('message' => "さんの鑑定に失敗しました", 'R' => 0, 'G' => 0, 'B' => 0);
@@ -777,8 +811,14 @@ class ResultList{
 				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_pharmacist = array('message' => "さんは|薬師|でした",
 				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
+  var $result_cure_pharmacist = array('message' => "さんは|河童|でした",
+				      'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_assassin = array('message' => "さんは|暗殺者|でした",
 			       'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
+  var $result_doom_assassin = array('message' => "さんは|死神|でした",
+				    'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
+  var $result_reverse_assassin = array('message' => "さんは|反魂師|でした",
+				       'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
   var $result_mind_scanner = array('message' => "さんは|さとり|でした",
 				   'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
   var $result_evoke_scanner = array('message' => "さんは|イタコ|でした",
@@ -833,6 +873,8 @@ class ResultList{
 					 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_agitate_mad = array('message' => "さんは|扇動者|でした",
 				   'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_miasma_mad = array('message' => "さんは|土蜘蛛|でした",
+				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_dream_eater_mad = array('message' => "さんは|獏|でした",
 				      'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_trap_mad = array('message' => "さんは|罠師|でした",
@@ -1005,7 +1047,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->triangle_cupid);
+$image = MakeImage($gen, $list->reverse_assassin);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

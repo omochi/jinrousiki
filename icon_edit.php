@@ -40,8 +40,9 @@ function EditIcon(){
   }
 
   //アイコンの名前が既に登録されていないかチェック
-  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$name}'") > 0){
-    OutputActionResult($title, 'アイコン名 "' . $name . '" は既に登録されています');
+  if(strlen($icon_name) > 0 &&
+     FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
+    OutputActionResult($title, 'アイコン名 "' . $icon_name . '" は既に登録されています');
   }
 
   //色指定のチェック

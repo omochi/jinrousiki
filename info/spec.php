@@ -65,36 +65,36 @@ OutputInfoPageHeader('詳細な仕様');
 </p>
 
 <h3><a name="dead_common">共通</a></h3>
-<h4>〜<?= $MESSAGE->sudden_death ?></h4>
+<h4>〜<?php echo $MESSAGE->sudden_death ?></h4>
 <ul>
 <li>突然死 (投票忘れ)</li>
 </ul>
 
-<h4>〜<?= $MESSAGE->lovers_followed ?></h4>
+<h4>〜<?php echo $MESSAGE->lovers_followed ?></h4>
 <ul>
 <li>後追い (恋人)</li>
 </ul>
 
 
 <h3><a name="dead_day">昼</a></h3>
-<h4>〜<?= $MESSAGE->vote_killed ?></h4>
+<h4>〜<?php echo $MESSAGE->vote_killed ?></h4>
 <ul>
 <li>処刑 (昼の投票)</li>
 </ul>
 
-<h4>〜<?= $MESSAGE->deadman ?></h4>
+<h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
 <li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
 <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
-<h4>〜<?= $MESSAGE->vote_sudden_death ?></h4>
+<h4>〜<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
 <li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>)</li>
 </ul>
 
 <h3><a name="dead_night">夜</a></h3>
-<h4>〜<?= $MESSAGE->deadman ?></h4>
+<h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
 <li>襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
 <li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
@@ -109,12 +109,12 @@ OutputInfoPageHeader('詳細な仕様');
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
 </ul>
-<h4>〜<?= $MESSAGE->revive_success ?></h4>
+<h4>〜<?php echo $MESSAGE->revive_success ?></h4>
 <ul>
 <li>蘇生 (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>、<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
 
-<h4>〜<?= $MESSAGE->revive_failed ?></h4>
+<h4>〜<?php echo $MESSAGE->revive_failed ?></h4>
 <ul>
 <li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>)</li>
 </ul>

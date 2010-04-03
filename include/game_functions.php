@@ -388,7 +388,9 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'jealousy');
       elseif($user->IsRoleGroup('mania'))
 	$str .= GenerateRoleName($user->main_role, 'mania');
-      elseif($user->IsRole('assassin', 'quiz'))
+      elseif($user->IsRoleGroup('assassin'))
+	$str .= GenerateRoleName($user->main_role, 'assassin');
+      elseif($user->IsRole('quiz'))
 	$str .= GenerateRoleName($user->main_role);
       elseif($user->IsRoleGroup('wolf'))
 	$str .= GenerateRoleName($user->main_role, 'wolf');
@@ -400,7 +402,7 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'chiroptera');
       elseif($user->IsRoleGroup('cupid', 'angel'))
 	$str .= GenerateRoleName($user->main_role, 'cupid');
-      elseif($user->IsRoleGroup('poison') || $user->IsRole('pharmacist'))
+      elseif($user->IsRoleGroup('poison', 'pharmacist'))
 	$str .= GenerateRoleName($user->main_role, 'poison');
 
       if(($role_count = count($user->role_list)) > 1){ //·óÇ¤Ìò¿¦¤ÎÉ½¼¨
@@ -1066,10 +1068,12 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_PERVERSENESS':
   case 'SUDDEN_DEATH_FLATTERY':
   case 'SUDDEN_DEATH_IMPATIENCE':
+  case 'SUDDEN_DEATH_NERVY':
   case 'SUDDEN_DEATH_CELIBACY':
   case 'SUDDEN_DEATH_PANELIST':
   case 'SUDDEN_DEATH_JEALOUSY':
   case 'SUDDEN_DEATH_AGITATED':
+  case 'SUDDEN_DEATH_FEBRIS':
     echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){
       $action = strtolower(array_pop(explode('_', $type)));

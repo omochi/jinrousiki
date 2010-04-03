@@ -232,7 +232,7 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [ルール]', 'rul
 　　村作成のオプションで「リアルタイム制」をチェック入れていると、実時間で経過していきます。<br>
 　　時間は部屋を作成した人が設定でき、トップページのゲーム一覧の「リアルタイム制」画像のAltテキストに表示されます。<br>
 
-　　(ゲーム一覧のオプションの部分にあるリアルタイム制の画像<?=
+　　(ゲーム一覧のオプションの部分にあるリアルタイム制の画像<?php echo
 $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
 		    '分　夜： ' . $TIME_CONF->default_night . '分')
 ?>にマウスポインタを乗せると表示されます)<br>
@@ -244,11 +244,11 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 <span class="caption2">・リアルタイム制でない場合<br></span><div class="info">
 　　村作成のオプションで「リアルタイム制」にチェックを入れない場合はこちらになります。<br>
 　　非リアルタイム制では発言することで時間が消費されます。<br>
-  　　半角100文字(全角50文字)の発言で、仮想時間が昼: [<?= $TIME_CALC->spend_day ?>] 夜: [<?= $TIME_CALC->spend_night ?>] ずつ消費されていきます。<br>
+  　　半角100文字(全角50文字)の発言で、仮想時間が昼: [<?php echo $TIME_CALC->spend_day ?>] 夜: [<?php echo $TIME_CALC->spend_night ?>] ずつ消費されていきます。<br>
 　　（夜は人狼の発言だけ仮想時間に加算されていきます）<br>
 　　たくさんの文字を使って発言するとそれだけ仮想時間の消費量が多くなります。<br>
 　　しかし、半角400字以上は消費時間は加算されず半角400字の消費量と同じです。<br>
-  　　一定時間( 実時間 [<?= $TIME_CALC->silence ?>] )発言が無いと皆沈黙したこととなり、昼： [<?= $TIME_CALC->silence_day ?>] 夜： [<?= $TIME_CALC->silence_night ?>] が消費されてしまいます。<br>
+  　　一定時間( 実時間 [<?php echo $TIME_CALC->silence ?>] )発言が無いと皆沈黙したこととなり、昼： [<?php echo $TIME_CALC->silence_day ?>] 夜： [<?php echo $TIME_CALC->silence_night ?>] が消費されてしまいます。<br>
 　　黙っているとどんどん時間が消費されていきます、積極的に発言しましょう。<br>
 </div>
 
@@ -259,7 +259,7 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 　　処刑するための投票は毎日、昼に行われます。<br>
 　　投票は議論中いつでも可能ですが投票をやり直すことはできません、慎重に投票先を決めてください。<br>
 　　また全員が投票した場合、その時点で残り時間に関係なく即処刑が実行され夜になります。<br>
-　　昼の仮想時間12時間を使いきり、それでも投票してない人は [<?= $TIME_CALC->sudden_death ?>] 以内に投票を完了しないと突然死となり<br>
+　　昼の仮想時間12時間を使いきり、それでも投票してない人は [<?php echo $TIME_CALC->sudden_death ?>] 以内に投票を完了しないと突然死となり<br>
 　　無条件で死亡してしまいます。<br>
 　　時間がなくなってきたらすみやかに投票してください。
 </div>
@@ -270,8 +270,8 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 　　人狼は全員で一人だけターゲットできます。<br>
 　　占い師、狩人は個人でそれぞれ指定できます。<br>
 　　キューピッドは１日目のみ、結び付けたい二人を指定してください。<br>
-　　ただし、村の総人数が [<?= $GAME_CONF->cupid_self_shoot ?>人] に満たない場合は、必ず自分と誰かを指定してください。<br>
-　　夜の仮想時間6時間を使いきり、それでも投票してない人は [<?= $TIME_CALC->sudden_death ?>] 以内に投票を完了しないと突然死となり<br>
+　　ただし、村の総人数が [<?php echo $GAME_CONF->cupid_self_shoot ?>人] に満たない場合は、必ず自分と誰かを指定してください。<br>
+　　夜の仮想時間6時間を使いきり、それでも投票してない人は [<?php echo $TIME_CALC->sudden_death ?>] 以内に投票を完了しないと突然死となり<br>
 　　無条件で死亡します。<br>
 </div>
 
@@ -280,7 +280,7 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 <div class="info">
 昼12時間、夜6時間の制限時間が過ぎると発言できなくなります。<br>
 村の住人達はこれまでの情報を元に投票しなくてはなりません。<br>
-投票せずに [<?= $TIME_CALC->sudden_death ?>] 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
+投票せずに [<?php echo $TIME_CALC->sudden_death ?>] 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
 誰かが突然死になってしまうと投票がリセットされてしまいますので注意してください。<br>
 投票は時間に余裕を持って早めにしましょう。<br>
 また、制限時間が来なくても全員の投票が完了していた場合はその時点で即、次の場面（昼→夜、夜→次の日の朝）になります。<br>
@@ -309,7 +309,7 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 [↓リスト]は村人リストを発言ログの下に表示するようにします。<br>
 逆に[↑リスト]は村人リストをデフォルトの発言ログの上に表示するようにします。<br>
 右上の「異議あり」ボタンを押すと特殊なメッセージと音で皆の注意を引きます。<br>
-「異議あり」ボタンのカッコの中の数字は残り回数でゲーム開始前から通算で [<?= $GAME_CONF->objection ?>回] しか使用できません。<br>
+「異議あり」ボタンのカッコの中の数字は残り回数でゲーム開始前から通算で [<?php echo $GAME_CONF->objection ?>回] しか使用できません。<br>
 <br>
 　ゲームが開始されると下のフレームで上から<br>
 　　　「村の名前」<br>
@@ -330,55 +330,55 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 </tr>
 
 <tr>
-<td>村人</td><td><?= $ROLE_IMG->Generate('human') ?></td>
+<td>村人</td><td><?php echo $ROLE_IMG->Generate('human') ?></td>
 </tr>
 
 <tr>
 <td class="wolf">人狼</td><td><?php $ROLE_IMG->Output('wolf') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('wolf_partner') ?></td><td>人狼一号</td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('wolf_partner') ?></td><td>人狼一号</td></tr></table>
 </td>
 </tr>
 
 <tr>
 <td class="mage">占い師</td><td><?php $ROLE_IMG->Output('mage') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('mage_result') ?></td><td>村人一号</td><td><?= $ROLE_IMG->Generate('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('mage_result') ?></td><td>人狼一号</td><td><?= $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>村人一号</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>人狼一号</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
 <td class="necromancer">霊能者</td><td><?php $ROLE_IMG->Output('necromancer') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('necromancer_result') ?></td><td>村人一号</td><td><?= $ROLE_IMG->Generate('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('necromancer_result') ?></td><td>人狼一号</td><td><?= $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>村人一号</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>人狼一号</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="wolf">狂人</td><td><?= $ROLE_IMG->Generate('mad') ?></td>
+<td class="wolf">狂人</td><td><?php echo $ROLE_IMG->Generate('mad') ?></td>
 </tr>
 
 <tr>
 <td class="guard">狩人</td><td><?php $ROLE_IMG->Output('guard') ?>
-<table class="view"><tr><td>占い師一号</td><td><?= $ROLE_IMG->Generate('guard_success') ?></td></tr></table></td>
+<table class="view"><tr><td>占い師一号</td><td><?php echo $ROLE_IMG->Generate('guard_success') ?></td></tr></table></td>
 </tr>
 
 <tr>
 <td class="common">共有者</td><td><?php $ROLE_IMG->Output('common') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('common_partner') ?></td><td>共有者一号</td></tr></table></td>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('common_partner') ?></td><td>共有者一号</td></tr></table></td>
 </tr>
 
 <tr>
 <td class="fox">妖狐</td><td><?php $ROLE_IMG->Output('fox') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('fox_targeted') ?></td></tr></table></td>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('fox_targeted') ?></td></tr></table></td>
 </tr>
 
 <tr>
-<td class="poison">埋毒者</td><td><?= $ROLE_IMG->Generate('poison') ?></td>
+<td class="poison">埋毒者</td><td><?php echo $ROLE_IMG->Generate('poison') ?></td>
 </tr>
 
 <tr>
 <td class="lovers">キューピッド</td><td><?php $ROLE_IMG->Output('cupid') ?>
-<table class="view"><tr><td><?= $ROLE_IMG->Generate('cupid_pair') ?></td><td>恋人一号 恋人二号</td></tr></table></td>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('cupid_pair') ?></td><td>恋人一号 恋人二号</td></tr></table></td>
 </tr>
 
 <tr>
@@ -386,13 +386,13 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 </tr>
 
 <tr>
-<td>権力者</td><td><?= $ROLE_IMG->Generate('authority') ?></td>
+<td>権力者</td><td><?php echo $ROLE_IMG->Generate('authority') ?></td>
 </tr>
 
 <tr>
 <td class="lovers">恋人</td>
-<td><table class="view"><tr><td><?= $ROLE_IMG->Generate('partner_header') ?></td><td>恋人一号</td>
-<td><?= $ROLE_IMG->Generate('lovers_footer') ?></td></tr></table></td>
+<td><table class="view"><tr><td><?php echo $ROLE_IMG->Generate('partner_header') ?></td><td>恋人一号</td>
+<td><?php echo $ROLE_IMG->Generate('lovers_footer') ?></td></tr></table></td>
 </tr>
 </table>
 <br>

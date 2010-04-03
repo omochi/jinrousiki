@@ -18,6 +18,10 @@ echo <<<EOF
 真・闇鍋
 <input type="radio" name="game_option" value="duel">
 決闘
+<input type="radio" name="game_option" value="duel auto_open_cast">
+自動公開決闘
+<input type="radio" name="game_option" value="duel not_open_cast">
+非公開決闘
 <input type="radio" name="game_option" value="full_mania">
 神話マニア
 <input type="submit" value=" 実 行 "></form>

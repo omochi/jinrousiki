@@ -1,13 +1,13 @@
 <?php
 class ScriptInfo{
   //パッケージのバージョン
-  var $version = 'Ver. 1.4.0 beta8';
+  var $version = 'Ver. 1.4.0 beta9';
 
   //パッケージの最終更新日
-  var $last_update = '2010/03/28 (Sun) 01:45';
+  var $last_update = '2010/03/30 (Tue) 04:51';
 
   //パッケージ化した時の Revision
-  var $revision = 176;
+  var $revision = 178;
 
   //PHP + パッケージのバージョン情報を出力する
   function OutputVersion(){

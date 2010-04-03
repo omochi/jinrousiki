@@ -317,6 +317,14 @@ function AggregateVoteGameStart($force_start = false){
   }
   */
 
+  $add_sub_role = 'nervy';
+  array_push($delete_role_list, $add_sub_role);
+  for($i = 0; $i < $user_count; $i++){
+    if(mt_rand(1, 100) <= 10){
+      $fix_role_list[$i] .= ' ' . $add_sub_role;
+    }
+  }
+
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
   foreach($now_sub_role_list as $role){
@@ -612,7 +620,7 @@ function VoteNight(){
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
-    if(! $SELF->IsRole('assassin')) OutputVoteResult('夜：暗殺者以外は投票できません');
+    if(! $SELF->IsRoleGroup('assassin')) OutputVoteResult('夜：暗殺者以外は投票できません');
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
@@ -1048,7 +1056,7 @@ function OutputVoteNight(){
     $submit     = 'revive_do';
     $not_submit = 'revive_not_do';
   }
-  elseif($SELF->IsRole('assassin')){
+  elseif($SELF->IsRoleGroup('assassin')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
     $type     = 'ASSASSIN_DO';
     $not_type = 'ASSASSIN_NOT_DO';

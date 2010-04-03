@@ -8,7 +8,7 @@ if($SERVER_CONF->back_page != ''){
 }
 ?>
 <a href="./"><img src="img/top_title.jpg"></a>
-<div class="comment"><?= $SERVER_CONF->comment ?></div>
+<div class="comment"><?php echo $SERVER_CONF->comment ?></div>
 <noscript>&lt;&lt; JavaScriptを有効にしてください &gt;&gt;</noscript>
 <table class="main">
   <tr><td>
@@ -88,6 +88,9 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="http://jinro.blue-sky-server.com/">猫又鯖</a></li>
       <li><a href="http://wikiwiki.jp/jinro/">Wiki</a></li>
       <li><a href="http://jbbs.livedoor.jp/netgame/4598/">掲示板</a></li>
+      <li>AC 人狼系</li>
+      <li><a href="http://acjinrou.blue-sky-server.com/">AC 人狼鯖</a></li>
+      <li><a href="http://acjinrou.bbs.fc2.com/">掲示板</a></li>
       <li>リンク希望募集中</li>
     </ul>
   </td>

@@ -87,7 +87,7 @@ function OutputAbility(){
     }
     OutputPartner($partner, 'common_partner'); //Ãç´Ö¤òÉ½¼¨
   }
-  elseif($SELF->IsRole('assassin')){ //°Å»¦¼Ô
+  elseif($SELF->IsRoleGroup('assassin')){ //°Å»¦¼Ô
     $ROLE_IMG->Output($SELF->main_role);
     if($is_after_first_night){ //Ìë¤ÎÅêÉ¼
       OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
@@ -277,7 +277,7 @@ function OutputAbility(){
     $ROLE_IMG->Output('human');
   }
   elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->Output('poison'); //ËäÆÇ¼Ô·Ï
-  elseif($SELF->IsRole('pharmacist')){ //Ìô»Õ
+  elseif($SELF->IsRoleGroup('pharmacist')){ //Ìô»Õ
     $ROLE_IMG->Output($SELF->main_role);
     OutputSelfAbilityResult('PHARMACIST_RESULT'); //´ÕÄê·ë²Ì¤òÉ½¼¨
   }
@@ -330,6 +330,14 @@ function OutputAbility(){
   }
   $fix_display_list[] = 'lovers';
 
+  if($SELF->IsRole('febris')){
+    $dead_date = max($SELF->GetPartner('febris'));
+    if($ROOM->date == $dead_date){
+      OutputAbilityResult('febris_header', $dead_date, 'febris_footer');
+    }
+  }
+  $fix_display_list[] = 'febris';
+
   //¤³¤³¤«¤é¤ÏØá°ÍÀè¤ÎÌò¿¦¤òÉ½¼¨
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
@@ -370,6 +378,11 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
 	     'mind_friend', 'mind_sympathy');
+
+  if($virtual_self->IsRole('death_warrant')){
+    $ROLE_IMG->Output('death_warrant');
+  }
+  $fix_display_list[] = 'death_warrant';
 
   //¤³¤ì°Ê¹ß¤Ï¥µ¥ÖÌò¿¦Èó¸ø³«¥ª¥×¥·¥ç¥ó¤Î±Æ¶Á¤ò¼õ¤±¤ë
   if($ROOM->IsOption('secret_sub_role')) return;

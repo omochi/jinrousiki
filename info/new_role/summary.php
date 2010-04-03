@@ -68,6 +68,7 @@ Ver. 1.4.0
 <a href="#sub_140alpha23">α23</a>
 <a href="#sub_140beta2">β2</a>
 <a href="#sub_140beta8">β8</a>
+<a href="#sub_140beta9">β9</a>
 </p>
 
 <table>
@@ -928,6 +929,43 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
+    <td><a href="wolf.php#gold_wolf">金狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる人狼。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#gold_fox">金狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#fox_group">妖狐系</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>村人</td>
+    <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる妖狐。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#sex_wolf">雛狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability">噛みに成功した場合、次の日に噛んだ人の性別が分かる。ただし、噛んだ相手は死なない。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#sex_fox">雛狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#child_fox_group">子狐系</a></td>
+    <td>村人<br>(呪殺無し)</td>
+    <td>子狐</td>
+    <td class="ability">呪殺されないが人狼に襲撃されると殺される妖狐。<br>
+      仲間は分かるが念話はできない。<a href="human.php#sex_mage">ひよこ鑑定士</a>の能力を持っているが時々失敗する。</td>
+    <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
     <td><a href="lovers.php#angel">天使</a></td>
     <td><a href="lovers.php">恋人</a></td>
     <td><a href="lovers.php#angel_group">天使系</a></td>
@@ -1320,6 +1358,13 @@ Ver. 1.4.0
     <td class="ability">お互いの役職が分かる</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#nervy" name="sub_140beta9">自信家</a></td>
+    <td><a href="sub_role.php#chicken_group">小心者系</a></td>
+    <td>○</td>
+    <td class="ability">同一陣営の人に投票するとショック死する</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
 </table>
 
 <h2><a name="reference">参考リンク</a></h2>
@@ -1374,6 +1419,9 @@ Ver. 1.4.0
 ○大蝙蝠 (蝙蝠陣営 / 蝙蝠系)
 ・噛まれたら他の蝙蝠に身代わりになってもらう
 ・弱点や詳細な仕様は要検討
+
+○物書き
+毎晩遺言が出力される
 </pre>
 
 <h4>採用予定</h4>

@@ -89,10 +89,12 @@ class Message{
   var $perverseness       = 'は天邪鬼だったようです'; //天邪鬼
   var $flattery           = 'はゴマすりだったようです'; //ゴマすり
   var $impatience         = 'は短気だったようです'; //短気
+  var $nervy              = 'は自信家だったようです'; //自信家
   var $celibacy           = 'は独身貴族だったようです'; //独身貴族
   var $panelist           = 'は解答者 (不正解) だったようです'; //解答者
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
+  var $febris             = 'は熱病にかかったようです'; //熱病
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合

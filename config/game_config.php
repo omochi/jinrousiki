@@ -227,7 +227,10 @@ class GameConfig{
     'poison_cat'         => 'Ç­Ëô',
     'revive_cat'         => 'ÀçÃ¬',
     'pharmacist'         => 'Ìô»Õ',
+    'cure_pharmacist'    => '²ÏÆ¸',
     'assassin'           => '°Å»¦¼Ô',
+    'doom_assassin'      => '»à¿À',
+    'reverse_assassin'   => 'È¿º²»Õ',
     'mind_scanner'       => '¤µ¤È¤ê',
     'evoke_scanner'      => '¥¤¥¿¥³',
     'jealousy'           => '¶¶É±',
@@ -255,6 +258,7 @@ class GameConfig{
     'voodoo_mad'         => '¼ö½Ñ»Õ',
     'corpse_courier_mad' => '²Ğ¼Ö',
     'agitate_mad'        => 'ÀğÆ°¼Ô',
+    'miasma_mad'         => 'ÅÚÃØéá',
     'dream_eater_mad'    => 'àÓ',
     'trap_mad'           => 'æ«»Õ',
     'fox'                => 'ÍÅ¸Ñ',
@@ -308,6 +312,7 @@ class GameConfig{
     'flattery'      => '¥´¥Ş¤¹¤ê',
     'celibacy'      => 'ÆÈ¿Èµ®Â²',
     'impatience'    => 'Ã»µ¤',
+    'nervy'         => '¼«¿®²È',
     'panelist'      => '²òÅú¼Ô',
     'liar'          => 'Ïµ¾¯Ç¯',
     'invisible'     => '¸÷³ØÌÂºÌ',
@@ -354,6 +359,7 @@ class GameConfig{
     'mind_evoke'    => '¸ı´ó¤»',
     'mind_lonely'   => '¤Ï¤°¤ì¼Ô',
     'lovers'        => 'Îø¿Í',
+    'death_warrant' => '»à¤ÎÀë¹ğ',
     'copied'        => '¸µ¿ÀÏÃ¥Ş¥Ë¥¢');
 
   //Ìò¿¦¤Î¾ÊÎ¬Ì¾ (²áµî¥í¥°ÍÑ)
@@ -395,7 +401,10 @@ class GameConfig{
     'poison_cat'         => 'Ç­',
     'revive_cat'         => 'ÀçÃ¬',
     'pharmacist'         => 'Ìô',
+    'cure_pharmacist'    => '²Ï',
     'assassin'           => '°Å',
+    'doom_assassin'      => '»à¿À',
+    'reverse_assassin'   => 'È¿º²',
     'mind_scanner'       => '¸ç',
     'evoke_scanner'      => '¥¤',
     'jealousy'           => '¶¶',
@@ -423,6 +432,7 @@ class GameConfig{
     'voodoo_mad'         => '¼ö¶¸',
     'corpse_courier_mad' => '²Ğ¼Ö',
     'agitate_mad'        => 'Àğ',
+    'miasma_mad'         => 'ÃØ',
     'dream_eater_mad'    => 'àÓ',
     'trap_mad'           => 'æ«',
     'fox'                => '¸Ñ',
@@ -471,6 +481,7 @@ class GameConfig{
     'flattery'           => '¸ÕËã',
     'celibacy'           => 'ÆÈ',
     'impatience'         => 'Ã»',
+    'nervy'              => '¿®',
     'panelist'           => '²ò',
     'liar'               => '±³',
     'invisible'          => '¸÷ÌÂ',
@@ -516,6 +527,7 @@ class GameConfig{
     'mind_sympathy'      => '´¶',
     'mind_lonely'        => '°ï',
     'lovers'             => 'Îø',
+    'death_warrant'      => 'Àë',
     'copied'             => '¸µ¥Ş');
 
   //¥á¥¤¥óÌò¿¦¤Î¥°¥ë¡¼¥×¥ê¥¹¥È (Ìò¿¦ => ½êÂ°¥°¥ë¡¼¥×)
@@ -549,7 +561,7 @@ class GameConfig{
     'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
 			    'mind_evoke', 'mind_lonely'),
     'mania'        => array('copied'),
-    'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
+    'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'nervy',
 			    'celibacy', 'panelist'),
     'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
 			    'line_reverse', 'gentleman', 'lady'),
@@ -558,7 +570,8 @@ class GameConfig{
     'luck'         => array('upper_luck', 'downer_luck', 'random_luck', 'star', 'disfavor'),
     'voice'        => array('strong_voice', 'normal_voice', 'weak_voice', 'upper_voice',
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
-    'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'));
+    'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'),
+    'assassin'     => array('death_warrant'));
 
   //-- ¤½¤ÎÂ¾ --//
   var $power_gm = false; //¶¯¸¢ GM ¥â¡¼¥É (ON¡§true / OFF¡§false)
@@ -667,7 +680,7 @@ class CastConfig{
   var $wish_role_rate = 100;
 
   //¿ÈÂå¤ï¤ê·¯¤¬¤Ê¤é¤Ê¤¤Ìò¿¦¥°¥ë¡¼¥×¤Î¥ê¥¹¥È
-  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison');
+  var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'mad');
 
   //-- ¿¿¡¦°ÇÆé¤ÎÇÛÌòÀßÄê --//
   //¸ÇÄêÇÛÌò
@@ -713,7 +726,6 @@ class RoleImage extends ImageManager{
 //-- ¾¡Íø¿Ø±Ä¤Î²èÁü --//
 class VictoryImage extends VictoryImageBase{
   var $path      = 'victory_role';
-  #var $extension = 'jpg';
   var $extension = 'gif';
   var $class     = 'winner';
 }

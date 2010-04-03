@@ -315,7 +315,7 @@ class User{
     if($this->IsRole('anti_voodoo')){
       return isset($vote_data['ANTI_VOODOO_DO'][$this->uname]);
     }
-    if($this->IsRole('assassin')){
+    if($this->IsRoleGroup('assassin')){
       if(is_array($vote_data['ASSASSIN_NOT_DO']) &&
 	 array_key_exists($this->uname, $vote_data['ASSASSIN_NOT_DO'])) return true;
       return isset($vote_data['ASSASSIN_DO'][$this->uname]);

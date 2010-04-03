@@ -5,12 +5,12 @@ $INIT_CONF->LoadClass('GAME_OPT_MESS');
 OutputInfoPageHeader('闇鍋モード');
 ?>
 <p>
-<a href="#wish_role"><?= $GAME_OPT_MESS->wish_role ?></a>
-<a href="#chaos"><?= $GAME_OPT_MESS->chaos ?></a>
-<a href="#chaosfull"><?= $GAME_OPT_MESS->chaosfull ?></a>
+<a href="#wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a>
+<a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>
+<a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>
 </p>
 
-<h2><a name="wish_role"><?= $GAME_OPT_MESS->wish_role ?></a></h2>
+<h2><a name="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
 <pre>
 配役を先に決めてから、出現した役職グループを希望していれば
 優先的に配役される仕様です。
@@ -32,7 +32,7 @@ OutputInfoPageHeader('闇鍋モード');
 希望制オプションは強制的にオフになります
 </pre>
 
-<h2><a name="chaos"><?= $GAME_OPT_MESS->chaos ?></a></h2>
+<h2><a name="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
 <p>
 <a href="#chaos_appear_role">出現役職</a>
 <a href="#chaos_decide_role">配役決定ルーチン</a>
@@ -299,7 +299,7 @@ OutputInfoPageHeader('闇鍋モード');
 出現人数の上限は規定していません。
 </pre>
 
-<h2><a name="chaosfull"><?= $GAME_OPT_MESS->chaosfull ?></a></h2>
+<h2><a name="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
 <p>
 <a href="#chaosfull_decide_role">配役決定ルーチン</a>
 <a href="#chaosfull_decide_role_example">配役決定例</a>

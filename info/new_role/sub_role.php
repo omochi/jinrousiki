@@ -38,6 +38,7 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <a href="#flattery">ゴマすり</a>
 <a href="#impatience">短気</a>
 <a href="#celibacy">独身貴族</a>
+<a href="#nervy">自信家</a>
 <a href="#panelist">解答者</a>
 </p>
 
@@ -96,6 +97,16 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <pre>
 <a href="human.php#jealousy">橋姫</a>同様、対<a href="lovers.php">恋人</a>用役職ですが、こっちはショック死系という事もあって
 より理不尽な仕様となっています。
+</pre>
+
+<h3><a name="nervy">自信家</a> [Ver. 1.4.0 β9〜]</h3>
+<pre>
+同一陣営の人に投票するとショック死します。
+恋人の場合は恋人陣営と判定されます。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+翠星石鯖＠やる夫人狼のとある村の RP がモデルです。
 </pre>
 
 <h3><a name="panelist">解答者</a> [Ver. 1.4.0 α17〜]</h3>
