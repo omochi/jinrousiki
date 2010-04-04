@@ -6,12 +6,12 @@ class DatabaseConfig extends DatabaseConfigBase{
   var $host = 'localhost';
 
   //データベースのユーザ名
-  #var $user = 'xxxx';
-  var $user = 'grayran';
+  var $user = 'xxxx';
+  #var $user = 'grayran';
 
   //データベースサーバのパスワード
-  #var $password = 'xxxxxxxx';
-  var $password = 'satorituri';
+  var $password = 'xxxxxxxx';
+  #var $password = 'satorituri';
 
   //データベース名
   var $name = 'jinrou';
@@ -42,7 +42,8 @@ class ServerConfig{
   var $system_password = 'xxxxxxxx';
 
   //パスワード暗号化用 salt
-  var $salt = 'xxxx';
+  #var $salt = 'xxxx';
+  var $salt = 'testtest';
 
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
   var $adjust_time_difference = false;
@@ -67,7 +68,7 @@ class ServerConfig{
     更新後のリビジョン番号と同じか、それより大きな値を設定すると
     admin/setup.php の処理は常時スキップされます。
   */
-  var $last_updated_revision = 0;
+  var $last_updated_revision = 164;
 }
 
 //-- 村情報共有サーバの設定 --//
@@ -116,7 +117,7 @@ class SharedServerConfig{
 			  'encode' => 'UTF-8',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>',
-			  'disable' => true),
+			  'disable' => false),
 
     'suisei' => array('name' => '翠星石鯖',
 		      'url' => 'http://alicegame.dip.jp/suisei/',
@@ -179,14 +180,37 @@ class SharedServerConfig{
 			     'encode' => 'EUC-JP',
 			     'separator' => '',
 			     'footer' => '',
-			     'disable' => true),
+			     'disable' => false),
 
     'kotori' => array('name' => '小鳥鯖',
 		      'url' => 'http://kiterew.tv/jinro/',
 		      'encode' => 'EUC-JP',
 		      'separator' => '',
 		      'footer' => '',
-		      'disable' => true)
+		      'disable' => false),
+
+    /*
+    'bourbon' => array('name' => 'バーボン鯖',
+		       'url' => 'http://www.freedom.xii.jp/jinro/',
+		       'encode' => 'EUC-JP',
+		       'separator' => '',
+		       'footer' => '',
+		       'disable' => false),
+    */
+
+    'nekomata' => array('name' => '猫又鯖',
+			'url' => 'http://jinro.blue-sky-server.com/',
+			'encode' => 'UTF-8',
+			'separator' => '<!-- pass 2(no referer) -->',
+			'footer' => '</a>',
+			'disable' => false),
+
+    'acjinrou' => array('name' => 'AC人狼鯖',
+			'url' => 'http://acjinrou.blue-sky-server.com/',
+			'encode' => 'EUC-JP',
+			'separator' => '',
+			'footer' => '',
+			'disable' => false)
 			   );
 }
 
@@ -198,12 +222,12 @@ class UserIcon extends UserIconBase{
   var $width  = 45;    //アップロードできるアイコンの最大幅
   var $height = 45;    //アップロードできるアイコンの最大高さ
   var $number = 1000;  //登録できるアイコンの最大数
-  var $password = 'xxxxxxxx'; //アイコン編集パスワード
+  var $password = 'xxxx'; //アイコン編集パスワード
 }
 
 //-- 開発用ソースアップロード設定 --//
 class SourceUploadConfig{
-  var $disable = true; //無効設定 <アップロードを [true:無効 / false:有効] にする>
+  var $disable = false; //無効設定 <アップロードを [true:無効 / false:有効] にする>
 
   //ソースアップロードフォームのパスワード
   var $password = 'upload';
@@ -216,4 +240,12 @@ class SourceUploadConfig{
 
   //最大ファイルサイズ (バイト)
   var $max_size = 10485760; //10 Mbyte
+}
+
+//-- Twitter 投稿設定 --//
+class TwitterConfig extends TwitterConfigBase{
+  var $disable = true; //Twitter 投稿停止設定 (true:停止する / false:しない)
+  var $server = ''; //サーバ名
+  var $user = 'xxxx'; //ユーザ名
+  var $password = 'xxxx'; //パスワード
 }

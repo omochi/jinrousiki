@@ -135,6 +135,24 @@ class CookieDataSet{
   }
 }
 
+//-- Twitter 投稿用の基底クラス --//
+class TwitterConfigBase{
+  //投稿処理
+  function Send($id, $name, $comment){
+    if($this->disable) return;
+    require_once(JINRO_MOD . "/twitter/Twitter.php"); //ライブラリをロード
+
+    $message = "【{$this->server}】{$id}番地に{$name}村\n〜{$comment}〜 が建ちました";
+    $st =& new Services_Twitter($this->user, $this->password);
+    if($st->setUpdate(mb_convert_encoding($message, 'UTF-8', 'auto'))) return;
+
+    //エラー処理
+    $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" .
+      'ユーザ名：' . $this->user . '<br>'."\n" . 'メッセージ：' . $message;
+    PrintData($sentence);
+  }
+}
+
 //-- ユーザアイコン管理の基底クラス --//
 class UserIconBase{
   // アイコンの文字数

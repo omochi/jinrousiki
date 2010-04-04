@@ -817,6 +817,20 @@ function GetRoleList($user_count, $option_role){
     $role_list['human'] = 0;
   }
 
+  //$is_single_role = true;
+  $is_single_role = false;
+  if($is_single_role){ //一人一職村対応
+    $role_list = array(); //配役をリセット
+    $base_role_list = array('wolf', 'mage', 'human', 'jammer_mad', 'necromancer',
+			    'common', 'crisis_priest', 'boss_wolf', 'guard', 'dark_fairy',
+			    'poison', 'agitate_mad', 'fox', 'cupid', 'soul_mage',
+			    'resist_wolf', 'trap_common', 'yama_necromancer', 'child_fox', 'mania',
+			    'tongue_wolf', 'assassin', 'fend_guard', 'cute_fox', 'ghost_common',
+			    'cute_wolf', 'black_fox', 'light_fairy', 'poison_jealousy', 'self_cupid',
+			    'silver_wolf','scarlet_wolf','wise_wolf', 'mind_cupid', 'dummy_chiroptera',);
+    for($i = $user_count; $i > 0; $i--) $role_list[array_shift($base_role_list)]++;
+  }
+
   if($role_list['human'] < 0){ //"村人" の人数をチェック
     $sentence = '"村人" の人数がマイナスになってます';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);

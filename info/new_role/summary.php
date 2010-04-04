@@ -51,6 +51,7 @@ Ver. 1.4.0
 <a href="#140beta6">β6</a>
 <a href="#140beta7">β7</a>
 <a href="#140beta8">β8</a>
+<a href="#140beta9">β9</a>
 </p>
 
 <p>
@@ -727,7 +728,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#elder_wolf" name="140beta5">概系</a></td>
+    <td><a href="wolf.php#elder_wolf">概系</a></td>
     <td><a href="wolf.php">客系</td>
     <td><a href="wolf.php#wolf_group">客系废</a></td>
     <td>客系</td>
@@ -1009,6 +1010,15 @@ Ver. 1.4.0
     <td>录客</td>
     <td class="ability">甜を话塑封てるキュ〖ピッド。</td>
     <td>Ver. 1.4.0 β8</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#reverse_assassin" name="140beta9">瓤翰徽</a></td>
+    <td><a href="human.php">录客</td>
+    <td><a href="human.php#assassin_group">芭沪荚废</a></td>
+    <td>录客</td>
+    <td>录客</td>
+    <td class="ability">屉に联んだ客が栏きていたら芭沪、秽んでいたら辽栏する泼检な芭沪荚。</td>
+    <td>Ver. 1.4.0 β9</td>
   </tr>
 </table>
 

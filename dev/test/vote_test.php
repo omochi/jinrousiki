@@ -261,12 +261,13 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 5;
 #$ROOM->day_night = 'beforegame';
-$ROOM->day_night = 'day';
-#$ROOM->day_night = 'night';
+#$ROOM->day_night = 'day';
+$ROOM->day_night = 'night';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';
+foreach($USERS->rows as $user) $user->handle_name = '身代わり君';
 $USERS->ByID(9)->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);

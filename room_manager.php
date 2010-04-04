@@ -244,6 +244,11 @@ function CreateRoom(){
        FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
       if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
     }
+
+    //Twitter Åê¹Æ½èÍý
+    $twitter = new TwitterConfig();
+    $twitter->Send($room_no, $room_name, $room_comment);
+
     OutputRoomAction('success', $room_name);
     $status = true;
   }while(false);
