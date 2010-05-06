@@ -295,6 +295,23 @@ function PrintData($data, $name = NULL){
   echo $str . '<br>';
 }
 
+//村情報のRSSファイルを更新する
+function OutputSiteSummary() {
+  global $INIT_CONF;
+  $INIT_CONF->LoadFile('feedengine');
+
+  $filename = 'rss/rooms.rss';
+  $rss = FeedEngine::Initialize('site_summary.php');
+  $rss->Build();
+
+  $fp = fopen(dirname(__FILE__)."/{$filename}", 'w');
+  fwrite($fp, $rss->Export($filename));
+  fflush($fp);
+  fclose($fp);
+
+  return $rss;
+}
+
 //ページ送り用のリンクタグを出力する
 function OutputPageLink($CONFIG){
   $page_count = ceil($CONFIG->count / $CONFIG->view);

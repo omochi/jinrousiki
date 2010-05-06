@@ -312,10 +312,10 @@ EOF;
 
   function LoadClosedRooms($room_order, $limit_statement) {
     $sql = <<<SQL
-SELECT room.room_no AS id, room.room_name, room.room_comment, room.date AS room_date,
-    room.game_option AS room_game_option, room.option_role AS room_option_role,
-    room.max_user AS room_max_user, users.room_num_user, room.victory_role AS room_victory_role,
-    room.establish_time, room.start_time, room.finish_time
+SELECT room.room_no AS id, room.room_name AS name, room.room_comment AS comment,
+    room.date AS room_date AS date, room.game_option AS room_game_option,
+    room.option_role AS room_option_role, room.max_user AS room_max_user, users.room_num_user,
+    room.victory_role AS room_victory_role, room.establish_time, room.start_time, room.finish_time
 FROM room
     LEFT JOIN (SELECT room_no, COUNT(user_no) AS room_num_user FROM user_entry GROUP BY room_no) users
 	USING (room_no)
@@ -328,7 +328,7 @@ SQL;
 
   function LoadOpeningRooms($class = 'RoomDataSet') {
     $sql = <<<SQL
-SELECT room_no AS id, room_name, room_comment, game_option, option_role, max_user, status
+SELECT room_no AS id, room_name AS name, room_comment AS comment, game_option, option_role, max_user, status
 FROM room
 WHERE status <> 'finished'
 ORDER BY room_no DESC
@@ -336,13 +336,16 @@ SQL;
     return self::__load($sql);
   }
 
-  function __load($sql) {
+  function __load($sql, $class = 'Room') {
     $result = new RoomDataSet();
-    if ($q_rooms = mysql_query($sql) != null) {
-      while(($object = mysql_fetch_object($q_room, $class)) !== false){
-	$object->ParseCompoundParameters();
+    if (($q_rooms = mysql_query($sql)) !== false) {
+      while(($object = mysql_fetch_object($q_rooms, $class)) !== false){
+        $object->ParseOption();
         $result->rows[] = $object;
       }
+    }
+    else {
+      die('村一覧の取得に失敗しました');
     }
     return $result;
   }

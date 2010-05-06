@@ -143,6 +143,7 @@ function CheckVictory($check_draw = false){
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame', " .
     "victory_role = '{$victory_role}', finish_time = NOW() WHERE room_no = {$ROOM->id}";
   SendQuery($query, true);
+  OutputSiteSummary();
   return true;
 }
 

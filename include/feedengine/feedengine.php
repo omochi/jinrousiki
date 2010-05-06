@@ -6,6 +6,7 @@ class FeedEngine {
   var $items = array();
 
   function Initialize($filename){
+    global $INIT_CONF;
     if (include(JINRO_INC . "/feedengine/$filename")) {
       $segments = explode('_', substr($filename, 0, -4));
       foreach($segments as $segment){
@@ -17,22 +18,42 @@ class FeedEngine {
   }
 
   function SetChannel($title, $url, $description='') {
-    if (empty($this->url) && !empty($title)) {
-      $this->title = $title;
-      $this->url = $url;
-      $this->description = $description;
-    }
+    $this->title = $title;
+    $this->url = $url;
+    $this->description = $description;
   }
 
   function AddItem($title, $url, $description) {
-    $this->items[] = array(
+    return $this->items[] = array(
       'title'=>$title,
       'url'=>$url,
       'description'=>$description
     );
   }
 
-  function Pack($filename) {
+  function decode($value) {
+    global $SERVER_CONF;
+    return mb_convert_encoding($value, $SERVER_CONF->encoding, 'auto');
+  }
+
+  function Import($url) {
+    $RDF = simplexml_load_string(file_get_contents($url));
+    $this->title = self::decode((string)$RDF->title);
+    $this->url = (string)$RDF->link;
+    $this->description = self::decode((string)$RDF->description);
+    foreach($RDF->item as $item) {
+      $this->ImportItem($item);
+    }
+  }
+
+  function ImportItem($item) {
+    $title = self::decode((string)$item->title);
+    $link = (string)$item->link;
+    $description = self::decode($item->description->asXML());
+    return $this->AddItem($title, $link, $description);
+  }
+
+  function Export($filename) {
     $list_items = '';
     $item_contents = '';
     foreach($this->items as $item) {
@@ -47,10 +68,10 @@ class FeedEngine {
 XML_RDF;
     }
 
-    return <<<XML_RDF
-<?xml version="1.0" charset="UTF-8"?>
+    $document = <<<XML_RDF
+<?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF xml:lang="ja" xmlns="http://purl.org/rss/1.0/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-<channel about="{$this->url}feed/{$filename}">
+<channel about="{$this->url}{$filename}">
 <title>{$this->title}</title>
 <link>{$this->url}</link>
 <description>{$this->description}</description>
@@ -63,5 +84,7 @@ XML_RDF;
 {$item_contents}
 </rdf:RDF>
 XML_RDF;
+    global $SERVER_CONF;
+    return mb_convert_encoding($document, 'UTF-8', $SERVER_CONF->encoding);
   }
 }

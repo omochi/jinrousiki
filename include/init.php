@@ -150,6 +150,7 @@ class InitializeConfig{
       break;
 
     case 'chatengine':
+    case 'feedengine':
     case 'paparazzi_class':
     case 'role_class':
       $path = $this->path->include . '/' . array_shift(explode('_', $name));

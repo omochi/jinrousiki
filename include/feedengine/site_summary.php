@@ -1,28 +1,30 @@
 <?php
-class SiteSummary {
-  var $rooms = array();
+$INIT_CONF->LoadClass('ROOM_IMG');
 
-  function Import($url, $rss) {
-    $summary = new SiteSummary();
-    $summary->url = $url;
-  }
+class SiteSummary extends FeedEngine {
+  var $room_info = array();
 
-  function Export() {
-    $feen = new FeedEngine();
-    $feen->SetChannel($SERVER_CONF->title, $SERVER_CONF->site_root, $SERVER_CONF->comment);
+  function Build() {
+    global $SERVER_CONF, $ROOM_IMG;
+    $this->SetChannel($SERVER_CONF->title, $SERVER_CONF->site_root, $SERVER_CONF->comment);
     $rooms = RoomDataSet::LoadOpeningRooms();
     foreach ($rooms->rows as $room) {
-      $title = "{$room->room_name}村 ~ {$room->room_comment}";
-      $url = str_replace('//', '/', "{$SERVER_CONF->site_root}/game_view.php?room={$room->id}");
+      $title = "{$room->name}村";
+      $url = "{$this->uri}game_view.php?room_no={$room->id}";
+      $options = GenerateGameOptionImage($room->game_option->row, $room->option_role->row);
+      $status = $ROOM_IMG->Generate($room->status);
       $description = <<<XHTML
-<p>{$SERVER_CONF->title}にて{$room->room_name}村 ~ {$room->comment}[{$room->id}番地]が建ちました。</p>
-<h2>設定</h2>
-<ul>
-<li></li>
-</ul>
+<div>
+<a href="{$url}">
+{$status}<span class='room_no'>[{$room->id}番地]</span><h2>{$title}</h2>
+〜 {$room->comment} 〜 {$options}(最大{$room->max_user}人)
+</a>
+</div>
+
 XHTML;
-      $feen->AddItem($room->room_name, $url, $description);
+      $description = strtr($description, array('./' => $this->url));
+      $description = preg_replace('#(<img .*?[^/])>#i', '$1/>', $description);
+      $this->AddItem($title, $url, $description);
     }
-    return $feen->Pack(JINRO_ROOT.'/feed/site.rss');
   }
 }

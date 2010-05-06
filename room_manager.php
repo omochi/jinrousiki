@@ -1,6 +1,8 @@
 <?php
 require_once('include/init.php');
+$INIT_CONF->LoadFile('feedengine');
 $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE', 'GAME_OPT_CAPT');
+
 
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
@@ -16,7 +18,10 @@ function MaintenanceRoom(){
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
     "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
-  SendQuery($query);
+  if (SendQuery($query)) {
+    //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
+    OutputSiteSummary();
+  }
 
   //終了した部屋のセッションIDのデータをクリアする
   $query = <<<EOF
@@ -248,6 +253,8 @@ function CreateRoom(){
     //Twitter 投稿処理
     $twitter = new TwitterConfig();
     $twitter->Send($room_no, $room_name, $room_comment);
+    //RSS更新
+    OutputSiteSummary();
 
     OutputRoomAction('success', $room_name);
     $status = true;
@@ -314,29 +321,39 @@ function OutputRoomAction($type, $room_name = ''){
 
 //村(room)のwaitingとplayingのリストを出力する
 function OutputRoomList(){
-  global $DEBUG_MODE, $ROOM_IMG;
+  if(!$DEBUG_MODE){
+    $filename = JINRO_ROOT.'/rss/rooms.rss';
+    if (file_exists($filename)) {
+      $rss = FeedEngine::Initialize('site_summary.php');
+      $rss->Import($filename);
+    }
+    else {
+      $rss = OutputSiteSummary();
+    }
+    foreach ($rss->items as $item) {
+      extract($item, EXTR_PREFIX_ALL, 'room');
+      echo $room_description;
+    }
+  }
+  else {
+    //return; //シークレットテスト用
+    //ルームNo、ルーム名、コメント、最大人数、状態を取得
+    $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
+     "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
+   $list = FetchAssoc($query);
+    foreach($list as $array){
+      extract($array);
+      $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
+      //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
 
-  //return; //シークレットテスト用
-  //ルームNo、ルーム名、コメント、最大人数、状態を取得
-  $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
-    "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
-  $list = FetchAssoc($query);
-  foreach($list as $array){
-    extract($array);
-    $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
-    //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
-
-    echo <<<EOF
+      echo <<<EOF
 <a href="login.php?room_no=$room_no">
 {$ROOM_IMG->Generate($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
 <div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
 </a><br>
+<a href="admin/room_delete.php?room_no={$room_no}">{$room_no}番地を削除 (緊急用)</a><br>
 
 EOF;
-
-    if($DEBUG_MODE){
-      echo '<a href="admin/room_delete.php?room_no=' . $room_no . '">' .
-	$room_no . ' 番地を削除 (緊急用)</a><br>'."\n";
     }
   }
 }

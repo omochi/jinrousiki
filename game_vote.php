@@ -424,6 +424,7 @@ function AggregateVoteGameStart($force_start = false){
   $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
     "status = 'playing', start_time = NOW() WHERE room_no = {$ROOM->id}";
   SendQuery($query);
+  OutputSiteSummary();
   $ROOM->Talk($sentence);
   $ROOM->SystemMessage(1, 'VOTE_TIMES'); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
