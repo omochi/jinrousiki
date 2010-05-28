@@ -1,5 +1,5 @@
 <?php
-define('JINRO_ROOT', '..');
+define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('GAME_CONF');
 

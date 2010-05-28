@@ -1,3 +1,4 @@
+@charset "euc-jp";
 @import url(role.css);
 /* game_view.php & OutputGameHeader() */
 body{ /* AA 用 */
@@ -107,7 +108,6 @@ body{ /* AA 用 */
   border: 0;
   border-collapse: collapse;
   width: 100%
-  font-family: "ＭＳ Ｐゴシック", "ＭＳＰゴシック", "MSPゴシック", "MS Pゴシック";
 }
 .normal{font-size:12pt;} /* 通常の発言 */
 .strong{  /* 大声 */

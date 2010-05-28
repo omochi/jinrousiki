@@ -27,16 +27,17 @@ class InitializeConfig{
     'DB_CONF' => 'server_config',
     'SERVER_CONF' => 'server_config',
     'USER_ICON' => 'server_config',
+    'MENU_LINK' => 'server_config',
     'SCRIPT_INFO' => 'version',
     'SESSION' => 'system_class',
     'ROOM_CONF' => 'game_config',
     'GAME_CONF' => 'game_config',
-    'CAST_CONF' => 'game_config',
     'TIME_CONF' => 'game_config',
     'ICON_CONF' => 'game_config',
     'ROOM_IMG' => 'game_config',
     'ROLE_IMG' => 'game_config',
     'SOUND' => 'game_config',
+    'CAST_CONF' => 'cast_config',
     'MESSAGE' => 'message',
     'GAME_OPT_MESS' => 'message',
     'VICT_MESS' => 'message',
@@ -71,6 +72,8 @@ class InitializeConfig{
     'DB_CONF' => 'DatabaseConfig',
     'SERVER_CONF' => 'ServerConfig',
     'SCRIPT_INFO' => 'ScriptInfo',
+    'MENU_LINK' => 'MenuLinkConfig',
+    'BBS_CONF' => 'BBSConfig',
     'SESSION' => 'Session',
     'ROOM_CONF' => 'RoomConfig',
     'GAME_CONF' => 'GameConfig',
@@ -140,6 +143,7 @@ class InitializeConfig{
     switch($name){
     case 'server_config':
     case 'game_config':
+    case 'cast_config':
     case 'message':
     case 'version':
       $path = $this->path->config;

@@ -221,11 +221,16 @@ class User{
   function IsPoison(){
     global $ROOM;
 
-    if(! $this->IsRoleGroup('poison')) return false;
-    if($this->IsRole('chain_poison', 'dummy_poison')) return false; //Ï¢ÆÇ¼Ô¡¦Ì´ÆÇ¼Ô
+    if(! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false; //ÌµÆÇ¡¦Ï¢ÆÇ¼Ô
+    if($this->IsRole('dummy_poison')) return $ROOM->IsDay(); //Ì´ÆÇ¼Ô
     if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //µ³»Î
     if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //ÀøÆÇ¼Ô¤Ï 5 ÆüÌÜ°Ê¹ß
     return true;
+  }
+
+  //Øá°ÍÇ½ÎÏ¼ÔÈ½Äê (ÈïØá°Í¼Ô¤È¥³¡¼¥É¾å¤Ç¶èÊÌ¤¹¤ë¤¿¤á¤Î´Ø¿ô)
+  function IsPossessedGroup(){
+    return $this->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox');
   }
 
   //½êÂ°¿Ø±ÄÈ½ÊÌ
@@ -240,6 +245,8 @@ class User{
 
   //Àê¤¤»Õ¤ÎÈ½Äê
   function DistinguishMage($reverse = false){
+    if($this->IsRole('boss_chiroptera')) return 'chiroptera'; //Âçéþéõ¤ÏéþéõÈ½Äê
+
     //ÇòÏµ°Ê³°¤ÎÏµ¡¢¹õ¸Ñ¡¢ÉÔ¿³¼Ô¤Ï¿ÍÏµÈ½Äê
     $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) ||
 	       $this->IsRole('black_fox', 'suspect'));
@@ -328,6 +335,12 @@ class User{
       if(is_array($vote_data['TRAP_MAD_NOT_DO']) &&
 	 array_key_exists($this->uname, $vote_data['TRAP_MAD_NOT_DO'])) return true;
       return isset($vote_data['TRAP_MAD_DO'][$this->uname]);
+    }
+    if($this->IsRole('possessed_mad', 'possessed_fox')){
+      if(! $this->IsActive()) return true;
+      if(is_array($vote_data['POSSESSED_NOT_DO']) &&
+	 array_key_exists($this->uname, $vote_data['POSSESSED_NOT_DO'])) return true;
+      return isset($vote_data['POSSESSED_DO'][$this->uname]);
     }
 
     if($ROOM->IsOpenCast()) return true;
@@ -618,11 +631,17 @@ class UserDataSet{
     return $this->ByID($SESSION->GetUser());
   }
 
-  function TraceVirtual($user_no, $role, $type){
+  function TraceVirtual($user_no, $type){
     global $ROOM;
 
     $user = $this->ByID($user_no);
-    if(! $ROOM->IsPlaying() || ! $user->IsRole($role)) return $user;
+    if(! $ROOM->IsPlaying()) return $user;
+    if($type == 'possessed'){
+      if(! $user->IsRole($type)) return $user;
+    }
+    elseif(! $user->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox')){
+      return $user;
+    }
 
     $virtual_id = $user->GetPossessedTarget($type, $ROOM->date);
     if($virtual_id === false) return $user;
@@ -630,11 +649,11 @@ class UserDataSet{
   }
 
   function ByVirtual($user_no){
-    return $this->TraceVirtual($user_no, 'possessed_wolf', 'possessed_target');
+    return $this->TraceVirtual($user_no, 'possessed_target');
   }
 
   function ByReal($user_no){
-    return $this->TraceVirtual($user_no, 'possessed', 'possessed');
+    return $this->TraceVirtual($user_no, 'possessed');
   }
 
   function ByVirtualUname($uname){

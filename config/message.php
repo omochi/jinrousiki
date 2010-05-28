@@ -35,6 +35,8 @@ class Message{
   var $jammer_do        = 'の占いを妨害します'; //月兎の投票
   var $trap_do          = 'の周辺に罠を仕掛けました'; //罠師の投票
   var $trap_not_do      = 'は罠設置を行いませんでした'; //罠師のキャンセル投票
+  var $possessed_do     = 'に憑依します'; //犬神の投票
+  var $possessed_not_do = 'は憑依を行いませんでした'; //犬神のキャンセル投票
   var $voodoo_do        = 'に呪いをかけます'; //呪術師の投票
   var $guard_do         = 'の護衛に付きました'; //狩人の投票
   var $anti_voodoo_do   = 'の厄を祓います'; //厄神の投票
@@ -68,7 +70,7 @@ class Message{
   //var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
   var $deadman            = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃
-  var $possessed          = 'は誰かに憑依したようです'; //憑狼の憑依
+  var $possessed          = 'は誰かに憑依したようです'; //憑依
   var $possessed_targeted = 'は憑狼に憑依されたようです'; //憑狼の襲撃
   var $possessed_reset    = 'は憑依から開放されたようです'; //憑依リセット
   var $dream_killed       = 'は獏の餌食になったようです'; //獏の襲撃
@@ -82,6 +84,7 @@ class Message{
   var $priest_returned    = 'は天に帰ったようです'; //天人の帰還
   var $revive_success     = 'は生き返りました'; //蘇生成功
   var $revive_failed      = 'の蘇生に失敗したようです'; //蘇生失敗
+  var $sacrifice          = 'は誰かの犠牲となって死亡したようです'; //身代わり死
   var $lovers_followed    = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
   var $vote_sudden_death  = 'はショック死しました'; //投票系ショック死
   var $chicken            = 'は小心者だったようです'; //小心者
@@ -106,6 +109,7 @@ class Message{
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
   var $ability_jammer_do        = '占いを妨害する人を選択してください'; //邪魔狂人
   var $ability_trap_do          = '罠を設置する人を選択してください'; //罠師
+  var $ability_possessed_do     = '憑依する人を選択してください'; //犬神
   var $ability_dream_eat        = '夢を喰べる人を選択してください'; //獏
   var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師・九尾
   var $ability_guard_do         = '護衛する人を選択してください'; //狩人系
@@ -114,7 +118,7 @@ class Message{
   var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
   var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
-  var $ability_cupid_do         = '結びつける二人を選択してください'; //キューピッド
+  var $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精
   var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
 
@@ -174,6 +178,7 @@ class GameOptionMessage{
   var $boss_wolf            = '白狼登場';
   var $poison_wolf          = '毒狼登場';
   var $possessed_wolf       = '憑狼登場';
+  var $sirius_wolf          = '天狼登場';
   var $cupid                = 'キューピッド登場';
   var $medium               = '巫女登場';
   var $mania                = '神話マニア登場';
@@ -184,6 +189,7 @@ class GameOptionMessage{
   var $sudden_death         = '虚弱体質村';
   var $perverseness         = '天邪鬼村';
   var $full_mania           = '神話マニア村';
+  var $festival             = 'お祭り村';
   var $chaos                = '闇鍋モード';
   var $chaosfull            = '真・闇鍋モード';
   var $chaos_open_cast      = '配役を通知する';
@@ -213,6 +219,7 @@ class GameOptionCaptionMessage{
   var $boss_wolf            = '占い結果が「村人」、霊能結果が「白狼」と表示される狼です。[人狼1→白狼1]';
   var $poison_wolf          = '吊られた時にランダムで村人一人を巻き添えにする狼です。<br>　　　[人狼1→毒狼1、村人1→薬師1]';
   var $possessed_wolf       = '噛んだ人に憑依して乗っ取ってしまう狼です。[人狼1→憑狼1]';
+  var $sirius_wolf          = '仲間が減ると特殊能力が発現する狼です。[人狼1→天狼1]';
   var $cupid                = '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]';
   var $medium               = '突然死した人の所属陣営が分かる特殊な霊能者です。[村人2→巫女1、女神1]';
   var $mania                = '初日夜に他の村人の役職をコピーする特殊な役職です。[村人1→神話マニア1]';
@@ -223,6 +230,7 @@ class GameOptionCaptionMessage{
   var $sudden_death         = '全員に投票でショック死するサブ役職のどれかがつきます';
   var $perverseness         = '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります';
   var $full_mania           = '「村人」が全員「神話マニア」に入れ替わります';
+  var $festival             = '管理人がカスタムする特殊設定です';
   var $no_chaos             = '通常人狼';
   var $chaos                = '通常村＋α程度に配役がぶれる闇鍋モードです';
   var $chaosfull            = '人狼1、占い師1以外の全ての役職がランダムとなる真・闇鍋モードです';
@@ -303,6 +311,8 @@ class VoteMessage{
   var $dream_eat        = '対象の夢を喰う'; //獏
   var $trap_do          = '対象の周辺に罠を設置する'; //罠師
   var $trap_not_do      = '罠を設置しない'; //罠師(キャンセル)
+  var $possessed_do     = '対象に憑依する'; //犬神
+  var $possessed_not_do = '誰にも憑依しない'; //犬神(キャンセル)
   var $cupid_do         = '対象に愛の矢を放つ'; //キューピッド
   var $fairy_do         = '対象に悪戯する'; //妖精
   var $mania_do         = '対象を真似る'; //神話マニア

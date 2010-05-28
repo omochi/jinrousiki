@@ -154,6 +154,11 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
 
+  var $sacrifice_cat = array(
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#猫神#です。死んだ人を誰か一人、確実に蘇らせる事ができますが自分は死んでしまいます。\n　あなたが残せる最後の御業は「等価を以て魂を反す」事。死を以て、輪廻の輪へと魂を導くのです。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
+
   var $pharmacist = array(
     'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#薬師#です。前日に投票した人が#毒#を持っているか翌朝に知ることができます。\n　また、投票した人が処刑された場合はその人を#無毒化#させることができます。|村人|への二次被害を未然に防ぐのです！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
@@ -258,6 +263,13 @@ class MainRoleList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|憑狼|です。噛んだ人に憑依することができます。その幽幻の力で肉体を奪い、多くの魂を食い荒らすのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
+  var $sirius_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|天狼|です。仲間が減ったら#暗殺#反射、|罠|無効、_毒_無効、^護衛^突破など、様々な能力が発現します。\n　最後の一人になった時、吊り以外であなたを止める手段はありません。孤高の生き様を魅せるのです！",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 144, 'G' => 64, 'B' => 64),
+			 '_' => array('R' => 0, 'G' => 153, 'B' => 102),
+			 '^' => array('R' => 51, 'G' => 153, 'B' => 255)));
+
   var $elder_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|古狼|です。古くから居るあなたの投票には#二票#分の価値があります。\n　老練の弁舌と素知らぬ村人の信頼を盾に、村人を食い殺すのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
@@ -322,6 +334,10 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 51, 'G' => 153, 'B' => 255)));
 
+  var $possessed_mad = array(
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|犬神|です。一度だけ、死んだ人に憑依することができます。骸を傀儡人形と化し、その怨恨の赴くままに呪詛を撒き散らすのです！",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
   var $fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|妖狐|、#人狼#に殺されることはありません。ただし占われると死んでしまいます。\n　村人を騙し、#人狼#を騙し、村を|妖狐|のものにするのです！",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
@@ -371,12 +387,17 @@ class MainRoleList{
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|仙狐|です。死んだ人を誰か一人蘇らせる事ができます。\n　繁栄を司るその力で、今まで散々不敬を働いた村人たちに恐怖の鉄槌を下すのです！",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
 
+  var $possessed_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|憑狐|です。一度だけ、死んだ人に憑依することができます。語らぬ骸を纏い、あなたの変化で村と狼を騙すのです！",
+    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+
   var $cursed_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|天狐|です。|妖狐|の天敵、#占い師#を呪返しで殺すことができます。_人狼_の襲撃すら跳ね返すことができますが、\n　^狩人^には殺されてしまいます。偽りと話術を飾りに舞うように村を駆け巡り、村を|妖狐|の物とするのです！",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|天狐|です。#占い師#、_暗殺_、^人狼^の襲撃すら跳ね返すことができますが、=狩人=には殺されてしまいます。\n　偽りを身に纏い、話術を飾りに舞うように村を駆け巡り、網の目のように張り巡らせた策謀の上を踊るのです！",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '#' => array('R' => 153, 'G' => 51, 'B' => 255),
-			 '_' => array('R' => 255, 'G' => 0, 'B' => 0),
-			 '^' => array('R' => 51, 'G' => 153, 'B' => 255)));
+			 '_' => array('R' => 144, 'G' => 64, 'B' => 64),
+			 '^' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '=' => array('R' => 51, 'G' => 153, 'B' => 255)));
 
   var $cute_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|萌狐|です。ごくまれに発言が遠吠えになってしまいます。バレた時は笑ってごまかしましょう。",
@@ -473,6 +494,11 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
 			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
 
+  var $boss_chiroptera = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|大蝙蝠|です。#人狼#に襲撃されても他の|蝙蝠|を犠牲にして生き延びることができます。\n　誇りを捨て情を捨て、同族の命すら糧にして、ただただ生き残ることだけを考えるのです。",
+    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
+			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
   var $elder_chiroptera = array(
     'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|古蝙蝠|です。古くから居るあなたの投票には#二票#分の価値があります。\n　年功と村人の笑顔を食い物にし粘り強く、汚くかつしぶとく生き抜くのです。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
@@ -515,6 +541,11 @@ class MainRoleList{
 
   var $mania = array(
     'message' => "[役割] [#村人#陣営] [|神話マニア|系]\n　あなたは|神話マニア|です。初日の夜に指定した人のメイン役職をコピーすることができます。\n　数多の神話の知識を力に、その役職になりきるのです！",
+    'delimiter' => array('|' => array('R' => 192, 'G' => 160, 'B' => 96),
+			 '#' => array('R' => 96, 'G' => 96, 'B' => 96)));
+
+  var $trick_mania = array(
+    'message' => "[役割] [#村人#陣営] [|神話マニア|系]\n　あなたは|奇術師|です。初日の夜に指定した人が何もしていなければ役職を奪うことができます。\n　奪った相手に成り代わり、その能力を使いこなしてあげましょう。",
     'delimiter' => array('|' => array('R' => 192, 'G' => 160, 'B' => 96),
 			 '#' => array('R' => 96, 'G' => 96, 'B' => 96)));
 
@@ -692,6 +723,13 @@ class SubRoleList{
 			  'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102),
 					       '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
+  var $ability_sirius_wolf = array('message' => "　残りの|狼|が二人になりました。人の繰り出す業（#暗殺#、|罠|）は、もはやあなたを貫けません。",
+			  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+					       '#' => array('R' => 144, 'G' => 64, 'B' => 64)));
+
+  var $ability_full_sirius_wolf = array('message' => "　あなたが最後の|狼|です。今や天に輝く|狼|となったあなたに、噛めないものはあんまりない。",
+			  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ", 'R' => 204, 'G' => 102, 'B' => 51);
   var $fox_partner = array('message' => "深遠なる|妖狐|の智を持つ同胞は以下の人たちです： ", 'R' => 204, 'G' => 0, 'B' => 153);
   var $child_fox_partner = array('message' => "|妖狐|に与する仲間は以下の人たちです： ", 'R' => 204, 'G' => 0, 'B' => 153);
@@ -742,6 +780,8 @@ class ResultList{
   var $result_elder = array('message' => "さんは|長老|でした",
 			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
   var $result_saint = array('message' => "さんは|聖女|でした",
+			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
+  var $result_executor = array('message' => "さんは|執行者|でした",
 			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
   var $result_suspect = array('message' => "さんは|不審者|でした",
 			      'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
@@ -809,6 +849,8 @@ class ResultList{
 				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_revive_cat = array('message' => "さんは|仙狸|でした",
 				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
+  var $result_sacrifice_cat = array('message' => "さんは|猫神|でした",
+				    'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_pharmacist = array('message' => "さんは|薬師|でした",
 				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_cure_pharmacist = array('message' => "さんは|河童|でした",
@@ -818,6 +860,8 @@ class ResultList{
   var $result_doom_assassin = array('message' => "さんは|死神|でした",
 				    'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
   var $result_reverse_assassin = array('message' => "さんは|反魂師|でした",
+				       'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
+  var $result_eclipse_assassin = array('message' => "さんは|蝕暗殺者|でした",
 				       'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
   var $result_mind_scanner = array('message' => "さんは|さとり|でした",
 				   'delimiter' => array('|' => array('R' => 160, 'G' => 160, 'B' => 0)));
@@ -851,6 +895,8 @@ class ResultList{
 				'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_possessed_wolf = array('message' => "さんは|憑狼|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_sirius_wolf = array('message' => "さんは|天狼|でした",
+				  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_elder_wolf = array('message' => "さんは|古狼|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_cute_wolf   = array('message' => "さんは|萌狼|でした",
@@ -879,6 +925,8 @@ class ResultList{
 				      'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_trap_mad = array('message' => "さんは|罠師|でした",
 			       'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_possessed_mad = array('message' => "さんは|犬神|でした",
+				    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_fox = array('message' => "さんは|妖狐|でした",
 			  'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_white_fox = array('message' => "さんは|白狐|でした",
@@ -897,6 +945,8 @@ class ResultList{
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_revive_fox = array('message' => "さんは|仙狐|でした",
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
+  var $result_possessed_fox = array('message' => "さんは|憑狐|でした",
+				    'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_cursed_fox = array('message' => "さんは|天狐|でした",
 				 'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_elder_fox = array('message' => "さんは|古狐|でした",
@@ -937,6 +987,8 @@ class ResultList{
 					'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_cursed_chiroptera = array('message' => "さんは|呪蝙蝠|でした",
 					'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
+  var $result_boss_chiroptera = array('message' => "さんは|大蝙蝠|でした",
+				      'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_elder_chiroptera = array('message' => "さんは|古蝙蝠|でした",
 					'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_dummy_chiroptera = array('message' => "さんは|夢求愛者|でした",
@@ -959,6 +1011,8 @@ class ResultList{
 				   'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_mania = array('message' => "さんは|神話マニア|でした",
 			    'delimiter' => array('|' => array('R' => 192, 'G' => 160, 'B' => 96)));
+  var $result_trick_mania = array('message' => "さんは|奇術師|でした",
+				  'delimiter' => array('|' => array('R' => 192, 'G' => 160, 'B' => 96)));
   var $result_unknown_mania = array('message' => "さんは|鵺|でした",
 				    'delimiter' => array('|' => array('R' => 192, 'G' => 160, 'B' => 96)));
 }
@@ -1047,7 +1101,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->reverse_assassin);
+$image = MakeImage($gen, $list->cursed_fox);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

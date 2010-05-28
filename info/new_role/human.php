@@ -33,13 +33,14 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 <p>
 <a href="#elder">長老</a>
 <a href="#saint">聖女</a>
+<a href="#executor">執行者</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
 
 <h3><a name="human_rule">村人表記役職</a></h3>
 <pre>
-本人の表示が「村人」になる役職は<a href="#saint">聖女</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#chain_poison">連毒者</a>です。
+本人の表示が「村人」になる役職は<a href="#saint">聖女</a>・<a href="#executor">執行者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#chain_poison">連毒者</a>です。
 
 <a href="#suspect">不審者</a>の発言が遠吠えに変換される確率は 1% (管理者は設定ファイルで変更可能) です。
 変換されたかどうかは本人にしか分からず、客観的な証明は不可能なので
@@ -83,6 +84,34 @@ PP ラインの計算を難しくさせるために作成してみました。
 やる夫人狼のプレイヤーさんがモデルです。
 判定法則が少々複雑ですが、基本的には村人陣営が有利になる結果になります。
 通常の決定者同様、地味ですが勝負所で効いてくる存在になることでしょう。
+</pre>
+
+<h3><a name="executor">執行者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+再投票発生時に非村人 (村人陣営以外 + 恋人) に投票していた場合は吊る事が出来る村人。
+本人表記は「村人」。
+</pre>
+<ol>
+  <li>判定は<a href="../spec.php#vote_day">決定者系</a>と<a href="#saint">聖女</a>の間</li>
+  <li>投票先が非村人 → 非村人が吊られる</li>
+  <li>投票先が村人 → 再投票</li>
+  <li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人が吊られる<br>
+    例) 執行者A → 村人A、執行者B → 村人B、執行者C → 人狼A<br>
+    　=&gt; 人狼A が吊られる
+  </li>
+  <li>執行者が複数 + 複数が同じ非村人に投票 → 非村人が吊られる<br>
+    例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 人狼A<br>
+    　=&gt; 人狼A が吊られる
+  </li>
+  <li>執行者が複数 + 別々の非村人に投票 → 再投票<br>
+    例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 妖狐A<br>
+    　=&gt; 再投票
+  </li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+iM@S人狼のプレイヤーさんへの誕生日プレゼントです。
+「なんとなく人外に投票する程度の能力」を形にしてみました。
 </pre>
 
 <h3><a name="suspect">不審者</a> (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9〜]</h3>
@@ -200,7 +229,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
 村人の性別を判別する特殊な占い師。
-<a href="chiroptera.php">蝙蝠</a>を占った場合は「蝙蝠」と判定される。
+<a href="chiroptera.php">蝙蝠</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
+</pre>
+<h4>Ver. 1.4.0 β8〜</h4>
+<pre>
+<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
 </pre>
 <h4>Ver. 1.4.0 α21〜</h4>
 <pre>
@@ -219,14 +252,14 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 月兎：無効 / 呪い：解呪</h4>
 <pre>
 対呪い専門の特殊な占い師。
-占った人が呪い持ちや<a href="wolf.php#possessed_wolf">憑狼</a>の場合は呪殺し(死亡メッセージは呪返しと同じ)、
+占った人が呪い持ちや憑依能力者の場合は呪殺し(死亡メッセージは呪返しと同じ)、
 誰かに呪いをかけられていた場合は解呪(呪返しが発動しない)する。
 呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 呪い系統の対抗役職です。
-積極的に呪い持ち(<a href="wolf.php#cursed_wolf">呪狼</a>、<a href="fox.php#cursed_fox">天狐</a>、<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>)を探しに行く場合は
+積極的に呪い持ち(<a href="wolf.php#cursed_wolf">呪狼</a>、<a href="fox.php#cursed_fox">天狐</a>、<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>)や憑依能力者(<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>)を探しに行く場合は
 普通の占い師と同じ感覚でいいですが、呪術系能力者(<a href="wolf.php#voodoo_mad">呪術師</a>、<a href="fox.php#voodoo_fox">九尾</a>)による
 占い師の呪返しを防ぐのが狙いなら、同時に同じ人を
 占う必要があるので動き方が難しくなります。
@@ -239,7 +272,12 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 <pre>
 本人には「占い師」と表示されており、占い行動もできるが結果は逆になる。
 呪殺できない代わりに呪返しも受けない。
+特殊蝙蝠(<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)は正しい結果が表示される。
 <a href="wolf.php#jammer_mad">月兎</a>による占い妨害の影響を受けない。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+特殊蝙蝠(<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)は正しい結果が表示される。
 </pre>
 <h4>Ver. 1.4.0 α18〜</h4>
 <pre>
@@ -305,7 +343,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 <h3><a name="dummy_necromancer">夢枕人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <pre>
 本人には「霊能者」と表示されており、霊能判定も表示されるが結果は逆になる。
-特殊狼(<a href="wolf.php#boss_wolf">白狼</a>、<a href="wolf.php#possessed_wolf">憑狼</a>など)や、特殊妖狐(<a href="fox.php#cursed_fox">天狐</a>、<a href="fox.php#child_fox">子狐</a>など)は正しい結果が表示される。
+特殊狼(<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>など)や、特殊妖狐(<a href="fox.php#cursed_fox">天狐</a>・<a href="fox.php#child_fox">子狐</a>など)は正しい結果が表示される。
 <a href="wolf.php#corpse_courier_mad">火車</a>の能力の影響を受けない。
 </pre>
 <h4>Ver. 1.4.0 α21〜</h4>
@@ -467,21 +505,25 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 
 <h3><a name="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest">司祭</a>、<a href="#reporter">ブン屋</a>、<a href="#assassin">暗殺者</a>です</li>
-  <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます。</li>
+  <li>制限対象は、<a href="#priest">司祭</a>・<a href="#reporter">ブン屋</a>・<a href="#assassin">暗殺者</a>です</li>
+  <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
 
 <h3><a name="guard_hunt">狩りルール</a></h3>
 <pre>
-1. 狩り能力があるのは狩人、<a href="#poison_guard">騎士</a>、<a href="#fend_guard">忍者</a>です
+1. 狩り能力があるのは狩人・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>です
 2. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>の項目を参照してください
-3. 狩り対象は特殊狂人、特殊妖狐、特殊蝙蝠です
-3-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>、<a href="wolf.php#voodoo_mad">呪術師</a>、<a href="wolf.php#corpse_courier_mad">火車</a>、<a href="wolf.php#agitate_mad">扇動者</a>、<a href="wolf.php#dream_eater_mad">獏</a>、<a href="wolf.php#trap_mad">罠師</a>)
-3-2. 特殊妖狐 (<a href="fox.php#voodoo_fox">九尾</a>、<a href="fox.php#revive_fox">仙狐</a>、<a href="fox.php#cursed_fox">天狐</a>)
-3-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>、<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>)
+3. 狩り対象は特殊狂人・特殊妖狐・特殊蝙蝠です
+3-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>)
+3-2. 特殊妖狐 (<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
+3-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+4. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
 </pre>
-
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
+</pre>
 
 <h3><a name="poison_guard">騎士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
 <h4>[狩人能力] 護衛：制限無し / 狩り：有り / 罠：有効</h4>
@@ -554,6 +596,10 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 護衛した人の厄 (占い妨害、呪返し、憑依) を祓う特殊な狩人。
 成功した場合は次の日に専用のシステムメッセージが表示される。
 </pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+憑依中の<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>を直接護衛すると憑依状態を解く事ができる。
+</pre>
 <h4>Ver. 1.4.0 α24〜</h4>
 <pre>
 憑依中の<a href="wolf.php#possessed_wolf">憑狼</a>に対しては圧倒的なアドバンテージを持っており、
@@ -576,6 +622,13 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <pre>
 本人には「狩人」と表示されており、護衛行動を取ることができる。
 必ず護衛成功メッセージが表示されるが、表示されるだけで誰も護衛していない。
+<a href="wolf.php#dream_eater_mad">獏</a>には圧倒的なアドバンテージを持っており、何らかの形で遭遇すると
+一方的に狩ることができる。
+<a href="chiroptera.php#fairy_group">妖精系</a>を護衛すると狩ることができる。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="chiroptera.php#fairy_group">妖精系</a>を護衛すると狩ることができる
 </pre>
 <h4>Ver. 1.4.0 α21〜</h4>
 <pre>
@@ -708,9 +761,14 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 </pre>
 
 <h3><a name="dummy_poison">夢毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
-<h4>[毒能力] 吊り：無し / 襲撃：無し / 薬師判定：無し</h4>
+<h4>[毒能力] 吊り：特殊 / 襲撃：無し / 薬師判定：無し</h4>
 <pre>
 本人には「埋毒者」と表示されている村人。
+吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -718,6 +776,9 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 毒は持っていませんが、身代わり君がこれになることはありません。
 偽者ではありますがどちらかと言うと人狼が不利になる役職ですね。
 夢毒者である事に賭けて真埋毒者を噛みに行く狼が出るかもしれません。
+
+Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>に中る仕様に変更しました。
+夢の世界の攻防なので<a href="#pharmacist_group">薬師系</a>による解毒はできません。
 </pre>
 
 
@@ -729,6 +790,7 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <p>
 <a href="#poison_cat">猫又</a>
 <a href="#revive_cat">仙狸</a>
+<a href="#sacrifice_cat">猫神</a>
 </p>
 
 <h3><a name="about_revive">蘇生能力者の基本ルール</a></h3>
@@ -782,7 +844,6 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 ただの埋毒者になる点に注意してください。
 </pre>
 
-
 <h3><a name="revive_cat">仙狸</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
 <pre>
 毒能力を失った代わりに高い蘇生能力を持った<a href="#poison_cat">猫又</a>の上位種。
@@ -797,10 +858,24 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <a href="#poison_cat">猫又</a>の上位種として実装してみました。
 </pre>
 
+<h3><a name="sacrifice_cat">猫神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+毒能力を失った代わりに確実な蘇生に特化した<a href="#poison_cat">猫又</a>の亜種。
+蘇生に関するルールは<a href="#about_revive">蘇生能力者の基本ルール</a>参照。
+蘇生成功率は 100% で、例外的に誤爆率が 0% に設定されているが、成功すると自分が死亡する。
+複数の猫神が同時に同じ人を蘇生しようとした場合は「全員成功」扱いとなり、本人は死亡する。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#possessed_mad">犬神</a>が能力を発動した時に蘇生能力者が誰もいないと
+正体がばれてしまうので、同じ状況に見える村陣営種を用意しました。
+</pre>
+
 
 <h2><a name="pharmacist_group">薬師系</a></h2>
 <p>
 <a href="#pharmacist">薬師</a>
+<a href="#cure_pharmacist">河童</a>
 </p>
 
 
@@ -816,6 +891,11 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 4. 限定的な毒を持っている (<a href="#poison_guard">騎士</a>・<a href="#chain_poison">連毒者</a>・<a href="#poison_jealousy">毒橋姫</a>)
 5. 解毒に成功した (この場合は詳細な毒の種類は分からない)
 </pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="#dummy_poison">夢毒者</a>が吊られると<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が巻き込まれる仕様に変更。
+これを「解毒」する事はできません。
+</pre>
 <h4>Ver. 1.4.0 α23〜</h4>
 <pre>
 解毒成功だけでなく、前日に投票した人の詳細な毒能力が分かります
@@ -827,6 +907,25 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 埋毒者系に対しても効果を発揮します。
 </pre>
 
+<h3><a name="cure_pharmacist">河童</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+昼に投票した人を解毒・ショック死抑制する特殊な薬師。
+解毒能力は<a href="#pharmacist">薬師</a>と同じ。
+抑制できるのは<a href="sub_role.php#chicken_group">小心者系</a>のみで、<a href="#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>によるものは対象外。
+解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
+何の「治療」に成功した(毒やショック死の種類など)のかは表示されない。
+
+例) A[河童] → B[村人][小心者]
+この場合、Bがショック死する条件を満たしますが、河童の能力でキャンセルされます。
+キャンセルするだけで<a href="sub_role.php#chicken">小心者</a>が消える訳ではないので注意。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+新役職考案スレ (最下参照) の 17 が原型です。
+河童の膏薬伝説をヒントに、高い治療能力をもった特殊薬師としてデザインしました。
+<a href="sub_role.php#febris">熱病</a>の性質上、<a href="wolf.php#miasma_mad">土蜘蛛</a>に対して完全なカウンターになっています。
+</pre>
+
 
 <h2><a name="assassin_group">暗殺者系</a></h2>
 <p>
@@ -835,11 +934,15 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <p>
 <a href="#assassin">暗殺者</a>
 <a href="#reverse_assassin">反魂師</a>
+<a href="#eclipse_assassin">蝕暗殺者</a>
 </p>
 
 <h3><a name="assassin_spec">暗殺者系の基本スペック</a></h3>
 <ol>
-<li>暗殺可能な役職に制限はありません (人狼・妖狐でも暗殺可能)</li>
+<li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)</li>
+<li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します</li>
+<li>人狼の残り人数が二人以下の時に<a href="wolf.php#sirius_wolf">天狼</a>を対象にした場合は反射されます</li>
+<li><a href="fox.php#cursed_fox">天狐</a>を対象にした場合は反射されます</li>
 <li>暗殺された人の死亡メッセージは人狼の襲撃と同じです</li>
 <li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です</li>
 <li>「暗殺する / しない」を必ず投票する必要があります</li>
@@ -849,6 +952,10 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <li>暗殺者に暗殺された占い師の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効になります</li>
 <li>暗殺者に暗殺されても狩人系の護衛判定は有効です</li>
 </ol>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+暗殺反射システムが実装されました
+</pre>
 
 <h3><a name="assassin">暗殺者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
 <pre>
@@ -867,6 +974,27 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <a href="#assassin_spec">暗殺者の基本スペック</a>が適用される。
 詳細な判定順は<a href="../spec.php#vote_night">詳細な仕様</a>参照。
 </pre>
+<ol>
+<li>一度死んだ人の能力発動はキャンセルされます</li>
+<li>「反魂」可能な対象は恋人以外全てです</li>
+<li>自分が暗殺されても投票は有効です (暗殺系の処理は同時並行処理扱い)</li>
+</ol>
+<pre>
+例1) A[反魂師] → B[占い師] ← C[反魂師]、B[占い師] → D[妖狐]
+占い結果：何も出ない (呪殺もなし)
+死体：B が無残な死体で発見されました (死因：「暗殺された」)
+蘇生：B は生き返りました
+
+例2) A[反魂師] → B[猫神] ← C[人狼]、B[猫神] → D[村人]
+死体：B が無残な死体で発見されました (死因：「人狼に襲撃された」)
+蘇生：B は生き返りました
+Bの蘇生処理はキャンセル
+
+例3) A[暗殺者] → B[反魂師] → C[村人] ← D[人狼]
+死体：B が無残な死体で発見されました (死因：「暗殺された」)
+死体：C が無残な死体で発見されました (死因：「人狼に襲撃された」)
+蘇生：C は生き返りました
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 基本的には<a href="#assassin">暗殺者</a>とほぼ同じ動きで問題ないでしょう。
@@ -874,6 +1002,18 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 失敗すると大惨事となりますが……
 </pre>
 
+<h3><a name="eclipse_assassin">蝕暗殺者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する劣化暗殺者。本人の表記は「<a href="#assassin">暗殺者</a>」。
+<a href="#assassin_spec">暗殺者の基本スペック</a>が適用される。
+<a href="#psycho_mage">精神鑑定士</a>の鑑定結果は「正常」。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#assassin">暗殺者</a>に暗殺のリスクを感じてもらうための存在です。
+<a href="#assassin">暗殺者</a>が恋人になると大惨事が発生する可能性がありましたが
+この役職の登場によって多少は緩和されるかもしれません。
+</pre>
 
 <h2><a name="mind_scanner_group">さとり系</a></h2>
 <p>
@@ -967,6 +1107,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h2><a name="mania_group">神話マニア系</a></h2>
 <p>
 <a href="#mania">神話マニア</a>
+<a href="#trick_mania">奇術師</a>
 <a href="#unknown_mania">鵺</a>
 </p>
 
@@ -974,8 +1115,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a name="mania">神話マニア</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11〜]</h3>
 <pre>
 初日の夜に誰か一人を選んでその人の役職をコピーします。
-入れ替わるのは2日目の朝です。
-神話マニアか<a href="#unknown_mania">鵺</a>を選んだ場合は村人になります。
+入れ替わるのは2日目の朝で、神話マニア系を選んだ場合は村人になります。
 陣営や占い結果は全てコピー先の役職に入れ替わります。
 通常闇鍋モードでは16人以上から出現します。
 </pre>
@@ -985,6 +1125,44 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 CO するべきかどうかは、コピーした役職次第です。
 </pre>
 
+
+<h3><a name="trick_mania">奇術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+初日の夜に誰か一人を選んでその人の役職をコピーします。
+入れ替わるのは2日目の朝で、神話マニア系を選んだ場合は村人になります。
+陣営や占い結果は全てコピー先の役職に入れ替わります。
+
+もし、コピー先が身代わり君以外で、「初日投票をしてなかった」場合はその役職を奪い取り、
+相手はその系統の基本職に入れ替わってしまいます。
+</pre>
+<h4>コピーの結果例</h4>
+<pre>
+1. A[奇術師] → B[魂の占い師] =&gt; A[魂の占い師] B[魂の占い師]
+初日に投票しているので入れ替わりが発生しません。
+<a href="#mage_group">占い師系</a>・<a href="#mind_scanner_group">さとり系</a>・<a href="fox.php#child_fox_group">子狐系</a>・<a href="lovers.php">恋人陣営</a>・<a href="chiroptera.php#fairy_group">妖精系</a>と、
+一部の<a href="wolf.php#mad_group">狂人</a>・<a href="fox.php#fox_group">妖狐</a>がこれに該当します
+
+2. A[奇術師] → B[巫女] =&gt; A[巫女] B[霊能者]
+入れ替わりが発生してもコピー先には特にメッセージが出ないので、
+朝、突然役職表記が入れ替わってしまうことになります。
+
+3. A[奇術師] → B[夢守人] =&gt; A[夢守人] B[狩人]
+この場合はコピー先は入れ替わりを自覚できないことになります。
+
+4. A[奇術師] → B[天人] =&gt; A[天人] B[天人]
+天人は初日に投票しませんが、死亡処理が入るので例外的に入れ替え対象外です。
+
+5. A[奇術師] → B[舌禍狼] → 身代わり君 =&gt; A[舌禍狼] B[舌禍狼]
+投票している狼をコピーした場合は入れ替えが発生しません
+
+6. A[奇術師] → B[罠師] =&gt; A[罠師] B[狂人]
+初日に投票していない狂人は入れ替えが発生します
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「所属陣営は初日の夜の投票で確定する」というルールの範囲内で
+「相手の能力を奪う」役職を作れないかな、と思案してこういう実装になりました。
+</pre>
 
 <h3><a name="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
 <pre>

@@ -1,5 +1,5 @@
 body{
-  background-image: url("img/icon_upload_bg.jpg");
+  background-image: url("../img/icon_upload_bg.jpg");
   background-repeat: no-repeat;
   background-position: 100% 100%;
   background-attachment: fixed;
@@ -31,7 +31,6 @@ input{
 table.color{
   width: 600px;
   font-size : 11px;
-  font-family : "ms ui gothic";
   line-height : 13px;
 }
 table.color label{font-weight: normal;}

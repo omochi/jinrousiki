@@ -3,10 +3,6 @@
   border-collapse: collapse;
 }
 .input-say td{vertical-align: top;}
-.input-say textarea{
-  font-size: 12pt;
-  font-family: "£Í£Ó ¥´¥·¥Ã¥¯";
-}
 .input-say input{
   width: 100px;
   border: 1px solid #C0C0C0;

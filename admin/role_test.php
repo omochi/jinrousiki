@@ -24,6 +24,8 @@ echo <<<EOF
 非公開決闘
 <input type="radio" name="game_option" value="full_mania">
 神話マニア
+<input type="radio" name="game_option" value="festival">
+お祭り
 <input type="submit" value=" 実 行 "></form>
 </form>
 
@@ -44,5 +46,4 @@ if($_POST['command'] == 'role_test'){
     PrintData(GenerateRoleNameList($role_count_list));
   }
 }
-
 OutputHTMLFooter(true);

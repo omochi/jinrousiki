@@ -73,6 +73,7 @@ class Talk{
       case 'VOODOO_MAD_DO':
       case 'VOODOO_FOX_DO':
       case 'TRAP_MAD_DO':
+      case 'POSSESSED_DO':
 	$action = array_shift(explode('_', $action)) . '_do';
 	$this->class = 'wolf-eat';
 	break;
@@ -80,6 +81,11 @@ class Talk{
       case 'TRAP_MAD_NOT_DO':
 	$this->class = 'wolf-eat';
 	$this->sentence = ' ' . $MESSAGE->trap_not_do;
+	return;
+
+      case 'POSSESSED_NOT_DO':
+	$this->class = 'wolf-eat';
+	$this->sentence = ' ' . $MESSAGE->possessed_not_do;
 	return;
 
       case 'REPORTER_DO':

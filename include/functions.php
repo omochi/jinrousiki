@@ -224,16 +224,16 @@ function ConvertTrip($str){
   global $SERVER_CONF, $GAME_CONF;
 
   if($GAME_CONF->trip){
+    if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
     //トリップ関連のキーワードを置換
     $str = str_replace(array('◆', '＃'), array('◇', '#'), $str);
     if(($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
       $name = mb_substr($str, 0, $trip_start);
       $key  = mb_substr($str, $trip_start + 1);
-      #echo 'trip_start: '.$trip_start.', name: '.$name.', key:'.$key.'<br>'; //デバッグ用
+      //PrintData("{$trip_start}, name: {$name}, key: {$key}", 'Trip Start'); //テスト用
+      $key = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode); //文字コードを変換
 
       if($GAME_CONF->trip_2ch && strlen($key) >= 12){
-	//文字コードを変換
-	$key = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode);
 	$trip_mark = substr($key, 0, 1);
 	if($trip_mark == '#' || $trip_mark == '$'){
 	  if(preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})$|', $key, $stack)){
@@ -244,15 +244,13 @@ function ConvertTrip($str){
 	  }
 	}
 	else{
-	  $trip = str_replace('+', '.', substr(base64_encode(sha1($key,TRUE)), 0, 12));
+	  $trip = str_replace('+', '.', substr(base64_encode(sha1($key, true)), 0, 12));
 	}
       }
       else{
-	//文字コードを変換
-	$key  = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode);
-	$salt = substr($key.'H.', 1, 2);
+	$salt = substr($key . 'H.', 1, 2);
 
-	//$salt =~ s/[^\.-z]/\./go;にあたる箇所
+	//$salt =~ s/[^\.-z]/\./go; にあたる箇所
 	$pattern = '/[\x00-\x20\x7B-\xFF]/';
 	$salt = preg_replace($pattern, '.', $salt);
 
@@ -263,9 +261,9 @@ function ConvertTrip($str){
 
 	$trip = substr(crypt($key, $salt), -10);
       }
-      $str = $name.'◆'.$trip;
+      $str = $name . '◆' . $trip;
     }
-    #echo 'result: '.$str.'<br>'; //デバッグ用
+    //PrintData($str, 'Result'); //テスト用
   }
   elseif(strpos($str, '#') !== false || strpos($str, '＃') !== false){
     $sentence = 'トリップは使用不可です。<br>' . "\n" . '"#" 又は "＃" の文字も使用不可です。';
@@ -296,7 +294,7 @@ function PrintData($data, $name = NULL){
 }
 
 //村情報のRSSファイルを更新する
-function OutputSiteSummary() {
+function OutputSiteSummary(){
   global $INIT_CONF;
   $INIT_CONF->LoadFile('feedengine');
 
@@ -385,10 +383,11 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   //PrintData($option_list); //テスト用
   $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'auto_open_cast',
 			      'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-			      'cupid', 'medium', 'mania', 'decide', 'authority', 'liar', 'gentleman',
-			      'sudden_death', 'perverseness', 'full_mania', 'quiz', 'duel',
-			      'chaos', 'chaosfull', 'chaos_open_cast', 'chaos_open_cast_camp',
-			      'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role');
+			      'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'liar',
+			      'gentleman', 'sudden_death', 'perverseness', 'full_mania', 'festival',
+			      'quiz', 'duel', 'chaos', 'chaosfull', 'chaos_open_cast',
+			      'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
+			      'no_sub_role');
 
   foreach($display_order_list as $option){
     if(! in_array($option, $option_list)) continue;

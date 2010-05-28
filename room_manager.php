@@ -1,8 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('feedengine');
+//$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
 $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE', 'GAME_OPT_CAPT');
-
 
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
@@ -18,10 +17,11 @@ function MaintenanceRoom(){
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
     "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
-  if (SendQuery($query)) {
-    //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
-    OutputSiteSummary();
-  }
+  /*
+  //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
+  if(SendQuery($query)) OutputSiteSummary();
+  */
+  SendQuery($query);
 
   //終了した部屋のセッションIDのデータをクリアする
   $query = <<<EOF
@@ -62,19 +62,19 @@ function CreateRoom(){
   //デバッグモード時は村立て制限をしない
   if(! $DEBUG_MODE){
     //同じユーザが立てた村が終了していなければ新しい村を作らない
-    if(FetchResult("SELECT COUNT(room_no) $query AND establisher_ip = '$ip_address'") > 0){
+    if(FetchResult("SELECT COUNT(room_no) {$query} AND establisher_ip = '{$ip_address}'") > 0){
       OutputRoomAction('over_establish');
       return false;
     }
 
     //最大並列村数を超えているようであれば新しい村を作らない
-    if(FetchResult("SELECT COUNT(room_no) $query") >= $ROOM_CONF->max_active_room){
+    if(FetchResult('SELECT COUNT(room_no)' . $query) >= $ROOM_CONF->max_active_room){
       OutputRoomAction('full');
       return false;
     }
 
     //連続村立て制限チェック
-    $time_stamp = FetchResult("SELECT establish_time $query ORDER BY room_no DESC");
+    $time_stamp = FetchResult("SELECT establish_time {$query} ORDER BY room_no DESC");
     if(isset($time_stamp) &&
        TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
       OutputRoomAction('establish_wait');
@@ -145,7 +145,7 @@ function CreateRoom(){
       }
       else{
 	array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
-		   'possessed_wolf', 'cupid', 'medium');
+		   'possessed_wolf', 'sirius_wolf', 'cupid', 'medium');
 	if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
 	if(! $full_mania) $check_option_role_list[] = 'mania';
       }
@@ -153,6 +153,7 @@ function CreateRoom(){
     array_push($check_option_role_list, 'liar', 'gentleman');
     $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
     if(! $duel) $check_option_role_list[] = 'full_mania';
+    $check_game_option_list[] = 'festival';
   }
 
   //PrintData($_POST); //テスト用
@@ -223,7 +224,7 @@ function CreateRoom(){
   //OutputHTMLFooter(true); //テスト用
 
   //テーブルをロック
-  if(! mysql_query('LOCK TABLES room WRITE, user_entry WRITE, vote WRITE, talk WRITE')){
+  if(! LockTable()){
     OutputRoomAction('busy');
     return false;
   }
@@ -238,29 +239,34 @@ function CreateRoom(){
   do{
     //村作成
     $time = TZTime();
-    $items = 'room_no, room_name, room_comment, establisher_ip, establish_time, game_option, ' .
-      'option_role, max_user, status, date, day_night, last_updated';
-    $values = "$room_no, '$room_name', '$room_comment', '$ip_address', NOW(), '$game_option', " .
-      "'$option_role', $max_user, 'waiting', 0, 'beforegame', '$time'";
+    $items = 'room_no, room_name, room_comment, establisher_ip, establish_time, ' .
+      'game_option, option_role, max_user, status, date, day_night, last_updated';
+    $values = "{$room_no}, '{$room_name}', '{$room_comment}', '{$ip_address}', NOW(), " .
+      "'{$game_option}', '{$option_role}', {$max_user}, 'waiting', 0, 'beforegame', '{$time}'";
     if(! InsertDatabase('room', $items, $values)) break;
 
     //身代わり君を入村させる
     if(strpos($game_option, 'dummy_boy') !== false &&
-       FetchResult("SELECT COUNT(uname) FROM user_entry WHERE room_no = $room_no") == 0){
+       FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
       if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
+    }
+
+    if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
+      OutputRoomAction('success', $room_name);
+      return true;
     }
 
     //Twitter 投稿処理
     $twitter = new TwitterConfig();
     $twitter->Send($room_no, $room_name, $room_comment);
-    //RSS更新
-    OutputSiteSummary();
+
+    //OutputSiteSummary(); //RSS更新 //テスト中
 
     OutputRoomAction('success', $room_name);
     $status = true;
   }while(false);
   if(! $status) OutputRoomAction('busy');
-  //mysql_query('UNLOCK TABLES'); ロック解除は OutputRoomAction() 経由で行う
+  return true;
 }
 
 //結果出力 (CreateRoom() 用)
@@ -321,39 +327,48 @@ function OutputRoomAction($type, $room_name = ''){
 
 //村(room)のwaitingとplayingのリストを出力する
 function OutputRoomList(){
-  if(!$DEBUG_MODE){
+  global $DEBUG_MODE, $SERVER_CONF, $ROOM_IMG;
+
+  if($SERVER_CONF->secret_room) return;
+
+  /* RSS機能はテスト中
+  if(! $DEBUG_MODE){
     $filename = JINRO_ROOT.'/rss/rooms.rss';
-    if (file_exists($filename)) {
+    if(file_exists($filename)){
       $rss = FeedEngine::Initialize('site_summary.php');
       $rss->Import($filename);
     }
-    else {
+    else{
       $rss = OutputSiteSummary();
     }
-    foreach ($rss->items as $item) {
+    foreach($rss->items as $item){
       extract($item, EXTR_PREFIX_ALL, 'room');
       echo $room_description;
     }
   }
-  else {
-    //return; //シークレットテスト用
-    //ルームNo、ルーム名、コメント、最大人数、状態を取得
-    $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
-     "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
-   $list = FetchAssoc($query);
-    foreach($list as $array){
-      extract($array);
-      $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
-      //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
+  */
 
-      echo <<<EOF
+  //return; //シークレットテスト用
+  //ルームNo、ルーム名、コメント、最大人数、状態を取得
+  $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
+    "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
+  $list = FetchAssoc($query);
+  foreach($list as $array){
+    extract($array);
+    $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
+    //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
+
+    echo <<<EOF
 <a href="login.php?room_no=$room_no">
 {$ROOM_IMG->Generate($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
 <div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
 </a><br>
-<a href="admin/room_delete.php?room_no={$room_no}">{$room_no}番地を削除 (緊急用)</a><br>
 
 EOF;
+
+    if($DEBUG_MODE){
+      echo '<a href="admin/room_delete.php?room_no=' . $room_no . '">' .
+	$room_no . ' 番地を削除 (緊急用)</a><br>'."\n";
     }
   }
 }
@@ -370,24 +385,11 @@ function OutputSharedServerRoom(){
     //PrintData($url, 'URL'); //テスト用
     if($disable || $url == $SERVER_CONF->site_root) continue;
 
-    //サーバ通信状態チェック
-    $url_stack = explode('/', $url);
-    $host = $url_stack[2];
-    $io = @fsockopen($host, 80, $err_no, $err_str, 3);
-    if(! $io){
-      echo GenerateSharedServerRoom($name, $url, $host . ': Connection timed out (3 seconds)');
+    if(! $SHARED_CONF->CheckConnection($url)){ //サーバ通信状態チェック
+      $data = $SHARED_CONF->host . ': Connection timed out (3 seconds)';
+      echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
       continue;
     }
-    stream_set_timeout($io, 3);
-    fwrite($io, "GET / HTTP/1.1\r\nHost: {$host}\r\nConnection: Close\r\n\r\n");
-    $data = fgets($io, 128);
-    $stream_stack = stream_get_meta_data($io);
-    fclose($io);
-    if($stream_stack['timed_out']){
-      echo GenerateSharedServerRoom($name, $url, 'Connection timed out (3 seconds)');
-      continue;
-    }
-    //PrintData($data, 'Connection');
 
     //部屋情報を取得
     if(($data = @file_get_contents($url.'room_manager.php')) == '') continue;
@@ -408,18 +410,8 @@ function OutputSharedServerRoom(){
 
     $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
     $data = strtr($data, $replace_list);
-    echo GenerateSharedServerRoom($name, $url, $data);
+    echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
   }
-}
-
-function GenerateSharedServerRoom($name, $url, $data){
-  return <<<EOF
-<fieldset>
-<legend>ゲーム一覧 (<a href="{$url}">{$name}</a>)</legend>
-<div class="game-list">{$data}</div>
-</fieldset>
-
-EOF;
 }
 
 //部屋作成画面を出力
@@ -464,10 +456,11 @@ EOF;
   OutputRoomOptionOpenCast();
 
   $option_list = array('poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-		       'cupid', 'medium', 'mania', 'decide', 'authority');
+		       'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority');
   OutputRoomOption($option_list, 'role');
 
-  $option_list = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania');
+  $option_list = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania',
+		       'festival');
   OutputRoomOption($option_list, 'role');
 
   OutputRoomOptionChaos();
@@ -553,7 +546,7 @@ function OutputRoomOptionDummyBoy(){
 
     /*
 <input type="radio" name="dummy_boy" value="gerd"{$checked_gerd}>
-身代わり君はゲルト君(村人確定の身代わり君です)<br>
+身代わり君はゲルト君(村人固定の身代わり君です)<br>
 */
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>

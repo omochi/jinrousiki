@@ -104,10 +104,11 @@ OutputInfoPageHeader('詳細な仕様');
 <li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
 <li>呪殺 (<a href="new_role/human.php#mage_group">占い師系</a>)</li>
 <li>呪返し (<a href="new_role/wolf.php#cursed_wolf">呪狼</a>などの呪い持ち、<a href="new_role/wolf.php#voodoo_mad">呪術師</a>などの呪い能力者)</li>
-<li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>)</li>
+<li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>など)</li>
 <li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
+<li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)</li>
 </ul>
 <h4>〜<?php echo $MESSAGE->revive_success ?></h4>
 <ul>
@@ -141,7 +142,7 @@ OutputInfoPageHeader('詳細な仕様');
   - 単独トップ ＞ 決定者 ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる
 
 + 役職判定順
-  - <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist">薬師</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
+  - <a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist">薬師</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
 
 </pre>
 
@@ -160,8 +161,8 @@ OutputInfoPageHeader('詳細な仕様');
 + 夢 (夢守人、獏)
   - 夢守人護衛 ＞ 獏襲撃 → 夢守人の狩り
 
-+ 占い (占い系、厄神、夢守人、月兎、呪術系)
-  - 厄払い ＞ 呪い ＞ 占い妨害 ＞ 占い (呪殺)
++ 占い (占い系、厄神、月兎、呪術系)
+  - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺)
 </pre>
 
 <h2><a name="revive_refuse">蘇生辞退システム</a></h2>

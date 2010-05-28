@@ -88,6 +88,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="#emerald_fox">翠狐</a>
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
+<a href="#possessed_fox">憑狐</a>
 <a href="#cursed_fox">天狐</a>
 <a href="#elder_fox">古狐</a>
 <a href="#cute_fox">萌狐</a>
@@ -201,10 +202,36 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 ケースがあるのが妖狐陣営の蘇生能力者のポイントです。
 </pre>
 
+<h3><a name="possessed_fox">憑狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+一度だけ、死体に憑依することができる妖狐。
+</pre>
+<ol>
+  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
+  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
+  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
+  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
+  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
+  <li>狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺されます</li>
+  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#possessed_mad">犬神</a>の妖狐バージョンです。
+<a href="wolf.php#possessed_wolf">憑狼</a>よりも看破されやすいので、能力を使いにくいと思います。
+存在自体が脅威になるタイプですね。
+</pre>
+
 <h3><a name="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
 <a href="wolf.php#wolf_group">人狼</a>に噛まれても死なないが、<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

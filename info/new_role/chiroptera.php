@@ -37,6 +37,7 @@ OutputHTMLHeader('新役職情報 - [蝙蝠陣営]', 'new_role');
 <a href="#chiroptera">蝙蝠</a>
 <a href="#poison_chiroptera">毒蝙蝠</a>
 <a href="#cursed_chiroptera">呪蝙蝠</a>
+<a href="#boss_chiroptera">大蝙蝠</a>
 <a href="#elder_chiroptera">古蝙蝠</a>
 <a href="#dummy_chiroptera">夢求愛者</a>
 </p>
@@ -80,6 +81,26 @@ OutputHTMLHeader('新役職情報 - [蝙蝠陣営]', 'new_role');
 <a href="wolf.php#cursed_wolf">呪狼</a>の蝙蝠バージョンです。
 どちらかと言うと、これを騙る狼や狐が非常にやっかいですね。
 素直に CO しても信用を取るのは難しいでしょう。
+</pre>
+
+<h3><a name="boss_chiroptera">大蝙蝠</a> (占い結果：蝙蝠 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、自分以外の蝙蝠陣営が生きていたら、
+他の蝙蝠が変わりに犠牲になってくれる。
+<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+</pre>
+<ol>
+  <li>本人は身代わりが発生しても分かりません</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱いです (狐噛みと同じ)</li>
+  <li>変わりに死んだ蝙蝠の死因は「誰かの犠牲となって死亡したようです」</li>
+  <li>他の大蝙蝠が襲撃された場合は自分が身代わりになる可能性があります</li>
+  <li>身代わり君は大蝙蝠になりません</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他の国に実在する役職です。
+狼サイドから見ると、結果的に確実に一人殺せるので、
+誰でもいいから人数を減らしたい時には便利な存在と言えますね。
 </pre>
 
 <h3><a name="elder_chiroptera">古蝙蝠</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
@@ -135,7 +156,16 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える存在ですが
   <li>悪戯の結果は相手の発言を見れば分かるので本人には何も表示されません。</li>
   <li>悪戯の効果は重複します (複数の妖精から悪戯されたら人数分の効果が出ます)。</li>
   <li>身代わり君を悪戯の対象に選ぶ事もできます。</li>
+  <li><a href="human.php#dummy_guard">夢守人</a>に護衛されると殺されます。</li>
+  <li><a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺されます。</li>
+  <li><a href="human.php#dummy_poison">夢毒者</a>を吊ったら毒に中ります。</li>
 </ol>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="human.php#dummy_guard">夢守人</a>に護衛されると殺されます
+<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺されます
+<a href="human.php#dummy_poison">夢毒者</a>を吊ったら毒に中ります
+</pre>
 
 <h3><a name="fairy">妖精</a> (占い結果：村人、霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
 <h4>[悪戯能力] 発言妨害：有り / 月兎：有効 / 呪い：有効</h4>

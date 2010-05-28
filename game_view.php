@@ -61,7 +61,7 @@ echo <<<EOF
 <body{$on_load}>
 <a name="#game_top"></a>
 <table class="login"><tr>
-<td classs="room"><span>{$ROOM->name}村</span>　〜{$ROOM->comment}〜[{$ROOM->id}番地]</td>
+<td class="room"><span>{$ROOM->name}村</span>　〜{$ROOM->comment}〜[{$ROOM->id}番地]</td>
 <td class="login-link">
 
 EOF;

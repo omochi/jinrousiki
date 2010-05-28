@@ -11,14 +11,14 @@ body{
 }
 .link{margin-bottom: 5px;}
 fieldset{
-  filter:alpha(opacity=80,enabled=80);
+  filter: alpha(opacity=80,enabled=80);
   border: 1px solid #000000;
-  background-color:#FFFFFF;
+  background-color: #FFFFFF;
 }
 legend{
   margin: 0px 5px;
   font-size: 20px;
-  font-weight:bold;
+  font-weight: bold;
 }
 table{border: 0;}
 table td{
@@ -26,7 +26,4 @@ table td{
   font-size: 15px;
 }
 table img{border: 2px solid;}
-.name{
-  width: 150px;
-  font-family:"£Í£Ó ¥´¥·¥Ã¥¯";
-}
+.name{width: 150px;}

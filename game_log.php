@@ -20,6 +20,11 @@ if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //死者かゲーム終了後だけ
 		     '<a href="index.php" target="_top">トップページ</a>' .
 		     'からログインしなおしてください');
 }
+if($ROOM->date < $RQ_ARGS->date ||
+   ($ROOM->date == $RQ_ARGS->date && $ROOM->IsDay() && $RQ_ARGS->day_night != 'day')){
+  OutputActionResult('入力データエラー','入力データエラー：無効な日時です');
+}
+
 $ROOM->date      = $RQ_ARGS->date;
 $ROOM->day_night = $RQ_ARGS->day_night;
 $USERS->SetEvent(true);

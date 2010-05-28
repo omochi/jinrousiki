@@ -317,14 +317,6 @@ function AggregateVoteGameStart($force_start = false){
   }
   */
 
-  $add_sub_role = 'nervy';
-  array_push($delete_role_list, $add_sub_role);
-  for($i = 0; $i < $user_count; $i++){
-    if(mt_rand(1, 100) <= 10){
-      $fix_role_list[$i] .= ' ' . $add_sub_role;
-    }
-  }
-
   $now_sub_role_list = array('decide', 'authority'); //オプションでつけるサブ役職のリスト
   $delete_role_list  = array_merge($delete_role_list, $now_sub_role_list);
   foreach($now_sub_role_list as $role){
@@ -386,7 +378,14 @@ function AggregateVoteGameStart($force_start = false){
       if($fix_uname_list[$i] != 'dummy_boy') $fix_role_list[$i] .= ' ' . $role;
     }
   }
-
+  /*
+  if($ROOM->IsOption('festival')){ //お祭り村 (内容は管理人が自由にカスタムする)
+    $role = 'nervy';
+    for($i = 0; $i < $user_count; $i++){ //全員に自信家をつける
+      $fix_role_list[$i] .= ' ' . $role;
+    }
+  }
+  */
   //デバッグ用
   //PrintData($fix_uname_list); PrintData($fix_role_list); DeleteVote(); return false;
 
@@ -424,7 +423,7 @@ function AggregateVoteGameStart($force_start = false){
   $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
     "status = 'playing', start_time = NOW() WHERE room_no = {$ROOM->id}";
   SendQuery($query);
-  OutputSiteSummary();
+  //OutputSiteSummary(); //RSS機能はテスト中
   $ROOM->Talk($sentence);
   $ROOM->SystemMessage(1, 'VOTE_TIMES'); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
@@ -655,6 +654,15 @@ function VoteNight(){
     $not_type = $RQ_ARGS->situation == 'TRAP_MAD_NOT_DO';
     break;
 
+  case 'POSSESSED_DO':
+  CASE 'POSSESSED_NOT_DO':
+    if(! $SELF->IsRole('possessed_mad', 'possessed_fox')){
+      OutputVoteResult('夜：犬神・憑狐以外は投票できません');
+    }
+    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
+    $not_type = $RQ_ARGS->situation == 'POSSESSED_NOT_DO';
+    break;
+
   case 'VOODOO_FOX_DO':
     if(! $SELF->IsRole('voodoo_fox')) OutputVoteResult('夜：九尾以外は投票できません');
     break;
@@ -729,8 +737,8 @@ function VoteNight(){
       OutputVoteResult($error_header . '自分には投票できません');
     }
 
-    if($RQ_ARGS->situation == 'POISON_CAT_DO'){ //蘇生能力者は死者以外への投票は無効
-      if($is_live){
+    if($RQ_ARGS->situation == 'POISON_CAT_DO' || $RQ_ARGS->situation == 'POSSESSED_DO'){
+      if($is_live){ //蘇生・憑依能力者は死者以外への投票は無効
 	OutputVoteResult($error_header . '死者以外には投票できません');
       }
     }
@@ -1091,6 +1099,13 @@ function OutputVoteNight(){
     $not_type   = 'TRAP_MAD_NOT_DO';
     $submit     = 'trap_do';
     $not_submit = 'trap_not_do';
+  }
+  elseif($SELF->IsRole('possessed_mad', 'possessed_fox')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の憑依はできません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
+    $type       = 'POSSESSED_DO';
+    $not_type   = 'POSSESSED_NOT_DO';
+    $role_revive = true;
   }
   elseif($SELF->IsRole('voodoo_fox')){
     $type   = 'VOODOO_FOX_DO';

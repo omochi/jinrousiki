@@ -30,18 +30,18 @@ table.input{text-align: left;}
 .submit{text-align: right;}
 .submit input{
   border:2px dotted;
-  background-color:#eeccaa;
+  background-color: #EECCAA;
   color:#774400;
 }
 input{
-  background-color:#eeccaa;
-  color:#774400;
+  background-color: #EECCAA;
+  color: #774400;
 }
 textarea{
-  background-color:#eeccaa;
-  color:#774400;
+  background-color: #EECCAA;
+  color: #774400;
 }
-fielfset{border: 1px dotted #000000;}
+fieldset{border: 1px dotted #000000;}
 legend{
   font-size:20px;
   font-weight:bold;
@@ -54,7 +54,6 @@ legend{
   width: 150px;
   vertical-align: top;
   text-align: left;
-  font-family:"£Í£Ó ¥´¥·¥Ã¥¯";
 }
 .icon img{
   border: 2px solid;

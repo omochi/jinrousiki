@@ -20,9 +20,10 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- テスト用 --//
-#$SELF->ChangeRole('fend_guard');
+#$SELF->ChangeRole('poison_wolf');
 #$SELF->Update('icon_no', 30);
-#$SELF->AddRole('mind_open');
+#$SELF->AddRole('possessed_target[2-2]');
+#$SELF->Update('live', 'live');
 #PrintData($SELF);
 #DeleteVote();
 
@@ -252,8 +253,9 @@ function Say($say){
       $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ
       if(! $update) $spend_time = 0;
 
-      if($virtual_self->IsWolf(true)) //人狼
-	$location = 'wolf';
+      if($virtual_self->IsWolf(true)){ //人狼
+	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf';
+      }
       elseif($virtual_self->IsRole('whisper_mad')) //囁き狂人
 	$location = 'mad';
       elseif($virtual_self->IsCommon(true)) //共有者
@@ -319,42 +321,64 @@ function CheckSilence(){
     //既に警告を出しているかチェック
     $query = $ROOM->GetQuery(true, 'talk') . " AND location = '{$ROOM->day_night} system' " .
       "AND uname = 'system' AND sentence = '{$sudden_death_announce}'";
-    if(FetchResult($query) == 0){ //警告を出していなかったら出す
+    $announce_flag = FetchResult($query) == 0;
+    if($announce_flag){ //警告を出していなかったら出す
       $ROOM->Talk($sudden_death_announce);
       $ROOM->UpdateTime(); //更新時間を更新
       $last_updated_pass_time = 0;
+    }
+    else{ //一分刻みで追加の警告を出す
+      $seconds = $TIME_CONF->sudden_death - $last_updated_pass_time;
+      $quotient = $seconds % 60;
+      $seconds -= $quotient;
+      if($quotient > 0) $seconds += 60;
+      if($seconds > $TIME_CONF->sudden_death) $seconds = $TIME_CONF->sudden_death;
+      if($seconds > 0){
+	$current_left_time = ConvertTime($seconds);
+	$sentence = 'あと' . $current_left_time . 'で' . $MESSAGE->sudden_death_announce;
+
+	//既に警告を出しているかチェック
+	$query = $ROOM->GetQuery(true, 'talk') . " AND location = '{$ROOM->day_night} system' " .
+	  "AND uname = 'system' AND sentence = '{$sentence}'";
+	if(FetchResult($query) == 0) $ROOM->Talk($sentence); //警告を出していなかったら出す
+      }
     }
     $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($ROOM->sudden_death <= 0){
-      $ROOM->LoadVote(); //投票情報を取得
-      if($ROOM->IsDay()){
-	//生存者と投票済みの人の差分を取る
-	$novote_uname_list = array_diff($USERS->GetLivingUsers(), array_keys($ROOM->vote));
+      if(abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect){ //サーバダウン検出
+	$ROOM->UpdateTime(); //突然死タイマーをリセット
       }
-      elseif($ROOM->IsNight()){
-	$vote_data = $ROOM->ParseVote(); //投票情報をパース
-	//PrintData($vote_data, 'Vote Data');
-
-	$novote_uname_list = array();
-	foreach($USERS->rows as $user){ //未投票チェック
-	  if($user->CheckVote($vote_data) === false) $novote_uname_list[] = $user->uname;
+      else{
+	$ROOM->LoadVote(); //投票情報を取得
+	if($ROOM->IsDay()){
+	  //生存者と投票済みの人の差分を取る
+	  $novote_uname_list = array_diff($USERS->GetLivingUsers(), array_keys($ROOM->vote));
 	}
-      }
+	elseif($ROOM->IsNight()){
+	  $vote_data = $ROOM->ParseVote(); //投票情報をパース
+	  //PrintData($vote_data, 'Vote Data');
 
-      //未投票者を全員突然死させる
-      foreach($novote_uname_list as $uname){
-	$USERS->SuddenDeath($USERS->ByUname($uname)->user_no);
-      }
-      LoversFollowed(true);
-      InsertMediumMessage();
+	  $novote_uname_list = array();
+	  foreach($USERS->rows as $user){ //未投票チェック
+	    if($user->CheckVote($vote_data) === false) $novote_uname_list[] = $user->uname;
+	  }
+	}
 
-      $ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
-      $ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
-      $ROOM->UpdateTime(); //制限時間リセット
-      DeleteVote(); //投票リセット
-      CheckVictory(); //勝敗チェック
+	//未投票者を全員突然死させる
+	foreach($novote_uname_list as $uname){
+	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no);
+	}
+	LoversFollowed(true);
+	InsertMediumMessage();
+
+	$ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
+	$ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
+	$ROOM->UpdateTime(); //制限時間リセット
+	DeleteVote(); //投票リセット
+	CheckVictory(); //勝敗チェック
+      }
     }
   }
   UnlockTable(); //テーブルロック解除
@@ -528,6 +552,7 @@ EOF;
 
   if($ROOM->IsPlaying() && $left_time == 0){
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
+    //PrintData($ROOM->sudden_death); //テスト用
     if($ROOM->sudden_death > 0){
       echo $MESSAGE->sudden_death_time . ConvertTime($ROOM->sudden_death) . '<br>'."\n";
     }

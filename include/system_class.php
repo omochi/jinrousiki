@@ -112,10 +112,10 @@ class Session{
     }
 
     if($exit){ //エラー処理
-      OutputActionResult('セッション認証エラー',
-			 'セッション認証エラー<br>'."\n" .
-			 '<a href="./" target="_top">トップページ</a>から' .
-			 'ログインしなおしてください');
+      $title = 'セッション認証エラー';
+      $sentence = $title . "\n" . '<a href="./" target="_top">トップページ</a>から' .
+	'ログインしなおしてください';
+      OutputActionResult($title, $sentence);
     }
     return false;
   }
@@ -135,21 +135,72 @@ class CookieDataSet{
   }
 }
 
-//-- Twitter 投稿用の基底クラス --//
-class TwitterConfigBase{
-  //投稿処理
-  function Send($id, $name, $comment){
+//-- 外部リンク生成クラス --//
+class ExternalLinkBuilder{
+  //サーバ通信状態チェック
+  function CheckConnection($url){
+    $url_stack = explode('/', $url);
+    $this->host = $url_stack[2];
+    $io = @fsockopen($this->host, 80, $err_no, $err_str, 3);
+    if(! $io) return false;
+
+    stream_set_timeout($io, 3);
+    fwrite($io, "GET / HTTP/1.1\r\nHost: {$host}\r\nConnection: Close\r\n\r\n");
+    $data = fgets($io, 128);
+    $stream_stack = stream_get_meta_data($io);
+    fclose($io);
+    //PrintData($data, 'Connection');
+    return ! $stream_stack['timed_out'];
+  }
+
+  function Generate($title, $data){
+    return <<<EOF
+<fieldset>
+<legend>{$title}</legend>
+<div class="game-list"><dl>{$data}</dl></div>
+</fieldset>
+
+EOF;
+  }
+
+  function GenerateBBS($data){
+    $title = '<a href="' . $this->view_url . $this->thread . 'l50' . '">告知スレッド情報</a>';
+    return $this->Generate($title, $data);
+  }
+
+  function GenerateSharedServerRoom($name, $url, $data){
+    return $this->Generate('ゲーム一覧 (<a href="' . $url . '">' . $name . '</a>)', $data);
+  }
+}
+
+//-- 掲示板情報取得の基底クラス --//
+class BBSConfigBase extends ExternalLinkBuilder{
+  function Output(){
+    global $SERVER_CONF;
+
     if($this->disable) return;
-    require_once(JINRO_MOD . "/twitter/Twitter.php"); //ライブラリをロード
+    if(! $this->CheckConnection($this->raw_url)){
+      echo $this->GenerateBBS($this->host . ': Connection timed out (3 seconds)');
+      return;
+    }
 
-    $message = "【{$this->server}】{$id}番地に{$name}村\n〜{$comment}〜 が建ちました";
-    $st =& new Services_Twitter($this->user, $this->password);
-    if($st->setUpdate(mb_convert_encoding($message, 'UTF-8', 'auto'))) return;
-
-    //エラー処理
-    $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" .
-      'ユーザ名：' . $this->user . '<br>'."\n" . 'メッセージ：' . $message;
-    PrintData($sentence);
+    //スレッド情報を取得
+    $url = $this->raw_url . $this->thread . 'l' . $this->size . 'n';
+    if(($data = @file_get_contents($url)) == '') return;
+    //PrintData($data, 'Data'); //テスト用
+    if($this->encode != $SERVER_CONF->encode){
+      $data = mb_convert_encoding($data, $SERVER_CONF->encode, $this->encode);
+    }
+    $str = '';
+    $str_stack = explode("\n", $data);
+    array_pop($str_stack);
+    foreach($str_stack as $res){
+      $res_stack = explode('<>', $res);
+      $str .= '<dt>' . $res_stack[0] . ' : <font color="#008800"><b>' . $res_stack[1] .
+	'</b></font> : ' . $res_stack[3] . ' ID : ' . $res_stack[6] . '</dt>' . "\n" .
+	'</dt><dd>' . $res_stack[4] . '</dd>';
+    }
+    echo $this->GenerateBBS($str);
   }
 }
 
@@ -230,6 +281,68 @@ class VictoryImageBase extends ImageManager{
   }
 }
 
+//-- メニューリンク表示用の基底クラス --//
+class MenuLinkConfigBase{
+  //交流用サイト表示
+  function Output(){
+    //初期化処理
+    $this->str = '';
+    $this->header = '<li>';
+    $this->footer = "</li>\n";
+
+    $this->AddHeader('交流用サイト');
+    $this->AddLink($this->list);
+    $this->AddFooter();
+
+    if(count($this->add_list) > 0){
+      $this->AddHeader('外部リンク');
+      foreach($this->add_list as $group => $list){
+	$this->str .= $this->header . $group . $this->footer;
+	$this->AddLink($list);
+      }
+      $this->AddFooter();
+    }
+    echo $this->str;
+  }
+
+  //ヘッダ追加
+  function AddHeader($title){
+    $this->str .= '<div class="menu">' . $title . "</div>\n<ul>\n";
+  }
+
+  //リンク生成
+  function AddLink($list){
+    $header = $this->header . '<a href="';
+    $footer = '</a>' . $this->footer;
+    foreach($list as $name => $url) $this->str .= $header . $url . '">' . $name . $footer;
+  }
+
+  //フッタ追加
+  function AddFooter(){
+    $this->str .= "</ul>\n";
+  }
+}
+
+//-- Copyright 表示用の基底クラス --//
+class CopyrightConfigBase{
+  //投稿処理
+  function Output(){
+    $stack = $this->list;
+    foreach($this->add_list as $class => $list){
+      $stack[$class] = array_key_exists($class, $stack) ? array_merge($stack[$class], $list) :
+	$list;
+    }
+
+    foreach($stack as $class => $list){
+      $str = '<h2>' . $class . '</h2>'."\n";
+      foreach($list as $name => $url){
+	$str .= '<a href="' . $url . '">' . $name . '</a><br>'."\n";
+      }
+      echo $str;
+    }
+  }
+}
+
 //-- 音源処理の基底クラス --//
 class SoundBase{
   //音を鳴らす
@@ -246,6 +359,24 @@ class SoundBase{
 </object>
 
 EOF;
+  }
+}
+
+//-- Twitter 投稿用の基底クラス --//
+class TwitterConfigBase{
+  //投稿処理
+  function Send($id, $name, $comment){
+    if($this->disable) return;
+    require_once(JINRO_MOD . "/twitter/Twitter.php"); //ライブラリをロード
+
+    $message = "【{$this->server}】{$id}番地に{$name}村\n〜{$comment}〜 が建ちました";
+    $st =& new Services_Twitter($this->user, $this->password);
+    if($st->setUpdate(mb_convert_encoding($message, 'UTF-8', 'auto'))) return;
+
+    //エラー処理
+    $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" .
+      'ユーザ名：' . $this->user . '<br>'."\n" . 'メッセージ：' . $message;
+    PrintData($sentence);
   }
 }
 
@@ -328,5 +459,33 @@ class PageLinkBuilder{
       $url_stack[] =  $this->Generate($this->page->set, $name, true);
     }
     echo $this->header . implode(' ', $url_stack) . $this->footer;
+  }
+}
+
+//-- 配役設定の基底クラス --//
+class CastConfigBase{
+  //「福引き」を一定回数行ってリストに追加する
+  function AddRandom(&$list, $random_list, $count){
+    $total = count($random_list) - 1;
+    for(; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
+  }
+
+  //「比」の配列から「福引き」を作成する
+  function GenerateRandomList($list){
+    $stack = array();
+    foreach($list as $role => $rate){
+      for($i = $rate; $i > 0; $i--) $stack[] = $role;
+    }
+    return $stack;
+  }
+
+  //「比」から「確率」に変換する (テスト用)
+  function RateToProbability($list){
+    $stack = array();
+    $total_rate = array_sum($list);
+    foreach($list as $role => $rate){
+      $stack[$role] = sprintf("%01.2f", $rate / $total_rate * 100);
+    }
+    PrintData($stack);
   }
 }

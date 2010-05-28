@@ -16,6 +16,7 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'info_menu');
   <li><a href="game_option.php" target="body">ゲームオプション</a></li>
   <li><a href="cast.php" target="body">配役一覧</a></li>
   <li><a href="spec.php" target="body">詳細な仕様</a></li>
+  <li><a href="copyright.php" target="body">謝辞・素材</a></li>
   <li>★☆★☆★☆★</li>
   <li><a href="history/" target="body">サーバ更新履歴</a></li>
   <li><a href="history/top.php" target="body">TOPページ更新履歴</a></li>

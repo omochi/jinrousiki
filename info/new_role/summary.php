@@ -273,7 +273,8 @@ Ver. 1.4.0
     <td><a href="human.php#poison_group">埋毒者系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">埋毒者と思い込んでいる村人 (表示は「埋毒者」)。</td>
+    <td class="ability">埋毒者と思い込んでいる村人 (表示は「埋毒者」)。<br>
+      吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>のみを巻き込む (<a href="human.php#pharmacist_group">薬師系</a>による解毒は不可)。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
@@ -1020,6 +1021,101 @@ Ver. 1.4.0
     <td class="ability">夜に選んだ人が生きていたら暗殺、死んでいたら蘇生する特殊な暗殺者。</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
+  <tr>
+    <td><a href="wolf.php#miasma_mad">土蜘蛛</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#mad_group">狂人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role#febris">熱病</a>にする特殊な狂人。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#cure_pharmacist">河童</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#pharmacist_group">薬師系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">昼に投票した人を解毒・ショック死抑制する特殊な薬師。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#executor">執行者</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#human_group">村人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">再投票発生時に非村人に投票していた場合は吊る事が出来る村人。本人の表記は「村人」。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#possessed_mad">犬神</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#mad_group">狂人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">一度だけ、死体に憑依できる特殊な狂人。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#possessed_fox">憑狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#fox_group">妖狐系</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>妖狐</td>
+    <td class="ability">一度だけ、死体に憑依できる妖狐。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#sacrifice_cat">猫神</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#poison_cat_group">猫又系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">自分の命と引き換えに誤爆なし、成功率100%の蘇生ができる特殊な猫又</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#sirius_wolf">天狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">狂人系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability">仲間の狼が減ると特殊能力が発現する狼。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#eclipse_assassin">蝕暗殺者</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#assassin_group">暗殺者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">30% の確率で暗殺反射が発生する劣化暗殺者。本人の表記は「暗殺者」。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#trick_mania">奇術師</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">コピー先が「初日投票をしてなかった」場合はその役職を奪い取り、
+相手はその系統の基本職に入れ替わってしまう、特殊な神話マニア。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#boss_chiroptera">大蝙蝠</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
+    <td>蝙蝠</td>
+    <td>村人</td>
+    <td class="ability">人狼に襲撃された時、他に蝙蝠陣営の人を身代わりして生き延びることができる蝙蝠。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
 </table>
 
 <table>
@@ -1375,6 +1471,13 @@ Ver. 1.4.0
     <td class="ability">同一陣営の人に投票するとショック死する</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#febris">熱病</a></td>
+    <td><a href="sub_role.php#chicken_group">小心者系</a></td>
+    <td>○</td>
+    <td class="ability">表示された日の昼の投票集計後にショック死する</td>
+    <td>Ver. 1.4.0 β9</td>
+  </tr>
 </table>
 
 <h2><a name="reference">参考リンク</a></h2>
@@ -1439,15 +1542,8 @@ Ver. 1.4.0
 ・泥棒 (レス 13)
 挙動は案募集中
 
-・河童 (レス 17)
-挙動は案募集中
-
 ・ミシャグジさま (レス 19)
 改善 (レス 33)
-
-・土蜘蛛 (レス 33)
-挙動は案募集中
-改善 (レス 43)
 
 ・宣教師 (レス 86)
 挙動は未定

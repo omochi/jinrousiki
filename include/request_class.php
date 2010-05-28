@@ -114,7 +114,8 @@ class RequestLogin extends RequestBase{
     EncodePostData();
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('IsOn', 'post.login_manually');
-    $this->GetItems('EscapeStrings', 'post.uname', 'post.password');
+    $this->GetItems('ConvertTrip', 'post.uname');
+    $this->GetItems('EscapeStrings', 'post.password');
   }
 }
 

@@ -115,7 +115,7 @@ function CheckVictory($check_draw = false){
 
   $victory_role = ''; //勝利陣営
   if($wolf == 0 && $fox == 0 && $human == $quiz){ //全滅
-    $victory_role = ($quiz > 0 ? 'quiz' : 'vanish');
+    $victory_role = $quiz > 0 ? 'quiz' : 'vanish';
   }
   elseif($wolf == 0){ //狼全滅
     if($lovers > 1)  $victory_role = 'lovers';
@@ -143,7 +143,7 @@ function CheckVictory($check_draw = false){
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame', " .
     "victory_role = '{$victory_role}', finish_time = NOW() WHERE room_no = {$ROOM->id}";
   SendQuery($query, true);
-  OutputSiteSummary();
+  //OutputSiteSummary(); //RSS機能はテスト中
   return true;
 }
 
@@ -192,10 +192,10 @@ function OutputGamePageHeader(){
 
   $title = $SERVER_CONF->title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
-  if(preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){ //MAC かどうか判別
+  if(false && preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){ //MAC かどうか判別
     $sentence = '';  //MAC は JavaScript でエラー？
     $anchor_header .= '<a href="';
-    $anchor_footer = '">ここをクリックしてください</a>';
+    $anchor_footer = '" target="_top">ここをクリックしてください</a>';
   }
   else{
     $sentence = '<script type="text/javascript"><!--'."\n" .
@@ -369,7 +369,7 @@ function OutputPlayerList(){
       $str .= ')<br>';
 
       //メイン役職を追加
-      if($user->IsRole('human', 'suspect', 'unconscious', 'elder', 'saint'))
+      if($user->IsRole('human', 'elder', 'saint', 'executor', 'suspect', 'unconscious'))
 	$str .= GenerateRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
 	$str .= GenerateRoleName($user->main_role, 'mage');
@@ -650,7 +650,9 @@ function OutputTalk($talk, &$builder){
      $said_user->IsPartner('mind_friend', $virtual_self->partner_list));
 
   $flag_mind_read = $is_mind_read || ($said_user->IsRole('mind_open') && $ROOM->date > 1) ||
-    ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf);
+    ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf) ||
+    ($real_user->IsRole('possessed_mad') && $said_user->IsSame($virtual_self->uname)) ||
+    ($real_user->IsRole('possessed_fox') && $builder->flag->fox);
 
   //発言表示フラグ判定
   $flag_dummy_boy = $builder->flag->dummy_boy;
@@ -827,7 +829,8 @@ function OutputAbilityAction(){
   }
   else{
     array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'DREAM_EAT',
-	       'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+	       'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
+	       'POSSESSED_DO', 'POSSESSED_NOT_DO');
   }
 
   $action = '';
@@ -837,7 +840,7 @@ function OutputAbilityAction(){
   }
 
   $query = "SELECT message AS sentence, type FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = $yesterday AND ( $action )";
+    "AND date = {$yesterday} AND ( {$action} )";
   $message_list = FetchAssoc($query);
   foreach($message_list as $array){
     extract($array);
@@ -845,79 +848,72 @@ function OutputAbilityAction(){
     echo $header.$actor.' ';
     switch($type){
     case 'WOLF_EAT':
-      echo '(人狼) たちは '.$target.' を狙いました';
+    case 'DREAM_EAT':
+    case 'POSSESSED_DO':
+    case 'ASSASSIN_DO':
+      echo 'は '.$target.' を狙いました';
       break;
 
     case 'MAGE_DO':
-      echo '(占い師) は '.$target.' を占いました';
+    case 'CHILD_FOX_DO':
+      echo 'は '.$target.' を占いました';
       break;
 
     case 'VOODOO_KILLER_DO':
-      echo '(陰陽師) は '.$target.' の呪いを祓いました';
+      echo 'は '.$target.' の呪いを祓いました';
       break;
 
     case 'JAMMER_MAD_DO':
-      echo '(月兎) は '.$target.' の占いを妨害しました';
+      echo 'は '.$target.' の占いを妨害しました';
       break;
 
     case 'TRAP_MAD_DO':
-      echo '(罠師) は '.$target.' '.$MESSAGE->trap_do;
+      echo 'は '.$target.' '.$MESSAGE->trap_do;
       break;
 
     case 'TRAP_MAD_NOT_DO':
-      echo '(罠師) '.$MESSAGE->trap_not_do;
+      echo $MESSAGE->trap_not_do;
+      break;
+
+    case 'POSSESSED_NOT_DO':
+      echo $MESSAGE->possessed_not_do;
       break;
 
     case 'VOODOO_MAD_DO':
-      echo '(呪術師) は '.$target.' に呪いをかけました';
-      break;
-
-    case 'DREAM_EAT':
-      echo '(獏) は '.$target.' を狙いました';
+    case 'VOODOO_FOX_DO':
+      echo 'は '.$target.' に呪いをかけました';
       break;
 
     case 'GUARD_DO':
-      echo '(狩人) は '.$target.' '.$MESSAGE->guard_do;
+      echo 'は '.$target.' '.$MESSAGE->guard_do;
       break;
 
     case 'ANTI_VOODOO_DO':
-      echo '(厄神) は '.$target.' の厄を祓いました';
+      echo 'は '.$target.' の厄を祓いました';
       break;
 
     case 'REPORTER_DO':
-      echo '(ブン屋) は '.$target.' '.$MESSAGE->reporter_do;
-      break;
-
-    case 'ASSASSIN_DO':
-      echo '(暗殺者) は '.$target.' を狙いました';
+      echo 'は '.$target.' '.$MESSAGE->reporter_do;
       break;
 
     case 'ASSASSIN_NOT_DO':
-      echo '(暗殺者) '.$MESSAGE->assassin_not_do;
+      echo $MESSAGE->assassin_not_do;
       break;
 
     case 'MIND_SCANNER_DO':
-      echo '(さとり) は '.$target.' の心を読みました';
-      break;
-
-    case 'VOODOO_FOX_DO':
-      echo '(九尾) は '.$target.' に呪いをかけました';
-      break;
-
-    case 'CHILD_FOX_DO':
-      echo '(子狐) は '.$target.' を占いました';
+      echo 'は '.$target.' の心を読みました';
       break;
 
     case 'CUPID_DO':
-      echo '(キューピッド) は '.$target.' '.$MESSAGE->cupid_do;
+      echo 'は '.$target.' '.$MESSAGE->cupid_do;
       break;
 
     case 'FAIRY_DO':
-      echo '(妖精) は '.$target.' '.$MESSAGE->fairy_do;;
+      echo 'は '.$target.' '.$MESSAGE->fairy_do;;
       break;
 
     case 'MANIA_DO':
-      echo '(神話マニア) は '.$target.' を真似しました';
+      echo 'は '.$target.' を真似しました';
       break;
     }
     echo $footer;
@@ -978,16 +974,17 @@ function OutputDeadMan(){
     'day' => array('VOTE_KILLED' => true, 'POISON_DEAD_day' => true,
 		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false),
 
-    'night' => array('WOLF_KILLED' => true, 'POSSESSED%' => false, 'DREAM_KILLED' => true,
+    'night' => array('WOLF_KILLED' => true, 'POSSESSED' => true, 'POSSESSED_TARGETED' => true,
+		     'POSSESSED_RESET' => true, 'DREAM_KILLED' => true,
 		     'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
 		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
-		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false));
+		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
     foreach($action_list as $action => $type){
-      $query_list[] = 'type ' . ($type ? '=' : 'LIKE') . " '$action'";
+      $query_list[] = 'type ' . ($type ? '=' : 'LIKE') . " '{$action}'";
     }
     $type_list->$scene = implode(' OR ', $query_list);
   }
@@ -1001,7 +998,7 @@ function OutputDeadMan(){
     $type = $type_list->day;
   }
 
-  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY RAND()");
+  $array = FetchAssoc("{$query_header} {$set_date} AND ( {$type} ) ORDER BY RAND()");
   foreach($array as $this_array){
     OutputDeadManType($this_array['message'], $this_array['type']);
   }
@@ -1013,7 +1010,7 @@ function OutputDeadMan(){
   $type = $type_list->{$ROOM->day_night};
 
   echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合は $array の中身をチェックする
-  $array = FetchAssoc("$query_header $set_date AND ( $type ) ORDER BY RAND()");
+  $array = FetchAssoc("{$query_header} {$set_date} AND ( {$type} ) ORDER BY RAND()");
   foreach($array as $this_array){
     OutputDeadManType($this_array['message'], $this_array['type']);
   }

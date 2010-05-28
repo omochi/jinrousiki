@@ -86,6 +86,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#sex_wolf">雛狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
+<a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
 <a href="#scarlet_wolf">紅狼</a>
@@ -557,6 +558,32 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 人狼の楽しみの一つである「RP」をどこまでまねる事ができるか、ぜひ挑戦してみてください。
 </pre>
 
+<h3><a name="sirius_wolf">天狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+仲間の狼が減ると特殊能力が発現する狼。
+</pre>
+<ol>
+  <li>狼が残り二人になると、以下の能力を持ちます</li>
+  <ol>
+    <li><a href="human.php#assassin_spec">暗殺反射</a></li>
+    <li><a href="#trap_mad">罠師</a>の罠無効</li>
+  </ol>
+  <li>狼が残り一人になると、さらに以下の能力を持ちます</li>
+  <ol>
+    <li>毒無効 (吊り・襲撃両対応)</li>
+    <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
+    <li><a href="human.php#fend_guard">忍者</a>の能力無効</li>
+    <li><a href="human.php#ghost_common">亡霊嬢</a>の能力無効</li>
+    <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
+  </ol>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルの、人狼系最終兵器です。
+LW になると吊り以外では止められなくなります。
+もし、LW になって噛みを失敗したらその人は狐です。
+</pre>
+
 <h3><a name="elder_wolf">古狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β5〜]</h3>
 <pre>
 投票数が +1 される人狼。詳細は<a href="human.php#elder">長老</a>参照。
@@ -622,8 +649,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#voodoo_mad">呪術師</a>
 <a href="#corpse_courier_mad">火車</a>
 <a href="#agitate_mad">扇動者</a>
+<a href="#miasma_mad">土蜘蛛</a>
 <a href="#dream_eater_mad">獏</a>
 <a href="#trap_mad">罠師</a>
+<a href="#possessed_mad">犬神</a>
 </p>
 
 <h3><a name="mad_rule">基本ルール</a></h3>
@@ -742,10 +771,24 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 より「扇動者」っぽくアレンジしてみました。
 </pre>
 
+<h3><a name="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role#febris">熱病</a>にする特殊な狂人。
+
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+新役職考案スレ (最下参照) の 33 が原型です。
+<a href="sub_role#febris">熱病</a>の仕様と実装が中々決まらず、作成決定から実装まで
+かなり間が開いてます。
+</pre>
+
 <h3><a name="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <pre>
-夜に投票した夢系能力者(<a href="human.php#dummy_mage">夢見人</a>、<a href="human.php#dummy_necromancer">夢枕人</a>、<a href="human.php#dummy_common">夢共有者</a>、<a href="human.php#dummy_poison">夢毒者</a>、<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) を
-殺すことができる狂人。<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>、<a href="human.php#dummy_necromancer">夢枕人</a>、<a href="human.php#dummy_common">夢共有者</a>、<a href="human.php#dummy_poison">夢毒者</a>、<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
+<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
 
 何らかの形で<a href="human.php#dummy_guard">夢守人</a>に接触した場合は殺される。
 夢守人に殺される条件は以下。
@@ -755,6 +798,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>夢守人に自分が護衛された</li>
   <li>襲撃先が夢守人に護衛されていた</li>
 </ol>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中ります (襲撃した場合は中らない)。
+<a href="chiroptera.php#fairy_group">妖精系</a>も殺す事ができます
+</pre>
 <h4>Ver. 1.4.0 α23〜</h4>
 <pre>
 初日の襲撃はできません (暗殺者系と挙動を揃えました)。
@@ -789,5 +837,26 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 人狼の襲撃先を外しつつ狩人の護衛先や暗殺者の襲撃先を読み切って
 ピンポイントで罠を仕掛けないといい仕事にならないので活躍するのは
 非常に難しいと思いますが、当たればきっと最高の気分になれるはず。
+</pre>
+
+<h3><a name="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+一度だけ、死体に憑依することができる特殊な狂人。
+</pre>
+<ol>
+  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
+  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
+  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
+  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
+  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
+  <li>狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺されます</li>
+  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
+  <li>死亡した人狼にも憑依できますが、夜の発言は独り言になり、仲間の人狼と会話できません</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「蘇生された人は本物なのか？」という疑心暗鬼を振りまくための存在です。
+<a href="#possessed_wolf">憑狼</a>と違い、死体に憑依するので死体の数で見切られやすいのが難点です。
 </pre>
 </body></html>

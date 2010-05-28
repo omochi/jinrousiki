@@ -16,6 +16,7 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#boss_wolf"><?php echo $GAME_OPT_MESS->boss_wolf ?></a>
 <a href="#poison_wolf"><?php echo $GAME_OPT_MESS->poison_wolf ?></a>
 <a href="#possessed_wolf"><?php echo $GAME_OPT_MESS->possessed_wolf ?></a>
+<a href="#sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?></a>
 <a href="#cupid"><?php echo $GAME_OPT_MESS->cupid ?></a>
 <a href="#medium"><?php echo $GAME_OPT_MESS->medium ?></a>
 <a href="#mania"><?php echo $GAME_OPT_MESS->mania ?></a>
@@ -27,6 +28,7 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>
 <a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a>
 <a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>
+<a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>
 </p>
 <p>
 <a href="#quiz"><?php echo $GAME_OPT_MESS->quiz ?></a>
@@ -82,6 +84,12 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->possessed_wolf ?>人以上になったら<a href="new_role/wolf.php#possessed_wolf">憑狼</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->possessed_wolf ?></li>
+</ul>
+</p>
+<h2><a name="sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?></a></h2>
+<ul>
+  <li>村の人口が<?php echo $CAST_CONF->sirius_wolf ?>人以上になったら<a href="new_role/wolf.php#sirius_wolf">天狼</a>が登場します</li>
+  <li><?php echo $GAME_OPT_CAPT->sirius_wolf ?></li>
 </ul>
 </p>
 <p>
@@ -153,6 +161,28 @@ OutputInfoPageHeader('ゲームオプション');
   <li>表記が村人となる役職が存在する事に注意してください</li>
 </ul>
 
+<h2><a name="festival"><?php echo $GAME_OPT_MESS->festival ?></a></h2>
+<ul>
+  <li>管理人がカスタムする特殊設定です</li>
+  <li>初期設定では、以下に示す人数の範囲だけ、固定編成になります</li>
+</ul>
+<pre>
+ 8人：村人1　占い師1　霊能者1　狩人1　白狼1　狂人1　白狐1　蝙蝠1
+ 9人：狩人2　夢守人4　人狼1　銀狼1　天狐1
+10人：蝕暗殺者6　銀狼2　天狐1　光妖精1
+11人：無意識1　魂の占い師1　雲外鏡1　預言者1　狩人1　厄神1　河童1　呪狼1　銀狼1　月兎1　呪蝙蝠1
+12人：賢狼1　月兎8　九尾2　妖精1
+13人：村人1　占い師1　精神鑑定士1　夢見人1　霊能者1　夢枕人1　狩人1　夢守人1　共有者1　人狼1　毒狼1　罠師1　呪蝙蝠1
+14人：霊能1　銀狼2　妖狐1　蝙蝠10
+15人：埋毒者3　人狼3　狂信者1　蝙蝠7　大蝙蝠1
+16人：村人7　占い師1　霊能者1　狩人1　共有者2　狼2　狂人1　狂信者1
+17人：占い師1　霊能者1　狩人1　共有2　人狼3　狂人1　妖狐1　QP7
+18人：埋毒者7　夢毒者1　人狼3　QP7
+19人：天人1　厄神1　夢毒者1　猫又1　蝕暗殺者2　橋姫1　毒狼1　憑狼1　天狼1　狂信者1　扇動者1　天狐2　女神1　出題者1　光妖精1　闇妖精1　鏡妖精1
+20人：蝕暗殺者13　銀狼5　妖狐2
+21人：埋毒者7　連毒者2　毒狼4　抗毒狼1　管狐2　出題者3　毒蝙蝠2
+22人：村人8　占い師1　霊能者1　狩人1　共有者2　猫又1　人狼4　白狼1　狂人1　妖狐1　子狐1
+</pre>
 <h2><a name="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a></h2>
 <ul>
   <li>GM が<a href="new_role/quiz.php#quiz">出題者</a>になります</li>

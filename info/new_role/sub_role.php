@@ -39,6 +39,7 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <a href="#impatience">短気</a>
 <a href="#celibacy">独身貴族</a>
 <a href="#nervy">自信家</a>
+<a href="#febris">熱病</a>
 <a href="#panelist">解答者</a>
 </p>
 
@@ -107,6 +108,13 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <h4>[作成者からのコメント]</h4>
 <pre>
 翠星石鯖＠やる夫人狼のとある村の RP がモデルです。
+</pre>
+
+<h3><a name="febris">熱病</a> [Ver. 1.4.0 β9〜]</h3>
+<pre>
+昼の投票集計後 (再投票になっても発動) にショック死します。
+発動条件を満たした日の昼に突然表示されて、効果は一日で消えます。
+<a href="wolf.php#miasma_mad">土蜘蛛</a>に投票された人にこれがつきます。
 </pre>
 
 <h3><a name="panelist">解答者</a> [Ver. 1.4.0 α17〜]</h3>
