@@ -119,12 +119,11 @@ function LockTable($type = NULL){
 
   case 'icon':
     $stack = array('user_icon');
+    break;
   }
 
   $query_stack = array();
-  foreach($stack as $table){
-    $query_stack[] = $table . ' WRITE';
-  }
+  foreach($stack as $table) $query_stack[] = $table . ' WRITE';
   return SendQuery('LOCK TABLES ' . implode(', ', $query_stack));
 }
 
@@ -375,7 +374,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   if(strpos($game_option, 'real_time') !== false){ //実時間の制限時間を取得
     $real_time_str = strstr($game_option, 'real_time');
     sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
-    $sentence = "{$GAME_OPT_MESS->real_time}　昼： $day 分　夜： $night 分";
+    $sentence = "{$GAME_OPT_MESS->real_time}　昼： {$day} 分　夜： {$night} 分";
     $str .= $ROOM_IMG->Generate('real_time', $sentence) . '['. $day . '：' . $night . ']';
   }
 
@@ -384,8 +383,8 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'auto_open_cast',
 			      'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
 			      'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'liar',
-			      'gentleman', 'sudden_death', 'perverseness', 'full_mania', 'festival',
-			      'quiz', 'duel', 'chaos', 'chaosfull', 'chaos_open_cast',
+			      'gentleman', 'sudden_death', 'perverseness', 'full_mania', 'detective',
+			      'festival', 'quiz', 'duel', 'chaos', 'chaosfull', 'chaos_open_cast',
 			      'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
 			      'no_sub_role');
 
@@ -431,6 +430,15 @@ function OutputCastTable($min = 0, $max = NULL){
 	$class = $value;
 	break;
       }
+    }
+    switch($class){
+    case 'mind_scanner':
+      $class = 'mind';
+      break;
+
+    case 'child_fox':
+      $class = 'fox';
+      break;
     }
     $str .= '<th class="' . $class . '">' . $GAME_CONF->main_role_list[$role] . '</th>';
   }

@@ -329,8 +329,8 @@ class CopyrightConfigBase{
   function Output(){
     $stack = $this->list;
     foreach($this->add_list as $class => $list){
-      $stack[$class] = array_key_exists($class, $stack) ? array_merge($stack[$class], $list) :
-	$list;
+      $stack[$class] = array_key_exists($class, $stack) ?
+	array_merge($stack[$class], $list) : $list;
     }
 
     foreach($stack as $class => $list){
@@ -367,9 +367,10 @@ class TwitterConfigBase{
   //投稿処理
   function Send($id, $name, $comment){
     if($this->disable) return;
-    require_once(JINRO_MOD . "/twitter/Twitter.php"); //ライブラリをロード
+    require_once(JINRO_MOD . '/twitter/Twitter.php'); //ライブラリをロード
 
     $message = "【{$this->server}】{$id}番地に{$name}村\n〜{$comment}〜 が建ちました";
+    if(strlen($this->hash) > 0) $message .= " #{$this->hash}";
     $st =& new Services_Twitter($this->user, $this->password);
     if($st->setUpdate(mb_convert_encoding($message, 'UTF-8', 'auto'))) return;
 

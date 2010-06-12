@@ -28,6 +28,7 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>
 <a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a>
 <a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>
+<a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a>
 <a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>
 </p>
 <p>
@@ -161,6 +162,16 @@ OutputInfoPageHeader('ゲームオプション');
   <li>表記が村人となる役職が存在する事に注意してください</li>
 </ul>
 
+<h2><a name="detective"><?php echo $GAME_OPT_MESS->detective ?></a></h2>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->detective ?></li>
+  <li>普通村の場合は、共有者がいれば共有者を、いなければ村人を一人<a href="new_role/human.php#detective_common">探偵</a>に入れ替えます</li>
+  <li>真・闇鍋モードの場合は固定枠に<a href="new_role/human.php#detective_common">探偵</a>が追加されます</li>
+  <li>このオプションを使用した場合は、身代わり君が<a href="new_role/human.php#detective_common">探偵</a>にはなりません</li>
+  <li>「身代わり君はGM」+「霊界を常時非公開」オプションと併用すると「霊界探偵モード」になります</li>
+  <li>「霊界探偵モード」はゲーム開始直後に探偵が死亡して、霊界に移動します。指示は GM 経由で行います</li>
+</ul>
+
 <h2><a name="festival"><?php echo $GAME_OPT_MESS->festival ?></a></h2>
 <ul>
   <li>管理人がカスタムする特殊設定です</li>
@@ -169,19 +180,23 @@ OutputInfoPageHeader('ゲームオプション');
 <pre>
  8人：村人1　占い師1　霊能者1　狩人1　白狼1　狂人1　白狐1　蝙蝠1
  9人：狩人2　夢守人4　人狼1　銀狼1　天狐1
-10人：蝕暗殺者6　銀狼2　天狐1　光妖精1
+10人：占い師1　霊能者1　狩人1　上海人形1　人形遣い1　人狼2　狂人1　妖狐1　蝙蝠1
 11人：無意識1　魂の占い師1　雲外鏡1　預言者1　狩人1　厄神1　河童1　呪狼1　銀狼1　月兎1　呪蝙蝠1
 12人：賢狼1　月兎8　九尾2　妖精1
 13人：村人1　占い師1　精神鑑定士1　夢見人1　霊能者1　夢枕人1　狩人1　夢守人1　共有者1　人狼1　毒狼1　罠師1　呪蝙蝠1
 14人：霊能1　銀狼2　妖狐1　蝙蝠10
 15人：埋毒者3　人狼3　狂信者1　蝙蝠7　大蝙蝠1
-16人：村人7　占い師1　霊能者1　狩人1　共有者2　狼2　狂人1　狂信者1
-17人：占い師1　霊能者1　狩人1　共有2　人狼3　狂人1　妖狐1　QP7
-18人：埋毒者7　夢毒者1　人狼3　QP7
+16人：夢守人1　強毒者1　夢毒者5　天狼3　獏1　小悪魔1　鏡妖精4
+17人：ひよこ鑑定士1　霊能者1　狩人1　共有者2　人狼2　金狼1　狂人1　妖狐1　蝙蝠7
+18人：聖女1　魂の占い師1　雲外鏡1　忍者1　策士1　亡霊嬢1　潜毒者1　反魂師1　賢狼1　憑狼1　天狼1　月兎1　呪術師1　九尾1　仙狐1　天使1　光妖精1　奇術師1
 19人：天人1　厄神1　夢毒者1　猫又1　蝕暗殺者2　橋姫1　毒狼1　憑狼1　天狼1　狂信者1　扇動者1　天狐2　女神1　出題者1　光妖精1　闇妖精1　鏡妖精1
 20人：蝕暗殺者13　銀狼5　妖狐2
 21人：埋毒者7　連毒者2　毒狼4　抗毒狼1　管狐2　出題者3　毒蝙蝠2
 22人：村人8　占い師1　霊能者1　狩人1　共有者2　猫又1　人狼4　白狼1　狂人1　妖狐1　子狐1
+出展：
+10人：奴隷村＠世紀末鯖
+15人：マインスイーパ村＠世紀末鯖
+22人：バルサン村＠わかめて鯖
 </pre>
 <h2><a name="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a></h2>
 <ul>
@@ -206,6 +221,12 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2><a name="duel"><?php echo $GAME_OPT_MESS->duel ?></a></h2>
 <ul>
-  <li><a href="new_role/human.php#assassin">暗殺者</a>、人狼、<a href="new_role/wolf.php#trap_mad">罠師</a>しか出現しません
+  <li><a href="new_role/human.php#assassin">暗殺者</a>、人狼、<a href="new_role/wolf.php#trap_mad">罠師</a>しか出現しません</li>
+  <li>「霊界で配役を公開しない」オプションの設定によって配役が変わります。デフォルトは以下です</li>
+  <ol>
+    <li>常時公開：暗殺者ベース</li>
+    <li>自動公開：キューピッドベース</li>
+    <li>非公開：埋毒者ベース</li>
+  </ol>
 </ul>
 </body></html>

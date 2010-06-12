@@ -28,11 +28,12 @@ foreach($RQ_ARGS as $key => $value){
 if($RQ_ARGS->password != $config->password) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
+//PrintData($_FILES['file']);
 $file_name = strtolower(trim($_FILES['file']['name']));
 $file_type = $_FILES['file']['type'];
-
 if(! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', $file_type) &&
       preg_match('/^.*\.(zip|lzh)$/', $file_name))){
+  PrintData($_FILES['file']);
   OutputUploadResult('<span>' . $file_name . '</span> : <span>' . $file_type . '</span><br>'."\n".
 		     'zip/lzh 以外のファイルはアップロードできません。');
 }
@@ -42,7 +43,6 @@ $file_size = $_FILES['file']['size'];
 if($file_size == 0 || $file_size > $config->max_size){
   OutputUploadResult('ファイルサイズは <span>' . $config->max_size . 'byte</span> まで。');
 }
-
 
 //ファイル番号の取得
 $number = (int)file_get_contents('file/number.txt');

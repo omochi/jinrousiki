@@ -39,8 +39,8 @@ function OutputIconList($base_url = 'icon_view'){
   $builder->footer = '</td></tr>'."\n";
   $builder->Output();
   $builder->AddOption('category_page', $RQ_ARGS->category_page);
-
   //PrintData($builder->query);
+
   $source_list = GetIconCategoryList('category', $builder->query);
   $count = count($source_list);
   $stack = array();
@@ -48,8 +48,8 @@ function OutputIconList($base_url = 'icon_view'){
     $list = $builder->option;
     $list[] = 'category=' . ($i + $builder->limit);
     $name = $source_list[$i];
-    $stack[] = ($RQ_ARGS->category === $i ? $name :
-		$url_header . implode('&', $list) . '">' . $name . '</a>');
+    $stack[] = $RQ_ARGS->category === $i ? $name :
+      $url_header . implode('&', $list) . '">' . $name . '</a>';
   }
   $stack[] = $RQ_ARGS->category == 'all' ? 'all' : $all_url . 'category=all">all</a>';
 
@@ -57,8 +57,10 @@ function OutputIconList($base_url = 'icon_view'){
   if(is_int($RQ_ARGS->category)){
     $type = $category_list[$RQ_ARGS->category];
     $query_stack[] = "category = '{$type}'";
+    $url_option[] = "category={$RQ_ARGS->category}";
     $builder->AddOption('category', $RQ_ARGS->category);
   }
+  AddIconURLOption($url_option, 'category_page');
 
   //出典
   $appearance_list = GetIconCategoryList('appearance', '', $query_stack);
@@ -76,8 +78,8 @@ function OutputIconList($base_url = 'icon_view'){
     $list = $builder->option;
     $list[] = 'appearance=' . ($i + $builder->limit);
     $name = $source_list[$i];
-    $stack[] = ($RQ_ARGS->appearance === $i ? $name :
-		$url_header . implode('&', $list) . '">' . $name . '</a>');
+    $stack[] = $RQ_ARGS->appearance === $i ? $name :
+      $url_header . implode('&', $list) . '">' . $name . '</a>';
   }
   $stack[] = $RQ_ARGS->appearance == 'all' ? 'all' : $all_url . 'appearance=all">all</a>';
 
@@ -87,6 +89,7 @@ function OutputIconList($base_url = 'icon_view'){
     $query_stack[] = "appearance = '{$type}'";
     $url_option[] = "appearance={$RQ_ARGS->appearance}";
   }
+  AddIconURLOption($url_option, 'appearance_page');
 
   //出典
   $author_list = GetIconCategoryList('author', '', $query_stack);
@@ -104,8 +107,8 @@ function OutputIconList($base_url = 'icon_view'){
     $list = $builder->option;
     $list[] = 'author=' . ($i + $builder->limit);
     $name = $source_list[$i];
-    $stack[] = ($RQ_ARGS->author === $i ? $name :
-		$url_header . implode('&', $list) . '">' . $name . '</a>');
+    $stack[] = $RQ_ARGS->author === $i ? $name :
+      $url_header . implode('&', $list) . '">' . $name . '</a>';
   }
   $stack[] = $RQ_ARGS->author == 'all' ? 'all' : $all_url . 'author=all">all</a>';
 
@@ -115,10 +118,11 @@ function OutputIconList($base_url = 'icon_view'){
     $query_stack[] = "author = '{$type}'";
     $url_option[] = "author={$RQ_ARGS->author}";
   }
+  AddIconURLOption($url_option, 'author_page');
 
   //ユーザアイコンのテーブルから一覧を取得
-  $query = "SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color, appearance, " .
-    "category, author FROM user_icon WHERE ";
+  $query = 'SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
+    'appearance, category, author FROM user_icon WHERE ';
   if($RQ_ARGS->icon_no > 0){
     $query .= 'icon_no = ' . $RQ_ARGS->icon_no;
   }
@@ -135,7 +139,7 @@ function OutputIconList($base_url = 'icon_view'){
   $PAGE_CONF->option  = $url_option;
   if($RQ_ARGS->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . $RQ_ARGS->room_no;
   echo $line_header . "\n";
-  #PrintData($PAGE_CONF);
+  //PrintData($PAGE_CONF, 'PAGE_CONF');
   OutputPageLink($PAGE_CONF);
   echo "</td></tr>\n";
   if(is_null($RQ_ARGS->room_no)){
@@ -172,7 +176,7 @@ EOF;
       if(isset($category))   $data .= '<br>[C]' . $category;
       if(isset($author))     $data .= '<br>[A]' . $author;
       $data .= '<br>[U]' . FetchResult($query_use_count . $icon_no);
-      echo <<< EOF
+      echo <<<EOF
 <td><a href="{$base_url}.php?icon_no={$icon_no}">
 <img src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border-color:{$color};">
 </a></td>
@@ -214,6 +218,7 @@ EOF;
       echo "</td>\n";
     }
   }
+  for($i = $count; $i < 5; $i++) echo '<td></td>';
 }
 
 function GetIconCategoryList($type, $limit = '', $query_stack = array()){
@@ -224,6 +229,11 @@ function GetIconCategoryList($type, $limit = '', $query_stack = array()){
     $stack[1] .= ' ' . implode(' AND ', $list);
   }
   return FetchArray(implode(" {$type} ", $stack) . $limit);
+}
+
+function AddIconURLOption(&$stack, $option){
+  global $RQ_ARGS;
+  if(is_int($RQ_ARGS->$option)) $stack[] = "{$option}={$RQ_ARGS->$option}";
 }
 
 function OutputIconPageFooter(){

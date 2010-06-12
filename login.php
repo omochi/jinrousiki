@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('SESSION'); //セッションスタート
+$INIT_CONF->LoadClass('SESSION', 'GAME_CONF'); //セッションスタート
 $INIT_CONF->LoadRequest('RequestLogin'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 

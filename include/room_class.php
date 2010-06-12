@@ -35,9 +35,7 @@ class Room{
     $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
       'game_option, date, day_night, status FROM room WHERE room_no = ' . $room_no;
     $array = FetchAssoc($query, true);
-    if(count($array) < 1){
-      OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
-    }
+    if(count($array) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $array;
   }
 
@@ -50,10 +48,12 @@ class Room{
 
   //発言を取得する
   function LoadTalk($heaven = false){
+    global $GAME_CONF;
+
     $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
       ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
       ' ORDER BY talk_id DESC';
-    if(! $this->IsPlaying()) $query .= ' LIMIT 0, 500';
+    if(! $this->IsPlaying()) $query .= ' LIMIT 0, ' . $GAME_CONF->display_talk_limit;
     return FetchObject($query, 'Talk');
   }
 

@@ -3,8 +3,8 @@
 class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  var $die_room = 1200;
-  #var $die_room = 12000; //テスト用
+  #var $die_room = 1200;
+  var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -21,8 +21,9 @@ class RoomConfig{
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
   //-- OutputCreateRoom() --//
-  var $room_name = 45; //村名の最大文字数
-  var $room_comment = 50; //村の説明の最大文字数
+  var $room_name = 60; //村名の最大文字数
+  var $room_comment = 60; //村の説明の最大文字数
+  var $ng_word = '/http:\/\//i'; //入力禁止文字列 (正規表現)
 
   //各オプションを有効に [true:する / false:しない]
   //デフォルトでチェックを [true:つける / false:つけない]
@@ -59,7 +60,7 @@ class RoomConfig{
   var $possessed_wolf = true; //憑狼出現 (必要人数は CastConfig->possessed_wolf 参照)
   var $default_possessed_wolf = false;
 
-  var $sirius_wolf = true; //憑狼出現 (必要人数は CastConfig->sirius_wolf 参照)
+  var $sirius_wolf = true; //天狼出現 (必要人数は CastConfig->sirius_wolf 参照)
   var $default_sirius_wolf = false;
 
   var $cupid = true; //キューピッド出現 (必要人数は CastConfig->cupid 参照)
@@ -91,6 +92,9 @@ class RoomConfig{
 
   var $full_mania = true; //神話マニア村
   var $default_full_mania = false;
+
+  var $detective = true; //お祭り村
+  var $default_detective = false;
 
   var $festival = true; //お祭り村
   var $default_festival = false;
@@ -132,12 +136,13 @@ class GameConfig{
   var $trip = true;
   var $trip_2ch = true; //2ch 互換 (12桁対応) モード (true：有効 / false：無効)
 
-  //発言を「」で括る
-  var $quote_words = false;
-
   //文字数制限
   var $entry_uname_limit = 50; //ユーザ名と村人の名前
   var $entry_profile_limit = 300; //プロフィール
+
+  //-- 表示設定 --//
+  var $quote_words = false; //発言を「」で括る
+  var $display_talk_limit = 500; //ゲーム開始前後の発言表示数の限界値
 
   //-- 投票 --//
   var $self_kick = true; //自分への KICK (true：有効 / false：無効)
@@ -214,6 +219,7 @@ class GameConfig{
     'dummy_necromancer'  => '夢枕人',
     'medium'             => '巫女',
     'priest'             => '司祭',
+    'bishop_priest'      => '司教',
     'crisis_priest'      => '預言者',
     'revive_priest'      => '天人',
     'guard'              => '狩人',
@@ -223,6 +229,7 @@ class GameConfig{
     'anti_voodoo'        => '厄神',
     'dummy_guard'        => '夢守人',
     'common'             => '共有者',
+    'detective_common'   => '探偵',
     'trap_common'        => '策士',
     'ghost_common'       => '亡霊嬢',
     'dummy_common'       => '夢共有者',
@@ -244,6 +251,10 @@ class GameConfig{
     'evoke_scanner'      => 'イタコ',
     'jealousy'           => '橋姫',
     'poison_jealousy'    => '毒橋姫',
+    'doll'               => '上海人形',
+    'poison_doll'        => '鈴蘭人形',
+    'friend_doll'        => '仏蘭西人形',
+    'doll_master'        => '人形遣い',
     'wolf'               => '人狼',
     'boss_wolf'          => '白狼',
     'gold_wolf'          => '金狼',
@@ -293,7 +304,7 @@ class GameConfig{
     'self_cupid'         => '求愛者',
     'mind_cupid'         => '女神',
     'triangle_cupid'     => '小悪魔',
-    //'possessed_cupid'    => 'QP',
+    //'possessed_cupid'    => '魂移使',
     'angel'              => '天使',
     'rose_angel'         => '薔薇天使',
     'lily_angel'         => '百合天使',
@@ -327,6 +338,8 @@ class GameConfig{
     'celibacy'      => '独身貴族',
     'impatience'    => '短気',
     'nervy'         => '自信家',
+    'febris'        => '熱病',
+    'death_warrant' => '死の宣告',
     'panelist'      => '解答者',
     'liar'          => '狼少年',
     'invisible'     => '光学迷彩',
@@ -373,7 +386,6 @@ class GameConfig{
     'mind_evoke'    => '口寄せ',
     'mind_lonely'   => 'はぐれ者',
     'lovers'        => '恋人',
-    'death_warrant' => '死の宣告',
     'copied'        => '元神話マニア');
 
   //役職の省略名 (過去ログ用)
@@ -395,7 +407,8 @@ class GameConfig{
     'yama_necromancer'   => '閻',
     'dummy_necromancer'  => '夢枕',
     'medium'             => '巫',
-    'priest'             => '司',
+    'priest'             => '司祭',
+    'bishop_priest'      => '司教',
     'crisis_priest'      => '預',
     'revive_priest'      => '天人',
     'guard'              => '狩',
@@ -405,6 +418,7 @@ class GameConfig{
     'anti_voodoo'        => '厄',
     'dummy_guard'        => '夢守',
     'common'             => '共',
+    'detective_common'   => '探',
     'trap_common'        => '策',
     'ghost_common'       => '亡',
     'dummy_common'       => '夢共',
@@ -426,6 +440,10 @@ class GameConfig{
     'evoke_scanner'      => 'イ',
     'jealousy'           => '橋',
     'poison_jealousy'    => '毒橋',
+    'doll'               => '上海',
+    'poison_doll'        => '鈴蘭',
+    'friend_doll'        => '仏蘭',
+    'doll_master'        => '人遣',
     'wolf'               => '狼',
     'boss_wolf'          => '白狼',
     'gold_wolf'          => '金狼',
@@ -504,6 +522,8 @@ class GameConfig{
     'celibacy'           => '独',
     'impatience'         => '短',
     'nervy'              => '信',
+    'febris'             => '熱',
+    'death_warrant'      => '宣',
     'panelist'           => '解',
     'liar'               => '嘘',
     'invisible'          => '光迷',
@@ -549,7 +569,6 @@ class GameConfig{
     'mind_sympathy'      => '感',
     'mind_lonely'        => '逸',
     'lovers'             => '恋',
-    'death_warrant'      => '宣',
     'copied'             => '元マ');
 
   //メイン役職のグループリスト (役職 => 所属グループ)
@@ -571,6 +590,7 @@ class GameConfig{
     'common' => 'common',
     'cat' => 'poison_cat',
     'jealousy' => 'jealousy',
+    'doll' => 'doll',
     'poison' => 'poison',
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
@@ -584,7 +604,7 @@ class GameConfig{
 			    'mind_evoke', 'mind_lonely'),
     'mania'        => array('copied'),
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'nervy',
-			    'celibacy', 'panelist'),
+			    'celibacy', 'febris', 'death_warrant', 'panelist'),
     'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
 			    'line_reverse', 'gentleman', 'lady'),
     'authority'    => array('authority', 'random_voter', 'rebel', 'watcher'),
@@ -592,8 +612,7 @@ class GameConfig{
     'luck'         => array('upper_luck', 'downer_luck', 'random_luck', 'star', 'disfavor'),
     'voice'        => array('strong_voice', 'normal_voice', 'weak_voice', 'upper_voice',
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
-    'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'),
-    'assassin'     => array('death_warrant'));
+    'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'));
 
   //-- その他 --//
   var $power_gm = false; //強権 GM モード (ON：true / OFF：false)

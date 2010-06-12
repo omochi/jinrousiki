@@ -40,6 +40,7 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <a href="#celibacy">独身貴族</a>
 <a href="#nervy">自信家</a>
 <a href="#febris">熱病</a>
+<a href="#death_warrant">死の宣告</a>
 <a href="#panelist">解答者</a>
 </p>
 
@@ -112,9 +113,16 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 
 <h3><a name="febris">熱病</a> [Ver. 1.4.0 β9〜]</h3>
 <pre>
-昼の投票集計後 (再投票になっても発動) にショック死します。
+表示された日の昼の投票集計後 (再投票になっても発動) にショック死します。
 発動条件を満たした日の昼に突然表示されて、効果は一日で消えます。
 <a href="wolf.php#miasma_mad">土蜘蛛</a>に投票された人にこれがつきます。
+</pre>
+
+<h3><a name="death_warrant">死の宣告</a> [Ver. 1.4.0 β10〜]</h3>
+<pre>
+予告された日の昼の投票集計後 (再投票になっても発動) にショック死します。
+<a href="human.php#doom_assassin">死神</a>に投票された人にこれがつきます。
+投票された次の日の昼から、発動日がいつか表示されます。
 </pre>
 
 <h3><a name="panelist">解答者</a> [Ver. 1.4.0 α17〜]</h3>

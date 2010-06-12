@@ -13,7 +13,6 @@ class Message{
   //EntryUser() : ユーザ登録
   //入村メッセージ
   //var $entry_user = 'さんが村の集会場にやってきました'
-  //var $entry_user = 'さんが村の寺子屋にやってきました';
   var $entry_user = 'さんが幻想郷入りしました';
 
   //-- game_view.php & OutputGameHTMLHeader() --//
@@ -98,6 +97,7 @@ class Message{
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   var $febris             = 'は熱病にかかったようです'; //熱病
+  var $warrant            = 'は死の宣告を受けたようです'; //死の宣告
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合
@@ -107,7 +107,7 @@ class Message{
   var $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
   var $ability_mage_do          = '占う人を選択してください'; //占い師系
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
-  var $ability_jammer_do        = '占いを妨害する人を選択してください'; //邪魔狂人
+  var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
   var $ability_trap_do          = '罠を設置する人を選択してください'; //罠師
   var $ability_possessed_do     = '憑依する人を選択してください'; //犬神
   var $ability_dream_eat        = '夢を喰べる人を選択してください'; //獏
@@ -189,6 +189,7 @@ class GameOptionMessage{
   var $sudden_death         = '虚弱体質村';
   var $perverseness         = '天邪鬼村';
   var $full_mania           = '神話マニア村';
+  var $detective            = '探偵村';
   var $festival             = 'お祭り村';
   var $chaos                = '闇鍋モード';
   var $chaosfull            = '真・闇鍋モード';
@@ -230,6 +231,7 @@ class GameOptionCaptionMessage{
   var $sudden_death         = '全員に投票でショック死するサブ役職のどれかがつきます';
   var $perverseness         = '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります';
   var $full_mania           = '「村人」が全員「神話マニア」に入れ替わります';
+  var $detective            = '「探偵」が登場し、初日の夜に全員に公表されます';
   var $festival             = '管理人がカスタムする特殊設定です';
   var $no_chaos             = '通常人狼';
   var $chaos                = '通常村＋α程度に配役がぶれる闇鍋モードです';
@@ -241,7 +243,7 @@ class GameOptionCaptionMessage{
   var $secret_sub_role      = 'サブ役職が分からなくなります：闇鍋モード専用オプション';
   var $no_sub_role          = 'サブ役職をつけません：闇鍋モード専用オプション';
   var $quiz                 = '身代わり君が「出題者」になってクイズを出します';
-  var $duel                 = '「人狼」「罠師」「暗殺者」のみしか登場しない村です';
+  var $duel                 = '霊界公開設定によって配役が変化する特殊村です';
 }
 
 //-- 村・本人の勝敗結果 --//

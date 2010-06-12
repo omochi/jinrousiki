@@ -39,11 +39,15 @@ function OutputAbility(){
     $ROLE_IMG->Output($SELF->main_role);
     OutputSelfAbilityResult('MEDIUM_RESULT'); //神託結果を表示
   }
-  elseif($SELF->IsRoleGroup('priest')){ //司祭
+  elseif($SELF->IsRoleGroup('priest')){ //司祭系
     $ROLE_IMG->Output($SELF->IsRole('crisis_priest') ? 'human' : $SELF->main_role);
     switch($SELF->main_role){
     case 'priest':
       OutputSelfAbilityResult('PRIEST_RESULT'); //神託結果を表示
+      break;
+
+    case 'bishop_priest':
+      OutputSelfAbilityResult('BISHOP_PRIEST_RESULT'); //神託結果を表示
       break;
 
     case 'crisis_priest':
@@ -158,10 +162,15 @@ function OutputAbility(){
       break;
 
     case 'sirius_wolf':
-      if(count($USERS->GetLivingWolves()) == 2)
+      switch(strval(count($USERS->GetLivingWolves()))){
+      case '2':
 	OutputAbilityResult('ability_sirius_wolf', NULL);
-      elseif(count($USERS->GetLivingWolves()) == 1)
+	break;
+
+      case '1':
 	OutputAbilityResult('ability_full_sirius_wolf', NULL);
+	break;
+      }
       break;
     }
 
@@ -331,6 +340,24 @@ function OutputAbility(){
       }
     }
   }
+  elseif($SELF->IsRoleGroup('doll')){ //上海人形系
+    $ROLE_IMG->Output($SELF->main_role);
+    if(! $SELF->IsRole('doll_master')){ //仲間表示
+      foreach($USERS->rows as $user){
+	if($user->IsSelf()) continue;
+	if($user->IsRole('doll_master')){
+	  $doll_master[] = $user->handle_name;
+	}
+	elseif($user->IsDoll()){
+	  $doll_partner[] = $user->handle_name;
+	}
+      }
+      OutputPartner($doll_master, 'doll_master_list'); //人形遣い
+      if($SELF->IsRole('friend_doll')){
+	OutputPartner($doll_partner, 'doll_partner'); //人形遣い
+      }
+    }
+  }
   elseif($SELF->IsRole('incubate_poison')){ //潜毒者
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
@@ -355,7 +382,8 @@ function OutputAbility(){
     OutputPartner($cupid_pair, 'cupid_pair');
 
     if($SELF->IsRole('ark_angel') && $ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
-    if($ROOM->IsNight() && $ROOM->date == 1) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //初日夜の投票
+    //初日夜の投票
+    if($ROOM->IsNight() && $ROOM->date == 1) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO');
   }
   elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //橋姫
   elseif($SELF->IsRole('quiz')){ //出題者
@@ -364,7 +392,8 @@ function OutputAbility(){
   }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->IsNight() && $ROOM->date == 1) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO'); //初日夜の投票
+    //初日夜の投票
+    if($ROOM->IsNight() && $ROOM->date == 1) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO');
   }
 
   //-- ここから兼任役職 --//
@@ -395,10 +424,18 @@ function OutputAbility(){
   if($SELF->IsRole('febris')){
     $dead_date = max($SELF->GetPartner('febris'));
     if($ROOM->date == $dead_date){
-      OutputAbilityResult('febris_header', $dead_date, 'febris_footer');
+      OutputAbilityResult('febris_header', $dead_date, 'sudden_death_footer');
     }
   }
   $fix_display_list[] = 'febris';
+
+  if($SELF->IsRole('death_warrant')){
+    $dead_date = max($SELF->GetPartner('death_warrant'));
+    if($ROOM->date <= $dead_date){
+      OutputAbilityResult('death_warrant_header', $dead_date, 'sudden_death_footer');
+    }
+  }
+  $fix_display_list[] = 'death_warrant';
 
   //ここからは憑依先の役職を表示
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
@@ -440,11 +477,6 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
 	     'mind_friend', 'mind_sympathy');
-
-  if($virtual_self->IsRole('death_warrant')){
-    $ROLE_IMG->Output('death_warrant');
-  }
-  $fix_display_list[] = 'death_warrant';
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -508,6 +540,12 @@ function OutputSelfAbilityResult($action){
   case 'PRIEST_RESULT':
     $type = 'priest';
     $header = 'priest_header';
+    $footer = 'priest_footer';
+    break;
+
+  case 'BISHOP_PRIEST_RESULT':
+    $type = 'priest';
+    $header = 'bishop_priest_header';
     $footer = 'priest_footer';
     break;
 
@@ -658,9 +696,9 @@ function OutputAbilityResult($header, $target, $footer = NULL){
   global $ROLE_IMG;
 
   echo '<table class="ability-result"><tr>'."\n";
-  if($header) echo '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n";
-  if($target) echo '<td>' . $target . '</td>'."\n";
-  if($footer) echo '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
+  if(isset($header)) echo '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n";
+  if(isset($target)) echo '<td>' . $target . '</td>'."\n";
+  if(isset($footer)) echo '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
   echo '</tr></table>'."\n";
 }
 

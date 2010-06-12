@@ -277,7 +277,7 @@ function OutputAutoReloadLink($url){
   $str = '[¼«Æ°¹¹¿·](' . $url . '0">' . ($RQ_ARGS->auto_reload == 0 ? '¡Ú¼êÆ°¡Û' : '¼êÆ°') . '</a>';
   foreach($GAME_CONF->auto_reload_list as $time){
     $name = $time . 'ÉÃ';
-    $value = ($RQ_ARGS->auto_reload == $time ? '¡Ú' . $name . '¡Û' : $name);
+    $value = $RQ_ARGS->auto_reload == $time ? '¡Ú' . $name . '¡Û' : $name;
     $str .= ' ' . $url . $time . '">' . $value . '</a>';
   }
   echo $str . ')'."\n";
@@ -383,26 +383,28 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'common');
       elseif($user->IsRoleGroup('cat'))
 	$str .= GenerateRoleName($user->main_role, 'cat');
+      elseif($user->IsRoleGroup('assassin'))
+	$str .= GenerateRoleName($user->main_role, 'assassin');
       elseif($user->IsRoleGroup('scanner'))
 	$str .= GenerateRoleName($user->main_role, 'mind');
       elseif($user->IsRoleGroup('jealousy'))
 	$str .= GenerateRoleName($user->main_role, 'jealousy');
+      elseif($user->IsRoleGroup('doll'))
+	$str .= GenerateRoleName($user->main_role, 'doll');
       elseif($user->IsRoleGroup('mania'))
 	$str .= GenerateRoleName($user->main_role, 'mania');
-      elseif($user->IsRoleGroup('assassin'))
-	$str .= GenerateRoleName($user->main_role, 'assassin');
-      elseif($user->IsRole('quiz'))
-	$str .= GenerateRoleName($user->main_role);
       elseif($user->IsRoleGroup('wolf'))
 	$str .= GenerateRoleName($user->main_role, 'wolf');
       elseif($user->IsRoleGroup('mad'))
 	$str .= GenerateRoleName($user->main_role, 'mad');
       elseif($user->IsRoleGroup('fox'))
 	$str .= GenerateRoleName($user->main_role, 'fox');
-      elseif($user->IsRoleGroup('chiroptera', 'fairy'))
-	$str .= GenerateRoleName($user->main_role, 'chiroptera');
+      elseif($user->IsRole('quiz'))
+	$str .= GenerateRoleName($user->main_role);
       elseif($user->IsRoleGroup('cupid', 'angel'))
 	$str .= GenerateRoleName($user->main_role, 'cupid');
+      elseif($user->IsRoleGroup('chiroptera', 'fairy'))
+	$str .= GenerateRoleName($user->main_role, 'chiroptera');
       elseif($user->IsRoleGroup('poison', 'pharmacist'))
 	$str .= GenerateRoleName($user->main_role, 'poison');
 
@@ -468,7 +470,7 @@ function OutputVictory(){
   //ÇÑÂ¼·Ï
   case NULL:
     $class  = 'none';
-    $winner = ($ROOM->date > 0 ? 'unfinished' : 'none');
+    $winner = $ROOM->date > 0 ? 'unfinished' : 'none';
     break;
   }
   echo <<<EOF
@@ -494,21 +496,56 @@ EOF;
     $result = $camp == 'quiz' ? 'lose' : 'draw';
   }
   else{
-    if($camp == 'chiroptera' && $SELF->IsLive()) //éþéõ¿Ø±Ä¤ÏÀ¸¤­¤Æ¤¤¤ì¤Ð¾¡Íø
-      $class = 'chiroptera';
-    elseif($victory == 'human' && $camp == 'human')
-      $class = 'human';
-    elseif($victory == 'wolf' && $camp == 'wolf')
-      $class = 'wolf';
-    elseif(strpos($victory, 'fox') !== false && $camp == 'fox')
-      $class = 'fox';
-    elseif($victory == 'lovers' && $camp == 'lovers')
-      $class = 'lovers';
-    elseif($victory == 'quiz' && $camp == 'quiz')
-      $class = 'quiz';
-    else{
-      $class  = 'none';
-      $result = 'lose';
+    switch($camp){
+    case 'fox':
+      if(strpos($victory, $camp) !== false){
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
+    case 'chiroptera':
+      if($SELF->IsLive()){ //éþéõ¿Ø±Ä¤ÏÀ¸¤­¤Æ¤¤¤ì¤Ð¾¡Íø
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
+    case 'human':
+      if($SELF->IsDoll()){ //¿Í·Á·Ï¤Ï¿Í·Á¸¯¤¤¤¬À¸Â¸¤·¤Æ¤¤¤¿¤éÇÔËÌ
+	foreach($USERS->rows as $user){
+	  if($user->IsRole('doll_master') && $user->IsLive()){
+	    $class  = 'none';
+	    $result = 'lose';
+	    break 2;
+	  }
+	}
+      }
+
+      if($victory == $camp){
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
+    default:
+      if($victory == $camp){
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
     }
   }
   $result = 'self_' . $result;
@@ -930,7 +967,7 @@ function OutputLastWords(){
   //Á°Æü¤Î»àË´¼Ô°ä¸À¤ò½ÐÎÏ
   $set_date = $ROOM->date - 1;
   $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = $set_date AND type = 'LAST_WORDS' ORDER BY RAND()";
+    "AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
   $array = FetchArray($query);
   if(count($array) < 1) return false;
 
@@ -1072,6 +1109,7 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_JEALOUSY':
   case 'SUDDEN_DEATH_AGITATED':
   case 'SUDDEN_DEATH_FEBRIS':
+  case 'SUDDEN_DEATH_WARRANT':
     echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){
       $action = strtolower(array_pop(explode('_', $type)));

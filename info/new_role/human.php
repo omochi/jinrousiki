@@ -23,6 +23,7 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 <a href="#assassin_group">暗殺者系</a>
 <a href="#mind_scanner_group">さとり系</a>
 <a href="#jealousy_group">橋姫系</a>
+<a href="#doll_group">上海人形系</a>
 <a href="#mania_group">神話マニア系</a>
 </p>
 
@@ -406,6 +407,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 </p>
 <p>
 <a href="#priest">司祭</a>
+<a href="#bishop_priest">司教</a>
 <a href="#crisis_priest">預言者</a>
 <a href="#revive_priest">天人</a>
 </p>
@@ -447,6 +449,19 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 役職の内訳が完全に分かりますが、式神研バージョンはかなり情報が絞られています。
 </pre>
 
+<h3><a name="bishop_priest">司教</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、司祭の亜種。
+</pre>
+<ol>
+  <li>能力の発動間隔は 3日目以降、1日おき (3 → 5 → 7 →...)</li>
+  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される</li>
+  <li>判定結果は夜も表示されたままですが、昼の処刑結果は反映されていません</li>
+  <li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+</pre>
 
 <h3><a name="crisis_priest">預言者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
 <pre>
@@ -505,7 +520,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 
 <h3><a name="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest">司祭</a>・<a href="#reporter">ブン屋</a>・<a href="#assassin">暗殺者</a>です</li>
+  <li>制限対象は、<a href="#priest">司祭</a>・<a href="#bishop_priest">司教</a>・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin">暗殺者</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
@@ -645,10 +660,28 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 
 <h2><a name="common_group">共有者系</a></h2>
 <p>
+<a href="#detective_common">探偵</a>
 <a href="#trap_common">策士</a>
 <a href="#ghost_common">亡霊嬢</a>
 <a href="#dummy_common">夢共有者</a>
 </p>
+
+<h3><a name="detective_common">探偵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+様々な特殊耐性を持つ、上位共有者。
+</pre>
+<ol>
+  <li>毒吊りで巻き込まれる対象になりません</li>
+  <li><a href="#assassin_spec">暗殺反射</a>能力を持つ</li>
+  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+  <li><a href="#about_revive">蘇生</a>不可</li>
+  <li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>の憑依対象外です (襲撃された場合は普通に殺されます)</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+闇鍋モードでも探偵村を実施できるようにチューニングした特殊共有者です。
+</pre>
 
 <h3><a name="trap_common">策士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
 <pre>
@@ -801,7 +834,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
   <li>「蘇生を行わない」を選ぶこともできます</li>
   <li>蘇生成功率のうち、1/5 は指定した人以外が対象になる「誤爆蘇生」となります<br>
     例) 25% : 成功 : 20% / 誤爆 :  5%</li>
-  <li>身代わり君、蘇生能力者 (猫又系と<a href="#revive_priest">天人</a>)、恋人は蘇生できません</li>
+  <li>身代わり君、蘇生能力者 (猫又系と<a href="#revive_priest">天人</a>)、恋人、<a href="#detective_common">探偵</a>は蘇生できません</li>
   <li>蘇生対象外の人が選ばれた場合は確実に失敗します</li>
   <li>蘇生に失敗した場合は霊界にだけ見えるシステムメッセージが表示されます</li>
 </ol>
@@ -914,6 +947,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 抑制できるのは<a href="sub_role.php#chicken_group">小心者系</a>のみで、<a href="#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>によるものは対象外。
 解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
 何の「治療」に成功した(毒やショック死の種類など)のかは表示されない。
+再投票時には発動しない。
 
 例) A[河童] → B[村人][小心者]
 この場合、Bがショック死する条件を満たしますが、河童の能力でキャンセルされます。
@@ -933,6 +967,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 </p>
 <p>
 <a href="#assassin">暗殺者</a>
+<a href="#doom_assassin">死神</a>
 <a href="#reverse_assassin">反魂師</a>
 <a href="#eclipse_assassin">蝕暗殺者</a>
 </p>
@@ -942,12 +977,11 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 <li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)</li>
 <li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します</li>
 <li>人狼の残り人数が二人以下の時に<a href="wolf.php#sirius_wolf">天狼</a>を対象にした場合は反射されます</li>
-<li><a href="fox.php#cursed_fox">天狐</a>を対象にした場合は反射されます</li>
+<li><a href="#detective_common">探偵</a>・<a href="fox.php#cursed_fox">天狐</a>を対象にした場合は反射されます</li>
 <li>暗殺された人の死亡メッセージは人狼の襲撃と同じです</li>
 <li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です</li>
 <li>「暗殺する / しない」を必ず投票する必要があります</li>
-<li>狩人の護衛を受けられません (狩人には護衛成功と出ますが、本人は死亡します)</li>
-<li><a href="#poison_guard">騎士</a>は通常通り護衛可能です</li>
+<li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
 <li>暗殺者がお互いを襲撃した場合は相打ちになります</li>
 <li>暗殺者に暗殺された占い師の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効になります</li>
 <li>暗殺者に暗殺されても狩人系の護衛判定は有効です</li>
@@ -966,6 +1000,25 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 村人陣営の最終兵器とも呼べる存在ですね。
 判定順とかが複雑なので色々調整が入るかもしれません。
 新役職考案スレ (最下参照) の 8 が原型です。
+</pre>
+
+<h3><a name="doom_assassin">死神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+夜に村人一人を選んで暗殺行動の代わりに<a href="sub_role.php#death_warrant">死の宣告</a>状態にすることができます。
+詳細は<a href="#assassin_spec">暗殺者の基本スペック</a>参照。
+</pre>
+<ol>
+<li>死の宣告の発動日は投票した夜から数えて2日後の昼です<br>
+  (例：2日目夜に投票→4日目昼に発動)
+</li>
+<li>すでに宣告を受けている人にさらに投票した場合は期限が上書きされます<br>
+  (例：4日目昼に発動表示→3日目夜にさらに投票→5日目昼に発動表示)
+</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「寿命を延ばすこともできる暗殺者」がコンセプトです。
+新役職考案スレ (最下参照) の 85 が原型です。
 </pre>
 
 <h3><a name="reverse_assassin">反魂師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
@@ -1104,13 +1157,77 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#poison_group">埋毒者</a>の亜種ですが、恋人限定なので所属は橋姫系です。
 </pre>
 
+<h2><a name="doll_group">上海人形系</a></h2>
+<p>
+<a href="#doll_rule">基本ルール</a>
+<a href="#doll">上海人形</a>
+<a href="#poison_doll">鈴蘭人形</a>
+<a href="#friend_doll">仏蘭西人形</a>
+<a href="#doll_master">人形遣い</a>
+</p>
+
+<h3><a name="doll_rule">基本ルール</a></h3>
+<ol>
+<li>他の国で言う「奴隷」に相当します</li>
+<li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村が勝利」です<br>自身の生死は問いません</li>
+<li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になります</li>
+<li><a href="#doll_master">人形遣い</a>が誰か分かります</li>
+</ol>
+
+<h3><a name="doll">上海人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+上海人形系の基本職で、他の国で言う「奴隷」。
+<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+奴隷という名称を避けたかったので、東方 Project のメディスンをヒントに
+「人形遣いの支配から逃れようとする人形」という構図を採用しました。
+</pre>
+
+<h3><a name="poison_doll">鈴蘭人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<h4>[毒能力] 吊り：上海人形系以外 (人形遣いには中る) / 襲撃：有り / 薬師判定：有り</h4>
+<pre>
+毒を持った人形。毒の対象は<a href="#doll_group">上海人形系</a>以外 (<a href="#doll_master">人形遣い</a>には中る)。
+<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のメディスン・メランコリーがモデルです。
+</pre>
+
+<h3><a name="friend_doll">仏蘭西人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+他の人形が誰か分かる人形。<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「博愛の仏蘭西人形」がモデルです。
+</pre>
+
+<h3><a name="doll_master">人形遣い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+他の国で言う「貴族」。
+</pre>
+<ol>
+<li>勝利条件は通常の村人陣営相当です</li>
+<li><a href="wolf.php#wolf_group">人狼</a>に襲撃された際に人形が生存していたら、ランダムで誰か一人が身代わりに死んでくれます<br>
+<a href="wolf.php#wolf_group">人狼</a>の襲撃自体は失敗扱いです</li>
+<li>人形が誰か分かりません</li>
+<li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。
+</pre>
+
+
 <h2><a name="mania_group">神話マニア系</a></h2>
 <p>
 <a href="#mania">神話マニア</a>
 <a href="#trick_mania">奇術師</a>
 <a href="#unknown_mania">鵺</a>
 </p>
-
 
 <h3><a name="mania">神話マニア</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11〜]</h3>
 <pre>

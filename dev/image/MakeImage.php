@@ -82,6 +82,11 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
+  var $bishop_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司教#です。一定日数おきに死亡した村人陣営以外の総数を知ることができます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+
   var $revive_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#天人#です。初日に一度天に帰って下界の様子を眺める事になります。後で颯爽と降臨して華麗に村を勝利に導きましょう。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
@@ -122,6 +127,13 @@ class MainRoleList{
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#共有者#、もう一人の#共有者#が誰であるか知ることができます。生存期間が他と比べ永い能力です。\n　あなたは推理する時間が与えられたのです。悩みなさい！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 204, 'G' => 102, 'B' => 51)));
+
+  var $detective_common = array(
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#探偵#です。他の#共有者#が誰であるか知ることができます。また、_暗殺_や^毒^で死ぬことはありません。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 204, 'G' => 102, 'B' => 51),
+			 '_' => array('R' => 144, 'G' => 64, 'B' => 64),
+			 '^' => array('R' => 0, 'G' => 153, 'B' => 102)));
 
   var $trap_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#策士#です。他の#共有者#が誰であるか知ることができます。また、村人以外の票を全て集めたらまとめて罠にかけることができます。\n　一発逆転の秘策を胸に、慢心しきった愚かな人外達が数の暴威を振るう、その時を待つのです！",
@@ -175,9 +187,10 @@ class MainRoleList{
 			 '#' => array('R' => 144, 'G' => 64, 'B' => 64)));
 
   var $doom_assassin = array(
-    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#死神#です。夜に誰か一人に#死の宣告#を行うことができます。",
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#死神#です。夜に誰か一人に_死の宣告_を行うことができます。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 144, 'G' => 64, 'B' => 64)));
+			 '#' => array('R' => 144, 'G' => 64, 'B' => 64),
+			 '_' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
   var $reverse_assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#反魂師#です。夜に選んだ村人が生きていたら暗殺し、死んでいたら蘇生することができます。\n　生と死の狭間に佇み、操魂の秘術をもって、自分にとって活かすべき者をより分けるのです！",
@@ -204,6 +217,28 @@ class MainRoleList{
     'message' => "[役割] [村人陣営] [|橋姫|系]\n　あなたは|橋姫|です。あなたに投票してきた#恋人#たちに別れの種を植え付けることができます。妬みの力で#恋人#たちを滅ぼすのです。",
     'delimiter' => array('|' => array( 'R' => 0, 'G' => 204, 'B' => 0),
 			 '#' => array('R' => 255, 'G' => 51, 'B' => 153)));
+
+  var $doll = array(
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#上海人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。自由を得るために立ち上がりましょう。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 96, 'G' => 96, 'B' => 255)));
+
+  var $poison_doll = array(
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#鈴蘭人形#、_毒_を持っています。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　#人形遣い#の存在を凌駕し、遣われる存在ではない事を証明した上で、自らの存在意義を見出すのです。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 96, 'G' => 96, 'B' => 255),
+			 '_' => array('R' => 0, 'G' => 153, 'B' => 102)));
+
+  var $friend_doll = array(
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#仏蘭西人形#です。同志の#人形#が誰か分かります。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　仲間と協力して自由を勝ち取るのです。勝利は非常に厳しいですが、みんなで頑張れば決して不可能ではありません！",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 96, 'G' => 96, 'B' => 255)));
+
+  var $doll_master = array(
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#人形遣い#です。_人狼_に襲撃されても他の#人形#たちを犠牲にして生き延びることができます。\n　#人形#を盾にする力で長生きしやすい立場を使い、あなたの手腕で村を勝利に導きましょう。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 96, 'G' => 96, 'B' => 255),
+			 '_' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $wolf = array(
     'message' => "[役割] [#人狼#陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の#人狼#と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
@@ -588,10 +623,13 @@ class SubRoleList{
 					     '#' => array('R' => 153, 'G' => 153, 'B' => 204)));
 
   var $febris_header = array('message' => "　あなたは|熱病|にかかっています。",
-		       'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
-
-  var $febris_footer = array('message' => "日目の昼にショック死してしまいます。",
 			     'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
+  var $sudden_death_footer = array('message' => "日目の昼にショック死してしまいます。",
+				   'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
+  var $death_warrant_header = array('message' => "　あなたは|死の宣告|を受けています。",
+				    'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
   var $liar = array('message' => "　あなたは|狼少年|です。「人」と「#狼#」をわざと取り違えて発言してしまいます。",
 		    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153),
@@ -731,6 +769,10 @@ class SubRoleList{
 			  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ", 'R' => 204, 'G' => 102, 'B' => 51);
+  var $doll_master_list = array('message' => "あなたを呪縛する|人形遣い|は以下の人たちです： ",
+			  'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
+  var $doll_partner = array('message' => "|人形遣い|打倒を目指す同志は以下の人たちです： ",
+			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
   var $fox_partner = array('message' => "深遠なる|妖狐|の智を持つ同胞は以下の人たちです： ", 'R' => 204, 'G' => 0, 'B' => 153);
   var $child_fox_partner = array('message' => "|妖狐|に与する仲間は以下の人たちです： ", 'R' => 204, 'G' => 0, 'B' => 153);
   var $fox_targeted = array('message' => "昨晩、|人狼|に狙われたようです", 'R' => 255, 'G' => 0, 'B' => 0);
@@ -744,6 +786,8 @@ class SubRoleList{
   var $medium_result = array('message' => "神託結果： ", 'R' => 0, 'G' => 0, 'B' => 0);
   var $priest_header = array('message' => "神託結果： 現在、生存している村人陣営は", 'R' => 0, 'G' => 0, 'B' => 0);
   var $priest_footer = array('message' => "人です", 'R' => 0, 'G' => 0, 'B' => 0);
+  var $bishop_priest_header = array('message' => "神託結果： 現在、死亡した非村人陣営は",
+				    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $crisis_priest_result = array('message' => "陣営が勝利目前です", 'delimiter' => array());
   var $side_wolf = array('message' => "|人狼|",
 			 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
@@ -811,6 +855,8 @@ class ResultList{
 			     'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_priest = array('message' => "さんは|司祭|でした",
 			     'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
+  var $result_bishop_priest = array('message' => "さんは|司教|でした",
+				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_crisis_priest = array('message' => "さんは|預言者|でした",
 				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_revive_priest = array('message' => "さんは|天人|でした",
@@ -829,6 +875,8 @@ class ResultList{
 				  'delimiter' => array('|' => array('R' => 51, 'G' => 153, 'B' => 255)));
   var $result_common = array('message' => "さんは|共有者|でした",
 			     'delimiter' => array('|' => array('R' => 204, 'G' => 102, 'B' => 51)));
+  var $result_detective_common = array('message' => "さんは|探偵|でした",
+				       'delimiter' => array('|' => array('R' => 204, 'G' => 102, 'B' => 51)));
   var $result_trap_common = array('message' => "さんは|策士|でした",
 				  'delimiter' => array('|' => array('R' => 204, 'G' => 102, 'B' => 51)));
   var $result_ghost_common = array('message' => "さんは|亡霊嬢|でした",
@@ -871,6 +919,14 @@ class ResultList{
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 204, 'B' => 0)));
   var $result_poison_jealousy = array('message' => "さんは|毒橋姫|でした",
 				      'delimiter' => array('|' => array('R' => 0, 'G' => 204, 'B' => 0)));
+  var $result_doll = array('message' => "さんは|上海人形|でした",
+			   'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
+  var $result_poison_doll = array('message' => "さんは|鈴蘭人形|でした",
+				  'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
+  var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした",
+				  'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
+  var $result_doll_master = array('message' => "さんは|人形遣い|でした",
+				  'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
   var $result_wolf = array('message' => "さんは|人狼|でした",
 			   'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_boss_wolf = array('message' => "さんは|白狼|でした",
@@ -1028,16 +1084,28 @@ class WishRoleList {
 				'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_medium = array('message' => "巫女→",
 			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_priest = array('message' => "司祭→",
+			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_guard = array('message' => "狩人→",
 			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_common = array('message' => "共有者→",
 			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_detective_common = array('message' => "探偵→",
+				     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_poison = array('message' => "埋毒者→",
 			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_poison_cat = array('message' => "猫又→",
+			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_pharmacist = array('message' => "薬師→",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_assassin = array('message' => "暗殺者→",
 			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mind_scanner = array('message' => "さとり→",
+				 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_jealousy = array('message' => "橋姫→",
+			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_doll = array('message' => "上海人形→",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_wolf = array('message' => "人狼→",
 			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_boss_wolf = array('message' => "白狼→",
@@ -1045,6 +1113,8 @@ class WishRoleList {
   var $role_poison_wolf = array('message' => "毒狼→",
 				'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_possessed_wolf = array('message' => "憑狼→",
+				   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_sirius_wolf = array('message' => "天狼→",
 				   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_mad = array('message' => "狂人→",
 			'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
@@ -1062,22 +1132,14 @@ class WishRoleList {
 			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_mind_cupid = array('message' => "女神→",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
-  var $role_mania = array('message' => "神話マニア→",
-			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_quiz = array('message' => "出題者→",
+			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_chiroptera = array('message' => "蝙蝠→",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_fairy = array('message' => "妖精→",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
-  var $role_quiz = array('message' => "出題者→",
-			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
-  var $role_priest = array('message' => "司祭→",
-			   'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
-  var $role_mind_scanner = array('message' => "さとり→",
-				 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
-  var $role_poison_cat = array('message' => "猫又→",
-			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
-  var $role_jealousy = array('message' => "橋姫→",
-			     'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_mania = array('message' => "神話マニア→",
+			  'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
 }
 
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
@@ -1101,7 +1163,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->cursed_fox);
+$image = MakeImage($gen, $list->poison_doll);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

@@ -52,6 +52,7 @@ Ver. 1.4.0
 <a href="#140beta7">β7</a>
 <a href="#140beta8">β8</a>
 <a href="#140beta9">β9</a>
+<a href="#140beta10">β10</a>
 </p>
 
 <p>
@@ -70,6 +71,7 @@ Ver. 1.4.0
 <a href="#sub_140beta2">β2</a>
 <a href="#sub_140beta8">β8</a>
 <a href="#sub_140beta9">β9</a>
+<a href="#sub_140beta10">β10</a>
 </p>
 
 <table>
@@ -1027,7 +1029,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role#febris">熱病</a>にする特殊な狂人。<br>
+    <td class="ability">投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role.php#febris">熱病</a>にする特殊な狂人。<br>
       狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
@@ -1081,7 +1083,7 @@ Ver. 1.4.0
   <tr>
     <td><a href="wolf.php#sirius_wolf">天狼</a></td>
     <td><a href="wolf.php">人狼</td>
-    <td><a href="wolf.php#wolf_group">狂人系</a></td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
     <td class="ability">仲間の狼が減ると特殊能力が発現する狼。</td>
@@ -1112,9 +1114,73 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
     <td>蝙蝠</td>
     <td>村人</td>
-    <td class="ability">人狼に襲撃された時、他に蝙蝠陣営の人を身代わりして生き延びることができる蝙蝠。<br>
+    <td class="ability">人狼に襲撃された時、他の蝙蝠陣営の人を身代わりして生き延びることができる蝙蝠。<br>
       狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 β9</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#doll" name="140beta10">上海人形</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#doll_group">上海人形系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">他の国で言う「奴隷」。<br>勝利条件は「<a href="human.php#doll_master">人形遣い</a>が全員死亡している＋村が勝利」で、自身の生死は不問。<br>
+<a href="human.php#doll_master">人形遣い</a>が人狼に襲撃されたら代わりに死亡する。</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#doll_master">人形遣い</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#doll_group">上海人形系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">他の国で言う「貴族」。<br>人狼に襲撃された時、他の人形遣い以外の人形系の人を身代わりして生き延びることができる。</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#poison_doll">鈴蘭人形</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#doll_group">上海人形系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">毒を持った人形。毒の対象は上海人形系以外 (<a href="human.php#doll_master">人形遣い</a>には中る)。</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#friend_doll">仏蘭西人形</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#doll_group">上海人形系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">他の人形が誰か分かる人形。</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#detective_common">探偵</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#common_group">共有者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">毒無効・暗殺反射などの様々な特殊耐性を持つ、上位共有者。</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#doom_assassin">死神</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#assassin_group">暗殺者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">夜に選んだ人を暗殺行動の代わりに<a href="sub_role.php#death_warrant">死の宣告</a>状態にする、特殊な暗殺者。</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#bishop_priest">司教</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#priest_group">司祭系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、司祭の亜種。</td>
+    <td>Ver. 1.4.0 β10</td>
   </tr>
 </table>
 
@@ -1478,6 +1544,13 @@ Ver. 1.4.0
     <td class="ability">表示された日の昼の投票集計後にショック死する</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#death_warrant" name="sub_140beta10">死の宣告</a></td>
+    <td><a href="sub_role.php#chicken_group">小心者系</a></td>
+    <td>○</td>
+    <td class="ability">予告された日の昼の投票集計後にショック死する</td>
+    <td>Ver. 1.4.0 β10</td>
+  </tr>
 </table>
 
 <h2><a name="reference">参考リンク</a></h2>
@@ -1502,11 +1575,6 @@ Ver. 1.4.0
 ○耐毒者 (村人陣営 / 薬師系？)
 ・毒がいっさい効かない村人
 
-○死神 (村人陣営 / 暗殺系)
-・投票したら 3 日後に死ぬ
-・投票先に暗殺予告が表示される
-・再び投票したら寿命が延びる
-
 ○仕事人 (村人陣営 / 暗殺系)
 ・村人陣営を殺したら能力を失う (結果として人外を殺した事が自覚できる)
 
@@ -1518,9 +1586,6 @@ Ver. 1.4.0
 ・5日目にコピー先の夢・劣化職に変化する
 ・夢・劣化職の定義は役職が増えたら変更する
 
-○天狼 (人狼陣営 / 人狼系)
-・LW になったら毒無効、護衛突破能力を持つ
-
 ○対妖狐狼 (人狼陣営 / 人狼系)
 ・妖狐を噛める人狼
 ・何かしらの弱点をつける
@@ -1529,12 +1594,11 @@ Ver. 1.4.0
 ○嫉狐 (妖狐陣営 / 妖狐系？)
 ・橋姫能力をもった妖狐
 
-○大蝙蝠 (蝙蝠陣営 / 蝙蝠系)
-・噛まれたら他の蝙蝠に身代わりになってもらう
-・弱点や詳細な仕様は要検討
-
 ○物書き
 毎晩遺言が出力される
+
+○花妖精
+意味のないメッセージが本人と死亡メッセージ欄に出力される
 </pre>
 
 <h4>採用予定</h4>
@@ -1552,14 +1616,10 @@ Ver. 1.4.0
 </pre>
 <h4>採用思案中</h4>
 <pre>
-・降霊術師 (レス 13)
-
 ・従者 (レス 13)
 改善 (レス 64)
 
 ・蟲師 (レス 68)
-
-・怠惰な死神 (レス85)
 </pre>
 
 

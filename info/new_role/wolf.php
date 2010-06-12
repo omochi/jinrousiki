@@ -104,7 +104,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 占いが怖くないので LW を担うことを前提に立ち回ると効果的でしょう。
 </pre>
 
-<h3><a name="gold_wolf">金狼</a> (占い結果：村人 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
+<h3><a name="gold_wolf">金狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる人狼。
 </pre>
@@ -215,7 +215,7 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 噛みを失敗した時の情報が増えるという副次的効果もあります。
 </pre>
 
-<h3><a name="sex_wolf">雛狼</a> (占い結果：村人 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
+<h3><a name="sex_wolf">雛狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 噛みに成功した場合、次の日に噛んだ人の性別が分かる。ただし、噛んだ相手は死なない。
 </pre>
@@ -250,7 +250,7 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 <pre>
 噛んだ人を乗っ取る人狼。
 乗っ取るのはアイコンと恋人を除くサブ役職全て。
-身代わり君、<a href="human.php#revive_priest">天人</a>、妖狐は乗っ取れません。
+身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・妖狐は乗っ取れません。
 </pre>
 <ol>
 <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -266,7 +266,7 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 <li><a href="#possessed_wolf_reporter">対ブン屋</a></li>
 <li><a href="#possessed_wolf_assassin">対暗殺者</a></li>
 <li><a href="#possessed_wolf_revive">対蘇生能力者</a></li>
-<li><a href="#possessed_wolf_revive_priest">対天人</a></li>
+<li><a href="#possessed_wolf_revive_priest">対天人・探偵</a></li>
 <li><a href="#possessed_wolf_evoke_scanner">対イタコ</a></li>
 </ol>
 
@@ -522,9 +522,9 @@ A は B から D への憑依がキャンセルされて B に憑依したまま。
 蘇生：B は生き返りました (誤爆蘇生：実際に生き返るのも B)
 </pre>
 
-<h4><a name="possessed_wolf_revive_priest">14. 対<a href="human.php#revive_priest">天人</a></a></h4>
+<h4><a name="possessed_wolf_revive_priest">14. 対<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a></a></h4>
 <pre>
-天人は憑依対象外なので、生存している天人は憑狼ではない事が保証されます。
+天人・探偵は憑依対象外なので、生存している該当者は憑狼ではない事が保証されます。
 また、霊界視点からは憑依者がはっきり分かるので蘇生した天人の情報は重要です。
 
 例14-1) B[村人](A[憑狼]) → C[天人]
@@ -774,8 +774,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a name="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
 <pre>
 投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role#febris">熱病</a>にする特殊な狂人。
+<a href="human.php#detective_common">探偵</a>には無効。
 
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>Ver. 1.4.0 β10〜</h4>
+<pre>
+<a href="human.php#detective_common">探偵</a>には無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -201,6 +201,10 @@ class User{
     return $talk ? ! $this->IsRole('dummy_common') : true;
   }
 
+  function IsDoll(){
+    return $this->IsRoleGroup('doll') && ! $this->IsRole('doll_master');
+  }
+
   function IsLovers(){
     return $this->IsRole('lovers');
   }

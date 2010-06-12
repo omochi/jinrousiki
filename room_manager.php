@@ -45,8 +45,19 @@ function CreateRoom(){
   //入力データのエラーチェック
   $room_name    = $_POST['room_name'];
   $room_comment = $_POST['room_comment'];
-  if($room_name == '' || $room_comment == ''){
+  EscapeStrings($room_name);
+  EscapeStrings($room_comment);
+  if($room_name == '' || $room_comment == ''){ //未入力チェック
     OutputRoomAction('empty');
+    return false;
+  }
+
+  //文字列チェック
+  if(strlen($room_name)    > $ROOM_CONF->room_name ||
+     strlen($room_comment) > $ROOM_CONF->room_comment ||
+     preg_match($ROOM_CONF->ng_word, $room_name) ||
+     preg_match($ROOM_CONF->ng_word, $room_comment)){
+    OutputRoomAction('comment');
     return false;
   }
 
@@ -152,7 +163,7 @@ function CreateRoom(){
     }
     array_push($check_option_role_list, 'liar', 'gentleman');
     $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
-    if(! $duel) $check_option_role_list[] = 'full_mania';
+    if(! $duel) array_push($check_option_role_list, 'full_mania', 'detective');
     $check_game_option_list[] = 'festival';
   }
 
@@ -280,6 +291,14 @@ function OutputRoomAction($type, $room_name = ''){
     echo '以下の項目を再度ご確認ください。<br>';
     echo '<ul><li>村の名前が記入されていない。</li>';
     echo '<li>村の説明が記入されていない。</li></ul>';
+    break;
+
+  case 'comment':
+    OutputActionResultHeader('村作成 [入力エラー]');
+    echo 'エラーが発生しました。<br>';
+    echo '以下の項目を再度ご確認ください。<br>';
+    echo '<ul><li>村の名前・村の説明の文字数が長すぎる</li>';
+    echo '<li>村の名前・村の説明に入力禁止文字列が含まれている。</li></ul>';
     break;
 
   case 'time':
@@ -460,7 +479,7 @@ EOF;
   OutputRoomOption($option_list, 'role');
 
   $option_list = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania',
-		       'festival');
+		       'detective', 'festival');
   OutputRoomOption($option_list, 'role');
 
   OutputRoomOptionChaos();

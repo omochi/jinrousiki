@@ -108,7 +108,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
-<li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)</li>
+<li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)</li>
 </ul>
 <h4>〜<?php echo $MESSAGE->revive_success ?></h4>
 <ul>

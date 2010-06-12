@@ -24,6 +24,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
   <li><a href="human.php#assassin_group" target="body">暗殺者系</a></li>
   <li><a href="human.php#mind_scanner_group" target="body">さとり系</a></li>
   <li><a href="human.php#jealousy_group" target="body">橋姫系</a></li>
+  <li><a href="human.php#doll_group" target="body">上海人形系</a></li>
   <li><a href="human.php#mania_group" target="body">神話マニア系</a></li>
   <li>★☆★☆★☆★</li>
   <li><a href="wolf.php" target="body">&lt; 人狼陣営 &gt;</a></li>

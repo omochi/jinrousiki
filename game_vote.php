@@ -159,10 +159,10 @@ function AggregateVoteGameStart($force_start = false){
   $remain_uname_list = array(); //希望の役割になれなかったユーザ名を一時的に格納
 
   //フラグセット
-  $gerd  = $ROOM->IsOption('gerd');
-  $chaos = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
-  $quiz  = $ROOM->IsQuiz();
-
+  $gerd      = $ROOM->IsOption('gerd');
+  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
+  $quiz      = $ROOM->IsQuiz();
+  $detective = $ROOM->IsOption('detective');
   //エラーメッセージ
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
@@ -180,6 +180,11 @@ function AggregateVoteGameStart($force_start = false){
     }
     else{
       shuffle($role_list); //配列をシャッフル
+      //探偵村なら身代わり君の対象外役職に追加する
+      if($detective && ! in_array('detective_common', $CAST_CONF->disable_dummy_boy_role_list)){
+	$CAST_CONF->disable_dummy_boy_role_list[] = 'detective_common';
+      }
+
       $count = count($role_list);
       for($i = 0; $i < $count; $i++){
 	$this_role = array_shift($role_list); //配役リストから先頭を抜き出す
@@ -289,8 +294,9 @@ function AggregateVoteGameStart($force_start = false){
   $rand_keys_index = 0;
   $sub_role_count_list = array();
   //割り振り対象外役職のリスト
-  $delete_role_list = array('lovers', 'copied', 'panelist', 'mind_read', 'mind_evoke',
-			    'mind_receiver', 'mind_friend', 'mind_lonely', 'mind_sympathy');
+  $delete_role_list = array('lovers', 'copied', 'febris', 'death_warrant', 'panelist',
+			    'mind_read', 'mind_evoke', 'mind_receiver', 'mind_friend',
+			    'mind_lonely', 'mind_sympathy');
 
   //サブ役職テスト用
   /*
@@ -391,11 +397,14 @@ function AggregateVoteGameStart($force_start = false){
 
   //役割をDBに更新
   $role_count_list = array();
+  $detective_list = array();
   for($i = 0; $i < $user_count; $i++){
     $role = $fix_role_list[$i];
-    $USERS->ByUname($fix_uname_list[$i])->ChangeRole($role);
+    $user = $USERS->ByUname($fix_uname_list[$i]);
+    $user->ChangeRole($role);
     $role_list = explode(' ', $role);
     foreach($role_list as $role) $role_count_list[$role]++;
+    if($detective && in_array('detective_common', $role_list)) $detective_list[] = $user;
   }
 
   //役割リスト通知
@@ -425,6 +434,13 @@ function AggregateVoteGameStart($force_start = false){
   SendQuery($query);
   //OutputSiteSummary(); //RSS機能はテスト中
   $ROOM->Talk($sentence);
+  if($detective && count($detective_list) > 0){ //探偵村の指名
+    $detective_user = GetRandom($detective_list);
+    $ROOM->Talk('探偵は ' . $detective_user->handle_name . ' さんです');
+    if($ROOM->IsOption('gm_login') && $ROOM->IsOption('not_open_cast') && $user_count > 7){
+      $detective_user->ToDead(); //霊界探偵モードなら探偵を霊界に送る
+    }
+  }
   $ROOM->SystemMessage(1, 'VOTE_TIMES'); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
   if($ROOM->IsOption('chaosfull')) CheckVictory(); //真・闇鍋はいきなり終了してる可能性あり
@@ -1174,7 +1190,7 @@ function OutputVoteNight(){
     $checkbox_header = '<input type="radio" name="target_no"';
     $checkbox_footer = ' id="' . $id . '"value="' . $id . '">'."\n";
     if($role_cupid || $role_mirror_fairy){
-      if(! $user->IsDummyBoy()){
+      if(! $user->IsDummyBoy() && $is_live){
 	$checked = ($role_cupid && $cupid_self_shoot && $user->IsSelf()) ? ' checked' : '';
 	$checkbox = '<input type="checkbox" name="target_no[]"' . $checked . $checkbox_footer;
       }

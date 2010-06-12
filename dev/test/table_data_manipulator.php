@@ -53,6 +53,7 @@ $DB_CONF->Connect(); //DB 接続
 //ReconstructFinishTime();
 //SendQuery("OPTIMIZE TABLE talk", true);
 //SqueezeIcon();
+//UpdateRoomInfo('room_name', 'テスト', 1);
 //OutputActionResult('処理完了', '処理完了。');
 
 //-- 関数 --//
@@ -93,6 +94,7 @@ function SqueezeIcon(){
   OutputHTMLFooter();
 }
 
+//村立て時刻再生成関数
 function ReconstructEstablishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE establish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
@@ -120,7 +122,8 @@ function ReconstructEstablishTime($test = false){
       $talk = FetchResult($query);
       if($test){
 	$time = gmdate('Y/m/d (D) H:i:s', $talk);
-	$date = FetchResult('SELECT establish_time FROM room WHERE room_no = ' . $room_no); //FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
+	$date = FetchResult('SELECT establish_time FROM room WHERE room_no = ' . $room_no);
+	//$date = FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
 	//$time = date('Y/m/d (D) H:i:s', $talk);
 	//$date = FetchResult("SELECT FROM_UNIXTIME('{$talk}')");
 	PrintData($date, $room_no . ': ' . $time);
@@ -134,6 +137,7 @@ function ReconstructEstablishTime($test = false){
   }
 }
 
+//ゲーム開始時刻再生成関数
 function ReconstructStartTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE start_time IS NULL ORDER BY room_no");
   $keyword = 'ゲーム開始：';
@@ -173,6 +177,7 @@ function ReconstructStartTime($test = false){
   }
 }
 
+//ゲーム終了時刻再生成関数
 function ReconstructFinishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE finish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
@@ -210,4 +215,14 @@ function ReconstructFinishTime($test = false){
       }
     }
   }
+}
+
+//村情報再編集関数 (文字化け対策用)
+/*
+  item  : DB 項目名
+  value : 入力内容
+  id    : 村番号
+*/
+function UpdateRoomInfo($item, $value, $id){
+  mysql_query("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");
 }

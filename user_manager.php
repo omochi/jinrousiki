@@ -16,13 +16,13 @@ function EntryUser(){
 
   //記入漏れチェック
   $title = '村人登録 [入力エラー]';
-  $sentence = ' (空白と改行コードは自動で削除されます)';
-  if($uname == '') OutputActionResult($title, 'ユーザ名が空です' . $sentence);
-  if($handle_name == '') OutputActionResult($title, '村人の名前が空です' . $sentence);
-  if($password == '') OutputActionResult($title, 'パスワードが空です' . $sentence);
-  if($profile == '') OutputActionResult($title, 'プロフィールが空です' . $sentence);
-  if(empty($sex)) OutputActionResult($title, '性別が入力されていません');
-  if(empty($icon_no)) OutputActionResult($title, 'アイコン番号が入力されていません');
+  $sentence = 'が空です (空白と改行コードは自動で削除されます)';
+  if($uname == '')       OutputActionResult($title, 'ユーザ名'     . $sentence);
+  if($handle_name == '') OutputActionResult($title, '村人の名前'   . $sentence);
+  if($password == '')    OutputActionResult($title, 'パスワード'   . $sentence);
+  if($profile == '')     OutputActionResult($title, 'プロフィール' . $sentence);
+  if(empty($sex))        OutputActionResult($title, '性別が入力されていません');
+  if(empty($icon_no))    OutputActionResult($title, 'アイコン番号が入力されていません');
 
   //文字数制限チェック
   if(strlen($uname) > $GAME_CONF->entry_uname_limit){
@@ -47,6 +47,12 @@ function EntryUser(){
   $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no;
   if($icon_no < 1 || FetchResult($query) < 1) OutputActionResult($title, '無効なアイコン番号です');
 
+  //テーブルをロック
+  if(! LockTable()){
+    OutputActionResult('村人登録 [サーバエラー]',
+		       'サーバが混雑しています。<br>'."\n".'再度登録してください');
+  }
+
   //項目被りチェック
   $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
 
@@ -64,7 +70,6 @@ function EntryUser(){
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
 		       '別の名前にしてください。');
   }
-
   //OutputActionResult('トリップテスト', $uname . '<br>' . $handle_name);
 
   //IPアドレスチェック
@@ -72,13 +77,6 @@ function EntryUser(){
   if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
      FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
     OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
-  }
-
-  //テーブルをロック
-  if(! LockTable()){
-    OutputActionResult('村人登録 [サーバエラー]',
-		       'サーバが混雑しています。<br>'."\n" .
-		       '再度登録してください');
   }
 
   //DBからユーザNoを降順に取得
@@ -119,7 +117,7 @@ function EntryUser(){
 		       'データベースサーバが混雑しています。<br>'."\n" .
 		       '時間を置いて再度登録してください。', '', true);
   }
-  mysql_query('UNLOCK TABLES'); //ロック解除
+  UnlockTable(); //ロック解除
 }
 
 //ユーザ登録画面表示
@@ -129,7 +127,7 @@ function OutputEntryUserPage(){
   extract($RQ_ARGS->ToArray()); //引数を取得
   $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
   $sentence = $room_no . ' 番地の村は';
-  if(is_null($ROOM->id)) OutputActionResult('村人登録 [村番号エラー]', $sentence . '存在しません');
+  if(is_null($ROOM->id))  OutputActionResult('村人登録 [村番号エラー]', $sentence . '存在しません');
   if($ROOM->IsFinished()) OutputActionResult('村人登録 [入村不可]',  $sentence . '終了しました');
   if($ROOM->status != 'waiting'){
     OutputActionResult('村人登録 [入村不可]', $sentence . 'すでにゲームが開始されています。');
@@ -204,8 +202,8 @@ IMAGE;
       elseif($ROOM->IsOption('chaosfull')){
 	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
 		   'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
-		   'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz', 'chiroptera',
-		   'fairy', 'mania');
+		   'doll', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz',
+		   'chiroptera', 'fairy', 'mania');
       }
       else{
 	if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';
@@ -214,7 +212,9 @@ IMAGE;
 	  array_push($wish_role_list, 'mad', 'common', 'fox');
 	}
 	else{
-	  array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common', 'fox');
+	  array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common');
+	  if($ROOM->IsOption('detective')) $wish_role_list[] = 'detective_common';
+	  $wish_role_list[] = 'fox';
 	}
       }
     }
@@ -225,6 +225,7 @@ IMAGE;
       array_push($wish_role_list, 'poison_wolf', 'pharmacist');
     }
     if($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
+    if($ROOM->IsOption('sirius_wolf')) $wish_role_list[] = 'sirius_wolf';
     if($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
     if($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
     if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
