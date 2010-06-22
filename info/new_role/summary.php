@@ -53,6 +53,7 @@ Ver. 1.4.0
 <a href="#140beta8">β8</a>
 <a href="#140beta9">β9</a>
 <a href="#140beta10">β10</a>
+<a href="#140beta11">β11</a>
 </p>
 
 <p>
@@ -304,7 +305,7 @@ Ver. 1.4.0
     <td><a href="human.php#poison_group">埋毒者系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">時が経つと (現在は 5 日目以降) <a href="human.php#strong_poison">強毒者</a>相当の毒を持つ村人。</td>
+    <td class="ability">時が経つと (現在は 5 日目以降) <a href="human.php#strong_poison">強毒者</a>相当の毒を持つ特殊な埋毒者。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
@@ -391,7 +392,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">村人の心理状態を判定する特殊な占い師。<br>
-      狂人・夢系・<a href="human.php#suspect">不審者</a>・<a href="human.php#unconscious">無意識</a>を占うと「嘘をついている」と判定される。</td>
+      <a href="wolf.php#mad_group">狂人系</a>・夢系・<a href="human.php#suspect">不審者</a>・<a href="human.php#unconscious">無意識</a>を占うと「嘘をついている」と判定される。</td>
     <td>Ver. 1.4.0 α18</td>
   </tr>
   <tr>
@@ -421,7 +422,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">村人の性別を判別する特殊な占い師。<br>
-      <a href="chiroptera.php">蝙蝠</a>を占うと「蝙蝠」と判定される。</td>
+      <a href="chiroptera.php">蝙蝠</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占うと「蝙蝠」と判定される。</td>
     <td>Ver. 1.4.0 α19</td>
   </tr>
   <tr>
@@ -463,7 +464,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">対呪い専門の特殊な占い師。<br>
-      占った人が呪い持ちか<a href="wolf.php#possessed_wolf">憑狼</a>の場合は呪殺し、誰かに呪いをかけられていた場合は解呪して、呪返しの発動をキャンセルする。呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。呪殺の死亡メッセージは「呪返し」と同じ。
+      占った人が呪い持ちか憑依能力者の場合は呪殺し、誰かに呪いをかけられていた場合は解呪して、呪返しの発動をキャンセルする。呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。呪殺の死亡メッセージは「呪返し」と同じ。
     </td>
     <td>Ver. 1.4.0 α20</td>
   </tr>
@@ -562,7 +563,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">夜に投票した夢系能力者を殺すことができる特殊な狂人。<br>
+    <td class="ability">夜に投票した夢系能力者・<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる特殊な狂人。<br>
       何らかの形で<a href="human.php#dummy_guard">夢守人</a>に接触した場合は殺される。狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
@@ -602,7 +603,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。<br>
-     現在は 4日目以降、1日おき (4 → 6 → 8 →...)。</td>
+     表示されるのは 4日目以降、1日おき (4 → 6 → 8 →...)。</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
@@ -845,7 +846,7 @@ Ver. 1.4.0
     <td><a href="human.php#poison_group">埋毒者系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">他の毒能力者に巻き込まれたら、さらに二人巻き込む埋毒者。本人の表記は「村人」。</td>
+    <td class="ability">他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人の表記は「村人」。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
@@ -1179,8 +1180,37 @@ Ver. 1.4.0
     <td><a href="human.php#priest_group">司祭系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、司祭の亜種。</td>
+    <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、特殊な司祭。<br>
+    表示されるのは 3日目以降、1日おき (3 → 5 → 7 →...)。</td>
     <td>Ver. 1.4.0 β10</td>
+  </tr>
+  <tr>
+    <td><a href="lovers.php#exchange_angel" name="140beta11">魂移使</a></td>
+    <td><a href="lovers.php">恋人</td>
+    <td><a href="lovers.php#angel_group">天使系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">矢を撃った二人を交換憑依させてしまうキューピッド。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#soul_mania">覚醒者</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">4日目にコピー先の上位種に変化する、特殊な神話マニア。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#dummy_mania">夢語部</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">4日目にコピー先の基本・劣化種に変化する、特殊な神話マニア。<br>
+    本人表記は「<a href="human.php#soul_mania">覚醒者</a>」で、変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。</td>
+    <td>Ver. 1.4.0 β11</td>
   </tr>
 </table>
 
@@ -1577,14 +1607,6 @@ Ver. 1.4.0
 
 ○仕事人 (村人陣営 / 暗殺系)
 ・村人陣営を殺したら能力を失う (結果として人外を殺した事が自覚できる)
-
-○覚醒者 (村人陣営 / 神話マニア系)
-・5日目にコピー先の上位職に変化する
-・上位職の定義は役職が増えたら変更する
-
-○夢語部 (村人陣営 / 神話マニア系)
-・5日目にコピー先の夢・劣化職に変化する
-・夢・劣化職の定義は役職が増えたら変更する
 
 ○対妖狐狼 (人狼陣営 / 人狼系)
 ・妖狐を噛める人狼

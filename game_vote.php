@@ -187,14 +187,14 @@ function AggregateVoteGameStart($force_start = false){
 
       $count = count($role_list);
       for($i = 0; $i < $count; $i++){
-	$this_role = array_shift($role_list); //配役リストから先頭を抜き出す
-	foreach($CAST_CONF->disable_dummy_boy_role_list as $this_disable_role){
-	  if(strpos($this_role, $this_disable_role) !== false){
-	    array_push($role_list, $this_role); //配役リストの末尾に戻す
+	$role = array_shift($role_list); //配役リストから先頭を抜き出す
+	foreach($CAST_CONF->disable_dummy_boy_role_list as $disable_role){
+	  if(strpos($role, $disable_role) !== false){
+	    array_push($role_list, $role); //配役リストの末尾に戻す
 	    continue 2;
 	  }
 	}
-	array_push($fix_role_list, $this_role);
+	array_push($fix_role_list, $role);
 	break;
       }
     }
@@ -212,33 +212,32 @@ function AggregateVoteGameStart($force_start = false){
 
   //希望役職を参照して一次配役を行う
   if($ROOM->IsOption('wish_role')){ //役割希望制の場合
-    foreach($uname_list as $this_uname){
+    $wish_group = $chaos || $ROOM->IsOption('duel') || $ROOM->IsOption('festival'); //特殊村用
+    foreach($uname_list as $uname){
       do{
-	$this_role = $USERS->GetRole($this_uname); //希望役職を取得
-	if($this_role  == '' || mt_rand(1, 100) > $CAST_CONF->wish_role_rate) break;
-	$this_fit_role = $this_role;
+	$role = $USERS->GetRole($uname); //希望役職を取得
+	if($role == '' || mt_rand(1, 100) > $CAST_CONF->wish_role_rate) break;
+	$fit_role = $role;
 
-	if($chaos){ //闇鍋モード
-	  $this_fit_role_list = array();
-	  foreach($role_list as $this_fit_role){
-	    if($this_role == DistinguishRoleGroup($this_fit_role)){
-	      $this_fit_role_list[] = $this_fit_role;
-	    }
+	if($wish_group){ //特殊村はグループ単位で希望処理を行なう
+	  $stack = array();
+	  foreach($role_list as $stack_role){
+	    if($role == DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
 	  }
-	  $this_fit_role = GetRandom($this_fit_role_list);
+	  $fit_role = GetRandom($stack);
 	}
-	$role_key = array_search($this_fit_role, $role_list); //希望役職の存在チェック
+	$role_key = array_search($fit_role, $role_list); //希望役職の存在チェック
 	if($role_key === false) break;
 
 	//希望役職があれば決定
-	array_push($fix_uname_list, $this_uname);
-	array_push($fix_role_list, $this_fit_role);
+	array_push($fix_uname_list, $uname);
+	array_push($fix_role_list, $fit_role);
 	unset($role_list[$role_key]);
 	continue 2;
       }while(false);
 
       //決まらなかった場合は未決定リスト行き
-      array_push($remain_uname_list, $this_uname);
+      array_push($remain_uname_list, $uname);
     }
   }
   else{
@@ -294,9 +293,9 @@ function AggregateVoteGameStart($force_start = false){
   $rand_keys_index = 0;
   $sub_role_count_list = array();
   //割り振り対象外役職のリスト
-  $delete_role_list = array('lovers', 'copied', 'febris', 'death_warrant', 'panelist',
-			    'mind_read', 'mind_evoke', 'mind_receiver', 'mind_friend',
-			    'mind_lonely', 'mind_sympathy');
+  $delete_role_list = array('lovers', 'copied', 'copied_trick', 'copied_soul', 'copied_teller',
+			    'febris', 'death_warrant', 'panelist', 'mind_read', 'mind_evoke',
+			    'mind_receiver', 'mind_friend', 'mind_lonely', 'mind_sympathy');
 
   //サブ役職テスト用
   /*
@@ -347,7 +346,8 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   if($ROOM->IsOption('sudden_death')){ //虚弱体質村
-    $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
+    $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'],
+				array('febris', 'death_warrant', 'panelist'));
     $delete_role_list = array_merge($delete_role_list, $sub_role_list);
     for($i = 0; $i < $user_count; $i++){ //全員にショック死系を何かつける
       $role = GetRandom($sub_role_list);
@@ -368,13 +368,13 @@ function AggregateVoteGameStart($force_start = false){
   if($chaos && ! $ROOM->IsOption('no_sub_role')){
     //ランダムなサブ役職のコードリストを作成
     $sub_role_keys = array_keys($GAME_CONF->sub_role_list);
-    // $sub_role_keys = array('authority', 'rebel', 'upper_luck', 'random_voter'); //デバッグ用
-    // array_push($delete_role_list, 'earplug', 'speaker'); //デバッグ用
+    //$sub_role_keys = array('authority', 'rebel', 'upper_luck', 'random_voter'); //テスト用
+    //array_push($delete_role_list, 'earplug', 'speaker'); //テスト用
     $sub_role_keys = array_diff($sub_role_keys, $delete_role_list);
     shuffle($sub_role_keys);
     foreach($sub_role_keys as $key){
       if($rand_keys_index > $user_count - 1) break; //$rand_keys_index は 0 から
-      // if(strpos($key, 'voice') !== false || $key == 'earplug') continue; //声変化形をスキップ
+      //if(strpos($key, 'voice') !== false || $key == 'earplug') continue; //声変化形をスキップ
       $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $key;
     }
   }
@@ -392,7 +392,7 @@ function AggregateVoteGameStart($force_start = false){
     }
   }
   */
-  //デバッグ用
+  //テスト用
   //PrintData($fix_uname_list); PrintData($fix_role_list); DeleteVote(); return false;
 
   //役割をDBに更新
@@ -707,6 +707,7 @@ function VoteNight(){
     OutputVoteResult('夜：あなたは投票できません');
     break;
   }
+  LockVote(); //テーブルを排他的ロック
   CheckAlreadyVote($is_mirror_fairy ? 'CUPID_DO' : $RQ_ARGS->situation); //投票済みチェック
 
   //-- 投票エラーチェック --//
@@ -780,7 +781,6 @@ function VoteNight(){
   }
 
   //-- 投票処理 --//
-  LockVote(); //テーブルを排他的ロック
   if($not_type){
     if(! $SELF->Vote($RQ_ARGS->situation)){ //投票処理
       OutputVoteResult('データベースエラー', true);

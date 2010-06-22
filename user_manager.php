@@ -191,31 +191,26 @@ HEADER;
 IMAGE;
 
     $wish_role_list = array('none');
-    if($ROOM->IsOption('duel')){
-      array_push($wish_role_list, 'wolf', 'trap_mad', 'assassin');
+    if($ROOM->IsOption('chaos')){
+      array_push($wish_role_list, 'human', 'mage', 'necromancer', 'guard', 'common',
+		 'poison', 'pharmacist', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'mania');
+    }
+    elseif($ROOM->IsOption('chaosfull') || $ROOM->IsOption('duel')){
+      array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
+		 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
+		 'doll', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz',
+		 'chiroptera', 'fairy', 'mania');
     }
     else{
-      if($ROOM->IsOption('chaos')){
-	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'guard', 'common',
-		   'poison', 'pharmacist', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'mania');
-      }
-      elseif($ROOM->IsOption('chaosfull')){
-	array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
-		   'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
-		   'doll', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz',
-		   'chiroptera', 'fairy', 'mania');
+      if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';
+      $wish_role_list[] = 'wolf';
+      if($ROOM->IsQuiz()){
+	array_push($wish_role_list, 'mad', 'common', 'fox');
       }
       else{
-	if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';
-	$wish_role_list[] = 'wolf';
-	if($ROOM->IsQuiz()){
-	  array_push($wish_role_list, 'mad', 'common', 'fox');
-	}
-	else{
-	  array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common');
-	  if($ROOM->IsOption('detective')) $wish_role_list[] = 'detective_common';
-	  $wish_role_list[] = 'fox';
-	}
+	array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common');
+	if($ROOM->IsOption('detective')) $wish_role_list[] = 'detective_common';
+	$wish_role_list[] = 'fox';
       }
     }
     if($ROOM->IsOption('poison')) $wish_role_list[] = 'poison';

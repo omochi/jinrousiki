@@ -10,8 +10,7 @@ class DocumentBuilder{
     global $ROOM, $USERS, $SELF;
 
     $this->actor = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
-    if($ROOM->IsEvent('blind_day') &&
-       (is_null($this->actor->live) || ! $ROOM->IsOpenCast())){
+    if($ROOM->IsEvent('blind_day') && (is_null($this->actor->live) || ! $ROOM->IsOpenCast())){
       $this->actor->live = 'live';
       $this->actor->role_list[] = 'blinder';
     }

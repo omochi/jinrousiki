@@ -3,8 +3,8 @@
 class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
-  #var $die_room = 1200;
-  var $die_room = 12000; //テスト用
+  var $die_room = 1200;
+  #var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -130,7 +130,6 @@ class GameConfig{
   //-- 住人登録 --//
   //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
   var $entry_one_ip_address = true;
-  #var $entry_one_ip_address = false; //テスト用
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
   var $trip = true;
@@ -258,6 +257,7 @@ class GameConfig{
     'wolf'               => '人狼',
     'boss_wolf'          => '白狼',
     'gold_wolf'          => '金狼',
+    'phantom_wolf'       => '幻狼',
     'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗毒狼',
@@ -287,6 +287,7 @@ class GameConfig{
     'white_fox'          => '白狐',
     'black_fox'          => '黒狐',
     'gold_fox'           => '金狐',
+    'phantom_fox'        => '幻狐',
     'poison_fox'         => '管狐',
     'blue_fox'           => '蒼狐',
     'emerald_fox'        => '翠狐',
@@ -304,10 +305,10 @@ class GameConfig{
     'self_cupid'         => '求愛者',
     'mind_cupid'         => '女神',
     'triangle_cupid'     => '小悪魔',
-    //'possessed_cupid'    => '魂移使',
     'angel'              => '天使',
     'rose_angel'         => '薔薇天使',
     'lily_angel'         => '百合天使',
+    'exchange_angel'     => '魂移使',
     'ark_angel'          => '大天使',
     'quiz'               => '出題者',
     'chiroptera'         => '蝙蝠',
@@ -326,7 +327,9 @@ class GameConfig{
     'mirror_fairy'       => '鏡妖精',
     'mania'              => '神話マニア',
     'trick_mania'        => '奇術師',
-    'unknown_mania'      => '鵺');
+    'soul_mania'         => '覚醒者',
+    'unknown_mania'      => '鵺',
+    'dummy_mania'        => '夢語部');
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -386,7 +389,10 @@ class GameConfig{
     'mind_evoke'    => '口寄せ',
     'mind_lonely'   => 'はぐれ者',
     'lovers'        => '恋人',
-    'copied'        => '元神話マニア');
+    'copied'        => '元神話マニア',
+    'copied_trick'  => '元奇術師',
+    'copied_soul'   => '元覚醒者',
+    'copied_teller' => '元夢語部');
 
   //役職の省略名 (過去ログ用)
   var $short_role_list = array(
@@ -394,6 +400,7 @@ class GameConfig{
     'elder'              => '老',
     'saint'              => '聖',
     'executor'           => '執',
+    'phantom'            => '幻',
     'suspect'            => '不審',
     'unconscious'        => '無',
     'mage'               => '占',
@@ -447,6 +454,7 @@ class GameConfig{
     'wolf'               => '狼',
     'boss_wolf'          => '白狼',
     'gold_wolf'          => '金狼',
+    'phantom_wolf'       => '幻狼',
     'wise_wolf'          => '賢狼',
     'poison_wolf'        => '毒狼',
     'resist_wolf'        => '抗狼',
@@ -476,6 +484,7 @@ class GameConfig{
     'white_fox'          => '白狐',
     'black_fox'          => '黒狐',
     'gold_fox'           => '金狐',
+    'phantom_fox'        => '幻狐',
     'poison_fox'         => '管狐',
     'blue_fox'           => '蒼狐',
     'emerald_fox'        => '翠狐',
@@ -496,9 +505,11 @@ class GameConfig{
     'angel'              => '天使',
     'rose_angel'         => '薔天',
     'lily_angel'         => '百天',
+    'exchange_angel'     => '魂移',
     'ark_angel'          => '大天',
     'quiz'               => 'GM',
     'chiroptera'         => '蝙',
+    'phantom_chiroptera' => '幻蝙',
     'poison_chiroptera'  => '毒蝙',
     'cursed_chiroptera'  => '呪蝙',
     'boss_chiroptera'    => '大蝙',
@@ -514,7 +525,9 @@ class GameConfig{
     'mirror_fairy'       => '鏡精',
     'mania'              => 'マ',
     'trick_mania'        => '奇',
+    'soul_mania'         => '覚醒',
     'unknown_mania'      => '鵺',
+    'dummy_mania'        => '夢語',
     'chicken'            => '酉',
     'rabbit'             => '卯',
     'perverseness'       => '邪',
@@ -569,7 +582,10 @@ class GameConfig{
     'mind_sympathy'      => '感',
     'mind_lonely'        => '逸',
     'lovers'             => '恋',
-    'copied'             => '元マ');
+    'copied'             => '元マ',
+    'copied_trick'       => '元奇',
+    'copied_soul'        => '元覚',
+    'copied_teller'      => '元語');
 
   //メイン役職のグループリスト (役職 => 所属グループ)
   // このリストの並び順に strpos で判別する (毒系など、順番依存の役職があるので注意)
@@ -602,7 +618,7 @@ class GameConfig{
     'lovers'       => array('lovers'),
     'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
 			    'mind_evoke', 'mind_lonely'),
-    'mania'        => array('copied'),
+    'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'),
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'nervy',
 			    'celibacy', 'febris', 'death_warrant', 'panelist'),
     'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
@@ -628,7 +644,7 @@ class GameConfig{
 //ゲームの時間設定
 class TimeConfig{
   //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
-  var $sudden_death = 120; //240;
+  var $sudden_death = 120; //180;
 
   //超過のマイナス時間がこの閾値を越えた場合はサーバが一時的にダウンしていたと判定して、
   //超過時間をリセットします (秒)

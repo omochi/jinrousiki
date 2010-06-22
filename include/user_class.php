@@ -12,8 +12,8 @@ class User{
   }
 
   //指定したユーザーデータのセットを名前つき配列にして返します。
-  //このメソッドはextract関数を使用してオブジェクトのプロパティを
-  //迅速にローカルに展開するために使用できます。
+  //このメソッドは extract 関数を使用してオブジェクトのプロパティを
+  //迅速にローカルに展開するために使用できます。 (現在は未使用)
   function ToArray($type = NULL){
     switch($type){
       case 'profiles':
@@ -121,29 +121,35 @@ class User{
     return NULL;
   }
 
+  //生存フラグ判定
   function IsLive($strict = false){
     $dead = $this->IsDeadFlag($strict);
     return is_null($dead) ? ($this->live == 'live') : ! $dead;
   }
 
+  //死亡フラグ判定
   function IsDead($strict = false){
     $dead = $this->IsDeadFlag($strict);
     return is_null($dead) ? ($this->live == 'dead' || $this->IsDrop()) : $dead;
   }
 
+  //蘇生辞退フラグ判定
   function IsDrop(){
     return $this->live == 'drop';
   }
 
+  //同一ユーザ判定
   function IsSame($uname){
     return $this->uname == $uname;
   }
 
+  //自分と同一ユーザ判定
   function IsSelf(){
     global $SELF;
     return $this->IsSame($SELF->uname);
   }
 
+  //身代わり君判定
   function IsDummyBoy($strict = false){
     global $ROOM;
 
@@ -151,6 +157,7 @@ class User{
     return $this->IsSame('dummy_boy');
   }
 
+  //役職判定
   function IsRole($role){
     $role_list = func_get_args();
     if(is_array($role_list[0])) $role_list = $role_list[0];
@@ -162,11 +169,13 @@ class User{
     }
   }
 
+  //失効タイプの役職判定
   function IsActive($role = NULL){
     $is_role = is_null($role) ? true : $this->IsRole($role);
     return ($is_role && ! $this->IsRole('lost_ability') && ! $this->lost_flag);
   }
 
+  //役職グループ判定
   function IsRoleGroup($role){
     $role_list = func_get_args();
     foreach($role_list as $target_role){
@@ -177,38 +186,45 @@ class User{
     return false;
   }
 
-  function IsLonely($role = NULL){
-    $is_role = is_null($role) ? true : $this->IsRoleGroup($role);
+  //孤立系役職判定
+  function IsLonely(){
     return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 
-  function IsWolf($talk = false){
-    if(! $this->IsRoleGroup('wolf')) return false;
-    return $talk ? ! $this->IsLonely() : true;
-  }
-
-  function IsFox($talk = false){
-    if(! $this->IsRoleGroup('fox')) return false;
-    return $talk ? ! ($this->IsChildFox() || $this->IsLonely()) : true;
-  }
-
-  function IsChildFox(){
-    return $this->IsRole('child_fox', 'sex_fox');
-  }
-
+  //共有者系判定
   function IsCommon($talk = false){
     if(! $this->IsRoleGroup('common')) return false;
     return $talk ? ! $this->IsRole('dummy_common') : true;
   }
 
+  //上海人形系判定 (人形遣いは含まない)
   function IsDoll(){
     return $this->IsRoleGroup('doll') && ! $this->IsRole('doll_master');
   }
 
+  //人狼系判定
+  function IsWolf($talk = false){
+    if(! $this->IsRoleGroup('wolf')) return false;
+    return $talk ? ! $this->IsLonely() : true;
+  }
+
+  //妖狐系判定
+  function IsFox($talk = false){
+    if(! $this->IsRoleGroup('fox')) return false;
+    return $talk ? ! ($this->IsChildFox() || $this->IsLonely()) : true;
+  }
+
+  //子狐系判定
+  function IsChildFox(){
+    return $this->IsRole('child_fox', 'sex_fox');
+  }
+
+  //恋人判定
   function IsLovers(){
     return $this->IsRole('lovers');
   }
 
+  //拡張判定
   function IsPartner($type, $target){
     if(is_null($partner_list = $this->GetPartner($type))) return false;
 
@@ -358,7 +374,7 @@ class User{
 
   //役職をパースして省略名を返す
   function GenerateShortRoleName(){
-    global $GAME_CONF;
+    global $GAME_CONF, $USERS;
 
     //メイン役職を取得
     $camp = $this->GetCamp();
@@ -374,7 +390,7 @@ class User{
       }
     }
 
-    return $str . '] (' . $this->uname . ')</span>';
+    return $str . '] (' . $USERS->TraceExchange($this->user_no)->uname . ')</span>';
   }
 
   //個別 DB 更新処理
@@ -470,7 +486,8 @@ class User{
   function SaveLastWords($handle_name = NULL){
     global $ROOM;
 
-    if(! $this->IsDummyBoy() && $this->IsRole('reporter', 'evoke_scanner', 'no_last_words')) return;
+    if(! $this->IsDummyBoy() &&
+       $this->IsRole('reporter', 'evoke_scanner', 'no_last_words', 'possessed_exchange')) return;
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
@@ -632,7 +649,7 @@ class UserDataSet{
 
   function BySession(){
     global $SESSION;
-    return $this->ByID($SESSION->GetUser());
+    return $this->TraceExchange($SESSION->GetUser());
   }
 
   function TraceVirtual($user_no, $type){
@@ -643,13 +660,24 @@ class UserDataSet{
     if($type == 'possessed'){
       if(! $user->IsRole($type)) return $user;
     }
-    elseif(! $user->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox')){
+    elseif(! $user->IsPossessedGroup()){
       return $user;
     }
 
-    $virtual_id = $user->GetPossessedTarget($type, $ROOM->date);
-    if($virtual_id === false) return $user;
-    return $this->ByID($virtual_id);
+    $id = $user->GetPossessedTarget($type, $ROOM->date);
+    return $id === false ? $user : $this->ByID($id);
+  }
+
+  function TraceExchange($user_no){
+    global $ROOM;
+
+    $user = $this->ByID($user_no);
+    $type = 'possessed_exchange';
+    if(! $user->IsRole($type) || ! $ROOM->IsPlaying() ||
+       (! $ROOM->log_mode && $user->IsDead())) return $user;
+
+    $stack = $user->GetPartner($type);
+    return is_array($stack) && $ROOM->date > 2 ? $this->ByID(array_shift($stack)) : $user;
   }
 
   function ByVirtual($user_no){
@@ -689,6 +717,15 @@ class UserDataSet{
     }
 
     $target_user = $user;
+    do{ //覚醒者・夢語部ならコピー先を辿る
+      if(! $target_user->IsRole('soul_mania', 'dummy_mania')) break;
+      $target_list = $target_user->GetPartner($target_user->main_role);
+      if(is_null($target_list)) break; //コピー先が見つからなければスキップ
+
+      $target_user = $this->ByID($target_list[0]);
+      if($target_user->IsRoleGroup('mania')) $target_user = $user; //神話マニア系なら元に戻す
+    }while(false);
+
     while($target_user->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
       $target_list = $target_user->GetPartner('unknown_mania');
       if(is_null($target_list)) break; //コピー先が見つからなければスキップ

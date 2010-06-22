@@ -669,7 +669,7 @@ function GetRoleList($user_count, $option_role){
        17 => array('sex_mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'wolf' => 2, 'gold_wolf' => 1, 'fox' => 1, 'chiroptera' => 7),
        18 => array('saint' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'fend_guard' => 1, 'trap_common' => 1, 'ghost_common' => 1, 'incubate_poison' => 1, 'reverse_assassin' => 1, 'wise_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'jammer_mad' => 1, 'voodoo_mad' => 1, 'voodoo_fox' => 1, 'revive_fox' => 1, 'angel' => 1, 'light_fairy' => 1, 'trick_mania' => 1),
        19 => array('revive_priest' => 1, 'anti_voodoo' => 1, 'dummy_poison' => 1, 'eclipse_assassin' => 2, 'poison_cat' => 1, 'jealousy' => 1, 'poison_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'fanatic_mad' => 1, 'agitate_mad' => 1, 'cursed_fox' => 2, 'quiz' => 1, 'mind_cupid' => 1, 'light_fairy' => 1, 'dark_fairy' => 1, 'mirror_fairy' => 1),
-       20 => array('eclipse_assassin' => 13, 'silver_wolf' => 5, 'fox' => 2),
+       20 => array('emerald_wolf' => 1, 'blue_wolf' => 1, 'silver_wolf' => 2, 'voodoo_mad' => 2, 'emerald_fox' => 1, 'blue_fox' => 1, 'silver_fox' => 1, 'chiroptera' => 5, 'boss_chiroptera' => 1, 'fairy' => 5),
        21 => array('poison' => 7, 'chain_poison' => 2, 'poison_wolf' => 4, 'resist_wolf' => 1, 'poison_fox' => 2, 'quiz' => 3, 'poison_chiroptera' => 2),
        22 => array('human' => 8, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'poison_cat' => 1, 'wolf' => 4, 'boss_wolf' => 1, 'fox' => 1, 'child_fox' => 1)
 				);
@@ -1170,10 +1170,10 @@ function AggregateVoteDay(){
     $action = 'NECROMANCER_RESULT';
 
     //霊能判定
-    if($vote_target->IsRole('boss_wolf', 'cursed_wolf', 'possessed_wolf')){
+    if($vote_target->IsRole('boss_wolf', 'phantom_wolf', 'cursed_wolf', 'possessed_wolf')){
       $necromancer_result = $vote_target->main_role;
     }
-    elseif($vote_target->IsRole('white_fox', 'black_fox', 'possessed_fox', 'cursed_fox')){
+    elseif($vote_target->IsRole('white_fox', 'black_fox', 'phantom_fox', 'possessed_fox', 'cursed_fox')){
       $necromancer_result = 'fox';
     }
     elseif($vote_target->IsChildFox()){
@@ -1588,6 +1588,7 @@ function AggregateVoteNight(){
     //狩人系の狩り対象リスト
     $hunt_target_list = array('jammer_mad', 'voodoo_mad', 'corpse_courier_mad', 'agitate_mad',
 			      'miasma_mad', 'dream_eater_mad', 'trap_mad', 'possessed_mad',
+			      'phantom_fox',
 			      'voodoo_fox', 'revive_fox', 'possessed_fox', 'cursed_fox',
 			      'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera');
     foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
@@ -1850,11 +1851,26 @@ function AggregateVoteNight(){
     if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
     $target = $USERS->ByRealUname($target_uname); //対象者の情報を取得
+
+    $phantom_flag = false;
+    if($target->IsRoleGroup('phantom') && $target->IsActive()){ //幻系の判定
+      if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
+	$anti_voodoo_success_list[$user->uname] = true;
+      }
+      else{
+	$phantom_flag = true;
+      }
+    }
+
     if($user->IsRole('dummy_mage')){ //夢見人の判定 (村人と人狼を反転させる)
       $result = $target->DistinguishMage(true);
     }
     elseif(in_array($user->uname, $jammer_target_list)){ //月兎の妨害判定
       $result = $user->IsRole('psycho_mage', 'sex_mage') ? 'mage_failed' : 'failed';
+    }
+    elseif($phantom_flag){ //幻系の判定
+      $result = $user->IsRole('psycho_mage', 'sex_mage') ? 'mage_failed' : 'failed';
+      $target->LostAbility();
     }
     elseif($user->IsRole('psycho_mage')){ //精神鑑定士の判定 (正常 / 嘘つき)
       $result = 'psycho_mage_normal';
@@ -1973,13 +1989,14 @@ function AggregateVoteNight(){
 	  $result = $target->main_role;
 	}
 	$user->ReplaceRole('trick_mania', $result);
-	$user->AddRole('copied');
+	$user->AddRole('copied_trick');
 	if(! $actor_flag && ! $target->IsDummyBoy()){
 	  switch($target->main_role){
 	  case 'human':
 	  case 'elder':
 	  case 'saint':
 	  case 'executor':
+	  case 'phantom':
 	  case 'suspect':
 	  case 'unconscious':
 	    $stack_role = 'human';
@@ -2014,6 +2031,16 @@ function AggregateVoteNight(){
 	$sentence = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
 	$ROOM->SystemMessage($sentence, 'MANIA_RESULT');
       }
+      elseif($user->IsRole('soul_mania', 'dummy_mania')){ //覚醒者・夢語部
+	//コピー先をセット
+	$user->ReplaceRole($user->main_role, $user->main_role . '[' . strval($target->user_no) . ']');
+
+	//コピー結果を出力 (神話マニア系を指定した場合は村人)
+	$result = $target->IsRoleGroup('mania') ? 'human' : DistinguishRoleGroup($target->main_role);
+
+	$sentence = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
+	$ROOM->SystemMessage($sentence, 'MANIA_RESULT');
+      }
       else{ //神話マニア
 	//コピー処理 (神話マニア系を指定した場合は村人)
 	$result = $target->IsRoleGroup('mania') ? 'human' : $target->main_role;
@@ -2035,6 +2062,65 @@ function AggregateVoteNight(){
 	  $USERS->Kill($user->user_no, 'PRIEST_RETURNED');
 	}
       }
+    }
+
+    //魂移使の処理
+    $exchange_angel_list  = array();
+    $exchange_lovers_list = array();
+    $fix_angel_stack      = array();
+    $exec_exchange_stack  = array();
+    foreach($USERS->rows as $user){ //魂移使が打った恋人の情報を収集
+      if($user->IsDummyBoy() || ! $user->IsLovers()) continue;
+      $cupid_stack = $user->GetPartner('lovers');
+      foreach($cupid_stack as $cupid_id){
+	$cupid_user = $USERS->ById($cupid_id);
+	if($cupid_user->IsRole('exchange_angel')){
+	  $exchange_angel_list[$cupid_id][] = $user->user_no;
+	  $exchange_lovers_list[$user->user_no][] = $cupid_id;
+	  if($user->IsPossessedGroup()) $fix_angel_stack[$cupid_id] = true; //憑依能力者なら対象外
+	}
+      }
+    }
+    //PrintData($exchange_angel_list, 'exchange_angel: 1st'); //テスト用
+    //PrintData($exchange_lovers_list, 'exchange_lovers: 1st'); //テスト用
+
+    foreach($exchange_angel_list as $id => $lovers_stack){ //抽選処理
+      if(array_key_exists($id, $fix_angel_stack)) continue;
+      $duplicate_stack = array();
+      //PrintData($fix_angel_stack, 'fix_angel:'. $id); //テスト用
+      foreach($lovers_stack as $lovers_id){
+	foreach($exchange_lovers_list[$lovers_id] as $cupid_id){
+	  if(! array_key_exists($cupid_id, $fix_angel_stack)){
+	    $duplicate_stack[$cupid_id] = true;
+	  }
+	}
+      }
+      //PrintData($duplicate_stack, 'duplicate:' . $id); //テスト用
+      $duplicate_list = array_keys($duplicate_stack);
+      if(count($duplicate_list) > 1){
+	$exec_exchange_stack[] = GetRandom($duplicate_list);
+	foreach($duplicate_list as $duplicate_id){
+	  $fix_angel_stack[$duplicate_id] = true;
+	}
+      }
+      else{
+	$exec_exchange_stack[] = $id;
+      }
+      $fix_angel_stack[$id] = true;
+    }
+    //PrintData($exec_exchange_stack, 'exec_exchange'); //テスト用
+
+    foreach($exec_exchange_stack as $id){
+      $target_list = $exchange_angel_list[$id];
+      $lovers_a = $USERS->ByID($target_list[0]);
+      $lovers_b = $USERS->ByID($target_list[1]);
+      $lovers_a->AddRole('mind_sympathy possessed_exchange[' . $target_list[1] . ']');
+      $sentence = $lovers_a->handle_name . "\t" . $lovers_b->handle_name . "\t";
+      $ROOM->SystemMessage($sentence . $lovers_b->main_role, 'SYMPATHY_RESULT');
+
+      $lovers_b->AddRole('mind_sympathy possessed_exchange[' . $target_list[0] . ']');
+      $sentence = $lovers_b->handle_name . "\t" . $lovers_a->handle_name . "\t";
+      $ROOM->SystemMessage($sentence . $lovers_a->main_role, 'SYMPATHY_RESULT');
     }
   }
   else{
@@ -2365,6 +2451,78 @@ function AggregateVoteNight(){
     $anti_voodoo_list = array_keys($anti_voodoo_target_list, $target_uname); //成功者を検出
     foreach($anti_voodoo_list as $uname){
       $ROOM->SystemMessage($USERS->GetHandleName($uname) . $sentence, $action);
+    }
+  }
+
+  if($ROOM->date == 3){ //覚醒者・夢語部のコピー処理
+    $soul_mania_replace_list = array(
+      'human' => 'executor',
+      'mage' => 'soul_mage',
+      'necromancer' => 'soul_necromancer',
+      'priest' => 'bishop_priest',
+      'guard' => 'poison_guard',
+      'common' => 'ghost_common',
+      'poison' => 'strong_poison',
+      'poison_cat' => 'revive_cat',
+      'pharmacist' => 'pharmacist',
+      'assassin' => 'reverse_assassin',
+      'mind_scanner' => 'evoke_scanner',
+      'jealousy' => 'poison_jealousy',
+      'doll' => 'doll_master',
+      'wolf' => 'sirius_wolf',
+      'mad' => 'whisper_mad',
+      'fox' => 'cursed_fox',
+      'child_fox' => 'child_fox',
+      'cupid' => 'mind_cupid',
+      'angel' => 'ark_angel',
+      'quiz' => 'quiz',
+      'chiroptera' => 'boss_chiroptera',
+      'fairy' => 'light_fairy');
+    $dummy_mania_replace_list = array(
+      'human' => 'suspect',
+      'mage' => 'dummy_mage',
+      'necromancer' => 'dummy_necromancer',
+      'priest' => 'crisis_priest',
+      'guard' => 'dummy_guard',
+      'common' => 'dummy_common',
+      'poison' => 'dummy_poison',
+      'poison_cat' => 'sacrifice_cat',
+      'pharmacist' => 'cure_pharmacist',
+      'assassin' => 'eclipse_assassin',
+      'mind_scanner' => 'mind_scanner',
+      'jealousy' => 'jealousy',
+      'doll' => 'doll',
+      'wolf' => 'cute_wolf',
+      'mad' => 'mad',
+      'fox' => 'cute_fox',
+      'child_fox' => 'sex_fox',
+      'cupid' => 'self_cupid',
+      'angel' => 'angel',
+      'quiz' => 'quiz',
+      'chiroptera' => 'dummy_chiroptera',
+      'fairy' => 'mirror_fairy');
+    foreach($USERS->rows as $user){
+      if($user->IsDummyBoy() || ! $user->IsRole('soul_mania', 'dummy_mania')) continue;
+      $target_id = array_shift($user->GetPartner($user->main_role));
+      $target = $USERS->ById($target_id);
+      $target_role = DistinguishRoleGroup($target->main_role);
+      //PrintData($target_role, $user->uname); //テスト用
+      if($user->IsRole('soul_mania')){
+	$base_role = 'soul_mania[' . $target_id . ']';
+	$replace_list = $soul_mania_replace_list;
+	$copied_role = 'copied_soul';
+      }
+      else{
+	$base_role = 'dummy_mania[' . $target_id . ']';
+	$replace_list = $dummy_mania_replace_list;
+	$copied_role = 'copied_teller';
+      }
+      $result = $target->IsRoleGroup('mania', 'copied') ? 'human' : $replace_list[$target_role];
+      $user->ReplaceRole($base_role, $result);
+      $user->AddRole($copied_role);
+
+      $sentence = $user->handle_name . "\t" . $user->handle_name . "\t" . $result;
+      $ROOM->SystemMessage($sentence, 'MANIA_RESULT');
     }
   }
 

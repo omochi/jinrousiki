@@ -138,8 +138,9 @@ class CastConfig extends CastConfigBase{
     'soul_necromancer'   =>  5,
     'yama_necromancer'   => 10,
     'dummy_necromancer'  => 15,
-    'medium'             => 25,
+    'medium'             => 20,
     'priest'             => 10,
+    'bishop_priest'      =>  5,
     'crisis_priest'      =>  5,
     'revive_priest'      => 10,
     'guard'              => 30,
@@ -161,9 +162,10 @@ class CastConfig extends CastConfigBase{
     'poison_cat'         =>  5,
     'revive_cat'         =>  5,
     'sacrifice_cat'      =>  5,
-    'pharmacist'         => 20,
+    'pharmacist'         => 15,
     'cure_pharmacist'    =>  5,
     'assassin'           => 10,
+    'doom_assassin'      =>  5,
     'reverse_assassin'   =>  5,
     'eclipse_assassin'   =>  5,
     'mind_scanner'       => 10,
@@ -219,13 +221,14 @@ class CastConfig extends CastConfigBase{
     'silver_fox'         =>  4,
     'child_fox'          => 10,
     'sex_fox'            =>  4,
-    'cupid'              => 10,
+    'cupid'              =>  8,
     'self_cupid'         =>  5,
     'mind_cupid'         =>  3,
-    'triangle_cupid'     =>  4,
+    'triangle_cupid'     =>  3,
     'angel'              =>  5,
     'rose_angel'         =>  5,
     'lily_angel'         =>  5,
+    'exchange_angel'     =>  3,
     'ark_angel'          =>  3,
     'quiz'               =>  2,
     'chiroptera'         => 10,
@@ -242,8 +245,11 @@ class CastConfig extends CastConfigBase{
     'light_fairy'        =>  2,
     'dark_fairy'         =>  2,
     'mirror_fairy'       =>  3,
-    'mania'              =>  5,
-    'unknown_mania'      =>  9);
+    'mania'              =>  3,
+    'trick_mania'        =>  2,
+    'soul_mania'         =>  2,
+    'unknown_mania'      =>  5,
+    'dummy_mania'        =>  2);
   var $chaos_min_wolf_rate = 10; //¿ÍÏµ¤ÎºÇÄã½Ð¸½Èæ (Áí¿Í¸ý/N)
   var $chaos_min_fox_rate  = 15; //ÍÅ¸Ñ¤ÎºÇÄã½Ð¸½Èæ (Áí¿Í¸ý/N)
 
@@ -257,7 +263,9 @@ class CastConfig extends CastConfigBase{
   //Â¼¿Í¤Î½Ð¸½¾å¸ÂÊäÀµ
   var $chaos_max_human_rate = 0.1; //Â¼¿Í¤ÎºÇÂç¿Í¸ýÈæ (1.0 = 100%)
   //Â¼¿Í¤«¤é¿¶¤êÊÖ¤ëÌò¿¦ => ½Ð¸½Èæ
-  var $chaos_replace_human_role_list = array('mania' => 6, 'trick_mania' => 2, 'unknown_mania' => 2);
+  var $chaos_replace_human_role_list = array(
+    'mania' => 4, 'trick_mania' => 2, 'soul_mania' => 1,
+    'unknown_mania' => 2, 'dummy_mania' => 1,);
 
   //-- ´Ø¿ô --//
   //·èÆ®Â¼
@@ -304,9 +312,10 @@ class CastConfig extends CastConfigBase{
       $duel_rate_list = array('assassin' => 11, 'wolf' => 6, 'self_cupid' => 10,
 			      'mind_cupid' => 10 ,'trap_mad' => 3); //ÇÛÊ¬ÈæÎ¨
       */
-      $duel_rate_list = array('triangle_cupid' => 3, 'miasma_mad' => 5,'cure_pharmacist' => 3,
-			      'assassin' => 2, 'mind_cupid' => 4, 'wolf' => 3); //ÇÛÊ¬ÈæÎ¨
-      $duel_fix_list = array('silver_wolf' => 1);
+      $duel_rate_list = array('assassin' => 3, 'doom_assassin' => 1, 'wolf' => 3,
+			      'self_cupid' => 1, 'mind_cupid' => 4,
+			      'triangle_cupid' => 2, 'exchange_angel' => 1); //ÇÛÊ¬ÈæÎ¨
+      $duel_fix_list = array('possessed_wolf' => 1, 'medium' => 1, 'dummy_chiroptera' => 1);
     }
     else{
       $duel_fix_list = array();

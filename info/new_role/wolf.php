@@ -792,7 +792,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a name="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <pre>
 夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>、<a href="human.php#dummy_necromancer">夢枕人</a>、<a href="human.php#dummy_common">夢共有者</a>、<a href="human.php#dummy_poison">夢毒者</a>、<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
-<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="human.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
+<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
 <a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
 
 何らかの形で<a href="human.php#dummy_guard">夢守人</a>に接触した場合は殺される。

@@ -62,10 +62,10 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 </pre>
 
 <h2><a name="angel_group">天使系</a></h2>
-<p>
 <a href="#angel">天使</a>
 <a href="#rose_angel">薔薇天使</a>
 <a href="#lily_angel">百合天使</a>
+<a href="#exchange_angel">魂移使</a>
 <a href="#ark_angel">大天使</a>
 </p>
 
@@ -97,6 +97,29 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <pre>
 <a href="#rose_angle">天使</a>の女性版です。
 <a href="human.php#sex_mage">ひよこ鑑定士</a>対策で性別をごまかすケースがあることに気をつけましょう。
+</pre>
+
+<h3><a name="exchange_angel">魂移使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+矢を撃った二人を交換憑依させてしまうキューピッド。
+</pre>
+<ol>
+  <li>憑依先の相手と完全に入れ替わります。実質他人にログインしているような状態です。</li>
+  <li>2日目に入れ替わる相手が誰か予告が表示されて、3日目に入れ替えが実行されます。</li>
+  <li><a href="sub_role.php#mind_sympathy">共感者</a>が付加されるので事前に相手の役職が分かります。</li>
+  <li>交換憑依が発生した二人は死亡しても遺言が表示されません。</li>
+  <li>入れ替え前に遺言を残しておくと、入れ替わった後で相方にメッセージを残せる事になります。</li>
+  <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わります。<br>
+    例) A-B・B-C と矢を打たれた → A-B または B-C のどちらかだけが入れ替わる
+  </li>
+  <li>憑依能力者 (<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>) が対象だった場合は交換憑依は発生しません。</li>
+  <li>他人打ちをした場合、矢を打った本人には交換憑依が成立したかどうかは分かりません。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ラブコメでよくある「中の人が入れ替わってしまう」展開を再現してしてみました。
+これにぴったりくる実在する名前を思いつかなかったので造語を当てました。
+「たまうつし」と読みます。
 </pre>
 
 <h3><a name="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>

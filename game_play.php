@@ -408,7 +408,7 @@ function OutputGameHeader(){
       echo $room_message;
 
     //過去の日のログへのリンク生成
-    echo '<td class="view-option">ログ';
+    echo '<td class="view-option">ログ ';
 
     $url_header ='<a href="game_log.php' . $url_room . '&date=';
     $url_footer = '#game_top" target="_blank">';
@@ -465,6 +465,7 @@ EOF;
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
     $url_reload . $url_sound  . '&list_down=' . ($RQ_ARGS->list_down ? 'off">↑' : 'on">↓') .
     'リスト</a>'."\n";
+  if($ROOM->IsFinished()) OutputLogLink();
 
   //夜明けを音でお知らせする
   if($RQ_ARGS->play_sound){

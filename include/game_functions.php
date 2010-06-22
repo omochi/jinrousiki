@@ -283,6 +283,28 @@ function OutputAutoReloadLink($url){
   echo $str . ')'."\n";
 }
 
+//ログへのリンクを出力
+function OutputLogLink(){
+  global $ROOM;
+
+  $url = 'old_log.php?room_no=' . $ROOM->id;
+  $header = $ROOM->view_mode ? 'ログ' : '全体ログ';
+  echo <<<EOF
+<br>{$header}
+<a href="{$url}&reverse_log=on">逆</a>
+<a href="{$url}&heaven_talk=on">霊</a>
+<a href="{$url}&reverse_log=on&heaven_talk=on">逆&amp;霊</a>
+<a href="{$url}&heaven_only=on">逝</a>
+<a href="{$url}&reverse_log=on&heaven_only=on">逆&amp;逝</a>
+<br>役職表示ログ
+<a href="{$url}&add_role=on&reverse_log=on">逆</a>
+<a href="{$url}&add_role=on&heaven_talk=on">霊</a>
+<a href="{$url}&add_role=on&reverse_log=on&heaven_talk=on">逆&amp;霊</a>
+<a href="{$url}&add_role=on&heaven_only=on">逝</a>
+<a href="{$url}&add_role=on&reverse_log=on&heaven_only=on">逆&amp;逝</a>
+EOF;
+}
+
 //ゲームオプション画像を出力
 function OutputGameOption(){
   global $ROOM;
@@ -365,6 +387,7 @@ function OutputPlayerList(){
 
       //憑依状態なら憑依しているユーザを追加
       $real_user = $USERS->ByReal($id);
+      if($real_user == $user) $real_user = $USERS->TraceExchange($id);
       if($real_user != $user && $real_user->IsLive()) $str .= '<br>[' . $real_user->uname . ']';
       $str .= ')<br>';
 

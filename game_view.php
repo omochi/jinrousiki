@@ -74,8 +74,10 @@ else{
   echo '<a href="' . $url . '">[更新]</a>'."\n";
 }
 
+echo '<a href="./">[戻る]</a>';
+if($ROOM->IsFinished()) OutputLogLink();
+
 echo <<<EOF
-<a href="./">[戻る]</a>
 </td></tr>
 <tr><td><form method="POST" action="login.php?room_no={$ROOM->id}">
 <label>ユーザ名</label><input type="text" name="uname" size="20">
