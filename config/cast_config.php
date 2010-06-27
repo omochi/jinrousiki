@@ -267,6 +267,25 @@ class CastConfig extends CastConfigBase{
     'mania' => 4, 'trick_mania' => 2, 'soul_mania' => 1,
     'unknown_mania' => 2, 'dummy_mania' => 1,);
 
+  //¤ªº×¤êÂ¼ÀìÍÑÇÛÌò¥Æ¡¼¥Ö¥ë
+  var $festival_role_list = array(
+        8 => array('human' => 1, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'boss_wolf' => 1, 'mad' => 1, 'white_fox' => 1, 'chiroptera' => 1),
+        9 => array('guard' => 2, 'dummy_guard' => 4, 'wolf' => 1, 'silver_wolf' => 1, 'cursed_fox' => 1),
+       10 => array('mage' => 1, 'necromancer' => 1, 'guard' => 1, 'doll' => 1, 'doll_master' => 1, 'wolf' => 2, 'mad' => 1, 'fox' => 1, 'chiroptera' => 1),
+       11 => array('unconscious' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'crisis_priest' => 1, 'guard' => 1, 'anti_voodoo' => 1, 'cure_pharmacist' => 1, 'cursed_wolf' => 1, 'silver_wolf' => 1, 'jammer_mad' => 1, 'cursed_chiroptera' => 1),
+       12 => array('wise_wolf' => 1, 'jammer_mad' => 8, 'voodoo_fox' => 2, 'fairy' => 1),
+       13 => array('human' => 1, 'mage' => 1, 'psycho_mage' => 1, 'dummy_mage' => 1,'necromancer' => 1, 'dummy_necromancer' => 1, 'guard' => 1, 'dummy_guard' => 1, 'common'=> 1, 'wolf' => 1, 'poison_wolf' => 1,'trap_mad' => 1, 'cursed_chiroptera' => 1),
+       14 => array('necromancer' => 1, 'silver_wolf' => 2, 'fox' => 1, 'chiroptera' => 10),
+       15 => array('poison' => 3, 'wolf' => 3, 'fanatic_mad' => 1, 'fox' => 1, 'chiroptera' => 6, 'boss_chiroptera' => 1),
+       16 => array('dummy_guard' => 1, 'strong_poison' => 1, 'dummy_poison' => 5, 'sirius_wolf' => 3, 'dream_eater_mad' => 1, 'triangle_cupid' => 1, 'mirror_fairy' => 4),
+       17 => array('sex_mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'wolf' => 2, 'gold_wolf' => 1, 'fox' => 1, 'chiroptera' => 7),
+       18 => array('saint' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'fend_guard' => 1, 'trap_common' => 1, 'ghost_common' => 1, 'incubate_poison' => 1, 'reverse_assassin' => 1, 'wise_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'jammer_mad' => 1, 'voodoo_mad' => 1, 'voodoo_fox' => 1, 'revive_fox' => 1, 'angel' => 1, 'light_fairy' => 1, 'trick_mania' => 1),
+       19 => array('revive_priest' => 1, 'anti_voodoo' => 1, 'dummy_poison' => 1, 'eclipse_assassin' => 2, 'poison_cat' => 1, 'jealousy' => 1, 'poison_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'fanatic_mad' => 1, 'agitate_mad' => 1, 'cursed_fox' => 2, 'quiz' => 1, 'mind_cupid' => 1, 'light_fairy' => 1, 'dark_fairy' => 1, 'mirror_fairy' => 1),
+       20 => array('emerald_wolf' => 1, 'blue_wolf' => 1, 'silver_wolf' => 2, 'voodoo_mad' => 2, 'emerald_fox' => 1, 'blue_fox' => 1, 'silver_fox' => 1, 'chiroptera' => 5, 'boss_chiroptera' => 1, 'fairy' => 5),
+       21 => array('poison' => 7, 'chain_poison' => 2, 'poison_wolf' => 4, 'resist_wolf' => 1, 'poison_fox' => 2, 'quiz' => 3, 'poison_chiroptera' => 2),
+       22 => array('human' => 8, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'poison_cat' => 1, 'wolf' => 4, 'boss_wolf' => 1, 'fox' => 1, 'child_fox' => 1)
+				);
+
   //-- ´Ø¿ô --//
   //·èÆ®Â¼
   function SetDuel($user_count){
@@ -313,9 +332,9 @@ class CastConfig extends CastConfigBase{
 			      'mind_cupid' => 10 ,'trap_mad' => 3); //ÇÛÊ¬ÈæÎ¨
       */
       $duel_rate_list = array('assassin' => 3, 'doom_assassin' => 1, 'wolf' => 3,
-			      'self_cupid' => 1, 'mind_cupid' => 4,
+			      'possessed_wolf' => 1, 'self_cupid' => 1, 'mind_cupid' => 4,
 			      'triangle_cupid' => 2, 'exchange_angel' => 1); //ÇÛÊ¬ÈæÎ¨
-      $duel_fix_list = array('possessed_wolf' => 1, 'medium' => 1, 'dummy_chiroptera' => 1);
+      $duel_fix_list = array('medium' => 1, 'dummy_chiroptera' => 1);
     }
     else{
       $duel_fix_list = array();

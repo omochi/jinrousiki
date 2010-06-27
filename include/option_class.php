@@ -42,4 +42,8 @@ class OptionManager{
     //キャッシュの生成
     foreach($this->options as $name => $value) $this->__get($name);
   }
+
+  function Exists($name){
+    return array_key_exists($name, $this->options);
+  }
 }

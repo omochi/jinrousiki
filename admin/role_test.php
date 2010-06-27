@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF');
-$INIT_CONF->LoadFile('game_vote_functions');
+$INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('闇鍋モード配役テスト');
 
 echo <<<EOF
@@ -35,6 +35,7 @@ if($_POST['command'] == 'role_test'){
   $user_count = (int)$_POST['user_count'];
   $try_count  = (int)$_POST['try_count'];
   $option_role = $_POST['game_option'];
+  $RQ_ARGS = new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $RQ_ARGS->TestItems->test_room = array('game_option' => $_POST['game_option']);
   $ROOM = new Room($RQ_ARGS);

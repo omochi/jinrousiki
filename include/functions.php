@@ -16,9 +16,7 @@ function CheckReferer($page, $white_list = NULL){
 //-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
 function SendQuery($query, $commit = false){
-  if(($sql = mysql_query($query)) !== false){
-    return $commit ? SendCommit() : $sql;
-  }
+  if(($sql = mysql_query($query)) !== false) return $commit ? SendCommit() : $sql;
   $backtrace = debug_backtrace(); //バックトレースを取得
 
   //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
@@ -343,7 +341,7 @@ function OutputPageLink($CONFIG){
     $list['page'] = 'page=' . $CONFIG->current;
     $list['reverse'] = 'reverse=' . ($CONFIG->is_reverse ? 'off' : 'on');
     $url_stack[] = '[表示順]';
-    $url_stack[] = ($CONFIG->is_reverse ? '新↓古' : '古↓新');
+    $url_stack[] = $CONFIG->is_reverse ? '新↓古' : '古↓新';
 
     $url = $url_header . implode('&', $list) . '">';
     $name = ($CONFIG->is_reverse xor $CONFIG->reverse) ? '元に戻す' : '入れ替える';
@@ -363,35 +361,39 @@ function GeneratePageLink($CONFIG, $page, $title = NULL){
   return $url . implode('&', $list) . '">' . $title . '</a>';
 }
 
+//ログへのリンクを生成
+function GenerateLogLink($url, $header = NULL, $footer = ''){
+  $str = isset($header) ? '<br>' . $header : '';
+  return <<<EOF
+{$header} <a href="{$url}"{$footer}>正</a>
+<a href="{$url}&reverse_log=on"{$footer}>逆</a>
+<a href="{$url}&heaven_talk=on"{$footer}>霊</a>
+<a href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>逆&amp;霊</a>
+<a href="{$url}&heaven_only=on"{$footer} >逝</a>
+<a href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
+EOF;
+}
+
 //ゲームオプションの画像タグを作成する
 function GenerateGameOptionImage($game_option, $option_role = ''){
   global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;
 
+  $stack = new OptionManager($game_option . ' ' . $option_role);
+  //PrintData($stack); //テスト用
   $str = '';
-  if(strpos($game_option, 'wish_role') !== false){
-    $str .= $ROOM_IMG->Generate('wish_role', $GAME_OPT_MESS->wish_role);
-  }
-  if(strpos($game_option, 'real_time') !== false){ //実時間の制限時間を取得
-    $real_time_str = strstr($game_option, 'real_time');
-    sscanf($real_time_str, "real_time:%d:%d", &$day, &$night);
-    $sentence = "{$GAME_OPT_MESS->real_time}　昼： {$day} 分　夜： {$night} 分";
-    $str .= $ROOM_IMG->Generate('real_time', $sentence) . '['. $day . '：' . $night . ']';
-  }
-
-  $option_list = explode(' ', $game_option . ' ' . $option_role);
-  //PrintData($option_list); //テスト用
-  $display_order_list = array('dummy_boy', 'gm_login', 'open_vote', 'not_open_cast', 'auto_open_cast',
-			      'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-			      'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'liar',
-			      'gentleman', 'sudden_death', 'perverseness', 'full_mania', 'detective',
-			      'festival', 'quiz', 'duel', 'chaos', 'chaosfull', 'chaos_open_cast',
-			      'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
-			      'no_sub_role');
+  $display_order_list = array(
+    'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'open_vote', 'not_open_cast',
+    'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+    'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'liar', 'gentleman',
+    'sudden_death', 'perverseness', 'full_mania', 'detective', 'festival', 'quiz', 'duel',
+    'chaos', 'chaosfull', 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role',
+    'secret_sub_role', 'no_sub_role');
 
   foreach($display_order_list as $option){
-    if(! in_array($option, $option_list)) continue;
+    if(! $stack->Exists($option)) continue;
     if($GAME_OPT_MESS->$option == '') continue;
     $sentence = '';
+    $footer = '';
     if($option == 'cupid'){
       $sentence = '14人または' . $CAST_CONF->$option . '人以上で';
     }
@@ -400,7 +402,21 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     }
     $sentence .= $GAME_OPT_MESS->$option;
 
-    $str .= $ROOM_IMG->Generate($option, $sentence);
+    if($option == 'real_time'){
+      $day   = $stack->options['real_time'][0];
+      $night = $stack->options['real_time'][1];
+      $sentence .= "　昼： {$day} 分　夜： {$night} 分";
+      $footer = '['. $day . '：' . $night . ']';
+    }
+    elseif($option == 'chaosfull'){
+      /*
+      $level = $stack->options['chaosfull'][0];
+      $grade = isset($level) && $level > 0 ? $level : 'Max';
+      $sentence .= 'Lv' . $grade;
+      $footer = '[' . $grade . ']';
+      */
+    }
+    $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
   }
 
   return $str;
@@ -448,7 +464,7 @@ function OutputCastTable($min = 0, $max = NULL){
   //人数毎の配役を表示
   foreach($CAST_CONF->role_list as $key => $value){
     if($key < $min) continue;
-    $tag = "<td><strong>$key</strong></td>";
+    $tag = "<td><strong>{$key}</strong></td>";
     foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
     echo '<tr>' . $tag . '</tr>'."\n";
     if($key == $max) break;

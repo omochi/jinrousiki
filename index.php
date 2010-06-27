@@ -20,7 +20,7 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="info/new_role/">新役職情報</a></li>
       <li><a href="info/">その他の情報一覧</a></li>
       <li>★☆★☆★☆★</li>
-      <li><a href="old_log.php">ログ閲覧</a> (<a href="old_log.php?add_role=on">+ 役職表示</a>)</li>
+      <li><a href="old_log.php">ログ閲覧</a></li>
 <!-- さとり鯖用
       <li class="log">HTML化ログ</li>
       <li>さとり鯖V3ログ</li>

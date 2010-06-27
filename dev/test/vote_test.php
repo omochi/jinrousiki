@@ -306,7 +306,6 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByID(1);
 #$SELF = $USERS->ByID(7);
 #$SELF = $USERS->TraceExchange(4);
-
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ
 //OutputGameOption($ROOM->game_option, '');

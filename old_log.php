@@ -52,7 +52,6 @@ EOF;
   $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
   $builder->set_reverse = $is_reverse;
   $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
-  if($RQ_ARGS->add_role) $builder->AddOption('add_role');
   $builder->Output();
   echo <<<EOF
 </td></tr>
@@ -64,7 +63,7 @@ EOF;
 
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数ごと表示
   $query = "SELECT room_no FROM room WHERE status = 'finished' ORDER BY room_no";
-  if($is_reverse) $query .=  ' DESC';
+  if($is_reverse) $query .= ' DESC';
   if($RQ_ARGS->page != 'all'){
     $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->view * ($RQ_ARGS->page - 1), $LOG_CONF->view);
   }
@@ -75,14 +74,15 @@ EOF;
   foreach($room_no_list as $room_no){
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
-    $base_url = 'old_log.php?room_no=' . $ROOM->id;
-    if($RQ_ARGS->add_role) $base_url .= '&add_role=on';
-    $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
     //$max_user_str = $ROOM_IMG->max_user_list[$ROOM->max_user]; //ユーザ総数画像
-    $game_option_str = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
+    $base_url = 'old_log.php?room_no=' . $ROOM->id;
+    $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
     $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
-    $login = ($current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
-	      '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n");
+    $login = $current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
+      '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
+    $log_link_str = GenerateLogLink($base_url, '(', $dead_room) . ' )' .
+      GenerateLogLink($base_url . '&add_role=on', "\n[役職表示] (", $dead_room) . ' )';
+    $game_option_str = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
 
     echo <<<EOF
 <tr class="list">
@@ -98,13 +98,7 @@ EOF;
 </tr>
 <tr class="lower list">
 <td class="comment">
-{$login}(
-<a href="{$base_url}&reverse_log=on"{$dead_room}>逆</a>
-<a href="{$base_url}&heaven_talk=on"{$dead_room}>霊</a>
-<a href="{$base_url}&reverse_log=on&heaven_talk=on"{$dead_room}>逆&amp;霊</a>
-<a href="{$base_url}&heaven_only=on"{$dead_room} >逝</a>
-<a href="{$base_url}&reverse_log=on&heaven_only=on"{$dead_room}>逆&amp;逝</a>
-)
+{$login}{$log_link_str}
 </td>
 <td colspan="3">{$game_option_str}</td>
 </tr>

@@ -532,9 +532,12 @@ class UserDataSet{
   }
 
   function LoadRoom($request){
-    if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
+    if($request->IsVirtualRoom()){
       $user_list = $request->TestItems->test_users;
       if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
+    }
+    elseif($request->entry_user){
+      $user_list = $this->RetriveByEntryUser($request->room_no);
     }
     else{
       $user_list = $this->RetriveByRoom($request->room_no);
@@ -591,6 +594,13 @@ class UserDataSet{
     return FetchObject($query, 'User');
   }
 
+  //入村処理用のユーザデータを取得する
+  function RetriveByEntryUser($room_no){
+    $query = "SELECT room_no, user_no, uname, handle_name, live, ip_address
+      FROM user_entry WHERE room_no = {$room_no} ORDER BY user_no";
+    return FetchObject($query, 'User');
+  }
+
   //取得したユーザ情報を User クラスでパースして登録する
   function LoadUsers($user_list){
     if(! is_array($user_list)) return false;
@@ -603,7 +613,7 @@ class UserDataSet{
 
     foreach($user_list as $user){
       $user->ParseCompoundParameters();
-      if($user->user_no >= 0){
+      if($user->user_no >= 0 && $user->live != 'kick'){
 	$this->rows[$user->user_no] = $user;
       }
       else{
@@ -705,8 +715,13 @@ class UserDataSet{
     return $this->ByUname($uname)->role;
   }
 
-  function GetUserCount(){
-    return count($this->rows);
+  function GetUserCount($strict = false){
+    if(! $strict) return count($this->rows);
+    $count = 0;
+    foreach($this->rows as $user){
+      if($user->user_no > 0) $count++;
+    }
+    return $count;
   }
 
   //所属陣営を判定してキャッシュする
@@ -740,6 +755,7 @@ class UserDataSet{
   function SetEvent($force = false){
     global $ROOM;
 
+    if($ROOM->room_no < 1) return;
     $event_rows = $ROOM->GetEvent($force);
     if(! is_array($event_rows)) return;
     foreach($event_rows as $event){

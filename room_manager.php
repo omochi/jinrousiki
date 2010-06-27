@@ -542,11 +542,11 @@ EOF;
 }
 
 function OutputRoomOption($option_list, $label = '', $border = true){
-  $tag_list = array();
-  foreach($option_list as $option) $tag_list[] = GenerateRoomOption($option, $label);
-  if(count($tag_list) < 1) return NULL;
-  if($border) array_unshift($tag_list, '<tr><td colspan="2"><hr></td></tr>');
-  echo implode('', $tag_list);
+  $stack = array();
+  foreach($option_list as $option) $stack[] = GenerateRoomOption($option, $label);
+  if(count($stack) < 1) return NULL;
+  if($border) array_unshift($stack, '<tr><td colspan="2"><hr></td></tr>');
+  echo implode('', $stack);
 }
 
 function OutputRoomOptionDummyBoy(){
@@ -563,10 +563,10 @@ function OutputRoomOptionDummyBoy(){
   else
     $checked_nothing = ' checked';
 
-    /*
+  /*
 <input type="radio" name="dummy_boy" value="gerd"{$checked_gerd}>
 身代わり君はゲルト君(村人固定の身代わり君です)<br>
-*/
+  */
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>

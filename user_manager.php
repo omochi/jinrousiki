@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('room_class', 'icon_functions');
+$INIT_CONF->LoadFile('room_class', 'user_class', 'icon_functions');
 $INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
@@ -53,19 +53,22 @@ function EntryUser(){
 		       'サーバが混雑しています。<br>'."\n".'再度登録してください');
   }
 
-  //項目被りチェック
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
+  $request = new RequestBase();
+  $request->room_no = $room_no;
+  $request->entry_user = true;
+  $USERS = new UserDataSet($request);
+  //PrintData($USERS); //テスト用
 
-  //キックされた人と同じユーザ名
-  if(FetchResult($query . "uname = '{$uname}' AND user_no = -1") > 0){
+  //項目被りチェック
+  $user = $USERS->ByUname($uname);
+  if($user->live == 'kick' || $user->user_no < 0){
     OutputActionResult('村人登録 [キックされたユーザ]',
 		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
 		       '別の名前にしてください。');
   }
 
   //ユーザ名、村人名
-  $query .= 'user_no > 0 AND ';
-  if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
+  if($user->user_no > 0 || $USERS->ByHandleName($handle_name)->user_no > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
 		       '別の名前にしてください。');
@@ -74,21 +77,20 @@ function EntryUser(){
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-  if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
-     FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
-    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
+  if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address){
+    foreach($USERS->rows as $user){
+      if($user->ip_address == $ip_address){
+	OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
+      }
+    }
   }
 
-  //DBからユーザNoを降順に取得
-  $query = 'SELECT user_no FROM user_entry WHERE room_no = ' . $room_no .
-    ' AND user_no > 0 ORDER BY user_no DESC';
-  $user_no = (int)FetchResult($query) + 1; //最も大きい No + 1
-
-  //DBから最大人数を取得
-  $ROOM = RoomDataSet::LoadEntryUser($room_no);
+  $ROOM = RoomDataSet::LoadEntryUser($room_no); //DBから最大人数を取得
+  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
+  $user_count = $USERS->GetUserCount(true); //現在の KICK されていない住人の数を取得
 
   //定員オーバーしているとき
-  if($user_no > $ROOM->max_user){
+  if($user_count >= $ROOM->max_user){
     OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
   }
   if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){
@@ -107,8 +109,9 @@ function EntryUser(){
 		$sex, $role, $SESSION->Get(true))){
     $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
     $url = 'game_frame.php?room_no=' . $room_no;
+    $user_count++;
     OutputActionResult('村人登録',
-		       $user_no . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
+		       $user_count . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
 		       '切り替わらないなら <a href="' . $url. '">ここ</a> 。',
 		       $url, true);
   }

@@ -288,21 +288,8 @@ function OutputLogLink(){
   global $ROOM;
 
   $url = 'old_log.php?room_no=' . $ROOM->id;
-  $header = $ROOM->view_mode ? 'ログ' : '全体ログ';
-  echo <<<EOF
-<br>{$header}
-<a href="{$url}&reverse_log=on">逆</a>
-<a href="{$url}&heaven_talk=on">霊</a>
-<a href="{$url}&reverse_log=on&heaven_talk=on">逆&amp;霊</a>
-<a href="{$url}&heaven_only=on">逝</a>
-<a href="{$url}&reverse_log=on&heaven_only=on">逆&amp;逝</a>
-<br>役職表示ログ
-<a href="{$url}&add_role=on&reverse_log=on">逆</a>
-<a href="{$url}&add_role=on&heaven_talk=on">霊</a>
-<a href="{$url}&add_role=on&reverse_log=on&heaven_talk=on">逆&amp;霊</a>
-<a href="{$url}&add_role=on&heaven_only=on">逝</a>
-<a href="{$url}&add_role=on&reverse_log=on&heaven_only=on">逆&amp;逝</a>
-EOF;
+  echo GenerateLogLink($url, '<br>' . ($ROOM->view_mode ? '[ログ]' : '[全体ログ]')) .
+    GenerateLogLink($url . '&add_role=on', '<br>[役職表示ログ]');
 }
 
 //ゲームオプション画像を出力
@@ -311,10 +298,9 @@ function OutputGameOption(){
 
   $query = "SELECT game_option, option_role, max_user FROM room WHERE room_no = {$ROOM->id}";
   extract(FetchAssoc($query, true));
-  $str = '<table class="time-table"><tr>'."\n" .
+  echo '<table class="time-table"><tr>'."\n" .
     '<td>ゲームオプション：' . GenerateGameOptionImage($game_option, $option_role) .
     ' 最大' . $max_user . '人</td>'."\n" . '</tr></table>'."\n";
-  echo $str;
 }
 
 //日付と生存者の人数を出力
@@ -383,7 +369,8 @@ function OutputPlayerList(){
 
     //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
     if($is_open_role){
-      $str .= '　(' . $user->uname; //ユーザ名を追加
+      $uname = str_replace(array('◆', '◇'), array('◆<br>', '◇<br>'), $user->uname); //トリップ対応
+      $str .= '　(' . $uname; //ユーザ名を追加
 
       //憑依状態なら憑依しているユーザを追加
       $real_user = $USERS->ByReal($id);

@@ -19,7 +19,7 @@ class Room{
   function Room($request = NULL){ $this->__construct($request); }
   function __construct($request = NULL){
     if(is_null($request)) return;
-    if(isset($request->TestItems) && $request->TestItems->is_virtual_room){
+    if($request->IsVirtualRoom()){
       $array = $request->TestItems->test_room;
       $this->event->rows = $request->TestItems->event;
     }
@@ -41,7 +41,10 @@ class Room{
 
   //option_role を追加ロードする
   function LoadOption(){
-    $option_role = FetchResult('SELECT option_role FROM room' . $this->GetQuery(false));
+    global $RQ_ARGS;
+
+    $option_role = $RQ_ARGS->IsVirtualRoom() ? $RQ_ARGS->TestItems->test_room['option_role'] :
+      FetchResult('SELECT option_role FROM room' . $this->GetQuery(false));
     $this->option_role = new OptionManager($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
   }
@@ -61,7 +64,7 @@ class Room{
   function LoadVote($action = NULL){
     global $RQ_ARGS;
 
-    if(isset($RQ_ARGS->TestItems) && $RQ_ARGS->TestItems->is_virtual_room){
+    if($RQ_ARGS->IsVirtualRoom()){
       switch($this->day_night){
       case 'day':
 	$vote_list = $RQ_ARGS->TestItems->vote_day;

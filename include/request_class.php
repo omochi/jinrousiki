@@ -7,8 +7,9 @@ class RequestBase{
     $src_list  = array('get' => $_GET, 'post' => $_POST, 'file' => $_FILES['file']);
     foreach($spec_list as $spec){
       list($src, $item) = explode('.', $spec);
-      if(array_key_exists($src, $src_list))
+      if(array_key_exists($src, $src_list)){
 	$value_list = $src_list[$src];
+      }
       else{
 	$value_list = $_REQUEST;
 	$item = $spec;
@@ -16,9 +17,8 @@ class RequestBase{
 
       if(is_array($value_list) && array_key_exists($item, $value_list))
 	$value = $value_list[$item];
-      elseif(! $this->GetDefault($item, $value)){
+      elseif(! $this->GetDefault($item, $value))
 	$value = NULL;
-      }
 
       $this->$item = empty($processor) ? $value :
 	(method_exists($this, $processor) ? $this->$processor($value) : $processor($value));
@@ -48,6 +48,10 @@ class RequestBase{
   function AttachTestParameters(){
     global $DEBUG_MODE;
     if($DEBUG_MODE) $this->TestItems = new TestParams();
+  }
+
+  function IsVirtualRoom(){
+    return isset($this->TestItems) && $this->TestItems->is_virtual_room;
   }
 }
 
@@ -220,13 +224,12 @@ class RequestOldLog extends RequestBase{
   function __construct(){
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no');
-      $this->GetItems('IsOn', 'get.reverse_log', 'get.heaven_talk',
-		      'get.heaven_only','get.debug', 'get.add_role');
+      $this->GetItems('IsOn', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only',
+		      'get.add_role');
       $this->AttachTestParameters();
     }
     else{
       $this->GetItems(NULL, 'get.reverse');
-      $this->GetItems('IsOn', 'get.add_role');
       $this->GetItems('SetPage', 'get.page');
     }
   }
