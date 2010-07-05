@@ -35,6 +35,7 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 <a href="#elder">長老</a>
 <a href="#saint">聖女</a>
 <a href="#executor">執行者</a>
+<a href="#escaper">逃亡者</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
@@ -113,6 +114,28 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 iM@S人狼のプレイヤーさんへの誕生日プレゼントです。
 「なんとなく人外に投票する程度の能力」を形にしてみました。
+</pre>
+
+<h3><a name="escaper">逃亡者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目の夜以降、生きている誰かの側に逃亡して生存を図ろうとする村人。
+</pre>
+<ol>
+  <li>勝利条件は「村人陣営の勝利」＋「自身の生存」です</li>
+  <li>人狼に直接狙われても殺されません (襲撃は失敗扱い)</li>
+  <li>人狼に狙われていたことを自覚できません</li>
+  <li>逃亡先が人狼だった場合は殺されます</li>
+  <li>逃亡先が人狼に襲撃されたら自分も殺されます</li>
+  <li>逃亡先が護衛や狐などで人狼の襲撃が失敗しても殺されます</li>
+  <li>何らかの理由で人狼に殺された場合の死因は「人狼に襲撃された」です</li>
+  <li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡します</a>
+  <li><a href="#assassin_group">暗殺者系</a>に狙われても殺されません</li>
+  <li>遺言を残せません</li>
+</ol>
+
+<h4>[作成者からのコメント]</h4>
+<pre>
+他国に実在する役職です。
 </pre>
 
 <h3><a name="suspect">不審者</a> (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9〜]</h3>
@@ -532,7 +555,7 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 2. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>の項目を参照してください
 3. 狩り対象は特殊狂人・特殊妖狐・特殊蝙蝠です
 3-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>)
-3-2. 特殊妖狐 (<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
+3-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
 3-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 4. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
 </pre>
@@ -738,6 +761,7 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <p>
 <a href="#strong_poison">強毒者</a>
 <a href="#incubate_poison">潜毒者</a>
+<a href="#guide_poison">誘毒者</a>
 <a href="#chain_poison">連毒者</a>
 <a href="#dummy_poison">夢毒者</a>
 </p>
@@ -779,6 +803,17 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
 <pre>
 東方ウミガメ人狼のプレイヤーさんがモデルです。
 いかに毒を持つまで時間を稼ぐかがポイントです
+</pre>
+
+<h3><a name="guide_poison">誘毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h4>[毒能力] 吊り：毒能力者 / 襲撃：毒能力者 / 薬師判定：限定的</h4>
+<pre>
+毒能力者のみに中る特殊な埋毒者。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#pharmacist_group">薬師系</a>と違うアプローチで毒能力を持った人外を仕留めることができますが
+毒と名のつく役職全てが対象なので<a href="#poison_guard">騎士</a>・<a href="#chain_poison">連毒者</a>に中ると大惨事になります。
 </pre>
 
 <h3><a name="chain_poison">連毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
@@ -1073,6 +1108,9 @@ Bの蘇生処理はキャンセル
 <p>
 <a href="#mind_scanner">さとり</a>
 <a href="#evoke_scanner">イタコ</a>
+<a href="#whisper_scanner">囁騒霊</a>
+<a href="#howl_scanner">吠騒霊</a>
+<a href="#telepath_scanner">念騒霊</a>
 </p>
 
 <h3><a name="mind_scanner">さとり</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
@@ -1096,7 +1134,6 @@ Bの蘇生処理はキャンセル
 Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 
-
 <h3><a name="evoke_scanner">イタコ</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
 <pre>
 初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にします。
@@ -1112,6 +1149,40 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 こういう実装にしてみました。
 </pre>
 
+<h3><a name="whisper_scanner">囁騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目夜以降、<a href="#common_group">共有者系</a>に一方的に声が届く特殊なさとり。
+相手には誰の声が聞こえているのか分かりますが、仲間表示などには何も出ません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+名称は東方 Project のプリズムリバー姉妹がモチーフです。
+共有者の囁きに同時に表示される形で実装しているので、
+実質、片側通行の共有者相当になります。
+</pre>
+
+<h3><a name="howl_scanner">吠騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目夜以降、<a href="wolf.php#wolf_group">人狼系</a>に一方的に声が届く特殊なさとり。
+相手には誰の声が聞こえているのか分かりますが、仲間表示などには何も出ません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#whisper_scanner">囁騒霊</a>の対人狼バージョンです。
+人狼の夜会話に同時に表示される形で実装しているので<a href="wolf.php#whisper_mad">囁き狂人</a>にも見えます。
+</pre>
+
+<h3><a name="telepath_scanner">念騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目夜以降、<a href="fox.php#fox_group">妖狐系</a>に一方的に声が届く特殊なさとり。
+相手には誰の声が聞こえているのか分かりますが、仲間表示などには何も出ません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#whisper_scanner">囁騒霊</a>の対妖狐バージョンです。
+妖狐の<a href="fox.php#fox_talk">念話</a>に同時に表示される形で実装していますが、妖狐の発言ではないので
+<a href="wolf.php#wise_wolf">賢狼</a>は感知できません。
+</pre>
 
 <h2><a name="jealousy_group">橋姫系</a></h2>
 <p>
@@ -1311,7 +1382,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="#poison_cat_group">猫又系</a> → <a href="#revive_cat">仙狸</a></li>
 <li><a href="#pharmacist_group">薬師系</a> → <a href="#pharmacist">薬師</a></li>
 <li><a href="#assassin_group">暗殺者系</a> → <a href="#reverse_assassin">反魂師</a></li>
-<li><a href="#mind_scanner_group">さとり系</a> → <a href="#evoke_scanner">イタコ</a></li>
+<li><a href="#mind_scanner_group">さとり系</a> → <a href="#howl_scanner">吠騒霊</a></li>
 <li><a href="#jealousy_group">橋姫系</a> → <a href="#poison_jealousy">毒橋姫</a></li>
 <li><a href="#doll_group">上海人形系</a> → <a href="#doll_master">人形遣い</a></li>
 <li><a href="wolf.php#wolf_group">人狼系</a> → <a href="wolf.php#sirius_wolf">天狼</a></li>

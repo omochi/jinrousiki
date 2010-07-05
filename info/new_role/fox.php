@@ -83,6 +83,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="#white_fox">白狐</a>
 <a href="#black_fox">黒狐</a>
 <a href="#gold_fox">金狐</a>
+<a href="#phantom_fox">幻狐</a>
 <a href="#poison_fox">管狐</a>
 <a href="#blue_fox">蒼狐</a>
 <a href="#emerald_fox">翠狐</a>
@@ -128,6 +129,17 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <pre>
 <a href="wolf.php#gold_wolf">金狼</a>の妖狐バージョンです。
 この役職でメイン役職の総数が既存のものと合わせてちょうど 100 になりました。
+</pre>
+
+<h3><a name="phantom_fox">幻狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+一度だけ、自分が占われても占い妨害をする事ができる妖狐。
+妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#phantom_wolf">幻狼</a>の妖狐バージョンです。
 </pre>
 
 <h3><a name="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>

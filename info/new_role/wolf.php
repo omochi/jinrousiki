@@ -20,25 +20,29 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#mad_group">狂人系</a>
 </p>
 
-<h2><a name="wolf_rule">基本ルール</a></h2>
-<pre>
-夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。
-(<a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない)
-人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
-</pre>
+<h2><a name="wolf_rule">人狼系の基本ルール</a></h2>
+<ol>
+  <li>夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。<br>
+    例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない
+  </li>
+  <li>狼が狼を襲撃した場合は失敗扱いとなる (襲撃された狼には何も表示されない)。</li>
+</ol>
 <h3>Ver. 1.4.0 α21〜</h3>
 <pre>
 狼が狼を襲撃した場合は失敗扱いとなる。
 <a href="fox.php">妖狐</a>と違い、襲撃された方にも何も表示されない。
+人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
 </pre>
 
-<h2><a name="wolf_partner">仲間表示</a></h2>
-<pre>
-<a href="#fanatic_mad">狂信者</a>と全ての人狼は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。
-<a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。
-<a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かります。
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
-</pre>
+<h2><a name="wolf_partner">人狼系の仲間表示</a></h2>
+<ol>
+  <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。</li>
+  <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。</li>
+  <li><a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かります。<br>
+  ただし、<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示されます。
+  </li>
+  <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
+</ol>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
@@ -57,6 +61,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
   <li>人狼視点の遠吠えは<a href="silver_wolf">銀狼</a>か<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼</li>
   <li><a href="silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明)</li>
   <li>村人視点の遠吠えは<a href="silver_wolf">銀狼</a>も含めた狼 (種類は不明)</li>
+  <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない</li>
 </ol>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
@@ -77,10 +82,11 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <p>
 <a href="#boss_wolf">白狼</a>
 <a href="#gold_wolf">金狼</a>
+<a href="#phantom_wolf">幻狼</a>
+<a href="#cursed_wolf">呪狼</a>
 <a href="#wise_wolf">賢狼</a>
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
-<a href="#cursed_wolf">呪狼</a>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
 <a href="#sex_wolf">雛狼</a>
@@ -113,6 +119,40 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 ローゼンメイデンの金糸雀がモチーフです。
 一見地味ですが存在に気づかないと見事に騙される可能性があります。
 <a href="chiroptera.php">蝙蝠陣営</a>不在が確定している場合は逆に<a href="human.php#sex_mage">ひよこ鑑定士</a>が脅威となる事に気をつけましょう。
+</pre>
+
+<h3><a name="phantom_wolf">幻狼</a> (占い結果：人狼 / 霊能結果：幻狼) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+一度だけ、自分が占われても占い妨害をする事ができる人狼。
+</pre>
+<ol>
+  <li>占い妨害が可能な対象は<a href="#jammer_mad">月兎</a>と同じ。</li>
+  <li>対象になった占い能力者が<a href="human.php#anti_voodoo">厄神</a>に護衛されていたら無効化される。</li>
+  <li>同じ晩であれば複数の占い能力者に占われても有効。</li>
+  <li>一度占われると「能力を失いました」という趣旨のメッセージが表示される。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#cursed_wolf">呪狼</a>の占い妨害バージョンです。
+「どこかに<a href="#jammer_mad">月兎</a>がいる」と思わせるのが狙いです。
+</pre>
+
+<h3><a name="cursed_wolf">呪狼</a> (占い結果：人狼(呪返し) / 霊能結果：呪狼) [Ver. 1.4.0 α17〜]</h3>
+<pre>
+占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼です。
+呪殺された占い師には襲撃されたときと同じ死亡メッセージが出ます。
+</pre>
+<h4>Ver. 1.4.0 β3〜</h4>
+<pre>
+霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">霊能の基本ルール</a>対応抜け)
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他の国に実在する役職です。
+新役職考案スレ (最下参照) の 69 を参考にしています。
+<a href="human.php#soul_mage">魂の占い師</a>や<a href="fox.php#child_fox">子狐</a>も呪い殺せます。
+<a href="human.php#mage_group">占い師</a>側の対策は、遺言に占い先をきちんと書いておく事です。
+死体の数や状況にもよりますが、残った村人がきっと仇を討ってくれるでしょう。
 </pre>
 
 <h3><a name="wise_wolf">賢狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24〜]</h3>
@@ -171,24 +211,6 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 新役職考案スレ (最下参照) の 25 を参考にしています。
 現時点でほぼ無敵の能力を誇る<a href="human.php#poison_guard">騎士</a>への対抗策として作成しました。
 安易に CO する騎士・埋毒者を葬ってやりましょう！
-</pre>
-
-<h3><a name="cursed_wolf">呪狼</a> (占い結果：人狼(呪返し) / 霊能結果：呪狼) [Ver. 1.4.0 α17〜]</h3>
-<pre>
-占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼です。
-呪殺された占い師には襲撃されたときと同じ死亡メッセージが出ます。
-</pre>
-<h4>Ver. 1.4.0 β3〜</h4>
-<pre>
-霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">霊能の基本ルール</a>対応抜け)
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-他の国に実在する役職です。
-新役職考案スレ (最下参照) の 69 を参考にしています。
-<a href="human.php#soul_mage">魂の占い師</a>や<a href="fox.php#child_fox">子狐</a>も呪い殺せます。
-<a href="human.php#mage_group">占い師</a>側の対策は、遺言に占い先をきちんと書いておく事です。
-死体の数や状況にもよりますが、残った村人がきっと仇を討ってくれるでしょう。
 </pre>
 
 <h3><a name="blue_wolf">蒼狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
@@ -697,7 +719,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 夜に村人一人を選び、その人の占い行動を妨害する特殊な狂人。
 </pre>
 <ol>
-  <li>妨害可能な役職は<a href="human.php#voodoo_killer">陰陽師</a>と<a href="human.php#dummy_mage">夢見人</a>を除く<a href="human.php#mage_group">占い師系</a>、<a href="fox.php#child_fox">子狐</a>、<a href="chiroptera.php#fairy_group">妖精系</a>です</li>
+  <li>妨害可能な役職は<a href="human.php#voodoo_killer">陰陽師</a>と<a href="human.php#dummy_mage">夢見人</a>を除く<a href="human.php#mage_group">占い師系</a>、<a href="fox.php#emerald_fox">翠狐</a>、<a href="fox.php#child_fox_group">子狐系</a>、<a href="chiroptera.php#fairy_group">妖精系</a>です</li>
   <li>妨害された占い能力者には「〜さんの占いに失敗しました」と出ます</li>
   <li>妨害が成功したかどうかは本人には分かりません</li>
   <li>呪われている役職を選んだ場合は呪返しを受けます</li>

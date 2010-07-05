@@ -17,6 +17,11 @@ function OutputAbility(){
   elseif($SELF->IsRole('elder')){ //長老
     $ROLE_IMG->Output($SELF->main_role);
   }
+  elseif($SELF->IsRole('escaper')){ //逃亡者
+    $ROLE_IMG->Output($SELF->main_role);
+    //夜の投票
+    if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('fairy-do', 'escape_do', 'ESCAPE_DO');
+  }
   elseif($SELF->IsRoleGroup('mage')){ //占い師系
     $ROLE_IMG->Output($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);
     if($ROOM->date > 1) OutputSelfAbilityResult('MAGE_RESULT'); //占い結果
@@ -117,19 +122,21 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('scanner')){ //さとり系
     $ROLE_IMG->Output($SELF->main_role);
 
-    if($ROOM->date == 1){
-      if($ROOM->IsNight()){ //初日夜の投票
-	OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
+    if($SELF->IsRole('mind_scanner', 'evoke_scanner')){
+      if($ROOM->date == 1){
+	if($ROOM->IsNight()){ //初日夜の投票
+	  OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
+	}
       }
-    }
-    else{ //2日目以降、自分のサトラレ/口寄せを表示
-      $stack = array();
-      $role = $SELF->IsRole('mind_scanner') ? 'mind_read' : 'mind_evoke';
-      foreach($USERS->rows as $user){
-	if($user->IsPartner($role, $SELF->user_no)) $stack[] = $user->handle_name;
+      else{ //2日目以降、自分のサトラレ/口寄せを表示
+	$stack = array();
+	$role = $SELF->IsRole('mind_scanner') ? 'mind_read' : 'mind_evoke';
+	foreach($USERS->rows as $user){
+	  if($user->IsPartner($role, $SELF->user_no)) $stack[] = $user->handle_name;
+	}
+	OutputPartner($stack, 'mind_scanner_target');
+	unset($stack);
       }
-      OutputPartner($stack, 'mind_scanner_target');
-      unset($stack);
     }
   }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系
@@ -357,6 +364,9 @@ function OutputAbility(){
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
   }
+  elseif($SELF->IsRole('guide_poison')){ //誘毒者
+    $ROLE_IMG->Output($SELF->main_role);
+  }
   elseif($SELF->IsRole('chain_poison')){ //連毒者
     $ROLE_IMG->Output('human');
   }
@@ -416,6 +426,11 @@ function OutputAbility(){
     OutputPartner($lovers_partner, 'partner_header', 'lovers_footer');
   }
   $fix_display_list[] = 'lovers';
+
+  if($SELF->IsRole('challenge_lovers')){ //難題
+    if($ROOM->date > 1) $ROLE_IMG->Output('challenge_lovers'); //表示は2日目以降
+  }
+  $fix_display_list[] = 'challenge_lovers';
 
   if($SELF->IsRole('possessed_exchange')){ //交換憑依
     //現在の憑依先を表示

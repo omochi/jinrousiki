@@ -55,6 +55,10 @@ class Talk{
       case 'GAMESTART_DO':
 	return;
 
+      case 'ESCAPE_DO':
+	$this->class = 'fairy-do';
+	break;
+
       case 'VOODOO_KILLER_DO':
 	$this->class = 'mage-do';
 	break;

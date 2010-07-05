@@ -207,8 +207,8 @@ function EntryLastWords($say){
 
   if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
 
-  if($SELF->IsLive()){ //ブン屋、イタコ、筆不精は登録しない
-    if($SELF->IsRole('reporter', 'evoke_scanner', 'no_last_words')) return false;
+  if($SELF->IsLive()){ //登録しない役職をチェック
+    if($SELF->IsRole('escaper', 'reporter', 'evoke_scanner', 'no_last_words')) return false;
     $SELF->Update('last_words', $say); //遺言を残す
   }
   elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){

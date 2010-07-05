@@ -74,21 +74,23 @@ class CastConfig extends CastConfigBase{
 
   //身代わり君がならない役職グループのリスト
   var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'doll_master',
-					   'boss_chiroptera');
+					   'boss_chiroptera', 'scanner', 'eclipse_assassin');
 
   //-- 真・闇鍋の配役設定 --//
   //固定配役
-  var $chaos_fix_role_list = array('mage' => 1, 'wolf' => 1);
-
+  var $chaos_fix_role_list = array('mage' => 1, 'phantom_wolf' => 1, 'eclipse_assassin' => 1,
+				   'phantom_fox' => 1, 'telepath_scanner' => 1,
+				   'sex_mage' => 1, 'howl_scanner' => 1, 'moon_cupid' => 1);
   //人狼の最低出現枠 (役職名 => 出現比)
   var $chaos_wolf_list = array(
-    'wolf'           => 58,
+    'wolf'           => 56,
     'boss_wolf'      =>  3,
     'gold_wolf'      =>  2,
+    'phantom_wolf'   =>  2,
+    'cursed_wolf'    =>  1,
     'wise_wolf'      =>  3,
     'poison_wolf'    =>  3,
     'resist_wolf'    =>  4,
-    'cursed_wolf'    =>  1,
     'blue_wolf'      =>  2,
     'emerald_wolf'   =>  2,
     'sex_wolf'       =>  1,
@@ -102,10 +104,11 @@ class CastConfig extends CastConfigBase{
 
   //妖狐の最低出現枠 (役職名 => 出現比)
   var $chaos_fox_list = array(
-    'fox'           => 63,
+    'fox'           => 61,
     'white_fox'     =>  2,
     'black_fox'     =>  3,
     'gold_fox'      =>  3,
+    'phantom_fox'   =>  2,
     'poison_fox'    =>  3,
     'blue_fox'      =>  2,
     'emerald_fox'   =>  2,
@@ -126,8 +129,9 @@ class CastConfig extends CastConfigBase{
     'elder'              =>  5,
     'saint'              =>  5,
     'executor'           =>  5,
+    'escaper'            =>  5,
     'suspect'            =>  5,
-    'unconscious'        => 10,
+    'unconscious'        =>  5,
     'mage'               => 20,
     'soul_mage'          =>  5,
     'psycho_mage'        => 10,
@@ -154,9 +158,10 @@ class CastConfig extends CastConfigBase{
     'trap_common'        =>  5,
     'ghost_common'       =>  5,
     'dummy_common'       => 10,
-    'poison'             => 20,
+    'poison'             => 15,
     'strong_poison'      =>  5,
     'incubate_poison'    => 10,
+    'guide_poison'       =>  5,
     'chain_poison'       =>  5,
     'dummy_poison'       => 10,
     'poison_cat'         =>  5,
@@ -168,8 +173,11 @@ class CastConfig extends CastConfigBase{
     'doom_assassin'      =>  5,
     'reverse_assassin'   =>  5,
     'eclipse_assassin'   =>  5,
-    'mind_scanner'       => 10,
-    'evoke_scanner'      => 10,
+    'mind_scanner'       =>  8,
+    'evoke_scanner'      =>  6,
+    'whisper_scanner'    =>  2,
+    'howl_scanner'       =>  2,
+    'telepath_scanner'   =>  2,
     'jealousy'           => 10,
     'poison_jealousy'    =>  5,
     'doll'               => 10,
@@ -179,12 +187,13 @@ class CastConfig extends CastConfigBase{
     'wolf'               => 10,
     'boss_wolf'          =>  5,
     'gold_wolf'          => 10,
+    'phantom_wolf'       => 10,
+    'cursed_wolf'        =>  5,
     'wise_wolf'          => 10,
     'poison_wolf'        => 15,
     'resist_wolf'        => 15,
-    'cursed_wolf'        =>  5,
-    'blue_wolf'          => 15,
-    'emerald_wolf'       => 15,
+    'blue_wolf'          => 10,
+    'emerald_wolf'       => 10,
     'sex_wolf'           =>  5,
     'tongue_wolf'        => 10,
     'possessed_wolf'     => 10,
@@ -204,10 +213,11 @@ class CastConfig extends CastConfigBase{
     'dream_eater_mad'    => 10,
     'trap_mad'           => 10,
     'possessed_mad'      =>  5,
-    'fox'                =>  7,
+    'fox'                =>  6,
     'white_fox'          =>  4,
     'black_fox'          =>  4,
     'gold_fox'           =>  4,
+    'phantom_fox'        =>  2,
     'poison_fox'         =>  4,
     'blue_fox'           =>  3,
     'emerald_fox'        =>  3,
@@ -215,14 +225,15 @@ class CastConfig extends CastConfigBase{
     'revive_fox'         =>  3,
     'possessed_fox'      =>  2,
     'cursed_fox'         =>  2,
-    'elder_fox'          =>  4,
+    'elder_fox'          =>  3,
     'cute_fox'           =>  5,
     'scarlet_fox'        =>  4,
     'silver_fox'         =>  4,
     'child_fox'          => 10,
     'sex_fox'            =>  4,
-    'cupid'              =>  8,
+    'cupid'              =>  3,
     'self_cupid'         =>  5,
+    'moon_cupid'         =>  3,
     'mind_cupid'         =>  3,
     'triangle_cupid'     =>  3,
     'angel'              =>  5,
@@ -294,49 +305,29 @@ class CastConfig extends CastConfigBase{
     $role_list = array(); //初期化処理
     $duel_fix_list = array();
 
-    //暗殺11:人狼4:罠師5 (初期設定)
-    /*
-    $duel_fix_list = array();
-    $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5);
-    */
-    //暗殺2:狼1.5:求愛6.5 (求愛決闘バージョン)
-    /*
-    $duel_fix_list = array();
-    $duel_rate_list = array('assassin' => 2, 'wolf' => 1.5, 'self_cupid' => 6.5);
-    */
-    //暗殺3:人狼1.5:求愛3.5:女神2  + 巫女1人:夢求愛1人 (恋色決闘バージョン)
-    /*
-    $duel_fix_list = array('medium' => 1, 'dummy_chiroptera' => 1);
-    $duel_rate_list = array('assassin' => 3, 'wolf' => 1.5, 'self_cupid' => 3.5, 'mind_cupid' => 2);
-    */
-
     //霊界自動公開オプションによる配役設定分岐
     if($ROOM->IsOption('not_open_cast')){
       //埋毒決闘
-      /*
-	【埋毒系2.0/毒狼1.75/連毒者3.0/女神2.5/暗殺0.5】
-	埋毒系：（埋毒3:毒橋姫1の確率でランダム配分）
-	（暗殺1）（17人以上で毒蝙蝠1）
-      */
-      $duel_fix_list = array('assassin' => 1); //固定配役
-      if($user_count > 16) $duel_fix_list['poison_chiroptera']++;
-      $duel_rate_list = array('assassin' => 2, 'poison_wolf' => 7, 'chain_poison' => 12 ,
-			      'mind_cupid' => 10 ,'poison' => 9);
+      $duel_fix_list = array(); //固定配役
+      if($user_count >= 20){
+	$duel_fix_list['poison_jealousy'] = 1;
+	$duel_fix_list['moon_cupid'] = 1;
+      }
+      if($user_count >= 25) $duel_fix_list['quiz'] = 1;
+      $duel_rate_list = array('poison_wolf' => 5, 'chain_poison' => 10,
+			      'triangle_cupid' => 2 ,'poison' => 5);
     }
     elseif($ROOM->IsOption('auto_open_cast')){
       //恋色決闘
-      /*
-	【狼1.5、暗殺2.75、罠師0.75、求愛2.5、女神2.5】（+夢求愛1）（狼1→銀狼1）
-      $duel_fix_list = array('dummy_chiroptera' => 1, 'medium' => 1);
-      $duel_rate_list = array('assassin' => 11, 'wolf' => 6, 'self_cupid' => 10,
-			      'mind_cupid' => 10 ,'trap_mad' => 3); //配分比率
-      */
-      $duel_rate_list = array('assassin' => 3, 'doom_assassin' => 1, 'wolf' => 3,
-			      'possessed_wolf' => 1, 'self_cupid' => 1, 'mind_cupid' => 4,
-			      'triangle_cupid' => 2, 'exchange_angel' => 1); //配分比率
-      $duel_fix_list = array('medium' => 1, 'dummy_chiroptera' => 1);
+      $duel_rate_list = array('assassin' => 4, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
+			      'triangle_cupid' => 1, 'exchange_angel' => 1); //配分比率
+      $duel_fix_list = array('moon_cupid' => 1,  'dummy_chiroptera' => 1);
+      if($user_count >= 10) $duel_fix_list['sirius_wolf'] = 1;
+      if($user_count >= 15) $duel_fix_list['howl_scanner'] = 1;
+      if($user_count >= 20) $duel_fix_list['quiz'] = 1;
     }
     else{
+      //暗殺決闘
       $duel_fix_list = array();
       $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5);
     }

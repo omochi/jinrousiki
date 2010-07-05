@@ -73,6 +73,7 @@ Ver. 1.4.0
 <a href="#sub_140beta8">β8</a>
 <a href="#sub_140beta9">β9</a>
 <a href="#sub_140beta10">β10</a>
+<a href="#sub_140beta11">β11</a>
 </p>
 
 <table>
@@ -1212,6 +1213,71 @@ Ver. 1.4.0
     本人表記は「<a href="human.php#soul_mania">覚醒者</a>」で、変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
+  <tr>
+    <td><a href="wolf.php#phantom_wolf">幻狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>幻狼</td>
+    <td class="ability">一度だけ、自分が占われても占い妨害をする事ができる人狼。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#phantom_fox">幻狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#fox_group">妖狐系</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>妖狐</td>
+    <td class="ability">一度だけ、自分が占われても占い妨害をする事ができる妖狐。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#escaper">逃亡者</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#human_group">村人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">2日目の夜以降、生きている誰かの側に逃亡して生存を図ろうとする村人。<br>
+    勝利条件は「村人陣営の勝利」＋「自身の生存」。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#whisper_scanner">囁騒霊</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mind_scanner_group">さとり系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">2日目夜以降、<a href="human.php#common_group">共有者系</a>に一方的に声が届く特殊なさとり。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#howl_scanner">吠騒霊</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mind_scanner_group">さとり系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">2日目夜以降、<a href="wolf.php#wolf_group">人狼系</a>に一方的に声が届く特殊なさとり。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#telepath_scanner">念騒霊</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mind_scanner_group">さとり系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">2日目夜以降、<a href="fox.php#fox_group">妖狐系</a>に一方的に声が届く特殊なさとり。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="lovers.php#moon_cupid">かぐや姫</a></td>
+    <td><a href="lovers.php">恋人</a></td>
+    <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">自分撃ち固定のキューピッド。自分に<a href="sub_role.php#mind_receiver">受信者</a>、自分と相手に<a href="sub_role.php#challenge_lovers">難題</a>が追加される。</td>
+    <td>Ver. 1.4.0 α21</td>
+  </tr>
 </table>
 
 <table>
@@ -1581,6 +1647,14 @@ Ver. 1.4.0
     <td class="ability">予告された日の昼の投票集計後にショック死する</td>
     <td>Ver. 1.4.0 β10</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#challenge_lovers" name="sub_140beta11">難題</a></td>
+    <td><a href="sub_role.php#lovers_group">恋人系</a></td>
+    <td>○</td>
+    <td class="ability">4日目夜までは人狼の襲撃無効・毒無効・暗殺反射を持つ。<br>
+      5日目以降は恋人の相方と同じ人に投票しないとショック死する。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
 </table>
 
 <h2><a name="reference">参考リンク</a></h2>
@@ -1596,9 +1670,6 @@ Ver. 1.4.0
 <h3>役職</h3>
 <h4>作成予定</h4>
 <pre>
-○誘毒者 (村人陣営 / 村人系？)
-・毒が村に中った時だけ身代わりで死ぬ
-
 ○吉凶占い師 (村人陣営 / 占い師系)
 ・対象がその村でどれくらい活躍できる可能性があるかを吉凶で判定する
 

@@ -224,6 +224,12 @@ class User{
     return $this->IsRole('lovers');
   }
 
+  //難題判定
+  function IsChallengeLovers(){
+    global $ROOM;
+    return $ROOM->date > 1 && $ROOM < 5 && $this->IsRole('challenge_lovers');
+  }
+
   //拡張判定
   function IsPartner($type, $target){
     if(is_null($partner_list = $this->GetPartner($type))) return false;
@@ -333,6 +339,9 @@ class User{
     }
 
     //二日目以降
+    if($this->IsRole('escaper')){
+      return isset($vote_data['ESCAPE_DO'][$this->uname]);
+    }
     if($this->IsRoleGroup('guard')){
       return isset($vote_data['GUARD_DO'][$this->uname]);
     }
@@ -373,7 +382,7 @@ class User{
   }
 
   //役職をパースして省略名を返す
-  function GenerateShortRoleName(){
+  function GenerateShortRoleName($heaven = false){
     global $GAME_CONF, $USERS;
 
     //メイン役職を取得
@@ -386,11 +395,12 @@ class User{
     $sub_role_list = array_slice($this->role_list, 1);
     foreach($GAME_CONF->short_role_list as $role => $name){
       if(in_array($role, $sub_role_list)){
-	$str .= $role == 'lovers' ? '<span class="lovers">' . $name . '</span>' : $name;
+	$str .= ($role == 'lovers' || $role == 'challenge_lovers') ?
+	  '<span class="lovers">' . $name . '</span>' : $name;
       }
     }
-
-    return $str . '] (' . $USERS->TraceExchange($this->user_no)->uname . ')</span>';
+    $uname = $heaven ? $this->uname : $USERS->TraceExchange($this->user_no)->uname;
+    return $str . '] (' . $uname . ')</span>';
   }
 
   //個別 DB 更新処理
@@ -486,8 +496,10 @@ class User{
   function SaveLastWords($handle_name = NULL){
     global $ROOM;
 
+    //保存しない役職をチェック
     if(! $this->IsDummyBoy() &&
-       $this->IsRole('reporter', 'evoke_scanner', 'no_last_words', 'possessed_exchange')) return;
+       $this->IsRole('escaper', 'reporter', 'evoke_scanner', 'no_last_words',
+		     'possessed_exchange')) return;
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
@@ -755,7 +767,7 @@ class UserDataSet{
   function SetEvent($force = false){
     global $ROOM;
 
-    if($ROOM->room_no < 1) return;
+    if($ROOM->id < 1) return; //入村時対応
     $event_rows = $ROOM->GetEvent($force);
     if(! is_array($event_rows)) return;
     foreach($event_rows as $event){

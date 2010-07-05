@@ -192,17 +192,13 @@ class RequestGameVote extends RequestBaseGamePlay{
     vote_times : 昼の投票回数
     target_no : 投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
     situation : 投票の分類 (Kick、処刑、占い、狼など)
-    target_handle_name :
-    target_no はタイミングで入れ替わる可能性があるので Kick のみ target_handle_name を参照する
   */
   function RequestGameVote(){ $this->__construct(); }
   function __construct(){
-    if($_POST['situation'] == 'KICK_DO') EncodePostData(); //KICK 処理対応
     parent::__construct();
     $this->GetItems('intval', 'post.vote_times');
     $this->GetItems('IsOn', 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
-    $this->GetItems('EscapeStrings', 'post.target_handle_name');
     $this->AttachTestParameters(); //テスト用引数のロード
     $this->SetURL();
   }
@@ -212,7 +208,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     if($this->auto_reload > 0) $url_option .= '&auto_reload=' . $this->auto_reload;
     if($this->play_sound)      $url_option .= '&play_sound=on';
     if($this->list_down)       $url_option .= '&list_down=on';
-    $url_option . '#game_top';
+    $url_option .= '#game_top';
     $this->post_url = 'game_vote.php?' . $url_option;
     $this->back_url = '<a href="game_up.php?' . $url_option . '">←戻る &amp; reload</a>';
   }

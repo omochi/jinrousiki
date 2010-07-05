@@ -61,7 +61,7 @@ class Room{
   }
 
   //シーンに合わせた投票情報を取得する
-  function LoadVote($action = NULL){
+  function LoadVote($kick = false){
     global $RQ_ARGS;
 
     if($RQ_ARGS->IsVirtualRoom()){
@@ -81,8 +81,14 @@ class Room{
     else{
       switch($this->day_night){
       case 'beforegame':
-	$data = 'uname, target_uname, situation';
-	$action = "situation = '" . (is_null($action) ? 'GAMESTART' : $action) . "'";
+	if($kick){
+	  $data = 'uname, target_uname';
+	  $action = "situation = 'KICK_DO'";
+	}
+	else{
+	  $data = 'uname, target_uname, situation';
+	  $action = "situation = 'GAMESTART'";
+	}
 	break;
 
       case 'day':
@@ -98,16 +104,21 @@ class Room{
       default:
 	return NULL;
       }
-      $vote_list = FetchAssoc("SELECT {$data} FROM vote" . $this->GetQuery() . ' AND ' . $action);
+      $vote_list = FetchAssoc("SELECT {$data} FROM vote {$this->GetQuery()} AND {$action}");
     }
 
-    $vote_data = array();
-    foreach($vote_list as $list){
-      $uname = $list['uname'];
-      unset($list['uname']);
-      $vote_data[$uname] = $list;
+    $stack = array();
+    if($kick){
+      foreach($vote_list as $list) $stack[$list['uname']][] = $list['target_uname'];
     }
-    $this->vote = $vote_data;
+    else{
+      foreach($vote_list as $list){
+	$uname = $list['uname'];
+	unset($list['uname']);
+	$stack[$uname] = $list;
+      }
+    }
+    $this->vote = $stack;
 
     return count($this->vote);
   }

@@ -55,5 +55,6 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
   <li><a href="sub_role.php#strong_voice_group" target="body">大声系</a></li>
   <li><a href="sub_role.php#no_last_words_group" target="body">筆不精系</a></li>
   <li><a href="sub_role.php#mind_read_group" target="body">サトラレ系</a></li>
+  <li><a href="sub_role.php#lovers_group" target="body">恋人系</a></li>
 </ul>
 </body></html>

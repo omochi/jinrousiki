@@ -21,22 +21,11 @@ if($SERVER_CONF->back_page != ''){
       <li><a href="info/">その他の情報一覧</a></li>
       <li>★☆★☆★☆★</li>
       <li><a href="old_log.php">ログ閲覧</a></li>
-<!-- さとり鯖用
-      <li class="log">HTML化ログ</li>
-      <li>さとり鯖V3ログ</li>
-      <li><a href="log3/">1〜378村</a></li>
-      <li><a href="log3_2/">379村〜</a></li>
-      <li><a href="log2/">さとり鯖V2ログ</a></li>
-      <li><a href="log1/">さとり鯖V1ログ</a></li>
--->
       <li>★☆★☆★☆★</li>
       <li><a href="icon_view.php">アイコン一覧</a></li>
       <li><a href="icon_upload.php">アイコン登録</a></li>
       <li>★☆★☆★☆★</li>
       <li><a href="src/">ソースコードダウンロード</a></li>
-      <li><a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a></li>
-      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50">開発・バグ報告スレ</a></li>
-      <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50">新役職提案スレ</a></li>
     </ul>
     <?php $MENU_LINK->Output() ?>
   </td>

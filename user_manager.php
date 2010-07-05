@@ -198,7 +198,7 @@ IMAGE;
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'guard', 'common',
 		 'poison', 'pharmacist', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'mania');
     }
-    elseif($ROOM->IsOption('chaosfull') || $ROOM->IsOption('duel')){
+    elseif($ROOM->IsOption('chaosfull') || $ROOM->IsOption('duel') || $ROOM->IsOption('festival')){
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'priest', 'guard', 'common',
 		 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
 		 'doll', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz',

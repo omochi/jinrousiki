@@ -51,12 +51,15 @@ function GetTalkPassTime(&$left_time, $silence = false){
 function InsertMediumMessage(){
   global $ROOM, $USERS;
 
-  if(! $USERS->IsAppear('medium')) return false; //巫女の出現チェック
+  $flag = false; //巫女の出現判定
+  $stack = array();
   foreach($USERS->rows as $user){
-    if(! $user->suicide_flag) continue;
-    $sentence = $USERS->GetHandleName($user->uname, true). "\t" . $user->GetCamp();
-    $ROOM->SystemMessage($sentence , 'MEDIUM_RESULT');
+    $flag |= $user->IsRole('medium');
+    if($user->suicide_flag){
+      $stack[] = $USERS->GetHandleName($user->uname, true) . "\t" . $user->GetCamp();
+    }
   }
+  if($flag) foreach($stack as $str) $ROOM->SystemMessage($str, 'MEDIUM_RESULT');
 }
 
 //恋人の後追い死処理
@@ -157,10 +160,10 @@ function DeleteVote(){
     $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . $ROOM->GetVoteTimes();
   }
   elseif($ROOM->IsNight()){
-    $query .= " AND situation <> " . ($ROOM->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
+    $query .= ' AND situation <> ' . ($ROOM->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
   }
   SendQuery($query);
-  SendQuery("OPTIMIZE TABLE vote", true);
+  SendQuery('OPTIMIZE TABLE vote', true);
 }
 
 //夜の自分の投票済みチェック
@@ -172,7 +175,8 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
     $query .= "situation = '{$situation}'";
   }
   elseif($not_situation != ''){
-    $query .= "uname = '{$SELF->uname}' AND(situation = '{$situation}' OR situation = '{$not_situation}')";
+    $query .= "uname = '{$SELF->uname}' " .
+      "AND(situation = '{$situation}' OR situation = '{$not_situation}')";
   }
   else{
     $query .= "uname = '{$SELF->uname}' AND situation = '{$situation}'";
@@ -192,8 +196,13 @@ function OutputGamePageHeader(){
 
   $title = $SERVER_CONF->title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
-  if(false && preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){ //MAC かどうか判別
-    $sentence = '';  //MAC は JavaScript でエラー？
+  /*
+    Mac で JavaScript でエラーを吐くブラウザがあった当時のコード
+    現在の Safari、Firefox では不要なので false でスキップしておく
+    //if(preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){
+  */
+  if(false){
+    $sentence = '';
     $anchor_header .= '<a href="';
     $anchor_footer = '" target="_top">ここをクリックしてください</a>';
   }
@@ -379,7 +388,7 @@ function OutputPlayerList(){
       $str .= ')<br>';
 
       //メイン役職を追加
-      if($user->IsRole('human', 'elder', 'saint', 'executor', 'suspect', 'unconscious'))
+      if($user->IsRole('human', 'elder', 'saint', 'executor', 'escaper', 'suspect', 'unconscious'))
 	$str .= GenerateRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
 	$str .= GenerateRoleName($user->main_role, 'mage');
@@ -528,7 +537,12 @@ EOF;
       break;
 
     case 'human':
-      if($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
+      if($SELF->IsRole('escaper') && $SELF->IsDead()){ //逃亡者は死亡していたら敗北
+	$class  = 'none';
+	$result = 'lose';
+	break;
+      }
+      elseif($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
 	foreach($USERS->rows as $user){
 	  if($user->IsRole('doll_master') && $user->IsLive()){
 	    $class  = 'none';
@@ -683,7 +697,7 @@ function OutputTalk($talk, &$builder){
   $virtual_self = $builder->actor;
   if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
     $real_user = $talk->scene == 'heaven' ? $said_user : $USERS->ByReal($said_user->user_no);
-    $handle_name .= $real_user->GenerateShortRoleName();
+    $handle_name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
   }
   else{
     $real_user = $USERS->ByRealUname($talk->uname);
@@ -696,7 +710,11 @@ function OutputTalk($talk, &$builder){
      $virtual_self->IsPartner('mind_receiver', $said_user->user_no) ||
      $said_user->IsPartner('mind_friend', $virtual_self->partner_list));
 
-  $flag_mind_read = $is_mind_read || ($said_user->IsRole('mind_open') && $ROOM->date > 1) ||
+  $flag_mind_read = $is_mind_read ||
+    ($ROOM->date > 1 && ($said_user->IsRole('mind_open') ||
+			 ($builder->flag->common && $said_user->IsRole('whisper_scanner')) ||
+			 ($builder->flag->wolf   && $said_user->IsRole('howl_scanner')) ||
+			 ($builder->flag->fox    && $said_user->IsRole('telepath_scanner')))) ||
     ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf) ||
     ($real_user->IsRole('possessed_mad') && $said_user->IsSame($virtual_self->uname)) ||
     ($real_user->IsRole('possessed_fox') && $builder->flag->fox);
@@ -875,8 +893,8 @@ function OutputAbilityAction(){
     array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
   }
   else{
-    array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'DREAM_EAT',
-	       'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
+    array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
+	       'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
 	       'POSSESSED_DO', 'POSSESSED_NOT_DO');
   }
 
@@ -899,6 +917,10 @@ function OutputAbilityAction(){
     case 'POSSESSED_DO':
     case 'ASSASSIN_DO':
       echo 'は '.$target.' を狙いました';
+      break;
+
+    case 'ESCAPE_DO':
+      echo 'は '.$target.' '.$MESSAGE->escape_do;
       break;
 
     case 'MAGE_DO':
@@ -1120,6 +1142,7 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_AGITATED':
   case 'SUDDEN_DEATH_FEBRIS':
   case 'SUDDEN_DEATH_WARRANT':
+  case 'SUDDEN_DEATH_CHALLENGE':
     echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){
       $action = strtolower(array_pop(explode('_', $type)));

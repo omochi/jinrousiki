@@ -29,6 +29,7 @@ class Message{
   var $kick_do          = 'に KICK 投票しました'; //KICK 投票
   var $vote_do          = 'に処刑投票しました'; //処刑投票
   var $wolf_eat         = 'に狙いをつけました'; //人狼の投票
+  var $escape_do        = 'の周辺に逃亡しました'; //逃亡者の投票
   var $mage_do          = 'を占います'; //占い師の投票
   var $voodoo_killer_do = 'の呪いを祓います'; //陰陽師の投票
   var $jammer_do        = 'の占いを妨害します'; //月兎の投票
@@ -98,6 +99,7 @@ class Message{
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   var $febris             = 'は熱病にかかったようです'; //熱病
   var $warrant            = 'は死の宣告を受けたようです'; //死の宣告
+  var $challenge          = 'は難題を解けなかったようです'; //難題
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合
@@ -105,6 +107,7 @@ class Message{
   //CheckNightVote() : 夜の投票
   var $ability_vote             = '処刑する人を選択してください'; //昼の処刑投票
   var $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
+  var $ability_escape_do        = '逃亡する先を選択してください'; //逃亡者
   var $ability_mage_do          = '占う人を選択してください'; //占い師系
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
   var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
@@ -298,6 +301,7 @@ class VoteMessage{
   //OutputVoteNight()
   //投票ボタン
   var $wolf_eat         = '対象を喰い殺す (先着)'; //人狼
+  var $escape_do        = '対象の周辺に逃亡する'; //逃亡者
   var $mage_do          = '対象を占う'; //占い師
   var $voodoo_killer_do = '対象の呪いを祓う'; //陰陽師
   var $guard_do         = '対象を護衛する'; //狩人

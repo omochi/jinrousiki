@@ -18,6 +18,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <h2><a name="cupid_group">キューピッド系</a></h2>
 <p>
 <a href="#self_cupid">求愛者</a>
+<a href="#moon_cupid">かぐや姫</a>
 <a href="#mind_cupid">女神</a>
 <a href="#triangle_cupid">小悪魔</a>
 </p>
@@ -36,6 +37,19 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 他の国に実在する役職です。
 対象が制限される代わりに、相手にメッセージを (一方的に) 送ることができます。
 思う存分自分の想いを語ってください。
+</pre>
+
+<h3><a name="moon_cupid">かぐや姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+自分撃ち固定のキューピッド。
+自分に矢を撃った相手を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が、
+自分と矢を撃った相手に<a href="sub_role.php#challenge_lovers">難題</a>が追加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+バーボンハウス鯖＠東方陰陽鉄の管理人さんへの誕生日プレゼントです。
+かぐや姫の不老不死の秘薬の伝説を元に、序盤は無敵だけど後半は月に帰る
+(死亡する) 可能性が高くなるカップルを再現してみました。
 </pre>
 
 <h3><a name="mind_cupid">女神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
