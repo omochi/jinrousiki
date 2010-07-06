@@ -390,8 +390,7 @@ function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
     $COOKIE, $SOUND, $objection_list, $objection_left_count;
 
-  $room_message = '<td class="room"><span>' . $ROOM->name . '¬º</span>°°°¡' . $ROOM->comment .
-    '°¡[' . $ROOM->id . '»÷√œ]</td>'."\n";
+  $room_message = $ROOM->GenerateTitleTag();
   $url_room   = '?room_no=' . $ROOM->id;
   $url_reload = $RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '';
   $url_sound  = $RQ_ARGS->play_sound ? '&play_sound=on'  : '';

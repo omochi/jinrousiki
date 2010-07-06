@@ -142,8 +142,7 @@ function OutputOldLog(){
 </head>
 <body>
 <a href="{$referer}">←戻る</a><br>
-<div class="room"><span>{$ROOM->name}村</span> 〜{$ROOM->comment}〜 [{$ROOM->id}番地]</td></div>
-
+{$ROOM->GenerateTitleTag()}
 EOF;
   OutputPlayerList(); //プレイヤーリストを出力
   $RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog();
@@ -155,18 +154,14 @@ function LayoutTalkLog(){
 
   if($RQ_ARGS->reverse_log){
     OutputDateTalkLog(0, 'beforegame');
-    for($i = 1; $i <= $ROOM->last_date; $i++){
-      OutputDateTalkLog($i, '');
-    }
+    for($i = 1; $i <= $ROOM->last_date; $i++) OutputDateTalkLog($i, '');
     OutputVictory();
     OutputDateTalkLog($ROOM->last_date, 'aftergame');
   }
   else{
     OutputDateTalkLog($ROOM->last_date, 'aftergame');
     OutputVictory();
-    for($i = $ROOM->last_date; $i > 0; $i--){
-      OutputDateTalkLog($i, '');
-    }
+    for($i = $ROOM->last_date; $i > 0; $i--) OutputDateTalkLog($i, '');
     OutputDateTalkLog(0, 'beforegame');
   }
 }
@@ -176,14 +171,10 @@ function LayoutHeaven(){
   global $RQ_ARGS, $ROOM;
 
   if($RQ_ARGS->reverse_log){
-    for($i = 1; $i <= $ROOM->last_date; $i++){
-      OutputDateTalkLog($i, 'heaven_only');
-    }
+    for($i = 1; $i <= $ROOM->last_date; $i++) OutputDateTalkLog($i, 'heaven_only');
   }
   else{
-    for($i = $ROOM->last_date; $i > 0; $i--){
-      OutputDateTalkLog($i, 'heaven_only');
-    }
+    for($i = $ROOM->last_date; $i > 0; $i--) OutputDateTalkLog($i, 'heaven_only');
   }
 }
 
@@ -191,10 +182,8 @@ function LayoutHeaven(){
 function OutputDateTalkLog($set_date, $set_location){
   global $RQ_ARGS, $ROLES, $ROOM;
 
-  if($RQ_ARGS->reverse_log) //逆順、初日から最終日まで
-    $select_order = 'ORDER BY talk_id';
-  else //最終日から初日まで
-    $select_order = 'ORDER BY talk_id DESC';
+  //ログの表示順
+  $select_order = $RQ_ARGS->reverse_log ? 'ORDER BY talk_id' : 'ORDER BY talk_id DESC';
 
   switch($set_location){
   case 'beforegame':
@@ -239,7 +228,7 @@ function OutputDateTalkLog($set_date, $set_location){
   //$ROOM->status = 'playing';
   //$ROOM->option_list[] = 'not_open_cast';
 
-  if($flag_border_game && ! $RQ_ARGS->reverse_log && $set_date != $ROOM->last_date){
+  if($flag_border_game && ! $RQ_ARGS->reverse_log){
     $ROOM->date = $set_date + 1;
     $ROOM->day_night = 'day';
     OutputLastWords(); //遺言を出力
@@ -278,9 +267,9 @@ function OutputDateTalkLog($set_date, $set_location){
   $builder->EndTalk();
 
   if($flag_border_game && $RQ_ARGS->reverse_log){
-    if($set_date == $ROOM->last_date && $ROOM->IsDay()){
-      OutputVoteList(); //突然死で勝敗が決定したケース
-    }
+    //突然死で勝敗が決定したケース
+    if($set_date == $ROOM->last_date && $ROOM->IsDay()) OutputVoteList();
+
     $ROOM->date = $set_date + 1;
     $ROOM->day_night = 'day';
     OutputDeadMan();   //死亡者を出力

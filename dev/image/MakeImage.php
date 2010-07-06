@@ -1250,8 +1250,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-#$image = MakeImage($gen, $list->trap_mad);
-$image = MakeImage($gen, $list->unknown_mania);
+$image = MakeImage($gen, $list->telepath_scanner);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

@@ -187,7 +187,8 @@ class User{
   }
 
   //¸ÉÎ©·ÏÌò¿¦È½Äê
-  function IsLonely(){
+  function IsLonely($role = NULL){
+    $is_role = is_null($role) ? true : $this->IsRole($role);
     return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 

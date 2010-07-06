@@ -101,8 +101,10 @@ class RoomConfig{
 
   var $chaos = true; //闇鍋モード
   var $chaosfull = true; //真・闇鍋モード
+  var $chaos_hyper = true; //超・闇鍋モード
 
-  //闇鍋モードのデフォルト [NULL:通常人狼 / 'chaos':通常闇鍋 / 'chaosfull':真・闇鍋]
+  //闇鍋モードのデフォルト
+  //[NULL:通常人狼 / 'chaos':通常闇鍋 / 'chaosfull':真・闇鍋 / 'chaos_hyper':超・闇鍋]
   var $default_chaos = NULL; //通常人狼
 
   var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)

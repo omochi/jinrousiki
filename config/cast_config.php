@@ -74,15 +74,40 @@ class CastConfig extends CastConfigBase{
 
   //身代わり君がならない役職グループのリスト
   var $disable_dummy_boy_role_list = array('wolf', 'fox', 'poison', 'doll_master',
-					   'boss_chiroptera', 'scanner', 'eclipse_assassin');
+					   'boss_chiroptera');
 
   //-- 真・闇鍋の配役設定 --//
-  //固定配役
-  var $chaos_fix_role_list = array('mage' => 1, 'phantom_wolf' => 1, 'eclipse_assassin' => 1,
-				   'phantom_fox' => 1, 'telepath_scanner' => 1,
-				   'sex_mage' => 1, 'howl_scanner' => 1, 'moon_cupid' => 1);
+  //固定配役 (普通闇鍋)
+  var $chaos_fix_role_list = array('mage' => 1, 'wolf' => 1);
+
+  //固定配役 (真・闇鍋)
+  var $chaosfull_fix_role_list = array('mage' => 1, 'wolf' => 1);
+
+  //固定配役 (超・闇鍋)
+  var $chaos_hyper_fix_role_list = array('mage' => 1, 'wolf' => 1);
+
   //人狼の最低出現枠 (役職名 => 出現比)
+  //普通闇鍋
   var $chaos_wolf_list = array(
+    'wolf'           => 60,
+    'boss_wolf'      =>  5,
+    'poison_wolf'    => 10,
+    'tongue_wolf'    =>  5,
+    'silver_wolf'    => 20);
+
+  //真・闇鍋
+  var $chaosfull_wolf_list = array(
+    'wolf'           => 74,
+    'boss_wolf'      =>  2,
+    'cursed_wolf'    =>  1,
+    'poison_wolf'    =>  4,
+    'resist_wolf'    =>  4,
+    'tongue_wolf'    =>  3,
+    'cute_wolf'      => 10,
+    'silver_wolf'    =>  2);
+
+  //超・闇鍋
+  var $chaos_hyper_wolf_list = array(
     'wolf'           => 56,
     'boss_wolf'      =>  3,
     'gold_wolf'      =>  2,
@@ -103,7 +128,24 @@ class CastConfig extends CastConfigBase{
     'silver_wolf'    =>  2);
 
   //妖狐の最低出現枠 (役職名 => 出現比)
+  //普通闇鍋
   var $chaos_fox_list = array(
+    'fox'           => 90,
+    'child_fox'     => 10);
+
+  //真・闇鍋
+  var $chaosfull_fox_list = array(
+    'fox'           => 80,
+    'white_fox'     =>  3,
+    'poison_fox'    =>  3,
+    'voodoo_fox'    =>  2,
+    'cursed_fox'    =>  1,
+    'cute_fox'      =>  5,
+    'silver_fox'    =>  1,
+    'child_fox'     =>  5);
+
+  //超・闇鍋
+  var $chaos_hyper_fox_list = array(
     'fox'           => 61,
     'white_fox'     =>  2,
     'black_fox'     =>  3,
@@ -124,7 +166,108 @@ class CastConfig extends CastConfigBase{
     'sex_fox'       =>  2);
 
   //ランダム配役テーブル (役職名 => 出現比)
+  //普通闇鍋
   var $chaos_random_role_list = array(
+    'human'              => 88,
+    'escaper'            => 30,
+    'mage'               => 50,
+    'soul_mage'          =>  5,
+    'psycho_mage'        => 10,
+    'necromancer'        => 60,
+    'medium'             => 30,
+    'guard'              => 70,
+    'poison_guard'       =>  5,
+    'reporter'           => 15,
+    'common'             => 75,
+    'poison'             => 40,
+    'incubate_poison'    => 10,
+    'pharmacist'         => 20,
+    'assassin'           => 20,
+    'doll'               => 20,
+    'doll_master'        => 10,
+    'wolf'               => 80,
+    'boss_wolf'          => 10,
+    'poison_wolf'        => 40,
+    'tongue_wolf'        => 20,
+    'silver_wolf'        => 30,
+    'mad'                => 60,
+    'fanatic_mad'        => 20,
+    'whisper_mad'        => 10,
+    'fox'                => 50,
+    'child_fox'          => 20,
+    'cupid'              => 30,
+    'self_cupid'         => 10,
+    'quiz'               =>  2,
+    'chiroptera'         => 50,
+    'mania'              => 10);
+
+  //真・闇鍋
+  var $chaosfull_random_role_list = array(
+    'human'              =>  3,
+    'suspect'            => 15,
+    'unconscious'        => 20,
+    'mage'               => 20,
+    'soul_mage'          =>  5,
+    'psycho_mage'        => 10,
+    'sex_mage'           => 15,
+    'voodoo_killer'      => 10,
+    'dummy_mage'         => 15,
+    'necromancer'        => 40,
+    'soul_necromancer'   =>  5,
+    'yama_necromancer'   => 10,
+    'dummy_necromancer'  => 25,
+    'medium'             => 30,
+    'guard'              => 40,
+    'poison_guard'       =>  5,
+    'reporter'           => 10,
+    'anti_voodoo'        => 15,
+    'dummy_guard'        => 20,
+    'common'             => 80,
+    'dummy_common'       => 10,
+    'poison'             => 20,
+    'strong_poison'      =>  5,
+    'incubate_poison'    => 10,
+    'dummy_poison'       => 15,
+    'poison_cat'         => 10,
+    'pharmacist'         => 30,
+    'assassin'           => 20,
+    'mind_scanner'       => 20,
+    'jealousy'           => 15,
+    'wolf'               => 70,
+    'boss_wolf'          => 10,
+    'cursed_wolf'        =>  5,
+    'poison_wolf'        => 15,
+    'resist_wolf'        => 15,
+    'tongue_wolf'        => 30,
+    'cute_wolf'          => 30,
+    'silver_wolf'        => 15,
+    'mad'                => 20,
+    'fanatic_mad'        => 10,
+    'whisper_mad'        =>  5,
+    'jammer_mad'         => 10,
+    'voodoo_mad'         => 10,
+    'corpse_courier_mad' => 15,
+    'dream_eater_mad'    => 10,
+    'trap_mad'           => 10,
+    'fox'                => 30,
+    'white_fox'          => 10,
+    'poison_fox'         =>  7,
+    'voodoo_fox'         =>  5,
+    'cursed_fox'         =>  3,
+    'silver_fox'         =>  5,
+    'child_fox'          => 10,
+    'cupid'              => 25,
+    'self_cupid'         => 10,
+    'mind_cupid'         =>  5,
+    'quiz'               =>  2,
+    'chiroptera'         => 20,
+    'poison_chiroptera'  =>  5,
+    'cursed_chiroptera'  =>  5,
+    'mania'              => 20,
+    'unknown_mania'      => 10);
+
+  //超・闇鍋
+  var $chaos_hyper_random_role_list = array(
     'human'              =>  1,
     'elder'              =>  5,
     'saint'              =>  5,
@@ -261,6 +404,7 @@ class CastConfig extends CastConfigBase{
     'soul_mania'         =>  2,
     'unknown_mania'      =>  5,
     'dummy_mania'        =>  2);
+
   var $chaos_min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
   var $chaos_min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)
 
@@ -274,9 +418,16 @@ class CastConfig extends CastConfigBase{
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
   //村人から振り返る役職 => 出現比
-  var $chaos_replace_human_role_list = array(
+  //普通闇鍋
+  var $chaos_replace_human_role_list = array('mania' => 1);
+
+  //真・闇鍋
+  var $chaosfull_replace_human_role_list = array('mania' => 7, 'unknown_mania' => 3);
+
+  //超・闇鍋
+  var $chaos_hyper_replace_human_role_list = array(
     'mania' => 4, 'trick_mania' => 2, 'soul_mania' => 1,
-    'unknown_mania' => 2, 'dummy_mania' => 1,);
+    'unknown_mania' => 2, 'dummy_mania' => 1);
 
   //お祭り村専用配役テーブル
   var $festival_role_list = array(

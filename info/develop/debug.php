@@ -9,7 +9,24 @@ Ver. 1.4.0
 <a href="#140beta2">¦Â2</a>
 <a href="#140beta3">¦Â3</a>
 <a href="#140beta4">¦Â4</a>
+<a href="#140beta11">¦Â11</a>
 </p>
+
+<h2><a name="140beta11">Ver. 1.4.0 ¦Â11</a></h2>
+<h3>include/user_class.php % 190¹ÔÌÜÉÕ¶á</h3>
+<h4>[before]</h4>
+<pre>
+  function IsLonely(){
+    return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
+  }
+</pre>
+<h4>[after]</h4>
+<pre>
+  function IsLonely($role = NULL){
+    $is_role = is_null($role) ? true : $this->IsRole($role);
+    return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
+  }
+</pre>
 
 <h2><a name="140beta4">Ver. 1.4.0 ¦Â4</a></h2>
 <h3>user_manager.php % 35¹ÔÌÜÉÕ¶á</h3>

@@ -56,51 +56,68 @@ function GetRoleList($user_count, $option_role){
   elseif(strpos($option_role, 'duel') !== false){ //決闘村
     $role_list = $CAST_CONF->SetDuel($user_count);
   }
-  elseif($ROOM->IsOption('chaosfull')){ //真・闇鍋
+  elseif($ROOM->IsOptionGroup('chaos')){ //闇鍋系
     $random_role_list = array();
+
+    if($ROOM->IsOption('chaos')){
+      $base_name = 'chaos';
+    }
+    elseif($ROOM->IsOption('chaosfull')){
+      $base_name = 'chaosfull';
+    }
+    elseif($ROOM->IsOption('chaos_hyper')){
+      $base_name = 'chaos_hyper';
+    }
+    $fix_role_name = $base_name . '_fix_role_list';
+    $wolf_name     = $base_name . '_wolf_list';
+    $fox_name      = $base_name . '_fox_list';
+    $random_name   = $base_name . '_random_role_list';
+    $human_name    = $base_name . '_replace_human_role_list';
+
+    $chaos_fix_role_list = $CAST_CONF->$fix_role_name;
+    $random_wolf_list    = $CAST_CONF->GenerateRandomList($CAST_CONF->$wolf_name);
+    $random_fox_list     = $CAST_CONF->GenerateRandomList($CAST_CONF->$fox_name);
+    $random_full_list    = $CAST_CONF->GenerateRandomList($CAST_CONF->$random_name);
+    $replace_human_list  = $CAST_CONF->GenerateRandomList($CAST_CONF->$human_name);
+    //PrintData(array_sum($CAST_CONF->$random_name));
 
     //-- 最小補正 --//
     //探偵村なら固定枠に追加する
     if(strpos($option_role, 'detective') !== false &&
-       is_null($CAST_CONF->chaos_fix_role_list['detective_common'])){
-       $CAST_CONF->chaos_fix_role_list['detective_common'] = 1;
+       is_null($chaos_fix_role_list['detective_common'])){
+      $chaos_fix_role_list['detective_common'] = 1;
     }
 
-    foreach($CAST_CONF->chaos_fix_role_list as $key => $value){ //最小補正用リスト
+    foreach($chaos_fix_role_list as $key => $value){ //最小補正用リスト
       $fix_role_group_list[DistinguishRoleGroup($key)] = $value;
     }
 
     //人狼
-    $random_wolf_list = $CAST_CONF->GenerateRandomList($CAST_CONF->chaos_wolf_list);
     //PrintData($random_wolf_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->chaos_wolf_list); //テスト用
+    //$CAST_CONF->RateToProbability($CAST_CONF->$wolf_name); //テスト用
 
     $add_count = round($user_count / $CAST_CONF->chaos_min_wolf_rate) - $fix_role_group_list['wolf'];
     $CAST_CONF->AddRandom($random_role_list, $random_wolf_list, $add_count);
     //PrintData($random_role_list);
 
     //妖狐
-    $random_fox_list = $CAST_CONF->GenerateRandomList($CAST_CONF->chaos_fox_list);
     //PrintData($random_fox_list);
-    //$CAST_CONF->RateToProbability($chaos_fox_list); //テスト用
+    //$CAST_CONF->RateToProbability($CAST_CONF->$fox_name); //テスト用
 
     $add_count = floor($user_count / $CAST_CONF->chaos_min_fox_rate) - $fix_role_group_list['fox'];
     $CAST_CONF->AddRandom($random_role_list, $random_fox_list, $add_count);
     //PrintData($random_role_list);
 
     //-- ランダム配役 --//
-    $random_full_list = $CAST_CONF->GenerateRandomList($CAST_CONF->chaos_random_role_list);
     //PrintData($random_full_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->chaos_random_role_list); //テスト用
-
-    $add_count = $user_count - (array_sum($random_role_list) +
-				array_sum($CAST_CONF->chaos_fix_role_list));
+    //$CAST_CONF->RateToProbability($CAST_CONF->$random_name); //テスト用
+    $add_count = $user_count - (array_sum($random_role_list) + array_sum($chaos_fix_role_list));
     $CAST_CONF->AddRandom($random_role_list, $random_full_list, $add_count);
     //PrintData($random_role_list);
 
     //ランダムと固定を合計
     $role_list = $random_role_list;
-    foreach($CAST_CONF->chaos_fix_role_list as $key => $value){
+    foreach($chaos_fix_role_list as $key => $value){
       $role_list[$key] += (int)$value;
     }
     //PrintData($role_list, '1st_list');
@@ -147,15 +164,14 @@ function GetRoleList($user_count, $option_role){
     if(strpos($option_role, 'full_mania') === false){
       $over_count = $role_list['human'] - round($user_count * $CAST_CONF->chaos_max_human_rate);
       if($over_count > 0){
-	$stack = $CAST_CONF->chaos_replace_human_role_list;
-	$random_replace_list = $CAST_CONF->GenerateRandomList($stack);
+	$random_replace_list = $CAST_CONF->GenerateRandomList($replace_human_list);
 	$CAST_CONF->AddRandom($role_list, $random_replace_list, $over_count);
 	$role_list['human'] -= $over_count;
 	//PrintData($role_list, '3rd_list');
       }
     }
   }
-  elseif($ROOM->IsOption('chaos')){ //闇鍋
+  elseif($ROOM->IsOption('chaos')){ //闇鍋 //β12からは不使用
     //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
     $role_list = array(); //配列をリセット
 
@@ -809,7 +825,7 @@ function AggregateVoteGameStart($force_start = false){
 
   //フラグセット
   $gerd      = $ROOM->IsOption('gerd');
-  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
+  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull, chaos_hyper も含む
   $quiz      = $ROOM->IsQuiz();
   $detective = $ROOM->IsOption('detective');
   //エラーメッセージ
@@ -1323,7 +1339,7 @@ function AggregateVoteDay(){
 
       $target = $USERS->ByUname($vote_target_list[$user->uname]); //投票先の情報を取得
       $pharmacist_target_list[$user->uname] = $target->uname;
-      if($user->IsRole('cure_pharmacist')){ //河童には種類は不明
+      if($user->IsRole('cure_pharmacist')){ //河童には毒の種類は不明
 	$cure_pharmacist_target_list[$user->uname] = $target->uname;
 	continue;
       }
@@ -1338,7 +1354,7 @@ function AggregateVoteDay(){
 	$pharmacist_result_list[$user->uname] = $ROOM->date >= 5 ? 'strong' : 'nothing';
       }
       elseif($target->IsRole('poison_guard', 'guide_poison', 'chain_poison', 'poison_jealousy')){
-	$pharmacist_result_list[$user->uname] = 'limited'; //騎士・連毒者・毒橋姫
+	$pharmacist_result_list[$user->uname] = 'limited'; //騎士・誘毒者・連毒者・毒橋姫
       }
       else{
 	$pharmacist_result_list[$user->uname] = 'poison';
@@ -1370,6 +1386,7 @@ function AggregateVoteDay(){
 	$last_wolf_flag = $last_wolf->IsRole('sirius_wolf');
       }
       else{
+	$last_wolf = new User();
 	$last_wolf_flag = false;
       }
 
@@ -1519,17 +1536,27 @@ function AggregateVoteDay(){
       $flag_stolen |= $USERS->ByRealUname($this_uname)->IsRole('corpse_courier_mad');
     }
 
-    if($USERS->IsAppear('necromancer')){ //霊能者の処理
+    //霊能者系の出現判定
+    $necromacer_flag       = false;
+    $soul_necromacer_flag  = false;
+    $dummy_necromacer_flag = false;
+    foreach($USERS->rows as $user){
+      $necromacer_flag       |= $user->IsRole('necromancer');
+      $soul_necromacer_flag  |= $user->IsRole('soul_necromancer');
+      $dummy_necromacer_flag |= $user->IsRole('dummy_necromancer');
+    }
+
+    if($necromacer_flag){ //霊能者の処理
       $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $necromancer_result);
       $ROOM->SystemMessage($sentence, $action);
     }
 
-    if($USERS->IsAppear('soul_necromancer')){ //雲外鏡の処理
+    if($soul_necromacer_flag){ //雲外鏡の処理
       $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
       $ROOM->SystemMessage($sentence, 'SOUL_' . $action);
     }
 
-    if($USERS->IsAppear('dummy_necromancer')){ //夢枕人は「村人」⇔「人狼」反転
+    if($dummy_necromacer_flag){ //夢枕人は「村人」⇔「人狼」反転
       if($necromancer_result == 'human')    $necromancer_result = 'wolf';
       elseif($necromancer_result == 'wolf') $necromancer_result = 'human';
       $ROOM->SystemMessage($sentence_header . $necromancer_result, 'DUMMY_' . $action);

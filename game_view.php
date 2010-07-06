@@ -61,7 +61,7 @@ echo <<<EOF
 <body{$on_load}>
 <a name="#game_top"></a>
 <table class="login"><tr>
-<td class="room"><span>{$ROOM->name}Â¼</span>¡¡¡Á{$ROOM->comment}¡Á[{$ROOM->id}ÈÖÃÏ]</td>
+{$ROOM->GenerateTitleTag()}
 <td class="login-link">
 
 EOF;

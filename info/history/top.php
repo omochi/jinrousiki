@@ -4,6 +4,12 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
 
+<h2>Ver. 1.4.0 β10 アップロード (2010/06/12 (Sat) 19:36:45)</h2>
+<ul>
+  <li>探偵村実装</li>
+  <li>「人形遣い」「上海人形」「鈴蘭人形」「仏蘭西人形」「探偵」「死神」「司教」実装</li>
+</ul>
+
 <h2>Ver. 1.4.0 β9 アップロード (2010/05/29 (Sat) 05:29:15)</h2>
 <ul>
   <li>Twitter 投稿機能の実装</li>

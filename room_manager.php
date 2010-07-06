@@ -96,6 +96,7 @@ function CreateRoom(){
   //ゲームオプションをセット
   $chaos        = ($ROOM_CONF->chaos        && $_POST['chaos'] == 'chaos');
   $chaosfull    = ($ROOM_CONF->chaosfull    && $_POST['chaos'] == 'chaosfull');
+  $chaos_hyper  = ($ROOM_CONF->chaos_hyper  && $_POST['chaos'] == 'chaos_hyper');
   $perverseness = ($ROOM_CONF->perverseness && $_POST['perverseness']  == 'on');
   $full_mania   = ($ROOM_CONF->full_mania   && $_POST['full_mania']  == 'on');
   $quiz         = ($ROOM_CONF->quiz         && $_POST['quiz']  == 'on');
@@ -137,8 +138,8 @@ function CreateRoom(){
       $dummy_boy_password    = $gm_password;
     }
 
-    if($chaos || $chaosfull){
-      $game_option_list[] = $chaos ? 'chaos' : 'chaosfull';
+    if($chaos || $chaosfull || $chaos_hyper){
+      $game_option_list[] = $chaos ? 'chaos' : ($chaosfull ? 'chaosfull' : 'chaos_hyper');
       $check_game_option_list[] = 'secret_sub_role';
       array_push($check_option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp',
 		 'chaos_open_cast_role');
@@ -649,6 +650,12 @@ function OutputRoomOptionChaos(){
       break;
     }
 
+  case 'chaos_hyper':
+    if($ROOM_CONF->chaos_hyper){
+      $checked_chaos_hyper = ' checked';
+      break;
+    }
+
   default:
     $checked_normal = ' checked';
     break;
@@ -670,12 +677,19 @@ EOF;
   if($ROOM_CONF->chaosfull){
     echo <<<EOF
 <input type="radio" name="chaos" value="chaosfull"{$checked_chaosfull}>
-{$GAME_OPT_CAPT->chaosfull}
-</td>
+{$GAME_OPT_CAPT->chaosfull}<br>
 
 EOF;
   }
-  echo '</tr>'."\n";
+
+  if($ROOM_CONF->chaos_hyper){
+    echo <<<EOF
+<input type="radio" name="chaos" value="chaos_hyper"{$checked_chaos_hyper}>
+{$GAME_OPT_CAPT->chaos_hyper}
+
+EOF;
+  }
+  echo '</td></tr>'."\n";
 
   if($ROOM_CONF->chaos_open_cast){
     switch($ROOM_CONF->default_chaos_open_cast){

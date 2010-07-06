@@ -196,6 +196,7 @@ class GameOptionMessage{
   var $festival             = 'お祭り村';
   var $chaos                = '闇鍋モード';
   var $chaosfull            = '真・闇鍋モード';
+  var $chaos_hyper          = '超・闇鍋モード';
   var $chaos_open_cast      = '配役を通知する';
   var $chaos_open_cast_camp = '陣営を通知する';
   var $chaos_open_cast_role = '役職を通知する';
@@ -237,8 +238,9 @@ class GameOptionCaptionMessage{
   var $detective            = '「探偵」が登場し、初日の夜に全員に公表されます';
   var $festival             = '管理人がカスタムする特殊設定です';
   var $no_chaos             = '通常人狼';
-  var $chaos                = '通常村＋α程度に配役がぶれる闇鍋モードです';
-  var $chaosfull            = '人狼1、占い師1以外の全ての役職がランダムとなる真・闇鍋モードです';
+  var $chaos                = '控えめな闇鍋モードです';
+  var $chaosfull            = 'そこそこ歯応えのある真・闇鍋モードです';
+  var $chaos_hyper          = '全く容赦のない超・闇鍋モードです';
   var $chaos_not_open_cast  = '通知無し';
   var $chaos_open_cast_camp = '陣営通知 (陣営毎の合計を通知)';
   var $chaos_open_cast_role = '役職通知 (役職の種類別に合計を通知)';

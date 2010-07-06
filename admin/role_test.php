@@ -14,8 +14,10 @@ echo <<<EOF
 <label>»î¹Ô²ó¿ô</label><input type="text" name="try_count" size="2" value="100">
 <input type="radio" name="game_option" value="chaos">
 °ÇÆé
-<input type="radio" name="game_option" value="chaosfull" checked>
+<input type="radio" name="game_option" value="chaosfull">
 ¿¿¡¦°ÇÆé
+<input type="radio" name="game_option" value="chaos_hyper" checked>
+Ä¶¡¦°ÇÆé
 <input type="radio" name="game_option" value="duel">
 ·èÆ®
 <input type="radio" name="game_option" value="duel auto_open_cast">

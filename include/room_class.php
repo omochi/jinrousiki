@@ -293,6 +293,12 @@ class Room{
     CheckVictory(); //勝敗のチェック
     SendCommit(); //一応コミット
   }
+
+  //村のタイトルタグを生成
+  function GenerateTitleTag(){
+    return '<td class="room"><span>' . $this->name . '村</span>　[' . $this->id .
+      '番地]<br>〜' . $this->comment . '〜</td>'."\n";
+  }
 }
 
 class RoomDataSet{
