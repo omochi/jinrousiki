@@ -103,7 +103,7 @@ function CreateRoom(){
   $duel         = ($ROOM_CONF->duel         && $_POST['duel']  == 'on');
   $game_option_list = array();
   $option_role_list = array();
-  $check_game_option_list = array('wish_role', 'open_vote', 'not_open_cast');
+  $check_game_option_list = array('wish_role', 'open_vote', 'open_day', 'not_open_cast');
   $check_option_role_list = array();
   if($quiz){
     $game_option_list[] = 'quiz';
@@ -124,6 +124,7 @@ function CreateRoom(){
       $game_option_list[]    = 'dummy_boy';
       $dummy_boy_handle_name = '身代わり君';
       $dummy_boy_password    = $SERVER_CONF->system_password;
+      $check_option_role_list[] = 'gerd';
     }
     elseif($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'gm_login'){
       //GM ログインパスワードをチェック
@@ -136,6 +137,7 @@ function CreateRoom(){
       array_push($game_option_list, 'dummy_boy', 'gm_login');
       $dummy_boy_handle_name = 'GM';
       $dummy_boy_password    = $gm_password;
+      $check_option_role_list[] = 'gerd';
     }
 
     if($chaos || $chaosfull || $chaos_hyper){
@@ -471,7 +473,7 @@ EOF;
 
 EOF;
 
-  OutputRoomOption(array('wish_role', 'real_time', 'open_vote'));
+  OutputRoomOption(array('wish_role', 'real_time', 'open_vote', 'open_day'));
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
 
@@ -557,17 +559,11 @@ function OutputRoomOptionDummyBoy(){
 
   if($ROOM_CONF->default_dummy_boy)
     $checked_dummy_boy = ' checked';
-  elseif($ROOM_CONF->default_gerd)
-    $checked_gerd = ' checked';
   elseif($ROOM_CONF->default_gm_login)
     $checked_gm = ' checked';
   else
     $checked_nothing = ' checked';
 
-  /*
-<input type="radio" name="dummy_boy" value="gerd"{$checked_gerd}>
-身代わり君はゲルト君(村人固定の身代わり君です)<br>
-  */
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
@@ -588,6 +584,19 @@ function OutputRoomOptionDummyBoy(){
 </tr>
 
 EOF;
+
+  if($ROOM_CONF->gerd){
+    $checked = $ROOM_CONF->default_gerd ? ' checked' : '';
+    echo <<<EOF
+<tr>
+<td><label for="gerd">{$GAME_OPT_MESS->gerd}：</label></td>
+<td class="explain">
+<input id="gerd" type="checkbox" name="gerd" value="on"{$checked}>
+{$GAME_OPT_CAPT->gerd}
+</td>
+</tr>
+EOF;
+  }
 }
 
 function OutputRoomOptionOpenCast(){

@@ -228,7 +228,7 @@ class User{
   //ÆñÂêÈ½Äê
   function IsChallengeLovers(){
     global $ROOM;
-    return $ROOM->date > 1 && $ROOM < 5 && $this->IsRole('challenge_lovers');
+    return $ROOM->date > 1 && $ROOM->date < 5 && $this->IsRole('challenge_lovers');
   }
 
   //³ÈÄ¥È½Äê

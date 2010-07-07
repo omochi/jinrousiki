@@ -173,7 +173,9 @@ class GameOptionMessage{
   var $real_time            = 'リアルタイム制';
   var $dummy_boy            = '初日の夜は身代わり君';
   var $gm_login             = '身代わり君は GM';
+  var $gerd                 = 'ゲルト君モード';
   var $open_vote            = '投票した票数を公表する';
+  var $open_day             = 'オープニングあり';
   var $not_open_cast        = '霊界で配役を公開しない';
   var $auto_open_cast       = '自動で霊界の配役を公開する';
   var $poison               = '埋毒者登場';
@@ -215,7 +217,9 @@ class GameOptionCaptionMessage{
   var $dummy_boy            = '身代わり君あり(初日の夜、身代わり君が狼に食べられます)';
   var $gm_login_header      = '仮想 GM が身代わり君としてログインします';
   var $gm_login_footer      = 'ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください';
+  var $gerd                 = '役職が村人固定になります (村人が出現している場合のみ有効)';
   var $open_vote            = '「権力者」などのサブ役職が分かりやすくなります';
+  var $open_day             = 'ゲームが1日目の「昼」からスタートします';
   var $no_close_cast        = '常時公開 (蘇生能力は無効です)';
   var $not_open_cast        = '常時非公開 (誰がどの役職なのかが公開されません。蘇生能力は有効です)';
   var $auto_open_cast       = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';

@@ -382,12 +382,12 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   //PrintData($stack); //テスト用
   $str = '';
   $display_order_list = array(
-    'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'open_vote', 'not_open_cast',
-    'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-    'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'liar', 'gentleman',
-    'sudden_death', 'perverseness', 'full_mania', 'detective', 'festival', 'quiz', 'duel',
-    'chaos', 'chaosfull', 'chaos_hyper', 'chaos_open_cast', 'chaos_open_cast_camp',
-    'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role');
+    'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'open_vote', 'open_day',
+    'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
+    'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority',
+    'liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania', 'detective',
+    'festival', 'quiz', 'duel', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_open_cast',
+    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option)) continue;

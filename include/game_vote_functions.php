@@ -34,6 +34,10 @@ function GetRoleList($user_count, $option_role){
     $sentence = $user_count . '人は設定されていません';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
+  $option_role_list = explode(' ', $option_role);
+  $gerd = in_array('gerd', $option_role_list);
+  //$gerd = true; //テスト用
+  //PrintData($option_role_list);
 
   if($ROOM->IsQuiz()){ //クイズ村
     $quiz_role_list = array();
@@ -53,7 +57,7 @@ function GetRoleList($user_count, $option_role){
     $quiz_role_list['quiz'] = 1;
     $role_list = $quiz_role_list;
   }
-  elseif(strpos($option_role, 'duel') !== false){ //決闘村
+  elseif(in_array('duel', $option_role_list)){ //決闘村
     $role_list = $CAST_CONF->SetDuel($user_count);
   }
   elseif($ROOM->IsOptionGroup('chaos')){ //闇鍋系
@@ -82,10 +86,15 @@ function GetRoleList($user_count, $option_role){
     //PrintData(array_sum($CAST_CONF->$random_name));
 
     //-- 最小補正 --//
-    //探偵村なら固定枠に追加する
-    if(strpos($option_role, 'detective') !== false &&
+    //探偵村なら固定枠に探偵を追加する
+    if(in_array('detective', $option_role_list) &&
        is_null($chaos_fix_role_list['detective_common'])){
       $chaos_fix_role_list['detective_common'] = 1;
+    }
+
+    //ゲルト君モードなら固定枠に村人を追加する
+    if($gerd && is_null($chaos_fix_role_list['human'])){
+      $chaos_fix_role_list['human'] = 1;
     }
 
     foreach($chaos_fix_role_list as $key => $value){ //最小補正用リスト
@@ -161,7 +170,7 @@ function GetRoleList($user_count, $option_role){
     //PrintData($role_list, '2nd_list');
 
     //神話マニア村以外なら一定数以上の村人を別の役職に振り返る
-    if(strpos($option_role, 'full_mania') === false){
+    if(! in_array('full_mania', $option_role_list)){
       $over_count = $role_list['human'] - round($user_count * $CAST_CONF->chaos_max_human_rate);
       if($over_count > 0){
 	$random_replace_list = $CAST_CONF->GenerateRandomList($replace_human_list);
@@ -578,27 +587,27 @@ function GetRoleList($user_count, $option_role){
   }
   else{ //通常村
     //埋毒者 (村人2 → 埋毒者1、人狼1)
-    if(strpos($option_role, 'poison') !== false && $user_count >= $CAST_CONF->poison){
+    if(in_array('poison', $option_role_list) && $user_count >= $CAST_CONF->poison){
       $role_list['human'] -= 2;
       $role_list['poison']++;
       $role_list['wolf']++;
     }
 
     //暗殺者 (村人2 → 暗殺者1、人狼1)
-    if(strpos($option_role, 'assassin') !== false && $user_count >= $CAST_CONF->assassin){
+    if(in_array('assassin', $option_role_list) && $user_count >= $CAST_CONF->assassin){
       $role_list['human'] -= 2;
       $role_list['assassin']++;
       $role_list['wolf']++;
     }
 
     //白狼 (人狼 → 白狼)
-    if(strpos($option_role, 'boss_wolf') !== false && $user_count >= $CAST_CONF->boss_wolf){
+    if(in_array('boss_wolf', $option_role_list) && $user_count >= $CAST_CONF->boss_wolf){
       $role_list['wolf']--;
       $role_list['boss_wolf']++;
     }
 
     //毒狼 (人狼 → 毒狼、村人 → 薬師)
-    if(strpos($option_role, 'poison_wolf') !== false && $user_count >= $CAST_CONF->poison_wolf){
+    if(in_array('poison_wolf', $option_role_list) && $user_count >= $CAST_CONF->poison_wolf){
       $role_list['wolf']--;
       $role_list['poison_wolf']++;
       $role_list['human']--;
@@ -606,40 +615,40 @@ function GetRoleList($user_count, $option_role){
     }
 
     //憑狼 (人狼 → 憑狼)
-    if(strpos($option_role, 'possessed_wolf') !== false && $user_count >= $CAST_CONF->possessed_wolf){
+    if(in_array('possessed_wolf', $option_role_list) && $user_count >= $CAST_CONF->possessed_wolf){
       $role_list['wolf']--;
       $role_list['possessed_wolf']++;
     }
 
     //天狼 (人狼 → 天狼)
-    if(strpos($option_role, 'sirius_wolf') !== false && $user_count >= $CAST_CONF->sirius_wolf){
+    if(in_array('sirius_wolf', $option_role_list) && $user_count >= $CAST_CONF->sirius_wolf){
       $role_list['wolf']--;
       $role_list['sirius_wolf']++;
     }
 
     //キューピッド (14人はハードコード / 村人 → キューピッド)
-    if(strpos($option_role, 'cupid') !== false &&
+    if(in_array('cupid', $option_role_list) &&
        ($user_count == 14 || $user_count >= $CAST_CONF->cupid)){
       $role_list['human']--;
       $role_list['cupid']++;
     }
 
     //巫女 (村人 → 巫女1、女神1)
-    if(strpos($option_role, 'medium') !== false && $user_count >= $CAST_CONF->medium){
+    if(in_array('medium', $option_role_list) && $user_count >= $CAST_CONF->medium){
       $role_list['human'] -= 2;
       $role_list['medium']++;
       $role_list['mind_cupid']++;
     }
 
     //神話マニア (村人 → 神話マニア)
-    if(strpos($option_role, 'mania') !== false && strpos($option_role, 'full_mania') === false &&
+    if(in_array('mania', $option_role_list) && ! in_array('full_mania', $option_role_list) &&
        $user_count >= $CAST_CONF->mania){
       $role_list['human']--;
       $role_list['mania']++;
     }
 
     //探偵 (共有 or 村人 → 探偵)
-    if(strpos($option_role, 'detective') !== false){
+    if(in_array('detective', $option_role_list)){
       if($role_list['common'] > 0){
 	$role_list['common']--;
 	$role_list['detective_common']++;
@@ -652,9 +661,11 @@ function GetRoleList($user_count, $option_role){
   }
 
   //神話マニア村
-  if(strpos($option_role, 'full_mania') !== false){
-    $role_list['mania'] += $role_list['human'];
-    $role_list['human'] = 0;
+  if(in_array('full_mania', $option_role_list)){
+    $add_count = $role_list['human'];
+    if($gerd && $add_count > 1) $add_count--;
+    $role_list['mania'] += $add_count;
+    $role_list['human'] -= $add_count;
   }
 
   //$is_single_role = true;
@@ -825,7 +836,7 @@ function AggregateVoteGameStart($force_start = false){
 
   //フラグセット
   $gerd      = $ROOM->IsOption('gerd');
-  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull, chaos_hyper も含む
+  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
   $quiz      = $ROOM->IsQuiz();
   $detective = $ROOM->IsOption('detective');
   //エラーメッセージ
@@ -834,9 +845,9 @@ function AggregateVoteGameStart($force_start = false){
   $reset_flag   = ! $ROOM->test_mode;
 
   if($ROOM->IsDummyBoy()){ //身代わり君の役職を決定
-    #$gerd = true; //デバッグ用
-    if($gerd || $quiz){ //身代わり君の役職固定オプションをチェック
-      if($gerd)     $fit_role = 'human'; //ゲルト君
+    #$gerd = true; //テスト用
+    if(($gerd && in_array('human', $role_list)) || $quiz){ //身代わり君の役職固定オプション判定
+      if($gerd) $fit_role = 'human'; //ゲルト君
       elseif($quiz) $fit_role = 'quiz';  //クイズ村
 
       if(($key = array_search($fit_role, $role_list)) !== false){
@@ -1100,7 +1111,7 @@ function AggregateVoteGameStart($force_start = false){
 
   //ゲーム開始
   $ROOM->date++;
-  $ROOM->day_night = 'night';
+  $ROOM->day_night = $ROOM->IsOption('open_day') ? 'day' : 'night';
   if(! $ROOM->test_mode){
     $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
       "status = 'playing', start_time = NOW() WHERE room_no = {$ROOM->id}";

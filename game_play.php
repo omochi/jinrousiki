@@ -69,7 +69,7 @@ OutputGameHeader(); //部屋のタイトルなど
 if(! $ROOM->heaven_mode){
   if(! $RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
   OutputAbility(); //自分の役割の説明
-  if($ROOM->IsDay() && $SELF->IsLive()) CheckSelfVoteDay(); //昼の投票済みチェック
+  if($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay(); //昼の投票済みチェック
   OutputRevoteList(); //再投票の時、メッセージを表示する
 }
 
@@ -315,6 +315,17 @@ function CheckSilence(){
     }
   }
   elseif($left_time == 0){ //制限時間を過ぎていたら警告を出す
+    //オープニングなら即座に夜に移行する
+    if($ROOM->IsOption('open_day') && $ROOM->IsDay() && $ROOM->date == 1){
+      $ROOM->day_night = 'night';
+      SendQuery("UPDATE room SET day_night = '{$ROOM->day_night}' WHERE room_no = {$ROOM->id}");
+      $ROOM->Talk('NIGHT'); //夜がきた通知
+      $ROOM->UpdateTime(); //最終書き込み時刻を更新
+      SendCommit(); //一応コミット
+      UnlockTable(); //テーブルロック解除
+      return;
+    }
+
     //突然死発動までの時間を取得
     $left_time_str = ConvertTime($TIME_CONF->sudden_death); //表示用に変換
     $sudden_death_announce = 'あと' . $left_time_str . 'で' . $MESSAGE->sudden_death_announce;
@@ -415,6 +426,7 @@ function OutputGameHeader(){
     $url_night  = '&day_night=night' . $url_footer;
 
     echo $url_header . '0&day_night=beforegame' . $url_footer . '0(開始前)</a>'."\n";
+    if($ROOM->IsOption('open_day')) echo $url_header . '1' . $url_day . '1(昼)</a>'."\n";
     echo $url_header . '1' . $url_night . '1(夜)</a>'."\n";
     for($i = 2; $i < $ROOM->date; $i++){
       echo $url_header . $i . $url_day   . $i . '(昼)</a>'."\n";

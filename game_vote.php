@@ -292,7 +292,7 @@ function VoteNight(){
     break;
 
   case 'MIND_SCANNER_DO':
-    if(! $SELF->IsRole('scanner', 'evoke_scanner')){
+    if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
       OutputVoteResult('夜：さとり・イタコ以外は投票できません');
     }
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
@@ -637,6 +637,7 @@ function OutputVoteDay(){
   global $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   CheckScene();  //投票する状況があっているかチェック
+  if($ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
   $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
 
   //投票済みチェック

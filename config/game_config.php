@@ -36,8 +36,14 @@ class RoomConfig{
   var $open_vote = true; //投票した票数を公表する
   var $default_open_vote = false;
 
+  var $open_day = true; //オープニングあり
+  var $default_open_day = false;
+
   var $dummy_boy = true; //初日の夜は身代わり君
   var $default_dummy_boy = true;
+
+  var $gerd = true; //ゲルト君モード
+  var $default_gerd = false;
 
   var $not_open_cast = true; //霊界で配役を公開しない
   var $auto_open_cast = true; //霊界で配役を自動で公開する

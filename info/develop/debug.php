@@ -27,6 +27,16 @@ Ver. 1.4.0
     return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 </pre>
+<h3>include/user_class.php % 230行目付近 (2010/07/07 (Wed) 21:40)</h3>
+<pre>
+× return $ROOM->date > 1 && $ROOM < 5 && $this->IsRole('challenge_lovers');
+○ return $ROOM->date > 1 && $ROOM->date < 5 && $this->IsRole('challenge_lovers');
+</pre>
+<h3>game_vote.php % 295行目付近 (2010/07/07 (Wed) 23:16)</h3>
+<pre>
+× if(! $SELF->IsRole('scanner', 'evoke_scanner')){
+○ if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
+</pre>
 
 <h2><a name="140beta4">Ver. 1.4.0 β4</a></h2>
 <h3>user_manager.php % 35行目付近</h3>
