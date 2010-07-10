@@ -58,7 +58,7 @@ class MainRoleList{
 			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
 
   var $stargazer_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占星術師#です。占った人が夜に行動しているかどうかを知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占星術師#です。占った人が夜に行動しているかどうかを知ることができます。\n　頭上に輝く星々は全ての夜を知っている。星々の視点からしか見えぬ事を知るのです。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
 
@@ -99,7 +99,7 @@ class MainRoleList{
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
   var $border_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#境界師#です。二日目以降、夜にあなたに投票した人の数を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#境界師#です。二日目以降、夜にあなたに投票した人の数を知ることができます。\n　夜に見た夢は幻ではない。あなたにしか持ち得ない夢と現の双方の視点を生かすのです。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
@@ -630,6 +630,10 @@ class MainRoleList{
 
   var $winter_fairy = array(
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|冬妖精|です。村人一人の発言に冬を告げるメッセージを追加してしまいます。\n　幻冬―雪が降り、全ての生き物が眠る季節を村人に告げ、|春妖精|へとバトンを繋ぐのです。",
+    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
+
+  var $flower_fairy = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|花妖精|です。村人一人の頭の上に花を咲かせることができます。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
   var $light_fairy = array(
@@ -1169,6 +1173,8 @@ class ResultList{
 			    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_winter_fairy = array('message' => "さんは|冬妖精|でした",
 			    'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
+  var $result_flower_fairy = array('message' => "さんは|花妖精|でした",
+				   'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_light_fairy = array('message' => "さんは|光妖精|でした",
 				  'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_dark_fairy = array('message' => "さんは|闇妖精|でした",
@@ -1259,8 +1265,8 @@ class WishRoleList {
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$list =& new MainRoleList();
-$list =& new SubRoleList();
+$list =& new MainRoleList();
+#$list =& new SubRoleList();
 #$list =& new ResultList();
 
 #$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
@@ -1277,7 +1283,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->border_priest_header);
+$image = MakeImage($gen, $list->flower_fairy);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

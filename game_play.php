@@ -436,7 +436,7 @@ function OutputGameHeader(){
       echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(Ãë)</a>'."\n";
     }
     elseif($ROOM->IsAfterGame()){
-      if(FetchResult($ROOM->GetQuery(true, 'talk') . " AND location = 'day'") > 0){
+      if(FetchResult($ROOM->GetQuery(true, 'talk') . " AND location LIKE 'day%'") > 0){
 	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(Ãë)</a>'."\n";
       }
     }

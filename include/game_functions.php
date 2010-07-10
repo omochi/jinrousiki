@@ -831,7 +831,7 @@ function OutputTalk($talk, &$builder){
 	if($virtual_self->IsSame($talk->uname) || $flag_dummy_boy || $flag_mind_read){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($said_user->IsLonely('wolf')){
+	elseif($said_user->IsLonely('silver_wolf')){
 	  $builder->AddWhisper('wolf', $talk); //孤立した狼の独り言は遠吠えに見える
 	}
 	break;
@@ -1048,7 +1048,8 @@ function OutputDeadMan(){
 		     'DREAM_KILLED' => true, 'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
 		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
-		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true));
+		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
+		     'FLOWERED_%' => false));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
@@ -1150,6 +1151,37 @@ function OutputDeadManType($name, $type){
       $action = strtolower(array_pop(explode('_', $type)));
       echo $reason_header.$MESSAGE->$action.')</td>';
     }
+    break;
+
+  case 'FLOWERED_A':
+  case 'FLOWERED_B':
+  case 'FLOWERED_C':
+  case 'FLOWERED_D':
+  case 'FLOWERED_E':
+  case 'FLOWERED_F':
+  case 'FLOWERED_G':
+  case 'FLOWERED_H':
+  case 'FLOWERED_I':
+  case 'FLOWERED_J':
+  case 'FLOWERED_K':
+  case 'FLOWERED_L':
+  case 'FLOWERED_M':
+  case 'FLOWERED_N':
+  case 'FLOWERED_O':
+  case 'FLOWERED_P':
+  case 'FLOWERED_Q':
+  case 'FLOWERED_R':
+  case 'FLOWERED_S':
+  case 'FLOWERED_T':
+  case 'FLOWERED_U':
+  case 'FLOWERED_V':
+  case 'FLOWERED_W':
+  case 'FLOWERED_X':
+  case 'FLOWERED_Y':
+  case 'FLOWERED_Z':
+    $action = strtolower($type);
+    echo '<tr class="dead-type-fairy">';
+    echo '<td>'.$name.' '.$MESSAGE->$action.'</td>';
     break;
 
   default:

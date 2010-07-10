@@ -518,7 +518,6 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
 <pre>
 東方 Project のマエリベリー・ハーンがモチーフです。
 例えば、自分を「占った」人が本物かどうかを推測することができます。
-
 </pre>
 
 <h3><a name="crisis_priest">預言者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
@@ -556,7 +555,12 @@ Ver. 1.4.0 α21 から登場の蝙蝠陣営の鑑定能力を持ちました。
   <li>5日目になると能力を失います</li>
   <li><a href="#poison_cat">猫又</a>系の蘇生対象外です (選ばれた場合は失敗します)</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>の憑依対象外です (襲撃された場合は普通に殺されます)</li>
+  <li><a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (憑依しようとした場合は失敗します)</li>
 </ol>
+<h4>Ver. 1.4.0 β12〜</h4>
+<pre>
+<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 新役職考案スレ (最下参照) の 54 が原型です。
@@ -735,7 +739,12 @@ Ver. 1.4.0 α8 以降は出現率を大幅に落としたのでこれでバランスが取れるかな？
   <li><a href="#about_revive">蘇生</a>不可</li>
   <li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>の憑依対象外です (襲撃された場合は普通に殺されます)</li>
+  <li><a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (憑依しようとした場合は失敗します)</li>
 </ol>
+<h4>Ver. 1.4.0 β12〜</h4>
+<pre>
+<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 闇鍋モードでも探偵村を実施できるようにチューニングした上位共有者です。

@@ -219,7 +219,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 一度だけ、死体に憑依することができる妖狐。
 </pre>
 <ol>
-  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
+  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
   <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
@@ -228,6 +228,11 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
   <li>狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺されます</li>
   <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
 </ol>
+<h4>Ver. 1.4.0 β12〜</h4>
+<pre>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できません。
+(<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職には憑依できません)。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>の妖狐バージョンです。

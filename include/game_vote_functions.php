@@ -2269,6 +2269,10 @@ function AggregateVoteNight(){
   //精神鑑定士の嘘つき判定対象役職リスト
   $psycho_mage_liar_list = array('mad', 'dummy', 'suspect', 'unconscious');
 
+  //花妖精のメッセージ作成用リスト
+  $flower_list = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+		       'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
   //占い能力者の処理を合成 (array_merge() は $uname が整数だと添え字と認識されるので使わないこと)
   $mage_list = array();
   $mage_action_list = array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
@@ -2346,6 +2350,9 @@ function AggregateVoteNight(){
       elseif($user->IsRole('child_fox')){ //子狐の判定 (一定確率で失敗する)
 	$result = $last_wolf_flag ? 'human' :
 	  (mt_rand(1, 100) > 30 ? $target->DistinguishMage() : 'failed');
+      }
+      elseif($user->IsRole('flower_fairy')){ //花妖精の処理
+	$ROOM->SystemMessage($target->handle_name, 'FLOWERED_' . GetRandom($flower_list));
       }
       elseif($user->IsRoleGroup('fairy')){ //妖精系の処理
 	$target_date = $ROOM->date + 1;
@@ -2777,14 +2784,13 @@ function AggregateVoteNight(){
     foreach($possessed_do_stack as $uname => $target_uname){ //憑依能力者の処理
       $user = $USERS->ByUname($uname);
 
-      //憑依先が競合したら失敗扱い
-      if(count(array_keys($possessed_do_stack, $target_uname)) > 1) continue;
-
-      //誰かが憑依していたら失敗扱い
-      if($target_uname != $USERS->ByRealUname($target_uname)->uname) continue;
+      //失敗判定1：憑依先が競合 / 誰かが憑依してる
+      if(count(array_keys($possessed_do_stack, $target_uname)) > 1 ||
+	 $target_uname != $USERS->ByRealUname($target_uname)->uname) continue;
 
       $target = $USERS->ByUname($target_uname); //対象者の情報を取得
-      if($target->revive_flag) continue; //蘇生されていたら失敗扱い
+      //失敗判定2：蘇生されている / 憑狼の憑依制限役職である
+      if($target->revive_flag || $target->IsRole('detective_common', 'revive_priest')) continue;
 
       //人外が他陣営の人外には憑依できない
       switch($target->GetCamp(true)){

@@ -1280,7 +1280,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#tongue_wolf" name="140beta12">餓狼</a></td>
+    <td><a href="wolf.php#hungry_wolf" name="140beta12">餓狼</a></td>
     <td><a href="wolf.php">人狼</a></td>
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
@@ -1304,6 +1304,15 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">二日目以降、「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。</td>
+    <td>Ver. 1.4.0 β12</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#flower_fairy">花妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">悪戯が成功すると、意味の無いメッセージを死亡メッセージ欄に表示できる妖精。</td>
     <td>Ver. 1.4.0 β12</td>
   </tr>
 </table>
@@ -1706,12 +1715,6 @@ Ver. 1.4.0
 
 ○嫉狐 (妖狐陣営 / 妖狐系？)
 ・橋姫能力をもった妖狐
-
-○物書き
-毎晩遺言が出力される
-
-○花妖精
-意味のないメッセージが本人と死亡メッセージ欄に出力される
 </pre>
 
 <h4>採用予定</h4>

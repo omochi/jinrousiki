@@ -42,6 +42,11 @@ Ver. 1.4.0
 × if($target->IsRole('escaper')) break; //逃亡者は暗殺不可
 ○ if($target->IsRole('escaper')) continue; //逃亡者は暗殺不可
 </pre>
+<h3>include/game_functions.php % 834行目付近 (2010/07/11 (Sun) 02:22)</h3>
+<pre>
+× elseif($said_user->IsLonely('wolf')){
+○ elseif($said_user->IsLonely('silver_wolf')){
+</pre>
 
 <h2><a name="140beta4">Ver. 1.4.0 β4</a></h2>
 <h3>user_manager.php % 35行目付近</h3>

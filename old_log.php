@@ -11,7 +11,13 @@ if($RQ_ARGS->is_room){
   $ROOM->last_date = $ROOM->date;
 
   $USERS =& new UserDataSet($RQ_ARGS);
-  $SELF  =& new User();
+  if($RQ_ARGS->user_no > 0){
+    $SELF = $USERS->ByID($RQ_ARGS->user_no);
+    $SELF->live = 'live';
+  }
+  else{
+    $SELF = new User();
+  }
 
   OutputOldLog();
 }
@@ -126,6 +132,7 @@ function OutputOldLog(){
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
+  if($RQ_ARGS->user_no > 0) $ROOM->status = 'playing';
   $title = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
 
   //戻る先を前のページにする

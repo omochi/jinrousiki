@@ -101,6 +101,32 @@ class Message{
   var $febris             = 'は熱病にかかったようです'; //熱病
   var $warrant            = 'は死の宣告を受けたようです'; //死の宣告
   var $challenge          = 'は難題を解けなかったようです'; //難題
+  var $flowered_a         = 'の頭の上に松の花が咲きました'; //花妖精
+  var $flowered_b         = 'の頭の上に梅の花が咲きました'; //花妖精
+  var $flowered_c         = 'の頭の上に桜の花が咲きました'; //花妖精
+  var $flowered_d         = 'の頭の上に藤の花が咲きました'; //花妖精
+  var $flowered_e         = 'の頭の上に菖蒲の花が咲きました'; //花妖精
+  var $flowered_f         = 'の頭の上に牡丹の花が咲きました'; //花妖精
+  var $flowered_g         = 'の頭の上に萩の花が咲きました'; //花妖精
+  var $flowered_h         = 'の頭の上に芒の花が咲きました'; //花妖精
+  var $flowered_i         = 'の頭の上に菊の花が咲きました'; //花妖精
+  var $flowered_j         = 'の頭の上に紅葉の花が咲きました'; //花妖精
+  var $flowered_k         = 'の頭の上に柳の花が咲きました'; //花妖精
+  var $flowered_l         = 'の頭の上に桐の花が咲きました'; //花妖精
+  var $flowered_m         = 'の頭の上に鬼灯の花が咲きました'; //花妖精
+  var $flowered_n         = 'の頭の上に達磨草の花が咲きました'; //花妖精
+  var $flowered_o         = 'の頭の上に福寿草の花が咲きました'; //花妖精
+  var $flowered_p         = 'の頭の上に山茶花の花が咲きました'; //花妖精
+  var $flowered_q         = 'の頭の上に彼岸花の花が咲きました'; //花妖精
+  var $flowered_r         = 'の頭の上に鈴蘭の花が咲きました'; //花妖精
+  var $flowered_s         = 'の頭の上に向日葵の花が咲きました'; //花妖精
+  var $flowered_t         = 'の頭の上に優曇華の花が咲きました'; //花妖精
+  var $flowered_u         = 'の頭の上に桃の花が咲きました'; //花妖精
+  var $flowered_v         = 'の頭の上に椿の花が咲きました'; //花妖精
+  var $flowered_w         = 'の頭の上に鳳仙花の花が咲きました'; //花妖精
+  var $flowered_x         = 'の頭の上に薔薇の花が咲きました'; //花妖精
+  var $flowered_y         = 'の頭の上に百合の花が咲きました'; //花妖精
+  var $flowered_z         = 'の頭の上に仙人掌の花が咲きました'; //花妖精
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合

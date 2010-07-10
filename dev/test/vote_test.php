@@ -45,7 +45,7 @@ $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[2]->profile = '';
-$RQ_ARGS->TestItems->test_users[2]->role = 'doll_master lovers[5] lovers[11]';
+$RQ_ARGS->TestItems->test_users[2]->role = 'possessed_fox lovers[5]';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 $RQ_ARGS->TestItems->test_users[2]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[2]->is_system = false;
@@ -59,7 +59,7 @@ $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
 $RQ_ARGS->TestItems->test_users[3]->handle_name = '暗灰';
 $RQ_ARGS->TestItems->test_users[3]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[3]->profile = '';
-$RQ_ARGS->TestItems->test_users[3]->role = 'doll';
+$RQ_ARGS->TestItems->test_users[3]->role = 'flower_fairy';
 $RQ_ARGS->TestItems->test_users[3]->live = 'live';
 $RQ_ARGS->TestItems->test_users[3]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[3]->is_system = false;
@@ -115,8 +115,8 @@ $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[7]->profile = '';
-$RQ_ARGS->TestItems->test_users[7]->role = 'border_priest';
-$RQ_ARGS->TestItems->test_users[7]->live = 'live';
+$RQ_ARGS->TestItems->test_users[7]->role = 'revive_priest';
+$RQ_ARGS->TestItems->test_users[7]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[7]->last_load_day_night = 'day';
 $RQ_ARGS->TestItems->test_users[7]->is_system = false;
 $RQ_ARGS->TestItems->test_users[7]->icon_filename = '006.gif';
@@ -218,7 +218,7 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'light_gray',  'target_uname' => 'dummy_boy',  'situation' => 'FAIRY_DO'),
   #array('uname' => 'light_gray',  'target_uname' => 'red',  'situation' => 'MANIA_DO'),
   #array('uname' => 'light_gray',  'target_uname' => 'light_blue orange',  'situation' => 'FAIRY_DO'),
-  #array('uname' => 'light_gray',  'target_uname' => 'dark_gray',  'situation' => 'POSSESSED_DO'),
+  array('uname' => 'light_gray',  'target_uname' => 'light_blue',  'situation' => 'POSSESSED_DO'),
   #array('uname' => 'light_gray',  'target_uname' => NULL,  'situation' => 'POSSESSED_NOT_DO'),
   #array('uname' => 'dark_gray',  'target_uname' => 'yellow',  'situation' => 'VOODOO_MAD_DO'),
   #array('uname' => 'dark_gray',  'target_uname' => 'yellow',  'situation' => 'DREAM_EAT'),
@@ -226,7 +226,7 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'dark_gray',  'target_uname' => 'dark_gray',  'situation' => 'TRAP_MAD_DO'),
   #array('uname' => 'dark_gray',  'target_uname' => 'light_gray',  'situation' => 'JAMMER_MAD_DO'),
   #array('uname' => 'dark_gray', 'target_uname' => 'light_gray',     'situation' => 'GUARD_DO'),
-  #array('uname' => 'dark_gray',  'target_uname' => 'cherry',  'situation' => 'FAIRY_DO'),
+  array('uname' => 'dark_gray',  'target_uname' => 'cherry',  'situation' => 'FAIRY_DO'),
   #array('uname' => 'dark_gray',  'target_uname' => 'cherry',  'situation' => 'ESCAPE_DO'),
   #array('uname' => 'light_gray',  'target_uname' => 'blue',  'situation' => 'VOODOO_MAD_DO'),
   #array('uname' => 'yellow',     'target_uname' => 'cherry',     'situation' => 'VOODOO_KILLER_DO'),
@@ -304,7 +304,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 3;
+$ROOM->date = 4;
 #$ROOM->day_night = 'beforegame';
 #$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';
@@ -316,7 +316,8 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
 #$SELF = $USERS->ByID(7);
-#$SELF = $USERS->TraceExchange(8);
+#$SELF = $USERS->TraceExchange(3);
+
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[投票テスト]', 'game'); //HTMLヘッダ
 //OutputGameOption($ROOM->game_option, '');

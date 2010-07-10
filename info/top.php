@@ -11,7 +11,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>Ver. 1.4.0 β11 アップロード (2010/07/06 (Tue) 03:26:47) → <a href="src/">ダウンロード</a></h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#140beta11">デバッグ情報</a> (2010/07/09 (Fri) 01:18)</li>
+  <li>→ <a href="info/develop/debug.php#140beta11">デバッグ情報</a> (2010/07/11 (Sun) 02:22)</li>
   <li>「魂移使」「覚醒者」「夢語部」「幻狼」「幻狐」「逃亡者」「誘毒者」<br>
     「囁騒霊」「吠騒霊」「念騒霊」「かぐや姫」実装</li>
 </ul>
