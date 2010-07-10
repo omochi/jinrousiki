@@ -418,7 +418,8 @@ function VoteNight(){
 
     if($RQ_ARGS->situation == 'WOLF_EAT'){ //¿ÍÏµ¤ÎÅêÉ¼
       //Ãç´Ö¤À¤ÈÊ¬¤«¤Ã¤Æ¤¤¤ëÏµÆ±»Î¤Ø¤ÎÅêÉ¼¤ÏÌµ¸ú
-      if($SELF->IsWolf(true) && $USERS->ByReal($target->user_no)->IsWolf(true)){
+      if($SELF->IsWolf(true) && ! $SELF->IsRole('hungry_wolf') &&
+	 $USERS->ByReal($target->user_no)->IsWolf(true)){
 	OutputVoteResult($error_header . 'ÏµÆ±»Î¤Ë¤ÏÅêÉ¼¤Ç¤­¤Þ¤»¤ó');
       }
 
@@ -829,7 +830,7 @@ function OutputVoteNight(){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5¸Ä¤´¤È¤Ë²þ¹Ô
     $count++;
     $is_live = $USERS->IsVirtualLive($id);
-    $is_wolf = $role_wolf && ! $SELF->IsRole('silver_wolf') &&
+    $is_wolf = $role_wolf && ! $SELF->IsRole('hungry_wolf', 'silver_wolf') &&
       $USERS->ByReal($id)->IsWolf(true);
 
     /*

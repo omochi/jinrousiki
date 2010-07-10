@@ -57,6 +57,11 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
 
+  var $stargazer_mage = array(
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占星術師#です。占った人が夜に行動しているかどうかを知ることができます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
+
   var $voodoo_killer = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#陰陽師#です。夜の間に村人一人を占うことでその人の呪いを祓うことができます。\n　呪いや憑依の力で村を陥れようとする人外を呪返しで祓い、村を清めるのです！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
@@ -90,6 +95,11 @@ class MainRoleList{
 
   var $bishop_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司教#です。一定日数おきに死亡した村人陣営以外の総数を知ることができます。\n　神聖なるお告げにより死者達の真の姿を伝え、心清き村人達を正しき道へと導くのです。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+
+  var $border_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#境界師#です。二日目以降、夜にあなたに投票した人の数を知ることができます。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
 
@@ -329,6 +339,11 @@ class MainRoleList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雛狼|、噛んだ人の性別を知ることができます。ただし、噛んだ人を殺すことはできません。\n　雛であるあなたの未熟な襲撃は、小賢しい大人どもの計算を大いに狂わすことができるはずです。",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 96, 'G' => 96, 'B' => 96)));
+
+  var $hungry_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|餓狼|です。仲間の|狼|や#妖狐#すら噛み殺せますが、村人は殺せません。強者のみがあなたの獲物なのです。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '#' => array('R' => 204, 'G' => 0, 'B' => 153)));
 
   var $tongue_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|舌禍狼|、噛んだ人の役職を知ることができます。ただし、#村人#を噛んだらその力を失ってしまいます。\n　能力者の血肉を知り、正体を暴くその舌の力で#村人#を避け、狼に情報をもたらすのです。",
@@ -849,6 +864,8 @@ class SubRoleList{
   var $priest_footer = array('message' => "人です", 'R' => 0, 'G' => 0, 'B' => 0);
   var $bishop_priest_header = array('message' => "神託結果： 現在、死亡した非村人陣営は",
 				    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $border_priest_header = array('message' => "神託結果： 昨夜、あなたの境界に触れた人数は",
+				    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $crisis_priest_result = array('message' => "陣営が勝利目前です", 'delimiter' => array());
   var $side_wolf = array('message' => "|人狼|",
 			 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
@@ -871,6 +888,10 @@ class SubRoleList{
   var $result_sex_female = array('message' => "さんは|女性|でした", 'R' => 255, 'G' => 51, 'B' => 153);
   var $result_psycho_mage_normal = array('message' => "さんは正常でした", 'R' => 0, 'G' => 0, 'B' => 0);
   var $result_psycho_mage_liar = array('message' => "さんは|嘘|をついています", 'R' => 255, 'G' => 0, 'B' => 0);
+  var $result_stargazer_mage_ability = array('message' => "さんは|投票能力|を持っています",
+					     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_stargazer_mage_nothing = array('message' => "さんは投票能力を持っていません",
+					     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_stolen = array('message' => "さんの死体が盗まれました！", 'R' => 0, 'G' => 0, 'B' => 0);
   var $reporter_result_footer = array('message' => "さんに襲撃されました！", 'R' => 0, 'G' => 0, 'B' => 0);
   var $reporter_result_header = array('message' => "張り込み結果： ", 'R' => 0, 'G' => 0, 'B' => 0);
@@ -906,6 +927,8 @@ class ResultList{
 				  'delimiter' => array('|' => array('R' => 153, 'G' => 51, 'B' => 255)));
   var $result_sex_mage = array('message' => "さんは|ひよこ鑑定士|でした",
 			       'delimiter' => array('|' => array('R' => 153, 'G' => 51, 'B' => 255)));
+  var $result_stargazer_mage = array('message' => "さんは|占星術師|でした",
+				     'delimiter' => array('|' => array('R' => 153, 'G' => 51, 'B' => 255)));
   var $result_voodoo_killer = array('message' => "さんは|陰陽師|でした",
 				    'delimiter' => array('|' => array('R' => 153, 'G' => 51, 'B' => 255)));
   var $result_dummy_mage = array('message' => "さんは|夢見人|でした",
@@ -923,6 +946,8 @@ class ResultList{
   var $result_priest = array('message' => "さんは|司祭|でした",
 			     'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_bishop_priest = array('message' => "さんは|司教|でした",
+				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
+  var $result_border_priest = array('message' => "さんは|境界師|でした",
 				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
   var $result_crisis_priest = array('message' => "さんは|預言者|でした",
 				    'delimiter' => array('|' => array('R' => 0, 'G' => 102, 'B' => 153)));
@@ -1020,6 +1045,8 @@ class ResultList{
 				  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_sex_wolf = array('message' => "さんは|雛狼|でした",
 			       'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_hungry_wolf = array('message' => "さんは|餓狼|でした",
+				  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_tongue_wolf = array('message' => "さんは|舌禍狼|でした",
 				 'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_emerald_wolf = array('message' => "さんは|翠狼|でした",
@@ -1232,8 +1259,8 @@ class WishRoleList {
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-$list =& new MainRoleList();
-#$list =& new SubRoleList();
+#$list =& new MainRoleList();
+$list =& new SubRoleList();
 #$list =& new ResultList();
 
 #$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
@@ -1250,7 +1277,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->telepath_scanner);
+$image = MakeImage($gen, $list->border_priest_header);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

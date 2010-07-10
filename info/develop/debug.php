@@ -37,6 +37,11 @@ Ver. 1.4.0
 °ﬂ if(! $SELF->IsRole('scanner', 'evoke_scanner')){
 °˚ if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
 </pre>
+<h3>include/game_vote_functions.php % 2009π‘Ã‹…’∂· (2010/07/09 (Fri) 01:18)</h3>
+<pre>
+°ﬂ if($target->IsRole('escaper')) break; //∆®À¥º‘§œ∞≈ª¶…‘≤ƒ
+°˚ if($target->IsRole('escaper')) continue; //∆®À¥º‘§œ∞≈ª¶…‘≤ƒ
+</pre>
 
 <h2><a name="140beta4">Ver. 1.4.0 ¶¬4</a></h2>
 <h3>user_manager.php % 35π‘Ã‹…’∂·</h3>

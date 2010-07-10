@@ -249,9 +249,9 @@ class User{
     global $ROOM;
 
     if(! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false; //ÌµÆÇ¡¦Ï¢ÆÇ¼Ô
-    if($this->IsRole('dummy_poison')) return $ROOM->IsDay(); //Ì´ÆÇ¼Ô
     if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //µ³»Î
     if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //ÀøÆÇ¼Ô¤Ï 5 ÆüÌÜ°Ê¹ß
+    if($this->IsRole('dummy_poison', 'poison_wolf')) return $ROOM->IsDay(); //Ì´ÆÇ¼Ô¡¦ÆÇÏµ
     return true;
   }
 

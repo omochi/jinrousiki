@@ -1043,9 +1043,9 @@ function OutputDeadMan(){
     'day' => array('VOTE_KILLED' => true, 'POISON_DEAD_day' => true,
 		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false),
 
-    'night' => array('WOLF_KILLED' => true, 'POSSESSED' => true, 'POSSESSED_TARGETED' => true,
-		     'POSSESSED_RESET' => true, 'DREAM_KILLED' => true,
-		     'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
+    'night' => array('WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
+		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
+		     'DREAM_KILLED' => true, 'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
 		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
 		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true));
@@ -1111,7 +1111,8 @@ function OutputDeadManType($name, $type){
 
   case 'LOVERS_FOLLOWED_day':
   case 'LOVERS_FOLLOWED_night':
-    echo '<tr><td>'.$name.' '.$MESSAGE->lovers_followed.'</td>';
+    echo '<tr class="dead-type-lovers">';
+    echo '<td>'.$name.' '.$MESSAGE->lovers_followed.'</td>';
     break;
 
   case 'REVIVE_SUCCESS':
@@ -1143,7 +1144,8 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_FEBRIS':
   case 'SUDDEN_DEATH_WARRANT':
   case 'SUDDEN_DEATH_CHALLENGE':
-    echo $deadman_header.$MESSAGE->vote_sudden_death.'</td>';
+    echo '<tr class="dead-type-sudden-death">';
+    echo '<td>'.$name.' '.$MESSAGE->vote_sudden_death.'</td>';
     if($show_reason){
       $action = strtolower(array_pop(explode('_', $type)));
       echo $reason_header.$MESSAGE->$action.')</td>';

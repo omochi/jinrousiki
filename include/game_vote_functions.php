@@ -1882,8 +1882,9 @@ function AggregateVoteNight(){
 
 	//騎士でない場合、一部の役職は護衛していても人狼に襲撃される
 	if($user->IsRole('poison_guard') ||
-	   ! ($wolf_target->IsRole('priest', 'bishop_priest', 'detective_common', 'reporter',
-				   'doll_master') || $wolf_target->IsRoleGroup('assassin'))){
+	   ! ($wolf_target->IsRole('priest', 'bishop_priest', 'border_priest', 'detective_common',
+				   'reporter', 'doll_master') ||
+	      $wolf_target->IsRoleGroup('assassin'))){
 	  $guarded_uname = $wolf_target->uname;
 	}
 
@@ -1894,25 +1895,32 @@ function AggregateVoteNight(){
       if(! $last_wolf_flag && $guarded_uname != '') break;
     }
 
-    //襲撃先が人狼の場合は失敗する (例：銀狼出現)
-    if($wolf_target->IsWolf()){
-      if($voted_wolf->IsRole('emerald_wolf')){ //翠狼の処理
-	$add_role = 'mind_friend[' . strval($voted_wolf->user_no) . ']';
-	$voted_wolf->AddRole($add_role);
-	$wolf_target->AddRole($add_role);
-      }
-      break;
+    if($voted_wolf->IsRole('hungry_wolf')){ //餓狼は村陣営なら襲撃失敗
+      if(! $wolf_target->IsDummyBoy() &&
+	 ! ($wolf_target->IsWolf() || $wolf_target->IsFox())) break;
     }
-    //襲撃先が妖狐の場合は失敗する
-    if($wolf_target->IsFox() && ! $wolf_target->IsRole('poison_fox', 'white_fox') &&
-       ! $wolf_target->IsChildFox()){
-      if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsRole('silver_fox')){ //蒼狼の処理
-	$wolf_target->AddRole('mind_lonely');
+    else{
+      //襲撃先が人狼の場合は失敗する (例：銀狼出現)
+      if($wolf_target->IsWolf()){
+	if($voted_wolf->IsRole('emerald_wolf')){ //翠狼の処理
+	  $add_role = 'mind_friend[' . strval($voted_wolf->user_no) . ']';
+	  $voted_wolf->AddRole($add_role);
+	  $wolf_target->AddRole($add_role);
+	}
+	break;
       }
-      if($wolf_target->IsRole('blue_fox')) $voted_wolf->AddRole('mind_lonely'); //蒼狐の処理
 
-      $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
-      break;
+      //襲撃先が妖狐の場合は失敗する
+      if($wolf_target->IsFox() && ! $wolf_target->IsRole('poison_fox', 'white_fox') &&
+	 ! $wolf_target->IsChildFox()){
+	if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsRole('silver_fox')){ //蒼狼の処理
+	  $wolf_target->AddRole('mind_lonely');
+	}
+	if($wolf_target->IsRole('blue_fox')) $voted_wolf->AddRole('mind_lonely'); //蒼狐の処理
+
+	$ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
+	break;
+      }
     }
 
     if(! $wolf_target->IsDummyBoy()){ //特殊能力者の処理 (身代わり君は例外)
@@ -1947,9 +1955,7 @@ function AggregateVoteNight(){
       }
       elseif($wolf_target->IsRole('doll_master')){ //人形遣い (人形系)
 	foreach($USERS->rows as $user){
-	  if($user->IsLive() && $user->IsRoleGroup('doll') && ! $user->IsRole('doll_master')){
-	    $stack[] = $user->uname;
-	  }
+	  if($user->IsLive() && $user->IsDoll()) $stack[] = $user->uname;
 	}
       }
 
@@ -1970,7 +1976,8 @@ function AggregateVoteNight(){
       if($wolf_target->IsRole('anti_voodoo')) $voted_wolf->possessed_reset = true;
     }
     else{
-      $USERS->Kill($wolf_target->user_no, 'WOLF_KILLED'); //通常狼の襲撃処理
+      $action = $voted_wolf->IsRole('hungry_wolf') ? 'HUNGRY_WOLF_KILLED' : 'WOLF_KILLED';
+      $USERS->Kill($wolf_target->user_no, $action); //通常狼の襲撃処理
     }
 
     if($voted_wolf->IsActive('tongue_wolf')){ //舌禍狼の処理
@@ -1989,13 +1996,10 @@ function AggregateVoteNight(){
 	$poison_target = $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
       }
 
-      if($poison_target->IsChallengeLovers()) break; //難題なら無効
-
-      //誘毒者は毒能力者だけ
-      if($wolf_target->IsRole('guide_poison') && ! $poison_target->IsRoleGroup('poison')) break;
-
-      //毒橋姫は恋人だけ
-      if($wolf_target->IsRole('poison_jealousy') && ! $poison_target->IsLovers()) break;
+      //難題なら無効 / 誘毒者は毒能力者だけ / 毒橋姫は恋人だけ
+      if($poison_target->IsChallengeLovers() ||
+	 ($wolf_target->IsRole('guide_poison') && ! $poison_target->IsRoleGroup('poison')) ||
+	 ($wolf_target->IsRole('poison_jealousy') && ! $poison_target->IsLovers())) break;
 
       if($poison_target->IsActive('resist_wolf')){ //抗毒狼なら無効
 	$poison_target->LostAbility();
@@ -2044,7 +2048,7 @@ function AggregateVoteNight(){
       }
 
       $target = $USERS->ByUname($target_uname);
-      if($target->IsRole('escaper')) break; //逃亡者は暗殺不可
+      if($target->IsRole('escaper')) continue; //逃亡者は暗殺不可
 
       if(($anti_assassin_flag && $target->IsRole('sirius_wolf')) ||
 	 $target->IsRole('detective_common', 'cursed_fox') || $target->IsChallengeLovers()){
@@ -2310,6 +2314,10 @@ function AggregateVoteNight(){
     }
     elseif($user->IsRole('sex_mage')){ //ひよこ鑑定士の判定 (蝙蝠 / 性別)
       $result = $target->DistinguishSex();
+    }
+    elseif($user->IsRole('stargazer_mage')){ //占星術師の判定 (投票能力の有無)
+      $result = array_key_exists($target->uname, $ROOM->vote) || $target->IsWolf() ?
+	'stargazer_mage_ability' : 'stargazer_mage_nothing';
     }
     elseif($user->IsRole('sex_fox')){ //雛狐の判定 (蝙蝠 / 性別 + 一定確率で失敗)
       $result = mt_rand(1, 100) > 30 ? $target->DistinguishSex() : 'failed';
@@ -2961,6 +2969,7 @@ function AggregateVoteNight(){
   //-- 司祭系レイヤー --//
   $priest_flag = false;
   $bishop_priest_flag = false;
+  $border_priest_list = array();
   $crisis_priest_flag = false;
   $revive_priest_list = array();
   $live_count = array();
@@ -2969,6 +2978,7 @@ function AggregateVoteNight(){
     if(! $user->IsDummyBoy()){
       $priest_flag        |= $user->IsRole('priest');
       $bishop_priest_flag |= $user->IsRole('bishop_priest');
+      if($user->IsRole('border_priest')) $border_priest_list[] = $user;
       $crisis_priest_flag |= $user->IsRole('crisis_priest');
       if($user->IsActive('revive_priest')) $revive_priest_list[] = $user->uname;
     }
@@ -2993,6 +3003,15 @@ function AggregateVoteNight(){
   }
   if($bishop_priest_flag && $ROOM->date > 1 && ($ROOM->date % 2) == 0){ //司教の処理
     $ROOM->SystemMessage($dead_count, 'BISHOP_PRIEST_RESULT');
+  }
+  if(count($border_priest_list) > 0 && $ROOM->date > 1){ //境界師の処理
+    foreach($border_priest_list as $user){
+      $stack_count = 0;
+      foreach($ROOM->vote as $uname => $stack){
+	if($stack['target_uname'] == $user->uname) $stack_count++;
+      }
+      $ROOM->SystemMessage($user->handle_name . "\t" . $stack_count, 'BORDER_PRIEST_RESULT');
+    }
   }
 
   if($crisis_priest_flag || count($revive_priest_list) > 0){ //預言者、天人の処理

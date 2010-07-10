@@ -20,7 +20,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- テスト用 --//
-#$SELF->ChangeRole('fend_guard');
+#$SELF->ChangeRole('hungry_wolf');
 #$SELF->Update('icon_no', 30);
 #$SELF->AddRole('possessed_target[2-2]');
 #$SELF->Update('live', 'live');

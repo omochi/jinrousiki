@@ -54,6 +54,7 @@ Ver. 1.4.0
 <a href="#140beta9">β9</a>
 <a href="#140beta10">β10</a>
 <a href="#140beta11">β11</a>
+<a href="#140beta12">β12</a>
 </p>
 
 <p>
@@ -1276,7 +1277,34 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">自分撃ち固定のキューピッド。自分に<a href="sub_role.php#mind_receiver">受信者</a>、自分と相手に<a href="sub_role.php#challenge_lovers">難題</a>が追加される。</td>
-    <td>Ver. 1.4.0 α21</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#tongue_wolf" name="140beta12">餓狼</a></td>
+    <td><a href="wolf.php">人狼</a></td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability">人狼と妖狐しか噛み殺せない人狼。</td>
+    <td>Ver. 1.4.0 β12</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#stargazer_mage">占星術師</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#mage_group">占い師系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">夜の投票能力の有無を判定する特殊な占い師。</td>
+    <td>Ver. 1.4.0 β12</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#border_priest">境界師</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#priest_group">司祭系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">二日目以降、「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。</td>
+    <td>Ver. 1.4.0 β12</td>
   </tr>
 </table>
 
@@ -1670,19 +1698,11 @@ Ver. 1.4.0
 <h3>役職</h3>
 <h4>作成予定</h4>
 <pre>
-○吉凶占い師 (村人陣営 / 占い師系)
-・対象がその村でどれくらい活躍できる可能性があるかを吉凶で判定する
-
 ○耐毒者 (村人陣営 / 薬師系？)
 ・毒がいっさい効かない村人
 
 ○仕事人 (村人陣営 / 暗殺系)
 ・村人陣営を殺したら能力を失う (結果として人外を殺した事が自覚できる)
-
-○対妖狐狼 (人狼陣営 / 人狼系)
-・妖狐を噛める人狼
-・何かしらの弱点をつける
-・妖狐陣営が人狼陣営に対して強力になってきたら実装する
 
 ○嫉狐 (妖狐陣営 / 妖狐系？)
 ・橋姫能力をもった妖狐

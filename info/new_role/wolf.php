@@ -90,6 +90,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
 <a href="#sex_wolf">雛狼</a>
+<a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
 <a href="#sirius_wolf">天狼</a>
@@ -250,6 +251,24 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 <a href="fox.php#sex_fox.php">雛狐</a>の人狼バージョンです。
 能力そのものよりも副次的効果の方が重要です (いわゆる空襲撃が可能になります)。
 この狼が LW になると非常に辛い事になるので気をつけましょう。
+</pre>
+
+<h3><a name="hungry_wolf">餓狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12〜]</h3>
+<pre>
+人狼と妖狐しか噛み殺せない人狼。
+</pre>
+<ol>
+  <li>仲間と分かっている狼も襲撃可能</li>
+  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」</li>
+  <li>身代わり君は役職関係なく襲撃成功扱い</li>
+  <li>人狼と妖狐以外を襲撃した場合は失敗扱い</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルの、対<a href="fox.php">妖狐</a>の切り札です。
+狼飽和状態の妖狐勝利を仲間や村人確定の人を襲撃することで防ぐことができます。
+死因が違うので<a href="human.php#yama_necromancer">閻魔</a>が天敵になります。
+<a href="#sex_wolf">雛狼</a>同様、LW にしないように戦略を練りましょう。
 </pre>
 
 <h3><a name="tongue_wolf">舌禍狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α13〜]</h3>
@@ -594,8 +613,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   <ol>
     <li>毒無効 (吊り・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
-    <li><a href="human.php#fend_guard">忍者</a>の能力無効</li>
-    <li><a href="human.php#ghost_common">亡霊嬢</a>の能力無効</li>
+    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
 </ol>
@@ -603,7 +621,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 <pre>
 東方ウミガメ人狼のプレイヤーさんがモデルの、人狼系最終兵器です。
 LW になると吊り以外では止められなくなります。
-もし、LW になって噛みを失敗したらその人は狐です。
+<a href="human.php#escaper">逃亡者</a>・狐・<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>は LW になっても噛みを失敗する可能性があります。
 </pre>
 
 <h3><a name="elder_wolf">古狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β5〜]</h3>

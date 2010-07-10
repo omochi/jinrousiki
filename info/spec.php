@@ -97,6 +97,7 @@ OutputInfoPageHeader('╬э╨ы╓й╩емм');
 <h4>║а<?php echo $MESSAGE->deadman ?></h4>
 <ul>
 <li>╫╠╥Б (<a href="new_role/wolf.php#wolf_group">©мо╣╥о</a>)</li>
+<li>╡Но╣╫╠╥Б (<a href="new_role/wolf.php#hungry_wolf">╡Но╣</a>)</li>
 <li>фг (<a href="new_role/human.php#poison_group">кДфг╪т╥о</a>)</li>
 <li>Ф╚ (<a href="new_role/wolf.php#trap_mad">Ф╚╩у</a>)</li>
 <li><a href="new_role/human.php#guard_hunt">╪М╓Й</a> (<a href="new_role/human.php#guard_group">╪М©м╥о</a>)</li>

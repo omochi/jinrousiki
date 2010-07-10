@@ -7,8 +7,7 @@ class CastConfig extends CastConfigBase{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   var $role_list = array(
-     #4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     4 => array('human' =>  2, 'wolf' => 1, 'mage' => 1),
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -109,7 +108,7 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   var $chaos_hyper_wolf_list = array(
-    'wolf'           => 56,
+    'wolf'           => 55,
     'boss_wolf'      =>  3,
     'gold_wolf'      =>  2,
     'phantom_wolf'   =>  2,
@@ -120,6 +119,7 @@ class CastConfig extends CastConfigBase{
     'blue_wolf'      =>  2,
     'emerald_wolf'   =>  2,
     'sex_wolf'       =>  1,
+    'hungry_wolf'    =>  1,
     'tongue_wolf'    =>  2,
     'possessed_wolf' =>  1,
     'sirius_wolf'    =>  1,
@@ -339,13 +339,14 @@ class CastConfig extends CastConfigBase{
     'blue_wolf'          => 10,
     'emerald_wolf'       => 10,
     'sex_wolf'           =>  5,
+    'hungry_wolf'        =>  5,
     'tongue_wolf'        => 10,
     'possessed_wolf'     => 10,
     'sirius_wolf'        =>  5,
     'elder_wolf'         => 10,
     'cute_wolf'          => 15,
     'scarlet_wolf'       => 10,
-    'silver_wolf'        => 15,
+    'silver_wolf'        => 10,
     'mad'                => 10,
     'fanatic_mad'        => 10,
     'whisper_mad'        =>  5,

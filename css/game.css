@@ -235,12 +235,16 @@ body{ /* AA Õ— */
   vertical-align: middle;
 }
 .dead-type-vote{
-  height: 35px;
   color: #666600;
 }
 .dead-type-revive{
-  height: 35px;
   color: #009966;
+}
+.dead-type-lovers{
+  color: #FF66CC;
+}
+.dead-type-sudden-death{
+  color: #33CCFF;
 }
 /* OutputVoteListDay() */
 .vote-list{ /* ≈Í…º∑Î≤Ã§Œ table */

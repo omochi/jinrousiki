@@ -54,6 +54,10 @@ function OutputAbility(){
       if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
       break;
 
+    case 'border_priest': //¶­³¦»Õ
+      if($ROOM->date > 2) OutputSelfAbilityResult('BORDER_PRIEST_RESULT');
+      break;
+
     case 'crisis_priest': //ÍÂ¸À¼Ô
       if($ROOM->date > 1) OutputSelfAbilityResult('CRISIS_PRIEST_RESULT');
       break;
@@ -585,6 +589,12 @@ function OutputSelfAbilityResult($action){
   case 'BISHOP_PRIEST_RESULT':
     $type = 'priest';
     $header = 'bishop_priest_header';
+    $footer = 'priest_footer';
+    break;
+
+  case 'BORDER_PRIEST_RESULT':
+    $type = 'mage';
+    $header = 'border_priest_header';
     $footer = 'priest_footer';
     break;
 

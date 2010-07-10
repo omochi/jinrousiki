@@ -70,6 +70,7 @@ class Message{
   //var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
   var $deadman            = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃
+  var $hungry_wolf_killed = 'は餓狼の餌食になったようです'; //餓狼の襲撃
   var $possessed          = 'は誰かに憑依したようです'; //憑依
   var $possessed_targeted = 'は憑狼に憑依されたようです'; //憑狼の襲撃
   var $possessed_reset    = 'は憑依から開放されたようです'; //憑依リセット
