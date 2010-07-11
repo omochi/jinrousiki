@@ -12,7 +12,7 @@ Ver. 1.4.0
 <a href="#140beta11">¦Â11</a>
 </p>
 
-<h2><a name="140beta11">Ver. 1.4.0 ¦Â11</a></h2>
+<h2><a id="140beta11">Ver. 1.4.0 ¦Â11</a></h2>
 <h3>include/user_class.php % 190¹ÔÌÜÉÕ¶á</h3>
 <h4>[before]</h4>
 <pre>
@@ -48,7 +48,7 @@ Ver. 1.4.0
 ¡û elseif($said_user->IsLonely('silver_wolf')){
 </pre>
 
-<h2><a name="140beta4">Ver. 1.4.0 ¦Â4</a></h2>
+<h2><a id="140beta4">Ver. 1.4.0 ¦Â4</a></h2>
 <h3>user_manager.php % 35¹ÔÌÜÉÕ¶á</h3>
 <h4>[before]</h4>
 <pre>
@@ -91,7 +91,7 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 ¡û $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
 </pre>
 
-<h2><a name="140beta3">Ver. 1.4.0 ¦Â3</a></h2>
+<h2><a id="140beta3">Ver. 1.4.0 ¦Â3</a></h2>
 <h3>game_play.php % 259¹ÔÌÜÉÕ¶á</h3>
 <pre>
 ¡ß if($ROOM->IsPlaying() && $virtual->IsLive()){
@@ -154,7 +154,7 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 </pre>
 
 
-<h2><a name="140beta2">Ver. 1.4.0 ¦Â2</a></h2>
+<h2><a id="140beta2">Ver. 1.4.0 ¦Â2</a></h2>
 <h3>include/game_vote_functions.php % 1188¹ÔÌÜ</h3>
 <pre>
 ¡ß elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
@@ -167,7 +167,7 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 ¡û array_push($actor_list, '%cat', 'revive_fox');
 </pre>
 
-<h2><a name="140alpha24">Ver. 1.4.0 ¦Á24</a></h2>
+<h2><a id="140alpha24">Ver. 1.4.0 ¦Á24</a></h2>
 <h3>game_play.php % 731 ¹ÔÌÜ</h3>
 <pre>
 ¡ß $USERS->GetHandleName($target_uname) . '¤µ¤ó¤ËÅêÉ¼ºÑ¤ß');

@@ -9,7 +9,7 @@
 <script type="text/javascript" src="javascript/game_up.js"></script>
 </head>
 <body onLoad="set_focus(); reload_game();">
-<a name="game_top"></a>
+<a id="game_top"></a>
 <?php
 $url_argv = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
 if($_GET['play_sound']  == 'on') $url_argv .= '&play_sound=on';

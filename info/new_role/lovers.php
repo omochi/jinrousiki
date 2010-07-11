@@ -15,7 +15,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <a href="#angel_group">天使系</a>
 </p>
 
-<h2><a name="cupid_group">キューピッド系</a></h2>
+<h2><a id="cupid_group">キューピッド系</a></h2>
 <p>
 <a href="#self_cupid">求愛者</a>
 <a href="#moon_cupid">かぐや姫</a>
@@ -23,7 +23,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <a href="#triangle_cupid">小悪魔</a>
 </p>
 
-<h3><a name="self_cupid">求愛者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h3><a id="self_cupid">求愛者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <pre>
 自分撃ち固定のキューピッド。
 矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
@@ -39,7 +39,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 思う存分自分の想いを語ってください。
 </pre>
 
-<h3><a name="moon_cupid">かぐや姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h3><a id="moon_cupid">かぐや姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <pre>
 自分撃ち固定のキューピッド。
 自分に矢を撃った相手を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が、
@@ -52,7 +52,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 (死亡する) 可能性が高くなるカップルを再現してみました。
 </pre>
 
-<h3><a name="mind_cupid">女神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
+<h3><a id="mind_cupid">女神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
 <pre>
 矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。
 他人撃ちの場合は、さらに自分が二人を対象にした<a href="sub_role.php#mind_receiver">受信者</a>になります。
@@ -65,7 +65,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 必ず見えることになります。
 </pre>
 
-<h3><a name="triangle_cupid">小悪魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="triangle_cupid">小悪魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 矢を三本撃てるキューピッド。
 他人撃ち制限などは普通のキューピッドと同じ。
@@ -75,7 +75,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 翠星石鯖＠やる夫人狼で一時的に施されていた改造に別名を与えてみました。
 </pre>
 
-<h2><a name="angel_group">天使系</a></h2>
+<h2><a id="angel_group">天使系</a></h2>
 <a href="#angel">天使</a>
 <a href="#rose_angel">薔薇天使</a>
 <a href="#lily_angel">百合天使</a>
@@ -83,7 +83,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <a href="#ark_angel">大天使</a>
 </p>
 
-<h3><a name="angel">天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="angel">天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。
 </pre>
@@ -93,7 +93,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 鉄板カップルが増えることを狙って作成してみました。
 </pre>
 
-<h3><a name="rose_angel">薔薇天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="rose_angel">薔薇天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 矢を撃った二人が男性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。
 </pre>
@@ -103,7 +103,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <a href="#rose_angle">天使</a>とは逆に予想外のカップリングが増えるかもしれませんね。
 </pre>
 
-<h3><a name="lily_angel">百合天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="lily_angel">百合天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 矢を撃った二人が女性だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。
 </pre>
@@ -113,7 +113,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <a href="human.php#sex_mage">ひよこ鑑定士</a>対策で性別をごまかすケースがあることに気をつけましょう。
 </pre>
 
-<h3><a name="exchange_angel">魂移使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h3><a id="exchange_angel">魂移使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <pre>
 矢を撃った二人を交換憑依させてしまうキューピッド。
 </pre>
@@ -136,7 +136,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 「たまうつし」と読みます。
 </pre>
 
-<h3><a name="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
 他の<a href="#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。
 ただし、本人は<a href="sub_role.php#mind_sympathy">共感者</a>を作ることはできない。

@@ -27,7 +27,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="sub_role.php">サブ役職</a>
 </p>
 
-<h2><a name="table">早見表</a></h2>
+<h2><a id="table">早見表</a></h2>
 <p>
 <a href="#main_role">メイン役職</a>
 Ver. 1.4.0
@@ -78,7 +78,7 @@ Ver. 1.4.0
 </p>
 
 <table>
-<caption><a name="main_role">新役職早見表</a></caption>
+<caption><a id="main_role">新役職早見表</a></caption>
   <tr>
     <th>名称</th>
     <th>陣営</th>
@@ -89,7 +89,7 @@ Ver. 1.4.0
     <th>初登場</th>
   </tr>
   <tr>
-    <td><a href="quiz.php#quiz" name="140alpha2">出題者</a></td>
+    <td><a href="quiz.php#quiz" id="140alpha2">出題者</a></td>
     <td><a href="quiz.php">出題者</a></td>
     <td><a href="quiz.php#quiz_group">出題者系</a></td>
     <td>村人</td>
@@ -98,7 +98,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α2</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#boss_wolf" name="140alpha3">白狼</a></td>
+    <td><a href="wolf.php#boss_wolf" id="140alpha3">白狼</a></td>
     <td><a href="wolf.php">人狼</a></td>
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>村人</td>
@@ -155,7 +155,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
-    <td><a href="human.php#suspect" name="140alpha9">不審者</a></td>
+    <td><a href="human.php#suspect" id="140alpha9">不審者</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#human_group">村人系</a></td>
     <td>人狼</td>
@@ -165,7 +165,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α9</td>
   </tr>
   <tr>
-    <td><a href="human.php#mania" name="140alpha11">神話マニア</a></td>
+    <td><a href="human.php#mania" id="140alpha11">神話マニア</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
@@ -174,7 +174,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α11</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#poison_wolf" name="140alpha12">毒狼</a></td>
+    <td><a href="wolf.php#poison_wolf" id="140alpha12">毒狼</a></td>
     <td><a href="wolf.php">人狼</a></td>
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
@@ -194,7 +194,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α12</td>
   </tr>
   <tr>
-    <td><a href="human.php#unconscious" name="140alpha13">無意識</a></td>
+    <td><a href="human.php#unconscious" id="140alpha13">無意識</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#human_group">村人系</a></td>
     <td>村人</td>
@@ -213,7 +213,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α13</td>
   </tr>
   <tr>
-    <td><a href="human.php#reporter" name="140alpha14">ブン屋</a></td>
+    <td><a href="human.php#reporter" id="140alpha14">ブン屋</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#guard_group">狩人系</a></td>
     <td>村人</td>
@@ -242,7 +242,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
-    <td><a href="human.php#dummy_necromancer" name="140alpha17">夢枕人</a></td>
+    <td><a href="human.php#dummy_necromancer" id="140alpha17">夢枕人</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#necromancer_group">霊能者系</a></td>
     <td>村人</td>
@@ -368,7 +368,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
-    <td><a href="human.php#poison_cat" name="140alpha18">猫又</a></td>
+    <td><a href="human.php#poison_cat" id="140alpha18">猫又</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#poison_cat_group">猫又系</a></td>
     <td>村人</td>
@@ -408,7 +408,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α18</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#jammer_mad" name="140alpha19">月兎</a></td>
+    <td><a href="wolf.php#jammer_mad" id="140alpha19">月兎</a></td>
     <td><a href="wolf.php">人狼</a></td>
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
@@ -428,7 +428,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α19</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#voodoo_mad" name="140alpha20">呪術師</a></td>
+    <td><a href="wolf.php#voodoo_mad" id="140alpha20">呪術師</a></td>
     <td><a href="wolf.php">人狼</a></td>
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
@@ -491,7 +491,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α20</td>
   </tr>
   <tr>
-    <td><a href="lovers.php#self_cupid" name="140alpha21">求愛者</a></td>
+    <td><a href="lovers.php#self_cupid" id="140alpha21">求愛者</a></td>
     <td><a href="lovers.php">恋人</a></td>
     <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
     <td>村人</td>
@@ -570,7 +570,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α21</td>
   </tr>
   <tr>
-    <td><a href="human.php#jealousy" name="140alpha22">橋姫</a></td>
+    <td><a href="human.php#jealousy" id="140alpha22">橋姫</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#jealousy_group">橋姫系</a></td>
     <td>村人</td>
@@ -579,7 +579,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
-    <td><a href="human.php#unknown_mania" name="140alpha23">鵺</a></td>
+    <td><a href="human.php#unknown_mania" id="140alpha23">鵺</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
@@ -599,7 +599,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
-    <td><a href="human.php#priest" name="140alpha24">司祭</a></td>
+    <td><a href="human.php#priest" id="140alpha24">司祭</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#priest_group">司祭系</a></td>
     <td>村人</td>
@@ -675,7 +675,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
-    <td><a href="human.php#crisis_priest" name="140beta2">預言者</a></td>
+    <td><a href="human.php#crisis_priest" id="140beta2">預言者</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#priest_group">司祭系</a></td>
     <td>村人</td>
@@ -725,7 +725,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β2</td>
   </tr>
   <tr>
-    <td><a href="human.php#elder" name="140beta5">長老</a></td>
+    <td><a href="human.php#elder" id="140beta5">長老</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#human_group">村人系</a></td>
     <td>村人</td>
@@ -770,7 +770,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
-    <td><a href="human.php#trap_common" name="140beta6">策士</a></td>
+    <td><a href="human.php#trap_common" id="140beta6">策士</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#common_group">共有者系</a></td>
     <td>村人</td>
@@ -852,7 +852,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr>
-    <td><a href="human.php#saint" name="140beta7">聖女</a></td>
+    <td><a href="human.php#saint" id="140beta7">聖女</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#human_group">村人系</a></td>
     <td>村人</td>
@@ -898,7 +898,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β7</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#emerald_wolf" name="140beta8">翠狼</a></td>
+    <td><a href="wolf.php#emerald_wolf" id="140beta8">翠狼</a></td>
     <td><a href="wolf.php">人狼</td>
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
@@ -1018,7 +1018,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
-    <td><a href="human.php#reverse_assassin" name="140beta9">反魂師</a></td>
+    <td><a href="human.php#reverse_assassin" id="140beta9">反魂師</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#assassin_group">暗殺者系</a></td>
     <td>村人</td>
@@ -1122,7 +1122,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β9</td>
   </tr>
   <tr>
-    <td><a href="human.php#doll" name="140beta10">上海人形</a></td>
+    <td><a href="human.php#doll" id="140beta10">上海人形</a></td>
     <td><a href="human.php">村人</td>
     <td><a href="human.php#doll_group">上海人形系</a></td>
     <td>村人</td>
@@ -1187,7 +1187,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β10</td>
   </tr>
   <tr>
-    <td><a href="lovers.php#exchange_angel" name="140beta11">魂移使</a></td>
+    <td><a href="lovers.php#exchange_angel" id="140beta11">魂移使</a></td>
     <td><a href="lovers.php">恋人</td>
     <td><a href="lovers.php#angel_group">天使系</a></td>
     <td>村人</td>
@@ -1280,7 +1280,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
-    <td><a href="wolf.php#hungry_wolf" name="140beta12">餓狼</a></td>
+    <td><a href="wolf.php#hungry_wolf" id="140beta12">餓狼</a></td>
     <td><a href="wolf.php">人狼</a></td>
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
@@ -1318,7 +1318,7 @@ Ver. 1.4.0
 </table>
 
 <table>
-<caption><a name="sub_role">新サブ役職早見表</a></caption>
+<caption><a id="sub_role">新サブ役職早見表</a></caption>
   <tr>
     <th>名称</th>
     <th>所属</th>
@@ -1327,7 +1327,7 @@ Ver. 1.4.0
     <th>初登場</th>
   </tr>
   <tr>
-    <td><a href="sub_role.php#strong_voice" name="sub_140alpha3">大声</a></td>
+    <td><a href="sub_role.php#strong_voice" id="sub_140alpha3">大声</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
     <td class="ability">常に大声になる</td>
@@ -1369,7 +1369,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#no_last_words" name="sub_140alpha9">筆不精</a></td>
+    <td><a href="sub_role.php#no_last_words" id="sub_140alpha9">筆不精</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
     <td class="ability">遺言を残せない</td>
@@ -1390,14 +1390,14 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α9</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#liar" name="sub_140alpha11">狼少年</a></td>
+    <td><a href="sub_role.php#liar" id="sub_140alpha11">狼少年</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
     <td class="ability">発言時に「人⇔狼」等が入れ替わる (たまに変換されないこともある)</td>
     <td>Ver. 1.4.0 α11</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#random_voice" name="sub_140alpha14">臆病者</a></td>
+    <td><a href="sub_role.php#random_voice" id="sub_140alpha14">臆病者</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
     <td class="ability">声の大きさがランダムに変わる</td>
@@ -1502,7 +1502,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#random_luck" name="sub_140alpha15">波乱万丈</a></td>
+    <td><a href="sub_role.php#random_luck" id="sub_140alpha15">波乱万丈</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
     <td>○</td>
     <td class="ability">得票数に -2〜+2 の範囲でランダムに補正がかかる</td>
@@ -1523,7 +1523,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α15</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#speaker" name="sub_140alpha17">スピーカー</a></td>
+    <td><a href="sub_role.php#speaker" id="sub_140alpha17">スピーカー</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
     <td class="ability">発言が一段階大きく見えるようになり、大声が聞き取れなくなる</td>
@@ -1559,21 +1559,21 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#weekly" name="sub_140alpha19">七曜迷彩</a></td>
+    <td><a href="sub_role.php#weekly" id="sub_140alpha19">七曜迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
     <td class="ability">発言に曜日が含まれていたら曜日の順番に合わせて入れ替えられてしまう</td>
     <td>Ver. 1.4.0 α19</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#mind_read" name="sub_140alpha21">サトラレ</a></td>
+    <td><a href="sub_role.php#mind_read" id="sub_140alpha21">サトラレ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability"><a href="human.php#mind_scanner">さとり</a>に夜の発言が見られてしまう</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#mind_open" name="sub_140alpha22">公開者</a></td>
+    <td><a href="sub_role.php#mind_open" id="sub_140alpha22">公開者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability">二日目以降の夜の発言が参加者全員に見られてしまう</td>
@@ -1594,7 +1594,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#inside_voice" name="sub_140alpha23">内弁慶</a></td>
+    <td><a href="sub_role.php#inside_voice" id="sub_140alpha23">内弁慶</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
     <td class="ability">昼は小声、夜は大声になる</td>
@@ -1643,14 +1643,14 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#mind_evoke" name="sub_140beta2">口寄せ</a></td>
+    <td><a href="sub_role.php#mind_evoke" id="sub_140beta2">口寄せ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability">死後に特定の人の遺言窓にメッセージを送れるようになる</td>
     <td>Ver. 1.4.0 β2</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#mind_lonely" name="sub_140beta8">はぐれ者</a></td>
+    <td><a href="sub_role.php#mind_lonely" id="sub_140beta8">はぐれ者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability">仲間が分からなくなり、会話できなくなる</td>
@@ -1664,7 +1664,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#nervy" name="sub_140beta9">自信家</a></td>
+    <td><a href="sub_role.php#nervy" id="sub_140beta9">自信家</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
     <td class="ability">同一陣営の人に投票するとショック死する</td>
@@ -1678,14 +1678,14 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β9</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#death_warrant" name="sub_140beta10">死の宣告</a></td>
+    <td><a href="sub_role.php#death_warrant" id="sub_140beta10">死の宣告</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
     <td class="ability">予告された日の昼の投票集計後にショック死する</td>
     <td>Ver. 1.4.0 β10</td>
   </tr>
   <tr>
-    <td><a href="sub_role.php#challenge_lovers" name="sub_140beta11">難題</a></td>
+    <td><a href="sub_role.php#challenge_lovers" id="sub_140beta11">難題</a></td>
     <td><a href="sub_role.php#lovers_group">恋人系</a></td>
     <td>○</td>
     <td class="ability">4日目夜までは人狼の襲撃無効・毒無効・暗殺反射を持つ。<br>
@@ -1694,7 +1694,7 @@ Ver. 1.4.0
   </tr>
 </table>
 
-<h2><a name="reference">参考リンク</a></h2>
+<h2><a id="reference">参考リンク</a></h2>
 <pre>
 作って欲しい役職などがあったらこちらのスレへどうぞ
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">【ネタ歓迎】あったらいいな、こんな役職【ガチ大歓迎】</a>
@@ -1703,7 +1703,7 @@ Ver. 1.4.0
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50" target="_top">新役職提案スレッド＠やる夫</a>
 </pre>
 
-<h2><a name="memo">作成予定メモ</a></h2>
+<h2><a id="memo">作成予定メモ</a></h2>
 <h3>役職</h3>
 <h4>作成予定</h4>
 <pre>

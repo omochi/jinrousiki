@@ -633,7 +633,7 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
   var $flower_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|花妖精|です。村人一人の頭の上に花を咲かせることができます。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|花妖精|です。村人一人の頭の上に花を咲かせることができます。\n　特に効力は有りませんが、頭に花の咲いた者達をからかってやるのです！",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
 
   var $light_fairy = array(

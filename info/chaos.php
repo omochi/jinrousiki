@@ -12,7 +12,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定)</a>
 </p>
 
-<h2><a name="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
+<h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
 <pre>
 配役を先に決めてから、出現した役職グループを希望していれば
 優先的に配役される仕様です。
@@ -34,12 +34,12 @@ OutputInfoPageHeader('闇鍋モード');
 希望制オプションは強制的にオフになります
 </pre>
 
-<h2><a name="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
+<h2><a id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
 <p>
 <a href="#chaos_appear_role">出現役職</a>
 <a href="#chaos_decide_role">配役決定ルーチン</a>
 </p>
-<h3><a name="chaos_appear_role">出現役職</a></h3>
+<h3><a id="chaos_appear_role">出現役職</a></h3>
 <pre>
 出現する可能性のある役職は以下です
 </pre>
@@ -84,19 +84,19 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>
 </pre>
 
-<h3><a name="chaos_decide_role">配役決定ルーチン</a></h3>
+<h3><a id="chaos_decide_role">配役決定ルーチン</a></h3>
 <pre>
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>と同じです。
 </pre>
 
-<h2><a name="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
+<h2><a id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
 <p>
 <a href="#chaosfull_appear_role">出現役職</a>
 <a href="#chaosfull_decide_role">配役決定ルーチン</a>
 <a href="#chaosfull_decide_role_example">配役決定例</a>
 </p>
 
-<h3><a name="chaosfull_appear_role">出現役職</a></h3>
+<h3><a id="chaosfull_appear_role">出現役職</a></h3>
 <pre>
 出現する可能性のある役職は以下 (Ver. 1.4.0 α23 相当) です。
 </pre>
@@ -143,7 +143,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>、<a href="new_role/chiroptera.php#poison_chiroptera">毒蝙蝠</a><a href="new_role/chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
 </pre>
 
-<h3><a name="chaosfull_decide_role">配役決定ルーチン</a></h3>
+<h3><a id="chaosfull_decide_role">配役決定ルーチン</a></h3>
 <pre>
 バージョンアップで仕様が変わる可能性があります。
 </pre>
@@ -177,7 +177,7 @@ OutputInfoPageHeader('闇鍋モード');
   </li>
 </ul>
 
-<h3><a name="chaosfull_decide_role_example">配役決定例</a></h3>
+<h3><a id="chaosfull_decide_role_example">配役決定例</a></h3>
 <ul>
   <li>村人：10人</li>
 
@@ -231,27 +231,27 @@ OutputInfoPageHeader('闇鍋モード');
 村人1　占い師1　精神鑑定士1　霊能者1　人狼1　白狼1　神話マニア4
 </pre>
 
-<h2><a name="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a></h2>
+<h2><a id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a></h2>
 <p>
 <a href="#chaos_hyper_appear_role">出現役職</a>
 <a href="#chaos_hyper_decide_role">配役決定ルーチン</a>
 </p>
-<h3><a name="chaos_hyper_appear_role">出現役職</a></h3>
+<h3><a id="chaos_hyper_appear_role">出現役職</a></h3>
 <pre>
 実装されているすべての役職が出現します。
 </pre>
 
-<h3><a name="chaos_hyper_decide_role">配役決定ルーチン</a></h3>
+<h3><a id="chaos_hyper_decide_role">配役決定ルーチン</a></h3>
 <pre>
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>と同じです。
 </pre>
 
-<h2><a name="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?></a> (〜Ver. 1.4.0 β11)</h2>
+<h2><a id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?></a> (〜Ver. 1.4.0 β11)</h2>
 <p>
 <a href="#chaos_appear_role">出現役職</a>
 <a href="#chaos_decide_role">配役決定ルーチン</a>
 </p>
-<h3><a name="chaos_appear_role">出現役職</a></h3>
+<h3><a id="chaos_appear_role">出現役職</a></h3>
 <pre>
 出現する可能性のある役職は以下です
 </pre>
@@ -284,7 +284,7 @@ OutputInfoPageHeader('闇鍋モード');
 キューピッド
 </pre>
 
-<h3><a name="chaos_decide_role">配役決定ルーチン</a></h3>
+<h3><a id="chaos_decide_role">配役決定ルーチン</a></h3>
 <pre>
 かなり複雑なので分からなかったらごめんなさい。
 大雑把に説明すると「通常編成＋α」(多少ぶれる＆人数が増えるとレア役職登場)です。
@@ -297,7 +297,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#chaos_other">その他</a>
 </p>
 
-<h4><a name="chaos_wolf">人狼</a></h4>
+<h4><a id="chaos_wolf">人狼</a></h4>
 <pre>
 ※一定数を確保します (人数が増えるごとにブレを大きくするのもありかな？)
 8人未満：1:2 = 80:20 (80%で1人、20%で2人)
@@ -338,7 +338,7 @@ OutputInfoPageHeader('闇鍋モード');
 最大出現人数は1人です。
 </pre>
 
-<h4><a name="chaos_fox">妖狐</a></h4>
+<h4><a id="chaos_fox">妖狐</a></h4>
 <pre>
 ※15人未満はたまに出る程度、それ以降は出現確定
 15人未満：0:1 = 90:10 (90%で0人、10%で1人)
@@ -358,7 +358,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/fox.php#child_fox">子狐</a>が出現した場合は出現人数と同じだけ妖狐が減ります。
 </pre>
 
-<h4><a name="chaos_cupid">キューピッド</a></h4>
+<h4><a id="chaos_cupid">キューピッド</a></h4>
 <pre>
 ※増減の確率の関係で確実に出現するのは40人以上となります。
 (キューピッドの出現自体をオプションで制御できるようにする予定)
@@ -373,7 +373,7 @@ OutputInfoPageHeader('闇鍋モード');
 50人：90%で3人、5%で1人増減(1人か3人)
 </pre>
 
-<h4><a name="chaos_other">その他</a></h4>
+<h4><a id="chaos_other">その他</a></h4>
 <pre>
 参加人数から人狼・妖狐・キューピッドを差し引いた人数です。
 

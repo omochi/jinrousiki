@@ -17,7 +17,7 @@ function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
 
   if($reset_vote) DeleteVote(); //∫£§ﬁ§«§Œ≈Í…º§Ú¡¥…Ù∫ÔΩ¸
   $title  = $SERVER_CONF->title . ' [≈Í…º∑Î≤Ã]';
-  $header = '<div align="center"><a name="#game_top"></a>';
+  $header = '<div align="center"><a id="#game_top"></a>';
   $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
   OutputActionResult($title, $header . $sentence . $footer, '', $unlock);
 }

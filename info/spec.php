@@ -12,14 +12,14 @@ OutputInfoPageHeader('詳細な仕様');
 <a href="#revive_refuse">蘇生辞退システム</a>
 </p>
 
-<h2><a name="decide_role">配役決定ルーチン</a></h2>
+<h2><a id="decide_role">配役決定ルーチン</a></h2>
 <p>
 <a href="#decide_role_room">村</a>
 <a href="#decide_role_dummy_boy">身代わり君</a>
 <a href="#decide_role_user">ユーザ</a>
 </p>
 
-<h3><a name="decide_role_room">村</a></h3>
+<h3><a id="decide_role_room">村</a></h3>
 </p>
 <ol>
 <li>参加人数を取得</li>
@@ -29,7 +29,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>配役決定</li>
 </ol>
 
-<h3><a name="decide_role_dummy_boy">身代わり君</a></h3>
+<h3><a id="decide_role_dummy_boy">身代わり君</a></h3>
 <ol>
 <li>配役を取得</li>
 <li>ランダムな配役リストを作る</li>
@@ -38,7 +38,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>配役決定
 </ol>
 
-<h3><a name="decide_role_user">ユーザ</a></h3>
+<h3><a id="decide_role_user">ユーザ</a></h3>
 <ol>
 <li>身代わり君の配役を決定してユーザリストから「決定済みリスト」へ移動</li>
 <li>ランダムなユーザリストを作る</li>
@@ -48,7 +48,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>全部振り終えたら「未決定リスト」の人に余りを割り振る</li>
 </ol>
 
-<h2><a name="dummy_boy">身代わり君 (GM) の仕様</a></h2>
+<h2><a id="dummy_boy">身代わり君 (GM) の仕様</a></h2>
 <ul>
 <li>常時、ゲーム終了後相当の情報が見えます</li>
 <li>ゲーム開始前のユーザの「役職」は「希望役職」です</li>
@@ -57,14 +57,14 @@ OutputInfoPageHeader('詳細な仕様');
 <li>投票能力がある役職であっても投票することはできません</li>
 </ul>
 
-<h2><a name="dead">死因一覧</a></h2>
+<h2><a id="dead">死因一覧</a></h2>
 <p>
 <a href="#dead_common">共通</a>
 <a href="#dead_day">昼</a>
 <a href="#dead_night">夜</a>
 </p>
 
-<h3><a name="dead_common">共通</a></h3>
+<h3><a id="dead_common">共通</a></h3>
 <h4>〜<?php echo $MESSAGE->sudden_death ?></h4>
 <ul>
 <li>突然死 (投票忘れ)</li>
@@ -76,7 +76,7 @@ OutputInfoPageHeader('詳細な仕様');
 </ul>
 
 
-<h3><a name="dead_day">昼</a></h3>
+<h3><a id="dead_day">昼</a></h3>
 <h4>〜<?php echo $MESSAGE->vote_killed ?></h4>
 <ul>
 <li>処刑 (昼の投票)</li>
@@ -93,7 +93,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>)</li>
 </ul>
 
-<h3><a name="dead_night">夜</a></h3>
+<h3><a id="dead_night">夜</a></h3>
 <h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
 <li>襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
@@ -121,20 +121,20 @@ OutputInfoPageHeader('詳細な仕様');
 <li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>)</li>
 </ul>
 
-<h2><a name="vote">投票処理の仕様</a></h2>
+<h2><a id="vote">投票処理の仕様</a></h2>
 <p>
 <a href="#vote_legend">判例</a>
 <a href="#vote_day">昼</a>
 <a href="#vote_night">夜</a>
 </p>
 
-<h3><a name="vote_legend">判例</a></h3>
+<h3><a id="vote_legend">判例</a></h3>
 <ul>
   <li>「→」死因決定の単位</li>
   <li>「＞」判定優先順位 (判定上書き)</li>
 </ul>
 
-<h3><a name="vote_day">昼</a></h3>
+<h3><a id="vote_day">昼</a></h3>
 <pre>
 + 処理順序
   - 投票集計 → 処刑者決定 → 役職判定 → 後追い
@@ -147,7 +147,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 </pre>
 
-<h3><a name="vote_night">夜</a></h3>
+<h3><a id="vote_night">夜</a></h3>
 <pre>
 + 処理順序
   - 恋人 → 接触 → 夢 → 占い → &lt;日にち別処理&gt; → 憑依 → 後追い → 司祭
@@ -166,7 +166,7 @@ OutputInfoPageHeader('詳細な仕様');
   - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺)
 </pre>
 
-<h2><a name="revive_refuse">蘇生辞退システム</a></h2>
+<h2><a id="revive_refuse">蘇生辞退システム</a></h2>
 <pre>
 死亡後、霊界オフ状態の時に投票画面をクリックすると
 「蘇生を辞退する」(デフォルト) というボタンが出現します。

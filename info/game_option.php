@@ -46,47 +46,47 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#duel"><?php echo $GAME_OPT_MESS->duel ?></a>
 </p>
 
-<h2><a name="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
+<h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->wish_role ?></li>
   <li>村人登録 (プレイヤー登録) の際になりたい役職を選択することができます</li>
   <li>オプションの組み合わせによって希望できる役職の数や種類が違います</li>
 </ul>
 
-<h2><a name="real_time"><?php echo $GAME_OPT_MESS->real_time ?></a></h2>
+<h2><a id="real_time"><?php echo $GAME_OPT_MESS->real_time ?></a></h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->real_time ?></li>
   <li>昼と夜を個別に指定できます</li>
 </ul>
 
-<h2><a name="open_vote"><?php echo $GAME_OPT_MESS->open_vote ?></a></h2>
+<h2><a id="open_vote"><?php echo $GAME_OPT_MESS->open_vote ?></a></h2>
 <ul>
   <li>昼の処刑投票数が公開されます</li>
   <li><?php echo $GAME_OPT_CAPT->open_vote ?></li>
 </ul>
 
-<h2><a name="open_day"><?php echo $GAME_OPT_MESS->open_day ?></a> [Ver. 1.4.0 β12〜]</h2>
+<h2><a id="open_day"><?php echo $GAME_OPT_MESS->open_day ?></a> [Ver. 1.4.0 β12〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->open_day ?></li>
   <li>自分の役職は分かりますが1日目昼は投票できません</li>
   <li>制限時間を過ぎたら自動で夜に切り替わります (通常時のスタート相当)</li>
 </ul>
 
-<h2><a name="dummy_boy"><?php echo $GAME_OPT_MESS->dummy_boy ?></a></h2>
+<h2><a id="dummy_boy"><?php echo $GAME_OPT_MESS->dummy_boy ?></a></h2>
 <ul>
   <li>初日の夜、身代わり君が狼に食べられます</li>
   <li>身代わり君がなれる役職には制限があります</li>
   <li>身代わり君は、基本的には能力は発動しません</li>
 </ul>
 
-<h2><a name="gm_login"><?php echo $GAME_OPT_MESS->gm_login ?></a> [Ver. 1.4.0 α18〜]</h2>
+<h2><a id="gm_login"><?php echo $GAME_OPT_MESS->gm_login ?></a> [Ver. 1.4.0 α18〜]</h2>
 <ul>
   <li>仮想 GM が身代わり君としてログインします</li>
   <li>村を立てる際にログインパスワードを入力します</li>
   <li>身代わり君のユーザ名は「dummy_boy」です</li>
 </ul>
 
-<h2><a name="gerd"><?php echo $GAME_OPT_MESS->gerd ?></a> [Ver. 1.4.0 β12〜]</h2>
+<h2><a id="gerd"><?php echo $GAME_OPT_MESS->gerd ?></a> [Ver. 1.4.0 β12〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->gerd ?></li>
   <li>闇鍋モードの固定配役に村人を一人追加します</li>
@@ -94,78 +94,78 @@ OutputInfoPageHeader('ゲームオプション');
   <li>決闘村・お祭り村の配役は入れ替えません (最初から存在する場合のみ有効です)</li>
 </ul>
 
-<h2><a name="not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a></h2>
+<h2><a id="not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a></h2>
 <ul>
   <li>誰がどの役職なのかが公開されません</li>
   <li>蘇生能力は有効になります</li>
 </ul>
 
-<h2><a name="auto_open_cast"><?php echo $GAME_OPT_MESS->auto_open_cast ?></a> [Ver. 1.4.0 β3〜]</h2>
+<h2><a id="auto_open_cast"><?php echo $GAME_OPT_MESS->auto_open_cast ?></a> [Ver. 1.4.0 β3〜]</h2>
 <ul>
   <li>蘇生能力者などが能力を持っている間だけ霊界が非公開になります</li>
 </ul>
 
-<h2><a name="poison"><?php echo $GAME_OPT_MESS->poison ?></a></h2>
+<h2><a id="poison"><?php echo $GAME_OPT_MESS->poison ?></a></h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->poison ?>人以上になったら埋毒者が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->poison ?></li>
 </ul>
-<h2><a name="assassin"><?php echo $GAME_OPT_MESS->assassin ?></a> [Ver. 1.4.0 β4〜]</h2>
+<h2><a id="assassin"><?php echo $GAME_OPT_MESS->assassin ?></a> [Ver. 1.4.0 β4〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->assassin ?>人以上になったら<a href="new_role/human.php#assassin">暗殺者</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->assassin ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="boss_wolf"><?php echo $GAME_OPT_MESS->boss_wolf ?></a> [Ver. 1.4.0 α3-7〜]</h2>
+<h2><a id="boss_wolf"><?php echo $GAME_OPT_MESS->boss_wolf ?></a> [Ver. 1.4.0 α3-7〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->boss_wolf ?>人以上になったら<a href="new_role/wolf.php#boss_wolf">白狼</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->boss_wolf ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="poison_wolf"><?php echo $GAME_OPT_MESS->poison_wolf ?></a> [Ver. 1.4.0 α14〜]</h2>
+<h2><a id="poison_wolf"><?php echo $GAME_OPT_MESS->poison_wolf ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->poison_wolf ?>人以上になったら<a href="new_role/wolf.php#poison_wolf">毒狼</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->poison_wolf ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="possessed_wolf"><?php echo $GAME_OPT_MESS->possessed_wolf ?></a> [Ver. 1.4.0 β4〜]</h2>
+<h2><a id="possessed_wolf"><?php echo $GAME_OPT_MESS->possessed_wolf ?></a> [Ver. 1.4.0 β4〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->possessed_wolf ?>人以上になったら<a href="new_role/wolf.php#possessed_wolf">憑狼</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->possessed_wolf ?></li>
 </ul>
 </p>
-<h2><a name="sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?></a> [Ver. 1.4.0 β9〜]</h2>
+<h2><a id="sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?></a> [Ver. 1.4.0 β9〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->sirius_wolf ?>人以上になったら<a href="new_role/wolf.php#sirius_wolf">天狼</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->sirius_wolf ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="cupid"><?php echo $GAME_OPT_MESS->cupid ?></a> [Ver. 1.2.0〜]</h2>
+<h2><a id="cupid"><?php echo $GAME_OPT_MESS->cupid ?></a> [Ver. 1.2.0〜]</h2>
 <ul>
   <li>村の人口が14人もしくは<?php echo $CAST_CONF->cupid ?>人以上になったらキューピッドが登場します</li>
   <li><?php echo $GAME_OPT_CAPT->cupid ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="medium"><?php echo $GAME_OPT_MESS->medium ?></a> [Ver. 1.4.0 α14〜]</h2>
+<h2><a id="medium"><?php echo $GAME_OPT_MESS->medium ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->medium ?>人以上になったら<a href="new_role/human.php#medium">巫女</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->medium ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="mania"><?php echo $GAME_OPT_MESS->mania ?></a> [Ver. 1.4.0 α14〜]</h2>
+<h2><a id="mania"><?php echo $GAME_OPT_MESS->mania ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->mania ?>人以上になったら<a href="new_role/human.php#mania">神話マニア</a>が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->mania ?></li>
 </ul>
 </p>
 <p>
-<h2><a name="decide"><?php echo $GAME_OPT_MESS->decide ?></a></h2>
+<h2><a id="decide"><?php echo $GAME_OPT_MESS->decide ?></a></h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->decide ?>人以上になったら決定者が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->decide ?></li>
@@ -173,26 +173,26 @@ OutputInfoPageHeader('ゲームオプション');
 </ul>
 </p>
 <p>
-<h2><a name="authority"><?php echo $GAME_OPT_MESS->authority ?></a></h2>
+<h2><a id="authority"><?php echo $GAME_OPT_MESS->authority ?></a></h2>
 <ul>
   <li>村の人口が<?php echo $CAST_CONF->authority ?>人以上になったら権力者が登場します</li>
   <li><?php echo $GAME_OPT_CAPT->authority ?></li>
   <li>自分が権力者であることはわかります</li>
 </ul>
 
-<h2><a name="liar"><?php echo $GAME_OPT_MESS->liar ?></a> [Ver. 1.4.0 α14〜]</h2>
+<h2><a id="liar"><?php echo $GAME_OPT_MESS->liar ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li>全ユーザに一定の確率 (70% 程度) で<a href="new_role/sub_role.php#liar">狼少年</a>がつきます</li>
 </ul>
 
-<h2><a name="gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a> [Ver. 1.4.0 α14〜]</h2>
+<h2><a id="gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li>全ユーザに登録時の性別に応じた<a href="new_role/sub_role.php#gentleman">紳士</a>か<a href="new_role/sub_role.php#gentleman">淑女</a>がつきます</li>
   <li>闇鍋モードでランダムに付加される時は個々の性別を参照していません</li>
   <li>発動率はランダム付加の場合と同じです</li>
 </ul>
 
-<h2><a name="sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a> [Ver. 1.4.0 α14〜]</h2>
+<h2><a id="sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li>全ユーザに<a href="new_role/sub_role.php#chicken_group">小心者系</a>のどれかがつきます</li>
   <li><a href="new_role/sub_role.php#impatience">短気</a>がつくのは最大で一人です</li>
@@ -200,19 +200,19 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a>と併用できません</li>
 </ul>
 
-<h2><a name="perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a> [Ver. 1.4.0 α19〜]</h2>
+<h2><a id="perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a> [Ver. 1.4.0 α19〜]</h2>
 <ul>
   <li>全ユーザに<a href="new_role/sub_role.php#perverseness">天の邪鬼</a>がつきます</li>
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>と併用できません</li>
 </ul>
 
-<h2><a name="full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a> [Ver. 1.4.0 α17〜]</h2>
+<h2><a id="full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a> [Ver. 1.4.0 α17〜]</h2>
 <ul>
   <li>村人が全員<a href="new_role/human.php#mania">神話マニア</a>になります</li>
   <li>表記が村人となる役職が存在する事に注意してください</li>
 </ul>
 
-<h2><a name="detective"><?php echo $GAME_OPT_MESS->detective ?></a> [Ver. 1.4.0 β10〜]</h2>
+<h2><a id="detective"><?php echo $GAME_OPT_MESS->detective ?></a> [Ver. 1.4.0 β10〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->detective ?></li>
   <li>普通村の場合は、共有者がいれば共有者を、いなければ村人を一人<a href="new_role/human.php#detective_common">探偵</a>に入れ替えます</li>
@@ -222,7 +222,7 @@ OutputInfoPageHeader('ゲームオプション');
   <li>「霊界探偵モード」はゲーム開始直後に探偵が死亡して、霊界に移動します。指示は GM 経由で行います</li>
 </ul>
 
-<h2><a name="festival"><?php echo $GAME_OPT_MESS->festival ?></a> [Ver. 1.4.0 β9〜]</h2>
+<h2><a id="festival"><?php echo $GAME_OPT_MESS->festival ?></a> [Ver. 1.4.0 β9〜]</h2>
 <ul>
   <li>管理人がカスタムする特殊設定です</li>
   <li>初期設定では、以下に示す人数の範囲だけ、固定編成になります</li>
@@ -248,7 +248,7 @@ OutputInfoPageHeader('ゲームオプション');
 15人：マインスイーパ村＠世紀末鯖
 22人：バルサン村＠わかめて鯖
 </pre>
-<h2><a name="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a> [Ver. 1.4.0 α2〜]</h2>
+<h2><a id="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a> [Ver. 1.4.0 α2〜]</h2>
 <ul>
   <li>GM が<a href="new_role/quiz.php#quiz">出題者</a>になります</li>
   <li>GM もゲーム開始投票をする必要があります</li>
@@ -269,7 +269,7 @@ OutputInfoPageHeader('ゲームオプション');
   </ol>
 </ul>
 
-<h2><a name="duel"><?php echo $GAME_OPT_MESS->duel ?></a> [Ver. 1.4.0 α19〜]</h2>
+<h2><a id="duel"><?php echo $GAME_OPT_MESS->duel ?></a> [Ver. 1.4.0 α19〜]</h2>
 <ul>
   <li><a href="new_role/human.php#assassin">暗殺者</a>、人狼、<a href="new_role/wolf.php#trap_mad">罠師</a>しか出現しません</li>
   <li>「霊界で配役を公開しない」オプションの設定によって配役が変わります。デフォルトは以下です</li>

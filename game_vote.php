@@ -81,7 +81,7 @@ $DB_CONF->Disconnect(); //DB 接続解除
 function OutputVoteError($title, $sentence = NULL){
   global $RQ_ARGS;
 
-  $header = '<div align="center"><a name="game_top"></a>';
+  $header = '<div align="center"><a id="game_top"></a>';
   $footer = "<br>\n" . $RQ_ARGS->back_url . '</div>';
   if(is_null($sentence)) $sentence = 'プログラムエラーです。管理者に問い合わせてください。';
   OutputActionResult('投票エラー [' . $title .']', $header . $sentence . $footer);
@@ -569,7 +569,7 @@ function OutputVotePageHeader(){
 <link rel="stylesheet" href="css/game_vote.css">
 <link rel="stylesheet" id="day_night">
 </head><body>
-<a name="game_top"></a>
+<a id="game_top"></a>
 <form method="POST" action="{$RQ_ARGS->post_url}">
 <input type="hidden" name="vote" value="on">
 

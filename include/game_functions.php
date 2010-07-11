@@ -251,8 +251,7 @@ function OutputGamePageHeader(){
     $on_load .= 'output_realtime();';
     OutputRealTimer($start_time, $end_time);
   }
-  echo '</head>'."\n" . '<body onLoad="' . $on_load . '">'."\n" .
-    '<a name="#game_top"></a>'."\n";
+  echo '</head>'."\n" . '<body onLoad="' . $on_load . '">'."\n".'<a id="#game_top"></a>'."\n";
 }
 
 //リアルタイム表示に使う JavaScript の変数を出力

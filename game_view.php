@@ -59,7 +59,7 @@ if($ROOM->IsPlaying()){ //経過時間を取得
 echo <<<EOF
 </head>
 <body{$on_load}>
-<a name="#game_top"></a>
+<a id="#game_top"></a>
 <table class="login"><tr>
 {$ROOM->GenerateTitleTag()}
 <td class="login-link">

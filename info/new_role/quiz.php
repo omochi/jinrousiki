@@ -13,11 +13,11 @@ OutputHTMLHeader('新役職情報 - [出題者陣営]', 'new_role');
 <p>
 <a href="#quiz_group">出題者系</a>
 </p>
-<h2><a name="quiz_group">出題者系</a></h2>
+<h2><a id="quiz_group">出題者系</a></h2>
 <p>
 <a href="#quiz">出題者</a>
 </p>
-<h3><a name="quiz">出題者</a> (占い結果：村人、霊能結果：村人) [Ver. 1.4.0 α2〜]</h3>
+<h3><a id="quiz">出題者</a> (占い結果：村人、霊能結果：村人) [Ver. 1.4.0 α2〜]</h3>
 <pre>
 クイズ村の GM です。闇鍋村にも低確率で出現します。
 勝利条件は「出題者以外が全滅していること」。
