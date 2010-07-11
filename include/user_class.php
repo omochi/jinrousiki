@@ -544,12 +544,13 @@ class UserDataSet{
     $this->LoadRoom($request);
   }
 
+  //村情報のロード処理
   function LoadRoom($request){
-    if($request->IsVirtualRoom()){
+    if($request->IsVirtualRoom()){ //仮想モード
       $user_list = $request->TestItems->test_users;
       if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
-    elseif($request->entry_user){
+    elseif($request->entry_user){ //入村処理用
       $user_list = $this->RetriveByEntryUser($request->room_no);
     }
     else{
@@ -603,7 +604,7 @@ class UserDataSet{
 	LEFT JOIN user_entry users USING(room_no, uname)
 	LEFT JOIN user_icon icons USING(icon_no)
       ORDER BY RAND()
-      LIMIT $user_count";
+      LIMIT {$user_count}";
     return FetchObject($query, 'User');
   }
 
@@ -626,7 +627,7 @@ class UserDataSet{
 
     foreach($user_list as $user){
       $user->ParseCompoundParameters();
-      if($user->user_no >= 0 && $user->live != 'kick'){
+      if($user->user_no >= 0 && $user->live != 'kick'){ //KICK 判定
 	$this->rows[$user->user_no] = $user;
       }
       else{
@@ -642,14 +643,17 @@ class UserDataSet{
     foreach($this->rows as $user) $user->ParseCompoundParameters();
   }
 
+  //ユーザ ID - ユーザ名変換
   function NumberToUname($user_no){
     return $this->rows[$user_no]->uname;
   }
 
+  //ユーザ名 - ユーザ ID 変換
   function UnameToNumber($uname){
     return $this->names[$uname];
   }
 
+  //HN - ユーザ名変換
   function HandleNameToUname($handle_name){
     foreach($this->rows as $user){
       if($handle_name == $user->handle_name) return $user->uname;
@@ -657,24 +661,29 @@ class UserDataSet{
     return NULL;
   }
 
+  //ユーザ情報取得 (ユーザ ID 経由)
   function ByID($user_no){
     if(is_null($user_no)) return new User();
     return $user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no];
   }
 
+  //ユーザ情報取得 (ユーザ名経由)
   function ByUname($uname){
     return $this->ByID($this->UnameToNumber($uname));
   }
 
+  //ユーザ情報取得 (HN 経由)
   function ByHandleName($handle_name){
     return $this->ByUname($this->HandleNameToUname($handle_name));
   }
 
+  //ユーザ情報取得 (クッキー経由)
   function BySession(){
     global $SESSION;
     return $this->TraceExchange($SESSION->GetUser());
   }
 
+  //憑依情報追跡
   function TraceVirtual($user_no, $type){
     global $ROOM;
 
@@ -691,6 +700,7 @@ class UserDataSet{
     return $id === false ? $user : $this->ByID($id);
   }
 
+  //交換憑依情報追跡
   function TraceExchange($user_no){
     global $ROOM;
 
@@ -703,31 +713,38 @@ class UserDataSet{
     return is_array($stack) && $ROOM->date > 2 ? $this->ByID(array_shift($stack)) : $user;
   }
 
+  //ユーザ情報取得 (憑依先ユーザ ID 経由)
   function ByVirtual($user_no){
     return $this->TraceVirtual($user_no, 'possessed_target');
   }
 
+  //ユーザ情報取得 (憑依元ユーザ ID 経由)
   function ByReal($user_no){
     return $this->TraceVirtual($user_no, 'possessed');
   }
 
+  //ユーザ情報取得 (憑依先ユーザ名経由)
   function ByVirtualUname($uname){
     return $this->ByVirtual($this->UnameToNumber($uname));
   }
 
+  //ユーザ情報取得 (憑依元ユーザ名経由)
   function ByRealUname($uname){
     return $this->ByReal($this->UnameToNumber($uname));
   }
 
+  //HN 取得
   function GetHandleName($uname, $virtual = false){
     $user = $virtual ? $this->ByVirtualUname($uname) : $this->ByUname($uname);
     return $user->handle_name;
   }
 
+  //役職情報取得
   function GetRole($uname){
     return $this->ByUname($uname)->role;
   }
 
+  //ユーザ数カウント
   function GetUserCount($strict = false){
     if(! $strict) return count($this->rows);
     $count = 0;
@@ -806,7 +823,7 @@ class UserDataSet{
     }
   }
 
-  //役職の出現判定関数
+  //役職の出現判定関数 (現在は不使用)
   function IsAppear($role){
     $role_list = func_get_args();
     foreach($this->rows as $user){
@@ -848,54 +865,60 @@ class UserDataSet{
     return $this->ByID($user_no)->IsLive($strict);
   }
 
+  //生存者を取得する
   function GetLivingUsers($strict = false){
-    $array = array();
+    $stack = array();
     foreach($this->rows as $user){
-      if($user->IsLive($strict)) $array[] = $user->uname;
+      if($user->IsLive($strict)) $stack[] = $user->uname;
     }
-    return $array;
+    return $stack;
   }
 
+  //生存している狼を取得する
   function GetLivingWolves(){
-    $array = array();
+    $stack = array();
     foreach($this->rows as $user){
-      if($user->IsLive() && $user->IsWolf()) $array[] = $user->uname;
+      if($user->IsLive() && $user->IsWolf()) $stack[] = $user->uname;
     }
-    return $array;
+    return $stack;
   }
 
   //死亡処理
-  function Kill($user_no, $reason = NULL){
+  function Kill($user_no, $reason){
     global $ROOM;
 
     $user = $this->ByReal($user_no);
     if(! $user->ToDead()) return false;
 
-    if($reason){
-      $virtual_user = $this->ByVirtual($user->user_no);
-      $ROOM->SystemMessage($virtual_user->handle_name, $reason);
+    $virtual_user = $this->ByVirtual($user->user_no);
+    $ROOM->SystemMessage($virtual_user->handle_name, $reason);
 
-      //遺言処理
-      if($reason == 'POSSESSED_TARGETED') return true;
+    switch($reason){
+    case 'SUDDEN_DEATH_NOVOTED':
+    case 'POSSESSED_TARGETED':
+      return true;
+
+    default: //遺言処理
       $user->SaveLastWords($virtual_user->handle_name);
       if($user != $virtual_user) $virtual_user->SaveLastWords();
+      return true;
     }
-    return true;
   }
 
   //突然死処理
-  function SuddenDeath($user_no, $reason = NULL){
+  function SuddenDeath($user_no, $reason){
     global $MESSAGE, $ROOM;
 
     $user = $this->ByReal($user_no);
     if(! $this->Kill($user_no, $reason)) return false;
     $user->suicide_flag = true;
 
-    $sentence = $reason ? 'vote_sudden_death' : 'sudden_death';
-    $ROOM->Talk($this->GetHandleName($user->uname, true) . $MESSAGE->$sentence);
+    $sentence = $reason == 'SUDDEN_DEATH_NOVOTED' ? 'sudden_death' : 'vote_sudden_death';
+    $ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . $MESSAGE->$sentence);
     return true;
   }
 
+  //保存処理 (実用されていません)
   function Save(){
     foreach($this->rows as $user) $user->Save();
   }

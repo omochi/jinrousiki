@@ -380,7 +380,7 @@ function CheckSilence(){
 
 	//未投票者を全員突然死させる
 	foreach($novote_uname_list as $uname){
-	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no);
+	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'SUDDEN_DEATH_NOVOTED');
 	}
 	LoversFollowed(true);
 	InsertMediumMessage();

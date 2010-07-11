@@ -1049,7 +1049,7 @@ function OutputDeadMan(){
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
 		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
 		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
-		     'FLOWERED_%' => false));
+		     'FLOWERED_%' => false, 'SUDDEN_DEATH_NOVOTED' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
@@ -1130,6 +1130,11 @@ function OutputDeadManType($name, $type){
 
   case 'POSSESSED_TARGETED':
     if($open_reason) echo '<tr><td>'.$name.' '.$MESSAGE->possessed_targeted.'</td>';
+    break;
+
+  case 'SUDDEN_DEATH_NOVOTED':
+    echo '<tr class="dead-type-sudden-death">';
+    echo '<td>'.$name.' '.$MESSAGE->novoted.'</td>';
     break;
 
   case 'SUDDEN_DEATH_CHICKEN':

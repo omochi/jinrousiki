@@ -88,6 +88,8 @@ class Message{
   var $sacrifice          = 'は誰かの犠牲となって死亡したようです'; //身代わり死
   var $lovers_followed    = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
   var $vote_sudden_death  = 'はショック死しました'; //投票系ショック死
+  //var $novoted            = 'は突然お亡くなりになられました'; //未投票突然死
+  var $novoted            = 'はスキマ送りされました'; //未投票突然死
   var $chicken            = 'は小心者だったようです'; //小心者
   var $rabbit             = 'はウサギだったようです'; //ウサギ
   var $perverseness       = 'は天邪鬼だったようです'; //天邪鬼
