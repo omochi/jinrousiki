@@ -283,17 +283,20 @@ class CastConfig extends CastConfigBase{
     'stargazer_mage'     =>  5,
     'voodoo_killer'      => 10,
     'dummy_mage'         => 10,
-    'necromancer'        => 35,
+    'necromancer'        => 30,
     'soul_necromancer'   =>  5,
     'yama_necromancer'   => 10,
     'dummy_necromancer'  => 10,
-    'medium'             => 20,
+    'medium'             => 15,
+    'seal_medium'        =>  5,
+    'revive_medium'      =>  5,
     'priest'             => 10,
     'bishop_priest'      =>  5,
     'border_priest'      =>  5,
     'crisis_priest'      =>  5,
     'revive_priest'      => 10,
-    'guard'              => 30,
+    'guard'              => 20,
+    'hunter_guard'       => 10,
     'poison_guard'       =>  5,
     'fend_guard'         => 10,
     'reporter'           => 10,
@@ -315,9 +318,10 @@ class CastConfig extends CastConfigBase{
     'sacrifice_cat'      =>  5,
     'pharmacist'         => 15,
     'cure_pharmacist'    =>  5,
-    'assassin'           => 10,
+    'assassin'           =>  7,
     'doom_assassin'      =>  5,
     'reverse_assassin'   =>  5,
+    'soul_assassin'      =>  3,
     'eclipse_assassin'   =>  5,
     'mind_scanner'       =>  8,
     'evoke_scanner'      =>  6,
@@ -326,9 +330,10 @@ class CastConfig extends CastConfigBase{
     'telepath_scanner'   =>  2,
     'jealousy'           => 10,
     'poison_jealousy'    =>  5,
-    'doll'               => 10,
-    'poison_doll'        =>  5,
+    'doll'               =>  7,
     'friend_doll'        =>  5,
+    'poison_doll'        =>  5,
+    'doom_doll'          =>  3,
     'doll_master'        => 10,
     'wolf'               => 10,
     'boss_wolf'          =>  5,
@@ -360,10 +365,10 @@ class CastConfig extends CastConfigBase{
     'dream_eater_mad'    => 10,
     'trap_mad'           => 10,
     'possessed_mad'      =>  5,
-    'fox'                =>  6,
-    'white_fox'          =>  4,
-    'black_fox'          =>  4,
-    'gold_fox'           =>  4,
+    'fox'                =>  7,
+    'white_fox'          =>  3,
+    'black_fox'          =>  3,
+    'gold_fox'           =>  3,
     'phantom_fox'        =>  2,
     'poison_fox'         =>  4,
     'blue_fox'           =>  3,
@@ -373,11 +378,14 @@ class CastConfig extends CastConfigBase{
     'possessed_fox'      =>  2,
     'cursed_fox'         =>  2,
     'elder_fox'          =>  3,
-    'cute_fox'           =>  5,
+    'cute_fox'           =>  4,
     'scarlet_fox'        =>  4,
     'silver_fox'         =>  4,
-    'child_fox'          => 10,
-    'sex_fox'            =>  4,
+    'child_fox'          =>  5,
+    'sex_fox'            =>  3,
+    'stargazer_fox'      =>  3,
+    'jammer_fox'         =>  3,
+    'miasma_fox'         =>  3,
     'cupid'              =>  3,
     'self_cupid'         =>  5,
     'moon_cupid'         =>  3,
@@ -390,17 +398,21 @@ class CastConfig extends CastConfigBase{
     'ark_angel'          =>  3,
     'quiz'               =>  2,
     'chiroptera'         => 10,
-    'poison_chiroptera'  =>  5,
+    'poison_chiroptera'  =>  4,
     'cursed_chiroptera'  =>  3,
     'boss_chiroptera'    =>  2,
-    'elder_chiroptera'   =>  5,
-    'dummy_chiroptera'   => 10,
+    'elder_chiroptera'   =>  3,
+    'dummy_chiroptera'   =>  5,
     'fairy'              =>  2,
     'spring_fairy'       =>  2,
     'summer_fairy'       =>  2,
     'autumn_fairy'       =>  2,
     'winter_fairy'       =>  2,
     'flower_fairy'       =>  2,
+    'star_fairy'         =>  2,
+    'sun_fairy'          =>  2,
+    'moon_fairy'         =>  2,
+    'grass_fairy'        =>  2,
     'light_fairy'        =>  2,
     'dark_fairy'         =>  2,
     'mirror_fairy'       =>  2,
@@ -416,7 +428,7 @@ class CastConfig extends CastConfigBase{
   //Ìò¿¦¥°¥ë¡¼¥×¤ÎºÇÂç½Ð¸½Î¨ (¥°¥ë¡¼¥× => ºÇÂç¿Í¸ýÈæ)
   var $chaos_role_group_rate_list = array(
     'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.1, 'child_fox' => 0.08, 'cupid' => 0.1, 'angel' => 0.07,
-    'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15,
+    'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
     'priest' => 0.1, 'guard' => 0.15, 'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1,
     'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15);
 
@@ -436,94 +448,90 @@ class CastConfig extends CastConfigBase{
 
   //¤ªº×¤êÂ¼ÀìÍÑÇÛÌò¥Æ¡¼¥Ö¥ë
   var $festival_role_list = array(
-        8 => array('human' => 1, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'boss_wolf' => 1, 'mad' => 1, 'white_fox' => 1, 'chiroptera' => 1),
-        9 => array('guard' => 2, 'dummy_guard' => 4, 'wolf' => 1, 'silver_wolf' => 1, 'cursed_fox' => 1),
-       10 => array('mage' => 1, 'necromancer' => 1, 'guard' => 1, 'doll' => 1, 'doll_master' => 1, 'wolf' => 2, 'mad' => 1, 'fox' => 1, 'chiroptera' => 1),
-       11 => array('unconscious' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'crisis_priest' => 1, 'guard' => 1, 'anti_voodoo' => 1, 'cure_pharmacist' => 1, 'cursed_wolf' => 1, 'silver_wolf' => 1, 'jammer_mad' => 1, 'cursed_chiroptera' => 1),
-       12 => array('wise_wolf' => 1, 'jammer_mad' => 8, 'voodoo_fox' => 2, 'fairy' => 1),
-       13 => array('human' => 1, 'mage' => 1, 'psycho_mage' => 1, 'dummy_mage' => 1,'necromancer' => 1, 'dummy_necromancer' => 1, 'guard' => 1, 'dummy_guard' => 1, 'common'=> 1, 'wolf' => 1, 'poison_wolf' => 1,'trap_mad' => 1, 'cursed_chiroptera' => 1),
-       14 => array('necromancer' => 1, 'silver_wolf' => 2, 'fox' => 1, 'chiroptera' => 10),
-       15 => array('poison' => 3, 'wolf' => 3, 'fanatic_mad' => 1, 'fox' => 1, 'chiroptera' => 6, 'boss_chiroptera' => 1),
-       16 => array('dummy_guard' => 1, 'strong_poison' => 1, 'dummy_poison' => 5, 'sirius_wolf' => 3, 'dream_eater_mad' => 1, 'triangle_cupid' => 1, 'mirror_fairy' => 4),
-       17 => array('sex_mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'wolf' => 2, 'gold_wolf' => 1, 'fox' => 1, 'chiroptera' => 7),
-       18 => array('saint' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'fend_guard' => 1, 'trap_common' => 1, 'ghost_common' => 1, 'incubate_poison' => 1, 'reverse_assassin' => 1, 'wise_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'jammer_mad' => 1, 'voodoo_mad' => 1, 'voodoo_fox' => 1, 'revive_fox' => 1, 'angel' => 1, 'light_fairy' => 1, 'trick_mania' => 1),
-       19 => array('revive_priest' => 1, 'anti_voodoo' => 1, 'dummy_poison' => 1, 'eclipse_assassin' => 2, 'poison_cat' => 1, 'jealousy' => 1, 'poison_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'fanatic_mad' => 1, 'agitate_mad' => 1, 'cursed_fox' => 2, 'quiz' => 1, 'mind_cupid' => 1, 'light_fairy' => 1, 'dark_fairy' => 1, 'mirror_fairy' => 1),
-       20 => array('emerald_wolf' => 1, 'blue_wolf' => 1, 'silver_wolf' => 2, 'voodoo_mad' => 2, 'emerald_fox' => 1, 'blue_fox' => 1, 'silver_fox' => 1, 'chiroptera' => 5, 'boss_chiroptera' => 1, 'fairy' => 5),
-       21 => array('poison' => 7, 'chain_poison' => 2, 'poison_wolf' => 4, 'resist_wolf' => 1, 'poison_fox' => 2, 'quiz' => 3, 'poison_chiroptera' => 2),
-       22 => array('human' => 8, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'poison_cat' => 1, 'wolf' => 4, 'boss_wolf' => 1, 'fox' => 1, 'child_fox' => 1)
+     8 => array('human' => 1, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'boss_wolf' => 1, 'mad' => 1, 'white_fox' => 1, 'chiroptera' => 1),
+     9 => array('guard' => 2, 'dummy_guard' => 4, 'wolf' => 1, 'silver_wolf' => 1, 'cursed_fox' => 1),
+    10 => array('human' => 2, 'escaper' => 1, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'wolf' => 2, 'mad' => 1, 'fox' => 1),
+    11 => array('unconscious' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'crisis_priest' => 1, 'guard' => 1, 'anti_voodoo' => 1, 'cure_pharmacist' => 1, 'cursed_wolf' => 1, 'silver_wolf' => 1, 'jammer_mad' => 1, 'cursed_chiroptera' => 1),
+    12 => array('wise_wolf' => 1, 'jammer_mad' => 8, 'voodoo_fox' => 2, 'fairy' => 1),
+    13 => array('human' => 4, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'doll' => 1, 'doll_master' => 1, 'wolf' => 2, 'fanatic_mad' => 1, 'chiroptera' => 1),
+    14 => array('necromancer' => 1, 'silver_wolf' => 2, 'fox' => 1, 'chiroptera' => 10),
+    15 => array('poison' => 3, 'wolf' => 3, 'fanatic_mad' => 1, 'fox' => 1, 'chiroptera' => 6, 'boss_chiroptera' => 1),
+    16 => array('dummy_guard' => 1, 'strong_poison' => 1, 'dummy_poison' => 5, 'sirius_wolf' => 3, 'dream_eater_mad' => 1, 'triangle_cupid' => 1, 'mirror_fairy' => 4),
+    17 => array('sex_mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'wolf' => 2, 'gold_wolf' => 1, 'fox' => 1, 'chiroptera' => 7),
+    18 => array('saint' => 1, 'soul_mage' => 1, 'soul_necromancer' => 1, 'fend_guard' => 1, 'trap_common' => 1, 'ghost_common' => 1, 'incubate_poison' => 1, 'reverse_assassin' => 1, 'wise_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'jammer_mad' => 1, 'voodoo_mad' => 1, 'voodoo_fox' => 1, 'revive_fox' => 1, 'angel' => 1, 'light_fairy' => 1, 'trick_mania' => 1),
+    19 => array('revive_priest' => 1, 'anti_voodoo' => 1, 'dummy_poison' => 1, 'eclipse_assassin' => 2, 'poison_cat' => 1, 'jealousy' => 1, 'poison_wolf' => 1, 'possessed_wolf' => 1, 'sirius_wolf' => 1, 'fanatic_mad' => 1, 'agitate_mad' => 1, 'cursed_fox' => 2, 'quiz' => 1, 'mind_cupid' => 1, 'light_fairy' => 1, 'dark_fairy' => 1, 'mirror_fairy' => 1),
+    20 => array('emerald_wolf' => 1, 'blue_wolf' => 1, 'silver_wolf' => 2, 'voodoo_mad' => 2, 'emerald_fox' => 1, 'blue_fox' => 1, 'silver_fox' => 1, 'chiroptera' => 5, 'boss_chiroptera' => 1, 'fairy' => 5),
+    21 => array('poison' => 7, 'chain_poison' => 2, 'poison_wolf' => 4, 'resist_wolf' => 1, 'poison_fox' => 2, 'quiz' => 3, 'poison_chiroptera' => 2),
+    22 => array('human' => 8, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'poison_cat' => 1, 'wolf' => 4, 'boss_wolf' => 1, 'fox' => 1, 'child_fox' => 1)
 				);
 
+  //·èÆ®Â¼ÇÛÌò¥Ç¡¼¥¿ (¼ÂºÝ¤Ï InitializeDuel() ¤ÇÀßÄê¤¹¤ë)
+  var $duel_fix_list = array(); //¸ÇÄêÇÛÌò
+  var $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5); //ÇÛÌòÈæÎ¨
+
   //-- ´Ø¿ô --//
-  //·èÆ®Â¼
-  function SetDuel($user_count){
+  //·èÆ®Â¼¤ÎÇÛÌò½é´ü²½½èÍý
+  function InitializeDuel($user_count){
     global $ROOM;
 
-    $role_list = array(); //½é´ü²½½èÍý
-    $duel_fix_list = array();
-
-    //Îî³¦¼«Æ°¸ø³«¥ª¥×¥·¥ç¥ó¤Ë¤è¤ëÇÛÌòÀßÄêÊ¬´ô
-    if($ROOM->IsOption('not_open_cast')){
-      //ËäÆÇ·èÆ®
-      $duel_fix_list = array(); //¸ÇÄêÇÛÌò
+    //-- Îî³¦¼«Æ°¸ø³«¥ª¥×¥·¥ç¥ó¤Ë¤è¤ëÇÛÌòÀßÄêÊ¬´ô --//
+    if($ROOM->IsOption('not_open_cast')){ //Èó¸ø³«
+      //-- ËäÆÇ·èÆ® --//
+      $duel_fix_list = array();
       if($user_count >= 20){
 	$duel_fix_list['poison_jealousy'] = 1;
 	$duel_fix_list['moon_cupid'] = 1;
       }
       if($user_count >= 25) $duel_fix_list['quiz'] = 1;
-      $duel_rate_list = array('poison_wolf' => 5, 'chain_poison' => 10,
-			      'triangle_cupid' => 2 ,'poison' => 5);
+
+      $duel_rate_list = array('poison' => 5, 'chain_poison' => 10,
+			      'poison_wolf' => 5, 'triangle_cupid' => 2);
     }
-    elseif($ROOM->IsOption('auto_open_cast')){
-      //Îø¿§·èÆ®
-      $duel_rate_list = array('assassin' => 4, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
-			      'triangle_cupid' => 1, 'exchange_angel' => 1); //ÇÛÊ¬ÈæÎ¨
-      $duel_fix_list = array('moon_cupid' => 1,  'dummy_chiroptera' => 1);
-      if($user_count >= 10) $duel_fix_list['sirius_wolf'] = 1;
+    elseif($ROOM->IsOption('auto_open_cast')){ //¼«Æ°¸ø³«
+      //-- Îø¿§·èÆ® --//
+      $duel_fix_list = array();
       if($user_count >= 15) $duel_fix_list['howl_scanner'] = 1;
-      if($user_count >= 20) $duel_fix_list['quiz'] = 1;
+      if($user_count >= 20){
+	$duel_fix_list['sirius_wolf'] = 1;
+	$duel_fix_list['moon_cupid'] = 1;
+      }
+      if($user_count >= 25) $duel_fix_list['quiz'] = 1;
+
+      $duel_rate_list = array('assassin' => 5, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
+			      'triangle_cupid' => 1);
     }
-    else{
-      //°Å»¦·èÆ®
+    else{ //¾ï»þ¸ø³«
+      //-- °Å»¦·èÆ® --//
       $duel_fix_list = array();
       $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5);
     }
 
-    if(array_sum($duel_fix_list) <= $user_count){
-      foreach($duel_fix_list as $role => $count){
-	$role_list[$role] = $count;
-      }
-    }
-    $rest_user_count = $user_count - array_sum($role_list);
-    asort($duel_rate_list);
-    $total_rate = array_sum($duel_rate_list);
-    $max_rate_role = array_pop(array_keys($duel_rate_list));
-    foreach($duel_rate_list as $role => $rate){
-      if($role == $max_rate_role) continue;
-      $role_list[$role] = round($rest_user_count / $total_rate * $rate);
-    }
-    $role_list[$max_rate_role] = $user_count - array_sum($role_list);
+    //·ë²Ì¤òÅÐÏ¿
+    $this->duel_fix_list  = $duel_fix_list;
+    $this->duel_rate_list = $duel_rate_list;
+  }
 
-    //¡Ú°Ê²¼¡¢·èÆ®¤Î»ÅÍÍ¤ËÈ¼¤¦ÆÈ¼«¥³¡¼¥É¡ÛËäÆÇ¡¦Ïµ¤ÎÃÖ´¹½èÍý¡£
-    //Îø¿§·èÆ®¡§Ïµ1¢ª¶äÏµ1¡£
-    if(false){
-      if($role_list['wolf'] > 0){
+  //·èÆ®Â¼¤ÎÇÛÌòºÇ½ª½èÍý
+  function FinalizeDuel($user_count, &$role_list){
+    global $ROOM;
+
+    if($ROOM->IsOption('not_open_cast')){ //Èó¸ø³«
+    }
+    elseif($ROOM->IsOption('auto_open_cast')){ //¼«Æ°¸ø³«
+      if($role_list['self_cupid'] > 0 && $role_list['assassin'] > 1){
+	$role_list['assassin']--;
+	$role_list['dummy_chiroptera']++;
+      }
+      if($role_list['mind_cupid'] > 2){
+	$role_list['mind_cupid']--;
+	$role_list['exchange_angel']++;
+      }
+      if($role_list['wolf'] > 1){
 	$role_list['wolf']--;
 	$role_list['silver_wolf']++;
       }
-      elseif($role_list['poison_wolf'] == 0){
-	//Îø¿§·èÆ®¡§Ïµ¥¼¥í¤Î»þ¤ÎÎã³°½èÍý¡£
-	$role_list['wolf']++;
-	$role_list['medium']--;
-      }
-      //ËäÆÇ·èÆ®¡§ÆÇ°ì¿ÍÅö¤¿¤ê4Ê¬¤Î1¤Î³ÎÎ¨¤Ç¡¢ÆÇ¶¶É±¤ËÃÖ´¹¡£
-      for($i = $role_list['poison']; $i > 0; $i--){
-	$rand = mt_rand(1,4);
-	if($rand == 1){
-	  $role_list['poison']--;
-	  $role_list['poison_jealousy']++;
-	}
-      }
     }
-    return $role_list;
+    else{ //¾ï»þ¸ø³«
+    }
   }
 }

@@ -1,5 +1,5 @@
 <?php
-//-- ¥Ç¡¼¥¿¥Ù¡¼¥¹½èÍı¤Îµ¬Äê¥¯¥é¥¹ --//
+//-- ¥Ç¡¼¥¿¥Ù¡¼¥¹½èÍı¤Î´ğÄì¥¯¥é¥¹ --//
 class DatabaseConfigBase{
   //¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³
   /*
@@ -93,6 +93,7 @@ class Session{
     return $this->id;
   }
 
+  //Ç§¾Ú¤·¤¿¥æ¡¼¥¶¤Î ID ¼èÆÀ
   function GetUser(){
     return $this->user_no;
   }
@@ -135,7 +136,7 @@ class CookieDataSet{
   }
 }
 
-//-- ³°Éô¥ê¥ó¥¯À¸À®¥¯¥é¥¹ --//
+//-- ³°Éô¥ê¥ó¥¯À¸À®¤Î´ğÄì¥¯¥é¥¹ --//
 class ExternalLinkBuilder{
   //¥µ¡¼¥ĞÄÌ¿®¾õÂÖ¥Á¥§¥Ã¥¯
   function CheckConnection($url){
@@ -153,6 +154,7 @@ class ExternalLinkBuilder{
     return ! $stream_stack['timed_out'];
   }
 
+  //HTML ¥¿¥°À¸À®
   function Generate($title, $data){
     return <<<EOF
 <fieldset>
@@ -163,11 +165,13 @@ class ExternalLinkBuilder{
 EOF;
   }
 
+  //BBS ¥ê¥ó¥¯À¸À®
   function GenerateBBS($data){
     $title = '<a href="' . $this->view_url . $this->thread . 'l50' . '">¹ğÃÎ¥¹¥ì¥Ã¥É¾ğÊó</a>';
     return $this->Generate($title, $data);
   }
 
+  //³°ÉôÂ¼¥ê¥ó¥¯À¸À®
   function GenerateSharedServerRoom($name, $url, $data){
     return $this->Generate('¥²¡¼¥à°ìÍ÷ (<a href="' . $url . '">' . $name . '</a>)', $data);
   }
@@ -463,6 +467,490 @@ class PageLinkBuilder{
   }
 }
 
+//-- Ìò¿¦¥Ç¡¼¥¿¥Ù¡¼¥¹ --//
+class RoleData{
+  //-- Ìò¿¦Ì¾¤ÎËİÌõ --//
+  //¥á¥¤¥óÌò¿¦¤Î¥ê¥¹¥È (¥³¡¼¥ÉÌ¾ => É½¼¨Ì¾)
+  //½éÆü¤ÎÌò¿¦ÄÌÃÎ¥ê¥¹¥È¤Ï¤³¤Î½çÈÖ¤ÇÉ½¼¨¤µ¤ì¤ë
+  var $main_role_list = array(
+    'human'              => 'Â¼¿Í',
+    'elder'              => 'Ä¹Ï·',
+    'saint'              => 'À»½÷',
+    'executor'           => '¼¹¹Ô¼Ô',
+    'escaper'            => 'Æ¨Ë´¼Ô',
+    'suspect'            => 'ÉÔ¿³¼Ô',
+    'unconscious'        => 'Ìµ°Õ¼±',
+    'mage'               => 'Àê¤¤»Õ',
+    'soul_mage'          => 'º²¤ÎÀê¤¤»Õ',
+    'psycho_mage'        => 'Àº¿À´ÕÄê»Î',
+    'sex_mage'           => '¤Ò¤è¤³´ÕÄê»Î',
+    'stargazer_mage'     => 'ÀêÀ±½Ñ»Õ',
+    'voodoo_killer'      => '±¢ÍÛ»Õ',
+    'dummy_mage'         => 'Ì´¸«¿Í',
+    'necromancer'        => 'ÎîÇ½¼Ô',
+    'soul_necromancer'   => '±À³°¶À',
+    'yama_necromancer'   => 'ïåËâ',
+    'dummy_necromancer'  => 'Ì´Ëí¿Í',
+    'medium'             => 'Öà½÷',
+    'seal_medium'        => 'Éõ°õ»Õ',
+    'revive_medium'      => 'É÷½Ë',
+    'priest'             => '»Êº×',
+    'bishop_priest'      => '»Ê¶µ',
+    'border_priest'      => '¶­³¦»Õ',
+    'crisis_priest'      => 'ÍÂ¸À¼Ô',
+    'revive_priest'      => 'Å·¿Í',
+    'guard'              => '¼í¿Í',
+    'hunter_guard'       => 'ÎÄ»Õ',
+    'poison_guard'       => 'µ³»Î',
+    'fend_guard'         => 'Ç¦¼Ô',
+    'reporter'           => '¥Ö¥ó²°',
+    'anti_voodoo'        => 'Ìñ¿À',
+    'dummy_guard'        => 'Ì´¼é¿Í',
+    'common'             => '¶¦Í­¼Ô',
+    'detective_common'   => 'ÃµÄå',
+    'trap_common'        => 'ºö»Î',
+    'ghost_common'       => 'Ë´Îî¾î',
+    'dummy_common'       => 'Ì´¶¦Í­¼Ô',
+    'poison'             => 'ËäÆÇ¼Ô',
+    'strong_poison'      => '¶¯ÆÇ¼Ô',
+    'incubate_poison'    => 'ÀøÆÇ¼Ô',
+    'guide_poison'       => 'Í¶ÆÇ¼Ô',
+    'chain_poison'       => 'Ï¢ÆÇ¼Ô',
+    'dummy_poison'       => 'Ì´ÆÇ¼Ô',
+    'poison_cat'         => 'Ç­Ëô',
+    'revive_cat'         => 'ÀçÃ¬',
+    'sacrifice_cat'      => 'Ç­¿À',
+    'pharmacist'         => 'Ìô»Õ',
+    'cure_pharmacist'    => '²ÏÆ¸',
+    'assassin'           => '°Å»¦¼Ô',
+    'doom_assassin'      => '»à¿À',
+    'reverse_assassin'   => 'È¿º²»Õ',
+    'soul_assassin'      => 'ÄÔ»Â¤ê',
+    'eclipse_assassin'   => '¿ª°Å»¦¼Ô',
+    'mind_scanner'       => '¤µ¤È¤ê',
+    'evoke_scanner'      => '¥¤¥¿¥³',
+    'whisper_scanner'    => 'ÓñÁûÎî',
+    'howl_scanner'       => 'ËÊÁûÎî',
+    'telepath_scanner'   => 'Ç°ÁûÎî',
+    'jealousy'           => '¶¶É±',
+    'poison_jealousy'    => 'ÆÇ¶¶É±',
+    'doll'               => '¾å³¤¿Í·Á',
+    'friend_doll'        => 'Ê©ÍöÀ¾¿Í·Á',
+    'poison_doll'        => 'ÎëÍö¿Í·Á',
+    'doom_doll'          => 'Ë©Íé¿Í·Á',
+    'doll_master'        => '¿Í·Á¸¯¤¤',
+    'wolf'               => '¿ÍÏµ',
+    'boss_wolf'          => 'ÇòÏµ',
+    'gold_wolf'          => '¶âÏµ',
+    'phantom_wolf'       => '¸¸Ïµ',
+    'cursed_wolf'        => '¼öÏµ',
+    'wise_wolf'          => '¸­Ïµ',
+    'poison_wolf'        => 'ÆÇÏµ',
+    'resist_wolf'        => '¹³ÆÇÏµ',
+    'blue_wolf'          => 'ÁóÏµ',
+    'emerald_wolf'       => '¿éÏµ',
+    'sex_wolf'           => '¿÷Ïµ',
+    'tongue_wolf'        => 'Àå²ÒÏµ',
+    'possessed_wolf'     => 'ØáÏµ',
+    'hungry_wolf'        => '²îÏµ',
+    'sirius_wolf'        => 'Å·Ïµ',
+    'elder_wolf'         => '¸ÅÏµ',
+    'cute_wolf'          => 'Ë¨Ïµ',
+    'scarlet_wolf'       => '¹ÈÏµ',
+    'silver_wolf'        => '¶äÏµ',
+    'mad'                => '¶¸¿Í',
+    'fanatic_mad'        => '¶¸¿®¼Ô',
+    'whisper_mad'        => 'Óñ¤­¶¸¿Í',
+    'jammer_mad'         => '·îÅÆ',
+    'voodoo_mad'         => '¼ö½Ñ»Õ',
+    'corpse_courier_mad' => '²Ğ¼Ö',
+    'agitate_mad'        => 'ÀğÆ°¼Ô',
+    'miasma_mad'         => 'ÅÚÃØéá',
+    'dream_eater_mad'    => 'àÓ',
+    'trap_mad'           => 'æ«»Õ',
+    'possessed_mad'      => '¸¤¿À',
+    'fox'                => 'ÍÅ¸Ñ',
+    'white_fox'          => 'Çò¸Ñ',
+    'black_fox'          => '¹õ¸Ñ',
+    'gold_fox'           => '¶â¸Ñ',
+    'phantom_fox'        => '¸¸¸Ñ',
+    'poison_fox'         => '´É¸Ñ',
+    'blue_fox'           => 'Áó¸Ñ',
+    'emerald_fox'        => '¿é¸Ñ',
+    'voodoo_fox'         => '¶åÈø',
+    'revive_fox'         => 'Àç¸Ñ',
+    'possessed_fox'      => 'Øá¸Ñ',
+    'cursed_fox'         => 'Å·¸Ñ',
+    'elder_fox'          => '¸Å¸Ñ',
+    'cute_fox'           => 'Ë¨¸Ñ',
+    'scarlet_fox'        => '¹È¸Ñ',
+    'silver_fox'         => '¶ä¸Ñ',
+    'child_fox'          => '»Ò¸Ñ',
+    'sex_fox'            => '¿÷¸Ñ',
+    'stargazer_fox'      => 'À±¸Ñ',
+    'jammer_fox'         => '·î¸Ñ',
+    'miasma_fox'         => 'êµ¸Ñ',
+    'cupid'              => '¥­¥å¡¼¥Ô¥Ã¥É',
+    'self_cupid'         => 'µá°¦¼Ô',
+    'moon_cupid'         => '¤«¤°¤äÉ±',
+    'mind_cupid'         => '½÷¿À',
+    'triangle_cupid'     => '¾®°­Ëâ',
+    'angel'              => 'Å·»È',
+    'rose_angel'         => 'é¬é¯Å·»È',
+    'lily_angel'         => 'É´¹çÅ·»È',
+    'exchange_angel'     => 'º²°Ü»È',
+    'ark_angel'          => 'ÂçÅ·»È',
+    'quiz'               => '½ĞÂê¼Ô',
+    'chiroptera'         => 'éşéõ',
+    'poison_chiroptera'  => 'ÆÇéşéõ',
+    'cursed_chiroptera'  => '¼öéşéõ',
+    'boss_chiroptera'    => 'Âçéşéõ',
+    'elder_chiroptera'   => '¸Åéşéõ',
+    'dummy_chiroptera'   => 'Ì´µá°¦¼Ô',
+    'fairy'              => 'ÍÅÀº',
+    'spring_fairy'       => '½ÕÍÅÀº',
+    'summer_fairy'       => '²ÆÍÅÀº',
+    'autumn_fairy'       => '½©ÍÅÀº',
+    'winter_fairy'       => 'ÅßÍÅÀº',
+    'flower_fairy'       => '²ÖÍÅÀº',
+    'star_fairy'         => 'À±ÍÅÀº',
+    'sun_fairy'          => 'ÆüÍÅÀº',
+    'moon_fairy'         => '·îÍÅÀº',
+    'grass_fairy'        => 'ÁğÍÅÀº',
+    'light_fairy'        => '¸÷ÍÅÀº',
+    'dark_fairy'         => '°ÇÍÅÀº',
+    'mirror_fairy'       => '¶ÀÍÅÀº',
+    'mania'              => '¿ÀÏÃ¥Ş¥Ë¥¢',
+    'trick_mania'        => '´ñ½Ñ»Õ',
+    'soul_mania'         => '³ĞÀÃ¼Ô',
+    'unknown_mania'      => 'ó¬',
+    'dummy_mania'        => 'Ì´¸ìÉô');
+
+  //¥µ¥ÖÌò¿¦¤Î¥ê¥¹¥È (¥³¡¼¥ÉÌ¾ => É½¼¨Ì¾)
+  //½éÆü¤ÎÌò¿¦ÄÌÃÎ¥ê¥¹¥È¤Ï¤³¤Î½çÈÖ¤ÇÉ½¼¨¤µ¤ì¤ë
+  var $sub_role_list = array(
+    'chicken'          => '¾®¿´¼Ô',
+    'rabbit'           => '¥¦¥µ¥®',
+    'perverseness'     => 'Å·¼Ùµ´',
+    'flattery'         => '¥´¥Ş¤¹¤ê',
+    'celibacy'         => 'ÆÈ¿Èµ®Â²',
+    'impatience'       => 'Ã»µ¤',
+    'nervy'            => '¼«¿®²È',
+    'febris'           => 'Ç®ÉÂ',
+    'death_warrant'    => '»à¤ÎÀë¹ğ',
+    'panelist'         => '²òÅú¼Ô',
+    'liar'             => 'Ïµ¾¯Ç¯',
+    'invisible'        => '¸÷³ØÌÂºÌ',
+    'rainbow'          => 'Æú¿§ÌÂºÌ',
+    'weekly'           => '¼·ÍËÌÂºÌ',
+    'grassy'           => 'Áğ¸¶ÌÂºÌ',
+    'side_reverse'     => '¶ÀÌÌÌÂºÌ',
+    'line_reverse'     => 'Å·ÃÏÌÂºÌ',
+    'gentleman'        => '¿Â»Î',
+    'lady'             => '½Ê½÷',
+    'authority'        => '¸¢ÎÏ¼Ô',
+    'random_voter'     => 'µ¤Ê¬²°',
+    'rebel'            => 'È¿µÕ¼Ô',
+    'watcher'          => 'Ëµ´Ñ¼Ô',
+    'decide'           => '·èÄê¼Ô',
+    'plague'           => '±ÖÉÂ¿À',
+    'good_luck'        => '¹¬±¿',
+    'bad_luck'         => 'ÉÔ±¿',
+    'upper_luck'       => '»¨Áğº²',
+    'downer_luck'      => '°ìÈ¯²°',
+    'random_luck'      => 'ÇÈÍğËü¾æ',
+    'star'             => '¿Íµ¤¼Ô',
+    'disfavor'         => 'ÉÔ¿Íµ¤',
+    'strong_voice'     => 'ÂçÀ¼',
+    'normal_voice'     => 'ÉÔ´ïÍÑ',
+    'weak_voice'       => '¾®À¼',
+    'upper_voice'      => '¥á¥¬¥Û¥ó',
+    'downer_voice'     => '¥Ş¥¹¥¯',
+    'inside_voice'     => 'ÆâÊÛ·Ä',
+    'outside_voice'    => '³°ÊÛ·Ä',
+    'random_voice'     => '²²ÉÂ¼Ô',
+    'no_last_words'    => 'É®ÉÔÀº',
+    'blinder'          => 'ÌÜ±£¤·',
+    'earplug'          => '¼ªÀò',
+    'speaker'          => '¥¹¥Ô¡¼¥«¡¼',
+    'silent'           => 'Ìµ¸ı',
+    'mower'            => 'Áğ´¢¤ê',
+    'mind_read'        => '¥µ¥È¥é¥ì',
+    'mind_open'        => '¸ø³«¼Ô',
+    'mind_receiver'    => '¼õ¿®¼Ô',
+    'mind_friend'      => '¶¦ÌÄ¼Ô',
+    'mind_sympathy'    => '¶¦´¶¼Ô',
+    'mind_evoke'       => '¸ı´ó¤»',
+    'mind_lonely'      => '¤Ï¤°¤ì¼Ô',
+    'lovers'           => 'Îø¿Í',
+    'challenge_lovers' => 'ÆñÂê',
+    'copied'           => '¸µ¿ÀÏÃ¥Ş¥Ë¥¢',
+    'copied_trick'     => '¸µ´ñ½Ñ»Õ',
+    'copied_soul'      => '¸µ³ĞÀÃ¼Ô',
+    'copied_teller'    => '¸µÌ´¸ìÉô',
+    'lost_ability'     => 'Ç½ÎÏÁÓ¼º');
+
+  //Ìò¿¦¤Î¾ÊÎ¬Ì¾ (²áµî¥í¥°ÍÑ)
+  var $short_role_list = array(
+    'human'              => 'Â¼',
+    'elder'              => 'Ï·',
+    'saint'              => 'À»',
+    'executor'           => '¼¹',
+    'escaper'            => 'Æ¨',
+    'suspect'            => 'ÉÔ¿³',
+    'unconscious'        => 'Ìµ',
+    'mage'               => 'Àê',
+    'soul_mage'          => 'º²',
+    'psycho_mage'        => '¿´Àê',
+    'sex_mage'           => '¿÷Àê',
+    'stargazer_mage'     => 'À±Àê',
+    'voodoo_killer'      => '±¢ÍÛ',
+    'dummy_mage'         => 'Ì´¸«',
+    'necromancer'        => 'Îî',
+    'soul_necromancer'   => '±À',
+    'yama_necromancer'   => 'ïå',
+    'dummy_necromancer'  => 'Ì´Ëí',
+    'medium'             => 'Öà',
+    'seal_medium'        => 'Éõ',
+    'revive_medium'      => 'É÷½Ë',
+    'priest'             => '»Êº×',
+    'bishop_priest'      => '»Ê¶µ',
+    'border_priest'      => '¶­',
+    'crisis_priest'      => 'ÍÂ',
+    'revive_priest'      => 'Å·¿Í',
+    'guard'              => '¼í',
+    'hunter_guard'       => 'ÎÄ',
+    'poison_guard'       => 'µ³',
+    'fend_guard'         => 'Ç¦',
+    'reporter'           => 'Ê¹',
+    'anti_voodoo'        => 'Ìñ',
+    'dummy_guard'        => 'Ì´¼é',
+    'common'             => '¶¦',
+    'detective_common'   => 'Ãµ',
+    'trap_common'        => 'ºö',
+    'ghost_common'       => 'Ë´',
+    'dummy_common'       => 'Ì´¶¦',
+    'poison'             => 'ÆÇ',
+    'strong_poison'      => '¶¯ÆÇ',
+    'incubate_poison'    => 'ÀøÆÇ',
+    'guide_poison'       => 'Í¶ÆÇ',
+    'chain_poison'       => 'Ï¢ÆÇ',
+    'dummy_poison'       => 'Ì´ÆÇ',
+    'poison_cat'         => 'Ç­',
+    'revive_cat'         => 'ÀçÃ¬',
+    'sacrifice_cat'      => 'Ç­¿À',
+    'pharmacist'         => 'Ìô',
+    'cure_pharmacist'    => '²Ï',
+    'assassin'           => '°Å',
+    'doom_assassin'      => '»à¿À',
+    'reverse_assassin'   => 'È¿º²',
+    'soul_assassin'      => 'ÄÔ»Â',
+    'eclipse_assassin'   => '¿ª°Å',
+    'mind_scanner'       => '¸ç',
+    'evoke_scanner'      => '¥¤',
+    'whisper_scanner'    => 'ÓñÁû',
+    'howl_scanner'       => 'ËÊÁû',
+    'telepath_scanner'   => 'Ç°Áû',
+    'jealousy'           => '¶¶',
+    'poison_jealousy'    => 'ÆÇ¶¶',
+    'doll'               => '¾å³¤',
+    'friend_doll'        => 'Ê©Íö',
+    'poison_doll'        => 'ÎëÍö',
+    'doom_doll'          => 'Ë©Íé',
+    'doll_master'        => '¿Í¸¯',
+    'wolf'               => 'Ïµ',
+    'boss_wolf'          => 'ÇòÏµ',
+    'gold_wolf'          => '¶âÏµ',
+    'phantom_wolf'       => '¸¸Ïµ',
+    'cursed_wolf'        => '¼öÏµ',
+    'wise_wolf'          => '¸­Ïµ',
+    'poison_wolf'        => 'ÆÇÏµ',
+    'resist_wolf'        => '¹³Ïµ',
+    'blue_wolf'          => 'ÁóÏµ',
+    'emerald_wolf'       => '¿éÏµ',
+    'sex_wolf'           => '¿÷Ïµ',
+    'tongue_wolf'        => 'ÀåÏµ',
+    'possessed_wolf'     => 'ØáÏµ',
+    'hungry_wolf'        => '²îÏµ',
+    'sirius_wolf'        => 'Å·Ïµ',
+    'elder_wolf'         => '¸ÅÏµ',
+    'cute_wolf'          => 'Ë¨Ïµ',
+    'scarlet_wolf'       => '¹ÈÏµ',
+    'silver_wolf'        => '¶äÏµ',
+    'mad'                => '¶¸',
+    'fanatic_mad'        => '¶¸¿®',
+    'whisper_mad'        => 'Óñ¶¸',
+    'jammer_mad'         => '·îÅÆ',
+    'voodoo_mad'         => '¼ö¶¸',
+    'corpse_courier_mad' => '²Ğ¼Ö',
+    'agitate_mad'        => 'Àğ',
+    'miasma_mad'         => 'ÃØ',
+    'dream_eater_mad'    => 'àÓ',
+    'trap_mad'           => 'æ«',
+    'possessed_mad'      => '¸¤',
+    'fox'                => '¸Ñ',
+    'white_fox'          => 'Çò¸Ñ',
+    'black_fox'          => '¹õ¸Ñ',
+    'gold_fox'           => '¶â¸Ñ',
+    'phantom_fox'        => '¸¸¸Ñ',
+    'poison_fox'         => '´É¸Ñ',
+    'blue_fox'           => 'Áó¸Ñ',
+    'emerald_fox'        => '¿é¸Ñ',
+    'voodoo_fox'         => '¶åÈø',
+    'revive_fox'         => 'Àç¸Ñ',
+    'possessed_fox'      => 'Øá¸Ñ',
+    'cursed_fox'         => 'Å·¸Ñ',
+    'elder_fox'          => '¸Å¸Ñ',
+    'cute_fox'           => 'Ë¨¸Ñ',
+    'scarlet_fox'        => '¹È¸Ñ',
+    'silver_fox'         => '¶ä¸Ñ',
+    'child_fox'          => '»Ò¸Ñ',
+    'sex_fox'            => '¿÷¸Ñ',
+    'stargazer_fox'      => 'À±¸Ñ',
+    'jammer_fox'         => '·î¸Ñ',
+    'miasma_fox'         => 'êµ¸Ñ',
+    'cupid'              => 'QP',
+    'self_cupid'         => 'µá°¦',
+    'moon_cupid'         => 'É±',
+    'mind_cupid'         => '½÷¿À',
+    'triangle_cupid'     => '¾®°­',
+    'angel'              => 'Å·»È',
+    'rose_angel'         => 'é¬Å·',
+    'lily_angel'         => 'É´Å·',
+    'exchange_angel'     => 'º²°Ü',
+    'ark_angel'          => 'ÂçÅ·',
+    'quiz'               => 'GM',
+    'chiroptera'         => 'éş',
+    'poison_chiroptera'  => 'ÆÇéş',
+    'cursed_chiroptera'  => '¼öéş',
+    'boss_chiroptera'    => 'Âçéş',
+    'elder_chiroptera'   => '¸Åéş',
+    'dummy_chiroptera'   => 'Ì´°¦',
+    'fairy'              => 'ÍÅÀº',
+    'spring_fairy'       => '½ÕÀº',
+    'summer_fairy'       => '²ÆÀº',
+    'autumn_fairy'       => '½©Àº',
+    'winter_fairy'       => 'ÅßÀº',
+    'flower_fairy'       => '²ÖÀº',
+    'star_fairy'         => 'À±Àº',
+    'sun_fairy'          => 'ÆüÀº',
+    'moon_fairy'         => '·îÀº',
+    'grass_fairy'        => 'ÁğÀº',
+    'light_fairy'        => '¸÷Àº',
+    'dark_fairy'         => '°ÇÀº',
+    'mirror_fairy'       => '¶ÀÀº',
+    'mania'              => '¥Ş',
+    'trick_mania'        => '´ñ',
+    'soul_mania'         => '³ĞÀÃ',
+    'unknown_mania'      => 'ó¬',
+    'dummy_mania'        => 'Ì´¸ì',
+    'chicken'            => 'ÆÓ',
+    'rabbit'             => '±¬',
+    'perverseness'       => '¼Ù',
+    'flattery'           => '¸ÕËã',
+    'celibacy'           => 'ÆÈ',
+    'impatience'         => 'Ã»',
+    'nervy'              => '¿®',
+    'febris'             => 'Ç®',
+    'death_warrant'      => 'Àë',
+    'panelist'           => '²ò',
+    'liar'               => '±³',
+    'invisible'          => '¸÷ÌÂ',
+    'rainbow'            => 'ÆúÌÂ',
+    'weekly'             => 'ÍËÌÂ',
+    'grassy'             => 'ÁğÌÂ',
+    'side_reverse'       => '¶ÀÌÂ',
+    'line_reverse'       => 'Å·ÌÂ',
+    'gentleman'          => '¿Â',
+    'lady'               => '½Ê',
+    'authority'          => '¸¢',
+    'random_voter'       => 'µ¤',
+    'rebel'              => 'È¿',
+    'watcher'            => 'Ëµ',
+    'decide'             => '·è',
+    'plague'             => '±Ö',
+    'good_luck'          => '¹¬',
+    'bad_luck'           => 'ÉÔ±¿',
+    'upper_luck'         => '»¨Áğ',
+    'downer_luck'        => '°ìÈ¯',
+    'random_luck'        => 'ÇÈÍğ',
+    'star'               => '¿Íµ¤',
+    'disfavor'           => 'ÉÔ¿Í',
+    'strong_voice'       => 'Âç',
+    'normal_voice'       => 'ÉÔ',
+    'weak_voice'         => '¾®',
+    'upper_voice'        => '³ÈÀ¼',
+    'downer_voice'       => 'Ê¤',
+    'inside_voice'       => 'ÆâÊÛ',
+    'outside_voice'      => '³°ÊÛ',
+    'random_voice'       => '²²',
+    'no_last_words'      => 'É®',
+    'blinder'            => 'ÌÜ',
+    'earplug'            => '¼ª',
+    'speaker'            => '½¸²»',
+    'silent'             => 'Ìµ¸ı',
+    'mower'              => 'Áğ´¢',
+    'mind_read'          => 'Ï³',
+    'mind_evoke'         => '¸ı´ó',
+    'mind_open'          => '¸ø',
+    'mind_receiver'      => '¼õ',
+    'mind_friend'        => 'ÌÄ',
+    'mind_sympathy'      => '´¶',
+    'mind_lonely'        => '°ï',
+    'lovers'             => 'Îø',
+    'challenge_lovers'   => 'Æñ',
+    'copied'             => '¸µ¥Ş',
+    'copied_trick'       => '¸µ´ñ',
+    'copied_soul'        => '¸µ³Ğ',
+    'copied_teller'      => '¸µ¸ì',
+    'lost_ability'       => '¼º');
+
+  //¥á¥¤¥óÌò¿¦¤Î¥°¥ë¡¼¥×¥ê¥¹¥È (Ìò¿¦ => ½êÂ°¥°¥ë¡¼¥×)
+  // ¤³¤Î¥ê¥¹¥È¤ÎÊÂ¤Ó½ç¤Ë strpos ¤ÇÈ½ÊÌ¤¹¤ë (ÆÇ·Ï¤Ê¤É¡¢½çÈÖ°ÍÂ¸¤ÎÌò¿¦¤¬¤¢¤ë¤Î¤ÇÃí°Õ)
+  var $main_role_group_list = array(
+    'wolf' => 'wolf',
+    'mad' => 'mad',
+    'child_fox' => 'child_fox', 'sex_fox' => 'child_fox',
+    'fox' => 'fox',
+    'cupid' => 'cupid',
+    'angel' => 'angel',
+    'quiz' => 'quiz',
+    'chiroptera' => 'chiroptera',
+    'fairy' => 'fairy',
+    'mage' => 'mage', 'voodoo_killer' => 'mage',
+    'necromancer' => 'necromancer',
+    'medium' => 'medium',
+    'priest' => 'priest',
+    'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
+    'common' => 'common',
+    'cat' => 'poison_cat',
+    'jealousy' => 'jealousy',
+    'doll' => 'doll',
+    'poison' => 'poison',
+    'pharmacist' => 'pharmacist',
+    'assassin' => 'assassin',
+    'scanner' => 'mind_scanner',
+    'mania' => 'mania');
+
+  //¥µ¥ÖÌò¿¦¤Î¥°¥ë¡¼¥×¥ê¥¹¥È (CSS ¤Î¥¯¥é¥¹Ì¾ => ½êÂ°Ìò¿¦)
+  var $sub_role_group_list = array(
+    'lovers'       => array('lovers', 'challenge_lovers'),
+    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
+			    'mind_evoke', 'mind_lonely'),
+    'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'),
+    'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience', 'nervy',
+			    'celibacy', 'febris', 'death_warrant', 'panelist'),
+    'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
+			    'line_reverse', 'gentleman', 'lady'),
+    'authority'    => array('authority', 'random_voter', 'rebel', 'watcher'),
+    'decide'       => array('decide', 'plague', 'good_luck', 'bad_luck'),
+    'luck'         => array('upper_luck', 'downer_luck', 'random_luck', 'star', 'disfavor'),
+    'voice'        => array('strong_voice', 'normal_voice', 'weak_voice', 'upper_voice',
+			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
+    'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'silent', 'mower'),
+    'human'        => array('lost_ability'));
+}
+
 //-- ÇÛÌòÀßÄê¤Î´ğÄì¥¯¥é¥¹ --//
 class CastConfigBase{
   //¡ÖÊ¡°ú¤­¡×¤ò°ìÄê²ó¿ô¹Ô¤Ã¤Æ¥ê¥¹¥È¤ËÄÉ²Ã¤¹¤ë
@@ -488,5 +976,39 @@ class CastConfigBase{
       $stack[$role] = sprintf("%01.2f", $rate / $total_rate * 100);
     }
     PrintData($stack);
+  }
+
+  //·èÆ®Â¼¤ÎÇÛÌò½é´ü²½½èÍı
+  function InitializeDuel($user_count){
+    return true;
+  }
+
+  //·èÆ®Â¼¤ÎÇÛÌòºÇ½ª½èÍı
+  function FinalizeDuel($user_count, &$role_list){
+    return true;
+  }
+
+  //·èÆ®Â¼¤ÎÇÛÌò½èÍı
+  function SetDuel($user_count){
+    $role_list = array(); //½é´ü²½½èÍı
+    $this->InitializeDuel($user_count);
+
+    if(array_sum($this->duel_fix_list) <= $user_count){
+      foreach($this->duel_fix_list as $role => $count){
+	$role_list[$role] = $count;
+      }
+    }
+    $rest_user_count = $user_count - array_sum($role_list);
+    asort($this->duel_rate_list);
+    $total_rate = array_sum($this->duel_rate_list);
+    $max_rate_role = array_pop(array_keys($this->duel_rate_list));
+    foreach($this->duel_rate_list as $role => $rate){
+      if($role == $max_rate_role) continue;
+      $role_list[$role] = round($rest_user_count / $total_rate * $rate);
+    }
+    $role_list[$max_rate_role] = $user_count - array_sum($role_list);
+
+    $this->FinalizeDuel($user_count, $role_list);
+    return $role_list;
   }
 }

@@ -1,76 +1,76 @@
 <?php
 /*
-  ¤³¤Î¥Õ¥¡¥¤¥ë¤Ï¥Ç¡¼¥¿¥Ù¡¼¥¹½ñ¤­´¹¤¨ºî¶È»Ù±ç´Ø¿ô¤ò½¸¤á¤¿¤â¤Î¤Ç¤¹
-  ´ÉÍı¼Ô¤¬É¬Í×¤Ë±ş¤¸¤ÆÊÔ½¸¤¹¤ë¢ª¥¢¥Ã¥×¥í¡¼¥É¢ª¥Ö¥é¥¦¥¶¤Ç¥¢¥¯¥»¥¹
-  ¤È¤¤¤¦»È¤¤Êı¤òÁÛÄê¤·¤Æ¤¤¤Ş¤¹¡£
+  ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹æ›¸ãæ›ãˆä½œæ¥­æ”¯æ´é–¢æ•°ã‚’é›†ã‚ãŸã‚‚ã®ã§ã™
+  ç®¡ç†è€…ãŒå¿…è¦ã«å¿œã˜ã¦ç·¨é›†ã™ã‚‹â†’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰â†’ãƒ–ãƒ©ã‚¦ã‚¶ã§ã‚¢ã‚¯ã‚»ã‚¹
+  ã¨ã„ã†ä½¿ã„æ–¹ã‚’æƒ³å®šã—ã¦ã„ã¾ã™ã€‚
 
-  ³«È¯¼Ô¤Î¥Æ¥¹¥ÈÍÑ¥³¡¼¥É¤½¤Î¤Ş¤Ş¤Ê¤Î¤ÇÍ×Ãí°Õ¡ª
+  é–‹ç™ºè€…ã®ãƒ†ã‚¹ãƒˆç”¨ã‚³ãƒ¼ãƒ‰ãã®ã¾ã¾ãªã®ã§è¦æ³¨æ„ï¼
  */
 #exit;
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
 if(! $DEBUG_MODE){
-  OutputActionResult('Ç§¾Ú¥¨¥é¡¼', '¤³¤Î¥¹¥¯¥ê¥×¥È¤Ï»ÈÍÑ¤Ç¤­¤Ê¤¤ÀßÄê¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£');
+  OutputActionResult('èªè¨¼ã‚¨ãƒ©ãƒ¼', 'ã“ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã¯ä½¿ç”¨ã§ããªã„è¨­å®šã«ãªã£ã¦ã„ã¾ã™ã€‚');
 }
 $INIT_CONF->LoadClass('ICON_CONF');
 
-$DB_CONF->Connect(); //DB ÀÜÂ³
-//UpdateIconInfo('category', '½é´üÀßÄê', 1, 10);
-//UpdateIconInfo('appearance', '½é´üÀßÄê', 1, 10);
-//UpdateIconInfo('category', 'ÅìÊıProject', 11, 78);
-//UpdateIconInfo('appearance', 'ÅìÊı¹ÈËâ¶¿', 13, 21);
-//UpdateIconInfo('appearance', 'ÅìÊıÍÅ¡¹Ì´', 22, 33);
-//UpdateIconInfo('appearance', 'ÅìÊıèÄÌ´ÁÛ', 34);
-//UpdateIconInfo('appearance', 'ÅìÊı±ÊÌë¾¶', 35, 42);
-//UpdateIconInfo('appearance', 'ÅìÊı²Ö±ÇÄÍ', 43, 47);
-//UpdateIconInfo('appearance', 'ÅìÊıÉ÷¿ÀÏ¿', 48, 55);
-//UpdateIconInfo('appearance', 'ÅìÊıÈìÁÛÅ·', 56, 57);
-//UpdateIconInfo('appearance', 'ÅìÊıÃÏÎîÅÂ', 58, 65);
-//UpdateIconInfo('appearance', 'ÅìÊı¹áğÃÆ²', 66, 67);
-//UpdateIconInfo('appearance', 'ÅìÊı»°·îÀº', 68, 70);
-//UpdateIconInfo('appearance', 'ÅìÊıµáÊ¹»Ëµª', 71);
-//UpdateIconInfo('appearance', 'ÅìÊıÑ³·î¾¶', 72);
-//UpdateIconInfo('appearance', 'ÈëÉõ¶æ³ÚÉô', 76, 77);
-//UpdateIconInfo('appearance', 'ÅìÊığÍ°ÛÅÁ', 91, 92);
-//UpdateIconInfo('appearance', 'ÅìÊıÌ´»ş¶õ', 181);
-//UpdateIconInfo('appearance', 'ÅìÊı²øåºÃÌ', 185, 186);
-//UpdateIconInfo('appearance', 'ÅìÊıÆó¼¡', 121);
-//UpdateIconInfo('category', 'ÅìÊıÆó¼¡', 121);
-//UpdateIconInfo('category', '¥İ¥±¥Ã¥È¥â¥ó¥¹¥¿¡¼', 96, 97);
-//UpdateIconInfo('appearance', '¥İ¥±¥Ã¥È¥â¥ó¥¹¥¿¡¼ ¶â¡¦¶ä', 96);
-//UpdateIconInfo('appearance', '¤Ï¤¸¤á¿Í´Ö¥®¥ã¡¼¥È¥ë¥º', 99);
-//UpdateIconInfo('appearance', '¥È¥é¥ó¥¹¥Õ¥©¡¼¥Ş¡¼G1', 106);
-//UpdateIconInfo('category', '¥È¥é¥ó¥¹¥Õ¥©¡¼¥Ş¡¼', 106);
+$DB_CONF->Connect(); //DB æ¥ç¶š
+//UpdateIconInfo('category', 'åˆæœŸè¨­å®š', 1, 10);
+//UpdateIconInfo('appearance', 'åˆæœŸè¨­å®š', 1, 10);
+//UpdateIconInfo('category', 'æ±æ–¹Project', 11, 78);
+//UpdateIconInfo('appearance', 'æ±æ–¹ç´…é­”éƒ·', 13, 21);
+//UpdateIconInfo('appearance', 'æ±æ–¹å¦–ã€…å¤¢', 22, 33);
+//UpdateIconInfo('appearance', 'æ±æ–¹èƒå¤¢æƒ³', 34);
+//UpdateIconInfo('appearance', 'æ±æ–¹æ°¸å¤œæŠ„', 35, 42);
+//UpdateIconInfo('appearance', 'æ±æ–¹èŠ±æ˜ å¡š', 43, 47);
+//UpdateIconInfo('appearance', 'æ±æ–¹é¢¨ç¥éŒ²', 48, 55);
+//UpdateIconInfo('appearance', 'æ±æ–¹ç·‹æƒ³å¤©', 56, 57);
+//UpdateIconInfo('appearance', 'æ±æ–¹åœ°éœŠæ®¿', 58, 65);
+//UpdateIconInfo('appearance', 'æ±æ–¹é¦™éœ–å ‚', 66, 67);
+//UpdateIconInfo('appearance', 'æ±æ–¹ä¸‰æœˆç²¾', 68, 70);
+//UpdateIconInfo('appearance', 'æ±æ–¹æ±‚èå²ç´€', 71);
+//UpdateIconInfo('appearance', 'æ±æ–¹å„šæœˆæŠ„', 72);
+//UpdateIconInfo('appearance', 'ç§˜å°å€¶æ¥½éƒ¨', 76, 77);
+//UpdateIconInfo('appearance', 'æ±æ–¹éˆç•°ä¼', 91, 92);
+//UpdateIconInfo('appearance', 'æ±æ–¹å¤¢æ™‚ç©º', 181);
+//UpdateIconInfo('appearance', 'æ±æ–¹æ€ªç¶ºè«‡', 185, 186);
+//UpdateIconInfo('appearance', 'æ±æ–¹äºŒæ¬¡', 121);
+//UpdateIconInfo('category', 'æ±æ–¹äºŒæ¬¡', 121);
+//UpdateIconInfo('category', 'ãƒã‚±ãƒƒãƒˆãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼', 96, 97);
+//UpdateIconInfo('appearance', 'ãƒã‚±ãƒƒãƒˆãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ é‡‘ãƒ»éŠ€', 96);
+//UpdateIconInfo('appearance', 'ã¯ã˜ã‚äººé–“ã‚®ãƒ£ãƒ¼ãƒˆãƒ«ã‚º', 99);
+//UpdateIconInfo('appearance', 'ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒãƒ¼G1', 106);
+//UpdateIconInfo('category', 'ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒãƒ¼', 106);
 //UpdateIconInfo('appearance', 'Rozen Maiden', 118);
-//UpdateIconInfo('category', '¥í¡¼¥¼¥ó¥á¥¤¥Ç¥ó', 118);
-//UpdateIconInfo('appearance', '¤é¤­¡ù¤¹¤¿', 144);
-//UpdateIconInfo('author', '²Æ·Ö', 12, 77);
-//UpdateIconInfo('author', '¥¸¥®¥¶¥®¤Î¤µ¤¤¤Ï¤Æ', 109, 111);
+//UpdateIconInfo('category', 'ãƒ­ãƒ¼ã‚¼ãƒ³ãƒ¡ã‚¤ãƒ‡ãƒ³', 118);
+//UpdateIconInfo('appearance', 'ã‚‰ãâ˜†ã™ãŸ', 144);
+//UpdateIconInfo('author', 'å¤è›', 12, 77);
+//UpdateIconInfo('author', 'ã‚¸ã‚®ã‚¶ã‚®ã®ã•ã„ã¯ã¦', 109, 111);
 //SendCommit();
 //ReconstructEstablishTime();
 //ReconstructStartTime();
 //ReconstructFinishTime();
 //SendQuery("OPTIMIZE TABLE talk", true);
 //SqueezeIcon();
-//UpdateRoomInfo('room_name', '¥Æ¥¹¥È', 1);
-//OutputActionResult('½èÍı´°Î»', '½èÍı´°Î»¡£');
+//UpdateRoomInfo('room_name', 'ãƒ†ã‚¹ãƒˆ', 1);
+//OutputActionResult('å‡¦ç†å®Œäº†', 'å‡¦ç†å®Œäº†ã€‚');
 
-//-- ´Ø¿ô --//
+//-- é–¢æ•° --//
 /*
-  Ver. 1.4.0 ¦Â3 ¤è¤ê¼ÂÁõ¤µ¤ì¤¿¥æ¡¼¥¶¥¢¥¤¥³¥ó¥Æ¡¼¥Ö¥ë¤ÎÄÉ²Ã¾ğÊóÆşÎÏ»Ù±ç´Ø¿ô
-  type:[appearance / category / author] (½ĞÅµ / ¥«¥Æ¥´¥ê / ºî¼Ô)
-  value: ÆşÎÏÆâÍÆ
-  from / to: ÆşÎÏÂĞ¾İ¥¢¥¤¥³¥ó (from ¡Á to ¤Ş¤Ç)
+  Ver. 1.4.0 Î²3 ã‚ˆã‚Šå®Ÿè£…ã•ã‚ŒãŸãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¿½åŠ æƒ…å ±å…¥åŠ›æ”¯æ´é–¢æ•°
+  type:[appearance / category / author] (å‡ºå…¸ / ã‚«ãƒ†ã‚´ãƒª / ä½œè€…)
+  value: å…¥åŠ›å†…å®¹
+  from / to: å…¥åŠ›å¯¾è±¡ã‚¢ã‚¤ã‚³ãƒ³ (from ã€œ to ã¾ã§)
 */
 function UpdateIconInfo($type, $value, $from, $to = NULL){
   $query = isset($to) ? "{$from} <= icon_no AND icon_no <= {$to}" : "icon_no = {$from}";
   mysql_query("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
 }
 
-//¥¢¥¤¥³¥ó¤Î·çÈÖ¤òËä¤á¤ë
+//ã‚¢ã‚¤ã‚³ãƒ³ã®æ¬ ç•ªã‚’åŸ‹ã‚ã‚‹
 function SqueezeIcon(){
-  OutputHTMLHeader('¥æ¡¼¥¶¥¢¥¤¥³¥ó·çÈÖ½èÍı');
+  OutputHTMLHeader('ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³æ¬ ç•ªå‡¦ç†');
   $query = 'SELECT icon_no, icon_filename FROM user_icon WHERE icon_no > 0 ORDER BY icon_no';
   $icon_list = FetchAssoc($query);
 
@@ -94,11 +94,11 @@ function SqueezeIcon(){
   OutputHTMLFooter();
 }
 
-//Â¼Î©¤Æ»ş¹ïºÆÀ¸À®´Ø¿ô
+//æ‘ç«‹ã¦æ™‚åˆ»å†ç”Ÿæˆé–¢æ•°
 function ReconstructEstablishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE establish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
-  $keyword = 'Â¼ºîÀ®¡§';
+  $keyword = 'æ‘ä½œæˆï¼š';
   foreach($room_list as $room_no){
     #if($room_no == 434) return;
     $query = "SELECT sentence, talk_id FROM talk WHERE room_no = {$room_no} AND sentence LIKE '%{$keyword}%'";
@@ -137,10 +137,10 @@ function ReconstructEstablishTime($test = false){
   }
 }
 
-//¥²¡¼¥à³«»Ï»ş¹ïºÆÀ¸À®´Ø¿ô
+//ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚åˆ»å†ç”Ÿæˆé–¢æ•°
 function ReconstructStartTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE start_time IS NULL ORDER BY room_no");
-  $keyword = '¥²¡¼¥à³«»Ï¡§';
+  $keyword = 'ã‚²ãƒ¼ãƒ é–‹å§‹ï¼š';
   //PrintData($room_list);
   foreach($room_list as $room_no){
     #if($room_no == 434) return;
@@ -177,11 +177,11 @@ function ReconstructStartTime($test = false){
   }
 }
 
-//¥²¡¼¥à½ªÎ»»ş¹ïºÆÀ¸À®´Ø¿ô
+//ã‚²ãƒ¼ãƒ çµ‚äº†æ™‚åˆ»å†ç”Ÿæˆé–¢æ•°
 function ReconstructFinishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE finish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
-  $keyword = '¥²¡¼¥à½ªÎ»¡§';
+  $keyword = 'ã‚²ãƒ¼ãƒ çµ‚äº†ï¼š';
   foreach($room_list as $room_no){
     #if($room_no == 434) return;
     $query = "SELECT sentence, talk_id FROM talk WHERE room_no = {$room_no} AND sentence LIKE '%{$keyword}%'";
@@ -217,11 +217,11 @@ function ReconstructFinishTime($test = false){
   }
 }
 
-//Â¼¾ğÊóºÆÊÔ½¸´Ø¿ô (Ê¸»ú²½¤±ÂĞºöÍÑ)
+//æ‘æƒ…å ±å†ç·¨é›†é–¢æ•° (æ–‡å­—åŒ–ã‘å¯¾ç­–ç”¨)
 /*
-  item  : DB ¹àÌÜÌ¾
-  value : ÆşÎÏÆâÍÆ
-  id    : Â¼ÈÖ¹æ
+  item  : DB é …ç›®å
+  value : å…¥åŠ›å†…å®¹
+  id    : æ‘ç•ªå·
 */
 function UpdateRoomInfo($item, $value, $id){
   mysql_query("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");

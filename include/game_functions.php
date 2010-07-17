@@ -54,7 +54,7 @@ function InsertMediumMessage(){
   $flag = false; //巫女の出現判定
   $stack = array();
   foreach($USERS->rows as $user){
-    $flag |= $user->IsRole('medium');
+    $flag |= $user->IsRoleGroup('medium');
     if($user->suicide_flag){
       $stack[] = $USERS->GetHandleName($user->uname, true) . "\t" . $user->GetCamp();
     }
@@ -323,7 +323,7 @@ function OutputTimeTable(){
 
 //プレイヤー一覧出力
 function OutputPlayerList(){
-  global $DEBUG_MODE, $GAME_CONF, $ICON_CONF, $ROOM, $USERS, $SELF;
+  global $DEBUG_MODE, $ICON_CONF, $ROLE_DATA, $ROOM, $USERS, $SELF;
 
   //アイコンの設定を取得
   $width  = $ICON_CONF->width;
@@ -391,8 +391,10 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
 	$str .= GenerateRoleName($user->main_role, 'mage');
-      elseif($user->IsRoleGroup('necromancer') || $user->IsRole('medium'))
+      elseif($user->IsRoleGroup('necromancer'))
 	$str .= GenerateRoleName($user->main_role, 'necromancer');
+      elseif($user->IsRoleGroup('medium'))
+	$str .= GenerateRoleName($user->main_role, 'medium');
       elseif($user->IsRoleGroup('priest'))
 	$str .= GenerateRoleName($user->main_role, 'priest');
       elseif($user->IsRoleGroup('guard') || $user->IsRole('reporter', 'anti_voodoo'))
@@ -428,7 +430,7 @@ function OutputPlayerList(){
 
       if(($role_count = count($user->role_list)) > 1){ //兼任役職の表示
 	$display_role_count = 1;
-	foreach($GAME_CONF->sub_role_group_list as $class => $role_list){
+	foreach($ROLE_DATA->sub_role_group_list as $class => $role_list){
 	  foreach($role_list as $sub_role){
 	    if($user->IsRole($sub_role)){
 	      $str .= GenerateRoleName($sub_role, $class, true);
@@ -449,14 +451,14 @@ function OutputPlayerList(){
 //1. User->GenerateShortRoleName() との対応を考える
 //2. GenerateRoleNameList() @ game_vote_functions.php との対応を考える
 function GenerateRoleName($role, $css = '', $sub_role = false){
-  global $GAME_CONF;
+  global $ROLE_DATA;
 
   $str = '';
   if($css == '') $css = $role;
   if($sub_role) $str .= '<br>';
   $str .= '<span class="' . $css . '">[';
-  if($sub_role) $str .= $GAME_CONF->sub_role_list[$role];
-  else $str .= $GAME_CONF->main_role_list[$role];
+  if($sub_role) $str .= $ROLE_DATA->sub_role_list[$role];
+  else $str .= $ROLE_DATA->main_role_list[$role];
   $str .= ']</span>';
 
   return $str;
@@ -1040,7 +1042,7 @@ function OutputDeadMan(){
   //死亡タイプリスト
   $dead_type_list = array(
     'day' => array('VOTE_KILLED' => true, 'POISON_DEAD_day' => true,
-		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false),
+		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false, 'NOVOTED_day' => true),
 
     'night' => array('WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
 		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
@@ -1048,7 +1050,7 @@ function OutputDeadMan(){
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
 		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
 		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
-		     'FLOWERED_%' => false, 'SUDDEN_DEATH_NOVOTED' => true));
+		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'NOVOTED_night' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
@@ -1131,7 +1133,8 @@ function OutputDeadManType($name, $type){
     if($open_reason) echo '<tr><td>'.$name.' '.$MESSAGE->possessed_targeted.'</td>';
     break;
 
-  case 'SUDDEN_DEATH_NOVOTED':
+  case 'NOVOTED_day':
+  case 'NOVOTED_night':
     echo '<tr class="dead-type-sudden-death">';
     echo '<td>'.$name.' '.$MESSAGE->novoted.'</td>';
     break;
@@ -1144,6 +1147,7 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_NERVY':
   case 'SUDDEN_DEATH_CELIBACY':
   case 'SUDDEN_DEATH_PANELIST':
+  case 'SUDDEN_DEATH_SEALED':
   case 'SUDDEN_DEATH_JEALOUSY':
   case 'SUDDEN_DEATH_AGITATED':
   case 'SUDDEN_DEATH_FEBRIS':
@@ -1183,6 +1187,19 @@ function OutputDeadManType($name, $type){
   case 'FLOWERED_X':
   case 'FLOWERED_Y':
   case 'FLOWERED_Z':
+  case 'CONSTELLATION_A':
+  case 'CONSTELLATION_B':
+  case 'CONSTELLATION_C':
+  case 'CONSTELLATION_D':
+  case 'CONSTELLATION_E':
+  case 'CONSTELLATION_F':
+  case 'CONSTELLATION_G':
+  case 'CONSTELLATION_H':
+  case 'CONSTELLATION_I':
+  case 'CONSTELLATION_J':
+  case 'CONSTELLATION_K':
+  case 'CONSTELLATION_L':
+  case 'CONSTELLATION_M':
     $action = strtolower($type);
     echo '<tr class="dead-type-fairy">';
     echo '<td>'.$name.' '.$MESSAGE->$action.'</td>';

@@ -24,6 +24,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="lovers.php">恋人陣営</a>
 <a href="quiz.php">出題者陣営</a>
 <a href="chiroptera.php">蝙蝠陣営</a>
+<a href="mania.php">神話マニア陣営</a>
 <a href="sub_role.php">サブ役職</a>
 </p>
 
@@ -55,6 +56,7 @@ Ver. 1.4.0
 <a href="#140beta10">β10</a>
 <a href="#140beta11">β11</a>
 <a href="#140beta12">β12</a>
+<a href="#140beta13">β13</a>
 </p>
 
 <p>
@@ -119,10 +121,10 @@ Ver. 1.4.0
   <tr>
     <td><a href="human.php#medium">巫女</a></td>
     <td><a href="human.php">村人</td>
-    <td><a href="human.php#necromancer_group">霊能者系</a></td>
+    <td><a href="human.php#medium_group">巫女系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">突然死した人の所属陣営が分かる特殊な霊能者。</td>
+    <td class="ability">突然死した人の所属陣営が分かる。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
@@ -165,9 +167,9 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α9</td>
   </tr>
   <tr>
-    <td><a href="human.php#mania" id="140alpha11">神話マニア</a></td>
-    <td><a href="human.php">村人</td>
-    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td><a href="mania.php#mania" id="140alpha11">神話マニア</a></td>
+    <td><a href="mania.php">神話マニア</td>
+    <td><a href="mania.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">初日の夜に誰か一人を選んでその人の役職をコピーする (入れ替わるのは 2 日目の朝)。</td>
@@ -579,9 +581,9 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
-    <td><a href="human.php#unknown_mania" id="140alpha23">鵺</a></td>
-    <td><a href="human.php">村人</td>
-    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td><a href="mania.php#unknown_mania" id="140alpha23">鵺</a></td>
+    <td><a href="mania.php">神話マニア</td>
+    <td><a href="mania.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">初日の夜に誰か一人を選んでその人と同じ所属陣営にする。<br>
@@ -968,8 +970,7 @@ Ver. 1.4.0
     <td><a href="fox.php#child_fox_group">子狐系</a></td>
     <td>村人<br>(呪殺無し)</td>
     <td>子狐</td>
-    <td class="ability">呪殺されないが人狼に襲撃されると殺される妖狐。<br>
-      仲間は分かるが念話はできない。<a href="human.php#sex_mage">ひよこ鑑定士</a>の能力を持っているが時々失敗する。</td>
+    <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>相当の能力を持つ子狐。成功率は 70%。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
@@ -1102,9 +1103,9 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β9</td>
   </tr>
   <tr>
-    <td><a href="human.php#trick_mania">奇術師</a></td>
-    <td><a href="human.php">村人</td>
-    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td><a href="mania.php#trick_mania">奇術師</a></td>
+    <td><a href="mania.php">神話マニア</td>
+    <td><a href="mania.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">コピー先が「初日投票をしてなかった」場合はその役職を奪い取り、
@@ -1196,22 +1197,22 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
-    <td><a href="human.php#soul_mania">覚醒者</a></td>
-    <td><a href="human.php">村人</td>
-    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td><a href="mania.php#soul_mania">覚醒者</a></td>
+    <td><a href="mania.php">神話マニア</td>
+    <td><a href="mania.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">4日目にコピー先の上位種に変化する、特殊な神話マニア。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
-    <td><a href="human.php#dummy_mania">夢語部</a></td>
-    <td><a href="human.php">村人</td>
-    <td><a href="human.php#mania_group">神話マニア系</a></td>
+    <td><a href="mania.php#dummy_mania">夢語部</a></td>
+    <td><a href="mania.php">神話マニア</td>
+    <td><a href="mania.php#mania_group">神話マニア系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">4日目にコピー先の基本・劣化種に変化する、特殊な神話マニア。<br>
-    本人表記は「<a href="human.php#soul_mania">覚醒者</a>」で、変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。</td>
+    本人表記は「<a href="mania.php#soul_mania">覚醒者</a>」で、変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
@@ -1231,6 +1232,15 @@ Ver. 1.4.0
     <td>妖狐</td>
     <td class="ability">一度だけ、自分が占われても占い妨害をする事ができる妖狐。<br>
       狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#guide_poison">誘毒者</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#poison_group">埋毒者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">毒能力者のみに中る特殊な埋毒者。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
@@ -1312,8 +1322,116 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">悪戯が成功すると、意味の無いメッセージを死亡メッセージ欄に表示できる妖精。</td>
+    <td class="ability">悪戯が成功すると、花に関するメッセージを死亡メッセージ欄に表示できる妖精。</td>
     <td>Ver. 1.4.0 β12</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#doom_doll" id="140beta13">蓬莱人形</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#doll_group">上海人形系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">吊られた時に、自分に投票した人からランダムで一人に<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人形。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#miasma_fox">蟲狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#child_fox_group">子狐系</a></td>
+    <td>村人<br>(呪殺無し)</td>
+    <td>子狐</td>
+    <td class="ability">吊られるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#jammer_fox">月狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#child_fox_group">子狐系</a></td>
+    <td>村人<br>(呪殺無し)</td>
+    <td>子狐</td>
+    <td class="ability"<a href="wolf.php#jammer_mad">月兎</a>相当の能力を持つ子狐。成功率は 70%。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#stargazer_fox">星狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#child_fox_group">子狐系</a></td>
+    <td>村人<br>(呪殺無し)</td>
+    <td>子狐</td>
+    <td class="ability"<a href="human.php#stargazer_mage">占星術師</a>相当の能力を持つ子狐。成功率は 70%。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#sun_fairy">日妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">悪戯先が人狼に襲撃されたら、次の日の昼を全員<a href="sub_role.php#invisible">光学迷彩</a>にする妖精。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#moon_fairy">月妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">悪戯先が人狼に襲撃されたら、次の日の昼を全員<a href="sub_role.php#earplug">耳栓</a>にする妖精。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#star_fairy">星妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">悪戯が成功すると、星に関するメッセージを死亡メッセージ欄に表示できる妖精。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#moon_fairy">草妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">悪戯先が人狼に襲撃されたら、次の日の昼を全員<a href="sub_role.php#grassy">草原迷彩</a>にする妖精。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#hunter_guard">猟師</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#guard_group">狩人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">妖狐も狩る事ができる特殊な狩人。護衛先が人狼に襲撃されたら本人は殺される。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#soul_assassin">辻斬り</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#assassin_group">暗殺者系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">暗殺した人の役職を知る事ができる上位暗殺者。毒能力者を暗殺したら本人は毒死する。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#seal_medium">封印師</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#medium_group">巫女系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。</td>
+    <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#revive_medium">風祝</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#medium_group">巫女系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability"><a href="human.php#poison_cat">猫又</a>相当の蘇生能力を持った上位巫女。</td>
+    <td>Ver. 1.4.0 β13</td>
   </tr>
 </table>
 

@@ -208,7 +208,9 @@ function EntryLastWords($say){
   if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
 
   if($SELF->IsLive()){ //登録しない役職をチェック
-    if($SELF->IsRole('escaper', 'reporter', 'evoke_scanner', 'no_last_words')) return false;
+    if($SELF->IsRole('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words')){
+      return false;
+    }
     $SELF->Update('last_words', $say); //遺言を残す
   }
   elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){
@@ -380,7 +382,7 @@ function CheckSilence(){
 
 	//未投票者を全員突然死させる
 	foreach($novote_uname_list as $uname){
-	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'SUDDEN_DEATH_NOVOTED');
+	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED_' . $ROOM->day_night);
 	}
 	LoversFollowed(true);
 	InsertMediumMessage();

@@ -20,7 +20,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#mad_group">狂人系</a>
 </p>
 
-<h2><a id="wolf_rule">人狼系の基本ルール</a></h2>
+<h2><a id="wolf_rule">基本ルール [人狼系]</a></h2>
 <ol>
   <li>夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。<br>
     例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない
@@ -34,7 +34,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
 </pre>
 
-<h2><a id="wolf_partner">人狼系の仲間表示</a></h2>
+<h2><a id="wolf_partner">仲間表示 [人狼系]</a></h2>
 <ol>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。</li>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。</li>
@@ -102,7 +102,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h3><a id="boss_wolf">白狼</a> (占い結果：村人 / 霊能結果：白狼) [Ver. 1.4.0 α3-7〜]</h3>
 <pre>
-他の国で言うところの「大狼」。
+他の国で言う「大狼」。
 <a href="human.php#mage_group">占い師</a>を欺けるが、<a href="human.php#necromancer_group">霊能者</a>には見抜かれる。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -145,14 +145,13 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 </pre>
 <h4>Ver. 1.4.0 β3〜</h4>
 <pre>
-霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">霊能の基本ルール</a>対応抜け)
+霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">基本ルール [霊能]</a>対応抜け)
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する役職です。
-新役職考案スレ (最下参照) の 69 を参考にしています。
+他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ</a> の 69 を参考にしています。
 <a href="human.php#soul_mage">魂の占い師</a>や<a href="fox.php#child_fox">子狐</a>も呪い殺せます。
-<a href="human.php#mage_group">占い師</a>側の対策は、遺言に占い先をきちんと書いておく事です。
+占い能力者側の対策は、遺言に占い先をきちんと書いておく事です。
 死体の数や状況にもよりますが、残った村人がきっと仇を討ってくれるでしょう。
 </pre>
 
@@ -171,7 +170,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 </pre>
 
 <h3><a id="poison_wolf">毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12〜]</h3>
-<h4>[毒能力] 吊り：人狼以外 / 襲撃：不可 / 薬師判定：有り</h4>
+<h4>[毒能力] 吊り：人狼以外 / 襲撃：無し / 薬師判定：有り</h4>
 <pre>
 毒能力を持った人狼。
 吊られた時に巻き込む対象の決定時に人狼が除かれるため
@@ -179,25 +178,16 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-新役職考案スレ (最下参照) の 31 が原型です。
-毒狼 CO した人を吊って誰も巻き込まれなかった場合は以下のケースがありえます。
-1. <a href="human.php#pharmacist">薬師</a>が投票していた
-2. 投票者ランダムの設定で、投票者が全員狼だった
-3. 騙りだった
-
-Ver. 1.4.0 α12 からは毒持ちを吊った時に巻き込まれる対象を設定で制限できます。
-(設定は管理者に確認を取ってください)
-「投票者ランダム」だった場合、この状況から推理を詰めることが可能になります。
-<a href="human.php#pharmacist">薬師</a>が投票していない場合、毒狼を真と見るなら投票者に狼がいる事になります。
-しかし、これが騙りの場合は・・・？
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/31" target="_top">新役職考案スレ</a> の 31 が原型です。
+吊られてもただでは死なないので、破綻を恐れず積極的に騙ると効果的です。
 </pre>
 
 <h3><a id="resist_wolf">抗毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α17〜]</h3>
 <pre>
 一度だけ毒に耐えられる(毒に中っても死なない)人狼です。
 毒吊りの巻き込み、毒噛み両方に対応しています。
-Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
-関わらず毒の対象が襲撃者に固定されます。
+毒能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
+毒の対象が襲撃者に固定されます。
 </pre>
 <h4>Ver. 1.4.0 α24〜</h4>
 <pre>
@@ -209,9 +199,8 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-新役職考案スレ (最下参照) の 25 を参考にしています。
-現時点でほぼ無敵の能力を誇る<a href="human.php#poison_guard">騎士</a>への対抗策として作成しました。
-安易に CO する騎士・埋毒者を葬ってやりましょう！
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ</a> の 25 を参考にしています。
+毒能力者の対抗役職です。安易に CO する<a href="human.php#poison_guard">騎士</a>・埋毒者を葬ってやりましょう！
 </pre>
 
 <h3><a id="blue_wolf">蒼狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
@@ -278,14 +267,13 @@ Ver. 1.4.0 α24 からは毒能力者を襲撃した場合はサーバ設定や能力失効の有無に
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-新役職考案スレ (最下参照) の 69 の「賢狼」が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ</a> の 69 の「賢狼」が原型です。
 ベーグル(真偽の付かない占い噛み) 時に動くのが一番有効でしょう。
 ベーグル後はワンチャンスの狩人確認に使うと良いと思います。
 また、村人の場合に能力を失いますが身代わり君を噛むのも面白いですね。
 結果が出てから仲間に伝える前に吊られる可能性があるので
 事前にブロックサインを決めておくと良いでしょう。
 </pre>
-
 
 <h3><a id="possessed_wolf">憑狼</a> (占い結果：人狼 / 霊能結果：憑狼) [Ver. 1.4.0 α24〜]</h3>
 <pre>
@@ -604,19 +592,25 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 仲間の狼が減ると特殊能力が発現する狼。
 </pre>
 <ol>
-  <li>狼が残り二人になると、以下の能力を持ちます</li>
+  <li>狼が残り二人になると、以下の能力を持ちます (覚醒状態)</li>
   <ol>
     <li><a href="human.php#assassin_spec">暗殺反射</a></li>
     <li><a href="#trap_mad">罠師</a>の罠無効</li>
   </ol>
-  <li>狼が残り一人になると、さらに以下の能力を持ちます</li>
+  <li>狼が残り一人になると、さらに以下の能力を持ちます (完全覚醒状態)</li>
   <ol>
-    <li>毒無効 (吊り・襲撃両対応)</li>
+    <li>毒・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (吊り・襲撃両対応)</li>
+    <li><a href="human.php#doom_doll">蓬莱人形</a>の能力の対象外</li>
+    <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
     <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
 </ol>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方ウミガメ人狼のプレイヤーさんがモデルの、人狼系最終兵器です。
@@ -814,9 +808,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
 <pre>
 投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role#febris">熱病</a>にする特殊な狂人。
-<a href="human.php#detective_common">探偵</a>には無効。
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
 
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
 </pre>
 <h4>Ver. 1.4.0 β10〜</h4>
 <pre>

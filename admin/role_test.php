@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF');
+$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA');
 $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('闇鍋モード配役テスト');
 
@@ -12,6 +12,9 @@ echo <<<EOF
 <input type="hidden" name="command" value="role_test">
 <label>人数</label><input type="text" name="user_count" size="3" value="20">
 <label>試行回数</label><input type="text" name="try_count" size="2" value="100">
+<input type="submit" value=" 実 行 "><br>
+<input type="radio" name="game_option" value="">
+普通村
 <input type="radio" name="game_option" value="chaos">
 闇鍋
 <input type="radio" name="game_option" value="chaosfull">
@@ -24,11 +27,10 @@ echo <<<EOF
 自動公開決闘
 <input type="radio" name="game_option" value="duel not_open_cast">
 非公開決闘
-<input type="radio" name="game_option" value="full_mania">
+<input type="checkbox" name="full_mania" value="on">
 神話マニア
-<input type="radio" name="game_option" value="festival">
+<input type="checkbox" name="festival" value="on">
 お祭り
-<input type="submit" value=" 実 行 "></form>
 </form>
 
 EOF;
@@ -39,7 +41,10 @@ if($_POST['command'] == 'role_test'){
   $option_role = $_POST['game_option'];
   $RQ_ARGS = new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
-  $RQ_ARGS->TestItems->test_room = array('game_option' => $_POST['game_option']);
+  $game_option = $_POST['game_option'];
+  if($_POST['full_mania'] == 'on') $option_role .= ' full_mania';
+  if($_POST['festival']   == 'on') $game_option .= ' festival';
+  $RQ_ARGS->TestItems->test_room = array('game_option' => $game_option);
   $ROOM = new Room($RQ_ARGS);
   for($i = 1; $i <= $try_count; $i++){
     echo "$i 回目";

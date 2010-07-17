@@ -53,7 +53,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 
 <h2><a id="fox_talk">夜の会話 (念話)</a></h2>
 <pre>
-<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>は夜に会話(念話)できます。
+<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できます。
 他人からはいっさい見えません。
 <a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
 <a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
@@ -99,7 +99,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 
 <h3><a id="white_fox">白狐</a> (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
 <pre>
-呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺される。
+呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺される妖狐。
 <a href="#child_fox">子狐</a>との違いは占いができない代わりに他の妖狐と<a href="#fox_talk">念話</a>ができる事。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -110,15 +110,12 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 
 <h3><a id="black_fox">黒狐</a> (占い結果：人狼(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α24〜]</h3>
 <pre>
-占い結果が「人狼」 / 霊能結果が「妖狐」と判定される妖狐。
-<a href="wolf.php#wolf_group">人狼</a>に襲撃されても死なない。
+占い結果が「人狼」、霊能結果が「妖狐」と判定される妖狐。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 呪殺されない代わりに人狼扱いされる妖狐です。
-人狼側にとっては、黒狐自体の存在よりも、それを占った
-占い師を狂人だと思って放置していたら真だった、なんて
-事態になりかねないことの方が問題になりそうです。
+人狼側から見ると、SG にできる代わりに占い師の真贋を読みづらくなる存在になります。
 </pre>
 
 <h3><a id="gold_fox">金狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
@@ -134,19 +131,19 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h3><a id="phantom_fox">幻狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11〜]</h3>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
-妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#phantom_wolf">幻狼</a>の妖狐バージョンです。
+二回占われると呪殺されてしまうので、どう対応するかがポイントです。
 </pre>
 
 <h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <h4>[毒能力] 吊り：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
-毒を持った妖狐。毒能力は<a href="human.php#poison_group">埋毒者</a>と同じだが、対象から妖狐陣営が除かれるため
-投票者ランダムの場合は不発となるケースがある。
+毒を持った妖狐。毒の対象は妖狐陣営以外。
+<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら殺されて毒が発動する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -185,7 +182,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h3><a id="voodoo_fox">九尾</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
 <pre>
 夜に村人一人を選び、その人に呪いをかける妖狐。
-<a href="wolf.php#wolf_group">人狼</a>に襲撃されても死なないが、<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
   <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受けます</li>
@@ -205,6 +202,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 蘇生能力を持った妖狐。
 蘇生に関するルールは<a href="human.php#about_revive">蘇生能力者の基本ルール</a>参照。
 蘇生成功率は 100% で、一度成功すると能力を失う。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -217,6 +215,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h3><a id="possessed_fox">憑狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9〜]</h3>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
   <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
@@ -225,13 +224,11 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
   <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
   <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
-  <li>狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺されます</li>
   <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
 </ol>
 <h4>Ver. 1.4.0 β12〜</h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できません。
-(<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職には憑依できません)。
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できません。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -243,8 +240,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h3><a id="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
-<a href="wolf.php#wolf_group">人狼</a>に噛まれても死なないが、<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
-<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
+<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
 </pre>
 <h4>Ver. 1.4.0 β9〜</h4>
 <pre>
@@ -309,23 +305,33 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 
 <h2><a id="child_fox_group">子狐系</a></h2>
 <p>
+<a href="#child_fox_spec">基本スペック</a>
+</p>
+<p>
 <a href="#child_fox">子狐</a>
 <a href="#sex_fox">雛狐</a>
+<a href="#stargazer_fox">星狐</a>
+<a href="#jammer_fox">月狐</a>
+<a href="#miasma_fox">蟲狐</a>
 </p>
+
+<h3><a id="child_fox_spec">基本スペック</a></h3>
+<ol>
+  <li>呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺されます。</li>
+  <li>夜の投票能力を持っている場合、成功率は 70% です。</li>
+</ol>
 
 <h3><a id="child_fox">子狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 α3-7〜]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
-呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺されます。
-妖狐と<a href="#fox_talk">念話</a>できない代わりに占いができます。
+占い能力を持つ、子狐系の基本職。
 判定結果は普通の<a href="human.php#mage_group">占い師</a>と同じで、呪殺は出来ませんが呪返しは受けます。
-占いの成功率は 70% です。
 </pre>
 <h4>Ver. 1.4.0 α17〜</h4>
 <pre>
 占い能力を持ちました。
 </pre>
-<h4>Ver. 1.4.0 α8〜</h4>
+<h4>Ver. 1.4.0 α8〜β11</h4>
 <pre>
 通常闇鍋モードでは20人未満では出現しません。
 20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
@@ -335,22 +341,49 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する役職です。
-妖狐陣営自体の出現数が少ないのでかなりのレア役職になりそうな予感。
+他国に実在する役職です。
+占い騙りをする場合は失敗した時にどうフォローするかがポイントです。
 </pre>
 
 <h3><a id="sex_fox">雛狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β8〜]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
-呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺されます。
-妖狐と<a href="#fox_talk">念話</a>できない代わりに占いができます。
-判定結果は普通の<a href="human.php#sex_group">ひよこ鑑定士</a>と同じです。
-占いの成功率は 70% です。
+<a href="human.php#sex_group">ひよこ鑑定士</a>相当の能力を持つ子狐。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#child_fox">子狐</a>の<a href="human.php#sex_group">ひよこ鑑定士</a>バージョンです。
+<a href="human.php#sex_group">ひよこ鑑定士</a>の<a href="#child_fox">子狐</a>バージョンです。
 能力よりも、存在自体が脅威となるタイプですね。
 村や狼が疑心暗鬼になって<a href="human.php#sex_group">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
+</pre>
+
+<h3><a id="stargazer_fox">星狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
+<pre>
+<a href="human.php#stargazer_group">占星術師</a>相当の能力を持つ子狐。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#stargazer_group">占星術師</a>の<a href="#child_fox">子狐</a>バージョンです。
+</pre>
+
+<h3><a id="jammer_fox">月狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<pre>
+<a href="wolf.php#jammer_mad">月兎</a>相当の能力を持つ子狐。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#jammer_mad">月兎</a>の<a href="#child_fox">子狐</a>バージョンです。
+</pre>
+
+<h3><a id="miasma_fox">蟲狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<pre>
+吊られるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。
+吊られた場合は投票した人からランダムで一人、人狼に襲撃された場合は襲撃した人狼に付加する。
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#poison_fox">管狐</a>の<a href="#child_fox">子狐</a>相当として、<a href="wolf.php#miasma_mad">土蜘蛛</a>能力を持たせてみました。
 </pre>
 </body></html>

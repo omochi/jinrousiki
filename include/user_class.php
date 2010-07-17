@@ -216,8 +216,10 @@ class User{
   }
 
   //子狐系判定
-  function IsChildFox(){
-    return $this->IsRole('child_fox', 'sex_fox');
+  function IsChildFox($vote = false){
+    $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
+    if(! $vote) $stack[] = 'miasma_fox';
+    return $this->IsRole($stack);
   }
 
   //恋人判定
@@ -225,10 +227,30 @@ class User{
     return $this->IsRole('lovers');
   }
 
+  //覚醒天狼判定
+  function IsLastWolf(){
+    global $USERS;
+
+    if(! $this->IsRole('sirius_wolf')) return false;
+    if(is_null($this->last_wolf)){
+      $living_wolves_list = $USERS->GetLivingWolves();
+      //PrintData($living_wolves_list);
+      $this->last_wolf = count($living_wolves_list) == 1;
+    }
+    return $this->last_wolf;
+  }
+
   //難題判定
   function IsChallengeLovers(){
     global $ROOM;
     return $ROOM->date > 1 && $ROOM->date < 5 && $this->IsRole('challenge_lovers');
+  }
+
+  //特殊耐性判定
+  function IsAvoid($quiz = false){
+    $role_list = array('detective_common');
+    if($quiz) $role_list[] = 'quiz';
+    return $this->IsRole($role_list) || $this->IsLastWolf() || $this->IsChallengeLovers();
   }
 
   //拡張判定
@@ -251,13 +273,19 @@ class User{
     if(! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false; //無毒・連毒者
     if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //騎士
     if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //潜毒者は 5 日目以降
-    if($this->IsRole('dummy_poison', 'poison_wolf')) return $ROOM->IsDay(); //夢毒者・毒狼
+    if($this->IsRole('dummy_poison')) return $ROOM->IsDay(); //夢毒者
     return true;
   }
 
   //憑依能力者判定 (被憑依者とコード上で区別するための関数)
   function IsPossessedGroup(){
     return $this->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox');
+  }
+
+  //蘇生能力者判定
+  function IsReviveGroup($active = false){
+    if(! ($this->IsRoleGroup('cat') || $this->IsRole('revive_medium', 'revive_fox'))) return false;
+    return $active ? $this->IsActive() : true;
   }
 
   //所属陣営判別
@@ -301,7 +329,7 @@ class User{
     if($this->IsWolf()){
       return isset($vote_data['WOLF_EAT']);
     }
-    if($this->IsRole('jammer_mad')){
+    if($this->IsRole('jammer_mad', 'jammer_fox')){
       return isset($vote_data['JAMMER_MAD_DO'][$this->uname]);
     }
     if($this->IsRole('voodoo_mad')){
@@ -314,7 +342,7 @@ class User{
     if($this->IsRole('voodoo_fox')){
       return isset($vote_data['VOODOO_FOX_DO'][$this->uname]);
     }
-    if($this->IsChildFox()){
+    if($this->IsChildFox(true)){
       return isset($vote_data['CHILD_FOX_DO'][$this->uname]);
     }
     if($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy')){
@@ -374,7 +402,7 @@ class User{
     }
 
     if($ROOM->IsOpenCast()) return true;
-    if($this->IsRoleGroup('cat') || $this->IsActive('revive_fox')){
+    if($this->IsReviveGroup(true)){
       if(is_array($vote_data['POISON_CAT_NOT_DO']) &&
 	 array_key_exists($this->uname, $vote_data['POISON_CAT_NOT_DO'])) return true;
       return isset($vote_data['POISON_CAT_DO'][$this->uname]);
@@ -384,17 +412,17 @@ class User{
 
   //役職をパースして省略名を返す
   function GenerateShortRoleName($heaven = false){
-    global $GAME_CONF, $USERS;
+    global $ROLE_DATA, $USERS;
 
     //メイン役職を取得
     $camp = $this->GetCamp();
-    $name = $GAME_CONF->short_role_list[$this->main_role];
+    $name = $ROLE_DATA->short_role_list[$this->main_role];
     $str = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
 
     //サブ役職を追加
     $sub_role_list = array_slice($this->role_list, 1);
-    foreach($GAME_CONF->short_role_list as $role => $name){
+    foreach($ROLE_DATA->short_role_list as $role => $name){
       if(in_array($role, $sub_role_list)){
 	$str .= ($role == 'lovers' || $role == 'challenge_lovers') ?
 	  '<span class="lovers">' . $name . '</span>' : $name;
@@ -499,7 +527,7 @@ class User{
 
     //保存しない役職をチェック
     if(! $this->IsDummyBoy() &&
-       $this->IsRole('escaper', 'reporter', 'evoke_scanner', 'no_last_words',
+       $this->IsRole('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words',
 		     'possessed_exchange')) return;
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
@@ -761,24 +789,24 @@ class UserDataSet{
       return;
     }
 
-    $target_user = $user;
+    $target = $user;
     do{ //覚醒者・夢語部ならコピー先を辿る
-      if(! $target_user->IsRole('soul_mania', 'dummy_mania')) break;
-      $target_list = $target_user->GetPartner($target_user->main_role);
-      if(is_null($target_list)) break; //コピー先が見つからなければスキップ
+      if(! $target->IsRole('soul_mania', 'dummy_mania')) break;
+      $stack = $target->GetPartner($target->main_role);
+      if(is_null($stack)) break; //コピー先が見つからなければスキップ
 
-      $target_user = $this->ByID($target_list[0]);
-      if($target_user->IsRoleGroup('mania')) $target_user = $user; //神話マニア系なら元に戻す
+      $target = $this->ByID($stack[0]);
+      if($target->IsRoleGroup('mania')) $target = $user; //神話マニア系なら元に戻す
     }while(false);
 
-    while($target_user->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
-      $target_list = $target_user->GetPartner('unknown_mania');
-      if(is_null($target_list)) break; //コピー先が見つからなければスキップ
+    while($target->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
+      $stack = $target->GetPartner('unknown_mania');
+      if(is_null($stack)) break; //コピー先が見つからなければスキップ
 
-      $target_user = $this->ByID($target_list[0]);
-      if($target_user->IsSelf()) break; //自分に戻ったらスキップ
+      $target = $this->ByID($stack[0]);
+      if($target->IsSelf()) break; //自分に戻ったらスキップ
     }
-    $user->$type = $target_user->DistinguishCamp();
+    $user->$type = $target->DistinguishCamp();
   }
 
   //特殊イベント情報を設定する
@@ -808,18 +836,21 @@ class UserDataSet{
 	foreach($status_stack as $id => $date){
 	  if($date != $ROOM->date) continue;
 	  $status_user = $this->ByID($id);
-	  $ROOM->event->blind_day    |= $status_user->IsRole('dark_fairy') && $ROOM->IsDay();
-	  $ROOM->event->bright_night |= $status_user->IsRole('light_fairy');
+	  $ROOM->event->invisible |= $status_user->IsRole('sun_fairy')   && $ROOM->IsDay();
+	  $ROOM->event->earplug   |= $status_user->IsRole('moon_fairy')  && $ROOM->IsDay();
+	  $ROOM->event->grassy    |= $status_user->IsRole('grass_fairy') && $ROOM->IsDay();
+	  $ROOM->event->blinder   |= $status_user->IsRole('dark_fairy')  && $ROOM->IsDay();
+	  $ROOM->event->mind_open |= $status_user->IsRole('light_fairy');
 	}
 	break;
       }
     }
 
-    if($ROOM->IsEvent('blind_day')){
-      foreach($this->rows as $user) $user->AddVirtualRole('blinder');
-    }
-    if($ROOM->IsEvent('bright_night')){
-      foreach($this->rows as $user) $user->AddVirtualRole('mind_open');
+    $stack = array('invisible', 'earplug', 'grassy', 'blinder', 'mind_open');
+    foreach($stack as $role){
+      if($ROOM->IsEvent($role)){
+	foreach($this->rows as $user) $user->AddVirtualRole($role);
+      }
     }
   }
 
@@ -836,11 +867,8 @@ class UserDataSet{
   function IsOpenCast(){
     foreach($this->rows as $user){
       if($user->IsDummyBoy()) continue;
-      if($user->IsRoleGroup('cat')){
+      if($user->IsReviveGroup(true)){
 	if($user->IsLive()) return false;
-      }
-      elseif($user->IsRole('revive_fox')){
-	if($user->IsLive() && $user->IsActive()) return false;
       }
       elseif($user->IsRole('revive_priest')){
 	if($user->IsActive()) return false;
@@ -894,7 +922,8 @@ class UserDataSet{
     $ROOM->SystemMessage($virtual_user->handle_name, $reason);
 
     switch($reason){
-    case 'SUDDEN_DEATH_NOVOTED':
+    case 'NOVOTED_day':
+    case 'NOVOTED_night':
     case 'POSSESSED_TARGETED':
       return true;
 
@@ -913,7 +942,7 @@ class UserDataSet{
     if(! $this->Kill($user_no, $reason)) return false;
     $user->suicide_flag = true;
 
-    $sentence = $reason == 'SUDDEN_DEATH_NOVOTED' ? 'sudden_death' : 'vote_sudden_death';
+    $sentence = strpos($reason, 'NOVOTED') !== false ? 'sudden_death' : 'vote_sudden_death';
     $ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . $MESSAGE->$sentence);
     return true;
   }

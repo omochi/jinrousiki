@@ -6,6 +6,7 @@ OutputInfoPageHeader('闇鍋モード');
 ?>
 <p>
 <a href="#wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a>
+<a href="#chaos_decide_role">配役決定ルーチン</a>
 <a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>
 <a href="#chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a>
@@ -34,150 +35,44 @@ OutputInfoPageHeader('闇鍋モード');
 希望制オプションは強制的にオフになります
 </pre>
 
-<h2><a id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
+<h2><a id="chaos_decide_role">配役決定ルーチン</a></h2>
+<ol>
+  <li>バージョンアップで仕様が変わる可能性があります。</li>
+  <li>ゲーム開始直後に勝敗が決まる可能性があります</li>
+  <li>設定ファイルで変更できるので具体的な数値はサーバ毎に違います。</li>
+</ol>
 <p>
-<a href="#chaos_appear_role">出現役職</a>
-<a href="#chaos_decide_role">配役決定ルーチン</a>
-</p>
-<h3><a id="chaos_appear_role">出現役職</a></h3>
-<pre>
-出現する可能性のある役職は以下です
-</pre>
-<h4><a href="new_role/human.php">村人陣営</a></h4>
-<pre>
-村人、<a href="new_role/human.php#escaper">逃亡者</a>
-占い師、<a href="new_role/human.php#soul_mage">魂の占い師</a>、<a href="new_role/human.php#psycho_mage">精神鑑定士</a>
-霊能者、<a href="new_role/human.php#medium">巫女</a>
-狩人、<a href="new_role/human.php#poison_guard">騎士</a>、<a href="new_role/human.php#reporter">ブン屋</a>
-共有者
-埋毒者、<a href="new_role/human.php#incubate_poison">潜毒者</a>
-<a href="new_role/human.php#pharmacist">薬師</a>
-<a href="new_role/human.php#assassin">暗殺者</a>
-<a href="new_role/human.php#doll">上海人形</a>、<a href="new_role/human.php#doll_master">人形遣い</a>
-<a href="new_role/human.php#mania">神話マニア</a>
-</pre>
-
-<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
-<pre>
-人狼、<a href="new_role/wolf.php#boss_wolf">白狼</a>、<a href="new_role/wolf.php#poison_wolf">毒狼</a>、<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>、<a href="new_role/wolf.php#silver_wolf">銀狼</a>
-狂人、<a href="new_role/wolf.php#fanatic_mad">狂信者</a>、<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>
-</pre>
-
-<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
-<pre>
-妖狐
-<a href="new_role/fox.php#child_fox">子狐</a>
-</pre>
-
-<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
-<pre>
-キューピッド、<a href="new_role/lovers.php#self_cupid">求愛者</a>
-</pre>
-
-<h4><a href="new_role/quiz.php">出題者陣営</a></h4>
-<pre>
-<a href="new_role/quiz.php#quiz">出題者</a>
-</pre>
-
-<h4><a href="new_role/chiroptera.php">蝙蝠陣営</a></h4>
-<pre>
-<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>
-</pre>
-
-<h3><a id="chaos_decide_role">配役決定ルーチン</a></h3>
-<pre>
-<a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>と同じです。
-</pre>
-
-<h2><a id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
-<p>
-<a href="#chaosfull_appear_role">出現役職</a>
-<a href="#chaosfull_decide_role">配役決定ルーチン</a>
+<a href="#chaosfull_decide_role_fix">固定出現枠</a>
+<a href="#chaosfull_decide_role_random">ランダム出現枠</a>
 <a href="#chaosfull_decide_role_example">配役決定例</a>
 </p>
 
-<h3><a id="chaosfull_appear_role">出現役職</a></h3>
+<h3><a id="chaosfull_decide_role_fix">固定出現枠</a></h3>
 <pre>
-出現する可能性のある役職は以下 (Ver. 1.4.0 α23 相当) です。
-</pre>
-<h4><a href="new_role/human.php">村人陣営</a></h4>
-<pre>
-村人、<a href="new_role/human.php#suspect">不審者</a>、<a href="new_role/human.php#unconscious">無意識</a>
-占い師、<a href="new_role/human.php#soul_mage">魂の占い師</a>、<a href="new_role/human.php#psycho_mage">精神鑑定士</a>、<a href="new_role/human.php#sex_mage">ひよこ鑑定士</a>、<a href="new_role/human.php#voodoo_killer">陰陽師</a>、<a href="new_role/human.php#dummy_mage">夢見人</a>
-霊能者、<a href="new_role/human.php#soul_necromancer">雲外鏡</a>、<a href="new_role/human.php#yama_necromancer">閻魔</a>、<a href="new_role/human.php#dummy_necromancer">夢枕人</a>、<a href="new_role/human.php#medium">巫女</a>
-狩人、<a href="new_role/human.php#poison_guard">騎士</a>、<a href="new_role/human.php#reporter">ブン屋</a>、<a href="new_role/human.php#anti_voodoo">厄神</a>、<a href="new_role/human.php#dummy_guard">夢守人</a>
-共有者、<a href="new_role/human.php#dummy_common">夢共有者</a>
-埋毒者、<a href="new_role/human.php#strong_poison">強毒者</a>、<a href="new_role/human.php#incubate_poison">潜毒者</a>、<a href="new_role/human.php#dummy_poison">夢毒者</a>
-<a href="new_role/human.php#poison_cat">猫又</a>
-<a href="new_role/human.php#pharmacist">薬師</a>
-<a href="new_role/human.php#assassin">暗殺者</a>
-<a href="new_role/human.php#mind_scanner">さとり</a>
-<a href="new_role/human.php#jealousy">橋姫</a>
-<a href="new_role/human.php#mania">神話マニア</a>、<a href="new_role/human.php#unknown_mania">鵺</a>
-</pre>
-
-<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
-<pre>
-人狼、<a href="new_role/wolf.php#boss_wolf">白狼</a>、<a href="new_role/wolf.php#cursed_wolf">呪狼</a>、<a href="new_role/wolf.php#poison_wolf">毒狼</a>、<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>、<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>、<a href="new_role/wolf.php#cute_wolf">萌狼</a>、<a href="new_role/wolf.php#silver_wolf">銀狼</a>
-狂人、<a href="new_role/wolf.php#fanatic_mad">狂信者</a>、<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>、<a href="new_role/wolf.php#jammer_mad">月兎</a>、<a href="new_role/wolf.php#voodoo_mad">呪術師</a>、<a href="new_role/wolf.php#corpse_courier_mad">火車</a>、<a href="new_role/wolf.php#dream_eater_mad">獏</a>、<a href="new_role/wolf.php#trap_mad">罠師</a>
-</pre>
-
-<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
-<pre>
-妖狐、<a href="new_role/fox.php#white_fox">白狐</a>、<a href="new_role/fox.php#poison_fox">管狐</a>、<a href="new_role/fox.php#voodoo_fox">九尾</a>、<a href="new_role/fox.php#cursed_fox">天狐</a>、<a href="new_role/fox.php#silver_fox">銀狐</a>
-<a href="new_role/fox.php#child_fox">子狐</a>
-</pre>
-
-<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
-<pre>
-キューピッド、<a href="new_role/lovers.php#self_cupid">求愛者</a>、<a href="new_role/lovers.php#mind_cupid">女神</a>
-</pre>
-
-<h4><a href="new_role/quiz.php">出題者陣営</a></h4>
-<pre>
-<a href="new_role/quiz.php#quiz">出題者</a>
-</pre>
-
-<h4><a href="new_role/chiroptera.php">蝙蝠陣営</a></h4>
-<pre>
-<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>、<a href="new_role/chiroptera.php#poison_chiroptera">毒蝙蝠</a><a href="new_role/chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
-</pre>
-
-<h3><a id="chaosfull_decide_role">配役決定ルーチン</a></h3>
-<pre>
-バージョンアップで仕様が変わる可能性があります。
-</pre>
-<h4>固定出現枠が存在します</h4>
-<pre>
-デフォルトは人狼1、占い師1で、サーバ毎に設定を変更できます。
+初期設定は人狼1、占い師1で、各難易度で個別に設定できます。
 ただし、身代わり君が占い師になる可能性もあるので CO した占い師が真であるとは限りません。
 </pre>
-<h4>それ以外は全てランダムです</h4>
-<ul>
-  <li>ゲーム開始直後に勝敗が決まる可能性があります</li>
 
-  <li>実装されている全ての役職が出現します</li>
+<h3><a id="chaosfull_decide_role_random">ランダム出現枠</a></h3>
+<ol>
+  <li>各役職の出現率は基本的には非公開です。</li>
 
-  <li>各役職の出現率は基本的には非公開です
-    <ul><li>一応、通常闇鍋のレア役職はそれなりにレアです</li></ul>
+  <li>一部の役職グループには最低出現数を設定しています。<br>
+    例) 人狼は人口の 1/10 を最低限割り当てる
   </li>
 
-  <li>一部の役職は最低出現数を設定しています
-    <ul><li>例：人狼は人口の 1/10 を最低限割り当てる</li></ul>
+  <li>役職グループ毎に人口に対する上限が設定されています。<br>
+    例) 人狼は 20%、占い師は 10%
   </li>
 
-  <li>役職グループ毎に人口に対する上限が設定されています
-    <ul><li>例：人狼は20%、占い師は 10%</li></ul>
+  <li>ランダム出現で役職グループの上限を超えると村人に振り返られます。</li>
+
+  <li>村人には人口に対する上限が設定されています。<br>
+    上限を超えると特定の役職に振り返られます(初期設定は神話マニア)。
   </li>
+</ol>
 
-  <li>ランダムで役職グループの上限を超えると村人に振り返られます</li>
-
-  <li>村人には人口に対する上限が設定されています
-    <ul><li>上限を超えると特定の役職に振り返られます(デフォルトは神話マニア)</li></ul>
-  </li>
-</ul>
-
-<h3><a id="chaosfull_decide_role_example">配役決定例</a></h3>
+<h3><a id="chaos_decide_role_example">配役決定例</a></h3>
 <ul>
   <li>村人：10人</li>
 
@@ -231,64 +126,147 @@ OutputInfoPageHeader('闇鍋モード');
 村人1　占い師1　精神鑑定士1　霊能者1　人狼1　白狼1　神話マニア4
 </pre>
 
+<h2><a id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
+<h3><a id="chaos_appear_role">出現役職</a></h3>
+<pre>
+出現する可能性のある役職は以下です。
+</pre>
+<h4><a href="new_role/human.php">村人陣営</a></h4>
+<pre>
+<a href="new_role/human.php#human_group">村人系</a>：村人・<a href="new_role/human.php#escaper">逃亡者</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：占い師・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#psycho_mage">精神鑑定士</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：霊能者・<a href="new_role/human.php#medium">巫女</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：狩人・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#reporter">ブン屋</a>
+<a href="new_role/human.php#common_group">共有者系</a>：共有者
+<a href="new_role/human.php#poison_group">埋毒者系</a>：埋毒者・<a href="new_role/human.php#incubate_poison">潜毒者</a>
+<a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
+<a href="new_role/human.php#assassin_group">暗殺者系</a>：<a href="new_role/human.php#assassin">暗殺者</a>
+<a href="new_role/human.php#doll_group">上海人形系</a>：<a href="new_role/human.php#doll">上海人形</a>・<a href="new_role/human.php#doll_master">人形遣い</a>
+<a href="new_role/human.php#mania_group">神話マニア系</a>：<a href="new_role/human.php#mania">神話マニア</a>
+</pre>
+
+<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
+<pre>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#silver_wolf">銀狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>
+</pre>
+
+<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
+<pre>
+<a href="new_role/fox.php#fox_group">妖狐系</a>：妖狐
+<a href="new_role/fox.php#child_fox_group">子狐系</a>：<a href="new_role/fox.php#child_fox">子狐</a>
+</pre>
+
+<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
+<pre>
+<a href="new_role/lovers.php#cupid_group">キューピッド系</a>：キューピッド・<a href="new_role/lovers.php#self_cupid">求愛者</a>
+</pre>
+
+<h4><a href="new_role/quiz.php">出題者陣営</a></h4>
+<pre>
+<a href="new_role/quiz.php#quiz_group">出題者系</a>：<a href="new_role/quiz.php#quiz">出題者</a>
+</pre>
+
+<h4><a href="new_role/chiroptera.php">蝙蝠陣営</a></h4>
+<pre>
+<a href="new_role/chiroptera.php#chiroptera_group">蝙蝠系</a>：<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>
+</pre>
+
+<h2><a id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
+<h3><a id="chaosfull_appear_role">出現役職</a></h3>
+<pre>
+出現する可能性のある役職は以下 (Ver. 1.4.0 α23 相当) です。
+</pre>
+<h4><a href="new_role/human.php">村人陣営</a></h4>
+<pre>
+<a href="new_role/human.php#human_group">村人系</a>：村人・<a href="new_role/human.php#suspect">不審者</a>・<a href="new_role/human.php#unconscious">無意識</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：占い師・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#psycho_mage">精神鑑定士</a>・<a href="new_role/human.php#sex_mage">ひよこ鑑定士</a>・<a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/human.php#dummy_mage">夢見人</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：霊能者・<a href="new_role/human.php#soul_necromancer">雲外鏡</a>・<a href="new_role/human.php#yama_necromancer">閻魔</a>・<a href="new_role/human.php#dummy_necromancer">夢枕人</a>・<a href="new_role/human.php#medium">巫女</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：狩人・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>
+<a href="new_role/human.php#common_group">共有者系</a>：共有者・<a href="new_role/human.php#dummy_common">夢共有者</a>
+<a href="new_role/human.php#poison_group">埋毒者系</a>：埋毒者・<a href="new_role/human.php#strong_poison">強毒者</a>・<a href="new_role/human.php#incubate_poison">潜毒者</a>・<a href="new_role/human.php#dummy_poison">夢毒者</a>
+<a href="new_role/human.php#poison_cat_group">猫又系</a>：<a href="new_role/human.php#poison_cat">猫又</a>
+<a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
+<a href="new_role/human.php#assassin_group">暗殺者系</a>：<a href="new_role/human.php#assassin">暗殺者</a>
+<a href="new_role/human.php#mind_scanner_group">さとり系</a>：<a href="new_role/human.php#mind_scanner">さとり</a>
+<a href="new_role/human.php#jealousy_group">橋姫系</a>：<a href="new_role/human.php#jealousy">橋姫</a>
+<a href="new_role/human.php#mania_group">神話マニア系</a>：<a href="new_role/human.php#mania">神話マニア</a>・<a href="new_role/human.php#unknown_mania">鵺</a>
+</pre>
+
+<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
+<pre>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#cursed_wolf">呪狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>・<a href="new_role/wolf.php#silver_wolf">銀狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>・<a href="new_role/wolf.php#corpse_courier_mad">火車</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>
+</pre>
+
+<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
+<pre>
+<a href="new_role/fox.php#fox_group">妖狐系</a>：妖狐・<a href="new_role/fox.php#white_fox">白狐</a>・<a href="new_role/fox.php#poison_fox">管狐</a>・<a href="new_role/fox.php#voodoo_fox">九尾</a>・<a href="new_role/fox.php#cursed_fox">天狐</a>・<a href="new_role/fox.php#silver_fox">銀狐</a>
+<a href="new_role/fox.php#child_fox_group">子狐系</a>：<a href="new_role/fox.php#child_fox">子狐</a>
+</pre>
+
+<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
+<pre>
+<a href="new_role/lovers.php#cupid_group">キューピッド系</a>：キューピッド・<a href="new_role/lovers.php#self_cupid">求愛者</a>・<a href="new_role/lovers.php#mind_cupid">女神</a>
+</pre>
+
+<h4><a href="new_role/quiz.php">出題者陣営</a></h4>
+<pre>
+<a href="new_role/quiz.php#quiz_group">出題者系</a>：<a href="new_role/quiz.php#quiz">出題者</a>
+</pre>
+
+<h4><a href="new_role/chiroptera.php">蝙蝠陣営</a></h4>
+<pre>
+<a href="new_role/chiroptera.php#chiroptera_group">蝙蝠系</a>：<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>・<a href="new_role/chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="new_role/chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
+</pre>
+
 <h2><a id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a></h2>
-<p>
-<a href="#chaos_hyper_appear_role">出現役職</a>
-<a href="#chaos_hyper_decide_role">配役決定ルーチン</a>
-</p>
 <h3><a id="chaos_hyper_appear_role">出現役職</a></h3>
 <pre>
 実装されているすべての役職が出現します。
 </pre>
 
-<h3><a id="chaos_hyper_decide_role">配役決定ルーチン</a></h3>
-<pre>
-<a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>と同じです。
-</pre>
-
 <h2><a id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?></a> (〜Ver. 1.4.0 β11)</h2>
 <p>
-<a href="#chaos_appear_role">出現役職</a>
-<a href="#chaos_decide_role">配役決定ルーチン</a>
+<a href="#chaos_old_appear_role">出現役職</a>
+<a href="#chaos_old_decide_role">配役決定ルーチン</a>
 </p>
-<h3><a id="chaos_appear_role">出現役職</a></h3>
+<h3><a id="chaos_old_appear_role">出現役職</a></h3>
 <pre>
 出現する可能性のある役職は以下です
 </pre>
 <h4><a href="new_role/human.php">村人陣営</a></h4>
 <pre>
-村人、<a href="new_role/human.php#suspect">不審者</a>、<a href="new_role/human.php#unconscious">無意識</a>
-占い師、<a href="new_role/human.php#soul_mage">魂の占い師</a>
-霊能者、<a href="new_role/human.php#medium">巫女</a>
-狩人、<a href="new_role/human.php#poison_guard">騎士</a>、<a href="new_role/human.php#reporter">ブン屋</a>
-共有者
-埋毒者
-<a href="new_role/human.php#pharmacist">薬師</a>
-<a href="new_role/human.php#mania">神話マニア</a>
+<a href="new_role/human.php#human_group">村人系</a>：村人・<a href="new_role/human.php#suspect">不審者</a>・<a href="new_role/human.php#unconscious">無意識</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：占い師・<a href="new_role/human.php#soul_mage">魂の占い師</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：霊能者・<a href="new_role/human.php#medium">巫女</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：狩人・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#reporter">ブン屋</a>
+<a href="new_role/human.php#common_group">共有者系</a>：共有者
+<a href="new_role/human.php#poison_group">埋毒者系</a>：埋毒者
+<a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
+<a href="new_role/human.php#mania_group">神話マニア系</a>：<a href="new_role/human.php#mania">神話マニア</a>
 </pre>
 
 <h4><a href="new_role/wolf.php">人狼陣営</a></h4>
 <pre>
-人狼、<a href="new_role/wolf.php#boss_wolf">白狼</a>、<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>、<a href="new_role/wolf.php#poison_wolf">毒狼</a>、<a href="new_role/wolf.php#cute_wolf">萌狼</a>
-狂人、<a href="new_role/wolf.php#fanatic_mad">狂信者</a>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>
 </pre>
 
 <h4><a href="new_role/fox.php">妖狐陣営</a></h4>
 <pre>
-妖狐
-<a href="new_role/fox.php#child_fox">子狐</a>
+<a href="new_role/fox.php#fox_group">妖狐系</a>：妖狐
+<a href="new_role/fox.php#child_fox_group">子狐系</a>：<a href="new_role/fox.php#child_fox">子狐</a>
 </pre>
 
 <h4><a href="new_role/lovers.php">恋人陣営</a></h4>
 <pre>
-キューピッド
+<a href="new_role/lovers.php#cupid_group">キューピッド系</a>：キューピッド
 </pre>
 
-<h3><a id="chaos_decide_role">配役決定ルーチン</a></h3>
+<h3><a id="chaos_old_decide_role">配役決定ルーチン</a></h3>
 <pre>
-かなり複雑なので分からなかったらごめんなさい。
 大雑把に説明すると「通常編成＋α」(多少ぶれる＆人数が増えるとレア役職登場)です。
-バージョンアップで仕様が変わる可能性があります。
 </pre>
 <p>
 <a href="#chaos_wolf">人狼</a>

@@ -98,6 +98,7 @@ class Message{
   var $nervy              = 'は自信家だったようです'; //自信家
   var $celibacy           = 'は独身貴族だったようです'; //独身貴族
   var $panelist           = 'は解答者 (不正解) だったようです'; //解答者
+  var $sealed             = 'は封印されたようです'; //封印師
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   var $febris             = 'は熱病にかかったようです'; //熱病
@@ -129,6 +130,19 @@ class Message{
   var $flowered_x         = 'の頭の上に薔薇の花が咲きました'; //花妖精
   var $flowered_y         = 'の頭の上に百合の花が咲きました'; //花妖精
   var $flowered_z         = 'の頭の上に仙人掌の花が咲きました'; //花妖精
+  var $constellation_a    = 'は昨夜、牡羊座を見ていたようです'; //星妖精
+  var $constellation_b    = 'は昨夜、牡牛座を見ていたようです'; //星妖精
+  var $constellation_c    = 'は昨夜、双子座を見ていたようです'; //星妖精
+  var $constellation_d    = 'は昨夜、蟹座を見ていたようです'; //星妖精
+  var $constellation_e    = 'は昨夜、獅子座を見ていたようです'; //星妖精
+  var $constellation_f    = 'は昨夜、乙女座を見ていたようです'; //星妖精
+  var $constellation_g    = 'は昨夜、天秤座を見ていたようです'; //星妖精
+  var $constellation_h    = 'は昨夜、蠍座を見ていたようです'; //星妖精
+  var $constellation_i    = 'は昨夜、射手座を見ていたようです'; //星妖精
+  var $constellation_j    = 'は昨夜、山羊座を見ていたようです'; //星妖精
+  var $constellation_k    = 'は昨夜、水瓶座を見ていたようです'; //星妖精
+  var $constellation_l    = 'は昨夜、魚座を見ていたようです'; //星妖精
+  var $constellation_m    = 'は昨夜、蛇遣座を見ていたようです'; //星妖精
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合

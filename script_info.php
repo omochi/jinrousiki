@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROOM_IMG',
+$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA', 'ROOM_IMG',
 		      'USER_ICON', 'GAME_OPT_MESS');
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [仕様]', 'script_info');
 ?>
@@ -93,8 +93,7 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_da
 割り当てられる役割は<?php
 $str = '';
 foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
-  #$str .= '「' . $GAME_CONF->GetRoleName($role) . '」';
-  $str .= '「' . $GAME_CONF->main_role_list[$role] . '」';
+  $str .= '「' . $ROLE_DATA->main_role_list[$role] . '」';
 }
 echo $str;
 ?>以外のどれかランダムに設定されます。<br>

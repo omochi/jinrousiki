@@ -423,7 +423,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
 }
 
 function OutputCastTable($min = 0, $max = NULL){
-  global $GAME_CONF, $CAST_CONF;
+  global $CAST_CONF, $ROLE_DATA;
 
   $header = '<table class="member">';
   $str = '<tr><th>全人数</th>';
@@ -438,10 +438,10 @@ function OutputCastTable($min = 0, $max = NULL){
   $all_cast = array_unique($all_cast);
 
   //表示順を決定
-  $role_list = array_intersect(array_keys($GAME_CONF->main_role_list), $all_cast);
+  $role_list = array_intersect(array_keys($ROLE_DATA->main_role_list), $all_cast);
   foreach($role_list as $role){
     $class = 'human';
-    foreach($GAME_CONF->main_role_group_list as $key => $value){
+    foreach($ROLE_DATA->main_role_group_list as $key => $value){
       if(strpos($role, $key) !== false){
 	$class = $value;
 	break;
@@ -456,7 +456,7 @@ function OutputCastTable($min = 0, $max = NULL){
       $class = 'fox';
       break;
     }
-    $str .= '<th class="' . $class . '">' . $GAME_CONF->main_role_list[$role] . '</th>';
+    $str .= '<th class="' . $class . '">' . $ROLE_DATA->main_role_list[$role] . '</th>';
   }
   $str .= '</tr>'."\n";
   echo $header . $str;

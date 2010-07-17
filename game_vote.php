@@ -252,7 +252,12 @@ function VoteNight(){
     break;
 
   case 'MAGE_DO':
-    if(! $SELF->IsRoleGroup('mage', 'emerald_fox')) OutputVoteResult('夜：占い師系以外は投票できません');
+    if($SELF->IsRole('emerald_fox')){
+      if(! $SELF->IsActive()) OutputVoteResult('夜：翠狐は一度しかできません');
+    }
+    elseif(! $SELF->IsRoleGroup('mage')){
+      OutputVoteResult('夜：占い能力者以外は投票できません');
+    }
     break;
 
   case 'VOODOO_KILLER_DO':
@@ -273,9 +278,7 @@ function VoteNight(){
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
-    if(! $SELF->IsRoleGroup('cat', 'revive_fox')){
-      OutputVoteResult('夜：猫又系・仙狐以外は投票できません');
-    }
+    if(! $SELF->IsReviveGroup()) OutputVoteResult('夜：蘇生能力者以外は投票できません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
@@ -287,7 +290,7 @@ function VoteNight(){
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
-    if(! $SELF->IsRoleGroup('assassin')) OutputVoteResult('夜：暗殺者以外は投票できません');
+    if(! $SELF->IsRoleGroup('assassin')) OutputVoteResult('夜：暗殺者系以外は投票できません');
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
@@ -305,7 +308,9 @@ function VoteNight(){
     break;
 
   case 'JAMMER_MAD_DO':
-    if(! $SELF->IsRole('jammer_mad')) OutputVoteResult('夜：月兎以外は投票できません');
+    if(! $SELF->IsRole('jammer_mad', 'jammer_fox')){
+      OutputVoteResult('夜：月兎・月狐以外は投票できません');
+    }
     break;
 
   case 'VOODOO_MAD_DO':
@@ -337,12 +342,14 @@ function VoteNight(){
     break;
 
   case 'CHILD_FOX_DO':
-    if(! $SELF->IsChildFox()) OutputVoteResult('夜：子狐以外は投票できません');
+    if(! $SELF->IsChildFox(true) && ! $SELF->IsRole('jammer_fox')){
+      OutputVoteResult('夜：子狐系以外は投票できません');
+    }
     break;
 
   case 'CUPID_DO':
     if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
-      OutputVoteResult('夜：キューピッド系以外は投票できません');
+      OutputVoteResult('夜：キューピッド系・天使系以外は投票できません');
     }
     $is_cupid = true;
     break;
@@ -722,7 +729,7 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の厄払いはできません');
     $type = 'ANTI_VOODOO_DO';
   }
-  elseif($role_revive = $SELF->IsRoleGroup('cat', 'revive_fox')){
+  elseif($role_revive = $SELF->IsReviveGroup()){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の蘇生はできません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
@@ -750,7 +757,7 @@ function OutputVoteNight(){
   elseif($role_wolf = $SELF->IsWolf()){
     $type = 'WOLF_EAT';
   }
-  elseif($SELF->IsRole('jammer_mad')){
+  elseif($SELF->IsRole('jammer_mad', 'jammer_fox')){
     $type   = 'JAMMER_MAD_DO';
     $submit = 'jammer_do';
   }
@@ -786,7 +793,7 @@ function OutputVoteNight(){
     $type   = 'MAGE_DO';
     $submit = 'mage_do';
   }
-  elseif($SELF->IsChildFox()){
+  elseif($SELF->IsChildFox(true)){
     $type   = 'CHILD_FOX_DO';
     $submit = 'mage_do';
   }

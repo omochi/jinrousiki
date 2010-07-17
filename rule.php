@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROLE_IMG');
+$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA', 'ROOM_IMG', 'ROLE_IMG');
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [¥ë¡¼¥ë]', 'rule');
 ?>
 </head>

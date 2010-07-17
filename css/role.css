@@ -1,7 +1,8 @@
 .human{       color: #606060;} /* Â¼¿Í */
 .mage{        color: #9933FF;} /* Àê¤¤»Õ */
 .necromancer{ color: #006699;} /* ÎîÇ½¼Ô */
-.priest{      color: #006699;} /* »Êº× */
+.medium{      color: #99CC00;} /* Öà½÷ */
+.priest{      color: #4D4DCC;} /* »Êº× */
 .guard{       color: #3399FF;} /* ¼í¿Í */
 .common{      color: #CC6633;} /* ¶¦Í­¼Ô */
 .poison{      color: #009966;} /* ËäÆÇ¼Ô */

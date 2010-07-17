@@ -10,7 +10,20 @@ Ver. 1.4.0
 <a href="#140beta3">¦Â3</a>
 <a href="#140beta4">¦Â4</a>
 <a href="#140beta11">¦Â11</a>
+<a href="#140beta12">¦Â12</a>
 </p>
+
+<h2><a id="140beta12">Ver. 1.4.0 ¦Â12</a></h2>
+<h3>include/game_vote_functinons.php % 176¹ÔÌÜÉÕ¶á</h3>
+<h4>[before]</h4>
+<pre>
+	$random_replace_list = $CAST_CONF->GenerateRandomList($replace_human_list);
+	$CAST_CONF->AddRandom($role_list, $random_replace_list, $over_count);
+</pre>
+<h4>[after]</h4>
+<pre>
+	$CAST_CONF->AddRandom($role_list, $replace_human_list, $over_count);
+</pre>
 
 <h2><a id="140beta11">Ver. 1.4.0 ¦Â11</a></h2>
 <h3>include/user_class.php % 190¹ÔÌÜÉÕ¶á</h3>

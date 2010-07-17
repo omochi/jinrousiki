@@ -1,7 +1,7 @@
 <?php
 //Ç½ÎÏ¤Î¼ïÎà¤È¤½¤ÎÀâÌÀ¤ò½ÐÎÏ
 function OutputAbility(){
-  global $GAME_CONF, $MESSAGE, $ROLE_IMG, $ROOM, $USERS, $SELF;
+  global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $USERS, $SELF;
 
   if(! $ROOM->IsPlaying()) return false; //¥²¡¼¥àÃæ¤Î¤ßÉ½¼¨¤¹¤ë
 
@@ -39,9 +39,15 @@ function OutputAbility(){
       OutputSelfAbilityResult(strtoupper($SELF->main_role) . '_RESULT');
     }
   }
-  elseif($SELF->IsRole('medium')){ //Öà½÷
+  elseif($SELF->IsRoleGroup('medium')){ //Öà½÷
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 1) OutputSelfAbilityResult('MEDIUM_RESULT'); //¿ÀÂ÷·ë²Ì
+    if($SELF->IsRole('revive_medium') && ! $ROOM->IsOpenCast()){ //É÷½Ë
+      if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //ÁÉÀ¸·ë²Ì
+      if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+      }
+    }
   }
   elseif($SELF->IsRoleGroup('priest')){ //»Êº×·Ï
     $ROLE_IMG->Output($SELF->IsRole('crisis_priest') ? 'human' : $SELF->main_role);
@@ -119,6 +125,9 @@ function OutputAbility(){
   }
   elseif($SELF->IsRoleGroup('assassin')){ //°Å»¦¼Ô·Ï
     $ROLE_IMG->Output($SELF->IsRole('eclipse_assassin') ? 'assassin' : $SELF->main_role);
+    if($ROOM->date > 2 && $SELF->IsRole('soul_assassin')){ //ÄÔ»Â¤ê
+      OutputSelfAbilityResult('ASSASSIN_RESULT'); //°Å»¦·ë²Ì
+    }
     if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
       OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
@@ -293,7 +302,10 @@ function OutputAbility(){
       unset($stack);
     }
 
-    if($SELF->IsChildFox()){ //»Ò¸Ñ·Ï
+    if($SELF->IsRole('jammer_fox')){ //·î¸Ñ
+      if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO');
+    }
+    elseif($SELF->IsChildFox(true)){ //»Ò¸Ñ·Ï
       if($ROOM->date > 1) OutputSelfAbilityResult('CHILD_FOX_RESULT'); //Àê¤¤·ë²Ì
       if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //Ìë¤ÎÅêÉ¼
     }
@@ -513,7 +525,7 @@ function OutputAbility(){
   //¤³¤ì°Ê¹ß¤Ï¥µ¥ÖÌò¿¦Èó¸ø³«¥ª¥×¥·¥ç¥ó¤Î±Æ¶Á¤ò¼õ¤±¤ë
   if($ROOM->IsOption('secret_sub_role')) return;
 
-  $role_keys_list    = array_keys($GAME_CONF->sub_role_list);
+  $role_keys_list    = array_keys($ROLE_DATA->sub_role_list);
   $hide_display_list = array('decide', 'plague', 'good_luck', 'bad_luck');
   $not_display_list  = array_merge($fix_display_list, $hide_display_list);
   $display_list      = array_diff($role_keys_list, $not_display_list);
@@ -623,6 +635,11 @@ function OutputSelfAbilityResult($action){
   case 'ANTI_VOODOO_SUCCESS':
     $type = 'guard';
     $footer = 'anti_voodoo_success';
+    break;
+
+  case 'ASSASSIN_RESULT':
+    $type = 'mage';
+    $header = 'assassin_result';
     break;
 
   case 'TONGUE_WOLF_RESULT':

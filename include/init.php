@@ -63,7 +63,7 @@ class InitializeConfig{
     'GAME_OPT_CAPT' => 'GAME_OPT_MESS',
     'TIME_CALC' => array('TIME_CONF', 'ROOM_CONF'),
     'game_play_functions' => 'ROLE_IMG',
-    'user_class' => array('GAME_CONF', 'MESSAGE'),
+    'user_class' => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
     'icon_functions' => array('ICON_CONF', 'USER_ICON')
   );
 
@@ -77,6 +77,7 @@ class InitializeConfig{
     'SESSION' => 'Session',
     'ROOM_CONF' => 'RoomConfig',
     'GAME_CONF' => 'GameConfig',
+    'ROLE_DATA' => 'RoleData',
     'CAST_CONF' => 'CastConfig',
     'TIME_CONF' => 'TimeConfig',
     'ICON_CONF' => 'IconConfig',
