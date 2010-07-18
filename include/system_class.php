@@ -114,7 +114,7 @@ class Session{
 
     if($exit){ //エラー処理
       $title = 'セッション認証エラー';
-      $sentence = $title . "\n" . '<a href="./" target="_top">トップページ</a>から' .
+      $sentence = $title . '：<a href="./" target="_top">トップページ</a>から' .
 	'ログインしなおしてください';
       OutputActionResult($title, $sentence);
     }

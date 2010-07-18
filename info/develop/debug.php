@@ -11,7 +11,15 @@ Ver. 1.4.0
 <a href="#140beta4">¦Â4</a>
 <a href="#140beta11">¦Â11</a>
 <a href="#140beta12">¦Â12</a>
+<a href="#140beta13">¦Â13</a>
 </p>
+
+<h2><a id="140beta13">Ver. 1.4.0 ¦Â13</a></h2>
+<h3>include/game_vote_functions.php % 973¹ÔÌÜÉÕ¶á</h3>
+<pre>
+¡ß $delete_role_list = array('lovers', 'admire_lovers', 'copied', 'copied_trick', 'copied_soul',
+¡û $delete_role_list = array('lovers', 'challenge_lovers', 'copied', 'copied_trick', 'copied_soul',
+</pre>
 
 <h2><a id="140beta12">Ver. 1.4.0 ¦Â12</a></h2>
 <h3>include/game_vote_functinons.php % 176¹ÔÌÜÉÕ¶á</h3>

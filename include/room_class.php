@@ -1,4 +1,5 @@
 <?php
+//-- 個別の村情報の基底クラス --//
 class Room{
   var $id;
   var $name;
@@ -137,6 +138,7 @@ class Room{
     $this->event->rows = FetchAssoc($query);
   }
 
+  //ゲームオプションの展開処理
   function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
     $this->option_role = new OptionManager($this->option_role);
@@ -180,10 +182,12 @@ class Room{
     return $this->event->rows;
   }
 
+  //オプション判定
   function IsOption($option){
     return in_array($option, $this->option_list);
   }
 
+  //オプショングループ判定
   function IsOptionGroup($option){
     foreach($this->option_list as $this_option){
       if(strpos($this_option, $option) !== false) return true;
@@ -191,14 +195,22 @@ class Room{
     return false;
   }
 
+  //リアルタイム制判定
   function IsRealTime(){
     return $this->IsOption('real_time');
   }
 
+  //身代わり君使用判定
   function IsDummyBoy(){
     return $this->IsOption('dummy_boy');
   }
 
+  //クイズ村判定
+  function IsQuiz(){
+    return $this->IsOption('quiz');
+  }
+
+  //霊界公開判定
   function IsOpenCast(){
     global $USERS;
 
@@ -210,34 +222,37 @@ class Room{
     return $this->open_cast;
   }
 
-  function IsQuiz(){
-    return $this->IsOption('quiz');
-  }
-
+  //ゲーム開始前判定
   function IsBeforeGame(){
     return $this->day_night == 'beforegame';
   }
 
+  //ゲーム中 (昼) 判定
   function IsDay(){
     return $this->day_night == 'day';
   }
 
+  //ゲーム中 (夜) 判定
   function IsNight(){
     return $this->day_night == 'night';
   }
 
+  //ゲーム終了後判定
   function IsAfterGame(){
     return $this->day_night == 'aftergame';
   }
 
+  //ゲーム中判定 (仮想処理をする為に status では判定しない)
   function IsPlaying(){
     return $this->IsDay() || $this->IsNight();
   }
 
+  //ゲーム終了判定
   function IsFinished(){
     return $this->status == 'finished';
   }
 
+  //特殊イベント判定
   function IsEvent($type){
     return $this->event->$type;
   }
@@ -265,6 +280,15 @@ class Room{
       $values .= ", '{$font_type}'";
     }
     return InsertDatabase('talk', $items, $values);
+  }
+
+  //超過警告メッセージ登録
+  function OvertimeAlert($str){
+    $query = $this->GetQuery(true, 'talk') . " AND location = '{$this->day_night} system' " .
+      "AND uname = 'system' AND sentence = '{$str}'";
+    if(FetchResult($query) != 0) return false; //出力済みならスキップ
+    $this->Talk($str);
+    return true;
   }
 
   //システムメッセージ登録

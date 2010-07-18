@@ -137,8 +137,8 @@ class RequestUserManager extends RequestBaseIcon{
     EscapeStrings($this->profile, false);
 
     if($this->room_no < 1){
-      $sentence = 'エラー：村の番号が正常ではありません。<br>'."\n".'<a href="./">←戻る</a>';
-      OutputActionResult('村人登録 [村番号エラー]', $sentence);
+      $str = '村番号エラー：村の番号が正常ではありません。<br>'."\n".'<a href="./">←戻る</a>';
+      OutputActionResult('村人登録 [村番号エラー]', $str);
     }
   }
 }
@@ -191,7 +191,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     vote : 投票ボタンを押した or 投票ページの表示の制御用
     vote_times : 昼の投票回数
     target_no : 投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
-    situation : 投票の分類 (Kick、処刑、占い、狼など)
+    situation : 投票の分類 (Kick・処刑・占い・人狼襲撃など)
   */
   function RequestGameVote(){ $this->__construct(); }
   function __construct(){
