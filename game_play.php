@@ -20,7 +20,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- テスト用 --//
-#$SELF->ChangeRole('hungry_wolf');
+#$SELF->ChangeRole('common whisper_ringing');
 #$SELF->Update('icon_no', 30);
 #$SELF->AddRole('possessed_target[2-2]');
 #$SELF->Update('live', 'live');
@@ -196,7 +196,7 @@ function ConvertSay(&$say){
     }
   }
 
-  foreach($ROLES->Load('say_filter') as $filter) $filter->FilterSay($say); //他のサブ役職の処理
+  foreach($ROLES->Load('say') as $filter) $filter->FilterSay($say); //他のサブ役職の処理
 }
 
 //遺言登録

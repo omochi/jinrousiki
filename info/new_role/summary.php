@@ -23,6 +23,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="fox.php">妖狐陣営</a>
 <a href="lovers.php">恋人陣営</a>
 <a href="quiz.php">出題者陣営</a>
+<a href="vampire.php">吸血鬼陣営</a>
 <a href="chiroptera.php">蝙蝠陣営</a>
 <a href="mania.php">神話マニア陣営</a>
 <a href="sub_role.php">サブ役職</a>
@@ -57,6 +58,7 @@ Ver. 1.4.0
 <a href="#140beta11">β11</a>
 <a href="#140beta12">β12</a>
 <a href="#140beta13">β13</a>
+<a href="#140beta14">β14</a>
 </p>
 
 <p>
@@ -77,6 +79,7 @@ Ver. 1.4.0
 <a href="#sub_140beta9">β9</a>
 <a href="#sub_140beta10">β10</a>
 <a href="#sub_140beta11">β11</a>
+<a href="#sub_140beta14">β14</a>
 </p>
 
 <table>
@@ -134,7 +137,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">毒を持った上位狩人 (吊られても毒は発動しない)。<br>
-      <a href="#guard_limit">護衛制限</a>の影響を受けない。</td>
+      <a href="human.php#guard_limit">護衛制限</a>の影響を受けない。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
@@ -1389,7 +1392,7 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β13</td>
   </tr>
   <tr>
-    <td><a href="chiroptera.php#moon_fairy">草妖精</a></td>
+    <td><a href="chiroptera.php#grass_fairy">草妖精</a></td>
     <td><a href="chiroptera.php">蝙蝠</a></td>
     <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
     <td>村人</td>
@@ -1432,6 +1435,26 @@ Ver. 1.4.0
     <td>村人</td>
     <td class="ability"><a href="human.php#poison_cat">猫又</a>相当の蘇生能力を持った上位巫女。</td>
     <td>Ver. 1.4.0 β13</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#blind_guard" id="140beta14">夜雀</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#guard_group">狩人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability"><a href="human.php#guard_hunt">狩り能力</a>は持たないが、護衛先を襲撃した人狼に<a href="sub_role.php#blinder">目隠し</a>を付加する特殊な狩人。<br>
+      <a href="human.php#guard_limit">護衛制限</a>の影響を受けない。
+    </td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="vampire.php#vampire">吸血鬼</a></td>
+    <td><a href="vampire.php">吸血鬼</td>
+    <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+    <td>蝙蝠</td>
+    <td>蝙蝠</td>
+    <td class="ability">他国で言うカルトリーダー相当。</td>
+    <td>Ver. 1.4.0 β14</td>
   </tr>
 </table>
 
@@ -1809,6 +1832,62 @@ Ver. 1.4.0
     <td class="ability">4日目夜までは人狼の襲撃無効・毒無効・暗殺反射を持つ。<br>
       5日目以降は恋人の相方と同じ人に投票しないとショック死する。</td>
     <td>Ver. 1.4.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#critical_voter" id="sub_140beta14">会心</a></td>
+    <td><a href="sub_role.php#authority_group">権力者系</a></td>
+    <td>×</td>
+    <td class="ability">5% の確率で投票数が +100 される。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#critical_luck">痛恨</a></td>
+    <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
+    <td>×</td>
+    <td class="ability">5% の確率で得票数が +100 される。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#whisper_ringing">囁耳鳴</a></td>
+    <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
+    <td>○</td>
+    <td class="ability">他人の独り言が共有者の囁きに見えるようになる。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#howl_ringing">吠耳鳴</a></td>
+    <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
+    <td>○</td>
+    <td class="ability">他人の独り言が人狼の遠吠えに見えるようになる。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#deep_sleep">爆睡者</a></td>
+    <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
+    <td>○</td>
+    <td class="ability">共有の囁き・人狼の遠吠えが一切見えなくなる。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#actor">役者</a></td>
+    <td><a href="sub_role.php#liar_group">狼少年系</a></td>
+    <td>○</td>
+    <td class="ability">発言時に一部のキーワードが入れ替わる。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#androphobia">男性恐怖症</a></td>
+    <td><a href="sub_role.php#chicken_group">小心者系</a></td>
+    <td>○</td>
+    <td class="ability">昼の投票時に男性に投票するとショック死します。</td>
+    <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#gynophobia">女性恐怖症</a></td>
+    <td><a href="sub_role.php#chicken_group">小心者系</a></td>
+    <td>○</td>
+    <td class="ability">昼の投票時に女性に投票するとショック死します。</td>
+    <td>Ver. 1.4.0 β14</td>
   </tr>
 </table>
 

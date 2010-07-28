@@ -95,8 +95,10 @@ class Message{
   var $perverseness       = 'は天邪鬼だったようです'; //天邪鬼
   var $flattery           = 'はゴマすりだったようです'; //ゴマすり
   var $impatience         = 'は短気だったようです'; //短気
-  var $nervy              = 'は自信家だったようです'; //自信家
   var $celibacy           = 'は独身貴族だったようです'; //独身貴族
+  var $nervy              = 'は自信家だったようです'; //自信家
+  var $androphobia        = 'は男性恐怖症だったようです'; //男性恐怖症
+  var $gynophobia         = 'は女性恐怖症だったようです'; //女性恐怖症
   var $panelist           = 'は解答者 (不正解) だったようです'; //解答者
   var $sealed             = 'は封印されたようです'; //封印師
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
@@ -151,20 +153,21 @@ class Message{
   var $ability_vote             = '処刑する人を選択してください'; //昼の処刑投票
   var $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
   var $ability_escape_do        = '逃亡する先を選択してください'; //逃亡者
-  var $ability_mage_do          = '占う人を選択してください'; //占い師系
+  var $ability_mage_do          = '占う人を選択してください'; //占い師
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
   var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
   var $ability_trap_do          = '罠を設置する人を選択してください'; //罠師
   var $ability_possessed_do     = '憑依する人を選択してください'; //犬神
   var $ability_dream_eat        = '夢を喰べる人を選択してください'; //獏
-  var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師・九尾
-  var $ability_guard_do         = '護衛する人を選択してください'; //狩人系
+  var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師
+  var $ability_guard_do         = '護衛する人を選択してください'; //狩人
   var $ability_anti_voodoo_do   = '厄を祓う人を選択してください'; //厄神
   var $ability_reporter_do      = '尾行する人を選択してください'; //ブン屋
   var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
   var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
   var $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
+  var $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精
   var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
 
@@ -209,93 +212,103 @@ class Message{
 
 //-- ゲームオプション名 --//
 class GameOptionMessage{
-  var $room_name            = '村の名前';
-  var $room_comment         = '村についての説明';
-  var $max_user             = '最大人数';
-  var $wish_role            = '役割希望制';
-  var $real_time            = 'リアルタイム制';
-  var $dummy_boy            = '初日の夜は身代わり君';
-  var $gm_login             = '身代わり君は GM';
-  var $gerd                 = 'ゲルト君モード';
-  var $open_vote            = '投票した票数を公表する';
-  var $open_day             = 'オープニングあり';
-  var $not_open_cast        = '霊界で配役を公開しない';
-  var $auto_open_cast       = '自動で霊界の配役を公開する';
-  var $poison               = '埋毒者登場';
-  var $assassin             = '暗殺者登場';
-  var $boss_wolf            = '白狼登場';
-  var $poison_wolf          = '毒狼登場';
-  var $possessed_wolf       = '憑狼登場';
-  var $sirius_wolf          = '天狼登場';
-  var $cupid                = 'キューピッド登場';
-  var $medium               = '巫女登場';
-  var $mania                = '神話マニア登場';
-  var $decide               = '決定者登場';
-  var $authority            = '権力者登場';
-  var $liar                 = '狼少年村';
-  var $gentleman            = '紳士・淑女村';
-  var $sudden_death         = '虚弱体質村';
-  var $perverseness         = '天邪鬼村';
-  var $full_mania           = '神話マニア村';
-  var $detective            = '探偵村';
-  var $festival             = 'お祭り村';
-  var $chaos                = '闇鍋モード';
-  var $chaosfull            = '真・闇鍋モード';
-  var $chaos_hyper          = '超・闇鍋モード';
-  var $chaos_open_cast      = '配役を通知する';
-  var $chaos_open_cast_camp = '陣営を通知する';
-  var $chaos_open_cast_role = '役職を通知する';
-  var $secret_sub_role      = 'サブ役職を表示しない';
-  var $no_sub_role          = 'サブ役職をつけない';
-  var $quiz                 = 'クイズ村';
-  var $duel                 = '決闘村';
+  var $room_name             = '村の名前';
+  var $room_comment          = '村についての説明';
+  var $max_user              = '最大人数';
+  var $wish_role             = '役割希望制';
+  var $real_time             = 'リアルタイム制';
+  var $dummy_boy             = '初日の夜は身代わり君';
+  var $gm_login              = '身代わり君は GM';
+  var $gerd                  = 'ゲルト君モード';
+  var $open_vote             = '投票した票数を公表する';
+  var $open_day              = 'オープニングあり';
+  var $not_open_cast         = '霊界で配役を公開しない';
+  var $auto_open_cast        = '自動で霊界の配役を公開する';
+  var $poison                = '埋毒者登場';
+  var $assassin              = '暗殺者登場';
+  var $boss_wolf             = '白狼登場';
+  var $poison_wolf           = '毒狼登場';
+  var $possessed_wolf        = '憑狼登場';
+  var $sirius_wolf           = '天狼登場';
+  var $cupid                 = 'キューピッド登場';
+  var $medium                = '巫女登場';
+  var $mania                 = '神話マニア登場';
+  var $decide                = '決定者登場';
+  var $authority             = '権力者登場';
+  var $liar                  = '狼少年村';
+  var $gentleman             = '紳士・淑女村';
+  var $sudden_death          = '虚弱体質村';
+  var $perverseness          = '天邪鬼村';
+  var $replace_human         = '村人置換村';
+  var $full_mania            = '神話マニア村';
+  var $full_chiroptera       = '蝙蝠村';
+  var $full_cupid            = 'キューピッド村';
+  var $detective             = '探偵村';
+  var $festival              = 'お祭り村';
+  var $chaos                 = '闇鍋モード';
+  var $chaosfull             = '真・闇鍋モード';
+  var $chaos_hyper           = '超・闇鍋モード';
+  var $chaos_open_cast       = '配役を通知する';
+  var $chaos_open_cast_camp  = '陣営を通知する';
+  var $chaos_open_cast_role  = '役職を通知する';
+  var $no_sub_role           = 'サブ役職をつけない';
+  var $sub_role_limit        = 'サブ役職制限';
+  var $sub_role_limit_easy   = 'サブ役職制限：EASYモード';
+  var $sub_role_limit_normal = 'サブ役職制限：NORMALモード';
+  var $secret_sub_role       = 'サブ役職を表示しない';
+  var $quiz                  = 'クイズ村';
+  var $duel                  = '決闘村';
 }
 
 //-- ゲームオプション名の説明 --//
 class GameOptionCaptionMessage{
-  var $max_user             = '配役は<a href="rule.php">ルール</a>を確認して下さい';
-  var $wish_role            = '希望の役割を指定できますが、なれるかは運です';
-  var $real_time            = '制限時間が実時間で消費されます';
-  var $no_dummy_boy         = '身代わり君なし';
-  var $dummy_boy            = '身代わり君あり(初日の夜、身代わり君が狼に食べられます)';
-  var $gm_login_header      = '仮想 GM が身代わり君としてログインします';
-  var $gm_login_footer      = 'ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください';
-  var $gerd                 = '役職が村人固定になります (村人が出現している場合のみ有効)';
-  var $open_vote            = '「権力者」などのサブ役職が分かりやすくなります';
-  var $open_day             = 'ゲームが1日目の「昼」からスタートします';
-  var $no_close_cast        = '常時公開 (蘇生能力は無効です)';
-  var $not_open_cast        = '常時非公開 (誰がどの役職なのかが公開されません。蘇生能力は有効です)';
-  var $auto_open_cast       = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
-  var $poison               = '処刑されたり狼に食べられた場合、道連れにします。[村人2→埋毒1、人狼1]';
-  var $assassin             = '夜に村人一人を殺すことができます。[村人2→暗殺者1、人狼1]';
-  var $boss_wolf            = '占い結果が「村人」、霊能結果が「白狼」と表示される狼です。[人狼1→白狼1]';
-  var $poison_wolf          = '吊られた時にランダムで村人一人を巻き添えにする狼です。<br>　　　[人狼1→毒狼1、村人1→薬師1]';
-  var $possessed_wolf       = '噛んだ人に憑依して乗っ取ってしまう狼です。[人狼1→憑狼1]';
-  var $sirius_wolf          = '仲間が減ると特殊能力が発現する狼です。[人狼1→天狼1]';
-  var $cupid                = '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]';
-  var $medium               = '突然死した人の所属陣営が分かる特殊な霊能者です。[村人2→巫女1、女神1]';
-  var $mania                = '初日夜に他の村人の役職をコピーする特殊な役職です。[村人1→神話マニア1]';
-  var $decide               = '投票が同数の時、決定者の投票先が優先されます。[兼任]';
-  var $authority            = '投票の票数が二票になります。[兼任]';
-  var $liar                 = 'ランダムで「狼少年」がつきます';
-  var $gentleman            = '全員に性別に応じた「紳士」「淑女」がつきます';
-  var $sudden_death         = '全員に投票でショック死するサブ役職のどれかがつきます';
-  var $perverseness         = '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります';
-  var $full_mania           = '「村人」が全員「神話マニア」に入れ替わります';
-  var $detective            = '「探偵」が登場し、初日の夜に全員に公表されます';
-  var $festival             = '管理人がカスタムする特殊設定です';
-  var $no_chaos             = '通常人狼';
-  var $chaos                = '控えめな闇鍋モードです';
-  var $chaosfull            = 'そこそこ歯応えのある真・闇鍋モードです';
-  var $chaos_hyper          = '全く容赦のない超・闇鍋モードです';
-  var $chaos_not_open_cast  = '通知無し';
-  var $chaos_open_cast_camp = '陣営通知 (陣営毎の合計を通知)';
-  var $chaos_open_cast_role = '役職通知 (役職の種類別に合計を通知)';
-  var $chaos_open_cast_full = '完全通知 (通常村相当)';
-  var $secret_sub_role      = 'サブ役職が分からなくなります：闇鍋モード専用オプション';
-  var $no_sub_role          = 'サブ役職をつけません：闇鍋モード専用オプション';
-  var $quiz                 = '身代わり君が「出題者」になってクイズを出します';
-  var $duel                 = '霊界公開設定によって配役が変化する特殊村です';
+  var $max_user              = '配役は<a href="rule.php">ルール</a>を確認して下さい';
+  var $wish_role             = '希望の役割を指定できますが、なれるかは運です';
+  var $real_time             = '制限時間が実時間で消費されます';
+  var $no_dummy_boy          = '身代わり君なし';
+  var $dummy_boy             = '身代わり君あり (初日の夜、身代わり君が狼に食べられます)';
+  var $gm_login_header       = '仮想 GM が身代わり君としてログインします';
+  var $gm_login_footer       = 'ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください';
+  var $gerd                  = '役職が村人固定になります (村人が出現している場合のみ有効)';
+  var $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
+  var $open_day              = 'ゲームが1日目の「昼」からスタートします';
+  var $no_close_cast         = '常時公開 (蘇生能力は無効です)';
+  var $not_open_cast         = '常時非公開 (誰がどの役職なのかが公開されません。蘇生能力は有効です)';
+  var $auto_open_cast        = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
+  var $poison                = '処刑されたり狼に食べられた場合、道連れにします。[村人2→埋毒1、人狼1]';
+  var $assassin              = '夜に村人一人を殺すことができます。[村人2→暗殺者1、人狼1]';
+  var $boss_wolf             = '占い結果が「村人」、霊能結果が「白狼」と表示される狼です。[人狼1→白狼1]';
+  var $poison_wolf           = '吊られた時にランダムで村人一人を巻き添えにする狼です。<br>　　　[人狼1→毒狼1、村人1→薬師1]';
+  var $possessed_wolf        = '噛んだ人に憑依して乗っ取ってしまう狼です。[人狼1→憑狼1]';
+  var $sirius_wolf           = '仲間が減ると特殊能力が発現する狼です。[人狼1→天狼1]';
+  var $cupid                 = '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]';
+  var $medium                = '突然死した人の所属陣営が分かる特殊な霊能者です。[村人2→巫女1、女神1]';
+  var $mania                 = '初日夜に他の村人の役職をコピーする特殊な役職です。[村人1→神話マニア1]';
+  var $decide                = '投票が同数の時、決定者の投票先が優先されます。[兼任]';
+  var $authority             = '投票の票数が二票になります。[兼任]';
+  var $liar                  = 'ランダムで「狼少年」がつきます';
+  var $gentleman             = '全員に性別に応じた「紳士」「淑女」がつきます';
+  var $sudden_death          = '全員に投票でショック死するサブ役職のどれかがつきます';
+  var $perverseness          = '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります';
+  var $replace_human         = '「村人」が全員特定の役職に入れ替わります';
+  var $full_mania            = '「村人」が全員「神話マニア」に入れ替わります';
+  var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
+  var $festival              = '管理人がカスタムする特殊設定です';
+  var $no_chaos              = '通常人狼';
+  var $chaos                 = '控えめな闇鍋モードです';
+  var $chaosfull             = 'そこそこ歯応えのある真・闇鍋モードです';
+  var $chaos_hyper           = '全く容赦のない超・闇鍋モードです';
+  var $chaos_not_open_cast   = '通知無し';
+  var $chaos_open_cast_camp  = '陣営通知 (陣営毎の合計を通知)';
+  var $chaos_open_cast_role  = '役職通知 (役職の種類別に合計を通知)';
+  var $chaos_open_cast_full  = '完全通知 (通常村相当)';
+  var $no_sub_role           = 'サブ役職をつけない';
+  var $sub_role_limit_easy   = 'サブ役職制限：EASYモード';
+  var $sub_role_limit_normal = 'サブ役職制限：NORMALモード';
+  var $sub_role_limit_none   = 'サブ役職制限なし';
+  var $secret_sub_role       = 'サブ役職が分からなくなります：闇鍋モード専用オプション';
+  var $quiz                  = '身代わり君が「出題者」になってクイズを出します';
+  var $duel                  = '霊界公開設定によって配役が変化する特殊村です';
 }
 
 //-- 村・本人の勝敗結果 --//
@@ -320,6 +333,9 @@ class VictoryMessage{
 
   //出題者死亡
   var $quiz_dead = '[引き分け] 何という事だ！このままでは決着が付かないぞ！';
+
+  //吸血鬼勝利
+  var $vampire = '[吸血鬼勝利] 夜の支配者に抗える存在など、ありはしない';
 
   //引き分け
   var $draw = '[引き分け] 引き分けとなりました';
@@ -369,6 +385,7 @@ class VoteMessage{
   var $possessed_do     = '対象に憑依する'; //犬神
   var $possessed_not_do = '誰にも憑依しない'; //犬神(キャンセル)
   var $cupid_do         = '対象に愛の矢を放つ'; //キューピッド
+  var $vampire_do       = '対象を吸血する'; //吸血鬼
   var $fairy_do         = '対象に悪戯する'; //妖精
   var $mania_do         = '対象を真似る'; //神話マニア
   var $revive_refuse    = '蘇生を辞退する'; //蘇生辞退

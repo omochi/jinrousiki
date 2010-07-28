@@ -42,6 +42,9 @@ OutputHTMLHeader('¿·Ìò¿¦¾ğÊó - [¥á¥Ë¥å¡¼]', 'info_menu');
   <li><a href="quiz.php" target="body">&lt;½ĞÂê¼Ô¿Ø±Ä&gt;</a></li>
   <li><a href="quiz.php#quiz" target="body">½ĞÂê¼Ô·Ï</a></li>
   <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
+  <li><a href="vampire.php" target="body">&lt;µÛ·ìµ´¿Ø±Ä&gt;</a></li>
+  <li><a href="vampire.php#vampire" target="body">µÛ·ìµ´·Ï</a></li>
+  <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
   <li><a href="chiroptera.php" target="body">&lt;éşéõ¿Ø±Ä&gt;</a></li>
   <li><a href="chiroptera.php#chiroptera_group" target="body">éşéõ·Ï</a></li>
   <li><a href="chiroptera.php#fairy_group" target="body">ÍÅÀº·Ï</a></li>

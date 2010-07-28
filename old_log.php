@@ -11,14 +11,8 @@ if($RQ_ARGS->is_room){
   $ROOM->last_date = $ROOM->date;
 
   $USERS =& new UserDataSet($RQ_ARGS);
-  if($RQ_ARGS->user_no > 0){
-    $SELF = $USERS->ByID($RQ_ARGS->user_no);
-    $SELF->live = 'live';
-  }
-  else{
-    $SELF = new User();
-  }
-
+  $SELF = $RQ_ARGS->user_no > 0 ? $USERS->ByID($RQ_ARGS->user_no) : new User();
+  if($RQ_ARGS->user_no > 0 || $RQ_ARGS->watch) $SELF->live = 'live';
   OutputOldLog();
 }
 else{
@@ -86,8 +80,8 @@ EOF;
     $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
     $login = $current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
       '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
-    $log_link_str = GenerateLogLink($base_url, '(', $dead_room) . ' )' .
-      GenerateLogLink($base_url . '&add_role=on', "\n[役職表示] (", $dead_room) . ' )';
+    $log_link_str = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
+      GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
     $game_option_str = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
 
     echo <<<EOF
@@ -132,17 +126,13 @@ function OutputOldLog(){
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
-  if($RQ_ARGS->user_no > 0) $ROOM->status = 'playing';
+  if($RQ_ARGS->user_no > 0 || $RQ_ARGS->watch) $ROOM->status = 'playing';
   $title = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
 
   //戻る先を前のページにする
   $referer_url = sprintf("%s", $_SERVER['HTTP_REFERER']);
-  if(strpos($referer_url, $SERVER_CONF->site_root . 'old_log.php') === 0){
-    $referer = $referer_url;
-  }
-  else{
-    $referer = 'old_log.php';
-  }
+  $referer = strpos($referer_url, $SERVER_CONF->site_root . 'old_log.php') === 0 ?
+    $referer_url : 'old_log.php';
 
   OutputHTMLHeader($title, 'old_log');
   echo <<<EOF
@@ -151,6 +141,7 @@ function OutputOldLog(){
 <a href="{$referer}">←戻る</a><br>
 {$ROOM->GenerateTitleTag()}
 EOF;
+  if($RQ_ARGS->watch) $ROOM->day_night = 'day';
   OutputPlayerList(); //プレイヤーリストを出力
   $RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog();
 }
@@ -197,17 +188,16 @@ function OutputDateTalkLog($set_date, $set_location){
   case 'aftergame':
     $table_class = $set_location;
     $date_select = '';
-    $location_select = "AND location LIKE '$set_location%'";
+    $location_select = "AND location LIKE '{$set_location}%'";
     break;
 
   default:
     //二日目以降は昼から始まる
     $table_class = ($RQ_ARGS->reverse_log && $set_date != 1) ? 'day' : 'night';
-    $date_select = "AND date = $set_date";
-    if($set_location == 'heaven_only')
-      $location_select = "AND (location = 'heaven' OR uname = 'system')";
-    else
-      $location_select = "AND location <> 'aftergame' AND location <> 'beforegame'";
+    $date_select = "AND date = {$set_date}";
+    $location_select = $set_location == 'heaven_only' ?
+      "AND (location = 'heaven' OR uname = 'system')" :
+      "AND location <> 'aftergame' AND location <> 'beforegame'";
     break;
   }
 

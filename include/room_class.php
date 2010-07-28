@@ -210,6 +210,13 @@ class Room{
     return $this->IsOption('quiz');
   }
 
+  //扒崎及歹司扩オプション冉年
+  function IsChaosWish(){
+    return $this->IsOptionGroup('chaos') || $this->IsOption('duel') || $this->IsOption('festival') ||
+      $this->IsOption('replace_human') || $this->IsOption('full_mania') ||
+      $this->IsOption('full_chiroptera') || $this->IsOption('full_cupid');
+  }
+
   //晤肠给倡冉年
   function IsOpenCast(){
     global $USERS;

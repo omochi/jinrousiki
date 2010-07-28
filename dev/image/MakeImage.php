@@ -132,6 +132,13 @@ class MainRoleList{
 			 '_' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '^' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
+  var $blind_guard = array(
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#夜雀#です。#狩り#能力はありませんが、護衛先を襲撃した_人狼_を^目隠し^にして撃退することができます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 51, 'G' => 153, 'B' => 255),
+			 '_' => array('R' => 255, 'G' => 0, 'B' => 0),
+			 '^' => array('R' => 221, 'G' => 34, 'B' => 34)));
+
   var $poison_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#騎士#です。夜の間に村人一人を_人狼_から護ることができます。もし、あなたが_人狼_に襲われたら刺し違えてでも倒すのです！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
@@ -620,6 +627,10 @@ class MainRoleList{
     'message' => "[役割] [#出題者#陣営] [|出題者|系]\n　あなたは|出題者|です。この村の難易度はあなたの口先三寸で決まります。頑張って皆を楽しませれば、それがあなたの勝利です。",
     'R' => 153, 'G' => 153, 'B' => 204, 'R2' => 153, 'G2' => 153, 'B2' => 204);
 
+  var $vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。",
+    'delimiter' => array('|' => array('R' => 208, 'G' => 0, 'B' => 208)));
+
   var $chiroptera = array(
     'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|蝙蝠|です。生き残りましょう。ただそれだけで勝ちになります。\n　勝ち馬に乗り、いずれの存在からも疎まれながらも生き抜くのです。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
@@ -739,12 +750,20 @@ class SubRoleList{
   var $impatience = array('message' => "　あなたは|短気|です。決定力がありますが、再投票になると|ショック死|してしまいます。",
 			  'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
-  var $nervy = array('message' => "　あなたは|自信家|です。自分と同じ陣営の人に投票にすると|ショック死|してしまいます。",
-		     'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
-
   var $celibacy = array('message' => "　あなたは|独身貴族|です。#恋人#に投票されると|ショック死|してしまいます。",
 			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
 					     '#' => array('R' => 255, 'G' => 51, 'B' => 153)));
+
+  var $nervy = array('message' => "　あなたは|自信家|です。自分と同じ陣営の人に投票にすると|ショック死|してしまいます。",
+		     'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
+  var $androphobia = array('message' => "　あなたは|男性恐怖症|です。#男性#に投票すると|ショック死|してしまいます。",
+			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
+					     '#' => array('R' => 0, 'G' => 0, 'B' => 255)));
+
+  var $gynophobia = array('message' => "　あなたは|女性恐怖症|です。#女性#に投票すると|ショック死|してしまいます。",
+			  'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
+					       '#' => array('R' => 255, 'G' => 51, 'B' => 153)));
 
   var $panelist = array('message' => "　あなたは|解答者|です。不正解だったときは#出題者#に投票してください。",
 			'delimiter' => array('|' => array('R' => 51, 'G' => 204, 'B' => 255),
@@ -786,6 +805,9 @@ class SubRoleList{
 
   var $lady = array('message' => "　あなたは|淑女|です。時々淑女な発言をしてしまいます。",
 		    'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
+
+  var $actor = array('message' => "　あなたは|役者|です。あらかじめ設定された RP を演じてもらうことになります。",
+		     'delimiter' => array('|' => array('R' => 102, 'G' => 0, 'B' => 153)));
 
   var $authority = array('message' => "　あなたは|権力者|です。あなたの投票は二票分の効果があります。",
 			 'delimiter' => array('|' => array('R' => 102, 'G' => 102, 'B' => 51)));
@@ -851,6 +873,19 @@ class SubRoleList{
   var $speaker = array('message' => "　あなたは|スピーカー|を使っているので声が一段階大きく聞こえます。#大声#は音割れしてしまいます。",
 		       'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34),
 					    '#' => array('R' => 255, 'G' => 153, 'B' => 0)));
+
+  var $whisper_ringing = array('message' => "　あなたは|囁耳鳴|なので他人の独り言が#共有者#の囁きに聞こえてしまいます。",
+			  'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34),
+					       '#' => array('R' => 204, 'G' => 102, 'B' => 51)));
+
+  var $howl_ringing = array('message' => "　あなたは|吠耳鳴|なので他人の独り言が#人狼#の遠吠えに聞こえてしまいます。",
+			  'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34),
+					       '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
+  var $deep_sleep = array('message' => "　あなたは|爆睡者|なので#共有者#の囁きや、_人狼_の遠吠えが聞こえません。",
+			  'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34),
+					       '#' => array('R' => 204, 'G' => 102, 'B' => 51),
+					       '_' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $silent = array('message' => "　あなたは|無口|なのであまり多くの言葉を話せません。",
 		      'delimiter' => array('|' => array('R' => 221, 'G' => 34, 'B' => 34)));
@@ -920,6 +955,9 @@ class SubRoleList{
   var $mad_partner = array('message' => "|人狼|に仕える|狂人|は以下の人たちです： ",
 			   'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
+  var $unconscious_list = array('message' => "以下の人たちが|無意識|に歩き回っているようです： ",
+			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
+
   var $fox_partner = array('message' => "深遠なる|妖狐|の智を持つ同胞は以下の人たちです： ",
 			   'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
 
@@ -936,6 +974,9 @@ class SubRoleList{
 
   var $quiz_chaos = array('message' => "　闇鍋モードではあなたの最大の能力である噛み無効がありません。\n　はっきり言って無理ゲーなので好き勝手にクイズでも出して遊ぶと良いでしょう。",
 			  'delimiter' => array());
+
+  var $infected_list = array('message' => "あなたの血に|感染|したのは以下の人たちです： ",
+			     'delimiter' => array('|' => array('R' => 208, 'G' => 0, 'B' => 208)));
 }
 
 class ResultList{
@@ -995,6 +1036,8 @@ class ResultList{
 			    'delimiter' => array('|' => array('R' => 51, 'G' => 153, 'B' => 255)));
   var $result_hunter_guard = array('message' => "さんは|猟師|でした",
 				   'delimiter' => array('|' => array('R' => 51, 'G' => 153, 'B' => 255)));
+  var $result_blind_guard = array('message' => "さんは|夜雀|でした",
+				  'delimiter' => array('|' => array('R' => 51, 'G' => 153, 'B' => 255)));
   var $result_poison_guard = array('message' => "さんは|騎士|でした",
 				   'delimiter' => array('|' => array('R' => 51, 'G' => 153, 'B' => 255)));
   var $result_fend_guard = array('message' => "さんは|忍者|でした",
@@ -1197,6 +1240,8 @@ class ResultList{
 			     'delimiter' => array('|' => array('R' => 255, 'G' => 51, 'B' => 153)));
   var $result_quiz = array('message' => "さんは|出題者|でした",
 			   'delimiter' => array('|' => array('R' => 153, 'G' => 153, 'B' => 204)));
+  var $result_vampire = array('message' => "さんは|吸血鬼|でした",
+			      'delimiter' => array('|' => array('R' => 208, 'G' => 0, 'B' => 208)));
   var $result_chiroptera = array('message' => "さんは|蝙蝠|でした",
 				 'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136)));
   var $result_poison_chiroptera = array('message' => "さんは|毒蝙蝠|でした",
@@ -1383,6 +1428,8 @@ class WishRoleList {
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_quiz = array('message' => "出題者→",
 			 'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
+  var $role_vampire = array('message' => "吸血鬼→",
+			    'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_chiroptera = array('message' => "蝙蝠→",
 			       'delimiter' => array('|' => array('R' => 0, 'G' => 0, 'B' => 0)));
   var $role_fairy = array('message' => "妖精→",
@@ -1394,8 +1441,8 @@ class WishRoleList {
 //$image = $gen->GetImage("あなたは", 255, 0, 0);
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-$list =& new MainRoleList();
-#$list =& new SubRoleList();
+#$list =& new MainRoleList();
+$list =& new SubRoleList();
 #$list =& new ResultList();
 
 #$gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\" . $font_name, 12, 3, 3, true);
@@ -1412,7 +1459,7 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-$image = MakeImage($gen, $list->jammer_fox);
+$image = MakeImage($gen, $list->gynophobia);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

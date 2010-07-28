@@ -76,6 +76,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 </pre>
 
 <h2><a id="angel_group">天使系</a></h2>
+<p>
 <a href="#angel">天使</a>
 <a href="#rose_angel">薔薇天使</a>
 <a href="#lily_angel">百合天使</a>

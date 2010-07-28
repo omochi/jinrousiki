@@ -6,12 +6,12 @@ class DatabaseConfig extends DatabaseConfigBase{
   var $host = 'localhost';
 
   //データベースのユーザ名
-  var $user = 'xxxx';
-  #var $user = 'grayran';
+  #var $user = 'xxxx';
+  var $user = 'grayran';
 
   //データベースサーバのパスワード
-  var $password = 'xxxxxxxx';
-  #var $password = 'satorituri';
+  #var $password = 'xxxxxxxx';
+  var $password = 'satorituri';
 
   //データベース名
   var $name = 'jinrou';
@@ -20,13 +20,14 @@ class DatabaseConfig extends DatabaseConfigBase{
 //-- サーバ設定 --//
 class ServerConfig{
   //サーバのURL
-  var $site_root = 'http://localhost/jinrou/';
+  #var $site_root = 'http://localhost/jinrou/';
+  var $site_root = 'http://localhost/jinro/';
 
   //タイトル
   var $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  var $comment = '';
+  var $comment = '〜チルノ鯖＠ローカル〜';
 
   //サーバの文字コード
   /*
@@ -39,7 +40,8 @@ class ServerConfig{
   var $back_page = '';
 
   //管理者用パスワード
-  var $system_password = 'xxxxxxxx';
+  #var $system_password = 'xxxxxxxx';
+  var $system_password = 'pass';
 
   //パスワード暗号化用 salt
   #var $salt = 'xxxx';
@@ -68,7 +70,10 @@ class ServerConfig{
     更新後のリビジョン番号と同じか、それより大きな値を設定すると
     admin/setup.php の処理は常時スキップされます。
   */
-  var $last_updated_revision = 164;
+  var $last_updated_revision = 187;
+
+  //村情報非表示モード (村立てテストなどの開発者テスト用スイッチです)
+  var $secret_room = false;
 }
 
 //-- 村情報共有サーバの設定 --//
@@ -124,10 +129,24 @@ class SharedServerConfig extends ExternalLinkBuilder{
 			  'encode' => 'UTF-8',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>',
-			  'disable' => false),
+			  'disable' => true),
+
+    'sasugasister' => array('name' => '流石妹者鯖',
+			    'url' => 'http://www21.atpages.jp/sasugasister/',
+			    'encode' => 'UTF-8',
+			    'separator' => '<!-- atpages banner tag -->',
+			    'footer' => '</div></small></a><br>',
+			    'disable' => false),
 
     'suisei' => array('name' => '翠星石鯖',
 		      'url' => 'http://alicegame.dip.jp/suisei/',
+		      'encode' => 'UTF-8',
+		      'separator' => '',
+		      'footer' => '',
+		      'disable' => false),
+
+    'sousei' => array('name' => '蒼星石テスト鯖',
+		      'url' => 'http://alicegame.dip.jp/sousei/',
 		      'encode' => 'UTF-8',
 		      'separator' => '',
 		      'footer' => '',
@@ -145,13 +164,6 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		      'encode' => 'UTF-8',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</a><br>',
-		      'disable' => false),
-
-    'sousei' => array('name' => '蒼星石テスト鯖',
-		      'url' => 'http://alicegame.dip.jp/sousei/',
-		      'encode' => 'UTF-8',
-		      'separator' => '',
-		      'footer' => '',
 		      'disable' => false),
 
     'mohican' => array('name' => '世紀末テスト鯖',
@@ -262,15 +274,15 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 			      'チャットルーム' => 'http://umigamejinrou.chatx2.whocares.jp/'),
     '東方ウミガメ系予備' => array(//'さとり鯖' => 'http://satori.crz.jp/',
 				  '咲夜鯖' => 'http://www7.atpages.jp/izayoi398/'),
-    'やる夫系' => array('流石弟者鯖' => 'http://www16.atpages.jp/sasugabros/',
-			'流石妹者鯖' => 'http://www21.atpages.jp/sasugasister/',
+    'やる夫系' => array('流石妹者鯖' => 'http://www21.atpages.jp/sasugasister/',
 			'翠星石鯖' => 'http://alicegame.dip.jp/suisei/',
+			'蒼星石テスト鯖' => 'http://alicegame.dip.jp/sousei/',
 			'Wiki' => 'http://www37.atwiki.jp/yaruomura/',
 			'掲示板' => 'http://jbbs.livedoor.jp/game/48159/',
 			'流石鯖用ツール' => 'http://www.petitnoir.net/zinro/sasuga.html',
 			'流石戦績検索' => 'http://www.petitnoir.net/zinro/sasuga/yaruomura.php'),
     'やる夫系予備' => array('流石兄弟鯖' => 'http://www12.atpages.jp/yaruo/jinro/',
-			    '蒼星石テスト鯖' => 'http://alicegame.dip.jp/sousei/',
+			    '流石弟者鯖' => 'http://www16.atpages.jp/sasugabros/',
 			    '薔薇姉妹鯖' => 'http://www13.atpages.jp/yaranai/',
 			    '水銀鯖' => 'http://www13.atpages.jp/suigintou/',
 			    '金糸雀保管庫' => 'http://www15.atpages.jp/kanaria/',

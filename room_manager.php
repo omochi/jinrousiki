@@ -98,7 +98,8 @@ function CreateRoom(){
   $chaosfull    = ($ROOM_CONF->chaosfull    && $_POST['chaos'] == 'chaosfull');
   $chaos_hyper  = ($ROOM_CONF->chaos_hyper  && $_POST['chaos'] == 'chaos_hyper');
   $perverseness = ($ROOM_CONF->perverseness && $_POST['perverseness']  == 'on');
-  $full_mania   = ($ROOM_CONF->full_mania   && $_POST['full_mania']  == 'on');
+  $full_mania   = ($ROOM_CONF->full_mania   && $_POST['replace_human']  == 'full_mania');
+  $full_cupid   = ($ROOM_CONF->full_cupid   && $_POST['replace_human']  == 'full_cupid');
   $quiz         = ($ROOM_CONF->quiz         && $_POST['quiz']  == 'on');
   $duel         = ($ROOM_CONF->duel         && $_POST['duel']  == 'on');
   $game_option_list = array();
@@ -146,11 +147,11 @@ function CreateRoom(){
       array_push($check_option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp',
 		 'chaos_open_cast_role');
       if($perverseness){
-	$option_role_list[] = 'no_sub_role';
+	$option_role_list[] = 'sub_role_limit';
 	$check_option_role_list[] = 'perverseness';
       }
       else{
-	$check_option_role_list[] = 'no_sub_role';
+	$check_option_role_list[] = 'sub_role_limit';
       }
     }
     else{
@@ -159,19 +160,21 @@ function CreateRoom(){
       }
       else{
 	array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
-		   'possessed_wolf', 'sirius_wolf', 'cupid', 'medium');
+		   'possessed_wolf', 'sirius_wolf');
+	if(! $full_cupid) $check_option_role_list[] = 'cupid';
+	$check_option_role_list[] = 'medium';
 	if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
 	if(! $full_mania) $check_option_role_list[] = 'mania';
       }
     }
     array_push($check_option_role_list, 'liar', 'gentleman');
     $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
-    if(! $duel) array_push($check_option_role_list, 'full_mania', 'detective');
+    if(! $duel) array_push($check_option_role_list, 'detective', 'replace_human');
     $check_game_option_list[] = 'festival';
   }
 
-  //PrintData($_POST); //テスト用
-  //PrintData($check_game_option_list, 'Check Game Option'); //テスト用
+  //PrintData($_POST, 'Post');
+  //PrintData($check_game_option_list, 'CheckGameOption');
   foreach($check_game_option_list as $option){
     if(! $ROOM_CONF->$option) continue;
     if($option == 'not_open_cast'){
@@ -191,9 +194,9 @@ function CreateRoom(){
     elseif($_POST[$option] != 'on') continue;
     $game_option_list[] = $option;
   }
-  //PrintData($game_option_list); //テスト用
+  //PrintData($game_option_list);
 
-  //PrintData($check_option_role_list, 'Check Option Role'); //テスト用
+  //PrintData($check_option_role_list, 'CheckOptionRole');
   foreach($check_option_role_list as $option){
     if(! $ROOM_CONF->$option) continue;
     if($option == 'chaos_open_cast'){
@@ -208,6 +211,35 @@ function CreateRoom(){
 
       case 'role':
 	$option = 'chaos_open_cast_role';
+	break;
+
+      default:
+	continue 2;
+      }
+    }
+    elseif($option == 'replace_human'){
+      $target = $_POST[$option];
+      switch($target){
+      case 'full_mania':
+      case 'full_chiroptera':
+      case 'full_cupid':
+      case 'replace_human':
+	if(! $ROOM_CONF->$target) continue 2;
+	$option = $target;
+	break;
+
+      default:
+	continue 2;
+      }
+    }
+    elseif($option == 'sub_role_limit'){
+      $target = $_POST[$option];
+      switch($target){
+      case 'no_sub_role':
+      case 'sub_role_limit_easy':
+      case 'sub_role_limit_normal':
+	if(! $ROOM_CONF->$target) continue;
+	$option = $target;
 	break;
 
       default:
@@ -233,9 +265,9 @@ function CreateRoom(){
     }
   }
 
-  //PrintData($game_option_list, 'Game Option'); //テスト用
-  //PrintData($option_role_list, 'Option Role'); //テスト用
-  //OutputHTMLFooter(true); //テスト用
+  //PrintData($game_option_list, 'GameOption');
+  //PrintData($option_role_list, 'OptionRole');
+  //OutputHTMLFooter(true);
 
   //テーブルをロック
   if(! LockTable()){
@@ -477,13 +509,13 @@ EOF;
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
 
-  $option_list = array('poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-		       'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority');
-  OutputRoomOption($option_list, 'role');
+  $stack = array('poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+		 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority');
+  OutputRoomOption($stack, 'role');
 
-  $option_list = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania',
-		       'detective', 'festival');
-  OutputRoomOption($option_list, 'role');
+  $stack = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'detective',
+		 'festival',  'replace_human');
+  OutputRoomOption($stack, 'role');
 
   OutputRoomOptionChaos();
   OutputRoomOption(array('quiz', 'duel'));
@@ -530,6 +562,32 @@ EOF;
 　　{$GAME_OPT_CAPT->gm_login_footer}
 EOF;
     break;
+
+  case 'replace_human':
+    $str = <<<EOF
+<tr>
+<td><label>{$GAME_OPT_MESS->$option}：</label></td>
+<td>
+<select name="{$option}">
+<optgroup label="モード名">
+<option value="" selected>なし</option>
+
+EOF;
+
+    foreach($ROOM_CONF->replace_human_list as $role){
+      if($ROOM_CONF->$role){
+	$str .= '<option value="' . $role . '">' . $GAME_OPT_MESS->$role . '</option>'."\n";
+      }
+    }
+
+    $str .= <<<EOF
+</optgroup>
+</select>
+<span class="explain">({$GAME_OPT_CAPT->$option})</span></td>
+</tr>
+
+EOF;
+    return $str;
   }
 
   return <<<EOF
@@ -739,5 +797,45 @@ EOF;
 
 EOF;
   }
-  OutputRoomOption(array('secret_sub_role', 'no_sub_role'), '', false);
+
+  if($ROOM_CONF->sub_role_limit){
+    switch($ROOM_CONF->default_sub_role_limit){
+    case 'no':
+      $checked_no_sub_role = ' checked';
+      break;
+
+    case 'easy':
+      $checked_sub_role_limit_easy = ' checked';
+      break;
+
+    case 'normal':
+      $checked_sub_role_limit_normal = ' checked';
+      break;
+
+    default:
+      $checked_sub_role_limit_none = ' checked';
+      break;
+    }
+
+    echo <<<EOF
+<tr>
+<td><label>{$GAME_OPT_MESS->sub_role_limit}：</label></td>
+<td class="explain">
+<input type="radio" name="sub_role_limit" value="no_sub_role"{$checked_no_sub_role}>
+{$GAME_OPT_CAPT->no_sub_role}<br>
+
+<input type="radio" name="sub_role_limit" value="sub_role_limit_easy"{$checked_sub_role_limit_easy}>
+{$GAME_OPT_CAPT->sub_role_limit_easy}<br>
+
+<input type="radio" name="sub_role_limit" value="sub_role_limit_normal"{$checked_sub_role_limit_normal}>
+{$GAME_OPT_CAPT->sub_role_limit_normal}<br>
+
+<input type="radio" name="sub_role_limit" value=""{$checked_sub_role_limit_none}>
+{$GAME_OPT_CAPT->sub_role_limit_none}<br>
+</td>
+</tr>
+
+EOF;
+  }
+  OutputRoomOption(array('secret_sub_role'), '', false);
 }

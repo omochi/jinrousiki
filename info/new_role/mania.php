@@ -129,6 +129,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="lovers.php#cupid_group">キューピッド系</a> → <a href="lovers.php#mind_cupid">女神</a></li>
 <li><a href="lovers.php#angel_group">天使系</a> → <a href="lovers.php#ark_angel">大天使</a></li>
 <li><a href="quiz.php#quiz_group">出題者系</a> → <a href="quiz.php#quiz">出題者</a></li>
+<li><a href="vampire.php#vampire_group">吸血鬼系</a> → <a href="vampire.php#vampire">吸血鬼</a> (Ver. 1.4.0 β14〜)</li>
 <li><a href="chiroptera.php#chiroptera_group">蝙蝠系</a> → <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a></li>
 <li><a href="chiroptera.php#fairy_group">妖精系</a> → <a href="chiroptera.php#light_fairy">光妖精</a></li>
 <li><a href="mania.php#mania_group">神話マニア系</a> → 村人</li>
@@ -175,17 +176,21 @@ CO するべきかどうかは、コピーした役職次第です。
 コピー先が村人陣営の<a href="human.php#mind_scanner">さとり</a>に会話を覗かれている状態なので
 コピー先からの情報入手が難しくなります。
 
-8. 鵺 → 鵺 → 人狼 (全員人狼陣営)
+8. 鵺 → 吸血鬼 (吸血鬼陣営)
+吸血鬼陣営の勝利条件の仕様上、鵺は絶対に勝てない事になります。
+従って、吸血鬼は素直に自分の正体を告げない方がいいと思われます。
+
+9. 鵺 → 鵺 → 人狼 (全員人狼陣営)
 コピー先が鵺だった場合は鵺以外の役職に当たるまで
 コピー先を辿って判定します。
 
-9. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
+10. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
 コピー先を辿って自分に戻った場合は村人陣営になります。
 
-10. 鵺 → 神話マニア → 妖狐 (妖狐陣営)
+11. 鵺 → 神話マニア → 妖狐 (妖狐陣営)
 神話マニアをコピーした場合はコピー結果の陣営になります。
 
-11. 鵺A → 神話マニア → 鵺B → 人狼
+12. 鵺A → 神話マニア → 鵺B → 人狼
 神話マニアは鵺をコピーしたら村人になるので鵺のリンクが切れます。
 結果として以下のようになります。
 鵺A(村人陣営) → 村人(元神話マニア)、鵺B (人狼陣営) → 人狼
@@ -231,6 +236,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="lovers.php#cupid_group">キューピッド系</a> → <a href="lovers.php#self_cupid">求愛者</a></li>
 <li><a href="lovers.php#angel_group">天使系</a> → <a href="lovers.php#angel">天使</a></li>
 <li><a href="quiz.php#quiz_group">出題者系</a> → <a href="quiz.php#quiz">出題者</a></li>
+<li><a href="vampire.php#vampire_group">吸血鬼系</a> → <a href="vampire.php#vampire">吸血鬼</a> (Ver. 1.4.0 β14〜)</li>
 <li><a href="chiroptera.php#chiroptera_group">蝙蝠系</a> → <a href="chiroptera.php#dummy_chiroptera">夢求愛者</a></li>
 <li><a href="chiroptera.php#fairy_group">妖精系</a> → <a href="chiroptera.php#mirror_fairy">鏡妖精</a></li>
 <li><a href="mania.php#mania_group">神話マニア系</a> → 村人</li>

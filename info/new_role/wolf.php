@@ -860,10 +860,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="trap_mad">罠師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
 <pre>
 一度だけ夜に村人一人に罠を仕掛けることができる特殊な狂人。
-罠を仕掛けられた人の元に訪れた<a href="#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>・<a href="human.php#assassin_group">暗殺者</a>は死亡する。
+罠を仕掛けられた人の元に訪れた<a href="#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>・<a href="human.php#assassin_group">暗殺者系</a>・<a href="vampire.php">吸血鬼陣営</a>は死亡する。
 </pre>
 <ol>
-  <li>罠にかかる<a href="human.php#guard_group">狩人系</a>は狩人・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#reporter">ブン屋</a>です</li>
+  <li><a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は罠の対象外です</li>
   <li>自分が人狼に襲撃されたら無効になります</li>
   <li>罠を仕掛けに行った先に他の罠師が罠を仕掛けていた場合は死亡します</li>
   <li>自分にも仕掛けることができます</li>

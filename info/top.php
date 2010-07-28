@@ -11,7 +11,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>Ver. 1.4.0 β13 アップロード (2010/07/17 (Sat) 19:02:15) → <a href="src/">ダウンロード</a></h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#140beta13">デバッグ情報</a> (2010/07/18 (Sun) 02:44)</li>
+  <li>→ <a href="info/develop/debug.php#140beta13">デバッグ情報</a> (2010/07/21 (Wed) 01:03)</li>
   <li>未投票突然死も死亡欄に表示する仕様に変更</li>
   <li>神話マニア系の所属を神話マニア陣営に移動</li>
   <li>巫女の所属を巫女系に移動</li>
@@ -22,10 +22,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>「村人置換村」「蝙蝠村」「キューピッド村」「サブ役職制限」オプション実装</li>
+  <li>夜雀：狩り能力は持たないが、護衛先を襲撃した人狼に目隠しを付加する特殊な狩人。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>吸血鬼：他国のカルトリーダー相当。</li>
 </ul>

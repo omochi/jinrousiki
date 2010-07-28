@@ -409,6 +409,22 @@ function OutputAbility(){
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
   }
+  elseif($SELF->IsRole('vampire')){ //吸血鬼
+    $ROLE_IMG->Output($SELF->main_role);
+
+    if($ROOM->date > 2){
+      //自分の感染者を表示
+      $stack = array();
+      foreach($USERS->rows as $user){
+	if($user->IsPartner('infected', $SELF->user_no)) $stack[] = $user->handle_name;
+      }
+      OutputPartner($stack, 'infected_list');
+      unset($stack);
+    }
+    if($ROOM->date > 1 && $ROOM->IsNight()){
+      OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO'); //夜の投票
+    }
+  }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア
     $ROLE_IMG->Output($SELF->IsRole('dummy_mania') ? 'soul_mania' : $SELF->main_role);
     //初日夜の投票
@@ -520,13 +536,14 @@ function OutputAbility(){
     }
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
-	     'mind_friend', 'mind_sympathy');
+	     'mind_friend', 'mind_sympathy', 'infected');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
 
   $role_keys_list    = array_keys($ROLE_DATA->sub_role_list);
-  $hide_display_list = array('decide', 'plague', 'good_luck', 'bad_luck');
+  $hide_display_list = array('decide', 'plague', 'good_luck', 'bad_luck', 'critical_voter',
+			     'critical_luck');
   $not_display_list  = array_merge($fix_display_list, $hide_display_list);
   $display_list      = array_diff($role_keys_list, $not_display_list);
   $target_list       = array_intersect($display_list, array_slice($virtual_self->role_list, 1));

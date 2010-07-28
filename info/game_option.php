@@ -37,9 +37,14 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a>
 <a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>
 <a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a>
-<a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>
 <a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a>
 <a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>
+</p>
+<p>
+<a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a>
+<a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>
+<a href="#full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a>
+<a href="#full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a>
 </p>
 <p>
 <a href="#quiz"><?php echo $GAME_OPT_MESS->quiz ?></a>
@@ -206,12 +211,6 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>と併用できません</li>
 </ul>
 
-<h2><a id="full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a> [Ver. 1.4.0 α17〜]</h2>
-<ul>
-  <li>村人が全員<a href="new_role/human.php#mania">神話マニア</a>になります</li>
-  <li>表記が村人となる役職が存在する事に注意してください</li>
-</ul>
-
 <h2><a id="detective"><?php echo $GAME_OPT_MESS->detective ?></a> [Ver. 1.4.0 β10〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->detective ?></li>
@@ -250,6 +249,31 @@ OutputInfoPageHeader('ゲームオプション');
 15人：マインスイーパ村＠世紀末鯖
 22人：バルサン村＠わかめて鯖
 </pre>
+
+<h2><a id="replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a> [Ver. 1.4.0 β13〜]</h2>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->replace_human ?></li>
+  <li><?php echo $GAME_OPT_MESS->full_mania ?>を拡張して実装したオプションです</li>
+  <li>表記が村人となる役職が存在する事に注意してください</li>
+  <li>「<?php echo $GAME_OPT_MESS->replace_human ?>」は管理人がカスタムすることを前提にしたオプションです<br>
+    現在の初期設定は全員<a href="new_role/human.php#escaper">逃亡者</a>になります
+  </li>
+</ul>
+<h3><a id="full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a> [Ver. 1.4.0 α17〜]</h3>
+<ul>
+  <li>村人が全員<a href="new_role/human.php#mania">神話マニア</a>になります</li>
+</ul>
+<h3><a id="full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a> [Ver. 1.4.0 β13〜]</h3>
+<ul>
+  <li>村人が全員<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>になります</li>
+</ul>
+<h3><a id="full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a> [Ver. 1.4.0 β13〜]</h3>
+<ul>
+  <li>村人が全員<a href="new_role/lovers.php#cupid">キューピッド</a>になります</li>
+</ul>
+
+
+
 <h2><a id="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a> [Ver. 1.4.0 α2〜]</h2>
 <ul>
   <li>GM が<a href="new_role/quiz.php#quiz">出題者</a>になります</li>
@@ -273,8 +297,8 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2><a id="duel"><?php echo $GAME_OPT_MESS->duel ?></a> [Ver. 1.4.0 α19〜]</h2>
 <ul>
-  <li><a href="new_role/human.php#assassin">暗殺者</a>、人狼、<a href="new_role/wolf.php#trap_mad">罠師</a>しか出現しません</li>
-  <li>「霊界で配役を公開しない」オプションの設定によって配役が変わります。デフォルトは以下です</li>
+  <li><?php echo $GAME_OPT_CAPT->duel ?></li>
+  <li>「霊界で配役を公開しない」オプションの設定によって配役が変わります。初期設定は以下です</li>
   <ol>
     <li>常時公開：暗殺者ベース</li>
     <li>自動公開：キューピッドベース</li>

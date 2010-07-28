@@ -96,14 +96,19 @@ class RoomConfig{
   var $perverseness = true; //天邪鬼村
   var $default_perverseness = false;
 
-  var $full_mania = true; //神話マニア村
-  var $default_full_mania = false;
 
-  var $detective = true; //お祭り村
+  var $detective = true; //探偵村
   var $default_detective = false;
 
   var $festival = true; //お祭り村
   var $default_festival = false;
+
+  var $replace_human = true; //村人置換村
+  var $full_mania = true; //神話マニア村
+  var $full_chiroptera = true; //蝙蝠村
+  var $full_cupid = true; //キューピッド村
+  //置換モードの内訳 (replace_human：管理人カスタムモード)
+  var $replace_human_list = array('full_mania', 'full_chiroptera', 'full_cupid', 'replace_human');
 
   var $chaos = true; //闇鍋モード
   var $chaosfull = true; //真・闇鍋モード
@@ -123,8 +128,12 @@ class RoomConfig{
   var $secret_sub_role = true; //サブ役職を本人に通知しない (闇鍋モード専用オプション)
   var $default_secret_sub_role = false;
 
-  var $no_sub_role = true; //サブ役職をつけない (闇鍋モード専用オプション)
-  var $default_no_sub_role = true;
+  var $sub_role_limit = true; //サブ役職制限 (闇鍋モード専用オプション)
+  var $sub_role_limit_easy   = true; //サブ役職制限：EASYモード
+  var $sub_role_limit_normal = true; //サブ役職制限：NORMALモード
+  var $no_sub_role = true; //サブ役職をつけない
+  //サブ役職制限のデフォルト [NULL:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード]
+  var $default_sub_role_limit = 'no'; //つけない (no_sub_role)
 
   var $quiz = true; //クイズ村
   var $default_quiz = false;
@@ -192,6 +201,9 @@ class GameConfig{
   //七曜迷彩の変換テーブル
   var $weekly_replace_list = array('月' => '火', '火' => '水', '水' => '木', '木' => '金',
 				   '金' => '土', '土' => '日', '日' => '月');
+
+  //役者の変換テーブル
+  var $actor_replace_list = array('です' => 'みょん');
 
   var $invisible_rate = 10; //光学迷彩の発言が空白に入れ替わる確率 (%)
   var $silent_length  = 25; //無口が発言できる最大文字数

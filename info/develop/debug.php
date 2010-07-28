@@ -20,6 +20,36 @@ Ver. 1.4.0
 × $delete_role_list = array('lovers', 'admire_lovers', 'copied', 'copied_trick', 'copied_soul',
 ○ $delete_role_list = array('lovers', 'challenge_lovers', 'copied', 'copied_trick', 'copied_soul',
 </pre>
+<h3>include/game_vote_functions.php % 2510行目付近 (2010/07/19 (Mon) 09:41)</h3>
+<h4>[before]</h4>
+<pre>
+case 'doll_master':
+</pre>
+<h4>[after]</h4>
+<pre>
+case 'whisper_scanner':
+case 'howl_scanner':
+case 'telepath_scanner':
+  $stack_role = 'mind_scanner';
+  break;
+
+case 'doll_master':
+</pre>
+<h3>game_vote.php % 490行目付近 (2010/07/20 (Tue) 01:58)</h3>
+<h4>[before]</h4>
+<pre>
+$target->AddRole($add_role);
+</pre>
+<h4>[after]</h4>
+<pre>
+$target->AddRole($add_role);
+$target->ParseRoles($target->GetRole());
+</pre>
+<h3>include/game_functions.php % 835行目付近 (2010/07/21 (Wed) 01:02)</h3>
+<pre>
+× elseif($said_user->IsLonely('silver_wolf')){
+○ elseif($said_user->IsWolf() && $said_user->IsLonely()){
+</pre>
 
 <h2><a id="140beta12">Ver. 1.4.0 β12</a></h2>
 <h3>include/game_vote_functinons.php % 176行目付近</h3>

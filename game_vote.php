@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
-$INIT_CONF->LoadClass('SESSION', 'ICON_CONF');
+$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得
@@ -194,7 +194,7 @@ function AggregateVoteKick($target){
 
 //昼の投票処理
 function VoteDay(){
-  global $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
 
@@ -218,16 +218,11 @@ function VoteDay(){
   //-- 投票処理 --//
   //役職に応じて投票数を補正
   $vote_number = 1;
-  if($SELF->IsRoleGroup('elder')) $vote_number++; //長老系 (メイン役職)
-  if($virtual_self->IsRole('authority')){ //権力者
-    $vote_number++;
-  }
-  elseif($virtual_self->IsRole('watcher', 'panelist')){ //傍観者・解答者
-    $vote_number = 0;
-  }
-  elseif($virtual_self->IsRole('random_voter')){ //気分屋
-    $vote_number += mt_rand(0, 2) - 1;
-  }
+  if($SELF->IsRoleGroup('elder')) $vote_number++; //長老系
+
+  //サブ役職の処理
+  $ROLES->actor = $virtual_self;
+  foreach($ROLES->Load('vote_do') as $filter) $filter->FilterVoteDo($vote_number);
 
   if(! $SELF->Vote('VOTE_KILL', $target->uname, $vote_number)){ //投票処理
     OutputVoteResult('データベースエラー', true);
@@ -352,6 +347,10 @@ function VoteNight(){
       OutputVoteResult('夜：キューピッド系・天使系以外は投票できません');
     }
     $is_cupid = true;
+    break;
+
+  case 'VAMPIRE_DO':
+    if(! $SELF->IsRole('vampire')) OutputVoteResult('夜：吸血鬼以外は投票できません');
     break;
 
   case 'FAIRY_DO':
@@ -488,6 +487,7 @@ function VoteNight(){
 	  }
 	}
 	$target->AddRole($add_role);
+	$target->ParseRoles($target->GetRole()); //再パース (魂移使判定用)
       }
       if($SELF->IsRoleGroup('angel')){
 	$lovers_a = $target_list[0];
@@ -804,6 +804,10 @@ function OutputVoteNight(){
     $role_mirror_fairy = $SELF->IsRole('mirror_fairy');
     $cupid_self_shoot  = $SELF->IsRole('self_cupid', 'dummy_chiroptera', 'moon_cupid') ||
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
+  }
+  elseif($SELF->IsRole('vampire')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
+    $type = 'VAMPIRE_DO';
   }
   elseif($SELF->IsRoleGroup('fairy')){
     $type = 'FAIRY_DO';

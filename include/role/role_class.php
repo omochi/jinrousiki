@@ -5,16 +5,28 @@ class RoleManager{
   var $loaded;
   var $actor;
 
-  //発言表示フィルタ
+  //発言表示
   var $talk_list = array('blinder', 'earplug', 'speaker');
 
-  //発言フィルタ (登録時)
-  var $say_filter_list = array('rainbow', 'weekly', 'grassy', 'invisible', 'mower',
-			       'silent', 'side_reverse', 'line_reverse');
+  //発言変換
+  var $say_list = array('rainbow', 'weekly', 'grassy', 'invisible', 'mower', 'silent',
+			'side_reverse', 'line_reverse', 'actor');
 
-  //声量フィルタ
+  //声量
   var $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
 			  'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
+
+  //投票
+  var $vote_do_list = array('authority', 'critical_voter', 'random_voter', 'watcher', 'panelist');
+
+  //得票
+  var $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
+			  'random_luck');
+
+  //ショック死
+  var $sudden_death_list = array('febris', 'death_warrant', 'chicken', 'rabbit', 'perverseness',
+				 'flattery', 'impatience', 'celibacy', 'nervy', 'androphobia',
+				 'gynophobia', 'panelist');
 
   function RoleManager(){ $this->__construct(); }
   function __construct(){
@@ -28,14 +40,16 @@ class RoleManager{
     $role_list = $this->$name;
     if(! (is_array($role_list) && count($role_list) > 0)) return;
 
+    $target_list = array();
     foreach($role_list as $role){
       if(! $this->actor->IsRole($role)) continue;
+      $target_list[] = $role;
       $class = 'Role_' . $role;
       $this->LoadFile($role);
       $this->LoadClass($role, $class);
     }
 
-    return array_intersect_key($this->loaded->class, array_flip($role_list));
+    return array_intersect_key($this->loaded->class, array_flip($target_list));
   }
 
   function LoadFile($name){
@@ -46,7 +60,7 @@ class RoleManager{
 
   function LoadClass($name, $class){
     if(is_null($name) || in_array($name, $this->loaded->class)) return false;
-    $this->loaded->class[$name] = & new $class();
+    $this->loaded->class[$name] =& new $class();
     return true;
   }
 
@@ -55,23 +69,25 @@ class RoleManager{
 
     switch($role){
     case 'common': //共有者のささやき
-      if($SELF->IsRole('dummy_common')) return false; //夢共有者には見えない
+      if($SELF->IsRole('dummy_common', 'deep_sleep')) return false; //夢共有者・爆睡者には見えない
       $class = 'talk-common';
       return '共有者の小声';
 
     case 'wolf': //人狼の遠吠え
-      if($SELF->IsRole('mind_scanner')) return false; //さとりには見えない
+      if($SELF->IsRole('mind_scanner', 'deep_sleep')) return false; //さとり・爆睡者には見えない
       return '狼の遠吠え';
     }
     return false;
   }
 
-  function GetWhisperingSound($role_name, $talk, &$class_attr){
+  function GetWhisperingSound($role, $talk, &$class){
     global $MESSAGE;
-    switch ($role_name){
+
+    switch($role){
     case 'common':
-      $class_attr = 'say-common';
+      $class = 'say-common';
       return $MESSAGE->common_talk;
+
     case 'wolf':
       return $MESSAGE->wolf_howl;
     }

@@ -15,9 +15,13 @@ $RQ_ARGS->TestItems->test_room = array(
   'game_option'  => 'dummy_boy wish_role real_time:6:4',
   #'game_option'  => 'dummy_boy wish_role full_mania chaosfull no_sub_role real_time:6:4',
   #'game_option'  => 'dummy_boy wish_role chaosfull real_time:6:4',
+  'game_option'  => 'dummy_boy wish_role chaos_hyper real_time:6:4',
   #'option_role' => '',
-  'option_role' => 'decide',
-  #'option_role' => 'chaos_open_cast_camp',
+  #'option_role' => 'decide replace_human',
+  'option_role' => 'chaos_open_cast_camp',
+  #'option_role' => 'chaos_open_cast_camp sub_role_limit_easy',
+  #'option_role' => 'chaos_open_cast_camp sub_role_limit_normal',
+  #'option_role' => 'chaos_open_cast_camp no_sub_role',
   #'option_role' => 'sudden_death',
   'date' => 0,
   'day_night' => 'aftergame',
@@ -200,7 +204,7 @@ $SELF = $USERS->ByID(1);
 #$SELF = $USERS->ByID(7);
 
 //-- データ出力 --//
-OutputHTMLHeader($SERVER_CONF->title . '[配役テスト]', 'game'); //HTMLヘッダ
+OutputHTMLHeader('配役テスト', 'game'); //HTMLヘッダ
 //OutputGameOption($ROOM->game_option, '');
 OutputPlayerList(); //プレイヤーリスト
 #PrintData($ROOM);

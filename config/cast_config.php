@@ -11,7 +11,7 @@ class CastConfig extends CastConfigBase{
      5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
-     8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
+     8 => array('human' =>  4, 'wolf' => 2, 'mage' => 1, 'vampire' => 1),
      9 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1),
     10 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1),
     11 => array('human' =>  5, 'wolf' => 2, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1),
@@ -297,11 +297,12 @@ class CastConfig extends CastConfigBase{
     'revive_priest'      => 10,
     'guard'              => 20,
     'hunter_guard'       => 10,
+    'blind_guard'        =>  5,
     'poison_guard'       =>  5,
     'fend_guard'         => 10,
     'reporter'           => 10,
     'anti_voodoo'        => 15,
-    'dummy_guard'        => 20,
+    'dummy_guard'        => 15,
     'common'             => 50,
     'detective_common'   =>  5,
     'trap_common'        =>  5,
@@ -397,10 +398,11 @@ class CastConfig extends CastConfigBase{
     'exchange_angel'     =>  3,
     'ark_angel'          =>  3,
     'quiz'               =>  2,
-    'chiroptera'         => 10,
-    'poison_chiroptera'  =>  4,
+    'vampire'            =>  5,
+    'chiroptera'         =>  5,
+    'poison_chiroptera'  =>  3,
     'cursed_chiroptera'  =>  3,
-    'boss_chiroptera'    =>  2,
+    'boss_chiroptera'    =>  3,
     'elder_chiroptera'   =>  3,
     'dummy_chiroptera'   =>  5,
     'fairy'              =>  2,
@@ -430,7 +432,8 @@ class CastConfig extends CastConfigBase{
     'wolf' => 0.21, 'mad' => 0.15, 'fox' => 0.1, 'child_fox' => 0.08, 'cupid' => 0.1, 'angel' => 0.07,
     'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
     'priest' => 0.1, 'guard' => 0.15, 'common' => 0.18, 'poison' => 0.15, 'cat' => 0.1,
-    'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15);
+    'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15,
+    'quiz' => 0.15, 'vampire' => 0.15);
 
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -445,6 +448,18 @@ class CastConfig extends CastConfigBase{
   var $chaos_hyper_replace_human_role_list = array(
     'mania' => 4, 'trick_mania' => 2, 'soul_mania' => 1,
     'unknown_mania' => 2, 'dummy_mania' => 1);
+
+  //サブ役職制限：EASYモード
+  var $chaos_sub_role_limit_easy_list = array(
+    'authority', 'critical_voter', 'random_voter', 'rebel', 'watcher', 'decide', 'plague',
+    'good_luck', 'bad_luck');
+
+  //サブ役職制限：NORMALモード
+  var $chaos_sub_role_limit_normal_list = array(
+    'authority', 'critical_voter', 'random_voter', 'rebel', 'watcher', 'decide', 'plague',
+    'good_luck', 'bad_luck', 'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
+    'random_luck', 'strong_voice', 'normal_voice', 'weak_voice', 'upper_voice', 'downer_voice',
+    'inside_voice', 'outside_voice', 'random_voice');
 
   //お祭り村専用配役テーブル
   var $festival_role_list = array(
@@ -532,6 +547,26 @@ class CastConfig extends CastConfigBase{
       }
     }
     else{ //常時公開
+    }
+  }
+
+  //村人置換村の処理
+  function ReplaceHuman(&$role_list, $count, $option_list){
+    if(in_array('full_mania', $option_list)){ //神話マニア村
+      $role_list['mania'] += $count;
+      $role_list['human'] -= $count;
+    }
+    elseif(in_array('full_chiroptera', $option_list)){ //蝙蝠村
+      $role_list['chiroptera'] += $count;
+      $role_list['human'] -= $count;
+    }
+    elseif(in_array('full_cupid', $option_list)){ //キューピッド村
+      $role_list['cupid'] += $count;
+      $role_list['human'] -= $count;
+    }
+    elseif(in_array('replace_human', $option_list)){ //村人置換村
+      $role_list['escaper'] += $count;
+      $role_list['human'] -= $count;
     }
   }
 }

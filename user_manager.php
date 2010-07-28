@@ -194,15 +194,14 @@ HEADER;
 IMAGE;
 
     $wish_role_list = array('none');
-    if($ROOM->IsOptionGroup('chaos') || $ROOM->IsOption('duel') || $ROOM->IsOption('festival')){
+    if($ROOM->IsChaosWish()){
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'medium', 'priest', 'guard',
 		 'common', 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner',
 		 'jealousy', 'doll', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz',
-		 'chiroptera', 'fairy', 'mania');
+		 'vampire', 'chiroptera', 'fairy', 'mania');
     }
     else{
-      if(! $ROOM->IsOption('full_mania')) $wish_role_list[] = 'human';
-      $wish_role_list[] = 'wolf';
+      array_push($wish_role_list,  'human', 'wolf');
       if($ROOM->IsQuiz()){
 	array_push($wish_role_list, 'mad', 'common', 'fox');
       }
@@ -211,19 +210,19 @@ IMAGE;
 	if($ROOM->IsOption('detective')) $wish_role_list[] = 'detective_common';
 	$wish_role_list[] = 'fox';
       }
-    }
-    if($ROOM->IsOption('poison')) $wish_role_list[] = 'poison';
-    if($ROOM->IsOption('assassin')) $wish_role_list[] = 'assassin';
-    if($ROOM->IsOption('boss_wolf')) $wish_role_list[] = 'boss_wolf';
-    if($ROOM->IsOption('poison_wolf')){
-      array_push($wish_role_list, 'poison_wolf', 'pharmacist');
-    }
-    if($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
-    if($ROOM->IsOption('sirius_wolf')) $wish_role_list[] = 'sirius_wolf';
-    if($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
-    if($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
-    if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
-      $wish_role_list[] = 'mania';
+      if($ROOM->IsOption('poison')) $wish_role_list[] = 'poison';
+      if($ROOM->IsOption('assassin')) $wish_role_list[] = 'assassin';
+      if($ROOM->IsOption('boss_wolf')) $wish_role_list[] = 'boss_wolf';
+      if($ROOM->IsOption('poison_wolf')){
+	array_push($wish_role_list, 'poison_wolf', 'pharmacist');
+      }
+      if($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
+      if($ROOM->IsOption('sirius_wolf')) $wish_role_list[] = 'sirius_wolf';
+      if($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
+      if($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
+      if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
+	$wish_role_list[] = 'mania';
+      }
     }
 
     $count = 0;

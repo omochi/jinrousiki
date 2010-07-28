@@ -27,10 +27,19 @@ echo <<<EOF
 自動公開決闘
 <input type="radio" name="game_option" value="duel not_open_cast">
 非公開決闘
-<input type="checkbox" name="full_mania" value="on">
-神話マニア
 <input type="checkbox" name="festival" value="on">
 お祭り
+<br>
+<input type="radio" name="replace_human" value="" checked>
+置換無し
+<input type="radio" name="replace_human" value="full_mania">
+神話マニア村
+<input type="radio" name="replace_human" value="full_chiroptera">
+蝙蝠村
+<input type="radio" name="replace_human" value="full_cupid">
+キューピッド村
+<input type="radio" name="replace_human" value="replace_human">
+村人置換村
 </form>
 
 EOF;
@@ -42,8 +51,15 @@ if($_POST['command'] == 'role_test'){
   $RQ_ARGS = new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $game_option = $_POST['game_option'];
-  if($_POST['full_mania'] == 'on') $option_role .= ' full_mania';
   if($_POST['festival']   == 'on') $game_option .= ' festival';
+  switch($_POST['replace_human']){
+  case 'full_mania':
+  case 'full_chiroptera':
+  case 'full_cupid':
+  case 'replace_human':
+    $option_role .= ' ' . $_POST['replace_human'];
+    break;
+  }
   $RQ_ARGS->TestItems->test_room = array('game_option' => $game_option);
   $ROOM = new Room($RQ_ARGS);
   for($i = 1; $i <= $try_count; $i++){

@@ -107,7 +107,7 @@ function LoversFollowed($sudden_death = false){
 
 //勝敗をチェック
 function CheckVictory($check_draw = false){
-  global $GAME_CONF, $ROOM;
+  global $GAME_CONF, $ROOM, $USERS;
 
   $query_count = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0 AND ";
   $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
@@ -116,9 +116,37 @@ function CheckVictory($check_draw = false){
   $lovers = FetchResult($query_count . "role LIKE '%lovers%'"); //恋人
   $quiz   = FetchResult($query_count . "role LIKE 'quiz%'"); //出題者
 
+  //-- 吸血鬼の勝利判定 --//
+  $vampire = false;
+  $living_id_list = array(); //生存者の ID リスト
+  $infected_list = array(); //吸血鬼 => 感染者リスト
+  foreach($USERS->GetLivingUsers(true) as $uname){
+    $user = $USERS->ByUname($uname);
+    $user->ParseRoles($user->GetRole());
+    $living_id_list[] = $user->user_no;
+    if(! $user->IsRole('infected')) continue;
+    foreach($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->user_no;
+  }
+  if(count($living_id_list) == 1){
+    $vampire = $USERS->ByID(array_shift($living_id_list))->IsRole('vampire');
+  }
+  else{
+    foreach($infected_list as $id => $stack){
+      $diff_list = array_diff($living_id_list, $stack);
+      if(count($diff_list) == 1 && in_array($id, $diff_list)){
+	$vampire = true;
+	break;
+      }
+    }
+  }
+
   $victory_role = ''; //勝利陣営
   if($wolf == 0 && $fox == 0 && $human == $quiz){ //全滅
     $victory_role = $quiz > 0 ? 'quiz' : 'vanish';
+  }
+  elseif($vampire){ //吸血鬼支配
+    if($lovers > 1)  $victory_role = 'lovers';
+    else             $victory_role = 'vampire';
   }
   elseif($wolf == 0){ //狼全滅
     if($lovers > 1)  $victory_role = 'lovers';
@@ -296,8 +324,8 @@ function OutputLogLink(){
   global $ROOM;
 
   $url = 'old_log.php?room_no=' . $ROOM->id;
-  echo GenerateLogLink($url, '<br>' . ($ROOM->view_mode ? '[ログ]' : '[全体ログ]')) .
-    GenerateLogLink($url . '&add_role=on', '<br>[役職表示ログ]');
+  echo GenerateLogLink($url, true, '<br>' . ($ROOM->view_mode ? '[ログ]' : '[全体ログ]')) .
+    GenerateLogLink($url . '&add_role=on', false, '<br>[役職表示ログ]');
 }
 
 //ゲームオプション画像を出力
@@ -419,7 +447,7 @@ function OutputPlayerList(){
 	$str .= GenerateRoleName($user->main_role, 'mad');
       elseif($user->IsRoleGroup('fox'))
 	$str .= GenerateRoleName($user->main_role, 'fox');
-      elseif($user->IsRole('quiz'))
+      elseif($user->IsRole('quiz', 'vampire'))
 	$str .= GenerateRoleName($user->main_role);
       elseif($user->IsRoleGroup('cupid', 'angel'))
 	$str .= GenerateRoleName($user->main_role, 'cupid');
@@ -554,6 +582,16 @@ EOF;
       }
 
       if($victory == $camp){
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
+    case 'vampire':
+      if($victory == $camp && $SELF->IsLive()){ //吸血鬼陣営は生き残った者だけが勝利
 	$class = $camp;
       }
       else{
@@ -832,8 +870,13 @@ function OutputTalk($talk, &$builder){
 	if($virtual_self->IsSame($talk->uname) || $flag_dummy_boy || $flag_mind_read){
 	  $builder->AddTalk($said_user, $talk);
 	}
-	elseif($said_user->IsLonely('silver_wolf')){
-	  $builder->AddWhisper('wolf', $talk); //孤立した狼の独り言は遠吠えに見える
+	elseif($virtual_self->IsRole('whisper_ringing')){ //囁耳鳴は独り言が囁きに見える
+	  $builder->AddWhisper('common', $talk);
+	}
+	//吠耳鳴・孤立した狼の独り言は遠吠えに見える
+	elseif($virtual_self->IsRole('howl_ringing') ||
+	       ($said_user->IsWolf() && $said_user->IsLonely())){
+	  $builder->AddWhisper('wolf', $talk);
 	}
 	break;
       }
@@ -896,7 +939,7 @@ function OutputAbilityAction(){
   else{
     array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
 	       'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
-	       'POSSESSED_DO', 'POSSESSED_NOT_DO');
+	       'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO');
   }
 
   $action = '';
@@ -917,6 +960,7 @@ function OutputAbilityAction(){
     case 'DREAM_EAT':
     case 'POSSESSED_DO':
     case 'ASSASSIN_DO':
+    case 'VAMPIRE_DO':
       echo 'は '.$target.' を狙いました';
       break;
 
@@ -1144,8 +1188,10 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_PERVERSENESS':
   case 'SUDDEN_DEATH_FLATTERY':
   case 'SUDDEN_DEATH_IMPATIENCE':
-  case 'SUDDEN_DEATH_NERVY':
   case 'SUDDEN_DEATH_CELIBACY':
+  case 'SUDDEN_DEATH_NERVY':
+  case 'SUDDEN_DEATH_ANDROPHOBIA':
+  case 'SUDDEN_DEATH_GYNOPHOBIA':
   case 'SUDDEN_DEATH_PANELIST':
   case 'SUDDEN_DEATH_SEALED':
   case 'SUDDEN_DEATH_JEALOUSY':

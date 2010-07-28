@@ -605,6 +605,7 @@ iM@S人狼のプレイヤーさんへの誕生日プレゼントです。
 </p>
 <p>
 <a href="#hunter_guard">猟師</a>
+<a href="#blind_guard">夜雀</a>
 <a href="#poison_guard">騎士</a>
 <a href="#fend_guard">忍者</a>
 <a href="#reporter">ブン屋</a>
@@ -616,7 +617,7 @@ iM@S人狼のプレイヤーさんへの誕生日プレゼントです。
 <ol>
   <li>制限対象は、<a href="#priest">司祭</a>・<a href="#bishop_priest">司教</a>・<a href="#border_priest">境界師</a>・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
-  <li><a href="#poison_guard">騎士</a>には適用されません</li>
+  <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
 
 <h3><a id="guard_hunt">狩りルール</a></h3>
@@ -629,6 +630,11 @@ iM@S人狼のプレイヤーさんへの誕生日プレゼントです。
 3. <a href="#hunter_guard">猟師</a>は<a href="fox.php">妖狐陣営</a>を狩ることができます
 4. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
 5. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>を参照してください
+6. 対象が身代わり死していた場合は狩りが発生しません (例：<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+</pre>
+<h4>Ver. 1.4.0 β14〜</h4>
+<pre>
+対象が身代わり死していた場合は狩りが発生しません (例：<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 </pre>
 <h4>Ver. 1.4.0 β9〜</h4>
 <pre>
@@ -642,11 +648,25 @@ iM@S人狼のプレイヤーさんへの誕生日プレゼントです。
 通常の狩り能力 (<a href="#guard_hunt">狩りルール</a>) に加えて、<a href="fox.php">妖狐陣営</a>も狩る事ができる。
 護衛先が人狼に襲撃された場合は、狼の種類を問わず本人が死亡する (護衛は成功扱い)。
 死因は「人狼の襲撃」となる。
+<a href="vampire.php">吸血鬼</a>の襲撃から護衛した場合は死亡しない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 メビウス人狼の守護者がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/641" target="_top">新役職考案スレ</a> の 641 が原型です。
 村側の対妖狐の切り札としてデザインしてあり、その分だけ対狼能力が犠牲になっています。
+</pre>
+
+<h3><a id="blind_guard">夜雀</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β14〜]</h3>
+<h4>[狩人能力] 護衛：制限無し / 狩り：無し / 罠：有効</h4>
+<pre>
+<a href="#guard_hunt">狩り能力</a>は持たないが、護衛先を襲撃した<a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に<a href="sub_role.php#blinder">目隠し</a>を付加する特殊な狩人。
+<a href="#guard_limit">護衛制限</a>の影響を受けない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#hunter_guard">猟師</a>とは対照的に、護衛力に特化した特殊狩人です。
+死体の状況を見ることで<a href="chiroptera.php#dark_fairy">闇妖精</a>と区別することができるので、
+襲撃役の<a href="wolf.php#wolf_group">人狼</a>はうっかり<a href="sub_role.php#blinder">目隠し</a> CO しないように気をつけましょう。
 </pre>
 
 <h3><a id="poison_guard">騎士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>

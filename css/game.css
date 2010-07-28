@@ -83,9 +83,13 @@ body{ /* AA 用 */
   background-color: #FFFAFA;
   color: #FF69B4; /* hotpink */
 }
-.victory-quiz{ /* クイズ GM 勝利 */
+.victory-quiz{ /* 出題者勝利 */
   background-color: #9999CC;
   color: #FFFF99;
+}
+.victory-vampire{ /* 吸血鬼勝利 */
+  background-color: #D000D0;
+  color: #FFFAFA;
 }
 .victory-chiroptera{ /* 蝙蝠勝利 */
   background-color: #888888;
@@ -150,7 +154,7 @@ body{ /* AA 用 */
 }
 .objection-male{  background-color: #336699;} /* 異議あり(男) */
 .objection-female{background-color: #FF0099;} /* 異議あり(女) */
-.game-start{      background-color: #999900;} /* ゲーム開始投票(現在は使ってない模様) */
+.game-start{      background-color: #999900;} /* ゲーム開始投票 (現在は不使用) */
 .kick-do{         background-color: #AAAA33;} /* キック投票 */
 .vote-do{         background-color: #999900;} /* 処刑投票 */
 .mage-do{         background-color: #990099;} /* 占い師 */
@@ -158,8 +162,9 @@ body{ /* AA 用 */
 .revive-do{       background-color: #009966;} /* 猫又 */
 .assassin-do{     background-color: #904040;} /* 暗殺者 */
 .mind-scanner-do{ background-color: #A0A000;} /* さとり */
-.wolf-eat{        background-color: #CC3300;} /* 狼の襲撃 */
+.wolf-eat{        background-color: #CC3300;} /* 人狼 */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */
+.vampire-do{      background-color: #D000D0;} /* 吸血鬼 */
 .fairy-do{        background-color: #888888;} /* 妖精 */
 .mania-do{        background-color: #C0A060;} /* 神話マニア */
 .system-user{ /* システムユーザーの発言 */

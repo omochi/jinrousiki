@@ -169,12 +169,6 @@ class User{
     }
   }
 
-  //¼º¸ú¥¿¥¤¥×¤ÎÌò¿¦È½Äê
-  function IsActive($role = NULL){
-    $is_role = is_null($role) ? true : $this->IsRole($role);
-    return ($is_role && ! $this->IsRole('lost_ability') && ! $this->lost_flag);
-  }
-
   //Ìò¿¦¥°¥ë¡¼¥×È½Äê
   function IsRoleGroup($role){
     $role_list = func_get_args();
@@ -186,10 +180,29 @@ class User{
     return false;
   }
 
+  //³ÈÄ¥È½Äê
+  function IsPartner($type, $target){
+    if(is_null($partner_list = $this->GetPartner($type))) return false;
+
+    if(is_array($target)){
+      if(! is_array($target_list = $target[$type])) return false;
+      return count(array_intersect($partner_list, $target_list)) > 0;
+    }
+    else{
+      return in_array($target, $partner_list);
+    }
+  }
+
+  //¼º¸ú¥¿¥¤¥×¤ÎÌò¿¦È½Äê
+  function IsActive($role = NULL){
+    $flag = is_null($role) ? true : $this->IsRole($role);
+    return $flag && ! $this->lost_flag && ! $this->IsRole('lost_ability');
+  }
+
   //¸ÉÎ©·ÏÌò¿¦È½Äê
   function IsLonely($role = NULL){
-    $is_role = is_null($role) ? true : $this->IsRole($role);
-    return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
+    $flag = is_null($role) ? true : $this->IsRole($role);
+    return $flag && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 
   //¶¦Í­¼Ô·ÏÈ½Äê
@@ -227,6 +240,17 @@ class User{
     return $this->IsRole('lovers');
   }
 
+  //Øá°ÍÇ½ÎÏ¼ÔÈ½Äê (ÈïØá°Í¼Ô¤È¥³¡¼¥É¾å¤Ç¶èÊÌ¤¹¤ë¤¿¤á¤Î´Ø¿ô)
+  function IsPossessedGroup(){
+    return $this->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox');
+  }
+
+  //ÁÉÀ¸Ç½ÎÏ¼ÔÈ½Äê
+  function IsReviveGroup($active = false){
+    if(! ($this->IsRoleGroup('cat') || $this->IsRole('revive_medium', 'revive_fox'))) return false;
+    return $active ? $this->IsActive() : true;
+  }
+
   //³ÐÀÃÅ·ÏµÈ½Äê
   function IsLastWolf(){
     global $USERS;
@@ -248,22 +272,9 @@ class User{
 
   //ÆÃ¼ìÂÑÀ­È½Äê
   function IsAvoid($quiz = false){
-    $role_list = array('detective_common');
-    if($quiz) $role_list[] = 'quiz';
-    return $this->IsRole($role_list) || $this->IsLastWolf() || $this->IsChallengeLovers();
-  }
-
-  //³ÈÄ¥È½Äê
-  function IsPartner($type, $target){
-    if(is_null($partner_list = $this->GetPartner($type))) return false;
-
-    if(is_array($target)){
-      if(! is_array($target_list = $target[$type])) return false;
-      return count(array_intersect($partner_list, $target_list)) > 0;
-    }
-    else{
-      return in_array($target, $partner_list);
-    }
+    $stack = array('detective_common');
+    if($quiz) $stack[] = 'quiz';
+    return $this->IsRole($stack) || $this->IsLastWolf() || $this->IsChallengeLovers();
   }
 
   //ÆÇÇ½ÎÏ¤ÎÈ¯Æ°È½Äê
@@ -277,15 +288,10 @@ class User{
     return true;
   }
 
-  //Øá°ÍÇ½ÎÏ¼ÔÈ½Äê (ÈïØá°Í¼Ô¤È¥³¡¼¥É¾å¤Ç¶èÊÌ¤¹¤ë¤¿¤á¤Î´Ø¿ô)
-  function IsPossessedGroup(){
-    return $this->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox');
-  }
-
-  //ÁÉÀ¸Ç½ÎÏ¼ÔÈ½Äê
-  function IsReviveGroup($active = false){
-    if(! ($this->IsRoleGroup('cat') || $this->IsRole('revive_medium', 'revive_fox'))) return false;
-    return $active ? $this->IsActive() : true;
+  //¸î±ÒÀ©¸ÂÈ½Äê
+  function IsGuardLimited(){
+    return $this->IsRole('priest', 'bishop_priest', 'border_priest', 'detective_common',
+			 'reporter', 'doll_master') || $this->IsRoleGroup('assassin');
   }
 
   //½êÂ°¿Ø±ÄÈ½ÊÌ
@@ -293,6 +299,7 @@ class User{
     if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
     if($this->IsFox()) return 'fox';
     if($this->IsRole('quiz')) return 'quiz';
+    if($this->IsRole('vampire')) return 'vampire';
     if($this->IsRoleGroup('chiroptera', 'fairy')) return 'chiroptera';
     if($this->IsRoleGroup('cupid', 'angel')) return 'lovers';
     return 'human';
@@ -300,9 +307,9 @@ class User{
 
   //Àê¤¤»Õ¤ÎÈ½Äê
   function DistinguishMage($reverse = false){
-    if($this->IsRole('boss_chiroptera')) return 'chiroptera'; //Âçéþéõ¤ÏéþéõÈ½Äê
+    if($this->IsRole('vampire', 'boss_chiroptera')) return 'chiroptera'; //µÛ·ìµ´¡¦Âçéþéõ¤ÏéþéõÈ½Äê
 
-    //ÇòÏµ°Ê³°¤ÎÏµ¡¢¹õ¸Ñ¡¢ÉÔ¿³¼Ô¤Ï¿ÍÏµÈ½Äê
+    //ÇòÏµ°Ê³°¤Î¿ÍÏµ¡¦¹õ¸Ñ¡¦ÉÔ¿³¼Ô¤Ï¿ÍÏµÈ½Äê
     $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) ||
 	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
@@ -399,6 +406,9 @@ class User{
       if(is_array($vote_data['POSSESSED_NOT_DO']) &&
 	 array_key_exists($this->uname, $vote_data['POSSESSED_NOT_DO'])) return true;
       return isset($vote_data['POSSESSED_DO'][$this->uname]);
+    }
+    if($this->IsRole('vampire')){
+      return isset($vote_data['VAMPIRE_DO'][$this->uname]);
     }
 
     if($ROOM->IsOpenCast()) return true;
@@ -867,14 +877,14 @@ class UserDataSet{
   function IsOpenCast(){
     foreach($this->rows as $user){
       if($user->IsDummyBoy()) continue;
-      if($user->IsReviveGroup(true)){
+      if($user->IsReviveGroup(true) || $user->IsRole('soul_mania', 'dummy_mania')){
 	if($user->IsLive()) return false;
       }
       elseif($user->IsRole('revive_priest')){
 	if($user->IsActive()) return false;
       }
       elseif($user->IsRole('evoke_scanner')){
-	if($user->IsLive() && ! $user->IsRole('copied')) return false;
+	if($user->IsLive() && ! $user->IsRoleGroup('copied')) return false;
       }
     }
     return true;

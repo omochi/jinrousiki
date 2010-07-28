@@ -52,7 +52,7 @@ OutputInfoPageHeader('詳細な仕様');
 <ul>
 <li>常時、ゲーム終了後相当の情報が見えます</li>
 <li>ゲーム開始前のユーザの「役職」は「希望役職」です</li>
-<li>単独の KICK 投票でユーザを蹴りだします</li>
+<li>単独の KICK 投票でユーザを蹴りだせます</li>
 <li>ゲーム中は「遺言」発言をすると専用システムメッセージになります</li>
 <li>投票能力がある役職であっても投票することはできません</li>
 </ul>
@@ -67,58 +67,58 @@ OutputInfoPageHeader('詳細な仕様');
 <h3><a id="dead_common">共通</a></h3>
 <h4>〜<?php echo $MESSAGE->sudden_death ?></h4>
 <ul>
-<li>突然死 (投票忘れ)</li>
+  <li>未投票突然死</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->lovers_followed ?></h4>
 <ul>
-<li>後追い (恋人)</li>
+  <li>恋人後追い</li>
 </ul>
 
 
 <h3><a id="dead_day">昼</a></h3>
 <h4>〜<?php echo $MESSAGE->vote_killed ?></h4>
 <ul>
-<li>処刑 (昼の投票)</li>
+  <li>処刑</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
-<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
-<li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
+  <li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>などの毒能力者)</li>
+  <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
-<li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>)</li>
+  <li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/human.php#seal_medium">封印師</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>)</li>
 </ul>
 
 <h3><a id="dead_night">夜</a></h3>
 <h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
-<li>襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
-<li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
-<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>)</li>
-<li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
-<li><a href="new_role/human.php#guard_hunt">狩り</a> (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
-<li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
-<li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
-<li>呪殺 (<a href="new_role/human.php#mage_group">占い師系</a>)</li>
-<li>呪返し (<a href="new_role/wolf.php#cursed_wolf">呪狼</a>などの呪い持ち、<a href="new_role/wolf.php#voodoo_mad">呪術師</a>などの呪い能力者)</li>
-<li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>など)</li>
-<li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
-<li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
-<li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
-<li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)</li>
+  <li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
+  <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
+  <li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)</li>
+  <li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>などの毒能力者)</li>
+  <li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
+  <li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
+  <li><a href="new_role/human.php#guard_hunt">狩り</a> (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
+  <li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
+  <li>呪殺 (<a href="new_role/human.php#mage_group">占い師系</a>)</li>
+  <li>呪返し (<a href="new_role/wolf.php#cursed_wolf">呪狼</a>などの呪い所持者、<a href="new_role/wolf.php#voodoo_mad">呪術師</a>などの呪術能力者)</li>
+  <li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>などの憑依能力者)</li>
+  <li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
+  <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
+  <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
 <h4>〜<?php echo $MESSAGE->revive_success ?></h4>
 <ul>
-<li>蘇生 (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>、<a href="new_role/human.php#revive_priest">天人</a>)</li>
+  <li>蘇生 (<a href="new_role/human.php#poison_cat_group">猫又系</a>などの蘇生能力者、<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->revive_failed ?></h4>
 <ul>
-<li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>、<a href="new_role/fox.php#revive_fox">仙狐</a>)</li>
+  <li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>などの蘇生能力者)</li>
 </ul>
 
 <h2><a id="vote">投票処理の仕様</a></h2>
@@ -143,8 +143,8 @@ OutputInfoPageHeader('詳細な仕様');
   - 単独トップ ＞ 決定者 ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる
 
 + 役職判定順
-  - <a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist">薬師</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
-
+  - <a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist">薬師</a> ＞ 抗毒判定 ＞ 毒発動判定 →
+    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
 </pre>
 
 <h3><a id="vote_night">夜</a></h3>
@@ -153,16 +153,16 @@ OutputInfoPageHeader('詳細な仕様');
   - 恋人 → 接触 → 夢 → 占い → &lt;日にち別処理&gt; → 憑依 → 後追い → 司祭
     &lt;[初日] コピー → 帰還 / [二日目以降] 尾行 → 反魂 → 蘇生&gt;
 
-+ 恋人 (キューピッド系)
++ 恋人 (<a href="new_role/lovers.php">恋人陣営</a>)
   - 相互作用はないので投票直後に処理を行う
 
-+ 接触 (人狼、狩人、暗殺者、罠師)
-  - 罠 ＞ 狩人護衛 ＞ 人狼襲撃 → 狩人の狩り → 暗殺
++ 接触 (<a href="new_role/human.php#guard_group">狩人系</a>・<a href="new_role/human.php#assassin_group">暗殺者系</a>・<a href="new_role/wolf.php#wolf_group">人狼系</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/vampire.php">吸血鬼陣営</a>)
+  - 罠 ＞ 狩人護衛 ＞ 人狼襲撃 → 狩人の狩り → 吸血鬼襲撃 → 暗殺
 
-+ 夢 (夢守人、獏)
++ 夢 (<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>)
   - 夢守人護衛 ＞ 獏襲撃 → 夢守人の狩り
 
-+ 占い (占い系、厄神、月兎、呪術系)
++ 占い (<a href="new_role/human.php#mage_group">占い師系</a>他・<a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>他・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>他)
   - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺)
 </pre>
 

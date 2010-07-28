@@ -362,9 +362,8 @@ function GeneratePageLink($CONFIG, $page, $title = NULL){
 }
 
 //ログへのリンクを生成
-function GenerateLogLink($url, $header = NULL, $footer = ''){
-  $str = isset($header) ? '<br>' . $header : '';
-  return <<<EOF
+function GenerateLogLink($url, $watch = false, $header = '', $footer = ''){
+  $str = <<<EOF
 {$header} <a href="{$url}"{$footer}>正</a>
 <a href="{$url}&reverse_log=on"{$footer}>逆</a>
 <a href="{$url}&heaven_talk=on"{$footer}>霊</a>
@@ -372,6 +371,15 @@ function GenerateLogLink($url, $header = NULL, $footer = ''){
 <a href="{$url}&heaven_only=on"{$footer} >逝</a>
 <a href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
 EOF;
+
+  if($watch){
+    $str .= <<<EOF
+
+<a href="{$url}&watch=on"{$footer}>観</a>
+<a href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
+EOF;
+  }
+  return $str;
 }
 
 //ゲームオプションの画像タグを作成する
@@ -385,9 +393,11 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'open_vote', 'open_day',
     'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
     'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority',
-    'liar', 'gentleman', 'sudden_death', 'perverseness', 'full_mania', 'detective',
-    'festival', 'quiz', 'duel', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_open_cast',
-    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role');
+    'liar', 'gentleman', 'sudden_death', 'perverseness', 'detective', 'festival',
+    'full_mania', 'full_chiroptera', 'full_cupid', 'replace_human', 'quiz', 'duel',
+    'chaos', 'chaosfull', 'chaos_hyper', 'chaos_open_cast', 'chaos_open_cast_camp',
+    'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role', 'sub_role_limit_easy',
+    'sub_role_limit_normal');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option)) continue;
@@ -450,6 +460,10 @@ function OutputCastTable($min = 0, $max = NULL){
     switch($class){
     case 'mind_scanner':
       $class = 'mind';
+      break;
+
+    case 'poison_cat':
+      $class = 'cat';
       break;
 
     case 'child_fox':

@@ -1,16 +1,20 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_OPT_MESS');
+$INIT_CONF->LoadClass('GAME_OPT_CAPT');
 OutputInfoPageHeader('闇鍋モード');
 ?>
 <p>
 <a href="#wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a>
 <a href="#chaos_decide_role">配役決定ルーチン</a>
+</p>
+<p>
 <a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>
 <a href="#chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a>
 <a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定)</a>
+<a href="#chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a>
+<a href="#sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a>
 </p>
 
 <h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
@@ -489,5 +493,32 @@ OutputInfoPageHeader('闇鍋モード');
 20人未満では無意識の出現率が高め (無意識：不審者 = 80%:20%)。
 20人以上で不審者の出現率がやや高め (無意識：不審者 = 40%:60%)。
 出現人数の上限は規定していません。
+</pre>
+
+<h2><a id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a></h2>
+<ol>
+  <li>初日の夜に表示される陣営内訳通知に制限をかけることができます</li>
+  <li>「通知無し」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_full ?>」から選べます</li>
+</ol>
+
+<h2><a id="sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a></h2>
+<ol>
+  <li>出現するサブ役職の種類に制限をかけることができます</li>
+  <li>「<?php echo $GAME_OPT_CAPT->no_sub_role ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_easy ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_normal ?>」「サブ役職制限なし」から選べます</li>
+  <li>内容は設定ファイルで変更できます</li>
+</ol>
+<p>
+<a href="#sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a>
+<a href="#sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a>
+</p>
+
+<h3><a id="sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a></h3>
+<pre>
+<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>のみ出現します。
+</pre>
+
+<h3><a id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a></h3>
+<pre>
+<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>のみ出現します。
 </pre>
 </body></html>
