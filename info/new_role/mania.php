@@ -125,7 +125,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="wolf.php#wolf_group">人狼系</a> → <a href="wolf.php#sirius_wolf">天狼</a></li>
 <li><a href="wolf.php#mad_group">狂人系</a> → <a href="wolf.php#whisper_mad">囁き狂人</a></li>
 <li><a href="fox.php#fox_group">妖狐系</a> → <a href="fox.php#cursed_fox">天狐</a></li>
-<li><a href="fox.php#child_fox_group">子狐系</a> → <a href="fox.php#stargazer_fox">星狐</a> (Ver. 1.4.0 β13〜)</li>
+<li><a href="fox.php#child_fox_group">子狐系</a> → <a href="fox.php#jammer_fox">月狐</a> (Ver. 1.4.0 β14〜)</li>
 <li><a href="lovers.php#cupid_group">キューピッド系</a> → <a href="lovers.php#mind_cupid">女神</a></li>
 <li><a href="lovers.php#angel_group">天使系</a> → <a href="lovers.php#ark_angel">大天使</a></li>
 <li><a href="quiz.php#quiz_group">出題者系</a> → <a href="quiz.php#quiz">出題者</a></li>

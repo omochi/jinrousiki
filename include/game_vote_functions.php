@@ -2078,7 +2078,7 @@ function AggregateVoteNight(){
 	  //°Å»¦Àè¤¬ÆÇÇ½ÎÏ¼Ô¤Ê¤é»àË´
 	  if($target->IsPoison()) $USERS->Kill($user->user_no, 'POISON_DEAD_night');
 	}
-	elseif($user->IsRole('cute_assassin')){ //¿ª°Å»¦¼Ô¤Î¼«ÌÇÈ½Äê
+	elseif($user->IsRole('eclipse_assassin')){ //¿ª°Å»¦¼Ô¤Î¼«ÌÇÈ½Äê
 	  if(mt_rand(1, 100) <= 30) $target_uname = $uname;
 	}
 	$assassin_target_list[$target_uname] = true; //°Å»¦ÂÐ¾Ý¼Ô¥ê¥¹¥È¤ËÄÉ²Ã

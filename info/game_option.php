@@ -250,7 +250,7 @@ OutputInfoPageHeader('ゲームオプション');
 22人：バルサン村＠わかめて鯖
 </pre>
 
-<h2><a id="replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a> [Ver. 1.4.0 β13〜]</h2>
+<h2><a id="replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a> [Ver. 1.4.0 β14〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->replace_human ?></li>
   <li><?php echo $GAME_OPT_MESS->full_mania ?>を拡張して実装したオプションです</li>
@@ -263,11 +263,11 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
   <li>村人が全員<a href="new_role/human.php#mania">神話マニア</a>になります</li>
 </ul>
-<h3><a id="full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a> [Ver. 1.4.0 β13〜]</h3>
+<h3><a id="full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a> [Ver. 1.4.0 β14〜]</h3>
 <ul>
   <li>村人が全員<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>になります</li>
 </ul>
-<h3><a id="full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a> [Ver. 1.4.0 β13〜]</h3>
+<h3><a id="full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a> [Ver. 1.4.0 β14〜]</h3>
 <ul>
   <li>村人が全員<a href="new_role/lovers.php#cupid">キューピッド</a>になります</li>
 </ul>
