@@ -16,12 +16,23 @@ class RoleManager{
   var $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
 			  'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
-  //ÅêÉ¼
+  //½è·ºÅêÉ¼
   var $vote_do_list = array('authority', 'critical_voter', 'random_voter', 'watcher', 'panelist');
 
-  //ÆÀÉ¼
+  //½è·ºÆÀÉ¼
   var $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
 			  'random_luck');
+
+  //½è·ºÅêÉ¼·ÏÇ½ÎÏ¼Ô
+  var $vote_ability_list = array('saint', 'executor', 'agitate_mad', 'impatience', 'authority',
+				 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
+
+  //È¿µÕ¼ÔÈ½Äê
+  var $rebel_list = array('rebel');
+
+  //½è·º¼Ô·èÄê (½çÈÖ°ÍÂ¸¤¢¤ê)
+  var $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
+			      'executor', 'saint', 'agitate_mad');
 
   //¥·¥ç¥Ã¥¯»à
   var $sudden_death_list = array('febris', 'death_warrant', 'chicken', 'rabbit', 'perverseness',
@@ -36,32 +47,46 @@ class RoleManager{
   }
 
   function Load($type){
-    $name = $type . '_list';
-    $role_list = $this->$name;
-    if(! (is_array($role_list) && count($role_list) > 0)) return;
-
-    $target_list = array();
-    foreach($role_list as $role){
+    $stack = array();
+    foreach($this->GetList($type) as $role){
       if(! $this->actor->IsRole($role)) continue;
-      $target_list[] = $role;
-      $class = 'Role_' . $role;
+      $stack[] = $role;
       $this->LoadFile($role);
-      $this->LoadClass($role, $class);
+      $this->LoadClass($role, 'Role_' . $role);
     }
-
-    return array_intersect_key($this->loaded->class, array_flip($target_list));
+    return $this->GetFilter($stack);
   }
 
   function LoadFile($name){
     if(is_null($name) || in_array($name, $this->loaded->file)) return false;
     require_once($this->path . '/' . $name . '.php');
     $this->loaded->file[] = $name;
+    return true;
   }
 
   function LoadClass($name, $class){
     if(is_null($name) || in_array($name, $this->loaded->class)) return false;
     $this->loaded->class[$name] =& new $class();
     return true;
+  }
+
+  function LoadFilter($type){
+    return $this->GetFilter($this->GetList($type));
+  }
+
+  function GetList($type){
+    $name = $type . '_list';
+    $stack = $this->$name;
+    return is_array($stack) ? $stack : array();
+  }
+
+
+  function GetFilter($list){
+    $stack = array();
+    foreach($list as $key){ //½çÈÖ°ÍÂ¸¤¬¤¢¤ë¤Î¤ÇÇÛÎó´Ø¿ô¤ò»È¤ï¤Ê¤¤¤Ç½èÍý¤¹¤ë
+      if(is_object(($class = $this->loaded->class[$key]))) $stack[] = $class;
+    }
+    return $stack;
   }
 
   function GetWhisperingUserInfo($role, &$class){

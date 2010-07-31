@@ -222,7 +222,7 @@ function EntryLastWords($say){
 function Say($say){
   global $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  $virtual_self = $USERS->ByVirtual($SELF->user_no);
+  $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
   if($ROOM->IsRealTime()){ //リアルタイム制
     GetRealPassTime(&$left_time);
     $spend_time = 0; //会話で時間経過制の方は無効にする
@@ -249,16 +249,16 @@ function Say($say){
       Write($say, 'day', $spend_time, true);
     }
     elseif($ROOM->IsNight()){ //夜は役職毎に分ける
-      $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ
+      $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
       if(! $update) $spend_time = 0;
 
-      if($virtual_self->IsWolf(true)) //人狼
-	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf';
-      elseif($virtual_self->IsRole('whisper_mad')) //囁き狂人
+      if($user->IsWolf(true)) //人狼
+	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
+      elseif($user->IsRole('whisper_mad')) //囁き狂人
 	$location = 'mad';
-      elseif($virtual_self->IsCommon(true)) //共有者
+      elseif($user->IsCommon(true)) //共有者
 	$location = 'common';
-      elseif($virtual_self->IsFox(true)) //妖狐
+      elseif($user->IsFox(true)) //妖狐
 	$location = 'fox';
       else //独り言
 	$location = 'self_talk';
@@ -274,9 +274,9 @@ function Write($say, $location, $spend_time, $update = false){
 
   //声の大きさを決定
   $voice = $RQ_ARGS->font_type;
-  $virtual_self = $USERS->ByVirtual($SELF->user_no);
-  if($ROOM->IsPlaying() && $virtual_self->IsLive()){
-    $ROLES->actor = $virtual_self;
+  $user = $USERS->ByVirtual($SELF->user_no);
+  if($ROOM->IsPlaying() && $user->IsLive()){
+    $ROLES->actor = $user;
     foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
   }
 

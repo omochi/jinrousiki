@@ -26,5 +26,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>冥狼 / 冥狐：死の宣告能力を持った人狼 / 妖狐</li>
 </ul>

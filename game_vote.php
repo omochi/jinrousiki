@@ -198,7 +198,6 @@ function VoteDay(){
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
 
-  $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想投票者を取得
   $target = $USERS->ByReal($RQ_ARGS->target_no); //投票先のユーザ情報を取得
   if($target->uname == '') OutputVoteResult('処刑：投票先が指定されていません');
   if($target->IsSelf())    OutputVoteResult('処刑：自分には投票できません');
@@ -221,7 +220,7 @@ function VoteDay(){
   if($SELF->IsRoleGroup('elder')) $vote_number++; //長老系
 
   //サブ役職の処理
-  $ROLES->actor = $virtual_self;
+  $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //仮想投票者をセット
   foreach($ROLES->Load('vote_do') as $filter) $filter->FilterVoteDo($vote_number);
 
   if(! $SELF->Vote('VOTE_KILL', $target->uname, $vote_number)){ //投票処理
@@ -278,7 +277,7 @@ function VoteNight(){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
     if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
-       OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
+      OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
     }
     $not_type = $RQ_ARGS->situation == 'POISON_CAT_NOT_DO';
     break;
@@ -669,8 +668,8 @@ EOF;
   $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
   foreach($USERS->rows as $id => $user){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
-    $count++;
     if(is_array($vote_duel) && ! in_array($id, $vote_duel)) continue;
+    $count++;
     $is_live = $USERS->IsVirtualLive($id);
 
     //生きていればユーザアイコン、死んでれば死亡アイコン

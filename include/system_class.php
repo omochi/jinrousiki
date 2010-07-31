@@ -114,9 +114,8 @@ class Session{
 
     if($exit){ //¥¨¥é¡¼½èÍý
       $title = '¥»¥Ã¥·¥ç¥óÇ§¾Ú¥¨¥é¡¼';
-      $sentence = $title . '¡§<a href="./" target="_top">¥È¥Ã¥×¥Ú¡¼¥¸</a>¤«¤é' .
-	'¥í¥°¥¤¥ó¤·¤Ê¤ª¤·¤Æ¤¯¤À¤µ¤¤';
-      OutputActionResult($title, $sentence);
+      $str = $title . '¡§<a href="./" target="_top">¥È¥Ã¥×¥Ú¡¼¥¸</a>¤«¤é¥í¥°¥¤¥ó¤·¤Ê¤ª¤·¤Æ¤¯¤À¤µ¤¤';
+      OutputActionResult($title, $str);
     }
     return false;
   }
@@ -558,6 +557,7 @@ class RoleData{
     'tongue_wolf'        => 'Àå²ÒÏµ',
     'possessed_wolf'     => 'ØáÏµ',
     'hungry_wolf'        => '²îÏµ',
+    'doom_wolf'          => 'Ì½Ïµ',
     'sirius_wolf'        => 'Å·Ïµ',
     'elder_wolf'         => '¸ÅÏµ',
     'cute_wolf'          => 'Ë¨Ïµ',
@@ -585,6 +585,7 @@ class RoleData{
     'voodoo_fox'         => '¶åÈø',
     'revive_fox'         => 'Àç¸Ñ',
     'possessed_fox'      => 'Øá¸Ñ',
+    'doom_fox'           => 'Ì½¸Ñ',
     'cursed_fox'         => 'Å·¸Ñ',
     'elder_fox'          => '¸Å¸Ñ',
     'cute_fox'           => 'Ë¨¸Ñ',
@@ -788,6 +789,7 @@ class RoleData{
     'tongue_wolf'        => 'ÀåÏµ',
     'possessed_wolf'     => 'ØáÏµ',
     'hungry_wolf'        => '²îÏµ',
+    'doom_wolf'          => 'Ì½Ïµ',
     'sirius_wolf'        => 'Å·Ïµ',
     'elder_wolf'         => '¸ÅÏµ',
     'cute_wolf'          => 'Ë¨Ïµ',
@@ -815,6 +817,7 @@ class RoleData{
     'voodoo_fox'         => '¶åÈø',
     'revive_fox'         => 'Àç¸Ñ',
     'possessed_fox'      => 'Øá¸Ñ',
+    'doom_fox'           => 'Ì½¸Ñ',
     'cursed_fox'         => 'Å·¸Ñ',
     'elder_fox'          => '¸Å¸Ñ',
     'cute_fox'           => 'Ë¨¸Ñ',
