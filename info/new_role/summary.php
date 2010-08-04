@@ -59,6 +59,7 @@ Ver. 1.4.0
 <a href="#140beta12">β12</a>
 <a href="#140beta13">β13</a>
 <a href="#140beta14">β14</a>
+<a href="#140beta15">β15</a>
 </p>
 
 <p>
@@ -213,8 +214,8 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
-    <td class="ability">自ら噛み投票を行った場合のみ、次の日に噛んだ人の役職が分かる。<br>
-      襲撃に失敗したら無効。村人を襲撃すると能力を失う。</td>
+    <td class="ability">襲撃に成功した人の役職が分かる人狼。<br>
+      本人が投票した場合のみ有効で、村人だった場合は能力を失う。</td>
     <td>Ver. 1.4.0 α13</td>
   </tr>
   <tr>
@@ -418,7 +419,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">夜に村人一人を選び、その人の占い行動を妨害する特殊な狂人。<br>
+    <td class="ability">夜に投票した人の占い行動を妨害する特殊な狂人。<br>
       狩人に護衛されると殺される。α21から邪魔狂人 → 月兎 に変更。</td>
     <td>Ver. 1.4.0 α19</td>
   </tr>
@@ -438,7 +439,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">夜に村人一人を選び、その人に呪いをかける特殊な狂人。<br>
+    <td class="ability">夜に投票した人に呪いをかける特殊な狂人。<br>
       呪われた人を占った占い師は呪返しを受ける。狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 α20</td>
   </tr>
@@ -560,7 +561,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">自分が投票して吊った人の霊能結果を隠蔽できる特殊な狂人。<br>
+    <td class="ability">自分の投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。<br>
       <a href="human.php#dummy_necromancer">夢枕人</a>には影響しない。狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
@@ -637,8 +638,8 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>憑狼</td>
-    <td class="ability">襲撃が成功したら襲撃した人を乗っ取る人狼。<br>
-      身代わり君・<a href="human.php#revive_priest">天人</a>・妖狐は乗っ取れない。</td>
+    <td class="ability">襲撃に成功した人を乗っ取る人狼。<br>
+      身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・妖狐は乗っ取れない。</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
@@ -735,7 +736,7 @@ Ver. 1.4.0
     <td><a href="human.php#human_group">村人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票数が +1 される村人。</td>
+    <td class="ability">処刑投票数が +1 される村人。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -744,7 +745,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
-    <td class="ability">投票数が +1 される人狼。</td>
+    <td class="ability">処刑投票数が +1 される人狼。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -753,7 +754,7 @@ Ver. 1.4.0
     <td><a href="fox.php#fox_group">妖狐系</a></td>
     <td>村人<br>(呪殺)</td>
     <td>村人</td>
-    <td class="ability">投票数が +1 される妖狐。</td>
+    <td class="ability">処刑投票数が +1 される妖狐。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -762,7 +763,7 @@ Ver. 1.4.0
     <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票数が +1 される蝙蝠。</td>
+    <td class="ability">処刑投票数が +1 される蝙蝠。</td>
     <td>Ver. 1.4.0 β5</td>
   </tr>
   <tr>
@@ -908,7 +909,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
-    <td class="ability">噛んだ人が狼だった場合に自分と噛んだ人を<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。</td>
+    <td class="ability">襲撃した人が狼だった場合に自分と<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
@@ -917,7 +918,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
-    <td class="ability">噛んだ人が<a href="fox.php#silver_fox">銀狐</a>以外の噛み殺せない妖狐だった場合に<a href="sub_role.php#mind_lonely">はぐれ者</a>を付加する人狼。</td>
+    <td class="ability">襲撃した人が<a href="fox.php#silver_fox">銀狐</a>以外の噛み殺せない妖狐だった場合に<a href="sub_role.php#mind_lonely">はぐれ者</a>を付加する人狼。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
@@ -964,7 +965,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#wolf_group">人狼系</a></td>
     <td>人狼</td>
     <td>人狼</td>
-    <td class="ability">噛みに成功した場合、次の日に噛んだ人の性別が分かる。ただし、噛んだ相手は死なない。</td>
+    <td class="ability">襲撃に成功した人の性別が分かるが、噛み殺せない人狼。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
@@ -1036,7 +1037,7 @@ Ver. 1.4.0
     <td><a href="wolf.php#mad_group">狂人系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role.php#febris">熱病</a>にする特殊な狂人。<br>
+    <td class="ability">処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role#febris">熱病</a>にする特殊な狂人。<br>
       狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
@@ -1455,6 +1456,36 @@ Ver. 1.4.0
     <td>蝙蝠</td>
     <td class="ability">他国で言うカルトリーダー相当。</td>
     <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#doom_wolf" id="140beta15">冥狼</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#wolf_group">人狼系</a></td>
+    <td>人狼</td>
+    <td>人狼</td>
+    <td class="ability">襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人狼。</td>
+    <td>Ver. 1.4.0 β15</td>
+  </tr>
+  <tr>
+    <td><a href="fox.php#doom_fox">冥狐</a></td>
+    <td><a href="fox.php">妖狐</a></td>
+    <td><a href="fox.php#fox_group">妖狐系</a></td>
+    <td>村人<br>(呪殺)</td>
+    <td>妖狐</td>
+    <td class="ability">遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β15</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#brownie">座敷童子</a></td>
+    <td><a href="human.php">村人</a></td>
+    <td><a href="human.php#fox_group">村人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">役職「村人」の処刑投票数を +1 する村人。<br>
+      処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
+    </td>
+    <td>Ver. 1.4.0 β15</td>
   </tr>
 </table>
 
@@ -1924,8 +1955,6 @@ Ver. 1.4.0
 
 ・宣教師 (レス 86)
 挙動は未定
-
-・主人公 (レス 89)
 </pre>
 <h4>採用思案中</h4>
 <pre>

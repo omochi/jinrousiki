@@ -90,6 +90,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
 <a href="#possessed_fox">憑狐</a>
+<a href="#doom_fox">冥狐</a>
 <a href="#cursed_fox">天狐</a>
 <a href="#elder_fox">古狐</a>
 <a href="#cute_fox">萌狐</a>
@@ -98,6 +99,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </p>
 
 <h3><a id="white_fox">白狐</a> (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
+<h4>[耐性] 人狼襲撃：死亡</h4>
 <pre>
 呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺される妖狐。
 <a href="#child_fox">子狐</a>との違いは占いができない代わりに他の妖狐と<a href="#fox_talk">念話</a>ができる事。
@@ -109,6 +111,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="black_fox">黒狐</a> (占い結果：人狼(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α24〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 占い結果が「人狼」、霊能結果が「妖狐」と判定される妖狐。
 </pre>
@@ -119,6 +122,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="gold_fox">金狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる妖狐。
 </pre>
@@ -129,6 +133,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="phantom_fox">幻狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
 妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
@@ -140,6 +145,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
 <h4>[毒能力] 吊り：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った妖狐。毒の対象は妖狐陣営以外。
@@ -152,6 +158,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="blue_fox">蒼狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。
 </pre>
@@ -163,6 +170,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="emerald_fox">翠狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
 占った人が会話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
@@ -180,6 +188,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="voodoo_fox">九尾</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 夜に村人一人を選び、その人に呪いをかける妖狐。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
@@ -198,6 +207,8 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="revive_fox">仙狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 蘇生：不可</h4>
+<h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：有り</h4>
 <pre>
 蘇生能力を持った妖狐。
 蘇生に関するルールは<a href="human.php#about_revive">蘇生能力者の基本ルール</a>参照。
@@ -213,6 +224,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="possessed_fox">憑狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
@@ -237,7 +249,22 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 存在自体が脅威になるタイプですね。
 </pre>
 
+<h3><a id="doom_fox">冥狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
+<pre>
+遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。
+暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて4日目後の昼。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+流石兄弟鯖＠やる夫人狼の管理人さんがモチーフです。
+<a href="wolf.php#doom_wolf">冥狼</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ</a> の 614 が原型です。
+発動日が違うので存在がすぐにバレることになります。
+</pre>
+
 <h3><a id="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 暗殺：反射</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
@@ -253,6 +280,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="elder_fox">古狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 投票数が +1 される妖狐。詳細は<a href="human.php#elder">長老</a>参照。
 </pre>
@@ -263,6 +291,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="cute_fox">萌狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう妖狐。
 遠吠えの内容は<a href="human.php#suspect">不審者</a>や<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
@@ -279,6 +308,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="scarlet_fox">紅狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に見える妖狐。
 本物の<a href="human.php#unconscious">無意識</a>と混ざって表示されるため、人狼側からは区別できない。
@@ -292,6 +322,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 
 <h3><a id="silver_fox">銀狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="#fox_partner">仲間</a>が分からない妖狐。
 (他の妖狐・<a href="#child_fox">子狐</a>からも仲間であると分からない)

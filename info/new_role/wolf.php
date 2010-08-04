@@ -90,9 +90,10 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
 <a href="#sex_wolf">雛狼</a>
-<a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
+<a href="#hungry_wolf">餓狼</a>
+<a href="#doom_wolf">冥狼</a>
 <a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
@@ -141,7 +142,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <h3><a id="cursed_wolf">呪狼</a> (占い結果：人狼(呪返し) / 霊能結果：呪狼) [Ver. 1.4.0 α17〜]</h3>
 <pre>
 占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼です。
-呪殺された占い師には襲撃されたときと同じ死亡メッセージが出ます。
+死亡した占い師の死因は「呪返し」になります。
 </pre>
 <h4>Ver. 1.4.0 β3〜</h4>
 <pre>
@@ -173,7 +174,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <h4>[毒能力] 吊り：人狼以外 / 襲撃：無し / 薬師判定：有り</h4>
 <pre>
 毒能力を持った人狼。
-吊られた時に巻き込む対象の決定時に人狼が除かれるため
+処刑された時に巻き込む対象の決定時に人狼が除かれるため
 投票者ランダムの場合は不発となるケースがある。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -184,8 +185,8 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h3><a id="resist_wolf">抗毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α17〜]</h3>
 <pre>
-一度だけ毒に耐えられる(毒に中っても死なない)人狼です。
-毒吊りの巻き込み、毒噛み両方に対応しています。
+一度だけ毒に耐えられる(毒に中っても死なない)人狼。
+処刑・襲撃両方に対応しています。
 毒能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
 毒の対象が襲撃者に固定されます。
 </pre>
@@ -205,7 +206,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h3><a id="blue_wolf">蒼狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
 <pre>
-噛んだ人が<a href="fox.php#silver_fox">銀狐</a>以外の噛み殺せない妖狐だった場合に<a href="sub_role.php#mind_lonely">はぐれ者</a>を付加する人狼。
+襲撃した人が<a href="fox.php#silver_fox">銀狐</a>以外の噛み殺せない妖狐だった場合に<a href="sub_role.php#mind_lonely">はぐれ者</a>を付加する人狼。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -217,7 +218,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h3><a id="emerald_wolf">翠狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
 <pre>
-噛んだ人が狼だった場合に自分と噛んだ人を<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。
+襲撃した人が狼だった場合に自分と<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -229,11 +230,12 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h3><a id="sex_wolf">雛狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
 <pre>
-噛みに成功した場合、次の日に噛んだ人の性別が分かる。ただし、噛んだ相手は死なない。
+襲撃に成功した人の性別が分かるが、噛み殺せない人狼。
 </pre>
 <ol>
   <li>性別判定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ</li>
   <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)</li>
+  <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力は無効</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -242,42 +244,20 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 この狼が LW になると非常に辛い事になるので気をつけましょう。
 </pre>
 
-<h3><a id="hungry_wolf">餓狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12〜]</h3>
-<pre>
-人狼と妖狐しか噛み殺せない人狼。
-</pre>
-<ol>
-  <li>仲間と分かっている狼も襲撃可能</li>
-  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」</li>
-  <li>身代わり君は役職関係なく襲撃成功扱い</li>
-  <li>人狼と妖狐以外を襲撃した場合は失敗扱い</li>
-</ol>
-<h4>[作成者からのコメント]</h4>
-<pre>
-東方ウミガメ人狼のプレイヤーさんがモデルの、対<a href="fox.php">妖狐</a>の切り札です。
-狼飽和状態の妖狐勝利を仲間や村人確定の人を襲撃することで防ぐことができます。
-死因が違うので<a href="human.php#yama_necromancer">閻魔</a>が天敵になります。
-<a href="#sex_wolf">雛狼</a>同様、LW にしないように戦略を練りましょう。
-</pre>
-
 <h3><a id="tongue_wolf">舌禍狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α13〜]</h3>
 <pre>
-自ら噛み投票を行った場合のみ、次の日に噛んだ人の役職が分かる。
-ただし、村人を噛んだ場合は能力を失ってしまう。
+襲撃に成功した人の役職が分かる人狼。
+本人が投票した場合のみ有効で、村人だった場合は能力を失ってしまう。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ</a> の 69 の「賢狼」が原型です。
-ベーグル(真偽の付かない占い噛み) 時に動くのが一番有効でしょう。
-ベーグル後はワンチャンスの狩人確認に使うと良いと思います。
-また、村人の場合に能力を失いますが身代わり君を噛むのも面白いですね。
-結果が出てから仲間に伝える前に吊られる可能性があるので
-事前にブロックサインを決めておくと良いでしょう。
+身代わり君の正体が分かるので内訳の把握が非常に有利になります。
 </pre>
 
 <h3><a id="possessed_wolf">憑狼</a> (占い結果：人狼 / 霊能結果：憑狼) [Ver. 1.4.0 α24〜]</h3>
 <pre>
-噛んだ人を乗っ取る人狼。
+襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと恋人を除くサブ役職全て。
 身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・妖狐は乗っ取れません。
 </pre>
@@ -301,8 +281,8 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h4><a id="possessed_wolf_system">1. 基本システム</a></h4>
 <pre>
-噛みが成功した場合は、噛まれた人が霊界に行きますが、
-見かけ上は噛んだ憑狼が無残な死体で発見されます。
+襲撃が成功した場合は、噛み殺された人が霊界に行きますが、
+見かけ上は襲撃した憑狼が無残な死体で発見されます。
 
 例1-1) A[憑狼] → B[村人]
 死体：A が無残な死体で発見されました (死因：「誰かに憑依した」)
@@ -321,7 +301,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 占い師を乗っ取った場合は占い騙りをしないと不自然になります。
 また、共有と会話できますが共有仲間が誰か分かるわけではありません。
 
-憑依状態の憑狼が他の村人を噛んだ場合は次々と乗り移ります。
+憑依状態の憑狼が他の村人を襲撃した場合は次々と乗り移ります。
 一度憑依を始めた憑狼は現在自分が憑依している対象が常に表示されます。
 様々な要因で自分の体に戻されるケースがありますが、その場合は
 「あなたはあなたに憑依しています」と表記されます。
@@ -360,7 +340,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <h4><a id="possessed_wolf_last_words">4. 遺言</a></h4>
 <pre>
 遺言は憑狼が偽装したものと見かけ上死んだ村人の両方が出ます。
-また、憑狼が憑依に成功するたびに憑狼の現在の遺言が空になります。
+また、憑依に成功するたびに憑狼の現在の遺言が空になります。
 
 例4-1) A[憑狼] → B[村人]
 A が書いた遺言が A の遺言として表示される。
@@ -581,10 +561,50 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 
 <h4>[作成者からのコメント]</h4>
 <pre>
-長期に実在する特殊狼です。
-単純に「中の人が入れ替わる狼」というだけでも十分にややこしいかと思いますが、
-オリジナルの国に存在しない恋人や猫又の存在が複雑さに拍車をかけています。
+長期人狼に実在する特殊狼です。
+単純に「中の人が入れ替わる」というだけでも十分にややこしいかと思いますが、
+元の国に存在しない恋人や蘇生システムの存在が複雑さに拍車をかけています。
 人狼の楽しみの一つである「RP」をどこまでまねる事ができるか、ぜひ挑戦してみてください。
+</pre>
+
+<h3><a id="hungry_wolf">餓狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12〜]</h3>
+<pre>
+人狼と妖狐しか噛み殺せない人狼。
+</pre>
+<ol>
+  <li>仲間と分かっている狼も襲撃可能</li>
+  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」</li>
+  <li>身代わり君は役職関係なく襲撃成功扱い</li>
+  <li>人狼と妖狐以外を襲撃した場合は失敗扱い</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルの、対<a href="fox.php">妖狐</a>の切り札です。
+狼飽和状態の妖狐勝利を仲間や村人確定の人を襲撃することで防ぐことができます。
+死因が違うので<a href="human.php#yama_necromancer">閻魔</a>が天敵になります。
+<a href="#sex_wolf">雛狼</a>同様、LW にしないように戦略を練りましょう。
+</pre>
+
+<h3><a id="doom_wolf">冥狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β15〜]</h3>
+<pre>
+襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人狼。
+</pre>
+<ol>
+  <li>身代わり君には無効 (普通に死亡する)</li>
+  <li>死の宣告の発動日は投票した夜から数えて4日後の昼<br>
+    (例：2日目夜に襲撃→6日目昼に発動)
+  </li>
+  <li>すでに死の宣告を受けている人を襲撃した場合は期限が上書きされる<br>
+    (例：6日目昼に発動表示→3日目夜に襲撃→7日目昼に発動表示)
+  </li>
+  <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力は無効</li>
+  <li><a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する (<a href="human.php#soul_assassin">辻斬り</a>の判定法則と同じ)
+  </li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ</a> の 614 が原型です。
 </pre>
 
 <h3><a id="sirius_wolf">天狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β9〜]</h3>
@@ -592,14 +612,14 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 仲間の狼が減ると特殊能力が発現する狼。
 </pre>
 <ol>
-  <li>狼が残り二人になると、以下の能力を持ちます (覚醒状態)</li>
+  <li>狼が残り二人になると、以下の能力を持つ (覚醒状態)</li>
   <ol>
     <li><a href="human.php#assassin_spec">暗殺反射</a></li>
     <li><a href="#trap_mad">罠師</a>の罠無効</li>
   </ol>
-  <li>狼が残り一人になると、さらに以下の能力を持ちます (完全覚醒状態)</li>
+  <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)</li>
   <ol>
-    <li>毒・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (吊り・襲撃両対応)</li>
+    <li>毒・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#doom_doll">蓬莱人形</a>の能力の対象外</li>
     <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
@@ -614,13 +634,13 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方ウミガメ人狼のプレイヤーさんがモデルの、人狼系最終兵器です。
-LW になると吊り以外では止められなくなります。
-<a href="human.php#escaper">逃亡者</a>・狐・<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>は LW になっても噛みを失敗する可能性があります。
+LW になると処刑以外では止められなくなります。
+<a href="human.php#escaper">逃亡者</a>・<a href="fox.php">妖狐</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>は LW になっても襲撃失敗する可能性があります。
 </pre>
 
 <h3><a id="elder_wolf">古狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β5〜]</h3>
 <pre>
-投票数が +1 される人狼。詳細は<a href="human.php#elder">長老</a>参照。
+処刑投票数が +1 される人狼。詳細は<a href="human.php#elder">長老</a>参照。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -631,7 +651,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3><a id="cute_wolf">萌狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α14〜]</h3>
 <pre>
-昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。
+昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう人狼。
 </pre>
 <h4>Ver. 1.4.0 β7〜</h4>
 <pre>
@@ -698,14 +718,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="fanatic_mad">狂信者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
 <pre>
 人狼が誰か分かる上位狂人 (人狼からは狂信者は分からない)。
-狼にとって完璧な騙りが出来るはず。
 </pre>
-<h4>Ver. 1.4.0 α8〜</h4>
+<h4>Ver. 1.4.0 α8〜β11</h4>
 <pre>
 通常闇鍋モードでは16人未満では出現しません。
 16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
 最大出現人数は1人です。
-つまり、狂信者視点、狂信者を名乗る人は偽者です。
 狂信者が出現した場合は出現人数と同じだけ狂人が減ります。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -717,8 +735,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3><a id="whisper_mad">囁き狂人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <pre>
-人狼の夜の相談に参加できる上位狂人です。
-人狼と違い、発言が遠吠えに変換されません。
+人狼の夜の相談に参加できる上位狂人。
+人狼と違い、発言が遠吠えに変換されない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -727,15 +745,16 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3><a id="jammer_mad">月兎 (邪魔狂人)</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α19〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
-夜に村人一人を選び、その人の占い行動を妨害する特殊な狂人。
+夜に投票した人の占い行動を妨害する特殊な狂人。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
-  <li>妨害可能な役職は<a href="human.php#voodoo_killer">陰陽師</a>と<a href="human.php#dummy_mage">夢見人</a>を除く<a href="human.php#mage_group">占い師系</a>、<a href="fox.php#emerald_fox">翠狐</a>、<a href="fox.php#child_fox_group">子狐系</a>、<a href="chiroptera.php#fairy_group">妖精系</a>です</li>
+  <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#fairy_group">妖精系</a>です</li>
   <li>妨害された占い能力者には「〜さんの占いに失敗しました」と出ます</li>
   <li>妨害が成功したかどうかは本人には分かりません</li>
-  <li>呪われている役職を選んだ場合は呪返しを受けます</li>
-  <li><a href="human.php#guard_hunt">狩人系に護衛</a>されると殺されます</li>
+  <li>呪われている人を選んだ場合は呪返しを受けます</li>
 </ol>
 <h4>Ver. 1.4.0 α21〜</h4>
 <pre>
@@ -743,57 +762,56 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-実在する役職ですね。狂人系の中でも上位に属します。
-うかつに CO する事ができなくなるので占い師は非常につらくなりますね。
+他国に実在する役職で、狂人系の中でも上位に属します。
+妨害しすぎると妖狐が有利になるので加減するのがポイントです。
 </pre>
 
 <h3><a id="voodoo_mad">呪術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
-夜に村人一人を選び、その人に呪いをかける特殊な狂人。
+夜に投票した人に呪いをかける特殊な狂人。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
   <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受けます</li>
-  <li>呪われている役職を選んだ場合は本人が呪返しを受けます</li>
+  <li>呪い持ち (<a href="#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>) を選んだ場合は本人が呪返しを受けます</li>
   <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受けます</li>
-  <li><a href="human.php#guard_hunt">狩人系</a>に護衛されると殺されます</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
 対<a href="human.php#mage_group">占い師系</a>専門の<a href="#trap_mad">罠師</a>的存在です。
-新役職考案スレ (最下参照) の 13 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/13" target="_top">新役職考案スレ</a> の 13 が原型です。
 占い師の占い先を先読みして呪いをかけておくことで呪返しを狙うのが
 基本的な立ち回りになると思います。
 </pre>
 
 <h3><a id="corpse_courier_mad">火車</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
-自分が投票して吊った人の霊能結果を隠蔽できる特殊な狂人。
-投票先を吊ることさえ出来れば、投票した日にショック死しようと
-その夜に何らかの形で死のうと効果が発動する。
-
-霊能結果が隠蔽されると、霊能者と<a href="human.php#soul_necromancer">雲外鏡</a>の霊能結果が
-「〜さんの死体が盗まれた」という趣旨のメッセージになる。
-<a href="human.php#dummy_necromancer">夢枕人</a>は火車の影響は受けない。
-
+自分の投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
+<ol>
+  <li>投票先が処刑された時点で能力が発動する。</li>
+  <li>能力が発動すると<a href="human.php#dummy_necromancer">夢枕人</a>以外の霊能結果が「〜さんの死体が盗まれた」という趣旨のメッセージになる。</li>
+</ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#jammer_mad">月兎</a>の霊能バージョンです。「かしゃ」と読みます。
-新役職考案スレ (最下参照) の 48 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/48" target="_top">新役職考案スレ</a> の 48 が原型です。
 火車の能力が発動しているのに霊能結果を出す人は
 <a href="human.php#dummy_necromancer">夢枕人</a>か騙りになります。
 </pre>
 
 <h3><a id="agitate_mad">扇動者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 再投票の最多得票者に投票していた場合に、投票先を吊り、
 それ以外の最多得票者をまとめてショック死させる特殊な狂人。
-
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
-  <li>事前に吊り先が決定していた場合は発動しない</li>
+  <li>事前に処刑者が決定していた場合は発動しない</li>
   <li>判定は<a href="human.php#saint">聖女</a>の判定の後</li>
   <li>複数の扇動者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
   <li>最多得票者に自分が含まれていても有効 (自分の投票先が吊られて、自分はショック死する)</li>
@@ -806,10 +824,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3><a id="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
-投票者決定後、投票先が吊られなかった場合に、投票先を<a href="sub_role#febris">熱病</a>にする特殊な狂人。
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
-
+処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role#febris">熱病</a>にする特殊な狂人。
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <h4>Ver. 1.4.0 β13〜</h4>
@@ -822,12 +840,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-新役職考案スレ (最下参照) の 33 が原型です。
-<a href="sub_role#febris">熱病</a>の仕様と実装が中々決まらず、作成決定から実装まで
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ</a> の 33 が原型です。
+<a href="sub_role#febris">熱病</a>の仕様と実装がなかなか決まらず、作成決定から実装まで
 かなり間が開いてます。
 </pre>
 
 <h3><a id="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>、<a href="human.php#dummy_necromancer">夢枕人</a>、<a href="human.php#dummy_common">夢共有者</a>、<a href="human.php#dummy_poison">夢毒者</a>、<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
 <a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="human.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
@@ -858,20 +877,21 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3><a id="trap_mad">罠師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 一度だけ夜に村人一人に罠を仕掛けることができる特殊な狂人。
 罠を仕掛けられた人の元に訪れた<a href="#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>・<a href="human.php#assassin_group">暗殺者系</a>・<a href="vampire.php">吸血鬼陣営</a>は死亡する。
+<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
 </pre>
 <ol>
   <li><a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は罠の対象外です</li>
-  <li>自分が人狼に襲撃されたら無効になります</li>
+  <li>自分が<a href="#wolf_group">人狼系</a> (種類を問わない) に襲撃されたら無効になります</li>
   <li>罠を仕掛けに行った先に他の罠師が罠を仕掛けていた場合は死亡します</li>
   <li>自分にも仕掛けることができます</li>
   <li>自分に仕掛けた場合は人狼に襲撃されても有効です (人狼が死にます)</li>
   <li>自分に仕掛けた場合は他の罠師が罠をかけていても本人は死にません<br>
     (仕掛けに来た他の罠師は死にます)</li>
-  <li>狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺されます</li>
-  <li>自分に仕掛けて狩人に護衛された場合は相打ちになります</li>
+  <li>自分に仕掛けて<a href="human.php#guard_group">狩人系</a>に護衛された場合は相打ちになります</li>
   <li>暗殺者が罠にかかった場合、暗殺は無効になります</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
@@ -884,8 +904,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3><a id="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる特殊な狂人。
+狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
 </pre>
 <ol>
   <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
@@ -894,7 +916,6 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
   <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
   <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
-  <li>狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺されます</li>
   <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
   <li>死亡した人狼にも憑依できますが、夜の発言は独り言になり、仲間の人狼と会話できません</li>
 </ol>

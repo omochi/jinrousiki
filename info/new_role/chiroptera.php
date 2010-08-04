@@ -53,6 +53,7 @@ OutputHTMLHeader('新役職情報 - [蝙蝠陣営]', 'new_role');
 </pre>
 
 <h3><a id="poison_chiroptera">毒蝙蝠</a> (占い結果：村人、霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <h4>[毒能力] 吊り：人狼 + 妖狐 + 蝙蝠 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った蝙蝠。
@@ -71,6 +72,7 @@ OutputHTMLHeader('新役職情報 - [蝙蝠陣営]', 'new_role');
 </pre>
 
 <h3><a id="cursed_chiroptera">呪蝙蝠</a> (占い結果：村人(呪返し)、霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す蝙蝠。
 <a href="human.php#voodoo_killer">陰陽師</a>に占われると殺される。
@@ -84,6 +86,7 @@ OutputHTMLHeader('新役職情報 - [蝙蝠陣営]', 'new_role');
 </pre>
 
 <h3><a id="boss_chiroptera">大蝙蝠</a> (占い結果：蝙蝠 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 護衛：狩り</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、自分以外の蝙蝠陣営が生きていたら、
 他の蝙蝠が変わりに犠牲になってくれる。

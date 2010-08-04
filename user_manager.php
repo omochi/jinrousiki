@@ -53,22 +53,20 @@ function EntryUser(){
 		       'サーバが混雑しています。<br>'."\n".'再度登録してください');
   }
 
-  $request = new RequestBase();
-  $request->room_no = $room_no;
-  $request->entry_user = true;
-  $USERS = new UserDataSet($request);
-  //PrintData($USERS); //テスト用
-
   //項目被りチェック
-  $user = $USERS->ByUname($uname);
-  if($user->live == 'kick' || $user->user_no < 0){
+  //比較演算子は大文字・小文字を区別しないのでクエリで直に判定する
+  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
+
+  //キックされた人と同じユーザ名
+  if(FetchResult($query . "uname = '{$uname}' AND live = 'kick'") > 0){
     OutputActionResult('村人登録 [キックされたユーザ]',
 		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
 		       '別の名前にしてください。');
   }
 
   //ユーザ名、村人名
-  if($user->user_no > 0 || $USERS->ByHandleName($handle_name)->user_no > 0){
+  $query .= 'user_no > 0 AND ';
+  if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
 		       '別の名前にしてください。');
@@ -77,13 +75,19 @@ function EntryUser(){
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-  if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address){
-    foreach($USERS->rows as $user){
-      if($user->ip_address == $ip_address){
-	OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
-      }
-    }
+  if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
+     FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
+    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
   }
+
+  //DBから最大人数を取得
+  $ROOM = RoomDataSet::LoadEntryUser($room_no);
+
+  $request = new RequestBase();
+  $request->room_no = $room_no;
+  $request->entry_user = true;
+  $USERS = new UserDataSet($request);
+  #//PrintData($USERS); //テスト用
 
   $ROOM = RoomDataSet::LoadEntryUser($room_no); //DBから最大人数を取得
   $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る

@@ -264,19 +264,13 @@ class Room{
     return $this->event->$type;
   }
 
-  //最終更新時刻を更新
-  function UpdateTime(){
-    if($this->test_mode) return;
-    SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP()' . $this->GetQuery(false));
-  }
-
   //発言登録
   function Talk($sentence, $uname = '', $location = '', $font_type = NULL, $spend_time = 0){
     if(empty($uname)) $uname = 'system';
     if(empty($location)) $location = $this->day_night . ' system';
     if($this->test_mode){
       PrintData($sentence, 'Talk: ' . $uname . ': '. $location);
-      return;
+      return true;
     }
 
     $items  = 'room_no, date, location, uname, sentence, spend_time, time';
@@ -293,20 +287,37 @@ class Room{
   function OvertimeAlert($str){
     $query = $this->GetQuery(true, 'talk') . " AND location = '{$this->day_night} system' " .
       "AND uname = 'system' AND sentence = '{$str}'";
-    if(FetchResult($query) != 0) return false; //出力済みならスキップ
-    $this->Talk($str);
-    return true;
+    return FetchResult($query) == 0 ? $this->Talk($str) : false;
   }
 
   //システムメッセージ登録
-  function SystemMessage($sentence, $type){
+  function SystemMessage($str, $type){
+    global $RQ_ARGS;
+
     if($this->test_mode){
-      PrintData($sentence, 'SystemMessage: ' . $type);
-      return;
+      PrintData($str, 'SystemMessage: ' . $type);
+      if(is_array($RQ_ARGS->TestItems->system_message) && $type != 'VOTE_KILL'){
+	$RQ_ARGS->TestItems->system_message[$this->date][$type][] = $str;
+      }
+      return true;
     }
     $items = 'room_no, date, message, type';
-    $values = "{$this->id}, {$this->date}, '{$sentence}', '{$type}'";
+    $values = "{$this->id}, {$this->date}, '{$str}', '{$type}'";
     return InsertDatabase('system_message', $items, $values);
+  }
+
+  //最終更新時刻を更新
+  function UpdateTime($commit = false){
+    if($this->test_mode) return true;
+    SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP()' . $this->GetQuery(false));
+    return $commit ? SendCommit() : true;
+  }
+
+  //夜にする
+  function ChangeNight(){
+    $this->day_night = 'night';
+    SendQuery("UPDATE room SET day_night = '{$this->day_night}'" . $this->GetQuery(false));
+    $this->Talk('NIGHT'); //夜がきた通知
   }
 
   //次の日にする

@@ -478,6 +478,7 @@ class RoleData{
   var $main_role_list = array(
     'human'              => 'Â¼¿Í',
     'elder'              => 'Ä¹Ï·',
+    'brownie'            => 'ºÂÉßÆ¸»Ò',
     'saint'              => 'À»½÷',
     'executor'           => '¼¹¹Ô¼Ô',
     'escaper'            => 'Æ¨Ë´¼Ô',
@@ -710,6 +711,7 @@ class RoleData{
   var $short_role_list = array(
     'human'              => 'Â¼',
     'elder'              => 'Ï·',
+    'brownie'            => 'Æ¸',
     'saint'              => 'À»',
     'executor'           => '¼¹',
     'escaper'            => 'Æ¨',

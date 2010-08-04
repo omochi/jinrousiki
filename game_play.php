@@ -282,7 +282,7 @@ function Write($say, $location, $spend_time, $update = false){
 
   $ROOM->Talk($say, $SELF->uname, $location, $voice, $spend_time);
   if($update) $ROOM->UpdateTime();
-  SendCommit(); //一応コミット
+  SendCommit();
 }
 
 //ゲーム停滞のチェック
@@ -313,14 +313,11 @@ function CheckSilence(){
     if($ROOM->IsOption('open_day') && $ROOM->IsDay() && $ROOM->date == 1){
       //シーンを DB から再取得して切り替わっていなければ処理
       if(FetchResult('SELECT day_night FROM room' . $ROOM->GetQuery(false)) == 'day'){
-	$ROOM->day_night = 'night';
-	SendQuery("UPDATE room SET day_night = '{$ROOM->day_night}' WHERE room_no = {$ROOM->id}");
-	$ROOM->Talk('NIGHT'); //夜がきた通知
-	$ROOM->UpdateTime(); //最終書き込み時刻を更新
-	SendCommit(); //一応コミット
+	$ROOM->ChangeNight(); //夜に切り替え
+	$ROOM->UpdateTime(true); //最終書き込み時刻を更新
       }
       UnlockTable(); //テーブルロック解除
-      return;
+      return true;
     }
 
     //突然死発動までの時間を取得

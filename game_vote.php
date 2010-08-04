@@ -217,7 +217,16 @@ function VoteDay(){
   //-- 投票処理 --//
   //役職に応じて投票数を補正
   $vote_number = 1;
-  if($SELF->IsRoleGroup('elder')) $vote_number++; //長老系
+  $brownie_flag = false;
+  foreach($USERS->rows as $user){ //座敷童子の生存判定
+    if($user->IsLive() && $user->IsRole('brownie')){
+      $brownie_flag = true;
+      break;
+    }
+  }
+  if($SELF->IsRoleGroup('elder') || ($brownie_flag && $SELF->IsRole('human'))){
+    $vote_number++; //長老系と座敷童子が出現している村人は投票数が 1 増える
+  }
 
   //サブ役職の処理
   $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //仮想投票者をセット
@@ -284,7 +293,9 @@ function VoteNight(){
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
-    if(! $SELF->IsRoleGroup('assassin')) OutputVoteResult('夜：暗殺者系以外は投票できません');
+    if(! $SELF->IsRoleGroup('assassin') && ! $SELF->IsRole('doom_fox')){
+      OutputVoteResult('夜：暗殺能力者以外は投票できません');
+    }
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
@@ -459,36 +470,28 @@ function VoteNight(){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
 
-	if($is_dummy){ //夢求愛者の処理
-	  if(! $target->IsSelf()){ //自分以外には何もしない
-	    $main_role = 'dummy_chiroptera';
-	    $change_role = $main_role . '[' . strval($target->user_no) . ']';
-	    $SELF->ReplaceRole($main_role, $change_role);
-	  }
+	if($is_dummy){ //夢求愛者：自分に矢を打った相手を追加
+	  if(! $target->IsSelf()) $SELF->AddMainRole($target->user_no);
 	  continue;
 	}
 
-	//役職に恋人を追加
-	$add_role = 'lovers[' . strval($SELF->user_no) . ']';
-	if($is_self && ! $target->IsSelf()){ //求愛者なら相手に受信者を追加
-	  $add_role .= ' mind_receiver['. strval($SELF->user_no) . ']';
+	$role = 'lovers[' . $SELF->user_no . ']'; //役職に恋人を追加
+	if($is_self){ //求愛者：相手に受信者を追加
+	  if(! $target->IsSelf()) $role .= ' mind_receiver['. $SELF->user_no . ']';
 	}
-	elseif($is_moon){ //かぐや姫
-	  $add_role .= ' challenge_lovers'; //相手に求婚者を追加
-	  if(! $target->IsSelf()){ //本人には受信者も追加
-	    $SELF->AddRole('mind_receiver['. strval($target->user_no) . ']');
-	  }
+	elseif($is_moon){ //かぐや姫：両方に難題 + 自分に受信者を追加
+	  $role .= ' challenge_lovers';
+	  if(! $target->IsSelf()) $SELF->AddRole('mind_receiver['. $target->user_no . ']');
 	}
-	elseif($is_mind){ //女神なら共鳴者を追加
-	  $add_role .= ' mind_friend['. strval($SELF->user_no) . ']';
-	  if(! $self_shoot){//他人撃ちなら本人に受信者を追加する
-	    $SELF->AddRole('mind_receiver[' . strval($target->user_no) . ']');
-	  }
+	elseif($is_mind){ //女神：両方に共鳴者 + 他人撃ちなら自分に受信者を追加
+	  $role .= ' mind_friend['. $SELF->user_no . ']';
+	  if(! $self_shoot) $SELF->AddRole('mind_receiver[' . $target->user_no . ']');
 	}
-	$target->AddRole($add_role);
+	$target->AddRole($role);
 	$target->ParseRoles($target->GetRole()); //再パース (魂移使判定用)
       }
-      if($SELF->IsRoleGroup('angel')){
+
+      if($SELF->IsRoleGroup('angel')){ //天使系の処理
 	$lovers_a = $target_list[0];
 	$lovers_b = $target_list[1];
 	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) ||
@@ -517,9 +520,7 @@ function VoteNight(){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
       }
-      $main_role = 'mirror_fairy';
-      $change_role = $main_role . '[' . implode('-', $id_stack) . ']';
-      $SELF->ReplaceRole($main_role, $change_role);
+      $SELF->AddMainRole(implode('-', $id_stack));
 
       $situation     = 'CUPID_DO';
       $target_uname  = implode(' ', $uname_stack);
@@ -741,7 +742,7 @@ function OutputVoteNight(){
     $submit     = 'revive_do';
     $not_submit = 'revive_not_do';
   }
-  elseif($SELF->IsRoleGroup('assassin')){
+  elseif($SELF->IsRoleGroup('assassin') || $SELF->IsRole('doom_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
     $type     = 'ASSASSIN_DO';
     $not_type = 'ASSASSIN_NOT_DO';

@@ -183,6 +183,7 @@ function CheckVictory($check_draw = false){
 function DeleteVote(){
   global $ROOM;
 
+  if(is_null($ROOM->id)) return true;
   $query = 'DELETE FROM vote' . $ROOM->GetQuery();
   if($ROOM->IsDay()){
     $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . $ROOM->GetVoteTimes();
@@ -415,7 +416,8 @@ function OutputPlayerList(){
       $str .= ')<br>';
 
       //メイン役職を追加
-      if($user->IsRole('human', 'elder', 'saint', 'executor', 'escaper', 'suspect', 'unconscious'))
+      if($user->IsRole('human', 'elder', 'brownie', 'saint', 'executor', 'escaper', 'suspect',
+		       'unconscious'))
 	$str .= GenerateRoleName($user->main_role, 'human');
       elseif($user->IsRoleGroup('mage') || $user->IsRole('voodoo_killer'))
 	$str .= GenerateRoleName($user->main_role, 'mage');

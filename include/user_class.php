@@ -316,9 +316,22 @@ class User{
     return $result ? 'wolf' : 'human';
   }
 
+  //精神鑑定士の判定
+  function DistinguishLiar(){
+    return $this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
+      'psycho_mage_liar' : 'psycho_mage_normal';
+  }
+
   //ひよこ鑑定士の判定
   function DistinguishSex(){
     return $this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex;
+  }
+
+  //占星術師の判定
+  function DistinguishVoteAbility(){
+    global $ROOM;
+    return array_key_exists($this->uname, $ROOM->vote) || $this->IsWolf() ?
+      'stargazer_mage_ability' : 'stargazer_mage_nothing';
   }
 
   //未投票チェック
@@ -387,7 +400,7 @@ class User{
     if($this->IsRole('anti_voodoo')){
       return isset($vote_data['ANTI_VOODOO_DO'][$this->uname]);
     }
-    if($this->IsRoleGroup('assassin')){
+    if($this->IsRoleGroup('assassin') || $this->IsRole('doom_fox')){
       if(is_array($vote_data['ASSASSIN_NOT_DO']) &&
 	 array_key_exists($this->uname, $vote_data['ASSASSIN_NOT_DO'])) return true;
       return isset($vote_data['ASSASSIN_DO'][$this->uname]);
@@ -500,6 +513,11 @@ class User{
   //仮想役職追加処理 (キャッシュ限定)
   function AddVirtualRole($role){
     if(! in_array($role, $this->role_list)) $this->role_list[] = $role;
+  }
+
+  //メイン役職追加処理
+  function AddMainRole($role){
+    $this->ReplaceRole($this->main_role, $this->main_role . '[' . $role . ']');
   }
 
   //役職置換処理

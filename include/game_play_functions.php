@@ -14,7 +14,7 @@ function OutputAbility(){
   if($SELF->IsRole('human', 'saint', 'executor', 'suspect', 'unconscious')){ //Â¼¿Í·Ï
     $ROLE_IMG->Output('human');
   }
-  elseif($SELF->IsRole('elder')){ //Ä¹Ï·
+  elseif($SELF->IsRole('elder', 'brownie')){ //Ä¹Ï·¡¦ºÂÉßÆ¸»Ò
     $ROLE_IMG->Output($SELF->main_role);
   }
   elseif($SELF->IsRole('escaper')){ //Æ¨Ë´¼Ô
@@ -331,8 +331,14 @@ function OutputAbility(){
 
       case 'possessed_fox': //Øá¸Ñ
 	if($ROOM->date > 2) OutputPossessedTarget(); //¸½ºß¤ÎØá°ÍÀè¤òÉ½¼¨
-	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
+	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
 	  OutputVoteMessage('wolf-eat', 'possessed_do', 'POSSESSED_DO', 'POSSESSED_NOT_DO');
+	}
+	break;
+
+      case 'doom_fox': //Ì½¸Ñ
+	if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+	  OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
 	}
 	break;
       }
@@ -700,6 +706,7 @@ function OutputSelfAbilityResult($action){
 
   $yesterday = $ROOM->date - 1;
   if($ROOM->test_mode){
+    if($type == 'necromancer') $yesterday++;
     $stack = $RQ_ARGS->TestItems->system_message[$yesterday][$action];
     $result_list = is_array($stack) ? $stack : array();
   }

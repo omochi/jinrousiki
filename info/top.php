@@ -21,10 +21,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>冥狼 / 冥狐：死の宣告能力を持った人狼 / 妖狐</li>
+  <li>座敷童子：役職「村人」の処刑投票数を +1 する村人。吊られたらランダムで一人を「熱病」にする。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>冥狼 / 冥狐：死の宣告能力を持った人狼 / 妖狐</li>
+  <li>なし</li>
 </ul>
