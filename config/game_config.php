@@ -17,7 +17,7 @@ class RoomConfig{
   var $clear_session_id = 86400; //24時間
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
-  var $max_user_list = array(8, 16, 22, 32);
+  var $max_user_list = array(8, 16, 22, 32, 50);
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
   //-- OutputCreateRoom() --//
@@ -96,6 +96,8 @@ class RoomConfig{
   var $perverseness = true; //天邪鬼村
   var $default_perverseness = false;
 
+  var $critical = true; //急所村
+  var $default_critical = false;
 
   var $detective = true; //探偵村
   var $default_detective = false;

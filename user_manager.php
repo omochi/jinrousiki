@@ -65,7 +65,7 @@ function EntryUser(){
   }
 
   //ユーザ名、村人名
-  $query .= 'user_no > 0 AND ';
+  $query .= "live = 'live' AND ";
   if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .

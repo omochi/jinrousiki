@@ -1248,6 +1248,19 @@ function OutputDeadManType($name, $type){
   case 'CONSTELLATION_K':
   case 'CONSTELLATION_L':
   case 'CONSTELLATION_M':
+  case 'CONSTELLATION_N':
+  case 'CONSTELLATION_O':
+  case 'CONSTELLATION_P':
+  case 'CONSTELLATION_Q':
+  case 'CONSTELLATION_R':
+  case 'CONSTELLATION_S':
+  case 'CONSTELLATION_T':
+  case 'CONSTELLATION_U':
+  case 'CONSTELLATION_V':
+  case 'CONSTELLATION_W':
+  case 'CONSTELLATION_X':
+  case 'CONSTELLATION_Y':
+  case 'CONSTELLATION_Z':
     $action = strtolower($type);
     echo '<tr class="dead-type-fairy">';
     echo '<td>'.$name.' '.$MESSAGE->$action.'</td>';

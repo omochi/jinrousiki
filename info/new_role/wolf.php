@@ -171,7 +171,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 </pre>
 
 <h3><a id="poison_wolf">毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12〜]</h3>
-<h4>[毒能力] 吊り：人狼以外 / 襲撃：無し / 薬師判定：有り</h4>
+<h4>[毒能力] 処刑：人狼以外 / 襲撃：無し / 薬師判定：有り</h4>
 <pre>
 毒能力を持った人狼。
 処刑された時に巻き込む対象の決定時に人狼が除かれるため
@@ -259,7 +259,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと恋人を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・妖狐は乗っ取れません。
+身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・妖狐は乗っ取れません。
 </pre>
 <ol>
 <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -275,7 +275,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <li><a href="#possessed_wolf_reporter">対ブン屋</a></li>
 <li><a href="#possessed_wolf_assassin">対暗殺者</a></li>
 <li><a href="#possessed_wolf_revive">対蘇生能力者</a></li>
-<li><a href="#possessed_wolf_revive_priest">対天人・探偵</a></li>
+<li><a href="#possessed_wolf_revive_priest">対天人・探偵・仙人</a></li>
 <li><a href="#possessed_wolf_evoke_scanner">対イタコ</a></li>
 </ol>
 
@@ -531,9 +531,9 @@ A は B から D への憑依がキャンセルされて B に憑依したまま。
 蘇生：B は生き返りました (誤爆蘇生：実際に生き返るのも B)
 </pre>
 
-<h4><a id="possessed_wolf_revive_priest">14. 対<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a></a></h4>
+<h4><a id="possessed_wolf_revive_priest">14. 対<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a></a></h4>
 <pre>
-天人・探偵は憑依対象外なので、生存している該当者は憑狼ではない事が保証されます。
+天人・探偵・仙人は憑依対象外なので、生存している該当者は憑狼ではない事が保証されます。
 また、霊界視点からは憑依者がはっきり分かるので蘇生した天人の情報は重要です。
 
 例14-1) B[村人](A[憑狼]) → C[天人]
@@ -623,7 +623,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
     <li><a href="human.php#doom_doll">蓬莱人形</a>の能力の対象外</li>
     <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
-    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
+    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
 </ol>
@@ -848,7 +848,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <h4>[耐性] 護衛：狩り</h4>
 <pre>
-夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>、<a href="human.php#dummy_necromancer">夢枕人</a>、<a href="human.php#dummy_common">夢共有者</a>、<a href="human.php#dummy_poison">夢毒者</a>、<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
+夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
 <a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="human.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
 <a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
@@ -910,7 +910,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
 </pre>
 <ol>
-  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
+  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
   <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>

@@ -115,22 +115,27 @@ class MainRoleList{
   var $priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司祭#です。一定日数おきに現在生きている|村人|陣営の総数を知ることができます。\n　神のお告げで清き村人達の人数を知り、「村人を導くべし」との神のご意志に適うのです！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+			 '#' => array('R' => 77, 'G' => 77, 'B' => 204)));
 
   var $bishop_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司教#です。一定日数おきに死亡した|村人|陣営以外の総数を知ることができます。\n　神聖なるお告げにより死者達の真の姿を伝え、心清き村人達を正しき道へと導くのです。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+			 '#' => array('R' => 77, 'G' => 77, 'B' => 204)));
+
+  var $dowser_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#探知師#です。一定日数おきに現在生きている人が所有しているサブ役職の総数を知ることができます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 77, 'G' => 77, 'B' => 204)));
 
   var $border_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#境界師#です。二日目以降、夜にあなたに投票した人の数を知ることができます。\n　夜に見た夢は幻ではない。あなたにしか持ち得ない夢と現の双方の視点を活かすのです。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+			 '#' => array('R' => 77, 'G' => 77, 'B' => 204)));
 
   var $revive_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#天人#です。初日に一度天に帰って下界の様子を眺める事になります。後で颯爽と降臨して華麗に村を勝利に導きましょう。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 0, 'G' => 102, 'B' => 153)));
+			 '#' => array('R' => 77, 'G' => 77, 'B' => 204)));
 
   var $guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#狩人#です。夜の間に村人一人を_人狼_から護ることができます。_人狼_のココロを読むのです。",
@@ -248,6 +253,14 @@ class MainRoleList{
 			 '#' => array('R' => 0, 'G' => 153, 'B' => 102),
 			 '_' => array('R' => 153, 'G' => 153, 'B' => 0),
 			 '^' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
+  var $revive_pharmacist = array(
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#仙人#です。_処刑_投票した人の^ショック死^を抑制することができます。また、一度だけ=人狼=に襲撃されても#蘇生#できます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 0, 'G' => 153, 'B' => 102),
+			 '_' => array('R' => 153, 'G' => 153, 'B' => 0),
+			 '^' => array('R' => 51, 'G' => 204, 'B' => 255),
+			 '=' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#暗殺者#です。夜に村人一人を#暗殺#することができます。闇の内に人外を消し、村の平和の為に暗躍するのです！",
@@ -1102,12 +1115,16 @@ class ResultList{
 			     'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
   var $result_bishop_priest = array('message' => "さんは|司教|でした",
 				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
+  var $result_dowser_priest = array('message' => "さんは|探知師|でした",
+				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
   var $result_border_priest = array('message' => "さんは|境界師|でした",
 				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
   var $result_crisis_priest = array('message' => "さんは|預言者|でした",
 				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
   var $result_revive_priest = array('message' => "さんは|天人|でした",
 				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
+  var $result_dummy_priest = array('message' => "さんは|夢司祭|でした",
+				   'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
   var $result_guard = array('message' => "さんは|狩人|でした",
 			    'delimiter' => array('|' => array('R' => 51, 'G' => 153, 'B' => 255)));
   var $result_hunter_guard = array('message' => "さんは|猟師|でした",
@@ -1156,6 +1173,8 @@ class ResultList{
 				 'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_cure_pharmacist = array('message' => "さんは|河童|でした",
 				      'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
+  var $result_revive_pharmacist = array('message' => "さんは|仙人|でした",
+					'delimiter' => array('|' => array('R' => 0, 'G' => 153, 'B' => 102)));
   var $result_assassin = array('message' => "さんは|暗殺者|でした",
 			       'delimiter' => array('|' => array('R' => 144, 'G' => 64, 'B' => 64)));
   var $result_doom_assassin = array('message' => "さんは|死神|でした",
@@ -1399,6 +1418,9 @@ class ResultList{
   var $bishop_priest_header = array('message' => "|神託|結果： 現在、死亡した#非村人#陣営は",
 				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204),
 							 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $dowser_priest_header = array('message' => "|神託|結果： 現在の生存者が所有しているサブ役職の合計は",
+				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
+  var $dowser_priest_footer = array('message' => "個です", 'delimiter' => array());
   var $border_priest_header = array('message' => "|神託|結果： 昨夜、あなたの境界に触れた人数は",
 				    'delimiter' => array('|' => array('R' => 77, 'G' => 77, 'B' => 204)));
   var $crisis_priest_result = array('message' => "陣営が勝利目前です", 'delimiter' => array());
@@ -1542,7 +1564,10 @@ header('Content-Type: image/gif');
 #$image = MakeImage($gen, $list->cursed_chiroptera);
 #$image = MakeImage($gen, $list->doom_wolf);
 #$image = MakeImage($gen, $list->doom_fox);
-$image = MakeImage($gen, $list->brownie);
+#$image = MakeImage($gen, $list->brownie);
+#$image = MakeImage($gen, $list->dowser_priest);
+#$image = MakeImage($gen, $list->revive_pharmacist);
+$image = MakeImage($gen, $list->revive_pharmacist);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

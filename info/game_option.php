@@ -37,6 +37,7 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a>
 <a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>
 <a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a>
+<a href="#critical"><?php echo $GAME_OPT_MESS->critical ?></a>
 <a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a>
 <a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>
 </p>
@@ -192,6 +193,7 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2><a id="gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
+  <li><?php echo $GAME_OPT_CAPT->gentleman ?></li>
   <li>全ユーザに登録時の性別に応じた<a href="new_role/sub_role.php#gentleman">紳士</a>か<a href="new_role/sub_role.php#gentleman">淑女</a>がつきます</li>
   <li>闇鍋モードでランダムに付加される時は個々の性別を参照していません</li>
   <li>発動率はランダム付加の場合と同じです</li>
@@ -209,6 +211,12 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
   <li>全ユーザに<a href="new_role/sub_role.php#perverseness">天の邪鬼</a>がつきます</li>
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>と併用できません</li>
+</ul>
+
+<h2><a id="critical"><?php echo $GAME_OPT_MESS->critical ?></a> [Ver. 1.4.0 β15〜]</h2>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->critical ?></li>
+  <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率はランダム付加の場合と同じです</li>
 </ul>
 
 <h2><a id="detective"><?php echo $GAME_OPT_MESS->detective ?></a> [Ver. 1.4.0 β10〜]</h2>

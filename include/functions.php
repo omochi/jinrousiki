@@ -118,6 +118,10 @@ function LockTable($type = NULL){
   case 'icon':
     $stack = array('user_icon');
     break;
+
+  case 'icon_delete':
+    $stack = array('user_icon', 'user_entry');
+    break;
   }
 
   $query_stack = array();
@@ -393,7 +397,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'open_vote', 'open_day',
     'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
     'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority',
-    'liar', 'gentleman', 'sudden_death', 'perverseness', 'detective', 'festival',
+    'liar', 'gentleman', 'sudden_death', 'perverseness', 'critical', 'detective', 'festival',
     'full_mania', 'full_chiroptera', 'full_cupid', 'replace_human', 'quiz', 'duel',
     'chaos', 'chaosfull', 'chaos_hyper', 'chaos_open_cast', 'chaos_open_cast_camp',
     'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role', 'sub_role_limit_easy',

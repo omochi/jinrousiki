@@ -296,8 +296,16 @@ class Room{
 
     if($this->test_mode){
       PrintData($str, 'SystemMessage: ' . $type);
-      if(is_array($RQ_ARGS->TestItems->system_message) && $type != 'VOTE_KILL'){
-	$RQ_ARGS->TestItems->system_message[$this->date][$type][] = $str;
+      if(is_array($RQ_ARGS->TestItems->system_message)){
+	switch($type){
+	case 'VOTE_KILL':
+	case 'LAST_WORDS':
+	  break;
+
+	default:
+	  $RQ_ARGS->TestItems->system_message[$this->date][$type][] = $str;
+	  break;
+	}
       }
       return true;
     }

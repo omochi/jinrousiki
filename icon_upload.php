@@ -6,7 +6,7 @@ if($USER_ICON->disable_upload){
   OutputActionResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
 }
 $INIT_CONF->LoadRequest('RequestIconUpload'); //引数を取得
-$RQ_ARGS->command != '' ? UploadIcon() : OutputUploadIconPage();
+is_null($RQ_ARGS->command) ? OutputUploadIconPage() : UploadIcon();
 
 //-- 関数 --//
 //投稿データチェック
@@ -209,9 +209,8 @@ function OutputUploadIconPage(){
   global $USER_ICON;
 
   OutputHTMLHeader('ユーザアイコンアップロード', 'icon_upload');
-  $icon_size_max = $USER_ICON->IconSizeMax();
-  $icon_file_size_max = $USER_ICON->IconFileSizeMax();
-  $icon_name_length_max = $USER_ICON->IconNameMaxLength();
+  $name_length = $USER_ICON->IconNameMaxLength();
+  $cation = isset($USER_ICON->cation) ? '<br>' . $USER_ICON->cation : '';
 
   echo <<<EOF
 </head>
@@ -220,9 +219,9 @@ function OutputUploadIconPage(){
 <img class="title" src="img/icon_upload_title.jpg"><br>
 <table align="center">
 <tr><td class="link"><a href="icon_view.php">→アイコン一覧</a></td><tr>
-<tr><td class="caution">＊あらかじめ指定する大きさ ({$icon_size_max}) にリサイズしてからアップロードしてください。</td></tr>
+<tr><td class="caution">＊あらかじめ指定する大きさ ({$USER_ICON->IconSizeMax()}) にリサイズしてからアップロードしてください。{$cation}</td></tr>
 <tr><td>
-<fieldset><legend>アイコン指定 (jpg, gif, png 画像を登録して下さい。{$icon_file_size_max})</legend>
+<fieldset><legend>アイコン指定 (jpg / gif / png 形式で登録して下さい。{$USER_ICON->IconFileSizeMax()})</legend>
 <form method="POST" action="icon_upload.php" enctype="multipart/form-data">
 <table>
 <tr><td><label>ファイル選択</label></td>
@@ -234,16 +233,16 @@ function OutputUploadIconPage(){
 </td></tr>
 
 <tr><td><label>アイコンの名前</label></td>
-<td><input type="text" name="icon_name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+<td><input type="text" name="icon_name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
 <tr><td><label>出典</label></td>
-<td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+<td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
 <tr><td><label>カテゴリ</label></td>
-<td><input type="text" name="category" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+<td><input type="text" name="category" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
 <tr><td><label>アイコンの作者</label></td>
-<td><input type="text" name="author" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
+<td><input type="text" name="author" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
 <tr><td><label>アイコン枠の色</label></td>
 <td>

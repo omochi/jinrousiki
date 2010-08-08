@@ -1,8 +1,8 @@
 <?php
 /*
   このファイルはデータベース書き換え作業支援関数を集めたものです
-  管理者が必要に応じて編集する→アップロード→ブラウザでアクセス
-  という使い方を想定しています。
+  管理者が必要に応じて編集し、アップロードした後にブラウザで当ファイルに
+  アクセス、という使い方を想定しています。
 
   開発者のテスト用コードそのままなので要注意！
  */
@@ -52,13 +52,16 @@ $DB_CONF->Connect(); //DB 接続
 //ReconstructStartTime();
 //ReconstructFinishTime();
 //SendQuery("OPTIMIZE TABLE talk", true);
+OutputHTMLHeader('Test Tools');
+//DeleteIcon(136, 8);
 //SqueezeIcon();
+OutputHTMLFooter();
 //UpdateRoomInfo('room_name', 'テスト', 1);
 //OutputActionResult('処理完了', '処理完了。');
 
 //-- 関数 --//
 /*
-  Ver. 1.4.0 β3 より実装されたユーザアイコンテーブルの追加情報入力支援関数
+  Ver. 1.4.0 beta3 より実装されたユーザアイコンテーブルの追加情報入力支援関数
   type:[appearance / category / author] (出典 / カテゴリ / 作者)
   value: 入力内容
   from / to: 入力対象アイコン (from 〜 to まで)
@@ -68,9 +71,32 @@ function UpdateIconInfo($type, $value, $from, $to = NULL){
   mysql_query("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
 }
 
+//ファイルの IO テスト
+function OpenFile($file){
+  $io = file_get_contents(JINRO_ROOT . '/' . $file);
+  PrintData($io);
+}
+
+//アイコンを削除する (from: 対象番号 / to: 代替番号)
+function DeleteIcon($from, $to){
+  global $ICON_CONF;
+
+  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = {$to}") < 1){
+    PrintData($to, 'Invalid Icon No');
+    return false;
+  }
+  if(LockTable('icon_delete') &&
+     SendQuery("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")){
+    $file = FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = {$from}");
+    unlink(JINRO_ROOT . '/user_icon/' . $file); //ファイルの存在をチェックしていないので要注意
+    SendQuery("DELETE FROM user_icon WHERE icon_no={$from}");
+    PrintData($to, "Icon Change From {$from}");
+    UnlockTable();
+  }
+}
+
 //アイコンの欠番を埋める
 function SqueezeIcon(){
-  OutputHTMLHeader('ユーザアイコン欠番処理');
   $query = 'SELECT icon_no, icon_filename FROM user_icon WHERE icon_no > 0 ORDER BY icon_no';
   $icon_list = FetchAssoc($query);
 
@@ -91,7 +117,6 @@ function SqueezeIcon(){
     //break;
   }
   SendQuery("OPTIMIZE TABLE user_icon", true);
-  OutputHTMLFooter();
 }
 
 //村立て時刻再生成関数

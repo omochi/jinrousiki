@@ -252,16 +252,22 @@ class User{
   }
 
   //³ÐÀÃÅ·ÏµÈ½Äê
-  function IsLastWolf(){
+  function IsSiriusWolf($full = true){
     global $USERS;
 
     if(! $this->IsRole('sirius_wolf')) return false;
-    if(is_null($this->last_wolf)){
-      $living_wolves_list = $USERS->GetLivingWolves();
-      //PrintData($living_wolves_list);
-      $this->last_wolf = count($living_wolves_list) == 1;
+    $type = $full ? 'ability_full_sirius_wolf' : 'ability_sirius_wolf';
+    if(is_null($this->$type)){
+      $stack = $USERS->GetLivingWolves();
+      $this->ability_sirius_wolf      = count($stack) < 3;
+      $this->ability_full_sirius_wolf = count($stack) == 1;
     }
-    return $this->last_wolf;
+    return $this->$type;
+  }
+
+  //¸¸·ÏÇ½ÎÏÈ½Äê
+  function IsAbilityPhantom(){
+    return $this->IsLive(true) && $this->IsRoleGroup('phantom') && $this->IsActive();
   }
 
   //ÆñÂêÈ½Äê
@@ -274,7 +280,7 @@ class User{
   function IsAvoid($quiz = false){
     $stack = array('detective_common');
     if($quiz) $stack[] = 'quiz';
-    return $this->IsRole($stack) || $this->IsLastWolf() || $this->IsChallengeLovers();
+    return $this->IsRole($stack) || $this->IsSiriusWolf() || $this->IsChallengeLovers();
   }
 
   //ÆÇÇ½ÎÏ¤ÎÈ¯Æ°È½Äê
@@ -290,8 +296,27 @@ class User{
 
   //¸î±ÒÀ©¸ÂÈ½Äê
   function IsGuardLimited(){
-    return $this->IsRole('priest', 'bishop_priest', 'border_priest', 'detective_common',
-			 'reporter', 'doll_master') || $this->IsRoleGroup('assassin');
+    return $this->IsRole('detective_common', 'reporter', 'doll_master') ||
+      ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
+      $this->IsRoleGroup('assassin');
+  }
+
+  //°Å»¦È¿¼ÍÈ½Äê
+  function IsRefrectAssassin(){
+    return $this->IsLive(true) &&
+      ($this->IsRole('detective_common', 'cursed_fox') ||
+       $this->IsSiriusWolf(false) || $this->IsChallengeLovers());
+  }
+
+  //Øá°ÍÀ©¸ÂÈ½Äê
+  function IsPossessedLimited(){
+    return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist');
+  }
+
+  //ÁÉÀ¸À©¸ÂÈ½Äê
+  function IsReviveLimited(){
+    return $this->IsRoleGroup('cat', 'revive') || $this->IsRole('detective_common') ||
+      $this->IsLovers() || $this->IsDrop() || $this->possessed_reset;
   }
 
   //½êÂ°¿Ø±ÄÈ½ÊÌ
@@ -307,10 +332,10 @@ class User{
 
   //Àê¤¤»Õ¤ÎÈ½Äê
   function DistinguishMage($reverse = false){
-    if($this->IsRole('vampire', 'boss_chiroptera')) return 'chiroptera'; //µÛ·ìµ´¡¦Âçéþéõ¤ÏéþéõÈ½Äê
+    if($this->IsRole('vampire', 'boss_chiroptera')) return 'chiroptera'; //µÛ·ìµ´¡¦Âçéþéõ¤Ï¡Öéþéõ¡×
 
-    //ÇòÏµ°Ê³°¤Î¿ÍÏµ¡¦¹õ¸Ñ¡¦ÉÔ¿³¼Ô¤Ï¿ÍÏµÈ½Äê
-    $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf')) ||
+    //ÇòÏµ¤«´°Á´³ÐÀÃÅ·Ïµ°Ê³°¤Î¿ÍÏµ¡¦¹õ¸Ñ¡¦ÉÔ¿³¼Ô¤Ï¡Ö¿ÍÏµ¡×
+    $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
 	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
     return $result ? 'wolf' : 'human';
@@ -447,8 +472,21 @@ class User{
     $sub_role_list = array_slice($this->role_list, 1);
     foreach($ROLE_DATA->short_role_list as $role => $name){
       if(in_array($role, $sub_role_list)){
-	$str .= ($role == 'lovers' || $role == 'challenge_lovers') ?
-	  '<span class="lovers">' . $name . '</span>' : $name;
+	switch($role){
+	case 'lovers':
+	case 'possessed_exchange':
+	case 'challenge_lovers':
+	  $str .= '<span class="lovers">' . $name . '</span>';
+	  break;
+
+	case 'infected':
+	  $str .= '<span class="vampire">' . $name . '</span>';
+	  break;
+
+	default:
+	  $str .=  $name;
+	  break;
+	}
       }
     }
     $uname = $heaven ? $this->uname : $USERS->TraceExchange($this->user_no)->uname;
@@ -523,6 +561,12 @@ class User{
   //Ìò¿¦ÃÖ´¹½èÍý
   function ReplaceRole($target, $replace){
     $this->ChangeRole(str_replace($target, $replace, $this->GetRole()));
+  }
+
+  //»à¤ÎÀë¹ð½èÍý
+  function AddDoom($date){
+    global $ROOM;
+    $this->AddRole('death_warrant[' . ($ROOM->date + $date) . ']');
   }
 
   /*

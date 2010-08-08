@@ -146,7 +146,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 
 <h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <h4>[耐性] 人狼襲撃：特殊</h4>
-<h4>[毒能力] 吊り：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
+<h4>[毒能力] 処刑：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った妖狐。毒の対象は妖狐陣営以外。
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら殺されて毒が発動する。
@@ -230,7 +230,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
-  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
+  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
   <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>

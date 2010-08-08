@@ -16,6 +16,7 @@ $RQ_ARGS->TestItems->test_room = array(
   #'game_option'  => 'dummy_boy wish_role full_mania chaosfull no_sub_role real_time:6:4',
   #'game_option'  => 'dummy_boy wish_role chaosfull real_time:6:4',
   'game_option'  => 'dummy_boy wish_role chaos_hyper real_time:6:4',
+  #'game_option'  => 'dummy_boy wish_role real_time:6:4',
   #'option_role' => '',
   #'option_role' => 'decide replace_human',
   'option_role' => 'chaos_open_cast_camp',
@@ -241,7 +242,7 @@ foreach($RQ_ARGS->TestItems->test_users as $user){
 
 //-- 設定調整 --//
 //$CAST_CONF->decide = 11;
-$RQ_ARGS->TestItems->test_users[3]->live = 'kick';
+#$RQ_ARGS->TestItems->test_users[3]->live = 'kick';
 
 //-- データ収集 --//
 //$DB_CONF->Connect(); // DB 接続

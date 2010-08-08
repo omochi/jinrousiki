@@ -50,7 +50,10 @@ function OutputAbility(){
     }
   }
   elseif($SELF->IsRoleGroup('priest')){ //»Êº×·Ï
-    $ROLE_IMG->Output($SELF->IsRole('crisis_priest') ? 'human' : $SELF->main_role);
+    if($SELF->IsRole('crisis_priest'))    $ROLE_IMG->Output('human');
+    elseif($SELF->IsRole('dummy_priest')) $ROLE_IMG->Output('priest');
+    else                                  $ROLE_IMG->Output($SELF->main_role);
+
     switch($SELF->main_role){ //Ìò¿¦¤Ë±ş¤¸¤¿¿ÀÂ÷·ë²Ì¤òÉ½¼¨
     case 'priest': //»Êº×
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
@@ -60,12 +63,20 @@ function OutputAbility(){
       if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
       break;
 
+    case 'dowser_priest': //ÃµÃÎ»Õ
+      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DOWSER_PRIEST_RESULT');
+      break;
+
     case 'border_priest': //¶­³¦»Õ
       if($ROOM->date > 2) OutputSelfAbilityResult('BORDER_PRIEST_RESULT');
       break;
 
     case 'crisis_priest': //ÍÂ¸À¼Ô
       if($ROOM->date > 1) OutputSelfAbilityResult('CRISIS_PRIEST_RESULT');
+      break;
+
+    case 'dummy_priest': //Ì´»Êº×
+      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DUMMY_PRIEST_RESULT');
       break;
     }
   }
@@ -542,7 +553,8 @@ function OutputAbility(){
     }
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
-	     'mind_friend', 'mind_sympathy', 'infected');
+	     'mind_friend', 'mind_sympathy', 'infected', 'possessed_target', 'possessed',
+	     'bad_status');
 
   //¤³¤ì°Ê¹ß¤Ï¥µ¥ÖÌò¿¦Èó¸ø³«¥ª¥×¥·¥ç¥ó¤Î±Æ¶Á¤ò¼õ¤±¤ë
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -616,6 +628,7 @@ function OutputSelfAbilityResult($action){
     break;
 
   case 'PRIEST_RESULT':
+  case 'DUMMY_PRIEST_RESULT':
     $type = 'priest';
     $header = 'priest_header';
     $footer = 'priest_footer';
@@ -631,6 +644,12 @@ function OutputSelfAbilityResult($action){
     $type = 'mage';
     $header = 'border_priest_header';
     $footer = 'priest_footer';
+    break;
+
+  case 'DOWSER_PRIEST_RESULT':
+    $type = 'priest';
+    $header = 'dowser_priest_header';
+    $footer = 'dowser_priest_footer';
     break;
 
   case 'CRISIS_PRIEST_RESULT':
@@ -706,7 +725,7 @@ function OutputSelfAbilityResult($action){
 
   $yesterday = $ROOM->date - 1;
   if($ROOM->test_mode){
-    if($type == 'necromancer') $yesterday++;
+    if($type == 'necromancer' || $action == 'PHARMACIST_RESULT') $yesterday++;
     $stack = $RQ_ARGS->TestItems->system_message[$yesterday][$action];
     $result_list = is_array($stack) ? $stack : array();
   }

@@ -611,7 +611,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。<br>
-     表示されるのは 4日目以降、1日おき (4 → 6 → 8 →...)。</td>
+     表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
@@ -1188,7 +1188,7 @@ Ver. 1.4.0
     <td>村人</td>
     <td>村人</td>
     <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、特殊な司祭。<br>
-    表示されるのは 3日目以降、1日おき (3 → 5 → 7 →...)。</td>
+    表示されるのは 3日目以降の奇数日 (3 → 5 → 7 →...)。</td>
     <td>Ver. 1.4.0 β10</td>
   </tr>
   <tr>
@@ -1479,12 +1479,42 @@ Ver. 1.4.0
   <tr>
     <td><a href="human.php#brownie">座敷童子</a></td>
     <td><a href="human.php">村人</a></td>
-    <td><a href="human.php#fox_group">村人系</a></td>
+    <td><a href="human.php#human_group">村人系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">役職「村人」の処刑投票数を +1 する村人。<br>
       処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
     </td>
+    <td>Ver. 1.4.0 β15</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#dowser_priest">探知師</a></td>
+    <td><a href="human.php">村人</a></td>
+    <td><a href="human.php#priest_group">司祭系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の合計が分かる特殊な司祭。<br>
+     表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
+    <td>Ver. 1.4.0 β15</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#dummy_priest">夢司祭</a></td>
+    <td><a href="human.php">村人</a></td>
+    <td><a href="human.php#priest_group">司祭系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">一定日数ごとに現在、生きている夢系能力者と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。<br>
+      本人表記は<a href="human.php#priest">司祭</a>で仕様も同じ。</td>
+    <td>Ver. 1.4.0 β15</td>
+  </tr>
+  <tr>
+    <td><a href="human.php#revive_pharmacist">仙人</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#pharmacist_group">薬師系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">処刑投票した人のショック死を抑制する特殊な薬師。<br>
+      人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。</td>
     <td>Ver. 1.4.0 β15</td>
   </tr>
 </table>

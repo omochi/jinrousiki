@@ -241,6 +241,7 @@ class UserIcon extends UserIconBase{
   var $height = 45;    //アップロードできるアイコンの最大高さ
   var $number = 1000;  //登録できるアイコンの最大数
   var $password = 'xxxx'; //アイコン編集パスワード
+  var $cation = ''; //注意事項 (空なら何も表示しない)
 }
 
 //メニューリンク表示設定
