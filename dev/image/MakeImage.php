@@ -32,7 +32,7 @@ class MainRoleList{
 			 '_' => array('R' => 102, 'G' => 102, 'B' => 51)));
 
   var $brownie = array(
-    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|座敷童子|です。|村人|の#処刑#投票数を +1 することができますが、#処刑#されたらランダムで一人を_熱病_にしてしまいます。",
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|座敷童子|です。|村人|の#処刑#投票数を +1 することができますが、あなたが#処刑#されたら誰か一人を_熱病_にしてしまいます。",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 153, 'G' => 153, 'B' => 0),
 			 '_' => array('R' => 51, 'G' => 204, 'B' => 255)));
@@ -424,7 +424,7 @@ class MainRoleList{
 			 '#' => array('R' => 204, 'G' => 0, 'B' => 153)));
 
   var $doom_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|冥狼|です。襲撃した人に#死の宣告#を行うことができます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|冥狼|です。襲撃した人に#死の宣告#を行うことができます。|狼|に抗う者に迫り来る死の恐怖を与えて屠るのです。",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '#' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
@@ -514,13 +514,17 @@ class MainRoleList{
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|犬神|です。一度だけ、死んだ人に憑依することができます。骸を傀儡人形と化し、その怨恨の赴くままに呪詛を撒き散らすのです！",
     'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
+  var $therian_mad = array(
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。",
+    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
   var $fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|妖狐|、#人狼#に殺されることはありません。ただし占われると死んでしまいます。\n　村人を騙し、#人狼#を騙し、村を|妖狐|のものにするのです！",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '#' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $white_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。_占い師_を騙すことができますが、^霊能者^には見抜かれてしまいます。\n　また、#人狼#に襲撃されると殺されてしまいます。#狼#さえ欺ければ、恐れる者などあらず。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。_占い師_を騙すことができますが、^霊能者^には見抜かれてしまいます。\n　また、#人狼#に襲撃されると殺されてしまいます。巧みに#狼#を欺き、勝利を奪うのです。",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '#' => array('R' => 255, 'G' => 0, 'B' => 0),
 			 '_' => array('R' => 153, 'G' => 51, 'B' => 255),
@@ -575,7 +579,7 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
 
   var $doom_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|冥狐|です。夜の間に誰か一人に遅効性の#死の宣告#を行うことができます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|冥狐|です。夜に誰か一人に#死の宣告#を行うことができます。村の支配者は誰なのか、死を以て教えてやるのです。",
     'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153),
 			 '#' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
@@ -703,7 +707,7 @@ class MainRoleList{
 			 '#' => array('R' => 0, 'G' => 153, 'B' => 102)));
 
   var $cursed_chiroptera = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|呪蝙蝠|です。あなたを占った#占い師#を呪返しで殺すことができます。\n　この能力をもって人外に肩入れし、裏切る時を見計らうのです。",
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|呪蝙蝠|です。あなたを占った#占い師#を呪返しで殺すことができます。混乱する村を尻目にしたたかに生き延びるのです。",
     'delimiter' => array('|' => array('R' => 136, 'G' => 136, 'B' => 136),
 			 '#' => array('R' => 153, 'G' => 51, 'B' => 255)));
 
@@ -1271,6 +1275,8 @@ class ResultList{
 			       'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_possessed_mad = array('message' => "さんは|犬神|でした",
 				    'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
+  var $result_therian_mad = array('message' => "さんは|獣人|でした",
+				  'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_fox = array('message' => "さんは|妖狐|でした",
 			  'delimiter' => array('|' => array('R' => 204, 'G' => 0, 'B' => 153)));
   var $result_white_fox = array('message' => "さんは|白狐|でした",
@@ -1561,13 +1567,12 @@ foreach($list as $name => $array){
 }
 */
 header('Content-Type: image/gif');
-#$image = MakeImage($gen, $list->cursed_chiroptera);
-#$image = MakeImage($gen, $list->doom_wolf);
-#$image = MakeImage($gen, $list->doom_fox);
+#$image = MakeImage($gen, $list->poison);
 #$image = MakeImage($gen, $list->brownie);
 #$image = MakeImage($gen, $list->dowser_priest);
 #$image = MakeImage($gen, $list->revive_pharmacist);
-$image = MakeImage($gen, $list->revive_pharmacist);
+#$image = MakeImage($gen, $list->vampire);
+$image = MakeImage($gen, $list->therian_mad);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);

@@ -206,9 +206,7 @@ function EntryLastWords($say){
   if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
 
   if($SELF->IsLive()){ //登録しない役職をチェック
-    if(! $SELF->IsRole('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words')){
-      $SELF->Update('last_words', $say);
-    }
+    if(! $SELF->IsLastWordsLimited()) $SELF->Update('last_words', $say);
   }
   elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){ //口寄せの処理
     foreach($SELF->GetPartner('mind_evoke') as $id){ //口寄せしているイタコすべての遺言を更新する

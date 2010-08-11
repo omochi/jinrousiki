@@ -507,7 +507,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-東方 Project の東風谷 早苗がモチーフです。
+東方 Project の東風谷 早苗がモチーフです。「かぜはふり」と読みます。
 「奇跡」を蘇生能力に読み替えてみました。
 </pre>
 
@@ -560,6 +560,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
     従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値です
   </li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#dummy_priest">夢司祭</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/72" target="_top">新役職考案スレ</a> の 72 が原型です。
@@ -652,9 +656,8 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
   <li><a href="mania.php#mania">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は実行されません</li>
   <li>2 日目朝以降に死んでも蘇生判定を満たせば生き返ります</li>
   <li>5 日目になると能力を失います</li>
-  <li>蘇生対象外です (選ばれた場合は失敗します)</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>の憑依対象外です (襲撃された場合は普通に死亡します)</li>
-  <li><a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (憑依しようとした場合は失敗します)</li>
+  <li>蘇生対象外です (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です。</li>
 </ol>
 <h4>Ver. 1.4.0 β12〜</h4>
 <pre>
@@ -708,7 +711,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 1. 狩り能力があるのは狩人・<a href="#hunter_guard">猟師</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>です
 2. 対象は特殊狂人・特殊妖狐・特殊蝙蝠です
-2-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>)
+2-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#therian_mad">獣人</a>)
 2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
 2-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 3. <a href="#hunter_guard">猟師</a>は<a href="fox.php">妖狐陣営</a>を狩ることができます
@@ -776,13 +779,14 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="fend_guard">忍者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
 <h4>[狩人能力] 護衛：制限有り / 狩り：有り / 罠：有効</h4>
 <pre>
 一度だけ<a href="wolf.php#wolf_group">人狼系</a> (種類を問わない) の襲撃に耐えることができる上位狩人。
 人狼に襲撃されると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 誰に襲撃されたのかは分からないが、耐性を失っても護衛は通常通り行える。
 狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
-身代わり君がこれになった場合は能力発動しない (普通に噛み殺される)。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -884,10 +888,9 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
   <li>毒能力の対象外</li>
   <li><a href="#assassin_spec">暗殺反射</a>能力を持つ</li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
-  <li><a href="#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li><a href="#brownie">座敷童子</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#about_revive">蘇生</a>不可</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>の憑依対象外 (襲撃された場合は普通に死亡する)</li>
-  <li><a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外 (憑依しようとした場合は失敗する)</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
 <h4>Ver. 1.4.0 β12〜</h4>
 <pre>
@@ -920,9 +923,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="ghost_common">亡霊嬢</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
 自分を襲撃した<a href="wolf.php#wolf_group">人狼</a>に<a href="sub_role.php#chicken">小心者</a>を付加する上位共有者。
 <a href="wolf.php#possessed_wolf_sub_role">憑狼</a>は本体に付加される。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1202,12 +1207,12 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
 </pre>
 <ol>
-  <li>一度蘇生すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)</li>
-  <li>恋人になると蘇生能力は無効になります</li>
-  <li>人狼の襲撃以外で死亡した場合 (例：暗殺) は能力は適用されません</li>
-  <li>蘇生対象外です (選ばれた場合は失敗します)</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>の憑依対象外です (襲撃された場合は普通に死亡します)</li>
-  <li><a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (憑依しようとした場合は失敗します)</li>
+  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>恋人になったら蘇生能力は無効。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1232,8 +1237,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 <ol>
 <li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)</li>
 <li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します</li>
-<li>人狼の残り人数が二人以下の時に<a href="wolf.php#sirius_wolf">天狼</a>を対象にした場合は反射されます</li>
-<li><a href="#detective_common">探偵</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射されます</li>
+<li><a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射されます</li>
 <li>暗殺された人の死亡メッセージは人狼の襲撃と同じです</li>
 <li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です</li>
 <li>「暗殺する / しない」を必ず投票する必要があります</li>
@@ -1251,6 +1255,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 <pre>
 夜に村人一人を選んで暗殺できます。詳細は<a href="#assassin_spec">暗殺者の基本スペック</a>参照。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#eclipse_assassin">蝕暗殺者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ</a> の 8 が原型です。
@@ -1259,21 +1267,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a
 
 <h3><a id="doom_assassin">死神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
 <pre>
-夜に村人一人を選んで暗殺行動の代わりに<a href="sub_role.php#death_warrant">死の宣告</a>状態にすることができます。
+暗殺行動の代りに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する特殊な暗殺者。
 詳細は<a href="#assassin_spec">暗殺者の基本スペック</a>参照。
+死の宣告の発動日は投票した夜から数えて 2 日後の昼。
 </pre>
-<ol>
-<li>死の宣告の発動日は投票した夜から数えて2日後の昼です<br>
-  (例：2日目夜に投票→4日目昼に発動)
-</li>
-<li>すでに宣告を受けている人にさらに投票した場合は期限が上書きされます<br>
-  (例：4日目昼に発動表示→3日目夜にさらに投票→5日目昼に発動表示)
-</li>
-</ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/85" target="_top">新役職考案スレ</a> の 85 が原型です。
 「寿命を延ばすこともできる暗殺者」がコンセプトです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/85" target="_top">新役職考案スレ</a> の 85 が原型です。
 </pre>
 
 <h3><a id="reverse_assassin">反魂師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
@@ -1488,7 +1489,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3><a id="doll">上海人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
 <pre>
-上海人形系の基本職で、他の国で言う「奴隷」。
+上海人形系の基本種で、他の国で言う「奴隷」。
 <a href="#doll_rule">基本ルール</a>が適用される。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -1523,12 +1524,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#doll_rule">基本ルール</a>が適用される。
 </pre>
 <ol>
-<li>死の宣告の発動日は吊られた日から数えて2日後の昼です<br>
-  (例：2日目昼に吊られる→4日目昼に発動)
-</li>
-<li>すでに宣告を受けている人に宣告した場合は期限が上書きされます<br>
-  (例：4日目昼に発動表示→3日目昼に吊られて宣告→5日目昼に発動表示)
-</li>
+  <li>死の宣告の発動日は吊られた日から数えて2日後の昼。</li>
+  <li><a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+  <li>対象者が誰もいなかった場合は不発となる。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1538,16 +1536,24 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 
 <h3><a id="doll_master">人形遣い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 護衛：制限対象</h4>
 <pre>
 他の国で言う「貴族」。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-<li>勝利条件は通常の村人陣営相当です</li>
-<li><a href="wolf.php#wolf_group">人狼</a>に襲撃された際に人形が生存していたら、ランダムで誰か一人が身代わりに死んでくれます<br>
-<a href="wolf.php#wolf_group">人狼</a>の襲撃自体は失敗扱いです</li>
-<li>人形が誰か分かりません</li>
-<li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+  <li>勝利条件は通常の村人陣営相当。</li>
+  <li>人形が誰なのかは分からない。</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>に襲撃された際に人形が生存していたら、ランダムで誰か一人が身代わりに死亡する。</li>
+  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+  <li>本人は身代わりが発生しても分からない。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
+<h4>Ver. 1.4.0 β15〜</h4>
+<pre>
+身代わり君が人形遣いになる可能性があります。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。

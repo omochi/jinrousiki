@@ -281,7 +281,7 @@ class VictoryImage extends VictoryImageBase{
 }
 
 //ゲームプレイ時のアイコン表示設定
-class IconConfig{
+class IconConfig extends IconConfigBase{
   var $path   = 'user_icon'; //ユーザアイコンのパス
   var $dead   = 'grave.gif'; //死者
   var $wolf   = 'wolf.gif';  //狼
@@ -291,11 +291,7 @@ class IconConfig{
   var $page   = 10; //一画面に表示するページ数の数
 
   function IconConfig(){ $this->__construct(); }
-  function __construct(){
-    $this->path = JINRO_ROOT . '/' . $this->path;
-    $this->dead = JINRO_IMG  . '/' . $this->dead;
-    $this->wolf = JINRO_IMG  . '/' . $this->wolf;
-  }
+  function __construct(){ parent::__construct(); }
 }
 
 //-- 音源設定 --//

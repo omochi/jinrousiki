@@ -97,13 +97,13 @@ CO するべきかどうかは、コピーした役職次第です。
 コピー先の上位種に変化する特殊な<a href="#mania">神話マニア</a>。
 </pre>
 <ol>
-  <li>入れ替わるのは 4 日目の朝で、それまでは覚醒者のままです</li>
-  <li>2 日目の朝にどの役職系になるのか (コピー先の役職の系統) 分かります<br>
+  <li>入れ替わるのは 4 日目の朝で、それまでは覚醒者のままです。</li>
+  <li>2 日目の朝にどの役職系になるのか (コピー先の役職の系統) 分かります。<br>
     例) A[覚醒者] → B[白狼]  =&gt; 「Bさんは人狼でした」
   </li>
   <li>4 日目の朝にどの役職になったのか分かります。</li>
   <li>神話マニア系を選んだ場合は村人になります。</li>
-  <li>蘇生されるケースがあるので、死亡していても変化処理は行なわれます</li>
+  <li>蘇生されるケースがあるので、死亡していても変化処理は行なわれます。</li>
 </ol>
 <h4>コピー元の系統 → コピー結果</h4>
 <ol>
@@ -133,6 +133,10 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="chiroptera.php#fairy_group">妖精系</a> → <a href="chiroptera.php#light_fairy">光妖精</a></li>
 <li><a href="mania.php#mania_group">神話マニア系</a> → 村人</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#dummy_mania">夢語部</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#incubate_poison">潜毒者</a>の亜種を作ろうとして色々検討した結果、こういう実装になりました。
@@ -216,7 +220,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="human.php#mage_group">占い師系</a> → <a href="human.php#dummy_mage">夢見人</a></li>
 <li><a href="human.php#necromancer_group">霊能者系</a> → <a href="human.php#dummy_necromancer">夢枕人</a></li>
 <li><a href="human.php#medium_group">巫女系</a> → <a href="human.php#medium">巫女</a></li>
-<li><a href="human.php#priest_group">司祭系</a> → <a href="human.php#crisis_priest">預言者</a></li>
+<li><a href="human.php#priest_group">司祭系</a> → <a href="human.php#dummy_priest">夢司祭</a> (Ver. 1.4.0 β15〜)</li>
 <li><a href="human.php#guard_group">狩人系</a> → <a href="human.php#dummy_guard">夢守人</a></li>
 <li><a href="human.php#common_group">共有者系</a> → <a href="human.php#dummy_common">夢共有者</a></li>
 <li><a href="human.php#poison_group">埋毒者系</a> → <a href="human.php#dummy_poison">夢毒者</a></li>

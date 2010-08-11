@@ -586,10 +586,7 @@ EOF;
 //シーンの一致チェック
 function CheckScene(){
   global $ROOM, $SELF;
-
-  if($ROOM->day_night != $SELF->last_load_day_night){
-    OutputVoteResult('戻ってリロードしてください');
-  }
+  if($ROOM->day_night != $SELF->last_load_day_night) OutputVoteResult('戻ってリロードしてください');
 }
 
 //開始前の投票ページ出力
@@ -602,24 +599,14 @@ function OutputVoteBeforeGame(){
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
 
   $count  = 0;
-  $width  = $ICON_CONF->width;
-  $height = $ICON_CONF->height;
   $header = '<input type="radio" name="target_no" id="';
-  foreach($USERS->rows as $user_no => $user){
+  foreach($USERS->rows as $id => $user){
     if($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
 
-    $icon = $ICON_CONF->path . '/' . $user->icon_filename;
     $checkbox = ! $user->IsDummyBoy() && ($GAME_CONF->self_kick || ! $user->IsSelf()) ?
-      $header . $user_no . '" value="' . $user_no . '">'."\n" : '';
-
-    echo <<<EOF
-<td><label for="{$user_no}">
-<img src="{$icon}" width="{$width}" height="{$height}" style="border-color: {$user->color};">
-<font color="{$user->color}">◆</font>{$user->handle_name}<br>
-{$checkbox}</label></td>
-
-EOF;
+      $header . $id . '" value="' . $id . '">'."\n" : '';
+    echo $user->GenerateVoteTag($ICON_CONF->path . '/' . $user->icon_filename, $checkbox);
   }
 
   echo <<<EOF
@@ -663,8 +650,6 @@ EOF;
 
   $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想投票者を取得
   $count  = 0;
-  $width  = $ICON_CONF->width;
-  $height = $ICON_CONF->height;
   $vote_duel = $ROOM->event->vote_duel; //特殊イベントを取得
   $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
   foreach($USERS->rows as $id => $user){
@@ -677,14 +662,7 @@ EOF;
     $path = $is_live ? $ICON_CONF->path . '/' . $user->icon_filename : $ICON_CONF->dead;
     $checkbox = ($is_live && ! $user->IsSame($virtual_self->uname)) ?
       $checkbox_header . $id . '" value="' . $id . '">' : '';
-
-    echo <<<EOF
-<td><label for="{$id}">
-<img src="{$path}" width="{$width}" height="{$height}" style="border-color: {$user->color};">
-<font color="{$user->color}">◆</font>{$user->handle_name}<br>{$checkbox}
-</label></td>
-
-EOF;
+    echo $user->GenerateVoteTag($path, $checkbox);
   }
 
   echo <<<EOF
@@ -831,12 +809,9 @@ function OutputVoteNight(){
     $user_stack = $USERS->rows;
   }
 
-  $count  = 0;
-  $width  = $ICON_CONF->width;
-  $height = $ICON_CONF->height;
-
   OutputVotePageHeader();
   echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
+  $count = 0;
   foreach($user_stack as $id => $user){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
@@ -871,14 +846,7 @@ function OutputVoteNight(){
     elseif($is_live && ! $user->IsSelf() && ! $is_wolf){
       $checkbox = $checkbox_header . $checkbox_footer;
     }
-
-    echo <<<EOF
-<td><label for="{$id}">
-<img src="{$path}" width="{$width}" height="{$height}" style="border-color: {$user->color};">
-<font color="{$user->color}">◆</font>{$user->handle_name}<br>{$checkbox}
-</label></td>
-
-EOF;
+    echo $user->GenerateVoteTag($path, $checkbox);
   }
 
   if(empty($submit)) $submit = strtolower($type);
@@ -919,7 +887,7 @@ function OutputVoteDeadUser(){
 
   //投票済みチェック
   if($SELF->IsDummyBoy()) OutputVoteResult('蘇生辞退：身代わり君の投票は無効です');
-  if($SELF->IsDrop()) OutputVoteResult('蘇生辞退：投票済み');
+  if($SELF->IsDrop())     OutputVoteResult('蘇生辞退：投票済み');
   if($ROOM->IsOpenCast()) OutputVoteResult('蘇生辞退：投票不要です');
 
   OutputVotePageHeader();
@@ -936,6 +904,6 @@ EOF;
 }
 
 //投票済みチェック
-function CheckAlreadyVote($situation, $not_situation = ''){
-  if(CheckSelfVoteNight($situation, $not_situation)) OutputVoteResult('夜：投票済み');
+function CheckAlreadyVote($action, $not_action = ''){
+  if(CheckSelfVoteNight($action, $not_action)) OutputVoteResult('夜：投票済み');
 }

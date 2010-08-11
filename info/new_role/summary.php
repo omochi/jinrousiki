@@ -1178,7 +1178,7 @@ Ver. 1.4.0
     <td><a href="human.php#assassin_group">暗殺者系</a></td>
     <td>村人</td>
     <td>村人</td>
-    <td class="ability">夜に選んだ人を暗殺行動の代わりに<a href="sub_role.php#death_warrant">死の宣告</a>状態にする、特殊な暗殺者。</td>
+    <td class="ability">暗殺行動の代りに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する特殊な暗殺者。</td>
     <td>Ver. 1.4.0 β10</td>
   </tr>
   <tr>
@@ -1515,6 +1515,16 @@ Ver. 1.4.0
     <td>村人</td>
     <td class="ability">処刑投票した人のショック死を抑制する特殊な薬師。<br>
       人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。</td>
+    <td>Ver. 1.4.0 β15</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#therian_mad">獣人</a></td>
+    <td><a href="wolf.php">人狼</td>
+    <td><a href="wolf.php#mad_group">狂人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">人狼 (種類は問わない) に襲撃されたら「人狼」に変化する、特殊な狂人。<br>
+      狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 β15</td>
   </tr>
 </table>

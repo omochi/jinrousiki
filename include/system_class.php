@@ -207,6 +207,28 @@ class BBSConfigBase extends ExternalLinkBuilder{
   }
 }
 
+//¥²¡¼¥à¥×¥ì¥¤»þ¤Î¥¢¥¤¥³¥óÉ½¼¨ÀßÄê¤Î´ðÄì¥¯¥é¥¹ --//
+class IconConfigBase{
+  //½é´üÀßÄê
+  var $path   = 'user_icon'; //¥æ¡¼¥¶¥¢¥¤¥³¥ó¤Î¥Ñ¥¹
+  var $dead   = 'grave.gif'; //»à¼Ô
+  var $wolf   = 'wolf.gif';  //Ïµ
+  var $width  = 45; //É½¼¨¥µ¥¤¥º(Éý)
+  var $height = 45; //É½¼¨¥µ¥¤¥º(¹â¤µ)
+
+  function IconConfigBase(){ $this->__construct(); }
+  function __construct(){
+    $this->path = JINRO_ROOT . '/' . $this->path;
+    $this->dead = JINRO_IMG  . '/' . $this->dead;
+    $this->wolf = JINRO_IMG  . '/' . $this->wolf;
+    $this->tag  = $this->GenerateTag();
+  }
+
+  function GenerateTag(){
+    return ' width="' . $this->width . '" height="' . $this->height . '"';
+  }
+}
+
 //-- ¥æ¡¼¥¶¥¢¥¤¥³¥ó´ÉÍý¤Î´ðÄì¥¯¥é¥¹ --//
 class UserIconBase{
   // ¥¢¥¤¥³¥ó¤ÎÊ¸»ú¿ô
@@ -282,7 +304,6 @@ class VictoryImageBase extends ImageManager{
 
     default:
       return '-';
-      break;
     }
     return parent::Generate($name, $alt);
   }
@@ -578,6 +599,7 @@ class RoleData{
     'dream_eater_mad'    => 'àÓ',
     'trap_mad'           => 'æ«»Õ',
     'possessed_mad'      => '¸¤¿À',
+    'therian_mad'        => '½Ã¿Í',
     'fox'                => 'ÍÅ¸Ñ',
     'white_fox'          => 'Çò¸Ñ',
     'black_fox'          => '¹õ¸Ñ',
@@ -705,6 +727,7 @@ class RoleData{
     'possessed_exchange' => '¸ò´¹Øá°Í',
     'challenge_lovers'   => 'ÆñÂê',
     'infected'           => '´¶À÷¼Ô',
+    'changed_therian'    => '¸µ½Ã¿Í',
     'copied'             => '¸µ¿ÀÏÃ¥Þ¥Ë¥¢',
     'copied_trick'       => '¸µ´ñ½Ñ»Õ',
     'copied_soul'        => '¸µ³ÐÀÃ¼Ô',
@@ -738,7 +761,7 @@ class RoleData{
     'medium'             => 'Öà',
     'seal_medium'        => 'Éõ',
     'revive_medium'      => 'É÷',
-    'priest'             => '»Êº×',
+    'priest'             => '»Ê',
     'bishop_priest'      => '»Ê¶µ',
     'dowser_priest'      => 'Ãµ',
     'border_priest'      => '¶­',
@@ -775,7 +798,7 @@ class RoleData{
     'reverse_assassin'   => 'È¿º²',
     'soul_assassin'      => 'ÄÔ',
     'eclipse_assassin'   => '¿ª°Å',
-    'mind_scanner'       => '¸ç',
+    'mind_scanner'       => '³Ð',
     'evoke_scanner'      => '¥¤',
     'whisper_scanner'    => 'ÓñÁû',
     'howl_scanner'       => 'ËÊÁû',
@@ -812,12 +835,13 @@ class RoleData{
     'whisper_mad'        => 'Óñ¶¸',
     'jammer_mad'         => '·îÅÆ',
     'voodoo_mad'         => '¼ö¶¸',
-    'corpse_courier_mad' => '²Ð¼Ö',
+    'corpse_courier_mad' => '²Ð',
     'agitate_mad'        => 'Àð',
     'miasma_mad'         => 'ÃØ',
     'dream_eater_mad'    => 'àÓ',
     'trap_mad'           => 'æ«',
     'possessed_mad'      => '¸¤',
+    'therian_mad'        => '½Ã',
     'fox'                => '¸Ñ',
     'white_fox'          => 'Çò¸Ñ',
     'black_fox'          => '¹õ¸Ñ',
@@ -945,6 +969,7 @@ class RoleData{
     'copied_trick'       => '¸µ´ñ',
     'copied_soul'        => '¸µ³Ð',
     'copied_teller'      => '¸µ¸ì',
+    'changed_therian'    => '¸µ½Ã',
     'possessed_target'   => 'Øá',
     'possessed'          => 'ÈïØá',
     'bad_status'         => 'µº',
@@ -999,7 +1024,7 @@ class RoleData{
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'whisper_ringing',
 			    'howl_ringing', 'deep_sleep', 'silent', 'mower'),
-    'wolf'         => array('possessed_target', 'possessed'),
+    'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
     'chiroptera'   => array('bad_status'),
     'human'        => array('lost_ability'));
 }
@@ -1047,9 +1072,7 @@ class CastConfigBase{
     $this->InitializeDuel($user_count);
 
     if(array_sum($this->duel_fix_list) <= $user_count){
-      foreach($this->duel_fix_list as $role => $count){
-	$role_list[$role] = $count;
-      }
+      foreach($this->duel_fix_list as $role => $count) $role_list[$role] = $count;
     }
     $rest_user_count = $user_count - array_sum($role_list);
     asort($this->duel_rate_list);

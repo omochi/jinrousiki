@@ -156,8 +156,8 @@ OutputInfoPageHeader('拒嘿な慌屯');
 + 硒客 (<a href="new_role/lovers.php">硒客控蹦</a>)
   - 陵高侯脱はないので抨杉木稿に借妄を乖う
 
-+ 儡卡 (<a href="new_role/human.php#guard_group">柬客废</a>ˇ<a href="new_role/human.php#assassin_group">芭沪荚废</a>ˇ<a href="new_role/wolf.php#wolf_group">客系废</a>ˇ<a href="new_role/wolf.php#trap_mad">娅徽</a>ˇ<a href="new_role/vampire.php">帝缝荡控蹦</a>)
-  - 娅 ′ 柬客割币 ′ 客系奖封 ⅹ 柬客の柬り ⅹ 帝缝荡奖封 ⅹ 芭沪
++ 儡卡 (<a href="new_role/human.php#escaper">屁舜荚</a>ˇ<a href="new_role/human.php#guard_group">柬客废</a>ˇ<a href="new_role/human.php#assassin_group">芭沪荚废</a>ˇ<a href="new_role/human.php#doll_master">客妨腐い</a>ˇ<a href="new_role/wolf.php#wolf_group">客系废</a>ˇ<a href="new_role/wolf.php#trap_mad">娅徽</a>ˇ<a href="new_role/vampire.php">帝缝荡控蹦</a>ˇ<a href="new_role/chiroptera.php#boss_chiroptera">络辋轷</a>)
+  - 娅 ′ 柬客割币 ′ 咳洛わり ′ 客系奖封 ⅹ 柬客の柬り ⅹ 帝缝荡奖封 ⅹ 芭沪
 
 + 檀 (<a href="new_role/human.php#dummy_guard">檀奸客</a>ˇ<a href="new_role/wolf.php#dream_eater_mad">嘤</a>)
   - 檀奸客割币 ′ 嘤奖封 ⅹ 檀奸客の柬り

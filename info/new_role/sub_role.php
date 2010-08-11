@@ -157,6 +157,7 @@ OutputHTMLHeader('¿·Ìò¿¦¾ðÊó - [¥µ¥ÖÌò¿¦]', 'new_role');
 <pre>
 Í½¹ð¤µ¤ì¤¿Æü¤Î½è·ºÅêÉ¼½¸·×¸å (ºÆÅêÉ¼¤Ë¤Ê¤Ã¤Æ¤âÈ¯Æ°) ¤Ë¥·¥ç¥Ã¥¯»à¤·¤Þ¤¹¡£
 ÉÕ²Ã¤µ¤ì¤¿Ä¾¸å¤«¤é¡¢È¯Æ°Æü¤¬¤¤¤Ä¤«É½¼¨¤µ¤ì¤Þ¤¹¡£
+Ê£¿ôÉÕ²Ã¤µ¤ì¤¿¾ì¹ç¤Ï¡¢°ìÈÖÃÙ¤¤Æü¤¬Å¬ÍÑ¤µ¤ì¤Þ¤¹¡£
 </pre>
 <h4>´ØÏ¢Ìò¿¦</h4>
 <pre>
@@ -940,6 +941,7 @@ LW ¤¬<a href="#strong_voice">ÂçÀ¼</a>¡¦<a href="#strong_voice">¾®À¼</a>¤À¤È°µÅÝÅ
 <a href="#possessed">Øá°Í</a>
 <a href="#bad_status">°­µº</a>
 <a href="#infected">´¶À÷¼Ô</a>
+<a href="#changed_therian">¸µ½Ã¿Í</a>
 <a href="#copied">¸µ¿ÀÏÃ¥Þ¥Ë¥¢</a>
 <a href="#copied_trick">¸µ´ñ½Ñ»Õ</a>
 <a href="#copied_soul">¸µ³ÐÀÃ¼Ô</a>
@@ -1022,6 +1024,17 @@ LW ¤¬<a href="#strong_voice">ÂçÀ¼</a>¡¦<a href="#strong_voice">¾®À¼</a>¤À¤È°µÅÝÅ
 <h4>[ºîÀ®¼Ô¤«¤é¤Î¥³¥á¥ó¥È]</h4>
 <pre>
 <a href="vampire.php">µÛ·ìµ´¿Ø±Ä</a>¤Î¾¡ÇÔÈ½ÄêÍÑ¤Ë¼ÂÁõ¤µ¤ì¤¿¥µ¥ÖÌò¿¦¤Ç¤¹¡£
+</pre>
+
+<h3><a id="changed_therian">¸µ½Ã¿Í</a> [Ver. 1.4.0 ¦Â15¡Á]</h3>
+<h4>[Ìò¿¦É½¼¨] É½¼¨Ìµ¤·</h4>
+<h4>[ÇÛÌòÀ©¸Â] Ìò¿¦ÉÕ²ÃÀìÍÑ</h4>
+<pre>
+¿ÍÏµ¤ËÊÑ²½¤·¤¿¸å¤Î<a href="wolf.php#therian_mad">½Ã¿Í</a>¤ËÉÕ²Ã¤µ¤ì¤Þ¤¹¡£
+</pre>
+<h4>[ºîÀ®¼Ô¤«¤é¤Î¥³¥á¥ó¥È]</h4>
+<pre>
+<a href="wolf.php#therian_mad">½Ã¿Í</a>ÍÑ¤Ë¼ÂÁõ¤µ¤ì¤¿¥µ¥ÖÌò¿¦¤Ç¤¹¡£
 </pre>
 
 <h3><a id="copied">¸µ¿ÀÏÃ¥Þ¥Ë¥¢</a> [Ver. 1.4.0 ¦Á11¡Á]</h3>

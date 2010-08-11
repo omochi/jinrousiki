@@ -109,6 +109,7 @@ function LoversFollowed($sudden_death = false){
 function CheckVictory($check_draw = false){
   global $GAME_CONF, $ROOM, $USERS;
 
+  //コピー系がいるのでキャッシュを更新するかクエリから引くこと
   $query_count = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0 AND ";
   $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
   $wolf   = FetchResult($query_count . "role LIKE '%wolf%'"); //人狼
@@ -354,10 +355,6 @@ function OutputTimeTable(){
 function OutputPlayerList(){
   global $DEBUG_MODE, $ICON_CONF, $ROLE_DATA, $ROOM, $USERS, $SELF;
 
-  //アイコンの設定を取得
-  $width  = $ICON_CONF->width;
-  $height = $ICON_CONF->height;
-
   //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
   //IE の場合改行を \r\n に統一、その他のブラウザはスペースにする(画像のAlt属性)
   $replace = preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ';
@@ -397,7 +394,7 @@ function OutputPlayerList(){
       $path = $ICON_CONF->dead; //アイコンを死亡アイコンに入れ替え
       $str .= ' onMouseout="this.src=' . "'$path'" . '"';
     }
-    $str .= ' width="' . $width . '" height="' . $height . '" src="' . $path . '"></td>'."\n";
+    $str .= $ICON_CONF->tag . ' src="' . $path . '"></td>'."\n";
 
     //HN を追加
     $str .= $td_header . '<font color="' . $user->color . '">◆</font>' . $user->handle_name;

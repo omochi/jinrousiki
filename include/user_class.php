@@ -59,16 +59,13 @@ class User{
 
     //展開処理
     $role_list = array();
-    $explode_list = explode(' ', $this->role);
-    foreach($explode_list as $role){
+    foreach(explode(' ', $this->role) as $role){
       if(preg_match($regex_partner, $role, $match_partner)){
 	$role_list[] = $match_partner[1];
-	if(preg_match($regex_status, $match_partner[2], $match_status)){
+	if(preg_match($regex_status, $match_partner[2], $match_status))
 	  $this->partner_list[$match_partner[1]][$match_status[1]] = $match_status[2];
-	}
-	else{
+	else
 	  $this->partner_list[$match_partner[1]][] = $match_partner[2];
-	}
       }
       else{
 	$role_list[] = $role;
@@ -161,20 +158,17 @@ class User{
   function IsRole($role){
     $role_list = func_get_args();
     if(is_array($role_list[0])) $role_list = $role_list[0];
-    if(count($role_list) > 1){
+    if(count($role_list) > 1)
       return count(array_intersect($role_list, $this->role_list)) > 0;
-    }
-    else{
+    else
       return in_array($role_list[0], $this->role_list);
-    }
   }
 
   //役職グループ判定
-  function IsRoleGroup($role){
-    $role_list = func_get_args();
-    foreach($role_list as $target_role){
-      foreach($this->role_list as $this_role){
-	if(strpos($this_role, $target_role) !== false) return true;
+  function IsRoleGroup($role_list){
+    foreach(func_get_args() as $target_role){
+      foreach($this->role_list as $role){
+	if(strpos($role, $target_role) !== false) return true;
       }
     }
     return false;
@@ -233,6 +227,11 @@ class User{
     $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
     if(! $vote) $stack[] = 'miasma_fox';
     return $this->IsRole($stack);
+  }
+
+  //襲撃耐性妖狐判定
+  function IsResistFox(){
+    return $this->IsFox() && ! $this->IsRole('white_fox', 'poison_fox') && ! $this->IsChildFox();
   }
 
   //恋人判定
@@ -294,6 +293,13 @@ class User{
     return true;
   }
 
+  //狩り判定
+  function IsHuntTarget(){
+    return ($this->IsRoleGroup('mad') && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
+      $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
+		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera');
+  }
+
   //護衛制限判定
   function IsGuardLimited(){
     return $this->IsRole('detective_common', 'reporter', 'doll_master') ||
@@ -317,6 +323,13 @@ class User{
   function IsReviveLimited(){
     return $this->IsRoleGroup('cat', 'revive') || $this->IsRole('detective_common') ||
       $this->IsLovers() || $this->IsDrop() || $this->possessed_reset;
+  }
+
+  //遺言制限判定
+  function IsLastWordsLimited($save = false){
+    $stack = array('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words');
+    if($save) $stack[] = 'possessed_exchange';
+    return $this->IsRole($stack);
   }
 
   //所属陣営判別
@@ -359,101 +372,71 @@ class User{
       'stargazer_mage_ability' : 'stargazer_mage_nothing';
   }
 
+  //投票済み判定
+  function IsVoted($vote_data, $action, $not_action = NULL){
+    if(isset($not_action) && is_array($vote_data[$not_action]) &&
+       array_key_exists($this->uname, $vote_data[$not_action])) return true;
+
+    return $action == 'WOLF_EAT' ? isset($vote_data[$action]) :
+      isset($vote_data[$action][$this->uname]);
+  }
+
   //未投票チェック
   function CheckVote($vote_data){
     global $ROOM;
 
     if($this->IsDummyBoy() || $this->IsDead()) return true;
-
-    if($this->IsRoleGroup('mage')){
-      return isset($vote_data['MAGE_DO'][$this->uname]);
-    }
-    if($this->IsRole('voodoo_killer')){
-      return isset($vote_data['VOODOO_KILLER_DO'][$this->uname]);
-    }
-    if($this->IsWolf()){
-      return isset($vote_data['WOLF_EAT']);
-    }
+    if($this->IsWolf()) return $this->IsVoted($vote_data, 'WOLF_EAT');
+    if($this->IsRoleGroup('mage')) return $this->IsVoted($vote_data, 'MAGE_DO');
+    if($this->IsRole('voodoo_killer')) return $this->IsVoted($vote_data, 'VOODOO_KILLER_DO');
     if($this->IsRole('jammer_mad', 'jammer_fox')){
-      return isset($vote_data['JAMMER_MAD_DO'][$this->uname]);
+      return $this->IsVoted($vote_data, 'JAMMER_MAD_DO');
     }
-    if($this->IsRole('voodoo_mad')){
-      return isset($vote_data['VOODOO_MAD_DO'][$this->uname]);
-    }
+    if($this->IsRole('voodoo_mad')) return $this->IsVoted($vote_data, 'VOODOO_MAD_DO');
     if($this->IsRole('emerald_fox')){
       if(! $this->IsActive()) return true;
-      return isset($vote_data['MAGE_DO'][$this->uname]);
+      $this->IsVoted($vote_data, 'MAGE_DO');
     }
-    if($this->IsRole('voodoo_fox')){
-      return isset($vote_data['VOODOO_FOX_DO'][$this->uname]);
-    }
-    if($this->IsChildFox(true)){
-      return isset($vote_data['CHILD_FOX_DO'][$this->uname]);
-    }
+    if($this->IsRole('voodoo_fox')) return $this->IsVoted($vote_data, 'VOODOO_FOX_DO');
+    if($this->IsChildFox(true)) return $this->IsVoted($vote_data, 'CHILD_FOX_DO');
     if($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy')){
-      return isset($vote_data['FAIRY_DO'][$this->uname]);
+      return $this->IsVoted($vote_data, 'FAIRY_DO');
     }
 
     if($ROOM->date == 1){ //初日限定
-      if($this->IsRole('mind_scanner')){
-	return isset($vote_data['MIND_SCANNER_DO'][$this->uname]);
-      }
+      if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
-	return isset($vote_data['CUPID_DO'][$this->uname]);
+	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
-      if($this->IsRoleGroup('mania')){
-	return isset($vote_data['MANIA_DO'][$this->uname]);
-      }
+      if($this->IsRoleGroup('mania')) return $this->IsVoted($vote_data, 'MANIA_DO');
 
       if($ROOM->IsOpenCast()) return true;
-      if($this->IsRole('evoke_scanner')){
-	return isset($vote_data['MIND_SCANNER_DO'][$this->uname]);
-      }
+      if($this->IsRole('evoke_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
       return true;
     }
 
     //二日目以降
-    if($this->IsRole('escaper')){
-      return isset($vote_data['ESCAPE_DO'][$this->uname]);
-    }
-    if($this->IsRoleGroup('guard')){
-      return isset($vote_data['GUARD_DO'][$this->uname]);
-    }
-    if($this->IsRole('reporter')){
-      return isset($vote_data['REPORTER_DO'][$this->uname]);
-    }
-    if($this->IsRole('anti_voodoo')){
-      return isset($vote_data['ANTI_VOODOO_DO'][$this->uname]);
-    }
+    if($this->IsRole('escaper')) return $this->IsVoted($vote_data, 'ESCAPE_DO');
+    if($this->IsRoleGroup('guard')) return $this->IsVoted($vote_data, 'GUARD_DO');
+    if($this->IsRole('reporter')) return $this->IsVoted($vote_data, 'REPORTER_DO');
+    if($this->IsRole('anti_voodoo')) return $this->IsVoted($vote_data, 'ANTI_VOODOO_DO');
     if($this->IsRoleGroup('assassin') || $this->IsRole('doom_fox')){
-      if(is_array($vote_data['ASSASSIN_NOT_DO']) &&
-	 array_key_exists($this->uname, $vote_data['ASSASSIN_NOT_DO'])) return true;
-      return isset($vote_data['ASSASSIN_DO'][$this->uname]);
+      return $this->IsVoted($vote_data, 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
-    if($this->IsRole('dream_eater_mad')){
-      return isset($vote_data['DREAM_EAT'][$this->uname]);
-    }
+    if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
     if($this->IsRole('trap_mad')){
       if(! $this->IsActive()) return true;
-      if(is_array($vote_data['TRAP_MAD_NOT_DO']) &&
-	 array_key_exists($this->uname, $vote_data['TRAP_MAD_NOT_DO'])) return true;
-      return isset($vote_data['TRAP_MAD_DO'][$this->uname]);
+      return $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
     }
     if($this->IsRole('possessed_mad', 'possessed_fox')){
       if(! $this->IsActive()) return true;
-      if(is_array($vote_data['POSSESSED_NOT_DO']) &&
-	 array_key_exists($this->uname, $vote_data['POSSESSED_NOT_DO'])) return true;
-      return isset($vote_data['POSSESSED_DO'][$this->uname]);
+      return $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
     }
-    if($this->IsRole('vampire')){
-      return isset($vote_data['VAMPIRE_DO'][$this->uname]);
-    }
+    if($this->IsRole('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
 
     if($ROOM->IsOpenCast()) return true;
     if($this->IsReviveGroup(true)){
-      if(is_array($vote_data['POISON_CAT_NOT_DO']) &&
-	 array_key_exists($this->uname, $vote_data['POISON_CAT_NOT_DO'])) return true;
-      return isset($vote_data['POISON_CAT_DO'][$this->uname]);
+      return $this->IsVoted($vote_data, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
     }
     return true;
   }
@@ -491,6 +474,19 @@ class User{
     }
     $uname = $heaven ? $this->uname : $USERS->TraceExchange($this->user_no)->uname;
     return $str . '] (' . $uname . ')</span>';
+  }
+
+  //投票画面用アイコンタグ生成
+  function GenerateVoteTag($icon_path, $checkbox){
+    global  $ICON_CONF;
+
+    return <<<EOF
+<td><label for="{$this->user_no}">
+<img src="{$icon_path}" style="border-color: {$this->color};"{$ICON_CONF->tag}>
+<font color="{$this->color}">◆</font>{$this->handle_name}<br>
+{$checkbox}</label></td>
+
+EOF;
   }
 
   //個別 DB 更新処理
@@ -597,10 +593,7 @@ class User{
   function SaveLastWords($handle_name = NULL){
     global $ROOM;
 
-    //保存しない役職をチェック
-    if(! $this->IsDummyBoy() &&
-       $this->IsRole('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words',
-		     'possessed_exchange')) return;
+    if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return; //スキップ判定
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
