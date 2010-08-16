@@ -7,20 +7,20 @@ function output_realtime(){
     seconds = Math.floor(12 * 60 * 60 * left_seconds / diff_seconds);
     time = new Date(0, 0, 0, 0, 0, seconds);
     value = sentence;
-    if(time.getHours()   > 0){value += time.getHours()   + "»þ´Ö";}
-    if(time.getMinutes() > 0){value += time.getMinutes() + "Ê¬";}
-    value += "(¼Â»þ´Ö ";
-    if(left_time.getHours()   > 0){value += left_time.getHours()   + "»þ´Ö";}
-    if(left_time.getMinutes() > 0){value += left_time.getMinutes() + "Ê¬";}
-    if(left_time.getSeconds() > 0){value += left_time.getSeconds() + "ÉÃ";}
+    if(time.getHours()   > 0){value += time.getHours()   + "æ™‚é–“";}
+    if(time.getMinutes() > 0){value += time.getMinutes() + "åˆ†";}
+    value += "(å®Ÿæ™‚é–“ ";
+    if(left_time.getHours()   > 0){value += left_time.getHours()   + "æ™‚é–“";}
+    if(left_time.getMinutes() > 0){value += left_time.getMinutes() + "åˆ†";}
+    if(left_time.getSeconds() > 0){value += left_time.getSeconds() + "ç§’";}
     value += ")";
   }
   else{
     time = new Date(0, 0, 0, 0, 0, Math.abs(left_seconds));
-    value = "Ä¶²á»þ´Ö ";
-    if(time.getHours()   > 0){value += time.getHours()   + "»þ´Ö";}
-    if(time.getMinutes() > 0){value += time.getMinutes() + "Ê¬";}
-    if(time.getSeconds() > 0){value += time.getSeconds() + "ÉÃ";}
+    value = "è¶…éŽæ™‚é–“ ";
+    if(time.getHours()   > 0){value += time.getHours()   + "æ™‚é–“";}
+    if(time.getMinutes() > 0){value += time.getMinutes() + "åˆ†";}
+    if(time.getSeconds() > 0){value += time.getSeconds() + "ç§’";}
   }
   document.realtime_form.output_realtime.value = value;
   tid = setTimeout("output_realtime()", 1000);

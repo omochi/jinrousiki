@@ -1,207 +1,210 @@
 <?php
-//-- ¥Ç¡¼¥¿¥Ù¡¼¥¹ÀßÄê --//
+//-- ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹è¨­å®š --//
 class DatabaseConfig extends DatabaseConfigBase{
-  //¥Ç¡¼¥¿¥Ù¡¼¥¹¥µ¡¼¥Ğ¤Î¥Û¥¹¥ÈÌ¾ hostname:port
-  //¥İ¡¼¥ÈÈÖ¹æ¤ò¾ÊÎ¬¤¹¤ë¤È¥Ç¥Õ¥©¥ë¥È¥İ¡¼¥È¤¬¥»¥Ã¥È¤µ¤ì¤Ş¤¹¡£(MySQL:3306)
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚µãƒ¼ãƒã®ãƒ›ã‚¹ãƒˆå hostname:port
+  //ãƒãƒ¼ãƒˆç•ªå·ã‚’çœç•¥ã™ã‚‹ã¨ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ¼ãƒˆãŒã‚»ãƒƒãƒˆã•ã‚Œã¾ã™ã€‚(MySQL:3306)
   var $host = 'localhost';
 
-  //¥Ç¡¼¥¿¥Ù¡¼¥¹¤Î¥æ¡¼¥¶Ì¾
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®ãƒ¦ãƒ¼ã‚¶å
   #var $user = 'xxxx';
   var $user = 'grayran';
 
-  //¥Ç¡¼¥¿¥Ù¡¼¥¹¥µ¡¼¥Ğ¤Î¥Ñ¥¹¥ï¡¼¥É
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚µãƒ¼ãƒã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
   #var $password = 'xxxxxxxx';
   var $password = 'satorituri';
 
-  //¥Ç¡¼¥¿¥Ù¡¼¥¹Ì¾
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹å
   var $name = 'jinrou';
+
+  //æ–‡å­—ã‚³ãƒ¼ãƒ‰
+  var $encode = 'utf8';
 }
 
-//-- ¥µ¡¼¥ĞÀßÄê --//
+//-- ã‚µãƒ¼ãƒè¨­å®š --//
 class ServerConfig{
-  //¥µ¡¼¥Ğ¤ÎURL
+  //ã‚µãƒ¼ãƒã®URL
   #var $site_root = 'http://localhost/jinrou/';
   var $site_root = 'http://localhost/jinro/';
 
-  //¥¿¥¤¥È¥ë
-  var $title = 'Æò¤Ï¿ÍÏµ¤Ê¤ê¤ä¡©';
+  //ã‚¿ã‚¤ãƒˆãƒ«
+  var $title = 'æ±ã¯äººç‹¼ãªã‚Šã‚„ï¼Ÿ';
 
-  //¥µ¡¼¥Ğ¤Î¥³¥á¥ó¥È
-  var $comment = '¡Á¥Á¥ë¥Î»ª¡÷¥í¡¼¥«¥ë¡Á';
+  //ã‚µãƒ¼ãƒã®ã‚³ãƒ¡ãƒ³ãƒˆ
+  var $comment = 'ã€œãƒãƒ«ãƒé¯–ï¼ ãƒ­ãƒ¼ã‚«ãƒ«ã€œ';
 
-  //¥µ¡¼¥Ğ¤ÎÊ¸»ú¥³¡¼¥É
+  //ã‚µãƒ¼ãƒã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
   /*
-    ÊÑ¹¹¤¹¤ë¾ì¹ç¤ÏÁ´¤Æ¤Î¥Õ¥¡¥¤¥ë¼«ÂÎ¤ÎÊ¸»ú¥³¡¼¥É¤ò¼«Á°¤ÇÊÑ¹¹¤·¤Æ¤¯¤À¤µ¤¤
-    include/init.php ¤â»²¾È¤·¤Æ¤¯¤À¤µ¤¤
+    å¤‰æ›´ã™ã‚‹å ´åˆã¯å…¨ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«è‡ªä½“ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’è‡ªå‰ã§å¤‰æ›´ã—ã¦ãã ã•ã„
+    include/init.php ã‚‚å‚ç…§ã—ã¦ãã ã•ã„
   */
-  var $encode = 'EUC-JP';
+  var $encode = 'UTF-8';
 
-  //Ìá¤êÀè¤Î¥Ú¡¼¥¸
+  //æˆ»ã‚Šå…ˆã®ãƒšãƒ¼ã‚¸
   var $back_page = '';
 
-  //´ÉÍı¼ÔÍÑ¥Ñ¥¹¥ï¡¼¥É
+  //ç®¡ç†è€…ç”¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
   #var $system_password = 'xxxxxxxx';
   var $system_password = 'pass';
 
-  //¥Ñ¥¹¥ï¡¼¥É°Å¹æ²½ÍÑ salt
+  //ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰æš—å·åŒ–ç”¨ salt
   #var $salt = 'xxxx';
   var $salt = 'testtest';
 
-  //¥¿¥¤¥à¥¾¡¼¥ó¤¬ÀßÄê¤Ç¤­¤Ê¤¤¾ì¹ç¤Ë»şº¹¤òÉÃÃ±°Ì¤ÇÀßÄê¤¹¤ë¤«Èİ¤«
+  //ã‚¿ã‚¤ãƒ ã‚¾ãƒ¼ãƒ³ãŒè¨­å®šã§ããªã„å ´åˆã«æ™‚å·®ã‚’ç§’å˜ä½ã§è¨­å®šã™ã‚‹ã‹å¦ã‹
   var $adjust_time_difference = false;
 
-  //$adjust_time_difference ¤¬Í­¸ú¤Ê»ş¤Î»şº¹ (ÉÃ¿ô)
-  var $offset_seconds = 32400; //9»ş´Ö
+  //$adjust_time_difference ãŒæœ‰åŠ¹ãªæ™‚ã®æ™‚å·® (ç§’æ•°)
+  var $offset_seconds = 32400; //9æ™‚é–“
 
-  //¹¹¿·Á°¤Î¥¹¥¯¥ê¥×¥È¤Î¥ê¥Ó¥¸¥ç¥óÈÖ¹æ
+  //æ›´æ–°å‰ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒªãƒ“ã‚¸ãƒ§ãƒ³ç•ªå·
   /*
-    ¢¨ ¤³¤Îµ¡Ç½¤Ï Ver. 1.4.0 beta1 (revision 152) ¤Ç¼ÂÁõ¤µ¤ì¤Ş¤·¤¿¡£
+    â€» ã“ã®æ©Ÿèƒ½ã¯ Ver. 1.4.0 beta1 (revision 152) ã§å®Ÿè£…ã•ã‚Œã¾ã—ãŸã€‚
 
-    ¹¹¿·Á°¤Î¥¹¥¯¥ê¥×¥È¤Î class ScriptInfo (config/version.php) ¤Ç
-    ÄêµÁ¤µ¤ì¤Æ¤¤¤ë $revision ¤òÀßÄê¤¹¤ë¤³¤È¤Ç admin/setup.php ¤Ç
-    ¹Ô¤ï¤ì¤ë½èÍı¤¬ºÇÅ¬²½¤µ¤ì¤Ş¤¹¡£
+    æ›´æ–°å‰ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã® class ScriptInfo (config/version.php) ã§
+    å®šç¾©ã•ã‚Œã¦ã„ã‚‹ $revision ã‚’è¨­å®šã™ã‚‹ã“ã¨ã§ admin/setup.php ã§
+    è¡Œã‚ã‚Œã‚‹å‡¦ç†ãŒæœ€é©åŒ–ã•ã‚Œã¾ã™ã€‚
 
-    ½é¤á¤ÆÅö¥¹¥¯¥ê¥×¥È¤òÀßÃÖ¤¹¤ë¾ì¹ç¤ä¡¢¥Ç¡¼¥¿¥Ù¡¼¥¹¤ò°ìÅÙ´°Á´¾Ãµî¤·¤Æ
-    ºÆÀßÃÖ¤¹¤ë¾ì¹ç¤Ï 0 ¤òÀßÄê¤·¤Æ²¼¤µ¤¤¡£
+    åˆã‚ã¦å½“ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’è¨­ç½®ã™ã‚‹å ´åˆã‚„ã€ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’ä¸€åº¦å®Œå…¨æ¶ˆå»ã—ã¦
+    å†è¨­ç½®ã™ã‚‹å ´åˆã¯ 0 ã‚’è¨­å®šã—ã¦ä¸‹ã•ã„ã€‚
 
-    ¹¹¿·Á°¤Î¥¹¥¯¥ê¥×¥È¤Ë³ºÅö¥Õ¥¡¥¤¥ë¤äÊÑ¿ô¤¬¤Ê¤¤¾ì¹ç¤ä¡¢
-    ¥Ğ¡¼¥¸¥ç¥ó¤¬Ê¬¤«¤é¤Ê¤¤¾ì¹ç¤Ï 1 ¤òÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£
+    æ›´æ–°å‰ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã«è©²å½“ãƒ•ã‚¡ã‚¤ãƒ«ã‚„å¤‰æ•°ãŒãªã„å ´åˆã‚„ã€
+    ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒåˆ†ã‹ã‚‰ãªã„å ´åˆã¯ 1 ã‚’è¨­å®šã—ã¦ãã ã•ã„ã€‚
 
-    ¹¹¿·¸å¤Î¥ê¥Ó¥¸¥ç¥óÈÖ¹æ¤ÈÆ±¤¸¤«¡¢¤½¤ì¤è¤êÂç¤­¤ÊÃÍ¤òÀßÄê¤¹¤ë¤È
-    admin/setup.php ¤Î½èÍı¤Ï¾ï»ş¥¹¥­¥Ã¥×¤µ¤ì¤Ş¤¹¡£
+    æ›´æ–°å¾Œã®ãƒªãƒ“ã‚¸ãƒ§ãƒ³ç•ªå·ã¨åŒã˜ã‹ã€ãã‚Œã‚ˆã‚Šå¤§ããªå€¤ã‚’è¨­å®šã™ã‚‹ã¨
+    admin/setup.php ã®å‡¦ç†ã¯å¸¸æ™‚ã‚¹ã‚­ãƒƒãƒ—ã•ã‚Œã¾ã™ã€‚
   */
   var $last_updated_revision = 187;
 
-  //Â¼¾ğÊóÈóÉ½¼¨¥â¡¼¥É (Â¼Î©¤Æ¥Æ¥¹¥È¤Ê¤É¤Î³«È¯¼Ô¥Æ¥¹¥ÈÍÑ¥¹¥¤¥Ã¥Á¤Ç¤¹)
+  //æ‘æƒ…å ±éè¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰ (æ‘ç«‹ã¦ãƒ†ã‚¹ãƒˆãªã©ã®é–‹ç™ºè€…ãƒ†ã‚¹ãƒˆç”¨ã‚¹ã‚¤ãƒƒãƒã§ã™)
   var $secret_room = false;
 }
 
-//-- Â¼¾ğÊó¶¦Í­¥µ¡¼¥Ğ¤ÎÀßÄê --//
+//-- æ‘æƒ…å ±å…±æœ‰ã‚µãƒ¼ãƒã®è¨­å®š --//
 class SharedServerConfig extends ExternalLinkBuilder{
-  var $disable = true; //Ìµ¸úÀßÄê <É½¼¨¤ò [true:Ìµ¸ú / false:Í­¸ú] ¤Ë¤¹¤ë>
+  var $disable = true; //ç„¡åŠ¹è¨­å®š <è¡¨ç¤ºã‚’ [true:ç„¡åŠ¹ / false:æœ‰åŠ¹] ã«ã™ã‚‹>
 
-  //É½¼¨¤¹¤ëÂ¾¤Î¥µ¡¼¥Ğ¤Î¥ê¥¹¥È
+  //è¡¨ç¤ºã™ã‚‹ä»–ã®ã‚µãƒ¼ãƒã®ãƒªã‚¹ãƒˆ
   var $server_list = array(
-    'cirno' => array('name' => '¥Á¥ë¥Î»ª',
+    'cirno' => array('name' => 'ãƒãƒ«ãƒé¯–',
 		     'url' => 'http://www12.atpages.jp/cirno/',
-		     'encode' => 'EUC-JP',
+		     'encode' => 'UTF-8',
 		     'separator' => '<!-- atpages banner tag -->',
 		     'footer' => '</a><br>',
 		     'disable' => false),
 
-    'eva' => array('name' => 'Eva »ª',
+    'eva' => array('name' => 'Eva é¯–',
 		   'url' => 'http://jinrou.kuroienogu.net/',
 		   'encode' => 'EUC-JP',
 		   'separator' => '',
 		   'footer' => '</a><br>',
 		   'disable' => false),
 
-    'sanae' => array('name' => 'ÁáÉÄ»ª',
+    'sanae' => array('name' => 'æ—©è‹—é¯–',
 		     'url' => 'http://alicegame.dip.jp/sanae/',
 		     'encode' => 'UTF-8',
 		     'separator' => '',
 		     'footer' => '',
 		     'disable' => false),
     /*
-    'satori' => array('name' => '¤µ¤È¤ê»ª',
+    'satori' => array('name' => 'ã•ã¨ã‚Šé¯–',
 		      'url' => 'http://satori.crz.jp/',
 		      'encode' => 'EUC-JP',
 		      'separator' => '',
 		      'footer' => '',
 		      'disable' => true),
     */
-    'sakuya' => array('name' => 'ºéÌë»ª',
+    'sakuya' => array('name' => 'å’²å¤œé¯–',
 		      'url' => 'http://www7.atpages.jp/izayoi398/',
 		      'encode' => 'EUC-JP',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</div></small></a><br>',
 		      'disable' => false),
     /*
-    'sasuga' => array('name' => 'Î®ÀĞ·»Äï»ª',
+    'sasuga' => array('name' => 'æµçŸ³å…„å¼Ÿé¯–',
 		      'url' => 'http://www12.atpages.jp/yaruo/jinro/',
 		      'encode' => 'EUC-JP',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</div></small></a><br>',
 		      'disable' => true),
     */
-    'sasugabros' => array('name' => 'Î®ÀĞÄï¼Ô»ª',
+    'sasugabros' => array('name' => 'æµçŸ³å¼Ÿè€…é¯–',
 			  'url' => 'http://www16.atpages.jp/sasugabros/',
 			  'encode' => 'UTF-8',
 			  'separator' => '<!-- atpages banner tag -->',
 			  'footer' => '</div></small></a><br>',
 			  'disable' => true),
 
-    'sasugasister' => array('name' => 'Î®ÀĞËå¼Ô»ª',
+    'sasugasister' => array('name' => 'æµçŸ³å¦¹è€…é¯–',
 			    'url' => 'http://www21.atpages.jp/sasugasister/',
 			    'encode' => 'UTF-8',
 			    'separator' => '<!-- atpages banner tag -->',
 			    'footer' => '</div></small></a><br>',
 			    'disable' => false),
 
-    'suisei' => array('name' => '¿éÀ±ÀĞ»ª',
+    'suisei' => array('name' => 'ç¿ æ˜ŸçŸ³é¯–',
 		      'url' => 'http://alicegame.dip.jp/suisei/',
 		      'encode' => 'UTF-8',
 		      'separator' => '',
 		      'footer' => '',
 		      'disable' => false),
 
-    'sousei' => array('name' => 'ÁóÀ±ÀĞ¥Æ¥¹¥È»ª',
+    'sousei' => array('name' => 'è’¼æ˜ŸçŸ³ãƒ†ã‚¹ãƒˆé¯–',
 		      'url' => 'http://alicegame.dip.jp/sousei/',
 		      'encode' => 'UTF-8',
 		      'separator' => '',
 		      'footer' => '',
 		      'disable' => false),
 
-    'bara' => array('name' => 'é¬é¯»ĞËå»ª',
+    'bara' => array('name' => 'è–”è–‡å§‰å¦¹é¯–',
 		    'url' => 'http://www13.atpages.jp/yaranai/',
 		    'encode' => 'UTF-8',
 		    'separator' => '<!-- atpages banner tag -->',
 		    'footer' => '</a><br>',
 		    'disable' => false),
 
-    'suigin' => array('name' => '¿å¶ä»ª',
+    'suigin' => array('name' => 'æ°´éŠ€é¯–',
 		      'url' => 'http://www13.atpages.jp/suigintou/',
 		      'encode' => 'UTF-8',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</a><br>',
 		      'disable' => false),
 
-    'mohican' => array('name' => 'À¤µªËö¥Æ¥¹¥È»ª',
+    'mohican' => array('name' => 'ä¸–ç´€æœ«ãƒ†ã‚¹ãƒˆé¯–',
 		       'url' => 'http://www15.atpages.jp/seikima2/jinro_php/',
 		       'encode' => 'UTF-8',
 		       'separator' => '<!-- atpages banner tag -->',
 		       'footer' => '</div></small></a><br>',
 		       'disable' => true),
 
-    'mmr' => array('name' => 'À¤µªËö»ª',
+    'mmr' => array('name' => 'ä¸–ç´€æœ«é¯–',
 		   'url' => 'http://www14.atpages.jp/mmr1/',
 		   'encode' => 'UTF-8',
 		   'separator' => '<!-- atpages banner tag -->',
 		   'footer' => '</div></small></a><br>',
 		   'disable' => true),
 
-    'bourbon_test' => array('name' => '¥Ğ¡¼¥Ü¥ó¥Ï¥¦¥¹»ª¡Ê²¾¡Ë',
+    'bourbon_test' => array('name' => 'ãƒãƒ¼ãƒœãƒ³ãƒã‚¦ã‚¹é¯–ï¼ˆä»®ï¼‰',
 			    'url' => 'http://www16.atpages.jp/bourbonjinro/',
 			    'encode' => 'UTF-8',
 			    'separator' => '<!-- atpages banner tag -->',
 			    'footer' => '</div></small></a><br>',
 			    'disable' => true),
 
-    'bourbonhouse' => array('name' => '¥Ğ¡¼¥Ü¥ó¥Ï¥¦¥¹»ª',
+    'bourbonhouse' => array('name' => 'ãƒãƒ¼ãƒœãƒ³ãƒã‚¦ã‚¹é¯–',
 			    'url' => 'http://bourbonhouse.xsrv.jp/jinro/',
 			    'encode' => 'EUC-JP',
 			    'separator' => '',
 			    'footer' => '',
 			    'disable' => false),
 
-    'bourbon_chaos' => array('name' => 'Î¢À¤³¦»ª',
+    'bourbon_chaos' => array('name' => 'è£ä¸–ç•Œé¯–',
 			     'url' => 'http://dynamis.xsrv.jp/jinro/',
 			     'encode' => 'EUC-JP',
 			     'separator' => '',
 			     'footer' => '',
 			     'disable' => false),
 
-    'kotori' => array('name' => '¾®Ä»»ª',
+    'kotori' => array('name' => 'å°é³¥é¯–',
 		      'url' => 'http://kiterew.tv/jinro/',
 		      'encode' => 'EUC-JP',
 		      'separator' => '',
@@ -209,21 +212,21 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		      'disable' => false),
 
     /*
-    'bourbon' => array('name' => '¥Ğ¡¼¥Ü¥ó»ª',
+    'bourbon' => array('name' => 'ãƒãƒ¼ãƒœãƒ³é¯–',
 		       'url' => 'http://www.freedom.xii.jp/jinro/',
 		       'encode' => 'EUC-JP',
 		       'separator' => '',
 		       'footer' => '',
 		       'disable' => false),
     */
-    'nekomata' => array('name' => 'Ç­Ëô»ª',
+    'nekomata' => array('name' => 'çŒ«åˆé¯–',
 			'url' => 'http://jinro.blue-sky-server.com/',
 			'encode' => 'UTF-8',
 			'separator' => '<!-- End Ad -->',
 			'footer' => '</a>',
 			'disable' => false),
 
-    'acjinrou' => array('name' => 'AC¿ÍÏµ»ª',
+    'acjinrou' => array('name' => 'ACäººç‹¼é¯–',
 			'url' => 'http://acjinrou.blue-sky-server.com/',
 			'encode' => 'EUC-JP',
 			'separator' => '',
@@ -232,135 +235,135 @@ class SharedServerConfig extends ExternalLinkBuilder{
 			   );
 }
 
-//¥¢¥¤¥³¥óÅĞÏ¿ÀßÄê
+//ã‚¢ã‚¤ã‚³ãƒ³ç™»éŒ²è¨­å®š
 class UserIcon extends UserIconBase{
-  var $disable_upload = false; //true; //¥¢¥¤¥³¥ó¤Î¥¢¥Ã¥×¥í¡¼¥É¤ÎÄä»ßÀßÄê (true:Ää»ß¤¹¤ë / false:¤·¤Ê¤¤)
-  var $name   = 30;    //¥¢¥¤¥³¥óÌ¾¤Ë¤Ä¤±¤é¤ì¤ëÊ¸»ú¿ô(È¾³Ñ)
-  var $size   = 15360; //¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤ë¥¢¥¤¥³¥ó¥Õ¥¡¥¤¥ë¤ÎºÇÂçÍÆÎÌ(Ã±°Ì¡§¥Ğ¥¤¥È)
-  var $width  = 45;    //¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤ë¥¢¥¤¥³¥ó¤ÎºÇÂçÉı
-  var $height = 45;    //¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤ë¥¢¥¤¥³¥ó¤ÎºÇÂç¹â¤µ
-  var $number = 1000;  //ÅĞÏ¿¤Ç¤­¤ë¥¢¥¤¥³¥ó¤ÎºÇÂç¿ô
-  var $password = 'xxxx'; //¥¢¥¤¥³¥óÊÔ½¸¥Ñ¥¹¥ï¡¼¥É
-  var $cation = ''; //Ãí°Õ»ö¹à (¶õ¤Ê¤é²¿¤âÉ½¼¨¤·¤Ê¤¤)
+  var $disable_upload = false; //true; //ã‚¢ã‚¤ã‚³ãƒ³ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã®åœæ­¢è¨­å®š (true:åœæ­¢ã™ã‚‹ / false:ã—ãªã„)
+  var $name   = 30;    //ã‚¢ã‚¤ã‚³ãƒ³åã«ã¤ã‘ã‚‰ã‚Œã‚‹æ–‡å­—æ•°(åŠè§’)
+  var $size   = 15360; //ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã§ãã‚‹ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¤§å®¹é‡(å˜ä½ï¼šãƒã‚¤ãƒˆ)
+  var $width  = 45;    //ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã§ãã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®æœ€å¤§å¹…
+  var $height = 45;    //ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã§ãã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®æœ€å¤§é«˜ã•
+  var $number = 1000;  //ç™»éŒ²ã§ãã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®æœ€å¤§æ•°
+  var $password = 'xxxx'; //ã‚¢ã‚¤ã‚³ãƒ³ç·¨é›†ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+  var $cation = ''; //æ³¨æ„äº‹é … (ç©ºãªã‚‰ä½•ã‚‚è¡¨ç¤ºã—ãªã„)
 }
 
-//¥á¥Ë¥å¡¼¥ê¥ó¥¯É½¼¨ÀßÄê
+//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒªãƒ³ã‚¯è¡¨ç¤ºè¨­å®š
 class MenuLinkConfig extends MenuLinkConfigBase{
   var $list = array('SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
-		    '³«È¯¡¦¥Ğ¥°Êó¹ğ¥¹¥ì' =>
+		    'é–‹ç™ºãƒ»ãƒã‚°å ±å‘Šã‚¹ãƒ¬' =>
 		    'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',
-		    '¿·Ìò¿¦Äó°Æ¥¹¥ì' =>
+		    'æ–°å½¹è·ææ¡ˆã‚¹ãƒ¬' =>
 		    'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50'
 		    );
-  /* ÁáÉÄ»ªÍÑ
-  var $list = array('ËÜ¥¹¥ì (¹ğÃÎ¤Ï¤³¤³)' =>
+  /* æ—©è‹—é¯–ç”¨
+  var $list = array('æœ¬ã‚¹ãƒ¬ (å‘ŠçŸ¥ã¯ã“ã“)' =>
 		    'http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1275564772/l50',
 		    'Wiki' => 'http://www27.atwiki.jp/umigamejinnro/',
-		    '·Ç¼¨ÈÄ' => 'http://jbbs.livedoor.jp/netgame/2829/',
-		    '¥Á¥ã¥Ã¥È¥ë¡¼¥à' => 'http://umigamejinrou.chatx2.whocares.jp/',
-		    //'µì¥¦¥ß¥¬¥á»¨ÃÌÂ¼' => 'http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi',
-		    'È¿¾Ê¡¦µÄÏÀÍÑ¥¹¥ì' =>
+		    'æ²ç¤ºæ¿' => 'http://jbbs.livedoor.jp/netgame/2829/',
+		    'ãƒãƒ£ãƒƒãƒˆãƒ«ãƒ¼ãƒ ' => 'http://umigamejinrou.chatx2.whocares.jp/',
+		    //'æ—§ã‚¦ãƒŸã‚¬ãƒ¡é›‘è«‡æ‘' => 'http://konoharu.sakura.ne.jp/umigame/yychat/yychat.cgi',
+		    'åçœãƒ»è­°è«–ç”¨ã‚¹ãƒ¬' =>
 		    'http://jbbs.livedoor.jp/bbs/read.cgi/game/43883/1224519836/l50'
 		    );
   */
   var $add_list = array(
-    '¼°¿À¸¦·Ï' => array('¥Á¥ë¥Î»ª' => 'http://www12.atpages.jp/cirno/',
-			'Eva »ª' => 'http://jinrou.kuroienogu.net/',
+    'å¼ç¥ç ”ç³»' => array('ãƒãƒ«ãƒé¯–' => 'http://www12.atpages.jp/cirno/',
+			'Eva é¯–' => 'http://jinrou.kuroienogu.net/',
 			'SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
-			'³«È¯¡¦¥Ğ¥°Êó¹ğ¥¹¥ì' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',
-			'¿·Ìò¿¦Äó°Æ¥¹¥ì' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50'),
-    'ÅìÊı¥¦¥ß¥¬¥á·Ï' => array('ÁáÉÄ»ª' => 'http://alicegame.dip.jp/sanae/',
+			'é–‹ç™ºãƒ»ãƒã‚°å ±å‘Šã‚¹ãƒ¬' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',
+			'æ–°å½¹è·ææ¡ˆã‚¹ãƒ¬' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50'),
+    'æ±æ–¹ã‚¦ãƒŸã‚¬ãƒ¡ç³»' => array('æ—©è‹—é¯–' => 'http://alicegame.dip.jp/sanae/',
 			      'Wiki' => 'http://www27.atwiki.jp/umigamejinnro/',
-			      '·Ç¼¨ÈÄ' => 'http://jbbs.livedoor.jp/netgame/2829/',
-			      '¥Á¥ã¥Ã¥È¥ë¡¼¥à' => 'http://umigamejinrou.chatx2.whocares.jp/'),
-    'ÅìÊı¥¦¥ß¥¬¥á·ÏÍ½È÷' => array(//'¤µ¤È¤ê»ª' => 'http://satori.crz.jp/',
-				  'ºéÌë»ª' => 'http://www7.atpages.jp/izayoi398/'),
-    '¤ä¤ëÉ×·Ï' => array('Î®ÀĞËå¼Ô»ª' => 'http://www21.atpages.jp/sasugasister/',
-			'¿éÀ±ÀĞ»ª' => 'http://alicegame.dip.jp/suisei/',
-			'ÁóÀ±ÀĞ¥Æ¥¹¥È»ª' => 'http://alicegame.dip.jp/sousei/',
+			      'æ²ç¤ºæ¿' => 'http://jbbs.livedoor.jp/netgame/2829/',
+			      'ãƒãƒ£ãƒƒãƒˆãƒ«ãƒ¼ãƒ ' => 'http://umigamejinrou.chatx2.whocares.jp/'),
+    'æ±æ–¹ã‚¦ãƒŸã‚¬ãƒ¡ç³»äºˆå‚™' => array(//'ã•ã¨ã‚Šé¯–' => 'http://satori.crz.jp/',
+				  'å’²å¤œé¯–' => 'http://www7.atpages.jp/izayoi398/'),
+    'ã‚„ã‚‹å¤«ç³»' => array('æµçŸ³å¦¹è€…é¯–' => 'http://www21.atpages.jp/sasugasister/',
+			'ç¿ æ˜ŸçŸ³é¯–' => 'http://alicegame.dip.jp/suisei/',
+			'è’¼æ˜ŸçŸ³ãƒ†ã‚¹ãƒˆé¯–' => 'http://alicegame.dip.jp/sousei/',
 			'Wiki' => 'http://www37.atwiki.jp/yaruomura/',
-			'·Ç¼¨ÈÄ' => 'http://jbbs.livedoor.jp/game/48159/',
-			'Î®ÀĞ»ªÍÑ¥Ä¡¼¥ë' => 'http://www.petitnoir.net/zinro/sasuga.html',
-			'Î®ÀĞÀïÀÓ¸¡º÷' => 'http://www.petitnoir.net/zinro/sasuga/yaruomura.php'),
-    '¤ä¤ëÉ×·ÏÍ½È÷' => array('Î®ÀĞ·»Äï»ª' => 'http://www12.atpages.jp/yaruo/jinro/',
-			    'Î®ÀĞÄï¼Ô»ª' => 'http://www16.atpages.jp/sasugabros/',
-			    'é¬é¯»ĞËå»ª' => 'http://www13.atpages.jp/yaranai/',
-			    '¿å¶ä»ª' => 'http://www13.atpages.jp/suigintou/',
-			    '¶â»å¿ıÊİ´É¸Ë' => 'http://www15.atpages.jp/kanaria/',
-			    'À¤µªËö»ª' => 'http://www14.atpages.jp/mmr1/'),
-    'ÅìÊı±¢ÍÛÅ´·Ï' => array('¥Ğ¡¼¥Ü¥ó¥Ï¥¦¥¹»ª' => 'http://bourbonhouse.xsrv.jp/jinro/',
-			'Î¢À¤³¦»ª' => 'http://dynamis.xsrv.jp/jinro/',
+			'æ²ç¤ºæ¿' => 'http://jbbs.livedoor.jp/game/48159/',
+			'æµçŸ³é¯–ç”¨ãƒ„ãƒ¼ãƒ«' => 'http://www.petitnoir.net/zinro/sasuga.html',
+			'æµçŸ³æˆ¦ç¸¾æ¤œç´¢' => 'http://www.petitnoir.net/zinro/sasuga/yaruomura.php'),
+    'ã‚„ã‚‹å¤«ç³»äºˆå‚™' => array('æµçŸ³å…„å¼Ÿé¯–' => 'http://www12.atpages.jp/yaruo/jinro/',
+			    'æµçŸ³å¼Ÿè€…é¯–' => 'http://www16.atpages.jp/sasugabros/',
+			    'è–”è–‡å§‰å¦¹é¯–' => 'http://www13.atpages.jp/yaranai/',
+			    'æ°´éŠ€é¯–' => 'http://www13.atpages.jp/suigintou/',
+			    'é‡‘ç³¸é›€ä¿ç®¡åº«' => 'http://www15.atpages.jp/kanaria/',
+			    'ä¸–ç´€æœ«é¯–' => 'http://www14.atpages.jp/mmr1/'),
+    'æ±æ–¹é™°é™½é‰„ç³»' => array('ãƒãƒ¼ãƒœãƒ³ãƒã‚¦ã‚¹é¯–' => 'http://bourbonhouse.xsrv.jp/jinro/',
+			'è£ä¸–ç•Œé¯–' => 'http://dynamis.xsrv.jp/jinro/',
 			'Wiki' => 'http://www29.atwiki.jp/onmyoutetu-jinro/'),
-    'ÅìÊı±¢ÍÛÅ´·ÏÍ½È÷' => array('µì¥Ğ¡¼¥Ü¥ó¥Ï¥¦¥¹»ª' => 'http://www16.atpages.jp/bourbonjinro/'),
-    'iM@S·Ï' => array('¾®Ä»»ª' => 'http://kiterew.tv/jinro/',
+    'æ±æ–¹é™°é™½é‰„ç³»äºˆå‚™' => array('æ—§ãƒãƒ¼ãƒœãƒ³ãƒã‚¦ã‚¹é¯–' => 'http://www16.atpages.jp/bourbonjinro/'),
+    'iM@Sç³»' => array('å°é³¥é¯–' => 'http://kiterew.tv/jinro/',
 		      'Wiki' => 'http://www38.atwiki.jp/ijinrou/'),
-    '¥Ğ¡¼¥Ü¥ó»ª·Ï' => array('¥Ğ¡¼¥Ü¥ó»ª' => 'http://www.freedom.xii.jp/jinro/',
-			    'Ç­Ëô»ª' => 'http://jinro.blue-sky-server.com/',
+    'ãƒãƒ¼ãƒœãƒ³é¯–ç³»' => array('ãƒãƒ¼ãƒœãƒ³é¯–' => 'http://www.freedom.xii.jp/jinro/',
+			    'çŒ«åˆé¯–' => 'http://jinro.blue-sky-server.com/',
 			    'Wiki' => 'http://wikiwiki.jp/jinro/',
-			    '·Ç¼¨ÈÄ' => 'http://jbbs.livedoor.jp/netgame/4598/'),
-    'AC ¿ÍÏµ·Ï' => array('AC ¿ÍÏµ»ª' => 'http://acjinrou.blue-sky-server.com/',
-			    '·Ç¼¨ÈÄ' => 'http://acjinrou.bbs.fc2.com/'),
+			    'æ²ç¤ºæ¿' => 'http://jbbs.livedoor.jp/netgame/4598/'),
+    'AC äººç‹¼ç³»' => array('AC äººç‹¼é¯–' => 'http://acjinrou.blue-sky-server.com/',
+			    'æ²ç¤ºæ¿' => 'http://acjinrou.bbs.fc2.com/'),
 			);
 }
 
-//¹ğÃÎ¥¹¥ì¥Ã¥ÉÉ½¼¨ÀßÄê
+//å‘ŠçŸ¥ã‚¹ãƒ¬ãƒƒãƒ‰è¡¨ç¤ºè¨­å®š
 class BBSConfig extends BBSConfigBase{
-  var $disable = true; //É½¼¨Ìµ¸úÀßÄê (true:Ìµ¸ú¤Ë¤¹¤ë / false:¤·¤Ê¤¤)
-  var $title = '¹ğÃÎ¥¹¥ì¥Ã¥É¾ğÊó'; //É½¼¨Ì¾
-  var $raw_url = 'http://jbbs.livedoor.jp/bbs/rawmode.cgi'; //¥Ç¡¼¥¿¼èÆÀÍÑ URL
-  var $view_url = 'http://jbbs.livedoor.jp/bbs/read.cgi'; //É½¼¨ÍÑ URL
-  var $thread = '/game/43883/1260623018/'; //¥¹¥ì¥Ã¥É¤Î¥¢¥É¥ì¥¹
-  var $encode = 'EUC-JP'; //¥¹¥ì¥Ã¥É¤ÎÊ¸»ú¥³¡¼¥É
-  var $size = 5; //É½¼¨¤¹¤ë¥ì¥¹¤Î¿ô
+  var $disable = true; //è¡¨ç¤ºç„¡åŠ¹è¨­å®š (true:ç„¡åŠ¹ã«ã™ã‚‹ / false:ã—ãªã„)
+  var $title = 'å‘ŠçŸ¥ã‚¹ãƒ¬ãƒƒãƒ‰æƒ…å ±'; //è¡¨ç¤ºå
+  var $raw_url = 'http://jbbs.livedoor.jp/bbs/rawmode.cgi'; //ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨ URL
+  var $view_url = 'http://jbbs.livedoor.jp/bbs/read.cgi'; //è¡¨ç¤ºç”¨ URL
+  var $thread = '/game/43883/1260623018/'; //ã‚¹ãƒ¬ãƒƒãƒ‰ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+  var $encode = 'EUC-JP'; //ã‚¹ãƒ¬ãƒƒãƒ‰ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
+  var $size = 5; //è¡¨ç¤ºã™ã‚‹ãƒ¬ã‚¹ã®æ•°
 }
 
-//ÁÇºà¾ğÊóÀßÄê
+//ç´ ææƒ…å ±è¨­å®š
 class CopyrightConfig extends CopyrightConfigBase{
-  //¥·¥¹¥Æ¥àÉ¸½à¾ğÊó
-  var $list = array('¥·¥¹¥Æ¥à' =>
-		    array('PHP4 + MYSQL¥¹¥¯¥ê¥×¥È' => 'http://f45.aaa.livedoor.jp/~netfilms/',
-			  'mbstring¥¨¥ß¥å¥ì¡¼¥¿' => 'http://sourceforge.jp/projects/mbemulator/'
+  //ã‚·ã‚¹ãƒ†ãƒ æ¨™æº–æƒ…å ±
+  var $list = array('ã‚·ã‚¹ãƒ†ãƒ ' =>
+		    array('PHP4 + MYSQLã‚¹ã‚¯ãƒªãƒ—ãƒˆ' => 'http://f45.aaa.livedoor.jp/~netfilms/',
+			  'mbstringã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿' => 'http://sourceforge.jp/projects/mbemulator/'
 			  ),
-		    '¼Ì¿¿ÁÇºà' =>
-		    array('Å·¤Î·çÊÒ' => 'http://keppen.web.infoseek.co.jp/'),
-		    '¥Õ¥©¥ó¥ÈÁÇºà' =>
-		    array('¤¢¤º¤­¥Õ¥©¥ó¥È' => 'http://azukifont.mints.ne.jp/')
+		    'å†™çœŸç´ æ' =>
+		    array('å¤©ã®æ¬ ç‰‡' => 'http://keppen.web.infoseek.co.jp/'),
+		    'ãƒ•ã‚©ãƒ³ãƒˆç´ æ' =>
+		    array('ã‚ãšããƒ•ã‚©ãƒ³ãƒˆ' => 'http://azukifont.mints.ne.jp/')
 		    );
 
-  //ÄÉ²Ã¾ğÊó
-  var $add_list = array('¥·¥¹¥Æ¥à' =>
-			array('TwitterÅê¹Æ¥â¥¸¥å¡¼¥ë' =>
+  //è¿½åŠ æƒ…å ±
+  var $add_list = array('ã‚·ã‚¹ãƒ†ãƒ ' =>
+			array('TwitteræŠ•ç¨¿ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«' =>
 			      'http://www.transrain.net/product/services_twitter/'),
-			'¼Ì¿¿ÁÇºà' =>
-			array('Le moineau - ¤¹¤º¤á¤Î¤ª¤ä¤É -' => 'http://moineau.fc2web.com/'),
-			'¥¢¥¤¥³¥óÁÇºà' =>
-			array('²Æ·Ö' => 'http://natuhotaru.yukihotaru.com/',
-			      '¥¸¥®¥¶¥®¤Î¤µ¤¤¤Ï¤Æ' => 'http://jigizagi.s57.xrea.com/')
+			'å†™çœŸç´ æ' =>
+			array('Le moineau - ã™ãšã‚ã®ãŠã‚„ã© -' => 'http://moineau.fc2web.com/'),
+			'ã‚¢ã‚¤ã‚³ãƒ³ç´ æ' =>
+			array('å¤è›' => 'http://natuhotaru.yukihotaru.com/',
+			      'ã‚¸ã‚®ã‚¶ã‚®ã®ã•ã„ã¯ã¦' => 'http://jigizagi.s57.xrea.com/')
 			);
 }
 
-//-- ³«È¯ÍÑ¥½¡¼¥¹¥¢¥Ã¥×¥í¡¼¥ÉÀßÄê --//
+//-- é–‹ç™ºç”¨ã‚½ãƒ¼ã‚¹ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰è¨­å®š --//
 class SourceUploadConfig{
-  var $disable = false; //Ìµ¸úÀßÄê <¥¢¥Ã¥×¥í¡¼¥É¤ò [true:Ìµ¸ú / false:Í­¸ú] ¤Ë¤¹¤ë>
+  var $disable = false; //ç„¡åŠ¹è¨­å®š <ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã‚’ [true:ç„¡åŠ¹ / false:æœ‰åŠ¹] ã«ã™ã‚‹>
 
-  //¥½¡¼¥¹¥¢¥Ã¥×¥í¡¼¥É¥Õ¥©¡¼¥à¤Î¥Ñ¥¹¥ï¡¼¥É
+  //ã‚½ãƒ¼ã‚¹ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
   var $password = 'upload';
 
-  //¥Õ¥©¡¼¥à¤ÎºÇÂçÊ¸»ú¿ô¤ÈÉ½¼¨Ì¾
-  var $form_list = array('name'     => array('size' => 20, 'label' => '¥Õ¥¡¥¤¥ëÌ¾'),
-			 'caption'  => array('size' => 80, 'label' => '¥Õ¥¡¥¤¥ë¤ÎÀâÌÀ'),
-			 'user'     => array('size' => 20, 'label' => 'ºîÀ®¼ÔÌ¾'),
-			 'password' => array('size' => 20, 'label' => '¥Ñ¥¹¥ï¡¼¥É'));
+  //ãƒ•ã‚©ãƒ¼ãƒ ã®æœ€å¤§æ–‡å­—æ•°ã¨è¡¨ç¤ºå
+  var $form_list = array('name'     => array('size' => 20, 'label' => 'ãƒ•ã‚¡ã‚¤ãƒ«å'),
+			 'caption'  => array('size' => 80, 'label' => 'ãƒ•ã‚¡ã‚¤ãƒ«ã®èª¬æ˜'),
+			 'user'     => array('size' => 20, 'label' => 'ä½œæˆè€…å'),
+			 'password' => array('size' => 20, 'label' => 'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰'));
 
-  //ºÇÂç¥Õ¥¡¥¤¥ë¥µ¥¤¥º (¥Ğ¥¤¥È)
+  //æœ€å¤§ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º (ãƒã‚¤ãƒˆ)
   var $max_size = 10485760; //10 Mbyte
 }
 
-//-- Twitter Åê¹ÆÀßÄê --//
+//-- Twitter æŠ•ç¨¿è¨­å®š --//
 class TwitterConfig extends TwitterConfigBase{
-  var $disable = true; //Twitter Åê¹ÆÄä»ßÀßÄê (true:Ää»ß¤¹¤ë / false:¤·¤Ê¤¤)
-  var $server = 'localhost'; //¥µ¡¼¥ĞÌ¾
-  var $hash = ''; //¥Ï¥Ã¥·¥å¥¿¥° (Ç¤°Õ)
-  var $user = 'xxxx'; //¥æ¡¼¥¶Ì¾
-  var $password = 'xxxx'; //¥Ñ¥¹¥ï¡¼¥É
+  var $disable = true; //Twitter æŠ•ç¨¿åœæ­¢è¨­å®š (true:åœæ­¢ã™ã‚‹ / false:ã—ãªã„)
+  var $server = 'localhost'; //ã‚µãƒ¼ãƒå
+  var $hash = ''; //ãƒãƒƒã‚·ãƒ¥ã‚¿ã‚° (ä»»æ„)
+  var $user = 'xxxx'; //ãƒ¦ãƒ¼ã‚¶å
+  var $password = 'xxxx'; //ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 }

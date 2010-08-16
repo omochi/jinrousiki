@@ -1,40 +1,40 @@
 <?php
-//-- Ìò¿¦¥³¥ó¥È¥í¡¼¥é¡¼¥¯¥é¥¹ --//
+//-- å½¹è·ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚¯ãƒ©ã‚¹ --//
 class RoleManager{
   var $path;
   var $loaded;
   var $actor;
 
-  //È¯¸ÀÉ½¼¨
+  //ç™ºè¨€è¡¨ç¤º
   var $talk_list = array('blinder', 'earplug', 'speaker');
 
-  //È¯¸ÀÊÑ´¹
+  //ç™ºè¨€å¤‰æ›
   var $say_list = array('rainbow', 'weekly', 'grassy', 'invisible', 'mower', 'silent',
 			'side_reverse', 'line_reverse', 'actor');
 
-  //À¼ÎÌ
+  //å£°é‡
   var $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
 			  'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
-  //½è·ºÅêÉ¼
+  //å‡¦åˆ‘æŠ•ç¥¨
   var $vote_do_list = array('authority', 'critical_voter', 'random_voter', 'watcher', 'panelist');
 
-  //½è·ºÆÀÉ¼
+  //å‡¦åˆ‘å¾—ç¥¨
   var $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
 			  'random_luck');
 
-  //½è·ºÅêÉ¼·ÏÇ½ÎÏ¼Ô
+  //å‡¦åˆ‘æŠ•ç¥¨ç³»èƒ½åŠ›è€…
   var $vote_ability_list = array('saint', 'executor', 'agitate_mad', 'impatience', 'authority',
 				 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
 
-  //È¿µÕ¼ÔÈ½Äê
+  //åé€†è€…åˆ¤å®š
   var $rebel_list = array('rebel');
 
-  //½è·º¼Ô·èÄê (½çÈÖ°ÍÂ¸¤¢¤ê)
+  //å‡¦åˆ‘è€…æ±ºå®š (é †ç•ªä¾å­˜ã‚ã‚Š)
   var $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
 			      'executor', 'saint', 'agitate_mad');
 
-  //¥·¥ç¥Ã¥¯»à
+  //ã‚·ãƒ§ãƒƒã‚¯æ­»
   var $sudden_death_list = array('febris', 'death_warrant', 'chicken', 'rabbit', 'perverseness',
 				 'flattery', 'impatience', 'celibacy', 'nervy', 'androphobia',
 				 'gynophobia', 'panelist');
@@ -83,7 +83,7 @@ class RoleManager{
 
   function GetFilter($list){
     $stack = array();
-    foreach($list as $key){ //½çÈÖ°ÍÂ¸¤¬¤¢¤ë¤Î¤ÇÇÛÎó´Ø¿ô¤ò»È¤ï¤Ê¤¤¤Ç½èÍý¤¹¤ë
+    foreach($list as $key){ //é †ç•ªä¾å­˜ãŒã‚ã‚‹ã®ã§é…åˆ—é–¢æ•°ã‚’ä½¿ã‚ãªã„ã§å‡¦ç†ã™ã‚‹
       if(is_object(($class = $this->loaded->class[$key]))) $stack[] = $class;
     }
     return $stack;
@@ -93,14 +93,14 @@ class RoleManager{
     global $SELF;
 
     switch($role){
-    case 'common': //¶¦Í­¼Ô¤Î¤µ¤µ¤ä¤­
-      if($SELF->IsRole('dummy_common', 'deep_sleep')) return false; //Ì´¶¦Í­¼Ô¡¦Çú¿ç¼Ô¤Ë¤Ï¸«¤¨¤Ê¤¤
+    case 'common': //å…±æœ‰è€…ã®ã•ã•ã‚„ã
+      if($SELF->IsRole('dummy_common', 'deep_sleep')) return false; //å¤¢å…±æœ‰è€…ãƒ»çˆ†ç¡è€…ã«ã¯è¦‹ãˆãªã„
       $class = 'talk-common';
-      return '¶¦Í­¼Ô¤Î¾®À¼';
+      return 'å…±æœ‰è€…ã®å°å£°';
 
-    case 'wolf': //¿ÍÏµ¤Î±óËÊ¤¨
-      if($SELF->IsRole('mind_scanner', 'deep_sleep')) return false; //¤µ¤È¤ê¡¦Çú¿ç¼Ô¤Ë¤Ï¸«¤¨¤Ê¤¤
-      return 'Ïµ¤Î±óËÊ¤¨';
+    case 'wolf': //äººç‹¼ã®é å ãˆ
+      if($SELF->IsRole('mind_scanner', 'deep_sleep')) return false; //ã•ã¨ã‚Šãƒ»çˆ†ç¡è€…ã«ã¯è¦‹ãˆãªã„
+      return 'ç‹¼ã®é å ãˆ';
     }
     return false;
   }
@@ -119,15 +119,15 @@ class RoleManager{
   }
 }
 
-//-- Ìò¿¦¤Î´ðÄì¥¯¥é¥¹ --//
+//-- å½¹è·ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class Role{
   function Role(){ $this->__construct(); }
   function __construct(){}
 
-  //-- È½ÄêÍÑ´Ø¿ô --//
+  //-- åˆ¤å®šç”¨é–¢æ•° --//
   function Ignored(){
     global $ROOM, $ROLES;
-    //return false; //¥Æ¥¹¥ÈÍÑ
+    //return false; //ãƒ†ã‚¹ãƒˆç”¨
     return ! ($ROOM->IsPlaying() && $ROLES->actor->IsLive());
   }
 
@@ -137,7 +137,7 @@ class Role{
   }
 }
 
-//-- È¯¸À¥Õ¥£¥ë¥¿¥ê¥ó¥°ÍÑ³ÈÄ¥¥¯¥é¥¹ --//
+//-- ç™ºè¨€ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ç”¨æ‹¡å¼µã‚¯ãƒ©ã‚¹ --//
 class RoleTalkFilter extends Role{
   var $volume_list = array('weak', 'normal', 'strong');
 

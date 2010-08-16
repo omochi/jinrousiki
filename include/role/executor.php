@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡¼¹¹Ô¼Ô (executor)
-  ¡û»ÅÍÍ
-  ¡¦½è·ºÅêÉ¼¤¬ÙÉ¹³¤·¤¿¤é¼«Ê¬¤ÎÅêÉ¼Àè¤¬ÈóÂ¼¿Í¤Î¾ì¹ç¤Î¤ß½è·º¤µ¤ì¤ë
+  â—†åŸ·è¡Œè€… (executor)
+  â—‹ä»•æ§˜
+  ãƒ»å‡¦åˆ‘æŠ•ç¥¨ãŒæ‹®æŠ—ã—ãŸã‚‰è‡ªåˆ†ã®æŠ•ç¥¨å…ˆãŒéæ‘äººã®å ´åˆã®ã¿å‡¦åˆ‘ã•ã‚Œã‚‹
 */
 class Role_executor extends Role{
   function Role_executor(){ $this->__construct(); }
@@ -20,15 +20,15 @@ class Role_executor extends Role{
 
     if($uname != '' || ! is_array($ROLES->stack->executor)) return;
     $stack = array();
-    foreach($ROLES->stack->executor as $actor_uname){ //ºÇÂ¿ÆÀÉ¼¼Ô¤ËÅêÉ¼¤·¤¿¼¹¹Ô¼Ô¤ÎÅêÉ¼Àè¤ò¼ı½¸
+    foreach($ROLES->stack->executor as $actor_uname){ //æœ€å¤šå¾—ç¥¨è€…ã«æŠ•ç¥¨ã—ãŸåŸ·è¡Œè€…ã®æŠ•ç¥¨å…ˆã‚’åé›†
       $target = $USERS->ByVirtualUname($ROOM->vote[$actor_uname]['target_uname']);
       if(in_array($target->uname, $ROLES->stack->max_voted) &&
-	 $target->GetCamp(true) != 'human'){ //ºÇÂ¿ÆÀÉ¼¼Ô¥ê¥¹¥È¤Ï²¾ÁÛ¥æ¡¼¥¶
+	 $target->GetCamp(true) != 'human'){ //æœ€å¤šå¾—ç¥¨è€…ãƒªã‚¹ãƒˆã¯ä»®æƒ³ãƒ¦ãƒ¼ã‚¶
 	$stack[$target->uname] = true;
       }
     }
     //PrintData($stack);
-    //ÂĞ¾İ¤ò°ì¿Í¤Ë¸ÇÄê¤Ç¤­¤ë»ş¤Î¤ßÍ­¸ú
+    //å¯¾è±¡ã‚’ä¸€äººã«å›ºå®šã§ãã‚‹æ™‚ã®ã¿æœ‰åŠ¹
     if(count($stack) == 1) $uname = array_shift(array_keys($stack));
   }
 }

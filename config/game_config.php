@@ -1,313 +1,313 @@
 <?php
-//-- Â¼¥á¥ó¥Æ¥Ê¥ó¥¹¡¦ºîÀ®ÀßÄê --//
+//-- æ‘ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹ãƒ»ä½œæˆè¨­å®š --//
 class RoomConfig{
-  //Â¼Æâ¤ÎºÇ¸å¤ÎÈ¯¸À¤«¤éÇÑÂ¼¤Ë¤Ê¤ë¤Ş¤Ç¤Î»ş´Ö (ÉÃ)
-  //(¤¢¤Ş¤êÃ»¤¯¤¹¤ë¤ÈÄÀÌÛÅù¤È¶¥¹ç¤¹¤ë²ÄÇ½À­¤¢¤ê)
+  //æ‘å†…ã®æœ€å¾Œã®ç™ºè¨€ã‹ã‚‰å»ƒæ‘ã«ãªã‚‹ã¾ã§ã®æ™‚é–“ (ç§’)
+  //(ã‚ã¾ã‚ŠçŸ­ãã™ã‚‹ã¨æ²ˆé»™ç­‰ã¨ç«¶åˆã™ã‚‹å¯èƒ½æ€§ã‚ã‚Š)
   var $die_room = 1200;
-  #var $die_room = 12000; //¥Æ¥¹¥ÈÍÑ
+  #var $die_room = 12000; //ãƒ†ã‚¹ãƒˆç”¨
 
-  //ºÇÂçÊÂÎó¥×¥ì¥¤²ÄÇ½Â¼¿ô
+  //æœ€å¤§ä¸¦åˆ—ãƒ—ãƒ¬ã‚¤å¯èƒ½æ‘æ•°
   var $max_active_room = 4;
 
-  //¼¡¤ÎÂ¼¤òÎ©¤Æ¤é¤ì¤ë¤Ş¤Ç¤ÎÂÔ¤Á»ş´Ö (ÉÃ)
+  //æ¬¡ã®æ‘ã‚’ç«‹ã¦ã‚‰ã‚Œã‚‹ã¾ã§ã®å¾…ã¡æ™‚é–“ (ç§’)
   var $establish_wait = 120;
 
-  //½ªÎ»¤·¤¿Â¼¤Î¥æ¡¼¥¶¤Î¥»¥Ã¥·¥ç¥ó ID ¥Ç¡¼¥¿¤ò¥¯¥ê¥¢¤¹¤ë¤Ş¤Ç¤Î»ş´Ö (ÉÃ)
-  //¤³¤Î»ş´ÖÆâ¤Ç¤¢¤ì¤Ğ¡¢²áµî¥í¥°¥Ú¡¼¥¸¤ËºÆÆşÂ¼¤Î¥ê¥ó¥¯¤¬½Ğ¸½¤·¤Ş¤¹
-  var $clear_session_id = 86400; //24»ş´Ö
+  //çµ‚äº†ã—ãŸæ‘ã®ãƒ¦ãƒ¼ã‚¶ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ ID ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ã¾ã§ã®æ™‚é–“ (ç§’)
+  //ã“ã®æ™‚é–“å†…ã§ã‚ã‚Œã°ã€éå»ãƒ­ã‚°ãƒšãƒ¼ã‚¸ã«å†å…¥æ‘ã®ãƒªãƒ³ã‚¯ãŒå‡ºç¾ã—ã¾ã™
+  var $clear_session_id = 86400; //24æ™‚é–“
 
-  //ºÇÂç¿Í¿ô¤Î¥ê¥¹¥È (RoomImage->max_user_list ¤ÈÏ¢Æ°¤µ¤»¤ë ¢ª ¸½ºß¤ÏÉÔÍ×)
+  //æœ€å¤§äººæ•°ã®ãƒªã‚¹ãƒˆ (RoomImage->max_user_list ã¨é€£å‹•ã•ã›ã‚‹ â†’ ç¾åœ¨ã¯ä¸è¦)
   var $max_user_list = array(8, 16, 22, 32, 50);
-  var $default_max_user = 22; //¥Ç¥Õ¥©¥ë¥È¤ÎºÇÂç¿Í¿ô ($max_user_list ¤Ë¤¢¤ëÃÍ¤òÆş¤ì¤ë¤³¤È)
+  var $default_max_user = 22; //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æœ€å¤§äººæ•° ($max_user_list ã«ã‚ã‚‹å€¤ã‚’å…¥ã‚Œã‚‹ã“ã¨)
 
   //-- OutputCreateRoom() --//
-  var $room_name = 60; //Â¼Ì¾¤ÎºÇÂçÊ¸»ú¿ô
-  var $room_comment = 60; //Â¼¤ÎÀâÌÀ¤ÎºÇÂçÊ¸»ú¿ô
-  var $ng_word = '/http:\/\//i'; //ÆşÎÏ¶Ø»ßÊ¸»úÎó (Àµµ¬É½¸½)
+  var $room_name = 60; //æ‘åã®æœ€å¤§æ–‡å­—æ•°
+  var $room_comment = 60; //æ‘ã®èª¬æ˜ã®æœ€å¤§æ–‡å­—æ•°
+  var $ng_word = '/http:\/\//i'; //å…¥åŠ›ç¦æ­¢æ–‡å­—åˆ— (æ­£è¦è¡¨ç¾)
 
-  //³Æ¥ª¥×¥·¥ç¥ó¤òÍ­¸ú¤Ë [true:¤¹¤ë / false:¤·¤Ê¤¤]
-  //¥Ç¥Õ¥©¥ë¥È¤Ç¥Á¥§¥Ã¥¯¤ò [true:¤Ä¤±¤ë / false:¤Ä¤±¤Ê¤¤]
-  var $wish_role = true; //Ìò³ä´õË¾À©
+  //å„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’æœ‰åŠ¹ã« [true:ã™ã‚‹ / false:ã—ãªã„]
+  //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ãƒã‚§ãƒƒã‚¯ã‚’ [true:ã¤ã‘ã‚‹ / false:ã¤ã‘ãªã„]
+  var $wish_role = true; //å½¹å‰²å¸Œæœ›åˆ¶
   var $default_wish_role = false;
 
-  var $real_time = true; //¥ê¥¢¥ë¥¿¥¤¥àÀ© (½é´üÀßÄê¤Ï TimeConfig->default_day/night »²¾È)
+  var $real_time = true; //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ (åˆæœŸè¨­å®šã¯ TimeConfig->default_day/night å‚ç…§)
   var $default_real_time = true;
 
-  var $open_vote = true; //ÅêÉ¼¤·¤¿É¼¿ô¤ò¸øÉ½¤¹¤ë
+  var $open_vote = true; //æŠ•ç¥¨ã—ãŸç¥¨æ•°ã‚’å…¬è¡¨ã™ã‚‹
   var $default_open_vote = false;
 
-  var $open_day = true; //¥ª¡¼¥×¥Ë¥ó¥°¤¢¤ê
+  var $open_day = true; //ã‚ªãƒ¼ãƒ—ãƒ‹ãƒ³ã‚°ã‚ã‚Š
   var $default_open_day = false;
 
-  var $dummy_boy = true; //½éÆü¤ÎÌë¤Ï¿ÈÂå¤ï¤ê·¯
+  var $dummy_boy = true; //åˆæ—¥ã®å¤œã¯èº«ä»£ã‚ã‚Šå›
   var $default_dummy_boy = true;
 
-  var $gerd = true; //¥²¥ë¥È·¯¥â¡¼¥É
+  var $gerd = true; //ã‚²ãƒ«ãƒˆå›ãƒ¢ãƒ¼ãƒ‰
   var $default_gerd = false;
 
-  var $not_open_cast = true; //Îî³¦¤ÇÇÛÌò¤ò¸ø³«¤·¤Ê¤¤
-  var $auto_open_cast = true; //Îî³¦¤ÇÇÛÌò¤ò¼«Æ°¤Ç¸ø³«¤¹¤ë
+  var $not_open_cast = true; //éœŠç•Œã§é…å½¹ã‚’å…¬é–‹ã—ãªã„
+  var $auto_open_cast = true; //éœŠç•Œã§é…å½¹ã‚’è‡ªå‹•ã§å…¬é–‹ã™ã‚‹
 
-  //Îî³¦¥ª¥Õ¥â¡¼¥É¤Î¥Ç¥Õ¥©¥ë¥È [NULL:Ìµ¤· / 'auto':¼«Æ°¥ª¥Õ / 'full': ´°Á´¥ª¥Õ ]
+  //éœŠç•Œã‚ªãƒ•ãƒ¢ãƒ¼ãƒ‰ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ [NULL:ç„¡ã— / 'auto':è‡ªå‹•ã‚ªãƒ• / 'full': å®Œå…¨ã‚ªãƒ• ]
   var $default_not_open_cast = 'auto';
 
-  var $poison = true; //ËäÆÇ¼Ô½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->poison »²¾È)
+  var $poison = true; //åŸ‹æ¯’è€…å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->poison å‚ç…§)
   var $default_poison = true;
 
-  var $assassin = true; //°Å»¦¼Ô½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->assassin »²¾È)
+  var $assassin = true; //æš—æ®ºè€…å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->assassin å‚ç…§)
   var $default_assassin = false;
 
-  var $boss_wolf = true; //ÇòÏµ½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->boss_wolf »²¾È)
+  var $boss_wolf = true; //ç™½ç‹¼å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->boss_wolf å‚ç…§)
   var $default_boss_wolf = false;
 
-  var $poison_wolf = true; //ÆÇÏµ½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->poison_wolf »²¾È)
+  var $poison_wolf = true; //æ¯’ç‹¼å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->poison_wolf å‚ç…§)
   var $default_poison_wolf = false;
 
-  var $possessed_wolf = true; //ØáÏµ½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->possessed_wolf »²¾È)
+  var $possessed_wolf = true; //æ†‘ç‹¼å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->possessed_wolf å‚ç…§)
   var $default_possessed_wolf = false;
 
-  var $sirius_wolf = true; //Å·Ïµ½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->sirius_wolf »²¾È)
+  var $sirius_wolf = true; //å¤©ç‹¼å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->sirius_wolf å‚ç…§)
   var $default_sirius_wolf = false;
 
-  var $cupid = true; //¥­¥å¡¼¥Ô¥Ã¥É½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->cupid »²¾È)
+  var $cupid = true; //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->cupid å‚ç…§)
   var $default_cupid = false;
 
-  var $medium = true; //Öà½÷½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->medium »²¾È)
+  var $medium = true; //å·«å¥³å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->medium å‚ç…§)
   var $default_medium = false;
 
-  var $mania = true; //¿ÀÏÃ¥Ş¥Ë¥¢½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->mania »²¾È)
+  var $mania = true; //ç¥è©±ãƒãƒ‹ã‚¢å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->mania å‚ç…§)
   var $default_mania = false;
 
-  var $decide = true; //·èÄê¼Ô½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->decide »²¾È)
+  var $decide = true; //æ±ºå®šè€…å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->decide å‚ç…§)
   var $default_decide = true;
 
-  var $authority = true; //¸¢ÎÏ¼Ô½Ğ¸½ (É¬Í×¿Í¿ô¤Ï CastConfig->authority »²¾È)
+  var $authority = true; //æ¨©åŠ›è€…å‡ºç¾ (å¿…è¦äººæ•°ã¯ CastConfig->authority å‚ç…§)
   var $default_authority = true;
 
-  var $liar = true; //Ïµ¾¯Ç¯Â¼
+  var $liar = true; //ç‹¼å°‘å¹´æ‘
   var $default_liar = false;
 
-  var $gentleman = true; //¿Â»Î¡¦½Ê½÷Â¼
+  var $gentleman = true; //ç´³å£«ãƒ»æ·‘å¥³æ‘
   var $default_gentleman = false;
 
-  var $sudden_death = true; //µõ¼åÂÎ¼ÁÂ¼
+  var $sudden_death = true; //è™šå¼±ä½“è³ªæ‘
   var $default_sudden_death = false;
 
-  var $perverseness = true; //Å·¼Ùµ´Â¼
+  var $perverseness = true; //å¤©é‚ªé¬¼æ‘
   var $default_perverseness = false;
 
-  var $critical = true; //µŞ½êÂ¼
+  var $critical = true; //æ€¥æ‰€æ‘
   var $default_critical = false;
 
-  var $detective = true; //ÃµÄåÂ¼
+  var $detective = true; //æ¢åµæ‘
   var $default_detective = false;
 
-  var $festival = true; //¤ªº×¤êÂ¼
+  var $festival = true; //ãŠç¥­ã‚Šæ‘
   var $default_festival = false;
 
-  var $replace_human = true; //Â¼¿ÍÃÖ´¹Â¼
-  var $full_mania = true; //¿ÀÏÃ¥Ş¥Ë¥¢Â¼
-  var $full_chiroptera = true; //éşéõÂ¼
-  var $full_cupid = true; //¥­¥å¡¼¥Ô¥Ã¥ÉÂ¼
-  //ÃÖ´¹¥â¡¼¥É¤ÎÆâÌõ (replace_human¡§´ÉÍı¿Í¥«¥¹¥¿¥à¥â¡¼¥É)
+  var $replace_human = true; //æ‘äººç½®æ›æ‘
+  var $full_mania = true; //ç¥è©±ãƒãƒ‹ã‚¢æ‘
+  var $full_chiroptera = true; //è™è æ‘
+  var $full_cupid = true; //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰æ‘
+  //ç½®æ›ãƒ¢ãƒ¼ãƒ‰ã®å†…è¨³ (replace_humanï¼šç®¡ç†äººã‚«ã‚¹ã‚¿ãƒ ãƒ¢ãƒ¼ãƒ‰)
   var $replace_human_list = array('full_mania', 'full_chiroptera', 'full_cupid', 'replace_human');
 
-  var $chaos = true; //°ÇÆé¥â¡¼¥É
-  var $chaosfull = true; //¿¿¡¦°ÇÆé¥â¡¼¥É
-  var $chaos_hyper = true; //Ä¶¡¦°ÇÆé¥â¡¼¥É
+  var $chaos = true; //é—‡é‹ãƒ¢ãƒ¼ãƒ‰
+  var $chaosfull = true; //çœŸãƒ»é—‡é‹ãƒ¢ãƒ¼ãƒ‰
+  var $chaos_hyper = true; //è¶…ãƒ»é—‡é‹ãƒ¢ãƒ¼ãƒ‰
 
-  //°ÇÆé¥â¡¼¥É¤Î¥Ç¥Õ¥©¥ë¥È
-  //[NULL:ÄÌ¾ï¿ÍÏµ / 'chaos':ÄÌ¾ï°ÇÆé / 'chaosfull':¿¿¡¦°ÇÆé / 'chaos_hyper':Ä¶¡¦°ÇÆé]
-  var $default_chaos = NULL; //ÄÌ¾ï¿ÍÏµ
+  //é—‡é‹ãƒ¢ãƒ¼ãƒ‰ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
+  //[NULL:é€šå¸¸äººç‹¼ / 'chaos':é€šå¸¸é—‡é‹ / 'chaosfull':çœŸãƒ»é—‡é‹ / 'chaos_hyper':è¶…ãƒ»é—‡é‹]
+  var $default_chaos = NULL; //é€šå¸¸äººç‹¼
 
-  var $chaos_open_cast = true; //ÇÛÌòÆâÌõ¤òÉ½¼¨¤¹¤ë (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
-  var $chaos_open_cast_camp = true; //¿Ø±ÄËè¤ÎÁí¿ô¤òÉ½¼¨¤¹¤ë (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
-  var $chaos_open_cast_role = true; //Ìò¿¦¤Î¼ïÎàËè¤ÎÁí¿ô¤òÉ½¼¨¤¹¤ë (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
+  var $chaos_open_cast = true; //é…å½¹å†…è¨³ã‚’è¡¨ç¤ºã™ã‚‹ (é—‡é‹ãƒ¢ãƒ¼ãƒ‰å°‚ç”¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
+  var $chaos_open_cast_camp = true; //é™£å–¶æ¯ã®ç·æ•°ã‚’è¡¨ç¤ºã™ã‚‹ (é—‡é‹ãƒ¢ãƒ¼ãƒ‰å°‚ç”¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
+  var $chaos_open_cast_role = true; //å½¹è·ã®ç¨®é¡æ¯ã®ç·æ•°ã‚’è¡¨ç¤ºã™ã‚‹ (é—‡é‹ãƒ¢ãƒ¼ãƒ‰å°‚ç”¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
 
-  //ÄÌÃÎ¥â¡¼¥É¤Î¥Ç¥Õ¥©¥ë¥È [NULL:Ìµ¤· / 'camp':¿Ø±Ä / 'role':Ìò¿¦ / 'full':´°Á´]
-  var $default_chaos_open_cast = 'camp'; //¿Ø±ÄÄÌÃÎ
+  //é€šçŸ¥ãƒ¢ãƒ¼ãƒ‰ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ [NULL:ç„¡ã— / 'camp':é™£å–¶ / 'role':å½¹è· / 'full':å®Œå…¨]
+  var $default_chaos_open_cast = 'camp'; //é™£å–¶é€šçŸ¥
 
-  var $secret_sub_role = true; //¥µ¥ÖÌò¿¦¤òËÜ¿Í¤ËÄÌÃÎ¤·¤Ê¤¤ (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
+  var $secret_sub_role = true; //ã‚µãƒ–å½¹è·ã‚’æœ¬äººã«é€šçŸ¥ã—ãªã„ (é—‡é‹ãƒ¢ãƒ¼ãƒ‰å°‚ç”¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
   var $default_secret_sub_role = false;
 
-  var $sub_role_limit = true; //¥µ¥ÖÌò¿¦À©¸Â (°ÇÆé¥â¡¼¥ÉÀìÍÑ¥ª¥×¥·¥ç¥ó)
-  var $sub_role_limit_easy   = true; //¥µ¥ÖÌò¿¦À©¸Â¡§EASY¥â¡¼¥É
-  var $sub_role_limit_normal = true; //¥µ¥ÖÌò¿¦À©¸Â¡§NORMAL¥â¡¼¥É
-  var $no_sub_role = true; //¥µ¥ÖÌò¿¦¤ò¤Ä¤±¤Ê¤¤
-  //¥µ¥ÖÌò¿¦À©¸Â¤Î¥Ç¥Õ¥©¥ë¥È [NULL:À©¸ÂÌµ¤· / no:¤Ä¤±¤Ê¤¤ / easy:EASY¥â¡¼¥É / normal:NORMAL¥â¡¼¥É]
-  var $default_sub_role_limit = 'no'; //¤Ä¤±¤Ê¤¤ (no_sub_role)
+  var $sub_role_limit = true; //ã‚µãƒ–å½¹è·åˆ¶é™ (é—‡é‹ãƒ¢ãƒ¼ãƒ‰å°‚ç”¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
+  var $sub_role_limit_easy   = true; //ã‚µãƒ–å½¹è·åˆ¶é™ï¼šEASYãƒ¢ãƒ¼ãƒ‰
+  var $sub_role_limit_normal = true; //ã‚µãƒ–å½¹è·åˆ¶é™ï¼šNORMALãƒ¢ãƒ¼ãƒ‰
+  var $no_sub_role = true; //ã‚µãƒ–å½¹è·ã‚’ã¤ã‘ãªã„
+  //ã‚µãƒ–å½¹è·åˆ¶é™ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ [NULL:åˆ¶é™ç„¡ã— / no:ã¤ã‘ãªã„ / easy:EASYãƒ¢ãƒ¼ãƒ‰ / normal:NORMALãƒ¢ãƒ¼ãƒ‰]
+  var $default_sub_role_limit = 'no'; //ã¤ã‘ãªã„ (no_sub_role)
 
-  var $quiz = true; //¥¯¥¤¥ºÂ¼
+  var $quiz = true; //ã‚¯ã‚¤ã‚ºæ‘
   var $default_quiz = false;
 
-  var $duel = true; //·èÆ®Â¼
+  var $duel = true; //æ±ºé—˜æ‘
   var $default_duel = false;
 }
 
-//-- ¥²¡¼¥àÀßÄê --//
+//-- ã‚²ãƒ¼ãƒ è¨­å®š --//
 class GameConfig{
-  //-- ½»¿ÍÅĞÏ¿ --//
-  //ÆşÂ¼À©¸Â (Æ±¤¸Éô²°¤ËÆ±¤¸ IP ¤ÇÊ£¿ôÅĞÏ¿) (true¡§µö²Ä¤·¤Ê¤¤ / false¡§µö²Ä¤¹¤ë)
+  //-- ä½äººç™»éŒ² --//
+  //å…¥æ‘åˆ¶é™ (åŒã˜éƒ¨å±‹ã«åŒã˜ IP ã§è¤‡æ•°ç™»éŒ²) (trueï¼šè¨±å¯ã—ãªã„ / falseï¼šè¨±å¯ã™ã‚‹)
   var $entry_one_ip_address = true;
 
-  //¥È¥ê¥Ã¥×ÂĞ±ş (true¡§ÊÑ´¹¤¹¤ë / false¡§ "#" ¤¬´Ş¤Ş¤ì¤Æ¤¤¤¿¤é¥¨¥é¡¼¤òÊÖ¤¹)
+  //ãƒˆãƒªãƒƒãƒ—å¯¾å¿œ (trueï¼šå¤‰æ›ã™ã‚‹ / falseï¼š "#" ãŒå«ã¾ã‚Œã¦ã„ãŸã‚‰ã‚¨ãƒ©ãƒ¼ã‚’è¿”ã™)
   var $trip = true;
-  var $trip_2ch = true; //2ch ¸ß´¹ (12·åÂĞ±ş) ¥â¡¼¥É (true¡§Í­¸ú / false¡§Ìµ¸ú)
+  var $trip_2ch = true; //2ch äº’æ› (12æ¡å¯¾å¿œ) ãƒ¢ãƒ¼ãƒ‰ (trueï¼šæœ‰åŠ¹ / falseï¼šç„¡åŠ¹)
 
-  //Ê¸»ú¿ôÀ©¸Â
-  var $entry_uname_limit = 50; //¥æ¡¼¥¶Ì¾¤ÈÂ¼¿Í¤ÎÌ¾Á°
-  var $entry_profile_limit = 300; //¥×¥í¥Õ¥£¡¼¥ë
+  //æ–‡å­—æ•°åˆ¶é™
+  var $entry_uname_limit = 50; //ãƒ¦ãƒ¼ã‚¶åã¨æ‘äººã®åå‰
+  var $entry_profile_limit = 300; //ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«
 
-  //-- É½¼¨ÀßÄê --//
-  var $quote_words = false; //È¯¸À¤ò¡Ö¡×¤Ç³ç¤ë
-  var $display_talk_limit = 500; //¥²¡¼¥à³«»ÏÁ°¸å¤ÎÈ¯¸ÀÉ½¼¨¿ô¤Î¸Â³¦ÃÍ
+  //-- è¡¨ç¤ºè¨­å®š --//
+  var $quote_words = false; //ç™ºè¨€ã‚’ã€Œã€ã§æ‹¬ã‚‹
+  var $display_talk_limit = 500; //ã‚²ãƒ¼ãƒ é–‹å§‹å‰å¾Œã®ç™ºè¨€è¡¨ç¤ºæ•°ã®é™ç•Œå€¤
 
-  //-- ÅêÉ¼ --//
-  var $self_kick = true; //¼«Ê¬¤Ø¤Î KICK (true¡§Í­¸ú / false¡§Ìµ¸ú)
-  var $kick = 3; //²¿É¼¤Ç KICK ½èÍı¤ò¹Ô¤¦¤«
-  var $draw = 5; //ºÆÅêÉ¼²¿²óÌÜ¤Ç°ú¤­Ê¬¤±¤È¤¹¤ë¤«
+  //-- æŠ•ç¥¨ --//
+  var $self_kick = true; //è‡ªåˆ†ã¸ã® KICK (trueï¼šæœ‰åŠ¹ / falseï¼šç„¡åŠ¹)
+  var $kick = 3; //ä½•ç¥¨ã§ KICK å‡¦ç†ã‚’è¡Œã†ã‹
+  var $draw = 5; //å†æŠ•ç¥¨ä½•å›ç›®ã§å¼•ãåˆ†ã‘ã¨ã™ã‚‹ã‹
 
-  //-- Ìò¿¦¤ÎÇ½ÎÏÀßÄê --//
-  //ÆÇÇ½ÎÏ¼Ô¤òÄß¤Ã¤¿ºİ¤Ë´¬¤­¹ş¤Ş¤ì¤ëÂĞ¾İ (true:ÅêÉ¼¼Ô¥é¥ó¥À¥à / false:´°Á´¥é¥ó¥À¥à)
-  var $poison_only_voter = false; //1.3 ·Ï¤Î¥Ç¥Õ¥©¥ë¥È¤Ï false
+  //-- å½¹è·ã®èƒ½åŠ›è¨­å®š --//
+  //æ¯’èƒ½åŠ›è€…ã‚’åŠã£ãŸéš›ã«å·»ãè¾¼ã¾ã‚Œã‚‹å¯¾è±¡ (true:æŠ•ç¥¨è€…ãƒ©ãƒ³ãƒ€ãƒ  / false:å®Œå…¨ãƒ©ãƒ³ãƒ€ãƒ )
+  var $poison_only_voter = false; //1.3 ç³»ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ false
 
-  //Ïµ¤¬ÆÇÇ½ÎÏ¼Ô¤ò³ú¤ó¤Àºİ¤Ë´¬¤­¹ş¤Ş¤ì¤ëÂĞ¾İ (true:ÅêÉ¼¼Ô¸ÇÄê / false:¥é¥ó¥À¥à)
-  var $poison_only_eater = true; //1.3 ·Ï¤Î¥Ç¥Õ¥©¥ë¥È¤Ï false
+  //ç‹¼ãŒæ¯’èƒ½åŠ›è€…ã‚’å™›ã‚“ã éš›ã«å·»ãè¾¼ã¾ã‚Œã‚‹å¯¾è±¡ (true:æŠ•ç¥¨è€…å›ºå®š / false:ãƒ©ãƒ³ãƒ€ãƒ )
+  var $poison_only_eater = true; //1.3 ç³»ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ false
 
-  var $cupid_self_shoot = 18; //¥­¥å¡¼¥Ô¥Ã¥É¤¬Â¾¿Í·â¤Á²ÄÇ½¤È¤Ê¤ëºÇÄãÂ¼¿Í¿ô
-  var $cute_wolf_rate = 1; //Ë¨Ïµ¤ÎÈ¯Æ°Î¨ (%)
-  var $gentleman_rate = 13; //¿Â»Î¡¦½Ê½÷¤ÎÈ¯Æ°Î¨ (%)
-  var $liar_rate = 95; //Ïµ¾¯Ç¯¤ÎÈ¯Æ°Î¨ (%)
+  var $cupid_self_shoot = 18; //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ãŒä»–äººæ’ƒã¡å¯èƒ½ã¨ãªã‚‹æœ€ä½æ‘äººæ•°
+  var $cute_wolf_rate = 1; //èŒç‹¼ã®ç™ºå‹•ç‡ (%)
+  var $gentleman_rate = 13; //ç´³å£«ãƒ»æ·‘å¥³ã®ç™ºå‹•ç‡ (%)
+  var $liar_rate = 95; //ç‹¼å°‘å¹´ã®ç™ºå‹•ç‡ (%)
 
-  //Ïµ¾¯Ç¯¤ÎÊÑ´¹¥Æ¡¼¥Ö¥ë
-  var $liar_replace_list = array('Â¼¿Í' => '¿ÍÏµ', '¿ÍÏµ' => 'Â¼¿Í',
-				 '¤à¤é¤Ó¤È' => '¤ª¤ª¤«¤ß', '¤ª¤ª¤«¤ß' => '¤à¤é¤Ó¤È',
-				 '¥à¥é¥Ó¥È' => '¥ª¥ª¥«¥ß', '¥ª¥ª¥«¥ß' => '¥à¥é¥Ó¥È',
-				 'ËÜÅö' => '±³', '±³' => 'ËÜÅö',
-				 '¿¿' => 'µ¶', 'µ¶' => '¿¿',
-				 '¿Í' => 'Ïµ', 'Ïµ' => '¿Í',
-				 'Çò' => '¹õ', '¹õ' => 'Çò',
-				 '¡û' => '¡ü', '¡ü' => '¡û',
-				 'CO' => 'ÀøÉú', '£Ã£Ï' => 'ÀøÉú', 'ÀøÉú' => 'CO',
-				 'Äß¤ê' => '³ú¤ß', '³ú¤ß' => 'Äß¤ê',
-				 '¥°¥ì¥é¥ó' => '¥í¡¼¥é¡¼', '¥í¡¼¥é¡¼'  => '¥°¥ì¥é¥ó',
-				 '¾¯Ç¯' => '¾¯½÷', '¾¯½÷' => '¾¯Ç¯',
-				 '¤·¤ç¤¦¤Í¤ó' => '¤·¤ç¤¦¤¸¤ç', '¤·¤ç¤¦¤¸¤ç' => '¤·¤ç¤¦¤Í¤ó',
-				 '¤ª¤Ï¤è¤¦' => '¤ª¤ä¤¹¤ß', '¤ª¤ä¤¹¤ß' => '¤ª¤Ï¤è¤¦'
+  //ç‹¼å°‘å¹´ã®å¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ«
+  var $liar_replace_list = array('æ‘äºº' => 'äººç‹¼', 'äººç‹¼' => 'æ‘äºº',
+				 'ã‚€ã‚‰ã³ã¨' => 'ãŠãŠã‹ã¿', 'ãŠãŠã‹ã¿' => 'ã‚€ã‚‰ã³ã¨',
+				 'ãƒ ãƒ©ãƒ“ãƒˆ' => 'ã‚ªã‚ªã‚«ãƒŸ', 'ã‚ªã‚ªã‚«ãƒŸ' => 'ãƒ ãƒ©ãƒ“ãƒˆ',
+				 'æœ¬å½“' => 'å˜˜', 'å˜˜' => 'æœ¬å½“',
+				 'çœŸ' => 'å½', 'å½' => 'çœŸ',
+				 'äºº' => 'ç‹¼', 'ç‹¼' => 'äºº',
+				 'ç™½' => 'é»’', 'é»’' => 'ç™½',
+				 'â—‹' => 'â—', 'â—' => 'â—‹',
+				 'CO' => 'æ½œä¼', 'ï¼£ï¼¯' => 'æ½œä¼', 'æ½œä¼' => 'CO',
+				 'åŠã‚Š' => 'å™›ã¿', 'å™›ã¿' => 'åŠã‚Š',
+				 'ã‚°ãƒ¬ãƒ©ãƒ³' => 'ãƒ­ãƒ¼ãƒ©ãƒ¼', 'ãƒ­ãƒ¼ãƒ©ãƒ¼'  => 'ã‚°ãƒ¬ãƒ©ãƒ³',
+				 'å°‘å¹´' => 'å°‘å¥³', 'å°‘å¥³' => 'å°‘å¹´',
+				 'ã—ã‚‡ã†ã­ã‚“' => 'ã—ã‚‡ã†ã˜ã‚‡', 'ã—ã‚‡ã†ã˜ã‚‡' => 'ã—ã‚‡ã†ã­ã‚“',
+				 'ãŠã¯ã‚ˆã†' => 'ãŠã‚„ã™ã¿', 'ãŠã‚„ã™ã¿' => 'ãŠã¯ã‚ˆã†'
 				 );
 
-  //Æú¿§ÌÂºÌ¤ÎÊÑ´¹¥Æ¡¼¥Ö¥ë
-  var $rainbow_replace_list = array('ÀÖ' => 'Üô', 'Üô' => '²«', '²«' => 'ÎĞ', 'ÎĞ' => 'ÀÄ',
-				    'ÀÄ' => 'Íõ', 'Íõ' => '»ç', '»ç' => 'ÀÖ');
+  //è™¹è‰²è¿·å½©ã®å¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ«
+  var $rainbow_replace_list = array('èµ¤' => 'æ©™', 'æ©™' => 'é»„', 'é»„' => 'ç·‘', 'ç·‘' => 'é’',
+				    'é’' => 'è—', 'è—' => 'ç´«', 'ç´«' => 'èµ¤');
 
-  //¼·ÍËÌÂºÌ¤ÎÊÑ´¹¥Æ¡¼¥Ö¥ë
-  var $weekly_replace_list = array('·î' => '²Ğ', '²Ğ' => '¿å', '¿å' => 'ÌÚ', 'ÌÚ' => '¶â',
-				   '¶â' => 'ÅÚ', 'ÅÚ' => 'Æü', 'Æü' => '·î');
+  //ä¸ƒæ›œè¿·å½©ã®å¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ«
+  var $weekly_replace_list = array('æœˆ' => 'ç«', 'ç«' => 'æ°´', 'æ°´' => 'æœ¨', 'æœ¨' => 'é‡‘',
+				   'é‡‘' => 'åœŸ', 'åœŸ' => 'æ—¥', 'æ—¥' => 'æœˆ');
 
-  //Ìò¼Ô¤ÎÊÑ´¹¥Æ¡¼¥Ö¥ë
-  var $actor_replace_list = array('¤Ç¤¹' => '¤ß¤ç¤ó');
+  //å½¹è€…ã®å¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ«
+  var $actor_replace_list = array('ã§ã™' => 'ã¿ã‚‡ã‚“');
 
-  var $invisible_rate = 10; //¸÷³ØÌÂºÌ¤ÎÈ¯¸À¤¬¶õÇò¤ËÆş¤ìÂØ¤ï¤ë³ÎÎ¨ (%)
-  var $silent_length  = 25; //Ìµ¸ı¤¬È¯¸À¤Ç¤­¤ëºÇÂçÊ¸»ú¿ô
+  var $invisible_rate = 10; //å…‰å­¦è¿·å½©ã®ç™ºè¨€ãŒç©ºç™½ã«å…¥ã‚Œæ›¿ã‚ã‚‹ç¢ºç‡ (%)
+  var $silent_length  = 25; //ç„¡å£ãŒç™ºè¨€ã§ãã‚‹æœ€å¤§æ–‡å­—æ•°
 
-  //-- ¡Ö°ÛµÄ¡×¤¢¤ê --//
-  var $objection = 5; //ºÇÂç²ó¿ô
-  var $objection_image = 'img/objection.gif'; //¡Ö°ÛµÄ¡×¤¢¤ê¥Ü¥¿¥ó¤Î²èÁü¥Ñ¥¹
+  //-- ã€Œç•°è­°ã€ã‚ã‚Š --//
+  var $objection = 5; //æœ€å¤§å›æ•°
+  var $objection_image = 'img/objection.gif'; //ã€Œç•°è­°ã€ã‚ã‚Šãƒœã‚¿ãƒ³ã®ç”»åƒãƒ‘ã‚¹
 
-  //-- ¼«Æ°¹¹¿· --//
-  var $auto_reload = true; //game_view.php ¤Ç¼«Æ°¹¹¿·¤òÍ­¸ú¤Ë¤¹¤ë / ¤·¤Ê¤¤ (¥µ¡¼¥ĞÉé²Ù¤ËÃí°Õ)
-  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //¼«Æ°¹¹¿·¥â¡¼¥É¤Î¹¹¿·´Ö³Ö(ÉÃ)¤Î¥ê¥¹¥È
+  //-- è‡ªå‹•æ›´æ–° --//
+  var $auto_reload = true; //game_view.php ã§è‡ªå‹•æ›´æ–°ã‚’æœ‰åŠ¹ã«ã™ã‚‹ / ã—ãªã„ (ã‚µãƒ¼ãƒè² è·ã«æ³¨æ„)
+  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //è‡ªå‹•æ›´æ–°ãƒ¢ãƒ¼ãƒ‰ã®æ›´æ–°é–“éš”(ç§’)ã®ãƒªã‚¹ãƒˆ
 
-  //-- ¤½¤ÎÂ¾ --//
-  var $power_gm = false; //¶¯¸¢ GM ¥â¡¼¥É (ON¡§true / OFF¡§false)
-  var $random_message = false; //¥é¥ó¥À¥à¥á¥Ã¥»¡¼¥¸¤ÎÁŞÆş (¤¹¤ë¡§true / ¤·¤Ê¤¤¡§false)
+  //-- ãã®ä»– --//
+  var $power_gm = false; //å¼·æ¨© GM ãƒ¢ãƒ¼ãƒ‰ (ONï¼štrue / OFFï¼šfalse)
+  var $random_message = false; //ãƒ©ãƒ³ãƒ€ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æŒ¿å…¥ (ã™ã‚‹ï¼štrue / ã—ãªã„ï¼šfalse)
 }
 
-//¥²¡¼¥à¤Î»ş´ÖÀßÄê
+//ã‚²ãƒ¼ãƒ ã®æ™‚é–“è¨­å®š
 class TimeConfig{
-  //ÆüË×¡¢ÌëÌÀ¤±»Ä¤ê»ş´Ö¥¼¥í¤Ç¤³¤ÎïçÃÍ¤ò²á¤®¤ë¤ÈÅêÉ¼¤·¤Æ¤¤¤Ê¤¤¿Í¤ÏÆÍÁ³»à¤·¤Ş¤¹(ÉÃ)
+  //æ—¥æ²¡ã€å¤œæ˜ã‘æ®‹ã‚Šæ™‚é–“ã‚¼ãƒ­ã§ã“ã®é–¾å€¤ã‚’éãã‚‹ã¨æŠ•ç¥¨ã—ã¦ã„ãªã„äººã¯çªç„¶æ­»ã—ã¾ã™(ç§’)
   var $sudden_death = 120; //180;
 
-  //Ä¶²á¤Î¥Ş¥¤¥Ê¥¹»ş´Ö¤¬¤³¤ÎïçÃÍ¤ò±Û¤¨¤¿¾ì¹ç¤Ï¥µ¡¼¥Ğ¤¬°ì»şÅª¤Ë¥À¥¦¥ó¤·¤Æ¤¤¤¿¤ÈÈ½Äê¤·¤Æ¡¢
-  //Ä¶²á»ş´Ö¤ò¥ê¥»¥Ã¥È¤·¤Ş¤¹ (ÉÃ)
+  //è¶…éã®ãƒã‚¤ãƒŠã‚¹æ™‚é–“ãŒã“ã®é–¾å€¤ã‚’è¶ŠãˆãŸå ´åˆã¯ã‚µãƒ¼ãƒãŒä¸€æ™‚çš„ã«ãƒ€ã‚¦ãƒ³ã—ã¦ã„ãŸã¨åˆ¤å®šã—ã¦ã€
+  //è¶…éæ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¾ã™ (ç§’)
   var $server_disconnect = 90;
 
-  //-- ¥ê¥¢¥ë¥¿¥¤¥àÀ© --//
-  var $default_day   = 5; //¥Ç¥Õ¥©¥ë¥È¤ÎÃë¤ÎÀ©¸Â»ş´Ö(Ê¬)
-  var $default_night = 3; //¥Ç¥Õ¥©¥ë¥È¤ÎÌë¤ÎÀ©¸Â»ş´Ö(Ê¬)
+  //-- ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ --//
+  var $default_day   = 5; //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ˜¼ã®åˆ¶é™æ™‚é–“(åˆ†)
+  var $default_night = 3; //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å¤œã®åˆ¶é™æ™‚é–“(åˆ†)
 
-  //-- ²ñÏÃ¤òÍÑ¤¤¤¿²¾ÁÛ»ş´ÖÀ© --//
-  //Ãë¤ÎÀ©¸Â»ş´Ö(Ãë¤Ï12»ş´Ö¡¢spend_time=1(È¾³Ñ100Ê¸»ú°ÊÆâ) ¤Ç 12»ş´Ö ¡à $day ¿Ê¤ß¤Ş¤¹)
+  //-- ä¼šè©±ã‚’ç”¨ã„ãŸä»®æƒ³æ™‚é–“åˆ¶ --//
+  //æ˜¼ã®åˆ¶é™æ™‚é–“(æ˜¼ã¯12æ™‚é–“ã€spend_time=1(åŠè§’100æ–‡å­—ä»¥å†…) ã§ 12æ™‚é–“ Ã· $day é€²ã¿ã¾ã™)
   var $day = 96;
 
-  //Ìë¤ÎÀ©¸Â»ş´Ö(Ìë¤Ï 6»ş´Ö¡¢spend_time=1(È¾³Ñ100Ê¸»ú°ÊÆâ) ¤Ç  6»ş´Ö ¡à $night ¿Ê¤ß¤Ş¤¹)
+  //å¤œã®åˆ¶é™æ™‚é–“(å¤œã¯ 6æ™‚é–“ã€spend_time=1(åŠè§’100æ–‡å­—ä»¥å†…) ã§  6æ™‚é–“ Ã· $night é€²ã¿ã¾ã™)
   var $night = 24;
 
-  //Èó¥ê¥¢¥ë¥¿¥¤¥àÀ©¤Ç¤³¤ÎïçÃÍ¤ò²á¤®¤ë¤ÈÄÀÌÛ¤È¤Ê¤ê¡¢ÀßÄê¤·¤¿»ş´Ö¤¬¿Ê¤ß¤Ş¤¹(ÉÃ)
+  //éãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ã§ã“ã®é–¾å€¤ã‚’éãã‚‹ã¨æ²ˆé»™ã¨ãªã‚Šã€è¨­å®šã—ãŸæ™‚é–“ãŒé€²ã¿ã¾ã™(ç§’)
   var $silence = 60;
 
-  //ÄÀÌÛ·Ğ²á»ş´Ö (12»ş´Ö ¡à $day(Ãë) or 6»ş´Ö ¡à $night (Ìë) ¤Î $silence_pass ÇÜ¤Î»ş´Ö¤¬¿Ê¤ß¤Ş¤¹)
+  //æ²ˆé»™çµŒéæ™‚é–“ (12æ™‚é–“ Ã· $day(æ˜¼) or 6æ™‚é–“ Ã· $night (å¤œ) ã® $silence_pass å€ã®æ™‚é–“ãŒé€²ã¿ã¾ã™)
   var $silence_pass = 8;
 }
 
-//-- Â¼¤Î¥ª¥×¥·¥ç¥ó²èÁü --//
+//-- æ‘ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç”»åƒ --//
 class RoomImage extends ImageManager{
   var $path      = 'room_option';
   var $extension = 'gif';
   var $class     = 'option';
   /*
-  //Â¼¤ÎºÇÂç¿Í¿ô¥ê¥¹¥È (RoomConfig->max_user_list ¤ÈÏ¢Æ°¤µ¤»¤ë)
-  //¸½ºß¤ÏÉÔ»ÈÍÑ
+  //æ‘ã®æœ€å¤§äººæ•°ãƒªã‚¹ãƒˆ (RoomConfig->max_user_list ã¨é€£å‹•ã•ã›ã‚‹)
+  //ç¾åœ¨ã¯ä¸ä½¿ç”¨
   var $max_user_list = array(
-			      8 => 'img/room_option/max8.gif',   // 8¿Í
-			     16 => 'img/room_option/max16.gif',  //16¿Í
-			     22 => 'img/room_option/max22.gif'   //22¿Í
+			      8 => 'img/room_option/max8.gif',   // 8äºº
+			     16 => 'img/room_option/max16.gif',  //16äºº
+			     22 => 'img/room_option/max22.gif'   //22äºº
 			     );
   */
 }
 
-//-- Ìò¿¦¤Î²èÁü --//
+//-- å½¹è·ã®ç”»åƒ --//
 class RoleImage extends ImageManager{
   var $path      = 'role';
   var $extension = 'gif';
   var $class     = '';
 }
 
-//-- ¾¡Íø¿Ø±Ä¤Î²èÁü --//
+//-- å‹åˆ©é™£å–¶ã®ç”»åƒ --//
 class VictoryImage extends VictoryImageBase{
   var $path      = 'victory_role';
   var $extension = 'gif';
   var $class     = 'winner';
 }
 
-//¥²¡¼¥à¥×¥ì¥¤»ş¤Î¥¢¥¤¥³¥óÉ½¼¨ÀßÄê
+//ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤æ™‚ã®ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºè¨­å®š
 class IconConfig extends IconConfigBase{
-  var $path   = 'user_icon'; //¥æ¡¼¥¶¥¢¥¤¥³¥ó¤Î¥Ñ¥¹
-  var $dead   = 'grave.gif'; //»à¼Ô
-  var $wolf   = 'wolf.gif';  //Ïµ
-  var $width  = 45; //É½¼¨¥µ¥¤¥º(Éı)
-  var $height = 45; //É½¼¨¥µ¥¤¥º(¹â¤µ)
-  var $view   = 100; //°ì²èÌÌ¤ËÉ½¼¨¤¹¤ë¥¢¥¤¥³¥ó¤Î¿ô
-  var $page   = 10; //°ì²èÌÌ¤ËÉ½¼¨¤¹¤ë¥Ú¡¼¥¸¿ô¤Î¿ô
+  var $path   = 'user_icon'; //ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ‘ã‚¹
+  var $dead   = 'grave.gif'; //æ­»è€…
+  var $wolf   = 'wolf.gif';  //ç‹¼
+  var $width  = 45; //è¡¨ç¤ºã‚µã‚¤ã‚º(å¹…)
+  var $height = 45; //è¡¨ç¤ºã‚µã‚¤ã‚º(é«˜ã•)
+  var $view   = 100; //ä¸€ç”»é¢ã«è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®æ•°
+  var $page   = 10; //ä¸€ç”»é¢ã«è¡¨ç¤ºã™ã‚‹ãƒšãƒ¼ã‚¸æ•°ã®æ•°
 
   function IconConfig(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 }
 
-//-- ²»¸»ÀßÄê --//
+//-- éŸ³æºè¨­å®š --//
 class Sound extends SoundBase{
-  var $path      = 'swf'; //²»¸»¤Î¥Ñ¥¹
-  var $extension = 'swf'; //³ÈÄ¥»Ò
+  var $path      = 'swf'; //éŸ³æºã®ãƒ‘ã‚¹
+  var $extension = 'swf'; //æ‹¡å¼µå­
 
-  var $morning          = 'sound_morning';          //ÌëÌÀ¤±
-  var $revote           = 'sound_revote';           //ºÆÅêÉ¼
-  var $objection_male   = 'sound_objection_male';   //°ÛµÄ¤¢¤ê(ÃË)
-  var $objection_female = 'sound_objection_female'; //°ÛµÄ¤¢¤ê(½÷)
+  var $morning          = 'sound_morning';          //å¤œæ˜ã‘
+  var $revote           = 'sound_revote';           //å†æŠ•ç¥¨
+  var $objection_male   = 'sound_objection_male';   //ç•°è­°ã‚ã‚Š(ç”·)
+  var $objection_female = 'sound_objection_female'; //ç•°è­°ã‚ã‚Š(å¥³)
 }
 
-//²áµî¥í¥°É½¼¨ÀßÄê
+//éå»ãƒ­ã‚°è¡¨ç¤ºè¨­å®š
 class OldLogConfig{
-  var $view = 20; //°ì²èÌÌ¤ËÉ½¼¨¤¹¤ëÂ¼¤Î¿ô
-  var $page =  5; //°ì²èÌÌ¤ËÉ½¼¨¤¹¤ë¥Ú¡¼¥¸¿ô¤Î¿ô
-  var $reverse = true; //¥Ç¥Õ¥©¥ë¥È¤ÎÂ¼ÈÖ¹æ¤ÎÉ½¼¨½ç (true:µÕ¤Ë¤¹¤ë / false:¤·¤Ê¤¤)
+  var $view = 20; //ä¸€ç”»é¢ã«è¡¨ç¤ºã™ã‚‹æ‘ã®æ•°
+  var $page =  5; //ä¸€ç”»é¢ã«è¡¨ç¤ºã™ã‚‹ãƒšãƒ¼ã‚¸æ•°ã®æ•°
+  var $reverse = true; //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ‘ç•ªå·ã®è¡¨ç¤ºé † (true:é€†ã«ã™ã‚‹ / false:ã—ãªã„)
 }

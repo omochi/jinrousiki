@@ -3,26 +3,26 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('user_class', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
-//-- ¥Ç¡¼¥¿¼ı½¸ --//
-$INIT_CONF->LoadRequest('RequestBaseGame'); //°ú¿ô¤ò¼èÆÀ
+//-- ãƒ‡ãƒ¼ã‚¿åé›† --//
+$INIT_CONF->LoadRequest('RequestBaseGame'); //å¼•æ•°ã‚’å–å¾—
 $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
 
-$DB_CONF->Connect(); // DB ÀÜÂ³
+$DB_CONF->Connect(); // DB æ¥ç¶š
 
-$ROOM =& new Room($RQ_ARGS); //Â¼¾ğÊó¤ò¥í¡¼¥É
+$ROOM =& new Room($RQ_ARGS); //æ‘æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 $ROOM->view_mode = true;
-$ROOM->system_time = TZTime(); //¸½ºß»ş¹ï¤ò¼èÆÀ
+$ROOM->system_time = TZTime(); //ç¾åœ¨æ™‚åˆ»ã‚’å–å¾—
 switch($ROOM->day_night){
-case 'day': //Ãë
-  $time_message = '¡¡ÆüË×¤Ş¤Ç ';
+case 'day': //æ˜¼
+  $time_message = 'ã€€æ—¥æ²¡ã¾ã§ ';
   break;
 
-case 'night': //Ìë
-  $time_message = '¡¡ÌëÌÀ¤±¤Ş¤Ç ';
+case 'night': //å¤œ
+  $time_message = 'ã€€å¤œæ˜ã‘ã¾ã§ ';
   break;
 }
 
-//¥·¡¼¥ó¤Ë±ş¤¸¤¿ÄÉ²Ã¥¯¥é¥¹¤ò¥í¡¼¥É
+//ã‚·ãƒ¼ãƒ³ã«å¿œã˜ãŸè¿½åŠ ã‚¯ãƒ©ã‚¹ã‚’ãƒ­ãƒ¼ãƒ‰
 if($ROOM->IsFinished()){
   $INIT_CONF->LoadClass('VICT_MESS');
 }
@@ -30,27 +30,27 @@ else{
   $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
 }
 
-$USERS =& new UserDataSet($RQ_ARGS); //¥æ¡¼¥¶¾ğÊó¤ò¥í¡¼¥É
+$USERS =& new UserDataSet($RQ_ARGS); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 $SELF  =& new User();
 if($ROOM->IsBeforeGame()) $ROOM->LoadVote();
 
-//-- ¥Ç¡¼¥¿½ĞÎÏ --//
-OutputHTMLHeader($SERVER_CONF->title . '[´ÑÀï]', 'game_view'); //HTML¥Ø¥Ã¥À
+//-- ãƒ‡ãƒ¼ã‚¿å‡ºåŠ› --//
+OutputHTMLHeader($SERVER_CONF->title . '[è¦³æˆ¦]', 'game_view'); //HTMLãƒ˜ãƒƒãƒ€
 
-if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //¼«Æ°¹¹¿·
+if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //è‡ªå‹•æ›´æ–°
   echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
 }
 
-//¥·¡¼¥ó¤Ë¹ç¤ï¤»¤¿Ê¸»ú¿§¤ÈÇØ·Ê¿§ CSS ¤ò¥í¡¼¥É
+//ã‚·ãƒ¼ãƒ³ã«åˆã‚ã›ãŸæ–‡å­—è‰²ã¨èƒŒæ™¯è‰² CSS ã‚’ãƒ­ãƒ¼ãƒ‰
 echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
 
-if($ROOM->IsPlaying()){ //·Ğ²á»ş´Ö¤ò¼èÆÀ
-  if($ROOM->IsRealTime()){ //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+if($ROOM->IsPlaying()){ //çµŒéæ™‚é–“ã‚’å–å¾—
+  if($ROOM->IsRealTime()){ //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
     list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
     $on_load = ' onLoad="output_realtime();"';
     OutputRealTimer($start_time, $end_time);
   }
-  else{ //²ñÏÃ¤Ç»ş´Ö·Ğ²áÀ©
+  else{ //ä¼šè©±ã§æ™‚é–“çµŒéåˆ¶
     $INIT_CONF->LoadClass('TIME_CONF');
     $left_talk_time = GetTalkPassTime(&$left_time);
   }
@@ -66,50 +66,50 @@ echo <<<EOF
 
 EOF;
 
-if($GAME_CONF->auto_reload){ //¼«Æ°¹¹¿·ÀßÄê¤¬Í­¸ú¤Ê¤é¥ê¥ó¥¯¤òÉ½¼¨
-  echo '<a href="' . $url . '&auto_reload=' . $RQ_ARGS->auto_reload . '">[¹¹¿·]</a>'."\n";
+if($GAME_CONF->auto_reload){ //è‡ªå‹•æ›´æ–°è¨­å®šãŒæœ‰åŠ¹ãªã‚‰ãƒªãƒ³ã‚¯ã‚’è¡¨ç¤º
+  echo '<a href="' . $url . '&auto_reload=' . $RQ_ARGS->auto_reload . '">[æ›´æ–°]</a>'."\n";
   OutputAutoReloadLink('<a href="' . $url . '&auto_reload=');
 }
 else{
-  echo '<a href="' . $url . '">[¹¹¿·]</a>'."\n";
+  echo '<a href="' . $url . '">[æ›´æ–°]</a>'."\n";
 }
 
-echo '<a href="./">[Ìá¤ë]</a>';
+echo '<a href="./">[æˆ»ã‚‹]</a>';
 if($ROOM->IsFinished()) OutputLogLink();
 
 echo <<<EOF
 </td></tr>
 <tr><td><form method="POST" action="login.php?room_no={$ROOM->id}">
-<label>¥æ¡¼¥¶Ì¾</label><input type="text" name="uname" size="20">
-<label>¥Ñ¥¹¥ï¡¼¥É</label><input type="password" class="login-password" name="password" size="20">
+<label>ãƒ¦ãƒ¼ã‚¶å</label><input type="text" name="uname" size="20">
+<label>ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰</label><input type="password" class="login-password" name="password" size="20">
 <input type="hidden" name="login_manually" value="on">
-<input type="submit" value="¥í¥°¥¤¥ó">
+<input type="submit" value="ãƒ­ã‚°ã‚¤ãƒ³">
 </form></td>
 
 EOF;
 
-if($ROOM->IsBeforeGame()){ //¥²¡¼¥à³«»ÏÁ°¤Ê¤éÅĞÏ¿²èÌÌ¤Î¥ê¥ó¥¯¤òÉ½¼¨
+if($ROOM->IsBeforeGame()){ //ã‚²ãƒ¼ãƒ é–‹å§‹å‰ãªã‚‰ç™»éŒ²ç”»é¢ã®ãƒªãƒ³ã‚¯ã‚’è¡¨ç¤º
   echo '<td class="login-link">';
-  echo '<a href="user_manager.php?room_no=' . $ROOM->id . '"><span>[½»Ì±ÅĞÏ¿]</span></a>';
+  echo '<a href="user_manager.php?room_no=' . $ROOM->id . '"><span>[ä½æ°‘ç™»éŒ²]</span></a>';
   echo '</td>'."\n";
 }
 echo '</tr></table>'."\n";
 
 
 if(! $ROOM->IsFinished()){
-  OutputGameOption(); //¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤òÉ½¼¨
+  OutputGameOption(); //ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤º
 }
 
 echo '<table class="time-table"><tr>'."\n";
-OutputTimeTable(); //·Ğ²áÆü¿ô¤ÈÀ¸Â¸¿Í¿ô
+OutputTimeTable(); //çµŒéæ—¥æ•°ã¨ç”Ÿå­˜äººæ•°
 
 if($ROOM->IsPlaying()){
-  if($ROOM->IsRealTime()){ //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+  if($ROOM->IsRealTime()){ //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
     echo '<td class="real-time"><form name="realtime_form">'."\n";
     echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
     echo '</form></td>'."\n";
   }
-  elseif($left_talk_time){ //²ñÏÃ¤Ç»ş´Ö·Ğ²áÀ©
+  elseif($left_talk_time){ //ä¼šè©±ã§æ™‚é–“çµŒéåˆ¶
     echo '<td>' . $time_message . $left_talk_time . '</td>'."\n";
   }
 
@@ -120,11 +120,11 @@ if($ROOM->IsPlaying()){
 }
 echo '</tr></table>'."\n";
 
-OutputPlayerList(); //¥×¥ì¥¤¥ä¡¼¥ê¥¹¥È
-if($ROOM->IsFinished()) OutputVictory(); //¾¡ÇÔ·ë²Ì
-OutputRevoteList(); //ºÆÅêÉ¼¥á¥Ã¥»¡¼¥¸
-OutputTalkLog();    //²ñÏÃ¥í¥°
-OutputLastWords();  //°ä¸À
-OutputDeadMan();    //»àË´¼Ô
-OutputVoteList();   //ÅêÉ¼·ë²Ì
-OutputHTMLFooter(); //HTML¥Õ¥Ã¥¿
+OutputPlayerList(); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒªã‚¹ãƒˆ
+if($ROOM->IsFinished()) OutputVictory(); //å‹æ•—çµæœ
+OutputRevoteList(); //å†æŠ•ç¥¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+OutputTalkLog();    //ä¼šè©±ãƒ­ã‚°
+OutputLastWords();  //éºè¨€
+OutputDeadMan();    //æ­»äº¡è€…
+OutputVoteList();   //æŠ•ç¥¨çµæœ
+OutputHTMLFooter(); //HTMLãƒ•ãƒƒã‚¿

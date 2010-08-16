@@ -1,5 +1,5 @@
 <?php
-//ÅêÉ¼¥³¥Ş¥ó¥É¤¬¤¢¤Ã¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯
+//æŠ•ç¥¨ã‚³ãƒãƒ³ãƒ‰ãŒã‚ã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 function CheckSituation($applay_situation){
   global $RQ_ARGS;
 
@@ -8,38 +8,38 @@ function CheckSituation($applay_situation){
   }
   elseif($RQ_ARGS->situation == $applay_situation) return true;
 
-  OutputVoteResult('Ìµ¸ú¤ÊÅêÉ¼¤Ç¤¹');
+  OutputVoteResult('ç„¡åŠ¹ãªæŠ•ç¥¨ã§ã™');
 }
 
-//ÅêÉ¼·ë²Ì½ĞÎÏ
+//æŠ•ç¥¨çµæœå‡ºåŠ›
 function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
   global $SERVER_CONF, $RQ_ARGS;
 
-  if($reset_vote) DeleteVote(); //º£¤Ş¤Ç¤ÎÅêÉ¼¤òÁ´Éôºï½ü
-  $title  = $SERVER_CONF->title . ' [ÅêÉ¼·ë²Ì]';
+  if($reset_vote) DeleteVote(); //ä»Šã¾ã§ã®æŠ•ç¥¨ã‚’å…¨éƒ¨å‰Šé™¤
+  $title  = $SERVER_CONF->title . ' [æŠ•ç¥¨çµæœ]';
   $header = '<div align="center"><a id="#game_top"></a>';
   $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
   OutputActionResult($title, $header . $sentence . $footer, '', $unlock);
 }
 
-//¿Í¿ô¤È¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤Ë±ş¤¸¤¿Ìò¿¦¥Æ¡¼¥Ö¥ë¤òÊÖ¤¹ (¥¨¥é¡¼½èÍı¤Ï»ÃÄê)
+//äººæ•°ã¨ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«å¿œã˜ãŸå½¹è·ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’è¿”ã™ (ã‚¨ãƒ©ãƒ¼å‡¦ç†ã¯æš«å®š)
 function GetRoleList($user_count, $option_role){
-  global $GAME_CONF, $CAST_CONF, $ROOM;
+  global $GAME_CONF, $CAST_CONF, $ROLE_DATA, $ROOM;
 
-  $error_header = '¥²¡¼¥à¥¹¥¿¡¼¥È[ÇÛÌòÀßÄê¥¨¥é¡¼]¡§';
-  $error_footer = '¡£<br>´ÉÍı¼Ô¤ËÌä¤¤¹ç¤ï¤»¤Æ²¼¤µ¤¤¡£';
+  $error_header = 'ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆ[é…å½¹è¨­å®šã‚¨ãƒ©ãƒ¼]ï¼š';
+  $error_footer = 'ã€‚<br>ç®¡ç†è€…ã«å•ã„åˆã‚ã›ã¦ä¸‹ã•ã„ã€‚';
 
-  $role_list = $CAST_CONF->role_list[$user_count]; //¿Í¿ô¤Ë±ş¤¸¤¿ÀßÄê¥ê¥¹¥È¤ò¼èÆÀ
-  if($role_list == NULL){ //¥ê¥¹¥È¤ÎÍ­Ìµ¤ò¥Á¥§¥Ã¥¯
-    $sentence = $user_count . '¿Í¤ÏÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤»¤ó';
+  $role_list = $CAST_CONF->role_list[$user_count]; //äººæ•°ã«å¿œã˜ãŸè¨­å®šãƒªã‚¹ãƒˆã‚’å–å¾—
+  if($role_list == NULL){ //ãƒªã‚¹ãƒˆã®æœ‰ç„¡ã‚’ãƒã‚§ãƒƒã‚¯
+    $sentence = $user_count . 'äººã¯è¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
   $option_role_list = explode(' ', $option_role);
   $gerd = in_array('gerd', $option_role_list);
-  //$gerd = true; //¥Æ¥¹¥ÈÍÑ
+  //$gerd = true; //ãƒ†ã‚¹ãƒˆç”¨
   //PrintData($option_role_list);
 
-  if($ROOM->IsQuiz()){ //¥¯¥¤¥ºÂ¼
+  if($ROOM->IsQuiz()){ //ã‚¯ã‚¤ã‚ºæ‘
     $stack = array();
     $quiz_role_list = array('wolf', 'mad', 'common', 'fox');
     foreach($role_list as $key => $value){
@@ -56,10 +56,10 @@ function GetRoleList($user_count, $option_role){
     $stack['quiz'] = 1;
     $role_list = $stack;
   }
-  elseif(in_array('duel', $option_role_list)){ //·èÆ®Â¼
+  elseif(in_array('duel', $option_role_list)){ //æ±ºé—˜æ‘
     $role_list = $CAST_CONF->SetDuel($user_count);
   }
-  elseif($ROOM->IsOptionGroup('chaos')){ //°ÇÆé¥â¡¼¥É
+  elseif($ROOM->IsOptionGroup('chaos')){ //é—‡é‹ãƒ¢ãƒ¼ãƒ‰
     $random_role_list = array();
     foreach(array('chaos', 'chaosfull', 'chaos_hyper') as $option){
       if($ROOM->IsOption($option)){
@@ -80,80 +80,81 @@ function GetRoleList($user_count, $option_role){
     $replace_human_list  = $CAST_CONF->GenerateRandomList($CAST_CONF->$human_name);
     //PrintData(array_sum($CAST_CONF->$random_name));
 
-    //-- ºÇ¾®ÊäÀµ --//
-    //ÃµÄåÂ¼¤Ê¤é¸ÇÄêÏÈ¤ËÃµÄå¤òÄÉ²Ã¤¹¤ë
+    //-- æœ€å°è£œæ­£ --//
+    //æ¢åµæ‘ãªã‚‰å›ºå®šæ ã«æ¢åµã‚’è¿½åŠ ã™ã‚‹
     if(in_array('detective', $option_role_list) &&
        is_null($chaos_fix_role_list['detective_common'])){
       $chaos_fix_role_list['detective_common'] = 1;
     }
 
-    //¥²¥ë¥È·¯¥â¡¼¥É¤Ê¤é¸ÇÄêÏÈ¤ËÂ¼¿Í¤òÄÉ²Ã¤¹¤ë
+    //ã‚²ãƒ«ãƒˆå›ãƒ¢ãƒ¼ãƒ‰ãªã‚‰å›ºå®šæ ã«æ‘äººã‚’è¿½åŠ ã™ã‚‹
     if($gerd && is_null($chaos_fix_role_list['human'])){
       $chaos_fix_role_list['human'] = 1;
     }
 
-    foreach($chaos_fix_role_list as $key => $value){ //ºÇ¾®ÊäÀµÍÑ¥ê¥¹¥È
-      $fix_role_group_list[DistinguishRoleGroup($key)] = $value;
+    foreach($chaos_fix_role_list as $key => $value){ //æœ€å°è£œæ­£ç”¨ãƒªã‚¹ãƒˆ
+      $fix_role_group_list[$ROLE_DATA->DistinguishRoleGroup($key)] = $value;
     }
+    //PrintData($fix_role_group_list, 'FixRole');
 
-    //¿ÍÏµ
+    //äººç‹¼
     //PrintData($random_wolf_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->$wolf_name); //¥Æ¥¹¥ÈÍÑ
+    //$CAST_CONF->RateToProbability($CAST_CONF->$wolf_name); //ãƒ†ã‚¹ãƒˆç”¨
 
     $add_count = round($user_count / $CAST_CONF->chaos_min_wolf_rate) - $fix_role_group_list['wolf'];
     $CAST_CONF->AddRandom($random_role_list, $random_wolf_list, $add_count);
     //PrintData($random_role_list);
 
-    //ÍÅ¸Ñ
+    //å¦–ç‹
     //PrintData($random_fox_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->$fox_name); //¥Æ¥¹¥ÈÍÑ
+    //$CAST_CONF->RateToProbability($CAST_CONF->$fox_name); //ãƒ†ã‚¹ãƒˆç”¨
 
     $add_count = floor($user_count / $CAST_CONF->chaos_min_fox_rate) - $fix_role_group_list['fox'];
     $CAST_CONF->AddRandom($random_role_list, $random_fox_list, $add_count);
     //PrintData($random_role_list);
 
-    //-- ¥é¥ó¥À¥àÇÛÌò --//
+    //-- ãƒ©ãƒ³ãƒ€ãƒ é…å½¹ --//
     //PrintData($random_full_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->$random_name); //¥Æ¥¹¥ÈÍÑ
+    //$CAST_CONF->RateToProbability($CAST_CONF->$random_name); //ãƒ†ã‚¹ãƒˆç”¨
     $add_count = $user_count - (array_sum($random_role_list) + array_sum($chaos_fix_role_list));
     $CAST_CONF->AddRandom($random_role_list, $random_full_list, $add_count);
     //PrintData($random_role_list);
 
-    //¥é¥ó¥À¥à¤È¸ÇÄê¤ò¹ç·×
+    //ãƒ©ãƒ³ãƒ€ãƒ ã¨å›ºå®šã‚’åˆè¨ˆ
     $role_list = $random_role_list;
     foreach($chaos_fix_role_list as $key => $value) $role_list[$key] += (int)$value;
     //PrintData($role_list, '1st_list');
 
-    //Ìò¿¦¥°¥ë¡¼¥×Ëè¤Ë½¸·×
+    //å½¹è·ã‚°ãƒ«ãƒ¼ãƒ—æ¯ã«é›†è¨ˆ
     foreach($role_list as $key => $value){
-      $role_group = DistinguishRoleGroup($key);
+      $role_group = $ROLE_DATA->DistinguishRoleGroup($key);
       $role_group_list->{$role_group}[$key] = $value;
     }
-    foreach($random_role_list as $key => $value){ //ÊäÀµÍÑ¥ê¥¹¥È
-      $role_group = DistinguishRoleGroup($key);
+    foreach($random_role_list as $key => $value){ //è£œæ­£ç”¨ãƒªã‚¹ãƒˆ
+      $role_group = $ROLE_DATA->DistinguishRoleGroup($key);
       $random_role_group_list->{$role_group}[$key] = $value;
     }
 
-    //-- ºÇÂçÊäÀµ --//
+    //-- æœ€å¤§è£œæ­£ --//
     foreach($CAST_CONF->chaos_role_group_rate_list as $name => $rate){
       if(! (is_array($role_group_list->$name) && is_array($random_role_group_list->$name))){
 	continue;
       }
       $over_count = array_sum($role_group_list->$name) - round($user_count * $rate);
-      //if($over_count > 0) PrintData($over_count, $name); //¥Æ¥¹¥ÈÍÑ
+      //if($over_count > 0) PrintData($over_count, $name); //ãƒ†ã‚¹ãƒˆç”¨
       for(; $over_count > 0; $over_count--){
 	if(array_sum($random_role_group_list->$name) < 1) break;
-	//PrintData($random_role_group_list->$name, "¡¡¡¡$over_count: before");
+	//PrintData($random_role_group_list->$name, "ã€€ã€€$over_count: before");
 	arsort($random_role_group_list->$name);
-	//PrintData($random_role_group_list->$name, "¡¡¡¡$over_count: after");
+	//PrintData($random_role_group_list->$name, "ã€€ã€€$over_count: after");
 	$key = key($random_role_group_list->$name);
-	//PrintData($key, "¡¡¡¡target");
+	//PrintData($key, "ã€€ã€€target");
 	$random_role_group_list->{$name}[$key]--;
 	$role_list[$key]--;
 	$role_list['human']++;
-	//PrintData($random_role_group_list->$name, "¡¡¡¡$over_count: delete");
+	//PrintData($random_role_group_list->$name, "ã€€ã€€$over_count: delete");
 
-	//0 ¤Ë¤Ê¤Ã¤¿Ìò¿¦¤Ï¥ê¥¹¥È¤«¤é½ü¤¯
+	//0 ã«ãªã£ãŸå½¹è·ã¯ãƒªã‚¹ãƒˆã‹ã‚‰é™¤ã
 	if($role_list[$key] < 1) unset($role_list[$key]);
 	if($random_role_group_list->{$name}[$key] < 1){
 	  unset($random_role_group_list->{$name}[$key]);
@@ -162,7 +163,7 @@ function GetRoleList($user_count, $option_role){
     }
     //PrintData($role_list, '2nd_list');
 
-    //¿ÀÏÃ¥Ş¥Ë¥¢Â¼°Ê³°¤Ê¤é°ìÄê¿ô°Ê¾å¤ÎÂ¼¿Í¤òÊÌ¤ÎÌò¿¦¤Ë¿¶¤êÊÖ¤ë
+    //ç¥è©±ãƒãƒ‹ã‚¢æ‘ä»¥å¤–ãªã‚‰ä¸€å®šæ•°ä»¥ä¸Šã®æ‘äººã‚’åˆ¥ã®å½¹è·ã«æŒ¯ã‚Šè¿”ã‚‹
     if(count(array_intersect(array('full_mania', 'full_chiroptera', 'full_cupid', 'replace_human'),
 			     $option_role_list)) == 0){
       $over_count = $role_list['human'] - round($user_count * $CAST_CONF->chaos_max_human_rate);
@@ -173,12 +174,12 @@ function GetRoleList($user_count, $option_role){
       }
     }
   }
-  elseif($ROOM->IsOption('chaos')){ //°ÇÆé //Ver. 1.4.0 ¦Â12¤«¤é¤ÏÉÔ»ÈÍÑ
-    //-- ³Æ¿Ø±Ä¤Î¿Í¿ô¤ò·èÄê (¿Í¿ô = ³Æ¿Í¿ô¤Î½Ğ¸½Î¨) --//
-    $role_list = array(); //ÇÛÎó¤ò¥ê¥»¥Ã¥È
+  elseif($ROOM->IsOption('chaos')){ //é—‡é‹ //Ver. 1.4.0 Î²12ã‹ã‚‰ã¯ä¸ä½¿ç”¨
+    //-- å„é™£å–¶ã®äººæ•°ã‚’æ±ºå®š (äººæ•° = å„äººæ•°ã®å‡ºç¾ç‡) --//
+    $role_list = array(); //é…åˆ—ã‚’ãƒªã‚»ãƒƒãƒˆ
 
-    //¿ÍÏµ¿Ø±Ä
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //äººç‹¼é™£å–¶
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 5){
       $wolf_count = 1;
     }
@@ -197,7 +198,7 @@ function GetRoleList($user_count, $option_role){
       if($rand > 85) $wolf_count++;
       if($rand > 95) $wolf_count++;
     }
-    else{ //°Ê¸å¡¢5¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€5äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $wolf_count = floor(($user_count - 20) / 5) + 1;
       if($rand >  5) $wolf_count++;
       if($rand > 15) $wolf_count++;
@@ -205,8 +206,8 @@ function GetRoleList($user_count, $option_role){
       if($rand > 95) $wolf_count++;
     }
 
-    //ÍÅ¸Ñ¿Ø±Ä
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //å¦–ç‹é™£å–¶
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 8){
       $fox_count = 0;
     }
@@ -216,14 +217,14 @@ function GetRoleList($user_count, $option_role){
     elseif($user_count < 23){ //1:2 = 90:10
       $fox_count = ($rand <= 90 ? 1 : 2);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬20¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ20äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $fox_count = ceil($user_count / 20) - 1;
       if($rand > 10) $fox_count++;
       if($rand > 90) $fox_count++;
     }
 
-    //Îø¿Í¿Ø±Ä (¼Â¼Á¥­¥å¡¼¥Ô¥Ã¥É)
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //æ‹äººé™£å–¶ (å®Ÿè³ªã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰)
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 8){
       $lovers_count = 0;
     }
@@ -238,36 +239,36 @@ function GetRoleList($user_count, $option_role){
       if($rand >  5) $lovers_count++;
       if($rand > 95) $lovers_count++;
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬20¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
-      //´ğÁÃ-1:´ğÁÃ:´ğÁÃ+1 = 5:90:5
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ20äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
+      //åŸºç¤-1:åŸºç¤:åŸºç¤+1 = 5:90:5
       $lovers_count = floor($user_count / 20) - 1;
       if($rand >  5) $lovers_count++;
       if($rand > 95) $lovers_count++;
     }
     $role_list['cupid'] = $lovers_count;
 
-    //Â¼¿Í¿Ø±Ä¤Î¿Í¿ô¤ò»»½Ğ
+    //æ‘äººé™£å–¶ã®äººæ•°ã‚’ç®—å‡º
     $human_count = $user_count - $wolf_count - $fox_count - $lovers_count;
 
-    //¿ÍÏµ·Ï¤ÎÇÛÌò¤ò·èÄê
-    $special_wolf_count = 0; //ÆÃ¼ìÏµ¤Î¿Í¿ô
-    $base_count = ceil($user_count / 15); //ÆÃ¼ìÏµÈ½Äê²ó¿ô¤ò»»½Ğ
+    //äººç‹¼ç³»ã®é…å½¹ã‚’æ±ºå®š
+    $special_wolf_count = 0; //ç‰¹æ®Šç‹¼ã®äººæ•°
+    $base_count = ceil($user_count / 15); //ç‰¹æ®Šç‹¼åˆ¤å®šå›æ•°ã‚’ç®—å‡º
     for(; $base_count > 0; $base_count--){
-      if(mt_rand(1, 100) <= $user_count) $special_wolf_count++; //»²²Ã¿Í¿ô % ¤Î³ÎÎ¨¤ÇÆÃ¼ìÏµ½Ğ¸½
+      if(mt_rand(1, 100) <= $user_count) $special_wolf_count++; //å‚åŠ äººæ•° % ã®ç¢ºç‡ã§ç‰¹æ®Šç‹¼å‡ºç¾
     }
-    if($special_wolf_count > 0){ //ÆÃ¼ìÏµ¤Î³ä¤êÅö¤Æ
-      //Ïµ¤ÎÁí¿ô¤òÄ¶¤¨¤Æ¤¤¤¿¤éÊäÀµ¤¹¤ë
+    if($special_wolf_count > 0){ //ç‰¹æ®Šç‹¼ã®å‰²ã‚Šå½“ã¦
+      //ç‹¼ã®ç·æ•°ã‚’è¶…ãˆã¦ã„ãŸã‚‰è£œæ­£ã™ã‚‹
       if($special_wolf_count > $wolf_count) $special_wolf_count = $wolf_count;
-      $wolf_count -= $special_wolf_count; //ÆÃ¼ìÏµ¤Î¿ô¤À¤±ÄÌ¾ïÏµ¤ò¸º¤é¤¹
+      $wolf_count -= $special_wolf_count; //ç‰¹æ®Šç‹¼ã®æ•°ã ã‘é€šå¸¸ç‹¼ã‚’æ¸›ã‚‰ã™
 
-      if($user_count <= 16){ //16¿ÍÌ¤Ëş¤Î¾ì¹ç¤ÏÇòÏµ¤Î¤ß
+      if($user_count <= 16){ //16äººæœªæº€ã®å ´åˆã¯ç™½ç‹¼ã®ã¿
 	if(mt_rand(1, 100) <= $user_count){
 	  $role_list['cute_wolf']++;
 	  $special_wolf_count--;
 	}
 	$role_list['boss_wolf'] = $special_wolf_count;
       }
-      elseif($user_count < 20){ //20¿ÍÌ¤Ëş¤ÇÀå²ÒÏµ½Ğ¸½
+      elseif($user_count < 20){ //20äººæœªæº€ã§èˆŒç¦ç‹¼å‡ºç¾
 	if(mt_rand(1, 100) <= 40){
 	  $role_list['tongue_wolf']++;
 	  $special_wolf_count--;
@@ -278,7 +279,7 @@ function GetRoleList($user_count, $option_role){
 	}
 	$role_list['boss_wolf'] = $special_wolf_count;
       }
-      else{ //20¿Í°Ê¾å¤Ê¤éÆÇÏµ¤òÀè¤ËÈ½Äê¤·¤Æ¤ä¤ä½Ğ¤ä¤¹¤¯¤¹¤ë
+      else{ //20äººä»¥ä¸Šãªã‚‰æ¯’ç‹¼ã‚’å…ˆã«åˆ¤å®šã—ã¦ã‚„ã‚„å‡ºã‚„ã™ãã™ã‚‹
 	if(mt_rand(1, 100) <= $user_count){
 	  $role_list['poison_wolf']++;
 	  $special_wolf_count--;
@@ -296,18 +297,18 @@ function GetRoleList($user_count, $option_role){
     }
     $role_list['wolf'] = $wolf_count;
 
-    //ÍÅ¸Ñ·Ï¤ÎÇÛÌò¤ò·èÄê
-    if($user_count < 20){ //Á´¿Í¸ı¤¬20¿ÍÌ¤Ëş¤Î¾ì¹ç¤Ï»Ò¸Ñ¤Ï½Ğ¸½¤·¤Ê¤¤
+    //å¦–ç‹ç³»ã®é…å½¹ã‚’æ±ºå®š
+    if($user_count < 20){ //å…¨äººå£ãŒ20äººæœªæº€ã®å ´åˆã¯å­ç‹ã¯å‡ºç¾ã—ãªã„
       $role_list['fox'] = $fox_count;
       $role_list['child_fox'] = 0;
     }
-    else{ //»²²Ã¿Í¿ô % ¤Ç»Ò¸Ñ¤¬°ì¿Í½Ğ¸½
+    else{ //å‚åŠ äººæ•° % ã§å­ç‹ãŒä¸€äººå‡ºç¾
       if(mt_rand(1, 100) <= $user_count) $role_list['child_fox'] = 1;
       $role_list['fox'] = $fox_count - (int)$role_list['child_fox'];
     }
 
-    //Àê¤¤·Ï¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //å ã„ç³»ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 8){ //0:1 = 10:90
       $mage_count = ($rand <= 10 ? 0 : 1);
     }
@@ -317,26 +318,26 @@ function GetRoleList($user_count, $option_role){
     elseif($user_count < 30){ //1:2 = 90:10
       $mage_count = ($rand <= 90 ? 1 : 2);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬15¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ15äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $mage_count = floor($user_count / 15) - 1;
       if($rand > 10) $mage_count++;
       if($rand > 90) $mage_count++;
     }
 
-    //Àê¤¤·Ï¤ÎÇÛÌò¤ò·èÄê
+    //å ã„ç³»ã®é…å½¹ã‚’æ±ºå®š
     if($mage_count > 0 && $human_count >= $mage_count){
-      $human_count -= $mage_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
-      if($user_count < 16){ //16¿ÍÌ¤Ëş¤Î¾ì¹ç¤ÏÆÃ¼ìÀê¤¤»Õ¤Ï¤Ê¤·
+      $human_count -= $mage_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
+      if($user_count < 16){ //16äººæœªæº€ã®å ´åˆã¯ç‰¹æ®Šå ã„å¸«ã¯ãªã—
 	$role_list['mage'] = $mage_count;
       }
-      else{ //»²²Ã¿Í¿ô % ¤Çº²¤ÎÀê¤¤»Õ¤¬°ì¿Í½Ğ¸½
+      else{ //å‚åŠ äººæ•° % ã§é­‚ã®å ã„å¸«ãŒä¸€äººå‡ºç¾
 	if(mt_rand(1, 100) <= $user_count) $role_list['soul_mage'] = 1;
 	$role_list['mage'] = $mage_count - (int)$role_list['soul_mage'];
       }
     }
 
-    //Öà½÷¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //å·«å¥³ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 9){ //0:1 = 70:30
       $medium_count = ($rand <= 70 ? 0 : 1);
     }
@@ -345,21 +346,21 @@ function GetRoleList($user_count, $option_role){
       if($rand > 10) $medium_count++;
       if($rand > 90) $medium_count++;
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬15¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ15äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $medium_count = floor($user_count / 15) - 1;
       if($rand > 10) $medium_count++;
       if($rand > 90) $medium_count++;
     }
     if($cupid_count > 0 && $medium_count == 0) $medium_count++;
 
-    //Öà½÷¤ÎÇÛÌò¤ò·èÄê
+    //å·«å¥³ã®é…å½¹ã‚’æ±ºå®š
     if($medium_count > 0 && $human_count >= $medium_count){
-      $human_count -= $medium_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $medium_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
       $role_list['medium'] = $medium_count;
     }
 
-    //ÎîÇ½·Ï¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //éœŠèƒ½ç³»ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 9){ //0:1 = 10:90
       $necromancer_count = ($rand <= 10 ? 0 : 1);
     }
@@ -369,20 +370,20 @@ function GetRoleList($user_count, $option_role){
     elseif($user_count < 30){ //1:2 = 90:10
       $necromancer_count = ($rand <= 90 ? 1 : 2);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬15¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ15äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $necromancer_count = floor($user_count / 15) - 1;
       if($rand > 10) $necromancer_count++;
       if($rand > 90) $necromancer_count++;
     }
 
-    //ÎîÇ½·Ï¤ÎÇÛÌò¤ò·èÄê
+    //éœŠèƒ½ç³»ã®é…å½¹ã‚’æ±ºå®š
     if($necromancer_count > 0 && $human_count >= $necromancer_count){
-      $human_count -= $necromancer_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $necromancer_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
       $role_list['necromancer'] = $necromancer_count;
     }
 
-    //¶¸¿Í·Ï¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //ç‹‚äººç³»ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 10){ //0:1 = 30:70
       $mad_count = ($rand <= 30 ? 0 : 1);
     }
@@ -391,27 +392,27 @@ function GetRoleList($user_count, $option_role){
       if($rand > 10) $mad_count++;
       if($rand > 90) $mad_count++;
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬15¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ15äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $mad_count = floor($user_count / 15) - 1;
       if($rand > 10) $mad_count++;
       if($rand > 90) $mad_count++;
     }
 
-    //¶¸¿Í·Ï¤ÎÇÛÌò¤ò·èÄê
+    //ç‹‚äººç³»ã®é…å½¹ã‚’æ±ºå®š
     if($mad_count > 0 && $human_count >= $mad_count){
-      $human_count -= $mad_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
-      if($user_count < 16){ //Á´¿Í¸ı¤¬16¿ÍÌ¤Ëş¤Î¾ì¹ç¤Ï¶¸¿®¼Ô¤Ï½Ğ¸½¤·¤Ê¤¤
+      $human_count -= $mad_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
+      if($user_count < 16){ //å…¨äººå£ãŒ16äººæœªæº€ã®å ´åˆã¯ç‹‚ä¿¡è€…ã¯å‡ºç¾ã—ãªã„
 	$role_list['mad'] = $mad_count;
 	$role_list['fanatic_mad'] = 0;
       }
-      else{ //»²²Ã¿Í¿ô % ¤Ç¶¸¿®¼Ô¤¬°ì¿Í½Ğ¸½
+      else{ //å‚åŠ äººæ•° % ã§ç‹‚ä¿¡è€…ãŒä¸€äººå‡ºç¾
 	if(mt_rand(1, 100) <= $user_count) $role_list['fanatic_mad'] = 1;
 	$role_list['mad'] = $mad_count - (int)$role_list['fanatic_mad'];
       }
     }
 
-    //¼í¿Í·Ï¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //ç‹©äººç³»ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 11){ //0:1 = 10:90
       $guard_count = ($rand <= 10 ? 0 : 1);
     }
@@ -420,32 +421,32 @@ function GetRoleList($user_count, $option_role){
       if($rand > 10) $guard_count++;
       if($rand > 90) $guard_count++;
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬15¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ15äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $guard_count = floor($user_count / 15) - 1;
       if($rand > 10) $guard_count++;
       if($rand > 90) $guard_count++;
     }
 
-    //¼í¿Í·Ï¤ÎÇÛÌò¤ò·èÄê
+    //ç‹©äººç³»ã®é…å½¹ã‚’æ±ºå®š
     if($guard_count > 0 && $human_count >= $guard_count){
-      $human_count -= $guard_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
-      $special_guard_count = 0; //ÆÃ¼ì¼í¿Í¤Î¿Í¿ô
-      //16¿Í°Ê¾å¤Ê¤éÆÃ¼ì¼í¿ÍÈ½Äê²ó¿ô¤ò»»½Ğ
+      $human_count -= $guard_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
+      $special_guard_count = 0; //ç‰¹æ®Šç‹©äººã®äººæ•°
+      //16äººä»¥ä¸Šãªã‚‰ç‰¹æ®Šç‹©äººåˆ¤å®šå›æ•°ã‚’ç®—å‡º
       $base_count = ($user_count >= 16 ? ceil($user_count / 15) : 0);
       for(; $base_count > 0; $base_count--){
-	if(mt_rand(1, 100) <= $user_count) $special_guard_count++; //»²²Ã¿Í¿ô % ¤Î³ÎÎ¨¤ÇÆÃ¼ì¼í¿Í½Ğ¸½
+	if(mt_rand(1, 100) <= $user_count) $special_guard_count++; //å‚åŠ äººæ•° % ã®ç¢ºç‡ã§ç‰¹æ®Šç‹©äººå‡ºç¾
       }
 
-      if($special_guard_count > 0){ //ÆÃ¼ì¼í¿Í¤Î³ä¤êÅö¤Æ
-	//¼í¿Í¤ÎÁí¿ô¤òÄ¶¤¨¤Æ¤¤¤¿¤éÊäÀµ¤¹¤ë
+      if($special_guard_count > 0){ //ç‰¹æ®Šç‹©äººã®å‰²ã‚Šå½“ã¦
+	//ç‹©äººã®ç·æ•°ã‚’è¶…ãˆã¦ã„ãŸã‚‰è£œæ­£ã™ã‚‹
 	if($special_guard_count > $guard_count) $special_guard_count = $guard_count;
-	$guard_count -= $special_guard_count; //ÆÃ¼ì¼í¿Í¤Î¿ô¤À¤±¼í¿Í¤ò¸º¤é¤¹
+	$guard_count -= $special_guard_count; //ç‰¹æ®Šç‹©äººã®æ•°ã ã‘ç‹©äººã‚’æ¸›ã‚‰ã™
 	
-	if($user_count < 20){ //20¿ÍÌ¤Ëş¤Î¾ì¹ç¤Ï¥Ö¥ó²°¤Î¤ß
+	if($user_count < 20){ //20äººæœªæº€ã®å ´åˆã¯ãƒ–ãƒ³å±‹ã®ã¿
 	  $role_list['reporter'] = $special_guard_count;
 	}
 	else{
-	  if(mt_rand(1, 100) <= $user_count){ //µ³»Î¤ÏºÇÂç°ì¿Í
+	  if(mt_rand(1, 100) <= $user_count){ //é¨å£«ã¯æœ€å¤§ä¸€äºº
 	    $role_list['poison_guard']++;
 	    $special_guard_count--;
 	  }
@@ -455,8 +456,8 @@ function GetRoleList($user_count, $option_role){
       $role_list['guard'] = $guard_count;
     }
 
-    //¶¦Í­¼Ô¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //å…±æœ‰è€…ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 13){ //0:1 = 10:90
       $common_count = ($rand <= 10 ? 0 : 1);
     }
@@ -465,108 +466,108 @@ function GetRoleList($user_count, $option_role){
       if($rand > 10) $common_count++;
       if($rand > 90) $common_count++;
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬15¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ15äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $common_count = floor($user_count / 15);
       if($rand > 10) $common_count++;
       if($rand > 90) $common_count++;
     }
 
-    //¶¦Í­¼Ô¤ÎÇÛÌò¤ò·èÄê
+    //å…±æœ‰è€…ã®é…å½¹ã‚’æ±ºå®š
     if($common_count > 0 && $human_count >= $common_count){
       $role_list['common'] = $common_count;
-      $human_count -= $common_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $common_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
     }
 
-    //ËäÆÇ¼Ô¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //åŸ‹æ¯’è€…ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 15){ //0:1 = 95:5
       $poison_count = ($rand <= 95 ? 0 : 1);
     }
     elseif($user_count < 19){ //0:1 = 85:15
       $poison_count = ($rand <= 85 ? 0 : 1);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬20¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ20äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $poison_count = floor($user_count / 20) - 1;
       if($rand > 10) $poison_count++;
       if($rand > 90) $poison_count++;
     }
-    $poison_count -= $poison_guard_count; //µ³»Î¤Î¿ô¤À¤±¸º¤é¤¹
+    $poison_count -= $poison_guard_count; //é¨å£«ã®æ•°ã ã‘æ¸›ã‚‰ã™
 
-    //ËäÆÇ¼Ô¤ÎÇÛÌò¤ò·èÄê
+    //åŸ‹æ¯’è€…ã®é…å½¹ã‚’æ±ºå®š
     if($poison_count > 0 && $human_count >= $poison_count){
       $role_list['poison'] = $poison_count;
-      $human_count -= $poison_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $poison_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
     }
 
-    //Ìô»Õ¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //è–¬å¸«ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 15){ //0:1 = 95:5
       $pharmacist_count = ($rand <= 95 ? 0 : 1);
     }
     elseif($user_count < 19){ //0:1 = 85:15
       $pharmacist_count = ($rand <= 85 ? 0 : 1);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬20¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ20äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $pharmacist_count = floor($user_count / 20) - 1;
       if($rand > 10) $pharmacist_count++;
       if($rand > 90) $pharmacist_count++;
     }
     if($poison_wolf_count > 0 && $pharmacist_count == 0) $pharmacist_count++;
 
-    //Ìô»Õ¤ÎÇÛÌò¤ò·èÄê
+    //è–¬å¸«ã®é…å½¹ã‚’æ±ºå®š
     if($pharmacist_count > 0 && $human_count >= $pharmacist_count){
       $role_list['pharmacist'] = $pharmacist_count;
-      $human_count -= $pharmacist_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $pharmacist_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
     }
 
-    //¿ÀÏÃ¥Ş¥Ë¥¢¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
-    if($user_count < 16){ //16¿ÍÌ¤Ëş¤Ç¤Ï½Ğ¸½¤·¤Ê¤¤
+    //ç¥è©±ãƒãƒ‹ã‚¢ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
+    if($user_count < 16){ //16äººæœªæº€ã§ã¯å‡ºç¾ã—ãªã„
       $mania_count = 0;
     }
     elseif($user_count < 23){ //0:1 = 40:60
       $mania_count = ($rand <= 40 ? 0 : 1);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬20¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ20äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $mania_count = floor($user_count / 20) - 1;
       if($rand > 10) $mania_count++;
       if($rand > 90) $mania_count++;
     }
 
-    //¿ÀÏÃ¥Ş¥Ë¥¢¤ÎÇÛÌò¤ò·èÄê
+    //ç¥è©±ãƒãƒ‹ã‚¢ã®é…å½¹ã‚’æ±ºå®š
     if($mania_count > 0 && $human_count >= $mania_count){
       $role_list['mania'] = $mania_count;
-      $human_count -= $mania_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $mania_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
     }
 
-    //ÉÔ¿³¼Ô·Ï¤Î¿Í¿ô¤ò·èÄê
-    $rand = mt_rand(1, 100); //¿Í¿ô·èÄêÍÑÍğ¿ô
+    //ä¸å¯©è€…ç³»ã®äººæ•°ã‚’æ±ºå®š
+    $rand = mt_rand(1, 100); //äººæ•°æ±ºå®šç”¨ä¹±æ•°
     if($user_count < 15){ //0:1 = 90:10
       $strangers_count = ($rand <= 90 ? 0 : 1);
     }
     elseif($user_count < 19){ //0:1 = 80:20
       $strangers_count = ($rand <= 80 ? 0 : 1);
     }
-    else{ //°Ê¸å¡¢»²²Ã¿Í¿ô¤¬20¿ÍÁı¤¨¤ë¤´¤È¤Ë 1¿Í¤º¤ÄÁı²Ã
+    else{ //ä»¥å¾Œã€å‚åŠ äººæ•°ãŒ20äººå¢—ãˆã‚‹ã”ã¨ã« 1äººãšã¤å¢—åŠ 
       $strangers_count = floor($user_count / 20) - 1;
       if($rand > 10) $strangers_count++;
       if($rand > 90) $strangers_count++;
     }
 
-    //ÉÔ¿³¼Ô·Ï¤ÎÇÛÌò¤ò·èÄê
+    //ä¸å¯©è€…ç³»ã®é…å½¹ã‚’æ±ºå®š
     if($strangers_count > 0 && $human_count >= $strangers_count){
-      //Á´¿Í¸ı¤¬20¿ÍÌ¤Ëş¤Î¾ì¹ç¤ÏÌµ°Õ¼±¡¢¤½¤ì°Ê¾å¤Ê¤éÉÔ¿³¼Ô¤ò¤ä¤ä½Ğ¤ä¤¹¤¯¤¹¤ë
+      //å…¨äººå£ãŒ20äººæœªæº€ã®å ´åˆã¯ç„¡æ„è­˜ã€ãã‚Œä»¥ä¸Šãªã‚‰ä¸å¯©è€…ã‚’ã‚„ã‚„å‡ºã‚„ã™ãã™ã‚‹
       $strangers_rate = ($user_count < 20 ? 60 : 40);
       for($i = 0; $i < $strangers_count; $i++){
 	$strangers_role = (mt_rand(1, 100) <= $strangers_rate ? 'unconscious' : 'suspect');
 	$role_list[$strangers_role]++;
       }
-      $human_count -= $strangers_count; //Â¼¿Í¿Ø±Ä¤Î»Ä¤ê¿Í¿ô
+      $human_count -= $strangers_count; //æ‘äººé™£å–¶ã®æ®‹ã‚Šäººæ•°
     }
 
-    $role_list['human'] = $human_count; //Â¼¿Í¤Î¿Í¿ô
+    $role_list['human'] = $human_count; //æ‘äººã®äººæ•°
 
-    //ÃµÄå (¶¦Í­ or Â¼¿Í ¢ª ÃµÄå)
+    //æ¢åµ (å…±æœ‰ or æ‘äºº â†’ æ¢åµ)
     if(strpos($option_role, 'detective') !== false){
       if($role_list['common'] > 0){
 	$role_list['common']--;
@@ -578,28 +579,28 @@ function GetRoleList($user_count, $option_role){
       }
     }
   }
-  else{ //ÄÌ¾ïÂ¼
-    //ËäÆÇ¼Ô (Â¼¿Í2 ¢ª ËäÆÇ¼Ô1¡¢¿ÍÏµ1)
+  else{ //é€šå¸¸æ‘
+    //åŸ‹æ¯’è€… (æ‘äºº2 â†’ åŸ‹æ¯’è€…1ã€äººç‹¼1)
     if(in_array('poison', $option_role_list) && $user_count >= $CAST_CONF->poison){
       $role_list['human'] -= 2;
       $role_list['poison']++;
       $role_list['wolf']++;
     }
 
-    //°Å»¦¼Ô (Â¼¿Í2 ¢ª °Å»¦¼Ô1¡¢¿ÍÏµ1)
+    //æš—æ®ºè€… (æ‘äºº2 â†’ æš—æ®ºè€…1ã€äººç‹¼1)
     if(in_array('assassin', $option_role_list) && $user_count >= $CAST_CONF->assassin){
       $role_list['human'] -= 2;
       $role_list['assassin']++;
       $role_list['wolf']++;
     }
 
-    //ÇòÏµ (¿ÍÏµ ¢ª ÇòÏµ)
+    //ç™½ç‹¼ (äººç‹¼ â†’ ç™½ç‹¼)
     if(in_array('boss_wolf', $option_role_list) && $user_count >= $CAST_CONF->boss_wolf){
       $role_list['wolf']--;
       $role_list['boss_wolf']++;
     }
 
-    //ÆÇÏµ (¿ÍÏµ ¢ª ÆÇÏµ¡¢Â¼¿Í ¢ª Ìô»Õ)
+    //æ¯’ç‹¼ (äººç‹¼ â†’ æ¯’ç‹¼ã€æ‘äºº â†’ è–¬å¸«)
     if(in_array('poison_wolf', $option_role_list) && $user_count >= $CAST_CONF->poison_wolf){
       $role_list['wolf']--;
       $role_list['poison_wolf']++;
@@ -607,40 +608,40 @@ function GetRoleList($user_count, $option_role){
       $role_list['pharmacist']++;
     }
 
-    //ØáÏµ (¿ÍÏµ ¢ª ØáÏµ)
+    //æ†‘ç‹¼ (äººç‹¼ â†’ æ†‘ç‹¼)
     if(in_array('possessed_wolf', $option_role_list) && $user_count >= $CAST_CONF->possessed_wolf){
       $role_list['wolf']--;
       $role_list['possessed_wolf']++;
     }
 
-    //Å·Ïµ (¿ÍÏµ ¢ª Å·Ïµ)
+    //å¤©ç‹¼ (äººç‹¼ â†’ å¤©ç‹¼)
     if(in_array('sirius_wolf', $option_role_list) && $user_count >= $CAST_CONF->sirius_wolf){
       $role_list['wolf']--;
       $role_list['sirius_wolf']++;
     }
 
-    //¥­¥å¡¼¥Ô¥Ã¥É (14¿Í¤Ï¥Ï¡¼¥É¥³¡¼¥É / Â¼¿Í ¢ª ¥­¥å¡¼¥Ô¥Ã¥É)
+    //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ (14äººã¯ãƒãƒ¼ãƒ‰ã‚³ãƒ¼ãƒ‰ / æ‘äºº â†’ ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰)
     if(in_array('cupid', $option_role_list) && ! in_array('full_cupid', $option_role_list) &&
        ($user_count == 14 || $user_count >= $CAST_CONF->cupid)){
       $role_list['human']--;
       $role_list['cupid']++;
     }
 
-    //Öà½÷ (Â¼¿Í ¢ª Öà½÷1¡¢½÷¿À1)
+    //å·«å¥³ (æ‘äºº â†’ å·«å¥³1ã€å¥³ç¥1)
     if(in_array('medium', $option_role_list) && $user_count >= $CAST_CONF->medium){
       $role_list['human'] -= 2;
       $role_list['medium']++;
       $role_list['mind_cupid']++;
     }
 
-    //¿ÀÏÃ¥Ş¥Ë¥¢ (Â¼¿Í ¢ª ¿ÀÏÃ¥Ş¥Ë¥¢)
+    //ç¥è©±ãƒãƒ‹ã‚¢ (æ‘äºº â†’ ç¥è©±ãƒãƒ‹ã‚¢)
     if(in_array('mania', $option_role_list) && ! in_array('full_mania', $option_role_list) &&
        $user_count >= $CAST_CONF->mania){
       $role_list['human']--;
       $role_list['mania']++;
     }
 
-    //ÃµÄå (¶¦Í­ or Â¼¿Í ¢ª ÃµÄå)
+    //æ¢åµ (å…±æœ‰ or æ‘äºº â†’ æ¢åµ)
     if(in_array('detective', $option_role_list)){
       if($role_list['common'] > 0){
 	$role_list['common']--;
@@ -653,15 +654,15 @@ function GetRoleList($user_count, $option_role){
     }
   }
 
-  //-- Â¼¿ÍÃÖ´¹Â¼ --//
+  //-- æ‘äººç½®æ›æ‘ --//
   $add_count = $role_list['human'];
   if($gerd && $add_count > 1) $add_count--;
   $CAST_CONF->ReplaceHuman($role_list, $add_count, $option_role_list);
 
   //$is_single_role = true;
   $is_single_role = false;
-  if($is_single_role){ //°ì¿Í°ì¿¦Â¼ÂĞ±ş
-    $role_list = array(); //ÇÛÌò¤ò¥ê¥»¥Ã¥È
+  if($is_single_role){ //ä¸€äººä¸€è·æ‘å¯¾å¿œ
+    $role_list = array(); //é…å½¹ã‚’ãƒªã‚»ãƒƒãƒˆ
     $base_role_list = array('wolf', 'mage', 'human', 'jammer_mad', 'necromancer',
 			    'common', 'crisis_priest', 'boss_wolf', 'guard', 'dark_fairy',
 			    'poison', 'agitate_mad', 'fox', 'cupid', 'soul_mage',
@@ -673,80 +674,67 @@ function GetRoleList($user_count, $option_role){
   }
 
   if($ROOM->IsOption('festival') && is_array($CAST_CONF->festival_role_list[$user_count])){
-    $role_list = $CAST_CONF->festival_role_list[$user_count]; //¤ªº×¤êÂ¼ÀìÍÑÇÛÌò
+    $role_list = $CAST_CONF->festival_role_list[$user_count]; //ãŠç¥­ã‚Šæ‘å°‚ç”¨é…å½¹
   }
 
-  if($role_list['human'] < 0){ //"Â¼¿Í" ¤Î¿Í¿ô¤ò¥Á¥§¥Ã¥¯
-    $sentence = '"Â¼¿Í" ¤Î¿Í¿ô¤¬¥Ş¥¤¥Ê¥¹¤Ë¤Ê¤Ã¤Æ¤Ş¤¹';
+  if($role_list['human'] < 0){ //"æ‘äºº" ã®äººæ•°ã‚’ãƒã‚§ãƒƒã‚¯
+    $sentence = '"æ‘äºº" ã®äººæ•°ãŒãƒã‚¤ãƒŠã‚¹ã«ãªã£ã¦ã¾ã™';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
-  if($role_list['wolf'] < 0){ //"¿ÍÏµ" ¤Î¿Í¿ô¤ò¥Á¥§¥Ã¥¯
-    $sentence = '"¿ÍÏµ" ¤Î¿Í¿ô¤¬¥Ş¥¤¥Ê¥¹¤Ë¤Ê¤Ã¤Æ¤Ş¤¹';
+  if($role_list['wolf'] < 0){ //"äººç‹¼" ã®äººæ•°ã‚’ãƒã‚§ãƒƒã‚¯
+    $sentence = '"äººç‹¼" ã®äººæ•°ãŒãƒã‚¤ãƒŠã‚¹ã«ãªã£ã¦ã¾ã™';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
-  //Ìò¿¦Ì¾¤ò³ÊÇ¼¤·¤¿ÇÛÎó¤òÀ¸À®
+  //å½¹è·åã‚’æ ¼ç´ã—ãŸé…åˆ—ã‚’ç”Ÿæˆ
   $now_role_list = array();
   foreach($role_list as $key => $value){
     for($i = 0; $i < $value; $i++) array_push($now_role_list, $key);
   }
   $role_count = count($now_role_list);
 
-  if($role_count != $user_count){ //ÇÛÎóÄ¹¤ò¥Á¥§¥Ã¥¯
+  if($role_count != $user_count){ //é…åˆ—é•·ã‚’ãƒã‚§ãƒƒã‚¯
     if($ROOM->test_mode){
-      PrintData($role_count, '¥¨¥é¡¼¡§ÇÛÌò¿ô');
+      PrintData($role_count, 'ã‚¨ãƒ©ãƒ¼ï¼šé…å½¹æ•°');
       return $now_role_list;
     }
-    $sentence = 'Â¼¿Í (' . $user_count . ') ¤ÈÇÛÌò¤Î¿ô (' . $role_count . ') ¤¬°ìÃ×¤·¤Æ¤¤¤Ş¤»¤ó';
+    $sentence = 'æ‘äºº (' . $user_count . ') ã¨é…å½¹ã®æ•° (' . $role_count . ') ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
   return $now_role_list;
 }
 
-//Ìò¿¦¤Î¿Í¿ôÄÌÃÎ¥ê¥¹¥È¤òºîÀ®¤¹¤ë
+//å½¹è·ã®äººæ•°é€šçŸ¥ãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹
 function GenerateRoleNameList($role_count_list, $chaos = NULL){
   global $ROLE_DATA;
 
   $main_role_key_list = array_keys($ROLE_DATA->main_role_list);
   switch($chaos){
   case 'camp':
-    $header = '½Ğ¸½¿Ø±Ä¡§';
-    $main_type = '¿Ø±Ä';
+    $header = 'å‡ºç¾é™£å–¶ï¼š';
+    $main_type = 'é™£å–¶';
     $main_role_list = array();
     foreach($role_count_list as $key => $value){
-      if(! in_array($key, $main_role_key_list)) continue;
-      if(strpos($key, 'wolf') !== false || strpos($key, 'mad') !== false)
-	$main_role_list['wolf'] += $value;
-      elseif(strpos($key, 'fox') !== false)
-	$main_role_list['fox'] += $value;
-      elseif(strpos($key, 'cupid') !== false || strpos($key, 'angel') !== false)
-	$main_role_list['cupid'] += $value;
-      elseif(strpos($key, 'mania') !== false)
-	$main_role_list['mania'] += $value;
-      elseif(strpos($key, 'quiz') !== false)
-	$main_role_list['quiz'] += $value;
-      elseif(strpos($key, 'vampire') !== false)
-	$main_role_list['vampire'] += $value;
-      elseif(strpos($key, 'chiroptera') !== false || strpos($key, 'fairy') !== false)
-	$main_role_list['chiroptera'] += $value;
-      else
-	$main_role_list['human'] += $value;
+      if(in_array($key, $main_role_key_list)){
+	$main_role_list[$ROLE_DATA->DistinguishCamp($key, true)] += $value;
+      }
     }
     break;
 
   case 'role':
-    $header = '½Ğ¸½Ìò¿¦¼ï¡§';
-    $main_type = '·Ï';
+    $header = 'å‡ºç¾å½¹è·ç¨®ï¼š';
+    $main_type = 'ç³»';
     $main_role_list = array();
     foreach($role_count_list as $key => $value){
-      if(! in_array($key, $main_role_key_list)) continue;
-      $main_role_list[DistinguishRoleGroup($key)] += $value;
+      if(in_array($key, $main_role_key_list)){
+	$main_role_list[$ROLE_DATA->DistinguishRoleGroup($key)] += $value;
+      }
     }
     break;
 
   default:
-    $header = '½Ğ¸½Ìò¿¦¡§';
+    $header = 'å‡ºç¾å½¹è·ï¼š';
     $main_role_list = $role_count_list;
     break;
   }
@@ -755,13 +743,12 @@ function GenerateRoleNameList($role_count_list, $chaos = NULL){
   switch($chaos){
   case 'camp':
   case 'role':
-    $sub_type = '·Ï';
+    $sub_type = 'ç³»';
     $sub_role_list = array();
     foreach($role_count_list as $key => $value){
       if(! in_array($key, $sub_role_key_list)) continue;
       foreach($ROLE_DATA->sub_role_group_list as $class => $list){
-	if(! in_array($key, $list)) continue;
-	$sub_role_list[$list[0]] += $value;
+	if(in_array($key, $list)) $sub_role_list[$list[0]] += $value;
       }
     }
     break;
@@ -781,64 +768,64 @@ function GenerateRoleNameList($role_count_list, $chaos = NULL){
     $count = (int)$sub_role_list[$key];
     if($count > 0) $stack[] = '(' . $value . $sub_type . $count . ')';
   }
-  return $header . implode('¡¡', $stack);
+  return $header . implode('ã€€', $stack);
 }
 
-//¥²¡¼¥à³«»ÏÅêÉ¼½¸·×½èÍı
+//ã‚²ãƒ¼ãƒ é–‹å§‹æŠ•ç¥¨é›†è¨ˆå‡¦ç†
 function AggregateVoteGameStart($force_start = false){
   global $CAST_CONF, $MESSAGE, $ROLE_DATA, $ROOM, $USERS;
 
-  $user_count = $USERS->GetUserCount(true); //¥æ¡¼¥¶Áí¿ô¤ò¼èÆÀ
+  $user_count = $USERS->GetUserCount(true); //ãƒ¦ãƒ¼ã‚¶ç·æ•°ã‚’å–å¾—
   if($ROOM->test_mode){
     $vote_count = $user_count;
   }
   else{
     CheckSituation('GAMESTART');
 
-    //ÅêÉ¼Áí¿ô¤ò¼èÆÀ
-    if($force_start){ //¶¯À©³«»Ï¥â¡¼¥É»ş¤Ï¥¹¥­¥Ã¥×
+    //æŠ•ç¥¨ç·æ•°ã‚’å–å¾—
+    if($force_start){ //å¼·åˆ¶é–‹å§‹ãƒ¢ãƒ¼ãƒ‰æ™‚ã¯ã‚¹ã‚­ãƒƒãƒ—
       $vote_count = $user_count;
     }
     else{
-      $vote_count = $ROOM->LoadVote(); //ÅêÉ¼¾ğÊó¤ò¥í¡¼¥É (¥í¥Ã¥¯Á°¤Î¾ğÊó¤Ï»È¤ï¤Ê¤¤»ö)
-      //¥¯¥¤¥ºÂ¼°Ê³°¤Î¿ÈÂå¤ï¤ê·¯¤ÎÊ¬¤ò²Ã»»
+      $vote_count = $ROOM->LoadVote(); //æŠ•ç¥¨æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰ (ãƒ­ãƒƒã‚¯å‰ã®æƒ…å ±ã¯ä½¿ã‚ãªã„äº‹)
+      //ã‚¯ã‚¤ã‚ºæ‘ä»¥å¤–ã®èº«ä»£ã‚ã‚Šå›ã®åˆ†ã‚’åŠ ç®—
       if($ROOM->IsDummyBoy() && ! $ROOM->IsQuiz()) $vote_count++;
     }
   }
 
-  //µ¬Äê¿Í¿ô¤ËÂ­¤ê¤Ê¤¤¤«¡¢Á´°÷ÅêÉ¼¤·¤Æ¤¤¤Ê¤±¤ì¤Ğ½èÍı½ªÎ»
+  //è¦å®šäººæ•°ã«è¶³ã‚Šãªã„ã‹ã€å…¨å“¡æŠ•ç¥¨ã—ã¦ã„ãªã‘ã‚Œã°å‡¦ç†çµ‚äº†
   if($vote_count != $user_count || $vote_count < min(array_keys($CAST_CONF->role_list))){
     return false;
   }
 
-  //-- ÇÛÌò·èÄê¥ë¡¼¥Á¥ó --//
-  $ROOM->LoadOption(); //ÇÛÌòÀßÄê¥ª¥×¥·¥ç¥ó¤Î¾ğÊó¤ò¼èÆÀ
+  //-- é…å½¹æ±ºå®šãƒ«ãƒ¼ãƒãƒ³ --//
+  $ROOM->LoadOption(); //é…å½¹è¨­å®šã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æƒ…å ±ã‚’å–å¾—
   //PrintData($ROOM->option_role);
   //PrintData($ROOM->option_list);
 
-  //ÇÛÌò·èÄêÍÑÊÑ¿ô¤ò¥»¥Ã¥È
-  $uname_list        = $USERS->GetLivingUsers(); //¥æ¡¼¥¶Ì¾¤ÎÇÛÎó
-  $role_list         = GetRoleList($user_count, $ROOM->option_role->row); //Ìò¿¦¥ê¥¹¥È¤ò¼èÆÀ
-  $fix_uname_list    = array(); //Ìò³ä¤Î·èÄê¤·¤¿¥æ¡¼¥¶Ì¾¤ò³ÊÇ¼¤¹¤ë
-  $fix_role_list     = array(); //¥æ¡¼¥¶Ì¾¤ËÂĞ±ş¤¹¤ëÌò³ä
-  $remain_uname_list = array(); //´õË¾¤ÎÌò³ä¤Ë¤Ê¤ì¤Ê¤«¤Ã¤¿¥æ¡¼¥¶Ì¾¤ò°ì»şÅª¤Ë³ÊÇ¼
+  //é…å½¹æ±ºå®šç”¨å¤‰æ•°ã‚’ã‚»ãƒƒãƒˆ
+  $uname_list        = $USERS->GetLivingUsers(); //ãƒ¦ãƒ¼ã‚¶åã®é…åˆ—
+  $role_list         = GetRoleList($user_count, $ROOM->option_role->row); //å½¹è·ãƒªã‚¹ãƒˆã‚’å–å¾—
+  $fix_uname_list    = array(); //å½¹å‰²ã®æ±ºå®šã—ãŸãƒ¦ãƒ¼ã‚¶åã‚’æ ¼ç´ã™ã‚‹
+  $fix_role_list     = array(); //ãƒ¦ãƒ¼ã‚¶åã«å¯¾å¿œã™ã‚‹å½¹å‰²
+  $remain_uname_list = array(); //å¸Œæœ›ã®å½¹å‰²ã«ãªã‚Œãªã‹ã£ãŸãƒ¦ãƒ¼ã‚¶åã‚’ä¸€æ™‚çš„ã«æ ¼ç´
   //PrintData($uname_list, 'Uname');
   //PrintData($role_list, 'Role');
 
-  //¥Õ¥é¥°¥»¥Ã¥È
+  //ãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ
   $gerd      = $ROOM->IsOption('gerd');
-  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull ¤â´Ş¤à
+  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull ã‚‚å«ã‚€
   $quiz      = $ROOM->IsQuiz();
   $detective = $ROOM->IsOption('detective');
-  //¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
-  $error_header = '¥²¡¼¥à¥¹¥¿¡¼¥È[ÇÛÌòÀßÄê¥¨¥é¡¼]¡§';
-  $error_footer = '¡£<br>´ÉÍı¼Ô¤ËÌä¤¤¹ç¤ï¤»¤Æ²¼¤µ¤¤¡£';
+  //ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+  $error_header = 'ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆ[é…å½¹è¨­å®šã‚¨ãƒ©ãƒ¼]ï¼š';
+  $error_footer = 'ã€‚<br>ç®¡ç†è€…ã«å•ã„åˆã‚ã›ã¦ä¸‹ã•ã„ã€‚';
   $reset_flag   = ! $ROOM->test_mode;
 
-  if($ROOM->IsDummyBoy()){ //¿ÈÂå¤ï¤ê·¯¤ÎÌò¿¦¤ò·èÄê
-    if(($gerd && in_array('human', $role_list)) || $quiz){ //¿ÈÂå¤ï¤ê·¯¤ÎÌò¿¦¸ÇÄê¥ª¥×¥·¥ç¥óÈ½Äê
-      if($gerd) $fit_role = 'human'; //¥²¥ë¥È·¯
-      elseif($quiz) $fit_role = 'quiz';  //¥¯¥¤¥ºÂ¼
+  if($ROOM->IsDummyBoy()){ //èº«ä»£ã‚ã‚Šå›ã®å½¹è·ã‚’æ±ºå®š
+    if(($gerd && in_array('human', $role_list)) || $quiz){ //èº«ä»£ã‚ã‚Šå›ã®å½¹è·å›ºå®šã‚ªãƒ—ã‚·ãƒ§ãƒ³åˆ¤å®š
+      if($gerd) $fit_role = 'human'; //ã‚²ãƒ«ãƒˆå›
+      elseif($quiz) $fit_role = 'quiz';  //ã‚¯ã‚¤ã‚ºæ‘
 
       if(($key = array_search($fit_role, $role_list)) !== false){
 	array_push($fix_role_list, $fit_role);
@@ -846,19 +833,19 @@ function AggregateVoteGameStart($force_start = false){
       }
     }
     else{
-      shuffle($role_list); //ÇÛÎó¤ò¥·¥ã¥Ã¥Õ¥ë
-      //ÃµÄåÂ¼¤Ê¤é¿ÈÂå¤ï¤ê·¯¤ÎÂĞ¾İ³°Ìò¿¦¤ËÄÉ²Ã¤¹¤ë
+      shuffle($role_list); //é…åˆ—ã‚’ã‚·ãƒ£ãƒƒãƒ•ãƒ«
+      //æ¢åµæ‘ãªã‚‰èº«ä»£ã‚ã‚Šå›ã®å¯¾è±¡å¤–å½¹è·ã«è¿½åŠ ã™ã‚‹
       if($detective && ! in_array('detective_common', $CAST_CONF->disable_dummy_boy_role_list)){
 	$CAST_CONF->disable_dummy_boy_role_list[] = 'detective_common';
       }
 
-      array_push($CAST_CONF->disable_dummy_boy_role_list, 'wolf', 'fox'); //¾ï»şÂĞ¾İ³°¤ÎÌò¿¦ÄÉ²Ã
+      array_push($CAST_CONF->disable_dummy_boy_role_list, 'wolf', 'fox'); //å¸¸æ™‚å¯¾è±¡å¤–ã®å½¹è·è¿½åŠ 
       $count = count($role_list);
       for($i = 0; $i < $count; $i++){
-	$role = array_shift($role_list); //ÇÛÌò¥ê¥¹¥È¤«¤éÀèÆ¬¤òÈ´¤­½Ğ¤¹
+	$role = array_shift($role_list); //é…å½¹ãƒªã‚¹ãƒˆã‹ã‚‰å…ˆé ­ã‚’æŠœãå‡ºã™
 	foreach($CAST_CONF->disable_dummy_boy_role_list as $disable_role){
 	  if(strpos($role, $disable_role) !== false){
-	    array_push($role_list, $role); //ÇÛÌò¥ê¥¹¥È¤ÎËöÈø¤ËÌá¤¹
+	    array_push($role_list, $role); //é…å½¹ãƒªã‚¹ãƒˆã®æœ«å°¾ã«æˆ»ã™
 	    continue 2;
 	  }
 	}
@@ -867,109 +854,109 @@ function AggregateVoteGameStart($force_start = false){
       }
     }
 
-    if(count($fix_role_list) < 1){ //¿ÈÂå¤ï¤ê·¯¤ËÌò¤¬Í¿¤¨¤é¤ì¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯
-      $sentence = '¿ÈÂå¤ï¤ê·¯¤ËÌò¤¬Í¿¤¨¤é¤ì¤Æ¤¤¤Ş¤»¤ó';
+    if(count($fix_role_list) < 1){ //èº«ä»£ã‚ã‚Šå›ã«å½¹ãŒä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+      $sentence = 'èº«ä»£ã‚ã‚Šå›ã«å½¹ãŒä¸ãˆã‚‰ã‚Œã¦ã„ã¾ã›ã‚“';
       OutputVoteResult($error_header . $sentence . $error_footer, $reset_flag, $reset_flag);
     }
-    array_push($fix_uname_list, 'dummy_boy'); //·èÄêºÑ¤ß¥ê¥¹¥È¤Ë¿ÈÂå¤ï¤ê·¯¤òÄÉ²Ã
-    unset($uname_list[array_search('dummy_boy', $uname_list)]); //¿ÈÂå¤ï¤ê·¯¤òºï½ü
+    array_push($fix_uname_list, 'dummy_boy'); //æ±ºå®šæ¸ˆã¿ãƒªã‚¹ãƒˆã«èº«ä»£ã‚ã‚Šå›ã‚’è¿½åŠ 
+    unset($uname_list[array_search('dummy_boy', $uname_list)]); //èº«ä»£ã‚ã‚Šå›ã‚’å‰Šé™¤
     //PrintData($fix_role_list, 'dummy_boy');
   }
 
-  shuffle($uname_list); //¥æ¡¼¥¶¥ê¥¹¥È¤ò¥é¥ó¥À¥à¤Ë¼èÆÀ
+  shuffle($uname_list); //ãƒ¦ãƒ¼ã‚¶ãƒªã‚¹ãƒˆã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«å–å¾—
   //PrintData($uname_list, 'ShuffleUname');
 
-  //´õË¾Ìò¿¦¤ò»²¾È¤·¤Æ°ì¼¡ÇÛÌò¤ò¹Ô¤¦
-  if($ROOM->IsOption('wish_role')){ //Ìò³ä´õË¾À©¤Î¾ì¹ç
-    $wish_group = $ROOM->IsChaosWish(); //ÆÃ¼ìÂ¼ÍÑ
+  //å¸Œæœ›å½¹è·ã‚’å‚ç…§ã—ã¦ä¸€æ¬¡é…å½¹ã‚’è¡Œã†
+  if($ROOM->IsOption('wish_role')){ //å½¹å‰²å¸Œæœ›åˆ¶ã®å ´åˆ
+    $wish_group = $ROOM->IsChaosWish(); //ç‰¹æ®Šæ‘ç”¨
     foreach($uname_list as $uname){
       do{
-	$role = $USERS->GetRole($uname); //´õË¾Ìò¿¦¤ò¼èÆÀ
+	$role = $USERS->GetRole($uname); //å¸Œæœ›å½¹è·ã‚’å–å¾—
 	if($role == '' || mt_rand(1, 100) > $CAST_CONF->wish_role_rate) break;
 	$fit_role = $role;
 
-	if($wish_group){ //ÆÃ¼ìÂ¼¤Ï¥°¥ë¡¼¥×Ã±°Ì¤Ç´õË¾½èÍı¤ò¹Ô¤Ê¤¦
+	if($wish_group){ //ç‰¹æ®Šæ‘ã¯ã‚°ãƒ«ãƒ¼ãƒ—å˜ä½ã§å¸Œæœ›å‡¦ç†ã‚’è¡Œãªã†
 	  $stack = array();
 	  foreach($role_list as $stack_role){
-	    if($role == DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
+	    if($role == $ROLE_DATA->DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
 	  }
 	  $fit_role = GetRandom($stack);
 	}
-	$role_key = array_search($fit_role, $role_list); //´õË¾Ìò¿¦¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
+	$role_key = array_search($fit_role, $role_list); //å¸Œæœ›å½¹è·ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 	if($role_key === false) break;
 
-	//´õË¾Ìò¿¦¤¬¤¢¤ì¤Ğ·èÄê
+	//å¸Œæœ›å½¹è·ãŒã‚ã‚Œã°æ±ºå®š
 	array_push($fix_uname_list, $uname);
 	array_push($fix_role_list, $fit_role);
 	unset($role_list[$role_key]);
 	continue 2;
       }while(false);
 
-      //·è¤Ş¤é¤Ê¤«¤Ã¤¿¾ì¹ç¤ÏÌ¤·èÄê¥ê¥¹¥È¹Ô¤­
+      //æ±ºã¾ã‚‰ãªã‹ã£ãŸå ´åˆã¯æœªæ±ºå®šãƒªã‚¹ãƒˆè¡Œã
       array_push($remain_uname_list, $uname);
     }
   }
   else{
-    shuffle($role_list); //ÇÛÎó¤ò¥·¥ã¥Ã¥Õ¥ë
+    shuffle($role_list); //é…åˆ—ã‚’ã‚·ãƒ£ãƒƒãƒ•ãƒ«
     $fix_uname_list = array_merge($fix_uname_list, $uname_list);
     $fix_role_list  = array_merge($fix_role_list, $role_list);
-    $role_list = array(); //»Ä¤êÇÛÌò¥ê¥¹¥È¤ò¥ê¥»¥Ã¥È
+    $role_list = array(); //æ®‹ã‚Šé…å½¹ãƒªã‚¹ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
   }
 
-  //°ì¼¡ÇÛÌò¤Î·ë²Ì¤ò¸¡¾Ú
-  $remain_uname_list_count = count($remain_uname_list); //Ì¤·èÄê¼Ô¤Î¿Í¿ô
-  $role_list_count         = count($role_list); //»Ä¤êÇÛÌò¿ô
+  //ä¸€æ¬¡é…å½¹ã®çµæœã‚’æ¤œè¨¼
+  $remain_uname_list_count = count($remain_uname_list); //æœªæ±ºå®šè€…ã®äººæ•°
+  $role_list_count         = count($role_list); //æ®‹ã‚Šé…å½¹æ•°
   if($remain_uname_list_count != $role_list_count){
-    $uname_str = 'ÇÛÌòÌ¤·èÄê¼Ô¤Î¿Í¿ô (' . $remain_uname_list_count . ') ';
-    $role_str  = '»Ä¤êÇÛÌò¤Î¿ô (' . $role_list_count . ') ';
-    $sentence  = $uname_str . '¤È' . $role_str . '¤¬°ìÃ×¤·¤Æ¤¤¤Ş¤»¤ó';
+    $uname_str = 'é…å½¹æœªæ±ºå®šè€…ã®äººæ•° (' . $remain_uname_list_count . ') ';
+    $role_str  = 'æ®‹ã‚Šé…å½¹ã®æ•° (' . $role_list_count . ') ';
+    $sentence  = $uname_str . 'ã¨' . $role_str . 'ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
-  //Ì¤·èÄê¼Ô¤òÆó¼¡ÇÛÌò
+  //æœªæ±ºå®šè€…ã‚’äºŒæ¬¡é…å½¹
   if($remain_uname_list_count > 0){
-    shuffle($role_list); //ÇÛÎó¤ò¥·¥ã¥Ã¥Õ¥ë
+    shuffle($role_list); //é…åˆ—ã‚’ã‚·ãƒ£ãƒƒãƒ•ãƒ«
     $fix_uname_list = array_merge($fix_uname_list, $remain_uname_list);
     $fix_role_list  = array_merge($fix_role_list, $role_list);
-    $role_list = array(); //»Ä¤êÇÛÌò¥ê¥¹¥È¤ò¥ê¥»¥Ã¥È
+    $role_list = array(); //æ®‹ã‚Šé…å½¹ãƒªã‚¹ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
   }
 
-  //Æó¼¡ÇÛÌò¤Î·ë²Ì¤ò¸¡¾Ú
-  $fix_uname_list_count = count($fix_uname_list); //·èÄê¼Ô¤Î¿Í¿ô
+  //äºŒæ¬¡é…å½¹ã®çµæœã‚’æ¤œè¨¼
+  $fix_uname_list_count = count($fix_uname_list); //æ±ºå®šè€…ã®äººæ•°
   if($user_count != $fix_uname_list_count){
-    $user_str  = 'Â¼¿Í¤Î¿Í¿ô (' . $user_count . ') ';
-    $uname_str = 'ÇÛÌò·èÄê¼Ô¤Î¿Í¿ô (' . $fix_uname_list_count . ') ';
-    $sentence  = $user_str . '¤È' . $uname_str . '¤¬°ìÃ×¤·¤Æ¤¤¤Ş¤»¤ó';
+    $user_str  = 'æ‘äººã®äººæ•° (' . $user_count . ') ';
+    $uname_str = 'é…å½¹æ±ºå®šè€…ã®äººæ•° (' . $fix_uname_list_count . ') ';
+    $sentence  = $user_str . 'ã¨' . $uname_str . 'ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
-  $fix_role_list_count = count($fix_role_list); //ÇÛÌò¤Î¿ô
+  $fix_role_list_count = count($fix_role_list); //é…å½¹ã®æ•°
   if($fix_uname_list_count != $fix_role_list_count){
-    $uname_str = 'ÇÛÌò·èÄê¼Ô¤Î¿Í¿ô (' . $fix_uname_list_count . ') ';
-    $role_str  = 'ÇÛÌò¤Î¿ô (' . $fix_role_list_count . ') ';
-    $sentence  = $uname_str . '¤È' . $role_str . '¤¬°ìÃ×¤·¤Æ¤¤¤Ş¤»¤ó';
+    $uname_str = 'é…å½¹æ±ºå®šè€…ã®äººæ•° (' . $fix_uname_list_count . ') ';
+    $role_str  = 'é…å½¹ã®æ•° (' . $fix_role_list_count . ') ';
+    $sentence  = $uname_str . 'ã¨' . $role_str . 'ãŒä¸€è‡´ã—ã¦ã„ã¾ã›ã‚“';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
-  $role_list_count = count($role_list); //»Ä¤êÇÛÌò¿ô
+  $role_list_count = count($role_list); //æ®‹ã‚Šé…å½¹æ•°
   if($role_list_count > 0){
-    $sentence = 'ÇÛÌò¥ê¥¹¥È¤ËÍ¾¤ê (' . $role_list_count .') ¤¬¤¢¤ê¤Ş¤¹';
+    $sentence = 'é…å½¹ãƒªã‚¹ãƒˆã«ä½™ã‚Š (' . $role_list_count .') ãŒã‚ã‚Šã¾ã™';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
 
-  //·óÇ¤¤È¤Ê¤ëÌò³ä¤ÎÀßÄê
-  $rand_keys = array_rand($fix_role_list, $user_count); //¥é¥ó¥À¥à¥­¡¼¤ò¼èÆÀ
+  //å…¼ä»»ã¨ãªã‚‹å½¹å‰²ã®è¨­å®š
+  $rand_keys = array_rand($fix_role_list, $user_count); //ãƒ©ãƒ³ãƒ€ãƒ ã‚­ãƒ¼ã‚’å–å¾—
   $rand_keys_index = 0;
   $sub_role_count_list = array();
-  $roled_list = array(); //ÇÛÌòºÑ¤ßÈÖ¹æ
-  //³ä¤ê¿¶¤êÂĞ¾İ³°Ìò¿¦¤Î¥ê¥¹¥È
+  $roled_list = array(); //é…å½¹æ¸ˆã¿ç•ªå·
+  //å‰²ã‚ŠæŒ¯ã‚Šå¯¾è±¡å¤–å½¹è·ã®ãƒªã‚¹ãƒˆ
   $delete_role_list = array('febris', 'death_warrant', 'panelist', 'mind_read', 'mind_receiver',
 			    'mind_friend', 'mind_sympathy', 'mind_evoke', 'mind_lonely', 'lovers',
 			    'possessed_exchange', 'challenge_lovers', 'infected', 'copied',
 			    'copied_trick', 'copied_soul', 'copied_teller', 'possessed_target',
 			    'possessed', 'changed_therian', 'bad_status', 'lost_ability');
 
-  //¥µ¥ÖÌò¿¦¥Æ¥¹¥ÈÍÑ
+  //ã‚µãƒ–å½¹è·ãƒ†ã‚¹ãƒˆç”¨
   /*
   $stack = array('whisper_ringing', 'howl_ringing', 'critical_luck');
   $delete_role_list = array_merge($delete_role_list, $stack);
@@ -984,7 +971,7 @@ function AggregateVoteGameStart($force_start = false){
   }
   */
 
-  foreach(array('decide', 'authority') as $role){ //¥ª¥×¥·¥ç¥ó¤Ç¤Ä¤±¤ë¥µ¥ÖÌò¿¦
+  foreach(array('decide', 'authority') as $role){ //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã¤ã‘ã‚‹ã‚µãƒ–å½¹è·
     if(! $ROOM->IsOption($role)) continue;
     $delete_role_list[] = $role;
     if($user_count >= $CAST_CONF->$role){
@@ -992,40 +979,40 @@ function AggregateVoteGameStart($force_start = false){
     }
   }
 
-  if($ROOM->IsOption('liar')){ //Ïµ¾¯Ç¯Â¼
+  if($ROOM->IsOption('liar')){ //ç‹¼å°‘å¹´æ‘
     $role = 'liar';
     $delete_role_list[] = $role;
-    for($i = 0; $i < $user_count; $i++){ //Á´°÷¤Ë°ìÄê³ÎÎ¨¤ÇÏµ¾¯Ç¯¤ò¤Ä¤±¤ë
+    for($i = 0; $i < $user_count; $i++){ //å…¨å“¡ã«ä¸€å®šç¢ºç‡ã§ç‹¼å°‘å¹´ã‚’ã¤ã‘ã‚‹
       if(mt_rand(1, 100) <= 70) $fix_role_list[$i] .= ' ' . $role;
     }
   }
 
-  if($ROOM->IsOption('gentleman')){ //¿Â»Î¡¦½Ê½÷Â¼
+  if($ROOM->IsOption('gentleman')){ //ç´³å£«ãƒ»æ·‘å¥³æ‘
     $stack = array('male' => 'gentleman', 'female' => 'lady');
     $delete_role_list = array_merge($delete_role_list, $stack);
-    for($i = 0; $i < $user_count; $i++){ //Á´°÷¤ËÀ­ÊÌ¤Ë±ş¤¸¤¿¿Â»Î¤«½Ê½÷¤ò¤Ä¤±¤ë
+    for($i = 0; $i < $user_count; $i++){ //å…¨å“¡ã«æ€§åˆ¥ã«å¿œã˜ãŸç´³å£«ã‹æ·‘å¥³ã‚’ã¤ã‘ã‚‹
       $fix_role_list[$i] .= ' ' . $stack[$USERS->ByUname($fix_uname_list[$i])->sex];
     }
   }
 
-  if($ROOM->IsOption('sudden_death')){ //µõ¼åÂÎ¼ÁÂ¼
+  if($ROOM->IsOption('sudden_death')){ //è™šå¼±ä½“è³ªæ‘
     $stack = array_diff($ROLE_DATA->sub_role_group_list['sudden-death'],
 			array('febris', 'death_warrant', 'panelist'));
     //PrintData($stack, 'SuddenDeath');
     $delete_role_list = array_merge($delete_role_list, $stack);
-    for($i = 0; $i < $user_count; $i++){ //Á´°÷¤Ë¾®¿´¼Ô·Ï¤ò²¿¤«¤Ä¤±¤ë
+    for($i = 0; $i < $user_count; $i++){ //å…¨å“¡ã«å°å¿ƒè€…ç³»ã‚’ä½•ã‹ã¤ã‘ã‚‹
       $role = GetRandom($stack);
       $fix_role_list[$i] .= ' ' . $role;
-      if($role == 'impatience') $stack = array_diff($stack, array('impatience')); //Ã»µ¤¤Ï°ì¿Í¤À¤±
+      if($role == 'impatience') $stack = array_diff($stack, array('impatience')); //çŸ­æ°—ã¯ä¸€äººã ã‘
     }
   }
-  elseif($ROOM->IsOption('perverseness')){ //Å·¼Ùµ´Â¼
+  elseif($ROOM->IsOption('perverseness')){ //å¤©é‚ªé¬¼æ‘
     $role = 'perverseness';
     $delete_role_list[] = $role;
     for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
   }
 
-  if($ROOM->IsOption('critical')){ //µŞ½êÂ¼
+  if($ROOM->IsOption('critical')){ //æ€¥æ‰€æ‘
     $stack = array('critical_voter', 'critical_luck');
     $delete_role_list = array_merge($delete_role_list, $stack);
     foreach($stack as $role){
@@ -1035,45 +1022,45 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   if($chaos && ! $ROOM->IsOption('no_sub_role')){
-    //¥é¥ó¥À¥à¤Ê¥µ¥ÖÌò¿¦¤Î¥³¡¼¥É¥ê¥¹¥È¤òºîÀ®
+    //ãƒ©ãƒ³ãƒ€ãƒ ãªã‚µãƒ–å½¹è·ã®ã‚³ãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã‚’ä½œæˆ
     if($ROOM->IsOption('sub_role_limit_easy'))
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_easy_list;
     elseif($ROOM->IsOption('sub_role_limit_normal'))
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_normal_list;
     else
       $sub_role_keys = array_keys($ROLE_DATA->sub_role_list);
-    //$sub_role_keys = array('authority', 'rebel', 'upper_luck', 'random_voter'); //¥Æ¥¹¥ÈÍÑ
-    //array_push($delete_role_list, 'earplug', 'speaker'); //¥Æ¥¹¥ÈÍÑ
+    //$sub_role_keys = array('authority', 'rebel', 'upper_luck', 'random_voter'); //ãƒ†ã‚¹ãƒˆç”¨
+    //array_push($delete_role_list, 'earplug', 'speaker'); //ãƒ†ã‚¹ãƒˆç”¨
     //PrintData($delete_role_list, 'DeleteRoleList');
 
     $sub_role_keys = array_diff($sub_role_keys, $delete_role_list);
     //PrintData($sub_role_keys, 'SubRoleList');
     shuffle($sub_role_keys);
     foreach($sub_role_keys as $key){
-      if($rand_keys_index > $user_count - 1) break; //$rand_keys_index ¤Ï 0 ¤«¤é
+      if($rand_keys_index > $user_count - 1) break; //$rand_keys_index ã¯ 0 ã‹ã‚‰
       $i = $rand_keys[$rand_keys_index++];
       if(! in_array($i, $roled_list)) $fix_role_list[$i] .= ' ' . $key;
     }
   }
 
-  if($quiz){ //¥¯¥¤¥ºÂ¼
+  if($quiz){ //ã‚¯ã‚¤ã‚ºæ‘
     $role = 'panelist';
-    for($i = 0; $i < $user_count; $i++){ //½ĞÂê¼Ô°Ê³°¤Ë²òÅú¼Ô¤ò¤Ä¤±¤ë
+    for($i = 0; $i < $user_count; $i++){ //å‡ºé¡Œè€…ä»¥å¤–ã«è§£ç­”è€…ã‚’ã¤ã‘ã‚‹
       if($fix_uname_list[$i] != 'dummy_boy') $fix_role_list[$i] .= ' ' . $role;
     }
   }
   /*
-  if($ROOM->IsOption('festival')){ //¤ªº×¤êÂ¼ (ÆâÍÆ¤Ï´ÉÍı¿Í¤¬¼«Í³¤Ë¥«¥¹¥¿¥à¤¹¤ë)
+  if($ROOM->IsOption('festival')){ //ãŠç¥­ã‚Šæ‘ (å†…å®¹ã¯ç®¡ç†äººãŒè‡ªç”±ã«ã‚«ã‚¹ã‚¿ãƒ ã™ã‚‹)
     $role = 'nervy';
-    for($i = 0; $i < $user_count; $i++){ //Á´°÷¤Ë¼«¿®²È¤ò¤Ä¤±¤ë
+    for($i = 0; $i < $user_count; $i++){ //å…¨å“¡ã«è‡ªä¿¡å®¶ã‚’ã¤ã‘ã‚‹
       $fix_role_list[$i] .= ' ' . $role;
     }
   }
   */
-  //¥Æ¥¹¥ÈÍÑ
+  //ãƒ†ã‚¹ãƒˆç”¨
   //PrintData($fix_uname_list); PrintData($fix_role_list); DeleteVote(); return false;
 
-  //Ìò³ä¤òDB¤Ë¹¹¿·
+  //å½¹å‰²ã‚’DBã«æ›´æ–°
   $role_count_list = array();
   $detective_list = array();
   for($i = 0; $i < $user_count; $i++){
@@ -1085,7 +1072,7 @@ function AggregateVoteGameStart($force_start = false){
     if($detective && in_array('detective_common', $stack)) $detective_list[] = $user;
   }
 
-  //KICK ¤Î¸å½èÍı
+  //KICK ã®å¾Œå‡¦ç†
   $user_no = 1;
   foreach($USERS->rows as $user){
     if($user->user_no != $user_no) $user->Update('user_no', $user_no);
@@ -1093,7 +1080,7 @@ function AggregateVoteGameStart($force_start = false){
   }
   foreach($USERS->kicked as $user) $user->Update('user_no', '-1');
 
-  //Ìò³ä¥ê¥¹¥ÈÄÌÃÎ
+  //å½¹å‰²ãƒªã‚¹ãƒˆé€šçŸ¥
   if($chaos){
     if($ROOM->IsOption('chaos_open_cast_camp')){
       $sentence = GenerateRoleNameList($role_count_list, 'camp');
@@ -1112,81 +1099,81 @@ function AggregateVoteGameStart($force_start = false){
     $sentence = GenerateRoleNameList($role_count_list);
   }
 
-  //¥²¡¼¥à³«»Ï
+  //ã‚²ãƒ¼ãƒ é–‹å§‹
   $ROOM->date++;
   $ROOM->day_night = $ROOM->IsOption('open_day') ? 'day' : 'night';
   if(! $ROOM->test_mode){
     $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
       "status = 'playing', start_time = NOW() WHERE room_no = {$ROOM->id}";
     SendQuery($query);
-    //OutputSiteSummary(); //RSSµ¡Ç½¤Ï¥Æ¥¹¥ÈÃæ
+    //OutputSiteSummary(); //RSSæ©Ÿèƒ½ã¯ãƒ†ã‚¹ãƒˆä¸­
   }
   $ROOM->Talk($sentence);
-  if($detective && count($detective_list) > 0){ //ÃµÄåÂ¼¤Î»ØÌ¾
+  if($detective && count($detective_list) > 0){ //æ¢åµæ‘ã®æŒ‡å
     $detective_user = GetRandom($detective_list);
-    $ROOM->Talk('ÃµÄå¤Ï ' . $detective_user->handle_name . ' ¤µ¤ó¤Ç¤¹');
+    $ROOM->Talk('æ¢åµã¯ ' . $detective_user->handle_name . ' ã•ã‚“ã§ã™');
     if($ROOM->IsOption('gm_login') && $ROOM->IsOption('not_open_cast') && $user_count > 7){
-      $detective_user->ToDead(); //Îî³¦ÃµÄå¥â¡¼¥É¤Ê¤éÃµÄå¤òÎî³¦¤ËÁ÷¤ë
+      $detective_user->ToDead(); //éœŠç•Œæ¢åµãƒ¢ãƒ¼ãƒ‰ãªã‚‰æ¢åµã‚’éœŠç•Œã«é€ã‚‹
     }
   }
   if($ROOM->test_mode) return true;
 
-  $ROOM->SystemMessage(1, 'VOTE_TIMES'); //½éÆü¤Î½è·ºÅêÉ¼¤Î¥«¥¦¥ó¥È¤ò1¤Ë½é´ü²½(ºÆÅêÉ¼¤ÇÁı¤¨¤ë)
-  $ROOM->UpdateTime(); //ºÇ½ª½ñ¤­¹ş¤ß»ş¹ï¤ò¹¹¿·
-  CheckVictory(); //ÇÛÌò»ş¤Ë¾¡ÇÔ¤¬·èÄê¤·¤Æ¤¤¤ë²ÄÇ½À­¤¬¤¢¤ë¤Î¤Ç¾¡ÇÔÈ½Äê¤ò¹Ô¤¦
-  DeleteVote(); //º£¤Ş¤Ç¤ÎÅêÉ¼¤òÁ´Éôºï½ü
+  $ROOM->SystemMessage(1, 'VOTE_TIMES'); //åˆæ—¥ã®å‡¦åˆ‘æŠ•ç¥¨ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’1ã«åˆæœŸåŒ–(å†æŠ•ç¥¨ã§å¢—ãˆã‚‹)
+  $ROOM->UpdateTime(); //æœ€çµ‚æ›¸ãè¾¼ã¿æ™‚åˆ»ã‚’æ›´æ–°
+  CheckVictory(); //é…å½¹æ™‚ã«å‹æ•—ãŒæ±ºå®šã—ã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§å‹æ•—åˆ¤å®šã‚’è¡Œã†
+  DeleteVote(); //ä»Šã¾ã§ã®æŠ•ç¥¨ã‚’å…¨éƒ¨å‰Šé™¤
   return true;
 }
 
-//Ãë¤ÎÅêÉ¼½¸·×½èÍı
+//æ˜¼ã®æŠ•ç¥¨é›†è¨ˆå‡¦ç†
 function AggregateVoteDay(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS;
 
-  //-- ÅêÉ¼½èÍı¼Â¹ÔÈ½Äê --//
-  if(! $ROOM->test_mode) CheckSituation('VOTE_KILL'); //¥³¥Ş¥ó¥É¥Á¥§¥Ã¥¯
+  //-- æŠ•ç¥¨å‡¦ç†å®Ÿè¡Œåˆ¤å®š --//
+  if(! $ROOM->test_mode) CheckSituation('VOTE_KILL'); //ã‚³ãƒãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯
 
-  $user_list = $USERS->GetLivingUsers(); //À¸¤­¤Æ¤¤¤ë¥æ¡¼¥¶¤ò¼èÆÀ
-  if($ROOM->LoadVote() != count($user_list)) return false; //ÅêÉ¼¿ô¤È¾È¹ç
+  $user_list = $USERS->GetLivingUsers(); //ç”Ÿãã¦ã„ã‚‹ãƒ¦ãƒ¼ã‚¶ã‚’å–å¾—
+  if($ROOM->LoadVote() != count($user_list)) return false; //æŠ•ç¥¨æ•°ã¨ç…§åˆ
   //PrintData($ROOM->vote, 'Vote');
 
-  //-- ½é´ü²½½èÍı --//
-  $max_voted_number = 0; //ºÇÂ¿ÆÀÉ¼¿ô
-  $vote_kill_uname = ''; //½è·º¤µ¤ì¤ë¿Í¤Î¥æ¡¼¥¶Ì¾
-  $live_uname_list        = array(); //À¸¤­¤Æ¤¤¤ë¿Í¤Î¥æ¡¼¥¶Ì¾¥ê¥¹¥È
-  $vote_message_list      = array(); //¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸ÍÑ (¥æ¡¼¥¶Ì¾ => array())
-  $vote_target_list       = array(); //ÅêÉ¼¥ê¥¹¥È (¥æ¡¼¥¶Ì¾ => ÅêÉ¼Àè¥æ¡¼¥¶Ì¾)
-  $vote_count_list        = array(); //ÆÀÉ¼¥ê¥¹¥È (¥æ¡¼¥¶Ì¾ => ÅêÉ¼¿ô)
-  $pharmacist_target_list = array(); //Ìô»Õ·Ï¤ÎÅêÉ¼Àè
-  $detox_target_list      = array(); //²òÆÇÇ½ÎÏ¼Ô¤ÎÅêÉ¼Àè
-  $cure_target_list       = array(); //¥·¥ç¥Ã¥¯»àÍŞÀ©Ç½ÎÏ¼Ô¤ÎÅêÉ¼Àè
-  $pharmacist_result_list = array(); //Ìô»Õ·Ï¤Î´ÕÄê·ë²Ì
+  //-- åˆæœŸåŒ–å‡¦ç† --//
+  $max_voted_number = 0; //æœ€å¤šå¾—ç¥¨æ•°
+  $vote_kill_uname = ''; //å‡¦åˆ‘ã•ã‚Œã‚‹äººã®ãƒ¦ãƒ¼ã‚¶å
+  $live_uname_list        = array(); //ç”Ÿãã¦ã„ã‚‹äººã®ãƒ¦ãƒ¼ã‚¶åãƒªã‚¹ãƒˆ
+  $vote_message_list      = array(); //ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”¨ (ãƒ¦ãƒ¼ã‚¶å => array())
+  $vote_target_list       = array(); //æŠ•ç¥¨ãƒªã‚¹ãƒˆ (ãƒ¦ãƒ¼ã‚¶å => æŠ•ç¥¨å…ˆãƒ¦ãƒ¼ã‚¶å)
+  $vote_count_list        = array(); //å¾—ç¥¨ãƒªã‚¹ãƒˆ (ãƒ¦ãƒ¼ã‚¶å => æŠ•ç¥¨æ•°)
+  $pharmacist_target_list = array(); //è–¬å¸«ç³»ã®æŠ•ç¥¨å…ˆ
+  $detox_target_list      = array(); //è§£æ¯’èƒ½åŠ›è€…ã®æŠ•ç¥¨å…ˆ
+  $cure_target_list       = array(); //ã‚·ãƒ§ãƒƒã‚¯æ­»æŠ‘åˆ¶èƒ½åŠ›è€…ã®æŠ•ç¥¨å…ˆ
+  $pharmacist_result_list = array(); //è–¬å¸«ç³»ã®é‘‘å®šçµæœ
 
-  //-- ÅêÉ¼¥Ç¡¼¥¿¼ı½¸ --//
-  foreach($ROOM->vote as $uname => $list){ //½é´üÆÀÉ¼¥Ç¡¼¥¿¤ò¼ı½¸
+  //-- æŠ•ç¥¨ãƒ‡ãƒ¼ã‚¿åé›† --//
+  foreach($ROOM->vote as $uname => $list){ //åˆæœŸå¾—ç¥¨ãƒ‡ãƒ¼ã‚¿ã‚’åé›†
     $target_uname = $USERS->ByVirtualUname($list['target_uname'])->uname;
     $vote_count_list[$target_uname] += $list['vote_number'];
   }
   //PrintData($vote_count_list, 'VoteCountBase');
 
-  foreach($user_list as $uname){ //¸ÄÊÌ¤ÎÅêÉ¼¥Ç¡¼¥¿¤ò¼ı½¸
-    $user = $USERS->ByVirtualUname($uname); //²¾ÁÛ¥æ¡¼¥¶¤ò¼èÆÀ
-    $list = $ROOM->vote[$uname]; //ÅêÉ¼¥Ç¡¼¥¿
-    $target = $USERS->ByVirtualUname($list['target_uname']); //ÅêÉ¼Àè¤Î²¾ÁÛ¥æ¡¼¥¶
-    $vote_number  = (int)$list['vote_number']; //ÅêÉ¼¿ô
-    $voted_number = (int)$vote_count_list[$user->uname]; //ÆÀÉ¼¿ô
+  foreach($user_list as $uname){ //å€‹åˆ¥ã®æŠ•ç¥¨ãƒ‡ãƒ¼ã‚¿ã‚’åé›†
+    $user = $USERS->ByVirtualUname($uname); //ä»®æƒ³ãƒ¦ãƒ¼ã‚¶ã‚’å–å¾—
+    $list = $ROOM->vote[$uname]; //æŠ•ç¥¨ãƒ‡ãƒ¼ã‚¿
+    $target = $USERS->ByVirtualUname($list['target_uname']); //æŠ•ç¥¨å…ˆã®ä»®æƒ³ãƒ¦ãƒ¼ã‚¶
+    $vote_number  = (int)$list['vote_number']; //æŠ•ç¥¨æ•°
+    $voted_number = (int)$vote_count_list[$user->uname]; //å¾—ç¥¨æ•°
 
-    //¥µ¥ÖÌò¿¦¤ÎÆÀÉ¼ÊäÀµ
+    //ã‚µãƒ–å½¹è·ã®å¾—ç¥¨è£œæ­£
     $ROLES->actor = $user;
     foreach($ROLES->Load('voted') as $filter) $filter->FilterVoted($voted_number);
-    if($voted_number < 0) $voted_number = 0; //¥Ş¥¤¥Ê¥¹¤Ë¤Ê¤Ã¤Æ¤¤¤¿¤é 0 ¤Ë¤¹¤ë
+    if($voted_number < 0) $voted_number = 0; //ãƒã‚¤ãƒŠã‚¹ã«ãªã£ã¦ã„ãŸã‚‰ 0 ã«ã™ã‚‹
 
-    //¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸ÍÑ¤ÎÇÛÎó¤òÀ¸À®
+    //ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”¨ã®é…åˆ—ã‚’ç”Ÿæˆ
     $message_list = array('target'       => $target->handle_name,
 			  'voted_number' => $voted_number,
 			  'vote_number'  => $vote_number);
     //PrintData($message_list, $uname);
 
-    //¥ê¥¹¥È¤Ë¥Ç¡¼¥¿¤òÄÉ²Ã
+    //ãƒªã‚¹ãƒˆã«ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
     $live_uname_list[$user->user_no] = $user->uname;
     $vote_message_list[$user->uname] = $message_list;
     $vote_target_list[$user->uname]  = $target->uname;
@@ -1196,50 +1183,50 @@ function AggregateVoteDay(){
   //PrintData($vote_count_list, 'VoteCount');
   //PrintData($ROLES->stack, 'RoleStack');
 
-  //-- È¿µÕ¼Ô¤Î½èÍı --//
+  //-- åé€†è€…ã®å‡¦ç† --//
   foreach($ROLES->LoadFilter('rebel') as $filter){
     $filter->FilterRebel($vote_message_list, $vote_count_list);
   }
   //PrintData($vote_message_list, 'VoteMessage');
 
-  //-- ÅêÉ¼·ë²ÌÅĞÏ¿ --//
-  foreach($live_uname_list as $uname){ //¥¿¥Ö¶èÀÚ¤ê¤Î¥Ç¡¼¥¿¤ò¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸¤ËÅĞÏ¿
-    extract($vote_message_list[$uname]); //ÇÛÎó¤òÅ¸³«
-    if($voted_number > $max_voted_number) $max_voted_number = $voted_number; //ºÇÂçÆÀÉ¼¿ô¤ò¹¹¿·
+  //-- æŠ•ç¥¨çµæœç™»éŒ² --//
+  foreach($live_uname_list as $uname){ //ã‚¿ãƒ–åŒºåˆ‡ã‚Šã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«ç™»éŒ²
+    extract($vote_message_list[$uname]); //é…åˆ—ã‚’å±•é–‹
+    if($voted_number > $max_voted_number) $max_voted_number = $voted_number; //æœ€å¤§å¾—ç¥¨æ•°ã‚’æ›´æ–°
 
-    //(Ã¯¤¬ [TAB] Ã¯¤Ë [TAB] ¼«Ê¬¤ÎÆÀÉ¼¿ô [TAB] ¼«Ê¬¤ÎÅêÉ¼¿ô [TAB] ÅêÉ¼²ó¿ô)
+    //(èª°ãŒ [TAB] èª°ã« [TAB] è‡ªåˆ†ã®å¾—ç¥¨æ•° [TAB] è‡ªåˆ†ã®æŠ•ç¥¨æ•° [TAB] æŠ•ç¥¨å›æ•°)
     $sentence = $USERS->GetHandleName($uname) . "\t" . $target . "\t" .
       $voted_number ."\t" . $vote_number . "\t" . $RQ_ARGS->vote_times;
     $ROOM->SystemMessage($sentence, 'VOTE_KILL');
   }
 
-  //-- ½è·º¼Ô·èÄê½èÍı --//
-  //ºÇÂçÆÀÉ¼¿ô¤Î¥æ¡¼¥¶Ì¾ (½è·º¸õÊä¼Ô) ¤Î¥ê¥¹¥È¤ò¼èÆÀ
+  //-- å‡¦åˆ‘è€…æ±ºå®šå‡¦ç† --//
+  //æœ€å¤§å¾—ç¥¨æ•°ã®ãƒ¦ãƒ¼ã‚¶å (å‡¦åˆ‘å€™è£œè€…) ã®ãƒªã‚¹ãƒˆã‚’å–å¾—
   $ROLES->stack->max_voted = array_keys($vote_count_list, $max_voted_number);
   //PrintData($ROLES->stack->max_voted, 'MaxVoted');
-  if(count($ROLES->stack->max_voted) == 1){ //°ì¿Í¤À¤±¤Ê¤é·èÄê
+  if(count($ROLES->stack->max_voted) == 1){ //ä¸€äººã ã‘ãªã‚‰æ±ºå®š
     $vote_kill_uname = array_shift($ROLES->stack->max_voted);
   }
-  else{ //·èÄêÇ½ÎÏ¼ÔÈ½Äê
+  else{ //æ±ºå®šèƒ½åŠ›è€…åˆ¤å®š
     $ROLES->stack->vote_possible = $ROLES->stack->max_voted;
     foreach($ROLES->LoadFilter('vote_kill') as $filter) $filter->DecideVoteKill($vote_kill_uname);
   }
   //PrintData($vote_kill_uname, 'VoteTarget');
 
-  if($vote_kill_uname != ''){ //-- ½è·º¼Â¹Ô½èÍı --//
-    //-- ½è·º¼Ô¾ğÊó¼ı¼è --//
-    $vote_target = $USERS->ByRealUname($vote_kill_uname); //¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ
-    $USERS->Kill($vote_target->user_no, 'VOTE_KILLED'); //½è·º½èÍı
-    unset($live_uname_list[$vote_target->user_no]); //½è·º¼Ô¤òÀ¸Â¸¼Ô¥ê¥¹¥È¤«¤é½ü¤¯
-    $voter_list = array_keys($vote_target_list, $vote_target->uname); //ÅêÉ¼¤·¤¿¿Í¤ò¼èÆÀ
+  if($vote_kill_uname != ''){ //-- å‡¦åˆ‘å®Ÿè¡Œå‡¦ç† --//
+    //-- å‡¦åˆ‘è€…æƒ…å ±åå– --//
+    $vote_target = $USERS->ByRealUname($vote_kill_uname); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—
+    $USERS->Kill($vote_target->user_no, 'VOTE_KILLED'); //å‡¦åˆ‘å‡¦ç†
+    unset($live_uname_list[$vote_target->user_no]); //å‡¦åˆ‘è€…ã‚’ç”Ÿå­˜è€…ãƒªã‚¹ãƒˆã‹ã‚‰é™¤ã
+    $voter_list = array_keys($vote_target_list, $vote_target->uname); //æŠ•ç¥¨ã—ãŸäººã‚’å–å¾—
 
-    foreach($user_list as $uname){ //-- Ìô»Õ¤Î¾ğÊó¼ı½¸ --//
+    foreach($user_list as $uname){ //-- è–¬å¸«ã®æƒ…å ±åé›† --//
       $user = $USERS->ByUname($uname);
       if(! $user->IsRoleGroup('pharmacist')) continue;
 
-      $target = $USERS->ByUname($vote_target_list[$user->uname]); //ÅêÉ¼Àè¤Î¾ğÊó¤ò¼èÆÀ
+      $target = $USERS->ByUname($vote_target_list[$user->uname]); //æŠ•ç¥¨å…ˆã®æƒ…å ±ã‚’å–å¾—
       $pharmacist_target_list[$user->uname] = $target->uname;
-      //²ÏÆ¸¤ÏÆÇ´ÕÄêÇ½ÎÏ¤Ê¤· / Àç¿Í¤Ï²òÆÇÇ½ÎÏ¤Ê¤·
+      //æ²³ç«¥ã¯æ¯’é‘‘å®šèƒ½åŠ›ãªã— / ä»™äººã¯è§£æ¯’èƒ½åŠ›ãªã—
       if(! $user->IsRole('revive_pharmacist')) $detox_target_list[$user->uname] = $target->uname;
       if(! $user->IsRole('pharmacist')){
 	$cure_target_list[$user->uname] = $target->uname;
@@ -1247,59 +1234,59 @@ function AggregateVoteDay(){
       }
 
       if(! $target->IsRoleGroup('poison') || $target->IsRole('dummy_poison')){
-	$pharmacist_result_list[$user->uname] = 'nothing'; //ÈóÆÇÇ½ÎÏ¼Ô¡¦Ì´ÆÇ¼Ô
+	$pharmacist_result_list[$user->uname] = 'nothing'; //éæ¯’èƒ½åŠ›è€…ãƒ»å¤¢æ¯’è€…
       }
       elseif($target->IsRole('strong_poison')){
-	$pharmacist_result_list[$user->uname] = 'strong'; //¶¯ÆÇ¼Ô
+	$pharmacist_result_list[$user->uname] = 'strong'; //å¼·æ¯’è€…
       }
-      elseif($target->IsRole('incubate_poison')){ //ÀøÆÇ¼Ô¤Ï 5 ÆüÌÜ°Ê¹ß¤Ë¶¯ÆÇ¤ò»ı¤Ä
+      elseif($target->IsRole('incubate_poison')){ //æ½œæ¯’è€…ã¯ 5 æ—¥ç›®ä»¥é™ã«å¼·æ¯’ã‚’æŒã¤
 	$pharmacist_result_list[$user->uname] = $ROOM->date >= 5 ? 'strong' : 'nothing';
       }
       elseif($target->IsRole('poison_guard', 'guide_poison', 'chain_poison', 'poison_jealousy')){
-	$pharmacist_result_list[$user->uname] = 'limited'; //µ³»Î¡¦Í¶ÆÇ¼Ô¡¦Ï¢ÆÇ¼Ô¡¦ÆÇ¶¶É±
+	$pharmacist_result_list[$user->uname] = 'limited'; //é¨å£«ãƒ»èª˜æ¯’è€…ãƒ»é€£æ¯’è€…ãƒ»æ¯’æ©‹å§«
       }
       else{
 	$pharmacist_result_list[$user->uname] = 'poison';
       }
     }
 
-    do{ //-- ½è·º¼Ô¤ÎÆÇ½èÍı --//
-      if(! $vote_target->IsPoison()) break; //ÆÇÇ½ÎÏ¤ÎÈ¯Æ°È½Äê
+    do{ //-- å‡¦åˆ‘è€…ã®æ¯’å‡¦ç† --//
+      if(! $vote_target->IsPoison()) break; //æ¯’èƒ½åŠ›ã®ç™ºå‹•åˆ¤å®š
 
-      //Ìô»Õ·Ï¤Î²òÆÇÈ½Äê (Ì´ÆÇ¼Ô¤ÏÂĞ¾İ³°)
+      //è–¬å¸«ç³»ã®è§£æ¯’åˆ¤å®š (å¤¢æ¯’è€…ã¯å¯¾è±¡å¤–)
       if(in_array($vote_target->uname, $detox_target_list) &&
 	 ! $vote_target->IsRole('dummy_poison')){
-	foreach(array_keys($detox_target_list, $vote_target->uname) as $uname){ //ÅêÉ¼¼Ô¤ò¸¡½Ğ
+	foreach(array_keys($detox_target_list, $vote_target->uname) as $uname){ //æŠ•ç¥¨è€…ã‚’æ¤œå‡º
 	  $pharmacist_result_list[$uname] = 'success';
 	}
 	break;
       }
 
-      //ÆÇ¤ÎÂĞ¾İ¥ª¥×¥·¥ç¥ó¤ò¥Á¥§¥Ã¥¯¤·¤Æ¸õÊä¼Ô¥ê¥¹¥È¤òºîÀ®
-      $poison_target_list = array(); //ÆÇ¤ÎÂĞ¾İ¥ê¥¹¥È
+      //æ¯’ã®å¯¾è±¡ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦å€™è£œè€…ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+      $poison_target_list = array(); //æ¯’ã®å¯¾è±¡ãƒªã‚¹ãƒˆ
       $target_list = $GAME_CONF->poison_only_voter ? $voter_list : $live_uname_list;
       //PrintData($target_list);
 
-      foreach($target_list as $uname){ //¾ï»şÂĞ¾İ³°¤ÎÌò¿¦¤ò½ü¤¯
+      foreach($target_list as $uname){ //å¸¸æ™‚å¯¾è±¡å¤–ã®å½¹è·ã‚’é™¤ã
 	$user = $USERS->ByRealUname($uname);
 	if($user->IsLive(true) && ! $user->IsAvoid(true)) $poison_target_list[] = $uname;
       }
       //PrintData($poison_target_list, 'BasePoisonTarget');
 
-      $limited_list = array(); //ÆÃ¼ìÆÇ¤Î¾ì¹ç¤Ï¥¿¡¼¥²¥Ã¥È¤¬¸ÂÄê¤µ¤ì¤ë
-      if($vote_target->IsRole('strong_poison', 'incubate_poison')){ //¶¯ÆÇ¼Ô¡¦ÀøÆÇ¼Ô
+      $limited_list = array(); //ç‰¹æ®Šæ¯’ã®å ´åˆã¯ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒé™å®šã•ã‚Œã‚‹
+      if($vote_target->IsRole('strong_poison', 'incubate_poison')){ //å¼·æ¯’è€…ãƒ»æ½œæ¯’è€…
 	foreach($poison_target_list as $uname){
 	  if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox')) $limited_list[] = $uname;
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('guide_poison')){ //Í¶ÆÇ¼Ô
+      elseif($vote_target->IsRole('guide_poison')){ //èª˜æ¯’è€…
 	foreach($poison_target_list as $uname){
 	  if($USERS->ByRealUname($uname)->IsRoleGroup('poison')) $limited_list[] = $uname;
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('dummy_poison')){ //Ì´ÆÇ¼Ô
+      elseif($vote_target->IsRole('dummy_poison')){ //å¤¢æ¯’è€…
 	foreach($poison_target_list as $uname){
 	  if($USERS->ByRealUname($uname)->IsRoleGroup('dream_eater_mad', 'fairy')){
 	    $limited_list[] = $uname;
@@ -1307,31 +1294,31 @@ function AggregateVoteDay(){
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('poison_jealousy')){ //ÆÇ¶¶É±
+      elseif($vote_target->IsRole('poison_jealousy')){ //æ¯’æ©‹å§«
 	foreach($poison_target_list as $uname){
 	  if($USERS->ByRealUname($uname)->IsLovers()) $limited_list[] = $uname;
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('poison_doll')){ //ÎëÍö¿Í·Á
+      elseif($vote_target->IsRole('poison_doll')){ //éˆ´è˜­äººå½¢
 	foreach($poison_target_list as $uname){
 	  if(! $USERS->ByRealUname($uname)->IsDoll()) $limited_list[] = $uname;
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('poison_wolf')){ //ÆÇÏµ
+      elseif($vote_target->IsRole('poison_wolf')){ //æ¯’ç‹¼
 	foreach($poison_target_list as $uname){
 	  if(! $USERS->ByRealUname($uname)->IsWolf()) $limited_list[] = $uname;
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('poison_fox')){ //´É¸Ñ
+      elseif($vote_target->IsRole('poison_fox')){ //ç®¡ç‹
 	foreach($poison_target_list as $uname){
 	  if(! $USERS->ByRealUname($uname)->IsFox()) $limited_list[] = $uname;
 	}
 	$poison_target_list = $limited_list;
       }
-      elseif($vote_target->IsRole('poison_chiroptera')){ //ÆÇéşéõ
+      elseif($vote_target->IsRole('poison_chiroptera')){ //æ¯’è™è 
 	foreach($poison_target_list as $uname){
 	  if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox', 'chiroptera', 'fairy')){
 	    $limited_list[] = $uname;
@@ -1342,49 +1329,49 @@ function AggregateVoteDay(){
       if(count($poison_target_list) < 1) break;
 
       //PrintData($poison_target_list, 'PoisonTarget');
-      $poison_target = $USERS->ByRealUname(GetRandom($poison_target_list)); //ÂĞ¾İ¼Ô¤ò·èÄê
+      $poison_target = $USERS->ByRealUname(GetRandom($poison_target_list)); //å¯¾è±¡è€…ã‚’æ±ºå®š
 
-      if($poison_target->IsActive('resist_wolf')){ //¹³ÆÇÈ½Äê
+      if($poison_target->IsActive('resist_wolf')){ //æŠ—æ¯’åˆ¤å®š
 	$poison_target->LostAbility();
 	break;
       }
-      $USERS->Kill($poison_target->user_no, 'POISON_DEAD_day'); //»àË´½èÍı
+      $USERS->Kill($poison_target->user_no, 'POISON_DEAD_day'); //æ­»äº¡å‡¦ç†
 
-      //-- Ï¢ÆÇ¼Ô¤Î½èÍı --//
-      if(! $poison_target->IsRole('chain_poison')) break; //Ï¢ÆÇ¼ÔÈ½Äê
-      if(in_array($poison_target->uname, $detox_target_list)){ //Ìô»Õ·Ï¤Î²òÆÇÈ½Äê
-	foreach(array_keys($detox_target_list, $poison_target->uname) as $uname){ //ÅêÉ¼¼Ô¤ò¸¡½Ğ
+      //-- é€£æ¯’è€…ã®å‡¦ç† --//
+      if(! $poison_target->IsRole('chain_poison')) break; //é€£æ¯’è€…åˆ¤å®š
+      if(in_array($poison_target->uname, $detox_target_list)){ //è–¬å¸«ç³»ã®è§£æ¯’åˆ¤å®š
+	foreach(array_keys($detox_target_list, $poison_target->uname) as $uname){ //æŠ•ç¥¨è€…ã‚’æ¤œå‡º
 	  $pharmacist_result_list[$uname] = 'success';
 	}
 	break;
       }
 
       $target_stack = array();
-      foreach($USERS->GetLivingUsers(true) as $uname){ //À¸Â¸¼Ô¤«¤é¾ï»şÂĞ¾İ³°¤ÎÌò¿¦¤ò½ü¤¯
+      foreach($USERS->GetLivingUsers(true) as $uname){ //ç”Ÿå­˜è€…ã‹ã‚‰å¸¸æ™‚å¯¾è±¡å¤–ã®å½¹è·ã‚’é™¤ã
 	$user = $USERS->ByRealUname($uname);
 	if(! $user->IsAvoid(true)) $target_stack[] = $user->user_no;
       }
       //PrintData($target_stack, 'BaseChainPoisonTarget');
 
-      $chain_count = 1; //Ï¢º¿¥«¥¦¥ó¥È¤ò½é´ü²½
+      $chain_count = 1; //é€£é–ã‚«ã‚¦ãƒ³ãƒˆã‚’åˆæœŸåŒ–
       while($chain_count > 0){
 	$chain_count--;
-	shuffle($target_stack); //ÇÛÎó¤ò¥·¥ã¥Ã¥Õ¥ë
+	shuffle($target_stack); //é…åˆ—ã‚’ã‚·ãƒ£ãƒƒãƒ•ãƒ«
 	for($i = 0; $i < 2; $i++){
 	  if(count($target_stack) < 1) break 2;
 	  $id = array_shift($target_stack);
 	  $target = $USERS->ByReal($id);
 
-	  if($target->IsActive('resist_wolf')){ //¹³ÆÇÈ½Äê
+	  if($target->IsActive('resist_wolf')){ //æŠ—æ¯’åˆ¤å®š
 	    $target->LostAbility();
 	    $target_stack[] = $id;
 	    continue;
 	  }
-	  $USERS->Kill($id, 'POISON_DEAD_day'); //»àË´½èÍı
+	  $USERS->Kill($id, 'POISON_DEAD_day'); //æ­»äº¡å‡¦ç†
 
-	  if(! $target->IsRole('chain_poison')) continue; //Ï¢º¿È½Äê
-	  if(in_array($target->uname, $detox_target_list)){ //Ìô»Õ·Ï¤Î²òÆÇÈ½Äê
-	    foreach(array_keys($detox_target_list, $target->uname) as $uname){ //ÅêÉ¼¼Ô¤ò¸¡½Ğ
+	  if(! $target->IsRole('chain_poison')) continue; //é€£é–åˆ¤å®š
+	  if(in_array($target->uname, $detox_target_list)){ //è–¬å¸«ç³»ã®è§£æ¯’åˆ¤å®š
+	    foreach(array_keys($detox_target_list, $target->uname) as $uname){ //æŠ•ç¥¨è€…ã‚’æ¤œå‡º
 	      $pharmacist_result_list[$uname] = 'success';
 	    }
 	  }
@@ -1393,9 +1380,9 @@ function AggregateVoteDay(){
       }
     }while(false);
 
-    //-- ÆÃ¼ìÌò¿¦È½Äê --//
-    if($vote_target->IsRole('doom_doll')){ //Ë©Íé¿Í·Á
-      $stack = array(); //ÂĞ¾İ¼Ô¤ÎÁª½Ğ
+    //-- ç‰¹æ®Šå½¹è·åˆ¤å®š --//
+    if($vote_target->IsRole('doom_doll')){ //è“¬è±äººå½¢
+      $stack = array(); //å¯¾è±¡è€…ã®é¸å‡º
       foreach($voter_list as $uname){
 	$user = $USERS->ByRealUname($uname);
 	if(! $user->IsAvoid() && ! $user->IsDoll()) $stack[] = $user->user_no;
@@ -1403,8 +1390,8 @@ function AggregateVoteDay(){
       //PrintData($stack, 'Target [death_warrant]');
       if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(2);
     }
-    elseif($vote_target->IsRole('brownie', 'miasma_fox')){ //ºÂÉßÆ¸»Ò¡¦êµ¸Ñ
-      $stack = array(); //ÂĞ¾İ¼Ô¤ÎÁª½Ğ
+    elseif($vote_target->IsRole('brownie', 'miasma_fox')){ //åº§æ•·ç«¥å­ãƒ»èŸ²ç‹
+      $stack = array(); //å¯¾è±¡è€…ã®é¸å‡º
       foreach($voter_list as $uname){
 	$user = $USERS->ByRealUname($uname);
 	if(! $user->IsAvoid()) $stack[] = $user->user_no;
@@ -1415,14 +1402,14 @@ function AggregateVoteDay(){
       }
     }
 
-    //-- Éõ°õ»Õ¤Î½èÍı --//
+    //-- å°å°å¸«ã®å‡¦ç† --//
     $stack = array('phantom_wolf', 'resist_wolf', 'tongue_wolf', 'trap_mad', 'possessed_mad',
 		   'phantom_fox', 'emerald_fox', 'revive_fox', 'possessed_fox');
     foreach($user_list as $uname){
       $user = $USERS->ByRealUname($uname);
       if($user->IsSame($vote_kill_uname) || ! $user->IsRole('seal_medium')) continue;
 
-      $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //ÅêÉ¼Àè¤ò¼èÆÀ
+      $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //æŠ•ç¥¨å…ˆã‚’å–å¾—
       if($target->IsSame($vote_kill_uname)) continue;
       if($target->IsActive($stack)) $target->LostAbility();
       elseif($target->IsRole('lost_ability')){
@@ -1430,22 +1417,22 @@ function AggregateVoteDay(){
       }
     }
 
-    //-- ÅÚÃØéá¤Î½èÍı --//
+    //-- åœŸèœ˜è››ã®å‡¦ç† --//
     foreach($user_list as $uname){
       $user = $USERS->ByRealUname($uname);
       if(! $user->IsRole('miasma_mad')) continue;
 
-      $target = $USERS->ByUname($vote_target_list[$user->uname]); //ËÜÂÎ¤ËÉÕ¤±¤ë
-      if($target->IsLive(true) && ! $target->IsAvoid()){ //ÆÃ¼ìÂÑÀ­È½Äê
+      $target = $USERS->ByUname($vote_target_list[$user->uname]); //æœ¬ä½“ã«ä»˜ã‘ã‚‹
+      if($target->IsLive(true) && ! $target->IsAvoid()){ //ç‰¹æ®Šè€æ€§åˆ¤å®š
 	$target->AddRole('febris[' . ($ROOM->date + 1) . ']');
       }
     }
 
-    //-- ÎîÇ½¼Ô·Ï¤Î½èÍı --//
+    //-- éœŠèƒ½è€…ç³»ã®å‡¦ç† --//
     $sentence_header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
     $action = 'NECROMANCER_RESULT';
 
-    //ÎîÇ½È½Äê
+    //éœŠèƒ½åˆ¤å®š
     if($vote_target->IsRole('boss_wolf', 'phantom_wolf', 'cursed_wolf', 'possessed_wolf')){
       $necromancer_result = $vote_target->main_role;
     }
@@ -1466,13 +1453,13 @@ function AggregateVoteDay(){
       $necromancer_result = 'human';
     }
 
-    //²Ğ¼Ö¤ÎË¸³²È½Äê
+    //ç«è»Šã®å¦¨å®³åˆ¤å®š
     $flag_stolen = false;
     foreach($voter_list as $this_uname){
       $flag_stolen |= $USERS->ByRealUname($this_uname)->IsRole('corpse_courier_mad');
     }
 
-    //ÎîÇ½¼Ô·Ï¤Î½Ğ¸½È½Äê
+    //éœŠèƒ½è€…ç³»ã®å‡ºç¾åˆ¤å®š
     $necromacer_flag       = false;
     $soul_necromacer_flag  = false;
     $dummy_necromacer_flag = false;
@@ -1482,26 +1469,26 @@ function AggregateVoteDay(){
       $dummy_necromacer_flag |= $user->IsRole('dummy_necromancer');
     }
 
-    if($necromacer_flag){ //ÎîÇ½¼Ô¤Î½èÍı
+    if($necromacer_flag){ //éœŠèƒ½è€…ã®å‡¦ç†
       $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $necromancer_result);
       $ROOM->SystemMessage($sentence, $action);
     }
 
-    if($soul_necromacer_flag){ //±À³°¶À¤Î½èÍı
+    if($soul_necromacer_flag){ //é›²å¤–é¡ã®å‡¦ç†
       $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
       $ROOM->SystemMessage($sentence, 'SOUL_' . $action);
     }
 
-    if($dummy_necromacer_flag){ //Ì´Ëí¿Í¤Ï¡ÖÂ¼¿Í¡×¢Î¡Ö¿ÍÏµ¡×È¿Å¾
+    if($dummy_necromacer_flag){ //å¤¢æ•äººã¯ã€Œæ‘äººã€â‡”ã€Œäººç‹¼ã€åè»¢
       if($necromancer_result == 'human')    $necromancer_result = 'wolf';
       elseif($necromancer_result == 'wolf') $necromancer_result = 'human';
       $ROOM->SystemMessage($sentence_header . $necromancer_result, 'DUMMY_' . $action);
     }
   }
 
-  //-- ºö»Î¤Î½èÍı --//
+  //-- ç­–å£«ã®å‡¦ç† --//
   $target_stack = array();
-  foreach($user_list as $uname){ //ÈóÂ¼¿Í¿Ø±Ä¤Î ID ¤È²¾ÁÛÅêÉ¼¼ÔÌ¾¤ò¼ı½¸
+  foreach($user_list as $uname){ //éæ‘äººé™£å–¶ã® ID ã¨ä»®æƒ³æŠ•ç¥¨è€…åã‚’åé›†
     $user = $USERS->ByRealUname($uname);
     if($user->GetCamp(true) != 'human'){
       $target_stack[$user->user_no] = $USERS->ByVirtual($user->user_no)->uname;
@@ -1510,21 +1497,21 @@ function AggregateVoteDay(){
   //PrintData($target_stack, '! HUMAN');
   //PrintData(array_values($target_stack), 'target');
 
-  foreach($user_list as $uname){ //ºö»Î¤ÎÅêÉ¼¼Ô¥ê¥¹¥È¤È¾È¹ç
+  foreach($user_list as $uname){ //ç­–å£«ã®æŠ•ç¥¨è€…ãƒªã‚¹ãƒˆã¨ç…§åˆ
     $user = $USERS->ByRealUname($uname);
     if(! $user->IsRole('trap_common')) continue;
-    $voted_uname_stack = array_keys($vote_target_list, $user->uname); //ºö»Î¤Ø¤ÎÅêÉ¼¼Ô¥ê¥¹¥È
+    $voted_uname_stack = array_keys($vote_target_list, $user->uname); //ç­–å£«ã¸ã®æŠ•ç¥¨è€…ãƒªã‚¹ãƒˆ
     //PrintData($voted_uname_stack, 'voted');
     if($voted_uname_stack != array_values($target_stack)) continue;
     foreach($target_stack as $id => $uname) $USERS->Kill($id, 'TRAPPED');
   }
 
-  foreach($user_list as $uname){ //-- ¶¶É±¤Î½èÍı --//
+  foreach($user_list as $uname){ //-- æ©‹å§«ã®å‡¦ç† --//
     $user = $USERS->ByRealUname($uname);
     if($vote_kill_uname == $user->uname || ! $user->IsRole('jealousy')) continue;
 
-    $cupid_list = array(); //¥­¥å¡¼¥Ô¥Ã¥É¤ÎID => Îø¿Í¤ÎID
-    $jealousy_voted_list = array_keys($vote_target_list, $user->uname); //¶¶É±¤Ø¤ÎÅêÉ¼¼Ô¥ê¥¹¥È
+    $cupid_list = array(); //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ã®ID => æ‹äººã®ID
+    $jealousy_voted_list = array_keys($vote_target_list, $user->uname); //æ©‹å§«ã¸ã®æŠ•ç¥¨è€…ãƒªã‚¹ãƒˆ
     foreach($jealousy_voted_list as $voted_uname){
       $voted_user = $USERS->ByRealUname($voted_uname);
       if($voted_user->dead_flag || ! $voted_user->IsLovers()) continue;
@@ -1533,21 +1520,21 @@ function AggregateVoteDay(){
       }
     }
 
-    //Æ±°ì¥­¥å¡¼¥Ô¥Ã¥É¤ÎÎø¿Í¤¬Ê£¿ô¤¤¤¿¤é¥·¥ç¥Ã¥¯»à
+    //åŒä¸€ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ã®æ‹äººãŒè¤‡æ•°ã„ãŸã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»
     foreach($cupid_list as $cupid_id => $lovers_list){
       if(count($lovers_list) < 2) continue;
       foreach($lovers_list as $id) $USERS->SuddenDeath($id, 'SUDDEN_DEATH_JEALOUSY');
     }
   }
 
-  //-- ¥µ¥ÖÌò¿¦¤Î¥·¥ç¥Ã¥¯»à½èÍı --//
-  //È½ÄêÍÑ¥Ç¡¼¥¿¤òÅĞÏ¿
+  //-- ã‚µãƒ–å½¹è·ã®ã‚·ãƒ§ãƒƒã‚¯æ­»å‡¦ç† --//
+  //åˆ¤å®šç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ç™»éŒ²
   $ROLES->stack->revote = $vote_kill_uname == '';
   $ROLES->stack->target = $vote_target_list;
-  $ROLES->stack->count  = array_count_values($vote_target_list); //ÅêÉ¼¼ÔÂĞ¾İ¥æ¡¼¥¶Ì¾ => ¿Í¿ô
+  $ROLES->stack->count  = array_count_values($vote_target_list); //æŠ•ç¥¨è€…å¯¾è±¡ãƒ¦ãƒ¼ã‚¶å => äººæ•°
   //PrintData($ROLES->stack->count);
 
-  $cupid_list = array(); //ÆñÂêÈ½ÄêÍÑ
+  $cupid_list = array(); //é›£é¡Œåˆ¤å®šç”¨
   foreach($user_list as $uname){
     $user = $USERS->ByRealUname($uname);
     if($user->IsLovers()){
@@ -1562,7 +1549,7 @@ function AggregateVoteDay(){
     $user = $USERS->ByUname($this_uname);
     $reason = '';
 
-    if($ROOM->date > 4 && $user->IsRole('challenge_lovers')){ //ÆñÂê
+    if($ROOM->date > 4 && $user->IsRole('challenge_lovers')){ //é›£é¡Œ
       $stack = array_keys($vote_target_list, $vote_target_list[$user->uname]);
       //PrintData($stack, $user->uname);
       $count = 0;
@@ -1579,8 +1566,8 @@ function AggregateVoteDay(){
     foreach($ROLES->Load('sudden_death') as $filter) $filter->FilterSuddenDeath($reason);
 
     if($reason != ''){
-      if(in_array($user->uname, $cure_target_list)){ //Ìô»Õ·Ï¤Î¼£ÎÅÈ½Äê
-	foreach(array_keys($cure_target_list, $user->uname) as $uname){ //ÅêÉ¼¼Ô¤ò¸¡½Ğ
+      if(in_array($user->uname, $cure_target_list)){ //è–¬å¸«ç³»ã®æ²»ç™‚åˆ¤å®š
+	foreach(array_keys($cure_target_list, $user->uname) as $uname){ //æŠ•ç¥¨è€…ã‚’æ¤œå‡º
 	  $pharmacist_result_list[$uname] = 'cured';
 	}
       }
@@ -1590,7 +1577,7 @@ function AggregateVoteDay(){
     }
   }
 
-  foreach($pharmacist_result_list as $uname => $result){ //Ìô»Õ·Ï¤Î´ÕÄê·ë²Ì¤òÅĞÏ¿
+  foreach($pharmacist_result_list as $uname => $result){ //è–¬å¸«ç³»ã®é‘‘å®šçµæœã‚’ç™»éŒ²
     $user = $USERS->ByUname($uname);
     if($user->IsRole('cure_pharmacist')) $result = 'cured';
     $handle_name = $USERS->GetHandleName($pharmacist_target_list[$user->uname], true);
@@ -1598,47 +1585,50 @@ function AggregateVoteDay(){
     $ROOM->SystemMessage($sentence, 'PHARMACIST_RESULT');
   }
 
-  LoversFollowed(); //Îø¿Í¸åÄÉ¤¤½èÍı
-  InsertMediumMessage(); //Öà½÷¤Î¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸
+  LoversFollowed(); //æ‹äººå¾Œè¿½ã„å‡¦ç†
+  InsertMediumMessage(); //å·«å¥³ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
   if($ROOM->test_mode) return $vote_message_list;
 
-  if($vote_kill_uname != ''){ //Ìë¤ËÀÚ¤êÂØ¤¨
+  if($vote_kill_uname != ''){ //å¤œã«åˆ‡ã‚Šæ›¿ãˆ
     $ROOM->ChangeNight();
-    if(! CheckVictory()) InsertRandomMessage(); //¥é¥ó¥À¥à¥á¥Ã¥»¡¼¥¸
+    if(! CheckVictory()) InsertRandomMessage(); //ãƒ©ãƒ³ãƒ€ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+    $ROOM->SkipNight();
   }
-  else{ //ºÆÅêÉ¼½èÍı
-    $next_vote_times = $RQ_ARGS->vote_times + 1; //ÅêÉ¼²ó¿ô¤òÁı¤ä¤¹
+  else{ //å†æŠ•ç¥¨å‡¦ç†
+    $next_vote_times = $RQ_ARGS->vote_times + 1; //æŠ•ç¥¨å›æ•°ã‚’å¢—ã‚„ã™
     $query = 'UPDATE system_message SET message = ' . $next_vote_times . $ROOM->GetQuery() .
       " AND type = 'VOTE_TIMES'";
     SendQuery($query);
 
-    //¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸
+    //ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
     $ROOM->SystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
-    $ROOM->Talk("ºÆÅêÉ¼¤Ë¤Ê¤ê¤Ş¤·¤¿( {$RQ_ARGS->vote_times} ²óÌÜ)");
-    CheckVictory(true); //¾¡ÇÔÈ½Äê
+    $ROOM->Talk("å†æŠ•ç¥¨ã«ãªã‚Šã¾ã—ãŸ( {$RQ_ARGS->vote_times} å›ç›®)");
+    CheckVictory(true); //å‹æ•—åˆ¤å®š
   }
-  $ROOM->UpdateTime(true); //ºÇ½ª½ñ¤­¹ş¤ß»ş¹ï¤ò¹¹¿·
+  $ROOM->UpdateTime(true); //æœ€çµ‚æ›¸ãè¾¼ã¿æ™‚åˆ»ã‚’æ›´æ–°
 }
 
-//Ìë¤Î½¸·×½èÍı
-function AggregateVoteNight(){
+//å¤œã®é›†è¨ˆå‡¦ç†
+function AggregateVoteNight($skip = false){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  $ROOM->LoadVote(); //ÅêÉ¼¾ğÊó¤ò¼èÆÀ
+  $ROOM->LoadVote(); //æŠ•ç¥¨æƒ…å ±ã‚’å–å¾—
   //PrintData($ROOM->vote, 'Vote Row');
 
-  $vote_data = $ROOM->ParseVote(); //¥³¥Ş¥ó¥ÉËè¤ËÊ¬³ä
+  $vote_data = $ROOM->ParseVote(); //ã‚³ãƒãƒ³ãƒ‰æ¯ã«åˆ†å‰²
   //PrintData($vote_data, 'Vote Data');
 
-  foreach($USERS->rows as $user){ //Ì¤ÅêÉ¼¥Á¥§¥Ã¥¯
-    if($user->CheckVote($vote_data) === false){
-      //PrintData($user->uname, $user->main_role); //¥Æ¥¹¥ÈÍÑ
-      return false;
+  if(! $skip){
+    foreach($USERS->rows as $user){ //æœªæŠ•ç¥¨ãƒã‚§ãƒƒã‚¯
+      if($user->CheckVote($vote_data) === false){
+	//PrintData($user->uname, $user->main_role); //ãƒ†ã‚¹ãƒˆç”¨
+	return false;
+      }
     }
   }
 
-  //½èÍıÂĞ¾İ¥³¥Ş¥ó¥É¥Á¥§¥Ã¥¯
+  //å‡¦ç†å¯¾è±¡ã‚³ãƒãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯
   $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
 		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
   if($ROOM->date == 1){
@@ -1654,50 +1644,52 @@ function AggregateVoteNight(){
   }
   //PrintData($vote_data);
 
-  //-- ÊÑ¿ô¤Î½é´ü²½ --//
-  $trap_target_list         = array(); //æ«¤ÎÀßÃÖÀè¥ê¥¹¥È
-  $trapped_list             = array(); //æ«¤Ë¤«¤«¤Ã¤¿¿Í¥ê¥¹¥È
-  $guard_target_list        = array(); //¼í¿Í·Ï¤Î¸î±ÒÂĞ¾İ¥ê¥¹¥È
-  $dummy_guard_target_list  = array(); //Ì´¼é¿Í¤Î¸î±ÒÂĞ¾İ¥ê¥¹¥È
-  $escaper_target_list      = array(); //Æ¨Ë´¼Ô¤ÎÆ¨Ë´Àè¥ê¥¹¥È
-  $sacrifice_list           = array(); //¿ÈÂå¤ï¤ê»à¤·¤¿¿Í¥ê¥¹¥È
+  //-- å¤‰æ•°ã®åˆæœŸåŒ– --//
+  $trap_target_list         = array(); //ç½ ã®è¨­ç½®å…ˆãƒªã‚¹ãƒˆ
+  $trapped_list             = array(); //ç½ ã«ã‹ã‹ã£ãŸäººãƒªã‚¹ãƒˆ
+  $guard_target_list        = array(); //ç‹©äººç³»ã®è­·è¡›å¯¾è±¡ãƒªã‚¹ãƒˆ
+  $dummy_guard_target_list  = array(); //å¤¢å®ˆäººã®è­·è¡›å¯¾è±¡ãƒªã‚¹ãƒˆ
+  $escaper_target_list      = array(); //é€ƒäº¡è€…ã®é€ƒäº¡å…ˆãƒªã‚¹ãƒˆ
+  $sacrifice_list           = array(); //èº«ä»£ã‚ã‚Šæ­»ã—ãŸäººãƒªã‚¹ãƒˆ
 
-  $anti_voodoo_target_list  = array(); //Ìñ¿À¤Î¸î±ÒÂĞ¾İ¥ê¥¹¥È
-  $anti_voodoo_success_list = array(); //ÌñÊ§¤¤À®¸ù¼Ô¥ê¥¹¥È
+  $anti_voodoo_target_list  = array(); //å„ç¥ã®è­·è¡›å¯¾è±¡ãƒªã‚¹ãƒˆ
+  $anti_voodoo_success_list = array(); //å„æ‰•ã„æˆåŠŸè€…ãƒªã‚¹ãƒˆ
 
-  $reverse_assassin_target_list = array(); //È¿º²»Õ¤ÎÂĞ¾İ¥ê¥¹¥È
+  $reverse_assassin_target_list = array(); //åé­‚å¸«ã®å¯¾è±¡ãƒªã‚¹ãƒˆ
 
-  $possessed_target_list    = array(); //Øá°ÍÍ½Äê¼Ô¥ê¥¹¥È => Øá°ÍÀ®Î©¥Õ¥é¥°
-  $possessed_target_id_list = array(); //Øá°ÍÂĞ¾İ¼Ô¥ê¥¹¥È
+  $possessed_target_list    = array(); //æ†‘ä¾äºˆå®šè€…ãƒªã‚¹ãƒˆ => æ†‘ä¾æˆç«‹ãƒ•ãƒ©ã‚°
+  $possessed_target_id_list = array(); //æ†‘ä¾å¯¾è±¡è€…ãƒªã‚¹ãƒˆ
 
-  //-- ÀÜ¿¨·Ï¥ì¥¤¥ä¡¼ --//
-  foreach($vote_data['WOLF_EAT'] as $uname => $target_uname){ //¿ÍÏµ¤Î¾ğÊó¼ı½¸
+  //-- æ¥è§¦ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
+  $voted_wolf  =& new User();
+  $wolf_target =& new User();
+  foreach($vote_data['WOLF_EAT'] as $uname => $target_uname){ //äººç‹¼ã®æƒ…å ±åé›†
     $voted_wolf  = $USERS->ByUname($uname);
     $wolf_target = $USERS->ByUname($target_uname);
   }
 
   if($ROOM->date > 1){
-    foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //æ«»Õ¤Î¾ğÊó¼ı½¸
+    foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //ç½ å¸«ã®æƒ…å ±åé›†
       $user = $USERS->ByUname($uname);
-      $user->LostAbility(); //°ìÅÙÀßÃÖ¤·¤¿¤éÇ½ÎÏ¼º¸ú
+      $user->LostAbility(); //ä¸€åº¦è¨­ç½®ã—ãŸã‚‰èƒ½åŠ›å¤±åŠ¹
 
-      //¿ÍÏµ¤ËÁÀ¤ï¤ì¤Æ¤¤¤¿¤é¼«Ê¬¼«¿È¤Ø¤ÎÀßÃÖ°Ê³°¤ÏÌµ¸ú
+      //äººç‹¼ã«ç‹™ã‚ã‚Œã¦ã„ãŸã‚‰è‡ªåˆ†è‡ªèº«ã¸ã®è¨­ç½®ä»¥å¤–ã¯ç„¡åŠ¹
       if(! $user->IsSame($wolf_target->uname) || $user->IsSame($target_uname)){
-	$trap_target_list[$user->uname] = $target_uname; //æ«¤ò¥»¥Ã¥È
+	$trap_target_list[$user->uname] = $target_uname; //ç½ ã‚’ã‚»ãƒƒãƒˆ
       }
     }
 
-    //æ«»Õ¤¬¼«Ê¬¼«¿È°Ê³°¤Ëæ«¤ò»Å³İ¤±¤¿¾ì¹ç¡¢ÀßÃÖÀè¤Ëæ«¤¬¤¢¤Ã¤¿¾ì¹ç¤Ï»àË´
+    //ç½ å¸«ãŒè‡ªåˆ†è‡ªèº«ä»¥å¤–ã«ç½ ã‚’ä»•æ›ã‘ãŸå ´åˆã€è¨­ç½®å…ˆã«ç½ ãŒã‚ã£ãŸå ´åˆã¯æ­»äº¡
     $stack = array_count_values($trap_target_list);
     foreach($trap_target_list as $uname => $target_uname){
       if($uname != $target_uname && $stack[$target_uname] > 1) $trapped_list[] = $uname;
     }
 
-    foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //¼í¿Í·Ï¤Î¸î±ÒÀè¤ò¥»¥Ã¥È
+    foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //ç‹©äººç³»ã®è­·è¡›å…ˆã‚’ã‚»ãƒƒãƒˆ
       $user = $USERS->ByUname($uname);
-      if($user->IsRole('dummy_guard')) //Ì´¼é¿Í¤Ïæ«Ìµ¸ú
+      if($user->IsRole('dummy_guard')) //å¤¢å®ˆäººã¯ç½ ç„¡åŠ¹
 	$dummy_guard_target_list[$user->uname] = $target_uname;
-      elseif(in_array($target_uname, $trap_target_list)) //æ«¤¬ÀßÃÖ¤µ¤ì¤Æ¤¤¤¿¤é»àË´
+      elseif(in_array($target_uname, $trap_target_list)) //ç½ ãŒè¨­ç½®ã•ã‚Œã¦ã„ãŸã‚‰æ­»äº¡
 	$trapped_list[] = $user->uname;
       else
 	$guard_target_list[$user->uname] = $target_uname;
@@ -1705,106 +1697,106 @@ function AggregateVoteNight(){
     //PrintData($guard_target_list, 'Target [guard]');
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
 
-    foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //Æ¨Ë´¼Ô¤Î¾ğÊó¼ı½¸
+    foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //é€ƒäº¡è€…ã®æƒ…å ±åé›†
       $user = $USERS->ByUname($uname);
-      if(in_array($target_uname, $trap_target_list)) //æ«¤¬ÀßÃÖ¤µ¤ì¤Æ¤¤¤¿¤é»àË´
+      if(in_array($target_uname, $trap_target_list)) //ç½ ãŒè¨­ç½®ã•ã‚Œã¦ã„ãŸã‚‰æ­»äº¡
 	$trapped_list[] = $user->uname;
-      elseif($USERS->ByUname($target_uname)->IsWolf()) //Æ¨Ë´Àè¤¬¿ÍÏµ¤Ê¤é»àË´
+      elseif($USERS->ByUname($target_uname)->IsWolf()) //é€ƒäº¡å…ˆãŒäººç‹¼ãªã‚‰æ­»äº¡
 	$USERS->Kill($user->user_no, 'WOLF_KILLED');
       else
-	$escaper_target_list[$user->uname] = $target_uname; //Æ¨Ë´Àè¤ò¥»¥Ã¥È
+	$escaper_target_list[$user->uname] = $target_uname; //é€ƒäº¡å…ˆã‚’ã‚»ãƒƒãƒˆ
     }
     //PrintData($escaper_target_list, 'Target [escaper]');
   }
 
-  do{ //¿ÍÏµ¤Î½±·âÀ®¸ùÈ½Äê
-    if($ROOM->IsQuiz()) break; //¥¯¥¤¥ºÂ¼»ÅÍÍ
+  do{ //äººç‹¼ã®è¥²æ’ƒæˆåŠŸåˆ¤å®š
+    if($skip || $ROOM->IsQuiz()) break; //ã‚¹ã‚­ãƒƒãƒ—ãƒ¢ãƒ¼ãƒ‰ãƒ»ã‚¯ã‚¤ã‚ºæ‘ä»•æ§˜
 
-    //æ«¤¬ÀßÃÖ¤µ¤ì¤Æ¤¤¤¿¤é»àË´
+    //ç½ ãŒè¨­ç½®ã•ã‚Œã¦ã„ãŸã‚‰æ­»äº¡
     if(in_array($wolf_target->uname, $trap_target_list) && ! $voted_wolf->IsSiriusWolf(false)){
       $trapped_list[] = $voted_wolf->uname;
       break;
     }
 
-    //Æ¨Ë´¼Ô¤Î´¬¤­Åº¤¨È½Äê
+    //é€ƒäº¡è€…ã®å·»ãæ·»ãˆåˆ¤å®š
     foreach(array_keys($escaper_target_list, $wolf_target->uname) as $uname){
-      $USERS->Kill($USERS->UnameToNumber($uname), 'WOLF_KILLED'); //»àË´½èÍı
+      $USERS->Kill($USERS->UnameToNumber($uname), 'WOLF_KILLED'); //æ­»äº¡å‡¦ç†
     }
 
-    //¼í¿Í·Ï¤Î¸î±ÒÈ½Äê
-    $stack = array_keys($guard_target_list, $wolf_target->uname); //¸î±Ò¼Ô¤ò¸¡½Ğ
+    //ç‹©äººç³»ã®è­·è¡›åˆ¤å®š
+    $stack = array_keys($guard_target_list, $wolf_target->uname); //è­·è¡›è€…ã‚’æ¤œå‡º
     //PrintData($stack, 'List [gurad]');
     if(count($stack) > 0){
       $guard_flag = false;
       foreach($stack as $uname){
 	$user = $USERS->ByUname($uname);
 
-	//¸î±ÒÀ©¸ÂÈ½Äê (Ìë¿ı¡¦µ³»Î¤ÏÂĞ¾İ³°)
+	//è­·è¡›åˆ¶é™åˆ¤å®š (å¤œé›€ãƒ»é¨å£«ã¯å¯¾è±¡å¤–)
 	$guard_flag |= $user->IsRole('blind_guard', 'poison_guard') ||
 	  ! $wolf_target->IsGuardLimited();
 
-	if($user->IsRole('hunter_guard')) //ÎÄ»Õ¤À¤Ã¤¿¾ì¹ç¤Ï¿ÍÏµ¤Ë»¦¤µ¤ì¤ë
+	if($user->IsRole('hunter_guard')) //çŒŸå¸«ã ã£ãŸå ´åˆã¯äººç‹¼ã«æ®ºã•ã‚Œã‚‹
 	  $USERS->Kill($user->user_no, 'WOLF_KILLED');
-	elseif($user->IsRole('blind_guard')) //Ìë¿ı¤À¤Ã¤¿¾ì¹ç¤Ï½±·â¤·¤¿¿ÍÏµ¤òÌÜ±£¤·¤Ë¤¹¤ë
+	elseif($user->IsRole('blind_guard')) //å¤œé›€ã ã£ãŸå ´åˆã¯è¥²æ’ƒã—ãŸäººç‹¼ã‚’ç›®éš ã—ã«ã™ã‚‹
 	  $voted_wolf->AddRole('blinder');
 
-	//¸î±ÒÀ®¸ù¥á¥Ã¥»¡¼¥¸¤òÅĞÏ¿
+	//è­·è¡›æˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç™»éŒ²
 	$str = $user->handle_name . "\t" . $USERS->GetHandleName($wolf_target->uname, true);
 	$ROOM->SystemMessage($str, 'GUARD_SUCCESS');
       }
       if($guard_flag && ! $voted_wolf->IsSiriusWolf()) break;
     }
 
-    //ÆÃ¼ì½±·â¼ºÇÔÈ½Äê
+    //ç‰¹æ®Šè¥²æ’ƒå¤±æ•—åˆ¤å®š
     if(! $wolf_target->IsDummyBoy()){
-      if($ROOM->date > 1 && $wolf_target->IsRole('escaper')) break; //Æ¨Ë´¼Ô
-      elseif($wolf_target->IsActive('fend_guard') && ! $voted_wolf->IsSiriusWolf()){ //Ç¦¼Ô¤Î½èÍı
+      if($ROOM->date > 1 && $wolf_target->IsRole('escaper')) break; //é€ƒäº¡è€…
+      elseif($wolf_target->IsActive('fend_guard') && ! $voted_wolf->IsSiriusWolf()){ //å¿è€…ã®å‡¦ç†
 	$wolf_target->LostAbility();
 	break;
       }
-      elseif($voted_wolf->IsRole('hungry_wolf')){ //²îÏµ¤Ï¿ÍÏµ¡¦ÍÅ¸Ñ¤Î¤ß
+      elseif($voted_wolf->IsRole('hungry_wolf')){ //é¤“ç‹¼ã¯äººç‹¼ãƒ»å¦–ç‹ã®ã¿
 	if(! $wolf_target->IsWolf() && ! $wolf_target->IsFox()) break;
       }
-      elseif($wolf_target->IsWolf()){ //½±·âÀè¤¬¿ÍÏµ¤Ê¤é½±·â¼ºÇÔ (Îã¡§¶äÏµ½Ğ¸½)
-	if($voted_wolf->IsRole('emerald_wolf')){ //¿éÏµ¤Î½èÍı
+      elseif($wolf_target->IsWolf()){ //è¥²æ’ƒå…ˆãŒäººç‹¼ãªã‚‰è¥²æ’ƒå¤±æ•— (ä¾‹ï¼šéŠ€ç‹¼å‡ºç¾)
+	if($voted_wolf->IsRole('emerald_wolf')){ //ç¿ ç‹¼ã®å‡¦ç†
 	  $role = 'mind_friend[' . $voted_wolf->user_no . ']';
 	  $voted_wolf->AddRole($role);
 	  $wolf_target->AddRole($role);
 	}
-	$wolf_target->wolf_killed = true; //Èø¹ÔÈ½Äê¤ÏÀ®¸ù°·¤¤
+	$wolf_target->wolf_killed = true; //å°¾è¡Œåˆ¤å®šã¯æˆåŠŸæ‰±ã„
 	break;
       }
-      elseif($wolf_target->IsResistFox()){ //½±·âÀè¤¬ÍÅ¸Ñ¤Î¾ì¹ç¤Ï½±·â¼ºÇÔ
-	if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsRole('silver_fox')){ //ÁóÏµ¤Î½èÍı
+      elseif($wolf_target->IsResistFox()){ //è¥²æ’ƒå…ˆãŒå¦–ç‹ã®å ´åˆã¯è¥²æ’ƒå¤±æ•—
+	if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsRole('silver_fox')){ //è’¼ç‹¼ã®å‡¦ç†
 	  $wolf_target->AddRole('mind_lonely');
 	}
-	if($wolf_target->IsRole('blue_fox') && ! $voted_wolf->IsRole('silver_wolf')){ //Áó¸Ñ¤Î½èÍı
+	if($wolf_target->IsRole('blue_fox') && ! $voted_wolf->IsRole('silver_wolf')){ //è’¼ç‹ã®å‡¦ç†
 	  $voted_wolf->AddRole('mind_lonely');
 	}
 	$ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
-	$wolf_target->wolf_killed = true; //Èø¹ÔÈ½Äê¤ÏÀ®¸ù°·¤¤
+	$wolf_target->wolf_killed = true; //å°¾è¡Œåˆ¤å®šã¯æˆåŠŸæ‰±ã„
 	break;
       }
 
-      //ÆÃ¼ìÇ½ÎÏ¼Ô¤Î½èÍı (³ĞÀÃÅ·Ïµ¤ÏÌµ¸ú)
+      //ç‰¹æ®Šèƒ½åŠ›è€…ã®å‡¦ç† (è¦šé†’å¤©ç‹¼ã¯ç„¡åŠ¹)
       if(! $voted_wolf->IsSiriusWolf()){
-	if($wolf_target->IsChallengeLovers()) break; //ÆñÂêÈ½Äê
-	elseif($wolf_target->IsRole('therian_mad')){ //½Ã¿Í¤Î½èÍı
+	if($wolf_target->IsChallengeLovers()) break; //é›£é¡Œåˆ¤å®š
+	elseif($wolf_target->IsRole('therian_mad')){ //ç£äººã®å‡¦ç†
 	  $wolf_target->ReplaceRole($wolf_target->main_role, 'wolf');
 	  $wolf_target->AddRole('changed_therian');
-	  $wolf_target->wolf_killed = true; //Èø¹ÔÈ½Äê¤ÏÀ®¸ù°·¤¤
+	  $wolf_target->wolf_killed = true; //å°¾è¡Œåˆ¤å®šã¯æˆåŠŸæ‰±ã„
 	  break;
 	}
 
-	//¿ÈÂå¤ï¤êÇ½ÎÏ¼Ô¤ÎÈ½Äê
+	//èº«ä»£ã‚ã‚Šèƒ½åŠ›è€…ã®åˆ¤å®š
 	$stack = array();
-	if($wolf_target->IsRole('boss_chiroptera')){ //Âçéşéõ (Â¾¤Îéşéõ¿Ø±Ä)
+	if($wolf_target->IsRole('boss_chiroptera')){ //å¤§è™è  (ä»–ã®è™è é™£å–¶)
 	  foreach($USERS->rows as $user){
 	    if($user->IsLive() && ! $user->IsSame($wolf_target->uname) &&
 	       $user->IsRoleGroup('chiroptera', 'fairy')) $stack[] = $user->uname;
 	  }
 	}
-	elseif($wolf_target->IsRole('doll_master')){ //¿Í·Á¸¯¤¤ (¿Í·Á·Ï)
+	elseif($wolf_target->IsRole('doll_master')){ //äººå½¢é£ã„ (äººå½¢ç³»)
 	  foreach($USERS->rows as $user){
 	    if($user->IsLive() && $user->IsDoll()) $stack[] = $user->uname;
 	  }
@@ -1817,76 +1809,76 @@ function AggregateVoteNight(){
 	  break;
 	}
 
-	if($voted_wolf->IsRole('sex_wolf')){ //¿÷Ïµ¤Î½èÍı
+	if($voted_wolf->IsRole('sex_wolf')){ //é››ç‹¼ã®å‡¦ç†
 	  $str = $voted_wolf->handle_name . "\t" . $wolf_target->handle_name . "\t";
 	  $ROOM->SystemMessage($str . $wolf_target->DistinguishSex(), 'SEX_WOLF_RESULT');
-	  $wolf_target->wolf_killed = true; //Èø¹ÔÈ½Äê¤ÏÀ®¸ù°·¤¤
+	  $wolf_target->wolf_killed = true; //å°¾è¡Œåˆ¤å®šã¯æˆåŠŸæ‰±ã„
 	  break;
 	}
-	elseif($voted_wolf->IsRole('doom_wolf')){ //Ì½Ïµ¤Î½èÍı
+	elseif($voted_wolf->IsRole('doom_wolf')){ //å†¥ç‹¼ã®å‡¦ç†
 	  $wolf_target->AddDoom(4);
-	  if($wolf_target->IsPoison() && ! $wolf_target->IsWolf()){ //½±·âÀè¤¬ÆÇÇ½ÎÏ¼Ô¤Ê¤é»àË´
+	  if($wolf_target->IsPoison() && ! $wolf_target->IsWolf()){ //è¥²æ’ƒå…ˆãŒæ¯’èƒ½åŠ›è€…ãªã‚‰æ­»äº¡
 	    $USERS->Kill($voted_wolf->user_no, 'POISON_DEAD_night');
 	  }
-	  $wolf_target->wolf_killed = true; //Èø¹ÔÈ½Äê¤ÏÀ®¸ù°·¤¤
+	  $wolf_target->wolf_killed = true; //å°¾è¡Œåˆ¤å®šã¯æˆåŠŸæ‰±ã„
 	  break;
 	}
 
-	if($wolf_target->IsRole('ghost_common')) //Ë´Îî¾î¤Î¾ì¹ç¤Ï¾®¿´¼Ô¤¬ÉÕ¤¯
+	if($wolf_target->IsRole('ghost_common')) //äº¡éœŠå¬¢ã®å ´åˆã¯å°å¿ƒè€…ãŒä»˜ã
 	  $voted_wolf->AddRole('chicken');
-	elseif($wolf_target->IsRole('miasma_fox')) //êµ¸Ñ¤Î¾ì¹ç¤ÏÇ®ÉÂ¤¬ÉÕ¤¯
+	elseif($wolf_target->IsRole('miasma_fox')) //èŸ²ç‹ã®å ´åˆã¯ç†±ç—…ãŒä»˜ã
 	  $voted_wolf->AddRole('febris[' . ($ROOM->date + 1) . ']');
       }
     }
 
-    //-- ½±·â½èÍı --//
-    //ØáÏµ¤Î½èÍı
+    //-- è¥²æ’ƒå‡¦ç† --//
+    //æ†‘ç‹¼ã®å‡¦ç†
     if($voted_wolf->IsRole('possessed_wolf') && ! $wolf_target->IsDummyBoy() &&
        $wolf_target->GetCamp(true) != 'fox' && ! $wolf_target->IsPossessedLimited()){
       $possessed_target_list[$voted_wolf->uname] = $wolf_target->uname;
       $wolf_target->dead_flag = true;
-      //½±·âÀè¤¬Ìñ¿À¤Ê¤éØá°Í¥ê¥»¥Ã¥È
+      //è¥²æ’ƒå…ˆãŒå„ç¥ãªã‚‰æ†‘ä¾ãƒªã‚»ãƒƒãƒˆ
       if($wolf_target->IsRole('anti_voodoo')) $voted_wolf->possessed_reset = true;
     }
     else{
       $action = $voted_wolf->IsRole('hungry_wolf') ? 'HUNGRY_WOLF_KILLED' : 'WOLF_KILLED';
-      $USERS->Kill($wolf_target->user_no, $action); //ÄÌ¾ïÏµ¤Î½±·â½èÍı
+      $USERS->Kill($wolf_target->user_no, $action); //é€šå¸¸ç‹¼ã®è¥²æ’ƒå‡¦ç†
     }
     $wolf_target->wolf_killed = true;
 
-    if($voted_wolf->IsActive('tongue_wolf')){ //Àå²ÒÏµ¤Î½èÍı
-      if($wolf_target->IsRole('human')) $voted_wolf->LostAbility(); //Â¼¿Í¤Ê¤éÇ½ÎÏ¼º¸ú
+    if($voted_wolf->IsActive('tongue_wolf')){ //èˆŒç¦ç‹¼ã®å‡¦ç†
+      if($wolf_target->IsRole('human')) $voted_wolf->LostAbility(); //æ‘äººãªã‚‰èƒ½åŠ›å¤±åŠ¹
       $str = $voted_wolf->handle_name . "\t" . $USERS->GetHandleName($wolf_target->uname, true);
       $ROOM->SystemMessage($str . "\t" . $wolf_target->main_role, 'TONGUE_WOLF_RESULT');
     }
 
-    if(! $voted_wolf->IsSiriusWolf() && $wolf_target->IsPoison()){ //-- ÆÇ»àÈ½Äê --//
-      //½±·â¼Ô¤¬¹³ÆÇÏµ¤«¡¢½±·â¼Ô¸ÇÄêÀßÄê¤Ê¤éÂĞ¾İ¸ÇÄê
+    if(! $voted_wolf->IsSiriusWolf() && $wolf_target->IsPoison()){ //-- æ¯’æ­»åˆ¤å®š --//
+      //è¥²æ’ƒè€…ãŒæŠ—æ¯’ç‹¼ã‹ã€è¥²æ’ƒè€…å›ºå®šè¨­å®šãªã‚‰å¯¾è±¡å›ºå®š
       if($voted_wolf->IsRole('resist_wolf') || $GAME_CONF->poison_only_eater)
 	$poison_target = $voted_wolf;
-      else //À¸¤­¤Æ¤¤¤ëÏµ¤«¤é¥é¥ó¥À¥àÁª½Ğ
+      else //ç”Ÿãã¦ã„ã‚‹ç‹¼ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ é¸å‡º
 	$poison_target = $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
 
-      //ÆñÂê¤Ê¤éÌµ¸ú / ÆÇÏµ¤ÏÏµ¤Ë¤ÏÉÔÈ¯ / Í¶ÆÇ¼Ô¤ÏÆÇÇ½ÎÏ¼Ô¤À¤± / ÆÇ¶¶É±¤ÏÎø¿Í¤À¤±
+      //é›£é¡Œãªã‚‰ç„¡åŠ¹ / æ¯’ç‹¼ã¯ç‹¼ã«ã¯ä¸ç™º / èª˜æ¯’è€…ã¯æ¯’èƒ½åŠ›è€…ã ã‘ / æ¯’æ©‹å§«ã¯æ‹äººã ã‘
       if($poison_target->IsChallengeLovers() || $wolf_target->IsRole('poison_wolf') ||
 	 ($wolf_target->IsRole('guide_poison') && ! $poison_target->IsRoleGroup('poison')) ||
 	 ($wolf_target->IsRole('poison_jealousy') && ! $poison_target->IsLovers())) break;
 
-      if($poison_target->IsActive('resist_wolf')) //¹³ÆÇÏµ¤Ê¤éÌµ¸ú
+      if($poison_target->IsActive('resist_wolf')) //æŠ—æ¯’ç‹¼ãªã‚‰ç„¡åŠ¹
 	$poison_target->LostAbility();
       else
-	$USERS->Kill($poison_target->user_no, 'POISON_DEAD_night'); //ÆÇ»à½èÍı
+	$USERS->Kill($poison_target->user_no, 'POISON_DEAD_night'); //æ¯’æ­»å‡¦ç†
     }
   }while(false);
   //PrintData($possessed_target_list, 'PossessedTarget [possessed_wolf]');
 
   if($ROOM->date > 1){
-    foreach($guard_target_list as $uname => $target_uname){ //¼í¿Í·Ï¤Î¼í¤êÈ½Äê
+    foreach($guard_target_list as $uname => $target_uname){ //ç‹©äººç³»ã®ç‹©ã‚Šåˆ¤å®š
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true) || $user->IsRole('blind_guard')) continue; //¥¹¥­¥Ã¥×È½Äê (»àË´ / Ìë¿ı)
+      if($user->IsDead(true) || $user->IsRole('blind_guard')) continue; //ã‚¹ã‚­ãƒƒãƒ—åˆ¤å®š (æ­»äº¡ / å¤œé›€)
 
       $target = $USERS->ByUname($target_uname);
-      //ÂĞ¾İ¤¬¿ÈÂå¤ï¤ê»à¤·¤Æ¤¤¤¿¾ì¹ç¤Ï¥¹¥­¥Ã¥×
+      //å¯¾è±¡ãŒèº«ä»£ã‚ã‚Šæ­»ã—ã¦ã„ãŸå ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
       if(! in_array($target->uname, $sacrifice_list) &&
 	 ($target->IsHuntTarget() || ($user->IsRole('hunter_guard') && $target->IsFox()))){
 	$USERS->Kill($target->user_no, 'HUNTED');
@@ -1895,86 +1887,86 @@ function AggregateVoteNight(){
       }
     }
 
-    foreach($vote_data['VAMPIRE_DO'] as $uname => $target_uname){ //µÛ·ìµ´¤Î½èÍı
+    foreach($vote_data['VAMPIRE_DO'] as $uname => $target_uname){ //å¸è¡€é¬¼ã®å‡¦ç†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-      if(in_array($target_uname, $trap_target_list)){ //æ«¤¬ÀßÃÖ¤µ¤ì¤Æ¤¤¤¿¤é»àË´
+      if(in_array($target_uname, $trap_target_list)){ //ç½ ãŒè¨­ç½®ã•ã‚Œã¦ã„ãŸã‚‰æ­»äº¡
 	$trapped_list[] = $user->uname;
 	continue;
       }
 
       $target = $USERS->ByUname($target_uname);
-      if($target->IsDead(true) || $target->GetCamp() == 'vampire') continue; //¥¹¥­¥Ã¥×È½Äê
+      if($target->IsDead(true) || $target->GetCamp() == 'vampire') continue; //ã‚¹ã‚­ãƒƒãƒ—åˆ¤å®š
 
-      //¼í¿Í·Ï¤Î¸î±ÒÈ½Äê
+      //ç‹©äººç³»ã®è­·è¡›åˆ¤å®š
       $guard_flag = false;
       foreach(array_keys($guard_target_list, $target->uname) as $guard_uname){
 	$guard_user = $USERS->ByUname($guard_uname);
 
-	//¸î±ÒÀ©¸ÂÈ½Äê (Ìë¿ı¡¦µ³»Î¤ÏÂĞ¾İ³°)
+	//è­·è¡›åˆ¶é™åˆ¤å®š (å¤œé›€ãƒ»é¨å£«ã¯å¯¾è±¡å¤–)
 	$guard_flag |= $guard_user->IsRole('blind_guard', 'poison_guard') ||
 	  ! $target->IsGuardLimited();
 
-	//Ìë¿ı¤À¤Ã¤¿¾ì¹ç¤Ï½±·â¤·¤¿µÛ·ìµ´¤òÌÜ±£¤·¤Ë¤¹¤ë
+	//å¤œé›€ã ã£ãŸå ´åˆã¯è¥²æ’ƒã—ãŸå¸è¡€é¬¼ã‚’ç›®éš ã—ã«ã™ã‚‹
 	if($guard_user->IsRole('blind_guard')) $user->AddRole('blinder');
 
-	//¸î±ÒÀ®¸ù¥á¥Ã¥»¡¼¥¸¤òÅĞÏ¿
+	//è­·è¡›æˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç™»éŒ²
 	$str = $guard_user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
 	$ROOM->SystemMessage($str, 'GUARD_SUCCESS');
       }
       if(! $guard_flag) $target->AddRole('infected[' . $user->user_no . ']');
     }
 
-    $assassin_target_list = array(); //°Å»¦ÂĞ¾İ¼Ô¥ê¥¹¥È
-    foreach($vote_data['ASSASSIN_DO'] as $uname => $target_uname){ //°Å»¦¼Ô¤Î¾ğÊó¼ı½¸
+    $assassin_target_list = array(); //æš—æ®ºå¯¾è±¡è€…ãƒªã‚¹ãƒˆ
+    foreach($vote_data['ASSASSIN_DO'] as $uname => $target_uname){ //æš—æ®ºè€…ã®æƒ…å ±åé›†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-      if(in_array($target_uname, $trap_target_list)){ //æ«¤¬ÀßÃÖ¤µ¤ì¤Æ¤¤¤¿¤é»àË´
+      if(in_array($target_uname, $trap_target_list)){ //ç½ ãŒè¨­ç½®ã•ã‚Œã¦ã„ãŸã‚‰æ­»äº¡
 	$trapped_list[] = $user->uname;
 	continue;
       }
 
       $target = $USERS->ByUname($target_uname);
-      if($target->IsRole('escaper')) continue; //Æ¨Ë´¼Ô¤Ï°Å»¦Ìµ¸ú
-      if($target->IsRefrectAssassin()){ //°Å»¦È¿¼ÍÈ½Äê
+      if($target->IsRole('escaper')) continue; //é€ƒäº¡è€…ã¯æš—æ®ºç„¡åŠ¹
+      if($target->IsRefrectAssassin()){ //æš—æ®ºåå°„åˆ¤å®š
 	$assassin_target_list[$uname] = true;
 	continue;
       }
 
-      if($user->IsRole('reverse_assassin')){ //È¿º²ÂĞ¾İ¼Ô¤ò¥ê¥¹¥È¤ËÄÉ²Ã
+      if($user->IsRole('reverse_assassin')){ //åé­‚å¯¾è±¡è€…ã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
 	$reverse_assassin_target_list[$uname] = $target_uname;
 	continue;
       }
-      if($target->IsDead(true)) continue; //¤¹¤Ç¤Ë»àË´¤·¤Æ¤¤¤¿¤é¥¹¥­¥Ã¥×
+      if($target->IsDead(true)) continue; //ã™ã§ã«æ­»äº¡ã—ã¦ã„ãŸã‚‰ã‚¹ã‚­ãƒƒãƒ—
 
-      if($user->IsRoleGroup('doom')){ //»à¤ÎÀë¹ğÇ½ÎÏ¼Ô¤Î½èÍı
+      if($user->IsRoleGroup('doom')){ //æ­»ã®å®£å‘Šèƒ½åŠ›è€…ã®å‡¦ç†
 	$USERS->ByVirtualUname($target_uname)->AddDoom($user->IsRole('doom_fox') ? 4 : 2);
 	continue;
       }
-      if($user->IsRole('soul_assassin')){ //ÄÔ»Â¤ê¤Î½èÍı
+      if($user->IsRole('soul_assassin')){ //è¾»æ–¬ã‚Šã®å‡¦ç†
 	$str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true) . "\t";
-	$ROOM->SystemMessage($str . $target->main_role, 'ASSASSIN_RESULT'); //Ìò¿¦¤òÅĞÏ¿
+	$ROOM->SystemMessage($str . $target->main_role, 'ASSASSIN_RESULT'); //å½¹è·ã‚’ç™»éŒ²
 
-	//°Å»¦Àè¤¬ÆÇÇ½ÎÏ¼Ô¤Ê¤é»àË´
+	//æš—æ®ºå…ˆãŒæ¯’èƒ½åŠ›è€…ãªã‚‰æ­»äº¡
 	if($target->IsPoison()) $USERS->Kill($user->user_no, 'POISON_DEAD_night');
       }
-      elseif($user->IsRole('eclipse_assassin')){ //¿ª°Å»¦¼Ô¤Î¼«ÌÇÈ½Äê
+      elseif($user->IsRole('eclipse_assassin')){ //è•æš—æ®ºè€…ã®è‡ªæ»…åˆ¤å®š
 	if(mt_rand(1, 100) <= 30) $target_uname = $uname;
       }
-      $assassin_target_list[$target_uname] = true; //°Å»¦ÂĞ¾İ¼Ô¥ê¥¹¥È¤ËÄÉ²Ã
+      $assassin_target_list[$target_uname] = true; //æš—æ®ºå¯¾è±¡è€…ãƒªã‚¹ãƒˆã«è¿½åŠ 
     }
 
-    //æ«¤Î»àË´½èÍı
+    //ç½ ã®æ­»äº¡å‡¦ç†
     foreach($trapped_list as $uname) $USERS->Kill($USERS->UnameToNumber($uname), 'TRAPPED');
 
     //PrintData($assassin_target_list, 'Target [assassin]');
-    foreach($assassin_target_list as $uname => $flag){ //°Å»¦½èÍı
+    foreach($assassin_target_list as $uname => $flag){ //æš—æ®ºå‡¦ç†
       $USERS->Kill($USERS->UnameToNumber($uname), 'ASSASSIN_KILLED');
     }
 
-    $reverse_list = array(); //È¿º²ÂĞ¾İ¥ê¥¹¥È
+    $reverse_list = array(); //åé­‚å¯¾è±¡ãƒªã‚¹ãƒˆ
     foreach($reverse_assassin_target_list as $uname => $target_uname){
       $target = $USERS->ByUname($target_uname);
       if($target->IsLive(true))
@@ -1982,27 +1974,27 @@ function AggregateVoteNight(){
       elseif(! $target->IsLovers())
 	$reverse_list[$target_uname] = ! $reverse_list[$target_uname];
     }
-    //PrintData($reverse_list, 'ReverseList'); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($reverse_list, 'ReverseList'); //ãƒ†ã‚¹ãƒˆç”¨
 
-    //-- Ì´·Ï¥ì¥¤¥ä¡¼ --//
-    foreach($vote_data['DREAM_EAT'] as $uname => $target_uname){ //àÓ¤Î½èÍı
+    //-- å¤¢ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
+    foreach($vote_data['DREAM_EAT'] as $uname => $target_uname){ //çã®å‡¦ç†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-      $target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
+      $target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
       $str = "\t" . $user->handle_name;
 
-      if($target->IsLive(true) && $target->IsRole('dummy_guard')){ //ÂĞ¾İ¤¬Ì´¼é¿Í¤Ê¤éÊÖ¤êÆ¤¤Á¤Ë¹ç¤¦
+      if($target->IsLive(true) && $target->IsRole('dummy_guard')){ //å¯¾è±¡ãŒå¤¢å®ˆäººãªã‚‰è¿”ã‚Šè¨ã¡ã«åˆã†
 	$USERS->Kill($user->user_no, 'HUNTED');
 	$ROOM->SystemMessage($target->handle_name . $str, 'GUARD_HUNTED');
 	continue;
       }
 
-      if(in_array($target->uname, $dummy_guard_target_list)){ //Ì´¼é¿Í¤Î¸î±ÒÈ½Äê
+      if(in_array($target->uname, $dummy_guard_target_list)){ //å¤¢å®ˆäººã®è­·è¡›åˆ¤å®š
 	$hunted_flag = false;
-	foreach(array_keys($dummy_guard_target_list, $target->uname) as $uname){ //¸î±Ò¼Ô¤ò¸¡½Ğ
+	foreach(array_keys($dummy_guard_target_list, $target->uname) as $uname){ //è­·è¡›è€…ã‚’æ¤œå‡º
 	  $guard_user = $USERS->ByUname($uname);
-	  if($guard_user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+	  if($guard_user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 	  $hunted_flag = true;
 	  $ROOM->SystemMessage($guard_user->handle_name . $str, 'GUARD_HUNTED');
 	}
@@ -2013,42 +2005,42 @@ function AggregateVoteNight(){
 	}
       }
 
-      //Ì´¿©¤¤È½Äê (Ì´·ÏÇ½ÎÏ¼Ô¡¦ÍÅÀº·Ï)
+      //å¤¢é£Ÿã„åˆ¤å®š (å¤¢ç³»èƒ½åŠ›è€…ãƒ»å¦–ç²¾ç³»)
       if($target->IsRoleGroup('dummy', 'fairy')) $USERS->Kill($target->user_no, 'DREAM_KILLED');
     }
 
-    $hunted_list = array(); //¼í¤êÀ®¸ù¼Ô¥ê¥¹¥È
-    foreach($dummy_guard_target_list as $uname => $target_uname){ //Ì´¼é¿Í¤Î½èÍı
+    $hunted_list = array(); //ç‹©ã‚ŠæˆåŠŸè€…ãƒªã‚¹ãƒˆ
+    foreach($dummy_guard_target_list as $uname => $target_uname){ //å¤¢å®ˆäººã®å‡¦ç†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
       $target = $USERS->ByUname($target_uname);
       if(($target->IsRole('dream_eater_mad') || $target->IsRoleGroup('fairy')) &&
-	 $target->IsLive(true)){ //¼í¤êÈ½Äê (àÓ¡¦ÍÅÀº·Ï)
+	 $target->IsLive(true)){ //ç‹©ã‚Šåˆ¤å®š (çãƒ»å¦–ç²¾ç³»)
 	$hunted_list[$user->handle_name] = $target;
       }
 
-      //¾ï»ş¸î±ÒÀ®¸ù¥á¥Ã¥»¡¼¥¸¤À¤±¤¬½Ğ¤ë
+      //å¸¸æ™‚è­·è¡›æˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã ã‘ãŒå‡ºã‚‹
       $str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
       $ROOM->SystemMessage($str, 'GUARD_SUCCESS');
     }
 
-    foreach($hunted_list as $handle_name => $target){ //Ì´¼í¤ê½èÍı
+    foreach($hunted_list as $handle_name => $target){ //å¤¢ç‹©ã‚Šå‡¦ç†
       $USERS->Kill($target->user_no, 'HUNTED');
-      //Øá°ÍÇ½ÎÏ¼Ô¤ÏÂĞ¾İ³°¤Ê¤Î¤Ç²¾ÁÛ¥æ¡¼¥¶¤ò°ú¤¯É¬Í×¤Ê¤·
+      //æ†‘ä¾èƒ½åŠ›è€…ã¯å¯¾è±¡å¤–ãªã®ã§ä»®æƒ³ãƒ¦ãƒ¼ã‚¶ã‚’å¼•ãå¿…è¦ãªã—
       $ROOM->SystemMessage($handle_name . "\t" . $target->handle_name, 'GUARD_HUNTED');
     }
     unset($hunted_list);
 
-    //-- ¼ö¤¤·Ï¥ì¥¤¥ä¡¼ --//
-    foreach($vote_data['ANTI_VOODOO_DO'] as $uname => $target_uname){ //Ìñ¿À¤Î¾ğÊó¼ı½¸
+    //-- å‘ªã„ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
+    foreach($vote_data['ANTI_VOODOO_DO'] as $uname => $target_uname){ //å„ç¥ã®æƒ…å ±åé›†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
       $target = $USERS->ByUname($target_uname);
       $anti_voodoo_target_list[$user->uname] = $target->uname;
 
-      //Øá°ÍÍ½ÄêÀè¤Ê¤é¥­¥ã¥ó¥»¥ë
+      //æ†‘ä¾äºˆå®šå…ˆãªã‚‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«
       $possessed_list = array_keys($possessed_target_list, $target->uname);
       if(count($possessed_list) > 0){
 	foreach($possessed_list as $possessed_uname){
@@ -2056,9 +2048,9 @@ function AggregateVoteNight(){
 	}
       }
       elseif($target->IsPossessedGroup() &&
-	     $target != $USERS->ByVirtual($target->user_no)){ //Øá°Í¼Ô¤Ê¤é¶¯À©Á÷´Ô
+	     $target != $USERS->ByVirtual($target->user_no)){ //æ†‘ä¾è€…ãªã‚‰å¼·åˆ¶é€é‚„
 	if(! array_key_exists($target->uname, $possessed_target_list)){
-	  $possessed_target_list[$target->uname] = NULL; //Øá°Í¥ê¥¹¥È¤ËÄÉ²Ã
+	  $possessed_target_list[$target->uname] = NULL; //æ†‘ä¾ãƒªã‚¹ãƒˆã«è¿½åŠ 
 	}
 	$target->possessed_reset = true;
       }
@@ -2067,24 +2059,24 @@ function AggregateVoteNight(){
       }
       $anti_voodoo_success_list[$target->uname] = true;
     }
-    //PrintData($possessed_target_list, 'PossessedTarget [anti_voodoo]'); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($possessed_target_list, 'PossessedTarget [anti_voodoo]'); //ãƒ†ã‚¹ãƒˆç”¨
   }
 
-  $voodoo_killer_target_list  = array(); //±¢ÍÛ»Õ¤Î²ò¼öÂĞ¾İ¥ê¥¹¥È
-  $voodoo_killer_success_list = array(); //±¢ÍÛ»Õ¤Î²ò¼öÀ®¸ù¼ÔÂĞ¾İ¥ê¥¹¥È
-  foreach($vote_data['VOODOO_KILLER_DO'] as $uname => $target_uname){ //±¢ÍÛ»Õ¤Î¾ğÊó¼ı½¸
+  $voodoo_killer_target_list  = array(); //é™°é™½å¸«ã®è§£å‘ªå¯¾è±¡ãƒªã‚¹ãƒˆ
+  $voodoo_killer_success_list = array(); //é™°é™½å¸«ã®è§£å‘ªæˆåŠŸè€…å¯¾è±¡ãƒªã‚¹ãƒˆ
+  foreach($vote_data['VOODOO_KILLER_DO'] as $uname => $target_uname){ //é™°é™½å¸«ã®æƒ…å ±åé›†
     $user = $USERS->ByUname($uname);
-    if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+    if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-    $target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
+    $target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
 
-    //¼ö»¦È½Äê (¼ö¤¤·Ï¡¦Øá°ÍÇ½ÎÏ¼Ô)
+    //å‘ªæ®ºåˆ¤å®š (å‘ªã„ç³»ãƒ»æ†‘ä¾èƒ½åŠ›è€…)
     if($target->IsLive(true) && ($target->IsRoleGroup('cursed') || $target->IsPossessedGroup())){
       $USERS->Kill($target->user_no, 'CURSED');
       $voodoo_killer_success_list[$target->uname] = true;
     }
 
-    //Øá°ÍÍ½ÄêÀè¤Ê¤é¥­¥ã¥ó¥»¥ë
+    //æ†‘ä¾äºˆå®šå…ˆãªã‚‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«
     $possessed_list = array_keys($possessed_target_list, $target->uname);
     if(count($possessed_list) > 0){
       foreach($possessed_list as $possessed_uname){
@@ -2093,18 +2085,18 @@ function AggregateVoteNight(){
       $voodoo_killer_success_list[$target->uname] = true;
     }
 
-    $voodoo_killer_target_list[$user->uname] = $target->uname; //²ò¼öÂĞ¾İ¥ê¥¹¥È¤ËÄÉ²Ã
+    $voodoo_killer_target_list[$user->uname] = $target->uname; //è§£å‘ªå¯¾è±¡ãƒªã‚¹ãƒˆã«è¿½åŠ 
   }
 
-  $voodoo_target_list = array(); //¼ö½Ñ·ÏÇ½ÎÏ¼Ô¤ÎÂĞ¾İ¥ê¥¹¥È
+  $voodoo_target_list = array(); //å‘ªè¡“ç³»èƒ½åŠ›è€…ã®å¯¾è±¡ãƒªã‚¹ãƒˆ
   $voodoo_list = array_merge($vote_data['VOODOO_MAD_DO'], $vote_data['VOODOO_FOX_DO']);
-  foreach($voodoo_list as $uname => $target_uname){ //¼ö½Ñ·ÏÇ½ÎÏ¼Ô¤Î½èÍı
+  foreach($voodoo_list as $uname => $target_uname){ //å‘ªè¡“ç³»èƒ½åŠ›è€…ã®å‡¦ç†
     $user = $USERS->ByUname($uname);
-    if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+    if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-    $target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
-    if($target->IsRoleGroup('cursed') && $target->IsLive(true)){ //¼öÊÖ¤·È½Äê
-      if(in_array($user->uname, $anti_voodoo_target_list)){ //Ìñ¿À¤Î¸î±ÒÈ½Äê
+    $target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
+    if($target->IsRoleGroup('cursed') && $target->IsLive(true)){ //å‘ªè¿”ã—åˆ¤å®š
+      if(in_array($user->uname, $anti_voodoo_target_list)){ //å„ç¥ã®è­·è¡›åˆ¤å®š
 	$anti_voodoo_success_list[$user->uname] = true;
       }
       else{
@@ -2113,34 +2105,34 @@ function AggregateVoteNight(){
       }
     }
 
-    if(in_array($target->uname, $voodoo_killer_target_list)) //±¢ÍÛ»Õ¤Î²ò¼öÈ½Äê
+    if(in_array($target->uname, $voodoo_killer_target_list)) //é™°é™½å¸«ã®è§£å‘ªåˆ¤å®š
       $voodoo_killer_success_list[$target->uname] = true;
     else
       $voodoo_target_list[$user->uname] = $target->uname;
   }
 
-  //¼ö½Ñ·ÏÇ½ÎÏ¼Ô¤ÎÂĞ¾İÀè¤¬½Å¤Ê¤Ã¤¿¾ì¹ç¤Ï¼öÊÖ¤·¤ò¼õ¤±¤ë
+  //å‘ªè¡“ç³»èƒ½åŠ›è€…ã®å¯¾è±¡å…ˆãŒé‡ãªã£ãŸå ´åˆã¯å‘ªè¿”ã—ã‚’å—ã‘ã‚‹
   $voodoo_count_list = array_count_values($voodoo_target_list);
   foreach($voodoo_target_list as $uname => $target_uname){
     if($voodoo_count_list[$target_uname] < 2) continue;
 
-    if(in_array($uname, $anti_voodoo_target_list)) //Ìñ¿À¤Î¸î±ÒÈ½Äê
+    if(in_array($uname, $anti_voodoo_target_list)) //å„ç¥ã®è­·è¡›åˆ¤å®š
       $anti_voodoo_success_list[$uname] = true;
     else
       $USERS->Kill($USERS->UnameToNumber($uname), 'CURSED');
   }
 
-  //-- Àê¤¤·Ï¥ì¥¤¥ä¡¼ --//
-  $jammer_target_list = array(); //Ë¸³²ÂĞ¾İ¥ê¥¹¥È
-  foreach($vote_data['JAMMER_MAD_DO'] as $uname => $target_uname){ //·îÅÆ¡¦·î¸Ñ¤Î½èÍı
+  //-- å ã„ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
+  $jammer_target_list = array(); //å¦¨å®³å¯¾è±¡ãƒªã‚¹ãƒˆ
+  foreach($vote_data['JAMMER_MAD_DO'] as $uname => $target_uname){ //æœˆå…ãƒ»æœˆç‹ã®å‡¦ç†
     $user = $USERS->ByUname($uname);
-    if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+    if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-    $target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
-    //¼öÊÖ¤·È½Äê
+    $target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
+    //å‘ªè¿”ã—åˆ¤å®š
     if(($target->IsRoleGroup('cursed') && ! $target->IsDead(true)) ||
        in_array($target->uname, $voodoo_target_list)){
-      if(in_array($user->uname, $anti_voodoo_target_list)){ //Ìñ¿À¤Î¸î±ÒÈ½Äê
+      if(in_array($user->uname, $anti_voodoo_target_list)){ //å„ç¥ã®è­·è¡›åˆ¤å®š
 	$anti_voodoo_success_list[$user->uname] = true;
       }
       else{
@@ -2149,71 +2141,71 @@ function AggregateVoteNight(){
       }
     }
 
-    if(in_array($target->uname, $anti_voodoo_target_list)){ //Ìñ¿À¤Î¸î±ÒÈ½Äê
+    if(in_array($target->uname, $anti_voodoo_target_list)){ //å„ç¥ã®è­·è¡›åˆ¤å®š
       $anti_voodoo_success_list[$target->uname] = true;
     }
-    else{ //Ë¸³²ÂĞ¾İ¼Ô¥ê¥¹¥È¤ËÄÉ²Ã
-      if($user->IsRole('jammer_fox') && mt_rand(1, 100) > 70) continue; //·î¸Ñ¤Ï°ìÄê³ÎÎ¨¤Ç¼ºÇÔ¤¹¤ë
+    else{ //å¦¨å®³å¯¾è±¡è€…ãƒªã‚¹ãƒˆã«è¿½åŠ 
+      if($user->IsRole('jammer_fox') && mt_rand(1, 100) > 70) continue; //æœˆç‹ã¯ä¸€å®šç¢ºç‡ã§å¤±æ•—ã™ã‚‹
       $jammer_target_list[$user->uname] = $target->uname;
     }
   }
   //PrintData($jammer_target_list, 'Target [jammer_mad]');
 
-  //²ÖÍÅÀº¡¦À±ÍÅÀº¤Î¥á¥Ã¥»¡¼¥¸ºîÀ®ÍÑ¥ê¥¹¥È
+  //èŠ±å¦–ç²¾ãƒ»æ˜Ÿå¦–ç²¾ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä½œæˆç”¨ãƒªã‚¹ãƒˆ
   $flower_list = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 		       'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
-  //Àê¤¤Ç½ÎÏ¼Ô¤Î½èÍı¤ò¹çÀ® (array_merge() ¤Ï $uname ¤¬À°¿ô¤À¤ÈÅº¤¨»ú¤ÈÇ§¼±¤µ¤ì¤ë¤Î¤Ç»È¤ï¤Ê¤¤¤³¤È)
+  //å ã„èƒ½åŠ›è€…ã®å‡¦ç†ã‚’åˆæˆ (array_merge() ã¯ $uname ãŒæ•´æ•°ã ã¨æ·»ãˆå­—ã¨èªè­˜ã•ã‚Œã‚‹ã®ã§ä½¿ã‚ãªã„ã“ã¨)
   $mage_list = array();
   foreach(array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action){
     foreach($vote_data[$action] as $uname => $target_uname) $mage_list[$uname] = $target_uname;
   }
 
   $phantom_user_list = array();
-  foreach($mage_list as $uname => $target_uname){ //Àê¤¤·Ï¤Î½èÍı
+  foreach($mage_list as $uname => $target_uname){ //å ã„ç³»ã®å‡¦ç†
     $user = $USERS->ByUname($uname);
-    if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+    if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-    $target = $USERS->ByRealUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
+    $target = $USERS->ByRealUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
 
-    $phantom_flag = false; //¸¸·ÏÈ½Äê¥Õ¥é¥°
-    if($target->IsAbilityPhantom()){ //¸¸·Ï¤ÎÈ½Äê
-      if(in_array($user->uname, $anti_voodoo_target_list)) //Ìñ¿À¤Î¸î±ÒÈ½Äê
+    $phantom_flag = false; //å¹»ç³»åˆ¤å®šãƒ•ãƒ©ã‚°
+    if($target->IsAbilityPhantom()){ //å¹»ç³»ã®åˆ¤å®š
+      if(in_array($user->uname, $anti_voodoo_target_list)) //å„ç¥ã®è­·è¡›åˆ¤å®š
 	$anti_voodoo_success_list[$user->uname] = true;
       else
 	$phantom_flag = true;
     }
 
-    if($user->IsRole('dummy_mage')){ //Ì´¸«¿Í¤ÎÈ½Äê
+    if($user->IsRole('dummy_mage')){ //å¤¢è¦‹äººã®åˆ¤å®š
       $result = $target->DistinguishMage(true);
     }
-    elseif(in_array($user->uname, $jammer_target_list)){ //·îÅÆ¡¦·î¸Ñ¤ÎË¸³²È½Äê
+    elseif(in_array($user->uname, $jammer_target_list)){ //æœˆå…ãƒ»æœˆç‹ã®å¦¨å®³åˆ¤å®š
       $result = $user->IsRole('psycho_mage', 'sex_mage') ? 'mage_failed' : 'failed';
     }
-    elseif($phantom_flag){ //¸¸·Ï¤ÎÈ½Äê
+    elseif($phantom_flag){ //å¹»ç³»ã®åˆ¤å®š
       $result = $user->IsRole('psycho_mage', 'sex_mage') ? 'mage_failed' : 'failed';
       $phantom_user_list[] = $target;
     }
-    elseif($user->IsRole('psycho_mage')){ //Àº¿À´ÕÄê»Î¤ÎÈ½Äê
+    elseif($user->IsRole('psycho_mage')){ //ç²¾ç¥é‘‘å®šå£«ã®åˆ¤å®š
       $result = $target->DistinguishLiar();
     }
-    elseif($user->IsRole('sex_mage')){ //¤Ò¤è¤³´ÕÄê»Î¤ÎÈ½Äê
+    elseif($user->IsRole('sex_mage')){ //ã²ã‚ˆã“é‘‘å®šå£«ã®åˆ¤å®š
       $result = $target->DistinguishSex();
     }
-    elseif($user->IsRole('sex_fox')){ //¿÷¸Ñ¤ÎÈ½Äê
+    elseif($user->IsRole('sex_fox')){ //é››ç‹ã®åˆ¤å®š
       $result = mt_rand(1, 100) <= 70 ? $target->DistinguishSex() : 'failed';
     }
-    elseif($user->IsRole('stargazer_mage')){ //ÀêÀ±½Ñ»Õ¤ÎÈ½Äê
+    elseif($user->IsRole('stargazer_mage')){ //å æ˜Ÿè¡“å¸«ã®åˆ¤å®š
       $result = $target->DistinguishVoteAbility();
     }
-    elseif($user->IsRole('stargazer_fox')){ //À±¸Ñ¤ÎÈ½Äê
+    elseif($user->IsRole('stargazer_fox')){ //æ˜Ÿç‹ã®åˆ¤å®š
       $result = mt_rand(1, 100) <= 70 ? $target->DistinguishVoteAbility() : 'failed';
     }
     else{
-      //¼öÊÖ¤·È½Äê
+      //å‘ªè¿”ã—åˆ¤å®š
       if(($target->IsLive(true) && $target->IsRoleGroup('cursed')) ||
 	 in_array($target->uname, $voodoo_target_list)){
-	if(in_array($user->uname, $anti_voodoo_target_list)){ //Ìñ¿À¤Î¸î±ÒÈ½Äê
+	if(in_array($user->uname, $anti_voodoo_target_list)){ //å„ç¥ã®è­·è¡›åˆ¤å®š
 	  $anti_voodoo_success_list[$user->uname] = true;
 	}
 	else{
@@ -2222,7 +2214,7 @@ function AggregateVoteNight(){
 	}
       }
 
-      if($user->IsRole('emerald_fox')){ //¿é¸Ñ¤Î½èÍı
+      if($user->IsRole('emerald_fox')){ //ç¿ ç‹ã®å‡¦ç†
 	if($target->IsChildFox() || $target->IsLonely('fox')){
 	  $role = 'mind_friend[' . $user->user_no . ']';
 	  $user->LostAbility();
@@ -2230,77 +2222,77 @@ function AggregateVoteNight(){
 	  $target->AddRole($role);
 	}
       }
-      elseif($user->IsRole('child_fox')){ //»Ò¸Ñ¤ÎÈ½Äê
+      elseif($user->IsRole('child_fox')){ //å­ç‹ã®åˆ¤å®š
 	$result = mt_rand(1, 100) <= 70 ? $target->DistinguishMage() : 'failed';
       }
-      elseif($user->IsRole('flower_fairy')){ //²ÖÍÅÀº¤Î½èÍı
+      elseif($user->IsRole('flower_fairy')){ //èŠ±å¦–ç²¾ã®å‡¦ç†
 	$action = 'FLOWERED_' . GetRandom($flower_list);
 	$ROOM->SystemMessage($USERS->GetHandleName($target->uname, true), $action);
       }
-      elseif($user->IsRole('star_fairy')){ //À±ÍÅÀº¤Î½èÍı
+      elseif($user->IsRole('star_fairy')){ //æ˜Ÿå¦–ç²¾ã®å‡¦ç†
 	$action = 'CONSTELLATION_' . GetRandom($flower_list);
 	$ROOM->SystemMessage($USERS->GetHandleName($target->uname, true), $action);
       }
-      elseif($user->IsRoleGroup('fairy')){ //ÍÅÀº·Ï¤Î½èÍı
+      elseif($user->IsRoleGroup('fairy')){ //å¦–ç²¾ç³»ã®å‡¦ç†
 	$target_date = $ROOM->date + 1;
 	$target->AddRole("bad_status[{$user->user_no}-{$target_date}]");
       }
       else{
-	if(array_key_exists($target->uname, $possessed_target_list)){ //Øá°Í¥­¥ã¥ó¥»¥ëÈ½Äê
+	if(array_key_exists($target->uname, $possessed_target_list)){ //æ†‘ä¾ã‚­ãƒ£ãƒ³ã‚»ãƒ«åˆ¤å®š
 	  $target->possessed_cancel = true;
 	}
 
-	if($user->IsRole('soul_mage')){ //º²¤ÎÀê¤¤»Õ¤ÎÈ½Äê
+	if($user->IsRole('soul_mage')){ //é­‚ã®å ã„å¸«ã®åˆ¤å®š
 	  $result = $target->main_role;
 	}
-	else{ //Àê¤¤»Õ¤Î½èÍı
+	else{ //å ã„å¸«ã®å‡¦ç†
 	  if($target->IsLive(true) && $target->IsFox() && ! $target->IsChildFox() &&
-	     ! $target->IsRole('white_fox', 'black_fox')){ //¼ö»¦È½Äê
+	     ! $target->IsRole('white_fox', 'black_fox')){ //å‘ªæ®ºåˆ¤å®š
 	    $USERS->Kill($target->user_no, 'FOX_DEAD');
 	  }
-	  $result = $target->DistinguishMage(); //Àê¤¤È½Äê
+	  $result = $target->DistinguishMage(); //å ã„åˆ¤å®š
 	}
       }
     }
 
-    //Àê¤¤·ë²Ì¤òÅĞÏ¿ (ÆÃ¼ìÀê¤¤Ç½ÎÏ¼Ô¤Ï½ü³°)
+    //å ã„çµæœã‚’ç™»éŒ² (ç‰¹æ®Šå ã„èƒ½åŠ›è€…ã¯é™¤å¤–)
     if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')) continue;
     $str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
     $action = $user->IsChildFox() ? 'CHILD_FOX_RESULT' : 'MAGE_RESULT';
     $ROOM->SystemMessage($str . "\t" . $result, $action);
   }
-  foreach($phantom_user_list as $user) $user->LostAbility(); //¸¸·Ï¤ÎÇ½ÎÏ¼º¸ú½èÍı
+  foreach($phantom_user_list as $user) $user->LostAbility(); //å¹»ç³»ã®èƒ½åŠ›å¤±åŠ¹å‡¦ç†
 
   if($ROOM->date == 1){
-    //-- ¥³¥Ô¡¼·Ï¥ì¥¤¥ä¡¼ --//
-    //¤µ¤È¤ê·Ï¤ÎÄÉ²Ã¥µ¥ÖÌò¿¦¥ê¥¹¥È (¤µ¤È¤ê => ¥µ¥È¥é¥ì, ¥¤¥¿¥³ => ¸ı´ó¤»)
+    //-- ã‚³ãƒ”ãƒ¼ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
+    //ã•ã¨ã‚Šç³»ã®è¿½åŠ ã‚µãƒ–å½¹è·ãƒªã‚¹ãƒˆ (ã•ã¨ã‚Š => ã‚µãƒˆãƒ©ãƒ¬, ã‚¤ã‚¿ã‚³ => å£å¯„ã›)
     $stack = array('mind_scanner' => 'mind_read', 'evoke_scanner' => 'mind_evoke');
-    foreach($vote_data['MIND_SCANNER_DO'] as $uname => $target_uname){ //¤µ¤È¤ê·Ï¤Î½èÍı
+    foreach($vote_data['MIND_SCANNER_DO'] as $uname => $target_uname){ //ã•ã¨ã‚Šç³»ã®å‡¦ç†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-      //ÂĞ¾İ¼Ô¤Ë¥µ¥ÖÌò¿¦¤òÄÉ²Ã
+      //å¯¾è±¡è€…ã«ã‚µãƒ–å½¹è·ã‚’è¿½åŠ 
       $role = $stack[$user->main_role] . '[' . $user->user_no . ']';
       $USERS->ByUname($target_uname)->AddRole($role);
     }
 
-    foreach($vote_data['MANIA_DO'] as $uname => $target_uname){ //¿ÀÏÃ¥Ş¥Ë¥¢·Ï¤Î½èÍı
+    foreach($vote_data['MANIA_DO'] as $uname => $target_uname){ //ç¥è©±ãƒãƒ‹ã‚¢ç³»ã®å‡¦ç†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-      $target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
-      if($user->IsRole('unknown_mania')){ //ó¬
-	$user->AddMainRole($target->user_no); //¥³¥Ô¡¼Àè¤ò¥»¥Ã¥È
+      $target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
+      if($user->IsRole('unknown_mania')){ //éµº
+	$user->AddMainRole($target->user_no); //ã‚³ãƒ”ãƒ¼å…ˆã‚’ã‚»ãƒƒãƒˆ
 
-	//¶¦ÌÄ¼Ô¤òÄÉ²Ã
+	//å…±é³´è€…ã‚’è¿½åŠ 
 	$role = 'mind_friend[' . $user->user_no . ']';
 	$user->AddRole($role);
 	$target->AddRole($role);
       }
-      elseif($user->IsRole('trick_mania')){ //¿ÀÏÃ¥Ş¥Ë¥¢
-	//¥³¥Ô¡¼½èÍı
+      elseif($user->IsRole('trick_mania')){ //ç¥è©±ãƒãƒ‹ã‚¢
+	//ã‚³ãƒ”ãƒ¼å‡¦ç†
 	$actor_flag = false;
-	if($target->IsRoleGroup('mania')){ //¿ÀÏÃ¥Ş¥Ë¥¢·Ï¤ò»ØÄê¤·¤¿¾ì¹ç¤ÏÂ¼¿Í
+	if($target->IsRoleGroup('mania')){ //ç¥è©±ãƒãƒ‹ã‚¢ç³»ã‚’æŒ‡å®šã—ãŸå ´åˆã¯æ‘äºº
 	  $result =  'human';
 	  $actor_flag = true;
 	}
@@ -2367,17 +2359,17 @@ function AggregateVoteNight(){
 	$str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
 	$ROOM->SystemMessage($str, 'MANIA_RESULT');
       }
-      elseif($user->IsRole('soul_mania', 'dummy_mania')){ //³ĞÀÃ¼Ô¡¦Ì´¸ìÉô
-	$user->AddMainRole($target->user_no); //¥³¥Ô¡¼Àè¤ò¥»¥Ã¥È
+      elseif($user->IsRole('soul_mania', 'dummy_mania')){ //è¦šé†’è€…ãƒ»å¤¢èªéƒ¨
+	$user->AddMainRole($target->user_no); //ã‚³ãƒ”ãƒ¼å…ˆã‚’ã‚»ãƒƒãƒˆ
 
-	//¥³¥Ô¡¼·ë²Ì¤ò½ĞÎÏ (¿ÀÏÃ¥Ş¥Ë¥¢·Ï¤ò»ØÄê¤·¤¿¾ì¹ç¤ÏÂ¼¿Í)
-	$result = $target->IsRoleGroup('mania') ? 'human' : DistinguishRoleGroup($target->main_role);
+	//ã‚³ãƒ”ãƒ¼çµæœã‚’å‡ºåŠ› (ç¥è©±ãƒãƒ‹ã‚¢ç³»ã‚’æŒ‡å®šã—ãŸå ´åˆã¯æ‘äºº)
+	$result = $target->IsRoleGroup('mania') ? 'human' : $target->DistinguishRoleGroup();
 
 	$str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
 	$ROOM->SystemMessage($str, 'MANIA_RESULT');
       }
-      else{ //¿ÀÏÃ¥Ş¥Ë¥¢
-	//¥³¥Ô¡¼½èÍı (¿ÀÏÃ¥Ş¥Ë¥¢·Ï¤ò»ØÄê¤·¤¿¾ì¹ç¤ÏÂ¼¿Í)
+      else{ //ç¥è©±ãƒãƒ‹ã‚¢
+	//ã‚³ãƒ”ãƒ¼å‡¦ç† (ç¥è©±ãƒãƒ‹ã‚¢ç³»ã‚’æŒ‡å®šã—ãŸå ´åˆã¯æ‘äºº)
 	$result = $target->IsRoleGroup('mania') ? 'human' : $target->main_role;
 	$user->ReplaceRole('mania', $result);
 	$user->AddRole('copied');
@@ -2388,32 +2380,32 @@ function AggregateVoteNight(){
     }
 
     if(! $ROOM->IsOpenCast()){
-      foreach($USERS->rows as $user){ //Å·¿Í¤Îµ¢´Ô½èÍı
+      foreach($USERS->rows as $user){ //å¤©äººã®å¸°é‚„å‡¦ç†
 	if($user->IsDummyBoy() || ! $user->IsRole('revive_priest')) continue;
 	if($user->IsLovers()) $user->LostAbility();
 	elseif($user->IsLive(true)) $USERS->Kill($user->user_no, 'PRIEST_RETURNED');
       }
     }
 
-    //º²°Ü»È¤Î½èÍı
+    //é­‚ç§»ä½¿ã®å‡¦ç†
     $exchange_angel_list  = array();
     $exchange_lovers_list = array();
     $fix_angel_stack      = array();
     $exec_exchange_stack  = array();
-    foreach($USERS->rows as $user){ //º²°Ü»È¤¬ÂÇ¤Ã¤¿Îø¿Í¤Î¾ğÊó¤ò¼ı½¸
+    foreach($USERS->rows as $user){ //é­‚ç§»ä½¿ãŒæ‰“ã£ãŸæ‹äººã®æƒ…å ±ã‚’åé›†
       if($user->IsDummyBoy() || ! $user->IsLovers()) continue;
       foreach($user->GetPartner('lovers') as $cupid_id){
 	if($USERS->ById($cupid_id)->IsRole('exchange_angel')){
 	  $exchange_angel_list[$cupid_id][] = $user->user_no;
 	  $exchange_lovers_list[$user->user_no][] = $cupid_id;
-	  if($user->IsPossessedGroup()) $fix_angel_stack[$cupid_id] = true; //Øá°ÍÇ½ÎÏ¼Ô¤Ê¤éÂĞ¾İ³°
+	  if($user->IsPossessedGroup()) $fix_angel_stack[$cupid_id] = true; //æ†‘ä¾èƒ½åŠ›è€…ãªã‚‰å¯¾è±¡å¤–
 	}
       }
     }
     //PrintData($exchange_angel_list, 'exchange_angel: 1st');
     //PrintData($exchange_lovers_list, 'exchange_lovers: 1st');
 
-    foreach($exchange_angel_list as $id => $lovers_stack){ //ÃêÁª½èÍı
+    foreach($exchange_angel_list as $id => $lovers_stack){ //æŠ½é¸å‡¦ç†
       if(array_key_exists($id, $fix_angel_stack)) continue;
       $duplicate_stack = array();
       //PrintData($fix_angel_stack, 'fix_angel:'. $id);
@@ -2449,82 +2441,82 @@ function AggregateVoteNight(){
     }
   }
   else{
-    //-- Èø¹Ô·Ï¥ì¥¤¥ä¡¼ --//
-    foreach($vote_data['REPORTER_DO'] as $uname => $target_uname){ //¥Ö¥ó²°¤Î½èÍı
+    //-- å°¾è¡Œç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
+    foreach($vote_data['REPORTER_DO'] as $uname => $target_uname){ //ãƒ–ãƒ³å±‹ã®å‡¦ç†
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+      if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-      $target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
-      if(in_array($target->uname, $trap_target_list)){ //æ«¤¬ÀßÃÖ¤µ¤ì¤Æ¤¤¤¿¤é»àË´
+      $target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
+      if(in_array($target->uname, $trap_target_list)){ //ç½ ãŒè¨­ç½®ã•ã‚Œã¦ã„ãŸã‚‰æ­»äº¡
 	$USERS->Kill($user->user_no, 'TRAPPED');
 	continue;
       }
 
-      if($target->IsSame($wolf_target->uname)){ //Èø¹ÔÀ®¸ù
-	if(! $target->wolf_killed) continue; //¿ÍÏµ¤Ë½±·â¤µ¤ì¤Æ¤¤¤Ê¤«¤Ã¤¿¤é¥¹¥­¥Ã¥×
+      if($target->IsSame($wolf_target->uname)){ //å°¾è¡ŒæˆåŠŸ
+	if(! $target->wolf_killed) continue; //äººç‹¼ã«è¥²æ’ƒã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ã‚¹ã‚­ãƒƒãƒ—
 	$str = $user->handle_name . "\t" .
 	  $USERS->GetHandleName($wolf_target->uname, true) . "\t" .
 	  $USERS->GetHandleName($voted_wolf->uname, true);
 	$ROOM->SystemMessage($str, 'REPORTER_SUCCESS');
       }
       elseif($target->IsLive(true) && $target->IsRoleGroup('wolf', 'fox')){
-	$USERS->Kill($user->user_no, 'REPORTER_DUTY'); //Èø¹ÔÂĞ¾İ¤¬¿ÍÏµ¤«ÍÅ¸Ñ¤Ê¤é»¦¤µ¤ì¤ë
+	$USERS->Kill($user->user_no, 'REPORTER_DUTY'); //å°¾è¡Œå¯¾è±¡ãŒäººç‹¼ã‹å¦–ç‹ãªã‚‰æ®ºã•ã‚Œã‚‹
       }
     }
 
-    //-- È¿º²·Ï¥ì¥¤¥ä¡¼ --//
+    //-- åé­‚ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
     if($wolf_target->IsDead(true) && ! $wolf_target->IsDummyBoy() && ! $wolf_target->IsLovers() &&
        $wolf_target->IsActive('revive_pharmacist') && $wolf_target->wolf_killed &&
-       ! $voted_wolf->IsSiriusWolf()){ //Àç¿Í¤ÎÁÉÀ¸È½Äê
+       ! $voted_wolf->IsSiriusWolf()){ //ä»™äººã®è˜‡ç”Ÿåˆ¤å®š
       $wolf_target->Revive();
       $wolf_target->LostAbility();
     }
 
-    foreach($reverse_list as $target_uname => $flag){ //È¿º²»Õ¤Î½èÍı
+    foreach($reverse_list as $target_uname => $flag){ //åé­‚å¸«ã®å‡¦ç†
       if(! $flag) continue;
       $target = $USERS->ByUname($target_uname);
-      if($target->IsPossessedGroup()){ //Øá°ÍÇ½ÎÏ¼ÔÂĞ±ş
-	if($target->revive_flag) break; //ÁÉÀ¸ºÑ¤ß¤Ê¤é¥¹¥­¥Ã¥×
+      if($target->IsPossessedGroup()){ //æ†‘ä¾èƒ½åŠ›è€…å¯¾å¿œ
+	if($target->revive_flag) break; //è˜‡ç”Ÿæ¸ˆã¿ãªã‚‰ã‚¹ã‚­ãƒƒãƒ—
 
 	$virtual_target = $USERS->ByVirtual($target->user_no);
-	if($target != $virtual_target){ //Øá°ÍÃæ¤Ê¤é¥ê¥»¥Ã¥È
-	  $target->ReturnPossessed('possessed_target', $ROOM->date + 1); //ËÜ¿Í
-	  $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1); //Øá°ÍÀè
+	if($target != $virtual_target){ //æ†‘ä¾ä¸­ãªã‚‰ãƒªã‚»ãƒƒãƒˆ
+	  $target->ReturnPossessed('possessed_target', $ROOM->date + 1); //æœ¬äºº
+	  $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1); //æ†‘ä¾å…ˆ
 	}
 
-	//Øá°ÍÍ½Äê¼Ô¤¬µï¤¿¤é¥­¥ã¥ó¥»¥ë
+	//æ†‘ä¾äºˆå®šè€…ãŒå±…ãŸã‚‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 	if(array_key_exists($target->uname, $possessed_target_list)){
 	  $target->possessed_reset  = false;
 	  $target->possessed_cancel = true;
 	}
 	elseif(in_array($target->uname, $possessed_target_list)){
-	  //Øá°ÍÃæ¤Î¸¤¿À¤ËØá°Í¤·¤è¤¦¤È¤·¤¿ØáÏµ¤ò¸¡½Ğ
+	  //æ†‘ä¾ä¸­ã®çŠ¬ç¥ã«æ†‘ä¾ã—ã‚ˆã†ã¨ã—ãŸæ†‘ç‹¼ã‚’æ¤œå‡º
 	  $stack = array_keys($possessed_target_list, $target->uname);
 	  $USERS->ByUname($stack[0])->possessed_cancel = true;
 	}
 
-	//ÆÃ¼ì¥±¡¼¥¹¤Ê¤Î¤Ç¥Ù¥¿¤Ë½èÍı
+	//ç‰¹æ®Šã‚±ãƒ¼ã‚¹ãªã®ã§ãƒ™ã‚¿ã«å‡¦ç†
 	$virtual_target->Update('live', 'live');
 	$virtual_target->revive_flag = true;
 	$ROOM->SystemMessage($virtual_target->handle_name, 'REVIVE_SUCCESS');
       }
       else{
-	if($target != $USERS->ByReal($target->user_no)){ //Øá°Í¤µ¤ì¤Æ¤¤¤¿¤é¥ê¥»¥Ã¥È
+	if($target != $USERS->ByReal($target->user_no)){ //æ†‘ä¾ã•ã‚Œã¦ã„ãŸã‚‰ãƒªã‚»ãƒƒãƒˆ
 	  $target->ReturnPossessed('possessed', $ROOM->date + 1);
 	}
-	$target->Revive(); //ÁÉÀ¸½èÍı
+	$target->Revive(); //è˜‡ç”Ÿå‡¦ç†
       }
     }
 
-    //-- ÁÉÀ¸·Ï¥ì¥¤¥ä¡¼ --//
+    //-- è˜‡ç”Ÿç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
     if(! $ROOM->IsOpenCast()){
-      foreach($vote_data['POISON_CAT_DO'] as $uname => $target_uname){ //ÁÉÀ¸Ç½ÎÏ¼Ô¤Î½èÍı
+      foreach($vote_data['POISON_CAT_DO'] as $uname => $target_uname){ //è˜‡ç”Ÿèƒ½åŠ›è€…ã®å‡¦ç†
 	$user = $USERS->ByUname($uname);
-	if($user->IsDead(true)) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú
+	if($user->IsDead(true)) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹
 
-	$target = $USERS->ByUname($target_uname); //ÂĞ¾İ¼Ô¤Î¾ğÊó¤ò¼èÆÀ
+	$target = $USERS->ByUname($target_uname); //å¯¾è±¡è€…ã®æƒ…å ±ã‚’å–å¾—
 
-	//ÁÉÀ¸È½Äê
+	//è˜‡ç”Ÿåˆ¤å®š
 	if($user->IsRole('poison_cat', 'revive_medium')){
 	  $revive_rate = 25;
 	}
@@ -2535,16 +2527,16 @@ function AggregateVoteNight(){
 	elseif($user->IsRole('sacrifice_cat', 'revive_fox')){
 	  $revive_rate = 100;
 	}
-	$rate = mt_rand(1, 100); //ÁÉÀ¸È½ÄêÍÑÍğ¿ô
-	//$rate = 5; //mt_rand(1, 10); //¥Æ¥¹¥ÈÍÑ
+	$rate = mt_rand(1, 100); //è˜‡ç”Ÿåˆ¤å®šç”¨ä¹±æ•°
+	//$rate = 5; //mt_rand(1, 10); //ãƒ†ã‚¹ãƒˆç”¨
 	//PrintData($revive_rate, 'Revive Info: ' . $user->uname . ' => ' . $target->uname);
 
 	$result = 'failed';
 	do{
-	  if($rate > $revive_rate) break; //ÁÉÀ¸¼ºÇÔ
-	  if(! $user->IsRole('sacrifice_cat') && $rate <= floor($revive_rate / 5)){ //¸íÇúÁÉÀ¸
+	  if($rate > $revive_rate) break; //è˜‡ç”Ÿå¤±æ•—
+	  if(! $user->IsRole('sacrifice_cat') && $rate <= floor($revive_rate / 5)){ //èª¤çˆ†è˜‡ç”Ÿ
 	    $revive_target_list = array();
-	    //¸½»şÅÀ¤Î¿ÈÂå¤ï¤ê·¯¤ÈÁÉÀ¸Ç½ÎÏ¼Ô¤¬Áª¤ó¤À¿Í°Ê³°¤Î»à¼Ô¤ÈØá°Í¼Ô¤ò¸¡½Ğ
+	    //ç¾æ™‚ç‚¹ã®èº«ä»£ã‚ã‚Šå›ã¨è˜‡ç”Ÿèƒ½åŠ›è€…ãŒé¸ã‚“ã äººä»¥å¤–ã®æ­»è€…ã¨æ†‘ä¾è€…ã‚’æ¤œå‡º
 	    foreach($USERS->rows as $revive_target){
 	      if($revive_target->IsDummyBoy() || $revive_target->revive_flag ||
 		 $target == $revive_target) continue;
@@ -2555,77 +2547,77 @@ function AggregateVoteNight(){
 	      }
 	    }
 	    if($ROOM->test_mode) PrintData($revive_target_list, 'ReviveTarget');
-	    if(count($revive_target_list) > 0){ //¸õÊä¤¬¤¤¤ë»ş¤À¤±Æş¤ìÂØ¤¨¤ë
+	    if(count($revive_target_list) > 0){ //å€™è£œãŒã„ã‚‹æ™‚ã ã‘å…¥ã‚Œæ›¿ãˆã‚‹
 	      $target = $USERS->ByUname(GetRandom($revive_target_list));
 	    }
 	  }
-	  //$target = $USERS->ByID(3); //¥Æ¥¹¥ÈÍÑ
+	  //$target = $USERS->ByID(3); //ãƒ†ã‚¹ãƒˆç”¨
 	  //PrintData($target->uname, 'ReviveUser');
-	  if($target->IsReviveLimited()) break; //ÁÉÀ¸¼ºÇÔÈ½Äê
+	  if($target->IsReviveLimited()) break; //è˜‡ç”Ÿå¤±æ•—åˆ¤å®š
 
 	  $result = 'success';
-	  if($target->IsPossessedGroup()){ //Øá°ÍÇ½ÎÏ¼ÔÂĞ±ş
-	    if($target->revive_flag) break; //ÁÉÀ¸ºÑ¤ß¤Ê¤é¥¹¥­¥Ã¥×
+	  if($target->IsPossessedGroup()){ //æ†‘ä¾èƒ½åŠ›è€…å¯¾å¿œ
+	    if($target->revive_flag) break; //è˜‡ç”Ÿæ¸ˆã¿ãªã‚‰ã‚¹ã‚­ãƒƒãƒ—
 
 	    $virtual_target = $USERS->ByVirtual($target->user_no);
-	    if($target->IsDead()){ //³ÎÄê»à¼Ô
-	      if($target != $virtual_target){ //Øá°Í¸å¤Ë»àË´¤·¤Æ¤¤¤¿¾ì¹ç¤Ï¥ê¥»¥Ã¥È½èÍı¤ò¹Ô¤¦
+	    if($target->IsDead()){ //ç¢ºå®šæ­»è€…
+	      if($target != $virtual_target){ //æ†‘ä¾å¾Œã«æ­»äº¡ã—ã¦ã„ãŸå ´åˆã¯ãƒªã‚»ãƒƒãƒˆå‡¦ç†ã‚’è¡Œã†
 		$target->ReturnPossessed('possessed_target', $ROOM->date + 1);
 	      }
 	    }
-	    elseif($target->IsLive(true)){ //À¸Â¸¼Ô (Øá°Í¾õÂÖ³ÎÄê)
-	      if($virtual_target->IsDrop()){ //ÁÉÀ¸¼­Âà¼ÔÂĞ±ş
+	    elseif($target->IsLive(true)){ //ç”Ÿå­˜è€… (æ†‘ä¾çŠ¶æ…‹ç¢ºå®š)
+	      if($virtual_target->IsDrop()){ //è˜‡ç”Ÿè¾é€€è€…å¯¾å¿œ
 		$result = 'failed';
 		break;
 	      }
 
-	      //¸«¤«¤±¾å¤ÎÁÉÀ¸½èÍı
+	      //è¦‹ã‹ã‘ä¸Šã®è˜‡ç”Ÿå‡¦ç†
 	      $target->ReturnPossessed('possessed_target', $ROOM->date + 1);
 	      $ROOM->SystemMessage($target->handle_name, 'REVIVE_SUCCESS');
 
-	      //ËÜÅö¤Î»à¼Ô¤ÎÁÉÀ¸½èÍı
+	      //æœ¬å½“ã®æ­»è€…ã®è˜‡ç”Ÿå‡¦ç†
 	      $virtual_target->Revive(true);
 	      $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1);
 
-	      //Øá°ÍÍ½Äê¼Ô¤¬µï¤¿¤é¥­¥ã¥ó¥»¥ë
+	      //æ†‘ä¾äºˆå®šè€…ãŒå±…ãŸã‚‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«
   	      if(array_key_exists($target->uname, $possessed_target_list)){
 		$target->possessed_reset  = false;
 		$target->possessed_cancel = true;
 	      }
 	      break;
 	    }
-	    else{ //ÅöÌë¤Ë»à¤ó¤À¥±¡¼¥¹
-	      if($target != $virtual_target){ //Øá°ÍÃæ¤Ê¤é¥ê¥»¥Ã¥È
-		$target->ReturnPossessed('possessed_target', $ROOM->date + 1); //ËÜ¿Í
-		$virtual_target->ReturnPossessed('possessed', $ROOM->date + 1); //Øá°ÍÀè
+	    else{ //å½“å¤œã«æ­»ã‚“ã ã‚±ãƒ¼ã‚¹
+	      if($target != $virtual_target){ //æ†‘ä¾ä¸­ãªã‚‰ãƒªã‚»ãƒƒãƒˆ
+		$target->ReturnPossessed('possessed_target', $ROOM->date + 1); //æœ¬äºº
+		$virtual_target->ReturnPossessed('possessed', $ROOM->date + 1); //æ†‘ä¾å…ˆ
 	      }
 
-	      //Øá°ÍÍ½Äê¼Ô¤¬µï¤¿¤é¥­¥ã¥ó¥»¥ë
+	      //æ†‘ä¾äºˆå®šè€…ãŒå±…ãŸã‚‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 	      if(array_key_exists($target->uname, $possessed_target_list)){
 		$target->possessed_reset  = false;
 		$target->possessed_cancel = true;
 	      }
 	    }
 	  }
-	  elseif($target != $USERS->ByReal($target->user_no)){ //Øá°Í¤µ¤ì¤Æ¤¤¤¿¤é¥ê¥»¥Ã¥È
+	  elseif($target != $USERS->ByReal($target->user_no)){ //æ†‘ä¾ã•ã‚Œã¦ã„ãŸã‚‰ãƒªã‚»ãƒƒãƒˆ
 	    $target->ReturnPossessed('possessed', $ROOM->date + 1);
 	  }
-	  $target->Revive(); //ÁÉÀ¸½èÍı
+	  $target->Revive(); //è˜‡ç”Ÿå‡¦ç†
 	}while(false);
 
 	if($result == 'success'){
-	  if($user->IsRole('revive_cat')){ //ÀçÃ¬¤ÎÁÉÀ¸À®¸ù¥«¥¦¥ó¥È¤ò¹¹¿·
-	    //$revive_times = (int)$user->partner_list['revive_cat'][0]; //¼èÆÀºÑ¤ß¤Î¤Ï¤º
+	  if($user->IsRole('revive_cat')){ //ä»™ç‹¸ã®è˜‡ç”ŸæˆåŠŸã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
+	    //$revive_times = (int)$user->partner_list['revive_cat'][0]; //å–å¾—æ¸ˆã¿ã®ã¯ãš
 	    $base_role = $user->main_role;
 	    if($revive_times > 0) $base_role .= '[' . $revive_times . ']';
 
 	    $new_role = $user->main_role . '[' . ($revive_times + 1) . ']';
 	    $user->ReplaceRole($base_role, $new_role);
 	  }
-	  elseif($user->IsRole('sacrifice_cat')){ //Ç­¿À¤Î»àË´½èÍı
+	  elseif($user->IsRole('sacrifice_cat')){ //çŒ«ç¥ã®æ­»äº¡å‡¦ç†
 	    $USERS->Kill($user->user_no, 'SACRIFICE');
 	  }
-	  elseif($user->IsRole('revive_fox')){ //Àç¸Ñ¤ÎÇ½ÎÏ¼º¸ú½èÍı
+	  elseif($user->IsRole('revive_fox')){ //ä»™ç‹ã®èƒ½åŠ›å¤±åŠ¹å‡¦ç†
 	    $user->LostAbility();
 	  }
 	}
@@ -2638,34 +2630,34 @@ function AggregateVoteNight(){
     }
   }
 
-  //-- Øá°Í¥ì¥¤¥ä¡¼ --//
+  //-- æ†‘ä¾ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
   //PrintData($possessed_target_list, 'Target [possessed_wolf]');
   if($ROOM->date > 1){
-    //Øá°ÍÇ½ÎÏ¼Ô¤Î½èÍı
-    $possessed_do_stack = array(); //Í­¸úØá°Í¾ğÊó¥ê¥¹¥È (»àË´È½Äê¤ÈÌñ¿À¥ê¥»¥Ã¥ÈÈ½Äê)
+    //æ†‘ä¾èƒ½åŠ›è€…ã®å‡¦ç†
+    $possessed_do_stack = array(); //æœ‰åŠ¹æ†‘ä¾æƒ…å ±ãƒªã‚¹ãƒˆ (æ­»äº¡åˆ¤å®šã¨å„ç¥ãƒªã‚»ãƒƒãƒˆåˆ¤å®š)
     foreach($vote_data['POSSESSED_DO'] as $uname => $target_uname){
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true) || $user->revive_flag) continue; //Ä¾Á°¤Ë»à¤ó¤Ç¤¤¤¿¤éÌµ¸ú (ÁÉÀ¸¤Ç¤âÌµ¸ú)
+      if($user->IsDead(true) || $user->revive_flag) continue; //ç›´å‰ã«æ­»ã‚“ã§ã„ãŸã‚‰ç„¡åŠ¹ (è˜‡ç”Ÿã§ã‚‚ç„¡åŠ¹)
 
-      if(in_array($user->uname, $anti_voodoo_target_list)){ //Ìñ¿À¤Î¸î±ÒÈ½Äê
+      if(in_array($user->uname, $anti_voodoo_target_list)){ //å„ç¥ã®è­·è¡›åˆ¤å®š
 	$anti_voodoo_success_list[$user->uname] = true;
 	continue;
       }
       $possessed_do_stack[$uname] = $target_uname;
     }
 
-    foreach($possessed_do_stack as $uname => $target_uname){ //Øá°ÍÇ½ÎÏ¼Ô¤Î½èÍı
+    foreach($possessed_do_stack as $uname => $target_uname){ //æ†‘ä¾èƒ½åŠ›è€…ã®å‡¦ç†
       $user = $USERS->ByUname($uname);
 
-      //¼ºÇÔÈ½Äê1¡§Øá°ÍÀè¤¬¶¥¹ç / Ã¯¤«¤¬Øá°Í¤·¤Æ¤ë
+      //å¤±æ•—åˆ¤å®š1ï¼šæ†‘ä¾å…ˆãŒç«¶åˆ / èª°ã‹ãŒæ†‘ä¾ã—ã¦ã‚‹
       if(count(array_keys($possessed_do_stack, $target_uname)) > 1 ||
 	 ! $USERS->ByRealUname($target_uname)->IsSame($target_uname)) continue;
 
       $target = $USERS->ByUname($target_uname);
-      //¼ºÇÔÈ½Äê2¡§ÁÉÀ¸¤µ¤ì¤Æ¤¤¤ë / ØáÏµ¤ÎØá°ÍÀ©¸ÂÌò¿¦¤Ç¤¢¤ë
+      //å¤±æ•—åˆ¤å®š2ï¼šè˜‡ç”Ÿã•ã‚Œã¦ã„ã‚‹ / æ†‘ç‹¼ã®æ†‘ä¾åˆ¶é™å½¹è·ã§ã‚ã‚‹
       if($target->revive_flag || $target->IsPossessedLimited()) continue;
 
-      //¼ºÇÔÈ½Äê3¡§¿ÍÏµ ¢Î ÍÅ¸Ñ ¤ÈÎø¿Í¿Ø±Ä¤Ë¤ÏØá°Í¤Ç¤­¤Ê¤¤
+      //å¤±æ•—åˆ¤å®š3ï¼šäººç‹¼ â‡” å¦–ç‹ ã¨æ‹äººé™£å–¶ã«ã¯æ†‘ä¾ã§ããªã„
       switch($target->GetCamp(true)){
       case 'wolf':
 	if($user->IsRole('possessed_fox')) continue 2;
@@ -2683,50 +2675,50 @@ function AggregateVoteNight(){
     //PrintData($possessed_target_list, 'Target [Possessed]');
   }
 
-  //-- Øá°Í½èÍı --//
-  $possessed_date = $ROOM->date + 1; //Øá°Í¤¹¤ëÆü¤ò¼èÆÀ
+  //-- æ†‘ä¾å‡¦ç† --//
+  $possessed_date = $ROOM->date + 1; //æ†‘ä¾ã™ã‚‹æ—¥ã‚’å–å¾—
   foreach($possessed_target_list as $uname => $target_uname){
-    $user         = $USERS->ByUname($uname); //Øá°Í¼Ô
-    $target       = $USERS->ByUname($target_uname); //Øá°ÍÍ½ÄêÀè
-    $virtual_user = $USERS->ByVirtual($user->user_no); //¸½ºß¤ÎØá°ÍÀè
-    $array = array(); //°ì»ş½èÍı
+    $user         = $USERS->ByUname($uname); //æ†‘ä¾è€…
+    $target       = $USERS->ByUname($target_uname); //æ†‘ä¾äºˆå®šå…ˆ
+    $virtual_user = $USERS->ByVirtual($user->user_no); //ç¾åœ¨ã®æ†‘ä¾å…ˆ
+    $array = array(); //ä¸€æ™‚å‡¦ç†
 
-    if($user->IsDead(true)){ //Øá°Í¼Ô»àË´
-      $target->dead_flag = false; //»àË´¥Õ¥é¥°¤ò¥ê¥»¥Ã¥È
+    if($user->IsDead(true)){ //æ†‘ä¾è€…æ­»äº¡
+      $target->dead_flag = false; //æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
       $USERS->Kill($target->user_no, 'WOLF_KILLED');
-      if($target->revive_flag) $target->Update('live', 'live'); //ÁÉÀ¸ÂĞ±ş
+      if($target->revive_flag) $target->Update('live', 'live'); //è˜‡ç”Ÿå¯¾å¿œ
     }
-    elseif($user->possessed_reset){ //Øá°Í¥ê¥»¥Ã¥È
+    elseif($user->possessed_reset){ //æ†‘ä¾ãƒªã‚»ãƒƒãƒˆ
       if(isset($target->user_no)){
-	$target->dead_flag = false; //»àË´¥Õ¥é¥°¤ò¥ê¥»¥Ã¥È
+	$target->dead_flag = false; //æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	$USERS->Kill($target->user_no, 'WOLF_KILLED');
-	if($target->revive_flag) $target->Update('live', 'live'); //ÁÉÀ¸ÂĞ±ş
+	if($target->revive_flag) $target->Update('live', 'live'); //è˜‡ç”Ÿå¯¾å¿œ
       }
 
-      if($user != $virtual_user){ //Øá°ÍÃæ¤Ê¤é¸µ¤ÎÂÎ¤ËÌá¤µ¤ì¤ë
-	//Øá°ÍÀè¤Î¥ê¥»¥Ã¥È½èÍı
+      if($user != $virtual_user){ //æ†‘ä¾ä¸­ãªã‚‰å…ƒã®ä½“ã«æˆ»ã•ã‚Œã‚‹
+	//æ†‘ä¾å…ˆã®ãƒªã‚»ãƒƒãƒˆå‡¦ç†
 	$virtual_user->ReturnPossessed('possessed', $possessed_date);
 	$virtual_user->SaveLastWords();
 	$ROOM->SystemMessage($virtual_user->handle_name, 'POSSESSED_RESET');
 
-	//¸«¤«¤±¾å¤ÎÁÉÀ¸½èÍı
+	//è¦‹ã‹ã‘ä¸Šã®è˜‡ç”Ÿå‡¦ç†
 	$user->ReturnPossessed('possessed_target', $possessed_date);
 	$user->SaveLastWords($virtual_user->handle_name);
 	$ROOM->SystemMessage($user->handle_name, 'REVIVE_SUCCESS');
       }
       continue;
     }
-    elseif($user->possessed_cancel || $target->revive_flag){ //Øá°Í¼ºÇÔ
-      $target->dead_flag = false; //»àË´¥Õ¥é¥°¤ò¥ê¥»¥Ã¥È
+    elseif($user->possessed_cancel || $target->revive_flag){ //æ†‘ä¾å¤±æ•—
+      $target->dead_flag = false; //æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
       $USERS->Kill($target->user_no, 'WOLF_KILLED');
-      if($target->revive_flag) $target->Update('live', 'live'); //ÁÉÀ¸ÂĞ±ş
+      if($target->revive_flag) $target->Update('live', 'live'); //è˜‡ç”Ÿå¯¾å¿œ
       continue;
     }
-    else{ //Øá°ÍÀ®¸ù
+    else{ //æ†‘ä¾æˆåŠŸ
       if($user->IsRole('possessed_wolf')){
-	$target->dead_flag = false; //»àË´¥Õ¥é¥°¤ò¥ê¥»¥Ã¥È
-	$USERS->Kill($target->user_no, 'POSSESSED_TARGETED'); //Øá°ÍÀè¤Î»àË´½èÍı
-	//Øá°ÍÀè¤¬Ã¯¤«¤ËØá°Í¤·¤Æ¤¤¤ë¥±¡¼¥¹¤¬¤¢¤ë¤Î¤Ç²¾ÁÛ¥æ¡¼¥¶¤Ç¾å½ñ¤­¤¹¤ë
+	$target->dead_flag = false; //æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
+	$USERS->Kill($target->user_no, 'POSSESSED_TARGETED'); //æ†‘ä¾å…ˆã®æ­»äº¡å‡¦ç†
+	//æ†‘ä¾å…ˆãŒèª°ã‹ã«æ†‘ä¾ã—ã¦ã„ã‚‹ã‚±ãƒ¼ã‚¹ãŒã‚ã‚‹ã®ã§ä»®æƒ³ãƒ¦ãƒ¼ã‚¶ã§ä¸Šæ›¸ãã™ã‚‹
 	$target = $USERS->ByVirtual($target->user_no);
       }
       else{
@@ -2735,7 +2727,7 @@ function AggregateVoteNight(){
       }
       $target->AddRole("possessed[{$possessed_date}-{$user->user_no}]");
 
-      //Øá°Í½èÍı
+      //æ†‘ä¾å‡¦ç†
       $user->AddRole("possessed_target[{$possessed_date}-{$target->user_no}]");
       $ROOM->SystemMessage($virtual_user->handle_name, 'POSSESSED');
       $user->SaveLastWords($virtual_user->handle_name);
@@ -2749,22 +2741,22 @@ function AggregateVoteNight(){
   }
 
   //PrintData($voodoo_killer_success_list, 'SUCCESS [voodoo_killer]');
-  foreach($voodoo_killer_success_list as $target_uname => $flag){ //±¢ÍÛ»Õ¤Î²ò¼ö·ë²Ì½èÍı
+  foreach($voodoo_killer_success_list as $target_uname => $flag){ //é™°é™½å¸«ã®è§£å‘ªçµæœå‡¦ç†
     $str = "\t" . $USERS->GetHandleName($target_uname, true);
-    foreach(array_keys($voodoo_killer_target_list, $target_uname) as $uname){ //À®¸ù¼Ô¤ò¸¡½Ğ
+    foreach(array_keys($voodoo_killer_target_list, $target_uname) as $uname){ //æˆåŠŸè€…ã‚’æ¤œå‡º
       $ROOM->SystemMessage($USERS->GetHandleName($uname) . $str, 'VOODOO_KILLER_SUCCESS');
     }
   }
 
   //PrintData($anti_voodoo_success_list, 'SUCCESS [anti_voodoo]');
-  foreach($anti_voodoo_success_list as $target_uname => $flag){ //Ìñ¿À¤ÎÌñÊ§¤¤·ë²Ì½èÍı
+  foreach($anti_voodoo_success_list as $target_uname => $flag){ //å„ç¥ã®å„æ‰•ã„çµæœå‡¦ç†
     $str = "\t" . $USERS->GetHandleName($target_uname, true);
-    foreach(array_keys($anti_voodoo_target_list, $target_uname) as $uname){ //À®¸ù¼Ô¤ò¸¡½Ğ
+    foreach(array_keys($anti_voodoo_target_list, $target_uname) as $uname){ //æˆåŠŸè€…ã‚’æ¤œå‡º
       $ROOM->SystemMessage($USERS->GetHandleName($uname) . $str, 'ANTI_VOODOO_SUCCESS');
     }
   }
 
-  if($ROOM->date == 3){ //³ĞÀÃ¼Ô¡¦Ì´¸ìÉô¤Î¥³¥Ô¡¼½èÍı
+  if($ROOM->date == 3){ //è¦šé†’è€…ãƒ»å¤¢èªéƒ¨ã®ã‚³ãƒ”ãƒ¼å‡¦ç†
     $soul_mania_replace_list = array(
       'human' => 'executor',
       'mage' => 'soul_mage',
@@ -2819,7 +2811,7 @@ function AggregateVoteNight(){
       if($user->IsDummyBoy() || ! $user->IsRole('soul_mania', 'dummy_mania')) continue;
       $target_id = array_shift($user->GetPartner($user->main_role));
       $target = $USERS->ById($target_id);
-      $target_role = DistinguishRoleGroup($target->main_role);
+      $target_role = $target->DistinguishRoleGroup();
       //PrintData($target_role, $user->uname);
       if($user->IsRole('soul_mania')){
 	$base_role = 'soul_mania[' . $target_id . ']';
@@ -2840,10 +2832,10 @@ function AggregateVoteNight(){
     }
   }
 
-  LoversFollowed(); //Îø¿Í¸åÄÉ¤¤½èÍı
-  InsertMediumMessage(); //Öà½÷¤Î¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸
+  LoversFollowed(); //æ‹äººå¾Œè¿½ã„å‡¦ç†
+  InsertMediumMessage(); //å·«å¥³ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
-  //-- »Êº×·Ï¥ì¥¤¥ä¡¼ --//
+  //-- å¸ç¥­ç³»ãƒ¬ã‚¤ãƒ¤ãƒ¼ --//
   $priest_flag        = false;
   $bishop_priest_flag = false;
   $dowser_priest_flag = false;
@@ -2852,7 +2844,7 @@ function AggregateVoteNight(){
   $border_priest_list = array();
   $revive_priest_list = array();
   $live_count         = array();
-  foreach($USERS->rows as $user){ //»Êº×·Ï¤Î¾ğÊó¼ı½¸
+  foreach($USERS->rows as $user){ //å¸ç¥­ç³»ã®æƒ…å ±åé›†
     if(! $user->IsDummyBoy()){
       $priest_flag        |= $user->IsRole('priest');
       $bishop_priest_flag |= $user->IsRole('bishop_priest');
@@ -2863,7 +2855,7 @@ function AggregateVoteNight(){
       if($user->IsActive('revive_priest')) $revive_priest_list[] = $user;
     }
     if($user->IsDead(true)){
-      if($user->GetCamp() != 'human') $live_count['dead']++;
+      if($user->GetCamp(true) != 'human') $live_count['dead']++;
       continue;
     }
 
@@ -2882,7 +2874,7 @@ function AggregateVoteNight(){
   }
   //PrintData($live_count, 'LiveCount');
 
-  if($ROOM->date > 2 && ($ROOM->date % 2) == 1){ //»Êº×¡¦ÃµÃÎ»Õ¡¦Ì´»Êº×¤Î½èÍı
+  if($ROOM->date > 2 && ($ROOM->date % 2) == 1){ //å¸ç¥­ãƒ»æ¢çŸ¥å¸«ãƒ»å¤¢å¸ç¥­ã®å‡¦ç†
     if($priest_flag){
       $ROOM->SystemMessage((int)$live_count['human_side'], 'PRIEST_RESULT');
     }
@@ -2893,10 +2885,10 @@ function AggregateVoteNight(){
       $ROOM->SystemMessage((int)$live_count['dream'], 'DUMMY_PRIEST_RESULT');
     }
   }
-  if($bishop_priest_flag && $ROOM->date > 1 && ($ROOM->date % 2) == 0){ //»Ê¶µ¤Î½èÍı
+  if($bishop_priest_flag && $ROOM->date > 1 && ($ROOM->date % 2) == 0){ //å¸æ•™ã®å‡¦ç†
     $ROOM->SystemMessage((int)$live_count['dead'], 'BISHOP_PRIEST_RESULT');
   }
-  if(count($border_priest_list) > 0 && $ROOM->date > 1){ //¶­³¦»Õ¤Î½èÍı
+  if(count($border_priest_list) > 0 && $ROOM->date > 1){ //å¢ƒç•Œå¸«ã®å‡¦ç†
     foreach($border_priest_list as $user){
       $stack_count = 0;
       foreach($ROOM->vote as $uname => $stack){
@@ -2906,8 +2898,8 @@ function AggregateVoteNight(){
     }
   }
 
-  if($crisis_priest_flag || count($revive_priest_list) > 0){ //ÍÂ¸À¼Ô¡¢Å·¿Í¤Î½èÍı
-    //¡Ö¿Í³°¾¡ÍøÁ°Æü¡×È½Äê
+  if($crisis_priest_flag || count($revive_priest_list) > 0){ //é è¨€è€…ã€å¤©äººã®å‡¦ç†
+    //ã€Œäººå¤–å‹åˆ©å‰æ—¥ã€åˆ¤å®š
     $crisis_priest_result = '';
     if($live_count['total'] - $live_count['lovers'] <= 2){
       $crisis_priest_result = 'lovers';
@@ -2921,11 +2913,11 @@ function AggregateVoteNight(){
 	$crisis_priest_result = 'wolf';
     }
 
-    if($crisis_priest_flag && $crisis_priest_result != ''){ //ÍÂ¸À¼Ô¤Î½èÍı
+    if($crisis_priest_flag && $crisis_priest_result != ''){ //é è¨€è€…ã®å‡¦ç†
       $ROOM->SystemMessage($crisis_priest_result, 'CRISIS_PRIEST_RESULT');
     }
 
-    //Å·¿Í¤ÎÁÉÀ¸È½Äê½èÍı
+    //å¤©äººã®è˜‡ç”Ÿåˆ¤å®šå‡¦ç†
     if(! $ROOM->IsOpenCast() && count($revive_priest_list) > 0 &&
        ($ROOM->date == 4 || $crisis_priest_result != '' || $live_count['wolf'] == 1 ||
 	count($USERS->rows) >= $live_count['total'] * 2)){
@@ -2941,20 +2933,10 @@ function AggregateVoteNight(){
     }
   }
 
-  return $ROOM->test_mode ? true : $ROOM->ChangeDate();
+  return $ROOM->test_mode || $ROOM->ChangeDate() || $ROOM->SkipDay();
 }
 
-//Ìò¿¦¤Î½êÂ°¥°¥ë¡¼¥×¤òÈ½ÊÌ¤¹¤ë
-function DistinguishRoleGroup($role){
-  global $ROLE_DATA;
-
-  foreach($ROLE_DATA->main_role_group_list as $key => $value){
-    if(strpos($role, $key) !== false) return $value;
-  }
-  return 'human';
-}
-
-//¥é¥ó¥À¥à¥á¥Ã¥»¡¼¥¸¤òÁŞÆş¤¹¤ë
+//ãƒ©ãƒ³ãƒ€ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æŒ¿å…¥ã™ã‚‹
 function InsertRandomMessage(){
   global $MESSAGE, $GAME_CONF, $ROOM;
 

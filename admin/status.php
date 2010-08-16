@@ -3,8 +3,8 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF');
 $INIT_CONF->LoadFile('game_vote_functions');
-OutputHTMLHeader('Åý·×');
-$DB_CONF->Connect(); //DB ÀÜÂ³
+OutputHTMLHeader('çµ±è¨ˆ');
+$DB_CONF->Connect(); //DB æŽ¥ç¶š
 
 FetchStatus();
 OutputHTMLFooter(true);

@@ -2,32 +2,32 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT  . '/include/init.php');
 
-$INIT_CONF->LoadRequest('RequestSrcUpload'); //░·┐ЇдЄе╗е├е╚
-$config =& new SourceUploadConfig(); //└▀─ъдЄеэб╝е╔
+$INIT_CONF->LoadRequest('RequestSrcUpload'); //х╝ХцХ░уВТуВ╗уГГуГИ
+$config =& new SourceUploadConfig(); //шинхоЪуВТуГнуГ╝уГЙ
 
 if($config->disable){
-  OutputActionResult('е╒ебедеыеве├е╫еэб╝е╔', '╕╜║▀еве├е╫еэб╝е╔д╧─ф╗▀д╖д╞ддд▐д╣');
+  OutputActionResult('уГХуВбуВдуГлуВвуГГуГЧуГнуГ╝уГЙ', 'чП╛хЬиуВвуГГуГЧуГнуГ╝уГЙуБпхБЬцнвуБЧуБжуБДуБ╛уБЩ');
 }
 
-//░·┐Їд╬еиещб╝е┴езе├еп
+//х╝ХцХ░уБоуВиуГйуГ╝уГБуВзуГГуВп
 foreach($RQ_ARGS as $key => $value){
   $label = $config->form_list[$key]['label'];
   $size  = $config->form_list[$key]['size'];
 
-  //╠д╞■╬╧е┴езе├еп
-  if($value == '') OutputUploadResult('<span>' . $label . '</span> дм╠д╞■╬╧д╟д╣бг');
+  //цЬкхЕехКЫуГБуВзуГГуВп
+  if($value == '') OutputUploadResult('<span>' . $label . '</span> уБМцЬкхЕехКЫуБзуБЩуАВ');
 
-  //╩╕╗·╬є─╣е┴езе├еп
+  //цЦЗхнЧхИЧщХ╖уГБуВзуГГуВп
   if(strlen($value) > $size){
-    OutputUploadResult('<span>' . $label . '</span> д╧ ' .
-		       '<span>' . $size . '</span> ╩╕╗·░╩▓╝д╦д╖д╞дпд└д╡ддбг');
+    OutputUploadResult('<span>' . $label . '</span> уБп ' .
+		       '<span>' . $size . '</span> цЦЗхнЧф╗еф╕ЛуБлуБЧуБжуБПуБауБХуБДуАВ');
   }
 }
 
-//е╤е╣еяб╝е╔д╬е┴езе├еп
-if($RQ_ARGS->password != $config->password) OutputUploadResult('е╤е╣еяб╝е╔╟з╛┌еиещб╝бг');
+//уГСуВ╣уГпуГ╝уГЙуБоуГБуВзуГГуВп
+if($RQ_ARGS->password != $config->password) OutputUploadResult('уГСуВ╣уГпуГ╝уГЙшкНши╝уВиуГйуГ╝уАВ');
 
-//е╒ебедеыд╬╝я╬рд╬е┴езе├еп
+//уГХуВбуВдуГлуБочиощбЮуБоуГБуВзуГГуВп
 //PrintData($_FILES['file']);
 $file_name = strtolower(trim($_FILES['file']['name']));
 $file_type = $_FILES['file']['type'];
@@ -35,38 +35,38 @@ if(! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', 
       preg_match('/^.*\.(zip|lzh)$/', $file_name))){
   PrintData($_FILES['file']);
   OutputUploadResult('<span>' . $file_name . '</span> : <span>' . $file_type . '</span><br>'."\n".
-		     'zip/lzh ░╩│░д╬е╒ебедеыд╧еве├е╫еэб╝е╔д╟днд▐д╗дєбг');
+		     'zip/lzh ф╗ехдЦуБоуГХуВбуВдуГлуБпуВвуГГуГЧуГнуГ╝уГЙуБзуБНуБ╛уБЫуВУуАВ');
 }
 
-//е╒ебедеые╡еде║д╬е┴езе├еп
+//уГХуВбуВдуГлуВ╡уВдуВ║уБоуГБуВзуГГуВп
 $file_size = $_FILES['file']['size'];
 if($file_size == 0 || $file_size > $config->max_size){
-  OutputUploadResult('е╒ебедеые╡еде║д╧ <span>' . $config->max_size . 'byte</span> д▐д╟бг');
+  OutputUploadResult('уГХуВбуВдуГлуВ╡уВдуВ║уБп <span>' . $config->max_size . 'byte</span> уБ╛уБзуАВ');
 }
 
-//е╒ебедеы╚╓╣цд╬╝ш╞└
+//уГХуВбуВдуГлчХкхП╖уБохПЦх╛Ч
 $number = (int)file_get_contents('file/number.txt');
-if(! ($io = fopen('file/number.txt', 'wb+'))){ //е╒ебедеыекб╝е╫еє
-  OutputUploadResult('е╒ебедеыд╬ IO еиещб╝д╟д╣бг<br>' .
-		     '╗■┤╓дЄдкддд╞длдщеве├е╫еэб╝е╔д╖д╩дкд╖д╞дпд└д╡ддбг');
+if(! ($io = fopen('file/number.txt', 'wb+'))){ //уГХуВбуВдуГлуВкуГ╝уГЧуГ│
+  OutputUploadResult('уГХуВбуВдуГлуБо IO уВиуГйуГ╝уБзуБЩуАВ<br>' .
+		     'цЩВщЦУуВТуБКуБДуБжуБЛуВЙуВвуГГуГЧуГнуГ╝уГЙуБЧуБкуБКуБЧуБжуБПуБауБХуБДуАВ');
 }
-stream_set_write_buffer($io, 0); //е╨е├е╒ебдЄ 0 д╦╗╪─ъ (╟╙┬╛└й╕цд╬╩▌╛┌)
+stream_set_write_buffer($io, 0); //уГРуГГуГХуВбуВТ 0 уБлцМЗхоЪ (цОТф╗ЦхИ╢х╛буБоф┐Эши╝)
 
-if(! flock($io, LOCK_EX)){ //е╒ебедеыд╬еэе├еп
+if(! flock($io, LOCK_EX)){ //уГХуВбуВдуГлуБоуГнуГГуВп
   fclose($io);
-  OutputUploadResult('е╒ебедеыд╬еэе├епеиещб╝д╟д╣бг<br>' .
-		     '╗■┤╓дЄдкддд╞длдщеве├е╫еэб╝е╔д╖д╩дкд╖д╞дпд└д╡ддбг');
+  OutputUploadResult('уГХуВбуВдуГлуБоуГнуГГуВпуВиуГйуГ╝уБзуБЩуАВ<br>' .
+		     'цЩВщЦУуВТуБКуБДуБжуБЛуВЙуВвуГГуГЧуГнуГ╝уГЙуБЧуБкуБКуБЧуБжуБПуБауБХуБДуАВ');
 }
-rewind($io); //е╒ебедеые▌едеєе┐дЄ└ш╞мд╦░▄╞░
-fwrite($io, $number + 1); //едеєепеъесеєе╚д╖д╞╜ёдн╣■д▀
+rewind($io); //уГХуВбуВдуГлуГЭуВдуГ│уВ┐уВТхЕИщануБлчз╗хЛХ
+fwrite($io, $number + 1); //уВдуГ│уВпуГкуГбуГ│уГИуБЧуБжцЫ╕уБНш╛╝уБ┐
 
-flock($io, LOCK_UN); //еэе├еп▓Є╜№
-fclose($io); //е╒ебедеыд╬епеэб╝е║
+flock($io, LOCK_UN); //уГнуГГуВпшзгщЩд
+fclose($io); //уГХуВбуВдуГлуБоуВпуГнуГ╝уВ║
 
-//HTMLе╜б╝е╣дЄ╜╨╬╧
-$number = sprintf("%04d", $number); //╖х┬╖ди
-$ext    = substr($file_name, -3); //│╚─е╗╥
-$time   = TZDate('Y/m/d (D) H:i:s', TZTime()); //╞№╗■
+//HTMLуВ╜уГ╝уВ╣уВТхЗ║хКЫ
+$number = sprintf("%04d", $number); //цбБцПГуБИ
+$ext    = substr($file_name, -3); //цЛбх╝╡хнР
+$time   = TZDate('Y/m/d (D) H:i:s', TZTime()); //цЧецЩВ
 if($file_size > 1024 * 1024) // Mbyte
   $file_size = sprintf('%.2f', $file_size / (1024 * 1024)) . ' Mbyte';
 elseif($file_size > 1024) // Kbyte
@@ -84,37 +84,37 @@ $html = <<<EOF
 
 EOF;
 
-if(! ($io = fopen('html/' . $number . '.html', 'wb+'))){ //е╒ебедеыекб╝е╫еє
-  OutputUploadResult('е╒ебедеыд╬ IO еиещб╝д╟д╣бг<br>' .
-		     '╗■┤╓дЄдкддд╞длдщеве├е╫еэб╝е╔д╖д╩дкд╖д╞дпд└д╡ддбг');
+if(! ($io = fopen('html/' . $number . '.html', 'wb+'))){ //уГХуВбуВдуГлуВкуГ╝уГЧуГ│
+  OutputUploadResult('уГХуВбуВдуГлуБо IO уВиуГйуГ╝уБзуБЩуАВ<br>' .
+		     'цЩВщЦУуВТуБКуБДуБжуБЛуВЙуВвуГГуГЧуГнуГ╝уГЙуБЧуБкуБКуБЧуБжуБПуБауБХуБДуАВ');
 }
-stream_set_write_buffer($io, 0); //е╨е├е╒ебдЄ 0 д╦╗╪─ъ (╟╙┬╛└й╕цд╬╩▌╛┌)
+stream_set_write_buffer($io, 0); //уГРуГГуГХуВбуВТ 0 уБлцМЗхоЪ (цОТф╗ЦхИ╢х╛буБоф┐Эши╝)
 
-if(! flock($io, LOCK_EX)){ //е╒ебедеыд╬еэе├еп
+if(! flock($io, LOCK_EX)){ //уГХуВбуВдуГлуБоуГнуГГуВп
   fclose($io);
-  OutputUploadResult('е╒ебедеыд╬еэе├епеиещб╝д╟д╣бг<br>' .
-		     '╗■┤╓дЄдкддд╞длдщеве├е╫еэб╝е╔д╖д╩дкд╖д╞дпд└д╡ддбг');
+  OutputUploadResult('уГХуВбуВдуГлуБоуГнуГГуВпуВиуГйуГ╝уБзуБЩуАВ<br>' .
+		     'цЩВщЦУуВТуБКуБДуБжуБЛуВЙуВвуГГуГЧуГнуГ╝уГЙуБЧуБкуБКуБЧуБжуБПуБауБХуБДуАВ');
 }
-rewind($io); //е╒ебедеые▌едеєе┐дЄ└ш╞мд╦░▄╞░
-fwrite($io, $html); //╜ёдн╣■д▀
+rewind($io); //уГХуВбуВдуГлуГЭуВдуГ│уВ┐уВТхЕИщануБлчз╗хЛХ
+fwrite($io, $html); //цЫ╕уБНш╛╝уБ┐
 
-flock($io, LOCK_UN); //еэе├еп▓Є╜№
-fclose($io); //е╒ебедеыд╬епеэб╝е║
+flock($io, LOCK_UN); //уГнуГГуВпшзгщЩд
+fclose($io); //уГХуВбуВдуГлуБоуВпуГнуГ╝уВ║
 
-//е╒ебедеыд╬е│е╘б╝
+//уГХуВбуВдуГлуБоуВ│уГФуГ╝
 if(move_uploaded_file($_FILES['file']['tmp_name'], 'file/' . $number . '.' . $ext)){
-  OutputUploadResult('е╒ебедеыд╬еве├е╫еэб╝е╔д╦└о╕∙д╖д▐д╖д┐бг');
+  OutputUploadResult('уГХуВбуВдуГлуБоуВвуГГуГЧуГнуГ╝уГЙуБлцИРхКЯуБЧуБ╛уБЧуБЯуАВ');
 }
 else{
-  OutputUploadResult('е╒ебедеыд╬е│е╘б╝╝║╟╘бг<br>' .
-		     '╗■┤╓дЄдкддд╞длдщеве├е╫еэб╝е╔д╖д╩дкд╖д╞дпд└д╡ддбг');
+  OutputUploadResult('уГХуВбуВдуГлуБоуВ│уГФуГ╝хд▒цХЧуАВ<br>' .
+		     'цЩВщЦУуВТуБКуБДуБжуБЛуВЙуВвуГГуГЧуГнуГ╝уГЙуБЧуБкуБКуБЧуБжуБПуБауБХуБДуАВ');
 }
 
-// ┤╪┐Ї //
-//╖ы▓╠╜╨╬╧
+// щЦвцХ░ //
+//ч╡РцЮЬхЗ║хКЫ
 function OutputUploadResult($body){
-  OutputHTMLHeader('е╒ебедеыеве├е╫еэб╝е╔╜ш═¤', 'src');
+  OutputHTMLHeader('уГХуВбуВдуГлуВвуГГуГЧуГнуГ╝уГЙхЗжчРЖ', 'src');
   echo '</head><body>'."\n" . $body . '<br><br>'."\n" .
-    '<a href="./">вл╠сды</a>'."\n";
+    '<a href="./">тЖРцИ╗уВЛ</a>'."\n";
   OutputHTMLFooter(true);
 }

@@ -1,397 +1,397 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA', 'ROOM_IMG', 'ROLE_IMG');
-OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [�롼��]', 'rule');
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [ルール]', 'rule');
 ?>
 </head>
 <body>
-<a href="./">�����</a><br>
+<a href="./">←戻る</a><br>
 <img src="img/rule_title.jpg">
 
 <hr>
-<h1>�㥲����˻��ä����ǽ��פʤ��ȡ�</h1>
-<span class="worning">�֥�����Υץ쥤���ƤˤĤ��Ƥ��Υ�����ʳ��ξ����ä��ΤϤ��Ƥ�����������<br></span>
-<span class="worning2">������äƤ��ޤ��ȥ����ब���⤷�����ʤ��ʤ�ޤ���<br></span>
-<span class="worning2">�ä˼�ʬ����������Ȥ��ä������������褦�ʤ��Ȥ����Фˤ��ʤ��Ǥ��������� <br></span>
+<h1>＜ゲームに参加する上で重要なこと＞</h1>
+<span class="worning">「ゲームのプレイ内容についてこのゲーム以外の場所で話すのはやめてください。」<br></span>
+<span class="worning2">これをやってしまうとゲームがおもしろくなくなります。<br></span>
+<span class="worning2">特に自分が死んだからといって役割を公開するようなことは絶対にしないでください。 <br></span>
 <hr>
 
-<h1>�����Ͽ�ϵ�ʤ�䡩�פδ��ܥ롼��ˤĤ��ơ�</h1>
-<span class="caption">[���������Ū]</span>
+<h1>＜「汝は人狼なりや？」の基本ルールについて＞</h1>
+<span class="caption">[ゲームの目的]</span>
 <div class="info">
-������¼�ǿ�ϵ��¼�ν��ͤ�ʶ����ߡ�������¼�ͤ򽱤äƤ���Ȥ�����<br>
-�����ä�¼�ͤ����Ͻ����˽��ޤä��ä��礤�򤷡������˰�͡���ϵ���Ȼפ���ͤ򡡽跺���뤳�Ȥˤ�����<br>
-��¼�ͤ�¼���뤿��ˡ���ϵ��¼��ϵ�Τ�Τˤ��뤿��ˡ��ɤ����餫��äƤ����ŸѤϤ����ͻҤ򤽤ФǻǤäƤ��ޤ���<br>
-�������ƥ��塼�ԥåɤˤ�äƷ�Ф줿���ͤ����ϡ�������Ĥ����ȤФ���ͤ��Ƥ��ޤ���<br>
-�������˳�����Ƥ�줿�ץ쥤�䡼ã���ηä�ʤäƼ�ʬ��ͭ���ˤʤ�褦�˽跺���ä�ʤ�Ƥ����ޤ���<br>
+　ある村で人狼が村の住人に紛れ込み、夜な夜な村人を襲っているという。<br>
+　困った村人たちは集会所に集まって話し合いをし、一日に一人、人狼だと思われる人を　処刑することにした。<br>
+　村人は村を守るために、人狼は村を狼のものにするために、どこからかやってきた妖狐はその様子をそばで伺っています。<br>
+　そしてキューピッドによって結ばれた恋人たちは、イチャつくことばかり考えています。<br>
+　各役割に割り当てられたプレイヤー達は知恵を絞って自分の有利になるように処刑の話を進めていきます。<br>
 </div>
 
-<span class="caption">[�������]</span><br>
+<span class="caption">[勝利条件]</span><br>
 <ul>
-  <li>¼�ͤξ�������ϵ���Ÿѡ����ͤ����Ǥ����뤳��</li>
-  <li><span class="wolf">��ϵ</span>�ξ������Ÿѡ����ͤ򻦤���¼�ͤοͿ����ϵ�οͿ��ʲ��ˤ��뤳��</li>
-  <li><span class="fox">�Ÿ�</span>�ξ��������ͤ����Ǥ�������ϵ�����Ǥ����Ȥ��ޤ���¼�ͤοͿ�����ϵ�οͿ��ʲ��ˤʤä����������Ƥ��뤳��</li>
-  <li><span class="lovers">����</span>�ξ�������ϵ�����Ǥ����Ȥ��ޤ���¼�ͤοͿ�����ϵ�οͿ��ʲ��ˤʤä����ˡ����ͤ������Ƥ��뤳��</li>
+  <li>村人の勝利　人狼、妖狐、恋人を全滅させること</li>
+  <li><span class="wolf">人狼</span>の勝利　妖狐、恋人を殺し、村人の人数を人狼の人数以下にすること</li>
+  <li><span class="fox">妖狐</span>の勝利　恋人を全滅させ、人狼が全滅したときまたは村人の人数が人狼の人数以下になった時に生きていること</li>
+  <li><span class="lovers">恋人</span>の勝利　人狼が全滅したときまたは村人の人数が人狼の人数以下になった時に、恋人が生きていること</li>
 </ul>
 <div class="info">
-ɬ�����⤢�ʤ��������Ĥ뤳�Ȥ����Υ��������Ū�ǤϤ���ޤ���<br>
-��ʬ�����ˤ��Ƥ⤢�ʤ��Υ����ब���Ƥо����Ȥʤ�ޤ���<br>
+必ずしもあなたが生き残ることがこのゲームの目的ではありません。<br>
+自分を犠牲にしてもあなたのチームが勝てば勝利となります。<br>
 </div>
 
-<span class="caption">[¼�ͤο͸����]</span><br>
+<span class="caption">[村人の人口推移]</span><br>
 <div class="info">
-¼�ˤ��ü��ǽ�Ϥ���ä��ͤ䡢�ͤ��ΰۤʤ�ͤ���ޤ���<br>
-����ɽ�����ο͸��ο�ܤǤ� �� <a href="info/cast.php">�ܺ�</a>��
+村には特殊な能力を持った人や、考えの異なる人が居ます。<br>
+下の表がその人口の推移です → <a href="info/cast.php">詳細</a>。
 </div>
 <ul>
-    <li>¼��¦�ξ�����˾��ͤ�����¼�͡��ꤤ�ա���ǽ�ԡ����͡���ͭ��</li>
-    <li><span class="wolf">��ϵ</span>¦�ξ�����˾��ͤ�������ϵ������</li>
-    <li><span class="fox">�Ÿ�</span>¦�ξ�����˾��ͤ������Ÿ�</li>
-    <li><span class="lovers">����</span>¦�ξ�����˾��ͤ��������塼�ԥåɡ�����<br>
-    �ʥ��塼�ԥåɤϥ��ץ���������Τ��о줷�ޤ����ޤ������ͤϷ�Ǥ�򿦤Ȥʤ�ޤ���</li>
+    <li>村人側の勝利を望む人たち　村人、占い師、霊能者、狩人、共有者</li>
+    <li><span class="wolf">人狼</span>側の勝利を望む人たち　人狼、狂人</li>
+    <li><span class="fox">妖狐</span>側の勝利を望む人たち　妖狐</li>
+    <li><span class="lovers">恋人</span>側の勝利を望む人たち　キューピッド、恋人<br>
+    （キューピッドはオプション指定時のみ登場します。また、恋人は兼任役職となります）</li>
 </ul>
 
 <?php OutputCastTable(8, 22); ?>
 
-<span class="caption">[���Ҳ�]</span><br>
-<div class="info">���о줹�����ˤĤ��ƾܤ����������ޤ���</div>
+<span class="caption">[役割紹介]</span><br>
+<div class="info">　登場する役割について詳しく説明します。</div>
 
 <table class="role">
 <tr>
-	<th>���</th><th>--����������������--</th>
+	<th>役割</th><th>--　　　説明　　　--</th>
 </tr>
 
 <tr>
-	<td>¼��</td>
+	<td>村人</td>
 	<td>
-	<div class="info">�ü��ǽ�ϤϤ���ޤ��󡣤����������ʥ����ηä�ͦ����¼��ߤ����Ȥ��Ǥ���Ϥ��Ǥ���</div>
+	<div class="info">特殊な能力はありません。しかし、アナタの知恵と勇気で村を救うことができるはずです。</div>
 	</td>
 </tr>
 
 <tr>
-	<td class="wolf">��ϵ</td>
+	<td class="wolf">人狼</td>
 	<td>
-	<div class="info">��δ֤�¾�ο�ϵ�ȶ��Ϥ�¼�ͤҤȤ껦���Ǥ��ޤ���<br>
-	�ޤ�����ʬ�ʳ��ο�ϵ������ʤΤ��Τ뤳�Ȥ��Ǥ��ޤ���<br>
-	���ʤ��Ϥ��ζ��Ϥ��Ϥ�¼�ͤ򿩤������ΤǤ���<br>
-	��ϵ�����ˤ����狼��ʤ����ʤ��Ǳ�Υ��Ƥ��Ƥ���ä��뤳�Ȥ��Ǥ��ޤ���<br>
-	��ϵƱ�Τǻ������礦���ȤϤǤ��ޤ���<br></div>
+	<div class="info">夜の間に他の人狼と協力し村人ひとり殺害できます。<br>
+	また、自分以外の人狼がだれなのか知ることができます。<br>
+	あなたはその強力な力で村人を食い殺すのです。<br>
+	人狼だけにしかわからない遠吠えで遠く離れていても会話することができます。<br>
+	人狼同士で殺害し合うことはできません<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="mage">�ꤤ��</td>
+	<td class="mage">占い師</td>
 	<td>
-	<div class="info">��δ֤�¼�ͤҤȤ��ֿ͡פ���ϵ�פ��ꤤ����ī�ˤ��η�̤��Τ뤳�Ȥ��Ǥ��ޤ���<br>
-	���������Τϡֿ͡פ���ϵ�פ������Ǥ���<br>
-	���ͤ���ǽ�Ԥ���äƤ�ֿ͡פȤ���ɽ������ޤ���<br>
-	�ޤ����ŸѤ��ꤦ���ŸѤϻ��Ǥ��ޤ��ޤ����ꤤ�դ��ŸѤ�ŷŨ�Ǥ���<br>
-	�ŸѤ���ä������ꤤ��̤ϡֿ͡פȽФޤ���<br>
-	���ʤ���¼�ͤξ����򰮤äƤ��ޤ���<br></div>
+	<div class="info">夜の間に村人ひとりを「人」か「狼」か占い、翌朝にその結果を知ることができます。<br>
+	ただし解るのは「人」か「狼」かだけです。<br>
+	狂人や霊能者を占っても「人」としか表示されません。<br>
+	また、妖狐を占うと妖狐は死んでしまいます。占い師は妖狐の天敵です。<br>
+	妖狐を占った場合の占い結果は「人」と出ます。<br>
+	あなたが村人の勝利を握っています！<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="necromancer">��ǽ��</td>
+	<td class="necromancer">霊能者</td>
 	<td>
-	<div class="info">�����ܰʹߤˤ������ν跺�Ԥ��ֿ͡פ���ϵ�פ����Τ뤳�Ȥ��Ǥ��ޤ���<br>
-	��ǽ�ˤϰ��դλ��֤�ɬ�פǡ����η�̤��狼��Τ�������ī�ˤʤ�ޤ���<br>
-	��̣�Ǥ������ʤ������ϼ�����礭���׸����뤳�Ȥ��Բ�ǽ�ǤϤ���ޤ���<br></div>
+	<div class="info">２日目以降にその日の処刑者が「人」か「狼」かを知ることができます。<br>
+	霊能には一晩の時間が必要で、その結果がわかるのは翌日の朝になります。<br>
+	地味ですがあなたの努力次第で大きく貢献することも不可能ではありません。<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="wolf">����</td>
+	<td class="wolf">狂人</td>
 	<td>
-	<div class="info">��ϵ����Ҥ��Ƥ���ʹ֤ǡ���ϵ�ξ��������ʥ��ξ����Ȥʤ�ޤ���<br>
-	���������ʤ���¼�ͤΰ�ͤȿ������ޤ���<br>
-	���ʤ����ꤤ�դο���򤷤��ꡢ���ߤ��ýѤ�¼�ͤ���ˤ��Ȥ������ΤǤ���<br>
-	��ϵ������Ǥ���������Ƥ��¼�͡פ�ɽ������ޤ��� <br></div>
+	<div class="info">人狼を崇拝している人間で、人狼の勝利がアナタの勝利となります。<br>
+	しかしあなたは村人の一人と数えられます。<br>
+	あなたは占い師の振りをしたり、巧みな話術で村人を混乱におとしいれるのです。<br>
+	人狼チームですが、占われても「村人」と表示されます。 <br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="guard">����</td>
+	<td class="guard">狩人</td>
 	<td>
-	<div class="info">�����ܰʹߤ���δ֤�¼�ͤҤȤ����ꤷ��ϵ�λ��������뤳�Ȥ��Ǥ��ޤ���<br>
-	������ľ�ܿ�ϵ��������Ȼ�����Ƥ��ޤ��ޤ���<br>
-	��ϵ�Υ��������ɤ�ΤǤ���<br></div>
+	<div class="info">２日目以降に夜の間に村人ひとりを指定し人狼の殺害から護ることができます。<br>
+	しかし直接人狼に狙われると殺されてしまいます。<br>
+	人狼のココロを読むのです。<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="common">��ͭ��</td>
+	<td class="common">共有者</td>
 	<td>
-	<div class="info">���ʤ����Ի׵Ĥ�ǽ�ϤǤ⤦�ҤȤ�ζ�ͭ�Ԥ�����Ǥ��뤫���Τ뤳�Ȥ��Ǥ��ޤ���<br>
-	�ޤ�Υ��Ƥ��Ƥⶦͭ��Ʊ�Τǰջפ����̤򤹤뤳�Ȥ��Ǥ��ޤ���<br>
-	��ͭ�ԤȤ������Ȥ��ɽ���뤳�Ȥǳ��ο��Ѥ����䤹������¸���֤�¾����ٱʤ�ǽ�ϤǤ���<br>
-	���ʤ��ˤϿ���������֤�Ϳ����줿�ΤǤ���Ǻ�ߤʤ����� <br></div>
+	<div class="info">あなたは不思議な能力でもうひとりの共有者がだれであるかを知ることができます。<br>
+	また離れていても共有者同士で意思の疎通をすることができます。<br>
+	共有者ということを公表することで皆の信用を得やすく、生存期間が他に比べ永い能力です。<br>
+	あなたには推理する時間が与えられたのです。悩みなさい。 <br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="fox">�Ÿ�</td>
+	<td class="fox">妖狐</td>
 	<td>
-	<div class="info">���ʤ��Ͽ�ϵ�������Ƥ⻦����뤳�ȤϤ���ޤ���<br>
-	����������Ƥ��ޤ��Ȼ��Ǥ��ޤ��ޤ���<br>
-	¼�ͤ��٤�����ϵ���٤���¼���ŸѤΤ�Τˤ���ΤǤ���<br></div>
+	<div class="info">あなたは人狼に狙われても殺されることはありません。<br>
+	ただし占われてしまうと死んでしまいます。<br>
+	村人を騙し、人狼を騙し、村を妖狐のものにするのです。<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="poison">���Ǽ�</td>
+	<td class="poison">埋毒者</td>
 	<td>
-	<div class="info">���ʤ����Τ˾��̤��Ǥ�ή��Ƥ��ޤ���<br>
-	���ȤϹ��Τ�����ʤ�Ȥ⤢��ޤ��󤬡����η�դ˿��줿�ͤϻ�˻��ȸ����Ƥ��ޤ���<br>
-	���ʤ����跺������¼���椫�������˰��ƻϢ��ˤ��ޤ���<br>
-	��ϵ���齱��줿���Ͽ�ϵ���������˰��ƻϢ��ˤ��ޤ���<br>
-	���ʤ������ͤǡ��ǰ��οͤ���Ω���줿���ϸ���ɤäƼ�������ƻϢ��ϽФޤ���<br>
-	��������¼�;����Ǥ�<br>
-	���ǼԤ�¼�����λ��˥��ץ����Ȥ������ꤵ�졢¼�οͿ�20�Ͱʾ���о줷�ޤ���<br>
-	�����ǼԤ��о줹���硢¼�ͤ�����Ȥ�������ޤ������κ�¼�ͤ��⤦��͸��ꡢ��ϵ����������ޤ���<br></div>
+	<div class="info">あなたは体に少量の毒が流れています。<br>
+	自身は抗体がありなんともありませんが、その血液に触れた人は死に至ると言われています。<br>
+	あなたが処刑されると村の中からランダムに一人道連れにします。<br>
+	人狼から襲われた場合は人狼からランダムに一人道連れにします。<br>
+	あなたが恋人で、最愛の人に先立たれた場合は後を追って自殺し、道連れは出ません。<br>
+	勝利条件は村人勝利です<br>
+	埋毒者は村作成の時にオプションとして設定され、村の人数20人以上で登場します。<br>
+	（埋毒者が登場する場合、村人の代わりとして入ります。その際村人がもう一人減り、人狼が一人増えます）<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="lovers">���塼�ԥå�</td>
+	<td class="lovers">キューピッド</td>
 	<td>
-	<div class="info">���ʤ��ϰ���ŷ�ȤǤ��������ܤ����ï����̾�˰���������Ĥ��ȤǤ��Σ��ͤ����ͤˤǤ��ޤ���<br>
-	�����������ͤ�ǽ�Ϥ��Ѳ��Ϥ���ޤ��󤬡����򤪤��Ƥ⤪�ߤ�����¸���ͥ��˹ͤ���褦�ˤʤ�ޤ���<br>
-	���ʤ����Ȥ�����Ͼ������˴ط����ޤ��󡣻��ˤϼ�������ˤ��ƤǤ����ͤ����������Ĥ餻��ΤǤ���<br>
-	�ꤤ����ǽȽ��Ǥ�¼��Ƚ��Ȥʤ�ޤ����ޤ����������Ƚ��κݤˤ�¼�ͤȥ�����Ȥ���ޤ���<br>
-	���塼�ԥåɤ�¼�����λ��˥��ץ����Ȥ������ꤵ�졢¼�οͿ�6̾�ʾ���о줷�ޤ���<br></div>
+	<div class="info">あなたは愛の天使です。１日目の夜に誰か２名に愛の矢を放つことでその２人を恋人にできます。<br>
+	恋に落ちた二人は能力に変化はありませんが、何をおいてもお互いの生存を最優先に考えるようになります。<br>
+	あなた自身の生死は勝利条件に関係しません。時には自らを犠牲にしてでも恋人たちを生き残らせるのです。<br>
+	占い、霊能判定では村人判定となります。また、勝利条件判定の際にも村人とカウントされます。<br>
+	キューピッドは村作成の時にオプションとして設定され、村の人数6名以上で登場します。<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td>�����</td>
+	<td>決定者</td>
 	<td>
-	<div class="info">���ʤ��λ��äƤ���ʷ�ϵ���¾�ͤ��Ѥ�������������äƤ��ޤ���<br>
-	�跺��ɼ��ɼ����Ʊ����ʬ���줿��硢���ʤ�����ɼ�����ۤ���ͥ�褵��ޤ���<br>
-	���������ʤ����Ȥϼ�ʬ������ԤǤ��뤳�ȤϤ狼��ޤ���<br>
-	��Ǥ�Ȥʤꡢ¾�����Υ��ץ����Ȥ����դ��ޤ���<br>
-	����Ԥ�¼�����λ��˥��ץ����Ȥ������ꤵ�졢¼�οͿ�16�Ͱʾ���о줷�ޤ���<br></div>
+	<div class="info">あなたの持っている雰囲気は他人を信用させる匂いを持っています。<br>
+	処刑投票の票数が同数で分かれた場合、あなたの投票したほうが優先されます。<br>
+	しかしあなた自身は自分が決定者であることはわかりません。<br>
+	兼任となり、他の役割のオプションとして付きます。<br>
+	決定者は村作成の時にオプションとして設定され、村の人数16人以上で登場します。<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td>���ϼ�</td>
+	<td>権力者</td>
 	<td>
-	<div class="info">���ʤ��ϿȤʤꡢ�⻺����¼�Ǥϰ����֤��줿¸�ߤˤʤäƤ��ޤ���<br>
-	¾��¼����⤢�ʤ��Τ��蘆����������ۤɤǤ���<br>
-	���θ��Ϥ򿶤꤫�������跺��ɼ�Ǥ��ʤ�����ɼ��2ɼʬ�θ��̤�ȯ�����ޤ���<br>
-	��Ǥ�Ȥʤꡢ¾�����Υ��ץ����Ȥ����դ��ޤ���<br>
-	���ϼԤ�¼�����λ��˥��ץ����Ȥ������ꤵ�졢¼�οͿ�16�Ͱʾ���о줷�ޤ���<br></div>
+	<div class="info">あなたは身なり、財産から村では一目置かれた存在になっています。<br>
+	他の村からもあなたのうわさが耳に入るほどです。<br>
+	その権力を振りかざし、処刑投票であなたの投票は2票分の効果を発揮します。<br>
+	兼任となり、他の役割のオプションとして付きます。<br>
+	権力者は村作成の時にオプションとして設定され、村の人数16人以上で登場します。<br></div>
 	</td>
 </tr>
 
 <tr>
-	<td class="lovers">����</td>
+	<td class="lovers">恋人</td>
 	<td>
-	<div class="info">���ʤ��ϥ��塼�ԥåɤ����ä�������ˤ�ä���������Ƥ��ޤ���<br>
-	�������ϻ��˼�²���ɤ�ۤ��뤳�Ȥ⤢��ޤ���<br>
-	�⤷�ɤ��餫��������˴������硢�Ĥ��줿�������ͤθ���ɤäƼ������Ƥ��ޤ��ޤ���<br>
-	���ʤ������ϲ��Ȥ��Ƥ�������ӡ���ͤΰ����������ۤ��夲��ΤǤ���<br>
-	��Ǥ�Ȥʤꡢ¾�����Υ��ץ����Ȥ����դ��ޤ���<br>
-	���ͤ�¼�����λ��˥��ץ����Ȥ��ƥ��塼�ԥåɤ��о줹��褦�����ꤵ�졢¼�οͿ�6̾�ʾ���о줷�ޤ���<br></div>
+	<div class="info">あなたはキューピッドが放った愛の矢によって恋に落ちています。<br>
+	その恋は時に種族の壁を越えることもあります。<br>
+	もしどちらか一方が死亡した場合、残された方も恋人の後を追って自殺してしまいます。<br>
+	あなたたちは何としても生き延び、二人の愛の世界を築き上げるのです。<br>
+	兼任となり、他の役割のオプションとして付きます。<br>
+	恋人は村作成の時にオプションとしてキューピッドが登場するように設定され、村の人数6名以上で登場します。<br></div>
 	</td>
 </tr>
 </table>
 
 <hr>
-<h1>��WEB�ѥ�����ץȤΥ����ƥ��</h1>
+<h1>＜WEB用スクリプトのシステム＞</h1>
 
-<span class="caption">[��ι�ư]<br></span>
+<span class="caption">[昼の行動]<br></span>
 <div class="info">
-��Ͻ����ǳ��ȵ������뤳�Ȥˤʤ�ޤ���<br>
-¾�οͤΰո���ǽ�ϼԤ�ȯ����ʹ���ʤ��鼫ʬ�ΰո���ȯ�����Ƥ��äƤ���������<br>
-�ޤ��跺����ͤ���뤿�����ɼ�⤷�ʤ���Фʤ�ޤ���<br>
-��Υե졼���[��ɼ/�ꤦ/���]�򥯥�å������跺���٤����Ȼפ��ͤ���ɼ���Ƥ���������<br>
+昼は集会場で皆と議論することになります。<br>
+他の人の意見や能力者の発言を聞きながら自分の意見を発言していってください。<br>
+また処刑する人を決めるための投票もしなければなりません。<br>
+上のフレームの[投票/占う/護衛]をクリックし、処刑すべきだと思う人に投票してください。<br>
 </div>
 
-<span class="caption">[��ι�ư]<br></span>
+<span class="caption">[夜の行動]<br></span>
 <div class="info">
-��Ϥ��줾�켫ʬ�βȤ˵��ꡢ��ͤǲᤴ�����Ȥˤʤ�ޤ���<br>
-���̤οͤ�¾�οͤȲ��äǤ��ޤ���ϵƱ�Τ�ȯ���򤹤뤳�ȤǱ��ʤ��Ȥʤꡢ���ä��뤳�Ȥ��Ǥ��ޤ���<br>
-��ͭ�Ԥ�ȯ�����뤳�ȤǶ�ͭ��Ʊ�Τǲ��ä��뤳�Ȥ��Ǥ��ޤ���<br>
-����ʳ��ο�ã���Ȥ���Ȥʤꡢ����ŷ��οͤ���Τ� �������Ƥ��Τ뤳�Ȥ��Ǥ��ޤ���<br>
-��¼Ω�ƻ��ˡ���������������ʤ��ץ��ץ���󤬻��ꤵ��Ƥ������ϵƱ�Τ���ͭ��Ʊ�Τ������ɽ������ޤ����<br>
+夜はそれぞれ自分の家に帰り、一人で過ごすことになります。<br>
+普通の人は他の人と会話できませんが狼同士は発言をすることで遠吠えとなり、会話することができます。<br>
+共有者も発言することで共有者同士で会話することができます。<br>
+それ以外の人達は独り言となり、死んだ天国の人からのみ その内容を知ることができます。<br>
+（村立て時に「霊界で配役を公開しない」オプションが指定されている場合は狼同士か共有者同士を除いて表示されません）<br>
 </div>
 
-<span class="caption">[��ν�������λ��ַв�ˤĤ���]<br></span>
+<span class="caption">[昼の集会所や夜の時間経過について]<br></span>
 <div class="info">
-������������ʬ����Ƥ��ꡢ��Ͻ�����12���֤δֵ�������Ͻ���꤫��Υ�졢�Ŀ��̡���6���֤λ��֤�����ޤ���<br>
-����12���֤�6���֤Ȥ������֤ϥ�������β��ۻ��֤ǡ����λ��֤δ֤��͡��ʹ�ư��Ԥ��ޤ���<br>
-����ι�ư�� ���ȵ������롢�跺����ɼ�򤹤�<br>
-����ι�ư�� ϵ�Ϻ����Ω��¼�Ͱ�ͤ�����������ꤤ�դ�ï����ͤ��ꤦ�����ͤ�ï����ͤθ�Ҥ��դ���<br>
-���������������������ܤΤߥ��塼�ԥåɤ�ï����̾�˰�����������ޤ���<br>
+一日は昼と夜に分かれており、昼は集会所で12時間の間議論、夜は集会所から離れ、個人別々に6時間の時間があります。<br>
+この12時間や6時間という時間はゲーム内の仮想時間で、この時間の間で様々な行動を行います。<br>
+　昼の行動： 皆と議論する、処刑の投票をする<br>
+　夜の行動： 狼は作戦を立て村人一人を喰い殺す、占い師は誰か一人を占う、狩人は誰か一人の護衛に付く、<br>
+　　　　　　　　１日目のみキューピッドは誰か二名に愛の矢を放ちます。<br>
 </div>
 
 
-<span class="caption">[���񤵤����֤ˤĤ���]<br></span>
-<span class="caption2">���ꥢ�륿�������ξ��<br></span><div class="info">
-����¼�����Υ��ץ����ǡ֥ꥢ�륿�������פ�����å�����Ƥ���ȡ��»��֤Ƿвᤷ�Ƥ����ޤ���<br>
-�������֤���������������ͤ�����Ǥ����ȥåץڡ����Υ���������Ρ֥ꥢ�륿�������ײ�����Alt�ƥ����Ȥ�ɽ������ޤ���<br>
+<span class="caption">[消費される時間について]<br></span>
+<span class="caption2">・リアルタイム制の場合<br></span><div class="info">
+　　村作成のオプションで「リアルタイム制」をチェック入れていると、実時間で経過していきます。<br>
+　　時間は部屋を作成した人が設定でき、トップページのゲーム一覧の「リアルタイム制」画像のAltテキストに表示されます。<br>
 
-����(����������Υ��ץ�������ʬ�ˤ���ꥢ�륿�������β���<?php echo
-$ROOM_IMG->Generate('real_time', '�ꥢ�륿���������롧' . $TIME_CONF->default_day .
-		    'ʬ���롧 ' . $TIME_CONF->default_night . 'ʬ')
-?>�˥ޥ����ݥ��󥿤�褻���ɽ������ޤ�)<br>
-������������ϲ��ۻ��֤ȼ»��֤�ξ����ɽ�����졢���ۻ��֤�12���֡��⤷����6���֤�������˸��äƤ�����<br>
-�����»��֤�0�ˤʤ��Ʊ���˲��ۻ��֤�0�ˤʤ�褦�˷׻�����Ƥ��ޤ���<br>
-�����ꥢ�륿��������¼�˻��ä����硢����ʬ��PC�λ��פ��碌�Ƥ����ʤ����������Ĥ���֤�ɽ������ޤ���
+　　(ゲーム一覧のオプションの部分にあるリアルタイム制の画像<?php echo
+$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
+		    '分　夜： ' . $TIME_CONF->default_night . '分')
+?>にマウスポインタを乗せると表示されます)<br>
+　　ゲーム中は仮想時間と実時間の両方が表示され、仮想時間は12時間、もしくは6時間から徐々に減っていき、<br>
+　　実時間が0になると同時に仮想時間も0になるように計算されています。<br>
+　　リアルタイム制の村に参加する場合、ご自分のPCの時計を合わせておかないと正しい残り時間が表示されません。
 </div>
 
-<span class="caption2">���ꥢ�륿�������Ǥʤ����<br></span><div class="info">
-����¼�����Υ��ץ����ǡ֥ꥢ�륿�������פ˥����å�������ʤ����Ϥ�����ˤʤ�ޤ���<br>
-������ꥢ�륿�������Ǥ�ȯ�����뤳�Ȥǻ��֤����񤵤�ޤ���<br>
-  ����Ⱦ��100ʸ��(����50ʸ��)��ȯ���ǡ����ۻ��֤���: [<?php echo $TIME_CALC->spend_day ?>] ��: [<?php echo $TIME_CALC->spend_night ?>] ���ľ��񤵤�Ƥ����ޤ���<br>
-��������Ͽ�ϵ��ȯ���������ۻ��֤˲û�����Ƥ����ޤ���<br>
-�������������ʸ����Ȥä�ȯ������Ȥ���������ۻ��֤ξ����̤�¿���ʤ�ޤ���<br>
-������������Ⱦ��400���ʾ�Ͼ�����֤ϲû����줺Ⱦ��400���ξ����̤�Ʊ���Ǥ���<br>
-  �����������( �»��� [<?php echo $TIME_CALC->silence ?>] )ȯ����̵���ȳ����ۤ������ȤȤʤꡢ�롧 [<?php echo $TIME_CALC->silence_day ?>] �롧 [<?php echo $TIME_CALC->silence_night ?>] �����񤵤�Ƥ��ޤ��ޤ���<br>
-�����ۤäƤ���Ȥɤ�ɤ���֤����񤵤�Ƥ����ޤ����Ѷ�Ū��ȯ�����ޤ��礦��<br>
-</div>
-
-
-<span class="caption">[��ɼ�ˤĤ���]<br></span>
-
-<span class="caption2">����ν跺��ɼ</span><br><div class="info">
-�����跺���뤿�����ɼ����������˹Ԥ��ޤ���<br>
-������ɼ�ϵ����椤�ĤǤ��ǽ�Ǥ�����ɼ����ľ�����ȤϤǤ��ޤ��󡢿��Ť���ɼ�����Ƥ���������<br>
-�����ޤ���������ɼ������硢���λ����ǻĤ���֤˴ط��ʤ�¨�跺���¹Ԥ�����ˤʤ�ޤ���<br>
-������β��ۻ���12���֤�Ȥ����ꡢ����Ǥ���ɼ���Ƥʤ��ͤ� [<?php echo $TIME_CALC->sudden_death ?>] �������ɼ��λ���ʤ���������Ȥʤ�<br>
-����̵���ǻ�˴���Ƥ��ޤ��ޤ���<br>
-�������֤��ʤ��ʤäƤ����餹�ߤ䤫����ɼ���Ƥ���������
-</div>
-
-<span class="caption2">�������ɼ�ʿ�ϵ���������ꤤ�դ��ꤦ�����ͤ���Ҥ��롦�ʣ����ܤΤߡ˥��塼�ԥåɤ�����������ġ�<br></span><div class="info">
-������ˤʤ�ȿ�ϵ���ꤤ�ա����͡����塼�ԥåɤϤ��줾���ǽ�Ϥ�ȯ�����뤿��˥������åȤ���ꤷ�ޤ���<br>
-������ɼ�ڡ����ǥ������åȤ���ꤷ�Ƥ���������<br>
-������ϵ�������ǰ�ͤ����������åȤǤ��ޤ���<br>
-�����ꤤ�ա����ͤϸĿͤǤ��줾�����Ǥ��ޤ���<br>
-�������塼�ԥåɤϣ����ܤΤߡ�����դ�������ͤ���ꤷ�Ƥ���������<br>
-������������¼�����Ϳ��� [<?php echo $GAME_CONF->cupid_self_shoot ?>��] �������ʤ����ϡ�ɬ����ʬ��ï������ꤷ�Ƥ���������<br>
-������β��ۻ���6���֤�Ȥ����ꡢ����Ǥ���ɼ���Ƥʤ��ͤ� [<?php echo $TIME_CALC->sudden_death ?>] �������ɼ��λ���ʤ���������Ȥʤ�<br>
-����̵���ǻ�˴���ޤ���<br>
+<span class="caption2">・リアルタイム制でない場合<br></span><div class="info">
+　　村作成のオプションで「リアルタイム制」にチェックを入れない場合はこちらになります。<br>
+　　非リアルタイム制では発言することで時間が消費されます。<br>
+  　　半角100文字(全角50文字)の発言で、仮想時間が昼: [<?php echo $TIME_CALC->spend_day ?>] 夜: [<?php echo $TIME_CALC->spend_night ?>] ずつ消費されていきます。<br>
+　　（夜は人狼の発言だけ仮想時間に加算されていきます）<br>
+　　たくさんの文字を使って発言するとそれだけ仮想時間の消費量が多くなります。<br>
+　　しかし、半角400字以上は消費時間は加算されず半角400字の消費量と同じです。<br>
+  　　一定時間( 実時間 [<?php echo $TIME_CALC->silence ?>] )発言が無いと皆沈黙したこととなり、昼： [<?php echo $TIME_CALC->silence_day ?>] 夜： [<?php echo $TIME_CALC->silence_night ?>] が消費されてしまいます。<br>
+　　黙っているとどんどん時間が消費されていきます、積極的に発言しましょう。<br>
 </div>
 
 
-<span class="caption">[���»��֤��᤮��ȡ���]<br></span>
+<span class="caption">[投票について]<br></span>
+
+<span class="caption2">・昼の処刑投票</span><br><div class="info">
+　　処刑するための投票は毎日、昼に行われます。<br>
+　　投票は議論中いつでも可能ですが投票をやり直すことはできません、慎重に投票先を決めてください。<br>
+　　また全員が投票した場合、その時点で残り時間に関係なく即処刑が実行され夜になります。<br>
+　　昼の仮想時間12時間を使いきり、それでも投票してない人は [<?php echo $TIME_CALC->sudden_death ?>] 以内に投票を完了しないと突然死となり<br>
+　　無条件で死亡してしまいます。<br>
+　　時間がなくなってきたらすみやかに投票してください。
+</div>
+
+<span class="caption2">・夜の投票（人狼が襲う・占い師が占う・狩人が護衛する・（１日目のみ）キューピッドが愛の矢を放つ）<br></span><div class="info">
+　　夜になると人狼・占い師・狩人・キューピッドはそれぞれの能力を発揮するためにターゲットを指定します。<br>
+　　投票ページでターゲットを指定してください。<br>
+　　人狼は全員で一人だけターゲットできます。<br>
+　　占い師、狩人は個人でそれぞれ指定できます。<br>
+　　キューピッドは１日目のみ、結び付けたい二人を指定してください。<br>
+　　ただし、村の総人数が [<?php echo $GAME_CONF->cupid_self_shoot ?>人] に満たない場合は、必ず自分と誰かを指定してください。<br>
+　　夜の仮想時間6時間を使いきり、それでも投票してない人は [<?php echo $TIME_CALC->sudden_death ?>] 以内に投票を完了しないと突然死となり<br>
+　　無条件で死亡します。<br>
+</div>
+
+
+<span class="caption">[制限時間が過ぎると・・]<br></span>
 <div class="info">
-��12���֡���6���֤����»��֤��᤮���ȯ���Ǥ��ʤ��ʤ�ޤ���<br>
-¼�ν���ã�Ϥ���ޤǤξ���򸵤���ɼ���ʤ��ƤϤʤ�ޤ���<br>
-��ɼ������ [<?php echo $TIME_CALC->sudden_death ?>] �᤮�Ƥ��ޤ�����ɼ�����̵������������Ȥʤ궯��Ū�˻��Ǥ��ޤ��ޤ���<br>
-ï����������ˤʤäƤ��ޤ�����ɼ���ꥻ�åȤ���Ƥ��ޤ��ޤ��Τ����դ��Ƥ���������<br>
-��ɼ�ϻ��֤�;͵����ä����ˤ��ޤ��礦��<br>
-�ޤ������»��֤���ʤ��Ƥ���������ɼ����λ���Ƥ������Ϥ��λ�����¨�����ξ��̡��뢪�롢�뢪��������ī�ˤˤʤ�ޤ���<br>
-�Ϳ������ʤ��ʤäƤ�����硢ȯ�������ʤ������֤ˤʤä����ʤɤǤ�������ɼ����褦�ˤ��ޤ��礦��<br>
+昼12時間、夜6時間の制限時間が過ぎると発言できなくなります。<br>
+村の住人達はこれまでの情報を元に投票しなくてはなりません。<br>
+投票せずに [<?php echo $TIME_CALC->sudden_death ?>] 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
+誰かが突然死になってしまうと投票がリセットされてしまいますので注意してください。<br>
+投票は時間に余裕を持って早めにしましょう。<br>
+また、制限時間が来なくても全員の投票が完了していた場合はその時点で即、次の場面（昼→夜、夜→次の日の朝）になります。<br>
+人数が少なくなってきた場合、発言が少なく膠着状態になった場合などでは早めに投票するようにしましょう。<br>
 </div>
 
 
-<span class="caption">[����Ȥ�]<br></span>
+<span class="caption">[遺言とは]<br></span>
 <div class="info">
-�跺���줿�ꡢ��ϵ�˽���줿�ꡢ�ŸѤ��ꤤ�����줿�ꡢ���ͤ����ɤ����������ꤷ���Ȥ��˽��Ƹ��������ʸ��Ǥ���<br>
-�פäƤ��Ƥ�����ʤ��ä�������¸�Ԥ˸�������å������ʤɤ򤢤餫�������˻Ĥ��Ƥ������Ȥǡ�<br>
-�����Ȥ��κǸ�ΰ���Ȥ��ưʸ��Ÿ���˱ƶ���Ϳ���뤫�⤷��ޤ���<br>
-��˴�Ԥΰ���򸫤뤳�Ȥ��Ǥ���Τϻ�˴����������ī�Ǥ���<br>
-����λĤ����ϡ�ȯ���Ρ��̾�ɤ���ȯ������פΥɥ��åץ�����ꥹ�Ȥΰ��ֲ��ˤ���ְ����Ĥ��פ����򤷤Ƥ���������<br>
-��˴����Ȱ����񤯤��ȤϤǤ��ޤ��������Ƥ��뤦���˲ˤʻ��֤�Ȥäư����Ĥ��Ƥ���������<br>
+処刑されたり、人狼に襲われたり、妖狐が占い殺されたり、恋人が後追い自殺したりしたときに初めて公開される文書です。<br>
+思っていても言えなかった事や生存者に向けたメッセージなどをあらかじめ遺言に残しておくことで、<br>
+死んだときの最後の一言として以後の展開に影響を与えるかもしれません。<br>
+死亡者の遺言を見ることができるのは死亡した翌日の朝です。<br>
+遺言の残し方は、発言の「通常どおり発言する」のドロップダウンリストの一番下にある「遺言を残す」を選択してください。<br>
+死亡すると遺言を書くことはできません、生きているうちに暇な時間を使って遺言を残してください。<br>
 </div>
 
 <hr>
-<h1>��ץ쥤����������</h1>
-<span class="caption">[������������¸�桦�������]<br></span>
+<h1>＜プレイ画面説明＞</h1>
+<span class="caption">[ゲーム前・生存中・ゲーム後]<br></span>
 <div class="info">
-�ե졼���ʬ�䤵��Ƥ�������ʬ��ȯ�����뤿����ΰ����ɼ���뤿��˻��Ѥ��ޤ���<br>
-���Υե졼��ϥ���������Ƥ�ɽ�����Ƥ��ޤ���<br>
-����ˤ���[��ư����]�ϲ��Υե졼�����ꤷ���ÿ��Ǽ�ư�������ޤ���<br>
-[���Ǥ��Τ餻]���뤬�������Ȥ��Ⱥ���ɼ�ˤʤä��Ȥ����۵Ĥ����Ԥä��Ȥ��˲���Ф������Τ��ޤ���<br>
-[���ꥹ��]��¼�ͥꥹ�Ȥ�ȯ�������β���ɽ������褦�ˤ��ޤ���<br>
-�դ�[���ꥹ��]��¼�ͥꥹ�Ȥ�ǥե���Ȥ�ȯ�������ξ��ɽ������褦�ˤ��ޤ���<br>
-����Ρְ۵Ĥ���ץܥ���򲡤����ü�ʥ�å������Ȳ��ǳ������դ�����ޤ���<br>
-�ְ۵Ĥ���ץܥ���Υ��å�����ο����ϻĤ����ǥ����೫���������̻��� [<?php echo $GAME_CONF->objection ?>��] �������ѤǤ��ޤ���<br>
+フレームに分割されている上の部分は発言するための領域と投票するために使用します。<br>
+下のフレームはゲームの内容を表示しています。<br>
+右上にある[自動更新]は下のフレームを指定した秒数で自動更新します。<br>
+[音でお知らせ]は夜が明けたときと再投票になったとき、異議ありを行ったときに音を出して通知します。<br>
+[↓リスト]は村人リストを発言ログの下に表示するようにします。<br>
+逆に[↑リスト]は村人リストをデフォルトの発言ログの上に表示するようにします。<br>
+右上の「異議あり」ボタンを押すと特殊なメッセージと音で皆の注意を引きます。<br>
+「異議あり」ボタンのカッコの中の数字は残り回数でゲーム開始前から通算で [<?php echo $GAME_CONF->objection ?>回] しか使用できません。<br>
 <br>
-�������ब���Ϥ����Ȳ��Υե졼��Ǿ夫��<br>
-��������¼��̾����<br>
-�������ֻĤ���֡�<br>
-��������¼�ͥꥹ�ȡ�<br>
-�������ּ�ʬ�����(��ǽ�Ϥη��)��<br>
-��������ȯ��������<br>
-�������ֻ�˴�Ԥ�ɽ����<br>
-�������ֽ跺��ɼ�γ�ɼ�ꥹ�ȡפν��ɽ������ޤ���<br>
+　ゲームが開始されると下のフレームで上から<br>
+　　　「村の名前」<br>
+　　　「残り時間」<br>
+　　　「村人リスト」<br>
+　　　「自分の役割(と能力の結果)」<br>
+　　　「発言ログ」<br>
+　　　「死亡者の表示」<br>
+　　　「処刑投票の開票リスト」の順で表示されます。<br>
 <br>
 </div>
 
-<h2>--�ºݤ�ɽ�������ּ�ʬ�����ʤ�ǽ�Ϥη�̡ˡ�--</h2><br>
+<h2>--実際に表示される「自分の役割（と能力の結果）」--</h2><br>
 
 <table class="role">
 <tr>
-<th>���</th><th>--����������ʬ�����(��ǽ�Ϥη��)��������--</th>
+<th>役割</th><th>--　　　　自分の役割(と能力の結果)　　　　--</th>
 </tr>
 
 <tr>
-<td>¼��</td><td><?php echo $ROLE_IMG->Generate('human') ?></td>
+<td>村人</td><td><?php echo $ROLE_IMG->Generate('human') ?></td>
 </tr>
 
 <tr>
-<td class="wolf">��ϵ</td><td><?php $ROLE_IMG->Output('wolf') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('wolf_partner') ?></td><td>��ϵ���</td></tr></table>
+<td class="wolf">人狼</td><td><?php $ROLE_IMG->Output('wolf') ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('wolf_partner') ?></td><td>人狼一号</td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="mage">�ꤤ��</td><td><?php $ROLE_IMG->Output('mage') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>¼�Ͱ��</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>��ϵ���</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
+<td class="mage">占い師</td><td><?php $ROLE_IMG->Output('mage') ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>村人一号</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>人狼一号</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="necromancer">��ǽ��</td><td><?php $ROLE_IMG->Output('necromancer') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>¼�Ͱ��</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>��ϵ���</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
+<td class="necromancer">霊能者</td><td><?php $ROLE_IMG->Output('necromancer') ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>村人一号</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>人狼一号</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="wolf">����</td><td><?php echo $ROLE_IMG->Generate('mad') ?></td>
+<td class="wolf">狂人</td><td><?php echo $ROLE_IMG->Generate('mad') ?></td>
 </tr>
 
 <tr>
-<td class="guard">����</td><td><?php $ROLE_IMG->Output('guard') ?>
-<table class="view"><tr><td>�ꤤ�հ��</td><td><?php echo $ROLE_IMG->Generate('guard_success') ?></td></tr></table></td>
+<td class="guard">狩人</td><td><?php $ROLE_IMG->Output('guard') ?>
+<table class="view"><tr><td>占い師一号</td><td><?php echo $ROLE_IMG->Generate('guard_success') ?></td></tr></table></td>
 </tr>
 
 <tr>
-<td class="common">��ͭ��</td><td><?php $ROLE_IMG->Output('common') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('common_partner') ?></td><td>��ͭ�԰��</td></tr></table></td>
+<td class="common">共有者</td><td><?php $ROLE_IMG->Output('common') ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('common_partner') ?></td><td>共有者一号</td></tr></table></td>
 </tr>
 
 <tr>
-<td class="fox">�Ÿ�</td><td><?php $ROLE_IMG->Output('fox') ?>
+<td class="fox">妖狐</td><td><?php $ROLE_IMG->Output('fox') ?>
 <table class="view"><tr><td><?php echo $ROLE_IMG->Generate('fox_targeted') ?></td></tr></table></td>
 </tr>
 
 <tr>
-<td class="poison">���Ǽ�</td><td><?php echo $ROLE_IMG->Generate('poison') ?></td>
+<td class="poison">埋毒者</td><td><?php echo $ROLE_IMG->Generate('poison') ?></td>
 </tr>
 
 <tr>
-<td class="lovers">���塼�ԥå�</td><td><?php $ROLE_IMG->Output('cupid') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('cupid_pair') ?></td><td>���Ͱ�� �������</td></tr></table></td>
+<td class="lovers">キューピッド</td><td><?php $ROLE_IMG->Output('cupid') ?>
+<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('cupid_pair') ?></td><td>恋人一号 恋人二号</td></tr></table></td>
 </tr>
 
 <tr>
-<td>�����</td><td>--�ʤ�--</td>
+<td>決定者</td><td>--なし--</td>
 </tr>
 
 <tr>
-<td>���ϼ�</td><td><?php echo $ROLE_IMG->Generate('authority') ?></td>
+<td>権力者</td><td><?php echo $ROLE_IMG->Generate('authority') ?></td>
 </tr>
 
 <tr>
-<td class="lovers">����</td>
-<td><table class="view"><tr><td><?php echo $ROLE_IMG->Generate('partner_header') ?></td><td>���Ͱ��</td>
+<td class="lovers">恋人</td>
+<td><table class="view"><tr><td><?php echo $ROLE_IMG->Generate('partner_header') ?></td><td>恋人一号</td>
 <td><?php echo $ROLE_IMG->Generate('lovers_footer') ?></td></tr></table></td>
 </tr>
 </table>
@@ -399,16 +399,16 @@ $ROOM_IMG->Generate('real_time', '�ꥢ�륿���������롧' . $TIME_CONF->default_da
 <br>
 
 
-<span class="caption">[��������˻�˴�����]<br></span>
+<span class="caption">[ゲーム中に死亡すると]<br></span>
 <div class="info">
-��������˻�˴��������ŷ��⡼�ɤˤʤ�ޤ���<br>
-��Υե졼�������ȯ���ѡ�����Υե졼���¼�Ǥν���������Υե졼��������ѤȤʤäƤ��ޤ���<br>
-ȯ������Ȼ�˴��Ʊ�ΤǤ�����魯���ȤΤǤ��ʤ����ä򤹤뤳�Ȥ��Ǥ��ޤ���<br>
-�ޤ����Υե졼��α���˲���ȯ������ɼ�Υ����򸫤뤳�Ȥ��Ǥ����󥯤�����ޤ���<br>
+ゲーム中に死亡した場合は天国モードになります。<br>
+上のフレームは霊話発言用、中央のフレームは村での出来事、下のフレームは霊話用となっています。<br>
+発言すると死亡者同士でしか交わすことのできない霊話をすることができます。<br>
+また下のフレームの右上に過去の発言や投票のログを見ることができるリンクがあります。<br>
 <br>
-�̾��ŷ��⡼�ɤǤ����Ƥ��򿦡����ʤ��������䤭���Ȥ�������Ƹ����Ƥ��ޤ���<br>
-¼Ω�ƻ��ˡ���������������ʤ��ץ��ץ��������ꤷ�Ƥ����硢ŷ��⡼�ɤǤ⤳���ξ���ϸ����ޤ���<br>
-��������ϵ�ȶ�ͭ�Ԥϡ���¸���Ƥ�����֤α��ʤ��䤵���䤭�򸫤뤳�Ȥ���ǽ�Ǥ���<br>
-������󸫤�����ǡ�ϵ�䶦ͭ�Ԥ����ä���¸���Ƥ�����֤ˤ�ʹ�����ޤ���<br>
+通常の天国モードでは全ての役職、遠吠え、ささやき、独り言が全て見えています。<br>
+村立て時に「霊界で配役を公開しない」オプションを設定している場合、天国モードでもこれらの情報は見えません。<br>
+ただし、狼と共有者は、生存している仲間の遠吠えやささやきを見ることが可能です。<br>
+もちろん見るだけで、狼や共有者の霊話は生存している仲間には聞こえません。<br>
 </div>
 </body></html>

@@ -1,10 +1,10 @@
 <?php
 /*
-  ¢¡Ìµ¸ý (silent)
-  ¡û»ÅÍÍ
-  ¡¦¼«Ê¬¤ÎÈ¯¸À¤¬°ìÄêÊ¸»ú¿ô¤òÄ¶¤¨¤¿¤é¤½¤ì°Ê¹ß¤¬¾Ã¤¨¤ë
-  ¡¦Ê¸»ú¿ôÀ©¸Â¤Ï GameConfig->silent_length ¤ÇÄêµÁ
-  ¡¦¥²¡¼¥à¥×¥ì¥¤Ãæ¤ÇÀ¸Â¸»þ¤Î¤ßÍ­¸ú (¸Æ¤Ó½Ð¤·´Ø¿ôÂ¦¤ÇÂÐ±þ)
+  â—†ç„¡å£ (silent)
+  â—‹ä»•æ§˜
+  ãƒ»è‡ªåˆ†ã®ç™ºè¨€ãŒä¸€å®šæ–‡å­—æ•°ã‚’è¶…ãˆãŸã‚‰ãã‚Œä»¥é™ãŒæ¶ˆãˆã‚‹
+  ãƒ»æ–‡å­—æ•°åˆ¶é™ã¯ GameConfig->silent_length ã§å®šç¾©
+  ãƒ»ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ã§ç”Ÿå­˜æ™‚ã®ã¿æœ‰åŠ¹ (å‘¼ã³å‡ºã—é–¢æ•°å´ã§å¯¾å¿œ)
 */
 class Role_silent extends Role{
   function Role_silent(){ $this->__construct(); }
@@ -13,7 +13,7 @@ class Role_silent extends Role{
   function FilterSay(&$sentence){
     global $GAME_CONF;
     if(mb_strlen($sentence) > $GAME_CONF->silent_length){
-      $sentence = mb_substr($sentence, 0, $GAME_CONF->silent_length) . '¡Ä¡Ä';
+      $sentence = mb_substr($sentence, 0, $GAME_CONF->silent_length) . 'â€¦â€¦';
     }
   }
 }

@@ -9,19 +9,19 @@ class GamePlayFormat extends ChatEngine{
   function ParseUsers(){
     $user_cache = array();
     if ($this->room->IsNight()){
-      $user_cache['wolf'] = array( 'display_name' => 'Ïµ¤Î±óËÊ¤¨' );
-      $user_cache['common'] = array( 'display_name' => '<span class="weak">¶¦Í­¼Ô¤Î¾®À¼</span>' );
+      $user_cache['wolf'] = array( 'display_name' => 'ç‹¼ã®é å ãˆ' );
+      $user_cache['common'] = array( 'display_name' => '<span class="weak">å…±æœ‰è€…ã®å°å£°</span>' );
       $user_cache['self'] = array(
         'class_attr' => 'u'.$this->self->user_no,
         'color' => $this->self->color,
-        'display_name' => '¢¡'.$this->self->handle_name.'¤ÎÆÈ¤ê¸À'
+        'display_name' => 'â—†'.$this->self->handle_name.'ã®ç‹¬ã‚Šè¨€'
         );
     }
     foreach ($this->users->rows as $user){
       $user_cache[$user->uname] = array (
         'class_attr' => 'u'.$user->user_no,
         'color' => $user->color,
-        'display_name' => '¢¡'.$user->handle_name
+        'display_name' => 'â—†'.$user->handle_name
       );
     }
     $this->user_cache = $user_cache;
@@ -36,10 +36,10 @@ class GamePlayFormat extends ChatEngine{
   }
 
   function GenerateScript(){
-    $realtime_message = $this->room->IsDay() ? 'ÆüË×¤Ş¤Ç' : 'ÌëÌÀ¤±¤Ş¤Ç';
+    $realtime_message = $this->room->IsDay() ? 'æ—¥æ²¡ã¾ã§' : 'å¤œæ˜ã‘ã¾ã§';
     list($start_time, $end_time) = GetRealPassTime($left_time, true);
     return <<<SCRIPT
-var realtime_message = "¡¡{$realtime_message}";
+var realtime_message = "ã€€{$realtime_message}";
 var start_time = "{$start_time}";
 var end_time = "{$end_time}";
 
@@ -57,45 +57,45 @@ SCRIPT;
       $option_image = MakeGameOptionImage($this->room->game_option, $option_role);
      $this->output .= <<<NOTICE
 <div class="caution">
-¥²¡¼¥à¤ò³«»Ï¤¹¤ë¤Ë¤ÏÁ´°÷¤¬¥²¡¼¥à³«»Ï¤ËÅêÉ¼¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹
-<span>(ÅêÉ¼¤·¤¿¿Í¤ÏÂ¼¿Í¥ê¥¹¥È¤ÎÇØ·Ê¤¬ÀÖ¤¯¤Ê¤ê¤Ş¤¹)</span>
+ã‚²ãƒ¼ãƒ ã‚’é–‹å§‹ã™ã‚‹ã«ã¯å…¨å“¡ãŒã‚²ãƒ¼ãƒ é–‹å§‹ã«æŠ•ç¥¨ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™
+<span>(æŠ•ç¥¨ã—ãŸäººã¯æ‘äººãƒªã‚¹ãƒˆã®èƒŒæ™¯ãŒèµ¤ããªã‚Šã¾ã™)</span>
 </div>
 <table class="time-table">
-<tr><td>¥²¡¼¥à¥ª¥×¥·¥ç¥ó¡§{$option_image} </td></tr>
+<tr><td>ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼š{$option_image} </td></tr>
 </table>
 
 NOTICE;
     }
-    //»ş´Ö¤º¤ì¤ÎÉ½¼¨
+    //æ™‚é–“ãšã‚Œã®è¡¨ç¤º
     $date_str = $SERVER_CONF->adjust_time_difference ?
                 gmdate('Y, m, j, G, i, s', $this->room->system_time) : date('Y, m, j, G, i, s', $this->room->system_time);
     $this->output .= <<<NOTICE
 <div>
-¥µ¡¼¥Ğ¤È¥í¡¼¥«¥ëPC¤Î»ş´Ö¥º¥ì(¥é¥°´Ş)¡§ <span>
+ã‚µãƒ¼ãƒã¨ãƒ­ãƒ¼ã‚«ãƒ«PCã®æ™‚é–“ã‚ºãƒ¬(ãƒ©ã‚°å«)ï¼š <span>
 <script type="text/javascript"><!--
 output_diff_time('$date_str');
-//--></script>ÉÃ</span>
+//--></script>ç§’</span>
 </div>
 
 NOTICE;
-    //·×Â¬¤Î·ë²Ì¡¢¤³¤Î¥¯¥¨¥ê¤Ï¥Ñ¥Õ¥©¡¼¥Ş¥ó¥¹¤ËÂç¤­¤Ê±Æ¶Á¤òÍ¿¤¨¤Ê¤¤¤³¤È¤¬³ÎÇ§¤µ¤ì¤Ş¤·¤¿¡£
+    //è¨ˆæ¸¬ã®çµæœã€ã“ã®ã‚¯ã‚¨ãƒªã¯ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã«å¤§ããªå½±éŸ¿ã‚’ä¸ãˆãªã„ã“ã¨ãŒç¢ºèªã•ã‚Œã¾ã—ãŸã€‚
     $living_users = FetchResult(
       "SELECT COUNT(uname) FROM user_entry
       WHERE room_no = {$this->room->id}
         AND live = 'live' AND user_no > 0"
       );
-    if($this->room->IsRealTime()){ //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+    if($this->room->IsRealTime()){ //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
       GetRealPassTime($left_time);
       $time_text =
         '<form name="realtime_form"><input type="text" name="output_realtime" size="50" readonly></form>';
     }
-    else{ //È¯¸À¤Ë¤è¤ë²¾ÁÛ»ş´Ö
+    else{ //ç™ºè¨€ã«ã‚ˆã‚‹ä»®æƒ³æ™‚é–“
       $time_text = $time_message . GetTalkPassTime($left_time);
     }
     $this->output .= <<<LIST
 <ul id='game_info'>
-<li id='date'>{$this->room->date} ÆüÌÜ</li>
-<li id='alive'>(À¸Â¸¼Ô{$living_users}¿Í)</li>
+<li id='date'>{$this->room->date} æ—¥ç›®</li>
+<li id='alive'>(ç”Ÿå­˜è€…{$living_users}äºº)</li>
 <li id='time'>{$time_text}</li>
 </ul>
 
@@ -111,10 +111,10 @@ LIST;
 
     if($DEBUG_MODE) $this_handle .= ' (' . $user->user_no . ')';
 
-    //¥¢¥¤¥³¥ó
+    //ã‚¢ã‚¤ã‚³ãƒ³
     $icon = $this->GenerateUserIcon($user);
 
-    if($this->room->IsBeforeGame()){ //¥²¡¼¥à¥¹¥¿¡¼¥È¤ËÅêÉ¼¤·¤Æ¤¤¤ì¤Ğ¿§¤òÊÑ¤¨¤ë
+    if($this->room->IsBeforeGame()){ //ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆã«æŠ•ç¥¨ã—ã¦ã„ã‚Œã°è‰²ã‚’å¤‰ãˆã‚‹
       $query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$this->room->id} " .
         "AND situation = 'GAMESTART' AND uname = '$this_uname'";
       if((! $this->room->IsQuiz() && $user->IsDummyBoy()) || FetchResult($query_game_start) > 0){
@@ -135,19 +135,19 @@ CELL;
     return 'success';
   }
 
-  //¥æ¡¼¥¶¡¼¤ò»ØÄê¤·¤Æ¥¢¥¤¥³¥óÉ½¼¨ÍÑ¤ÎimgÍ×ÁÇ¤òÀ¸À®¤·¤Ş¤¹¡£
+  //ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’æŒ‡å®šã—ã¦ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºç”¨ã®imgè¦ç´ ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
   function GenerateUserIcon(&$user) {
     global $ICON_CONF;
-    //¥Ö¥é¥¦¥¶¤ò¥Á¥§¥Ã¥¯ (MSIE @ Windows ¤À¤± ²èÁü¤Î Alt, Title Â°À­¤Ç²ş¹Ô¤Ç¤­¤ë)
-    //IE ¤Î¾ì¹ç²ş¹Ô¤ò \r\n ¤ËÅı°ì¡¢¤½¤ÎÂ¾¤Î¥Ö¥é¥¦¥¶¤Ï¥¹¥Ú¡¼¥¹¤Ë¤¹¤ë(²èÁü¤ÎAltÂ°À­)
+    //ãƒ–ãƒ©ã‚¦ã‚¶ã‚’ãƒã‚§ãƒƒã‚¯ (MSIE @ Windows ã ã‘ ç”»åƒã® Alt, Title å±æ€§ã§æ”¹è¡Œã§ãã‚‹)
+    //IE ã®å ´åˆæ”¹è¡Œã‚’ \r\n ã«çµ±ä¸€ã€ãã®ä»–ã®ãƒ–ãƒ©ã‚¦ã‚¶ã¯ã‚¹ãƒšãƒ¼ã‚¹ã«ã™ã‚‹(ç”»åƒã®Altå±æ€§)
     if($user->IsLive()){
       $icon_src = $ICON_CONF->path . '/' . $user->icon_filename;
-      $display_live = '(À¸Â¸Ãæ)';
+      $display_live = '(ç”Ÿå­˜ä¸­)';
     }
     else{
       $icon_src = $ICON_CONF->dead;
       $rollover_path = $ICON_CONF->path . '/' . $user->icon_filename;
-      $display_live  = '(»àË´)';
+      $display_live  = '(æ­»äº¡)';
       $rollover_handlers = " onMouseover=\"this.src='{$rollover_path}'\" onMouseout=\"this.src='{$icon_src}'\"";
     }
     $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');
@@ -168,64 +168,64 @@ ELEMENT;
   }
 
   function OutputVoteNotice(){
-    //ÅêÉ¼²ó¿ô¤ò¼èÆÀ
+    //æŠ•ç¥¨å›æ•°ã‚’å–å¾—
     $vote_times = GetVoteTimes();
-    $sentence = '<div class="self-vote">ÅêÉ¼ ' . $vote_times . ' ²óÌÜ¡§';
+    $sentence = '<div class="self-vote">æŠ•ç¥¨ ' . $vote_times . ' å›ç›®ï¼š';
   
-    //ÅêÉ¼ÂĞ¾İ¼Ô¤ò¼èÆÀ
+    //æŠ•ç¥¨å¯¾è±¡è€…ã‚’å–å¾—
     $query = "SELECT target_uname FROM vote WHERE room_no = {$this->room->id} AND date = {$this->room->date} " .
       "AND situation = 'VOTE_KILL' AND vote_times = $vote_times AND uname = '{$this->self->uname}'";
     $target_uname = FetchResult($query);
-    $sentence .= ($target_uname === false ? '<font color="red">¤Ş¤ÀÅêÉ¼¤·¤Æ¤¤¤Ş¤»¤ó</font>' :
-  		$this->users->GetHandleName($target_uname) . '¤ËÅêÉ¼ºÑ¤ß');
+    $sentence .= ($target_uname === false ? '<font color="red">ã¾ã æŠ•ç¥¨ã—ã¦ã„ã¾ã›ã‚“</font>' :
+  		$this->users->GetHandleName($target_uname) . 'ã«æŠ•ç¥¨æ¸ˆã¿');
     $this->output .= $sentence . '</div>'."\n";
 
-    //ºÆÅêÉ¼
+    //å†æŠ•ç¥¨
     if($this->room->IsDay() && 0 < ($revote_times = GetVoteTimes(true))) {
       global $GAME_CONF, $MESSAGE, $RQ_ARGS, $COOKIE, $SOUND;
       if($RQ_ARGS->play_sound && ! $this->room->view_mode && $revote_times > $COOKIE->vote_times){
-        $SOUND->Output('revote'); //²»¤òÌÄ¤é¤¹
+        $SOUND->Output('revote'); //éŸ³ã‚’é³´ã‚‰ã™
       }
     
-      //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
+      //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
       $vote_times = $revote_times + 1;
       $query = "SELECT COUNT(uname) FROM vote WHERE room_no = {$this->room->id} AND date = {$this->room->date} " .
         "AND vote_times = $vote_times AND uname = '{$this->self->uname}'";
       if(FetchResult($query) == 0){
-        $this->output .= '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '²ó' .
+        $this->output .= '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . 'å›' .
           $MESSAGE->draw_announce . ')</div>';
       }
     
-      $this->OutputVoteList($this->room->date); //ÅêÉ¼·ë²Ì¤ò½ĞÎÏ
+      $this->OutputVoteList($this->room->date); //æŠ•ç¥¨çµæœã‚’å‡ºåŠ›
     }
   }
 
-  //»ØÄê¤·¤¿ÆüÉÕ¤ÎÅêÉ¼·ë²Ì¤ò½ĞÎÏ¤¹¤ë
+  //æŒ‡å®šã—ãŸæ—¥ä»˜ã®æŠ•ç¥¨çµæœã‚’å‡ºåŠ›ã™ã‚‹
   function OutputVoteList($set_date){
     global $RQ_ARGS;
 
-    //»ØÄê¤µ¤ì¤¿ÆüÉÕ¤ÎÅêÉ¼·ë²Ì¤ò¼èÆÀ
+    //æŒ‡å®šã•ã‚ŒãŸæ—¥ä»˜ã®æŠ•ç¥¨çµæœã‚’å–å¾—
     $query = "SELECT message FROM system_message WHERE room_no = {$this->room->id} " .
       "AND date = {$set_date} and type = 'VOTE_KILL'";
     $vote_message_list = FetchArray($query);
-    if(count($vote_message_list) == 0) return false; //ÅêÉ¼Áí¿ô
+    if(count($vote_message_list) == 0) return false; //æŠ•ç¥¨ç·æ•°
 
-    $result_array = array(); //ÅêÉ¼·ë²Ì¤ò³ÊÇ¼¤¹¤ë
-    $this_vote_times = -1; //½ĞÎÏ¤¹¤ëÅêÉ¼²ó¿ô¤òµ­Ï¿
+    $result_array = array(); //æŠ•ç¥¨çµæœã‚’æ ¼ç´ã™ã‚‹
+    $this_vote_times = -1; //å‡ºåŠ›ã™ã‚‹æŠ•ç¥¨å›æ•°ã‚’è¨˜éŒ²
     $is_open_vote = $this->room->IsOption('open_vote');
-    foreach($vote_message_list as $vote_message){ //¤¤¤Ã¤¿¤óÇÛÎó¤Ë³ÊÇ¼¤¹¤ë
-      //¥¿¥Ö¶èÀÚ¤ê¤Î¥Ç¡¼¥¿¤òÊ¬³ä¤¹¤ë
+    foreach($vote_message_list as $vote_message){ //ã„ã£ãŸã‚“é…åˆ—ã«æ ¼ç´ã™ã‚‹
+      //ã‚¿ãƒ–åŒºåˆ‡ã‚Šã®ãƒ‡ãƒ¼ã‚¿ã‚’åˆ†å‰²ã™ã‚‹
       list($handle_name, $target_name, $voted_number, $vote_number, $vote_times)
         = explode("\t",$vote_message);
-      $vote_number_str = ($is_open_vote ? 'ÅêÉ¼Àè ' . $vote_number . ' É¼ ¢ª' : 'ÅêÉ¼Àè¢ª');
-      //É½¼¨¤µ¤ì¤ë¥á¥Ã¥»¡¼¥¸
+      $vote_number_str = ($is_open_vote ? 'æŠ•ç¥¨å…ˆ ' . $vote_number . ' ç¥¨ â†’' : 'æŠ•ç¥¨å…ˆâ†’');
+      //è¡¨ç¤ºã•ã‚Œã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
       $result_array[$vote_times][]
-        = '<tr><td class="name">' . $handle_name . '</td><td>' . $voted_number . ' É¼</td><td>'
+        = '<tr><td class="name">' . $handle_name . '</td><td>' . $voted_number . ' ç¥¨</td><td>'
         . $vote_number_str . '</td><td class="name">' . $target_name . '</td></tr>';
     }
 
-    //ÇÛÎó¤Ë³ÊÇ¼¤µ¤ì¤¿¥Ç¡¼¥¿¤ò½ĞÎÏ
-    if($RQ_ARGS->reverse_log){ //µÕ½çÉ½¼¨
+    //é…åˆ—ã«æ ¼ç´ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’å‡ºåŠ›
+    if($RQ_ARGS->reverse_log){ //é€†é †è¡¨ç¤º
       $start = 1;
       $end = count($result_array);
     }
@@ -237,7 +237,7 @@ ELEMENT;
       if(is_array($result_array[$vote_times])){
         $this->output .= <<<HEADER
 <table class="vote-list">
-<caption>{$set_date} ÆüÌÜ ( {$vote_times} ²óÌÜ)</caption>
+<caption>{$set_date} æ—¥ç›® ( {$vote_times} å›ç›®)</caption>
 
 HEADER;
         $this->output .= implode("\n", $result_array[$vote_times]) . "\n</table>\n";
@@ -250,32 +250,32 @@ HEADER;
     global $ROLE_IMG, $GAME_CONF;
     $self = & $this->self;
 
-    //¥²¡¼¥àÃæ¤Î¤ßÉ½¼¨¤¹¤ë
+    //ã‚²ãƒ¼ãƒ ä¸­ã®ã¿è¡¨ç¤ºã™ã‚‹
     if(!$this->room->IsPlaying()) return 'not suppored';
 
-    if($self->IsRole('human', 'suspect', 'unconscious')){ //Â¼¿Í¡¦ÉÔ¿³¼Ô¡¦Ìµ°Õ¼±
+    if($self->IsRole('human', 'suspect', 'unconscious')){ //æ‘äººãƒ»ä¸å¯©è€…ãƒ»ç„¡æ„è­˜
       $this->OutputRole_Human();
     }
-    elseif($self->IsWolf()){ //¿ÍÏµ·Ï
+    elseif($self->IsWolf()){ //äººç‹¼ç³»
       $this->OutputRole_Wolf();
     }
-    elseif($self->IsRoleGroup('mage')){ //Àê¤¤·Ï
+    elseif($self->IsRoleGroup('mage')){ //å ã„ç³»
       shot($this->OutputRole_Mage(), 'GamePlayFormat::OutputRole_Mage');
     }
-    elseif($self->IsRole('voodoo_killer')){ //±¢ÍÛ»Õ
+    elseif($self->IsRole('voodoo_killer')){ //é™°é™½å¸«
       $this->OutputRole_VoodooKiller();
     }
-    elseif($self->IsRole('yama_necromancer')) $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role); //ïåËâ
+    elseif($self->IsRole('yama_necromancer')) $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role); //é–»é­”
     elseif($self->IsRole( 'necromancer') || $self->IsRole( 'medium') !== false){
       $this->OutputRole_Necromancer();
     }
-    elseif($self->IsRoleGroup('mad')){ //¶¸¿Í·Ï
+    elseif($self->IsRoleGroup('mad')){ //ç‹‚äººç³»
       $this->OutputRole_Mad();
     }
-    elseif($self->IsRoleGroup('guard')){ //¼í¿Í·Ï
+    elseif($self->IsRoleGroup('guard')){ //ç‹©äººç³»
       $this->OutputRole_Guard();
     }
-    elseif($self->IsRole('anti_voodoo')){ //Ìñ¿À
+    elseif($self->IsRole('anti_voodoo')){ //å„ç¥
       $this->OutputRole_AntiVoodoo();
     }
     elseif($self->IsRole( 'reporter')){
@@ -310,13 +310,13 @@ HEADER;
       $this->OutputRole_Quiz();
     }
 
-    //¤³¤³¤«¤é·óÇ¤Ìò¿¦
-    if($this->self->IsRole('lost_ability')) $ROLE_IMG->DisplayImage('lost_ability'); //Ç½ÎÏ¼º¸ú
-    if($this->self->IsLovers()){ //Îø¿Í¤òÉ½¼¨¤¹¤ë
+    //ã“ã“ã‹ã‚‰å…¼ä»»å½¹è·
+    if($this->self->IsRole('lost_ability')) $ROLE_IMG->DisplayImage('lost_ability'); //èƒ½åŠ›å¤±åŠ¹
+    if($this->self->IsLovers()){ //æ‹äººã‚’è¡¨ç¤ºã™ã‚‹
       $this->OutputRole_Lovers();
     }
 
-    //¤³¤ì°Ê¹ß¤Ï¥µ¥ÖÌò¿¦Èó¸ø³«¥ª¥×¥·¥ç¥ó¤Î±Æ¶Á¤ò¼õ¤±¤ë
+    //ã“ã‚Œä»¥é™ã¯ã‚µãƒ–å½¹è·éå…¬é–‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å½±éŸ¿ã‚’å—ã‘ã‚‹
     if($this->room->IsOption('secret_sub_role')) return;
 
     $role_keys_list   = array_keys($GAME_CONF->sub_role_list);
@@ -338,7 +338,7 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
-    foreach($this->users->rows as $user){ //Ãç´Ö¾ğÊó¤ò¼ı½¸
+    foreach($this->users->rows as $user){ //ä»²é–“æƒ…å ±ã‚’åé›†
       if($user->IsSelf()) continue;
       if($user->IsWolf()){
 	$wolf_partner[] = $user->handle_name;
@@ -350,11 +350,11 @@ HEADER;
 	$unconscious_list[] = $user->handle_name;
       }
     }
-    $this->OutputPartner($wolf_partner, 'wolf_partner'); //Ãç´Ö¤òÉ½¼¨
-    $this->OutputPartner($mad_partner, 'mad_partner'); //Óñ¤­¶¸¿Í¤òÉ½¼¨
-    if($this->room->IsNight()) $this->OutputPartner($unconscious_list, 'unconscious_list'); //Ìë¤À¤±Ìµ°Õ¼±¤òÉ½¼¨
+    $this->OutputPartner($wolf_partner, 'wolf_partner'); //ä»²é–“ã‚’è¡¨ç¤º
+    $this->OutputPartner($mad_partner, 'mad_partner'); //å›ãç‹‚äººã‚’è¡¨ç¤º
+    if($this->room->IsNight()) $this->OutputPartner($unconscious_list, 'unconscious_list'); //å¤œã ã‘ç„¡æ„è­˜ã‚’è¡¨ç¤º
 
-    if($this->self->IsRole('tongue_wolf')){ //Àå²ÒÏµ¤Î³ú¤ß·ë²Ì¤òÉ½¼¨
+    if($this->self->IsRole('tongue_wolf')){ //èˆŒç¦ç‹¼ã®å™›ã¿çµæœã‚’è¡¨ç¤º
       $action = 'TONGUE_WOLF_RESULT';
       $sql    = $this->GetAbilityActionResult($action);
       $count  = mysql_num_rows($sql);
@@ -367,7 +367,7 @@ HEADER;
       }
     }
 
-    if($this->room->IsNight()) $this->OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //Ìë¤ÎÅêÉ¼
+    if($this->room->IsNight()) $this->OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //å¤œã®æŠ•ç¥¨
     return 'success';
   }
 
@@ -375,7 +375,7 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->IsRole('dummy_mage') ? 'mage' : $this->self->main_role);
 
-    //Àê¤¤·ë²Ì¤òÉ½¼¨
+    //å ã„çµæœã‚’è¡¨ç¤º
     $action = 'MAGE_RESULT';
     $sql    = $this->GetAbilityActionResult($action);
     $count  = mysql_num_rows($sql);
@@ -387,7 +387,7 @@ HEADER;
       }
     }
     
-    if($this->room->IsNight()) $this->OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //Ìë¤ÎÅêÉ¼
+    if($this->room->IsNight()) $this->OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //å¤œã®æŠ•ç¥¨
     return 'success';
   }
 
@@ -395,7 +395,7 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
-    //¸î±Ò·ë²Ì¤òÉ½¼¨
+    //è­·è¡›çµæœã‚’è¡¨ç¤º
     $sql = $this->GetAbilityActionResult('VOODOO_KILLER_SUCCESS');
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
@@ -406,7 +406,7 @@ HEADER;
       }
     }
 
-    //Ìë¤ÎÅêÉ¼
+    //å¤œã®æŠ•ç¥¨
     if($this->room->IsNight()) $this->OutputVoteMessage('mage-do', 'voodoo_killer_do', 'VOODOO_KILLER_DO');
   }
 
@@ -434,7 +434,7 @@ HEADER;
     }
     $this->output .= $ROLE_IMG->GenerateTag($role_name);
 
-    //È½Äê·ë²Ì¤òÉ½¼¨
+    //åˆ¤å®šçµæœã‚’è¡¨ç¤º
     $sql = $this->GetAbilityActionResult($action);
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
@@ -456,16 +456,16 @@ HEADER;
 	  $mad_partner[] = $user->handle_name;
 	}
       }
-      $this->OutputPartner($wolf_partner, 'wolf_partner'); //Ïµ¤òÉ½¼¨
-      if($this->self->IsRole('whisper_mad')) $this->OutputPartner($mad_partner, 'mad_partner'); //Óñ¤­¶¸¿Í¤òÉ½¼¨
+      $this->OutputPartner($wolf_partner, 'wolf_partner'); //ç‹¼ã‚’è¡¨ç¤º
+      if($this->self->IsRole('whisper_mad')) $this->OutputPartner($mad_partner, 'mad_partner'); //å›ãç‹‚äººã‚’è¡¨ç¤º
     }
-    elseif($this->self->IsRole('jammer_mad') && $this->room->IsNight()){ //¼ÙËâ¶¸¿Í
+    elseif($this->self->IsRole('jammer_mad') && $this->room->IsNight()){ //é‚ªé­”ç‹‚äºº
       $this->OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO');
     }
-    elseif($this->self->IsActiveRole('trap_mad') && $is_after_first_night){ //æ«»Õ
+    elseif($this->self->IsActiveRole('trap_mad') && $is_after_first_night){ //ç½ å¸«
       $this->OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
     }
-    elseif($this->self->IsRole('voodoo_mad') && $this->room->IsNight()){ //¼ö½Ñ»Õ
+    elseif($this->self->IsRole('voodoo_mad') && $this->room->IsNight()){ //å‘ªè¡“å¸«
       $this->OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_MAD_DO');
     }
   }
@@ -474,7 +474,7 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->IsRole('dummy_guard') ? 'guard' : $this->self->main_role);
 
-    //¸î±Ò·ë²Ì¤òÉ½¼¨
+    //è­·è¡›çµæœã‚’è¡¨ç¤º
     $sql = $this->GetAbilityActionResult('GUARD_SUCCESS');
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
@@ -485,7 +485,7 @@ HEADER;
       }
     }
 
-    if(! $this->self->IsRole('dummy_guard')){ //¼í¤ê·ë²Ì¤òÉ½¼¨
+    if(! $this->self->IsRole('dummy_guard')){ //ç‹©ã‚Šçµæœã‚’è¡¨ç¤º
       $sql = $this->GetAbilityActionResult('GUARD_HUNTED');
       $count = mysql_num_rows($sql);
       for($i = 0; $i < $count; $i++){
@@ -497,14 +497,14 @@ HEADER;
       }
     }
 
-    if($is_after_first_night) $this->OutputVoteMessage('guard-do', 'guard_do', 'GUARD_DO'); //Ìë¤ÎÅêÉ¼
+    if($is_after_first_night) $this->OutputVoteMessage('guard-do', 'guard_do', 'GUARD_DO'); //å¤œã®æŠ•ç¥¨
   }
 
   function OutputRole_AntiVoodoo() {
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
-    //¸î±Ò·ë²Ì¤òÉ½¼¨
+    //è­·è¡›çµæœã‚’è¡¨ç¤º
     $sql = $this->GetAbilityActionResult('ANTI_VOODOO_SUCCESS');
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
@@ -516,7 +516,7 @@ HEADER;
     }
 
     if($is_after_first_night){
-      $this->OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO'); //Ìë¤ÎÅêÉ¼
+      $this->OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO'); //å¤œã®æŠ•ç¥¨
     }
   }
 
@@ -524,27 +524,27 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
-    //Èø¹Ô·ë²Ì¤òÉ½¼¨
+    //å°¾è¡Œçµæœã‚’è¡¨ç¤º
     $action = 'REPORTER_SUCCESS';
     $sql    = $this->GetAbilityActionResult($action);
     $count  = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
       list($actor, $target, $wolf_handle) = ParseStrings(mysql_result($sql, $i, 0), $action);
       if($this->self->handle_name == $actor){
-	$target .= ' ¤µ¤ó¤Ï ' . $wolf_handle;
+	$target .= ' ã•ã‚“ã¯ ' . $wolf_handle;
 	$this->OutputAbilityResult('reporter_result_header', $target, 'reporter_result_footer');
 	break;
       }
     }
 
-    if($is_after_first_night) $this->OutputVoteMessage('guard-do', 'reporter_do', 'REPORTER_DO'); //Ìë¤ÎÅêÉ¼
+    if($is_after_first_night) $this->OutputVoteMessage('guard-do', 'reporter_do', 'REPORTER_DO'); //å¤œã®æŠ•ç¥¨
   }
 
   function OutputRole_Common(){
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag('common');
 
-    //Ãç´Ö¤òÉ½¼¨
+    //ä»²é–“ã‚’è¡¨ç¤º
     foreach($this->users->rows as $user){
       if($user->IsSelf()) continue;
       if(($this->self->IsRole('common') && $user->IsRole('common')) ||
@@ -569,12 +569,12 @@ HEADER;
       }
     }
     if(! $this->self->IsRole('silver_fox')){
-      $this->OutputPartner($fox_partner, 'fox_partner'); //ÍÅ¸Ñ¤ÎÃç´Ö¤òÉ½¼¨
-      $this->OutputPartner($child_fox_partner, 'child_fox_partner'); //»Ò¸Ñ¤ÎÃç´Ö¤òÉ½¼¨
+      $this->OutputPartner($fox_partner, 'fox_partner'); //å¦–ç‹ã®ä»²é–“ã‚’è¡¨ç¤º
+      $this->OutputPartner($child_fox_partner, 'child_fox_partner'); //å­ç‹ã®ä»²é–“ã‚’è¡¨ç¤º
     }
 
     if($this->self->IsRole('child_fox')){
-      //Àê¤¤·ë²Ì¤òÉ½¼¨
+      //å ã„çµæœã‚’è¡¨ç¤º
       $action = 'CHILD_FOX_RESULT';
       $sql    = $this->GetAbilityActionResult($action);
       $count  = mysql_num_rows($sql);
@@ -586,14 +586,14 @@ HEADER;
 	}
       }
 
-      if($this->room->IsNight()) $this->OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //Ìë¤ÎÅêÉ¼
+      if($this->room->IsNight()) $this->OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //å¤œã®æŠ•ç¥¨
     }
-    elseif($this->self->IsRole('voodoo_fox') && $this->room->IsNight()){ //¶åÈø
+    elseif($this->self->IsRole('voodoo_fox') && $this->room->IsNight()){ //ä¹å°¾
       $this->OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
     }
 
     if($this->self->IsRole('fox', 'cursed_fox', 'voodoo_fox')){
-      //¸Ñ¤¬ÁÀ¤ï¤ì¤¿¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨
+      //ç‹ãŒç‹™ã‚ã‚ŒãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
       $sql = $this->GetAbilityActionResult('FOX_EAT');
       $count = mysql_num_rows($sql);
       for($i = 0; $i < $count; $i++){
@@ -616,7 +616,7 @@ HEADER;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
     if(! $this->room->IsOpenCast()){
-      //ÁÉÀ¸·ë²Ì¤òÉ½¼¨
+      //è˜‡ç”Ÿçµæœã‚’è¡¨ç¤º
       $action = 'POISON_CAT_RESULT';
       $sql    = $this->GetAbilityActionResult($action);
       $count  = mysql_num_rows($sql);
@@ -628,7 +628,7 @@ HEADER;
 	}
       }
 
-      if($is_after_first_night){ //Ìë¤ÎÅêÉ¼
+      if($is_after_first_night){ //å¤œã®æŠ•ç¥¨
 	$this->OutputVoteMessage('poison-cat-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
@@ -638,7 +638,7 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
-    //²òÆÇ·ë²Ì¤òÉ½¼¨
+    //è§£æ¯’çµæœã‚’è¡¨ç¤º
     $sql = $this->GetAbilityActionResult('PHARMACIST_SUCCESS');
     $count = mysql_num_rows($sql);
     for($i = 0; $i < $count; $i++){
@@ -653,7 +653,7 @@ HEADER;
   function OutputRole_Assasin(){
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
-    if($is_after_first_night){ //Ìë¤ÎÅêÉ¼
+    if($is_after_first_night){ //å¤œã®æŠ•ç¥¨
       $this->OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }    
   }
@@ -662,7 +662,7 @@ HEADER;
     global $ROLE_IMG;
     $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
 
-    //¼«Ê¬¤¬Ìğ¤òÂÇ¤Ã¤¿Îø¿Í (¼«Ê¬¼«¿È´Ş¤à) ¤òÉ½¼¨¤¹¤ë
+    //è‡ªåˆ†ãŒçŸ¢ã‚’æ‰“ã£ãŸæ‹äºº (è‡ªåˆ†è‡ªèº«å«ã‚€) ã‚’è¡¨ç¤ºã™ã‚‹
     foreach($this->users->rows as $user){
       if($user->IsLovers() && in_array($this->self->user_no, $user->partner_list['lovers'])){
 	$cupid_pair[] = $user->handle_name;
@@ -670,14 +670,14 @@ HEADER;
     }
     $this->OutputPartner($cupid_pair, 'cupid_pair');
 
-    if($is_first_night) $this->OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //½éÆüÌë¤ÎÅêÉ¼
+    if($is_first_night) $this->OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //åˆæ—¥å¤œã®æŠ•ç¥¨
   }
 
   function OutputRole_Mania() {
     global $ROLE_IMG;
     if($self->IsRole( 'mania')){
       $this->output .= $ROLE_IMG->GenerateTag($this->self->main_role);
-      if($is_first_night) $this->OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO'); //½éÆüÌë¤ÎÅêÉ¼
+      if($is_first_night) $this->OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO'); //åˆæ—¥å¤œã®æŠ•ç¥¨
     }
     if ($this->self->IsRole('copied')) {
       $action = 'MANIA_RESULT';
@@ -710,20 +710,20 @@ HEADER;
     $this->OutputPartner($lovers_partner, 'lovers_header', 'lovers_footer');
   }
 
-  //Ìò¿¦ÀâÌÀ¤òÉ½¼¨¤¹¤ë
+  //å½¹è·èª¬æ˜ã‚’è¡¨ç¤ºã™ã‚‹
   function OutputRoleComment($role){
     global $ROLE_IMG;
     $this->output .=  '<img src="' . $ROLE_IMG->$role . '"><br>'."\n";
   }
 
-  //Ãç´Ö¤òÉ½¼¨¤¹¤ë
+  //ä»²é–“ã‚’è¡¨ç¤ºã™ã‚‹
   function OutputPartner($partner_list, $header, $footer = NULL){
     global $ROLE_IMG;
 
-    if(count($partner_list) < 1) return false; //Ãç´Ö¤¬¤¤¤Ê¤±¤ì¤ĞÉ½¼¨¤·¤Ê¤¤
+    if(count($partner_list) < 1) return false; //ä»²é–“ãŒã„ãªã‘ã‚Œã°è¡¨ç¤ºã—ãªã„
 
     $message = $ROLE_IMG->GenerateTag($header);
-    $partners = implode('¤µ¤ó ', $partner_list) . '¤µ¤ó';  //implode¤Î»ÅÍÍ¾åËöÈø¤Ë¤Ï·É¾Î¤¬¤Ä¤«¤Ê¤¤¡£
+    $partners = implode('ã•ã‚“ ', $partner_list) . 'ã•ã‚“';  //implodeã®ä»•æ§˜ä¸Šæœ«å°¾ã«ã¯æ•¬ç§°ãŒã¤ã‹ãªã„ã€‚
     if($footer) $message_end .= $ROLE_IMG->GenerateTag($footer);
     $this->output .= <<<LINE
 <div id="partners">{$message}{$partners}{$message_end}</div>
@@ -731,14 +731,14 @@ HEADER;
 LINE;
   }
 
-  //Ç½ÎÏÈ¯Æ°·ë²Ì¤ò¥Ç¡¼¥¿¥Ù¡¼¥¹¤ËÌä¤¤¹ç¤ï¤»¤ë
+  //èƒ½åŠ›ç™ºå‹•çµæœã‚’ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«å•ã„åˆã‚ã›ã‚‹
   function GetAbilityActionResult($action){
     $yesterday = $this->room->date - 1;
     return mysql_query("SELECT message FROM system_message WHERE room_no = {$this->room->id}
   			AND date = $yesterday AND type = '$action'");
   }
 
-  //Ç½ÎÏÈ¯Æ°·ë²Ì¤òÉ½¼¨¤¹¤ë
+  //èƒ½åŠ›ç™ºå‹•çµæœã‚’è¡¨ç¤ºã™ã‚‹
   function OutputAbilityResult($header, $target, $footer = NULL){
     global $ROLE_IMG;
 
@@ -749,56 +749,56 @@ LINE;
     $this->output .= '</div>'."\n";
   }
 
-  //¼«Ê¬¤ÎÌ¤ÅêÉ¼¥Á¥§¥Ã¥¯
+  //è‡ªåˆ†ã®æœªæŠ•ç¥¨ãƒã‚§ãƒƒã‚¯
   function CheckSelfVote(){
     $room_no = $this->room->id;
     $date = $this->room->date;
     $uname = $this->self->uname;
 
-    //ÅêÉ¼²ó¿ô¤ò¼èÆÀ(ºÆÅêÉ¼¤Ê¤é $vote_times ¤ÏÁı¤¨¤ë)
+    //æŠ•ç¥¨å›æ•°ã‚’å–å¾—(å†æŠ•ç¥¨ãªã‚‰ $vote_times ã¯å¢—ãˆã‚‹)
     $sql = mysql_query("SELECT message FROM system_message WHERE room_no = $room_no
   			AND type = 'VOTE_TIMES' AND date = $date");
     $vote_times = (int)mysql_result($sql, 0, 0);
-    $this->output .=  '<div class="self-vote">ÅêÉ¼ ' . $vote_times . ' ²óÌÜ¡§';
+    $this->output .=  '<div class="self-vote">æŠ•ç¥¨ ' . $vote_times . ' å›ç›®ï¼š';
 
-    //ÅêÉ¼ºÑ¤ß¤«¤É¤¦¤«
+    //æŠ•ç¥¨æ¸ˆã¿ã‹ã©ã†ã‹
     $sql = mysql_query("SELECT COUNT(uname) FROM vote WHERE room_no = $room_no
   			AND uname = '$uname' AND date = $date AND vote_times = $vote_times
   			AND situation = 'VOTE_KILL'");
-    $this->output .=  (mysql_result($sql, 0, 0) ? 'ÅêÉ¼ºÑ¤ß' : '¤Ş¤ÀÅêÉ¼¤·¤Æ¤¤¤Ş¤»¤ó') . '</div>'."\n";
+    $this->output .=  (mysql_result($sql, 0, 0) ? 'æŠ•ç¥¨æ¸ˆã¿' : 'ã¾ã æŠ•ç¥¨ã—ã¦ã„ã¾ã›ã‚“') . '</div>'."\n";
   }
 
-  //Ìë¤ÎÌ¤ÅêÉ¼¥Á¥§¥Ã¥¯
+  //å¤œã®æœªæŠ•ç¥¨ãƒã‚§ãƒƒã‚¯
   function CheckNightVote($action, $class){
     global $MESSAGE;
 
-    $query = "SELECT uname FROM vote WHERE room_no = {$this->room->id} "; //¶¦Í­¥¯¥¨¥ê
-    if($action != 'WOLF_EAT') $query .= "AND uname = '{$this->self->uname}' "; //¿ÍÏµ¤ÏÃ¯¤Ç¤â OK
+    $query = "SELECT uname FROM vote WHERE room_no = {$this->room->id} "; //å…±æœ‰ã‚¯ã‚¨ãƒª
+    if($action != 'WOLF_EAT') $query .= "AND uname = '{$this->self->uname}' "; //äººç‹¼ã¯èª°ã§ã‚‚ OK
     $sql = mysql_query($query . "AND situation = '$action'");
 
-    if(mysql_num_rows($sql) != 0) return false; //ÅêÉ¼ºÑ¤ß¤Ê¤é¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤
-    $class_str   = 'ability-' . $class; //¥¯¥é¥¹Ì¾¤Ï¥¢¥ó¥À¡¼¥¹¥³¥¢¤ò»È¤ï¤Ê¤¤¤Ç¤ª¤¯
+    if(mysql_num_rows($sql) != 0) return false; //æŠ•ç¥¨æ¸ˆã¿ãªã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ãªã„
+    $class_str   = 'ability-' . $class; //ã‚¯ãƒ©ã‚¹åã¯ã‚¢ãƒ³ãƒ€ãƒ¼ã‚¹ã‚³ã‚¢ã‚’ä½¿ã‚ãªã„ã§ãŠã
     $message_str = 'ability_' . strtolower($action);
     $this->output .=  '<span class="' . $class_str . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
   }
 
-  //Ìë¤ÎÌ¤ÅêÉ¼¥á¥Ã¥»¡¼¥¸½ĞÎÏ
+  //å¤œã®æœªæŠ•ç¥¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡ºåŠ›
   function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
     global $MESSAGE, $ROOM;
 
     if(! $ROOM->test_mode){
-      //ÅêÉ¼ºÑ¤ß¤Ê¤é¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤
+      //æŠ•ç¥¨æ¸ˆã¿ãªã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ãªã„
       if(CheckSelfVoteNight($situation, $not_situation)) return false;
     }
 
-    $class_str   = 'ability-' . $class; //¥¯¥é¥¹Ì¾¤Ï¥¢¥ó¥À¡¼¥¹¥³¥¢¤ò»È¤ï¤Ê¤¤¤Ç¤ª¤¯
+    $class_str   = 'ability-' . $class; //ã‚¯ãƒ©ã‚¹åã¯ã‚¢ãƒ³ãƒ€ãƒ¼ã‚¹ã‚³ã‚¢ã‚’ä½¿ã‚ãªã„ã§ãŠã
     $message_str = 'ability_' . $sentence;
     $this->output .= '<span class="' . $class_str . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
   }
 
   function OutputTermChanged($date, $situation, $new_date, $new_situation){
-    $message = $new_situation == 'night' ? 'Æü¤¬Íî¤Á¡¢°Å¤¯ÀÅ¤«¤ÊÌë¤¬¤ä¤Ã¤Æ¤­¤Ş¤·¤¿¡£'
-        : 'Ìë¤¬ÌÀ¤±¡¢' . $new_date . 'ÆüÌÜ¤ÎÄ«¤¬¤ä¤Ã¤Æ¤­¤Ş¤·¤¿¡£';
+    $message = $new_situation == 'night' ? 'æ—¥ãŒè½ã¡ã€æš—ãé™ã‹ãªå¤œãŒã‚„ã£ã¦ãã¾ã—ãŸã€‚'
+        : 'å¤œãŒæ˜ã‘ã€' . $new_date . 'æ—¥ç›®ã®æœãŒã‚„ã£ã¦ãã¾ã—ãŸã€‚';
     $this->output .= '<dt class="system"><br></dt><dd class="system">&lt&lt' . $message . "&gt&gt</dd>\n";
     return false;
   }

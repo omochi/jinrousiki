@@ -6,10 +6,10 @@ $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 $INIT_CONF->LoadFile('chatengine');
 if(! $DEBUG_MODE){
-  OutputActionResult('ChatEngine [¥Æ¥¹¥È]', '¥Ç¥Ð¥Ã¥°µ¡Ç½¤Î»ÈÍÑ¤Ïµö²Ä¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
+  OutputActionResult('ChatEngine [ãƒ†ã‚¹ãƒˆ]', 'ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã®ä½¿ç”¨ã¯è¨±å¯ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚');
 }
 
-// ¥Æ¥¹¥ÈÂÐ¾Ý¤Î¥í¡¼¥É¤È¼Â¹Ô¤òÀ©¸æ¤·¤Þ¤¹¡£
+// ãƒ†ã‚¹ãƒˆå¯¾è±¡ã®ãƒ­ãƒ¼ãƒ‰ã¨å®Ÿè¡Œã‚’åˆ¶å¾¡ã—ã¾ã™ã€‚
 class ChatEngineTestCore extends RequestBaseGamePlay{
   var $all_mode = array('game_play', 'game_after', 'game_heaven');
 
@@ -26,7 +26,7 @@ class ChatEngineTestCore extends RequestBaseGamePlay{
       $this->GetItems(null, 'date', 'day_night', 'uno', 'time');
       $this->initiate = 'init_playing';
       $this->run = 'test_view';
-      break; //view_playing¤Î½é´ü²½ ¤³¤³¤Þ¤Ç
+      break; //view_playingã®åˆæœŸåŒ– ã“ã“ã¾ã§
 
     default:
       $this->initiate = 'test_nothing';
@@ -111,7 +111,7 @@ $options
 <td><input name="time" type="text" value="{$this->time}"></td>
 </tr>
 </table>
-<button type="submit">¥ê¥í¡¼¥É</button>
+<button type="submit">ãƒªãƒ­ãƒ¼ãƒ‰</button>
 </form>
 
 FORM;
@@ -122,21 +122,21 @@ FORM;
     shot("init_playing\r\n");
     shot(serialize($this), 'TestCore');
 
-    $DB_CONF->Connect(true, true); //DB ÀÜÂ³
+    $DB_CONF->Connect(true, true); //DB æŽ¥ç¶š
 
     $room_no = $this->room_no;
 
-    $ROOM = new RoomDataSet($this); //Â¼¾ðÊó¤ò¥í¡¼¥É
+    $ROOM = new RoomDataSet($this); //æ‘æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
     $ROOM->status = 'playing';
     $ROOM->date = $this->date;
     $ROOM->day_night = $this->day_night;
-    $ROOM->dead_mode    = $this->dead_mode; //»àË´¼Ô¥â¡¼¥É
-    $ROOM->heaven_mode  = $this->heaven_mode; //ÎîÏÃ¥â¡¼¥É
-    $ROOM->system_time  = TZTime() - $this->time; //¸½ºß»þ¹ï¤ò¼èÆÀ
-    $ROOM->sudden_death = 0; //ÆÍÁ³»à¼Â¹Ô¤Þ¤Ç¤Î»Ä¤ê»þ´Ö
+    $ROOM->dead_mode    = $this->dead_mode; //æ­»äº¡è€…ãƒ¢ãƒ¼ãƒ‰
+    $ROOM->heaven_mode  = $this->heaven_mode; //éœŠè©±ãƒ¢ãƒ¼ãƒ‰
+    $ROOM->system_time  = TZTime() - $this->time; //ç¾åœ¨æ™‚åˆ»ã‚’å–å¾—
+    $ROOM->sudden_death = 0; //çªç„¶æ­»å®Ÿè¡Œã¾ã§ã®æ®‹ã‚Šæ™‚é–“
 
-    $USERS = new UserDataSet($this); //¥æ¡¼¥¶¾ðÊó¤ò¥í¡¼¥É
-    //¼«Ê¬¤Î¾ðÊó¤ò¥í¡¼¥É
+    $USERS = new UserDataSet($this); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+    //è‡ªåˆ†ã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
     if (array_key_exists($this->uno, $USERS->rows))
       $SELF = $USERS->rows[$this->uno];
     else
@@ -157,7 +157,7 @@ FORM;
     $target = ChatEngine::Initialize($this->TestItems->test_mode . '.php');
     shot($target->OutputDocumentHeader(), 'ChatEngine::OutputDocumentHeader');
     $target->output .= $this->generateTestPanel();
-    $target->Flush(); //¤³¤³¤Ç¥Õ¥é¥Ã¥·¥å¤·¤Ê¤¤¤È¥¨¥é¡¼¤ÇÍî¤Á¤¿ºÝ¤Ë¥Õ¥©¡¼¥à¤¬¤Ç¤Ê¤¤¡£
+    $target->Flush(); //ã“ã“ã§ãƒ•ãƒ©ãƒƒã‚·ãƒ¥ã—ãªã„ã¨ã‚¨ãƒ©ãƒ¼ã§è½ã¡ãŸéš›ã«ãƒ•ã‚©ãƒ¼ãƒ ãŒã§ãªã„ã€‚
     $target->OutputContentHeader();
     $target->OutputContent();
     $target->OutputContentFooter();

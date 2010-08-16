@@ -3,75 +3,75 @@ require_once('include/init.php');
 $INIT_CONF->LoadClass('SESSION', 'ICON_CONF', 'USER_ICON');
 
 if($USER_ICON->disable_upload){
-  OutputActionResult('ецб╝е╢еведе│еєеве├е╫еэб╝е╔', '╕╜║▀еве├е╫еэб╝е╔д╧─ф╗▀д╖д╞ддд▐д╣');
+  OutputActionResult('уГжуГ╝уВ╢уВвуВдуВ│уГ│уВвуГГуГЧуГнуГ╝уГЙ', 'чП╛хЬиуВвуГГуГЧуГнуГ╝уГЙуБпхБЬцнвуБЧуБжуБДуБ╛уБЩ');
 }
-$INIT_CONF->LoadRequest('RequestIconUpload'); //░·┐ЇдЄ╝ш╞└
+$INIT_CONF->LoadRequest('RequestIconUpload'); //х╝ХцХ░уВТхПЦх╛Ч
 is_null($RQ_ARGS->command) ? OutputUploadIconPage() : UploadIcon();
 
-//-- ┤╪┐Ї --//
-//┼ъ╣╞е╟б╝е┐е┴езе├еп
+//-- щЦвцХ░ --//
+//цКХчи┐уГЗуГ╝уВ┐уГБуВзуГГуВп
 function UploadIcon(){
   global $DB_CONF, $ICON_CONF, $USER_ICON, $RQ_ARGS, $SESSION;
 
-  if(CheckReferer('icon_upload.php')){ //еъе╒ебеще┴езе├еп
-    OutputActionResult('ецб╝е╢еведе│еєеве├е╫еэб╝е╔', '╠╡╕·д╩евепе╗е╣д╟д╣');
+  if(CheckReferer('icon_upload.php')){ //уГкуГХуВбуГйуГБуВзуГГуВп
+    OutputActionResult('уГжуГ╝уВ╢уВвуВдуВ│уГ│уВвуГГуГЧуГнуГ╝уГЙ', 'чДбхК╣уБкуВвуВпуВ╗уВ╣уБзуБЩ');
   }
-  $title = 'еведе│еє┼╨╧┐еиещб╝'; // еиещб╝е┌б╝е╕═╤е┐еде╚еы
+  $title = 'уВвуВдуВ│уГ│чЩ╗щМ▓уВиуГйуГ╝'; // уВиуГйуГ╝уГЪуГ╝уВ╕чФиуВ┐уВдуГИуГл
   $query_no = ' WHERE icon_no = ' . $RQ_ARGS->icon_no;
 
   switch($RQ_ARGS->command){
   case 'upload':
     break;
 
-  case 'success': //е╗е├е╖ечеє ID ╛Ё╩єдЄ DB длдщ║я╜№
+  case 'success': //уВ╗уГГуВ╖уГзуГ│ ID цГЕха▒уВТ DB уБЛуВЙхЙКщЩд
     $DB_CONF->Connect();
     SendQuery('UPDATE user_icon SET session_id = NULL' . $query_no, true);
-    OutputActionResult('еведе│еє┼╨╧┐┤░╬╗',
-		       '┼╨╧┐┤░╬╗бзеведе│еє░ь═ўд╬е┌б╝е╕д╦╚Їд╙д▐д╣бг<br>'."\n" .
-		       '└┌дъ┬╪дядщд╩ддд╩дщ <a href="icon_view.php">д│д│</a> бг',
+    OutputActionResult('уВвуВдуВ│уГ│чЩ╗щМ▓хоМф║Ж',
+		       'чЩ╗щМ▓хоМф║Жя╝ЪуВвуВдуВ│уГ│ф╕АшжзуБоуГЪуГ╝уВ╕уБлщгЫуБ│уБ╛уБЩуАВ<br>'."\n" .
+		       'хИЗуВКцЫ┐уВПуВЙуБкуБДуБкуВЙ <a href="icon_view.php">уБУуБУ</a> уАВ',
 		       'icon_view.php');
     break;
 
   case 'cancel':
-    //DB длдщеведе│еєд╬е╒ебедеы╠╛д╚┼╨╧┐╗■д╬е╗е├е╖ечеє ID дЄ╝ш╞└
-    $DB_CONF->Connect(); //DB └▄┬│
+    //DB уБЛуВЙуВвуВдуВ│уГ│уБоуГХуВбуВдуГлхРНуБичЩ╗щМ▓цЩВуБоуВ╗уГГуВ╖уГзуГ│ ID уВТхПЦх╛Ч
+    $DB_CONF->Connect(); //DB цОеч╢Ъ
     extract(FetchAssoc('SELECT icon_filename, session_id FROM user_icon' . $query_no, true));
 
-    //е╗е├е╖ечеє ID │╬╟з
+    //уВ╗уГГуВ╖уГзуГ│ ID чв║шкН
     if($session_id != $SESSION->Get()){
-      OutputActionResult('еведе│еє║я╜№╝║╟╘', '║я╜№╝║╟╘бзеве├е╫еэб╝е╔е╗е├е╖ечеєдм░ь├╫д╖д▐д╗дє');
+      OutputActionResult('уВвуВдуВ│уГ│хЙКщЩдхд▒цХЧ', 'хЙКщЩдхд▒цХЧя╝ЪуВвуГГуГЧуГнуГ╝уГЙуВ╗уГГуВ╖уГзуГ│уБМф╕АшЗ┤уБЧуБ╛уБЫуВУ');
     }
     unlink($ICON_CONF->path . '/' . $icon_filename);
     SendQuery('DELETE FROM user_icon' . $query_no);
     SendQuery('OPTIMIZE TABLE user_icon', true);
 
-    //DB └▄┬│▓Є╜№д╧ OutputActionResult() ╖╨═│
-    $sentence = '║я╜№┤░╬╗бз┼╨╧┐е┌б╝е╕д╦╚Їд╙д▐д╣бг<br>'."\n" .
-      '└┌дъ┬╪дядщд╩ддд╩дщ <a href="icon_upload.php">д│д│</a> бг';
-    OutputActionResult('еведе│еє║я╜№┤░╬╗', $sentence, 'icon_upload.php');
+    //DB цОеч╢ЪшзгщЩдуБп OutputActionResult() ч╡МчФ▒
+    $sentence = 'хЙКщЩдхоМф║Жя╝ЪчЩ╗щМ▓уГЪуГ╝уВ╕уБлщгЫуБ│уБ╛уБЩуАВ<br>'."\n" .
+      'хИЗуВКцЫ┐уВПуВЙуБкуБДуБкуВЙ <a href="icon_upload.php">уБУуБУ</a> уАВ';
+    OutputActionResult('уВвуВдуВ│уГ│хЙКщЩдхоМф║Ж', $sentence, 'icon_upload.php');
     break;
 
   default:
-    OutputActionResult($title, '╠╡╕·д╩е│е▐еєе╔д╟д╣');
+    OutputActionResult($title, 'чДбхК╣уБкуВ│уГЮуГ│уГЙуБзуБЩ');
     break;
   }
 
-  //еве├е╫еэб╝е╔д╡дьд┐е╒ебедеыд╬еиещб╝е┴езе├еп
+  //уВвуГГуГЧуГнуГ╝уГЙуБХуВМуБЯуГХуВбуВдуГлуБоуВиуГйуГ╝уГБуВзуГГуВп
   if($_FILES['upfile']['error'][$i] != 0){
-    $sentence = "е╒ебедеыд╬еве├е╫еэб╝е╔еиещб╝дм╚п└╕д╖д▐д╖д┐бг<br>\n║╞┼┘╝┬╣╘д╖д╞дпд└д╡ддбг";
+    $sentence = "уГХуВбуВдуГлуБоуВвуГГуГЧуГнуГ╝уГЙуВиуГйуГ╝уБМчЩ║чФЯуБЧуБ╛уБЧуБЯуАВ<br>\nхЖНх║жхоЯшбМуБЧуБжуБПуБауБХуБДуАВ";
     OutputActionResult($title, $sentence);
   }
 
-  extract($RQ_ARGS->ToArray()); //░·┐ЇдЄ┼╕│л
+  extract($RQ_ARGS->ToArray()); //х╝ХцХ░уВТх▒ХщЦЛ
 
-  //╢ї╟Єе┴езе├еп
-  if($icon_name == '') OutputActionResult($title, 'еведе│еє╠╛дЄ╞■╬╧д╖д╞дпд└д╡дд');
+  //чй║чЩ╜уГБуВзуГГуВп
+  if($icon_name == '') OutputActionResult($title, 'уВвуВдуВ│уГ│хРНуВТхЕехКЫуБЧуБжуБПуБауБХуБД');
 
-  //еведе│еє╠╛д╬╩╕╗·╬є─╣д╬е┴езе├еп
-  $text_list = array('icon_name' => 'еведе│еє╠╛',
-		     'appearance' => '╜╨┼╡',
-		     'category' => 'еле╞е┤еъ',
-		     'author' => 'еведе│еєд╬║ю╝╘');
+  //уВвуВдуВ│уГ│хРНуБоцЦЗхнЧхИЧщХ╖уБоуГБуВзуГГуВп
+  $text_list = array('icon_name' => 'уВвуВдуВ│уГ│хРН',
+		     'appearance' => 'хЗ║хЕ╕',
+		     'category' => 'уВлуГЖуВ┤уГк',
+		     'author' => 'уВвуВдуВ│уГ│уБоф╜ЬшАЕ');
   foreach($text_list as $text => $label){
     $value = $RQ_ARGS->$text;
     if(strlen($value) > $USER_ICON->name){
@@ -79,13 +79,13 @@ function UploadIcon(){
     }
   }
 
-  //е╒ебедеые╡еде║д╬е┴езе├еп
-  if($size == 0) OutputActionResult($title, 'е╒ебедеыдм╢їд╟д╣');
+  //уГХуВбуВдуГлуВ╡уВдуВ║уБоуГБуВзуГГуВп
+  if($size == 0) OutputActionResult($title, 'уГХуВбуВдуГлуБМчй║уБзуБЩ');
   if($size > $USER_ICON->size){
-    OutputActionResult($title, 'е╒ебедеые╡еде║д╧ ' . $USER_ICON->IconFileSizeMax());
+    OutputActionResult($title, 'уГХуВбуВдуГлуВ╡уВдуВ║уБп ' . $USER_ICON->IconFileSizeMax());
   }
 
-  //е╒ебедеыд╬╝я╬рд╬е┴езе├еп
+  //уГХуВбуВдуГлуБочиощбЮуБоуГБуВзуГГуВп
   switch($type){
   case 'image/jpeg':
   case 'image/pjpeg':
@@ -102,56 +102,56 @@ function UploadIcon(){
     break;
 
   default:
-    OutputActionResult($title, $type . ' : jpgбвgifбвpng ░╩│░д╬е╒ебедеыд╧┼╨╧┐д╟днд▐д╗дє');
+    OutputActionResult($title, $type . ' : jpgуАБgifуАБpng ф╗ехдЦуБоуГХуВбуВдуГлуБпчЩ╗щМ▓уБзуБНуБ╛уБЫуВУ');
     break;
   }
 
-  //┐з╗╪─ъд╬е┴езе├еп
+  //шЙ▓цМЗхоЪуБоуГБуВзуГГуВп
   if(strlen($color) != 7 && ! preg_match('/^#[0123456789abcdefABCDEF]{6}/', $color)){
-    $sentence = '┐з╗╪─ъдм└╡д╖дпдвдъд▐д╗дєбг<br>'."\n" .
-      '╗╪─ъд╧ (╬убз#6699CC) д╬дшджд╦ RGB 16┐╩┐Ї╗╪─ъд╟╣╘д├д╞дпд└д╡ддбг<br>'."\n" .
-      '┴ў┐од╡дьд┐┐з╗╪─ъ вк <span class="color">' . $color . '</span>';
+    $sentence = 'шЙ▓цМЗхоЪуБМцнгуБЧуБПуБВуВКуБ╛уБЫуВУуАВ<br>'."\n" .
+      'цМЗхоЪуБп (ф╛Ля╝Ъ#6699CC) уБоуВИуБЖуБл RGB 16щА▓цХ░цМЗхоЪуБзшбМуБгуБжуБПуБауБХуБДуАВ<br>'."\n" .
+      'щАБф┐буБХуВМуБЯшЙ▓цМЗхоЪ тЖТ <span class="color">' . $color . '</span>';
     OutputActionResult($title, $sentence);
   }
   $color = strtoupper($color);
 
-  //еведе│еєд╬╣тд╡д╚╔¤дЄе┴езе├еп
+  //уВвуВдуВ│уГ│уБощлШуБХуБих╣ЕуВТуГБуВзуГГуВп
   list($width, $height) = getimagesize($tmp_name);
   if($width > $USER_ICON->width || $height > $USER_ICON->height){
-    $sentence = 'еведе│еєд╧ ' . $USER_ICON->IconSizeMax() . ' д╖дл┼╨╧┐д╟днд▐д╗дєбг<br>'."\n" .
-      '┴ў┐од╡дьд┐е╒ебедеы вк <span class="color">╔¤ ' . $width . 'бв╣тд╡ ' . $height . '</span>';
+    $sentence = 'уВвуВдуВ│уГ│уБп ' . $USER_ICON->IconSizeMax() . ' уБЧуБЛчЩ╗щМ▓уБзуБНуБ╛уБЫуВУуАВ<br>'."\n" .
+      'щАБф┐буБХуВМуБЯуГХуВбуВдуГл тЖТ <span class="color">х╣Е ' . $width . 'уАБщлШуБХ ' . $height . '</span>';
     OutputActionResult($title, $sentence);
   }
 
-  $DB_CONF->Connect(); //DB └▄┬│
+  $DB_CONF->Connect(); //DB цОеч╢Ъ
 
-  //еведе│еєд╬╠╛┴░дм┤√д╦┼╨╧┐д╡дьд╞ддд╩дддле┴езе├еп
+  //уВвуВдуВ│уГ│уБохРНхЙНуБМцЧвуБлчЩ╗щМ▓уБХуВМуБжуБДуБкуБДуБЛуГБуВзуГГуВп
   if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
-    OutputActionResult($title, 'еведе│еє╠╛ "' . $icon_name . '" д╧┤√д╦┼╨╧┐д╡дьд╞ддд▐д╣');
+    OutputActionResult($title, 'уВвуВдуВ│уГ│хРН "' . $icon_name . '" уБпцЧвуБлчЩ╗щМ▓уБХуВМуБжуБДуБ╛уБЩ');
   }
 
-  if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon е╞б╝е╓еыдЄеэе├еп
-    $sentence = "е╡б╝е╨дм║о╗ид╖д╞ддд▐д╣бг<br>\n╗■┤╓дЄ├╓ддд╞длдщ║╞┼╨╧┐дЄдк┤ъддд╖д▐д╣бг";
+  if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon уГЖуГ╝уГЦуГлуВТуГнуГГуВп
+    $sentence = "уВ╡уГ╝уГРуБМц╖╖щЫСуБЧуБжуБДуБ╛уБЩуАВ<br>\nцЩВщЦУуВТч╜оуБДуБжуБЛуВЙхЖНчЩ╗щМ▓уВТуБКщбШуБДуБЧуБ╛уБЩуАВ";
     OutputActionResult($title, $sentence);
   }
 
-  //еведе│еє┼╨╧┐┐Їдм║╟┬ч├═дЄ─╢дид╞д╩дддле┴езе├еп
-  //╕╜║▀┼╨╧┐д╡дьд╞дддыеведе│еєе╩еєе╨б╝дЄ╣▀╜чд╦╝ш╞└
-  $icon_no = FetchResult('SELECT icon_no FROM user_icon ORDER BY icon_no DESC') + 1; //░ь╚╓┬чднд╩No + 1
-  if($icon_no >= $USER_ICON->number) OutputActionResult($title, 'д│дь░╩╛х┼╨╧┐д╟днд▐д╗дє', '', true);
+  //уВвуВдуВ│уГ│чЩ╗щМ▓цХ░уБМцЬАхдзхАдуВТш╢ЕуБИуБжуБкуБДуБЛуГБуВзуГГуВп
+  //чП╛хЬичЩ╗щМ▓уБХуВМуБжуБДуВЛуВвуВдуВ│уГ│уГКуГ│уГРуГ╝уВТщЩНщаЖуБлхПЦх╛Ч
+  $icon_no = FetchResult('SELECT icon_no FROM user_icon ORDER BY icon_no DESC') + 1; //ф╕АчХкхдзуБНуБкNo + 1
+  if($icon_no >= $USER_ICON->number) OutputActionResult($title, 'уБУуВМф╗еф╕КчЩ╗щМ▓уБзуБНуБ╛уБЫуВУ', '', true);
 
-  //е╒ебедеы╠╛д╬╖хдЄд╜дэдиды
+  //уГХуВбуВдуГлхРНуБоцбБуВТуБЭуВНуБИуВЛ
   $file_name = sprintf("%03s.%s", $icon_no, $ext);
 
-  //е╒ебедеыдЄе╞еєе▌ещеъдлдще│е╘б╝
+  //уГХуВбуВдуГлуВТуГЖуГ│уГЭуГйуГкуБЛуВЙуВ│уГФуГ╝
   if(! move_uploaded_file($tmp_name, $ICON_CONF->path . '/' . $file_name)){
-    $sentence = "е╒ебедеыд╬е│е╘б╝д╦╝║╟╘д╖д▐д╖д┐бг<br>\n║╞┼┘╝┬╣╘д╖д╞дпд└д╡ддбг";
+    $sentence = "уГХуВбуВдуГлуБоуВ│уГФуГ╝уБлхд▒цХЧуБЧуБ╛уБЧуБЯуАВ<br>\nхЖНх║жхоЯшбМуБЧуБжуБПуБауБХуБДуАВ";
     OutputActionResult($title, $sentence, '', true);
   }
 
-  //е╟б╝е┐е┘б╝е╣д╦┼╨╧┐
+  //уГЗуГ╝уВ┐уГЩуГ╝уВ╣уБлчЩ╗щМ▓
   $data = '';
-  $session_id = $SESSION->Reset(); //е╗е├е╖ечеє ID дЄ╝ш╞└
+  $session_id = $SESSION->Reset(); //уВ╗уГГуВ╖уГзуГ│ ID уВТхПЦх╛Ч
   $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
     'session_id, regist_date';
   $values = "{$icon_no}, '{$icon_name}', '{$file_name}', {$width}, {$height}, '{$color}', " .
@@ -174,80 +174,80 @@ function UploadIcon(){
   }
 
   InsertDatabase('user_icon', $items, $values);
-  mysql_query('COMMIT'); //░ь▒■е│е▀е├е╚
-  $DB_CONF->Disconnect(true); //DB └▄┬│▓Є╜№
+  mysql_query('COMMIT'); //ф╕Ах┐ЬуВ│уГЯуГГуГИ
+  $DB_CONF->Disconnect(true); //DB цОеч╢ЪшзгщЩд
 
-  //│╬╟зе┌б╝е╕дЄ╜╨╬╧
-  OutputHTMLHeader('ецб╝е╢еведе│еєеве├е╫еэб╝е╔╜ш═¤[│╬╟з]', 'icon_upload_check');
+  //чв║шкНуГЪуГ╝уВ╕уВТхЗ║хКЫ
+  OutputHTMLHeader('уГжуГ╝уВ╢уВвуВдуВ│уГ│уВвуГГуГЧуГнуГ╝уГЙхЗжчРЖ[чв║шкН]', 'icon_upload_check');
   echo <<<EOF
 </head>
 <body>
-<p>е╒ебедеыдЄеве├е╫еэб╝е╔д╖д▐д╖д┐бг<br>║гд└д▒дфдъд╩дкд╖д╟днд▐д╣</p>
-<p>[S] ╜╨┼╡ / [C] еле╞е┤еъ / [A] еведе│еєд╬║ю╝╘</p>
+<p>уГХуВбуВдуГлуВТуВвуГГуГЧуГнуГ╝уГЙуБЧуБ╛уБЧуБЯуАВ<br>ф╗КуБауБСуВДуВКуБкуБКуБЧуБзуБНуБ╛уБЩ</p>
+<p>[S] хЗ║хЕ╕ / [C] уВлуГЖуВ┤уГк / [A] уВвуВдуВ│уГ│уБоф╜ЬшАЕ</p>
 <table><tr>
 <td><img src="{$ICON_CONF->path}/{$file_name}" width="{$width}" height="{$height}"></td>
-<td class="name">No. {$icon_no} {$icon_name}<br><font color="{$color}">вб</font>{$color}{$data}</td>
+<td class="name">No. {$icon_no} {$icon_name}<br><font color="{$color}">тЧЖ</font>{$color}{$data}</td>
 </tr>
-<tr><td colspan="2">дшдэд╖ддд╟д╣длбй</td></tr>
+<tr><td colspan="2">уВИуВНуБЧуБДуБзуБЩуБЛя╝Я</td></tr>
 <tr><td><form method="POST" action="icon_upload.php">
   <input type="hidden" name="command" value="cancel">
   <input type="hidden" name="icon_no" value="$icon_no">
-  <input type="submit" value="дфдъд╩дкд╖">
+  <input type="submit" value="уВДуВКуБкуБКуБЧ">
 </form></td>
 <td><form method="POST" action="icon_upload.php">
   <input type="hidden" name="command" value="success">
   <input type="hidden" name="icon_no" value="{$icon_no}">
-  <input type="submit" value="┼╨╧┐┤░╬╗">
+  <input type="submit" value="чЩ╗щМ▓хоМф║Ж">
 </form></td></tr></table>
 </body></html>
 
 EOF;
 }
 
-//еве├е╫еэб╝е╔е╒ейб╝ер╜╨╬╧
+//уВвуГГуГЧуГнуГ╝уГЙуГХуВйуГ╝уГахЗ║хКЫ
 function OutputUploadIconPage(){
   global $USER_ICON;
 
-  OutputHTMLHeader('ецб╝е╢еведе│еєеве├е╫еэб╝е╔', 'icon_upload');
+  OutputHTMLHeader('уГжуГ╝уВ╢уВвуВдуВ│уГ│уВвуГГуГЧуГнуГ╝уГЙ', 'icon_upload');
   $name_length = $USER_ICON->IconNameMaxLength();
   $cation = isset($USER_ICON->cation) ? '<br>' . $USER_ICON->cation : '';
 
   echo <<<EOF
 </head>
 <body>
-<a href="./">вл╠сды</a><br>
+<a href="./">тЖРцИ╗уВЛ</a><br>
 <img class="title" src="img/icon_upload_title.jpg"><br>
 <table align="center">
-<tr><td class="link"><a href="icon_view.php">вкеведе│еє░ь═ў</a></td><tr>
-<tr><td class="caution">бЎдвдщдлд╕дс╗╪─ъд╣ды┬чднд╡ ({$USER_ICON->IconSizeMax()}) д╦еъе╡еде║д╖д╞длдщеве├е╫еэб╝е╔д╖д╞дпд└д╡ддбг{$cation}</td></tr>
+<tr><td class="link"><a href="icon_view.php">тЖТуВвуВдуВ│уГ│ф╕Ашжз</a></td><tr>
+<tr><td class="caution">я╝КуБВуВЙуБЛуБШуВБцМЗхоЪуБЩуВЛхдзуБНуБХ ({$USER_ICON->IconSizeMax()}) уБлуГкуВ╡уВдуВ║уБЧуБжуБЛуВЙуВвуГГуГЧуГнуГ╝уГЙуБЧуБжуБПуБауБХуБДуАВ{$cation}</td></tr>
 <tr><td>
-<fieldset><legend>еведе│еє╗╪─ъ (jpg / gif / png ╖┴╝░д╟┼╨╧┐д╖д╞▓╝д╡ддбг{$USER_ICON->IconFileSizeMax()})</legend>
+<fieldset><legend>уВвуВдуВ│уГ│цМЗхоЪ (jpg / gif / png х╜вх╝ПуБзчЩ╗щМ▓уБЧуБжф╕ЛуБХуБДуАВ{$USER_ICON->IconFileSizeMax()})</legend>
 <form method="POST" action="icon_upload.php" enctype="multipart/form-data">
 <table>
-<tr><td><label>е╒ебедеы┴к┬Є</label></td>
+<tr><td><label>уГХуВбуВдуГлщБ╕цКЮ</label></td>
 <td>
 <input type="file" name="file" size="80">
 <input type="hidden" name="max_file_size" value="{$USER_ICON->size}">
 <input type="hidden" name="command" value="upload">
-<input type="submit" value="┼╨╧┐">
+<input type="submit" value="чЩ╗щМ▓">
 </td></tr>
 
-<tr><td><label>еведе│еєд╬╠╛┴░</label></td>
+<tr><td><label>уВвуВдуВ│уГ│уБохРНхЙН</label></td>
 <td><input type="text" name="icon_name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
-<tr><td><label>╜╨┼╡</label></td>
+<tr><td><label>хЗ║хЕ╕</label></td>
 <td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
-<tr><td><label>еле╞е┤еъ</label></td>
+<tr><td><label>уВлуГЖуВ┤уГк</label></td>
 <td><input type="text" name="category" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
-<tr><td><label>еведе│еєд╬║ю╝╘</label></td>
+<tr><td><label>уВвуВдуВ│уГ│уБоф╜ЬшАЕ</label></td>
 <td><input type="text" name="author" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
 
-<tr><td><label>еведе│еє╧╚д╬┐з</label></td>
+<tr><td><label>уВвуВдуВ│уГ│цЮауБошЙ▓</label></td>
 <td>
-<input id="fix_color" type="radio" name="color"><label for="fix_color">╝ъ╞■╬╧</label>
-<input type="text" name="color" size="10px" maxlength="7">(╬убз#6699CC)
+<input id="fix_color" type="radio" name="color"><label for="fix_color">цЙЛхЕехКЫ</label>
+<input type="text" name="color" size="10px" maxlength="7">(ф╛Ля╝Ъ#6699CC)
 </td></tr>
 
 <tr><td colspan="2">
@@ -272,7 +272,7 @@ EOF;
 
   $count = 0;
   foreach($color_list as $color => $bright){
-    if($count > 0 && ($count % 6) == 0) echo "</tr>\n<tr>\n"; //6╕─д┤д╚д╦▓■╣╘
+    if($count > 0 && ($count % 6) == 0) echo "</tr>\n<tr>\n"; //6хАЛуБФуБиуБлцФ╣шбМ
     $count++;
 
     echo <<<EOF

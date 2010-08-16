@@ -9,15 +9,15 @@ class SiteSummary extends FeedEngine {
     $this->SetChannel($SERVER_CONF->title, $SERVER_CONF->site_root, $SERVER_CONF->comment);
     $rooms = RoomDataSet::LoadOpeningRooms();
     foreach ($rooms->rows as $room) {
-      $title = "{$room->name}Â¼";
+      $title = "{$room->name}æ‘";
       $url = "{$this->uri}game_view.php?room_no={$room->id}";
       $options = GenerateGameOptionImage($room->game_option->row, $room->option_role->row);
       $status = $ROOM_IMG->Generate($room->status);
       $description = <<<XHTML
 <div>
 <a href="{$url}">
-{$status}<span class='room_no'>[{$room->id}ÈÖÃÏ]</span><h2>{$title}</h2>
-¡Á {$room->comment} ¡Á {$options}(ºÇÂç{$room->max_user}¿Í)
+{$status}<span class='room_no'>[{$room->id}ç•ªåœ°]</span><h2>{$title}</h2>
+ã€œ {$room->comment} ã€œ {$options}(æœ€å¤§{$room->max_user}äºº)
 </a>
 </div>
 

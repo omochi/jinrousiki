@@ -4,8 +4,8 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'MESSAGE');
 
-$DB_CONF->Connect(); // DB ÀÜÂ³
-OutputHTMLHeader($SERVER_CONF->title . '[ÇÛÌòÅı·×]', 'game'); //HTML¥Ø¥Ã¥À
+$DB_CONF->Connect(); // DB æ¥ç¶š
+OutputHTMLHeader($SERVER_CONF->title . '[é…å½¹çµ±è¨ˆ]', 'game'); //HTMLãƒ˜ãƒƒãƒ€
 
 $SELF =& new User();
 $role_count_list = array();
@@ -25,10 +25,10 @@ foreach($room_list as $id){
   }
 }
 
-PrintData($total_room, 'Â¼¿ô');
-PrintData($total_user, 'Â¼¿Í');
+PrintData($total_room, 'æ‘æ•°');
+PrintData($total_user, 'æ‘äºº');
 //PrintData($role_count_list);
 echo GenerateRoleNameList($role_count_list, 'camp') . '<br><br>';
 echo GenerateRoleNameList($role_count_list, 'role') . '<br><br>';
 echo GenerateRoleNameList($role_count_list) . '<br>';
-OutputHTMLFooter(); //HTML¥Õ¥Ã¥¿
+OutputHTMLFooter(); //HTMLãƒ•ãƒƒã‚¿

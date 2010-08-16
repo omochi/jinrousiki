@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡»à¤ÎÀë¹ð (death_warrant)
-  ¡û»ÅÍÍ
-  ¡¦È¯Æ°ÅöÆü¤Ê¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†æ­»ã®å®£å‘Š (death_warrant)
+  â—‹ä»•æ§˜
+  ãƒ»ç™ºå‹•å½“æ—¥ãªã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_death_warrant extends Role{
   function Role_death_warrant(){ $this->__construct(); }

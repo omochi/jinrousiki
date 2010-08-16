@@ -1,10 +1,10 @@
 <?php
-exit //Ì¤´°À®¤ËÉÕ¤­»ÈÍÑ¤·¤Ê¤¤¤³¤È¡£
-require_once 'contenttype_set.php';  //¥Ø¥Ã¥À¤ò¶¯À©ÆüËÜ¸ìEUC-JP»ØÄê
+exit //æœªå®Œæˆã«ä»˜ãä½¿ç”¨ã—ãªã„ã“ã¨ã€‚
+require_once 'contenttype_set.php';  //ãƒ˜ãƒƒãƒ€ã‚’å¼·åˆ¶æ—¥æœ¬èªEUC-JPæŒ‡å®š
 require_once 'game_functions.php';
 
 
-//MySQL¤ËÀÜÂ³
+//MySQLã«æ¥ç¶š
 if( ($dbHandle = ConnectDatabase()) == NULL)
 {
 	exit;
@@ -13,7 +13,7 @@ if( ($dbHandle = ConnectDatabase()) == NULL)
 
 print("<html><head>");
 print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-JP\">");
-print("<title>Æò¤Ï¿ÍÏµ¤Ê¤ê¤ä¡©[²áµî¥í¥°ÊÔ½¸]</title> \r\n");
+print("<title>æ±ã¯äººç‹¼ãªã‚Šã‚„ï¼Ÿ[éå»ãƒ­ã‚°ç·¨é›†]</title> \r\n");
 print("<style type=\"text/css\"><!--\r\n");
 
 $background_color = $background_color_aftergame;
@@ -51,36 +51,36 @@ OldLogListOutput;
 
 print("</body></html> \r\n");
 
-	//ÊÑ¿ô¤Î´ğËÜÀßÄê¤ò¹Ô¤¦
-	//$keep_num:¥Ç¡¼¥¿¥Ù¡¼¥¹¤Ë»Ä¤¹Â¼¿ô
-	//$base_url:¿ÍÏµ¥¹¥¯¥ê¥×¥È¤òÀßÃÖ¤·¤Æ¤¢¤ë¥¢¥É¥ì¥¹
+	//å¤‰æ•°ã®åŸºæœ¬è¨­å®šã‚’è¡Œã†
+	//$keep_num:ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ®‹ã™æ‘æ•°
+	//$base_url:äººç‹¼ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’è¨­ç½®ã—ã¦ã‚ã‚‹ã‚¢ãƒ‰ãƒ¬ã‚¹
 	
-	//$keep_num¤Ë¤Ä¤¤¤Æ
-	//user_entry¥Æ¡¼¥Ö¥ë¤ÇÂ¼¿ô¤Î³ÎÇ§¤ò¤·¤Æ¤¤¤ë°Ù¡¢Í¾¤ê¾®¤µ¤¯¤·¤Æ¤Ï¤¤¤±¤Ê¤¤¡£
-	//²ÔÆ°Ãæ¤ÎÂ¼¤Î¥Æ¡¼¥Ö¥ë¤Ë¤Ş¤Ç¼ê¤ò½Ğ¤·¤Æ¤·¤Ş¤¦²ÄÇ½À­¤¬¤¢¤ë¡Ê¸½¾õ¤Ï£±£°¡Á£±£µ¤¬¤è¤í¤·¤¤¤«¤È¡Ë¡£
+	//$keep_numã«ã¤ã„ã¦
+	//user_entryãƒ†ãƒ¼ãƒ–ãƒ«ã§æ‘æ•°ã®ç¢ºèªã‚’ã—ã¦ã„ã‚‹ç‚ºã€ä½™ã‚Šå°ã•ãã—ã¦ã¯ã„ã‘ãªã„ã€‚
+	//ç¨¼å‹•ä¸­ã®æ‘ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã«ã¾ã§æ‰‹ã‚’å‡ºã—ã¦ã—ã¾ã†å¯èƒ½æ€§ãŒã‚ã‚‹ï¼ˆç¾çŠ¶ã¯ï¼‘ï¼ã€œï¼‘ï¼•ãŒã‚ˆã‚ã—ã„ã‹ã¨ï¼‰ã€‚
 	$keep_num = 15;
 	
-	//¥Ù¡¼¥¹¥¢¥É¥ì¥¹¤ÎÀßÄê
+	//ãƒ™ãƒ¼ã‚¹ã‚¢ãƒ‰ãƒ¬ã‚¹ã®è¨­å®š
 	$base_url = "http://www12.atpages.jp/yaruo/jinro/";
 
-	//¸½ºß¤ÎDBÃæ¤Ë¤¢¤ëÉô²°Áí¿ô¤ò¥«¥¦¥ó¥È¤¹¤ë
+	//ç¾åœ¨ã®DBä¸­ã«ã‚ã‚‹éƒ¨å±‹ç·æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
 	$res_oldlog_list = mysql_query("select room_no from room where status = 'finished'");
 	$finished_room_count = mysql_num_rows($res_oldlog_list);
-	print("¸½ºß¤ÎÂ¼¿ô¡§".$finished_room_count."<br>");
+	print("ç¾åœ¨ã®æ‘æ•°ï¼š".$finished_room_count."<br>");
 
-	//ºÇ¤â¸Å¤¤Éô²°¤Î¥Ê¥ó¥Ğ¡¼¤ò¼èÆÀ¤¹¤ë
+	//æœ€ã‚‚å¤ã„éƒ¨å±‹ã®ãƒŠãƒ³ãƒãƒ¼ã‚’å–å¾—ã™ã‚‹
 	$res_oldlog_list = mysql_query("select room_no from user_entry WHERE room_no > 0 ORDER BY room_no");
 	$oldest_room_no = mysql_result($res_oldlog_list,0,0);
-	print("¸½ºß¤ÎHTML²½¤µ¤ì¤¿Â¼¿ô(¼Â¿ô¤Ï-1¤¹¤ë)¡§".$oldest_room_no."<br>");
+	print("ç¾åœ¨ã®HTMLåŒ–ã•ã‚ŒãŸæ‘æ•°(å®Ÿæ•°ã¯-1ã™ã‚‹)ï¼š".$oldest_room_no."<br>");
 
-	//ºÇ¤â¿·¤·¤¤Éô²°¤Î¥Ê¥ó¥Ğ¡¼¤ò¼èÆÀ¤¹¤ë
+	//æœ€ã‚‚æ–°ã—ã„éƒ¨å±‹ã®ãƒŠãƒ³ãƒãƒ¼ã‚’å–å¾—ã™ã‚‹
 	$res_oldlog_list = mysql_query("select room_no from room where status = 'finished' ORDER BY room_no DESC");
 	$latest_room_no = mysql_result($res_oldlog_list,0,0);
 	$latest_room_no = $latest_room_no - $keep_num;
 	$now_room_count = $finished_room_count - $oldest_room_no;
 
 
-	//£È£Ô£Í£Ì²½¤µ¤ì¤Æ¤¤¤Ê¤¤Â¼¤Î¿ô¤¬$keep_num¤è¤êÂç¤­¤«¤Ã¤¿¾ì¹ç¡¢Â¼¿ô¤¬$keep_num¤ÈÆ±¤¸¤Ë¤Ê¤ë¤Ş¤Ç¥í¥°ÊİÂ¸¤È¥Æ¡¼¥Ö¥ëºï½ü¤ò¼Â¹Ô¤¹¤ë
+	//ï¼¨ï¼´ï¼­ï¼¬åŒ–ã•ã‚Œã¦ã„ãªã„æ‘ã®æ•°ãŒ$keep_numã‚ˆã‚Šå¤§ãã‹ã£ãŸå ´åˆã€æ‘æ•°ãŒ$keep_numã¨åŒã˜ã«ãªã‚‹ã¾ã§ãƒ­ã‚°ä¿å­˜ã¨ãƒ†ãƒ¼ãƒ–ãƒ«å‰Šé™¤ã‚’å®Ÿè¡Œã™ã‚‹
 	if($now_room_count >= $keep_num){
 		for(;$oldest_room_no <=$latest_room_no ;$oldest_room_no++){
 			$log_url = $base_url."old_log.php?log_mode=on&room_no=".$oldest_room_no."&heaven_talk=on";
@@ -89,11 +89,11 @@ print("</body></html> \r\n");
 			$log_url = $base_url."old_log.php?log_mode=on&room_no=".$oldest_room_no."&reverse_log=on&heaven_talk=on";
 			$logdata = file_get_contents($log_url);
 			$error_r = file_put_contents("log/".$oldest_room_no."_r.html",$logdata);
-			$message = "Éô²°ÈÖ¹æ".$oldest_room_no."¤òÊİÂ¸¤·¤Ş¤·¤¿<br>";
+			$message = "éƒ¨å±‹ç•ªå·".$oldest_room_no."ã‚’ä¿å­˜ã—ã¾ã—ãŸ<br>";
 			echo $message;
-			//¥Æ¡¼¥Ö¥ë¥Ç¡¼¥¿¤Îºï½ü
+			//ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
 			if(($error == FALSE) || ($error_r == FALSE)){
-				$message = "¥Õ¥¡¥¤¥ë½ĞÎÏ¥¨¥é¡¼¤¬È¯À¸¤·¤¿°Ù¡¢¥Æ¡¼¥Ö¥ë¥Ç¡¼¥¿¤Îºï½ü¤Ï¹Ô¤¤¤Ş¤»¤ó¤Ç¤·¤¿¡£<br>";
+				$message = "ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸç‚ºã€ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤ã¯è¡Œã„ã¾ã›ã‚“ã§ã—ãŸã€‚<br>";
 				echo $message;
 			}
 			else{
@@ -101,17 +101,17 @@ print("</body></html> \r\n");
 				mysql_query("DELETE FROM user_entry WHERE room_no = $oldest_room_no");
 				mysql_query("DELETE FROM system_message WHERE room_no = $oldest_room_no");
 				mysql_query("DELETE FROM vote WHERE room_no = $oldest_room_no");
-				$message = "Éô²°ÈÖ¹æ".$oldest_room_no."¤Î¥Æ¡¼¥Ö¥ë¥Ç¡¼¥¿¤òÁ´¤Æºï½ü¤·¤Ş¤·¤¿<br>";
+				$message = "éƒ¨å±‹ç•ªå·".$oldest_room_no."ã®ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å…¨ã¦å‰Šé™¤ã—ã¾ã—ãŸ<br>";
 				echo $message;
 			}
 		}
 	}
 	else{
-	print("¸½ºß¥Æ¡¼¥Ö¥ë¥Ç¡¼¥¿¤ÏºÇ¾®¸Â¤Ç¤¹¡£¤³¤ì°Ê¾åºï½ü¤¹¤ëÉ¬Í×¤Ï¤¢¤ê¤Ş¤»¤ó¡£");
+	print("ç¾åœ¨ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ‡ãƒ¼ã‚¿ã¯æœ€å°é™ã§ã™ã€‚ã“ã‚Œä»¥ä¸Šå‰Šé™¤ã™ã‚‹å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚");
 	}
 
 
-//MySQL¤È¤ÎÀÜÂ³¤òÊÄ¤¸¤ë
+//MySQLã¨ã®æ¥ç¶šã‚’é–‰ã˜ã‚‹
 DisconnectDatabase($dbHandle);
 
 ?>

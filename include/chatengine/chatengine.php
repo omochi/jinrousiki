@@ -32,7 +32,7 @@ class ChatEngine{
   }
 
    //Show
-  //¥Ú¡¼¥¸½ĞÎÏ¤ò¼Â»Ü¤·¤Ş¤¹¡£
+  //ãƒšãƒ¼ã‚¸å‡ºåŠ›ã‚’å®Ÿæ–½ã—ã¾ã™ã€‚
   function Show(){
     shot($this->OutputDocumentHeader(), 'OutputDocumentHeader');
     shot($this->OutputContentHeader(), 'OutputContentHeader');
@@ -42,7 +42,7 @@ class ChatEngine{
     shot($this->Flush(), 'Flush');
   }
 
- // ³ÈÄ¥¥İ¥¤¥ó¥È
+ // æ‹¡å¼µãƒã‚¤ãƒ³ãƒˆ
   function ParseUsers(){}
   function LoadTalk(){ return false; }
   function FetchTalk(){ return false; }
@@ -69,7 +69,7 @@ class ChatEngine{
     }
     $additional_style = $this->GenerateStyle();
     $additional_script = $this->GenerateScript();
-    $this->output .= MakeHTMLHeader($this->room->name . 'Â¼', $style_path);
+    $this->output .= MakeHTMLHeader($this->room->name . 'æ‘', $style_path);
     $this->output .= <<<HEADER
 <style>
 {$additional_style}
@@ -85,8 +85,8 @@ HEADER;
 
   function OutputRoomTitle(){
     $room = $this->room;
-    $this->output .= '<div id="title"><h1>'.$room->name.'Â¼</h1>'.
-      '<p>¡Á' . $room->comment .  '¡Á [' . $room->id . 'ÈÖÃÏ]</p></div>'."\n";
+    $this->output .= '<div id="title"><h1>'.$room->name.'æ‘</h1>'.
+      '<p>ã€œ' . $room->comment .  'ã€œ [' . $room->id . 'ç•ªåœ°]</p></div>'."\n";
     return 'success';
   }
   function OutputGameInfo(){}
@@ -131,26 +131,26 @@ WORDS;
     return 'success';
   }
 
-//Á°¤ÎÆü¤Î Ïµ¤¬¿©¤Ù¤¿¡¢¸Ñ¤¬Àê¤ï¤ì¤Æ»àË´¡¢ÅêÉ¼·ë²Ì¤Ç»àË´¤Î¥á¥Ã¥»¡¼¥¸
+//å‰ã®æ—¥ã® ç‹¼ãŒé£Ÿã¹ãŸã€ç‹ãŒå ã‚ã‚Œã¦æ­»äº¡ã€æŠ•ç¥¨çµæœã§æ­»äº¡ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 function OutputDeadList(){
-  //½è·º¥á¥Ã¥»¡¼¥¸¡¢ÆÇ»à¥á¥Ã¥»¡¼¥¸(Ãë)
+  //å‡¦åˆ‘ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã€æ¯’æ­»ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸(æ˜¼)
   $type_day = "type = 'VOTE_KILLED' OR type = 'POISON_DEAD_day' OR type = 'LOVERS_FOLLOWED_day' " .
     "OR type LIKE 'SUDDEN_DEATH%'";
 
-  //Á°¤ÎÆü¤ÎÌë¤Ëµ¯¤³¤Ã¤¿»àË´¥á¥Ã¥»¡¼¥¸
+  //å‰ã®æ—¥ã®å¤œã«èµ·ã“ã£ãŸæ­»äº¡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
   $type_night = "type = 'WOLF_KILLED' OR type = 'CURSED' OR type = 'FOX_DEAD' " .
     "OR type = 'HUNTED' OR type = 'REPORTER_DUTY' OR type = 'ASSASSIN_KILLED' " .
     "OR type = 'TRAPPED' OR type = 'POISON_DEAD_night' OR type = 'LOVERS_FOLLOWED_night' " .
     "OR type LIKE 'REVIVE%'";
 
     if($this->room->IsDay()){
-      //Ãë¤ÏÁ°Ìë¤Î»àË´¥á¥Ã¥»¡¼¥¸
+      //æ˜¼ã¯å‰å¤œã®æ­»äº¡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
       shot($this->OutputDeadMessage($this->room->date - 1, $type_night), 'ChatEngine::OutputDeadMessage[night]');
       if (!$this->room->log_mode)
         shot($this->OutputDeadMessage($this->room->date - 1, $type_day), 'ChatEngine::OutputDeadMessage[day]');
     }
     else{
-      //Ìë¤ÏÍ¼Êı¤Î»àË´¥á¥Ã¥»¡¼¥¸
+      //å¤œã¯å¤•æ–¹ã®æ­»äº¡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
       shot($this->OutputDeadMessage($this->room->date, $type_day), 'ChatEngine::OutputDeadMessage[day]');
       if (!$this->room->log_mode)
         shot($this->OutputDeadMessage($this->room->date - 1, $type_night), 'ChatEngine::OutputDeadMessage[night]');
@@ -232,11 +232,11 @@ LINE;
     return 'success';
   }
 
-  //»àË´¼Ô¤Î°ä¸À¤ò½ĞÎÏ
+  //æ­»äº¡è€…ã®éºè¨€ã‚’å‡ºåŠ›
   function OutputLastWords(){
     global $MESSAGE, $ROOM;
 
-    //Á°Æü¤Î»àË´¼Ô°ä¸À¤ò½ĞÎÏ
+    //å‰æ—¥ã®æ­»äº¡è€…éºè¨€ã‚’å‡ºåŠ›
     $set_date = $ROOM->date - 1;
     $sql = mysql_query("SELECT message FROM system_message WHERE room_no = {$ROOM->id}
   			AND date = $set_date AND type = 'LAST_WORDS' ORDER BY RAND()");
@@ -254,7 +254,7 @@ EOF;
       LineToBR(&$result);
       list($handle, $str) = ParseStrings($result);
 
-      $this->output .= '<dt>'.$handle.' ¤µ¤ó¤Î°ä¸À</dt><dd>'.$str.'</dd>';
+      $this->output .= '<dt>'.$handle.' ã•ã‚“ã®éºè¨€</dt><dd>'.$str.'</dd>';
     }
     $this->output .= "<dt class='bottom'></dt></dl>\n</div>\n";
   }
@@ -295,10 +295,10 @@ HEADER;
   }
 
   //OutputPlayerTable
-  //¥×¥ì¥¤¥ä¡¼°ìÍ÷¤òÉ½¼¨¤·¤Ş¤¹¡£
-  //³ÈÄ¥ÅÀ
-  //OutputUserCell : ¥æ¡¼¥¶¡¼¾ğÊó¤ò½ĞÎÏ¥­¥ã¥Ã¥·¥å¤Ë½ĞÎÏ¤·¤Ş¤¹¡£
-  //¡¡¤³¤Îµ¡Ç½¤ÏÅêÉ¼¥Õ¥©¡¼¥à¤Î½ĞÎÏ¤Ê¤É¤Ç»ÈÍÑ¤µ¤ì¤Æ¤¤¤Ş¤¹¡£
+  //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ä¸€è¦§ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
+  //æ‹¡å¼µç‚¹
+  //OutputUserCell : ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’å‡ºåŠ›ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«å‡ºåŠ›ã—ã¾ã™ã€‚
+  //ã€€ã“ã®æ©Ÿèƒ½ã¯æŠ•ç¥¨ãƒ•ã‚©ãƒ¼ãƒ ã®å‡ºåŠ›ãªã©ã§ä½¿ç”¨ã•ã‚Œã¦ã„ã¾ã™ã€‚
   function OutputPlayerTable(){
     global $ICON_CONF, $USERS;
   
@@ -308,7 +308,7 @@ HEADER;
     $this->output .= '<table id="players" cellspacing="5">'."\n";
     $count = 0;
     foreach($USERS->rows as $this_user){
-      switch(++$count % 5) { //5¸Ä¤´¤È¤Ë²ş¹Ô
+      switch(++$count % 5) { //5å€‹ã”ã¨ã«æ”¹è¡Œ
         case 1:
           $this->output .= "<tr>\n";
           $this->OutputPlayerCell($this_user);
@@ -327,7 +327,7 @@ HEADER;
   }
 
   //OutputUserCell
-  //¥æ¡¼¥¶¡¼¾ğÊó¤òÉ½¼¨¤·¤Ş¤¹¡£
+  //ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
   function OutputPlayerCell(&$user){
     return 'not implemented.';
   }
@@ -428,7 +428,7 @@ FOOTER;
     elseif($user->IsRole('assassin', 'mania', 'cupid', 'quiz'))
       $role_str = MakeRoleName($user->main_role);
   
-    //¤³¤³¤«¤é·óÇ¤Ìò¿¦
+    //ã“ã“ã‹ã‚‰å…¼ä»»å½¹è·
     if($user->IsLovers()) $role_str .= MakeRoleName('lovers', '', true);
     if($user->IsRole('copied')) $role_str .= MakeRoleName('copied', 'mania', true);
   

@@ -6,7 +6,7 @@ class GameBaseFormat extends ChatEngine {
       $user_cache[$user->uname] = array (
         'class_attr' => 'u'.$user->user_no,
         'color' => $user->color,
-        'display_name' => '¢¡'.$user->handle_name
+        'display_name' => 'â—†'.$user->handle_name
       );
     }
     $this->user_cache = $user_cache;
@@ -21,11 +21,11 @@ class GameBaseFormat extends ChatEngine {
     $option_image = MakeGameOptionImage($this->room->game_option, $option_role);
     $this->output .= <<<NOTICE
 <div class="caution">
-¥²¡¼¥à¤ò³«»Ï¤¹¤ë¤Ë¤ÏÁ´°÷¤¬¥²¡¼¥à³«»Ï¤ËÅêÉ¼¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹
-<span>(ÅêÉ¼¤·¤¿¿Í¤ÏÂ¼¿Í¥ê¥¹¥È¤ÎÇØ·Ê¤¬ÀÖ¤¯¤Ê¤ê¤Ş¤¹)</span>
+ã‚²ãƒ¼ãƒ ã‚’é–‹å§‹ã™ã‚‹ã«ã¯å…¨å“¡ãŒã‚²ãƒ¼ãƒ é–‹å§‹ã«æŠ•ç¥¨ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™
+<span>(æŠ•ç¥¨ã—ãŸäººã¯æ‘äººãƒªã‚¹ãƒˆã®èƒŒæ™¯ãŒèµ¤ããªã‚Šã¾ã™)</span>
 </div>
 <table class="time-table">
-<tr><td>¥²¡¼¥à¥ª¥×¥·¥ç¥ó¡§{$option_image} </td></tr>
+<tr><td>ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼š{$option_image} </td></tr>
 </table>
 
 NOTICE;
@@ -33,39 +33,39 @@ NOTICE;
 
   function OutputTimelag() {
     global $SERVER_CONF;
-    //»ş´Ö¤º¤ì¤ÎÉ½¼¨
+    //æ™‚é–“ãšã‚Œã®è¡¨ç¤º
     $date_str = $SERVER_CONF->adjust_time_difference ?
                 gmdate('Y, m, j, G, i, s', $this->room->system_time) : date('Y, m, j, G, i, s', $this->room->system_time);
     $this->output .= <<<NOTICE
 <div>
-¥µ¡¼¥Ğ¤È¥í¡¼¥«¥ëPC¤Î»ş´Ö¥º¥ì(¥é¥°´Ş)¡§ <span>
+ã‚µãƒ¼ãƒã¨ãƒ­ãƒ¼ã‚«ãƒ«PCã®æ™‚é–“ã‚ºãƒ¬(ãƒ©ã‚°å«)ï¼š <span>
 <script type="text/javascript"><!--
 output_diff_time('$date_str');
-//--></script>ÉÃ</span>
+//--></script>ç§’</span>
 </div>
 
 NOTICE;
   }
 
   function OutputGameStatus() {
-    //·×Â¬¤Î·ë²Ì¡¢¤³¤Î¥¯¥¨¥ê¤Ï¥Ñ¥Õ¥©¡¼¥Ş¥ó¥¹¤ËÂç¤­¤Ê±Æ¶Á¤òÍ¿¤¨¤Ê¤¤¤³¤È¤¬³ÎÇ§¤µ¤ì¤Ş¤·¤¿¡£
+    //è¨ˆæ¸¬ã®çµæœã€ã“ã®ã‚¯ã‚¨ãƒªã¯ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã«å¤§ããªå½±éŸ¿ã‚’ä¸ãˆãªã„ã“ã¨ãŒç¢ºèªã•ã‚Œã¾ã—ãŸã€‚
     $living_users = FetchResult(
       "SELECT COUNT(uname) FROM user_entry
       WHERE room_no = {$this->room->id}
         AND live = 'live' AND user_no > 0"
       );
-    if($this->room->IsRealTime()){ //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+    if($this->room->IsRealTime()){ //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
       GetRealPassTime($left_time);
       $time_text =
         '<form name="realtime_form"><input type="text" name="output_realtime" size="50" readonly></form>';
     }
-    else{ //È¯¸À¤Ë¤è¤ë²¾ÁÛ»ş´Ö
+    else{ //ç™ºè¨€ã«ã‚ˆã‚‹ä»®æƒ³æ™‚é–“
       $time_text = $time_message . GetTalkPassTime($left_time);
     }
     $this->output .= <<<LIST
 <ul id='game_info'>
-<li id='date'>{$this->room->date} ÆüÌÜ</li>
-<li id='alive'>(À¸Â¸¼Ô{$living_users}¿Í)</li>
+<li id='date'>{$this->room->date} æ—¥ç›®</li>
+<li id='alive'>(ç”Ÿå­˜è€…{$living_users}äºº)</li>
 <li id='time'>{$time_text}</li>
 </ul>
 
@@ -80,10 +80,10 @@ LIST;
 
     if($DEBUG_MODE) $this_handle .= ' (' . $user->user_no . ')';
 
-    //¥¢¥¤¥³¥ó
+    //ã‚¢ã‚¤ã‚³ãƒ³
     $icon = $this->GenerateUserIcon($user);
 
-    if($this->room->IsBeforeGame()){ //¥²¡¼¥à¥¹¥¿¡¼¥È¤ËÅêÉ¼¤·¤Æ¤¤¤ì¤Ğ¿§¤òÊÑ¤¨¤ë
+    if($this->room->IsBeforeGame()){ //ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆã«æŠ•ç¥¨ã—ã¦ã„ã‚Œã°è‰²ã‚’å¤‰ãˆã‚‹
       $query_game_start = "SELECT COUNT(uname) FROM vote WHERE room_no = {$this->room->id} " .
         "AND situation = 'GAMESTART' AND uname = '$this_uname'";
       if((! $this->room->IsQuiz() && $user->IsDummyBoy()) || FetchResult($query_game_start) > 0){
@@ -105,38 +105,38 @@ CELL;
   }
 
   function OutputWaybackLinks() {
-    //²áµî¤ÎÆü¤Î¥í¥°¤Ø¤Î¥ê¥ó¥¯À¸À®
+    //éå»ã®æ—¥ã®ãƒ­ã‚°ã¸ã®ãƒªãƒ³ã‚¯ç”Ÿæˆ
     $link_format ='<li><a href="game_log.php?room_no=' . $this->room->id .
       '&date=%d&day_night=%s#game_top" target="_blank">%s</a></li>';
 
-    $list = '<div id="wayback_links"><h2>¥í¥°</h2><ul>';
-    $list .= sprintf($link_format, 0, 'beforegame', "0(³«»ÏÁ°)");
-    $list .= sprintf($link_format, 1, 'night', "1(Ìë)");
+    $list = '<div id="wayback_links"><h2>ãƒ­ã‚°</h2><ul>';
+    $list .= sprintf($link_format, 0, 'beforegame', "0(é–‹å§‹å‰)");
+    $list .= sprintf($link_format, 1, 'night', "1(å¤œ)");
     for($day = 2; $day < $this->room->date; $day++){
-      $list .= sprintf($link_format, 1, 'day', "{$day}(Ãë)");
-      $list .= sprintf($link_format, 1, 'night', "{$day}(Ìë)");
+      $list .= sprintf($link_format, 1, 'day', "{$day}(æ˜¼)");
+      $list .= sprintf($link_format, 1, 'night', "{$day}(å¤œ)");
     }
     $query = "SELECT COUNT(uname) FROM talk WHERE room_no = {$this->room->id} " .
       "AND date = {$this->room->date} AND location = 'day'";
     if(FetchResult($query) > 0){
-      $list .= sprintf($link_format, $this->room->date, 'day', "{$this->room->date}(Ãë)");
+      $list .= sprintf($link_format, $this->room->date, 'day', "{$this->room->date}(æ˜¼)");
     }
     $this->output .= $list . "</ul></div>\n";
   }
 
-  //¥æ¡¼¥¶¡¼¤ò»ØÄê¤·¤Æ¥¢¥¤¥³¥óÉ½¼¨ÍÑ¤ÎimgÍ×ÁÇ¤òÀ¸À®¤·¤Ş¤¹¡£
+  //ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’æŒ‡å®šã—ã¦ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºç”¨ã®imgè¦ç´ ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
   function GenerateUserIcon(&$user) {
     global $ICON_CONF;
-    //¥Ö¥é¥¦¥¶¤ò¥Á¥§¥Ã¥¯ (MSIE @ Windows ¤À¤± ²èÁü¤Î Alt, Title Â°À­¤Ç²ş¹Ô¤Ç¤­¤ë)
-    //IE ¤Î¾ì¹ç²ş¹Ô¤ò \r\n ¤ËÅı°ì¡¢¤½¤ÎÂ¾¤Î¥Ö¥é¥¦¥¶¤Ï¥¹¥Ú¡¼¥¹¤Ë¤¹¤ë(²èÁü¤ÎAltÂ°À­)
+    //ãƒ–ãƒ©ã‚¦ã‚¶ã‚’ãƒã‚§ãƒƒã‚¯ (MSIE @ Windows ã ã‘ ç”»åƒã® Alt, Title å±æ€§ã§æ”¹è¡Œã§ãã‚‹)
+    //IE ã®å ´åˆæ”¹è¡Œã‚’ \r\n ã«çµ±ä¸€ã€ãã®ä»–ã®ãƒ–ãƒ©ã‚¦ã‚¶ã¯ã‚¹ãƒšãƒ¼ã‚¹ã«ã™ã‚‹(ç”»åƒã®Altå±æ€§)
     if($user->IsLive()){
       $icon_src = $ICON_CONF->path . '/' . $user->icon_filename;
-      $display_live = '(À¸Â¸Ãæ)';
+      $display_live = '(ç”Ÿå­˜ä¸­)';
     }
     else{
       $icon_src = $ICON_CONF->dead;
       $rollover_path = $ICON_CONF->path . '/' . $user->icon_filename;
-      $display_live  = '(»àË´)';
+      $display_live  = '(æ­»äº¡)';
       $rollover_handlers = " onMouseover=\"this.src='{$rollover_path}'\" onMouseout=\"this.src='{$icon_src}'\"";
     }
     $replace = (preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ');

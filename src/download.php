@@ -1,20 +1,20 @@
 <p>
-¢¨¡Öalpha¡×¤¬ÉÕ¤¤¤Æ¤¤¤ë¥Ð¡¼¥¸¥ç¥ó¤Ï¡¢¤Û¤È¤ó¤É¥Æ¥¹¥È¤ò¹Ô¤Ã¤Æ¤¤¤Þ¤»¤ó¡£¼è¤ê°·¤¤Í×Ãí°Õ¡£
+â€»ã€Œalphaã€ãŒä»˜ã„ã¦ã„ã‚‹ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯ã€ã»ã¨ã‚“ã©ãƒ†ã‚¹ãƒˆã‚’è¡Œã£ã¦ã„ã¾ã›ã‚“ã€‚å–ã‚Šæ‰±ã„è¦æ³¨æ„ã€‚
 </p>
 <p>
-¢¨¡Öbeta¡×¤¬ÉÕ¤¤¤Æ¤¤¤ë¥Ð¡¼¥¸¥ç¥ó¤Ï³«È¯¥Á¡¼¥àÆâ¤Î¾ðÊó¸ò´¹ÍÑ¤Ç¤¹¡£´ðËÜÅª¤Ë°ÂÄêÀ­¤ÏÊÝ¾Ú¤µ¤ì¤Þ¤»¤ó¡£
+â€»ã€Œbetaã€ãŒä»˜ã„ã¦ã„ã‚‹ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯é–‹ç™ºãƒãƒ¼ãƒ å†…ã®æƒ…å ±äº¤æ›ç”¨ã§ã™ã€‚åŸºæœ¬çš„ã«å®‰å®šæ€§ã¯ä¿è¨¼ã•ã‚Œã¾ã›ã‚“ã€‚
 </p>
 <table id="download">
-<caption>ÄêÃÖ¥Õ¥¡¥¤¥ë</caption>
+<caption>å®šç½®ãƒ•ã‚¡ã‚¤ãƒ«</caption>
 <?php
 $caption = <<<EOF
 <tr class="caption">
-<td>¥Õ¥¡¥¤¥ë</td>
-<td>³ÈÄ¥»Ò</td>
-<td>¥µ¥¤¥º</td>
-<td>ÀâÌÀ</td>
-<td>ºîÀ®¼Ô</td>
-<td>Æü»þ</td>
+<td>ãƒ•ã‚¡ã‚¤ãƒ«</td>
+<td>æ‹¡å¼µå­</td>
+<td>ã‚µã‚¤ã‚º</td>
+<td>èª¬æ˜Ž</td>
+<td>ä½œæˆè€…</td>
+<td>æ—¥æ™‚</td>
 </tr>
 
 EOF;
@@ -24,32 +24,32 @@ echo $caption;
 <td class="link"><a href="fix/jinro_php_1.3.0.zip">Ver. 1.3.0</a></td>
 <td class="type">zip</td>
 <td class="size">1.25 Mbyte</td>
-<td class="explain">Ver. 1.3.0¡¡Àµ¼°¥ê¥ê¡¼¥¹¡£²áµî¥í¥°¤ÎTITLEÊÑ¹¹¡¢¡Ö¡×ÄÉ²Ã¥ª¥×¥·¥ç¥ó¼ÂÁõ</td>
-<td class="name">¤ªÆù</td>
+<td class="explain">Ver. 1.3.0ã€€æ­£å¼ãƒªãƒªãƒ¼ã‚¹ã€‚éŽåŽ»ãƒ­ã‚°ã®TITLEå¤‰æ›´ã€ã€Œã€è¿½åŠ ã‚ªãƒ—ã‚·ãƒ§ãƒ³å®Ÿè£…</td>
+<td class="name">ãŠè‚‰</td>
 <td class="date">2009/07/11</td>
 </tr>
 <tr>
 <td class="link"><a href="fix/jinro_php_1.2.3.UTF-8.zip">Ver. 1.2.3.UTF-8</a></td>
 <td class="type">zip</td>
 <td class="size">1.19 Mbyte</td>
-<td class="explain">Ver. 1.2.2 ¤Î UTF-8 ÂÐ±þÈÇ¡ÊÊ¸»ú¥³¡¼¥ÉÊÑ¹¹¡¢µì¥í¥°²½¤±¤ë¡Ë</td>
-<td class="name">¤Í¤³¤Í¤³</td>
+<td class="explain">Ver. 1.2.2 ã® UTF-8 å¯¾å¿œç‰ˆï¼ˆæ–‡å­—ã‚³ãƒ¼ãƒ‰å¤‰æ›´ã€æ—§ãƒ­ã‚°åŒ–ã‘ã‚‹ï¼‰</td>
+<td class="name">ã­ã“ã­ã“</td>
 <td class="date">2009/06/23</td>
 </tr>
 <tr>
 <td class="link"><a href="fix/jinro_php_1.2.2a.zip">Ver. 1.2.2a</a></td>
 <td class="type">zip</td>
 <td class="size">1.21 Mbyte</td>
-<td class="explain">¥½¡¼¥¹¥³¡¼¥É Ver. 1.2.2a</td>
-<td class="name">Ëä¤á¥Á¥ë</td>
+<td class="explain">ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ Ver. 1.2.2a</td>
+<td class="name">åŸ‹ã‚ãƒãƒ«</td>
 <td class="date">2009/06/04</td>
 </tr>
 <tr>
 <td class="link"><a href="fix/jinro_php_1.2.1.zip">Ver. 1.2.1</a>
 <td class="type">zip</td>
 <td class="size">1.19 Mbyte</td>
-<td class="explain">¥½¡¼¥¹¥³¡¼¥É Ver. 1.2.1</td>
-<td class="name">¤ªÆù</td>
+<td class="explain">ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ Ver. 1.2.1</td>
+<td class="name">ãŠè‚‰</td>
 <td class="date">2009/04/15</td>
 </tr>
 </table>
@@ -64,14 +64,14 @@ if($handle = opendir('html')){
 if(count($array) < 1) return;
 rsort($array);
 
-$str = '<table id="download">'."\n" . '<caption>¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤¿¥Õ¥¡¥¤¥ë</caption>' . $caption;
+$str = '<table id="download">'."\n" . '<caption>ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«</caption>' . $caption;
 foreach($array as $key => $file){
   $str .= '<tr>'."\n";
   if($html = file_get_contents('html/' . $file)){
     $str .= $html;
   }
   else{
-    $str .= '<td colspan="6">ÆÉ¤ß¹þ¤ß¼ºÇÔ: ' . $file . '</td>'."\n";
+    $str .= '<td colspan="6">èª­ã¿è¾¼ã¿å¤±æ•—: ' . $file . '</td>'."\n";
   }
   $str .= '<tr>'."\n";
 }

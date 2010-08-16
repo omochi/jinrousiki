@@ -1,112 +1,110 @@
 <?php
-//Ç½ÎÏ¤Î¼ïÎà¤È¤½¤ÎÀâÌÀ¤ò½ĞÎÏ
+//èƒ½åŠ›ã®ç¨®é¡ã¨ãã®èª¬æ˜ã‚’å‡ºåŠ›
 function OutputAbility(){
   global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $USERS, $SELF;
 
-  if(! $ROOM->IsPlaying()) return false; //¥²¡¼¥àÃæ¤Î¤ßÉ½¼¨¤¹¤ë
+  if(! $ROOM->IsPlaying()) return false; //ã‚²ãƒ¼ãƒ ä¸­ã®ã¿è¡¨ç¤ºã™ã‚‹
 
-  if($SELF->IsDead()){ //»àË´¤·¤¿¤é¸ı´ó¤»°Ê³°¤ÏÉ½¼¨¤·¤Ê¤¤
+  if($SELF->IsDead()){ //æ­»äº¡ã—ãŸã‚‰å£å¯„ã›ä»¥å¤–ã¯è¡¨ç¤ºã—ãªã„
     echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
     if($SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
     return;
   }
 
-  if($SELF->IsRole('human', 'saint', 'executor', 'suspect', 'unconscious')){ //Â¼¿Í·Ï
+  if($SELF->IsRole('human', 'saint', 'executor', 'suspect', 'unconscious')){ //æ‘äººç³»
     $ROLE_IMG->Output('human');
   }
-  elseif($SELF->IsRole('elder', 'brownie')){ //Ä¹Ï·¡¦ºÂÉßÆ¸»Ò
+  elseif($SELF->IsRole('elder')) $ROLE_IMG->Output($SELF->main_role); //é•·è€
+  elseif($SELF->IsRole('escaper')){ //é€ƒäº¡è€…
     $ROLE_IMG->Output($SELF->main_role);
-  }
-  elseif($SELF->IsRole('escaper')){ //Æ¨Ë´¼Ô
-    $ROLE_IMG->Output($SELF->main_role);
-    //Ìë¤ÎÅêÉ¼
+    //å¤œã®æŠ•ç¥¨
     if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('fairy-do', 'escape_do', 'ESCAPE_DO');
   }
-  elseif($SELF->IsRoleGroup('mage')){ //Àê¤¤»Õ·Ï
+  elseif($SELF->IsRoleGroup('mage')){ //å ã„å¸«ç³»
     $ROLE_IMG->Output($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);
-    if($ROOM->date > 1) OutputSelfAbilityResult('MAGE_RESULT'); //Àê¤¤·ë²Ì
-    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //Ìë¤ÎÅêÉ¼
+    if($ROOM->date > 1) OutputSelfAbilityResult('MAGE_RESULT'); //å ã„çµæœ
+    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //å¤œã®æŠ•ç¥¨
   }
-  elseif($SELF->IsRole('voodoo_killer')){ //±¢ÍÛ»Õ
+  elseif($SELF->IsRole('voodoo_killer')){ //é™°é™½å¸«
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 1) OutputSelfAbilityResult('VOODOO_KILLER_SUCCESS'); //Àê¤¤·ë²Ì
-    //Ìë¤ÎÅêÉ¼
+    if($ROOM->date > 1) OutputSelfAbilityResult('VOODOO_KILLER_SUCCESS'); //å ã„çµæœ
+    //å¤œã®æŠ•ç¥¨
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'voodoo_killer_do', 'VOODOO_KILLER_DO');
   }
-  elseif($SELF->IsRoleGroup('necromancer')){ //ÎîÇ½¼Ô·Ï
+  elseif($SELF->IsRoleGroup('necromancer')){ //éœŠèƒ½è€…ç³»
     $ROLE_IMG->Output($SELF->IsRole('dummy_necromancer') ? 'necromancer' : $SELF->main_role);
-    if($ROOM->date > 2 && ! $SELF->IsRole('yama_necromancer')){ //ÎîÇ½·ë²Ì
+    if($ROOM->date > 2 && ! $SELF->IsRole('yama_necromancer')){ //éœŠèƒ½çµæœ
       OutputSelfAbilityResult(strtoupper($SELF->main_role) . '_RESULT');
     }
   }
-  elseif($SELF->IsRoleGroup('medium')){ //Öà½÷
+  elseif($SELF->IsRoleGroup('medium')){ //å·«å¥³
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 1) OutputSelfAbilityResult('MEDIUM_RESULT'); //¿ÀÂ÷·ë²Ì
-    if($SELF->IsRole('revive_medium') && ! $ROOM->IsOpenCast()){ //É÷½Ë
-      if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //ÁÉÀ¸·ë²Ì
-      if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+    if($ROOM->date > 1) OutputSelfAbilityResult('MEDIUM_RESULT'); //ç¥è¨—çµæœ
+    if($SELF->IsRole('revive_medium') && ! $ROOM->IsOpenCast()){ //é¢¨ç¥
+      if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //è˜‡ç”Ÿçµæœ
+      if($ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
 	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
   }
-  elseif($SELF->IsRoleGroup('priest')){ //»Êº×·Ï
+  elseif($SELF->IsRoleGroup('priest')){ //å¸ç¥­ç³»
     if($SELF->IsRole('crisis_priest'))    $ROLE_IMG->Output('human');
     elseif($SELF->IsRole('dummy_priest')) $ROLE_IMG->Output('priest');
     else                                  $ROLE_IMG->Output($SELF->main_role);
 
-    switch($SELF->main_role){ //Ìò¿¦¤Ë±ş¤¸¤¿¿ÀÂ÷·ë²Ì¤òÉ½¼¨
-    case 'priest': //»Êº×
+    switch($SELF->main_role){ //å½¹è·ã«å¿œã˜ãŸç¥è¨—çµæœã‚’è¡¨ç¤º
+    case 'priest': //å¸ç¥­
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
       break;
 
-    case 'bishop_priest': //»Ê¶µ
+    case 'bishop_priest': //å¸æ•™
       if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
       break;
 
-    case 'dowser_priest': //ÃµÃÎ»Õ
+    case 'dowser_priest': //æ¢çŸ¥å¸«
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DOWSER_PRIEST_RESULT');
       break;
 
-    case 'border_priest': //¶­³¦»Õ
+    case 'border_priest': //å¢ƒç•Œå¸«
       if($ROOM->date > 2) OutputSelfAbilityResult('BORDER_PRIEST_RESULT');
       break;
 
-    case 'crisis_priest': //ÍÂ¸À¼Ô
+    case 'crisis_priest': //é è¨€è€…
       if($ROOM->date > 1) OutputSelfAbilityResult('CRISIS_PRIEST_RESULT');
       break;
 
-    case 'dummy_priest': //Ì´»Êº×
+    case 'dummy_priest': //å¤¢å¸ç¥­
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DUMMY_PRIEST_RESULT');
       break;
     }
   }
-  elseif($SELF->IsRoleGroup('guard')){ //¼í¿Í·Ï
+  elseif($SELF->IsRoleGroup('guard')){ //ç‹©äººç³»
     $ROLE_IMG->Output($SELF->IsRole('dummy_guard') ? 'guard' : $SELF->main_role);
     if($ROOM->date > 2){
-      OutputSelfAbilityResult('GUARD_SUCCESS'); //¸î±Ò·ë²Ì
-      OutputSelfAbilityResult('GUARD_HUNTED');  //¼í¤ê·ë²Ì
+      OutputSelfAbilityResult('GUARD_SUCCESS'); //è­·è¡›çµæœ
+      OutputSelfAbilityResult('GUARD_HUNTED');  //ç‹©ã‚Šçµæœ
     }
-    //Ìë¤ÎÅêÉ¼
+    //å¤œã®æŠ•ç¥¨
     if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('guard-do', 'guard_do', 'GUARD_DO');
   }
-  elseif($SELF->IsRole('reporter')){ //¥Ö¥ó²°
+  elseif($SELF->IsRole('reporter')){ //ãƒ–ãƒ³å±‹
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 2) OutputSelfAbilityResult('REPORTER_SUCCESS'); //Èø¹Ô·ë²Ì
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+    if($ROOM->date > 2) OutputSelfAbilityResult('REPORTER_SUCCESS'); //å°¾è¡Œçµæœ
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
       OutputVoteMessage('guard-do', 'reporter_do', 'REPORTER_DO');
     }
   }
-  elseif($SELF->IsRole('anti_voodoo')){ //Ìñ¿À
+  elseif($SELF->IsRole('anti_voodoo')){ //å„ç¥
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 2) OutputSelfAbilityResult('ANTI_VOODOO_SUCCESS'); //¸î±Ò·ë²Ì
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+    if($ROOM->date > 2) OutputSelfAbilityResult('ANTI_VOODOO_SUCCESS'); //è­·è¡›çµæœ
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
       OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO');
     }
   }
-  elseif($SELF->IsCommon()){ //¶¦Í­¼Ô·Ï
+  elseif($SELF->IsCommon()){ //å…±æœ‰è€…ç³»
     $ROLE_IMG->Output($SELF->IsRole('dummy_common') ? 'common' : $SELF->main_role);
 
-    //Ãç´Ö¾ğÊó¤ò¼èÆÀ
+    //ä»²é–“æƒ…å ±ã‚’å–å¾—
     $stack = array();
     foreach($USERS->rows as $user){
       if($user->IsSelf()) continue;
@@ -117,42 +115,42 @@ function OutputAbility(){
 	$stack[] = $user->handle_name;
       }
     }
-    OutputPartner($stack, 'common_partner'); //Ãç´Ö¤òÉ½¼¨
+    OutputPartner($stack, 'common_partner'); //ä»²é–“ã‚’è¡¨ç¤º
     unset($stack);
   }
-  elseif($SELF->IsRoleGroup('cat')){ //Ç­Ëô·Ï
+  elseif($SELF->IsRoleGroup('cat')){ //çŒ«åˆç³»
     $ROLE_IMG->Output($SELF->main_role);
 
     if(! $ROOM->IsOpenCast()){
-      if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //ÁÉÀ¸·ë²Ì
-      if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+      if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //è˜‡ç”Ÿçµæœ
+      if($ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
 	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
     }
   }
-  elseif($SELF->IsRoleGroup('pharmacist')){ //Ìô»Õ·Ï
+  elseif($SELF->IsRoleGroup('pharmacist')){ //è–¬å¸«ç³»
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 2) OutputSelfAbilityResult('PHARMACIST_RESULT'); //´ÕÄê·ë²Ì
+    if($ROOM->date > 2) OutputSelfAbilityResult('PHARMACIST_RESULT'); //é‘‘å®šçµæœ
   }
-  elseif($SELF->IsRoleGroup('assassin')){ //°Å»¦¼Ô·Ï
+  elseif($SELF->IsRoleGroup('assassin')){ //æš—æ®ºè€…ç³»
     $ROLE_IMG->Output($SELF->IsRole('eclipse_assassin') ? 'assassin' : $SELF->main_role);
-    if($ROOM->date > 2 && $SELF->IsRole('soul_assassin')){ //ÄÔ»Â¤ê
-      OutputSelfAbilityResult('ASSASSIN_RESULT'); //°Å»¦·ë²Ì
+    if($ROOM->date > 2 && $SELF->IsRole('soul_assassin')){ //è¾»æ–¬ã‚Š
+      OutputSelfAbilityResult('ASSASSIN_RESULT'); //æš—æ®ºçµæœ
     }
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
       OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
   }
-  elseif($SELF->IsRoleGroup('scanner')){ //¤µ¤È¤ê·Ï
+  elseif($SELF->IsRoleGroup('scanner')){ //ã•ã¨ã‚Šç³»
     $ROLE_IMG->Output($SELF->main_role);
 
     if($SELF->IsRole('mind_scanner', 'evoke_scanner')){
       if($ROOM->date == 1){
-	if($ROOM->IsNight()){ //½éÆüÌë¤ÎÅêÉ¼
+	if($ROOM->IsNight()){ //åˆæ—¥å¤œã®æŠ•ç¥¨
 	  OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
 	}
       }
-      else{ //2ÆüÌÜ°Ê¹ß¡¢¼«Ê¬¤Î¥µ¥È¥é¥ì/¸ı´ó¤»¤òÉ½¼¨
+      else{ //2æ—¥ç›®ä»¥é™ã€è‡ªåˆ†ã®ã‚µãƒˆãƒ©ãƒ¬/å£å¯„ã›ã‚’è¡¨ç¤º
 	$stack = array();
 	$role = $SELF->IsRole('mind_scanner') ? 'mind_read' : 'mind_evoke';
 	foreach($USERS->rows as $user){
@@ -163,9 +161,9 @@ function OutputAbility(){
       }
     }
   }
-  elseif($SELF->IsRoleGroup('doll')){ //¾å³¤¿Í·Á·Ï
+  elseif($SELF->IsRoleGroup('doll')){ //ä¸Šæµ·äººå½¢ç³»
     $ROLE_IMG->Output($SELF->main_role);
-    if(! $SELF->IsRole('doll_master')){ //Ãç´ÖÉ½¼¨
+    if(! $SELF->IsRole('doll_master')){ //ä»²é–“è¡¨ç¤º
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsSelf()) continue;
@@ -176,15 +174,18 @@ function OutputAbility(){
 	  $stack['doll'][] = $user->handle_name;
 	}
       }
-      OutputPartner($stack['master'], 'doll_master_list'); //¿Í·Á¸¯¤¤
-      if($SELF->IsRole('friend_doll')) OutputPartner($stack['doll'], 'doll_partner'); //Ê©ÍöÀ¾¿Í·Á
+      OutputPartner($stack['master'], 'doll_master_list'); //äººå½¢é£ã„
+      if($SELF->IsRole('friend_doll')) OutputPartner($stack['doll'], 'doll_partner'); //ä»è˜­è¥¿äººå½¢
       unset($stack);
     }
   }
-  elseif($SELF->IsWolf()){ //¿ÍÏµ·Ï
+  elseif($SELF->IsRoleGroup('brownie')){ //åº§æ•·ç«¥å­ç³»
+    $ROLE_IMG->Output($SELF->main_role);
+  }
+  elseif($SELF->IsWolf()){ //äººç‹¼ç³»
     $ROLE_IMG->Output($SELF->main_role);
 
-    //Ãç´Ö¾ğÊó¤ò¼ı½¸
+    //ä»²é–“æƒ…å ±ã‚’åé›†
     $stack = array();
     foreach($USERS->rows as $user){
       if($user->IsSelf()) continue;
@@ -199,28 +200,28 @@ function OutputAbility(){
       }
     }
     if($SELF->IsWolf(true)){
-      OutputPartner($stack['wolf'], 'wolf_partner'); //Ãç´Ö¤òÉ½¼¨
-      OutputPartner($stack['mad'], 'mad_partner'); //Óñ¤­¶¸¿Í¤òÉ½¼¨
+      OutputPartner($stack['wolf'], 'wolf_partner'); //ä»²é–“ã‚’è¡¨ç¤º
+      OutputPartner($stack['mad'], 'mad_partner'); //å›ãç‹‚äººã‚’è¡¨ç¤º
     }
-    if($ROOM->IsNight()){ //Ìë¤À¤±Ìµ°Õ¼±¤È¹È¸Ñ¤òÉ½¼¨
+    if($ROOM->IsNight()){ //å¤œã ã‘ç„¡æ„è­˜ã¨ç´…ç‹ã‚’è¡¨ç¤º
       OutputPartner($stack['unconscious'], 'unconscious_list');
     }
     unset($stack);
 
-    switch($SELF->main_role){ //ÆÃ¼ìÏµ¤Î½èÍı
-    case 'tongue_wolf': //Àå²ÒÏµ
-      if($ROOM->date > 1) OutputSelfAbilityResult('TONGUE_WOLF_RESULT'); //³ú¤ß·ë²Ì
+    switch($SELF->main_role){ //ç‰¹æ®Šç‹¼ã®å‡¦ç†
+    case 'tongue_wolf': //èˆŒç¦ç‹¼
+      if($ROOM->date > 1) OutputSelfAbilityResult('TONGUE_WOLF_RESULT'); //å™›ã¿çµæœ
       break;
 
-    case 'sex_wolf': //¿÷Ïµ
-      if($ROOM->date > 1) OutputSelfAbilityResult('SEX_WOLF_RESULT'); //À­ÊÌ¾ğÊó
+    case 'sex_wolf': //é››ç‹¼
+      if($ROOM->date > 1) OutputSelfAbilityResult('SEX_WOLF_RESULT'); //æ€§åˆ¥æƒ…å ±
       break;
 
-    case 'possessed_wolf': //ØáÏµ
-      if($ROOM->date > 1) OutputPossessedTarget(); //¸½ºß¤ÎØá°ÍÀè¤òÉ½¼¨
+    case 'possessed_wolf': //æ†‘ç‹¼
+      if($ROOM->date > 1) OutputPossessedTarget(); //ç¾åœ¨ã®æ†‘ä¾å…ˆã‚’è¡¨ç¤º
       break;
 
-    case 'sirius_wolf': //Å·Ïµ
+    case 'sirius_wolf': //å¤©ç‹¼
       switch(strval(count($USERS->GetLivingWolves()))){
       case '2':
 	OutputAbilityResult('ability_sirius_wolf', NULL);
@@ -233,14 +234,14 @@ function OutputAbility(){
       break;
     }
 
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //Ìë¤ÎÅêÉ¼
+    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //å¤œã®æŠ•ç¥¨
   }
-  elseif($SELF->IsRoleGroup('mad')){ //¶¸¿Í·Ï
+  elseif($SELF->IsRoleGroup('mad')){ //ç‹‚äººç³»
     $ROLE_IMG->Output($SELF->main_role);
 
     switch($SELF->main_role){
-    case 'fanatic_mad': //¶¸¿®¼Ô
-      //Ïµ¤òÉ½¼¨
+    case 'fanatic_mad': //ç‹‚ä¿¡è€…
+      //ç‹¼ã‚’è¡¨ç¤º
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsWolf(true)) $stack[] = $USERS->GetHandleName($user->uname, true);
@@ -249,8 +250,8 @@ function OutputAbility(){
       unset($stack);
       break;
 
-    case 'whisper_mad': //Óñ¤­¶¸¿Í
-      //Ïµ¤ÈÓñ¤­¶¸¿Í¤òÉ½¼¨
+    case 'whisper_mad': //å›ãç‹‚äºº
+      //ç‹¼ã¨å›ãç‹‚äººã‚’è¡¨ç¤º
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsSelf() || $user->IsRole('silver_wolf')) continue;
@@ -266,38 +267,38 @@ function OutputAbility(){
       unset($stack);
       break;
 
-    case 'jammer_mad': //·îÅÆ
+    case 'jammer_mad': //æœˆå…
       if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO');
       break;
 
-    case 'voodoo_mad': //¼ö½Ñ»Õ
+    case 'voodoo_mad': //å‘ªè¡“å¸«
       if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_MAD_DO');
       break;
 
-    case 'dream_eater_mad': //àÓ
+    case 'dream_eater_mad': //ç
       if($ROOM->date > 1 && $ROOM->IsNight()){
 	OutputVoteMessage('wolf-eat', 'dream_eat', 'DREAM_EAT');
       }
       break;
 
-    case 'trap_mad': //æ«»Õ
+    case 'trap_mad': //ç½ å¸«
       if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
 	OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
       }
       break;
 
-    case 'possessed_mad': //¸¤¿À
-      if($ROOM->date > 2) OutputPossessedTarget(); //¸½ºß¤ÎØá°ÍÀè¤òÉ½¼¨
+    case 'possessed_mad': //çŠ¬ç¥
+      if($ROOM->date > 2) OutputPossessedTarget(); //ç¾åœ¨ã®æ†‘ä¾å…ˆã‚’è¡¨ç¤º
       if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
 	OutputVoteMessage('wolf-eat', 'possessed_do', 'POSSESSED_DO', 'POSSESSED_NOT_DO');
       }
       break;
     }
   }
-  elseif($SELF->IsFox()){ //ÍÅ¸Ñ·Ï
+  elseif($SELF->IsFox()){ //å¦–ç‹ç³»
     $ROLE_IMG->Output($SELF->main_role);
 
-    if(! $SELF->IsLonely()){ //Ãç´ÖÉ½¼¨
+    if(! $SELF->IsLonely()){ //ä»²é–“è¡¨ç¤º
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsSelf()) continue;
@@ -308,47 +309,47 @@ function OutputAbility(){
 	  $stack['child_fox'][] = $user->handle_name;
 	}
       }
-      OutputPartner($stack['fox'], 'fox_partner'); //ÍÅ¸Ñ·Ï
-      OutputPartner($stack['child_fox'], 'child_fox_partner'); //»Ò¸Ñ·Ï
+      OutputPartner($stack['fox'], 'fox_partner'); //å¦–ç‹ç³»
+      OutputPartner($stack['child_fox'], 'child_fox_partner'); //å­ç‹ç³»
       unset($stack);
     }
 
-    if($SELF->IsRole('jammer_fox')){ //·î¸Ñ
+    if($SELF->IsRole('jammer_fox')){ //æœˆç‹
       if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO');
     }
-    elseif($SELF->IsChildFox(true)){ //»Ò¸Ñ·Ï
-      if($ROOM->date > 1) OutputSelfAbilityResult('CHILD_FOX_RESULT'); //Àê¤¤·ë²Ì
-      if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //Ìë¤ÎÅêÉ¼
+    elseif($SELF->IsChildFox(true)){ //å­ç‹ç³»
+      if($ROOM->date > 1) OutputSelfAbilityResult('CHILD_FOX_RESULT'); //å ã„çµæœ
+      if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //å¤œã®æŠ•ç¥¨
     }
     else{
       switch($SELF->main_role){
-      case 'emerald_fox': //¿é¸Ñ
+      case 'emerald_fox': //ç¿ ç‹
 	if($SELF->IsActive() && $ROOM->IsNight()){
 	  OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO');
 	}
 	break;
 
-      case 'voodoo_fox': //¶åÈø
+      case 'voodoo_fox': //ä¹å°¾
 	if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
 	break;
 
-      case 'revive_fox': //Àç¸Ñ
+      case 'revive_fox': //ä»™ç‹
 	if($ROOM->IsOpenCast()) break;
-	if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //ÁÉÀ¸·ë²Ì
-	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+	if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //è˜‡ç”Ÿçµæœ
+	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
 	  OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
 	}
 	break;
 
-      case 'possessed_fox': //Øá¸Ñ
-	if($ROOM->date > 2) OutputPossessedTarget(); //¸½ºß¤ÎØá°ÍÀè¤òÉ½¼¨
-	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+      case 'possessed_fox': //æ†‘ç‹
+	if($ROOM->date > 2) OutputPossessedTarget(); //ç¾åœ¨ã®æ†‘ä¾å…ˆã‚’è¡¨ç¤º
+	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
 	  OutputVoteMessage('wolf-eat', 'possessed_do', 'POSSESSED_DO', 'POSSESSED_NOT_DO');
 	}
 	break;
 
-      case 'doom_fox': //Ì½¸Ñ
-	if($ROOM->date > 1 && $ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼
+      case 'doom_fox': //å†¥ç‹
+	if($ROOM->date > 1 && $ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨
 	  OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
 	}
 	break;
@@ -356,14 +357,14 @@ function OutputAbility(){
     }
 
     if($ROOM->date > 1 && ! ($SELF->IsRole('white_fox', 'poison_fox') || $SELF->IsChildFox())){
-      OutputSelfAbilityResult('FOX_EAT'); //½±·â¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨
+      OutputSelfAbilityResult('FOX_EAT'); //è¥²æ’ƒãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
     }
   }
-  elseif($SELF->IsRoleGroup('chiroptera')){ //éşéõ·Ï
-    if($SELF->IsRole('dummy_chiroptera')){ //Ì´µá°¦¼Ô
+  elseif($SELF->IsRoleGroup('chiroptera')){ //è™è ç³»
+    if($SELF->IsRole('dummy_chiroptera')){ //å¤¢æ±‚æ„›è€…
       $ROLE_IMG->Output('self_cupid');
 
-      //¼«Ê¬¤¬Ìğ¤òÂÇ¤Ã¤¿(¤Ä¤â¤ê)¤ÎÎø¿Í (¼«Ê¬¼«¿È´Ş¤à) ¤òÉ½¼¨
+      //è‡ªåˆ†ãŒçŸ¢ã‚’æ‰“ã£ãŸ(ã¤ã‚‚ã‚Š)ã®æ‹äºº (è‡ªåˆ†è‡ªèº«å«ã‚€) ã‚’è¡¨ç¤º
       $stack = $SELF->GetPartner('dummy_chiroptera');
       if(is_array($stack)){
 	$stack[] = $SELF->user_no;
@@ -375,39 +376,39 @@ function OutputAbility(){
       }
 
       if($ROOM->date == 1 && $ROOM->IsNight()){
-	OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //½éÆüÌë¤ÎÅêÉ¼
+	OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO'); //åˆæ—¥å¤œã®æŠ•ç¥¨
       }
     }
     else{
       $ROLE_IMG->Output($SELF->main_role);
     }
   }
-  elseif($SELF->IsRoleGroup('fairy')){ //ÍÅÀº·Ï
+  elseif($SELF->IsRoleGroup('fairy')){ //å¦–ç²¾ç³»
     $ROLE_IMG->Output($SELF->main_role);
-    if($SELF->IsRole('mirror_fairy')){ //¶ÀÍÅÀº
+    if($SELF->IsRole('mirror_fairy')){ //é¡å¦–ç²¾
       if($ROOM->date == 1 && $ROOM->IsNight()){
-	OutputVoteMessage('fairy-do', 'fairy_do', 'CUPID_DO'); //½éÆüÌë¤ÎÅêÉ¼
+	OutputVoteMessage('fairy-do', 'fairy_do', 'CUPID_DO'); //åˆæ—¥å¤œã®æŠ•ç¥¨
       }
     }
     else{
-      if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //Ìë¤ÎÅêÉ¼
+      if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //å¤œã®æŠ•ç¥¨
     }
   }
-  elseif($SELF->IsRole('incubate_poison')){ //ÀøÆÇ¼Ô
+  elseif($SELF->IsRole('incubate_poison')){ //æ½œæ¯’è€…
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
   }
-  elseif($SELF->IsRole('guide_poison')){ //Í¶ÆÇ¼Ô
+  elseif($SELF->IsRole('guide_poison')){ //èª˜æ¯’è€…
     $ROLE_IMG->Output($SELF->main_role);
   }
-  elseif($SELF->IsRole('chain_poison')){ //Ï¢ÆÇ¼Ô
+  elseif($SELF->IsRole('chain_poison')){ //é€£æ¯’è€…
     $ROLE_IMG->Output('human');
   }
-  elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->Output('poison'); //ËäÆÇ¼Ô·Ï
-  elseif($SELF->IsRoleGroup('cupid', 'angel')){ //¥­¥å¡¼¥Ô¥Ã¥É·Ï
+  elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->Output('poison'); //åŸ‹æ¯’è€…ç³»
+  elseif($SELF->IsRoleGroup('cupid', 'angel')){ //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ç³»
     $ROLE_IMG->Output($SELF->main_role);
 
-    //¼«Ê¬¤¬Ìğ¤òÂÇ¤Ã¤¿Îø¿Í (¼«Ê¬¼«¿È´Ş¤à) ¤òÉ½¼¨
+    //è‡ªåˆ†ãŒçŸ¢ã‚’æ‰“ã£ãŸæ‹äºº (è‡ªåˆ†è‡ªèº«å«ã‚€) ã‚’è¡¨ç¤º
     $stack = array();
     foreach($USERS->rows as $user){
       if($user->IsPartner('lovers', $SELF->user_no)) $stack[] = $user->handle_name;
@@ -416,21 +417,21 @@ function OutputAbility(){
     unset($stack);
 
     if($SELF->IsRole('ark_angel') && $ROOM->date == 2){
-      OutputSelfAbilityResult('SYMPATHY_RESULT'); //ÂçÅ·»È¤Ï¶¦´¶¼Ô¾ğÊó¤òÁ´¤Æ¸«¤ë¤³¤È¤¬½ĞÍè¤ë
+      OutputSelfAbilityResult('SYMPATHY_RESULT'); //å¤§å¤©ä½¿ã¯å…±æ„Ÿè€…æƒ…å ±ã‚’å…¨ã¦è¦‹ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹
     }
-    //½éÆüÌë¤ÎÅêÉ¼
+    //åˆæ—¥å¤œã®æŠ•ç¥¨
     if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO');
   }
-  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //¶¶É±
-  elseif($SELF->IsRole('quiz')){ //½ĞÂê¼Ô
+  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //æ©‹å§«
+  elseif($SELF->IsRole('quiz')){ //å‡ºé¡Œè€…
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
   }
-  elseif($SELF->IsRole('vampire')){ //µÛ·ìµ´
+  elseif($SELF->IsRole('vampire')){ //å¸è¡€é¬¼
     $ROLE_IMG->Output($SELF->main_role);
 
     if($ROOM->date > 2){
-      //¼«Ê¬¤Î´¶À÷¼Ô¤òÉ½¼¨
+      //è‡ªåˆ†ã®æ„ŸæŸ“è€…ã‚’è¡¨ç¤º
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsPartner('infected', $SELF->user_no)) $stack[] = $user->handle_name;
@@ -439,32 +440,32 @@ function OutputAbility(){
       unset($stack);
     }
     if($ROOM->date > 1 && $ROOM->IsNight()){
-      OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO'); //Ìë¤ÎÅêÉ¼
+      OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO'); //å¤œã®æŠ•ç¥¨
     }
   }
-  elseif($SELF->IsRoleGroup('mania')){ //¿ÀÏÃ¥Ş¥Ë¥¢
+  elseif($SELF->IsRoleGroup('mania')){ //ç¥è©±ãƒãƒ‹ã‚¢
     $ROLE_IMG->Output($SELF->IsRole('dummy_mania') ? 'soul_mania' : $SELF->main_role);
-    //½éÆüÌë¤ÎÅêÉ¼
+    //åˆæ—¥å¤œã®æŠ•ç¥¨
     if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO');
     if($ROOM->date == 2 && $SELF->IsRole('soul_mania', 'dummy_mania')){
-      OutputSelfAbilityResult('MANIA_RESULT'); //³ĞÀÃ¼Ô¡¦Ì´¸ìÉô¤Î¥³¥Ô¡¼·ë²Ì
+      OutputSelfAbilityResult('MANIA_RESULT'); //è¦šé†’è€…ãƒ»å¤¢èªéƒ¨ã®ã‚³ãƒ”ãƒ¼çµæœ
     }
   }
 
-  //-- ¤³¤³¤«¤é·óÇ¤Ìò¿¦ --//
-  $fix_display_list = array(); //¾ï»şÉ½¼¨¤¹¤ëÌò¿¦¥ê¥¹¥È
+  //-- ã“ã“ã‹ã‚‰å…¼ä»»å½¹è· --//
+  $fix_display_list = array(); //å¸¸æ™‚è¡¨ç¤ºã™ã‚‹å½¹è·ãƒªã‚¹ãƒˆ
 
-  //¸µ¿ÀÏÃ¥Ş¥Ë¥¢¤Î¥³¥Ô¡¼·ë²Ì¤òÉ½¼¨
+  //å…ƒç¥è©±ãƒãƒ‹ã‚¢ã®ã‚³ãƒ”ãƒ¼çµæœã‚’è¡¨ç¤º
   if($SELF->IsRoleGroup('copied') && ($ROOM->date == 2 || $ROOM->date == 4)){
     OutputSelfAbilityResult('MANIA_RESULT');
   }
   array_push($fix_display_list, 'copied', 'copied_trick', 'copied_soul', 'copied_teller');
 
-  //Ç½ÎÏÁÓ¼º (Àå²ÒÏµ¡¢æ«»Õ)
+  //èƒ½åŠ›å–ªå¤± (èˆŒç¦ç‹¼ã€ç½ å¸«)
   if($SELF->IsRole('lost_ability')) $ROLE_IMG->Output('lost_ability');
   $fix_display_list[] = 'lost_ability';
 
-  if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){ //Îø¿Í
+  if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){ //æ‹äºº
     foreach($USERS->rows as $user){
       if(! $user->IsSelf() &&
 	 ($user->IsPartner('lovers', $SELF->partner_list) ||
@@ -476,13 +477,13 @@ function OutputAbility(){
   }
   $fix_display_list[] = 'lovers';
 
-  if($SELF->IsRole('challenge_lovers')){ //ÆñÂê
-    if($ROOM->date > 1) $ROLE_IMG->Output('challenge_lovers'); //É½¼¨¤Ï2ÆüÌÜ°Ê¹ß
+  if($SELF->IsRole('challenge_lovers')){ //é›£é¡Œ
+    if($ROOM->date > 1) $ROLE_IMG->Output('challenge_lovers'); //è¡¨ç¤ºã¯2æ—¥ç›®ä»¥é™
   }
   $fix_display_list[] = 'challenge_lovers';
 
-  if($SELF->IsRole('possessed_exchange')){ //¸ò´¹Øá°Í
-    //¸½ºß¤ÎØá°ÍÀè¤òÉ½¼¨
+  if($SELF->IsRole('possessed_exchange')){ //äº¤æ›æ†‘ä¾
+    //ç¾åœ¨ã®æ†‘ä¾å…ˆã‚’è¡¨ç¤º
     $target_list = $SELF->partner_list['possessed_exchange'];
     if(is_array($target_list)){
       $target = $USERS->ByID(array_shift($target_list))->handle_name;
@@ -498,7 +499,7 @@ function OutputAbility(){
   }
   $fix_display_list[] = 'possessed_exchange';
 
-  if($SELF->IsRole('febris')){ //Ç®ÉÂ
+  if($SELF->IsRole('febris')){ //ç†±ç—…
     $dead_date = max($SELF->GetPartner('febris'));
     if($ROOM->date == $dead_date){
       OutputAbilityResult('febris_header', $dead_date, 'sudden_death_footer');
@@ -506,7 +507,7 @@ function OutputAbility(){
   }
   $fix_display_list[] = 'febris';
 
-  if($SELF->IsRole('death_warrant')){ //»à¤ÎÀë¹ğ
+  if($SELF->IsRole('death_warrant')){ //æ­»ã®å®£å‘Š
     $dead_date = max($SELF->GetPartner('death_warrant'));
     if($ROOM->date <= $dead_date){
       OutputAbilityResult('death_warrant_header', $dead_date, 'sudden_death_footer');
@@ -514,13 +515,13 @@ function OutputAbility(){
   }
   $fix_display_list[] = 'death_warrant';
 
-  //¤³¤³¤«¤é¤ÏØá°ÍÀè¤ÎÌò¿¦¤òÉ½¼¨
+  //ã“ã“ã‹ã‚‰ã¯æ†‘ä¾å…ˆã®å½¹è·ã‚’è¡¨ç¤º
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
   if($virtual_self->IsRole('mind_open')) $ROLE_IMG->Output('mind_open');
   $fix_display_list[] = 'mind_open';
 
-  if($ROOM->date > 1){ //¥µ¥È¥é¥ì·Ï¤ÎÉ½¼¨¤Ï 2 ÆüÌÜ°Ê¹ß
+  if($ROOM->date > 1){ //ã‚µãƒˆãƒ©ãƒ¬ç³»ã®è¡¨ç¤ºã¯ 2 æ—¥ç›®ä»¥é™
     if($virtual_self->IsRole('mind_read')) $ROLE_IMG->Output('mind_read');
     if($virtual_self->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
     if($virtual_self->IsRole('mind_lonely')) $ROLE_IMG->Output('mind_lonely');
@@ -556,7 +557,7 @@ function OutputAbility(){
 	     'mind_friend', 'mind_sympathy', 'infected', 'possessed_target', 'possessed',
 	     'bad_status');
 
-  //¤³¤ì°Ê¹ß¤Ï¥µ¥ÖÌò¿¦Èó¸ø³«¥ª¥×¥·¥ç¥ó¤Î±Æ¶Á¤ò¼õ¤±¤ë
+  //ã“ã‚Œä»¥é™ã¯ã‚µãƒ–å½¹è·éå…¬é–‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å½±éŸ¿ã‚’å—ã‘ã‚‹
   if($ROOM->IsOption('secret_sub_role')) return;
 
   $role_keys_list    = array_keys($ROLE_DATA->sub_role_list);
@@ -569,20 +570,20 @@ function OutputAbility(){
   foreach($target_list as $role) $ROLE_IMG->Output($role);
 }
 
-//Ãç´Ö¤òÉ½¼¨¤¹¤ë
+//ä»²é–“ã‚’è¡¨ç¤ºã™ã‚‹
 function OutputPartner($partner_list, $header, $footer = NULL){
   global $ROLE_IMG;
 
-  if(count($partner_list) < 1) return false; //Ãç´Ö¤¬¤¤¤Ê¤±¤ì¤ĞÉ½¼¨¤·¤Ê¤¤
+  if(count($partner_list) < 1) return false; //ä»²é–“ãŒã„ãªã‘ã‚Œã°è¡¨ç¤ºã—ãªã„
 
   $str = '<table class="ability-partner"><tr>'."\n" .
     '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n" .
-    '<td>¡¡' . implode('¤µ¤ó¡¡', $partner_list) . '¤µ¤ó¡¡</td>'."\n";
+    '<td>ã€€' . implode('ã•ã‚“ã€€', $partner_list) . 'ã•ã‚“ã€€</td>'."\n";
   if($footer) $str .= '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
   echo $str . '</tr></table>'."\n";
 }
 
-//¸½ºß¤ÎØá°ÍÀè¤òÉ½¼¨¤¹¤ë
+//ç¾åœ¨ã®æ†‘ä¾å…ˆã‚’è¡¨ç¤ºã™ã‚‹
 function OutputPossessedTarget(){
   global $USERS, $SELF;
 
@@ -593,12 +594,12 @@ function OutputPossessedTarget(){
   if($target != '') OutputAbilityResult('partner_header', $target, $type);
 }
 
-//¸Ä¡¹¤ÎÇ½ÎÏÈ¯Æ°·ë²Ì¤òÉ½¼¨¤¹¤ë
+//å€‹ã€…ã®èƒ½åŠ›ç™ºå‹•çµæœã‚’è¡¨ç¤ºã™ã‚‹
 /*
-  °ìÉô¤Î½èÍı¤Ï¡¢HN ¤Ë¥¿¥Ö¤¬Æş¤ë¤È¥Ñ¡¼¥¹¤Ë¼ºÇÔ¤¹¤ë
-  ÆşÂ¼»ş¤Ë HN ¤«¤é¥¿¥Ö¤ò½ü¤¯»ö¤ÇÂĞ±ş¤Ç¤­¤ë¤¬¡¢
-  ¤½¤â¤½¤â¤³¤Î¤è¤¦¤Ê¥Ñ¡¼¥¹¤ò¤·¤Ê¤¤¤È¤¤¤±¤Ê¤¤ DB ¹½Â¤¤Ë
-  ÌäÂê¤¬¤¢¤ë¤Î¤Ç¡¢¤³¤³¤Ç¤ÏÆÃ¤ËÂĞ±ş¤·¤Ê¤¤
+  ä¸€éƒ¨ã®å‡¦ç†ã¯ã€HN ã«ã‚¿ãƒ–ãŒå…¥ã‚‹ã¨ãƒ‘ãƒ¼ã‚¹ã«å¤±æ•—ã™ã‚‹
+  å…¥æ‘æ™‚ã« HN ã‹ã‚‰ã‚¿ãƒ–ã‚’é™¤ãäº‹ã§å¯¾å¿œã§ãã‚‹ãŒã€
+  ãã‚‚ãã‚‚ã“ã®ã‚ˆã†ãªãƒ‘ãƒ¼ã‚¹ã‚’ã—ãªã„ã¨ã„ã‘ãªã„ DB æ§‹é€ ã«
+  å•é¡ŒãŒã‚ã‚‹ã®ã§ã€ã“ã“ã§ã¯ç‰¹ã«å¯¾å¿œã—ãªã„
 */
 function OutputSelfAbilityResult($action){
   global $RQ_ARGS, $ROOM, $SELF;
@@ -640,16 +641,16 @@ function OutputSelfAbilityResult($action){
     $footer = 'priest_footer';
     break;
 
-  case 'BORDER_PRIEST_RESULT':
-    $type = 'mage';
-    $header = 'border_priest_header';
-    $footer = 'priest_footer';
-    break;
-
   case 'DOWSER_PRIEST_RESULT':
     $type = 'priest';
     $header = 'dowser_priest_header';
     $footer = 'dowser_priest_footer';
+    break;
+
+  case 'BORDER_PRIEST_RESULT':
+    $type = 'mage';
+    $header = 'border_priest_header';
+    $footer = 'priest_footer';
     break;
 
   case 'CRISIS_PRIEST_RESULT':
@@ -684,6 +685,16 @@ function OutputSelfAbilityResult($action){
     $header = 'assassin_result';
     break;
 
+  case 'POISON_CAT_RESULT':
+    $type = 'mage';
+    $footer = 'poison_cat_';
+    break;
+
+  case 'PHARMACIST_RESULT':
+    $type = 'mage';
+    $footer = 'pharmacist_';
+    break;
+
   case 'TONGUE_WOLF_RESULT':
   case 'SEX_WOLF_RESULT':
     $type = 'mage';
@@ -700,16 +711,6 @@ function OutputSelfAbilityResult($action){
     $header = 'fox_targeted';
     break;
 
-  case 'POISON_CAT_RESULT':
-    $type = 'mage';
-    $footer = 'poison_cat_';
-    break;
-
-  case 'PHARMACIST_RESULT':
-    $type = 'mage';
-    $footer = 'pharmacist_';
-    break;
-
   case 'MANIA_RESULT':
     $type = 'mage';
     break;
@@ -723,24 +724,27 @@ function OutputSelfAbilityResult($action){
     return false;
   }
 
-  $yesterday = $ROOM->date - 1;
+  $target_date = $ROOM->date - 1;
   if($ROOM->test_mode){
-    if($type == 'necromancer' || $action == 'PHARMACIST_RESULT') $yesterday++;
-    $stack = $RQ_ARGS->TestItems->system_message[$yesterday][$action];
+    if($action == 'MEDIUM_RESULT'){
+      if($ROOM->IsNight()) $target_date++;
+    }
+    elseif($type == 'necromancer' || $action == 'PHARMACIST_RESULT') $target_date++;
+    $stack = $RQ_ARGS->TestItems->system_message[$target_date][$action];
     $result_list = is_array($stack) ? $stack : array();
   }
   else{
     $query = 'SELECT DISTINCT message FROM system_message WHERE room_no = ' .
-      "{$ROOM->id} AND date = {$yesterday} AND type = '{$action}'";
+      "{$ROOM->id} AND date = {$target_date} AND type = '{$action}'";
     $result_list = FetchArray($query);
   }
 
   switch($type){
   case 'mage':
     foreach($result_list as $result){
-      list($actor, $target, $target_role) = explode("\t", $result);
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult($header, $target, $footer . $target_role);
+      list($actor, $target, $data) = explode("\t", $result);
+      if($SELF->IsSameName($actor)){
+	OutputAbilityResult($header, $target, $footer . $data);
 	break;
       }
     }
@@ -749,27 +753,23 @@ function OutputSelfAbilityResult($action){
   case 'necromancer':
     if(is_null($header)) $header = 'necromancer';
     foreach($result_list as $result){
-      list($target, $target_role) = explode("\t", $result);
-      OutputAbilityResult($header . '_result', $target, $footer . $target_role);
+      list($target, $data) = explode("\t", $result);
+      OutputAbilityResult($header . '_result', $target, $footer . $data);
     }
     break;
 
   case 'priest':
-    foreach($result_list as $result){
-      OutputAbilityResult($header, $result, $footer);
-    }
+    foreach($result_list as $result) OutputAbilityResult($header, $result, $footer);
     break;
 
   case 'crisis_priest':
-    foreach($result_list as $result){
-      OutputAbilityResult($header . $result, NULL, $footer);
-    }
+    foreach($result_list as $result) OutputAbilityResult($header . $result, NULL, $footer);
     break;
 
   case 'guard':
     foreach($result_list as $result){
       list($actor, $target) = explode("\t", $result);
-      if($SELF->handle_name == $actor){
+      if($SELF->IsSameName($actor)){
 	OutputAbilityResult(NULL, $target, $footer);
 	break;
       }
@@ -778,9 +778,9 @@ function OutputSelfAbilityResult($action){
 
   case 'reporter':
     foreach($result_list as $result){
-      list($actor, $target, $wolf_handle) = explode("\t", $result);
-      if($SELF->handle_name == $actor){
-	OutputAbilityResult($header, $target . ' ¤µ¤ó¤Ï ' . $wolf_handle, $footer);
+      list($actor, $target, $wolf) = explode("\t", $result);
+      if($SELF->IsSameName($actor)){
+	OutputAbilityResult($header, $target . ' ã•ã‚“ã¯ ' . $wolf, $footer);
 	break;
       }
     }
@@ -788,7 +788,7 @@ function OutputSelfAbilityResult($action){
 
   case 'fox':
     foreach($result_list as $result){
-      if($SELF->handle_name == $result){
+      if($SELF->IsSameName($result)){
 	OutputAbilityResult($header, NULL);
 	break;
       }
@@ -797,16 +797,16 @@ function OutputSelfAbilityResult($action){
 
   case 'sympathy':
     foreach($result_list as $result){
-      list($actor, $target, $target_role) = explode("\t", $result);
-      if($SELF->IsRole('ark_angel') || $SELF->handle_name == $actor){
-	OutputAbilityResult($header, $target, $footer . $target_role);
+      list($actor, $target, $data) = explode("\t", $result);
+      if($SELF->IsSameName($actor) || $SELF->IsRole('ark_angel')){
+	OutputAbilityResult($header, $target, $footer . $data);
       }
     }
     break;
   }
 }
 
-//Ç½ÎÏÈ¯Æ°·ë²Ì¤òÉ½¼¨¤¹¤ë
+//èƒ½åŠ›ç™ºå‹•çµæœã‚’è¡¨ç¤ºã™ã‚‹
 function OutputAbilityResult($header, $target, $footer = NULL){
   global $ROLE_IMG;
 
@@ -817,11 +817,11 @@ function OutputAbilityResult($header, $target, $footer = NULL){
   echo '</tr></table>'."\n";
 }
 
-//Ìë¤ÎÌ¤ÅêÉ¼¥á¥Ã¥»¡¼¥¸½ĞÎÏ
+//å¤œã®æœªæŠ•ç¥¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡ºåŠ›
 function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   global $MESSAGE, $ROOM;
 
-  //ÅêÉ¼ºÑ¤ß¤Ê¤é¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤
+  //æŠ•ç¥¨æ¸ˆã¿ãªã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ãªã„
   if(! $ROOM->test_mode && CheckSelfVoteNight($situation, $not_situation)) return false;
 
   $message_str = 'ability_' . $sentence;

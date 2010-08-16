@@ -8,7 +8,7 @@ class GameAfterFormat extends GameBaseFormat {
       $user_cache[$user->uname] = array (
         'class_attr' => 'u'.$user->user_no,
         'color' => $user->color,
-        'display_name' => '¢¡'.$user->handle_name, 
+        'display_name' => 'â—†'.$user->handle_name, 
         'additional_info' => "($user->uname)"
       );
     }
@@ -48,45 +48,45 @@ CELL;
   }
 
   function OutputNotice(){
-    //¾¡ÇÔ¤Î½ĞÎÏ
+    //å‹æ•—ã®å‡ºåŠ›
     global $MESSAGE;
 
-    //¾¡Íø¿Ø±Ä¤ò¼èÆÀ
+    //å‹åˆ©é™£å–¶ã‚’å–å¾—
     $game_result = FetchResult("SELECT victory_role FROM room WHERE room_no = {$this->room->id}");
     switch($game_result){
-    //¸Ñ¾¡Íø·Ï
+    //ç‹å‹åˆ©ç³»
       case 'fox1':
       case 'fox2':
         $camp_won = 'fox';
         break;
-    //°ú¤­Ê¬¤±·Ï
-      case 'draw': //°ú¤­Ê¬¤±
-      case 'vanish': //Á´ÌÇ
-      case 'quiz_dead': //¥¯¥¤¥ºÂ¼ GM »àË´
+    //å¼•ãåˆ†ã‘ç³»
+      case 'draw': //å¼•ãåˆ†ã‘
+      case 'vanish': //å…¨æ»…
+      case 'quiz_dead': //ã‚¯ã‚¤ã‚ºæ‘ GM æ­»äº¡
         $camp_won = 'none';
         break;
-    //ÇÑÂ¼
+    //å»ƒæ‘
       case NULL: 
         $game_result = 'none';
         break;
-    //ÄÌ¾ï
+    //é€šå¸¸
       default:
         $camp_won = $game_result;
     }
     $winner  = 'victory_' . $game_result;
 
-    //¸Ä¿Í¤Î¾¡ÇÔ¤ò¥Á¥§¥Ã¥¯
+    //å€‹äººã®å‹æ•—ã‚’ãƒã‚§ãƒƒã‚¯
     if ($game_result != 'none') {
-       //½êÂ°¿Ø±Ä¤ò¼èÆÀ
+       //æ‰€å±é™£å–¶ã‚’å–å¾—
       $my_camp   = $this->self->IsLovers() ? 'lovers' : $this->self->DistinguishCamp();
-      //¥¯¥¤¥ºGM»àË´¤Ë¤è¤ë°ú¤­Ê¬¤±¤Î¾ì¹ç¡¢¥¯¥¤¥ºGM¤ÏÇÔ¼Ô°·¤¤¤Ë¤Ê¤ë¡£
+      //ã‚¯ã‚¤ã‚ºGMæ­»äº¡ã«ã‚ˆã‚‹å¼•ãåˆ†ã‘ã®å ´åˆã€ã‚¯ã‚¤ã‚ºGMã¯æ•—è€…æ‰±ã„ã«ãªã‚‹ã€‚
       $my_result = ($camp_won == 'none') ?
         (($game_result == 'quiz_dead' && $my_camp == 'quiz') ? 'lose' : 'draw')
         : ($camp_won == $my_camp ? 'win' : 'lose');
       $li_personal_result = "<li>{$MESSAGE->$my_result}</li>";
     }
 
-    //½ĞÎÏ
+    //å‡ºåŠ›
     $this->output .= <<<EOF
 <ul id="winner" class="victory-{$camp_won}">
 <li>{$MESSAGE->$winner}</li>

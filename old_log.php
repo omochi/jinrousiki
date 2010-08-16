@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadRequest('RequestOldLog'); //°ú¿ô¤ò¼èÆÀ
-$DB_CONF->Connect(); //DB ÀÜÂ³
+$INIT_CONF->LoadRequest('RequestOldLog'); //å¼•æ•°ã‚’å–å¾—
+$DB_CONF->Connect(); //DB æ¥ç¶š
 if($RQ_ARGS->is_room){
   $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
   $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
@@ -21,34 +21,34 @@ else{
 }
 OutputHTMLFooter();
 
-//-- ´Ø¿ô --//
-//²áµî¥í¥°°ìÍ÷É½¼¨
+//-- é–¢æ•° --//
+//éå»ãƒ­ã‚°ä¸€è¦§è¡¨ç¤º
 function OutputFinishedRooms($page){
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
-  //Â¼¿ô¤Î³ÎÇ§
+  //æ‘æ•°ã®ç¢ºèª
   $room_count = FetchResult("SELECT COUNT(status) FROM room WHERE status = 'finished'");
   if($room_count < 1){
-    OutputActionResult($SERVER_CONF->title . ' [²áµî¥í¥°]',
-		       '¥í¥°¤Ï¤¢¤ê¤Ş¤»¤ó¡£<br>'."\n" . '<a href="./">¢«Ìá¤ë</a>'."\n");
+    OutputActionResult($SERVER_CONF->title . ' [éå»ãƒ­ã‚°]',
+		       'ãƒ­ã‚°ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚<br>'."\n" . '<a href="./">â†æˆ»ã‚‹</a>'."\n");
   }
 
-  OutputHTMLHeader($SERVER_CONF->title . ' [²áµî¥í¥°]', 'old_log_list');
+  OutputHTMLHeader($SERVER_CONF->title . ' [éå»ãƒ­ã‚°]', 'old_log_list');
 echo <<<EOF
 </head>
 <body id="room_list">
-<p><a href="./">¢«Ìá¤ë</a></p>
+<p><a href="./">â†æˆ»ã‚‹</a></p>
 <img src="img/old_log_title.jpg"><br>
 <div align="center">
 <table><tr><td class="list">
 
 EOF;
 
-  $LOG_CONF =& new OldLogConfig(); //ÀßÄê¤ò¥í¡¼¥É
+  $LOG_CONF =& new OldLogConfig(); //è¨­å®šã‚’ãƒ­ãƒ¼ãƒ‰
   $is_reverse = empty($RQ_ARGS->reverse) ? $LOG_CONF->reverse : ($RQ_ARGS->reverse == 'on');
-  $current_time = TZTime(); // ¸½ºß»ş¹ï¤Î¼èÆÀ
+  $current_time = TZTime(); // ç¾åœ¨æ™‚åˆ»ã®å–å¾—
 
-  //¥Ú¡¼¥¸¥ê¥ó¥¯¤Î½ĞÎÏ
+  //ãƒšãƒ¼ã‚¸ãƒªãƒ³ã‚¯ã®å‡ºåŠ›
   $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
   $builder->set_reverse = $is_reverse;
   $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
@@ -57,11 +57,11 @@ EOF;
 </td></tr>
 <tr><td>
 <table class="main">
-<tr><th>Â¼No</th><th>Â¼Ì¾</th><th>¿Í¿ô</th><th>Æü¿ô</th><th>¾¡</th></tr>
+<tr><th>æ‘No</th><th>æ‘å</th><th>äººæ•°</th><th>æ—¥æ•°</th><th>å‹</th></tr>
 
 EOF;
 
-  //Á´ÉôÉ½¼¨¤Î¾ì¹ç¡¢°ì¥Ú¡¼¥¸¤ÇÁ´ÉôÉ½¼¨¤¹¤ë¡£¤½¤ì°Ê³°¤ÏÀßÄê¤·¤¿¿ô¤´¤ÈÉ½¼¨
+  //å…¨éƒ¨è¡¨ç¤ºã®å ´åˆã€ä¸€ãƒšãƒ¼ã‚¸ã§å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ã€‚ãã‚Œä»¥å¤–ã¯è¨­å®šã—ãŸæ•°ã”ã¨è¡¨ç¤º
   $query = "SELECT room_no FROM room WHERE status = 'finished' ORDER BY room_no";
   if($is_reverse) $query .= ' DESC';
   if($RQ_ARGS->page != 'all'){
@@ -74,26 +74,26 @@ EOF;
   foreach($room_no_list as $room_no){
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
-    //$max_user_str = $ROOM_IMG->max_user_list[$ROOM->max_user]; //¥æ¡¼¥¶Áí¿ô²èÁü
+    //$max_user_str = $ROOM_IMG->max_user_list[$ROOM->max_user]; //ãƒ¦ãƒ¼ã‚¶ç·æ•°ç”»åƒ
     $base_url = 'old_log.php?room_no=' . $ROOM->id;
-    $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //ÇÑÂ¼¤Î¾ì¹ç¡¢¿§¤ò³¥¿§¤Ë¤¹¤ë
+    $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //å»ƒæ‘ã®å ´åˆã€è‰²ã‚’ç°è‰²ã«ã™ã‚‹
     $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
     $login = $current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
-      '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[ºÆÆşÂ¼]</a>\n";
+      '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[å†å…¥æ‘]</a>\n";
     $log_link_str = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
-      GenerateLogLink($base_url . '&add_role=on', false, "\n[Ìò¿¦É½¼¨] (", $dead_room) . ' )';
+      GenerateLogLink($base_url . '&add_role=on', false, "\n[å½¹è·è¡¨ç¤º] (", $dead_room) . ' )';
     $game_option_str = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
 
     echo <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">{$ROOM->id}</td>
-<td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} Â¼</a>
-<td class="upper">{$ROOM->user_count} (ºÇÂç{$ROOM->max_user})</td>
+<td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} æ‘</a>
+<td class="upper">{$ROOM->user_count} (æœ€å¤§{$ROOM->max_user})</td>
 <td class="upper">{$ROOM->date}</td>
 <td class="side">{$VICT_IMG->Generate($ROOM->victory_role)}</td>
 </tr>
 <tr class="list middle">
-<td class="comment side">¡Á {$ROOM->comment} ¡Á</td>
+<td class="comment side">ã€œ {$ROOM->comment} ã€œ</td>
 <td class="time comment" colspan="3">{$establish_time}</td>
 </tr>
 <tr class="lower list">
@@ -115,21 +115,21 @@ EOF;
 EOF;
 }
 
-//»ØÄê¤ÎÉô²°ÈÖ¹æ¤Î¥í¥°¤ò½ĞÎÏ¤¹¤ë
+//æŒ‡å®šã®éƒ¨å±‹ç•ªå·ã®ãƒ­ã‚°ã‚’å‡ºåŠ›ã™ã‚‹
 function OutputOldLog(){
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
-  //ÊÑ¿ô¤ò¥»¥Ã¥È
-  $base_title = $SERVER_CONF->title . ' [²áµî¥í¥°]';
-  $url = "<br>\n<a href=\"old_log.php\">¢«Ìá¤ë</a>\n";
+  //å¤‰æ•°ã‚’ã‚»ãƒƒãƒˆ
+  $base_title = $SERVER_CONF->title . ' [éå»ãƒ­ã‚°]';
+  $url = "<br>\n<a href=\"old_log.php\">â†æˆ»ã‚‹</a>\n";
 
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
-    OutputActionResult($base_title, '¤Ş¤À¤³¤ÎÉô²°¤Î¥í¥°¤Ï±ÜÍ÷¤Ç¤­¤Ş¤»¤ó¡£' . $url);
+    OutputActionResult($base_title, 'ã¾ã ã“ã®éƒ¨å±‹ã®ãƒ­ã‚°ã¯é–²è¦§ã§ãã¾ã›ã‚“ã€‚' . $url);
   }
   if($RQ_ARGS->user_no > 0 || $RQ_ARGS->watch) $ROOM->status = 'playing';
-  $title = '[' . $ROOM->id . 'ÈÖÃÏ] ' . $ROOM->name . ' - ' . $base_title;
+  $title = '[' . $ROOM->id . 'ç•ªåœ°] ' . $ROOM->name . ' - ' . $base_title;
 
-  //Ìá¤ëÀè¤òÁ°¤Î¥Ú¡¼¥¸¤Ë¤¹¤ë
+  //æˆ»ã‚‹å…ˆã‚’å‰ã®ãƒšãƒ¼ã‚¸ã«ã™ã‚‹
   $referer_url = sprintf("%s", $_SERVER['HTTP_REFERER']);
   $referer = strpos($referer_url, $SERVER_CONF->site_root . 'old_log.php') === 0 ?
     $referer_url : 'old_log.php';
@@ -138,15 +138,15 @@ function OutputOldLog(){
   echo <<<EOF
 </head>
 <body>
-<a href="{$referer}">¢«Ìá¤ë</a><br>
+<a href="{$referer}">â†æˆ»ã‚‹</a><br>
 {$ROOM->GenerateTitleTag()}
 EOF;
   if($RQ_ARGS->watch) $ROOM->day_night = 'day';
-  OutputPlayerList(); //¥×¥ì¥¤¥ä¡¼¥ê¥¹¥È¤ò½ĞÎÏ
+  OutputPlayerList(); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒªã‚¹ãƒˆã‚’å‡ºåŠ›
   $RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog();
 }
 
-//ÄÌ¾ï¤Î¥í¥°É½¼¨½ç¤òÉ½¸½¤·¤Ş¤¹¡£
+//é€šå¸¸ã®ãƒ­ã‚°è¡¨ç¤ºé †ã‚’è¡¨ç¾ã—ã¾ã™ã€‚
 function LayoutTalkLog(){
   global $RQ_ARGS, $ROOM;
 
@@ -164,7 +164,7 @@ function LayoutTalkLog(){
   }
 }
 
-//Îî³¦¤Î¤ß¤Î¥í¥°É½¼¨½ç¤òÉ½¸½¤·¤Ş¤¹¡£
+//éœŠç•Œã®ã¿ã®ãƒ­ã‚°è¡¨ç¤ºé †ã‚’è¡¨ç¾ã—ã¾ã™ã€‚
 function LayoutHeaven(){
   global $RQ_ARGS, $ROOM;
 
@@ -176,11 +176,11 @@ function LayoutHeaven(){
   }
 }
 
-//»ØÄê¤ÎÆüÉÕ¤Î²ñÏÃ¥í¥°¤ò½ĞÎÏ
+//æŒ‡å®šã®æ—¥ä»˜ã®ä¼šè©±ãƒ­ã‚°ã‚’å‡ºåŠ›
 function OutputDateTalkLog($set_date, $set_location){
   global $RQ_ARGS, $ROLES, $ROOM;
 
-  //¥í¥°¤ÎÉ½¼¨½ç
+  //ãƒ­ã‚°ã®è¡¨ç¤ºé †
   $select_order = $RQ_ARGS->reverse_log ? 'ORDER BY talk_id' : 'ORDER BY talk_id DESC';
 
   switch($set_location){
@@ -192,7 +192,7 @@ function OutputDateTalkLog($set_date, $set_location){
     break;
 
   default:
-    //ÆóÆüÌÜ°Ê¹ß¤ÏÃë¤«¤é»Ï¤Ş¤ë
+    //äºŒæ—¥ç›®ä»¥é™ã¯æ˜¼ã‹ã‚‰å§‹ã¾ã‚‹
     $table_class = ($RQ_ARGS->reverse_log && $set_date != 1) ? 'day' : 'night';
     $date_select = "AND date = {$set_date}";
     $location_select = $set_location == 'heaven_only' ?
@@ -202,7 +202,7 @@ function OutputDateTalkLog($set_date, $set_location){
   }
 
   $flag_border_game = false;
-  //²ñÏÃ¤Î¥æ¡¼¥¶Ì¾¡¢¥Ï¥ó¥É¥ëÌ¾¡¢È¯¸À¡¢È¯¸À¤Î¥¿¥¤¥×¤ò¼èÆÀ
+  //ä¼šè©±ã®ãƒ¦ãƒ¼ã‚¶åã€ãƒãƒ³ãƒ‰ãƒ«åã€ç™ºè¨€ã€ç™ºè¨€ã®ã‚¿ã‚¤ãƒ—ã‚’å–å¾—
   $query = "SELECT uname, sentence, font_type, location FROM talk WHERE room_no = {$ROOM->id} AND ";
   if($set_location == 'heaven_only'){
     $query .= "date = $set_date AND (location = 'heaven' OR uname = 'system')";
@@ -217,7 +217,7 @@ function OutputDateTalkLog($set_date, $set_location){
   }
   $talk_list = FetchObject($query . ' ' . $select_order, 'Talk');
 
-  //-- ²¾ÁÛ²ÔÆ°¥â¡¼¥É¥Æ¥¹¥ÈÍÑ --//
+  //-- ä»®æƒ³ç¨¼å‹•ãƒ¢ãƒ¼ãƒ‰ãƒ†ã‚¹ãƒˆç”¨ --//
   //global $USERS, $SELF;
   //$SELF = $USERS->rows[3];
   //$SELF->ParseRoles('human earplug');
@@ -228,13 +228,13 @@ function OutputDateTalkLog($set_date, $set_location){
   if($flag_border_game && ! $RQ_ARGS->reverse_log){
     $ROOM->date = $set_date + 1;
     $ROOM->day_night = 'day';
-    OutputLastWords(); //°ä¸À¤ò½ĞÎÏ
-    OutputDeadMan();   //»àË´¼Ô¤ò½ĞÎÏ
+    OutputLastWords(); //éºè¨€ã‚’å‡ºåŠ›
+    OutputDeadMan();   //æ­»äº¡è€…ã‚’å‡ºåŠ›
   }
   $ROOM->date = $set_date;
   $ROOM->day_night = $table_class;
 
-  //½ĞÎÏ
+  //å‡ºåŠ›
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk ' . $table_class);
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
@@ -257,24 +257,24 @@ function OutputDateTalkLog($set_date, $set_location){
       $builder->BeginTalk('talk ' . $talk->scene);
       break;
     }
-    OutputTalk($talk, &$builder); //²ñÏÃ½ĞÎÏ
+    OutputTalk($talk, &$builder); //ä¼šè©±å‡ºåŠ›
   }
 
   if(! $RQ_ARGS->reverse_log) OutputTimeStamp($builder);
   $builder->EndTalk();
 
   if($flag_border_game && $RQ_ARGS->reverse_log){
-    //ÆÍÁ³»à¤Ç¾¡ÇÔ¤¬·èÄê¤·¤¿¥±¡¼¥¹
+    //çªç„¶æ­»ã§å‹æ•—ãŒæ±ºå®šã—ãŸã‚±ãƒ¼ã‚¹
     if($set_date == $ROOM->last_date && $ROOM->IsDay()) OutputVoteList();
 
     $ROOM->date = $set_date + 1;
     $ROOM->day_night = 'day';
-    OutputDeadMan();   //»àË´¼Ô¤ò½ĞÎÏ
-    OutputLastWords(); //°ä¸À¤ò½ĞÎÏ
+    OutputDeadMan();   //æ­»äº¡è€…ã‚’å‡ºåŠ›
+    OutputLastWords(); //éºè¨€ã‚’å‡ºåŠ›
   }
 }
 
-//¥·¡¼¥óÀÚ¤êÂØ¤¨»ş¤Î¥í¥°½ĞÎÏ
+//ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚ã®ãƒ­ã‚°å‡ºåŠ›
 function OutputSceneChange($set_date){
   global $RQ_ARGS, $ROOM;
 
@@ -282,11 +282,11 @@ function OutputSceneChange($set_date){
   $ROOM->date = $set_date;
   if($RQ_ARGS->reverse_log){
     $ROOM->day_night = 'night';
-    OutputVoteList(); //ÅêÉ¼·ë²Ì½ĞÎÏ
-    OutputDeadMan();  //»àË´¼Ô¤ò½ĞÎÏ
+    OutputVoteList(); //æŠ•ç¥¨çµæœå‡ºåŠ›
+    OutputDeadMan();  //æ­»äº¡è€…ã‚’å‡ºåŠ›
   }
   else{
-    OutputDeadMan();  //»àË´¼Ô¤ò½ĞÎÏ
-    OutputVoteList(); //ÅêÉ¼·ë²Ì½ĞÎÏ
+    OutputDeadMan();  //æ­»äº¡è€…ã‚’å‡ºåŠ›
+    OutputVoteList(); //æŠ•ç¥¨çµæœå‡ºåŠ›
   }
 }

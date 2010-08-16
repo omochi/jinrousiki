@@ -1,15 +1,15 @@
 <?php
 /*
-  ¢¡Áð´¢¤ê (mower)
-  ¡û»ÅÍÍ
-  ¡¦¼«Ê¬¤ÎÈ¯¸À¤«¤éÁð¤¬¾Ã¤¨¤ë
-  ¡¦¥²¡¼¥à¥×¥ì¥¤Ãæ¤ÇÀ¸Â¸»þ¤Î¤ßÍ­¸ú (¸Æ¤Ó½Ð¤·´Ø¿ôÂ¦¤ÇÂÐ±þ)
+  â—†è‰åˆˆã‚Š (mower)
+  â—‹ä»•æ§˜
+  ãƒ»è‡ªåˆ†ã®ç™ºè¨€ã‹ã‚‰è‰ãŒæ¶ˆãˆã‚‹
+  ãƒ»ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ã§ç”Ÿå­˜æ™‚ã®ã¿æœ‰åŠ¹ (å‘¼ã³å‡ºã—é–¢æ•°å´ã§å¯¾å¿œ)
 */
 class Role_mower extends Role{
   function Role_mower(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSay(&$sentence){
-    $sentence = strtr($sentence, array('w' => '', '£÷' => '', 'W' => '', '£×' => ''));
+    $sentence = strtr($sentence, array('w' => '', 'ï½—' => '', 'W' => '', 'ï¼·' => ''));
   }
 }

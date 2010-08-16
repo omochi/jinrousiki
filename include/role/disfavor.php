@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÉÔ¿Íµ¤ (disfavor)
-  ¡û»ÅÍÍ
-  ¡¦ÆÀÉ¼¿ô¤¬ +1 ¤µ¤ì¤ë
+  â—†ä¸äººæ°— (disfavor)
+  â—‹ä»•æ§˜
+  ãƒ»å¾—ç¥¨æ•°ãŒ +1 ã•ã‚Œã‚‹
 */
 class Role_disfavor extends Role{
   function Role_disfavor(){ $this->__construct(); }

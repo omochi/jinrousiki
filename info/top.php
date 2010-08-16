@@ -1,35 +1,28 @@
 <p>
-<h1>¤³¤Î¥µ¡¼¥Ð¤Ë¤Ä¤¤¤Æ</h1>
+<h1>ã“ã®ã‚µãƒ¼ãƒã«ã¤ã„ã¦</h1>
 <font color="#FF0000">
-¤³¤³¤Ï¡Ö<a href="http://sourceforge.jp/projects/jinrousiki/">¿ÍÏµ¼° ¡ÁÆò¤Ï¿ÍÏµ¤Ê¤ê¤ä¡© ¼°¿À¸¦µæÆ±¹¥²ñÈÇ</a>¡×¸ø³«¥Æ¥¹¥ÈÀìÍÑ¥µ¡¼¥Ð¤Ç¤¹¡£<br>
-¥í¥°¤ÎÊÝÁ´¤ò°ìÀÚÊÝ¾Ú¤·¤Þ¤»¤ó¡£<br>
+ã“ã“ã¯ã€Œ<a href="http://sourceforge.jp/projects/jinrousiki/">äººç‹¼å¼ ã€œæ±ã¯äººç‹¼ãªã‚Šã‚„ï¼Ÿ å¼ç¥žç ”ç©¶åŒå¥½ä¼šç‰ˆ</a>ã€å…¬é–‹ãƒ†ã‚¹ãƒˆå°‚ç”¨ã‚µãƒ¼ãƒã§ã™ã€‚<br>
+ãƒ­ã‚°ã®ä¿å…¨ã‚’ä¸€åˆ‡ä¿è¨¼ã—ã¾ã›ã‚“ã€‚<br>
 This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a>
 </font>
 </p>
 
 <h1>TOPIC</h1>
 
-<h2>Ver. 1.4.0 ¦Â14 ¥¢¥Ã¥×¥í¡¼¥É (2010/07/29 (Thu) 05:13:05) ¢ª <a href="src/">¥À¥¦¥ó¥í¡¼¥É</a></h2>
+<h2>Ver. 1.4.0 Î²15 ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ (2010/08/12 (Thu) 05:14:33) â†’ <a href="src/">ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</a></h2>
 <ul>
-  <!-- <li>¢ª <a href="info/develop/debug.php#140beta14">¥Ç¥Ð¥Ã¥°¾ðÊó</a></li> -->
-  <li>¢¨³ÐÀÃ¼Ô¤Î»Ò¸Ñ¥³¥Ô¡¼·ë²Ì¤òÀ±¸Ñ¤«¤é·î¸Ñ¤ËÊÑ¹¹¤·¤Æ¤Þ¤¹¤¬Æ±º­¤Î¼èÀâ¤ÏÀ±¸Ñ¤Î¤Þ¤Þ¤È¤Ê¤Ã¤Æ¤¤¤Þ¤¹</li>
-  <li>¡ÖÂ¼¿ÍÃÖ´¹Â¼¡×¡ÖéþéõÂ¼¡×¡Ö¥­¥å¡¼¥Ô¥Ã¥ÉÂ¼¡×¡Ö¥µ¥ÖÌò¿¦À©¸Â¡×¥ª¥×¥·¥ç¥ó¼ÂÁõ</li>
-  <li>¡ÖÌë¿ý¡×¡ÖµÛ·ìµ´¡×¡¢¡Ö²ñ¿´¡×¡ÖÄËº¨¡×¡ÖÓñ¼ªÌÄ¡×¡ÖËÊ¼ªÌÄ¡×¡ÖÇú¿ç¼Ô¡×<br>
-    ¡ÖÌò¼Ô¡×¡ÖÃËÀ­¶²ÉÝ¾É¡×¡Ö½÷À­¶²ÉÝ¾É¡×¼ÂÁõ</li>
+  <!-- <li>â†’ <a href="info/develop/debug.php#140beta15">ãƒ‡ãƒãƒƒã‚°æƒ…å ±</a></li> -->
+  <li>ã€Œæ€¥æ‰€æ‘ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³å®Ÿè£…</li>
+  <li>ã€Œå†¥ç‹¼ã€ã€Œå†¥ç‹ã€ã€Œåº§æ•·ç«¥å­ã€ã€ŒæŽ¢çŸ¥å¸«ã€ã€Œå¤¢å¸ç¥­ã€ã€Œä»™äººã€ã€Œç£äººã€å®Ÿè£…</li>
 </ul>
 
-<h1>³«È¯¾õ¶·</h1>
-<h2>¿·µ¬¼ÂÁõ / »ÅÍÍÊÑ¹¹</h2>
+<h1>é–‹ç™ºçŠ¶æ³</h1>
+<h2>æ–°è¦å®Ÿè£… / ä»•æ§˜å¤‰æ›´</h2>
 <ul>
-  <li>¡ÖµÞ½êÂ¼¡×¥ª¥×¥·¥ç¥ó¼ÂÁõ</li>
-  <li>Ì½Ïµ / Ì½¸Ñ¡§»à¤ÎÀë¹ðÇ½ÎÏ¤ò»ý¤Ã¤¿¿ÍÏµ / ÍÅ¸Ñ</li>
-  <li>ºÂÉßÆ¸»Ò¡§Ìò¿¦¡ÖÂ¼¿Í¡×¤Î½è·ºÅêÉ¼¿ô¤ò +1 ¤¹¤ëÂ¼¿Í¡£Äß¤é¤ì¤¿¤é¥é¥ó¥À¥à¤Ç°ì¿Í¤ò¡ÖÇ®ÉÂ¡×¤Ë¤¹¤ë¡£</li>
-  <li>ÃµÃÎ»Õ¡§À¸Â¸¤·¤Æ¤¤¤ë¿Í¤¬½ê»ý¤·¤Æ¤¤¤ë¥µ¥ÖÌò¿¦¤Î¹ç·×¤¬Ê¬¤«¤ëÆÃ¼ì¤Ê»Êº×¡£</li>
-  <li>Ì´»Êº×¡§À¸Â¸¤·¤Æ¤¤¤ëÌ´·Ï¡¦ÍÅÀº·Ï¤Î¹ç·×¤¬Ê¬¤«¤ëÆÃ¼ì¤Ê»Êº×¡£ËÜ¿ÍÉ½µ­¤Ï¡Ö»Êº×¡×¡£</li>
-  <li>Àç¿Í¡§½è·ºÅêÉ¼¤·¤¿¿Í¤Î¥·¥ç¥Ã¥¯»à¤òÍÞÀ©¤¹¤ëÆÃ¼ì¤ÊÌô»Õ¡£¿ÍÏµ¤Ë»¦¤µ¤ì¤¿¤é°ìÅÙ¤À¤±ÁÉÀ¸¤¹¤ë¡£</li>
+  <li>ãªã—</li>
 </ul>
 
-<h2>¸½ºßºîÀ®Ãæ / ¸ø³«¥Æ¥¹¥ÈÂÔ¤Á</h2>
+<h2>ç¾åœ¨ä½œæˆä¸­ / å…¬é–‹ãƒ†ã‚¹ãƒˆå¾…ã¡</h2>
 <ul>
-  <li>¤Ê¤·</li>
+  <li>ãªã—</li>
 </ul>

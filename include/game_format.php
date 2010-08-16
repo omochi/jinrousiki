@@ -1,5 +1,5 @@
 <?php
-//-- »Ø∏¿ΩËÕ˝§Œ¥ƒÏ•Ø•È•π --//
+//-- Áô∫Ë®ÄÂá¶ÁêÜ„ÅÆÂü∫Â∫ï„ÇØ„É©„Çπ --//
 class DocumentBuilder{
   var $actor;
   var $flag;
@@ -9,10 +9,9 @@ class DocumentBuilder{
   function __construct(){
     global $ROOM, $USERS, $SELF;
 
-    $this->actor = $USERS->ByVirtual($SELF->user_no); //≤æ¡€•Ê°º•∂§ÚºË∆¿
-    if(is_null($this->actor->live) || ! $ROOM->IsOpenCast()){ //¥—¿Ô•‚°º•…»ΩƒÍ
-      $stack = array('blinder', 'earplug'); //À‹øÕªÎ≈¿§¨ —≤Ω§π§Î•ø•§•◊
-      foreach($stack as $role){
+    $this->actor = $USERS->ByVirtual($SELF->user_no); //‰ªÆÊÉ≥„É¶„Éº„Ç∂„ÇíÂèñÂæó
+    if(is_null($this->actor->live) || ! $ROOM->IsOpenCast()){ //Ë¶≥Êà¶„É¢„Éº„ÉâÂà§ÂÆö
+      foreach(array('blinder', 'earplug') as $role){ //Êú¨‰∫∫Ë¶ñÁÇπ„ÅåÂ§âÂåñ„Åô„Çã„Çø„Ç§„Éó
 	if($ROOM->IsEvent($role)){
 	  $this->actor->live = 'live';
 	  $this->actor->role_list[] = $role;
@@ -23,7 +22,7 @@ class DocumentBuilder{
     $this->SetFlag();
   }
 
-  //•’•£•Î•ø¬–æ›ÃÚø¶§Œæ Û§Ú•Ì°º•…
+  //„Éï„Ç£„É´„ÇøÂØæË±°ÂΩπËÅ∑„ÅÆÊÉÖÂ†±„Çí„É≠„Éº„Éâ
   function LoadExtension(){
     global $ROLES;
 
@@ -31,38 +30,36 @@ class DocumentBuilder{
     $this->extension_list = $ROLES->Load('talk');
   }
 
-  //•’•£•Î•øÕ—•’•È•∞§Ú•ª•√•»
+  //„Éï„Ç£„É´„ÇøÁî®„Éï„É©„Ç∞„Çí„Çª„ÉÉ„Éà
   function SetFlag(){
     global $ROOM, $SELF;
 
-    //»ΩƒÍÕ— —øÙ§Ú•ª•√•»
-    $actor = $this->actor;
-    $dummy_boy = $SELF->IsDummyBoy();
-
-    //•’•È•∞§Ú•ª•√•»
-    $this->flag->dummy_boy = $dummy_boy;
-    $this->flag->common    = $dummy_boy || $actor->IsCommon(true);
-    $this->flag->wolf      = $dummy_boy || $SELF->IsWolf(true) || $actor->IsRole('whisper_mad');
-    $this->flag->fox       = $dummy_boy || $SELF->IsFox(true);
+    //„Éï„É©„Ç∞„Çí„Çª„ÉÉ„Éà
+    $this->flag->dummy_boy = $SELF->IsDummyBoy();
+    $this->flag->common    = $this->actor->IsCommon(true);
+    $this->flag->wolf      = $SELF->IsWolf(true) || $this->actor->IsRole('whisper_mad');
+    $this->flag->fox       = $SELF->IsFox(true);
     $this->flag->mind_read = $ROOM->date > 1 && $SELF->IsLive();
 
-    //»Ø∏¿¥∞¡¥∏¯≥´•’•È•∞
+    //Áô∫Ë®ÄÂÆåÂÖ®ÂÖ¨Èñã„Éï„É©„Ç∞
     /*
-      + •≤°º•‡Ω™Œª∏Â§œ¡¥§∆…Ωº®
-      + ø»¬Â§Ô§Í∑Ø§À§œ¡¥§∆…Ωº®
-      + ŒÓ≥¶…Ωº®•™•Ûæı¬÷§Œª‡º‘§À§œ¡¥§∆…Ωº®
-      + ŒÓ≥¶…Ωº®•™•’æı¬÷§œ¥—¿Ôº‘§»∆±§∏ (≈Í…ºæ Û§œ…Ωº®§∑§ §§)
+      + „Ç≤„Éº„É†ÁµÇ‰∫ÜÂæå„ÅØÂÖ®„Å¶Ë°®Á§∫
+      + ÈúäÁïåË°®Á§∫„Ç™„É≥Áä∂ÊÖã„ÅÆÊ≠ªËÄÖ„Å´„ÅØÂÖ®„Å¶Ë°®Á§∫
+      + ÈúäÁïåË°®Á§∫„Ç™„ÉïÁä∂ÊÖã„ÅØË¶≥Êà¶ËÄÖ„Å®Âêå„Åò (ÊäïÁ•®ÊÉÖÂ†±„ÅØË°®Á§∫„Åó„Å™„ÅÑ)
     */
-    $this->flag->open_talk = $dummy_boy || $ROOM->IsFinished() ||
-      ($SELF->IsDead() && $ROOM->IsOpenCast());
+    $this->flag->open_talk = $ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast());
+
+    foreach(array('common', 'wolf', 'fox', 'open_talk') as $type){ //Ë∫´‰ª£„Çè„ÇäÂêõ„ÅÆ‰∏äÊõ∏„ÅçÂà§ÂÆö
+      $this->flag->$type |= $this->flag->dummy_boy;
+    }
   }
 
-  //»Ø∏¿•∆°º•÷•Î•ÿ•√•¿∫Ó¿Æ
+  //Áô∫Ë®Ä„ÉÜ„Éº„Éñ„É´„Éò„ÉÉ„ÉÄ‰ΩúÊàê
   function BeginTalk($class){
     $this->cache = '<table class="' . $class . '">' . "\n";
   }
 
-  //¥¡√»Ø∏¿ΩËÕ˝
+  //Âü∫Á§éÁô∫Ë®ÄÂá¶ÁêÜ
   function RawAddTalk($symbol, $user_info, $sentence, $volume, $row_class = '',
 		      $user_class = '', $say_class = ''){
     global $GAME_CONF;
@@ -71,72 +68,75 @@ class DocumentBuilder{
     if($user_class != '') $user_class = ' ' . $user_class;
     if($say_class  != '') $say_class  = ' ' . $say_class;
     LineToBR($sentence);
-    if($GAME_CONF->quote_words) $sentence = '°÷' . $sentence . '°◊';
+    if($GAME_CONF->quote_words) $sentence = '„Äå' . $sentence . '„Äç';
 
-    $this->cache .= <<<WORDS
+    $this->cache .= <<<EOF
 <tr class="user-talk{$row_class}">
 <td class="user-name{$user_class}">{$symbol}{$user_info}</td>
 <td class="say{$say_class} {$volume}">{$sentence}</td>
 </tr>
 
-WORDS;
+EOF;
+    return true;
   }
 
-  //…∏Ω‡≈™§ »Ø∏¿ΩËÕ˝
+  //Ê®ôÊ∫ñÁöÑ„Å™Áô∫Ë®ÄÂá¶ÁêÜ
   function AddTalk($user, $talk){
     global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS;
 
-    //…Ωº®æ Û§Ú√ÍΩ–
+    //Ë°®Á§∫ÊÉÖÂ†±„ÇíÊäΩÂá∫
     $handle_name = $user->handle_name;
-    if($RQ_ARGS->add_role){ //ÃÚø¶…Ωº®•‚°º•…¬–±˛
+    if($RQ_ARGS->add_role){ //ÂΩπËÅ∑Ë°®Á§∫„É¢„Éº„ÉâÂØæÂøú
       $real_user = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
       $handle_name .= $real_user->GenerateShortRoleName();
     }
 
-    $user_info = '<font style="color:'.$user->color.'">¢°</font>'.$handle_name;
+    $user_info = '<font style="color:'.$user->color.'">‚óÜ</font>'.$handle_name;
     if(($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')) ||
        ($user->IsRole('mind_read', 'mind_open') && $ROOM->IsNight())){
-      $user_info .= '<span>§Œ∆»§Í∏¿</span>';
+      $user_info .= '<span>„ÅÆÁã¨„ÇäË®Ä</span>';
     }
     $volume = $talk->font_type;
     $sentence = $talk->sentence;
-    foreach($this->extension_list as $extension){ //•’•£•Î•ø•Í•Û•∞ΩËÕ˝
+    foreach($this->extension_list as $extension){ //„Éï„Ç£„É´„Çø„É™„É≥„Ç∞Âá¶ÁêÜ
       $extension->AddTalk($user, $talk, $user_info, $volume, $sentence);
     }
-    $this->RawAddTalk('', $user_info, $sentence, $volume);
+    return $this->RawAddTalk('', $user_info, $sentence, $volume);
   }
 
-  //”Ò§≠ΩËÕ˝
+  //ÂõÅ„ÅçÂá¶ÁêÜ
   function AddWhisper($role, $talk){
     global $ROLES;
 
-    if(($user_info = $ROLES->GetWhisperingUserInfo($role, $user_class)) === false) return;
+    if(($user_info = $ROLES->GetWhisperingUserInfo($role, $user_class)) === false) return false;
     $volume = $talk->font_type;
     $sentence = $ROLES->GetWhisperingSound($role, $talk, $say_class);
-    foreach($this->extension_list as $extension){ //•’•£•Î•ø•Í•Û•∞ΩËÕ˝
+    foreach($this->extension_list as $extension){ //„Éï„Ç£„É´„Çø„É™„É≥„Ç∞Âá¶ÁêÜ
       $extension->AddWhisper($role, $talk, $user_info, $volume, $sentence);
     }
-    $this->RawAddTalk('', $user_info, $sentence, $volume, '', $user_class, $say_class);
+    return $this->RawAddTalk('', $user_info, $sentence, $volume, '', $user_class, $say_class);
   }
 
   function AddSystemTalk($sentence, $class = 'system-user'){
     LineToBR($sentence);
-    $this->cache .= <<<WORDS
+    $this->cache .= <<<EOF
 <tr>
 <td class="{$class}" colspan="2">{$sentence}</td>
 </tr>
 
-WORDS;
+EOF;
+    return true;
   }
 
   function AddSystemMessage($class, $sentence, $add_class = ''){
     if($add_class != '') $add_class = ' ' . $add_class;
-    $this->cache .= <<<WORDS
+    $this->cache .= <<<EOF
 <tr class="system-message{$add_class}">
 <td class="{$class}" colspan="2">{$sentence}</td>
 </tr>
 
-WORDS;
+EOF;
+    return true;
   }
 
   function EndTalk(){

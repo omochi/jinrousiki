@@ -1,11 +1,11 @@
 <?php
 /*
-  ¢¡¸÷³ØÌÂºÌ (invisible)
-  ¡û»ÅÍÍ
-  ¡¦¼«Ê¬¤ÎÈ¯¸À¤Î°ìÉô¤¬°ìÄê³ÎÎ¨¤Ç¾Ã¤¨¤ë
-  ¡¦È½Äê¤Ï°ìÊ¸»úËè¤Ç¡¢¶õÇò¡¢¥¿¥Ö¡¢²þ¹ÔÊ¸»ú¤ÏÂÐ¾Ý³°
-  ¡¦³ÎÎ¨¤Î½é´üÃÍ¤Ï GameConfig->invisible_rate ¤ÇÄêµÁ¤·, °ìÊ¸»úËè¤Ë 1% ¥¢¥Ã¥×¤¹¤ë
-  ¡¦¥²¡¼¥à¥×¥ì¥¤Ãæ¤ÇÀ¸Â¸»þ¤Î¤ßÍ­¸ú (¸Æ¤Ó½Ð¤·´Ø¿ôÂ¦¤ÇÂÐ±þ)
+  â—†å…‰å­¦è¿·å½© (invisible)
+  â—‹ä»•æ§˜
+  ãƒ»è‡ªåˆ†ã®ç™ºè¨€ã®ä¸€éƒ¨ãŒä¸€å®šç¢ºçŽ‡ã§æ¶ˆãˆã‚‹
+  ãƒ»åˆ¤å®šã¯ä¸€æ–‡å­—æ¯Žã§ã€ç©ºç™½ã€ã‚¿ãƒ–ã€æ”¹è¡Œæ–‡å­—ã¯å¯¾è±¡å¤–
+  ãƒ»ç¢ºçŽ‡ã®åˆæœŸå€¤ã¯ GameConfig->invisible_rate ã§å®šç¾©ã—, ä¸€æ–‡å­—æ¯Žã« 1% ã‚¢ãƒƒãƒ—ã™ã‚‹
+  ãƒ»ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ã§ç”Ÿå­˜æ™‚ã®ã¿æœ‰åŠ¹ (å‘¼ã³å‡ºã—é–¢æ•°å´ã§å¯¾å¿œ)
 */
 class Role_invisible extends Role{
   function Role_invisible(){ $this->__construct(); }
@@ -15,7 +15,7 @@ class Role_invisible extends Role{
     global $GAME_CONF;
 
     $result = '';
-    $regex  = "/[\t\r\n ¡¡]/";
+    $regex  = "/[\t\r\n ã€€]/";
     $rate   = $GAME_CONF->invisible_rate;
     $count  = mb_strlen($sentence);
     for($i = 0; $i < $count; $i++){
@@ -26,7 +26,7 @@ class Role_invisible extends Role{
       }
 
       if(mt_rand(1, 100) <= $rate)
-	$result .= (strlen($str) == 2 ? '¡¡' : '&nbsp;');
+	$result .= (strlen($str) == 2 ? 'ã€€' : '&nbsp;');
       else
 	$result .= $str;
       if(++$rate > 100) break;

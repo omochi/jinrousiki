@@ -2,174 +2,174 @@
 require_once('include/init.php');
 $INIT_CONF->LoadFile('room_class', 'user_class', 'icon_functions');
 $INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'MESSAGE');
-$INIT_CONF->LoadRequest('RequestUserManager'); //���������
-$DB_CONF->Connect(); //DB ��³
+$INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
+$DB_CONF->Connect(); //DB 接続
 $RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
-$DB_CONF->Disconnect(); //DB ��³���
+$DB_CONF->Disconnect(); //DB 接続解除
 
-//-- �ؿ� --//
-//�桼������Ͽ����
+//-- 関数 --//
+//ユーザを登録する
 function EntryUser(){
   global $DEBUG_MODE, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
-  extract($RQ_ARGS->ToArray()); //���������
+  extract($RQ_ARGS->ToArray()); //引数を取得
 
-  //����ϳ������å�
-  $title = '¼����Ͽ [���ϥ��顼]';
-  $sentence = '�����Ǥ� (����Ȳ��ԥ����ɤϼ�ư�Ǻ������ޤ�)';
-  if($uname == '')       OutputActionResult($title, '�桼��̾'     . $sentence);
-  if($handle_name == '') OutputActionResult($title, '¼�ͤ�̾��'   . $sentence);
-  if($password == '')    OutputActionResult($title, '�ѥ����'   . $sentence);
-  if($profile == '')     OutputActionResult($title, '�ץ��ե�����' . $sentence);
-  if(empty($sex))        OutputActionResult($title, '���̤����Ϥ���Ƥ��ޤ���');
-  if(empty($icon_no))    OutputActionResult($title, '���������ֹ椬���Ϥ���Ƥ��ޤ���');
+  //記入漏れチェック
+  $title = '村人登録 [入力エラー]';
+  $sentence = 'が空です (空白と改行コードは自動で削除されます)';
+  if($uname == '')       OutputActionResult($title, 'ユーザ名'     . $sentence);
+  if($handle_name == '') OutputActionResult($title, '村人の名前'   . $sentence);
+  if($password == '')    OutputActionResult($title, 'パスワード'   . $sentence);
+  if($profile == '')     OutputActionResult($title, 'プロフィール' . $sentence);
+  if(empty($sex))        OutputActionResult($title, '性別が入力されていません');
+  if(empty($icon_no))    OutputActionResult($title, 'アイコン番号が入力されていません');
 
-  //ʸ�������¥����å�
+  //文字数制限チェック
   if(strlen($uname) > $GAME_CONF->entry_uname_limit){
-    OutputActionResult($title, '�桼��̾��' . $GAME_CONF->entry_uname_limit . 'ʸ���ޤ�');
+    OutputActionResult($title, 'ユーザ名は' . $GAME_CONF->entry_uname_limit . '文字まで');
   }
   if(strlen($handle_name) > $GAME_CONF->entry_uname_limit){
-    OutputActionResult($title, '¼�ͤ�̾����' . $GAME_CONF->entry_uname_limit . 'ʸ���ޤ�');
+    OutputActionResult($title, '村人の名前は' . $GAME_CONF->entry_uname_limit . '文字まで');
   }
   if(strlen($profile) > $GAME_CONF->entry_profile_limit){
-    OutputActionResult($title, '�ץ��ե������' . $GAME_CONF->entry_profile_limit . 'ʸ���ޤ�');
+    OutputActionResult($title, 'プロフィールは' . $GAME_CONF->entry_profile_limit . '文字まで');
   }
 
-  //�㳰�����å�
+  //例外チェック
   if($uname == 'dummy_boy' || $uname == 'system'){
-    OutputActionResult($title, '�桼��̾��' . $uname . '�פϻ��ѤǤ��ޤ���');
+    OutputActionResult($title, 'ユーザ名「' . $uname . '」は使用できません');
   }
-  if($handle_name == '�����귯' || $handle_name == '�����ƥ�'){
-    OutputActionResult($title, '¼��̾��' . $handle_name . '�פϻ��ѤǤ��ޤ���');
+  if($handle_name == '身代わり君' || $handle_name == 'システム'){
+    OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません');
   }
-  if($sex != 'male' && $sex != 'female') OutputActionResult($title, '̵�������̤Ǥ�');
+  if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です');
 
   $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no;
-  if($icon_no < 1 || FetchResult($query) < 1) OutputActionResult($title, '̵���ʥ��������ֹ�Ǥ�');
+  if($icon_no < 1 || FetchResult($query) < 1) OutputActionResult($title, '無効なアイコン番号です');
 
-  //�ơ��֥����å�
+  //テーブルをロック
   if(! LockTable()){
-    OutputActionResult('¼����Ͽ [�����Х��顼]',
-		       '�����Ф��������Ƥ��ޤ���<br>'."\n".'������Ͽ���Ƥ�������');
+    OutputActionResult('村人登録 [サーバエラー]',
+		       'サーバが混雑しています。<br>'."\n".'再度登録してください');
   }
 
-  //�����������å�
-  //��ӱ黻�Ҥ���ʸ������ʸ������̤��ʤ��Τǥ������ľ��Ƚ�ꤹ��
+  //項目被りチェック
+  //比較演算子は大文字・小文字を区別しないのでクエリで直に判定する
   $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
 
-  //���å����줿�ͤ�Ʊ���桼��̾
+  //キックされた人と同じユーザ名
   if(FetchResult($query . "uname = '{$uname}' AND live = 'kick'") > 0){
-    OutputActionResult('¼����Ͽ [���å����줿�桼��]',
-		       '���å����줿�ͤ�Ʊ���桼��̾�ϻ��ѤǤ��ޤ��� (¼��̾�ϲ�)<br>'."\n" .
-		       '�̤�̾���ˤ��Ƥ���������');
+    OutputActionResult('村人登録 [キックされたユーザ]',
+		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
+		       '別の名前にしてください。');
   }
 
-  //�桼��̾��¼��̾
+  //ユーザ名、村人名
   $query .= "live = 'live' AND ";
   if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
-    OutputActionResult('¼����Ͽ [��ʣ��Ͽ���顼]',
-		       '�桼��̾���ޤ���¼��̾��������Ͽ���Ƥ���ޤ���<br>'."\n" .
-		       '�̤�̾���ˤ��Ƥ���������');
+    OutputActionResult('村人登録 [重複登録エラー]',
+		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
+		       '別の名前にしてください。');
   }
-  //OutputActionResult('�ȥ�åץƥ���', $uname . '<br>' . $handle_name);
+  //OutputActionResult('トリップテスト', $uname . '<br>' . $handle_name);
 
-  //IP���ɥ쥹�����å�
-  $ip_address = $_SERVER['REMOTE_ADDR']; //�桼����IP���ɥ쥹�����
+  //IPアドレスチェック
+  $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
   if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
      FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
-    OutputActionResult('¼����Ͽ [¿����Ͽ���顼]', '¿����Ͽ�ϤǤ��ޤ���');
+    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
   }
 
-  //DB�������Ϳ������
+  //DBから最大人数を取得
   $ROOM = RoomDataSet::LoadEntryUser($room_no);
 
   $request = new RequestBase();
   $request->room_no = $room_no;
   $request->entry_user = true;
   $USERS = new UserDataSet($request);
-  #//PrintData($USERS); //�ƥ�����
+  #//PrintData($USERS); //テスト用
 
-  $ROOM = RoomDataSet::LoadEntryUser($room_no); //DB�������Ϳ������
-  $user_no = count($USERS->names) + 1; //KICK ���줿���ͤ�ޤ᤿�������ֹ�򿶤�
-  $user_count = $USERS->GetUserCount(true); //���ߤ� KICK ����Ƥ��ʤ����ͤο������
+  $ROOM = RoomDataSet::LoadEntryUser($room_no); //DBから最大人数を取得
+  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
+  $user_count = $USERS->GetUserCount(true); //現在の KICK されていない住人の数を取得
 
-  //��������С����Ƥ���Ȥ�
+  //定員オーバーしているとき
   if($user_count >= $ROOM->max_user){
-    OutputActionResult('¼����Ͽ [��¼�Բ�]', '¼�������Ǥ���', '', true);
+    OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
   }
   if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){
-    OutputActionResult('¼����Ͽ [��¼�Բ�]', '���Ǥ˥����ब���Ϥ���Ƥ��ޤ�', '', true);
+    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています', '', true);
   }
 
-  //���å����κ��
-  $ROOM->system_time = TZTime(); //���߻�������
+  //クッキーの削除
+  $ROOM->system_time = TZTime(); //現在時刻を取得
   $cookie_time = $ROOM->system_time - 3600;
   setcookie('day_night',  '', $cookie_time);
   setcookie('vote_times', '', $cookie_time);
   setcookie('objection',  '', $cookie_time);
 
-  //DB �˥桼���ǡ�������Ͽ
+  //DB にユーザデータを登録
   if(InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
 		$sex, $role, $SESSION->Get(true))){
-    $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //��¼��å�����
+    $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
     $url = 'game_frame.php?room_no=' . $room_no;
     $user_count++;
-    OutputActionResult('¼����Ͽ',
-		       $user_count . ' ���ܤ�¼����Ͽ��λ��¼�δ��礤�ڡ��������Ӥޤ���<br>'."\n" .
-		       '�ڤ��ؤ��ʤ��ʤ� <a href="' . $url. '">����</a> ��',
+    OutputActionResult('村人登録',
+		       $user_count . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
+		       '切り替わらないなら <a href="' . $url. '">ここ</a> 。',
 		       $url, true);
   }
   else{
-    OutputActionResult('¼����Ͽ [�ǡ����١��������Х��顼]',
-		       '�ǡ����١��������Ф��������Ƥ��ޤ���<br>'."\n" .
-		       '���֤��֤��ƺ�����Ͽ���Ƥ���������', '', true);
+    OutputActionResult('村人登録 [データベースサーバエラー]',
+		       'データベースサーバが混雑しています。<br>'."\n" .
+		       '時間を置いて再度登録してください。', '', true);
   }
-  UnlockTable(); //���å����
+  UnlockTable(); //ロック解除
 }
 
-//�桼����Ͽ����ɽ��
+//ユーザ登録画面表示
 function OutputEntryUserPage(){
   global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $RQ_ARGS;
 
-  extract($RQ_ARGS->ToArray()); //���������
+  extract($RQ_ARGS->ToArray()); //引数を取得
   $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
-  $sentence = $room_no . ' ���Ϥ�¼��';
-  if(is_null($ROOM->id))  OutputActionResult('¼����Ͽ [¼�ֹ楨�顼]', $sentence . '¸�ߤ��ޤ���');
-  if($ROOM->IsFinished()) OutputActionResult('¼����Ͽ [��¼�Բ�]',  $sentence . '��λ���ޤ���');
+  $sentence = $room_no . ' 番地の村は';
+  if(is_null($ROOM->id))  OutputActionResult('村人登録 [村番号エラー]', $sentence . '存在しません');
+  if($ROOM->IsFinished()) OutputActionResult('村人登録 [入村不可]',  $sentence . '終了しました');
   if($ROOM->status != 'waiting'){
-    OutputActionResult('¼����Ͽ [��¼�Բ�]', $sentence . '���Ǥ˥����ब���Ϥ���Ƥ��ޤ���');
+    OutputActionResult('村人登録 [入村不可]', $sentence . 'すでにゲームが開始されています。');
   }
   $ROOM->ParseOption(true);
-  $trip = '(�ȥ�å׻���' . ($GAME_CONF->trip ? '��ǽ' : '�Բ�') . ')';
+  $trip = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
-  OutputHTMLHeader($SERVER_CONF->title .'[¼����Ͽ]', 'entry_user');
+  OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
   echo <<<HEADER
 </head>
 <body>
-<a href="./">�����</a><br>
+<a href="./">←戻る</a><br>
 <form method="POST" action="user_manager.php?room_no={$ROOM->id}">
 <input type="hidden" name="entry" value="on">
 <div align="center">
 <table class="main">
 <tr><td><img src="img/entry_user/title.gif"></td></tr>
-<tr><td class="title">{$ROOM->name} ¼<img src="img/entry_user/top.gif"></td></tr>
-<tr><td class="number">��{$ROOM->comment}�� [{$ROOM->id} ����]</td></tr>
+<tr><td class="title">{$ROOM->name} 村<img src="img/entry_user/top.gif"></td></tr>
+<tr><td class="number">〜{$ROOM->comment}〜 [{$ROOM->id} 番地]</td></tr>
 <tr><td>
 <table class="input">
 <tr>
 <td class="img"><img src="img/entry_user/uname.gif"></td>
 <td><input type="text" name="uname" size="30" maxlength="30"></td>
-<td class="explain">���ʤ�ɽ�����줺��¾�Υ桼��̾���狼��Τ�<br>��˴�����Ȥ��ȥ����ཪλ��ΤߤǤ�{$trip}</td>
+<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip}</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/handle_name.gif"></td>
 <td><input type="text" name="handle_name" size="30" maxlength="30"></td>
-<td class="explain">¼��ɽ�������̾���Ǥ�</td>
+<td class="explain">村で表示される名前です</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/password.gif"></td>
 <td><input type="password" name="password" size="30" maxlength="30"></td>
-<td class="explain">���å�����ڤ줿���Υ���������˻Ȥ��ޤ�<br> (�Ź沽����Ƥ��ʤ��Τ�������)</td>
+<td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/sex.gif"></td>
@@ -177,7 +177,7 @@ function OutputEntryUserPage(){
 <label for="male"><img src="img/entry_user/sex_male.gif"><input type="radio" id="male" name="sex" value="male"></label>
 <label for="female"><img src="img/entry_user/sex_female.gif"><input type="radio" id="female" name="sex" value="female"></label>
 </td>
-<td class="explain">�ä˰�̣��̵������ġ�</td>
+<td class="explain">特に意味は無いかも……</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/profile.gif"></td>
@@ -231,7 +231,7 @@ IMAGE;
 
     $count = 0;
     foreach($wish_role_list as $role){
-      if($count > 0 && $count % 4 == 0) echo '<br>'; //4�Ĥ��Ȥ˲���
+      if($count > 0 && $count % 4 == 0) echo '<br>'; //4個ごとに改行
       $count++;
       echo <<<TAG
 <label for="{$role}"><img src="img/entry_user/role_{$role}.gif"><input type="radio" id="{$role}" name="role" value="{$role}"></label>
@@ -249,9 +249,9 @@ TAG;
 <tr>
 <td class="submit" colspan="3">
 <span class="explain">
-�桼��̾��¼�ͤ�̾�����ѥ���ɤ�����ζ��򤪤�Ӳ��ԥ����ɤϼ�ư�Ǻ������ޤ�
+ユーザ名、村人の名前、パスワードの前後の空白および改行コードは自動で削除されます
 </span>
-<input type="submit" value="¼����Ͽ����"></td>
+<input type="submit" value="村人登録申請"></td>
 </tr>
 </table>
 </td></tr>
@@ -260,8 +260,8 @@ TAG;
 <fieldset><legend><img src="img/entry_user/icon.gif"></legend>
 <table class="icon">
 <tr><td colspan="5">
-<input id="fix_number" type="radio" name="icon_no"><label for="fix_number">������</label>
-<input type="text" name="icon_no" size="10px">(Ⱦ�ѱѿ������Ϥ��Ƥ�������)
+<input id="fix_number" type="radio" name="icon_no"><label for="fix_number">手入力</label>
+<input type="text" name="icon_no" size="10px">(半角英数で入力してください)
 </td></tr>
 
 BODY;

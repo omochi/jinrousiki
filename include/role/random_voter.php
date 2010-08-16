@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡µ¤Ê¬²° (random_voter)
-  ¡û»ÅÍÍ
-  ¡¦ÅêÉ¼¿ô¤¬ -1¡Á+1 ¤ÎÈÏ°Ï¤Ç¥é¥ó¥À¥à¤ËÊäÀµ¤¬¤«¤«¤ë
+  â—†æ°—åˆ†å±‹ (random_voter)
+  â—‹ä»•æ§˜
+  ãƒ»æŠ•ç¥¨æ•°ãŒ -1ã€œ+1 ã®ç¯„å›²ã§ãƒ©ãƒ³ãƒ€ãƒ ã«è£œæ­£ãŒã‹ã‹ã‚‹
 */
 class Role_random_voter extends Role{
   function Role_random_voter(){ $this->__construct(); }

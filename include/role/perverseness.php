@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡Å·¼Ùµ´ (perverseness)
-  ¡û»ÅÍÍ
-  ¡¦¼«Ê¬¤ÎÅêÉ¼Àè¤ËÊ£¿ô¤Î¿Í¤¬ÅêÉ¼¤·¤Æ¤¤¤¿¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†å¤©é‚ªé¬¼ (perverseness)
+  â—‹ä»•æ§˜
+  ãƒ»è‡ªåˆ†ã®æŠ•ç¥¨å…ˆã«è¤‡æ•°ã®äººãŒæŠ•ç¥¨ã—ã¦ã„ãŸã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_perverseness extends Role{
   function Role_perverseness(){ $this->__construct(); }

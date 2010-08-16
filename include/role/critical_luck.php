@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÄËº¨ (critical_luck)
-  ¡û»ÅÍÍ
-  ¡¦5% ¤Î³ÎÎ¨¤ÇÆÀÉ¼¿ô¤¬ +100 ¤µ¤ì¤ë
+  â—†ç—›æ¨ (critical_luck)
+  â—‹ä»•æ§˜
+  ãƒ»5% ã®ç¢ºçŽ‡ã§å¾—ç¥¨æ•°ãŒ +100 ã•ã‚Œã‚‹
 */
 class Role_critical_luck extends Role{
   function Role_critical_luck(){ $this->__construct(); }

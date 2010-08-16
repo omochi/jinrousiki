@@ -3,24 +3,24 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF');
 
-//-- ¥Ç¡¼¥¿¼ı½¸ --//
-$INIT_CONF->LoadRequest('RequestGameVote'); //°ú¿ô¤ò¼èÆÀ
-$DB_CONF->Connect(); //DB ÀÜÂ³
-$SESSION->Certify(); //¥»¥Ã¥·¥ç¥óÇ§¾Ú
+//-- ãƒ‡ãƒ¼ã‚¿åé›† --//
+$INIT_CONF->LoadRequest('RequestGameVote'); //å¼•æ•°ã‚’å–å¾—
+$DB_CONF->Connect(); //DB æ¥ç¶š
+$SESSION->Certify(); //ã‚»ãƒƒã‚·ãƒ§ãƒ³èªè¨¼
 
-$ROOM =& new Room($RQ_ARGS); //Â¼¾ğÊó¤ò¥í¡¼¥É
-if($ROOM->IsFinished()) OutputVoteError('¥²¡¼¥à½ªÎ»', '¥²¡¼¥à¤Ï½ªÎ»¤·¤Ş¤·¤¿');
-$ROOM->system_time = TZTime(); //¸½ºß»ş¹ï¤ò¼èÆÀ
+$ROOM =& new Room($RQ_ARGS); //æ‘æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+if($ROOM->IsFinished()) OutputVoteError('ã‚²ãƒ¼ãƒ çµ‚äº†', 'ã‚²ãƒ¼ãƒ ã¯çµ‚äº†ã—ã¾ã—ãŸ');
+$ROOM->system_time = TZTime(); //ç¾åœ¨æ™‚åˆ»ã‚’å–å¾—
 
-$USERS =& new UserDataSet($RQ_ARGS); //¥æ¡¼¥¶¾ğÊó¤ò¥í¡¼¥É
-$SELF = $USERS->BySession(); //¼«Ê¬¤Î¾ğÊó¤ò¥í¡¼¥É
+$USERS =& new UserDataSet($RQ_ARGS); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+$SELF = $USERS->BySession(); //è‡ªåˆ†ã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 
-//-- ¥á¥¤¥ó¥ë¡¼¥Á¥ó --//
-if($RQ_ARGS->vote){ //ÅêÉ¼½èÍı
-  if($ROOM->IsBeforeGame()){ //¥²¡¼¥à³«»Ï or Kick ÅêÉ¼½èÍı
+//-- ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒãƒ³ --//
+if($RQ_ARGS->vote){ //æŠ•ç¥¨å‡¦ç†
+  if($ROOM->IsBeforeGame()){ //ã‚²ãƒ¼ãƒ é–‹å§‹ or Kick æŠ•ç¥¨å‡¦ç†
     switch($RQ_ARGS->situation){
     case 'GAMESTART':
-      $INIT_CONF->LoadClass('CAST_CONF'); //ÇÛÌò¾ğÊó¤ò¥í¡¼¥É
+      $INIT_CONF->LoadClass('CAST_CONF'); //é…å½¹æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
       VoteGameStart();
       break;
 
@@ -28,8 +28,8 @@ if($RQ_ARGS->vote){ //ÅêÉ¼½èÍı
       VoteKick();
       break;
 
-    default: //¤³¤³¤ËÍè¤¿¤é¥í¥¸¥Ã¥¯¥¨¥é¡¼
-      OutputVoteError('¥²¡¼¥à³«»ÏÁ°ÅêÉ¼');
+    default: //ã“ã“ã«æ¥ãŸã‚‰ãƒ­ã‚¸ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
+      OutputVoteError('ã‚²ãƒ¼ãƒ é–‹å§‹å‰æŠ•ç¥¨');
       break;
     }
   }
@@ -37,19 +37,19 @@ if($RQ_ARGS->vote){ //ÅêÉ¼½èÍı
     VoteDeadUser();
   }
   elseif($RQ_ARGS->target_no == 0){
-    OutputVoteError('¶õÅêÉ¼', 'ÅêÉ¼Àè¤ò»ØÄê¤·¤Æ¤¯¤À¤µ¤¤');
+    OutputVoteError('ç©ºæŠ•ç¥¨', 'æŠ•ç¥¨å…ˆã‚’æŒ‡å®šã—ã¦ãã ã•ã„');
   }
-  elseif($ROOM->IsDay()){ //Ãë¤Î½è·ºÅêÉ¼½èÍı
+  elseif($ROOM->IsDay()){ //æ˜¼ã®å‡¦åˆ‘æŠ•ç¥¨å‡¦ç†
     VoteDay();
   }
-  elseif($ROOM->IsNight()){ //Ìë¤ÎÅêÉ¼½èÍı
+  elseif($ROOM->IsNight()){ //å¤œã®æŠ•ç¥¨å‡¦ç†
     VoteNight();
   }
-  else{ //¤³¤³¤ËÍè¤¿¤é¥í¥¸¥Ã¥¯¥¨¥é¡¼
-    OutputVoteError('ÅêÉ¼¥³¥Ş¥ó¥É¥¨¥é¡¼', 'ÅêÉ¼Àè¤ò»ØÄê¤·¤Æ¤¯¤À¤µ¤¤');
+  else{ //ã“ã“ã«æ¥ãŸã‚‰ãƒ­ã‚¸ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
+    OutputVoteError('æŠ•ç¥¨ã‚³ãƒãƒ³ãƒ‰ã‚¨ãƒ©ãƒ¼', 'æŠ•ç¥¨å…ˆã‚’æŒ‡å®šã—ã¦ãã ã•ã„');
   }
 }
-else{ //¥·¡¼¥ó¤Ë¹ç¤ï¤»¤¿ÅêÉ¼¥Ú¡¼¥¸¤ò½ĞÎÏ
+else{ //ã‚·ãƒ¼ãƒ³ã«åˆã‚ã›ãŸæŠ•ç¥¨ãƒšãƒ¼ã‚¸ã‚’å‡ºåŠ›
   $INIT_CONF->LoadClass('VOTE_MESS');
   if($SELF->IsDead()){
     OutputVoteDeadUser();
@@ -68,115 +68,115 @@ else{ //¥·¡¼¥ó¤Ë¹ç¤ï¤»¤¿ÅêÉ¼¥Ú¡¼¥¸¤ò½ĞÎÏ
       OutputVoteNight();
       break;
 
-    default: //¤³¤³¤ËÍè¤¿¤é¥í¥¸¥Ã¥¯¥¨¥é¡¼
-      OutputVoteError('ÅêÉ¼¥·¡¼¥ó¥¨¥é¡¼');
+    default: //ã“ã“ã«æ¥ãŸã‚‰ãƒ­ã‚¸ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
+      OutputVoteError('æŠ•ç¥¨ã‚·ãƒ¼ãƒ³ã‚¨ãƒ©ãƒ¼');
       break;
     }
   }
 }
-$DB_CONF->Disconnect(); //DB ÀÜÂ³²ò½ü
+$DB_CONF->Disconnect(); //DB æ¥ç¶šè§£é™¤
 
-//-- ´Ø¿ô --//
-//¥¨¥é¡¼¥Ú¡¼¥¸½ĞÎÏ
+//-- é–¢æ•° --//
+//ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸å‡ºåŠ›
 function OutputVoteError($title, $sentence = NULL){
   global $RQ_ARGS;
 
   $header = '<div align="center"><a id="game_top"></a>';
   $footer = "<br>\n" . $RQ_ARGS->back_url . '</div>';
-  if(is_null($sentence)) $sentence = '¥×¥í¥°¥é¥à¥¨¥é¡¼¤Ç¤¹¡£´ÉÍı¼Ô¤ËÌä¤¤¹ç¤ï¤»¤Æ¤¯¤À¤µ¤¤¡£';
-  OutputActionResult('ÅêÉ¼¥¨¥é¡¼ [' . $title .']', $header . $sentence . $footer);
+  if(is_null($sentence)) $sentence = 'ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚¨ãƒ©ãƒ¼ã§ã™ã€‚ç®¡ç†è€…ã«å•ã„åˆã‚ã›ã¦ãã ã•ã„ã€‚';
+  OutputActionResult('æŠ•ç¥¨ã‚¨ãƒ©ãƒ¼ [' . $title .']', $header . $sentence . $footer);
 }
 
-//¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
+//ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
 function LockVote(){
-  if(! LockTable('game')) OutputVoteResult('¥µ¡¼¥Ğ¤¬º®»¨¤·¤Æ¤¤¤Ş¤¹¡£<br>ºÆÅÙÅêÉ¼¤ò¤ª´ê¤¤¤·¤Ş¤¹¡£');
+  if(! LockTable('game')) OutputVoteResult('ã‚µãƒ¼ãƒãŒæ··é›‘ã—ã¦ã„ã¾ã™ã€‚<br>å†åº¦æŠ•ç¥¨ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚');
 }
 
-//¥²¡¼¥à³«»ÏÅêÉ¼¤Î½èÍı
+//ã‚²ãƒ¼ãƒ é–‹å§‹æŠ•ç¥¨ã®å‡¦ç†
 function VoteGameStart(){
   global $GAME_CONF, $ROOM, $SELF;
 
   CheckSituation('GAMESTART');
-  if($SELF->IsDummyBoy(true)){ //½ĞÂê¼Ô°Ê³°¤Î¿ÈÂå¤ï¤ê·¯
-    if($GAME_CONF->power_gm){ //¶¯¸¢ GM ¤Ë¤è¤ë¶¯À©¥¹¥¿¡¼¥È½èÍı
-      LockVote(); //¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
-      $sentence = AggregateVoteGameStart(true) ? '¥²¡¼¥à³«»Ï' :
-	'¥²¡¼¥à¥¹¥¿¡¼¥È¡§³«»Ï¿Í¿ô¤ËÃ£¤·¤Æ¤¤¤Ş¤»¤ó¡£';
+  if($SELF->IsDummyBoy(true)){ //å‡ºé¡Œè€…ä»¥å¤–ã®èº«ä»£ã‚ã‚Šå›
+    if($GAME_CONF->power_gm){ //å¼·æ¨© GM ã«ã‚ˆã‚‹å¼·åˆ¶ã‚¹ã‚¿ãƒ¼ãƒˆå‡¦ç†
+      LockVote(); //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
+      $sentence = AggregateVoteGameStart(true) ? 'ã‚²ãƒ¼ãƒ é–‹å§‹' :
+	'ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆï¼šé–‹å§‹äººæ•°ã«é”ã—ã¦ã„ã¾ã›ã‚“ã€‚';
       OutputVoteResult($sentence, true);
     }
     else{
-      OutputVoteResult('¥²¡¼¥à¥¹¥¿¡¼¥È¡§¿ÈÂå¤ï¤ê·¯¤ÏÅêÉ¼ÉÔÍ×¤Ç¤¹');
+      OutputVoteResult('ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆï¼šèº«ä»£ã‚ã‚Šå›ã¯æŠ•ç¥¨ä¸è¦ã§ã™');
     }
   }
-  LockVote(); //¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
+  LockVote(); //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
 
-  //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
+  //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
   $ROOM->LoadVote();
-  if(isset($ROOM->vote[$SELF->uname])) OutputVoteResult('¥²¡¼¥à¥¹¥¿¡¼¥È¡§ÅêÉ¼ºÑ¤ß¤Ç¤¹', true);
+  if(isset($ROOM->vote[$SELF->uname])) OutputVoteResult('ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆï¼šæŠ•ç¥¨æ¸ˆã¿ã§ã™', true);
 
-  if($SELF->Vote('GAMESTART')){ //ÅêÉ¼½èÍı
-    AggregateVoteGameStart(); //½¸·×½èÍı
-    OutputVoteResult('ÅêÉ¼´°Î»', true);
+  if($SELF->Vote('GAMESTART')){ //æŠ•ç¥¨å‡¦ç†
+    AggregateVoteGameStart(); //é›†è¨ˆå‡¦ç†
+    OutputVoteResult('æŠ•ç¥¨å®Œäº†', true);
   }
   else{
-    OutputVoteResult('¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼', true);
+    OutputVoteResult('ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼', true);
   }
 }
 
-//³«»ÏÁ°¤Î Kick ÅêÉ¼¤Î½èÍı
+//é–‹å§‹å‰ã® Kick æŠ•ç¥¨ã®å‡¦ç†
 function VoteKick(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  CheckSituation('KICK_DO'); //¥³¥Ş¥ó¥É¥Á¥§¥Ã¥¯
+  CheckSituation('KICK_DO'); //ã‚³ãƒãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯
 
-  $target = $USERS->ByID($RQ_ARGS->target_no); //ÅêÉ¼Àè¤Î¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ
+  $target = $USERS->ByID($RQ_ARGS->target_no); //æŠ•ç¥¨å…ˆã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—
   if($target->uname == '' || $target->live == 'kick'){
-    OutputVoteResult('Kick¡§ÅêÉ¼Àè¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¡¢¤¹¤Ç¤Ë Kick ¤µ¤ì¤Æ¤¤¤Ş¤¹');
+    OutputVoteResult('Kickï¼šæŠ•ç¥¨å…ˆãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„ã‹ã€ã™ã§ã« Kick ã•ã‚Œã¦ã„ã¾ã™');
   }
-  if($target->IsDummyBoy()) OutputVoteResult('Kick¡§¿ÈÂå¤ï¤ê·¯¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+  if($target->IsDummyBoy()) OutputVoteResult('Kickï¼šèº«ä»£ã‚ã‚Šå›ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
   if(! $GAME_CONF->self_kick && $target->IsSelf()){
-    OutputVoteResult('Kick¡§¼«Ê¬¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    OutputVoteResult('Kickï¼šè‡ªåˆ†ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
   }
-  LockVote(); //¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
+  LockVote(); //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
 
-  //¥²¡¼¥à³«»Ï¥Á¥§¥Ã¥¯
+  //ã‚²ãƒ¼ãƒ é–‹å§‹ãƒã‚§ãƒƒã‚¯
   if(FetchResult("SELECT day_night FROM room WHERE room_no = {$ROOM->id}") != 'beforegame'){
-    OutputVoteResult('Kick¡§´û¤Ë¥²¡¼¥à¤Ï³«»Ï¤µ¤ì¤Æ¤¤¤Ş¤¹', true);
+    OutputVoteResult('Kickï¼šæ—¢ã«ã‚²ãƒ¼ãƒ ã¯é–‹å§‹ã•ã‚Œã¦ã„ã¾ã™', true);
   }
 
-  $ROOM->LoadVote(true); //ÅêÉ¼¾ğÊó¤ò¥í¡¼¥É
+  $ROOM->LoadVote(true); //æŠ•ç¥¨æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
   $vote_data = $ROOM->vote[$SELF->uname];
   if(is_array($vote_data) && in_array($target->uname, $vote_data)){
-    OutputVoteResult("Kick¡§{$target->handle_name} ¤µ¤ó¤Ø Kick ÅêÉ¼ºÑ¤ß", true);
+    OutputVoteResult("Kickï¼š{$target->handle_name} ã•ã‚“ã¸ Kick æŠ•ç¥¨æ¸ˆã¿", true);
   }
-  //PrintData($ROOM->vote); //¥Æ¥¹¥ÈÍÑ
-  //OutputVoteResult('Kick¡§¥Æ¥¹¥È', true);
+  //PrintData($ROOM->vote); //ãƒ†ã‚¹ãƒˆç”¨
+  //OutputVoteResult('Kickï¼šãƒ†ã‚¹ãƒˆ', true);
   //return;
 
-  if($SELF->Vote('KICK_DO', $target->uname)){ //ÅêÉ¼½èÍı
-    $ROOM->Talk("KICK_DO\t" . $target->handle_name, $SELF->uname); //ÅêÉ¼¤·¤Ş¤·¤¿ÄÌÃÎ
-    $vote_count = AggregateVoteKick($target); //½¸·×½èÍı
-    OutputVoteResult("ÅêÉ¼´°Î»¡§{$target->handle_name} ¤µ¤ó¡§{$vote_count} ¿ÍÌÜ " .
-		     "(Kick ¤¹¤ë¤Ë¤Ï {$GAME_CONF->kick} ¿Í°Ê¾å¤ÎÅêÉ¼¤¬É¬Í×¤Ç¤¹)", true);
+  if($SELF->Vote('KICK_DO', $target->uname)){ //æŠ•ç¥¨å‡¦ç†
+    $ROOM->Talk("KICK_DO\t" . $target->handle_name, $SELF->uname); //æŠ•ç¥¨ã—ã¾ã—ãŸé€šçŸ¥
+    $vote_count = AggregateVoteKick($target); //é›†è¨ˆå‡¦ç†
+    OutputVoteResult("æŠ•ç¥¨å®Œäº†ï¼š{$target->handle_name} ã•ã‚“ï¼š{$vote_count} äººç›® " .
+		     "(Kick ã™ã‚‹ã«ã¯ {$GAME_CONF->kick} äººä»¥ä¸Šã®æŠ•ç¥¨ãŒå¿…è¦ã§ã™)", true);
   }
   else{
-    OutputVoteResult('¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼', true);
+    OutputVoteResult('ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼', true);
   }
 }
 
-//Kick ÅêÉ¼¤Î½¸·×½èÍı ($target : ÂĞ¾İ HN, ÊÖ¤êÃÍ : ÂĞ¾İ HN ¤ÎÅêÉ¼¹ç·×¿ô)
+//Kick æŠ•ç¥¨ã®é›†è¨ˆå‡¦ç† ($target : å¯¾è±¡ HN, è¿”ã‚Šå€¤ : å¯¾è±¡ HN ã®æŠ•ç¥¨åˆè¨ˆæ•°)
 function AggregateVoteKick($target){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  CheckSituation('KICK_DO'); //¥³¥Ş¥ó¥É¥Á¥§¥Ã¥¯
+  CheckSituation('KICK_DO'); //ã‚³ãƒãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯
 
-  //º£²óÅêÉ¼¤·¤¿Áê¼ê¤Ë¤¹¤Ç¤ËÅêÉ¼¤·¤Æ¤¤¤ë¿Í¿ô¤ò¼èÆÀ
+  //ä»Šå›æŠ•ç¥¨ã—ãŸç›¸æ‰‹ã«ã™ã§ã«æŠ•ç¥¨ã—ã¦ã„ã‚‹äººæ•°ã‚’å–å¾—
   $vote_count = 1;
   foreach($ROOM->vote as $stack){
     if(in_array($target->uname, $stack)) $vote_count++;
   }
 
-  //µ¬Äê¿ô°Ê¾å¤ÎÅêÉ¼¤¬¤¢¤Ã¤¿ / ¥­¥Ã¥«¡¼¤¬¿ÈÂå¤ï¤ê·¯ / ¼«¸Ê KICK ¤¬Í­¸ú¤Î¾ì¹ç¤Ë½èÍı
+  //è¦å®šæ•°ä»¥ä¸Šã®æŠ•ç¥¨ãŒã‚ã£ãŸ / ã‚­ãƒƒã‚«ãƒ¼ãŒèº«ä»£ã‚ã‚Šå› / è‡ªå·± KICK ãŒæœ‰åŠ¹ã®å ´åˆã«å‡¦ç†
   if($vote_count < $GAME_CONF->kick && ! $SELF->IsDummyBoy() &&
      ! ($GAME_CONF->self_kick && $target->IsSelf())){
     return $vote_count;
@@ -185,108 +185,108 @@ function AggregateVoteKick($target){
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
     "WHERE room_no = {$ROOM->id} AND user_no = '{$target->user_no}' AND user_no > 0";
   SendQuery($query);
-  $ROOM->Talk($target->handle_name . $MESSAGE->kick_out); //½Ğ¤Æ¹Ô¤Ã¤¿¥á¥Ã¥»¡¼¥¸
-  $ROOM->Talk($MESSAGE->vote_reset); //ÅêÉ¼¥ê¥»¥Ã¥ÈÄÌÃÎ
-  $ROOM->UpdateTime(); //ºÇ½ª½ñ¤­¹ş¤ß»ş¹ï¤ò¹¹¿·
-  DeleteVote(); //º£¤Ş¤Ç¤ÎÅêÉ¼¤òÁ´Éôºï½ü
+  $ROOM->Talk($target->handle_name . $MESSAGE->kick_out); //å‡ºã¦è¡Œã£ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+  $ROOM->Talk($MESSAGE->vote_reset); //æŠ•ç¥¨ãƒªã‚»ãƒƒãƒˆé€šçŸ¥
+  $ROOM->UpdateTime(); //æœ€çµ‚æ›¸ãè¾¼ã¿æ™‚åˆ»ã‚’æ›´æ–°
+  DeleteVote(); //ä»Šã¾ã§ã®æŠ•ç¥¨ã‚’å…¨éƒ¨å‰Šé™¤
   return $vote_count;
 }
 
-//Ãë¤ÎÅêÉ¼½èÍı
+//æ˜¼ã®æŠ•ç¥¨å‡¦ç†
 function VoteDay(){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
-  CheckSituation('VOTE_KILL'); //¥³¥Ş¥ó¥É¥Á¥§¥Ã¥¯
+  CheckSituation('VOTE_KILL'); //ã‚³ãƒãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯
 
-  $target = $USERS->ByReal($RQ_ARGS->target_no); //ÅêÉ¼Àè¤Î¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ
-  if($target->uname == '') OutputVoteResult('½è·º¡§ÅêÉ¼Àè¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ş¤»¤ó');
-  if($target->IsSelf())    OutputVoteResult('½è·º¡§¼«Ê¬¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
-  if(! $target->IsLive())  OutputVoteResult('½è·º¡§À¸Â¸¼Ô°Ê³°¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+  $target = $USERS->ByReal($RQ_ARGS->target_no); //æŠ•ç¥¨å…ˆã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—
+  if($target->uname == '') OutputVoteResult('å‡¦åˆ‘ï¼šæŠ•ç¥¨å…ˆãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“');
+  if($target->IsSelf())    OutputVoteResult('å‡¦åˆ‘ï¼šè‡ªåˆ†ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
+  if(! $target->IsLive())  OutputVoteResult('å‡¦åˆ‘ï¼šç”Ÿå­˜è€…ä»¥å¤–ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
 
-  $vote_duel = $ROOM->event->vote_duel; //ÆÃ¼ì¥¤¥Ù¥ó¥È¤ò¼èÆÀ
+  $vote_duel = $ROOM->event->vote_duel; //ç‰¹æ®Šã‚¤ãƒ™ãƒ³ãƒˆã‚’å–å¾—
   if(is_array($vote_duel) && ! in_array($RQ_ARGS->target_no, $vote_duel)){
-    OutputVoteResult('½è·º¡§·èÁªÅêÉ¼ÂĞ¾İ¼Ô°Ê³°¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    OutputVoteResult('å‡¦åˆ‘ï¼šæ±ºé¸æŠ•ç¥¨å¯¾è±¡è€…ä»¥å¤–ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
   }
-  LockVote(); //¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
+  LockVote(); //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
 
-  //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
+  //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
   $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
     "AND vote_times = {$RQ_ARGS->vote_times} AND uname = '{$SELF->uname}'";
-  if(FetchResult($query) > 0) OutputVoteResult('½è·º¡§ÅêÉ¼ºÑ¤ß');
+  if(FetchResult($query) > 0) OutputVoteResult('å‡¦åˆ‘ï¼šæŠ•ç¥¨æ¸ˆã¿');
 
-  //-- ÅêÉ¼½èÍı --//
-  //Ìò¿¦¤Ë±ş¤¸¤ÆÅêÉ¼¿ô¤òÊäÀµ
+  //-- æŠ•ç¥¨å‡¦ç† --//
+  //å½¹è·ã«å¿œã˜ã¦æŠ•ç¥¨æ•°ã‚’è£œæ­£
   $vote_number = 1;
   $brownie_flag = false;
-  foreach($USERS->rows as $user){ //ºÂÉßÆ¸»Ò¤ÎÀ¸Â¸È½Äê
+  foreach($USERS->rows as $user){ //åº§æ•·ç«¥å­ã®ç”Ÿå­˜åˆ¤å®š
     if($user->IsLive() && $user->IsRole('brownie')){
       $brownie_flag = true;
       break;
     }
   }
   if($SELF->IsRoleGroup('elder') || ($brownie_flag && $SELF->IsRole('human'))){
-    $vote_number++; //Ä¹Ï··Ï¤ÈºÂÉßÆ¸»Ò¤¬½Ğ¸½¤·¤Æ¤¤¤ëÂ¼¿Í¤ÏÅêÉ¼¿ô¤¬ 1 Áı¤¨¤ë
+    $vote_number++; //é•·è€ç³»ã¨åº§æ•·ç«¥å­ãŒå‡ºç¾ã—ã¦ã„ã‚‹æ‘äººã¯æŠ•ç¥¨æ•°ãŒ 1 å¢—ãˆã‚‹
   }
 
-  //¥µ¥ÖÌò¿¦¤Î½èÍı
-  $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //²¾ÁÛÅêÉ¼¼Ô¤ò¥»¥Ã¥È
+  //ã‚µãƒ–å½¹è·ã®å‡¦ç†
+  $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //ä»®æƒ³æŠ•ç¥¨è€…ã‚’ã‚»ãƒƒãƒˆ
   foreach($ROLES->Load('vote_do') as $filter) $filter->FilterVoteDo($vote_number);
 
-  if(! $SELF->Vote('VOTE_KILL', $target->uname, $vote_number)){ //ÅêÉ¼½èÍı
-    OutputVoteResult('¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼', true);
+  if(! $SELF->Vote('VOTE_KILL', $target->uname, $vote_number)){ //æŠ•ç¥¨å‡¦ç†
+    OutputVoteResult('ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼', true);
   }
 
-  //¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸
+  //ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
   $ROOM->Talk("VOTE_DO\t" . $USERS->GetHandleName($target->uname, true), $SELF->uname);
 
-  AggregateVoteDay(); //½¸·×½èÍı
-  OutputVoteResult('ÅêÉ¼´°Î»', true);
+  AggregateVoteDay(); //é›†è¨ˆå‡¦ç†
+  OutputVoteResult('æŠ•ç¥¨å®Œäº†', true);
 }
 
-//Ìë¤ÎÅêÉ¼½èÍı
+//å¤œã®æŠ•ç¥¨å‡¦ç†
 function VoteNight(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  //-- ¥¤¥Ù¥ó¥ÈÌ¾¤ÈÌò¿¦¤ÎÀ°¹ç¥Á¥§¥Ã¥¯ --//
-  if($SELF->IsDummyBoy()) OutputVoteResult('Ìë¡§¿ÈÂå¤ï¤ê·¯¤ÎÅêÉ¼¤ÏÌµ¸ú¤Ç¤¹');
+  //-- ã‚¤ãƒ™ãƒ³ãƒˆåã¨å½¹è·ã®æ•´åˆãƒã‚§ãƒƒã‚¯ --//
+  if($SELF->IsDummyBoy()) OutputVoteResult('å¤œï¼šèº«ä»£ã‚ã‚Šå›ã®æŠ•ç¥¨ã¯ç„¡åŠ¹ã§ã™');
   switch($RQ_ARGS->situation){
   case 'ESCAPE_DO':
-    if(! $SELF->IsRole('escaper')) OutputVoteResult('Ìë¡§Æ¨Ë´¼Ô°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('escaper')) OutputVoteResult('å¤œï¼šé€ƒäº¡è€…ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'MAGE_DO':
     if($SELF->IsRole('emerald_fox')){
-      if(! $SELF->IsActive()) OutputVoteResult('Ìë¡§¿é¸Ñ¤Ï°ìÅÙ¤·¤«¤Ç¤­¤Ş¤»¤ó');
+      if(! $SELF->IsActive()) OutputVoteResult('å¤œï¼šç¿ ç‹ã¯ä¸€åº¦ã—ã‹ã§ãã¾ã›ã‚“');
     }
     elseif(! $SELF->IsRoleGroup('mage')){
-      OutputVoteResult('Ìë¡§Àê¤¤Ç½ÎÏ¼Ô°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šå ã„èƒ½åŠ›è€…ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     break;
 
   case 'VOODOO_KILLER_DO':
-    if(! $SELF->IsRole('voodoo_killer')) OutputVoteResult('Ìë¡§±¢ÍÛ»Õ°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('voodoo_killer')) OutputVoteResult('å¤œï¼šé™°é™½å¸«ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'GUARD_DO':
-    if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('Ìë¡§¼í¿Í·Ï°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('å¤œï¼šç‹©äººç³»ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'REPORTER_DO':
-    if(! $SELF->IsRole('reporter')) OutputVoteResult('Ìë¡§¥Ö¥ó²°°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('reporter')) OutputVoteResult('å¤œï¼šãƒ–ãƒ³å±‹ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'ANTI_VOODOO_DO':
-    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('Ìë¡§Ìñ¿À°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('å¤œï¼šå„ç¥ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
-    if(! $SELF->IsReviveGroup()) OutputVoteResult('Ìë¡§ÁÉÀ¸Ç½ÎÏ¼Ô°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsReviveGroup()) OutputVoteResult('å¤œï¼šè˜‡ç”Ÿèƒ½åŠ›è€…ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     if($ROOM->IsOpenCast()){
-      OutputVoteResult('Ìë¡§¡ÖÎî³¦¤ÇÇÛÌò¤ò¸ø³«¤·¤Ê¤¤¡×¥ª¥×¥·¥ç¥ó¤¬¥ª¥Õ¤Î»ş¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šã€ŒéœŠç•Œã§é…å½¹ã‚’å…¬é–‹ã—ãªã„ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ªãƒ•ã®æ™‚ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
-      OutputVoteResult('Ìë¡§Àç¸Ñ¤ÎÁÉÀ¸¤Ï°ìÅÙ¤·¤«¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šä»™ç‹ã®è˜‡ç”Ÿã¯ä¸€åº¦ã—ã‹ã§ãã¾ã›ã‚“');
     }
     $not_type = $RQ_ARGS->situation == 'POISON_CAT_NOT_DO';
     break;
@@ -294,172 +294,172 @@ function VoteNight(){
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
     if(! $SELF->IsRoleGroup('assassin') && ! $SELF->IsRole('doom_fox')){
-      OutputVoteResult('Ìë¡§°Å»¦Ç½ÎÏ¼Ô°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šæš—æ®ºèƒ½åŠ›è€…ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
   case 'MIND_SCANNER_DO':
     if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
-      OutputVoteResult('Ìë¡§¤µ¤È¤ê¡¦¥¤¥¿¥³°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šã•ã¨ã‚Šãƒ»ã‚¤ã‚¿ã‚³ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
-      OutputVoteResult('Ìë¡§¡ÖÎî³¦¤ÇÇÛÌò¤ò¸ø³«¤·¤Ê¤¤¡×¥ª¥×¥·¥ç¥ó¤¬¥ª¥Õ¤Î»ş¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šã€ŒéœŠç•Œã§é…å½¹ã‚’å…¬é–‹ã—ãªã„ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ªãƒ•ã®æ™‚ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     break;
 
   case 'WOLF_EAT':
-    if(! $SELF->IsWolf()) OutputVoteResult('Ìë¡§¿ÍÏµ·Ï°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsWolf()) OutputVoteResult('å¤œï¼šäººç‹¼ç³»ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'JAMMER_MAD_DO':
     if(! $SELF->IsRole('jammer_mad', 'jammer_fox')){
-      OutputVoteResult('Ìë¡§·îÅÆ¡¦·î¸Ñ°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šæœˆå…ãƒ»æœˆç‹ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     break;
 
   case 'VOODOO_MAD_DO':
-    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('Ìë¡§¼ö½Ñ»Õ°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('å¤œï¼šå‘ªè¡“å¸«ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'DREAM_EAT':
-    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('Ìë¡§àÓ°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('å¤œï¼šçä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
-    if(! $SELF->IsRole('trap_mad')) OutputVoteResult('Ìë¡§æ«»Õ°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
-    if(! $SELF->IsActive()) OutputVoteResult('Ìë¡§æ«¤Ï°ìÅÙ¤·¤«ÀßÃÖ¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('trap_mad')) OutputVoteResult('å¤œï¼šç½ å¸«ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
+    if(! $SELF->IsActive()) OutputVoteResult('å¤œï¼šç½ ã¯ä¸€åº¦ã—ã‹è¨­ç½®ã§ãã¾ã›ã‚“');
     $not_type = $RQ_ARGS->situation == 'TRAP_MAD_NOT_DO';
     break;
 
   case 'POSSESSED_DO':
   CASE 'POSSESSED_NOT_DO':
     if(! $SELF->IsRole('possessed_mad', 'possessed_fox')){
-      OutputVoteResult('Ìë¡§¸¤¿À¡¦Øá¸Ñ°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šçŠ¬ç¥ãƒ»æ†‘ç‹ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
-    if(! $SELF->IsActive()) OutputVoteResult('Ìë¡§Øá°Í¤Ï°ìÅÙ¤·¤«¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsActive()) OutputVoteResult('å¤œï¼šæ†‘ä¾ã¯ä¸€åº¦ã—ã‹ã§ãã¾ã›ã‚“');
     $not_type = $RQ_ARGS->situation == 'POSSESSED_NOT_DO';
     break;
 
   case 'VOODOO_FOX_DO':
-    if(! $SELF->IsRole('voodoo_fox')) OutputVoteResult('Ìë¡§¶åÈø°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('voodoo_fox')) OutputVoteResult('å¤œï¼šä¹å°¾ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'CHILD_FOX_DO':
     if(! $SELF->IsChildFox(true) && ! $SELF->IsRole('jammer_fox')){
-      OutputVoteResult('Ìë¡§»Ò¸Ñ·Ï°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šå­ç‹ç³»ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     break;
 
   case 'CUPID_DO':
     if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
-      OutputVoteResult('Ìë¡§¥­¥å¡¼¥Ô¥Ã¥É·Ï¡¦Å·»È·Ï°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ç³»ãƒ»å¤©ä½¿ç³»ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     $is_cupid = true;
     break;
 
   case 'VAMPIRE_DO':
-    if(! $SELF->IsRole('vampire')) OutputVoteResult('Ìë¡§µÛ·ìµ´°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRole('vampire')) OutputVoteResult('å¤œï¼šå¸è¡€é¬¼ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   case 'FAIRY_DO':
-    if(! $SELF->IsRoleGroup('fairy')) OutputVoteResult('Ìë¡§ÍÅÀº·Ï°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRoleGroup('fairy')) OutputVoteResult('å¤œï¼šå¦–ç²¾ç³»ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     $is_mirror_fairy = $SELF->IsRole('mirror_fairy');
     break;
 
   case 'MANIA_DO':
-    if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('Ìë¡§¿ÀÏÃ¥Ş¥Ë¥¢·Ï°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('å¤œï¼šç¥è©±ãƒãƒ‹ã‚¢ç³»ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
 
   default:
-    OutputVoteResult('Ìë¡§¤¢¤Ê¤¿¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    OutputVoteResult('å¤œï¼šã‚ãªãŸã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     break;
   }
-  LockVote(); //¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
-  CheckAlreadyVote($is_mirror_fairy ? 'CUPID_DO' : $RQ_ARGS->situation); //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
+  LockVote(); //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
+  CheckAlreadyVote($is_mirror_fairy ? 'CUPID_DO' : $RQ_ARGS->situation); //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 
-  //-- ÅêÉ¼¥¨¥é¡¼¥Á¥§¥Ã¥¯ --//
-  $error_header = 'Ìë¡§ÅêÉ¼Àè¤¬Àµ¤·¤¯¤¢¤ê¤Ş¤»¤ó<br>'; //¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤Î¥Ø¥Ã¥À
+  //-- æŠ•ç¥¨ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ --//
+  $error_header = 'å¤œï¼šæŠ•ç¥¨å…ˆãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“<br>'; //ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒ˜ãƒƒãƒ€
 
-  if($not_type); //ÅêÉ¼¥­¥ã¥ó¥»¥ë¥¿¥¤¥×¤Ï²¿¤â¤·¤Ê¤¤
-  elseif($is_cupid || $is_mirror_fairy){ //¥­¥å¡¼¥Ô¥Ã¥É·Ï
+  if($not_type); //æŠ•ç¥¨ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚¿ã‚¤ãƒ—ã¯ä½•ã‚‚ã—ãªã„
+  elseif($is_cupid || $is_mirror_fairy){ //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ç³»
     if($SELF->IsRole('triangle_cupid')){
-      if(count($RQ_ARGS->target_no) != 3) OutputVoteResult('Ìë¡§»ØÄê¿Í¿ô¤¬»°¿Í¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó');
+      if(count($RQ_ARGS->target_no) != 3) OutputVoteResult('å¤œï¼šæŒ‡å®šäººæ•°ãŒä¸‰äººã§ã¯ã‚ã‚Šã¾ã›ã‚“');
     }
     elseif(count($RQ_ARGS->target_no) != 2){
-      OutputVoteResult('Ìë¡§»ØÄê¿Í¿ô¤¬Æó¿Í¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šæŒ‡å®šäººæ•°ãŒäºŒäººã§ã¯ã‚ã‚Šã¾ã›ã‚“');
     }
 
     $target_list = array();
-    $self_shoot = false; //¼«Ê¬·â¤Á¥Õ¥é¥°¤ò½é´ü²½
+    $self_shoot = false; //è‡ªåˆ†æ’ƒã¡ãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
     foreach($RQ_ARGS->target_no as $target_no){
-      $target = $USERS->ByID($target_no); //ÅêÉ¼Àè¤Î¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ
+      $target = $USERS->ByID($target_no); //æŠ•ç¥¨å…ˆã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—
 
-      //À¸Â¸¼Ô°Ê³°¤È¿ÈÂå¤ï¤ê·¯¤Ø¤ÎÅêÉ¼¤ÏÌµ¸ú
+      //ç”Ÿå­˜è€…ä»¥å¤–ã¨èº«ä»£ã‚ã‚Šå›ã¸ã®æŠ•ç¥¨ã¯ç„¡åŠ¹
       if(! $target->IsLive() || $target->IsDummyBoy()){
-	OutputVoteResult('À¸Â¸¼Ô°Ê³°¤È¿ÈÂå¤ï¤ê·¯¤Ø¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+	OutputVoteResult('ç”Ÿå­˜è€…ä»¥å¤–ã¨èº«ä»£ã‚ã‚Šå›ã¸ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
       }
 
       $target_list[] = $target;
-      $self_shoot |= $target->IsSelf(); //¼«Ê¬·â¤ÁÈ½Äê
+      $self_shoot |= $target->IsSelf(); //è‡ªåˆ†æ’ƒã¡åˆ¤å®š
     }
 
-    //¼«Ê¬·â¤Á¤Ç¤ÏÌµ¤¤¾ì¹ç¤ÏÆÃÄê¤Î¥±¡¼¥¹¤Ç¥¨¥é¡¼¤òÊÖ¤¹
+    //è‡ªåˆ†æ’ƒã¡ã§ã¯ç„¡ã„å ´åˆã¯ç‰¹å®šã®ã‚±ãƒ¼ã‚¹ã§ã‚¨ãƒ©ãƒ¼ã‚’è¿”ã™
     if($is_cupid && ! $self_shoot){
-      if($SELF->IsRole('self_cupid', 'moon_cupid', 'dummy_chiroptera')){ //µá°¦¼Ô
-	OutputVoteResult($error_header . 'µá°¦¼Ô¡¦¤«¤°¤äÉ±¤ÏÉ¬¤º¼«Ê¬¤òÂĞ¾İ¤Ë´Ş¤á¤Æ¤¯¤À¤µ¤¤');
+      if($SELF->IsRole('self_cupid', 'moon_cupid', 'dummy_chiroptera')){ //æ±‚æ„›è€…
+	OutputVoteResult($error_header . 'æ±‚æ„›è€…ãƒ»ã‹ãã‚„å§«ã¯å¿…ãšè‡ªåˆ†ã‚’å¯¾è±¡ã«å«ã‚ã¦ãã ã•ã„');
       }
-      elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //»²²Ã¿Í¿ô
-	OutputVoteResult($error_header . '¾¯¿Í¿ôÂ¼¤Î¾ì¹ç¤Ï¡¢É¬¤º¼«Ê¬¤òÂĞ¾İ¤Ë´Ş¤á¤Æ¤¯¤À¤µ¤¤');
+      elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //å‚åŠ äººæ•°
+	OutputVoteResult($error_header . 'å°‘äººæ•°æ‘ã®å ´åˆã¯ã€å¿…ãšè‡ªåˆ†ã‚’å¯¾è±¡ã«å«ã‚ã¦ãã ã•ã„');
       }
     }
   }
-  else{ //¥­¥å¡¼¥Ô¥Ã¥É·Ï°Ê³°
-    $target  = $USERS->ByID($RQ_ARGS->target_no); //ÅêÉ¼Àè¤Î¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ
-    $is_live = $USERS->IsVirtualLive($target->user_no); //²¾ÁÛÅª¤ÊÀ¸»à¤òÈ½Äê
+  else{ //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ç³»ä»¥å¤–
+    $target  = $USERS->ByID($RQ_ARGS->target_no); //æŠ•ç¥¨å…ˆã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—
+    $is_live = $USERS->IsVirtualLive($target->user_no); //ä»®æƒ³çš„ãªç”Ÿæ­»ã‚’åˆ¤å®š
 
-    if($RQ_ARGS->situation != 'TRAP_MAD_DO' && $target->IsSelf()){ //æ«»Õ°Ê³°¤Ï¼«Ê¬¤Ø¤ÎÅêÉ¼¤ÏÌµ¸ú
-      OutputVoteResult($error_header . '¼«Ê¬¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if($RQ_ARGS->situation != 'TRAP_MAD_DO' && $target->IsSelf()){ //ç½ å¸«ä»¥å¤–ã¯è‡ªåˆ†ã¸ã®æŠ•ç¥¨ã¯ç„¡åŠ¹
+      OutputVoteResult($error_header . 'è‡ªåˆ†ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
 
     if($RQ_ARGS->situation == 'POISON_CAT_DO' || $RQ_ARGS->situation == 'POSSESSED_DO'){
-      if($is_live){ //ÁÉÀ¸¡¦Øá°ÍÇ½ÎÏ¼Ô¤Ï»à¼Ô°Ê³°¤Ø¤ÎÅêÉ¼¤ÏÌµ¸ú
-	OutputVoteResult($error_header . '»à¼Ô°Ê³°¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      if($is_live){ //è˜‡ç”Ÿãƒ»æ†‘ä¾èƒ½åŠ›è€…ã¯æ­»è€…ä»¥å¤–ã¸ã®æŠ•ç¥¨ã¯ç„¡åŠ¹
+	OutputVoteResult($error_header . 'æ­»è€…ä»¥å¤–ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
       }
     }
     elseif(! $is_live){
-      OutputVoteResult($error_header . 'À¸Â¸¼Ô°Ê³°¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult($error_header . 'ç”Ÿå­˜è€…ä»¥å¤–ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
 
-    if($RQ_ARGS->situation == 'WOLF_EAT'){ //¿ÍÏµ¤ÎÅêÉ¼
-      //Ãç´Ö¤À¤ÈÊ¬¤«¤Ã¤Æ¤¤¤ëÏµÆ±»Î¤Ø¤ÎÅêÉ¼¤ÏÌµ¸ú
+    if($RQ_ARGS->situation == 'WOLF_EAT'){ //äººç‹¼ã®æŠ•ç¥¨
+      //ä»²é–“ã ã¨åˆ†ã‹ã£ã¦ã„ã‚‹ç‹¼åŒå£«ã¸ã®æŠ•ç¥¨ã¯ç„¡åŠ¹
       if($SELF->IsWolf(true) && ! $SELF->IsRole('hungry_wolf') &&
 	 $USERS->ByReal($target->user_no)->IsWolf(true)){
-	OutputVoteResult($error_header . 'ÏµÆ±»Î¤Ë¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+	OutputVoteResult($error_header . 'ç‹¼åŒå£«ã«ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
       }
 
-      if($ROOM->IsQuiz() && ! $target->IsDummyBoy()){ //¥¯¥¤¥ºÂ¼¤Ï GM °Ê³°Ìµ¸ú
-	OutputVoteResult($error_header . '¥¯¥¤¥ºÂ¼¤Ç¤Ï GM °Ê³°¤ËÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      if($ROOM->IsQuiz() && ! $target->IsDummyBoy()){ //ã‚¯ã‚¤ã‚ºæ‘ã¯ GM ä»¥å¤–ç„¡åŠ¹
+	OutputVoteResult($error_header . 'ã‚¯ã‚¤ã‚ºæ‘ã§ã¯ GM ä»¥å¤–ã«æŠ•ç¥¨ã§ãã¾ã›ã‚“');
       }
 
-      //¿ÈÂå¤ï¤ê·¯»ÈÍÑ¤Î¾ì¹ç¤Ï¡¢½éÆü¤Ï¿ÈÂå¤ï¤ê·¯°Ê³°Ìµ¸ú
+      //èº«ä»£ã‚ã‚Šå›ä½¿ç”¨ã®å ´åˆã¯ã€åˆæ—¥ã¯èº«ä»£ã‚ã‚Šå›ä»¥å¤–ç„¡åŠ¹
       if($ROOM->IsDummyBoy() && $ROOM->date == 1 && ! $target->IsDummyBoy()){
-	OutputVoteResult($error_header . '¿ÈÂå¤ï¤ê·¯»ÈÍÑ¤Î¾ì¹ç¤Ï¡¢¿ÈÂå¤ï¤ê·¯°Ê³°¤ËÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+	OutputVoteResult($error_header . 'èº«ä»£ã‚ã‚Šå›ä½¿ç”¨ã®å ´åˆã¯ã€èº«ä»£ã‚ã‚Šå›ä»¥å¤–ã«æŠ•ç¥¨ã§ãã¾ã›ã‚“');
       }
     }
   }
 
-  //-- ÅêÉ¼½èÍı --//
+  //-- æŠ•ç¥¨å‡¦ç† --//
   if($not_type){
-    if(! $SELF->Vote($RQ_ARGS->situation)){ //ÅêÉ¼½èÍı
-      OutputVoteResult('¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼', true);
+    if(! $SELF->Vote($RQ_ARGS->situation)){ //æŠ•ç¥¨å‡¦ç†
+      OutputVoteResult('ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼', true);
     }
     $ROOM->SystemMessage($SELF->handle_name, $RQ_ARGS->situation);
     $ROOM->Talk($RQ_ARGS->situation, $SELF->uname);
   }
   else{
-    if($is_cupid){ //¥­¥å¡¼¥Ô¥Ã¥É·Ï¤Î½èÍı
+    if($is_cupid){ //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ç³»ã®å‡¦ç†
       $uname_stack  = array();
       $handle_stack = array();
       $is_self  = $SELF->IsRole('self_cupid');
@@ -470,28 +470,28 @@ function VoteNight(){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
 
-	if($is_dummy){ //Ì´µá°¦¼Ô¡§¼«Ê¬¤ËÌğ¤òÂÇ¤Ã¤¿Áê¼ê¤òÄÉ²Ã
+	if($is_dummy){ //å¤¢æ±‚æ„›è€…ï¼šè‡ªåˆ†ã«çŸ¢ã‚’æ‰“ã£ãŸç›¸æ‰‹ã‚’è¿½åŠ 
 	  if(! $target->IsSelf()) $SELF->AddMainRole($target->user_no);
 	  continue;
 	}
 
-	$role = 'lovers[' . $SELF->user_no . ']'; //Ìò¿¦¤ËÎø¿Í¤òÄÉ²Ã
-	if($is_self){ //µá°¦¼Ô¡§Áê¼ê¤Ë¼õ¿®¼Ô¤òÄÉ²Ã
+	$role = 'lovers[' . $SELF->user_no . ']'; //å½¹è·ã«æ‹äººã‚’è¿½åŠ 
+	if($is_self){ //æ±‚æ„›è€…ï¼šç›¸æ‰‹ã«å—ä¿¡è€…ã‚’è¿½åŠ 
 	  if(! $target->IsSelf()) $role .= ' mind_receiver['. $SELF->user_no . ']';
 	}
-	elseif($is_moon){ //¤«¤°¤äÉ±¡§Î¾Êı¤ËÆñÂê + ¼«Ê¬¤Ë¼õ¿®¼Ô¤òÄÉ²Ã
+	elseif($is_moon){ //ã‹ãã‚„å§«ï¼šä¸¡æ–¹ã«é›£é¡Œ + è‡ªåˆ†ã«å—ä¿¡è€…ã‚’è¿½åŠ 
 	  $role .= ' challenge_lovers';
 	  if(! $target->IsSelf()) $SELF->AddRole('mind_receiver['. $target->user_no . ']');
 	}
-	elseif($is_mind){ //½÷¿À¡§Î¾Êı¤Ë¶¦ÌÄ¼Ô + Â¾¿Í·â¤Á¤Ê¤é¼«Ê¬¤Ë¼õ¿®¼Ô¤òÄÉ²Ã
+	elseif($is_mind){ //å¥³ç¥ï¼šä¸¡æ–¹ã«å…±é³´è€… + ä»–äººæ’ƒã¡ãªã‚‰è‡ªåˆ†ã«å—ä¿¡è€…ã‚’è¿½åŠ 
 	  $role .= ' mind_friend['. $SELF->user_no . ']';
 	  if(! $self_shoot) $SELF->AddRole('mind_receiver[' . $target->user_no . ']');
 	}
 	$target->AddRole($role);
-	$target->ParseRoles($target->GetRole()); //ºÆ¥Ñ¡¼¥¹ (º²°Ü»ÈÈ½ÄêÍÑ)
+	$target->ReparseRoles(); //å†ãƒ‘ãƒ¼ã‚¹ (é­‚ç§»ä½¿åˆ¤å®šç”¨)
       }
 
-      if($SELF->IsRoleGroup('angel')){ //Å·»È·Ï¤Î½èÍı
+      if($SELF->IsRoleGroup('angel')){ //å¤©ä½¿ç³»ã®å‡¦ç†
 	$lovers_a = $target_list[0];
 	$lovers_b = $target_list[1];
 	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) ||
@@ -511,11 +511,11 @@ function VoteNight(){
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
     }
-    elseif($is_mirror_fairy){ //¶ÀÍÅÀº¤Î½èÍı
+    elseif($is_mirror_fairy){ //é¡å¦–ç²¾ã®å‡¦ç†
       $id_stack     = array();
       $uname_stack  = array();
       $handle_stack = array();
-      foreach($target_list as $target){ //¾ğÊó¼ı½¸
+      foreach($target_list as $target){ //æƒ…å ±åé›†
 	$id_stack[]     = strval($target->user_no);
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
@@ -526,49 +526,49 @@ function VoteNight(){
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
     }
-    else{ //ÄÌ¾ï½èÍı
+    else{ //é€šå¸¸å‡¦ç†
       $situation     = $RQ_ARGS->situation;
       $target_uname  = $USERS->ByReal($target->user_no)->uname;
       $target_handle = $target->handle_name;
     }
 
-    if(! $SELF->Vote($situation, $target_uname)){ //ÅêÉ¼½èÍı
-      OutputVoteResult('¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼', true);
+    if(! $SELF->Vote($situation, $target_uname)){ //æŠ•ç¥¨å‡¦ç†
+      OutputVoteResult('ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼', true);
     }
     $ROOM->SystemMessage($SELF->handle_name . "\t" . $target_handle, $RQ_ARGS->situation);
     $ROOM->Talk($RQ_ARGS->situation . "\t" . $target_handle, $SELF->uname);
   }
 
-  AggregateVoteNight(); //½¸·×½èÍı
-  OutputVoteResult('ÅêÉ¼´°Î»', true);
+  AggregateVoteNight(); //é›†è¨ˆå‡¦ç†
+  OutputVoteResult('æŠ•ç¥¨å®Œäº†', true);
 }
 
-//»à¼Ô¤ÎÅêÉ¼½èÍı
+//æ­»è€…ã®æŠ•ç¥¨å‡¦ç†
 function VoteDeadUser(){
   global $ROOM, $SELF;
 
-  CheckSituation('REVIVE_REFUSE'); //¥³¥Ş¥ó¥É¥Á¥§¥Ã¥¯
+  CheckSituation('REVIVE_REFUSE'); //ã‚³ãƒãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯
 
-  //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
-  if($SELF->IsDrop()) OutputVoteResult('ÁÉÀ¸¼­Âà¡§ÅêÉ¼ºÑ¤ß');
-  if($ROOM->IsOpenCast()) OutputVoteResult('ÁÉÀ¸¼­Âà¡§ÅêÉ¼ÉÔÍ×¤Ç¤¹');
-  LockVote(); //¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
+  //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
+  if($SELF->IsDrop()) OutputVoteResult('è˜‡ç”Ÿè¾é€€ï¼šæŠ•ç¥¨æ¸ˆã¿');
+  if($ROOM->IsOpenCast()) OutputVoteResult('è˜‡ç”Ÿè¾é€€ï¼šæŠ•ç¥¨ä¸è¦ã§ã™');
+  LockVote(); //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
 
-  //-- ÅêÉ¼½èÍı --//
-  if(! $SELF->Update('live', 'drop')) OutputVoteResult('¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼', true);
+  //-- æŠ•ç¥¨å‡¦ç† --//
+  if(! $SELF->Update('live', 'drop')) OutputVoteResult('ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼', true);
 
-  //¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸
-  $sentence = '¥·¥¹¥Æ¥à¡§' . $SELF->handle_name . '¤µ¤ó¤ÏÁÉÀ¸¤ò¼­Âà¤·¤Ş¤·¤¿¡£';
+  //ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+  $sentence = 'ã‚·ã‚¹ãƒ†ãƒ ï¼š' . $SELF->handle_name . 'ã•ã‚“ã¯è˜‡ç”Ÿã‚’è¾é€€ã—ã¾ã—ãŸã€‚';
   $ROOM->Talk($sentence, $SELF->uname, 'heaven', 'normal');
 
-  OutputVoteResult('ÅêÉ¼´°Î»', true);
+  OutputVoteResult('æŠ•ç¥¨å®Œäº†', true);
 }
 
-//ÅêÉ¼¥Ú¡¼¥¸ HTML ¥Ø¥Ã¥À½ĞÎÏ
+//æŠ•ç¥¨ãƒšãƒ¼ã‚¸ HTML ãƒ˜ãƒƒãƒ€å‡ºåŠ›
 function OutputVotePageHeader(){
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
-  OutputHTMLHeader($SERVER_CONF->title . ' [ÅêÉ¼]', 'game');
+  OutputHTMLHeader($SERVER_CONF->title . ' [æŠ•ç¥¨]', 'game');
   if($ROOM->day_night != ''){
     echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
   }
@@ -583,25 +583,25 @@ function OutputVotePageHeader(){
 EOF;
 }
 
-//¥·¡¼¥ó¤Î°ìÃ×¥Á¥§¥Ã¥¯
+//ã‚·ãƒ¼ãƒ³ã®ä¸€è‡´ãƒã‚§ãƒƒã‚¯
 function CheckScene(){
   global $ROOM, $SELF;
-  if($ROOM->day_night != $SELF->last_load_day_night) OutputVoteResult('Ìá¤Ã¤Æ¥ê¥í¡¼¥É¤·¤Æ¤¯¤À¤µ¤¤');
+  if($ROOM->day_night != $SELF->last_load_day_night) OutputVoteResult('æˆ»ã£ã¦ãƒªãƒ­ãƒ¼ãƒ‰ã—ã¦ãã ã•ã„');
 }
 
-//³«»ÏÁ°¤ÎÅêÉ¼¥Ú¡¼¥¸½ĞÎÏ
+//é–‹å§‹å‰ã®æŠ•ç¥¨ãƒšãƒ¼ã‚¸å‡ºåŠ›
 function OutputVoteBeforeGame(){
   global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  CheckScene(); //ÅêÉ¼¤¹¤ë¾õ¶·¤¬¤¢¤Ã¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯
+  CheckScene(); //æŠ•ç¥¨ã™ã‚‹çŠ¶æ³ãŒã‚ã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
   OutputVotePageHeader();
   echo '<input type="hidden" name="situation" value="KICK_DO">'."\n";
-  echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
+  echo '<table class="vote-page"><tr>'."\n";
 
   $count  = 0;
   $header = '<input type="radio" name="target_no" id="';
   foreach($USERS->rows as $id => $user){
-    if($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5¸Ä¤´¤È¤Ë²ş¹Ô
+    if($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5å€‹ã”ã¨ã«æ”¹è¡Œ
     $count++;
 
     $checkbox = ! $user->IsDummyBoy() && ($GAME_CONF->self_kick || ! $user->IsSelf()) ?
@@ -611,7 +611,7 @@ function OutputVoteBeforeGame(){
 
   echo <<<EOF
 </tr></table>
-<span class="vote-message">* Kick ¤¹¤ë¤Ë¤Ï {$GAME_CONF->kick} ¿Í¤ÎÅêÉ¼¤¬É¬Í×¤Ç¤¹</span>
+<span class="vote-message">* Kick ã™ã‚‹ã«ã¯ {$GAME_CONF->kick} äººã®æŠ•ç¥¨ãŒå¿…è¦ã§ã™</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td>{$RQ_ARGS->back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->kick_do}"></form></td>
@@ -627,38 +627,38 @@ function OutputVoteBeforeGame(){
 EOF;
 }
 
-//Ãë¤ÎÅêÉ¼¥Ú¡¼¥¸¤ò½ĞÎÏ¤¹¤ë
+//æ˜¼ã®æŠ•ç¥¨ãƒšãƒ¼ã‚¸ã‚’å‡ºåŠ›ã™ã‚‹
 function OutputVoteDay(){
   global $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  CheckScene();  //ÅêÉ¼¤¹¤ë¾õ¶·¤¬¤¢¤Ã¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯
-  if($ROOM->date == 1) OutputVoteResult('½è·º¡§½éÆü¤ÏÅêÉ¼ÉÔÍ×¤Ç¤¹');
-  $vote_times = $ROOM->GetVoteTimes(); //ÅêÉ¼²ó¿ô¤ò¼èÆÀ
+  CheckScene();  //æŠ•ç¥¨ã™ã‚‹çŠ¶æ³ãŒã‚ã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+  if($ROOM->date == 1) OutputVoteResult('å‡¦åˆ‘ï¼šåˆæ—¥ã¯æŠ•ç¥¨ä¸è¦ã§ã™');
+  $vote_times = $ROOM->GetVoteTimes(); //æŠ•ç¥¨å›æ•°ã‚’å–å¾—
 
-  //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
+  //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
   $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
     "AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
-  if(FetchResult($query) > 0) OutputVoteResult('½è·º¡§ÅêÉ¼ºÑ¤ß');
+  if(FetchResult($query) > 0) OutputVoteResult('å‡¦åˆ‘ï¼šæŠ•ç¥¨æ¸ˆã¿');
 
   OutputVotePageHeader();
   echo <<<EOF
 <input type="hidden" name="situation" value="VOTE_KILL">
 <input type="hidden" name="vote_times" value="{$vote_times}">
-<table class="vote-page" cellspacing="5"><tr>
+<table class="vote-page"><tr>
 
 EOF;
 
-  $virtual_self = $USERS->ByVirtual($SELF->user_no); //²¾ÁÛÅêÉ¼¼Ô¤ò¼èÆÀ
+  $virtual_self = $USERS->ByVirtual($SELF->user_no); //ä»®æƒ³æŠ•ç¥¨è€…ã‚’å–å¾—
   $count  = 0;
-  $vote_duel = $ROOM->event->vote_duel; //ÆÃ¼ì¥¤¥Ù¥ó¥È¤ò¼èÆÀ
+  $vote_duel = $ROOM->event->vote_duel; //ç‰¹æ®Šã‚¤ãƒ™ãƒ³ãƒˆã‚’å–å¾—
   $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
   foreach($USERS->rows as $id => $user){
-    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5¸Ä¤´¤È¤Ë²ş¹Ô
+    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5å€‹ã”ã¨ã«æ”¹è¡Œ
     if(is_array($vote_duel) && ! in_array($id, $vote_duel)) continue;
     $count++;
     $is_live = $USERS->IsVirtualLive($id);
 
-    //À¸¤­¤Æ¤¤¤ì¤Ğ¥æ¡¼¥¶¥¢¥¤¥³¥ó¡¢»à¤ó¤Ç¤ì¤Ğ»àË´¥¢¥¤¥³¥ó
+    //ç”Ÿãã¦ã„ã‚Œã°ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ã€æ­»ã‚“ã§ã‚Œã°æ­»äº¡ã‚¢ã‚¤ã‚³ãƒ³
     $path = $is_live ? $ICON_CONF->path . '/' . $user->icon_filename : $ICON_CONF->dead;
     $checkbox = ($is_live && ! $user->IsSame($virtual_self->uname)) ?
       $checkbox_header . $id . '" value="' . $id . '">' : '';
@@ -667,7 +667,7 @@ EOF;
 
   echo <<<EOF
 </tr></table>
-<span class="vote-message">* ÅêÉ¼Àè¤ÎÊÑ¹¹¤Ï¤Ç¤­¤Ş¤»¤ó¡£¿µ½Å¤Ë¡ª</span>
+<span class="vote-message">* æŠ•ç¥¨å…ˆã®å¤‰æ›´ã¯ã§ãã¾ã›ã‚“ã€‚æ…é‡ã«ï¼</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td>{$RQ_ARGS->back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->vote_do}"></td>
@@ -677,16 +677,16 @@ EOF;
 EOF;
 }
 
-//Ìë¤ÎÅêÉ¼¥Ú¡¼¥¸¤ò½ĞÎÏ¤¹¤ë
+//å¤œã®æŠ•ç¥¨ãƒšãƒ¼ã‚¸ã‚’å‡ºåŠ›ã™ã‚‹
 function OutputVoteNight(){
   global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  CheckScene(); //ÅêÉ¼¥·¡¼¥ó¥Á¥§¥Ã¥¯
+  CheckScene(); //æŠ•ç¥¨ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒƒã‚¯
 
-  //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
-  if($SELF->IsDummyBoy()) OutputVoteResult('Ìë¡§¿ÈÂå¤ï¤ê·¯¤ÎÅêÉ¼¤ÏÌµ¸ú¤Ç¤¹');
+  //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
+  if($SELF->IsDummyBoy()) OutputVoteResult('å¤œï¼šèº«ä»£ã‚ã‚Šå›ã®æŠ•ç¥¨ã¯ç„¡åŠ¹ã§ã™');
   if($SELF->IsRole('escaper')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤ÎÆ¨Ë´¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®é€ƒäº¡ã¯ã§ãã¾ã›ã‚“');
     $type = 'ESCAPE_DO';
   }
   elseif($SELF->IsRoleGroup('mage')){
@@ -696,24 +696,24 @@ function OutputVoteNight(){
     $type = 'VOODOO_KILLER_DO';
   }
   elseif($SELF->IsRoleGroup('guard')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤Î¸î±Ò¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®è­·è¡›ã¯ã§ãã¾ã›ã‚“');
     $type = 'GUARD_DO';
   }
   elseif($SELF->IsRole('reporter')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤ÎÈø¹Ô¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®å°¾è¡Œã¯ã§ãã¾ã›ã‚“');
     $type = 'REPORTER_DO';
   }
   elseif($SELF->IsRole('anti_voodoo')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤ÎÌñÊ§¤¤¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®å„æ‰•ã„ã¯ã§ãã¾ã›ã‚“');
     $type = 'ANTI_VOODOO_DO';
   }
   elseif($role_revive = $SELF->IsReviveGroup()){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤ÎÁÉÀ¸¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®è˜‡ç”Ÿã¯ã§ãã¾ã›ã‚“');
     if($ROOM->IsOpenCast()){
-      OutputVoteResult('Ìë¡§¡ÖÎî³¦¤ÇÇÛÌò¤ò¸ø³«¤·¤Ê¤¤¡×¥ª¥×¥·¥ç¥ó¤¬¥ª¥Õ¤Î»ş¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šã€ŒéœŠç•Œã§é…å½¹ã‚’å…¬é–‹ã—ãªã„ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ªãƒ•ã®æ™‚ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
-      OutputVoteResult('Ìë¡§Àç¸Ñ¤ÎÁÉÀ¸¤Ï°ìÅÙ¤·¤«¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šä»™ç‹ã®è˜‡ç”Ÿã¯ä¸€åº¦ã—ã‹ã§ãã¾ã›ã‚“');
     }
     $type       = 'POISON_CAT_DO';
     $not_type   = 'POISON_CAT_NOT_DO';
@@ -721,14 +721,14 @@ function OutputVoteNight(){
     $not_submit = 'revive_not_do';
   }
   elseif($SELF->IsRoleGroup('assassin') || $SELF->IsRole('doom_fox')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤Î°Å»¦¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®æš—æ®ºã¯ã§ãã¾ã›ã‚“');
     $type     = 'ASSASSIN_DO';
     $not_type = 'ASSASSIN_NOT_DO';
   }
   elseif($SELF->IsRole('mind_scanner', 'evoke_scanner')){
-    if($ROOM->date != 1) OutputVoteResult('Ìë¡§½éÆü°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date != 1) OutputVoteResult('å¤œï¼šåˆæ—¥ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
-      OutputVoteResult('Ìë¡§¡ÖÎî³¦¤ÇÇÛÌò¤ò¸ø³«¤·¤Ê¤¤¡×¥ª¥×¥·¥ç¥ó¤¬¥ª¥Õ¤Î»ş¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+      OutputVoteResult('å¤œï¼šã€ŒéœŠç•Œã§é…å½¹ã‚’å…¬é–‹ã—ãªã„ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ªãƒ•ã®æ™‚ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     }
     $type = 'MIND_SCANNER_DO';
   }
@@ -744,20 +744,20 @@ function OutputVoteNight(){
     $submit = 'voodoo_do';
   }
   elseif($SELF->IsRole('dream_eater_mad')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤Î½±·â¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®è¥²æ’ƒã¯ã§ãã¾ã›ã‚“');
     $type = 'DREAM_EAT';
   }
   elseif($role_trap = $SELF->IsRole('trap_mad')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤Îæ«ÀßÃÖ¤Ï¤Ç¤­¤Ş¤»¤ó');
-    if(! $SELF->IsActive()) OutputVoteResult('Ìë¡§æ«¤Ï°ìÅÙ¤·¤«ÀßÃÖ¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®ç½ è¨­ç½®ã¯ã§ãã¾ã›ã‚“');
+    if(! $SELF->IsActive()) OutputVoteResult('å¤œï¼šç½ ã¯ä¸€åº¦ã—ã‹è¨­ç½®ã§ãã¾ã›ã‚“');
     $type       = 'TRAP_MAD_DO';
     $not_type   = 'TRAP_MAD_NOT_DO';
     $submit     = 'trap_do';
     $not_submit = 'trap_not_do';
   }
   elseif($SELF->IsRole('possessed_mad', 'possessed_fox')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤ÎØá°Í¤Ï¤Ç¤­¤Ş¤»¤ó');
-    if(! $SELF->IsActive()) OutputVoteResult('Ìë¡§Øá°Í¤Ï°ìÅÙ¤·¤«¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®æ†‘ä¾ã¯ã§ãã¾ã›ã‚“');
+    if(! $SELF->IsActive()) OutputVoteResult('å¤œï¼šæ†‘ä¾ã¯ä¸€åº¦ã—ã‹ã§ãã¾ã›ã‚“');
     $type       = 'POSSESSED_DO';
     $not_type   = 'POSSESSED_NOT_DO';
     $role_revive = true;
@@ -767,7 +767,7 @@ function OutputVoteNight(){
     $submit = 'voodoo_do';
   }
   elseif($SELF->IsRole('emerald_fox')){
-    if(! $SELF->IsActive()) OutputVoteResult('Ìë¡§Àê¤¤¤Ï°ìÅÙ¤·¤«¤Ç¤­¤Ş¤»¤ó');
+    if(! $SELF->IsActive()) OutputVoteResult('å¤œï¼šå ã„ã¯ä¸€åº¦ã—ã‹ã§ãã¾ã›ã‚“');
     $type   = 'MAGE_DO';
     $submit = 'mage_do';
   }
@@ -776,7 +776,7 @@ function OutputVoteNight(){
     $submit = 'mage_do';
   }
   elseif($SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera', 'mirror_fairy')){
-    if($ROOM->date != 1) OutputVoteResult('Ìë¡§½éÆü°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date != 1) OutputVoteResult('å¤œï¼šåˆæ—¥ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     $type = 'CUPID_DO';
     $role_cupid = $SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera');
     $role_mirror_fairy = $SELF->IsRole('mirror_fairy');
@@ -784,44 +784,44 @@ function OutputVoteNight(){
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
   elseif($SELF->IsRole('vampire')){
-    if($ROOM->date == 1) OutputVoteResult('Ìë¡§½éÆü¤Î½±·â¤Ï¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date == 1) OutputVoteResult('å¤œï¼šåˆæ—¥ã®è¥²æ’ƒã¯ã§ãã¾ã›ã‚“');
     $type = 'VAMPIRE_DO';
   }
   elseif($SELF->IsRoleGroup('fairy')){
     $type = 'FAIRY_DO';
   }
   elseif($SELF->IsRoleGroup('mania')){
-    if($ROOM->date != 1) OutputVoteResult('Ìë¡§½éÆü°Ê³°¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    if($ROOM->date != 1) OutputVoteResult('å¤œï¼šåˆæ—¥ä»¥å¤–ã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
     $type = 'MANIA_DO';
   }
   else{
-    OutputVoteResult('Ìë¡§¤¢¤Ê¤¿¤ÏÅêÉ¼¤Ç¤­¤Ş¤»¤ó');
+    OutputVoteResult('å¤œï¼šã‚ãªãŸã¯æŠ•ç¥¨ã§ãã¾ã›ã‚“');
   }
   CheckAlreadyVote($type, $not_type);
-  if($role_mirror_fairy) $type = 'FAIRY_DO'; //¶ÀÍÅÀº¤ÏÉ½¼¨¤À¤±ÍÅÀº·Ï (ÆâÉô½èÍı¤Ï¥­¥å¡¼¥Ô¥Ã¥É·Ï)
+  if($role_mirror_fairy) $type = 'FAIRY_DO'; //é¡å¦–ç²¾ã¯è¡¨ç¤ºã ã‘å¦–ç²¾ç³» (å†…éƒ¨å‡¦ç†ã¯ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ç³»)
 
-  //¿ÈÂå¤ï¤ê·¯»ÈÍÑ or ¥¯¥¤¥ºÂ¼¤Î»ş¤Ï¿ÈÂå¤ï¤ê·¯¤À¤±¤·¤«Áª¤Ù¤Ê¤¤
+  //èº«ä»£ã‚ã‚Šå›ä½¿ç”¨ or ã‚¯ã‚¤ã‚ºæ‘ã®æ™‚ã¯èº«ä»£ã‚ã‚Šå›ã ã‘ã—ã‹é¸ã¹ãªã„
   if($role_wolf && (($ROOM->IsDummyBoy() && $ROOM->date == 1) || $ROOM->IsQuiz())){
-    //¿ÈÂå¤ï¤ê·¯¤Î¥æ¡¼¥¶¾ğÊó
-    $user_stack = array(1 => $USERS->rows[1]); //dummy_boy = 1ÈÖ¤ÏÊİ¾Ú¤µ¤ì¤Æ¤¤¤ë¡©
+    //èº«ä»£ã‚ã‚Šå›ã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±
+    $user_stack = array(1 => $USERS->rows[1]); //dummy_boy = 1ç•ªã¯ä¿è¨¼ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
   }
   else{
     $user_stack = $USERS->rows;
   }
 
   OutputVotePageHeader();
-  echo '<table class="vote-page" cellspacing="5"><tr>'."\n";
+  echo '<table class="vote-page"><tr>'."\n";
   $count = 0;
   foreach($user_stack as $id => $user){
-    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5¸Ä¤´¤È¤Ë²ş¹Ô
+    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5å€‹ã”ã¨ã«æ”¹è¡Œ
     $count++;
     $is_live = $USERS->IsVirtualLive($id);
     $is_wolf = $role_wolf && ! $SELF->IsRole('hungry_wolf', 'silver_wolf') &&
       $USERS->ByReal($id)->IsWolf(true);
 
     /*
-      »à¤ó¤Ç¤¤¤ì¤Ğ»àË´¥¢¥¤¥³¥ó (ÁÉÀ¸Ç½ÎÏ¼Ô¤Ï»àË´¥¢¥¤¥³¥ó¤Ë¤·¤Ê¤¤)
-      ÏµÆ±»Î¤Ê¤éÏµ¥¢¥¤¥³¥ó¡¢À¸¤­¤Æ¤¤¤ì¤Ğ¥æ¡¼¥¶¥¢¥¤¥³¥ó
+      æ­»ã‚“ã§ã„ã‚Œã°æ­»äº¡ã‚¢ã‚¤ã‚³ãƒ³ (è˜‡ç”Ÿèƒ½åŠ›è€…ã¯æ­»äº¡ã‚¢ã‚¤ã‚³ãƒ³ã«ã—ãªã„)
+      ç‹¼åŒå£«ãªã‚‰ç‹¼ã‚¢ã‚¤ã‚³ãƒ³ã€ç”Ÿãã¦ã„ã‚Œã°ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³
     */
     $path = ! ($is_live || $role_revive) ? $ICON_CONF->dead :
       ($is_wolf ? $ICON_CONF->wolf : $ICON_CONF->path . '/' . $user->icon_filename);
@@ -852,7 +852,7 @@ function OutputVoteNight(){
   if(empty($submit)) $submit = strtolower($type);
   echo <<<EOF
 </tr></table>
-<span class="vote-message">* ÅêÉ¼Àè¤ÎÊÑ¹¹¤Ï¤Ç¤­¤Ş¤»¤ó¡£¿µ½Å¤Ë¡ª</span>
+<span class="vote-message">* æŠ•ç¥¨å…ˆã®å¤‰æ›´ã¯ã§ãã¾ã›ã‚“ã€‚æ…é‡ã«ï¼</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td>{$RQ_ARGS->back_url}</td>
 <input type="hidden" name="situation" value="{$type}">
@@ -881,19 +881,19 @@ EOF;
 EOF;
 }
 
-//»à¼Ô¤ÎÅêÉ¼¥Ú¡¼¥¸½ĞÎÏ
+//æ­»è€…ã®æŠ•ç¥¨ãƒšãƒ¼ã‚¸å‡ºåŠ›
 function OutputVoteDeadUser(){
   global $VOTE_MESS, $RQ_ARGS, $ROOM, $SELF;
 
-  //ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
-  if($SELF->IsDummyBoy()) OutputVoteResult('ÁÉÀ¸¼­Âà¡§¿ÈÂå¤ï¤ê·¯¤ÎÅêÉ¼¤ÏÌµ¸ú¤Ç¤¹');
-  if($SELF->IsDrop())     OutputVoteResult('ÁÉÀ¸¼­Âà¡§ÅêÉ¼ºÑ¤ß');
-  if($ROOM->IsOpenCast()) OutputVoteResult('ÁÉÀ¸¼­Âà¡§ÅêÉ¼ÉÔÍ×¤Ç¤¹');
+  //æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
+  if($SELF->IsDummyBoy()) OutputVoteResult('è˜‡ç”Ÿè¾é€€ï¼šèº«ä»£ã‚ã‚Šå›ã®æŠ•ç¥¨ã¯ç„¡åŠ¹ã§ã™');
+  if($SELF->IsDrop())     OutputVoteResult('è˜‡ç”Ÿè¾é€€ï¼šæŠ•ç¥¨æ¸ˆã¿');
+  if($ROOM->IsOpenCast()) OutputVoteResult('è˜‡ç”Ÿè¾é€€ï¼šæŠ•ç¥¨ä¸è¦ã§ã™');
 
   OutputVotePageHeader();
   echo <<<EOF
 <input type="hidden" name="situation" value="REVIVE_REFUSE">
-<span class="vote-message">* ÅêÉ¼¤Î¼è¤ê¾Ã¤·¤Ï¤Ç¤­¤Ş¤»¤ó¡£¿µ½Å¤Ë¡ª</span>
+<span class="vote-message">* æŠ•ç¥¨ã®å–ã‚Šæ¶ˆã—ã¯ã§ãã¾ã›ã‚“ã€‚æ…é‡ã«ï¼</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td>{$RQ_ARGS->back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->revive_refuse}"></form></td>
@@ -903,7 +903,7 @@ function OutputVoteDeadUser(){
 EOF;
 }
 
-//ÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
+//æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 function CheckAlreadyVote($action, $not_action = ''){
-  if(CheckSelfVoteNight($action, $not_action)) OutputVoteResult('Ìë¡§ÅêÉ¼ºÑ¤ß');
+  if(CheckSelfVoteNight($action, $not_action)) OutputVoteResult('å¤œï¼šæŠ•ç¥¨æ¸ˆã¿');
 }

@@ -5,27 +5,27 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'info_menu');
 ?>
 </head>
 <body>
-<div class="menu">¾ðÊó°ìÍ÷</div>
+<div class="menu">æƒ…å ±ä¸€è¦§</div>
 <ul>
-  <li><a href="../" target="_top">¢« TOP</a></li>
-  <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
-  <li><a href="../script_info.php" target="_top">ÆÃÄ§¤È»ÅÍÍ</a></li>
-  <li><a href="../rule.php" target="_top">¥²¡¼¥à¤Î¥ë¡¼¥ë</a></li>
-  <li><a href="chaos.php" target="body">°ÇÆé¥â¡¼¥É</a></li>
-  <li><a href="new_role/" target="_top">¿·Ìò¿¦¾ðÊó</a></li>
-  <li><a href="game_option.php" target="body">¥²¡¼¥à¥ª¥×¥·¥ç¥ó</a></li>
-  <li><a href="cast.php" target="body">ÇÛÌò°ìÍ÷</a></li>
-  <li><a href="spec.php" target="body">¾ÜºÙ¤Ê»ÅÍÍ</a></li>
-  <li><a href="copyright.php" target="body">¼Õ¼­¡¦ÁÇºà</a></li>
-  <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
-  <li><a href="history/" target="body">¥µ¡¼¥Ð¹¹¿·ÍúÎò</a></li>
-  <li><a href="history/top.php" target="body">TOP¥Ú¡¼¥¸¹¹¿·ÍúÎò</a></li>
-  <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
-  <li><a href="develop/" target="body">³«È¯¼Ô¸þ¤±¾ðÊó</a></li>
-  <li><a href="develop/history.php" target="body">³«È¯ÍúÎò</a></li>
-  <li><a href="develop/debug.php" target="body">¥Ç¥Ð¥Ã¥°¾ðÊó</a></li>
+  <li><a href="../" target="_top">â† TOP</a></li>
+  <li>â˜…â˜†â˜…â˜†â˜…â˜†â˜…</li>
+  <li><a href="../script_info.php" target="_top">ç‰¹å¾´ã¨ä»•æ§˜</a></li>
+  <li><a href="../rule.php" target="_top">ã‚²ãƒ¼ãƒ ã®ãƒ«ãƒ¼ãƒ«</a></li>
+  <li><a href="chaos.php" target="body">é—‡é‹ãƒ¢ãƒ¼ãƒ‰</a></li>
+  <li><a href="new_role/" target="_top">æ–°å½¹è·æƒ…å ±</a></li>
+  <li><a href="game_option.php" target="body">ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³</a></li>
+  <li><a href="cast.php" target="body">é…å½¹ä¸€è¦§</a></li>
+  <li><a href="spec.php" target="body">è©³ç´°ãªä»•æ§˜</a></li>
+  <li><a href="copyright.php" target="body">è¬è¾žãƒ»ç´ æ</a></li>
+  <li>â˜…â˜†â˜…â˜†â˜…â˜†â˜…</li>
+  <li><a href="history/" target="body">ã‚µãƒ¼ãƒæ›´æ–°å±¥æ­´</a></li>
+  <li><a href="history/top.php" target="body">TOPãƒšãƒ¼ã‚¸æ›´æ–°å±¥æ­´</a></li>
+  <li>â˜…â˜†â˜…â˜†â˜…â˜†â˜…</li>
+  <li><a href="develop/" target="body">é–‹ç™ºè€…å‘ã‘æƒ…å ±</a></li>
+  <li><a href="develop/history.php" target="body">é–‹ç™ºå±¥æ­´</a></li>
+  <li><a href="develop/debug.php" target="body">ãƒ‡ãƒãƒƒã‚°æƒ…å ±</a></li>
   <li><a href="http://sourceforge.jp/projects/jinrousiki/" target="_top">SourceForge</a></li>
-  <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50" target="_top">³«È¯¡¦¥Ð¥°Êó¹ð¥¹¥ì</a></li>
-  <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">¿·Ìò¿¦Äó°Æ¥¹¥ì</a></li>
+  <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50" target="_top">é–‹ç™ºãƒ»ãƒã‚°å ±å‘Šã‚¹ãƒ¬</a></li>
+  <li><a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">æ–°å½¹è·ææ¡ˆã‚¹ãƒ¬</a></li>
 </ul>
 </body></html>

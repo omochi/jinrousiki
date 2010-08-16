@@ -1,35 +1,35 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadClass('ICON_CONF', 'USER_ICON');
-$INIT_CONF->LoadRequest('RequestIconEdit'); //°ú¿ô¤ò¼èÆÀ
+$INIT_CONF->LoadRequest('RequestIconEdit'); //å¼•æ•°ã‚’å–å¾—
 EditIcon();
 
-//-- ´Ø¿ô --//
+//-- é–¢æ•° --//
 function EditIcon(){
   global $DB_CONF, $USER_ICON, $ICON_CONF, $RQ_ARGS;
 
-  $title = '¥æ¡¼¥¶¥¢¥¤¥³¥óÊÔ½¸';
-  if(CheckReferer('icon_view.php')){ //¥ê¥Õ¥¡¥é¥Á¥§¥Ã¥¯
-    OutputActionResult($title, 'Ìµ¸ú¤Ê¥¢¥¯¥»¥¹¤Ç¤¹');
+  $title = 'ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ç·¨é›†';
+  if(CheckReferer('icon_view.php')){ //ãƒªãƒ•ã‚¡ãƒ©ãƒã‚§ãƒƒã‚¯
+    OutputActionResult($title, 'ç„¡åŠ¹ãªã‚¢ã‚¯ã‚»ã‚¹ã§ã™');
   }
 
-  extract($RQ_ARGS->ToArray()); //°ú¿ô¤òÅ¸³«
+  extract($RQ_ARGS->ToArray()); //å¼•æ•°ã‚’å±•é–‹
   if($password != $USER_ICON->password){
-    OutputActionResult($title, '¥Ñ¥¹¥ï¡¼¥É¤¬°ã¤¤¤Ş¤¹');
+    OutputActionResult($title, 'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™');
   }
   $query_stack = array();
 
-  $DB_CONF->Connect(); //DB ÀÜÂ³
-  //¥¢¥¤¥³¥ó¤ÎÌ¾Á°¤¬´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯
+  $DB_CONF->Connect(); //DB æ¥ç¶š
+  //ã‚¢ã‚¤ã‚³ãƒ³ã®åå‰ãŒæ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯
   if(FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no) < 1){
-    OutputActionResult($title, 'Ìµ¸ú¤Ê¥¢¥¤¥³¥óÈÖ¹æ¤Ç¤¹¡§' . $icon_no);
+    OutputActionResult($title, 'ç„¡åŠ¹ãªã‚¢ã‚¤ã‚³ãƒ³ç•ªå·ã§ã™ï¼š' . $icon_no);
   }
 
-  //¥¢¥¤¥³¥óÌ¾¤ÎÊ¸»úÎóÄ¹¤Î¥Á¥§¥Ã¥¯
-  $text_list = array('icon_name' => '¥¢¥¤¥³¥óÌ¾',
-		     'appearance' => '½ĞÅµ',
-		     'category' => '¥«¥Æ¥´¥ê',
-		     'author' => '¥¢¥¤¥³¥ó¤Îºî¼Ô');
+  //ã‚¢ã‚¤ã‚³ãƒ³åã®æ–‡å­—åˆ—é•·ã®ãƒã‚§ãƒƒã‚¯
+  $text_list = array('icon_name' => 'ã‚¢ã‚¤ã‚³ãƒ³å',
+		     'appearance' => 'å‡ºå…¸',
+		     'category' => 'ã‚«ãƒ†ã‚´ãƒª',
+		     'author' => 'ã‚¢ã‚¤ã‚³ãƒ³ã®ä½œè€…');
   foreach($text_list as $text => $label){
     $value = $RQ_ARGS->$text;
     if(strlen($value) < 1) continue;
@@ -39,18 +39,18 @@ function EditIcon(){
     $query_stack[] = "{$text} = '{$value}'";
   }
 
-  //¥¢¥¤¥³¥ó¤ÎÌ¾Á°¤¬´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯
+  //ã‚¢ã‚¤ã‚³ãƒ³ã®åå‰ãŒæ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯
   if(strlen($icon_name) > 0 &&
      FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
-    OutputActionResult($title, '¥¢¥¤¥³¥óÌ¾ "' . $icon_name . '" ¤Ï´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ş¤¹');
+    OutputActionResult($title, 'ã‚¢ã‚¤ã‚³ãƒ³å "' . $icon_name . '" ã¯æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã™');
   }
 
-  //¿§»ØÄê¤Î¥Á¥§¥Ã¥¯
+  //è‰²æŒ‡å®šã®ãƒã‚§ãƒƒã‚¯
   if(strlen($color) > 0){
     if(strlen($color) != 7 && ! preg_match('/^#[0123456789abcdefABCDEF]{6}/', $color)){
-      $sentence = '¿§»ØÄê¤¬Àµ¤·¤¯¤¢¤ê¤Ş¤»¤ó¡£<br>'."\n" .
-	'»ØÄê¤Ï (Îã¡§#6699CC) ¤Î¤è¤¦¤Ë RGB 16¿Ê¿ô»ØÄê¤Ç¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£<br>'."\n" .
-	'Á÷¿®¤µ¤ì¤¿¿§»ØÄê ¢ª <span class="color">' . $color . '</span>';
+      $sentence = 'è‰²æŒ‡å®šãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“ã€‚<br>'."\n" .
+	'æŒ‡å®šã¯ (ä¾‹ï¼š#6699CC) ã®ã‚ˆã†ã« RGB 16é€²æ•°æŒ‡å®šã§è¡Œã£ã¦ãã ã•ã„ã€‚<br>'."\n" .
+	'é€ä¿¡ã•ã‚ŒãŸè‰²æŒ‡å®š â†’ <span class="color">' . $color . '</span>';
       OutputActionResult($title, $sentence);
     }
     $color = strtoupper($color);
@@ -58,15 +58,15 @@ function EditIcon(){
   }
 
   if(count($query_stack) < 1){
-    OutputActionResult($title, 'ÊÑ¹¹ÆâÍÆ¤Ï¤¢¤ê¤Ş¤»¤ó');
+    OutputActionResult($title, 'å¤‰æ›´å†…å®¹ã¯ã‚ã‚Šã¾ã›ã‚“');
   }
   $query = 'UPDATE user_icon SET ' . implode(', ', $query_stack) . ' WHERE icon_no = ' . $icon_no;
-  //OutputActionResult($title, $query); //¥Æ¥¹¥ÈÍÑ
+  //OutputActionResult($title, $query); //ãƒ†ã‚¹ãƒˆç”¨
 
-  if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon ¥Æ¡¼¥Ö¥ë¤ò¥í¥Ã¥¯
-    $sentence = "¥µ¡¼¥Ğ¤¬º®»¨¤·¤Æ¤¤¤Ş¤¹¡£<br>\n»ş´Ö¤òÃÖ¤¤¤Æ¤«¤éºÆÅĞÏ¿¤ò¤ª´ê¤¤¤·¤Ş¤¹¡£";
+  if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ãƒ­ãƒƒã‚¯
+    $sentence = "ã‚µãƒ¼ãƒãŒæ··é›‘ã—ã¦ã„ã¾ã™ã€‚<br>\næ™‚é–“ã‚’ç½®ã„ã¦ã‹ã‚‰å†ç™»éŒ²ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚";
     OutputActionResult($title, $sentence);
   }
   SendQuery($query, true);
-  OutputActionResult($title, 'ÊÔ½¸´°Î»', 'icon_view.php?icon_no=' . $icon_no, true);
+  OutputActionResult($title, 'ç·¨é›†å®Œäº†', 'icon_view.php?icon_no=' . $icon_no, true);
 }

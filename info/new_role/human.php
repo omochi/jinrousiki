@@ -1,1561 +1,1562 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('���򿦾��� - [¼�Ϳر�]', 'new_role');
+OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 ?>
 </head>
 <body>
-<h1>¼�Ϳر�</h1>
+<h1>村人陣営</h1>
 <p>
-<a href="./" target="_top">&lt;-��˥塼</a>
-<a href="summary.php">������ɽ</a>
+<a href="./" target="_top">&lt;-メニュー</a>
+<a href="summary.php">←一覧表</a>
 </p>
 <p>
-<a href="#human_group">¼�ͷ�</a>
-<a href="#mage_group">�ꤤ�շ�</a>
-<a href="#necromancer_group">��ǽ�Է�</a>
-<a href="#medium_group">�����</a>
-<a href="#priest_group">�ʺ׷�</a>
-<a href="#guard_group">���ͷ�</a>
-<a href="#common_group">��ͭ�Է�</a>
-<a href="#poison_group">���ǼԷ�</a>
-<a href="#poison_cat_group">ǭ����</a>
-<a href="#pharmacist_group">���շ�</a>
-<a href="#assassin_group">�Ż��Է�</a>
-<a href="#mind_scanner_group">���Ȥ��</a>
-<a href="#jealousy_group">��ɱ��</a>
-<a href="#doll_group">�峤�ͷ���</a>
-</p>
-
-<h2><a id="human_group">¼�ͷ�</a></h2>
-<p>
-<a href="#human_rule">¼��ɽ����</a>
-</p>
-<p>
-<a href="#elder">ĹϷ</a>
-<a href="#brownie">����Ƹ��</a>
-<a href="#saint">����</a>
-<a href="#executor">���Լ�</a>
-<a href="#escaper">ƨ˴��</a>
-<a href="#suspect">�Կ���</a>
-<a href="#unconscious">̵�ռ�</a>
+<a href="#human_group">村人系</a>
+<a href="#mage_group">占い師系</a>
+<a href="#necromancer_group">霊能者系</a>
+<a href="#medium_group">巫女系</a>
+<a href="#priest_group">司祭系</a>
+<a href="#guard_group">狩人系</a>
+<a href="#common_group">共有者系</a>
+<a href="#poison_group">埋毒者系</a>
+<a href="#poison_cat_group">猫又系</a>
+<a href="#pharmacist_group">薬師系</a>
+<a href="#assassin_group">暗殺者系</a>
+<a href="#mind_scanner_group">さとり系</a>
+<a href="#jealousy_group">橋姫系</a>
+<a href="#doll_group">上海人形系</a>
 </p>
 
-<h3><a id="human_rule">¼��ɽ����</a></h3>
+<h2><a id="human_group">村人系</a></h2>
+<p>
+<a href="#human_rule">村人表記役職</a>
+</p>
+<p>
+<a href="#elder">長老</a>
+<a href="#brownie">座敷童子</a>
+<a href="#saint">聖女</a>
+<a href="#executor">執行者</a>
+<a href="#escaper">逃亡者</a>
+<a href="#suspect">不審者</a>
+<a href="#unconscious">無意識</a>
+</p>
+
+<h3><a id="human_rule">村人表記役職</a></h3>
 <pre>
-�ܿͤ�ɽ������¼�͡פˤʤ��򿦤�<a href="#saint">����</a>��<a href="#executor">���Լ�</a>��<a href="#suspect">�Կ���</a>��<a href="#unconscious">̵�ռ�</a>��<a href="#crisis_priest">�¸���</a>��<a href="#chain_poison">Ϣ�Ǽ�</a>�Ǥ���
+本人の表示が「村人」になる役職は<a href="#saint">聖女</a>・<a href="#executor">執行者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#chain_poison">連毒者</a>です。
 
-<a href="#suspect">�Կ���</a>��ȯ�������ʤ����Ѵ�������Ψ�� 1% (�����Ԥ�����ե�������ѹ���ǽ) �Ǥ���
-�Ѵ����줿���ɤ������ܿͤˤ���ʬ���餺���Ҵ�Ū�ʾ������Բ�ǽ�ʤΤ�
-��ȯ����¿���ԤʤäƳ�ǧ�����ߤϳ�ΨŪ�ˤ�ۤȤ�ɰ�̣��̵���Ǥ��礦��
+<a href="#suspect">不審者</a>の発言が遠吠えに変換される確率は 1% (管理者は設定ファイルで変更可能) です。
+変換されたかどうかは本人にしか分からず、客観的な証明は不可能なので
+空発言を多数行なって確認する試みは確率的にもほとんど意味が無いでしょう。
 </pre>
 
-<h3><a id="elder">ĹϷ</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��5��]</h3>
+<h3><a id="elder">長老</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
 <pre>
-�跺��ɼ���� +1 �����¼�͡�
+処刑投票数が +1 される村人。
 </pre>
 <ol>
-  <li>���ϼԤȥ��åȤˤʤä����Ϥ���� +1 ����ޤ�</li>
-  <li><a href="sub_role.php#random_voter">��ʬ��</a>�ȥ��åȤˤʤä������ɲä���������ޤ�</li>
-  <li><a href="sub_role.php#watcher">˵�Ѽ�</a>�ȥ��åȤˤʤä����� 0 �Ǹ���Ǥ�</li>
+  <li>権力者とセットになった場合はさらに +1 されます</li>
+  <li><a href="sub_role.php#random_voter">気分屋</a>とセットになった場合は追加で補正されます</li>
+  <li><a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定です</li>
 </ol>
-<h4>��Ϣ��</h4>
+<h4>関連役職</h4>
 <pre>
-<a href="wolf.php#elder_wolf">��ϵ</a>��<a href="fox.php#elder_fox">�Ÿ�</a>��<a href="chiroptera.php#elder_chiroptera">������</a>
+<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-���ϼ�������ǽ�Ϥ���ä�¼�ͤǤ���
-PP �饤��η׻����񤷤������뤿��˺������Ƥߤޤ�����
-ǽ�Ϥ������塢������٤�ΤϤۤ��Բ�ǽ�ʤΤ�Ʊ��ǽ�Ϥ���ä�¾�رļ郎¸�ߤ��ޤ���
-</pre>
-
-<h3><a id="brownie">����Ƹ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��15��]</h3>
-<pre>
-�򿦡�¼�͡פν跺��ɼ���� +1 ����¼�͡������Ƥ���֤Τ�ͭ����
-�跺���줿����ɼ�����ͤ��������ǰ�ͤ�<a href="sub_role.php#febris">Ǯ��</a>���ղä��롣
-<a href="human.php#detective_common">õ��</a>��<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���)��<a href="sub_role.php#challenge_lovers">����</a>��ǽ�Ϥ��оݳ��Ȥʤꡢ�оݼԤ�ï�⤤�ʤ��ä�������ȯ�Ȥʤ롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�ֵ��֤ϲ��ä�⤿�餹�����Ⱥ���ˬ���פȸ��������⤬������դǤ���
-<a href="#human_rule">¼��ɽ����</a>�����Τ�ʤ���ळ�Ȥ��Ǥ��ޤ���
+権力者相当の能力を持った村人です。
+PP ラインの計算を難しくさせるために作成してみました。
+能力の性質上、これを騙るのはほぼ不可能なので同じ能力を持った他陣営種が存在します。
 </pre>
 
-<h3><a id="saint">����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��7��]</h3>
-<h4>[��ɽ��] ¼��</h4>
+<h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
 <pre>
-����ɼ�κ�¿��ɼ�Ԥˤʤä����ˡ������ˤ�ä��ߤ���ͤ��Ѳ�������¼�͡�
-�ܿ�ɽ���ϡ�¼�͡ס�
+役職「村人」の処刑投票数を +1 する村人。生きている間のみ有効。
+処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「居る間は恩恵をもたらすが去ると災厄が訪れる」と言われる伝説がモチーフです。
+<a href="#human_rule">村人表示役職</a>の正体を絞り込むことができます。
+</pre>
+
+<h3><a id="saint">聖女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
+<h4>[役職表示] 村人</h4>
+<pre>
+再投票の最多得票者になった場合に、内訳によって吊られる人を変化させる村人。
+本人表記は「村人」。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">Ƚ��</a>��<a href="#executor">���Լ�</a>�θ�</li>
-  <li>��¼�� (¼�Ϳرİʳ� + ����) ���ͤ����ޤ� �� ��¼�ͤ��ߤ���</li>
-  <li>��¼�ͤ�ʣ���ޤޤ�Ƥ��� �� ����ɼ</li>
-  <li>����¼�� + ��¿��ɼ�Ԥ������ϼ�ʬ���� �� ��ʬ���ߤ���</li>
-  <li>����¼�� + ��¿��ɼ�Ԥ�������ʣ������ �� ����ɼ</li>
-  <li>��ʬ�����ͤ��ä����ϼ�ʬ����¼�Ͱ���<br>
-    ��1) ����������[����]��¼�� �� ����[����] ���ߤ���<br>
-    ��2) ����[����]����ϵ �� ����ɼ
+  <li><a href="../spec.php#vote_day">判定</a>は<a href="#executor">執行者</a>の後</li>
+  <li>非村人 (村人陣営以外 + 恋人) を一人だけ含む → 非村人が吊られる</li>
+  <li>非村人が複数含まれている → 再投票</li>
+  <li>全員村人 + 最多得票者の聖女は自分だけ → 自分が吊られる</li>
+  <li>全員村人 + 最多得票者の聖女が複数いる → 再投票</li>
+  <li>自分が恋人だった場合は自分も非村人扱い<br>
+    例1) 聖女・聖女[恋人]・村人 → 聖女[恋人] が吊られる<br>
+    例2) 聖女[恋人]・人狼 → 再投票
   </li>
 </ol>
-<h4>��Ϣ��</h4>
+<h4>関連役職</h4>
 <pre>
-<a href="#executor">���Լ�</a>��<a href="wolf.php#agitate_mad">��ư��</a>
+<a href="#executor">執行者</a>・<a href="wolf.php#agitate_mad">扇動者</a>
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-����׿�ϵ�Υץ쥤�䡼���󤬥�ǥ�Ǥ���
-Ƚ��ˡ§������ʣ���Ǥ���������Ū�ˤ�¼�ͿرĤ�ͭ���ˤʤ��̤ˤʤ�ޤ���
-�̾�η����Ʊ�͡���̣�Ǥ��������Ǹ����Ƥ���¸�ߤˤʤ뤳�ȤǤ��礦��
+やる夫人狼のプレイヤーさんがモデルです。
+判定法則が少々複雑ですが、基本的には村人陣営が有利になる結果になります。
+通常の決定者同様、地味ですが勝負所で効いてくる存在になることでしょう。
 </pre>
 
-<h3><a id="executor">���Լ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��9��]</h3>
-<h4>[��ɽ��] ¼��</h4>
+<h3><a id="executor">執行者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[役職表示] 村人</h4>
 <pre>
-����ɼȯ��������¼�� (¼�Ϳرİʳ� + ����) ����ɼ���Ƥ��������ߤ���������¼�͡�
-�ܿ�ɽ���ϡ�¼�͡ס�
+再投票発生時に非村人 (村人陣営以外 + 恋人) に投票していた場合は吊る事が出来る村人。
+本人表記は「村人」。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">Ƚ��</a>��<a href="sub_role.php#decide_group">����Է�</a>�θ�</li>
-  <li>��ɼ�褬��¼�� �� ��¼�ͤ��ߤ���</li>
-  <li>��ɼ�褬¼�� �� ����ɼ</li>
-  <li>���ԼԤ�ʣ�� + ��¼�ͤ���ɼ���Ƥ����Τϰ�ͤ��� �� ��¼�ͤ��ߤ���<br>
-    ��) ���Լ�A �� ¼��A�����Լ�B �� ¼��B�����Լ�C �� ��ϵA<br>
-    ��=&gt; ��ϵA ���ߤ���
+  <li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php#decide_group">決定者系</a>の後</li>
+  <li>投票先が非村人 → 非村人が吊られる</li>
+  <li>投票先が村人 → 再投票</li>
+  <li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人が吊られる<br>
+    例) 執行者A → 村人A、執行者B → 村人B、執行者C → 人狼A<br>
+    　=&gt; 人狼A が吊られる
   </li>
-  <li>���ԼԤ�ʣ�� + ʣ����Ʊ����¼�ͤ���ɼ �� ��¼�ͤ��ߤ���<br>
-    ��) ���Լ�A �� ¼��A�����Լ�B �� ��ϵA�����Լ�C �� ��ϵA<br>
-    ��=&gt; ��ϵA ���ߤ���
+  <li>執行者が複数 + 複数が同じ非村人に投票 → 非村人が吊られる<br>
+    例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 人狼A<br>
+    　=&gt; 人狼A が吊られる
   </li>
-  <li>���ԼԤ�ʣ�� + �̡�����¼�ͤ���ɼ �� ����ɼ<br>
-    ��) ���Լ�A �� ¼��A�����Լ�B �� ��ϵA�����Լ�C �� �Ÿ�A<br>
-    ��=&gt; ����ɼ
-  </li>
-</ol>
-<h4>��Ϣ��</h4>
-<pre>
-<a href="#saint">����</a>��<a href="wolf.php#agitate_mad">��ư��</a>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-iM@S��ϵ�Υץ쥤�䡼������������ץ쥼��ȤǤ���
-�֤ʤ�Ȥʤ��ͳ�����ɼ�������٤�ǽ�ϡפ���ˤ��Ƥߤޤ�����
-</pre>
-
-<h3><a id="escaper">ƨ˴��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��11��]</h3>
-<h4>[����] ��ϵ���⡧�ü� / �Ż���̵�� / 櫡�ͭ��</h4>
-<pre>
-2���ܤ���ʹߡ������Ƥ���ï����¦��ƨ˴������¸��ޤ����Ȥ���¼�͡�
-</pre>
-<ol>
-  <li>�������ϡ�¼�ͿرĤξ����סܡּ��Ȥ���¸�פǤ�</li>
-  <li>��ϵ��ľ�������Ƥ⻦����ޤ��� (����ϼ��԰���)</li>
-  <li>��ϵ�������Ƥ������Ȥ򼫳ФǤ��ޤ���</li>
-  <li>ƨ˴�褬��ϵ���ä����ϻ�����ޤ�</li>
-  <li>ƨ˴�褬��ϵ�˽��⤵�줿�鼫ʬ�⻦����ޤ�</li>
-  <li>ƨ˴�褬��Ҥ�Ѥʤɤǿ�ϵ�ν��⤬���Ԥ��Ƥ⻦����ޤ�</li>
-  <li>����������ϵ�μ���˴ط��ʤ�������ޤ� (�㡧<a href="wolf.php#sex_wolf">��ϵ</a>�Ǥ��äƤ��˴)</li>
-  <li>���餫����ͳ�ǿ�ϵ�˻����줿���λ���ϡֿ�ϵ�˽��⤵�줿�פǤ�</li>
-  <li>ƨ˴���<a href="wolf.php#trap_mad">櫻�</a>��櫤����֤���Ƥ������˴���ޤ�</a>
-  <li><a href="#assassin_group">�Ż��Է�</a>�������Ƥ⻦����ޤ���</li>
-  <li>�����Ĥ��ޤ���</li>
-</ol>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-¾��˼ºߤ����򿦤Ǥ���¼������ݤ���줿<a href="chiroptera.php">����</a>�Τ褦��¸�ߤǤ��͡�
-</pre>
-
-<h3><a id="suspect">�Կ���</a> (�ꤤ��̡���ϵ / ��ǽ��̡�¼��) [Ver. 1.4.0 ��9��]</h3>
-<h4>[��ɽ��] ¼��</h4>
-<pre>
-�Կ��ʤ��ޤꡢ�ꤤ�դ˿�ϵ��Ƚ�ꤵ��Ƥ��ޤ�¼�ͤǡ��ܿ�ɽ���ϡ�¼�͡ס�
-�ޤ�����δ֤��������Ψ��ȯ������ϵ�α��ʤ��������ؤ�äƤ��ޤ� (<a href="wolf.php#cute_wolf">˨ϵ</a>��Ʊ��)��
-</pre>
-<h4>Ver. 1.4.0 ��7��</h4>
-<pre>
-���ʤ������ؤ���ȯư���������ѹ����ޤ�����
-</pre>
-<h4>Ver. 1.4.0 ��16��</h4>
-<pre>
-���Ψ��ȯ�������ʤ��������ؤ�äƤ��ޤ� (<a href="wolf.php#cute_wolf">˨ϵ</a>��Ʊ��)��
-</pre>
-<h4>��Ϣ��</h4>
-<pre>
-<a href="wolf.php#cute_wolf">˨ϵ</a>��<a href="fox.php#cute_fox">˨��</a>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-¼�ͿرĤǤ�������ϵ�رĤ�ͭ����¸�ߤǤ���
-����������ϵ�����ɤˤ��Կ��ԤǤ������ʬ����ʤ��Τ�
-�ꤤ�դο��椬�ɤߤŤ餯�ʤ�ޤ���
-</pre>
-
-<h3><a id="unconscious">̵�ռ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��13��]</h3>
-<h4>[��ɽ��] ¼��</h4>
-<pre>
-¾�ι�Ǹ����ȡּ��ФΤʤ�̴ͷ�¼ԡס�
-�ܿͤˤϡ�¼�͡פ�ɽ������Ƥ��뤬����ˤʤ��̵�ռ����⤭�ޤ�뤿��
-��ϵ��̵�ռ��Ǥ��뤳�Ȥ�ʬ���äƤ��ޤ���
-</pre>
-<h4>��Ϣ��</h4>
-<pre>
-<a href="fox.php#scarlet_fox">�ȸ�</a>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#suspect">�Կ���</a>Ʊ�͡�¼�ͿرĤǤ�����ϵ�رĤ�ͭ����¸�ߤǤ���
-��ϵ�����ɤ��鸫���̵ǽ�ϤǤ��뤳�Ȥ������¼�ͤʤΤǳ��ޤ�ˤ����Ǥ���
-�������Ĺ�������֤�����<a href="wolf.php#boss_wolf">��ϵ</a>��������뤫�⡣
-</pre>
-
-
-<h2><a id="mage_group">�ꤤ�շ�</a></h2>
-<p>
-<a href="#mage_rule">���ܥ롼��</a>
-</p>
-<p>
-<a href="#soul_mage">�����ꤤ��</a>
-<a href="#psycho_mage">���������</a>
-<a href="#sex_mage">�Ҥ褳�����</a>
-<a href="#stargazer_mage">�����ѻ�</a>
-<a href="#voodoo_killer">���ۻ�</a>
-<a href="#dummy_mage">̴����</a>
-</p>
-
-<h3><a id="mage_rule">���ܥ롼�� [�ꤤǽ��]</a></h3>
-<ol>
-  <li>�ꤤǽ�ϤϿ�ϵ�ν����Ż��ʤɤǻ����˻��Ǥ�����̵���ˤʤ�ޤ���<br>
-    ��) ��ϵ�˳��ޤ줿�ꤤ�դ��ŸѤ���äƤ��Ƥ�̵��
-  </li>
-  <li>�ꤤ�о��褬Ʊ�ͤ���ͳ�ǻ����˻��Ǥ������оݤ�ǽ�Ϥ�̵���ˤʤ�ޤ�<br>
-    <a href="#assassin">�Ż���</a>�˻����줿<a href="wolf.php#cursed_wolf">��ϵ</a>���ꤤ�դ���äƤ���֤��ϼ����ʤ�
+  <li>執行者が複数 + 別々の非村人に投票 → 再投票<br>
+    例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 妖狐A<br>
+    　=&gt; 再投票
   </li>
 </ol>
-
-<h3><a id="soul_mage">�����ꤤ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��3-7��]</h3>
-<h4>[�ꤤǽ��] ������̵�� / ���˸����ͭ�� / ���ơ�ͭ�� / ������ͭ��</h4>
+<h4>関連役職</h4>
 <pre>
-��ä��ͤ��򿦤�ʬ�������ꤤ�ա�
-<a href="fox.php#fox_group">�Ÿ�</a>����äƤ�����Ǥ��ʤ������ꤤ˸������֤��ϼ�����Τ����ա�
+<a href="#saint">聖女</a>・<a href="wolf.php#agitate_mad">扇動者</a>
 </pre>
-<h4>Ver. 1.4.0 ��15��</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-<a href="fox.php#fox_group">�Ÿ�</a>����äƤ�����Ǥ��ޤ���
-</pre>
-<h4>Ver. 1.4.0 ��8����11</h4>
-<pre>
-<a href="../chaos.php#chaos">�̾����⡼��</a>�Ǥ�16��̤���ǤϽи����ޤ���
-16�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(16�ͤʤ�16%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
-�����ꤤ�դ��и��������Ͻи��Ϳ���Ʊ�������ꤤ�դ�����ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�������ߥ����ϵ�Υץ쥤�䡼���󤬥�ǥ�Ǥ���
-<a href="wolf.php#boss_wolf">��ϵ</a>��������<a href="fox.php#child_fox">�Ҹ�</a>��������ʬ���äƤ��ޤ��Τ�¼¦�Ƕ����饹�Ǥ�����
-����ʬ�����䤹���Ǥ��礦��
+iM@S人狼のプレイヤーさんの誕生日プレゼントです。
+「なんとなく人外に投票する程度の能力」を形にしてみました。
 </pre>
 
-<h3><a id="psycho_mage">���������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��18��]</h3>
-<h4>[�ꤤǽ��] ������̵�� / ���˸����̵�� / ���ơ�ͭ�� / ������̵��</h4>
+<h3><a id="escaper">逃亡者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効</h4>
 <pre>
-�ֱ��Ĥ��פ�õ���Ф��ü���ꤤ�ա�
-<a href="wolf.php#mad_group">���ͷ�</a>��̴�ϡ�<a href="#suspect">�Կ���</a>��<a href="#unconscious">̵�ռ�</a>���ꤦ�ȡֱ���Ĥ��Ƥ���פ�Ƚ�ꤵ��롣
-����ʳ��ϡ�����Ǥ���פ�Ƚ�ꤵ��롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�ж���������ꤤ�դǤ����������ܿͻ����ȼºݤ��򿦤��㤦������
-(̴�ϡ�<a href="#suspect">�Կ���</a>��<a href="#unconscious">̵�ռ�</a>)�ˤ��б����Ƥ��ޤ���
-��������Τ򿿤ȸ���ʤ����줿�ͻ������򿦤��ۤܳ��ꤷ�ޤ���
-��ϵ���ŸѤ��٤�ϸ�ȴ���ʤ��Τ����դ��Ƥ���������
-</pre>
-
-<h3><a id="sex_mage">�Ҥ褳�����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��19��]</h3>
-<h4>[�ꤤǽ��] ������̵�� / ���˸����̵�� / ���ơ�ͭ�� / ������̵��</h4>
-<pre>
-���̤�Ƚ�̤����ü���ꤤ�ա�
-<a href="chiroptera.php">����</a>��<a href="wolf.php#gold_wolf">��ϵ</a>��<a href="fox.php#gold_fox">���</a>����ä����ϡ������פ�Ƚ�ꤵ��롣
-</pre>
-<h4>Ver. 1.4.0 ��8��</h4>
-<pre>
-<a href="wolf.php#gold_wolf">��ϵ</a>��<a href="fox.php#gold_fox">���</a>����ä����ϡ������פ�Ƚ�ꤵ��롣
-</pre>
-<h4>Ver. 1.4.0 ��21��</h4>
-<pre>
-<a href="chiroptera.php">����</a>����ä����ϡ������פ�Ƚ�ꤵ��롣
-</pre>
-<h4>��Ϣ��</h4>
-<pre>
-<a href="wolf.php#sex_wolf">��ϵ</a>��<a href="fox.php#sex_fox">����</a>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#psycho_mage">���������</a>���ä�Ф����Ȥ���ή�л��δ����ͤ���Υ����Ȥ�
-���ä��������ޤ줿�򿦤Ǥ���
-</pre>
-
-<h3><a id="stargazer_mage">�����ѻ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��12��]</h3>
-<h4>[�ꤤǽ��] ������̵�� / ���˸����̵�� / ���ơ�ͭ�� / ������̵��</h4>
-<pre>
-�����ɼǽ�Ϥ�̵ͭ��Ƚ�ꤹ���ü���ꤤ�ա�
-��ä���ˡ������������ɼ�򤷤��ͤ�<a href="wolf.php#wolf_group">��ϵ��</a>�ϡ���ɼǽ�Ϥ���äƤ���ס�
-����ʳ��ϡ���ɼǽ�Ϥ���äƤ��ʤ��פ�Ƚ�ꤵ��롣
-</pre>
-<h4>��Ϣ��</h4>
-<pre>
-<a href="fox.php#stargazer_fox">����</a>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-���� Project �α����� ϡ�Ҥ�������դǤ���
-<a href="#psycho_mage">���������</a>�Ȥϰ㤦���ץ��������٤��ȴ�����Ȥ��Ǥ��ޤ���
-�����Ȥ���ʹߤ�Ƚ���̤��ۤʤ��򿦤�¸�ߤ��뤳�Ȥ����դ��Ƥ���������
-</pre>
-
-<h3><a id="voodoo_killer">���ۻ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��20��]</h3>
-<h4>[�ꤤǽ��] ������̵�� / ���˸�����ü� / ���ơ�̵�� / ���������</h4>
-<pre>
-�м���������ü���ꤤ�ա�
-��ä��ͤ��������������ǽ�ϼԤξ��ϼ�����(��˴��å������ϼ��֤���Ʊ��)��
-ï���˼����򤫤����Ƥ������ϲ��(���֤���ȯư���ʤ�)���롣
-����������������������Τߡ������������ѤΥ����ƥ��å�������ɽ������롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�����������й��򿦤Ǥ���
-�Ѷ�Ū�˼�������(<a href="wolf.php#cursed_wolf">��ϵ</a>��<a href="fox.php#cursed_fox">ŷ��</a>��<a href="chiroptera.php#cursed_chiroptera">������</a>)�����ǽ�ϼ�(<a href="wolf.php#possessed_wolf">��ϵ</a>��<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>)��õ���˹Ԥ�����
-���̤��ꤤ�դ�Ʊ�����ФǤ����Ǥ���������ǽ�ϼ�(<a href="wolf.php#voodoo_mad">���ѻ�</a>��<a href="fox.php#voodoo_fox">����</a>)�ˤ����֤���
-�ɤ��Τ������ʤ顢Ʊ����Ʊ���ͤ��ꤦɬ�פ�����Τ�ư�������񤷤��ʤ�ޤ���
-���⤽������Ϥ��쥢�ʤΤ����Ω�ĤΤ�ʬ����ޤ��󤬡ġ�
-</pre>
-
-
-<h3><a id="dummy_mage">̴����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��14��]</h3>
-<h4>[��ɽ��] �ꤤ��</h4>
-<h4>[�ꤤǽ��] ������̵�� / ���˸����̵�� / ���ơ�̵�� / ������̵��</h4>
-<pre>
-��¼�͡פȡֿ�ϵ�פ��դ�Ƚ�ꤵ����ꤤ�ա��ܿ�ɽ���ϡ��ꤤ�աס�
-�����Ǥ��ʤ�����˼��֤�������ʤ���
-��¼�͡סֿ�ϵ�װʳ���Ƚ�� (<a href="chiroptera.php#boss_chiroptera">������</a>�ʤ�) ����������̤�ɽ������롣
-�ꤤ˸��ǽ�� (<a href="wolf.php#phantom_wolf">��ϵ</a>��<a href="wolf.php#jammer_mad">����</a>�ʤ�) �αƶ�������ʤ���
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-��¼�͡סֿ�ϵ�װʳ���Ƚ�� (<a href="chiroptera.php#boss_chiroptera">������</a>�ʤ�) ����������̤�ɽ������롣
-</pre>
-<h4>Ver. 1.4.0 ��18��</h4>
-<pre>
-�ꤤ��̤������फ���¼�͡עΡֿ�ϵ��ȿž���Ѥ��ޤ�����
-������(�㤨�ж�ͭ��)����äƿ�ϵȽ�꤬�Ф����ܿͻ���̴���ͳ���Ǥ���
-�ޤ���<a href="#psycho_mage">���������</a>����ֱ��Ĥ���Ƚ�������Ƥ�Ʊ�ͤǤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/17" target="_top">������ƥ���åɡ������</a> �� 17 �������Ǥ���
-����������Ǥ��ꤤ��̤��������Ω���ʤ��ʤ�Τ����ȿž���ѹ����ޤ�����
-</pre>
-
-
-<h2><a id="necromancer_group">��ǽ�Է�</a></h2>
-<p>
-<a href="#necromancer_rule">���ܥ롼��</a>
-<a href="#change_necromancer_group">��°�ѹ�</a>
-</p>
-<p>
-<a href="#soul_necromancer">������</a>
-<a href="#yama_necromancer">����</a>
-<a href="#dummy_necromancer">̴����</a>
-</p>
-
-<h3><a id="necromancer_rule">���ܥ롼�� [��ǽ]</a></h3>
-<pre>
-¼�ͤ��ߤ�ʤ��Ȥ����ʤ��ͳ��ʤΤˡ��ꤤ�ǤϿͳ�Ƚ���Ф��ʤ���
-���餫��˸����������򿦤���ǽ��ʬ����ޤ� (�㡧<a href="wolf.php#boss_wolf">��ϵ</a>��<a href="wolf.php#phantom_wolf">��ϵ</a>��<a href="fox.php#cursed_fox">ŷ��</a>��<a href="fox.php#child_fox">�Ҹ�</a>)��
-�ܺ٤ϸġ����򿦤���ǽ��̤��ǧ���Ƥ���������
-</pre>
-
-<h3><a id="change_necromancer_group">��°�ѹ� [��ǽ��]</a></h3>
-<h4>Ver. 1.4.0 ��13��</h4>
-<pre>
-<a href="#medium">���</a>�ν�°��<a href="#medium_group">�����</a>���ѹ����ޤ�����
-</pre>
-
-<h3><a id="soul_necromancer">������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<pre>
-�跺�����ͤ��򿦤�ʬ��������ǽ�ԡ�
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#soul_mage">�����ꤤ��</a>����ǽ�ԥС������Ǥ���
-�ꤤ�Ȱ�äƥ��åȤ����ʤ��ΤǸ�󤷤ˤ��Ƥ��ޤ�����<a href="#dummy_necromancer">̴����</a>�ȥ��åȤǽФ����Ȥ�
-���ä����ܿͻ�����Ƚ��˵��꤬���Ф�̵���Ȥ������ɥХ�ơ�����Ϳ�����ޤ���
-���������ֻ�ͤ˸�̵���׸Τ˺����ꤤ�դ���Ϥ뤫���٤�䤹���Ǥ��͡�
-</pre>
-
-<h3><a id="yama_necromancer">����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��20��]</h3>
-<pre>
-�����λ�Ԥ�<a href="../spec.php#dead">���</a>��ʬ�����ü����ǽ�ԡ�
-����ϲ��̤β���ɽ�������֡���̵�Ĥʡ��פβ��ιԤ�
-��(���Ͽ�ϵ�˽��⤵�줿�褦�Ǥ�)������ɽ������롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="../spec.php#dead">���</a>��¿���ˤ錄������Ѥ��ü���ǽ�ԤǤ���
-�����ʬ��������ʤΤ�����Ǵ������ޤ��Ż����줿������
-��Ԥ��򿦤�ʬ����ʤ���ǽ���⤢���������դ��Ƥ���������
-</pre>
-
-<h3><a id="dummy_necromancer">̴����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<h4>[��ɽ��] ��ǽ��</h4>
-<pre>
-��¼�͡פȡֿ�ϵ�פ��դ�Ƚ�ꤵ�����ǽ�ԡ��ܿ�ɽ���ϡ���ǽ�ԡס�
-��¼�͡פȡֿ�ϵ�װʳ���Ƚ�� (�㡧<a href="wolf.php#boss_wolf">��ϵ</a>��<a href="fox.php#white_fox">���</a>��<a href="fox.php#child_fox">�Ҹ�</a>�ʤ�) ����������̤�ɽ������롣
-<a href="wolf.php#corpse_courier_mad">�м�</a>��ǽ�Ϥαƶ�������ʤ���
-</pre>
-<h4>Ver. 1.4.0 ��21��</h4>
-<pre>
-<a href="wolf.php#corpse_courier_mad">�м�</a>��ǽ�Ϥαƶ�������ޤ���
-</pre>
-<h4>Ver. 1.4.0 ��18��</h4>
-<pre>
-��ǽ��̤������फ���¼�͡עΡֿ�ϵ��ȿž���Ѥ��ޤ�����
-<a href="#psycho_mage">���������</a>����ֱ��Ĥ���Ƚ�����������ܿͻ���̴���ͳ���Ǥ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#dummy_mage">̴����</a>����ǽ�ԥС������Ǥ���
-����������Ǥ���ǽ��̤��������Ω���ʤ��ʤ�Τ����ȿž���ѹ����ޤ�����
-</pre>
-
-<h2><a id="medium_group">�����</a></h2>
-<p>
-<a href="#change_medium_group">��°�ѹ�</a>
-</p>
-<p>
-<a href="#medium">���</a>
-<a href="#seal_medium">������</a>
-<a href="#revive_medium">����</a>
-</p>
-
-<h3><a id="change_medium_group">��°�ѹ� [�����]</a></h3>
-<h4>Ver. 1.4.0 ��13��</h4>
-<pre>
-<a href="#medium">���</a>�ν�°��<a href="#necromancer_group">��ǽ�Է�</a>�����ѹ����ޤ�����
-</pre>
-
-<h3><a id="medium">���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��3-7��]</h3>
-<pre>
-�����ष���ͤν�°�رĤ�ʬ���롢��ǽ�Τ褦���򿦡�
-����⡼�ɤ��о줹��֥���å���פ���ͤ����ξ������Τ���ʻŻ�����
-��ǽ�ԤȤ�Ƚ��ˡ§���㤦�Τ����ա�
-
-��°�رĤȤϡ����Ԥ���ޤä��Ȥ��οرĤǡ���ɽ������Ƭ�˵��ܤ��줤�Ƥ�֡��رġפ�ؤ���
-��1) <a href="wolf.php#wolf_group">��ϵ��</a>��<a href="wolf.php#mad_group">���ͷ�</a>�ϡֿ�ϵ��
-��2) <a href="fox.php#fox_group">�Ÿѷ�</a>��<a href="fox.php#child_fox_group">�Ҹѷ�</a>�ϡ��Ÿѡ�
-��3) <a href="lovers.php#cupid_group">���塼�ԥåɷ�</a>��<a href="lovers.php#angel_group">ŷ�ȷ�</a>�ϡ����͡�
-��4) <a href="chiroptera.php#chiroptera_group">������</a>��<a href="chiroptera.php#fairy_group">������</a>�ϡ�������
-
-�ޤ����ᥤ���򿦤Τߤ�Ƚ����о� (�����򿦤�ʬ����ʤ�)��
-�Ĥޤꡢ���ͤϥ����򿦤ʤΤǡ����͡פ�Ƚ�ꤵ���Τ�<a href="lovers.php#cupid_group">���塼�ԥåɷ�</a>��<a href="lovers.php#angel_group">ŷ�ȷ�</a>�Τߡ�
-</pre>
-<h4>Ver. 1.4.0 ��6��</h4>
-<pre>
-<a href="mania.php#unknown_mania">�</a>�ν�°�رĤ��������Фʤ��Х����� (�������Ͼ��¼��Ƚ��)
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-���͸��ɤ��ˤ��б� (���ɤ��������ͤΤߡ����ν�°�رĤ�ʬ����)
-</pre>
-<h4>Ver. 1.4.0 ��8����11</h4>
-<pre>
-�̾����⡼�ɤǤϥ��塼�ԥåɤ��и����Ƥ�����ϳμ¤˽и����ޤ���
-(��������������и����Ƥ⥭�塼�ԥåɤ��и����Ƥ���Ȥϸ¤�ޤ���)
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�������Υ��ꥸ�ʥ��򿦤Ǥ���
-����⡼�ɤ����̤������ब�Ф뤳�Ȥˤʤä��ΤǺ�äƤߤޤ�����
-��ǽ�Ԥ����̣��¸�ߤǤ��͡��٤�Τ��ưפʤΤǤʤ��ʤ�����ʤ����⤷��ޤ���
-</pre>
-
-<h3><a id="seal_medium">������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��13��]</h3>
-<pre>
-�跺��ɼ�褬��������ǽ�Ϥ���äƤ���ͳ��ξ��������뤳�Ȥ��Ǥ����������
+2日目の夜以降、生きている誰かの側に逃亡して生存を図ろうとする村人。
 </pre>
 <ol>
-  <li>�оݤ�<a href="wolf.php#phantom_wolf">��ϵ</a>��<a href="wolf.php#resist_wolf">����ϵ</a>��<a href="wolf.php#toungue_wolf">���ϵ</a>��<a href="wolf.php#tra_mad">櫻�</a>��<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#phantom_fox">����</a>��<a href="fox.php#emerald_fox">���</a>��<a href="fox.php#revive_fox">���</a>��<a href="fox.php#possessed_fox">���</a>�Ǥ���</li>
-  <li>�跺�褬���ꤵ��ơ���ɼ�褬�跺�ԤǤϤʤ�����ȯư���ޤ���</li>
-  <li>��ʬ���跺���줿����̵���ˤʤ�ޤ���</li>
-  <li>�Ǥ䥷��å���ǻ�˴��������ͭ���Ǥ���</li>
-  <li>��ɼ�褬���Ǥ�ǽ�Ϥ򼺤äƤ������ (<a href="sub_role.php#lost_ability">ǽ���Ӽ�</a>) �Ǥ���Х���å��व���ޤ���</li>
-  <li>����å��व�������λ���ϡ��������줿�פ�<a href="#cure_pharmacist">��Ƹ</a>��ǽ��ȯư�оݳ��Ǥ���</li>
+  <li>勝利条件は「村人陣営の勝利」＋「自身の生存」です</li>
+  <li>人狼に直接狙われても殺されません (襲撃は失敗扱い)</li>
+  <li>人狼に狙われていたことを自覚できません</li>
+  <li>逃亡先が人狼だった場合は殺されます</li>
+  <li>逃亡先が人狼に襲撃されたら自分も殺されます</li>
+  <li>逃亡先が護衛や狐などで人狼の襲撃が失敗しても殺されます</li>
+  <li>遭遇した人狼の種類に関係なく殺されます (例：<a href="wolf.php#sex_wolf">雛狼</a>であっても死亡)</li>
+  <li>何らかの理由で人狼に殺された場合の死因は「人狼に襲撃された」です</li>
+  <li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡します</a>
+  <li><a href="#assassin_group">暗殺者系</a>に狙われても殺されません</li>
+  <li>遺言を残せません</li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-���� Project ������ ��̴�Υ��ڥ륫���ɡ�̴�������פ�������դǤ���
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/626" target="_top">���򿦹Ͱƥ���</a> �� 626 �������Ǥ���
-�������ü�ͳ��ˤȤäƤ����˴�����¸�ߤȤʤ�ޤ���
+他国に実在する役職です。村勝利を課せられた<a href="chiroptera.php">蝙蝠</a>のような存在ですね。
 </pre>
 
-<h3><a id="revive_medium">����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��13��]</h3>
-<h4>[����] �������Բ�</h4>
-<h4>[����ǽ��] ����Ψ��25% / ������ͭ��</h4>
+<h3><a id="suspect">不審者</a> (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9〜]</h3>
+<h4>[役職表示] 村人</h4>
 <pre>
-<a href="#poison_cat">ǭ��</a>����������ǽ�Ϥ���ä���������
+不審なあまり、占い師に人狼と判定されてしまう村人で、本人表記は「村人」。
+また、昼の間だけ、低確率で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>Ver. 1.4.0 β7〜</h4>
 <pre>
-���� Project ������ë ���Ĥ�������դǤ����֤����Ϥդ�פ��ɤߤޤ���
-�ִ��ספ�����ǽ�Ϥ��ɤ��ؤ��Ƥߤޤ�����
+遠吠え入れ替えの発動を昼限定に変更しました。
+</pre>
+<h4>Ver. 1.4.0 α16〜</h4>
+<pre>
+低確率で発言が遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+村人陣営ですが、人狼陣営に有利な存在です。
+ただし、人狼サイドにも不審者である事は分からないので
+占い師の真贋が読みづらくなります。
 </pre>
 
-<h2><a id="priest_group">�ʺ׷�</a></h2>
+<h3><a id="unconscious">無意識</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α13〜]</h3>
+<h4>[役職表示] 村人</h4>
+<pre>
+他の国で言うと「自覚のない夢遊病者」。
+本人には「村人」と表示されているが、夜になると無意識に歩きまわるため
+人狼に無意識であることが分かってしまう。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#scarlet_fox">紅狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#suspect">不審者</a>同様、村人陣営ですが人狼陣営に有利な存在です。
+人狼サイドから見ると無能力であることが確定の村人なので噛まれにくいです。
+確定白で長期間放置されると<a href="wolf.php#boss_wolf">白狼</a>扱いされるかも。
+</pre>
+
+
+<h2><a id="mage_group">占い師系</a></h2>
 <p>
-<a href="#priest_rule">���ܥ롼��</a>
-<a href="#crisis_priest_rule">�ͳ���������Ƚ��롼��</a>
+<a href="#mage_rule">基本ルール</a>
 </p>
 <p>
-<a href="#priest">�ʺ�</a>
-<a href="#bishop_priest">�ʶ�</a>
-<a href="#dowser_priest">õ�λ�</a>
-<a href="#border_priest">������</a>
-<a href="#crisis_priest">�¸���</a>
-<a href="#revive_priest">ŷ��</a>
-<a href="#dummy_priest">̴�ʺ�</a>
+<a href="#soul_mage">魂の占い師</a>
+<a href="#psycho_mage">精神鑑定士</a>
+<a href="#sex_mage">ひよこ鑑定士</a>
+<a href="#stargazer_mage">占星術師</a>
+<a href="#voodoo_killer">陰陽師</a>
+<a href="#dummy_mage">夢見人</a>
 </p>
 
-<h3><a id="priest_rule">���ܥ롼��</a></h3>
+<h3><a id="mage_rule">基本ルール [占い能力]</a></h3>
 <ol>
-  <li>Ƚ���̤����ɽ�����줿�ޤޤǤ�������ν跺��̤�ȿ�Ǥ���Ƥ��ޤ���</li>
-  <li><a href="#crisis_priest">�¸���</a>��<a href="#revive_priest">ŷ��</a>�ʳ��ϼ��ͤ�<a href="#guard_limit">�������</a>�оݤǤ�</li>
-</ol>
-
-<h3><a id="crisis_priest_rule">�ͳ���������Ƚ��롼��</a></h3>
-<pre>
-1. ��¸�� - (��ϵ + �Ÿ�) &lt;= ��ϵ + 2
-���������ߤ꤬��ϵ�ʳ� + ��˿�ϵ�γ��ߤ���Ω����ȿ�ϵ�����Ȥʤ�ޤ���
-��å������ϡֿ�ϵ�����������פǤ���
-
-2. �־��1 ����Ω���Ƥ���פޤ��ϡֿ�ϵ���Ĥ��͡� + �Ÿ� / ���ͤ���¸���Ƥ���
-�ŸѤ���¸���Ƥ���С��ŸѤ����������ס�
-���ͤ���¸���Ƥ���С����ͤ����������פ�Ƚ�ꤵ��ޤ�
-
-3. ��¸�� &lt;= ���� + 2
-��¸�Ԥ��������ͤˤʤ�����;����Ȥʤ�ޤ���
-��å������ϡ����ͤ����������פǤ���
-</pre>
-
-<h3><a id="priest">�ʺ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��24��]</h3>
-<h4>[����] ��ҡ������о�</h4>
-<pre>
-�����������Ȥ˸��ߡ���¸���Ƥ���¼�ͿرĤοͿ���ʬ���롣
-���ͤ�<a href="#guard_limit">�������</a>�оݡ�
-</pre>
-<ol>
-  <li>Ƚ�꤬�Ф�Τ� 4 ���ܰʹߤζ����� (4 �� 6 �� 8 ��...)</li>
-  <li>¼�ͿرĤ�Ƚ��ˡ§��<a href="#medium">���</a>��Ʊ��</li>
-  <li><a href="#revive_priest">ŷ��</a>������Ƚ��ϻʺ�Ƚ��θ�˹Ԥʤ��ޤ�<br>
-    ���äơ��ֻʺפ�Ƚ�� + <a href="#revive_priest">ŷ��</a>�����������Ϳ��� ���ʺ׻������������ͤǤ�
+  <li>占い能力は人狼の襲撃や暗殺などで事前に死んでいたら無効になります。<br>
+    例) 人狼に噛まれた占い師が妖狐を占っていても無効
+  </li>
+  <li>占い対象先が同様の理由で事前に死んでいたら対象の能力は無効になります<br>
+    <a href="#assassin">暗殺者</a>に殺された<a href="wolf.php#cursed_wolf">呪狼</a>を占い師が占っても呪返しは受けない
   </li>
 </ol>
-<h4>��Ϣ��</h4>
+
+<h3><a id="soul_mage">魂の占い師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：有り / 月兎：有効 / 呪い：有効</h4>
 <pre>
-<a href="#dummy_priest">̴�ʺ�</a>
+占った人の役職が分かる上位占い師。
+<a href="fox.php#fox_group">妖狐</a>を占っても呪殺できないが、占い妨害や呪返しは受けるので注意。
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>Ver. 1.4.0 α15〜</h4>
 <pre>
-¾��˼ºߤ����򿦤ǡ�<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/72" target="_top">���򿦹Ͱƥ���</a> �� 72 �������Ǥ���
-���ꥸ�ʥ����������������ΰ������򿦤ʤΤǡ�ǽ�Ϥ�ȯư������������¸���Ƥ���
-�򿦤�������������ʬ����ޤ������������С������Ϥ��ʤ���󤬹ʤ��Ƥ��ޤ���
+<a href="fox.php#fox_group">妖狐</a>を占っても呪殺できません。
+</pre>
+<h4>Ver. 1.4.0 α8〜β11</h4>
+<pre>
+<a href="../chaos.php#chaos">通常闇鍋モード</a>では16人未満では出現しません。
+16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
+最大出現人数は1人です。
+魂の占い師が出現した場合は出現人数と同じだけ占い師が減ります。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルです。
+<a href="wolf.php#boss_wolf">白狼</a>だろうが<a href="fox.php#child_fox">子狐</a>だろうが分かってしまうので村側最強クラスですが、
+その分狙われやすいでしょう。
 </pre>
 
-<h3><a id="bishop_priest">�ʶ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<h4>[����] ��ҡ������о�</h4>
+<h3><a id="psycho_mage">精神鑑定士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
-�����������Ȥ˸��ߡ���˴���Ƥ���¼�Ϳرİʳ��οͿ���ʬ���롢�ü�ʻʺס�
-���ͤ�<a href="#guard_limit">�������</a>�оݡ�
+「嘘つき」を探し出す特殊な占い師。
+<a href="wolf.php#mad_group">狂人系</a>・夢系・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>を占うと「嘘をついている」と判定される。
+それ以外は「正常である」と判定される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+対狂人専門の占い師です。一部の本人視点と実際の役職が違うタイプ
+(夢系・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>)にも対応しています。
+精神鑑定士を真と見るなら占われた人視点の役職がほぼ確定します。
+人狼や妖狐の騙りは見抜けないので注意してください。
+</pre>
+
+<h3><a id="sex_mage">ひよこ鑑定士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α19〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
+<pre>
+性別を判別する特殊な占い師。
+<a href="chiroptera.php">蝙蝠</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
+</pre>
+<h4>Ver. 1.4.0 β8〜</h4>
+<pre>
+<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
+</pre>
+<h4>Ver. 1.4.0 α21〜</h4>
+<pre>
+<a href="chiroptera.php">蝙蝠</a>を占った場合は「蝙蝠」と判定される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#psycho_mage">精神鑑定士</a>の話を出したときの流石鯖の管理人さんのコメントが
+きっかけで生まれた役職です。
+</pre>
+
+<h3><a id="stargazer_mage">占星術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β12〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
+<pre>
+夜の投票能力の有無を判定する特殊な占い師。
+占った夜に、何かしらの投票をした人と<a href="wolf.php#wolf_group">人狼系</a>は「投票能力を持っている」、
+それ以外は「投票能力を持っていない」と判定される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#stargazer_fox">星狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の宇佐見 蓮子がモチーフです。
+<a href="#psycho_mage">精神鑑定士</a>とは違うアプローチで騙りを見抜くことができます。
+初日とそれ以降で判定結果が異なる役職が存在することに注意してください。
+</pre>
+
+<h3><a id="voodoo_killer">陰陽師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 月兎：無効 / 呪い：解呪</h4>
+<pre>
+対呪い専門の特殊な占い師。
+占った人が呪い持ちや憑依能力者の場合は呪殺し(死亡メッセージは呪返しと同じ)、
+誰かに呪いをかけられていた場合は解呪(呪返しが発動しない)する。
+呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+呪い系統の対抗役職です。
+積極的に呪い持ち(<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>)や憑依能力者(<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>)を探しに行く場合は
+普通の占い師と同じ感覚でいいですが、呪術能力者(<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="fox.php#voodoo_fox">九尾</a>)による呪返しを
+防ぐのが狙いなら、同時に同じ人を占う必要があるので動き方が難しくなります。
+そもそも呪い系がレアなので役に立つのか分かりませんが……
+</pre>
+
+
+<h3><a id="dummy_mage">夢見人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α14〜]</h3>
+<h4>[役職表示] 占い師</h4>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：無効 / 呪い：無効</h4>
+<pre>
+「村人」と「人狼」が逆に判定される占い師。本人表記は「占い師」。
+呪殺できない代わりに呪返しも受けない。
+「村人」「人狼」以外の判定 (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など) は正しい結果が表示される。
+占い妨害能力 (<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#jammer_mad">月兎</a>など) の影響を受けない。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+「村人」「人狼」以外の判定 (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など) は正しい結果が表示される。
+</pre>
+<h4>Ver. 1.4.0 α18〜</h4>
+<pre>
+占い結果がランダムから「村人」⇔「人狼」反転に変わりました。
+確定白(例えば共有者)を占って人狼判定が出たら本人視点夢見人確定です。
+また、<a href="#psycho_mage">精神鑑定士</a>から「嘘つき」判定を受けても同様です。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/17" target="_top">新役職提案スレッド＠やる夫</a> の 17 が原型です。
+完全ランダムでは占い結果が全く役に立たなくなるので白黒反転に変更しました。
+</pre>
+
+
+<h2><a id="necromancer_group">霊能者系</a></h2>
+<p>
+<a href="#necromancer_rule">基本ルール</a>
+<a href="#change_necromancer_group">所属変更</a>
+</p>
+<p>
+<a href="#soul_necromancer">雲外鏡</a>
+<a href="#yama_necromancer">閻魔</a>
+<a href="#dummy_necromancer">夢枕人</a>
+</p>
+
+<h3><a id="necromancer_rule">基本ルール [霊能]</a></h3>
+<pre>
+村人が吊らないといけない人外なのに、占いでは人外判定を出せないか
+何らかの妨害を受ける役職は霊能で分かります (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="fox.php#child_fox">子狐</a>)。
+詳細は個々の役職の霊能結果を確認してください。
+</pre>
+
+<h3><a id="change_necromancer_group">所属変更 [霊能系]</a></h3>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="#medium">巫女</a>の所属を<a href="#medium_group">巫女系</a>に変更しました。
+</pre>
+
+<h3><a id="soul_necromancer">雲外鏡</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<pre>
+処刑した人の役職が分かる上位霊能者。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#soul_mage">魂の占い師</a>の霊能者バージョンです。
+占いと違ってメリットが少ないので後回しにしていましたが<a href="#dummy_necromancer">夢枕人</a>とセットで出すことで
+こっちは本人視点、判定に偽りが絶対に無いというアドバンテージが与えられます。
+しかし、「死人に口無し」故に魂の占い師よりもはるかに騙りやすいですね。
+</pre>
+
+<h3><a id="yama_necromancer">閻魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<pre>
+前日の死者の<a href="../spec.php#dead">死因</a>が分かる特殊な霊能者。
+死因は画面の下に表示される「〜は無残な〜」の下の行に
+「(〜は人狼に襲撃されたようです)」等と表示される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="../spec.php#dead">死因</a>が多岐にわたる闇鍋用の特殊霊能者です。
+死因が分かるだけなので昼の毒巻き込まれや暗殺された人等、
+死者の役職が分からない可能性もある点に注意してください。
+</pre>
+
+<h3><a id="dummy_necromancer">夢枕人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[役職表示] 霊能者</h4>
+<pre>
+「村人」と「人狼」が逆に判定される霊能者。本人表記は「霊能者」。
+「村人」と「人狼」以外の判定 (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#child_fox">子狐</a>など) は正しい結果が表示される。
+<a href="wolf.php#corpse_courier_mad">火車</a>の能力の影響を受けない。
+</pre>
+<h4>Ver. 1.4.0 α21〜</h4>
+<pre>
+<a href="wolf.php#corpse_courier_mad">火車</a>の能力の影響を受けません。
+</pre>
+<h4>Ver. 1.4.0 α18〜</h4>
+<pre>
+霊能結果がランダムから「村人」⇔「人狼」反転に変わりました。
+<a href="#psycho_mage">精神鑑定士</a>から「嘘つき」判定を受けたら本人視点夢枕人確定です。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#dummy_mage">夢見人</a>の霊能者バージョンです。
+完全ランダムでは霊能結果が全く役に立たなくなるので白黒反転に変更しました。
+</pre>
+
+<h2><a id="medium_group">巫女系</a></h2>
+<p>
+<a href="#change_medium_group">所属変更</a>
+</p>
+<p>
+<a href="#medium">巫女</a>
+<a href="#seal_medium">封印師</a>
+<a href="#revive_medium">風祝</a>
+</p>
+
+<h3><a id="change_medium_group">所属変更 [巫女系]</a></h3>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="#medium">巫女</a>の所属を<a href="#necromancer_group">霊能者系</a>から変更しました。
+</pre>
+
+<h3><a id="medium">巫女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
+<pre>
+突然死した人の所属陣営が分かる、霊能のような役職。
+闇鍋モードで登場する「ショック死」する人たちの情報を取るのが主な仕事だが
+霊能者とは判定法則が違うので注意。
+
+所属陣営とは、勝敗が決まったときの陣営で、役職表記の先頭に記載されいてる「〜陣営」を指す。
+例1) <a href="wolf.php#wolf_group">人狼系</a>・<a href="wolf.php#mad_group">狂人系</a>は「人狼」
+例2) <a href="fox.php#fox_group">妖狐系</a>・<a href="fox.php#child_fox_group">子狐系</a>は「妖狐」
+例3) <a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>は「恋人」
+例4) <a href="chiroptera.php#chiroptera_group">蝙蝠系</a>・<a href="chiroptera.php#fairy_group">妖精系</a>は「蝙蝠」
+
+また、メイン役職のみが判定の対象 (サブ役職は分からない)。
+つまり、恋人はサブ役職なので「恋人」と判定されるのは<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>のみ。
+</pre>
+<h4>Ver. 1.4.0 β6〜</h4>
+<pre>
+<a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく出ないバグ修正 (修正前は常時村人判定)
+</pre>
+<h4>Ver. 1.4.0 α9〜</h4>
+<pre>
+恋人後追いにも対応 (後追いした恋人のみ、元の所属陣営が分かる)
+</pre>
+<h4>Ver. 1.4.0 α8〜β11</h4>
+<pre>
+通常闇鍋モードではキューピッドが出現している場合は確実に出現します。
+(ただし、巫女が出現してもキューピッドが出現しているとは限りません)
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+式神研のオリジナル役職です。
+闇鍋モードで大量の突然死が出ることになったので作ってみましたが
+霊能者より地味な存在ですね。騙るのも容易なのでなかなか報われないかもしれません。
+</pre>
+
+<h3><a id="seal_medium">封印師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
+<pre>
+処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-  <li>Ƚ�꤬�Ф�Τ� 3 ���ܰʹߤδ���� (3 �� 5 �� 7 ��...)</li>
-  <li><a href="#medium">���</a>��Ƚ��Ȱ㤤�����ͤ��¼�Ϳرġװʳ���Ƚ�ꤵ���</li>
+  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#toungue_wolf">舌禍狼</a>・<a href="wolf.php#tra_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>です。</li>
+  <li>処刑先が決定されて、投票先が処刑者ではない場合に発動します。</li>
+  <li>自分が処刑された場合は無効になります。</li>
+  <li>毒やショック死で死亡した場合は有効です。</li>
+  <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させます。</li>
+  <li>ショック死させた場合の死因は「封印された」で<a href="#cure_pharmacist">河童</a>の能力発動対象外です。</li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#priest">�ʺ�</a>�ΰ���ǡ�������ϻ�Ԥ��������¬���뤳�Ȥ��Ǥ��ޤ���
-�äˡ�3 ���ܤξ���Ͽ����귯�ν�°�رĤ�ʤ����Τ�ͭ���Ǥ���
+東方 Project の博麗 霊夢のスペルカード「夢想封印」がモチーフです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/626" target="_top">新役職考案スレ</a> の 626 が原型です。
+一部の特殊人外にとっては非常に危険な存在となります。
 </pre>
 
-<h3><a id="dowser_priest">õ�λ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��15��]</h3>
-<h4>[����] ��ҡ������о�</h4>
+<h3><a id="revive_medium">風祝</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
+<h4>[耐性] 蘇生：不可</h4>
+<h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
 <pre>
-�����������Ȥ˸��ߤ���¸�Ԥ�������Ƥ���<a href="sub_role.php">������</a>�ι�פ�ʬ���롢�ü�ʻʺס�
-���ͤ�<a href="#guard_limit">�������</a>�оݡ�
+<a href="#poison_cat">猫又</a>相当の蘇生能力を持った上位巫女。
 </pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の東風谷 早苗がモチーフです。「かぜはふり」と読みます。
+「奇跡」を蘇生能力に読み替えてみました。
+</pre>
+
+<h2><a id="priest_group">司祭系</a></h2>
+<p>
+<a href="#priest_rule">基本ルール</a>
+<a href="#crisis_priest_rule">人外勝利前日判定ルール</a>
+</p>
+<p>
+<a href="#priest">司祭</a>
+<a href="#bishop_priest">司教</a>
+<a href="#dowser_priest">探知師</a>
+<a href="#border_priest">境界師</a>
+<a href="#crisis_priest">預言者</a>
+<a href="#revive_priest">天人</a>
+<a href="#dummy_priest">夢司祭</a>
+</p>
+
+<h3><a id="priest_rule">基本ルール</a></h3>
 <ol>
-  <li>Ƚ�꤬�Ф�Τ� 4 ���ܰʹߤζ����� (4 �� 6 �� 8 ��...)</li>
-  <li>�ܿͤˤ�ɽ������Ƥ��ʤ������򿦤⥫����Ȥ���ޤ� (�㡧�����)</li>
-  <li>ʣ������Ǥ��륵���򿦤ϤޤȤ�ư�Ĥȥ�����Ȥ���ޤ� (�㡧����)</li>
+  <li>判定結果は夜も表示されたままですが、昼の処刑結果は反映されていません</li>
+  <li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+
+<h3><a id="crisis_priest_rule">人外勝利前日判定ルール</a></h3>
 <pre>
-���� Project �Υʥ�����󤬥�����դǤ���
-<a href="lovers.php">����</a>�μ�������ꡢ���ǽ�ϼԡ�<a href="vampire.php">�۷쵴�ر�</a>�ι�ư�������İ��˰��Ϥ�ȯ�����ޤ���
+1. 生存者 - (人狼 + 妖狐) &lt;= 人狼 + 2
+その日の吊りが人狼以外 + 夜に人狼の噛みが成立すると人狼勝利となります。
+メッセージは「人狼が勝利目前」です。
+
+2. 「条件1 が成立している」または「人狼が残り一人」 + 妖狐 / 恋人が生存している
+妖狐が生存していれば「妖狐が勝利目前」、
+恋人が生存していれば「恋人が勝利目前」と判定されます
+
+3. 生存者 &lt;= 恋人 + 2
+生存者が全員恋人になると恋人勝利となります。
+メッセージは「恋人が勝利目前」です。
 </pre>
 
-<h3><a id="border_priest">������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��12��]</h3>
-<h4>[����] ��ҡ������о�</h4>
+<h3><a id="priest">司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
 <pre>
-2���ܰʹߡ����롢��ʬ�˲��餫����ɼ�򤷤��ͤο��פ�ʬ���롢�ü�ʻʺס�
-���ͤ�<a href="#guard_limit">�������</a>�оݡ�
+一定日数ごとに現在、生存している村人陣営の人数が分かる。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>ǽ�Ϥ�ȯư�� 2 ���ܤ���ʤΤǡ�Ƚ���̤��Ф�Τ� 3 ���ܤ��뤫��ˤʤ�ޤ�</li>
-  <li>ȯư���Ƥ��ʤ���ɼ�⥫����Ȥ���ޤ�<br>
-    ��) ��ϵ�˳��߻����줿�ꤤ�դ���ɼ�⥫����Ȥ����
+  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)</li>
+  <li>村人陣営の判定法則は<a href="#medium">巫女</a>と同じ</li>
+  <li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に行なわれます<br>
+    従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値です
   </li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>関連役職</h4>
 <pre>
-���� Project �Υޥ���٥꡼���ϡ��󤬥�����դǤ���
-�㤨�С���ʬ�����ä��׿ͤ���ʪ���ɤ������¬���뤳�Ȥ��Ǥ��ޤ���
+<a href="#dummy_priest">夢司祭</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/72" target="_top">新役職考案スレ</a> の 72 が原型です。
+オリジナルは配役非通知設定の闇鍋用役職なので、能力を発動した時点で生存している
+役職の内訳が完全に分かりますが、式神研バージョンはかなり情報が絞られています。
 </pre>
 
-<h3><a id="crisis_priest">�¸���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��2��]</h3>
-<h4>[��ɽ��] ¼��</h4>
+<h3><a id="bishop_priest">司教</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
 <pre>
-<a href="#crisis_priest_rule">�ͳ���������</a>��Ƚ�ꤹ���ü�ʻʺס�ɽ���ϡ�¼�͡ס�
-���������������Τߡ��ɤοرĤ�ͭ���ʤΤ���å�������ɽ������롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-¼�δ�����𤲤��ü�ʻʺפǤ���
-�������Ŵ�о�פ϶��ͤ�������¸�� + ���ͤθ����򿦤ˤ�ä�
-����Ū��Ƚ�꤬�Ǥ��ʤ��Τ�Ƚ�����֥����ƥ�Ū�ʾ��Է��������פȤ��ޤ�����
-</pre>
-
-<h3><a id="revive_priest">ŷ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��2��]</h3>
-<h4>[����] �������Բ� / ��͡�̵��</h4>
-<pre>
-2 ���ܤ�ī�ˤ����ʤ��˴���ơ�����ξ����������������֤��ü�ʻʺס�
-����������������ʤ��ץ��ץ����ͭ���ˤʤäƤ��ʤ��Ȼ�˴�������⤷�ޤ���
-</pre>
-<h4>������� (�ɤ줫��Ĥ�����������������)</h4>
-<ol>
-  <li>��<a href="#crisis_priest_rule">�ͳ���������</a>�פǤ���</li>
-  <li>5 ���ܤǤ���</li>
-  <li>¼�ο͸���Ⱦʬ�ʲ��ˤʤä�</li>
-  <li>��¸���Ƥ����ϵ����ͤˤʤä�</li>
-</ol>
-<h4>�ܺ٤ʻ���</h4>
-<ol>
-  <li>2 ���ܤ�ī�λ�˴��å������ϡ֡���̵���ʡ��פǡ�����ϡ�ŷ�˵��ä��פǤ�</li>
-  <li>�������������ǽ�Ϥ򼺤��ޤ� (<a href="sub_role.php#lost_ability">ǽ���Ӽ�</a>)</li>
-  <li>���ͤˤʤ��ǽ�Ϥ򼺤��ޤ� (2 ����ī�λ�˴�ⵯ����ޤ���)</li>
-  <li><a href="mania.php#mania">���åޥ˥�</a>�����ԡ��������� 2 ����ī�λ�˴�����ϼ¹Ԥ���ޤ���</li>
-  <li>2 ����ī�ʹߤ˻��Ǥ�����Ƚ����������������֤�ޤ�</li>
-  <li>5 ���ܤˤʤ��ǽ�Ϥ򼺤��ޤ�</li>
-  <li>�����оݳ��Ǥ� (���Ф줿���ϼ��Ԥ���)��</li>
-  <li><a href="wolf.php#possessed_wolf">��ϵ</a>��<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>������оݳ��Ǥ���</li>
-</ol>
-<h4>Ver. 1.4.0 ��12��</h4>
-<pre>
-<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>������оݳ��Ǥ� (<a href="wolf.php#possessed_wolf">��ϵ</a>��·���ޤ���)��
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/54" target="_top">���򿦹Ͱƥ���</a> �� 54 �������Ǥ���
-���褷��ŷ�ͤ����ͤǤʤ������ݾڤ����Τ��������ˤʤ�ޤ���
-</pre>
-
-<h3><a id="dummy_priest">̴�ʺ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��15��]</h3>
-<h4>[��ɽ��] �ʺ�</h4>
-<h4>[����] ��ҡ������о�</h4>
-<pre>
-�����������Ȥ˸��ߡ���¸���Ƥ���̴��ǽ�ϼԤ�<a href="chiroptera.php#fairy_group">������</a>�οͿ���ʬ�����ü�ʻʺס�
-�ܿ�ɽ���ϡ�<a href="#priest">�ʺ�</a>�פ�ǽ�Ϥ�ȯư���ʤɤλ��ͤ�Ʊ����
-���ͤθ�������оݡ�
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#dummy_mage">̴����</a>�λʺץС������Ǥ���
-�ʺפ�Ƚ��ˡ§�������㤦�Τ����Ū���Ф��ưפ����������ޤ���
-̴���٤����ˤ���ҥ�Ȥˤʤ�ޤ������դ˻ʺ��٤������٤������뤳�Ȥˤʤ�ޤ���
-</pre>
-
-
-<h2><a id="guard_group">���ͷ�</a></h2>
-<p>
-<a href="#guard_limit">�������</a>
-<a href="#guard_hunt">����롼��</a>
-</p>
-<p>
-<a href="#hunter_guard">�Ļ�</a>
-<a href="#blind_guard">���</a>
-<a href="#poison_guard">����</a>
-<a href="#fend_guard">Ǧ��</a>
-<a href="#reporter">�֥�</a>
-<a href="#anti_voodoo">���</a>
-<a href="#dummy_guard">̴���</a>
-</p>
-
-<h3><a id="guard_limit">�������</a></h3>
-<ol>
-  <li>�����оݤϡ�<a href="#priest">�ʺ�</a>��<a href="#bishop_priest">�ʶ�</a>��<a href="#border_priest">������</a>��<a href="#reporter">�֥�</a>��<a href="#detective_common">õ��</a>��<a href="#assassin_group">�Ż��Է�</a>��<a href="#doll_master">�ͷ�����</a>�Ǥ�</li>
-  <li>�оݤ��Ҥ��ƽ��⤵�줿��硢���ͤˡָ�������פΥ�å������ϽФޤ����������ϳ��߻�����ޤ�</li>
-  <li><a href="#blind_guard">���</a>��<a href="#poison_guard">����</a>�ˤ�Ŭ�Ѥ���ޤ���</li>
-</ol>
-
-<h3><a id="guard_hunt">����롼��</a></h3>
-<pre>
-1. ����ǽ�Ϥ�����Τϼ��͡�<a href="#hunter_guard">�Ļ�</a>��<a href="#poison_guard">����</a>��<a href="#fend_guard">Ǧ��</a>�Ǥ�
-2. �оݤ��ü춸�͡��ü��Ÿѡ��ü������Ǥ�
-2-1. �ü춸�� (<a href="wolf.php#jammer_mad">����</a>��<a href="wolf.php#voodoo_mad">���ѻ�</a>��<a href="wolf.php#corpse_courier_mad">�м�</a>��<a href="wolf.php#agitate_mad">��ư��</a>��<a href="wolf.php#miasma_mad">������</a>��<a href="wolf.php#dream_eater_mad">��</a>��<a href="wolf.php#trap_mad">櫻�</a>��<a href="wolf.php#possessed_mad">����</a>��<a href="wolf.php#therian_mad">�ÿ�</a>)
-2-2. �ü��Ÿ� (<a href="fox.php#phantom_fox">����</a>��<a href="fox.php#voodoo_fox">����</a>��<a href="fox.php#revive_fox">���</a>��<a href="fox.php#possessed_fox">���</a>��<a href="fox.php#doom_fox">̽��</a>��<a href="fox.php#cursed_fox">ŷ��</a>)
-2-3. �ü����� (<a href="chiroptera.php#poison_chiroptera">������</a>��<a href="chiroptera.php#cursed_chiroptera">������</a>��<a href="chiroptera.php#boss_chiroptera">������</a>)
-3. <a href="#hunter_guard">�Ļ�</a>��<a href="fox.php">�Ÿѿر�</a>����뤳�Ȥ��Ǥ��ޤ�
-4. <a href="#dummy_guard">̴���</a>��<a href="chiroptera.php#fairy_group">������</a>����뤳�Ȥ��Ǥ��ޤ�
-5. <a href="wolf.php#dream_eater_mad">��</a>��<a href="#dummy_guard">̴���</a>�δط���<a href="wolf.php#dream_eater_mad">��</a>�򻲾Ȥ��Ƥ�������
-6. �оݤ�������ष�Ƥ������ϼ��꤬ȯ�����ޤ��� (<a href="chiroptera.php#boss_chiroptera">������</a>�ʤ�)
-</pre>
-<h4>Ver. 1.4.0 ��14��</h4>
-<pre>
-�оݤ�������ष�Ƥ������ϼ��꤬ȯ�����ޤ��� (<a href="chiroptera.php#boss_chiroptera">������</a>�ʤ�)
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-<a href="#dummy_guard">̴���</a>��<a href="chiroptera.php#fairy_group">������</a>����뤳�Ȥ��Ǥ��ޤ�
-</pre>
-
-<h3><a id="hunter_guard">�Ļ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��13��]</h3>
-<h4>[����ǽ��] ��ҡ�����ͭ�� / ���ꡧͭ�� / 櫡�ͭ��</h4>
-<pre>
-����ǽ�Ϥ��ò������ü�ʼ��͡�
-�̾�μ���ǽ�� (<a href="#guard_hunt">����롼��</a>) �˲ä��ơ�<a href="fox.php">�Ÿѿر�</a>���������Ǥ��롣
-����褬��ϵ�˽��⤵�줿���ϡ�ϵ�μ������鷺�ܿͤ���˴���� (��Ҥ���������)��
-����ϡֿ�ϵ�ν���פȤʤ롣
-<a href="vampire.php">�۷쵴</a>�ν��⤫���Ҥ������ϻ�˴���ʤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-��ӥ�����ϵ�μ��Ԥ�������դǡ�<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/641" target="_top">���򿦹Ͱƥ���</a> �� 641 �������Ǥ���
-¼¦�����ŸѤ��ڤ껥�Ȥ��ƥǥ����󤷤Ƥ��ꡢ����ʬ������ϵǽ�Ϥ������ˤʤäƤ��ޤ���
-</pre>
-
-<h3><a id="blind_guard">���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��14��]</h3>
-<h4>[����ǽ��] ��ҡ�����̵�� / ���ꡧ̵�� / 櫡�ͭ��</h4>
-<pre>
-<a href="#guard_hunt">����ǽ��</a>�ϻ����ʤ����������򽱷⤷��<a href="wolf.php#wolf_group">��ϵ</a>��<a href="vampire.php">�۷쵴</a>��<a href="sub_role.php#blinder">�ܱ���</a>���ղä����ü�ʼ��͡�
-<a href="#guard_limit">�������</a>�αƶ�������ʤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#hunter_guard">�Ļ�</a>�Ȥ��о�Ū�ˡ���Ҥ��ò������ü���ͤǤ���
-���Τξ����򸫤뤳�Ȥ�<a href="chiroptera.php#dark_fairy">������</a>�ȶ��̤��뤳�Ȥ��Ǥ���Τǡ�
-�������<a href="wolf.php#wolf_group">��ϵ</a>�Ϥ��ä���<a href="sub_role.php#blinder">�ܱ���</a> CO ���ʤ��褦�˵���Ĥ��ޤ��礦��
-</pre>
-
-<h3><a id="poison_guard">����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��3-7��]</h3>
-<h4>[����ǽ��] ��ҡ�����̵�� / ���ꡧͭ�� / 櫡�ͭ��</h4>
-<h4>[��ǽ��] �跺��̵�� / ���⡧ͭ�� / ����Ƚ�ꡧ����Ū</h4>
-<pre>
-���ޤ줿���Τ��Ǥ�ȯư�����̼��͡�
-<a href="#guard_limit">�������</a>�αƶ�������ʤ���
-����ǽ�Ϥ�<a href="#guard_hunt">����롼��</a>�򻲾ȡ�
-</pre>
-<h4>Ver. 1.4.0 ��8����11</h4>
-<pre>
-�̾����⡼�ɤǤ�20��̤���ǤϽи����ޤ���
-20�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(20�ͤʤ�20%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
-���Τ��и��������Ͻи��Ϳ���Ʊ���������ͤ����ǼԤ�����ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�������ߥ����ϵ�Υץ쥤�䡼���󤬥�ǥ�Ǥ���
-����Ū�˴�ñ���ä��ΤǷڤ��������Ǻ�äƤߤޤ������Ȥ�Ǥ�ʤ������褦�Ǥ���
-<a href="wolf.php#resist_wolf">����ϵ</a>��<a href="wolf.php#trap_mad">櫻�</a>�����դ��ޤ��礦��
-</pre>
-
-<h3><a id="fend_guard">Ǧ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��5��]</h3>
-<h4>[����] ��ϵ���⡧�ü�</h4>
-<h4>[����ǽ��] ��ҡ�����ͭ�� / ���ꡧͭ�� / 櫡�ͭ��</h4>
-<pre>
-���٤���<a href="wolf.php#wolf_group">��ϵ��</a> (��������ʤ�) �ν�����Ѥ��뤳�Ȥ��Ǥ����̼��͡�
-��ϵ�˽��⤵���������򼺤� (<a href="sub_role.php#lost_ability">ǽ���Ӽ�</a>)��
-ï�˽��⤵�줿�Τ���ʬ����ʤ����������򼺤äƤ��Ҥ��̾��̤�Ԥ��롣
-����ǽ�Ϥ�<a href="#guard_hunt">����롼��</a>�򻲾ȡ�
-�����귯��������Ԥ�<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���) ���ä�����ǽ��̵����
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-��������Ŵ�Υץ쥤�䡼�������������ǰ�˺�äƤߤޤ�����
-ϵ�����ǤϸѤȶ��̤��Ĥ��ʤ��Τǡ������̣��<a href="#poison_guard">����</a>�ʾ��
-��ä�����¸�ߤˤʤ�Ǥ��礦��
-</pre>
-
-<h3><a id="reporter">�֥�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��14��]</h3>
-<h4>[����] ��ҡ������о�</h4>
-<h4>[����ǽ��] ��ҡ��ü� / ���ꡧ̵�� / 櫡�ͭ��</h4>
-<pre>
-�����ɼ(����)�����ͤ���ϵ�˽��⤵�줿���ˡ�ï�����⤷����ʬ�����ü�ʼ��͡�
-���ͤ�<a href="#guard_limit">�������</a>�оݤǤ���
+一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、特殊な司祭。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>��ϵ���ŸѤ����Ԥ����黦����ޤ� (��˴��å������ϡ�̵���ʡ��ס�����ϡֿͳ����ԡ�)</li>
-  <li>�����Ĥ��ޤ���</li>
-  <li>�����оݼԤ����ͤ˸�Ҥ���Ƥ������ϲ���Фޤ���</li>
-  <li>��ϵ���ͳ�(�Ѥ�<a href="wolf.php#silver_wolf">��ϵ</a>�ʤ�)�򽱷⤷�Ƽ��Ԥ��������������������Ȥʤ�ޤ� (������ޤ���)<br>
-    (����������å��������оݤ����Ǥ��ʤ���ϵ������ʤ��ͳ�������)</li>
+  <li>判定が出るのは 3 日目以降の奇数日 (3 → 5 → 7 →...)</li>
+  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される</li>
 </ol>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/5" target="_top">���򿦹Ͱƥ���</a> �� 5 �������Ǥ���
-��������Τ������񤷤��Ǥ��������������Ȥ��ˤ��礭�ʥ꥿���󤬤���ޤ���
-�ѳ��ߤθ���򥹥����פ���֥󲰤����󸫤Ƥߤ�����ΤǤ���
+<a href="#priest">司祭</a>の亜種で、こちらは死者の内訳を推測することができます。
+特に、3 日目の情報は身代わり君の所属陣営を絞り込むのに有効です。
 </pre>
 
-<h3><a id="anti_voodoo">���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��20��]</h3>
-<h4>[����ǽ��] ��ҡ��ü� / ���ꡧ̵�� / 櫡�̵��</h4>
+<h3><a id="dowser_priest">探知師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
 <pre>
-��Ҥ����ͤ��� (�ꤤ˸�������֤������) ��㱤��ü�ʼ��͡�
-�����������ϼ����������ѤΥ����ƥ��å�������ɽ������롣
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-������<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>��ľ�ܸ�Ҥ������;��֤�򤯻����Ǥ��롣
-</pre>
-<h4>Ver. 1.4.0 ��24��</h4>
-<pre>
-������<a href="wolf.php#possessed_wolf">��ϵ</a>���Ф��Ƥϰ���Ū�ʥ��ɥХ�ơ�������äƤ��ꡢ
-ľ�ܸ�Ҥ��뤫�����⤵������;��֤�򤯤��Ȥ��Ǥ��롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-���ꤤ˸������������μ��ͤǤ����֤䤯����פ��ɤߤޤ���
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/43" target="_top">���򿦹Ͱƥ���</a> �� 43 �������Ǥ���
-����θ�Ҥ�����뤳�Ȥ�<a href="wolf.php#cursed_wolf">��ϵ</a>��ϵȽ���Ф����ꡢ
-<a href="fox.php#cursed_fox">ŷ��</a>��������뤳�Ȥ���ǽ�ˤʤ�ޤ���
-�̾�μ��ͤ����͡��ŸѤǤ����������Ƥ��ޤ��Τ�Ʊ�ͤ�
-���ͤ��ŸѤˤ��ꤤ˸������֤���������򿦤�����Τǡ�
-����ʧ���������оݼԤ�¼�رġפȤϸ¤�ʤ��������դ��Ƥ���������
-</pre>
-
-<h3><a id="dummy_guard">̴���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<h4>[��ɽ��] ����</h4>
-<h4>[����ǽ��] ��ҡ��ü� / ���ꡧ�ü� / 櫡�̵��</h4>
-<pre>
-�ܿͤˤϡּ��͡פ�ɽ������Ƥ��ꡢ��ҹ�ư���뤳�Ȥ��Ǥ��롣
-ɬ�����������å�������ɽ������뤬��ɽ������������ï���Ҥ��Ƥ��ʤ���
-<a href="wolf.php#dream_eater_mad">��</a>�ˤϰ���Ū�ʥ��ɥХ�ơ�������äƤ��ꡢ���餫�η������������
-����Ū�˼��뤳�Ȥ��Ǥ��롣
-<a href="chiroptera.php#fairy_group">������</a>���Ҥ���ȼ��뤳�Ȥ��Ǥ��롣
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-<a href="chiroptera.php#fairy_group">������</a>���Ҥ���ȼ��뤳�Ȥ��Ǥ���
-</pre>
-<h4>Ver. 1.4.0 ��21��</h4>
-<pre>
-<a href="wolf.php#dream_eater_mad">��</a>�ˤϰ���Ū�ʥ��ɥХ�ơ�������äƤ��ꡢ���餫�η������������
-����Ū�˼��뤳�Ȥ��Ǥ��롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#dummy_mage">̴����</a>�μ��ͥС������Ǥ���
-��˸��������å��������Ф�Τǰ��٤Ǥ⼺�Ԥ�����̴��ͤ�̵�������ǧ�Ǥ��ޤ���
-�ߤʤ�����٤��餤�����Ƹ���������ƾ������Ƥߤ����Ȼפä���������ޤ��󤫡�
-</pre>
-
-
-<h2><a id="common_group">��ͭ�Է�</a></h2>
-<p>
-<a href="#detective_common">õ��</a>
-<a href="#trap_common">����</a>
-<a href="#ghost_common">˴���</a>
-<a href="#dummy_common">̴��ͭ��</a>
-</p>
-
-<h3><a id="detective_common">õ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<h4>[����] ��ҡ������о� / �������Բ� / �Ż���ȿ�� / ��͡�̵��</h4>
-<pre>
-�͡����ü���������ġ���̶�ͭ�ԡ�
-���ͤ�<a href="#guard_limit">�������</a>�оݤǤ���
+一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の合計が分かる、特殊な司祭。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>��ǽ�Ϥ��оݳ�</li>
-  <li><a href="#assassin_spec">�Ż�ȿ��</a>ǽ�Ϥ����</li>
-  <li><a href="wolf.php#miasma_mad">������</a>��ǽ��̵��</li>
-  <li><a href="#brownie">����Ƹ��</a>��<a href="#doom_doll">˩��ͷ�</a>��<a href="fox.php#miasma_fox">굸�</a>��ǽ�Ϥ��оݳ�</li>
-  <li><a href="#about_revive">����</a>�Բ�</li>
-  <li><a href="wolf.php#possessed_wolf">��ϵ</a>��<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>������оݳ�</li>
+  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)</li>
+  <li>本人には表示されていないサブ役職もカウントされます (例：決定者)</li>
+  <li>複数所持できるサブ役職はまとめて一つとカウントされます (例：恋人)</li>
 </ol>
-<h4>Ver. 1.4.0 ��12��</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>������оݳ� (<a href="wolf.php#possessed_wolf">��ϵ</a>��·���ޤ���)��
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-����⡼�ɤǤ�õ��¼��»ܤǤ���褦�˥��塼�˥󥰤�����̶�ͭ�ԤǤ���
+東方 Project のナズーリンがモチーフです。
+<a href="lovers.php">恋人</a>の種類の特定、憑依能力者・<a href="vampire.php">吸血鬼陣営</a>の行動状況の把握に威力を発揮します。
 </pre>
 
-<h3><a id="trap_common">����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��6��]</h3>
+<h3><a id="border_priest">境界師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β12〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
 <pre>
-�����ɼ���ˡ����λ�������¸���Ƥ���¼�Ϳرİʳ��ο����Ƥ�����ɼ���줿��
-�ޤȤ�ƻ�˴�������̶�ͭ�ԡ�
+2日目以降、「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li><a href="#medium">���</a>��Ƚ��Ȱ㤤�����ͤ��¼�Ϳرġװʳ���Ƚ�ꤵ���</li>
-  <li>��ͤǤ�¼�ͿرĤοͤ�����ɼ������̵��</li>
-  <li>ȯư�������˴���������ͤλ���ϡ�櫡�</li>
-  <li>��ʬ���ߤ�줿�ꡢ����ɼ�ˤʤäƤ�ͭ��</li>
-  <li>�ܿͤ����ͤˤʤä����ϼ�ʬ���Ȥ�����¼�Ϳرġפˤʤ�Τ�ȯư�Ǥ��ʤ�</li>
+  <li>能力の発動は 2 日目からなので、判定結果が出るのは 3 日目の昼からになります</li>
+  <li>発動していない投票もカウントされます<br>
+    例) 人狼に噛み殺された占い師の投票もカウントされる
+  </li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-����Ū�����ʾ����򤿤ä�������ɼ�ǤҤä����֤�����ˤ��� PP ʼ��Ǥ���
-<a href="#jealousy">��ɱ</a>Ʊ�͡��򿦤�¸�ߤˤ���޻��Ϥ�ȯ�������Ǥ���
-
-�ּ�ʬ��¼�ͤ�������ɼ���ʤ��פȼ�ĥ���줿�餽��ޤǤʤΤǡ�ǽ�Ϥ����̤˽Ф���
-��ʬ����ɼ�������������Ѥ��ʤ��Ǥ��礦��
+東方 Project のマエリベリー・ハーンがモチーフです。
+例えば、自分を「占った」人が本物かどうかを推測することができます。
 </pre>
 
-<h3><a id="ghost_common">˴���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��6��]</h3>
-<h4>[����] ��ϵ���⡧�ü�</h4>
+<h3><a id="crisis_priest">預言者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
+<h4>[役職表示] 村人</h4>
 <pre>
-��ʬ�򽱷⤷��<a href="wolf.php#wolf_group">��ϵ</a>��<a href="sub_role.php#chicken">������</a>���ղä����̶�ͭ�ԡ�
-<a href="wolf.php#possessed_wolf_sub_role">��ϵ</a>�����Τ��ղä���롣
-�����귯��������Ԥ�<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���) ���ä�����ǽ��̵����
+<a href="#crisis_priest_rule">人外勝利前日</a>を判定する特殊な司祭。表示は「村人」。
+条件を満たした場合のみ、どの陣営が有利なのかメッセージが表示される。
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-�������ߥ����ϵ�Υץ쥤�䡼���󤬥�ǥ�Ǥ���
-¨�ळ�����ޤ��󤬡�<a href="wolf.php#resist_wolf">����ϵ</a>�Ǥ�̵�����Ǥ��ʤ��Τ����˶��ϤǤ���
-<a href="#trap_common">����</a>Ʊ�͡���ϵ�رĤˤȤäƤ��򿦤�¸�߼��Τ����Ҥˤʤ�Ǥ��礦��
-</pre>
-
-<h3><a id="dummy_common">̴��ͭ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<h4>[��ɽ��] ��ͭ��</h4>
-<pre>
-�ܿͤˤϡ֡������������귯�٤ζ�ͭ�ԡפ�ɽ������Ƥ���¼�͡�
-�������ȯ�����Ƥ�֤Ҥ��Ҥ����פˤϤʤ�ʤ�������ʪ�ζ�ͭ�Ԥ�����ʹ�����ʤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#dummy_mage">̴����</a>�ζ�ͭ�ԥС������Ǥ���
-�֤Ҥ��Ҥ����פ�ȯ�����ʤ��Τǿ���ͭ�ԤˤϤʤ�ޤ���
-(����⡼�ɤǤ��äƤ�֤Ҥ��Ҥ����פϾä��ޤ��󡣻��ͤǤ�)
-�������ʤ�̵���Τ��ưפ��٤�ޤ��͡����äȿ��Ǥ��ߤ��뤳�ȤǤ��礦��
+村の危機を告げる特殊な司祭です。
+いわゆる「鉄火場」は狂人や蝙蝠の存在 + 恋人の元の役職によって
+機械的な判定ができないので判定条件を「システム的な勝敗決定前日」としました。
 </pre>
 
-
-<h2><a id="poison_group">���ǼԷ�</a></h2>
-<p>
-<a href="#change_poison_group">��°�ѹ�</a>
-</p>
-<p>
-<a href="#strong_poison">���Ǽ�</a>
-<a href="#incubate_poison">���Ǽ�</a>
-<a href="#guide_poison">Ͷ�Ǽ�</a>
-<a href="#chain_poison">Ϣ�Ǽ�</a>
-<a href="#dummy_poison">̴�Ǽ�</a>
-</p>
-
-<h3><a id="change_poison_group">��°�ѹ�</a></h3>
-<h4>Ver. 1.4.0 ��2��</h4>
+<h3><a id="revive_priest">天人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
+<h4>[耐性] 蘇生：不可 / 憑依：無効</h4>
 <pre>
-<a href="#poison_cat">ǭ��</a>�ν�°��<a href="#poison_cat_group">ǭ����</a>���ѹ����ޤ�����
+2 日目の朝にいきなり死亡して、特定の条件を満たすと生き返る特殊な司祭。
+「霊界で配役を公開しない」オプションが有効になっていないと死亡も蘇生もしません。
 </pre>
-
-<h3><a id="strong_poison">���Ǽ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<h4>[��ɽ��] ���Ǽ�</h4>
-<h4>[��ǽ��] �跺����ϵ + �Ÿ� / ���⡧ͭ�� / ����Ƚ�ꡧ������</h4>
-<pre>
-�ߤ�줿���˿ͳ�(ϵ�ȸ�)�Τߤ򴬤����������ǼԤǤ���
-���������ܿͤˤϡ����Ǽԡפ�ɽ������Ƥ���ΤǼ��ФϤ���ޤ���
-���ǼԤδ��������о����� (<a href="../../script_info.php" target="_top">��ħ�Ȼ���</a>����) ����ɼ�ԥ�������ä���硢
-�ͳ�����ɼ���Ƥ��ʤ�����Ǥ���ȯ�Ȥʤ�ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�������ߥ����ϵ�Υץ쥤�䡼���󤬥�ǥ�Ǥ���
-�����ˤ���ޤ�����<a href="#soul_mage">�����ꤤ��</a>�˴��ꤷ�Ƥ��ä���¨�ߤäƤ�餦�ȶ����Ǥ��͡�
-��ɼ�ԥ����������Ǥ���С����λ�����ɼ��̤Ͻ��פʿ��������ˤ�ʤ�ޤ���
-</pre>
-
-
-<h3><a id="incubate_poison">���Ǽ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<h4>[��ǽ��] �跺��̵�� �� ��ϵ + �Ÿ� / ���⡧̵�� �� ͭ�� / ����Ƚ�ꡧ̵�� �� ������</h4>
-<pre>
-������ָ� (���ߤ� 5 ���ܰʹ�) ���Ǥ�����ü�����ǼԤǤ���
-�Ǥ���ä����ܿͤ��ɲäΥ����ƥ��å�������ɽ������ޤ���
-��ǽ�Ϥ�<a href="#strong_poison">���Ǽ�</a>�����Ǥ���
-</pre>
-<h4>Ver. 1.4.0 ��20��</h4>
-<pre>
-��ǽ�Ϥ����Ǽ��������鶯�Ǽ��������ѹ����ޤ�����
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�������ߥ����ϵ�Υץ쥤�䡼���󤬥�ǥ�Ǥ���
-�������Ǥ���Ĥޤǻ��֤�Ԥ������ݥ���ȤǤ�
-</pre>
-
-<h3><a id="guide_poison">Ͷ�Ǽ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��11��]</h3>
-<h4>[��ǽ��] �跺����ǽ�ϼ� / ���⡧��ǽ�ϼ� / ����Ƚ�ꡧ����Ū</h4>
-<pre>
-��ǽ�ϼԤΤߤ�����ü�����Ǽԡ�
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#pharmacist_group">���շ�</a>�Ȱ㤦���ץ���������ǽ�Ϥ���ä��ͳ����α��뤳�Ȥ��Ǥ��ޤ���
-�Ǥ�̾�ΤĤ������Ƥ��оݤʤΤ�<a href="#poison_guard">����</a>��<a href="#chain_poison">Ϣ�Ǽ�</a>�������维���ˤʤ�ޤ���
-</pre>
-
-<h3><a id="chain_poison">Ϣ�Ǽ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��6��]</h3>
-<h4>[��ɽ��] ¼��</h4>
-<h4>[��ǽ��] �跺���ü� / ���⡧̵�� / ����Ƚ�ꡧ����Ū</h4>
-<pre>
-¾����ǽ�ϼԤ˴������ޤ줿�顢�������ʹ��������ü�����Ǽԡ��ܿͤ�ɽ���ϡ�¼�͡ס�
-<a href="#pharmacist">����</a>����ɼ����Ƥ�������Ǥ���� (Ϣ����ȯ�����ʤ�)��
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-΢����������������Ŵ��ϵ�ΤȤ���¼����ǥ�Ǥ���
-ȯưΨ���㤤�Ǥ������ҤȤ���ȯư������维��������������ޤ���
-Ϣ�ǼԤ򴬤�ź���ˤ���Ȥ����Ϣ������Τǰ����ߤ�����Ǥ����ǽ���⤢��ޤ���
-</pre>
-
-<h3><a id="dummy_poison">̴�Ǽ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��17��]</h3>
-<h4>[��ɽ��] ���Ǽ�</h4>
-<h4>[��ǽ��] �跺���ü� / ���⡧̵�� / ����Ƚ�ꡧ̵��</h4>
-<pre>
-�ܿͤˤϡ����Ǽԡפ�ɽ������Ƥ���¼�͡�
-�ߤ�줿����<a href="wolf.php#dream_eater_mad">��</a>��<a href="chiroptera.php#fairy_group">������</a>�Τߴ������� (�ֲ��ǡפϤǤ��ʤ�)��
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-�ߤ�줿����<a href="wolf.php#dream_eater_mad">��</a>��<a href="chiroptera.php#fairy_group">������</a>�Τߴ������� (�ֲ��ǡפϤǤ��ʤ�)��
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#dummy_mage">̴����</a>�����ǼԥС������Ǥ���
-�Ǥϻ��äƤ��ޤ��󤬡������귯������ˤʤ뤳�ȤϤ���ޤ���
-���ԤǤϤ���ޤ����ɤ��餫�ȸ����ȿ�ϵ�������ˤʤ��򿦤Ǥ��͡�
-̴�ǼԤǤ�������Ҥ��ƿ����ǼԤ���ߤ˹Ԥ�ϵ���Ф뤫�⤷��ޤ���
-
-Ver. 1.4.0 ��9 ������ߤ�줿���Τ�<a href="wolf.php#dream_eater_mad">��</a>��<a href="chiroptera.php#fairy_group">������</a>�������ͤ��ѹ����ޤ�����
-̴�������ι��ɤʤΤ�<a href="#pharmacist_group">���շ�</a>�ˤ����ǤϤǤ��ޤ���
-</pre>
-
-
-<h2><a id="poison_cat_group">ǭ����</a></h2>
-<p>
-<a href="#about_revive">���ܥ롼��</a>
-<a href="#change_poison_cat_group">��°�ѹ�</a>
-</p>
-<p>
-<a href="#poison_cat">ǭ��</a>
-<a href="#revive_cat">��ì</a>
-<a href="#sacrifice_cat">ǭ��</a>
-</p>
-
-<h3><a id="about_revive">����ǽ�ϼԤδ��ܥ롼��</a></h3>
+<h4>蘇生条件 (どれか一つを満たせば蘇生する)</h4>
 <ol>
-  <li>����������������ʤ��ץ��ץ����ͭ���ˤʤäƤ��ʤ���������ư�ϤǤ��ޤ���</li>
-  <li>��ɼ��ǽ�ˤʤ�Τ� 2���ܤ��뤫��ǡ�[�������� / ���ʤ�] ��ɬ����ɼ����ɬ�פ�����ޤ�</li>
-  <li>��ɼ�Ǥ���Τϡ������귯�ʳ��λ�ԤǤ�</li>
-  <li>��������Ԥ�ʤ��פ����֤��Ȥ�Ǥ��ޤ�</li>
-  <li>��������Ψ�Τ�����1/5 �ϻ��ꤷ���Ͱʳ����оݤˤʤ�ָ��������פȤʤ�ޤ�<br>
-    ��) 25% : ���� : 20% / ���� :  5%</li>
-  <li>�����귯������ǽ�ϼ� (ǭ���ϡ�<a href="#revive_priest">ŷ��</a>�ʤ�)�����͡�<a href="#detective_common">õ��</a>�������Ǥ��ޤ���</li>
-  <li>�����оݳ��οͤ����Ф줿���ϳμ¤˼��Ԥ��ޤ�</li>
-  <li>�����˼��Ԥ���������ˤ��������륷���ƥ��å�������ɽ������ޤ�</li>
+  <li>「<a href="#crisis_priest_rule">人外勝利前日</a>」である</li>
+  <li>5 日目である</li>
+  <li>村の人口が半分以下になった</li>
+  <li>生存している人狼が一人になった</li>
 </ol>
-
-<h4>Ver. 1.4.0 ��2��</h4>
+<h4>詳細な仕様</h4>
+<ol>
+  <li>2 日目の朝の死亡メッセージは「〜は無惨な〜」で、死因は「天に帰った」です</li>
+  <li>一度蘇生すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)</li>
+  <li>恋人になると能力を失います (2 日目朝の死亡も起こりません)</li>
+  <li><a href="mania.php#mania">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は実行されません</li>
+  <li>2 日目朝以降に死んでも蘇生判定を満たせば生き返ります</li>
+  <li>5 日目になると能力を失います</li>
+  <li>蘇生対象外です (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です。</li>
+</ol>
+<h4>Ver. 1.4.0 β12〜</h4>
 <pre>
-���ͤ������оݳ����ѹ����ޤ��� (�����塢¨������������ѹ����ޤ���)
+<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/54" target="_top">新役職考案スレ</a> の 54 が原型です。
+復活した天人は恋人でない事が保証されるので非常に頼りになります。
 </pre>
 
-<h4>Ver. 1.4.0 ��19��</h4>
+<h3><a id="dummy_priest">夢司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h4>[役職表示] 司祭</h4>
+<h4>[耐性] 護衛：制限対象</h4>
 <pre>
-<a href="#poison_cat">ǭ��</a>�������оݳ����ѹ����ޤ���
+一定日数ごとに現在、生存している夢系能力者と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。
+本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
+狩人の護衛制限対象。
 </pre>
-
-<h3><a id="change_poison_cat_group">��°�ѹ�</a></h3>
-<h4>Ver. 1.4.0 ��2��</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#poison_cat">ǭ��</a>�ν�°��<a href="#poison_group">���ǼԷ�</a>�����ѹ����ޤ�����
-</pre>
-
-<h3><a id="poison_cat">ǭ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��18��]</h3>
-<h4>[����ǽ��] ����Ψ��25% / ������ͭ��</h4>
-<h4>[��ǽ��] �跺��ͭ�� / ���⡧ͭ�� / ����Ƚ�ꡧͭ��</h4>
-<pre>
-����ǽ�Ϥ���ä����Ǽԡ���������Ψ�� 25%��
-�����˴ؤ���롼���<a href="#about_revive">����ǽ�ϼԤδ��ܥ롼��</a>���ȡ�
-</pre>
-<h4>Ver. 1.4.0 ��2��</h4>
-<pre>
-��°��<a href="#poison_group">���ǼԷ�</a>����<a href="#poison_cat_group">ǭ����</a>���ѹ����ޤ�����
-</pre>
-<h4>Ver. 1.4.0 ��19��</h4>
-<pre>
-ǭ��������������Ϥ���ޤ���
-ǭ���������оݼԤ����Ф줿���ϼ��԰����ˤʤ�ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-¾�ι�˼ºߤ����򿦤Ǥ���
-����������������ʤ��ץ��ץ�����ͭ���ˤ��Ƥ����ʤ���
-���������ǼԤˤʤ��������դ��Ƥ���������
-</pre>
-
-<h3><a id="revive_cat">��ì</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��2��]</h3>
-<h4>[����ǽ��] ����Ψ��80% (�����) / ������ͭ��</h4>
-<pre>
-��ǽ�Ϥ򼺤ä�����˹⤤����ǽ�Ϥ���ä�<a href="#poison_cat">ǭ��</a>�ξ�̼
-�����˴ؤ���롼���<a href="#about_revive">����ǽ�ϼԤδ��ܥ롼��</a>���ȡ�
-��������Ψ�� 80% �ǡ��������뤿�Ӥ�����Ψ�� 1/4 �ˤʤ롣
-80% �� 20% �� 5% �� 2% �� 1% (�ʸ�� 1% �Ǹ���)
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-��ì (�����) �Ȥϡ�����ǭ���Ų��Ǥ� (��ì�פϻ�ǭ�ΰ�)��
-��������Ŵ��ϵ�Υץ쥤�䡼����Υ����Ȥ򻲹ͤ�Ʊ��ǭ���Ų��Ǥ���
-<a href="#poison_cat">ǭ��</a>�ξ�̼�Ȥ��Ƽ������Ƥߤޤ�����
-</pre>
-
-<h3><a id="sacrifice_cat">ǭ��</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��9��]</h3>
-<h4>[����ǽ��] ����Ψ��100% (1�����) / ������̵��</h4>
-<pre>
-��ǽ�Ϥ򼺤ä�����˳μ¤��������ò�����<a href="#poison_cat">ǭ��</a>�ΰ��
-�����˴ؤ���롼���<a href="#about_revive">����ǽ�ϼԤδ��ܥ롼��</a>���ȡ�
-��������Ψ�� 100% �ǡ��㳰Ū�˸���Ψ�� 0% �����ꤵ��Ƥ��뤬����������ȼ�ʬ����˴���롣
-ʣ����ǭ����Ʊ����Ʊ���ͤ��������褦�Ȥ������ϡ����������װ����Ȥʤꡢ�ܿͤϻ�˴���롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="wolf.php#possessed_mad">����</a>��ǽ�Ϥ�ȯư������������ǽ�ϼԤ�ï�⤤�ʤ���
-���Τ��Ф�Ƥ��ޤ��Τǡ�Ʊ�������˸�����¼�رļ���Ѱդ��ޤ�����
+<a href="#dummy_mage">夢見人</a>の司祭バージョンです。
+司祭と判定法則が全然違うので比較的自覚は容易な部類に入ります。
+夢系騙りを看破するヒントになりますが、逆に司祭騙りの難易度が下がることになります。
 </pre>
 
 
-<h2><a id="pharmacist_group">���շ�</a></h2>
+<h2><a id="guard_group">狩人系</a></h2>
 <p>
-<a href="#pharmacist">����</a>
-<a href="#cure_pharmacist">��Ƹ</a>
-<a href="#revive_pharmacist">���</a>
+<a href="#guard_limit">護衛制限</a>
+<a href="#guard_hunt">狩りルール</a>
+</p>
+<p>
+<a href="#hunter_guard">猟師</a>
+<a href="#blind_guard">夜雀</a>
+<a href="#poison_guard">騎士</a>
+<a href="#fend_guard">忍者</a>
+<a href="#reporter">ブン屋</a>
+<a href="#anti_voodoo">厄神</a>
+<a href="#dummy_guard">夢守人</a>
 </p>
 
-<h3><a id="pharmacist">����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��12��]</h3>
-<pre>
-�ǻ������ߤä��Ȥ��ˡ����դ���ɼ���Ƥ��������(�Ǥ�ȯư���ʤ�)���ޤ���
-�ޤ��������ɼ�����ͤ��Ǥ���äƤ��뤫��ī��ʬ����ޤ���
-ī�˽Ф��å������ϰʲ��� 5 ���ࡣ
+<h3><a id="guard_limit">護衛制限</a></h3>
+<ol>
+  <li>制限対象は、<a href="#priest">司祭</a>・<a href="#bishop_priest">司教</a>・<a href="#border_priest">境界師</a>・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#doll_master">人形遣い</a>です</li>
+  <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
+  <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
+</ol>
 
-1. �Ǥ���äƤ��ʤ� (<a href="#dummy_poison">̴�Ǽ�</a>��ȯ������<a href="#incubate_poison">���Ǽ�</a>�⤳��)
-2. �Ǥ���äƤ���
-3. �����Ǥ���äƤ��� (<a href="#strong_poison">���Ǽ�</a>��ȯ�����<a href="#incubate_poison">���Ǽ�</a>)
-4. ����Ū���Ǥ���äƤ��� (<a href="#poison_guard">����</a>��<a href="#guide_poison">Ͷ�Ǽ�</a>��<a href="#chain_poison">Ϣ�Ǽ�</a>��<a href="#poison_jealousy">�Ƕ�ɱ</a>)
-5. ���Ǥ��������� (���ξ��Ͼܺ٤��Ǥμ����ʬ����ʤ�)
-</pre>
-<h4>Ver. 1.4.0 ��9��</h4>
+<h3><a id="guard_hunt">狩りルール</a></h3>
 <pre>
-<a href="#dummy_poison">̴�Ǽ�</a>���ߤ����<a href="wolf.php#dream_eater_mad">��</a>��<a href="chiroptera.php#fairy_group">������</a>���������ޤ����ͤ��ѹ���
-�����ֲ��ǡפ�����ϤǤ��ޤ���
+1. 狩り能力があるのは狩人・<a href="#hunter_guard">猟師</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>です
+2. 対象は特殊狂人・特殊妖狐・特殊蝙蝠です
+2-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#therian_mad">獣人</a>)
+2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
+2-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+3. <a href="#hunter_guard">猟師</a>は<a href="fox.php">妖狐陣営</a>を狩ることができます
+4. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
+5. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>を参照してください
+6. 対象が身代わり死していた場合は狩りが発生しません (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)
 </pre>
-<h4>Ver. 1.4.0 ��23��</h4>
+<h4>Ver. 1.4.0 β14〜</h4>
 <pre>
-�������������Ǥʤ�����������ɼ�����ͤξܺ٤���ǽ�Ϥ�ʬ����ޤ�
+対象が身代わり死していた場合は狩りが発生しません (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>Ver. 1.4.0 β9〜</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/24" target="_top">���򿦹Ͱƥ���</a> �� 24 �������Ǥ����֤������פ��ɤߤޤ���
-<a href="wolf.php#poison_wolf">��ϵ</a>���й��򿦤Ǥ���
-<a href="#poison_group">���ǼԷ�</a>���Ф��Ƥ���̤�ȯ�����ޤ���
-</pre>
-
-<h3><a id="cure_pharmacist">��Ƹ</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��9��]</h3>
-<pre>
-�����ɼ�����ͤ���ǡ�����å������������ü�����ա�
-����ǽ�Ϥ�<a href="#pharmacist">����</a>��Ʊ����
-�����Ǥ���Τ�<a href="sub_role.php#chicken_group">�����Է�</a>�Τߤǡ�<a href="#seal_medium">������</a>��<a href="#jealousy">��ɱ</a>��<a href="wolf.php#agitate_mad">��ư��</a>�ˤ���Τ��оݳ���
-���ǡ�����å�����������������ȼ������ˡּ��������פȤ�����ݤΥ�å�������ɽ������롣
-���Ρּ��šפ���������(�Ǥ䥷��å���μ���ʤ�)�Τ���ɽ������ʤ���
-����ɼ���ˤ�ȯư���ʤ���
-
-��) A[��Ƹ] �� B[¼��][������]
-���ξ�硢B������å��ह������������ޤ�������Ƹ��ǽ�Ϥǥ���󥻥뤵��ޤ���
-����󥻥뤹�������<a href="sub_role.php#chicken">������</a>���ä������ǤϤʤ��Τ����ա�
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/17" target="_top">���򿦹Ͱƥ���</a> �� 17 �������Ǥ���
-��Ƹ�ι��������ҥ�Ȥˡ��⤤����ǽ�Ϥ��ä��ü����դȤ��ƥǥ����󤷤ޤ�����
-<a href="sub_role.php#febris">Ǯ��</a>�������塢<a href="wolf.php#miasma_mad">������</a>���Ф��ƴ����ʥ����󥿡��ˤʤäƤ��ޤ���
+<a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
 </pre>
 
-<h3><a id="revive_pharmacist">���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��15��]</h3>
-<h4>[����] ��ϵ���⡧�ü� / �������Բ� / ��͡�̵��</h4>
+<h3><a id="hunter_guard">猟師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
+<h4>[狩人能力] 護衛：制限有り / 狩り：有り / 罠：有効</h4>
 <pre>
-��˽跺��ɼ�����ͤΥ���å�������������ü�����ա�
-����å�������ǽ�Ϥ�<a href="#cure_pharmacist">��Ƹ</a>��Ʊ����
-��ϵ�˽��⤵��ƻ�˴������硢���٤���¨�¤��������롣
+狩り能力に特化した特殊な狩人。
+通常の狩り能力 (<a href="#guard_hunt">狩りルール</a>) に加えて、<a href="fox.php">妖狐陣営</a>も狩る事ができる。
+護衛先が人狼に襲撃された場合は、狼の種類を問わず本人が死亡する (護衛は成功扱い)。
+死因は「人狼の襲撃」となる。
+<a href="vampire.php">吸血鬼</a>の襲撃から護衛した場合は死亡しない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+メビウス人狼の守護者がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/641" target="_top">新役職考案スレ</a> の 641 が原型です。
+村側の対妖狐の切り札としてデザインしてあり、その分だけ対狼能力が犠牲になっています。
+</pre>
+
+<h3><a id="blind_guard">夜雀</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β14〜]</h3>
+<h4>[狩人能力] 護衛：制限無し / 狩り：無し / 罠：有効</h4>
+<pre>
+<a href="#guard_hunt">狩り能力</a>は持たないが、護衛先を襲撃した<a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に<a href="sub_role.php#blinder">目隠し</a>を付加する特殊な狩人。
+<a href="#guard_limit">護衛制限</a>の影響を受けない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#hunter_guard">猟師</a>とは対照的に、護衛に特化した特殊狩人です。
+死体の状況を見ることで<a href="chiroptera.php#dark_fairy">闇妖精</a>と区別することができるので、
+襲撃役の<a href="wolf.php#wolf_group">人狼</a>はうっかり<a href="sub_role.php#blinder">目隠し</a> CO しないように気をつけましょう。
+</pre>
+
+<h3><a id="poison_guard">騎士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
+<h4>[狩人能力] 護衛：制限無し / 狩り：有り / 罠：有効</h4>
+<h4>[毒能力] 処刑：無し / 襲撃：有り / 薬師判定：限定的</h4>
+<pre>
+噛まれた時のみ毒が発動する上位狩人。
+<a href="#guard_limit">護衛制限</a>の影響を受けない。
+狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
+</pre>
+<h4>Ver. 1.4.0 α8〜β11</h4>
+<pre>
+通常闇鍋モードでは20人未満では出現しません。
+20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
+最大出現人数は1人です。
+騎士が出現した場合は出現人数と同じだけ狩人と埋毒者が減ります。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルです。
+技術的に簡単だったので軽い気持ちで作ってみましたがとんでもなく強いようです。
+<a href="wolf.php#resist_wolf">抗毒狼</a>や<a href="wolf.php#trap_mad">罠師</a>に注意しましょう。
+</pre>
+
+<h3><a id="fend_guard">忍者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
+<h4>[狩人能力] 護衛：制限有り / 狩り：有り / 罠：有効</h4>
+<pre>
+一度だけ<a href="wolf.php#wolf_group">人狼系</a> (種類を問わない) の襲撃に耐えることができる上位狩人。
+人狼に襲撃されると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
+誰に襲撃されたのかは分からないが、耐性を失っても護衛は通常通り行える。
+狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方陰陽鉄のプレイヤーさんの誕生日記念に作ってみました。
+狼視点では狐と区別がつかないので、ある意味で<a href="#poison_guard">騎士</a>以上に
+やっかいな存在になるでしょう。
+</pre>
+
+<h3><a id="reporter">ブン屋</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α14〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
+<h4>[狩人能力] 護衛：特殊 / 狩り：無し / 罠：有効</h4>
+<pre>
+夜に投票(尾行)した人が人狼に襲撃された場合に、誰が襲撃したか分かる特殊な狩人。
+狩人の<a href="#guard_limit">護衛制限</a>対象です。
 </pre>
 <ol>
-  <li>�������������ǽ�Ϥ򼺤� (<a href="sub_role.php#lost_ability">ǽ���Ӽ�</a>)��</li>
-  <li>���ͤˤʤä�������ǽ�Ϥ�̵����</li>
-  <li>��ϵ�ν���ʳ��ǻ�˴������� (�㡧�Ż�)������ǽ�Ϥ�̵����</li>
-  <li>�����귯��������Ԥ�<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���) ���ä���硢����ǽ�Ϥ�̵����</li>
-  <li>�����оݳ� (���Ф줿���ϼ��Ԥ���)��</li>
-  <li><a href="wolf.php#possessed_wolf">��ϵ</a>��<a href="wolf.php#possessed_mad">����</a>��<a href="fox.php#possessed_fox">���</a>������оݳ�</li>
+  <li>人狼・妖狐を尾行したら殺されます (死亡メッセージは「無惨な〜」、死因は「人外尾行」)</li>
+  <li>遺言を残せません</li>
+  <li>尾行対象者が狩人に護衛されていた場合は何も出ません</li>
+  <li>人狼が人外(狐や<a href="wolf.php#silver_wolf">銀狼</a>など)を襲撃して失敗した場合は尾行成功扱いとなります (殺されません)<br>
+    (尾行成功メッセージ＆対象が死んでいない＝狼が噛めない人外を噛んだ)</li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+</pre>
+<h4>[作成者からのコメント]</h4>
 <pre>
-���� Project ��ƣ����Ȥ�������դǤ���
-ǽ�Ϥ�ȯư����ȡֻ�˴��������Ʊ����ɽ�������פ��Ȥˤʤ�ޤ���
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/5" target="_top">新役職考案スレ</a> の 5 が原型です。
+活躍するのは非常に難しいですが、成功したときには大きなリターンがあります。
+狐噛みの現場をスクープするブン屋を是非見てみたいものです。
+</pre>
+
+<h3><a id="anti_voodoo">厄神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h4>[狩人能力] 護衛：特殊 / 狩り：無し / 罠：無効</h4>
+<pre>
+護衛した人の厄 (占い妨害・呪返し・憑依) を祓う特殊な狩人。
+成功した場合は次の日に専用のシステムメッセージが表示される。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+憑依中の<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>を直接護衛すると憑依状態を解く事ができる。
+</pre>
+<h4>Ver. 1.4.0 α24〜</h4>
+<pre>
+憑依中の<a href="wolf.php#possessed_wolf">憑狼</a>に対しては圧倒的なアドバンテージを持っており、
+直接護衛するか、襲撃されると憑依状態を解くことができる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+対占い妨害・呪い専門の狩人です。「やくじん」と読みます。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/43" target="_top">新役職考案スレ</a> の 43 が原型です。
+厄神の護衛を受けることで<a href="wolf.php#cursed_wolf">呪狼</a>に狼判定を出したり、
+<a href="fox.php#cursed_fox">天狐</a>を呪殺することが可能になります。
+通常の狩人が狂人・妖狐でも護衛成功してしまうのと同様に
+狂人や妖狐にも占い妨害や呪返しを受ける役職がいるので、
+「厄払い成功＝対象者は村陣営」とは限らない点に注意してください。
+</pre>
+
+<h3><a id="dummy_guard">夢守人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[役職表示] 狩人</h4>
+<h4>[狩人能力] 護衛：特殊 / 狩り：特殊 / 罠：無効</h4>
+<pre>
+本人には「狩人」と表示されており、護衛行動を取ることができる。
+必ず護衛成功メッセージが表示されるが、表示されるだけで誰も護衛していない。
+<a href="wolf.php#dream_eater_mad">獏</a>には圧倒的なアドバンテージを持っており、何らかの形で遭遇すると
+一方的に狩ることができる。
+<a href="chiroptera.php#fairy_group">妖精系</a>を護衛すると狩ることができる。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="chiroptera.php#fairy_group">妖精系</a>を護衛すると狩ることができる
+</pre>
+<h4>Ver. 1.4.0 α21〜</h4>
+<pre>
+<a href="wolf.php#dream_eater_mad">獏</a>には圧倒的なアドバンテージを持っており、何らかの形で遭遇すると
+一方的に狩ることができる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#dummy_mage">夢見人</a>の狩人バージョンです。
+常に護衛成功メッセージが出るので一度でも失敗したら夢守人で無い事を確認できます。
+みなさん一度くらいは全て護衛成功して勝利してみたいと思った事、ありませんか？
 </pre>
 
 
-<h2><a id="assassin_group">�Ż��Է�</a></h2>
+<h2><a id="common_group">共有者系</a></h2>
 <p>
-<a href="#assassin_spec">���ܥ��ڥå�</a>
-</p>
-<p>
-<a href="#assassin">�Ż���</a>
-<a href="#doom_assassin">���</a>
-<a href="#reverse_assassin">ȿ����</a>
-<a href="#soul_assassin">�Ի¤�</a>
-<a href="#eclipse_assassin">���Ż���</a>
-</p>
-
-<h3><a id="assassin_spec">�Ż��ԷϤδ��ܥ��ڥå�</a></h3>
-<ol>
-<li>�Ż��оݤˤǤ��ʤ��ͤϤ��ޤ��� (��ϵ���ŸѤǤ������ǽ)</li>
-<li>����ξ��ǡְŻ�ȿ�͡�(��ʬ�Ǽ�ʬ��Ż����뤳��) ��ȯ�����ޤ�</li>
-<li><a href="#detective_common">õ��</a>��<a href="wolf.php#sirius_wolf">ŷϵ</a> (���þ���)��<a href="fox.php#cursed_fox">ŷ��</a>��<a href="sub_role.php#challenge_lovers">����</a>���оݤˤ�������ȿ�ͤ���ޤ�</li>
-<li>�Ż����줿�ͤλ�˴��å������Ͽ�ϵ�ν����Ʊ���Ǥ�</li>
-<li>��ϵ�˽��⤵�줿�ꡢ<a href="wolf.php#trap_mad">櫻�</a>��櫤ˤ�����ȰŻ���̵���Ǥ�</li>
-<li>�ְŻ����� / ���ʤ��פ�ɬ����ɼ����ɬ�פ�����ޤ�</li>
-<li>���ͤ�<a href="#guard_limit">�������</a>�оݤǤ�</li>
-<li>�Ż��Ԥ����ߤ��򽱷⤷���������Ǥ��ˤʤ�ޤ�</li>
-<li>�Ż��Ԥ˰Ż����줿�ꤤ�դμ�����<a href="#poison_cat">ǭ��</a>��������̵���ˤʤ�ޤ�</li>
-<li>�Ż��Ԥ˰Ż�����Ƥ�<a href="#guard_group">���ͷ�</a>�θ��Ƚ���ͭ���Ǥ�</li>
-</ol>
-<h4>Ver. 1.4.0 ��9��</h4>
-<pre>
-�Ż�ȿ�ͥ����ƥब��������ޤ���
-</pre>
-
-<h3><a id="assassin">�Ż���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��18��]</h3>
-<pre>
-���¼�Ͱ�ͤ�����ǰŻ��Ǥ��ޤ����ܺ٤�<a href="#assassin_spec">�Ż��Ԥδ��ܥ��ڥå�</a>���ȡ�
-</pre>
-<h4>��Ϣ��</h4>
-<pre>
-<a href="#eclipse_assassin">���Ż���</a>
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-¾��˼ºߤ����򿦤ǡ�<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">���򿦹Ͱƥ���</a> �� 8 �������Ǥ���
-¼�ͿرĤκǽ�ʼ��Ȥ�Ƥ٤�¸�ߤǤ��͡�
-</pre>
-
-<h3><a id="doom_assassin">���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<pre>
-�Ż���ư������<a href="sub_role.php#death_warrant">������</a>���ղä����ü�ʰŻ��ԡ�
-�ܺ٤�<a href="#assassin_spec">�Ż��Ԥδ��ܥ��ڥå�</a>���ȡ�
-�������ȯư������ɼ�����뤫������� 2 ������롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�ּ�̿���Ф����Ȥ�Ǥ���Ż��ԡפ����󥻥ץȤǤ���
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/85" target="_top">���򿦹Ͱƥ���</a> �� 85 �������Ǥ���
-</pre>
-
-<h3><a id="reverse_assassin">ȿ����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��9��]</h3>
-<pre>
-���������ͤ������Ƥ�����Ż������Ǥ��������������ü�ʰŻ��ԡ�
-<a href="#assassin_spec">�Ż��Ԥδ��ܥ��ڥå�</a>��Ŭ�Ѥ���롣
-�ܺ٤�Ƚ����<a href="../spec.php#vote_night">�ܺ٤ʻ���</a>���ȡ�
-</pre>
-<ol>
-<li>���ٻ����ͤ�ǽ��ȯư�ϥ���󥻥뤵��ޤ�</li>
-<li>��ȿ���ײ�ǽ���оݤ����Ͱʳ����ƤǤ�</li>
-<li>��ʬ���Ż�����Ƥ���ɼ��ͭ���Ǥ� (�Ż��Ϥν�����Ʊ���¹Խ�������)</li>
-<li>��ȿ�����褬���ǽ�ϼԤ��ä����ϡ����οͤ��������ޤ�(<a href="wolf.php#possessed_wolf_revive">��ϵ</a>�ν�����Ʊ��)</li>
-</ol>
-<pre>
-��1) A[ȿ����] �� B[�ꤤ��] �� C[ȿ����]��B[�ꤤ��] �� D[�Ÿ�]
-�ꤤ��̡�����Фʤ� (������ʤ�)
-���Ρ�B ��̵�Ĥʻ��Τ�ȯ������ޤ��� (������ְŻ����줿��)
-������B �������֤�ޤ���
-
-��2) A[ȿ����] �� B[ǭ��] �� C[��ϵ]��B[ǭ��] �� D[¼��]
-���Ρ�B ��̵�Ĥʻ��Τ�ȯ������ޤ��� (������ֿ�ϵ�˽��⤵�줿��)
-������B �������֤�ޤ���
-B�����������ϥ���󥻥�
-
-��3) A[�Ż���] �� B[ȿ����] �� C[¼��] �� D[��ϵ]
-���Ρ�B ��̵�Ĥʻ��Τ�ȯ������ޤ��� (������ְŻ����줿��)
-���Ρ�C ��̵�Ĥʻ��Τ�ȯ������ޤ��� (������ֿ�ϵ�˽��⤵�줿��)
-������C �������֤�ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-���� Project ��Ȭ�� ��Υ��ڥ륫���ɡ����Ȼ�ζ����פ�������դǤ���
-����Ū�ˤ�<a href="#assassin">�Ż���</a>�Ȥۤ�Ʊ��ư��������ʤ��Ǥ��礦��
-����ǿ�ϵ�˳��߻����줽���ʿͤ����ä����˿�����ȯ�����ޤ���
-���Ԥ�����维���Ȥʤ�ޤ����ġ�
-</pre>
-
-<h3><a id="soul_assassin">�Ի¤�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��13��]</h3>
-<pre>
-�Ż������ͤ��򿦤��Τ�����Ǥ��롢��̰Ż��ԡ�
-<a href="#assassin_spec">�Ż��Ԥδ��ܥ��ڥå�</a>��Ŭ�Ѥ���롣
-
-��ϵ�����⤷��ȯư�����ǽ���Τ�����ǽ�ϼԤ�Ż��������ϡ��ܿͤ��ǻह�롣
-��1) <a href="wolf.php#poison_wolf">��ϵ</a>�򽱷⤷�����ǻ�
-��2) ���ͤ�̵ͭ����鷺<a href="#poison_jealousy">�Ƕ�ɱ</a>�򽱷⤷�����ǻ�
-��3) <a href="#chain_poison">Ϣ�Ǽ�</a>����ǽ�ϼԤ����ʤ���ȯư���ʤ��Τ���ȯ��
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-��ӥ�����ϵ�ΰŻ��Ԥ�������դǡ�<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/641" target="_top">���򿦹Ͱƥ���</a> �� 641 �������Ǥ���
-</pre>
-
-<h3><a id="eclipse_assassin">���Ż���</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��9��]</h3>
-<h4>[��ɽ��] �Ż���</h4>
-<pre>
-30% �γ�Ψ��<a href="#assassin_spec">�Ż�ȿ��</a>��ȯ�����������Ż��ԡ��ܿͤ�ɽ���ϡ�<a href="#assassin">�Ż���</a>�ס�
-<a href="#assassin_spec">�Ż��Ԥδ��ܥ��ڥå�</a>��Ŭ�Ѥ���롣
-<a href="#psycho_mage">���������</a>�δ����̤ϡ�����ס�
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#assassin">�Ż���</a>�˰Ż��Υꥹ���򴶤��Ƥ�餦�����¸�ߤǤ���
-<a href="#assassin">�Ż���</a>�����ͤˤʤ���维����ȯ�������ǽ��������ޤ�����
-�����򿦤��о�ˤ�ä�¿���ϴ��¤���뤫�⤷��ޤ���
-</pre>
-
-<h2><a id="mind_scanner_group">���Ȥ��</a></h2>
-<p>
-<a href="#mind_scanner">���Ȥ�</a>
-<a href="#evoke_scanner">������</a>
-<a href="#whisper_scanner">������</a>
-<a href="#howl_scanner">������</a>
-<a href="#telepath_scanner">ǰ����</a>
+<a href="#detective_common">探偵</a>
+<a href="#trap_common">策士</a>
+<a href="#ghost_common">亡霊嬢</a>
+<a href="#dummy_common">夢共有者</a>
 </p>
 
-<h3><a id="mind_scanner">���Ȥ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��21��]</h3>
+<h3><a id="detective_common">探偵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<h4>[耐性] 護衛：制限対象 / 蘇生：不可 / 暗殺：反射 / 憑依：無効</h4>
 <pre>
-���������ï����ͤ�����Ǥ��οͤ����ȯ���򸫤뤳�Ȥ��Ǥ��ޤ���
-��̤��Ф�Τ� 2 ���ܰʹߤǡ����ˤϥ����򿦡�<a href="sub_role.php#mind_read">���ȥ��</a>�פ��Ĥ��ޤ���
-<a href="#unconscious">̵�ռ�</a>�Ȼ�Ԥ�ȯ���򸫤뤳�ȤϤǤ��ޤ���
-��ʬ��������ǽ�Ϥ�̵���ˤʤ�ޤ���
-��ϵ�α��ʤ������ڸ����ޤ���
-</pre>
-<h4>Ver. 1.4.0 ��23��</h4>
-<pre>
-��ϵ�α��ʤ������ڸ����ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/4" target="_top">���򿦹Ͱƥ���</a> �� 4 �������Ǥ���
-���⸫���Ƥ��뤳�Ȥ����ϼ��ФǤ���Τ�
-�ɤ��ޤǿ����˳褫����Τ���̤�ο��Ǥ����ġ�
-���ʤ���̵ͭ����꤬��ϵ���ɤ�����Ƚ�ǤǤ��Ƥ��ޤ��Τ�
-Ver. 1.4.0 ��23 ����Ͼ�����ʤ��򸫤��ʤ����ޤ�����
-</pre>
-
-<h3><a id="evoke_scanner">������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��2��]</h3>
-<pre>
-���������ï����ͤ�����Ǥ��οͤ�<a href="sub_role.php#mind_evoke">����</a>�ˤ��ޤ���
-
-1. ��ɼ��̤��Ф�Τ� 2 ���ܰʹߤǤ���
-2. �����褬��˴����������������𤷤ƥ�å�������������ޤ���
-3. ��ʬ�Ǥϰ������ѹ��Ǥ��ޤ���
-4. ��ʬ�ΰ����˲���ɽ������Ƥ��Ƥ����ϻĤ�ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-����ե⡼�ɤ�ͭ�����Ѥ�Ǥ����򿦤������Ȼפ���
-�������������ˤ��Ƥߤޤ�����
-</pre>
-
-<h3><a id="whisper_scanner">������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��11��]</h3>
-<pre>
-2������ʹߡ�<a href="#common_group">��ͭ�Է�</a>�˰���Ū�������Ϥ��ü�ʤ��Ȥꡣ
-���ˤ�ï������ʹ�����Ƥ���Τ�ʬ����ޤ��������ɽ���ʤɤˤϲ���Фޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-̾�Τ����� Project �Υץꥺ���С����夬������դǤ���
-��ͭ�Ԥ��񤭤�Ʊ����ɽ���������Ǽ������Ƥ���Τǡ�
-�¼�����¦�̹Ԥζ�ͭ�������ˤʤ�ޤ���
-</pre>
-
-<h3><a id="howl_scanner">������</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��11��]</h3>
-<pre>
-2������ʹߡ�<a href="wolf.php#wolf_group">��ϵ��</a>�˰���Ū�������Ϥ��ü�ʤ��Ȥꡣ
-���ˤ�ï������ʹ�����Ƥ���Τ�ʬ����ޤ��������ɽ���ʤɤˤϲ���Фޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#whisper_scanner">������</a>���п�ϵ�С������Ǥ���
-��ϵ������ä�Ʊ����ɽ���������Ǽ������Ƥ���Τ�<a href="wolf.php#whisper_mad">�񤭶���</a>�ˤ⸫���ޤ���
-</pre>
-
-<h3><a id="telepath_scanner">ǰ����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��11��]</h3>
-<pre>
-2������ʹߡ�<a href="fox.php#fox_group">�Ÿѷ�</a>�˰���Ū�������Ϥ��ü�ʤ��Ȥꡣ
-���ˤ�ï������ʹ�����Ƥ���Τ�ʬ����ޤ��������ɽ���ʤɤˤϲ���Фޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#whisper_scanner">������</a>�����ŸѥС������Ǥ���
-�ŸѤ�<a href="fox.php#fox_talk">ǰ��</a>��Ʊ����ɽ���������Ǽ������Ƥ��ޤ������ŸѤ�ȯ���ǤϤʤ��Τ�
-<a href="wolf.php#wise_wolf">��ϵ</a>�ϴ��ΤǤ��ޤ���
-</pre>
-
-<h2><a id="jealousy_group">��ɱ��</a></h2>
-<p>
-<a href="#jealousy">��ɱ</a>
-<a href="#poison_jealousy">�Ƕ�ɱ</a>
-</p>
-
-<h3><a id="jealousy">��ɱ</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��22��]</h3>
-<pre>
-�����ɼ���ˡ�Ʊ�쥭�塼�ԥåɤ����ͤ�·�äƼ�ʬ����ɼ������
-��ɼ�������ͤ򥷥�å��व���롣�ܺ٤ϰʲ���
-
-1. ��ʬ���ߤ�줿��̵��
-�ߤ��ʤ��ϰϤ����ͤ�ɼ�򽸤��ɬ�פ�����ޤ���
-�����ͤǿ���ˤʤäƤ�̵��̣�Ǥ���
-
-2. ¾�Υ��塼�ԥåɤ����ͤ�������ɼ����Ƥ�̵��
-ʣ���Υ��塼�ԥåɤ�����Ǥ���ƷҤ��äƤ������ͤ���ɼ����Ƥ�̵���Ǥ���
-
-3. �����Υ����ߥ󥰤ϥ���å��������ľ��
-�Ĥޤꡢ��ɼ��̤�����ɼ�ˤʤäƤ�ͭ���Ǥ���
-�ޤ����ܿͤ�<a href="sub_role.php#celibacy">�ȿȵ�²</a>�Ǥ��äƤ�ͭ���Ǥ���
-(���Ū�ˤ���Ƥ���ˤʤ�)
-
-4. ���åץ뤬�̡��ζ�ɱ����ɼ���Ƥ�̵��
-¾�ζ�ɱ���Ф�����ɼ�ϻ��Ȥ��Ƥ��ޤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-�������򿦤Ǥ���
-���򿦹Ͱƥ��� �� <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/2" target="_top">2</a>��<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/21" target="_top">21</a>��<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/44" target="_top">44</a> �򻲹ͤˤ��Ƥ��ޤ���
-�̤줵����������񤷤��ΤǤ������������ˤʤ�ޤ�����
-</pre>
-
-<h3><a id="poison_jealousy">�Ƕ�ɱ</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��6��]</h3>
-<h4>[��ɽ��] ���Ǽ�</h4>
-<h4>[��ǽ��] �跺������ / ���⡧���� / ����Ƚ�ꡧ����Ū</h4>
-<pre>
-���ͤΤߤ�������ǼԤǡ��ܿͤ�ɽ���ϡ����Ǽԡס�
-<a href="#jealousy">��ɱ</a>��ǽ�Ϥϻ��äƤ��ʤ���
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-<a href="#poison_group">���Ǽ�</a>�ΰ���Ǥ��������͸���ʤΤǽ�°�϶�ɱ�ϤǤ���
-</pre>
-
-<h2><a id="doll_group">�峤�ͷ���</a></h2>
-<p>
-<a href="#doll_rule">���ܥ롼��</a>
-</p>
-<p>
-<a href="#doll">�峤�ͷ�</a>
-<a href="#friend_doll">ʩ�����ͷ�</a>
-<a href="#poison_doll">�����ͷ�</a>
-<a href="#doom_doll">˩��ͷ�</a>
-<a href="#doll_master">�ͷ�����</a>
-</p>
-
-<h3><a id="doll_rule">�峤�ͷ��Ϥδ��ܥ롼��</a></h3>
-<ol>
-<li>¾�ι�Ǹ���������פ��������ޤ�</li>
-<li>�������ϡ�<a href="#doll_master">�ͷ�����</a>��������˴���Ƥ����¼�������פǤ�<br>���Ȥ�������䤤�ޤ���</li>
-<li><a href="#doll_master">�ͷ�����</a>���и����ʤ��ä����ξ��������̾��¼�Ϳر������ˤʤ�ޤ�</li>
-<li><a href="#doll_master">�ͷ�����</a>��ï��ʬ����ޤ�</li>
-</ol>
-
-<h3><a id="doll">�峤�ͷ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<pre>
-�峤�ͷ��Ϥδ��ܼ�ǡ�¾�ι�Ǹ���������ס�
-<a href="#doll_rule">���ܥ롼��</a>��Ŭ�Ѥ���롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-����Ȥ���̾�Τ��򤱤����ä��Τǡ����� Project �Υ�ǥ����󡦥��󥳥꡼��ҥ�Ȥ�
-��<a href="#doll_master">�ͷ�����</a>�λ��ۤ���ƨ��褦�Ȥ���ͷ��פȤ������ޤ���Ѥ��ޤ�����
-</pre>
-
-<h3><a id="friend_doll">ʩ�����ͷ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<pre>
-¾�οͷ���ï��ʬ����ͷ���<a href="#doll_rule">���ܥ롼��</a>��Ŭ�Ѥ���롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-���� Project �Υ��ꥹ���ޡ����ȥ����ɤΥ��ڥ륫���ɡ����ʩ�����ͷ��פ�������դǤ���
-</pre>
-
-<h3><a id="poison_doll">�����ͷ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<h4>[��ǽ��] �跺���峤�ͷ��ϰʳ� (�ͷ������ˤ����) / ���⡧ͭ�� / ����Ƚ�ꡧͭ��</h4>
-<pre>
-�Ǥ���ä��ͷ����Ǥ��оݤ�<a href="#doll_group">�峤�ͷ���</a>�ʳ� (<a href="#doll_master">�ͷ�����</a>�ˤ����)��
-<a href="#doll_rule">���ܥ롼��</a>��Ŭ�Ѥ���롣
-</pre>
-<h4>[�����Ԥ���Υ�����]</h4>
-<pre>
-���� Project �Υ�ǥ����󡦥��󥳥꡼����ǥ�Ǥ���
-</pre>
-
-<h3><a id="doom_doll">˩��ͷ�</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��13��]</h3>
-<pre>
-�ߤ�줿���ˡ���ʬ����ɼ�����ͤ��������ǰ�ͤ�<a href="sub_role.php#death_warrant">������</a>���ղä���ͷ���
-<a href="#doll_rule">���ܥ롼��</a>��Ŭ�Ѥ���롣
+様々な特殊耐性を持つ、上位共有者。
+狩人の<a href="#guard_limit">護衛制限</a>対象です。
 </pre>
 <ol>
-  <li>�������ȯư�����ߤ�줿�����������2������롣</li>
-  <li><a href="human.php#detective_common">õ��</a>��<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���)��<a href="sub_role.php#challenge_lovers">����</a>��ǽ�Ϥ��оݳ���</li>
-  <li>�оݼԤ�ï�⤤�ʤ��ä�������ȯ�Ȥʤ롣</li>
+  <li>毒能力の対象外</li>
+  <li><a href="#assassin_spec">暗殺反射</a>能力を持つ</li>
+  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+  <li><a href="#brownie">座敷童子</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li><a href="#about_revive">蘇生</a>不可</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
-<h4>[�����Ԥ���Υ�����]</h4>
+<h4>Ver. 1.4.0 β12〜</h4>
 <pre>
-���� Project �Υ��ꥹ���ޡ����ȥ����ɤΥ��ڥ륫���ɡּ��ߤ�˩��ͷ��פ�������դǤ���
-��ʬ���ߤ������<a href="#doll_master">�ͷ�����</a>����ɼ��������ळ�Ȥ��Ǥ���о����Υ���󥹤����ޤ�ޤ�����
-�оݤϥ�����ʤΤǡ�����Ū��ɼ�򽸤�Ƥ��ޤ��ȳ�Ψ��������Τ��񤷤��Ȥ����Ǥ��͡�
+<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外 (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+闇鍋モードでも探偵村を実施できるようにチューニングした上位共有者です。
 </pre>
 
-<h3><a id="doll_master">�ͷ�����</a> (�ꤤ��̡�¼�� / ��ǽ��̡�¼��) [Ver. 1.4.0 ��10��]</h3>
-<h4>[����] ��ϵ���⡧�ü� / ��ҡ������о�</h4>
+<h3><a id="trap_common">策士</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
 <pre>
-¾�ι�Ǹ����ֵ�²�ס�
-���ͤ�<a href="#guard_limit">�������</a>�оݡ�
+昼の投票時に、その時点で生存している村人陣営以外の人全てから投票されたら
+まとめて死亡させる上位共有者。
 </pre>
 <ol>
-  <li>���������̾��¼�Ϳر�������</li>
-  <li>�ͷ���ï�ʤΤ���ʬ����ʤ���</li>
-  <li><a href="wolf.php#wolf_group">��ϵ</a>�˽��⤵�줿�ݤ˿ͷ�����¸���Ƥ����顢�������ï����ͤ�������˻�˴���롣</li>
-  <li>�����꤬ȯ��������硢<a href="wolf.php#wolf_group">��ϵ</a>�ν���ϼ��԰�����</li>
-  <li>�ܿͤϿ����꤬ȯ�����Ƥ�ʬ����ʤ���</li>
-  <li>�����귯��������Ԥ�<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���) ���ä���硢������ǽ�Ϥ�̵����</li>
+  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される</li>
+  <li>一人でも村人陣営の人から投票されると無効</li>
+  <li>発動した場合に巻き込んだ人の死因は「罠」</li>
+  <li>自分が吊られたり、再投票になっても有効</li>
+  <li>本人が恋人になった場合は自分自身が「非村人陣営」になるので発動できない</li>
 </ol>
-<h4>Ver. 1.4.0 ��15��</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-�����귯���ͷ������ˤʤ��ǽ��������ޤ���
-�����귯��������Ԥ�<a href="wolf.php#sirius_wolf">ŷϵ</a> (�������þ���) ���ä���硢������ǽ�Ϥ�̵����
+圧倒的不利な状況をたった一回の投票でひっくり返す、究極の対 PP 兵器です。
+<a href="#jealousy">橋姫</a>同様、役職の存在による抑止力の発生が主眼です。
+
+「自分は村人だから投票しない」と主張されたらそれまでなので、能力を前面に出して
+自分に投票させる作戦は通用しないでしょう。
 </pre>
-<h4>[�����Ԥ���Υ�����]</h4>
+
+<h3><a id="ghost_common">亡霊嬢</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
-¾�ι�˼ºߤ����򿦤򼰿����ΰ�������˥���󥸤��Ƥߤޤ�����
+自分を襲撃した<a href="wolf.php#wolf_group">人狼</a>に<a href="sub_role.php#chicken">小心者</a>を付加する上位共有者。
+<a href="wolf.php#possessed_wolf_sub_role">憑狼</a>は本体に付加される。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルです。
+即死こそしませんが、<a href="wolf.php#resist_wolf">抗毒狼</a>でも無効化できないので非常に強力です。
+<a href="#trap_common">策士</a>同様、人狼陣営にとっては役職の存在自体が脅威になるでしょう。
+</pre>
+
+<h3><a id="dummy_common">夢共有者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[役職表示] 共有者</h4>
+<pre>
+本人には「『相方が身代わり君』の共有者」と表示されている村人。
+が、夜に発言しても「ひそひそ声」にはならないし、本物の共有者の声も聞こえない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#dummy_mage">夢見人</a>の共有者バージョンです。
+「ひそひそ声」が発生しないので真共有者にはなれません。
+(闇鍋モードであっても「ひそひそ声」は消しません。仕様です)
+証明手段が無いので容易に騙れますね。きっと真でも吊られることでしょう。
+</pre>
+
+
+<h2><a id="poison_group">埋毒者系</a></h2>
+<p>
+<a href="#change_poison_group">所属変更</a>
+</p>
+<p>
+<a href="#strong_poison">強毒者</a>
+<a href="#incubate_poison">潜毒者</a>
+<a href="#guide_poison">誘毒者</a>
+<a href="#chain_poison">連毒者</a>
+<a href="#dummy_poison">夢毒者</a>
+</p>
+
+<h3><a id="change_poison_group">所属変更</a></h3>
+<h4>Ver. 1.4.0 β2〜</h4>
+<pre>
+<a href="#poison_cat">猫又</a>の所属を<a href="#poison_cat_group">猫又系</a>に変更しました。
+</pre>
+
+<h3><a id="strong_poison">強毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[役職表示] 埋毒者</h4>
+<h4>[毒能力] 処刑：人狼 + 妖狐 / 襲撃：有り / 薬師判定：強い毒</h4>
+<pre>
+吊られた時に人外(狼と狐)のみを巻き込む上位埋毒者です。
+ただし、本人には「埋毒者」と表示されているので自覚はありません。
+埋毒者の巻き込み対象設定 (<a href="../../script_info.php" target="_top">特徴と仕様</a>参照) が投票者ランダムだった場合、
+人外が投票していなければ毒は不発となります。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルです。
+状況にもよりますが、<a href="#soul_mage">魂の占い師</a>に鑑定してもらったら即吊ってもらうと強いですね。
+投票者ランダムの設定であれば、その時の投票結果は重要な推理材料にもなります。
+</pre>
+
+
+<h3><a id="incubate_poison">潜毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[毒能力] 処刑：無し → 人狼 + 妖狐 / 襲撃：無し → 有り / 薬師判定：無し → 強い毒</h4>
+<pre>
+一定期間後 (現在は 5 日目以降) に毒を持つ特殊な埋毒者です。
+毒を持ったら本人に追加のシステムメッセージが表示されます。
+毒能力は<a href="#strong_poison">強毒者</a>相当です。
+</pre>
+<h4>Ver. 1.4.0 α20〜</h4>
+<pre>
+毒能力を埋毒者相当から強毒者相当に変更しました。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルです。
+いかに毒を持つまで時間を稼ぐかがポイントです
+</pre>
+
+<h3><a id="guide_poison">誘毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h4>[毒能力] 処刑：毒能力者 / 襲撃：毒能力者 / 薬師判定：限定的</h4>
+<pre>
+毒能力者のみに中る特殊な埋毒者。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#pharmacist_group">薬師系</a>と違うアプローチで毒能力を持った人外を仕留めることができますが
+毒と名のつく役職全てが対象なので<a href="#poison_guard">騎士</a>・<a href="#chain_poison">連毒者</a>に中ると大惨事になります。
+</pre>
+
+<h3><a id="chain_poison">連毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
+<h4>[役職表示] 村人</h4>
+<h4>[毒能力] 処刑：特殊 / 襲撃：無し / 薬師判定：限定的</h4>
+<pre>
+他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人の表記は「村人」。
+<a href="#pharmacist">薬師</a>に投票されていたら解毒される (連鎖が発生しない)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+裏世界鯖＠東方陰陽鉄人狼のとある村がモデルです。
+発動率は低いですが、ひとたび発動すると大惨事を引き起こします。
+連毒者を巻き添えにするとさらに連鎖するので一回の吊りで全滅する可能性もあります。
+</pre>
+
+<h3><a id="dummy_poison">夢毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h4>[役職表示] 埋毒者</h4>
+<h4>[毒能力] 処刑：特殊 / 襲撃：無し / 薬師判定：無し</h4>
+<pre>
+本人には「埋毒者」と表示されている村人。
+吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#dummy_mage">夢見人</a>の埋毒者バージョンです。
+毒は持っていませんが、身代わり君がこれになることはありません。
+偽者ではありますがどちらかと言うと人狼が不利になる役職ですね。
+夢毒者である事に賭けて真埋毒者を噛みに行く狼が出るかもしれません。
+
+Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>に中る仕様に変更しました。
+夢の世界の攻防なので<a href="#pharmacist_group">薬師系</a>による解毒はできません。
+</pre>
+
+
+<h2><a id="poison_cat_group">猫又系</a></h2>
+<p>
+<a href="#about_revive">基本ルール</a>
+<a href="#change_poison_cat_group">所属変更</a>
+</p>
+<p>
+<a href="#poison_cat">猫又</a>
+<a href="#revive_cat">仙狸</a>
+<a href="#sacrifice_cat">猫神</a>
+</p>
+
+<h3><a id="about_revive">蘇生能力者の基本ルール</a></h3>
+<ol>
+  <li>「霊界で配役を公開しない」オプションが有効になっていないと蘇生行動はできません</li>
+  <li>投票可能になるのは 2日目の夜からで、[蘇生する / しない] を必ず投票する必要があります</li>
+  <li>投票できるのは、身代わり君以外の死者です</li>
+  <li>「蘇生を行わない」を選ぶこともできます</li>
+  <li>蘇生成功率のうち、1/5 は指定した人以外が対象になる「誤爆蘇生」となります<br>
+    例) 25% : 成功 : 20% / 誤爆 :  5%</li>
+  <li>身代わり君、蘇生能力者 (猫又系・<a href="#revive_priest">天人</a>など)、恋人、<a href="#detective_common">探偵</a>は蘇生できません</li>
+  <li>蘇生対象外の人が選ばれた場合は確実に失敗します</li>
+  <li>蘇生に失敗した場合は霊界にだけ見えるシステムメッセージが表示されます</li>
+</ol>
+
+<h4>Ver. 1.4.0 β2〜</h4>
+<pre>
+恋人を蘇生対象外に変更しました (蘇生後、即自殺から仕様変更しました)
+</pre>
+
+<h4>Ver. 1.4.0 α19〜</h4>
+<pre>
+<a href="#poison_cat">猫又</a>を蘇生対象外に変更しました
+</pre>
+
+<h3><a id="change_poison_cat_group">所属変更</a></h3>
+<h4>Ver. 1.4.0 β2〜</h4>
+<pre>
+<a href="#poison_cat">猫又</a>の所属を<a href="#poison_group">埋毒者系</a>から変更しました。
+</pre>
+
+<h3><a id="poison_cat">猫又</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
+<h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
+<h4>[毒能力] 処刑：有り / 襲撃：有り / 薬師判定：有り</h4>
+<pre>
+蘇生能力を持った埋毒者。蘇生成功率は 25%。
+蘇生に関するルールは<a href="#about_revive">蘇生能力者の基本ルール</a>参照。
+</pre>
+<h4>Ver. 1.4.0 β2〜</h4>
+<pre>
+所属を<a href="#poison_group">埋毒者系</a>から<a href="#poison_cat_group">猫又系</a>に変更しました。
+</pre>
+<h4>Ver. 1.4.0 α19〜</h4>
+<pre>
+猫又が蘇生する事はありません。
+猫又が蘇生対象者に選ばれた場合は失敗扱いになります。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他の国に実在する役職です。
+「霊界で配役を公開しない」オプションを有効にしておかないと
+ただの埋毒者になる点に注意してください。
+</pre>
+
+<h3><a id="revive_cat">仙狸</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
+<h4>[蘇生能力] 成功率：80% (初期値) / 誤爆：有り</h4>
+<pre>
+毒能力を失った代わりに高い蘇生能力を持った<a href="#poison_cat">猫又</a>の上位種。
+蘇生に関するルールは<a href="#about_revive">蘇生能力者の基本ルール</a>参照。
+蘇生成功率は 80% で、成功するたびに成功率が 1/4 になる。
+80% → 20% → 5% → 2% → 1% (以後は 1% で固定)
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+仙狸 (センリ) とは、中国の猫の妖怪です (「狸」は山猫の意)。
+東方陰陽鉄人狼のプレイヤーさんのコメントを参考に同じ猫の妖怪である
+<a href="#poison_cat">猫又</a>の上位種として実装してみました。
+</pre>
+
+<h3><a id="sacrifice_cat">猫神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：無し</h4>
+<pre>
+毒能力を失った代わりに確実な蘇生に特化した<a href="#poison_cat">猫又</a>の亜種。
+蘇生に関するルールは<a href="#about_revive">蘇生能力者の基本ルール</a>参照。
+蘇生成功率は 100% で、例外的に誤爆率が 0% に設定されているが、成功すると自分が死亡する。
+複数の猫神が同時に同じ人を蘇生しようとした場合は「全員成功」扱いとなり、本人は死亡する。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#possessed_mad">犬神</a>が能力を発動した時に蘇生能力者が誰もいないと
+正体がばれてしまうので、同じ状況に見える村陣営種を用意しました。
+</pre>
+
+
+<h2><a id="pharmacist_group">薬師系</a></h2>
+<p>
+<a href="#pharmacist">薬師</a>
+<a href="#cure_pharmacist">河童</a>
+<a href="#revive_pharmacist">仙人</a>
+</p>
+
+<h3><a id="pharmacist">薬師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α12〜]</h3>
+<pre>
+毒持ちを吊ったときに、薬師が投票していたら解毒(毒が発動しない)します。
+また、昼に投票した人が毒を持っているか翌朝に分かります。
+朝に出るメッセージは以下の 5 種類。
+
+1. 毒を持っていない (<a href="#dummy_poison">夢毒者</a>や発現前の<a href="#incubate_poison">潜毒者</a>もこれ)
+2. 毒を持っている
+3. 強い毒を持っている (<a href="#strong_poison">強毒者</a>と発現後の<a href="#incubate_poison">潜毒者</a>)
+4. 限定的な毒を持っている (<a href="#poison_guard">騎士</a>・<a href="#guide_poison">誘毒者</a>・<a href="#chain_poison">連毒者</a>・<a href="#poison_jealousy">毒橋姫</a>)
+5. 解毒に成功した (この場合は詳細な毒の種類は分からない)
+</pre>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+<a href="#dummy_poison">夢毒者</a>が吊られると<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が巻き込まれる仕様に変更。
+これを「解毒」する事はできません。
+</pre>
+<h4>Ver. 1.4.0 α23〜</h4>
+<pre>
+解毒成功だけでなく、前日に投票した人の詳細な毒能力が分かります
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/24" target="_top">新役職考案スレ</a> の 24 が原型です。「くすし」と読みます。
+<a href="wolf.php#poison_wolf">毒狼</a>の対抗役職です。
+<a href="#poison_group">埋毒者系</a>に対しても効果を発揮します。
+</pre>
+
+<h3><a id="cure_pharmacist">河童</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+昼に投票した人を解毒・ショック死抑制する特殊な薬師。
+解毒能力は<a href="#pharmacist">薬師</a>と同じ。
+抑制できるのは<a href="sub_role.php#chicken_group">小心者系</a>のみで、<a href="#seal_medium">封印師</a>・<a href="#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>によるものは対象外。
+解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
+何の「治療」に成功した(毒やショック死の種類など)のかは表示されない。
+再投票時には発動しない。
+
+例) A[河童] → B[村人][小心者]
+この場合、Bがショック死する条件を満たしますが、河童の能力でキャンセルされます。
+キャンセルするだけで<a href="sub_role.php#chicken">小心者</a>が消える訳ではないので注意。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/17" target="_top">新役職考案スレ</a> の 17 が原型です。
+河童の膏薬伝説をヒントに、高い治療能力をもった特殊薬師としてデザインしました。
+<a href="sub_role.php#febris">熱病</a>の性質上、<a href="wolf.php#miasma_mad">土蜘蛛</a>に対して完全なカウンターになっています。
+</pre>
+
+<h3><a id="revive_pharmacist">仙人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 蘇生：不可 / 憑依：無効</h4>
+<pre>
+昼に処刑投票した人のショック死を抑制する特殊な薬師。
+ショック死抑制能力は<a href="#cure_pharmacist">河童</a>と同じ。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
+</pre>
+<ol>
+  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>恋人になったら蘇生能力は無効。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の藤原妹紅がモチーフです。
+能力が発動すると「死亡と蘇生が同時に表示される」ことになります。
+</pre>
+
+
+<h2><a id="assassin_group">暗殺者系</a></h2>
+<p>
+<a href="#assassin_spec">基本スペック</a>
+</p>
+<p>
+<a href="#assassin">暗殺者</a>
+<a href="#doom_assassin">死神</a>
+<a href="#reverse_assassin">反魂師</a>
+<a href="#soul_assassin">辻斬り</a>
+<a href="#eclipse_assassin">蝕暗殺者</a>
+</p>
+
+<h3><a id="assassin_spec">暗殺者系の基本スペック</a></h3>
+<ol>
+<li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)</li>
+<li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します</li>
+<li><a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射されます</li>
+<li>暗殺された人の死亡メッセージは人狼の襲撃と同じです</li>
+<li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です</li>
+<li>「暗殺する / しない」を必ず投票する必要があります</li>
+<li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+<li>暗殺者がお互いを襲撃した場合は相打ちになります</li>
+<li>暗殺者に暗殺された占い師の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効になります</li>
+<li>暗殺者に暗殺されても<a href="#guard_group">狩人系</a>の護衛判定は有効です</li>
+</ol>
+<h4>Ver. 1.4.0 β9〜</h4>
+<pre>
+暗殺反射システムが実装されました
+</pre>
+
+<h3><a id="assassin">暗殺者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
+<pre>
+夜に村人一人を選んで暗殺できます。詳細は<a href="#assassin_spec">暗殺者の基本スペック</a>参照。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#eclipse_assassin">蝕暗殺者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ</a> の 8 が原型です。
+村人陣営の最終兵器とも呼べる存在ですね。
+</pre>
+
+<h3><a id="doom_assassin">死神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+暗殺行動の代りに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する特殊な暗殺者。
+詳細は<a href="#assassin_spec">暗殺者の基本スペック</a>参照。
+死の宣告の発動日は投票した夜から数えて 2 日後の昼。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「寿命を延ばすこともできる暗殺者」がコンセプトです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/85" target="_top">新役職考案スレ</a> の 85 が原型です。
+</pre>
+
+<h3><a id="reverse_assassin">反魂師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<pre>
+夜に選んだ人が生きていたら暗殺、死んでいたら蘇生する特殊な暗殺者。
+<a href="#assassin_spec">暗殺者の基本スペック</a>が適用される。
+詳細な判定順は<a href="../spec.php#vote_night">詳細な仕様</a>参照。
+</pre>
+<ol>
+<li>一度死んだ人の能力発動はキャンセルされます</li>
+<li>「反魂」可能な対象は恋人以外全てです</li>
+<li>自分が暗殺されても投票は有効です (暗殺系の処理は同時並行処理扱い)</li>
+<li>「反魂」先が憑依能力者だった場合は、元の人が蘇生します(<a href="wolf.php#possessed_wolf_revive">憑狼</a>の処理と同じ)</li>
+</ol>
+<pre>
+例1) A[反魂師] → B[占い師] ← C[反魂師]、B[占い師] → D[妖狐]
+占い結果：何も出ない (呪殺もなし)
+死体：B が無残な死体で発見されました (死因：「暗殺された」)
+蘇生：B は生き返りました
+
+例2) A[反魂師] → B[猫神] ← C[人狼]、B[猫神] → D[村人]
+死体：B が無残な死体で発見されました (死因：「人狼に襲撃された」)
+蘇生：B は生き返りました
+Bの蘇生処理はキャンセル
+
+例3) A[暗殺者] → B[反魂師] → C[村人] ← D[人狼]
+死体：B が無残な死体で発見されました (死因：「暗殺された」)
+死体：C が無残な死体で発見されました (死因：「人狼に襲撃された」)
+蘇生：C は生き返りました
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の八雲 紫のスペルカード「生と死の境界」がモチーフです。
+基本的には<a href="#assassin">暗殺者</a>とほぼ同じ動きで問題ないでしょう。
+確定で人狼に噛み殺されそうな人を狙った時に真価を発揮します。
+失敗すると大惨事となりますが……
+</pre>
+
+<h3><a id="soul_assassin">辻斬り</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
+<pre>
+暗殺した人の役職を知る事ができる、上位暗殺者。
+<a href="#assassin_spec">暗殺者の基本スペック</a>が適用される。
+遺言を残せない。
+
+人狼が襲撃して発動する可能性のある毒能力者を暗殺した場合は、本人は毒死する。
+例1) <a href="wolf.php#poison_wolf">毒狼</a>を襲撃したら毒死
+例2) 恋人の有無を問わず<a href="#poison_jealousy">毒橋姫</a>を襲撃したら毒死
+例3) <a href="#chain_poison">連毒者</a>は毒能力者に中らないと発動しないので不発。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+メビウス人狼の暗殺者がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/641" target="_top">新役職考案スレ</a> の 641 が原型です。
+</pre>
+
+<h3><a id="eclipse_assassin">蝕暗殺者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[役職表示] 暗殺者</h4>
+<pre>
+30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する劣化暗殺者。本人の表記は「<a href="#assassin">暗殺者</a>」。
+<a href="#assassin_spec">暗殺者の基本スペック</a>が適用される。
+<a href="#psycho_mage">精神鑑定士</a>の鑑定結果は「正常」。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#assassin">暗殺者</a>に暗殺のリスクを感じてもらうための存在です。
+<a href="#assassin">暗殺者</a>が恋人になると大惨事が発生する可能性がありましたが
+この役職の登場によって多少は緩和されるかもしれません。
+</pre>
+
+<h2><a id="mind_scanner_group">さとり系</a></h2>
+<p>
+<a href="#mind_scanner">さとり</a>
+<a href="#evoke_scanner">イタコ</a>
+<a href="#whisper_scanner">囁騒霊</a>
+<a href="#howl_scanner">吠騒霊</a>
+<a href="#telepath_scanner">念騒霊</a>
+</p>
+
+<h3><a id="mind_scanner">さとり</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<pre>
+初日の夜に誰か一人を選んでその人の夜の発言を見ることができます。
+結果が出るのは 2 日目以降で、相手にはサブ役職「<a href="sub_role.php#mind_read">サトラレ</a>」がつきます。
+<a href="#unconscious">無意識</a>と死者の発言を見ることはできません。
+自分が死んだら能力は無効になります。
+人狼の遠吠えが一切見えません。
+</pre>
+<h4>Ver. 1.4.0 α23〜</h4>
+<pre>
+人狼の遠吠えが一切見えません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/4" target="_top">新役職考案スレ</a> の 4 が原型です。
+相手も見られていることだけは自覚できるので
+どこまで推理に活かせるのかは未知数ですが……
+遠吠えの有無で相手が人狼かどうかの判断できてしまうので
+Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
+</pre>
+
+<h3><a id="evoke_scanner">イタコ</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
+<pre>
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にします。
+
+1. 投票結果が出るのは 2 日目以降です。
+2. 口寄せ先が死亡したら霊界から遺言窓を介してメッセージを受け取れます。
+3. 自分では遺言欄を変更できません。
+4. 自分の遺言欄に何が表示されていても遺言は残りません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+霊界オフモードの有効活用をできる役職を作ろうと思い、
+こういう実装にしてみました。
+</pre>
+
+<h3><a id="whisper_scanner">囁騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目夜以降、<a href="#common_group">共有者系</a>に一方的に声が届く特殊なさとり。
+相手には誰の声が聞こえているのか分かりますが、仲間表示などには何も出ません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+名称は東方 Project のプリズムリバー姉妹がモチーフです。
+共有者の囁きに同時に表示される形で実装しているので、
+実質、片側通行の共有者相当になります。
+</pre>
+
+<h3><a id="howl_scanner">吠騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目夜以降、<a href="wolf.php#wolf_group">人狼系</a>に一方的に声が届く特殊なさとり。
+相手には誰の声が聞こえているのか分かりますが、仲間表示などには何も出ません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#whisper_scanner">囁騒霊</a>の対人狼バージョンです。
+人狼の夜会話に同時に表示される形で実装しているので<a href="wolf.php#whisper_mad">囁き狂人</a>にも見えます。
+</pre>
+
+<h3><a id="telepath_scanner">念騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<pre>
+2日目夜以降、<a href="fox.php#fox_group">妖狐系</a>に一方的に声が届く特殊なさとり。
+相手には誰の声が聞こえているのか分かりますが、仲間表示などには何も出ません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#whisper_scanner">囁騒霊</a>の対妖狐バージョンです。
+妖狐の<a href="fox.php#fox_talk">念話</a>に同時に表示される形で実装していますが、妖狐の発言ではないので
+<a href="wolf.php#wise_wolf">賢狼</a>は感知できません。
+</pre>
+
+<h2><a id="jealousy_group">橋姫系</a></h2>
+<p>
+<a href="#jealousy">橋姫</a>
+<a href="#poison_jealousy">毒橋姫</a>
+</p>
+
+<h3><a id="jealousy">橋姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22〜]</h3>
+<pre>
+昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら
+投票した恋人をショック死させる。詳細は以下。
+
+1. 自分が吊られたら無効
+吊られない範囲で恋人の票を集める必要があります。
+対恋人で人柱になっても無意味です。
+
+2. 他のキューピッドの恋人たちに投票されても無効
+複数のキューピッドに矢を打たれて繋がっている恋人に投票されても無効です。
+
+3. 処理のタイミングはショック死処理の直前
+つまり、投票結果が再投票になっても有効です。
+また、本人が<a href="sub_role.php#celibacy">独身貴族</a>であっても有効です。
+(結果的には相討ちになる)
+
+4. カップルが別々の橋姫に投票しても無効
+他の橋姫に対する投票は参照していません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+対恋人役職です。
+新役職考案スレ の <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/2" target="_top">2</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/21" target="_top">21</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/44" target="_top">44</a> を参考にしています。
+別れさせる処理が難しいのでこういう実装になりました。
+</pre>
+
+<h3><a id="poison_jealousy">毒橋姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
+<h4>[役職表示] 埋毒者</h4>
+<h4>[毒能力] 処刑：恋人 / 襲撃：恋人 / 薬師判定：限定的</h4>
+<pre>
+恋人のみに中る埋毒者で、本人の表記は「埋毒者」。
+<a href="#jealousy">橋姫</a>の能力は持っていない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#poison_group">埋毒者</a>の亜種ですが、恋人限定なので所属は橋姫系です。
+</pre>
+
+<h2><a id="doll_group">上海人形系</a></h2>
+<p>
+<a href="#doll_rule">基本ルール</a>
+</p>
+<p>
+<a href="#doll">上海人形</a>
+<a href="#friend_doll">仏蘭西人形</a>
+<a href="#poison_doll">鈴蘭人形</a>
+<a href="#doom_doll">蓬莱人形</a>
+<a href="#doll_master">人形遣い</a>
+</p>
+
+<h3><a id="doll_rule">上海人形系の基本ルール</a></h3>
+<ol>
+<li>他の国で言う「奴隷」に相当します</li>
+<li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村が勝利」です<br>自身の生死は問いません</li>
+<li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になります</li>
+<li><a href="#doll_master">人形遣い</a>が誰か分かります</li>
+</ol>
+
+<h3><a id="doll">上海人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+上海人形系の基本種で、他の国で言う「奴隷」。
+<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+奴隷という名称を避けたかったので、東方 Project のメディスン・メランコリーをヒントに
+「<a href="#doll_master">人形遣い</a>の支配から逃れようとする人形」という構図を採用しました。
+</pre>
+
+<h3><a id="friend_doll">仏蘭西人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<pre>
+他の人形が誰か分かる人形。<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「博愛の仏蘭西人形」がモチーフです。
+</pre>
+
+<h3><a id="poison_doll">鈴蘭人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<h4>[毒能力] 処刑：上海人形系以外 (人形遣いには中る) / 襲撃：有り / 薬師判定：有り</h4>
+<pre>
+毒を持った人形。毒の対象は<a href="#doll_group">上海人形系</a>以外 (<a href="#doll_master">人形遣い</a>には中る)。
+<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のメディスン・メランコリーがモデルです。
+</pre>
+
+<h3><a id="doom_doll">蓬莱人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
+<pre>
+吊られた時に、自分に投票した人からランダムで一人に<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人形。
+<a href="#doll_rule">基本ルール</a>が適用される。
+</pre>
+<ol>
+  <li>死の宣告の発動日は吊られた日から数えて2日後の昼。</li>
+  <li><a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+  <li>対象者が誰もいなかった場合は不発となる。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「首吊り蓬莱人形」がモチーフです。
+自分が吊られる時に<a href="#doll_master">人形遣い</a>の投票を引き込むことができれば勝利のチャンスが生まれますが、
+対象はランダムなので、人柱的に票を集めてしまうと確率が下がるので難しいところですね。
+</pre>
+
+<h3><a id="doll_master">人形遣い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 護衛：制限対象</h4>
+<pre>
+他の国で言う「貴族」。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<ol>
+  <li>勝利条件は通常の村人陣営相当。</li>
+  <li>人形が誰なのかは分からない。</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>に襲撃された際に人形が生存していたら、ランダムで誰か一人が身代わりに死亡する。</li>
+  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+  <li>本人は身代わりが発生しても分からない。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+</ol>
+<h4>Ver. 1.4.0 β15〜</h4>
+<pre>
+身代わり君が人形遣いになる可能性があります。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。
 </pre>
 </body></html>

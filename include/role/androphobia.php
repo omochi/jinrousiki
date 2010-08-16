@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÃËÀ­¶²ÉÝ¾É (androphobia)
-  ¡û»ÅÍÍ
-  ¡¦ÃËÀ­¤ËÅêÉ¼¤·¤¿¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†ç”·æ€§ææ€–ç—‡ (androphobia)
+  â—‹ä»•æ§˜
+  ãƒ»ç”·æ€§ã«æŠ•ç¥¨ã—ãŸã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_androphobia extends Role{
   function Role_androphobia(){ $this->__construct(); }

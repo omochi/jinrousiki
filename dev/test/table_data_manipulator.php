@@ -6,16 +6,17 @@
 
   開発者のテスト用コードそのままなので要注意！
  */
-#exit;
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
-if(! $DEBUG_MODE){
+$DISABLE_TABLE_DATA_MANIPULATOR = true; //false にすると使用可能になる
+if($DISABLE_TABLE_DATA_MANIPULATOR){
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 $INIT_CONF->LoadClass('ICON_CONF');
 
 $DB_CONF->Connect(); //DB 接続
+OutputHTMLHeader('Test Tools');
 //UpdateIconInfo('category', '初期設定', 1, 10);
 //UpdateIconInfo('appearance', '初期設定', 1, 10);
 //UpdateIconInfo('category', '東方Project', 11, 78);
@@ -35,26 +36,23 @@ $DB_CONF->Connect(); //DB 接続
 //UpdateIconInfo('appearance', '東方靈異伝', 91, 92);
 //UpdateIconInfo('appearance', '東方夢時空', 181);
 //UpdateIconInfo('appearance', '東方怪綺談', 185, 186);
-//UpdateIconInfo('appearance', '東方二次', 121);
-//UpdateIconInfo('category', '東方二次', 121);
-//UpdateIconInfo('category', 'ポケットモンスター', 96, 97);
-//UpdateIconInfo('appearance', 'ポケットモンスター 金・銀', 96);
-//UpdateIconInfo('appearance', 'はじめ人間ギャートルズ', 99);
-//UpdateIconInfo('appearance', 'トランスフォーマーG1', 106);
-//UpdateIconInfo('category', 'トランスフォーマー', 106);
-//UpdateIconInfo('appearance', 'Rozen Maiden', 118);
-//UpdateIconInfo('category', 'ローゼンメイデン', 118);
-//UpdateIconInfo('appearance', 'らき☆すた', 144);
 //UpdateIconInfo('author', '夏蛍', 12, 77);
-//UpdateIconInfo('author', 'ジギザギのさいはて', 109, 111);
 //SendCommit();
 //ReconstructEstablishTime();
 //ReconstructStartTime();
 //ReconstructFinishTime();
 //SendQuery("OPTIMIZE TABLE talk", true);
-OutputHTMLHeader('Test Tools');
 //DeleteIcon(136, 8);
 //SqueezeIcon();
+//ConvertTableEncode('admin_manage');
+//ConvertTableEncode('room');
+//ConvertCurrentTableEncode('room', 0);
+//ConvertTableEncode('system_message');
+//ConvertTableEncode('talk');
+//ConvertTableEncode('user_entry');
+//ConvertTalkTableEncode('talk', array('uname', 'sentence'), 238);
+//ConvertTableEncode('user_icon');
+//ConvertTableEncode('vote');
 OutputHTMLFooter();
 //UpdateRoomInfo('room_name', 'テスト', 1);
 //OutputActionResult('処理完了', '処理完了。');
@@ -68,7 +66,7 @@ OutputHTMLFooter();
 */
 function UpdateIconInfo($type, $value, $from, $to = NULL){
   $query = isset($to) ? "{$from} <= icon_no AND icon_no <= {$to}" : "icon_no = {$from}";
-  mysql_query("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
+  SendQuery("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
 }
 
 //ファイルの IO テスト
@@ -250,4 +248,144 @@ function ReconstructFinishTime($test = false){
 */
 function UpdateRoomInfo($item, $value, $id){
   mysql_query("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");
+}
+
+//テーブルデータの文字コード変換
+/*
+  table : TABLE  */
+function ConvertTableEncode($table){
+  $max = 0;
+  switch($table){
+  case 'admin_manage':
+    $recode_list = array();
+    break;
+
+  case 'room':
+    $recode_list = array('room_name', 'room_comment');
+    break;
+
+  case 'system_message':
+    $recode_list = array('message');
+    $room_list = FetchArray("SELECT room_no FROM {$table}");
+    $alter = 'ALTER TABLE system_message_utf ADD INDEX system_message_index(room_no, date)';
+    break;
+
+  case 'talk':
+    $room_list = FetchArray("SELECT room_no FROM {$table}");
+    $recode_list = array('uname', 'sentence');
+    $alter = array('ALTER TABLE talk_utf MODIFY talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY',
+		   'ALTER TABLE talk_utf ADD INDEX talk_index(room_no, date, time)');
+    break;
+
+  case 'user_entry':
+    $recode_list = array('uname', 'handle_name', 'profile', 'password', 'last_words');
+    $room_list = FetchArray("SELECT room_no FROM {$table}");
+    $alter = 'ALTER TABLE user_entry_utf ADD INDEX user_entry_index(room_no, user_no)';
+    break;
+
+  case 'user_icon':
+    $recode_list = array('icon_name', 'appearance', 'category', 'author');
+    break;
+
+  case 'vote':
+    $recode_list = array('uname', 'target_uname');
+    $room_list = FetchArray("SELECT room_no FROM {$table}");
+    $alter = 'ALTER TABLE vote_utf ADD INDEX vote_index(room_no, date)';
+    break;
+
+  default:
+    return false;
+  }
+  $new_table = $table . '_utf';
+  SendQuery("CREATE TABLE {$new_table} AS SELECT * FROM {$table}");
+  if(is_array($alter)) foreach($alter as $add_query) SendQuery($alter);
+  elseif(isset($alter)) SendQuery($alter);
+  $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
+  if($table == 'talk'){
+    ConvertTalkTableEncode($new_table, $recode_list, 0);
+  }
+  elseif(is_array($room_list)){
+    ConvertCurrentTableEncode($new_table, $recode_list, 0);
+  }
+  else{
+    foreach(FetchAssoc($query) as $stack){
+      foreach($recode_list as $recode){
+	$from = $stack[$recode];
+	$encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+	if($encode != '' && $encode != 'UTF-8'){
+	  $to = mb_convert_encoding($from, 'UTF-8', $encode);
+	  SendQuery("UPDATE {$new_table} SET {$recode} = '{$to}' WHERE {$recode} = '{$from}'");
+	}
+      }
+    }
+  }
+  PrintData($new_table, 'Code Convert');
+}
+
+function ConvertCurrentTableEncode($table, $start){
+  switch($table){
+  case 'admin_manage':
+    $recode_list = array();
+    break;
+
+  case 'room':
+    $recode_list = array('room_name', 'room_comment');
+    break;
+
+  case 'system_message':
+    $recode_list = array('message');
+    break;
+
+  case 'user_entry':
+    $recode_list = array('uname', 'handle_name', 'profile', 'password', 'last_words');
+    break;
+
+  case 'user_icon':
+    $recode_list = array('icon_name', 'appearance', 'category', 'author');
+    break;
+
+  case 'vote':
+    $recode_list = array('uname', 'target_uname');
+    break;
+
+  default:
+    return false;
+  }
+
+  $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
+  $room_list = FetchArray("SELECT room_no FROM {$table} WHERE room_no > {$start} GROUP BY room_no");
+  foreach($room_list as $room_no){
+    foreach(FetchAssoc($query . " WHERE room_no = {$room_no}") as $stack){
+      foreach($recode_list as $recode){
+	$from = $stack[$recode];
+	$encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+	if($encode != '' && $encode != 'UTF-8'){
+	  $to = mb_convert_encoding($from, 'UTF-8', $encode);
+	  SendQuery("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
+		    "AND {$recode} = '{$from}'");
+	}
+      }
+    }
+  }
+}
+
+function ConvertTalkTableEncode($table, $recode_list, $start){
+  $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
+  $room_list = FetchArray("SELECT room_no FROM {$table} WHERE room_no > {$start} GROUP BY room_no");
+  foreach($room_list as $room_no){
+    $talk_list = FetchArray("SELECT talk_id FROM {$table} WHERE room_no = $room_no");
+    foreach($talk_list as $talk_id){
+      foreach(FetchAssoc($query . " WHERE room_no = {$room_no} AND talk_id = {$talk_id}") as $stack){
+	foreach($recode_list as $recode){
+	  $from = $stack[$recode];
+	  $encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+	  if($encode != '' && $encode != 'UTF-8'){
+	    $to = mb_convert_encoding($from, 'UTF-8', $encode);
+	    SendQuery("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
+		      "AND talk_id = {$talk_id} AND {$recode} = '{$from}'");
+	  }
+	}
+      }
+    }
+  }
 }

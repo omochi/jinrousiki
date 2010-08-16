@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÀðÆ°¼Ô (agitate_mad)
-  ¡û»ÅÍÍ
-  ¡¦½è·ºÅêÉ¼¤¬ÙÉ¹³¤·¤¿¤é¼«Ê¬¤ÎÅêÉ¼Àè¤ò½è·º¤·¡¢»Ä¤ê¤ò¤Þ¤È¤á¤Æ¥·¥ç¥Ã¥¯»à¤µ¤»¤ë
+  â—†æ‰‡å‹•è€… (agitate_mad)
+  â—‹ä»•æ§˜
+  ãƒ»å‡¦åˆ‘æŠ•ç¥¨ãŒæ‹®æŠ—ã—ãŸã‚‰è‡ªåˆ†ã®æŠ•ç¥¨å…ˆã‚’å‡¦åˆ‘ã—ã€æ®‹ã‚Šã‚’ã¾ã¨ã‚ã¦ã‚·ãƒ§ãƒƒã‚¯æ­»ã•ã›ã‚‹
 */
 class Role_agitate_mad extends Role{
   function Role_agitate_mad(){ $this->__construct(); }
@@ -20,16 +20,16 @@ class Role_agitate_mad extends Role{
 
     if($uname != '' || ! is_array($ROLES->stack->agitate_mad)) return;
     $stack = array();
-    foreach($ROLES->stack->agitate_mad as $actor_uname){ //ºÇÂ¿ÆÀÉ¼¼Ô¤ËÅêÉ¼¤·¤¿ÀðÆ°¼Ô¤ÎÅêÉ¼Àè¤ò¼ý½¸
+    foreach($ROLES->stack->agitate_mad as $actor_uname){ //æœ€å¤šå¾—ç¥¨è€…ã«æŠ•ç¥¨ã—ãŸæ‰‡å‹•è€…ã®æŠ•ç¥¨å…ˆã‚’åŽé›†
       $target = $USERS->ByVirtualUname($ROOM->vote[$actor_uname]['target_uname']);
-      if(in_array($target->uname, $ROLES->stack->max_voted)){ //ºÇÂ¿ÆÀÉ¼¼Ô¥ê¥¹¥È¤Ï²¾ÁÛ¥æ¡¼¥¶
+      if(in_array($target->uname, $ROLES->stack->max_voted)){ //æœ€å¤šå¾—ç¥¨è€…ãƒªã‚¹ãƒˆã¯ä»®æƒ³ãƒ¦ãƒ¼ã‚¶
 	$stack[$target->uname] = true;
       }
     }
-    if(count($stack) != 1) return; //ÂÐ¾Ý¤ò°ì¿Í¤Ë¸ÇÄê¤Ç¤­¤ë»þ¤Î¤ßÍ­¸ú
+    if(count($stack) != 1) return; //å¯¾è±¡ã‚’ä¸€äººã«å›ºå®šã§ãã‚‹æ™‚ã®ã¿æœ‰åŠ¹
     $uname = array_shift(array_keys($stack));
     foreach($ROLES->stack->max_voted as $target_uname){
-      if($target_uname != $uname){ //$target_uname ¤Ï²¾ÁÛ¥æ¡¼¥¶
+      if($target_uname != $uname){ //$target_uname ã¯ä»®æƒ³ãƒ¦ãƒ¼ã‚¶
 	$USERS->SuddenDeath($USERS->ByRealUname($target_uname)->user_no, 'SUDDEN_DEATH_AGITATED');
       }
     }

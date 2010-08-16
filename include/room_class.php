@@ -1,5 +1,5 @@
 <?php
-//-- ¸ÄÊÌ¤ÎÂ¼¾ğÊó¤Î´ğÄì¥¯¥é¥¹ --//
+//-- å€‹åˆ¥ã®æ‘æƒ…å ±ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class Room{
   var $id;
   var $name;
@@ -31,16 +31,16 @@ class Room{
     $this->ParseOption();
   }
 
-  //»ØÄê¤·¤¿Éô²°ÈÖ¹æ¤Î DB ¾ğÊó¤ò¼èÆÀ¤¹¤ë
+  //æŒ‡å®šã—ãŸéƒ¨å±‹ç•ªå·ã® DB æƒ…å ±ã‚’å–å¾—ã™ã‚‹
   function LoadRoom($room_no){
     $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
       'game_option, date, day_night, status FROM room WHERE room_no = ' . $room_no;
     $array = FetchAssoc($query, true);
-    if(count($array) < 1) OutputActionResult('Â¼ÈÖ¹æ¥¨¥é¡¼', 'Ìµ¸ú¤ÊÂ¼ÈÖ¹æ¤Ç¤¹: ' . $room_no);
+    if(count($array) < 1) OutputActionResult('æ‘ç•ªå·ã‚¨ãƒ©ãƒ¼', 'ç„¡åŠ¹ãªæ‘ç•ªå·ã§ã™: ' . $room_no);
     return $array;
   }
 
-  //option_role ¤òÄÉ²Ã¥í¡¼¥É¤¹¤ë
+  //option_role ã‚’è¿½åŠ ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
   function LoadOption(){
     global $RQ_ARGS;
 
@@ -50,7 +50,7 @@ class Room{
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
   }
 
-  //È¯¸À¤ò¼èÆÀ¤¹¤ë
+  //ç™ºè¨€ã‚’å–å¾—ã™ã‚‹
   function LoadTalk($heaven = false){
     global $GAME_CONF;
 
@@ -61,7 +61,7 @@ class Room{
     return FetchObject($query, 'Talk');
   }
 
-  //¥·¡¼¥ó¤Ë¹ç¤ï¤»¤¿ÅêÉ¼¾ğÊó¤ò¼èÆÀ¤¹¤ë
+  //ã‚·ãƒ¼ãƒ³ã«åˆã‚ã›ãŸæŠ•ç¥¨æƒ…å ±ã‚’å–å¾—ã™ã‚‹
   function LoadVote($kick = false){
     global $RQ_ARGS;
 
@@ -124,21 +124,21 @@ class Room{
     return count($this->vote);
   }
 
-  //ÅêÉ¼²ó¿ô¤ò DB ¤«¤é¼èÆÀ¤¹¤ë
+  //æŠ•ç¥¨å›æ•°ã‚’ DB ã‹ã‚‰å–å¾—ã™ã‚‹
   function LoadVoteTimes($revote = false){
     $query = 'SELECT message FROM system_message' . $this->GetQuery() . ' AND type = ' .
       ($revote ?  "'RE_VOTE' ORDER BY message DESC" : "'VOTE_TIMES'");
     return (int)FetchResult($query);
   }
 
-  //ÆÃ¼ì¥¤¥Ù¥ó¥ÈÈ½ÄêÍÑ¤Î¾ğÊó¤ò DB ¤«¤é¼èÆÀ¤¹¤ë
+  //ç‰¹æ®Šã‚¤ãƒ™ãƒ³ãƒˆåˆ¤å®šç”¨ã®æƒ…å ±ã‚’ DB ã‹ã‚‰å–å¾—ã™ã‚‹
   function LoadEvent(){
     $query = 'SELECT message, type FROM system_message' . $this->GetQuery(false) . ' AND date = '  .
       ($this->date - 1) . " AND(type = 'WOLF_KILLED' OR type = 'VOTE_KILLED')";
     $this->event->rows = FetchAssoc($query);
   }
 
-  //¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤ÎÅ¸³«½èÍı
+  //ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å±•é–‹å‡¦ç†
   function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
     $this->option_role = new OptionManager($this->option_role);
@@ -151,7 +151,7 @@ class Room{
     }
   }
 
-  //ÅêÉ¼¾ğÊó¤ò¥³¥Ş¥ó¥ÉËè¤ËÊ¬³ä¤¹¤ë
+  //æŠ•ç¥¨æƒ…å ±ã‚’ã‚³ãƒãƒ³ãƒ‰æ¯ã«åˆ†å‰²ã™ã‚‹
   function ParseVote(){
     $stack = array();
     foreach($this->vote as $uname => $list){
@@ -161,33 +161,33 @@ class Room{
     return $stack;
   }
 
-  //¶¦ÄÌ¥¯¥¨¥ê¤ò¼èÆÀ
+  //å…±é€šã‚¯ã‚¨ãƒªã‚’å–å¾—
   function GetQuery($date = true, $count = NULL){
     $query = (is_null($count) ? '' : 'SELECT COUNT(uname) FROM ' . $count) .
       ' WHERE room_no = ' . $this->id;
     return $date ? $query . ' AND date = ' . $this->date : $query;
   }
 
-  //ÅêÉ¼²ó¿ô¤ò¼èÆÀ¤¹¤ë
+  //æŠ•ç¥¨å›æ•°ã‚’å–å¾—ã™ã‚‹
   function GetVoteTimes($revote = false){
     $value = $revote ? 'revote_times' : 'vote_times';
     if(is_null($this->$value)) $this->$value = $this->LoadVoteTimes($revote);
     return $this->$value;
   }
 
-  //ÆÃ¼ì¥¤¥Ù¥ó¥ÈÈ½ÄêÍÑ¤Î¾ğÊó¤ò¼èÆÀ¤¹¤ë
+  //ç‰¹æ®Šã‚¤ãƒ™ãƒ³ãƒˆåˆ¤å®šç”¨ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
   function GetEvent($force = false){
     if(! $this->IsPlaying()) return array();
     if($force || is_null($this->event)) $this->LoadEvent();
     return $this->event->rows;
   }
 
-  //¥ª¥×¥·¥ç¥óÈ½Äê
+  //ã‚ªãƒ—ã‚·ãƒ§ãƒ³åˆ¤å®š
   function IsOption($option){
     return in_array($option, $this->option_list);
   }
 
-  //¥ª¥×¥·¥ç¥ó¥°¥ë¡¼¥×È½Äê
+  //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚°ãƒ«ãƒ¼ãƒ—åˆ¤å®š
   function IsOptionGroup($option){
     foreach($this->option_list as $this_option){
       if(strpos($this_option, $option) !== false) return true;
@@ -195,76 +195,76 @@ class Room{
     return false;
   }
 
-  //¥ê¥¢¥ë¥¿¥¤¥àÀ©È½Äê
+  //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶åˆ¤å®š
   function IsRealTime(){
     return $this->IsOption('real_time');
   }
 
-  //¿ÈÂå¤ï¤ê·¯»ÈÍÑÈ½Äê
+  //èº«ä»£ã‚ã‚Šå›ä½¿ç”¨åˆ¤å®š
   function IsDummyBoy(){
     return $this->IsOption('dummy_boy');
   }
 
-  //¥¯¥¤¥ºÂ¼È½Äê
+  //ã‚¯ã‚¤ã‚ºæ‘åˆ¤å®š
   function IsQuiz(){
     return $this->IsOption('quiz');
   }
 
-  //°ÇÆé¼°´õË¾À©¥ª¥×¥·¥ç¥óÈ½Äê
+  //é—‡é‹å¼å¸Œæœ›åˆ¶ã‚ªãƒ—ã‚·ãƒ§ãƒ³åˆ¤å®š
   function IsChaosWish(){
     return $this->IsOptionGroup('chaos') || $this->IsOption('duel') || $this->IsOption('festival') ||
       $this->IsOption('replace_human') || $this->IsOption('full_mania') ||
       $this->IsOption('full_chiroptera') || $this->IsOption('full_cupid');
   }
 
-  //Îî³¦¸ø³«È½Äê
+  //éœŠç•Œå…¬é–‹åˆ¤å®š
   function IsOpenCast(){
     global $USERS;
 
-    if($this->IsOption('not_open_cast')) return false; //¾ï»şÈó¸ø³«
-    if(! $this->IsOption('auto_open_cast')) return true; //¼«Æ°¸ø³«¤¬¥ª¥Õ¤Ê¤é¾ï»ş¸ø³«
+    if($this->IsOption('not_open_cast')) return false; //å¸¸æ™‚éå…¬é–‹
+    if(! $this->IsOption('auto_open_cast')) return true; //è‡ªå‹•å…¬é–‹ãŒã‚ªãƒ•ãªã‚‰å¸¸æ™‚å…¬é–‹
 
-    //Ìò¿¦¤ò¥Á¥§¥Ã¥¯¤·¤Æ¥Õ¥é¥°¤ò¥­¥ã¥Ã¥·¥å¤¹¤ë
+    //å½¹è·ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ãƒ•ãƒ©ã‚°ã‚’ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã™ã‚‹
     if(is_null($this->open_cast)) $this->open_cast = $USERS->IsOpenCast();
     return $this->open_cast;
   }
 
-  //¥²¡¼¥à³«»ÏÁ°È½Äê
+  //ã‚²ãƒ¼ãƒ é–‹å§‹å‰åˆ¤å®š
   function IsBeforeGame(){
     return $this->day_night == 'beforegame';
   }
 
-  //¥²¡¼¥àÃæ (Ãë) È½Äê
+  //ã‚²ãƒ¼ãƒ ä¸­ (æ˜¼) åˆ¤å®š
   function IsDay(){
     return $this->day_night == 'day';
   }
 
-  //¥²¡¼¥àÃæ (Ìë) È½Äê
+  //ã‚²ãƒ¼ãƒ ä¸­ (å¤œ) åˆ¤å®š
   function IsNight(){
     return $this->day_night == 'night';
   }
 
-  //¥²¡¼¥à½ªÎ»¸åÈ½Äê
+  //ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œåˆ¤å®š
   function IsAfterGame(){
     return $this->day_night == 'aftergame';
   }
 
-  //¥²¡¼¥àÃæÈ½Äê (²¾ÁÛ½èÍı¤ò¤¹¤ë°Ù¤Ë status ¤Ç¤ÏÈ½Äê¤·¤Ê¤¤)
+  //ã‚²ãƒ¼ãƒ ä¸­åˆ¤å®š (ä»®æƒ³å‡¦ç†ã‚’ã™ã‚‹ç‚ºã« status ã§ã¯åˆ¤å®šã—ãªã„)
   function IsPlaying(){
     return $this->IsDay() || $this->IsNight();
   }
 
-  //¥²¡¼¥à½ªÎ»È½Äê
+  //ã‚²ãƒ¼ãƒ çµ‚äº†åˆ¤å®š
   function IsFinished(){
     return $this->status == 'finished';
   }
 
-  //ÆÃ¼ì¥¤¥Ù¥ó¥ÈÈ½Äê
+  //ç‰¹æ®Šã‚¤ãƒ™ãƒ³ãƒˆåˆ¤å®š
   function IsEvent($type){
     return $this->event->$type;
   }
 
-  //È¯¸ÀÅĞÏ¿
+  //ç™ºè¨€ç™»éŒ²
   function Talk($sentence, $uname = '', $location = '', $font_type = NULL, $spend_time = 0){
     if(empty($uname)) $uname = 'system';
     if(empty($location)) $location = $this->day_night . ' system';
@@ -283,14 +283,14 @@ class Room{
     return InsertDatabase('talk', $items, $values);
   }
 
-  //Ä¶²á·Ù¹ğ¥á¥Ã¥»¡¼¥¸ÅĞÏ¿
+  //è¶…éè­¦å‘Šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç™»éŒ²
   function OvertimeAlert($str){
     $query = $this->GetQuery(true, 'talk') . " AND location = '{$this->day_night} system' " .
       "AND uname = 'system' AND sentence = '{$str}'";
     return FetchResult($query) == 0 ? $this->Talk($str) : false;
   }
 
-  //¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸ÅĞÏ¿
+  //ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç™»éŒ²
   function SystemMessage($str, $type){
     global $RQ_ARGS;
 
@@ -314,40 +314,62 @@ class Room{
     return InsertDatabase('system_message', $items, $values);
   }
 
-  //ºÇ½ª¹¹¿·»ş¹ï¤ò¹¹¿·
+  //æœ€çµ‚æ›´æ–°æ™‚åˆ»ã‚’æ›´æ–°
   function UpdateTime($commit = false){
     if($this->test_mode) return true;
     SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP()' . $this->GetQuery(false));
     return $commit ? SendCommit() : true;
   }
 
-  //Ìë¤Ë¤¹¤ë
+  //å¤œã«ã™ã‚‹
   function ChangeNight(){
     $this->day_night = 'night';
     SendQuery("UPDATE room SET day_night = '{$this->day_night}'" . $this->GetQuery(false));
-    $this->Talk('NIGHT'); //Ìë¤¬¤­¤¿ÄÌÃÎ
+    $this->Talk('NIGHT'); //å¤œãŒããŸé€šçŸ¥
   }
 
-  //¼¡¤ÎÆü¤Ë¤¹¤ë
+  //æ¬¡ã®æ—¥ã«ã™ã‚‹
   function ChangeDate(){
     $this->date++;
     $this->day_night = 'day';
     SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day' WHERE room_no = {$this->id}");
 
-    //Ìë¤¬ÌÀ¤±¤¿ÄÌÃÎ
+    //å¤œãŒæ˜ã‘ãŸé€šçŸ¥
     $this->Talk("MORNING\t" . $this->date);
-    $this->SystemMessage(1, 'VOTE_TIMES'); //½è·ºÅêÉ¼¤Î¥«¥¦¥ó¥È¤ò 1 ¤Ë½é´ü²½(ºÆÅêÉ¼¤ÇÁı¤¨¤ë)
-    $this->UpdateTime(); //ºÇ½ª½ñ¤­¹ş¤ß¤ò¹¹¿·
-    //DeleteVote(); //º£¤Ş¤Ç¤ÎÅêÉ¼¤òÁ´Éôºï½ü
+    $this->SystemMessage(1, 'VOTE_TIMES'); //å‡¦åˆ‘æŠ•ç¥¨ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’ 1 ã«åˆæœŸåŒ–(å†æŠ•ç¥¨ã§å¢—ãˆã‚‹)
+    $this->UpdateTime(); //æœ€çµ‚æ›¸ãè¾¼ã¿ã‚’æ›´æ–°
+    //DeleteVote(); //ä»Šã¾ã§ã®æŠ•ç¥¨ã‚’å…¨éƒ¨å‰Šé™¤
 
-    CheckVictory(); //¾¡ÇÔ¤Î¥Á¥§¥Ã¥¯
-    SendCommit(); //°ì±ş¥³¥ß¥Ã¥È
+    $status = CheckVictory(); //å‹æ•—ã®ãƒã‚§ãƒƒã‚¯
+    SendCommit(); //ä¸€å¿œã‚³ãƒŸãƒƒãƒˆ
+    return $status;
   }
 
-  //Â¼¤Î¥¿¥¤¥È¥ë¥¿¥°¤òÀ¸À®
+  //æ˜¼ã‚’é£›ã°ã™
+  function SkipDay(){
+    global $USERS;
+
+    $USERS->SetEvent(true);
+    if($this->IsEvent('skip_day')){
+      $this->ChangeNight();
+      $this->talk('ç™½æ¾¤ã®èƒ½åŠ›ã§æ˜¼ãŒé£›ã°ã•ã‚Œã¾ã—ãŸâ€¦â€¦');
+      $this->SkipNight();
+    }
+    return true;
+  }
+
+  //å¤œã‚’é£›ã°ã™
+  function SkipNight(){
+    if($this->IsEvent('skip_night')){
+      AggregateVoteNight(true);
+      $this->talk('ç™½æ¾¤ã®èƒ½åŠ›ã§å¤œãŒé£›ã°ã•ã‚Œã¾ã—ãŸâ€¦â€¦');
+    }
+  }
+
+  //æ‘ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚¿ã‚°ã‚’ç”Ÿæˆ
   function GenerateTitleTag(){
-    return '<td class="room"><span>' . $this->name . 'Â¼</span>¡¡[' . $this->id .
-      'ÈÖÃÏ]<br>¡Á' . $this->comment . '¡Á</td>'."\n";
+    return '<td class="room"><span>' . $this->name . 'æ‘</span>ã€€[' . $this->id .
+      'ç•ªåœ°]<br>ã€œ' . $this->comment . 'ã€œ</td>'."\n";
   }
 }
 
@@ -415,7 +437,7 @@ SQL;
       }
     }
     else {
-      die('Â¼°ìÍ÷¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿');
+      die('æ‘ä¸€è¦§ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ');
     }
     return $result;
   }

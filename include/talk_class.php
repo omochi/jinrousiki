@@ -7,7 +7,7 @@ class Talk{
   }
 
   function ParseLocation($location = NULL){
-    if($location != NULL) $this->location = $location; //½é´ü²½½èÍý
+    if(! is_null($location)) $this->location = $location; //åˆæœŸåŒ–å‡¦ç†
 
     list($scene, $type) = explode(' ', $this->location);
     $this->scene = $scene;
@@ -17,10 +17,9 @@ class Talk{
   function ParseSentence($sentence = NULL){
     global $GAME_CONF, $MESSAGE;
 
-    //½é´ü²½½èÍý
-    is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence;
+    is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence; //åˆæœŸåŒ–å‡¦ç†
 
-    switch($this->uname){ //¥·¥¹¥Æ¥à¥æ¡¼¥¶·Ï¤Î½èÍý
+    switch($this->uname){ //ã‚·ã‚¹ãƒ†ãƒ ãƒ¦ãƒ¼ã‚¶ç³»ã®å‡¦ç†
     case 'system':
       $action = strtok($sentence, "\t");
       switch($action){
@@ -38,16 +37,16 @@ class Talk{
     case 'dummy_boy':
       if($this->type == 'system') break;
       if($this->type == $this->uname){
-	if($GAME_CONF->quote_words) $sentence = '¡Ö' . $sentence . '¡×';
+	if($GAME_CONF->quote_words) $sentence = 'ã€Œ' . $sentence . 'ã€';
 	$this->sentence = $MESSAGE->dummy_boy . $sentence;
       }
       return;
     }
 
-    if($this->type == 'system'){ //ÅêÉ¼¥Ç¡¼¥¿·Ï
+    if($this->type == 'system'){ //æŠ•ç¥¨ãƒ‡ãƒ¼ã‚¿ç³»
       $this->action = strtok($sentence, "\t");
       $action = strtolower($this->action);
-      switch($this->action){ //ÂçÊ¸»ú¾®Ê¸»ú¤ò¤­¤Á¤ó¤È¶èÊÌ¤·¤Æ¥Þ¥Ã¥Á¥ó¥°¤¹¤ë
+      switch($this->action){ //å¤§æ–‡å­—å°æ–‡å­—ã‚’ãã¡ã‚“ã¨åŒºåˆ¥ã—ã¦ãƒžãƒƒãƒãƒ³ã‚°ã™ã‚‹
       case 'OBJECTION':
 	$this->sentence = ' ' . $MESSAGE->objection;
 	return;
@@ -121,7 +120,7 @@ class Talk{
 	$this->class = strtr($action, '_', '-');
 	break;
       }
-      $this->sentence = ' ¤Ï ' . strtok("\t") . ' ' . $MESSAGE->$action;
+      $this->sentence = ' ã¯ ' . strtok("\t") . ' ' . $MESSAGE->$action;
       return;
     }
   }

@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
 <html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>��Ͽ�ϵ�ʤ�䡩[ȯ��]</title>
+<title>汝は人狼なりや？[発言]</title>
 <link rel="stylesheet" href="css/game_up.css">
 <link rel="stylesheet" id="day_night">
 <script type="text/javascript" src="javascript/game_up.js"></script>
@@ -18,26 +18,26 @@ if($_GET['heaven_mode'] == 'on') $url_argv .= '&heaven_mode=on';
 if($_GET['list_down']   == 'on') $url_argv .= '&list_down=on';
 $header = '<form method="POST" action="game_play.php' . $url_argv . '#game_top" target="bottom" ';
 
-//�ڡ����ɤ߹��߻��˼�ư�ǥ�����ɤ�����ߡ������ե�����
+//ページ読み込み時に自動でリロードするダミー送信フォーム
 echo $header . 'name="reload_game"></form>'."\n";
 
-//�����ѥե�����
+//送信用フォーム
 $submit = 'set_focus();';
-//���å⡼�ɤλ���ȯ���ѥե졼��ǥ�����ɡ��񤭹��ߤ����Ȥ��˿�����Υե졼��������ɤ���
+//霊話モードの時は発言用フレームでリロード、書き込みしたときに真ん中のフレームもリロードする
 if($_GET['heaven_mode'] == 'on') $submit .= 'reload_middle_frame();';
 echo $header . 'class="input-say" name="send" onSubmit="' . $submit . '">'."\n";
 ?>
 <table><tr>
 <td><textarea name="say" rows="3" cols="70" wrap="soft"></textarea></td>
 <td>
-<input type="submit" onclick="setTimeout(&quot;auto_clear()&quot;, 10)" value="����/�������"><br>
+<input type="submit" onclick="setTimeout(&quot;auto_clear()&quot;, 10)" value="送信/リロード"><br>
 <select name="font_type">
-<option value="strong">����ȯ������</option>
-<option value="normal" selected>�̾��̤�ȯ������</option>
-<option value="weak">�夯ȯ������</option>
-<option value="last_words">�����Ĥ�</option>
+<option value="strong">強く発言する</option>
+<option value="normal" selected>通常通り発言する</option>
+<option value="weak">弱く発言する</option>
+<option value="last_words">遺言を残す</option>
 </select><br>
-<?php echo '[<a class="vote" href="game_vote.php' . $url_argv . '#game_top">��ɼ/�ꤦ/���</a>]' ?>
+<?php echo '[<a class="vote" href="game_vote.php' . $url_argv . '#game_top">投票/占う/護衛</a>]' ?>
 <a class="top-link" href="./" target="_top">TOP</a>
 </td>
 </tr></table>

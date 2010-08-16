@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡¹¬±¿ (good_luck)
-  ¡û»ÅÍÍ
-  ¡¦½è·ºÅêÉ¼¤¬ÙÉ¹³¤·¤¿¤é¼«Ê¬¤¬¸õÊä¤«¤é½ü³°¤µ¤ì¤ë
+  â—†å¹¸é‹ (good_luck)
+  â—‹ä»•æ§˜
+  ãƒ»å‡¦åˆ‘æŠ•ç¥¨ãŒæ‹®æŠ—ã—ãŸã‚‰è‡ªåˆ†ãŒå€™è£œã‹ã‚‰é™¤å¤–ã•ã‚Œã‚‹
 */
 class Role_good_luck extends Role{
   function Role_good_luck(){ $this->__construct(); }
@@ -21,7 +21,7 @@ class Role_good_luck extends Role{
       return;
     }
     unset($ROLES->stack->vote_possible[$key]);
-    if(count($ROLES->stack->vote_possible) == 1){ //¤³¤Î»þÅÀ¤Ç¸õÊä¤¬°ì¿Í¤Ê¤é½è·º¼Ô·èÄê
+    if(count($ROLES->stack->vote_possible) == 1){ //ã“ã®æ™‚ç‚¹ã§å€™è£œãŒä¸€äººãªã‚‰å‡¦åˆ‘è€…æ±ºå®š
       $uname = array_shift($ROLES->stack->vote_possible);
     }
   }

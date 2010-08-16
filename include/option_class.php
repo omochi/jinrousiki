@@ -39,7 +39,7 @@ class OptionManager{
 
   function Option($value){
     $this->__construct($value);
-    //¥­¥ã¥Ã¥·¥å¤ÎÀ¸À®
+    //ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ç”Ÿæˆ
     foreach($this->options as $name => $value) $this->__get($name);
   }
 

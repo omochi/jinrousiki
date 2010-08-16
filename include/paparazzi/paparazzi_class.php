@@ -51,13 +51,13 @@ class Paparazzi{
 
     $this->ModifySchema();
 
-    //¥·¡¼¥ó¤ÎÅÐÏ¿
+    //ã‚·ãƒ¼ãƒ³ã®ç™»éŒ²
     $items  = 'room_no, reported_time, uname, action';
     $values = "$room_no, '{$this->date}', '$uname', '$action'";
     shot(InsetDataBase('pp_articles', $items, $values));
     $article_id = mysql_insert_id();
 
-    //¥í¥°¤Îµ­Ï¿
+    //ãƒ­ã‚°ã®è¨˜éŒ²
     $items = 'article_id, step_no, elapsed_time, category, note';
     foreach ($this->log as $i => $item){
       extract($item, EXTR_PREFIX_ALL, 'unsafe');

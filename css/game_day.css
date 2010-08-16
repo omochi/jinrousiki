@@ -1,19 +1,19 @@
 body{
-  background-color: #FFFAF0; /* ÇØ·Ê¿§ */
-  color: #000000; /* Ê¸»ú¿§ */
+  background-color: #FFFAF0; /* èƒŒæ™¯è‰² */
+  color: #000000; /* æ–‡å­—è‰² */
 }
 a:link{   color: #0000FF;}
 a:visited{color: #0000FF;}
 a:active{ color: #FF0000;}
 a:hover{  color: #FF0000;}
 .real-time input{
-  background-color: #FFFAF0; /* body ¤ÎÇØ·Ê¿§¤ÈÂ·¤¨¤Æ¤¯¤À¤µ¤¤ */
-  color: #000000; /* body ¤ÎÊ¸»ú¿§¤ÈÂ·¤¨¤Æ¤¯¤À¤µ¤¤ */
+  background-color: #FFFAF0; /* body ã®èƒŒæ™¯è‰²ã¨æƒãˆã¦ãã ã•ã„ */
+  color: #000000; /* body ã®æ–‡å­—è‰²ã¨æƒãˆã¦ãã ã•ã„ */
 }
 .vote-page{border-color: #000000;}
 .vote-page td{
   border-color: #000000;
-  color: #000000; /* body ¤ÎÊ¸»ú¿§¤ÈÂ·¤¨¤Æ¤¯¤À¤µ¤¤ */
+  color: #000000; /* body ã®æ–‡å­—è‰²ã¨æƒãˆã¦ãã ã•ã„ */
 }
 .vote-list{   border-color: #000000;}
 .vote-list td{border-color: #000000;}

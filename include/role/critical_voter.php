@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡²ñ¿´ (critical_voter)
-  ¡û»ÅÍÍ
-  ¡¦5% ¤Î³ÎÎ¨¤ÇÅêÉ¼¿ô¤¬ +100 ¤µ¤ì¤ë
+  â—†ä¼šå¿ƒ (critical_voter)
+  â—‹ä»•æ§˜
+  ãƒ»5% ã®ç¢ºçŽ‡ã§æŠ•ç¥¨æ•°ãŒ +100 ã•ã‚Œã‚‹
 */
 class Role_critical_voter extends Role{
   function Role_critical_voter(){ $this->__construct(); }

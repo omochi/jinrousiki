@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡È¿µÕ¼Ô (rebel)
-  ¡û»ÅÍÍ
-  ¡¦¸¢ÎÏ¼Ô¤ÈÆ±¤¸¿Í¤ËÅêÉ¼¤¹¤ë¤È£°É¼¤Ë¤Ê¤ë
+  â—†åé€†è€… (rebel)
+  â—‹ä»•æ§˜
+  ãƒ»æ¨©åŠ›è€…ã¨åŒã˜äººã«æŠ•ç¥¨ã™ã‚‹ã¨ï¼ç¥¨ã«ãªã‚‹
 */
 class Role_rebel extends Role{
   function Role_rebel(){ $this->__construct(); }
@@ -17,15 +17,15 @@ class Role_rebel extends Role{
   function FilterRebel(&$message_list, &$count_list){
     global $ROLES;
 
-    //Ç½ÎÏÈ¯Æ°È½Äê
+    //èƒ½åŠ›ç™ºå‹•åˆ¤å®š
     if(is_null($ROLES->stack->authority) || is_null($ROLES->stack->rebel) ||
        $ROLES->stack->authority_uname != $ROLES->stack->rebel_uname) return;
 
-    //¸¢ÎÏ¼Ô¤ÈÈ¿µÕ¼Ô¤ÎÅêÉ¼¿ô¤ò 0 ¤Ë¤¹¤ë
+    //æ¨©åŠ›è€…ã¨åé€†è€…ã®æŠ•ç¥¨æ•°ã‚’ 0 ã«ã™ã‚‹
     $message_list[$ROLES->stack->authority]['vote_number'] = 0;
     $message_list[$ROLES->stack->rebel]['vote_number'] = 0;
 
-    //ÅêÉ¼Àè¤ÎÆÀÉ¼¿ô¤òÊäÀµ¤¹¤ë
+    //æŠ•ç¥¨å…ˆã®å¾—ç¥¨æ•°ã‚’è£œæ­£ã™ã‚‹
     $uname = $ROLES->stack->rebel_uname;
     if($message_list[$uname]['voted_number'] > 3)
       $message_list[$uname]['voted_number'] -= 3;

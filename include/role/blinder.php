@@ -1,13 +1,13 @@
 <?php
 /*
-  ¢¡ÌÜ±£¤· (blinder)
-  ¡û»ÅÍÍ
-  ¡¦¼«Ê¬°Ê³°¤Î¥Ï¥ó¥É¥ë¥Í¡¼¥à¤¬¸«¤¨¤Ê¤¯¤Ê¤ë
-  ¡¦¿ÍÏµ¤Î±óËÊ¤¨¡¢¶¦Í­¼Ô¤Î¤Ò¤½¤Ò¤½À¼¤Ë¤Ï±Æ¶Á¤·¤Ê¤¤
-  ¡¦¥²¡¼¥à¥×¥ì¥¤Ãæ¤ÇÀ¸Â¸»þ¤Î¤ßÍ­¸ú
+  â—†ç›®éš ã— (blinder)
+  â—‹ä»•æ§˜
+  ãƒ»è‡ªåˆ†ä»¥å¤–ã®ãƒãƒ³ãƒ‰ãƒ«ãƒãƒ¼ãƒ ãŒè¦‹ãˆãªããªã‚‹
+  ãƒ»äººç‹¼ã®é å ãˆã€å…±æœ‰è€…ã®ã²ãã²ãå£°ã«ã¯å½±éŸ¿ã—ãªã„
+  ãƒ»ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ã§ç”Ÿå­˜æ™‚ã®ã¿æœ‰åŠ¹
 
-  ¡ûÌäÂêÅÀ
-  ¡¦´ÑÀï¥â¡¼¥É¤Ë¤¹¤ë¤ÈÉáÄÌ¤Ë¸«¤¨¤Æ¤·¤Þ¤¦
+  â—‹å•é¡Œç‚¹
+  ãƒ»è¦³æˆ¦ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹ã¨æ™®é€šã«è¦‹ãˆã¦ã—ã¾ã†
 */
 class Role_blinder extends RoleTalkFilter{
   function Role_blinder(){ $this->__construct(); }
@@ -15,6 +15,6 @@ class Role_blinder extends RoleTalkFilter{
 
   function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
     if($this->Ignored() || $this->IsSameUser($user->uname)) return;
-    $user_info = '<font style="color:' . $user->color . '">¢¡</font>';
+    $user_info = '<font style="color:' . $user->color . '">â—†</font>';
   }
 }

@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡¾®¿´¼Ô (chicken)
-  ¡û»ÅÍÍ
-  ¡¦ÅêÉ¼¤µ¤ì¤Æ¤¤¤¿¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†å°å¿ƒè€… (chicken)
+  â—‹ä»•æ§˜
+  ãƒ»æŠ•ç¥¨ã•ã‚Œã¦ã„ãŸã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_chicken extends Role{
   function Role_chicken(){ $this->__construct(); }

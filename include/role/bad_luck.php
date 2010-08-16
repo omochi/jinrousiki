@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÉÔ±¿ (bad_luck)
-  ¡û»ÅÍÍ
-  ¡¦½è·ºÅêÉ¼¤¬ÙÉ¹³¤·¤¿¤é¼«Ê¬¤¬½è·º¤µ¤ì¤ë
+  â—†ä¸é‹ (bad_luck)
+  â—‹ä»•æ§˜
+  ãƒ»å‡¦åˆ‘æŠ•ç¥¨ãŒæ‹®æŠ—ã—ãŸã‚‰è‡ªåˆ†ãŒå‡¦åˆ‘ã•ã‚Œã‚‹
 */
 class Role_bad_luck extends Role{
   function Role_bad_luck(){ $this->__construct(); }

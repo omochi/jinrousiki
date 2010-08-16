@@ -1,10 +1,10 @@
 <?php
-//-- ÇÛÌòÀßÄê --//
+//-- é…å½¹è¨­å®š --//
 class CastConfig extends CastConfigBase{
-  //-- ÇÛÌò¥Æ¡¼¥Ö¥ë --//
-  /* ÀßÄê¤Î¸«Êı
-    [¥²¡¼¥à»²²Ã¿Í¿ô] => array([ÇÛÌòÌ¾1] => [ÇÛÌòÌ¾1¤Î¿Í¿ô], [ÇÛÌòÌ¾2] => [ÇÛÌòÌ¾2¤Î¿Í¿ô], ...),
-    ¥²¡¼¥à»²²Ã¿Í¿ô¤ÈÇÛÌòÌ¾¤Î¿Í¿ô¤Î¹ç·×¤¬¹ç¤ï¤Ê¤¤¾ì¹ç¤Ï¥²¡¼¥à³«»ÏÅêÉ¼»ş¤Ë¥¨¥é¡¼¤¬ÊÖ¤ë
+  //-- é…å½¹ãƒ†ãƒ¼ãƒ–ãƒ« --//
+  /* è¨­å®šã®è¦‹æ–¹
+    [ã‚²ãƒ¼ãƒ å‚åŠ äººæ•°] => array([é…å½¹å1] => [é…å½¹å1ã®äººæ•°], [é…å½¹å2] => [é…å½¹å2ã®äººæ•°], ...),
+    ã‚²ãƒ¼ãƒ å‚åŠ äººæ•°ã¨é…å½¹åã®äººæ•°ã®åˆè¨ˆãŒåˆã‚ãªã„å ´åˆã¯ã‚²ãƒ¼ãƒ é–‹å§‹æŠ•ç¥¨æ™‚ã«ã‚¨ãƒ©ãƒ¼ãŒè¿”ã‚‹
   */
   var $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
@@ -55,38 +55,38 @@ class CastConfig extends CastConfigBase{
     49 => array('human' => 48, 'wolf' => 1),
     50 => array('human' => 49, 'wolf' => 1)
                          );
-  //-- Ìò¿¦½Ğ¸½¿Í¿ô --//
-  //³ÆÌò¿¦¤Î½Ğ¸½¤ËÉ¬Í×¤Ê¿Í¿ô¤òÀßÄê¤¹¤ë
-  var $poison         = 20; //ËäÆÇ¼Ô [Â¼¿Í2 ¢ª ËäÆÇ¼Ô1¡¢¿ÍÏµ1]
-  var $assassin       = 22; //°Å»¦¼Ô [Â¼¿Í2 ¢ª °Å»¦¼Ô1¡¢¿ÍÏµ1]
-  var $boss_wolf      = 18; //ÇòÏµ [¿ÍÏµ1 ¢ª ÇòÏµ]
-  var $poison_wolf    = 20; //ÆÇÏµ (+ Ìô»Õ) [¿ÍÏµ1 ¢ª ÆÇÏµ1¡¢Â¼¿Í1 ¢ª Ìô»Õ1]
-  var $possessed_wolf = 17; //ØáÏµ [¿ÍÏµ1 ¢ª ØáÏµ1]
-  var $sirius_wolf    = 17; //Å·Ïµ [¿ÍÏµ1 ¢ª Å·Ïµ1]
-  var $cupid          = 16; //¥­¥å¡¼¥Ô¥Ã¥É (14¿Í¤ÎÊı¤Ï¸½ºß¥Ï¡¼¥É¥³¡¼¥É) [Â¼¿Í1 ¢ª ¥­¥å¡¼¥Ô¥Ã¥É1]
-  var $medium         = 20; //Öà½÷ (+ ½÷¿À) [Â¼¿Í2 ¢ª Öà½÷1¡¢½÷¿À1]
-  var $mania          = 16; //¿ÀÏÃ¥Ş¥Ë¥¢ [Â¼¿Í1 ¢ª ¿ÀÏÃ¥Ş¥Ë¥¢1]
-  var $decide         = 16; //·èÄê¼Ô [·óÇ¤]
-  var $authority      = 16; //¸¢ÎÏ¼Ô [·óÇ¤]
+  //-- å½¹è·å‡ºç¾äººæ•° --//
+  //å„å½¹è·ã®å‡ºç¾ã«å¿…è¦ãªäººæ•°ã‚’è¨­å®šã™ã‚‹
+  var $poison         = 20; //åŸ‹æ¯’è€… [æ‘äºº2 â†’ åŸ‹æ¯’è€…1ã€äººç‹¼1]
+  var $assassin       = 22; //æš—æ®ºè€… [æ‘äºº2 â†’ æš—æ®ºè€…1ã€äººç‹¼1]
+  var $boss_wolf      = 18; //ç™½ç‹¼ [äººç‹¼1 â†’ ç™½ç‹¼]
+  var $poison_wolf    = 20; //æ¯’ç‹¼ (+ è–¬å¸«) [äººç‹¼1 â†’ æ¯’ç‹¼1ã€æ‘äºº1 â†’ è–¬å¸«1]
+  var $possessed_wolf = 17; //æ†‘ç‹¼ [äººç‹¼1 â†’ æ†‘ç‹¼1]
+  var $sirius_wolf    = 17; //å¤©ç‹¼ [äººç‹¼1 â†’ å¤©ç‹¼1]
+  var $cupid          = 16; //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ (14äººã®æ–¹ã¯ç¾åœ¨ãƒãƒ¼ãƒ‰ã‚³ãƒ¼ãƒ‰) [æ‘äºº1 â†’ ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰1]
+  var $medium         = 20; //å·«å¥³ (+ å¥³ç¥) [æ‘äºº2 â†’ å·«å¥³1ã€å¥³ç¥1]
+  var $mania          = 16; //ç¥è©±ãƒãƒ‹ã‚¢ [æ‘äºº1 â†’ ç¥è©±ãƒãƒ‹ã‚¢1]
+  var $decide         = 16; //æ±ºå®šè€… [å…¼ä»»]
+  var $authority      = 16; //æ¨©åŠ›è€… [å…¼ä»»]
 
-  //´õË¾À©¤ÇÌò¿¦´õË¾¤¬ÄÌ¤ë³ÎÎ¨ (%) (¿ÈÂå¤ï¤ê·¯¤¬¤¤¤ë¾ì¹ç¤Ï 100% ¤Ë¤·¤Æ¤âÊİ¾Ú¤µ¤ì¤Ş¤»¤ó)
+  //å¸Œæœ›åˆ¶ã§å½¹è·å¸Œæœ›ãŒé€šã‚‹ç¢ºç‡ (%) (èº«ä»£ã‚ã‚Šå›ãŒã„ã‚‹å ´åˆã¯ 100% ã«ã—ã¦ã‚‚ä¿è¨¼ã•ã‚Œã¾ã›ã‚“)
   var $wish_role_rate = 100;
 
-  //¿ÈÂå¤ï¤ê·¯¤¬¤Ê¤é¤Ê¤¤Ìò¿¦¥°¥ë¡¼¥×¤Î¥ê¥¹¥È (¿ÍÏµ¡¦ÍÅ¸Ñ¿Ø±Ä¤Ï¾ï»şÂĞ¾İ³°¤Ê¤Î¤ÇÀßÄêÉÔÍ×)
+  //èº«ä»£ã‚ã‚Šå›ãŒãªã‚‰ãªã„å½¹è·ã‚°ãƒ«ãƒ¼ãƒ—ã®ãƒªã‚¹ãƒˆ (äººç‹¼ãƒ»å¦–ç‹é™£å–¶ã¯å¸¸æ™‚å¯¾è±¡å¤–ãªã®ã§è¨­å®šä¸è¦)
   var $disable_dummy_boy_role_list = array('poison');
 
-  //-- ¿¿¡¦°ÇÆé¤ÎÇÛÌòÀßÄê --//
-  //¸ÇÄêÇÛÌò (ÉáÄÌ°ÇÆé)
+  //-- çœŸãƒ»é—‡é‹ã®é…å½¹è¨­å®š --//
+  //å›ºå®šé…å½¹ (æ™®é€šé—‡é‹)
   var $chaos_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //¸ÇÄêÇÛÌò (¿¿¡¦°ÇÆé)
+  //å›ºå®šé…å½¹ (çœŸãƒ»é—‡é‹)
   var $chaosfull_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //¸ÇÄêÇÛÌò (Ä¶¡¦°ÇÆé)
+  //å›ºå®šé…å½¹ (è¶…ãƒ»é—‡é‹)
   var $chaos_hyper_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //¿ÍÏµ¤ÎºÇÄã½Ğ¸½ÏÈ (Ìò¿¦Ì¾ => ½Ğ¸½Èæ)
-  //ÉáÄÌ°ÇÆé
+  //äººç‹¼ã®æœ€ä½å‡ºç¾æ  (å½¹è·å => å‡ºç¾æ¯”)
+  //æ™®é€šé—‡é‹
   var $chaos_wolf_list = array(
     'wolf'           => 60,
     'boss_wolf'      =>  5,
@@ -94,7 +94,7 @@ class CastConfig extends CastConfigBase{
     'tongue_wolf'    =>  5,
     'silver_wolf'    => 20);
 
-  //¿¿¡¦°ÇÆé
+  //çœŸãƒ»é—‡é‹
   var $chaosfull_wolf_list = array(
     'wolf'           => 74,
     'boss_wolf'      =>  2,
@@ -105,7 +105,7 @@ class CastConfig extends CastConfigBase{
     'cute_wolf'      => 10,
     'silver_wolf'    =>  2);
 
-  //Ä¶¡¦°ÇÆé
+  //è¶…ãƒ»é—‡é‹
   var $chaos_hyper_wolf_list = array(
     'wolf'           => 54,
     'boss_wolf'      =>  3,
@@ -128,13 +128,13 @@ class CastConfig extends CastConfigBase{
     'scarlet_wolf'   =>  3,
     'silver_wolf'    =>  2);
 
-  //ÍÅ¸Ñ¤ÎºÇÄã½Ğ¸½ÏÈ (Ìò¿¦Ì¾ => ½Ğ¸½Èæ)
-  //ÉáÄÌ°ÇÆé
+  //å¦–ç‹ã®æœ€ä½å‡ºç¾æ  (å½¹è·å => å‡ºç¾æ¯”)
+  //æ™®é€šé—‡é‹
   var $chaos_fox_list = array(
     'fox'           => 90,
     'child_fox'     => 10);
 
-  //¿¿¡¦°ÇÆé
+  //çœŸãƒ»é—‡é‹
   var $chaosfull_fox_list = array(
     'fox'           => 80,
     'white_fox'     =>  3,
@@ -145,7 +145,7 @@ class CastConfig extends CastConfigBase{
     'silver_fox'    =>  1,
     'child_fox'     =>  5);
 
-  //Ä¶¡¦°ÇÆé
+  //è¶…ãƒ»é—‡é‹
   var $chaos_hyper_fox_list = array(
     'fox'           => 57,
     'white_fox'     =>  2,
@@ -170,8 +170,8 @@ class CastConfig extends CastConfigBase{
     'jammer_fox'    =>  1,
     'miasma_fox'    =>  1);
 
-  //¥é¥ó¥À¥àÇÛÌò¥Æ¡¼¥Ö¥ë (Ìò¿¦Ì¾ => ½Ğ¸½Èæ)
-  //ÉáÄÌ°ÇÆé
+  //ãƒ©ãƒ³ãƒ€ãƒ é…å½¹ãƒ†ãƒ¼ãƒ–ãƒ« (å½¹è·å => å‡ºç¾æ¯”)
+  //æ™®é€šé—‡é‹
   var $chaos_random_role_list = array(
     'human'              => 88,
     'escaper'            => 30,
@@ -206,7 +206,7 @@ class CastConfig extends CastConfigBase{
     'chiroptera'         => 50,
     'mania'              => 10);
 
-  //¿¿¡¦°ÇÆé
+  //çœŸãƒ»é—‡é‹
   var $chaosfull_random_role_list = array(
     'human'              =>  3,
     'suspect'            => 15,
@@ -271,7 +271,7 @@ class CastConfig extends CastConfigBase{
     'mania'              => 20,
     'unknown_mania'      => 10);
 
-  //Ä¶¡¦°ÇÆé
+  //è¶…ãƒ»é—‡é‹
   var $chaos_hyper_random_role_list = array(
     'human'              =>  1,
     'elder'              =>  4,
@@ -435,10 +435,10 @@ class CastConfig extends CastConfigBase{
     'unknown_mania'      =>  5,
     'dummy_mania'        =>  2);
 
-  var $chaos_min_wolf_rate = 10; //¿ÍÏµ¤ÎºÇÄã½Ğ¸½Èæ (Áí¿Í¸ı/N)
-  var $chaos_min_fox_rate  = 15; //ÍÅ¸Ñ¤ÎºÇÄã½Ğ¸½Èæ (Áí¿Í¸ı/N)
+  var $chaos_min_wolf_rate = 10; //äººç‹¼ã®æœ€ä½å‡ºç¾æ¯” (ç·äººå£/N)
+  var $chaos_min_fox_rate  = 15; //å¦–ç‹ã®æœ€ä½å‡ºç¾æ¯” (ç·äººå£/N)
 
-  //Ìò¿¦¥°¥ë¡¼¥×¤ÎºÇÂç½Ğ¸½Î¨ (¥°¥ë¡¼¥× => ºÇÂç¿Í¸ıÈæ)
+  //å½¹è·ã‚°ãƒ«ãƒ¼ãƒ—ã®æœ€å¤§å‡ºç¾ç‡ (ã‚°ãƒ«ãƒ¼ãƒ— => æœ€å¤§äººå£æ¯”)
   var $chaos_role_group_rate_list = array(
     'wolf' => 0.21, 'mad' => 0.14, 'fox' => 0.1, 'child_fox' => 0.08, 'cupid' => 0.1, 'angel' => 0.07,
     'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
@@ -446,33 +446,33 @@ class CastConfig extends CastConfigBase{
     'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15,
     'quiz' => 0.15, 'vampire' => 0.15);
 
-  //Â¼¿Í¤Î½Ğ¸½¾å¸ÂÊäÀµ
-  var $chaos_max_human_rate = 0.1; //Â¼¿Í¤ÎºÇÂç¿Í¸ıÈæ (1.0 = 100%)
-  //Â¼¿Í¤«¤é¿¶¤êÊÖ¤ëÌò¿¦ => ½Ğ¸½Èæ
-  //ÉáÄÌ°ÇÆé
+  //æ‘äººã®å‡ºç¾ä¸Šé™è£œæ­£
+  var $chaos_max_human_rate = 0.1; //æ‘äººã®æœ€å¤§äººå£æ¯” (1.0 = 100%)
+  //æ‘äººã‹ã‚‰æŒ¯ã‚Šè¿”ã‚‹å½¹è· => å‡ºç¾æ¯”
+  //æ™®é€šé—‡é‹
   var $chaos_replace_human_role_list = array('mania' => 1);
 
-  //¿¿¡¦°ÇÆé
+  //çœŸãƒ»é—‡é‹
   var $chaosfull_replace_human_role_list = array('mania' => 7, 'unknown_mania' => 3);
 
-  //Ä¶¡¦°ÇÆé
+  //è¶…ãƒ»é—‡é‹
   var $chaos_hyper_replace_human_role_list = array(
     'mania' => 4, 'trick_mania' => 2, 'soul_mania' => 1,
     'unknown_mania' => 2, 'dummy_mania' => 1);
 
-  //¥µ¥ÖÌò¿¦À©¸Â¡§EASY¥â¡¼¥É
+  //ã‚µãƒ–å½¹è·åˆ¶é™ï¼šEASYãƒ¢ãƒ¼ãƒ‰
   var $chaos_sub_role_limit_easy_list = array(
     'authority', 'critical_voter', 'random_voter', 'rebel', 'watcher', 'decide', 'plague',
     'good_luck', 'bad_luck');
 
-  //¥µ¥ÖÌò¿¦À©¸Â¡§NORMAL¥â¡¼¥É
+  //ã‚µãƒ–å½¹è·åˆ¶é™ï¼šNORMALãƒ¢ãƒ¼ãƒ‰
   var $chaos_sub_role_limit_normal_list = array(
     'authority', 'critical_voter', 'random_voter', 'rebel', 'watcher', 'decide', 'plague',
     'good_luck', 'bad_luck', 'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
     'random_luck', 'strong_voice', 'normal_voice', 'weak_voice', 'upper_voice', 'downer_voice',
     'inside_voice', 'outside_voice', 'random_voice');
 
-  //¤ªº×¤êÂ¼ÀìÍÑÇÛÌò¥Æ¡¼¥Ö¥ë
+  //ãŠç¥­ã‚Šæ‘å°‚ç”¨é…å½¹ãƒ†ãƒ¼ãƒ–ãƒ«
   var $festival_role_list = array(
      8 => array('human' => 2, 'mage' => 1, 'necromancer' => 1, 'wolf' => 1, 'mad' => 1, 'whisper_mad' => 1, 'fox' => 1),
      9 => array('human' => 3 , 'guard' => 3, 'wolf' => 2, 'chiroptera' => 1),
@@ -491,18 +491,18 @@ class CastConfig extends CastConfigBase{
     22 => array('human' => 8, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'poison_cat' => 1, 'wolf' => 4, 'boss_wolf' => 1, 'fox' => 1, 'child_fox' => 1)
 				);
 
-  //·èÆ®Â¼ÇÛÌò¥Ç¡¼¥¿ (¼Âºİ¤Ï InitializeDuel() ¤ÇÀßÄê¤¹¤ë)
-  var $duel_fix_list = array(); //¸ÇÄêÇÛÌò
-  var $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5); //ÇÛÌòÈæÎ¨
+  //æ±ºé—˜æ‘é…å½¹ãƒ‡ãƒ¼ã‚¿ (å®Ÿéš›ã¯ InitializeDuel() ã§è¨­å®šã™ã‚‹)
+  var $duel_fix_list = array(); //å›ºå®šé…å½¹
+  var $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5); //é…å½¹æ¯”ç‡
 
-  //-- ´Ø¿ô --//
-  //·èÆ®Â¼¤ÎÇÛÌò½é´ü²½½èÍı
+  //-- é–¢æ•° --//
+  //æ±ºé—˜æ‘ã®é…å½¹åˆæœŸåŒ–å‡¦ç†
   function InitializeDuel($user_count){
     global $ROOM;
 
-    //-- Îî³¦¼«Æ°¸ø³«¥ª¥×¥·¥ç¥ó¤Ë¤è¤ëÇÛÌòÀßÄêÊ¬´ô --//
-    if($ROOM->IsOption('not_open_cast')){ //Èó¸ø³«
-      //-- ËäÆÇ·èÆ® --//
+    //-- éœŠç•Œè‡ªå‹•å…¬é–‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«ã‚ˆã‚‹é…å½¹è¨­å®šåˆ†å² --//
+    if($ROOM->IsOption('not_open_cast')){ //éå…¬é–‹
+      //-- åŸ‹æ¯’æ±ºé—˜ --//
       $duel_fix_list = array();
       if($user_count >= 20){
 	$duel_fix_list['poison_jealousy'] = 1;
@@ -513,8 +513,8 @@ class CastConfig extends CastConfigBase{
       $duel_rate_list = array('poison' => 5, 'chain_poison' => 10,
 			      'poison_wolf' => 5, 'triangle_cupid' => 2);
     }
-    elseif($ROOM->IsOption('auto_open_cast')){ //¼«Æ°¸ø³«
-      //-- Îø¿§·èÆ® --//
+    elseif($ROOM->IsOption('auto_open_cast')){ //è‡ªå‹•å…¬é–‹
+      //-- æ‹è‰²æ±ºé—˜ --//
       $duel_fix_list = array();
       if($user_count >= 15) $duel_fix_list['howl_scanner'] = 1;
       if($user_count >= 20){
@@ -526,24 +526,24 @@ class CastConfig extends CastConfigBase{
       $duel_rate_list = array('assassin' => 5, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
 			      'triangle_cupid' => 1);
     }
-    else{ //¾ï»ş¸ø³«
-      //-- °Å»¦·èÆ® --//
+    else{ //å¸¸æ™‚å…¬é–‹
+      //-- æš—æ®ºæ±ºé—˜ --//
       $duel_fix_list = array();
       $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5);
     }
 
-    //·ë²Ì¤òÅĞÏ¿
+    //çµæœã‚’ç™»éŒ²
     $this->duel_fix_list  = $duel_fix_list;
     $this->duel_rate_list = $duel_rate_list;
   }
 
-  //·èÆ®Â¼¤ÎÇÛÌòºÇ½ª½èÍı
+  //æ±ºé—˜æ‘ã®é…å½¹æœ€çµ‚å‡¦ç†
   function FinalizeDuel($user_count, &$role_list){
     global $ROOM;
 
-    if($ROOM->IsOption('not_open_cast')){ //Èó¸ø³«
+    if($ROOM->IsOption('not_open_cast')){ //éå…¬é–‹
     }
-    elseif($ROOM->IsOption('auto_open_cast')){ //¼«Æ°¸ø³«
+    elseif($ROOM->IsOption('auto_open_cast')){ //è‡ªå‹•å…¬é–‹
       if($role_list['self_cupid'] > 0 && $role_list['assassin'] > 1){
 	$role_list['assassin']--;
 	$role_list['dummy_chiroptera']++;
@@ -557,25 +557,25 @@ class CastConfig extends CastConfigBase{
 	$role_list['silver_wolf']++;
       }
     }
-    else{ //¾ï»ş¸ø³«
+    else{ //å¸¸æ™‚å…¬é–‹
     }
   }
 
-  //Â¼¿ÍÃÖ´¹Â¼¤Î½èÍı
+  //æ‘äººç½®æ›æ‘ã®å‡¦ç†
   function ReplaceHuman(&$role_list, $count, $option_list){
-    if(in_array('full_mania', $option_list)){ //¿ÀÏÃ¥Ş¥Ë¥¢Â¼
+    if(in_array('full_mania', $option_list)){ //ç¥è©±ãƒãƒ‹ã‚¢æ‘
       $role_list['mania'] += $count;
       $role_list['human'] -= $count;
     }
-    elseif(in_array('full_chiroptera', $option_list)){ //éşéõÂ¼
+    elseif(in_array('full_chiroptera', $option_list)){ //è™è æ‘
       $role_list['chiroptera'] += $count;
       $role_list['human'] -= $count;
     }
-    elseif(in_array('full_cupid', $option_list)){ //¥­¥å¡¼¥Ô¥Ã¥ÉÂ¼
+    elseif(in_array('full_cupid', $option_list)){ //ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰æ‘
       $role_list['cupid'] += $count;
       $role_list['human'] -= $count;
     }
-    elseif(in_array('replace_human', $option_list)){ //Â¼¿ÍÃÖ´¹Â¼
+    elseif(in_array('replace_human', $option_list)){ //æ‘äººç½®æ›æ‘
       $role_list['escaper'] += $count;
       $role_list['human'] -= $count;
     }

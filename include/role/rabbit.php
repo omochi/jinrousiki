@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡¥¦¥µ¥® (rabbit)
-  ¡û»ÅÍÍ
-  ¡¦ÅêÉ¼¤µ¤ì¤Æ¤¤¤Ê¤«¤Ã¤¿¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†ã‚¦ã‚µã‚® (rabbit)
+  â—‹ä»•æ§˜
+  ãƒ»æŠ•ç¥¨ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_rabbit extends Role{
   function Role_rabbit(){ $this->__construct(); }

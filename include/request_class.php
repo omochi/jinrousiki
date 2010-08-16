@@ -1,5 +1,5 @@
 <?php
-//-- °ú¿ô²òÀÏ¤Î´ğÄì¥¯¥é¥¹ --//
+//-- å¼•æ•°è§£æã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class RequestBase{
   function GetItems($items){
     $spec_list = func_get_args();
@@ -55,7 +55,7 @@ class RequestBase{
   }
 }
 
-//-- ¥Æ¥¹¥ÈÍÑ¥Ñ¥é¥á¡¼¥¿ÀßÄê¥¯¥é¥¹ --//
+//-- ãƒ†ã‚¹ãƒˆç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®šã‚¯ãƒ©ã‚¹ --//
 class TestParams extends RequestBase{
   function TestParams(){ $this->__construct(); }
   function __construct(){
@@ -64,7 +64,7 @@ class TestParams extends RequestBase{
   }
 }
 
-//-- game ÍÑ¶¦ÄÌ¥¯¥é¥¹ --//
+//-- game ç”¨å…±é€šã‚¯ãƒ©ã‚¹ --//
 class RequestBaseGame extends RequestBase{
   function RequestBaseGame(){ $this->__construct(); }
   function __construct(){
@@ -78,7 +78,7 @@ class RequestBaseGame extends RequestBase{
   }
 }
 
-//-- game play ÍÑ¶¦ÄÌ¥¯¥é¥¹ --//
+//-- game play ç”¨å…±é€šã‚¯ãƒ©ã‚¹ --//
 class RequestBaseGamePlay extends RequestBaseGame{
   function RequestBaseGamePlay(){ $this->__construct(); }
   function __construct(){
@@ -87,7 +87,7 @@ class RequestBaseGamePlay extends RequestBaseGame{
   }
 }
 
-//-- icon ÍÑ¶¦ÄÌ¥¯¥é¥¹ --//
+//-- icon ç”¨å…±é€šã‚¯ãƒ©ã‚¹ --//
 class RequestBaseIcon extends RequestBase{
   function RequestBaseIcon(){ $this->__construct(); }
   function __construct(){
@@ -137,8 +137,8 @@ class RequestUserManager extends RequestBaseIcon{
     EscapeStrings($this->profile, false);
 
     if($this->room_no < 1){
-      $str = 'Â¼ÈÖ¹æ¥¨¥é¡¼¡§Â¼¤ÎÈÖ¹æ¤¬Àµ¾ï¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£<br>'."\n".'<a href="./">¢«Ìá¤ë</a>';
-      OutputActionResult('Â¼¿ÍÅĞÏ¿ [Â¼ÈÖ¹æ¥¨¥é¡¼]', $str);
+      $str = 'æ‘ç•ªå·ã‚¨ãƒ©ãƒ¼ï¼šæ‘ã®ç•ªå·ãŒæ­£å¸¸ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚<br>'."\n".'<a href="./">â†æˆ»ã‚‹</a>';
+      OutputActionResult('æ‘äººç™»éŒ² [æ‘ç•ªå·ã‚¨ãƒ©ãƒ¼]', $str);
     }
   }
 }
@@ -165,7 +165,7 @@ class RequestGameLog extends RequestBase{
     $this->GetItems(NULL, 'get.day_night');
 
     if($this->IsInvalidScene()){
-      OutputActionResult('°ú¿ô¥¨¥é¡¼', '°ú¿ô¥¨¥é¡¼¡§Ìµ¸ú¤Ê°ú¿ô¤Ç¤¹');
+      OutputActionResult('å¼•æ•°ã‚¨ãƒ©ãƒ¼', 'å¼•æ•°ã‚¨ãƒ©ãƒ¼ï¼šç„¡åŠ¹ãªå¼•æ•°ã§ã™');
     }
   }
 
@@ -186,12 +186,12 @@ class RequestGameLog extends RequestBase{
 
 //-- game_vote.php --//
 class RequestGameVote extends RequestBaseGamePlay{
-  //ÊÑ¿ô¤ÎÍÑÅÓ
+  //å¤‰æ•°ã®ç”¨é€”
   /*
-    vote : ÅêÉ¼¥Ü¥¿¥ó¤ò²¡¤·¤¿ or ÅêÉ¼¥Ú¡¼¥¸¤ÎÉ½¼¨¤ÎÀ©¸æÍÑ
-    vote_times : Ãë¤ÎÅêÉ¼²ó¿ô
-    target_no : ÅêÉ¼Àè¤Î user_no (¥­¥å¡¼¥Ô¥Ã¥É¤¬¤¤¤ë¤¿¤áÃ±½ã¤ËÀ°¿ô·¿¤Ë¥­¥ã¥¹¥È¤·¤Æ¤Ï¤À¤á)
-    situation : ÅêÉ¼¤ÎÊ¬Îà (Kick¡¦½è·º¡¦Àê¤¤¡¦¿ÍÏµ½±·â¤Ê¤É)
+    vote : æŠ•ç¥¨ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸ or æŠ•ç¥¨ãƒšãƒ¼ã‚¸ã®è¡¨ç¤ºã®åˆ¶å¾¡ç”¨
+    vote_times : æ˜¼ã®æŠ•ç¥¨å›æ•°
+    target_no : æŠ•ç¥¨å…ˆã® user_no (ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰ãŒã„ã‚‹ãŸã‚å˜ç´”ã«æ•´æ•°å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ã¯ã ã‚)
+    situation : æŠ•ç¥¨ã®åˆ†é¡ (Kickãƒ»å‡¦åˆ‘ãƒ»å ã„ãƒ»äººç‹¼è¥²æ’ƒãªã©)
   */
   function RequestGameVote(){ $this->__construct(); }
   function __construct(){
@@ -199,7 +199,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     $this->GetItems('intval', 'post.vote_times');
     $this->GetItems('IsOn', 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
-    $this->AttachTestParameters(); //¥Æ¥¹¥ÈÍÑ°ú¿ô¤Î¥í¡¼¥É
+    $this->AttachTestParameters(); //ãƒ†ã‚¹ãƒˆç”¨å¼•æ•°ã®ãƒ­ãƒ¼ãƒ‰
     $this->SetURL();
   }
 
@@ -210,7 +210,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     if($this->list_down)       $url_option .= '&list_down=on';
     $url_option .= '#game_top';
     $this->post_url = 'game_vote.php?' . $url_option;
-    $this->back_url = '<a href="game_up.php?' . $url_option . '">¢«Ìá¤ë &amp; reload</a>';
+    $this->back_url = '<a href="game_up.php?' . $url_option . '">â†æˆ»ã‚‹ &amp; reload</a>';
   }
 }
 

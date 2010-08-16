@@ -2,180 +2,180 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('MESSAGE');
-OutputInfoPageHeader('�ܺ٤ʻ���');
+OutputInfoPageHeader('詳細な仕様');
 ?>
 <p>
-<a href="#decide_role">�������롼����</a>
-<a href="#dummy_boy">�����귯 (GM)</a>
-<a href="#dead">�������</a>
-<a href="#vote">��ɼ</a>
-<a href="#revive_refuse">�������ॷ���ƥ�</a>
+<a href="#decide_role">配役決定ルーチン</a>
+<a href="#dummy_boy">身代わり君 (GM)</a>
+<a href="#dead">死因一覧</a>
+<a href="#vote">投票</a>
+<a href="#revive_refuse">蘇生辞退システム</a>
 </p>
 
-<h2><a id="decide_role">�������롼����</a></h2>
+<h2><a id="decide_role">配役決定ルーチン</a></h2>
 <p>
-<a href="#decide_role_room">¼</a>
-<a href="#decide_role_dummy_boy">�����귯</a>
-<a href="#decide_role_user">�桼��</a>
+<a href="#decide_role_room">村</a>
+<a href="#decide_role_dummy_boy">身代わり君</a>
+<a href="#decide_role_user">ユーザ</a>
 </p>
 
-<h3><a id="decide_role_room">¼</a></h3>
+<h3><a id="decide_role_room">村</a></h3>
 </p>
 <ol>
-<li>���ÿͿ������</li>
-<li>�Ϳ�������ꤵ��Ƥ�������ǡ�������� (<a href="../rule.php" target="_top">�롼��</a>����)</li>
-<li>�ü�¼�ʤ����ƺ����ؤ���</li>
-<li>�̾�¼�ʤ饲���४�ץ����˱����Ƹ��̤������ؤ���</li>
-<li>�������</li>
+<li>参加人数を取得</li>
+<li>人数毎に設定されている配役データを取得 (<a href="../rule.php" target="_top">ルール</a>参照)</li>
+<li>特殊村なら全て差し替える</li>
+<li>通常村ならゲームオプションに応じて個別に入れ替える</li>
+<li>配役決定</li>
 </ol>
 
-<h3><a id="decide_role_dummy_boy">�����귯</a></h3>
+<h3><a id="decide_role_dummy_boy">身代わり君</a></h3>
 <ol>
-<li>��������</li>
-<li>�����������ꥹ�Ȥ���</li>
-<li>�����귯���ʤ���򿦤�������ޤ���Ƭ��������å�</li>
-<li>���ƥ����å����Ƹ��Ĥ���ʤ���Х��顼���֤�</li>
-<li>�������
+<li>配役を取得</li>
+<li>ランダムな配役リストを作る</li>
+<li>身代わり君がなれる役職に当たるまで先頭からチェック</li>
+<li>全てチェックして見つからなければエラーを返す</li>
+<li>配役決定
 </ol>
 
-<h3><a id="decide_role_user">�桼��</a></h3>
+<h3><a id="decide_role_user">ユーザ</a></h3>
 <ol>
-<li>�����귯���������ꤷ�ƥ桼���ꥹ�Ȥ���ַ���Ѥߥꥹ�ȡפذ�ư</li>
-<li>������ʥ桼���ꥹ�Ȥ���</li>
-<li>�ꥹ�Ȥ���Ƭ�οͤδ�˾�򿦤��ǧ</li>
-<li>������˾���Ƥƶ���������Ф��οͤ��򤬷��ꡢ�ַ���Ѥߥꥹ�ȡפذ�ư</li>
-<li>��˾�ʤ����������ʤ���С�̤����ꥹ�ȡפذ�ư</li>
-<li>�������꽪�������̤����ꥹ�ȡפοͤ�;����꿶��</li>
+<li>身代わり君の配役を決定してユーザリストから「決定済みリスト」へ移動</li>
+<li>ランダムなユーザリストを作る</li>
+<li>リストの先頭の人の希望役職を確認</li>
+<li>何か希望してて空きがあればその人の役が決定、「決定済みリスト」へ移動</li>
+<li>希望なしか空きがなければ「未決定リスト」へ移動</li>
+<li>全部振り終えたら「未決定リスト」の人に余りを割り振る</li>
 </ol>
 
-<h2><a id="dummy_boy">�����귯 (GM) �λ���</a></h2>
-<ul>
-<li>����������ཪλ�������ξ��󤬸����ޤ�</li>
-<li>�����೫�����Υ桼���Ρ��򿦡פϡִ�˾�򿦡פǤ�</li>
-<li>ñ�Ȥ� KICK ��ɼ�ǥ桼���򽳤�����ޤ�</li>
-<li>��������ϡְ����ȯ���򤹤�����ѥ����ƥ��å������ˤʤ�ޤ�</li>
-<li>��ɼǽ�Ϥ������򿦤Ǥ��äƤ���ɼ���뤳�ȤϤǤ��ޤ���</li>
-</ul>
+<h2><a id="dummy_boy">身代わり君 (GM) の仕様</a></h2>
+<ol>
+<li>常時、ゲーム終了後相当の情報が見えます</li>
+<li>ゲーム開始前のユーザの「役職」は「希望役職」です</li>
+<li>単独の KICK 投票でユーザを蹴りだせます</li>
+<li>ゲーム中は「遺言」発言をすると専用システムメッセージになります</li>
+<li>投票能力がある役職であっても投票することはできません</li>
+</ol>
 
-<h2><a id="dead">�������</a></h2>
+<h2><a id="dead">死因一覧</a></h2>
 <p>
-<a href="#dead_common">����</a>
-<a href="#dead_day">��</a>
-<a href="#dead_night">��</a>
+<a href="#dead_common">共通</a>
+<a href="#dead_day">昼</a>
+<a href="#dead_night">夜</a>
 </p>
 
-<h3><a id="dead_common">����</a></h3>
-<h4>��<?php echo $MESSAGE->sudden_death ?></h4>
+<h3><a id="dead_common">共通</a></h3>
+<h4>〜<?php echo $MESSAGE->sudden_death ?></h4>
 <ul>
-  <li>̤��ɼ������</li>
+<li>未投票突然死</li>
 </ul>
 
-<h4>��<?php echo $MESSAGE->lovers_followed ?></h4>
+<h4>〜<?php echo $MESSAGE->lovers_followed ?></h4>
 <ul>
-  <li>���͸��ɤ�</li>
+<li>恋人後追い</li>
 </ul>
 
 
-<h3><a id="dead_day">��</a></h3>
-<h4>��<?php echo $MESSAGE->vote_killed ?></h4>
+<h3><a id="dead_day">昼</a></h3>
+<h4>〜<?php echo $MESSAGE->vote_killed ?></h4>
 <ul>
-  <li>�跺</li>
+<li>処刑</li>
 </ul>
 
-<h4>��<?php echo $MESSAGE->deadman ?></h4>
+<h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
-  <li>�� (<a href="new_role/human.php#poison_group">���ǼԷ�</a>�ʤɤ���ǽ�ϼ�)</li>
-  <li>� (<a href="new_role/human.php#trap_common">����</a>)</li>
+<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>などの毒能力者)</li>
+<li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
-<h4>��<?php echo $MESSAGE->vote_sudden_death ?></h4>
+<h4>〜<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
-  <li>����å��� (<a href="new_role/sub_role.php#chicken_group">�����Է�</a>��<a href="new_role/human.php#seal_medium">������</a>��<a href="new_role/human.php#jealousy">��ɱ</a>��<a href="new_role/wolf.php#agitate_mad">��ư��</a>)</li>
+<li>ショック死 (<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/human.php#seal_medium">封印師</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>)</li>
 </ul>
 
-<h3><a id="dead_night">��</a></h3>
-<h4>��<?php echo $MESSAGE->deadman ?></h4>
+<h3><a id="dead_night">夜</a></h3>
+<h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
-  <li>��ϵ���� (<a href="new_role/wolf.php#wolf_group">��ϵ��</a>)</li>
-  <li>��ϵ���� (<a href="new_role/wolf.php#hungry_wolf">��ϵ</a>)</li>
-  <li>������ (<a href="new_role/human.php#sacrifice_cat">ǭ��</a>��<a href="new_role/human.php#doll_master">�ͷ�����</a>��<a href="new_role/chiroptera.php#boss_chiroptera">������</a>)</li>
-  <li>�� (<a href="new_role/human.php#poison_group">���ǼԷ�</a>�ʤɤ���ǽ�ϼ�)</li>
-  <li>� (<a href="new_role/wolf.php#trap_mad">櫻�</a>)</li>
-  <li>�Ż� (<a href="new_role/human.php#assassin_group">�Ż��Է�</a>)</li>
-  <li><a href="new_role/human.php#guard_hunt">����</a> (<a href="new_role/human.php#guard_group">���ͷ�</a>)</li>
-  <li>̴���� (<a href="new_role/wolf.php#dream_eater_mad">��</a>)</li>
-  <li>���� (<a href="new_role/human.php#mage_group">�ꤤ�շ�</a>)</li>
-  <li>���֤� (<a href="new_role/wolf.php#cursed_wolf">��ϵ</a>�ʤɤμ�������ԡ�<a href="new_role/wolf.php#voodoo_mad">���ѻ�</a>�ʤɤμ���ǽ�ϼ�)</li>
-  <li>��� (<a href="new_role/wolf.php#possessed_wolf">��ϵ</a>�ʤɤ����ǽ�ϼ�)</li>
-  <li>��Ͳ��� (<a href="new_role/human.php#anti_voodoo">���</a>)</li>
-  <li>�ͳ����� (<a href="new_role/human.php#reporter">�֥�</a>)</li>
-  <li>���� (<a href="new_role/human.php#revive_priest">ŷ��</a>)</li>
+<li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
+<li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
+<li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)</li>
+<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>などの毒能力者)</li>
+<li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
+<li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
+<li><a href="new_role/human.php#guard_hunt">狩り</a> (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
+<li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
+<li>呪殺 (<a href="new_role/human.php#mage_group">占い師系</a>)</li>
+<li>呪返し (<a href="new_role/wolf.php#cursed_wolf">呪狼</a>などの呪い所持者、<a href="new_role/wolf.php#voodoo_mad">呪術師</a>などの呪術能力者)</li>
+<li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>などの憑依能力者)</li>
+<li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
+<li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
+<li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
-<h4>��<?php echo $MESSAGE->revive_success ?></h4>
+<h4>〜<?php echo $MESSAGE->revive_success ?></h4>
 <ul>
-  <li>���� (<a href="new_role/human.php#poison_cat_group">ǭ����</a>�ʤɤ�����ǽ�ϼԡ�<a href="new_role/human.php#revive_priest">ŷ��</a>)</li>
-</ul>
-
-<h4>��<?php echo $MESSAGE->revive_failed ?></h4>
-<ul>
-  <li>�������� (����餷�������ʤ�) (<a href="new_role/human.php#poison_cat_group">ǭ����</a>�ʤɤ�����ǽ�ϼ�)</li>
+<li>蘇生 (<a href="new_role/human.php#poison_cat_group">猫又系</a>などの蘇生能力者、<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
 
-<h2><a id="vote">��ɼ�����λ���</a></h2>
+<h4>〜<?php echo $MESSAGE->revive_failed ?></h4>
+<ul>
+<li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>などの蘇生能力者)</li>
+</ul>
+
+<h2><a id="vote">投票処理の仕様</a></h2>
 <p>
-<a href="#vote_legend">Ƚ��</a>
-<a href="#vote_day">��</a>
-<a href="#vote_night">��</a>
+<a href="#vote_legend">判例</a>
+<a href="#vote_day">昼</a>
+<a href="#vote_night">夜</a>
 </p>
 
-<h3><a id="vote_legend">Ƚ��</a></h3>
+<h3><a id="vote_legend">判例</a></h3>
 <ul>
-  <li>�֢��׻�������ñ��</li>
-  <li>�֡��Ƚ��ͥ���� (Ƚ����)</li>
+<li>「→」死因決定の単位</li>
+<li>「＞」判定優先順位 (判定上書き)</li>
 </ul>
 
-<h3><a id="vote_day">��</a></h3>
+<h3><a id="vote_day">昼</a></h3>
 <pre>
-+ �������
-  - ��ɼ���� �� �跺�Է��� �� ��Ƚ�� �� ���ɤ�
++ 処理順序
+  - 投票集計 → 処刑者決定 → 役職判定 → 後追い
 
-+ �跺�Է���ˡ§
-  - ñ�ȥȥå� �� ����� �� <a href="new_role/sub_role.php#bad_luck">�Ա�</a> �� <a href="new_role/sub_role.php#impatience">û��</a> �� <a href="new_role/sub_role.php#good_luck">����</a>��ƨ��� �� <a href="new_role/sub_role.php#plague">���¿�</a>����ɼ�褬ƨ���
++ 処刑者決定法則
+  - 単独トップ ＞ 決定者 ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる
 
-+ ��Ƚ���
-  - <a href="new_role/human.php#executor">���Լ�</a> �� <a href="new_role/human.php#saint">����</a> �� <a href="new_role/wolf.php#agitate_mad">��ư��</a> �� <a href="new_role/human.php#pharmacist_group">���շ�</a> �� ����Ƚ�� �� ��ȯưȽ�� ��
-    <a href="new_role/human.php#seal_medium">������</a> �� <a href="new_role/human.php#trap_common">����</a> �� <a href="new_role/human.php#jealousy">��ɱ</a> �� <a href="new_role/sub_role.php#chicken_group">����å���</a>
++ 役職判定順
+  - <a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 →
+    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
 </pre>
 
-<h3><a id="vote_night">��</a></h3>
+<h3><a id="vote_night">夜</a></h3>
 <pre>
-+ �������
-  - ���� �� �ܿ� �� ̴ �� �ꤤ �� &lt;���ˤ��̽���&gt; �� ��� �� ���ɤ� �� �ʺ�
-    &lt;[����] ���ԡ� �� ���� / [�����ܰʹ�] ���� �� ȿ�� �� ����&gt;
++ 処理順序
+  - 恋人 → 接触 → 夢 → 占い → &lt;日にち別処理&gt; → 憑依 → 後追い → 司祭
+    &lt;[初日] コピー → 帰還 / [二日目以降] 尾行 → 反魂 → 蘇生&gt;
 
-+ ���� (<a href="new_role/lovers.php">���Ϳر�</a>)
-  - ��ߺ��ѤϤʤ��Τ���ɼľ��˽�����Ԥ�
++ 恋人 (<a href="new_role/lovers.php">恋人陣営</a>)
+  - 相互作用はないので投票直後に処理を行う
 
-+ �ܿ� (<a href="new_role/human.php#escaper">ƨ˴��</a>��<a href="new_role/human.php#guard_group">���ͷ�</a>��<a href="new_role/human.php#assassin_group">�Ż��Է�</a>��<a href="new_role/human.php#doll_master">�ͷ�����</a>��<a href="new_role/wolf.php#wolf_group">��ϵ��</a>��<a href="new_role/wolf.php#trap_mad">櫻�</a>��<a href="new_role/vampire.php">�۷쵴�ر�</a>��<a href="new_role/chiroptera.php#boss_chiroptera">������</a>)
-  - � �� ���͸�� �� ������ �� ��ϵ���� �� ���ͤμ��� �� �۷쵴���� �� �Ż�
++ 接触 (<a href="new_role/human.php#escaper">逃亡者</a>・<a href="new_role/human.php#guard_group">狩人系</a>・<a href="new_role/human.php#assassin_group">暗殺者系</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/wolf.php#wolf_group">人狼系</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/vampire.php">吸血鬼陣営</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+  - 罠 ＞ 狩人護衛 ＞ 身代わり ＞ 人狼襲撃 → 狩人の狩り → 吸血鬼襲撃 → 暗殺
 
-+ ̴ (<a href="new_role/human.php#dummy_guard">̴���</a>��<a href="new_role/wolf.php#dream_eater_mad">��</a>)
-  - ̴��͸�� �� �ӽ��� �� ̴��ͤμ���
++ 夢 (<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>)
+  - 夢守人護衛 ＞ 獏襲撃 → 夢守人の狩り
 
-+ �ꤤ (<a href="new_role/human.php#mage_group">�ꤤ�շ�</a>¾��<a href="new_role/human.php#anti_voodoo">���</a>��<a href="new_role/wolf.php#jammer_mad">����</a>¾��<a href="new_role/wolf.php#voodoo_mad">���ѻ�</a>¾)
-  - ��ʧ�� �� �ꤤ˸�� �� ���� �� �ꤤ (����)
++ 占い (<a href="new_role/human.php#mage_group">占い師系</a>他・<a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>他・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>他)
+  - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺)
 </pre>
 
-<h2><a id="revive_refuse">�������ॷ���ƥ�</a></h2>
+<h2><a id="revive_refuse">蘇生辞退システム</a></h2>
 <pre>
-��˴�塢����վ��֤λ�����ɼ���̤򥯥�å������
-���������ह���(�ǥե����) �Ȥ����ܥ��󤬽и����ޤ���
-����򥯥�å�����ȡ֥����ƥࡧ��������������ष�ޤ����פȤ���
-�ȯ������������ޤ���
+死亡後、霊界オフ状態の時に投票画面をクリックすると
+「蘇生を辞退する」(デフォルト) というボタンが出現します。
+それをクリックすると「システム：〜さんは蘇生を辞退しました」という
+霊界発言が挿入されます。
 
-���ξ��֤Ǥ��οͤ�����������Ф줿���� 100% �����˼��Ԥ��ޤ���
-��ͤ˴ؤ��륷���ƥ����ȤʤäƤ��ޤ����ᡢ�����ˤϹ��Τ��ޤ���
+この状態でその人が蘇生先に選ばれた場合は 100% 蘇生に失敗します。
+憑依に関するシステム情報となってしまうため、下界には告知しません。
 
-����ϡ���˴��˵ޤ��ѻ������ä�ȴ���ʤ���Фʤ�ʤ��ͤΰ٤εߺ����֤Ǥ���
+これは、死亡後に急な用事が入って抜けなければならない人の為の救済措置です。
 </pre>
 </body></html>

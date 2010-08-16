@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡À»½÷ (saint)
-  ¡û»ÅÍÍ
-  ¡¦½è·ºÅêÉ¼¤¬ÙÉ¹³¤·¤¿¤é¸õÊä¼Ô¤ÎÆâÌõ¤Ë¤è¤Ã¤Æ½è·º¸õÊä¤¬ÊÑ²½¤¹¤ë
+  â—†è–å¥³ (saint)
+  â—‹ä»•æ§˜
+  ãƒ»å‡¦åˆ‘æŠ•ç¥¨ãŒæ‹®æŠ—ã—ãŸã‚‰å€™è£œè€…ã®å†…è¨³ã«ã‚ˆã£ã¦å‡¦åˆ‘å€™è£œãŒå¤‰åŒ–ã™ã‚‹
 */
 class Role_saint extends Role{
   function Role_saint(){ $this->__construct(); }
@@ -16,12 +16,12 @@ class Role_saint extends Role{
     if($uname != '') return;
     $stack = array();
     $target_stack = array();
-    foreach($ROLES->stack->max_voted as $target_uname){//ºÇÂ¿ÆÀÉ¼¼Ô¤Î¾ğÊó¤ò¼ı½¸
-      $user = $USERS->ByRealUname($target_uname); //$target_uname ¤Ï²¾ÁÛ¥æ¡¼¥¶
+    foreach($ROLES->stack->max_voted as $target_uname){//æœ€å¤šå¾—ç¥¨è€…ã®æƒ…å ±ã‚’åé›†
+      $user = $USERS->ByRealUname($target_uname); //$target_uname ã¯ä»®æƒ³ãƒ¦ãƒ¼ã‚¶
       if($user->IsRole('saint')) $stack[] = $target_uname;
       if($user->GetCamp(true) != 'human') $target_stack[] = $target_uname;
     }
-    if(count($stack) > 0 && count($target_stack) < 2){ //ÂĞ¾İ¤ò°ì¿Í¤Ë¸ÇÄê¤Ç¤­¤ë»ş¤Î¤ßÍ­¸ú
+    if(count($stack) > 0 && count($target_stack) < 2){ //å¯¾è±¡ã‚’ä¸€äººã«å›ºå®šã§ãã‚‹æ™‚ã®ã¿æœ‰åŠ¹
       if(isset($target_stack[0])) $uname = $target_stack[0];
       elseif(count($stack) == 1)  $uname = $stack[0];
     }

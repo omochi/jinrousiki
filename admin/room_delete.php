@@ -3,18 +3,18 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 
 if(! $DEBUG_MODE){
-  OutputActionResult('Ç§¾Ú¥¨¥é¡¼', '¤³¤Î¥¹¥¯¥ê¥×¥È¤Ï»ÈÍÑ¤Ç¤­¤Ê¤¤ÀßÄê¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£');
+  OutputActionResult('èªè¨¼ã‚¨ãƒ©ãƒ¼', 'ã“ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã¯ä½¿ç”¨ã§ããªã„è¨­å®šã«ãªã£ã¦ã„ã¾ã™ã€‚');
 }
 
 extract($_GET, EXTR_PREFIX_ALL, 'unsafe');
 $room_no = intval($unsafe_room_no);
-if($room_no < 1) OutputActionResult('Éô²°ºï½ü[¥¨¥é¡¼]', 'Ìµ¸ú¤ÊÂ¼ÈÖ¹æ¤Ç¤¹¡£');
+if($room_no < 1) OutputActionResult('éƒ¨å±‹å‰Šé™¤[ã‚¨ãƒ©ãƒ¼]', 'ç„¡åŠ¹ãªæ‘ç•ªå·ã§ã™ã€‚');
 
-$DB_CONF->Connect(); //DB ÀÜÂ³
+$DB_CONF->Connect(); //DB æ¥ç¶š
 SendQuery(sprintf("DELETE FROM room WHERE room_no=%d", $room_no));
 SendQuery(sprintf("DELETE FROM system_message WHERE room_no=%d", $room_no));
 SendQuery(sprintf("DELETE FROM talk WHERE room_no=%d", $room_no));
 SendQuery(sprintf("DELETE FROM user_entry WHERE room_no=%d", $room_no));
 SendQuery(sprintf("DELETE FROM vote WHERE room_no=%d", $room_no));
 SendQuery('OPTIMIZE TABLE room, system_message, talk, user_entry, vote');
-OutputActionResult('Éô²°ºï½ü', $room_no . ' ÈÖÃÏ¤òºï½ü¤·¤Ş¤·¤¿¡£¥È¥Ã¥×¥Ú¡¼¥¸¤ËÌá¤ê¤Ş¤¹¡£', '../');
+OutputActionResult('éƒ¨å±‹å‰Šé™¤', $room_no . ' ç•ªåœ°ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã«æˆ»ã‚Šã¾ã™ã€‚', '../');

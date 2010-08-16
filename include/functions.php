@@ -1,10 +1,10 @@
 <?php
-//-- ¥»¥­¥å¥ê¥Æ¥£´ØÏ¢ --//
-//¥ê¥Õ¥¡¥é¥Á¥§¥Ã¥¯
+//-- ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£é–¢é€£ --//
+//ãƒªãƒ•ã‚¡ãƒ©ãƒã‚§ãƒƒã‚¯
 function CheckReferer($page, $white_list = NULL){
   global $SERVER_CONF;
 
-  if(is_array($white_list)){ //¥Û¥ï¥¤¥È¥ê¥¹¥È¥Á¥§¥Ã¥¯
+  if(is_array($white_list)){ //ãƒ›ãƒ¯ã‚¤ãƒˆãƒªã‚¹ãƒˆãƒã‚§ãƒƒã‚¯
     foreach($white_list as $host){
       if(strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
     }
@@ -13,32 +13,32 @@ function CheckReferer($page, $white_list = NULL){
   return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
 }
 
-//-- DB ´ØÏ¢ --//
-//DB Ìä¤¤¹ç¤ï¤»½èÍı¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//-- DB é–¢é€£ --//
+//DB å•ã„åˆã‚ã›å‡¦ç†ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function SendQuery($query, $commit = false){
   if(($sql = mysql_query($query)) !== false) return $commit ? SendCommit() : $sql;
-  $backtrace = debug_backtrace(); //¥Ğ¥Ã¥¯¥È¥ì¡¼¥¹¤ò¼èÆÀ
+  $backtrace = debug_backtrace(); //ãƒãƒƒã‚¯ãƒˆãƒ¬ãƒ¼ã‚¹ã‚’å–å¾—
 
-  //SendQuery() ¤ò call ¤·¤¿´Ø¿ô¤È°ÌÃÖ¤ò¼èÆÀ¤·¤Æ¡ÖSQL¥¨¥é¡¼¡×¤È¤·¤ÆÊÖ¤¹
+  //SendQuery() ã‚’ call ã—ãŸé–¢æ•°ã¨ä½ç½®ã‚’å–å¾—ã—ã¦ã€ŒSQLã‚¨ãƒ©ãƒ¼ã€ã¨ã—ã¦è¿”ã™
   $trace_stack = array_shift($backtrace);
   $stack = array($trace_stack['line'], $query);
   $trace_stack = array_shift($backtrace);
   array_unshift($stack, $trace_stack['function'] . '()');
-  PrintData(implode(': ', $stack), 'SQL¥¨¥é¡¼');
+  PrintData(implode(': ', $stack), 'SQLã‚¨ãƒ©ãƒ¼');
 
-  foreach($backtrace as $trace_stack){ //¸Æ¤Ó½Ğ¤·¸µ¤¬¤¢¤ë¤Ê¤éÄÉ²Ã¤Ç½ĞÎÏ
+  foreach($backtrace as $trace_stack){ //å‘¼ã³å‡ºã—å…ƒãŒã‚ã‚‹ãªã‚‰è¿½åŠ ã§å‡ºåŠ›
     $stack = array($trace_stack['function'] . '()', $trace_stack['line']);
     PrintData(implode(': ', $stack), 'Caller');
   }
   return false;
 }
 
-//¥³¥ß¥Ã¥È½èÍı
+//ã‚³ãƒŸãƒƒãƒˆå‡¦ç†
 function SendCommit(){
   return mysql_query('COMMIT');
 }
 
-//DB ¤«¤éÃ±ÂÎ¤ÎÃÍ¤ò¼èÆÀ¤¹¤ë½èÍı¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//DB ã‹ã‚‰å˜ä½“ã®å€¤ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function FetchResult($query){
   if(($sql = SendQuery($query)) === false) return false;
   $data = mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false;
@@ -46,7 +46,7 @@ function FetchResult($query){
   return $data;
 }
 
-//DB ¤«¤é³ºÅö¤¹¤ë¥Ç¡¼¥¿¤Î¹Ô¿ô¤ò¼èÆÀ¤¹¤ë½èÍı¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//DB ã‹ã‚‰è©²å½“ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®è¡Œæ•°ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function FetchCount($query){
   if(($sql = SendQuery($query)) === false) return false;
   $data = mysql_num_rows($sql);
@@ -54,7 +54,7 @@ function FetchCount($query){
   return $data;
 }
 
-//DB ¤«¤é°ì¼¡¸µ¤ÎÇÛÎó¤ò¼èÆÀ¤¹¤ë½èÍı¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//DB ã‹ã‚‰ä¸€æ¬¡å…ƒã®é…åˆ—ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function FetchArray($query){
   $array = array();
   if(($sql = SendQuery($query)) === false) return $array;
@@ -64,7 +64,7 @@ function FetchArray($query){
   return $array;
 }
 
-//DB ¤«¤éÏ¢ÁÛÇÛÎó¤ò¼èÆÀ¤¹¤ë½èÍı¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//DB ã‹ã‚‰é€£æƒ³é…åˆ—ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function FetchAssoc($query, $shift = false){
   $array = array();
   if(($sql = SendQuery($query)) === false) return $array;
@@ -73,7 +73,7 @@ function FetchAssoc($query, $shift = false){
   return $shift ? array_shift($array) : $array;
 }
 
-//DB ¤«¤é¥ª¥Ö¥¸¥§¥¯¥È·Á¼°¤ÎÇÛÎó¤ò¼èÆÀ¤¹¤ë½èÍı¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//DB ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå½¢å¼ã®é…åˆ—ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function FetchObject($query, $class, $shift = false){
   $array = array();
   if(($sql = SendQuery($query)) === false) return $array;
@@ -82,12 +82,12 @@ function FetchObject($query, $class, $shift = false){
   return $shift ? array_shift($array) : $array;
 }
 
-//¥Ç¡¼¥¿¥Ù¡¼¥¹ÅĞÏ¿¤Î¥é¥Ã¥Ñ¡¼´Ø¿ô
+//ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ç™»éŒ²ã®ãƒ©ãƒƒãƒ‘ãƒ¼é–¢æ•°
 function InsertDatabase($table, $items, $values){
   return SendQuery("INSERT INTO {$table}({$items}) VALUES({$values})", true);
 }
 
-//¥æ¡¼¥¶ÅĞÏ¿½èÍı
+//ãƒ¦ãƒ¼ã‚¶ç™»éŒ²å‡¦ç†
 function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $icon_no = 0,
 		    $profile = NULL, $sex = 'male', $role = NULL, $session_id = NULL){
   global $MESSAGE;
@@ -100,14 +100,14 @@ function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $ic
     $values .= "'{$MESSAGE->dummy_boy_comment}', '{$MESSAGE->dummy_boy_last_words}'";
   }
   else{
-    $ip_address = $_SERVER['REMOTE_ADDR']; //¥æ¡¼¥¶¤ÎIP¥¢¥É¥ì¥¹¤ò¼èÆÀ
+    $ip_address = $_SERVER['REMOTE_ADDR']; //ãƒ¦ãƒ¼ã‚¶ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
     $items .= ', role, session_id, ip_address, last_load_day_night';
     $values .= "'{$profile}', '', '{$role}', '{$session_id}', '{$ip_address}', 'beforegame'";
   }
   return InsertDatabase('user_entry', $items, $values);
 }
 
-//¥Æ¡¼¥Ö¥ë¤òÇÓÂ¾Åª¥í¥Ã¥¯
+//ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ’ä»–çš„ãƒ­ãƒƒã‚¯
 function LockTable($type = NULL){
   $stack = array('room', 'user_entry', 'talk', 'vote');
   switch($type){
@@ -129,32 +129,32 @@ function LockTable($type = NULL){
   return SendQuery('LOCK TABLES ' . implode(', ', $query_stack));
 }
 
-//¥Æ¡¼¥Ö¥ë¥í¥Ã¥¯²ò½ü
+//ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ­ãƒƒã‚¯è§£é™¤
 function UnlockTable(){
   return SendQuery('UNLOCK TABLES');
 }
 
-//-- Æü»ş´ØÏ¢ --//
-//TZ ÊäÀµ¤ò¤«¤±¤¿»ş¹ï¤òÊÖ¤¹ (´Ä¶­ÊÑ¿ô TZ ¤òÊÑ¹¹¤Ç¤­¤Ê¤¤´Ä¶­ÁÛÄê¡©)
+//-- æ—¥æ™‚é–¢é€£ --//
+//TZ è£œæ­£ã‚’ã‹ã‘ãŸæ™‚åˆ»ã‚’è¿”ã™ (ç’°å¢ƒå¤‰æ•° TZ ã‚’å¤‰æ›´ã§ããªã„ç’°å¢ƒæƒ³å®šï¼Ÿ)
 function TZTime(){
   global $SERVER_CONF;
 
   $time = time();
   if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
   return $time;
-  /* // ¥ß¥êÉÃÂĞ±ş¤Î¥³¡¼¥É(°Æ) 2009-08-08 enogu
-     return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ¥ß¥êÉÃ
-     ÂĞ±ş¤Î¥³¡¼¥É(°Æ) 2009-08-08 enogu
+  /* // ãƒŸãƒªç§’å¯¾å¿œã®ã‚³ãƒ¼ãƒ‰(æ¡ˆ) 2009-08-08 enogu
+     return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ãƒŸãƒªç§’
+     å¯¾å¿œã®ã‚³ãƒ¼ãƒ‰(æ¡ˆ) 2009-08-08 enogu
   */
 }
 
-//TZ ÊäÀµ¤ò¤«¤±¤¿Æü»ş¤òÊÖ¤¹
+//TZ è£œæ­£ã‚’ã‹ã‘ãŸæ—¥æ™‚ã‚’è¿”ã™
 function TZDate($format, $time){
   global $SERVER_CONF;
   return $SERVER_CONF->adjust_time_difference ? gmdate($format, $time) : date($format, $time);
 }
 
-//TIMESTAMP ·Á¼°¤Î»ş¹ï¤òÊÑ´¹¤¹¤ë
+//TIMESTAMP å½¢å¼ã®æ™‚åˆ»ã‚’å¤‰æ›ã™ã‚‹
 function ConvertTimeStamp($time_stamp, $convert_date = true){
   global $SERVER_CONF;
 
@@ -163,7 +163,7 @@ function ConvertTimeStamp($time_stamp, $convert_date = true){
   return $convert_date ? TZDate('Y/m/d (D) H:i:s', $time) : $time;
 }
 
-//»ş´Ö(ÉÃ)¤òÊÑ´¹¤¹¤ë
+//æ™‚é–“(ç§’)ã‚’å¤‰æ›ã™ã‚‹
 function ConvertTime($seconds){
   $sentence = '';
   $hours    = 0;
@@ -178,14 +178,14 @@ function ConvertTime($seconds){
     $minutes %= 60;
   }
 
-  if($hours   > 0) $sentence .= $hours   . '»ş´Ö';
-  if($minutes > 0) $sentence .= $minutes . 'Ê¬';
-  if($seconds > 0) $sentence .= $seconds . 'ÉÃ';
+  if($hours   > 0) $sentence .= $hours   . 'æ™‚é–“';
+  if($minutes > 0) $sentence .= $minutes . 'åˆ†';
+  if($seconds > 0) $sentence .= $seconds . 'ç§’';
   return $sentence;
 }
 
-//-- Ê¸»ú½èÍı´ØÏ¢ --//
-//POST¤µ¤ì¤¿¥Ç¡¼¥¿¤ÎÊ¸»ú¥³¡¼¥É¤òÅı°ì¤¹¤ë
+//-- æ–‡å­—å‡¦ç†é–¢é€£ --//
+//POSTã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’çµ±ä¸€ã™ã‚‹
 function EncodePostData(){
   global $SERVER_CONF;
 
@@ -197,11 +197,11 @@ function EncodePostData(){
   }
 }
 
-//ÆÃ¼ìÊ¸»ú¤Î¥¨¥¹¥±¡¼¥×½èÍı
-//htmlentities() ¤ò»È¤¦¤ÈÊ¸»ú²½¤±¤òµ¯¤³¤·¤Æ¤·¤Ş¤¦¤è¤¦¤Ê¤Î¤Ç´º¤¨¤Æ¤Ù¤¿¤Ë½èÍı
+//ç‰¹æ®Šæ–‡å­—ã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—å‡¦ç†
+//htmlentities() ã‚’ä½¿ã†ã¨æ–‡å­—åŒ–ã‘ã‚’èµ·ã“ã—ã¦ã—ã¾ã†ã‚ˆã†ãªã®ã§æ•¢ãˆã¦ã¹ãŸã«å‡¦ç†
 function EscapeStrings(&$str, $trim = true){
-  if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ ¤ò¼«Æ°¤Ç¤Ä¤±¤ë½èÍı·ÏÂĞºö
-  // $str = htmlentities($str, ENT_QUOTES); //UTF ¤Ë°Ü¹Ô¤·¤¿¤éµ¡Ç½¤¹¤ë¡©
+  if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ ã‚’è‡ªå‹•ã§ã¤ã‘ã‚‹å‡¦ç†ç³»å¯¾ç­–
+  // $str = htmlentities($str, ENT_QUOTES); //UTF ã«ç§»è¡Œã—ãŸã‚‰æ©Ÿèƒ½ã™ã‚‹ï¼Ÿ
   $replace_list = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;',
 			'\\' => '&yen;', '"' => '&quot;', "'" => '&#039;');
   $str = strtr($str, $replace_list);
@@ -209,30 +209,30 @@ function EscapeStrings(&$str, $trim = true){
   return $str;
 }
 
-//¥È¥ê¥Ã¥×ÊÑ´¹
+//ãƒˆãƒªãƒƒãƒ—å¤‰æ›
 /*
-  ÊÑ´¹¥Æ¥¹¥È·ë²Ì¡÷2ch (2009/07/26)
-  [ÆşÎÏÊ¸»úÎó] => [ÊÑ´¹·ë²Ì] (ConvetTrip()¤Î·ë²Ì)
-  test#test                     => test ¢¡.CzKQna1OU (test¢¡.CzKQna1OU)
-  ¥Æ¥¹¥È#¥Æ¥¹¥È                 => ¥Æ¥¹¥È ¢¡SQ2Wyjdi7M (¥Æ¥¹¥È¢¡SQ2Wyjdi7M)
-  ¤Æ¤¹¤È¡ô¤Æ¤¹¤È                => ¤Æ¤¹¤È ¢¡ZUNa78GuQc (¤Æ¤¹¤È¢¡ZUNa78GuQc)
-  ¤Æ¤¹¤È¥Æ¥¹¥È#¤Æ¤¹¤È¡ô¥Æ¥¹¥È   => ¤Æ¤¹¤È¥Æ¥¹¥È ¢¡TBYWAU/j2qbJ (¤Æ¤¹¤È¥Æ¥¹¥È¢¡sXitOlnF0g)
-  ¥Æ¥¹¥È¤Æ¤¹¤È¡ô¥Æ¥¹¥È¤Æ¤¹¤È    => ¥Æ¥¹¥È¤Æ¤¹¤È ¢¡RZ9/PhChteSA (¥Æ¥¹¥È¤Æ¤¹¤È¢¡XuUGgmt7XI)
-  ¥Æ¥¹¥È¤Æ¤¹¤È¡ô¥Æ¥¹¥È¤Æ¤¹¤È#   => ¥Æ¥¹¥È¤Æ¤¹¤È ¢¡rtfFl6edK5fK (¥Æ¥¹¥È¤Æ¤¹¤È¢¡XuUGgmt7XI)
-  ¥Æ¥¹¥È¤Æ¤¹¤È¡ô¥Æ¥¹¥È¤Æ¤¹¤È¡ô  => ¥Æ¥¹¥È¤Æ¤¹¤È ¢¡rtfFl6edK5fK (¥Æ¥¹¥È¤Æ¤¹¤È¢¡XuUGgmt7XI)
+  å¤‰æ›ãƒ†ã‚¹ãƒˆçµæœï¼ 2ch (2009/07/26)
+  [å…¥åŠ›æ–‡å­—åˆ—] => [å¤‰æ›çµæœ] (ConvetTrip()ã®çµæœ)
+  test#test                     => test â—†.CzKQna1OU (testâ—†.CzKQna1OU)
+  ãƒ†ã‚¹ãƒˆ#ãƒ†ã‚¹ãƒˆ                 => ãƒ†ã‚¹ãƒˆ â—†SQ2Wyjdi7M (ãƒ†ã‚¹ãƒˆâ—†SQ2Wyjdi7M)
+  ã¦ã™ã¨ï¼ƒã¦ã™ã¨                => ã¦ã™ã¨ â—†ZUNa78GuQc (ã¦ã™ã¨â—†ZUNa78GuQc)
+  ã¦ã™ã¨ãƒ†ã‚¹ãƒˆ#ã¦ã™ã¨ï¼ƒãƒ†ã‚¹ãƒˆ   => ã¦ã™ã¨ãƒ†ã‚¹ãƒˆ â—†TBYWAU/j2qbJ (ã¦ã™ã¨ãƒ†ã‚¹ãƒˆâ—†sXitOlnF0g)
+  ãƒ†ã‚¹ãƒˆã¦ã™ã¨ï¼ƒãƒ†ã‚¹ãƒˆã¦ã™ã¨    => ãƒ†ã‚¹ãƒˆã¦ã™ã¨ â—†RZ9/PhChteSA (ãƒ†ã‚¹ãƒˆã¦ã™ã¨â—†XuUGgmt7XI)
+  ãƒ†ã‚¹ãƒˆã¦ã™ã¨ï¼ƒãƒ†ã‚¹ãƒˆã¦ã™ã¨#   => ãƒ†ã‚¹ãƒˆã¦ã™ã¨ â—†rtfFl6edK5fK (ãƒ†ã‚¹ãƒˆã¦ã™ã¨â—†XuUGgmt7XI)
+  ãƒ†ã‚¹ãƒˆã¦ã™ã¨ï¼ƒãƒ†ã‚¹ãƒˆã¦ã™ã¨ï¼ƒ  => ãƒ†ã‚¹ãƒˆã¦ã™ã¨ â—†rtfFl6edK5fK (ãƒ†ã‚¹ãƒˆã¦ã™ã¨â—†XuUGgmt7XI)
 */
 function ConvertTrip($str){
   global $SERVER_CONF, $GAME_CONF;
 
   if($GAME_CONF->trip){
-    if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ ¤ò¼«Æ°¤Ç¤Ä¤±¤ë½èÍı·ÏÂĞºö
-    //¥È¥ê¥Ã¥×´ØÏ¢¤Î¥­¡¼¥ï¡¼¥É¤òÃÖ´¹
-    $str = str_replace(array('¢¡', '¡ô'), array('¡ş', '#'), $str);
-    if(($trip_start = mb_strpos($str, '#')) !== false){ //¥È¥ê¥Ã¥×¥­¡¼¤Î°ÌÃÖ¤ò¸¡º÷
+    if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ ã‚’è‡ªå‹•ã§ã¤ã‘ã‚‹å‡¦ç†ç³»å¯¾ç­–
+    //ãƒˆãƒªãƒƒãƒ—é–¢é€£ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’ç½®æ›
+    $str = str_replace(array('â—†', 'ï¼ƒ'), array('â—‡', '#'), $str);
+    if(($trip_start = mb_strpos($str, '#')) !== false){ //ãƒˆãƒªãƒƒãƒ—ã‚­ãƒ¼ã®ä½ç½®ã‚’æ¤œç´¢
       $name = mb_substr($str, 0, $trip_start);
       $key  = mb_substr($str, $trip_start + 1);
-      //PrintData("{$trip_start}, name: {$name}, key: {$key}", 'Trip Start'); //¥Æ¥¹¥ÈÍÑ
-      $key = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode); //Ê¸»ú¥³¡¼¥É¤òÊÑ´¹
+      //PrintData("{$trip_start}, name: {$name}, key: {$key}", 'Trip Start'); //ãƒ†ã‚¹ãƒˆç”¨
+      $key = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode); //æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
 
       if($GAME_CONF->trip_2ch && strlen($key) >= 12){
 	$trip_mark = substr($key, 0, 1);
@@ -251,50 +251,50 @@ function ConvertTrip($str){
       else{
 	$salt = substr($key . 'H.', 1, 2);
 
-	//$salt =~ s/[^\.-z]/\./go; ¤Ë¤¢¤¿¤ë²Õ½ê
+	//$salt =~ s/[^\.-z]/\./go; ã«ã‚ãŸã‚‹ç®‡æ‰€
 	$pattern = '/[\x00-\x20\x7B-\xFF]/';
 	$salt = preg_replace($pattern, '.', $salt);
 
-	//ÆÃ¼ìÊ¸»ú¤ÎÃÖ´¹
+	//ç‰¹æ®Šæ–‡å­—ã®ç½®æ›
 	$from_list = array(':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`');
 	$to_list   = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f');
 	$salt = str_replace($from_list, $to_list, $salt);
 
 	$trip = substr(crypt($key, $salt), -10);
       }
-      $str = $name . '¢¡' . $trip;
+      $str = $name . 'â—†' . $trip;
     }
-    //PrintData($str, 'Result'); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($str, 'Result'); //ãƒ†ã‚¹ãƒˆç”¨
   }
-  elseif(strpos($str, '#') !== false || strpos($str, '¡ô') !== false){
-    $sentence = '¥È¥ê¥Ã¥×¤Ï»ÈÍÑÉÔ²Ä¤Ç¤¹¡£<br>' . "\n" . '"#" Ëô¤Ï "¡ô" ¤ÎÊ¸»ú¤â»ÈÍÑÉÔ²Ä¤Ç¤¹¡£';
-    OutputActionResult('Â¼¿ÍÅĞÏ¿ [ÆşÎÏ¥¨¥é¡¼]', $sentence);
+  elseif(strpos($str, '#') !== false || strpos($str, 'ï¼ƒ') !== false){
+    $sentence = 'ãƒˆãƒªãƒƒãƒ—ã¯ä½¿ç”¨ä¸å¯ã§ã™ã€‚<br>' . "\n" . '"#" åˆã¯ "ï¼ƒ" ã®æ–‡å­—ã‚‚ä½¿ç”¨ä¸å¯ã§ã™ã€‚';
+    OutputActionResult('æ‘äººç™»éŒ² [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]', $sentence);
   }
 
-  return EscapeStrings($str); //ÆÃ¼ìÊ¸»ú¤Î¥¨¥¹¥±¡¼¥×
+  return EscapeStrings($str); //ç‰¹æ®Šæ–‡å­—ã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 }
 
-//²ş¹Ô¥³¡¼¥É¤ò <br> ¤ËÊÑ´¹¤¹¤ë (nl2br() ¤À¤È <br /> ¤Ê¤Î¤Ç HTML 4.01 ¤À¤ÈÉÔ¸ş¤­)
+//æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’ <br> ã«å¤‰æ›ã™ã‚‹ (nl2br() ã ã¨ <br /> ãªã®ã§ HTML 4.01 ã ã¨ä¸å‘ã)
 function LineToBR(&$str){
   $str = str_replace("\n", '<br>', $str);
   return $str;
 }
 
-//¥Ñ¥¹¥ï¡¼¥É°Å¹æ²½
+//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰æš—å·åŒ–
 function CryptPassword($raw_password){
   global $SERVER_CONF;
   return sha1($SERVER_CONF->hash_salt . $raw_password);
 }
 
-//-- ½ĞÎÏ´ØÏ¢ --//
-//ÊÑ¿ôÉ½¼¨´Ø¿ô (¥Ç¥Ğ¥Ã¥°ÍÑ)
+//-- å‡ºåŠ›é–¢é€£ --//
+//å¤‰æ•°è¡¨ç¤ºé–¢æ•° (ãƒ‡ãƒãƒƒã‚°ç”¨)
 function PrintData($data, $name = NULL){
   $str = is_null($name) ? '' : $name . ': ';
   $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
   echo $str . '<br>';
 }
 
-//Â¼¾ğÊó¤ÎRSS¥Õ¥¡¥¤¥ë¤ò¹¹¿·¤¹¤ë
+//æ‘æƒ…å ±ã®RSSãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›´æ–°ã™ã‚‹
 function OutputSiteSummary(){
   global $INIT_CONF;
   $INIT_CONF->LoadFile('feedengine');
@@ -311,7 +311,7 @@ function OutputSiteSummary(){
   return $rss;
 }
 
-//¥Ú¡¼¥¸Á÷¤êÍÑ¤Î¥ê¥ó¥¯¥¿¥°¤ò½ĞÎÏ¤¹¤ë
+//ãƒšãƒ¼ã‚¸é€ã‚Šç”¨ã®ãƒªãƒ³ã‚¯ã‚¿ã‚°ã‚’å‡ºåŠ›ã™ã‚‹
 function OutputPageLink($CONFIG){
   $page_count = ceil($CONFIG->count / $CONFIG->view);
   $start_page = $CONFIG->current== 'all' ? 1 : $CONFIG->current;
@@ -344,17 +344,17 @@ function OutputPageLink($CONFIG){
     $list = $CONFIG->option;
     $list['page'] = 'page=' . $CONFIG->current;
     $list['reverse'] = 'reverse=' . ($CONFIG->is_reverse ? 'off' : 'on');
-    $url_stack[] = '[É½¼¨½ç]';
-    $url_stack[] = $CONFIG->is_reverse ? '¿·¢­¸Å' : '¸Å¢­¿·';
+    $url_stack[] = '[è¡¨ç¤ºé †]';
+    $url_stack[] = $CONFIG->is_reverse ? 'æ–°â†“å¤' : 'å¤â†“æ–°';
 
     $url = $url_header . implode('&', $list) . '">';
-    $name = ($CONFIG->is_reverse xor $CONFIG->reverse) ? '¸µ¤ËÌá¤¹' : 'Æş¤ìÂØ¤¨¤ë';
+    $name = ($CONFIG->is_reverse xor $CONFIG->reverse) ? 'å…ƒã«æˆ»ã™' : 'å…¥ã‚Œæ›¿ãˆã‚‹';
     $url_stack[] =  $url . $name . '</a>';
   }
   echo implode(' ', $url_stack);
 }
 
-//¥Ú¡¼¥¸Á÷¤êÍÑ¤Î¥ê¥ó¥¯¥¿¥°¤òºîÀ®¤¹¤ë
+//ãƒšãƒ¼ã‚¸é€ã‚Šç”¨ã®ãƒªãƒ³ã‚¯ã‚¿ã‚°ã‚’ä½œæˆã™ã‚‹
 function GeneratePageLink($CONFIG, $page, $title = NULL){
   $url = '<a href="' . $CONFIG->url . '.php?';
   if($page == $CONFIG->current) return '[' . $page . ']';
@@ -365,33 +365,33 @@ function GeneratePageLink($CONFIG, $page, $title = NULL){
   return $url . implode('&', $list) . '">' . $title . '</a>';
 }
 
-//¥í¥°¤Ø¤Î¥ê¥ó¥¯¤òÀ¸À®
+//ãƒ­ã‚°ã¸ã®ãƒªãƒ³ã‚¯ã‚’ç”Ÿæˆ
 function GenerateLogLink($url, $watch = false, $header = '', $footer = ''){
   $str = <<<EOF
-{$header} <a href="{$url}"{$footer}>Àµ</a>
-<a href="{$url}&reverse_log=on"{$footer}>µÕ</a>
-<a href="{$url}&heaven_talk=on"{$footer}>Îî</a>
-<a href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>µÕ&amp;Îî</a>
-<a href="{$url}&heaven_only=on"{$footer} >ÀÂ</a>
-<a href="{$url}&reverse_log=on&heaven_only=on"{$footer}>µÕ&amp;ÀÂ</a>
+{$header} <a href="{$url}"{$footer}>æ­£</a>
+<a href="{$url}&reverse_log=on"{$footer}>é€†</a>
+<a href="{$url}&heaven_talk=on"{$footer}>éœŠ</a>
+<a href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>é€†&amp;éœŠ</a>
+<a href="{$url}&heaven_only=on"{$footer} >é€</a>
+<a href="{$url}&reverse_log=on&heaven_only=on"{$footer}>é€†&amp;é€</a>
 EOF;
 
   if($watch){
     $str .= <<<EOF
 
-<a href="{$url}&watch=on"{$footer}>´Ñ</a>
-<a href="{$url}&watch=on&reverse_log=on"{$footer}>µÕ&amp;´Ñ</a>
+<a href="{$url}&watch=on"{$footer}>è¦³</a>
+<a href="{$url}&watch=on&reverse_log=on"{$footer}>é€†&amp;è¦³</a>
 EOF;
   }
   return $str;
 }
 
-//¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤Î²èÁü¥¿¥°¤òºîÀ®¤¹¤ë
+//ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ç”»åƒã‚¿ã‚°ã‚’ä½œæˆã™ã‚‹
 function GenerateGameOptionImage($game_option, $option_role = ''){
   global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;
 
   $stack = new OptionManager($game_option . ' ' . $option_role);
-  //PrintData($stack); //¥Æ¥¹¥ÈÍÑ
+  //PrintData($stack); //ãƒ†ã‚¹ãƒˆç”¨
   $str = '';
   $display_order_list = array(
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'open_vote', 'open_day',
@@ -409,18 +409,18 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     $sentence = '';
     $footer = '';
     if($option == 'cupid'){
-      $sentence = '14¿Í¤Ş¤¿¤Ï' . $CAST_CONF->$option . '¿Í°Ê¾å¤Ç';
+      $sentence = '14äººã¾ãŸã¯' . $CAST_CONF->$option . 'äººä»¥ä¸Šã§';
     }
     elseif(is_integer($CAST_CONF->$option)){
-      $sentence = $CAST_CONF->$option . '¿Í°Ê¾å¤Ç';
+      $sentence = $CAST_CONF->$option . 'äººä»¥ä¸Šã§';
     }
     $sentence .= $GAME_OPT_MESS->$option;
 
     if($option == 'real_time'){
       $day   = $stack->options['real_time'][0];
       $night = $stack->options['real_time'][1];
-      $sentence .= "¡¡Ãë¡§ {$day} Ê¬¡¡Ìë¡§ {$night} Ê¬";
-      $footer = '['. $day . '¡§' . $night . ']';
+      $sentence .= "ã€€æ˜¼ï¼š {$day} åˆ†ã€€å¤œï¼š {$night} åˆ†";
+      $footer = '['. $day . 'ï¼š' . $night . ']';
     }
     elseif($option == 'chaosfull'){
       /*
@@ -440,9 +440,9 @@ function OutputCastTable($min = 0, $max = NULL){
   global $CAST_CONF, $ROLE_DATA;
 
   $header = '<table class="member">';
-  $str = '<tr><th>Á´¿Í¿ô</th>';
+  $str = '<tr><th>å…¨äººæ•°</th>';
 
-  //ÀßÄê¤µ¤ì¤Æ¤¤¤ëÌò¿¦Ì¾¤ò¼èÆÀ
+  //è¨­å®šã•ã‚Œã¦ã„ã‚‹å½¹è·åã‚’å–å¾—
   $all_cast = array();
   foreach($CAST_CONF->role_list as $key => $value){
     if($key < $min) continue;
@@ -450,36 +450,16 @@ function OutputCastTable($min = 0, $max = NULL){
     if($key == $max) break;
   }
   $all_cast = array_unique($all_cast);
+  $role_list = array_intersect(array_keys($ROLE_DATA->main_role_list), $all_cast); //è¡¨ç¤ºé †ã‚’æ±ºå®š
 
-  //É½¼¨½ç¤ò·èÄê
-  $role_list = array_intersect(array_keys($ROLE_DATA->main_role_list), $all_cast);
   foreach($role_list as $role){
-    $class = 'human';
-    foreach($ROLE_DATA->main_role_group_list as $key => $value){
-      if(strpos($role, $key) !== false){
-	$class = $value;
-	break;
-      }
-    }
-    switch($class){
-    case 'mind_scanner':
-      $class = 'mind';
-      break;
-
-    case 'poison_cat':
-      $class = 'cat';
-      break;
-
-    case 'child_fox':
-      $class = 'fox';
-      break;
-    }
+    $class = $ROLE_DATA->DistinguishRoleClass($role);
     $str .= '<th class="' . $class . '">' . $ROLE_DATA->main_role_list[$role] . '</th>';
   }
   $str .= '</tr>'."\n";
   echo $header . $str;
 
-  //¿Í¿ôËè¤ÎÇÛÌò¤òÉ½¼¨
+  //äººæ•°æ¯ã®é…å½¹ã‚’è¡¨ç¤º
   foreach($CAST_CONF->role_list as $key => $value){
     if($key < $min) continue;
     $tag = "<td><strong>{$key}</strong></td>";
@@ -491,7 +471,7 @@ function OutputCastTable($min = 0, $max = NULL){
   echo '</table>';
 }
 
-//¶¦ÄÌ HTML ¥Ø¥Ã¥ÀÀ¸À®
+//å…±é€š HTML ãƒ˜ãƒƒãƒ€ç”Ÿæˆ
 function GenerateHTMLHeader($title, $css = 'action'){
   global $SERVER_CONF;
 
@@ -508,12 +488,12 @@ function GenerateHTMLHeader($title, $css = 'action'){
 EOF;
 }
 
-//¶¦ÄÌ HTML ¥Ø¥Ã¥À½ĞÎÏ
+//å…±é€š HTML ãƒ˜ãƒƒãƒ€å‡ºåŠ›
 function OutputHTMLHeader($title, $css = 'action'){
   echo GenerateHTMLHeader($title, $css);
 }
 
-//·ë²Ì¥Ú¡¼¥¸ HTML ¥Ø¥Ã¥À½ĞÎÏ
+//çµæœãƒšãƒ¼ã‚¸ HTML ãƒ˜ãƒƒãƒ€å‡ºåŠ›
 function OutputActionResultHeader($title, $url = ''){
   global $ROOM;
 
@@ -525,27 +505,27 @@ function OutputActionResultHeader($title, $url = ''){
   echo '</head><body>'."\n";
 }
 
-//·ë²Ì¥Ú¡¼¥¸½ĞÎÏ
+//çµæœãƒšãƒ¼ã‚¸å‡ºåŠ›
 function OutputActionResult($title, $body, $url = '', $unlock = false){
   global $DB_CONF;
 
-  $DB_CONF->Disconnect($unlock); //DB ÀÜÂ³²ò½ü
+  $DB_CONF->Disconnect($unlock); //DB æ¥ç¶šè§£é™¤
 
   OutputActionResultHeader($title, $url);
   echo $body . "\n";
   OutputHTMLFooter(true);
 }
 
-//HTML ¥Õ¥Ã¥¿½ĞÎÏ
+//HTML ãƒ•ãƒƒã‚¿å‡ºåŠ›
 function OutputHTMLFooter($exit = false){
   global $DB_CONF;
 
-  $DB_CONF->Disconnect(); //DB ÀÜÂ³²ò½ü
+  $DB_CONF->Disconnect(); //DB æ¥ç¶šè§£é™¤
   echo '</body></html>'."\n";
   if($exit) exit;
 }
 
-//¶¦Í­¥Õ¥ì¡¼¥à HTML ¥Ø¥Ã¥À½ĞÎÏ
+//å…±æœ‰ãƒ•ãƒ¬ãƒ¼ãƒ  HTML ãƒ˜ãƒƒãƒ€å‡ºåŠ›
 function OutputFrameHTMLHeader($title){
   global $SERVER_CONF;
 
@@ -559,18 +539,18 @@ function OutputFrameHTMLHeader($title){
 EOF;
 }
 
-//¥Õ¥ì¡¼¥à HTML ¥Õ¥Ã¥¿½ĞÎÏ
+//ãƒ•ãƒ¬ãƒ¼ãƒ  HTML ãƒ•ãƒƒã‚¿å‡ºåŠ›
 function OutputFrameHTMLFooter(){
   echo <<<EOF
 <noframes><body>
-¥Õ¥ì¡¼¥àÈóÂĞ±ş¤Î¥Ö¥é¥¦¥¶¤ÎÊı¤ÏÍøÍÑ¤Ç¤­¤Ş¤»¤ó¡£
+ãƒ•ãƒ¬ãƒ¼ãƒ éå¯¾å¿œã®ãƒ–ãƒ©ã‚¦ã‚¶ã®æ–¹ã¯åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚
 </body></noframes>
 </frameset></html>
 
 EOF;
 }
 
-//¾ğÊó°ìÍ÷¥Ú¡¼¥¸ HTML ¥Ø¥Ã¥À½ĞÎÏ
+//æƒ…å ±ä¸€è¦§ãƒšãƒ¼ã‚¸ HTML ãƒ˜ãƒƒãƒ€å‡ºåŠ›
 function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
   global $SERVER_CONF;
 
@@ -583,7 +563,7 @@ function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
 <h1>{$title}</h1>
 <p>
 <a href="{$top}" target="_top">&lt;= TOP</a>
-<a href="{$info}" target="_top">¢«¾ğÊó°ìÍ÷</a>
+<a href="{$info}" target="_top">â†æƒ…å ±ä¸€è¦§</a>
 </p>
 
 EOF;

@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÆÈ¿Èµ®Â² (celibacy)
-  ¡û»ÅÍÍ
-  ¡¦Îø¿Í¤ËÅêÉ¼¤µ¤ì¤¿¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†ç‹¬èº«è²´æ— (celibacy)
+  â—‹ä»•æ§˜
+  ãƒ»æ‹äººã«æŠ•ç¥¨ã•ã‚ŒãŸã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_celibacy extends Role{
   function Role_celibacy(){ $this->__construct(); }

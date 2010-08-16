@@ -1,15 +1,15 @@
 <?php
 class ScriptInfo{
-  //¥Ñ¥Ã¥±¡¼¥¸¤Î¥Ð¡¼¥¸¥ç¥ó
+  //ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³
   var $version = 'Ver. 1.4.0 beta15';
 
-  //¥Ñ¥Ã¥±¡¼¥¸¤ÎºÇ½ª¹¹¿·Æü
-  var $last_update = '2010/08/05 (Thu) 04:28';
+  //ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®æœ€çµ‚æ›´æ–°æ—¥
+  var $last_update = '2010/08/12 (Thu) 04:48';
 
-  //¥Ñ¥Ã¥±¡¼¥¸²½¤·¤¿»þ¤Î Revision
-  var $revision = 196;
+  //ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åŒ–ã—ãŸæ™‚ã® Revision
+  var $revision = 201;
 
-  //PHP + ¥Ñ¥Ã¥±¡¼¥¸¤Î¥Ð¡¼¥¸¥ç¥ó¾ðÊó¤ò½ÐÎÏ¤¹¤ë
+  //PHP + ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’å‡ºåŠ›ã™ã‚‹
   function OutputVersion(){
     $list = array('PHP Ver. ' . PHP_VERSION,
 		  $this->version . '(Rev. ' . $this->revision . ')',

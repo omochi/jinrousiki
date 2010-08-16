@@ -2,510 +2,510 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('GAME_OPT_CAPT');
-OutputInfoPageHeader('����⡼��');
+OutputInfoPageHeader('闇鍋モード');
 ?>
 <p>
 <a href="#wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a>
-<a href="#chaos_decide_role">�������롼����</a>
+<a href="#chaos_decide_role">配役決定ルーチン</a>
 </p>
 <p>
 <a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>
 <a href="#chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a>
-<a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (������)</a>
+<a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定)</a>
 <a href="#chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a>
 <a href="#sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a>
 </p>
 
 <h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
 <pre>
-�������˷��Ƥ��顢�и������򿦥��롼�פ��˾���Ƥ����
-ͥ��Ū�����򤵤����ͤǤ���
+配役を先に決めてから、出現した役職グループを希望していれば
+優先的に配役される仕様です。
 
-��1) �ꤤ�դ��˾�����ꤤ�ա������ꤤ�դ��и�����
-�� �ꤤ�դ������ꤤ�դΤɤ��餫�ˤʤ�ޤ�
+例1) 占い師を希望して占い師、魂の占い師が出現した
+→ 占い師か魂の占い師のどちらかになります
 
-��2) �Ż��Ԥ��˾�������и����ʤ��ä�
-�� ��˾�ʤ���Ʊ�������ˤʤ�ޤ�
+例2) 暗殺者を希望したが出現しなかった
+→ 希望なしと同じ扱いになります
 </pre>
 
-<h3>Ver. 1.4.0 ��24��</h3>
+<h3>Ver. 1.4.0 α24〜</h3>
 <pre>
-��˾�����ץ����ͭ���ˤʤ�ޤ���
+希望制オプションが有効になりました
 </pre>
 
-<h3>Ver. 1.4.0 ��11��</h3>
+<h3>Ver. 1.4.0 α11〜</h3>
 <pre>
-��˾�����ץ����϶���Ū�˥��դˤʤ�ޤ�
+希望制オプションは強制的にオフになります
 </pre>
 
-<h2><a id="chaos_decide_role">�������롼����</a></h2>
+<h2><a id="chaos_decide_role">配役決定ルーチン</a></h2>
 <ol>
-  <li>�С�����󥢥åפǻ��ͤ��Ѥ���ǽ��������ޤ���</li>
-  <li>�����೫��ľ��˾��Ԥ���ޤ��ǽ��������ޤ�</li>
-  <li>����ե�������ѹ��Ǥ���ΤǶ���Ū�ʿ��ͤϥ�������˰㤤�ޤ���</li>
+  <li>バージョンアップで仕様が変わる可能性があります。</li>
+  <li>ゲーム開始直後に勝敗が決まる可能性があります</li>
+  <li>設定ファイルで変更できるので具体的な数値はサーバ毎に違います。</li>
 </ol>
 <p>
-<a href="#chaosfull_decide_role_fix">����и���</a>
-<a href="#chaosfull_decide_role_random">������и���</a>
-<a href="#chaosfull_decide_role_example">���������</a>
+<a href="#chaosfull_decide_role_fix">固定出現枠</a>
+<a href="#chaosfull_decide_role_random">ランダム出現枠</a>
+<a href="#chaosfull_decide_role_example">配役決定例</a>
 </p>
 
-<h3><a id="chaosfull_decide_role_fix">����и���</a></h3>
+<h3><a id="chaosfull_decide_role_fix">固定出現枠</a></h3>
 <pre>
-�������Ͽ�ϵ1���ꤤ��1�ǡ�������٤Ǹ��̤�����Ǥ��ޤ���
-�������������귯���ꤤ�դˤʤ��ǽ���⤢��Τ� CO �����ꤤ�դ����Ǥ���Ȥϸ¤�ޤ���
+初期設定は人狼1、占い師1で、各難易度で個別に設定できます。
+ただし、身代わり君が占い師になる可能性もあるので CO した占い師が真であるとは限りません。
 </pre>
 
-<h3><a id="chaosfull_decide_role_random">������и���</a></h3>
+<h3><a id="chaosfull_decide_role_random">ランダム出現枠</a></h3>
 <ol>
-  <li>���򿦤νи�Ψ�ϴ���Ū�ˤ�������Ǥ���</li>
+  <li>各役職の出現率は基本的には非公開です。</li>
 
-  <li>�������򿦥��롼�פˤϺ���и��������ꤷ�Ƥ��ޤ���<br>
-    ��) ��ϵ�Ͽ͸��� 1/10 �����³�����Ƥ�
+  <li>一部の役職グループには最低出現数を設定しています。<br>
+    例) 人狼は人口の 1/10 を最低限割り当てる
   </li>
 
-  <li>�򿦥��롼����˿͸����Ф����¤����ꤵ��Ƥ��ޤ���<br>
-    ��) ��ϵ�� 20%���ꤤ�դ� 10%
+  <li>役職グループ毎に人口に対する上限が設定されています。<br>
+    例) 人狼は 20%、占い師は 10%
   </li>
 
-  <li>������и����򿦥��롼�פξ�¤�Ķ�����¼�ͤ˿����֤��ޤ���</li>
+  <li>ランダム出現で役職グループの上限を超えると村人に振り返られます。</li>
 
-  <li>¼�ͤˤϿ͸����Ф����¤����ꤵ��Ƥ��ޤ���<br>
-    ��¤�Ķ�����������򿦤˿����֤��ޤ�(�������Ͽ��åޥ˥�)��
+  <li>村人には人口に対する上限が設定されています。<br>
+    上限を超えると特定の役職に振り返られます(初期設定は神話マニア)。
   </li>
 </ol>
 
-<h3><a id="chaos_decide_role_example">���������</a></h3>
+<h3><a id="chaos_decide_role_example">配役決定例</a></h3>
 <ul>
-  <li>¼�͡�10��</li>
+  <li>村人：10人</li>
 
-  <li>���򿦤ξ���� (�ºݤȤϿ������㤤�ޤ�)</li>
+  <li>各役職の上限例 (実際とは数字が違います)</li>
   <ul>
-    <li>�ꤤ�շϡ�20%</li>
-    <li>��ǽ�Էϡ�10%</li>
-    <li>��ϵ�ϡ�20%</li>
+    <li>占い師系：20%</li>
+    <li>霊能者系：10%</li>
+    <li>人狼系：20%</li>
   </ul>
 </ul>
 
 <pre>
-1. ������ (�ºݤϥ�������˰㤤�ޤ�)
-�ꤤ��1����ǽ��1����ϵ1
+1. 固定枠 (実際はサーバ毎に違います)
+占い師1　霊能者1　人狼1
 
-2. �����������ä��������
-�ꤤ��2�����������1����ǽ��1��������1����ϵ1����ϵ1��˨ϵ3
+2. ランダム配役を加えた結果例
+占い師2　精神鑑定士1　霊能者1　雲外鏡1　人狼1　白狼1　萌狼3
 
-3. �������
-3-1. ����¿���Ȥ�������ͥ��Ū�˺���ޤ���
-�ʤ�٤����ब¿���Ф�褦�ˤ��뤿��Ǥ���
+3. 上限補正
+3-1. 数が多いところから優先的に削られます。
+なるべく種類が多く出るようにするためです。
 
-�ꤤ�շ�3 �� 2
-�ꤤ��1�����������1��¼��1
+占い師系3 → 2
+占い師1　精神鑑定士1　村人1
 
-3-2. �����Ȥ������оݤˤʤ�ޤ���
-��ǽ�Է�2 �� 1
-��ǽ��1��¼��1
+3-2. 固定枠は補正対象になりません
+霊能者系2 → 1
+霊能者1　村人1
 
-3-3. Ʊ�����Ǥɤ��餫����ʤ��Ȥ����ʤ����ϥ�����Ǥ�
-(�򿦤νи�Ψ�Ȥϴط�����ޤ���)
-��ϵ��5�� 2
+3-3. 同じ数でどちらかを削らないといけない場合はランダムです
+(役職の出現率とは関係ありません)
+人狼系5→ 2
 
-��ϵ1 �ϸ���ʤΤ������оݳ����Ĥޤꡢ˨ϵ3����ϵ1����3����ޤ�
-����¿���ۤ�������Τǡ�˨ϵ-2�ϳ��ꡣ
-�Ǹ��˨ϵ1����ϵ1���������Ǥɤ��餫������ޤ���
+人狼1 は固定なので補正対象外。つまり、萌狼3と白狼1から3削られます
+数が多いほうから削るので、萌狼-2は確定。
+最後に萌狼1と白狼1からランダムでどちらかが削られます。
 
-���������
-��ϵ1����ϵ1��¼��3
-��������������
-¼��5���ꤤ��1�����������1����ǽ��1����ϵ1����ϵ1
+補正結果例
+人狼1　白狼1　村人3
+上限補正後の配役
+村人5　占い師1　精神鑑定士1　霊能者1　人狼1　白狼1
 
-4. ¼�;������
-�ֿ��åޥ˥�¼�פΥ��ץ�����դ��Ƥ��ʤ�����
-¼�ͤξ�¤�Ķ��������åޥ˥��˿����֤��ޤ���
+4. 村人上限補正
+「神話マニア村」のオプションが付いていない場合は
+村人の上限を超えたら神話マニアに振り返られます。
 
-¼�ͤξ���㡡�͸���10%
-¼��5 �� ¼��1�����åޥ˥�4
+村人の上限例　人口の10%
+村人5 → 村人1　神話マニア4
 
-5. �ǽ�����
-¼��1���ꤤ��1�����������1����ǽ��1����ϵ1����ϵ1�����åޥ˥�4
+5. 最終配役
+村人1　占い師1　精神鑑定士1　霊能者1　人狼1　白狼1　神話マニア4
 </pre>
 
 <h2><a id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
-<h3><a id="chaos_appear_role">�и���</a></h3>
+<h3><a id="chaos_appear_role">出現役職</a></h3>
 <pre>
-�и������ǽ���Τ����򿦤ϰʲ��Ǥ���
+出現する可能性のある役職は以下です。
 </pre>
-<h4><a href="new_role/human.php">¼�Ϳر�</a></h4>
+<h4><a href="new_role/human.php">村人陣営</a></h4>
 <pre>
-<a href="new_role/human.php#human_group">¼�ͷ�</a>��¼�͡�<a href="new_role/human.php#escaper">ƨ˴��</a>
-<a href="new_role/human.php#mage_group">�ꤤ�շ�</a>���ꤤ�ա�<a href="new_role/human.php#soul_mage">�����ꤤ��</a>��<a href="new_role/human.php#psycho_mage">���������</a>
-<a href="new_role/human.php#necromancer_group">��ǽ�Է�</a>����ǽ�ԡ�<a href="new_role/human.php#medium">���</a>
-<a href="new_role/human.php#guard_group">���ͷ�</a>�����͡�<a href="new_role/human.php#poison_guard">����</a>��<a href="new_role/human.php#reporter">�֥�</a>
-<a href="new_role/human.php#common_group">��ͭ�Է�</a>����ͭ��
-<a href="new_role/human.php#poison_group">���ǼԷ�</a>�����Ǽԡ�<a href="new_role/human.php#incubate_poison">���Ǽ�</a>
-<a href="new_role/human.php#pharmacist_group">���շ�</a>��<a href="new_role/human.php#pharmacist">����</a>
-<a href="new_role/human.php#assassin_group">�Ż��Է�</a>��<a href="new_role/human.php#assassin">�Ż���</a>
-<a href="new_role/human.php#doll_group">�峤�ͷ���</a>��<a href="new_role/human.php#doll">�峤�ͷ�</a>��<a href="new_role/human.php#doll_master">�ͷ�����</a>
-<a href="new_role/human.php#mania_group">���åޥ˥���</a>��<a href="new_role/human.php#mania">���åޥ˥�</a>
-</pre>
-
-<h4><a href="new_role/wolf.php">��ϵ�ر�</a></h4>
-<pre>
-<a href="new_role/wolf.php#wolf_group">��ϵ��</a>����ϵ��<a href="new_role/wolf.php#boss_wolf">��ϵ</a>��<a href="new_role/wolf.php#poison_wolf">��ϵ</a>��<a href="new_role/wolf.php#tongue_wolf">���ϵ</a>��<a href="new_role/wolf.php#silver_wolf">��ϵ</a>
-<a href="new_role/wolf.php#mad_group">���ͷ�</a>�����͡�<a href="new_role/wolf.php#fanatic_mad">������</a>��<a href="new_role/wolf.php#whisper_mad">�񤭶���</a>
+<a href="new_role/human.php#human_group">村人系</a>：村人・<a href="new_role/human.php#escaper">逃亡者</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：占い師・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#psycho_mage">精神鑑定士</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：霊能者・<a href="new_role/human.php#medium">巫女</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：狩人・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#reporter">ブン屋</a>
+<a href="new_role/human.php#common_group">共有者系</a>：共有者
+<a href="new_role/human.php#poison_group">埋毒者系</a>：埋毒者・<a href="new_role/human.php#incubate_poison">潜毒者</a>
+<a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
+<a href="new_role/human.php#assassin_group">暗殺者系</a>：<a href="new_role/human.php#assassin">暗殺者</a>
+<a href="new_role/human.php#doll_group">上海人形系</a>：<a href="new_role/human.php#doll">上海人形</a>・<a href="new_role/human.php#doll_master">人形遣い</a>
+<a href="new_role/human.php#mania_group">神話マニア系</a>：<a href="new_role/human.php#mania">神話マニア</a>
 </pre>
 
-<h4><a href="new_role/fox.php">�Ÿѿر�</a></h4>
+<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
 <pre>
-<a href="new_role/fox.php#fox_group">�Ÿѷ�</a>���Ÿ�
-<a href="new_role/fox.php#child_fox_group">�Ҹѷ�</a>��<a href="new_role/fox.php#child_fox">�Ҹ�</a>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#silver_wolf">銀狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>
 </pre>
 
-<h4><a href="new_role/lovers.php">���Ϳر�</a></h4>
+<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
 <pre>
-<a href="new_role/lovers.php#cupid_group">���塼�ԥåɷ�</a>�����塼�ԥåɡ�<a href="new_role/lovers.php#self_cupid">�ᰦ��</a>
+<a href="new_role/fox.php#fox_group">妖狐系</a>：妖狐
+<a href="new_role/fox.php#child_fox_group">子狐系</a>：<a href="new_role/fox.php#child_fox">子狐</a>
 </pre>
 
-<h4><a href="new_role/quiz.php">����Կر�</a></h4>
+<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
 <pre>
-<a href="new_role/quiz.php#quiz_group">����Է�</a>��<a href="new_role/quiz.php#quiz">�����</a>
+<a href="new_role/lovers.php#cupid_group">キューピッド系</a>：キューピッド・<a href="new_role/lovers.php#self_cupid">求愛者</a>
 </pre>
 
-<h4><a href="new_role/chiroptera.php">�����ر�</a></h4>
+<h4><a href="new_role/quiz.php">出題者陣営</a></h4>
 <pre>
-<a href="new_role/chiroptera.php#chiroptera_group">������</a>��<a href="new_role/chiroptera.php#chiroptera">����</a>
+<a href="new_role/quiz.php#quiz_group">出題者系</a>：<a href="new_role/quiz.php#quiz">出題者</a>
+</pre>
+
+<h4><a href="new_role/chiroptera.php">蝙蝠陣営</a></h4>
+<pre>
+<a href="new_role/chiroptera.php#chiroptera_group">蝙蝠系</a>：<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>
 </pre>
 
 <h2><a id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
-<h3><a id="chaosfull_appear_role">�и���</a></h3>
+<h3><a id="chaosfull_appear_role">出現役職</a></h3>
 <pre>
-�и������ǽ���Τ����򿦤ϰʲ� (Ver. 1.4.0 ��23 ����) �Ǥ���
+出現する可能性のある役職は以下 (Ver. 1.4.0 α23 相当) です。
 </pre>
-<h4><a href="new_role/human.php">¼�Ϳر�</a></h4>
+<h4><a href="new_role/human.php">村人陣営</a></h4>
 <pre>
-<a href="new_role/human.php#human_group">¼�ͷ�</a>��¼�͡�<a href="new_role/human.php#suspect">�Կ���</a>��<a href="new_role/human.php#unconscious">̵�ռ�</a>
-<a href="new_role/human.php#mage_group">�ꤤ�շ�</a>���ꤤ�ա�<a href="new_role/human.php#soul_mage">�����ꤤ��</a>��<a href="new_role/human.php#psycho_mage">���������</a>��<a href="new_role/human.php#sex_mage">�Ҥ褳�����</a>��<a href="new_role/human.php#voodoo_killer">���ۻ�</a>��<a href="new_role/human.php#dummy_mage">̴����</a>
-<a href="new_role/human.php#necromancer_group">��ǽ�Է�</a>����ǽ�ԡ�<a href="new_role/human.php#soul_necromancer">������</a>��<a href="new_role/human.php#yama_necromancer">����</a>��<a href="new_role/human.php#dummy_necromancer">̴����</a>��<a href="new_role/human.php#medium">���</a>
-<a href="new_role/human.php#guard_group">���ͷ�</a>�����͡�<a href="new_role/human.php#poison_guard">����</a>��<a href="new_role/human.php#reporter">�֥�</a>��<a href="new_role/human.php#anti_voodoo">���</a>��<a href="new_role/human.php#dummy_guard">̴���</a>
-<a href="new_role/human.php#common_group">��ͭ�Է�</a>����ͭ�ԡ�<a href="new_role/human.php#dummy_common">̴��ͭ��</a>
-<a href="new_role/human.php#poison_group">���ǼԷ�</a>�����Ǽԡ�<a href="new_role/human.php#strong_poison">���Ǽ�</a>��<a href="new_role/human.php#incubate_poison">���Ǽ�</a>��<a href="new_role/human.php#dummy_poison">̴�Ǽ�</a>
-<a href="new_role/human.php#poison_cat_group">ǭ����</a>��<a href="new_role/human.php#poison_cat">ǭ��</a>
-<a href="new_role/human.php#pharmacist_group">���շ�</a>��<a href="new_role/human.php#pharmacist">����</a>
-<a href="new_role/human.php#assassin_group">�Ż��Է�</a>��<a href="new_role/human.php#assassin">�Ż���</a>
-<a href="new_role/human.php#mind_scanner_group">���Ȥ��</a>��<a href="new_role/human.php#mind_scanner">���Ȥ�</a>
-<a href="new_role/human.php#jealousy_group">��ɱ��</a>��<a href="new_role/human.php#jealousy">��ɱ</a>
-<a href="new_role/human.php#mania_group">���åޥ˥���</a>��<a href="new_role/human.php#mania">���åޥ˥�</a>��<a href="new_role/human.php#unknown_mania">�</a>
-</pre>
-
-<h4><a href="new_role/wolf.php">��ϵ�ر�</a></h4>
-<pre>
-<a href="new_role/wolf.php#wolf_group">��ϵ��</a>����ϵ��<a href="new_role/wolf.php#boss_wolf">��ϵ</a>��<a href="new_role/wolf.php#cursed_wolf">��ϵ</a>��<a href="new_role/wolf.php#poison_wolf">��ϵ</a>��<a href="new_role/wolf.php#resist_wolf">����ϵ</a>��<a href="new_role/wolf.php#tongue_wolf">���ϵ</a>��<a href="new_role/wolf.php#cute_wolf">˨ϵ</a>��<a href="new_role/wolf.php#silver_wolf">��ϵ</a>
-<a href="new_role/wolf.php#mad_group">���ͷ�</a>�����͡�<a href="new_role/wolf.php#fanatic_mad">������</a>��<a href="new_role/wolf.php#whisper_mad">�񤭶���</a>��<a href="new_role/wolf.php#jammer_mad">����</a>��<a href="new_role/wolf.php#voodoo_mad">���ѻ�</a>��<a href="new_role/wolf.php#corpse_courier_mad">�м�</a>��<a href="new_role/wolf.php#dream_eater_mad">��</a>��<a href="new_role/wolf.php#trap_mad">櫻�</a>
+<a href="new_role/human.php#human_group">村人系</a>：村人・<a href="new_role/human.php#suspect">不審者</a>・<a href="new_role/human.php#unconscious">無意識</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：占い師・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#psycho_mage">精神鑑定士</a>・<a href="new_role/human.php#sex_mage">ひよこ鑑定士</a>・<a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/human.php#dummy_mage">夢見人</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：霊能者・<a href="new_role/human.php#soul_necromancer">雲外鏡</a>・<a href="new_role/human.php#yama_necromancer">閻魔</a>・<a href="new_role/human.php#dummy_necromancer">夢枕人</a>・<a href="new_role/human.php#medium">巫女</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：狩人・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>
+<a href="new_role/human.php#common_group">共有者系</a>：共有者・<a href="new_role/human.php#dummy_common">夢共有者</a>
+<a href="new_role/human.php#poison_group">埋毒者系</a>：埋毒者・<a href="new_role/human.php#strong_poison">強毒者</a>・<a href="new_role/human.php#incubate_poison">潜毒者</a>・<a href="new_role/human.php#dummy_poison">夢毒者</a>
+<a href="new_role/human.php#poison_cat_group">猫又系</a>：<a href="new_role/human.php#poison_cat">猫又</a>
+<a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
+<a href="new_role/human.php#assassin_group">暗殺者系</a>：<a href="new_role/human.php#assassin">暗殺者</a>
+<a href="new_role/human.php#mind_scanner_group">さとり系</a>：<a href="new_role/human.php#mind_scanner">さとり</a>
+<a href="new_role/human.php#jealousy_group">橋姫系</a>：<a href="new_role/human.php#jealousy">橋姫</a>
+<a href="new_role/human.php#mania_group">神話マニア系</a>：<a href="new_role/human.php#mania">神話マニア</a>・<a href="new_role/human.php#unknown_mania">鵺</a>
 </pre>
 
-<h4><a href="new_role/fox.php">�Ÿѿر�</a></h4>
+<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
 <pre>
-<a href="new_role/fox.php#fox_group">�Ÿѷ�</a>���Ÿѡ�<a href="new_role/fox.php#white_fox">���</a>��<a href="new_role/fox.php#poison_fox">�ɸ�</a>��<a href="new_role/fox.php#voodoo_fox">����</a>��<a href="new_role/fox.php#cursed_fox">ŷ��</a>��<a href="new_role/fox.php#silver_fox">���</a>
-<a href="new_role/fox.php#child_fox_group">�Ҹѷ�</a>��<a href="new_role/fox.php#child_fox">�Ҹ�</a>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#cursed_wolf">呪狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>・<a href="new_role/wolf.php#silver_wolf">銀狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>・<a href="new_role/wolf.php#corpse_courier_mad">火車</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>
 </pre>
 
-<h4><a href="new_role/lovers.php">���Ϳر�</a></h4>
+<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
 <pre>
-<a href="new_role/lovers.php#cupid_group">���塼�ԥåɷ�</a>�����塼�ԥåɡ�<a href="new_role/lovers.php#self_cupid">�ᰦ��</a>��<a href="new_role/lovers.php#mind_cupid">����</a>
+<a href="new_role/fox.php#fox_group">妖狐系</a>：妖狐・<a href="new_role/fox.php#white_fox">白狐</a>・<a href="new_role/fox.php#poison_fox">管狐</a>・<a href="new_role/fox.php#voodoo_fox">九尾</a>・<a href="new_role/fox.php#cursed_fox">天狐</a>・<a href="new_role/fox.php#silver_fox">銀狐</a>
+<a href="new_role/fox.php#child_fox_group">子狐系</a>：<a href="new_role/fox.php#child_fox">子狐</a>
 </pre>
 
-<h4><a href="new_role/quiz.php">����Կر�</a></h4>
+<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
 <pre>
-<a href="new_role/quiz.php#quiz_group">����Է�</a>��<a href="new_role/quiz.php#quiz">�����</a>
+<a href="new_role/lovers.php#cupid_group">キューピッド系</a>：キューピッド・<a href="new_role/lovers.php#self_cupid">求愛者</a>・<a href="new_role/lovers.php#mind_cupid">女神</a>
 </pre>
 
-<h4><a href="new_role/chiroptera.php">�����ر�</a></h4>
+<h4><a href="new_role/quiz.php">出題者陣営</a></h4>
 <pre>
-<a href="new_role/chiroptera.php#chiroptera_group">������</a>��<a href="new_role/chiroptera.php#chiroptera">����</a>��<a href="new_role/chiroptera.php#poison_chiroptera">������</a>��<a href="new_role/chiroptera.php#cursed_chiroptera">������</a>
+<a href="new_role/quiz.php#quiz_group">出題者系</a>：<a href="new_role/quiz.php#quiz">出題者</a>
+</pre>
+
+<h4><a href="new_role/chiroptera.php">蝙蝠陣営</a></h4>
+<pre>
+<a href="new_role/chiroptera.php#chiroptera_group">蝙蝠系</a>：<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>・<a href="new_role/chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="new_role/chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
 </pre>
 
 <h2><a id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a></h2>
-<h3><a id="chaos_hyper_appear_role">�и���</a></h3>
+<h3><a id="chaos_hyper_appear_role">出現役職</a></h3>
 <pre>
-��������Ƥ��뤹�٤Ƥ��򿦤��и����ޤ���
+実装されているすべての役職が出現します。
 </pre>
 
-<h2><a id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?></a> (��Ver. 1.4.0 ��11)</h2>
+<h2><a id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?></a> (〜Ver. 1.4.0 β11)</h2>
 <p>
-<a href="#chaos_old_appear_role">�и���</a>
-<a href="#chaos_old_decide_role">�������롼����</a>
+<a href="#chaos_old_appear_role">出現役職</a>
+<a href="#chaos_old_decide_role">配役決定ルーチン</a>
 </p>
-<h3><a id="chaos_old_appear_role">�и���</a></h3>
+<h3><a id="chaos_old_appear_role">出現役職</a></h3>
 <pre>
-�и������ǽ���Τ����򿦤ϰʲ��Ǥ�
+出現する可能性のある役職は以下です
 </pre>
-<h4><a href="new_role/human.php">¼�Ϳر�</a></h4>
+<h4><a href="new_role/human.php">村人陣営</a></h4>
 <pre>
-<a href="new_role/human.php#human_group">¼�ͷ�</a>��¼�͡�<a href="new_role/human.php#suspect">�Կ���</a>��<a href="new_role/human.php#unconscious">̵�ռ�</a>
-<a href="new_role/human.php#mage_group">�ꤤ�շ�</a>���ꤤ�ա�<a href="new_role/human.php#soul_mage">�����ꤤ��</a>
-<a href="new_role/human.php#necromancer_group">��ǽ�Է�</a>����ǽ�ԡ�<a href="new_role/human.php#medium">���</a>
-<a href="new_role/human.php#guard_group">���ͷ�</a>�����͡�<a href="new_role/human.php#poison_guard">����</a>��<a href="new_role/human.php#reporter">�֥�</a>
-<a href="new_role/human.php#common_group">��ͭ�Է�</a>����ͭ��
-<a href="new_role/human.php#poison_group">���ǼԷ�</a>�����Ǽ�
-<a href="new_role/human.php#pharmacist_group">���շ�</a>��<a href="new_role/human.php#pharmacist">����</a>
-<a href="new_role/human.php#mania_group">���åޥ˥���</a>��<a href="new_role/human.php#mania">���åޥ˥�</a>
-</pre>
-
-<h4><a href="new_role/wolf.php">��ϵ�ر�</a></h4>
-<pre>
-<a href="new_role/wolf.php#wolf_group">��ϵ��</a>����ϵ��<a href="new_role/wolf.php#boss_wolf">��ϵ</a>��<a href="new_role/wolf.php#tongue_wolf">���ϵ</a>��<a href="new_role/wolf.php#poison_wolf">��ϵ</a>��<a href="new_role/wolf.php#cute_wolf">˨ϵ</a>
-<a href="new_role/wolf.php#mad_group">���ͷ�</a>�����͡�<a href="new_role/wolf.php#fanatic_mad">������</a>
+<a href="new_role/human.php#human_group">村人系</a>：村人・<a href="new_role/human.php#suspect">不審者</a>・<a href="new_role/human.php#unconscious">無意識</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：占い師・<a href="new_role/human.php#soul_mage">魂の占い師</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：霊能者・<a href="new_role/human.php#medium">巫女</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：狩人・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#reporter">ブン屋</a>
+<a href="new_role/human.php#common_group">共有者系</a>：共有者
+<a href="new_role/human.php#poison_group">埋毒者系</a>：埋毒者
+<a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
+<a href="new_role/human.php#mania_group">神話マニア系</a>：<a href="new_role/human.php#mania">神話マニア</a>
 </pre>
 
-<h4><a href="new_role/fox.php">�Ÿѿر�</a></h4>
+<h4><a href="new_role/wolf.php">人狼陣営</a></h4>
 <pre>
-<a href="new_role/fox.php#fox_group">�Ÿѷ�</a>���Ÿ�
-<a href="new_role/fox.php#child_fox_group">�Ҹѷ�</a>��<a href="new_role/fox.php#child_fox">�Ҹ�</a>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>
 </pre>
 
-<h4><a href="new_role/lovers.php">���Ϳر�</a></h4>
+<h4><a href="new_role/fox.php">妖狐陣営</a></h4>
 <pre>
-<a href="new_role/lovers.php#cupid_group">���塼�ԥåɷ�</a>�����塼�ԥå�
+<a href="new_role/fox.php#fox_group">妖狐系</a>：妖狐
+<a href="new_role/fox.php#child_fox_group">子狐系</a>：<a href="new_role/fox.php#child_fox">子狐</a>
 </pre>
 
-<h3><a id="chaos_old_decide_role">�������롼����</a></h3>
+<h4><a href="new_role/lovers.php">恋人陣営</a></h4>
 <pre>
-�绨�Ĥ���������ȡ��̾������ܦ���(¿���֤����Ϳ���������ȥ쥢���о�)�Ǥ���
+<a href="new_role/lovers.php#cupid_group">キューピッド系</a>：キューピッド
+</pre>
+
+<h3><a id="chaos_old_decide_role">配役決定ルーチン</a></h3>
+<pre>
+大雑把に説明すると「通常編成＋α」(多少ぶれる＆人数が増えるとレア役職登場)です。
 </pre>
 <p>
-<a href="#chaos_wolf">��ϵ</a>
-<a href="#chaos_fox">�Ÿ�</a>
-<a href="#chaos_cupid">���塼�ԥå�</a>
-<a href="#chaos_other">����¾</a>
+<a href="#chaos_wolf">人狼</a>
+<a href="#chaos_fox">妖狐</a>
+<a href="#chaos_cupid">キューピッド</a>
+<a href="#chaos_other">その他</a>
 </p>
 
-<h4><a id="chaos_wolf">��ϵ</a></h4>
+<h4><a id="chaos_wolf">人狼</a></h4>
 <pre>
-�����������ݤ��ޤ� (�Ϳ��������뤴�Ȥ˥֥���礭������Τ⤢�꤫�ʡ�)
-8��̤����1:2 = 80:20 (80%��1�͡�20%��2��)
-8��15�͡�1:2:3 = 15:70:15 (70%��2�͡�15%��1������(1�ͤ�3��))
-16��20�͡�1:2:3:4:5 = 5:10:70:10:5 (70%��3�͡�10%��1������(2�ͤ�4��)��5%��2������(1�ͤ�5��))
-21�͡���70%�Ǵ��ÿͿ���10%��1��������5%��2������ (5�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([(�Ϳ� - 20) / 5]���ڼΤ�) + 3
-��)
-24�͡�70%��3�͡�10%��1������(2�ͤ�4��)��5%��2������(1�ͤ�5��)
-25�͡�70%��4�͡�10%��1������(3�ͤ�5��)��5%��2������(2�ͤ�6��)
-30�͡�70%��5�͡�10%��1������(4�ͤ�6��)��5%��2������(3�ͤ�7��)
-50�͡�70%��9�͡�10%��1������(8�ͤ�10��)��5%��2������(7�ͤ�11��)
+※一定数を確保します (人数が増えるごとにブレを大きくするのもありかな？)
+8人未満：1:2 = 80:20 (80%で1人、20%で2人)
+8〜15人：1:2:3 = 15:70:15 (70%で2人、15%で1人増減(1人か3人))
+16〜20人：1:2:3:4:5 = 5:10:70:10:5 (70%で3人、10%で1人増減(2人か4人)、5%で2人増減(1人か5人))
+21人〜：70%で基礎人数、10%で1人増減、5%で2人増減 (5人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([(人数 - 20) / 5]の切捨て) + 3
+例)
+24人：70%で3人、10%で1人増減(2人か4人)、5%で2人増減(1人か5人)
+25人：70%で4人、10%で1人増減(3人か5人)、5%で2人増減(2人か6人)
+30人：70%で5人、10%で1人増減(4人か6人)、5%で2人増減(3人か7人)
+50人：70%で9人、10%で1人増減(8人か10人)、5%で2人増減(7人か11人)
 
-���ü�ϵ�νи�Ψ
-��<a href="new_role/wolf.php#boss_wolf">��ϵ</a>��<a href="new_role/wolf.php#poison_wolf">��ϵ</a>��<a href="new_role/wolf.php#tongue_wolf">���ϵ</a>������˴ޤޤ�ޤ���
-([���ÿͿ� / 15] ���ھ夲)�������Ƚ���Ԥ��ޤ���
-(15�ͤʤ�1��16�ͤʤ�2��50�ͤʤ�3��)
-Ƚ���Ԥ����Ӥˡ����ÿͿ���Ʊ������1�͡���ϵ�������ؤ��ޤ���
-��)
-15�͡�15%��Ƚ���1��Ԥ���
-16�͡�16%��Ƚ���2��Ԥ���
-30�͡�30%��Ƚ���2��Ԥ���
-50�͡�50%��Ƚ���3��Ԥ���
+○特殊狼の出現率
+・<a href="new_role/wolf.php#boss_wolf">白狼</a>、<a href="new_role/wolf.php#poison_wolf">毒狼</a>、<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>がこれに含まれます。
+([参加人数 / 15] の切上げ)回数だけ判定を行います。
+(15人なら1回、16人なら2回、50人なら3回)
+判定を行うたびに、参加人数と同じ割合で1人、人狼と入れ替わります。
+例)
+15人：15%の判定を1回行う。
+16人：16%の判定を2回行う。
+30人：30%の判定を2回行う。
+50人：50%の判定を3回行う。
 
-���ü�ϵ�γ�꿶��ˡ§
-��<a href="new_role/wolf.php#boss_wolf">��ϵ</a>
-<a href="new_role/wolf.php#tongue_wolf">���ϵ</a>��<a href="new_role/wolf.php#poison_wolf">��ϵ</a>�򺹤��������Ϳ������и����ޤ���
+○特殊狼の割り振り法則
+・<a href="new_role/wolf.php#boss_wolf">白狼</a>
+<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>、<a href="new_role/wolf.php#poison_wolf">毒狼</a>を差し引いた人数だけ出現します。
 
-��<a href="new_role/wolf.php#tongue_wolf">���ϵ</a>�νи�Ψ
-16��̤���ǤϽи����ޤ���
-16�͡�20�ͤ�40%�γ�Ψ�ǽи����ޤ���
-20�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(20�ͤʤ�16%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
+・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>の出現率
+16人未満では出現しません。
+16人〜20人は40%の確率で出現します。
+20人以上で参加人数と同じ割合で出現します。(20人なら16%、50人なら50%)
+最大出現人数は1人です。
 
-��<a href="new_role/wolf.php#poison_wolf">��ϵ</a>�νи�Ψ
-20��̤���ǤϽи����ޤ���
-20�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(20�ͤʤ�16%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
+・<a href="new_role/wolf.php#poison_wolf">毒狼</a>の出現率
+20人未満では出現しません。
+20人以上で参加人数と同じ割合で出現します。(20人なら16%、50人なら50%)
+最大出現人数は1人です。
 </pre>
 
-<h4><a id="chaos_fox">�Ÿ�</a></h4>
+<h4><a id="chaos_fox">妖狐</a></h4>
 <pre>
-��15��̤���Ϥ��ޤ˽Ф����١�����ʹߤϽи�����
-15��̤����0:1 = 90:10 (90%��0�͡�10%��1��)
-16��22�͡�1:2 = 90:10 (90%��1�͡�10%��2��)
-23�͡���80%�Ǵ��ÿͿ���10%��1������ (20�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 20]���ھ夲)
-��)
-23�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-40�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-41�͡�80%��3�͡�10%��1������(2�ͤ�4��)
-50�͡�80%��3�͡�10%��1������(2�ͤ�4��)
+※15人未満はたまに出る程度、それ以降は出現確定
+15人未満：0:1 = 90:10 (90%で0人、10%で1人)
+16〜22人：1:2 = 90:10 (90%で1人、10%で2人)
+23人〜：80%で基礎人数、10%で1人増減 (20人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 20]の切上げ)
+例)
+23人：80%で2人、10%で1人増減(1人か3人)
+40人：80%で2人、10%で1人増減(1人か3人)
+41人：80%で3人、10%で1人増減(2人か4人)
+50人：80%で3人、10%で1人増減(2人か4人)
 
-��<a href="new_role/fox.php#child_fox">�Ҹ�</a>�νи�Ψ
-20��̤���ǤϽи����ޤ���
-20�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(20�ͤʤ�16%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
-<a href="new_role/fox.php#child_fox">�Ҹ�</a>���и��������Ͻи��Ϳ���Ʊ�������ŸѤ�����ޤ���
+・<a href="new_role/fox.php#child_fox">子狐</a>の出現率
+20人未満では出現しません。
+20人以上で参加人数と同じ割合で出現します。(20人なら16%、50人なら50%)
+最大出現人数は1人です。
+<a href="new_role/fox.php#child_fox">子狐</a>が出現した場合は出現人数と同じだけ妖狐が減ります。
 </pre>
 
-<h4><a id="chaos_cupid">���塼�ԥå�</a></h4>
+<h4><a id="chaos_cupid">キューピッド</a></h4>
 <pre>
-�������γ�Ψ�δط��ǳμ¤˽и�����Τ�40�Ͱʾ�Ȥʤ�ޤ���
-(���塼�ԥåɤνи����Τ򥪥ץ���������Ǥ���褦�ˤ���ͽ��)
-10��̤����0:1 = 95:5 (95%��0�͡�5%��1��)
-10��16�͡�0:1 = 70:30 (70%��0�͡�30%��1��)
-16��22�͡�0:1:2 = 5:90:5 (90%��1�͡�5%��1������(0�ͤ�2��))
-23�͡���90%�Ǵ��ÿͿ���5%��1������ (20�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 20]���ڼΤ�)
-��)
-23�͡�90%��1�͡�5%��1������(0�ͤ�2��)
-40�͡�90%��2�͡�5%��1������(1�ͤ�3��)
-50�͡�90%��3�͡�5%��1������(1�ͤ�3��)
+※増減の確率の関係で確実に出現するのは40人以上となります。
+(キューピッドの出現自体をオプションで制御できるようにする予定)
+10人未満：0:1 = 95:5 (95%で0人、5%で1人)
+10〜16人：0:1 = 70:30 (70%で0人、30%で1人)
+16〜22人：0:1:2 = 5:90:5 (90%で1人、5%で1人増減(0人か2人))
+23人〜：90%で基礎人数、5%で1人増減 (20人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 20]の切捨て)
+例)
+23人：90%で1人、5%で1人増減(0人か2人)
+40人：90%で2人、5%で1人増減(1人か3人)
+50人：90%で3人、5%で1人増減(1人か3人)
 </pre>
 
-<h4><a id="chaos_other">����¾</a></h4>
+<h4><a id="chaos_other">その他</a></h4>
 <pre>
-���ÿͿ������ϵ���Ÿѡ����塼�ԥåɤ򺹤��������Ϳ��Ǥ���
+参加人数から人狼・妖狐・キューピッドを差し引いた人数です。
 
-���ꤤ��
-���ꤤ�դȺ����ꤤ�դ������˴ޤޤ�ޤ���
-8��̤����0:1 = 10:90 (90%��1�͡�10%��0��)
-8��15�͡�1:2 = 95:5 (95%��1�͡�5%��2��)
-16��29�͡�1:2 = 90:10 (90%��1�͡�10%��2��)
-30�͡���80%�Ǵ��ÿͿ���10%��1������ (15�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 15]���ڼΤ�)
-��)
-30�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��3�͡�10%��1������(2�ͤ�4��)
+・占い系
+※占い師と魂の占い師がここに含まれます。
+8人未満：0:1 = 10:90 (90%で1人、10%で0人)
+8〜15人：1:2 = 95:5 (95%で1人、5%で2人)
+16〜29人：1:2 = 90:10 (90%で1人、10%で2人)
+30人〜：80%で基礎人数、10%で1人増減 (15人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 15]の切捨て)
+例)
+30人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で3人、10%で1人増減(2人か4人)
 
-�������ꤤ�դνи�Ψ
-16��̤���ǤϽи����ޤ���
-16�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(16�ͤʤ�16%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
-�����ꤤ�դ��и��������Ͻи��Ϳ���Ʊ�������ꤤ�դ�����ޤ���
+・魂の占い師の出現率
+16人未満では出現しません。
+16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
+最大出現人数は1人です。
+魂の占い師が出現した場合は出現人数と同じだけ占い師が減ります。
 
-����ǽ��
-�����ߤ���ǽ�ԤΤߤ������˴ޤޤ�ޤ���
-9��̤����0:1 = 10:90 (90%��1�͡�10%��0��)
-9��15�͡�1:2 = 95:5 (95%��1�͡�5%��2��)
-16��29�͡�1:2 = 90:10 (90%��1�͡�10%��2��)
-30�͡���80%�Ǵ��ÿͿ���10%��1������ (15�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 15]���ڼΤ�)
-��)
-30�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��3�͡�10%��1������(2�ͤ�4��)
+・霊能系
+・現在は霊能者のみがここに含まれます。
+9人未満：0:1 = 10:90 (90%で1人、10%で0人)
+9〜15人：1:2 = 95:5 (95%で1人、5%で2人)
+16〜29人：1:2 = 90:10 (90%で1人、10%で2人)
+30人〜：80%で基礎人数、10%で1人増減 (15人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 15]の切捨て)
+例)
+30人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で3人、10%で1人増減(2人か4人)
 
-�����
-�����塼�ԥåɤ��и����Ƥ�����Ϥۤܳμ¤˽и����ޤ���
-��(�������0�ͤ������äƤ⶯��Ū��1�ͤ���������ޤ�)
-��(��������������и����Ƥ⥭�塼�ԥåɤ��и����Ƥ���Ȥϸ¤�ޤ���)
-9��̤����0:1 = 30:70 (70%��1�͡�30%��0��)
-9��15�͡�0:1:2 = 10:80:10 (80%��1�͡�10%��1������(0�ͤ�2��)
-16�͡���80%�Ǵ��ÿͿ���10%��1������ (15�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 15]���ڼΤ�)
-��)
-29�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-30�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��3�͡�10%��1������(2�ͤ�4��)
+・巫女
+※キューピッドが出現している場合はほぼ確実に出現します。
+　(ランダムで0人に当たっても強制的に1人に補正されます)
+　(ただし、巫女が出現してもキューピッドが出現しているとは限りません)
+9人未満：0:1 = 30:70 (70%で1人、30%で0人)
+9〜15人：0:1:2 = 10:80:10 (80%で1人、10%で1人増減(0人か2人)
+16人〜：80%で基礎人数、10%で1人増減 (15人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 15]の切捨て)
+例)
+29人：80%で1人、10%で1人増減(0人か2人)
+30人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で3人、10%で1人増減(2人か4人)
 
-�����ͷ�
-�����ͤȶ����Ԥ������˴ޤޤ�ޤ���
-10��̤����0:1 = 70:30 (70%��0�͡�30%��1��)
-10��15�͡�0:1:2 = 10:80:10 (80%��1�͡�10%��1������(0�ͤ�2��)
-16�͡���80%�Ǵ��ÿͿ���10%��1������ (15�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 15]���ڼΤ�)
-��)
-29�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-30�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��3�͡�10%��1������(2�ͤ�4��)
+・狂人系
+・狂人と狂信者がここに含まれます。
+10人未満：0:1 = 70:30 (70%で0人、30%で1人)
+10〜15人：0:1:2 = 10:80:10 (80%で1人、10%で1人増減(0人か2人)
+16人〜：80%で基礎人数、10%で1人増減 (15人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 15]の切捨て)
+例)
+29人：80%で1人、10%で1人増減(0人か2人)
+30人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で3人、10%で1人増減(2人か4人)
 
-�������Ԥνи�Ψ
-16��̤���ǤϽи����ޤ���
-16�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(16�ͤʤ�16%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
-�����Ԥ��и��������Ͻи��Ϳ���Ʊ���������ͤ�����ޤ���
+・狂信者の出現率
+16人未満では出現しません。
+16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
+最大出現人数は1人です。
+狂信者が出現した場合は出現人数と同じだけ狂人が減ります。
 
-�����ͷ�
-�����ͤȵ��Τ������˴ޤޤ�ޤ���
-11��̤����0:1 = 90:10 (90%��0�͡�10%��1��)
-11��15�͡�0:1:2 = 10:80:10 (80%��1�͡�10%��1������(0�ͤ�2��)
-16�͡���80%�Ǵ��ÿͿ���10%��1������ (15�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 15]���ڼΤ�)
-��)
-29�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-30�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��3�͡�10%��1������(2�ͤ�4��)
+・狩人系
+・狩人と騎士がここに含まれます。
+11人未満：0:1 = 90:10 (90%で0人、10%で1人)
+11〜15人：0:1:2 = 10:80:10 (80%で1人、10%で1人増減(0人か2人)
+16人〜：80%で基礎人数、10%で1人増減 (15人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 15]の切捨て)
+例)
+29人：80%で1人、10%で1人増減(0人か2人)
+30人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で3人、10%で1人増減(2人か4人)
 
-�����Τνи�Ψ
-20��̤���ǤϽи����ޤ���
-20�Ͱʾ�ǻ��ÿͿ���Ʊ�����ǽи����ޤ���(20�ͤʤ�20%��50�ͤʤ�50%)
-����и��Ϳ���1�ͤǤ���
-���Τ��и��������Ͻи��Ϳ���Ʊ���������ͤ����ǼԤ�����ޤ���
+・騎士の出現率
+20人未満では出現しません。
+20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
+最大出現人数は1人です。
+騎士が出現した場合は出現人数と同じだけ狩人と埋毒者が減ります。
 
-����ͭ��
-13��̤����0:1 = 90:10 (90%��0�͡�10%��1��)
-13��22�͡�1:2:3 = 10:80:10 (80%��2�͡�10%��1������(1�ͤ�3��)
-23�͡���80%�Ǵ��ÿͿ���10%��1������ (15�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 15]���ڼΤ�) + 1
-��)
-29�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-30�͡�80%��3�͡�10%��1������(2�ͤ�4��)
-50�͡�80%��4�͡�10%��1������(3�ͤ�5��)
+・共有者
+13人未満：0:1 = 90:10 (90%で0人、10%で1人)
+13〜22人：1:2:3 = 10:80:10 (80%で2人、10%で1人増減(1人か3人)
+23人〜：80%で基礎人数、10%で1人増減 (15人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 15]の切捨て) + 1
+例)
+29人：80%で2人、10%で1人増減(1人か3人)
+30人：80%で3人、10%で1人増減(2人か4人)
+50人：80%で4人、10%で1人増減(3人か5人)
 
-�����Ǽ�
-�����Τ��и����Ƥ������Ϥ��οͿ�ʬ�������ǼԤ�����ޤ���
-16��̤����0:1 = 95:5 (95%��0�͡�5%��1��)
-16��19�͡�0:1 = 85:15 (85%��0�͡�15%��1��)
-20�͡���80%�Ǵ��ÿͿ���10%��1������ (20�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 20]���ڼΤ�)
-��)
-39�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-40�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��2�͡�10%��1������(1�ͤ�3��)
+・埋毒者
+・騎士が出現していた場合はその人数分だけ埋毒者が減ります。
+16人未満：0:1 = 95:5 (95%で0人、5%で1人)
+16〜19人：0:1 = 85:15 (85%で0人、15%で1人)
+20人〜：80%で基礎人数、10%で1人増減 (20人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 20]の切捨て)
+例)
+39人：80%で1人、10%で1人増減(0人か2人)
+40人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で2人、10%で1人増減(1人か3人)
 
-������
-����ϵ���и����Ƥ�����Ϥۤܳμ¤˽и����ޤ���
-��(�������0�ͤ������äƤ⶯��Ū��1�ͤ���������ޤ�)
-��(�����������դ��и����Ƥ���ϵ���и����Ƥ���Ȥϸ¤�ޤ���)
-16��̤����0:1 = 95:5 (95%��0�͡�5%��1��)
-16��19�͡�0:1 = 85:15 (85%��0�͡�15%��1��)
-20�͡���80%�Ǵ��ÿͿ���10%��1������ (20�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 20]���ڼΤ�)
-��)
-39�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-40�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��2�͡�10%��1������(1�ͤ�3��)
+・薬師
+※毒狼が出現している場合はほぼ確実に出現します。
+　(ランダムで0人に当たっても強制的に1人に補正されます)
+　(ただし、薬師が出現しても毒狼が出現しているとは限りません)
+16人未満：0:1 = 95:5 (95%で0人、5%で1人)
+16〜19人：0:1 = 85:15 (85%で0人、15%で1人)
+20人〜：80%で基礎人数、10%で1人増減 (20人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 20]の切捨て)
+例)
+39人：80%で1人、10%で1人増減(0人か2人)
+40人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で2人、10%で1人増減(1人か3人)
 
-�����åޥ˥�
-16��̤�����и����ޤ���
-16��22�͡�0:1 = 40:60 (60%��1�͡�40%��0��)
-23�͡���80%�Ǵ��ÿͿ���10%��1������ (20�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 20]���ڼΤ�)
-��)
-39�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-40�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��2�͡�10%��1������(1�ͤ�3��)
+・神話マニア
+16人未満：出現しません
+16〜22人：0:1 = 40:60 (60%で1人、40%で0人)
+23人〜：80%で基礎人数、10%で1人増減 (20人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 20]の切捨て)
+例)
+39人：80%で1人、10%で1人増減(0人か2人)
+40人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で2人、10%で1人増減(1人か3人)
 
-���Կ��Է�
-���Կ��Ԥ�̵�ռ��������˴ޤޤ�ޤ���
-16��̤����0:1 = 90:10 (90%��0�͡�10%��1��)
-16��19�͡�0:1 = 80:20 (80%��0�͡�20%��1��)
-20�͡���80%�Ǵ��ÿͿ���10%��1������ (20�������뤴�Ȥ˴��ÿͿ���1�ͤ�������)
-���ÿͿ� = ([�Ϳ� / 20]���ڼΤ�)
-��)
-39�͡�80%��1�͡�10%��1������(0�ͤ�2��)
-40�͡�80%��2�͡�10%��1������(1�ͤ�3��)
-50�͡�80%��2�͡�10%��1������(1�ͤ�3��)
+・不審者系
+・不審者と無意識がここに含まれます。
+16人未満：0:1 = 90:10 (90%で0人、10%で1人)
+16〜19人：0:1 = 80:20 (80%で0人、20%で1人)
+20人〜：80%で基礎人数、10%で1人増減 (20人増えるごとに基礎人数が1人ずつ増加)
+基礎人数 = ([人数 / 20]の切捨て)
+例)
+39人：80%で1人、10%で1人増減(0人か2人)
+40人：80%で2人、10%で1人増減(1人か3人)
+50人：80%で2人、10%で1人増減(1人か3人)
 
-���Կ��ԡ�̵�ռ��νи�Ψ
-20��̤���Ǥ�̵�ռ��νи�Ψ����� (̵�ռ����Կ��� = 80%:20%)��
-20�Ͱʾ���Կ��Ԥνи�Ψ������� (̵�ռ����Կ��� = 40%:60%)��
-�и��Ϳ��ξ�¤ϵ��ꤷ�Ƥ��ޤ���
+・不審者・無意識の出現率
+20人未満では無意識の出現率が高め (無意識：不審者 = 80%:20%)。
+20人以上で不審者の出現率がやや高め (無意識：不審者 = 40%:60%)。
+出現人数の上限は規定していません。
 </pre>
 
 <h2><a id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a></h2>
 <ol>
-  <li>���������ɽ�������ر��������Τ����¤򤫤��뤳�Ȥ��Ǥ��ޤ�</li>
-  <li>������̵���ס�<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>�ס�<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>�ס�<?php echo $GAME_OPT_CAPT->chaos_open_cast_full ?>�פ������٤ޤ�</li>
+  <li>初日の夜に表示される陣営内訳通知に制限をかけることができます</li>
+  <li>「通知無し」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_full ?>」から選べます</li>
 </ol>
 
 <h2><a id="sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a></h2>
 <ol>
-  <li>�и����륵���򿦤μ�������¤򤫤��뤳�Ȥ��Ǥ��ޤ�</li>
-  <li>��<?php echo $GAME_OPT_CAPT->no_sub_role ?>�ס�<?php echo $GAME_OPT_CAPT->sub_role_limit_easy ?>�ס�<?php echo $GAME_OPT_CAPT->sub_role_limit_normal ?>�ס֥��������¤ʤ��פ������٤ޤ�</li>
-  <li>���Ƥ�����ե�������ѹ��Ǥ��ޤ�</li>
+  <li>出現するサブ役職の種類に制限をかけることができます</li>
+  <li>「<?php echo $GAME_OPT_CAPT->no_sub_role ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_easy ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_normal ?>」「サブ役職制限なし」から選べます</li>
+  <li>内容は設定ファイルで変更できます</li>
 </ol>
 <p>
 <a href="#sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a>
@@ -514,11 +514,11 @@ OutputInfoPageHeader('����⡼��');
 
 <h3><a id="sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a></h3>
 <pre>
-<a href="new_role/sub_role.php#decide_group">����Է�</a>��<a href="new_role/sub_role.php#authority_group">���ϼԷ�</a>�Τ߽и����ޤ���
+<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>のみ出現します。
 </pre>
 
 <h3><a id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a></h3>
 <pre>
-<a href="new_role/sub_role.php#decide_group">����Է�</a>��<a href="new_role/sub_role.php#authority_group">���ϼԷ�</a>��<a href="new_role/sub_role.php#upper_luck_group">���𺲷�</a>��<a href="new_role/sub_role.php#strong_voice_group">������</a>�Τ߽и����ޤ���
+<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>のみ出現します。
 </pre>
 </body></html>

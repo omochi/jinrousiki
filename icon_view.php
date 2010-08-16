@@ -1,8 +1,8 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('icon_functions');
-$INIT_CONF->LoadRequest('RequestIconView'); //°ú¿ô¤ò¼èÆÀ
-$DB_CONF->Connect(); //DB ÀÜÂ³
+$INIT_CONF->LoadRequest('RequestIconView'); //å¼•æ•°ã‚’å–å¾—
+$DB_CONF->Connect(); //DB æŽ¥ç¶š
 OutputIconPageHeader();
 OutputIconList();
 OutputIconPageFooter();

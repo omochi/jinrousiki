@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡Ç®ÉÂ (febris)
-  ¡û»ÅÍÍ
-  ¡¦È¯Æ°ÅöÆü¤Ê¤é¥·¥ç¥Ã¥¯»à¤¹¤ë
+  â—†ç†±ç—… (febris)
+  â—‹ä»•æ§˜
+  ãƒ»ç™ºå‹•å½“æ—¥ãªã‚‰ã‚·ãƒ§ãƒƒã‚¯æ­»ã™ã‚‹
 */
 class Role_febris extends Role{
   function Role_febris(){ $this->__construct(); }

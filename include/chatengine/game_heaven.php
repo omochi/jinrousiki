@@ -13,7 +13,7 @@ class GameHeavenFormat extends GameBaseFormat {
   }
 
   function OutputContentHeader(){
-    $this->output .= '<body class="heaven"><div id="title"><h1>¡Á Í©Îî¤Î´Ö ¡Á</h1>';
+    $this->output .= '<body class="heaven"><div id="title"><h1>ã€œ å¹½éœŠã®é–“ ã€œ</h1>';
     $this->OutputWaybackLinks();
     $this->output .= "</div>";
     return 'success';

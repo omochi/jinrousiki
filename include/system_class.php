@@ -1,52 +1,50 @@
 <?php
-//-- ¥Ç¡¼¥¿¥Ù¡¼¥¹½èÍı¤Î´ğÄì¥¯¥é¥¹ --//
+//-- ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹å‡¦ç†ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class DatabaseConfigBase{
-  //¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹æ¥ç¶š
   /*
-    $header : HTML¥Ø¥Ã¥À½ĞÎÏ¾ğÊó [true: ½ĞÎÏºÑ¤ß / false: Ì¤½ĞÎÏ]
-    $exit   : ¥¨¥é¡¼½èÍı [true: exit ¤òÊÖ¤¹ / false ¤Ç½ªÎ»]
+    $header : HTML ãƒ˜ãƒƒãƒ€å‡ºåŠ›æƒ…å ± [true: å‡ºåŠ›æ¸ˆã¿ / false: æœªå‡ºåŠ›]
+    $exit   : ã‚¨ãƒ©ãƒ¼å‡¦ç† [true: exit ã‚’è¿”ã™ / false ã§çµ‚äº†]
   */
   function Connect($header = false, $exit = true){
-    //¥Ç¡¼¥¿¥Ù¡¼¥¹¥µ¡¼¥Ğ¤Ë¥¢¥¯¥»¥¹
-    $db_handle = mysql_connect($this->host, $this->user, $this->password);
-    if($db_handle){ //¥¢¥¯¥»¥¹À®¸ù
-      mysql_set_charset('ujis');
-      if(mysql_select_db($this->name, $db_handle)){ //¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³
-	//mysql_query("SET NAMES utf8");
-	//À®¸ù¤·¤¿¤é¥Ï¥ó¥É¥ë¤òÊÖ¤·¤Æ½èÍı½ªÎ»
-	$this->db_handle = $db_handle;
-	return $db_handle;
-      }
-      else{
-	$error_title = '¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³¼ºÇÔ';
-	$error_name  = $this->name;
-      }
-    }
-    else{
-      $error_title = 'MySQL¥µ¡¼¥ĞÀÜÂ³¼ºÇÔ';
-      $error_name  = $this->host;
+    //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚µãƒ¼ãƒã«ã‚¢ã‚¯ã‚»ã‚¹
+    if(! ($db_handle = mysql_connect($this->host, $this->user, $this->password))){
+      return $this->OutputError($header, $exit, 'MySQL ã‚µãƒ¼ãƒæ¥ç¶šå¤±æ•—', $this->host);
     }
 
-    $error_message = $error_title . ': ' . $error_name; //¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸ºîÀ®
-    if($header){
-      echo '<font color="#FF0000">' . $error_message . '</font><br>';
-      if($exit) OutputHTMLFooter($exit);
-      return false;
+    mysql_set_charset($this->encode); //æ–‡å­—ã‚³ãƒ¼ãƒ‰è¨­å®š
+    if(! mysql_select_db($this->name, $db_handle)){ //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹æ¥ç¶š
+      return $this->OutputError($header, $exit, 'ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹æ¥ç¶šå¤±æ•—', $this->name);
     }
-    OutputActionResult($error_title, $error_message);
+    if($this->encode == 'utf8') mysql_query('SET NAMES utf8');
+
+    //æˆåŠŸã—ãŸã‚‰ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã—ã¦å‡¦ç†çµ‚äº†
+    $this->db_handle = $db_handle;
+    return $db_handle;
   }
 
-  //¥Ç¡¼¥¿¥Ù¡¼¥¹¤È¤ÎÀÜÂ³¤òÊÄ¤¸¤ë
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¨ã®æ¥ç¶šã‚’é–‰ã˜ã‚‹
   function Disconnect($unlock = false){
     if(is_null($this->db_handle)) return;
 
-    if($unlock) UnlockTable(); //¥í¥Ã¥¯²ò½ü
+    if($unlock) UnlockTable(); //ãƒ­ãƒƒã‚¯è§£é™¤
     mysql_close($this->db_handle);
-    unset($this->db_handle); //¥Ï¥ó¥É¥ë¤ò¥¯¥ê¥¢
+    unset($this->db_handle); //ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚¯ãƒªã‚¢
+  }
+
+  //ã‚¨ãƒ©ãƒ¼å‡ºåŠ› ($header, $exit ã¯ Connect() å‚ç…§)
+  function OutputError($header, $exit, $title, $type){
+    $str = $title . ': ' . $type; //ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä½œæˆ
+    if($header){
+      echo '<font color="#FF0000">' . $str . '</font><br>';
+      if($exit) OutputHTMLFooter($exit);
+      return false;
+    }
+    OutputActionResult($title, $str);
   }
 }
 
-//-- ¥»¥Ã¥·¥ç¥ó´ÉÍı¥¯¥é¥¹ --//
+//-- ã‚»ãƒƒã‚·ãƒ§ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ --//
 class Session{
   var $id;
   var $user_no;
@@ -57,15 +55,15 @@ class Session{
     $this->Set();
   }
 
-  //ID ¥»¥Ã¥È
+  //ID ã‚»ãƒƒãƒˆ
   function Set(){
     $this->id = session_id();
     return $this->id;
   }
 
-  //ID ¥ê¥»¥Ã¥È
+  //ID ãƒªã‚»ãƒƒãƒˆ
   function Reset(){
-    //PHP ¤Î¥Ğ¡¼¥¸¥ç¥ó¤¬¸Å¤¤¾ì¹ç¤Ï´Ø¿ô¤¬¤Ê¤¤¤Î¤Ç¼«Á°¤Ç½èÍı¤¹¤ë
+    //PHP ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒå¤ã„å ´åˆã¯é–¢æ•°ãŒãªã„ã®ã§è‡ªå‰ã§å‡¦ç†ã™ã‚‹
     if(function_exists('session_regenerate_id')){
       session_regenerate_id();
     }
@@ -79,12 +77,12 @@ class Session{
     return $this->Set();
   }
 
-  //ID ¼èÆÀ
+  //ID å–å¾—
   function Get($uniq = false){
     return $uniq ? $this->GetUniq() : $this->id;
   }
 
-  //DB ¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥»¥Ã¥·¥ç¥ó ID ¤ÈÈï¤é¤Ê¤¤¤è¤¦¤Ë¤¹¤ë
+  //DB ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒƒã‚·ãƒ§ãƒ³ ID ã¨è¢«ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
   function GetUniq(){
     $query = 'SELECT COUNT(room_no) FROM user_entry WHERE session_id = ';
     do{
@@ -93,17 +91,17 @@ class Session{
     return $this->id;
   }
 
-  //Ç§¾Ú¤·¤¿¥æ¡¼¥¶¤Î ID ¼èÆÀ
+  //èªè¨¼ã—ãŸãƒ¦ãƒ¼ã‚¶ã® ID å–å¾—
   function GetUser(){
     return $this->user_no;
   }
 
-  //Ç§¾Ú
+  //èªè¨¼
   function Certify($exit = true){
     global $RQ_ARGS;
-    //$ip_address = $_SERVER['REMOTE_ADDR']; //IP¥¢¥É¥ì¥¹Ç§¾Ú¤Ï¸½ºß¤Ï¹Ô¤Ã¤Æ¤¤¤Ê¤¤
+    //$ip_address = $_SERVER['REMOTE_ADDR']; //IPã‚¢ãƒ‰ãƒ¬ã‚¹èªè¨¼ã¯ç¾åœ¨ã¯è¡Œã£ã¦ã„ãªã„
 
-    //¥»¥Ã¥·¥ç¥ó ID ¤Ë¤è¤ëÇ§¾Ú
+    //ã‚»ãƒƒã‚·ãƒ§ãƒ³ ID ã«ã‚ˆã‚‹èªè¨¼
     $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
       "AND session_id ='{$this->id}' AND user_no > 0";
     $array = FetchArray($query);
@@ -112,20 +110,20 @@ class Session{
       return true;
     }
 
-    if($exit){ //¥¨¥é¡¼½èÍı
-      $title = '¥»¥Ã¥·¥ç¥óÇ§¾Ú¥¨¥é¡¼';
-      $str = $title . '¡§<a href="./" target="_top">¥È¥Ã¥×¥Ú¡¼¥¸</a>¤«¤é¥í¥°¥¤¥ó¤·¤Ê¤ª¤·¤Æ¤¯¤À¤µ¤¤';
+    if($exit){ //ã‚¨ãƒ©ãƒ¼å‡¦ç†
+      $title = 'ã‚»ãƒƒã‚·ãƒ§ãƒ³èªè¨¼ã‚¨ãƒ©ãƒ¼';
+      $str = $title . 'ï¼š<a href="./" target="_top">ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸</a>ã‹ã‚‰ãƒ­ã‚°ã‚¤ãƒ³ã—ãªãŠã—ã¦ãã ã•ã„';
       OutputActionResult($title, $str);
     }
     return false;
   }
 }
 
-//-- ¥¯¥Ã¥­¡¼¥Ç¡¼¥¿¤Î¥í¡¼¥É½èÍı --//
+//-- ã‚¯ãƒƒã‚­ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰å‡¦ç† --//
 class CookieDataSet{
-  var $day_night;  //ÌëÌÀ¤±
-  var $vote_times; //ÅêÉ¼²ó¿ô
-  var $objection;  //¡Ö°ÛµÄ¤¢¤ê¡×¤Î¾ğÊó
+  var $day_night;  //å¤œæ˜ã‘
+  var $vote_times; //æŠ•ç¥¨å›æ•°
+  var $objection;  //ã€Œç•°è­°ã‚ã‚Šã€ã®æƒ…å ±
 
   function CookieDataSet(){ $this->__construct(); }
   function __construct(){
@@ -135,9 +133,9 @@ class CookieDataSet{
   }
 }
 
-//-- ³°Éô¥ê¥ó¥¯À¸À®¤Î´ğÄì¥¯¥é¥¹ --//
+//-- å¤–éƒ¨ãƒªãƒ³ã‚¯ç”Ÿæˆã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class ExternalLinkBuilder{
-  //¥µ¡¼¥ĞÄÌ¿®¾õÂÖ¥Á¥§¥Ã¥¯
+  //ã‚µãƒ¼ãƒé€šä¿¡çŠ¶æ…‹ãƒã‚§ãƒƒã‚¯
   function CheckConnection($url){
     $url_stack = explode('/', $url);
     $this->host = $url_stack[2];
@@ -153,7 +151,7 @@ class ExternalLinkBuilder{
     return ! $stream_stack['timed_out'];
   }
 
-  //HTML ¥¿¥°À¸À®
+  //HTML ã‚¿ã‚°ç”Ÿæˆ
   function Generate($title, $data){
     return <<<EOF
 <fieldset>
@@ -164,19 +162,19 @@ class ExternalLinkBuilder{
 EOF;
   }
 
-  //BBS ¥ê¥ó¥¯À¸À®
+  //BBS ãƒªãƒ³ã‚¯ç”Ÿæˆ
   function GenerateBBS($data){
-    $title = '<a href="' . $this->view_url . $this->thread . 'l50' . '">¹ğÃÎ¥¹¥ì¥Ã¥É¾ğÊó</a>';
+    $title = '<a href="' . $this->view_url . $this->thread . 'l50' . '">å‘ŠçŸ¥ã‚¹ãƒ¬ãƒƒãƒ‰æƒ…å ±</a>';
     return $this->Generate($title, $data);
   }
 
-  //³°ÉôÂ¼¥ê¥ó¥¯À¸À®
+  //å¤–éƒ¨æ‘ãƒªãƒ³ã‚¯ç”Ÿæˆ
   function GenerateSharedServerRoom($name, $url, $data){
-    return $this->Generate('¥²¡¼¥à°ìÍ÷ (<a href="' . $url . '">' . $name . '</a>)', $data);
+    return $this->Generate('ã‚²ãƒ¼ãƒ ä¸€è¦§ (<a href="' . $url . '">' . $name . '</a>)', $data);
   }
 }
 
-//-- ·Ç¼¨ÈÄ¾ğÊó¼èÆÀ¤Î´ğÄì¥¯¥é¥¹ --//
+//-- æ²ç¤ºæ¿æƒ…å ±å–å¾—ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class BBSConfigBase extends ExternalLinkBuilder{
   function Output(){
     global $SERVER_CONF;
@@ -187,10 +185,10 @@ class BBSConfigBase extends ExternalLinkBuilder{
       return;
     }
 
-    //¥¹¥ì¥Ã¥É¾ğÊó¤ò¼èÆÀ
+    //ã‚¹ãƒ¬ãƒƒãƒ‰æƒ…å ±ã‚’å–å¾—
     $url = $this->raw_url . $this->thread . 'l' . $this->size . 'n';
     if(($data = @file_get_contents($url)) == '') return;
-    //PrintData($data, 'Data'); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($data, 'Data'); //ãƒ†ã‚¹ãƒˆç”¨
     if($this->encode != $SERVER_CONF->encode){
       $data = mb_convert_encoding($data, $SERVER_CONF->encode, $this->encode);
     }
@@ -207,14 +205,14 @@ class BBSConfigBase extends ExternalLinkBuilder{
   }
 }
 
-//¥²¡¼¥à¥×¥ì¥¤»ş¤Î¥¢¥¤¥³¥óÉ½¼¨ÀßÄê¤Î´ğÄì¥¯¥é¥¹ --//
+//ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤æ™‚ã®ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºè¨­å®šã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class IconConfigBase{
-  //½é´üÀßÄê
-  var $path   = 'user_icon'; //¥æ¡¼¥¶¥¢¥¤¥³¥ó¤Î¥Ñ¥¹
-  var $dead   = 'grave.gif'; //»à¼Ô
-  var $wolf   = 'wolf.gif';  //Ïµ
-  var $width  = 45; //É½¼¨¥µ¥¤¥º(Éı)
-  var $height = 45; //É½¼¨¥µ¥¤¥º(¹â¤µ)
+  //åˆæœŸè¨­å®š
+  var $path   = 'user_icon'; //ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ‘ã‚¹
+  var $dead   = 'grave.gif'; //æ­»è€…
+  var $wolf   = 'wolf.gif';  //ç‹¼
+  var $width  = 45; //è¡¨ç¤ºã‚µã‚¤ã‚º(å¹…)
+  var $height = 45; //è¡¨ç¤ºã‚µã‚¤ã‚º(é«˜ã•)
 
   function IconConfigBase(){ $this->__construct(); }
   function __construct(){
@@ -229,25 +227,25 @@ class IconConfigBase{
   }
 }
 
-//-- ¥æ¡¼¥¶¥¢¥¤¥³¥ó´ÉÍı¤Î´ğÄì¥¯¥é¥¹ --//
+//-- ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ç®¡ç†ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class UserIconBase{
-  // ¥¢¥¤¥³¥ó¤ÎÊ¸»ú¿ô
+  // ã‚¢ã‚¤ã‚³ãƒ³ã®æ–‡å­—æ•°
   function IconNameMaxLength(){
-    return 'È¾³Ñ¤Ç' . $this->name . 'Ê¸»ú¡¢Á´³Ñ¤Ç' . floor($this->name / 2) . 'Ê¸»ú¤Ş¤Ç';
+    return 'åŠè§’ã§' . $this->name . 'æ–‡å­—ã€å…¨è§’ã§' . floor($this->name / 2) . 'æ–‡å­—ã¾ã§';
   }
 
-  // ¥¢¥¤¥³¥ó¤Î¥Õ¥¡¥¤¥ë¥µ¥¤¥º
+  // ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º
   function IconFileSizeMax(){
-    return ($this->size > 1024 ? floor($this->size / 1024) . 'k' : $this->size) . 'Byte ¤Ş¤Ç';
+    return ($this->size > 1024 ? floor($this->size / 1024) . 'k' : $this->size) . 'Byte ã¾ã§';
   }
 
-  // ¥¢¥¤¥³¥ó¤Î½Ä²£¤Î¥µ¥¤¥º
+  // ã‚¢ã‚¤ã‚³ãƒ³ã®ç¸¦æ¨ªã®ã‚µã‚¤ã‚º
   function IconSizeMax(){
-    return 'Éı' . $this->width . '¥Ô¥¯¥»¥ë ¡ß ¹â¤µ' . $this->height . '¥Ô¥¯¥»¥ë¤Ş¤Ç';
+    return 'å¹…' . $this->width . 'ãƒ”ã‚¯ã‚»ãƒ« Ã— é«˜ã•' . $this->height . 'ãƒ”ã‚¯ã‚»ãƒ«ã¾ã§';
   }
 }
 
-//-- ²èÁü´ÉÍı¤Î´ğÄì¥¯¥é¥¹ --//
+//-- ç”»åƒç®¡ç†ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class ImageManager{
   function Generate($name, $alt = ''){
     $str = '<img';
@@ -265,41 +263,41 @@ class ImageManager{
   }
 }
 
-//-- ¾¡Íø¿Ø±Ä¤Î²èÁü½èÍı¤Î´ğÄì¥¯¥é¥¹ --//
+//-- å‹åˆ©é™£å–¶ã®ç”»åƒå‡¦ç†ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class VictoryImageBase extends ImageManager{
   function Generate($name){
     switch($name){
     case 'human':
-      $alt = 'Â¼¿Í¾¡Íø';
+      $alt = 'æ‘äººå‹åˆ©';
       break;
 
     case 'wolf':
-      $alt = '¿ÍÏµ¾¡Íø';
+      $alt = 'äººç‹¼å‹åˆ©';
       break;
 
     case 'fox1':
     case 'fox2':
       $name = 'fox';
-      $alt = 'ÍÅ¸Ñ¾¡Íø';
+      $alt = 'å¦–ç‹å‹åˆ©';
       break;
 
     case 'lovers':
-      $alt = 'Îø¿Í¾¡Íø';
+      $alt = 'æ‹äººå‹åˆ©';
       break;
 
     case 'quiz':
-      $alt = '½ĞÂê¼Ô¾¡Íø';
+      $alt = 'å‡ºé¡Œè€…å‹åˆ©';
       break;
 
     case 'vampire':
-      $alt = 'µÛ·ìµ´¾¡Íø';
+      $alt = 'å¸è¡€é¬¼å‹åˆ©';
       break;
 
     case 'draw':
     case 'vanish':
     case 'quiz_dead':
       $name = 'draw';
-      $alt = '°ú¤­Ê¬¤±';
+      $alt = 'å¼•ãåˆ†ã‘';
       break;
 
     default:
@@ -309,21 +307,21 @@ class VictoryImageBase extends ImageManager{
   }
 }
 
-//-- ¥á¥Ë¥å¡¼¥ê¥ó¥¯É½¼¨ÍÑ¤Î´ğÄì¥¯¥é¥¹ --//
+//-- ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒªãƒ³ã‚¯è¡¨ç¤ºç”¨ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class MenuLinkConfigBase{
-  //¸òÎ®ÍÑ¥µ¥¤¥ÈÉ½¼¨
+  //äº¤æµç”¨ã‚µã‚¤ãƒˆè¡¨ç¤º
   function Output(){
-    //½é´ü²½½èÍı
+    //åˆæœŸåŒ–å‡¦ç†
     $this->str = '';
     $this->header = '<li>';
     $this->footer = "</li>\n";
 
-    $this->AddHeader('¸òÎ®ÍÑ¥µ¥¤¥È');
+    $this->AddHeader('äº¤æµç”¨ã‚µã‚¤ãƒˆ');
     $this->AddLink($this->list);
     $this->AddFooter();
 
     if(count($this->add_list) > 0){
-      $this->AddHeader('³°Éô¥ê¥ó¥¯');
+      $this->AddHeader('å¤–éƒ¨ãƒªãƒ³ã‚¯');
       foreach($this->add_list as $group => $list){
 	$this->str .= $this->header . $group . $this->footer;
 	$this->AddLink($list);
@@ -333,27 +331,27 @@ class MenuLinkConfigBase{
     echo $this->str;
   }
 
-  //¥Ø¥Ã¥ÀÄÉ²Ã
+  //ãƒ˜ãƒƒãƒ€è¿½åŠ 
   function AddHeader($title){
     $this->str .= '<div class="menu">' . $title . "</div>\n<ul>\n";
   }
 
-  //¥ê¥ó¥¯À¸À®
+  //ãƒªãƒ³ã‚¯ç”Ÿæˆ
   function AddLink($list){
     $header = $this->header . '<a href="';
     $footer = '</a>' . $this->footer;
     foreach($list as $name => $url) $this->str .= $header . $url . '">' . $name . $footer;
   }
 
-  //¥Õ¥Ã¥¿ÄÉ²Ã
+  //ãƒ•ãƒƒã‚¿è¿½åŠ 
   function AddFooter(){
     $this->str .= "</ul>\n";
   }
 }
 
-//-- Copyright É½¼¨ÍÑ¤Î´ğÄì¥¯¥é¥¹ --//
+//-- Copyright è¡¨ç¤ºç”¨ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class CopyrightConfigBase{
-  //Åê¹Æ½èÍı
+  //æŠ•ç¨¿å‡¦ç†
   function Output(){
     $stack = $this->list;
     foreach($this->add_list as $class => $list){
@@ -362,18 +360,18 @@ class CopyrightConfigBase{
     }
 
     foreach($stack as $class => $list){
-      $str = '<h2>' . $class . '</h2>'."\n";
+      $str = '<h2>' . $class . "</h2>\n<ul>\n";
       foreach($list as $name => $url){
-	$str .= '<a href="' . $url . '">' . $name . '</a><br>'."\n";
+	$str .= '<li><a href="' . $url . '">' . $name . "</a></li>\n";
       }
-      echo $str;
+      echo $str . "</ul>\n";
     }
   }
 }
 
-//-- ²»¸»½èÍı¤Î´ğÄì¥¯¥é¥¹ --//
+//-- éŸ³æºå‡¦ç†ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class SoundBase{
-  //²»¤òÌÄ¤é¤¹
+  //éŸ³ã‚’é³´ã‚‰ã™
   function Output($type, $loop = false){
     $path = JINRO_ROOT . '/' . $this->path . '/' . $this->$type . '.' . $this->extension;
     if($loop) $loop_tag = "\n".'<param name="loop" value="true">';
@@ -390,26 +388,26 @@ EOF;
   }
 }
 
-//-- Twitter Åê¹ÆÍÑ¤Î´ğÄì¥¯¥é¥¹ --//
+//-- Twitter æŠ•ç¨¿ç”¨ã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class TwitterConfigBase{
-  //Åê¹Æ½èÍı
+  //æŠ•ç¨¿å‡¦ç†
   function Send($id, $name, $comment){
     if($this->disable) return;
-    require_once(JINRO_MOD . '/twitter/Twitter.php'); //¥é¥¤¥Ö¥é¥ê¤ò¥í¡¼¥É
+    require_once(JINRO_MOD . '/twitter/Twitter.php'); //ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ãƒ­ãƒ¼ãƒ‰
 
-    $message = "¡Ú{$this->server}¡Û{$id}ÈÖÃÏ¤Ë{$name}Â¼\n¡Á{$comment}¡Á ¤¬·ú¤Á¤Ş¤·¤¿";
+    $message = "ã€{$this->server}ã€‘{$id}ç•ªåœ°ã«{$name}æ‘\nã€œ{$comment}ã€œ ãŒå»ºã¡ã¾ã—ãŸ";
     if(strlen($this->hash) > 0) $message .= " #{$this->hash}";
     $st =& new Services_Twitter($this->user, $this->password);
     if($st->setUpdate(mb_convert_encoding($message, 'UTF-8', 'auto'))) return;
 
-    //¥¨¥é¡¼½èÍı
-    $sentence = 'Twitter ¤Ø¤ÎÅê¹Æ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>'."\n" .
-      '¥æ¡¼¥¶Ì¾¡§' . $this->user . '<br>'."\n" . '¥á¥Ã¥»¡¼¥¸¡§' . $message;
+    //ã‚¨ãƒ©ãƒ¼å‡¦ç†
+    $sentence = 'Twitter ã¸ã®æŠ•ç¨¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>'."\n" .
+      'ãƒ¦ãƒ¼ã‚¶åï¼š' . $this->user . '<br>'."\n" . 'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼š' . $message;
     PrintData($sentence);
   }
 }
 
-//-- ¥Ú¡¼¥¸Á÷¤ê¥ê¥ó¥¯À¸À®¥¯¥é¥¹ --//
+//-- ãƒšãƒ¼ã‚¸é€ã‚Šãƒªãƒ³ã‚¯ç”Ÿæˆã‚¯ãƒ©ã‚¹ --//
 class PageLinkBuilder{
   function PageLinkBuilder($file, $page, $count, $config, $title = 'Page', $type = 'page'){
     $this->__construct($file, $page, $count, $config, $title, $type);
@@ -428,11 +426,11 @@ class PageLinkBuilder{
     $this->SetPage($page);
   }
 
-  //É½¼¨¤¹¤ë¥Ú¡¼¥¸¤Î¥¢¥É¥ì¥¹¤ò¥»¥Ã¥È
+  //è¡¨ç¤ºã™ã‚‹ãƒšãƒ¼ã‚¸ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ã‚»ãƒƒãƒˆ
   function SetPage($page){
     $total = ceil($this->view_total / $this->view_count);
     $start = $page == 'all' ? 1 : $page;
-    if($total - $start < $this->view_page){ //»Ä¤ê¥Ú¡¼¥¸¤¬¾¯¤Ê¤¤¾ì¹ç¤ÏÉ½¼¨³«»Ï°ÌÃÖ¤ò¤º¤é¤¹
+    if($total - $start < $this->view_page){ //æ®‹ã‚Šãƒšãƒ¼ã‚¸ãŒå°‘ãªã„å ´åˆã¯è¡¨ç¤ºé–‹å§‹ä½ç½®ã‚’ãšã‚‰ã™
       $start = $total - $this->view_page + 1;
       if($start < 1) $start = 1;
     }
@@ -448,12 +446,12 @@ class PageLinkBuilder{
     $this->query = $page == 'all' ? '' : sprintf(' LIMIT %d, %d', $this->limit, $this->view_count);
   }
 
-  //¥ª¥×¥·¥ç¥ó¤òÄÉ²Ã¤¹¤ë
+  //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã™ã‚‹
   function AddOption($type, $value = 'on'){
     $this->option[$type] = $type . '=' . $value;
   }
 
-  //¥Ú¡¼¥¸Á÷¤êÍÑ¤Î¥ê¥ó¥¯¥¿¥°¤òºîÀ®¤¹¤ë
+  //ãƒšãƒ¼ã‚¸é€ã‚Šç”¨ã®ãƒªãƒ³ã‚¯ã‚¿ã‚°ã‚’ä½œæˆã™ã‚‹
   function Generate($page, $title = NULL, $force = false){
     if($page == $this->page->set && ! $force) return '[' . $page . ']';
     $list = $this->option;
@@ -462,7 +460,7 @@ class PageLinkBuilder{
     return $this->url . implode('&', $list) . '">' . $title . '</a>';
   }
 
-  //¥Ú¡¼¥¸¥ê¥ó¥¯¤ò½ĞÎÏ¤¹¤ë
+  //ãƒšãƒ¼ã‚¸ãƒªãƒ³ã‚¯ã‚’å‡ºåŠ›ã™ã‚‹
   function Output(){
     $url_stack = array('[' . $this->title . ']');
     if($this->page->start > 1 && $this->page->total > $this->view_page){
@@ -482,501 +480,503 @@ class PageLinkBuilder{
 
     if($this->file == 'old_log'){
       $this->AddOption('reverse', $this->set_reverse ? 'off' : 'on');
-      $url_stack[] = '[É½¼¨½ç]';
-      $url_stack[] = $this->set_reverse ? '¿·¢­¸Å' : '¸Å¢­¿·';
-      $name = ($this->set_reverse xor $this->reverse) ? '¸µ¤ËÌá¤¹' : 'Æş¤ìÂØ¤¨¤ë';
+      $url_stack[] = '[è¡¨ç¤ºé †]';
+      $url_stack[] = $this->set_reverse ? 'æ–°â†“å¤' : 'å¤â†“æ–°';
+      $name = ($this->set_reverse xor $this->reverse) ? 'å…ƒã«æˆ»ã™' : 'å…¥ã‚Œæ›¿ãˆã‚‹';
       $url_stack[] =  $this->Generate($this->page->set, $name, true);
     }
     echo $this->header . implode(' ', $url_stack) . $this->footer;
   }
 }
 
-//-- Ìò¿¦¥Ç¡¼¥¿¥Ù¡¼¥¹ --//
+//-- å½¹è·ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ --//
 class RoleData{
-  //-- Ìò¿¦Ì¾¤ÎËİÌõ --//
-  //¥á¥¤¥óÌò¿¦¤Î¥ê¥¹¥È (¥³¡¼¥ÉÌ¾ => É½¼¨Ì¾)
-  //½éÆü¤ÎÌò¿¦ÄÌÃÎ¥ê¥¹¥È¤Ï¤³¤Î½çÈÖ¤ÇÉ½¼¨¤µ¤ì¤ë
+  //-- å½¹è·åã®ç¿»è¨³ --//
+  //ãƒ¡ã‚¤ãƒ³å½¹è·ã®ãƒªã‚¹ãƒˆ (ã‚³ãƒ¼ãƒ‰å => è¡¨ç¤ºå)
+  //åˆæ—¥ã®å½¹è·é€šçŸ¥ãƒªã‚¹ãƒˆã¯ã“ã®é †ç•ªã§è¡¨ç¤ºã•ã‚Œã‚‹
   var $main_role_list = array(
-    'human'              => 'Â¼¿Í',
-    'elder'              => 'Ä¹Ï·',
-    'brownie'            => 'ºÂÉßÆ¸»Ò',
-    'saint'              => 'À»½÷',
-    'executor'           => '¼¹¹Ô¼Ô',
-    'escaper'            => 'Æ¨Ë´¼Ô',
-    'suspect'            => 'ÉÔ¿³¼Ô',
-    'unconscious'        => 'Ìµ°Õ¼±',
-    'mage'               => 'Àê¤¤»Õ',
-    'soul_mage'          => 'º²¤ÎÀê¤¤»Õ',
-    'psycho_mage'        => 'Àº¿À´ÕÄê»Î',
-    'sex_mage'           => '¤Ò¤è¤³´ÕÄê»Î',
-    'stargazer_mage'     => 'ÀêÀ±½Ñ»Õ',
-    'voodoo_killer'      => '±¢ÍÛ»Õ',
-    'dummy_mage'         => 'Ì´¸«¿Í',
-    'necromancer'        => 'ÎîÇ½¼Ô',
-    'soul_necromancer'   => '±À³°¶À',
-    'yama_necromancer'   => 'ïåËâ',
-    'dummy_necromancer'  => 'Ì´Ëí¿Í',
-    'medium'             => 'Öà½÷',
-    'seal_medium'        => 'Éõ°õ»Õ',
-    'revive_medium'      => 'É÷½Ë',
-    'priest'             => '»Êº×',
-    'bishop_priest'      => '»Ê¶µ',
-    'dowser_priest'      => 'ÃµÃÎ»Õ',
-    'border_priest'      => '¶­³¦»Õ',
-    'crisis_priest'      => 'ÍÂ¸À¼Ô',
-    'revive_priest'      => 'Å·¿Í',
-    'dummy_priest'       => 'Ì´»Êº×',
-    'guard'              => '¼í¿Í',
-    'hunter_guard'       => 'ÎÄ»Õ',
-    'blind_guard'        => 'Ìë¿ı',
-    'poison_guard'       => 'µ³»Î',
-    'fend_guard'         => 'Ç¦¼Ô',
-    'reporter'           => '¥Ö¥ó²°',
-    'anti_voodoo'        => 'Ìñ¿À',
-    'dummy_guard'        => 'Ì´¼é¿Í',
-    'common'             => '¶¦Í­¼Ô',
-    'detective_common'   => 'ÃµÄå',
-    'trap_common'        => 'ºö»Î',
-    'ghost_common'       => 'Ë´Îî¾î',
-    'dummy_common'       => 'Ì´¶¦Í­¼Ô',
-    'poison'             => 'ËäÆÇ¼Ô',
-    'strong_poison'      => '¶¯ÆÇ¼Ô',
-    'incubate_poison'    => 'ÀøÆÇ¼Ô',
-    'guide_poison'       => 'Í¶ÆÇ¼Ô',
-    'chain_poison'       => 'Ï¢ÆÇ¼Ô',
-    'dummy_poison'       => 'Ì´ÆÇ¼Ô',
-    'poison_cat'         => 'Ç­Ëô',
-    'revive_cat'         => 'ÀçÃ¬',
-    'sacrifice_cat'      => 'Ç­¿À',
-    'pharmacist'         => 'Ìô»Õ',
-    'cure_pharmacist'    => '²ÏÆ¸',
-    'revive_pharmacist'  => 'Àç¿Í',
-    'assassin'           => '°Å»¦¼Ô',
-    'doom_assassin'      => '»à¿À',
-    'reverse_assassin'   => 'È¿º²»Õ',
-    'soul_assassin'      => 'ÄÔ»Â¤ê',
-    'eclipse_assassin'   => '¿ª°Å»¦¼Ô',
-    'mind_scanner'       => '¤µ¤È¤ê',
-    'evoke_scanner'      => '¥¤¥¿¥³',
-    'whisper_scanner'    => 'ÓñÁûÎî',
-    'howl_scanner'       => 'ËÊÁûÎî',
-    'telepath_scanner'   => 'Ç°ÁûÎî',
-    'jealousy'           => '¶¶É±',
-    'poison_jealousy'    => 'ÆÇ¶¶É±',
-    'doll'               => '¾å³¤¿Í·Á',
-    'friend_doll'        => 'Ê©ÍöÀ¾¿Í·Á',
-    'poison_doll'        => 'ÎëÍö¿Í·Á',
-    'doom_doll'          => 'Ë©Íé¿Í·Á',
-    'doll_master'        => '¿Í·Á¸¯¤¤',
-    'wolf'               => '¿ÍÏµ',
-    'boss_wolf'          => 'ÇòÏµ',
-    'gold_wolf'          => '¶âÏµ',
-    'phantom_wolf'       => '¸¸Ïµ',
-    'cursed_wolf'        => '¼öÏµ',
-    'wise_wolf'          => '¸­Ïµ',
-    'poison_wolf'        => 'ÆÇÏµ',
-    'resist_wolf'        => '¹³ÆÇÏµ',
-    'blue_wolf'          => 'ÁóÏµ',
-    'emerald_wolf'       => '¿éÏµ',
-    'sex_wolf'           => '¿÷Ïµ',
-    'tongue_wolf'        => 'Àå²ÒÏµ',
-    'possessed_wolf'     => 'ØáÏµ',
-    'hungry_wolf'        => '²îÏµ',
-    'doom_wolf'          => 'Ì½Ïµ',
-    'sirius_wolf'        => 'Å·Ïµ',
-    'elder_wolf'         => '¸ÅÏµ',
-    'cute_wolf'          => 'Ë¨Ïµ',
-    'scarlet_wolf'       => '¹ÈÏµ',
-    'silver_wolf'        => '¶äÏµ',
-    'mad'                => '¶¸¿Í',
-    'fanatic_mad'        => '¶¸¿®¼Ô',
-    'whisper_mad'        => 'Óñ¤­¶¸¿Í',
-    'jammer_mad'         => '·îÅÆ',
-    'voodoo_mad'         => '¼ö½Ñ»Õ',
-    'corpse_courier_mad' => '²Ğ¼Ö',
-    'agitate_mad'        => 'ÀğÆ°¼Ô',
-    'miasma_mad'         => 'ÅÚÃØéá',
-    'dream_eater_mad'    => 'àÓ',
-    'trap_mad'           => 'æ«»Õ',
-    'possessed_mad'      => '¸¤¿À',
-    'therian_mad'        => '½Ã¿Í',
-    'fox'                => 'ÍÅ¸Ñ',
-    'white_fox'          => 'Çò¸Ñ',
-    'black_fox'          => '¹õ¸Ñ',
-    'gold_fox'           => '¶â¸Ñ',
-    'phantom_fox'        => '¸¸¸Ñ',
-    'poison_fox'         => '´É¸Ñ',
-    'blue_fox'           => 'Áó¸Ñ',
-    'emerald_fox'        => '¿é¸Ñ',
-    'voodoo_fox'         => '¶åÈø',
-    'revive_fox'         => 'Àç¸Ñ',
-    'possessed_fox'      => 'Øá¸Ñ',
-    'doom_fox'           => 'Ì½¸Ñ',
-    'cursed_fox'         => 'Å·¸Ñ',
-    'elder_fox'          => '¸Å¸Ñ',
-    'cute_fox'           => 'Ë¨¸Ñ',
-    'scarlet_fox'        => '¹È¸Ñ',
-    'silver_fox'         => '¶ä¸Ñ',
-    'child_fox'          => '»Ò¸Ñ',
-    'sex_fox'            => '¿÷¸Ñ',
-    'stargazer_fox'      => 'À±¸Ñ',
-    'jammer_fox'         => '·î¸Ñ',
-    'miasma_fox'         => 'êµ¸Ñ',
-    'cupid'              => '¥­¥å¡¼¥Ô¥Ã¥É',
-    'self_cupid'         => 'µá°¦¼Ô',
-    'moon_cupid'         => '¤«¤°¤äÉ±',
-    'mind_cupid'         => '½÷¿À',
-    'triangle_cupid'     => '¾®°­Ëâ',
-    'angel'              => 'Å·»È',
-    'rose_angel'         => 'é¬é¯Å·»È',
-    'lily_angel'         => 'É´¹çÅ·»È',
-    'exchange_angel'     => 'º²°Ü»È',
-    'ark_angel'          => 'ÂçÅ·»È',
-    'quiz'               => '½ĞÂê¼Ô',
-    'vampire'            => 'µÛ·ìµ´',
-    'chiroptera'         => 'éşéõ',
-    'poison_chiroptera'  => 'ÆÇéşéõ',
-    'cursed_chiroptera'  => '¼öéşéõ',
-    'boss_chiroptera'    => 'Âçéşéõ',
-    'elder_chiroptera'   => '¸Åéşéõ',
-    'dummy_chiroptera'   => 'Ì´µá°¦¼Ô',
-    'fairy'              => 'ÍÅÀº',
-    'spring_fairy'       => '½ÕÍÅÀº',
-    'summer_fairy'       => '²ÆÍÅÀº',
-    'autumn_fairy'       => '½©ÍÅÀº',
-    'winter_fairy'       => 'ÅßÍÅÀº',
-    'flower_fairy'       => '²ÖÍÅÀº',
-    'star_fairy'         => 'À±ÍÅÀº',
-    'sun_fairy'          => 'ÆüÍÅÀº',
-    'moon_fairy'         => '·îÍÅÀº',
-    'grass_fairy'        => 'ÁğÍÅÀº',
-    'light_fairy'        => '¸÷ÍÅÀº',
-    'dark_fairy'         => '°ÇÍÅÀº',
-    'mirror_fairy'       => '¶ÀÍÅÀº',
-    'mania'              => '¿ÀÏÃ¥Ş¥Ë¥¢',
-    'trick_mania'        => '´ñ½Ñ»Õ',
-    'soul_mania'         => '³ĞÀÃ¼Ô',
-    'unknown_mania'      => 'ó¬',
-    'dummy_mania'        => 'Ì´¸ìÉô');
+    'human'              => 'æ‘äºº',
+    'elder'              => 'é•·è€',
+    'saint'              => 'è–å¥³',
+    'executor'           => 'åŸ·è¡Œè€…',
+    'escaper'            => 'é€ƒäº¡è€…',
+    'suspect'            => 'ä¸å¯©è€…',
+    'unconscious'        => 'ç„¡æ„è­˜',
+    'mage'               => 'å ã„å¸«',
+    'soul_mage'          => 'é­‚ã®å ã„å¸«',
+    'psycho_mage'        => 'ç²¾ç¥é‘‘å®šå£«',
+    'sex_mage'           => 'ã²ã‚ˆã“é‘‘å®šå£«',
+    'stargazer_mage'     => 'å æ˜Ÿè¡“å¸«',
+    'voodoo_killer'      => 'é™°é™½å¸«',
+    'dummy_mage'         => 'å¤¢è¦‹äºº',
+    'necromancer'        => 'éœŠèƒ½è€…',
+    'soul_necromancer'   => 'é›²å¤–é¡',
+    'yama_necromancer'   => 'é–»é­”',
+    'dummy_necromancer'  => 'å¤¢æ•äºº',
+    'medium'             => 'å·«å¥³',
+    'seal_medium'        => 'å°å°å¸«',
+    'revive_medium'      => 'é¢¨ç¥',
+    'priest'             => 'å¸ç¥­',
+    'bishop_priest'      => 'å¸æ•™',
+    'dowser_priest'      => 'æ¢çŸ¥å¸«',
+    'border_priest'      => 'å¢ƒç•Œå¸«',
+    'crisis_priest'      => 'é è¨€è€…',
+    'revive_priest'      => 'å¤©äºº',
+    'dummy_priest'       => 'å¤¢å¸ç¥­',
+    'guard'              => 'ç‹©äºº',
+    'hunter_guard'       => 'çŒŸå¸«',
+    'blind_guard'        => 'å¤œé›€',
+    'poison_guard'       => 'é¨å£«',
+    'fend_guard'         => 'å¿è€…',
+    'reporter'           => 'ãƒ–ãƒ³å±‹',
+    'anti_voodoo'        => 'å„ç¥',
+    'dummy_guard'        => 'å¤¢å®ˆäºº',
+    'common'             => 'å…±æœ‰è€…',
+    'detective_common'   => 'æ¢åµ',
+    'trap_common'        => 'ç­–å£«',
+    'ghost_common'       => 'äº¡éœŠå¬¢',
+    'dummy_common'       => 'å¤¢å…±æœ‰è€…',
+    'poison'             => 'åŸ‹æ¯’è€…',
+    'strong_poison'      => 'å¼·æ¯’è€…',
+    'incubate_poison'    => 'æ½œæ¯’è€…',
+    'guide_poison'       => 'èª˜æ¯’è€…',
+    'chain_poison'       => 'é€£æ¯’è€…',
+    'dummy_poison'       => 'å¤¢æ¯’è€…',
+    'poison_cat'         => 'çŒ«åˆ',
+    'revive_cat'         => 'ä»™ç‹¸',
+    'sacrifice_cat'      => 'çŒ«ç¥',
+    'pharmacist'         => 'è–¬å¸«',
+    'cure_pharmacist'    => 'æ²³ç«¥',
+    'revive_pharmacist'  => 'ä»™äºº',
+    'assassin'           => 'æš—æ®ºè€…',
+    'doom_assassin'      => 'æ­»ç¥',
+    'reverse_assassin'   => 'åé­‚å¸«',
+    'soul_assassin'      => 'è¾»æ–¬ã‚Š',
+    'eclipse_assassin'   => 'è•æš—æ®ºè€…',
+    'mind_scanner'       => 'ã•ã¨ã‚Š',
+    'evoke_scanner'      => 'ã‚¤ã‚¿ã‚³',
+    'whisper_scanner'    => 'å›é¨’éœŠ',
+    'howl_scanner'       => 'å é¨’éœŠ',
+    'telepath_scanner'   => 'å¿µé¨’éœŠ',
+    'jealousy'           => 'æ©‹å§«',
+    'poison_jealousy'    => 'æ¯’æ©‹å§«',
+    'doll'               => 'ä¸Šæµ·äººå½¢',
+    'friend_doll'        => 'ä»è˜­è¥¿äººå½¢',
+    'poison_doll'        => 'éˆ´è˜­äººå½¢',
+    'doom_doll'          => 'è“¬è±äººå½¢',
+    'doll_master'        => 'äººå½¢é£ã„',
+    'brownie'            => 'åº§æ•·ç«¥å­',
+    'history_brownie'    => 'ç™½æ¾¤',
+    'wolf'               => 'äººç‹¼',
+    'boss_wolf'          => 'ç™½ç‹¼',
+    'gold_wolf'          => 'é‡‘ç‹¼',
+    'phantom_wolf'       => 'å¹»ç‹¼',
+    'cursed_wolf'        => 'å‘ªç‹¼',
+    'wise_wolf'          => 'è³¢ç‹¼',
+    'poison_wolf'        => 'æ¯’ç‹¼',
+    'resist_wolf'        => 'æŠ—æ¯’ç‹¼',
+    'blue_wolf'          => 'è’¼ç‹¼',
+    'emerald_wolf'       => 'ç¿ ç‹¼',
+    'sex_wolf'           => 'é››ç‹¼',
+    'tongue_wolf'        => 'èˆŒç¦ç‹¼',
+    'possessed_wolf'     => 'æ†‘ç‹¼',
+    'hungry_wolf'        => 'é¤“ç‹¼',
+    'doom_wolf'          => 'å†¥ç‹¼',
+    'sirius_wolf'        => 'å¤©ç‹¼',
+    'elder_wolf'         => 'å¤ç‹¼',
+    'cute_wolf'          => 'èŒç‹¼',
+    'scarlet_wolf'       => 'ç´…ç‹¼',
+    'silver_wolf'        => 'éŠ€ç‹¼',
+    'mad'                => 'ç‹‚äºº',
+    'fanatic_mad'        => 'ç‹‚ä¿¡è€…',
+    'whisper_mad'        => 'å›ãç‹‚äºº',
+    'jammer_mad'         => 'æœˆå…',
+    'voodoo_mad'         => 'å‘ªè¡“å¸«',
+    'corpse_courier_mad' => 'ç«è»Š',
+    'agitate_mad'        => 'æ‰‡å‹•è€…',
+    'miasma_mad'         => 'åœŸèœ˜è››',
+    'dream_eater_mad'    => 'ç',
+    'trap_mad'           => 'ç½ å¸«',
+    'possessed_mad'      => 'çŠ¬ç¥',
+    'therian_mad'        => 'ç£äºº',
+    'fox'                => 'å¦–ç‹',
+    'white_fox'          => 'ç™½ç‹',
+    'black_fox'          => 'é»’ç‹',
+    'gold_fox'           => 'é‡‘ç‹',
+    'phantom_fox'        => 'å¹»ç‹',
+    'poison_fox'         => 'ç®¡ç‹',
+    'blue_fox'           => 'è’¼ç‹',
+    'emerald_fox'        => 'ç¿ ç‹',
+    'voodoo_fox'         => 'ä¹å°¾',
+    'revive_fox'         => 'ä»™ç‹',
+    'possessed_fox'      => 'æ†‘ç‹',
+    'doom_fox'           => 'å†¥ç‹',
+    'cursed_fox'         => 'å¤©ç‹',
+    'elder_fox'          => 'å¤ç‹',
+    'cute_fox'           => 'èŒç‹',
+    'scarlet_fox'        => 'ç´…ç‹',
+    'silver_fox'         => 'éŠ€ç‹',
+    'child_fox'          => 'å­ç‹',
+    'sex_fox'            => 'é››ç‹',
+    'stargazer_fox'      => 'æ˜Ÿç‹',
+    'jammer_fox'         => 'æœˆç‹',
+    'miasma_fox'         => 'èŸ²ç‹',
+    'cupid'              => 'ã‚­ãƒ¥ãƒ¼ãƒ”ãƒƒãƒ‰',
+    'self_cupid'         => 'æ±‚æ„›è€…',
+    'moon_cupid'         => 'ã‹ãã‚„å§«',
+    'mind_cupid'         => 'å¥³ç¥',
+    'triangle_cupid'     => 'å°æ‚ªé­”',
+    'angel'              => 'å¤©ä½¿',
+    'rose_angel'         => 'è–”è–‡å¤©ä½¿',
+    'lily_angel'         => 'ç™¾åˆå¤©ä½¿',
+    'exchange_angel'     => 'é­‚ç§»ä½¿',
+    'ark_angel'          => 'å¤§å¤©ä½¿',
+    'quiz'               => 'å‡ºé¡Œè€…',
+    'vampire'            => 'å¸è¡€é¬¼',
+    'chiroptera'         => 'è™è ',
+    'poison_chiroptera'  => 'æ¯’è™è ',
+    'cursed_chiroptera'  => 'å‘ªè™è ',
+    'boss_chiroptera'    => 'å¤§è™è ',
+    'elder_chiroptera'   => 'å¤è™è ',
+    'dummy_chiroptera'   => 'å¤¢æ±‚æ„›è€…',
+    'fairy'              => 'å¦–ç²¾',
+    'spring_fairy'       => 'æ˜¥å¦–ç²¾',
+    'summer_fairy'       => 'å¤å¦–ç²¾',
+    'autumn_fairy'       => 'ç§‹å¦–ç²¾',
+    'winter_fairy'       => 'å†¬å¦–ç²¾',
+    'flower_fairy'       => 'èŠ±å¦–ç²¾',
+    'star_fairy'         => 'æ˜Ÿå¦–ç²¾',
+    'sun_fairy'          => 'æ—¥å¦–ç²¾',
+    'moon_fairy'         => 'æœˆå¦–ç²¾',
+    'grass_fairy'        => 'è‰å¦–ç²¾',
+    'light_fairy'        => 'å…‰å¦–ç²¾',
+    'dark_fairy'         => 'é—‡å¦–ç²¾',
+    'mirror_fairy'       => 'é¡å¦–ç²¾',
+    'mania'              => 'ç¥è©±ãƒãƒ‹ã‚¢',
+    'trick_mania'        => 'å¥‡è¡“å¸«',
+    'soul_mania'         => 'è¦šé†’è€…',
+    'unknown_mania'      => 'éµº',
+    'dummy_mania'        => 'å¤¢èªéƒ¨');
 
-  //¥µ¥ÖÌò¿¦¤Î¥ê¥¹¥È (¥³¡¼¥ÉÌ¾ => É½¼¨Ì¾)
-  //½éÆü¤ÎÌò¿¦ÄÌÃÎ¥ê¥¹¥È¤Ï¤³¤Î½çÈÖ¤ÇÉ½¼¨¤µ¤ì¤ë
+  //ã‚µãƒ–å½¹è·ã®ãƒªã‚¹ãƒˆ (ã‚³ãƒ¼ãƒ‰å => è¡¨ç¤ºå)
+  //åˆæ—¥ã®å½¹è·é€šçŸ¥ãƒªã‚¹ãƒˆã¯ã“ã®é †ç•ªã§è¡¨ç¤ºã•ã‚Œã‚‹
   var $sub_role_list = array(
-    'chicken'            => '¾®¿´¼Ô',
-    'rabbit'             => '¥¦¥µ¥®',
-    'perverseness'       => 'Å·¼Ùµ´',
-    'flattery'           => '¥´¥Ş¤¹¤ê',
-    'impatience'         => 'Ã»µ¤',
-    'celibacy'           => 'ÆÈ¿Èµ®Â²',
-    'nervy'              => '¼«¿®²È',
-    'androphobia'        => 'ÃËÀ­¶²Éİ¾É',
-    'gynophobia'         => '½÷À­¶²Éİ¾É',
-    'febris'             => 'Ç®ÉÂ',
-    'death_warrant'      => '»à¤ÎÀë¹ğ',
-    'panelist'           => '²òÅú¼Ô',
-    'liar'               => 'Ïµ¾¯Ç¯',
-    'invisible'          => '¸÷³ØÌÂºÌ',
-    'rainbow'            => 'Æú¿§ÌÂºÌ',
-    'weekly'             => '¼·ÍËÌÂºÌ',
-    'grassy'             => 'Áğ¸¶ÌÂºÌ',
-    'side_reverse'       => '¶ÀÌÌÌÂºÌ',
-    'line_reverse'       => 'Å·ÃÏÌÂºÌ',
-    'gentleman'          => '¿Â»Î',
-    'lady'               => '½Ê½÷',
-    'actor'              => 'Ìò¼Ô',
-    'authority'          => '¸¢ÎÏ¼Ô',
-    'critical_voter'     => '²ñ¿´',
-    'random_voter'       => 'µ¤Ê¬²°',
-    'rebel'              => 'È¿µÕ¼Ô',
-    'watcher'            => 'Ëµ´Ñ¼Ô',
-    'decide'             => '·èÄê¼Ô',
-    'plague'             => '±ÖÉÂ¿À',
-    'good_luck'          => '¹¬±¿',
-    'bad_luck'           => 'ÉÔ±¿',
-    'upper_luck'         => '»¨Áğº²',
-    'downer_luck'        => '°ìÈ¯²°',
-    'star'               => '¿Íµ¤¼Ô',
-    'disfavor'           => 'ÉÔ¿Íµ¤',
-    'critical_luck'      => 'ÄËº¨',
-    'random_luck'        => 'ÇÈÍğËü¾æ',
-    'strong_voice'       => 'ÂçÀ¼',
-    'normal_voice'       => 'ÉÔ´ïÍÑ',
-    'weak_voice'         => '¾®À¼',
-    'upper_voice'        => '¥á¥¬¥Û¥ó',
-    'downer_voice'       => '¥Ş¥¹¥¯',
-    'inside_voice'       => 'ÆâÊÛ·Ä',
-    'outside_voice'      => '³°ÊÛ·Ä',
-    'random_voice'       => '²²ÉÂ¼Ô',
-    'no_last_words'      => 'É®ÉÔÀº',
-    'blinder'            => 'ÌÜ±£¤·',
-    'earplug'            => '¼ªÀò',
-    'speaker'            => '¥¹¥Ô¡¼¥«¡¼',
-    'whisper_ringing'    => 'Óñ¼ªÌÄ',
-    'howl_ringing'       => 'ËÊ¼ªÌÄ',
-    'deep_sleep'         => 'Çú¿ç¼Ô',
-    'silent'             => 'Ìµ¸ı',
-    'mower'              => 'Áğ´¢¤ê',
-    'mind_read'          => '¥µ¥È¥é¥ì',
-    'mind_open'          => '¸ø³«¼Ô',
-    'mind_receiver'      => '¼õ¿®¼Ô',
-    'mind_friend'        => '¶¦ÌÄ¼Ô',
-    'mind_sympathy'      => '¶¦´¶¼Ô',
-    'mind_evoke'         => '¸ı´ó¤»',
-    'mind_lonely'        => '¤Ï¤°¤ì¼Ô',
-    'lovers'             => 'Îø¿Í',
-    'possessed_exchange' => '¸ò´¹Øá°Í',
-    'challenge_lovers'   => 'ÆñÂê',
-    'infected'           => '´¶À÷¼Ô',
-    'changed_therian'    => '¸µ½Ã¿Í',
-    'copied'             => '¸µ¿ÀÏÃ¥Ş¥Ë¥¢',
-    'copied_trick'       => '¸µ´ñ½Ñ»Õ',
-    'copied_soul'        => '¸µ³ĞÀÃ¼Ô',
-    'copied_teller'      => '¸µÌ´¸ìÉô',
-    'possessed_target'   => 'Øá°Í¼Ô',
-    'possessed'          => 'Øá°Í',
-    'bad_status'         => '°­µº',
-    'lost_ability'       => 'Ç½ÎÏÁÓ¼º');
+    'chicken'            => 'å°å¿ƒè€…',
+    'rabbit'             => 'ã‚¦ã‚µã‚®',
+    'perverseness'       => 'å¤©é‚ªé¬¼',
+    'flattery'           => 'ã‚´ãƒã™ã‚Š',
+    'impatience'         => 'çŸ­æ°—',
+    'celibacy'           => 'ç‹¬èº«è²´æ—',
+    'nervy'              => 'è‡ªä¿¡å®¶',
+    'androphobia'        => 'ç”·æ€§ææ€–ç—‡',
+    'gynophobia'         => 'å¥³æ€§ææ€–ç—‡',
+    'febris'             => 'ç†±ç—…',
+    'death_warrant'      => 'æ­»ã®å®£å‘Š',
+    'panelist'           => 'è§£ç­”è€…',
+    'liar'               => 'ç‹¼å°‘å¹´',
+    'invisible'          => 'å…‰å­¦è¿·å½©',
+    'rainbow'            => 'è™¹è‰²è¿·å½©',
+    'weekly'             => 'ä¸ƒæ›œè¿·å½©',
+    'grassy'             => 'è‰åŸè¿·å½©',
+    'side_reverse'       => 'é¡é¢è¿·å½©',
+    'line_reverse'       => 'å¤©åœ°è¿·å½©',
+    'gentleman'          => 'ç´³å£«',
+    'lady'               => 'æ·‘å¥³',
+    'actor'              => 'å½¹è€…',
+    'authority'          => 'æ¨©åŠ›è€…',
+    'critical_voter'     => 'ä¼šå¿ƒ',
+    'random_voter'       => 'æ°—åˆ†å±‹',
+    'rebel'              => 'åé€†è€…',
+    'watcher'            => 'å‚è¦³è€…',
+    'decide'             => 'æ±ºå®šè€…',
+    'plague'             => 'ç–«ç—…ç¥',
+    'good_luck'          => 'å¹¸é‹',
+    'bad_luck'           => 'ä¸é‹',
+    'upper_luck'         => 'é›‘è‰é­‚',
+    'downer_luck'        => 'ä¸€ç™ºå±‹',
+    'star'               => 'äººæ°—è€…',
+    'disfavor'           => 'ä¸äººæ°—',
+    'critical_luck'      => 'ç—›æ¨',
+    'random_luck'        => 'æ³¢ä¹±ä¸‡ä¸ˆ',
+    'strong_voice'       => 'å¤§å£°',
+    'normal_voice'       => 'ä¸å™¨ç”¨',
+    'weak_voice'         => 'å°å£°',
+    'upper_voice'        => 'ãƒ¡ã‚¬ãƒ›ãƒ³',
+    'downer_voice'       => 'ãƒã‚¹ã‚¯',
+    'inside_voice'       => 'å†…å¼æ…¶',
+    'outside_voice'      => 'å¤–å¼æ…¶',
+    'random_voice'       => 'è‡†ç—…è€…',
+    'no_last_words'      => 'ç­†ä¸ç²¾',
+    'blinder'            => 'ç›®éš ã—',
+    'earplug'            => 'è€³æ “',
+    'speaker'            => 'ã‚¹ãƒ”ãƒ¼ã‚«ãƒ¼',
+    'whisper_ringing'    => 'å›è€³é³´',
+    'howl_ringing'       => 'å è€³é³´',
+    'deep_sleep'         => 'çˆ†ç¡è€…',
+    'silent'             => 'ç„¡å£',
+    'mower'              => 'è‰åˆˆã‚Š',
+    'mind_read'          => 'ã‚µãƒˆãƒ©ãƒ¬',
+    'mind_open'          => 'å…¬é–‹è€…',
+    'mind_receiver'      => 'å—ä¿¡è€…',
+    'mind_friend'        => 'å…±é³´è€…',
+    'mind_sympathy'      => 'å…±æ„Ÿè€…',
+    'mind_evoke'         => 'å£å¯„ã›',
+    'mind_lonely'        => 'ã¯ãã‚Œè€…',
+    'lovers'             => 'æ‹äºº',
+    'possessed_exchange' => 'äº¤æ›æ†‘ä¾',
+    'challenge_lovers'   => 'é›£é¡Œ',
+    'infected'           => 'æ„ŸæŸ“è€…',
+    'changed_therian'    => 'å…ƒç£äºº',
+    'copied'             => 'å…ƒç¥è©±ãƒãƒ‹ã‚¢',
+    'copied_trick'       => 'å…ƒå¥‡è¡“å¸«',
+    'copied_soul'        => 'å…ƒè¦šé†’è€…',
+    'copied_teller'      => 'å…ƒå¤¢èªéƒ¨',
+    'possessed_target'   => 'æ†‘ä¾è€…',
+    'possessed'          => 'æ†‘ä¾',
+    'bad_status'         => 'æ‚ªæˆ¯',
+    'lost_ability'       => 'èƒ½åŠ›å–ªå¤±');
 
-  //Ìò¿¦¤Î¾ÊÎ¬Ì¾ (²áµî¥í¥°ÍÑ)
+  //å½¹è·ã®çœç•¥å (éå»ãƒ­ã‚°ç”¨)
   var $short_role_list = array(
-    'human'              => 'Â¼',
-    'elder'              => 'Ï·',
-    'brownie'            => 'Æ¸',
-    'saint'              => 'À»',
-    'executor'           => '¼¹',
-    'escaper'            => 'Æ¨',
-    'suspect'            => 'ÉÔ¿³',
-    'unconscious'        => 'Ìµ',
-    'mage'               => 'Àê',
-    'soul_mage'          => 'º²',
-    'psycho_mage'        => '¿´Àê',
-    'sex_mage'           => '¿÷Àê',
-    'stargazer_mage'     => 'À±Àê',
-    'voodoo_killer'      => '±¢ÍÛ',
-    'dummy_mage'         => 'Ì´¸«',
-    'necromancer'        => 'Îî',
-    'soul_necromancer'   => '±À',
-    'yama_necromancer'   => 'ïå',
-    'dummy_necromancer'  => 'Ì´Ëí',
-    'medium'             => 'Öà',
-    'seal_medium'        => 'Éõ',
-    'revive_medium'      => 'É÷',
-    'priest'             => '»Ê',
-    'bishop_priest'      => '»Ê¶µ',
-    'dowser_priest'      => 'Ãµ',
-    'border_priest'      => '¶­',
-    'crisis_priest'      => 'ÍÂ',
-    'revive_priest'      => 'Å·¿Í',
-    'dummy_priest'       => 'Ì´»Ê',
-    'guard'              => '¼í',
-    'hunter_guard'       => 'ÎÄ',
-    'blind_guard'        => '¿ı',
-    'poison_guard'       => 'µ³',
-    'fend_guard'         => 'Ç¦',
-    'reporter'           => 'Ê¹',
-    'anti_voodoo'        => 'Ìñ',
-    'dummy_guard'        => 'Ì´¼é',
-    'common'             => '¶¦',
-    'detective_common'   => 'Äå',
-    'trap_common'        => 'ºö',
-    'ghost_common'       => 'Ë´',
-    'dummy_common'       => 'Ì´¶¦',
-    'poison'             => 'ÆÇ',
-    'strong_poison'      => '¶¯ÆÇ',
-    'incubate_poison'    => 'ÀøÆÇ',
-    'guide_poison'       => 'Í¶ÆÇ',
-    'chain_poison'       => 'Ï¢ÆÇ',
-    'dummy_poison'       => 'Ì´ÆÇ',
-    'poison_cat'         => 'Ç­',
-    'revive_cat'         => 'ÀçÃ¬',
-    'sacrifice_cat'      => 'Ç­¿À',
-    'pharmacist'         => 'Ìô',
-    'cure_pharmacist'    => '²Ï',
-    'revive_pharmacist'  => 'Àç¿Í',
-    'assassin'           => '°Å',
-    'doom_assassin'      => '»à¿À',
-    'reverse_assassin'   => 'È¿º²',
-    'soul_assassin'      => 'ÄÔ',
-    'eclipse_assassin'   => '¿ª°Å',
-    'mind_scanner'       => '³Ğ',
-    'evoke_scanner'      => '¥¤',
-    'whisper_scanner'    => 'ÓñÁû',
-    'howl_scanner'       => 'ËÊÁû',
-    'telepath_scanner'   => 'Ç°Áû',
-    'jealousy'           => '¶¶',
-    'poison_jealousy'    => 'ÆÇ¶¶',
-    'doll'               => '¾å³¤',
-    'friend_doll'        => 'Ê©Íö',
-    'poison_doll'        => 'ÎëÍö',
-    'doom_doll'          => 'Ë©Íé',
-    'doll_master'        => '¿Í¸¯',
-    'wolf'               => 'Ïµ',
-    'boss_wolf'          => 'ÇòÏµ',
-    'gold_wolf'          => '¶âÏµ',
-    'phantom_wolf'       => '¸¸Ïµ',
-    'cursed_wolf'        => '¼öÏµ',
-    'wise_wolf'          => '¸­Ïµ',
-    'poison_wolf'        => 'ÆÇÏµ',
-    'resist_wolf'        => '¹³Ïµ',
-    'blue_wolf'          => 'ÁóÏµ',
-    'emerald_wolf'       => '¿éÏµ',
-    'sex_wolf'           => '¿÷Ïµ',
-    'tongue_wolf'        => 'ÀåÏµ',
-    'possessed_wolf'     => 'ØáÏµ',
-    'hungry_wolf'        => '²îÏµ',
-    'doom_wolf'          => 'Ì½Ïµ',
-    'sirius_wolf'        => 'Å·Ïµ',
-    'elder_wolf'         => '¸ÅÏµ',
-    'cute_wolf'          => 'Ë¨Ïµ',
-    'scarlet_wolf'       => '¹ÈÏµ',
-    'silver_wolf'        => '¶äÏµ',
-    'mad'                => '¶¸',
-    'fanatic_mad'        => '¶¸¿®',
-    'whisper_mad'        => 'Óñ¶¸',
-    'jammer_mad'         => '·îÅÆ',
-    'voodoo_mad'         => '¼ö¶¸',
-    'corpse_courier_mad' => '²Ğ',
-    'agitate_mad'        => 'Àğ',
-    'miasma_mad'         => 'ÃØ',
-    'dream_eater_mad'    => 'àÓ',
-    'trap_mad'           => 'æ«',
-    'possessed_mad'      => '¸¤',
-    'therian_mad'        => '½Ã',
-    'fox'                => '¸Ñ',
-    'white_fox'          => 'Çò¸Ñ',
-    'black_fox'          => '¹õ¸Ñ',
-    'gold_fox'           => '¶â¸Ñ',
-    'phantom_fox'        => '¸¸¸Ñ',
-    'poison_fox'         => '´É¸Ñ',
-    'blue_fox'           => 'Áó¸Ñ',
-    'emerald_fox'        => '¿é¸Ñ',
-    'voodoo_fox'         => '¶åÈø',
-    'revive_fox'         => 'Àç¸Ñ',
-    'possessed_fox'      => 'Øá¸Ñ',
-    'doom_fox'           => 'Ì½¸Ñ',
-    'cursed_fox'         => 'Å·¸Ñ',
-    'elder_fox'          => '¸Å¸Ñ',
-    'cute_fox'           => 'Ë¨¸Ñ',
-    'scarlet_fox'        => '¹È¸Ñ',
-    'silver_fox'         => '¶ä¸Ñ',
-    'child_fox'          => '»Ò¸Ñ',
-    'sex_fox'            => '¿÷¸Ñ',
-    'stargazer_fox'      => 'À±¸Ñ',
-    'jammer_fox'         => '·î¸Ñ',
-    'miasma_fox'         => 'êµ¸Ñ',
+    'human'              => 'æ‘',
+    'elder'              => 'è€',
+    'saint'              => 'è–',
+    'executor'           => 'åŸ·',
+    'escaper'            => 'é€ƒ',
+    'suspect'            => 'ä¸å¯©',
+    'unconscious'        => 'ç„¡',
+    'mage'               => 'å ',
+    'soul_mage'          => 'é­‚',
+    'psycho_mage'        => 'å¿ƒå ',
+    'sex_mage'           => 'é››å ',
+    'stargazer_mage'     => 'æ˜Ÿå ',
+    'voodoo_killer'      => 'é™°é™½',
+    'dummy_mage'         => 'å¤¢è¦‹',
+    'necromancer'        => 'éœŠ',
+    'soul_necromancer'   => 'é›²',
+    'yama_necromancer'   => 'é–»',
+    'dummy_necromancer'  => 'å¤¢æ•',
+    'medium'             => 'å·«',
+    'seal_medium'        => 'å°',
+    'revive_medium'      => 'é¢¨',
+    'priest'             => 'å¸',
+    'bishop_priest'      => 'å¸æ•™',
+    'dowser_priest'      => 'æ¢',
+    'border_priest'      => 'å¢ƒ',
+    'crisis_priest'      => 'é ',
+    'revive_priest'      => 'å¤©äºº',
+    'dummy_priest'       => 'å¤¢å¸',
+    'guard'              => 'ç‹©',
+    'hunter_guard'       => 'çŒŸ',
+    'blind_guard'        => 'é›€',
+    'poison_guard'       => 'é¨',
+    'fend_guard'         => 'å¿',
+    'reporter'           => 'è',
+    'anti_voodoo'        => 'å„',
+    'dummy_guard'        => 'å¤¢å®ˆ',
+    'common'             => 'å…±',
+    'detective_common'   => 'åµ',
+    'trap_common'        => 'ç­–',
+    'ghost_common'       => 'äº¡',
+    'dummy_common'       => 'å¤¢å…±',
+    'poison'             => 'æ¯’',
+    'strong_poison'      => 'å¼·æ¯’',
+    'incubate_poison'    => 'æ½œæ¯’',
+    'guide_poison'       => 'èª˜æ¯’',
+    'chain_poison'       => 'é€£æ¯’',
+    'dummy_poison'       => 'å¤¢æ¯’',
+    'poison_cat'         => 'çŒ«',
+    'revive_cat'         => 'ä»™ç‹¸',
+    'sacrifice_cat'      => 'çŒ«ç¥',
+    'pharmacist'         => 'è–¬',
+    'cure_pharmacist'    => 'æ²³',
+    'revive_pharmacist'  => 'ä»™äºº',
+    'assassin'           => 'æš—',
+    'doom_assassin'      => 'æ­»ç¥',
+    'reverse_assassin'   => 'åé­‚',
+    'soul_assassin'      => 'è¾»',
+    'eclipse_assassin'   => 'è•æš—',
+    'mind_scanner'       => 'è¦š',
+    'evoke_scanner'      => 'ã‚¤',
+    'whisper_scanner'    => 'å›é¨’',
+    'howl_scanner'       => 'å é¨’',
+    'telepath_scanner'   => 'å¿µé¨’',
+    'jealousy'           => 'æ©‹',
+    'poison_jealousy'    => 'æ¯’æ©‹',
+    'doll'               => 'ä¸Šæµ·',
+    'friend_doll'        => 'ä»è˜­',
+    'poison_doll'        => 'éˆ´è˜­',
+    'doom_doll'          => 'è“¬è±',
+    'doll_master'        => 'äººé£',
+    'brownie'            => 'ç«¥',
+    'history_brownie'    => 'ç™½æ¾¤',
+    'wolf'               => 'ç‹¼',
+    'boss_wolf'          => 'ç™½ç‹¼',
+    'gold_wolf'          => 'é‡‘ç‹¼',
+    'phantom_wolf'       => 'å¹»ç‹¼',
+    'cursed_wolf'        => 'å‘ªç‹¼',
+    'wise_wolf'          => 'è³¢ç‹¼',
+    'poison_wolf'        => 'æ¯’ç‹¼',
+    'resist_wolf'        => 'æŠ—ç‹¼',
+    'blue_wolf'          => 'è’¼ç‹¼',
+    'emerald_wolf'       => 'ç¿ ç‹¼',
+    'sex_wolf'           => 'é››ç‹¼',
+    'tongue_wolf'        => 'èˆŒç‹¼',
+    'possessed_wolf'     => 'æ†‘ç‹¼',
+    'hungry_wolf'        => 'é¤“ç‹¼',
+    'doom_wolf'          => 'å†¥ç‹¼',
+    'sirius_wolf'        => 'å¤©ç‹¼',
+    'elder_wolf'         => 'å¤ç‹¼',
+    'cute_wolf'          => 'èŒç‹¼',
+    'scarlet_wolf'       => 'ç´…ç‹¼',
+    'silver_wolf'        => 'éŠ€ç‹¼',
+    'mad'                => 'ç‹‚',
+    'fanatic_mad'        => 'ç‹‚ä¿¡',
+    'whisper_mad'        => 'å›ç‹‚',
+    'jammer_mad'         => 'æœˆå…',
+    'voodoo_mad'         => 'å‘ªç‹‚',
+    'corpse_courier_mad' => 'ç«',
+    'agitate_mad'        => 'æ‰‡',
+    'miasma_mad'         => 'èœ˜',
+    'dream_eater_mad'    => 'ç',
+    'trap_mad'           => 'ç½ ',
+    'possessed_mad'      => 'çŠ¬',
+    'therian_mad'        => 'ç£',
+    'fox'                => 'ç‹',
+    'white_fox'          => 'ç™½ç‹',
+    'black_fox'          => 'é»’ç‹',
+    'gold_fox'           => 'é‡‘ç‹',
+    'phantom_fox'        => 'å¹»ç‹',
+    'poison_fox'         => 'ç®¡ç‹',
+    'blue_fox'           => 'è’¼ç‹',
+    'emerald_fox'        => 'ç¿ ç‹',
+    'voodoo_fox'         => 'ä¹å°¾',
+    'revive_fox'         => 'ä»™ç‹',
+    'possessed_fox'      => 'æ†‘ç‹',
+    'doom_fox'           => 'å†¥ç‹',
+    'cursed_fox'         => 'å¤©ç‹',
+    'elder_fox'          => 'å¤ç‹',
+    'cute_fox'           => 'èŒç‹',
+    'scarlet_fox'        => 'ç´…ç‹',
+    'silver_fox'         => 'éŠ€ç‹',
+    'child_fox'          => 'å­ç‹',
+    'sex_fox'            => 'é››ç‹',
+    'stargazer_fox'      => 'æ˜Ÿç‹',
+    'jammer_fox'         => 'æœˆç‹',
+    'miasma_fox'         => 'èŸ²ç‹',
     'cupid'              => 'QP',
-    'self_cupid'         => 'µá°¦',
-    'moon_cupid'         => 'É±',
-    'mind_cupid'         => '½÷¿À',
-    'triangle_cupid'     => '¾®°­',
-    'angel'              => 'Å·»È',
-    'rose_angel'         => 'é¬Å·',
-    'lily_angel'         => 'É´Å·',
-    'exchange_angel'     => 'º²°Ü',
-    'ark_angel'          => 'ÂçÅ·',
+    'self_cupid'         => 'æ±‚æ„›',
+    'moon_cupid'         => 'å§«',
+    'mind_cupid'         => 'å¥³ç¥',
+    'triangle_cupid'     => 'å°æ‚ª',
+    'angel'              => 'å¤©ä½¿',
+    'rose_angel'         => 'è–”å¤©',
+    'lily_angel'         => 'ç™¾å¤©',
+    'exchange_angel'     => 'é­‚ç§»',
+    'ark_angel'          => 'å¤§å¤©',
     'quiz'               => 'GM',
-    'vampire'            => '·ì',
-    'chiroptera'         => 'éş',
-    'poison_chiroptera'  => 'ÆÇéş',
-    'cursed_chiroptera'  => '¼öéş',
-    'boss_chiroptera'    => 'Âçéş',
-    'elder_chiroptera'   => '¸Åéş',
-    'dummy_chiroptera'   => 'Ì´°¦',
-    'fairy'              => 'ÍÅÀº',
-    'spring_fairy'       => '½ÕÀº',
-    'summer_fairy'       => '²ÆÀº',
-    'autumn_fairy'       => '½©Àº',
-    'winter_fairy'       => 'ÅßÀº',
-    'flower_fairy'       => '²ÖÀº',
-    'star_fairy'         => 'À±Àº',
-    'sun_fairy'          => 'ÆüÀº',
-    'moon_fairy'         => '·îÀº',
-    'grass_fairy'        => 'ÁğÀº',
-    'light_fairy'        => '¸÷Àº',
-    'dark_fairy'         => '°ÇÀº',
-    'mirror_fairy'       => '¶ÀÀº',
-    'mania'              => '¥Ş',
-    'trick_mania'        => '´ñ',
-    'soul_mania'         => '³ĞÀÃ',
-    'unknown_mania'      => 'ó¬',
-    'dummy_mania'        => 'Ì´¸ì',
-    'chicken'            => 'ÆÓ',
-    'rabbit'             => '±¬',
-    'perverseness'       => '¼Ù',
-    'flattery'           => '¸ÕËã',
-    'impatience'         => 'Ã»',
-    'celibacy'           => 'ÆÈ',
-    'nervy'              => '¿®',
-    'androphobia'        => 'ÃË¶²',
-    'gynophobia'         => '½÷¶²',
-    'febris'             => 'Ç®',
-    'death_warrant'      => 'Àë',
-    'panelist'           => '²ò',
-    'liar'               => '±³',
-    'invisible'          => '¸÷ÌÂ',
-    'rainbow'            => 'ÆúÌÂ',
-    'weekly'             => 'ÍËÌÂ',
-    'grassy'             => 'ÁğÌÂ',
-    'side_reverse'       => '¶ÀÌÂ',
-    'line_reverse'       => 'Å·ÌÂ',
-    'gentleman'          => '¿Â',
-    'lady'               => '½Ê',
-    'actor'              => 'Ìò',
-    'authority'          => '¸¢',
-    'critical_voter'     => '²ñ',
-    'random_voter'       => 'µ¤',
-    'rebel'              => 'È¿',
-    'watcher'            => 'Ëµ',
-    'decide'             => '·è',
-    'plague'             => '±Ö',
-    'good_luck'          => '¹¬',
-    'bad_luck'           => 'ÉÔ±¿',
-    'upper_luck'         => '»¨',
-    'downer_luck'        => '°ìÈ¯',
-    'star'               => '¿Íµ¤',
-    'disfavor'           => 'ÉÔ¿Í',
-    'critical_luck'      => 'ÄË',
-    'random_luck'        => 'Íğ',
-    'strong_voice'       => 'Âç',
-    'normal_voice'       => 'ÉÔ',
-    'weak_voice'         => '¾®',
-    'upper_voice'        => '³ÈÀ¼',
-    'downer_voice'       => 'Ê¤',
-    'inside_voice'       => 'ÆâÊÛ',
-    'outside_voice'      => '³°ÊÛ',
-    'random_voice'       => '²²',
-    'no_last_words'      => 'É®',
-    'blinder'            => 'ÌÜ',
-    'earplug'            => '¼ª',
-    'speaker'            => '½¸²»',
-    'whisper_ringing'    => 'ÓñÌÄ',
-    'howl_ringing'       => 'ËÊÌÄ',
-    'deep_sleep'         => 'Çú¿ç',
-    'silent'             => 'Ìµ¸ı',
-    'mower'              => 'Áğ´¢',
-    'mind_read'          => 'Ï³',
-    'mind_evoke'         => '¸ı´ó',
-    'mind_open'          => '¸ø',
-    'mind_receiver'      => '¼õ',
-    'mind_friend'        => 'ÌÄ',
-    'mind_sympathy'      => '´¶',
-    'mind_lonely'        => '°ï',
-    'lovers'             => 'Îø',
-    'possessed_exchange' => '´¹',
-    'challenge_lovers'   => 'Æñ',
-    'infected'           => 'À÷',
-    'copied'             => '¸µ¥Ş',
-    'copied_trick'       => '¸µ´ñ',
-    'copied_soul'        => '¸µ³Ğ',
-    'copied_teller'      => '¸µ¸ì',
-    'changed_therian'    => '¸µ½Ã',
-    'possessed_target'   => 'Øá',
-    'possessed'          => 'ÈïØá',
-    'bad_status'         => 'µº',
-    'lost_ability'       => '¼º');
+    'vampire'            => 'è¡€',
+    'chiroptera'         => 'è™',
+    'poison_chiroptera'  => 'æ¯’è™',
+    'cursed_chiroptera'  => 'å‘ªè™',
+    'boss_chiroptera'    => 'å¤§è™',
+    'elder_chiroptera'   => 'å¤è™',
+    'dummy_chiroptera'   => 'å¤¢æ„›',
+    'fairy'              => 'å¦–ç²¾',
+    'spring_fairy'       => 'æ˜¥ç²¾',
+    'summer_fairy'       => 'å¤ç²¾',
+    'autumn_fairy'       => 'ç§‹ç²¾',
+    'winter_fairy'       => 'å†¬ç²¾',
+    'flower_fairy'       => 'èŠ±ç²¾',
+    'star_fairy'         => 'æ˜Ÿç²¾',
+    'sun_fairy'          => 'æ—¥ç²¾',
+    'moon_fairy'         => 'æœˆç²¾',
+    'grass_fairy'        => 'è‰ç²¾',
+    'light_fairy'        => 'å…‰ç²¾',
+    'dark_fairy'         => 'é—‡ç²¾',
+    'mirror_fairy'       => 'é¡ç²¾',
+    'mania'              => 'ãƒ',
+    'trick_mania'        => 'å¥‡',
+    'soul_mania'         => 'è¦šé†’',
+    'unknown_mania'      => 'éµº',
+    'dummy_mania'        => 'å¤¢èª',
+    'chicken'            => 'é…‰',
+    'rabbit'             => 'å¯',
+    'perverseness'       => 'é‚ª',
+    'flattery'           => 'èƒ¡éº»',
+    'impatience'         => 'çŸ­',
+    'celibacy'           => 'ç‹¬',
+    'nervy'              => 'ä¿¡',
+    'androphobia'        => 'ç”·æ',
+    'gynophobia'         => 'å¥³æ',
+    'febris'             => 'ç†±',
+    'death_warrant'      => 'å®£',
+    'panelist'           => 'è§£',
+    'liar'               => 'å˜˜',
+    'invisible'          => 'å…‰è¿·',
+    'rainbow'            => 'è™¹è¿·',
+    'weekly'             => 'æ›œè¿·',
+    'grassy'             => 'è‰è¿·',
+    'side_reverse'       => 'é¡è¿·',
+    'line_reverse'       => 'å¤©è¿·',
+    'gentleman'          => 'ç´³',
+    'lady'               => 'æ·‘',
+    'actor'              => 'å½¹',
+    'authority'          => 'æ¨©',
+    'critical_voter'     => 'ä¼š',
+    'random_voter'       => 'æ°—',
+    'rebel'              => 'å',
+    'watcher'            => 'å‚',
+    'decide'             => 'æ±º',
+    'plague'             => 'ç–«',
+    'good_luck'          => 'å¹¸',
+    'bad_luck'           => 'ä¸é‹',
+    'upper_luck'         => 'é›‘',
+    'downer_luck'        => 'ä¸€ç™º',
+    'star'               => 'äººæ°—',
+    'disfavor'           => 'ä¸äºº',
+    'critical_luck'      => 'ç—›',
+    'random_luck'        => 'ä¹±',
+    'strong_voice'       => 'å¤§',
+    'normal_voice'       => 'ä¸',
+    'weak_voice'         => 'å°',
+    'upper_voice'        => 'æ‹¡å£°',
+    'downer_voice'       => 'è¦†',
+    'inside_voice'       => 'å†…å¼',
+    'outside_voice'      => 'å¤–å¼',
+    'random_voice'       => 'è‡†',
+    'no_last_words'      => 'ç­†',
+    'blinder'            => 'ç›®',
+    'earplug'            => 'è€³',
+    'speaker'            => 'é›†éŸ³',
+    'whisper_ringing'    => 'å›é³´',
+    'howl_ringing'       => 'å é³´',
+    'deep_sleep'         => 'çˆ†ç¡',
+    'silent'             => 'ç„¡å£',
+    'mower'              => 'è‰åˆˆ',
+    'mind_read'          => 'æ¼',
+    'mind_evoke'         => 'å£å¯„',
+    'mind_open'          => 'å…¬',
+    'mind_receiver'      => 'å—',
+    'mind_friend'        => 'é³´',
+    'mind_sympathy'      => 'æ„Ÿ',
+    'mind_lonely'        => 'é€¸',
+    'lovers'             => 'æ‹',
+    'possessed_exchange' => 'æ›',
+    'challenge_lovers'   => 'é›£',
+    'infected'           => 'æŸ“',
+    'copied'             => 'å…ƒãƒ',
+    'copied_trick'       => 'å…ƒå¥‡',
+    'copied_soul'        => 'å…ƒè¦š',
+    'copied_teller'      => 'å…ƒèª',
+    'changed_therian'    => 'å…ƒç£',
+    'possessed_target'   => 'æ†‘',
+    'possessed'          => 'è¢«æ†‘',
+    'bad_status'         => 'æˆ¯',
+    'lost_ability'       => 'å¤±');
 
-  //¥á¥¤¥óÌò¿¦¤Î¥°¥ë¡¼¥×¥ê¥¹¥È (Ìò¿¦ => ½êÂ°¥°¥ë¡¼¥×)
-  // ¤³¤Î¥ê¥¹¥È¤ÎÊÂ¤Ó½ç¤Ë strpos ¤ÇÈ½ÊÌ¤¹¤ë (ÆÇ·Ï¤Ê¤É¡¢½çÈÖ°ÍÂ¸¤ÎÌò¿¦¤¬¤¢¤ë¤Î¤ÇÃí°Õ)
+  //ãƒ¡ã‚¤ãƒ³å½¹è·ã®ã‚°ãƒ«ãƒ¼ãƒ—ãƒªã‚¹ãƒˆ (å½¹è· => æ‰€å±ã‚°ãƒ«ãƒ¼ãƒ—)
+  // ã“ã®ãƒªã‚¹ãƒˆã®ä¸¦ã³é †ã« strpos() ã§åˆ¤åˆ¥ã™ã‚‹ (æ¯’ç³»ãªã©ã€é †ç•ªä¾å­˜ã®å½¹è·ãŒã‚ã‚‹ã®ã§æ³¨æ„)
   var $main_role_group_list = array(
     'wolf' => 'wolf',
     'mad' => 'mad',
@@ -998,13 +998,14 @@ class RoleData{
     'cat' => 'poison_cat',
     'jealousy' => 'jealousy',
     'doll' => 'doll',
+    'brownie' => 'brownie',
     'poison' => 'poison',
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
     'scanner' => 'mind_scanner',
     'mania' => 'mania');
 
-  //¥µ¥ÖÌò¿¦¤Î¥°¥ë¡¼¥×¥ê¥¹¥È (CSS ¤Î¥¯¥é¥¹Ì¾ => ½êÂ°Ìò¿¦)
+  //ã‚µãƒ–å½¹è·ã®ã‚°ãƒ«ãƒ¼ãƒ—ãƒªã‚¹ãƒˆ (CSS ã®ã‚¯ãƒ©ã‚¹å => æ‰€å±å½¹è·)
   var $sub_role_group_list = array(
     'lovers'       => array('lovers', 'possessed_exchange', 'challenge_lovers'),
     'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
@@ -1027,17 +1028,89 @@ class RoleData{
     'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
     'chiroptera'   => array('bad_status'),
     'human'        => array('lost_ability'));
+
+  //-- é–¢æ•° --//
+  //å½¹è·ã‚°ãƒ«ãƒ¼ãƒ—åˆ¤å®š
+  function DistinguishRoleGroup($role){
+    foreach($this->main_role_group_list as $key => $value){
+      if(strpos($role, $key) !== false) return $value;
+    }
+    return 'human';
+  }
+
+  //æ‰€å±é™£å–¶åˆ¤åˆ¥
+  function DistinguishCamp($role, $start = false){
+    switch(($camp = $this->DistinguishRoleGroup($role))){
+    case 'wolf':
+    case 'mad':
+      return 'wolf';
+
+    case 'fox':
+    case 'child_fox':
+      return 'fox';
+
+    case 'cupid':
+    case 'angel':
+      return 'lovers';
+
+    case 'chiroptera':
+    case 'fairy':
+      return 'chiroptera';
+
+    case 'quiz':
+    case 'vampire':
+      return $camp;
+
+    case 'mania':
+      return $start ? $camp : 'human';
+
+    default:
+      return 'human';
+    }
+  }
+
+  //å½¹è·ã‚¯ãƒ©ã‚¹ (CSS) åˆ¤å®š
+  function DistinguishRoleClass($role){
+    switch(($class = $this->DistinguishRoleGroup($role))){
+    case 'poison_cat':
+      $class = 'cat';
+      break;
+
+    case 'pharmacist':
+      $class = 'poison';
+      break;
+
+    case 'mind_scanner':
+      $class = 'mind';
+      break;
+
+    case 'child_fox':
+      $class = 'fox';
+      break;
+    }
+    return $class;
+  }
+
+  //å½¹è·åã®ã‚¿ã‚°ç”Ÿæˆ
+  function GenerateRoleTag($role, $css = NULL, $sub_role = false){
+    $str = '';
+    if(is_null($css)) $css = $this->DistinguishRoleClass($role);
+    if($sub_role) $str .= '<br>';
+    $str .= '<span class="' . $css . '">[' .
+      ($sub_role ? $this->sub_role_list[$role] : $this->main_role_list[$role]) . ']</span>';
+    return $str;
+  }
 }
 
-//-- ÇÛÌòÀßÄê¤Î´ğÄì¥¯¥é¥¹ --//
+//-- é…å½¹è¨­å®šã®åŸºåº•ã‚¯ãƒ©ã‚¹ --//
 class CastConfigBase{
-  //¡ÖÊ¡°ú¤­¡×¤ò°ìÄê²ó¿ô¹Ô¤Ã¤Æ¥ê¥¹¥È¤ËÄÉ²Ã¤¹¤ë
+  //ã€Œç¦å¼•ãã€ã‚’ä¸€å®šå›æ•°è¡Œã£ã¦ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹
   function AddRandom(&$list, $random_list, $count){
     $total = count($random_list) - 1;
     for(; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
   }
 
-  //¡ÖÈæ¡×¤ÎÇÛÎó¤«¤é¡ÖÊ¡°ú¤­¡×¤òºîÀ®¤¹¤ë
+  //ã€Œæ¯”ã€ã®é…åˆ—ã‹ã‚‰ã€Œç¦å¼•ãã€ã‚’ä½œæˆã™ã‚‹
   function GenerateRandomList($list){
     $stack = array();
     foreach($list as $role => $rate){
@@ -1046,7 +1119,7 @@ class CastConfigBase{
     return $stack;
   }
 
-  //¡ÖÈæ¡×¤«¤é¡Ö³ÎÎ¨¡×¤ËÊÑ´¹¤¹¤ë (¥Æ¥¹¥ÈÍÑ)
+  //ã€Œæ¯”ã€ã‹ã‚‰ã€Œç¢ºç‡ã€ã«å¤‰æ›ã™ã‚‹ (ãƒ†ã‚¹ãƒˆç”¨)
   function RateToProbability($list){
     $stack = array();
     $total_rate = array_sum($list);
@@ -1056,19 +1129,19 @@ class CastConfigBase{
     PrintData($stack);
   }
 
-  //·èÆ®Â¼¤ÎÇÛÌò½é´ü²½½èÍı
+  //æ±ºé—˜æ‘ã®é…å½¹åˆæœŸåŒ–å‡¦ç†
   function InitializeDuel($user_count){
     return true;
   }
 
-  //·èÆ®Â¼¤ÎÇÛÌòºÇ½ª½èÍı
+  //æ±ºé—˜æ‘ã®é…å½¹æœ€çµ‚å‡¦ç†
   function FinalizeDuel($user_count, &$role_list){
     return true;
   }
 
-  //·èÆ®Â¼¤ÎÇÛÌò½èÍı
+  //æ±ºé—˜æ‘ã®é…å½¹å‡¦ç†
   function SetDuel($user_count){
-    $role_list = array(); //½é´ü²½½èÍı
+    $role_list = array(); //åˆæœŸåŒ–å‡¦ç†
     $this->InitializeDuel($user_count);
 
     if(array_sum($this->duel_fix_list) <= $user_count){

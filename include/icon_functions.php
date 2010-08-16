@@ -1,13 +1,13 @@
 <?php
 function OutputIconPageHeader(){
-  OutputHTMLHeader('ецб╝е╢еведе│еє░ь═ў', 'icon_view');
+  OutputHTMLHeader('уГжуГ╝уВ╢уВвуВдуВ│уГ│ф╕Ашжз', 'icon_view');
   echo <<<EOF
 </head>
 <body>
-<a href="./">вл╠сды</a><br>
+<a href="./">тЖРцИ╗уВЛ</a><br>
 <img class="title" src="img/icon_view_title.jpg"><br>
-<div class="link"><a href="icon_upload.php">вкеведе│еє┼╨╧┐</a></div>
-<fieldset><legend>ецб╝е╢еведе│еє░ь═ў</legend>
+<div class="link"><a href="icon_upload.php">тЖТуВвуВдуВ│уГ│чЩ╗щМ▓</a></div>
+<fieldset><legend>уГжуГ╝уВ╢уВвуВдуВ│уГ│ф╕Ашжз</legend>
 <table>
 
 EOF;
@@ -29,11 +29,11 @@ function OutputIconList($base_url = 'icon_view'){
   //PrintData($category_list);
   //PrintData($RQ_ARGS);
 
-  //еле╞е┤еъ
+  //уВлуГЖуВ┤уГк
   $config->view = 5;
   $config->page = 5;
   $builder = new PageLinkBuilder($base_url, $RQ_ARGS->category_page, count($category_list),
-				 $config, 'еле╞е┤еъ', 'category_page');
+				 $config, 'уВлуГЖуВ┤уГк', 'category_page');
   if($RQ_ARGS->room_no > 0) $builder->AddOption('room_no', $RQ_ARGS->room_no);
   $builder->header = '<tr><td colspan="10">';
   $builder->footer = '</td></tr>'."\n";
@@ -62,10 +62,10 @@ function OutputIconList($base_url = 'icon_view'){
   }
   AddIconURLOption($url_option, 'category_page');
 
-  //╜╨┼╡
+  //хЗ║хЕ╕
   $appearance_list = GetIconCategoryList('appearance', '', $query_stack);
   $builder->view_total = count($appearance_list);
-  $builder->title      = '╜╨┼╡';
+  $builder->title      = 'хЗ║хЕ╕';
   $builder->type       = 'appearance_page';
   $builder->SetPage($RQ_ARGS->appearance_page);
   $source_list = GetIconCategoryList('appearance', $builder->query, $query_stack);
@@ -91,10 +91,10 @@ function OutputIconList($base_url = 'icon_view'){
   }
   AddIconURLOption($url_option, 'appearance_page');
 
-  //╜╨┼╡
+  //хЗ║хЕ╕
   $author_list = GetIconCategoryList('author', '', $query_stack);
   $builder->view_total = count($author_list);
-  $builder->title      = 'еведе│еєд╬║ю╝╘';
+  $builder->title      = 'уВвуВдуВ│уГ│уБоф╜ЬшАЕ';
   $builder->type       = 'author_page';
   $builder->SetPage($RQ_ARGS->author_page);
   $source_list = GetIconCategoryList('author', $builder->query, $query_stack);
@@ -120,7 +120,7 @@ function OutputIconList($base_url = 'icon_view'){
   }
   AddIconURLOption($url_option, 'author_page');
 
-  //ецб╝е╢еведе│еєд╬е╞б╝е╓еыдлдщ░ь═ўдЄ╝ш╞└
+  //уГжуГ╝уВ╢уВвуВдуВ│уГ│уБоуГЖуГ╝уГЦуГлуБЛуВЙф╕АшжзуВТхПЦх╛Ч
   $query = 'SELECT icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
     'appearance, category, author FROM user_icon WHERE ';
   if($RQ_ARGS->icon_no > 0){
@@ -143,11 +143,11 @@ function OutputIconList($base_url = 'icon_view'){
   OutputPageLink($PAGE_CONF);
   echo "</td></tr>\n";
   if(is_null($RQ_ARGS->room_no)){
-    echo $line_header . '[S] ╜╨┼╡ / [C] еле╞е┤еъ / [A] еведе│еєд╬║ю╝╘ / [U] ╗╚═╤▓є┐Ї' . $line_footer;
-    echo $line_header . 'еведе│еєдЄепеъе├епд╣дыд╚╩╘╜╕д╟днд▐д╣ (═╫е╤е╣еяб╝е╔)' . $line_footer;
+    echo $line_header . '[S] хЗ║хЕ╕ / [C] уВлуГЖуВ┤уГк / [A] уВвуВдуВ│уГ│уБоф╜ЬшАЕ / [U] ф╜┐чФихЫЮцХ░' . $line_footer;
+    echo $line_header . 'уВвуВдуВ│уГ│уВТуВпуГкуГГуВпуБЩуВЛуБич╖ищЫЖуБзуБНуБ╛уБЩ (шжБуГСуВ╣уГпуГ╝уГЙ)' . $line_footer;
   }
 
-  //╔╜д╬╜╨╬╧
+  //шбиуБохЗ║хКЫ
   if($RQ_ARGS->page != 'all'){
     $limit_min = $ICON_CONF->view * ($RQ_ARGS->page - 1);
     if($limit_min < 1) $limit_min = 0;
@@ -157,7 +157,7 @@ function OutputIconList($base_url = 'icon_view'){
   $count = 0;
   $query_use_count = 'SELECT COUNT(uname) FROM user_entry WHERE icon_no = ';
   foreach($icon_list as $array){
-    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5╕─д┤д╚д╦▓■╣╘
+    if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5хАЛуБФуБиуБлцФ╣шбМ
     $count++;
 
     extract($array);
@@ -166,7 +166,7 @@ function OutputIconList($base_url = 'icon_view'){
     if($RQ_ARGS->room_no > 0){
       echo <<<EOF
 <td><label for="{$icon_no}"><img src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border-color:{$color};"> No. {$icon_no}<br>{$icon_name}<br>
-<font color="{$color}">вб</font><input type="radio" id="{$icon_no}" name="icon_no" value="{$icon_no}"></label></td>
+<font color="{$color}">тЧЖ</font><input type="radio" id="{$icon_no}" name="icon_no" value="{$icon_no}"></label></td>
 
 EOF;
     }
@@ -180,7 +180,7 @@ EOF;
 <td><a href="{$base_url}.php?icon_no={$icon_no}">
 <img src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border-color:{$color};">
 </a></td>
-<td class="name">No. {$icon_no}<br>{$icon_name}<br><font color="{$color}">вб</font>{$color}{$data}</td>
+<td class="name">No. {$icon_no}<br>{$icon_name}<br><font color="{$color}">тЧЖ</font>{$color}{$data}</td>
 
 EOF;
     }
@@ -190,25 +190,25 @@ EOF;
 <td><form method="POST" action="icon_edit.php">
 <input type="hidden" name="icon_no" value="{$icon_no}">
 <table>
-<tr><td><label>еведе│еєд╬╠╛┴░</label></td>
+<tr><td><label>уВвуВдуВ│уГ│уБохРНхЙН</label></td>
 <td><input type="text" name="icon_name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
 
-<tr><td><label>╜╨┼╡</label></td>
+<tr><td><label>хЗ║хЕ╕</label></td>
 <td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
 
-<tr><td><label>еле╞е┤еъ</label></td>
+<tr><td><label>уВлуГЖуВ┤уГк</label></td>
 <td><input type="text" name="category" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
 
-<tr><td><label>еведе│еєд╬║ю╝╘</label></td>
+<tr><td><label>уВвуВдуВ│уГ│уБоф╜ЬшАЕ</label></td>
 <td><input type="text" name="author" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$icon_name_length_max}</td></tr>
 
-<tr><td><label>еведе│еє╧╚д╬┐з</label></td>
-<td><input type="text" name="color" size="10px" maxlength="7"> (╬убз#6699CC)</td></tr>
+<tr><td><label>уВвуВдуВ│уГ│цЮауБошЙ▓</label></td>
+<td><input type="text" name="color" size="10px" maxlength="7"> (ф╛Ля╝Ъ#6699CC)</td></tr>
 
-<tr><td><label>╩╘╜╕е╤е╣еяб╝е╔</label></td>
+<tr><td><label>ч╖ищЫЖуГСуВ╣уГпуГ╝уГЙ</label></td>
 <td><input type="password" name="password" size="20"></td></tr>
 
-<tr><td colspan="2"><input type="submit" value="╩╤╣╣"></td></tr>
+<tr><td colspan="2"><input type="submit" value="хдЙцЫ┤"></td></tr>
 </table>
 </form></td>
 

@@ -11,9 +11,9 @@ class User{
     $this->ParseRoles();
   }
 
-  //»ØÄê¤·¤¿¥æ¡¼¥¶¡¼¥Ç¡¼¥¿¤Î¥»¥Ã¥È¤òÌ¾Á°¤Ä¤­ÇÛÎó¤Ë¤·¤ÆÊÖ¤·¤Ş¤¹¡£
-  //¤³¤Î¥á¥½¥Ã¥É¤Ï extract ´Ø¿ô¤ò»ÈÍÑ¤·¤Æ¥ª¥Ö¥¸¥§¥¯¥È¤Î¥×¥í¥Ñ¥Æ¥£¤ò
-  //¿×Â®¤Ë¥í¡¼¥«¥ë¤ËÅ¸³«¤¹¤ë¤¿¤á¤Ë»ÈÍÑ¤Ç¤­¤Ş¤¹¡£ (¸½ºß¤ÏÌ¤»ÈÍÑ)
+  //æŒ‡å®šã—ãŸãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®ã‚»ãƒƒãƒˆã‚’åå‰ã¤ãé…åˆ—ã«ã—ã¦è¿”ã—ã¾ã™ã€‚
+  //ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ extract é–¢æ•°ã‚’ä½¿ç”¨ã—ã¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’
+  //è¿…é€Ÿã«ãƒ­ãƒ¼ã‚«ãƒ«ã«å±•é–‹ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã§ãã¾ã™ã€‚ (ç¾åœ¨ã¯æœªä½¿ç”¨)
   function ToArray($type = NULL){
     switch($type){
       case 'profiles':
@@ -47,17 +47,17 @@ class User{
     return $result;
   }
 
-  //Ìò¿¦¾ğÊó¤ÎÅ¸³«½èÍı
+  //å½¹è·æƒ…å ±ã®å±•é–‹å‡¦ç†
   function ParseRoles($role = NULL){
-    //½é´ü²½½èÍı
+    //åˆæœŸåŒ–å‡¦ç†
     if(isset($role)) $this->role = $role;
     $this->partner_list = array();
 
-    //Å¸³«ÍÑ¤ÎÀµµ¬É½¸½¤ò¥»¥Ã¥È
-    $regex_partner = '/([^\[]+)\[([^\]]+)\]/'; //Îø¿Í·¿ (role[id])
-    $regex_status  = '/([^-]+)-(.+)/';         //ØáÏµ·¿ (role[date-id])
+    //å±•é–‹ç”¨ã®æ­£è¦è¡¨ç¾ã‚’ã‚»ãƒƒãƒˆ
+    $regex_partner = '/([^\[]+)\[([^\]]+)\]/'; //æ‹äººå‹ (role[id])
+    $regex_status  = '/([^-]+)-(.+)/';         //æ†‘ç‹¼å‹ (role[date-id])
 
-    //Å¸³«½èÍı
+    //å±•é–‹å‡¦ç†
     $role_list = array();
     foreach(explode(' ', $this->role) as $role){
       if(preg_match($regex_partner, $role, $match_partner)){
@@ -72,17 +72,22 @@ class User{
       }
     }
 
-    //ÂåÆş½èÍı
+    //ä»£å…¥å‡¦ç†
     $this->role_list = array_unique($role_list);
     $this->main_role = $this->role_list[0];
   }
 
-  //¸½ºß¤ÎÌò¿¦¤ò¼èÆÀ
+  //å½¹è·ã®å†ãƒ‘ãƒ¼ã‚¹å‡¦ç†
+  function ReparseRoles(){
+    $this->ParseRoles($this->GetRole());
+  }
+
+  //ç¾åœ¨ã®å½¹è·ã‚’å–å¾—
   function GetRole(){
     return $this->updated['role'] ? $this->updated['role'] : $this->role;
   }
 
-  //¸½ºß¤Î½êÂ°¿Ø±Ä¤ò¼èÆÀ
+  //ç¾åœ¨ã®æ‰€å±é™£å–¶ã‚’å–å¾—
   function GetCamp($strict = false){
     global $USERS;
 
@@ -91,13 +96,13 @@ class User{
     return $this->$type;
   }
 
-  //³ÈÄ¥¾ğÊó¤ò¼èÆÀ
+  //æ‹¡å¼µæƒ…å ±ã‚’å–å¾—
   function GetPartner($type){
     $list = $this->partner_list[$type];
     return is_array($list) ? $list : NULL;
   }
 
-  //Æü¿ô¤Ë±ş¤¸¤¿Øá°ÍÀè¤Î ID ¤ò¼èÆÀ
+  //æ—¥æ•°ã«å¿œã˜ãŸæ†‘ä¾å…ˆã® ID ã‚’å–å¾—
   function GetPossessedTarget($type, $today){
     if(is_null($target_list = $this->GetPartner($type))) return false;
 
@@ -109,7 +114,7 @@ class User{
     return false;
   }
 
-  //¸½ºß¤Î²¾ÁÛÅª¤ÊÀ¸»à¾ğÊó
+  //ç¾åœ¨ã®ä»®æƒ³çš„ãªç”Ÿæ­»æƒ…å ±
   function IsDeadFlag($strict = false){
     if(! $strict) return NULL;
     if($this->suicide_flag) return true;
@@ -118,35 +123,40 @@ class User{
     return NULL;
   }
 
-  //À¸Â¸¥Õ¥é¥°È½Äê
+  //ç”Ÿå­˜ãƒ•ãƒ©ã‚°åˆ¤å®š
   function IsLive($strict = false){
     $dead = $this->IsDeadFlag($strict);
     return is_null($dead) ? ($this->live == 'live') : ! $dead;
   }
 
-  //»àË´¥Õ¥é¥°È½Äê
+  //æ­»äº¡ãƒ•ãƒ©ã‚°åˆ¤å®š
   function IsDead($strict = false){
     $dead = $this->IsDeadFlag($strict);
     return is_null($dead) ? ($this->live == 'dead' || $this->IsDrop()) : $dead;
   }
 
-  //ÁÉÀ¸¼­Âà¥Õ¥é¥°È½Äê
+  //è˜‡ç”Ÿè¾é€€ãƒ•ãƒ©ã‚°åˆ¤å®š
   function IsDrop(){
     return $this->live == 'drop';
   }
 
-  //Æ±°ì¥æ¡¼¥¶È½Äê
+  //åŒä¸€ãƒ¦ãƒ¼ã‚¶åˆ¤å®š
   function IsSame($uname){
     return $this->uname == $uname;
   }
 
-  //¼«Ê¬¤ÈÆ±°ì¥æ¡¼¥¶È½Äê
+  //åŒä¸€ HN åˆ¤å®š
+  function IsSameName($handle_name){
+    return $this->handle_name == $handle_name;
+  }
+
+  //è‡ªåˆ†ã¨åŒä¸€ãƒ¦ãƒ¼ã‚¶åˆ¤å®š
   function IsSelf(){
     global $SELF;
     return $this->IsSame($SELF->uname);
   }
 
-  //¿ÈÂå¤ï¤ê·¯È½Äê
+  //èº«ä»£ã‚ã‚Šå›åˆ¤å®š
   function IsDummyBoy($strict = false){
     global $ROOM;
 
@@ -154,7 +164,7 @@ class User{
     return $this->IsSame('dummy_boy');
   }
 
-  //Ìò¿¦È½Äê
+  //å½¹è·åˆ¤å®š
   function IsRole($role){
     $role_list = func_get_args();
     if(is_array($role_list[0])) $role_list = $role_list[0];
@@ -164,7 +174,7 @@ class User{
       return in_array($role_list[0], $this->role_list);
   }
 
-  //Ìò¿¦¥°¥ë¡¼¥×È½Äê
+  //å½¹è·ã‚°ãƒ«ãƒ¼ãƒ—åˆ¤å®š
   function IsRoleGroup($role_list){
     foreach(func_get_args() as $target_role){
       foreach($this->role_list as $role){
@@ -174,7 +184,7 @@ class User{
     return false;
   }
 
-  //³ÈÄ¥È½Äê
+  //æ‹¡å¼µåˆ¤å®š
   function IsPartner($type, $target){
     if(is_null($partner_list = $this->GetPartner($type))) return false;
 
@@ -187,70 +197,70 @@ class User{
     }
   }
 
-  //¼º¸ú¥¿¥¤¥×¤ÎÌò¿¦È½Äê
+  //å¤±åŠ¹ã‚¿ã‚¤ãƒ—ã®å½¹è·åˆ¤å®š
   function IsActive($role = NULL){
     $flag = is_null($role) ? true : $this->IsRole($role);
     return $flag && ! $this->lost_flag && ! $this->IsRole('lost_ability');
   }
 
-  //¸ÉÎ©·ÏÌò¿¦È½Äê
+  //å­¤ç«‹ç³»å½¹è·åˆ¤å®š
   function IsLonely($role = NULL){
     $flag = is_null($role) ? true : $this->IsRole($role);
     return $flag && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 
-  //¶¦Í­¼Ô·ÏÈ½Äê
+  //å…±æœ‰è€…ç³»åˆ¤å®š
   function IsCommon($talk = false){
     if(! $this->IsRoleGroup('common')) return false;
     return $talk ? ! $this->IsRole('dummy_common') : true;
   }
 
-  //¾å³¤¿Í·Á·ÏÈ½Äê (¿Í·Á¸¯¤¤¤Ï´Ş¤Ş¤Ê¤¤)
+  //ä¸Šæµ·äººå½¢ç³»åˆ¤å®š (äººå½¢é£ã„ã¯å«ã¾ãªã„)
   function IsDoll(){
     return $this->IsRoleGroup('doll') && ! $this->IsRole('doll_master');
   }
 
-  //¿ÍÏµ·ÏÈ½Äê
+  //äººç‹¼ç³»åˆ¤å®š
   function IsWolf($talk = false){
     if(! $this->IsRoleGroup('wolf')) return false;
     return $talk ? ! $this->IsLonely() : true;
   }
 
-  //ÍÅ¸Ñ·ÏÈ½Äê
+  //å¦–ç‹ç³»åˆ¤å®š
   function IsFox($talk = false){
     if(! $this->IsRoleGroup('fox')) return false;
     return $talk ? ! ($this->IsChildFox() || $this->IsLonely()) : true;
   }
 
-  //»Ò¸Ñ·ÏÈ½Äê
+  //å­ç‹ç³»åˆ¤å®š
   function IsChildFox($vote = false){
     $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
     if(! $vote) $stack[] = 'miasma_fox';
     return $this->IsRole($stack);
   }
 
-  //½±·âÂÑÀ­ÍÅ¸ÑÈ½Äê
+  //è¥²æ’ƒè€æ€§å¦–ç‹åˆ¤å®š
   function IsResistFox(){
     return $this->IsFox() && ! $this->IsRole('white_fox', 'poison_fox') && ! $this->IsChildFox();
   }
 
-  //Îø¿ÍÈ½Äê
+  //æ‹äººåˆ¤å®š
   function IsLovers(){
     return $this->IsRole('lovers');
   }
 
-  //Øá°ÍÇ½ÎÏ¼ÔÈ½Äê (ÈïØá°Í¼Ô¤È¥³¡¼¥É¾å¤Ç¶èÊÌ¤¹¤ë¤¿¤á¤Î´Ø¿ô)
+  //æ†‘ä¾èƒ½åŠ›è€…åˆ¤å®š (è¢«æ†‘ä¾è€…ã¨ã‚³ãƒ¼ãƒ‰ä¸Šã§åŒºåˆ¥ã™ã‚‹ãŸã‚ã®é–¢æ•°)
   function IsPossessedGroup(){
     return $this->IsRole('possessed_wolf', 'possessed_mad', 'possessed_fox');
   }
 
-  //ÁÉÀ¸Ç½ÎÏ¼ÔÈ½Äê
+  //è˜‡ç”Ÿèƒ½åŠ›è€…åˆ¤å®š
   function IsReviveGroup($active = false){
     if(! ($this->IsRoleGroup('cat') || $this->IsRole('revive_medium', 'revive_fox'))) return false;
     return $active ? $this->IsActive() : true;
   }
 
-  //³ĞÀÃÅ·ÏµÈ½Äê
+  //è¦šé†’å¤©ç‹¼åˆ¤å®š
   function IsSiriusWolf($full = true){
     global $USERS;
 
@@ -264,115 +274,116 @@ class User{
     return $this->$type;
   }
 
-  //¸¸·ÏÇ½ÎÏÈ½Äê
+  //å¹»ç³»èƒ½åŠ›åˆ¤å®š
   function IsAbilityPhantom(){
     return $this->IsLive(true) && $this->IsRoleGroup('phantom') && $this->IsActive();
   }
 
-  //ÆñÂêÈ½Äê
+  //é›£é¡Œåˆ¤å®š
   function IsChallengeLovers(){
     global $ROOM;
     return $ROOM->date > 1 && $ROOM->date < 5 && $this->IsRole('challenge_lovers');
   }
 
-  //ÆÃ¼ìÂÑÀ­È½Äê
+  //ç‰¹æ®Šè€æ€§åˆ¤å®š
   function IsAvoid($quiz = false){
     $stack = array('detective_common');
     if($quiz) $stack[] = 'quiz';
     return $this->IsRole($stack) || $this->IsSiriusWolf() || $this->IsChallengeLovers();
   }
 
-  //ÆÇÇ½ÎÏ¤ÎÈ¯Æ°È½Äê
+  //æ¯’èƒ½åŠ›ã®ç™ºå‹•åˆ¤å®š
   function IsPoison(){
     global $ROOM;
 
-    if(! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false; //ÌµÆÇ¡¦Ï¢ÆÇ¼Ô
-    if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //µ³»Î
-    if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //ÀøÆÇ¼Ô¤Ï 5 ÆüÌÜ°Ê¹ß
-    if($this->IsRole('dummy_poison')) return $ROOM->IsDay(); //Ì´ÆÇ¼Ô
+    if(! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false; //ç„¡æ¯’ãƒ»é€£æ¯’è€…
+    if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //é¨å£«
+    if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //æ½œæ¯’è€…ã¯ 5 æ—¥ç›®ä»¥é™
+    if($this->IsRole('dummy_poison')) return $ROOM->IsDay(); //å¤¢æ¯’è€…
     return true;
   }
 
-  //¼í¤êÈ½Äê
+  //ç‹©ã‚Šåˆ¤å®š
   function IsHuntTarget(){
     return ($this->IsRoleGroup('mad') && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
       $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
 		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera');
   }
 
-  //¸î±ÒÀ©¸ÂÈ½Äê
+  //è­·è¡›åˆ¶é™åˆ¤å®š
   function IsGuardLimited(){
     return $this->IsRole('detective_common', 'reporter', 'doll_master') ||
       ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
       $this->IsRoleGroup('assassin');
   }
 
-  //°Å»¦È¿¼ÍÈ½Äê
+  //æš—æ®ºåå°„åˆ¤å®š
   function IsRefrectAssassin(){
     return $this->IsLive(true) &&
       ($this->IsRole('detective_common', 'cursed_fox') ||
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers());
   }
 
-  //Øá°ÍÀ©¸ÂÈ½Äê
+  //æ†‘ä¾åˆ¶é™åˆ¤å®š
   function IsPossessedLimited(){
     return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist');
   }
 
-  //ÁÉÀ¸À©¸ÂÈ½Äê
+  //è˜‡ç”Ÿåˆ¶é™åˆ¤å®š
   function IsReviveLimited(){
     return $this->IsRoleGroup('cat', 'revive') || $this->IsRole('detective_common') ||
       $this->IsLovers() || $this->IsDrop() || $this->possessed_reset;
   }
 
-  //°ä¸ÀÀ©¸ÂÈ½Äê
+  //éºè¨€åˆ¶é™åˆ¤å®š
   function IsLastWordsLimited($save = false){
     $stack = array('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words');
     if($save) $stack[] = 'possessed_exchange';
     return $this->IsRole($stack);
   }
 
-  //½êÂ°¿Ø±ÄÈ½ÊÌ
+  //æ‰€å±é™£å–¶åˆ¤åˆ¥ (ãƒ©ãƒƒãƒ‘ãƒ¼)
   function DistinguishCamp(){
-    if($this->IsWolf() || $this->IsRoleGroup('mad')) return 'wolf';
-    if($this->IsFox()) return 'fox';
-    if($this->IsRole('quiz')) return 'quiz';
-    if($this->IsRole('vampire')) return 'vampire';
-    if($this->IsRoleGroup('chiroptera', 'fairy')) return 'chiroptera';
-    if($this->IsRoleGroup('cupid', 'angel')) return 'lovers';
-    return 'human';
+    global $ROLE_DATA;
+    return $ROLE_DATA->DistinguishCamp($this->main_role);
   }
 
-  //Àê¤¤»Õ¤ÎÈ½Äê
-  function DistinguishMage($reverse = false){
-    if($this->IsRole('vampire', 'boss_chiroptera')) return 'chiroptera'; //µÛ·ìµ´¡¦Âçéşéõ¤Ï¡Öéşéõ¡×
+  //æ‰€å±å½¹è·ã‚°ãƒ«ãƒ¼ãƒ—é™£å–¶åˆ¤åˆ¥ (ãƒ©ãƒƒãƒ‘ãƒ¼)
+  function DistinguishRoleGroup(){
+    global $ROLE_DATA;
+    return $ROLE_DATA->DistinguishRoleGroup($this->main_role);
+  }
 
-    //ÇòÏµ¤«´°Á´³ĞÀÃÅ·Ïµ°Ê³°¤Î¿ÍÏµ¡¦¹õ¸Ñ¡¦ÉÔ¿³¼Ô¤Ï¡Ö¿ÍÏµ¡×
+  //å ã„å¸«ã®åˆ¤å®š
+  function DistinguishMage($reverse = false){
+    if($this->IsRole('vampire', 'boss_chiroptera')) return 'chiroptera'; //å¸è¡€é¬¼ãƒ»å¤§è™è ã¯ã€Œè™è ã€
+
+    //ç™½ç‹¼ã‹å®Œå…¨è¦šé†’å¤©ç‹¼ä»¥å¤–ã®äººç‹¼ãƒ»é»’ç‹ãƒ»ä¸å¯©è€…ã¯ã€Œäººç‹¼ã€
     $result = (($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
 	       $this->IsRole('black_fox', 'suspect'));
     if($reverse) $result = (! $result);
     return $result ? 'wolf' : 'human';
   }
 
-  //Àº¿À´ÕÄê»Î¤ÎÈ½Äê
+  //ç²¾ç¥é‘‘å®šå£«ã®åˆ¤å®š
   function DistinguishLiar(){
     return $this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
       'psycho_mage_liar' : 'psycho_mage_normal';
   }
 
-  //¤Ò¤è¤³´ÕÄê»Î¤ÎÈ½Äê
+  //ã²ã‚ˆã“é‘‘å®šå£«ã®åˆ¤å®š
   function DistinguishSex(){
     return $this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex;
   }
 
-  //ÀêÀ±½Ñ»Õ¤ÎÈ½Äê
+  //å æ˜Ÿè¡“å¸«ã®åˆ¤å®š
   function DistinguishVoteAbility(){
     global $ROOM;
     return array_key_exists($this->uname, $ROOM->vote) || $this->IsWolf() ?
       'stargazer_mage_ability' : 'stargazer_mage_nothing';
   }
 
-  //ÅêÉ¼ºÑ¤ßÈ½Äê
+  //æŠ•ç¥¨æ¸ˆã¿åˆ¤å®š
   function IsVoted($vote_data, $action, $not_action = NULL){
     if(isset($not_action) && is_array($vote_data[$not_action]) &&
        array_key_exists($this->uname, $vote_data[$not_action])) return true;
@@ -381,7 +392,7 @@ class User{
       isset($vote_data[$action][$this->uname]);
   }
 
-  //Ì¤ÅêÉ¼¥Á¥§¥Ã¥¯
+  //æœªæŠ•ç¥¨ãƒã‚§ãƒƒã‚¯
   function CheckVote($vote_data){
     global $ROOM;
 
@@ -403,7 +414,7 @@ class User{
       return $this->IsVoted($vote_data, 'FAIRY_DO');
     }
 
-    if($ROOM->date == 1){ //½éÆü¸ÂÄê
+    if($ROOM->date == 1){ //åˆæ—¥é™å®š
       if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
@@ -415,7 +426,7 @@ class User{
       return true;
     }
 
-    //ÆóÆüÌÜ°Ê¹ß
+    //äºŒæ—¥ç›®ä»¥é™
     if($this->IsRole('escaper')) return $this->IsVoted($vote_data, 'ESCAPE_DO');
     if($this->IsRoleGroup('guard')) return $this->IsVoted($vote_data, 'GUARD_DO');
     if($this->IsRole('reporter')) return $this->IsVoted($vote_data, 'REPORTER_DO');
@@ -441,17 +452,34 @@ class User{
     return true;
   }
 
-  //Ìò¿¦¤ò¥Ñ¡¼¥¹¤·¤Æ¾ÊÎ¬Ì¾¤òÊÖ¤¹
+  //å½¹è·æƒ…å ±ã‹ã‚‰è¡¨ç¤ºæƒ…å ±ã‚’ä½œæˆã™ã‚‹
+  function GenerateRoleName(){
+    global $ROLE_DATA;
+
+    $str = $ROLE_DATA->GenerateRoleTag($this->main_role); //ãƒ¡ã‚¤ãƒ³å½¹è·
+    if(($role_count = count($this->role_list)) < 2) return $str; //ã‚µãƒ–å½¹è·
+    $count = 1;
+    foreach($ROLE_DATA->sub_role_group_list as $class => $role_list){
+      foreach($role_list as $sub_role){
+	if(! $this->IsRole($sub_role)) continue;
+	$str .= $ROLE_DATA->GenerateRoleTag($sub_role, $class, true);
+	if(++$count >= $role_count) break 2;
+      }
+    }
+    return $str;
+  }
+
+  //å½¹è·ã‚’ãƒ‘ãƒ¼ã‚¹ã—ã¦çœç•¥åã‚’è¿”ã™
   function GenerateShortRoleName($heaven = false){
     global $ROLE_DATA, $USERS;
 
-    //¥á¥¤¥óÌò¿¦¤ò¼èÆÀ
+    //ãƒ¡ã‚¤ãƒ³å½¹è·ã‚’å–å¾—
     $camp = $this->GetCamp();
     $name = $ROLE_DATA->short_role_list[$this->main_role];
     $str = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
 
-    //¥µ¥ÖÌò¿¦¤òÄÉ²Ã
+    //ã‚µãƒ–å½¹è·ã‚’è¿½åŠ 
     $sub_role_list = array_slice($this->role_list, 1);
     foreach($ROLE_DATA->short_role_list as $role => $name){
       if(in_array($role, $sub_role_list)){
@@ -476,20 +504,20 @@ class User{
     return $str . '] (' . $uname . ')</span>';
   }
 
-  //ÅêÉ¼²èÌÌÍÑ¥¢¥¤¥³¥ó¥¿¥°À¸À®
+  //æŠ•ç¥¨ç”»é¢ç”¨ã‚¢ã‚¤ã‚³ãƒ³ã‚¿ã‚°ç”Ÿæˆ
   function GenerateVoteTag($icon_path, $checkbox){
     global  $ICON_CONF;
 
     return <<<EOF
 <td><label for="{$this->user_no}">
 <img src="{$icon_path}" style="border-color: {$this->color};"{$ICON_CONF->tag}>
-<font color="{$this->color}">¢¡</font>{$this->handle_name}<br>
+<font color="{$this->color}">â—†</font>{$this->handle_name}<br>
 {$checkbox}</label></td>
 
 EOF;
   }
 
-  //¸ÄÊÌ DB ¹¹¿·½èÍı
+  //å€‹åˆ¥ DB æ›´æ–°å‡¦ç†
   function Update($item, $value){
     global $ROOM;
 
@@ -501,7 +529,7 @@ EOF;
     return SendQuery("UPDATE user_entry SET {$item} = '{$value}' {$query}", true);
   }
 
-  //Áí¹ç DB ¹¹¿·½èÍı (¤³¤Î´Ø¿ô¤Ï¤Ş¤À¼ÂÍÑ¤µ¤ì¤Æ¤¤¤Ş¤»¤ó)
+  //ç·åˆ DB æ›´æ–°å‡¦ç† (ã“ã®é–¢æ•°ã¯ã¾ã å®Ÿç”¨ã•ã‚Œã¦ã„ã¾ã›ã‚“)
   function Save(){
     if(empty($this->updated)) return false;
     foreach($this->updated as $item){
@@ -512,7 +540,7 @@ EOF;
     SendQuery("UPDATE user_entry SET {$update} {$query}", true);
   }
 
-  //´ğ´´»àË´½èÍı
+  //åŸºå¹¹æ­»äº¡å‡¦ç†
   function ToDead(){
     if($this->IsDead(true)) return false;
     $this->Update('live', 'dead');
@@ -520,7 +548,7 @@ EOF;
     return true;
   }
 
-  //ÁÉÀ¸½èÍı
+  //è˜‡ç”Ÿå‡¦ç†
   function Revive($virtual = false){
     global $ROOM;
 
@@ -531,45 +559,45 @@ EOF;
     return true;
   }
 
-  //Ìò¿¦¹¹¿·½èÍı
+  //å½¹è·æ›´æ–°å‡¦ç†
   function ChangeRole($role){
     $this->Update('role', $role);
-    $this->updated['role'] = $role; //¥­¥ã¥Ã¥·¥åËÜÂÎ¤Î¹¹¿·¤Ï¹Ô¤ï¤Ê¤¤
+    $this->updated['role'] = $role; //ã‚­ãƒ£ãƒƒã‚·ãƒ¥æœ¬ä½“ã®æ›´æ–°ã¯è¡Œã‚ãªã„
   }
 
-  //Ìò¿¦ÄÉ²Ã½èÍı
+  //å½¹è·è¿½åŠ å‡¦ç†
   function AddRole($role){
     $base_role = $this->GetRole();
-    if(in_array($role, explode(' ', $base_role))) return false; //Æ±¤¸Ìò¿¦¤ÏÄÉ²Ã¤·¤Ê¤¤
+    if(in_array($role, explode(' ', $base_role))) return false; //åŒã˜å½¹è·ã¯è¿½åŠ ã—ãªã„
     $this->ChangeRole($base_role . ' ' . $role);
   }
 
-  //²¾ÁÛÌò¿¦ÄÉ²Ã½èÍı (¥­¥ã¥Ã¥·¥å¸ÂÄê)
+  //ä»®æƒ³å½¹è·è¿½åŠ å‡¦ç† (ã‚­ãƒ£ãƒƒã‚·ãƒ¥é™å®š)
   function AddVirtualRole($role){
     if(! in_array($role, $this->role_list)) $this->role_list[] = $role;
   }
 
-  //¥á¥¤¥óÌò¿¦ÄÉ²Ã½èÍı
+  //ãƒ¡ã‚¤ãƒ³å½¹è·è¿½åŠ å‡¦ç†
   function AddMainRole($role){
     $this->ReplaceRole($this->main_role, $this->main_role . '[' . $role . ']');
   }
 
-  //Ìò¿¦ÃÖ´¹½èÍı
+  //å½¹è·ç½®æ›å‡¦ç†
   function ReplaceRole($target, $replace){
     $this->ChangeRole(str_replace($target, $replace, $this->GetRole()));
   }
 
-  //»à¤ÎÀë¹ğ½èÍı
+  //æ­»ã®å®£å‘Šå‡¦ç†
   function AddDoom($date){
     global $ROOM;
     $this->AddRole('death_warrant[' . ($ROOM->date + $date) . ']');
   }
 
   /*
-    ¤³¤Î¥á¥½¥Ã¥É¤Ï¶¶É±¼ÂÁõ»ş¤Î¤¿¤á¤ËÍ½Ìó¤µ¤ì¤Æ¤¤¤Ş¤¹¡£
-     ¥¹¥Ú¡¼¥¹¤¬£²¤ÄÂ³¤¤¤Æ¤¤¤ë²Õ½ê¤Ï¶õ¤ÎÌò¿¦¤ÈÇ§¼±¤µ¤ì¤ë¤ª¤½¤ì¤¬¤¢¤ê¤Ş¤¹¡£
-     ËÜÍè¤ÏParseRoleÂ¦¤Çpreg_split()¤Ê¤É¤ò»ÈÍÑ¤¹¤ë¤Ù¤­¤Ç¤¹¤¬¡¢Ìò¿¦¤¬¸º¤ë¾õ¶·¤ÎÊı¤¬¾¯¤Ê¤¤¤¿¤á¡¢
-     ºï½üÂ¦¤ÇÄ´Àá¤¹¤ë¤â¤Î¤È¤·¤Ş¤¹¡£(2009-07-05 enogu)
+    ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯æ©‹å§«å®Ÿè£…æ™‚ã®ãŸã‚ã«äºˆç´„ã•ã‚Œã¦ã„ã¾ã™ã€‚
+     ã‚¹ãƒšãƒ¼ã‚¹ãŒï¼’ã¤ç¶šã„ã¦ã„ã‚‹ç®‡æ‰€ã¯ç©ºã®å½¹è·ã¨èªè­˜ã•ã‚Œã‚‹ãŠãã‚ŒãŒã‚ã‚Šã¾ã™ã€‚
+     æœ¬æ¥ã¯ParseRoleå´ã§preg_split()ãªã©ã‚’ä½¿ç”¨ã™ã‚‹ã¹ãã§ã™ãŒã€å½¹è·ãŒæ¸›ã‚‹çŠ¶æ³ã®æ–¹ãŒå°‘ãªã„ãŸã‚ã€
+     å‰Šé™¤å´ã§èª¿ç¯€ã™ã‚‹ã‚‚ã®ã¨ã—ã¾ã™ã€‚(2009-07-05 enogu)
   */
   /*
   function RemoveRole($role){
@@ -589,11 +617,11 @@ EOF;
     return true;
   }
 
-  //°ä¸À¤ò¼èÆÀ¤·¤ÆÊİÂ¸¤¹¤ë
+  //éºè¨€ã‚’å–å¾—ã—ã¦ä¿å­˜ã™ã‚‹
   function SaveLastWords($handle_name = NULL){
     global $ROOM;
 
-    if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return; //¥¹¥­¥Ã¥×È½Äê
+    if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return; //ã‚¹ã‚­ãƒƒãƒ—åˆ¤å®š
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
@@ -607,7 +635,7 @@ EOF;
     }
   }
 
-  //ÅêÉ¼½èÍı
+  //æŠ•ç¥¨å‡¦ç†
   function Vote($action, $target = NULL, $vote_number = NULL){
     global $RQ_ARGS, $ROOM;
 
@@ -637,13 +665,13 @@ class UserDataSet{
     $this->LoadRoom($request);
   }
 
-  //Â¼¾ğÊó¤Î¥í¡¼¥É½èÍı
+  //æ‘æƒ…å ±ã®ãƒ­ãƒ¼ãƒ‰å‡¦ç†
   function LoadRoom($request){
-    if($request->IsVirtualRoom()){ //²¾ÁÛ¥â¡¼¥É
+    if($request->IsVirtualRoom()){ //ä»®æƒ³ãƒ¢ãƒ¼ãƒ‰
       $user_list = $request->TestItems->test_users;
       if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
-    elseif($request->entry_user){ //ÆşÂ¼½èÍıÍÑ
+    elseif($request->entry_user){ //å…¥æ‘å‡¦ç†ç”¨
       $user_list = $this->RetriveByEntryUser($request->room_no);
     }
     else{
@@ -652,7 +680,7 @@ class UserDataSet{
     $this->LoadUsers($user_list);
   }
 
-  //ÆÃÄê¤ÎÂ¼¤Î¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ¤¹¤ë
+  //ç‰¹å®šã®æ‘ã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—ã™ã‚‹
   function RetriveByRoom($room_no){
     $query = "SELECT
 	users.room_no,
@@ -675,7 +703,7 @@ class UserDataSet{
     return FetchObject($query, 'User');
   }
 
-  //»ØÄê¤·¤¿¿Í¿ôÊ¬¤Î¥æ¡¼¥¶¾ğÊó¤òÁ´Â¼¤«¤é¥é¥ó¥À¥à¤Ë¼èÆÀ¤¹¤ë
+  //æŒ‡å®šã—ãŸäººæ•°åˆ†ã®ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å…¨æ‘ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«å–å¾—ã™ã‚‹
   function RetriveByUserCount($user_count){
     mysql_query('SET @new_user_no := 0');
     $query = "SELECT
@@ -701,18 +729,18 @@ class UserDataSet{
     return FetchObject($query, 'User');
   }
 
-  //ÆşÂ¼½èÍıÍÑ¤Î¥æ¡¼¥¶¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
+  //å…¥æ‘å‡¦ç†ç”¨ã®ãƒ¦ãƒ¼ã‚¶ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
   function RetriveByEntryUser($room_no){
     $query = "SELECT room_no, user_no, uname, handle_name, live, ip_address
       FROM user_entry WHERE room_no = {$room_no} ORDER BY user_no";
     return FetchObject($query, 'User');
   }
 
-  //¼èÆÀ¤·¤¿¥æ¡¼¥¶¾ğÊó¤ò User ¥¯¥é¥¹¤Ç¥Ñ¡¼¥¹¤·¤ÆÅĞÏ¿¤¹¤ë
+  //å–å¾—ã—ãŸãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’ User ã‚¯ãƒ©ã‚¹ã§ãƒ‘ãƒ¼ã‚¹ã—ã¦ç™»éŒ²ã™ã‚‹
   function LoadUsers($user_list){
     if(! is_array($user_list)) return false;
 
-    //½é´ü²½½èÍı
+    //åˆæœŸåŒ–å‡¦ç†
     $this->rows = array();
     $this->kicked = array();
     $this->names = array();
@@ -720,7 +748,7 @@ class UserDataSet{
 
     foreach($user_list as $user){
       $user->ParseCompoundParameters();
-      if($user->user_no >= 0 && $user->live != 'kick'){ //KICK È½Äê
+      if($user->user_no >= 0 && $user->live != 'kick'){ //KICK åˆ¤å®š
 	$this->rows[$user->user_no] = $user;
       }
       else{
@@ -736,47 +764,47 @@ class UserDataSet{
     foreach($this->rows as $user) $user->ParseCompoundParameters();
   }
 
-  //¥æ¡¼¥¶ ID - ¥æ¡¼¥¶Ì¾ÊÑ´¹
+  //ãƒ¦ãƒ¼ã‚¶ ID - ãƒ¦ãƒ¼ã‚¶åå¤‰æ›
   function NumberToUname($user_no){
     return $this->rows[$user_no]->uname;
   }
 
-  //¥æ¡¼¥¶Ì¾ - ¥æ¡¼¥¶ ID ÊÑ´¹
+  //ãƒ¦ãƒ¼ã‚¶å - ãƒ¦ãƒ¼ã‚¶ ID å¤‰æ›
   function UnameToNumber($uname){
     return $this->names[$uname];
   }
 
-  //HN - ¥æ¡¼¥¶Ì¾ÊÑ´¹
+  //HN - ãƒ¦ãƒ¼ã‚¶åå¤‰æ›
   function HandleNameToUname($handle_name){
     foreach($this->rows as $user){
-      if($handle_name == $user->handle_name) return $user->uname;
+      if($user->IsSameName($handle_name)) return $user->uname;
     }
     return NULL;
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (¥æ¡¼¥¶ ID ·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (ãƒ¦ãƒ¼ã‚¶ ID çµŒç”±)
   function ByID($user_no){
     if(is_null($user_no)) return new User();
     return $user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no];
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (¥æ¡¼¥¶Ì¾·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (ãƒ¦ãƒ¼ã‚¶åçµŒç”±)
   function ByUname($uname){
     return $this->ByID($this->UnameToNumber($uname));
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (HN ·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (HN çµŒç”±)
   function ByHandleName($handle_name){
     return $this->ByUname($this->HandleNameToUname($handle_name));
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (¥¯¥Ã¥­¡¼·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (ã‚¯ãƒƒã‚­ãƒ¼çµŒç”±)
   function BySession(){
     global $SESSION;
     return $this->TraceExchange($SESSION->GetUser());
   }
 
-  //Øá°Í¾ğÊóÄÉÀ×
+  //æ†‘ä¾æƒ…å ±è¿½è·¡
   function TraceVirtual($user_no, $type){
     global $ROOM;
 
@@ -793,7 +821,7 @@ class UserDataSet{
     return $id === false ? $user : $this->ByID($id);
   }
 
-  //¸ò´¹Øá°Í¾ğÊóÄÉÀ×
+  //äº¤æ›æ†‘ä¾æƒ…å ±è¿½è·¡
   function TraceExchange($user_no){
     global $ROOM;
 
@@ -806,38 +834,38 @@ class UserDataSet{
     return is_array($stack) && $ROOM->date > 2 ? $this->ByID(array_shift($stack)) : $user;
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (Øá°ÍÀè¥æ¡¼¥¶ ID ·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (æ†‘ä¾å…ˆãƒ¦ãƒ¼ã‚¶ ID çµŒç”±)
   function ByVirtual($user_no){
     return $this->TraceVirtual($user_no, 'possessed_target');
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (Øá°Í¸µ¥æ¡¼¥¶ ID ·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (æ†‘ä¾å…ƒãƒ¦ãƒ¼ã‚¶ ID çµŒç”±)
   function ByReal($user_no){
     return $this->TraceVirtual($user_no, 'possessed');
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (Øá°ÍÀè¥æ¡¼¥¶Ì¾·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (æ†‘ä¾å…ˆãƒ¦ãƒ¼ã‚¶åçµŒç”±)
   function ByVirtualUname($uname){
     return $this->ByVirtual($this->UnameToNumber($uname));
   }
 
-  //¥æ¡¼¥¶¾ğÊó¼èÆÀ (Øá°Í¸µ¥æ¡¼¥¶Ì¾·ĞÍ³)
+  //ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— (æ†‘ä¾å…ƒãƒ¦ãƒ¼ã‚¶åçµŒç”±)
   function ByRealUname($uname){
     return $this->ByReal($this->UnameToNumber($uname));
   }
 
-  //HN ¼èÆÀ
+  //HN å–å¾—
   function GetHandleName($uname, $virtual = false){
     $user = $virtual ? $this->ByVirtualUname($uname) : $this->ByUname($uname);
     return $user->handle_name;
   }
 
-  //Ìò¿¦¾ğÊó¼èÆÀ
+  //å½¹è·æƒ…å ±å–å¾—
   function GetRole($uname){
     return $this->ByUname($uname)->role;
   }
 
-  //¥æ¡¼¥¶¿ô¥«¥¦¥ó¥È
+  //ãƒ¦ãƒ¼ã‚¶æ•°ã‚«ã‚¦ãƒ³ãƒˆ
   function GetUserCount($strict = false){
     if(! $strict) return count($this->rows);
     $count = 0;
@@ -847,7 +875,7 @@ class UserDataSet{
     return $count;
   }
 
-  //½êÂ°¿Ø±Ä¤òÈ½Äê¤·¤Æ¥­¥ã¥Ã¥·¥å¤¹¤ë
+  //æ‰€å±é™£å–¶ã‚’åˆ¤å®šã—ã¦ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã™ã‚‹
   function SetCamp($user, $type){
     if($type == 'win_camp' && $user->IsLovers()){
       $user->$type = 'lovers';
@@ -855,40 +883,44 @@ class UserDataSet{
     }
 
     $target = $user;
-    do{ //³ĞÀÃ¼Ô¡¦Ì´¸ìÉô¤Ê¤é¥³¥Ô¡¼Àè¤òÃ©¤ë
+    do{ //è¦šé†’è€…ãƒ»å¤¢èªéƒ¨ãªã‚‰ã‚³ãƒ”ãƒ¼å…ˆã‚’è¾¿ã‚‹
       if(! $target->IsRole('soul_mania', 'dummy_mania')) break;
       $stack = $target->GetPartner($target->main_role);
-      if(is_null($stack)) break; //¥³¥Ô¡¼Àè¤¬¸«¤Ä¤«¤é¤Ê¤±¤ì¤Ğ¥¹¥­¥Ã¥×
+      if(is_null($stack)) break; //ã‚³ãƒ”ãƒ¼å…ˆãŒè¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 
       $target = $this->ByID($stack[0]);
-      if($target->IsRoleGroup('mania')) $target = $user; //¿ÀÏÃ¥Ş¥Ë¥¢·Ï¤Ê¤é¸µ¤ËÌá¤¹
+      if($target->IsRoleGroup('mania')) $target = $user; //ç¥è©±ãƒãƒ‹ã‚¢ç³»ãªã‚‰å…ƒã«æˆ»ã™
     }while(false);
 
-    while($target->IsRole('unknown_mania')){ //ó¬¤Ê¤é¥³¥Ô¡¼Àè¤òÃ©¤ë
+    while($target->IsRole('unknown_mania')){ //éµºãªã‚‰ã‚³ãƒ”ãƒ¼å…ˆã‚’è¾¿ã‚‹
       $stack = $target->GetPartner('unknown_mania');
-      if(is_null($stack)) break; //¥³¥Ô¡¼Àè¤¬¸«¤Ä¤«¤é¤Ê¤±¤ì¤Ğ¥¹¥­¥Ã¥×
+      if(is_null($stack)) break; //ã‚³ãƒ”ãƒ¼å…ˆãŒè¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 
       $target = $this->ByID($stack[0]);
-      if($target->IsSelf()) break; //¼«Ê¬¤ËÌá¤Ã¤¿¤é¥¹¥­¥Ã¥×
+      if($target->IsSelf()) break; //è‡ªåˆ†ã«æˆ»ã£ãŸã‚‰ã‚¹ã‚­ãƒƒãƒ—
     }
     $user->$type = $target->DistinguishCamp();
   }
 
-  //ÆÃ¼ì¥¤¥Ù¥ó¥È¾ğÊó¤òÀßÄê¤¹¤ë
+  //ç‰¹æ®Šã‚¤ãƒ™ãƒ³ãƒˆæƒ…å ±ã‚’è¨­å®šã™ã‚‹
   function SetEvent($force = false){
     global $ROOM;
 
-    if($ROOM->id < 1) return; //ÆşÂ¼»şÂĞ±ş
+    if($ROOM->id < 1) return; //å…¥æ‘æ™‚å¯¾å¿œ
     $event_rows = $ROOM->GetEvent($force);
     if(! is_array($event_rows)) return;
     foreach($event_rows as $event){
       switch($event['type']){
       case 'VOTE_KILLED':
 	$user = $this->ByHandleName($event['message']);
+	if($user->IsRole('history_brownie')){
+	  $ROOM->event->skip_day = true;
+	  break;
+	}
 	if(! $user->IsRole('mirror_fairy')) break;
 	if(is_null($status_stack = $user->GetPartner('mirror_fairy'))) break;
-	$duel_stack = array(); //·èÆ®ÂĞ¾İ¼Ô¤Î ID ¥ê¥¹¥È
-	foreach($status_stack as $key => $value){ //À¸Â¸³ÎÇ§
+	$duel_stack = array(); //æ±ºé—˜å¯¾è±¡è€…ã® ID ãƒªã‚¹ãƒˆ
+	foreach($status_stack as $key => $value){ //ç”Ÿå­˜ç¢ºèª
 	  if($this->IsVirtualLive($key))   $duel_stack[] = $key;
 	  if($this->IsVirtualLive($value)) $duel_stack[] = $value;
 	}
@@ -897,6 +929,7 @@ class UserDataSet{
 
       case 'WOLF_KILLED':
 	$user = $this->ByHandleName($event['message']);
+	$ROOM->event->skip_night = ! $user->IsDummyBoy() && $user->IsRole('history_brownie');
 	if(is_null($status_stack = $user->GetPartner('bad_status'))) break;
 	foreach($status_stack as $id => $date){
 	  if($date != $ROOM->date) continue;
@@ -919,7 +952,7 @@ class UserDataSet{
     }
   }
 
-  //Ìò¿¦¤Î½Ğ¸½È½Äê´Ø¿ô (¸½ºß¤ÏÉÔ»ÈÍÑ)
+  //å½¹è·ã®å‡ºç¾åˆ¤å®šé–¢æ•° (ç¾åœ¨ã¯ä¸ä½¿ç”¨)
   function IsAppear($role){
     $role_list = func_get_args();
     foreach($this->rows as $user){
@@ -928,7 +961,7 @@ class UserDataSet{
     return false;
   }
 
-  //Îî³¦¤ÎÇÛÌò¸ø³«È½Äê
+  //éœŠç•Œã®é…å½¹å…¬é–‹åˆ¤å®š
   function IsOpenCast(){
     foreach($this->rows as $user){
       if($user->IsDummyBoy()) continue;
@@ -945,20 +978,20 @@ class UserDataSet{
     return true;
   }
 
-  //²¾ÁÛÅª¤ÊÀ¸»à¤òÊÖ¤¹
+  //ä»®æƒ³çš„ãªç”Ÿæ­»ã‚’è¿”ã™
   function IsVirtualLive($user_no, $strict = false){
-    //Øá°Í¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤ÏØá°Í¼Ô¤ÎÀ¸»à¤òÊÖ¤¹
+    //æ†‘ä¾ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯æ†‘ä¾è€…ã®ç”Ÿæ­»ã‚’è¿”ã™
     $real_user = $this->ByReal($user_no);
     if($real_user->user_no != $user_no) return $real_user->IsLive($strict);
 
-    //Øá°ÍÀè¤Ë°ÜÆ°¤·¤Æ¤¤¤ë¾ì¹ç¤Ï¾ï¤Ë»àË´°·¤¤
+    //æ†‘ä¾å…ˆã«ç§»å‹•ã—ã¦ã„ã‚‹å ´åˆã¯å¸¸ã«æ­»äº¡æ‰±ã„
     if($this->ByVirtual($user_no)->user_no != $user_no) return false;
 
-    //Øá°Í¤¬Ìµ¤±¤ì¤ĞËÜ¿Í¤ÎÀ¸»à¤òÊÖ¤¹
+    //æ†‘ä¾ãŒç„¡ã‘ã‚Œã°æœ¬äººã®ç”Ÿæ­»ã‚’è¿”ã™
     return $this->ByID($user_no)->IsLive($strict);
   }
 
-  //À¸Â¸¼Ô¤ò¼èÆÀ¤¹¤ë
+  //ç”Ÿå­˜è€…ã‚’å–å¾—ã™ã‚‹
   function GetLivingUsers($strict = false){
     $stack = array();
     foreach($this->rows as $user){
@@ -967,7 +1000,7 @@ class UserDataSet{
     return $stack;
   }
 
-  //À¸Â¸¤·¤Æ¤¤¤ëÏµ¤ò¼èÆÀ¤¹¤ë
+  //ç”Ÿå­˜ã—ã¦ã„ã‚‹ç‹¼ã‚’å–å¾—ã™ã‚‹
   function GetLivingWolves(){
     $stack = array();
     foreach($this->rows as $user){
@@ -976,7 +1009,7 @@ class UserDataSet{
     return $stack;
   }
 
-  //»àË´½èÍı
+  //æ­»äº¡å‡¦ç†
   function Kill($user_no, $reason){
     global $ROOM;
 
@@ -992,14 +1025,14 @@ class UserDataSet{
     case 'POSSESSED_TARGETED':
       return true;
 
-    default: //°ä¸À½èÍı
+    default: //éºè¨€å‡¦ç†
       $user->SaveLastWords($virtual_user->handle_name);
       if($user != $virtual_user) $virtual_user->SaveLastWords();
       return true;
     }
   }
 
-  //ÆÍÁ³»à½èÍı
+  //çªç„¶æ­»å‡¦ç†
   function SuddenDeath($user_no, $reason){
     global $MESSAGE, $ROOM;
 
@@ -1012,13 +1045,13 @@ class UserDataSet{
     return true;
   }
 
-  //ÊİÂ¸½èÍı (¼ÂÍÑ¤µ¤ì¤Æ¤¤¤Ş¤»¤ó)
+  //ä¿å­˜å‡¦ç† (å®Ÿç”¨ã•ã‚Œã¦ã„ã¾ã›ã‚“)
   function Save(){
     foreach($this->rows as $user) $user->Save();
   }
 
-  //¸½ºß¤Î¥ê¥¯¥¨¥¹¥È¾ğÊó¤Ë´ğ¤Å¤¤¤Æ¿·¤·¤¤¥æ¡¼¥¶¡¼¤ò¥Ç¡¼¥¿¥Ù¡¼¥¹¤ËÅĞÏ¿¤·¤Ş¤¹¡£
-  //¤³¤Î´Ø¿ô¤Ï¼ÂÍÑ¤µ¤ì¤Æ¤¤¤Ş¤»¤ó
+  //ç¾åœ¨ã®ãƒªã‚¯ã‚¨ã‚¹ãƒˆæƒ…å ±ã«åŸºã¥ã„ã¦æ–°ã—ã„ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«ç™»éŒ²ã—ã¾ã™ã€‚
+  //ã“ã®é–¢æ•°ã¯å®Ÿç”¨ã•ã‚Œã¦ã„ã¾ã›ã‚“
   function RegisterByRequest(){
     extract($_REQUEST, EXTR_PREFIX_ALL, 'unsafe');
     session_regenerate_id();
@@ -1035,7 +1068,7 @@ class UserDataSet{
     );
   }
 
-  //¥æ¡¼¥¶¡¼¾ğÊó¤ò»ØÄê¤·¤Æ¿·¤·¤¤¥æ¡¼¥¶¡¼¤ò¥Ç¡¼¥¿¥Ù¡¼¥¹¤ËÅĞÏ¿¤·¤Ş¤¹¡£(¥É¥é¥Õ¥È¡§¤³¤Îµ¡Ç½¤Ï¥Æ¥¹¥È¤µ¤ì¤Æ¤¤¤Ş¤»¤ó)
+  //ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’æŒ‡å®šã—ã¦æ–°ã—ã„ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«ç™»éŒ²ã—ã¾ã™ã€‚(ãƒ‰ãƒ©ãƒ•ãƒˆï¼šã“ã®æ©Ÿèƒ½ã¯ãƒ†ã‚¹ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“)
   function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role,
 		    $ip_address = '', $session_id = ''){
     $items = 'room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role';

@@ -3,68 +3,68 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('SCRIPT_INFO');
 
-OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [½é´üÀßÄê]'); //HTML¥Ø¥Ã¥À
+OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [åˆæœŸè¨­å®š]'); //HTMLãƒ˜ãƒƒãƒ€
 
-if(! $DB_CONF->Connect(true, false)){ //DB ÀÜÂ³
+if(! $DB_CONF->Connect(true, false)){ //DB æ¥ç¶š
   mysql_query("CREATE DATABASE {$DB_CONF->name} DEFAULT CHARSET ujis");
-  echo "¥Ç¡¼¥¿¥Ù¡¼¥¹ {$DB_CONF->name} ¤òºîÀ®¤·¤Ş¤·¤¿¡£<br>";
-  $DB_CONF->Connect(true); //²ş¤á¤Æ DB ÀÜÂ³
+  echo "ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ {$DB_CONF->name} ã‚’ä½œæˆã—ã¾ã—ãŸã€‚<br>";
+  $DB_CONF->Connect(true); //æ”¹ã‚ã¦ DB æ¥ç¶š
 }
 echo "</head><body>\n";
 
-CheckTable(); //¥Æ¡¼¥Ö¥ëºîÀ®
-OutputHTMLFooter(); //HTML¥Õ¥Ã¥¿
+CheckTable(); //ãƒ†ãƒ¼ãƒ–ãƒ«ä½œæˆ
+OutputHTMLFooter(); //HTMLãƒ•ãƒƒã‚¿
 
-//-- ¥¯¥é¥¹ÄêµÁ --//
-//¥æ¡¼¥¶¥¢¥¤¥³¥ó¤Î½é´üÀßÄê
-//¥¢¥¤¥³¥ó¥¤¥á¡¼¥¸¤òPHPÀßÃÖ»ş¤ËÄÉ²Ã¤¹¤ë¾ì¹ç¤Ï¤³¤³¤âÉ¬¤ºÄÉ²Ã¤·¤Æ¤¯¤À¤µ¤¤¡£
+//-- ã‚¯ãƒ©ã‚¹å®šç¾© --//
+//ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸè¨­å®š
+//ã‚¢ã‚¤ã‚³ãƒ³ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’PHPè¨­ç½®æ™‚ã«è¿½åŠ ã™ã‚‹å ´åˆã¯ã“ã“ã‚‚å¿…ãšè¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 class DefaultIcon{
-  //¥æ¡¼¥¶¥¢¥¤¥³¥ó¥Ç¥£¥ì¥¯¥È¥ê¡§setup.php ¤«¤é¤ÎÁêÂĞ¥Ñ¥¹
-  //¼Âºİ¤Ë±¿ÍÑ¤¹¤ëºİ¤Ï TOP ¤«¤é¤ÎÁêÂĞ¥Ñ¥¹ (IconConfig->path) ¤ò»²¾È¤¹¤ëÅÀ¤ËÃí°Õ
-  var $path   = '../user_icon';  //¥¢¥¤¥³¥óÌ¾¤Î¥ê¥¹¥È
+  //ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼šsetup.php ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹
+  //å®Ÿéš›ã«é‹ç”¨ã™ã‚‹éš›ã¯ TOP ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ (IconConfig->path) ã‚’å‚ç…§ã™ã‚‹ç‚¹ã«æ³¨æ„
+  var $path   = '../user_icon';  //ã‚¢ã‚¤ã‚³ãƒ³åã®ãƒªã‚¹ãƒˆ
 
-  var $name = array('ÌÀ³¥', '°Å³¥', '²«¿§', '¥ª¥ì¥ó¥¸', 'ÀÖ', '¿å¿§', 'ÀÄ', 'ÎĞ', '»ç', '¤µ¤¯¤é¿§');
+  var $name = array('æ˜ç°', 'æš—ç°', 'é»„è‰²', 'ã‚ªãƒ¬ãƒ³ã‚¸', 'èµ¤', 'æ°´è‰²', 'é’', 'ç·‘', 'ç´«', 'ã•ãã‚‰è‰²');
 
-  //¥¢¥¤¥³¥ó¤Î¿§ (¥¢¥¤¥³¥ó¤Î¥Õ¥¡¥¤¥ëÌ¾¤ÏÉ¬¤º001¡Á¤Î¿ô»ú¤Ë¤·¤Æ¤¯¤À¤µ¤¤), Éı, ¹â¤µ
+  //ã‚¢ã‚¤ã‚³ãƒ³ã®è‰² (ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«åã¯å¿…ãš001ã€œã®æ•°å­—ã«ã—ã¦ãã ã•ã„), å¹…, é«˜ã•
   var $color = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 		     '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
   var $width  = array(32, 32, 32, 32, 32, 32, 32, 32, 32, 32);
   var $height = array(32, 32, 32, 32, 32, 32, 32, 32, 32, 32);
 }
 
-//¿ÈÂå¤ï¤ê·¯¥¢¥¤¥³¥ó
+//èº«ä»£ã‚ã‚Šå›ã‚¢ã‚¤ã‚³ãƒ³
 class DummyBoyIcon{
-  var $path   = '../img/dummy_boy_user_icon.jpg'; //IconConfig->path ¤«¤é¤ÎÁêÂĞ¥Ñ¥¹
-  var $name   = '¿ÈÂå¤ï¤ê·¯ÍÑ'; //Ì¾Á°
-  var $color  = '#000000'; //¿§
-  var $width  = 45; //Éı
-  var $height = 45; //¹â¤µ
+  var $path   = '../img/dummy_boy_user_icon.jpg'; //IconConfig->path ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹
+  var $name   = 'èº«ä»£ã‚ã‚Šå›ç”¨'; //åå‰
+  var $color  = '#000000'; //è‰²
+  var $width  = 45; //å¹…
+  var $height = 45; //é«˜ã•
 }
 
-//-- ´Ø¿ô --//
-//É¬Í×¤Ê¥Æ¡¼¥Ö¥ë¤¬¤¢¤ë¤«³ÎÇ§¤¹¤ë
+//-- é–¢æ•° --//
+//å¿…è¦ãªãƒ†ãƒ¼ãƒ–ãƒ«ãŒã‚ã‚‹ã‹ç¢ºèªã™ã‚‹
 function CheckTable(){
   global $SERVER_CONF, $DB_CONF, $SCRIPT_INFO;
 
-  //Á°²ó¤Î¥Ñ¥Ã¥±¡¼¥¸¤Î¥ê¥Ó¥¸¥ç¥óÈÖ¹æ¤ò¼èÆÀ
+  //å‰å›ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒªãƒ“ã‚¸ãƒ§ãƒ³ç•ªå·ã‚’å–å¾—
   $revision = $SERVER_CONF->last_updated_revision;
   if($revision >= $SCRIPT_INFO->revision){
-    echo '½é´üÀßÄê¤Ï¤¹¤Ç¤Ë´°Î»¤·¤Æ¤¤¤Ş¤¹¡£';
+    echo 'åˆæœŸè¨­å®šã¯ã™ã§ã«å®Œäº†ã—ã¦ã„ã¾ã™ã€‚';
     return;
   }
 
-  //¥Æ¡¼¥Ö¥ë¤Î¥ê¥¹¥È¤òÇÛÎó¤Ë¼èÆÀ
+  //ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒªã‚¹ãƒˆã‚’é…åˆ—ã«å–å¾—
   $sql   = mysql_list_tables($DB_CONF->name);
   $count = mysql_num_rows($sql);
   $table = array();
   for($i = 0; $i < $count; $i++) $table[] = mysql_tablename($sql, $i);
 
-  //¥Á¥§¥Ã¥¯¤·¤Æ¥Æ¡¼¥Ö¥ë¤¬Â¸ºß¤·¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë
-  $header = '¥Æ¡¼¥Ö¥ë';
+  //ãƒã‚§ãƒƒã‚¯ã—ã¦ãƒ†ãƒ¼ãƒ–ãƒ«ãŒå­˜åœ¨ã—ãªã‘ã‚Œã°ä½œæˆã™ã‚‹
+  $header = 'ãƒ†ãƒ¼ãƒ–ãƒ«';
   $footer = '<br>'."\n";
-  $str = '¤òºîÀ®¤·¤Ş¤·¤¿' . $footer;
-  $success = ')¤òÄÉ²Ã¤·¤Ş¤·¤¿';
-  $failed  = ')¤òÄÉ²Ã¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿';
+  $str = 'ã‚’ä½œæˆã—ã¾ã—ãŸ' . $footer;
+  $success = ')ã‚’è¿½åŠ ã—ã¾ã—ãŸ';
+  $failed  = ')ã‚’è¿½åŠ ã§ãã¾ã›ã‚“ã§ã—ãŸ';
 
   $title = $header . '(room)';
   if(! in_array('room', $table)){
@@ -75,7 +75,7 @@ function CheckTable(){
     echo $title . $str;
   }
   elseif($revision > 0){
-    //ÄÉ²Ã¥Õ¥£¡¼¥ë¥É½èÍı
+    //è¿½åŠ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å‡¦ç†
     $sql = mysql_query('SHOW COLUMNS FROM room');
     if(mysql_num_rows($sql) > 0){
       while(($row = mysql_fetch_assoc($sql)) !== false){
@@ -86,7 +86,7 @@ function CheckTable(){
       }
 
       $query = 'ALTER TABLE room ADD ';
-      $title .= '¤Ë¥Õ¥£¡¼¥ë¥É(';
+      $title .= 'ã«ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰(';
 
       if(! $flag->establisher_ip){
 	$status = mysql_query($query . 'establisher_ip TEXT') ? $success : $failed;
@@ -116,16 +116,16 @@ function CheckTable(){
     echo $title . $str;
 
     mysql_query("INSERT INTO user_entry(room_no, user_no, uname, handle_name, icon_no, profile,
-		password, role, live) VALUES(0, 0, 'system', '¥·¥¹¥Æ¥à', 1, '¥²¡¼¥à¥Ş¥¹¥¿¡¼',
+		password, role, live) VALUES(0, 0, 'system', 'ã‚·ã‚¹ãƒ†ãƒ ', 1, 'ã‚²ãƒ¼ãƒ ãƒã‚¹ã‚¿ãƒ¼',
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
   elseif($revision > 0 && $revision < 152){
-    mysql_query('ALTER TABLE user_entry MODIFY room_no INT NOT NULL'); //room_no ¤Î·¿¤òÊÑ¹¹
-    echo $title . '¤Î room_no ¤Î·¿¤ò "INT NOT NULL" ¤ËÊÑ¹¹¤·¤Ş¤·¤¿' . $footer;
+    mysql_query('ALTER TABLE user_entry MODIFY room_no INT NOT NULL'); //room_no ã®å‹ã‚’å¤‰æ›´
+    echo $title . 'ã® room_no ã®å‹ã‚’ "INT NOT NULL" ã«å¤‰æ›´ã—ã¾ã—ãŸ' . $footer;
 
-    if($revision < 140){ //INDEX ¤òÀßÄê
+    if($revision < 140){ //INDEX ã‚’è¨­å®š
       mysql_query('ALTER TABLE user_entry ADD INDEX user_entry_index(room_no, user_no)');
-      echo $title . '¤Ë INDEX (room_no, user_no) ¤òÀßÄê¤·¤Ş¤·¤¿' . $footer;
+      echo $title . 'ã« INDEX (room_no, user_no) ã‚’è¨­å®šã—ã¾ã—ãŸ' . $footer;
     }
   }
 
@@ -138,7 +138,7 @@ function CheckTable(){
     echo $title . $str;
   }
   elseif($revision > 0){
-    //ÄÉ²Ã¥Õ¥£¡¼¥ë¥É½èÍı
+    //è¿½åŠ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å‡¦ç†
     $sql = mysql_query('SHOW COLUMNS FROM talk');
     if(mysql_num_rows($sql) > 0){
       while(($row = mysql_fetch_assoc($sql)) !== false){
@@ -147,7 +147,7 @@ function CheckTable(){
     }
 
     $query = 'ALTER TABLE talk ADD ';
-    $title .= '¤Ë¥Õ¥£¡¼¥ë¥É(';
+    $title .= 'ã«ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰(';
 
     if(! $flag->talk_id){
       $status = (mysql_query($query . 'talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY') ?
@@ -156,15 +156,15 @@ function CheckTable(){
     }
 
     if($revision < 152){
-      mysql_query('ALTER TABLE talk MODIFY room_no INT NOT NULL'); //room_no ¤Î·¿¤òÊÑ¹¹
-      echo $title . '¤Î room_no ¤Î·¿¤ò "INT NOT NULL" ¤ËÊÑ¹¹¤·¤Ş¤·¤¿' . $footer;
+      mysql_query('ALTER TABLE talk MODIFY room_no INT NOT NULL'); //room_no ã®å‹ã‚’å¤‰æ›´
+      echo $title . 'ã® room_no ã®å‹ã‚’ "INT NOT NULL" ã«å¤‰æ›´ã—ã¾ã—ãŸ' . $footer;
 
-      if($revision < 140){ //time ¤Î·¿¤òÊÑ¹¹¡¢INDEX ¤òÀßÄê
+      if($revision < 140){ //time ã®å‹ã‚’å¤‰æ›´ã€INDEX ã‚’è¨­å®š
 	mysql_query('ALTER TABLE talk MODIFY time INT NOT NULL');
-	echo $title . '¤Î time ¤Î·¿¤ò "INT NOT NULL" ¤ËÊÑ¹¹¤·¤Ş¤·¤¿' . $footer;
+	echo $title . 'ã® time ã®å‹ã‚’ "INT NOT NULL" ã«å¤‰æ›´ã—ã¾ã—ãŸ' . $footer;
 
 	mysql_query('ALTER TABLE talk ADD INDEX talk_index(room_no, date, time)');
-	echo $title . '¤Ë INDEX (room_no, date, time) ¤òÀßÄê¤·¤Ş¤·¤¿' . $footer;
+	echo $title . 'ã« INDEX (room_no, date, time) ã‚’è¨­å®šã—ã¾ã—ãŸ' . $footer;
       }
     }
   }
@@ -176,12 +176,12 @@ function CheckTable(){
     echo $title . $str;
   }
   elseif($revision > 0 && $revision < 152){
-    mysql_query("ALTER TABLE vote MODIFY room_no INT NOT NULL"); //room_no ¤Î·¿¤òÊÑ¹¹
-    echo $title . '¤Î room_no ¤Î·¿¤ò "INT NOT NULL" ¤ËÊÑ¹¹¤·¤Ş¤·¤¿' . $footer;
+    mysql_query("ALTER TABLE vote MODIFY room_no INT NOT NULL"); //room_no ã®å‹ã‚’å¤‰æ›´
+    echo $title . 'ã® room_no ã®å‹ã‚’ "INT NOT NULL" ã«å¤‰æ›´ã—ã¾ã—ãŸ' . $footer;
 
-    if($revision < 140){ //INDEX ¤òÀßÄê
+    if($revision < 140){ //INDEX ã‚’è¨­å®š
       mysql_query("ALTER TABLE vote ADD INDEX vote_index(room_no, date)");
-      echo $title . '¤Ë INDEX (room_no, date) ¤òÀßÄê¤·¤Ş¤·¤¿' . $footer;
+      echo $title . 'ã« INDEX (room_no, date) ã‚’è¨­å®šã—ã¾ã—ãŸ' . $footer;
     }
   }
 
@@ -192,12 +192,12 @@ function CheckTable(){
     echo $title . $str;
   }
   elseif($revision > 0 && $revision < 152){
-    mysql_query("ALTER TABLE system_message MODIFY room_no INT NOT NULL"); //room_no ¤Î·¿¤òÊÑ¹¹
-    echo $title . '¤Î room_no ¤Î·¿¤ò "INT NOT NULL" ¤ËÊÑ¹¹¤·¤Ş¤·¤¿' . $footer;
+    mysql_query("ALTER TABLE system_message MODIFY room_no INT NOT NULL"); //room_no ã®å‹ã‚’å¤‰æ›´
+    echo $title . 'ã® room_no ã®å‹ã‚’ "INT NOT NULL" ã«å¤‰æ›´ã—ã¾ã—ãŸ' . $footer;
 
-    if($revision < 140){ //INDEX ¤òÀßÄê
+    if($revision < 140){ //INDEX ã‚’è¨­å®š
       mysql_query("ALTER TABLE system_message ADD INDEX system_message_index(room_no, date)");
-      echo $title . '¤Ë INDEX (room_no, date) ¤òÀßÄê¤·¤Ş¤·¤¿' . $footer;
+      echo $title . 'ã« INDEX (room_no, date) ã‚’è¨­å®šã—ã¾ã—ãŸ' . $footer;
     }
   }
 
@@ -208,22 +208,22 @@ function CheckTable(){
 		category TEXT, author TEXT, regist_date DATETIME)");
     echo $title . $str;
 
-    //¿ÈÂå¤ï¤ê·¯¤Î¥¢¥¤¥³¥ó¤òÅĞÏ¿(¥¢¥¤¥³¥óNo¡§0)
-    $class = new DummyBoyIcon(); //¿ÈÂå¤ï¤ê·¯¥¢¥¤¥³¥ó¤ÎÀßÄê¤ò¥í¡¼¥É
+    //èº«ä»£ã‚ã‚Šå›ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç™»éŒ²(ã‚¢ã‚¤ã‚³ãƒ³Noï¼š0)
+    $class = new DummyBoyIcon(); //èº«ä»£ã‚ã‚Šå›ã‚¢ã‚¤ã‚³ãƒ³ã®è¨­å®šã‚’ãƒ­ãƒ¼ãƒ‰
     mysql_query("INSERT INTO user_icon(icon_no, icon_name, icon_filename, icon_width,
 		 icon_height,color)
 		 VALUES(0, '{$class->name}', '{$class->path}', {$class->width},
 		 {$class->height}, '{$class->color}')");
 
-    //½é´ü¤Î¥¢¥¤¥³¥ó¤Î¥Õ¥¡¥¤¥ëÌ¾¤È¿§¥Ç¡¼¥¿¤ò DB ¤ËÅĞÏ¿¤¹¤ë
+    //åˆæœŸã®ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«åã¨è‰²ãƒ‡ãƒ¼ã‚¿ã‚’ DB ã«ç™»éŒ²ã™ã‚‹
     $icon_no = 1;
-    $class = new DefaultIcon(); //¥æ¡¼¥¶¥¢¥¤¥³¥ó¤Î½é´üÀßÄê¤ò¥í¡¼¥É
+    $class = new DefaultIcon(); //ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸè¨­å®šã‚’ãƒ­ãƒ¼ãƒ‰
 
-    //¥Ç¥£¥ì¥¯¥È¥êÆâ¤Î¥Õ¥¡¥¤¥ë°ìÍ÷¤ò¼èÆÀ
+    //ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’å–å¾—
     if($handle = opendir($class->path)){
       while(($file = readdir($handle)) !== false){
 	if($file != '.' && $file != '..'){
-	  //½é´ü¥Ç¡¼¥¿¤ÎÆÉ¤ß¹ş¤ß
+	  //åˆæœŸãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	  $name   = $class->name[  $icon_no - 1];
 	  $width  = $class->width[ $icon_no - 1];
 	  $height = $class->height[$icon_no - 1];
@@ -233,13 +233,13 @@ function CheckTable(){
 			icon_height, color)
 			VALUES($icon_no, '$name', '$file', $width, $height, '$color')");
 	  $icon_no++;
-	  echo "¥æ¡¼¥¶¥¢¥¤¥³¥ó($file $name $width ¡ß $height $color)¤òÅĞÏ¿¤·¤Ş¤·¤¿" . $footer;
+	  echo "ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³($file $name $width Ã— $height $color)ã‚’ç™»éŒ²ã—ã¾ã—ãŸ" . $footer;
 	}
       }
       closedir($handle);
     }
   }
-  elseif($revision > 0){ //ÄÉ²Ã¥Õ¥£¡¼¥ë¥É½èÍı
+  elseif($revision > 0){ //è¿½åŠ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å‡¦ç†
     $sql = mysql_query("SHOW COLUMNS FROM user_icon");
     if(mysql_num_rows($sql) > 0){
       while(($row = mysql_fetch_assoc($sql)) !== false){
@@ -251,7 +251,7 @@ function CheckTable(){
     }
 
     $query = 'ALTER TABLE user_icon ADD ';
-    $title .= '¤Ë¥Õ¥£¡¼¥ë¥É(';
+    $title .= 'ã«ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰(';
 
     if(! $flag->appearance){
       $status = mysql_query($query . 'appearance TEXT') ? $success : $failed;
@@ -279,6 +279,6 @@ function CheckTable(){
   }
 
   mysql_query("GRANT ALL ON {$db_name}.* TO $db_uname");
-  mysql_query('COMMIT'); //°ì±ş¥³¥ß¥Ã¥È
-  echo '½é´üÀßÄê¤ÏÌµ»ö´°Î»¤·¤Ş¤·¤¿' . $footer;
+  mysql_query('COMMIT'); //ä¸€å¿œã‚³ãƒŸãƒƒãƒˆ
+  echo 'åˆæœŸè¨­å®šã¯ç„¡äº‹å®Œäº†ã—ã¾ã—ãŸ' . $footer;
 }

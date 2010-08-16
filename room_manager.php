@@ -1,29 +1,29 @@
 <?php
 require_once('include/init.php');
-//$INIT_CONF->LoadFile('feedengine'); //RSSµ¡Ç½¤Ï¥Æ¥¹¥ÈÃæ
+//$INIT_CONF->LoadFile('feedengine'); //RSSæ©Ÿèƒ½ã¯ãƒ†ã‚¹ãƒˆä¸­
 $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE', 'GAME_OPT_CAPT');
 
-if(! $DB_CONF->Connect(true, false)) return false; //DB ÀÜÂ³
+if(! $DB_CONF->Connect(true, false)) return false; //DB æ¥ç¶š
 MaintenanceRoom();
 EncodePostData();
 $_POST['command'] == 'CREATE_ROOM' ? CreateRoom() : OutputRoomList();
-$DB_CONF->Disconnect(); //DB ÀÜÂ³²ò½ü
+$DB_CONF->Disconnect(); //DB æ¥ç¶šè§£é™¤
 
-//-- ´Ø¿ô --//
-//Â¼¤Î¥á¥ó¥Æ¥Ê¥ó¥¹½èÍı
+//-- é–¢æ•° --//
+//æ‘ã®ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹å‡¦ç†
 function MaintenanceRoom(){
   global $ROOM_CONF;
 
-  //°ìÄê»ş´Ö¹¹¿·¤ÎÌµ¤¤Â¼¤ÏÇÑÂ¼¤Ë¤¹¤ë
+  //ä¸€å®šæ™‚é–“æ›´æ–°ã®ç„¡ã„æ‘ã¯å»ƒæ‘ã«ã™ã‚‹
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
     "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
   /*
-  //RSS¹¹¿·(ÇÑÂ¼¤¬0¤Î»ş¤âÉ¬Í×¤Ê¤¤½èÍı¤Ê¤Î¤Çfalse¤Ë¸ÂÄê¤·¤Æ¤¤¤Ê¤¤)
+  //RSSæ›´æ–°(å»ƒæ‘ãŒ0ã®æ™‚ã‚‚å¿…è¦ãªã„å‡¦ç†ãªã®ã§falseã«é™å®šã—ã¦ã„ãªã„)
   if(SendQuery($query)) OutputSiteSummary();
   */
   SendQuery($query);
 
-  //½ªÎ»¤·¤¿Éô²°¤Î¥»¥Ã¥·¥ç¥óID¤Î¥Ç¡¼¥¿¤ò¥¯¥ê¥¢¤¹¤ë
+  //çµ‚äº†ã—ãŸéƒ¨å±‹ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³IDã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
   $query = <<<EOF
 UPDATE room, user_entry SET user_entry.session_id = NULL
 WHERE room.room_no = user_entry.room_no
@@ -34,25 +34,25 @@ EOF;
   SendQuery($query, true);
 }
 
-//Â¼(room)¤ÎºîÀ®
+//æ‘(room)ã®ä½œæˆ
 function CreateRoom(){
   global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $MESSAGE;
 
-  if(CheckReferer('', array('127.', '192.168.'))){ //¥ê¥Õ¥¡¥é¥Á¥§¥Ã¥¯
-    OutputActionResult('Â¼ºîÀ® [ÆşÎÏ¥¨¥é¡¼]', 'Ìµ¸ú¤Ê¥¢¥¯¥»¥¹¤Ç¤¹¡£');
+  if(CheckReferer('', array('127.', '192.168.'))){ //ãƒªãƒ•ã‚¡ãƒ©ãƒã‚§ãƒƒã‚¯
+    OutputActionResult('æ‘ä½œæˆ [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]', 'ç„¡åŠ¹ãªã‚¢ã‚¯ã‚»ã‚¹ã§ã™ã€‚');
   }
 
-  //ÆşÎÏ¥Ç¡¼¥¿¤Î¥¨¥é¡¼¥Á¥§¥Ã¥¯
+  //å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã®ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
   $room_name    = $_POST['room_name'];
   $room_comment = $_POST['room_comment'];
   EscapeStrings($room_name);
   EscapeStrings($room_comment);
-  if($room_name == '' || $room_comment == ''){ //Ì¤ÆşÎÏ¥Á¥§¥Ã¥¯
+  if($room_name == '' || $room_comment == ''){ //æœªå…¥åŠ›ãƒã‚§ãƒƒã‚¯
     OutputRoomAction('empty');
     return false;
   }
 
-  //Ê¸»úÎó¥Á¥§¥Ã¥¯
+  //æ–‡å­—åˆ—ãƒã‚§ãƒƒã‚¯
   if(strlen($room_name)    > $ROOM_CONF->room_name ||
      strlen($room_comment) > $ROOM_CONF->room_comment ||
      preg_match($ROOM_CONF->ng_word, $room_name) ||
@@ -61,30 +61,30 @@ function CreateRoom(){
     return false;
   }
 
-  //»ØÄê¤µ¤ì¤¿¿Í¿ô¤ÎÇÛÌò¤¬¤¢¤ë¤«¥Á¥§¥Ã¥¯
+  //æŒ‡å®šã•ã‚ŒãŸäººæ•°ã®é…å½¹ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
   $max_user = (int)$_POST['max_user'];
   if(! in_array($max_user, $ROOM_CONF->max_user_list)){
-    OutputActionResult('Â¼ºîÀ® [ÆşÎÏ¥¨¥é¡¼]', 'Ìµ¸ú¤ÊºÇÂç¿Í¿ô¤Ç¤¹¡£');
+    OutputActionResult('æ‘ä½œæˆ [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]', 'ç„¡åŠ¹ãªæœ€å¤§äººæ•°ã§ã™ã€‚');
   }
 
-  $query = "FROM room WHERE status <> 'finished'"; //¥Á¥§¥Ã¥¯ÍÑ¤Î¶¦ÄÌ¥¯¥¨¥ê
-  $ip_address = $_SERVER['REMOTE_ADDR']; //Â¼Î©¤Æ¤ò¹Ô¤Ã¤¿¥æ¡¼¥¶¤Î IP ¤ò¼èÆÀ
+  $query = "FROM room WHERE status <> 'finished'"; //ãƒã‚§ãƒƒã‚¯ç”¨ã®å…±é€šã‚¯ã‚¨ãƒª
+  $ip_address = $_SERVER['REMOTE_ADDR']; //æ‘ç«‹ã¦ã‚’è¡Œã£ãŸãƒ¦ãƒ¼ã‚¶ã® IP ã‚’å–å¾—
 
-  //¥Ç¥Ğ¥Ã¥°¥â¡¼¥É»ş¤ÏÂ¼Î©¤ÆÀ©¸Â¤ò¤·¤Ê¤¤
+  //ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰æ™‚ã¯æ‘ç«‹ã¦åˆ¶é™ã‚’ã—ãªã„
   if(! $DEBUG_MODE){
-    //Æ±¤¸¥æ¡¼¥¶¤¬Î©¤Æ¤¿Â¼¤¬½ªÎ»¤·¤Æ¤¤¤Ê¤±¤ì¤Ğ¿·¤·¤¤Â¼¤òºî¤é¤Ê¤¤
+    //åŒã˜ãƒ¦ãƒ¼ã‚¶ãŒç«‹ã¦ãŸæ‘ãŒçµ‚äº†ã—ã¦ã„ãªã‘ã‚Œã°æ–°ã—ã„æ‘ã‚’ä½œã‚‰ãªã„
     if(FetchResult("SELECT COUNT(room_no) {$query} AND establisher_ip = '{$ip_address}'") > 0){
       OutputRoomAction('over_establish');
       return false;
     }
 
-    //ºÇÂçÊÂÎóÂ¼¿ô¤òÄ¶¤¨¤Æ¤¤¤ë¤è¤¦¤Ç¤¢¤ì¤Ğ¿·¤·¤¤Â¼¤òºî¤é¤Ê¤¤
+    //æœ€å¤§ä¸¦åˆ—æ‘æ•°ã‚’è¶…ãˆã¦ã„ã‚‹ã‚ˆã†ã§ã‚ã‚Œã°æ–°ã—ã„æ‘ã‚’ä½œã‚‰ãªã„
     if(FetchResult('SELECT COUNT(room_no)' . $query) >= $ROOM_CONF->max_active_room){
       OutputRoomAction('full');
       return false;
     }
 
-    //Ï¢Â³Â¼Î©¤ÆÀ©¸Â¥Á¥§¥Ã¥¯
+    //é€£ç¶šæ‘ç«‹ã¦åˆ¶é™ãƒã‚§ãƒƒã‚¯
     $time_stamp = FetchResult("SELECT establish_time {$query} ORDER BY room_no DESC");
     if(isset($time_stamp) &&
        TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
@@ -93,7 +93,7 @@ function CreateRoom(){
     }
   }
 
-  //¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤ò¥»¥Ã¥È
+  //ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚»ãƒƒãƒˆ
   $chaos        = ($ROOM_CONF->chaos        && $_POST['chaos'] == 'chaos');
   $chaosfull    = ($ROOM_CONF->chaosfull    && $_POST['chaos'] == 'chaosfull');
   $chaos_hyper  = ($ROOM_CONF->chaos_hyper  && $_POST['chaos'] == 'chaos_hyper');
@@ -109,7 +109,7 @@ function CreateRoom(){
   if($quiz){
     $game_option_list[] = 'quiz';
 
-    //GM ¥í¥°¥¤¥ó¥Ñ¥¹¥ï¡¼¥É¤ò¥Á¥§¥Ã¥¯
+    //GM ãƒ­ã‚°ã‚¤ãƒ³ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ãƒã‚§ãƒƒã‚¯
     $quiz_password = $_POST['quiz_password'];
     EscapeStrings(&$quiz_password);
     if($quiz_password == ''){
@@ -123,12 +123,12 @@ function CreateRoom(){
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
       $game_option_list[]    = 'dummy_boy';
-      $dummy_boy_handle_name = '¿ÈÂå¤ï¤ê·¯';
+      $dummy_boy_handle_name = 'èº«ä»£ã‚ã‚Šå›';
       $dummy_boy_password    = $SERVER_CONF->system_password;
       $check_option_role_list[] = 'gerd';
     }
     elseif($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'gm_login'){
-      //GM ¥í¥°¥¤¥ó¥Ñ¥¹¥ï¡¼¥É¤ò¥Á¥§¥Ã¥¯
+      //GM ãƒ­ã‚°ã‚¤ãƒ³ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ãƒã‚§ãƒƒã‚¯
       $gm_password = $_POST['gm_password'];
       if($gm_password == ''){
 	OutputRoomAction('empty');
@@ -255,7 +255,7 @@ function CreateRoom(){
     $day   = $_POST['real_time_day'];
     $night = $_POST['real_time_night'];
 
-    //À©¸Â»ş´Ö¤¬0¤«¤é99°ÊÆâ¤Î¿ô»ú¤«¥Á¥§¥Ã¥¯
+    //åˆ¶é™æ™‚é–“ãŒ0ã‹ã‚‰99ä»¥å†…ã®æ•°å­—ã‹ãƒã‚§ãƒƒã‚¯
     if($day   != '' && ! preg_match('/[^0-9]/', $day)   && $day   > 0 && $day   < 99 &&
        $night != '' && ! preg_match('/[^0-9]/', $night) && $night > 0 && $night < 99){
       $game_option_list[] = 'real_time:' . $day . ':' . $night;
@@ -270,21 +270,21 @@ function CreateRoom(){
   //PrintData($option_role_list, 'OptionRole');
   //OutputHTMLFooter(true);
 
-  //¥Æ¡¼¥Ö¥ë¤ò¥í¥Ã¥¯
+  //ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ãƒ­ãƒƒã‚¯
   if(! LockTable()){
     OutputRoomAction('busy');
     return false;
   }
 
-  //¹ß½ç¤Ë¥ë¡¼¥à No ¤ò¼èÆÀ¤·¤ÆºÇ¤âÂç¤­¤Ê No ¤ò¼èÆÀ
+  //é™é †ã«ãƒ«ãƒ¼ãƒ  No ã‚’å–å¾—ã—ã¦æœ€ã‚‚å¤§ããª No ã‚’å–å¾—
   $room_no = FetchResult('SELECT room_no FROM room ORDER BY room_no DESC') + 1;
 
-  //ÅĞÏ¿
+  //ç™»éŒ²
   $game_option = implode(' ', $game_option_list);
   $option_role = implode(' ', $option_role_list);
   $status = false;
   do{
-    //Â¼ºîÀ®
+    //æ‘ä½œæˆ
     $time = TZTime();
     $items = 'room_no, room_name, room_comment, establisher_ip, establish_time, ' .
       'game_option, option_role, max_user, status, date, day_night, last_updated';
@@ -292,22 +292,22 @@ function CreateRoom(){
       "'{$game_option}', '{$option_role}', {$max_user}, 'waiting', 0, 'beforegame', '{$time}'";
     if(! InsertDatabase('room', $items, $values)) break;
 
-    //¿ÈÂå¤ï¤ê·¯¤òÆşÂ¼¤µ¤»¤ë
+    //èº«ä»£ã‚ã‚Šå›ã‚’å…¥æ‘ã•ã›ã‚‹
     if(strpos($game_option, 'dummy_boy') !== false &&
        FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
       if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
     }
 
-    if($SERVER_CONF->secret_room){ //Â¼¾ğÊóÈóÉ½¼¨¥â¡¼¥É¤Î½èÍı
+    if($SERVER_CONF->secret_room){ //æ‘æƒ…å ±éè¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰ã®å‡¦ç†
       OutputRoomAction('success', $room_name);
       return true;
     }
 
-    //Twitter Åê¹Æ½èÍı
+    //Twitter æŠ•ç¨¿å‡¦ç†
     $twitter = new TwitterConfig();
     $twitter->Send($room_no, $room_name, $room_comment);
 
-    //OutputSiteSummary(); //RSS¹¹¿· //¥Æ¥¹¥ÈÃæ
+    //OutputSiteSummary(); //RSSæ›´æ–° //ãƒ†ã‚¹ãƒˆä¸­
 
     OutputRoomAction('success', $room_name);
     $status = true;
@@ -316,77 +316,77 @@ function CreateRoom(){
   return true;
 }
 
-//·ë²Ì½ĞÎÏ (CreateRoom() ÍÑ)
+//çµæœå‡ºåŠ› (CreateRoom() ç”¨)
 function OutputRoomAction($type, $room_name = ''){
   global $SERVER_CONF;
 
   switch($type){
   case 'empty':
-    OutputActionResultHeader('Â¼ºîÀ® [ÆşÎÏ¥¨¥é¡¼]');
-    echo '¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br>';
-    echo '°Ê²¼¤Î¹àÌÜ¤òºÆÅÙ¤´³ÎÇ§¤¯¤À¤µ¤¤¡£<br>';
-    echo '<ul><li>Â¼¤ÎÌ¾Á°¤¬µ­Æş¤µ¤ì¤Æ¤¤¤Ê¤¤¡£</li>';
-    echo '<li>Â¼¤ÎÀâÌÀ¤¬µ­Æş¤µ¤ì¤Æ¤¤¤Ê¤¤¡£</li></ul>';
+    OutputActionResultHeader('æ‘ä½œæˆ [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]');
+    echo 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br>';
+    echo 'ä»¥ä¸‹ã®é …ç›®ã‚’å†åº¦ã”ç¢ºèªãã ã•ã„ã€‚<br>';
+    echo '<ul><li>æ‘ã®åå‰ãŒè¨˜å…¥ã•ã‚Œã¦ã„ãªã„ã€‚</li>';
+    echo '<li>æ‘ã®èª¬æ˜ãŒè¨˜å…¥ã•ã‚Œã¦ã„ãªã„ã€‚</li></ul>';
     break;
 
   case 'comment':
-    OutputActionResultHeader('Â¼ºîÀ® [ÆşÎÏ¥¨¥é¡¼]');
-    echo '¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br>';
-    echo '°Ê²¼¤Î¹àÌÜ¤òºÆÅÙ¤´³ÎÇ§¤¯¤À¤µ¤¤¡£<br>';
-    echo '<ul><li>Â¼¤ÎÌ¾Á°¡¦Â¼¤ÎÀâÌÀ¤ÎÊ¸»ú¿ô¤¬Ä¹¤¹¤®¤ë</li>';
-    echo '<li>Â¼¤ÎÌ¾Á°¡¦Â¼¤ÎÀâÌÀ¤ËÆşÎÏ¶Ø»ßÊ¸»úÎó¤¬´Ş¤Ş¤ì¤Æ¤¤¤ë¡£</li></ul>';
+    OutputActionResultHeader('æ‘ä½œæˆ [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]');
+    echo 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br>';
+    echo 'ä»¥ä¸‹ã®é …ç›®ã‚’å†åº¦ã”ç¢ºèªãã ã•ã„ã€‚<br>';
+    echo '<ul><li>æ‘ã®åå‰ãƒ»æ‘ã®èª¬æ˜ã®æ–‡å­—æ•°ãŒé•·ã™ãã‚‹</li>';
+    echo '<li>æ‘ã®åå‰ãƒ»æ‘ã®èª¬æ˜ã«å…¥åŠ›ç¦æ­¢æ–‡å­—åˆ—ãŒå«ã¾ã‚Œã¦ã„ã‚‹ã€‚</li></ul>';
     break;
 
   case 'time':
-    OutputActionResultHeader('Â¼ºîÀ® [ÆşÎÏ¥¨¥é¡¼]');
-    echo '¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br>';
-    echo '°Ê²¼¤Î¹àÌÜ¤òºÆÅÙ¤´³ÎÇ§¤¯¤À¤µ¤¤¡£<br>';
-    echo '<ul><li>¥ê¥¢¥ë¥¿¥¤¥àÀ©¤ÎÃë¡¢Ìë¤Î»ş´Ö¤òµ­Æş¤·¤Æ¤¤¤Ê¤¤¡£</li>';
-    echo '<li>¥ê¥¢¥ë¥¿¥¤¥àÀ©¤ÎÃë¡¢Ìë¤Î»ş´Ö¤òÁ´³Ñ¤ÇÆşÎÏ¤·¤Æ¤¤¤ë</li>';
-    echo '<li>¥ê¥¢¥ë¥¿¥¤¥àÀ©¤ÎÃë¡¢Ìë¤Î»ş´Ö¤¬0°Ê²¼¡¢¤Ş¤¿¤Ï99°Ê¾å¤Ç¤¢¤ë</li>';
-    echo '<li>¥ê¥¢¥ë¥¿¥¤¥àÀ©¤ÎÃë¡¢Ìë¤Î»ş´Ö¤¬¿ô»ú¤Ç¤Ï¤Ê¤¤¡¢¤Ş¤¿¤Ï°Û¾ï¤ÊÊ¸»úÎó</li></ul>';
+    OutputActionResultHeader('æ‘ä½œæˆ [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]');
+    echo 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br>';
+    echo 'ä»¥ä¸‹ã®é …ç›®ã‚’å†åº¦ã”ç¢ºèªãã ã•ã„ã€‚<br>';
+    echo '<ul><li>ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ã®æ˜¼ã€å¤œã®æ™‚é–“ã‚’è¨˜å…¥ã—ã¦ã„ãªã„ã€‚</li>';
+    echo '<li>ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ã®æ˜¼ã€å¤œã®æ™‚é–“ã‚’å…¨è§’ã§å…¥åŠ›ã—ã¦ã„ã‚‹</li>';
+    echo '<li>ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ã®æ˜¼ã€å¤œã®æ™‚é–“ãŒ0ä»¥ä¸‹ã€ã¾ãŸã¯99ä»¥ä¸Šã§ã‚ã‚‹</li>';
+    echo '<li>ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶ã®æ˜¼ã€å¤œã®æ™‚é–“ãŒæ•°å­—ã§ã¯ãªã„ã€ã¾ãŸã¯ç•°å¸¸ãªæ–‡å­—åˆ—</li></ul>';
     break;
 
   case 'success':
-    OutputActionResultHeader('Â¼ºîÀ®', $SERVER_CONF->site_root);
-    echo $room_name . ' Â¼¤òºîÀ®¤·¤Ş¤·¤¿¡£¥È¥Ã¥×¥Ú¡¼¥¸¤ËÈô¤Ó¤Ş¤¹¡£';
-    echo 'ÀÚ¤êÂØ¤ï¤é¤Ê¤¤¤Ê¤é <a href="' . $SERVER_CONF->site_root . '">¤³¤³</a> ¡£';
+    OutputActionResultHeader('æ‘ä½œæˆ', $SERVER_CONF->site_root);
+    echo $room_name . ' æ‘ã‚’ä½œæˆã—ã¾ã—ãŸã€‚ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã«é£›ã³ã¾ã™ã€‚';
+    echo 'åˆ‡ã‚Šæ›¿ã‚ã‚‰ãªã„ãªã‚‰ <a href="' . $SERVER_CONF->site_root . '">ã“ã“</a> ã€‚';
     break;
 
   case 'busy':
-    OutputActionResultHeader('Â¼ºîÀ® [¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼]');
-    echo '¥Ç¡¼¥¿¥Ù¡¼¥¹¥µ¡¼¥Ğ¤¬º®»¨¤·¤Æ¤¤¤Ş¤¹¡£<br>'."\n";
-    echo '»ş´Ö¤òÃÖ¤¤¤ÆºÆÅÙÅĞÏ¿¤·¤Æ¤¯¤À¤µ¤¤¡£';
+    OutputActionResultHeader('æ‘ä½œæˆ [ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼]');
+    echo 'ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚µãƒ¼ãƒãŒæ··é›‘ã—ã¦ã„ã¾ã™ã€‚<br>'."\n";
+    echo 'æ™‚é–“ã‚’ç½®ã„ã¦å†åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚';
     break;
 
   case 'full':
-    OutputActionResultHeader('Â¼ºîÀ® [¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼]');
-    echo '¸½ºß¥×¥ì¥¤Ãæ¤ÎÂ¼¤Î¿ô¤¬¤³¤Î¥µ¡¼¥Ğ¤ÇÀßÄê¤µ¤ì¤Æ¤¤¤ëºÇÂçÃÍ¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹¡£<br>'."\n";
-    echo '¤É¤³¤«¤ÎÂ¼¤Ç·èÃå¤¬¤Ä¤¯¤Î¤òÂÔ¤Ã¤Æ¤«¤éºÆÅÙÅĞÏ¿¤·¤Æ¤¯¤À¤µ¤¤¡£';
+    OutputActionResultHeader('æ‘ä½œæˆ [ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼]');
+    echo 'ç¾åœ¨ãƒ—ãƒ¬ã‚¤ä¸­ã®æ‘ã®æ•°ãŒã“ã®ã‚µãƒ¼ãƒã§è¨­å®šã•ã‚Œã¦ã„ã‚‹æœ€å¤§å€¤ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚<br>'."\n";
+    echo 'ã©ã“ã‹ã®æ‘ã§æ±ºç€ãŒã¤ãã®ã‚’å¾…ã£ã¦ã‹ã‚‰å†åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚';
     break;
 
   case 'over_establish':
-    OutputActionResultHeader('Â¼ºîÀ® [¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼]');
-    echo '¤¢¤Ê¤¿¤¬Î©¤Æ¤¿Â¼¤¬¸½ºß²ÔÆ¯Ãæ¤Ç¤¹¡£<br>'."\n";
-    echo 'Î©¤Æ¤¿Â¼¤Ç·èÃå¤¬¤Ä¤¯¤Î¤òÂÔ¤Ã¤Æ¤«¤éºÆÅÙÅĞÏ¿¤·¤Æ¤¯¤À¤µ¤¤¡£';
+    OutputActionResultHeader('æ‘ä½œæˆ [ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼]');
+    echo 'ã‚ãªãŸãŒç«‹ã¦ãŸæ‘ãŒç¾åœ¨ç¨¼åƒä¸­ã§ã™ã€‚<br>'."\n";
+    echo 'ç«‹ã¦ãŸæ‘ã§æ±ºç€ãŒã¤ãã®ã‚’å¾…ã£ã¦ã‹ã‚‰å†åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚';
     break;
 
   case 'establish_wait':
-    OutputActionResultHeader('Â¼ºîÀ® [¥Ç¡¼¥¿¥Ù¡¼¥¹¥¨¥é¡¼]');
-    echo '¥µ¡¼¥Ğ¤ÇÀßÄê¤µ¤ì¤Æ¤¤¤ëÂ¼Î©¤Æ»ş´Ö´Ö³Ö¤ò·Ğ²á¤·¤Æ¤¤¤Ş¤»¤ó¡£<br>'."\n";
-    echo '¤·¤Ğ¤é¤¯»ş´Ö¤ò³«¤±¤Æ¤«¤éºÆÅÙÅĞÏ¿¤·¤Æ¤¯¤À¤µ¤¤¡£';
+    OutputActionResultHeader('æ‘ä½œæˆ [ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼]');
+    echo 'ã‚µãƒ¼ãƒã§è¨­å®šã•ã‚Œã¦ã„ã‚‹æ‘ç«‹ã¦æ™‚é–“é–“éš”ã‚’çµŒéã—ã¦ã„ã¾ã›ã‚“ã€‚<br>'."\n";
+    echo 'ã—ã°ã‚‰ãæ™‚é–“ã‚’é–‹ã‘ã¦ã‹ã‚‰å†åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚';
     break;
   }
-  OutputHTMLFooter(); //¥Õ¥Ã¥¿½ĞÎÏ
+  OutputHTMLFooter(); //ãƒ•ãƒƒã‚¿å‡ºåŠ›
 }
 
-//Â¼(room)¤Îwaiting¤Èplaying¤Î¥ê¥¹¥È¤ò½ĞÎÏ¤¹¤ë
+//æ‘(room)ã®waitingã¨playingã®ãƒªã‚¹ãƒˆã‚’å‡ºåŠ›ã™ã‚‹
 function OutputRoomList(){
   global $DEBUG_MODE, $SERVER_CONF, $ROOM_IMG;
 
   if($SERVER_CONF->secret_room) return;
 
-  /* RSSµ¡Ç½¤Ï¥Æ¥¹¥ÈÃæ
+  /* RSSæ©Ÿèƒ½ã¯ãƒ†ã‚¹ãƒˆä¸­
   if(! $DEBUG_MODE){
     $filename = JINRO_ROOT.'/rss/rooms.rss';
     if(file_exists($filename)){
@@ -403,32 +403,32 @@ function OutputRoomList(){
   }
   */
 
-  //return; //¥·¡¼¥¯¥ì¥Ã¥È¥Æ¥¹¥ÈÍÑ
-  //¥ë¡¼¥àNo¡¢¥ë¡¼¥àÌ¾¡¢¥³¥á¥ó¥È¡¢ºÇÂç¿Í¿ô¡¢¾õÂÖ¤ò¼èÆÀ
+  //return; //ã‚·ãƒ¼ã‚¯ãƒ¬ãƒƒãƒˆãƒ†ã‚¹ãƒˆç”¨
+  //ãƒ«ãƒ¼ãƒ Noã€ãƒ«ãƒ¼ãƒ åã€ã‚³ãƒ¡ãƒ³ãƒˆã€æœ€å¤§äººæ•°ã€çŠ¶æ…‹ã‚’å–å¾—
   $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
     "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
   $list = FetchAssoc($query);
   foreach($list as $array){
     extract($array);
-    $option_img_str = GenerateGameOptionImage($game_option, $option_role); //¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤Î²èÁü
-    //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //ºÇÂç¿Í¿ô
+    $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ç”»åƒ
+    //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //æœ€å¤§äººæ•°
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
-{$ROOM_IMG->Generate($status)}<span>[{$room_no}ÈÖÃÏ]</span>{$room_name}Â¼<br>
-<div>¡Á{$room_comment}¡Á {$option_img_str}(ºÇÂç{$max_user}¿Í)</div>
+{$ROOM_IMG->Generate($status)}<span>[{$room_no}ç•ªåœ°]</span>{$room_name}æ‘<br>
+<div>ã€œ{$room_comment}ã€œ {$option_img_str}(æœ€å¤§{$max_user}äºº)</div>
 </a><br>
 
 EOF;
 
     if($DEBUG_MODE){
       echo '<a href="admin/room_delete.php?room_no=' . $room_no . '">' .
-	$room_no . ' ÈÖÃÏ¤òºï½ü (¶ÛµŞÍÑ)</a><br>'."\n";
+	$room_no . ' ç•ªåœ°ã‚’å‰Šé™¤ (ç·Šæ€¥ç”¨)</a><br>'."\n";
     }
   }
 }
 
-//Â¾¤Î¥µ¡¼¥Ğ¤ÎÉô²°²èÌÌ¤ò½ĞÎÏ
+//ä»–ã®ã‚µãƒ¼ãƒã®éƒ¨å±‹ç”»é¢ã‚’å‡ºåŠ›
 function OutputSharedServerRoom(){
   global $SERVER_CONF;
 
@@ -437,24 +437,24 @@ function OutputSharedServerRoom(){
 
   foreach($SHARED_CONF->server_list as $server => $array){
     extract($array);
-    //PrintData($url, 'URL'); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($url, 'URL'); //ãƒ†ã‚¹ãƒˆç”¨
     if($disable || $url == $SERVER_CONF->site_root) continue;
 
-    if(! $SHARED_CONF->CheckConnection($url)){ //¥µ¡¼¥ĞÄÌ¿®¾õÂÖ¥Á¥§¥Ã¥¯
+    if(! $SHARED_CONF->CheckConnection($url)){ //ã‚µãƒ¼ãƒé€šä¿¡çŠ¶æ…‹ãƒã‚§ãƒƒã‚¯
       $data = $SHARED_CONF->host . ': Connection timed out (3 seconds)';
       echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
       continue;
     }
 
-    //Éô²°¾ğÊó¤ò¼èÆÀ
+    //éƒ¨å±‹æƒ…å ±ã‚’å–å¾—
     if(($data = @file_get_contents($url.'room_manager.php')) == '') continue;
-    //PrintData($data, 'Data'); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($data, 'Data'); //ãƒ†ã‚¹ãƒˆç”¨
     if($encode != '' && $encode != $SHARED_CONF->encode){
       $data = mb_convert_encoding($data, $SHARED_CONF->encode, $encode);
     }
     if($separator != ''){
       $split_list = mb_split($separator, $data);
-      //PrintData($split_list, 'Split'); //¥Æ¥¹¥ÈÍÑ
+      //PrintData($split_list, 'Split'); //ãƒ†ã‚¹ãƒˆç”¨
       $data = array_pop($split_list);
     }
     if($footer != ''){
@@ -469,7 +469,7 @@ function OutputSharedServerRoom(){
   }
 }
 
-//Éô²°ºîÀ®²èÌÌ¤ò½ĞÎÏ
+//éƒ¨å±‹ä½œæˆç”»é¢ã‚’å‡ºåŠ›
 function OutputCreateRoomPage(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
@@ -478,18 +478,18 @@ function OutputCreateRoomPage(){
 <input type="hidden" name="command" value="CREATE_ROOM">
 <table>
 <tr>
-<td><label>{$GAME_OPT_MESS->room_name}¡§</label></td>
-<td><input type="text" name="room_name" size="{$ROOM_CONF->room_name}"> Â¼</td>
+<td><label>{$GAME_OPT_MESS->room_name}ï¼š</label></td>
+<td><input type="text" name="room_name" size="{$ROOM_CONF->room_name}"> æ‘</td>
 </tr>
 <tr>
-<td><label>{$GAME_OPT_MESS->room_comment}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->room_comment}ï¼š</label></td>
 <td><input type="text" name="room_comment" size="{$ROOM_CONF->room_comment}"></td>
 </tr>
 <tr>
-<td><label>{$GAME_OPT_MESS->max_user}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->max_user}ï¼š</label></td>
 <td>
 <select name="max_user">
-<optgroup label="ºÇÂç¿Í¿ô">
+<optgroup label="æœ€å¤§äººæ•°">
 
 EOF;
 
@@ -523,7 +523,7 @@ EOF;
 
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
-<tr><td class="make" colspan="2"><input type="submit" value=" ºîÀ® "></td></tr>
+<tr><td class="make" colspan="2"><input type="submit" value=" ä½œæˆ "></td></tr>
 </table>
 </form>
 
@@ -541,37 +541,37 @@ function GenerateRoomOption($option, $label = ''){
   $label .= $option;
 
   $sentence = $CAST_CONF->$option;
-  if(isset($sentence)) $sentence .= '¿Í°Ê¾å¤Ç';
-  if($option == 'cupid') $sentence = '14¿Í¤â¤·¤¯¤Ï' . $sentence . '<br>¡¡';
+  if(isset($sentence)) $sentence .= 'äººä»¥ä¸Šã§';
+  if($option == 'cupid') $sentence = '14äººã‚‚ã—ãã¯' . $sentence . '<br>ã€€';
   $sentence .= $GAME_OPT_MESS->$option;
 
   $caption = $GAME_OPT_CAPT->$option;
   switch($option){
   case 'real_time':
     $caption .= <<<EOF
-¡¡Ãë¡§
-<input type="text" name="real_time_day" value="{$TIME_CONF->default_day}" size="2" maxlength="2">Ê¬ Ìë¡§
-<input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">Ê¬
+ã€€æ˜¼ï¼š
+<input type="text" name="real_time_day" value="{$TIME_CONF->default_day}" size="2" maxlength="2">åˆ† å¤œï¼š
+<input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">åˆ†
 EOF;
     break;
 
   case 'quiz':
     $add_caption = <<<EOF
 <br>
-<label for="quiz_password">GM ¥í¥°¥¤¥ó¥Ñ¥¹¥ï¡¼¥É¡§</label>
+<label for="quiz_password">GM ãƒ­ã‚°ã‚¤ãƒ³ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ï¼š</label>
 <input id="quiz_password" type="password" name="quiz_password" size="20"><br>
-¡¡¡¡{$GAME_OPT_CAPT->gm_login_footer}
+ã€€ã€€{$GAME_OPT_CAPT->gm_login_footer}
 EOF;
     break;
 
   case 'replace_human':
     $str = <<<EOF
 <tr>
-<td><label>{$GAME_OPT_MESS->$option}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->$option}ï¼š</label></td>
 <td>
 <select name="{$option}">
-<optgroup label="¥â¡¼¥ÉÌ¾">
-<option value="" selected>¤Ê¤·</option>
+<optgroup label="ãƒ¢ãƒ¼ãƒ‰å">
+<option value="" selected>ãªã—</option>
 
 EOF;
 
@@ -593,7 +593,7 @@ EOF;
 
   return <<<EOF
 <tr>
-<td><label for="{$label}">{$sentence}¡§</label></td>
+<td><label for="{$label}">{$sentence}ï¼š</label></td>
 <td class="explain">
 <input id="{$label}" type="checkbox" name="{$option}" value="on"{$checked}>
 ({$caption}){$add_caption}
@@ -626,7 +626,7 @@ function OutputRoomOptionDummyBoy(){
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label>{$GAME_OPT_MESS->dummy_boy}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->dummy_boy}ï¼š</label></td>
 <td class="explain">
 <input type="radio" name="dummy_boy" value=""{$checked_nothing}>
 {$GAME_OPT_CAPT->no_dummy_boy}<br>
@@ -636,9 +636,9 @@ function OutputRoomOptionDummyBoy(){
 
 <input type="radio" name="dummy_boy" value="gm_login"{$checked_gm_login}>
 {$GAME_OPT_MESS->gm_login} ({$GAME_OPT_CAPT->gm_login_header})<br>
-<label for="gm_password">GM ¥í¥°¥¤¥ó¥Ñ¥¹¥ï¡¼¥É¡§</label>
+<label for="gm_password">GM ãƒ­ã‚°ã‚¤ãƒ³ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ï¼š</label>
 <input id="gm_password" type="password" name="gm_password" size="20"><br>
-¡¡¡¡{$GAME_OPT_CAPT->gm_login_footer}
+ã€€ã€€{$GAME_OPT_CAPT->gm_login_footer}
 </td>
 </tr>
 
@@ -648,7 +648,7 @@ EOF;
     $checked = $ROOM_CONF->default_gerd ? ' checked' : '';
     echo <<<EOF
 <tr>
-<td><label for="gerd">{$GAME_OPT_MESS->gerd}¡§</label></td>
+<td><label for="gerd">{$GAME_OPT_MESS->gerd}ï¼š</label></td>
 <td class="explain">
 <input id="gerd" type="checkbox" name="gerd" value="on"{$checked}>
 {$GAME_OPT_CAPT->gerd}
@@ -682,7 +682,7 @@ function OutputRoomOptionOpenCast(){
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label>{$GAME_OPT_MESS->not_open_cast}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->not_open_cast}ï¼š</label></td>
 <td class="explain">
 <input type="radio" name="not_open_cast" value=""{$checked_open}>
 {$GAME_OPT_CAPT->no_close_cast}<br>
@@ -732,7 +732,7 @@ function OutputRoomOptionChaos(){
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
 <tr>
-<td><label>{$GAME_OPT_MESS->chaos}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->chaos}ï¼š</label></td>
 <td class="explain">
 <input type="radio" name="chaos" value=""{$checked_normal}>
 {$GAME_OPT_CAPT->no_chaos}<br>
@@ -780,7 +780,7 @@ EOF;
 
     echo <<<EOF
 <tr>
-<td><label>{$GAME_OPT_MESS->chaos_open_cast}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->chaos_open_cast}ï¼š</label></td>
 <td class="explain">
 <input type="radio" name="chaos_open_cast" value=""{$checked_chaos_open_cast_none}>
 {$GAME_OPT_CAPT->chaos_not_open_cast}<br>
@@ -820,7 +820,7 @@ EOF;
 
     echo <<<EOF
 <tr>
-<td><label>{$GAME_OPT_MESS->sub_role_limit}¡§</label></td>
+<td><label>{$GAME_OPT_MESS->sub_role_limit}ï¼š</label></td>
 <td class="explain">
 <input type="radio" name="sub_role_limit" value="no_sub_role"{$checked_no_sub_role}>
 {$GAME_OPT_CAPT->no_sub_role}<br>

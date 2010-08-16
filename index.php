@@ -4,45 +4,45 @@ $INIT_CONF->LoadClass('SCRIPT_INFO', 'MENU_LINK', 'BBS_CONF');
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'index');
 echo "</head>\n<body>\n";
 if($SERVER_CONF->back_page != ''){
-  echo '<a href="' . $SERVER_CONF->back_page . '">¢«Ìá¤ë</a><br>'."\n";
+  echo '<a href="' . $SERVER_CONF->back_page . '">â†æˆ»ã‚‹</a><br>'."\n";
 }
 ?>
 <a href="./"><img src="img/top_title.jpg"></a>
 <div class="comment"><?php echo $SERVER_CONF->comment ?></div>
-<noscript>&lt;&lt; JavaScript¤òÍ­¸ú¤Ë¤·¤Æ¤¯¤À¤µ¤¤ &gt;&gt;</noscript>
+<noscript>&lt;&lt; JavaScriptã‚’æœ‰åŠ¹ã«ã—ã¦ãã ã•ã„ &gt;&gt;</noscript>
 <table class="main">
   <tr><td>
-    <div class="menu">¥á¥Ë¥å¡¼</div>
+    <div class="menu">ãƒ¡ãƒ‹ãƒ¥ãƒ¼</div>
     <ul>
-      <li><a href="script_info.php">ÆÃÄ§¤È»ÅÍÍ</a></li>
-      <li><a href="rule.php">¥²¡¼¥à¤Î¥ë¡¼¥ë</a></li>
-      <li><a href="info/chaos.php">°ÇÆé¥â¡¼¥É</a></li>
-      <li><a href="info/new_role/">¿·Ìò¿¦¾ðÊó</a></li>
-      <li><a href="info/">¤½¤ÎÂ¾¤Î¾ðÊó°ìÍ÷</a></li>
-      <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
-      <li><a href="old_log.php">¥í¥°±ÜÍ÷</a></li>
-      <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
-      <li><a href="icon_view.php">¥¢¥¤¥³¥ó°ìÍ÷</a></li>
-      <li><a href="icon_upload.php">¥¢¥¤¥³¥óÅÐÏ¿</a></li>
-      <li>¡ú¡ù¡ú¡ù¡ú¡ù¡ú</li>
-      <li><a href="src/">¥½¡¼¥¹¥³¡¼¥É¥À¥¦¥ó¥í¡¼¥É</a></li>
+      <li><a href="script_info.php">ç‰¹å¾´ã¨ä»•æ§˜</a></li>
+      <li><a href="rule.php">ã‚²ãƒ¼ãƒ ã®ãƒ«ãƒ¼ãƒ«</a></li>
+      <li><a href="info/chaos.php">é—‡é‹ãƒ¢ãƒ¼ãƒ‰</a></li>
+      <li><a href="info/new_role/">æ–°å½¹è·æƒ…å ±</a></li>
+      <li><a href="info/">ãã®ä»–ã®æƒ…å ±ä¸€è¦§</a></li>
+      <li>â˜…â˜†â˜…â˜†â˜…â˜†â˜…</li>
+      <li><a href="old_log.php">ãƒ­ã‚°é–²è¦§</a></li>
+      <li>â˜…â˜†â˜…â˜†â˜…â˜†â˜…</li>
+      <li><a href="icon_view.php">ã‚¢ã‚¤ã‚³ãƒ³ä¸€è¦§</a></li>
+      <li><a href="icon_upload.php">ã‚¢ã‚¤ã‚³ãƒ³ç™»éŒ²</a></li>
+      <li>â˜…â˜†â˜…â˜†â˜…â˜†â˜…</li>
+      <li><a href="src/">ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</a></li>
     </ul>
     <?php $MENU_LINK->Output() ?>
   </td>
 
   <td>
     <fieldset>
-      <legend>Information <a href="info/history/top.php">¡Á²áµî¤Îinformation¤Ï¤³¤Á¤é¡Á</a></legend>
+      <legend>Information <a href="info/history/top.php">ã€œéŽåŽ»ã®informationã¯ã“ã¡ã‚‰ã€œ</a></legend>
       <div class="information"><?php include_once 'info/top.php' ?></div>
     </fieldset>
 
     <fieldset>
-      <legend>¥²¡¼¥à°ìÍ÷</legend>
+      <legend>ã‚²ãƒ¼ãƒ ä¸€è¦§</legend>
       <div class="game-list"><?php include_once 'room_manager.php' ?></div>
     </fieldset>
     <?php $BBS_CONF->Output(); OutputSharedServerRoom() ?>
     <fieldset>
-      <legend>Â¼¤ÎºîÀ®</legend><?php OutputCreateRoomPage() ?>
+      <legend>æ‘ã®ä½œæˆ</legend><?php OutputCreateRoomPage() ?>
     </fieldset>
   </td></tr>
 </table>

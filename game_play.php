@@ -3,23 +3,23 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
 
-//-- ¥Ç¡¼¥¿¼ı½¸ --//
-$INIT_CONF->LoadRequest('RequestGamePlay'); //°ú¿ô¤ò¼èÆÀ
-if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //²»¤Ç¤ªÃÎ¤é¤»
+//-- ãƒ‡ãƒ¼ã‚¿åé›† --//
+$INIT_CONF->LoadRequest('RequestGamePlay'); //å¼•æ•°ã‚’å–å¾—
+if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //éŸ³ã§ãŠçŸ¥ã‚‰ã›
 
-$DB_CONF->Connect(); //DB ÀÜÂ³
-$SESSION->Certify(); //¥»¥Ã¥·¥ç¥óÇ§¾Ú
+$DB_CONF->Connect(); //DB æ¥ç¶š
+$SESSION->Certify(); //ã‚»ãƒƒã‚·ãƒ§ãƒ³èªè¨¼
 
-$ROOM =& new Room($RQ_ARGS); //Â¼¾ğÊó¤ò¥í¡¼¥É
-$ROOM->dead_mode    = $RQ_ARGS->dead_mode; //»àË´¼Ô¥â¡¼¥É
-$ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //ÎîÏÃ¥â¡¼¥É
-$ROOM->system_time  = TZTime(); //¸½ºß»ş¹ï¤ò¼èÆÀ
-$ROOM->sudden_death = 0; //ÆÍÁ³»à¼Â¹Ô¤Ş¤Ç¤Î»Ä¤ê»ş´Ö
+$ROOM =& new Room($RQ_ARGS); //æ‘æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+$ROOM->dead_mode    = $RQ_ARGS->dead_mode; //æ­»äº¡è€…ãƒ¢ãƒ¼ãƒ‰
+$ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //éœŠè©±ãƒ¢ãƒ¼ãƒ‰
+$ROOM->system_time  = TZTime(); //ç¾åœ¨æ™‚åˆ»ã‚’å–å¾—
+$ROOM->sudden_death = 0; //çªç„¶æ­»å®Ÿè¡Œã¾ã§ã®æ®‹ã‚Šæ™‚é–“
 
-$USERS =& new UserDataSet($RQ_ARGS); //¥æ¡¼¥¶¾ğÊó¤ò¥í¡¼¥É
-$SELF = $USERS->BySession(); //¼«Ê¬¤Î¾ğÊó¤ò¥í¡¼¥É
+$USERS =& new UserDataSet($RQ_ARGS); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+$SELF = $USERS->BySession(); //è‡ªåˆ†ã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 
-//-- ¥Æ¥¹¥ÈÍÑ --//
+//-- ãƒ†ã‚¹ãƒˆç”¨ --//
 #$SELF->ChangeRole('soul_mania[5]');
 #$SELF->Update('icon_no', 30);
 #$SELF->AddRole('possessed_target[2-2]');
@@ -28,96 +28,96 @@ $SELF = $USERS->BySession(); //¼«Ê¬¤Î¾ğÊó¤ò¥í¡¼¥É
 #PrintData($SELF);
 #DeleteVote();
 
-//¥·¡¼¥ó¤Ë±ş¤¸¤¿ÄÉ²Ã¥¯¥é¥¹¤ò¥í¡¼¥É
+//ã‚·ãƒ¼ãƒ³ã«å¿œã˜ãŸè¿½åŠ ã‚¯ãƒ©ã‚¹ã‚’ãƒ­ãƒ¼ãƒ‰
 if($ROOM->IsBeforeGame()){
-  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //¥²¡¼¥à¥ª¥×¥·¥ç¥óÉ½¼¨ÍÑ
+  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¡¨ç¤ºç”¨
   $ROOM->LoadVote();
 }
 elseif($ROOM->IsFinished()){
-  $INIT_CONF->LoadClass('VICT_MESS'); //¾¡ÇÔ·ë²ÌÉ½¼¨ÍÑ
+  $INIT_CONF->LoadClass('VICT_MESS'); //å‹æ•—çµæœè¡¨ç¤ºç”¨
 }
 
-//É¬Í×¤Ê¥¯¥Ã¥­¡¼¤ò¥»¥Ã¥È¤¹¤ë
-$objection_list = array(); //SendCookie();¤Ç³ÊÇ¼¤µ¤ì¤ë¡¦°ÛµÄ¤¢¤ê¤Î¾ğÊó
-$objection_left_count = 0;  //SendCookie();¤Ç³ÊÇ¼¤µ¤ì¤ë¡¦°ÛµÄ¤¢¤ê¤Î»Ä¤ê²ó¿ô
+//å¿…è¦ãªã‚¯ãƒƒã‚­ãƒ¼ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+$objection_list = array(); //SendCookie();ã§æ ¼ç´ã•ã‚Œã‚‹ãƒ»ç•°è­°ã‚ã‚Šã®æƒ…å ±
+$objection_left_count = 0;  //SendCookie();ã§æ ¼ç´ã•ã‚Œã‚‹ãƒ»ç•°è­°ã‚ã‚Šã®æ®‹ã‚Šå›æ•°
 SendCookie();
 
-//-- È¯¸À½èÍı --//
-ConvertSay(&$RQ_ARGS->say); //È¯¸ÀÃÖ´¹½èÍı
+//-- ç™ºè¨€å‡¦ç† --//
+ConvertSay(&$RQ_ARGS->say); //ç™ºè¨€ç½®æ›å‡¦ç†
 
 if($RQ_ARGS->say == ''){
-  CheckSilence(); //È¯¸À¤¬¶õ¤Ê¤é¥²¡¼¥àÄäÂÚ¤Î¥Á¥§¥Ã¥¯(ÄÀÌÛ¡¢ÆÍÁ³»à)
+  CheckSilence(); //ç™ºè¨€ãŒç©ºãªã‚‰ã‚²ãƒ¼ãƒ åœæ»ã®ãƒã‚§ãƒƒã‚¯(æ²ˆé»™ã€çªç„¶æ­»)
 }
 elseif($RQ_ARGS->last_words && ! $SELF->IsDummyBoy()){
-  EntryLastWords($RQ_ARGS->say); //°ä¸ÀÅĞÏ¿ (ºÙ¤«¤¤È½Äê¾ò·ï¤Ï´Ø¿ôÆâ¤Ç¹Ô¤¦)
+  EntryLastWords($RQ_ARGS->say); //éºè¨€ç™»éŒ² (ç´°ã‹ã„åˆ¤å®šæ¡ä»¶ã¯é–¢æ•°å†…ã§è¡Œã†)
 }
 elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
-  Say($RQ_ARGS->say); //»à¤ó¤Ç¤¤¤ë or ¿ÈÂå¤ï¤ê·¯ or ¥²¡¼¥à¥·¡¼¥ó¤¬°ìÃ×¤·¤Æ¤¤¤ë¤Ê¤é½ñ¤­¹ş¤à
+  Say($RQ_ARGS->say); //æ­»ã‚“ã§ã„ã‚‹ or èº«ä»£ã‚ã‚Šå› or ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ãŒä¸€è‡´ã—ã¦ã„ã‚‹ãªã‚‰æ›¸ãè¾¼ã‚€
 }
 else{
-  CheckSilence(); //È¯¸À¤¬¤Ç¤­¤Ê¤¤¾õÂÖ¤Ê¤é¥²¡¼¥àÄäÂÚ¥Á¥§¥Ã¥¯
+  CheckSilence(); //ç™ºè¨€ãŒã§ããªã„çŠ¶æ…‹ãªã‚‰ã‚²ãƒ¼ãƒ åœæ»ãƒã‚§ãƒƒã‚¯
 }
 
-if($SELF->last_load_day_night != $ROOM->day_night){ //¥²¡¼¥à¥·¡¼¥ó¤ò¹¹¿·
+if($SELF->last_load_day_night != $ROOM->day_night){ //ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã‚’æ›´æ–°
   $SELF->Update('last_load_day_night', $ROOM->day_night);
 }
 
-//-- ¥Ç¡¼¥¿½ĞÎÏ --//
-OutputGamePageHeader(); //HTML¥Ø¥Ã¥À
-OutputGameHeader(); //Éô²°¤Î¥¿¥¤¥È¥ë¤Ê¤É
+//-- ãƒ‡ãƒ¼ã‚¿å‡ºåŠ› --//
+OutputGamePageHeader(); //HTMLãƒ˜ãƒƒãƒ€
+OutputGameHeader(); //éƒ¨å±‹ã®ã‚¿ã‚¤ãƒˆãƒ«ãªã©
 
 if(! $ROOM->heaven_mode){
-  if(! $RQ_ARGS->list_down) OutputPlayerList(); //¥×¥ì¥¤¥ä¡¼¥ê¥¹¥È
-  OutputAbility(); //¼«Ê¬¤ÎÌò³ä¤ÎÀâÌÀ
-  if($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay(); //Ãë¤ÎÅêÉ¼ºÑ¤ß¥Á¥§¥Ã¥¯
-  OutputRevoteList(); //ºÆÅêÉ¼¤Î»ş¡¢¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤¹¤ë
+  if(! $RQ_ARGS->list_down) OutputPlayerList(); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒªã‚¹ãƒˆ
+  OutputAbility(); //è‡ªåˆ†ã®å½¹å‰²ã®èª¬æ˜
+  if($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay(); //æ˜¼ã®æŠ•ç¥¨æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
+  OutputRevoteList(); //å†æŠ•ç¥¨ã®æ™‚ã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹
 }
 
-//²ñÏÃ¥í¥°¤ò½ĞÎÏ
+//ä¼šè©±ãƒ­ã‚°ã‚’å‡ºåŠ›
 ($SELF->IsDead() && $ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog();
 
 if(! $ROOM->heaven_mode){
-  if($SELF->IsDead()) OutputAbilityAction(); //Ç½ÎÏÈ¯´ø
-  OutputLastWords(); //°ä¸À
-  OutputDeadMan();   //»àË´¼Ô
-  OutputVoteList();  //ÅêÉ¼·ë²Ì
-  if(! $ROOM->dead_mode) OutputSelfLastWords(); //¼«Ê¬¤Î°ä¸À
-  if($RQ_ARGS->list_down) OutputPlayerList(); //¥×¥ì¥¤¥ä¡¼¥ê¥¹¥È
+  if($SELF->IsDead()) OutputAbilityAction(); //èƒ½åŠ›ç™ºæ®
+  OutputLastWords(); //éºè¨€
+  OutputDeadMan();   //æ­»äº¡è€…
+  OutputVoteList();  //æŠ•ç¥¨çµæœ
+  if(! $ROOM->dead_mode) OutputSelfLastWords(); //è‡ªåˆ†ã®éºè¨€
+  if($RQ_ARGS->list_down) OutputPlayerList(); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒªã‚¹ãƒˆ
 }
 OutputHTMLFooter();
 
-//-- ´Ø¿ô --//
-//É¬Í×¤Ê¥¯¥Ã¥­¡¼¤ò¤Ş¤È¤á¤ÆÅĞÏ¿(¤Ä¤¤¤Ç¤ËºÇ¿·¤Î°ÛµÄ¤¢¤ê¤Î¾õÂÖ¤ò¼èÆÀ¤·¤ÆÇÛÎó¤Ë³ÊÇ¼)
+//-- é–¢æ•° --//
+//å¿…è¦ãªã‚¯ãƒƒã‚­ãƒ¼ã‚’ã¾ã¨ã‚ã¦ç™»éŒ²(ã¤ã„ã§ã«æœ€æ–°ã®ç•°è­°ã‚ã‚Šã®çŠ¶æ…‹ã‚’å–å¾—ã—ã¦é…åˆ—ã«æ ¼ç´)
 function SendCookie(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF, $objection_list, $objection_left_count;
 
-  //<ÌëÌÀ¤±¤ò²»¤Ç¤ªÃÎ¤é¤»ÍÑ>
-  //¥¯¥Ã¥­¡¼¤Ë³ÊÇ¼ (ÌëÌÀ¤±¤Ë²»¤Ç¤ªÃÎ¤é¤»¤Ç»È¤¦¡¦Í­¸ú´ü¸Â°ì»ş´Ö)
+  //<å¤œæ˜ã‘ã‚’éŸ³ã§ãŠçŸ¥ã‚‰ã›ç”¨>
+  //ã‚¯ãƒƒã‚­ãƒ¼ã«æ ¼ç´ (å¤œæ˜ã‘ã«éŸ³ã§ãŠçŸ¥ã‚‰ã›ã§ä½¿ã†ãƒ»æœ‰åŠ¹æœŸé™ä¸€æ™‚é–“)
   setcookie('day_night', $ROOM->day_night, $ROOM->system_time + 3600);
 
-  //-- ¡Ö°ÛµÄ¡×¤¢¤ê¤ò²»¤Ç¤ªÃÎ¤é¤»ÍÑ --//
-  //º£¤Ş¤Ç¤Ë¼«Ê¬¤¬¡Ö°ÛµÄ¡×¤¢¤ê¤ò¤·¤¿²ó¿ô¤ò¼èÆÀ
+  //-- ã€Œç•°è­°ã€ã‚ã‚Šã‚’éŸ³ã§ãŠçŸ¥ã‚‰ã›ç”¨ --//
+  //ä»Šã¾ã§ã«è‡ªåˆ†ãŒã€Œç•°è­°ã€ã‚ã‚Šã‚’ã—ãŸå›æ•°ã‚’å–å¾—
   $query = "SELECT COUNT(message) FROM system_message WHERE room_no = {$ROOM->id} " .
     "AND type = 'OBJECTION' AND message = '{$SELF->user_no}'";
   $self_objection_count = FetchResult($query);
 
-  //À¸¤­¤Æ¤¤¤Æ(¥²¡¼¥à½ªÎ»¸å¤Ï»à¼Ô¤Ç¤âOK)¡Ö°ÛµÄ¡×¤¢¤ê¡¢¤Î¥»¥Ã¥ÈÍ×µá¤¬¤¢¤ì¤Ğ¥»¥Ã¥È¤¹¤ë(ºÇÂç²ó¿ô°ÊÆâ¤Î¾ì¹ç)
+  //ç”Ÿãã¦ã„ã¦(ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œã¯æ­»è€…ã§ã‚‚OK)ã€Œç•°è­°ã€ã‚ã‚Šã€ã®ã‚»ãƒƒãƒˆè¦æ±‚ãŒã‚ã‚Œã°ã‚»ãƒƒãƒˆã™ã‚‹(æœ€å¤§å›æ•°ä»¥å†…ã®å ´åˆ)
   if($SELF->IsLive() && ! $ROOM->IsNight() && $RQ_ARGS->set_objection &&
      $self_objection_count < $GAME_CONF->objection){
     $ROOM->SystemMessage($SELF->user_no, 'OBJECTION');
     $ROOM->Talk('OBJECTION', $SELF->uname);
   }
 
-  //¥æ¡¼¥¶Áí¿ô¤ò¼èÆÀ¤·¤Æ¿Í¿ôÊ¬¤Î¡Ö°ÛµÄ¤¢¤ê¡×¤Î¥¯¥Ã¥­¡¼¤ò¹½ÃÛ¤¹¤ë
+  //ãƒ¦ãƒ¼ã‚¶ç·æ•°ã‚’å–å¾—ã—ã¦äººæ•°åˆ†ã®ã€Œç•°è­°ã‚ã‚Šã€ã®ã‚¯ãƒƒã‚­ãƒ¼ã‚’æ§‹ç¯‰ã™ã‚‹
   $query = $ROOM->GetQuery(false, 'user_entry') . ' AND user_no > 0';
   $user_count = FetchResult($query);
-  // ÇÛÎó¤ò¥ê¥»¥Ã¥È (0 ÈÖÌÜ¤ËÊÑ¤ÊÃÍ¤¬Æş¤é¤Ê¤¤»ö¤¬Êİ¾Ú¤µ¤ì¤Æ¤¤¤ì¤ĞÉÔÍ×¤«¤Ê¡©)
-  // ¥­¥Ã¥¯¤Ç·çÈÖ¤¬½Ğ¤ë¤È¿§¡¹ÌÌÅİ¤Ê»ö¤Ë¤Ê¤ê¤½¤¦
+  // é…åˆ—ã‚’ãƒªã‚»ãƒƒãƒˆ (0 ç•ªç›®ã«å¤‰ãªå€¤ãŒå…¥ã‚‰ãªã„äº‹ãŒä¿è¨¼ã•ã‚Œã¦ã„ã‚Œã°ä¸è¦ã‹ãªï¼Ÿ)
+  // ã‚­ãƒƒã‚¯ã§æ¬ ç•ªãŒå‡ºã‚‹ã¨è‰²ã€…é¢å€’ãªäº‹ã«ãªã‚Šãã†
   // $objection_list = array();
   // unset($objection_list[0]);
-  $objection_list = array_fill(0, $user_count, 0); //index ¤Ï 0 ¤«¤é
+  $objection_list = array_fill(0, $user_count, 0); //index ã¯ 0 ã‹ã‚‰
 
-  //message:°ÛµÄ¤¢¤ê¤ò¤·¤¿¥æ¡¼¥¶ No ¤È¤½¤Î²ó¿ô¤ò¼èÆÀ
+  //message:ç•°è­°ã‚ã‚Šã‚’ã—ãŸãƒ¦ãƒ¼ã‚¶ No ã¨ãã®å›æ•°ã‚’å–å¾—
   $query = "SELECT message, COUNT(message) AS message_count FROM system_message " .
     "WHERE room_no = {$ROOM->id} AND type = 'OBJECTION' GROUP BY message";
   $array = FetchAssoc($query);
@@ -127,43 +127,43 @@ function SendCookie(){
     $objection_list[$this_user_no - 1] = $this_count;
   }
 
-  //¥¯¥Ã¥­¡¼¤Ë³ÊÇ¼ (Í­¸ú´ü¸Â°ì»ş´Ö)
+  //ã‚¯ãƒƒã‚­ãƒ¼ã«æ ¼ç´ (æœ‰åŠ¹æœŸé™ä¸€æ™‚é–“)
   foreach($objection_list as $value){
-    if($str != '') $str .= ','; //¥«¥ó¥Ş¶èÀÚ¤ê
+    if($str != '') $str .= ','; //ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Š
     $str .= $value;
   }
   setcookie('objection', $str, $ROOM->system_time + 3600);
 
-  //»Ä¤ê°ÛµÄ¤¢¤ê¤Î²ó¿ô
+  //æ®‹ã‚Šç•°è­°ã‚ã‚Šã®å›æ•°
   $objection_left_count = $GAME_CONF->objection - $objection_list[$SELF->user_no - 1];
 
-  //<ºÆÅêÉ¼¤ò²»¤Ç¤ªÃÎ¤é¤»ÍÑ>
-  //ºÆÅêÉ¼¤Î²ó¿ô¤ò¼èÆÀ
-  if(($last_vote_times = $ROOM->GetVoteTimes(true)) > 0){ //¥¯¥Ã¥­¡¼¤Ë³ÊÇ¼ (Í­¸ú´ü¸Â°ì»ş´Ö)
+  //<å†æŠ•ç¥¨ã‚’éŸ³ã§ãŠçŸ¥ã‚‰ã›ç”¨>
+  //å†æŠ•ç¥¨ã®å›æ•°ã‚’å–å¾—
+  if(($last_vote_times = $ROOM->GetVoteTimes(true)) > 0){ //ã‚¯ãƒƒã‚­ãƒ¼ã«æ ¼ç´ (æœ‰åŠ¹æœŸé™ä¸€æ™‚é–“)
     setcookie('vote_times', $last_vote_times, $ROOM->system_time + 3600);
   }
-  else{ //¥¯¥Ã¥­¡¼¤«¤éºï½ü (Í­¸ú´ü¸Â°ì»ş´Ö)
+  else{ //ã‚¯ãƒƒã‚­ãƒ¼ã‹ã‚‰å‰Šé™¤ (æœ‰åŠ¹æœŸé™ä¸€æ™‚é–“)
     setcookie('vote_times', '', $ROOM->system_time - 3600);
   }
 }
 
-//È¯¸ÀÃÖ´¹½èÍı
+//ç™ºè¨€ç½®æ›å‡¦ç†
 function ConvertSay(&$say){
   global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
 
-  //¥ê¥í¡¼¥É»ş¡¦»à¼Ô¡¦¥²¡¼¥à¥×¥ì¥¤Ãæ°Ê³°¤Ê¤é½èÍı¥¹¥­¥Ã¥×
+  //ãƒªãƒ­ãƒ¼ãƒ‰æ™‚ãƒ»æ­»è€…ãƒ»ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ä»¥å¤–ãªã‚‰å‡¦ç†ã‚¹ã‚­ãƒƒãƒ—
   if($say == '' || $SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
-  //if($say == '' || $SELF->IsDead()) return false; //¥Æ¥¹¥ÈÍÑ
+  //if($say == '' || $SELF->IsDead()) return false; //ãƒ†ã‚¹ãƒˆç”¨
 
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
   $ROLES->actor = $virtual_self;
 
-  //Ë¨·ÏÃÖ´¹ (Ãë¸ÂÄê)
+  //èŒç³»ç½®æ› (æ˜¼é™å®š)
   if($ROOM->IsDay() && $virtual_self->IsRole('suspect', 'cute_wolf', 'cute_fox') &&
      mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
     $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
   }
-  //¿Â»Î¡¦½Ê½÷ÃÖ´¹
+  //ç´³å£«ãƒ»æ·‘å¥³ç½®æ›
   elseif($virtual_self->IsRole('gentleman', 'lady') &&
 	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
     $role   = $virtual_self->IsRole('gentleman') ? 'gentleman' : 'lady';
@@ -171,19 +171,19 @@ function ConvertSay(&$say){
     $footer = $role . '_footer';
 
     $stack = array();
-    foreach($USERS->rows as $user){ //¼«Ê¬°Ê³°¤ÎÀ¸Â¸¼Ô¤Î HN ¤ò¼èÆÀ
+    foreach($USERS->rows as $user){ //è‡ªåˆ†ä»¥å¤–ã®ç”Ÿå­˜è€…ã® HN ã‚’å–å¾—
       if(! $user->IsSelf() && $user->IsLive()) $stack[] = $user->handle_name;
     }
     $say = $MESSAGE->$header . GetRandom($stack) . $MESSAGE->$footer;
   }
-  //Ïµ¾¯Ç¯ÊÑ´¹
+  //ç‹¼å°‘å¹´å¤‰æ›
   elseif($virtual_self->IsRole('liar') && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
     $say = strtr($say, $GAME_CONF->liar_replace_list);
   }
 
-  if($virtual_self->IsRole('bad_status')){ //ÍÅÀº¤Î½èÍı
-    $stack = array('spring_fairy' => '½Õ', 'summer_fairy' => '²Æ',
-		   'autumn_fairy' => '½©', 'winter_fairy' => 'Åß');
+  if($virtual_self->IsRole('bad_status')){ //å¦–ç²¾ã®å‡¦ç†
+    $stack = array('spring_fairy' => 'æ˜¥', 'summer_fairy' => 'å¤',
+		   'autumn_fairy' => 'ç§‹', 'winter_fairy' => 'å†¬');
     foreach($virtual_self->GetPartner('bad_status') as $id => $date){
       if($date != $ROOM->date) continue;
       $user = $USERS->ByID($id);
@@ -191,74 +191,74 @@ function ConvertSay(&$say){
 	$say = $MESSAGE->common_talk . $say;
       }
       elseif(array_key_exists($user->main_role, $stack)){
-	$say = $stack[$user->main_role] . '¤Ç¤¹¤è¡¼' . $say;
+	$say = $stack[$user->main_role] . 'ã§ã™ã‚ˆãƒ¼' . $say;
       }
     }
   }
 
-  foreach($ROLES->Load('say') as $filter) $filter->FilterSay($say); //Â¾¤Î¥µ¥ÖÌò¿¦¤Î½èÍı
+  foreach($ROLES->Load('say') as $filter) $filter->FilterSay($say); //ä»–ã®ã‚µãƒ–å½¹è·ã®å‡¦ç†
 }
 
-//°ä¸ÀÅĞÏ¿
+//éºè¨€ç™»éŒ²
 function EntryLastWords($say){
   global $ROOM, $USERS, $SELF;
 
-  if($ROOM->IsFinished()) return false; //¥²¡¼¥à½ªÎ»¸å¤Ê¤é¥¹¥­¥Ã¥×
+  if($ROOM->IsFinished()) return false; //ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œãªã‚‰ã‚¹ã‚­ãƒƒãƒ—
 
-  if($SELF->IsLive()){ //ÅĞÏ¿¤·¤Ê¤¤Ìò¿¦¤ò¥Á¥§¥Ã¥¯
+  if($SELF->IsLive()){ //ç™»éŒ²ã—ãªã„å½¹è·ã‚’ãƒã‚§ãƒƒã‚¯
     if(! $SELF->IsLastWordsLimited()) $SELF->Update('last_words', $say);
   }
-  elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){ //¸ı´ó¤»¤Î½èÍı
-    foreach($SELF->GetPartner('mind_evoke') as $id){ //¸ı´ó¤»¤·¤Æ¤¤¤ë¥¤¥¿¥³¤¹¤Ù¤Æ¤Î°ä¸À¤ò¹¹¿·¤¹¤ë
+  elseif($SELF->IsDead() && $SELF->IsRole('mind_evoke')){ //å£å¯„ã›ã®å‡¦ç†
+    foreach($SELF->GetPartner('mind_evoke') as $id){ //å£å¯„ã›ã—ã¦ã„ã‚‹ã‚¤ã‚¿ã‚³ã™ã¹ã¦ã®éºè¨€ã‚’æ›´æ–°ã™ã‚‹
       $target = $USERS->ByID($id);
       if($target->IsLive()) $target->Update('last_words', $say);
     }
   }
 }
 
-//È¯¸À
+//ç™ºè¨€
 function Say($say){
   global $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  $user = $USERS->ByVirtual($SELF->user_no); //²¾ÁÛ¥æ¡¼¥¶¤ò¼èÆÀ
-  if($ROOM->IsRealTime()){ //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+  $user = $USERS->ByVirtual($SELF->user_no); //ä»®æƒ³ãƒ¦ãƒ¼ã‚¶ã‚’å–å¾—
+  if($ROOM->IsRealTime()){ //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
     GetRealPassTime(&$left_time);
-    $spend_time = 0; //²ñÏÃ¤Ç»ş´Ö·Ğ²áÀ©¤ÎÊı¤ÏÌµ¸ú¤Ë¤¹¤ë
+    $spend_time = 0; //ä¼šè©±ã§æ™‚é–“çµŒéåˆ¶ã®æ–¹ã¯ç„¡åŠ¹ã«ã™ã‚‹
   }
-  else{ //²ñÏÃ¤Ç»ş´Ö·Ğ²áÀ©
-    GetTalkPassTime(&$left_time); //·Ğ²á»ş´Ö¤ÎÏÂ
-    $spend_time = floor(strlen($say) / 100); //·Ğ²á»ş´Ö
-    if($spend_time < 1) $spend_time = 1; //ºÇ¾®¤Ï 1
-    elseif($spend_time > 4) $spend_time = 4; //ºÇÂç¤Ï 4
+  else{ //ä¼šè©±ã§æ™‚é–“çµŒéåˆ¶
+    GetTalkPassTime(&$left_time); //çµŒéæ™‚é–“ã®å’Œ
+    $spend_time = floor(strlen($say) / 100); //çµŒéæ™‚é–“
+    if($spend_time < 1) $spend_time = 1; //æœ€å°ã¯ 1
+    elseif($spend_time > 4) $spend_time = 4; //æœ€å¤§ã¯ 4
   }
 
-  if(! $ROOM->IsPlaying()){ //¥²¡¼¥à³«»ÏÁ°¸å¤Ï¤½¤Î¤Ş¤ŞÈ¯¸À
+  if(! $ROOM->IsPlaying()){ //ã‚²ãƒ¼ãƒ é–‹å§‹å‰å¾Œã¯ãã®ã¾ã¾ç™ºè¨€
     Write($say, $ROOM->day_night, 0, true);
   }
-  //¿ÈÂå¤ï¤ê·¯ (²¾ÁÛ GM ÂĞ±ş) ¤Ï°ä¸À¤òÀìÍÑ¤Î¥·¥¹¥Æ¥à¥á¥Ã¥»¡¼¥¸¤ËÀÚ¤êÂØ¤¨
+  //èº«ä»£ã‚ã‚Šå› (ä»®æƒ³ GM å¯¾å¿œ) ã¯éºè¨€ã‚’å°‚ç”¨ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«åˆ‡ã‚Šæ›¿ãˆ
   elseif($SELF->IsDummyBoy() && $RQ_ARGS->last_words){
-    Write($say, "{$ROOM->day_night} dummy_boy", 0); //È¯¸À»ş´Ö¤ò¹¹¿·¤·¤Ê¤¤
+    Write($say, "{$ROOM->day_night} dummy_boy", 0); //ç™ºè¨€æ™‚é–“ã‚’æ›´æ–°ã—ãªã„
   }
-  elseif($SELF->IsDead()){ //»àË´¼Ô¤ÎÎîÏÃ
-    Write($say, 'heaven', 0); //È¯¸À»ş´Ö¤ò¹¹¿·¤·¤Ê¤¤
+  elseif($SELF->IsDead()){ //æ­»äº¡è€…ã®éœŠè©±
+    Write($say, 'heaven', 0); //ç™ºè¨€æ™‚é–“ã‚’æ›´æ–°ã—ãªã„
   }
-  elseif($SELF->IsLive() && $left_time > 0){ //À¸Â¸¼Ô¤ÇÀ©¸Â»ş´ÖÆâ
-    if($ROOM->IsDay()){ //Ãë¤Ï¤½¤Î¤Ş¤ŞÈ¯¸À
+  elseif($SELF->IsLive() && $left_time > 0){ //ç”Ÿå­˜è€…ã§åˆ¶é™æ™‚é–“å†…
+    if($ROOM->IsDay()){ //æ˜¼ã¯ãã®ã¾ã¾ç™ºè¨€
       Write($say, 'day', $spend_time, true);
     }
-    elseif($ROOM->IsNight()){ //Ìë¤ÏÌò¿¦Ëè¤ËÊ¬¤±¤ë
-      $update = $SELF->IsWolf(); //»ş´Ö·Ğ²á¤¹¤ë¤Î¤Ï¿ÍÏµ¤ÎÈ¯¸À¤Î¤ß (ËÜ¿ÍÈ½Äê)
+    elseif($ROOM->IsNight()){ //å¤œã¯å½¹è·æ¯ã«åˆ†ã‘ã‚‹
+      $update = $SELF->IsWolf(); //æ™‚é–“çµŒéã™ã‚‹ã®ã¯äººç‹¼ã®ç™ºè¨€ã®ã¿ (æœ¬äººåˆ¤å®š)
       if(! $update) $spend_time = 0;
 
-      if($user->IsWolf(true)) //¿ÍÏµ
-	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //¸¤¿ÀÈ½Äê
-      elseif($user->IsRole('whisper_mad')) //Óñ¤­¶¸¿Í
+      if($user->IsWolf(true)) //äººç‹¼
+	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //çŠ¬ç¥åˆ¤å®š
+      elseif($user->IsRole('whisper_mad')) //å›ãç‹‚äºº
 	$location = 'mad';
-      elseif($user->IsCommon(true)) //¶¦Í­¼Ô
+      elseif($user->IsCommon(true)) //å…±æœ‰è€…
 	$location = 'common';
-      elseif($user->IsFox(true)) //ÍÅ¸Ñ
+      elseif($user->IsFox(true)) //å¦–ç‹
 	$location = 'fox';
-      else //ÆÈ¤ê¸À
+      else //ç‹¬ã‚Šè¨€
 	$location = 'self_talk';
 
       Write($say, 'night ' . $location, $spend_time, $update);
@@ -266,11 +266,11 @@ function Say($say){
   }
 }
 
-//È¯¸À¤ò DB ¤ËÅĞÏ¿¤¹¤ë
+//ç™ºè¨€ã‚’ DB ã«ç™»éŒ²ã™ã‚‹
 function Write($say, $location, $spend_time, $update = false){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
-  //À¼¤ÎÂç¤­¤µ¤ò·èÄê
+  //å£°ã®å¤§ãã•ã‚’æ±ºå®š
   $voice = $RQ_ARGS->font_type;
   $user = $USERS->ByVirtual($SELF->user_no);
   if($ROOM->IsPlaying() && $user->IsLive()){
@@ -283,101 +283,101 @@ function Write($say, $location, $spend_time, $update = false){
   SendCommit();
 }
 
-//¥²¡¼¥àÄäÂÚ¤Î¥Á¥§¥Ã¥¯
+//ã‚²ãƒ¼ãƒ åœæ»ã®ãƒã‚§ãƒƒã‚¯
 function CheckSilence(){
   global $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
-  if(! $ROOM->IsPlaying() || ! LockTable('game')) return false; //¥¹¥­¥Ã¥×È½Äê + ¥Æ¡¼¥Ö¥ë¥í¥Ã¥¯
+  if(! $ROOM->IsPlaying() || ! LockTable('game')) return false; //ã‚¹ã‚­ãƒƒãƒ—åˆ¤å®š + ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ­ãƒƒã‚¯
 
-  //ºÇ½ªÈ¯¸À»ş¹ï¤«¤é¤Îº¹Ê¬¤ò¼èÆÀ
+  //æœ€çµ‚ç™ºè¨€æ™‚åˆ»ã‹ã‚‰ã®å·®åˆ†ã‚’å–å¾—
   $query = 'SELECT UNIX_TIMESTAMP() - last_updated FROM room WHERE room_no = ' . $ROOM->id;
   $last_updated_pass_time = FetchResult($query);
 
-  //·Ğ²á»ş´Ö¤ò¼èÆÀ
-  if($ROOM->IsRealTime()) //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+  //çµŒéæ™‚é–“ã‚’å–å¾—
+  if($ROOM->IsRealTime()) //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
     GetRealPassTime(&$left_time);
-  else //²¾ÁÛ»ş´ÖÀ©
+  else //ä»®æƒ³æ™‚é–“åˆ¶
     $silence_pass_time = GetTalkPassTime(&$left_time, true);
 
-  if(! $ROOM->IsRealTime() && $left_time > 0){ //²¾ÁÛ»ş´ÖÀ©¤ÎÄÀÌÛÈ½Äê
+  if(! $ROOM->IsRealTime() && $left_time > 0){ //ä»®æƒ³æ™‚é–“åˆ¶ã®æ²ˆé»™åˆ¤å®š
     if($last_updated_pass_time > $TIME_CONF->silence){
-      $str = '¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
+      $str = 'ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ» ' . $silence_pass_time . ' ' . $MESSAGE->silence;
       $ROOM->Talk($str, '', '', NULL, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
     }
   }
-  elseif($left_time == 0){ //À©¸Â»ş´ÖÄ¶²á»ş¤Î½èÍı
-    //¥ª¡¼¥×¥Ë¥ó¥°¤Ê¤éÂ¨ºÂ¤ËÌë¤Ë°Ü¹Ô¤¹¤ë
+  elseif($left_time == 0){ //åˆ¶é™æ™‚é–“è¶…éæ™‚ã®å‡¦ç†
+    //ã‚ªãƒ¼ãƒ—ãƒ‹ãƒ³ã‚°ãªã‚‰å³åº§ã«å¤œã«ç§»è¡Œã™ã‚‹
     if($ROOM->IsOption('open_day') && $ROOM->IsDay() && $ROOM->date == 1){
-      //¥·¡¼¥ó¤ò DB ¤«¤éºÆ¼èÆÀ¤·¤ÆÀÚ¤êÂØ¤ï¤Ã¤Æ¤¤¤Ê¤±¤ì¤Ğ½èÍı
+      //ã‚·ãƒ¼ãƒ³ã‚’ DB ã‹ã‚‰å†å–å¾—ã—ã¦åˆ‡ã‚Šæ›¿ã‚ã£ã¦ã„ãªã‘ã‚Œã°å‡¦ç†
       if(FetchResult('SELECT day_night FROM room' . $ROOM->GetQuery(false)) == 'day'){
-	$ROOM->ChangeNight(); //Ìë¤ËÀÚ¤êÂØ¤¨
-	$ROOM->UpdateTime(true); //ºÇ½ª½ñ¤­¹ş¤ß»ş¹ï¤ò¹¹¿·
+	$ROOM->ChangeNight(); //å¤œã«åˆ‡ã‚Šæ›¿ãˆ
+	$ROOM->UpdateTime(true); //æœ€çµ‚æ›¸ãè¾¼ã¿æ™‚åˆ»ã‚’æ›´æ–°
       }
-      UnlockTable(); //¥Æ¡¼¥Ö¥ë¥í¥Ã¥¯²ò½ü
+      UnlockTable(); //ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ­ãƒƒã‚¯è§£é™¤
       return true;
     }
 
-    //ÆÍÁ³»àÈ¯Æ°¤Ş¤Ç¤Î»ş´Ö¤ò¼èÆÀ
-    $sudden_death_announce = '¤¢¤È' . ConvertTime($TIME_CONF->sudden_death) . '¤Ç' .
+    //çªç„¶æ­»ç™ºå‹•ã¾ã§ã®æ™‚é–“ã‚’å–å¾—
+    $sudden_death_announce = 'ã‚ã¨' . ConvertTime($TIME_CONF->sudden_death) . 'ã§' .
       $MESSAGE->sudden_death_announce;
-    if($ROOM->OvertimeAlert($sudden_death_announce)){ //·Ù¹ğ½ĞÎÏ
-      $ROOM->UpdateTime(); //¹¹¿·»ş´Ö¤ò¹¹¿·
+    if($ROOM->OvertimeAlert($sudden_death_announce)){ //è­¦å‘Šå‡ºåŠ›
+      $ROOM->UpdateTime(); //æ›´æ–°æ™‚é–“ã‚’æ›´æ–°
       $last_updated_pass_time = 0;
     }
-    else{ //°ìÊ¬¹ï¤ß¤ÇÄÉ²Ã¤Î·Ù¹ğ¤ò½Ğ¤¹
+    else{ //ä¸€åˆ†åˆ»ã¿ã§è¿½åŠ ã®è­¦å‘Šã‚’å‡ºã™
       $seconds = $TIME_CONF->sudden_death - $last_updated_pass_time;
       $quotient = $seconds % 60;
       $seconds -= $quotient;
       if($quotient > 0) $seconds += 60;
       if($seconds > $TIME_CONF->sudden_death) $seconds = $TIME_CONF->sudden_death;
       if($seconds > 0){
-	$str = '¤¢¤È' . ConvertTime($seconds) . '¤Ç' . $MESSAGE->sudden_death_announce;
+	$str = 'ã‚ã¨' . ConvertTime($seconds) . 'ã§' . $MESSAGE->sudden_death_announce;
 	$ROOM->OvertimeAlert($str);
       }
     }
     $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
 
-    //À©¸Â»ş´Ö¤ò²á¤®¤Æ¤¤¤¿¤éÌ¤ÅêÉ¼¤Î¿Í¤òÆÍÁ³»à¤µ¤»¤ë
+    //åˆ¶é™æ™‚é–“ã‚’éãã¦ã„ãŸã‚‰æœªæŠ•ç¥¨ã®äººã‚’çªç„¶æ­»ã•ã›ã‚‹
     if($ROOM->sudden_death <= 0){
-      if(abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect){ //¥µ¡¼¥Ğ¥À¥¦¥ó¸¡½Ğ
-	$ROOM->UpdateTime(); //ÆÍÁ³»à¥¿¥¤¥Ş¡¼¤ò¥ê¥»¥Ã¥È
+      if(abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect){ //ã‚µãƒ¼ãƒãƒ€ã‚¦ãƒ³æ¤œå‡º
+	$ROOM->UpdateTime(); //çªç„¶æ­»ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
       }
       else{
-	$ROOM->LoadVote(); //ÅêÉ¼¾ğÊó¤ò¼èÆÀ
+	$ROOM->LoadVote(); //æŠ•ç¥¨æƒ…å ±ã‚’å–å¾—
 	if($ROOM->IsDay()){
-	  //À¸Â¸¼Ô¤ÈÅêÉ¼ºÑ¤ß¤Î¿Í¤Îº¹Ê¬¤ò¼è¤ë
+	  //ç”Ÿå­˜è€…ã¨æŠ•ç¥¨æ¸ˆã¿ã®äººã®å·®åˆ†ã‚’å–ã‚‹
 	  $novote_uname_list = array_diff($USERS->GetLivingUsers(), array_keys($ROOM->vote));
 	}
 	elseif($ROOM->IsNight()){
-	  $vote_data = $ROOM->ParseVote(); //ÅêÉ¼¾ğÊó¤ò¥Ñ¡¼¥¹
+	  $vote_data = $ROOM->ParseVote(); //æŠ•ç¥¨æƒ…å ±ã‚’ãƒ‘ãƒ¼ã‚¹
 	  //PrintData($vote_data, 'Vote Data');
 
 	  $novote_uname_list = array();
-	  foreach($USERS->rows as $user){ //Ì¤ÅêÉ¼¥Á¥§¥Ã¥¯
+	  foreach($USERS->rows as $user){ //æœªæŠ•ç¥¨ãƒã‚§ãƒƒã‚¯
 	    if($user->CheckVote($vote_data) === false) $novote_uname_list[] = $user->uname;
 	  }
 	}
 
-	//Ì¤ÅêÉ¼¼Ô¤òÁ´°÷ÆÍÁ³»à¤µ¤»¤ë
+	//æœªæŠ•ç¥¨è€…ã‚’å…¨å“¡çªç„¶æ­»ã•ã›ã‚‹
 	foreach($novote_uname_list as $uname){
 	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED_' . $ROOM->day_night);
 	}
 	LoversFollowed(true);
 	InsertMediumMessage();
 
-	$ROOM->Talk($MESSAGE->vote_reset); //ÅêÉ¼¥ê¥»¥Ã¥È¥á¥Ã¥»¡¼¥¸
-	$ROOM->Talk($sudden_death_announce); //ÆÍÁ³»à¹ğÃÎ¥á¥Ã¥»¡¼¥¸
-	$ROOM->UpdateTime(); //À©¸Â»ş´Ö¥ê¥»¥Ã¥È
-	DeleteVote(); //ÅêÉ¼¥ê¥»¥Ã¥È
-	CheckVictory(); //¾¡ÇÔ¥Á¥§¥Ã¥¯
+	$ROOM->Talk($MESSAGE->vote_reset); //æŠ•ç¥¨ãƒªã‚»ãƒƒãƒˆãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	$ROOM->Talk($sudden_death_announce); //çªç„¶æ­»å‘ŠçŸ¥ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	$ROOM->UpdateTime(); //åˆ¶é™æ™‚é–“ãƒªã‚»ãƒƒãƒˆ
+	DeleteVote(); //æŠ•ç¥¨ãƒªã‚»ãƒƒãƒˆ
+	CheckVictory(); //å‹æ•—ãƒã‚§ãƒƒã‚¯
       }
     }
   }
-  UnlockTable(); //¥Æ¡¼¥Ö¥ë¥í¥Ã¥¯²ò½ü
+  UnlockTable(); //ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ­ãƒƒã‚¯è§£é™¤
 }
 
-//Â¼Ì¾Á°¡¢ÈÖÃÏ¡¢²¿ÆüÌÜ¡¢ÆüË×¤Ş¤Ç¡Á»ş´Ö¤ò½ĞÎÏ(¾¡ÇÔ¤¬¤Ä¤¤¤¿¤éÂ¼¤ÎÌ¾Á°¤ÈÈÖÃÏ¡¢¾¡ÇÔ¤ò½ĞÎÏ)
+//æ‘åå‰ã€ç•ªåœ°ã€ä½•æ—¥ç›®ã€æ—¥æ²¡ã¾ã§ã€œæ™‚é–“ã‚’å‡ºåŠ›(å‹æ•—ãŒã¤ã„ãŸã‚‰æ‘ã®åå‰ã¨ç•ªåœ°ã€å‹æ•—ã‚’å‡ºåŠ›)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
     $COOKIE, $SOUND, $objection_list, $objection_left_count;
@@ -391,32 +391,32 @@ function OutputGameHeader(){
   $real_time  = $ROOM->IsRealTime();
 
   echo '<table class="game-header"><tr>'."\n";
-  if(($SELF->IsDead() && $ROOM->heaven_mode) || $ROOM->IsAfterGame()){ //Îî³¦¤È¥í¥°±ÜÍ÷»ş
+  if(($SELF->IsDead() && $ROOM->heaven_mode) || $ROOM->IsAfterGame()){ //éœŠç•Œã¨ãƒ­ã‚°é–²è¦§æ™‚
     if($SELF->IsDead() && $ROOM->heaven_mode)
-      echo '<td>&lt;&lt;&lt;Í©Îî¤Î´Ö&gt;&gt;&gt;</td>'."\n";
+      echo '<td>&lt;&lt;&lt;å¹½éœŠã®é–“&gt;&gt;&gt;</td>'."\n";
     else
       echo $ROOM->GenerateTitleTag();
 
-    //²áµî¤ÎÆü¤Î¥í¥°¤Ø¤Î¥ê¥ó¥¯À¸À®
-    echo '<td class="view-option">¥í¥° ';
+    //éå»ã®æ—¥ã®ãƒ­ã‚°ã¸ã®ãƒªãƒ³ã‚¯ç”Ÿæˆ
+    echo '<td class="view-option">ãƒ­ã‚° ';
     $url_header ='<a href="game_log.php' . $url_room . '&date=';
     $url_footer = '#game_top" target="_blank">';
     $url_day    = '&day_night=day'   . $url_footer;
     $url_night  = '&day_night=night' . $url_footer;
 
-    echo $url_header . '0&day_night=beforegame' . $url_footer . '0(³«»ÏÁ°)</a>'."\n";
-    if($ROOM->IsOption('open_day')) echo $url_header . '1' . $url_day . '1(Ãë)</a>'."\n";
-    echo $url_header . '1' . $url_night . '1(Ìë)</a>'."\n";
+    echo $url_header . '0&day_night=beforegame' . $url_footer . '0(é–‹å§‹å‰)</a>'."\n";
+    if($ROOM->IsOption('open_day')) echo $url_header . '1' . $url_day . '1(æ˜¼)</a>'."\n";
+    echo $url_header . '1' . $url_night . '1(å¤œ)</a>'."\n";
     for($i = 2; $i < $ROOM->date; $i++){
-      echo $url_header . $i . $url_day   . $i . '(Ãë)</a>'."\n";
-      echo $url_header . $i . $url_night . $i . '(Ìë)</a>'."\n";
+      echo $url_header . $i . $url_day   . $i . '(æ˜¼)</a>'."\n";
+      echo $url_header . $i . $url_night . $i . '(å¤œ)</a>'."\n";
     }
     if($ROOM->IsNight() && $ROOM->heaven_mode){
-      echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(Ãë)</a>'."\n";
+      echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(æ˜¼)</a>'."\n";
     }
     elseif($ROOM->IsAfterGame()){
       if(FetchResult($ROOM->GetQuery(true, 'talk') . " AND location LIKE 'day%'") > 0){
-	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(Ãë)</a>'."\n";
+	echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(æ˜¼)</a>'."\n";
       }
     }
 
@@ -427,46 +427,46 @@ function OutputGameHeader(){
   }
   else{
     echo $ROOM->GenerateTitleTag() . '<td class="view-option">'."\n";
-    if($SELF->IsDead() && $ROOM->dead_mode){ //»àË´¼Ô¤Î¾ì¹ç¤Î¡¢¿¿¤óÃæ¤ÎÁ´É½¼¨ÃÏ¾å¥â¡¼¥É
+    if($SELF->IsDead() && $ROOM->dead_mode){ //æ­»äº¡è€…ã®å ´åˆã®ã€çœŸã‚“ä¸­ã®å…¨è¡¨ç¤ºåœ°ä¸Šãƒ¢ãƒ¼ãƒ‰
       $url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload .
 	$url_sound . $url_list . '#game_top';
 
       echo <<<EOF
 <form method="POST" action="{$url}" name="reload_middle_frame" target="middle">
-<input type="submit" value="¹¹¿·">
+<input type="submit" value="æ›´æ–°">
 </form>
 
 EOF;
     }
   }
 
-  if(! $ROOM->IsAfterGame()){ //¥²¡¼¥à½ªÎ»¸å¤Ï¼«Æ°¹¹¿·¤·¤Ê¤¤
+  if(! $ROOM->IsAfterGame()){ //ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œã¯è‡ªå‹•æ›´æ–°ã—ãªã„
     $url_header = '<a target="_top" href="game_frame.php' . $url_room .
       $url_dead . $url_heaven . $url_list;
     OutputAutoReloadLink($url_header . $url_sound  . '&auto_reload=');
 
     $url = $url_header . $url_reload . '&play_sound=';
-    echo ' [²»¤Ç¤ªÃÎ¤é¤»](' .
+    echo ' [éŸ³ã§ãŠçŸ¥ã‚‰ã›](' .
       ($RQ_ARGS->play_sound ?  'on ' . $url . 'off">off</a>' : $url . 'on">on</a> off') .
       ')'."\n";
   }
 
-  //¥×¥ì¥¤¥ä¡¼¥ê¥¹¥È¤ÎÉ½¼¨°ÌÃÖ
+  //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒªã‚¹ãƒˆã®è¡¨ç¤ºä½ç½®
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
-    $url_reload . $url_sound  . '&list_down=' . ($RQ_ARGS->list_down ? 'off">¢¬' : 'on">¢­') .
-    '¥ê¥¹¥È</a>'."\n";
+    $url_reload . $url_sound  . '&list_down=' . ($RQ_ARGS->list_down ? 'off">â†‘' : 'on">â†“') .
+    'ãƒªã‚¹ãƒˆ</a>'."\n";
   if($ROOM->IsFinished()) OutputLogLink();
 
-  //ÌëÌÀ¤±¤ò²»¤Ç¤ªÃÎ¤é¤»¤¹¤ë
+  //å¤œæ˜ã‘ã‚’éŸ³ã§ãŠçŸ¥ã‚‰ã›ã™ã‚‹
   if($RQ_ARGS->play_sound){
-    //ÌëÌÀ¤±¤Î¾ì¹ç
+    //å¤œæ˜ã‘ã®å ´åˆ
     if($COOKIE->day_night != $ROOM->day_night && $ROOM->IsDay()) $SOUND->Output('morning');
 
-    //°ÛµÄ¤¢¤ê¡¢¤ò²»¤ÇÃÎ¤é¤»¤ë
-    $cookie_objection_list = explode(',', $COOKIE->objection); //¥¯¥Ã¥­¡¼¤ÎÃÍ¤òÇÛÎó¤Ë³ÊÇ¼¤¹¤ë
+    //ç•°è­°ã‚ã‚Šã€ã‚’éŸ³ã§çŸ¥ã‚‰ã›ã‚‹
+    $cookie_objection_list = explode(',', $COOKIE->objection); //ã‚¯ãƒƒã‚­ãƒ¼ã®å€¤ã‚’é…åˆ—ã«æ ¼ç´ã™ã‚‹
     $count = count($objection_list);
-    for($i = 0; $i < $count; $i++){ //º¹Ê¬¤ò·×»» (index ¤Ï 0 ¤«¤é)
-      //º¹Ê¬¤¬¤¢¤ì¤ĞÀ­ÊÌ¤ò³ÎÇ§¤·¤Æ²»¤òÌÄ¤é¤¹
+    for($i = 0; $i < $count; $i++){ //å·®åˆ†ã‚’è¨ˆç®— (index ã¯ 0 ã‹ã‚‰)
+      //å·®åˆ†ãŒã‚ã‚Œã°æ€§åˆ¥ã‚’ç¢ºèªã—ã¦éŸ³ã‚’é³´ã‚‰ã™
       if((int)$objection_list[$i] > (int)$cookie_objection_list[$i]){
 	$SOUND->Output('objection_' . $USERS->ByID($i + 1)->sex, true);
       }
@@ -475,59 +475,59 @@ EOF;
   echo '</td></tr>'."\n".'</table>'."\n";
 
   switch($ROOM->day_night){
-  case 'beforegame': //³«»ÏÁ°¤ÎÃí°Õ¤ò½ĞÎÏ
+  case 'beforegame': //é–‹å§‹å‰ã®æ³¨æ„ã‚’å‡ºåŠ›
     echo '<div class="caution">'."\n";
-    echo '¥²¡¼¥à¤ò³«»Ï¤¹¤ë¤Ë¤ÏÁ´°÷¤¬¥²¡¼¥à³«»Ï¤ËÅêÉ¼¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹';
-    echo '<span>(ÅêÉ¼¤·¤¿¿Í¤ÏÂ¼¿Í¥ê¥¹¥È¤ÎÇØ·Ê¤¬ÀÖ¤¯¤Ê¤ê¤Ş¤¹)</span>'."\n";
+    echo 'ã‚²ãƒ¼ãƒ ã‚’é–‹å§‹ã™ã‚‹ã«ã¯å…¨å“¡ãŒã‚²ãƒ¼ãƒ é–‹å§‹ã«æŠ•ç¥¨ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™';
+    echo '<span>(æŠ•ç¥¨ã—ãŸäººã¯æ‘äººãƒªã‚¹ãƒˆã®èƒŒæ™¯ãŒèµ¤ããªã‚Šã¾ã™)</span>'."\n";
     echo '</div>'."\n";
     break;
 
   case 'day':
-    $time_message = '¡¡ÆüË×¤Ş¤Ç ';
+    $time_message = 'ã€€æ—¥æ²¡ã¾ã§ ';
     break;
 
   case 'night':
-    $time_message = '¡¡ÌëÌÀ¤±¤Ş¤Ç ';
+    $time_message = 'ã€€å¤œæ˜ã‘ã¾ã§ ';
     break;
 
-  case 'aftergame': //¾¡ÇÔ·ë²Ì¤ò½ĞÎÏ¤·¤Æ½èÍı½ªÎ»
+  case 'aftergame': //å‹æ•—çµæœã‚’å‡ºåŠ›ã—ã¦å‡¦ç†çµ‚äº†
     OutputVictory();
     return;
   }
 
-  if($ROOM->IsBeforeGame()) OutputGameOption(); //¥²¡¼¥à¥ª¥×¥·¥ç¥ó¤òÀâÌÀ
+  if($ROOM->IsBeforeGame()) OutputGameOption(); //ã‚²ãƒ¼ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’èª¬æ˜
   echo '<table class="time-table"><tr>'."\n";
-  if(! $ROOM->IsAfterGame()){ //¥²¡¼¥à½ªÎ»¸å°Ê³°¤Ê¤é¡¢¥µ¡¼¥Ğ¤È¤Î»ş´Ö¥º¥ì¤òÉ½¼¨
+  if(! $ROOM->IsAfterGame()){ //ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œä»¥å¤–ãªã‚‰ã€ã‚µãƒ¼ãƒã¨ã®æ™‚é–“ã‚ºãƒ¬ã‚’è¡¨ç¤º
     $date_str = TZDate('Y, m, j, G, i, s', $ROOM->system_time);
     echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
-    echo '<td>¥µ¡¼¥Ğ¤È¥í¡¼¥«¥ëPC¤Î»ş´Ö¥º¥ì(¥é¥°´Ş)¡§ ' . '<span><script type="text/javascript">' .
-      "output_diff_time('$date_str');" . '</script>' . 'ÉÃ</span></td></td>'."\n";
+    echo '<td>ã‚µãƒ¼ãƒã¨ãƒ­ãƒ¼ã‚«ãƒ«PCã®æ™‚é–“ã‚ºãƒ¬(ãƒ©ã‚°å«)ï¼š ' . '<span><script type="text/javascript">' .
+      "output_diff_time('$date_str');" . '</script>' . 'ç§’</span></td></td>'."\n";
     echo '<tr>';
   }
-  OutputTimeTable(); //·Ğ²áÆü¿ô¤ÈÀ¸Â¸¿Í¿ô¤ò½ĞÎÏ
+  OutputTimeTable(); //çµŒéæ—¥æ•°ã¨ç”Ÿå­˜äººæ•°ã‚’å‡ºåŠ›
 
   $left_time = 0;
   if($ROOM->IsBeforeGame()){
     echo '<td class="real-time">';
-    if($real_time){ //¼Â»ş´Ö¤ÎÀ©¸Â»ş´Ö¤ò¼èÆÀ
-      echo "ÀßÄê»ş´Ö¡§ Ãë <span>{$ROOM->real_time->day}Ê¬</span> / " .
-	"Ìë <span>{$ROOM->real_time->night}Ê¬</span>";
+    if($real_time){ //å®Ÿæ™‚é–“ã®åˆ¶é™æ™‚é–“ã‚’å–å¾—
+      echo "è¨­å®šæ™‚é–“ï¼š æ˜¼ <span>{$ROOM->real_time->day}åˆ†</span> / " .
+	"å¤œ <span>{$ROOM->real_time->night}åˆ†</span>";
     }
-    echo '¡¡ÆÍÁ³»à¡§<span>' . ConvertTime($TIME_CONF->sudden_death) . '</span></td>';
+    echo 'ã€€çªç„¶æ­»ï¼š<span>' . ConvertTime($TIME_CONF->sudden_death) . '</span></td>';
   }
   if($ROOM->IsPlaying()){
-    if($real_time){ //¥ê¥¢¥ë¥¿¥¤¥àÀ©
+    if($real_time){ //ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ åˆ¶
       GetRealPassTime(&$left_time);
       echo '<td class="real-time"><form name="realtime_form">'."\n";
       echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
       echo '</form></td>'."\n";
     }
-    else{ //²¾ÁÛ»ş´ÖÀ©
+    else{ //ä»®æƒ³æ™‚é–“åˆ¶
       echo '<td>' . $time_message . GetTalkPassTime(&$left_time) . '</td>'."\n";
     }
   }
 
-  //°ÛµÄ¤¢¤ê¡¢¤Î¥Ü¥¿¥ó(Ìë¤È»à¼Ô¥â¡¼¥É°Ê³°)
+  //ç•°è­°ã‚ã‚Šã€ã®ãƒœã‚¿ãƒ³(å¤œã¨æ­»è€…ãƒ¢ãƒ¼ãƒ‰ä»¥å¤–)
   if($ROOM->IsBeforeGame() ||
      ($ROOM->IsDay() && ! $ROOM->dead_mode && ! $ROOM->heaven_mode && $left_time > 0)){
     $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list . '#game_top';
@@ -544,28 +544,28 @@ EOF;
 
   if($ROOM->IsPlaying() && $left_time == 0){
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
-    //PrintData($ROOM->sudden_death); //¥Æ¥¹¥ÈÍÑ
+    //PrintData($ROOM->sudden_death); //ãƒ†ã‚¹ãƒˆç”¨
     if($ROOM->sudden_death > 0){
       echo $MESSAGE->sudden_death_time . ConvertTime($ROOM->sudden_death) . '<br>'."\n";
     }
   }
 }
 
-//Å·¹ñ¤ÎÎîÏÃ¥í¥°½ĞÎÏ
+//å¤©å›½ã®éœŠè©±ãƒ­ã‚°å‡ºåŠ›
 function OutputHeavenTalkLog(){
   global $ROOM, $USERS;
 
-  //½ĞÎÏ¾ò·ï¤ò¥Á¥§¥Ã¥¯
-  // if($SELF->IsDead()) return false; //¸Æ¤Ó½Ğ¤·Â¦¤Ç¥Á¥§¥Ã¥¯¤¹¤ë¤Î¤Ç¸½ºß¤ÏÉÔÍ×
+  //å‡ºåŠ›æ¡ä»¶ã‚’ãƒã‚§ãƒƒã‚¯
+  // if($SELF->IsDead()) return false; //å‘¼ã³å‡ºã—å´ã§ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã®ã§ç¾åœ¨ã¯ä¸è¦
 
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk');
   foreach($ROOM->LoadTalk(true) as $talk){
-    $user = $USERS->ByUname($talk->uname); //¥æ¡¼¥¶¤ò¼èÆÀ
+    $user = $USERS->ByUname($talk->uname); //ãƒ¦ãƒ¼ã‚¶ã‚’å–å¾—
 
-    $symbol = '<font color="' . $user->color . '">¢¡</font>';
+    $symbol = '<font color="' . $user->color . '">â—†</font>';
     $handle_name = $user->handle_name;
-    //Îî³¦¤ÇÌò¿¦¤¬¸ø³«¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Î¤ß HN ¤òÄÉ²Ã
+    //éœŠç•Œã§å½¹è·ãŒå…¬é–‹ã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿ HN ã‚’è¿½åŠ 
     if($ROOM->IsOpenCast()) $handle_name .= '<span>(' . $talk->uname . ')</span>';
 
     $builder->RawAddTalk($symbol, $handle_name, $talk->sentence, $talk->font_type);
@@ -573,41 +573,41 @@ function OutputHeavenTalkLog(){
   $builder->EndTalk();
 }
 
-//Ãë¤Î¼«Ê¬¤ÎÌ¤ÅêÉ¼¥Á¥§¥Ã¥¯
+//æ˜¼ã®è‡ªåˆ†ã®æœªæŠ•ç¥¨ãƒã‚§ãƒƒã‚¯
 function CheckSelfVoteDay(){
   global $MESSAGE, $ROOM, $USERS, $SELF;
 
-  //ÅêÉ¼²ó¿ô¤ò¼èÆÀ
+  //æŠ•ç¥¨å›æ•°ã‚’å–å¾—
   $vote_times = $ROOM->GetVoteTimes();
-  $str = '<div class="self-vote">ÅêÉ¼ ' . $vote_times . ' ²óÌÜ¡§';
+  $str = '<div class="self-vote">æŠ•ç¥¨ ' . $vote_times . ' å›ç›®ï¼š';
 
-  //ÅêÉ¼ÂĞ¾İ¼Ô¤ò¼èÆÀ
+  //æŠ•ç¥¨å¯¾è±¡è€…ã‚’å–å¾—
   $query = 'SELECT target_uname FROM vote' . $ROOM->GetQuery() .
     " AND situation = 'VOTE_KILL' AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
-  $str .= ($target_uname === false ? '<font color="red">¤Ş¤ÀÅêÉ¼¤·¤Æ¤¤¤Ş¤»¤ó</font>' :
-	   $USERS->GetHandleName($target_uname, true) . '¤µ¤ó¤ËÅêÉ¼ºÑ¤ß') . '</div>'."\n";
+  $str .= ($target_uname === false ? '<font color="red">ã¾ã æŠ•ç¥¨ã—ã¦ã„ã¾ã›ã‚“</font>' :
+	   $USERS->GetHandleName($target_uname, true) . 'ã•ã‚“ã«æŠ•ç¥¨æ¸ˆã¿') . '</div>'."\n";
   if($target_uname === false){
     $str .= '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>'."\n";
   }
   echo $str;
 }
 
-//¼«Ê¬¤Î°ä¸À¤ò½ĞÎÏ
+//è‡ªåˆ†ã®éºè¨€ã‚’å‡ºåŠ›
 function OutputSelfLastWords(){
   global $ROOM, $SELF;
 
-  if($ROOM->IsAfterGame()) return false; //¥²¡¼¥à½ªÎ»¸å¤ÏÉ½¼¨¤·¤Ê¤¤
+  if($ROOM->IsAfterGame()) return false; //ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œã¯è¡¨ç¤ºã—ãªã„
 
   $query = 'SELECT last_words FROM user_entry' . $ROOM->GetQuery(false) .
     " AND uname = '{$SELF->uname}' AND user_no > 0";
   if(($str = FetchResult($query)) == '') return false;
-  LineToBR(&$str); //²ş¹Ô¥³¡¼¥É¤òÊÑ´¹
+  LineToBR(&$str); //æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
   if($str == '') return false;
 
   echo <<<EOF
-<table class="lastwords" cellspacing="5"><tr>
-<td class="lastwords-title">¼«Ê¬¤Î°ä¸À</td>
+<table class="lastwords"><tr>
+<td class="lastwords-title">è‡ªåˆ†ã®éºè¨€</td>
 <td class="lastwords-body">{$str}</td>
 </tr></table>
 

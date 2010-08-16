@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡ÇÈÍðËü¾æ (random_luck)
-  ¡û»ÅÍÍ
-  ¡¦ÆÀÉ¼¿ô¤Ë -2¡Á+2 ¤ÎÈÏ°Ï¤Ç¥é¥ó¥À¥à¤ËÊäÀµ¤¬¤«¤«¤ë
+  â—†æ³¢ä¹±ä¸‡ä¸ˆ (random_luck)
+  â—‹ä»•æ§˜
+  ãƒ»å¾—ç¥¨æ•°ã« -2ã€œ+2 ã®ç¯„å›²ã§ãƒ©ãƒ³ãƒ€ãƒ ã«è£œæ­£ãŒã‹ã‹ã‚‹
 */
 class Role_random_luck extends Role{
   function Role_random_luck(){ $this->__construct(); }

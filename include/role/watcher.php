@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡Ëµ´Ñ¼Ô (watcher)
-  ¡û»ÅÍÍ
-  ¡¦ÅêÉ¼¿ô¤¬ 0 ¤Ç¸ÇÄê¤µ¤ì¤ë
+  â—†å‚è¦³è€… (watcher)
+  â—‹ä»•æ§˜
+  ãƒ»æŠ•ç¥¨æ•°ãŒ 0 ã§å›ºå®šã•ã‚Œã‚‹
 */
 class Role_watcher extends Role{
   function Role_watcher(){ $this->__construct(); }

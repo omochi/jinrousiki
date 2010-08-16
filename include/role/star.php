@@ -1,8 +1,8 @@
 <?php
 /*
-  ¢¡¿Íµ¤¼Ô (star)
-  ¡û»ÅÍÍ
-  ¡¦ÆÀÉ¼¿ô¤¬ -1 ¤µ¤ì¤ë
+  â—†äººæ°—è€… (star)
+  â—‹ä»•æ§˜
+  ãƒ»å¾—ç¥¨æ•°ãŒ -1 ã•ã‚Œã‚‹
 */
 class Role_star extends Role{
   function Role_star(){ $this->__construct(); }

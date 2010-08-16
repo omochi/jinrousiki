@@ -1,26 +1,26 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputInfoPageHeader('¥Ç¥Ğ¥Ã¥°¾ğÊó', 1);
+OutputInfoPageHeader('ãƒ‡ãƒãƒƒã‚°æƒ…å ±', 1);
 ?>
 <p>
 Ver. 1.4.0
-<a href="#140alpha24">¦Á24</a>
-<a href="#140beta2">¦Â2</a>
-<a href="#140beta3">¦Â3</a>
-<a href="#140beta4">¦Â4</a>
-<a href="#140beta11">¦Â11</a>
-<a href="#140beta12">¦Â12</a>
-<a href="#140beta13">¦Â13</a>
+<a href="#140alpha24">Î±24</a>
+<a href="#140beta2">Î²2</a>
+<a href="#140beta3">Î²3</a>
+<a href="#140beta4">Î²4</a>
+<a href="#140beta11">Î²11</a>
+<a href="#140beta12">Î²12</a>
+<a href="#140beta13">Î²13</a>
 </p>
 
-<h2><a id="140beta13">Ver. 1.4.0 ¦Â13</a></h2>
-<h3>include/game_vote_functions.php % 973¹ÔÌÜÉÕ¶á</h3>
+<h2><a id="140beta13">Ver. 1.4.0 Î²13</a></h2>
+<h3>include/game_vote_functions.php % 973è¡Œç›®ä»˜è¿‘</h3>
 <pre>
-¡ß $delete_role_list = array('lovers', 'admire_lovers', 'copied', 'copied_trick', 'copied_soul',
-¡û $delete_role_list = array('lovers', 'challenge_lovers', 'copied', 'copied_trick', 'copied_soul',
+Ã— $delete_role_list = array('lovers', 'admire_lovers', 'copied', 'copied_trick', 'copied_soul',
+â—‹ $delete_role_list = array('lovers', 'challenge_lovers', 'copied', 'copied_trick', 'copied_soul',
 </pre>
-<h3>include/game_vote_functions.php % 2510¹ÔÌÜÉÕ¶á (2010/07/19 (Mon) 09:41)</h3>
+<h3>include/game_vote_functions.php % 2510è¡Œç›®ä»˜è¿‘ (2010/07/19 (Mon) 09:41)</h3>
 <h4>[before]</h4>
 <pre>
 case 'doll_master':
@@ -35,7 +35,7 @@ case 'telepath_scanner':
 
 case 'doll_master':
 </pre>
-<h3>game_vote.php % 490¹ÔÌÜÉÕ¶á (2010/07/20 (Tue) 01:58)</h3>
+<h3>game_vote.php % 490è¡Œç›®ä»˜è¿‘ (2010/07/20 (Tue) 01:58)</h3>
 <h4>[before]</h4>
 <pre>
 $target->AddRole($add_role);
@@ -45,14 +45,14 @@ $target->AddRole($add_role);
 $target->AddRole($add_role);
 $target->ParseRoles($target->GetRole());
 </pre>
-<h3>include/game_functions.php % 835¹ÔÌÜÉÕ¶á (2010/07/21 (Wed) 01:02)</h3>
+<h3>include/game_functions.php % 835è¡Œç›®ä»˜è¿‘ (2010/07/21 (Wed) 01:02)</h3>
 <pre>
-¡ß elseif($said_user->IsLonely('silver_wolf')){
-¡û elseif($said_user->IsWolf() && $said_user->IsLonely()){
+Ã— elseif($said_user->IsLonely('silver_wolf')){
+â—‹ elseif($said_user->IsWolf() && $said_user->IsLonely()){
 </pre>
 
-<h2><a id="140beta12">Ver. 1.4.0 ¦Â12</a></h2>
-<h3>include/game_vote_functinons.php % 176¹ÔÌÜÉÕ¶á</h3>
+<h2><a id="140beta12">Ver. 1.4.0 Î²12</a></h2>
+<h3>include/game_vote_functinons.php % 176è¡Œç›®ä»˜è¿‘</h3>
 <h4>[before]</h4>
 <pre>
 	$random_replace_list = $CAST_CONF->GenerateRandomList($replace_human_list);
@@ -63,8 +63,8 @@ $target->ParseRoles($target->GetRole());
 	$CAST_CONF->AddRandom($role_list, $replace_human_list, $over_count);
 </pre>
 
-<h2><a id="140beta11">Ver. 1.4.0 ¦Â11</a></h2>
-<h3>include/user_class.php % 190¹ÔÌÜÉÕ¶á</h3>
+<h2><a id="140beta11">Ver. 1.4.0 Î²11</a></h2>
+<h3>include/user_class.php % 190è¡Œç›®ä»˜è¿‘</h3>
 <h4>[before]</h4>
 <pre>
   function IsLonely(){
@@ -78,42 +78,42 @@ $target->ParseRoles($target->GetRole());
     return $is_role && ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 </pre>
-<h3>include/user_class.php % 230¹ÔÌÜÉÕ¶á (2010/07/07 (Wed) 21:40)</h3>
+<h3>include/user_class.php % 230è¡Œç›®ä»˜è¿‘ (2010/07/07 (Wed) 21:40)</h3>
 <pre>
-¡ß return $ROOM->date > 1 && $ROOM < 5 && $this->IsRole('challenge_lovers');
-¡û return $ROOM->date > 1 && $ROOM->date < 5 && $this->IsRole('challenge_lovers');
+Ã— return $ROOM->date > 1 && $ROOM < 5 && $this->IsRole('challenge_lovers');
+â—‹ return $ROOM->date > 1 && $ROOM->date < 5 && $this->IsRole('challenge_lovers');
 </pre>
-<h3>game_vote.php % 295¹ÔÌÜÉÕ¶á (2010/07/07 (Wed) 23:16)</h3>
+<h3>game_vote.php % 295è¡Œç›®ä»˜è¿‘ (2010/07/07 (Wed) 23:16)</h3>
 <pre>
-¡ß if(! $SELF->IsRole('scanner', 'evoke_scanner')){
-¡û if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
+Ã— if(! $SELF->IsRole('scanner', 'evoke_scanner')){
+â—‹ if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
 </pre>
-<h3>include/game_vote_functions.php % 2009¹ÔÌÜÉÕ¶á (2010/07/09 (Fri) 01:18)</h3>
+<h3>include/game_vote_functions.php % 2009è¡Œç›®ä»˜è¿‘ (2010/07/09 (Fri) 01:18)</h3>
 <pre>
-¡ß if($target->IsRole('escaper')) break; //Æ¨Ë´¼Ô¤Ï°Å»¦ÉÔ²Ä
-¡û if($target->IsRole('escaper')) continue; //Æ¨Ë´¼Ô¤Ï°Å»¦ÉÔ²Ä
+Ã— if($target->IsRole('escaper')) break; //é€ƒäº¡è€…ã¯æš—æ®ºä¸å¯
+â—‹ if($target->IsRole('escaper')) continue; //é€ƒäº¡è€…ã¯æš—æ®ºä¸å¯
 </pre>
-<h3>include/game_functions.php % 834¹ÔÌÜÉÕ¶á (2010/07/11 (Sun) 02:22)</h3>
+<h3>include/game_functions.php % 834è¡Œç›®ä»˜è¿‘ (2010/07/11 (Sun) 02:22)</h3>
 <pre>
-¡ß elseif($said_user->IsLonely('wolf')){
-¡û elseif($said_user->IsLonely('silver_wolf')){
+Ã— elseif($said_user->IsLonely('wolf')){
+â—‹ elseif($said_user->IsLonely('silver_wolf')){
 </pre>
 
-<h2><a id="140beta4">Ver. 1.4.0 ¦Â4</a></h2>
-<h3>user_manager.php % 35¹ÔÌÜÉÕ¶á</h3>
+<h2><a id="140beta4">Ver. 1.4.0 Î²4</a></h2>
+<h3>user_manager.php % 35è¡Œç›®ä»˜è¿‘</h3>
 <h4>[before]</h4>
 <pre>
-  //¹àÌÜÈï¤ê¥Á¥§¥Ã¥¯
+  //é …ç›®è¢«ã‚Šãƒã‚§ãƒƒã‚¯
 </pre>
 <h4>[after]</h4>
 <pre>
   $query = "SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = " . $icon_no;
-  if(FetchResult($query) < 1) OutputActionResult('Â¼¿ÍÅĞÏ¿ [ÆşÎÏ¥¨¥é¡¼]', 'Ìµ¸ú¤Ê¥¢¥¤¥³¥óÈÖ¹æ¤Ç¤¹');
+  if(FetchResult($query) < 1) OutputActionResult('æ‘äººç™»éŒ² [å…¥åŠ›ã‚¨ãƒ©ãƒ¼]', 'ç„¡åŠ¹ãªã‚¢ã‚¤ã‚³ãƒ³ç•ªå·ã§ã™');
 
-  //¹àÌÜÈï¤ê¥Á¥§¥Ã¥¯
+  //é …ç›®è¢«ã‚Šãƒã‚§ãƒƒã‚¯
 </pre>
 
-<h3>user_manager.php % 275¹ÔÌÜÉÕ¶á (2010/02/24 (Wed) 21:40)</h3>
+<h3>user_manager.php % 275è¡Œç›®ä»˜è¿‘ (2010/02/24 (Wed) 21:40)</h3>
 <h4>[before]</h4>
 <pre>
 if($ROOM->IsOptionGroup('mania')) $wish_role_list[] = 'mania';
@@ -125,7 +125,7 @@ if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
 }
 </pre>
 
-<h3>include/game_functons.php % 751¹ÔÌÜÉÕ¶á (2010/02/28 (Sun) 02:00)</h3>
+<h3>include/game_functons.php % 751è¡Œç›®ä»˜è¿‘ (2010/02/28 (Sun) 02:00)</h3>
 <h4>[before]</h4>
 <pre>
 $builder->AddSystemTalk($sentence, 'dummy-boy');
@@ -136,39 +136,39 @@ LineToBR($sentence);
 $builder->AddSystemTalk($sentence, 'dummy-boy');
 </pre>
 
-<h3>game_vote.php % 352¹ÔÌÜÉÕ¶á (2010/02/28 (Sun) 20:25)</h3>
+<h3>game_vote.php % 352è¡Œç›®ä»˜è¿‘ (2010/02/28 (Sun) 20:25)</h3>
 <pre>
-¡ß $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
-¡û $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
+Ã— $sub_role_list = $GAME_CONF->sub_role_group_list['sudden-death'];
+â—‹ $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
 </pre>
 
-<h2><a id="140beta3">Ver. 1.4.0 ¦Â3</a></h2>
-<h3>game_play.php % 259¹ÔÌÜÉÕ¶á</h3>
+<h2><a id="140beta3">Ver. 1.4.0 Î²3</a></h2>
+<h3>game_play.php % 259è¡Œç›®ä»˜è¿‘</h3>
 <pre>
-¡ß if($ROOM->IsPlaying() && $virtual->IsLive()){
-¡û if($ROOM->IsPlaying() && $virtual_self->IsLive()){
+Ã— if($ROOM->IsPlaying() && $virtual->IsLive()){
+â—‹ if($ROOM->IsPlaying() && $virtual_self->IsLive()){
 </pre>
 
-<h3>include/game_format.php % 60¹ÔÌÜÉÕ¶á</h3>
+<h3>include/game_format.php % 60è¡Œç›®ä»˜è¿‘</h3>
 <pre>
-¡ß global $RQ_ARGS;
-¡û global $GAME_CONF, $RQ_ARGS;
+Ã— global $RQ_ARGS;
+â—‹ global $GAME_CONF, $RQ_ARGS;
 </pre>
 
-<h3>include/game_format.php % 83¹ÔÌÜÉÕ¶á</h3>
+<h3>include/game_format.php % 83è¡Œç›®ä»˜è¿‘</h3>
 <h4>[before]</h4>
 <pre>
-if($RQ_ARGS->add_role) $handle_name .= $user->GenarateShortRoleName(); //Ìò¿¦É½¼¨¥â¡¼¥ÉÂĞ±ş
+if($RQ_ARGS->add_role) $handle_name .= $user->GenarateShortRoleName(); //å½¹è·è¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰å¯¾å¿œ
 </pre>
 <h4>[after]</h4>
 <pre>
-if($RQ_ARGS->add_role){ //Ìò¿¦É½¼¨¥â¡¼¥ÉÂĞ±ş
+if($RQ_ARGS->add_role){ //å½¹è·è¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰å¯¾å¿œ
   $real_user = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
   $handle_name .= $real_user->GenerateShortRoleName();
 }
 </pre>
 
-<h3>include/talk_class.php % 38¹ÔÌÜÉÕ¶á</h3>
+<h3>include/talk_class.php % 38è¡Œç›®ä»˜è¿‘</h3>
 <h4>[before]</h4>
 <pre>
 case 'dummy_boy':
@@ -181,19 +181,19 @@ case 'dummy_boy':
   if($this->type == $this->uname){
 </pre>
 
-<h3>include/game_functions.php % 236¹ÔÌÜÉÕ¶á (2010/02/22 (Mon) 23:00)</h3>
+<h3>include/game_functions.php % 236è¡Œç›®ä»˜è¿‘ (2010/02/22 (Mon) 23:00)</h3>
 <pre>
-¡ß $handle_name .= $real_user->GenarateShortRoleName();
-¡û $handle_name .= $real_user->GenerateShortRoleName();
+Ã— $handle_name .= $real_user->GenarateShortRoleName();
+â—‹ $handle_name .= $real_user->GenerateShortRoleName();
 </pre>
 
-<h3>include/user_class.php % 216¹ÔÌÜÉÕ¶á</h3>
+<h3>include/user_class.php % 216è¡Œç›®ä»˜è¿‘</h3>
 <pre>
-¡ß function GenarateShortRoleName(){
-¡û function GenerateShortRoleName(){
+Ã— function GenarateShortRoleName(){
+â—‹ function GenerateShortRoleName(){
 </pre>
 
-<h3>include/game_functons.php % 461¹ÔÌÜÉÕ¶á (2010/02/28 (Sun) 02:00)</h3>
+<h3>include/game_functons.php % 461è¡Œç›®ä»˜è¿‘ (2010/02/28 (Sun) 02:00)</h3>
 <h4>[before]</h4>
 <pre>
 $builder->AddSystemTalk($sentence, 'dummy-boy');
@@ -205,39 +205,39 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 </pre>
 
 
-<h2><a id="140beta2">Ver. 1.4.0 ¦Â2</a></h2>
-<h3>include/game_vote_functions.php % 1188¹ÔÌÜ</h3>
+<h2><a id="140beta2">Ver. 1.4.0 Î²2</a></h2>
+<h3>include/game_vote_functions.php % 1188è¡Œç›®</h3>
 <pre>
-¡ß elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
-¡û elseif(! $ROOM->IsOpenCast() && $user->IsRole('evoke_scanner')){
+Ã— elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
+â—‹ elseif(! $ROOM->IsOpenCast() && $user->IsRole('evoke_scanner')){
 </pre>
 
-<h3>game_play.php % 449 ¹ÔÌÜ</h3>
+<h3>game_play.php % 449 è¡Œç›®</h3>
 <pre>
-¡ß array_push($actor_list, 'poison_cat');
-¡û array_push($actor_list, '%cat', 'revive_fox');
+Ã— array_push($actor_list, 'poison_cat');
+â—‹ array_push($actor_list, '%cat', 'revive_fox');
 </pre>
 
-<h2><a id="140alpha24">Ver. 1.4.0 ¦Á24</a></h2>
-<h3>game_play.php % 731 ¹ÔÌÜ</h3>
+<h2><a id="140alpha24">Ver. 1.4.0 Î±24</a></h2>
+<h3>game_play.php % 731 è¡Œç›®</h3>
 <pre>
-¡ß $USERS->GetHandleName($target_uname) . '¤µ¤ó¤ËÅêÉ¼ºÑ¤ß');
-¡û $USERS->GetHandleName($target_uname, true) . '¤µ¤ó¤ËÅêÉ¼ºÑ¤ß');
+Ã— $USERS->GetHandleName($target_uname) . 'ã•ã‚“ã«æŠ•ç¥¨æ¸ˆã¿');
+â—‹ $USERS->GetHandleName($target_uname, true) . 'ã•ã‚“ã«æŠ•ç¥¨æ¸ˆã¿');
 </pre>
 
-<h3>include/game_functions.php % 705 ¹ÔÌÜ</h3>
+<h3>include/game_functions.php % 705 è¡Œç›®</h3>
 <pre>
-¡ßelseif($pseud_self->IsRole('wise_wolf')){
-¡ûelseif($virtual_self->IsRole('wise_wolf')){
+Ã—elseif($pseud_self->IsRole('wise_wolf')){
+â—‹elseif($virtual_self->IsRole('wise_wolf')){
 </pre>
 
-<h3>user_manager.php % 276 ¹ÔÌÜ (2010/01/30 02:30)</h3>
+<h3>user_manager.php % 276 è¡Œç›® (2010/01/30 02:30)</h3>
 <pre>
-¡ß array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'common', 'poison',
-¡û array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'guard', 'common', 'poison',
+Ã— array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'common', 'poison',
+â—‹ array_push($wish_role_list, 'mage', 'necromancer', 'priest', 'guard', 'common', 'poison',
 </pre>
 
-<h3>include/game_functions.php % 400 ¹ÔÌÜÉÕ¶á (2010/02/01 (Mon) 00:15)</h3>
+<h3>include/game_functions.php % 400 è¡Œç›®ä»˜è¿‘ (2010/02/01 (Mon) 00:15)</h3>
 <h4>[before]</h4>
 <pre>
 $said_user = $USERS->ByVirtualUname($talk->uname);
@@ -250,19 +250,19 @@ else
   $said_user = $USERS->ByUname($talk->uname);
 </pre>
 
-<h3>include/game_vote_functions % 1865 ¹ÔÌÜÉÕ¶á</h3>
+<h3>include/game_vote_functions % 1865 è¡Œç›®ä»˜è¿‘</h3>
 <h4>[before]</h4>
 <pre>
-$target->dead_flag = false; //»àË´¥Õ¥é¥°¤ò¥ê¥»¥Ã¥È
+$target->dead_flag = false; //æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 $USERS->Kill($target->user_no, 'WOLF_KILLED');
-if($target->revive_flag) $target->Update('live', 'live'); //ÁÉÀ¸ÂĞ±ş
+if($target->revive_flag) $target->Update('live', 'live'); //è˜‡ç”Ÿå¯¾å¿œ
 </pre>
 <h4>[after]</h4>
 <pre>
 if(isset($target->user_no)){
-  $target->dead_flag = false; //»àË´¥Õ¥é¥°¤ò¥ê¥»¥Ã¥È
+  $target->dead_flag = false; //æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
   $USERS->Kill($target->user_no, 'WOLF_KILLED');
-  if($target->revive_flag) $target->Update('live', 'live'); //ÁÉÀ¸ÂĞ±ş
+  if($target->revive_flag) $target->Update('live', 'live'); //è˜‡ç”Ÿå¯¾å¿œ
 }
 </pre>
 </body></html>

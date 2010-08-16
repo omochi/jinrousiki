@@ -3,40 +3,40 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('user_class', 'talk_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES');
 
-//-- ¥Ç¡¼¥¿¼ı½¸ --//
-$INIT_CONF->LoadRequest('RequestGameLog'); //°ú¿ô¤ò¼èÆÀ
-$DB_CONF->Connect(); //DB ÀÜÂ³
-$SESSION->Certify(); //¥»¥Ã¥·¥ç¥óÇ§¾Ú
+//-- ãƒ‡ãƒ¼ã‚¿åé›† --//
+$INIT_CONF->LoadRequest('RequestGameLog'); //å¼•æ•°ã‚’å–å¾—
+$DB_CONF->Connect(); //DB æ¥ç¶š
+$SESSION->Certify(); //ã‚»ãƒƒã‚·ãƒ§ãƒ³èªè¨¼
 
-$ROOM =& new Room($RQ_ARGS); //Â¼¾ğÊó¤ò¼èÆÀ
+$ROOM =& new Room($RQ_ARGS); //æ‘æƒ…å ±ã‚’å–å¾—
 $ROOM->log_mode = true;
 
-$USERS =& new UserDataSet($RQ_ARGS); //¥æ¡¼¥¶¾ğÊó¤ò¼èÆÀ
-$SELF = $USERS->BySession(); //¼«Ê¬¤Î¾ğÊó¤ò¥í¡¼¥É
+$USERS =& new UserDataSet($RQ_ARGS); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’å–å¾—
+$SELF = $USERS->BySession(); //è‡ªåˆ†ã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 
-if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //»à¼Ô¤«¥²¡¼¥à½ªÎ»¸å¤À¤±
-  OutputActionResult('¥í¥°±ÜÍ÷Ç§¾Ú¥¨¥é¡¼',
-		     '¥í¥°±ÜÍ÷Ç§¾Ú¥¨¥é¡¼¡§<a href="./" target="_top">¥È¥Ã¥×¥Ú¡¼¥¸</a>' .
-		     '¤«¤é¥í¥°¥¤¥ó¤·¤Ê¤ª¤·¤Æ¤¯¤À¤µ¤¤');
+if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //æ­»è€…ã‹ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œã ã‘
+  OutputActionResult('ãƒ­ã‚°é–²è¦§èªè¨¼ã‚¨ãƒ©ãƒ¼',
+		     'ãƒ­ã‚°é–²è¦§èªè¨¼ã‚¨ãƒ©ãƒ¼ï¼š<a href="./" target="_top">ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸</a>' .
+		     'ã‹ã‚‰ãƒ­ã‚°ã‚¤ãƒ³ã—ãªãŠã—ã¦ãã ã•ã„');
 }
 if($ROOM->date < $RQ_ARGS->date ||
    ($ROOM->date == $RQ_ARGS->date && $ROOM->IsDay() && $RQ_ARGS->day_night != 'day')){
-  OutputActionResult('ÆşÎÏ¥Ç¡¼¥¿¥¨¥é¡¼', 'ÆşÎÏ¥Ç¡¼¥¿¥¨¥é¡¼¡§Ìµ¸ú¤ÊÆü»ş¤Ç¤¹');
+  OutputActionResult('å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚¨ãƒ©ãƒ¼', 'å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚¨ãƒ©ãƒ¼ï¼šç„¡åŠ¹ãªæ—¥æ™‚ã§ã™');
 }
 
 $ROOM->date      = $RQ_ARGS->date;
 $ROOM->day_night = $RQ_ARGS->day_night;
 $USERS->SetEvent(true);
 
-//-- ¥í¥°½ĞÎÏ --//
-OutputGamePageHeader(); //HTML¥Ø¥Ã¥À
+//-- ãƒ­ã‚°å‡ºåŠ› --//
+OutputGamePageHeader(); //HTMLãƒ˜ãƒƒãƒ€
 
-echo '<table><tr><td width="1000" align="right">¥í¥°±ÜÍ÷ ' . $ROOM->date . ' ÆüÌÜ (' .
-  ($ROOM->IsBeforeGame() ? '³«»ÏÁ°' : ($ROOM->IsDay() ? 'Ãë' : 'Ìë')) . ')</td></tr></table>'."\n";
+echo '<table><tr><td width="1000" align="right">ãƒ­ã‚°é–²è¦§ ' . $ROOM->date . ' æ—¥ç›® (' .
+  ($ROOM->IsBeforeGame() ? 'é–‹å§‹å‰' : ($ROOM->IsDay() ? 'æ˜¼' : 'å¤œ')) . ')</td></tr></table>'."\n";
 
-OutputTalkLog();       //²ñÏÃ¥í¥°
-OutputAbilityAction(); //Ç½ÎÏÈ¯´ø
-OutputLastWords();     //°ä¸À
-OutputDeadMan();       //»àË´¼Ô
-if($ROOM->IsNight()) OutputVoteList(); //ÅêÉ¼·ë²Ì
-OutputHTMLFooter(); //HTML¥Õ¥Ã¥¿
+OutputTalkLog();       //ä¼šè©±ãƒ­ã‚°
+OutputAbilityAction(); //èƒ½åŠ›ç™ºæ®
+OutputLastWords();     //éºè¨€
+OutputDeadMan();       //æ­»äº¡è€…
+if($ROOM->IsNight()) OutputVoteList(); //æŠ•ç¥¨çµæœ
+OutputHTMLFooter(); //HTMLãƒ•ãƒƒã‚¿

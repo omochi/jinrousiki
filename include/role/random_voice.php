@@ -1,9 +1,9 @@
 <?php
 /*
-  ¢¡²²ÉÂ¼Ô (random_voice)
-  ¡û»ÅÍÍ
-  ¡¦À¼¤ÎÂç¤­¤µ¤¬¥é¥ó¥À¥à¤ÇÊÑ²½¤¹¤ë
-  ¡¦¥²¡¼¥à¥×¥ì¥¤Ãæ¤ÇÀ¸Â¸»þ¤Î¤ßÍ­¸ú
+  â—†è‡†ç—…è€… (random_voice)
+  â—‹ä»•æ§˜
+  ãƒ»å£°ã®å¤§ãã•ãŒãƒ©ãƒ³ãƒ€ãƒ ã§å¤‰åŒ–ã™ã‚‹
+  ãƒ»ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ã§ç”Ÿå­˜æ™‚ã®ã¿æœ‰åŠ¹
 */
 class Role_random_voice extends RoleTalkFilter{
   function Role_random_voice(){ $this->__construct(); }

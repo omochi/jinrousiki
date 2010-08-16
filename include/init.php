@@ -1,10 +1,10 @@
 <?php
-//-- �������� --//
+//-- 定数を定義 --//
 /*
-  ServerConfig->site_root ��Ȥä� CSS �������������ɤ�����ͤˤ����
-  �����������¸������䡢�������̤Υ����Ф˰ܤ����˼�֤�������Τ�
-  JINRO_ROOT �����Хѥ���������ƶ��̤ǻ��Ѥ�����ͤ��ѹ����ޤ�����
-  ���Хѥ����֤� dirname() ��Ȥä��ѥ��������Ԥ�ʤ��ǲ�������
+  ServerConfig->site_root を使って CSS や画像等をロードする仕様にすると
+  ローカルに保存する場合や、ログを別のサーバに移す場合に手間がかかるので
+  JINRO_ROOT で相対パスを定義して共通で使用する仕様に変更しました。
+  絶対パスが返る dirname() を使ったパスの定義を行わないで下さい。
 */
 if(! defined('JINRO_ROOT')) define('JINRO_ROOT', '.');
 define('JINRO_CONF', JINRO_ROOT . '/config');
@@ -13,16 +13,16 @@ define('JINRO_CSS',  JINRO_ROOT . '/css');
 define('JINRO_IMG',  JINRO_ROOT . '/img');
 define('JINRO_MOD',  JINRO_ROOT . '/module');
 
-//-- �ǥХå��⡼�ɤΥ���/���� --//
+//-- デバッグモードのオン/オフ --//
 #$DEBUG_MODE = false;
 $DEBUG_MODE = true;
 
-//-- ���饹����� --//
+//-- クラスを定義 --//
 class InitializeConfig{
-  var $path; //�ѥ������Ǽ�ѿ�
-  var $loaded; //�����ɾ����Ǽ�ѿ�
+  var $path; //パス情報格納変数
+  var $loaded; //ロード情報格納変数
 
-  //��¸�ե�������� (�ɤ߹���ǡ��� => ��¸����ե�����)
+  //依存ファイル情報 (読み込むデータ => 依存するファイル)
   var $depend_file = array(
     'DB_CONF' => 'server_config',
     'SERVER_CONF' => 'server_config',
@@ -58,7 +58,7 @@ class InitializeConfig{
     'role_class' => 'game_format'
   );
 
-  //��¸���饹���� (�ɤ߹���ǡ��� => ��¸���륯�饹)
+  //依存クラス情報 (読み込むデータ => 依存するクラス)
   var $depend_class = array(
     'GAME_OPT_CAPT' => 'GAME_OPT_MESS',
     'TIME_CALC' => array('TIME_CONF', 'ROOM_CONF'),
@@ -67,7 +67,7 @@ class InitializeConfig{
     'icon_functions' => array('ICON_CONF', 'USER_ICON')
   );
 
-  //���饹̾���� (�������Х��ѿ�̾ => �ɤ߹��९�饹)
+  //クラス名情報 (グローバル変数名 => 読み込むクラス)
   var $class_list = array(
     'DB_CONF' => 'DatabaseConfig',
     'SERVER_CONF' => 'ServerConfig',
@@ -107,21 +107,21 @@ class InitializeConfig{
     $this->loaded->class = array();
   }
 
-  //��¸��������
+  //依存情報設定
   function SetDepend($type, $name, $depend){
     if(is_null($this->$type)) return false;
     $this->{$type}[$name] = $depend;
     return true;
   }
 
-  //��¸���饹�������� �� ������
+  //依存クラス情報設定 ＆ ロード
   function SetClass($name, $class){
     if(! $this->SetDepend('class_list', $name, $class)) return false;
     $this->LoadClass($name);
     return true;
   }
 
-  //��¸������
+  //依存解決処理
   function LoadDependence($name){
     $depend_file = $this->depend_file[$name];
     if(! is_null($depend_file)) $this->LoadFile($depend_file);
@@ -193,32 +193,32 @@ class InitializeConfig{
   }
 }
 
-//-- ��������� --//
+//-- 初期化処理 --//
 require_once(JINRO_INC . '/paparazzi/paparazzi.php');
 
 $INIT_CONF =& new InitializeConfig();
 if($DEBUG_MODE) $INIT_CONF->LoadClass('PAPARAZZI');
 
-//mbstring ���б��ξ�硢���ߥ�졼������Ѥ���
+//mbstring 非対応の場合、エミュレータを使用する
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
 $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
 
-//PrintData($INIT_CONF); //�ƥ�����
+//PrintData($INIT_CONF); //テスト用
 
-//-- ������ץȷ���ʸ�������� --//
-//�ѹ�����������ƤΥե����뼫�Τ�ʸ�������ɤ������ѹ����Ƥ�������
+//-- スクリプト群の文字コード --//
+//変更する場合は全てのファイル自体の文字コードを自前で変更してください
 
-//���󥳡��ǥ��󥰻��� PHP�С������ˤ�äƻ�����ˡ���ۤʤ�
+//エンコーディング指定 PHPバージョンによって指定方法が異なる
 $php_version_array = explode('.', phpversion());
-if($php_version_array[0] <= 4 && $php_version_array[1] < 3){ //4.3.x̤��
-  //encoding $SERVER_CONF->encode;  //���顼���Ф롩
+if($php_version_array[0] <= 4 && $php_version_array[1] < 3){ //4.3.x未満
+  //encoding $SERVER_CONF->encode;  //エラーが出る？
 }
-else{ //4.3.x�ʹ�
-  declare(encoding='EUC-JP'); //�ѿ��������ȥѡ������顼���֤�Τǥϡ��ɥ�����
+else{ //4.3.x以降
+  declare(encoding='UTF-8'); //変数を入れるとパースエラーが返るのでハードコード
 }
 
-//-- �ޥ���Х��������ϻ��� --//
+//-- マルチバイト入出力指定 --//
 if(extension_loaded('mbstring')){
   mb_language('ja');
   mb_internal_encoding($SERVER_CONF->encode);
@@ -226,10 +226,10 @@ if(extension_loaded('mbstring')){
   mb_http_output($SERVER_CONF->encode);
 }
 
-//-- �����Υ����ФǤ�ư���褦�˥إå��������� --//
-//��������������ʸ������������˻��ꤷ�ޤ�
+//-- 海外のサーバでも動くようにヘッダ強制指定 --//
+//海外サーバ等で文字化けする場合に指定します
 /*
-if(! headers_sent()){ //�إå����ޤ�������������Ƥ��ʤ������������
+if(! headers_sent()){ //ヘッダがまだ何も送信されていない場合送信する
   header("Content-type: text/html; charset={$SERVER_CONF->encode}");
   header('Content-Language: ja');
 }

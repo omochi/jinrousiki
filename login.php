@@ -1,30 +1,30 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('SESSION', 'GAME_CONF'); //¥»¥Ã¥·¥ç¥ó¥¹¥¿¡¼¥È
-$INIT_CONF->LoadRequest('RequestLogin'); //°ú¿ô¤ò¼èÆÀ
-$DB_CONF->Connect(); //DB ÀÜÂ³
+$INIT_CONF->LoadClass('SESSION', 'GAME_CONF'); //ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¹ã‚¿ãƒ¼ãƒˆ
+$INIT_CONF->LoadRequest('RequestLogin'); //å¼•æ•°ã‚’å–å¾—
+$DB_CONF->Connect(); //DB æ¥ç¶š
 
-//-- ¥í¥°¥¤¥ó½èÍı --//
-//DB ÀÜÂ³²ò½ü¤Ï·ë²Ì½ĞÎÏ´Ø¿ô¤¬¹Ô¤¦
-if($RQ_ARGS->login_manually){ //¥æ¡¼¥¶Ì¾¤È¥Ñ¥¹¥ï¡¼¥É¤Ç¼êÆ°¥í¥°¥¤¥ó
+//-- ãƒ­ã‚°ã‚¤ãƒ³å‡¦ç† --//
+//DB æ¥ç¶šè§£é™¤ã¯çµæœå‡ºåŠ›é–¢æ•°ãŒè¡Œã†
+if($RQ_ARGS->login_manually){ //ãƒ¦ãƒ¼ã‚¶åã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã§æ‰‹å‹•ãƒ­ã‚°ã‚¤ãƒ³
   if(LoginManually()){
-    OutputLoginResult('¥í¥°¥¤¥ó¤·¤Ş¤·¤¿', 'game_frame');
+    OutputLoginResult('ãƒ­ã‚°ã‚¤ãƒ³ã—ã¾ã—ãŸ', 'game_frame');
   }
   else{
-    OutputLoginResult('¥í¥°¥¤¥ó¼ºÇÔ', NULL, '¥æ¡¼¥¶Ì¾¤È¥Ñ¥¹¥ï¡¼¥É¤¬°ìÃ×¤·¤Ş¤»¤ó¡£<br>' .
-		      '(¶õÇò¤È²ş¹Ô¥³¡¼¥É¤ÏÅĞÏ¿»ş¤Ë¼«Æ°¤Çºï½ü¤µ¤ì¤Æ¤¤¤ë»ö¤ËÃí°Õ¤·¤Æ¤¯¤À¤µ¤¤)');
+    OutputLoginResult('ãƒ­ã‚°ã‚¤ãƒ³å¤±æ•—', NULL, 'ãƒ¦ãƒ¼ã‚¶åã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒä¸€è‡´ã—ã¾ã›ã‚“ã€‚<br>' .
+		      '(ç©ºç™½ã¨æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã¯ç™»éŒ²æ™‚ã«è‡ªå‹•ã§å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹äº‹ã«æ³¨æ„ã—ã¦ãã ã•ã„)');
   }
 }
 
-if($SESSION->Certify(false)){ //¥»¥Ã¥·¥ç¥óID¤«¤é¼«Æ°¥í¥°¥¤¥ó
-  OutputLoginResult('¥í¥°¥¤¥ó¤·¤Æ¤¤¤Ş¤¹', 'game_frame');
+if($SESSION->Certify(false)){ //ã‚»ãƒƒã‚·ãƒ§ãƒ³IDã‹ã‚‰è‡ªå‹•ãƒ­ã‚°ã‚¤ãƒ³
+  OutputLoginResult('ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ã¾ã™', 'game_frame');
 }
-else{ //Ã±¤Ë¸Æ¤Ğ¤ì¤¿¤À¤±¤Ê¤é´ÑÀï¥Ú¡¼¥¸¤Ë°ÜÆ°¤µ¤»¤ë
-  OutputLoginResult('´ÑÀï¥Ú¡¼¥¸¤Ë¥¸¥ã¥ó¥×', 'game_view', '´ÑÀï¥Ú¡¼¥¸¤Ë°ÜÆ°¤·¤Ş¤¹');
+else{ //å˜ã«å‘¼ã°ã‚ŒãŸã ã‘ãªã‚‰è¦³æˆ¦ãƒšãƒ¼ã‚¸ã«ç§»å‹•ã•ã›ã‚‹
+  OutputLoginResult('è¦³æˆ¦ãƒšãƒ¼ã‚¸ã«ã‚¸ãƒ£ãƒ³ãƒ—', 'game_view', 'è¦³æˆ¦ãƒšãƒ¼ã‚¸ã«ç§»å‹•ã—ã¾ã™');
 }
 
-//-- ´Ø¿ô --//
-//·ë²Ì½ĞÎÏ´Ø¿ô
+//-- é–¢æ•° --//
+//çµæœå‡ºåŠ›é–¢æ•°
 function OutputLoginResult($title, $jump, $body = NULL){
   global $RQ_ARGS;
 
@@ -34,15 +34,15 @@ function OutputLoginResult($title, $jump, $body = NULL){
   }
   else{
     $url = $jump . '.php?room_no=' . $RQ_ARGS->room_no;
-    $body .= '¡£<br>' . "\n" . 'ÀÚ¤êÂØ¤ï¤é¤Ê¤¤¤Ê¤é <a href="' . $url . '" target="_top">¤³¤³</a> ¡£';
+    $body .= 'ã€‚<br>' . "\n" . 'åˆ‡ã‚Šæ›¿ã‚ã‚‰ãªã„ãªã‚‰ <a href="' . $url . '" target="_top">ã“ã“</a> ã€‚';
   }
   OutputActionResult($title, $body, $url);
 }
 
-//¼êÆ°¥í¥°¥¤¥ó½èÍı
+//æ‰‹å‹•ãƒ­ã‚°ã‚¤ãƒ³å‡¦ç†
 /*
-  ¥»¥Ã¥·¥ç¥ó¤ò¼º¤Ã¤¿¾ì¹ç¡¢¥æ¡¼¥¶Ì¾¤È¥Ñ¥¹¥ï¡¼¥É¤Ç¥í¥°¥¤¥ó¤¹¤ë
-  ¥í¥°¥¤¥óÀ®¸ù/¼ºÇÔ¤ò true/false ¤ÇÊÖ¤¹
+  ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’å¤±ã£ãŸå ´åˆã€ãƒ¦ãƒ¼ã‚¶åã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã§ãƒ­ã‚°ã‚¤ãƒ³ã™ã‚‹
+  ãƒ­ã‚°ã‚¤ãƒ³æˆåŠŸ/å¤±æ•—ã‚’ true/false ã§è¿”ã™
 */
 function LoginManually(){
   global $SESSION, $RQ_ARGS;
@@ -50,20 +50,20 @@ function LoginManually(){
   extract($RQ_ARGS->ToArray());
   if($uname == '' || $password == '') return false;
 
-  //IP¥¢¥É¥ì¥¹¼èÆÀ //¸½ºß¤Ï IP ¥¢¥É¥ì¥¹Ç§¾Ú¤Ï¹Ô¤Ã¤Æ¤¤¤Ê¤¤
+  //IPã‚¢ãƒ‰ãƒ¬ã‚¹å–å¾— //ç¾åœ¨ã¯ IP ã‚¢ãƒ‰ãƒ¬ã‚¹èªè¨¼ã¯è¡Œã£ã¦ã„ãªã„
   //$ip_address = $_SERVER['REMOTE_ADDR'];
   $crypt_password = CryptPassword($password);
-  //$crypt_password = $password; //¥Ç¥Ğ¥Ã¥°ÍÑ
+  //$crypt_password = $password; //ãƒ‡ãƒãƒƒã‚°ç”¨
 
-  //¶¦ÄÌ¥¯¥¨¥ê
+  //å…±é€šã‚¯ã‚¨ãƒª
   $query_base = "WHERE room_no = {$room_no} AND uname = '{$uname}' AND user_no > 0";
 
-  //³ºÅö¤¹¤ë¥æ¡¼¥¶Ì¾¤È¥Ñ¥¹¥ï¡¼¥É¤¬¤¢¤ë¤«³ÎÇ§
+  //è©²å½“ã™ã‚‹ãƒ¦ãƒ¼ã‚¶åã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒã‚ã‚‹ã‹ç¢ºèª
   $query = "SELECT COUNT(uname) FROM user_entry {$query_base} AND password = '{$crypt_password}'";
   if(FetchResult($query) != 1) return false;
 
-  //DB¤Î¥»¥Ã¥·¥ç¥óID¤ò¹¹¿·
-  $session_id = $SESSION->Get(true); //¥»¥Ã¥·¥ç¥óID¤ÎºÆÅĞÏ¿
+  //DBã®ã‚»ãƒƒã‚·ãƒ§ãƒ³IDã‚’æ›´æ–°
+  $session_id = $SESSION->Get(true); //ã‚»ãƒƒã‚·ãƒ§ãƒ³IDã®å†ç™»éŒ²
   SendQuery("UPDATE user_entry SET session_id = '{$session_id}' {$query_base}", true);
   return true;
 }

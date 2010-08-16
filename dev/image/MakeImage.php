@@ -31,12 +31,6 @@ class MainRoleList{
 			 '#' => array('R' => 153, 'G' => 153, 'B' => 0),
 			 '_' => array('R' => 102, 'G' => 102, 'B' => 51)));
 
-  var $brownie = array(
-    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|座敷童子|です。|村人|の#処刑#投票数を +1 することができますが、あなたが#処刑#されたら誰か一人を_熱病_にしてしまいます。",
-    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 153, 'G' => 153, 'B' => 0),
-			 '_' => array('R' => 51, 'G' => 204, 'B' => 255)));
-
   var $escaper = array(
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|逃亡者|です。臆病なあなたは夜の間、誰かの家の近くに隠れて夜をすごすことになります。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで#人狼#から逃げ切るのです！",
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
@@ -348,6 +342,20 @@ class MainRoleList{
     'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
 			 '#' => array('R' => 96, 'G' => 96, 'B' => 255),
 			 '_' => array('R' => 255, 'G' => 0, 'B' => 0)));
+
+  var $brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_投票数を +1 することができますが、あなたが_処刑_されたら誰か一人を^熱病^にしてしまいます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 144, 'G' => 192, 'B' => 160),
+			 '_' => array('R' => 153, 'G' => 153, 'B' => 0),
+			 '^' => array('R' => 51, 'G' => 204, 'B' => 255)));
+
+  var $history_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_処刑_されたら次の日の昼を、^人狼^に襲撃されたら次の日の夜を飛ばしてしまいます。",
+    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
+			 '#' => array('R' => 144, 'G' => 192, 'B' => 160),
+			 '_' => array('R' => 153, 'G' => 153, 'B' => 0),
+			 '^' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $wolf = array(
     'message' => "[役割] [#人狼#陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の#人狼#と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
@@ -1075,8 +1083,6 @@ class ResultList{
 			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
   var $result_elder = array('message' => "さんは|長老|でした",
 			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
-  var $result_brownie = array('message' => "さんは|座敷童子|でした",
-			      'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
   var $result_saint = array('message' => "さんは|聖女|でした",
 			    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96)));
   var $result_executor = array('message' => "さんは|執行者|でした",
@@ -1213,6 +1219,10 @@ class ResultList{
 				'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
   var $result_doll_master = array('message' => "さんは|人形遣い|でした",
 				  'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 255)));
+  var $result_brownie = array('message' => "さんは|座敷童子|でした",
+			      'delimiter' => array('|' => array('R' => 144, 'G' => 192, 'B' => 160)));
+  var $result_history_brownie = array('message' => "さんは|白澤|でした",
+				      'delimiter' => array('|' => array('R' => 144, 'G' => 192, 'B' => 160)));
   var $result_wolf = array('message' => "さんは|人狼|でした",
 			   'delimiter' => array('|' => array('R' => 255, 'G' => 0, 'B' => 0)));
   var $result_boss_wolf = array('message' => "さんは|白狼|でした",
@@ -1569,10 +1579,11 @@ foreach($list as $name => $array){
 header('Content-Type: image/gif');
 #$image = MakeImage($gen, $list->poison);
 #$image = MakeImage($gen, $list->brownie);
+$image = MakeImage($gen, $list->history_brownie);
 #$image = MakeImage($gen, $list->dowser_priest);
 #$image = MakeImage($gen, $list->revive_pharmacist);
 #$image = MakeImage($gen, $list->vampire);
-$image = MakeImage($gen, $list->therian_mad);
+#$image = MakeImage($gen, $list->therian_mad);
 imagegif($image);
 // imagegif($image, './test/test.gif');
 // imagedestroy($image);
