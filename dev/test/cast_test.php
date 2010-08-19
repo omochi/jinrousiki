@@ -192,7 +192,6 @@ $RQ_ARGS->TestItems->test_users[18]->user_no = 18;
 $RQ_ARGS->TestItems->test_users[18]->uname = 'deep_blue';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '蒼';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->profile = '';
 $RQ_ARGS->TestItems->test_users[18]->role = 'guard';
 $RQ_ARGS->TestItems->test_users[18]->icon_filename = '007.gif';
 $RQ_ARGS->TestItems->test_users[18]->color = '#0066FF';
@@ -226,12 +225,12 @@ $RQ_ARGS->TestItems->test_users[21]->color = '#FF9999';
 
 $RQ_ARGS->TestItems->test_users[22] =& new User();
 $RQ_ARGS->TestItems->test_users[22]->user_no = 22;
-$RQ_ARGS->TestItems->test_users[22]->uname = 'sky';
-$RQ_ARGS->TestItems->test_users[22]->handle_name = '空';
-$RQ_ARGS->TestItems->test_users[22]->sex = 'female';
+$RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
+$RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
+$RQ_ARGS->TestItems->test_users[22]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[22]->role = '';
-$RQ_ARGS->TestItems->test_users[22]->icon_filename = '006.gif';
-$RQ_ARGS->TestItems->test_users[22]->color = '#99CCFF';
+$RQ_ARGS->TestItems->test_users[22]->icon_filename = '001.gif';
+$RQ_ARGS->TestItems->test_users[22]->color = '#DDDDDD';
 
 foreach($RQ_ARGS->TestItems->test_users as $user){
   $user->room_no = $RQ_ARGS->room_no;

@@ -16,6 +16,9 @@ class DatabaseConfig extends DatabaseConfigBase{
   //データベース名
   var $name = 'jinrou';
 
+  //サブデータベースのリスト (サーバによってはサブのデータベースを作れないので注意)
+  var $name_list = array();
+
   //文字コード
   var $encode = 'utf8';
 }

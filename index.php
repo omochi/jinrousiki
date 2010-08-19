@@ -14,8 +14,8 @@ if($SERVER_CONF->back_page != ''){
   <tr><td>
     <div class="menu">メニュー</div>
     <ul>
-      <li><a href="script_info.php">特徴と仕様</a></li>
-      <li><a href="rule.php">ゲームのルール</a></li>
+      <li><a href="info/script_info.php">特徴と仕様</a></li>
+      <li><a href="info/rule.php">ゲームのルール</a></li>
       <li><a href="info/chaos.php">闇鍋モード</a></li>
       <li><a href="info/new_role/">新役職情報</a></li>
       <li><a href="info/">その他の情報一覧</a></li>

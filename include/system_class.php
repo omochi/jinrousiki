@@ -42,6 +42,12 @@ class DatabaseConfigBase{
     }
     OutputActionResult($title, $str);
   }
+
+  //データベース名変更
+  function ChangeName($id){
+    if(is_null($name = $this->name_list[$id - 1])) return;
+    $this->name = $name;
+  }
 }
 
 //-- セッション管理クラス --//
@@ -597,6 +603,7 @@ class RoleData{
     'miasma_mad'         => '土蜘蛛',
     'dream_eater_mad'    => '獏',
     'trap_mad'           => '罠師',
+    'snow_trap_mad'      => '雪女',
     'possessed_mad'      => '犬神',
     'therian_mad'        => '獣人',
     'fox'                => '妖狐',
@@ -651,6 +658,7 @@ class RoleData{
     'grass_fairy'        => '草妖精',
     'light_fairy'        => '光妖精',
     'dark_fairy'         => '闇妖精',
+    'ice_fairy'          => '氷妖精',
     'mirror_fairy'       => '鏡妖精',
     'mania'              => '神話マニア',
     'trick_mania'        => '奇術師',
@@ -671,6 +679,7 @@ class RoleData{
     'androphobia'        => '男性恐怖症',
     'gynophobia'         => '女性恐怖症',
     'febris'             => '熱病',
+    'frostbite'          => '凍傷',
     'death_warrant'      => '死の宣告',
     'panelist'           => '解答者',
     'liar'               => '狼少年',
@@ -840,6 +849,7 @@ class RoleData{
     'miasma_mad'         => '蜘',
     'dream_eater_mad'    => '獏',
     'trap_mad'           => '罠',
+    'snow_trap_mad'      => '雪',
     'possessed_mad'      => '犬',
     'therian_mad'        => '獣',
     'fox'                => '狐',
@@ -894,6 +904,7 @@ class RoleData{
     'grass_fairy'        => '草精',
     'light_fairy'        => '光精',
     'dark_fairy'         => '闇精',
+    'ice_fairy'          => '氷精',
     'mirror_fairy'       => '鏡精',
     'mania'              => 'マ',
     'trick_mania'        => '奇',
@@ -910,6 +921,7 @@ class RoleData{
     'androphobia'        => '男恐',
     'gynophobia'         => '女恐',
     'febris'             => '熱',
+    'frostbite'          => '凍',
     'death_warrant'      => '宣',
     'panelist'           => '解',
     'liar'               => '嘘',
@@ -1013,7 +1025,7 @@ class RoleData{
     'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'),
     'vampire'      => array('infected'),
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
-			    'celibacy', 'nervy', 'androphobia', 'gynophobia', 'febris',
+			    'celibacy', 'nervy', 'androphobia', 'gynophobia', 'febris', 'frostbite',
 			    'death_warrant', 'panelist'),
     'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
 			    'line_reverse', 'gentleman', 'lady', 'actor'),
@@ -1051,7 +1063,7 @@ class RoleData{
 
     case 'cupid':
     case 'angel':
-      return 'lovers';
+      return $start ? 'cupid' : 'lovers';
 
     case 'chiroptera':
     case 'fairy':

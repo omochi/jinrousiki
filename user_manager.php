@@ -201,8 +201,8 @@ IMAGE;
     if($ROOM->IsChaosWish()){
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'medium', 'priest', 'guard',
 		 'common', 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner',
-		 'jealousy', 'doll', 'wolf', 'mad', 'fox', 'child_fox', 'cupid', 'angel', 'quiz',
-		 'vampire', 'chiroptera', 'fairy', 'mania');
+		 'jealousy', 'doll', 'brownie', 'wolf', 'mad', 'fox', 'child_fox', 'cupid',
+		 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'mania');
     }
     else{
       array_push($wish_role_list,  'human', 'wolf');

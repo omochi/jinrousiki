@@ -651,16 +651,16 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 仲間の狼が減ると特殊能力が発現する狼。
 </pre>
 <ol>
-  <li>狼が残り二人になると、以下の能力を持つ (覚醒状態)</li>
+  <li>狼が残り二人になると、以下の能力を持つ (覚醒状態)。</li>
   <ol>
     <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-    <li><a href="#trap_mad">罠師</a>の罠無効</li>
+    <li><a href="#trap_mad">罠師</a>・<a href="#snow_trap_mad">雪女</a>の罠無効</li>
   </ol>
-  <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)</li>
+  <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
     <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
-    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
+    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
 </ol>
@@ -670,7 +670,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 </pre>
 <h4>Ver. 1.4.0 β13〜</h4>
 <pre>
-<a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効
+<a href="#miasma_mad">土蜘蛛</a>の能力無効
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -755,6 +755,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#miasma_mad">土蜘蛛</a>
 <a href="#dream_eater_mad">獏</a>
 <a href="#trap_mad">罠師</a>
+<a href="#snow_trap_mad">雪女</a>
 <a href="#possessed_mad">犬神</a>
 <a href="#therian_mad">獣人</a>
 </p>
@@ -889,12 +890,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h4>[耐性] 護衛：狩り</h4>
 <pre>
 処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role#febris">熱病</a>にする特殊な狂人。
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
+<a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <h4>Ver. 1.4.0 β13〜</h4>
 <pre>
-<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
+<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
 </pre>
 <h4>Ver. 1.4.0 β10〜</h4>
 <pre>
@@ -959,7 +960,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
     (仕掛けに来た他の罠師は死にます)</li>
   <li>自分に仕掛けて<a href="human.php#guard_group">狩人系</a>に護衛された場合は相打ちになります。</li>
   <li><a href="human.php#assassin_group">暗殺者系</a>が罠にかかった場合、暗殺は無効になります。</li>
-  <li><a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態) には無効です。</li>
+  <li><a href="#sirius_wolf">天狼</a> (覚醒状態) には無効です。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -968,6 +969,22 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 人狼の襲撃先を外しつつ狩人の護衛先や暗殺者の襲撃先を読み切って
 ピンポイントで罠を仕掛けないといい仕事にならないので活躍するのは
 非常に難しいと思いますが、当たればきっと最高の気分になれるはず。
+</pre>
+
+<h3><a id="snow_trap_mad">雪女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
+<pre>
+<a href="sub_role.php#frostbite">凍傷</a>になる罠を何回でも仕掛けることができる、特殊な<a href="#trap_mad">罠師</a>。
+罠に関する仕様は<a href="#trap_mad">罠師</a>と同じ。
+ただし、殺傷能力はないので罠にかかった人の能力を無効化することはできない。
+<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+回数制限を外した代りに威力が大幅に落ちた、<a href="#trap_mad">罠師</a>の亜種です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ</a> の 736 が原型です。
+<a href="sub_role.php#frostbite">凍傷</a>の性質上、なった場合は CO せざるを得ないので接触系能力者を
+まとめて炙り出すことが可能になります。
 </pre>
 
 <h3><a id="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
@@ -1006,8 +1023,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 人狼 (種類は問わない) に襲撃されたら「人狼」に変化する、特殊な狂人。
 狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
-身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。
 </pre>
+<ol>
+  <li>襲撃失敗 (例：狩人護衛) していた場合は無効。</li>
+  <li>身代わり君は能力無効。</li>
+  <li>襲撃者が<a href="#hungry_wolf">餓狼</a>だった場合は襲撃失敗扱い。</li>
+  <li>襲撃者が<a href="#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。</li>
+</ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他の国に実在する役職です。

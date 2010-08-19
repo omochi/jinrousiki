@@ -25,15 +25,16 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 <a href="#mind_scanner_group">さとり系</a>
 <a href="#jealousy_group">橋姫系</a>
 <a href="#doll_group">上海人形系</a>
+<a href="#brownie_group">座敷童子系</a>
 </p>
 
 <h2><a id="human_group">村人系</a></h2>
 <p>
 <a href="#human_rule">村人表記役職</a>
+<a href="#change_human_group">所属変更</a>
 </p>
 <p>
 <a href="#elder">長老</a>
-<a href="#brownie">座敷童子</a>
 <a href="#saint">聖女</a>
 <a href="#executor">執行者</a>
 <a href="#escaper">逃亡者</a>
@@ -48,6 +49,12 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 <a href="#suspect">不審者</a>の発言が遠吠えに変換される確率は 1% (管理者は設定ファイルで変更可能) です。
 変換されたかどうかは本人にしか分からず、客観的な証明は不可能なので
 空発言を多数行なって確認する試みは確率的にもほとんど意味が無いでしょう。
+</pre>
+
+<h3><a id="change_human_group">所属変更 [村人系]</a></h3>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="#brownie">座敷童子</a>の所属を<a href="#brownie_group">座敷童子系</a>に変更しました。
 </pre>
 
 <h3><a id="elder">長老</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
@@ -68,18 +75,6 @@ OutputHTMLHeader('新役職情報 - [村人陣営]', 'new_role');
 権力者相当の能力を持った村人です。
 PP ラインの計算を難しくさせるために作成してみました。
 能力の性質上、これを騙るのはほぼ不可能なので同じ能力を持った他陣営種が存在します。
-</pre>
-
-<h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
-<pre>
-役職「村人」の処刑投票数を +1 する村人。生きている間のみ有効。
-処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-「居る間は恩恵をもたらすが去ると災厄が訪れる」と言われる伝説がモチーフです。
-<a href="#human_rule">村人表示役職</a>の正体を絞り込むことができます。
 </pre>
 
 <h3><a id="saint">聖女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
@@ -1559,4 +1554,44 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。
 </pre>
+
+<h2><a id="brownie_group">座敷童子系</a></h2>
+<p>
+<a href="#change_brownie_group">所属変更</a>
+</p>
+<p>
+<a href="#brownie">座敷童子</a>
+<a href="#history_brownie">白澤</a>
+</p>
+
+<h3><a id="change_brownie_group">所属変更 [座敷童子系]</a></h3>
+<h4>Ver. 1.4.0 β16〜</h4>
+<pre>
+<a href="#brownie">座敷童子</a>の所属を<a href="#human_group">村人系</a>から変更しました。
+</pre>
+
+<h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<pre>
+役職「村人」の処刑投票数を +1 する村人。生きている間のみ有効。
+処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「居る間は恩恵をもたらすが去ると災厄が訪れる」と言われる伝説がモチーフです。
+<a href="#human_rule">村人表示役職</a>の正体を絞り込むことができます。
+</pre>
+
+<h3><a id="history_brownie">白澤</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
+<pre>
+人狼に襲撃されたら次の日の夜を飛ばしてしまう村人。
+能力が発動した場合は、専用のメッセージが表示される。
+<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+翠星石鯖＠やる夫人狼で実施された記念村の設定を役職にしてみました。
+東方 Project の上白沢 慧音がモチーフです。
+</pre>
+
 </body></html>

@@ -287,6 +287,12 @@ function OutputAbility(){
       }
       break;
 
+    case 'snow_trap_mad': //雪女
+      if($ROOM->date > 1 && $ROOM->IsNight()){
+	OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+      }
+      break;
+
     case 'possessed_mad': //犬神
       if($ROOM->date > 2) OutputPossessedTarget(); //現在の憑依先を表示
       if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
@@ -506,6 +512,14 @@ function OutputAbility(){
     }
   }
   $fix_display_list[] = 'febris';
+
+  if($SELF->IsRole('frostbite')){ //凍傷
+    $dead_date = max($SELF->GetPartner('frostbite'));
+    if($ROOM->date == $dead_date){
+      OutputAbilityResult('frostbite_header', $dead_date, 'frostbite_footer');
+    }
+  }
+  $fix_display_list[] = 'frostbite';
 
   if($SELF->IsRole('death_warrant')){ //死の宣告
     $dead_date = max($SELF->GetPartner('death_warrant'));

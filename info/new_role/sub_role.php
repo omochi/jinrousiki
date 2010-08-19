@@ -44,6 +44,7 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <a href="#androphobia">男性恐怖症</a>
 <a href="#gynophobia">女性恐怖症</a>
 <a href="#febris">熱病</a>
+<a href="#frostbite">凍傷</a>
 <a href="#death_warrant">死の宣告</a>
 <a href="#panelist">解答者</a>
 </p>
@@ -149,6 +150,22 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <h4>[作成者からのコメント]</h4>
 <pre>
 妖怪「土蜘蛛」の伝説がモチーフです。
+</pre>
+
+<h3><a id="frostbite">凍傷</a> [Ver. 1.4.0 β16〜]</h3>
+<h4>[役職表示] 発動日限定</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+表示された日限定の<a href="#rabbit">ウサギ</a>です。
+発動条件を満たした日の昼に突然表示されて、効果は一日で消えます。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ</a> の 736 が原型です。
 </pre>
 
 <h3><a id="death_warrant">死の宣告</a> [Ver. 1.4.0 β10〜]</h3>

@@ -439,6 +439,9 @@ class User{
       if(! $this->IsActive()) return true;
       return $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
     }
+    if($this->IsRole('snow_trap_mad')){
+      return $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+    }
     if($this->IsRole('possessed_mad', 'possessed_fox')){
       if(! $this->IsActive()) return true;
       return $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
@@ -588,9 +591,9 @@ EOF;
   }
 
   //死の宣告処理
-  function AddDoom($date){
+  function AddDoom($date, $role = 'death_warrant'){
     global $ROOM;
-    $this->AddRole('death_warrant[' . ($ROOM->date + $date) . ']');
+    $this->AddRole($role . '[' . ($ROOM->date + $date) . ']');
   }
 
   /*
@@ -913,10 +916,6 @@ class UserDataSet{
       switch($event['type']){
       case 'VOTE_KILLED':
 	$user = $this->ByHandleName($event['message']);
-	if($user->IsRole('history_brownie')){
-	  $ROOM->event->skip_day = true;
-	  break;
-	}
 	if(! $user->IsRole('mirror_fairy')) break;
 	if(is_null($status_stack = $user->GetPartner('mirror_fairy'))) break;
 	$duel_stack = array(); //決闘対象者の ID リスト

@@ -328,8 +328,10 @@ function VoteNight(){
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
-    if(! $SELF->IsRole('trap_mad')) OutputVoteResult('夜：罠師以外は投票できません');
-    if(! $SELF->IsActive()) OutputVoteResult('夜：罠は一度しか設置できません');
+    if(! $SELF->IsRoleGroup('trap_mad')) OutputVoteResult('夜：罠師・雪女以外は投票できません');
+    if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
+      OutputVoteResult('夜：罠師の罠は一度しか設置できません');
+    }
     $not_type = $RQ_ARGS->situation == 'TRAP_MAD_NOT_DO';
     break;
 
@@ -747,9 +749,11 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
     $type = 'DREAM_EAT';
   }
-  elseif($role_trap = $SELF->IsRole('trap_mad')){
+  elseif($role_trap = $SELF->IsRoleGroup('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
-    if(! $SELF->IsActive()) OutputVoteResult('夜：罠は一度しか設置できません');
+    if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
+      OutputVoteResult('夜：罠師の罠は一度しか設置できません');
+    }
     $type       = 'TRAP_MAD_DO';
     $not_type   = 'TRAP_MAD_NOT_DO';
     $submit     = 'trap_do';

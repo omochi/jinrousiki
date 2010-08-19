@@ -950,11 +950,12 @@ function AggregateVoteGameStart($force_start = false){
   $sub_role_count_list = array();
   $roled_list = array(); //配役済み番号
   //割り振り対象外役職のリスト
-  $delete_role_list = array('febris', 'death_warrant', 'panelist', 'mind_read', 'mind_receiver',
-			    'mind_friend', 'mind_sympathy', 'mind_evoke', 'mind_lonely', 'lovers',
-			    'possessed_exchange', 'challenge_lovers', 'infected', 'copied',
-			    'copied_trick', 'copied_soul', 'copied_teller', 'possessed_target',
-			    'possessed', 'changed_therian', 'bad_status', 'lost_ability');
+  $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'mind_read',
+			    'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
+			    'mind_lonely', 'lovers', 'possessed_exchange', 'challenge_lovers',
+			    'infected', 'copied', 'copied_trick', 'copied_soul', 'copied_teller',
+			    'possessed_target', 'possessed', 'changed_therian', 'bad_status',
+			    'lost_ability');
 
   //サブ役職テスト用
   /*
@@ -1397,9 +1398,7 @@ function AggregateVoteDay(){
 	if(! $user->IsAvoid()) $stack[] = $user->user_no;
       }
       //PrintData($stack, 'Target [febris]');
-      if(count($stack) > 0){
-	$USERS->ByID(GetRandom($stack))->AddRole('febris[' . ($ROOM->date + 1) . ']');
-      }
+      if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(1, 'febris');
     }
 
     //-- 封印師の処理 --//
@@ -1423,9 +1422,7 @@ function AggregateVoteDay(){
       if(! $user->IsRole('miasma_mad')) continue;
 
       $target = $USERS->ByUname($vote_target_list[$user->uname]); //本体に付ける
-      if($target->IsLive(true) && ! $target->IsAvoid()){ //特殊耐性判定
-	$target->AddRole('febris[' . ($ROOM->date + 1) . ']');
-      }
+      if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddDoom(1, 'febris');
     }
 
     //-- 霊能者系の処理 --//
@@ -1645,8 +1642,9 @@ function AggregateVoteNight($skip = false){
   //PrintData($vote_data);
 
   //-- 変数の初期化 --//
-  $trap_target_list         = array(); //罠の設置先リスト
-  $trapped_list             = array(); //罠にかかった人リスト
+  $trap_target_list         = array(); //罠師の罠の設置先リスト
+  $trapped_list             = array(); //罠師の罠にかかった人リスト
+  $snow_trap_target_list    = array(); //雪女の罠の設置先リスト
   $guard_target_list        = array(); //狩人系の護衛対象リスト
   $dummy_guard_target_list  = array(); //夢守人の護衛対象リスト
   $escaper_target_list      = array(); //逃亡者の逃亡先リスト
@@ -1671,13 +1669,17 @@ function AggregateVoteNight($skip = false){
   if($ROOM->date > 1){
     foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //罠師の情報収集
       $user = $USERS->ByUname($uname);
-      $user->LostAbility(); //一度設置したら能力失効
+      if($user->IsRole('trap_mad')) $user->LostAbility(); //罠師の罠は一度設置したら能力失効
 
       //人狼に狙われていたら自分自身への設置以外は無効
-      if(! $user->IsSame($wolf_target->uname) || $user->IsSame($target_uname)){
+      if($user->IsSame($wolf_target->uname) && ! $user->IsSame($target_uname)) continue;
+      if($user->IsRole('trap_mad'))
 	$trap_target_list[$user->uname] = $target_uname; //罠をセット
-      }
+      else
+	$snow_trap_target_list[$user->uname] = $target_uname; //罠をセット
     }
+    //PrintData($trap_target_list, 'List [trap_mad]');
+    //PrintData($snow_trap_target_list, 'List [snow_trap_mad]');
 
     //罠師が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は死亡
     $stack = array_count_values($trap_target_list);
@@ -1685,26 +1687,50 @@ function AggregateVoteNight($skip = false){
       if($uname != $target_uname && $stack[$target_uname] > 1) $trapped_list[] = $uname;
     }
 
+    //雪女の罠死判定
+    foreach($snow_trap_target_list as $uname => $target_uname){
+      if(in_array($target_uname, $trap_target_list)) $trapped_list[] = $uname;
+    }
+
+    //雪女が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は凍傷になる
+    $stack = array_count_values($snow_trap_target_list);
+    foreach($snow_trap_target_list as $uname => $target_uname){
+      if($uname != $target_uname && $stack[$target_uname] > 1){
+	$USERS->ByUname($uname)->AddDoom(1, 'frostbite');
+      }
+    }
+
+    //罠師の凍傷判定
+    foreach($trap_target_list as $uname => $target_uname){
+      if(in_array($target_uname, $snow_trap_target_list)){
+	$USERS->ByUname($uname)->AddDoom(1, 'frostbite');
+      }
+    }
+
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
       $user = $USERS->ByUname($uname);
       if($user->IsRole('dummy_guard')) //夢守人は罠無効
 	$dummy_guard_target_list[$user->uname] = $target_uname;
-      elseif(in_array($target_uname, $trap_target_list)) //罠が設置されていたら死亡
-	$trapped_list[] = $user->uname;
-      else
+      elseif(in_array($target_uname, $trap_target_list)) $trapped_list[] = $user->uname; //罠死判定
+      else{
+	//凍傷判定
+	if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
 	$guard_target_list[$user->uname] = $target_uname;
+      }
     }
     //PrintData($guard_target_list, 'Target [guard]');
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
 
     foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者の情報収集
       $user = $USERS->ByUname($uname);
-      if(in_array($target_uname, $trap_target_list)) //罠が設置されていたら死亡
-	$trapped_list[] = $user->uname;
+      if(in_array($target_uname, $trap_target_list)) $trapped_list[] = $user->uname; //罠死判定
       elseif($USERS->ByUname($target_uname)->IsWolf()) //逃亡先が人狼なら死亡
 	$USERS->Kill($user->user_no, 'WOLF_KILLED');
-      else
+      else{
+	//凍傷判定
+	if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
 	$escaper_target_list[$user->uname] = $target_uname; //逃亡先をセット
+      }
     }
     //PrintData($escaper_target_list, 'Target [escaper]');
   }
@@ -1712,10 +1738,14 @@ function AggregateVoteNight($skip = false){
   do{ //人狼の襲撃成功判定
     if($skip || $ROOM->IsQuiz()) break; //スキップモード・クイズ村仕様
 
-    //罠が設置されていたら死亡
-    if(in_array($wolf_target->uname, $trap_target_list) && ! $voted_wolf->IsSiriusWolf(false)){
-      $trapped_list[] = $voted_wolf->uname;
-      break;
+    if(! $voted_wolf->IsSiriusWolf(false)){ //罠判定 (覚醒天狼は無効)
+      if(in_array($wolf_target->uname, $trap_target_list)){ //罠死判定
+	$trapped_list[] = $voted_wolf->uname;
+	break;
+      }
+      if(in_array($wolf_target->uname, $snow_trap_target_list)){ //凍傷判定
+	$voted_wolf->AddDoom(1, 'frostbite');
+      }
     }
 
     //逃亡者の巻き添え判定
@@ -1727,13 +1757,10 @@ function AggregateVoteNight($skip = false){
     $stack = array_keys($guard_target_list, $wolf_target->uname); //護衛者を検出
     //PrintData($stack, 'List [gurad]');
     if(count($stack) > 0){
-      $guard_flag = false;
+      $guard_flag = ! $wolf_target->IsGuardLimited(); //護衛制限判定
       foreach($stack as $uname){
 	$user = $USERS->ByUname($uname);
-
-	//護衛制限判定 (夜雀・騎士は対象外)
-	$guard_flag |= $user->IsRole('blind_guard', 'poison_guard') ||
-	  ! $wolf_target->IsGuardLimited();
+	$guard_flag |= $user->IsRole('blind_guard', 'poison_guard'); //夜雀・騎士は護衛制限対象外
 
 	if($user->IsRole('hunter_guard')) //猟師だった場合は人狼に殺される
 	  $USERS->Kill($user->user_no, 'WOLF_KILLED');
@@ -1896,6 +1923,9 @@ function AggregateVoteNight($skip = false){
 	continue;
       }
 
+      //凍傷判定
+      if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
+
       $target = $USERS->ByUname($target_uname);
       if($target->IsDead(true) || $target->GetCamp() == 'vampire') continue; //スキップ判定
 
@@ -1927,6 +1957,9 @@ function AggregateVoteNight($skip = false){
 	$trapped_list[] = $user->uname;
 	continue;
       }
+
+      //凍傷判定
+      if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
 
       $target = $USERS->ByUname($target_uname);
       if($target->IsRole('escaper')) continue; //逃亡者は暗殺無効
@@ -2233,6 +2266,9 @@ function AggregateVoteNight($skip = false){
 	$action = 'CONSTELLATION_' . GetRandom($flower_list);
 	$ROOM->SystemMessage($USERS->GetHandleName($target->uname, true), $action);
       }
+      elseif($user->IsRole('ice_fairy')){ //氷妖精の処理
+	mt_rand(1, 100) <= 70 ? $target->AddDoom(1, 'frostbite') : $user->AddDoom(1, 'frostbite');
+      }
       elseif($user->IsRoleGroup('fairy')){ //妖精系の処理
 	$target_date = $ROOM->date + 1;
 	$target->AddRole("bad_status[{$user->user_no}-{$target_date}]");
@@ -2315,7 +2351,6 @@ function AggregateVoteNight($skip = false){
 	  switch($target->main_role){
 	  case 'human':
 	  case 'elder':
-	  case 'brownie':
 	  case 'saint':
 	  case 'executor':
 	  case 'escaper':
@@ -2451,6 +2486,8 @@ function AggregateVoteNight($skip = false){
 	$USERS->Kill($user->user_no, 'TRAPPED');
 	continue;
       }
+      //凍傷判定
+      if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
 
       if($target->IsSame($wolf_target->uname)){ //尾行成功
 	if(! $target->wolf_killed) continue; //人狼に襲撃されていなかったらスキップ
@@ -2772,6 +2809,7 @@ function AggregateVoteNight($skip = false){
       'mind_scanner' => 'howl_scanner',
       'jealousy' => 'poison_jealousy',
       'doll' => 'doll_master',
+      'brownie' => 'history_brownie',
       'wolf' => 'sirius_wolf',
       'mad' => 'whisper_mad',
       'fox' => 'cursed_fox',
@@ -2786,7 +2824,7 @@ function AggregateVoteNight($skip = false){
       'human' => 'suspect',
       'mage' => 'dummy_mage',
       'necromancer' => 'dummy_necromancer',
-      'medium' => 'revive_medium',
+      'medium' => 'medium',
       'priest' => 'dummy_priest',
       'guard' => 'dummy_guard',
       'common' => 'dummy_common',
@@ -2797,6 +2835,7 @@ function AggregateVoteNight($skip = false){
       'mind_scanner' => 'mind_scanner',
       'jealousy' => 'jealousy',
       'doll' => 'doll',
+      'brownie' => 'brownie',
       'wolf' => 'cute_wolf',
       'mad' => 'mad',
       'fox' => 'cute_fox',
@@ -2933,7 +2972,7 @@ function AggregateVoteNight($skip = false){
     }
   }
 
-  return $ROOM->test_mode || $ROOM->ChangeDate() || $ROOM->SkipDay();
+  return $ROOM->test_mode || $ROOM->ChangeDate();
 }
 
 //ランダムメッセージを挿入する

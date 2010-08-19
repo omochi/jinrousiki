@@ -104,6 +104,7 @@ class Message{
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   var $febris             = 'は熱病にかかったようです'; //熱病
+  var $frostbite          = 'は凍傷にかかったようです'; //凍傷
   var $warrant            = 'は死の宣告を受けたようです'; //死の宣告
   var $challenge          = 'は難題を解けなかったようです'; //難題
   //花妖精のリスト (A-Z)

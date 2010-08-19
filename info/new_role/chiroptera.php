@@ -121,6 +121,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 
 <h3><a id="dummy_chiroptera">夢求愛者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
+<h4>[役職表示] <a href="lovers.php#self_cupid">求愛者</a></h4>
 <pre>
 本人には<a href="lovers.php#self_cupid">求愛者</a>と表示されている蝙蝠。
 矢を撃つことはできるが恋人にはならず、矢を撃った先に<a href="sub_role.php#mind_receiver">受信者</a>もつかない。
@@ -153,6 +154,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="#grass_fairy">草妖精</a>
 <a href="#light_fairy">光妖精</a>
 <a href="#dark_fairy">闇妖精</a>
+<a href="#ice_fairy">氷妖精</a>
 <a href="#mirror_fairy">鏡妖精</a>
 </p>
 
@@ -320,6 +322,17 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 「宵闇」は<a href="sub_role.php#blinder">目隠し</a>の実装時から構想があったシステムです。
 宵闇になると役職の CO 状況を非常に掴みづらくなるので村サイドが特に不利になります。
 うかつに CO したら即座に吊られる事でしょう。
+</pre>
+
+<h3><a id="ice_fairy">氷妖精</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
+<h4>[悪戯能力] 発言妨害：無し / 占い妨害：有効 / 呪い：有効</h4>
+<pre>
+悪戯先を<a href="sub_role.php#frostbite">凍傷</a>にする妖精。
+成功率は 70% で、失敗すると自分が<a href="sub_role.php#frostbite">凍傷</a>になる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#snow_trap_mad">雪女</a>の能力を妖精に転化してみました。
 </pre>
 
 <h3><a id="mirror_fairy">鏡妖精</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>

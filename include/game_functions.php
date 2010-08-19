@@ -1081,6 +1081,7 @@ function OutputDeadManType($name, $type){
   case 'SUDDEN_DEATH_JEALOUSY':
   case 'SUDDEN_DEATH_AGITATED':
   case 'SUDDEN_DEATH_FEBRIS':
+  case 'SUDDEN_DEATH_FROSTBITE':
   case 'SUDDEN_DEATH_WARRANT':
   case 'SUDDEN_DEATH_CHALLENGE':
     echo '<tr class="dead-type-sudden-death">';

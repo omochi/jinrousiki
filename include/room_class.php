@@ -345,21 +345,10 @@ class Room{
     return $status;
   }
 
-  //昼を飛ばす
-  function SkipDay(){
-    global $USERS;
-
-    $USERS->SetEvent(true);
-    if($this->IsEvent('skip_day')){
-      $this->ChangeNight();
-      $this->talk('白澤の能力で昼が飛ばされました……');
-      $this->SkipNight();
-    }
-    return true;
-  }
-
   //夜を飛ばす
   function SkipNight(){
+    global $MESSAGE;
+
     if($this->IsEvent('skip_night')){
       AggregateVoteNight(true);
       $this->talk('白澤の能力で夜が飛ばされました……');

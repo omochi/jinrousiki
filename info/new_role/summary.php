@@ -60,6 +60,7 @@ Ver. 1.4.0
 <a href="#140beta13">β13</a>
 <a href="#140beta14">β14</a>
 <a href="#140beta15">β15</a>
+<a href="#140beta16">β16</a>
 </p>
 
 <p>
@@ -1527,6 +1528,36 @@ Ver. 1.4.0
       狩人に護衛されると殺される。</td>
     <td>Ver. 1.4.0 β15</td>
   </tr>
+  <tr>
+    <td><a href="human.php#history_brownie" id="140beta16">白澤</a></td>
+    <td><a href="human.php">村人</td>
+    <td><a href="human.php#brownie_group">座敷童子系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">人狼に襲撃されたら次の日の夜を飛ばしてしまう村人。</td>
+    <td>Ver. 1.4.0 β16</td>
+  </tr>
+  <tr>
+    <td><a href="wolf.php#snow_trap_mad">雪女</a></td>
+    <td><a href="wolf.php">人狼</a></td>
+    <td><a href="wolf.php#mad_group">狂人系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability"><a href="sub_role.php#frostbite">凍傷</a>になる罠を何回でも仕掛けることができる、特殊な<a href="wolf.php#trap_mad">罠師</a>。<br>
+      狩人に護衛されると殺される。</td>
+    <td>Ver. 1.4.0 β16</td>
+  </tr>
+  <tr>
+    <td><a href="chiroptera.php#ice_fairy">氷妖精</a></td>
+    <td><a href="chiroptera.php">蝙蝠</a></td>
+    <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+    <td>村人</td>
+    <td>村人</td>
+    <td class="ability">悪戯先を<a href="sub_role.php#frostbite">凍傷</a>にする妖精。<br>
+      成功率は 70% で、失敗すると自分が<a href="sub_role.php#frostbite">凍傷</a>になる。
+    </td>
+    <td>Ver. 1.4.0 β16</td>
+  </tr>
 </table>
 
 <table>
@@ -1959,6 +1990,13 @@ Ver. 1.4.0
     <td>○</td>
     <td class="ability">昼の投票時に女性に投票するとショック死します。</td>
     <td>Ver. 1.4.0 β14</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#frostbite" id="sub_140beta16">凍傷</a></td>
+    <td><a href="sub_role.php#chicken_group">小心者系</a></td>
+    <td>○</td>
+    <td class="ability">表示された日限定の<a href="sub_role.php#rabbit">ウサギ</a>。</td>
+    <td>Ver. 1.4.0 β16</td>
   </tr>
 </table>
 

@@ -69,12 +69,10 @@ class RequestBaseGame extends RequestBase{
   function RequestBaseGame(){ $this->__construct(); }
   function __construct(){
     global $GAME_CONF;
-    $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
 
-    $min_auto_reload = min($GAME_CONF->auto_reload_list);
-    if($this->auto_reload != 0 && $this->auto_reload < $min_auto_reload){
-      $this->auto_reload = $min_auto_reload;
-    }
+    $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
+    $min = min($GAME_CONF->auto_reload_list);
+    if($this->auto_reload != 0 && $this->auto_reload < $min) $this->auto_reload = $min;
   }
 }
 
@@ -163,10 +161,7 @@ class RequestGameLog extends RequestBase{
   function __construct(){
     $this->GetItems('intval', 'get.room_no', 'get.date');
     $this->GetItems(NULL, 'get.day_night');
-
-    if($this->IsInvalidScene()){
-      OutputActionResult('引数エラー', '引数エラー：無効な引数です');
-    }
+    if($this->IsInvalidScene()) OutputActionResult('引数エラー', '無効な引数です');
   }
 
   function IsInvalidScene(){
@@ -218,6 +213,7 @@ class RequestGameVote extends RequestBaseGamePlay{
 class RequestOldLog extends RequestBase{
   function RequestOldLog(){ $this->__construct(); }
   function __construct(){
+    $this->GetItems('intval', 'get.db_no');
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no', 'get.user_no');
       $this->GetItems('IsOn', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only',

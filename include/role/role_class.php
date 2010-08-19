@@ -35,9 +35,9 @@ class RoleManager{
 			      'executor', 'saint', 'agitate_mad');
 
   //ショック死
-  var $sudden_death_list = array('febris', 'death_warrant', 'chicken', 'rabbit', 'perverseness',
-				 'flattery', 'impatience', 'celibacy', 'nervy', 'androphobia',
-				 'gynophobia', 'panelist');
+  var $sudden_death_list = array('febris', 'frostbite', 'death_warrant', 'chicken', 'rabbit',
+				 'perverseness', 'flattery', 'impatience', 'celibacy', 'nervy',
+				 'androphobia', 'gynophobia', 'panelist');
 
   function RoleManager(){ $this->__construct(); }
   function __construct(){
