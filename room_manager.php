@@ -72,6 +72,11 @@ function CreateRoom(){
 
   //デバッグモード時は村立て制限をしない
   if(! $DEBUG_MODE){
+    if(CheckBlackList()){ //ブラックリストチェック
+      OutputRoomAction('black_list');
+      return false;
+    }
+
     //同じユーザが立てた村が終了していなければ新しい村を作らない
     if(FetchResult("SELECT COUNT(room_no) {$query} AND establisher_ip = '{$ip_address}'") > 0){
       OutputRoomAction('over_establish');
@@ -359,20 +364,25 @@ function OutputRoomAction($type, $room_name = ''){
     echo '時間を置いて再度登録してください。';
     break;
 
+  case 'black_list':
+    OutputActionResultHeader('村作成 [制限事項]');
+    echo '村立て制限ホストです。';
+    break;
+
   case 'full':
-    OutputActionResultHeader('村作成 [データベースエラー]');
+    OutputActionResultHeader('村作成 [制限事項]');
     echo '現在プレイ中の村の数がこのサーバで設定されている最大値を超えています。<br>'."\n";
     echo 'どこかの村で決着がつくのを待ってから再度登録してください。';
     break;
 
   case 'over_establish':
-    OutputActionResultHeader('村作成 [データベースエラー]');
+    OutputActionResultHeader('村作成 [制限事項]');
     echo 'あなたが立てた村が現在稼働中です。<br>'."\n";
     echo '立てた村で決着がつくのを待ってから再度登録してください。';
     break;
 
   case 'establish_wait':
-    OutputActionResultHeader('村作成 [データベースエラー]');
+    OutputActionResultHeader('村作成 [制限事項]');
     echo 'サーバで設定されている村立て時間間隔を経過していません。<br>'."\n";
     echo 'しばらく時間を開けてから再度登録してください。';
     break;

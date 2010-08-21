@@ -2,18 +2,16 @@
 /*
   ◆聖女 (saint)
   ○仕様
-  ・処刑投票が拮抗したら候補者の内訳によって処刑候補が変化する
+  ・処刑投票が拮抗したら候補者の内訳によって処刑者が変化する
 */
-class Role_saint extends Role{
+class Role_saint extends RoleVoteAbility{
   function Role_saint(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
-
-  function SetVoteAbility($uname){}
 
   function DecideVoteKill(&$uname){
     global $ROLES, $USERS;
 
-    if($uname != '') return;
+    if(parent::DecideVoteKill($uname)) return true;
     $stack = array();
     $target_stack = array();
     foreach($ROLES->stack->max_voted as $target_uname){//最多得票者の情報を収集

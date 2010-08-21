@@ -5,21 +5,12 @@
   ・優先順位が低めの決定者相当
   ・再投票になったらショック死する
 */
-class Role_impatience extends Role{
+class Role_impatience extends RoleVoteAbility{
+  var $data_type = 'target';
+  var $decide_type = 'decide';
+
   function Role_impatience(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
-
-  function SetVoteAbility($uname){
-    global $ROLES;
-    $ROLES->stack->impatience = $uname;
-  }
-
-  function DecideVoteKill(&$uname){
-    global $ROLES;
-    if($uname == '' && in_array($ROLES->stack->impatience, $ROLES->stack->vote_possible)){
-      $uname = $ROLES->stack->impatience;
-    }
-  }
 
   function FilterSuddenDeath(&$reason){
     global $ROLES;

@@ -1126,6 +1126,66 @@ function AggregateVoteGameStart($force_start = false){
   return true;
 }
 
+//昼の投票処理
+function VoteDay(){
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+
+  CheckSituation('VOTE_KILL'); //コマンドチェック
+
+  $target = $USERS->ByReal($RQ_ARGS->target_no); //投票先のユーザ情報を取得
+  if($target->uname == '') OutputVoteResult('処刑：投票先が指定されていません');
+  if($target->IsSelf())    OutputVoteResult('処刑：自分には投票できません');
+  if(! $target->IsLive())  OutputVoteResult('処刑：生存者以外には投票できません');
+
+  $vote_duel = $ROOM->event->vote_duel; //特殊イベントを取得
+  if(is_array($vote_duel) && ! in_array($RQ_ARGS->target_no, $vote_duel)){
+    OutputVoteResult('処刑：決選投票対象者以外には投票できません');
+  }
+  if(! $ROOM->test_mode) LockVote(); //テーブルを排他的ロック
+
+  //投票済みチェック
+  if($ROOM->test_mode){
+    if(array_key_exists($SELF->uname, $RQ_ARGS->TestItems->vote_day)){
+      PrintData($SELF->uname, 'AlreadyVoted');
+      return false;
+    }
+  }
+  else{
+    $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
+      "AND vote_times = {$RQ_ARGS->vote_times} AND uname = '{$SELF->uname}'";
+    if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
+  }
+
+  //-- 投票処理 --//
+  //役職に応じて投票数を補正
+  $vote_number = 1;
+  $brownie_flag = false;
+  foreach($USERS->rows as $user){ //座敷童子の生存判定
+    if($user->IsLive() && $user->IsRole('brownie')){
+      $brownie_flag = true;
+      break;
+    }
+  }
+  if($SELF->IsRoleGroup('elder') || ($brownie_flag && $SELF->IsRole('human'))){
+    $vote_number++; //長老系と座敷童子が出現している村人は投票数が 1 増える
+  }
+
+  //サブ役職の処理
+  $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //仮想投票者をセット
+  foreach($ROLES->Load('vote_do') as $filter) $filter->FilterVoteDo($vote_number);
+
+  if(! $SELF->Vote('VOTE_KILL', $target->uname, $vote_number)){ //投票処理
+    OutputVoteResult('データベースエラー', true);
+  }
+
+  //システムメッセージ
+  if($ROOM->test_mode) return true;
+  $ROOM->Talk("VOTE_DO\t" . $USERS->GetHandleName($target->uname, true), $SELF->uname);
+
+  AggregateVoteDay(); //集計処理
+  OutputVoteResult('投票完了', true);
+}
+
 //昼の投票集計処理
 function AggregateVoteDay(){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS;
@@ -1134,6 +1194,7 @@ function AggregateVoteDay(){
   if(! $ROOM->test_mode) CheckSituation('VOTE_KILL'); //コマンドチェック
 
   $user_list = $USERS->GetLivingUsers(); //生きているユーザを取得
+  //PrintData($user_list);
   if($ROOM->LoadVote() != count($user_list)) return false; //投票数と照合
   //PrintData($ROOM->vote, 'Vote');
 
@@ -1198,6 +1259,7 @@ function AggregateVoteDay(){
     //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
     $sentence = $USERS->GetHandleName($uname) . "\t" . $target . "\t" .
       $voted_number ."\t" . $vote_number . "\t" . $RQ_ARGS->vote_times;
+    if($ROOM->test_mode) continue;
     $ROOM->SystemMessage($sentence, 'VOTE_KILL');
   }
 
@@ -2819,7 +2881,7 @@ function AggregateVoteNight($skip = false){
       'quiz' => 'quiz',
       'vampire' => 'vampire',
       'chiroptera' => 'boss_chiroptera',
-      'fairy' => 'light_fairy');
+      'fairy' => 'ice_fairy');
     $dummy_mania_replace_list = array(
       'human' => 'suspect',
       'mage' => 'dummy_mage',

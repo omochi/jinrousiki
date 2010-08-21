@@ -121,6 +121,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="human.php#mind_scanner_group">さとり系</a> → <a href="human.php#howl_scanner">吠騒霊</a></li>
 <li><a href="human.php#jealousy_group">橋姫系</a> → <a href="human.php#poison_jealousy">毒橋姫</a></li>
 <li><a href="human.php#doll_group">上海人形系</a> → <a href="human.php#doll_master">人形遣い</a></li>
+<li><a href="human.php#brownie_group">座敷童子系</a> → <a href="human.php#history_brownie">白澤</a> (Ver. 1.4.0 β16〜)</li>
 <li><a href="wolf.php#wolf_group">人狼系</a> → <a href="wolf.php#sirius_wolf">天狼</a></li>
 <li><a href="wolf.php#mad_group">狂人系</a> → <a href="wolf.php#whisper_mad">囁き狂人</a></li>
 <li><a href="fox.php#fox_group">妖狐系</a> → <a href="fox.php#cursed_fox">天狐</a></li>
@@ -130,8 +131,8 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="quiz.php#quiz_group">出題者系</a> → <a href="quiz.php#quiz">出題者</a></li>
 <li><a href="vampire.php#vampire_group">吸血鬼系</a> → <a href="vampire.php#vampire">吸血鬼</a> (Ver. 1.4.0 β14〜)</li>
 <li><a href="chiroptera.php#chiroptera_group">蝙蝠系</a> → <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a></li>
-<li><a href="chiroptera.php#fairy_group">妖精系</a> → <a href="chiroptera.php#light_fairy">光妖精</a></li>
-<li><a href="mania.php#mania_group">神話マニア系</a> → 村人</li>
+<li><a href="chiroptera.php#fairy_group">妖精系</a> → <a href="chiroptera.php#ice_fairy">氷妖精</a> (Ver. 1.4.0 β16〜)</li>
+<li><a href="#mania_group">神話マニア系</a> → 村人</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -230,6 +231,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="human.php#mind_scanner_group">さとり系</a> → <a href="human.php#mind_scanner">さとり</a></li>
 <li><a href="human.php#jealousy_group">橋姫系</a> → <a href="human.php#jealousy">橋姫</a></li>
 <li><a href="human.php#doll_group">上海人形系</a> → <a href="human.php#doll">上海人形</a></li>
+<li><a href="human.php#brownie_group">座敷童子系</a> → <a href="human.php#brownie">座敷童子</a> (Ver. 1.4.0 β16〜)</li>
 <li><a href="wolf.php#wolf_group">人狼系</a> → <a href="wolf.php#cute_wolf">萌狼</a></li>
 <li><a href="wolf.php#mad_group">狂人系</a> → <a href="wolf.php#mad">狂人</a></li>
 <li><a href="fox.php#fox_group">妖狐系</a> → <a href="fox.php#cute_fox">萌狐</a></li>
@@ -240,7 +242,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <li><a href="vampire.php#vampire_group">吸血鬼系</a> → <a href="vampire.php#vampire">吸血鬼</a> (Ver. 1.4.0 β14〜)</li>
 <li><a href="chiroptera.php#chiroptera_group">蝙蝠系</a> → <a href="chiroptera.php#dummy_chiroptera">夢求愛者</a></li>
 <li><a href="chiroptera.php#fairy_group">妖精系</a> → <a href="chiroptera.php#mirror_fairy">鏡妖精</a></li>
-<li><a href="mania.php#mania_group">神話マニア系</a> → 村人</li>
+<li><a href="#mania_group">神話マニア系</a> → 村人</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>

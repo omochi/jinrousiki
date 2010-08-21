@@ -642,6 +642,15 @@ EOF;
   function Vote($action, $target = NULL, $vote_number = NULL){
     global $RQ_ARGS, $ROOM;
 
+    if($ROOM->test_mode){
+      if($ROOM->IsDay()){
+	$stack = array('uname' => $this->uname, 'target_uname' => $target,
+		       'vote_number' => $vote_number);
+	$RQ_ARGS->TestItems->vote_day[$this->uname] = $stack;
+      }
+      //PrintData($stack, 'Vote');
+      return true;
+    }
     $items = 'room_no, date, uname, situation';
     $values = "{$ROOM->id}, $ROOM->date, '{$this->uname}', '{$action}'";
     if(isset($target)){

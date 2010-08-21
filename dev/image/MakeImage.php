@@ -146,7 +146,7 @@ class RoleMessageList{
     'type' => 'priest');
 
   var $dowser_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#探知師#です。一定日数おきに現在生きている人が所有しているサブ役職の総数を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#探知師#です。一定日数おきに現在生きている人が所有しているサブ役職の総数を知ることができます。\n　あなたの探知能力と推理力次第では、水面下にて息を潜める特殊な陣営を見抜くことも不可能ではありません。",
     'type' => 'priest');
 
   var $border_priest = array(
@@ -252,7 +252,7 @@ class RoleMessageList{
     'delimiter' => array('^' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
   var $revive_pharmacist = array(
-    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#仙人#です。_処刑_投票した人の^ショック死^を抑制することができます。また、一度だけ=人狼=に襲撃されても#蘇生#できます。",
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#仙人#です。_処刑_投票した人の^ショック死^を抑制することができます。また、一度だけ=人狼=に襲撃されても#蘇生#できます。\n　死を超越し、死に拒絶されたあなたは死を否定する力を持っています。その力で村を人狼という理不尽な死から救いだすのです！",
     'type' => 'cure_pharmacist',
     'delimiter' => array('=' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
@@ -334,17 +334,16 @@ class RoleMessageList{
     'delimiter' => array('_' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_投票数を +1 することができますが、あなたが_処刑_されたら誰か一人を^熱病^にしてしまいます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_投票数を +1 することができますが、あなたが_処刑_されたら誰か一人を^熱病^にしてしまいます。\n　その力で村を裕福にしてあげましょう。但しあなたが_処刑_されてしまうとたちまち村に不幸が訪れ、病に伏せる者がでてしまいます。",
     'type' => 'human',
     'delimiter' => array('#' => array('R' => 144, 'G' => 192, 'B' => 160),
 			 '_' => array('R' => 153, 'G' => 153, 'B' => 0),
 			 '^' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
   var $history_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_人狼_に襲撃されたら次の日の夜を飛ばしてしまいます。",
-    'delimiter' => array('|' => array('R' => 96, 'G' => 96, 'B' => 96),
-			 '#' => array('R' => 144, 'G' => 192, 'B' => 160),
-			 '_' => array('R' => 255, 'G' => 0, 'B' => 0)));
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_人狼_に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
+    'type' => 'brownie',
+    'delimiter' => array('_' => array('R' => 255, 'G' => 0, 'B' => 0)));
 
   var $wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の|人狼|と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
@@ -487,7 +486,7 @@ class RoleMessageList{
     'type' => 'mad');
 
   var $snow_trap_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|雪女|です。夜に、触れた人を_凍傷_にする罠を仕掛けることができます。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|雪女|です。夜に、触れた人を_凍傷_にする罠を仕掛けることができます。美しいあなたの銀雪の息吹は数多を凍えさせるのです。",
     'type' => 'mad',
     'delimiter' => array('_' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
@@ -496,7 +495,7 @@ class RoleMessageList{
     'type' => 'mad');
 
   var $therian_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。その身に宿る気高き獣の血を覚醒させ、森羅万象全てを噛み殺すのです！",
     'type' => 'mad');
 
   var $fox = array(
@@ -659,7 +658,7 @@ class RoleMessageList{
     'delimiter' => array('|' => array('R' => 153, 'G' => 153, 'B' => 204)));
 
   var $vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。\n　夜の闇にまぎれ、誰にも知られぬまま血をすすり、眷属を増やすのです。真の支配者はあなただと言う事を村に知らしめましょう。",
     'delimiter' => array('|' => array('R' => 208, 'G' => 0, 'B' => 208)));
 
   var $chiroptera = array(
@@ -741,7 +740,7 @@ class RoleMessageList{
     'type' => 'moon_fairy');
 
   var $ice_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人を指定して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人を指定して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように悪戯して追い払いましょう。",
     'type' => 'fairy',
     'delimiter' => array('#' => array('R' => 51, 'G' => 204, 'B' => 255)));
 
@@ -1470,10 +1469,4 @@ foreach($list as $name => $array){
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_brownie');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison');
-#$builder->Output('brownie');
-$builder->Output('ice_fairy');
-#$builder->Output('snow_trap_mad');
-#$builder->Output('history_brownie');
-#$builder->Output('dowser_priset');
-#$builder->Output('therian_mad');
-#$builder->Output('vampire');
+$builder->Output('revive_pharmacist');

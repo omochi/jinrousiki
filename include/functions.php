@@ -13,6 +13,16 @@ function CheckReferer($page, $white_list = NULL){
   return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
 }
 
+//ブラックリストチェック
+function CheckBlackList(){
+  global $ROOM_CONF;
+
+  foreach($ROOM_CONF->black_list as $host){
+    if(strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return true;
+  }
+  return false;
+}
+
 //-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
 function SendQuery($query, $commit = false){

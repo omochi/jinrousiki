@@ -39,7 +39,7 @@ $RQ_ARGS->TestItems->test_users[2]->user_no = 2;
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'wolf strong_voice';
+$RQ_ARGS->TestItems->test_users[2]->role = 'wolf strong_voice rebel';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 $RQ_ARGS->TestItems->test_users[2]->icon_filename = '001.gif';
 $RQ_ARGS->TestItems->test_users[2]->color = '#DDDDDD';
@@ -99,7 +99,7 @@ $RQ_ARGS->TestItems->test_users[8]->user_no = 8;
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[8]->role = 'anti_voodoo decide';
+$RQ_ARGS->TestItems->test_users[8]->role = 'anti_voodoo good_luck';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 $RQ_ARGS->TestItems->test_users[8]->icon_filename = '007.gif';
 $RQ_ARGS->TestItems->test_users[8]->color = '#0066FF';
@@ -169,7 +169,7 @@ $RQ_ARGS->TestItems->test_users[15]->user_no = 15;
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
 $RQ_ARGS->TestItems->test_users[15]->handle_name = '炎';
 $RQ_ARGS->TestItems->test_users[15]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[15]->role = 'stargazer_fox critical_luck';
+$RQ_ARGS->TestItems->test_users[15]->role = 'stargazer_fox';
 $RQ_ARGS->TestItems->test_users[15]->live = 'live';
 $RQ_ARGS->TestItems->test_users[15]->icon_filename = '004.gif';
 $RQ_ARGS->TestItems->test_users[15]->color = '#FF9900';
@@ -219,7 +219,7 @@ $RQ_ARGS->TestItems->test_users[20]->user_no = 20;
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'vampire';
+$RQ_ARGS->TestItems->test_users[20]->role = 'vampire plague';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->icon_filename = '009.gif';
 $RQ_ARGS->TestItems->test_users[20]->color = '#CC00CC';
@@ -239,7 +239,7 @@ $RQ_ARGS->TestItems->test_users[22]->user_no = 22;
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[22]->role = 'escaper';
+$RQ_ARGS->TestItems->test_users[22]->role = 'agitate_mad';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->icon_filename = '001.gif';
 $RQ_ARGS->TestItems->test_users[22]->color = '#DDDDDD';
@@ -259,7 +259,7 @@ $RQ_ARGS->TestItems->test_users[24]->user_no = 24;
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'evoke_scanner';
+$RQ_ARGS->TestItems->test_users[24]->role = 'evoke_scanner critical_voter';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 $RQ_ARGS->TestItems->test_users[24]->icon_filename = '003.gif';
 $RQ_ARGS->TestItems->test_users[24]->color = '#FFD700';
@@ -269,7 +269,7 @@ $RQ_ARGS->TestItems->test_users[25]->user_no = 25;
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[25]->role = 'brownie downer_luck';
+$RQ_ARGS->TestItems->test_users[25]->role = 'executor disfavor';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->icon_filename = '004.gif';
 $RQ_ARGS->TestItems->test_users[25]->color = '#FF9900';
@@ -283,31 +283,32 @@ foreach($RQ_ARGS->TestItems->test_users as $user){
 }
 
 //-- 仮想投票データをセット --//
-$RQ_ARGS->TestItems->vote_day = array(
-  array('uname' => 'light_gray',	'vote_number' => 1, 'target_uname' => 'blue'),
-  array('uname' => 'dark_gray',		'vote_number' => 1, 'target_uname' => 'purple'),
-  array('uname' => 'yellow',		'vote_number' => 2, 'target_uname' => 'blue'),
-  array('uname' => 'orange',		'vote_number' => 1, 'target_uname' => 'dark_gray'),
-  #array('uname' => 'red',		'vote_number' => 1, 'target_uname' => 'dark_gray'),
-  array('uname' => 'light_blue',	'vote_number' => 1, 'target_uname' => 'orange'),
-  array('uname' => 'blue',		'vote_number' => 1, 'target_uname' => 'dark_gray'),
-  array('uname' => 'green',		'vote_number' => 1, 'target_uname' => 'light_blue'),
-  array('uname' => 'purple',		'vote_number' => 1, 'target_uname' => 'dark_gray'),
-  array('uname' => 'cherry',		'vote_number' => 1, 'target_uname' => 'sun'),
-  array('uname' => 'white',		'vote_number' => 1, 'target_uname' => 'sun'),
-  array('uname' => 'black',		'vote_number' => 1, 'target_uname' => 'sun'),
-  array('uname' => 'gold',		'vote_number' => 1, 'target_uname' => 'sun'),
-  array('uname' => 'frame',		'vote_number' => 1, 'target_uname' => 'light_blue'),
-  array('uname' => 'scarlet',		'vote_number' => 1, 'target_uname' => 'light_blue'),
-  #array('uname' => 'sky',		'vote_number' => 1, 'target_uname' => 'gust'),
-  array('uname' => 'sea',		'vote_number' => 1, 'target_uname' => 'gust'),
-  array('uname' => 'land',		'vote_number' => 1, 'target_uname' => 'gust'),
-  array('uname' => 'rose',		'vote_number' => 1, 'target_uname' => 'gust'),
-  array('uname' => 'peach',		'vote_number' => 1, 'target_uname' => 'blue'),
-  array('uname' => 'gust',		'vote_number' => 1, 'target_uname' => 'blue'),
-  array('uname' => 'cloud',		'vote_number' => 1, 'target_uname' => 'light_blue'),
-  array('uname' => 'moon',		'vote_number' => 1, 'target_uname' => 'light_blue'),
-  array('uname' => 'sun',		'vote_number' => 1, 'target_uname' => 'light_blue'),
+$RQ_ARGS->TestItems->vote_day = array();
+$RQ_ARGS->TestItems->vote_target_day = array(
+  array('id' =>  2, 'target_no' =>  7),
+  array('id' =>  3, 'target_no' => 10),
+  array('id' =>  4, 'target_no' =>  8),
+  array('id' =>  5, 'target_no' =>  3),
+  //array('id' =>  6, 'target_no' =>  3),
+  array('id' =>  7, 'target_no' =>  5),
+  array('id' =>  8, 'target_no' =>  3),
+  array('id' =>  9, 'target_no' =>  7),
+  array('id' => 10, 'target_no' =>  3),
+  array('id' => 11, 'target_no' => 25),
+  array('id' => 12, 'target_no' => 25),
+  array('id' => 13, 'target_no' => 25),
+  array('id' => 14, 'target_no' => 25),
+  array('id' => 15, 'target_no' =>  7),
+  array('id' => 16, 'target_no' =>  7),
+  //array('id' => 17, 'target_no' => 22),
+  array('id' => 18, 'target_no' => 22),
+  array('id' => 19, 'target_no' => 22),
+  array('id' => 20, 'target_no' => 22),
+  array('id' => 21, 'target_no' => 22),
+  array('id' => 22, 'target_no' =>  8),
+  array('id' => 23, 'target_no' =>  8),
+  array('id' => 24, 'target_no' =>  7),
+  array('id' => 25, 'target_no' =>  7),
 );
 
 $RQ_ARGS->TestItems->vote_night = array(
@@ -382,8 +383,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 3;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -406,6 +407,13 @@ OutputPlayerList(); //プレイヤーリスト
 OutputAbility();
 
 if($ROOM->IsDay()){ //昼の投票テスト
+  $self_id = $SELF->user_no;
+  $RQ_ARGS->situation = 'VOTE_KILL';
+  foreach($RQ_ARGS->TestItems->vote_target_day as $stack){
+    $SELF = $USERS->ByID($stack['id']);
+    $RQ_ARGS->target_no = $stack['target_no'];
+    VoteDay();
+  }
   $vote_message_list = AggregateVoteDay();
   if(! is_array($vote_message_list)) $vote_message_list = array();
   $stack = array();
@@ -416,6 +424,7 @@ if($ROOM->IsDay()){ //昼の投票テスト
   }
   echo GenerateVoteList($stack, $ROOM->date);
   $ROOM->day_night = 'night';
+  $SELF = $USERS->ByID($self_id);
 }
 elseif($ROOM->IsNight()){ // 夜の投票テスト
   //PrintData($RQ_ARGS->TestItems->vote_night);

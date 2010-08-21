@@ -170,3 +170,64 @@ class RoleTalkFilter extends Role{
     }
   }
 }
+
+//-- 処刑投票能力者用拡張クラス --//
+class RoleVoteAbility extends Role{
+  var $role;
+  var $data_type;
+  var $decide_type;
+
+  function RoleVoteAbility(){ $this->__construct(); }
+  function __construct(){
+    parent::__construct();
+    $this->role = array_pop(explode('Role_', get_class($this)));
+  }
+
+  function SetVoteAbility($uname){
+    global $ROLES, $USERS;
+    switch($this->data_type){
+    case 'self':
+      $ROLES->stack->{$this->role} = $ROLES->actor->uname;
+      break;
+
+    case 'target':
+      $ROLES->stack->{$this->role} = $uname;
+      break;
+
+    case 'both':
+      $ROLES->stack->{$this->role} = $ROLES->actor->uname;
+      $ROLES->stack->{$this->role . '_uname'} = $uname;
+      break;
+
+    case 'array':
+      $user = $USERS->ByRealUname($ROLES->actor->uname);
+      if($user->IsRole($this->role)) $ROLES->stack->{$this->role}[] = $user->uname;
+      break;
+    }
+  }
+
+  function DecideVoteKill(&$uname){
+    global $ROLES;
+
+    if($uname != '') return true;
+    switch($this->decide_type){
+    case 'decide':
+      $target = $ROLES->stack->{$this->role};
+      if(in_array($target, $ROLES->stack->vote_possible)) $uname = $target;
+      return true;
+
+    case 'escape':
+      $key = array_search($ROLES->stack->{$this->role}, $ROLES->stack->vote_possible);
+      if($key === false) return false;
+      unset($ROLES->stack->vote_possible[$key]);
+      if(count($ROLES->stack->vote_possible) == 1){ //候補が一人になった場合は処刑者決定
+	$uname = array_shift($ROLES->stack->vote_possible);
+	return true;
+      }
+      return false;
+
+    default:
+      return false;
+    }
+  }
+}

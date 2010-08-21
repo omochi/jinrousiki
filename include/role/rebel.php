@@ -4,15 +4,11 @@
   ○仕様
   ・権力者と同じ人に投票すると０票になる
 */
-class Role_rebel extends Role{
+class Role_rebel extends RoleVoteAbility{
+  var $data_type = 'both';
+
   function Role_rebel(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
-
-  function SetVoteAbility($uname){
-    global $ROLES;
-    $ROLES->stack->rebel = $ROLES->actor->uname;
-    $ROLES->stack->rebel_uname = $uname;
-  }
 
   function FilterRebel(&$message_list, &$count_list){
     global $ROLES;

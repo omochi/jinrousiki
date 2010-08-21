@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('room_class', 'user_class', 'icon_functions');
-$INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'MESSAGE');
+$INIT_CONF->LoadClass('SESSION', 'ROOM_CONF', 'GAME_CONF', 'MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 $RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
@@ -61,7 +61,7 @@ function EntryUser(){
   if(FetchResult($query . "uname = '{$uname}' AND live = 'kick'") > 0){
     OutputActionResult('村人登録 [キックされたユーザ]',
 		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
-		       '別の名前にしてください。');
+		       '別の名前にしてください。', '', true);
   }
 
   //ユーザ名、村人名
@@ -69,15 +69,20 @@ function EntryUser(){
   if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
-		       '別の名前にしてください。');
+		       '別の名前にしてください。', '', true);
   }
   //OutputActionResult('トリップテスト', $uname . '<br>' . $handle_name);
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-  if(! $DEBUG_MODE && $GAME_CONF->entry_one_ip_address &&
-     FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
-    OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
+  if(! $DEBUG_MODE){
+    if(CheckBlackList()){
+      OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。', '', true);
+    }
+    elseif($GAME_CONF->entry_one_ip_address &&
+	   FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
+      OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。', '', true);
+    }
   }
 
   //DBから最大人数を取得
@@ -87,7 +92,7 @@ function EntryUser(){
   $request->room_no = $room_no;
   $request->entry_user = true;
   $USERS = new UserDataSet($request);
-  #//PrintData($USERS); //テスト用
+  //PrintData($USERS); //テスト用
 
   $ROOM = RoomDataSet::LoadEntryUser($room_no); //DBから最大人数を取得
   $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る

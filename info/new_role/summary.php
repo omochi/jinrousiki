@@ -1480,7 +1480,7 @@ Ver. 1.4.0
   <tr>
     <td><a href="human.php#brownie">座敷童子</a></td>
     <td><a href="human.php">村人</a></td>
-    <td><a href="human.php#human_group">村人系</a></td>
+    <td><a href="human.php#brownie_group">座敷童子系</a></td>
     <td>村人</td>
     <td>村人</td>
     <td class="ability">役職「村人」の処刑投票数を +1 する村人。<br>

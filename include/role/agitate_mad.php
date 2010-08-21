@@ -4,21 +4,16 @@
   ○仕様
   ・処刑投票が拮抗したら自分の投票先を処刑し、残りをまとめてショック死させる
 */
-class Role_agitate_mad extends Role{
+class Role_agitate_mad extends RoleVoteAbility{
+  var $data_type = 'array';
+
   function Role_agitate_mad(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
-
-  function SetVoteAbility($uname){
-    global $ROLES, $USERS;
-
-    $user = $USERS->ByRealUname($ROLES->actor->uname);
-    if($user->IsRole('agitate_mad')) $ROLES->stack->agitate_mad[] = $user->uname;
-  }
 
   function DecideVoteKill(&$uname){
     global $ROOM, $ROLES, $USERS;
 
-    if($uname != '' || ! is_array($ROLES->stack->agitate_mad)) return;
+    if(parent::DecideVoteKill($uname) || ! is_array($ROLES->stack->agitate_mad)) return;
     $stack = array();
     foreach($ROLES->stack->agitate_mad as $actor_uname){ //最多得票者に投票した扇動者の投票先を収集
       $target = $USERS->ByVirtualUname($ROOM->vote[$actor_uname]['target_uname']);
