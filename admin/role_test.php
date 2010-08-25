@@ -3,7 +3,7 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA');
 $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
-OutputHTMLHeader('闇鍋モード配役テスト');
+OutputHTMLHeader('配役テストツール');
 
 echo <<<EOF
 </head>
@@ -27,8 +27,10 @@ echo <<<EOF
 自動公開決闘
 <input type="radio" name="game_option" value="duel not_open_cast">
 非公開決闘
-<input type="checkbox" name="festival" value="on">
-お祭り
+<input type="radio" name="game_option" value="gray_random">
+グレラン
+<input type="radio" name="game_option" value="quiz">
+クイズ
 <br>
 <input type="radio" name="replace_human" value="" checked>
 置換無し
@@ -40,6 +42,8 @@ echo <<<EOF
 キューピッド村
 <input type="radio" name="replace_human" value="replace_human">
 村人置換村
+<input type="checkbox" name="festival" value="on">
+お祭り
 </form>
 
 EOF;

@@ -24,8 +24,9 @@ class RoomConfig{
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
   //-- OutputCreateRoom() --//
-  var $room_name = 60; //村名の最大文字数
-  var $room_comment = 60; //村の説明の最大文字数
+  var $room_name = 80; //村名の最大文字数
+  var $room_comment = 80; //村の説明の最大文字数
+  var $gm_password = 20; //GM ログインパスワードの最大文字数
   var $ng_word = '/http:\/\//i'; //入力禁止文字列 (正規表現)
 
   //各オプションを有効に [true:する / false:しない]
@@ -115,13 +116,12 @@ class RoomConfig{
   //置換モードの内訳 (replace_human：管理人カスタムモード)
   var $replace_human_list = array('full_mania', 'full_chiroptera', 'full_cupid', 'replace_human');
 
+  //特殊配役村の内訳
+  var $special_role_list = array('chaos', 'chaosfull', 'chaos_hyper', 'duel', 'gray_random', 'quiz');
+
   var $chaos = true; //闇鍋モード
   var $chaosfull = true; //真・闇鍋モード
   var $chaos_hyper = true; //超・闇鍋モード
-
-  //闇鍋モードのデフォルト
-  //[NULL:通常人狼 / 'chaos':通常闇鍋 / 'chaosfull':真・闇鍋 / 'chaos_hyper':超・闇鍋]
-  var $default_chaos = NULL; //通常人狼
 
   var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
   var $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)
@@ -140,11 +140,9 @@ class RoomConfig{
   //サブ役職制限のデフォルト [NULL:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード]
   var $default_sub_role_limit = 'no'; //つけない (no_sub_role)
 
-  var $quiz = true; //クイズ村
-  var $default_quiz = false;
-
   var $duel = true; //決闘村
-  var $default_duel = false;
+  var $gray_random = true; //グレラン村
+  var $quiz = true; //クイズ村
 }
 
 //-- ゲーム設定 --//

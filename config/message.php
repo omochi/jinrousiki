@@ -235,6 +235,7 @@ class GameOptionMessage{
   var $real_time             = 'リアルタイム制';
   var $dummy_boy             = '初日の夜は身代わり君';
   var $gm_login              = '身代わり君は GM';
+  var $gm_password           = 'GM ログインパスワード';
   var $gerd                  = 'ゲルト君モード';
   var $open_vote             = '投票した票数を公表する';
   var $open_day              = 'オープニングあり';
@@ -262,6 +263,7 @@ class GameOptionMessage{
   var $full_cupid            = 'キューピッド村';
   var $detective             = '探偵村';
   var $festival              = 'お祭り村';
+  var $special_role          = '特殊配役モード';
   var $chaos                 = '闇鍋モード';
   var $chaosfull             = '真・闇鍋モード';
   var $chaos_hyper           = '超・闇鍋モード';
@@ -273,20 +275,21 @@ class GameOptionMessage{
   var $sub_role_limit_easy   = 'サブ役職制限：EASYモード';
   var $sub_role_limit_normal = 'サブ役職制限：NORMALモード';
   var $secret_sub_role       = 'サブ役職を表示しない';
-  var $quiz                  = 'クイズ村';
   var $duel                  = '決闘村';
+  var $gray_random           = 'グレラン村';
+  var $quiz                  = 'クイズ村';
 }
 
 //-- ゲームオプション名の説明 --//
 class GameOptionCaptionMessage{
-  var $max_user              = '配役は<a href="rule.php">ルール</a>を確認して下さい';
+  var $max_user              = '配役は<a href="info/rule.php">ルール</a>を確認して下さい';
   var $wish_role             = '希望の役割を指定できますが、なれるかは運です';
   var $real_time             = '制限時間が実時間で消費されます';
   var $no_dummy_boy          = '身代わり君なし';
   var $dummy_boy             = '身代わり君あり (初日の夜、身代わり君が狼に食べられます)';
-  var $gm_login_header       = '仮想 GM が身代わり君としてログインします';
-  var $gm_login_footer       = 'ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください';
-  var $gerd                  = '役職が村人固定になります (村人が出現している場合のみ有効)';
+  var $gm_login              = '仮想 GM が身代わり君としてログインします';
+  var $gm_password           = '(仮想 GM モード・クイズ村モード時の GM のパスワードです)<br>※ ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。';
+  var $gerd                  = '役職が村人固定になります [村人が出現している場合のみ有効]';
   var $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
   var $open_day              = 'ゲームが1日目の「昼」からスタートします';
   var $no_close_cast         = '常時公開 (蘇生能力は無効です)';
@@ -312,10 +315,7 @@ class GameOptionCaptionMessage{
   var $full_mania            = '「村人」が全員「神話マニア」に入れ替わります';
   var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
   var $festival              = '管理人がカスタムする特殊設定です';
-  var $no_chaos              = '通常人狼';
-  var $chaos                 = '控えめな闇鍋モードです';
-  var $chaosfull             = 'そこそこ歯応えのある真・闇鍋モードです';
-  var $chaos_hyper           = '全く容赦のない超・闇鍋モードです';
+  var $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   var $chaos_not_open_cast   = '通知無し';
   var $chaos_open_cast_camp  = '陣営通知 (陣営毎の合計を通知)';
   var $chaos_open_cast_role  = '役職通知 (役職の種類別に合計を通知)';
@@ -325,8 +325,6 @@ class GameOptionCaptionMessage{
   var $sub_role_limit_normal = 'サブ役職制限：NORMALモード';
   var $sub_role_limit_none   = 'サブ役職制限なし';
   var $secret_sub_role       = 'サブ役職が分からなくなります：闇鍋モード専用オプション';
-  var $quiz                  = '身代わり君が「出題者」になってクイズを出します';
-  var $duel                  = '霊界公開設定によって配役が変化する特殊村です';
 }
 
 //-- 村・本人の勝敗結果 --//

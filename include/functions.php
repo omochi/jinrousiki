@@ -408,7 +408,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
     'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority',
     'liar', 'gentleman', 'sudden_death', 'perverseness', 'critical', 'detective', 'festival',
-    'full_mania', 'full_chiroptera', 'full_cupid', 'replace_human', 'quiz', 'duel',
+    'full_mania', 'full_chiroptera', 'full_cupid', 'replace_human', 'duel', 'gray_random', 'quiz',
     'chaos', 'chaosfull', 'chaos_hyper', 'chaos_open_cast', 'chaos_open_cast_camp',
     'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role', 'sub_role_limit_easy',
     'sub_role_limit_normal');
@@ -416,69 +416,19 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   foreach($display_order_list as $option){
     if(! $stack->Exists($option)) continue;
     if($GAME_OPT_MESS->$option == '') continue;
-    $sentence = '';
     $footer = '';
-    if($option == 'cupid'){
-      $sentence = '14人または' . $CAST_CONF->$option . '人以上で';
-    }
-    elseif(is_integer($CAST_CONF->$option)){
-      $sentence = $CAST_CONF->$option . '人以上で';
-    }
-    $sentence .= $GAME_OPT_MESS->$option;
-
+    $sentence = $GAME_OPT_MESS->$option;
+    if(is_integer($CAST_CONF->$option)) $sentence .= '(' . $CAST_CONF->$option . '人〜)';
     if($option == 'real_time'){
       $day   = $stack->options['real_time'][0];
       $night = $stack->options['real_time'][1];
       $sentence .= "　昼： {$day} 分　夜： {$night} 分";
       $footer = '['. $day . '：' . $night . ']';
     }
-    elseif($option == 'chaosfull'){
-      /*
-      $level = $stack->options['chaosfull'][0];
-      $grade = isset($level) && $level > 0 ? $level : 'Max';
-      $sentence .= 'Lv' . $grade;
-      $footer = '[' . $grade . ']';
-      */
-    }
     $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
   }
 
   return $str;
-}
-
-function OutputCastTable($min = 0, $max = NULL){
-  global $CAST_CONF, $ROLE_DATA;
-
-  $header = '<table class="member">';
-  $str = '<tr><th>全人数</th>';
-
-  //設定されている役職名を取得
-  $all_cast = array();
-  foreach($CAST_CONF->role_list as $key => $value){
-    if($key < $min) continue;
-    $all_cast = array_merge($all_cast, array_keys($value));
-    if($key == $max) break;
-  }
-  $all_cast = array_unique($all_cast);
-  $role_list = array_intersect(array_keys($ROLE_DATA->main_role_list), $all_cast); //表示順を決定
-
-  foreach($role_list as $role){
-    $class = $ROLE_DATA->DistinguishRoleClass($role);
-    $str .= '<th class="' . $class . '">' . $ROLE_DATA->main_role_list[$role] . '</th>';
-  }
-  $str .= '</tr>'."\n";
-  echo $header . $str;
-
-  //人数毎の配役を表示
-  foreach($CAST_CONF->role_list as $key => $value){
-    if($key < $min) continue;
-    $tag = "<td><strong>{$key}</strong></td>";
-    foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
-    echo '<tr>' . $tag . '</tr>'."\n";
-    if($key == $max) break;
-    if($key % 20 == 0) echo $str;
-  }
-  echo '</table>';
 }
 
 //共通 HTML ヘッダ生成

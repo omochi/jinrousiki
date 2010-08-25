@@ -188,7 +188,7 @@ function AggregateVoteKick($target){
   $ROOM->Talk($target->handle_name . $MESSAGE->kick_out); //出て行ったメッセージ
   $ROOM->Talk($MESSAGE->vote_reset); //投票リセット通知
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
-  DeleteVote(); //今までの投票を全部削除
+  $ROOM->DeleteVote(); //今までの投票を全部削除
   return $vote_count;
 }
 

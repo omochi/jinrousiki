@@ -63,7 +63,7 @@ class CastConfig extends CastConfigBase{
   var $poison_wolf    = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
   var $possessed_wolf = 17; //憑狼 [人狼1 → 憑狼1]
   var $sirius_wolf    = 17; //天狼 [人狼1 → 天狼1]
-  var $cupid          = 16; //キューピッド (14人の方は現在ハードコード) [村人1 → キューピッド1]
+  var $cupid          = 16; //キューピッド [村人1 → キューピッド1]
   var $medium         = 20; //巫女 (+ 女神) [村人2 → 巫女1、女神1]
   var $mania          = 16; //神話マニア [村人1 → 神話マニア1]
   var $decide         = 16; //決定者 [兼任]

@@ -13,9 +13,9 @@ function CheckSituation($applay_situation){
 
 //投票結果出力
 function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
-  global $SERVER_CONF, $RQ_ARGS;
+  global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
-  if($reset_vote) DeleteVote(); //今までの投票を全部削除
+  if($reset_vote) $ROOM->DeleteVote(); //今までの投票を全部削除
   $title  = $SERVER_CONF->title . ' [投票結果]';
   $header = '<div align="center"><a id="#game_top"></a>';
   $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
@@ -39,27 +39,7 @@ function GetRoleList($user_count, $option_role){
   //$gerd = true; //テスト用
   //PrintData($option_role_list);
 
-  if($ROOM->IsQuiz()){ //クイズ村
-    $stack = array();
-    $quiz_role_list = array('wolf', 'mad', 'common', 'fox');
-    foreach($role_list as $key => $value){
-      $role = 'human';
-      foreach($quiz_role_list as $quiz_role){
-	if(strpos($key, $quiz_role) !== false){
-	  $role = $quiz_role;
-	  break;
-	}
-      }
-      $stack[$role] += (int)$value;
-    }
-    $stack['human']--;
-    $stack['quiz'] = 1;
-    $role_list = $stack;
-  }
-  elseif(in_array('duel', $option_role_list)){ //決闘村
-    $role_list = $CAST_CONF->SetDuel($user_count);
-  }
-  elseif($ROOM->IsOptionGroup('chaos')){ //闇鍋モード
+  if($ROOM->IsOptionGroup('chaos')){ //闇鍋モード
     $random_role_list = array();
     foreach(array('chaos', 'chaosfull', 'chaos_hyper') as $option){
       if($ROOM->IsOption($option)){
@@ -174,410 +154,14 @@ function GetRoleList($user_count, $option_role){
       }
     }
   }
-  elseif($ROOM->IsOption('chaos')){ //闇鍋 //Ver. 1.4.0 β12からは不使用
-    //-- 各陣営の人数を決定 (人数 = 各人数の出現率) --//
-    $role_list = array(); //配列をリセット
-
-    //人狼陣営
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 5){
-      $wolf_count = 1;
-    }
-    elseif($user_count < 8){ //1:2 = 80:20
-      $wolf_count = ($rand <= 80 ? 1 : 2);
-    }
-    elseif($user_count < 16){ //1:2:3 = 15:70:15
-      $wolf_count = 1;
-      if($rand > 15) $wolf_count++;
-      if($rand > 85) $wolf_count++;
-    }
-    elseif($user_count < 21){ //1:2:3:4:5 = 5:10:70:10:5
-      $wolf_count = 1;
-      if($rand >  5) $wolf_count++;
-      if($rand > 15) $wolf_count++;
-      if($rand > 85) $wolf_count++;
-      if($rand > 95) $wolf_count++;
-    }
-    else{ //以後、5人増えるごとに 1人ずつ増加
-      $wolf_count = floor(($user_count - 20) / 5) + 1;
-      if($rand >  5) $wolf_count++;
-      if($rand > 15) $wolf_count++;
-      if($rand > 85) $wolf_count++;
-      if($rand > 95) $wolf_count++;
-    }
-
-    //妖狐陣営
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 8){
-      $fox_count = 0;
-    }
-    elseif($user_count < 15){ //0:1 = 90:10
-      $fox_count = ($rand <= 90 ? 0 : 1);
-    }
-    elseif($user_count < 23){ //1:2 = 90:10
-      $fox_count = ($rand <= 90 ? 1 : 2);
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      $fox_count = ceil($user_count / 20) - 1;
-      if($rand > 10) $fox_count++;
-      if($rand > 90) $fox_count++;
-    }
-
-    //恋人陣営 (実質キューピッド)
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 8){
-      $lovers_count = 0;
-    }
-    elseif($user_count < 10){ //0:1 = 95:5
-      $lovers_count = ($rand <= 95 ? 0 : 1);
-    }
-    elseif($user_count < 16){ //0:1 = 70:30
-      $lovers_count = ($rand <= 70 ? 0 : 1);
-    }
-    elseif($user_count < 23){ //0:1:2 = 5:90:5
-      $lovers_count = 0;
-      if($rand >  5) $lovers_count++;
-      if($rand > 95) $lovers_count++;
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      //基礎-1:基礎:基礎+1 = 5:90:5
-      $lovers_count = floor($user_count / 20) - 1;
-      if($rand >  5) $lovers_count++;
-      if($rand > 95) $lovers_count++;
-    }
-    $role_list['cupid'] = $lovers_count;
-
-    //村人陣営の人数を算出
-    $human_count = $user_count - $wolf_count - $fox_count - $lovers_count;
-
-    //人狼系の配役を決定
-    $special_wolf_count = 0; //特殊狼の人数
-    $base_count = ceil($user_count / 15); //特殊狼判定回数を算出
-    for(; $base_count > 0; $base_count--){
-      if(mt_rand(1, 100) <= $user_count) $special_wolf_count++; //参加人数 % の確率で特殊狼出現
-    }
-    if($special_wolf_count > 0){ //特殊狼の割り当て
-      //狼の総数を超えていたら補正する
-      if($special_wolf_count > $wolf_count) $special_wolf_count = $wolf_count;
-      $wolf_count -= $special_wolf_count; //特殊狼の数だけ通常狼を減らす
-
-      if($user_count <= 16){ //16人未満の場合は白狼のみ
-	if(mt_rand(1, 100) <= $user_count){
-	  $role_list['cute_wolf']++;
-	  $special_wolf_count--;
-	}
-	$role_list['boss_wolf'] = $special_wolf_count;
-      }
-      elseif($user_count < 20){ //20人未満で舌禍狼出現
-	if(mt_rand(1, 100) <= 40){
-	  $role_list['tongue_wolf']++;
-	  $special_wolf_count--;
-	}
-	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
-	  $role_list['cute_wolf']++;
-	  $special_wolf_count--;
-	}
-	$role_list['boss_wolf'] = $special_wolf_count;
-      }
-      else{ //20人以上なら毒狼を先に判定してやや出やすくする
-	if(mt_rand(1, 100) <= $user_count){
-	  $role_list['poison_wolf']++;
-	  $special_wolf_count--;
-	}
-	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
-	  $role_list['tongue_wolf']++;
-	  $special_wolf_count--;
-	}
-	if($special_wolf_count > 0 && mt_rand(1, 100) <= $user_count){
-	  $role_list['cute_wolf']++;
-	  $special_wolf_count--;
-	}
-	$role_list['boss_wolf'] = $special_wolf_count;
-      }
-    }
-    $role_list['wolf'] = $wolf_count;
-
-    //妖狐系の配役を決定
-    if($user_count < 20){ //全人口が20人未満の場合は子狐は出現しない
-      $role_list['fox'] = $fox_count;
-      $role_list['child_fox'] = 0;
-    }
-    else{ //参加人数 % で子狐が一人出現
-      if(mt_rand(1, 100) <= $user_count) $role_list['child_fox'] = 1;
-      $role_list['fox'] = $fox_count - (int)$role_list['child_fox'];
-    }
-
-    //占い系の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 8){ //0:1 = 10:90
-      $mage_count = ($rand <= 10 ? 0 : 1);
-    }
-    elseif($user_count < 16){ //1:2 = 95:5
-      $mage_count = ($rand <= 95 ? 1 : 2);
-    }
-    elseif($user_count < 30){ //1:2 = 90:10
-      $mage_count = ($rand <= 90 ? 1 : 2);
-    }
-    else{ //以後、参加人数が15人増えるごとに 1人ずつ増加
-      $mage_count = floor($user_count / 15) - 1;
-      if($rand > 10) $mage_count++;
-      if($rand > 90) $mage_count++;
-    }
-
-    //占い系の配役を決定
-    if($mage_count > 0 && $human_count >= $mage_count){
-      $human_count -= $mage_count; //村人陣営の残り人数
-      if($user_count < 16){ //16人未満の場合は特殊占い師はなし
-	$role_list['mage'] = $mage_count;
-      }
-      else{ //参加人数 % で魂の占い師が一人出現
-	if(mt_rand(1, 100) <= $user_count) $role_list['soul_mage'] = 1;
-	$role_list['mage'] = $mage_count - (int)$role_list['soul_mage'];
-      }
-    }
-
-    //巫女の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 9){ //0:1 = 70:30
-      $medium_count = ($rand <= 70 ? 0 : 1);
-    }
-    elseif($user_count < 16){ //0:1:2 = 10:80:10
-      $medium_count = 0;
-      if($rand > 10) $medium_count++;
-      if($rand > 90) $medium_count++;
-    }
-    else{ //以後、参加人数が15人増えるごとに 1人ずつ増加
-      $medium_count = floor($user_count / 15) - 1;
-      if($rand > 10) $medium_count++;
-      if($rand > 90) $medium_count++;
-    }
-    if($cupid_count > 0 && $medium_count == 0) $medium_count++;
-
-    //巫女の配役を決定
-    if($medium_count > 0 && $human_count >= $medium_count){
-      $human_count -= $medium_count; //村人陣営の残り人数
-      $role_list['medium'] = $medium_count;
-    }
-
-    //霊能系の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 9){ //0:1 = 10:90
-      $necromancer_count = ($rand <= 10 ? 0 : 1);
-    }
-    elseif($user_count < 16){ //1:2 = 95:5
-      $necromancer_count = ($rand <= 95 ? 1 : 2);
-    }
-    elseif($user_count < 30){ //1:2 = 90:10
-      $necromancer_count = ($rand <= 90 ? 1 : 2);
-    }
-    else{ //以後、参加人数が15人増えるごとに 1人ずつ増加
-      $necromancer_count = floor($user_count / 15) - 1;
-      if($rand > 10) $necromancer_count++;
-      if($rand > 90) $necromancer_count++;
-    }
-
-    //霊能系の配役を決定
-    if($necromancer_count > 0 && $human_count >= $necromancer_count){
-      $human_count -= $necromancer_count; //村人陣営の残り人数
-      $role_list['necromancer'] = $necromancer_count;
-    }
-
-    //狂人系の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 10){ //0:1 = 30:70
-      $mad_count = ($rand <= 30 ? 0 : 1);
-    }
-    elseif($user_count < 16){ //0:1:2 = 10:80:10
-      $mad_count = 0;
-      if($rand > 10) $mad_count++;
-      if($rand > 90) $mad_count++;
-    }
-    else{ //以後、参加人数が15人増えるごとに 1人ずつ増加
-      $mad_count = floor($user_count / 15) - 1;
-      if($rand > 10) $mad_count++;
-      if($rand > 90) $mad_count++;
-    }
-
-    //狂人系の配役を決定
-    if($mad_count > 0 && $human_count >= $mad_count){
-      $human_count -= $mad_count; //村人陣営の残り人数
-      if($user_count < 16){ //全人口が16人未満の場合は狂信者は出現しない
-	$role_list['mad'] = $mad_count;
-	$role_list['fanatic_mad'] = 0;
-      }
-      else{ //参加人数 % で狂信者が一人出現
-	if(mt_rand(1, 100) <= $user_count) $role_list['fanatic_mad'] = 1;
-	$role_list['mad'] = $mad_count - (int)$role_list['fanatic_mad'];
-      }
-    }
-
-    //狩人系の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 11){ //0:1 = 10:90
-      $guard_count = ($rand <= 10 ? 0 : 1);
-    }
-    elseif($user_count < 16){ //0:1:2 = 10:80:10
-      $guard_count = 0;
-      if($rand > 10) $guard_count++;
-      if($rand > 90) $guard_count++;
-    }
-    else{ //以後、参加人数が15人増えるごとに 1人ずつ増加
-      $guard_count = floor($user_count / 15) - 1;
-      if($rand > 10) $guard_count++;
-      if($rand > 90) $guard_count++;
-    }
-
-    //狩人系の配役を決定
-    if($guard_count > 0 && $human_count >= $guard_count){
-      $human_count -= $guard_count; //村人陣営の残り人数
-      $special_guard_count = 0; //特殊狩人の人数
-      //16人以上なら特殊狩人判定回数を算出
-      $base_count = ($user_count >= 16 ? ceil($user_count / 15) : 0);
-      for(; $base_count > 0; $base_count--){
-	if(mt_rand(1, 100) <= $user_count) $special_guard_count++; //参加人数 % の確率で特殊狩人出現
-      }
-
-      if($special_guard_count > 0){ //特殊狩人の割り当て
-	//狩人の総数を超えていたら補正する
-	if($special_guard_count > $guard_count) $special_guard_count = $guard_count;
-	$guard_count -= $special_guard_count; //特殊狩人の数だけ狩人を減らす
-	
-	if($user_count < 20){ //20人未満の場合はブン屋のみ
-	  $role_list['reporter'] = $special_guard_count;
-	}
-	else{
-	  if(mt_rand(1, 100) <= $user_count){ //騎士は最大一人
-	    $role_list['poison_guard']++;
-	    $special_guard_count--;
-	  }
-	  $role_list['reporter'] = $special_guard_count;
-	}
-      }
-      $role_list['guard'] = $guard_count;
-    }
-
-    //共有者の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 13){ //0:1 = 10:90
-      $common_count = ($rand <= 10 ? 0 : 1);
-    }
-    elseif($user_count < 22){ //1:2:3 = 10:80:10
-      $common_count = 1;
-      if($rand > 10) $common_count++;
-      if($rand > 90) $common_count++;
-    }
-    else{ //以後、参加人数が15人増えるごとに 1人ずつ増加
-      $common_count = floor($user_count / 15);
-      if($rand > 10) $common_count++;
-      if($rand > 90) $common_count++;
-    }
-
-    //共有者の配役を決定
-    if($common_count > 0 && $human_count >= $common_count){
-      $role_list['common'] = $common_count;
-      $human_count -= $common_count; //村人陣営の残り人数
-    }
-
-    //埋毒者の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 15){ //0:1 = 95:5
-      $poison_count = ($rand <= 95 ? 0 : 1);
-    }
-    elseif($user_count < 19){ //0:1 = 85:15
-      $poison_count = ($rand <= 85 ? 0 : 1);
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      $poison_count = floor($user_count / 20) - 1;
-      if($rand > 10) $poison_count++;
-      if($rand > 90) $poison_count++;
-    }
-    $poison_count -= $poison_guard_count; //騎士の数だけ減らす
-
-    //埋毒者の配役を決定
-    if($poison_count > 0 && $human_count >= $poison_count){
-      $role_list['poison'] = $poison_count;
-      $human_count -= $poison_count; //村人陣営の残り人数
-    }
-
-    //薬師の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 15){ //0:1 = 95:5
-      $pharmacist_count = ($rand <= 95 ? 0 : 1);
-    }
-    elseif($user_count < 19){ //0:1 = 85:15
-      $pharmacist_count = ($rand <= 85 ? 0 : 1);
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      $pharmacist_count = floor($user_count / 20) - 1;
-      if($rand > 10) $pharmacist_count++;
-      if($rand > 90) $pharmacist_count++;
-    }
-    if($poison_wolf_count > 0 && $pharmacist_count == 0) $pharmacist_count++;
-
-    //薬師の配役を決定
-    if($pharmacist_count > 0 && $human_count >= $pharmacist_count){
-      $role_list['pharmacist'] = $pharmacist_count;
-      $human_count -= $pharmacist_count; //村人陣営の残り人数
-    }
-
-    //神話マニアの人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 16){ //16人未満では出現しない
-      $mania_count = 0;
-    }
-    elseif($user_count < 23){ //0:1 = 40:60
-      $mania_count = ($rand <= 40 ? 0 : 1);
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      $mania_count = floor($user_count / 20) - 1;
-      if($rand > 10) $mania_count++;
-      if($rand > 90) $mania_count++;
-    }
-
-    //神話マニアの配役を決定
-    if($mania_count > 0 && $human_count >= $mania_count){
-      $role_list['mania'] = $mania_count;
-      $human_count -= $mania_count; //村人陣営の残り人数
-    }
-
-    //不審者系の人数を決定
-    $rand = mt_rand(1, 100); //人数決定用乱数
-    if($user_count < 15){ //0:1 = 90:10
-      $strangers_count = ($rand <= 90 ? 0 : 1);
-    }
-    elseif($user_count < 19){ //0:1 = 80:20
-      $strangers_count = ($rand <= 80 ? 0 : 1);
-    }
-    else{ //以後、参加人数が20人増えるごとに 1人ずつ増加
-      $strangers_count = floor($user_count / 20) - 1;
-      if($rand > 10) $strangers_count++;
-      if($rand > 90) $strangers_count++;
-    }
-
-    //不審者系の配役を決定
-    if($strangers_count > 0 && $human_count >= $strangers_count){
-      //全人口が20人未満の場合は無意識、それ以上なら不審者をやや出やすくする
-      $strangers_rate = ($user_count < 20 ? 60 : 40);
-      for($i = 0; $i < $strangers_count; $i++){
-	$strangers_role = (mt_rand(1, 100) <= $strangers_rate ? 'unconscious' : 'suspect');
-	$role_list[$strangers_role]++;
-      }
-      $human_count -= $strangers_count; //村人陣営の残り人数
-    }
-
-    $role_list['human'] = $human_count; //村人の人数
-
-    //探偵 (共有 or 村人 → 探偵)
-    if(strpos($option_role, 'detective') !== false){
-      if($role_list['common'] > 0){
-	$role_list['common']--;
-	$role_list['detective_common']++;
-      }
-      else{
-	$role_list['human']--;
-	$role_list['detective_common']++;
-      }
-    }
+  elseif(in_array('duel', $option_role_list)){ //決闘村
+    $role_list = $CAST_CONF->SetDuel($user_count);
+  }
+  elseif(in_array('gray_random', $option_role_list)){ //グレラン村
+    $role_list = $CAST_CONF->SetGrayRandom($user_count);
+  }
+  elseif($ROOM->IsQuiz()){ //クイズ村
+    $role_list = $CAST_CONF->SetQuiz($user_count);
   }
   else{ //通常村
     //埋毒者 (村人2 → 埋毒者1、人狼1)
@@ -620,9 +204,9 @@ function GetRoleList($user_count, $option_role){
       $role_list['sirius_wolf']++;
     }
 
-    //キューピッド (14人はハードコード / 村人 → キューピッド)
+    //キューピッド (村人 → キューピッド)
     if(in_array('cupid', $option_role_list) && ! in_array('full_cupid', $option_role_list) &&
-       ($user_count == 14 || $user_count >= $CAST_CONF->cupid)){
+       $user_count >= $CAST_CONF->cupid){
       $role_list['human']--;
       $role_list['cupid']++;
     }
@@ -1059,7 +643,7 @@ function AggregateVoteGameStart($force_start = false){
   }
   */
   //テスト用
-  //PrintData($fix_uname_list); PrintData($fix_role_list); DeleteVote(); return false;
+  //PrintData($fix_uname_list); PrintData($fix_role_list); $ROOM->DeleteVote(); return false;
 
   //役割をDBに更新
   $role_count_list = array();
@@ -1121,8 +705,8 @@ function AggregateVoteGameStart($force_start = false){
 
   $ROOM->SystemMessage(1, 'VOTE_TIMES'); //初日の処刑投票のカウントを1に初期化(再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
+  $ROOM->DeleteVote(); //今までの投票を全部削除
   CheckVictory(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
-  DeleteVote(); //今までの投票を全部削除
   return true;
 }
 
@@ -1471,11 +1055,9 @@ function AggregateVoteDay(){
       if($user->IsSame($vote_kill_uname) || ! $user->IsRole('seal_medium')) continue;
 
       $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //投票先を取得
-      if($target->IsSame($vote_kill_uname)) continue;
-      if($target->IsActive($stack)) $target->LostAbility();
-      elseif($target->IsRole('lost_ability')){
+      if($target->IsSame($vote_kill_uname) || ! $target->IsRole($stack)) continue;
+      $target->IsActive() ? $target->LostAbility() :
 	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
-      }
     }
 
     //-- 土蜘蛛の処理 --//
@@ -1573,8 +1155,8 @@ function AggregateVoteDay(){
     $jealousy_voted_list = array_keys($vote_target_list, $user->uname); //橋姫への投票者リスト
     foreach($jealousy_voted_list as $voted_uname){
       $voted_user = $USERS->ByRealUname($voted_uname);
-      if($voted_user->dead_flag || ! $voted_user->IsLovers()) continue;
-      foreach($voted_user->partner_list['lovers'] as $id){
+      if($voted_user->dead_flag) continue;
+      foreach($voted_user->GetPartner('lovers', true) as $id){
 	$cupid_list[$id][] = $voted_user->user_no;
       }
     }
@@ -1704,21 +1286,19 @@ function AggregateVoteNight($skip = false){
   //PrintData($vote_data);
 
   //-- 変数の初期化 --//
-  $trap_target_list         = array(); //罠師の罠の設置先リスト
-  $trapped_list             = array(); //罠師の罠にかかった人リスト
-  $snow_trap_target_list    = array(); //雪女の罠の設置先リスト
-  $guard_target_list        = array(); //狩人系の護衛対象リスト
-  $dummy_guard_target_list  = array(); //夢守人の護衛対象リスト
-  $escaper_target_list      = array(); //逃亡者の逃亡先リスト
-  $sacrifice_list           = array(); //身代わり死した人リスト
-
-  $anti_voodoo_target_list  = array(); //厄神の護衛対象リスト
-  $anti_voodoo_success_list = array(); //厄払い成功者リスト
-
+  $trap_target_list             = array(); //罠師の罠の設置先リスト
+  $trapped_list                 = array(); //罠死予定者リスト
+  $snow_trap_target_list        = array(); //雪女の罠の設置先リスト
+  $frostbite_list               = array(); //凍傷予定者リスト
+  $guard_target_list            = array(); //狩人系の護衛対象リスト
+  $dummy_guard_target_list      = array(); //夢守人の護衛対象リスト
+  $escaper_target_list          = array(); //逃亡者の逃亡先リスト
+  $sacrifice_list               = array(); //身代わり死した人リスト
+  $anti_voodoo_target_list      = array(); //厄神の護衛対象リスト
+  $anti_voodoo_success_list     = array(); //厄払い成功者リスト
   $reverse_assassin_target_list = array(); //反魂師の対象リスト
-
-  $possessed_target_list    = array(); //憑依予定者リスト => 憑依成立フラグ
-  $possessed_target_id_list = array(); //憑依対象者リスト
+  $possessed_target_list        = array(); //憑依予定者リスト => 憑依成立フラグ
+  $possessed_target_id_list     = array(); //憑依対象者リスト
 
   //-- 接触系レイヤー --//
   $voted_wolf  =& new User();
@@ -1729,16 +1309,16 @@ function AggregateVoteNight($skip = false){
   }
 
   if($ROOM->date > 1){
-    foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //罠師の情報収集
+    foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //罠能力者の情報収集
       $user = $USERS->ByUname($uname);
-      if($user->IsRole('trap_mad')) $user->LostAbility(); //罠師の罠は一度設置したら能力失効
+      if($user->IsRole('trap_mad')) $user->LostAbility(); //罠師は一度設置したら能力失効
 
       //人狼に狙われていたら自分自身への設置以外は無効
       if($user->IsSame($wolf_target->uname) && ! $user->IsSame($target_uname)) continue;
-      if($user->IsRole('trap_mad'))
-	$trap_target_list[$user->uname] = $target_uname; //罠をセット
+      if($user->IsRole('trap_mad')) //役職別に罠をセット
+	$trap_target_list[$user->uname] = $target_uname;
       else
-	$snow_trap_target_list[$user->uname] = $target_uname; //罠をセット
+	$snow_trap_target_list[$user->uname] = $target_uname;
     }
     //PrintData($trap_target_list, 'List [trap_mad]');
     //PrintData($snow_trap_target_list, 'List [snow_trap_mad]');
@@ -1757,16 +1337,12 @@ function AggregateVoteNight($skip = false){
     //雪女が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は凍傷になる
     $stack = array_count_values($snow_trap_target_list);
     foreach($snow_trap_target_list as $uname => $target_uname){
-      if($uname != $target_uname && $stack[$target_uname] > 1){
-	$USERS->ByUname($uname)->AddDoom(1, 'frostbite');
-      }
+      if($uname != $target_uname && $stack[$target_uname] > 1) $frostbite_list[] = $uname;
     }
 
     //罠師の凍傷判定
     foreach($trap_target_list as $uname => $target_uname){
-      if(in_array($target_uname, $snow_trap_target_list)){
-	$USERS->ByUname($uname)->AddDoom(1, 'frostbite');
-      }
+      if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $uname;
     }
 
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
@@ -1776,7 +1352,7 @@ function AggregateVoteNight($skip = false){
       elseif(in_array($target_uname, $trap_target_list)) $trapped_list[] = $user->uname; //罠死判定
       else{
 	//凍傷判定
-	if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
+	if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 	$guard_target_list[$user->uname] = $target_uname;
       }
     }
@@ -1790,7 +1366,7 @@ function AggregateVoteNight($skip = false){
 	$USERS->Kill($user->user_no, 'WOLF_KILLED');
       else{
 	//凍傷判定
-	if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
+	if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 	$escaper_target_list[$user->uname] = $target_uname; //逃亡先をセット
       }
     }
@@ -1806,7 +1382,7 @@ function AggregateVoteNight($skip = false){
 	break;
       }
       if(in_array($wolf_target->uname, $snow_trap_target_list)){ //凍傷判定
-	$voted_wolf->AddDoom(1, 'frostbite');
+	$frostbite_list[] = $voted_wolf->uname;
       }
     }
 
@@ -1986,7 +1562,7 @@ function AggregateVoteNight($skip = false){
       }
 
       //凍傷判定
-      if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
+      if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
       if($target->IsDead(true) || $target->GetCamp() == 'vampire') continue; //スキップ判定
@@ -2021,7 +1597,7 @@ function AggregateVoteNight($skip = false){
       }
 
       //凍傷判定
-      if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
+      if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
       if($target->IsRole('escaper')) continue; //逃亡者は暗殺無効
@@ -2070,6 +1646,11 @@ function AggregateVoteNight($skip = false){
 	$reverse_list[$target_uname] = ! $reverse_list[$target_uname];
     }
     //PrintData($reverse_list, 'ReverseList'); //テスト用
+
+    foreach($frostbite_list as $uname){ //凍傷処理
+      $target = $USERS->ByUname($uname);
+      if($target->IsLive(true)) $target->AddDoom(1, 'frostbite');
+    }
 
     //-- 夢系レイヤー --//
     foreach($vote_data['DREAM_EAT'] as $uname => $target_uname){ //獏の処理

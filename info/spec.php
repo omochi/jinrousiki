@@ -156,8 +156,8 @@ OutputInfoPageHeader('詳細な仕様');
 + 恋人 (<a href="new_role/lovers.php">恋人陣営</a>)
   - 相互作用はないので投票直後に処理を行う
 
-+ 接触 (<a href="new_role/human.php#escaper">逃亡者</a>・<a href="new_role/human.php#guard_group">狩人系</a>・<a href="new_role/human.php#assassin_group">暗殺者系</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/wolf.php#wolf_group">人狼系</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/vampire.php">吸血鬼陣営</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)
-  - 罠 ＞ 狩人護衛 ＞ 身代わり ＞ 人狼襲撃 → 狩人の狩り → 吸血鬼襲撃 → 暗殺
++ 接触 (<a href="new_role/human.php#escaper">逃亡者</a>・<a href="new_role/human.php#guard_group">狩人系</a>・<a href="new_role/human.php#assassin_group">暗殺者系</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/wolf.php#wolf_group">人狼系</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>・<a href="new_role/vampire.php">吸血鬼陣営</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+  - 罠 ＞ 狩人護衛 ＞ 身代わり ＞ 人狼襲撃 → 狩人の狩り → 吸血鬼襲撃 → 暗殺 → 凍傷判定
 
 + 夢 (<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>)
   - 夢守人護衛 ＞ 獏襲撃 → 夢守人の狩り

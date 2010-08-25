@@ -12,7 +12,25 @@ Ver. 1.4.0
 <a href="#140beta11">β11</a>
 <a href="#140beta12">β12</a>
 <a href="#140beta13">β13</a>
+<a href="#140beta16">β16</a>
 </p>
+
+<h2><a id="140beta16">Ver. 1.4.0 β16</a></h2>
+<h3>include/game_vote_functions.php % 1474行目付近</h3>
+<h4>[before]</h4>
+<pre>
+if($target->IsSame($vote_kill_uname)) continue;
+if($target->IsActive($stack)) $target->LostAbility();
+elseif($target->IsRole('lost_ability')){
+	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+if($target->IsSame($vote_kill_uname) || ! $target->IsRole($stack)) continue;
+$target->IsActive() ? $target->LostAbility() :
+  $USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
+</pre>
 
 <h2><a id="140beta13">Ver. 1.4.0 β13</a></h2>
 <h3>include/game_vote_functions.php % 973行目付近</h3>

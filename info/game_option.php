@@ -48,8 +48,11 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a>
 </p>
 <p>
-<a href="#quiz"><?php echo $GAME_OPT_MESS->quiz ?></a>
+<a href="#special_role"><?php echo $GAME_OPT_MESS->special_role ?></a>
+<a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>
 <a href="#duel"><?php echo $GAME_OPT_MESS->duel ?></a>
+<a href="#gray_random"><?php echo $GAME_OPT_MESS->gray_random ?></a>
+<a href="#quiz"><?php echo $GAME_OPT_MESS->quiz ?></a>
 </p>
 
 <h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
@@ -95,9 +98,9 @@ OutputInfoPageHeader('ゲームオプション');
 <h2><a id="gerd"><?php echo $GAME_OPT_MESS->gerd ?></a> [Ver. 1.4.0 β12〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->gerd ?></li>
-  <li>闇鍋モードの固定配役に村人を一人追加します</li>
-  <li>神話マニアオプションが付いていても村人を一人確保します</li>
-  <li>決闘村・お祭り村の配役は入れ替えません (最初から存在する場合のみ有効です)</li>
+  <li><a href="#chaos">闇鍋モード</a>の固定配役に村人を一人追加します</li>
+  <li><a href="#mania">神話マニア</a>オプションが付いていても村人を一人確保します</li>
+  <li><a href="#duel">決闘村</a>・<a href="#festival">お祭り村</a>の配役は入れ替えません (最初から存在する場合のみ有効です)</li>
 </ul>
 
 <h2><a id="not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a></h2>
@@ -152,8 +155,9 @@ OutputInfoPageHeader('ゲームオプション');
 <p>
 <h2><a id="cupid"><?php echo $GAME_OPT_MESS->cupid ?></a> [Ver. 1.2.0〜]</h2>
 <ul>
-  <li>村の人口が14人もしくは<?php echo $CAST_CONF->cupid ?>人以上になったらキューピッドが登場します</li>
+  <li>村の人口が<?php echo $CAST_CONF->cupid ?>人以上になったらキューピッドが登場します</li>
   <li><?php echo $GAME_OPT_CAPT->cupid ?></li>
+  <li>Ver. 1.4.0 β17 から、「14人」の固定出現を外しました</li>
 </ul>
 </p>
 <p>
@@ -194,9 +198,8 @@ OutputInfoPageHeader('ゲームオプション');
 <h2><a id="gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a> [Ver. 1.4.0 α14〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->gentleman ?></li>
-  <li>全ユーザに登録時の性別に応じた<a href="new_role/sub_role.php#gentleman">紳士</a>か<a href="new_role/sub_role.php#gentleman">淑女</a>がつきます</li>
-  <li>闇鍋モードでランダムに付加される時は個々の性別を参照していません</li>
-  <li>発動率はランダム付加の場合と同じです</li>
+  <li><a href="new_role/sub_role.php#gentleman">紳士</a>・<a href="new_role/sub_role.php#gentleman">淑女</a>の発動率はランダム付加の場合と同じです</li>
+  <li><a href="#chaos">闇鍋モード</a>でランダムに付加される時は個々の性別を参照していません</li>
 </ul>
 
 <h2><a id="sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a> [Ver. 1.4.0 α14〜]</h2>
@@ -223,9 +226,9 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
   <li><?php echo $GAME_OPT_CAPT->detective ?></li>
   <li>普通村の場合は、共有者がいれば共有者を、いなければ村人を一人<a href="new_role/human.php#detective_common">探偵</a>に入れ替えます</li>
-  <li>真・闇鍋モードの場合は固定枠に<a href="new_role/human.php#detective_common">探偵</a>が追加されます</li>
+  <li><a href="#chaos">闇鍋モード</a>の場合は固定枠に<a href="new_role/human.php#detective_common">探偵</a>が追加されます</li>
   <li>このオプションを使用した場合は、身代わり君が<a href="new_role/human.php#detective_common">探偵</a>にはなりません</li>
-  <li>「身代わり君はGM」+「霊界を常時非公開」オプションと併用すると「霊界探偵モード」になります</li>
+  <li>「<a href="#gm_login">身代わり君はGM</a>」+「<a href="#not_open_cast">霊界を常時非公開</a>」オプションと併用すると「霊界探偵モード」になります</li>
   <li>「霊界探偵モード」はゲーム開始直後に探偵が死亡して、霊界に移動します。指示は GM 経由で行います</li>
 </ul>
 
@@ -263,7 +266,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h2><a id="replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a> [Ver. 1.4.0 β14〜]</h2>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->replace_human ?></li>
-  <li><?php echo $GAME_OPT_MESS->full_mania ?>を拡張して実装したオプションです</li>
+  <li><a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>を拡張して実装したオプションです</li>
   <li>表記が村人となる役職が存在する事に注意してください</li>
   <li>「<?php echo $GAME_OPT_MESS->replace_human ?>」は管理人がカスタムすることを前提にしたオプションです<br>
     現在の初期設定は全員<a href="new_role/human.php#escaper">逃亡者</a>になります
@@ -283,10 +286,42 @@ OutputInfoPageHeader('ゲームオプション');
 </ul>
 
 
+<h2><a id="special_role"><?php echo $GAME_OPT_MESS->special_role ?></a> [Ver. 1.4.0 β17〜]</h2>
+<ul>
+  <li>専用の配役テーブルを用いた特殊設定村です</li>
+  <li>詳細は個々のモードを参照してください</li>
+</ul>
 
-<h2><a id="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a> [Ver. 1.4.0 α2〜]</h2>
+<h3><a id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a> [Ver. 1.4.0 α1〜]</h3>
+<ul>
+  <li>専用ページを参照して下さい → <a href="chaos.php"><?php echo $GAME_OPT_MESS->chaos ?></a></li>
+</ul>
+
+<h3><a id="duel"><?php echo $GAME_OPT_MESS->duel ?></a> [Ver. 1.4.0 α19〜]</h3>
+<ul>
+  <li>「霊界で配役を公開しない」オプションの設定によって配役が変わります。初期設定は以下です</li>
+  <ol>
+    <li>常時公開：暗殺者ベース</li>
+    <li>自動公開：キューピッドベース</li>
+    <li>非公開：埋毒者ベース</li>
+  </ol>
+</ul>
+
+<h3><a id="gray_random"><?php echo $GAME_OPT_MESS->gray_random ?></a> [Ver. 1.4.0 β17〜]</h3>
+<ul>
+  <li>配役が基本職のみになります。初期設定は以下です。</li>
+  <ol>
+    <li>人狼系 → 人狼</li>
+    <li>狂人系 → 狂人</li>
+    <li>妖狐陣営 → 妖狐</li>
+    <li>上記以外 → 村人</li>
+  </ol>
+</ul>
+
+<h3><a id="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a> [Ver. 1.4.0 α2〜]</h3>
 <ul>
   <li>GM が<a href="new_role/quiz.php#quiz">出題者</a>になります</li>
+  <li>村を立てる際には GM ログインパスワードを設定する必要があります</li>
   <li>GM もゲーム開始投票をする必要があります</li>
   <li>出現役職は村人、共有者、人狼、狂人、妖狐です</li>
   <li>GM 以外の全員に<a href="new_role/sub_role.php#panelist">解答者</a>がつきます</li>
@@ -302,17 +337,6 @@ OutputInfoPageHeader('ゲームオプション');
     <li>GM は正解者の中で一番解答が遅かった人に投票</li>
     <li>GM は日が暮れる前に次の問題を出題する</li>
     <li>以下、勝敗が決まるまで繰り返す</li>
-  </ol>
-</ul>
-
-<h2><a id="duel"><?php echo $GAME_OPT_MESS->duel ?></a> [Ver. 1.4.0 α19〜]</h2>
-<ul>
-  <li><?php echo $GAME_OPT_CAPT->duel ?></li>
-  <li>「霊界で配役を公開しない」オプションの設定によって配役が変わります。初期設定は以下です</li>
-  <ol>
-    <li>常時公開：暗殺者ベース</li>
-    <li>自動公開：キューピッドベース</li>
-    <li>非公開：埋毒者ベース</li>
   </ol>
 </ul>
 </body></html>

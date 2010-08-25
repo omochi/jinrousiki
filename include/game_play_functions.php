@@ -489,42 +489,33 @@ function OutputAbility(){
   $fix_display_list[] = 'challenge_lovers';
 
   if($SELF->IsRole('possessed_exchange')){ //交換憑依
-    //現在の憑依先を表示
-    $target_list = $SELF->partner_list['possessed_exchange'];
-    if(is_array($target_list)){
-      $target = $USERS->ByID(array_shift($target_list))->handle_name;
-      if($target != ''){
-	if($ROOM->date < 3){
-	  OutputAbilityResult('exchange_header', $target, 'exchange_footer');
-	}
-	else{
-	  OutputAbilityResult('partner_header', $SELF->handle_name, 'possessed_target');
-	}
-      }
-    }
+    do{ //現在の憑依先を表示
+      if(! is_array($stack = $SELF->GetPartner('possessed_exchange'))) break;
+      if(is_null($target = $USERS->ByID(array_shift($stack))->handle_name)) break;
+      $ROOM->date < 3 ?
+	OutputAbilityResult('exchange_header', $target, 'exchange_footer') :
+	OutputAbilityResult('partner_header', $SELF->handle_name, 'possessed_target');
+    }while(false);
   }
   $fix_display_list[] = 'possessed_exchange';
 
   if($SELF->IsRole('febris')){ //熱病
-    $dead_date = max($SELF->GetPartner('febris'));
-    if($ROOM->date == $dead_date){
-      OutputAbilityResult('febris_header', $dead_date, 'sudden_death_footer');
+    if(($date = max($SELF->GetPartner('febris'))) == $ROOM->date){
+      OutputAbilityResult('febris_header', $date, 'sudden_death_footer');
     }
   }
   $fix_display_list[] = 'febris';
 
   if($SELF->IsRole('frostbite')){ //凍傷
-    $dead_date = max($SELF->GetPartner('frostbite'));
-    if($ROOM->date == $dead_date){
-      OutputAbilityResult('frostbite_header', $dead_date, 'frostbite_footer');
+    if(($date = max($SELF->GetPartner('frostbite'))) == $ROOM->date){
+      OutputAbilityResult('frostbite_header', $date, 'frostbite_footer');
     }
   }
   $fix_display_list[] = 'frostbite';
 
   if($SELF->IsRole('death_warrant')){ //死の宣告
-    $dead_date = max($SELF->GetPartner('death_warrant'));
-    if($ROOM->date <= $dead_date){
-      OutputAbilityResult('death_warrant_header', $dead_date, 'sudden_death_footer');
+    if(($date = max($SELF->GetPartner('death_warrant'))) >= $ROOM->date){
+      OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
     }
   }
   $fix_display_list[] = 'death_warrant';
@@ -536,31 +527,33 @@ function OutputAbility(){
   $fix_display_list[] = 'mind_open';
 
   if($ROOM->date > 1){ //サトラレ系の表示は 2 日目以降
-    if($virtual_self->IsRole('mind_read')) $ROLE_IMG->Output('mind_read');
-    if($virtual_self->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
+    if($virtual_self->IsRole('mind_read'))   $ROLE_IMG->Output('mind_read');
+    if($virtual_self->IsRole('mind_evoke'))  $ROLE_IMG->Output('mind_evoke');
     if($virtual_self->IsRole('mind_lonely')) $ROLE_IMG->Output('mind_lonely');
-
     if($virtual_self->IsRole('mind_receiver')){
       $ROLE_IMG->Output('mind_receiver');
 
-      $mind_scanner_target = array();
-      foreach($virtual_self->partner_list['mind_receiver'] as $this_no){
-	$mind_scanner_target[] = $USERS->ById($this_no)->handle_name;
+      $stack = array();
+      foreach($virtual_self->GetPartner('mind_receiver', true) as $id){
+	$stack[$id] = $USERS->ById($id)->handle_name;
       }
-      OutputPartner($mind_scanner_target, 'mind_scanner_target');
+      ksort($stack);
+      OutputPartner($stack, 'mind_scanner_target');
+      unset($stack);
     }
-
     if($virtual_self->IsRole('mind_friend')){
       $ROLE_IMG->Output('mind_friend');
 
-      $mind_friend = array();
+      $stack = array();
       foreach($USERS->rows as $user){
 	if(! $user->IsSame($virtual_self->uname) &&
 	   $user->IsPartner('mind_friend', $virtual_self->partner_list)){
-	  $mind_friend[] = $user->handle_name;
+	  $stack[$user->user_no] = $user->handle_name;
 	}
       }
-      OutputPartner($mind_friend, 'mind_friend_list');
+      ksort($stack);
+      OutputPartner($stack, 'mind_friend_list');
+      unset($stack);
     }
     if($SELF->IsRole('mind_sympathy')){
       $ROLE_IMG->Output('mind_sympathy');
@@ -589,7 +582,6 @@ function OutputPartner($partner_list, $header, $footer = NULL){
   global $ROLE_IMG;
 
   if(count($partner_list) < 1) return false; //仲間がいなければ表示しない
-
   $str = '<table class="ability-partner"><tr>'."\n" .
     '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n" .
     '<td>　' . implode('さん　', $partner_list) . 'さん　</td>'."\n";

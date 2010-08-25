@@ -99,14 +99,16 @@ function CreateRoom(){
   }
 
   //ゲームオプションをセット
-  $chaos        = ($ROOM_CONF->chaos        && $_POST['chaos'] == 'chaos');
-  $chaosfull    = ($ROOM_CONF->chaosfull    && $_POST['chaos'] == 'chaosfull');
-  $chaos_hyper  = ($ROOM_CONF->chaos_hyper  && $_POST['chaos'] == 'chaos_hyper');
-  $perverseness = ($ROOM_CONF->perverseness && $_POST['perverseness']  == 'on');
-  $full_mania   = ($ROOM_CONF->full_mania   && $_POST['replace_human']  == 'full_mania');
-  $full_cupid   = ($ROOM_CONF->full_cupid   && $_POST['replace_human']  == 'full_cupid');
-  $quiz         = ($ROOM_CONF->quiz         && $_POST['quiz']  == 'on');
-  $duel         = ($ROOM_CONF->duel         && $_POST['duel']  == 'on');
+  $perverseness = $ROOM_CONF->perverseness && $_POST['perverseness']  == 'on';
+  $full_mania   = $ROOM_CONF->full_mania   && $_POST['replace_human'] == 'full_mania';
+  $full_cupid   = $ROOM_CONF->full_cupid   && $_POST['replace_human'] == 'full_cupid';
+  $chaos        = $ROOM_CONF->chaos        && $_POST['special_role']  == 'chaos';
+  $chaosfull    = $ROOM_CONF->chaosfull    && $_POST['special_role']  == 'chaosfull';
+  $chaos_hyper  = $ROOM_CONF->chaos_hyper  && $_POST['special_role']  == 'chaos_hyper';
+  $quiz         = $ROOM_CONF->quiz         && $_POST['special_role']  == 'quiz';
+  $special_role =
+    ($ROOM_CONF->duel && $_POST['special_role']  == 'duel') ||
+    ($ROOM_CONF->gray_random  && $_POST['special_role']  == 'gray_random');
   $game_option_list = array();
   $option_role_list = array();
   $check_game_option_list = array('wish_role', 'open_vote', 'open_day', 'not_open_cast');
@@ -115,15 +117,15 @@ function CreateRoom(){
     $game_option_list[] = 'quiz';
 
     //GM ログインパスワードをチェック
-    $quiz_password = $_POST['quiz_password'];
-    EscapeStrings(&$quiz_password);
-    if($quiz_password == ''){
-      OutputRoomAction('empty');
+    $gm_password = $_POST['gm_password'];
+    EscapeStrings(&$gm_password);
+    if($gm_password == ''){
+      OutputRoomAction('no_password');
       return false;
     }
     $game_option_list[]    = 'dummy_boy';
     $dummy_boy_handle_name = 'GM';
-    $dummy_boy_password    = $quiz_password;
+    $dummy_boy_password    = $gm_password;
   }
   else{
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
@@ -136,7 +138,7 @@ function CreateRoom(){
       //GM ログインパスワードをチェック
       $gm_password = $_POST['gm_password'];
       if($gm_password == ''){
-	OutputRoomAction('empty');
+	OutputRoomAction('no_password');
 	return false;
       }
       EscapeStrings(&$gm_password);
@@ -160,9 +162,7 @@ function CreateRoom(){
       }
     }
     else{
-      if($duel){
-	$option_role_list[] = 'duel';
-      }
+      if($special_role) $option_role_list[] = $_POST['special_role'];
       else{
 	array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
 		   'possessed_wolf', 'sirius_wolf');
@@ -175,7 +175,7 @@ function CreateRoom(){
     array_push($check_option_role_list, 'liar', 'gentleman');
     $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
     $check_option_role_list[] = 'critical';
-    if(! $duel) array_push($check_option_role_list, 'detective', 'replace_human');
+    if(! $special_role) array_push($check_option_role_list, 'detective', 'replace_human');
     $check_game_option_list[] = 'festival';
   }
 
@@ -334,6 +334,11 @@ function OutputRoomAction($type, $room_name = ''){
     echo '<li>村の説明が記入されていない。</li></ul>';
     break;
 
+  case 'no_password':
+    OutputActionResultHeader('村作成 [入力エラー]');
+    echo '有効な GM ログインパスワードが設定されていません。<br>';
+    break;
+
   case 'comment':
     OutputActionResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
@@ -487,35 +492,10 @@ function OutputCreateRoomPage(){
 <form method="POST" action="room_manager.php">
 <input type="hidden" name="command" value="CREATE_ROOM">
 <table>
-<tr>
-<td><label>{$GAME_OPT_MESS->room_name}：</label></td>
-<td><input type="text" name="room_name" size="{$ROOM_CONF->room_name}"> 村</td>
-</tr>
-<tr>
-<td><label>{$GAME_OPT_MESS->room_comment}：</label></td>
-<td><input type="text" name="room_comment" size="{$ROOM_CONF->room_comment}"></td>
-</tr>
-<tr>
-<td><label>{$GAME_OPT_MESS->max_user}：</label></td>
-<td>
-<select name="max_user">
-<optgroup label="最大人数">
 
 EOF;
 
-  foreach($ROOM_CONF->max_user_list as $number){
-    echo '<option' . ($number == $ROOM_CONF->default_max_user ? ' selected' : '') . '>' .
-      $number . '</option>'."\n";
-  }
-
-  echo <<<EOF
-</optgroup>
-</select>
-<span class="explain">({$GAME_OPT_CAPT->max_user})</span></td>
-</tr>
-
-EOF;
-
+  OutputRoomOption(array('room_name', 'room_comment', 'max_user'), '', false);
   OutputRoomOption(array('wish_role', 'real_time', 'open_vote', 'open_day'));
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
@@ -528,8 +508,8 @@ EOF;
 		 'festival',  'replace_human');
   OutputRoomOption($stack, 'role');
 
+  OutputRoomOption(array('special_role'));
   OutputRoomOptionChaos();
-  OutputRoomOption(array('quiz', 'duel'));
 
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
@@ -543,20 +523,28 @@ EOF;
 function GenerateRoomOption($option, $label = ''){
   global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  if(! $ROOM_CONF->$option) return NULL;
+  if($ROOM_CONF->$option === false) return NULL;
 
   $default = 'default_' . $option;
-  $checked = ($ROOM_CONF->$default ? ' checked' : '');
+  $checked = $ROOM_CONF->$default ? ' checked' : '';
   if($label != '') $label .= '_';
   $label .= $option;
 
-  $sentence = $CAST_CONF->$option;
-  if(isset($sentence)) $sentence .= '人以上で';
-  if($option == 'cupid') $sentence = '14人もしくは' . $sentence . '<br>　';
-  $sentence .= $GAME_OPT_MESS->$option;
+  $sentence = $GAME_OPT_MESS->$option;
+  if(! is_null($limit = $CAST_CONF->$option)) $sentence .= ' ('  . $limit . '人〜)';
 
   $caption = $GAME_OPT_CAPT->$option;
   switch($option){
+  case 'room_name':
+  case 'room_comment':
+  case 'gm_password':
+    return GenerateTextForm($option);
+
+  case 'max_user':
+  case 'replace_human':
+  case 'special_role':
+    return GenerateSelector($option);
+
   case 'real_time':
     $caption .= <<<EOF
 　昼：
@@ -564,41 +552,6 @@ function GenerateRoomOption($option, $label = ''){
 <input type="text" name="real_time_night" value="{$TIME_CONF->default_night}" size="2" maxlength="2">分
 EOF;
     break;
-
-  case 'quiz':
-    $add_caption = <<<EOF
-<br>
-<label for="quiz_password">GM ログインパスワード：</label>
-<input id="quiz_password" type="password" name="quiz_password" size="20"><br>
-　　{$GAME_OPT_CAPT->gm_login_footer}
-EOF;
-    break;
-
-  case 'replace_human':
-    $str = <<<EOF
-<tr>
-<td><label>{$GAME_OPT_MESS->$option}：</label></td>
-<td>
-<select name="{$option}">
-<optgroup label="モード名">
-<option value="" selected>なし</option>
-
-EOF;
-
-    foreach($ROOM_CONF->replace_human_list as $role){
-      if($ROOM_CONF->$role){
-	$str .= '<option value="' . $role . '">' . $GAME_OPT_MESS->$role . '</option>'."\n";
-      }
-    }
-
-    $str .= <<<EOF
-</optgroup>
-</select>
-<span class="explain">({$GAME_OPT_CAPT->$option})</span></td>
-</tr>
-
-EOF;
-    return $str;
   }
 
   return <<<EOF
@@ -608,6 +561,68 @@ EOF;
 <input id="{$label}" type="checkbox" name="{$option}" value="on"{$checked}>
 ({$caption}){$add_caption}
 </td>
+</tr>
+
+EOF;
+}
+
+function GenerateTextForm($option){
+  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+
+  switch($option){
+  case 'room_name':
+    $footer = ' 村';
+    break;
+
+  case 'gm_password':
+    $footer = '<span class="explain">' . $GAME_OPT_CAPT->gm_password . '</span>';
+    break;
+  }
+
+  return <<<EOF
+<tr>
+<td><label>{$GAME_OPT_MESS->$option}：</label></td>
+<td><input type="text" name="{$option}" size="{$ROOM_CONF->$option}">{$footer}</td>
+</tr>
+
+EOF;
+}
+
+function GenerateSelector($option){
+  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+
+  switch($option){
+  case 'max_user':
+    $label = '最大人数';
+    $str = '';
+    foreach($ROOM_CONF->{$option . '_list'} as $number){
+      $str .= '<option value="' . $number . '"' .
+	($number == $ROOM_CONF->default_max_user ? ' selected' : '') . '>' .
+	$number . '</option>'."\n";
+    }
+    break;
+
+  case 'replace_human':
+  case 'special_role':
+    $label = 'モード名';
+    $str = '<option value="" selected>なし</option>';
+    foreach($ROOM_CONF->{$option . '_list'} as $role){
+      if($ROOM_CONF->$role){
+	$str .= '<option value="' . $role . '">' . $GAME_OPT_MESS->$role . '</option>'."\n";
+      }
+    }
+    break;
+  }
+
+  return <<<EOF
+<tr>
+<td><label>{$GAME_OPT_MESS->$option}：</label></td>
+<td>
+<select name="{$option}">
+<optgroup label="{$label}">
+{$str}</optgroup>
+</select>
+<span class="explain">({$GAME_OPT_CAPT->$option})</span></td>
 </tr>
 
 EOF;
@@ -640,32 +655,16 @@ function OutputRoomOptionDummyBoy(){
 <td class="explain">
 <input type="radio" name="dummy_boy" value=""{$checked_nothing}>
 {$GAME_OPT_CAPT->no_dummy_boy}<br>
-
 <input type="radio" name="dummy_boy" value="on"{$checked_dummy_boy}>
 {$GAME_OPT_CAPT->dummy_boy}<br>
-
 <input type="radio" name="dummy_boy" value="gm_login"{$checked_gm_login}>
-{$GAME_OPT_MESS->gm_login} ({$GAME_OPT_CAPT->gm_login_header})<br>
-<label for="gm_password">GM ログインパスワード：</label>
-<input id="gm_password" type="password" name="gm_password" size="20"><br>
-　　{$GAME_OPT_CAPT->gm_login_footer}
+{$GAME_OPT_MESS->gm_login} ({$GAME_OPT_CAPT->gm_login})
 </td>
 </tr>
 
 EOF;
 
-  if($ROOM_CONF->gerd){
-    $checked = $ROOM_CONF->default_gerd ? ' checked' : '';
-    echo <<<EOF
-<tr>
-<td><label for="gerd">{$GAME_OPT_MESS->gerd}：</label></td>
-<td class="explain">
-<input id="gerd" type="checkbox" name="gerd" value="on"{$checked}>
-{$GAME_OPT_CAPT->gerd}
-</td>
-</tr>
-EOF;
-  }
+  OutputRoomOption(array('gm_password', 'gerd'), '', false);
 }
 
 function OutputRoomOptionOpenCast(){
@@ -717,58 +716,6 @@ function OutputRoomOptionChaos(){
 
   if(! $ROOM_CONF->chaos) return NULL;
 
-  switch($ROOM_CONF->default_chaos){
-  case 'chaos':
-    $checked_chaos = ' checked';
-    break;
-
-  case 'chaosfull':
-    if($ROOM_CONF->chaosfull){
-      $checked_chaosfull = ' checked';
-      break;
-    }
-
-  case 'chaos_hyper':
-    if($ROOM_CONF->chaos_hyper){
-      $checked_chaos_hyper = ' checked';
-      break;
-    }
-
-  default:
-    $checked_normal = ' checked';
-    break;
-  }
-
-  echo <<<EOF
-<tr><td colspan="2"><hr></td></tr>
-<tr>
-<td><label>{$GAME_OPT_MESS->chaos}：</label></td>
-<td class="explain">
-<input type="radio" name="chaos" value=""{$checked_normal}>
-{$GAME_OPT_CAPT->no_chaos}<br>
-
-<input type="radio" name="chaos" value="chaos"{$checked_chaos}>
-{$GAME_OPT_CAPT->chaos}<br>
-
-EOF;
-
-  if($ROOM_CONF->chaosfull){
-    echo <<<EOF
-<input type="radio" name="chaos" value="chaosfull"{$checked_chaosfull}>
-{$GAME_OPT_CAPT->chaosfull}<br>
-
-EOF;
-  }
-
-  if($ROOM_CONF->chaos_hyper){
-    echo <<<EOF
-<input type="radio" name="chaos" value="chaos_hyper"{$checked_chaos_hyper}>
-{$GAME_OPT_CAPT->chaos_hyper}
-
-EOF;
-  }
-  echo '</td></tr>'."\n";
-
   if($ROOM_CONF->chaos_open_cast){
     switch($ROOM_CONF->default_chaos_open_cast){
     case 'full':
@@ -789,6 +736,7 @@ EOF;
     }
 
     echo <<<EOF
+<tr><td colspan="2"><hr></td></tr>
 <tr>
 <td><label>{$GAME_OPT_MESS->chaos_open_cast}：</label></td>
 <td class="explain">

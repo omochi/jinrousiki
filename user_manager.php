@@ -209,6 +209,9 @@ IMAGE;
 		 'jealousy', 'doll', 'brownie', 'wolf', 'mad', 'fox', 'child_fox', 'cupid',
 		 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'mania');
     }
+    elseif($ROOM->IsOption('gray_random')){
+      array_push($wish_role_list, 'human', 'wolf', 'mad', 'fox');
+    }
     else{
       array_push($wish_role_list,  'human', 'wolf');
       if($ROOM->IsQuiz()){

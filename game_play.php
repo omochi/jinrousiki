@@ -26,7 +26,6 @@ $SELF = $USERS->BySession(); //自分の情報をロード
 #$SELF->Update('live', 'live');
 #$SELF->Update('live', 'dead');
 #PrintData($SELF);
-#DeleteVote();
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
@@ -369,7 +368,7 @@ function CheckSilence(){
 	$ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
 	$ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
 	$ROOM->UpdateTime(); //制限時間リセット
-	DeleteVote(); //投票リセット
+	$ROOM->DeleteVote(); //投票リセット
 	CheckVictory(); //勝敗チェック
       }
     }

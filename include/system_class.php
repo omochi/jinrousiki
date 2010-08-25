@@ -1112,10 +1112,48 @@ class RoleData{
       ($sub_role ? $this->sub_role_list[$role] : $this->main_role_list[$role]) . ']</span>';
     return $str;
   }
+
+  //配役テーブル用タグ生成
+  function GenerateCastTag($role){
+    return '<th class="' . $this->DistinguishRoleClass($role) . '">' .
+      $this->main_role_list[$role] . '</th>';
+  }
 }
 
 //-- 配役設定の基底クラス --//
 class CastConfigBase{
+  //配役テーブル出力
+  function OutputCastTable($min = 0, $max = NULL){
+    global $ROLE_DATA;
+
+    //設定されている役職名を取得
+    $stack = array();
+    foreach($this->role_list as $key => $value){
+      if($key < $min) continue;
+      $stack = array_merge($stack, array_keys($value));
+      if($key == $max) break;
+    }
+    //表示順を決定
+    $role_list = array_intersect(array_keys($ROLE_DATA->main_role_list), array_unique($stack));
+
+    $header = '<table class="member">';
+    $str = '<tr><th>人口</th>';
+    foreach($role_list as $role) $str .= $ROLE_DATA->GenerateCastTag($role);
+    $str .= '</tr>'."\n";
+    echo $header . $str;
+
+    //人数毎の配役を表示
+    foreach($this->role_list as $key => $value){
+      if($key < $min) continue;
+      $tag = "<td><strong>{$key}</strong></td>";
+      foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
+      echo '<tr>' . $tag . '</tr>'."\n";
+      if($key == $max) break;
+      if($key % 20 == 0) echo $str;
+    }
+    echo '</table>';
+  }
+
   //「福引き」を一定回数行ってリストに追加する
   function AddRandom(&$list, $random_list, $count){
     $total = count($random_list) - 1;
@@ -1171,5 +1209,34 @@ class CastConfigBase{
 
     $this->FinalizeDuel($user_count, $role_list);
     return $role_list;
+  }
+
+  //配役フィルタリング処理
+  function FilterRoles($user_count, $filter){
+    $stack = array();
+    foreach($this->role_list[$user_count] as $key => $value){
+      $role = 'human';
+      foreach($filter as $set_role){
+	if(strpos($key, $set_role) !== false){
+	  $role = $set_role;
+	  break;
+	}
+      }
+      $stack[$role] += (int)$value;
+    }
+    return $stack;
+  }
+
+  //クイズ村の配役処理
+  function SetQuiz($user_count){
+    $stack = $this->FilterRoles($user_count, array('common', 'wolf', 'mad', 'fox'));
+    $stack['human']--;
+    $stack['quiz'] = 1;
+    return $stack;
+  }
+
+  //グレラン村の配役処理
+  function SetGrayRandom($user_count){
+    return $this->FilterRoles($user_count, array('wolf', 'mad', 'fox'));
   }
 }

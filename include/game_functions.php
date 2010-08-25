@@ -66,12 +66,9 @@ function LoversFollowed($sudden_death = false){
   $checked_list    = array(); //処理済キューピッドのID
 
   foreach($USERS->rows as $user){ //キューピッドと死んだ恋人のリストを作成
-    if(! $user->IsLovers()) continue;
-    foreach($user->partner_list['lovers'] as $id){
+    foreach($user->GetPartner('lovers', true) as $id){
       $cupid_list[$id][] = $user->user_no;
-      if(($user->dead_flag || $user->revive_flag) && ! in_array($id, $lost_cupid_list)){
-	$lost_cupid_list[] = $id;
-      }
+      if($user->dead_flag || $user->revive_flag) $lost_cupid_list[$id] = $id;
     }
   }
 
@@ -91,7 +88,7 @@ function LoversFollowed($sudden_death = false){
       }
       $user->suicide_flag = true;
 
-      foreach($user->partner_list['lovers'] as $id){ //後追いした恋人のキューピッドのIDを取得
+      foreach($user->GetPartner('lovers') as $id){ //後追いした恋人のキューピッドのIDを取得
 	if(! (in_array($id, $checked_list) || in_array($id, $lost_cupid_list))){ //連鎖判定
 	  $lost_cupid_list[] = $id;
 	}
@@ -164,21 +161,6 @@ function CheckVictory($check_draw = false){
 }
 
 //-- 投票関連 --//
-//今までの投票を全部削除
-function DeleteVote(){
-  global $ROOM;
-
-  if(is_null($ROOM->id)) return true;
-  $query = 'DELETE FROM vote' . $ROOM->GetQuery();
-  if($ROOM->IsDay())
-    $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . $ROOM->GetVoteTimes();
-  elseif($ROOM->IsNight())
-    $query .= ' AND situation <> ' . ($ROOM->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
-
-  SendQuery($query);
-  SendQuery('OPTIMIZE TABLE vote', true);
-}
-
 //夜の自分の投票済みチェック
 function CheckSelfVoteNight($situation, $not_situation = ''){
   global $ROOM, $SELF;
@@ -339,10 +321,6 @@ function OutputPlayerList(){
   global $DEBUG_MODE, $ICON_CONF, $ROOM, $USERS, $SELF;
 
   //PrintData($ROOM->event); //テスト用
-  //ブラウザをチェック (MSIE @ Windows だけ 画像の Alt, Title 属性で改行できる)
-  //IE の場合改行を \r\n に統一、その他のブラウザはスペースにする(画像のAlt属性)
-  $replace = preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? "\r\n" : ' ';
-
   //配役公開フラグを判定
   $is_open_role = $ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
     ($SELF->IsDead() && $ROOM->IsOpenCast());
@@ -362,7 +340,8 @@ function OutputPlayerList(){
     }
 
     //ユーザプロフィールと枠線の色を追加
-    $profile = str_replace("\n", $replace, $user->profile);
+    //Alt, Title 内の改行はブラウザ依存あり (Firefox 系は無効)
+    $profile = str_replace("\n", '&#13;&#10', $user->profile);
     $str .= $td_header . '<img title="' . $profile . '" alt="' . $profile .
       '" style="border-color: ' . $user->color . ';"';
 
@@ -539,8 +518,7 @@ function OutputVoteList(){
   if(! $ROOM->IsPlaying()) return false; //ゲーム中以外は出力しない
 
  //昼なら前日、夜ならの今日の集計を表示
-  $set_date = ($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date;
-  echo GetVoteList($set_date);
+  echo GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
 }
 
 //再投票の時、メッセージを表示

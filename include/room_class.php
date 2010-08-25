@@ -138,6 +138,16 @@ class Room{
     $this->event->rows = FetchAssoc($query);
   }
 
+  //投票情報をコマンド毎に分割する
+  function ParseVote(){
+    $stack = array();
+    foreach($this->vote as $uname => $list){
+      extract($list);
+      $stack[$situation][$uname] = $target_uname;
+    }
+    return $stack;
+  }
+
   //ゲームオプションの展開処理
   function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
@@ -151,14 +161,19 @@ class Room{
     }
   }
 
-  //投票情報をコマンド毎に分割する
-  function ParseVote(){
-    $stack = array();
-    foreach($this->vote as $uname => $list){
-      extract($list);
-      $stack[$situation][$uname] = $target_uname;
-    }
-    return $stack;
+  //今までの投票を全部削除
+  function DeleteVote(){
+    if(is_null($this->id)) return true;
+
+    $query = 'DELETE FROM vote' . $this->GetQuery();
+    if($this->IsDay())
+      $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . $this->GetVoteTimes();
+    elseif($this->IsNight())
+      $query .= ' AND situation <> ' . ($this->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
+
+    SendQuery($query);
+    SendQuery('OPTIMIZE TABLE vote', true);
+    return true;
   }
 
   //共通クエリを取得
@@ -338,7 +353,7 @@ class Room{
     $this->Talk("MORNING\t" . $this->date);
     $this->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
     $this->UpdateTime(); //最終書き込みを更新
-    //DeleteVote(); //今までの投票を全部削除
+    //$this->DeleteVote(); //今までの投票を全部削除
 
     $status = CheckVictory(); //勝敗のチェック
     SendCommit(); //一応コミット

@@ -97,9 +97,9 @@ class User{
   }
 
   //拡張情報を取得
-  function GetPartner($type){
+  function GetPartner($type, $fill = false){
     $list = $this->partner_list[$type];
-    return is_array($list) ? $list : NULL;
+    return is_array($list) ? $list : ($fill ? array() : NULL);
   }
 
   //日数に応じた憑依先の ID を取得
