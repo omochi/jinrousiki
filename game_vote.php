@@ -140,7 +140,7 @@ function VoteKick(){
   LockVote(); //テーブルを排他的ロック
 
   //ゲーム開始チェック
-  if(FetchResult("SELECT day_night FROM room WHERE room_no = {$ROOM->id}") != 'beforegame'){
+  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') != 'beforegame'){
     OutputVoteResult('Kick：既にゲームは開始されています', true);
   }
 
@@ -200,7 +200,7 @@ function VoteNight(){
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
   switch($RQ_ARGS->situation){
   case 'ESCAPE_DO':
-    if(! $SELF->IsRole('escaper')) OutputVoteResult('夜：逃亡者以外は投票できません');
+    if(! $SELF->IsRole('escaper')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'MAGE_DO':
@@ -208,29 +208,29 @@ function VoteNight(){
       if(! $SELF->IsActive()) OutputVoteResult('夜：翠狐は一度しかできません');
     }
     elseif(! $SELF->IsRoleGroup('mage')){
-      OutputVoteResult('夜：占い能力者以外は投票できません');
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     break;
 
   case 'VOODOO_KILLER_DO':
-    if(! $SELF->IsRole('voodoo_killer')) OutputVoteResult('夜：陰陽師以外は投票できません');
+    if(! $SELF->IsRole('voodoo_killer')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'GUARD_DO':
-    if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：狩人系以外は投票できません');
+    if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'REPORTER_DO':
-    if(! $SELF->IsRole('reporter')) OutputVoteResult('夜：ブン屋以外は投票できません');
+    if(! $SELF->IsRole('reporter')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'ANTI_VOODOO_DO':
-    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：厄神以外は投票できません');
+    if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
-    if(! $SELF->IsReviveGroup()) OutputVoteResult('夜：蘇生能力者以外は投票できません');
+    if(! $SELF->IsReviveGroup()) OutputVoteResult('夜：投票イベントが一致しません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
@@ -243,14 +243,14 @@ function VoteNight(){
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
     if(! $SELF->IsRoleGroup('assassin') && ! $SELF->IsRole('doom_fox')){
-      OutputVoteResult('夜：暗殺能力者以外は投票できません');
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
   case 'MIND_SCANNER_DO':
     if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
-      OutputVoteResult('夜：さとり・イタコ以外は投票できません');
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
@@ -258,69 +258,71 @@ function VoteNight(){
     break;
 
   case 'WOLF_EAT':
-    if(! $SELF->IsWolf()) OutputVoteResult('夜：人狼系以外は投票できません');
+    if(! $SELF->IsWolf()) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'JAMMER_MAD_DO':
     if(! $SELF->IsRole('jammer_mad', 'jammer_fox')){
-      OutputVoteResult('夜：月兎・月狐以外は投票できません');
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     break;
 
   case 'VOODOO_MAD_DO':
-    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：呪術師以外は投票できません');
+    if(! $SELF->IsRole('voodoo_mad')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'DREAM_EAT':
-    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：獏以外は投票できません');
+    if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：投票イベントが一致しません');
+    break;
+
+  case 'POSSESSED_DO':
+  CASE 'POSSESSED_NOT_DO':
+    if(! $SELF->IsRole('possessed_mad', 'possessed_fox')){
+      OutputVoteResult('夜：投票イベントが一致しません');
+    }
+    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
+    $not_type = $RQ_ARGS->situation == 'POSSESSED_NOT_DO';
     break;
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
-    if(! $SELF->IsRoleGroup('trap_mad')) OutputVoteResult('夜：罠師・雪女以外は投票できません');
+    if(! $SELF->IsRoleGroup('trap_mad')) OutputVoteResult('夜：投票イベントが一致しません');
     if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
       OutputVoteResult('夜：罠師の罠は一度しか設置できません');
     }
     $not_type = $RQ_ARGS->situation == 'TRAP_MAD_NOT_DO';
     break;
 
-  case 'POSSESSED_DO':
-  CASE 'POSSESSED_NOT_DO':
-    if(! $SELF->IsRole('possessed_mad', 'possessed_fox')){
-      OutputVoteResult('夜：犬神・憑狐以外は投票できません');
-    }
-    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
-    $not_type = $RQ_ARGS->situation == 'POSSESSED_NOT_DO';
-    break;
-
   case 'VOODOO_FOX_DO':
-    if(! $SELF->IsRole('voodoo_fox')) OutputVoteResult('夜：九尾以外は投票できません');
+    if(! $SELF->IsRole('voodoo_fox')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'CHILD_FOX_DO':
     if(! $SELF->IsChildFox(true) && ! $SELF->IsRole('jammer_fox')){
-      OutputVoteResult('夜：子狐系以外は投票できません');
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     break;
 
   case 'CUPID_DO':
     if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
-      OutputVoteResult('夜：キューピッド系・天使系以外は投票できません');
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     $is_cupid = true;
     break;
 
   case 'VAMPIRE_DO':
-    if(! $SELF->IsRole('vampire')) OutputVoteResult('夜：吸血鬼以外は投票できません');
+    if(! $SELF->IsRole('vampire')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'FAIRY_DO':
-    if(! $SELF->IsRoleGroup('fairy')) OutputVoteResult('夜：妖精系以外は投票できません');
+    if(! $SELF->IsRoleGroup('fairy') && ! $SELF->IsRole('enchant_mad')){
+      OutputVoteResult('夜：投票イベントが一致しません');
+    }
     $is_mirror_fairy = $SELF->IsRole('mirror_fairy');
     break;
 
   case 'MANIA_DO':
-    if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：神話マニア系以外は投票できません');
+    if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   default:
@@ -698,6 +700,13 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
     $type = 'DREAM_EAT';
   }
+  elseif($SELF->IsRole('possessed_mad', 'possessed_fox')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の憑依はできません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
+    $type       = 'POSSESSED_DO';
+    $not_type   = 'POSSESSED_NOT_DO';
+    $role_revive = true;
+  }
   elseif($role_trap = $SELF->IsRoleGroup('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
     if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
@@ -707,13 +716,6 @@ function OutputVoteNight(){
     $not_type   = 'TRAP_MAD_NOT_DO';
     $submit     = 'trap_do';
     $not_submit = 'trap_not_do';
-  }
-  elseif($SELF->IsRole('possessed_mad', 'possessed_fox')){
-    if($ROOM->date == 1) OutputVoteResult('夜：初日の憑依はできません');
-    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
-    $type       = 'POSSESSED_DO';
-    $not_type   = 'POSSESSED_NOT_DO';
-    $role_revive = true;
   }
   elseif($SELF->IsRole('voodoo_fox')){
     $type   = 'VOODOO_FOX_DO';
@@ -740,7 +742,7 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
     $type = 'VAMPIRE_DO';
   }
-  elseif($SELF->IsRoleGroup('fairy')){
+  elseif($SELF->IsRoleGroup('fairy') || $SELF->IsRole('enchant_mad')){
     $type = 'FAIRY_DO';
   }
   elseif($SELF->IsRoleGroup('mania')){

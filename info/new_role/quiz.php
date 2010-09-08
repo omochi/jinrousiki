@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [出題者陣営]', 'new_role');
+OutputRolePageHeader('出題者陣営');
 ?>
-</head>
-<body>
-<h1>出題者陣営</h1>
-<p>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
-</p>
 <p>
 <a href="#rule">基本ルール</a>
 </p>
@@ -36,7 +29,7 @@ OutputHTMLHeader('新役職情報 - [出題者陣営]', 'new_role');
 <h4>Ver. 1.4.0 β2〜</h4>
 <pre>
 毒吊りで巻き込まれる対象になりません。
-例えば、出題者、埋毒者、毒狼の編成で毒能力者を吊った場合は確実に出題者が生き残ります。
+例えば、出題者・<a href="human.php#poison">埋毒者</a>・<a href="wolf.php#poison_wolf">毒狼</a>の編成で毒能力者を吊った場合は確実に出題者が生き残ります。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -45,7 +45,7 @@ class Room{
     global $RQ_ARGS;
 
     $option_role = $RQ_ARGS->IsVirtualRoom() ? $RQ_ARGS->TestItems->test_room['option_role'] :
-      FetchResult('SELECT option_role FROM room' . $this->GetQuery(false));
+      FetchResult($this->GetQueryHeader('room', 'option_role'));
     $this->option_role = new OptionManager($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
   }
@@ -133,7 +133,7 @@ class Room{
 
   //特殊イベント判定用の情報を DB から取得する
   function LoadEvent(){
-    $query = 'SELECT message, type FROM system_message' . $this->GetQuery(false) . ' AND date = '  .
+    $query = $this->GetQueryHeader('system_message', 'message', 'type') . ' AND date = '  .
       ($this->date - 1) . " AND(type = 'WOLF_KILLED' OR type = 'VOTE_KILLED')";
     $this->event->rows = FetchAssoc($query);
   }
@@ -183,6 +183,13 @@ class Room{
     return $date ? $query . ' AND date = ' . $this->date : $query;
   }
 
+  //共通クエリヘッダを取得
+  function GetQueryHeader($data){
+    $stack = func_get_args();
+    $from = array_shift($stack);
+    return 'SELECT ' . implode(', ', $stack) . ' FROM ' . $from . $this->GetQuery(false);
+  }
+
   //投票回数を取得する
   function GetVoteTimes($revote = false){
     $value = $revote ? 'revote_times' : 'vote_times';
@@ -225,23 +232,38 @@ class Room{
     return $this->IsOption('quiz');
   }
 
+  //村人置換村グループオプション判定
+  function IsReplaceHumanGroup(){
+    return $this->IsOption('replace_human') || $this->IsOption('full_mania') ||
+      $this->IsOption('full_chiroptera') || $this->IsOption('full_cupid');
+  }
+
   //闇鍋式希望制オプション判定
   function IsChaosWish(){
-    return $this->IsOptionGroup('chaos') || $this->IsOption('duel') || $this->IsOption('festival') ||
-      $this->IsOption('replace_human') || $this->IsOption('full_mania') ||
-      $this->IsOption('full_chiroptera') || $this->IsOption('full_cupid');
+    return $this->IsOptionGroup('chaos') || $this->IsOption('duel') ||
+      $this->IsOption('festival') || $this->IsReplaceHumanGroup();
   }
 
   //霊界公開判定
   function IsOpenCast(){
     global $USERS;
 
-    if($this->IsOption('not_open_cast')) return false; //常時非公開
-    if(! $this->IsOption('auto_open_cast')) return true; //自動公開がオフなら常時公開
-
-    //役職をチェックしてフラグをキャッシュする
-    if(is_null($this->open_cast)) $this->open_cast = $USERS->IsOpenCast();
+    if(is_null($this->open_cast)){ //未設定ならキャッシュする
+      if($this->IsOption('not_open_cast')) //常時非公開
+	$this->open_cast = false;
+      elseif($this->IsOption('auto_open_cast')) //自動公開
+	$this->open_cast = $USERS->IsOpenCast();
+      else
+	$this->open_cast = true; //常時公開
+    }
     return $this->open_cast;
+  }
+
+  //情報公開判定
+  function IsOpenData($virtual = false){
+    global $SELF;
+    return $SELF->IsDummyBoy() || ($SELF->IsDead() && $this->IsOpenCast()) ||
+      ($virtual ? $this->IsAfterGame() : $this->IsFinished());
   }
 
   //ゲーム開始前判定

@@ -275,9 +275,20 @@ function OutputAbility(){
       if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_MAD_DO');
       break;
 
+    case 'enchant_mad': //狢
+      if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO');
+      break;
+
     case 'dream_eater_mad': //獏
       if($ROOM->date > 1 && $ROOM->IsNight()){
 	OutputVoteMessage('wolf-eat', 'dream_eat', 'DREAM_EAT');
+      }
+      break;
+
+    case 'possessed_mad': //犬神
+      if($ROOM->date > 2) OutputPossessedTarget(); //現在の憑依先を表示
+      if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
+	OutputVoteMessage('wolf-eat', 'possessed_do', 'POSSESSED_DO', 'POSSESSED_NOT_DO');
       }
       break;
 
@@ -290,13 +301,6 @@ function OutputAbility(){
     case 'snow_trap_mad': //雪女
       if($ROOM->date > 1 && $ROOM->IsNight()){
 	OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
-      }
-      break;
-
-    case 'possessed_mad': //犬神
-      if($ROOM->date > 2) OutputPossessedTarget(); //現在の憑依先を表示
-      if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
-	OutputVoteMessage('wolf-eat', 'possessed_do', 'POSSESSED_DO', 'POSSESSED_NOT_DO');
       }
       break;
     }

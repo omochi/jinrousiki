@@ -17,10 +17,7 @@ class DatabaseConfigBase{
       return $this->OutputError($header, $exit, 'データベース接続失敗', $this->name);
     }
     if($this->encode == 'utf8') mysql_query('SET NAMES utf8');
-
-    //成功したらハンドルを返して処理終了
-    $this->db_handle = $db_handle;
-    return $db_handle;
+    return $this->db_handle = $db_handle; //成功したらハンドルを返して処理終了
   }
 
   //データベースとの接続を閉じる
@@ -110,9 +107,9 @@ class Session{
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
       "AND session_id ='{$this->id}' AND user_no > 0";
-    $array = FetchArray($query);
-    if(count($array) == 1){
-      $this->user_no = $array[0];
+    $stack = FetchArray($query);
+    if(count($stack) == 1){
+      $this->user_no = $stack[0];
       return true;
     }
 
@@ -141,14 +138,15 @@ class CookieDataSet{
 
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder{
+  var $time = 1; //タイムアウト時間 (秒)
+
   //サーバ通信状態チェック
   function CheckConnection($url){
     $url_stack = explode('/', $url);
     $this->host = $url_stack[2];
-    $io = @fsockopen($this->host, 80, $err_no, $err_str, 3);
-    if(! $io) return false;
+    if(! ($io = @fsockopen($this->host, 80, $status, $str, $this->time))) return false;
 
-    stream_set_timeout($io, 3);
+    stream_set_timeout($io, $this->time);
     fwrite($io, "GET / HTTP/1.1\r\nHost: {$host}\r\nConnection: Close\r\n\r\n");
     $data = fgets($io, 128);
     $stream_stack = stream_get_meta_data($io);
@@ -187,7 +185,7 @@ class BBSConfigBase extends ExternalLinkBuilder{
 
     if($this->disable) return;
     if(! $this->CheckConnection($this->raw_url)){
-      echo $this->GenerateBBS($this->host . ': Connection timed out (3 seconds)');
+      echo $this->GenerateBBS($this->host . ": Connection timed out ({$this->time} seconds)");
       return;
     }
 
@@ -598,13 +596,14 @@ class RoleData{
     'whisper_mad'        => '囁き狂人',
     'jammer_mad'         => '月兎',
     'voodoo_mad'         => '呪術師',
+    'enchant_mad'        => '狢',
+    'dream_eater_mad'    => '獏',
+    'possessed_mad'      => '犬神',
+    'trap_mad'           => '罠師',
+    'snow_trap_mad'      => '雪女',
     'corpse_courier_mad' => '火車',
     'agitate_mad'        => '扇動者',
     'miasma_mad'         => '土蜘蛛',
-    'dream_eater_mad'    => '獏',
-    'trap_mad'           => '罠師',
-    'snow_trap_mad'      => '雪女',
-    'possessed_mad'      => '犬神',
     'therian_mad'        => '獣人',
     'fox'                => '妖狐',
     'white_fox'          => '白狐',
@@ -844,13 +843,14 @@ class RoleData{
     'whisper_mad'        => '囁狂',
     'jammer_mad'         => '月兎',
     'voodoo_mad'         => '呪狂',
+    'enchant_mad'        => '狢',
+    'dream_eater_mad'    => '獏',
+    'possessed_mad'      => '犬',
+    'trap_mad'           => '罠',
+    'snow_trap_mad'      => '雪',
     'corpse_courier_mad' => '火',
     'agitate_mad'        => '扇',
     'miasma_mad'         => '蜘',
-    'dream_eater_mad'    => '獏',
-    'trap_mad'           => '罠',
-    'snow_trap_mad'      => '雪',
-    'possessed_mad'      => '犬',
     'therian_mad'        => '獣',
     'fox'                => '狐',
     'white_fox'          => '白狐',
@@ -1052,7 +1052,7 @@ class RoleData{
 
   //所属陣営判別
   function DistinguishCamp($role, $start = false){
-    switch(($camp = $this->DistinguishRoleGroup($role))){
+    switch($camp = $this->DistinguishRoleGroup($role)){
     case 'wolf':
     case 'mad':
       return 'wolf';
@@ -1083,7 +1083,7 @@ class RoleData{
 
   //役職クラス (CSS) 判定
   function DistinguishRoleClass($role){
-    switch(($class = $this->DistinguishRoleGroup($role))){
+    switch($class = $this->DistinguishRoleGroup($role)){
     case 'poison_cat':
       $class = 'cat';
       break;
@@ -1113,10 +1113,10 @@ class RoleData{
     return $str;
   }
 
-  //配役テーブル用タグ生成
-  function GenerateCastTag($role){
-    return '<th class="' . $this->DistinguishRoleClass($role) . '">' .
-      $this->main_role_list[$role] . '</th>';
+  //役職名のタグ生成 (メイン役職専用)
+  function GenerateMainRoleTag($role, $tag = 'span'){
+    return '<' . $tag . ' class="' . $this->DistinguishRoleClass($role) . '">' .
+      $this->main_role_list[$role] . '</' . $tag .'>';
   }
 }
 
@@ -1138,7 +1138,7 @@ class CastConfigBase{
 
     $header = '<table class="member">';
     $str = '<tr><th>人口</th>';
-    foreach($role_list as $role) $str .= $ROLE_DATA->GenerateCastTag($role);
+    foreach($role_list as $role) $str .= $ROLE_DATA->GenerateMainRoleTag($role, 'th');
     $str .= '</tr>'."\n";
     echo $header . $str;
 

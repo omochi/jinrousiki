@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
+OutputRolePageHeader('恋人陣営');
 ?>
-</head>
-<body>
-<h1>恋人陣営</h1>
-<p>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
-</p>
 <p>
 <a href="#cupid_group">キューピッド系</a>
 <a href="#angel_group">天使系</a>
@@ -17,11 +10,17 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 
 <h2><a id="cupid_group">キューピッド系</a></h2>
 <p>
+<a href="#cupid">キューピッド</a>
 <a href="#self_cupid">求愛者</a>
 <a href="#moon_cupid">かぐや姫</a>
 <a href="#mind_cupid">女神</a>
 <a href="#triangle_cupid">小悪魔</a>
 </p>
+
+<h3><a id="cupid">キューピッド</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.2.0〜]</h3>
+<pre>
+恋人陣営の基本種。
+</pre>
 
 <h3><a id="self_cupid">求愛者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <pre>
@@ -31,6 +30,10 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 <h4>Ver. 1.4.0 α22〜</h4>
 <pre>
 矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>がつきます。
+</pre>
+<h4>同一表示役職</h4>
+<pre>
+<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -100,8 +103,8 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#rose_angle">天使</a>の男性版です。
-<a href="#rose_angle">天使</a>とは逆に予想外のカップリングが増えるかもしれませんね。
+<a href="#angel">天使</a>の男性版です。
+<a href="#angel">天使</a>とは逆に予想外のカップリングが増えるかもしれませんね。
 </pre>
 
 <h3><a id="lily_angel">百合天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
@@ -110,7 +113,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#rose_angle">天使</a>の女性版です。
+<a href="#angel">天使</a>の女性版です。
 <a href="human.php#sex_mage">ひよこ鑑定士</a>対策で性別をごまかすケースがあることに気をつけましょう。
 </pre>
 
@@ -139,7 +142,7 @@ OutputHTMLHeader('新役職情報 - [恋人陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#rose_angle">天使</a>の作成中の状態に別名を与えてみました。
+<a href="#angel">天使</a>の作成中の状態に別名を与えてみました。
 組み合わせ次第で、二日目の朝に内訳をほぼ掌握することが可能になります。
 </pre>
 </body></html>

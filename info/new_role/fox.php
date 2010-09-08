@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
+OutputRolePageHeader('妖狐陣営');
 ?>
-</head>
-<body>
-<h1>妖狐陣営</h1>
-<p>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
-</p>
 <p>
 <a href="#fox_partner">仲間表示</a>
 <a href="#fox_talk">夜の会話 (念話)</a>
@@ -80,6 +73,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 
 <h2><a id="fox_group">妖狐系</a></h2>
 <p>
+<a href="#fox">妖狐</a>
 <a href="#white_fox">白狐</a>
 <a href="#black_fox">黒狐</a>
 <a href="#gold_fox">金狐</a>
@@ -97,6 +91,12 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <a href="#scarlet_fox">紅狐</a>
 <a href="#silver_fox">銀狐</a>
 </p>
+
+<h3><a id="fox">妖狐</a> (占い結果：村人(呪殺) / 霊能結果：村人)</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+妖狐陣営の基本種。
+</pre>
 
 <h3><a id="white_fox">白狐</a> (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
 <h4>[耐性] 人狼襲撃：死亡</h4>
@@ -153,8 +153,8 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#poison_group">埋毒者</a>の妖狐バージョンです。「くだぎつね」と読みます。
-新役職考案スレ (最下参照) の 110 が原型です。
+<a href="human.php#poison_group">埋毒者</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/110" target="_top">新役職考案スレ</a> の 110 が原型です。
+「くだぎつね」と読みます。
 仲間がいるときに真価を発揮します。
 </pre>
 
@@ -179,7 +179,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <ol>
   <li>能力の発動対象は<a href="#silver_fox">銀狐</a>・<a href="#child_fox_group">子狐系</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>の妖狐のいずれかです。</li>
   <li>インターフェイスは占いと同じですが結果は何も表示されません。</li>
-  <li><a href="sub_role.php#mind_friend">共鳴者</a>を作る事に成功すると能力を失います。</li>
+  <li><a href="sub_role.php#mind_friend">共鳴者</a>を作る事に成功すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
   <li><a href="wolf.php#blue_wolf">蒼狼</a>の襲撃先を占って、占い先が<a href="sub_role.php#mind_lonely">はぐれ者</a>になってもその夜には能力は発動しません。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
@@ -201,9 +201,8 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンです。
-新役職考案スレ (最下参照) の 58 が原型です。
-対占い・対噛み耐性は通常の妖狐と同じですが
+<a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/58" target="_top">新役職考案スレ</a> の 58 が原型です。
+対占い・対噛み耐性は通常の<a href="#fox">妖狐</a>と同じですが
 呪い能力を持った代わりに<a href="human.php#guard_hunt">狩人</a>にも弱くなっています。
 </pre>
 
@@ -212,8 +211,8 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：有り</h4>
 <pre>
 蘇生能力を持った妖狐。
-蘇生に関するルールは<a href="human.php#about_revive">蘇生能力者の基本ルール</a>参照。
-蘇生成功率は 100% で、一度成功すると能力を失う。
+蘇生に関するルールは<a href="human.php#about_revive">基本ルール [蘇生]</a>参照。
+蘇生成功率は 100% で、一度成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -357,7 +356,7 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
 子狐系の基本種。占い能力を持つ。
-判定結果は普通の<a href="human.php#mage_group">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
+判定結果は<a href="human.php#mage">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
 </pre>
 <h4>Ver. 1.4.0 α17〜</h4>
 <pre>
@@ -373,13 +372,13 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職です。
-占い騙りをする場合は失敗した時にどうフォローするかがポイントです。
+占い師騙りをする場合は失敗した時にどうフォローするかがポイントです。
 </pre>
 
 <h3><a id="sex_fox">雛狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β8〜]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
-<a href="human.php#sex_group">ひよこ鑑定士</a>相当の能力を持つ子狐。
+<a href="human.php#sex_mage">ひよこ鑑定士</a>相当の能力を持つ子狐。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -389,17 +388,17 @@ OutputHTMLHeader('新役職情報 - [妖狐陣営]', 'new_role');
 <pre>
 <a href="human.php#sex_group">ひよこ鑑定士</a>の<a href="#child_fox">子狐</a>バージョンです。
 能力よりも、存在自体が脅威となるタイプですね。
-村や狼が疑心暗鬼になって<a href="human.php#sex_group">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
+村や狼が疑心暗鬼になって<a href="human.php#sex_mage">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
 </pre>
 
 <h3><a id="stargazer_fox">星狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
-<a href="human.php#stargazer_group">占星術師</a>相当の能力を持つ子狐。
+<a href="human.php#stargazer_mage">占星術師</a>相当の能力を持つ子狐。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#stargazer_group">占星術師</a>の<a href="#child_fox">子狐</a>バージョンです。
+<a href="human.php#stargazer_mage">占星術師</a>の<a href="#child_fox">子狐</a>バージョンです。
 </pre>
 
 <h3><a id="jammer_fox">月狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>

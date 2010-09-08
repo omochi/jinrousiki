@@ -251,9 +251,9 @@ class CastConfig extends CastConfigBase{
     'whisper_mad'        =>  5,
     'jammer_mad'         => 10,
     'voodoo_mad'         => 10,
-    'corpse_courier_mad' => 15,
     'dream_eater_mad'    => 10,
     'trap_mad'           => 10,
+    'corpse_courier_mad' => 15,
     'fox'                => 30,
     'white_fox'          => 10,
     'poison_fox'         =>  7,
@@ -370,13 +370,14 @@ class CastConfig extends CastConfigBase{
     'whisper_mad'        =>  5,
     'jammer_mad'         => 10,
     'voodoo_mad'         =>  5,
+    'enchant_mad'        =>  5,
+    'dream_eater_mad'    => 10,
+    'possessed_mad'      =>  5,
+    'trap_mad'           => 10,
+    'snow_trap_mad'      =>  5,
     'corpse_courier_mad' =>  5,
     'agitate_mad'        =>  5,
     'miasma_mad'         =>  5,
-    'dream_eater_mad'    => 10,
-    'trap_mad'           => 10,
-    'snow_trap_mad'      =>  5,
-    'possessed_mad'      =>  5,
     'therian_mad'        =>  5,
     'fox'                =>  3,
     'white_fox'          =>  3,
@@ -565,20 +566,22 @@ class CastConfig extends CastConfigBase{
   }
 
   //村人置換村の処理
-  function ReplaceHuman(&$role_list, $count, $option_list){
-    if(in_array('full_mania', $option_list)){ //神話マニア村
+  function ReplaceHuman(&$role_list, $count){
+    global $ROOM;
+
+    if($ROOM->IsOption('full_mania')){ //神話マニア村
       $role_list['mania'] += $count;
       $role_list['human'] -= $count;
     }
-    elseif(in_array('full_chiroptera', $option_list)){ //蝙蝠村
+    elseif($ROOM->IsOption('full_chiroptera')){ //蝙蝠村
       $role_list['chiroptera'] += $count;
       $role_list['human'] -= $count;
     }
-    elseif(in_array('full_cupid', $option_list)){ //キューピッド村
+    elseif($ROOM->IsOption('full_cupid')){ //キューピッド村
       $role_list['cupid'] += $count;
       $role_list['human'] -= $count;
     }
-    elseif(in_array('replace_human', $option_list)){ //村人置換村
+    elseif($ROOM->IsOption('replace_human')){ //村人置換村
       $role_list['escaper'] += $count;
       $role_list['human'] -= $count;
     }

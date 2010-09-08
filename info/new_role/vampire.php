@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [吸血鬼陣営]', 'new_role');
+OutputRolePageHeader('吸血鬼陣営');
 ?>
-</head>
-<body>
-<h1>吸血鬼陣営</h1>
-<p>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
-</p>
 <p>
 <a href="#rule">基本ルール</a>
 <a href="#vampire_do_spec">襲撃の仕様</a>

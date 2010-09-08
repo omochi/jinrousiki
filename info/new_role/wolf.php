@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
+OutputRolePageHeader('人狼陣営');
 ?>
-</head>
-<body>
-<h1>人狼陣営</h1>
-<p>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
-</p>
 <p>
 <a href="#wolf_rule">基本ルール</a>
 <a href="#wolf_partner">仲間表示</a>
@@ -58,9 +51,9 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h2><a id="wolf_howl">遠吠え</a></h2>
 <ol>
-  <li>人狼視点の遠吠えは<a href="silver_wolf">銀狼</a>か<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼</li>
-  <li><a href="silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明)</li>
-  <li>村人視点の遠吠えは<a href="silver_wolf">銀狼</a>も含めた狼 (種類は不明)</li>
+  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>か<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼</li>
+  <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明)</li>
+  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた狼 (種類は不明)</li>
   <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない</li>
 </ol>
 <h3>Ver. 1.4.0 β8〜</h3>
@@ -80,6 +73,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h2><a id="wolf_group">人狼系</a></h2>
 <p>
+<a href="#wolf">人狼</a>
 <a href="#boss_wolf">白狼</a>
 <a href="#gold_wolf">金狼</a>
 <a href="#phantom_wolf">幻狼</a>
@@ -100,6 +94,11 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <a href="#scarlet_wolf">紅狼</a>
 <a href="#silver_wolf">銀狼</a>
 </p>
+
+<h3><a id="wolf">人狼</a> (占い結果：人狼 / 霊能結果：人狼)</h3>
+<pre>
+人狼系の基本種。
+</pre>
 
 <h3><a id="boss_wolf">白狼</a> (占い結果：村人 / 霊能結果：白狼) [Ver. 1.4.0 α3-7〜]</h3>
 <pre>
@@ -139,7 +138,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
   <li>占い妨害が可能な対象は<a href="#jammer_mad">月兎</a>と同じ。</li>
   <li>対象になった占い能力者が<a href="human.php#anti_voodoo">厄神</a>に護衛されていたら無効化される。</li>
   <li>同じ晩であれば複数の占い能力者に占われても有効。</li>
-  <li>一度占われると「能力を失いました」という趣旨のメッセージが表示される。</li>
+  <li>一度占われると占い妨害能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -174,9 +173,9 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 
 <h3><a id="wise_wolf">賢狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24〜]</h3>
 <pre>
-<a href="fox.php#fox_talk">妖狐の念話</a>が共有者の囁きに変換されて聞こえる人狼。
+<a href="fox.php#fox_talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる人狼。
 結果として、念話ができる妖狐が生存していることだけが分かる。
-本物の共有者の囁きと混ざって表示されるので本人には区別できない。
+本物の<a href="human.php#common_group">共有者</a>の囁きと混ざって表示されるので本人には区別できない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -216,8 +215,8 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ</a> の 25 が原型で、毒能力者の対抗役職です。
-安易に CO する<a href="human.php#poison_guard">騎士</a>・埋毒者を葬ってやりましょう！
+毒能力者の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ</a> の 25 が原型です。
+安易に CO する<a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者</a>を葬ってやりましょう！
 </pre>
 
 <h3><a id="blue_wolf">蒼狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
@@ -249,7 +248,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 ローゼンメイデンの翠星石がモチーフです。
 <a href="#blue_wolf">蒼狼</a>と対になるように能力をデザインしてあります。
 <a href="#silver_wolf">銀狼</a>や<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼のフォローが主眼ですが
-噛みを失敗した時の情報が増えるという副次的効果もあります。
+襲撃失敗した時の情報が増えるという副次的効果もあります。
 </pre>
 
 <h3><a id="sex_wolf">雛狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8〜]</h3>
@@ -275,7 +274,7 @@ OutputHTMLHeader('新役職情報 - [人狼陣営]', 'new_role');
 <h3><a id="tongue_wolf">舌禍狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α13〜]</h3>
 <pre>
 襲撃に成功した人の役職が分かる人狼。
-本人が投票した場合のみ有効で、村人だった場合は能力を失ってしまう。
+本人が投票した場合のみ有効で、<a href="human.php#human">村人</a>だった場合は能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -642,8 +641,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンです。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ</a> の 614 が原型です。
+<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ</a> の 614 が原型です。
 </pre>
 
 <h3><a id="sirius_wolf">天狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β9〜]</h3>
@@ -696,7 +694,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>Ver. 1.4.0 β7〜</h4>
 <pre>
-遠吠えの入れ替え発動を昼限定に変更しました。
+遠吠えの入れ替え発動を昼限定に変更。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -746,17 +744,19 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#mad_rule">基本ルール</a>
 </p>
 <p>
+<a href="#mad">狂人</a>
 <a href="#fanatic_mad">狂信者</a>
 <a href="#whisper_mad">囁き狂人</a>
 <a href="#jammer_mad">月兎</a>
 <a href="#voodoo_mad">呪術師</a>
+<a href="#enchant_mad">狢</a>
+<a href="#dream_eater_mad">獏</a>
+<a href="#possessed_mad">犬神</a>
+<a href="#trap_mad">罠師</a>
+<a href="#snow_trap_mad">雪女</a>
 <a href="#corpse_courier_mad">火車</a>
 <a href="#agitate_mad">扇動者</a>
 <a href="#miasma_mad">土蜘蛛</a>
-<a href="#dream_eater_mad">獏</a>
-<a href="#trap_mad">罠師</a>
-<a href="#snow_trap_mad">雪女</a>
-<a href="#possessed_mad">犬神</a>
 <a href="#therian_mad">獣人</a>
 </p>
 
@@ -764,6 +764,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 騙りにリスクを与えるために、特殊能力を持った狂人は
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される仕様となっています。
+</pre>
+
+<h3><a id="mad">狂人</a> (占い結果：村人 / 霊能結果：村人)</h3>
+<pre>
+狂人系の基本種。
 </pre>
 
 <h3><a id="fanatic_mad">狂信者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
@@ -786,7 +791,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3><a id="whisper_mad">囁き狂人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <pre>
-人狼の夜の相談に参加できる上位狂人。
+人狼の夜の会話に参加できる上位狂人。
 人狼と違い、発言が遠吠えに変換されない。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -813,7 +818,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#phantom_wolf">冥狼</a>・<a href="fox.php#phantom_fox">冥狐</a>・<a href="fox.php#jammer_fox">月狐</a>
+<a href="#phantom_wolf">幻狼</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#jammer_fox">月狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -838,85 +843,30 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-対<a href="human.php#mage_group">占い師系</a>専門の<a href="#trap_mad">罠師</a>的存在です。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/13" target="_top">新役職考案スレ</a> の 13 が原型です。
-占い師の占い先を先読みして呪いをかけておくことで呪返しを狙うのが
+対<a href="human.php#mage_group">占い師系</a>専門の<a href="#trap_mad">罠師</a>的存在で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/13" target="_top">新役職考案スレ</a> の 13 が原型です。
+<a href="human.php#mage">占い師</a>の占い先を先読みして呪いをかけておくことで呪返しを狙うのが
 基本的な立ち回りになると思います。
 </pre>
 
-<h3><a id="corpse_courier_mad">火車</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h3><a id="enchant_mad">狢</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17〜]</h3>
 <h4>[耐性] 護衛：狩り</h4>
+<h4>[悪戯能力] 発言妨害：無し / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-自分の投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。
+悪戯先が人狼に襲撃されたら、次の日、全員のアイコンを襲撃された人にする特殊な狂人。
+悪戯の仕様は<a href="chiroptera.php#fairy_spec">妖精系</a>と同じで、対象が複数いた場合はリロードするたびにランダムで表示される。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
-</pre>
-<ol>
-  <li>投票先が処刑された時点で能力が発動する。</li>
-  <li>能力が発動すると<a href="human.php#dummy_necromancer">夢枕人</a>以外の霊能結果が「〜さんの死体が盗まれた」という趣旨のメッセージになる。</li>
-</ol>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#jammer_mad">月兎</a>の霊能バージョンです。「かしゃ」と読みます。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/48" target="_top">新役職考案スレ</a> の 48 が原型です。
-火車の能力が発動しているのに霊能結果を出す人は
-<a href="human.php#dummy_necromancer">夢枕人</a>か騙りになります。
-</pre>
-
-<h3><a id="agitate_mad">扇動者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
-<h4>[耐性] 護衛：狩り</h4>
-<pre>
-再投票の最多得票者に投票していた場合に、投票先を吊り、
-それ以外の最多得票者をまとめてショック死させる特殊な狂人。
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
-</pre>
-<ol>
-  <li>事前に処刑者が決定していた場合は発動しない</li>
-  <li>判定は<a href="human.php#saint">聖女</a>の判定の後</li>
-  <li>複数の扇動者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
-  <li>最多得票者に自分が含まれていても有効 (自分の投票先が吊られて、自分はショック死する)</li>
-</ol>
-<h4>関連役職</h4>
-<pre>
-<a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する役職です。
-オリジナルは「昼の処刑投票を二回発生させる能力」ですが、
-より「扇動者」っぽくアレンジしてみました。
-</pre>
-
-<h3><a id="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
-<h4>[耐性] 護衛：狩り</h4>
-<pre>
-処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role#febris">熱病</a>にする特殊な狂人。
-<a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
-</pre>
-<h4>Ver. 1.4.0 β13〜</h4>
-<pre>
-<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
-</pre>
-<h4>Ver. 1.4.0 β10〜</h4>
-<pre>
-<a href="human.php#detective_common">探偵</a>には無効。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ</a> の 33 が原型です。
-<a href="sub_role#febris">熱病</a>の仕様と実装がなかなか決まらず、作成決定から実装まで
-かなり間が開いてます。
+<a href="chiroptera.php#fairy_group">妖精系</a>の狂人バージョンです。
+客観的に存在していることを証明することができます。
 </pre>
 
 <h3><a id="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <h4>[耐性] 護衛：狩り</h4>
 <pre>
 夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
-<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="human.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
+<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="mania.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
 <a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
 
@@ -939,8 +889,39 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-対夢系能力者専門の<a href="human.php#assassin">暗殺者</a>という位置づけです。「ばく」と読みます。
+対夢系能力者専門の<a href="human.php#assassin_group">暗殺者</a>という位置づけです。「ばく」と読みます。
 夢系は基本的には村陣営なので獏は狂人相当になります。
+</pre>
+
+<h3><a id="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
+<pre>
+一度だけ、死体に憑依することができる特殊な狂人。
+狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
+</pre>
+<ol>
+  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
+  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
+  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
+  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
+  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
+  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
+  <li>死亡した人狼にも憑依できますが、夜の発言は独り言になり、仲間の人狼と会話できません</li>
+</ol>
+<h4>Ver. 1.4.0 β12〜</h4>
+<pre>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できません。
+(<a href="#possessed_wolf">憑狼</a>が憑依できない役職には憑依できません)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#sacrifice_cat">猫神</a>・<a href="fox.php#possessed_fox">憑狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「蘇生された人は本物なのか？」という疑心暗鬼を振りまくための存在です。
+<a href="#possessed_wolf">憑狼</a>と違い、死体に憑依するので死体の数で見切られやすいのが難点です。
 </pre>
 
 <h3><a id="trap_mad">罠師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
@@ -987,41 +968,78 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 まとめて炙り出すことが可能になります。
 </pre>
 
-<h3><a id="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h3><a id="corpse_courier_mad">火車</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <h4>[耐性] 護衛：狩り</h4>
 <pre>
-一度だけ、死体に憑依することができる特殊な狂人。
-狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
+自分の投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
 </pre>
 <ol>
-  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
-  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
-  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
-  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
-  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
-  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
-  <li>死亡した人狼にも憑依できますが、夜の発言は独り言になり、仲間の人狼と会話できません</li>
+  <li>投票先が処刑された時点で能力が発動する。</li>
+  <li>能力が発動すると<a href="human.php#dummy_necromancer">夢枕人</a>以外の霊能結果が「〜さんの死体が盗まれた」という趣旨のメッセージになる。</li>
 </ol>
-<h4>Ver. 1.4.0 β12〜</h4>
+<h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できません。
-(<a href="#possessed_wolf">憑狼</a>が憑依できない役職には憑依できません)。
+<a href="#jammer_mad">月兎</a>の霊能妨害バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/48" target="_top">新役職考案スレ</a> の 48 が原型です。
+「かしゃ」と読みます。
+火車の能力が発動しているのに霊能結果を出す人は<a href="human.php#dummy_necromancer">夢枕人</a>か騙りになります。
 </pre>
+
+<h3><a id="agitate_mad">扇動者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
+<pre>
+再投票の最多得票者に投票していた場合に、投票先を吊り、
+それ以外の最多得票者をまとめてショック死させる特殊な狂人。
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<ol>
+  <li>事前に処刑者が決定していた場合は発動しない</li>
+  <li>判定は<a href="human.php#saint">聖女</a>の判定の後</li>
+  <li>複数の扇動者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
+  <li>最多得票者に自分が含まれていても有効 (自分の投票先が吊られて、自分はショック死する)</li>
+</ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sacrifice_cat">猫神</a>・<a href="fox.php#possessed_fox">憑狐</a>
+<a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-「蘇生された人は本物なのか？」という疑心暗鬼を振りまくための存在です。
-<a href="#possessed_wolf">憑狼</a>と違い、死体に憑依するので死体の数で見切られやすいのが難点です。
+他の国に実在する役職です。
+オリジナルは「昼の処刑投票を二回発生させる能力」ですが、
+より「扇動者」っぽくアレンジしてみました。
+</pre>
+
+<h3><a id="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
+<h4>[耐性] 護衛：狩り</h4>
+<pre>
+処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role.php#febris">熱病</a>にする特殊な狂人。
+<a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
+<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
+</pre>
+<h4>Ver. 1.4.0 β10〜</h4>
+<pre>
+<a href="human.php#detective_common">探偵</a>には無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ</a> の 33 が原型です。
+<a href="sub_role#febris">熱病</a>の仕様と実装がなかなか決まらず、作成決定から実装まで
+かなり間が開いてます。
 </pre>
 
 <h3><a id="therian_mad">獣人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 護衛：狩り</h4>
 <pre>
-人狼 (種類は問わない) に襲撃されたら「人狼」に変化する、特殊な狂人。
+人狼 (種類は問わない) に襲撃されたら「<a href="#wolf">人狼</a>」に変化する、特殊な狂人。
+<a href="#wolf">人狼</a>に変化すると<a href="sub_role.php#changed_therian">元獣人</a>がつく。
 狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
 </pre>
 <ol>

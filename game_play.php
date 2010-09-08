@@ -96,8 +96,8 @@ function SendCookie(){
 
   //-- 「異議」ありを音でお知らせ用 --//
   //今までに自分が「異議」ありをした回数を取得
-  $query = "SELECT COUNT(message) FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND type = 'OBJECTION' AND message = '{$SELF->user_no}'";
+  $base_query = ' FROM system_message' . $ROOM->GetQuery(false)  . " AND type = 'OBJECTION' ";
+  $query = "SELECT COUNT(message) {$base_query} AND message = '{$SELF->user_no}'";
   $self_objection_count = FetchResult($query);
 
   //生きていて(ゲーム終了後は死者でもOK)「異議」あり、のセット要求があればセットする(最大回数以内の場合)
@@ -108,8 +108,7 @@ function SendCookie(){
   }
 
   //ユーザ総数を取得して人数分の「異議あり」のクッキーを構築する
-  $query = $ROOM->GetQuery(false, 'user_entry') . ' AND user_no > 0';
-  $user_count = FetchResult($query);
+  $user_count = FetchResult($ROOM->GetQuery(false, 'user_entry') . ' AND user_no > 0');
   // 配列をリセット (0 番目に変な値が入らない事が保証されていれば不要かな？)
   // キックで欠番が出ると色々面倒な事になりそう
   // $objection_list = array();
@@ -117,21 +116,12 @@ function SendCookie(){
   $objection_list = array_fill(0, $user_count, 0); //index は 0 から
 
   //message:異議ありをしたユーザ No とその回数を取得
-  $query = "SELECT message, COUNT(message) AS message_count FROM system_message " .
-    "WHERE room_no = {$ROOM->id} AND type = 'OBJECTION' GROUP BY message";
-  $array = FetchAssoc($query);
-  foreach($array as $this_array){
-    $this_user_no = (int)$this_array['message'];
-    $this_count   = (int)$this_array['message_count'];
-    $objection_list[$this_user_no - 1] = $this_count;
+  $query = 'SELECT message, COUNT(message) AS count' . $base_query . 'GROUP BY message';
+  foreach(FetchAssoc($query) as $stack){
+    $objection_list[(int)$stack['message'] - 1] = (int)$stack['count'];
   }
-
   //クッキーに格納 (有効期限一時間)
-  foreach($objection_list as $value){
-    if($str != '') $str .= ','; //カンマ区切り
-    $str .= $value;
-  }
-  setcookie('objection', $str, $ROOM->system_time + 3600);
+  setcookie('objection', implode(',', $objection_list), $ROOM->system_time + 3600);
 
   //残り異議ありの回数
   $objection_left_count = $GAME_CONF->objection - $objection_list[$SELF->user_no - 1];
@@ -289,7 +279,7 @@ function CheckSilence(){
   if(! $ROOM->IsPlaying() || ! LockTable('game')) return false; //スキップ判定 + テーブルロック
 
   //最終発言時刻からの差分を取得
-  $query = 'SELECT UNIX_TIMESTAMP() - last_updated FROM room WHERE room_no = ' . $ROOM->id;
+  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
   $last_updated_pass_time = FetchResult($query);
 
   //経過時間を取得
@@ -309,7 +299,7 @@ function CheckSilence(){
     //オープニングなら即座に夜に移行する
     if($ROOM->IsOption('open_day') && $ROOM->IsDay() && $ROOM->date == 1){
       //シーンを DB から再取得して切り替わっていなければ処理
-      if(FetchResult('SELECT day_night FROM room' . $ROOM->GetQuery(false)) == 'day'){
+      if(FetchResult($ROOM->GetQueryHeader('room', 'day_night')) == 'day'){
 	$ROOM->ChangeNight(); //夜に切り替え
 	$ROOM->UpdateTime(true); //最終書き込み時刻を更新
       }

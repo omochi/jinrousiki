@@ -24,9 +24,12 @@ class RoomConfig{
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
   //-- OutputCreateRoom() --//
-  var $room_name = 80; //村名の最大文字数
-  var $room_comment = 80; //村の説明の最大文字数
-  var $gm_password = 20; //GM ログインパスワードの最大文字数
+  var $room_name = 90; //村名の最大文字数 (byte)
+  var $room_comment = 90; //村の説明の最大文字数 (byte)
+  var $room_name_input = 50; //村名の入力欄サイズ
+  var $room_comment_input = 50; //村の説明の入力欄サイズ
+  var $gm_password = 50; //GM ログインパスワードの最大文字数 (byte)
+  var $gm_password_input = 20; //GM ログインパスワードの入力欄サイズ
   var $ng_word = '/http:\/\//i'; //入力禁止文字列 (正規表現)
 
   //各オプションを有効に [true:する / false:しない]

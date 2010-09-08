@@ -1,15 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
+OutputRolePageHeader('サブ役職');
 ?>
-</head>
-<body>
-<h1>サブ役職</h1>
-<p>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
-</p>
 <p>
 <a href="#rule">基本ルール</a>
 </p>
@@ -53,6 +46,10 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 <pre>
 処刑投票時に一票でも貰うとショック死します。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#ghost_common">亡霊嬢</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 大人数で実施できるようにしつつ進行を加速するために実装したシステムです。
@@ -90,28 +87,28 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 
 <h3><a id="impatience">短気</a> [Ver. 1.4.0 α15〜]</h3>
 <pre>
-決定者と同等の能力がある代わりに再投票になるとショック死します。
+<a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-自覚のある決定者で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ</a> の 80 が原型です。
-その分だけ判定の優先度が決定者より低めになっています。
+自覚のある<a href="#decide">決定者</a>で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ</a> の 80 が原型です。
+その分だけ<a href="../spec.php#vote_day">判定</a>の優先度が決定者より低めになっています。
 </pre>
 
 <h3><a id="celibacy">独身貴族</a> [Ver. 1.4.0 α22〜]</h3>
 <pre>
-処刑投票時に恋人から一票でも貰うとショック死します。
+処刑投票時に<a href="#lovers">恋人</a>から一票でも貰うとショック死します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#jealousy">橋姫</a>同様、対<a href="lovers.php">恋人</a>用役職ですが、こっちは小心者系という事もあって
+<a href="human.php#jealousy">橋姫</a>同様、対<a href="#lovers">恋人</a>用役職ですが、こっちは小心者系という事もあって
 より理不尽な仕様となっています。
 </pre>
 
 <h3><a id="nervy">自信家</a> [Ver. 1.4.0 β9〜]</h3>
 <pre>
 処刑投票時に同一陣営の人に投票するとショック死します。
-恋人の場合は恋人陣営と判定されます。
+<a href="#lovers">恋人</a>の場合は恋人陣営と判定されます。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -340,15 +337,21 @@ OutputHTMLHeader('新役職情報 - [サブ役職]', 'new_role');
 
 <h2><a id="authority_group">権力者系 (処刑投票数変化系)</a></h2>
 <p>
+<a href="#authority">権力者</a>
 <a href="#rebel">反逆者</a>
 <a href="#critical_voter">会心</a>
 <a href="#random_voter">気分屋</a>
 <a href="#watcher">傍観者</a>
 </p>
 
+<h3><a id="authority">権力者</a></h3>
+<pre>
+処刑投票数が +1 されます。
+</pre>
+
 <h3><a id="rebel">反逆者</a> [Ver. 1.4.0 α14〜]</h3>
 <pre>
-権力者と同じ人に処刑投票した場合に自分と権力者の投票数が 0 になります。
+<a href="#authority">権力者</a>と同じ人に処刑投票した場合に自分と権力者の投票数が 0 になります。
 それ以外のケースなら通常通り (1票) です。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -467,7 +470,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 
 <h3><a id="random_luck">波乱万丈</a> [Ver. 1.4.0 α15〜]</h3>
 <pre>
-処刑得票数に -2 〜 +2 の範囲でランダムに補正がかかります。
+処刑得票数に -2〜+2 の範囲でランダムに補正がかかります。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -478,36 +481,43 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 
 <h2><a id="decide_group">決定者系 (処刑者候補変化系)</a></h2>
 <p>
+<a href="#decide">決定者</a>
 <a href="#plague">疫病神</a>
 <a href="#good_luck">幸運</a>
 <a href="#bad_luck">不運</a>
 </p>
 
+<h3><a id="decide">決定者</a></h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
+</pre>
+
 <h3><a id="plague">疫病神</a> [Ver. 1.4.0 α9〜]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
-自分が最多得票者に投票していて処刑者候補が複数いた場合に投票先が候補から除外される。
+自分の投票先が最多得票者で処刑者候補が複数いた場合、候補から除外される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-決定者の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ</a> の 8 が原型です。
+<a href="#decide">決定者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ</a> の 8 が原型です。
 </pre>
 
 <h3><a id="good_luck">幸運</a> [Ver. 1.4.0 α14〜]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
-自分が最多得票者で処刑者候補が複数いた場合は候補から除外される。
+自分が最多得票者で処刑者候補が複数いた場合、候補から除外される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-本人に付随する決定者です。
+本人に付随する決定者系能力です。
 東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
 </pre>
 
 <h3><a id="bad_luck">不運</a> [Ver. 1.4.0 α14〜]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
-自分が最多得票者で処刑者候補が複数いた場合は優先的に処刑される。
+自分が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -745,7 +755,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 
 <h3><a id="mind_read_rule">基本ルール</a> [サトラレ系]</h3>
 <ol>
-  <li>「サブ役職非公開」設定でも必ず表示されます。</li>
+  <li><a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示されます。</li>
   <li>死者の発言を直接見ることはできません。</li>
   <li>効力を失っても役職表示は消えません。</li>
 </ol>
@@ -893,9 +903,17 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 
 <h2><a id="lovers_group">恋人系</a></h2>
 <p>
+<a href="#lovers">恋人</a>
 <a href="#possessed_exchange">交換憑依</a>
 <a href="#challenge_lovers">難題</a>
 </p>
+
+<h3><a id="lovers">恋人</a> [Ver. 1.2.0〜]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+勝利条件が恋人陣営に変化します。
+表示されている相手が死亡すると自分も死亡します。
+</pre>
 
 <h3><a id="possessed_exchange">交換憑依</a> [Ver. 1.4.0 β11〜]</h3>
 <h4>[役職表示] 2 日目限定</h4>

@@ -13,8 +13,11 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>
 <a href="#chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a>
 <a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定)</a>
+</p>
+<p>
 <a href="#chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a>
 <a href="#sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a>
+<a href="#secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a>
 </p>
 
 <h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
@@ -200,7 +203,7 @@ OutputInfoPageHeader('闇鍋モード');
 <h4><a href="new_role/wolf.php">人狼陣営</a></h4>
 <pre>
 <a href="new_role/wolf.php#wolf_group">人狼系</a>：人狼・<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#cursed_wolf">呪狼</a>・<a href="new_role/wolf.php#poison_wolf">毒狼</a>・<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>・<a href="new_role/wolf.php#silver_wolf">銀狼</a>
-<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>・<a href="new_role/wolf.php#corpse_courier_mad">火車</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：狂人・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>・<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#corpse_courier_mad">火車</a>
 </pre>
 
 <h4><a href="new_role/fox.php">妖狐陣営</a></h4>
@@ -520,5 +523,10 @@ OutputInfoPageHeader('闇鍋モード');
 <h3><a id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a></h3>
 <pre>
 <a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>のみ出現します。
+</pre>
+
+<h2><a id="secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a></h2>
+<pre>
+一部の例外を除き、サブ役職の本人表示が無効になります。
 </pre>
 </body></html>

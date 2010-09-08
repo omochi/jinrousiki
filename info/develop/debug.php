@@ -31,6 +31,11 @@ if($target->IsSame($vote_kill_uname) || ! $target->IsRole($stack)) continue;
 $target->IsActive() ? $target->LostAbility() :
   $USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
 </pre>
+<h3>include/user_class.php % 409行目付近 (2010/08/31 (Tue) 03:59)</h3>
+<pre>
+× $this->IsVoted($vote_data, 'MAGE_DO');
+○ return $this->IsVoted($vote_data, 'MAGE_DO');
+</pre>
 
 <h2><a id="140beta13">Ver. 1.4.0 β13</a></h2>
 <h3>include/game_vote_functions.php % 973行目付近</h3>

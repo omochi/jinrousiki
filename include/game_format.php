@@ -47,9 +47,9 @@ class DocumentBuilder{
       + 霊界表示オン状態の死者には全て表示
       + 霊界表示オフ状態は観戦者と同じ (投票情報は表示しない)
     */
-    $this->flag->open_talk = $ROOM->IsFinished() || ($SELF->IsDead() && $ROOM->IsOpenCast());
+    $this->flag->open_talk = $ROOM->IsOpenData();
 
-    foreach(array('common', 'wolf', 'fox', 'open_talk') as $type){ //身代わり君の上書き判定
+    foreach(array('common', 'wolf', 'fox') as $type){ //身代わり君の上書き判定
       $this->flag->$type |= $this->flag->dummy_boy;
     }
   }

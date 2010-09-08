@@ -77,15 +77,8 @@ function LoversFollowed($sudden_death = false){
     $checked_list[] = $cupid_id;
     foreach($cupid_list[$cupid_id] as $lovers_id){ //キューピッドのリストから恋人の ID を取得
       $user = $USERS->ById($lovers_id); //恋人の情報を取得
-
-      if($sudden_death){ //突然死の処理
-	if(! $user->ToDead()) continue;
-	$ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed);
-	$user->SaveLastWords();
-      }
-      elseif(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->day_night)){ //通常処理
-	continue;
-      }
+      if(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->day_night)) continue;
+      if($sudden_death) $ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed); //突然死の処理
       $user->suicide_flag = true;
 
       foreach($user->GetPartner('lovers') as $id){ //後追いした恋人のキューピッドのIDを取得
@@ -297,9 +290,9 @@ function OutputLogLink(){
 
 //ゲームオプション画像を出力
 function OutputGameOption(){
-  global $ROOM;
+  global $ROOM, $SELF;
 
-  $query = 'SELECT game_option, option_role, max_user FROM room WHERE room_no = ' . $ROOM->id;
+  $query = $ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
   extract(FetchAssoc($query, true));
   echo '<table class="time-table"><tr>'."\n" .
     '<td>ゲームオプション：' . GenerateGameOptionImage($game_option, $option_role) .
@@ -321,10 +314,8 @@ function OutputPlayerList(){
   global $DEBUG_MODE, $ICON_CONF, $ROOM, $USERS, $SELF;
 
   //PrintData($ROOM->event); //テスト用
-  //配役公開フラグを判定
-  $is_open_role = $ROOM->IsAfterGame() || $SELF->IsDummyBoy() ||
-    ($SELF->IsDead() && $ROOM->IsOpenCast());
-
+  $beforegame = $ROOM->IsBeforeGame();
+  $open_data  = $ROOM->IsOpenData(true);
   $count = 0; //改行カウントを初期化
   $str = '<div class="player"><table><tr>'."\n";
   foreach($USERS->rows as $id => $user){
@@ -332,7 +323,7 @@ function OutputPlayerList(){
     $count++;
 
     //ゲーム開始投票をしていたら背景色を変える
-    if($ROOM->IsBeforeGame() && ($user->IsDummyBoy(true) || isset($ROOM->vote[$user->uname]))){
+    if($beforegame && ($user->IsDummyBoy(true) || isset($ROOM->vote[$user->uname]))){
       $td_header = '<td class="already-vote">';
     }
     else{
@@ -347,7 +338,7 @@ function OutputPlayerList(){
 
     //生死情報に応じたアイコンを設定
     $path = $ICON_CONF->path . '/' . $user->icon_filename;
-    if($ROOM->IsBeforeGame() || $USERS->IsVirtualLive($id)){
+    if($beforegame || $USERS->IsVirtualLive($id)){
       $live = '(生存中)';
     }
     else{
@@ -364,8 +355,7 @@ function OutputPlayerList(){
     if($DEBUG_MODE) $str .= ' (' . $id . ')';
     $str .= '<br>'."\n";
 
-    //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
-    if($is_open_role){
+    if($open_data){ //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
       $uname = str_replace(array('◆', '◇'), array('◆<br>', '◇<br>'), $user->uname); //トリップ対応
       $str .= '　(' . $uname; //ユーザ名を追加
 
@@ -387,7 +377,7 @@ function OutputVictory(){
   global $VICT_MESS, $ROOM, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
-  $victory = FetchResult('SELECT victory_role FROM room WHERE room_no = ' . $ROOM->id);
+  $victory = FetchResult($ROOM->GetQueryHeader('room', 'victory_role'));
   $class   = $victory;
   $winner  = $victory;
 
@@ -456,14 +446,16 @@ EOF;
       break;
 
     case 'human':
-      if($SELF->IsRole('escaper') && $SELF->IsDead()){ //逃亡者は死亡していたら敗北
-	$class  = 'none';
-	$result = 'lose';
-	break;
+      if($SELF->IsRole('escaper')){ //逃亡者は死亡していたら敗北
+	if($SELF->IsDead()){
+	  $class  = 'none';
+	  $result = 'lose';
+	  break;
+	}
       }
       elseif($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
 	foreach($USERS->rows as $user){
-	  if($user->IsRole('doll_master') && $user->IsLive()){
+	  if($user->IsLiveRole('doll_master')){
 	    $class  = 'none';
 	    $result = 'lose';
 	    break 2;
@@ -549,8 +541,8 @@ function GetVoteList($date){
   global $ROOM;
 
   //指定された日付の投票結果を取得
-  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = {$date} and type = 'VOTE_KILL'";
+  $query = $ROOM->GetQueryHeader('system_message', 'message') .
+    " AND date = {$date} and type = 'VOTE_KILL'";
   return GenerateVoteList(FetchArray($query), $date);
 }
 
@@ -560,11 +552,7 @@ function GenerateVoteList($raw_data, $date){
 
   if(count($raw_data) < 1) return NULL; //投票総数
 
-  //投票数開示判定
-  $is_open_vote = ($ROOM->IsFinished() || $ROOM->test_mode ||
-		   ($ROOM->IsOption('open_vote') ? true :
-		    ($SELF->IsDead() && $ROOM->IsOpenCast())));
-
+  $open_vote = $ROOM->IsOpenData() || $ROOM->IsOption('open_vote'); //投票数開示判定
   $table_stack = array();
   $header = '<td class="vote-name">';
   foreach($raw_data as $raw){ //個別投票データのパース
@@ -572,7 +560,7 @@ function GenerateVoteList($raw_data, $date){
 	 $vote_number, $vote_times) = explode("\t", $raw);
 
     $stack = array('<tr>' .  $header . $handle_name, '<td>' . $voted_number . ' 票',
-		   '<td>投票先' . ($is_open_vote ? ' ' . $vote_number . ' 票' : '') . ' →',
+		   '<td>投票先' . ($open_vote ? ' ' . $vote_number . ' 票' : '') . ' →',
 		   $header . $target_name, '</tr>');
     $table_stack[$vote_times][] = implode('</td>', $stack);
   }
@@ -761,21 +749,21 @@ function OutputTimeStamp($builder){
   global $ROOM;
 
   $talk =& new Talk();
-  $query = ' FROM room' . $ROOM->GetQuery(false);
   if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
-    $time = FetchResult('SELECT establish_time' . $query);
+    $type = 'establish_time';
     $talk->sentence = '村作成';
   }
   elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
-    $time = FetchResult('SELECT start_time' . $query);
+    $type = 'start_time';
     $talk->sentence = 'ゲーム開始';
   }
   elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
-    $time = FetchResult('SELECT finish_time' . $query);
+    $type = 'finish_time';
     $talk->sentence = 'ゲーム終了';
   }
+  else return false;
 
-  if(is_null($time)) return false;
+  if(is_null($time = FetchResult($ROOM->GetQueryHeader('room', $type)))) return false;
   $talk->uname = 'system';
   $talk->sentence .= '：' . ConvertTimeStamp($time);
   $talk->ParseLocation($ROOM->day_night . ' system');
@@ -810,14 +798,12 @@ function OutputAbilityAction(){
     $action .= "type = '$this_action'";
   }
 
-  $query = "SELECT message AS sentence, type FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = {$yesterday} AND ( {$action} )";
-  $message_list = FetchAssoc($query);
-  foreach($message_list as $array){
-    extract($array);
-    list($actor, $target) = explode("\t", $sentence);
+  $query = $ROOM->GetQueryHeader('system_message', 'message', 'type') .
+    " AND date = {$yesterday} AND ({$action})";
+  foreach(FetchAssoc($query) as $stack){
+    list($actor, $target) = explode("\t", $stack['message']);
     echo $header.$actor.' ';
-    switch($type){
+    switch($stack['type']){
     case 'WOLF_EAT':
     case 'DREAM_EAT':
     case 'POSSESSED_DO':
@@ -905,8 +891,8 @@ function OutputLastWords(){
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;
-  $query = "SELECT message FROM system_message WHERE room_no = {$ROOM->id} " .
-    "AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
+  $query = $ROOM->GetQueryHeader('system_message', 'message') .
+    " AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
   $array = FetchArray($query);
   if(count($array) < 1) return false;
 
@@ -943,7 +929,7 @@ function OutputDeadMan(){
   $yesterday = $ROOM->date - 1;
 
   //共通クエリ
-  $query_header = "SELECT message, type FROM system_message WHERE room_no = {$ROOM->id} AND date =";
+  $query_header = $ROOM->GetQueryHeader('system_message', 'message', 'type') . " AND date =";
 
   //死亡タイプリスト
   $dead_type_list = array(
@@ -975,9 +961,8 @@ function OutputDeadMan(){
     $type = $type_list->day;
   }
 
-  $array = FetchAssoc("{$query_header} {$set_date} AND ( {$type} ) ORDER BY RAND()");
-  foreach($array as $this_array){
-    OutputDeadManType($this_array['message'], $this_array['type']);
+  foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
+    OutputDeadManType($stack['message'], $stack['type']);
   }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
@@ -986,10 +971,9 @@ function OutputDeadMan(){
   if($set_date < 2) return;
   $type = $type_list->{$ROOM->day_night};
 
-  echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合は $array の中身をチェックする
-  $array = FetchAssoc("{$query_header} {$set_date} AND ( {$type} ) ORDER BY RAND()");
-  foreach($array as $this_array){
-    OutputDeadManType($this_array['message'], $this_array['type']);
+  echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
+  foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
+    OutputDeadManType($stack['message'], $stack['type']);
   }
 }
 
@@ -997,143 +981,87 @@ function OutputDeadMan(){
 function OutputDeadManType($name, $type){
   global $MESSAGE, $ROOM, $SELF;
 
-  $deadman_header = '<tr><td>'.$name.' '; //基本メッセージヘッダ
-  $deadman        = $deadman_header.$MESSAGE->deadman.'</td>'; //基本メッセージ
-  $reason_header  = "</tr>\n<tr><td>(".$name.' '; //追加共通ヘッダ
-  $open_reason = $ROOM->IsFinished() || $SELF->IsDummyBoy() ||
-    ($SELF->IsDead() && $ROOM->IsOpenCast());
-  $show_reason = $open_reason || ($SELF->IsRole('yama_necromancer') && $SELF->IsLive());
-
-  echo '<table class="dead-type">'."\n";
-  switch($type){
-  case 'VOTE_KILLED':
-    echo '<tr class="dead-type-vote">';
-    echo '<td>'.$name.' '.$MESSAGE->vote_killed.'</td>';
-    break;
-
-  case 'POISON_DEAD_day':
-  case 'POISON_DEAD_night':
-    echo $deadman;
-    if($show_reason) echo $reason_header.$MESSAGE->poison_dead.')</td>';
-    break;
-
-  case 'LOVERS_FOLLOWED_day':
-  case 'LOVERS_FOLLOWED_night':
-    echo '<tr class="dead-type-lovers">';
-    echo '<td>'.$name.' '.$MESSAGE->lovers_followed.'</td>';
-    break;
-
-  case 'REVIVE_SUCCESS':
-    echo '<tr class="dead-type-revive">';
-    echo '<td>'.$name.' '.$MESSAGE->revive_success.'</td>';
-    break;
-
-  case 'REVIVE_FAILED':
-    if($ROOM->IsFinished() || $SELF->IsDead()){
-      echo '<tr class="dead-type-revive">';
-      echo '<td>'.$name.' '.$MESSAGE->revive_failed.'</td>';
-    }
-    break;
-
-  case 'POSSESSED_TARGETED':
-    if($open_reason) echo '<tr><td>'.$name.' '.$MESSAGE->possessed_targeted.'</td>';
-    break;
-
-  case 'NOVOTED_day':
-  case 'NOVOTED_night':
-    echo '<tr class="dead-type-sudden-death">';
-    echo '<td>'.$name.' '.$MESSAGE->novoted.'</td>';
-    break;
-
-  case 'SUDDEN_DEATH_CHICKEN':
-  case 'SUDDEN_DEATH_RABBIT':
-  case 'SUDDEN_DEATH_PERVERSENESS':
-  case 'SUDDEN_DEATH_FLATTERY':
-  case 'SUDDEN_DEATH_IMPATIENCE':
-  case 'SUDDEN_DEATH_CELIBACY':
-  case 'SUDDEN_DEATH_NERVY':
-  case 'SUDDEN_DEATH_ANDROPHOBIA':
-  case 'SUDDEN_DEATH_GYNOPHOBIA':
-  case 'SUDDEN_DEATH_PANELIST':
-  case 'SUDDEN_DEATH_SEALED':
-  case 'SUDDEN_DEATH_JEALOUSY':
-  case 'SUDDEN_DEATH_AGITATED':
-  case 'SUDDEN_DEATH_FEBRIS':
-  case 'SUDDEN_DEATH_FROSTBITE':
-  case 'SUDDEN_DEATH_WARRANT':
-  case 'SUDDEN_DEATH_CHALLENGE':
-    echo '<tr class="dead-type-sudden-death">';
-    echo '<td>'.$name.' '.$MESSAGE->vote_sudden_death.'</td>';
-    if($show_reason){
-      $action = strtolower(array_pop(explode('_', $type)));
-      echo $reason_header.$MESSAGE->$action.')</td>';
-    }
-    break;
-
-  case 'FLOWERED_A':
-  case 'FLOWERED_B':
-  case 'FLOWERED_C':
-  case 'FLOWERED_D':
-  case 'FLOWERED_E':
-  case 'FLOWERED_F':
-  case 'FLOWERED_G':
-  case 'FLOWERED_H':
-  case 'FLOWERED_I':
-  case 'FLOWERED_J':
-  case 'FLOWERED_K':
-  case 'FLOWERED_L':
-  case 'FLOWERED_M':
-  case 'FLOWERED_N':
-  case 'FLOWERED_O':
-  case 'FLOWERED_P':
-  case 'FLOWERED_Q':
-  case 'FLOWERED_R':
-  case 'FLOWERED_S':
-  case 'FLOWERED_T':
-  case 'FLOWERED_U':
-  case 'FLOWERED_V':
-  case 'FLOWERED_W':
-  case 'FLOWERED_X':
-  case 'FLOWERED_Y':
-  case 'FLOWERED_Z':
-  case 'CONSTELLATION_A':
-  case 'CONSTELLATION_B':
-  case 'CONSTELLATION_C':
-  case 'CONSTELLATION_D':
-  case 'CONSTELLATION_E':
-  case 'CONSTELLATION_F':
-  case 'CONSTELLATION_G':
-  case 'CONSTELLATION_H':
-  case 'CONSTELLATION_I':
-  case 'CONSTELLATION_J':
-  case 'CONSTELLATION_K':
-  case 'CONSTELLATION_L':
-  case 'CONSTELLATION_M':
-  case 'CONSTELLATION_N':
-  case 'CONSTELLATION_O':
-  case 'CONSTELLATION_P':
-  case 'CONSTELLATION_Q':
-  case 'CONSTELLATION_R':
-  case 'CONSTELLATION_S':
-  case 'CONSTELLATION_T':
-  case 'CONSTELLATION_U':
-  case 'CONSTELLATION_V':
-  case 'CONSTELLATION_W':
-  case 'CONSTELLATION_X':
-  case 'CONSTELLATION_Y':
-  case 'CONSTELLATION_Z':
-    $action = strtolower($type);
-    echo '<tr class="dead-type-fairy">';
-    echo '<td>'.$name.' '.$MESSAGE->$action.'</td>';
+  //タイプの解析
+  $base_type    = $type;
+  $parsed_type  = explode('_', $type);
+  $footer_type  = array_pop($parsed_type);
+  $implode_type = implode('_', $parsed_type);
+  switch($footer_type){
+  case 'day':
+  case 'night':
+    $base_type = $implode_type;
     break;
 
   default:
-    echo $deadman;
-    if($show_reason){
-      $action = strtolower($type);
-      echo $reason_header.$MESSAGE->$action.')</td>';
+    switch($implode_type){
+    case 'SUDDEN_DEATH':
+    case 'FLOWERED':
+    case 'CONSTELLATION':
+      $base_type = $implode_type;
+      break;
     }
     break;
   }
-  echo "</tr>\n</table>\n";
+
+  $base   = true;
+  $class  = NULL;
+  $reason = NULL;
+  $action = strtolower($base_type);
+  $open_reason = $ROOM->IsOpenData();
+  $show_reason = $open_reason || $SELF->IsLiveRole('yama_necromancer');
+  $str = '<table class="dead-type">'."\n";
+  switch($base_type){
+  case 'VOTE_KILLED':
+    $base  = false;
+    $class = 'vote';
+    break;
+
+  case 'LOVERS_FOLLOWED':
+    $base  = false;
+    $class = 'lovers';
+    break;
+
+  case 'REVIVE_SUCCESS':
+    $base  = false;
+    $class = 'revive';
+    break;
+
+  case 'REVIVE_FAILED':
+    if(! $ROOM->IsFinished() && ! $SELF->IsDead()) return;
+    $base  = false;
+    $class = 'revive';
+    break;
+
+  case 'POSSESSED_TARGETED':
+    if(! $open_reason) return;
+    $base = false;
+    break;
+
+  case 'NOVOTED':
+    $base  = false;
+    $class = 'sudden-death';
+    break;
+
+  case 'SUDDEN_DEATH':
+    $base   = false;
+    $class  = 'sudden-death';
+    $action = 'vote_sudden_death';
+    if($show_reason) $reason = strtolower($footer_type);
+    break;
+
+  case 'FLOWERED':
+  case 'CONSTELLATION':
+    $base   = false;
+    $class  = 'fairy';
+    $action = strtolower($type);
+    break;
+
+  default:
+    if($show_reason) $reason = $action;
+    break;
+  }
+  $str .= is_null($class) ? '<tr>' : '<tr class="dead-type-'.$class.'">';
+  $str .= '<td>'.$name.' '.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
+  if(isset($reason)) $str .= "</tr>\n<tr><td>(".$name.' '.$MESSAGE->$reason.')</td>';
+  echo $str."</tr>\n</table>\n";
 }

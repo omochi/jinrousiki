@@ -528,3 +528,19 @@ function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
 
 EOF;
 }
+
+//役職情報ページ HTML ヘッダ出力
+function OutputRolePageHeader($title){
+  OutputHTMLHeader('新役職情報 - ' . '[' . $title . ']', 'new_role');
+  echo <<<EOF
+</head>
+<body>
+<h1>{$title}</h1>
+<p>
+<a href="../" target="_top">&lt;=情報一覧</a>
+<a href="./" target="_top">&lt;-メニュー</a>
+<a href="summary.php">←一覧表</a>
+</p>
+
+EOF;
+}
