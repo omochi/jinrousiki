@@ -17,6 +17,7 @@ class Message{
 
   //-- game_view.php & OutputGameHTMLHeader() --//
   var $vote_announce = '時間がありません。投票してください'; //会話の制限時間切れ
+  var $wait_morning = '待機時間中です。'; //早朝待機制の待機時間中
 
   //-- game_functions.php --//
   //OutputRevoteList() : 再投票アナウンス
@@ -239,6 +240,7 @@ class GameOptionMessage{
   var $gerd                  = 'ゲルト君モード';
   var $open_vote             = '投票した票数を公表する';
   var $open_day              = 'オープニングあり';
+  var $wait_morning          = '早朝待機制';
   var $not_open_cast         = '霊界で配役を公開しない';
   var $auto_open_cast        = '自動で霊界の配役を公開する';
   var $poison                = '埋毒者登場';
@@ -291,6 +293,7 @@ class GameOptionCaptionMessage{
   var $gm_password           = '(仮想 GM モード・クイズ村モード時の GM のパスワードです)<br>※ ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。';
   var $gerd                  = '役職が村人固定になります [村人が出現している場合のみ有効]';
   var $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
+  var $wait_morning          = '夜が明けてから一定時間の間発言ができません';
   var $open_day              = 'ゲームが1日目の「昼」からスタートします';
   var $no_close_cast         = '常時公開 (蘇生能力は無効です)';
   var $not_open_cast         = '常時非公開 (誰がどの役職なのかが公開されません。蘇生能力は有効です)';

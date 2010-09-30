@@ -239,7 +239,7 @@ class User{
   //子狐系判定
   function IsChildFox($vote = false){
     $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
-    if(! $vote) $stack[] = 'miasma_fox';
+    if(! $vote) array_push($stack, 'miasma_fox', 'howl_fox');
     return $this->IsRole($stack);
   }
 
@@ -895,18 +895,18 @@ class UserDataSet{
     }
 
     $target = $user;
+    $stack  = array();
     while($target->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
-      $stack = $target->GetPartner('unknown_mania');
-      if(is_null($stack)) break; //コピー先が見つからなければスキップ
-
-      $target = $this->ByID($stack[0]);
-      if($target->IsSelf()) break; //自分に戻ったらスキップ
+      $id = array_shift($target->GetPartner('unknown_mania', true));
+      if(is_null($id) || in_array($id, $stack)) break;
+      $stack[] = $id;
+      $target  = $this->ByID($id);
     }
 
     //覚醒者・夢語部ならコピー先を辿る
     if($target->IsRole('soul_mania', 'dummy_mania') &&
        is_array($stack = $target->GetPartner($target->main_role))){
-      $target = $this->ByID($stack[0]);
+      $target = $this->ByID(array_shift($stack));
       if($target->IsRoleGroup('mania')) $target = $user; //神話マニア系なら元に戻す
     }
     $user->$type = $target->DistinguishCamp();
@@ -973,19 +973,33 @@ class UserDataSet{
 
   //霊界の配役公開判定
   function IsOpenCast(){
+    global $ROOM;
+
+    $evoke_scanner = array();
+    $mind_evoke    = array();
     foreach($this->rows as $user){
+      if($user->IsRole('mind_evoke')){
+	$mind_evoke = array_merge($mind_evoke, $user->GetPartner('mind_evoke'));
+      }
       if($user->IsDummyBoy()) continue;
-      if($user->IsReviveGroup(true) || $user->IsRole('soul_mania', 'dummy_mania')){
+      if($user->IsReviveGroup(true)){
 	if($user->IsLive()) return false;
       }
       elseif($user->IsRole('revive_priest')){
 	if($user->IsActive()) return false;
       }
       elseif($user->IsRole('evoke_scanner')){
-	if($user->IsLive() && ! $user->IsRoleGroup('copied')) return false;
+	if($user->IsLive()){
+	  if($ROOM->date == 1) return false;
+	  $evoke_scanner[] = $user->user_no;
+	}
+      }
+      elseif($user->IsRole('soul_mania', 'dummy_mania')){
+	if($ROOM->date == 1) return false;
+	if(is_array($user->GetPartner($user->main_role))) return false;
       }
     }
-    return true;
+    return count(array_intersect($evoke_scanner, $mind_evoke)) < 1;
   }
 
   //仮想的な生死を返す

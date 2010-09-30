@@ -40,6 +40,9 @@ class RoomConfig{
   var $real_time = true; //リアルタイム制 (初期設定は TimeConfig->default_day/night 参照)
   var $default_real_time = true;
 
+  var $wait_morning = true; //早朝待機制 (待機時間設定は TimeConfig->wait_morning 参照)
+  var $default_wait_morning = false;
+
   var $open_vote = true; //投票した票数を公表する
   var $default_open_vote = false;
 
@@ -208,6 +211,21 @@ class GameConfig{
   var $weekly_replace_list = array('月' => '火', '火' => '水', '水' => '木', '木' => '金',
 				   '金' => '土', '土' => '日', '日' => '月');
 
+  //恋色迷彩の変換テーブル
+  var $passion_replace_list = array('村人' => '好き', '好き' => '村人',
+				    '人狼' => '嫌い', '嫌い' => '人狼',
+				    'むらびと' => 'すき', 'すき' => 'むらびと',
+				    'おおかみ' => 'きらい', 'きらい' => 'おおかみ',
+				    'ムラビト' => 'スキ', 'スキ' => 'ムラビト',
+				    'オオカミ' => 'キライ', 'キライ' => 'オオカミ',
+				    '白' => '愛してる', '愛してる' => '白',
+				    '黒' => '妬ましい', '妬ましい' => '黒',
+				    '○' => 'あいしてる', 'あいしてる' => '○',
+				    '●' => 'ねたましい', 'ねたましい' => '●',
+				    'グレラン' => '告白', '告白'  => 'グレラン',
+				    'ローラー' => 'ハーレム', 'ハーレム'  => 'ローラー',
+				    );
+
   //役者の変換テーブル
   var $actor_replace_list = array('です' => 'みょん');
 
@@ -252,6 +270,8 @@ class TimeConfig{
 
   //沈黙経過時間 (12時間 ÷ $day(昼) or 6時間 ÷ $night (夜) の $silence_pass 倍の時間が進みます)
   var $silence_pass = 8;
+
+  var $wait_morning  = 15; //早朝待機制の待機時間(秒)
 }
 
 //-- 村のオプション画像 --//

@@ -269,6 +269,10 @@ function CreateRoom(){
       OutputRoomAction('time');
       return false;
     }
+
+    if($ROOM_CONF->wait_morning && $_POST['wait_morning'] == 'on'){
+      $game_option_list[] = 'wait_morning:';
+    }
   }
 
   //PrintData($game_option_list, 'GameOption');
@@ -455,7 +459,7 @@ function OutputCreateRoomPage(){
 EOF;
 
   OutputRoomOption(array('room_name', 'room_comment', 'max_user'), '', false);
-  OutputRoomOption(array('wish_role', 'real_time', 'open_vote', 'open_day'));
+  OutputRoomOption(array('wish_role', 'real_time', 'wait_morning', 'open_vote', 'open_day'));
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
 

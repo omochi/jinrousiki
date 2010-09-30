@@ -9,7 +9,7 @@ class RoleManager{
   var $talk_list = array('blinder', 'earplug', 'speaker');
 
   //発言変換
-  var $say_list = array('rainbow', 'weekly', 'grassy', 'invisible', 'mower', 'silent',
+  var $say_list = array('rainbow', 'weekly', 'passion', 'grassy', 'invisible', 'mower', 'silent',
 			'side_reverse', 'line_reverse', 'actor');
 
   //声量

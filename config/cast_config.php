@@ -96,14 +96,14 @@ class CastConfig extends CastConfigBase{
 
   //真・闇鍋
   var $chaosfull_wolf_list = array(
-    'wolf'           => 74,
-    'boss_wolf'      =>  2,
-    'cursed_wolf'    =>  1,
-    'poison_wolf'    =>  4,
-    'resist_wolf'    =>  4,
-    'tongue_wolf'    =>  3,
+    'wolf'           => 60,
+    'boss_wolf'      =>  5,
+    'cursed_wolf'    =>  5,
+    'poison_wolf'    =>  5,
+    'resist_wolf'    =>  5,
+    'tongue_wolf'    =>  5,
     'cute_wolf'      => 10,
-    'silver_wolf'    =>  2);
+    'silver_wolf'    =>  5);
 
   //超・闇鍋
   var $chaos_hyper_wolf_list = array(
@@ -139,10 +139,9 @@ class CastConfig extends CastConfigBase{
     'fox'           => 80,
     'white_fox'     =>  3,
     'poison_fox'    =>  3,
-    'voodoo_fox'    =>  2,
-    'cursed_fox'    =>  1,
-    'cute_fox'      =>  5,
-    'silver_fox'    =>  1,
+    'voodoo_fox'    =>  3,
+    'cursed_fox'    =>  3,
+    'silver_fox'    =>  3,
     'child_fox'     =>  5);
 
   //超・闇鍋
@@ -238,12 +237,12 @@ class CastConfig extends CastConfigBase{
     'assassin'           => 20,
     'mind_scanner'       => 20,
     'jealousy'           => 15,
-    'wolf'               => 70,
+    'wolf'               => 75,
     'boss_wolf'          => 10,
-    'cursed_wolf'        =>  5,
+    'cursed_wolf'        => 10,
     'poison_wolf'        => 15,
     'resist_wolf'        => 15,
-    'tongue_wolf'        => 30,
+    'tongue_wolf'        => 20,
     'cute_wolf'          => 30,
     'silver_wolf'        => 15,
     'mad'                => 20,
@@ -336,8 +335,9 @@ class CastConfig extends CastConfigBase{
     'whisper_scanner'    =>  3,
     'howl_scanner'       =>  3,
     'telepath_scanner'   =>  3,
-    'jealousy'           => 10,
-    'poison_jealousy'    =>  5,
+    'jealousy'           =>  7,
+    'priest_jealousy'    =>  5,
+    'poison_jealousy'    =>  3,
     'doll'               =>  7,
     'friend_doll'        =>  5,
     'poison_doll'        =>  5,
@@ -397,10 +397,11 @@ class CastConfig extends CastConfigBase{
     'scarlet_fox'        =>  3,
     'silver_fox'         =>  3,
     'child_fox'          =>  5,
-    'sex_fox'            =>  4,
-    'stargazer_fox'      =>  4,
+    'sex_fox'            =>  3,
+    'stargazer_fox'      =>  3,
     'jammer_fox'         =>  3,
-    'miasma_fox'         =>  4,
+    'miasma_fox'         =>  3,
+    'howl_fox'           =>  3,
     'cupid'              =>  5,
     'self_cupid'         =>  5,
     'moon_cupid'         =>  3,

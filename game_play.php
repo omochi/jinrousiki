@@ -233,7 +233,7 @@ function Say($say){
   }
   elseif($SELF->IsLive() && $left_time > 0){ //生存者で制限時間内
     if($ROOM->IsDay()){ //昼はそのまま発言
-      Write($say, 'day', $spend_time, true);
+      if(! $ROOM->IsEvent('wait_morning')) Write($say, 'day', $spend_time, true);
     }
     elseif($ROOM->IsNight()){ //夜は役職毎に分ける
       $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
@@ -531,12 +531,16 @@ EOF;
   }
   echo '</tr></table>'."\n";
 
-  if($ROOM->IsPlaying() && $left_time == 0){
+  if(! $ROOM->IsPlaying()) return;
+  if($left_time == 0){
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
     //PrintData($ROOM->sudden_death); //テスト用
     if($ROOM->sudden_death > 0){
       echo $MESSAGE->sudden_death_time . ConvertTime($ROOM->sudden_death) . '<br>'."\n";
     }
+  }
+  elseif($ROOM->IsEvent('wait_morning')){
+    echo '<div class="system-vote">' . $MESSAGE->wait_morning . '</div>'."\n";
   }
 }
 

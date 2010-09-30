@@ -36,6 +36,45 @@ $target->IsActive() ? $target->LostAbility() :
 × $this->IsVoted($vote_data, 'MAGE_DO');
 ○ return $this->IsVoted($vote_data, 'MAGE_DO');
 </pre>
+<h3>include/user_class.php % 897行目付近 (2010/09/16 (Thu) 04:22)</h3>
+<h4>[before]</h4>
+<pre>
+$target = $user;
+do{ //覚醒者・夢語部ならコピー先を辿る
+  if(! $target->IsRole('soul_mania', 'dummy_mania')) break;
+  $stack = $target->GetPartner($target->main_role);
+  if(is_null($stack)) break; //コピー先が見つからなければスキップ
+
+  $target = $this->ByID($stack[0]);
+  if($target->IsRoleGroup('mania')) $target = $user; //神話マニア系なら元に戻す
+}while(false);
+
+while($target->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
+  $stack = $target->GetPartner('unknown_mania');
+  if(is_null($stack)) break; //コピー先が見つからなければスキップ
+
+  $target = $this->ByID($stack[0]);
+  if($target->IsSelf()) break; //自分に戻ったらスキップ
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+$target = $user;
+$stack  = array();
+while($target->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
+  $id = array_shift($target->GetPartner('unknown_mania', true));
+  if(is_null($id) || in_array($id, $stack)) break;
+  $stack[] = $id;
+  $target  = $this->ByID($id);
+}
+
+//覚醒者・夢語部ならコピー先を辿る
+if($target->IsRole('soul_mania', 'dummy_mania') &&
+   is_array($stack = $target->GetPartner($target->main_role))){
+  $target = $this->ByID(array_shift($stack));
+  if($target->IsRoleGroup('mania')) $target = $user; //神話マニア系なら元に戻す
+}
+</pre>
 
 <h2><a id="140beta13">Ver. 1.4.0 β13</a></h2>
 <h3>include/game_vote_functions.php % 973行目付近</h3>

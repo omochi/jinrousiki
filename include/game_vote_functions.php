@@ -236,7 +236,7 @@ function GetRoleList($user_count){
 
   //-- 村人置換村 --//
   $add_count = $role_list['human'];
-  if($gerd && $add_count > 1) $add_count--;
+  if($gerd && $add_count > 0) $add_count--;
   $CAST_CONF->ReplaceHuman($role_list, $add_count);
 
   //$is_single_role = true;
@@ -1276,19 +1276,19 @@ function AggregateVoteNight($skip = false){
   //PrintData($vote_data);
 
   //-- 変数の初期化 --//
-  $trap_target_list             = array(); //罠師の罠の設置先リスト
-  $trapped_list                 = array(); //罠死予定者リスト
-  $snow_trap_target_list        = array(); //雪女の罠の設置先リスト
-  $frostbite_list               = array(); //凍傷予定者リスト
-  $guard_target_list            = array(); //狩人系の護衛対象リスト
-  $dummy_guard_target_list      = array(); //夢守人の護衛対象リスト
-  $escaper_target_list          = array(); //逃亡者の逃亡先リスト
-  $sacrifice_list               = array(); //身代わり死した人リスト
-  $anti_voodoo_target_list      = array(); //厄神の護衛対象リスト
-  $anti_voodoo_success_list     = array(); //厄払い成功者リスト
-  $reverse_assassin_target_list = array(); //反魂師の対象リスト
-  $possessed_target_list        = array(); //憑依予定者リスト => 憑依成立フラグ
-  $possessed_target_id_list     = array(); //憑依対象者リスト
+  $trap_target_list             = array(); //罠師の罠の設置先
+  $trapped_list                 = array(); //罠死予定者
+  $snow_trap_target_list        = array(); //雪女の罠の設置先
+  $frostbite_list               = array(); //凍傷予定者
+  $guard_target_list            = array(); //狩人系の護衛対象
+  $dummy_guard_target_list      = array(); //夢守人の護衛対象
+  $escaper_target_list          = array(); //逃亡者の逃亡先
+  $sacrifice_list               = array(); //身代わり死した人
+  $anti_voodoo_target_list      = array(); //厄神の護衛対象
+  $anti_voodoo_success_list     = array(); //厄払い成功者
+  $reverse_assassin_target_list = array(); //反魂師の対象
+  $possessed_target_list        = array(); //憑依予定者 => 憑依成立フラグ
+  $possessed_target_id_list     = array(); //憑依対象者
 
   //-- 接触系レイヤー --//
   $voted_wolf  =& new User();
@@ -1404,12 +1404,15 @@ function AggregateVoteNight($skip = false){
 
     //特殊襲撃失敗判定
     if(! $wolf_target->IsDummyBoy()){
-      if($ROOM->date > 1 && $wolf_target->IsRole('escaper')) break; //逃亡者
-      elseif($wolf_target->IsActive('fend_guard') && ! $voted_wolf->IsSiriusWolf()){ //忍者の処理
-	$wolf_target->LostAbility();
-	break;
+      if(! $voted_wolf->IsSiriusWolf()){ //完全覚醒天狼は無効
+	if($wolf_target->IsChallengeLovers()) break; //難題判定
+	if($wolf_target->IsActive('fend_guard')){ //忍者の処理
+	  $wolf_target->LostAbility();
+	  break;
+	}
       }
-      elseif($voted_wolf->IsRole('hungry_wolf')){ //餓狼は人狼・妖狐のみ
+      if($ROOM->date > 1 && $wolf_target->IsRole('escaper')) break; //逃亡者判定
+      if($voted_wolf->IsRole('hungry_wolf')){ //餓狼は人狼・妖狐のみ
 	if(! $wolf_target->IsWolf() && ! $wolf_target->IsFox()) break;
       }
       elseif($wolf_target->IsWolf()){ //襲撃先が人狼なら襲撃失敗 (例：銀狼出現)
@@ -1428,6 +1431,7 @@ function AggregateVoteNight($skip = false){
 	if($wolf_target->IsRole('blue_fox') && ! $voted_wolf->IsRole('silver_wolf')){ //蒼狐の処理
 	  $voted_wolf->AddRole('mind_lonely');
 	}
+	if($voted_wolf->IsRole('doom_wolf')) $wolf_target->AddDoom(4); //冥狼の処理
 	$ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
 	$wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	break;
@@ -1435,8 +1439,7 @@ function AggregateVoteNight($skip = false){
 
       //特殊能力者の処理 (覚醒天狼は無効)
       if(! $voted_wolf->IsSiriusWolf()){
-	if($wolf_target->IsChallengeLovers()) break; //難題判定
-	elseif($wolf_target->IsRole('therian_mad')){ //獣人の処理
+	if($wolf_target->IsRole('therian_mad')){ //獣人の処理
 	  $wolf_target->ReplaceRole($wolf_target->main_role, 'wolf');
 	  $wolf_target->AddRole('changed_therian');
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
@@ -1472,9 +1475,6 @@ function AggregateVoteNight($skip = false){
 	}
 	elseif($voted_wolf->IsRole('doom_wolf')){ //冥狼の処理
 	  $wolf_target->AddDoom(4);
-	  if($wolf_target->IsPoison() && ! $wolf_target->IsWolf()){ //襲撃先が毒能力者なら死亡
-	    $USERS->Kill($voted_wolf->user_no, 'POISON_DEAD_night');
-	  }
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
 	}
@@ -2506,21 +2506,24 @@ function AggregateVoteNight($skip = false){
   InsertMediumMessage(); //巫女のシステムメッセージ
 
   //-- 司祭系レイヤー --//
-  $priest_flag        = false;
-  $bishop_priest_flag = false;
-  $dowser_priest_flag = false;
-  $crisis_priest_flag = false;
-  $dummy_priest_flag  = false;
-  $border_priest_list = array();
-  $revive_priest_list = array();
-  $live_count         = array();
+  $priest_flag          = false;
+  $bishop_priest_flag   = false;
+  $dowser_priest_flag   = false;
+  $crisis_priest_flag   = false;
+  $dummy_priest_flag    = false;
+  $priest_jealousy_flag = false;
+  $border_priest_list   = array();
+  $revive_priest_list   = array();
+  $live_count           = array();
   foreach($USERS->rows as $user){ //司祭系の情報収集
     if(! $user->IsDummyBoy()){
-      $priest_flag        |= $user->IsRole('priest');
-      $bishop_priest_flag |= $user->IsRole('bishop_priest');
-      $dowser_priest_flag |= $user->IsRole('dowser_priest');
-      $crisis_priest_flag |= $user->IsRole('crisis_priest');
-      $dummy_priest_flag  |= $user->IsRole('dummy_priest');
+      $priest_flag          |= $user->IsRole('priest');
+      $bishop_priest_flag   |= $user->IsRole('bishop_priest');
+      $dowser_priest_flag   |= $user->IsRole('dowser_priest');
+      $crisis_priest_flag   |= $user->IsRole('crisis_priest');
+      $dummy_priest_flag    |= $user->IsRole('dummy_priest');
+      $priest_jealousy_flag |= $user->IsRole('priest_jealousy');
+      $dummy_priest_flag    |= $user->IsRole('dummy_priest');
       if($user->IsRole('border_priest'))   $border_priest_list[] = $user;
       if($user->IsActive('revive_priest')) $revive_priest_list[] = $user;
     }
@@ -2553,6 +2556,9 @@ function AggregateVoteNight($skip = false){
     }
     if($dummy_priest_flag){
       $ROOM->SystemMessage((int)$live_count['dream'], 'DUMMY_PRIEST_RESULT');
+    }
+    if($priest_jealousy_flag){
+      $ROOM->SystemMessage((int)$live_count['lovers'], 'PRIEST_JEALOUSY_RESULT');
     }
   }
   if($bishop_priest_flag && $ROOM->date > 1 && ($ROOM->date % 2) == 0){ //司教の処理

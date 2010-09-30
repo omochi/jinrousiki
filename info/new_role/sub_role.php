@@ -19,7 +19,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#other_group">その他</a>
 </p>
 
-<h2><a id="rule">基本ルール</a> [サブ役職]</h2>
+<h2><a id="rule">基本ルール</a></h2>
 <pre>
 メイン役職が付加するサブ役職 (恋人、サトラレなど) と専用ゲームオプション (狼少年村・紳士村など)
 以外のサブ役職は重なりません。
@@ -101,7 +101,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#jealousy">橋姫</a>同様、対<a href="#lovers">恋人</a>用役職ですが、こっちは小心者系という事もあって
+<a href="human.php#jealousy">橋姫</a>同様、対<a href="#lovers">恋人</a>役職ですが、こっちは小心者系という事もあって
 より理不尽な仕様となっています。
 </pre>
 

@@ -60,8 +60,7 @@ class Session{
 
   //ID セット
   function Set(){
-    $this->id = session_id();
-    return $this->id;
+    return $this->id = session_id();
   }
 
   //ID リセット
@@ -138,7 +137,7 @@ class CookieDataSet{
 
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder{
-  var $time = 1; //タイムアウト時間 (秒)
+  var $time = 2; //タイムアウト時間 (秒)
 
   //サーバ通信状態チェック
   function CheckConnection($url){
@@ -563,6 +562,7 @@ class RoleData{
     'howl_scanner'       => '吠騒霊',
     'telepath_scanner'   => '念騒霊',
     'jealousy'           => '橋姫',
+    'priest_jealousy'    => '恋司祭',
     'poison_jealousy'    => '毒橋姫',
     'doll'               => '上海人形',
     'friend_doll'        => '仏蘭西人形',
@@ -627,6 +627,7 @@ class RoleData{
     'stargazer_fox'      => '星狐',
     'jammer_fox'         => '月狐',
     'miasma_fox'         => '蟲狐',
+    'howl_fox'           => '化狐',
     'cupid'              => 'キューピッド',
     'self_cupid'         => '求愛者',
     'moon_cupid'         => 'かぐや姫',
@@ -685,6 +686,7 @@ class RoleData{
     'invisible'          => '光学迷彩',
     'rainbow'            => '虹色迷彩',
     'weekly'             => '七曜迷彩',
+    'passion'            => '恋色迷彩',
     'grassy'             => '草原迷彩',
     'side_reverse'       => '鏡面迷彩',
     'line_reverse'       => '天地迷彩',
@@ -810,6 +812,7 @@ class RoleData{
     'howl_scanner'       => '吠騒',
     'telepath_scanner'   => '念騒',
     'jealousy'           => '橋',
+    'priest_jealousy'    => '恋司',
     'poison_jealousy'    => '毒橋',
     'doll'               => '上海',
     'friend_doll'        => '仏蘭',
@@ -874,6 +877,7 @@ class RoleData{
     'stargazer_fox'      => '星狐',
     'jammer_fox'         => '月狐',
     'miasma_fox'         => '蟲狐',
+    'howl_fox'           => '化狐',
     'cupid'              => 'QP',
     'self_cupid'         => '求愛',
     'moon_cupid'         => '姫',
@@ -928,6 +932,7 @@ class RoleData{
     'invisible'          => '光迷',
     'rainbow'            => '虹迷',
     'weekly'             => '曜迷',
+    'passion'            => '恋迷',
     'grassy'             => '草迷',
     'side_reverse'       => '鏡迷',
     'line_reverse'       => '天迷',
@@ -993,7 +998,7 @@ class RoleData{
     'wolf' => 'wolf',
     'mad' => 'mad',
     'child_fox' => 'child_fox', 'sex_fox' => 'child_fox', 'stargazer_fox' => 'child_fox',
-    'jammer_fox' => 'child_fox', 'miasma_fox' => 'child_fox',
+    'jammer_fox' => 'child_fox', 'miasma_fox' => 'child_fox', 'howl_fox' => 'child_fox',
     'fox' => 'fox',
     'cupid' => 'cupid',
     'angel' => 'angel',
@@ -1004,11 +1009,11 @@ class RoleData{
     'mage' => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer',
     'medium' => 'medium',
+    'jealousy' => 'jealousy',
     'priest' => 'priest',
     'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
     'common' => 'common',
     'cat' => 'poison_cat',
-    'jealousy' => 'jealousy',
     'doll' => 'doll',
     'brownie' => 'brownie',
     'poison' => 'poison',
@@ -1027,8 +1032,8 @@ class RoleData{
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
 			    'celibacy', 'nervy', 'androphobia', 'gynophobia', 'febris', 'frostbite',
 			    'death_warrant', 'panelist'),
-    'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'grassy', 'side_reverse',
-			    'line_reverse', 'gentleman', 'lady', 'actor'),
+    'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'passion', 'grassy',
+			    'side_reverse', 'line_reverse', 'gentleman', 'lady', 'actor'),
     'authority'    => array('authority', 'critical_voter', 'random_voter', 'rebel', 'watcher'),
     'decide'       => array('decide', 'plague', 'good_luck', 'bad_luck'),
     'luck'         => array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',

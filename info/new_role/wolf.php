@@ -127,7 +127,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 ローゼンメイデンの金糸雀がモチーフです。
 一見地味ですが存在に気づかないと見事に騙される可能性があります。
-<a href="chiroptera.php">蝙蝠陣営</a>不在が確定している場合は逆に<a href="human.php#sex_mage">ひよこ鑑定士</a>が脅威となる事に気をつけましょう。
+<a href="chiroptera.php">蝙蝠陣営</a>不在が確定している場合は<a href="human.php#sex_mage">ひよこ鑑定士</a>が逆に脅威となる事に気をつけましょう。
 </pre>
 
 <h3><a id="phantom_wolf">幻狼</a> (占い結果：人狼 / 霊能結果：幻狼) [Ver. 1.4.0 β11〜]</h3>
@@ -632,9 +632,13 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   <li>身代わり君には無効 (普通に死亡する)。</li>
   <li>死の宣告の発動日は投票した夜から数えて 4 日後の昼。</li>
   <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定される。</li>
-  <li><a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する (<a href="human.php#soul_assassin">辻斬り</a>の判定法則と同じ)。
-  </li>
+  <li><a href="fox.php">妖狐陣営</a>にも宣告可能。</li>
 </ol>
+<h4>Ver. 1.4.0 β17〜</h4>
+<pre>
+「<a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する」制限を解除。
+<a href="fox.php">妖狐陣営</a>にも宣告できる仕様に変更。
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="fox.php#doom_fox">冥狐</a>

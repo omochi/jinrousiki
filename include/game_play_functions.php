@@ -48,9 +48,23 @@ function OutputAbility(){
     }
   }
   elseif($SELF->IsRoleGroup('priest')){ //司祭系
-    if($SELF->IsRole('crisis_priest'))    $ROLE_IMG->Output('human');
-    elseif($SELF->IsRole('dummy_priest')) $ROLE_IMG->Output('priest');
-    else                                  $ROLE_IMG->Output($SELF->main_role);
+    switch($SELF->main_role){ //役職に応じた名称を表示
+    case 'crisis_priest':
+      $ROLE_IMG->Output('human');
+      break;
+
+    case 'dummy_priest':
+      $ROLE_IMG->Output('human');
+      break;
+
+    case 'priest_jealousy':
+      $ROLE_IMG->Output('priest');
+      break;
+
+    default:
+      $ROLE_IMG->Output($SELF->main_role);
+      break;
+    }
 
     switch($SELF->main_role){ //役職に応じた神託結果を表示
     case 'priest': //司祭
@@ -75,6 +89,10 @@ function OutputAbility(){
 
     case 'dummy_priest': //夢司祭
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DUMMY_PRIEST_RESULT');
+      break;
+
+    case 'priest_jealousy': //恋司祭
+      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_JEALOUSY_RESULT');
       break;
     }
   }
@@ -640,6 +658,7 @@ function OutputSelfAbilityResult($action){
 
   case 'PRIEST_RESULT':
   case 'DUMMY_PRIEST_RESULT':
+  case 'PRIEST_JEALOUSY_RESULT':
     $type = 'priest';
     $header = 'priest_header';
     $footer = 'priest_footer';

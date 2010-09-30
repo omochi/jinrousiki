@@ -8,7 +8,7 @@ function GetRandom($array){
 //-- 時間関連 --//
 //リアルタイムの経過時間
 function GetRealPassTime(&$left_time){
-  global $ROOM;
+  global $TIME_CONF, $ROOM;
 
   //シーンの最初の時刻を取得
   $query = 'SELECT MIN(time) FROM talk' . $ROOM->GetQuery() .
@@ -16,7 +16,12 @@ function GetRealPassTime(&$left_time){
   if(($start_time = FetchResult($query)) === false) $start_time = $ROOM->system_time;
 
   $base_time = $ROOM->real_time->{$ROOM->day_night} * 60; //設定された制限時間
-  if(($left_time = $base_time - ($ROOM->system_time - $start_time)) < 0) $left_time = 0; //残り時間
+  $pass_time = $ROOM->system_time - $start_time;
+  if($ROOM->IsOption('wait_morning') && $ROOM->IsDay()){ //早朝待機制
+    $base_time += $TIME_CONF->wait_morning; //制限時間を追加する
+    $ROOM->event->wait_morning = $pass_time <= $TIME_CONF->wait_morning; //待機判定
+  }
+  if(($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
   return array($start_time, $start_time + $base_time);
 }
 
@@ -654,7 +659,7 @@ function OutputTalk($talk, &$builder){
       return true;
 
     default:
-      return $ROOM->IsBeforeGame() || $flag_open_talk ?
+      return $flag_open_talk || $ROOM->IsBeforeGame() ?
 	$builder->AddSystemMessage($talk->class, $handle_name . $sentence) : false;
     }
   }
@@ -719,15 +724,15 @@ function OutputTalk($talk, &$builder){
 	  : ($SELF->IsRole('wise_wolf') ? $builder->AddWhisper('common', $talk) : false);
 
       case 'self_talk': //独り言
-	if($builder->actor->IsSame($talk->uname) || $flag_dummy_boy || $flag_mind_read){
+	if($flag_dummy_boy || $flag_mind_read || $builder->actor->IsSame($talk->uname)){
 	  return $builder->AddTalk($said_user, $talk);
 	}
-	elseif($builder->actor->IsRole('whisper_ringing')){ //囁耳鳴は独り言が囁きに見える
+	elseif($builder->actor->IsRole('whisper_ringing')){ //囁き判定 (囁耳鳴)
 	  return $builder->AddWhisper('common', $talk);
 	}
-	//吠耳鳴・孤立した狼の独り言は遠吠えに見える
-	elseif($builder->actor->IsRole('howl_ringing') ||
-	       ($said_user->IsWolf() && $said_user->IsLonely())){
+	//遠吠え判定 (孤立した狼 / 化狐 / 吠耳鳴)
+	elseif(($said_user->IsWolf() && $said_user->IsLonely()) ||
+	       $said_user->IsRole('howl_fox') || $builder->actor->IsRole('howl_ringing')){
 	  return $builder->AddWhisper('wolf', $talk);
 	}
 	return false;

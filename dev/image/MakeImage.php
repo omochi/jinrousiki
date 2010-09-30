@@ -588,6 +588,10 @@ class RoleMessageList{
     'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|蟲狐|です。_処刑_されるか#人狼#に襲われたら、あなたを死なせた人からランダムで一人を^熱病^にさせることができます。\n　あなたは蟲毒をもった呪いの|狐|。幾百もの怨念が宿りしあなたを殺めた者は、死に至る無間の苦しみにのたうつことでしょう。",
     'type' => 'child_fox', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
 
+  var $howl_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|化狐|です。あなたの夜の独り言は#人狼#の遠吠えに見えます。",
+    'type' => 'child_fox');
+
   var $cupid = array(
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|キューピッド|です。初日の夜に誰か二人を|恋人|同士にすることができます。\n　愛しあう二人を影から支え、何物にも勝る愛の素晴らしさを村に知らしめるのです！",
     'delimiter' => array('|' => 'lovers'));
@@ -784,6 +788,9 @@ class RoleMessageList{
 		       'type' => 'liar');
 
   var $weekly = array('message' => "　あなたは|七曜迷彩|を使っているので曜日の順番に合わせて曜日を入れ替えて発言してしまいます。",
+		      'type' => 'liar');
+
+  var $passion = array('message' => "　あなたは|恋色迷彩|を使っているので発言が恋色に染まってしまいます。",
 		      'type' => 'liar');
 
   var $grassy = array('message' => "　あなたは|草原迷彩|を使っているので発言が草に埋もれてしまいます。",
@@ -1027,6 +1034,7 @@ class RoleMessageList{
   var $result_howl_scanner = array('message' => "さんは|吠騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_telepath_scanner = array('message' => "さんは|念騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_jealousy = array('message' => "さんは|橋姫|でした", 'delimiter' => array('|' => 'jealousy'));
+  var $result_priest_jealousy = array('message' => "さんは|恋司祭|でした", 'type' => 'result_jealousy');
   var $result_poison_jealousy = array('message' => "さんは|毒橋姫|でした", 'type' => 'result_jealousy');
   var $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
   var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした", 'type' => 'result_doll');
@@ -1091,6 +1099,7 @@ class RoleMessageList{
   var $result_stargazer_fox = array('message' => "さんは|星狐|でした", 'type' => 'result_child_fox');
   var $result_jammer_fox = array('message' => "さんは|月狐|でした", 'type' => 'result_child_fox');
   var $result_miasma_fox = array('message' => "さんは|蟲狐|でした", 'type' => 'result_child_fox');
+  var $result_howl_fox = array('message' => "さんは|化狐|でした", 'type' => 'result_child_fox');
   var $result_cupid = array('message' => "さんは|キューピッド|でした", 'delimiter' => array('|' => 'lovers'));
   var $result_self_cupid = array('message' => "さんは|求愛者|でした", 'type' => 'result_cupid');
   var $result_moon_cupid = array('message' => "さんは|かぐや姫|でした", 'type' => 'result_cupid');
@@ -1221,4 +1230,6 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_brownie');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison');
-$builder->Output('enchant_mad');
+#$builder->Output('enchant_mad');
+#$builder->Output('howl_fox');
+$builder->Output('result_priest_jealousy');

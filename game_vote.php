@@ -140,7 +140,7 @@ function VoteKick(){
   LockVote(); //テーブルを排他的ロック
 
   //ゲーム開始チェック
-  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') != 'beforegame'){
+  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') != 'beforegame')){
     OutputVoteResult('Kick：既にゲームは開始されています', true);
   }
 
@@ -400,6 +400,9 @@ function VoteNight(){
       if($ROOM->IsDummyBoy() && $ROOM->date == 1 && ! $target->IsDummyBoy()){
 	OutputVoteResult($error_header . '身代わり君使用の場合は、身代わり君以外に投票できません');
       }
+    }
+    elseif($RQ_ARGS->situation == 'MIND_SCANNER_DO' && $target->IsDummyBoy()){
+      OutputVoteResult($error_header . '身代わり君には投票できません');
     }
   }
 
@@ -678,7 +681,7 @@ function OutputVoteNight(){
     $type     = 'ASSASSIN_DO';
     $not_type = 'ASSASSIN_NOT_DO';
   }
-  elseif($SELF->IsRole('mind_scanner', 'evoke_scanner')){
+  elseif($role_scanner = $SELF->IsRole('mind_scanner', 'evoke_scanner')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
@@ -785,13 +788,18 @@ function OutputVoteNight(){
     $checkbox_header = '<input type="radio" name="target_no"';
     $checkbox_footer = ' id="' . $id . '"value="' . $id . '">'."\n";
     if($role_cupid || $role_mirror_fairy){
-      if(! $user->IsDummyBoy() && $is_live){
+      if($is_live && ! $user->IsDummyBoy()){
 	$checked = ($role_cupid && $cupid_self_shoot && $user->IsSelf()) ? ' checked' : '';
 	$checkbox = '<input type="checkbox" name="target_no[]"' . $checked . $checkbox_footer;
       }
     }
     elseif($role_revive){
       if(! $is_live && ! $user->IsSelf() && ! $user->IsDummyBoy()){
+	$checkbox = $checkbox_header . $checkbox_footer;
+      }
+    }
+    elseif($role_scanner){
+      if($is_live && ! $user->IsSelf() && ! $user->IsDummyBoy()){
 	$checkbox = $checkbox_header . $checkbox_footer;
       }
     }
