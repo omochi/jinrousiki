@@ -311,7 +311,7 @@ function VoteNight(){
     break;
 
   case 'VAMPIRE_DO':
-    if(! $SELF->IsRole('vampire')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! $SELF->IsRoleGroup('vampire')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'FAIRY_DO':
@@ -741,7 +741,7 @@ function OutputVoteNight(){
     $cupid_self_shoot  = $SELF->IsRole('self_cupid', 'dummy_chiroptera', 'moon_cupid') ||
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
-  elseif($SELF->IsRole('vampire')){
+  elseif($SELF->IsRoleGroup('vampire')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
     $type = 'VAMPIRE_DO';
   }

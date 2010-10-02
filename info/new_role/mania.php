@@ -37,7 +37,7 @@ OutputRolePageHeader('神話マニア陣営');
 
 <h3><a id="mania">神話マニア</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11〜]</h3>
 <pre>
-神話マニア系の基本種。能力は<a href="#rule">基本ルール</a>参照。
+神話マニア陣営の基本種。能力は<a href="#rule">基本ルール</a>参照。
 コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は村人になる。
 役職が変化すると<a href="sub_role.php#copied">元神話マニア</a>がつく。
 </pre>
@@ -219,8 +219,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
-  <td><a href="vampire.php#vampire">吸血鬼</a></td>
-  <td>Ver. 1.4.0 β14〜</td>
+  <td><a href="vampire.php#sacrifice_vampire">吸血公</a></td>
+  <td>Ver. 1.4.0 β17〜</td>
 </tr>
 <tr>
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
@@ -250,7 +250,7 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h3><a id="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
 <pre>
-初日の夜に誰か一人を選んでその人と同じ所属陣営になります。
+初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
 所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になります。
 生存カウントは常に村人なので、実質は所属陣営不明の狂人相当です。
 
@@ -318,7 +318,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <h3><a id="dummy_mania">夢語部</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <h4>[役職表示] <a href="#soul_mania">覚醒者</a></h4>
 <pre>
-コピー先の基本・劣化種に変化する特殊な<a href="#mania">神話マニア</a>。
+コピー先の基本・劣化種に変化する特殊な神話マニア。
 本人の表記は「<a href="#soul_mania">覚醒者</a>」で、仕様も同じ。
 役職が変化すると<a href="sub_role.php#copied_teller">元夢語部</a>がつく。
 変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。
@@ -367,8 +367,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
-  <td><a href="human.php#sacrifice_cat">猫神</a></td>
-  <td></td>
+  <td><a href="human.php#eclipse_cat">蝕仙狸</a></td>
+  <td>Ver. 1.4.0 β17〜</td>
 </tr>
 <tr>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>

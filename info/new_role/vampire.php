@@ -33,6 +33,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <h2><a id="vampire_group">吸血鬼系</a></h2>
 <p>
 <a href="#vampire">吸血鬼</a>
+<a href="#sacrifice_vampire">吸血公</a>
 </p>
 <h3><a id="vampire">吸血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14〜]</h3>
 <pre>
@@ -43,5 +44,22 @@ OutputRolePageHeader('吸血鬼陣営');
 他国に実在する役職です。
 式神研の闇鍋に混ぜてどの程度勝てるのか検討が付かないので、
 まずは条件を緩めに設定して様子を見てみようかと思います。
+</pre>
+
+<h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 護衛：狩り</h4>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する。
+<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+</pre>
+<ol>
+  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+  <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
+  <li>本人は身代わりが発生しても分からない。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の能力を持った吸血鬼で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
 </pre>
 </body></html>

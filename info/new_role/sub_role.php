@@ -19,7 +19,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#other_group">その他</a>
 </p>
 
-<h2><a id="rule">基本ルール</a></h2>
+<h2><a id="rule">基本ルール</a> [サブ役職]</h2>
 <pre>
 メイン役職が付加するサブ役職 (恋人、サトラレなど) と専用ゲームオプション (狼少年村・紳士村など)
 以外のサブ役職は重なりません。
@@ -101,7 +101,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#jealousy">橋姫</a>同様、対<a href="#lovers">恋人</a>役職ですが、こっちは小心者系という事もあって
+<a href="human.php#jealousy">橋姫</a>同様、対<a href="#lovers">恋人</a>用役職ですが、こっちは小心者系という事もあって
 より理不尽な仕様となっています。
 </pre>
 
@@ -199,6 +199,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#invisible">光学迷彩</a>
 <a href="#rainbow">虹色迷彩</a>
 <a href="#weekly">七曜迷彩</a>
+<a href="#passion">恋色迷彩</a>
 <a href="#grassy">草原迷彩</a>
 <a href="#side_reverse">鏡面迷彩</a>
 <a href="#line_reverse">天地迷彩</a>
@@ -264,6 +265,15 @@ OutputRolePageHeader('サブ役職');
 <pre>
 <a href="#rainbow">虹色迷彩</a>の曜日バージョンです。
 比較的引っ掛かりやすいでしょうが、対応も簡単ですね。
+</pre>
+
+<h3><a id="passion">恋色迷彩</a> [Ver. 1.4.0 β17〜]</h3>
+<pre>
+発言時に一部のキーワードが恋人っぽい言葉に入れ替えられてしまいます。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#liar">狼少年</a>の恋人バージョンで、Twitter 上の雑談から生まれた役職です。
 </pre>
 
 <h3><a id="grassy">草原迷彩</a> [Ver. 1.4.0 α23〜]</h3>

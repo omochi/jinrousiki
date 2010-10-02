@@ -277,8 +277,8 @@ class CastConfig extends CastConfigBase{
     'saint'              =>  3,
     'executor'           =>  3,
     'escaper'            =>  3,
-    'suspect'            =>  5,
-    'unconscious'        =>  5,
+    'suspect'            =>  3,
+    'unconscious'        =>  3,
     'mage'               => 15,
     'soul_mage'          =>  5,
     'psycho_mage'        => 10,
@@ -319,9 +319,10 @@ class CastConfig extends CastConfigBase{
     'guide_poison'       =>  5,
     'chain_poison'       =>  5,
     'dummy_poison'       => 10,
-    'poison_cat'         =>  5,
-    'revive_cat'         =>  5,
-    'sacrifice_cat'      =>  5,
+    'poison_cat'         =>  6,
+    'revive_cat'         =>  3,
+    'sacrifice_cat'      =>  3,
+    'eclipse_cat'        =>  3,
     'pharmacist'         => 10,
     'cure_pharmacist'    =>  5,
     'revive_pharmacist'  =>  5,
@@ -413,7 +414,8 @@ class CastConfig extends CastConfigBase{
     'exchange_angel'     =>  4,
     'ark_angel'          =>  3,
     'quiz'               =>  2,
-    'vampire'            =>  5,
+    'vampire'            =>  6,
+    'sacrifice_vampire'  =>  4,
     'chiroptera'         =>  4,
     'poison_chiroptera'  =>  4,
     'cursed_chiroptera'  =>  3,
@@ -522,11 +524,12 @@ class CastConfig extends CastConfigBase{
       //-- 恋色決闘 --//
       $duel_fix_list = array();
       if($user_count >= 15) $duel_fix_list['howl_scanner'] = 1;
-      if($user_count >= 20){
+      if($user_count >= 20) $duel_fix_list['enchant_mad'] = 1;
+      if($user_count >= 25){
 	$duel_fix_list['sirius_wolf'] = 1;
 	$duel_fix_list['moon_cupid'] = 1;
       }
-      if($user_count >= 25) $duel_fix_list['quiz'] = 1;
+      if($user_count >= 30) $duel_fix_list['quiz'] = 1;
 
       $duel_rate_list = array('assassin' => 5, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
 			      'triangle_cupid' => 1);
@@ -549,15 +552,15 @@ class CastConfig extends CastConfigBase{
     if($ROOM->IsOption('not_open_cast')){ //非公開
     }
     elseif($ROOM->IsOption('auto_open_cast')){ //自動公開
-      if($role_list['self_cupid'] > 0 && $role_list['assassin'] > 1){
-	$role_list['assassin']--;
+      if($role_list['self_cupid'] > 1){
+	$role_list['self_cupid']--;
 	$role_list['dummy_chiroptera']++;
       }
       if($role_list['mind_cupid'] > 2){
 	$role_list['mind_cupid']--;
 	$role_list['exchange_angel']++;
       }
-      if($role_list['wolf'] > 1){
+      if($role_list['wolf'] > 2){
 	$role_list['wolf']--;
 	$role_list['silver_wolf']++;
       }

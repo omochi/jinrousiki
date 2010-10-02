@@ -29,5 +29,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
+  <li>蝕仙狸：誤爆率が高く設定されている劣化仙狸</li>
+  <li>吸血公：人狼に襲撃されても自分の感染者を犠牲にして生き延びることができる吸血鬼</li>
   <li>恋色迷彩：発言の一部が恋色に変換される狼少年系サブ役職</li>
 </ul>

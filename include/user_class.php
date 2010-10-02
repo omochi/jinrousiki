@@ -311,7 +311,8 @@ class User{
   function IsHuntTarget(){
     return ($this->IsRoleGroup('mad') && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
       $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
-		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera');
+		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',
+		    'sacrifice_vampire');
   }
 
   //護衛制限判定
@@ -360,7 +361,8 @@ class User{
 
   //占い師の判定
   function DistinguishMage($reverse = false){
-    if($this->IsRole('vampire', 'boss_chiroptera')) return 'chiroptera'; //吸血鬼・大蝙蝠は「蝙蝠」
+    //吸血鬼陣営・大蝙蝠は「蝙蝠」
+    if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
 
     //白狼か完全覚醒天狼以外の人狼・黒狐・不審者は「人狼」
     $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
@@ -446,7 +448,7 @@ class User{
     if($this->IsRole('possessed_mad', 'possessed_fox')){
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
     }
-    if($this->IsRole('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
+    if($this->IsRoleGroup('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
 
     if($ROOM->IsOpenCast()) return true;
     if($this->IsReviveGroup(true)){

@@ -133,7 +133,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3><a id="phantom_fox">幻狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11〜]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 / 占い：無効 (1回限定) / 護衛：狩り</h4>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
 妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
@@ -145,7 +145,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊</h4>
+<h4>[耐性] 人狼襲撃：死亡 + 毒</h4>
 <h4>[毒能力] 処刑：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った妖狐。毒の対象は妖狐陣営以外。
@@ -159,7 +159,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3><a id="blue_fox">蒼狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊</h4>
+<h4>[耐性] 人狼襲撃：無効 + はぐれ者</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。
 </pre>
@@ -202,7 +202,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/58" target="_top">新役職考案スレ</a> の 58 が原型です。
-対占い・対噛み耐性は通常の<a href="#fox">妖狐</a>と同じですが
+対占い・対襲撃耐性は通常の<a href="#fox">妖狐</a>と同じですが
 呪い能力を持った代わりに<a href="human.php#guard_hunt">狩人</a>にも弱くなっています。
 </pre>
 
@@ -224,7 +224,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3><a id="possessed_fox">憑狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9〜]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 / 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
@@ -264,7 +264,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3><a id="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 暗殺：反射</h4>
+<h4>[耐性] 人狼襲撃：無効 / 占い：呪返し / 陰陽師：死亡 / 護衛：狩り / 暗殺：反射</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
@@ -344,6 +344,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#stargazer_fox">星狐</a>
 <a href="#jammer_fox">月狐</a>
 <a href="#miasma_fox">蟲狐</a>
+<a href="#howl_fox">化狐</a>
 </p>
 
 <h3><a id="child_fox_spec">基本スペック</a></h3>
@@ -372,7 +373,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職です。
-占い師騙りをする場合は失敗した時にどうフォローするかがポイントです。
+<a href="human.php#mage">占い師</a>騙りをする場合は失敗した時にどうフォローするかがポイントです。
 </pre>
 
 <h3><a id="sex_fox">雛狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β8〜]</h3>
@@ -408,9 +409,11 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#jammer_mad">月兎</a>の<a href="#child_fox">子狐</a>バージョンです。
+妖狐の最大の弱点である占いを妨害できるので、子狐系に於いては上位種となります。
 </pre>
 
 <h3><a id="miasma_fox">蟲狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 熱病 / 処刑：熱病</h4>
 <pre>
 処刑されるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。
 処刑された場合は投票した人からランダムで一人、人狼に襲撃された場合は襲撃した人狼に付加する。
@@ -419,5 +422,19 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#poison_fox">管狐</a>の<a href="#child_fox">子狐</a>相当として、<a href="wolf.php#miasma_mad">土蜘蛛</a>能力を持たせてみました。
+</pre>
+
+<h3><a id="howl_fox">化狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β17〜]</h3>
+<pre>
+夜の独り言が他の人には<a href="wolf.php#wolf_howl">人狼の遠吠え</a>に見える子狐。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#silver_wolf">銀狼</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#wolf_howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
+人狼の人数や<a href="wolf.php#silver_wolf">銀狼</a>の存在を誤認する可能性が出てくる事に注意しましょう。
 </pre>
 </body></html>

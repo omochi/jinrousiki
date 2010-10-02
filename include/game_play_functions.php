@@ -137,7 +137,7 @@ function OutputAbility(){
     unset($stack);
   }
   elseif($SELF->IsRoleGroup('cat')){ //猫又系
-    $ROLE_IMG->Output($SELF->main_role);
+    $ROLE_IMG->Output($SELF->IsRole('eclipse_cat') ? 'revive_cat' : $SELF->main_role);
 
     if(! $ROOM->IsOpenCast()){
       if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
@@ -455,7 +455,7 @@ function OutputAbility(){
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
   }
-  elseif($SELF->IsRole('vampire')){ //吸血鬼
+  elseif($SELF->IsRoleGroup('vampire')){ //吸血鬼系
     $ROLE_IMG->Output($SELF->main_role);
 
     if($ROOM->date > 2){

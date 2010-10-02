@@ -583,7 +583,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </ol>
 <h4>同一表示役職</h4>
 <pre>
-<a href="#dummy_priest">夢司祭</a>
+<a href="#dummy_priest">夢司祭</a>・<a href="#priest_jealousy">恋司祭</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -724,7 +724,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 
 <h3><a id="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest">司祭</a>・<a href="#bishop_priest">司教</a>・<a href="#border_priest">境界師</a>・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#doll_master">人形遣い</a>です</li>
+  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#revive_priest">天人</a>・<a href="#crisis_priest">預言者</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
@@ -732,10 +732,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h3><a id="guard_hunt">狩りルール</a></h3>
 <pre>
 1. 狩り能力があるのは<a href="#guard">狩人</a>・<a href="#hunter_guard">猟師</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>です
-2. 対象は特殊狂人・特殊妖狐・特殊蝙蝠です
-2-1. 特殊狂人 (<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#enchant_mad">狢</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#therian_mad">獣人</a>)
+2. 対象は特殊狂人・特殊妖狐・特殊吸血鬼・特殊蝙蝠です
+2-1. 特殊狂人 (<a href="wolf.php#mad">狂人</a>・<a href="wolf.php#fanatic_mad">狂信者</a>・<a href="wolf.php#whisper_mad">囁き狂人</a>以外の<a href="wolf.php#mad_group">狂人系</a>)
 2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
-2-3. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+2-3. 特殊吸血鬼 (<a href="vampire.php#sacrifice_vampire">吸血公</a>)
+2-4. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 3. <a href="#hunter_guard">猟師</a>は<a href="fox.php">妖狐陣営</a>を狩ることができます
 4. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
 5. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>を参照してください
@@ -811,7 +812,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="fend_guard">忍者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊</h4>
+<h4>[耐性] 人狼襲撃：無効 (1回限定)</h4>
 <h4>[狩人能力] 護衛：制限有り / 狩り：有り / 罠：有効</h4>
 <pre>
 一度だけ<a href="wolf.php#wolf_group">人狼系</a> (種類を問わない) の襲撃に耐えることができる上位狩人。
@@ -965,7 +966,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="ghost_common">亡霊嬢</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊</h4>
+<h4>[耐性] 人狼襲撃：死亡 + 小心者</h4>
 <pre>
 自分を襲撃した<a href="wolf.php#wolf_group">人狼</a>に<a href="sub_role.php#chicken">小心者</a>を付加する上位共有者。
 <a href="wolf.php#possessed_wolf_sub_role">憑狼</a>は本体に付加される。
@@ -1113,6 +1114,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#poison_cat">猫又</a>
 <a href="#revive_cat">仙狸</a>
 <a href="#sacrifice_cat">猫神</a>
+<a href="#eclipse_cat">蝕仙狸</a>
 </p>
 
 <h3><a id="about_revive">基本ルール</a> [蘇生]</h3>
@@ -1175,6 +1177,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 蘇生成功率は 80% で、成功するたびに成功率が 1/4 になる。
 80% → 20% → 5% → 2% → 1% (以後は 1% で固定)
 </pre>
+<h4>同一表示役職</h4>
+<pre>
+<a href="#eclipse_cat">蝕仙狸</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 仙狸 (センリ) とは、中国の猫の妖怪です (「狸」は山猫の意)。
@@ -1194,6 +1200,21 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>が能力を発動した時に蘇生能力者が誰もいないと
 正体がばれてしまうので、同じ状況に見える村陣営種を用意しました。
+</pre>
+
+<h3><a id="eclipse_cat">蝕仙狸</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17〜]</h3>
+<h4>[役職表示] <a href="#revive_cat">仙狸</a></h4>
+<h4>[蘇生能力] 成功率：40% / 誤爆：有り (特殊)</h4>
+<pre>
+誤爆率が高く設定されている猫又の亜種。本人の表記は「<a href="#revive_cat">仙狸</a>」。
+蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
+蘇生成功率は 40%、誤爆率は 15% で固定。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#poison_cat">猫又</a>の劣化種として、夢系ではなく蝕系を採用してみました。
+<a href="#about_revive">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が約二倍になっています。
+しかし、「成功率」だけなら 25% なので<a href="#poison_cat">猫又</a>より優秀です。
 </pre>
 
 
@@ -1497,6 +1518,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h2><a id="jealousy_group">橋姫系</a></h2>
 <p>
 <a href="#jealousy">橋姫</a>
+<a href="#priest_jealousy">恋司祭</a>
 <a href="#poison_jealousy">毒橋姫</a>
 </p>
 
@@ -1525,6 +1547,20 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 対恋人役職です。
 新役職考案スレ の <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/2" target="_top">2</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/21" target="_top">21</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/44" target="_top">44</a> を参考にしています。
 別れさせる処理が難しいのでこういう実装になりました。
+</pre>
+
+<h3><a id="priest_jealousy">恋司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17〜]</h3>
+<h4>[役職表示] <a href="#priest">司祭</a></h4>
+<h4>[耐性] 護衛：制限対象</h4>
+<pre>
+一定日数ごとに現在、生存している恋人の人数が分かる特殊な司祭。
+本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
+狩人の護衛制限対象。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#priest">司祭</a>の対恋人バージョンで、所属は橋姫系になります。
+判定法則が全然違うので他の司祭表示役職と区別しやすいですが、騙りやすいですね。
 </pre>
 
 <h3><a id="poison_jealousy">毒橋姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
@@ -1591,6 +1627,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 
 <h3><a id="doom_doll">蓬莱人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
+<h4>[耐性] 処刑：死の宣告 (2日後)</h4>
 <pre>
 吊られた時に、自分に投票した人からランダムで一人に<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人形。
 <a href="#doll_rule">基本ルール</a>が適用される。
@@ -1647,6 +1684,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 
 <h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h4>[耐性] 処刑：熱病</h4>
 <pre>
 役職「<a href="#human">村人</a>」の処刑投票数を +1 する村人。生きている間のみ有効。
 処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
@@ -1659,6 +1697,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 
 <h3><a id="history_brownie">白澤</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
 人狼に襲撃されたら次の日の夜を飛ばしてしまう村人。
 能力が発動した場合は、専用のメッセージが表示される。

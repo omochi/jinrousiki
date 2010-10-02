@@ -120,7 +120,7 @@ function CheckVictory($check_draw = false){
     }
   }
   if(count($living_id_list) == 1){
-    $vampire = $USERS->ByID(array_shift($living_id_list))->IsRole('vampire');
+    $vampire = $USERS->ByID(array_shift($living_id_list))->IsRoleGroup('vampire');
   }
   else{
     foreach($infected_list as $id => $stack){

@@ -1077,7 +1077,7 @@ function AggregateVoteDay(){
     elseif($vote_target->IsWolf()){
       $necromancer_result = 'wolf';
     }
-    elseif($vote_target->IsRole('vampire')){
+    elseif($vote_target->IsRoleGroup('vampire')){
       $necromancer_result = 'chiroptera';
     }
     else{
@@ -1457,6 +1457,13 @@ function AggregateVoteNight($skip = false){
 	elseif($wolf_target->IsRole('doll_master')){ //人形遣い (人形系)
 	  foreach($USERS->rows as $user){
 	    if($user->IsLive() && $user->IsDoll()) $stack[] = $user->uname;
+	  }
+	}
+	elseif($wolf_target->IsRole('sacrifice_vampire')){ //吸血公 (自分の感染者)
+	  foreach($USERS->rows as $user){
+	    if($user->IsLive() && $user->IsPartner('infected', $wolf_target->user_no)){
+	      $stack[] = $user->uname;
+	    }
 	  }
 	}
 
@@ -1999,6 +2006,7 @@ function AggregateVoteNight($skip = false){
 	  case 'poison_cat':
 	  case 'revive_cat':
 	  case 'sacrifice_cat':
+	  case 'eclipse_cat':
 	    $stack_role = 'poison_cat';
 	    break;
 
@@ -2185,6 +2193,7 @@ function AggregateVoteNight($skip = false){
 	$target = $USERS->ByUname($target_uname); //対象者の情報を取得
 
 	//蘇生判定
+	$missfire_rate = 0; //誤爆率
 	if($user->IsRole('poison_cat', 'revive_medium')){
 	  $revive_rate = 25;
 	}
@@ -2195,14 +2204,20 @@ function AggregateVoteNight($skip = false){
 	elseif($user->IsRole('sacrifice_cat', 'revive_fox')){
 	  $revive_rate = 100;
 	}
+	elseif($user->IsRole('eclipse_cat')){
+	  $revive_rate = 40;
+	  $missfire_rate = 15;
+	}
 	$rate = mt_rand(1, 100); //蘇生判定用乱数
+	if($missfire_rate == 0) $missfire_rate = floor($revive_rate / 5);
 	//$rate = 5; //mt_rand(1, 10); //テスト用
-	//PrintData($revive_rate, 'Revive Info: ' . $user->uname . ' => ' . $target->uname);
+	//PrintData("{$revive_rate} ({$missfire_rate})", "ReviveInfo: {$user->uname} => {$target->uname}");
+	//PrintData($rate, 'ReviveRate: ' . $user->uname);
 
 	$result = 'failed';
 	do{
 	  if($rate > $revive_rate) break; //蘇生失敗
-	  if(! $user->IsRole('sacrifice_cat') && $rate <= floor($revive_rate / 5)){ //誤爆蘇生
+	  if(! $user->IsRole('sacrifice_cat') && $rate <= $missfire_rate){ //誤爆蘇生
 	    $revive_target_list = array();
 	    //現時点の身代わり君と蘇生能力者が選んだ人以外の死者と憑依者を検出
 	    foreach($USERS->rows as $revive_target){
@@ -2448,7 +2463,7 @@ function AggregateVoteNight($skip = false){
       'cupid' => 'mind_cupid',
       'angel' => 'ark_angel',
       'quiz' => 'quiz',
-      'vampire' => 'vampire',
+      'vampire' => 'sacrifice_vampire',
       'chiroptera' => 'boss_chiroptera',
       'fairy' => 'ice_fairy');
     $dummy_mania_replace_list = array(
@@ -2460,7 +2475,7 @@ function AggregateVoteNight($skip = false){
       'guard' => 'dummy_guard',
       'common' => 'dummy_common',
       'poison' => 'dummy_poison',
-      'poison_cat' => 'sacrifice_cat',
+      'poison_cat' => 'eclipse_cat',
       'pharmacist' => 'cure_pharmacist',
       'assassin' => 'eclipse_assassin',
       'mind_scanner' => 'mind_scanner',

@@ -641,6 +641,10 @@ class RoleMessageList{
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。\n　夜の闇にまぎれ、誰にも知られぬまま血をすすり、眷属を増やすのです。真の支配者はあなただと言う事を村に知らしめましょう。",
     'delimiter' => array('|' => 'vampire'));
 
+  var $sacrifice_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血公|です。#人狼#に襲撃されても自分の|感染者|を犠牲にして生き延びることができます。",
+    'type' => 'vampire', 'delimiter' => array('#' => 'wolf'));
+
   var $chiroptera = array(
     'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|蝙蝠|です。生き残りましょう。ただそれだけで勝ちになります。\n　勝ち馬に乗り、いずれの存在からも疎まれながらも強く生き抜くのです。",
     'delimiter' => array('|' => 'chiroptera'));
@@ -1020,6 +1024,7 @@ class RoleMessageList{
   var $result_poison_cat = array('message' => "さんは|猫又|でした", 'type' => 'result_poison');
   var $result_revive_cat = array('message' => "さんは|仙狸|でした", 'type' => 'result_poison_cat');
   var $result_sacrifice_cat = array('message' => "さんは|猫神|でした", 'type' => 'result_poison_cat');
+  var $result_eclipse_cat = array('message' => "さんは|蝕仙狸|でした", 'type' => 'result_poison_cat');
   var $result_pharmacist = array('message' => "さんは|薬師|でした", 'type' => 'result_poison');
   var $result_cure_pharmacist = array('message' => "さんは|河童|でした", 'type' => 'result_pharmacist');
   var $result_revive_pharmacist = array('message' => "さんは|仙人|でした", 'type' => 'result_pharmacist');
@@ -1113,6 +1118,7 @@ class RoleMessageList{
   var $result_lovers = array('message' => "さんは|恋人|でした", 'type' => 'result_cupid');
   var $result_quiz = array('message' => "さんは|出題者|でした", 'delimiter' => array('|' => 'quiz'));
   var $result_vampire = array('message' => "さんは|吸血鬼|でした", 'delimiter' => array('|' => 'vampire'));
+  var $result_sacrifice_vampire = array('message' => "さんは|吸血公|でした", 'type' => 'result_vampire');
   var $result_chiroptera = array('message' => "さんは|蝙蝠|でした", 'delimiter' => array('|' => 'chiroptera'));
   var $result_poison_chiroptera = array('message' => "さんは|毒蝙蝠|でした", 'type' => 'result_chiroptera');
   var $result_cursed_chiroptera = array('message' => "さんは|呪蝙蝠|でした", 'type' => 'result_chiroptera');
@@ -1232,4 +1238,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison');
 #$builder->Output('enchant_mad');
 #$builder->Output('howl_fox');
-$builder->Output('result_priest_jealousy');
+$builder->Output('sacrifice_vampire');

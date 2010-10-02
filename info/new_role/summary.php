@@ -83,6 +83,7 @@ Ver. 1.4.0
 <a href="#sub_140beta10">β10</a>
 <a href="#sub_140beta11">β11</a>
 <a href="#sub_140beta14">β14</a>
+<a href="#sub_140beta17">β17</a>
 </p>
 
 <table>
@@ -1355,7 +1356,7 @@ Ver. 1.4.0
   <td><a href="fox.php#child_fox_group">子狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>子狐</td>
-  <td class="ability"<a href="wolf.php#jammer_mad">月兎</a>相当の能力を持つ子狐。成功率は 70%。</td>
+  <td class="ability"><a href="wolf.php#jammer_mad">月兎</a>相当の能力を持つ子狐。成功率は 70%。</td>
   <td>Ver. 1.4.0 β13</td>
 </tr>
 <tr>
@@ -1364,7 +1365,7 @@ Ver. 1.4.0
   <td><a href="fox.php#child_fox_group">子狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>子狐</td>
-  <td class="ability"<a href="human.php#stargazer_mage">占星術師</a>相当の能力を持つ子狐。成功率は 70%。</td>
+  <td class="ability"><a href="human.php#stargazer_mage">占星術師</a>相当の能力を持つ子狐。成功率は 70%。</td>
   <td>Ver. 1.4.0 β13</td>
 </tr>
 <tr>
@@ -1568,6 +1569,45 @@ Ver. 1.4.0
   <td class="ability">投票先が人狼に襲撃されたら、次の日、全員のアイコンを襲撃された人にする特殊な狂人。<br>
     狩人に護衛されると殺される。
   </td>
+  <td>Ver. 1.4.0 β17</td>
+</tr>
+<tr>
+  <td><a href="fox.php#howl_fox">化狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#child_fox_group">子狐系</a></td>
+  <td>村人<br>(呪殺無し)</td>
+  <td>子狐</td>
+  <td class="ability">夜の独り言が人狼の遠吠えに見える子狐。</td>
+  <td>Ver. 1.4.0 β17</td>
+</tr>
+<tr>
+  <td><a href="human.php#priest_jealousy">恋司祭</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#jealousy_group">橋姫系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">一定日数ごとに現在、生きている恋人の人数が分かる特殊な司祭 (所属は橋姫系)。<br>
+    本人表記は<a href="human.php#priest">司祭</a>で仕様も同じ。</td>
+  <td>Ver. 1.4.0 β17</td>
+</tr>
+<tr>
+  <td><a href="human.php#eclipse_cat">蝕仙狸</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#poison_cat_group">猫又系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">誤爆率 (15%) が高めに設定された猫又の劣化種。<br>
+  蘇生成功率 40% で、本人表記は<a href="human.php#revive_cat">仙狸</a>。</td>
+  <td>Ver. 1.4.0 β17</td>
+</tr>
+<tr>
+  <td><a href="vampire.php#sacrifice_vampire">吸血公</a></td>
+  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability">人狼に襲撃された時、自分の感染者を身代わりして生き延びることができる吸血鬼。<br>
+    狩人に護衛されると殺される。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
 </table>
@@ -2009,6 +2049,13 @@ Ver. 1.4.0
     <td>○</td>
     <td class="ability">表示された日限定の<a href="sub_role.php#rabbit">ウサギ</a>。</td>
     <td>Ver. 1.4.0 β16</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#passion" id="sub_140alpha17">恋色迷彩</a></td>
+    <td><a href="sub_role.php#liar_group">狼少年系</a></td>
+    <td>○</td>
+    <td class="ability">発言時に一部のキーワードが恋人っぽい発言に入れ替わる</td>
+    <td>Ver. 1.4.0 β17</td>
   </tr>
 </table>
 

@@ -110,7 +110,7 @@ $RQ_ARGS->TestItems->test_users[9]->user_no = 9;
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'revive_cat[2] mind_open';
+$RQ_ARGS->TestItems->test_users[9]->role = 'eclipse_cat mind_open';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 $RQ_ARGS->TestItems->test_users[9]->icon_filename = '008.gif';
 $RQ_ARGS->TestItems->test_users[9]->color = '#00EE00';
@@ -220,7 +220,7 @@ $RQ_ARGS->TestItems->test_users[20]->user_no = 20;
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'vampire plague';
+$RQ_ARGS->TestItems->test_users[20]->role = 'sacrifice_vampire plague';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->icon_filename = '009.gif';
 $RQ_ARGS->TestItems->test_users[20]->color = '#CC00CC';
@@ -320,9 +320,10 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'green'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'frame'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'white'),
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'black'),
+  #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'black'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sun'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'land'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'blue'),
   #array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'dark_gray'),
@@ -418,7 +419,7 @@ $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
 #$SELF = $USERS->ByID(3);
-#$SELF = $USERS->ByID(25);
+#$SELF = $USERS->ByID(20);
 #$SELF = $USERS->TraceExchange(14);
 
 //-- データ出力 --//
@@ -490,7 +491,7 @@ do{
   //PrintData($ROOM->event);
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 19, 25) as $id){
+  foreach(array(5, 20, 25) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   #var_dump($USERS->IsOpenCast());

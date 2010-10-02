@@ -51,11 +51,15 @@ OutputRolePageHeader('人狼陣営');
 
 <h2><a id="wolf_howl">遠吠え</a></h2>
 <ol>
-  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>か<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼</li>
-  <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明)</li>
-  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた狼 (種類は不明)</li>
+  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼・<a href="fox.php#howl_fox">化狐</a></li>
+  <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a></li>
+  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a></li>
   <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない</li>
 </ol>
+<h3>Ver. 1.4.0 β17〜</h3>
+<pre>
+<a href="fox.php#howl_fox">化狐</a>の夜の独り言は人狼の遠吠えに見えます。
+</pre>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になります (<a href="#silver_wolf">銀狼</a>と同じ)。
@@ -131,6 +135,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 
 <h3><a id="phantom_wolf">幻狼</a> (占い結果：人狼 / 霊能結果：幻狼) [Ver. 1.4.0 β11〜]</h3>
+<h4>[耐性] 占い：無効 (1回限定)</h4>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる人狼。
 </pre>
@@ -151,6 +156,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 
 <h3><a id="cursed_wolf">呪狼</a> (占い結果：人狼(呪返し) / 霊能結果：呪狼) [Ver. 1.4.0 α17〜]</h3>
+<h4>[耐性] 占い：呪返し</h4>
 <pre>
 占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼です。
 死亡した占い師の死因は「呪返し」になります。
@@ -199,6 +205,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 
 <h3><a id="resist_wolf">抗毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α17〜]</h3>
+<h4>[耐性] 毒：無効 (1回限定)</h4>
 <pre>
 一度だけ毒に耐えられる(毒に中っても死なない)人狼。
 処刑・襲撃両方に対応しています。
@@ -283,6 +290,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 
 <h3><a id="possessed_wolf">憑狼</a> (占い結果：人狼 / 霊能結果：憑狼) [Ver. 1.4.0 α24〜]</h3>
+<h4>[耐性] 占い：特殊 / 陰陽師：死亡</h4>
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと恋人を除くサブ役職全て。
@@ -662,7 +670,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   <ol>
     <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
-    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
+    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
 </ol>
@@ -734,7 +742,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#silver_fox">銀狐</a>
+<a href="fox.php#silver_fox">銀狐</a>・<a href="fox.php#howl_fox">化狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -898,7 +906,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3><a id="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる特殊な狂人。
 狩人系に<a href="human.php#guard_hunt">護衛</a>されると殺される。
@@ -1040,7 +1048,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3><a id="therian_mad">獣人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 + 人狼変化 / 護衛：狩り</h4>
 <pre>
 人狼 (種類は問わない) に襲撃されたら「<a href="#wolf">人狼</a>」に変化する、特殊な狂人。
 <a href="#wolf">人狼</a>に変化すると<a href="sub_role.php#changed_therian">元獣人</a>がつく。

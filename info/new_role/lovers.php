@@ -89,7 +89,7 @@ OutputRolePageHeader('恋人陣営');
 
 <h3><a id="angel">天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
-矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。
+矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する、天使系の基本種。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -99,7 +99,7 @@ OutputRolePageHeader('恋人陣営');
 
 <h3><a id="rose_angel">薔薇天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
-矢を撃った二人が男性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。
+矢を撃った二人が男性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -109,17 +109,17 @@ OutputRolePageHeader('恋人陣営');
 
 <h3><a id="lily_angel">百合天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
 <pre>
-矢を撃った二人が女性だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加するキューピッド。
+矢を撃った二人が女性だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#angel">天使</a>の女性版です。
-<a href="human.php#sex_mage">ひよこ鑑定士</a>対策で性別をごまかすケースがあることに気をつけましょう。
+<a href="human.php#sex_mage">ひよこ鑑定士</a>対策で性別を偽るケースがあることに気をつけましょう。
 </pre>
 
 <h3><a id="exchange_angel">魂移使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <pre>
-矢を撃った二人を<a href="sub_role.php#possessed_exchange">交換憑依</a>させてしまうキューピッド。
+矢を撃った二人を<a href="sub_role.php#possessed_exchange">交換憑依</a>させてしまう特殊な天使。
 </pre>
 <ol>
   <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わります。<br>
