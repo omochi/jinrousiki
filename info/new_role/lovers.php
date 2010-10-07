@@ -29,7 +29,7 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>Ver. 1.4.0 α22〜</h4>
 <pre>
-矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>がつきます。
+矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -44,9 +44,8 @@ OutputRolePageHeader('恋人陣営');
 
 <h3><a id="moon_cupid">かぐや姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <pre>
-自分撃ち固定のキューピッド。
-自分に矢を撃った相手を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が、
-自分と矢を撃った相手に<a href="sub_role.php#challenge_lovers">難題</a>が追加される。
+自分撃ち固定で、矢を撃った二人に<a href="sub_role.php#challenge_lovers">難題</a>を付加するキューピッド。
+自分に矢を撃った相手を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -58,7 +57,7 @@ OutputRolePageHeader('恋人陣営');
 <h3><a id="mind_cupid">女神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
 <pre>
 矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。
-他人撃ちの場合は、さらに自分が二人を対象にした<a href="sub_role.php#mind_receiver">受信者</a>になります。
+他人撃ちの場合は、さらに自分が二人を対象にした<a href="sub_role.php#mind_receiver">受信者</a>になる。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -84,6 +83,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#rose_angel">薔薇天使</a>
 <a href="#lily_angel">百合天使</a>
 <a href="#exchange_angel">魂移使</a>
+<a href="#sacrifice_angel">守護天使</a>
 <a href="#ark_angel">大天使</a>
 </p>
 
@@ -123,16 +123,33 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <ol>
   <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わります。<br>
-    例) A-B・B-C と矢を打たれた → A-B または B-C のどちらかだけが入れ替わる
+    例) A-B・B-C と矢を撃たれた → A-B または B-C のどちらかだけが入れ替わる
   </li>
   <li>憑依能力者 (<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>) が対象だった場合は交換憑依は発生しません。</li>
-  <li>他人打ちをした場合、矢を打った本人には交換憑依が成立したかどうかは分かりません。</li>
+  <li>他人撃ちをした場合、矢を撃った本人には交換憑依が成立したかどうかは分かりません。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
 ラブコメでよくある「中の人が入れ替わってしまう」展開を再現してみました。
-これにぴったりくる実在する名前を思いつかなかったので造語を当てました。
+これにぴったりくる実在する名前を思いつかなかったので造語を充てました。
 「たまうつし」と読みます。
+</pre>
+
+<h3><a id="sacrifice_angel">守護天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>と<a href="sub_role.php#protected">庇護者</a>を付加する上位天使。
+人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+自分撃ちをしても自分に<a href="sub_role.php#protected">庇護者</a>は付かない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="vampire.php#sacrifice_vampire">吸血公</a>の能力を恋人陣営向けに転化してみました。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/467" target="_top">新役職考案スレ</a> の 467 が原型です。
 </pre>
 
 <h3><a id="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>

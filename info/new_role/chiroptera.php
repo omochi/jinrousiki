@@ -77,7 +77,8 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 
 <h3><a id="boss_chiroptera">大蝙蝠</a> (占い結果：蝙蝠 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
+<h4>[身代わり能力] 蝙蝠陣営</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、自分以外の蝙蝠陣営が生きていたら、
 他の蝙蝠が身代わりで死亡する。
@@ -94,6 +95,10 @@ OutputRolePageHeader('蝙蝠陣営');
 <pre>
 身代わり君が大蝙蝠になる可能性があります。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="mania.php#sacrifice_mania">影武者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

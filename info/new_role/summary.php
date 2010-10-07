@@ -62,6 +62,7 @@ Ver. 1.4.0
 <a href="#140beta15">β15</a>
 <a href="#140beta16">β16</a>
 <a href="#140beta17">β17</a>
+<a href="#140beta18">β18</a>
 </p>
 
 <p>
@@ -590,7 +591,7 @@ Ver. 1.4.0
 <tr>
   <td><a href="mania.php#unknown_mania" id="140alpha23">鵺</a></td>
   <td><a href="mania.php">神話マニア</td>
-  <td><a href="mania.php#mania_group">神話マニア系</a></td>
+  <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
   <td class="ability">初日の夜に誰か一人を選んでその人と同じ所属陣営にする。<br>
@@ -1293,7 +1294,7 @@ Ver. 1.4.0
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">自分撃ち固定のキューピッド。自分に<a href="sub_role.php#mind_receiver">受信者</a>、自分と相手に<a href="sub_role.php#challenge_lovers">難題</a>が追加される。</td>
+  <td class="ability">自分撃ち固定で、矢を撃った二人に<a href="sub_role.php#challenge_lovers">難題</a>を付加するキューピッド。自分に<a href="sub_role.php#mind_receiver">受信者</a>が付く。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -1609,6 +1610,40 @@ Ver. 1.4.0
   <td class="ability">人狼に襲撃された時、自分の感染者を身代わりして生き延びることができる吸血鬼。<br>
     狩人に護衛されると殺される。</td>
   <td>Ver. 1.4.0 β17</td>
+</tr>
+<tr>
+  <td><a href="lovers.php#sacrifice_angel" id="140beta18">守護天使</a></td>
+  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php#angel_group">天使系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>と<a href="sub_role.php#protected">庇護者</a>を付加する上位天使。
+人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+  </td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
+<tr>
+  <td><a href="mania.php#sacrifice_mania">影武者</a></td>
+  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。<br>
+    自分と投票先に<a href="sub_role.php#mind_friend">共鳴者</a>がつく (結果が表示されるのは 2 日目の朝)。
+    人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+  </td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
+<tr>
+  <td><a href="human.php#evoke_scanner">イタコ</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#mind_scanner_group">さとり系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_presage">受託者</a>にする。<br>
+    自分が人狼に殺されたら<a href="sub_role.php#mind_presage">受託者</a>に誰が襲撃したかメッセージが届く。
+  </td>
+  <td>Ver. 1.4.0 β18</td>
 </tr>
 </table>
 
@@ -2099,8 +2134,6 @@ Ver. 1.4.0
 ○祟神 / ミシャグジさま (レス 19 / 33)
 
 ○宣教師 (レス 86)
-
-○従者 (レス 13 / 64)
 
 ○蟲師 (レス 68)
 </pre>

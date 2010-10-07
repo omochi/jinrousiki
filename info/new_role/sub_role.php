@@ -755,11 +755,12 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </p>
 <p>
 <a href="#mind_read">サトラレ</a>
-<a href="#mind_receiver">受信者</a>
 <a href="#mind_open">公開者</a>
+<a href="#mind_receiver">受信者</a>
 <a href="#mind_friend">共鳴者</a>
 <a href="#mind_sympathy">共感者</a>
 <a href="#mind_evoke">口寄せ</a>
+<a href="#mind_presage">受託者</a>
 <a href="#mind_lonely">はぐれ者</a>
 </p>
 
@@ -796,27 +797,6 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 夜に相談できる人外にこれが付くとかなり大変になると思われます。
 </pre>
 
-<h3><a id="mind_receiver">受信者</a> [Ver. 1.4.0 α22〜]</h3>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-特定の人の夜の発言を見ることができます。
-</pre>
-<ol>
-  <li>2 日目の朝から表示されて、その夜以降から効力が適用されます。</li>
-  <li>誰の発言を見ているのか分かります。</li>
-</ol>
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="lovers.php#self_cupid">求愛者</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>・<a href="lovers.php#mind_cupid">女神</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="human.php#mind_scanner">さとり</a> - <a href="#mind_read">サトラレ</a>の逆バージョンです。
-<a href="human.php#common_group">共有者</a>などの会話に混ざって表示されるのでうっかり
-返事をしないように気をつけましょう。
-</pre>
-
 <h3><a id="mind_open">公開者</a> [Ver. 1.4.0 α22〜]</h3>
 <pre>
 夜の発言が参加者全員に見られてしまいます。
@@ -841,6 +821,27 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 くれぐれもうっかり自分の役職をつぶやかないように注意してください。
 </pre>
 
+<h3><a id="mind_receiver">受信者</a> [Ver. 1.4.0 α22〜]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+特定の人の夜の発言を見ることができます。
+</pre>
+<ol>
+  <li>2 日目の朝から表示されて、その夜以降から効力が適用されます。</li>
+  <li>誰の発言を見ているのか分かります。</li>
+</ol>
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#self_cupid">求愛者</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>・<a href="lovers.php#mind_cupid">女神</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#mind_scanner">さとり</a> - <a href="#mind_read">サトラレ</a>の逆バージョンです。
+<a href="human.php#common_group">共有者</a>などの会話に混ざって表示されるのでうっかり
+返事をしないように気をつけましょう。
+</pre>
+
 <h3><a id="mind_friend">共鳴者</a> [Ver. 1.4.0 α23〜]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -849,12 +850,12 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="mania.php#unknown_mania">鵺</a>
+<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="mania.php#unknown_mania_group">鵺系</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 互いに認識できる<a href="#mind_receiver">受信者</a>です。
-共有者が<a href="human.php#unknown_mania">鵺</a>と<a href="lovers.php#mind_cupid">女神</a>に同時に矢を撃たれた場合は、誰が誰の発言が
+共有者が<a href="mania.php#unknown_mania">鵺</a>と<a href="lovers.php#mind_cupid">女神</a>に同時に矢を撃たれた場合は、誰が誰の発言が
 見えるのか、非常にややこしい状況になりますね。
 </pre>
 
@@ -896,6 +897,21 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 当然ですが、霊界オフモードにしないと機能しません。
 </pre>
 
+<h3><a id="mind_presage">受託者</a> [Ver. 1.4.0 β18〜]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+付加した<a href="human.php#presage_scanner">件</a>が人狼に襲撃されて死亡したら誰に襲撃されたかメッセージが表示されます。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#reporter">ブン屋</a>・<a href="human.php#presage_scanner">件</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+テーマは「ダイイングメッセージを受け取る人」です。
+</pre>
+
 <h3><a id="mind_lonely">はぐれ者</a> [Ver. 1.4.0 β8〜]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -914,8 +930,8 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h2><a id="lovers_group">恋人系</a></h2>
 <p>
 <a href="#lovers">恋人</a>
-<a href="#possessed_exchange">交換憑依</a>
 <a href="#challenge_lovers">難題</a>
+<a href="#possessed_exchange">交換憑依</a>
 </p>
 
 <h3><a id="lovers">恋人</a> [Ver. 1.2.0〜]</h3>
@@ -923,6 +939,34 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 勝利条件が恋人陣営に変化します。
 表示されている相手が死亡すると自分も死亡します。
+</pre>
+
+<h3><a id="challenge_lovers">難題</a> [Ver. 1.4.0 β11〜]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+4 日目夜までは以下の耐性を持つ。
+</pre>
+<ol>
+  <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
+  <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li><a href="human.php#assassin_spec">暗殺反射</a></li>
+  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+</ol>
+<pre>
+5 日目以降は恋人の相方と同じ人に投票しないとショック死する。
+複数の恋人がいる場合は誰か一人と同じならショック死しない。
+</pre>
+<h4>Ver. 1.4.0 β13〜</h4>
+<pre>
+<a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#moon_cupid">かぐや姫</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+かぐや姫の不老不死の秘薬の伝説がモチーフです。
 </pre>
 
 <h3><a id="possessed_exchange">交換憑依</a> [Ver. 1.4.0 β11〜]</h3>
@@ -951,37 +995,9 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="lovers.php#exchange_angel">魂移使</a>の処理用に実装されたサブ役職です。
 </pre>
 
-<h3><a id="challenge_lovers">難題</a> [Ver. 1.4.0 β11〜]</h3>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-4 日目夜までは以下の耐性を持つ。
-</pre>
-<ol>
-  <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
-  <li>毒能力の対象外</li>
-  <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
-  <li><a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
-</ol>
-<pre>
-5 日目以降は恋人の相方と同じ人に投票しないとショック死する。
-複数の恋人がいる場合は誰か一人と同じならショック死しない。
-</pre>
-<h4>Ver. 1.4.0 β13〜</h4>
-<pre>
-<a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="lovers.php#moon_cupid">かぐや姫</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-かぐや姫の不老不死の秘薬の伝説がモチーフです。
-</pre>
-
 <h2><a id="other_group">その他</a></h2>
 <p>
+<a href="#protected">庇護者</a>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
 <a href="#bad_status">悪戯</a>
@@ -993,6 +1009,31 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#copied_teller">元夢語部</a>
 <a href="#lost_ability">能力喪失</a>
 </p>
+
+<h3><a id="protected">庇護者</a> [Ver. 1.4.0 β18〜]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<h4>[耐性] 人狼襲撃：身代わり</h4>
+<h4>[身代わり能力] 庇護者付加者</h4>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、庇護者を付加した人が身代わりで死亡する。
+判定は<a href="#challenge_lovers">難題</a>の後で、基本役職の能力による人狼襲撃耐性判定 (例：<a href="human.php#escaper">逃亡者</a>・<a href="fox.php#fox">妖狐</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) 
+よりも優先される。
+</pre>
+<ol>
+  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+  <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
+  <li>本人は身代わりが発生しても分からない。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+身代わり能力者を与えるサブ役職です。誰が誰を、という判定はしていないので
+<a href="wolf.php#silver_wolf">銀狼</a>が仲間を襲撃した場合でも発生します。
+</pre>
 
 <h3><a id="possessed_target">憑依者</a> [Ver. 1.4.0 α24〜]</h3>
 <h4>[配役制限] 役職付加専用</h4>

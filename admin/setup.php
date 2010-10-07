@@ -6,7 +6,7 @@ $INIT_CONF->LoadClass('SCRIPT_INFO');
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ
 
 if(! $DB_CONF->Connect(true, false)){ //DB 接続
-  mysql_query("CREATE DATABASE {$DB_CONF->name} DEFAULT CHARSET ujis");
+  mysql_query("CREATE DATABASE {$DB_CONF->name} DEFAULT CHARSET utf8");
   echo "データベース {$DB_CONF->name} を作成しました。<br>";
   $DB_CONF->Connect(true); //改めて DB 接続
 }

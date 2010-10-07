@@ -435,6 +435,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#wolf_howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/740" target="_top">新役職考案スレ</a> の 740 が原型です。
 人狼の人数や<a href="wolf.php#silver_wolf">銀狼</a>の存在を誤認する可能性が出てくる事に注意しましょう。
 </pre>
 </body></html>

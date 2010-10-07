@@ -4,6 +4,9 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputRolePageHeader('村人陣営');
 ?>
 <p>
+<a href="#change_human_camp">所属変更</a>
+</p>
+<p>
 <a href="#human_group">村人系</a>
 <a href="#mage_group">占い師系</a>
 <a href="#necromancer_group">霊能者系</a>
@@ -21,10 +24,23 @@ OutputRolePageHeader('村人陣営');
 <a href="#brownie_group">座敷童子系</a>
 </p>
 
+<h2><a id="change_human_camp">所属変更</a></h2>
+<h3>Ver. 1.4.0 β16〜</h3>
+<pre>
+<a href="#brownie">座敷童子</a>の所属を<a href="#human_group">村人系</a>から<a href="#brownie_group">座敷童子系</a>に変更。
+</pre>
+<h3>Ver. 1.4.0 β13〜</h3>
+<pre>
+<a href="mania.php#mania_group">神話マニア系</a>の所属を村人陣営から<a href="mania.php">神話マニア陣営</a>に変更。
+<a href="#medium">巫女</a>の所属を<a href="#necromancer_group">霊能者系</a>から<a href="#medium_group">巫女系</a>に変更。
+</pre>
+<h3>Ver. 1.4.0 β2〜</h3>
+<pre>
+<a href="#poison_cat">猫又</a>の所属を<a href="#poison_group">埋毒者系</a>から<a href="#poison_cat_group">猫又系</a>に変更。
+</pre>
+
+
 <h2><a id="human_group">村人系</a></h2>
-<p>
-<a href="#change_human_group">所属変更</a>
-</p>
 <p>
 <a href="#human">村人</a>
 <a href="#elder">長老</a>
@@ -34,12 +50,6 @@ OutputRolePageHeader('村人陣営');
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
-
-<h3><a id="change_human_group">所属変更 [村人系]</a></h3>
-<h4>Ver. 1.4.0 β13〜</h4>
-<pre>
-<a href="#brownie">座敷童子</a>の所属を<a href="#brownie_group">座敷童子系</a>に変更しました。
-</pre>
 
 <h3><a id="human">村人</a> (占い結果：村人 / 霊能結果：村人)</h3>
 <pre>
@@ -368,7 +378,6 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h2><a id="necromancer_group">霊能者系</a></h2>
 <p>
 <a href="#necromancer_rule">基本ルール</a>
-<a href="#change_necromancer_group">所属変更</a>
 </p>
 <p>
 <a href="#necromancer">霊能者</a>
@@ -382,12 +391,6 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 村人が吊らないといけない人外なのに、占いでは人外判定を出せないか
 何らかの妨害を受ける役職は霊能で分かります (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="fox.php#child_fox">子狐</a>)。
 詳細は個々の役職の霊能結果を確認してください。
-</pre>
-
-<h3><a id="change_necromancer_group">所属変更 [霊能系]</a></h3>
-<h4>Ver. 1.4.0 β13〜</h4>
-<pre>
-<a href="#medium">巫女</a>の所属を<a href="#medium_group">巫女系</a>に変更しました。
 </pre>
 
 <h3><a id="necromancer">霊能者</a> (占い結果：村人 / 霊能結果：村人)</h3>
@@ -452,19 +455,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 
 <h2><a id="medium_group">巫女系</a></h2>
 <p>
-<a href="#change_medium_group">所属変更</a>
-</p>
-<p>
 <a href="#medium">巫女</a>
 <a href="#seal_medium">封印師</a>
 <a href="#revive_medium">風祝</a>
 </p>
-
-<h3><a id="change_medium_group">所属変更 [巫女系]</a></h3>
-<h4>Ver. 1.4.0 β13〜</h4>
-<pre>
-<a href="#medium">巫女</a>の所属を<a href="#necromancer_group">霊能者系</a>から変更しました。
-</pre>
 
 <h3><a id="medium">巫女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
 <pre>
@@ -843,6 +837,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
     (尾行成功メッセージ＆対象が死んでいない＝狼が噛めない人外を噛んだ)</li>
 </ol>
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#presage_scanner">件</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/5" target="_top">新役職考案スレ</a> の 5 が原型です。
@@ -928,10 +926,9 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 狩人の<a href="#guard_limit">護衛制限</a>対象です。
 </pre>
 <ol>
-  <li>毒能力の対象外</li>
-  <li><a href="#assassin_spec">暗殺反射</a>能力を持つ</li>
+  <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li><a href="#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
-  <li><a href="#brownie">座敷童子</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#about_revive">蘇生</a>不可</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
@@ -996,9 +993,6 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 
 <h2><a id="poison_group">埋毒者系</a></h2>
 <p>
-<a href="#change_poison_group">所属変更</a>
-</p>
-<p>
 <a href="#poison">埋毒者</a>
 <a href="#strong_poison">強毒者</a>
 <a href="#incubate_poison">潜毒者</a>
@@ -1006,12 +1000,6 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <a href="#chain_poison">連毒者</a>
 <a href="#dummy_poison">夢毒者</a>
 </p>
-
-<h3><a id="change_poison_group">所属変更</a></h3>
-<h4>Ver. 1.4.0 β2〜</h4>
-<pre>
-<a href="#poison_cat">猫又</a>の所属を<a href="#poison_cat_group">猫又系</a>に変更しました。
-</pre>
 
 <h3><a id="poison">埋毒者</a> (占い結果：村人 / 霊能結果：村人)</h3>
 <h4>[毒能力] 処刑：有り / 襲撃：有り / 薬師判定：有り</h4>
@@ -1108,7 +1096,6 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h2><a id="poison_cat_group">猫又系</a></h2>
 <p>
 <a href="#about_revive">基本ルール</a>
-<a href="#change_poison_cat_group">所属変更</a>
 </p>
 <p>
 <a href="#poison_cat">猫又</a>
@@ -1140,22 +1127,12 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#poison_cat">猫又</a>を蘇生対象外に変更
 </pre>
 
-<h3><a id="change_poison_cat_group">所属変更</a></h3>
-<h4>Ver. 1.4.0 β2〜</h4>
-<pre>
-<a href="#poison_cat">猫又</a>の所属を<a href="#poison_group">埋毒者系</a>から変更しました。
-</pre>
-
 <h3><a id="poison_cat">猫又</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18〜]</h3>
 <h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
 <h4>[毒能力] 処刑：有り / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 蘇生能力を持った<a href="#poison">埋毒者</a>。蘇生成功率は 25%。
 蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
-</pre>
-<h4>Ver. 1.4.0 β2〜</h4>
-<pre>
-所属を<a href="#poison_group">埋毒者系</a>から<a href="#poison_cat_group">猫又系</a>に変更しました。
 </pre>
 <h4>Ver. 1.4.0 α19〜</h4>
 <pre>
@@ -1429,6 +1406,7 @@ Bの蘇生処理はキャンセル
 <p>
 <a href="#mind_scanner">さとり</a>
 <a href="#evoke_scanner">イタコ</a>
+<a href="#presage_scanner">件</a>
 <a href="#whisper_scanner">囁騒霊</a>
 <a href="#howl_scanner">吠騒霊</a>
 <a href="#telepath_scanner">念騒霊</a>
@@ -1436,13 +1414,13 @@ Bの蘇生処理はキャンセル
 
 <h3><a id="mind_scanner">さとり</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <pre>
-初日の夜に誰か一人を選んでその人の夜の発言を見ることができます。
-結果が出るのは 2 日目以降で、相手にはサブ役職「<a href="sub_role.php#mind_read">サトラレ</a>」がつきます。
-身代わり君を対象に選ぶことはできません。
-<a href="#unconscious">無意識</a>と死者の発言を見ることはできません。
-自分が死んだら能力は無効になります。
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にします。
 人狼の遠吠えが一切見えません。
 </pre>
+<ol>
+<li>結果が出るのは 2 日目以降です。</li>
+<li>身代わり君を対象に選ぶことはできません。</li>
+</ol>
 <h4>Ver. 1.4.0 β17〜</h4>
 <pre>
 身代わり君を対象に選ぶことはできません。
@@ -1463,13 +1441,14 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="evoke_scanner">イタコ</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
 <pre>
 初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にします。
-
-1. 投票結果が出るのは 2 日目以降です。
-2. 口寄せ先が死亡したら霊界から遺言窓を介してメッセージを受け取れます。
-3. 自分では遺言欄を変更できません。
-4. 自分の遺言欄に何が表示されていても遺言は残りません。
-5. 身代わり君を対象に選ぶことはできません。
 </pre>
+<ol>
+<li>投票結果が出るのは 2 日目以降です。</li>
+<li>口寄せ先が死亡したら霊界から遺言窓を介してメッセージを受け取れます。</li>
+<li>自分では遺言欄を変更できません。</li>
+<li>自分の遺言欄に何が表示されていても遺言は残りません。</li>
+<li>身代わり君を対象に選ぶことはできません。</li>
+</ol>
 <h4>Ver. 1.4.0 β17〜</h4>
 <pre>
 身代わり君を対象に選ぶことはできません。
@@ -1478,6 +1457,27 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 霊界オフモードの有効活用をできる役職を作ろうと思い、
 こういう実装にしてみました。
+</pre>
+
+<h3><a id="presage_scanner">件</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
+<pre>
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_presage">受託者</a>にします。
+</pre>
+<ol>
+<li>投票結果が出るのは 2 日目以降です。</li>
+<li>自分が人狼に襲撃されて死亡したら<a href="sub_role.php#mind_presage">受託者</a>に自分が誰に襲撃されたかメッセージが送られます。</li>
+<li>身代わり君を対象に選ぶことはできません。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#reporter">ブン屋</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+能力を制限した<a href="#reporter">ブン屋</a>のさとりバージョンです。
+メッセージが届く相手が人外の可能性もあるので件であることを信用されても
+さらなる悲劇が起こる可能性があるのがポイントです。
 </pre>
 
 <h3><a id="whisper_scanner">囁騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
@@ -1645,7 +1645,8 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 
 <h3><a id="doll_master">人形遣い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊 / 護衛：制限対象</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 護衛：制限対象</h4>
+<h4>[身代わり能力] 上海人形系 (人形遣い以外)</h4>
 <pre>
 他の国で言う「貴族」。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
@@ -1663,6 +1664,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 身代わり君が人形遣いになる可能性があります。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。
@@ -1670,18 +1675,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h2><a id="brownie_group">座敷童子系</a></h2>
 <p>
-<a href="#change_brownie_group">所属変更</a>
-</p>
-<p>
 <a href="#brownie">座敷童子</a>
 <a href="#history_brownie">白澤</a>
 </p>
-
-<h3><a id="change_brownie_group">所属変更 [座敷童子系]</a></h3>
-<h4>Ver. 1.4.0 β16〜</h4>
-<pre>
-<a href="#brownie">座敷童子</a>の所属を<a href="#human_group">村人系</a>から変更しました。
-</pre>
 
 <h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
 <h4>[耐性] 処刑：熱病</h4>

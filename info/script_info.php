@@ -79,10 +79,7 @@ echo $str;
 $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
 		    '分　夜： ' . $TIME_CONF->default_night . '分') ?>にマウスポインタを合わせることで表示されます。<br>
 実時間の残り時間がおかしな場合は PC とサーバの時計がズレている可能性があります。<br>
-下記の計測結果で明らかに大きなズレがある場合は、<a href="http://www.vector.co.jp/soft/win95/personal/se050672.html" target="_blank">桜時計</a>などを使用して PC の時計を合わせてください。<br>
-<span class="diff-time">サーバとローカル PC の時間ズレ (ラグ含)：<script type="text/javascript">
-<?php echo "output_diff_time('" . TZDate('Y, m, j, G, i, s', TZTime()) . "');" ?>
-</script>秒</span>
+→ Ver. 1.4.0 β4 から不要になりました。
 </div>
 
 <h3>初日の夜は身代わり君</h3>

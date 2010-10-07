@@ -318,6 +318,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#イタコ#です。誰か一人の心を#口寄せ#を介して読むことができます。先祖伝来の#口寄せ#の力で村を勝利に導くのです。",
     'type' => 'mind_scanner');
 
+  var $presage_scanner = array(
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#件#です。あなたが_人狼_に襲撃されたら、あなたの#受託者#に誰が襲撃したかメッセージを送ることができます。",
+    'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
+
   var $whisper_scanner = array(
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#囁騒霊#です。二日目からあなたの夜の独り言が_共有者_にも聞こえるようになります。\n　死んでしまったのは誰？あなたの口ずさむ悲しみを、_共有者_たちにも知ってもらいましょう。",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'common'));
@@ -629,6 +633,10 @@ class RoleMessageList{
     'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|魂移使|です。初日の夜に誰か二人を|恋人|にすることができます。さらに、#共感者#にして二人の精神を入れ替えてしまいます。\n　|恋人|の強い絆は魂をも愛の奔流に飲み込みます。愛する人をゆっくりとみつめる機会を与えることで、真実の愛を教えるのです！",
     'type' => 'angel');
 
+  var $sacrifice_angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|守護天使|です。初日の夜に誰か二人を|恋人|にすることができます。あなたは#人狼#に襲撃されても死にません。\n　また、あなたの|恋人|が#人狼#に襲撃されても自分の命と引き換えに守ることができます。",
+    'type' => 'angel', 'delimiter' => array('#' => 'wolf'));
+
   var $ark_angel = array(
     'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|大天使|です。初日の夜に誰か二人を|恋人|にすることができます。また、他の|天使|が作った#共感者#を知ることができます。\n　秘蹟を統べる者――神に授けられたその力で村に神の存在を知らしめるのです。神を認める者には祝福を、認めぬ者には制裁を。",
     'type' => 'angel');
@@ -734,8 +742,12 @@ class RoleMessageList{
     'type' => 'mania');
 
   var $unknown_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|鵺|です。初日の夜に指定した人と同じ陣営になり、二日目夜からお互いに会話できます。\n　 ――鵺は二つの面を持っている。人側の側面と獣側の側面だ。正面から見ては？正体不明だ。",
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|鵺|です。初日の夜に指定した人と同じ陣営になり、二日目夜からお互いに会話できます。\n　――鵺は二つの面を持っている。人側の側面と獣側の側面だ。正面から見ては？――正体不明。",
     'type' => 'mania');
+
+  var $sacrifice_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|影武者|です。初日の夜に指定した人と同じ陣営になり、その人が#人狼#に襲撃されたら身代わりになります。",
+    'type' => 'mania', 'delimiter' => array('#' => 'wolf'));
 
   var $chicken = array('message' => "　あなたは|小心者|です。#処刑#投票時に一票でも貰うと|ショック死|してしまいます。",
 		       'delimiter' => array('|' => 'chicken', '#' => 'vote'));
@@ -1035,6 +1047,7 @@ class RoleMessageList{
   var $result_eclipse_assassin = array('message' => "さんは|蝕暗殺者|でした", 'type' => 'assassin');
   var $result_mind_scanner = array('message' => "さんは|さとり|でした", 'delimiter' => array('|' => 'mind'));
   var $result_evoke_scanner = array('message' => "さんは|イタコ|でした", 'type' => 'result_mind_scanner');
+  var $result_presage_scanner = array('message' => "さんは|件|でした", 'type' => 'result_mind_scanner');
   var $result_whisper_scanner = array('message' => "さんは|囁騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_howl_scanner = array('message' => "さんは|吠騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_telepath_scanner = array('message' => "さんは|念騒霊|でした", 'type' => 'result_mind_scanner');
@@ -1114,6 +1127,7 @@ class RoleMessageList{
   var $result_rose_angel = array('message' => "さんは|薔薇天使|でした", 'type' => 'result_angel');
   var $result_lily_angel = array('message' => "さんは|百合天使|でした", 'type' => 'result_angel');
   var $result_exchange_angel = array('message' => "さんは|魂移使|でした", 'type' => 'result_angel');
+  var $result_sacrifice_angel = array('message' => "さんは|守護天使|でした", 'type' => 'result_angel');
   var $result_ark_angel = array('message' => "さんは|大天使|でした", 'type' => 'result_angel');
   var $result_lovers = array('message' => "さんは|恋人|でした", 'type' => 'result_cupid');
   var $result_quiz = array('message' => "さんは|出題者|でした", 'delimiter' => array('|' => 'quiz'));
@@ -1142,8 +1156,9 @@ class RoleMessageList{
   var $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   var $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
   var $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
-  var $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
   var $result_dummy_mania = array('message' => "さんは|夢語部|でした", 'type' => 'result_mania');
+  var $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
+  var $result_sacrifice_mania = array('message' => "さんは|影武者|でした", 'type' => 'result_mania');
 
   var $result_mage_failed = array('message' => "さんの鑑定に失敗しました");
   var $result_stolen = array('message' => "さんの死体が盗まれました！");
@@ -1192,6 +1207,7 @@ class RoleMessageList{
   var $exchange_header = array('message' => "あなたは３日目に");
   var $exchange_footer = array('message' => "さんに|憑依|します", 'type' => 'result_wolf');
   var $sympathy_result = array('message' => "|共感|結果： ", 'type' => 'result_mind_scanner');
+  var $presage_result_header = array('message' => "|受託|結果： ", 'type' => 'result_mind_scanner');
 }
 
 class WishRoleList{
@@ -1230,12 +1246,16 @@ class WishRoleList{
   var $role_chiroptera        = array('message' => "蝙蝠→");
   var $role_fairy             = array('message' => "妖精→");
   var $role_mania             = array('message' => "神話マニア→");
+  var $role_unknown_mania     = array('message' => "鵺→");
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_brownie');
+#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_unknown_mania');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison');
 #$builder->Output('enchant_mad');
 #$builder->Output('howl_fox');
-$builder->Output('sacrifice_vampire');
+#$builder->Output('sacrifice_vampire');
+#$builder->Output('sacrifice_angel');
+#$builder->Output('sacrifice_mania');
+$builder->Output('presage_scanner');

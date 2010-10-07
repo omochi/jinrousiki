@@ -32,7 +32,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3><a id="real_time"><?php echo $GAME_OPT_MESS->real_time ?></a></h3>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->real_time ?></li>
-  <li>昼と夜を個別に指定できます</li>
+  <li>昼と夜を個別に設定できます</li>
 </ul>
 
 <h3><a id="wait_morning"><?php echo $GAME_OPT_MESS->wait_morning ?></a> [Ver. 1.4.0 β17〜]</h3>
@@ -72,7 +72,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3><a id="gm_login"><?php echo $GAME_OPT_MESS->gm_login ?></a> [Ver. 1.4.0 α18〜]</h3>
 <ul>
   <li>仮想 GM が身代わり君としてログインします</li>
-  <li>村を立てる際にログインパスワードを入力します</li>
+  <li>村を作成する際にログインパスワードの入力が必要です</li>
   <li>身代わり君のユーザ名は「dummy_boy」です</li>
 </ul>
 
@@ -80,7 +80,7 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
   <li><?php echo $GAME_OPT_CAPT->gerd ?></li>
   <li><a href="#chaos">闇鍋モード</a>の固定配役に村人を一人追加します</li>
-  <li><a href="#mania">神話マニア</a>オプションが付いていても村人を一人確保します</li>
+  <li><a href="#replace_human">村人置換</a>オプションが付いていても村人を一人確保します</li>
   <li><a href="#duel">決闘村</a>・<a href="#festival">お祭り村</a>の配役は入れ替えません (最初から存在する場合のみ有効です)</li>
 </ul>
 
@@ -101,7 +101,7 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h3><a id="not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a></h3>
 <ul>
-  <li>誰がどの役職なのかが公開されません</li>
+  <li>誰がどの役職なのかゲーム終了まで公開されません</li>
   <li>蘇生能力は有効になります</li>
 </ul>
 
@@ -219,7 +219,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3><a id="gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a> [Ver. 1.4.0 α14〜]</h3>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->gentleman ?></li>
-  <li><a href="new_role/sub_role.php#gentleman">紳士</a>・<a href="new_role/sub_role.php#gentleman">淑女</a>の発動率はランダム付加の場合と同じです</li>
+  <li><a href="new_role/sub_role.php#gentleman">紳士</a>・<a href="new_role/sub_role.php#lady">淑女</a>の発動率はランダム付加の場合と同じです</li>
   <li><a href="#chaos">闇鍋モード</a>でランダムに付加される時は個々の性別を参照していません</li>
 </ul>
 
@@ -355,9 +355,9 @@ OutputInfoPageHeader('ゲームオプション');
 <h4><a id="quiz"><?php echo $GAME_OPT_MESS->quiz ?></a> [Ver. 1.4.0 α2〜]</h4>
 <ul>
   <li>GM が<a href="new_role/quiz.php#quiz">出題者</a>になります</li>
-  <li>村を立てる際には GM ログインパスワードを設定する必要があります</li>
+  <li>村を作成する際に GM ログインパスワードの入力が必要です</li>
   <li>GM もゲーム開始投票をする必要があります</li>
-  <li>出現役職は村人、共有者、人狼、狂人、妖狐です</li>
+  <li>出現役職は村人・共有者・人狼・狂人・妖狐です</li>
   <li>GM 以外の全員に<a href="new_role/sub_role.php#panelist">解答者</a>がつきます</li>
   <li>人狼は常時 GM しか狙えません</li>
   <li>GM は噛まれても殺されません</li>
@@ -367,7 +367,7 @@ OutputInfoPageHeader('ゲームオプション');
     <li>人狼が適当なタイミングで GM を噛む</li>
     <li>夜が明けたらユーザが解答する</li>
     <li>全員解答したら GM が正解発表</li>
-    <li>ユーザは間違っていたら GM に投票、正解なら GM 以外に投票</li>
+    <li>ユーザは不正解なら GM に投票、正解なら GM 以外に投票</li>
     <li>GM は正解者の中で一番解答が遅かった人に投票</li>
     <li>GM は日が暮れる前に次の問題を出題する</li>
     <li>以下、勝敗が決まるまで繰り返す</li>

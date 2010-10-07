@@ -367,7 +367,7 @@ class User{
     //白狼か完全覚醒天狼以外の人狼・黒狐・不審者は「人狼」
     $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
       $this->IsRole('black_fox', 'suspect');
-    return $result && ! $reverse ? 'wolf' : 'human';
+    return ($result xor $reverse) ? 'wolf' : 'human';
   }
 
   //精神鑑定士の判定
@@ -419,7 +419,9 @@ class User{
     }
 
     if($ROOM->date == 1){ //初日限定
-      if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+      if($this->IsRole('mind_scanner', 'presage_scanner')){
+	return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+      }
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
@@ -898,8 +900,8 @@ class UserDataSet{
 
     $target = $user;
     $stack  = array();
-    while($target->IsRole('unknown_mania')){ //鵺ならコピー先を辿る
-      $id = array_shift($target->GetPartner('unknown_mania', true));
+    while($target->IsRole('unknown_mania', 'sacrifice_mania')){ //鵺系ならコピー先を辿る
+      $id = array_shift($target->GetPartner($target->main_role, true));
       if(is_null($id) || in_array($id, $stack)) break;
       $stack[] = $id;
       $target  = $this->ByID($id);

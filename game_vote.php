@@ -249,7 +249,7 @@ function VoteNight(){
     break;
 
   case 'MIND_SCANNER_DO':
-    if(! $SELF->IsRole('mind_scanner', 'evoke_scanner')){
+    if(! $SELF->IsRole('mind_scanner', 'evoke_scanner', 'presage_scanner')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
@@ -418,10 +418,11 @@ function VoteNight(){
     if($is_cupid){ //キューピッド系の処理
       $uname_stack  = array();
       $handle_stack = array();
-      $is_self  = $SELF->IsRole('self_cupid');
-      $is_moon  = $SELF->IsRole('moon_cupid');
-      $is_mind  = $SELF->IsRole('mind_cupid');
-      $is_dummy = $SELF->IsRole('dummy_chiroptera');
+      $is_self      = $SELF->IsRole('self_cupid');
+      $is_moon      = $SELF->IsRole('moon_cupid');
+      $is_mind      = $SELF->IsRole('mind_cupid');
+      $is_dummy     = $SELF->IsRole('dummy_chiroptera');
+      $is_sacrifice = $SELF->IsRole('sacrifice_angel');
       foreach($target_list as $target){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
@@ -443,6 +444,9 @@ function VoteNight(){
 	  $role .= ' mind_friend['. $SELF->user_no . ']';
 	  if(! $self_shoot) $SELF->AddRole('mind_receiver[' . $target->user_no . ']');
 	}
+	elseif($is_sacrifice){ //守護天使：自分以外に庇護者を追加
+	  if(! $target->IsSelf()) $role .= ' protected[' . $SELF->user_no . ']';
+	}
 	$target->AddRole($role);
 	$target->ReparseRoles(); //再パース (魂移使判定用)
       }
@@ -450,7 +454,7 @@ function VoteNight(){
       if($SELF->IsRoleGroup('angel')){ //天使系の処理
 	$lovers_a = $target_list[0];
 	$lovers_b = $target_list[1];
-	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) ||
+	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) || $is_sacrifice ||
 	   ($SELF->IsRole('rose_angel') && $lovers_a->sex == 'male' && $lovers_b->sex == 'male') ||
 	   ($SELF->IsRole('lily_angel') && $lovers_a->sex == 'female' && $lovers_b->sex == 'female')){
 	  $lovers_a->AddRole('mind_sympathy');
@@ -681,7 +685,7 @@ function OutputVoteNight(){
     $type     = 'ASSASSIN_DO';
     $not_type = 'ASSASSIN_NOT_DO';
   }
-  elseif($role_scanner = $SELF->IsRole('mind_scanner', 'evoke_scanner')){
+  elseif($role_scanner = $SELF->IsRole('mind_scanner', 'evoke_scanner', 'presage_scanner')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');

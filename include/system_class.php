@@ -559,6 +559,7 @@ class RoleData{
     'eclipse_assassin'   => '蝕暗殺者',
     'mind_scanner'       => 'さとり',
     'evoke_scanner'      => 'イタコ',
+    'presage_scanner'    => '件',
     'whisper_scanner'    => '囁騒霊',
     'howl_scanner'       => '吠騒霊',
     'telepath_scanner'   => '念騒霊',
@@ -638,6 +639,7 @@ class RoleData{
     'rose_angel'         => '薔薇天使',
     'lily_angel'         => '百合天使',
     'exchange_angel'     => '魂移使',
+    'sacrifice_angel'    => '守護天使',
     'ark_angel'          => '大天使',
     'quiz'               => '出題者',
     'vampire'            => '吸血鬼',
@@ -665,8 +667,9 @@ class RoleData{
     'mania'              => '神話マニア',
     'trick_mania'        => '奇術師',
     'soul_mania'         => '覚醒者',
+    'dummy_mania'        => '夢語部',
     'unknown_mania'      => '鵺',
-    'dummy_mania'        => '夢語部');
+    'sacrifice_mania'    => '影武者');
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -733,11 +736,13 @@ class RoleData{
     'mind_friend'        => '共鳴者',
     'mind_sympathy'      => '共感者',
     'mind_evoke'         => '口寄せ',
+    'mind_presage'       => '受託者',
     'mind_lonely'        => 'はぐれ者',
     'lovers'             => '恋人',
     'possessed_exchange' => '交換憑依',
     'challenge_lovers'   => '難題',
     'infected'           => '感染者',
+    'protected'          => '庇護者',
     'changed_therian'    => '元獣人',
     'copied'             => '元神話マニア',
     'copied_trick'       => '元奇術師',
@@ -811,6 +816,7 @@ class RoleData{
     'eclipse_assassin'   => '蝕暗',
     'mind_scanner'       => '覚',
     'evoke_scanner'      => 'イ',
+    'presage_scanner'    => '件',
     'whisper_scanner'    => '囁騒',
     'howl_scanner'       => '吠騒',
     'telepath_scanner'   => '念騒',
@@ -890,6 +896,7 @@ class RoleData{
     'rose_angel'         => '薔天',
     'lily_angel'         => '百天',
     'exchange_angel'     => '魂移',
+    'sacrifice_angel'    => '守天',
     'ark_angel'          => '大天',
     'quiz'               => 'GM',
     'vampire'            => '血',
@@ -917,8 +924,9 @@ class RoleData{
     'mania'              => 'マ',
     'trick_mania'        => '奇',
     'soul_mania'         => '覚醒',
-    'unknown_mania'      => '鵺',
     'dummy_mania'        => '夢語',
+    'unknown_mania'      => '鵺',
+    'sacrifice_mania'    => '影',
     'chicken'            => '酉',
     'rabbit'             => '卯',
     'perverseness'       => '邪',
@@ -977,6 +985,7 @@ class RoleData{
     'mower'              => '草刈',
     'mind_read'          => '漏',
     'mind_evoke'         => '口寄',
+    'mind_presage'       => '受託',
     'mind_open'          => '公',
     'mind_receiver'      => '受',
     'mind_friend'        => '鳴',
@@ -986,6 +995,7 @@ class RoleData{
     'possessed_exchange' => '換',
     'challenge_lovers'   => '難',
     'infected'           => '染',
+    'protected'          => '庇',
     'copied'             => '元マ',
     'copied_trick'       => '元奇',
     'copied_soul'        => '元覚',
@@ -1024,13 +1034,14 @@ class RoleData{
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
     'scanner' => 'mind_scanner',
+    'unknown_mania' => 'unknown_mania', 'sacrifice_mania' => 'unknown_mania',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
   var $sub_role_group_list = array(
     'lovers'       => array('lovers', 'possessed_exchange', 'challenge_lovers'),
     'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
-			    'mind_evoke', 'mind_lonely'),
+			    'mind_evoke', 'mind_presage', 'mind_lonely'),
     'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'),
     'vampire'      => array('infected'),
     'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
@@ -1048,7 +1059,8 @@ class RoleData{
 			    'howl_ringing', 'deep_sleep', 'silent', 'mower'),
     'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
     'chiroptera'   => array('bad_status'),
-    'human'        => array('lost_ability'));
+    'human'        => array('lost_ability'),
+    'guard'        => array('protected'));
 
   //-- 関数 --//
   //役職グループ判定
@@ -1083,7 +1095,8 @@ class RoleData{
       return $camp;
 
     case 'mania':
-      return $start ? $camp : 'human';
+    case 'unknown_mania':
+      return $start ? 'mania' : 'human';
 
     default:
       return 'human';
@@ -1107,6 +1120,10 @@ class RoleData{
 
     case 'child_fox':
       $class = 'fox';
+      break;
+
+    case 'unknown_mania':
+      $class = 'mania';
       break;
     }
     return $class;

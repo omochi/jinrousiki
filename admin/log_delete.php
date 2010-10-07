@@ -12,7 +12,7 @@ if( ($dbHandle = ConnectDatabase()) == NULL)
 
 
 print("<html><head>");
-print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-JP\">");
+print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
 print("<title>汝は人狼なりや？[過去ログ編集]</title> \r\n");
 print("<style type=\"text/css\"><!--\r\n");
 

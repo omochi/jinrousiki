@@ -296,7 +296,7 @@ class GameOptionCaptionMessage{
   var $wait_morning          = '夜が明けてから一定時間の間発言ができません';
   var $open_day              = 'ゲームが1日目の「昼」からスタートします';
   var $no_close_cast         = '常時公開 (蘇生能力は無効です)';
-  var $not_open_cast         = '常時非公開 (誰がどの役職なのかが公開されません。蘇生能力は有効です)';
+  var $not_open_cast         = '常時非公開 (誰がどの役職なのか公開されません。蘇生能力は有効です)';
   var $auto_open_cast        = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
   var $poison                = '処刑されたり狼に食べられた場合、道連れにします。[村人2→埋毒1、人狼1]';
   var $assassin              = '夜に村人一人を殺すことができます。[村人2→暗殺者1、人狼1]';

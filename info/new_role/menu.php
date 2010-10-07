@@ -52,6 +52,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li>★☆★☆★☆★</li>
 <li><a href="mania.php" target="body">&lt;神話マニア陣営&gt;</a></li>
 <li><a href="mania.php#mania_group" target="body">神話マニア系</a></li>
+<li><a href="mania.php#unknown_mania_group" target="body">鵺系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="sub_role.php" target="body">&lt;サブ役職&gt;</a></li>
 <li><a href="sub_role.php#chicken_group" target="body">小心者系</a></li>

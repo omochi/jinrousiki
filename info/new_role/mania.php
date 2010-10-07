@@ -5,10 +5,11 @@ OutputRolePageHeader('神話マニア陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
-<a href="#change_mania_group">所属変更</a>
+<a href="#change_mania_camp">所属変更</a>
 </p>
 <p>
 <a href="#mania_group">神話マニア系</a>
+<a href="#unknown_mania_group">鵺系</a>
 </p>
 
 <h2><a id="rule">基本ルール</a></h2>
@@ -20,10 +21,14 @@ OutputRolePageHeader('神話マニア陣営');
   <li>コピーが成立する前に突然死した場合の<a href="human.php#medium_group">巫女系</a>の陣営判定は「村人」です。</li>
 </ol>
 
-<h2><a id="change_poison_cat_group">所属変更</a></h2>
-<h4>Ver. 1.4.0 β13〜</h4>
+<h2><a id="change_mania_camp">所属変更</a></h2>
+<h3>Ver. 1.4.0 β18〜</h3>
 <pre>
-<a href="#mania_group">神話マニア系</a>の所属を<a href="human.php">村人陣営</a>から変更しました。
+<a href="#unknown_mania">鵺</a>の所属を<a href="#mania_group">神話マニア系</a>から<a href="#unknown_mania_group">鵺系</a>に変更。
+</pre>
+<h3>Ver. 1.4.0 β13〜</h3>
+<pre>
+<a href="#mania_group">神話マニア系</a>の所属を<a href="human.php">村人陣営</a>から神話マニア陣営に変更。
 </pre>
 
 <h2><a id="mania_group">神話マニア系</a></h2>
@@ -31,15 +36,14 @@ OutputRolePageHeader('神話マニア陣営');
 <a href="#mania">神話マニア</a>
 <a href="#trick_mania">奇術師</a>
 <a href="#soul_mania">覚醒者</a>
-<a href="#unknown_mania">鵺</a>
 <a href="#dummy_mania">夢語部</a>
 </p>
 
 <h3><a id="mania">神話マニア</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11〜]</h3>
 <pre>
 神話マニア陣営の基本種。能力は<a href="#rule">基本ルール</a>参照。
-コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は村人になる。
-役職が変化すると<a href="sub_role.php#copied">元神話マニア</a>がつく。
+コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
+コピー成立後は<a href="sub_role.php#copied">元神話マニア</a>がつく。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -248,73 +252,6 @@ CO するべきかどうかは、コピーした役職次第です。
 能力発動のタイミングを考慮して<a href="human.php#incubate_poison">潜毒者</a>より一日早く変化処理を行っています。
 </pre>
 
-<h3><a id="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
-<pre>
-初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
-所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になります。
-生存カウントは常に村人なので、実質は所属陣営不明の狂人相当です。
-
-<a href="#mania">神話マニア</a>と違い、コピー結果が出ないのでコピー先に聞かないと
-自分の所属陣営が分かりません。
-</pre>
-<h4>所属陣営の判定例</h4>
-<pre>
-1. 鵺 → <a href="human.php#human">村人</a> (村人陣営)
-擬似<a href="human.php#common_group">共有者</a>になります。
-
-2. 鵺 → <a href="wolf.php#wolf">人狼</a> (人狼陣営)
-コピー先とだけ会話できる<a href="wolf.php#whisper_mad">囁き狂人</a>相当です。
-
-3. 鵺 → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
-所属は妖狐ですが自身は妖狐カウントされないので気をつけましょう。
-
-4. 鵺 → <a href="lovers.php#cupid">キューピッド</a> (恋人陣営)
-自分の恋人を持たないキューピッド相当になります。
-
-5. 鵺 → <a href="quiz.php#quiz">出題者</a> (出題者陣営)
-妖狐同様、自身は出題者カウントされない点に注意してください。
-
-6. 鵺 → <a href="vampire.php#vampire">吸血鬼</a> (吸血鬼陣営)
-吸血鬼陣営の勝利条件の仕様上、鵺は絶対に勝てない事になります。
-従って、吸血鬼は素直に自分の正体を告げない方がいいと思われます。
-
-7. 鵺 → <a href="chiroptera.php#chiroptera">蝙蝠</a> (蝙蝠陣営)
-コピー先と会話できる蝙蝠相当になります。
-相手の生死と自分の勝敗は無関係です。
-
-8. 鵺 → <a href="wolf.php#wolf">人狼</a>[恋人] (人狼陣営)
-サブ役職は判定対象外 (<a href="human.php#medium">巫女</a>と同じ) なので
-コピー先と勝利陣営が異なる、例外ケースとなります。
-
-9. 鵺 → <a href="wolf.php#wolf">人狼</a>[<a href="sub_role.php#mind_read">サトラレ</a>] (人狼陣営)
-コピー先が村人陣営の<a href="human.php#mind_scanner">さとり</a>に会話を覗かれている状態なので
-コピー先からの情報入手が難しくなります。
-
-10. 鵺A → 鵺B → <a href="wolf.php#wolf">人狼</a> (全員人狼陣営)
-コピー先が鵺だった場合は鵺以外の役職に当たるまで
-コピー先を辿って判定します。
-
-11. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
-コピー先を辿って自分に戻った場合は村人陣営になります。
-
-12. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
-神話マニアをコピーした場合はコピー結果の陣営になります。
-
-13. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
-神話マニアは鵺をコピーしたら村人になるので鵺のリンクが切れます。
-結果として以下のようになります。
-鵺A(村人陣営) → 村人(元神話マニア)、鵺B (人狼陣営) → 人狼
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-やる夫人狼の薔薇 GM に、「初心者の指南用に使える役職」を
-要請されてこういう実装にしてみました。
-鵺が初心者をコピーして指南するイメージですね。
-
-もしも、教えてもらう前にコピー先が死んでしまったら自分の所属陣営は
-「正体不明」になる事になります。とっても理不尽ですね。
-</pre>
-
 <h3><a id="dummy_mania">夢語部</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <h4>[役職表示] <a href="#soul_mania">覚醒者</a></h4>
 <pre>
@@ -460,5 +397,96 @@ CO するべきかどうかは、コピーした役職次第です。
 <pre>
 <a href="#soul_mania">覚醒者</a>の夢バージョンです。
 最終的には自覚することができるので他の夢系と比べると対応はしやすいかもしれません。
+</pre>
+
+<h2><a id="unknown_mania_group">鵺系</a></h2>
+<p>
+<a href="#unknown_mania">鵺</a>
+<a href="#sacrifice_mania">影武者</a>
+</p>
+
+<h3><a id="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
+<pre>
+初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
+所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になります。
+生存カウントは常に村人なので、実質は所属陣営不明の狂人相当です。
+
+<a href="#mania">神話マニア</a>と違い、コピー結果が出ないのでコピー先に聞かないと
+自分の所属陣営が分かりません。
+</pre>
+<h4>所属陣営の判定例</h4>
+<pre>
+1. 鵺 → <a href="human.php#human">村人</a> (村人陣営)
+擬似<a href="human.php#common_group">共有者</a>になります。
+
+2. 鵺 → <a href="wolf.php#wolf">人狼</a> (人狼陣営)
+コピー先とだけ会話できる<a href="wolf.php#whisper_mad">囁き狂人</a>相当です。
+
+3. 鵺 → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
+所属は妖狐ですが自身は妖狐カウントされないので気をつけましょう。
+
+4. 鵺 → <a href="lovers.php#cupid">キューピッド</a> (恋人陣営)
+自分の恋人を持たないキューピッド相当になります。
+
+5. 鵺 → <a href="quiz.php#quiz">出題者</a> (出題者陣営)
+妖狐同様、自身は出題者カウントされない点に注意してください。
+
+6. 鵺 → <a href="vampire.php#vampire">吸血鬼</a> (吸血鬼陣営)
+吸血鬼陣営の勝利条件の仕様上、鵺は絶対に勝てない事になります。
+従って、吸血鬼は素直に自分の正体を告げない方がいいと思われます。
+
+7. 鵺 → <a href="chiroptera.php#chiroptera">蝙蝠</a> (蝙蝠陣営)
+コピー先と会話できる蝙蝠相当になります。
+相手の生死と自分の勝敗は無関係です。
+
+8. 鵺 → <a href="wolf.php#wolf">人狼</a>[恋人] (人狼陣営)
+サブ役職は判定対象外 (<a href="human.php#medium">巫女</a>と同じ) なので
+コピー先と勝利陣営が異なる、例外ケースとなります。
+
+9. 鵺 → <a href="wolf.php#wolf">人狼</a>[<a href="sub_role.php#mind_read">サトラレ</a>] (人狼陣営)
+コピー先が村人陣営の<a href="human.php#mind_scanner">さとり</a>に会話を覗かれている状態なので
+コピー先からの情報入手が難しくなります。
+
+10. 鵺A → 鵺B → <a href="wolf.php#wolf">人狼</a> (全員人狼陣営)
+コピー先が鵺だった場合は鵺以外の役職に当たるまで
+コピー先を辿って判定します。
+
+11. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
+コピー先を辿って自分に戻った場合は村人陣営になります。
+
+12. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
+神話マニアをコピーした場合はコピー結果の陣営になります。
+
+13. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
+神話マニアは鵺をコピーしたら村人になるので鵺のリンクが切れます。
+結果として以下のようになります。
+鵺A(村人陣営) → 村人(元神話マニア)、鵺B (人狼陣営) → 人狼
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+やる夫人狼の薔薇 GM に、「初心者の指南用に使える役職」を
+要請されてこういう実装にしてみました。
+鵺が初心者をコピーして指南するイメージですね。
+
+もしも、教えてもらう前にコピー先が死んでしまったら自分の所属陣営は
+「正体不明」になる事になります。とっても理不尽ですね。
+</pre>
+
+<h3><a id="sacrifice_mania">影武者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18〜]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。
+自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
+陣営判定法則などの基本的な仕様は<a href="#unknown_mania">鵺</a>と同じ。
+人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="lovers.php#sacrifice_angel">守護天使</a>の鵺バージョンです。
+構想自体はこちらが先で、かなり前から検討されていた能力です。
 </pre>
 </body></html>

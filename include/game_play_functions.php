@@ -162,15 +162,27 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('scanner')){ //さとり系
     $ROLE_IMG->Output($SELF->main_role);
 
-    if($SELF->IsRole('mind_scanner', 'evoke_scanner')){
+    if($SELF->IsRole('mind_scanner', 'evoke_scanner', 'presage_scanner')){
       if($ROOM->date == 1){
 	if($ROOM->IsNight()){ //初日夜の投票
 	  OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
 	}
       }
-      else{ //2日目以降、自分のサトラレ/口寄せを表示
+      else{ //2日目以降、自分のサトラレ/口寄せ/受託者を表示
 	$stack = array();
-	$role = $SELF->IsRole('mind_scanner') ? 'mind_read' : 'mind_evoke';
+	switch($SELF->main_role){
+	case 'mind_scanner':
+	  $role = 'mind_read';
+	  break;
+
+	case 'evoke_scanner':
+	  $role = 'mind_evoke';
+	  break;
+
+	case 'presage_scanner':
+	  $role = 'mind_presage';
+	  break;
+	}
 	foreach($USERS->rows as $user){
 	  if($user->IsPartner($role, $SELF->user_no)) $stack[] = $user->handle_name;
 	}
@@ -581,10 +593,13 @@ function OutputAbility(){
       $ROLE_IMG->Output('mind_sympathy');
       if($ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
     }
+    if($SELF->IsRole('mind_presage')){
+      if($ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
+    }
   }
-  array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
-	     'mind_friend', 'mind_sympathy', 'infected', 'possessed_target', 'possessed',
-	     'bad_status');
+  array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_presage', 'mind_lonely',
+	     'mind_receiver', 'mind_friend', 'mind_sympathy', 'infected', 'possessed_target',
+	     'possessed', 'bad_status', 'protected');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -747,6 +762,12 @@ function OutputSelfAbilityResult($action){
   case 'SYMPATHY_RESULT':
     $type = 'sympathy';
     $header = 'sympathy_result';
+    break;
+
+  case 'PRESAGE_RESULT':
+    $type = 'reporter';
+    $header = 'presage_result_header';
+    $footer = 'reporter_result_footer';
     break;
 
   default:

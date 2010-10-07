@@ -17,9 +17,12 @@ function CheckReferer($page, $white_list = NULL){
 function CheckBlackList(){
   global $ROOM_CONF;
 
-  foreach($ROOM_CONF->black_list as $host){
-    if(strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return true;
+  $ip = $_SERVER['REMOTE_ADDR'];
+  foreach($ROOM_CONF->black_list_ip as $host){
+    if(strpos($ip, $host) !== false) return true;
   }
+  if(is_null($ROOM_CONF->black_list_host)) return false;
+  if(preg_match($ROOM_CONF->black_list_host, gethostbyaddr($ip))) return true;
   return false;
 }
 

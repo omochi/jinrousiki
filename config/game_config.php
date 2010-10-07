@@ -16,8 +16,10 @@ class RoomConfig{
   //この時間内であれば、過去ログページに再入村のリンクが出現します
   var $clear_session_id = 86400; //24時間
 
-  //村立て・入村制限 IP アドレスのリスト
-  var $black_list = array();
+  //村立て・入村制限
+  var $black_list_ip = array(); //IP アドレス (strpos() による部分一致)
+  var $black_list_host = NULL; //ホスト名 (正規表現)
+  //var $black_list_host = '/localhost.localdomain/'; //入力例
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
   var $max_user_list = array(8, 16, 22, 32, 50);

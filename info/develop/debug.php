@@ -13,8 +13,15 @@ Ver. 1.4.0
 <a href="#140beta12">β12</a>
 <a href="#140beta13">β13</a>
 <a href="#140beta16">β16</a>
+<a href="#140beta17">β17</a>
 </p>
 
+<h2><a id="140beta17">Ver. 1.4.0 β17</a></h2>
+<h3>include/user_class.php % 370行目付近 (2010/10/04 (Mon) 00:44)</h3>
+<pre>
+× return $result && ! $reverse ? 'wolf' : 'human';
+○ return ($result xor $reverse) ? 'wolf' : 'human';
+</pre>
 <h2><a id="140beta16">Ver. 1.4.0 β16</a></h2>
 <h3>include/game_vote_functions.php % 1474行目付近</h3>
 <h4>[before]</h4>

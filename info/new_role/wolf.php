@@ -668,7 +668,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
-    <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
+    <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
     <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#challenge_lovers">難題</a>の能力無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>

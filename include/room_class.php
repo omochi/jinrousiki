@@ -303,8 +303,8 @@ class Room{
 
   //発言登録
   function Talk($sentence, $uname = '', $location = '', $font_type = NULL, $spend_time = 0){
-    if(empty($uname)) $uname = 'system';
-    if(empty($location)) $location = $this->day_night . ' system';
+    if($uname == '') $uname = 'system';
+    if($location == '') $location = $this->day_night . ' system';
     if($this->test_mode){
       PrintData($sentence, 'Talk: ' . $uname . ': '. $location);
       return true;

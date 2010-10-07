@@ -536,10 +536,10 @@ function AggregateVoteGameStart($force_start = false){
   //割り振り対象外役職のリスト
   $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'mind_read',
 			    'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
-			    'mind_lonely', 'lovers', 'possessed_exchange', 'challenge_lovers',
-			    'infected', 'copied', 'copied_trick', 'copied_soul', 'copied_teller',
-			    'possessed_target', 'possessed', 'changed_therian', 'bad_status',
-			    'lost_ability');
+			    'mind_presage',  'mind_lonely', 'lovers', 'possessed_exchange',
+			    'challenge_lovers', 'infected', 'copied', 'copied_trick', 'copied_soul',
+			    'copied_teller', 'possessed_target', 'possessed', 'changed_therian',
+			    'bad_status', 'lost_ability', 'protected');
 
   //サブ役職テスト用
   /*
@@ -1402,43 +1402,51 @@ function AggregateVoteNight($skip = false){
       if($guard_flag && ! $voted_wolf->IsSiriusWolf()) break;
     }
 
-    //特殊襲撃失敗判定
-    if(! $wolf_target->IsDummyBoy()){
-      if(! $voted_wolf->IsSiriusWolf()){ //完全覚醒天狼は無効
+    if(! $wolf_target->IsDummyBoy()){ //特殊能力者判定 (身代わり君は対象外)
+      if(! $voted_wolf->IsSiriusWolf()){ //特殊襲撃失敗判定 (完全覚醒天狼は無効)
 	if($wolf_target->IsChallengeLovers()) break; //難題判定
+	if($wolf_target->IsRole('protected')){ //庇護者判定
+	  $stack = array();
+	  foreach($wolf_target->GetPartner('protected') as $id){ //生存中の身代わり能力者を検出
+	    if($USERS->ByID($id)->IsLive(true)) $stack[] = $id;
+	  }
+	  if(count($stack) > 0){
+	    $USERS->Kill(GetRandom($stack), 'SACRIFICE');
+	    break;
+	  }
+	}
 	if($wolf_target->IsActive('fend_guard')){ //忍者の処理
 	  $wolf_target->LostAbility();
 	  break;
 	}
+	if($wolf_target->IsRole('sacrifice_angel', 'sacrifice_mania')) break; //守護天使・影武者判定
       }
       if($ROOM->date > 1 && $wolf_target->IsRole('escaper')) break; //逃亡者判定
-      if($voted_wolf->IsRole('hungry_wolf')){ //餓狼は人狼・妖狐のみ
-	if(! $wolf_target->IsWolf() && ! $wolf_target->IsFox()) break;
-      }
-      elseif($wolf_target->IsWolf()){ //襲撃先が人狼なら襲撃失敗 (例：銀狼出現)
-	if($voted_wolf->IsRole('emerald_wolf')){ //翠狼の処理
-	  $role = 'mind_friend[' . $voted_wolf->user_no . ']';
-	  $voted_wolf->AddRole($role);
-	  $wolf_target->AddRole($role);
+      if(! $voted_wolf->IsRole('hungry_wolf')){ //人狼・妖狐襲撃判定 (餓狼は対象外)
+	if($wolf_target->IsWolf()){ //人狼系判定 (例：銀狼出現)
+	  if($voted_wolf->IsRole('emerald_wolf')){ //翠狼の処理
+	    $role = 'mind_friend[' . $voted_wolf->user_no . ']';
+	    $voted_wolf->AddRole($role);
+	    $wolf_target->AddRole($role);
+	  }
+	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
+	  break;
 	}
-	$wolf_target->wolf_killed = true; //尾行判定は成功扱い
-	break;
-      }
-      elseif($wolf_target->IsResistFox()){ //襲撃先が妖狐の場合は襲撃失敗
-	if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsRole('silver_fox')){ //蒼狼の処理
-	  $wolf_target->AddRole('mind_lonely');
+	if($wolf_target->IsResistFox()){ //妖狐判定
+	  if($voted_wolf->IsRole('blue_wolf') && ! $wolf_target->IsLonely()){ //蒼狼の処理
+	    $wolf_target->AddRole('mind_lonely');
+	  }
+	  if($wolf_target->IsRole('blue_fox') && ! $voted_wolf->IsLonely()){ //蒼狐の処理
+	    $voted_wolf->AddRole('mind_lonely');
+	  }
+	  if($voted_wolf->IsRole('doom_wolf')) $wolf_target->AddDoom(4); //冥狼の処理
+	  $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
+	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
+	  break;
 	}
-	if($wolf_target->IsRole('blue_fox') && ! $voted_wolf->IsRole('silver_wolf')){ //蒼狐の処理
-	  $voted_wolf->AddRole('mind_lonely');
-	}
-	if($voted_wolf->IsRole('doom_wolf')) $wolf_target->AddDoom(4); //冥狼の処理
-	$ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
-	$wolf_target->wolf_killed = true; //尾行判定は成功扱い
-	break;
       }
 
-      //特殊能力者の処理 (覚醒天狼は無効)
-      if(! $voted_wolf->IsSiriusWolf()){
+      if(! $voted_wolf->IsSiriusWolf()){ //特殊能力者の処理 (完全覚醒天狼は無効)
 	if($wolf_target->IsRole('therian_mad')){ //獣人の処理
 	  $wolf_target->ReplaceRole($wolf_target->main_role, 'wolf');
 	  $wolf_target->AddRole('changed_therian');
@@ -1446,29 +1454,29 @@ function AggregateVoteNight($skip = false){
 	  break;
 	}
 
-	//身代わり能力者の判定
+	//身代わり能力者判定
 	$stack = array();
-	if($wolf_target->IsRole('boss_chiroptera')){ //大蝙蝠 (他の蝙蝠陣営)
+	if($wolf_target->IsRole('doll_master')){ //人形遣い (人形系)
 	  foreach($USERS->rows as $user){
-	    if($user->IsLive() && ! $user->IsSame($wolf_target->uname) &&
-	       $user->IsRoleGroup('chiroptera', 'fairy')) $stack[] = $user->uname;
-	  }
-	}
-	elseif($wolf_target->IsRole('doll_master')){ //人形遣い (人形系)
-	  foreach($USERS->rows as $user){
-	    if($user->IsLive() && $user->IsDoll()) $stack[] = $user->uname;
+	    if($user->IsLive() && $user->IsDoll()) $stack[] = $user->user_no;
 	  }
 	}
 	elseif($wolf_target->IsRole('sacrifice_vampire')){ //吸血公 (自分の感染者)
 	  foreach($USERS->rows as $user){
 	    if($user->IsLive() && $user->IsPartner('infected', $wolf_target->user_no)){
-	      $stack[] = $user->uname;
+	      $stack[] = $user->user_no;
 	    }
+	  }
+	}
+	elseif($wolf_target->IsRole('boss_chiroptera')){ //大蝙蝠 (蝙蝠陣営)
+	  foreach($USERS->rows as $user){
+	    if($user->IsLive() && ! $user->IsSame($wolf_target->uname) &&
+	       $user->IsRoleGroup('chiroptera', 'fairy')) $stack[] = $user->user_no;
 	  }
 	}
 
 	if(count($stack) > 0){
-	  $target = $USERS->ByUname(GetRandom($stack));
+	  $target = $USERS->ByID(GetRandom($stack));
 	  $USERS->Kill($target->user_no, 'SACRIFICE');
 	  $sacrifice_list[] = $target->uname;
 	  break;
@@ -1480,16 +1488,35 @@ function AggregateVoteNight($skip = false){
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
 	}
+	elseif($voted_wolf->IsRole('hungry_wolf')){ //餓狼は人狼・妖狐のみ
+	  if(! $wolf_target->IsWolf() && ! $wolf_target->IsFox()) break;
+	}
 	elseif($voted_wolf->IsRole('doom_wolf')){ //冥狼の処理
 	  $wolf_target->AddDoom(4);
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
 	}
 
-	if($wolf_target->IsRole('ghost_common')) //亡霊嬢の場合は小心者が付く
+	if($wolf_target->IsRole('ghost_common')){ //亡霊嬢の場合は小心者が付く
 	  $voted_wolf->AddRole('chicken');
-	elseif($wolf_target->IsRole('miasma_fox')) //蟲狐の場合は熱病が付く
+	}
+	elseif($wolf_target->IsRole('presage_scanner')){
+	  $stack = array(); //受託者を検出
+	  foreach($USERS->rows as $user){
+	    if($user->IsPartner('mind_presage', $wolf_target->user_no)){
+	      $stack[] = $user->user_no;
+	    }
+	  }
+	  if(count($stack) > 0){
+	    $str = $USERS->ByID(array_shift($stack))->handle_name . "\t" .
+	      $USERS->GetHandleName($wolf_target->uname, true) . "\t" .
+	      $USERS->GetHandleName($voted_wolf->uname, true);
+	    $ROOM->SystemMessage($str, 'PRESAGE_RESULT');
+	  }
+	}
+	elseif($wolf_target->IsRole('miasma_fox')){ //蟲狐の場合は熱病が付く
 	  $voted_wolf->AddRole('febris[' . ($ROOM->date + 1) . ']');
+	}
       }
     }
 
@@ -1941,7 +1968,8 @@ function AggregateVoteNight($skip = false){
   if($ROOM->date == 1){
     //-- コピー系レイヤー --//
     //さとり系の追加サブ役職リスト (さとり => サトラレ, イタコ => 口寄せ)
-    $stack = array('mind_scanner' => 'mind_read', 'evoke_scanner' => 'mind_evoke');
+    $stack = array('mind_scanner' => 'mind_read', 'evoke_scanner' => 'mind_evoke',
+		   'presage_scanner' => 'mind_presage');
     foreach($vote_data['MIND_SCANNER_DO'] as $uname => $target_uname){ //さとり系の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1956,27 +1984,31 @@ function AggregateVoteNight($skip = false){
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
       $target = $USERS->ByUname($target_uname); //対象者の情報を取得
-      if($user->IsRole('unknown_mania')){ //鵺
+      if($user->IsRole('unknown_mania', 'sacrifice_mania')){ //鵺系
 	$user->AddMainRole($target->user_no); //コピー先をセット
 
 	//共鳴者を追加
 	$role = 'mind_friend[' . $user->user_no . ']';
 	$user->AddRole($role);
+	//影武者は相手に庇護者を追加する
+	if($user->IsRole('sacrifice_mania')) $role .= ' protected[' . $user->user_no . ']';
 	$target->AddRole($role);
+	continue;
       }
-      elseif($user->IsRole('trick_mania')){ //神話マニア
-	//コピー処理
+
+      //コピー能力者の処理
+      if($user->IsRole('trick_mania')){ //奇術師
 	$actor_flag = false;
-	if($target->IsRoleGroup('mania')){ //神話マニア系を指定した場合は村人
-	  $result =  'human';
+	if($target->IsRoleGroup('mania')){ //神話マニア陣営を選択した場合は村人
+	  $result = 'human';
 	  $actor_flag = true;
 	}
-	elseif($target->IsRole('revive_priest')){
+	elseif($target->IsRole('revive_priest')){ //天人は交換コピー対象外
 	  $result = $target->main_role;
 	  $actor_flag = true;
 	}
 	else{
-	  foreach($vote_data as $action => $stack){
+	  foreach($vote_data as $stack){ //交換コピー判定
 	    if(array_key_exists($target->uname, $stack)){
 	      $actor_flag = true;
 	      break;
@@ -1987,71 +2019,22 @@ function AggregateVoteNight($skip = false){
 	$user->ReplaceRole('trick_mania', $result);
 	$user->AddRole('copied_trick');
 	if(! $actor_flag && ! $target->IsDummyBoy()){
-	  switch($target->main_role){
-	  case 'human':
-	  case 'elder':
-	  case 'saint':
-	  case 'executor':
-	  case 'escaper':
-	  case 'suspect':
-	  case 'unconscious':
-	    $stack_role = 'human';
-	    break;
-
-	  case 'reporter':
-	  case 'anti_voodoo':
-	    $stack_role = 'guard';
-	    break;
-
-	  case 'poison_cat':
-	  case 'revive_cat':
-	  case 'sacrifice_cat':
-	  case 'eclipse_cat':
-	    $stack_role = 'poison_cat';
-	    break;
-
-	  case 'whisper_scanner':
-	  case 'howl_scanner':
-	  case 'telepath_scanner':
-	    $stack_role = 'mind_scanner';
-	    break;
-
-	  case 'doll_master':
-	    $stack_role = 'doll';
-	    break;
-
-	  case 'miasma_fox':
-	    $stack_role = 'child_fox';
-	    break;
-
-	  default:
-	    $stack_role = array_pop(explode('_', $target->main_role));
-	    break;
-	  }
-	  $target->ReplaceRole($target->main_role, $stack_role);
+	  $target->ReplaceRole($target->main_role, $target->DistinguishRoleGroup());
 	}
-
-	$str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
-	$ROOM->SystemMessage($str, 'MANIA_RESULT');
       }
       elseif($user->IsRole('soul_mania', 'dummy_mania')){ //覚醒者・夢語部
-	$user->AddMainRole($target->user_no); //コピー先をセット
-
-	//コピー結果を出力 (神話マニア系を指定した場合は村人)
 	$result = $target->IsRoleGroup('mania') ? 'human' : $target->DistinguishRoleGroup();
-
-	$str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
-	$ROOM->SystemMessage($str, 'MANIA_RESULT');
+	$user->AddMainRole($target->user_no); //コピー先をセット
       }
       else{ //神話マニア
-	//コピー処理 (神話マニア系を指定した場合は村人)
 	$result = $target->IsRoleGroup('mania') ? 'human' : $target->main_role;
 	$user->ReplaceRole('mania', $result);
 	$user->AddRole('copied');
-
-	$str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
-	$ROOM->SystemMessage($str, 'MANIA_RESULT');
       }
+
+      //コピー結果を出力
+      $str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
+      $ROOM->SystemMessage($str, 'MANIA_RESULT');
     }
 
     if(! $ROOM->IsOpenCast()){
@@ -2206,7 +2189,7 @@ function AggregateVoteNight($skip = false){
 	}
 	elseif($user->IsRole('eclipse_cat')){
 	  $revive_rate = 40;
-	  $missfire_rate = 15;
+	  $missfire_rate = 20;
 	}
 	$rate = mt_rand(1, 100); //蘇生判定用乱数
 	if($missfire_rate == 0) $missfire_rate = floor($revive_rate / 5);

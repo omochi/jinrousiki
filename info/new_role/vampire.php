@@ -47,9 +47,10 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
+<h4>[身代わり能力] 自分の感染者</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する。
+<a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する。
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
 </pre>
 <ol>
@@ -58,6 +59,10 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>本人は身代わりが発生しても分からない。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の能力を持った吸血鬼で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
