@@ -39,6 +39,7 @@ class MessageImageBuilder{
     'quiz'		=> array('R' => 153, 'G' => 153, 'B' => 204),
     'vampire'		=> array('R' => 208, 'G' =>   0, 'B' => 208),
     'chiroptera'	=> array('R' => 136, 'G' => 136, 'B' => 136),
+    'ogre'		=> array('R' => 224, 'G' => 144, 'B' =>   0),
     'mania'		=> array('R' => 192, 'G' => 160, 'B' =>  96),
     'vote'		=> array('R' => 153, 'G' => 153, 'B' =>   0),
     'chicken'		=> array('R' =>  51, 'G' => 204, 'B' => 255),
@@ -729,6 +730,18 @@ class RoleMessageList{
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人を指名して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。\n　鏡界――合わせ鏡の無限次元に佇みながら、鏡の世界を体に埋め込むその力。姿見に自らを写しつつ、村人は何を思うのか。",
     'type' => 'fairy');
 
+  var $ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|鬼|です。あなた自身と#人狼#の生存が勝利条件になります。",
+    'delimiter' => array('|' => 'ogre', '#' => 'wolf'));
+
+  var $orange_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|前鬼|です。あなた自身の生存と#人狼#陣営の全滅が勝利条件になります。",
+    'type' => 'ogre');
+
+  var $indigo_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|後鬼|です。あなた自身の生存と#妖狐#陣営の全滅が勝利条件になります。",
+    'type' => 'ogre', 'delimiter' => array('#' => 'fox'));
+
   var $mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|神話マニア|です。初日の夜に指定した人のメイン役職をコピーすることができます。\n　星の数ほどある神話。誰を相手取るかによって何が最も適切なのかを的確に選び取るのです。",
     'delimiter' => array('|' => 'mania'));
@@ -1153,6 +1166,9 @@ class RoleMessageList{
   var $result_dark_fairy = array('message' => "さんは|闇妖精|でした", 'type' => 'result_fairy');
   var $result_ice_fairy = array('message' => "さんは|氷妖精|でした", 'type' => 'result_fairy');
   var $result_mirror_fairy = array('message' => "さんは|鏡妖精|でした", 'type' => 'result_fairy');
+  var $result_ogre = array('message' => "さんは|鬼|でした", 'delimiter' => array('|' => 'ogre'));
+  var $result_orange_ogre = array('message' => "さんは|前鬼|でした", 'type' => 'result_ogre');
+  var $result_indigo_ogre = array('message' => "さんは|後鬼|でした", 'type' => 'result_ogre');
   var $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   var $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
   var $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
@@ -1245,12 +1261,13 @@ class WishRoleList{
   var $role_vampire           = array('message' => "吸血鬼→");
   var $role_chiroptera        = array('message' => "蝙蝠→");
   var $role_fairy             = array('message' => "妖精→");
+  var $role_ogre              = array('message' => "鬼→");
   var $role_mania             = array('message' => "神話マニア→");
   var $role_unknown_mania     = array('message' => "鵺→");
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_unknown_mania');
+#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_ogre');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison');
 #$builder->Output('enchant_mad');
@@ -1258,4 +1275,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('sacrifice_vampire');
 #$builder->Output('sacrifice_angel');
 #$builder->Output('sacrifice_mania');
-$builder->Output('presage_scanner');
+#$builder->Output('presage_scanner');
+#$builder->Output('ogre');
+#$builder->Output('orange_ogre');
+$builder->Output('indigo_ogre');

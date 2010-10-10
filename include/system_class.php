@@ -664,6 +664,9 @@ class RoleData{
     'dark_fairy'         => '闇妖精',
     'ice_fairy'          => '氷妖精',
     'mirror_fairy'       => '鏡妖精',
+    'ogre'               => '鬼',
+    'orange_ogre'        => '前鬼',
+    'indigo_ogre'        => '後鬼',
     'mania'              => '神話マニア',
     'trick_mania'        => '奇術師',
     'soul_mania'         => '覚醒者',
@@ -921,6 +924,9 @@ class RoleData{
     'dark_fairy'         => '闇精',
     'ice_fairy'          => '氷精',
     'mirror_fairy'       => '鏡精',
+    'ogre'               => '鬼',
+    'orange_ogre'        => '前鬼',
+    'indigo_ogre'        => '後鬼',
     'mania'              => 'マ',
     'trick_mania'        => '奇',
     'soul_mania'         => '覚醒',
@@ -1020,6 +1026,7 @@ class RoleData{
     'vampire' => 'vampire',
     'chiroptera' => 'chiroptera',
     'fairy' => 'fairy',
+    'ogre' => 'ogre',
     'mage' => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer',
     'medium' => 'medium',
@@ -1092,6 +1099,7 @@ class RoleData{
 
     case 'quiz':
     case 'vampire':
+    case 'ogre':
       return $camp;
 
     case 'mania':

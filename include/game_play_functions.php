@@ -483,6 +483,12 @@ function OutputAbility(){
       OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO'); //夜の投票
     }
   }
+  elseif($SELF->IsRoleGroup('ogre')){ //鬼系
+    $ROLE_IMG->Output($SELF->main_role);
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+      OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
+    }
+  }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア
     $ROLE_IMG->Output($SELF->IsRole('dummy_mania') ? 'soul_mania' : $SELF->main_role);
     //初日夜の投票

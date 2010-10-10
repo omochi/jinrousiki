@@ -95,6 +95,10 @@ body{ /* AA 用 */
   background-color: #888888;
   color: #FFFAFA;
 }
+.victory-ogre{ /* 鬼勝利 */
+  background-color: #E09000;
+  color: #FFFAFA;
+}
 .victory-none{ /* 引き分け・廃村 */
   background-color: #000000;
   color: #FFFAFA;
@@ -166,6 +170,7 @@ body{ /* AA 用 */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */
 .vampire-do{      background-color: #D000D0;} /* 吸血鬼 */
 .fairy-do{        background-color: #888888;} /* 妖精 */
+.ogre-do{         background-color: #E09000;} /* 鬼 */
 .mania-do{        background-color: #C0A060;} /* 神話マニア */
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;

@@ -279,7 +279,12 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 「嘘つき」を探し出す特殊な占い師。
 <a href="wolf.php#mad_group">狂人系</a>・夢系・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>を占うと「嘘をついている」と判定される。
+<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 それ以外は「正常である」と判定される。
+</pre>
+<h4>Ver. 1.4.0 β18〜</h4>
+<pre>
+<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -293,7 +298,12 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
 性別を判別する特殊な占い師。
-<a href="chiroptera.php">蝙蝠</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
+<a href="chiroptera.php">蝙蝠陣営</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
+<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
+</pre>
+<h4>Ver. 1.4.0 β18〜</h4>
+<pre>
+<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 </pre>
 <h4>Ver. 1.4.0 β8〜</h4>
 <pre>
@@ -301,7 +311,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>Ver. 1.4.0 α21〜</h4>
 <pre>
-<a href="chiroptera.php">蝙蝠</a>を占った場合は「蝙蝠」と判定される。
+<a href="chiroptera.php">蝙蝠陣営</a>を占った場合は「蝙蝠」と判定される。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1116,12 +1126,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
   <li>蘇生対象外の人が選ばれた場合は確実に失敗します</li>
   <li>蘇生に失敗した場合は霊界にだけ見えるシステムメッセージが表示されます</li>
 </ol>
-
 <h4>Ver. 1.4.0 β2〜</h4>
 <pre>
 恋人を蘇生対象外に変更 (蘇生後、即自殺から変更)
 </pre>
-
 <h4>Ver. 1.4.0 α19〜</h4>
 <pre>
 <a href="#poison_cat">猫又</a>を蘇生対象外に変更
@@ -1185,13 +1193,17 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 誤爆率が高く設定されている猫又の亜種。本人の表記は「<a href="#revive_cat">仙狸</a>」。
 蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
-蘇生成功率は 40%、誤爆率は 15% で固定。
+蘇生成功率は 40%、誤爆率は 20% で固定。
+</pre>
+<h4>Ver. 1.4.0 β18〜</h4>
+<pre>
+誤爆率を 15% から 20% に変更
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#poison_cat">猫又</a>の劣化種として、夢系ではなく蝕系を採用してみました。
-<a href="#about_revive">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が約二倍になっています。
-しかし、「成功率」だけなら 25% なので<a href="#poison_cat">猫又</a>より優秀です。
+<a href="#about_revive">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が 2.5倍になっています。
+実質、誤爆率だけが上がった<a href="#poison_cat">猫又</a>相当になります。
 </pre>
 
 
@@ -1253,7 +1265,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 
 <h3><a id="revive_pharmacist">仙人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊 / 蘇生：不可 / 憑依：無効</h4>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
 <h4>[薬師能力] 毒能力判定：無し / 解毒：無し / ショック死抑制：有り</h4>
 <pre>
 昼に処刑投票した人のショック死を抑制する特殊な薬師。
@@ -1277,7 +1289,8 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 
 <h2><a id="assassin_group">暗殺者系</a></h2>
 <p>
-<a href="#assassin_spec">基本スペック</a>
+<a href="#assassin_rule">基本ルール</a>
+<a href="#assassin_spec">暗殺の仕様</a>
 </p>
 <p>
 <a href="#assassin">暗殺者</a>
@@ -1287,16 +1300,21 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#eclipse_assassin">蝕暗殺者</a>
 </p>
 
-<h3><a id="assassin_spec">基本スペック [暗殺者系]</a></h3>
+<h3><a id="assassin_rule">基本ルール [暗殺者系]</a></h3>
+<ol>
+<li>「暗殺する / しない」を必ず投票する必要があります</li>
+<li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+</ol>
+
+<h3><a id="assassin_spec">暗殺の仕様</a></h3>
 <ol>
 <li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)</li>
 <li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します</li>
 <li><a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射されます</li>
-<li>暗殺された人の死亡メッセージは人狼の襲撃と同じです</li>
+<li><a href="ogre.php">鬼陣営</a>を対象にした場合は一定確率で反射されます</li>
+<li>暗殺された人の死亡メッセージは人狼の襲撃と同じです (死因：暗殺された)</li>
 <li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です</li>
-<li>「暗殺する / しない」を必ず投票する必要があります</li>
-<li>狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
-<li>暗殺者がお互いを襲撃した場合は相打ちになります</li>
+<li>暗殺者・<a href="ogre.php">鬼</a>がお互いを襲撃した場合は相打ちになります</li>
 <li>暗殺者に暗殺された占い師の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効になります</li>
 <li>暗殺者に暗殺されても<a href="#guard_group">狩人系</a>の護衛判定は有効です</li>
 </ol>
@@ -1467,6 +1485,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <ol>
 <li>投票結果が出るのは 2 日目以降です。</li>
 <li>自分が人狼に襲撃されて死亡したら<a href="sub_role.php#mind_presage">受託者</a>に自分が誰に襲撃されたかメッセージが送られます。</li>
+<li>襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効です。</li>
 <li>身代わり君を対象に選ぶことはできません。</li>
 </ol>
 <h4>関連役職</h4>

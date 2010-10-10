@@ -50,6 +50,9 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a href="chiroptera.php#chiroptera_group" target="body">蝙蝠系</a></li>
 <li><a href="chiroptera.php#fairy_group" target="body">妖精系</a></li>
 <li>★☆★☆★☆★</li>
+<li><a href="ogre.php" target="body">&lt;鬼陣営&gt;</a></li>
+<li><a href="ogre.php#ogre_group" target="body">鬼系</a></li>
+<li>★☆★☆★☆★</li>
 <li><a href="mania.php" target="body">&lt;神話マニア陣営&gt;</a></li>
 <li><a href="mania.php#mania_group" target="body">神話マニア系</a></li>
 <li><a href="mania.php#unknown_mania_group" target="body">鵺系</a></li>

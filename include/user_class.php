@@ -82,6 +82,12 @@ class User{
     $this->ParseRoles($this->GetRole());
   }
 
+  //ユーザ番号を取得
+  function GetID($role = NULL){
+    $id = $this->user_no;
+    return is_null($role) ? $id : $role . '[' . $id . ']';
+  }
+
   //現在の役職を取得
   function GetRole(){
     return $this->updated['role'] ? $this->updated['role'] : $this->role;
@@ -326,7 +332,8 @@ class User{
   function IsRefrectAssassin(){
     return $this->IsLive(true) &&
       ($this->IsRole('detective_common', 'cursed_fox') ||
-       $this->IsSiriusWolf(false) || $this->IsChallengeLovers());
+       $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
+       ($this->IsRoleGroup('ogre') && mt_rand(1, 100) <= 30));
   }
 
   //憑依制限判定
@@ -363,6 +370,7 @@ class User{
   function DistinguishMage($reverse = false){
     //吸血鬼陣営・大蝙蝠は「蝙蝠」
     if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
+    if($this->IsRoleGroup('ogre')) return 'ogre'; //鬼陣営は「鬼」
 
     //白狼か完全覚醒天狼以外の人狼・黒狐・不審者は「人狼」
     $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
@@ -372,13 +380,15 @@ class User{
 
   //精神鑑定士の判定
   function DistinguishLiar(){
-    return $this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
-      'psycho_mage_liar' : 'psycho_mage_normal';
+    return $this->IsRoleGroup('ogre') ? 'ogre' :
+      ($this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
+       'psycho_mage_liar' : 'psycho_mage_normal');
   }
 
   //ひよこ鑑定士の判定
   function DistinguishSex(){
-    return $this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex;
+    return $this->IsRoleGroup('ogre') ? 'ogre' :
+      ($this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex);
   }
 
   //占星術師の判定
@@ -419,9 +429,7 @@ class User{
     }
 
     if($ROOM->date == 1){ //初日限定
-      if($this->IsRole('mind_scanner', 'presage_scanner')){
-	return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
-      }
+      if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
@@ -451,6 +459,9 @@ class User{
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
     }
     if($this->IsRoleGroup('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
+    if($this->IsRoleGroup('ogre')){
+      return $this->IsVoted($vote_data, 'OGRE_DO', 'OGRE_NOT_DO');
+    }
 
     if($ROOM->IsOpenCast()) return true;
     if($this->IsReviveGroup(true)){

@@ -116,6 +116,11 @@ class Talk{
 	$this->class = 'vampire-do';
 	break;
 
+      case 'OGRE_NOT_DO':
+	$this->class = 'ogre-do';
+	$this->sentence = ' ' . $MESSAGE->ogre_not_do;
+	return;
+
       default:
 	$this->class = strtr($action, '_', '-');
 	break;

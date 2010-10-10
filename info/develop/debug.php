@@ -22,6 +22,12 @@ Ver. 1.4.0
 × return $result && ! $reverse ? 'wolf' : 'human';
 ○ return ($result xor $reverse) ? 'wolf' : 'human';
 </pre>
+<h3>include/room_class.php % 306行目付近 (2010/10/08 (Fri) 02:21)</h3>
+<pre>
+× if(empty($uname)) $uname = 'system';
+○ if($uname == '') $uname = 'system';
+</pre>
+
 <h2><a id="140beta16">Ver. 1.4.0 β16</a></h2>
 <h3>include/game_vote_functions.php % 1474行目付近</h3>
 <h4>[before]</h4>

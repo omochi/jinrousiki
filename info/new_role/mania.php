@@ -237,6 +237,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.4.0 β16〜</td>
 </tr>
 <tr>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td><a href="ogre.php#indigo_ogre">後鬼</a></td>
+  <td>Ver. 1.4.0 β18〜</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -388,6 +393,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td></td>
 </tr>
 <tr>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td><a href="ogre.php#orange_ogre">前鬼</a></td>
+  <td>Ver. 1.4.0 β18〜</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -439,25 +449,28 @@ CO するべきかどうかは、コピーした役職次第です。
 コピー先と会話できる蝙蝠相当になります。
 相手の生死と自分の勝敗は無関係です。
 
-8. 鵺 → <a href="wolf.php#wolf">人狼</a>[恋人] (人狼陣営)
+8. 鵺 → <a href="ogre.php#ogre">鬼</a> (鬼陣営)
+勝利条件は<a href="ogre.php#rule">基本ルール [鬼]</a>参照。
+
+9. 鵺 → <a href="wolf.php#wolf">人狼</a>[恋人] (人狼陣営)
 サブ役職は判定対象外 (<a href="human.php#medium">巫女</a>と同じ) なので
 コピー先と勝利陣営が異なる、例外ケースとなります。
 
-9. 鵺 → <a href="wolf.php#wolf">人狼</a>[<a href="sub_role.php#mind_read">サトラレ</a>] (人狼陣営)
+10. 鵺 → <a href="wolf.php#wolf">人狼</a>[<a href="sub_role.php#mind_read">サトラレ</a>] (人狼陣営)
 コピー先が村人陣営の<a href="human.php#mind_scanner">さとり</a>に会話を覗かれている状態なので
 コピー先からの情報入手が難しくなります。
 
-10. 鵺A → 鵺B → <a href="wolf.php#wolf">人狼</a> (全員人狼陣営)
+11. 鵺A → 鵺B → <a href="wolf.php#wolf">人狼</a> (全員人狼陣営)
 コピー先が鵺だった場合は鵺以外の役職に当たるまで
 コピー先を辿って判定します。
 
-11. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
+12. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
 コピー先を辿って自分に戻った場合は村人陣営になります。
 
-12. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
+13. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
 神話マニアをコピーした場合はコピー結果の陣営になります。
 
-13. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
+14. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
 神話マニアは鵺をコピーしたら村人になるので鵺のリンクが切れます。
 結果として以下のようになります。
 鵺A(村人陣営) → 村人(元神話マニア)、鵺B (人狼陣営) → 人狼
@@ -479,6 +492,7 @@ CO するべきかどうかは、コピーした役職次第です。
 自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
 陣営判定法則などの基本的な仕様は<a href="#unknown_mania">鵺</a>と同じ。
 人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 </pre>
 <h4>関連役職</h4>
 <pre>

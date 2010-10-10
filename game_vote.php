@@ -321,6 +321,12 @@ function VoteNight(){
     $is_mirror_fairy = $SELF->IsRole('mirror_fairy');
     break;
 
+  case 'OGRE_DO':
+  case 'OGRE_NOT_DO':
+    if(! $SELF->IsRoleGroup('ogre')) OutputVoteResult('夜：投票イベントが一致しません');
+    $not_type = $RQ_ARGS->situation == 'OGRE_NOT_DO';
+    break;
+
   case 'MANIA_DO':
     if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
@@ -432,20 +438,20 @@ function VoteNight(){
 	  continue;
 	}
 
-	$role = 'lovers[' . $SELF->user_no . ']'; //役職に恋人を追加
+	$role = $SELF->GetID('lovers'); //役職に恋人を追加
 	if($is_self){ //求愛者：相手に受信者を追加
-	  if(! $target->IsSelf()) $role .= ' mind_receiver['. $SELF->user_no . ']';
+	  if(! $target->IsSelf()) $role .= ' ' . $SELF->GetID('mind_receiver');
 	}
 	elseif($is_moon){ //かぐや姫：両方に難題 + 自分に受信者を追加
 	  $role .= ' challenge_lovers';
-	  if(! $target->IsSelf()) $SELF->AddRole('mind_receiver['. $target->user_no . ']');
+	  if(! $target->IsSelf()) $SELF->AddRole($target->GetID('mind_receiver'));
 	}
 	elseif($is_mind){ //女神：両方に共鳴者 + 他人撃ちなら自分に受信者を追加
-	  $role .= ' mind_friend['. $SELF->user_no . ']';
-	  if(! $self_shoot) $SELF->AddRole('mind_receiver[' . $target->user_no . ']');
+	  $role .= ' ' . $SELF->GetID('mind_friend');
+	  if(! $self_shoot) $SELF->AddRole($target->GetID('mind_receiver'));
 	}
 	elseif($is_sacrifice){ //守護天使：自分以外に庇護者を追加
-	  if(! $target->IsSelf()) $role .= ' protected[' . $SELF->user_no . ']';
+	  if(! $target->IsSelf()) $role .= ' ' . $SELF->GetID('protected');
 	}
 	$target->AddRole($role);
 	$target->ReparseRoles(); //再パース (魂移使判定用)
@@ -751,6 +757,11 @@ function OutputVoteNight(){
   }
   elseif($SELF->IsRoleGroup('fairy') || $SELF->IsRole('enchant_mad')){
     $type = 'FAIRY_DO';
+  }
+  elseif($SELF->IsRoleGroup('ogre')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の人攫いはできません');
+    $type     = 'OGRE_DO';
+    $not_type = 'OGRE_NOT_DO';
   }
   elseif($SELF->IsRoleGroup('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');

@@ -207,7 +207,8 @@ IMAGE;
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'medium', 'priest', 'guard',
 		 'common', 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner',
 		 'jealousy', 'doll', 'brownie', 'wolf', 'mad', 'fox', 'child_fox', 'cupid',
-		 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'mania', 'unknown_mania');
+		 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'ogre', 'mania',
+		 'unknown_mania');
     }
     elseif($ROOM->IsOption('gray_random')){
       array_push($wish_role_list, 'human', 'wolf', 'mad', 'fox');

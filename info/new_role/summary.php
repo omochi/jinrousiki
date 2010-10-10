@@ -25,6 +25,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="quiz.php">出題者陣営</a>
 <a href="vampire.php">吸血鬼陣営</a>
 <a href="chiroptera.php">蝙蝠陣営</a>
+<a href="ogre.php">鬼陣営</a>
 <a href="mania.php">神話マニア陣営</a>
 <a href="sub_role.php">サブ役職</a>
 </p>
@@ -1597,7 +1598,7 @@ Ver. 1.4.0
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">誤爆率 (15%) が高めに設定された猫又の劣化種。<br>
+  <td class="ability">誤爆率 (20%) が高めに設定された猫又の劣化種。<br>
   蘇生成功率 40% で、本人表記は<a href="human.php#revive_cat">仙狸</a>。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
@@ -1635,13 +1636,43 @@ Ver. 1.4.0
   <td>Ver. 1.4.0 β18</td>
 </tr>
 <tr>
-  <td><a href="human.php#evoke_scanner">イタコ</a></td>
+  <td><a href="human.php#presage_scanner">件</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
   <td class="ability">初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_presage">受託者</a>にする。<br>
     自分が人狼に殺されたら<a href="sub_role.php#mind_presage">受託者</a>に誰が襲撃したかメッセージが届く。
+  </td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#ogre">鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼の基本種。勝利条件は自分自身と<a href="wolf.php#wolf_group">人狼系</a> (種類は問わない)の生存。
+  </td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#orange_ogre">前鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="wolf.php">人狼陣営</a>の全滅」。
+  </td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#indigo_ogre">後鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="wolf.php">妖狐陣営</a>の全滅」。
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>

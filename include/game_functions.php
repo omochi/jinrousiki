@@ -430,26 +430,6 @@ EOF;
   }
   else{
     switch($camp){
-    case 'fox':
-      if(strpos($victory, $camp) !== false){
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
-      break;
-
-    case 'chiroptera':
-      if($SELF->IsLive()){ //蝙蝠陣営は生きていれば勝利
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
-      break;
-
     case 'human':
       if($SELF->IsRole('escaper')){ //逃亡者は死亡していたら敗北
 	if($SELF->IsDead()){
@@ -477,8 +457,73 @@ EOF;
       }
       break;
 
+    case 'fox':
+      if(strpos($victory, $camp) !== false){
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
     case 'vampire':
       if($victory == $camp && $SELF->IsLive()){ //吸血鬼陣営は生き残った者だけが勝利
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
+    case 'chiroptera':
+      if($SELF->IsLive()){ //蝙蝠陣営は生きていれば勝利
+	$class = $camp;
+      }
+      else{
+	$class  = 'none';
+	$result = 'lose';
+      }
+      break;
+
+    case 'ogre':
+      $flag = false;
+      do{
+	if($SELF->IsDead()) break; //鬼陣営は死亡していたら敗北
+	if($SELF->IsRoleGroup('mania')){ //神話マニア陣営 (生存のみ)
+	  $flag = true;
+	  break;
+	}
+	if($SELF->IsRole('ogre')){ //鬼 (人狼の生存)
+	  if($victory == 'wolf'){ //人狼陣営勝利なら人狼生存確定
+	    $flag = true;
+	    break;
+	  }
+	  foreach($USERS->rows as $user){
+	    if($user->IsLiveRoleGroup('wolf')){
+	      $flag = true;
+	      break 2;
+	    }
+	  }
+	}
+	elseif($SELF->IsRole('orange_ogre')){ //前鬼 (人狼陣営全滅)
+	  if($victory == 'wolf') break; //人狼陣営勝利なら人狼生存確定
+	  foreach($USERS->rows as $user){
+	    if($user->IsLive() && $user->GetCamp(true) == 'wolf') break 2;
+	  }
+	  $flag = true;
+	}
+	elseif($SELF->IsRole('indigo_ogre')){ //後鬼 (妖狐陣営全滅)
+	  if(strpos($victory, 'fox') !== false) break; //妖狐陣営勝利なら妖狐生存確定
+	  foreach($USERS->rows as $user){
+	    if($user->IsLive() && $user->GetCamp(true) == 'fox') break 2;
+	  }
+	  $flag = true;
+	}
+      }while(false);
+
+      if($flag){
 	$class = $camp;
       }
       else{
@@ -794,7 +839,7 @@ function OutputAbilityAction(){
   else{
     array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
 	       'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
-	       'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO');
+	       'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
   }
 
   $action = '';
@@ -814,6 +859,7 @@ function OutputAbilityAction(){
     case 'POSSESSED_DO':
     case 'ASSASSIN_DO':
     case 'VAMPIRE_DO':
+    case 'OGRE_DO':
       echo 'は '.$target.' を狙いました';
       break;
 
@@ -865,6 +911,10 @@ function OutputAbilityAction(){
 
     case 'ASSASSIN_NOT_DO':
       echo $MESSAGE->assassin_not_do;
+      break;
+
+    case 'OGRE_NOT_DO':
+      echo $MESSAGE->ogre_not_do;
       break;
 
     case 'MIND_SCANNER_DO':
@@ -945,7 +995,7 @@ function OutputDeadMan(){
 		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
 		     'DREAM_KILLED' => true, 'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
-		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
+		     'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
 		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
 		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'NOVOTED_night' => true));
 

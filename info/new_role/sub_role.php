@@ -943,6 +943,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 
 <h3><a id="challenge_lovers">難題</a> [Ver. 1.4.0 β11〜]</h3>
 <h4>[配役制限] 役職付加専用</h4>
+<h4>[耐性] 人狼襲撃：無効 / 暗殺：反射</h4>
 <pre>
 4 日目夜までは以下の耐性を持つ。
 </pre>

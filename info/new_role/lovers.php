@@ -140,6 +140,7 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>と<a href="sub_role.php#protected">庇護者</a>を付加する上位天使。
 人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 自分撃ちをしても自分に<a href="sub_role.php#protected">庇護者</a>は付かない。
 </pre>
 <h4>関連役職</h4>

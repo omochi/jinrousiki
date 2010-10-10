@@ -49,6 +49,8 @@ class Message{
   var $mind_scanner_do  = 'の心を読みます'; //さとりの投票
   var $cupid_do         = 'に愛の矢を放ちました'; //キューピッドの投票
   var $fairy_do         = 'に悪戯しました'; //妖精の投票
+  var $ogre_do          = 'に狙いをつけました'; //鬼の投票
+  var $ogre_not_do      = 'は人攫いを行いませんでした'; //鬼のキャンセル投票
   var $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
@@ -83,6 +85,7 @@ class Message{
   var $reporter_duty      = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
   var $poison_dead        = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
   var $assassin_killed    = 'は暗殺されたようです'; //暗殺者の襲撃
+  var $ogre_killed        = 'は鬼に攫われたようです'; //鬼の襲撃
   var $priest_returned    = 'は天に帰ったようです'; //天人の帰還
   var $revive_success     = 'は生き返りました'; //蘇生成功
   var $revive_failed      = 'の蘇生に失敗したようです'; //蘇生失敗
@@ -186,6 +189,7 @@ class Message{
   var $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   var $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精
+  var $ability_ogre_do          = '攫う人を選択してください'; //鬼
   var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
 
   //-- game_play.php --//
@@ -406,6 +410,8 @@ class VoteMessage{
   var $cupid_do         = '対象に愛の矢を放つ'; //キューピッド
   var $vampire_do       = '対象を吸血する'; //吸血鬼
   var $fairy_do         = '対象に悪戯する'; //妖精
+  var $ogre_do          = '対象を攫う'; //鬼
+  var $ogre_not_do      = '誰も攫わない'; //鬼(キャンセル)
   var $mania_do         = '対象を真似る'; //神話マニア
   var $revive_refuse    = '蘇生を辞退する'; //蘇生辞退
 }

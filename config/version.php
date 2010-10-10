@@ -4,7 +4,7 @@ class ScriptInfo{
   var $version = 'Ver. 1.4.0 beta18';
 
   //パッケージの最終更新日
-  var $last_update = '2010/10/05 (Tue) 04:38';
+  var $last_update = '2010/10/08 (Fri) 02:18';
 
   //パッケージ化した時の Revision
   var $revision = 210;

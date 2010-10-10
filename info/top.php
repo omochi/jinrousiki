@@ -11,7 +11,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>Ver. 1.4.0 β17 アップロード (2010/10/03 (Sun) 07:08) → <a href="src/">ダウンロード</a></h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#140beta17">デバッグ情報</a> (2010/10/04 (Mon) 00:44)</li>
+  <li>→ <a href="info/develop/debug.php#140beta17">デバッグ情報</a> (2010/10/08 (Fri) 02:21)</li>
   <li>「グレラン村」「早朝待機制」オプション実装</li>
   <li>「狢」「化狐」「恋司祭」「蝕仙狸」「吸血公」実装</li>
   <li>サブ役職「恋色迷彩」実装</li>
@@ -22,10 +22,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>新規実装 / 仕様変更</h2>
 <ul>
   <li>守護天使：自分の作った恋人が人狼に襲撃されたら身代わりになる天使</li>
+  <li>影武者：自分のコピー先が人狼に襲撃されたら身代わりになる鵺</li>
+  <li>件：自分が襲撃されたら自分の受託者に誰に襲撃されたかメッセージを送るさとり</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>影武者：自分のコピー先が人狼に襲撃されたら身代わりになる鵺</li>
-  <li>件：自分が襲撃された自分の受託者に誰に襲撃されたかメッセージを送るさとり</li>
+  <li>なし</li>
 </ul>
