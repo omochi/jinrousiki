@@ -54,9 +54,6 @@ function OutputAbility(){
       break;
 
     case 'dummy_priest':
-      $ROLE_IMG->Output('human');
-      break;
-
     case 'priest_jealousy':
       $ROLE_IMG->Output('priest');
       break;

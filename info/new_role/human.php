@@ -939,6 +939,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
   <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+  <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
   <li><a href="#about_revive">蘇生</a>不可</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>

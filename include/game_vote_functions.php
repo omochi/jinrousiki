@@ -582,7 +582,7 @@ function AggregateVoteGameStart($force_start = false){
 
   if($ROOM->IsOption('sudden_death')){ //虚弱体質村
     $stack = array_diff($ROLE_DATA->sub_role_group_list['sudden-death'],
-			array('febris', 'death_warrant', 'panelist'));
+			array('febris', 'frostbite', 'death_warrant', 'panelist'));
     //PrintData($stack, 'SuddenDeath');
     $delete_role_list = array_merge($delete_role_list, $stack);
     for($i = 0; $i < $user_count; $i++){ //全員に小心者系を何かつける
@@ -597,10 +597,15 @@ function AggregateVoteGameStart($force_start = false){
     for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
   }
 
+  foreach(array('deep_sleep', 'mind_open', 'blinder') as $role){ //静寂村・白夜村・宵闇村
+    if($ROOM->IsOption($role)){
+      $delete_role_list[] = $role;
+      for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
+    }
+  }
+
   if($ROOM->IsOption('critical')){ //急所村
-    $stack = array('critical_voter', 'critical_luck');
-    $delete_role_list = array_merge($delete_role_list, $stack);
-    foreach($stack as $role){
+    foreach(array('critical_voter', 'critical_luck') as $role){
       $delete_role_list[] = $role;
       for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
     }
@@ -1585,6 +1590,7 @@ function AggregateVoteNight($skip = false){
       }
     }
 
+    $vampire_target_list = array(); //特殊吸血鬼の暗殺対象者リスト
     foreach($vote_data['VAMPIRE_DO'] as $uname => $target_uname){ //吸血鬼の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1616,7 +1622,21 @@ function AggregateVoteNight($skip = false){
 	$str = $guard_user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
 	$ROOM->SystemMessage($str, 'GUARD_SUCCESS');
       }
-      if(! $guard_flag) $target->AddRole($user->GetID('infected'));
+      if($guard_flag) continue;
+      //特殊吸血鬼の暗殺判定
+      /* 吸血死より罠死の方が優先されるが、本人も罠にかかるので競合しないはず */
+      if(! $user->IsAvoid() &&
+	 (($user->IsRole('incubus_vampire') && $target->sex == 'male') ||
+	  ($user->IsRole('succubus_vampire') && $target->sex == 'female'))){
+	$vampire_target_list[$target_uname] = true; //暗殺対象者リストに追加
+	continue;
+      }
+      $target->AddRole($user->GetID('infected'));
+    }
+
+    //PrintData($vampire_target_list, 'Target [vampire]');
+    foreach($vampire_target_list as $uname => $flag){ //暗殺処理
+      $USERS->Kill($USERS->UnameToNumber($uname), 'VAMPIRE_KILLED');
     }
 
     $assassin_target_list = array(); //暗殺対象者リスト

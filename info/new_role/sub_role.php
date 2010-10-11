@@ -952,6 +952,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="human.php#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+  <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
 </ol>
 <pre>
 5 日目以降は恋人の相方と同じ人に投票しないとショック死する。

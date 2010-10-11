@@ -220,7 +220,7 @@ $RQ_ARGS->TestItems->test_users[20]->user_no = 20;
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'sacrifice_vampire plague';
+$RQ_ARGS->TestItems->test_users[20]->role = 'succubus_vampire plague';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->icon_filename = '009.gif';
 $RQ_ARGS->TestItems->test_users[20]->color = '#CC00CC';
@@ -501,7 +501,7 @@ do{
   //PrintData($ROOM->event);
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 4, 25) as $id){
+  foreach(array(5, 20, 25) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   #var_dump($USERS->IsOpenCast());

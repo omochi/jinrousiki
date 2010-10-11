@@ -20,6 +20,7 @@ $RQ_ARGS->TestItems->test_room = array(
 $RQ_ARGS->TestItems->test_room['game_option'] .= ' wish_role';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' chaosfull';
 $RQ_ARGS->TestItems->test_room['game_option'] .= ' chaos_hyper';
+#$RQ_ARGS->TestItems->test_room['game_option'] .= ' deep_sleep';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' gerd';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' poison';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' decide';

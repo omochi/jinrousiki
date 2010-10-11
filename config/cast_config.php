@@ -326,13 +326,14 @@ class CastConfig extends CastConfigBase{
     'pharmacist'         => 10,
     'cure_pharmacist'    =>  5,
     'revive_pharmacist'  =>  5,
-    'assassin'           =>  7,
+    'assassin'           =>  5,
     'doom_assassin'      =>  5,
-    'reverse_assassin'   =>  5,
+    'reverse_assassin'   =>  3,
     'soul_assassin'      =>  3,
-    'eclipse_assassin'   =>  5,
-    'mind_scanner'       =>  7,
-    'evoke_scanner'      =>  4,
+    'eclipse_assassin'   =>  4,
+    'mind_scanner'       =>  5,
+    'evoke_scanner'      =>  3,
+    'presage_scanner'    =>  3,
     'whisper_scanner'    =>  3,
     'howl_scanner'       =>  3,
     'telepath_scanner'   =>  3,
@@ -406,22 +407,25 @@ class CastConfig extends CastConfigBase{
     'cupid'              =>  5,
     'self_cupid'         =>  5,
     'moon_cupid'         =>  3,
-    'mind_cupid'         =>  4,
+    'mind_cupid'         =>  3,
     'triangle_cupid'     =>  3,
-    'angel'              =>  5,
+    'angel'              =>  4,
     'rose_angel'         =>  4,
     'lily_angel'         =>  4,
-    'exchange_angel'     =>  4,
+    'exchange_angel'     =>  3,
+    'sacrifice_angel'    =>  3,
     'ark_angel'          =>  3,
     'quiz'               =>  2,
-    'vampire'            =>  6,
-    'sacrifice_vampire'  =>  4,
+    'vampire'            =>  4,
+    'incubus_vampire'    =>  2,
+    'succubus_vampire'   =>  2,
+    'sacrifice_vampire'  =>  2,
     'chiroptera'         =>  4,
     'poison_chiroptera'  =>  4,
     'cursed_chiroptera'  =>  3,
     'boss_chiroptera'    =>  3,
     'elder_chiroptera'   =>  3,
-    'dummy_chiroptera'   =>  5,
+    'dummy_chiroptera'   =>  4,
     'fairy'              =>  2,
     'spring_fairy'       =>  2,
     'summer_fairy'       =>  2,
@@ -436,11 +440,15 @@ class CastConfig extends CastConfigBase{
     'dark_fairy'         =>  2,
     'ice_fairy'          =>  2,
     'mirror_fairy'       =>  2,
+    'ogre'               =>  2,
+    'orange_ogre'        =>  2,
+    'indigo_ogre'        =>  2,
     'mania'              =>  3,
     'trick_mania'        =>  3,
     'soul_mania'         =>  2,
-    'unknown_mania'      =>  5,
-    'dummy_mania'        =>  2);
+    'dummy_mania'        =>  2,
+    'unknown_mania'      =>  3,
+    'sacrifice_mania'    =>  2);
 
   var $chaos_min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
   var $chaos_min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)
@@ -451,7 +459,7 @@ class CastConfig extends CastConfigBase{
     'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
     'priest' => 0.1, 'guard' => 0.15, 'common' => 0.18, 'poison' => 0.14, 'cat' => 0.1,
     'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15,
-    'quiz' => 0.15, 'vampire' => 0.15);
+    'quiz' => 0.15, 'vampire' => 0.15, 'ogre' => 0.12);
 
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -464,8 +472,8 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   var $chaos_hyper_replace_human_role_list = array(
-    'mania' => 4, 'trick_mania' => 2, 'soul_mania' => 1,
-    'unknown_mania' => 2, 'dummy_mania' => 1);
+    'mania' => 35, 'trick_mania' => 20, 'soul_mania' => 10, 'dummy_mania' => 10,
+    'unknown_mania' => 15, 'sacrifice_mania' => 10);
 
   //サブ役職制限：EASYモード
   var $chaos_sub_role_limit_easy_list = array(
@@ -489,7 +497,7 @@ class CastConfig extends CastConfigBase{
     13 => array('human' => 4, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'doll' => 1, 'doll_master' => 1, 'wolf' => 2, 'fanatic_mad' => 1, 'chiroptera' => 1),
     14 => array('necromancer' => 1, 'silver_wolf' => 2, 'fox' => 1, 'chiroptera' => 10),
     15 => array('poison' => 3, 'wolf' => 3, 'fanatic_mad' => 1, 'fox' => 1, 'chiroptera' => 6, 'boss_chiroptera' => 1),
-    16 => array('human' => 6, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'whisper_mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1),
+    16 => array('human' => 7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'whisper_mad' => 1, 'guard' => 1, 'common' => 2),
     17 => array('dummy_guard' => 1, 'strong_poison' => 1, 'dummy_poison' => 5, 'sirius_wolf' => 3, 'dream_eater_mad' => 1, 'triangle_cupid' => 1, 'mirror_fairy' => 5),
     18 => array('human' => 7, 'wolf' => 3, 'mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'fox' => 1, 'vampire' => 1),
     19 => array('sex_mage' => 1, 'necromancer' => 1, 'mad' => 1, 'guard' => 1, 'common' => 2, 'wolf' => 2, 'gold_wolf' => 1, 'fox' => 1, 'sex_fox' => 1, 'chiroptera' => 7, 'boss_chiroptera' => 1),

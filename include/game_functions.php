@@ -994,10 +994,11 @@ function OutputDeadMan(){
     'night' => array('WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
 		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
 		     'DREAM_KILLED' => true, 'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
-		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'ASSASSIN_KILLED' => true,
-		     'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
-		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
-		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'NOVOTED_night' => true));
+		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'VAMPIRE_KILLED' => true,
+		     'ASSASSIN_KILLED' => true, 'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true,
+		     'POISON_DEAD_night' => true, 'LOVERS_FOLLOWED_night' => true,
+		     'REVIVE_%' => false, 'SACRIFICE' => true, 'FLOWERED_%' => false,
+		     'CONSTELLATION_%' => false, 'NOVOTED_night' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();

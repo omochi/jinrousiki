@@ -27,12 +27,21 @@ OutputRolePageHeader('吸血鬼陣営');
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
   <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>の能力は有効です。</li>
   <li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
-  <li>吸血鬼陣営の人を<a href="sub_role.php#infected">感染者</a>にすることはできません (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>にも適用されます)。</li>
+  <li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
+    死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
+  </li>
+  <li>吸血鬼陣営の人を襲撃した場合は無条件で失敗し、吸血死も発生しません。<br>
+    (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>にも適用されます)。
+  </li>
+  <li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
+  </li>
 </ol>
 
 <h2><a id="vampire_group">吸血鬼系</a></h2>
 <p>
 <a href="#vampire">吸血鬼</a>
+<a href="#incubus_vampire">青髭公</a>
+<a href="#succubus_vampire">飛縁魔</a>
 <a href="#sacrifice_vampire">吸血公</a>
 </p>
 <h3><a id="vampire">吸血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14〜]</h3>
@@ -44,6 +53,32 @@ OutputRolePageHeader('吸血鬼陣営');
 他国に実在する役職です。
 式神研の闇鍋に混ぜてどの程度勝てるのか検討が付かないので、
 まずは条件を緩めに設定して様子を見てみようかと思います。
+</pre>
+
+<h3><a id="incubus_vampire">青髭公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
+<pre>
+女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#succubus_vampire">飛縁魔</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+童話「青ひげ」がモチーフです。
+</pre>
+
+<h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
+<pre>
+男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#incubus_vampire">青髭公</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#incubus_vampire">青髭公</a>の対女性バージョンです。「ひのえんま」と読みます。
 </pre>
 
 <h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17〜]</h3>

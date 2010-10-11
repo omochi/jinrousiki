@@ -108,6 +108,15 @@ class RoomConfig{
   var $perverseness = true; //天邪鬼村
   var $default_perverseness = false;
 
+  var $deep_sleep = true; //静寂村
+  var $default_deep_sleep = false;
+
+  var $mind_open = true; //白夜村
+  var $default_mind_open = false;
+
+  var $blinder = true; //宵闇村
+  var $default_blinder = false;
+
   var $critical = true; //急所村
   var $default_critical = false;
 

@@ -84,6 +84,7 @@ class Message{
   var $hunted             = 'は狩人に狩られたようです'; //狩人の狩り
   var $reporter_duty      = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
   var $poison_dead        = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
+  var $vampire_killed     = 'は血を吸い尽くされたようです'; //吸血鬼の襲撃
   var $assassin_killed    = 'は暗殺されたようです'; //暗殺者の襲撃
   var $ogre_killed        = 'は鬼に攫われたようです'; //鬼の襲撃
   var $priest_returned    = 'は天に帰ったようです'; //天人の帰還
@@ -262,6 +263,9 @@ class GameOptionMessage{
   var $gentleman             = '紳士・淑女村';
   var $sudden_death          = '虚弱体質村';
   var $perverseness          = '天邪鬼村';
+  var $deep_sleep            = '静寂村';
+  var $mind_open             = '白夜村';
+  var $blinder               = '宵闇村';
   var $critical              = '急所村';
   var $replace_human         = '村人置換村';
   var $full_mania            = '神話マニア村';
@@ -317,6 +321,9 @@ class GameOptionCaptionMessage{
   var $gentleman             = '全員に性別に応じた「紳士」「淑女」がつきます';
   var $sudden_death          = '全員に投票でショック死するサブ役職のどれかがつきます';
   var $perverseness          = '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります';
+  var $deep_sleep            = '全員に「爆睡者」がつきます。';
+  var $mind_open             = '全員に「公開者」がつきます。';
+  var $blinder               = '全員に「目隠し」がつきます。';
   var $critical              = '全員に「会心」「痛恨」がつきます。';
   var $replace_human         = '「村人」が全員特定の役職に入れ替わります';
   var $full_mania            = '「村人」が全員「神話マニア」に入れ替わります';

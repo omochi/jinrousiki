@@ -202,6 +202,9 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a></li>
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a></li>
   <li><a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a></li>
+  <li><a href="#deep_sleep"><?php echo $GAME_OPT_MESS->deep_sleep ?></a></li>
+  <li><a href="#mind_open"><?php echo $GAME_OPT_MESS->mind_open ?></a></li>
+  <li><a href="#blinder"><?php echo $GAME_OPT_MESS->blinder ?></a></li>
   <li><a href="#critical"><?php echo $GAME_OPT_MESS->critical ?></a></li>
   <li><a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a></li>
   <li><a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a></li>
@@ -237,6 +240,25 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>と併用できません</li>
 </ul>
 
+<h3><a id="deep_sleep"><?php echo $GAME_OPT_MESS->deep_sleep ?></a> [Ver. 1.4.0 β18〜]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->deep_sleep ?></li>
+  <li>観戦している人にも<a href="new_role/sub_role.php#deep_sleep">爆睡者</a>がつきます</li>
+  <li>結果として、<a href="new_role/human.php#common_group">共有者</a>を騙ることが可能になります</li>
+</ul>
+
+<h3><a id="mind_open"><?php echo $GAME_OPT_MESS->mind_open ?></a> [Ver. 1.4.0 β18〜]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->mind_open ?></li>
+  <li><a href="new_role/sub_role.php#mind_open">公開者</a>の影響で、観戦している人も夜の発言を見ることができます</li>
+</ul>
+
+<h3><a id="blinder"><?php echo $GAME_OPT_MESS->blinder ?></a> [Ver. 1.4.0 β18〜]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->blinder ?></li>
+  <li>観戦している人にも<a href="new_role/sub_role.php#blinder">目隠し</a>がつきます</li>
+</ul>
+
 <h3><a id="critical"><?php echo $GAME_OPT_MESS->critical ?></a> [Ver. 1.4.0 β15〜]</h3>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->critical ?></li>
@@ -268,7 +290,7 @@ OutputInfoPageHeader('ゲームオプション');
 13人：村人4　占い師1　霊能者1　狩人1　上海人形1　人形遣い1　人狼2　狂信者1　蝙蝠1
 14人：霊能1　銀狼2　妖狐1　蝙蝠10
 15人：埋毒者3　人狼3　狂信者1　妖狐1　蝙蝠6　大蝙蝠1
-16人：村人6　占い師1　霊能者1　狩人1　共有者2　人狼3　囁き狂人1　妖狐1
+16人：村人7　占い師1　霊能者1　狩人1　共有者2　人狼3　囁き狂人1
 17人：夢守人1　強毒者1　夢毒者5　天狼3　獏1　小悪魔1　鏡妖精5
 18人：村人7　占い師1　霊能者1　狩人1　共有者2　人狼3　狂人1　妖狐1　吸血鬼1
 19人：ひよこ鑑定士1　霊能者1　狩人1　共有者2　人狼2　金狼1　狂人1　妖狐1　雛狐1　蝙蝠7　大蝙蝠1

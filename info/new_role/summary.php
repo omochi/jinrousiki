@@ -1676,6 +1676,25 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
+<tr>
+  <td><a href="vampire.php#incubus_vampire">青髭公</a></td>
+  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability">女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
+</td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
+<tr>
+  <td><a href="vampire.php#succubus_vampire">飛縁魔</a></td>
+  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability">男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。</td>
+  <td>Ver. 1.4.0 β18</td>
+</tr>
 </table>
 
 <table>

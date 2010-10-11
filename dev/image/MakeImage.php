@@ -320,7 +320,7 @@ class RoleMessageList{
     'type' => 'mind_scanner');
 
   var $presage_scanner = array(
-    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#件#です。あなたが_人狼_に襲撃されたら、あなたの#受託者#に誰が襲撃したかメッセージを送ることができます。",
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#件#です。あなたが_人狼_に襲撃されたら、あなたの#受託者#に誰が襲撃したかメッセージを送ることができます。\n　たとえあなたが死すとも、見えるようで見えないものに繋がれた相方に自分の不屈な意思を受け継いでもらうのです。",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
 
   var $whisper_scanner = array(
@@ -470,7 +470,7 @@ class RoleMessageList{
     'type' => 'jammer_mad');
 
   var $enchant_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人を指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きしてみんなに「バカな…お前は死んだはず!!」って言ってやりましょう。あなたも同じ顔ですけどね。",
     'type' => 'jammer_mad');
 
   var $dream_eater_mad = array(
@@ -594,7 +594,7 @@ class RoleMessageList{
     'type' => 'child_fox', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
 
   var $howl_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|化狐|です。あなたの夜の独り言は#人狼#の遠吠えに見えます。",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|化狐|です。あなたの夜の独り言は#人狼#の遠吠えに見えます。化かし惑わし絡め取るのは|狐|の十八番。あなたの声で敵を騙すのです。",
     'type' => 'child_fox');
 
   var $cupid = array(
@@ -635,8 +635,8 @@ class RoleMessageList{
     'type' => 'angel');
 
   var $sacrifice_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|守護天使|です。初日の夜に誰か二人を|恋人|にすることができます。あなたは#人狼#に襲撃されても死にません。\n　また、あなたの|恋人|が#人狼#に襲撃されても自分の命と引き換えに守ることができます。",
-    'type' => 'angel', 'delimiter' => array('#' => 'wolf'));
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|守護天使|です。あなたの|恋人|が#人狼#に襲撃されても自分の命と引き換えに守ることができます。\n　愛する人を想う幸せな夜を壊す獣の手から二人を_庇護_し、命に代えても護るべき愛の存在を示すのです。",
+    'type' => 'angel', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
 
   var $ark_angel = array(
     'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|大天使|です。初日の夜に誰か二人を|恋人|にすることができます。また、他の|天使|が作った#共感者#を知ることができます。\n　秘蹟を統べる者――神に授けられたその力で村に神の存在を知らしめるのです。神を認める者には祝福を、認めぬ者には制裁を。",
@@ -650,8 +650,16 @@ class RoleMessageList{
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。\n　夜の闇にまぎれ、誰にも知られぬまま血をすすり、眷属を増やすのです。真の支配者はあなただと言う事を村に知らしめましょう。",
     'delimiter' => array('|' => 'vampire'));
 
+  var $incubus_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|青髭公|です。_女性_しか|感染者|にすることができず、#男性#を襲撃すると殺してしまいます。\n　あなたの欲望を妨げるものはありません。今こそ美しい女性を拐し、邪魔な男を縊り殺すのです！",
+    'type' => 'vampire', 'delimiter' => array('#' => 'sex_male', '_' => 'lovers'));
+
+  var $succubus_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|飛縁魔|です。#男性#しか|感染者|にすることができず、_女性_を襲撃すると殺してしまいます。\n　数多くの国を傾けてきた世にも美しきその美貌で男性を堕落させ、この村を我が物にするのです！",
+    'type' => 'incubus_vampire');
+
   var $sacrifice_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血公|です。#人狼#に襲撃されても自分の|感染者|を犠牲にして生き延びることができます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血公|です。#人狼#に襲撃されても自分の|感染者|を犠牲にして生き延びることができます。\n　重なり合う数多の命を持ってその身を不死と化し、幾千万の夜族を従え夜の王国を造るのです！",
     'type' => 'vampire', 'delimiter' => array('#' => 'wolf'));
 
   var $chiroptera = array(
@@ -1145,6 +1153,8 @@ class RoleMessageList{
   var $result_lovers = array('message' => "さんは|恋人|でした", 'type' => 'result_cupid');
   var $result_quiz = array('message' => "さんは|出題者|でした", 'delimiter' => array('|' => 'quiz'));
   var $result_vampire = array('message' => "さんは|吸血鬼|でした", 'delimiter' => array('|' => 'vampire'));
+  var $result_incubus_vampire = array('message' => "さんは|青髭公|でした", 'delimiter' => array('|' => 'vampire'));
+  var $result_succubus_vampire = array('message' => "さんは|飛縁魔|でした", 'delimiter' => array('|' => 'vampire'));
   var $result_sacrifice_vampire = array('message' => "さんは|吸血公|でした", 'type' => 'result_vampire');
   var $result_chiroptera = array('message' => "さんは|蝙蝠|でした", 'delimiter' => array('|' => 'chiroptera'));
   var $result_poison_chiroptera = array('message' => "さんは|毒蝙蝠|でした", 'type' => 'result_chiroptera');
@@ -1270,12 +1280,7 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_ogre');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison');
-#$builder->Output('enchant_mad');
-#$builder->Output('howl_fox');
-#$builder->Output('sacrifice_vampire');
-#$builder->Output('sacrifice_angel');
 #$builder->Output('sacrifice_mania');
-#$builder->Output('presage_scanner');
-#$builder->Output('ogre');
+$builder->Output('ogre');
 #$builder->Output('orange_ogre');
-$builder->Output('indigo_ogre');
+#$builder->Output('indigo_ogre');
