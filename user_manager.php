@@ -148,12 +148,19 @@ function OutputEntryUserPage(){
   $trip = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
+  if (isset($RQ_ARGS->sex)) {
+    $male_checked = $RQ_ARGS->sex == 'male' ? 'checked=""' : '';
+    $female_checked = $RQ_ARGS->sex == 'female' ? 'checked=""' : '';
+  }
+  else {
+    $male_checked = '';
+    $female_checked = '';
+  }
   echo <<<HEADER
 </head>
 <body>
 <a href="./">←戻る</a><br>
 <form method="POST" action="user_manager.php?room_no={$ROOM->id}">
-<input type="hidden" name="entry" value="on">
 <div align="center">
 <table class="main">
 <tr><td><img src="img/entry_user/title.gif"></td></tr>
@@ -163,12 +170,12 @@ function OutputEntryUserPage(){
 <table class="input">
 <tr>
 <td class="img"><img src="img/entry_user/uname.gif"></td>
-<td><input type="text" name="uname" size="30" maxlength="30"></td>
+<td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
 <td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip}</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/handle_name.gif"></td>
-<td><input type="text" name="handle_name" size="30" maxlength="30"></td>
+<td><input type="text" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
 <td class="explain">村で表示される名前です</td>
 </tr>
 <tr>
@@ -179,15 +186,15 @@ function OutputEntryUserPage(){
 <tr>
 <td class="img"><img src="img/entry_user/sex.gif"></td>
 <td class="img">
-<label for="male"><img src="img/entry_user/sex_male.gif"><input type="radio" id="male" name="sex" value="male"></label>
-<label for="female"><img src="img/entry_user/sex_female.gif"><input type="radio" id="female" name="sex" value="female"></label>
+<label for="male"><img src="img/entry_user/sex_male.gif"><input type="radio" id="male" name="sex" value="male" {$male_checked}></label>
+<label for="female"><img src="img/entry_user/sex_female.gif"><input type="radio" id="female" name="sex" value="female" {$female_checked}></label>
 </td>
 <td class="explain">特に意味は無いかも……</td>
 </tr>
 <tr>
 <td class="img"><img src="img/entry_user/profile.gif"></td>
 <td colspan="2">
-<textarea name="profile" cols="30" rows="2"></textarea>
+<textarea name="profile" cols="30" rows="2">{$RQ_ARGS->profile}</textarea>
 <input type="hidden" name="role" value="none">
 </td>
 </tr>
@@ -260,7 +267,7 @@ TAG;
 <span class="explain">
 ユーザ名、村人の名前、パスワードの前後の空白および改行コードは自動で削除されます
 </span>
-<input type="submit" value="村人登録申請"></td>
+<input type="submit" id="entry" name="entry"  value="村人登録申請"></td>
 </tr>
 </table>
 </td></tr>

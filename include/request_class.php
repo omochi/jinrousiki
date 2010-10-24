@@ -29,6 +29,10 @@ class RequestBase{
     return false;
   }
 
+  function Exists($arg){
+    return !empty($arg);
+  }
+
   function IsOn($arg){
     return $arg == 'on';
   }
@@ -93,12 +97,14 @@ class RequestBaseIcon extends RequestBase{
     $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance',
 		    'post.category', 'post.author', 'post.color');
     $this->GetItems('intval', 'post.icon_no');
+    $this->GetItems('Exists', 'search');
   }
 
   function GetIconData(){
-    $this->GetItems('SetPage', 'get.page', 'get.appearance_page',
-		    'get.category_page', 'get.author_page');
-    $this->GetItems('SetCategory', 'get.appearance', 'get.category', 'get.author');
+    $this->GetItems('SetPage', 'page');
+    $this->GetItems('EscapeStrings', 'appearance', 'category', 'author');
+    $this->GetItems('intval', 'sort_by_name');
+    $this->GetItems('Exists', 'search');
   }
 
   function SetCategory($arg){
@@ -129,7 +135,7 @@ class RequestUserManager extends RequestBaseIcon{
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
-    $this->GetItems('IsOn', 'post.entry');
+    $this->GetItems(Exists, 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
     $this->GetIconData();
     EscapeStrings($this->profile, false);
@@ -233,6 +239,7 @@ class RequestIconView extends RequestBaseIcon{
   function __construct(){
     $this->GetIconData();
     $this->GetItems('intval', 'get.icon_no');
+    $this->GetItems(NULL, 'get.category', 'get.appearance', 'get.author');
   }
 }
 

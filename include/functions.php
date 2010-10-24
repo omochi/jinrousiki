@@ -213,6 +213,13 @@ function EncodePostData(){
 //特殊文字のエスケープ処理
 //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
 function EscapeStrings(&$str, $trim = true){
+  if (is_array($str)) {
+    $result = array();
+    foreach($str as $item) {
+      $result[] = EscapeStrings($item);
+    }
+    return $result;
+  }
   if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
   // $str = htmlentities($str, ENT_QUOTES); //UTF に移行したら機能する？
   $replace_list = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;',
@@ -369,13 +376,20 @@ function OutputPageLink($CONFIG){
 
 //ページ送り用のリンクタグを作成する
 function GeneratePageLink($CONFIG, $page, $title = NULL){
-  $url = '<a href="' . $CONFIG->url . '.php?';
   if($page == $CONFIG->current) return '[' . $page . ']';
   $option = (is_null($CONFIG->page_type) ? 'page' : $CONFIG->page_type) . '=' . $page;
   $list = $CONFIG->option;
   array_unshift($list, $option);
+  $url = $CONFIG->url . '.php?' . implode('&', $list);
+  $attributes = array();
+  if (isset($CONFIG->attributes)) {
+    foreach($CONFIG->attributes as $attr => $value) {
+      $attributes[] = $attr . '="'. eval($value) . '"';
+    }
+  }
+  $attrs = implode(' ', $attributes);
   if(is_null($title)) $title = '[' . $page . ']';
-  return $url . implode('&', $list) . '">' . $title . '</a>';
+  return '<a href="' . $url . '" ' . $attrs . '>' . $title . '</a>';
 }
 
 //ログへのリンクを生成
