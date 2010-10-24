@@ -197,19 +197,25 @@ HTML;
 
   $selected_categories = _outputSelectionByType('category', 'カテゴリ');
   if(0 < count($selected_categories)){
-    $url_option[] = 'category=' . implode(',', $selected_categories);
+    foreach($selected_categories as $cat) {
+      $url_option[] = "category[]={$cat}";
+    }
     $where_cond[] = _generateInClause('category', $selected_categories);
   }
 
   $selected_appearances = _outputSelectionByType('appearance', '出典');
   if(0 < count($selected_appearances)){
-    $url_option[] = 'appearance=' . implode(',', $selected_appearances);
+    foreach($selected_appearances as $apr) {
+      $url_option[] = "appearance[]={$apr}";
+    }
     $where_cond[] = _generateInClause('appearance', $selected_appearances);
   }
 
   $selected_authors = _outputSelectionByType('author', 'アイコン作者');
   if(0 < count($selected_authors)){
-    $url_option[] = 'author=' . implode(',', $selected_authors);
+    foreach($selected_authors as $ath) {
+      $url_option[] = "author[]={$ath}";
+    }
     $where_cond[] = _generateInClause('author', $selected_authors);
   }
   $sort_by_name_checked = $RQ_ARGS->sort_by_name ? 'checked' : '';
