@@ -107,26 +107,26 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   var $chaos_hyper_wolf_list = array(
-    'wolf'           => 54,
-    'boss_wolf'      =>  3,
-    'gold_wolf'      =>  2,
+    'wolf'           => 40,
+    'boss_wolf'      =>  2,
+    'gold_wolf'      =>  3,
     'phantom_wolf'   =>  2,
-    'cursed_wolf'    =>  1,
+    'cursed_wolf'    =>  2,
     'wise_wolf'      =>  3,
     'poison_wolf'    =>  3,
-    'resist_wolf'    =>  4,
+    'resist_wolf'    =>  3,
     'blue_wolf'      =>  2,
     'emerald_wolf'   =>  2,
-    'sex_wolf'       =>  1,
+    'sex_wolf'       =>  2,
     'tongue_wolf'    =>  2,
-    'possessed_wolf' =>  1,
-    'hungry_wolf'    =>  1,
-    'doom_wolf'      =>  1,
-    'sirius_wolf'    =>  1,
-    'elder_wolf'     =>  2,
+    'possessed_wolf' =>  2,
+    'hungry_wolf'    =>  2,
+    'doom_wolf'      =>  2,
+    'sirius_wolf'    =>  2,
+    'elder_wolf'     =>  3,
     'cute_wolf'      => 10,
     'scarlet_wolf'   =>  3,
-    'silver_wolf'    =>  2);
+    'silver_wolf'    => 10);
 
   //妖狐の最低出現枠 (役職名 => 出現比)
   //普通闇鍋
@@ -146,28 +146,28 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   var $chaos_hyper_fox_list = array(
-    'fox'           => 57,
+    'fox'           => 40,
     'white_fox'     =>  2,
-    'black_fox'     =>  3,
+    'black_fox'     =>  2,
     'gold_fox'      =>  3,
     'phantom_fox'   =>  2,
     'poison_fox'    =>  3,
     'blue_fox'      =>  2,
     'emerald_fox'   =>  2,
     'voodoo_fox'    =>  2,
-    'revive_fox'    =>  1,
-    'possessed_fox' =>  1,
-    'doom_fox'      =>  1,
-    'cursed_fox'    =>  1,
-    'elder_fox'     =>  2,
+    'revive_fox'    =>  2,
+    'possessed_fox' =>  2,
+    'doom_fox'      =>  2,
+    'cursed_fox'    =>  2,
+    'elder_fox'     =>  3,
     'cute_fox'      =>  5,
     'scarlet_fox'   =>  3,
-    'silver_fox'    =>  2,
-    'child_fox'     =>  3,
-    'sex_fox'       =>  2,
-    'stargazer_fox' =>  1,
-    'jammer_fox'    =>  1,
-    'miasma_fox'    =>  1);
+    'silver_fox'    =>  3,
+    'child_fox'     => 10,
+    'sex_fox'       =>  4,
+    'stargazer_fox' =>  2,
+    'jammer_fox'    =>  2,
+    'miasma_fox'    =>  2);
 
   //ランダム配役テーブル (役職名 => 出現比)
   //普通闇鍋
@@ -290,12 +290,12 @@ class CastConfig extends CastConfigBase{
     'soul_necromancer'   =>  5,
     'yama_necromancer'   => 10,
     'dummy_necromancer'  => 10,
-    'medium'             => 15,
+    'medium'             => 10,
     'seal_medium'        =>  5,
     'revive_medium'      =>  5,
-    'priest'             =>  7,
-    'bishop_priest'      =>  3,
-    'dowser_priest'      =>  3,
+    'priest'             =>  5,
+    'bishop_priest'      =>  4,
+    'dowser_priest'      =>  4,
     'border_priest'      =>  4,
     'crisis_priest'      =>  4,
     'dummy_priest'       =>  4,
@@ -337,9 +337,10 @@ class CastConfig extends CastConfigBase{
     'whisper_scanner'    =>  3,
     'howl_scanner'       =>  3,
     'telepath_scanner'   =>  3,
-    'jealousy'           =>  7,
-    'priest_jealousy'    =>  5,
+    'jealousy'           =>  5,
+    'priest_jealousy'    =>  4,
     'poison_jealousy'    =>  3,
+    'divorce_jealousy'   =>  3,
     'doll'               =>  7,
     'friend_doll'        =>  5,
     'poison_doll'        =>  5,
@@ -368,7 +369,7 @@ class CastConfig extends CastConfigBase{
     'scarlet_wolf'       => 10,
     'silver_wolf'        => 10,
     'mad'                => 10,
-    'fanatic_mad'        => 10,
+    'fanatic_mad'        =>  5,
     'whisper_mad'        =>  5,
     'jammer_mad'         => 10,
     'voodoo_mad'         =>  5,
@@ -419,9 +420,11 @@ class CastConfig extends CastConfigBase{
     'vampire'            =>  4,
     'incubus_vampire'    =>  2,
     'succubus_vampire'   =>  2,
+    'doom_vampire'       =>  2,
     'sacrifice_vampire'  =>  2,
-    'chiroptera'         =>  4,
-    'poison_chiroptera'  =>  4,
+    'soul_vampire'       =>  2,
+    'chiroptera'         =>  3,
+    'poison_chiroptera'  =>  3,
     'cursed_chiroptera'  =>  3,
     'boss_chiroptera'    =>  3,
     'elder_chiroptera'   =>  3,
@@ -443,6 +446,7 @@ class CastConfig extends CastConfigBase{
     'ogre'               =>  2,
     'orange_ogre'        =>  2,
     'indigo_ogre'        =>  2,
+    'poison_ogre'        =>  2,
     'mania'              =>  3,
     'trick_mania'        =>  3,
     'soul_mania'         =>  2,
@@ -450,10 +454,10 @@ class CastConfig extends CastConfigBase{
     'unknown_mania'      =>  3,
     'sacrifice_mania'    =>  2);
 
-  var $chaos_min_wolf_rate = 10; //人狼の最低出現比 (総人口/N)
-  var $chaos_min_fox_rate  = 15; //妖狐の最低出現比 (総人口/N)
+  var $chaos_min_wolf_rate = 10; //人狼の最小出現比 (総人口 / N)
+  var $chaos_min_fox_rate  = 15; //妖狐の最小出現比 (総人口 / N)
 
-  //役職グループの最大出現率 (グループ => 最大人口比)
+  //役職グループの最大出現比率 (グループ => 最大人口比率)
   var $chaos_role_group_rate_list = array(
     'wolf' => 0.21, 'mad' => 0.14, 'fox' => 0.1, 'child_fox' => 0.08, 'cupid' => 0.1, 'angel' => 0.07,
     'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
@@ -474,6 +478,15 @@ class CastConfig extends CastConfigBase{
   var $chaos_hyper_replace_human_role_list = array(
     'mania' => 35, 'trick_mania' => 20, 'soul_mania' => 10, 'dummy_mania' => 10,
     'unknown_mania' => 15, 'sacrifice_mania' => 10);
+
+  //固定配役追加モード
+  var $topping_list = array(
+    'a' => array('doll' => 1, 'doll_master' => 1),
+    'b' => array('quiz' => 1, 'poison_ogre' => 1),
+    'c' => array('vampire' => 1),
+    'd' => array('poison_cat' => 1, 'resist_wolf' => 1),
+    'e' => array('anti_voodoo' => 1, 'possessed_wolf' => 1),
+			    );
 
   //サブ役職制限：EASYモード
   var $chaos_sub_role_limit_easy_list = array(

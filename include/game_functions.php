@@ -429,118 +429,86 @@ EOF;
     $result = $camp == 'quiz' ? 'lose' : 'draw';
   }
   else{
+    $win_flag = false;
     switch($camp){
     case 'human':
       if($SELF->IsRole('escaper')){ //逃亡者は死亡していたら敗北
-	if($SELF->IsDead()){
-	  $class  = 'none';
-	  $result = 'lose';
-	  break;
-	}
+	if($SELF->IsDead()) break;
       }
       elseif($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
 	foreach($USERS->rows as $user){
-	  if($user->IsLiveRole('doll_master')){
-	    $class  = 'none';
-	    $result = 'lose';
+	  if($user->IsLiveRole('doll_master')) break 2;
+	}
+      }
+      $win_flag = $victory == $camp;
+      break;
+
+    case 'fox':
+      $win_flag = (strpos($victory, $camp) !== false);
+      break;
+
+    case 'vampire': //吸血鬼陣営は生き残った者だけが勝利
+      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営がコピーした場合は陣営の勝敗依存
+	$win_flag = $victory == $camp;
+      }
+      else{
+	$win_flag = $victory == $camp && $SELF->IsLive();
+      }
+      break;
+
+    case 'chiroptera': //蝙蝠陣営は生きていれば勝利
+      $win_flag = $SELF->IsLive();
+      break;
+
+    case 'ogre':
+      //他陣営依存があるタイプを先に判定
+      if($SELF->IsRole('poison_ogre')){ //榊鬼 (出題者勝利 or 生存)
+	$win_flag = $victory == 'quiz' || $SELF->IsLive();
+	break;
+      }
+      if($SELF->IsDead()) break; //鬼陣営は死亡していたら敗北
+      if($SELF->IsRole('poison_ogre') || $SELF->IsRoleGroup('mania')){ //神話マニア陣営 (生存のみ)
+	$win_flag = true;
+	break;
+      }
+      if($SELF->IsRole('ogre')){ //鬼 (人狼の生存)
+	if($victory == 'wolf'){ //人狼陣営勝利なら人狼生存確定
+	  $win_flag = true;
+	  break;
+	}
+	foreach($USERS->rows as $user){
+	  if($user->IsLiveRoleGroup('wolf')){
+	    $win_flag = true;
 	    break 2;
 	  }
 	}
       }
-
-      if($victory == $camp){
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
-      break;
-
-    case 'fox':
-      if(strpos($victory, $camp) !== false){
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
-      break;
-
-    case 'vampire':
-      if($victory == $camp && $SELF->IsLive()){ //吸血鬼陣営は生き残った者だけが勝利
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
-      break;
-
-    case 'chiroptera':
-      if($SELF->IsLive()){ //蝙蝠陣営は生きていれば勝利
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
-      break;
-
-    case 'ogre':
-      $flag = false;
-      do{
-	if($SELF->IsDead()) break; //鬼陣営は死亡していたら敗北
-	if($SELF->IsRoleGroup('mania')){ //神話マニア陣営 (生存のみ)
-	  $flag = true;
-	  break;
+      elseif($SELF->IsRole('orange_ogre')){ //前鬼 (人狼陣営全滅)
+	if($victory == 'wolf') break; //人狼陣営勝利なら人狼生存確定
+	foreach($USERS->rows as $user){
+	  if($user->IsLive() && $user->GetCamp(true) == 'wolf') break 2;
 	}
-	if($SELF->IsRole('ogre')){ //鬼 (人狼の生存)
-	  if($victory == 'wolf'){ //人狼陣営勝利なら人狼生存確定
-	    $flag = true;
-	    break;
-	  }
-	  foreach($USERS->rows as $user){
-	    if($user->IsLiveRoleGroup('wolf')){
-	      $flag = true;
-	      break 2;
-	    }
-	  }
-	}
-	elseif($SELF->IsRole('orange_ogre')){ //前鬼 (人狼陣営全滅)
-	  if($victory == 'wolf') break; //人狼陣営勝利なら人狼生存確定
-	  foreach($USERS->rows as $user){
-	    if($user->IsLive() && $user->GetCamp(true) == 'wolf') break 2;
-	  }
-	  $flag = true;
-	}
-	elseif($SELF->IsRole('indigo_ogre')){ //後鬼 (妖狐陣営全滅)
-	  if(strpos($victory, 'fox') !== false) break; //妖狐陣営勝利なら妖狐生存確定
-	  foreach($USERS->rows as $user){
-	    if($user->IsLive() && $user->GetCamp(true) == 'fox') break 2;
-	  }
-	  $flag = true;
-	}
-      }while(false);
-
-      if($flag){
-	$class = $camp;
+	$win_flag = true;
       }
-      else{
-	$class  = 'none';
-	$result = 'lose';
+      elseif($SELF->IsRole('indigo_ogre')){ //後鬼 (妖狐陣営全滅)
+	if(strpos($victory, 'fox') !== false) break; //妖狐陣営勝利なら妖狐生存確定
+	foreach($USERS->rows as $user){
+	  if($user->IsLive() && $user->GetCamp(true) == 'fox') break 2;
+	}
+	$win_flag = true;
       }
       break;
 
     default:
-      if($victory == $camp){
-	$class = $camp;
-      }
-      else{
-	$class  = 'none';
-	$result = 'lose';
-      }
+      $win_flag = $victory == $camp;
       break;
+    }
+    if($win_flag){
+      $class = $camp;
+    }
+    else{
+      $class  = 'none';
+      $result = 'lose';
     }
   }
   $result = 'self_' . $result;
@@ -559,7 +527,11 @@ function OutputVoteList(){
 
   if(! $ROOM->IsPlaying()) return false; //ゲーム中以外は出力しない
 
- //昼なら前日、夜ならの今日の集計を表示
+  if($ROOM->IsEvent('blind_vote') && ! $ROOM->IsOpenData()){ //傘化けの判定
+    echo '傘化けの能力で投票結果が隠されました！！';
+    return;
+  }
+  //昼なら前日、夜ならの今日の集計を表示
   echo GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
 }
 
@@ -822,37 +794,43 @@ function OutputTimeStamp($builder){
 
 //占う、狼が狙う、護衛する等、能力を使うメッセージ
 function OutputAbilityAction(){
-  global $MESSAGE, $ROOM, $SELF;
+  global $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   //昼間で役職公開が許可されているときのみ表示
   //(猫又は役職公開時は行動できないので不要)
   if(! $ROOM->IsDay() || ! ($SELF->IsDummyBoy() || $ROOM->IsOpenCast())) return false;
 
-  $yesterday = $ROOM->date - 1;
   $header = '<b>前日の夜、';
   $footer = '</b><br>'."\n";
-  $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
-		       'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
-  if($yesterday == 1){
-    array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
+  if($ROOM->test_mode){
+    $stack_list = $RQ_ARGS->TestItems->ablity_action_list;
   }
   else{
-    array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
-	       'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
-	       'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
+    $yesterday = $ROOM->date - 1;
+    $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
+			 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
+    if($yesterday == 1){
+      array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
+    }
+    else{
+      array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
+		 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
+		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
+    }
+    $action = '';
+    foreach($action_list as $this_action){
+      if($action != '') $action .= ' OR ';
+      $action .= "type = '$this_action'";
+    }
+    $query = $ROOM->GetQueryHeader('system_message', 'message', 'type') .
+      " AND date = {$yesterday} AND ({$action})";
+    $stack_list = FetchAssoc($query);
   }
 
-  $action = '';
-  foreach($action_list as $this_action){
-    if($action != '') $action .= ' OR ';
-    $action .= "type = '$this_action'";
-  }
-
-  $query = $ROOM->GetQueryHeader('system_message', 'message', 'type') .
-    " AND date = {$yesterday} AND ({$action})";
-  foreach(FetchAssoc($query) as $stack){
+  foreach($stack_list as $stack){
     list($actor, $target) = explode("\t", $stack['message']);
-    echo $header.$actor.' ';
+    echo $header.$USERS->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
+    $target = 'は '.$USERS->ByHandleName($target)->GenerateShortRoleName(false, true).' ';
     switch($stack['type']){
     case 'WOLF_EAT':
     case 'DREAM_EAT':
@@ -860,28 +838,28 @@ function OutputAbilityAction(){
     case 'ASSASSIN_DO':
     case 'VAMPIRE_DO':
     case 'OGRE_DO':
-      echo 'は '.$target.' を狙いました';
+      echo $target.'を狙いました';
       break;
 
     case 'ESCAPE_DO':
-      echo 'は '.$target.' '.$MESSAGE->escape_do;
+      echo $target.$MESSAGE->escape_do;
       break;
 
     case 'MAGE_DO':
     case 'CHILD_FOX_DO':
-      echo 'は '.$target.' を占いました';
+      echo $target.'を占いました';
       break;
 
     case 'VOODOO_KILLER_DO':
-      echo 'は '.$target.' の呪いを祓いました';
+      echo $target.'の呪いを祓いました';
       break;
 
     case 'JAMMER_MAD_DO':
-      echo 'は '.$target.' の占いを妨害しました';
+      echo $target.'の占いを妨害しました';
       break;
 
     case 'TRAP_MAD_DO':
-      echo 'は '.$target.' '.$MESSAGE->trap_do;
+      echo $target.$MESSAGE->trap_do;
       break;
 
     case 'TRAP_MAD_NOT_DO':
@@ -894,19 +872,19 @@ function OutputAbilityAction(){
 
     case 'VOODOO_MAD_DO':
     case 'VOODOO_FOX_DO':
-      echo 'は '.$target.' に呪いをかけました';
+      echo $target.'に呪いをかけました';
       break;
 
     case 'GUARD_DO':
-      echo 'は '.$target.' '.$MESSAGE->guard_do;
+      echo $target.$MESSAGE->guard_do;
       break;
 
     case 'ANTI_VOODOO_DO':
-      echo 'は '.$target.' の厄を祓いました';
+      echo $target.'の厄を祓いました';
       break;
 
     case 'REPORTER_DO':
-      echo 'は '.$target.' '.$MESSAGE->reporter_do;
+      echo $target.$MESSAGE->reporter_do;
       break;
 
     case 'ASSASSIN_NOT_DO':
@@ -918,19 +896,23 @@ function OutputAbilityAction(){
       break;
 
     case 'MIND_SCANNER_DO':
-      echo 'は '.$target.' の心を読みました';
+      echo $target.'の心を読みました';
+      break;
+
+    case 'POISON_CAT_DO':
+      echo $target.$MESSAGE->revive_do;
       break;
 
     case 'CUPID_DO':
-      echo 'は '.$target.' '.$MESSAGE->cupid_do;
+      echo $target.$MESSAGE->cupid_do;
       break;
 
     case 'FAIRY_DO':
-      echo 'は '.$target.' '.$MESSAGE->fairy_do;;
+      echo $target.$MESSAGE->fairy_do;;
       break;
 
     case 'MANIA_DO':
-      echo 'は '.$target.' を真似しました';
+      echo $target.'を真似しました';
       break;
     }
     echo $footer;

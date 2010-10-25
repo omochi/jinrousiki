@@ -44,7 +44,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a href="quiz.php#quiz" target="body">出題者系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="vampire.php" target="body">&lt;吸血鬼陣営&gt;</a></li>
-<li><a href="vampire.php#vampire" target="body">吸血鬼系</a></li>
+<li><a href="vampire.php#vampire_group" target="body">吸血鬼系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="chiroptera.php" target="body">&lt;蝙蝠陣営&gt;</a></li>
 <li><a href="chiroptera.php#chiroptera_group" target="body">蝙蝠系</a></li>

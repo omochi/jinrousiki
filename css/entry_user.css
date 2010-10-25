@@ -47,7 +47,7 @@ legend{
   font-weight:bold;
 }
 td.icon_details {
-  padding:4px;
+  padding: 6px;
 }
 td.icon_details .icon_wrapper {
   display:block;
@@ -55,7 +55,7 @@ td.icon_details .icon_wrapper {
 }
 td.icon_details ul {
   list-style:none;
-  margin-left:4px;
+  margin-left: 4px;
   padding:0;
   vertical-align:middle;
 }

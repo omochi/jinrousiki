@@ -316,9 +316,9 @@ class User{
   //狩り判定
   function IsHuntTarget(){
     return ($this->IsRoleGroup('mad') && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
+      ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire')) ||
       $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
-		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',
-		    'sacrifice_vampire');
+		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera');
   }
 
   //護衛制限判定
@@ -331,7 +331,7 @@ class User{
   //暗殺反射判定
   function IsRefrectAssassin(){
     return $this->IsLive(true) &&
-      ($this->IsRole('detective_common', 'cursed_fox') ||
+      ($this->IsRole('detective_common', 'cursed_fox', 'soul_vampire') ||
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
        ($this->IsRoleGroup('ogre') && mt_rand(1, 100) <= 30));
   }
@@ -429,7 +429,9 @@ class User{
     }
 
     if($ROOM->date == 1){ //初日限定
-      if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+      if($this->IsRole('mind_scanner', 'presage_scanner')){
+	return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+      }
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
@@ -471,10 +473,11 @@ class User{
   }
 
   //役職情報から表示情報を作成する
-  function GenerateRoleName(){
+  function GenerateRoleName($main_only = false){
     global $ROLE_DATA;
 
     $str = $ROLE_DATA->GenerateRoleTag($this->main_role); //メイン役職
+    if($main_only) return $str;
     if(($role_count = count($this->role_list)) < 2) return $str; //サブ役職
     $count = 1;
     foreach($ROLE_DATA->sub_role_group_list as $class => $role_list){
@@ -488,7 +491,7 @@ class User{
   }
 
   //役職をパースして省略名を返す
-  function GenerateShortRoleName($heaven = false){
+  function GenerateShortRoleName($heaven = false, $main_only = false){
     global $ROLE_DATA, $USERS;
 
     //メイン役職を取得
@@ -496,6 +499,7 @@ class User{
     $name = $ROLE_DATA->short_role_list[$this->main_role];
     $str = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
+    if($main_only) return $this->handle_name . $str . ']</span>';
 
     //サブ役職を追加
     $sub_role_list = array_slice($this->role_list, 1);
@@ -937,13 +941,20 @@ class UserDataSet{
       switch($event['type']){
       case 'VOTE_KILLED':
 	$user = $this->ByHandleName($event['message']);
-	if(! $user->IsRole('mirror_fairy')) break;
-	$duel_stack = array(); //決闘対象者の ID リスト
-	foreach($user->GetPartner('mirror_fairy', true) as $key => $value){ //生存確認
-	  if($this->IsVirtualLive($key))   $duel_stack[] = $key;
-	  if($this->IsVirtualLive($value)) $duel_stack[] = $value;
+	if($user->IsRole('mirror_fairy')){
+	  $duel_stack = array(); //決闘対象者の ID リスト
+	  foreach($user->GetPartner('mirror_fairy', true) as $key => $value){ //生存確認
+	    if($this->IsVirtualLive($key))   $duel_stack[] = $key;
+	    if($this->IsVirtualLive($value)) $duel_stack[] = $value;
+	  }
+	  if(count($duel_stack) > 1) $ROOM->event->vote_duel = $duel_stack;
 	}
-	if(count($duel_stack) > 1) $ROOM->event->vote_duel = $duel_stack;
+	foreach($user->GetPartner('bad_status', true) as $id => $date){
+	  $status_user = $this->ByID($id);
+	  $ROOM->event->blind_vote |= $status_user->IsRole('amaze_mad') &&
+	    (($date == $ROOM->date     && $ROOM->IsNight()) ||
+	     ($date == $ROOM->date - 1 && $ROOM->IsDay()));
+	}
 	break;
 
       case 'WOLF_KILLED':

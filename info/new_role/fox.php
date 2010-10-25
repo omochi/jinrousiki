@@ -242,6 +242,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 <a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できません。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#sacrifice_cat">猫神</a>・<a href="wolf.php#possessed_wolf">憑狼</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>の妖狐バージョンです。
@@ -255,6 +259,10 @@ OutputRolePageHeader('妖狐陣営');
 遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。
 暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて4日目後の昼。
 <a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -272,6 +280,10 @@ OutputRolePageHeader('妖狐陣営');
 <h4>Ver. 1.4.0 β9〜</h4>
 <pre>
 <a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#voodoo_fox">九尾</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -387,7 +399,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#sex_group">ひよこ鑑定士</a>の<a href="#child_fox">子狐</a>バージョンです。
+<a href="human.php#sex_mage">ひよこ鑑定士</a>の<a href="#child_fox">子狐</a>バージョンです。
 能力よりも、存在自体が脅威となるタイプですね。
 村や狼が疑心暗鬼になって<a href="human.php#sex_mage">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
 </pre>

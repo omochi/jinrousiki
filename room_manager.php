@@ -38,7 +38,7 @@ EOF;
 function CreateRoom(){
   global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $MESSAGE;
 
-  if(CheckReferer('', array('127.', '192.168.'))){ //リファラチェック
+  if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
 
@@ -151,7 +151,7 @@ function CreateRoom(){
     if($chaos || $chaosfull || $chaos_hyper){
       $game_option_list[] = $chaos ? 'chaos' : ($chaosfull ? 'chaosfull' : 'chaos_hyper');
       $check_game_option_list[] = 'secret_sub_role';
-      array_push($check_option_role_list, 'chaos_open_cast', 'chaos_open_cast_camp',
+      array_push($check_option_role_list, 'topping', 'chaos_open_cast', 'chaos_open_cast_camp',
 		 'chaos_open_cast_role');
       if($perverseness){
 	$option_role_list[] = 'sub_role_limit';
@@ -206,54 +206,54 @@ function CreateRoom(){
   //PrintData($check_option_role_list, 'CheckOptionRole');
   foreach($check_option_role_list as $option){
     if(! $ROOM_CONF->$option) continue;
-    if($option == 'chaos_open_cast'){
-      switch($_POST[$option]){
-      case 'full':
-	$option = 'chaos_open_cast';
-	break;
 
-      case 'camp':
-	$option = 'chaos_open_cast_camp';
-	break;
-
-      case 'role':
-	$option = 'chaos_open_cast_role';
-	break;
-
-      default:
-	continue 2;
-      }
-    }
-    elseif($option == 'replace_human'){
-      $target = $_POST[$option];
-      switch($target){
+    switch($option){
+    case 'replace_human':
+      switch($target = $_POST[$option]){
       case 'full_mania':
       case 'full_chiroptera':
       case 'full_cupid':
       case 'replace_human':
-	if(! $ROOM_CONF->$target) continue 2;
-	$option = $target;
-	break;
-
-      default:
-	continue 2;
+	if($ROOM_CONF->$target){
+	  $option = $target;
+	  break 2;
+	}
       }
-    }
-    elseif($option == 'sub_role_limit'){
+      continue 2;
+
+    case 'topping':
       $target = $_POST[$option];
-      switch($target){
+      if(array_search($target, $ROOM_CONF->{$option . '_list'}) === false) continue 2;
+      $option .= ':' . $target;
+      break;
+
+    case 'chaos_open_cast':
+      switch($target = $_POST[$option]){
+      case 'full':
+	break 2;
+
+      case 'camp':
+      case 'role':
+	$option .= '_' . $target;
+	break 2;
+      }
+      continue 2;
+
+    case 'sub_role_limit':
+      switch($target = $_POST[$option]){
       case 'no_sub_role':
       case 'sub_role_limit_easy':
       case 'sub_role_limit_normal':
-	if(! $ROOM_CONF->$target) continue;
-	$option = $target;
-	break;
-
-      default:
-	continue 2;
+	if($ROOM_CONF->$target){
+	  $option = $target;
+	  break 2;
+	}
       }
+      continue 2;
+
+    default:
+      if($_POST[$option] != 'on') continue 2;
     }
-    elseif($_POST[$option] != 'on') continue;
     $option_role_list[] = $option;
   }
 
@@ -404,7 +404,7 @@ function OutputRoomAction($type, $room_name = ''){
 function OutputRoomList(){
   global $DEBUG_MODE, $SERVER_CONF, $ROOM_IMG;
 
-  if($SERVER_CONF->secret_room) return;
+  if($SERVER_CONF->secret_room) return; //シークレットテストモード
 
   /* RSS機能はテスト中
   if(! $DEBUG_MODE){
@@ -423,20 +423,19 @@ function OutputRoomList(){
   }
   */
 
-  //return; //シークレットテスト用
-  //ルームNo、ルーム名、コメント、最大人数、状態を取得
+  //部屋情報を取得
   $query = "SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status " .
     "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
   $list = FetchAssoc($query);
   foreach($list as $array){
     extract($array);
-    $option_img_str = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
-    //$option_img_str .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
+    $option_img = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
+    //$option_img .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
 {$ROOM_IMG->Generate($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
-<div>〜{$room_comment}〜 {$option_img_str}(最大{$max_user}人)</div>
+<div>〜{$room_comment}〜 {$option_img}(最大{$max_user}人)</div>
 </a><br>
 
 EOF;
@@ -484,6 +483,7 @@ EOF;
 EOF;
 }
 
+//村作成フォーム生成 (チェックボックス型)
 function GenerateRoomOption($option, $label = ''){
   global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
@@ -495,7 +495,7 @@ function GenerateRoomOption($option, $label = ''){
   $label .= $option;
 
   $sentence = $GAME_OPT_MESS->$option;
-  if(! is_null($limit = $CAST_CONF->$option)) $sentence .= ' ('  . $limit . '人〜)';
+  if(is_int($limit = $CAST_CONF->$option)) $sentence .= ' ('  . $limit . '人〜)';
 
   $caption = $GAME_OPT_CAPT->$option;
   switch($option){
@@ -507,6 +507,7 @@ function GenerateRoomOption($option, $label = ''){
   case 'max_user':
   case 'replace_human':
   case 'special_role':
+  case 'topping':
     return GenerateSelector($option);
 
   case 'real_time':
@@ -530,6 +531,7 @@ EOF;
 EOF;
 }
 
+//村作成フォーム生成 (テキスト型)
 function GenerateTextForm($option){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
@@ -551,6 +553,7 @@ function GenerateTextForm($option){
 EOF;
 }
 
+//村作成フォーム生成 (セレクタ型)
 function GenerateSelector($option){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
@@ -575,6 +578,17 @@ function GenerateSelector($option){
       }
     }
     break;
+
+  case 'topping':
+    $label = 'タイプ名';
+    $str = '<option value="" selected>なし</option>';
+    foreach($ROOM_CONF->{$option . '_list'} as $mode){
+      $role = 'topping_' . $mode;
+      if($GAME_OPT_MESS->$role){
+	$str .= '<option value="' . $mode . '">' . $GAME_OPT_MESS->$role . '</option>'."\n";
+      }
+    }
+    break;
   }
 
   return <<<EOF
@@ -591,6 +605,7 @@ function GenerateSelector($option){
 EOF;
 }
 
+//村作成フォーム出力 (標準)
 function OutputRoomOption($option_list, $label = '', $border = true){
   $stack = array();
   foreach($option_list as $option) $stack[] = GenerateRoomOption($option, $label);
@@ -599,6 +614,7 @@ function OutputRoomOption($option_list, $label = '', $border = true){
   echo implode('', $stack);
 }
 
+//村作成フォーム出力 (身代わり君用)
 function OutputRoomOptionDummyBoy(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
@@ -630,6 +646,7 @@ EOF;
   OutputRoomOption(array('gm_password', 'gerd'), '', false);
 }
 
+//村作成フォーム出力 (霊界配役用)
 function OutputRoomOptionOpenCast(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
@@ -674,11 +691,13 @@ EOF;
   }
 }
 
+//村作成フォーム出力 (闇鍋モード用)
 function OutputRoomOptionChaos(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
   if(! $ROOM_CONF->chaos) return NULL;
 
+  OutputRoomOption(array('topping'));
   if($ROOM_CONF->chaos_open_cast){
     switch($ROOM_CONF->default_chaos_open_cast){
     case 'full':
@@ -699,7 +718,6 @@ function OutputRoomOptionChaos(){
     }
 
     echo <<<EOF
-<tr><td colspan="2"><hr></td></tr>
 <tr>
 <td><label>{$GAME_OPT_MESS->chaos_open_cast}：</label></td>
 <td class="explain">

@@ -4,6 +4,9 @@
 <p>
 ※「beta」が付いているバージョンは開発チーム内の情報交換用です。基本的に安定性は保証されません。
 </p>
+<p>
+※Ver. 1.4.0β18 よりからは <a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a> にパッケージをアップロードしています。
+</p>
 <table id="download">
 <caption>定置ファイル</caption>
 <?php

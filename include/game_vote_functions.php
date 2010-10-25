@@ -22,24 +22,25 @@ function OutputVoteResult($sentence, $unlock = false, $reset_vote = false){
   OutputActionResult($title, $header . $sentence . $footer, '', $unlock);
 }
 
-//人数とゲームオプションに応じた役職テーブルを返す (エラー処理は暫定)
+//人数とゲームオプションに応じた役職テーブルを返す
 function GetRoleList($user_count){
   global $GAME_CONF, $CAST_CONF, $ROLE_DATA, $ROOM;
 
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
 
-  $role_list = $CAST_CONF->role_list[$user_count]; //人数に応じた設定リストを取得
-  if($role_list == NULL){ //リストの有無をチェック
+  $role_list = $CAST_CONF->role_list[$user_count]; //人数に応じた配役リストを取得
+  if(is_null($role_list)){ //リストの有無をチェック
     $sentence = $user_count . '人は設定されていません';
     OutputVoteResult($error_header . $sentence . $error_footer, true, true);
   }
-  $gerd = $ROOM->IsOption('gerd');
+  $is_gerd      = $ROOM->IsOption('gerd'); //ゲルト君モード
+  $is_detective = $ROOM->IsOption('detective'); //探偵村
   //PrintData($ROOM->option_list);
 
   if($ROOM->IsOptionGroup('chaos')){ //闇鍋モード
-    $random_role_list = array();
-    foreach(array('chaos', 'chaosfull', 'chaos_hyper') as $option){
+    $random_role_list = array(); //ランダム配役結果
+    foreach(array('chaos', 'chaosfull', 'chaos_hyper') as $option){ //グレードを検出
       if($ROOM->IsOption($option)){
 	$base_name = $option;
 	break;
@@ -59,15 +60,22 @@ function GetRoleList($user_count){
     //PrintData(array_sum($CAST_CONF->$random_name));
 
     //-- 最小補正 --//
-    //探偵村なら固定枠に探偵を追加する
-    if($ROOM->IsOption('detective') && is_null($chaos_fix_role_list['detective_common'])){
-      $chaos_fix_role_list['detective_common'] = 1;
+    //固定配役追加モード
+    if($ROOM->IsOption('topping') &&
+       is_array($stack = $CAST_CONF->topping_list[$ROOM->option_role->options['topping'][0]])){
+      //PrintData($stack);
+      foreach($stack as $role => $count){
+	$target =& $chaos_fix_role_list[$role];
+	if(is_null($target) || $target < $count) $target = $count;
+      }
+      //PrintData($chaos_fix_role_list);
     }
 
     //ゲルト君モードなら固定枠に村人を追加する
-    if($gerd && is_null($chaos_fix_role_list['human'])){
-      $chaos_fix_role_list['human'] = 1;
-    }
+    if($is_gerd && is_null($target =& $chaos_fix_role_list['human'])) $target = 1;
+
+    //探偵村なら固定枠に探偵を追加する
+    if($is_detective && is_null($target =& $chaos_fix_role_list['detective_common'])) $target = 1;
 
     foreach($chaos_fix_role_list as $key => $value){ //最小補正用リスト
       $fix_role_group_list[$ROLE_DATA->DistinguishRoleGroup($key)] = $value;
@@ -114,28 +122,25 @@ function GetRoleList($user_count){
 
     //-- 最大補正 --//
     foreach($CAST_CONF->chaos_role_group_rate_list as $name => $rate){
-      if(! (is_array($role_group_list->$name) && is_array($random_role_group_list->$name))){
-	continue;
-      }
+      $target =& $random_role_group_list->$name;
+      if(! (is_array($role_group_list->$name) && is_array($target))) continue;
       $over_count = array_sum($role_group_list->$name) - round($user_count * $rate);
       //if($over_count > 0) PrintData($over_count, $name); //テスト用
       for(; $over_count > 0; $over_count--){
-	if(array_sum($random_role_group_list->$name) < 1) break;
-	//PrintData($random_role_group_list->$name, "　　$over_count: before");
-	arsort($random_role_group_list->$name);
-	//PrintData($random_role_group_list->$name, "　　$over_count: after");
-	$key = key($random_role_group_list->$name);
+	if(array_sum($target) < 1) break;
+	//PrintData($target, "　　$over_count: before");
+	arsort($target);
+	//PrintData($target, "　　$over_count: after");
+	$key = key($target);
 	//PrintData($key, "　　target");
-	$random_role_group_list->{$name}[$key]--;
+	$target[$key]--;
 	$role_list[$key]--;
 	$role_list['human']++;
-	//PrintData($random_role_group_list->$name, "　　$over_count: delete");
+	//PrintData($target, "　　$over_count: delete");
 
 	//0 になった役職はリストから除く
 	if($role_list[$key] < 1) unset($role_list[$key]);
-	if($random_role_group_list->{$name}[$key] < 1){
-	  unset($random_role_group_list->{$name}[$key]);
-	}
+	if($target[$key]    < 1) unset($target[$key]);
       }
     }
     //PrintData($role_list, '2nd_list');
@@ -160,14 +165,14 @@ function GetRoleList($user_count){
     $role_list = $CAST_CONF->SetQuiz($user_count);
   }
   else{ //通常村
-    //埋毒者 (村人2 → 埋毒者1、人狼1)
+    //埋毒者 (村人2 → 埋毒者1・人狼1)
     if($ROOM->IsOption('poison') && $user_count >= $CAST_CONF->poison){
       $role_list['human'] -= 2;
       $role_list['poison']++;
       $role_list['wolf']++;
     }
 
-    //暗殺者 (村人2 → 暗殺者1、人狼1)
+    //暗殺者 (村人2 → 暗殺者1・人狼1)
     if($ROOM->IsOption('assassin') && $user_count >= $CAST_CONF->assassin){
       $role_list['human'] -= 2;
       $role_list['assassin']++;
@@ -207,7 +212,7 @@ function GetRoleList($user_count){
       $role_list['cupid']++;
     }
 
-    //巫女 (村人 → 巫女1、女神1)
+    //巫女 (村人2 → 巫女1・女神1)
     if($ROOM->IsOption('medium') && $user_count >= $CAST_CONF->medium){
       $role_list['human'] -= 2;
       $role_list['medium']++;
@@ -222,7 +227,7 @@ function GetRoleList($user_count){
     }
 
     //探偵 (共有 or 村人 → 探偵)
-    if($ROOM->IsOption('detective')){
+    if($is_detective){
       if($role_list['common'] > 0){
 	$role_list['common']--;
 	$role_list['detective_common']++;
@@ -236,7 +241,7 @@ function GetRoleList($user_count){
 
   //-- 村人置換村 --//
   $add_count = $role_list['human'];
-  if($gerd && $add_count > 0) $add_count--;
+  if($is_gerd && $add_count > 0) $add_count--;
   $CAST_CONF->ReplaceHuman($role_list, $add_count);
 
   //$is_single_role = true;
@@ -253,9 +258,9 @@ function GetRoleList($user_count){
     for($i = $user_count; $i > 0; $i--) $role_list[array_shift($base_role_list)]++;
   }
 
-  if($ROOM->IsOption('festival') && is_array($CAST_CONF->festival_role_list[$user_count])){
-    $role_list = $CAST_CONF->festival_role_list[$user_count]; //お祭り村専用配役
-  }
+  //お祭り村
+  if($ROOM->IsOption('festival') &&
+     is_array($target =& $CAST_CONF->festival_role_list[$user_count])) $role_list = $target;
 
   if($role_list['human'] < 0){ //"村人" の人数をチェック
     $sentence = '"村人" の人数がマイナスになってます';
@@ -289,17 +294,15 @@ function GetRoleList($user_count){
 function GenerateRoleNameList($role_count_list, $css = false){
   global $ROLE_DATA, $ROOM;
 
-  $main_role_key_list = array_keys($ROLE_DATA->main_role_list);
   $chaos = $ROOM->IsOption('chaos_open_cast_camp') ? 'camp' :
     ($ROOM->IsOption('chaos_open_cast_role') ? 'role' : NULL);
-
   switch($chaos){
   case 'camp':
     $header = '出現陣営：';
     $main_type = '陣営';
     $main_role_list = array();
     foreach($role_count_list as $key => $value){
-      if(in_array($key, $main_role_key_list)){
+      if(array_key_exists($key, $ROLE_DATA->main_role_list)){
 	$main_role_list[$ROLE_DATA->DistinguishCamp($key, true)] += $value;
       }
     }
@@ -310,7 +313,7 @@ function GenerateRoleNameList($role_count_list, $css = false){
     $main_type = '系';
     $main_role_list = array();
     foreach($role_count_list as $key => $value){
-      if(in_array($key, $main_role_key_list)){
+      if(array_key_exists($key, $ROLE_DATA->main_role_list)){
 	$main_role_list[$ROLE_DATA->DistinguishRoleGroup($key)] += $value;
       }
     }
@@ -322,15 +325,14 @@ function GenerateRoleNameList($role_count_list, $css = false){
     break;
   }
 
-  $sub_role_key_list = array_keys($ROLE_DATA->sub_role_list);
   switch($chaos){
   case 'camp':
   case 'role':
     $sub_type = '系';
     $sub_role_list = array();
     foreach($role_count_list as $key => $value){
-      if(! in_array($key, $sub_role_key_list)) continue;
-      foreach($ROLE_DATA->sub_role_group_list as $class => $list){
+      if(! array_key_exists($key, $ROLE_DATA->sub_role_list)) continue;
+      foreach($ROLE_DATA->sub_role_group_list as $list){
 	if(in_array($key, $list)) $sub_role_list[$list[0]] += $value;
       }
     }
@@ -344,8 +346,10 @@ function GenerateRoleNameList($role_count_list, $css = false){
   $stack = array();
   foreach($ROLE_DATA->main_role_list as $key => $value){
     $count = (int)$main_role_list[$key];
-    if($css) $value = $ROLE_DATA->GenerateMainRoleTag($key);
-    if($count > 0) $stack[] = $value . $main_type . $count;
+    if($count > 0){
+      if($css) $value = $ROLE_DATA->GenerateMainRoleTag($key);
+      $stack[] = $value . $main_type . $count;
+    }
   }
 
   foreach($ROLE_DATA->sub_role_list as $key => $value){
@@ -397,20 +401,18 @@ function AggregateVoteGameStart($force_start = false){
   //PrintData($role_list, 'Role');
 
   //フラグセット
-  $gerd      = $ROOM->IsOption('gerd');
-  $chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
-  $quiz      = $ROOM->IsQuiz();
-  $detective = $ROOM->IsOption('detective');
+  $is_gerd      = $ROOM->IsOption('gerd');
+  $is_chaos     = $ROOM->IsOptionGroup('chaos'); //chaosfull も含む
+  $is_quiz      = $ROOM->IsQuiz();
+  $is_detective = $ROOM->IsOption('detective');
   //エラーメッセージ
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
   $reset_flag   = ! $ROOM->test_mode;
 
   if($ROOM->IsDummyBoy()){ //身代わり君の役職を決定
-    if(($gerd && in_array('human', $role_list)) || $quiz){ //身代わり君の役職固定オプション判定
-      if($gerd) $fit_role = 'human'; //ゲルト君
-      elseif($quiz) $fit_role = 'quiz';  //クイズ村
-
+    if(($is_gerd && in_array('human', $role_list)) || $is_quiz){ //役職固定オプション判定
+      $fit_role = $is_gerd ? 'human' : 'quiz';
       if(($key = array_search($fit_role, $role_list)) !== false){
 	array_push($fix_role_list, $fit_role);
 	unset($role_list[$key]);
@@ -418,16 +420,15 @@ function AggregateVoteGameStart($force_start = false){
     }
     else{
       shuffle($role_list); //配列をシャッフル
+      $stack = $CAST_CONF->disable_dummy_boy_role_list; //身代わり君の対象役職リスト
+      array_push($stack, 'wolf', 'fox'); //常時対象外の役職追加
       //探偵村なら身代わり君の対象外役職に追加する
-      if($detective && ! in_array('detective_common', $CAST_CONF->disable_dummy_boy_role_list)){
-	$CAST_CONF->disable_dummy_boy_role_list[] = 'detective_common';
-      }
+      if($is_detective && ! in_array('detective_common', $stack)) $stack[] = 'detective_common';
 
-      array_push($CAST_CONF->disable_dummy_boy_role_list, 'wolf', 'fox'); //常時対象外の役職追加
       $count = count($role_list);
       for($i = 0; $i < $count; $i++){
 	$role = array_shift($role_list); //配役リストから先頭を抜き出す
-	foreach($CAST_CONF->disable_dummy_boy_role_list as $disable_role){
+	foreach($stack as $disable_role){
 	  if(strpos($role, $disable_role) !== false){
 	    array_push($role_list, $role); //配役リストの末尾に戻す
 	    continue 2;
@@ -466,8 +467,8 @@ function AggregateVoteGameStart($force_start = false){
 	  }
 	  $fit_role = GetRandom($stack);
 	}
-	$role_key = array_search($fit_role, $role_list); //希望役職の存在チェック
-	if($role_key === false) break;
+	//希望役職の存在チェック
+	if(($role_key = array_search($fit_role, $role_list)) === false) break;
 
 	//希望役職があれば決定
 	array_push($fix_uname_list, $uname);
@@ -475,9 +476,7 @@ function AggregateVoteGameStart($force_start = false){
 	unset($role_list[$role_key]);
 	continue 2;
       }while(false);
-
-      //決まらなかった場合は未決定リスト行き
-      array_push($remain_uname_list, $uname);
+      array_push($remain_uname_list, $uname); //決まらなかった場合は未決定リスト行き
     }
   }
   else{
@@ -542,6 +541,7 @@ function AggregateVoteGameStart($force_start = false){
 			    'bad_status', 'lost_ability', 'protected');
 
   //サブ役職テスト用
+  $roled_list = array();
   /*
   $stack = array('whisper_ringing', 'howl_ringing', 'critical_luck');
   $delete_role_list = array_merge($delete_role_list, $stack);
@@ -605,13 +605,12 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   if($ROOM->IsOption('critical')){ //急所村
-    foreach(array('critical_voter', 'critical_luck') as $role){
-      $delete_role_list[] = $role;
-      for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
-    }
+    array_push($delete_role_list, 'critical_voter', 'critical_luck');
+    $role = ' critical_voter critical_luck';
+    for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= $role;
   }
 
-  if($chaos && ! $ROOM->IsOption('no_sub_role')){
+  if($is_chaos && ! $ROOM->IsOption('no_sub_role')){
     //ランダムなサブ役職のコードリストを作成
     if($ROOM->IsOption('sub_role_limit_easy'))
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_easy_list;
@@ -633,7 +632,7 @@ function AggregateVoteGameStart($force_start = false){
     }
   }
 
-  if($quiz){ //クイズ村
+  if($is_quiz){ //クイズ村
     $role = 'panelist';
     for($i = 0; $i < $user_count; $i++){ //出題者以外に解答者をつける
       if($fix_uname_list[$i] != 'dummy_boy') $fix_role_list[$i] .= ' ' . $role;
@@ -652,14 +651,14 @@ function AggregateVoteGameStart($force_start = false){
 
   //役割をDBに更新
   $role_count_list = array();
-  $detective_list = array();
+  $detective_list  = array();
   for($i = 0; $i < $user_count; $i++){
     $role = $fix_role_list[$i];
     $user = $USERS->ByUname($fix_uname_list[$i]);
     $user->ChangeRole($role);
     $stack = explode(' ', $role);
     foreach($stack as $role) $role_count_list[$role]++;
-    if($detective && in_array('detective_common', $stack)) $detective_list[] = $user;
+    if($is_detective && in_array('detective_common', $stack)) $detective_list[] = $user;
   }
 
   //KICK の後処理
@@ -671,7 +670,7 @@ function AggregateVoteGameStart($force_start = false){
   foreach($USERS->kicked as $user) $user->Update('user_no', '-1');
 
   //役割リスト通知
-  if($chaos){
+  if($is_chaos){
     $sentence = $ROOM->IsOptionGroup('chaos_open_cast') ?
       GenerateRoleNameList($role_count_list) : $MESSAGE->chaos;
   }
@@ -689,7 +688,7 @@ function AggregateVoteGameStart($force_start = false){
     //OutputSiteSummary(); //RSS機能はテスト中
   }
   $ROOM->Talk($sentence);
-  if($detective && count($detective_list) > 0){ //探偵村の指名
+  if($is_detective && count($detective_list) > 0){ //探偵村の指名
     $detective_user = GetRandom($detective_list);
     $ROOM->Talk('探偵は ' . $detective_user->handle_name . ' さんです');
     if($ROOM->IsOption('gm_login') && $ROOM->IsOption('not_open_cast') && $user_count > 7){
@@ -862,7 +861,7 @@ function AggregateVoteDay(){
     unset($live_uname_list[$vote_target->user_no]); //処刑者を生存者リストから除く
     $voter_list = array_keys($vote_target_list, $vote_target->uname); //投票した人を取得
 
-    foreach($user_list as $uname){ //-- 薬師の情報収集 --//
+    foreach($user_list as $uname){ //-- 薬師系の情報収集 --//
       $user = $USERS->ByUname($uname);
       if(! $user->IsRoleGroup('pharmacist')) continue;
 
@@ -968,6 +967,14 @@ function AggregateVoteDay(){
 	}
 	$poison_target_list = $limited_list;
       }
+      elseif($vote_target->IsRole('poison_ogre')){ //榊鬼
+	foreach($poison_target_list as $uname){
+	  if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox', 'ogre')){
+	    $limited_list[] = $uname;
+	  }
+	}
+	$poison_target_list = $limited_list;
+      }
       if(count($poison_target_list) < 1) break;
 
       //PrintData($poison_target_list, 'PoisonTarget');
@@ -1058,7 +1065,7 @@ function AggregateVoteDay(){
     //-- 土蜘蛛の処理 --//
     foreach($user_list as $uname){
       $user = $USERS->ByRealUname($uname);
-      if(! $user->IsRole('miasma_mad')) continue;
+      if($user->IsSame($vote_kill_uname) || ! $user->IsRole('miasma_mad')) continue;
 
       $target = $USERS->ByUname($vote_target_list[$user->uname]); //本体に付ける
       if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddDoom(1, 'febris');
@@ -1147,7 +1154,7 @@ function AggregateVoteDay(){
 
   foreach($user_list as $uname){ //-- 橋姫の処理 --//
     $user = $USERS->ByRealUname($uname);
-    if($vote_kill_uname == $user->uname || ! $user->IsRole('jealousy')) continue;
+    if($user->IsSame($vote_kill_uname) || ! $user->IsRole('jealousy')) continue;
 
     $cupid_list = array(); //キューピッドのID => 恋人のID
     $jealousy_voted_list = array_keys($vote_target_list, $user->uname); //橋姫への投票者リスト
@@ -1226,6 +1233,30 @@ function AggregateVoteDay(){
 
   LoversFollowed(); //恋人後追い処理
   InsertMediumMessage(); //巫女のシステムメッセージ
+
+  if($vote_kill_uname != ''){
+    foreach($user_list as $uname){ //-- 縁切地蔵の処理 --//
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsSame($vote_kill_uname) || ! $user->IsRole('divorce_jealousy')) continue;
+
+      //縁切地蔵への投票者から恋人を検出
+      foreach(array_keys($vote_target_list, $user->uname) as $voted_uname){
+	$voted_user = $USERS->ByRealUname($voted_uname);
+	if($voted_user->IsLive(true) && $voted_user->IsLovers() && mt_rand(1, 100) <= 30){
+	  $voted_user->AddRole('passion');
+	}
+      }
+    }
+
+    foreach(array_keys($vote_target_list, $vote_kill_uname) as $uname){ //-- 傘化けの処理 --//
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsRole('amaze_mad')){
+	$role = "bad_status[{$user->user_no}-{$ROOM->date}]";
+	$USERS->ByRealUname($vote_kill_uname)->AddRole($role);
+	break;
+      }
+    }
+  }
 
   if($ROOM->test_mode) return $vote_message_list;
 
@@ -1411,7 +1442,7 @@ function AggregateVoteNight($skip = false){
     }
 
     if(! $wolf_target->IsDummyBoy()){ //特殊能力者判定 (身代わり君は対象外)
-      if(! $voted_wolf->IsSiriusWolf()){ //特殊襲撃失敗判定 (完全覚醒天狼は無効)
+      if(! $voted_wolf->IsSiriusWolf()){ //特殊襲撃失敗判定 (サブの判定が先/完全覚醒天狼は無効)
 	if($wolf_target->IsChallengeLovers()) break; //難題判定
 	if($wolf_target->IsRole('protected')){ //庇護者判定
 	  $stack = array();
@@ -1423,12 +1454,13 @@ function AggregateVoteNight($skip = false){
 	    break;
 	  }
 	}
-	if($wolf_target->IsActive('fend_guard')){ //忍者の処理
+	//無条件無効タイプ (守護天使・冥血鬼・影武者)
+	if($wolf_target->IsRole('sacrifice_angel', 'doom_vampire', 'sacrifice_mania')) break;
+	if($wolf_target->IsActive('fend_guard')){ //回数限定タイプ (忍者)
 	  $wolf_target->LostAbility();
 	  break;
 	}
-	if($wolf_target->IsRole('sacrifice_angel', 'sacrifice_mania')) break; //守護天使・影武者判定
-	if($wolf_target->IsRoleGroup('ogre')){ //鬼系判定
+	if($wolf_target->IsRoleGroup('ogre')){ //確率無効タイプ (鬼陣営)
 	  $rate = mt_rand(1, 100); //襲撃成功判定乱数
 	  //$rate = 5; //テスト用
 	  //PrintData($rate, 'Rate [ogre escape]');
@@ -1632,6 +1664,11 @@ function AggregateVoteNight($skip = false){
 	continue;
       }
       $target->AddRole($user->GetID('infected'));
+      if($user->IsRole('doom_vampire')) $target->AddDoom(4); //冥血鬼なら死の宣告を追加
+      elseif($user->IsRole('soul_vampire')){ //吸血姫の処理
+	$str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true) . "\t";
+	$ROOM->SystemMessage($str . $target->main_role, 'VAMPIRE_RESULT'); //役職を登録
+      }
     }
 
     //PrintData($vampire_target_list, 'Target [vampire]');
@@ -1706,11 +1743,18 @@ function AggregateVoteNight($skip = false){
       $rate = mt_rand(1, 100); //襲撃成功判定乱数
       //$rate = 5; //テスト用
       $ogre_times = (int)$user->partner_list[$user->main_role][0];
-      $ogre_rate = ceil(100 / pow(5, $ogre_times));
+      if($user->IsRole('poison_ogre')) $reduce_rate = 3; //榊鬼は 1/3
+      else $reduce_rate = 5;
+      $ogre_rate = ceil(100 / pow($reduce_rate, $ogre_times));
       //PrintData($rate, 'Rate [OGRE_DO]: ' . $ogre_rate);
 
       if($rate <= $ogre_rate){
-	$ogre_target_list[$target_uname] = true; //人攫い対象者リストに追加
+	if($user->IsRole('poison_ogre')){ //榊鬼は解答者を追加
+	  if(! $target->IsRole('quiz')) $target->AddRole('panelist');
+	}
+	else{
+	  $ogre_target_list[$target_uname] = true; //人攫い対象者リストに追加
+	}
 
 	$base_role = $user->main_role; //成功回数更新処理
 	if($ogre_times > 0) $base_role .= '[' . $ogre_times . ']';
@@ -2516,7 +2560,7 @@ function AggregateVoteNight($skip = false){
       'cupid' => 'mind_cupid',
       'angel' => 'ark_angel',
       'quiz' => 'quiz',
-      'vampire' => 'sacrifice_vampire',
+      'vampire' => 'soul_vampire',
       'chiroptera' => 'boss_chiroptera',
       'fairy' => 'ice_fairy',
       'ogre' => 'indigo_ogre');

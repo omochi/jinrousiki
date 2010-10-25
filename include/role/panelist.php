@@ -1,6 +1,6 @@
 <?php
 /*
-  ◆回答者 (panelist)
+  ◆解答者 (panelist)
   ○仕様
   ・出題者に投票するとショック死する
   ・投票数が 0 で固定される
@@ -16,7 +16,7 @@ class Role_panelist extends Role{
   function FilterSuddenDeath(&$reason){
     global $ROLES, $USERS;
     if($reason == '' &&
-       $USERS->ByUname($ROLES->stack->target[$ROLES->actor->uname])->IsDummyBoy()){
+       $USERS->ByUname($ROLES->stack->target[$ROLES->actor->uname])->IsRole('quiz')){
       $reason = 'PANELIST';
     }
   }

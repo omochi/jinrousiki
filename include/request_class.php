@@ -30,7 +30,7 @@ class RequestBase{
   }
 
   function Exists($arg){
-    return !empty($arg);
+    return ! empty($arg);
   }
 
   function IsOn($arg){
@@ -135,7 +135,7 @@ class RequestUserManager extends RequestBaseIcon{
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
     $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
-    $this->GetItems(Exists, 'post.entry');
+    $this->GetItems('Exists', 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
     $this->GetIconData();
     EscapeStrings($this->profile, false);

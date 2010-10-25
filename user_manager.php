@@ -134,7 +134,7 @@ function EntryUser(){
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $RQ_ARGS;
+  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $RQ_ARGS;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
   $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
@@ -148,13 +148,16 @@ function OutputEntryUserPage(){
   $trip = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
 
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
-  if (isset($RQ_ARGS->sex)) {
-    $male_checked = $RQ_ARGS->sex == 'male' ? 'checked=""' : '';
-    $female_checked = $RQ_ARGS->sex == 'female' ? 'checked=""' : '';
-  }
-  else {
-    $male_checked = '';
-    $female_checked = '';
+  $male_checked   = '';
+  $female_checked = '';
+  switch($RQ_ARGS->sex){
+  case 'male':
+    $male_checked   = ' checked=""';
+    break;
+
+  case 'female':
+    $female_checked = ' checked=""';
+    break;
   }
   echo <<<HEADER
 </head>
@@ -163,36 +166,36 @@ function OutputEntryUserPage(){
 <form method="POST" action="user_manager.php?room_no={$ROOM->id}">
 <div align="center">
 <table class="main">
-<tr><td><img src="img/entry_user/title.gif"></td></tr>
-<tr><td class="title">{$ROOM->name} 村<img src="img/entry_user/top.gif"></td></tr>
+<tr><td><img src="img/entry_user/title.gif" alt="申請書"></td></tr>
+<tr><td class="title">{$ROOM->name} 村<img src="img/entry_user/top.gif" alt="への住民登録を申請します"></td></tr>
 <tr><td class="number">〜{$ROOM->comment}〜 [{$ROOM->id} 番地]</td></tr>
 <tr><td>
 <table class="input">
 <tr>
-<td class="img"><img src="img/entry_user/uname.gif"></td>
+<td class="img"><img src="img/entry_user/uname.gif" alt="ユーザ名"></td>
 <td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
 <td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip}</td>
 </tr>
 <tr>
-<td class="img"><img src="img/entry_user/handle_name.gif"></td>
+<td class="img"><img src="img/entry_user/handle_name.gif" alt="村人の名前"></td>
 <td><input type="text" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
 <td class="explain">村で表示される名前です</td>
 </tr>
 <tr>
-<td class="img"><img src="img/entry_user/password.gif"></td>
+<td class="img"><img src="img/entry_user/password.gif" alt="パスワード"></td>
 <td><input type="password" name="password" size="30" maxlength="30"></td>
 <td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
 </tr>
 <tr>
-<td class="img"><img src="img/entry_user/sex.gif"></td>
+<td class="img"><img src="img/entry_user/sex.gif" alt="性別"></td>
 <td class="img">
-<label for="male"><img src="img/entry_user/sex_male.gif"><input type="radio" id="male" name="sex" value="male" {$male_checked}></label>
-<label for="female"><img src="img/entry_user/sex_female.gif"><input type="radio" id="female" name="sex" value="female" {$female_checked}></label>
+<label for="male"><img src="img/entry_user/sex_male.gif" alt="男性"><input type="radio" id="male" name="sex" value="male"{$male_checked}></label>
+<label for="female"><img src="img/entry_user/sex_female.gif" alt="女性"><input type="radio" id="female" name="sex" value="female"{$female_checked}></label>
 </td>
 <td class="explain">特に意味は無いかも……</td>
 </tr>
 <tr>
-<td class="img"><img src="img/entry_user/profile.gif"></td>
+<td class="img"><img src="img/entry_user/profile.gif" alt="プロフィール"></td>
 <td colspan="2">
 <textarea name="profile" cols="30" rows="2">{$RQ_ARGS->profile}</textarea>
 <input type="hidden" name="role" value="none">
@@ -204,7 +207,7 @@ HEADER;
   if($ROOM->IsOption('wish_role')){
     echo <<<IMAGE
 <tr>
-<td class="role"><img src="img/entry_user/role.gif"></td>
+<td class="role"><img src="img/entry_user/role.gif" alt="役割希望"></td>
 <td colspan="2">
 
 IMAGE;
@@ -249,8 +252,9 @@ IMAGE;
     foreach($wish_role_list as $role){
       if($count > 0 && $count % 4 == 0) echo '<br>'; //4個ごとに改行
       $count++;
+      $alt = ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]) . '→';
       echo <<<TAG
-<label for="{$role}"><img src="img/entry_user/role_{$role}.gif"><input type="radio" id="{$role}" name="role" value="{$role}"></label>
+<label for="{$role}"><img src="img/entry_user/role_{$role}.gif" alt="{$alt}"><input type="radio" id="{$role}" name="role" value="{$role}"></label>
 
 TAG;
     }
@@ -267,18 +271,19 @@ TAG;
 <span class="explain">
 ユーザ名、村人の名前、パスワードの前後の空白および改行コードは自動で削除されます
 </span>
-<input type="submit" id="entry" name="entry"  value="村人登録申請"></td>
+<input type="submit" id="entry" name="entry" value="村人登録申請"></td>
 </tr>
 </table>
 </td></tr>
 
 <tr><td>
-<fieldset><legend><img src="img/entry_user/icon.gif"></legend>
+<fieldset><legend><img src="img/entry_user/icon.gif" alt="アイコン"></legend>
 <table class="icon">
 <tr><td colspan="5">
 <input id="fix_number" type="radio" name="icon_no"><label for="fix_number">手入力</label>
 <input type="text" name="icon_no" size="10px">(半角英数で入力してください)
 </td></tr>
+<tr><td colspan="5">
 
 BODY;
   OutputIconList('user_manager');

@@ -11,17 +11,20 @@ function OutputIconPageHeader(){
 HTML;
 }
 
-
 function OutputIconList($base_url = 'icon_view'){
   global $RQ_ARGS;
   //初回表示前に検索条件をリセットする
   //TODO:リファラーをチェックすることでGETリクエストによる取得にも対処できる
   //現時点ではGETで直接検索を試みたユーザーのセッション情報まで配慮していないが、いずれ必要になるかも知れない (enogu)
-  if (!isset($RQ_ARGS->page)) {
-    unset($_SESSION['icon_view']);
-  }
+  if(is_null($RQ_ARGS->page)) unset($_SESSION['icon_view']);
+
   //編集フォームの表示
-  if ($base_url == 'icon_view') {
+  if($base_url == 'icon_view'){
+    $footer = <<<HTML
+</fieldset>
+</form>
+
+HTML;
     if(0 < $RQ_ARGS->icon_no){
       $params = $RQ_ARGS->ToArray();
       unset($params['icon_no']);
@@ -32,11 +35,7 @@ function OutputIconList($base_url = 'icon_view'){
 
 HTML;
       OutputIconEditForm($RQ_ARGS->icon_no);
-      echo <<<HTML
-</fieldset>
-</form>
-
-HTML;
+      echo $footer;
     }
     else {
       echo <<<HTML
@@ -45,11 +44,7 @@ HTML;
 
 HTML;
       ConcreteOutputIconList($base_url);
-      echo <<<HTML
-</fieldset>
-</form>
-
-HTML;
+      echo $footer;
     }
   }
   else {
@@ -59,6 +54,7 @@ HTML;
 
 function OutputIconEditForm($icon_no) {
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
+
   foreach(FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected) {
     extract($selected, EXTR_PREFIX_ALL, 'selected');
     $location = $ICON_CONF->path . '/' . $selected_icon_filename;
@@ -168,7 +164,7 @@ EOF;
 <td>
 <label for="{$type}[]">{$caption}</label><br>
 <select name="{$type}[]" size="6" multiple style="width:12em;">
-<option value="__all__">全て</option>',
+<option value="__all__">全て</option>
 
 HTML;
     foreach($list as $name){
@@ -237,8 +233,8 @@ EOF;
     echo <<<HTML
 <table>
 <caption>
-[S] 出典 / [C] カテゴリ / [A] アイコンの作者 / [U] 使用回数'<br>
-アイコンをクリックすると編集できます (要パスワード)'
+[S] 出典 / [C] カテゴリ / [A] アイコンの作者 / [U] 使用回数<br>
+アイコンをクリックすると編集できます (要パスワード)
 </caption>
 
 HTML;
@@ -341,14 +337,15 @@ HTML;
 }
 
 function OutputIconDetailsForIconView($icon_info, $format_info) {
-    global $ICON_CONF;
-    extract($icon_info);
-    extract($format_info, EXTR_PREFIX_ALL, 'frm');
-    $location = $ICON_CONF->path . '/' . $icon_filename;
-    $wrapper_width = $icon_width + 6;
-    $info_width = $frm_cellwidth - $icon_width;
-    $edit_url = "icon_view.php?icon_no={$icon_no}";
-    echo <<<HTML
+  global $ICON_CONF;
+
+  extract($icon_info);
+  extract($format_info, EXTR_PREFIX_ALL, 'frm');
+  $location = $ICON_CONF->path . '/' . $icon_filename;
+  $wrapper_width = $icon_width + 6;
+  $info_width = $frm_cellwidth - $icon_width;
+  $edit_url = "icon_view.php?icon_no={$icon_no}";
+  echo <<<HTML
 <td class="icon_details">
 <label for="icon_{$icon_no}">
 <a href="{$edit_url}" class="icon_wrapper" style="width:{$wrapper_width}px">
@@ -360,13 +357,14 @@ function OutputIconDetailsForIconView($icon_info, $format_info) {
 <li><font color="{$color}">◆</font>{$color}</li>
 
 HTML;
-    $data = '';
-    if(!empty($appearance)) $data .= '<li>[S]' . $appearance;
-    if(!empty($category))   $data .= '<li>[C]' . $category;
-    if(!empty($author))     $data .= '<li>[A]' . $author;
-    $data .= '<li>[U]' . $num_used;
-    echo $data;
-    echo <<<HTML
+
+  $data = '';
+  if(!empty($appearance)) $data .= '<li>[S]' . $appearance;
+  if(!empty($category))   $data .= '<li>[C]' . $category;
+  if(!empty($author))     $data .= '<li>[A]' . $author;
+  $data .= '<li>[U]' . $num_used;
+  echo $data;
+  echo <<<HTML
 </ul>
 </label>
 </td>
@@ -375,13 +373,21 @@ HTML;
 }
 
 function OutputIconDetailsForUserEntry($icon_info, $format_info) {
-    global $ICON_CONF;
-    extract($icon_info);
-    extract($format_info, EXTR_PREFIX_ALL, 'frm');
-    $location = $ICON_CONF->path . '/' . $icon_filename;
-    $wrapper_width = $icon_width + 6;
-    $info_width = $frm_cellwidth - $wrapper_width;
-    echo <<<HTML
+  global $ICON_CONF;
+
+  extract($icon_info);
+  extract($format_info, EXTR_PREFIX_ALL, 'frm');
+  $location = $ICON_CONF->path . '/' . $icon_filename;
+  $wrapper_width = $icon_width + 6;
+  $info_width = $frm_cellwidth - $wrapper_width;
+  //旧設定 (rev. 214 以前) 相当
+  echo <<<HTML
+<td class="icon_details"><label for="icon_{$icon_no}"><img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};"><br clear="all">
+<input type="radio" id="icon_{$icon_no}" name="icon_no" value="{$icon_no}"> No. {$icon_no}<br>
+<font color="{$color}">◆</font>{$icon_name}</label></td>
+
+HTML;
+  /*
 <th>
 <input type="radio" id="icon_{$icon_no}" name="icon_no" value="{$icon_no}">
 </th>
@@ -396,8 +402,7 @@ function OutputIconDetailsForUserEntry($icon_info, $format_info) {
 </ul>
 </label>
 </td>
-
-HTML;
+  */
 }
 
 function GetIconCategoryList($type, $limit = '', $query_stack = array()){

@@ -277,6 +277,12 @@ class GameOptionMessage{
   var $chaos                 = '闇鍋モード';
   var $chaosfull             = '真・闇鍋モード';
   var $chaos_hyper           = '超・闇鍋モード';
+  var $topping               = '固定配役追加モード';
+  var $topping_a             = 'A：人形村';
+  var $topping_b             = 'B：出題村';
+  var $topping_c             = 'C：吸血村';
+  var $topping_d             = 'D：蘇生村';
+  var $topping_e             = 'E：憑依村';
   var $chaos_open_cast       = '配役を通知する';
   var $chaos_open_cast_camp  = '陣営を通知する';
   var $chaos_open_cast_role  = '役職を通知する';
@@ -330,6 +336,7 @@ class GameOptionCaptionMessage{
   var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
   var $festival              = '管理人がカスタムする特殊設定です';
   var $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
+  var $topping               = '固定配役に追加する役職セットです';
   var $chaos_not_open_cast   = '通知無し';
   var $chaos_open_cast_camp  = '陣営通知 (陣営毎の合計を通知)';
   var $chaos_open_cast_role  = '役職通知 (役職の種類別に合計を通知)';

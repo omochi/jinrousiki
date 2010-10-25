@@ -19,9 +19,9 @@ OutputRolePageHeader('サブ役職');
 <a href="#other_group">その他</a>
 </p>
 
-<h2><a id="rule">基本ルール</a> [サブ役職]</h2>
+<h2><a id="rule">基本ルール</a></h2>
 <pre>
-メイン役職が付加するサブ役職 (恋人、サトラレなど) と専用ゲームオプション (狼少年村・紳士村など)
+メイン役職が付加するサブ役職 (例：<a href="#lovers">恋人</a>・<a href="#mind_read">サトラレ</a>) と専用ゲームオプション (例：<a href="../game_option.php#liar">狼少年村</a>・<a href="../game_option.php#gentleman">紳士村</a>)
 以外のサブ役職は重なりません。
 </pre>
 
@@ -58,6 +58,10 @@ OutputRolePageHeader('サブ役職');
 <h3><a id="rabbit">ウサギ</a> [Ver. 1.4.0 α3-7〜]</h3>
 <pre>
 処刑投票時に一票も貰えないとショック死します。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#frostbite">凍傷</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -175,7 +179,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -183,9 +187,13 @@ OutputRolePageHeader('サブ役職');
 </pre>
 
 <h3><a id="panelist">解答者</a> [Ver. 1.4.0 α17〜]</h3>
-<h4>[配役制限] クイズ村専用</h4>
+<h4>[配役制限] クイズ村・役職付加専用</h4>
 <pre>
 投票数が 0 になり、<a href="quiz.php#quiz">出題者</a>に投票したらショック死します。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ogre.php#poison_ogre">榊鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -270,6 +278,10 @@ OutputRolePageHeader('サブ役職');
 <h3><a id="passion">恋色迷彩</a> [Ver. 1.4.0 β17〜]</h3>
 <pre>
 発言時に一部のキーワードが恋人っぽい言葉に入れ替えられてしまいます。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#divorce_jealousy">縁切地蔵</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -358,6 +370,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 処刑投票数が +1 されます。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#elder">長老</a>・<a href="human.php#brownie">座敷童子</a>
+</pre>
 
 <h3><a id="rebel">反逆者</a> [Ver. 1.4.0 α14〜]</h3>
 <pre>
@@ -375,6 +391,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 5% の確率で処刑投票数が +100 されます。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#critical_luck">痛恨</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 RPG でよくある「クリティカルヒット」を再現してみました。
@@ -387,6 +407,10 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <h4>Ver. 1.4.0 β7〜</h4>
 <pre>
 <a href="human.php#elder">長老</a>系と矛盾しないために説明の表現を変えました (能力は変わっていません)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#random_luck">波乱万丈</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -502,6 +526,10 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <pre>
 自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#impatience">短気</a>
+</pre>
 
 <h3><a id="plague">疫病神</a> [Ver. 1.4.0 α9〜]</h3>
 <h4>[役職表示] 表示無し</h4>
@@ -597,6 +625,10 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 発言が一段階大きくなり、大声は音割れして聞き取れなくなります。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#speaker">スピーカー</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#strong_voice">大声</a>の上方シフトバージョンです。
@@ -605,6 +637,11 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3><a id="downer_voice">マスク</a> [Ver. 1.4.0 α17〜]</h3>
 <pre>
 発言が一段階小さくなり、小声は聞き取れなくなります。
+小声は共有者の囁きに入れ替わります。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#earplug">耳栓</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -638,6 +675,10 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3><a id="no_last_words">筆不精</a> [Ver. 1.4.0 α9〜]</h3>
 <pre>
 遺言を残せません。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#escaper">逃亡者</a>・<a href="human.php#reporter">ブン屋</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#evoke_scanner">イタコ</a>・<a href="#possessed_exchange">交換憑依</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -703,6 +744,10 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 他人の独り言が共有者の囁きに見えるようになります。
 共有の囁き・人狼の遠吠え・妖狐の念話は「独り言」ではないので影響しません。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#wise_wolf">賢狼</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#howl_ringing">吠耳鳴</a>の共有者の囁きバージョンです。
@@ -721,6 +766,10 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3><a id="deep_sleep">爆睡者</a> [Ver. 1.4.0 β14〜]</h3>
 <pre>
 共有の囁き・人狼の遠吠えが一切見えなくなります。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#mind_scanner">さとり</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -909,7 +958,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-テーマは「ダイイングメッセージを受け取る人」です。
+テーマは「ダイイング・メッセージを受け取る人」です。
 </pre>
 
 <h3><a id="mind_lonely">はぐれ者</a> [Ver. 1.4.0 β8〜]</h3>
@@ -937,7 +986,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3><a id="lovers">恋人</a> [Ver. 1.2.0〜]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-勝利条件が恋人陣営に変化します。
+勝利条件が<a href="lovers.php">恋人陣営</a>に変化します。
 表示されている相手が死亡すると自分も死亡します。
 </pre>
 
@@ -1079,7 +1128,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-一部の<a href="chiroptera.php#fairy_group">妖精系</a>に悪戯されている人に付加されます。
+一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加されます。
 </pre>
 <h4>Ver. 1.4.0 β15〜</h4>
 <pre>
@@ -1087,12 +1136,12 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="chiroptera.php#fairy_group">妖精系</a>
+<a href="wolf.php#enchant_mad">狢</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="chiroptera.php#fairy_group">妖精系</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 悪戯システム用に実装されたサブ役職です。
-<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>で使用されています。
+<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>などで使用されています。
 </pre>
 
 <h3><a id="infected">感染者</a> [Ver. 1.4.0 β14〜]</h3>
@@ -1176,7 +1225,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3><a id="lost_ability">能力喪失</a> [Ver. 1.4.0 α13〜]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-一部の制限付き能力者が能力を失った場合に付加されます。
+発動制限付き能力者が能力を失った場合に付加されます。
 </pre>
 <h4>Ver. 1.4.0 β11〜</h4>
 <pre>
@@ -1184,11 +1233,11 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#toungue_wolf">舌禍狼</a>・<a href="wolf.php#tra_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#toungue_wolf">舌禍狼</a>用に実装されたサブ役職ですが、汎用的に使用されています。
+<a href="wolf.php#tongue_wolf">舌禍狼</a>用に実装されたサブ役職ですが、汎用的に使用されています。
 一部の能力者は<a href="human.php#seal_medium">封印師</a>の能力の対象になります。
 </pre>
 </body></html>

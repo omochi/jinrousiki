@@ -82,7 +82,7 @@ class ServerConfig{
     更新後のリビジョン番号と同じか、それより大きな値を設定すると
     admin/setup.php の処理は常時スキップされます。
   */
-  var $last_updated_revision = 187;
+  var $last_updated_revision = 213;
 
   //村情報非表示モード (村立てテストなどの開発者テスト用スイッチです)
   var $secret_room = false;
@@ -90,7 +90,7 @@ class ServerConfig{
 
 //-- 村情報共有サーバの設定 --//
 class SharedServerConfig extends ExternalLinkBuilder{
-  var $disable = true; //無効設定 <表示を [true:無効 / false:有効] にする>
+  var $disable = false; //無効設定 <表示を [true:無効 / false:有効] にする>
 
   //表示する他のサーバのリスト
   var $server_list = array(
@@ -176,7 +176,7 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		      'encode' => 'UTF-8',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</a><br>',
-		      'disable' => false),
+		      'disable' => true),
 
     'mohican' => array('name' => '世紀末テスト鯖',
 		       'url' => 'http://www15.atpages.jp/seikima2/jinro_php/',
@@ -246,7 +246,7 @@ class SharedServerConfig extends ExternalLinkBuilder{
 
 //アイコン登録設定
 class UserIcon extends UserIconBase{
-  var $disable_upload = false; //true; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
+  var $disable_upload = false; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
   var $name   = 30;    //アイコン名につけられる文字数(半角)
   var $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
   var $width  = 45;    //アップロードできるアイコンの最大幅
@@ -302,6 +302,7 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 			    '世紀末鯖' => 'http://www14.atpages.jp/mmr1/'),
     '東方陰陽鉄系' => array('バーボンハウス鯖' => 'http://bourbonhouse.xsrv.jp/jinro/',
 			'裏世界鯖' => 'http://dynamis.xsrv.jp/jinro/',
+			'ミストさんテスト鯖' => 'http://bourbonhouse.xsrv.jp/test/',
 			'Wiki' => 'http://www29.atwiki.jp/onmyoutetu-jinro/'),
     '東方陰陽鉄系予備' => array('旧バーボンハウス鯖' => 'http://www16.atpages.jp/bourbonjinro/'),
     'iM@S系' => array('小鳥鯖' => 'http://kiterew.tv/jinro/',

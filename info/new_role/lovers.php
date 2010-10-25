@@ -145,7 +145,7 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

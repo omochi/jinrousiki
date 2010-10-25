@@ -431,6 +431,12 @@ function OutputAbility(){
       if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //夜の投票
     }
   }
+  elseif($SELF->IsRoleGroup('ogre')){ //鬼系
+    $ROLE_IMG->Output($SELF->main_role);
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+      OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
+    }
+  }
   elseif($SELF->IsRole('incubate_poison')){ //潜毒者
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
@@ -476,14 +482,9 @@ function OutputAbility(){
       OutputPartner($stack, 'infected_list');
       unset($stack);
     }
+    if($SELF->IsRole('soul_vampire')) OutputSelfAbilityResult('VAMPIRE_RESULT'); //吸血姫の吸血結果
     if($ROOM->date > 1 && $ROOM->IsNight()){
       OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO'); //夜の投票
-    }
-  }
-  elseif($SELF->IsRoleGroup('ogre')){ //鬼系
-    $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
-      OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
     }
   }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア
@@ -756,6 +757,11 @@ function OutputSelfAbilityResult($action){
   case 'FOX_EAT':
     $type = 'fox';
     $header = 'fox_targeted';
+    break;
+
+  case 'VAMPIRE_RESULT':
+    $type = 'mage';
+    $header = 'vampire_result';
     break;
 
   case 'MANIA_RESULT':

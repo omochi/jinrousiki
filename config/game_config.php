@@ -4,7 +4,6 @@ class RoomConfig{
   //村内の最後の発言から廃村になるまでの時間 (秒)
   //(あまり短くすると沈黙等と競合する可能性あり)
   var $die_room = 1200;
-  #var $die_room = 12000; //テスト用
 
   //最大並列プレイ可能村数
   var $max_active_room = 4;
@@ -17,8 +16,11 @@ class RoomConfig{
   var $clear_session_id = 86400; //24時間
 
   //村立て・入村制限
-  var $black_list_ip = array(); //IP アドレス (strpos() による部分一致)
-  var $black_list_host = NULL; //ホスト名 (正規表現)
+  /* IP アドレスは strpos() による先頭一致、ホスト名は正規表現 */
+  var $white_list_ip = array(); //IP アドレス (ホワイトリスト)
+  var $black_list_ip = array(); //IP アドレス (ブラックリスト)
+  var $white_list_host = NULL; //ホスト名 (ホワイトリスト)
+  var $black_list_host = NULL; //ホスト名 (ブラックリスト)
   //var $black_list_host = '/localhost.localdomain/'; //入力例
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
@@ -139,6 +141,10 @@ class RoomConfig{
   var $chaos = true; //闇鍋モード
   var $chaosfull = true; //真・闇鍋モード
   var $chaos_hyper = true; //超・闇鍋モード
+
+  var $topping = true; //固定配役追加モード
+  //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる
+  var $topping_list = array('a', 'b', 'c', 'd', 'e'); //配役タイプ
 
   var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
   var $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)

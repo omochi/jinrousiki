@@ -15,7 +15,7 @@ function OutputSharedServerRoom(){
   foreach($SHARED_CONF->server_list as $server => $array){
     extract($array);
     //PrintData($url, 'URL'); //テスト用
-    if($disable || $url == $SERVER_CONF->site_root) continue;
+    if($disable) continue;
 
     if(! $SHARED_CONF->CheckConnection($url)){ //サーバ通信状態チェック
       $data = $SHARED_CONF->host . ": Connection timed out ({$SHARED_CONF->time} seconds)";

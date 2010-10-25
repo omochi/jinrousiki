@@ -14,7 +14,25 @@ Ver. 1.4.0
 <a href="#140beta13">β13</a>
 <a href="#140beta16">β16</a>
 <a href="#140beta17">β17</a>
+<a href="#140beta18">β18</a>
 </p>
+
+<h2><a id="140beta18">Ver. 1.4.0 β18</a></h2>
+<h3>include/user_class.php % 432行目付近 (2010/10/16 (Sat) 03:18)</h3>
+<pre>
+× if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+○ if($this->IsRole('mind_scanner', 'presage_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+</pre>
+<h3>img/role/ (2010/10/18 (Mon) 05:33)</h3>
+<pre>
+× result_succbus_vampire.gif
+○ result_succubus_vampire.gif
+</pre>
+<h3>game_vote.php % 143行目付近 (2010/10/20 (Wed) 04:56)</h3>
+<pre>
+× if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') != 'beforegame')){
+○ if(FetchResult($ROOM->GetQueryHeader('room', 'day_night')) != 'beforegame'){
+</pre>
 
 <h2><a id="140beta17">Ver. 1.4.0 β17</a></h2>
 <h3>include/user_class.php % 370行目付近 (2010/10/04 (Mon) 00:44)</h3>

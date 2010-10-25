@@ -140,7 +140,7 @@ function VoteKick(){
   LockVote(); //テーブルを排他的ロック
 
   //ゲーム開始チェック
-  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') != 'beforegame')){
+  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night')) != 'beforegame'){
     OutputVoteResult('Kick：既にゲームは開始されています', true);
   }
 

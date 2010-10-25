@@ -133,8 +133,11 @@ class Room{
 
   //特殊イベント判定用の情報を DB から取得する
   function LoadEvent(){
-    $query = $this->GetQueryHeader('system_message', 'message', 'type') . ' AND date = '  .
-      ($this->date - 1) . " AND(type = 'WOLF_KILLED' OR type = 'VOTE_KILLED')";
+    $query = $this->GetQueryHeader('system_message', 'message', 'type') .
+      ($this->IsDay() ? ' AND date = ' . ($this->date - 1) .
+       " AND(type = 'WOLF_KILLED' OR type = 'VOTE_KILLED')" :
+       " AND((date = '" . ($this->date - 1) . "' AND type = 'WOLF_KILLED') OR " .
+       "(date = '{$this->date}' AND type = 'VOTE_KILLED'))");
     $this->event->rows = FetchAssoc($query);
   }
 

@@ -223,8 +223,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
-  <td><a href="vampire.php#sacrifice_vampire">吸血公</a></td>
-  <td>Ver. 1.4.0 β17〜</td>
+  <td><a href="vampire.php#soul_vampire">吸血姫</a></td>
+  <td>Ver. 1.4.0 β19〜</td>
 </tr>
 <tr>
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
@@ -442,8 +442,7 @@ CO するべきかどうかは、コピーした役職次第です。
 妖狐同様、自身は出題者カウントされない点に注意してください。
 
 6. 鵺 → <a href="vampire.php#vampire">吸血鬼</a> (吸血鬼陣営)
-吸血鬼陣営の勝利条件の仕様上、鵺は絶対に勝てない事になります。
-従って、吸血鬼は素直に自分の正体を告げない方がいいと思われます。
+勝利条件は<a href="vampire.php#rule">基本ルール [吸血鬼]</a>参照。
 
 7. 鵺 → <a href="chiroptera.php#chiroptera">蝙蝠</a> (蝙蝠陣営)
 コピー先と会話できる蝙蝠相当になります。
@@ -475,6 +474,10 @@ CO するべきかどうかは、コピーした役職次第です。
 結果として以下のようになります。
 鵺A(村人陣営) → 村人(元神話マニア)、鵺B (人狼陣営) → 人狼
 </pre>
+<h4>Ver. 1.4.0 β19〜</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>をコピーした場合の勝利条件判定を変更 (<a href="vampire.php#rule">基本ルール [吸血鬼]</a>参照)。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 やる夫人狼の薔薇 GM に、「初心者の指南用に使える役職」を
@@ -496,7 +499,7 @@ CO するべきかどうかは、コピーした役職次第です。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>
+<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

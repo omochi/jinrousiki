@@ -17,12 +17,15 @@ function CheckReferer($page, $white_list = NULL){
 function CheckBlackList(){
   global $ROOM_CONF;
 
-  $ip = $_SERVER['REMOTE_ADDR'];
-  foreach($ROOM_CONF->black_list_ip as $host){
-    if(strpos($ip, $host) !== false) return true;
+  $addr = $_SERVER['REMOTE_ADDR'];
+  $host = gethostbyaddr($addr);
+  foreach(array('white' => false, 'black' => true) as $type => $flag){
+    foreach($ROOM_CONF->{$type . '_list_ip'} as $ip){
+      if(strpos($addr, $ip) === 0) return $flag;
+    }
+    $list = $ROOM_CONF->{$type . '_list_host'};
+    if(isset($list) && preg_match($list, $host)) return $flag;
   }
-  if(is_null($ROOM_CONF->black_list_host)) return false;
-  if(preg_match($ROOM_CONF->black_list_host, gethostbyaddr($ip))) return true;
   return false;
 }
 
@@ -426,7 +429,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'poison_wolf', 'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide',
     'authority', 'liar', 'gentleman', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open',
     'blinder', 'critical', 'detective', 'festival', 'full_mania', 'full_chiroptera', 'full_cupid',
-    'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper',
+    'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'topping',
     'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
     'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
 
@@ -435,12 +438,20 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     if($GAME_OPT_MESS->$option == '') continue;
     $footer = '';
     $sentence = $GAME_OPT_MESS->$option;
-    if(is_integer($CAST_CONF->$option)) $sentence .= '(' . $CAST_CONF->$option . '人〜)';
-    if($option == 'real_time'){
-      $day   = $stack->options['real_time'][0];
-      $night = $stack->options['real_time'][1];
+    if(is_int($CAST_CONF->$option)) $sentence .= '(' . $CAST_CONF->$option . '人〜)';
+    switch($option){
+    case 'real_time':
+      $day   = $stack->options[$option][0];
+      $night = $stack->options[$option][1];
       $sentence .= "　昼： {$day} 分　夜： {$night} 分";
       $footer = '['. $day . '：' . $night . ']';
+      break;
+
+    case 'topping':
+      $type = $stack->options[$option][0];
+      $sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
+      $footer = '['. strtoupper($type) . ']';
+      break;
     }
     $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
   }

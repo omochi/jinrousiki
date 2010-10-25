@@ -15,6 +15,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定)</a>
 </p>
 <p>
+<a href="#topping"><?php echo $GAME_OPT_MESS->topping ?></a>
 <a href="#chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a>
 <a href="#sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a>
 <a href="#secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a>
@@ -25,7 +26,7 @@ OutputInfoPageHeader('闇鍋モード');
 配役を先に決めてから、出現した役職グループを希望していれば
 優先的に配役される仕様です。
 
-例1) 占い師を希望して占い師、魂の占い師が出現した
+例1) 占い師を希望して占い師・魂の占い師が出現した
 → 占い師か魂の占い師のどちらかになります
 
 例2) 暗殺者を希望したが出現しなかった
@@ -56,7 +57,7 @@ OutputInfoPageHeader('闇鍋モード');
 
 <h3><a id="chaosfull_decide_role_fix">固定出現枠</a></h3>
 <pre>
-初期設定は人狼1、占い師1で、各難易度で個別に設定できます。
+初期設定は人狼1・占い師1で、各難易度で個別に設定できます。
 ただし、身代わり君が占い師になる可能性もあるので CO した占い師が真であるとは限りません。
 </pre>
 
@@ -508,6 +509,21 @@ OutputInfoPageHeader('闇鍋モード');
 20人以上で不審者の出現率がやや高め (無意識：不審者 = 40%:60%)。
 出現人数の上限は規定していません。
 </pre>
+
+<h2><a id="topping"><?php echo $GAME_OPT_MESS->topping ?></a></h2>
+<ol>
+  <li><?php echo $GAME_OPT_CAPT->topping ?></li>
+  <li>内容は設定ファイルで変更できます</li>
+  <li>初期設定は以下です<br>
+    <ol>
+      <li><?php echo $GAME_OPT_MESS->topping_a ?> / 上海人形1 人形遣い1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_b ?> / 出題者1 榊鬼1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_c ?> / 吸血鬼1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_d ?> / 猫又1 抗毒狼1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_e ?> / 厄神1 憑狼1</li>
+    </ol>
+  </li>
+</ol>
 
 <h2><a id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a></h2>
 <ol>

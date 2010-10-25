@@ -16,10 +16,20 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
   <li>勝利条件は「生存者が自分と自分の<a href="sub_role.php#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
   <li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
+  <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php">神話マニア陣営</a> (例：<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>) がいた場合、<br>
+    例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
+  </li>
   <li>2日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
   <li><a href="sub_role.php#infected">感染者</a>になっても自覚がありません。</li>
   <li>生存カウントは村人です。</li>
+  <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」です。</li>
+  <li><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
 </ol>
+<h3>Ver. 1.4.0 β19〜</h3>
+<pre>
+ゲーム終了時に<a href="mania.php">神話マニア陣営</a>がいた場合は、例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。
+コピー先の勝敗や自己の生存は不問です。
+</pre>
 
 <h2><a id="vampire_do_spec">襲撃の仕様</a></h2>
 <ol>
@@ -42,9 +52,12 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#vampire">吸血鬼</a>
 <a href="#incubus_vampire">青髭公</a>
 <a href="#succubus_vampire">飛縁魔</a>
+<a href="#doom_vampire">冥血鬼</a>
 <a href="#sacrifice_vampire">吸血公</a>
+<a href="#soul_vampire">吸血姫</a>
 </p>
 <h3><a id="vampire">吸血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14〜]</h3>
+<h4>[耐性] 罠：有効</h4>
 <pre>
 吸血鬼陣営の基本種。
 </pre>
@@ -56,8 +69,14 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="incubus_vampire">青髭公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
+<h4>[耐性] 護衛：狩り / 罠：有効</h4>
 <pre>
 女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<h4>Ver. 1.4.0 β19〜</h4>
+<pre>
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -69,8 +88,14 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
+<h4>[耐性] 護衛：狩り / 罠：有効</h4>
 <pre>
 男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<h4>Ver. 1.4.0 β19〜</h4>
+<pre>
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -81,11 +106,28 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#incubus_vampire">青髭公</a>の対女性バージョンです。「ひのえんま」と読みます。
 </pre>
 
+<h3><a id="doom_vampire">冥血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19〜]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 罠：有効</h4>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、<a href="sub_role.php#infected">感染者</a>に<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう吸血鬼。
+<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて4日目後の昼。
+襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#doom_fox">冥狐</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+耐性を得た代わりに、<a href="sub_role.php#infected">感染者</a>のキープが難しくなっています。
+</pre>
+
 <h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17〜]</h3>
-<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り / 罠：有効</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する。
+<a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する上位吸血鬼。
 <a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
 </pre>
 <ol>
@@ -101,5 +143,22 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の能力を持った吸血鬼で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
+</pre>
+
+<h3><a id="soul_vampire">吸血姫</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19〜]</h3>
+<h4>[耐性] 護衛：狩り / 暗殺：反射 / 罠：有効</h4>
+<pre>
+<a href="#vampire_do_spec">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
+<a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#soul_mage">魂の占い師</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+吸血鬼系最上位種としてデザインしました。
+<a href="human.php#soul_mage">魂の占い師</a>をほぼ完璧に騙ることができますが、信用を得ると狙われやすくなる上、
+護衛を引きつけてもダメなので難易度は高いと思われます。
 </pre>
 </body></html>

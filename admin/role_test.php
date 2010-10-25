@@ -1,37 +1,10 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA');
+$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF', 'GAME_OPT_MESS', 'ROLE_DATA');
 $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('配役テストツール', 'role_table');
-
-echo <<<EOF
-</head>
-<body>
-<form method="POST" action="role_test.php">
-<input type="hidden" name="command" value="role_test">
-<label>人数</label><input type="text" name="user_count" size="3" value="20">
-<label>試行回数</label><input type="text" name="try_count" size="2" value="100">
-<input type="submit" value=" 実 行 "><br>
-<input type="radio" name="game_option" value="">普通村
-<input type="radio" name="game_option" value="chaos">闇鍋
-<input type="radio" name="game_option" value="chaosfull">真・闇鍋
-<input type="radio" name="game_option" value="chaos_hyper" checked>超・闇鍋
-<input type="radio" name="game_option" value="duel">決闘
-<input type="radio" name="game_option" value="duel_auto_open_cast">自動公開決闘
-<input type="radio" name="game_option" value="duel_not_open_cast">非公開決闘
-<input type="radio" name="game_option" value="gray_random">グレラン
-<input type="radio" name="game_option" value="quiz">クイズ<br>
-<input type="radio" name="replace_human" value="" checked>置換無し
-<input type="radio" name="replace_human" value="full_mania">神話マニア村
-<input type="radio" name="replace_human" value="full_chiroptera">蝙蝠村
-<input type="radio" name="replace_human" value="full_cupid">キューピッド村
-<input type="radio" name="replace_human" value="replace_human">村人置換村
-<input type="checkbox" name="festival" value="on">お祭り
-</form>
-
-EOF;
-
+OutputRoleTestForm();
 if($_POST['command'] == 'role_test'){
   $RQ_ARGS =& new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
@@ -58,13 +31,11 @@ if($_POST['command'] == 'role_test'){
   }
   if($_POST['festival'] == 'on') $stack->game_option[] = ' festival';
 
-  switch($_POST['replace_human']){
-  case 'full_mania':
-  case 'full_chiroptera':
-  case 'full_cupid':
-  case 'replace_human':
+  if(array_search($_POST['replace_human'], $ROOM_CONF->replace_human_list) !== false){
     $stack->option_role[] = $_POST['replace_human'];
-    break;
+  }
+  if(array_search($_POST['topping'], $ROOM_CONF->topping_list) !== false){
+    $stack->option_role[] = 'topping:' . $_POST['topping'];
   }
   $RQ_ARGS->TestItems->test_room['game_option'] = implode(' ', $stack->game_option);
   $RQ_ARGS->TestItems->test_room['option_role'] = implode(' ', $stack->option_role);
@@ -83,3 +54,53 @@ if($_POST['command'] == 'role_test'){
   }
 }
 OutputHTMLFooter(true);
+
+function OutputRoleTestForm(){
+  global $ROOM_CONF, $GAME_OPT_MESS;
+
+  echo <<<EOF
+</head>
+<body>
+<form method="POST" action="role_test.php">
+<input type="hidden" name="command" value="role_test">
+<label>人数</label><input type="text" name="user_count" size="3" value="20">
+<label>試行回数</label><input type="text" name="try_count" size="2" value="100">
+<input type="submit" value=" 実 行 "><br>
+<input type="radio" name="game_option" value="">普通村
+<input type="radio" name="game_option" value="chaos">闇鍋
+<input type="radio" name="game_option" value="chaosfull">真・闇鍋
+<input type="radio" name="game_option" value="chaos_hyper" checked>超・闇鍋
+<input type="radio" name="game_option" value="duel">決闘
+<input type="radio" name="game_option" value="duel_auto_open_cast">自動公開決闘
+<input type="radio" name="game_option" value="duel_not_open_cast">非公開決闘
+<input type="radio" name="game_option" value="gray_random">グレラン
+<input type="radio" name="game_option" value="quiz">クイズ<br>
+<input type="radio" name="topping" value="" checked>追加無し
+
+EOF;
+
+  foreach($ROOM_CONF->topping_list as $mode){
+      echo <<<EOF
+<input type="radio" name="topping" value="{$mode}">{$GAME_OPT_MESS->{'topping_' . $mode}}
+
+EOF;
+  }
+
+  echo <<<EOF
+<br>
+<input type="radio" name="replace_human" value="" checked>置換無し
+
+EOF;
+
+  foreach($ROOM_CONF->replace_human_list as $mode){
+      echo <<<EOF
+<input type="radio" name="replace_human" value="{$mode}">{$GAME_OPT_MESS->$mode}
+
+EOF;
+  }
+  echo <<<EOF
+<input type="checkbox" name="festival" value="on">お祭り
+</form>
+
+EOF;
+}
