@@ -15,6 +15,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <ol>
   <li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
   <li>勝利条件は「生存者が自分と自分の<a href="sub_role.php#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
+  <li>生存者が自分一人だけになった場合も勝利となります。</li>
   <li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
   <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php">神話マニア陣営</a> (例：<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>) がいた場合、<br>
     例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
@@ -80,11 +81,12 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#succubus_vampire">飛縁魔</a>
+<a href="#succubus_vampire">飛縁魔</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-童話「青ひげ」がモチーフです。
+<a href="human.php#assassin_group">暗殺</a>能力を持った吸血鬼で、童話「青ひげ」がモチーフです。
+勝利条件を考えると暗殺狙いの襲撃はあまり割りに合わないと思われます。
 </pre>
 
 <h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
@@ -99,11 +101,12 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#incubus_vampire">青髭公</a>
+<a href="#incubus_vampire">青髭公</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#incubus_vampire">青髭公</a>の対女性バージョンです。「ひのえんま」と読みます。
+村の男女構成比次第で難易度が大きく変わることになります。
 </pre>
 
 <h3><a id="doom_vampire">冥血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19〜]</h3>
@@ -134,6 +137,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
   <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
   <li>本人は身代わりが発生しても分からない。</li>
+  <li>人狼に遭遇した<a href="human.php#escaper">逃亡者</a>を身代わりにすることはできない。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h4>関連役職</h4>

@@ -379,7 +379,7 @@ function OutputPlayerList(){
 
 //勝敗の出力
 function OutputVictory(){
-  global $VICT_MESS, $ROOM, $USERS, $SELF;
+  global $VICT_MESS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
   $victory = FetchResult($ROOM->GetQueryHeader('room', 'victory_role'));
@@ -461,42 +461,13 @@ EOF;
       break;
 
     case 'ogre':
-      //他陣営依存があるタイプを先に判定
-      if($SELF->IsRole('poison_ogre')){ //榊鬼 (出題者勝利 or 生存)
-	$win_flag = $victory == 'quiz' || $SELF->IsLive();
+      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営は生存のみ
+	$win_flag = $SELF->IsLive();
 	break;
       }
-      if($SELF->IsDead()) break; //鬼陣営は死亡していたら敗北
-      if($SELF->IsRole('poison_ogre') || $SELF->IsRoleGroup('mania')){ //神話マニア陣営 (生存のみ)
-	$win_flag = true;
-	break;
-      }
-      if($SELF->IsRole('ogre')){ //鬼 (人狼の生存)
-	if($victory == 'wolf'){ //人狼陣営勝利なら人狼生存確定
-	  $win_flag = true;
-	  break;
-	}
-	foreach($USERS->rows as $user){
-	  if($user->IsLiveRoleGroup('wolf')){
-	    $win_flag = true;
-	    break 2;
-	  }
-	}
-      }
-      elseif($SELF->IsRole('orange_ogre')){ //前鬼 (人狼陣営全滅)
-	if($victory == 'wolf') break; //人狼陣営勝利なら人狼生存確定
-	foreach($USERS->rows as $user){
-	  if($user->IsLive() && $user->GetCamp(true) == 'wolf') break 2;
-	}
-	$win_flag = true;
-      }
-      elseif($SELF->IsRole('indigo_ogre')){ //後鬼 (妖狐陣営全滅)
-	if(strpos($victory, 'fox') !== false) break; //妖狐陣営勝利なら妖狐生存確定
-	foreach($USERS->rows as $user){
-	  if($user->IsLive() && $user->GetCamp(true) == 'fox') break 2;
-	}
-	$win_flag = true;
-      }
+      //個別判定
+      $ROLES->actor = $SELF;
+      $win_flag = array_shift($ROLES->Load('victory'))->DistinguishVictory($victory);
       break;
 
     default:
@@ -527,10 +498,16 @@ function OutputVoteList(){
 
   if(! $ROOM->IsPlaying()) return false; //ゲーム中以外は出力しない
 
-  if($ROOM->IsEvent('blind_vote') && ! $ROOM->IsOpenData()){ //傘化けの判定
-    echo '傘化けの能力で投票結果が隠されました！！';
-    return;
+  if($ROOM->IsEvent('blind_vote')){ //傘化けの判定
+    if($ROOM->IsOpenData()){ //傘化けの判定
+      echo '(傘化けの能力発動中です)<br>';
+    }
+    else{
+      echo '傘化けの能力で投票結果が隠されました！！';
+      return;
+    }
   }
+
   //昼なら前日、夜ならの今日の集計を表示
   echo GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
 }

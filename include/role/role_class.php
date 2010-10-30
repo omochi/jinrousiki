@@ -39,6 +39,11 @@ class RoleManager{
 				 'perverseness', 'flattery', 'impatience', 'celibacy', 'nervy',
 				 'androphobia', 'gynophobia', 'panelist');
 
+  //特殊勝利判定
+  var $victory_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
+			    'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'yaksa',
+			    'succubus_yaksa');
+
   function RoleManager(){ $this->__construct(); }
   function __construct(){
     $this->path = JINRO_INC . '/role';
@@ -79,7 +84,6 @@ class RoleManager{
     $stack = $this->$name;
     return is_array($stack) ? $stack : array();
   }
-
 
   function GetFilter($list){
     $stack = array();
@@ -134,6 +138,16 @@ class Role{
   function IsSameUser($uname){
     global $ROLES;
     return $ROLES->actor->IsSame($uname);
+  }
+
+  function IsLive($strict = false){
+    global $ROLES;
+    return $ROLES->actor->IsLive($strict);
+  }
+
+  function IsDead($strict = false){
+    global $ROLES;
+    return $ROLES->actor->IsDead($strict);
   }
 }
 

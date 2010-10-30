@@ -242,6 +242,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.4.0 β18〜</td>
 </tr>
 <tr>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td><a href="ogre.php#yaksa">夜叉</a></td>
+  <td>Ver. 1.4.0 β19〜</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -396,6 +401,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td><a href="ogre.php#orange_ogre">前鬼</a></td>
   <td>Ver. 1.4.0 β18〜</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td><a href="ogre.php#succubus_yaksa">荼枳尼天</a></td>
+  <td>Ver. 1.4.0 β19〜</td>
 </tr>
 <tr>
   <td>神話マニア陣営</td>

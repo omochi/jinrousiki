@@ -136,7 +136,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 占い：無効 (1回限定) / 護衛：狩り</h4>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
-妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -146,7 +146,7 @@ OutputRolePageHeader('妖狐陣営');
 
 <h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 毒</h4>
-<h4>[毒能力] 処刑：妖狐以外 / 襲撃：有り / 薬師判定：有り</h4>
+<h4>[毒能力] 処刑：妖狐陣営以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った妖狐。毒の対象は妖狐陣営以外。
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら殺されて毒が発動する。
@@ -192,7 +192,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 夜に村人一人を選び、その人に呪いをかける妖狐。
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受けます</li>
@@ -213,7 +213,7 @@ OutputRolePageHeader('妖狐陣営');
 蘇生能力を持った妖狐。
 蘇生に関するルールは<a href="human.php#about_revive">基本ルール [蘇生]</a>参照。
 蘇生成功率は 100% で、一度成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -227,7 +227,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
@@ -258,7 +258,7 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。
 暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて4日目後の昼。
-<a href="human.php#guard_hunt">狩人系に護衛</a>されると殺される。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -275,7 +275,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 占い：呪返し / 陰陽師：死亡 / 護衛：狩り / 暗殺：反射</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
-<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。<a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
+<a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>Ver. 1.4.0 β9〜</h4>
 <pre>
@@ -287,7 +287,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#cursed_wolf">呪狼</a>の妖狐バージョンで、妖狐族最上位種です。
+<a href="wolf.php#cursed_wolf">呪狼</a>の妖狐バージョンで、妖狐系最上位種です。
 呪いに対抗できる役職が出現するまでは狐無双が見られそうですね。
 </pre>
 
@@ -324,6 +324,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に見える妖狐。
 本物の<a href="human.php#unconscious">無意識</a>と混ざって表示されるため、人狼側からは区別できない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#scarlet_wolf">紅狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -395,7 +399,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#sex_wolf">雛狼</a>
+<a href="summary.php#ability_sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

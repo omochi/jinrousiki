@@ -14,6 +14,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="../" target="_top">&lt;=情報一覧</a>
 <a href="./" target="_top">←メニュー</a>
 <a href="#table">早見表</a>
+<a href="#ability">能力者逆引き</a>
 <a href="#reference">参考リンク</a>
 <a href="#memo">作成予定メモ</a>
 </p>
@@ -197,7 +198,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">毒を持った人狼。毒の対象は狼以外。</td>
+  <td class="ability">毒を持った人狼。毒の対象は<a href="wolf.php#wolf_group">人狼系</a>以外。</td>
   <td>Ver. 1.4.0 α12</td>
 </tr>
 <tr>
@@ -315,8 +316,7 @@ Ver. 1.4.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">吊られた時に人外 (狼と狐) のみを巻き込む上位埋毒者。<br>
-    表示は「埋毒者」で、村人に当たったら不発。</td>
+  <td class="ability">処刑された時の毒の対象が人外 (<a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>) 限定の上位埋毒者 (表示は「埋毒者」)。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -325,7 +325,7 @@ Ver. 1.4.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">時が経つと (現在は 5 日目以降) <a href="human.php#strong_poison">強毒者</a>相当の毒を持つ特殊な埋毒者。</td>
+  <td class="ability">時が経つと (5 日目以降) <a href="human.php#strong_poison">強毒者</a>相当の毒を持つ特殊な埋毒者。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -372,8 +372,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">毒を持った妖狐。<br>
-    吊られた場合の毒の対象は狐以外。</td>
+  <td class="ability">毒を持った妖狐。毒の対象は<a href="fox.php">妖狐陣営</a>以外。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -532,7 +531,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">毒を持った蝙蝠。吊られた場合の毒の対象は [人狼 + 妖狐 + 蝙蝠]。<br>
+  <td class="ability">毒を持った蝙蝠。毒の対象は [<a href="wolf.php#wolf_group">人狼系</a> + <a href="fox.php">妖狐陣営</a> + <a href="chiroptera.php">蝙蝠陣営</a>]。<br>
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
   </td>
   <td>Ver. 1.4.0 α21</td>
@@ -1166,7 +1165,7 @@ Ver. 1.4.0
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">毒を持った人形。毒の対象は上海人形系以外 (<a href="human.php#doll_master">人形遣い</a>には中る)。</td>
+  <td class="ability">毒を持った人形。毒の対象は<a href="human.php#doll_group">上海人形系</a>以外 (<a href="human.php#doll_master">人形遣い</a>には中る)。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
 <tr>
@@ -1314,7 +1313,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">人狼と妖狐しか噛み殺せない人狼。</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>しか噛み殺せない人狼。</td>
   <td>Ver. 1.4.0 β12</td>
 </tr>
 <tr>
@@ -1662,7 +1661,7 @@ Ver. 1.4.0
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
-  <td class="ability">鬼の基本種。勝利条件は自分自身と<a href="wolf.php#wolf_group">人狼系</a> (種類は問わない)の生存。
+  <td class="ability">鬼陣営の基本種。勝利条件は自分自身と<a href="wolf.php#wolf_group">人狼系</a> (種類・恋人不問) の生存。
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
@@ -1759,6 +1758,76 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">自分の投票先が処刑されたら投票結果を隠蔽できる特殊な狂人。<br>
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#west_ogre">金鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の左側にいる人の全滅 + 村人陣営の勝利」。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#east_ogre">風鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の右側にいる人の全滅 + 村人陣営の勝利」。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#north_ogre">水鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の上側にいる人の全滅 + 村人陣営の勝利」。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#south_ogre">隠行鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の下側にいる人の全滅 + 村人陣営の勝利」。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#yaksa">夜叉</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">人攫い能力が限定された鬼系の一種で、勝利条件は「自分自身の生存 + <a href="wolf.php#wolf_group">人狼系</a> (恋人を含む) の全滅」。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#incubus_ogre">般若</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 女性の全滅」。
+  </td>
+  <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#succubus_yaksa">荼枳尼天</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">夜叉系の一種で、勝利条件は「自分自身の生存 + 男性の全滅」。
   </td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
@@ -2300,6 +2369,30 @@ Ver. 1.4.0
     <td>Ver. 1.4.0 β18</td>
   </tr>
 </table>
+
+<h2><a id="ability">能力者逆引き</a></h2>
+<p>
+<a href="#ability_dummy">夢能力者</a>
+<a href="#ability_poison">毒能力者</a>
+<a href="#ability_revive">蘇生能力者</a>
+<a href="#ability_sex">性別関連能力者</a>
+<p>
+<h3><a id="ability_dummy">夢能力者</a></h3>
+<pre>
+<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
+</pre>
+<h3><a id="ability_poison">毒能力者</a></h3>
+<pre>
+<a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者系</a>・<a href="human.php#poison_cat">猫又</a>・<a href="human.php#poison_jealousy">毒橋姫</a>・<a href="human.php#poison_doll">鈴蘭人形</a>・<a href="wolf.php#poison_wolf">毒狼</a>・<a href="fox.php#poison_fox">管狐</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>
+</pre>
+<h3><a id="ability_revive">蘇生能力者</a></h3>
+<pre>
+<a href="human.php#revive_medium">風祝</a>・<a href="human.php#revive_priest">天人</a>・<a href="human.php#poison_cat_group">猫又系</a>・<a href="fox.php#revive_fox">仙狐</a>
+</pre>
+<h3><a id="ability_sex">性別関連能力者</a></h3>
+<pre>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>
+</pre>
 
 <h2><a id="reference">参考リンク</a></h2>
 <pre>

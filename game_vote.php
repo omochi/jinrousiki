@@ -323,7 +323,7 @@ function VoteNight(){
 
   case 'OGRE_DO':
   case 'OGRE_NOT_DO':
-    if(! $SELF->IsRoleGroup('ogre')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! $SELF->IsOgre()) OutputVoteResult('夜：投票イベントが一致しません');
     $not_type = $RQ_ARGS->situation == 'OGRE_NOT_DO';
     break;
 
@@ -758,7 +758,7 @@ function OutputVoteNight(){
   elseif($SELF->IsRoleGroup('fairy') || $SELF->IsRole('enchant_mad')){
     $type = 'FAIRY_DO';
   }
-  elseif($SELF->IsRoleGroup('ogre')){
+  elseif($SELF->IsOgre()){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の人攫いはできません');
     $type     = 'OGRE_DO';
     $not_type = 'OGRE_NOT_DO';

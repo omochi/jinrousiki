@@ -674,6 +674,13 @@ class RoleData{
     'orange_ogre'        => '前鬼',
     'indigo_ogre'        => '後鬼',
     'poison_ogre'        => '榊鬼',
+    'west_ogre'          => '金鬼',
+    'east_ogre'          => '風鬼',
+    'north_ogre'         => '水鬼',
+    'south_ogre'         => '隠行鬼',
+    'incubus_ogre'       => '般若',
+    'yaksa'              => '夜叉',
+    'succubus_yaksa'     => '荼枳尼天',
     'mania'              => '神話マニア',
     'trick_mania'        => '奇術師',
     'soul_mania'         => '覚醒者',
@@ -941,6 +948,13 @@ class RoleData{
     'orange_ogre'        => '前鬼',
     'indigo_ogre'        => '後鬼',
     'poison_ogre'        => '榊鬼',
+    'west_ogre'          => '金鬼',
+    'east_ogre'          => '風鬼',
+    'north_ogre'         => '水鬼',
+    'south_ogre'         => '隠鬼',
+    'incubus_ogre'       => '般若',
+    'yaksa'              => '夜叉',
+    'succubus_yaksa'     => '荼',
     'mania'              => 'マ',
     'trick_mania'        => '奇',
     'soul_mania'         => '覚醒',
@@ -1041,6 +1055,7 @@ class RoleData{
     'chiroptera' => 'chiroptera',
     'fairy' => 'fairy',
     'ogre' => 'ogre',
+    'yaksa' => 'yaksa',
     'mage' => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer',
     'medium' => 'medium',
@@ -1107,14 +1122,17 @@ class RoleData{
     case 'angel':
       return $start ? 'cupid' : 'lovers';
 
+    case 'quiz':
+    case 'vampire':
+      return $camp;
+
     case 'chiroptera':
     case 'fairy':
       return 'chiroptera';
 
-    case 'quiz':
-    case 'vampire':
     case 'ogre':
-      return $camp;
+    case 'yaksa':
+      return 'ogre';
 
     case 'mania':
     case 'unknown_mania':
@@ -1142,6 +1160,10 @@ class RoleData{
 
     case 'child_fox':
       $class = 'fox';
+      break;
+
+    case 'yaksa':
+      $class = 'ogre';
       break;
 
     case 'unknown_mania':

@@ -52,6 +52,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li>★☆★☆★☆★</li>
 <li><a href="ogre.php" target="body">&lt;鬼陣営&gt;</a></li>
 <li><a href="ogre.php#ogre_group" target="body">鬼系</a></li>
+<li><a href="ogre.php#yaksa_group" target="body">夜叉系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="mania.php" target="body">&lt;神話マニア陣営&gt;</a></li>
 <li><a href="mania.php#mania_group" target="body">神話マニア系</a></li>

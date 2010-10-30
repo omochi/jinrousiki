@@ -711,20 +711,48 @@ class RoleMessageList{
     'type' => 'fairy');
 
   var $ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|鬼|です。あなた自身と#人狼#の生存が勝利条件になります。煌々と輝く月の下で、人を喰らいし#狼#と生命を踏みにじるのです！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|鬼|です。あなた自身と#人狼系#の生存が勝利条件になります。煌々と輝く月の下で、人を喰らいし#狼#と生命を踏みにじるのです！",
     'delimiter' => array('|' => 'ogre', '#' => 'wolf'));
 
   var $orange_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|前鬼|です。あなた自身の生存と#人狼#陣営の全滅が勝利条件になります。村に潜む#狼#と裏切者を倒し、その凶行を食い止めるのです！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|前鬼|です。あなた自身の生存と#人狼陣営#の全滅が勝利条件になります。村に潜む#狼#と裏切者を倒し、その凶行を食い止めるのです！",
     'type' => 'ogre');
 
   var $indigo_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|後鬼|です。あなた自身の生存と#妖狐#陣営の全滅が勝利条件になります。理水の力で、滅びと邪を招く妖なる#狐#を抹殺するのです。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|後鬼|です。あなた自身の生存と#妖狐陣営#の全滅が勝利条件になります。理水の力で、滅びと邪を招く妖なる#狐#を抹殺するのです。",
     'type' => 'ogre', 'delimiter' => array('#' => 'fox'));
 
   var $poison_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|榊鬼|、#毒#を持っています。_出題者_陣営の勝利、またはあなた自身の生存が勝利条件です。\n　また、夜に攫った人を=解答者=にすることができます。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|榊鬼|、#毒#を持っています。_出題者陣営_の勝利、またはあなた自身の生存が勝利条件です。\n　また、夜に攫った人を=解答者=にすることができます。",
     'type' => 'ogre', 'delimiter' => array('#' => 'poison', '_' => 'quiz', '=' => 'chicken'));
+
+  var $west_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'type' => 'east_ogre');
+
+  var $east_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'type' => 'ogre', 'delimiter' => array('#' => 'human'));
+
+  var $north_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'type' => 'east_ogre');
+
+  var $south_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'type' => 'east_ogre');
+
+  var $incubus_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と#女性#の全滅が勝利条件になります。",
+    'type' => 'ogre', 'delimiter' => array('#' => 'lovers'));
+
+  var $yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉|です。あなた自身の生存と#人狼系#の全滅が勝利条件になります。",
+    'type' => 'ogre');
+
+  var $succubus_yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。",
+    'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   var $mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|神話マニア|です。初日の夜に指定した人のメイン役職をコピーすることができます。\n　星の数ほどある神話。誰を相手取るかによって何が最も適切なのかを的確に選び取るのです。",
@@ -1160,6 +1188,13 @@ class RoleMessageList{
   var $result_orange_ogre = array('message' => "さんは|前鬼|でした", 'type' => 'result_ogre');
   var $result_indigo_ogre = array('message' => "さんは|後鬼|でした", 'type' => 'result_ogre');
   var $result_poison_ogre = array('message' => "さんは|榊鬼|でした", 'type' => 'result_ogre');
+  var $result_west_ogre = array('message' => "さんは|金鬼|でした", 'type' => 'result_ogre');
+  var $result_east_ogre = array('message' => "さんは|風鬼|でした", 'type' => 'result_ogre');
+  var $result_north_ogre = array('message' => "さんは|水鬼|でした", 'type' => 'result_ogre');
+  var $result_south_ogre = array('message' => "さんは|隠行鬼|でした", 'type' => 'result_ogre');
+  var $result_incubus_ogre = array('message' => "さんは|般若|でした", 'type' => 'result_ogre');
+  var $result_yaksa = array('message' => "さんは|夜叉|でした", 'type' => 'result_ogre');
+  var $result_succubus_yaksa = array('message' => "さんは|荼枳尼天|でした", 'type' => 'result_yaksa');
   var $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   var $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
   var $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
@@ -1254,16 +1289,24 @@ class WishRoleList{
   var $role_chiroptera        = array('message' => "蝙蝠→");
   var $role_fairy             = array('message' => "妖精→");
   var $role_ogre              = array('message' => "鬼→");
+  var $role_yaksa             = array('message' => "夜叉→");
   var $role_mania             = array('message' => "神話マニア→");
   var $role_unknown_mania     = array('message' => "鵺→");
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_ogre');
+#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_yaksa');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 #$builder->Output('divorce_jealousy');
-#$builder->Output('poison_ogre');
 #$builder->Output('doom_vampire');
 #$builder->Output('soul_vampire');
-$builder->Output('amaze_mad');
+#$builder->Output('amaze_mad');
+#$builder->Output('poison_ogre');
+#$builder->Output('west_ogre');
+#$builder->Output('east_ogre');
+#$builder->Output('north_ogre');
+#$builder->Output('south_ogre');
+#$builder->Output('incubus_ogre');
+#$builder->Output('yaksa');
+$builder->Output('succubus_yaksa');

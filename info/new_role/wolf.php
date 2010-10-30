@@ -281,7 +281,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="#hungry_wolf">餓狼</a>・<a href="#doom_wolf">冥狼</a>
+<a href="#hungry_wolf">餓狼</a>・<a href="#doom_wolf">冥狼</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -913,8 +913,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
-夜に投票した夢系能力者 (<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>) と
-<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。<a href="mania.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
+夜に投票した<a href="summary.php#ability_dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。
+<a href="mania.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡し、<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
 
 何らかの形で<a href="human.php#dummy_guard">夢守人</a>に接触した場合は殺される。

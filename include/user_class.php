@@ -254,6 +254,11 @@ class User{
     return $this->IsFox() && ! $this->IsRole('white_fox', 'poison_fox') && ! $this->IsChildFox();
   }
 
+  //鬼陣営判定
+  function IsOgre(){
+    return $this->IsRoleGroup('ogre', 'yaksa');
+  }
+
   //恋人判定
   function IsLovers(){
     return $this->IsRole('lovers');
@@ -330,10 +335,14 @@ class User{
 
   //暗殺反射判定
   function IsRefrectAssassin(){
+    $rate = mt_rand(1, 100);
     return $this->IsLive(true) &&
       ($this->IsRole('detective_common', 'cursed_fox', 'soul_vampire') ||
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
-       ($this->IsRoleGroup('ogre') && mt_rand(1, 100) <= 30));
+       ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre') &&
+	$rate <= 40) ||
+       ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
+       ($this->IsRoleGroup('yaksa') && $rate <= 20));
   }
 
   //憑依制限判定
@@ -370,7 +379,7 @@ class User{
   function DistinguishMage($reverse = false){
     //吸血鬼陣営・大蝙蝠は「蝙蝠」
     if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
-    if($this->IsRoleGroup('ogre')) return 'ogre'; //鬼陣営は「鬼」
+    if($this->IsOgre()) return 'ogre'; //鬼陣営は「鬼」
 
     //白狼か完全覚醒天狼以外の人狼・黒狐・不審者は「人狼」
     $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
@@ -380,14 +389,14 @@ class User{
 
   //精神鑑定士の判定
   function DistinguishLiar(){
-    return $this->IsRoleGroup('ogre') ? 'ogre' :
+    return $this->IsOgre() ? 'ogre' :
       ($this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
        'psycho_mage_liar' : 'psycho_mage_normal');
   }
 
   //ひよこ鑑定士の判定
   function DistinguishSex(){
-    return $this->IsRoleGroup('ogre') ? 'ogre' :
+    return $this->IsOgre() ? 'ogre' :
       ($this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex);
   }
 
@@ -461,9 +470,7 @@ class User{
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
     }
     if($this->IsRoleGroup('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
-    if($this->IsRoleGroup('ogre')){
-      return $this->IsVoted($vote_data, 'OGRE_DO', 'OGRE_NOT_DO');
-    }
+    if($this->IsOgre()) return $this->IsVoted($vote_data, 'OGRE_DO', 'OGRE_NOT_DO');
 
     if($ROOM->IsOpenCast()) return true;
     if($this->IsReviveGroup(true)){

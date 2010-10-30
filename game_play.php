@@ -570,8 +570,7 @@ function OutputHeavenTalkLog(){
 function CheckSelfVoteDay(){
   global $MESSAGE, $ROOM, $USERS, $SELF;
 
-  //投票回数を取得
-  $vote_times = $ROOM->GetVoteTimes();
+  $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
   $str = '<div class="self-vote">投票 ' . $vote_times . ' 回目：';
 
   //投票対象者を取得
@@ -579,7 +578,7 @@ function CheckSelfVoteDay(){
     " AND situation = 'VOTE_KILL' AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
   $str .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
-	   $USERS->GetHandleName($target_uname, true) . 'さんに投票済み') . '</div>'."\n";
+	   $USERS->GetHandleName($target_uname, true) . ' さんに投票済み') . '</div>'."\n";
   if($target_uname === false){
     $str .= '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>'."\n";
   }

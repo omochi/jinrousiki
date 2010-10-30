@@ -431,7 +431,7 @@ function OutputAbility(){
       if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO'); //夜の投票
     }
   }
-  elseif($SELF->IsRoleGroup('ogre')){ //鬼系
+  elseif($SELF->IsOgre()){ //鬼陣営
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
       OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
