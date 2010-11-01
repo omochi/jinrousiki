@@ -92,39 +92,8 @@ EOF;
 function ConcreteOutputIconList($base_url = 'icon_view') {
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
-  //アイコン情報の準備
-  $sql_prepare = <<<SQL
-CREATE TEMPORARY TABLE IF NOT EXISTS _icons
-SELECT
-  ico.icon_no,
-  ico.icon_name,
-  ico.icon_filename,
-  ico.icon_width,
-  ico.icon_height,
-  ico.color,
-  ico.appearance,
-  ico.category,
-  ico.author,
-  COUNT( usr.uname ) AS num_used
-FROM
-  user_icon AS ico
-  LEFT JOIN user_entry AS usr USING (icon_no)
-GROUP BY
-  ico.icon_no,
-  ico.icon_name,
-  ico.icon_filename,
-  ico.icon_width,
-  ico.icon_height,
-  ico.color,
-  ico.appearance,
-  ico.category,
-  ico.author
-
-SQL;
-  SendQuery($sql_prepare);
-
   //ヘッダーの出力
-  $icon_count = FetchResult('SELECT COUNT(icon_no) FROM _icons WHERE icon_no > 0');
+  $icon_count = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0');
   $line_header = '<tr><td colspan="10">';
   $line_footer = '</td></tr>'."\n";
   $url_header  = '<a href="' . $base_url . '.php?';
@@ -133,7 +102,6 @@ SQL;
   $category_list = GetIconCategoryList('category');
   $all_url = $url_header;
   if($RQ_ARGS->room_no > 0) $all_url .= 'room_no=' . $RQ_ARGS->room_no;
-
   //PrintData($category_list);
   //PrintData($RQ_ARGS);
 
@@ -146,6 +114,7 @@ EOF;
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
   function _outputSelectionByType($type, $caption, $filter = array()) {
     global $RQ_ARGS;
+
     //選択状態の抽出
     $selection_source = $RQ_ARGS->search ? $RQ_ARGS->$type : $_SESSION['icon_view'][$type];
     $selected
@@ -154,10 +123,8 @@ EOF;
         : array();
     $_SESSION['icon_view'][$type] = $selected;
     //選択肢の生成
-    $sql = "SELECT DISTINCT {$type} FROM _icons WHERE {$type} IS NOT NULL";
-    if (count($filter)) {
-      $sql .= ' AND '.implode(' AND ', $filter);
-    }
+    $sql = "SELECT DISTINCT {$type} FROM user_icon WHERE {$type} IS NOT NULL";
+    if(count($filter) > 0) $sql .= ' AND ' . implode(' AND ', $filter);
     $list = FetchArray($sql);
     //表示
     echo <<<HTML
@@ -239,7 +206,7 @@ EOF;
 
 HTML;
   }
-  if ($is_user_entry = isset($RQ_ARGS->room_no)) {
+  if($is_user_entry = isset($RQ_ARGS->room_no)){
     echo <<<HTML
 <table>
 <caption>
@@ -252,7 +219,7 @@ HTML;
   }
 
   //ユーザアイコンのテーブルから一覧を取得
-  $query = 'SELECT * FROM _icons WHERE ';
+  $query = 'SELECT * FROM user_icon WHERE ';
   $where_cond[] = 'icon_no > 0';
   $query .= implode(' AND ', $where_cond);
   if ($RQ_ARGS->sort_by_name) {
@@ -285,7 +252,7 @@ function submitIconSearch(page) {
 //--></script>
 
 HTML;
-  $query = 'SELECT COUNT(icon_no) AS total_count FROM _icons WHERE ';
+  $query = 'SELECT COUNT(icon_no) AS total_count FROM user_icon WHERE ';
   $where_cond[] = 'icon_no > 0';
   $query .= implode(' AND ', $where_cond);
   $total_count = FetchResult($query);
@@ -362,7 +329,7 @@ HTML;
   if(!empty($appearance)) $data .= '<li>[S]' . $appearance;
   if(!empty($category))   $data .= '<li>[C]' . $category;
   if(!empty($author))     $data .= '<li>[A]' . $author;
-  $data .= '<li>[U]' . $num_used;
+  //$data .= '<li>[U]' . $num_used;
   echo $data;
   echo <<<HTML
 </ul>

@@ -1632,7 +1632,8 @@ function AggregateVoteNight($skip = false){
       }
     }
 
-    $vampire_target_list = array(); //吸血死対象者リスト
+    $vampire_target_list = array(); //吸血対象者リスト
+    PrintData($escaper_target_list);
     foreach($vote_data['VAMPIRE_DO'] as $uname => $target_uname){ //吸血鬼の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1644,6 +1645,14 @@ function AggregateVoteNight($skip = false){
       //凍傷判定
       if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
+      //吸血鬼に逃亡した逃亡者を対象者リストに追加
+      foreach(array_keys($escaper_target_list, $user->uname) as $escaper_uname){
+	$vampire_target_list[$user->uname][] = $escaper_uname;
+      }
+      //逃亡者の巻き添え判定
+      foreach(array_keys($escaper_target_list, $target_uname) as $escaper_uname){
+	$vampire_target_list[$user->uname][] = $escaper_uname;
+      }
       $target = $USERS->ByUname($target_uname);
       if($target->IsDead(true) || $target->GetCamp() == 'vampire') continue; //スキップ判定
 
@@ -1663,29 +1672,32 @@ function AggregateVoteNight($skip = false){
 	$str = $guard_user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
 	$ROOM->SystemMessage($str, 'GUARD_SUCCESS');
       }
-      if($guard_flag) continue;
-
-      //吸血死判定 (吸血死より罠死の方が優先されるが、本人も罠にかかるので競合しないはず)
-      if(! $user->IsAvoid() &&
-	 (($user->IsRole('incubus_vampire')  && $target->sex == 'male') ||
-	  ($user->IsRole('succubus_vampire') && $target->sex == 'female'))){
-	$vampire_target_list[$target_uname] = true; //暗殺対象者リストに追加
-	continue;
-      }
-
-      $target->AddRole($user->GetID('infected')); //感染処理
-      if($user->IsRole('doom_vampire')){ //冥血鬼の処理
-	$target->AddDoom(4); //死の宣告を付加
-      }
-      elseif($user->IsRole('soul_vampire')){ //吸血姫の処理
-	$str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true) . "\t";
-	$ROOM->SystemMessage($str . $target->main_role, 'VAMPIRE_RESULT'); //役職を登録
-      }
+      if(! $guard_flag) $vampire_target_list[$user->uname][] = $target->uname;
     }
 
-    //PrintData($vampire_target_list, 'Target [vampire]');
-    foreach($vampire_target_list as $uname => $flag){ //吸血死処理
-      $USERS->Kill($USERS->UnameToNumber($uname), 'VAMPIRE_KILLED');
+    PrintData($vampire_target_list, 'Target [vampire]');
+    foreach($vampire_target_list as $uname => $stack){ //吸血死処理
+      $user = $USERS->ByUname($uname);
+      PrintData($stack, $uname);
+      foreach($stack as $target_uname){
+	$target = $USERS->ByUname($target_uname);
+	//吸血死判定 (吸血死より罠死の方が優先されるが、本人も罠にかかるので競合しないはず)
+	if(! $target->IsAvoid() &&
+	   (($user->IsRole('incubus_vampire')  && $target->sex == 'male') ||
+	    ($user->IsRole('succubus_vampire') && $target->sex == 'female'))){
+	  $USERS->Kill($target->user_no, 'VAMPIRE_KILLED');
+	  continue;
+	}
+
+	$target->AddRole($user->GetID('infected')); //感染処理
+	if($user->IsRole('doom_vampire')){ //冥血鬼の処理
+	  $target->AddDoom(4); //死の宣告を付加
+	}
+	elseif($user->IsRole('soul_vampire')){ //吸血姫の処理
+	  $str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true) . "\t";
+	  $ROOM->SystemMessage($str . $target->main_role, 'VAMPIRE_RESULT'); //役職を登録
+	}
+      }
     }
 
     $assassin_target_list = array(); //暗殺対象者リスト

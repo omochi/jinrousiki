@@ -220,7 +220,7 @@ $RQ_ARGS->TestItems->test_users[20]->user_no = 20;
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'succubus_vampire plague';
+$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire plague';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->icon_filename = '009.gif';
 $RQ_ARGS->TestItems->test_users[20]->color = '#CC00CC';
@@ -240,7 +240,7 @@ $RQ_ARGS->TestItems->test_users[22]->user_no = 22;
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[22]->role = 'dowser_priest';
+$RQ_ARGS->TestItems->test_users[22]->role = 'escaper';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->icon_filename = '001.gif';
 $RQ_ARGS->TestItems->test_users[22]->color = '#DDDDDD';
@@ -250,7 +250,7 @@ $RQ_ARGS->TestItems->test_users[23]->user_no = 23;
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'reporter';
+$RQ_ARGS->TestItems->test_users[23]->role = 'escaper';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 $RQ_ARGS->TestItems->test_users[23]->icon_filename = '002.gif';
 $RQ_ARGS->TestItems->test_users[23]->color = '#999999';
@@ -394,13 +394,15 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'gust', 'situation' => 'ESCAPE_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'gust', 'situation' => 'ESCAPE_DO', 'target_uname' => 'cherry'),
   #array('uname' => 'gust', 'situation' => 'ESCAPE_DO', 'target_uname' => 'sun'),
+  array('uname' => 'gust', 'situation' => 'ESCAPE_DO', 'target_uname' => 'rose'),
   #array('uname' => 'gust', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
   #array('uname' => 'gust', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'gust', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'light_gray'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'black'),
-  array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'moon'),
+  #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'moon'),
+  array('uname' => 'cloud', 'situation' => 'ESCAPE_DO', 'target_uname' => 'purple'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'gold'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'sky'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'yellow'),
@@ -521,7 +523,7 @@ do{
   //PrintData($ROOM->event);
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 2, 25) as $id){
+  foreach(array(5, 20, 25) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   #var_dump($USERS->IsOpenCast());
