@@ -436,6 +436,15 @@ function OutputAbility(){
     if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
       OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
     }
+    if($ROOM->date > 2 && $SELF->IsRole('sacrifice_ogre')){ //酒呑童子
+      //洗脳者を表示
+      $stack = array();
+      foreach($USERS->rows as $user){
+	if($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;
+      }
+      OutputPartner($stack, 'psycho_infected_list');
+      unset($stack);
+    }
   }
   elseif($SELF->IsRole('incubate_poison')){ //潜毒者
     $ROLE_IMG->Output($SELF->main_role);
@@ -473,13 +482,16 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('vampire')){ //吸血鬼系
     $ROLE_IMG->Output($SELF->main_role);
 
-    if($ROOM->date > 2){
-      //自分の感染者を表示
+    if($ROOM->date > 2){ //自分の感染者と洗脳者を表示
       $stack = array();
       foreach($USERS->rows as $user){
-	if($user->IsPartner('infected', $SELF->user_no)) $stack[] = $user->handle_name;
+	if($user->IsPartner('infected', $SELF->user_no))
+	  $stack['infected'][] = $user->handle_name;
+	elseif($user->IsRole('psycho_infected'))
+	  $stack['psycho_infected'][] = $user->handle_name;
       }
-      OutputPartner($stack, 'infected_list');
+      OutputPartner($stack['infected'], 'infected_list');
+      OutputPartner($stack['psycho_infected'], 'psycho_infected_list');
       unset($stack);
     }
     if($SELF->IsRole('soul_vampire')) OutputSelfAbilityResult('VAMPIRE_RESULT'); //吸血姫の吸血結果
@@ -602,8 +614,8 @@ function OutputAbility(){
     }
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_presage', 'mind_lonely',
-	     'mind_receiver', 'mind_friend', 'mind_sympathy', 'infected', 'possessed_target',
-	     'possessed', 'bad_status', 'protected');
+	     'mind_receiver', 'mind_friend', 'mind_sympathy', 'infected', 'psycho_infected',
+	     'possessed_target', 'possessed', 'bad_status', 'protected');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;
@@ -665,8 +677,9 @@ function OutputSelfAbilityResult($action){
     break;
 
   case 'NECROMANCER_RESULT':
-  case 'DUMMY_NECROMANCER_RESULT':
   case 'SOUL_NECROMANCER_RESULT':
+  case 'ATTEMPT_NECROMANCER_RESULT':
+  case 'DUMMY_NECROMANCER_RESULT':
     $type = 'necromancer';
     break;
 
@@ -785,10 +798,6 @@ function OutputSelfAbilityResult($action){
 
   $target_date = $ROOM->date - 1;
   if($ROOM->test_mode){
-    if($action == 'MEDIUM_RESULT'){
-      if($ROOM->IsNight()) $target_date++;
-    }
-    elseif($type == 'necromancer' || $action == 'PHARMACIST_RESULT') $target_date++;
     $stack = $RQ_ARGS->TestItems->system_message[$target_date][$action];
     $result_list = is_array($stack) ? $stack : array();
   }
@@ -797,15 +806,13 @@ function OutputSelfAbilityResult($action){
       "{$ROOM->id} AND date = {$target_date} AND type = '{$action}'";
     $result_list = FetchArray($query);
   }
+  //PrintData($result_list);
 
   switch($type){
   case 'mage':
     foreach($result_list as $result){
       list($actor, $target, $data) = explode("\t", $result);
-      if($SELF->IsSameName($actor)){
-	OutputAbilityResult($header, $target, $footer . $data);
-	break;
-      }
+      if($SELF->IsSameName($actor)) OutputAbilityResult($header, $target, $footer . $data);
     }
     break;
 
@@ -828,10 +835,7 @@ function OutputSelfAbilityResult($action){
   case 'guard':
     foreach($result_list as $result){
       list($actor, $target) = explode("\t", $result);
-      if($SELF->IsSameName($actor)){
-	OutputAbilityResult(NULL, $target, $footer);
-	break;
-      }
+      if($SELF->IsSameName($actor)) OutputAbilityResult(NULL, $target, $footer);
     }
     break;
 
@@ -840,17 +844,13 @@ function OutputSelfAbilityResult($action){
       list($actor, $target, $wolf) = explode("\t", $result);
       if($SELF->IsSameName($actor)){
 	OutputAbilityResult($header, $target . ' さんは ' . $wolf, $footer);
-	break;
       }
     }
     break;
 
   case 'fox':
     foreach($result_list as $result){
-      if($SELF->IsSameName($result)){
-	OutputAbilityResult($header, NULL);
-	break;
-      }
+      if($SELF->IsSameName($result)) OutputAbilityResult($header, NULL);
     }
     break;
 

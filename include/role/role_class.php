@@ -41,8 +41,8 @@ class RoleManager{
 
   //特殊勝利判定
   var $victory_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
-			    'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'yaksa',
-			    'succubus_yaksa');
+			    'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
+			    'sacrifice_ogre', 'yaksa', 'succubus_yaksa');
 
   function RoleManager(){ $this->__construct(); }
   function __construct(){
@@ -130,9 +130,9 @@ class Role{
 
   //-- 判定用関数 --//
   function Ignored(){
-    global $ROOM, $ROLES;
+    global $ROOM, $USERS, $ROLES;
     //return false; //テスト用
-    return ! ($ROOM->IsPlaying() && $ROLES->actor->IsLive());
+    return ! ($ROOM->IsPlaying() && $USERS->IsVirtualLive($ROLES->actor->user_no));
   }
 
   function IsSameUser($uname){

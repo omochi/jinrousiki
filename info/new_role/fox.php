@@ -199,6 +199,10 @@ OutputRolePageHeader('妖狐陣営');
   <li>呪われている役職を選んだ場合は本人が呪返しを受けます</li>
   <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受けます</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#cursed_group">呪い能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/58" target="_top">新役職考案スレ</a> の 58 が原型です。
@@ -238,7 +242,7 @@ OutputRolePageHeader('妖狐陣営');
   <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
   <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
 </ol>
-<h4>Ver. 1.4.0 β12〜</h4>
+<h5>Ver. 1.4.0 β12〜</h5>
 <pre>
 <a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できません。
 </pre>
@@ -277,13 +281,13 @@ OutputRolePageHeader('妖狐陣営');
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
 <a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 <a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#voodoo_fox">九尾</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
+<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -308,7 +312,7 @@ OutputRolePageHeader('妖狐陣営');
 昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう妖狐。
 遠吠えの内容は<a href="human.php#suspect">不審者</a>や<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
 </pre>
-<h4>Ver. 1.4.0 β7〜</h4>
+<h5>Ver. 1.4.0 β7〜</h5>
 <pre>
 遠吠えの入れ替え発動を昼限定に変更しました。
 </pre>
@@ -375,11 +379,11 @@ OutputRolePageHeader('妖狐陣営');
 子狐系の基本種。占い能力を持つ。
 判定結果は<a href="human.php#mage">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
 </pre>
-<h4>Ver. 1.4.0 α17〜</h4>
+<h5>Ver. 1.4.0 α17〜</h5>
 <pre>
 占い能力を持ちました。
 </pre>
-<h4>Ver. 1.4.0 α8〜β11</h4>
+<h5>Ver. 1.4.0 α8〜β11</h5>
 <pre>
 通常闇鍋モードでは20人未満では出現しません。
 20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
@@ -399,7 +403,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

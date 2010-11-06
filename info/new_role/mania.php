@@ -85,7 +85,7 @@ CO するべきかどうかは、コピーした役職次第です。
 6. A[奇術師] → B[<a href="wolf.php#trap_mad">罠師</a>] =&gt; A[罠師] B[狂人]
 初日に投票していない狂人は入れ替えが発生します。
 </pre>
-<h4>Ver. 1.4.0 β11〜</h4>
+<h5>Ver. 1.4.0 β11〜</h5>
 <pre>
 役職変化後に付加される役職を<a href="sub_role.php#copied">元神話マニア</a>から<a href="sub_role.php#copied_trick">元奇術師</a>に変更。
 </pre>
@@ -238,8 +238,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
-  <td><a href="ogre.php#indigo_ogre">後鬼</a></td>
-  <td>Ver. 1.4.0 β18〜</td>
+  <td><a href="ogre.php#sacrifice_ogre">酒呑童子</a></td>
+  <td>Ver. 1.4.0 β20〜</td>
 </tr>
 <tr>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
@@ -399,8 +399,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
-  <td><a href="ogre.php#orange_ogre">前鬼</a></td>
-  <td>Ver. 1.4.0 β18〜</td>
+  <td><a href="ogre.php#incubus_ogre">般若</a></td>
+  <td>Ver. 1.4.0 β20〜</td>
 </tr>
 <tr>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
@@ -416,7 +416,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#soul_mania">覚醒者</a>の夢バージョンです。
-最終的には自覚することができるので他の夢系と比べると対応はしやすいかもしれません。
+最終的には自覚することができるので他の<a href="ability.php#dummy">夢系</a>と比べると対応はしやすいかもしれません。
 </pre>
 
 <h2><a id="unknown_mania_group">鵺系</a></h2>
@@ -437,7 +437,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <h4>所属陣営の判定例</h4>
 <pre>
 1. 鵺 → <a href="human.php#human">村人</a> (村人陣営)
-擬似<a href="human.php#common_group">共有者</a>になります。
+擬似<a href="human.php#common_group">共有者</a>相当になります。
 
 2. 鵺 → <a href="wolf.php#wolf">人狼</a> (人狼陣営)
 コピー先とだけ会話できる<a href="wolf.php#whisper_mad">囁き狂人</a>相当です。
@@ -474,7 +474,7 @@ CO するべきかどうかは、コピーした役職次第です。
 コピー先を辿って判定します。
 
 12. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
-コピー先を辿って自分に戻った場合は村人陣営になります。
+コピー先を辿る途中で自分に戻った場合は村人陣営になります。
 
 13. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
 神話マニアをコピーした場合はコピー結果の陣営になります。
@@ -482,9 +482,9 @@ CO するべきかどうかは、コピーした役職次第です。
 14. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
 神話マニアは鵺をコピーしたら村人になるので鵺のリンクが切れます。
 結果として以下のようになります。
-鵺A(村人陣営) → 村人(元神話マニア)、鵺B (人狼陣営) → 人狼
+鵺A(村人陣営) → 村人(元神話マニア) / 鵺B (人狼陣営) → 人狼
 </pre>
-<h4>Ver. 1.4.0 β19〜</h4>
+<h5>Ver. 1.4.0 β19〜</h5>
 <pre>
 <a href="vampire.php">吸血鬼陣営</a>をコピーした場合の勝利条件判定を変更 (<a href="vampire.php#rule">基本ルール [吸血鬼]</a>参照)。
 </pre>
@@ -509,7 +509,7 @@ CO するべきかどうかは、コピーした役職次第です。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>
+<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

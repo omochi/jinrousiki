@@ -22,7 +22,12 @@ h3{
   font-size: 120%;
 }
 h4{
+  background-color: #DDDDEE;
+  font-size: 100%;
+}
+h5{
   background-color: #DDDDDD;
+  font-size: 90%;
 }
 pre{
   padding-bottom: 10px;

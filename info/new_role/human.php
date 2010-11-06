@@ -150,20 +150,27 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
 2日目の夜以降、生きている誰かの側に逃亡して生存を図ろうとする村人。
-勝利条件は「村人陣営の勝利」＋「自身の生存」。
+勝利条件は「村人陣営の勝利 + 自分自身の生存」。
 遺言を残せない。
 </pre>
 <ol>
-  <li>人狼に直接狙われても殺されません (襲撃は失敗扱い)</li>
-  <li>人狼に狙われていたことを自覚できません</li>
-  <li>逃亡先が人狼だった場合は殺されます</li>
-  <li>逃亡先が人狼に襲撃されたら自分も殺されます</li>
-  <li>逃亡先が護衛や狐などで人狼の襲撃が失敗しても殺されます</li>
-  <li>遭遇した人狼の種類に関係なく殺されます (例：<a href="wolf.php#sex_wolf">雛狼</a>であっても死亡)</li>
-  <li>何らかの理由で人狼に殺された場合の死因は「人狼に襲撃された」です</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に直接狙われても無効です (襲撃は失敗扱い)</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に狙われていたことを自覚できません</li>
+  <li>逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は殺されます</li>
+  <li>逃亡先が<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら自分も殺されます</li>
+  <li>逃亡先が護衛や狐などで<a href="wolf.php#wolf_group">人狼</a>の襲撃が失敗しても殺されます</li>
+  <li>遭遇した<a href="wolf.php#wolf_group">人狼</a>の種類に関係なく殺されます (例：<a href="wolf.php#sex_wolf">雛狼</a>であっても死亡)</li>
+  <li>何らかの理由で<a href="wolf.php#wolf_group">人狼</a>に殺された場合の死因は「人狼に襲撃された」です</li>
   <li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡します</a>
   <li><a href="#assassin_group">暗殺者系</a>に狙われても殺されません</li>
+  <li>逃亡先が<a href="vampire.php">吸血鬼</a>だった場合は吸血されます</li>
+  <li>逃亡先が<a href="vampire.php">吸血鬼</a>に襲撃されたら吸血されます</li>
+  <li>逃亡先が護衛などで<a href="vampire.php">吸血鬼</a>の襲撃が失敗しても吸血されます</li>
 </ol>
+<h5>Ver. 1.4.0 β20〜</h5>
+<pre>
+吸血鬼の襲撃に関する仕様を変更。
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="#reporter">ブン屋</a>
@@ -184,11 +191,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 変換されたかどうかは本人にしか分からず、客観的な証明は不可能なので
 空発言を多数行なって確認する試みは確率的にもほとんど意味が無いので注意。
 </pre>
-<h4>Ver. 1.4.0 β7〜</h4>
+<h5>Ver. 1.4.0 β7〜</h5>
 <pre>
 遠吠え変換の発動を昼限定に変更。
 </pre>
-<h4>Ver. 1.4.0 α16〜</h4>
+<h5>Ver. 1.4.0 α16〜</h5>
 <pre>
 低確率で発言が遠吠えに変換される (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
 </pre>
@@ -263,11 +270,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 占った人の役職が分かる上位占い師。
 <a href="fox.php#fox_group">妖狐</a>を占っても呪殺できないが、占い妨害や呪返しは受けるので注意。
 </pre>
-<h4>Ver. 1.4.0 α15〜</h4>
+<h5>Ver. 1.4.0 α15〜</h5>
 <pre>
-<a href="fox.php#fox_group">妖狐</a>を占っても呪殺できません。
+<a href="fox.php#fox_group">妖狐</a>を占っても呪殺できない。
 </pre>
-<h4>Ver. 1.4.0 α8〜β11</h4>
+<h5>Ver. 1.4.0 α8〜β11</h5>
 <pre>
 <a href="../chaos.php#chaos">通常闇鍋モード</a>では16人未満では出現しません。
 16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
@@ -289,18 +296,18 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
 「嘘つき」を探し出す特殊な占い師。
-<a href="wolf.php#mad_group">狂人系</a>・夢系・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>を占うと「嘘をついている」と判定される。
+<a href="wolf.php#mad_group">狂人系</a>・<a href="ability.php#dummy">夢系</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>を占うと「嘘をついている」と判定される。
 <a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 それ以外は「正常である」と判定される。
 </pre>
-<h4>Ver. 1.4.0 β18〜</h4>
+<h5>Ver. 1.4.0 β18〜</h5>
 <pre>
 <a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-対狂人専門の占い師です。一部の本人視点と実際の役職が違うタイプ
-(夢系・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>)にも対応しています。
+対狂人専門の占い師です。
+一部の本人視点と実際の役職が違うタイプにも対応しています。
 精神鑑定士を真と見るなら占われた人視点の役職がほぼ確定します。
 人狼や妖狐の騙りは見抜けないので注意してください。
 </pre>
@@ -312,21 +319,21 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <a href="chiroptera.php">蝙蝠陣営</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
 <a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 </pre>
-<h4>Ver. 1.4.0 β18〜</h4>
+<h5>Ver. 1.4.0 β18〜</h5>
 <pre>
 <a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 </pre>
-<h4>Ver. 1.4.0 β8〜</h4>
+<h5>Ver. 1.4.0 β8〜</h5>
 <pre>
 <a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
 </pre>
-<h4>Ver. 1.4.0 α21〜</h4>
+<h5>Ver. 1.4.0 α21〜</h5>
 <pre>
 <a href="chiroptera.php">蝙蝠陣営</a>を占った場合は「蝙蝠」と判定される。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -363,8 +370,8 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 呪い系統の対抗役職です。
-積極的に呪い持ち(<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>)や憑依能力者(<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>)を探しに行く場合は
-普通の占い師と同じ感覚でいいですが、呪術能力者(<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="fox.php#voodoo_fox">九尾</a>)による呪返しを
+積極的に<a href="ability.php#cursed">呪い所持者</a>や憑依能力者(<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>)を探しに行く場合は
+普通の占い師と同じ感覚でいいですが、<a href="ability.php#voodoo">呪術能力者</a>による呪返しを
 防ぐのが狙いなら、同時に同じ人を占う必要があるので動き方が難しくなります。
 そもそも呪い系がレアなので役に立つのか分かりませんが……
 </pre>
@@ -380,11 +387,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 「村人」「人狼」以外の判定 (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など) は正しい結果が表示される。
 占い妨害能力 (<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#jammer_mad">月兎</a>など) の影響を受けない。
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 「村人」「人狼」以外の判定 (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など) は正しい結果が表示される。
 </pre>
-<h4>Ver. 1.4.0 α18〜</h4>
+<h5>Ver. 1.4.0 α18〜</h5>
 <pre>
 占い結果がランダムから「村人」⇔「人狼」反転に変わりました。
 確定白(例えば共有者)を占って人狼判定が出たら本人視点夢見人確定です。
@@ -392,7 +399,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#dummy_necromancer">夢枕人</a>
+<a href="#dummy_necromancer">夢枕人</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -408,6 +415,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <p>
 <a href="#necromancer">霊能者</a>
 <a href="#soul_necromancer">雲外鏡</a>
+<a href="#attempt_necromancer">蟲姫</a>
 <a href="#yama_necromancer">閻魔</a>
 <a href="#dummy_necromancer">夢枕人</a>
 </p>
@@ -442,6 +450,36 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 しかし、「死人に口無し」故に魂の占い師よりもはるかに騙りやすいですね。
 </pre>
 
+<h3><a id="attempt_necromancer">蟲姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
+<h4>[霊能能力] 火車：無効</h4>
+<pre>
+前日の<a href="wolf.php#wolf_group">人狼系</a>・<a href="ability.php#assassin">暗殺能力者</a>に狙われて生き残った人と<a href="ability.php#revive">蘇生</a>に失敗した人が分かる特殊な霊能者。
+</pre>
+<ol>
+<li>生き残った人がいた場合は、霊能結果に「〜さんは命を狙われたようです」と表示される。</li>
+<li>生き残っていれば理由は問わない (以下、生存例)。
+  <ol>
+    <li><a href="#guard_group">狩人</a>の護衛</a></li>
+    <li><a href="wolf.php#silver_wolf">銀狼</a>などの人狼同士の襲撃</li>
+    <li><a href="#doll_master">人形遣い</a>・<a href="fox.php">妖狐</a>・<a href="ogre.php">鬼</a>などの耐性持ちだった</li>
+    <li>襲撃者が<a href="wolf.php#sex_wolf">雛狼</a>だった</li>
+    <li><a href="#assassin">暗殺者</a>が人狼に殺された</li>
+    <li><a href="#assassin_spec">暗殺反射</a></li>
+    <li><a href="sub_role.php#death_warrant">死の宣告</a>など、即死しない能力だった</li>
+    <li><a href="ogre.php">鬼</a>の確率などによる人攫い失敗</li>
+  </ol>
+</li>
+<li>死亡した直後に蘇生した場合でも「生き残った」と判定される。</li>
+<li>蘇生失敗メッセージは<a href="#yama_necromancer">閻魔</a>と同様、画面の下に表示される (霊界で見えるものと同じ)。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+一部の「生と死の未遂」を感知できる特殊霊能者です。「虫の知らせ」がモチーフです。
+「誰が狙われたか」という情報を元に前日の夜に何が起きたか推測できます。
+下界にいながら蘇生能力者の存在を感知できるので「蘇生失敗騙り」を看破できます。
+また、「暗殺未遂」情報から「死の宣告騙り」を看破することも可能になります。
+</pre>
+
 <h3><a id="yama_necromancer">閻魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
 <h4>[霊能能力] 火車：無効</h4>
 <pre>
@@ -465,11 +503,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 「村人」と「人狼」以外の判定 (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#child_fox">子狐</a>など) は正しい結果が表示される。
 <a href="wolf.php#corpse_courier_mad">火車</a>の能力の影響を受けない。
 </pre>
-<h4>Ver. 1.4.0 α21〜</h4>
+<h5>Ver. 1.4.0 α21〜</h5>
 <pre>
 <a href="wolf.php#corpse_courier_mad">火車</a>の能力の影響を受けない。
 </pre>
-<h4>Ver. 1.4.0 α18〜</h4>
+<h5>Ver. 1.4.0 α18〜</h5>
 <pre>
 霊能結果がランダムから「村人」⇔「人狼」反転に変わりました。
 <a href="#psycho_mage">精神鑑定士</a>から「嘘つき」判定を受けたら本人視点夢枕人確定です。
@@ -502,15 +540,15 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 また、メイン役職のみが判定の対象 (サブ役職は分からない)。
 つまり、恋人はサブ役職なので「恋人」と判定されるのは<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>のみ。
 </pre>
-<h4>Ver. 1.4.0 β6〜</h4>
+<h5>Ver. 1.4.0 β6〜</h5>
 <pre>
 <a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく出ないバグ修正 (修正前は常時村人判定)
 </pre>
-<h4>Ver. 1.4.0 α9〜</h4>
+<h5>Ver. 1.4.0 α9〜</h5>
 <pre>
 恋人後追いにも対応 (後追いした恋人のみ、元の所属陣営が分かる)
 </pre>
-<h4>Ver. 1.4.0 α8〜β11</h4>
+<h5>Ver. 1.4.0 α8〜β11</h5>
 <pre>
 通常闇鍋モードではキューピッドが出現している場合は確実に出現します。
 (ただし、巫女が出現してもキューピッドが出現しているとは限りません)
@@ -705,7 +743,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
   <li>蘇生対象外です (選ばれた場合は失敗する)。</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です。</li>
 </ol>
-<h4>Ver. 1.4.0 β12〜</h4>
+<h5>Ver. 1.4.0 β12〜</h5>
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
 </pre>
@@ -767,11 +805,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 5. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>を参照してください
 6. 対象が身代わり死していた場合は狩りが発生しません (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)
 </pre>
-<h4>Ver. 1.4.0 β14〜</h4>
+<h5>Ver. 1.4.0 β14〜</h5>
 <pre>
 対象が身代わり死していた場合は狩りが発生しません (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
 </pre>
@@ -822,7 +860,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <a href="#guard_limit">護衛制限</a>の影響を受けない。
 狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
 </pre>
-<h4>Ver. 1.4.0 α8〜β11</h4>
+<h5>Ver. 1.4.0 α8〜β11</h5>
 <pre>
 通常闇鍋モードでは20人未満では出現しません。
 20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
@@ -887,11 +925,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 護衛先の役職に関係なく発動するので、例えば占い妨害を受けた村人を
 護衛した場合でも成功と判定される。
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 憑依中の<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>を直接護衛すると憑依状態を解く事ができる。
 </pre>
-<h4>Ver. 1.4.0 α24〜</h4>
+<h5>Ver. 1.4.0 α24〜</h5>
 <pre>
 憑依中の<a href="wolf.php#possessed_wolf">憑狼</a>に対しては圧倒的なアドバンテージを持っており、
 直接護衛するか、襲撃されると憑依状態を解くことができる。
@@ -918,11 +956,11 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 一方的に狩ることができる。
 <a href="chiroptera.php#fairy_group">妖精系</a>を護衛すると狩ることができる。
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 <a href="chiroptera.php#fairy_group">妖精系</a>を護衛すると狩ることができる
 </pre>
-<h4>Ver. 1.4.0 α21〜</h4>
+<h5>Ver. 1.4.0 α21〜</h5>
 <pre>
 <a href="wolf.php#dream_eater_mad">獏</a>には圧倒的なアドバンテージを持っており、何らかの形で遭遇すると
 一方的に狩ることができる。
@@ -960,14 +998,14 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 狩人の<a href="#guard_limit">護衛制限</a>対象です。
 </pre>
 <ol>
-  <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
   <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
   <li><a href="#about_revive">蘇生</a>不可</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
-<h4>Ver. 1.4.0 β12〜</h4>
+<h5>Ver. 1.4.0 β12〜</h5>
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外 (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
 </pre>
@@ -1048,7 +1086,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="summary.php#ability_poison">毒能力者</a>
+<a href="ability.php#poison">毒能力者</a>
 </pre>
 
 <h3><a id="strong_poison">強毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
@@ -1061,7 +1099,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#strong_poison">潜毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>
+<a href="#incubate_poison">潜毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1077,7 +1115,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 毒を持ったら本人に追加のシステムメッセージが表示される。
 毒能力は<a href="#strong_poison">強毒者</a>相当。
 </pre>
-<h4>Ver. 1.4.0 α20〜</h4>
+<h5>Ver. 1.4.0 α20〜</h5>
 <pre>
 毒能力を埋毒者相当から強毒者相当に変更。
 </pre>
@@ -1090,7 +1128,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h3><a id="guide_poison">誘毒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <h4>[毒能力] 処刑：毒能力者 / 襲撃：毒能力者 / 薬師判定：限定的</h4>
 <pre>
-<a href="summary.php#ability_poison">毒能力者</a>のみに中る特殊な埋毒者。
+<a href="ability.php#poison">毒能力者</a>のみに中る特殊な埋毒者。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1120,7 +1158,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 本人には「埋毒者」と表示されている村人。
 吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
 </pre>
@@ -1159,11 +1197,11 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
   <li>蘇生対象外の人が選ばれた場合は確実に失敗します</li>
   <li>蘇生に失敗した場合は霊界にだけ見えるシステムメッセージが表示されます</li>
 </ol>
-<h4>Ver. 1.4.0 β2〜</h4>
+<h5>Ver. 1.4.0 β2〜</h5>
 <pre>
 恋人を蘇生対象外に変更 (蘇生後、即自殺から変更)
 </pre>
-<h4>Ver. 1.4.0 α19〜</h4>
+<h5>Ver. 1.4.0 α19〜</h5>
 <pre>
 <a href="#poison_cat">猫又</a>を蘇生対象外に変更
 </pre>
@@ -1180,7 +1218,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 <a href="#revive_medium">風祝</a>
 </pre>
-<h4>Ver. 1.4.0 α19〜</h4>
+<h5>Ver. 1.4.0 α19〜</h5>
 <pre>
 猫又が蘇生する事はありません。
 猫又が蘇生対象者に選ばれた場合は失敗扱いになります。
@@ -1244,7 +1282,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
 蘇生成功率は 40%、誤爆率は 20% で固定。
 </pre>
-<h4>Ver. 1.4.0 β18〜</h4>
+<h5>Ver. 1.4.0 β18〜</h5>
 <pre>
 誤爆率を 15% から 20% に変更
 </pre>
@@ -1276,12 +1314,12 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 4. 限定的な毒を持っている (<a href="#poison_guard">騎士</a>・<a href="#guide_poison">誘毒者</a>・<a href="#chain_poison">連毒者</a>・<a href="#poison_jealousy">毒橋姫</a>)
 5. 解毒に成功した (この場合は詳細な毒の種類は分からない)
 </pre>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 <a href="#dummy_poison">夢毒者</a>が吊られると<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が巻き込まれる仕様に変更。
 これを「解毒」する事はできません。
 </pre>
-<h4>Ver. 1.4.0 α23〜</h4>
+<h5>Ver. 1.4.0 α23〜</h5>
 <pre>
 解毒成功だけでなく、前日に投票した人の詳細な毒能力が分かります
 </pre>
@@ -1364,14 +1402,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)</li>
 <li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します</li>
 <li><a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射されます</li>
-<li><a href="ogre.php">鬼陣営</a>を対象にした場合は一定確率で反射されます</li>
+<li><a href="#cursed_brownie">祟神</a>・<a href="ogre.php">鬼陣営</a>を対象にした場合は一定確率で反射されます</li>
 <li>暗殺された人の死亡メッセージは人狼の襲撃と同じです (死因：暗殺された)</li>
 <li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です</li>
 <li>暗殺者・<a href="ogre.php">鬼</a>がお互いを襲撃した場合は相打ちになります</li>
 <li>暗殺者に暗殺された占い師の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効になります</li>
 <li>暗殺者に暗殺されても<a href="#guard_group">狩人系</a>の護衛判定は有効です</li>
 </ol>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 暗殺反射システムが実装されました
 </pre>
@@ -1501,11 +1539,11 @@ Bの蘇生処理はキャンセル
 <li>結果が出るのは 2 日目以降です。</li>
 <li>身代わり君を対象に選ぶことはできません。</li>
 </ol>
-<h4>Ver. 1.4.0 β17〜</h4>
+<h5>Ver. 1.4.0 β17〜</h5>
 <pre>
 身代わり君を対象に選ぶことはできません。
 </pre>
-<h4>Ver. 1.4.0 α23〜</h4>
+<h5>Ver. 1.4.0 α23〜</h5>
 <pre>
 人狼の遠吠えが一切見えません。
 </pre>
@@ -1530,7 +1568,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <li>自分の遺言欄に何が表示されていても遺言は残りません。</li>
 <li>身代わり君を対象に選ぶことはできません。</li>
 </ol>
-<h4>Ver. 1.4.0 β17〜</h4>
+<h5>Ver. 1.4.0 β17〜</h5>
 <pre>
 身代わり君を対象に選ぶことはできません。
 </pre>
@@ -1668,6 +1706,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <li>判定は処刑対象が決定された後</li>
 <li>自分が処刑対象になった場合は発動しない</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#cursed_brownie">祟神</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 発動機会が増えた代りに効果や発動率が<a href="#jealousy">橋姫</a>よりもかなり抑えられています。
@@ -1681,8 +1723,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <p>
 <a href="#doll">上海人形</a>
 <a href="#friend_doll">仏蘭西人形</a>
+<a href="#phantom_doll">倫敦人形</a>
 <a href="#poison_doll">鈴蘭人形</a>
 <a href="#doom_doll">蓬莱人形</a>
+<a href="#revive_doll">西蔵人形</a>
 <a href="#doll_master">人形遣い</a>
 </p>
 
@@ -1697,12 +1741,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="doll">上海人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
 <pre>
 上海人形系の基本種で、他の国で言う「奴隷」。
-<a href="#doll_rule">基本ルール</a>が適用される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
+東方 Project のアリス・マーガトロイドのスペルカード「魔彩光の上海人形」がモチーフです。
 奴隷という名称を避けたかったので、東方 Project のメディスン・メランコリーをヒントに
 「<a href="#doll_master">人形遣い</a>の支配から逃れようとする人形」という構図を採用しました。
+上海は「シャンハイ」と読みます。
 </pre>
 
 <h3><a id="friend_doll">仏蘭西人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
@@ -1712,6 +1757,23 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「博愛の仏蘭西人形」がモチーフです。
+仏蘭西は「フランス」と読みます。
+</pre>
+
+<h3><a id="phantom_doll">倫敦人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
+<h4>[耐性] 占い：無効 (1回限定)</h4>
+<pre>
+一度だけ、自分が占われたら占い妨害をしてしまう人形。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#phantom">占い妨害能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「霧の倫敦人形」がモチーフです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/865" target="_top">新役職考案スレ</a> の 865 が原型です。
+倫敦は「ロンドン」と読みます。
 </pre>
 
 <h3><a id="poison_doll">鈴蘭人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
@@ -1738,13 +1800,37 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_assassin">死神</a>・<a href="#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+<a href="#doom_assassin">死神</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「首吊り蓬莱人形」がモチーフです。
 自分が吊られる時に<a href="#doll_master">人形遣い</a>の投票を引き込むことができれば勝利のチャンスが生まれますが、
 対象はランダムなので、人柱的に票を集めてしまうと確率が下がるので難しいところですね。
+</pre>
+
+<h3><a id="revive_doll">西蔵人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
+<pre>
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する人形。
+</pre>
+<ol>
+  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>恋人になったら蘇生能力は無効。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「輪廻の西蔵人形」がモチーフです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/865" target="_top">新役職考案スレ</a> の 865 が原型です。
+西蔵は「チベット」と読みます。
 </pre>
 
 <h3><a id="doll_master">人形遣い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
@@ -1762,17 +1848,18 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
   <li>本人は身代わりが発生しても分からない。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 身代わり君が人形遣いになる可能性があります。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
+東方 Project のアリス・マーガトロイドがモチーフです。
 他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。
 </pre>
 
@@ -1780,12 +1867,14 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <p>
 <a href="#brownie">座敷童子</a>
 <a href="#history_brownie">白澤</a>
+<a href="#revive_brownie">蛇神</a>
+<a href="#cursed_brownie">祟神</a>
 </p>
 
 <h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
 <h4>[耐性] 処刑：熱病</h4>
 <pre>
-役職「<a href="#human">村人</a>」の処刑投票数を +1 する村人。生きている間のみ有効。
+役職「<a href="#human">村人</a>」の処刑投票数を +1 する。生きている間のみ有効。
 処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
 <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
 </pre>
@@ -1802,7 +1891,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="history_brownie">白澤</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
 <h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
-人狼に襲撃されたら次の日の夜を飛ばしてしまう村人。
+人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子系の亜種。
 能力が発動した場合は、専用のメッセージが表示される。
 <a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
 </pre>
@@ -1810,5 +1899,57 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 翠星石鯖＠やる夫人狼で実施された記念村の設定を役職にしてみました。
 東方 Project の上白沢 慧音がモチーフです。
+</pre>
+
+<h3><a id="revive_brownie">蛇神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>の成功率を +30% (1.3倍) する、座敷童子系の亜種。
+生きている間のみ有効で、複数出現しても効果は重複しない。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
+例：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 32.5% (誤爆率 6%)
+</pre>
+<ol>
+  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>蘇生能力を失っても蘇生率向上能力は失わない。</li>
+  <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる</li>
+  <li>恋人になったら蘇生能力は無効。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+再生の象徴と言われる伝承がモチーフです。
+<a href="ability.php#revive">蘇生能力者</a>が出現しなかったケースを考慮して<a href="#revive_pharmacist">仙人</a>相当の能力も持たせてあります。
+</pre>
+
+<h3><a id="cursed_brownie">祟神</a> (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 死の宣告 (2日後) / 暗殺：反射 (30%) / 占い：呪返し / 陰陽師：死亡</h4>
+<pre>
+座敷童子系の亜種で、占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。
+また、処刑投票してきた人 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
+<a href="#assassin_spec">暗殺反射</a> (30%) を持つ。
+</pre>
+<ol>
+<li>判定は処刑対象が決定された後で、付加率は 30%。</li>
+<li>付加判定は個々で行う (例：5人投票してきたら5回、個々で判定)。</li>
+<li>自分が処刑対象になった場合でも有効。</li>
+<li>人狼に襲撃された場合は襲撃した人狼のみに、確定で付加される。</li>
+<li><a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#divorce_jealousy">縁切地蔵</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「うかつに触れると災厄が訪れる」と言われる伝承がモチーフです。
+対抗役職なしに触れる (占う・投票する) と酷い目に遭うことになります。
 </pre>
 </body></html>

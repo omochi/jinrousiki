@@ -391,7 +391,7 @@ class Room{
 
     if($this->IsEvent('skip_night')){
       AggregateVoteNight(true);
-      $this->talk('白澤の能力で夜が飛ばされました……');
+      $this->talk($MESSAGE->skip_night);
     }
   }
 

@@ -33,7 +33,7 @@ OutputRolePageHeader('鬼陣営');
   <li>暗殺カテゴリに属し、<a href="human.php#assassin_spec">暗殺の仕様</a>が適用されます</li>
   <li>「人攫いする / しない」を必ず投票する必要があります</li>
   <li>暗殺された人の死亡メッセージは人狼の襲撃と同じで、死因は「鬼に攫われた」です</li>
-  <li>暗殺が成立するたびに成功率が 1/5 になります (100% → 20% → 4% → 1% (以降は 1% で固定))</li>
+  <li>暗殺が成立するたびに成功率が低下 (下限は 1%) します (例：100% → 20% → 4% → 1%)</li>
 </ol>
 
 <h2><a id="ogre_group">鬼系</a></h2>
@@ -47,6 +47,7 @@ OutputRolePageHeader('鬼陣営');
 <a href="#north_ogre">水鬼</a>
 <a href="#south_ogre">隠行鬼</a>
 <a href="#incubus_ogre">般若</a>
+<a href="#sacrifice_ogre">酒呑童子</a>
 </p>
 <h3><a id="ogre">鬼</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β18〜]</h3>
 <h4>[耐性] 人狼襲撃：無効 (30%) / 暗殺：反射 (30%) / 罠：有効</h4>
@@ -71,7 +72,8 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-勝利条件の関係で<a href="#ogre">鬼</a>とは完全に敵対することになります。
+役 小角が従えていた赤鬼がモチーフで、<a href="#indigo_ogre">後鬼</a> (青鬼) と夫婦です。
+勝利条件の関係で、<a href="#ogre">鬼</a>とは敵対することになります。
 </pre>
 
 <h3><a id="indigo_ogre">後鬼</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β18〜]</h3>
@@ -85,7 +87,7 @@ OutputRolePageHeader('鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#orange_ogre">前鬼</a>の対妖狐バージョンです。
-他の鬼の勝利条件とは競合していないので比較的動きやすいと思います。
+勝利条件が競合する他の鬼が少ないので比較的動きやすいと思います。
 </pre>
 
 <h3><a id="poison_ogre">榊鬼</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β19〜]</h3>
@@ -95,10 +97,9 @@ OutputRolePageHeader('鬼陣営');
 <pre>
 鬼系の一種で、勝利条件は「<a href="quiz.php">出題者陣営</a>の勝利、または自分自身の生存」。
 毒能力は劣化<a href="human.php#strong_poison">強毒者</a>相当。
-例外的に<a href="#ogre_do_spec">人攫い</a>の効果が<a href="sub_role.php#panelist">解答者</a>の付加となり、
-成功率低下も 1/3 になる (100% → 34% → 12% → 4% → 2% → 1%)。
-出題者陣営が出現していて、敗北しても自分が生存していれば勝利となる。
-逆に、出題者陣営が勝利していれば死亡していても勝利となる。
+<a href="#ogre_do_spec">人攫い</a>の効果は<a href="sub_role.php#panelist">解答者</a>の付加で、対象が<a href="quiz.php#quiz">出題者</a>だった場合は無効。
+<a href="quiz.php">出題者陣営</a>が出現して敗北しても自分が生存していれば勝利となる。
+逆に、<a href="quiz.php">出題者陣営</a>が勝利していれば死亡していても勝利となる。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -106,7 +107,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-花祭りの花太夫と問答する鬼が出展です。
+花祭りの花太夫と問答する鬼がモチーフです。「さかきおに」と読みます。
 毒能力は<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>と同タイプなので気をつけましょう。
 </pre>
 
@@ -132,7 +133,7 @@ OutputRolePageHeader('鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#west_ogre">金鬼</a>の対右側バージョンです。木気＝東と見立てています。
-左端にいる場合は最初から条件を一つクリアしていることになります。
+右端にいる場合は最初から条件を一つクリアしていることになります。
 </pre>
 
 <h3><a id="north_ogre">水鬼</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β19〜]</h3>
@@ -169,7 +170,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#succubus_yaksa">荼枳尼天</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="#succubus_yaksa">荼枳尼天</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -177,6 +178,33 @@ OutputRolePageHeader('鬼陣営');
 仮に、村人が全員女性だった場合は単独生存を達成しないと勝てないことになります。
 </pre>
 
+<h3><a id="sacrifice_ogre">酒呑童子</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β20〜]</h3>
+<h4>[耐性] 人狼襲撃：身代わり / 暗殺：反射 (50%) / 罠：有効</h4>
+<h4>[人攫い能力] 襲撃タイプ：<a href="sub_role.php#psycho_infected">洗脳者</a>付加 / 成功率低下：1/2</h4>
+<h4>[身代わり能力] 洗脳者</h4>
+<pre>
+鬼系の一種で、勝利条件は「自分自身の生存 + 村人陣営以外の勝利」。
+<a href="#ogre_do_spec">人攫い</a>の効果は<a href="sub_role.php#psycho_infected">洗脳者</a>の付加で、村にいる<a href="sub_role.php#psycho_infected">洗脳者</a>が誰か知ることができる。
+対象が<a href="vampire.php">吸血鬼陣営</a> (<a href="mania.php#unknown_mania_group">鵺系</a>など、<a href="mania.php">神話マニア陣営</a>も含む) だった場合、人攫いは無効。
+他の鬼と違い、<a href="wolf.php#wolf_group">人狼</a>襲撃を自力では無効化できないが、<a href="sub_role.php#psycho_infected">洗脳者</a>が生きていれば
+身代わりにすることができる。
+</pre>
+<ol>
+  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+  <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
+  <li>本人は身代わりが発生しても分からない。</li>
+  <li>人狼に遭遇した<a href="human.php#escaper">逃亡者</a>を身代わりにすることはできない。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sacrifice">身代わり能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+鬼系最上位種で、<a href="vampire.php">吸血鬼陣営</a>の支援がテーマです。吸血能力は伝承に由来します。
+自力で身代わりを確保できる<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>相当で、非常に高い生存力を持ちます。
+</pre>
 
 <h2><a id="yaksa_group">夜叉系</a></h2>
 <p>
@@ -207,10 +235,11 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#incubus_ogre">般若</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="#incubus_ogre">般若</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#incubus_ogre">般若</a>の対男性バージョンです。
+<a href="#incubus_ogre">般若</a>の対男性バージョンです。「だきにてん」と読みます。
+性別を偽って入村する人もいるので勝利するのは難しいと思われます。
 </pre>
 </body></html>

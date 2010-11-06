@@ -53,6 +53,7 @@ EOF;
   $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
   $builder->set_reverse = $is_reverse;
   $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
+  if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0) $builder->AddOption('db_no', $RQ_ARGS->db_no);
   $builder->Output();
   echo <<<EOF
 </td></tr>
@@ -77,6 +78,7 @@ EOF;
 
     //$max_user_str = $ROOM_IMG->max_user_list[$ROOM->max_user]; //ユーザ総数画像
     $base_url = 'old_log.php?room_no=' . $ROOM->id;
+    if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0) $base_url .= '&db_no=' . $RQ_ARGS->db_no;
     $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
     $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
     $login = $current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :

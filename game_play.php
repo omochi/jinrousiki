@@ -261,9 +261,8 @@ function Write($say, $location, $spend_time, $update = false){
 
   //声の大きさを決定
   $voice = $RQ_ARGS->font_type;
-  $user = $USERS->ByVirtual($SELF->user_no);
-  if($ROOM->IsPlaying() && $user->IsLive()){
-    $ROLES->actor = $user;
+  if($ROOM->IsPlaying() && $SELF->IsLive()){
+    $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
     foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
   }
 

@@ -15,7 +15,53 @@ Ver. 1.4.0
 <a href="#140beta16">β16</a>
 <a href="#140beta17">β17</a>
 <a href="#140beta18">β18</a>
+<a href="#140beta19">β19</a>
 </p>
+
+<h2><a id="140beta19">Ver. 1.4.0 β19</a></h2>
+<h3>game_play.php % 264行目付近 (2010/11/06 (Sat) 04:12)</h3>
+<h4>[before]</h4>
+<pre>
+$user = $USERS->ByVirtual($SELF->user_no);
+if($ROOM->IsPlaying() && $user->IsLive()){
+  $ROLES->actor = $user;
+  foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+if($ROOM->IsPlaying() && $SELF->IsLive()){
+  $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
+  foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
+}
+</pre>
+<h3>include/role/role_class.php % 132行目付近 (2010/11/06 (Sat) 04:12)</h3>
+<h4>[before]</h4>
+<pre>
+function Ignored(){
+  global $ROOM, $ROLES;
+  //return false; //テスト用
+  return ! ($ROOM->IsPlaying() && $ROLES->actor->IsLive());
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+function Ignored(){
+  global $ROOM, $USERS, $ROLES;
+  //return false; //テスト用
+  return ! ($ROOM->IsPlaying() && $USERS->IsVirtualLive($ROLES->actor->user_no));
+}
+</pre>
+<h3>include/game_vote_functions.php % 2591行目付近 (2010/11/06 (Sat) 05:09)</h3>
+<pre>
+× 'ogre' => 'yaksa');
+○ 'yaksa' => 'yaksa');
+</pre>
+<h3>include/game_vote_functions.php % 2619行目付近 (2010/11/06 (Sat) 05:09)</h3>
+<pre>
+× 'ogre' => 'succubus_yaksa');
+○ 'yaksa' => 'succubus_yaksa');
+</pre>
 
 <h2><a id="140beta18">Ver. 1.4.0 β18</a></h2>
 <h3>include/user_class.php % 432行目付近 (2010/10/16 (Sat) 03:18)</h3>

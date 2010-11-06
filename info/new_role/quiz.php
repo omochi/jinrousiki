@@ -30,13 +30,13 @@ OutputRolePageHeader('出題者陣営');
 毒吊りで巻き込まれる対象になりません。
 例えば、出題者・<a href="human.php#poison">埋毒者</a>・<a href="wolf.php#poison_wolf">毒狼</a>の編成で毒能力者を吊った場合は確実に出題者が生き残ります。
 </pre>
-<h4>Ver. 1.4.0 β2〜</h4>
+<h5>Ver. 1.4.0 β2〜</h5>
 <pre>
 毒中りの対象外に変更
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ogre.php#poison_ogre">榊鬼</a>
+<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="sub_role.php#panelist">解答者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

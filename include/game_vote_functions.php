@@ -536,9 +536,10 @@ function AggregateVoteGameStart($force_start = false){
   $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'mind_read',
 			    'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
 			    'mind_presage',  'mind_lonely', 'lovers', 'possessed_exchange',
-			    'challenge_lovers', 'infected', 'copied', 'copied_trick', 'copied_soul',
-			    'copied_teller', 'possessed_target', 'possessed', 'changed_therian',
-			    'bad_status', 'lost_ability', 'protected');
+			    'challenge_lovers', 'infected', 'psycho_infected', 'copied',
+			    'copied_trick', 'copied_soul', 'copied_teller', 'possessed_target',
+			    'possessed', 'changed_therian', 'bad_status', 'lost_ability',
+			    'protected');
 
   //サブ役職テスト用
   $roled_list = array();
@@ -1239,11 +1240,24 @@ function AggregateVoteDay(){
       $user = $USERS->ByRealUname($uname);
       if($user->IsSame($vote_kill_uname) || ! $user->IsRole('divorce_jealousy')) continue;
 
-      //縁切地蔵への投票者から恋人を検出
+      //投票者を検出して恋人に一定確率で恋色迷彩を付加
       foreach(array_keys($vote_target_list, $user->uname) as $voted_uname){
 	$voted_user = $USERS->ByRealUname($voted_uname);
 	if($voted_user->IsLive(true) && $voted_user->IsLovers() && mt_rand(1, 100) <= 30){
 	  $voted_user->AddRole('passion');
+	}
+      }
+    }
+
+    foreach($user_list as $uname){ //-- 祟神の処理 --//
+      $user = $USERS->ByRealUname($uname);
+      if(! $user->IsRole('cursed_brownie')) continue;
+
+      //投票者に一定確率で死の宣告を付加
+      foreach(array_keys($vote_target_list, $user->uname) as $voted_uname){
+	$voted_user = $USERS->ByRealUname($voted_uname);
+	if($voted_user->IsLive(true) && ! $voted_user->IsAvoid() && mt_rand(1, 100) <= 30){
+	  $voted_user->AddDoom(2);
 	}
       }
     }
@@ -1468,14 +1482,16 @@ function AggregateVoteNight($skip = false){
 	if($wolf_target->IsOgre()){ //確率無効タイプ (鬼陣営)
 	  $rate = mt_rand(1, 100); //襲撃成功判定乱数
 	  //$rate = 5; //テスト用
-	  //PrintData($rate, 'Rate [ogre resist]');
 	  if($wolf_target->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre',
 				  'incubus_ogre'))
 	    $resist_rate = 40;
 	  elseif($wolf_target->IsRoleGroup('yaksa'))
 	    $resist_rate = 20;
+	  elseif($wolf_target->IsRole('sacrifice_ogre'))
+	    $resist_rate = 0;
 	  else
 	    $resist_rate = 30;
+	  //PrintData("{$rate} ({$resist_rate})", 'Rate [ogre resist]');
 	  if($rate <= $resist_rate) break;
 	}
       }
@@ -1528,8 +1544,15 @@ function AggregateVoteNight($skip = false){
 	}
 	elseif($wolf_target->IsRole('boss_chiroptera')){ //大蝙蝠 (蝙蝠陣営)
 	  foreach($USERS->rows as $user){
-	    if($user->IsLive(true) && ! $user->IsSame($wolf_target->uname) &&
-	       $user->IsRoleGroup('chiroptera', 'fairy')) $stack[] = $user->user_no;
+	    if(! $user->IsSame($wolf_target->uname) &&
+	       $user->IsLiveRoleGroup('chiroptera', 'fairy')) $stack[] = $user->user_no;
+	  }
+	}
+	elseif($wolf_target->IsRole('sacrifice_ogre')){ //酒呑童子 (洗脳者)
+	  foreach($USERS->rows as $user){
+	    if(! $user->IsSame($wolf_target->uname) && $user->IsLiveRole('psycho_infected', true)){
+	      $stack[] = $user->user_no;
+	    }
 	  }
 	}
 
@@ -1569,6 +1592,9 @@ function AggregateVoteNight($skip = false){
 	      $USERS->GetHandleName($voted_wolf->uname, true);
 	    $ROOM->SystemMessage($str, 'PRESAGE_RESULT');
 	  }
+	}
+	elseif($wolf_target->IsRole('cursed_brownie')){ //祟神の場合は死の宣告が付く
+	  $voted_wolf->AddDoom(2);
 	}
 	elseif($wolf_target->IsRole('miasma_fox')){ //蟲狐の場合は熱病が付く
 	  $voted_wolf->AddDoom(1, 'febris');
@@ -1633,7 +1659,6 @@ function AggregateVoteNight($skip = false){
     }
 
     $vampire_target_list = array(); //吸血対象者リスト
-    PrintData($escaper_target_list);
     foreach($vote_data['VAMPIRE_DO'] as $uname => $target_uname){ //吸血鬼の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1654,7 +1679,6 @@ function AggregateVoteNight($skip = false){
 	$vampire_target_list[$user->uname][] = $escaper_uname;
       }
       $target = $USERS->ByUname($target_uname);
-      if($target->IsDead(true) || $target->GetCamp() == 'vampire') continue; //スキップ判定
 
       //狩人系の護衛判定
       $guard_flag = false;
@@ -1672,13 +1696,16 @@ function AggregateVoteNight($skip = false){
 	$str = $guard_user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
 	$ROOM->SystemMessage($str, 'GUARD_SUCCESS');
       }
-      if(! $guard_flag) $vampire_target_list[$user->uname][] = $target->uname;
+      //吸血成立判定
+      if(! $guard_flag && $target->IsLive(true) && ! $target->IsRole('escaper') &&
+	 $target->GetCamp() != 'vampire'){
+	$vampire_target_list[$user->uname][] = $target->uname;
+      }
     }
 
-    PrintData($vampire_target_list, 'Target [vampire]');
-    foreach($vampire_target_list as $uname => $stack){ //吸血死処理
+    //PrintData($vampire_target_list, 'Target [vampire]');
+    foreach($vampire_target_list as $uname => $stack){ //吸血処理
       $user = $USERS->ByUname($uname);
-      PrintData($stack, $uname);
       foreach($stack as $target_uname){
 	$target = $USERS->ByUname($target_uname);
 	//吸血死判定 (吸血死より罠死の方が優先されるが、本人も罠にかかるので競合しないはず)
@@ -1755,7 +1782,7 @@ function AggregateVoteNight($skip = false){
       if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
-      if($target->IsRole('escaper')) continue; //逃亡者は無効
+      if($target->IsDead(true) || $target->IsRole('escaper')) continue; //無効判定
       if($target->IsRefrectAssassin()){ //反射判定
 	$ogre_target_list[$uname] = true;
 	continue;
@@ -1774,8 +1801,8 @@ function AggregateVoteNight($skip = false){
       if($user->IsRole('poison_ogre')){ //榊鬼
 	$reduce_rate = 1 / 3;
       }
-      elseif($user->IsRole('east_ogre', 'west_ogre', 'north_ogre', 'south_ogre',
-			   'incubus_ogre', 'succubus_yaksa')){ //方角・性別限定タイプ
+      elseif($user->IsRole('east_ogre', 'west_ogre', 'north_ogre', 'south_ogre', 'sacrifice_ogre',
+			   'incubus_ogre', 'succubus_yaksa')){ //方角・性別限定タイプ・酒呑童子
 	$reduce_rate = 1 / 2;
       }
       else{
@@ -1787,6 +1814,9 @@ function AggregateVoteNight($skip = false){
       if($rate <= $ogre_rate){
 	if($user->IsRole('poison_ogre')){ //榊鬼は解答者を追加
 	  if(! $target->IsRole('quiz')) $target->AddRole('panelist');
+	}
+	elseif($user->IsRole('sacrifice_ogre')){ //酒呑童子は洗脳者を追加
+	  if($target->GetCamp() != 'vampire') $target->AddRole('psycho_infected');
 	}
 	else{
 	  $ogre_target_list[$target_uname] = true; //人攫い対象者リストに追加
@@ -2274,9 +2304,10 @@ function AggregateVoteNight($skip = false){
     }
 
     //-- 反魂系レイヤー --//
+    //仙人・西蔵人形・蛇神の蘇生判定
     if($wolf_target->IsDead(true) && ! $wolf_target->IsDummyBoy() && ! $wolf_target->IsLovers() &&
-       $wolf_target->IsActive('revive_pharmacist') && $wolf_target->wolf_killed &&
-       ! $voted_wolf->IsSiriusWolf()){ //仙人の蘇生判定
+       $wolf_target->wolf_killed  && ! $voted_wolf->IsSiriusWolf() && $wolf_target->IsActive() &&
+       $wolf_target->IsRole('revive_pharmacist', 'revive_doll', 'revive_brownie')){
       $wolf_target->Revive();
       $wolf_target->LostAbility();
     }
@@ -2319,6 +2350,14 @@ function AggregateVoteNight($skip = false){
 
     //-- 蘇生系レイヤー --//
     if(! $ROOM->IsOpenCast()){
+      $boost_revive = false; //蛇神生存判定
+      foreach($USERS->rows as $user){
+	if($user->IsLiveRole('revive_brownie')){
+	  $boost_revive = true;
+	  break;
+	}
+      }
+
       foreach($vote_data['POISON_CAT_DO'] as $uname => $target_uname){ //蘇生能力者の処理
 	$user = $USERS->ByUname($uname);
 	if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -2342,6 +2381,7 @@ function AggregateVoteNight($skip = false){
 	  $missfire_rate = 20;
 	}
 	$rate = mt_rand(1, 100); //蘇生判定用乱数
+	if($boost_revive) $revive_rate *= 1.3;
 	if($missfire_rate == 0) $missfire_rate = floor($revive_rate / 5);
 	//$rate = 5; //mt_rand(1, 10); //テスト用
 	//PrintData("{$revive_rate} ({$missfire_rate})", "ReviveInfo: {$user->uname} => {$target->uname}");
@@ -2599,8 +2639,8 @@ function AggregateVoteNight($skip = false){
       'vampire' => 'soul_vampire',
       'chiroptera' => 'boss_chiroptera',
       'fairy' => 'ice_fairy',
-      'ogre' => 'indigo_ogre',
-      'ogre' => 'yaksa');
+      'ogre' => 'sacrifice_ogre',
+      'yaksa' => 'yaksa');
     $dummy_mania_replace_list = array(
       'human' => 'suspect',
       'mage' => 'dummy_mage',
@@ -2627,8 +2667,8 @@ function AggregateVoteNight($skip = false){
       'vampire' => 'vampire',
       'chiroptera' => 'dummy_chiroptera',
       'fairy' => 'mirror_fairy',
-      'ogre' => 'orange_ogre',
-      'ogre' => 'succubus_yaksa');
+      'ogre' => 'incubus_ogre',
+      'yaksa' => 'succubus_yaksa');
     foreach($USERS->rows as $user){
       if($user->IsDummyBoy() || ! $user->IsRole('soul_mania', 'dummy_mania')) continue;
       $target = $USERS->ById(array_shift($user->GetPartner($user->main_role)));
@@ -2657,6 +2697,22 @@ function AggregateVoteNight($skip = false){
   InsertMediumMessage(); //巫女のシステムメッセージ
 
   //-- 司祭系レイヤー --//
+  if($ROOM->date > 1 && $role_flag->attempt_necromancer){ //蟲姫の処理
+    $stack = array();
+    if($wolf_target->IsLive(true)) $stack[$wolf_target->uname] = true;
+    foreach($vote_data['ASSASSIN_DO'] as $uname){ //暗殺者の情報収集
+      if($USERS->ByUname($uname)->IsLive(true)) $stack[$uname] = true;
+    }
+    foreach($vote_data['OGRE_DO'] as $uname){ //暗殺者の情報収集
+      if($USERS->ByUname($uname)->IsLive(true)) $stack[$uname] = true;
+    }
+    //PrintData($stack);
+    foreach(array_keys($stack) as $uname){
+      $str = $USERS->GetHandleName($uname, true) . "\t" . 'attempt';
+      $ROOM->SystemMessage($str, 'ATTEMPT_NECROMANCER_RESULT');
+    }
+  }
+
   $border_priest_list = array();
   $revive_priest_list = array();
   $live_count         = array();

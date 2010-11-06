@@ -51,7 +51,7 @@ OutputRolePageHeader('蝙蝠陣営');
 毒を持った蝙蝠で、毒能力は劣化<a href="human.php#strong_poison">強毒者</a>相当。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h4>Ver. 1.4.0 α22〜</h4>
+<h5>Ver. 1.4.0 α22〜</h5>
 <pre>
 処刑時の毒の発動対象を [人狼系 + 妖狐陣営 + 蝙蝠陣営] に変更。
 </pre>
@@ -74,7 +74,7 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="fox.php#cursed_fox">天狐</a>
+<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -97,14 +97,14 @@ OutputRolePageHeader('蝙蝠陣営');
   <li>他の大蝙蝠が襲撃された場合は自分が身代わりになる可能性がある。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 身代わり君が大蝙蝠になる可能性があります。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -261,7 +261,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 初期設定は「〜さんは昨夜、〜座を見ていたようです」で、全部で26種類。
 メッセージの中身は管理者が設定ファイルで変更可能。
 </pre>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 メッセージの種類を13から26に変更。
 </pre>

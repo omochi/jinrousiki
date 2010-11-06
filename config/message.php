@@ -56,6 +56,7 @@ class Message{
   var $morning_header = '朝日が昇り'; //朝のヘッダー
   var $morning_footer = '日目の朝がやってきました'; //朝のフッター
   var $night = '日が落ち、暗く静かな夜がやってきました'; //夜
+  var $skip_night = '白澤の能力で夜が飛ばされました……'; //白澤の能力発動
   var $dummy_boy = '◆身代わり君　'; //仮想GMモード用ヘッダー
 
   var $wolf_howl = 'アオォーン・・・'; //狼の遠吠え
@@ -70,6 +71,8 @@ class Message{
   //OutoutDeadManType() : 死因の表示
   //var $vote_killed      = 'は投票の結果処刑されました'; //吊り
   var $vote_killed        = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
+  var $blind_vote         = '傘化けの能力で投票結果が隠されました！！'; //傘化けの能力発動
+  var $blind_vote_heaven  = '(傘化けの能力発動中です)'; //傘化けの能力発動 (霊界視点)
   //var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
   var $deadman            = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃

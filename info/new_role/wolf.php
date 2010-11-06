@@ -151,7 +151,7 @@ OutputRolePageHeader('人狼陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#phantom_fox">幻狐</a>
+<a href="ability.php#phantom">占い妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -165,13 +165,13 @@ OutputRolePageHeader('人狼陣営');
 占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼です。
 死亡した占い師の死因は「呪返し」になります。
 </pre>
-<h4>Ver. 1.4.0 β3〜</h4>
+<h5>Ver. 1.4.0 β3〜</h5>
 <pre>
 霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">基本ルール [霊能]</a>対応抜け)
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#voodoo_mad">呪術師</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
+<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -220,7 +220,7 @@ OutputRolePageHeader('人狼陣営');
 毒能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
 毒の対象が襲撃者に固定されます。
 </pre>
-<h4>Ver. 1.4.0 α24〜</h4>
+<h5>Ver. 1.4.0 α24〜</h5>
 <pre>
 襲撃先が毒能力者で、投票者が抗毒狼だった場合はサーバ設定に関わらず
 毒の対象者が投票した抗毒狼に固定されます。
@@ -275,13 +275,13 @@ OutputRolePageHeader('人狼陣営');
   <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)</li>
   <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定されます</li>
 </ol>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 <a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力適用
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#hungry_wolf">餓狼</a>・<a href="#doom_wolf">冥狼</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="#hungry_wolf">餓狼</a>・<a href="#doom_wolf">冥狼</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -609,7 +609,7 @@ C が遺言メッセージを送っても B に憑依している A の遺言窓
 憑依：B[村人](A[憑狼])
 B が遺言メッセージを送ると C の遺言窓が変更される。
 </pre>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 妖狐陣営に付いた<a href="mania.php#unknown_mania">鵺</a>、妖狐陣営に変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>も憑依対象外に変更
 </pre>
@@ -636,7 +636,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   <li>人狼と妖狐以外を襲撃した場合は失敗扱い</li>
   <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定される</li>
 </ol>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 <a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力適用
 </pre>
@@ -662,7 +662,7 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定される。</li>
   <li><a href="fox.php">妖狐陣営</a>にも宣告可能。</li>
 </ol>
-<h4>Ver. 1.4.0 β17〜</h4>
+<h5>Ver. 1.4.0 β17〜</h5>
 <pre>
 「<a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する」制限を解除。
 <a href="fox.php">妖狐陣営</a>にも宣告できる仕様に変更。
@@ -688,20 +688,20 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
-    <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
+    <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
     <li><a href="human.php#fend_guard">忍者</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
     <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
-    <li>身代わり能力 (<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#protected">庇護者</a>) 無効</li>
+    <li><a href="ability.php#sacrifice">身代わり能力</a>無効</li>
     <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
 </ol>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 <a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力無効
 </pre>
-<h4>Ver. 1.4.0 β13〜</h4>
+<h5>Ver. 1.4.0 β13〜</h5>
 <pre>
 <a href="#miasma_mad">土蜘蛛</a>の能力無効
 </pre>
@@ -727,7 +727,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう人狼。
 </pre>
-<h4>Ver. 1.4.0 β7〜</h4>
+<h5>Ver. 1.4.0 β7〜</h5>
 <pre>
 遠吠えの入れ替え発動を昼限定に変更。
 </pre>
@@ -759,7 +759,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 (他の人狼・<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>からも仲間であると分からない)
 人狼同士の会話もできず、発言は他の人からは<a href="#wolf_howl">遠吠え</a>に見える。
 </pre>
-<h4>Ver. 1.4.0 α23〜</h4>
+<h5>Ver. 1.4.0 α23〜</h5>
 <pre>
 独り言が他の人から<a href="#wolf_howl">遠吠え</a>に見える。
 </pre>
@@ -814,7 +814,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 人狼が誰か分かる上位狂人 (<a href="#wolf_partner">仲間表示</a>参照)。
 人狼からは狂信者は分からない。
 </pre>
-<h4>Ver. 1.4.0 α8〜β11</h4>
+<h5>Ver. 1.4.0 α8〜β11</h5>
 <pre>
 通常闇鍋モードでは16人未満では出現しません。
 16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
@@ -860,13 +860,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>妨害が成功したかどうかは本人には分かりません</li>
   <li>呪われている人を選んだ場合は呪返しを受けます</li>
 </ol>
-<h4>Ver. 1.4.0 α21〜</h4>
+<h5>Ver. 1.4.0 α21〜</h5>
 <pre>
 名称を邪魔狂人から月兎に変更。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#anti_voodoo">厄神</a>・<a href="#phantom_wolf">幻狼</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#jammer_fox">月狐</a>
+<a href="human.php#anti_voodoo">厄神</a>・<a href="fox.php#jammer_fox">月狐</a>・<a href="ability.php#phantom">占い妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -887,7 +887,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#anti_voodoo">厄神</a>・<a href="fox.php#voodoo_fox">九尾</a>
+<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#anti_voodoo">厄神</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -913,7 +913,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="dream_eater_mad">獏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
-夜に投票した<a href="summary.php#ability_dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。
+夜に投票した<a href="ability.php#dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる狂人。
 <a href="mania.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡し、<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
 
@@ -925,12 +925,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>夢守人に自分が護衛された</li>
   <li>襲撃先が夢守人に護衛されていた</li>
 </ol>
-<h4>Ver. 1.4.0 β9〜</h4>
+<h5>Ver. 1.4.0 β9〜</h5>
 <pre>
 <a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中ります (襲撃した場合は中らない)。
 <a href="chiroptera.php#fairy_group">妖精系</a>も殺す事ができます
 </pre>
-<h4>Ver. 1.4.0 α23〜</h4>
+<h5>Ver. 1.4.0 α23〜</h5>
 <pre>
 初日の襲撃はできません (<a href="human.php#assassin_group">暗殺者系</a>と挙動を揃えました)。
 </pre>
@@ -956,7 +956,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
   <li>死亡した人狼にも憑依できますが、夜の発言は独り言になり、仲間の人狼と会話できません</li>
 </ol>
-<h4>Ver. 1.4.0 β12〜</h4>
+<h5>Ver. 1.4.0 β12〜</h5>
 <pre>
 <a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できません。
 (<a href="#possessed_wolf">憑狼</a>が憑依できない役職には憑依できません)。
@@ -1086,15 +1086,15 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>自分が処刑された場合は無効</li>
   <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
-<h4>Ver. 1.4.0 β19〜</h4>
+<h5>Ver. 1.4.0 β19〜</h5>
 <pre>
 自分が処刑された場合は無効
 </pre>
-<h4>Ver. 1.4.0 β13〜</h4>
+<h5>Ver. 1.4.0 β13〜</h5>
 <pre>
 <a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。
 </pre>
-<h4>Ver. 1.4.0 β10〜</h4>
+<h5>Ver. 1.4.0 β10〜</h5>
 <pre>
 <a href="human.php#detective_common">探偵</a>には無効。
 </pre>

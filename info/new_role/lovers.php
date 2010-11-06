@@ -27,7 +27,7 @@ OutputRolePageHeader('恋人陣営');
 自分撃ち固定のキューピッド。
 矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
-<h4>Ver. 1.4.0 α22〜</h4>
+<h5>Ver. 1.4.0 α22〜</h5>
 <pre>
 矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
@@ -145,7 +145,7 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

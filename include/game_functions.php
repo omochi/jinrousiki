@@ -114,7 +114,7 @@ function CheckVictory($check_draw = false){
   foreach($USERS->GetLivingUsers(true) as $uname){
     $user = $USERS->ByUname($uname);
     $user->ReparseRoles();
-    $living_id_list[] = $user->user_no;
+    if(! $user->IsRole('psycho_infected')) $living_id_list[] = $user->user_no;
     if($user->IsRole('infected')){
       foreach($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->user_no;
     }
@@ -494,16 +494,17 @@ EOF;
 
 //投票の集計出力
 function OutputVoteList(){
-  global $ROOM;
+  global $MESSAGE, $ROOM;
 
   if(! $ROOM->IsPlaying()) return false; //ゲーム中以外は出力しない
-
   if($ROOM->IsEvent('blind_vote')){ //傘化けの判定
-    if($ROOM->IsOpenData()){ //傘化けの判定
-      echo '(傘化けの能力発動中です)<br>';
+    $str = '<table class="dead-type">'."\n".'<tr class="dead-type-vote"><td>';
+    $footer = "</td></tr>\n</table>\n";
+    if($ROOM->IsOpenData()){ //霊界表示判定
+      echo $str . $MESSAGE->blind_vote_heaven . $footer;
     }
     else{
-      echo '傘化けの能力で投票結果が隠されました！！';
+      echo $str . $MESSAGE->blind_vote . $footer;
       return;
     }
   }
@@ -1042,7 +1043,7 @@ function OutputDeadManType($name, $type){
     break;
 
   case 'REVIVE_FAILED':
-    if(! $ROOM->IsFinished() && ! $SELF->IsDead()) return;
+    if(! $ROOM->IsFinished() && ! ($SELF->IsDead() || $SELF->IsRole('attempt_necromancer'))) return;
     $base  = false;
     $class = 'revive';
     break;

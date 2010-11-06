@@ -15,6 +15,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <ol>
   <li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
   <li>勝利条件は「生存者が自分と自分の<a href="sub_role.php#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
+  <li><a href="sub_role.php#psycho_infected">洗脳者</a>がいる場合は<a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>と扱われます。</li>
   <li>生存者が自分一人だけになった場合も勝利となります。</li>
   <li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
   <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php">神話マニア陣営</a> (例：<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>) がいた場合、<br>
@@ -38,6 +39,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
   <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>の能力は有効です。</li>
   <li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
+  <li><a href="human.php#escaper">逃亡者</a>との関係は<a href="human.php#escaper">逃亡者</a>を参照してください。</li>
   <li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
     死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
   </li>
@@ -47,6 +49,10 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
   </li>
 </ol>
+<h3>Ver. 1.4.0 β20〜</h3>
+<pre>
+<a href="human.php#escaper">逃亡者</a>との関係の仕様を変更。
+</pre>
 
 <h2><a id="vampire_group">吸血鬼系</a></h2>
 <p>
@@ -75,18 +81,18 @@ OutputRolePageHeader('吸血鬼陣営');
 女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h4>Ver. 1.4.0 β19〜</h4>
+<h5>Ver. 1.4.0 β19〜</h5>
 <pre>
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#succubus_vampire">飛縁魔</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="#succubus_vampire">飛縁魔</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#assassin_group">暗殺</a>能力を持った吸血鬼で、童話「青ひげ」がモチーフです。
-勝利条件を考えると暗殺狙いの襲撃はあまり割りに合わないと思われます。
+勝利条件を考えると吸血死狙いの襲撃はあまり割りに合わないと思われます。
 </pre>
 
 <h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
@@ -95,13 +101,13 @@ OutputRolePageHeader('吸血鬼陣営');
 男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h4>Ver. 1.4.0 β19〜</h4>
+<h5>Ver. 1.4.0 β19〜</h5>
 <pre>
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#incubus_vampire">青髭公</a>・<a href="summary.php#ability_sex">性別関連能力者</a>
+<a href="#incubus_vampire">青髭公</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -142,7 +148,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -339,6 +339,8 @@ class User{
     return $this->IsLive(true) &&
       ($this->IsRole('detective_common', 'cursed_fox', 'soul_vampire') ||
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
+       ($this->IsRole('cursed_brownie') && $rate <= 30) ||
+       ($this->IsRole('sacrifice_ogre') && $rate <= 50) ||
        ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre') &&
 	$rate <= 40) ||
        ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
@@ -347,7 +349,8 @@ class User{
 
   //憑依制限判定
   function IsPossessedLimited(){
-    return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist');
+    return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist',
+			 'revive_doll', 'revive_brownie');
   }
 
   //蘇生制限判定

@@ -14,7 +14,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="../" target="_top">&lt;=情報一覧</a>
 <a href="./" target="_top">←メニュー</a>
 <a href="#table">早見表</a>
-<a href="#ability">能力者逆引き</a>
+<a href="ability.php">能力者逆引き</a>
 <a href="#reference">参考リンク</a>
 <a href="#memo">作成予定メモ</a>
 </p>
@@ -66,6 +66,7 @@ Ver. 1.4.0
 <a href="#140beta17">β17</a>
 <a href="#140beta18">β18</a>
 <a href="#140beta19">β19</a>
+<a href="#140beta20">β20</a>
 </p>
 
 <p>
@@ -94,6 +95,7 @@ Ver. 1.4.0
 <a href="#sub_140beta16">β16</a>
 <a href="#sub_140beta17">β17</a>
 <a href="#sub_140beta18">β18</a>
+<a href="#sub_140beta20">β20</a>
 </p>
 
 <table>
@@ -411,7 +413,7 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">村人の心理状態を判定する特殊な占い師。<br>
-    <a href="wolf.php#mad_group">狂人系</a>・夢系・<a href="human.php#suspect">不審者</a>・<a href="human.php#unconscious">無意識</a>を占うと「嘘をついている」と判定される。</td>
+    <a href="wolf.php#mad_group">狂人系</a>・<a href="ability.php#dummy">夢系</a>・<a href="human.php#suspect">不審者</a>・<a href="human.php#unconscious">無意識</a>を占うと「嘘をついている」と判定される。</td>
   <td>Ver. 1.4.0 α18</td>
 </tr>
 <tr>
@@ -1547,7 +1549,7 @@ Ver. 1.4.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">人狼に襲撃されたら次の日の夜を飛ばしてしまう村人。</td>
+  <td class="ability">人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子系の亜種。</td>
   <td>Ver. 1.4.0 β16</td>
 </tr>
 <tr>
@@ -1830,6 +1832,66 @@ Ver. 1.4.0
   <td class="ability">夜叉系の一種で、勝利条件は「自分自身の生存 + 男性の全滅」。
   </td>
   <td>Ver. 1.4.0 β19</td>
+</tr>
+<tr>
+  <td><a href="human.php#attempt_necromancer" id="140beta20">蟲姫</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#necromancer_group">霊能者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">前日の<a href="wolf.php#wolf_group">人狼系</a>・<a href="ability.php#assassin">暗殺能力者</a>に狙われて生き残った人と<a href="ability.php#revive">蘇生</a>に失敗した人が分かる特殊な霊能者。
+  </td>
+  <td>Ver. 1.4.0 β20</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#sacrifice_ogre">酒呑童子</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 村人陣営以外の勝利」。<br>
+    <a href="ogre.php#ogre_do_spec">人攫い</a>の効果が<a href="sub_role.php#psycho_infected">洗脳者</a>の付加になり、人狼に襲撃されたら<a href="sub_role.php#psycho_infected">洗脳者</a>を身代わりにして生き延びることができる
+。
+  </td>
+  <td>Ver. 1.4.0 β20</td>
+</tr>
+<tr>
+  <td><a href="human.php#cursed_brownie">祟神</a></td>
+  <td>村人<br>(呪返し)</td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票されるか人狼に襲撃されたら<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する、座敷童子系の亜種。<br>
+占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。</td>
+  <td>Ver. 1.4.0 β20</td>
+</tr>
+<tr>
+  <td><a href="human.php#revive_brownie">蛇神</a></td>
+  <td>村人</td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">生きている間、<a href="ability.php#revive">蘇生能力者</a>の成功率を +30% する、座敷童子系の亜種。<br>
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。</td>
+  <td>Ver. 1.4.0 β20</td>
+</tr>
+<tr>
+  <td><a href="human.php#phantom_doll">倫敦人形</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#doll_group">上海人形系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">一度だけ、自分が占われたら占い妨害をしてしまう人形。</td>
+  <td>Ver. 1.4.0 β20</td>
+</tr>
+<tr>
+  <td><a href="human.php#revive_doll">西蔵人形</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#doll_group">上海人形系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する人形。</td>
+  <td>Ver. 1.4.0 β20</td>
 </tr>
 </table>
 
@@ -2368,31 +2430,14 @@ Ver. 1.4.0
     <td class="ability"><a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、庇護者を付加した人が身代わりで死亡する。</td>
     <td>Ver. 1.4.0 β18</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#psycho_infected" id="sub_140beta20">洗脳者</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>×</td>
+    <td class="ability"><a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>相当。</td>
+    <td>Ver. 1.4.0 β20</td>
+  </tr>
 </table>
-
-<h2><a id="ability">能力者逆引き</a></h2>
-<p>
-<a href="#ability_dummy">夢能力者</a>
-<a href="#ability_poison">毒能力者</a>
-<a href="#ability_revive">蘇生能力者</a>
-<a href="#ability_sex">性別関連能力者</a>
-<p>
-<h3><a id="ability_dummy">夢能力者</a></h3>
-<pre>
-<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
-</pre>
-<h3><a id="ability_poison">毒能力者</a></h3>
-<pre>
-<a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者系</a>・<a href="human.php#poison_cat">猫又</a>・<a href="human.php#poison_jealousy">毒橋姫</a>・<a href="human.php#poison_doll">鈴蘭人形</a>・<a href="wolf.php#poison_wolf">毒狼</a>・<a href="fox.php#poison_fox">管狐</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>
-</pre>
-<h3><a id="ability_revive">蘇生能力者</a></h3>
-<pre>
-<a href="human.php#revive_medium">風祝</a>・<a href="human.php#revive_priest">天人</a>・<a href="human.php#poison_cat_group">猫又系</a>・<a href="fox.php#revive_fox">仙狐</a>
-</pre>
-<h3><a id="ability_sex">性別関連能力者</a></h3>
-<pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>
-</pre>
 
 <h2><a id="reference">参考リンク</a></h2>
 <pre>
@@ -2431,11 +2476,7 @@ Ver. 1.4.0
 <pre>
 ○泥棒 (レス 13)
 
-○祟神 / ミシャグジさま (レス 19 / 33)
-
 ○宣教師 (レス 86)
-
-○蟲師 (レス 68)
 </pre>
 
 <h3>村編成案</h3>

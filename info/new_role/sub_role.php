@@ -179,7 +179,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -221,7 +221,7 @@ OutputRolePageHeader('サブ役職');
 発言時に一部のキーワードが入れ替えられてしまいます。
 例：人⇔狼、白⇔黒、○⇔●
 </pre>
-<h4>Ver. 1.4.0 α14〜</h4>
+<h5>Ver. 1.4.0 α14〜</h5>
 <pre>
 変換対象キーワードが増えました (何が変わるかは自ら試してください)。
 時々変換されないことがあります (たまには真実を語るのです)。
@@ -238,7 +238,7 @@ OutputRolePageHeader('サブ役職');
 <pre>
 発言の一部が空白に入れ替えられてしまいます。
 </pre>
-<h4>Ver. 1.4.0 α17〜</h4>
+<h5>Ver. 1.4.0 α17〜</h5>
 <pre>
 変換率を落とした代わりに文字数が増えると変換率がアップします。
 一定文字数を超えると完全に消えます。
@@ -404,7 +404,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <pre>
 処刑投票数に -1〜+1 の範囲でランダムに補正がかかります (毎回変わります)。
 </pre>
-<h4>Ver. 1.4.0 β7〜</h4>
+<h5>Ver. 1.4.0 β7〜</h5>
 <pre>
 <a href="human.php#elder">長老</a>系と矛盾しないために説明の表現を変えました (能力は変わっていません)。
 </pre>
@@ -452,7 +452,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <pre>
 2 日目の処刑得票数が +4 される代わりに、3 日目以降は -2 されます。
 </pre>
-<h4>Ver. 1.4.0 α14〜</h4>
+<h5>Ver. 1.4.0 α14〜</h5>
 <pre>
 2 日目の補正値を +2 から +4 に変更しました
 </pre>
@@ -465,7 +465,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <pre>
 2 日目の処刑得票数が -4 される代わりに、3日目以降は +2 されます。
 </pre>
-<h4>Ver. 1.4.0 α14〜</h4>
+<h5>Ver. 1.4.0 α14〜</h5>
 <pre>
 2 日目の補正値を -2 から -4 に変更しました
 </pre>
@@ -692,7 +692,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 発言者の名前が見えません (空白に見えます)。
 </pre>
-<h4>Ver. 1.4.0 α16〜</h4>
+<h5>Ver. 1.4.0 α16〜</h5>
 <pre>
 名前の先頭に付いてる◆の色は変化しません。
 ユーザアイコンを見ればある程度推測できます。
@@ -711,11 +711,11 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 発言が一段階小さく見えるようになり、小声が聞き取れなります。
 小声は共有者の囁きに入れ替わります。
 </pre>
-<h4>Ver. 1.4.0 α17〜</h4>
+<h5>Ver. 1.4.0 α17〜</h5>
 <pre>
 小声は空白ではなく、共有者の囁きに入れ替わります。
 </pre>
-<h4>Ver. 1.4.0 α16〜</h4>
+<h5>Ver. 1.4.0 α16〜</h5>
 <pre>
 小声が聞こえないだけではなく、大声→普通、普通→小声になります。
 </pre>
@@ -832,7 +832,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li>死亡した<a href="human.php#mind_scanner">さとり</a>は自分の<a href="#mind_read">サトラレ</a>の発言を見ることができなくなります。</li>
   <li>自分が<a href="human.php#unconscious">無意識</a>の場合は無効化されます。</li>
 </ol>
-<h4>Ver. 1.4.0 β7〜</h4>
+<h5>Ver. 1.4.0 β7〜</h5>
 <pre>
 夜の発言に常時「〜の独り言」が付きます。
 </pre>
@@ -854,7 +854,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li>初日の夜から表示されますが、効力が適用されるのは 2 日目の夜からになります。</li>
   <li>夜の発言に常時「〜の独り言」が付きます。</li>
 </ol>
-<h4>Ver. 1.4.0 β7〜</h4>
+<h5>Ver. 1.4.0 β7〜</h5>
 <pre>
 初日の夜の発言は見えなくなりました。
 夜の発言に常時「〜の独り言」が付きます。
@@ -998,7 +998,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <ol>
   <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
-  <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="human.php#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
   <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
@@ -1007,7 +1007,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 5 日目以降は恋人の相方と同じ人に投票しないとショック死する。
 複数の恋人がいる場合は誰か一人と同じならショック死しない。
 </pre>
-<h4>Ver. 1.4.0 β13〜</h4>
+<h5>Ver. 1.4.0 β13〜</h5>
 <pre>
 <a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効
 </pre>
@@ -1033,7 +1033,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li>交換憑依が発生した二人は死亡しても遺言が表示されません。</li>
   <li>入れ替え前に遺言を残しておくと、入れ替わった後で相方にメッセージを残せる事になります。</li>
 </ol>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 役職名の表示
 </pre>
@@ -1053,6 +1053,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#possessed">憑依</a>
 <a href="#bad_status">悪戯</a>
 <a href="#infected">感染者</a>
+<a href="#psycho_infected">洗脳者</a>
 <a href="#changed_therian">元獣人</a>
 <a href="#copied">元神話マニア</a>
 <a href="#copied_trick">元奇術師</a>
@@ -1078,7 +1079,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1091,7 +1092,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 憑依能力者が誰かに憑依したら付加されます。
 </pre>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 役職名の表示
 </pre>
@@ -1111,7 +1112,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 憑依能力者に憑依されている人に付加されます。
 </pre>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 役職名の表示
 </pre>
@@ -1130,7 +1131,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加されます。
 </pre>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 役職名の表示
 </pre>
@@ -1150,17 +1151,34 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 <a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加されます。
 </pre>
-<h4>Ver. 1.4.0 β15〜</h4>
+<h5>Ver. 1.4.0 β15〜</h5>
 <pre>
 役職名の表示
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="vampire.php">吸血鬼陣営</a>
+<a href="vampire.php">吸血鬼陣営</a>・<a href="#psycho_infected">洗脳者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="vampire.php">吸血鬼陣営</a>の勝敗判定用に実装されたサブ役職です。
+</pre>
+
+<h3><a id="psycho_infected">洗脳者</a> [Ver. 1.4.0 β20〜]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>共通の<a href="#infected">感染者</a>扱いです。
+<a href="vampire.php">吸血鬼陣営</a>と<a href="ogre.php#sacrifice_ogre">酒呑童子</a>は村にいる洗脳者が誰か分かります。
+<a href="ogre.php#sacrifice_ogre">酒呑童子</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃された場合は身代わりで死亡します。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sacrifice">身代わり能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>支援能力者用に実装されたサブ役職です。
 </pre>
 
 <h3><a id="changed_therian">元獣人</a> [Ver. 1.4.0 β15〜]</h3>
@@ -1180,7 +1198,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 コピー後の<a href="mania.php#mania">神話マニア</a>に付加されます。
 </pre>
-<h4>Ver. 1.4.0 β9〜10</h4>
+<h5>Ver. 1.4.0 β9〜10</h5>
 <pre>
 コピー後の<a href="mania.php#trick_mania">奇術師</a>にも付加されます。
 </pre>
@@ -1227,7 +1245,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 発動制限付き能力者が能力を失った場合に付加されます。
 </pre>
-<h4>Ver. 1.4.0 β11〜</h4>
+<h5>Ver. 1.4.0 β11〜</h5>
 <pre>
 役職名の表示
 </pre>

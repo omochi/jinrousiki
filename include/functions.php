@@ -306,7 +306,7 @@ function LineToBR(&$str){
 //パスワード暗号化
 function CryptPassword($raw_password){
   global $SERVER_CONF;
-  return sha1($SERVER_CONF->hash_salt . $raw_password);
+  return sha1($SERVER_CONF->salt . $raw_password);
 }
 
 //-- 出力関連 --//
