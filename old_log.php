@@ -76,7 +76,6 @@ EOF;
   foreach($room_no_list as $room_no){
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
-    //$max_user_str = $ROOM_IMG->max_user_list[$ROOM->max_user]; //ユーザ総数画像
     $base_url = 'old_log.php?room_no=' . $ROOM->id;
     if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0) $base_url .= '&db_no=' . $RQ_ARGS->db_no;
     $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
@@ -85,13 +84,14 @@ EOF;
       '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
     $log_link_str = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
       GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
-    $game_option_str = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
+    $game_option_img = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
+    $max_user_img    = GenerateMaxUserImage($ROOM->max_user);
 
     echo <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">{$ROOM->id}</td>
 <td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} 村</a>
-<td class="upper">{$ROOM->user_count} (最大{$ROOM->max_user})</td>
+<td class="upper">{$ROOM->user_count} {$max_user_img}</td>
 <td class="upper">{$ROOM->date}</td>
 <td class="side">{$VICT_IMG->Generate($ROOM->victory_role)}</td>
 </tr>
@@ -103,7 +103,7 @@ EOF;
 <td class="comment">
 {$login}{$log_link_str}
 </td>
-<td colspan="3">{$game_option_str}</td>
+<td colspan="3">{$game_option_img}</td>
 </tr>
 
 EOF;

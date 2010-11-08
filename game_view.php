@@ -27,7 +27,7 @@ if($ROOM->IsFinished()){
   $INIT_CONF->LoadClass('VICT_MESS');
 }
 else{
-  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
+  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
 }
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード

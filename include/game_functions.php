@@ -301,7 +301,7 @@ function OutputGameOption(){
   extract(FetchAssoc($query, true));
   echo '<table class="time-table"><tr>'."\n" .
     '<td>ゲームオプション：' . GenerateGameOptionImage($game_option, $option_role) .
-    ' 最大' . $max_user . '人</td>'."\n" . '</tr></table>'."\n";
+    GenerateMaxUserImage($max_user) . '</td>'."\n" . '</tr></table>'."\n";
 }
 
 //日付と生存者の人数を出力

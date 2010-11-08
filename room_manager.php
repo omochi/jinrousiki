@@ -429,13 +429,14 @@ function OutputRoomList(){
   $list = FetchAssoc($query);
   foreach($list as $array){
     extract($array);
-    $option_img = GenerateGameOptionImage($game_option, $option_role); //ゲームオプションの画像
-    //$option_img .= '<img src="' . $ROOM_IMG->max_user_list[$max_user] . '">'; //最大人数
+    $status_img = $ROOM_IMG->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
+    $option_img = GenerateGameOptionImage($game_option, $option_role) .
+      GenerateMaxUserImage($max_user);
 
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
-{$ROOM_IMG->Generate($status)}<span>[{$room_no}番地]</span>{$room_name}村<br>
-<div>〜{$room_comment}〜 {$option_img}(最大{$max_user}人)</div>
+{$status_img}<span>[{$room_no}番地]</span>{$room_name}村<br>
+<div>〜{$room_comment}〜 {$option_img}</div>
 </a><br>
 
 EOF;

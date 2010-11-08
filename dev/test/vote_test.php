@@ -260,7 +260,7 @@ $RQ_ARGS->TestItems->test_users[24]->user_no = 24;
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'revive_doll critical_voter';
+$RQ_ARGS->TestItems->test_users[24]->role = 'cursed_brownie critical_voter';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 $RQ_ARGS->TestItems->test_users[24]->icon_filename = '003.gif';
 $RQ_ARGS->TestItems->test_users[24]->color = '#FFD700';
@@ -324,9 +324,9 @@ $RQ_ARGS->TestItems->vote_night = array(
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'frame'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'white'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'black'),
-  #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'land'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'land'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'moon'),
+  #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'moon'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sun'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'blue'),

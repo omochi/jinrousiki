@@ -136,7 +136,7 @@ class RoleMessageList{
     'type' => 'necromancer');
 
   var $attempt_necromancer = array(
-    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#蟲姫#です。前日の夜に^人狼^の襲撃、_暗殺_を免れた人と=蘇生=に失敗した人を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#蟲姫#です。前日の夜に^人狼^の襲撃、_暗殺_を免れた人と=蘇生=に失敗した人を知ることができます。\n　可愛い虫たちが知らせる生死の予兆を感じ取り、命を弄ぶ異能者どもに正しき人の道を悟らせるのです！",
     'type' => 'necromancer', 'delimiter' => array('_' => 'assassin', '=' => 'revive'));
 
   var $yama_necromancer = array(
@@ -301,7 +301,7 @@ class RoleMessageList{
     'delimiter' => array('#' => 'jealousy', '_' => 'lovers', '^' => 'vote', '=' => 'chicken'));
 
   var $divorce_jealousy = array(
-    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#縁切地蔵#です。あなたに^処刑^投票してきた_恋人_を一定確率で=恋色迷彩=にすることができます。",
+    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#縁切地蔵#です。あなたに^処刑^投票してきた_恋人_を一定確率で=恋色迷彩=にすることができます。\n　恋は得てして盲目。その言葉をも惑わし、幸せな時に終焉を。恋の終着を、その目で見届けるのです！",
     'type' => 'jealousy', 'delimiter' => array('=' => 'liar'));
 
   var $doll = array(
@@ -345,7 +345,7 @@ class RoleMessageList{
     'type' => 'cursed_brownie', 'delimiter' => array('_' => 'revive'));
 
   var $cursed_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#祟神#、=呪い=を持っています。また、あなたを襲撃した=人狼=や_処刑_投票してきた人に^死の宣告^を行います。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#祟神#、=呪い=を持っています。また、あなたを襲撃した=人狼=や_処刑_投票してきた人に^死の宣告^を行います。\n　呪われた身を呪うことなく、触れた者に不幸をもたらすその力で、村を襲う悪しき災厄を祟り返してやるのです！",
     'type' => 'brownie', 'delimiter' => array('=' => 'wolf'));
 
   var $wolf = array(
@@ -474,7 +474,7 @@ class RoleMessageList{
     'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $amaze_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。\n　みんなが気になってしょうがない投票結果。それを隠すと…？さぁ、みんなをびっくりさせちゃいましょう！ ",
     'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $agitate_mad = array(
@@ -651,7 +651,7 @@ class RoleMessageList{
     'type' => 'vampire', 'delimiter' => array('#' => 'wolf'));
 
   var $soul_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血姫|です。あなたの|感染者|の役職を知ることができ、#暗殺#を跳ね返すことができます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血姫|です。あなたの|感染者|の役職を知ることができ、#暗殺#を跳ね返すことができます。\n　夜の姫が持ちしは眷属の本質を知る力。村の全てを紐解くその知を以て、夜の楽園を創るのです！ ",
     'type' => 'vampire', 'delimiter' => array('#' => 'assassin'));
 
   var $chiroptera = array(
@@ -747,19 +747,19 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('#' => 'poison', '_' => 'quiz', '=' => 'chicken'));
 
   var $west_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　雨にも負けず、静かに村の為に生き続け、西に生きることに疲れた人がいたら、行って楽にしてあげましょう！",
     'type' => 'east_ogre');
 
   var $east_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　風にも負けず、決して怒らずに村の為に生き続け、東に病気の人がいれば、行ってその感染源を絶ちましょう！",
     'type' => 'ogre', 'delimiter' => array('#' => 'human'));
 
   var $north_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　水の冷たさにも負けず、欲も無く村の為に生き続け、北に喧嘩や訴訟があれば、行って成敗してやりましょう！",
     'type' => 'east_ogre');
 
   var $south_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人#陣営の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　夏の熱さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
     'type' => 'east_ogre');
 
   var $incubus_ogre = array(
@@ -767,7 +767,7 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('#' => 'lovers'));
 
   var $sacrifice_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と_村人_陣営以外の勝利が勝利条件になります。夜に攫った人を^洗脳者^にして\n　#人狼#に襲撃されたときの身代わりにできます。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と_村人_陣営以外の勝利が勝利条件になります。また、夜に攫った人を^洗脳者^にして\n　#人狼#に襲撃されたときの身代わりにできます。杯を酌み交わすために人を攫い、妖どもを率いて百鬼夜行の長となるのです！",
     'type' => 'ogre', 'delimiter' => array('_' => 'human', '^' => 'vampire', '=' => 'chicken'));
 
   var $yaksa = array(
@@ -1331,21 +1331,11 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_yaksa');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
-#$builder->Output('attempt_necromancer');
-#$builder->Output('divorce_jealousy');
-#$builder->Output('phantom_doll');
+$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
-$builder->Output('revive_brownie');
-#$builder->Output('cursed_brownie');
-#$builder->Output('amaze_mad');
+#$builder->Output('revive_brownie');
 #$builder->Output('doom_vampire');
-#$builder->Output('soul_vampire');
 #$builder->Output('poison_ogre');
-#$builder->Output('west_ogre');
-#$builder->Output('east_ogre');
-#$builder->Output('north_ogre');
-#$builder->Output('south_ogre');
 #$builder->Output('incubus_ogre');
-#$builder->Output('sacrifice_ogre');
 #$builder->Output('yaksa');
 #$builder->Output('succubus_yaksa');

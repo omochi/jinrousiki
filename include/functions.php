@@ -455,7 +455,20 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     }
     $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
   }
+  return $str;
+}
 
+//ゲームオプションの画像タグを作成する (最大人数用)
+function GenerateMaxUserImage($number){
+  global $ROOM_CONF, $ROOM_IMG;
+
+  if(in_array($number, $ROOM_CONF->max_user_list) &&
+     file_exists(JINRO_IMG . "/{$ROOM_IMG->path}/max{$number}.{$ROOM_IMG->extension}")){
+    $str = $ROOM_IMG->Generate("max{$number}", "最大{$number}人");
+  }
+  else{
+    $str = "(最大{$number}人)";
+  }
   return $str;
 }
 
