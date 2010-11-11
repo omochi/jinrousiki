@@ -29,7 +29,7 @@ $SELF = $USERS->BySession(); //自分の情報をロード
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
-  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //ゲームオプション表示用
+  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS'); //ゲームオプション表示用
   $ROOM->LoadVote();
 }
 elseif($ROOM->IsFinished()){

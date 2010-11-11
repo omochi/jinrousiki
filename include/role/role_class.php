@@ -132,7 +132,8 @@ class Role{
   function Ignored(){
     global $ROOM, $USERS, $ROLES;
     //return false; //テスト用
-    return ! ($ROOM->IsPlaying() && $USERS->IsVirtualLive($ROLES->actor->user_no));
+    return ! $ROOM->IsPlaying() &&
+      ! ($USERS->IsVirtualLive($ROLES->actor->user_no) || $ROLES->actor->virtual_live);
   }
 
   function IsSameUser($uname){

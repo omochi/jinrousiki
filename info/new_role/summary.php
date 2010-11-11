@@ -1893,6 +1893,15 @@ Ver. 1.4.0
   <td class="ability">人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する人形。</td>
   <td>Ver. 1.4.0 β20</td>
 </tr>
+<tr>
+  <td><a href="chiroptera.php#shadow_fairy">影妖精</a></td>
+  <td><a href="chiroptera.php">蝙蝠</a></td>
+  <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">自分のアイコンと色を悪戯先と同じにする妖精。</td>
+  <td>Ver. 1.4.0 β20</td>
+</tr>
 </table>
 
 <table>

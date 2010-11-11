@@ -220,14 +220,13 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		      'footer' => '',
 		      'disable' => false),
 
-    /*
     'bourbon' => array('name' => 'バーボン鯖',
 		       'url' => 'http://www.freedom.xii.jp/jinro/',
 		       'encode' => 'EUC-JP',
 		       'separator' => '',
 		       'footer' => '',
 		       'disable' => false),
-    */
+
     'nekomata' => array('name' => '猫又鯖',
 			'url' => 'http://jinro.blue-sky-server.com/',
 			'encode' => 'UTF-8',

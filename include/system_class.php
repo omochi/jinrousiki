@@ -250,10 +250,21 @@ class UserIconBase{
 
 //-- 画像管理の基底クラス --//
 class ImageManager{
+  //画像のファイルパス取得
+  function GetPath($name){
+    return JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extension;
+  }
+
+  //画像の存在確認
+  function Exists($name){
+    return file_exists($this->GetPath($name));
+  }
+
+  //画像タグ生成
   function Generate($name, $alt = ''){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
-    $str .= ' src="' . JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extension . '"';
+    $str .= ' src="' . $this->GetPath($name) . '"';
     if($alt != ''){
       EscapeStrings(&$alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
@@ -261,6 +272,7 @@ class ImageManager{
     return $str . '>';
   }
 
+  //画像出力
   function Output($name){
     echo $this->Generate($name) . "<br>\n";
   }
@@ -549,8 +561,8 @@ class RoleData{
     'poison_cat'          => '猫又',
     'revive_cat'          => '仙狸',
     'sacrifice_cat'       => '猫神',
-    'pharmacist'          => '薬師',
     'eclipse_cat'         => '蝕仙狸',
+    'pharmacist'          => '薬師',
     'cure_pharmacist'     => '河童',
     'revive_pharmacist'   => '仙人',
     'assassin'            => '暗殺者',
@@ -673,6 +685,7 @@ class RoleData{
     'grass_fairy'         => '草妖精',
     'light_fairy'         => '光妖精',
     'dark_fairy'          => '闇妖精',
+    'shadow_fairy'        => '影妖精',
     'ice_fairy'           => '氷妖精',
     'mirror_fairy'        => '鏡妖精',
     'ogre'                => '鬼',
@@ -953,6 +966,7 @@ class RoleData{
     'grass_fairy'         => '草精',
     'light_fairy'         => '光精',
     'dark_fairy'          => '闇精',
+    'shadow_fairy'        => '影精',
     'ice_fairy'           => '氷精',
     'mirror_fairy'        => '鏡精',
     'ogre'                => '鬼',

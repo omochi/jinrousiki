@@ -41,8 +41,8 @@ OutputHTMLHeader('Test Tools');
 //ReconstructEstablishTime();
 //ReconstructStartTime();
 //ReconstructFinishTime();
-//SendQuery("OPTIMIZE TABLE talk", true);
-//DeleteIcon(136, 8);
+//OptimizeTable('talk');
+//DeleteUsedIcon(136, 8);
 //SqueezeIcon();
 //ConvertTableEncode('admin_manage');
 //ConvertTableEncode('room');
@@ -75,8 +75,8 @@ function OpenFile($file){
   PrintData($io);
 }
 
-//アイコンを削除する (from: 対象番号 / to: 代替番号)
-function DeleteIcon($from, $to){
+//使用されているアイコンを削除する (from: 対象番号 / to: 代替番号)
+function DeleteUsedIcon($from, $to){
   global $ICON_CONF;
 
   if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = {$to}") < 1){
@@ -87,7 +87,7 @@ function DeleteIcon($from, $to){
      SendQuery("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")){
     $file = FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = {$from}");
     unlink(JINRO_ROOT . '/user_icon/' . $file); //ファイルの存在をチェックしていないので要注意
-    SendQuery("DELETE FROM user_icon WHERE icon_no={$from}");
+    SendQuery("DELETE FROM user_icon WHERE icon_no = {$from}");
     PrintData($to, "Icon Change From {$from}");
     UnlockTable();
   }
@@ -114,7 +114,7 @@ function SqueezeIcon(){
     PrintData($icon, $file_name);
     //break;
   }
-  SendQuery("OPTIMIZE TABLE user_icon", true);
+  OptimizeTable('user_icon');
 }
 
 //村立て時刻再生成関数

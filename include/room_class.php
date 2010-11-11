@@ -175,7 +175,7 @@ class Room{
       $query .= ' AND situation <> ' . ($this->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
 
     SendQuery($query);
-    SendQuery('OPTIMIZE TABLE vote', true);
+    OptimizeTable('vote');
     return true;
   }
 

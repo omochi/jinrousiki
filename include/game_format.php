@@ -13,13 +13,13 @@ class DocumentBuilder{
     if(is_null($this->actor->live) || ! $ROOM->IsOpenCast()){ //観戦モード判定
       foreach(array('blinder', 'earplug') as $role){ //本人視点が変化するタイプ
 	if($ROOM->IsEvent($role) || ($ROOM->IsOption($role) && ! $ROOM->IsFinished())){
-	  $this->actor->live = 'live';
+	  $this->actor->virtual_live = true;
 	  $this->actor->role_list[] = $role;
 	}
       }
       $role = 'deep_sleep'; //爆睡者は処理の位置が違うので個別対応
       if($ROOM->IsOption($role) && ! $ROOM->IsFinished()){
-	$SELF->live = 'live';
+	$SELF->live->virtual_live = true;
 	$SELF->role_list[] = $role;
       }
     }
@@ -144,8 +144,13 @@ EOF;
     return true;
   }
 
-  function EndTalk(){
-    echo $this->cache.'</table>'."\n";
+  function RefreshTalk(){
+    $str = $this->cache.'</table>'."\n";
     $this->cache = '';
+    return $str;
+  }
+
+  function EndTalk(){
+    echo $this->RefreshTalk();
   }
 }

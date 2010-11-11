@@ -42,8 +42,8 @@ function UploadIcon(){
       OutputActionResult('アイコン削除失敗', '削除失敗：アップロードセッションが一致しません');
     }
     unlink($ICON_CONF->path . '/' . $icon_filename);
-    SendQuery('DELETE FROM user_icon' . $query_no);
-    SendQuery('OPTIMIZE TABLE user_icon', true);
+    SendQuery('DELETE FROM user_icon ' . $query_no);
+    OptimizeTable('user_icon');
 
     //DB 接続解除は OutputActionResult() 経由
     $sentence = '削除完了：登録ページに飛びます。<br>'."\n" .

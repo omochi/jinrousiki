@@ -314,8 +314,8 @@ function OutputTimeTable(){
   echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
 }
 
-//プレイヤー一覧出力
-function OutputPlayerList(){
+//プレイヤー一覧生成
+function GeneratePlayerList(){
   global $DEBUG_MODE, $ICON_CONF, $ROOM, $USERS, $SELF;
 
   //PrintData($ROOM->event); //テスト用
@@ -374,11 +374,16 @@ function OutputPlayerList(){
     }
     $str .= $live . '</td>'."\n";
   }
-  echo $str . '</tr></table></div>'."\n";
+  return $str . '</tr></table></div>'."\n";
 }
 
-//勝敗の出力
-function OutputVictory(){
+//プレイヤー一覧出力
+function OutputPlayerList(){
+  echo GeneratePlayerList();
+}
+
+//勝敗結果の生成
+function GenerateVictory(){
   global $VICT_MESS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
@@ -406,7 +411,7 @@ function OutputVictory(){
     $winner = $ROOM->date > 0 ? 'unfinished' : 'none';
     break;
   }
-  echo <<<EOF
+  $str = <<<EOF
 <table class="victory victory-{$class}"><tr>
 <td>{$VICT_MESS->$winner}</td>
 </tr></table>
@@ -415,7 +420,7 @@ EOF;
 
   //-- 個々の勝敗結果 --//
   //勝敗未決定、観戦モード、ログ閲覧モードならスキップ
-  if(is_null($victory) || $ROOM->view_mode || $ROOM->log_mode) return;
+  if(is_null($victory) || $ROOM->view_mode || $ROOM->log_mode) return $str;
 
   $result = 'win';
   $camp = $SELF->GetCamp(true); //所属陣営を取得
@@ -484,7 +489,7 @@ EOF;
   }
   $result = 'self_' . $result;
 
-  echo <<<EOF
+  return $str . <<<EOF
 <table class="victory victory-{$class}"><tr>
 <td>{$VICT_MESS->$result}</td>
 </tr></table>
@@ -492,25 +497,37 @@ EOF;
 EOF;
 }
 
-//投票の集計出力
-function OutputVoteList(){
+//勝敗結果の出力
+function OutputVictory(){
+  echo GenerateVictory();
+}
+
+//投票の集計生成
+function GenerateVoteResult(){
   global $MESSAGE, $ROOM;
 
-  if(! $ROOM->IsPlaying()) return false; //ゲーム中以外は出力しない
+  if(! $ROOM->IsPlaying()) return NULL; //ゲーム中以外は出力しない
+  $str = '';
   if($ROOM->IsEvent('blind_vote')){ //傘化けの判定
-    $str = '<table class="dead-type">'."\n".'<tr class="dead-type-vote"><td>';
+    $str .= '<table class="dead-type">'."\n".'<tr class="dead-type-vote"><td>';
     $footer = "</td></tr>\n</table>\n";
     if($ROOM->IsOpenData()){ //霊界表示判定
-      echo $str . $MESSAGE->blind_vote_heaven . $footer;
+      $str .= $MESSAGE->blind_vote_heaven . $footer;
     }
     else{
-      echo $str . $MESSAGE->blind_vote . $footer;
-      return;
+      return $str . $MESSAGE->blind_vote . $footer;
     }
   }
 
   //昼なら前日、夜ならの今日の集計を表示
-  echo GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
+  return $str . GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
+}
+
+//投票の集計出力
+function OutputVoteList(){
+  $str = GenerateVoteResult();
+  if(is_null($str)) return false;
+  echo $str;
 }
 
 //再投票の時、メッセージを表示
@@ -886,7 +903,7 @@ function OutputAbilityAction(){
       break;
 
     case 'FAIRY_DO':
-      echo $target.$MESSAGE->fairy_do;;
+      echo $target.$MESSAGE->fairy_do;
       break;
 
     case 'MANIA_DO':
@@ -897,21 +914,21 @@ function OutputAbilityAction(){
   }
 }
 
-//死亡者の遺言を出力
-function OutputLastWords(){
+//死亡者の遺言を生成
+function GenerateLastWords(){
   global $MESSAGE, $ROOM;
 
   //ゲーム中以外は出力しない
-  if(! ($ROOM->IsPlaying() || $ROOM->log_mode)) return false;
+  if(! ($ROOM->IsPlaying() || $ROOM->log_mode)) return NULL;
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;
   $query = $ROOM->GetQueryHeader('system_message', 'message') .
     " AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
   $array = FetchArray($query);
-  if(count($array) < 1) return false;
+  if(count($array) < 1) return NULL;
 
-  echo <<<EOF
+  $str = <<<EOF
 <table class="system-lastwords"><tr>
 <td>{$MESSAGE->lastwords}</td>
 </tr></table>
@@ -923,7 +940,7 @@ EOF;
     list($handle_name, $sentence) = explode("\t", $result, 2);
     LineToBR(&$sentence);
 
-    echo <<<EOF
+    $str .= <<<EOF
 <tr>
 <td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
 <td class="lastwords-body">{$sentence}</td>
@@ -931,15 +948,22 @@ EOF;
 
 EOF;
   }
-  echo '</table>'."\n";
+  return $str . '</table>'."\n";
+}
+
+//死亡者の遺言を出力
+function OutputLastWords(){
+  $str = GenerateLastWords();
+  if(is_null($str)) return false;
+  echo $str;
 }
 
 //前の日の 狼が食べた、狐が占われて死亡、投票結果で死亡のメッセージ
-function OutputDeadMan(){
+function GenerateDeadMan(){
   global $ROOM;
 
   //ゲーム中以外は出力しない
-  if(! $ROOM->IsPlaying()) return false;
+  if(! $ROOM->IsPlaying()) return NULL;
 
   $yesterday = $ROOM->date - 1;
 
@@ -977,24 +1001,33 @@ function OutputDeadMan(){
     $type = $type_list->day;
   }
 
+  $str = '';
   foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
-    OutputDeadManType($stack['message'], $stack['type']);
+    $str .= GenerateDeadManType($stack['message'], $stack['type']);
   }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
-  if($ROOM->log_mode) return;
+  if($ROOM->log_mode) return $str;
   $set_date = $yesterday;
-  if($set_date < 2) return;
+  if($set_date < 2) return $str;
   $type = $type_list->{$ROOM->day_night};
 
-  echo '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
+  $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
   foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
-    OutputDeadManType($stack['message'], $stack['type']);
+    $str .= GenerateDeadManType($stack['message'], $stack['type']);
   }
+  return $str;
 }
 
-//死者のタイプ別に死亡メッセージを出力
-function OutputDeadManType($name, $type){
+//前日に死亡メッセージの出力
+function OutputDeadMan(){
+  $str = GenerateDeadMan();
+  if(is_null($str)) return false;
+  echo $str;
+}
+
+//死者のタイプ別に死亡メッセージを生成
+function GenerateDeadManType($name, $type){
   global $MESSAGE, $ROOM, $SELF;
 
   //タイプの解析
@@ -1079,5 +1112,5 @@ function OutputDeadManType($name, $type){
   $str .= is_null($class) ? '<tr>' : '<tr class="dead-type-'.$class.'">';
   $str .= '<td>'.$name.' '.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
   if(isset($reason)) $str .= "</tr>\n<tr><td>(".$name.' '.$MESSAGE->$reason.')</td>';
-  echo $str."</tr>\n</table>\n";
+  return $str."</tr>\n</table>\n";
 }

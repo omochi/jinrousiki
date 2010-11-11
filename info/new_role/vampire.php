@@ -18,7 +18,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li><a href="sub_role.php#psycho_infected">洗脳者</a>がいる場合は<a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>と扱われます。</li>
   <li>生存者が自分一人だけになった場合も勝利となります。</li>
   <li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
-  <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php">神話マニア陣営</a> (例：<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>) がいた場合、<br>
+  <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、<br>
     例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
   </li>
   <li>2日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
@@ -29,7 +29,8 @@ OutputRolePageHeader('吸血鬼陣営');
 </ol>
 <h3>Ver. 1.4.0 β19〜</h3>
 <pre>
-ゲーム終了時に<a href="mania.php">神話マニア陣営</a>がいた場合は、例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。
+ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、
+例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。
 コピー先の勝敗や自己の生存は不問です。
 </pre>
 
@@ -37,8 +38,8 @@ OutputRolePageHeader('吸血鬼陣営');
 <ol>
   <li>襲撃先が<a href="human.php#guard_group">狩人系</a>に護衛されていた場合は失敗し、狩人には「護衛成功」のメッセージが出ます。</li>
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
-  <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>の能力は有効です。</li>
   <li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
+  <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>の能力は有効です。</li>
   <li><a href="human.php#escaper">逃亡者</a>との関係は<a href="human.php#escaper">逃亡者</a>を参照してください。</li>
   <li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
     死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
@@ -129,6 +130,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
+<a href="wolf.php#doom_wolf">冥狼</a>の吸血鬼バージョンです。
 耐性を得た代わりに、<a href="sub_role.php#infected">感染者</a>のキープが難しくなっています。
 </pre>
 
@@ -152,7 +154,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の能力を持った吸血鬼で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
+<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の吸血鬼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
 </pre>
 
 <h3><a id="soul_vampire">吸血姫</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19〜]</h3>

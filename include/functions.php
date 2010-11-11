@@ -150,6 +150,21 @@ function UnlockTable(){
   return SendQuery('UNLOCK TABLES');
 }
 
+//部屋削除
+function DeleteRoom($room_no){
+  $header = 'DELETE FROM ';
+  $footer = ' WHERE room_no = ' . $room_no;
+  foreach(array('room', 'user_entry', 'talk', 'system_message', 'vote') as $name){
+    SendQuery($header . $name . $footer);
+  }
+}
+
+//DB 最適化
+function OptimizeTable($name = NULL){
+  $query = is_null($name) ? 'room, user_entry, talk, system_message, vote' : $name;
+  SendQuery('OPTIMIZE TABLE ' . $query, true);
+}
+
 //-- 日時関連 --//
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
@@ -216,11 +231,9 @@ function EncodePostData(){
 //特殊文字のエスケープ処理
 //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
 function EscapeStrings(&$str, $trim = true){
-  if (is_array($str)) {
+  if(is_array($str)){
     $result = array();
-    foreach($str as $item) {
-      $result[] = EscapeStrings($item);
-    }
+    foreach($str as $item) $result[] = EscapeStrings($item);
     return $result;
   }
   if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
@@ -434,8 +447,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
 
   foreach($display_order_list as $option){
-    if(! $stack->Exists($option)) continue;
-    if($GAME_OPT_MESS->$option == '') continue;
+    if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;
     $footer = '';
     $sentence = $GAME_OPT_MESS->$option;
     if(is_int($CAST_CONF->$option)) $sentence .= '(' . $CAST_CONF->$option . '人〜)';
@@ -462,14 +474,8 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
 function GenerateMaxUserImage($number){
   global $ROOM_CONF, $ROOM_IMG;
 
-  if(in_array($number, $ROOM_CONF->max_user_list) &&
-     file_exists(JINRO_IMG . "/{$ROOM_IMG->path}/max{$number}.{$ROOM_IMG->extension}")){
-    $str = $ROOM_IMG->Generate("max{$number}", "最大{$number}人");
-  }
-  else{
-    $str = "(最大{$number}人)";
-  }
-  return $str;
+  return in_array($number, $ROOM_CONF->max_user_list) && $ROOM_IMG->Exists("max{$number}") ?
+    $ROOM_IMG->Generate("max{$number}", "最大{$number}人") : "(最大{$number}人)";
 }
 
 //共通 HTML ヘッダ生成

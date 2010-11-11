@@ -11,10 +11,6 @@ $room_no = intval($unsafe_room_no);
 if($room_no < 1) OutputActionResult('部屋削除[エラー]', '無効な村番号です。');
 
 $DB_CONF->Connect(); //DB 接続
-SendQuery(sprintf("DELETE FROM room WHERE room_no=%d", $room_no));
-SendQuery(sprintf("DELETE FROM system_message WHERE room_no=%d", $room_no));
-SendQuery(sprintf("DELETE FROM talk WHERE room_no=%d", $room_no));
-SendQuery(sprintf("DELETE FROM user_entry WHERE room_no=%d", $room_no));
-SendQuery(sprintf("DELETE FROM vote WHERE room_no=%d", $room_no));
-SendQuery('OPTIMIZE TABLE room, system_message, talk, user_entry, vote');
+DeleteRoom($room_no);
+OptimizeTable();
 OutputActionResult('部屋削除', $room_no . ' 番地を削除しました。トップページに戻ります。', '../');

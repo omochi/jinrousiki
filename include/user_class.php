@@ -990,6 +990,25 @@ class UserDataSet{
       }
     }
 
+    if($ROOM->IsPlaying()){
+      $stack = array();
+      foreach($this->rows as $user){
+	foreach($user->GetPartner('bad_status', true) as $id => $date){
+	  if($date != $ROOM->date) continue;
+	  $status_user = $this->ByID($id);
+	  if($status_user->IsRole('shadow_fairy')){
+	    $stack[$status_user->user_no] = array('icon'  => $user->icon_filename,
+						  'color' => $user->color);
+	  }
+	}
+      }
+      foreach($stack as $id => $list){
+	$user = $this->ByID($id);
+	$user->color         = $list['color'];
+	$user->icon_filename = $list['icon'];
+      }
+    }
+
     do{ //狢のアイコン入れ替え処理
       if(! is_array($ROOM->event->same_face)) break;
       $target = $this->ById(GetRandom($ROOM->event->same_face));

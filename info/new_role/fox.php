@@ -13,13 +13,14 @@ OutputRolePageHeader('妖狐陣営');
 </p>
 
 <h2><a id="fox_partner">仲間表示</a></h2>
-<pre>
-全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かります。
-<a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示されます (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>みたいなものです)。
+<ol>
+<li>全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かります。</li>
+<li><a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示されます (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>みたいなものです)。<br>
 分けている基準は「<a href="#fox_talk">念話</a>ができるかどうか」です。
-<a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
-</pre>
+</li>
+<li><a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。</li>
+<li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
+</ol>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
@@ -45,13 +46,13 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h2><a id="fox_talk">夜の会話 (念話)</a></h2>
-<pre>
-<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できます。
-他人からはいっさい見えません。
-<a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
-<a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
-</pre>
+<ol>
+<li><a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できます。</li>
+<li>他人からはいっさい見えません。</li>
+<li><a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。</li>
+<li><a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。</li>
+<li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
+</ol>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
@@ -101,7 +102,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3><a id="white_fox">白狐</a> (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
 <h4>[耐性] 人狼襲撃：死亡</h4>
 <pre>
-呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺される妖狐。
+呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する妖狐。
 <a href="#child_fox">子狐</a>との違いは占いができない代わりに他の妖狐と<a href="#fox_talk">念話</a>ができる事。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -137,6 +138,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
 妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#phantom">占い妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -218,6 +223,10 @@ OutputRolePageHeader('妖狐陣営');
 蘇生に関するルールは<a href="human.php#about_revive">基本ルール [蘇生]</a>参照。
 蘇生成功率は 100% で、一度成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -314,7 +323,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h5>Ver. 1.4.0 β7〜</h5>
 <pre>
-遠吠えの入れ替え発動を昼限定に変更しました。
+遠吠えの入れ替え発動を昼限定に変更。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -377,7 +386,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
 子狐系の基本種。占い能力を持つ。
-判定結果は<a href="human.php#mage">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
+判定法則は<a href="human.php#mage">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
 </pre>
 <h5>Ver. 1.4.0 α17〜</h5>
 <pre>

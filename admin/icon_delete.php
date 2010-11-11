@@ -5,16 +5,17 @@ require_once(JINRO_ROOT . '/include/init.php');
 if(! $DEBUG_MODE){
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
+
+extract($_GET, EXTR_PREFIX_ALL, 'unsafe');
+$icon_no = intval($unsafe_icon_no);
+if($icon_no < 1) OutputActionResult('アイコン削除[エラー]', '無効なアイコン番号です。');
+
 $INIT_CONF->LoadClass('ICON_CONF');
-
 $DB_CONF->Connect(); //DB 接続
-$icon_no = (int)$_GET['icon_no'];
-$file = FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = $icon_no");
-
+$file = FetchResult('SELECT icon_filename FROM user_icon WHERE icon_no = ' . $icon_no);
 unlink($ICON_CONF->path . '/' . $file); //ファイルの存在をチェックしていないので要注意
-mysql_query("DELETE FROM user_icon WHERE icon_no = $icon_no");
-mysql_query("OPTIMIZE TABLE user_icon");
-mysql_query('COMMIT'); //一応コミット
+SendQuery('DELETE FROM user_icon ' . $icon_no);
+OptimizeTable('user_icon');
 
 //DB 接続解除は OutputActionResult() 経由
 OutputActionResult('アイコン削除完了',

@@ -447,8 +447,9 @@ class CastConfig extends CastConfigBase{
     'grass_fairy'         =>  2,
     'light_fairy'         =>  1,
     'dark_fairy'          =>  1,
+    'shadow_fairy'        =>  1,
     'ice_fairy'           =>  2,
-    'mirror_fairy'        =>  2,
+    'mirror_fairy'        =>  1,
     'ogre'                =>  2,
     'orange_ogre'         =>  2,
     'indigo_ogre'         =>  2,
@@ -551,7 +552,6 @@ class CastConfig extends CastConfigBase{
 	$duel_fix_list['moon_cupid'] = 1;
       }
       if($user_count >= 25) $duel_fix_list['quiz'] = 1;
-
       $duel_rate_list = array('poison' => 5, 'chain_poison' => 10,
 			      'poison_wolf' => 5, 'triangle_cupid' => 2);
     }

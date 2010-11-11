@@ -474,7 +474,7 @@ class RoleMessageList{
     'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $amaze_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。\n　みんなが気になってしょうがない投票結果。それを隠すと…？さぁ、みんなをびっくりさせちゃいましょう！ ",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。\n　みんなが気になってしょうがない投票結果。それを隠すと…？さぁ、みんなをびっくりさせちゃいましょう！",
     'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $agitate_mad = array(
@@ -498,7 +498,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('_' => 'mage', '^' => 'necromancer'));
 
   var $black_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|黒狐|です。占われても呪殺されませんが、#人狼#判定が出されるうえに、^霊能者^には見抜かれてしまいます。\n　黒き体色は闇にまぎれ、鮮やかなる虚飾の世界を彩る。あなたの話術で狼をだまし、村に夜の帳を下ろすのです。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|黒狐|です。占われても呪殺されませんが、#人狼#判定が出されるうえに、^霊能者^には見抜かれてしまいます。\n　黒き体色は闇にまぎれ、鮮やかなる虚飾の世界を彩る。あなたの話術で#人狼#を騙し、村に夜の帳を下ろすのです。",
     'type' => 'white_fox');
 
   var $gold_fox = array(
@@ -721,6 +721,10 @@ class RoleMessageList{
   var $dark_fairy = array(
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|闇妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を全員_目隠し_にしてしまいます。\n　誰が誰かも分からない、真っ暗闇の中。慌てふためく間抜けな村人たちを、心ゆくまでからかい倒してやりましょう！",
     'type' => 'moon_fairy');
+
+  var $shadow_fairy = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|影妖精|です。夜に村人一人を指定して、その人と同じ顔になることができます。",
+    'type' => 'fairy');
 
   var $ice_fairy = array(
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人を指定して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように|悪戯|して追い払いましょう。",
@@ -1213,6 +1217,7 @@ class RoleMessageList{
   var $result_grass_fairy = array('message' => "さんは|草妖精|でした", 'type' => 'result_fairy');
   var $result_light_fairy = array('message' => "さんは|光妖精|でした", 'type' => 'result_fairy');
   var $result_dark_fairy = array('message' => "さんは|闇妖精|でした", 'type' => 'result_fairy');
+  var $result_shadow_fairy = array('message' => "さんは|影妖精|でした", 'type' => 'result_fairy');
   var $result_ice_fairy = array('message' => "さんは|氷妖精|でした", 'type' => 'result_fairy');
   var $result_mirror_fairy = array('message' => "さんは|鏡妖精|でした", 'type' => 'result_fairy');
   var $result_ogre = array('message' => "さんは|鬼|でした", 'delimiter' => array('|' => 'ogre'));
@@ -1234,6 +1239,7 @@ class RoleMessageList{
   var $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
   var $result_sacrifice_mania = array('message' => "さんは|影武者|でした", 'type' => 'result_mania');
 
+  var $result_failed = array('message' => "さんの占いに失敗しました");
   var $result_mage_failed = array('message' => "さんの鑑定に失敗しました");
   var $result_sex_male = array('message' => "さんは|男性|でした", 'delimiter' => array('|' => 'sex_male'));
   var $result_sex_female = array('message' => "さんは|女性|でした", 'delimiter' => array('|' => 'lovers'));
@@ -1331,10 +1337,11 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_yaksa');
 $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
-$builder->Output('phantom_doll');
+#$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
 #$builder->Output('revive_brownie');
 #$builder->Output('doom_vampire');
+$builder->Output('shadow_fairy');
 #$builder->Output('poison_ogre');
 #$builder->Output('incubus_ogre');
 #$builder->Output('yaksa');
