@@ -39,10 +39,15 @@ class RoleManager{
 				 'perverseness', 'flattery', 'impatience', 'celibacy', 'nervy',
 				 'androphobia', 'gynophobia', 'panelist');
 
-  //特殊勝利判定
-  var $victory_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
-			    'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
-			    'sacrifice_ogre', 'yaksa', 'succubus_yaksa');
+  //特殊毒能力者
+  var $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
+			   'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
+			   'poison_chiroptera', 'poison_ogre');
+
+  //鬼陣営
+  var $ogre_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
+			 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'power_ogre',
+			 'sacrifice_ogre', 'yaksa', 'succubus_yaksa', 'dowser_yaksa');
 
   function RoleManager(){ $this->__construct(); }
   function __construct(){
@@ -51,7 +56,7 @@ class RoleManager{
     $this->loaded->class = array();
   }
 
-  function Load($type){
+  function Load($type, $shift = false){
     $stack = array();
     foreach($this->GetList($type) as $role){
       if(! $this->actor->IsRole($role)) continue;
@@ -59,7 +64,8 @@ class RoleManager{
       $this->LoadFile($role);
       $this->LoadClass($role, 'Role_' . $role);
     }
-    return $this->GetFilter($stack);
+    $filter = $this->GetFilter($stack);
+    return $shift ? array_shift($filter) : $filter;
   }
 
   function LoadFile($name){

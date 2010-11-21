@@ -159,7 +159,7 @@ function OutputEntryUserPage(){
     $female_checked = ' checked=""';
     break;
   }
-  echo <<<HEADER
+  echo <<<EOF
 </head>
 <body>
 <a href="./">←戻る</a><br>
@@ -202,15 +202,15 @@ function OutputEntryUserPage(){
 </td>
 </tr>
 
-HEADER;
+EOF;
 
   if($ROOM->IsOption('wish_role')){
-    echo <<<IMAGE
+    echo <<<EOF
 <tr>
 <td class="role"><img src="img/entry_user/role.gif" alt="役割希望"></td>
 <td colspan="2">
 
-IMAGE;
+EOF;
 
     $wish_role_list = array('none');
     if($ROOM->IsChaosWish()){
@@ -248,23 +248,23 @@ IMAGE;
       }
     }
 
+    echo "<table>\n<tr>";
     $count = 0;
     foreach($wish_role_list as $role){
-      if($count > 0 && $count % 4 == 0) echo '<br>'; //4個ごとに改行
+      if($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
       $count++;
       $alt = ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]) . '→';
-      echo <<<TAG
-<label for="{$role}"><img src="img/entry_user/role_{$role}.gif" alt="{$alt}"><input type="radio" id="{$role}" name="role" value="{$role}"></label>
-
-TAG;
+      echo <<<EOF
+<td><label for="{$role}"><input type="radio" id="{$role}" name="role" value="{$role}"><img src="img/entry_user/role_{$role}.gif" alt="{$alt}"></label></td>
+EOF;
     }
-    echo '</td>';
+    echo "</tr>\n</table>\n</td>";
   }
   else{
     echo '<input type="hidden" name="role" value="none">';
   }
 
-  echo <<<BODY
+  echo <<<EOF
 </tr>
 <tr>
 <td class="submit" colspan="3">
@@ -285,9 +285,9 @@ TAG;
 </td></tr>
 <tr><td colspan="5">
 
-BODY;
+EOF;
   OutputIconList('user_manager');
-  echo <<<FOOTER
+  echo <<<EOF
 </tr></table>
 </fieldset>
 </td></tr>
@@ -295,5 +295,5 @@ BODY;
 </table></div></form>
 </body></html>
 
-FOOTER;
+EOF;
 }

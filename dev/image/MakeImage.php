@@ -79,15 +79,14 @@ class MessageImageBuilder{
   }
 
   //まとめて画像ファイル生成
-  /*
-    foreach($list as $name => $array){
-    #echo "$name : "; print_r($a); echo '<br>';
-    $image = MakeImage($gen, $array);
-    imagegif($image, "./test/{$name}.gif");
-    imagedestroy($image);
-    echo "$name : {$array['message']} <br>";
+  function OutputAll(){
+    foreach($this->list as $name => $list){
+      $image = $this->Generate($name);
+      imagegif($image, "./test/{$name}.gif"); //出力先ディレクトリのパーミッションに注意
+      imagedestroy($image);
+      echo "$name<br>";
     }
-  */
+  }
 }
 
 class RoleMessageList{
@@ -112,12 +111,12 @@ class RoleMessageList{
     'type' => 'mage');
 
   var $psycho_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#精神鑑定士#、心理を図ることができる#占い師#です。_嘘つき_や_夢_を見ている人を探し出して村の混乱を収めるのです！",
-    'type' => 'mage');
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#精神鑑定士#、心理を図ることができる#占い師#です。_嘘つき_、_夢_を見ている人、^鬼^を探し出して村の混乱を収めるのです！",
+    'type' => 'mage', 'delimiter' => array('^' => 'ogre'));
 
   var $sex_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#ひよこ鑑定士#、性別が分かる#占い師#です。特にメリットはありませんが楽しんでください。",
-    'type' => 'mage');
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#ひよこ鑑定士#、性別が分かる#占い師#です。また、=蝙蝠=や^鬼^を見つけることもできます。",
+    'type' => 'psycho_mage', 'delimiter' => array('=' => 'chiroptera'));
 
   var $stargazer_mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占星術師#です。占った人が夜に行動しているかどうかを知ることができます。\n　頭上に輝く星々は全ての夜を知っている。星々の視点からしか見えぬ事を知るのです。",
@@ -156,7 +155,7 @@ class RoleMessageList{
     'type' => 'medium', 'delimiter' => array('^' => 'revive'));
 
   var $priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司祭#です。一定日数おきに現在生きている|村人|陣営の総数を知ることができます。\n　神のお告げで清き村人達の人数を知り、「村人を導くべし」との神のご意志に適うのです！",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司祭#です。一定日数おきに現在生きている|村人|陣営の総数を知ることができます。\n　神のお告げで清き村人達の人数を知り、「村人を導くべし」との神のご意志に適うのです。",
     'type' => 'human', 'delimiter' => array('#' => 'priest'));
 
   var $bishop_priest = array(
@@ -264,7 +263,7 @@ class RoleMessageList{
     'type' => 'assassin', 'delimiter' => array('_' => 'chicken'));
 
   var $reverse_assassin = array(
-    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#反魂師#です。夜に選んだ人が生きていたら#暗殺#し、死んでいたら_蘇生_することができます。\n　あなたの秘術は生死を操る禁忌。夜陰にその力を振るい、村のための舞台を秘密裏に整えるのです！",
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#反魂師#です。夜に選んだ人が生きていたら#暗殺#し、死んでいたら_蘇生_することができます。\n　あなたの秘術は生死を操る禁忌。夜陰にその力を振るい、村のための舞台を秘密裏に整えるのです。",
     'type' => 'assassin', 'delimiter' => array('_' => 'revive'));
 
   var $soul_assassin = array(
@@ -647,7 +646,7 @@ class RoleMessageList{
     'type' => 'vampire', 'delimiter' => array('#' => 'wolf', '=' => 'chicken'));
 
   var $sacrifice_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血公|です。#人狼#に襲撃されても自分の|感染者|を犠牲にして生き延びることができます。\n　重なり合う数多の命を以ってその身を不死と化し、幾千万の夜族を従え夜の王国を造るのです！",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血公|です。#人狼#に襲撃されても自分の|感染者|を犠牲にして生き延びることができます。\n　重なり合う数多の命を以ってその身を不死と化し、幾千万の夜族を従えて夜の王国を造るのです！",
     'type' => 'vampire', 'delimiter' => array('#' => 'wolf'));
 
   var $soul_vampire = array(
@@ -655,7 +654,7 @@ class RoleMessageList{
     'type' => 'vampire', 'delimiter' => array('#' => 'assassin'));
 
   var $chiroptera = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|蝙蝠|です。生き残りましょう。ただそれだけで勝ちになります。\n　勝ち馬に乗り、いずれの存在からも疎まれながらも強く生き抜くのです。",
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|蝙蝠|、生き残れば勝利です。勝ち馬に乗り、いずれの存在からも疎まれながらも強く生き抜くのです。",
     'delimiter' => array('|' => 'chiroptera'));
 
   var $poison_chiroptera = array(
@@ -727,7 +726,7 @@ class RoleMessageList{
     'type' => 'fairy');
 
   var $ice_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人を指定して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように|悪戯|して追い払いましょう。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人を指定して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように|悪戯|して追い払いましょう！",
     'type' => 'fairy', 'delimiter' => array('#' => 'chicken'));
 
   var $mirror_fairy = array(
@@ -770,6 +769,10 @@ class RoleMessageList{
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と#女性#の全滅が勝利条件になります。",
     'type' => 'ogre', 'delimiter' => array('#' => 'lovers'));
 
+  var $power_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|星熊童子|です。あなた自身の生存と村の人口を三分の一以下にすることが勝利条件になります。",
+    'type' => 'ogre');
+
   var $sacrifice_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と_村人_陣営以外の勝利が勝利条件になります。また、夜に攫った人を^洗脳者^にして\n　#人狼#に襲撃されたときの身代わりにできます。杯を酌み交わすために人を攫い、妖どもを率いて百鬼夜行の長となるのです！",
     'type' => 'ogre', 'delimiter' => array('_' => 'human', '^' => 'vampire', '=' => 'chicken'));
@@ -780,6 +783,10 @@ class RoleMessageList{
 
   var $succubus_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。",
+    'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
+
+  var $dowser_yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|毘沙門天|です。あなた自身の生存とあなたよりサブ役職の所持数が多い人を全滅させることが勝利条件になります。",
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   var $mania = array(
@@ -994,6 +1001,8 @@ class RoleMessageList{
 						     '^' => 'poison', ':' => 'vote', '=' => 'chicken'));
 
   var $lost_ability = array('message' => "　あなたは能力を失いました。");
+  var $joker = array('message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先に押し付けることができます。",
+		     'delimiter' => array('|' => 'wolf', '#' => 'vote'));
 
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ",
 			      'delimiter' => array('|' => 'common'));
@@ -1229,9 +1238,11 @@ class RoleMessageList{
   var $result_north_ogre = array('message' => "さんは|水鬼|でした", 'type' => 'result_ogre');
   var $result_south_ogre = array('message' => "さんは|隠行鬼|でした", 'type' => 'result_ogre');
   var $result_incubus_ogre = array('message' => "さんは|般若|でした", 'type' => 'result_ogre');
+  var $result_power_ogre = array('message' => "さんは|星熊童子|でした", 'type' => 'result_ogre');
   var $result_sacrifice_ogre = array('message' => "さんは|酒呑童子|でした", 'type' => 'result_ogre');
   var $result_yaksa = array('message' => "さんは|夜叉|でした", 'type' => 'result_ogre');
   var $result_succubus_yaksa = array('message' => "さんは|荼枳尼天|でした", 'type' => 'result_yaksa');
+  var $result_dowser_yaksa = array('message' => "さんは|毘沙門天|でした", 'type' => 'result_yaksa');
   var $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   var $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
   var $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
@@ -1293,56 +1304,60 @@ class RoleMessageList{
 }
 
 class WishRoleList{
-  var $role_none              = array('message' => "無し→");
-  var $role_human             = array('message' => "村人→");
-  var $role_mage              = array('message' => "占い師→");
-  var $role_necromancer       = array('message' => "霊能者→");
-  var $role_medium            = array('message' => "巫女→");
-  var $role_priest            = array('message' => "司祭→");
-  var $role_guard             = array('message' => "狩人→");
-  var $role_common            = array('message' => "共有者→");
-  var $role_detective_common  = array('message' => "探偵→");
-  var $role_poison            = array('message' => "埋毒者→");
-  var $role_poison_cat        = array('message' => "猫又→");
-  var $role_pharmacist        = array('message' => "薬師→");
-  var $role_assassin          = array('message' => "暗殺者→");
-  var $role_mind_scanner      = array('message' => "さとり→");
-  var $role_jealousy          = array('message' => "橋姫→");
-  var $role_doll              = array('message' => "上海人形→");
-  var $role_brownie           = array('message' => "座敷童子→");
-  var $role_wolf              = array('message' => "人狼→");
-  var $role_boss_wolf         = array('message' => "白狼→");
-  var $role_poison_wolf       = array('message' => "毒狼→");
-  var $role_possessed_wolf    = array('message' => "憑狼→");
-  var $role_sirius_wolf       = array('message' => "天狼→");
-  var $role_mad               = array('message' => "狂人→");
-  var $role_fanatic_mad       = array('message' => "狂信者→");
-  var $role_trap_mad          = array('message' => "罠師→");
-  var $role_fox               = array('message' => "妖狐→");
-  var $role_child_fox         = array('message' => "子狐→");
-  var $role_cupid             = array('message' => "キューピッド→");
-  var $role_angel             = array('message' => "天使→");
-  var $role_mind_cupid        = array('message' => "女神→");
-  var $role_quiz              = array('message' => "出題者→");
-  var $role_vampire           = array('message' => "吸血鬼→");
-  var $role_chiroptera        = array('message' => "蝙蝠→");
-  var $role_fairy             = array('message' => "妖精→");
-  var $role_ogre              = array('message' => "鬼→");
-  var $role_yaksa             = array('message' => "夜叉→");
-  var $role_mania             = array('message' => "神話マニア→");
-  var $role_unknown_mania     = array('message' => "鵺→");
+  var $role_none              = array('message' => "←無し");
+  var $role_human             = array('message' => "←村人");
+  var $role_mage              = array('message' => "←占い師");
+  var $role_necromancer       = array('message' => "←霊能者");
+  var $role_medium            = array('message' => "←巫女");
+  var $role_priest            = array('message' => "←司祭");
+  var $role_guard             = array('message' => "←狩人");
+  var $role_common            = array('message' => "←共有者");
+  var $role_detective_common  = array('message' => "←探偵");
+  var $role_poison            = array('message' => "←埋毒者");
+  var $role_poison_cat        = array('message' => "←猫又");
+  var $role_pharmacist        = array('message' => "←薬師");
+  var $role_assassin          = array('message' => "←暗殺者");
+  var $role_mind_scanner      = array('message' => "←さとり");
+  var $role_jealousy          = array('message' => "←橋姫");
+  var $role_doll              = array('message' => "←上海人形");
+  var $role_brownie           = array('message' => "←座敷童子");
+  var $role_wolf              = array('message' => "←人狼");
+  var $role_boss_wolf         = array('message' => "←白狼");
+  var $role_poison_wolf       = array('message' => "←毒狼");
+  var $role_possessed_wolf    = array('message' => "←憑狼");
+  var $role_sirius_wolf       = array('message' => "←天狼");
+  var $role_mad               = array('message' => "←狂人");
+  var $role_fanatic_mad       = array('message' => "←狂信者");
+  var $role_trap_mad          = array('message' => "←罠師");
+  var $role_fox               = array('message' => "←妖狐");
+  var $role_child_fox         = array('message' => "←子狐");
+  var $role_cupid             = array('message' => "←キューピッド");
+  var $role_angel             = array('message' => "←天使");
+  var $role_mind_cupid        = array('message' => "←女神");
+  var $role_quiz              = array('message' => "←出題者");
+  var $role_vampire           = array('message' => "←吸血鬼");
+  var $role_chiroptera        = array('message' => "←蝙蝠");
+  var $role_fairy             = array('message' => "←妖精");
+  var $role_ogre              = array('message' => "←鬼");
+  var $role_yaksa             = array('message' => "←夜叉");
+  var $role_mania             = array('message' => "←神話マニア");
+  var $role_unknown_mania     = array('message' => "←鵺");
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_yaksa');
 $builder = new MessageImageBuilder('RoleMessageList');
+//$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
 #$builder->Output('revive_brownie');
 #$builder->Output('doom_vampire');
-$builder->Output('shadow_fairy');
+#$builder->Output('shadow_fairy');
 #$builder->Output('poison_ogre');
 #$builder->Output('incubus_ogre');
+$builder->Output('power_ogre');
 #$builder->Output('yaksa');
 #$builder->Output('succubus_yaksa');
+#$builder->Output('dowser_yaksa');
+#$builder->Output('joker');

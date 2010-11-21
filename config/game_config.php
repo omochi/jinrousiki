@@ -24,7 +24,7 @@ class RoomConfig{
   //var $black_list_host = '/localhost.localdomain/'; //入力例
 
   //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
-  var $max_user_list = array(8, 16, 22, 32, 50);
+  var $max_user_list = array(8, 11, 16, 22, 32, 50);
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
   //-- OutputCreateRoom() --//
@@ -121,6 +121,9 @@ class RoomConfig{
 
   var $critical = true; //急所村
   var $default_critical = false;
+
+  var $joker = true; //ババ抜き村
+  var $default_joker = false;
 
   var $detective = true; //探偵村
   var $default_detective = false;

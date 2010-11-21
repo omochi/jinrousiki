@@ -10,7 +10,7 @@ class Role_death_warrant extends Role{
 
   function FilterSuddenDeath(&$reason){
     global $ROLES, $ROOM;
-    if($reason == '' && $ROOM->date == max($ROLES->actor->GetPartner('death_warrant'))){
+    if($reason == '' && $ROOM->date == $ROLES->actor->GetDoomDate('death_warrant')){
       $reason = 'WARRANT';
     }
   }

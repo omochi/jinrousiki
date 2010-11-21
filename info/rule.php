@@ -319,74 +319,62 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->
 <h3>--実際に表示される「自分の役割（と能力の結果）」--</h3>
 <br>
 <table class="role">
-<tr>
-<th>役割</th><th>--　　　　自分の役割(と能力の結果)　　　　--</th>
-</tr>
+<tr><th>役割</th><th>--　　　　自分の役割(と能力の結果)　　　　--</th></tr>
+
+<tr><td>村人</td><?php echo $ROLE_IMG->Generate('human', '村人', true) ?></tr>
 
 <tr>
-<td>村人</td><td><?php echo $ROLE_IMG->Generate('human') ?></td>
-</tr>
-
-<tr>
-<td class="wolf">人狼</td><td><?php $ROLE_IMG->Output('wolf') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('wolf_partner') ?></td><td>人狼一号</td></tr></table>
+<td class="wolf">人狼</td><td><?php echo $ROLE_IMG->Generate('wolf', '人狼') ?>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('wolf_partner', '人狼の仲間一覧', true) ?><td>　人狼一号さん　人狼二号さん　</td></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="mage">占い師</td><td><?php $ROLE_IMG->Output('mage') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>村人一号</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('mage_result') ?></td><td>人狼一号</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
+<td class="mage">占い師</td><td><?php echo $ROLE_IMG->Generate('mage', '占い師') ?>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('mage_result', '占い結果', true) ?><td>村人一号</td><?php echo $ROLE_IMG->Generate('result_human', '村人', true) ?></tr></table>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('mage_result', '占い結果', true) ?><td>人狼一号</td><?php echo $ROLE_IMG->Generate('result_wolf', '人狼', true) ?></tr></table>
 </td>
 </tr>
 
 <tr>
-<td class="necromancer">霊能者</td><td><?php $ROLE_IMG->Output('necromancer') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>村人一号</td><td><?php echo $ROLE_IMG->Generate('result_human') ?></td></tr></table>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('necromancer_result') ?></td><td>人狼一号</td><td><?php echo $ROLE_IMG->Generate('result_wolf') ?></td></tr></table>
+<td class="necromancer">霊能者</td><td><?php echo $ROLE_IMG->Generate('necromancer', '霊能者') ?>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('necromancer_result', '霊能結果', true) ?><td>村人一号</td><?php echo $ROLE_IMG->Generate('result_human', '村人', true) ?></tr></table>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('necromancer_result', '霊能結果', true) ?><td>人狼一号</td><?php echo $ROLE_IMG->Generate('result_wolf', '人狼', true) ?></tr></table>
 </td>
 </tr>
 
+<tr><td class="wolf">狂人</td><?php echo $ROLE_IMG->Generate('mad', '狂人', true) ?></tr>
+
 <tr>
-<td class="wolf">狂人</td><td><?php echo $ROLE_IMG->Generate('mad') ?></td>
+<td class="guard">狩人</td><td><?php echo $ROLE_IMG->Generate('guard', '狩人') ?>
+<table class="view"><tr><td>占い師一号</td><?php echo $ROLE_IMG->Generate('guard_success', '護衛成功', true) ?></tr></table></td>
 </tr>
 
 <tr>
-<td class="guard">狩人</td><td><?php $ROLE_IMG->Output('guard') ?>
-<table class="view"><tr><td>占い師一号</td><td><?php echo $ROLE_IMG->Generate('guard_success') ?></td></tr></table></td>
+<td class="common">共有者</td><td><?php echo $ROLE_IMG->Generate('common', '共有者') ?>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('common_partner', '共有者の仲間一覧', true) ?><td>　共有者一号さん　</td></tr></table></td>
 </tr>
 
 <tr>
-<td class="common">共有者</td><td><?php $ROLE_IMG->Output('common') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('common_partner') ?></td><td>共有者一号</td></tr></table></td>
+<td class="fox">妖狐</td><td><?php echo $ROLE_IMG->Generate('fox', '妖狐') ?>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('fox_targeted', '人狼襲撃', true) ?></tr></table></td>
 </tr>
 
-<tr>
-<td class="fox">妖狐</td><td><?php $ROLE_IMG->Output('fox') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('fox_targeted') ?></td></tr></table></td>
-</tr>
+<tr><td class="poison">埋毒者</td><?php echo $ROLE_IMG->Generate('poison', '埋毒者', true) ?></tr>
 
 <tr>
-<td class="poison">埋毒者</td><td><?php echo $ROLE_IMG->Generate('poison') ?></td>
+<td class="lovers">キューピッド</td><td><?php echo $ROLE_IMG->Generate('cupid', 'キューピッド') ?>
+<table class="view"><tr><?php echo $ROLE_IMG->Generate('cupid_pair', '自分の作った恋人一覧', true) ?><td>　恋人一号さん　恋人二号さん　</td></tr></table></td>
 </tr>
 
-<tr>
-<td class="lovers">キューピッド</td><td><?php $ROLE_IMG->Output('cupid') ?>
-<table class="view"><tr><td><?php echo $ROLE_IMG->Generate('cupid_pair') ?></td><td>恋人一号 恋人二号</td></tr></table></td>
-</tr>
+<tr><td>決定者</td><td>--なし--</td></tr>
 
-<tr>
-<td>決定者</td><td>--なし--</td>
-</tr>
-
-<tr>
-<td>権力者</td><td><?php echo $ROLE_IMG->Generate('authority') ?></td>
-</tr>
+<tr><td>権力者</td><?php echo $ROLE_IMG->Generate('authority', '権力者', true) ?></tr>
 
 <tr>
 <td class="lovers">恋人</td>
-<td><table class="view"><tr><td><?php echo $ROLE_IMG->Generate('partner_header') ?></td><td>恋人一号</td>
-<td><?php echo $ROLE_IMG->Generate('lovers_footer') ?></td></tr></table></td>
+<td><table class="view"><tr><?php echo $ROLE_IMG->Generate('partner_header', '自分の仲間一覧：ヘッダー', true) ?><td>　恋人一号さん　</td>
+<?php echo $ROLE_IMG->Generate('lovers_footer', '自分の恋人一覧：フッター', true) ?></tr></table></td>
 </tr>
 </table>
 <br>

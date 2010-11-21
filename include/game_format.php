@@ -19,7 +19,7 @@ class DocumentBuilder{
       }
       $role = 'deep_sleep'; //爆睡者は処理の位置が違うので個別対応
       if($ROOM->IsOption($role) && ! $ROOM->IsFinished()){
-	$SELF->live->virtual_live = true;
+	$SELF->virtual_live = true;
 	$SELF->role_list[] = $role;
       }
     }

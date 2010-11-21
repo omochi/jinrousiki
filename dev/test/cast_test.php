@@ -25,6 +25,7 @@ $RQ_ARGS->TestItems->test_room['game_option'] .= ' chaos_hyper';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' poison';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' decide';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' detective';
+#$RQ_ARGS->TestItems->test_room['option_role'] .= ' joker';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' sudden_death';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' full_mania';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' replace_human';

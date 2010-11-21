@@ -71,8 +71,7 @@ class Message{
   //OutoutDeadManType() : 死因の表示
   //var $vote_killed      = 'は投票の結果処刑されました'; //吊り
   var $vote_killed        = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
-  var $blind_vote         = '傘化けの能力で投票結果が隠されました！！'; //傘化けの能力発動
-  var $blind_vote_heaven  = '(傘化けの能力発動中です)'; //傘化けの能力発動 (霊界視点)
+  var $blind_vote         = '傘化けの能力で投票結果が隠されました'; //傘化けの能力発動
   //var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
   var $deadman            = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃
@@ -169,6 +168,7 @@ class Message{
   var $constellation_x    = 'は昨夜、竜座を見ていたようです';
   var $constellation_y    = 'は昨夜、鳳凰座を見ていたようです';
   var $constellation_z    = 'は昨夜、南十字座を見ていたようです';
+  var $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合
@@ -270,12 +270,13 @@ class GameOptionMessage{
   var $mind_open             = '白夜村';
   var $blinder               = '宵闇村';
   var $critical              = '急所村';
+  var $joker                 = 'ババ抜き村';
+  var $detective             = '探偵村';
+  var $festival              = 'お祭り村';
   var $replace_human         = '村人置換村';
   var $full_mania            = '神話マニア村';
   var $full_chiroptera       = '蝙蝠村';
   var $full_cupid            = 'キューピッド村';
-  var $detective             = '探偵村';
-  var $festival              = 'お祭り村';
   var $special_role          = '特殊配役モード';
   var $chaos                 = '闇鍋モード';
   var $chaosfull             = '真・闇鍋モード';
@@ -334,10 +335,11 @@ class GameOptionCaptionMessage{
   var $mind_open             = '全員に「公開者」がつきます。';
   var $blinder               = '全員に「目隠し」がつきます。';
   var $critical              = '全員に「会心」「痛恨」がつきます。';
+  var $joker                 = '誰か一人に「ジョーカー」がつきます。';
+  var $festival              = '管理人がカスタムする特殊設定です';
   var $replace_human         = '「村人」が全員特定の役職に入れ替わります';
   var $full_mania            = '「村人」が全員「神話マニア」に入れ替わります';
   var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
-  var $festival              = '管理人がカスタムする特殊設定です';
   var $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   var $topping               = '固定配役に追加する役職セットです';
   var $chaos_not_open_cast   = '通知無し';

@@ -5,6 +5,8 @@
   ・勝利条件：自分自身の生存 + 男性の全滅
 */
 class Role_succubus_yaksa extends Role{
+  var $resist_rate = 20;
+
   function Role_succubus_yaksa(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 

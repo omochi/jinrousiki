@@ -10,6 +10,6 @@ class Role_febris extends Role{
 
   function FilterSuddenDeath(&$reason){
     global $ROLES, $ROOM;
-    if($reason == '' && $ROOM->date == max($ROLES->actor->GetPartner('febris'))) $reason = 'FEBRIS';
+    if($reason == '' && $ROOM->date == $ROLES->actor->GetDoomDate('febris')) $reason = 'FEBRIS';
   }
 }

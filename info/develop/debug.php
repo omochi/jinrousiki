@@ -16,7 +16,40 @@ Ver. 1.4.0
 <a href="#140beta17">β17</a>
 <a href="#140beta18">β18</a>
 <a href="#140beta19">β19</a>
+<a href="#140beta20">β20</a>
 </p>
+
+<h2><a id="140beta20">Ver. 1.4.0 β20</a></h2>
+<h3>include/game_format.php % 22行目付近 (2010/11/15 (Mon) 03:16)</h3>
+<pre>
+× $SELF->live->virtual_live = true;
+○ $SELF->virtual_live = true;
+</pre>
+<h3>include/game_vote_functions.php % 817行目付近 (2010/11/16 (Tue) 05:57)</h3>
+<h4>[before]</h4>
+<pre>
+  //リストにデータを追加
+  $live_uname_list[$user->user_no] = $user->uname;
+  $vote_message_list[$user->uname] = $message_list;
+  $vote_target_list[$user->uname]  = $target->uname;
+  $vote_count_list[$user->uname]   = $voted_number;
+  foreach($ROLES->Load('vote_ability') as $filter) $filter->SetVoteAbility($target->uname);
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+  //リストにデータを追加
+  $live_uname_list[$user->user_no]   = $user->uname;
+  $vote_message_list[$user->user_no] = $message_list;
+  $vote_target_list[$user->uname]    = $target->uname;
+  $vote_count_list[$user->uname]     = $voted_number;
+  foreach($ROLES->Load('vote_ability') as $filter) $filter->SetVoteAbility($target->uname);
+}
+ksort($vote_message_list);
+$stack = array();
+foreach($vote_message_list as $id => $list) $stack[$USERS->ByID($id)->uname] = $list;
+$vote_message_list = $stack;
+</pre>
 
 <h2><a id="140beta19">Ver. 1.4.0 β19</a></h2>
 <h3>game_play.php % 264行目付近 (2010/11/06 (Sat) 04:12)</h3>

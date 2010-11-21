@@ -261,15 +261,17 @@ class ImageManager{
   }
 
   //画像タグ生成
-  function Generate($name, $alt = ''){
+  function Generate($name, $alt = NULL, $table = false){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
     $str .= ' src="' . $this->GetPath($name) . '"';
-    if($alt != ''){
+    if(isset($alt)){
       EscapeStrings(&$alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
     }
-    return $str . '>';
+    $str .= '>';
+    if($table) $str = '<td>' . $str . '</td>';
+    return $str;
   }
 
   //画像出力
@@ -467,40 +469,52 @@ class PageLinkBuilder{
   }
 
   //ページ送り用のリンクタグを作成する
-  function Generate($page, $title = NULL, $force = false){
+  function GenerateTag($page, $title = NULL, $force = false){
     if($page == $this->page->set && ! $force) return '[' . $page . ']';
-    $list = $this->option;
-    array_unshift($list, $this->type . '=' . $page);
     if(is_null($title)) $title = '[' . $page . ']';
-    return $this->url . implode('&', $list) . '">' . $title . '</a>';
+    if($this->file == 'index'){
+      $footer = $page . '.html';
+    }
+    else{
+      $list = $this->option;
+      array_unshift($list, $this->type . '=' . $page);
+      $footer = implode('&', $list);
+    }
+    return $this->url . $footer . '">' . $title . '</a>';
   }
 
-  //ページリンクを出力する
-  function Output(){
+  //ページリンクを生成する
+  function Generate(){
     $url_stack = array('[' . $this->title . ']');
+    if($this->file == 'index') $url_stack[] = '[<a href="index.html">new</a>]';
     if($this->page->start > 1 && $this->page->total > $this->view_page){
-      $url_stack[] = $this->Generate(1, '[1]...');
-      $url_stack[] = $this->Generate($this->page->start - 1, '&lt;&lt;');
+      $url_stack[] = $this->GenerateTag(1, '[1]...');
+      $url_stack[] = $this->GenerateTag($this->page->start - 1, '&lt;&lt;');
     }
 
     for($i = $this->page->start; $i <= $this->page->end; $i++){
-      $url_stack[] = $this->Generate($i);
+      $url_stack[] = $this->GenerateTag($i);
     }
 
     if($this->page->end < $this->page->total){
-      $url_stack[] = $this->Generate($this->page->end + 1, '&gt;&gt;');
-      $url_stack[] = $this->Generate($this->page->total, '...[' . $this->page->total . ']');
+      $url_stack[] = $this->GenerateTag($this->page->end + 1, '&gt;&gt;');
+      $url_stack[] = $this->GenerateTag($this->page->total, '...[' . $this->page->total . ']');
     }
-    $url_stack[] = $this->Generate('all');
+    if($this->file != 'index') $url_stack[] = $this->GenerateTag('all');
 
     if($this->file == 'old_log'){
       $this->AddOption('reverse', $this->set_reverse ? 'off' : 'on');
       $url_stack[] = '[表示順]';
       $url_stack[] = $this->set_reverse ? '新↓古' : '古↓新';
       $name = ($this->set_reverse xor $this->reverse) ? '元に戻す' : '入れ替える';
-      $url_stack[] =  $this->Generate($this->page->set, $name, true);
+      $url_stack[] =  $this->GenerateTag($this->page->set, $name, true);
     }
-    echo $this->header . implode(' ', $url_stack) . $this->footer;
+    return $this->header . implode(' ', $url_stack) . $this->footer;
+  }
+
+  //ページリンクを出力する
+  function Output(){
+    echo $this->Generate();
   }
 }
 
@@ -697,9 +711,11 @@ class RoleData{
     'north_ogre'          => '水鬼',
     'south_ogre'          => '隠行鬼',
     'incubus_ogre'        => '般若',
+    'power_ogre'          => '星熊童子',
     'sacrifice_ogre'      => '酒呑童子',
     'yaksa'               => '夜叉',
     'succubus_yaksa'      => '荼枳尼天',
+    'dowser_yaksa'        => '毘沙門天',
     'mania'               => '神話マニア',
     'trick_mania'         => '奇術師',
     'soul_mania'          => '覚醒者',
@@ -788,7 +804,8 @@ class RoleData{
     'possessed_target'   => '憑依者',
     'possessed'          => '憑依',
     'bad_status'         => '悪戯',
-    'lost_ability'       => '能力喪失');
+    'lost_ability'       => '能力喪失',
+    'joker'              => 'ジョーカー');
 
   //役職の省略名 (過去ログ用)
   var $short_role_list = array(
@@ -863,6 +880,7 @@ class RoleData{
     'poison_jealousy'     => '毒橋',
     'divorce_jealousy'    => '縁切',
     'doll'                => '上海',
+    'friend_doll'         => '仏蘭',
     'phantom_doll'        => '倫敦',
     'poison_doll'         => '鈴蘭',
     'doom_doll'           => '蓬莱',
@@ -978,9 +996,11 @@ class RoleData{
     'north_ogre'          => '水鬼',
     'south_ogre'          => '隠鬼',
     'incubus_ogre'        => '般若',
+    'power_ogre'          => '星熊',
     'sacrifice_ogre'      => '酒呑',
     'yaksa'               => '夜叉',
     'succubus_yaksa'      => '荼',
+    'dowser_yaksa'        => '毘',
     'mania'               => 'マ',
     'trick_mania'         => '奇',
     'soul_mania'          => '覚醒',
@@ -1065,7 +1085,8 @@ class RoleData{
     'possessed_target'    => '憑',
     'possessed'           => '被憑',
     'bad_status'          => '戯',
-    'lost_ability'        => '失');
+    'lost_ability'        => '失',
+    'joker'               => '道化');
 
   //メイン役職のグループリスト (役職 => 所属グループ)
   // このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
@@ -1121,7 +1142,7 @@ class RoleData{
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'whisper_ringing',
 			    'howl_ringing', 'deep_sleep', 'silent', 'mower'),
     'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
-    'chiroptera'   => array('bad_status'),
+    'chiroptera'   => array('joker', 'bad_status'),
     'guard'        => array('protected'),
     'human'        => array('lost_ability'));
 

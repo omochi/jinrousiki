@@ -358,7 +358,7 @@ function CheckSilence(){
 	$ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
 	$ROOM->UpdateTime(); //制限時間リセット
 	$ROOM->DeleteVote(); //投票リセット
-	CheckVictory(); //勝敗チェック
+	if(CheckVictory()) $USERS->ResetJoker(); //勝敗チェック
       }
     }
   }

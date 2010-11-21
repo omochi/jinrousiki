@@ -5,6 +5,8 @@
   ・勝利条件：自分自身の生存 + 人狼系の全滅
 */
 class Role_yaksa extends Role{
+  var $resist_rate = 20;
+
   function Role_yaksa(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 

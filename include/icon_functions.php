@@ -25,7 +25,7 @@ function OutputIconList($base_url = 'icon_view'){
 </form>
 
 HTML;
-    if(0 < $RQ_ARGS->icon_no){
+    if($RQ_ARGS->icon_no > 0){
       $params = $RQ_ARGS->ToArray();
       unset($params['icon_no']);
       echo <<<HTML
@@ -61,27 +61,32 @@ function OutputIconEditForm($icon_no) {
     echo <<<EOF
 <form method="POST" action="icon_edit.php">
 <input type="hidden" name="icon_no" value="{$selected_icon_no}">
-<table>
-<tr><td rowspan="6"><img src="{$location}"></td>
+<table cellpadding="3">
+<tr><td rowspan="6"><img src="{$location}" style="border:3px solid {$selected_color};"></td>
 <td><label>アイコンの名前</label></td>
-<td><input type="text" name="icon_name" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_icon_name}"></td></tr>
+<td>{$selected_icon_name}</td>
+<td><input type="text" name="icon_name" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
 
 <tr><td><label>出典</label></td>
-<td><input type="text" name="appearance" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_appearance}"></td></tr>
+<td>{$selected_appearance}</td>
+<td><input type="text" name="appearance" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
 
 <tr><td><label>カテゴリ</label></td>
-<td><input type="text" name="category" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_category}"></td></tr>
+<td>{$selected_category}</td>
+<td><input type="text" name="category" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
 
 <tr><td><label>アイコンの作者</label></td>
-<td><input type="text" name="author" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_author}"></td></tr>
+<td>{$selected_author}</td>
+<td><input type="text" name="author" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
 
 <tr><td><label>アイコン枠の色</label></td>
-<td><input type="text" name="color" size="10px" maxlength="7" value="{$selected_color}"> (例：#6699CC)</td></tr>
+<td>{$selected_color}</td>
+<td><input type="text" name="color" size="10px" maxlength="7" value=""> (例：#6699CC)</td></tr>
 
-<tr><td><label>編集パスワード</label></td>
+<tr><td colspan="2"><label>編集パスワード</label></td>
 <td><input type="password" name="password" size="20"></td></tr>
 
-<tr><td colspan="2"><input type="submit" value="変更"></td></tr>
+<tr><td colspan="4"><input type="submit" value="変更"></td></tr>
 </table>
 </form>
 

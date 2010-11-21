@@ -99,6 +99,8 @@ function LoversFollowed($sudden_death = false){
 function CheckVictory($check_draw = false){
   global $GAME_CONF, $ROOM, $USERS;
 
+  if($ROOM->test_mode) return false;
+
   //コピー系がいるのでキャッシュを更新するかクエリから引くこと
   $query_count = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0 AND ";
   $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
@@ -472,14 +474,15 @@ EOF;
       }
       //個別判定
       $ROLES->actor = $SELF;
-      $win_flag = array_shift($ROLES->Load('victory'))->DistinguishVictory($victory);
+      $win_flag = $ROLES->Load('ogre', true)->DistinguishVictory($victory);
       break;
 
     default:
       $win_flag = $victory == $camp;
       break;
     }
-    if($win_flag){
+
+    if($win_flag && (! $SELF->IsJoker($ROOM->date) || count($USERS->GetLivingUsers()) == 1)){
       $class = $camp;
     }
     else{
@@ -507,20 +510,10 @@ function GenerateVoteResult(){
   global $MESSAGE, $ROOM;
 
   if(! $ROOM->IsPlaying()) return NULL; //ゲーム中以外は出力しない
-  $str = '';
-  if($ROOM->IsEvent('blind_vote')){ //傘化けの判定
-    $str .= '<table class="dead-type">'."\n".'<tr class="dead-type-vote"><td>';
-    $footer = "</td></tr>\n</table>\n";
-    if($ROOM->IsOpenData()){ //霊界表示判定
-      $str .= $MESSAGE->blind_vote_heaven . $footer;
-    }
-    else{
-      return $str . $MESSAGE->blind_vote . $footer;
-    }
-  }
+  if($ROOM->IsEvent('blind_vote') && ! $ROOM->IsOpenData()) return NULL; //傘化けの判定
 
   //昼なら前日、夜ならの今日の集計を表示
-  return $str . GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
+  return GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
 }
 
 //投票の集計出力
@@ -972,8 +965,9 @@ function GenerateDeadMan(){
 
   //死亡タイプリスト
   $dead_type_list = array(
-    'day' => array('VOTE_KILLED' => true, 'POISON_DEAD_day' => true,
-		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false, 'NOVOTED_day' => true),
+    'day' => array('VOTE_KILLED' => true, 'BLIND_VOTE' => true, 'POISON_DEAD_day' => true,
+		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false, 'NOVOTED_day' => true,
+		   'JOKER_MOVED_day' => true),
 
     'night' => array('WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
 		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
@@ -982,7 +976,8 @@ function GenerateDeadMan(){
 		     'ASSASSIN_KILLED' => true, 'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true,
 		     'POISON_DEAD_night' => true, 'LOVERS_FOLLOWED_night' => true,
 		     'REVIVE_%' => false, 'SACRIFICE' => true, 'FLOWERED_%' => false,
-		     'CONSTELLATION_%' => false, 'NOVOTED_night' => true));
+		     'CONSTELLATION_%' => false, 'NOVOTED_night' => true,
+		     'JOKER_MOVED_night' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
@@ -1052,6 +1047,7 @@ function GenerateDeadManType($name, $type){
     break;
   }
 
+  $name .= ' ';
   $base   = true;
   $class  = NULL;
   $reason = NULL;
@@ -1061,6 +1057,12 @@ function GenerateDeadManType($name, $type){
   $str = '<table class="dead-type">'."\n";
   switch($base_type){
   case 'VOTE_KILLED':
+    $base  = false;
+    $class = 'vote';
+    break;
+
+  case 'BLIND_VOTE':
+    $name  = '';
     $base  = false;
     $class = 'vote';
     break;
@@ -1105,12 +1107,18 @@ function GenerateDeadManType($name, $type){
     $action = strtolower($type);
     break;
 
+  case 'JOKER_MOVED':
+    if(! $open_reason) return;
+    $base  = false;
+    $class = 'fairy';
+    break;
+
   default:
     if($show_reason) $reason = $action;
     break;
   }
   $str .= is_null($class) ? '<tr>' : '<tr class="dead-type-'.$class.'">';
-  $str .= '<td>'.$name.' '.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
-  if(isset($reason)) $str .= "</tr>\n<tr><td>(".$name.' '.$MESSAGE->$reason.')</td>';
+  $str .= '<td>'.$name.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
+  if(isset($reason)) $str .= "</tr>\n<tr><td>(".$name.$MESSAGE->$reason.')</td>';
   return $str."</tr>\n</table>\n";
 }

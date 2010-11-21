@@ -69,10 +69,10 @@ OutputRolePageHeader('村人陣営');
 処刑投票数が +1 される村人。
 </pre>
 <ol>
-  <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正されます<br>
+  <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
     例) <a href="sub_role.php#authority_group">権力者</a>ならさらに +1
   </li>
-  <li><a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定です</li>
+  <li><a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -110,7 +110,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 やる夫人狼のプレイヤーさんがモデルです。
 判定法則が少々複雑ですが、基本的には村人陣営が有利になる結果になります。
-通常の決定者同様、地味ですが勝負所で効いてくる存在になることでしょう。
+<a href="sub_role.php#decide">決定者</a>同様、地味ですが勝負所で効いてくる存在になることでしょう。
 </pre>
 
 <h3><a id="executor">執行者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
@@ -154,18 +154,18 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 遺言を残せない。
 </pre>
 <ol>
-  <li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に直接狙われても無効です (襲撃は失敗扱い)</li>
-  <li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に狙われていたことを自覚できません</li>
-  <li>逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は殺されます</li>
-  <li>逃亡先が<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら自分も殺されます</li>
-  <li>逃亡先が護衛や狐などで<a href="wolf.php#wolf_group">人狼</a>の襲撃が失敗しても殺されます</li>
-  <li>遭遇した<a href="wolf.php#wolf_group">人狼</a>の種類に関係なく殺されます (例：<a href="wolf.php#sex_wolf">雛狼</a>であっても死亡)</li>
-  <li>何らかの理由で<a href="wolf.php#wolf_group">人狼</a>に殺された場合の死因は「人狼に襲撃された」です</li>
-  <li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡します</a>
-  <li><a href="#assassin_group">暗殺者系</a>に狙われても殺されません</li>
-  <li>逃亡先が<a href="vampire.php">吸血鬼</a>だった場合は吸血されます</li>
-  <li>逃亡先が<a href="vampire.php">吸血鬼</a>に襲撃されたら吸血されます</li>
-  <li>逃亡先が護衛などで<a href="vampire.php">吸血鬼</a>の襲撃が失敗しても吸血されます</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に直接狙われても無効 (襲撃は失敗扱い)。</li>
+  <li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に狙われていたことを自覚できない。</li>
+  <li>逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は死亡する。</li>
+  <li>逃亡先が<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら死亡する。</li>
+  <li>逃亡先が護衛や耐性 (例：<a href="fox.php#fox">妖狐</a>) などで<a href="wolf.php#wolf_group">人狼</a>の襲撃が失敗しても死亡する。</li>
+  <li>遭遇した<a href="wolf.php#wolf_group">人狼</a>の種類に関係なく死亡する。</li>
+  <li>何らかの理由で<a href="wolf.php#wolf_group">人狼</a>に殺された場合の死因は「人狼に襲撃された」となる。</li>
+  <li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡する。</a>
+  <li><a href="ability.php#assassin">暗殺</a>は無効。</li>
+  <li>逃亡先が<a href="vampire.php">吸血鬼</a>だった場合は吸血される。</li>
+  <li>逃亡先が<a href="vampire.php">吸血鬼</a>に襲撃されたら吸血される。</li>
+  <li>逃亡先が護衛などで<a href="vampire.php">吸血鬼</a>の襲撃が失敗しても吸血される。</li>
 </ol>
 <h5>Ver. 1.4.0 β20〜</h5>
 <pre>
@@ -344,7 +344,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h3><a id="stargazer_mage">占星術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β12〜]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
-夜の投票能力の有無を判定する特殊な占い師。
+夜の投票能力の有無を判別する特殊な占い師。
 占った夜に、何かしらの投票をした人と<a href="wolf.php#wolf_group">人狼系</a>は「投票能力を持っている」、
 それ以外は「投票能力を持っていない」と判定される。
 </pre>
@@ -363,14 +363,18 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 月兎：無効 / 呪い：解呪</h4>
 <pre>
 対呪い専門の特殊な占い師。
-占った人が呪い持ちや憑依能力者の場合は呪殺し(死亡メッセージは呪返しと同じ)、
+占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し(死亡メッセージは呪返しと同じ)、
 誰かに呪いをかけられていた場合は解呪(呪返しが発動しない)する。
 呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#anti_voodoo">厄神</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 呪い系統の対抗役職です。
-積極的に<a href="ability.php#cursed">呪い所持者</a>や憑依能力者(<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>)を探しに行く場合は
+積極的に<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>を探しに行く場合は
 普通の占い師と同じ感覚でいいですが、<a href="ability.php#voodoo">呪術能力者</a>による呪返しを
 防ぐのが狙いなら、同時に同じ人を占う必要があるので動き方が難しくなります。
 そもそも呪い系がレアなので役に立つのか分かりませんが……
@@ -385,7 +389,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 「村人」と「人狼」が逆に判定される占い師。本人表記は「占い師」。
 呪殺できない代わりに呪返しも受けない。
 「村人」「人狼」以外の判定 (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など) は正しい結果が表示される。
-占い妨害能力 (<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#jammer_mad">月兎</a>など) の影響を受けない。
+<a href="ability.php#phantom">占い妨害能力</a>の影響を受けない。
 </pre>
 <h5>Ver. 1.4.0 β9〜</h5>
 <pre>
@@ -422,7 +426,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 
 <h3><a id="necromancer_rule">基本ルール</a> [霊能]</h3>
 <pre>
-村人が吊らないといけない人外なのに、占いでは人外判定を出せないか
+村人陣営が勝利する為には吊らないといけない人外なのに、占いでは人外判定を出せないか
 何らかの妨害を受ける役職は霊能で分かります (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="fox.php#child_fox">子狐</a>)。
 詳細は個々の役職の霊能結果を確認してください。
 </pre>
@@ -447,7 +451,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <a href="#soul_mage">魂の占い師</a>の霊能者バージョンです。
 占いと違ってメリットが少ないので後回しにしていましたが<a href="#dummy_necromancer">夢枕人</a>とセットで出すことで
 こっちは本人視点、判定に偽りが絶対に無いというアドバンテージが与えられます。
-しかし、「死人に口無し」故に魂の占い師よりもはるかに騙りやすいですね。
+しかし、「死人に口無し」故に<a href="#soul_mage">魂の占い師</a>よりもはるかに騙りやすいですね。
 </pre>
 
 <h3><a id="attempt_necromancer">蟲姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>

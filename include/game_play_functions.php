@@ -517,9 +517,9 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'copied', 'copied_trick', 'copied_soul', 'copied_teller');
 
-  //能力喪失 (舌禍狼、罠師)
-  if($SELF->IsRole('lost_ability')) $ROLE_IMG->Output('lost_ability');
-  $fix_display_list[] = 'lost_ability';
+  $role = 'lost_ability'; //能力喪失 (舌禍狼・罠師ほか)
+  if($SELF->IsRole($role)) $ROLE_IMG->Output($role);
+  $fix_display_list[] = $role;
 
   if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){ //恋人
     foreach($USERS->rows as $user){
@@ -533,71 +533,80 @@ function OutputAbility(){
   }
   $fix_display_list[] = 'lovers';
 
-  if($SELF->IsRole('challenge_lovers')){ //難題
-    if($ROOM->date > 1) $ROLE_IMG->Output('challenge_lovers'); //表示は2日目以降
-  }
-  $fix_display_list[] = 'challenge_lovers';
+  $role = 'challenge_lovers'; //難題 (表示は2日目以降)
+  if($SELF->IsRole($role) && $ROOM->date > 1) $ROLE_IMG->Output($role);
+  $fix_display_list[] = $role;
 
-  if($SELF->IsRole('possessed_exchange')){ //交換憑依
+  $role = 'possessed_exchange'; //交換憑依
+  if($SELF->IsRole($role)){
     do{ //現在の憑依先を表示
-      if(! is_array($stack = $SELF->GetPartner('possessed_exchange'))) break;
+      if(! is_array($stack = $SELF->GetPartner($role))) break;
       if(is_null($target = $USERS->ByID(array_shift($stack))->handle_name)) break;
       $ROOM->date < 3 ?
 	OutputAbilityResult('exchange_header', $target, 'exchange_footer') :
 	OutputAbilityResult('partner_header', $SELF->handle_name, 'possessed_target');
     }while(false);
   }
-  $fix_display_list[] = 'possessed_exchange';
+  $fix_display_list[] = $role;
 
-  if($SELF->IsRole('febris')){ //熱病
-    if(($date = max($SELF->GetPartner('febris'))) == $ROOM->date){
-      OutputAbilityResult('febris_header', $date, 'sudden_death_footer');
-    }
-  }
-  $fix_display_list[] = 'febris';
-
-  if($SELF->IsRole('frostbite')){ //凍傷
-    if(($date = max($SELF->GetPartner('frostbite'))) == $ROOM->date){
-      OutputAbilityResult('frostbite_header', $date, 'frostbite_footer');
-    }
-  }
-  $fix_display_list[] = 'frostbite';
-
-  if($SELF->IsRole('death_warrant')){ //死の宣告
-    if(($date = max($SELF->GetPartner('death_warrant'))) >= $ROOM->date){
-      OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
-    }
-  }
-  $fix_display_list[] = 'death_warrant';
+  $role = 'joker'; //ジョーカー
+  if($SELF->IsJoker($ROOM->date)) $ROLE_IMG->Output($role);
+  $fix_display_list[] = $role;
 
   //ここからは憑依先の役職を表示
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
-  if($virtual_self->IsRole('mind_open')) $ROLE_IMG->Output('mind_open');
-  $fix_display_list[] = 'mind_open';
+  $role = 'febris'; //熱病
+  if($virtual_self->IsRole($role) &&
+     ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
+    OutputAbilityResult('febris_header', $date, 'sudden_death_footer');
+  }
+  $fix_display_list[] = $role;
+
+  $role = 'frostbite'; //凍傷
+  if($virtual_self->IsRole($role) &&
+     ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
+    OutputAbilityResult('frostbite_header', $date, 'frostbite_footer');
+  }
+  $fix_display_list[] = $role;
+
+  $role = 'death_warrant'; //死の宣告
+  if($virtual_self->IsRole($role) &&
+     ($date = $virtual_self->GetDoomDate($role)) >= $ROOM->date){
+    OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
+  }
+  $fix_display_list[] = $role;
+
+  $role = 'mind_open'; //公開者
+  if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
+  $fix_display_list[] = $role;
 
   if($ROOM->date > 1){ //サトラレ系の表示は 2 日目以降
-    if($virtual_self->IsRole('mind_read'))   $ROLE_IMG->Output('mind_read');
-    if($virtual_self->IsRole('mind_evoke'))  $ROLE_IMG->Output('mind_evoke');
-    if($virtual_self->IsRole('mind_lonely')) $ROLE_IMG->Output('mind_lonely');
-    if($virtual_self->IsRole('mind_receiver')){
-      $ROLE_IMG->Output('mind_receiver');
+    foreach(array('mind_read', 'mind_evoke', 'mind_lonely') as $role){ //サトラレ・口寄せ・はぐれ者
+      if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
+    }
+
+    $role = 'mind_receiver'; //受信者
+    if($virtual_self->IsRole($role)){
+      $ROLE_IMG->Output($role);
 
       $stack = array();
-      foreach($virtual_self->GetPartner('mind_receiver', true) as $id){
+      foreach($virtual_self->GetPartner($role, true) as $id){
 	$stack[$id] = $USERS->ById($id)->handle_name;
       }
       ksort($stack);
       OutputPartner($stack, 'mind_scanner_target');
       unset($stack);
     }
-    if($virtual_self->IsRole('mind_friend')){
-      $ROLE_IMG->Output('mind_friend');
+
+    $role = 'mind_friend'; //共鳴者
+    if($virtual_self->IsRole($role)){
+      $ROLE_IMG->Output($role);
 
       $stack = array();
       foreach($USERS->rows as $user){
 	if(! $user->IsSame($virtual_self->uname) &&
-	   $user->IsPartner('mind_friend', $virtual_self->partner_list)){
+	   $user->IsPartner($role, $virtual_self->partner_list)){
 	  $stack[$user->user_no] = $user->handle_name;
 	}
       }
@@ -605,13 +614,15 @@ function OutputAbility(){
       OutputPartner($stack, 'mind_friend_list');
       unset($stack);
     }
-    if($SELF->IsRole('mind_sympathy')){
-      $ROLE_IMG->Output('mind_sympathy');
+
+    $role = 'mind_sympathy'; //共感者
+    if($virtual_self->IsRole($role)){
+      $ROLE_IMG->Output($role);
       if($ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
     }
-    if($SELF->IsRole('mind_presage')){
-      if($ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
-    }
+
+    $role = 'mind_presage'; //受託者
+    if($virtual_self->IsRole($role) && $ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_presage', 'mind_lonely',
 	     'mind_receiver', 'mind_friend', 'mind_sympathy', 'infected', 'psycho_infected',
@@ -631,14 +642,15 @@ function OutputAbility(){
 }
 
 //仲間を表示する
-function OutputPartner($partner_list, $header, $footer = NULL){
+function OutputPartner($list, $header, $footer = NULL){
   global $ROLE_IMG;
 
-  if(count($partner_list) < 1) return false; //仲間がいなければ表示しない
+  if(count($list) < 1) return false; //仲間がいなければ表示しない
+  $list[] = '</td>';
   $str = '<table class="ability-partner"><tr>'."\n" .
-    '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n" .
-    '<td>　' . implode('さん　', $partner_list) . 'さん　</td>'."\n";
-  if($footer) $str .= '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
+    $ROLE_IMG->Generate($header, NULL, true) ."\n" .
+    '<td>　' . implode('さん　', $list) ."\n";
+  if($footer) $str .= $ROLE_IMG->Generate($footer, NULL, true) ."\n";
   echo $str . '</tr></table>'."\n";
 }
 
@@ -869,11 +881,11 @@ function OutputSelfAbilityResult($action){
 function OutputAbilityResult($header, $target, $footer = NULL){
   global $ROLE_IMG;
 
-  echo '<table class="ability-result"><tr>'."\n";
-  if(isset($header)) echo '<td>' . $ROLE_IMG->Generate($header) . '</td>'."\n";
-  if(isset($target)) echo '<td>' . $target . '</td>'."\n";
-  if(isset($footer)) echo '<td>' . $ROLE_IMG->Generate($footer) . '</td>'."\n";
-  echo '</tr></table>'."\n";
+  $str = '<table class="ability-result"><tr>'."\n";
+  if(isset($header)) $str .= $ROLE_IMG->Generate($header, NULL, true) ."\n";
+  if(isset($target)) $str .= '<td>' . $target . '</td>'."\n";
+  if(isset($footer)) $str .= $ROLE_IMG->Generate($footer, NULL, true) ."\n";
+  echo $str . '</tr></table>'."\n";
 }
 
 //夜の未投票メッセージ出力
@@ -883,6 +895,6 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   //投票済みならメッセージを表示しない
   if(! $ROOM->test_mode && CheckSelfVoteNight($situation, $not_situation)) return false;
 
-  $message_str = 'ability_' . $sentence;
-  echo '<span class="ability ' . $class . '">' . $MESSAGE->$message_str . '</span><br>'."\n";
+  $str = 'ability_' . $sentence;
+  echo '<span class="ability ' . $class . '">' . $MESSAGE->$str . '</span><br>'."\n";
 }

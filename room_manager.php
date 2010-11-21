@@ -176,6 +176,7 @@ function CreateRoom(){
     $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
     $check_option_role_list[] = 'critical';
     array_push($check_game_option_list, 'deep_sleep', 'mind_open', 'blinder');
+    $check_option_role_list[] = 'joker';
     if(! $special_role) array_push($check_option_role_list, 'detective', 'replace_human');
     $check_game_option_list[] = 'festival';
   }
@@ -469,7 +470,7 @@ EOF;
   OutputRoomOption($stack, 'role');
 
   $stack = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open',
-		 'blinder', 'critical', 'detective', 'festival',  'replace_human');
+		 'blinder', 'critical', 'joker', 'detective', 'festival',  'replace_human');
   OutputRoomOption($stack, 'role');
 
   OutputRoomOption(array('special_role'));

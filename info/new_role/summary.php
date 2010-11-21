@@ -67,6 +67,7 @@ Ver. 1.4.0
 <a href="#140beta18">β18</a>
 <a href="#140beta19">β19</a>
 <a href="#140beta20">β20</a>
+<a href="#140beta21">β21</a>
 </p>
 
 <p>
@@ -96,6 +97,7 @@ Ver. 1.4.0
 <a href="#sub_140beta17">β17</a>
 <a href="#sub_140beta18">β18</a>
 <a href="#sub_140beta20">β20</a>
+<a href="#sub_140beta21">β21</a>
 </p>
 
 <table>
@@ -485,7 +487,7 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">対呪い専門の特殊な占い師。<br>
-    占った人が呪い持ちか憑依能力者の場合は呪殺し、誰かに呪いをかけられていた場合は解呪して、呪返しの発動をキャンセルする。呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。呪殺の死亡メッセージは「呪返し」と同じ。
+    占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し、誰かに呪いをかけられていた場合は解呪して、呪返しの発動をキャンセルする。呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。呪殺の死亡メッセージは「呪返し」と同じ。
   </td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
@@ -1324,7 +1326,7 @@ Ver. 1.4.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">夜の投票能力の有無を判定する特殊な占い師。</td>
+  <td class="ability">夜の投票能力の有無を判別する特殊な占い師。</td>
   <td>Ver. 1.4.0 β12</td>
 </tr>
 <tr>
@@ -1857,9 +1859,9 @@ Ver. 1.4.0
 </tr>
 <tr>
   <td><a href="human.php#cursed_brownie">祟神</a></td>
-  <td>村人<br>(呪返し)</td>
+  <td><a href="human.php">村人</td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
-  <td>村人</td>
+  <td>村人<br>(呪返し)</td>
   <td>村人</td>
   <td class="ability">処刑投票されるか人狼に襲撃されたら<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する、座敷童子系の亜種。<br>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。</td>
@@ -1867,7 +1869,7 @@ Ver. 1.4.0
 </tr>
 <tr>
   <td><a href="human.php#revive_brownie">蛇神</a></td>
-  <td>村人</td>
+  <td><a href="human.php">村人</td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1901,6 +1903,24 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">自分のアイコンと色を悪戯先と同じにする妖精。</td>
   <td>Ver. 1.4.0 β20</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#sacrifice_ogre" id="140beta21">毘沙門天</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">夜叉系の一種で勝利条件は「自分自身の生存 + 自分よりサブ役職の所持数の多い人の全滅」。</td>
+  <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#power_ogre">星熊童子</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 村の人口を三分の一以下にする」。</td>
+  <td>Ver. 1.4.0 β21</td>
 </tr>
 </table>
 
@@ -2446,6 +2466,13 @@ Ver. 1.4.0
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>相当。</td>
     <td>Ver. 1.4.0 β20</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#joker" id="sub_140beta21">ジョーカー</a></td>
+    <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
+    <td>○</td>
+    <td class="ability">ゲーム終了時に所持している場合、引き分け以外は無条件で敗北扱いになる。昼の処刑投票で移動する。</td>
+    <td>Ver. 1.4.0 β21</td>
+  </tr>
 </table>
 
 <h2><a id="reference">参考リンク</a></h2>
@@ -2470,23 +2497,7 @@ Ver. 1.4.0
 </ol>
 <h3>役職</h3>
 <h4>能力リスト</h4>
-<pre>
-○耐毒者 (村人陣営 / 薬師系？)
-・毒がいっさい効かない村人
-
-○仕事人 (村人陣営 / 暗殺系)
-・村人陣営を殺したら能力を失う (結果として人外を殺した事が自覚できる)
-
-○嫉狐 (妖狐陣営 / 妖狐系？)
-・橋姫能力をもった妖狐
-</pre>
-
 <h4>名称リスト</h4>
-<pre>
-○泥棒 (レス 13)
-
-○宣教師 (レス 86)
-</pre>
 
 <h3>村編成案</h3>
 </body></html>

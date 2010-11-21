@@ -57,7 +57,7 @@ OutputInfoPageHeader('闇鍋モード');
 
 <h3><a id="chaosfull_decide_role_fix">固定出現枠</a></h3>
 <pre>
-初期設定は人狼1・占い師1で、各難易度で個別に設定できます。
+初期設定は「占い師1・人狼1」で、各難易度で個別に設定できます。
 ただし、身代わり君が占い師になる可能性もあるので CO した占い師が真であるとは限りません。
 </pre>
 
@@ -235,7 +235,8 @@ OutputInfoPageHeader('闇鍋モード');
 
 <h4><a href="new_role/mania.php">神話マニア陣営</a></h4>
 <pre>
-<a href="new_role/mania.php#mania_group">神話マニア系</a>：<a href="new_role/mania.php#mania">神話マニア</a>・<a href="new_role/mania.php#unknown_mania">鵺</a>
+<a href="new_role/mania.php#mania_group">神話マニア系</a>：<a href="new_role/mania.php#mania">神話マニア</a>
+<a href="new_role/mania.php#unknown_mania_group">鵺系</a>：<a href="new_role/mania.php#unknown_mania">鵺</a>
 </pre>
 
 <h2><a id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a></h2>

@@ -120,6 +120,11 @@ class User{
     return false;
   }
 
+  //死の宣告系の宣告日を取得
+  function GetDoomDate($role){
+    return max($this->GetPartner($role));
+  }
+
   //現在の仮想的な生死情報
   function IsDeadFlag($strict = false){
     if(! $strict) return NULL;
@@ -341,8 +346,8 @@ class User{
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
        ($this->IsRole('cursed_brownie') && $rate <= 30) ||
        ($this->IsRole('sacrifice_ogre') && $rate <= 50) ||
-       ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre') &&
-	$rate <= 40) ||
+       ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
+		      'power_ogre', 'dowser_yaksa') && $rate <= 40) ||
        ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
        ($this->IsRoleGroup('yaksa') && $rate <= 20));
   }
@@ -364,6 +369,21 @@ class User{
     $stack = array('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words');
     if($save) $stack[] = 'possessed_exchange';
     return $this->IsRole($stack);
+  }
+
+  //ジョーカー所持者判定
+  function IsJoker($date){
+    global $ROOM, $USERS;
+
+    if(! $this->IsRole('joker')) return false;
+    if($ROOM->IsFinished()){
+      if(is_null($this->joker_flag)) $USERS->SetJoker();
+      return $this->joker_flag;
+    }
+    elseif($this->IsDead()) return false;
+
+    if($date == 1 || $ROOM->IsNight()) $date++;
+    return $this->GetDoomDate('joker') == $date;
   }
 
   //所属陣営判別 (ラッパー)
@@ -408,6 +428,23 @@ class User{
     global $ROOM;
     return array_key_exists($this->uname, $ROOM->vote) || $this->IsWolf() ?
       'stargazer_mage_ability' : 'stargazer_mage_nothing';
+  }
+
+  //薬師の毒鑑定
+  function DistinguishPoison(){
+    //非毒能力者・夢毒者
+    if(! $this->IsRoleGroup('poison') || $this->IsRole('dummy_poison')) return 'nothing';
+
+    if($this->IsRole('strong_poison')) return 'strong'; //強毒者
+
+    //潜毒者は 5 日目以降に強毒を持つ
+    if($this->IsRole('incubate_poison')) return $ROOM->date >= 5 ? 'strong' : 'nothing';
+
+    //騎士・誘毒者・連毒者・毒橋姫
+    if($this->IsRole('poison_guard', 'guide_poison', 'chain_poison', 'poison_jealousy')){
+      return 'limited';
+    }
+    return 'poison';
   }
 
   //投票済み判定
@@ -484,7 +521,7 @@ class User{
 
   //役職情報から表示情報を作成する
   function GenerateRoleName($main_only = false){
-    global $ROLE_DATA;
+    global $ROOM, $ROLE_DATA;
 
     $str = $ROLE_DATA->GenerateRoleTag($this->main_role); //メイン役職
     if($main_only) return $str;
@@ -493,7 +530,8 @@ class User{
     foreach($ROLE_DATA->sub_role_group_list as $class => $role_list){
       foreach($role_list as $sub_role){
 	if(! $this->IsRole($sub_role)) continue;
-	$str .= $ROLE_DATA->GenerateRoleTag($sub_role, $class, true);
+	$joker = $sub_role == 'joker' && $this->IsJoker($ROOM->date);
+	$str .= $ROLE_DATA->GenerateRoleTag($sub_role, $joker ? 'wolf' : $class, true);
 	if(++$count >= $role_count) break 2;
       }
     }
@@ -597,6 +635,11 @@ EOF;
     $this->updated['role'] = $role; //キャッシュ本体の更新は行わない
   }
 
+  //役職置換処理
+  function ReplaceRole($target, $replace){
+    $this->ChangeRole(str_replace($target, $replace, $this->GetRole()));
+  }
+
   //役職追加処理
   function AddRole($role){
     $base_role = $this->GetRole();
@@ -614,15 +657,27 @@ EOF;
     $this->ReplaceRole($this->main_role, $this->main_role . '[' . $role . ']');
   }
 
-  //役職置換処理
-  function ReplaceRole($target, $replace){
-    $this->ChangeRole(str_replace($target, $replace, $this->GetRole()));
-  }
-
   //死の宣告処理
   function AddDoom($date, $role = 'death_warrant'){
     global $ROOM;
     $this->AddRole($role . '[' . ($ROOM->date + $date) . ']');
+  }
+
+  //ジョーカーの移動処理
+  function AddJoker($decriment = false){
+    global $ROOM;
+
+    if($decriment){ //一時的に前日に巻戻す
+      $ROOM->date--;
+      $ROOM->day_night = 'night';
+    }
+    $this->AddDoom(1, 'joker');
+    $ROOM->SystemMessage($this->handle_name, 'JOKER_MOVED_' . $ROOM->day_night);
+
+    if($decriment){ //日時を元に戻す
+      $ROOM->date++;
+      $ROOM->day_night = 'day';
+    }
   }
 
   /*
@@ -1017,6 +1072,20 @@ class UserDataSet{
     }while(false);
   }
 
+  //ジョーカーの最終所持者判定
+  function SetJoker(){
+    global $ROOM;
+
+    $stack = array();
+    foreach($this->rows as $user){
+      if(! $user->IsRole('joker')) continue;
+      $stack[$user->user_no] = $user->GetDoomDate('joker');
+      $user->joker_flag = false;
+    }
+    //PrintData($stack);
+    $this->ByID(array_search(max($stack), $stack))->joker_flag = true;
+  }
+
   //役職の出現判定関数 (現在は不使用)
   function IsAppear($role){
     $role_list = func_get_args();
@@ -1122,6 +1191,19 @@ class UserDataSet{
     $sentence = strpos($reason, 'NOVOTED') !== false ? 'sudden_death' : 'vote_sudden_death';
     $ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . $MESSAGE->$sentence);
     return true;
+  }
+
+  //ジョーカーの再配置処理
+  function ResetJoker($decriment = false){
+    global $ROOM;
+
+    $stack = array();
+    foreach($this->rows as $user){
+      if($user->IsDead(true)) continue;
+      if($user->IsJoker($ROOM->date)) return; //現在の所持者が生存していた場合はスキップ
+      $stack[] = $user->user_no;
+    }
+    if(count($stack) > 0) $this->ByID(GetRandom($stack))->AddJoker($decriment);
   }
 
   //保存処理 (実用されていません)
