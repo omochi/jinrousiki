@@ -133,12 +133,18 @@ class RequestUserManager extends RequestBaseIcon{
   function __construct(){
     EncodePostData();
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
-    $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     $this->GetItems('EscapeStrings', 'post.password');
     $this->GetItems('Exists', 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
+    $this->GetItems('IsOn', 'post.login_manually');
     $this->GetIconData();
     EscapeStrings($this->profile, false);
+    if($this->search){
+      $this->GetItems('EscapeStrings', 'post.uname', 'post.handle_name');
+    }
+    else{
+      $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
+    }
 
     if($this->room_no < 1){
       $str = '村番号エラー：村の番号が正常ではありません。<br>'."\n".'<a href="./">←戻る</a>';

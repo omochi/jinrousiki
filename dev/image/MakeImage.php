@@ -1022,7 +1022,7 @@ class RoleMessageList{
 						     '^' => 'poison', ':' => 'vote', '=' => 'chicken'));
 
   var $lost_ability = array('message' => "　あなたは能力を失いました。");
-  var $joker = array('message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先に押し付けることができます。",
+  var $joker = array('message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先が生きていた場合に押し付けることができますが、例外があるので気をつけましょう。",
 		     'delimiter' => array('|' => 'wolf', '#' => 'vote'));
 
   var $common_partner = array('message' => "同じ|共有者|の仲間は以下の人たちです： ",
@@ -1385,7 +1385,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('scarlet_wolf');
 #$builder->Output('scarlet_fox');
 #$builder->Output('doom_vampire');
-$builder->Output('scarlet_chiroptera');
+#$builder->Output('scarlet_chiroptera');
 #$builder->Output('shadow_fairy');
 #$builder->Output('poison_ogre');
 #$builder->Output('incubus_ogre');
@@ -1393,4 +1393,4 @@ $builder->Output('scarlet_chiroptera');
 #$builder->Output('yaksa');
 #$builder->Output('succubus_yaksa');
 #$builder->Output('dowser_yaksa');
-#$builder->Output('joker');
+$builder->Output('joker');

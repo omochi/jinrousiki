@@ -13,9 +13,13 @@ HTML;
 
 function OutputIconList($base_url = 'icon_view'){
   global $RQ_ARGS;
-  //初回表示前に検索条件をリセットする
-  //TODO:リファラーをチェックすることでGETリクエストによる取得にも対処できる
-  //現時点ではGETで直接検索を試みたユーザーのセッション情報まで配慮していないが、いずれ必要になるかも知れない (enogu)
+
+  /*
+    初回表示前に検索条件をリセットする
+    TODO:リファラーをチェックすることでGETリクエストによる取得にも対処できる
+    現時点ではGETで直接検索を試みたユーザーのセッション情報まで配慮していないが、
+    いずれ必要になるかも知れない (enogu)
+  */
   if(is_null($RQ_ARGS->page)) unset($_SESSION['icon_view']);
 
   //編集フォームの表示
@@ -37,7 +41,7 @@ HTML;
       OutputIconEditForm($RQ_ARGS->icon_no);
       echo $footer;
     }
-    else {
+    else{
       echo <<<HTML
 <form id="icon_search" method="GET">
 <fieldset><legend>ユーザアイコン一覧</legend>
@@ -47,12 +51,12 @@ HTML;
       echo $footer;
     }
   }
-  else {
+  else{
     ConcreteOutputIconList($base_url);
   }
 }
 
-function OutputIconEditForm($icon_no) {
+function OutputIconEditForm($icon_no){
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
   foreach(FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected) {
@@ -94,7 +98,7 @@ EOF;
   }
 }
 
-function ConcreteOutputIconList($base_url = 'icon_view') {
+function ConcreteOutputIconList($base_url = 'icon_view'){
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
   //ヘッダーの出力
@@ -117,7 +121,7 @@ function ConcreteOutputIconList($base_url = 'icon_view') {
 EOF;
 
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
-  function _outputSelectionByType($type, $caption, $filter = array()) {
+  function _outputSelectionByType($type, $caption, $filter = array()){
     global $RQ_ARGS;
 
     //選択状態の抽出
@@ -152,9 +156,9 @@ HTML;
   }
 
   //検索項目と検索値のセットから抽出条件を生成します。
-  function _generateInClause($type, $values) {
+  function _generateInClause($type, $values){
     $safe_values = array();
-    foreach($values as $value) {
+    foreach($values as $value){
       $safe_values[] = sprintf("'%s'", mysql_real_escape_string($value));
     }
     return $type.' IN ('.implode(',', $safe_values).')';
@@ -165,25 +169,19 @@ HTML;
 
   $selected_categories = _outputSelectionByType('category', 'カテゴリ');
   if(0 < count($selected_categories)){
-    foreach($selected_categories as $cat) {
-      $url_option[] = "category[]={$cat}";
-    }
+    foreach($selected_categories as $cat) $url_option[] = "category[]={$cat}";
     $where_cond[] = _generateInClause('category', $selected_categories);
   }
 
   $selected_appearances = _outputSelectionByType('appearance', '出典');
   if(0 < count($selected_appearances)){
-    foreach($selected_appearances as $apr) {
-      $url_option[] = "appearance[]={$apr}";
-    }
+    foreach($selected_appearances as $apr) $url_option[] = "appearance[]={$apr}";
     $where_cond[] = _generateInClause('appearance', $selected_appearances);
   }
 
   $selected_authors = _outputSelectionByType('author', 'アイコン作者');
   if(0 < count($selected_authors)){
-    foreach($selected_authors as $ath) {
-      $url_option[] = "author[]={$ath}";
-    }
+    foreach($selected_authors as $ath) $url_option[] = "author[]={$ath}";
     $where_cond[] = _generateInClause('author', $selected_authors);
   }
   $sort_by_name_checked = $RQ_ARGS->sort_by_name ? 'checked' : '';
@@ -201,7 +199,7 @@ HTML;
 EOF;
 
   //検索結果の表示
-  if ($is_icon_view = empty($RQ_ARGS->room_no)) {
+  if($is_icon_view = empty($RQ_ARGS->room_no)){
     echo <<<HTML
 <table>
 <caption>
@@ -226,13 +224,8 @@ HTML;
   //ユーザアイコンのテーブルから一覧を取得
   $query = 'SELECT * FROM user_icon WHERE ';
   $where_cond[] = 'icon_no > 0';
-  $query .= implode(' AND ', $where_cond);
-  if ($RQ_ARGS->sort_by_name) {
-    $query .= ' ORDER BY icon_name, icon_no';
-  }
-  else {
-    $query .= ' ORDER BY icon_no, icon_name';
-  }
+  $query .= implode(' AND ', $where_cond) . ' ORDER BY ' .
+    ($RQ_ARGS->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name');
   if($RQ_ARGS->page != 'all'){
     $limit_min = $ICON_CONF->view * ($RQ_ARGS->page - 1);
     if($limit_min < 1) $limit_min = 0;

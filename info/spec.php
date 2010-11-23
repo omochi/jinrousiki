@@ -75,6 +75,11 @@ OutputInfoPageHeader('詳細な仕様');
 <li>恋人後追い</li>
 </ul>
 
+<h4>〜<?php echo $MESSAGE->joker_moved ?></h4>
+<ul>
+<li><a href="new_role/sub_role.php#joker">ジョーカー</a>の移動 (霊界限定)</li>
+</ul>
+
 
 <h3><a id="dead_day">昼</a></h3>
 <h4>〜<?php echo $MESSAGE->vote_killed ?></h4>
@@ -90,7 +95,12 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>〜<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
-<li>ショック死 (<a href="new_role/human.php#seal_medium">封印師</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>・<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a>)</li>
+<li>ショック死 (<a href="new_role/human.php#bacchus_medium">神主</a>・<a href="new_role/human.php#seal_medium">封印師</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>・<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a>)</li>
+</ul>
+
+<h4>〜<?php echo $MESSAGE->blind_vote ?></h4>
+<ul>
+<li><a href="new_role/wolf.php#amaze_mad">傘化け</a>の能力発動</li>
 </ul>
 
 <h3><a id="dead_night">夜</a></h3>

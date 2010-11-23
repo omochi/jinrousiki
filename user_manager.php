@@ -254,8 +254,9 @@ EOF;
       if($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
       $count++;
       $alt = ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]) . '→';
+      $checked = $RQ_ARGS->role == $role ? ' checked' : '';
       echo <<<EOF
-<td><label for="{$role}"><input type="radio" id="{$role}" name="role" value="{$role}"><img src="img/entry_user/role_{$role}.gif" alt="{$alt}"></label></td>
+<td><label for="{$role}"><input type="radio" id="{$role}" name="role" value="{$role}"{$checked}><img src="img/entry_user/role_{$role}.gif" alt="{$alt}"></label></td>
 EOF;
     }
     echo "</tr>\n</table>\n</td>";
