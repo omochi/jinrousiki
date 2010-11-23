@@ -72,6 +72,11 @@ function OutputAbility(){
       if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
       break;
 
+    case 'high_priest': //大司祭
+      if($ROOM->date > 4 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
+      if($ROOM->date > 5 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
+      break;
+
     case 'dowser_priest': //探知師
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DOWSER_PRIEST_RESULT');
       break;
@@ -194,14 +199,14 @@ function OutputAbility(){
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsSelf()) continue;
-	if($user->IsRole('doll_master')){
+	if($user->IsRole('doll_master') || $user->IsRoleGroup('scarlet')){
 	  $stack['master'][] = $user->handle_name;
 	}
-	elseif($user->IsDoll()){
-	  $stack['doll'][] = $user->handle_name;
-	}
+	if($user->IsDoll()) $stack['doll'][] = $user->handle_name;
       }
-      OutputPartner($stack['master'], 'doll_master_list'); //人形遣い
+      if(! $SELF->IsRole('silver_doll')){ //人形遣い (露西亜人形には見えない)
+	OutputPartner($stack['master'], 'doll_master_list');
+      }
       if($SELF->IsRole('friend_doll')) OutputPartner($stack['doll'], 'doll_partner'); //仏蘭西人形
       unset($stack);
     }
@@ -222,7 +227,7 @@ function OutputAbility(){
       elseif($user->IsRole('whisper_mad')){
 	$stack['mad'][] = $user->handle_name;
       }
-      elseif($user->IsRole('unconscious', 'scarlet_fox')){
+      elseif($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
 	$stack['unconscious'][] = $user->handle_name;
       }
     }
@@ -342,7 +347,7 @@ function OutputAbility(){
 	if($user->IsFox(true)){
 	  $stack['fox'][] = $user->handle_name;
 	}
-	elseif($user->IsChildFox() || $user->IsRole('scarlet_wolf')){
+	elseif($user->IsChildFox() || $user->IsRoleGroup('scarlet')){
 	  $stack['child_fox'][] = $user->handle_name;
 	}
       }

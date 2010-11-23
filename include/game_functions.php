@@ -422,7 +422,8 @@ EOF;
 
   //-- 個々の勝敗結果 --//
   //勝敗未決定、観戦モード、ログ閲覧モードならスキップ
-  if(is_null($victory) || $ROOM->view_mode || $ROOM->log_mode) return $str;
+  if(is_null($victory) || $ROOM->view_mode ||
+     ($ROOM->log_mode && ! $ROOM->single_view_mode)) return $str;
 
   $result = 'win';
   $camp = $SELF->GetCamp(true); //所属陣営を取得
@@ -518,8 +519,7 @@ function GenerateVoteResult(){
 
 //投票の集計出力
 function OutputVoteList(){
-  $str = GenerateVoteResult();
-  if(is_null($str)) return false;
+  if(is_null($str = GenerateVoteResult())) return false;
   echo $str;
 }
 
@@ -946,8 +946,7 @@ EOF;
 
 //死亡者の遺言を出力
 function OutputLastWords(){
-  $str = GenerateLastWords();
-  if(is_null($str)) return false;
+  if(is_null($str = GenerateLastWords())) return false;
   echo $str;
 }
 
@@ -1016,8 +1015,7 @@ function GenerateDeadMan(){
 
 //前日に死亡メッセージの出力
 function OutputDeadMan(){
-  $str = GenerateDeadMan();
-  if(is_null($str)) return false;
+  if(is_null($str = GenerateDeadMan())) return false;
   echo $str;
 }
 

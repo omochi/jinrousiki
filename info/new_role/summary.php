@@ -637,7 +637,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">人狼からは<a href="human.php#unconscious">無意識</a>に見える妖狐。</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -684,7 +684,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability"><a href="fox.php">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に見える人狼。</td>
+  <td class="ability"><a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -1920,6 +1920,52 @@ Ver. 1.4.0
   <td>鬼</td>
   <td>鬼</td>
   <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 村の人口を三分の一以下にする」。</td>
+  <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="human.php#high_priest">大司祭</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#priest_group">司祭系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">5日目以降、<a href="human.php#priest">司祭</a>・<a href="human.php#bishop_priest">司教</a>両方の結果が分かる上位司祭。</td>
+  <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="human.php#bacchus_medium">神主</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#medium_group">巫女系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が<a href="ogre.php">鬼陣営</a>だった場合にショック死させることができる上位巫女。</td>
+  <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="human.php#scarlet_doll">和蘭人形</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#doll_group">上海人形系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、他の人形から<a href="human.php#doll_master">人形遣い</a>に見える人形。</td>
+  <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="human.php#silver_doll">露西亜人形</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#doll_group">上海人形系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#doll_master">人形遣い</a>が誰か分からない人形。</td>
+  <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a></td>
+  <td><a href="chiroptera.php">蝙蝠</a></td>
+  <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
+  <td>蝙蝠</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える蝙蝠。
+  </td>
   <td>Ver. 1.4.0 β21</td>
 </tr>
 </table>

@@ -220,7 +220,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#scarlet_fox">紅狐</a>
+<a href="#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -525,6 +525,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h2><a id="medium_group">巫女系</a></h2>
 <p>
 <a href="#medium">巫女</a>
+<a href="#bacchus_medium">神主</a>
 <a href="#seal_medium">封印師</a>
 <a href="#revive_medium">風祝</a>
 </p>
@@ -562,6 +563,24 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 式神研のオリジナル役職です。
 闇鍋モードで大量の突然死が出ることになったので作ってみましたが
 霊能者より地味な存在ですね。騙るのも容易なのでなかなか報われないかもしれません。
+</pre>
+
+<h3><a id="bacchus_medium">神主</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21〜]</h3>
+<pre>
+処刑投票先が<a href="ogre.php">鬼陣営</a>だった場合にショック死させることができる上位巫女。
+</pre>
+<ol>
+  <li>処刑先が決定されて、投票先が処刑者ではない場合に発動します。</li>
+  <li>自分が処刑された場合は無効になります。</li>
+  <li>毒やショック死で死亡した場合は有効です。</li>
+  <li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外です。</li>
+  <li>ショック死させた場合の死因は「神主に酔い潰された」で<a href="#cure_pharmacist">河童</a>の能力発動対象外です。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の神主がモチーフの、対<a href="ogre.php">鬼陣営</a>能力者です。
+伝承上の鬼を退治するアイテムの一つであるお酒と掛け合わせてみました。
+この役職でメイン役職の総数が既存のものと合わせてちょうど 200 になりました。
 </pre>
 
 <h3><a id="seal_medium">封印師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13〜]</h3>
@@ -607,6 +626,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <p>
 <a href="#priest">司祭</a>
 <a href="#bishop_priest">司教</a>
+<a href="#high_priest">大司祭</a>
 <a href="#dowser_priest">探知師</a>
 <a href="#border_priest">境界師</a>
 <a href="#crisis_priest">預言者</a>
@@ -673,6 +693,19 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 <a href="#priest">司祭</a>の亜種で、こちらは死者の内訳を推測することができます。
 特に、3 日目の情報は身代わり君の所属陣営を絞り込むのに有効です。
+</pre>
+
+<h3><a id="high_priest">大司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
+<pre>
+5 日目以降、<a href="#priest">司祭</a>・<a href="#bishop_priest">司教</a>両方の結果が分かる上位司祭。
+奇数日に<a href="#bishop_priest">司教</a>、偶数日に<a href="#priest">司祭</a>の結果が表示される。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+発動は遅いですが、情報量が多いので多数の役職を一人で兼ねることができます。
+<a href="#guard_limit">護衛制限</a>がかかっているので、生き残るのが難しい役職ですね。
 </pre>
 
 <h3><a id="dowser_priest">探知師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
@@ -1731,16 +1764,23 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#poison_doll">鈴蘭人形</a>
 <a href="#doom_doll">蓬莱人形</a>
 <a href="#revive_doll">西蔵人形</a>
+<a href="#scarlet_doll">和蘭人形</a>
+<a href="#silver_doll">露西亜人形</a>
 <a href="#doll_master">人形遣い</a>
 </p>
 
 <h3><a id="doll_rule">基本ルール [上海人形]</a></h3>
 <ol>
-<li>他の国で言う「奴隷」に相当します</li>
-<li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村人陣営の勝利」です<br>自身の生死は問いません</li>
-<li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になります</li>
-<li><a href="#doll_master">人形遣い</a>が誰か分かります</li>
+<li>他の国で言う「奴隷」に相当します。</li>
+<li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村人陣営の勝利」です。<br>自身の生死は問いません。</li>
+<li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になります。</li>
+<li><a href="#doll_master">人形遣い</a>が誰か分かります。</li>
+<li><a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。</li>
 </ol>
+<h4>Ver. 1.4.0 β21〜</h4>
+<pre>
+<a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
+</pre>
 
 <h3><a id="doll">上海人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
 <pre>
@@ -1756,12 +1796,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3><a id="friend_doll">仏蘭西人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>
 <pre>
-他の人形が誰か分かる人形。<a href="#doll_rule">基本ルール</a>が適用される。
+他の人形が誰か分かる人形。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「博愛の仏蘭西人形」がモチーフです。
 仏蘭西は「フランス」と読みます。
+仲間と<a href="#doll_master">人形遣い</a>の両方に名前が載っている人は<a href="#scarlet_doll">和蘭人形</a>です。
 </pre>
 
 <h3><a id="phantom_doll">倫敦人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
@@ -1784,7 +1825,6 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[毒能力] 処刑：上海人形系以外 (人形遣いには中る) / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った人形。毒の対象は<a href="#doll_group">上海人形系</a>以外 (<a href="#doll_master">人形遣い</a>には中る)。
-<a href="#doll_rule">基本ルール</a>が適用される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1795,7 +1835,6 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[耐性] 処刑：死の宣告 (2日後)</h4>
 <pre>
 処刑された時に、自分に投票した人からランダムで一人に<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人形。
-<a href="#doll_rule">基本ルール</a>が適用される。
 </pre>
 <ol>
   <li>死の宣告の発動日は処刑された日から数えて2日後の昼。</li>
@@ -1835,6 +1874,36 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 東方 Project のアリス・マーガトロイドのスペルカード「輪廻の西蔵人形」がモチーフです。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/865" target="_top">新役職考案スレ</a> の 865 が原型です。
 西蔵は「チベット」と読みます。
+</pre>
+
+<h3><a id="scarlet_doll">和蘭人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21〜]</h3>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、他の人形から<a href="#doll_master">人形遣い</a>に見える人形。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「紅毛の和蘭人形」がモチーフです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/872" target="_top">新役職考案スレ</a> の 872 が原型です。
+和蘭は「オランダ」と読みます。
+</pre>
+
+<h3><a id="silver_doll">露西亜人形</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21〜]</h3>
+<pre>
+<a href="#doll_master">人形遣い</a>が誰か分からない人形。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#silver_wolf">銀狼</a>・<a href="fox.php#silver_fox">銀狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のアリス・マーガトロイドのスペルカード「白亜の露西亜人形」がモチーフです。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/872" target="_top">新役職考案スレ</a> の 872 が原型です。
+露西亜は「ロシア」と読みます。
 </pre>
 
 <h3><a id="doll_master">人形遣い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10〜]</h3>

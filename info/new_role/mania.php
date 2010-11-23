@@ -133,8 +133,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#priest_group">司祭系</a></td>
-  <td><a href="human.php#bishop_priest">司教</a></td>
-  <td></td>
+  <td><a href="human.php#high_priest">大司祭</a></td>
+  <td>Ver. 1.4.0 β21〜</td>
 </tr>
 <tr>
   <td><a href="human.php#guard_group">狩人系</a></td>
@@ -243,8 +243,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
-  <td><a href="ogre.php#yaksa">夜叉</a></td>
-  <td>Ver. 1.4.0 β19〜</td>
+  <td><a href="ogre.php#dowser_yaksa">毘沙門天</a></td>
+  <td>Ver. 1.4.0 β21〜</td>
 </tr>
 <tr>
   <td>神話マニア陣営</td>

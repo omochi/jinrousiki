@@ -108,6 +108,7 @@ class Message{
   var $gynophobia         = 'は女性恐怖症だったようです'; //女性恐怖症
   var $panelist           = 'は解答者 (不正解) だったようです'; //解答者
   var $sealed             = 'は封印されたようです'; //封印師
+  var $drunk              = 'は神主に酔い潰されたようです'; //神主
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   var $febris             = 'は熱病にかかったようです'; //熱病

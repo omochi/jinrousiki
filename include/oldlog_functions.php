@@ -148,7 +148,7 @@ function GenerateOldLog(){
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
-  if($RQ_ARGS->user_no > 0 || $RQ_ARGS->watch) $ROOM->status = 'playing';
+  if($RQ_ARGS->watch) $ROOM->status = 'playing';
   $title = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
 
   //戻る先を前のページにする

@@ -18,9 +18,13 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示されます (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>みたいなものです)。<br>
 分けている基準は「<a href="#fox_talk">念話</a>ができるかどうか」です。
 </li>
-<li><a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。</li>
+<li><a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
+<h3>Ver. 1.4.0 β21〜</h3>
+<pre>
+<a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
+</pre>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
@@ -335,12 +339,15 @@ OutputRolePageHeader('妖狐陣営');
 <h3><a id="scarlet_fox">紅狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に見える妖狐。
-本物の<a href="human.php#unconscious">無意識</a>と混ざって表示されるため、人狼側からは区別できない。
+<a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。
+</pre>
+<h5>Ver. 1.4.0 β21〜</h5>
+<pre>
+<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#scarlet_wolf">紅狼</a>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -355,6 +362,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 <a href="#fox_partner">仲間</a>が分からない妖狐。
 (他の妖狐・<a href="#child_fox">子狐</a>からも仲間であると分からない)
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#silver_doll">露西亜人形</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

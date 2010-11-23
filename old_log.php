@@ -10,11 +10,12 @@ if($RQ_ARGS->is_room){
 
   $ROOM =& new Room($RQ_ARGS);
   $ROOM->log_mode = true;
+  $ROOM->single_view_mode = $RQ_ARGS->user_no > 0;
   $ROOM->last_date = $ROOM->date;
 
   $USERS =& new UserDataSet($RQ_ARGS);
-  $SELF = $RQ_ARGS->user_no > 0 ? $USERS->ByID($RQ_ARGS->user_no) : new User();
-  if($RQ_ARGS->user_no > 0 || $RQ_ARGS->watch) $SELF->live = 'live';
+  $SELF = $ROOM->single_view_mode ? $USERS->ByID($RQ_ARGS->user_no) : new User();
+  if($RQ_ARGS->watch) $SELF->live = 'live';
   OutputOldLog();
 }
 else{

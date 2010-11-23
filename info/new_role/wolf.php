@@ -32,10 +32,14 @@ OutputRolePageHeader('人狼陣営');
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。</li>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。</li>
   <li><a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かります。<br>
-  ただし、<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示されます。
+  ただし、<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
   </li>
   <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
+<h3>Ver. 1.4.0 β21〜</h3>
+<pre>
+<a href="human.php#unconscious">無意識</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
+</pre>
 <h3>Ver. 1.4.0 β8〜</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
@@ -742,8 +746,15 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3><a id="scarlet_wolf">紅狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24〜]</h3>
 <pre>
-<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に見える人狼。
-本物の子狐と混ざって表示されるため、妖狐側からは区別できない。
+<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。
+</pre>
+<h5>Ver. 1.4.0 β21〜</h5>
+<pre>
+<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -765,7 +776,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#silver_fox">銀狐</a>・<a href="fox.php#howl_fox">化狐</a>
+<a href="human.php#silver_doll">露西亜人形</a>・<a href="fox.php#silver_fox">銀狐</a>・<a href="fox.php#howl_fox">化狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

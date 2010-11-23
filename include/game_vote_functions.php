@@ -811,7 +811,7 @@ function AggregateVoteDay(){
     $ROLES->actor = $user;
     foreach($ROLES->Load('voted') as $filter) $filter->FilterVoted($voted_number);
     if($voted_number < 0) $voted_number = 0; //マイナスになっていたら 0 にする
-    if($user->IsRole('critical_luck')) $voted_number += 100; //テスト用 (痛恨強制発動)
+    //if($user->IsRole('critical_luck')) $voted_number += 100; //テスト用 (痛恨強制発動)
 
     //システムメッセージ用の配列を生成
     $message_list = array('target'       => $target->handle_name,
@@ -997,6 +997,17 @@ function AggregateVoteDay(){
       if($target->IsSame($vote_kill_uname) || ! $target->IsRole($stack)) continue;
       $target->IsActive() ? $target->LostAbility() :
 	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
+    }
+
+    //-- 神主の処理 --//
+    foreach($user_list as $uname){
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsSame($vote_kill_uname) || ! $user->IsRole('bacchus_medium')) continue;
+
+      $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //投票先を取得
+      if(! $target->IsSame($vote_kill_uname) && $target->IsOgre()){
+	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_DRUNK');
+      }
     }
 
     //-- 土蜘蛛の処理 --//
@@ -2606,7 +2617,7 @@ function AggregateVoteNight($skip = false){
       'mage' => 'soul_mage',
       'necromancer' => 'soul_necromancer',
       'medium' => 'revive_medium',
-      'priest' => 'bishop_priest',
+      'priest' => 'high_priest',
       'guard' => 'poison_guard',
       'common' => 'ghost_common',
       'poison' => 'strong_poison',
@@ -2628,7 +2639,7 @@ function AggregateVoteNight($skip = false){
       'chiroptera' => 'boss_chiroptera',
       'fairy' => 'ice_fairy',
       'ogre' => 'sacrifice_ogre',
-      'yaksa' => 'yaksa');
+      'yaksa' => 'dowser_yaksa');
     $dummy_mania_replace_list = array(
       'human' => 'suspect',
       'mage' => 'dummy_mage',
@@ -2731,8 +2742,8 @@ function AggregateVoteNight($skip = false){
   }
   //PrintData($live_count, 'LiveCount');
 
-  if($ROOM->date > 2 && ($ROOM->date % 2) == 1){ //司祭・探知師・夢司祭・恋司祭の処理
-    if($role_flag->priest){
+  if($ROOM->date > 2 && ($ROOM->date % 2) == 1){ //司祭・大司祭・探知師・夢司祭・恋司祭の処理
+    if($role_flag->priest || ($role_flag->high_priest && $ROOM->date > 4)){
       $ROOM->SystemMessage((int)$live_count['human_side'], 'PRIEST_RESULT');
     }
     if($role_flag->dowser_priest){
@@ -2745,7 +2756,10 @@ function AggregateVoteNight($skip = false){
       $ROOM->SystemMessage((int)$live_count['lovers'], 'PRIEST_JEALOUSY_RESULT');
     }
   }
-  if($role_flag->bishop_priest && $ROOM->date > 1 && ($ROOM->date % 2) == 0){ //司教の処理
+  //司教・大司祭の処理
+  if(($ROOM->date % 2) == 0 &&
+     (($role_flag->bishop_priest && $ROOM->date > 1) ||
+      ($role_flag->high_priest   && $ROOM->date > 3))){
     $ROOM->SystemMessage((int)$live_count['dead'], 'BISHOP_PRIEST_RESULT');
   }
   if(count($border_priest_list) > 0 && $ROOM->date > 1){ //境界師の処理

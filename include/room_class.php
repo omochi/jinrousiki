@@ -15,6 +15,7 @@ class Room{
   var $dead_mode = false;
   var $heaven_mode = false;
   var $log_mode = false;
+  var $single_view_mode = false;
   var $test_mode = false;
 
   function Room($request = NULL){ $this->__construct($request); }
@@ -265,8 +266,9 @@ class Room{
   //情報公開判定
   function IsOpenData($virtual = false){
     global $SELF;
-    return $SELF->IsDummyBoy() || ($SELF->IsDead() && $this->IsOpenCast()) ||
-      ($virtual ? $this->IsAfterGame() : $this->IsFinished());
+    return $SELF->IsDummyBoy() ||
+      ($SELF->IsDead() && ! $this->single_view_mode && $this->IsOpenCast()) ||
+      ($virtual ? $this->IsAfterGame() : ($this->IsFinished() && ! $this->single_view_mode));
   }
 
   //ゲーム開始前判定
@@ -289,7 +291,7 @@ class Room{
     return $this->day_night == 'aftergame';
   }
 
-  //ゲーム中判定 (仮想処理をする為に status では判定しない)
+  //ゲーム中判定 (仮想処理をする為、status では判定しない)
   function IsPlaying(){
     return $this->IsDay() || $this->IsNight();
   }
@@ -372,7 +374,7 @@ class Room{
   function ChangeDate(){
     $this->date++;
     $this->day_night = 'day';
-    SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day' WHERE room_no = {$this->id}");
+    SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day'" . $this->GetQuery(false));
 
     //夜が明けた通知
     $this->Talk("MORNING\t" . $this->date);
@@ -459,13 +461,13 @@ SQL;
 
   function __load($sql, $class = 'Room') {
     $result = new RoomDataSet();
-    if (($q_rooms = mysql_query($sql)) !== false) {
+    if(($q_rooms = mysql_query($sql)) !== false){
       while(($object = mysql_fetch_object($q_rooms, $class)) !== false){
         $object->ParseOption();
         $result->rows[] = $object;
       }
     }
-    else {
+    else{
       die('村一覧の取得に失敗しました');
     }
     return $result;
