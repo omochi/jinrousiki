@@ -192,6 +192,12 @@ function OutputAbility(){
 	unset($stack);
       }
     }
+    elseif($SELF->IsRole('clairvoyance_scanner')){
+      if($ROOM->date > 2) OutputSelfAbilityResult('CLAIRVOYANCE_RESULT'); //透視結果
+      if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+	OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
+      }
+    }
   }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系
     $ROLE_IMG->Output($SELF->main_role);
@@ -758,11 +764,6 @@ function OutputSelfAbilityResult($action){
     $footer = 'anti_voodoo_success';
     break;
 
-  case 'ASSASSIN_RESULT':
-    $type = 'mage';
-    $header = 'assassin_result';
-    break;
-
   case 'POISON_CAT_RESULT':
     $type = 'mage';
     $footer = 'poison_cat_';
@@ -771,6 +772,17 @@ function OutputSelfAbilityResult($action){
   case 'PHARMACIST_RESULT':
     $type = 'mage';
     $footer = 'pharmacist_';
+    break;
+
+  case 'ASSASSIN_RESULT':
+    $type = 'mage';
+    $header = 'assassin_result';
+    break;
+
+  case 'CLAIRVOYANCE_RESULT':
+    $type = 'reporter';
+    $header = 'clairvoyance_result_header';
+    $footer = 'clairvoyance_result_footer';
     break;
 
   case 'TONGUE_WOLF_RESULT':

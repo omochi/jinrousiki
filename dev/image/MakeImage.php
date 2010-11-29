@@ -94,13 +94,13 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|村人|です。特殊な能力はありませんが、あなたの知恵と勇気で村を救えるはずです。",
     'delimiter' => array('|' => 'human'));
 
-  var $elder = array(
-    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|長老|です。あなたの#処刑#投票には_二票_分の価値があります。年功者の知恵を活かして村を勝利に導くのです。",
-    'type' => 'human', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
-
   var $escaper = array(
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|逃亡者|です。臆病なあなたは夜の間、誰かの家の近くに隠れて夜をすごすことになります。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで#人狼#から逃げ切るのです！",
     'type' => 'human', 'delimiter' => array('#' => 'wolf'));
+
+  var $elder = array(
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|長老|です。あなたの#処刑#投票には_二票_分の価値があります。年功者の知恵を活かして村を勝利に導くのです。",
+    'type' => 'human', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占い師#、夜の間に村人一人を占うことで翌朝その人が「|人|」か「_狼_」か知ることができます。あなたが村人の勝利を握っています。",
@@ -166,20 +166,20 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#司教#です。一定日数おきに死亡した|村人|陣営以外の総数を知ることができます。\n　神聖なるお告げにより死者達の真の姿を伝え、心清き村人達を正しき道へと導くのです。",
     'type' => 'priest');
 
-  var $high_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人|陣営、または死亡した|村人|陣営以外の総数を知ることができます。",
-    'type' => 'priest');
-
   var $dowser_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#探知師#です。一定日数おきに現在生きている人が所有しているサブ役職の総数を知ることができます。\n　あなたの探知能力と推理力次第では、水面下にて息を潜める特殊な陣営を見抜くことも不可能ではありません。",
     'type' => 'priest');
 
-  var $border_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#境界師#です。二日目以降、夜にあなたに投票した人の数を知ることができます。\n　夜に見た夢は幻ではない。あなたにしか持ち得ない夢と現の双方の視点を活かすのです。",
+  var $high_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人|陣営、または死亡した|村人|陣営以外の総数を知ることができます。",
     'type' => 'priest');
 
   var $revive_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#天人#です。初日に一度天に帰って下界の様子を眺める事になります。後で颯爽と降臨して華麗に村を勝利に導きましょう。",
+    'type' => 'priest');
+
+  var $border_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#境界師#です。二日目以降、夜にあなたに投票した人の数を知ることができます。\n　夜に見た夢は幻ではない。あなたにしか持ち得ない夢と現の双方の視点を活かすのです。",
     'type' => 'priest');
 
   var $guard = array(
@@ -290,6 +290,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#件#です。あなたが_人狼_に襲撃されたら、あなたの#受託者#に誰が襲撃したかメッセージを送ることができます。\n　たとえあなたが死すとも、見えるようで見えないものに繋がれた相方に自分の不屈な意思を受け継いでもらうのです。",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
 
+  var $clairvoyance_scanner = array(
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#猩々#です。二日目から誰か一人のその夜の能力の行使先が誰なのかを知ることができます。",
+    'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
+
   var $whisper_scanner = array(
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#囁騒霊#です。二日目からあなたの夜の独り言が_共有者_にも聞こえるようになります。\n　死んでしまったのは誰？あなたの口ずさむ悲しみを、_共有者_たちにも知ってもらいましょう。",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'common'));
@@ -351,10 +355,6 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_投票数を +1 することができますが、あなたが_処刑_されたら誰か一人を^熱病^にしてしまいます。\n　その力で村を裕福にしてあげましょう。但しあなたが_処刑_されてしまうとたちまち村に不幸が訪れ、病に伏せる者がでてしまいます。",
     'type' => 'human', 'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'chicken'));
 
-  var $history_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_人狼_に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
-    'type' => 'brownie', 'delimiter' => array('_' => 'wolf'));
-
   var $revive_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても_蘇生_できます。また、_蘇生_能力者の成功率を高めることができます。",
     'type' => 'cursed_brownie', 'delimiter' => array('_' => 'revive'));
@@ -362,6 +362,10 @@ class RoleMessageList{
   var $cursed_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#祟神#、=呪い=を持っています。また、あなたを襲撃した=人狼=や_処刑_投票してきた人に^死の宣告^を行います。\n　呪われた身を呪うことなく、触れた者に不幸をもたらすその力で、村を襲う悪しき災厄を祟り返してやるのです！",
     'type' => 'brownie', 'delimiter' => array('=' => 'wolf'));
+
+  var $history_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_人狼_に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
+    'type' => 'brownie', 'delimiter' => array('_' => 'wolf'));
 
   var $wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の|人狼|と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
@@ -437,7 +441,7 @@ class RoleMessageList{
     'type' => 'wolf');
 
   var $scarlet_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紅狼|です。#妖狐#からは#子狐#に、_人形_からは_人形遣い_に見えています。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紅狼|です。#妖狐#からは#子狐#に、_人形_からは_人形遣い_に見えています。#妖狐#と_人形_を欺き、その鋭い牙で村を真紅に染め上げるのです！",
     'type' => 'wise_wolf', 'delimiter' => array('_' => 'doll'));
 
   var $silver_wolf = array(
@@ -565,7 +569,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $scarlet_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紅狐|です。#人狼#からは_無意識_に、^人形^からは^人形遣い^に見えています。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紅狐|です。#人狼#からは_無意識_に、^人形^からは^人形遣い^に見えています。\n　無力な村人や^人形遣い^を生贄に仕立て上げ、|狐|の勝利に貢献してもらうのです。",
     'type' => 'fox', 'delimiter' => array('_' => 'human', '^' => 'doll'));
 
   var $silver_fox = array(
@@ -611,6 +615,10 @@ class RoleMessageList{
   var $mind_cupid = array(
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|女神|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。\n　夜に囁く愛の言葉をいつでも交わしあえる、愛に溢れた平和な村を創りだすのです！",
     'type' => 'cupid', 'delimiter' => array('#' => 'mind'));
+
+  var $sweet_cupid = array(
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|弁財天|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。また、_処刑_投票先を^恋耳鳴^にさせることができます。",
+    'type' => 'mind_cupid', 'delimiter' => array('_' => 'vote', '^' => 'no_last_words'));
 
   var $triangle_cupid = array(
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|小悪魔|です。初日の夜に誰か三人を|恋人|にしてしまいます。恋とはまた盲目。盲目なる|恋人|に、災いと嘲りあれ。",
@@ -787,7 +795,7 @@ class RoleMessageList{
     'type' => 'east_ogre');
 
   var $incubus_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と#女性#の全滅が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と#女性#の全滅が勝利条件になります。嫉妬の念を力に変えて村から#女性#を追い出すのです。",
     'type' => 'ogre', 'delimiter' => array('#' => 'lovers'));
 
   var $power_ogre = array(
@@ -799,11 +807,11 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('_' => 'human', '^' => 'vampire', '=' => 'chicken'));
 
   var $yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉|です。あなた自身の生存と#人狼系#の全滅が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉|です。あなた自身の生存と#人狼系#の全滅が勝利条件になります。夜の闇に溶け込み、#狼#を見つけ出して滅ぼすのです。",
     'type' => 'ogre');
 
   var $succubus_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。欲望の求めるままに、村の#男#を喰らい尽くすのです。",
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   var $dowser_yaksa = array(
@@ -977,6 +985,9 @@ class RoleMessageList{
   var $howl_ringing = array('message' => "　あなたは|吠耳鳴|なので他人の独り言が#人狼#の遠吠えに聞こえてしまいます。",
 			    'type' => 'no_last_words', 'delimiter' => array('#' => 'wolf'));
 
+  var $sweet_ringing = array('message' => "　あなたは|恋耳鳴|なので二日目以降、#恋人#の独り言が囁き声に聞こえてしまいます。",
+			       'type' => 'no_last_words', 'delimiter' => array('#' => 'lovers'));
+
   var $deep_sleep = array('message' => "　あなたは|爆睡者|なので#共有者#の囁きや、_人狼_の遠吠えが聞こえません。",
 			  'type' => 'no_last_words',
 			  'delimiter' => array('#' => 'common', '_' => 'wolf'));
@@ -1072,10 +1083,10 @@ class RoleMessageList{
 				    'delimiter' => array('|' => 'vampire'));
 
   var $result_human = array('message' => "さんは|村人|でした", 'delimiter' => array('|' => 'human'));
-  var $result_elder = array('message' => "さんは|長老|でした", 'type' => 'result_human');
   var $result_saint = array('message' => "さんは|聖女|でした", 'type' => 'result_human');
   var $result_executor = array('message' => "さんは|執行者|でした", 'type' => 'result_human');
   var $result_escaper = array('message' => "さんは|逃亡者|でした", 'type' => 'result_human');
+  var $result_elder = array('message' => "さんは|長老|でした", 'type' => 'result_human');
   var $result_suspect = array('message' => "さんは|不審者|でした", 'type' => 'result_human');
   var $result_unconscious = array('message' => "さんは|無意識|でした", 'type' => 'result_human');
   var $result_mage = array('message' => "さんは|占い師|でした", 'delimiter' => array('|' => 'mage'));
@@ -1096,11 +1107,11 @@ class RoleMessageList{
   var $result_revive_medium = array('message' => "さんは|風祝|でした", 'type' => 'result_medium');
   var $result_priest = array('message' => "さんは|司祭|でした", 'delimiter' => array('|' => 'priest'));
   var $result_bishop_priest = array('message' => "さんは|司教|でした", 'type' => 'result_priest');
-  var $result_high_priest = array('message' => "さんは|大司祭|でした", 'type' => 'result_priest');
   var $result_dowser_priest = array('message' => "さんは|探知師|でした", 'type' => 'result_priest');
-  var $result_border_priest = array('message' => "さんは|境界師|でした", 'type' => 'result_priest');
+  var $result_high_priest = array('message' => "さんは|大司祭|でした", 'type' => 'result_priest');
   var $result_crisis_priest = array('message' => "さんは|預言者|でした", 'type' => 'result_priest');
   var $result_revive_priest = array('message' => "さんは|天人|でした", 'type' => 'result_priest');
+  var $result_border_priest = array('message' => "さんは|境界師|でした", 'type' => 'result_priest');
   var $result_dummy_priest = array('message' => "さんは|夢司祭|でした", 'type' => 'result_priest');
   var $result_guard = array('message' => "さんは|狩人|でした", 'delimiter' => array('|' => 'guard'));
   var $result_hunter_guard = array('message' => "さんは|猟師|でした", 'type' => 'result_guard');
@@ -1136,13 +1147,14 @@ class RoleMessageList{
   var $result_mind_scanner = array('message' => "さんは|さとり|でした", 'delimiter' => array('|' => 'mind'));
   var $result_evoke_scanner = array('message' => "さんは|イタコ|でした", 'type' => 'result_mind_scanner');
   var $result_presage_scanner = array('message' => "さんは|件|でした", 'type' => 'result_mind_scanner');
+  var $result_clairvoyance_scanner = array('message' => "さんは|猩々|でした", 'type' => 'result_mind_scanner');
   var $result_whisper_scanner = array('message' => "さんは|囁騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_howl_scanner = array('message' => "さんは|吠騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_telepath_scanner = array('message' => "さんは|念騒霊|でした", 'type' => 'result_mind_scanner');
   var $result_jealousy = array('message' => "さんは|橋姫|でした", 'delimiter' => array('|' => 'jealousy'));
+  var $result_divorce_jealousy = array('message' => "さんは|縁切地蔵|でした", 'delimiter' => array('|' => 'jealousy'));
   var $result_priest_jealousy = array('message' => "さんは|恋司祭|でした", 'type' => 'result_jealousy');
   var $result_poison_jealousy = array('message' => "さんは|毒橋姫|でした", 'type' => 'result_jealousy');
-  var $result_divorce_jealousy = array('message' => "さんは|縁切地蔵|でした", 'delimiter' => array('|' => 'jealousy'));
   var $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
   var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした", 'type' => 'result_doll');
   var $result_phantom_doll = array('message' => "さんは|倫敦人形|でした", 'type' => 'result_doll');
@@ -1153,9 +1165,9 @@ class RoleMessageList{
   var $result_silver_doll = array('message' => "さんは|露西亜人形|でした", 'type' => 'result_doll');
   var $result_doll_master = array('message' => "さんは|人形遣い|でした", 'type' => 'result_doll');
   var $result_brownie = array('message' => "さんは|座敷童子|でした", 'delimiter' => array('|' => 'brownie'));
-  var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   var $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
   var $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
+  var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   var $result_wolf = array('message' => "さんは|人狼|でした", 'delimiter' => array('|' => 'wolf'));
   var $result_boss_wolf = array('message' => "さんは|白狼|でした", 'type' => 'result_wolf');
   var $result_gold_wolf = array('message' => "さんは|金狼|でした", 'type' => 'result_wolf');
@@ -1218,6 +1230,7 @@ class RoleMessageList{
   var $result_self_cupid = array('message' => "さんは|求愛者|でした", 'type' => 'result_cupid');
   var $result_moon_cupid = array('message' => "さんは|かぐや姫|でした", 'type' => 'result_cupid');
   var $result_mind_cupid = array('message' => "さんは|女神|でした", 'type' => 'result_cupid');
+  var $result_sweet_cupid = array('message' => "さんは|弁財天|でした", 'type' => 'result_cupid');
   var $result_triangle_cupid = array('message' => "さんは|小悪魔|でした", 'type' => 'result_cupid');
   var $result_angel = array('message' => "さんは|天使|でした", 'type' => 'result_cupid');
   var $result_rose_angel = array('message' => "さんは|薔薇天使|でした", 'type' => 'result_angel');
@@ -1327,6 +1340,8 @@ class RoleMessageList{
   var $exchange_footer = array('message' => "さんに|憑依|します", 'type' => 'result_wolf');
   var $sympathy_result = array('message' => "|共感|結果： ", 'type' => 'result_mind_scanner');
   var $presage_result_header = array('message' => "|受託|結果： ", 'type' => 'result_mind_scanner');
+  var $clairvoyance_result_header = array('message' => "|透視|結果： ", 'type' => 'result_mind_scanner');
+  var $clairvoyance_result_footer = array('message' => "さんに能力を行使したようです", 'type' => 'result_mind_scanner');
 }
 
 class WishRoleList{
@@ -1375,22 +1390,19 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
+#$builder->Output('sex_mage');
 #$builder->Output('bacchus_medium');
 #$builder->Output('high_priest');
+#$builder->Output('clairvoyance_scanner');
 #$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');
 #$builder->Output('silver_doll');
 #$builder->Output('revive_brownie');
-#$builder->Output('scarlet_wolf');
-#$builder->Output('scarlet_fox');
+#$builder->Output('sweet_cupid');
 #$builder->Output('doom_vampire');
 #$builder->Output('scarlet_chiroptera');
-#$builder->Output('shadow_fairy');
+$builder->Output('shadow_fairy');
 #$builder->Output('poison_ogre');
-#$builder->Output('incubus_ogre');
 #$builder->Output('power_ogre');
-#$builder->Output('yaksa');
-#$builder->Output('succubus_yaksa');
 #$builder->Output('dowser_yaksa');
-$builder->Output('joker');

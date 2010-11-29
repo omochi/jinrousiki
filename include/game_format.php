@@ -44,6 +44,9 @@ class DocumentBuilder{
     $this->flag->common    = $this->actor->IsCommon(true);
     $this->flag->wolf      = $SELF->IsWolf(true) || $this->actor->IsRole('whisper_mad');
     $this->flag->fox       = $SELF->IsFox(true);
+    $this->flag->whisper   = $this->actor->IsRole('whisper_ringing');
+    $this->flag->howl      = $this->actor->IsRole('howl_ringing');
+    $this->flag->lovers    = $ROOM->date > 1 && $this->actor->IsRole('sweet_ringing');
     $this->flag->mind_read = $ROOM->date > 1 && ($SELF->IsLive() || $ROOM->single_view_mode);
 
     //発言完全公開フラグ

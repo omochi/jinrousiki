@@ -668,6 +668,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#speaker">スピーカー</a>
 <a href="#whisper_ringing">囁耳鳴</a>
 <a href="#howl_ringing">吠耳鳴</a>
+<a href="#sweet_ringing">恋耳鳴</a>
 <a href="#deep_sleep">爆睡者</a>
 <a href="#silent">無口</a>
 <a href="#mower">草刈り</a>
@@ -764,9 +765,26 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 遠吠えの数で狼の人数を推測するケースがあるのでそれの妨害を狙ってみました。
 </pre>
 
+<h3><a id="sweet_ringing">恋耳鳴</a> [Ver. 1.4.0 β22〜]</h3>
+<pre>
+二日目以降、恋人の独り言が専用の囁き声に見えるようになります。
+共有の囁き・人狼の遠吠え・妖狐の念話は「独り言」ではないので影響しません。
+<a href="human.php#dummy_common">夢共有者</a>や<a href="human.php#mind_scanner">さとり</a>が元々見えない発言は見えません。
+<a href="wolf.php#wise_wolf">賢狼</a>の能力にも変化はありません。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#sweet_cupid">弁財天</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#howl_ringing">吠耳鳴</a>の対恋人バージョンです。
+</pre>
+
 <h3><a id="deep_sleep">爆睡者</a> [Ver. 1.4.0 β14〜]</h3>
 <pre>
 共有の囁き・人狼の遠吠えが一切見えなくなります。
+他の耳鳴系と重複していても表示されません。
 </pre>
 <h4>関連役職</h4>
 <pre>

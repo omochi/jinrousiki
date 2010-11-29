@@ -63,6 +63,8 @@ class Message{
   //var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
   //var $common_talk = 'ですぅ・・・ですぅ・・・'; //共有者の小声
   var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の小声
+  var $lovers_talk = 'うふふ・・・うふふ・・・'; //恋人の囁き
+  //var $lovers_talk = 'きゃっきゃうふふ・・・ちゅっちゅ！！'; //恋人の囁き
   var $howling = 'キィーーン・・・'; //スピーカーの音割れ効果音
 
   //OutputLastWords() : 遺言の表示

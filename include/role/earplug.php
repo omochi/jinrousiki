@@ -13,6 +13,12 @@ class Role_earplug extends RoleTalkFilter{
   function Role_earplug(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
+  function Ignored(){
+    global $ROOM;
+    return parent::Ignored() ||
+      ($ROOM->log_mode && $ROOM->IsEvent('earplug') && ! $ROOM->IsDay());
+  }
+
   function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
     $this->ChangeVolume('down', $volume, $sentence);
   }

@@ -644,13 +644,6 @@ function OutputTalk($talk, &$builder){
     ($real_user->IsRole('possessed_mad')  && $said_user->IsSame($builder->actor->uname)) ||
     ($real_user->IsRole('possessed_fox')  && $builder->flag->fox);
 
-  //発言表示フラグ判定
-  $flag_dummy_boy = $builder->flag->dummy_boy;
-  $flag_common    = $builder->flag->common || $flag_mind_read;
-  $flag_wolf      = $builder->flag->wolf   || $flag_mind_read;
-  $flag_fox       = $builder->flag->fox    || $flag_mind_read;
-  $flag_open_talk = $builder->flag->open_talk;
-
   if($talk->type == 'system' && isset($talk->action)){ //投票情報
     /*
       + ゲーム開始前の投票 (KICK 等) は常時表示
@@ -664,7 +657,7 @@ function OutputTalk($talk, &$builder){
       return true;
 
     default:
-      return $flag_open_talk || $ROOM->IsBeforeGame() ?
+      return $builder->flag->open_talk || $ROOM->IsBeforeGame() ?
 	$builder->AddSystemMessage($talk->class, $handle_name . $sentence) : false;
     }
   }
@@ -677,7 +670,7 @@ function OutputTalk($talk, &$builder){
 
   switch($talk->scene){
   case 'night':
-    if($flag_open_talk){
+    if($builder->flag->open_talk){
       $talk_class = '';
       switch($talk->type){
       case 'common':
@@ -714,39 +707,55 @@ function OutputTalk($talk, &$builder){
     else{
       switch($talk->type){
       case 'common': //共有者
-	return $flag_common ? $builder->AddTalk($said_user, $talk)
+	return ($builder->flag->common || $flag_mind_read) ? $builder->AddTalk($said_user, $talk)
 	  : $builder->AddWhisper('common', $talk);
 
       case 'wolf': //人狼
-	return $flag_wolf ? $builder->AddTalk($said_user, $talk)
+	return ($builder->flag->wolf || $flag_mind_read) ? $builder->AddTalk($said_user, $talk)
 	  : $builder->AddWhisper('wolf', $talk);
 
       case 'mad': //囁き狂人
-	return $flag_wolf ? $builder->AddTalk($said_user, $talk) : false;
+	if($builder->flag->wolf || $flag_mind_read)
+	  return $builder->AddTalk($said_user, $talk);
+	elseif($builder->flag->lovers && $said_user->IsLovers())
+	  return $builder->AddWhisper('lovers', $talk);
+	else
+	  return false;
 
       case 'fox': //妖狐
-	return $flag_fox ? $builder->AddTalk($said_user, $talk)
-	  : ($SELF->IsRole('wise_wolf') ? $builder->AddWhisper('common', $talk) : false);
+	if($builder->flag->fox || $flag_mind_read)
+	  return $builder->AddTalk($said_user, $talk);
+	elseif($SELF->IsRole('wise_wolf'))
+	  return $builder->AddWhisper('common', $talk);
+	elseif($builder->flag->lovers && $said_user->IsLovers())
+	  return $builder->AddWhisper('lovers', $talk);
+	else
+	  return false;
 
       case 'self_talk': //独り言
-	if($flag_dummy_boy || $flag_mind_read || $builder->actor->IsSame($talk->uname)){
+	if($builder->flag->dummy_boy || $flag_mind_read || $builder->actor->IsSame($talk->uname)){
 	  return $builder->AddTalk($said_user, $talk);
 	}
-	elseif($builder->actor->IsRole('whisper_ringing')){ //囁き判定 (囁耳鳴)
+	elseif($builder->flag->whisper){ //囁き判定 (囁耳鳴)
 	  return $builder->AddWhisper('common', $talk);
 	}
 	//遠吠え判定 (孤立した狼 / 化狐 / 吠耳鳴)
 	elseif(($said_user->IsWolf() && $said_user->IsLonely()) ||
-	       $said_user->IsRole('howl_fox') || $builder->actor->IsRole('howl_ringing')){
+	       $said_user->IsRole('howl_fox') || $builder->flag->howl){
 	  return $builder->AddWhisper('wolf', $talk);
 	}
-	return false;
+	elseif($builder->flag->lovers && $said_user->IsLovers()){ //恋耳鳴判定
+	  return $builder->AddWhisper('lovers', $talk);
+	}
+	else{
+	  return false;
+	}
       }
     }
     return false;
 
   case 'heaven':
-    return $flag_open_talk ?
+    return $builder->flag->open_talk ?
       $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, $talk->scene) : false;
 
   default:
@@ -780,12 +789,11 @@ function OutputTimeStamp($builder){
   OutputTalk($talk, $builder);
 }
 
-//占う、狼が狙う、護衛する等、能力を使うメッセージ
+//前日の能力発動結果を出力
 function OutputAbilityAction(){
   global $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   //昼間で役職公開が許可されているときのみ表示
-  //(猫又は役職公開時は行動できないので不要)
   if(! $ROOM->IsDay() || ! ($SELF->IsDummyBoy() || $ROOM->IsOpenCast())) return false;
 
   $header = '<b>前日の夜、';
@@ -795,14 +803,16 @@ function OutputAbilityAction(){
   }
   else{
     $yesterday = $ROOM->date - 1;
-    $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'JAMMER_MAD_DO',
-			 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
+    $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
+			 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO',
+			 'FAIRY_DO');
     if($yesterday == 1){
-      array_push($action_list, 'MIND_SCANNER_DO', 'CUPID_DO', 'MANIA_DO');
+      array_push($action_list, 'CUPID_DO', 'MANIA_DO');
     }
     else{
       array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
-		 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
+		 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'POISON_CAT_DO',
+		 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
 		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
     }
     $action = '';
@@ -852,6 +862,14 @@ function OutputAbilityAction(){
 
     case 'TRAP_MAD_NOT_DO':
       echo $MESSAGE->trap_not_do;
+      break;
+
+    case 'POISON_CAT_DO':
+      echo $target.$MESSAGE->revive_do;
+      break;
+
+    case 'POISON_CAT_NOT_DO':
+      echo $MESSAGE->revive_not_do;
       break;
 
     case 'POSSESSED_NOT_DO':

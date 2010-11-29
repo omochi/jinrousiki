@@ -89,13 +89,13 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>〜<?php echo $MESSAGE->deadman ?></h4>
 <ul>
-<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>などの毒能力者)</li>
+<li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
 <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
-<li>ショック死 (<a href="new_role/human.php#bacchus_medium">神主</a>・<a href="new_role/human.php#seal_medium">封印師</a>・<a href="new_role/human.php#jealousy">橋姫</a>・<a href="new_role/wolf.php#agitate_mad">扇動者</a>・<a href="new_role/sub_role.php#chicken_group">小心者系</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a>)</li>
+<li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>)</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->blind_vote ?></h4>
@@ -108,8 +108,8 @@ OutputInfoPageHeader('詳細な仕様');
 <ul>
 <li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
 <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
-<li>身代わり (<a href="new_role/human.php#sacrifice_cat">猫神</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/vampire.php#sacrifice_vampire">吸血公</a>・<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="new_role/sub_role.php#protected">庇護者</a>)</li>
-<li>毒 (<a href="new_role/human.php#poison_group">埋毒者系</a>などの毒能力者)</li>
+<li>身代わり (<a href="new_role/ability.php#sacrifice">身代わり能力者</a>)</li>
+<li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
 <li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
 <li>吸血 (<a href="new_role/vampire.php#incubus_vampire">青髭公</a>・<a href="new_role/vampire.php#succubus_vampire">飛縁魔</a>)</li>
 <li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
@@ -117,20 +117,20 @@ OutputInfoPageHeader('詳細な仕様');
 <li><a href="new_role/human.php#guard_hunt">狩り</a> (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
 <li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
 <li>呪殺 (<a href="new_role/human.php#mage">占い師</a>)</li>
-<li>呪返し (<a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/wolf.php#cursed_wolf">呪狼</a>などの呪い所持者・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>などの呪術能力者)</li>
-<li>憑依 (<a href="new_role/wolf.php#possessed_wolf">憑狼</a>などの憑依能力者)</li>
+<li>呪返し (<a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/ability.php#cursed_group">呪い能力者</a>)</li>
+<li>憑依 (<a href="new_role/ability.php#possessed">憑依能力者</a>)</li>
 <li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
 <h4>〜<?php echo $MESSAGE->revive_success ?></h4>
 <ul>
-<li>蘇生 (<a href="new_role/human.php#poison_cat_group">猫又系</a>などの蘇生能力者・<a href="new_role/human.php#revive_priest">天人</a>)</li>
+<li>蘇生 (<a href="new_role/ability.php#revive">蘇生能力者</a>)</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->revive_failed ?></h4>
 <ul>
-<li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/human.php#poison_cat_group">猫又系</a>などの蘇生能力者)</li>
+<li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>)</li>
 </ul>
 
 <h4>〜さんの頭の上に〜の花が咲きました</h4>
@@ -166,7 +166,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 + 役職判定順
   - <a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 →
-    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
+    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a>
 </pre>
 
 <h3><a id="vote_night">夜</a></h3>

@@ -200,6 +200,7 @@ function VoteNight(){
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
   switch($RQ_ARGS->situation){
   case 'ESCAPE_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('escaper')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
@@ -217,19 +218,23 @@ function VoteNight(){
     break;
 
   case 'GUARD_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'REPORTER_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('reporter')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'ANTI_VOODOO_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsReviveGroup()) OutputVoteResult('夜：投票イベントが一致しません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
@@ -242,6 +247,7 @@ function VoteNight(){
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('assassin') && ! $SELF->IsRole('doom_fox')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
@@ -249,11 +255,20 @@ function VoteNight(){
     break;
 
   case 'MIND_SCANNER_DO':
-    if(! $SELF->IsRole('mind_scanner', 'evoke_scanner', 'presage_scanner')){
-      OutputVoteResult('夜：投票イベントが一致しません');
+    if($SELF->IsRole('mind_scanner', 'presage_scanner')){
+      if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     }
-    if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
-      OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+    if($SELF->IsRole('evoke_scanner')){
+      if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+      if($ROOM->IsOpenCast()){
+	OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+      }
+    }
+    elseif($SELF->IsRole('clairvoyance_scanner')){
+      if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
+    }
+    else{
+      OutputVoteResult('夜：投票イベントが一致しません');
     }
     break;
 
@@ -272,11 +287,13 @@ function VoteNight(){
     break;
 
   case 'DREAM_EAT':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'POSSESSED_DO':
-  CASE 'POSSESSED_NOT_DO':
+  case 'POSSESSED_NOT_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('possessed_mad', 'possessed_fox')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
@@ -286,6 +303,7 @@ function VoteNight(){
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('trap_mad')) OutputVoteResult('夜：投票イベントが一致しません');
     if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
       OutputVoteResult('夜：罠師の罠は一度しか設置できません');
@@ -304,6 +322,7 @@ function VoteNight(){
     break;
 
   case 'CUPID_DO':
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
@@ -311,6 +330,7 @@ function VoteNight(){
     break;
 
   case 'VAMPIRE_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('vampire')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
@@ -323,11 +343,13 @@ function VoteNight(){
 
   case 'OGRE_DO':
   case 'OGRE_NOT_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsOgre()) OutputVoteResult('夜：投票イベントが一致しません');
     $not_type = $RQ_ARGS->situation == 'OGRE_NOT_DO';
     break;
 
   case 'MANIA_DO':
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
@@ -427,6 +449,7 @@ function VoteNight(){
       $is_self      = $SELF->IsRole('self_cupid');
       $is_moon      = $SELF->IsRole('moon_cupid');
       $is_mind      = $SELF->IsRole('mind_cupid');
+      $is_sweet     = $SELF->IsRole('sweet_cupid');
       $is_dummy     = $SELF->IsRole('dummy_chiroptera');
       $is_sacrifice = $SELF->IsRole('sacrifice_angel');
       foreach($target_list as $target){
@@ -449,6 +472,9 @@ function VoteNight(){
 	elseif($is_mind){ //女神：両方に共鳴者 + 他人撃ちなら自分に受信者を追加
 	  $role .= ' ' . $SELF->GetID('mind_friend');
 	  if(! $self_shoot) $SELF->AddRole($target->GetID('mind_receiver'));
+	}
+	elseif($is_sweet){ //弁財天：両方に共鳴者
+	  $role .= ' ' . $SELF->GetID('mind_friend');
 	}
 	elseif($is_sacrifice){ //守護天使：自分以外に庇護者を追加
 	  if(! $target->IsSelf()) $role .= ' ' . $SELF->GetID('protected');
@@ -691,10 +717,21 @@ function OutputVoteNight(){
     $type     = 'ASSASSIN_DO';
     $not_type = 'ASSASSIN_NOT_DO';
   }
-  elseif($role_scanner = $SELF->IsRole('mind_scanner', 'evoke_scanner', 'presage_scanner')){
-    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
-    if($SELF->IsRole('evoke_scanner') && $ROOM->IsOpenCast()){
-      OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+  elseif($role_scanner = $SELF->IsRoleGroup('scanner')){
+    if($SELF->IsRole('mind_scanner', 'presage_scanner')){
+      if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    }
+    elseif($SELF->IsRole('evoke_scanner')){
+      if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+      if($ROOM->IsOpenCast()){
+	OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
+      }
+    }
+    elseif($SELF->IsRole('clairvoyance_scanner')){
+      if($ROOM->date == 1) OutputVoteResult('夜：初日の透視はできません');
+    }
+    else{
+      OutputVoteResult('夜：あなたは投票できません');
     }
     $type = 'MIND_SCANNER_DO';
   }
@@ -764,7 +801,7 @@ function OutputVoteNight(){
     $not_type = 'OGRE_NOT_DO';
   }
   elseif($SELF->IsRoleGroup('mania')){
-    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外はコピーできません');
     $type = 'MANIA_DO';
   }
   else{

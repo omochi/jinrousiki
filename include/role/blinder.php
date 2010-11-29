@@ -14,7 +14,9 @@ class Role_blinder extends RoleTalkFilter{
   function __construct(){ parent::__construct(); }
 
   function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
-    if($this->Ignored() || $this->IsSameUser($user->uname)) return;
+    global $ROOM;
+
+    if($this->Ignored() || ! $ROOM->IsDay() || $this->IsSameUser($user->uname)) return;
     $user_info = '<font style="color:' . $user->color . '">◆</font>';
   }
 }

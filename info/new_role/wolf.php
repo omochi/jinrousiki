@@ -1082,7 +1082,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>
+<a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

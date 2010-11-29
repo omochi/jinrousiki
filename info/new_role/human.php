@@ -43,10 +43,10 @@ OutputRolePageHeader('村人陣営');
 <h2><a id="human_group">村人系</a></h2>
 <p>
 <a href="#human">村人</a>
-<a href="#elder">長老</a>
 <a href="#saint">聖女</a>
 <a href="#executor">執行者</a>
 <a href="#escaper">逃亡者</a>
+<a href="#elder">長老</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
@@ -64,31 +64,10 @@ OutputRolePageHeader('村人陣営');
 <a href="#brownie">座敷童子</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>
 </pre>
 
-<h3><a id="elder">長老</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
-<pre>
-処刑投票数が +1 される村人。
-</pre>
-<ol>
-  <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
-    例) <a href="sub_role.php#authority_group">権力者</a>ならさらに +1
-  </li>
-  <li><a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
-</ol>
-<h4>関連役職</h4>
-<pre>
-<a href="#brownie">座敷童子</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="sub_role.php#authority">権力者</a>相当の能力を持った村人です。
-PP ラインの計算を難しくさせるために作成してみました。
-能力の性質上、これを騙るのはほぼ不可能なので同じ能力を持った他陣営種が存在します。
-</pre>
-
 <h3><a id="saint">聖女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
-再投票の最多得票者になった場合に、内訳によって吊られる人を変化させる村人。
+再投票の最多得票者になった場合に、内訳によって処刑する人を変化させる村人。
 本人表記は「村人」。
 </pre>
 <ol>
@@ -110,7 +89,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 やる夫人狼のプレイヤーさんがモデルです。
 判定法則が少々複雑ですが、基本的には村人陣営が有利になる結果になります。
-<a href="sub_role.php#decide">決定者</a>同様、地味ですが勝負所で効いてくる存在になることでしょう。
+<a href="sub_role.php#decide">決定者</a>同様、一見地味ですが勝負所で効いてくる存在になることでしょう。
 </pre>
 
 <h3><a id="executor">執行者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9〜]</h3>
@@ -180,6 +159,27 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 他国に実在する役職です。村勝利を課せられた<a href="chiroptera.php">蝙蝠</a>のような存在ですね。
 </pre>
 
+<h3><a id="elder">長老</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<pre>
+処刑投票数が +1 される村人。
+</pre>
+<ol>
+  <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
+    例) <a href="sub_role.php#authority_group">権力者</a>ならさらに +1
+  </li>
+  <li><a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#brownie">座敷童子</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="sub_role.php#authority">権力者</a>相当の能力を持った村人です。
+PP ラインの計算を難しくさせるために作成してみました。
+能力の性質上、これを騙るのはほぼ不可能なので同じ能力を持った他陣営種が存在します。
+</pre>
+
 <h3><a id="suspect">不審者</a> (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9〜]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <h4>[耐性] 精神鑑定：嘘つき</h4>
@@ -205,7 +205,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-村人陣営ですが、人狼陣営に有利な存在です。
+村人陣営ですが、<a href="wolf.php">人狼陣営</a>に有利な存在です。
 ただし、人狼サイドにも不審者である事は分からないので
 占い師の真贋が読みづらくなります。
 </pre>
@@ -216,7 +216,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 他の国で言うと「自覚のない夢遊病者」。
 本人には「村人」と表示されているが、夜になると無意識に歩きまわるため
-人狼に無意識であることが分かってしまう。
+人狼に無意識であることが分かってしまう (<a href="wolf.php#wolf_partner">仲間表示[人狼]</a>)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -224,9 +224,8 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#suspect">不審者</a>同様、村人陣営ですが人狼陣営に有利な存在です。
-人狼サイドから見ると無能力であることが確定の村人なので噛まれにくいです。
-確定白で長期間放置されると<a href="wolf.php#boss_wolf">白狼</a>扱いされるかも。
+<a href="#suspect">不審者</a>同様、村人陣営ですが<a href="wolf.php">人狼陣営</a>に有利な存在です。
+無能力であることが確定の村人なので、人狼サイドは潜伏役職を絞りやすくなります。
 </pre>
 
 
@@ -247,10 +246,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h3><a id="mage_rule">基本ルール</a> [占い]</h3>
 <ol>
   <li>占い能力は人狼の襲撃や暗殺などで事前に死んでいたら無効になります。<br>
-    例) 人狼に噛まれた占い師が妖狐を占っていても無効
+    例) 人狼に噛まれた占い師が妖狐を占っていても無効。
   </li>
-  <li>占い対象先が同様の理由で事前に死んでいたら対象の能力は無効になります<br>
-    <a href="#assassin">暗殺者</a>に殺された<a href="wolf.php#cursed_wolf">呪狼</a>を占い師が占っても呪返しは受けない
+  <li>占い対象先が同様の理由で事前に死んでいたら対象の能力は無効になります。<br>
+    例) <a href="#assassin">暗殺者</a>に殺された<a href="wolf.php#cursed_wolf">呪狼</a>を占っても呪返しは受けない。
   </li>
 </ol>
 
@@ -350,7 +349,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#stargazer_fox">星狐</a>
+<a href="#border_priest">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="fox.php#stargazer_fox">星狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -432,7 +431,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="necromancer">霊能者</a> (占い結果：村人 / 霊能結果：村人)</h3>
-<h4>[霊能能力] 火車：有効</h4>
+<h4>[霊能能力] 処刑者情報：有り / 火車：有効</h4>
 <pre>
 霊能者系の基本種。
 </pre>
@@ -442,7 +441,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="soul_necromancer">雲外鏡</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
-<h4>[霊能能力] 火車：有効</h4>
+<h4>[霊能能力] 処刑者情報：有り / 火車：有効</h4>
 <pre>
 処刑した人の役職が分かる上位霊能者。
 </pre>
@@ -455,7 +454,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 
 <h3><a id="attempt_necromancer">蟲姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
-<h4>[霊能能力] 火車：無効</h4>
+<h4>[霊能能力] 処刑者情報：無し / 火車：無効</h4>
 <pre>
 前日の<a href="wolf.php#wolf_group">人狼系</a>・<a href="ability.php#assassin">暗殺能力者</a>に狙われて生き残った人と<a href="ability.php#revive">蘇生</a>に失敗した人が分かる特殊な霊能者。
 </pre>
@@ -476,16 +475,20 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <li>死亡した直後に蘇生した場合でも「生き残った」と判定される。</li>
 <li>蘇生失敗メッセージは<a href="#yama_necromancer">閻魔</a>と同様、画面の下に表示される (霊界で見えるものと同じ)。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#clairvoyance_scanner">猩々</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-一部の「生と死の未遂」を感知できる特殊霊能者です。「虫の知らせ」がモチーフです。
+一部の「生と死の未遂」を感知できる特殊霊能者で、「虫の知らせ」がモチーフです。
 「誰が狙われたか」という情報を元に前日の夜に何が起きたか推測できます。
 下界にいながら蘇生能力者の存在を感知できるので「蘇生失敗騙り」を看破できます。
-また、「暗殺未遂」情報から「死の宣告騙り」を看破することも可能になります。
+また、「暗殺未遂」情報から「<a href="sub_role.php#death_warrant">死の宣告</a>騙り」を看破することも可能になります。
 </pre>
 
 <h3><a id="yama_necromancer">閻魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
-<h4>[霊能能力] 火車：無効</h4>
+<h4>[霊能能力] 処刑者情報：無し / 火車：無効</h4>
 <pre>
 前日の死者の<a href="../spec.php#dead">死因</a>が分かる特殊な霊能者。
 死因は画面の下に表示される「〜は無残な〜」の下の行に
@@ -501,7 +504,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h3><a id="dummy_necromancer">夢枕人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
 <h4>[役職表示] <a href="#necromancer">霊能者</a></h4>
 <h4>[耐性] 精神鑑定：嘘つき / 獏襲撃：死亡</h4>
-<h4>[霊能能力] 火車：無効</h4>
+<h4>[霊能能力] 処刑者情報：有り / 火車：無効</h4>
 <pre>
 「村人」と「人狼」が逆に判定される霊能者。本人表記は「霊能者」。
 「村人」と「人狼」以外の判定 (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#child_fox">子狐</a>など) は正しい結果が表示される。
@@ -535,7 +538,9 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 突然死した人の所属陣営が分かる、霊能のような役職。
 闇鍋モードで登場する「ショック死」する人たちの情報を取るのが主な仕事だが
 <a href="#necromancer_group">霊能者</a>とは判定法則が違うので注意。
-
+</pre>
+<h4>所属陣営判定法則</h4>
+<pre>
 所属陣営とは、勝敗が決まったときの陣営で、役職表記の先頭に記載されいてる「〜陣営」を指す。
 例1) <a href="wolf.php#wolf_group">人狼系</a>・<a href="wolf.php#mad_group">狂人系</a>は「人狼」
 例2) <a href="fox.php#fox_group">妖狐系</a>・<a href="fox.php#child_fox_group">子狐系</a>は「妖狐」
@@ -576,6 +581,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
   <li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外です。</li>
   <li>ショック死させた場合の死因は「神主に酔い潰された」で<a href="#cure_pharmacist">河童</a>の能力発動対象外です。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の神主がモチーフの、対<a href="ogre.php">鬼陣営</a>能力者です。
@@ -597,7 +606,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -626,18 +635,18 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <p>
 <a href="#priest">司祭</a>
 <a href="#bishop_priest">司教</a>
-<a href="#high_priest">大司祭</a>
 <a href="#dowser_priest">探知師</a>
-<a href="#border_priest">境界師</a>
+<a href="#high_priest">大司祭</a>
 <a href="#crisis_priest">預言者</a>
 <a href="#revive_priest">天人</a>
+<a href="#border_priest">境界師</a>
 <a href="#dummy_priest">夢司祭</a>
 </p>
 
 <h3><a id="priest_rule">基本ルール</a> [司祭]</h3>
 <ol>
-  <li>判定結果は夜も表示されたままですが、昼の処刑結果は反映されていません</li>
-  <li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象です</li>
+  <li>判定結果は夜も表示されたままですが、昼の処刑結果は反映されていません。</li>
+  <li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象です。</li>
 </ol>
 
 <h3><a id="crisis_priest_rule">人外勝利前日判定ルール</a></h3>
@@ -662,10 +671,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)</li>
-  <li>村人陣営の判定法則は<a href="#medium">巫女</a>と同じ</li>
-  <li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に行なわれます<br>
-    従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値です
+  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
+  <li>村人陣営の判定法則は<a href="#medium">巫女</a>と同じ。</li>
+  <li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に行なわれます。<br>
+    従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値です。
   </li>
 </ol>
 <h4>同一表示役職</h4>
@@ -686,13 +695,34 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>判定が出るのは 3 日目以降の奇数日 (3 → 5 → 7 →...)</li>
-  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される</li>
+  <li>判定が出るのは 3 日目以降の奇数日 (3 → 5 → 7 →...)。</li>
+  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#priest">司祭</a>の亜種で、こちらは死者の内訳を推測することができます。
 特に、3 日目の情報は身代わり君の所属陣営を絞り込むのに有効です。
+</pre>
+
+<h3><a id="dowser_priest">探知師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
+<pre>
+一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の合計が分かる、特殊な司祭。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<ol>
+  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
+  <li>本人には表示されていないサブ役職もカウントされます (例：<a href="sub_role.php#decide">決定者</a>)。</li>
+  <li>複数所持できるサブ役職はまとめて一つとカウントされます (例：<a href="sub_role.php#lovers">恋人</a>)。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ogre.php#dowser_yaksa">毘沙門天</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のナズーリンがモチーフです。
+<a href="lovers.php">恋人</a>の種類の特定、<a href="ability.php#possessed">憑依能力者</a>・<a href="vampire.php">吸血鬼陣営</a>の行動状況の把握に威力を発揮します。
 </pre>
 
 <h3><a id="high_priest">大司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21〜]</h3>
@@ -706,41 +736,6 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 発動は遅いですが、情報量が多いので多数の役職を一人で兼ねることができます。
 <a href="#guard_limit">護衛制限</a>がかかっているので、生き残るのが難しい役職ですね。
-</pre>
-
-<h3><a id="dowser_priest">探知師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
-<h4>[耐性] 護衛：制限対象</h4>
-<pre>
-一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の合計が分かる、特殊な司祭。
-狩人の<a href="#guard_limit">護衛制限</a>対象。
-</pre>
-<ol>
-  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)</li>
-  <li>本人には表示されていないサブ役職もカウントされます (例：決定者)</li>
-  <li>複数所持できるサブ役職はまとめて一つとカウントされます (例：恋人)</li>
-</ol>
-<h4>[作成者からのコメント]</h4>
-<pre>
-東方 Project のナズーリンがモチーフです。
-<a href="lovers.php">恋人</a>の種類の特定、憑依能力者・<a href="vampire.php">吸血鬼陣営</a>の行動状況の把握に威力を発揮します。
-</pre>
-
-<h3><a id="border_priest">境界師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β12〜]</h3>
-<h4>[耐性] 護衛：制限対象</h4>
-<pre>
-2日目以降、「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。
-狩人の<a href="#guard_limit">護衛制限</a>対象。
-</pre>
-<ol>
-  <li>能力の発動は 2 日目からなので、判定結果が出るのは 3 日目の昼からになります</li>
-  <li>発動していない投票もカウントされます<br>
-    例) 人狼に噛み殺された占い師の投票もカウントされる
-  </li>
-</ol>
-<h4>[作成者からのコメント]</h4>
-<pre>
-東方 Project のマエリベリー・ハーンがモチーフです。
-例えば、自分を「占った」人が本物かどうかを推測することができます。
 </pre>
 
 <h3><a id="crisis_priest">預言者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
@@ -764,19 +759,19 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>蘇生条件 (どれか一つを満たせば蘇生する)</h4>
 <ol>
-  <li>「<a href="#crisis_priest_rule">人外勝利前日</a>」である</li>
-  <li>5 日目である</li>
-  <li>村の人口が半分以下になった</li>
-  <li>生存している人狼が一人になった</li>
+  <li>「<a href="#crisis_priest_rule">人外勝利前日</a>」である。</li>
+  <li>5 日目である。</li>
+  <li>村の人口が半分以下になった。</li>
+  <li>生存している人狼が一人になった。</li>
 </ol>
 <h4>詳細な仕様</h4>
 <ol>
-  <li>2 日目の朝の死亡メッセージは「〜は無惨な〜」で、死因は「天に帰った」です</li>
-  <li>一度蘇生すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)</li>
-  <li>恋人になると能力を失います (2 日目朝の死亡も起こりません)</li>
-  <li><a href="mania.php#mania">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は実行されません</li>
-  <li>2 日目朝以降に死んでも蘇生判定を満たせば生き返ります</li>
-  <li>5 日目になると能力を失います</li>
+  <li>2 日目の朝の死亡メッセージは「〜は無惨な〜」で、死因は「天に帰った」です。</li>
+  <li>一度蘇生すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>恋人になると能力を失います (2 日目朝の死亡も起こりません)。</li>
+  <li><a href="mania.php#mania_group">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は実行されません。</li>
+  <li>2 日目朝以降に死んでも蘇生判定を満たせば生き返ります。</li>
+  <li>5 日目になると能力を失います。</li>
   <li>蘇生対象外です (選ばれた場合は失敗する)。</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です。</li>
 </ol>
@@ -790,19 +785,41 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 復活した天人は恋人でない事が保証されるので非常に頼りになります。
 </pre>
 
+<h3><a id="border_priest">境界師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β12〜]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
+<pre>
+2日目以降、「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<ol>
+  <li>能力の発動は 2 日目からなので、判定結果が出るのは 3 日目の昼からになります。</li>
+  <li>発動していない投票もカウントされます。<br>
+    例) 人狼に噛み殺された占い師の投票もカウントされる。
+  </li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#stargazer_mage">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project のマエリベリー・ハーンがモチーフです。
+例えば、自分を「占った」人が本物かどうかを推測することができます。
+</pre>
+
 <h3><a id="dummy_priest">夢司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
 <h4>[役職表示] <a href="#priest">司祭</a></h4>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：制限対象 / 獏襲撃：死亡</h4>
 <pre>
-一定日数ごとに現在、生存している夢系能力者と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。
+一定日数ごとに現在、生存している<a href="ability.php#dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。
 本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
 狩人の護衛制限対象。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dummy_mage">夢見人</a>の司祭バージョンです。
-司祭と判定法則が全然違うので比較的自覚は容易な部類に入ります。
-夢系騙りを看破するヒントになりますが、逆に司祭騙りの難易度が下がることになります。
+<a href="#priest">司祭</a>と判定法則が全然違うので比較的自覚は容易な部類に入ります。
+<a href="ability.php#dummy">夢系</a>騙りを看破するヒントになりますが、逆に司祭騙りの難易度が下がることになります。
 </pre>
 
 
@@ -824,7 +841,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 
 <h3><a id="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#revive_priest">天人</a>・<a href="#crisis_priest">預言者</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#doll_master">人形遣い</a>です</li>
+  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
@@ -945,7 +962,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#escaper">逃亡者</a>・<a href="#presage_scanner">件</a>
+<a href="#escaper">逃亡者</a>・<a href="#presage_scanner">件</a>・<a href="#clairvoyance_scanner">猩々</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1491,11 +1508,12 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 詳細な判定順は<a href="../spec.php#vote_night">詳細な仕様</a>参照。
 </pre>
 <ol>
-<li>一度死んだ人の能力発動はキャンセルされます</li>
-<li>「反魂」可能な対象は恋人以外全てです</li>
-<li>自分が暗殺されても投票は有効です (暗殺系の処理は同時並行処理扱い)</li>
-<li>「反魂」先が憑依能力者だった場合は、元の人が蘇生します(<a href="wolf.php#possessed_wolf_revive">憑狼</a>の処理と同じ)</li>
+<li>一度死んだ人の能力発動はキャンセルされます。</li>
+<li>「反魂」可能な対象は恋人以外全てです。</li>
+<li>自分が暗殺されても投票は有効です (暗殺系の処理は同時並行処理扱い)。</li>
+<li>「反魂」先が憑依能力者だった場合は、元の人が蘇生します(<a href="wolf.php#possessed_wolf_revive">憑狼</a>の処理と同じ)。</li>
 </ol>
+<h4>能力発動例</h4>
 <pre>
 例1) A[反魂師] → B[占い師] ← C[反魂師]、B[占い師] → D[妖狐]
 占い結果：何も出ない (呪殺もなし)
@@ -1562,6 +1580,7 @@ Bの蘇生処理はキャンセル
 <a href="#mind_scanner">さとり</a>
 <a href="#evoke_scanner">イタコ</a>
 <a href="#presage_scanner">件</a>
+<a href="#clairvoyance_scanner">猩々</a>
 <a href="#whisper_scanner">囁騒霊</a>
 <a href="#howl_scanner">吠騒霊</a>
 <a href="#telepath_scanner">念騒霊</a>
@@ -1637,6 +1656,32 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 さらなる悲劇が起こる可能性があるのがポイントです。
 </pre>
 
+<h3><a id="clairvoyance_scanner">猩々</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22〜]</h3>
+<h4>[耐性] 護衛：制限対象 / 罠：有効</h4>
+<pre>
+2日目以降、夜に投票した人のその夜の投票先を知ることができる特殊なさとり。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<ol>
+<li>対象が投票していない場合は何も出ない。</li>
+<li><a href="#assassin_group">暗殺者系</a>・<a href="#poison_cat_group">猫又系</a>などが「行動しない」を選んでいた場合は何も出ない。</li>
+<li>能力を発動できなかった場合でも分かる。<br>
+  例) 人狼に噛み殺された占い師の投票先は分かる。
+</li>
+<li>投票先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡する。</a>
+<li>身代わり君を対象に選ぶことはできない。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#stargazer_mage">占星術師</a>・<a href="#border_priest">境界師</a>・<a href="#reporter">ブン屋</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/864" target="_top">新役職考案スレ</a> の 864 が原型です。「しょうじょう」と読みます。
+<a href="#reporter">ブン屋</a>と良く似た能力で、判定処理も<a href="#reporter">ブン屋</a>の直後となっています。
+他の投票能力者や、<a href="#attempt_necromancer">蟲姫</a>・<a href="#yama_necromancer">閻魔</a>などと連携できると非常に強力です。
+</pre>
+
 <h3><a id="whisper_scanner">囁騒霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
 <pre>
 2日目夜以降、<a href="#common_group">共有者系</a>に一方的に声が届く特殊なさとり。
@@ -1676,16 +1721,18 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h2><a id="jealousy_group">橋姫系</a></h2>
 <p>
 <a href="#jealousy">橋姫</a>
+<a href="#divorce_jealousy">縁切地蔵</a>
 <a href="#priest_jealousy">恋司祭</a>
 <a href="#poison_jealousy">毒橋姫</a>
-<a href="#divorce_jealousy">縁切地蔵</a>
 </p>
 
 <h3><a id="jealousy">橋姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22〜]</h3>
 <pre>
 昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら
-投票した恋人をショック死させる。詳細は以下。
-
+投票した恋人をショック死させる。
+</pre>
+<h4>詳細な仕様</h4>
+<pre>
 1. 自分が吊られたら無効
 吊られない範囲で恋人の票を集める必要があります。
 対恋人で人柱になっても無意味です。
@@ -1701,11 +1748,33 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 4. カップルが別々の橋姫に投票しても無効
 他の橋姫に対する投票は参照していません。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 対恋人役職です。
 新役職考案スレ の <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/2" target="_top">2</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/21" target="_top">21</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/44" target="_top">44</a> を参考にしています。
 別れさせる処理が難しいのでこういう実装になりました。
+</pre>
+
+<h3><a id="divorce_jealousy">縁切地蔵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19〜]</h3>
+<pre>
+自分に処刑投票してきた恋人に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+<a href="#jealousy">橋姫</a>の能力は持っていない。
+</pre>
+<ol>
+<li>判定は処刑対象が決定された後</li>
+<li>自分が処刑対象になった場合は発動しない</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#cursed_brownie">祟神</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+発動機会が増えた代りに効果や発動率が<a href="#jealousy">橋姫</a>よりもかなり抑えられています。
 </pre>
 
 <h3><a id="priest_jealousy">恋司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17〜]</h3>
@@ -1732,24 +1801,6 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#poison_group">埋毒者</a>の亜種ですが、恋人限定なので所属は橋姫系です。
-</pre>
-
-<h3><a id="divorce_jealousy">縁切地蔵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19〜]</h3>
-<pre>
-自分に処刑投票してきた恋人に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
-<a href="#jealousy">橋姫</a>の能力は持っていない。
-</pre>
-<ol>
-<li>判定は処刑対象が決定された後</li>
-<li>自分が処刑対象になった場合は発動しない</li>
-</ol>
-<h4>関連役職</h4>
-<pre>
-<a href="#cursed_brownie">祟神</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-発動機会が増えた代りに効果や発動率が<a href="#jealousy">橋姫</a>よりもかなり抑えられています。
 </pre>
 
 
@@ -1939,9 +1990,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h2><a id="brownie_group">座敷童子系</a></h2>
 <p>
 <a href="#brownie">座敷童子</a>
-<a href="#history_brownie">白澤</a>
 <a href="#revive_brownie">蛇神</a>
 <a href="#cursed_brownie">祟神</a>
+<a href="#history_brownie">白澤</a>
 </p>
 
 <h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
@@ -1961,19 +2012,6 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 村人表示役職の正体を絞り込むことができます。
 </pre>
 
-<h3><a id="history_brownie">白澤</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
-<h4>[耐性] 人狼襲撃：特殊</h4>
-<pre>
-人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子系の亜種。
-能力が発動した場合は、専用のメッセージが表示される。
-<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-翠星石鯖＠やる夫人狼で実施された記念村の設定を役職にしてみました。
-東方 Project の上白沢 慧音がモチーフです。
-</pre>
-
 <h3><a id="revive_brownie">蛇神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20〜]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
 <pre>
@@ -1985,9 +2023,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <ol>
   <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
   <li>蘇生能力を失っても蘇生率向上能力は失わない。</li>
-  <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる</li>
+  <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。</li>
   <li>恋人になったら蘇生能力は無効。</li>
-  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、蘇生能力は無効。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
   <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外。</li>
@@ -2024,5 +2062,18 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 「うかつに触れると災厄が訪れる」と言われる伝承がモチーフです。
 対抗役職なしに触れる (占う・投票する) と酷い目に遭うことになります。
+</pre>
+
+<h3><a id="history_brownie">白澤</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16〜]</h3>
+<h4>[耐性] 人狼襲撃：特殊</h4>
+<pre>
+人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子系の亜種。
+能力が発動した場合は、専用のメッセージが表示される。
+<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+翠星石鯖＠やる夫人狼で実施された記念村の設定を役職にしてみました。
+東方 Project の上白沢 慧音がモチーフです。
 </pre>
 </body></html>

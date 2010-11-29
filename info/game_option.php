@@ -206,6 +206,7 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#mind_open"><?php echo $GAME_OPT_MESS->mind_open ?></a></li>
   <li><a href="#blinder"><?php echo $GAME_OPT_MESS->blinder ?></a></li>
   <li><a href="#critical"><?php echo $GAME_OPT_MESS->critical ?></a></li>
+  <li><a href="#joker"><?php echo $GAME_OPT_MESS->joker ?></a></li>
   <li><a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a></li>
   <li><a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a></li>
   <li><a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a></li>
@@ -263,6 +264,12 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
   <li><?php echo $GAME_OPT_CAPT->critical ?></li>
   <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率はランダム付加の場合と同じです</li>
+</ul>
+
+<h3><a id="joker"><?php echo $GAME_OPT_MESS->joker ?></a> [Ver. 1.4.0 β21〜]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->joker ?></li>
+  <li>ゲーム終了時に<a href="new_role/sub_role.php#joker">ジョーカー</a>を所持していると無条件で敗北になります</li>
 </ul>
 
 <h3><a id="detective"><?php echo $GAME_OPT_MESS->detective ?></a> [Ver. 1.4.0 β10〜]</h3>

@@ -15,6 +15,7 @@ class Room{
   var $dead_mode = false;
   var $heaven_mode = false;
   var $log_mode = false;
+  var $watch_mode = false;
   var $single_view_mode = false;
   var $test_mode = false;
 
@@ -22,13 +23,13 @@ class Room{
   function __construct($request = NULL){
     if(is_null($request)) return;
     if($request->IsVirtualRoom()){
-      $array = $request->TestItems->test_room;
+      $stack = $request->TestItems->test_room;
       $this->event->rows = $request->TestItems->event;
     }
     else{
-      $array = $this->LoadRoom($request->room_no);
+      $stack = $this->LoadRoom($request->room_no);
     }
-    foreach($array as $name => $value) $this->$name = $value;
+    foreach($stack as $name => $value) $this->$name = $value;
     $this->ParseOption();
   }
 
@@ -36,9 +37,9 @@ class Room{
   function LoadRoom($room_no){
     $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
       'game_option, date, day_night, status FROM room WHERE room_no = ' . $room_no;
-    $array = FetchAssoc($query, true);
-    if(count($array) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
-    return $array;
+    $stack = FetchAssoc($query, true);
+    if(count($stack) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
+    return $stack;
   }
 
   //option_role を追加ロードする
@@ -67,18 +68,7 @@ class Room{
     global $RQ_ARGS;
 
     if($RQ_ARGS->IsVirtualRoom()){
-      switch($this->day_night){
-      case 'day':
-	$vote_list = $RQ_ARGS->TestItems->vote_day;
-	break;
-
-      case 'night':
-	$vote_list = $RQ_ARGS->TestItems->vote_night;
-	break;
-
-      default:
-	return NULL;
-      }
+      if(is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->day_night})) return NULL;
     }
     else{
       switch($this->day_night){
@@ -134,11 +124,18 @@ class Room{
 
   //特殊イベント判定用の情報を DB から取得する
   function LoadEvent(){
+    global $RQ_ARGS;
+
+    if(! $this->IsPlaying()) return NULL;
+    $date = $this->date;
+    if($this->log_mode && ! $RQ_ARGS->reverse_log) $date--;
+    $day   = $date;
+    $night = $date - 1;
+    if($this->IsDay() && ! ($this->watch_mode || $this->single_view_mode)) $day--;
+
     $query = $this->GetQueryHeader('system_message', 'message', 'type') .
-      ($this->IsDay() ? ' AND date = ' . ($this->date - 1) .
-       " AND(type = 'WOLF_KILLED' OR type = 'VOTE_KILLED')" :
-       " AND((date = '" . ($this->date - 1) . "' AND type = 'WOLF_KILLED') OR " .
-       "(date = '{$this->date}' AND type = 'VOTE_KILLED'))");
+      " AND((date = '{$day}'   AND type = 'VOTE_KILLED') OR " .
+      "     (date = '{$night}' AND type = 'WOLF_KILLED'))";
     $this->event->rows = FetchAssoc($query);
   }
 
@@ -146,8 +143,7 @@ class Room{
   function ParseVote(){
     $stack = array();
     foreach($this->vote as $uname => $list){
-      extract($list);
-      $stack[$situation][$uname] = $target_uname;
+      $stack[$list['situation']][$uname] = $list['target_uname'];
     }
     return $stack;
   }
@@ -156,12 +152,14 @@ class Room{
   function ParseOption($join = false){
     $this->game_option = new OptionManager($this->game_option);
     $this->option_role = new OptionManager($this->option_role);
-    $this->option_list = array_merge(array_keys($this->game_option->options),
-				     $join ? array_keys($this->option_role->options) : array());
+    $this->option_list = $join ?
+      array_merge(array_keys($this->game_option->options),
+		  array_keys($this->option_role->options)) :
+      array_keys($this->game_option->options);
+
     if($this->IsRealTime()){
-      $time_list = $this->game_option->options['real_time'];
-      $this->real_time->day   = $time_list[0];
-      $this->real_time->night = $time_list[1];
+      $this->real_time->day   = $this->game_option->options['real_time'][0];
+      $this->real_time->night = $this->game_option->options['real_time'][1];
     }
   }
 
@@ -204,7 +202,8 @@ class Room{
   //特殊イベント判定用の情報を取得する
   function GetEvent($force = false){
     if(! $this->IsPlaying()) return array();
-    if($force || is_null($this->event)) $this->LoadEvent();
+    if($force) unset($this->event);
+    if(is_null($this->event)) $this->LoadEvent();
     return $this->event->rows;
   }
 

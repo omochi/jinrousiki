@@ -168,8 +168,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
-  <td><a href="human.php#howl_scanner">吠騒霊</a></td>
-  <td></td>
+  <td><a href="human.php#clairvoyance_scanner">猩々</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
@@ -208,8 +208,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
-  <td><a href="lovers.php#mind_cupid">女神</a></td>
-  <td></td>
+  <td><a href="lovers.php#sweet_cupid">弁財天</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="lovers.php#angel_group">天使系</a></td>
@@ -339,8 +339,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#doll_group">上海人形系</a></td>
-  <td><a href="human.php#doll">上海人形</a></td>
-  <td></td>
+  <td><a href="human.php#silver_doll">露西亜人形</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
@@ -349,8 +349,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
-  <td><a href="wolf.php#cute_wolf">萌狼</a></td>
-  <td></td>
+  <td><a href="wolf.php#silver_wolf">銀狼</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
@@ -359,8 +359,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
-  <td><a href="fox.php#cute_fox">萌狐</a></td>
-  <td></td>
+  <td><a href="fox.php#silver_fox">銀狐</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="fox.php#child_fox_group">子狐系</a></td>

@@ -148,7 +148,7 @@ function GenerateOldLog(){
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
     OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
   }
-  if($RQ_ARGS->watch) $ROOM->status = 'playing';
+  if($ROOM->watch_mode) $ROOM->status = 'playing';
   $title = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
 
   //戻る先を前のページにする
@@ -163,7 +163,7 @@ function GenerateOldLog(){
 <a href="{$referer}">←戻る</a><br>
 {$ROOM->GenerateTitleTag()}
 EOF;
-  if($RQ_ARGS->watch) $ROOM->day_night = 'day';
+  if($ROOM->watch_mode) $ROOM->day_night = 'day';
   $str .= GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
   return $str;
 }
@@ -206,7 +206,7 @@ function LayoutHeaven(){
 
 //指定の日付の会話ログを生成
 function GenerateDateTalkLog($set_date, $set_location){
-  global $RQ_ARGS, $ROLES, $ROOM;
+  global $RQ_ARGS, $ROLES, $ROOM, $USERS;
 
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
@@ -216,6 +216,10 @@ function GenerateDateTalkLog($set_date, $set_location){
   case 'aftergame':
     $table_class = $set_location;
     $query .= "location LIKE '{$set_location}%'";
+    if($ROOM->watch_mode || $ROOM->single_view_mode){
+      $USERS->ResetRoleList();
+      unset($ROOM->event);
+    }
     break;
 
   case 'heaven_only':
@@ -228,6 +232,10 @@ function GenerateDateTalkLog($set_date, $set_location){
     $table_class = $RQ_ARGS->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
     $query .= "date = {$set_date} AND location <> 'beforegame' AND location <> 'aftergame'";
     if(! $RQ_ARGS->heaven_talk) $query .= " AND location <> 'heaven'";
+    if($ROOM->watch_mode || $ROOM->single_view_mode){
+      $USERS->ResetRoleList();
+      $USERS->SetEvent(true);
+    }
     break;
   }
   $query .= ' ORDER BY talk_id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
@@ -255,6 +263,7 @@ function GenerateDateTalkLog($set_date, $set_location){
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk ' . $table_class);
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
+  //if($ROOM->watch_mode) $builder->AddSystemTalk($ROOM->date . print_r($ROOM->event, true));
 
   foreach($talk_list as $talk){
     switch($talk->scene){

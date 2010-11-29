@@ -49,7 +49,7 @@ Ver. 1.4.0
 <a href="#140alpha21">α21</a>
 <a href="#140alpha22">α22</a>
 <a href="#140alpha23">α23</a>
-<a href="#140alpha24">α24</a>
+<a href="#140alpha24">α24</a><br>
 <a href="#140beta2">β2</a>
 <a href="#140beta5">β5</a>
 <a href="#140beta6">β6</a>
@@ -68,6 +68,7 @@ Ver. 1.4.0
 <a href="#140beta19">β19</a>
 <a href="#140beta20">β20</a>
 <a href="#140beta21">β21</a>
+<a href="#140beta22">β22</a>
 </p>
 
 <p>
@@ -84,7 +85,7 @@ Ver. 1.4.0
 <a href="#sub_140alpha21">α21</a>
 <a href="#sub_140alpha22">α22</a>
 <a href="#sub_140alpha23">α23</a>
-<a href="#sub_140alpha24">α24</a>
+<a href="#sub_140alpha24">α24</a><br>
 <a href="#sub_140beta2">β2</a>
 <a href="#sub_140beta6">β6</a>
 <a href="#sub_140beta8">β8</a>
@@ -98,6 +99,7 @@ Ver. 1.4.0
 <a href="#sub_140beta18">β18</a>
 <a href="#sub_140beta20">β20</a>
 <a href="#sub_140beta21">β21</a>
+<a href="#sub_140beta22">β22</a>
 </p>
 
 <table>
@@ -880,7 +882,7 @@ Ver. 1.4.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票の最多得票者になった場合に、内訳によって吊られる人を変化させる村人。本人の表記は「村人」。</td>
+  <td class="ability">再投票の最多得票者になった場合に、内訳によって処刑する人を変化させる村人。本人の表記は「村人」。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
 <tr>
@@ -1521,7 +1523,7 @@ Ver. 1.4.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、生きている夢系能力者と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。<br>
+  <td class="ability">一定日数ごとに現在、生きている<a href="ability.php#dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。<br>
     本人表記は<a href="human.php#priest">司祭</a>で仕様も同じ。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
@@ -1962,11 +1964,29 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a></td>
   <td><a href="chiroptera.php">蝙蝠</a></td>
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
-  <td>蝙蝠</td>
+  <td>村人</td>
   <td>村人</td>
   <td class="ability"><a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える蝙蝠。
   </td>
   <td>Ver. 1.4.0 β21</td>
+</tr>
+<tr>
+  <td><a href="human.php#clairvoyance_scanner" id="140beta22">猩々</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#mind_scanner_group">さとり系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">2日目以降、夜に投票した人のその夜の投票先を知ることができる特殊なさとり。</td>
+  <td>Ver. 1.4.0 β22</td>
+</tr>
+<tr>
+  <td><a href="lovers.php#sweet_cupid">弁財天</a></td>
+  <td><a href="lovers.php">恋人</a></td>
+  <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。<br>処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。</td>
+  <td>Ver. 1.4.0 β22</td>
 </tr>
 </table>
 
@@ -2518,6 +2538,13 @@ Ver. 1.4.0
     <td>○</td>
     <td class="ability">ゲーム終了時に所持している場合、引き分け以外は無条件で敗北扱いになる。昼の処刑投票で移動する。</td>
     <td>Ver. 1.4.0 β21</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#whisper_ringing" id="sub_140beta22">恋耳鳴</a></td>
+    <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
+    <td>○</td>
+    <td class="ability">二日目以降、恋人の独り言が専用の囁きに見えるようになる。</td>
+    <td>Ver. 1.4.0 β22</td>
   </tr>
 </table>
 

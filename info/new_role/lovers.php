@@ -14,6 +14,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#self_cupid">求愛者</a>
 <a href="#moon_cupid">かぐや姫</a>
 <a href="#mind_cupid">女神</a>
+<a href="#sweet_cupid">弁財天</a>
 <a href="#triangle_cupid">小悪魔</a>
 </p>
 
@@ -65,6 +66,19 @@ OutputRolePageHeader('恋人陣営');
 自分撃ちの場合は<a href="#self_cupid">求愛者</a>の相互撃ちと同様の状態になります。
 また、他人撃ちでも<a href="sub_role.php#mind_receiver">受信者</a>になるので、矢を撃った対象の発言が
 必ず見えることになります。
+</pre>
+
+<h3><a id="sweet_cupid">弁財天</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22〜]</h3>
+<pre>
+矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。
+また、処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら
+<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方陰陽鉄のプレイヤーさんとの会話から生まれた役職です。
+テーマは「恋人の甘い会話を雰囲気だけおすそ分け」で、実利はあまりないですね。
+むしろ能力を発動すると不利になるので自打ちの場合は注意が必要です。
 </pre>
 
 <h3><a id="triangle_cupid">小悪魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>

@@ -17,7 +17,45 @@ Ver. 1.4.0
 <a href="#140beta18">β18</a>
 <a href="#140beta19">β19</a>
 <a href="#140beta20">β20</a>
+<a href="#140beta21">β21</a>
 </p>
+
+<h2><a id="140beta21">Ver. 1.4.0 β21</a></h2>
+<h3>room_manager.php % 178行目付近 (2010/11/23 (Tue) 22:45)</h3>
+<h4>[before]</h4>
+<pre>
+array_push($check_game_option_list, 'deep_sleep', 'mind_open', 'blinder');
+$check_option_role_list[] = 'joker';
+</pre>
+<h4>[after]</h4>
+<pre>
+array_push($check_game_option_list, 'joker', 'deep_sleep', 'mind_open', 'blinder');
+</pre>
+<h3>include/user_class.php % 1200行目付近 (2010/11/23 (Tue) 22:45)</h3>
+<h4>[before]</h4>
+<pre>
+$stack = array();
+</pre>
+<h4>[after]</h4>
+<pre>
+if(! $ROOM->IsOption('joker')) return false;
+$stack = array();
+</pre>
+<h3>include/game_vote_functions.php % 1222行目付近 (2010/11/23 (Tue) 22:45)</h3>
+<pre>
+× $joker_flag = false; //ジョーカー移動成立フラグ
+○ $joker_flag = ! $ROOM->IsOption('joker'); //ジョーカー移動成立フラグ
+</pre>
+<h3>include/game_vote_functions.php % 2724行目付近 (2010/11/24 (Wed) 21:00)</h3>
+<pre>
+× if($role_flag->bishop_priest && $user->GetCamp(true) != 'human') $live_count['dead']++;
+○ if($user->GetCamp(true) != 'human') $live_count['dead']++;
+</pre>
+<h3>include/game_vote_functions.php % 2733行目付近 (2010/11/24 (Wed) 21:00)</h3>
+<pre>
+× if($role_flag->priest && $user->GetCamp() == 'human') $live_count['human_side']++;
+○ if($user->GetCamp() == 'human') $live_count['human_side']++;
+</pre>
 
 <h2><a id="140beta20">Ver. 1.4.0 β20</a></h2>
 <h3>include/game_format.php % 22行目付近 (2010/11/15 (Mon) 03:16)</h3>

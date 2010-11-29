@@ -333,7 +333,7 @@ class User{
 
   //護衛制限判定
   function IsGuardLimited(){
-    return $this->IsRole('detective_common', 'reporter', 'doll_master') ||
+    return $this->IsRole('detective_common', 'reporter', 'clairvoyance_scanner', 'doll_master') ||
       ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
       $this->IsRoleGroup('assassin');
   }
@@ -499,6 +499,7 @@ class User{
     if($this->IsRoleGroup('assassin') || $this->IsRole('doom_fox')){
       return $this->IsVoted($vote_data, 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
+    if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
     if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
     if($this->IsRole('trap_mad')){
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
@@ -730,7 +731,7 @@ EOF;
       if($ROOM->IsDay()){
 	$stack = array('uname' => $this->uname, 'target_uname' => $target,
 		       'vote_number' => $vote_number);
-	$RQ_ARGS->TestItems->vote_day[$this->uname] = $stack;
+	$RQ_ARGS->TestItems->vote->day[$this->uname] = $stack;
       }
       //PrintData($stack, 'Vote');
       return true;
@@ -998,10 +999,12 @@ class UserDataSet{
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $ROOM;
+    global $RQ_ARGS, $ROOM;
 
-    if($ROOM->id < 1) return; //入村時対応
-    if(! is_array($event_rows = $ROOM->GetEvent($force))) return;
+    if($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
+    $base_date = $ROOM->date;
+    if(($ROOM->watch_mode || $ROOM->single_view_mode) && ! $RQ_ARGS->reverse_log) $base_date--;
+
     foreach($event_rows as $event){
       switch($event['type']){
       case 'VOTE_KILLED':
@@ -1026,7 +1029,7 @@ class UserDataSet{
 	$user = $this->ByHandleName($event['message']);
 	$ROOM->event->skip_night = ! $user->IsDummyBoy() && $user->IsRole('history_brownie');
 	foreach($user->GetPartner('bad_status', true) as $id => $date){
-	  if($date != $ROOM->date) continue;
+	  if($date != $base_date) continue;
 	  $status_user = $this->ByID($id);
 	  $ROOM->event->invisible |= $status_user->IsRole('sun_fairy')   && $ROOM->IsDay();
 	  $ROOM->event->earplug   |= $status_user->IsRole('moon_fairy')  && $ROOM->IsDay();
@@ -1045,23 +1048,22 @@ class UserDataSet{
       }
     }
 
-    if($ROOM->IsPlaying()){
-      $stack = array();
-      foreach($this->rows as $user){
-	foreach($user->GetPartner('bad_status', true) as $id => $date){
-	  if($date != $ROOM->date) continue;
-	  $status_user = $this->ByID($id);
-	  if($status_user->IsRole('shadow_fairy')){
-	    $stack[$status_user->user_no] = array('icon'  => $user->icon_filename,
-						  'color' => $user->color);
-	  }
+    //影妖精の処理
+    $stack = array();
+    foreach($this->rows as $user){
+      foreach($user->GetPartner('bad_status', true) as $id => $date){
+	if($date != $ROOM->date) continue;
+	$status_user = $this->ByID($id);
+	if($status_user->IsRole('shadow_fairy')){
+	  $stack[$status_user->user_no] = array('icon'  => $user->icon_filename,
+						'color' => $user->color);
 	}
       }
-      foreach($stack as $id => $list){
-	$user = $this->ByID($id);
-	$user->color         = $list['color'];
-	$user->icon_filename = $list['icon'];
-      }
+    }
+    foreach($stack as $id => $list){
+      $user = $this->ByID($id);
+      $user->color         = $list['color'];
+      $user->icon_filename = $list['icon'];
     }
 
     do{ //狢のアイコン入れ替え処理
@@ -1197,6 +1199,7 @@ class UserDataSet{
   function ResetJoker($decriment = false){
     global $ROOM;
 
+    if(! $ROOM->IsOption('joker')) return false;
     $stack = array();
     foreach($this->rows as $user){
       if($user->IsDead(true)) continue;
@@ -1204,6 +1207,16 @@ class UserDataSet{
       $stack[] = $user->user_no;
     }
     if(count($stack) > 0) $this->ByID(GetRandom($stack))->AddJoker($decriment);
+  }
+
+  //仮想役職リストの保存 (ログ処理用)
+  function SaveRoleList(){
+    foreach($this->rows as $user) $user->save_role_list = $user->role_list;
+  }
+
+  //仮想役職リストの初期化 (ログ処理用)
+  function ResetRoleList(){
+    foreach($this->rows as $user) $user->role_list = $user->save_role_list;
   }
 
   //保存処理 (実用されていません)

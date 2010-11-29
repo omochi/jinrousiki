@@ -100,17 +100,21 @@ class RoleManager{
   }
 
   function GetWhisperingUserInfo($role, &$class){
-    global $SELF;
+    global $ROOM, $SELF;
 
+    if($SELF->IsRole('deep_sleep')) return false; //爆睡者にはいっさい見えない
     switch($role){
     case 'common': //共有者のささやき
-      if($SELF->IsRole('dummy_common', 'deep_sleep')) return false; //夢共有者・爆睡者には見えない
+      if($SELF->IsRole('dummy_common')) return false; //夢共有者には見えない
       $class = 'talk-common';
       return '共有者の小声';
 
     case 'wolf': //人狼の遠吠え
-      if($SELF->IsRole('mind_scanner', 'deep_sleep')) return false; //さとり・爆睡者には見えない
+      if($SELF->IsRole('mind_scanner')) return false; //さとりには見えない
       return '狼の遠吠え';
+
+    case 'lovers': //恋人の囁き
+      return '恋人の囁き';
     }
     return false;
   }
@@ -125,6 +129,9 @@ class RoleManager{
 
     case 'wolf':
       return $MESSAGE->wolf_howl;
+
+    case 'lovers':
+      return $MESSAGE->lovers_talk;
     }
   }
 }
