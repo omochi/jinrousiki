@@ -791,6 +791,7 @@ function AggregateVoteDay(){
   $vote_count_list        = array(); //得票リスト (ユーザ名 => 投票数)
   $pharmacist_target_list = array(); //薬師系の投票先
   $detox_target_list      = array(); //解毒能力者の投票先
+  $alchemy_target_list    = array(); //錬金術師の投票先
   $cure_target_list       = array(); //ショック死抑制能力者の投票先
   $pharmacist_result_list = array(); //薬師系の鑑定結果
 
@@ -878,26 +879,32 @@ function AggregateVoteDay(){
 
       $target = $USERS->ByUname($vote_target_list[$user->uname]); //投票先の情報を取得
       $pharmacist_target_list[$user->uname] = $target->uname;
-      //河童は毒鑑定能力なし / 仙人は解毒能力なし
-      if(! $user->IsRole('revive_pharmacist')) $detox_target_list[$user->uname] = $target->uname;
-      if($user->IsRole('pharmacist')){
+
+      //能力発動先リストを作成
+      if($user->IsRole('alchemy_pharmacist')) //錬金術師
+	$alchemy_target_list[$user->uname] = $target->uname;
+      elseif(! $user->IsRole('revive_pharmacist')) //解毒能力者
+	$detox_target_list[$user->uname] = $target->uname;
+
+      if($user->IsRole('pharmacist', 'alchemy_pharmacist')) //毒能力判定
 	$pharmacist_result_list[$user->uname] = $target->DistinguishPoison();
-      }
-      else{
-	$cure_target_list[$user->uname] = $target->uname;
-      }
+      else
+	$cure_target_list[$user->uname] = $target->uname; //ショック死抑制能力者
     }
 
     do{ //-- 処刑者の毒処理 --//
       if(! $vote_target->IsPoison()) break; //毒能力の発動判定
 
       //薬師系の解毒判定 (夢毒者は対象外)
-      if(in_array($vote_target->uname, $detox_target_list) &&
-	 ! $vote_target->IsRole('dummy_poison')){
-	foreach(array_keys($detox_target_list, $vote_target->uname) as $uname){ //投票者を検出
-	  $pharmacist_result_list[$uname] = 'success';
+      $alchemy_flag = false;
+      if(! $vote_target->IsRole('dummy_poison')){
+	if(in_array($vote_target->uname, $detox_target_list)){
+	  foreach(array_keys($detox_target_list, $vote_target->uname) as $uname){ //投票者を検出
+	    $pharmacist_result_list[$uname] = 'success';
+	  }
+	  break;
 	}
-	break;
+	$alchemy_flag = in_array($vote_target->uname, $alchemy_target_list);
       }
 
       //毒の対象オプションをチェックして候補者リストを作成
@@ -912,8 +919,17 @@ function AggregateVoteDay(){
       //PrintData($poison_target_list, 'BasePoisonTarget');
 
       //特殊毒の場合はターゲットが限定される
-      $ROLES->actor = $vote_target;
-      foreach($ROLES->Load('poison') as $filter) $filter->FilterPoisonTarget($poison_target_list);
+      if($alchemy_flag){ //錬金術師
+	$stack = array();
+	foreach($poison_target_list as $uname){
+	  if($USERS->ByRealUname($uname)->GetCamp() != 'human') $stack[] = $uname;
+	}
+	$poison_target_list = $stack;
+      }
+      else{
+	$ROLES->actor = $vote_target;
+	foreach($ROLES->Load('poison') as $filter) $filter->FilterPoisonTarget($poison_target_list);
+      }
       //PrintData($poison_target_list, 'PoisonTarget');
       if(count($poison_target_list) < 1) break;
       $poison_target = $USERS->ByRealUname(GetRandom($poison_target_list)); //対象者を決定
@@ -988,15 +1004,19 @@ function AggregateVoteDay(){
     }
 
     //-- 特殊投票発動者の処理 --//
+    /*
+      死者が出るので処理の順番に注意が必要。
+      仕様上は封印師→神主の順だが、現在は対象が競合していないので並行処理している。
+    */
     //封印師対象者リスト
     $seal_list = array('phantom_wolf', 'resist_wolf', 'tongue_wolf', 'trap_mad', 'possessed_mad',
-		   'phantom_fox', 'emerald_fox', 'revive_fox', 'possessed_fox');
-    foreach($user_list as $uname){
+		       'phantom_fox', 'emerald_fox', 'revive_fox', 'possessed_fox');
+    Foreach($user_list as $uname){ //死者が出るタイプの処理
       $user = $USERS->ByRealUname($uname);
       if($user->IsSame($vote_kill_uname)) continue;
 
       $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //投票先を取得
-      if($target->IsSame($vote_kill_uname)) continue;
+      if($target->IsDead(true) || $target->IsSame($vote_kill_uname)) continue;
 
       if($user->IsRole('bacchus_medium')){ //神主
 	if($target->IsOgre()) $USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_DRUNK');
@@ -1007,16 +1027,25 @@ function AggregateVoteDay(){
 	    $USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
 	}
       }
-      elseif($user->IsRole('miasma_mad')){ //土蜘蛛
-	if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddDoom(1, 'febris');
+    }
+
+    foreach($user_list as $uname){ //死者が出ないタイプの処理
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsSame($vote_kill_uname)) continue;
+
+      $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //投票先を取得
+      if($target->IsDead(true) || $target->IsSame($vote_kill_uname)) continue;
+
+      if($user->IsRole('miasma_mad')){ //土蜘蛛
+	if(! $target->IsAvoid()) $target->AddDoom(1, 'febris');
       }
-      elseif($user->IsRole('sweet_cupid')){ //土蜘蛛
+      elseif($user->IsRole('sweet_cupid')){ //弁財天
 	$target->AddRole('sweet_ringing');
       }
     }
 
     //-- 霊能者系の処理 --//
-    $sentence_header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
+    $result_header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
     $action = 'NECROMANCER_RESULT';
 
     //霊能判定
@@ -1045,34 +1074,29 @@ function AggregateVoteDay(){
 
     //火車の妨害判定
     $flag_stolen = false;
-    foreach($voter_list as $this_uname){
-      $flag_stolen |= $USERS->ByRealUname($this_uname)->IsRole('corpse_courier_mad');
+    foreach($voter_list as $uname){
+      if($USERS->ByRealUname($uname)->IsRole('corpse_courier_mad')){
+	$flag_stolen = true;
+	break;
+      }
     }
 
-    //霊能者系の出現判定
-    $necromacer_flag       = false;
-    $soul_necromacer_flag  = false;
-    $dummy_necromacer_flag = false;
-    foreach($USERS->rows as $user){
-      $necromacer_flag       |= $user->IsRole('necromancer');
-      $soul_necromacer_flag  |= $user->IsRole('soul_necromancer');
-      $dummy_necromacer_flag |= $user->IsRole('dummy_necromancer');
+    foreach($USERS->rows as $user) $role_flag->{$user->main_role} = true; //役職出現判定
+    //PrintData($role_flag, 'ROLE_FLAG');
+    if($role_flag->necromancer){ //霊能者の処理
+      $str = $result_header . ($flag_stolen ? 'stolen' : $necromancer_result);
+      $ROOM->SystemMessage($str, $action);
     }
 
-    if($necromacer_flag){ //霊能者の処理
-      $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $necromancer_result);
-      $ROOM->SystemMessage($sentence, $action);
+    if($role_flag->soul_necromancer){ //雲外鏡の処理
+      $str = $result_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
+      $ROOM->SystemMessage($str, 'SOUL_' . $action);
     }
 
-    if($soul_necromacer_flag){ //雲外鏡の処理
-      $sentence = $sentence_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
-      $ROOM->SystemMessage($sentence, 'SOUL_' . $action);
-    }
-
-    if($dummy_necromacer_flag){ //夢枕人は「村人」⇔「人狼」反転
+    if($role_flag->dummy_necromancer){ //夢枕人は「村人」⇔「人狼」反転
       if($necromancer_result == 'human')    $necromancer_result = 'wolf';
       elseif($necromancer_result == 'wolf') $necromancer_result = 'human';
-      $ROOM->SystemMessage($sentence_header . $necromancer_result, 'DUMMY_' . $action);
+      $ROOM->SystemMessage($result_header . $necromancer_result, 'DUMMY_' . $action);
     }
   }
 
@@ -2646,7 +2670,7 @@ function AggregateVoteNight($skip = false){
       'common' => 'ghost_common',
       'poison' => 'strong_poison',
       'poison_cat' => 'revive_cat',
-      'pharmacist' => 'pharmacist',
+      'pharmacist' => 'alchemy_pharmacist',
       'assassin' => 'soul_assassin',
       'mind_scanner' => 'clairvoyance_scanner',
       'jealousy' => 'poison_jealousy',

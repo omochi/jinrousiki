@@ -576,6 +576,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <ol>
   <li>処刑先が決定されて、投票先が処刑者ではない場合に発動します。</li>
+  <li>判定時に対象が死亡していた場合は無効になります。</li>
   <li>自分が処刑された場合は無効になります。</li>
   <li>毒やショック死で死亡した場合は有効です。</li>
   <li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外です。</li>
@@ -599,6 +600,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <ol>
   <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>です。</li>
   <li>処刑先が決定されて、投票先が処刑者ではない場合に発動します。</li>
+  <li>判定時に対象が死亡していた場合は無効になります。</li>
   <li>自分が処刑された場合は無効になります。</li>
   <li>毒やショック死で死亡した場合は有効です。</li>
   <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させます。</li>
@@ -841,7 +843,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3><a id="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#doll_master">人形遣い</a>です</li>
+  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
@@ -1353,14 +1355,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#pharmacist">薬師</a>
 <a href="#cure_pharmacist">河童</a>
 <a href="#revive_pharmacist">仙人</a>
+<a href="#alchemy_pharmacist">錬金術師</a>
 </p>
 
 <h3><a id="pharmacist">薬師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α12〜]</h3>
 <h4>[薬師能力] 毒能力判定：有り / 解毒：有り / ショック死抑制：無し</h4>
 <pre>
-毒持ちを吊ったときに、薬師が投票していたら解毒(毒が発動しない)します。
-また、昼に投票した人が毒を持っているか翌朝に分かります。
-朝に出るメッセージは以下の 5 種類。
+処刑投票先の毒能力者が分かり、処刑された場合に解毒(毒が発動しない)します。
+毒の鑑定結果は以下の 5 種類。
 
 1. 毒を持っていない (<a href="#dummy_poison">夢毒者</a>や発現前の<a href="#incubate_poison">潜毒者</a>もこれ)
 2. 毒を持っている
@@ -1429,6 +1431,25 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 東方 Project の藤原妹紅がモチーフです。
 能力が発動すると「死亡と蘇生が同時に表示される」ことになります。
+</pre>
+
+<h3><a id="alchemy_pharmacist">錬金術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22〜]</h3>
+<h4>[薬師能力] 毒能力判定：有り / 解毒：特殊 / ショック死抑制：無し</h4>
+<pre>
+処刑投票先が毒を持っていたら中る範囲を「村人陣営以外」に変更してしまう特殊な薬師。
+毒鑑定能力や対象者変更判定 (<a href="#pharmacist">薬師</a>が「解毒した」と判定する対象) は<a href="#pharmacist">薬師</a>と同じ。
+</pre>
+<ol>
+  <li>「対象者変更」能力が発動しても毒鑑定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
+  <li><a href="sub_role.php#lovers">恋人</a>は判定対象外 (<a href="#medium_group">巫女系</a>と同じ)。</li>
+  <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合、毒は不発。</li>
+  <li><a href="#chain_poison">連毒者</a>に投票しても能力は発動しない (毒鑑定能力は有効)。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/895" target="_top">新役職考案スレ</a> の 895 が原型です。
+<a href="wolf.php#poison_wolf">毒狼</a>などを比較的少ないリスクで処刑できますが、<a href="wolf.php#mad_group">狂人系</a>や<a href="chiroptera.php">蝙蝠陣営</a>も対象に入るので、
+<a href="#pharmacist">薬師</a>で解毒してしまう方がいいケースもあります。
 </pre>
 
 
@@ -1615,13 +1636,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="evoke_scanner">イタコ</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
 <h4>[耐性] 遺言：不可</h4>
 <pre>
-初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にします。
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にする特殊なさとり。
 </pre>
 <ol>
 <li>投票結果が出るのは 2 日目以降です。</li>
-<li>口寄せ先が死亡したら霊界から遺言窓を介してメッセージを受け取れます。</li>
-<li>自分では遺言欄を変更できません。</li>
-<li>自分の遺言欄に何が表示されていても遺言は残りません。</li>
+<li><a href="sub_role.php#mind_evoke">口寄せ</a>先が死亡したら霊界から遺言窓を介してメッセージを受け取れます。</li>
+<li>自分では遺言を変更できません。</li>
+<li>自分の遺言欄に何か表示されていても遺言は残りません。</li>
 <li>身代わり君を対象に選ぶことはできません。</li>
 </ol>
 <h5>Ver. 1.4.0 β17〜</h5>
@@ -1630,18 +1651,18 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-霊界オフモードの有効活用をできる役職を作ろうと思い、
+霊界オフモードを有効活用できる役職を作ろうと思い、
 こういう実装にしてみました。
 </pre>
 
 <h3><a id="presage_scanner">件</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18〜]</h3>
 <h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
-初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_presage">受託者</a>にします。
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_presage">受託者</a>にする特殊なさとり。
 </pre>
 <ol>
 <li>投票結果が出るのは 2 日目以降です。</li>
-<li>自分が人狼に襲撃されて死亡したら<a href="sub_role.php#mind_presage">受託者</a>に自分が誰に襲撃されたかメッセージが送られます。</li>
+<li>自分が<a href="wolf.php#wolf_group">人狼</a>に襲撃されて死亡したら<a href="sub_role.php#mind_presage">受託者</a>に自分が誰に襲撃されたかメッセージが送られます。</li>
 <li>襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効です。</li>
 <li>身代わり君を対象に選ぶことはできません。</li>
 </ol>
@@ -1651,7 +1672,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-能力を制限した<a href="#reporter">ブン屋</a>のさとりバージョンです。
+能力を制限した<a href="#reporter">ブン屋</a>のさとりバージョンです。「くだん」と読みます。
 メッセージが届く相手が人外の可能性もあるので件であることを信用されても
 さらなる悲劇が起こる可能性があるのがポイントです。
 </pre>
@@ -1728,19 +1749,19 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3><a id="jealousy">橋姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22〜]</h3>
 <pre>
-昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら
-投票した恋人をショック死させる。
+昼の投票時に、同一<a href="lovers.php">キューピッド</a>の<a href="sub_role.php#lovers">恋人</a>が揃って自分に投票したら
+投票した<a href="sub_role.php#lovers">恋人</a>をショック死させる。
 </pre>
 <h4>詳細な仕様</h4>
 <pre>
-1. 自分が吊られたら無効
-吊られない範囲で恋人の票を集める必要があります。
+1. 自分が処刑されたら無効
+処刑されない範囲で恋人の票を集める必要があります。
 対恋人で人柱になっても無意味です。
 
 2. 他のキューピッドの恋人たちに投票されても無効
 複数のキューピッドに矢を打たれて繋がっている恋人に投票されても無効です。
 
-3. 処理のタイミングはショック死処理の直前
+3. <a href="../spec.php#vote_day">判定</a>はショック死処理の直前
 つまり、投票結果が再投票になっても有効です。
 また、本人が<a href="sub_role.php#celibacy">独身貴族</a>であっても有効です。
 (結果的には相討ちになる)
@@ -1761,12 +1782,12 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3><a id="divorce_jealousy">縁切地蔵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19〜]</h3>
 <pre>
-自分に処刑投票してきた恋人に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+自分に処刑投票してきた<a href="sub_role.php#lovers">恋人</a>に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <ol>
-<li>判定は処刑対象が決定された後</li>
-<li>自分が処刑対象になった場合は発動しない</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後。</li>
+<li>自分が処刑された場合は発動しない。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -1781,9 +1802,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[役職表示] <a href="#priest">司祭</a></h4>
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
-一定日数ごとに現在、生存している恋人の人数が分かる特殊な司祭。
+一定日数ごとに現在、生存している<a href="sub_role.php#lovers">恋人</a>の人数が分かる特殊な司祭。
 本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
-狩人の護衛制限対象。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1795,7 +1816,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[役職表示] <a href="#poison">埋毒者</a></h4>
 <h4>[毒能力] 処刑：恋人 / 襲撃：恋人 / 薬師判定：限定的</h4>
 <pre>
-恋人のみに中る埋毒者で、本人の表記は「埋毒者」。
+<a href="sub_role.php#lovers">恋人</a>のみに中る埋毒者で、本人の表記は「埋毒者」。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <h4>[作成者からのコメント]</h4>

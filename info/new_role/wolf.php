@@ -313,8 +313,8 @@ OutputRolePageHeader('人狼陣営');
 <h4>[耐性] 占い：特殊 / 陰陽師：死亡</h4>
 <pre>
 襲撃に成功した人を乗っ取る人狼。
-乗っ取るのはアイコンと恋人を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・妖狐陣営 (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む) は乗っ取れません。
+乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
+身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む) は乗っ取れません。
 </pre>
 <ol>
   <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -332,6 +332,7 @@ OutputRolePageHeader('人狼陣営');
   <li><a href="#possessed_wolf_revive">対蘇生能力者</a></li>
   <li><a href="#possessed_wolf_possessed_limited">対憑依制限対象者</a></li>
   <li><a href="#possessed_wolf_evoke_scanner">対イタコ</a></li>
+  <li><a href="#possessed_wolf_presage_scanner">対件</a></li>
 </ol>
 
 <h4><a id="possessed_wolf_system">1. 基本システム</a></h4>
@@ -388,13 +389,13 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 結果は処刑された中の人で判定されます。
 
-例4-1) 吊り：B[村人](A[憑狼])
+例4-1) 処刑：B[村人](A[憑狼])
 霊能結果：B は「憑狼」でした。
 </pre>
 
 <h4><a id="possessed_wolf_last_words">4. 遺言</a></h4>
 <pre>
-遺言は憑狼が偽装したものと見かけ上死んだ村人の両方が出ます。
+遺言は憑狼が偽装したものと見かけ上死んだ人の両方が出ます。
 また、憑依に成功するたびに憑狼の現在の遺言が空になります。
 
 例4-1) A[憑狼] → B[村人]
@@ -534,7 +535,7 @@ A は憑依処理がキャンセルされて A のまま。
 
 <h4><a id="possessed_wolf_reporter">11. 対<a href="human.php#reporter">ブン屋</a></a></h4>
 <pre>
-ブン屋が憑狼の憑依先を護衛すると、「生存者は死者に襲撃された」という
+ブン屋が憑狼の憑依先を尾行すると、「生存者は死者に襲撃された」という
 尾行結果が表示されることになるので本人視点で憑狼の位置が確定します。
 
 例11-1) A[憑狼] → B[村人] ← C[ブン屋]
@@ -588,7 +589,7 @@ A は B から D への憑依がキャンセルされて B に憑依したまま
 
 <h4><a id="possessed_wolf_possessed_limited">14. 対憑依制限対象者</a></h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>は憑依対象外なので、生存している該当者は憑狼ではない事が保証されます。
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>などは憑依対象外なので、生存している該当者は憑狼ではない事が保証されます。
 また、霊界視点からは憑依者がはっきり分かるので蘇生した天人の情報は重要です。
 
 例14-1) B[村人](A[憑狼]) → C[天人]
@@ -613,13 +614,23 @@ C が遺言メッセージを送っても B に憑依している A の遺言窓
 憑依：B[村人](A[憑狼])
 B が遺言メッセージを送ると C の遺言窓が変更される。
 </pre>
+
+<h4><a id="possessed_wolf_presage_scanner">16. 対<a href="human.php#presage_scanner">件</a></a></h4>
+<pre>
+件に憑依すると、「生存者は死者に襲撃された」というメッセージが<a href="sub_role.php#mind_presage">受託者</a>に表示される。
+
+例16-1) A[憑狼] → B[件] → C[村人][受託者]
+死体：A が無残な死体で発見されました (死因：「誰かに憑依した」)
+憑依：B[件](A[憑狼])
+C に「受託結果：B は A に襲撃されました。」と表示される。
+</pre>
 <h5>Ver. 1.4.0 β15〜</h5>
 <pre>
-妖狐陣営に付いた<a href="mania.php#unknown_mania">鵺</a>、妖狐陣営に変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>も憑依対象外に変更
+妖狐陣営に付いた<a href="mania.php#unknown_mania">鵺</a>、<a href="fox.php">妖狐陣営</a>に変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>も憑依対象外に変更
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>
+<a href="ability.php#possessed">憑依能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -990,7 +1001,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>対象は<a href="human.php#escaper">逃亡者</a>・<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#assassin_group">暗殺者系</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>です。</li>
+  <li>対象は<a href="human.php#escaper">逃亡者</a>・<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="ability.php#assassin">暗殺能力者</a>です。</li>
   <li>自分が<a href="#wolf_group">人狼系</a> (種類を問わない) に襲撃されたら無効になります。</li>
   <li>罠を仕掛けた先に他の罠師が罠を仕掛けていた場合は死亡します。</li>
   <li>自分にも仕掛けることができます。</li>

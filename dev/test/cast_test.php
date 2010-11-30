@@ -223,7 +223,7 @@ $RQ_ARGS->TestItems->test_users[21]->user_no = 21;
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
 $RQ_ARGS->TestItems->test_users[21]->handle_name = '桃';
 $RQ_ARGS->TestItems->test_users[21]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[21]->role = 'cupid';
+$RQ_ARGS->TestItems->test_users[21]->role = 'ogre';
 $RQ_ARGS->TestItems->test_users[21]->icon_filename = '010.gif';
 $RQ_ARGS->TestItems->test_users[21]->color = '#FF9999';
 

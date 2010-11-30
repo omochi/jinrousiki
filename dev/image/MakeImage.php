@@ -262,6 +262,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#仙人#です。_処刑_投票した人の^ショック死^を抑制することができます。また、一度だけ=人狼=に襲撃されても#蘇生#できます。\n　死を超越し、死に拒絶されたあなたは死を否定する力を持っています。その力で村を=人狼=という理不尽な死から救いだすのです！",
     'type' => 'cure_pharmacist', 'delimiter' => array('=' => 'wolf'));
 
+  var $alchemy_pharmacist = array(
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#錬金術師#です。_処刑_投票した人の#毒#能力を知ることができ、_処刑_された場合は#毒#を強化することができます。",
+    'type' => 'pharmacist');
+
   var $assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#暗殺者#です。夜に村人一人を#暗殺#することができます。闇の内に人外を消し、村の平和の為に暗躍するのです！",
     'type' => 'human', 'delimiter' => array('#' => 'assassin'));
@@ -1139,6 +1143,7 @@ class RoleMessageList{
   var $result_pharmacist = array('message' => "さんは|薬師|でした", 'type' => 'result_poison');
   var $result_cure_pharmacist = array('message' => "さんは|河童|でした", 'type' => 'result_pharmacist');
   var $result_revive_pharmacist = array('message' => "さんは|仙人|でした", 'type' => 'result_pharmacist');
+  var $result_alchemy_pharmacist = array('message' => "さんは|錬金術師|でした", 'type' => 'result_pharmacist');
   var $result_assassin = array('message' => "さんは|暗殺者|でした", 'delimiter' => array('|' => 'assassin'));
   var $result_doom_assassin = array('message' => "さんは|死神|でした", 'type' => 'assassin');
   var $result_reverse_assassin = array('message' => "さんは|反魂師|でした", 'type' => 'assassin');
@@ -1390,9 +1395,10 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('sex_mage');
+$builder->Output('sex_mage');
 #$builder->Output('bacchus_medium');
 #$builder->Output('high_priest');
+#$builder->Output('alchemy_pharmacist');
 #$builder->Output('clairvoyance_scanner');
 #$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
@@ -1402,7 +1408,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('sweet_cupid');
 #$builder->Output('doom_vampire');
 #$builder->Output('scarlet_chiroptera');
-$builder->Output('shadow_fairy');
+#$builder->Output('shadow_fairy');
 #$builder->Output('poison_ogre');
 #$builder->Output('power_ogre');
 #$builder->Output('dowser_yaksa');

@@ -1988,6 +1988,15 @@ Ver. 1.4.0
   <td class="ability">矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。<br>処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
+<tr>
+  <td><a href="human.php#alchemy_pharmacist">錬金術師</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#pharmacist_group">薬師系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が毒を持っていたら中る範囲を「村人陣営以外」に変更してしまう特殊な薬師。</td>
+  <td>Ver. 1.4.0 β22</td>
+</tr>
 </table>
 
 <table>

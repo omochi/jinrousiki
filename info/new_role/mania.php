@@ -158,8 +158,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
-  <td><a href="human.php#pharmacist">薬師</a></td>
-  <td></td>
+  <td><a href="human.php#alchemy_pharmacist">錬金術師</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>

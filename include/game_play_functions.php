@@ -149,7 +149,8 @@ function OutputAbility(){
     }
   }
   elseif($SELF->IsRoleGroup('pharmacist')){ //薬師系
-    $ROLE_IMG->Output($SELF->main_role);
+    $ROLE_IMG->Output($SELF->IsRole('eclipse_pharmacist') ? 'alchemy_pharmacist' :
+		      $SELF->main_role);
     if($ROOM->date > 2) OutputSelfAbilityResult('PHARMACIST_RESULT'); //鑑定結果
   }
   elseif($SELF->IsRoleGroup('assassin')){ //暗殺者系
