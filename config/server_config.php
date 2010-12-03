@@ -340,10 +340,7 @@ class CopyrightConfig extends CopyrightConfigBase{
 		    );
 
   //追加情報
-  var $add_list = array('システム' =>
-			array('Twitter投稿モジュール' =>
-			      'http://www.transrain.net/product/services_twitter/'),
-			'写真素材' =>
+  var $add_list = array('写真素材' =>
 			array('Le moineau - すずめのおやど -' => 'http://moineau.fc2web.com/'),
 			'アイコン素材' =>
 			array('夏蛍' => 'http://natuhotaru.yukihotaru.com/',

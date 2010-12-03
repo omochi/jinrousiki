@@ -314,9 +314,10 @@ function CreateRoom(){
     }
 
     //Twitter 投稿処理
+    /*
     $twitter = new TwitterConfig();
     $twitter->Send($room_no, $room_name, $room_comment);
-
+    */
     //OutputSiteSummary(); //RSS更新 //テスト中
 
     OutputRoomAction('success', $room_name);

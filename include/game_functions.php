@@ -828,7 +828,11 @@ function OutputAbilityAction(){
   foreach($stack_list as $stack){
     list($actor, $target) = explode("\t", $stack['message']);
     echo $header.$USERS->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
-    $target = 'は '.$USERS->ByHandleName($target)->GenerateShortRoleName(false, true).' ';
+    //DB 登録時にタブ区切りで登録していないので CUPID_DO の個別の名前は取得不可
+    if($stack['type'] == 'CUPID_DO')
+      $target = 'は '.$target;
+    else
+      $target = 'は '.$USERS->ByHandleName($target)->GenerateShortRoleName(false, true).' ';
     switch($stack['type']){
     case 'WOLF_EAT':
     case 'DREAM_EAT':
