@@ -71,7 +71,15 @@ body{ /* AA 用 */
   background-color: #FFFF99;
   color: #000000;
 }
-.victory-wolf{ /* 人狼・狂人勝利 */
+.victory-doll{ /* 上海人形勝利 */
+  background-color: #6060FF;
+  color: #FFFAFA;
+}
+.victory-escaper{ /* 逃亡者勝利 */
+  background-color: #606090;
+  color: #FFFAFA;
+}
+.victory-wolf{ /* 人狼勝利 */
   background-color: #CC0000;
   color: #FFFAFA;
 }
@@ -79,7 +87,7 @@ body{ /* AA 用 */
   background-color: #993399;
   color: #FFFAFA;
 }
-.victory-lovers{ /* 恋人・キューピッド勝利 */
+.victory-lovers{ /* 恋人勝利 */
   background-color: #FFFAFA;
   color: #FF69B4; /* hotpink */
 }
@@ -166,6 +174,7 @@ body{ /* AA 用 */
 .revive-do{       background-color: #009966;} /* 猫又 */
 .assassin-do{     background-color: #904040;} /* 暗殺者 */
 .mind-scanner-do{ background-color: #A0A000;} /* さとり */
+.escape-do{       background-color: #606090;} /* 逃亡者 */
 .wolf-eat{        background-color: #CC3300;} /* 人狼 */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */
 .vampire-do{      background-color: #D000D0;} /* 吸血鬼 */

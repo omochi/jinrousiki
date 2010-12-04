@@ -48,6 +48,7 @@ OutputRolePageHeader('鬼陣営');
 <a href="#south_ogre">隠行鬼</a>
 <a href="#incubus_ogre">般若</a>
 <a href="#power_ogre">星熊童子</a>
+<a href="#revive_ogre">茨木童子</a>
 <a href="#sacrifice_ogre">酒呑童子</a>
 </p>
 <h3><a id="ogre">鬼</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β18〜]</h3>
@@ -190,6 +191,30 @@ OutputRolePageHeader('鬼陣営');
 <pre>
 人口規制タイプで、大江山の四天王がモチーフです。
 状況に応じて減らすべき陣営が変わるのがポイントです。
+</pre>
+
+<h3><a id="revive_ogre">茨木童子</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β22〜]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (40%) / 暗殺：反射 (40%) / 罠：有効 / 蘇生：不可 / 憑依：無効</h4>
+<h4>[人攫い能力] 襲撃タイプ：暗殺 / 成功率低下：1/2</h4>
+<pre>
+鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#psycho_mage">精神鑑定士</a>が『嘘吐き』判定を出す人の全滅」。
+人狼に襲撃されて死亡した場合、一定確率 (40%) で蘇生する。
+</pre>
+<ol>
+  <li>何度蘇生しても蘇生率は一定。</li>
+  <li>恋人になったら蘇生能力は無効。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、蘇生能力は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
+  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ability.php#revive">蘇生能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/890" target="_top">新役職考案スレ</a> の 890 が原型です。
 </pre>
 
 <h3><a id="sacrifice_ogre">酒呑童子</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β20〜]</h3>

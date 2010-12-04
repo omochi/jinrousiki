@@ -342,12 +342,12 @@ class User{
   function IsRefrectAssassin(){
     $rate = mt_rand(1, 100);
     return $this->IsLive(true) &&
-      ($this->IsRole('detective_common', 'cursed_fox', 'soul_vampire') ||
+      ($this->IsRole('reflect_guard', 'detective_common', 'cursed_fox', 'soul_vampire') ||
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
        ($this->IsRole('cursed_brownie') && $rate <= 30) ||
        ($this->IsRole('sacrifice_ogre') && $rate <= 50) ||
        ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
-		      'power_ogre', 'dowser_yaksa') && $rate <= 40) ||
+		      'power_ogre', 'revive_ogre', 'dowser_yaksa') && $rate <= 40) ||
        ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
        ($this->IsRoleGroup('yaksa') && $rate <= 20));
   }
@@ -355,7 +355,7 @@ class User{
   //憑依制限判定
   function IsPossessedLimited(){
     return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist',
-			 'revive_doll', 'revive_brownie');
+			 'revive_brownie', 'revive_doll', 'revive_ogre');
   }
 
   //蘇生制限判定
@@ -366,9 +366,9 @@ class User{
 
   //遺言制限判定
   function IsLastWordsLimited($save = false){
-    $stack = array('escaper', 'reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words');
+    $stack = array('reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words');
     if($save) $stack[] = 'possessed_exchange';
-    return $this->IsRole($stack);
+    return $this->IsRoleGroup('escaper') || $this->IsRole($stack);
   }
 
   //ジョーカー所持者判定
@@ -492,7 +492,7 @@ class User{
     }
 
     //二日目以降
-    if($this->IsRole('escaper')) return $this->IsVoted($vote_data, 'ESCAPE_DO');
+    if($this->IsRoleGroup('escaper')) return $this->IsVoted($vote_data, 'ESCAPE_DO');
     if($this->IsRoleGroup('guard')) return $this->IsVoted($vote_data, 'GUARD_DO');
     if($this->IsRole('reporter')) return $this->IsVoted($vote_data, 'REPORTER_DO');
     if($this->IsRole('anti_voodoo')) return $this->IsVoted($vote_data, 'ANTI_VOODOO_DO');

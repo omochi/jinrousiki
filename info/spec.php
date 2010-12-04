@@ -72,12 +72,12 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>〜<?php echo $MESSAGE->lovers_followed ?></h4>
 <ul>
-<li>恋人後追い</li>
+<li><a href="new_role/sub_role.php#lovers">恋人</a>後追い</li>
 </ul>
 
 <h4>〜<?php echo $MESSAGE->joker_moved ?></h4>
 <ul>
-<li><a href="new_role/sub_role.php#joker">ジョーカー</a>の移動 (霊界限定)</li>
+<li><a href="new_role/sub_role.php#joker">ジョーカー</a>の移動 (配役公開状態限定)</li>
 </ul>
 
 
@@ -98,7 +98,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>)</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->blind_vote ?></h4>
+<h4><?php echo $MESSAGE->blind_vote ?></h4>
 <ul>
 <li><a href="new_role/wolf.php#amaze_mad">傘化け</a>の能力発動</li>
 </ul>
@@ -111,6 +111,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>身代わり (<a href="new_role/ability.php#sacrifice">身代わり能力者</a>)</li>
 <li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
 <li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
+<li>逃亡失敗 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)</li>
 <li>吸血 (<a href="new_role/vampire.php#incubus_vampire">青髭公</a>・<a href="new_role/vampire.php#succubus_vampire">飛縁魔</a>)</li>
 <li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
 <li>人攫い (<a href="new_role/ogre.php">鬼陣営</a>)</li>
@@ -130,15 +131,15 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>〜<?php echo $MESSAGE->revive_failed ?></h4>
 <ul>
-<li>蘇生失敗 (霊界からしか見えない) (<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>)</li>
+<li>蘇生失敗 (霊界限定) (<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>)</li>
 </ul>
 
-<h4>〜さんの頭の上に〜の花が咲きました</h4>
+<h4>〜<?php echo $MESSAGE->flowered_a ?> (一例)</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#flower_fairy">花妖精</a>)</li>
 </ul>
 
-<h4>〜さんは昨夜、〜座を見ていたようです</h4>
+<h4>〜<?php echo $MESSAGE->constellation_a ?> (一例)</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#star_fairy">星妖精</a>)</li>
 </ul>
@@ -178,16 +179,18 @@ OutputInfoPageHeader('詳細な仕様');
 + 恋人 (<a href="new_role/lovers.php">恋人陣営</a>)
   - 相互作用はないので投票直後に処理を行う
 
-+ 接触 (罠・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺)
-  - 罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
++ 接触 (罠・逃亡・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺)
+  - 罠 ＞ 逃亡失敗 →
+    罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
     狩人の狩り → 罠＞ 狩人護衛 ＞ 吸血 → 罠 ＞ 暗殺 → 凍傷判定
 
   - 罠能力者 (<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>)
+  - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)
   - 護衛能力者 (<a href="new_role/human.php#guard_group">狩人系</a>)
-  - 襲撃耐性能力者 (<a href="new_role/human.php#escaper">逃亡者</a>・<a href="new_role/human.php#fend_guard">忍者</a>・<a href="new_role/wolf.php#therian_mad">獣人</a>・<a href="new_role/fox.php#fox_group">妖狐系</a>・<a href="new_role/ogre.php">鬼陣営</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a>)
-  - 身代わり能力者 (<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/vampire.php#sacrifice_vampire">吸血公</a>・<a href="new_role/sub_role.php#protected">庇護者</a>)
+  - 襲撃耐性能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>・<a href="new_role/human.php#fend_guard">忍者</a>・<a href="new_role/wolf.php#therian_mad">獣人</a>・<a href="new_role/fox.php#fox_group">妖狐系</a>・<a href="new_role/lovers.php#sacrifice_angel">守護天使</a>・<a href="new_role/ogre.php">鬼陣営</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a>)
+  - <a href="new_role/ability.php#sacrifice">身代わり能力者</a>
   - 吸血能力者 (<a href="new_role/vampire.php">吸血鬼陣営</a>)
-  - 暗殺能力者 (<a href="new_role/human.php#assassin_group">暗殺者系</a>・<a href="new_role/fox.php#doom_fox">冥狐</a>・<a href="new_role/ogre.php">鬼陣営</a>)
+  - <a href="new_role/ability.php#assassin">暗殺能力者</a>
 
 
 + 夢 (<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>)

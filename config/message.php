@@ -87,6 +87,7 @@ class Message{
   var $cursed             = 'は呪詛に呪い殺されたようです'; //呪返し
   var $hunted             = 'は狩人に狩られたようです'; //狩人の狩り
   var $reporter_duty      = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
+  var $escaper_dead       = 'は逃亡に失敗したようです'; //逃亡者の逃亡失敗
   var $poison_dead        = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
   var $vampire_killed     = 'は血を吸い尽くされたようです'; //吸血鬼の襲撃
   var $assassin_killed    = 'は暗殺されたようです'; //暗殺者の襲撃
@@ -179,7 +180,6 @@ class Message{
   //CheckNightVote() : 夜の投票
   var $ability_vote             = '処刑する人を選択してください'; //昼の処刑投票
   var $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
-  var $ability_escape_do        = '逃亡する先を選択してください'; //逃亡者
   var $ability_mage_do          = '占う人を選択してください'; //占い師
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
   var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
@@ -193,6 +193,7 @@ class Message{
   var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
   var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
+  var $ability_escape_do        = '逃亡する先を選択してください'; //逃亡者
   var $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   var $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精

@@ -201,7 +201,7 @@ function VoteNight(){
   switch($RQ_ARGS->situation){
   case 'ESCAPE_DO':
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
-    if(! $SELF->IsRole('escaper')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! $SELF->IsRoleGroup('escaper')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'MAGE_DO':
@@ -677,7 +677,7 @@ function OutputVoteNight(){
 
   //投票済みチェック
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
-  if($SELF->IsRole('escaper')){
+  if($SELF->IsRoleGroup('escaper')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の逃亡はできません');
     $type = 'ESCAPE_DO';
   }

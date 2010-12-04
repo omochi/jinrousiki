@@ -97,8 +97,8 @@ OutputRolePageHeader('恋人陣営');
 <a href="#rose_angel">薔薇天使</a>
 <a href="#lily_angel">百合天使</a>
 <a href="#exchange_angel">魂移使</a>
-<a href="#sacrifice_angel">守護天使</a>
 <a href="#ark_angel">大天使</a>
+<a href="#sacrifice_angel">守護天使</a>
 </p>
 
 <h3><a id="angel">天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
@@ -149,6 +149,17 @@ OutputRolePageHeader('恋人陣営');
 「たまうつし」と読みます。
 </pre>
 
+<h3><a id="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<pre>
+他の<a href="#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。
+ただし、本人は<a href="sub_role.php#mind_sympathy">共感者</a>を作ることはできない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#angel">天使</a>の作成中の状態に別名を与えてみました。
+組み合わせ次第で、二日目の朝に内訳をほぼ掌握することが可能になります。
+</pre>
+
 <h3><a id="sacrifice_angel">守護天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18〜]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
@@ -165,16 +176,5 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 <a href="vampire.php#sacrifice_vampire">吸血公</a>の能力を恋人陣営向けに転化してみました。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/467" target="_top">新役職考案スレ</a> の 467 が原型です。
-</pre>
-
-<h3><a id="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
-<pre>
-他の<a href="#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。
-ただし、本人は<a href="sub_role.php#mind_sympathy">共感者</a>を作ることはできない。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#angel">天使</a>の作成中の状態に別名を与えてみました。
-組み合わせ次第で、二日目の朝に内訳をほぼ掌握することが可能になります。
 </pre>
 </body></html>

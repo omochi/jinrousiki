@@ -141,7 +141,7 @@ OutputInfoPageHeader('闇鍋モード');
 </pre>
 <h4><a href="new_role/human.php">村人陣営</a></h4>
 <pre>
-<a href="new_role/human.php#human_group">村人系</a>：<a href="new_role/human.php#human">村人</a>・<a href="new_role/human.php#escaper">逃亡者</a>
+<a href="new_role/human.php#human_group">村人系</a>：<a href="new_role/human.php#human">村人</a>
 <a href="new_role/human.php#mage_group">占い師系</a>：<a href="new_role/human.php#mage">占い師</a>・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#psycho_mage">精神鑑定士</a>
 <a href="new_role/human.php#necromancer_group">霊能者系</a>：<a href="new_role/human.php#necromancer">霊能者</a>
 <a href="new_role/human.php#medium_group">巫女系</a>：<a href="new_role/human.php#medium">巫女</a>
@@ -151,6 +151,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/human.php#pharmacist_group">薬師系</a>：<a href="new_role/human.php#pharmacist">薬師</a>
 <a href="new_role/human.php#assassin_group">暗殺者系</a>：<a href="new_role/human.php#assassin">暗殺者</a>
 <a href="new_role/human.php#doll_group">上海人形系</a>：<a href="new_role/human.php#doll">上海人形</a>・<a href="new_role/human.php#doll_master">人形遣い</a>
+<a href="new_role/human.php#escaper_group">逃亡者系</a>：<a href="new_role/human.php#escaper">逃亡者</a>
 </pre>
 
 <h4><a href="new_role/wolf.php">人狼陣営</a></h4>

@@ -47,7 +47,8 @@ class RoleManager{
   //鬼陣営
   var $ogre_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
 			 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'power_ogre',
-			 'sacrifice_ogre', 'yaksa', 'succubus_yaksa', 'dowser_yaksa');
+			 'revive_ogre', 'sacrifice_ogre', 'yaksa', 'succubus_yaksa',
+			 'dowser_yaksa');
 
   function RoleManager(){ $this->__construct(); }
   function __construct(){

@@ -527,8 +527,8 @@ class RoleData{
     'human'                => '村人',
     'saint'                => '聖女',
     'executor'             => '執行者',
-    'escaper'              => '逃亡者',
     'elder'                => '長老',
+    'scripter'             => '執筆者',
     'suspect'              => '不審者',
     'unconscious'          => '無意識',
     'mage'                 => '占い師',
@@ -558,6 +558,7 @@ class RoleData{
     'guard'                => '狩人',
     'hunter_guard'         => '猟師',
     'blind_guard'          => '夜雀',
+    'reflect_guard'        => '侍',
     'poison_guard'         => '騎士',
     'fend_guard'           => '忍者',
     'reporter'             => 'ブン屋',
@@ -598,6 +599,10 @@ class RoleData{
     'divorce_jealousy'     => '縁切地蔵',
     'priest_jealousy'      => '恋司祭',
     'poison_jealousy'      => '毒橋姫',
+    'brownie'              => '座敷童子',
+    'revive_brownie'       => '蛇神',
+    'cursed_brownie'       => '祟神',
+    'history_brownie'      => '白澤',
     'doll'                 => '上海人形',
     'friend_doll'          => '仏蘭西人形',
     'phantom_doll'         => '倫敦人形',
@@ -607,10 +612,8 @@ class RoleData{
     'scarlet_doll'         => '和蘭人形',
     'silver_doll'          => '露西亜人形',
     'doll_master'          => '人形遣い',
-    'brownie'              => '座敷童子',
-    'revive_brownie'       => '蛇神',
-    'cursed_brownie'       => '祟神',
-    'history_brownie'      => '白澤',
+    'escaper'              => '逃亡者',
+    'incubus_escaper'      => '一角獣',
     'wolf'                 => '人狼',
     'boss_wolf'            => '白狼',
     'gold_wolf'            => '金狼',
@@ -679,8 +682,8 @@ class RoleData{
     'rose_angel'           => '薔薇天使',
     'lily_angel'           => '百合天使',
     'exchange_angel'       => '魂移使',
-    'sacrifice_angel'      => '守護天使',
     'ark_angel'            => '大天使',
+    'sacrifice_angel'      => '守護天使',
     'quiz'                 => '出題者',
     'vampire'              => '吸血鬼',
     'incubus_vampire'      => '青髭公',
@@ -720,6 +723,7 @@ class RoleData{
     'south_ogre'           => '隠行鬼',
     'incubus_ogre'         => '般若',
     'power_ogre'           => '星熊童子',
+    'revive_ogre'          => '茨木童子',
     'sacrifice_ogre'       => '酒呑童子',
     'yaksa'                => '夜叉',
     'succubus_yaksa'       => '荼枳尼天',
@@ -820,9 +824,9 @@ class RoleData{
   var $short_role_list = array(
     'human'                => '村',
     'saint'                => '聖',
-    'executor'             => '執',
-    'escaper'              => '逃',
+    'executor'             => '執行',
     'elder'                => '老',
+    'scripter'             => '執筆',
     'suspect'              => '不審',
     'unconscious'          => '無',
     'mage'                 => '占',
@@ -852,6 +856,7 @@ class RoleData{
     'guard'                => '狩',
     'hunter_guard'         => '猟',
     'blind_guard'          => '雀',
+    'reflect_guard'        => '侍',
     'poison_guard'         => '騎',
     'fend_guard'           => '忍',
     'reporter'             => '聞',
@@ -892,6 +897,10 @@ class RoleData{
     'divorce_jealousy'     => '縁切',
     'priest_jealousy'      => '恋司',
     'poison_jealousy'      => '毒橋',
+    'brownie'              => '童',
+    'revive_brownie'       => '蛇',
+    'cursed_brownie'       => '祟',
+    'history_brownie'      => '白澤',
     'doll'                 => '上海',
     'friend_doll'          => '仏蘭',
     'phantom_doll'         => '倫敦',
@@ -901,10 +910,8 @@ class RoleData{
     'scarlet_doll'         => '和蘭',
     'silver_doll'          => '露',
     'doll_master'          => '人遣',
-    'brownie'              => '童',
-    'revive_brownie'       => '蛇',
-    'cursed_brownie'       => '祟',
-    'history_brownie'      => '白澤',
+    'escaper'              => '逃',
+    'incubus_escaper'      => '一角',
     'wolf'                 => '狼',
     'boss_wolf'            => '白狼',
     'gold_wolf'            => '金狼',
@@ -973,8 +980,8 @@ class RoleData{
     'rose_angel'           => '薔天',
     'lily_angel'           => '百天',
     'exchange_angel'       => '魂移',
-    'sacrifice_angel'      => '守天',
     'ark_angel'            => '大天',
+    'sacrifice_angel'      => '守天',
     'quiz'                 => 'GM',
     'vampire'              => '血',
     'incubus_vampire'      => '青髭',
@@ -1014,6 +1021,7 @@ class RoleData{
     'south_ogre'           => '隠鬼',
     'incubus_ogre'         => '般若',
     'power_ogre'           => '星熊',
+    'revive_ogre'          => '茨木',
     'sacrifice_ogre'       => '酒呑',
     'yaksa'                => '夜叉',
     'succubus_yaksa'       => '荼',
@@ -1130,8 +1138,9 @@ class RoleData{
     'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
     'common' => 'common',
     'cat' => 'poison_cat',
-    'doll' => 'doll',
     'brownie' => 'brownie',
+    'doll' => 'doll',
+    'escaper' => 'escaper',
     'poison' => 'poison',
     'pharmacist' => 'pharmacist',
     'assassin' => 'assassin',
@@ -1216,20 +1225,12 @@ class RoleData{
       $class = 'cat';
       break;
 
-    case 'pharmacist':
-      $class = 'poison';
-      break;
-
     case 'mind_scanner':
       $class = 'mind';
       break;
 
     case 'child_fox':
       $class = 'fox';
-      break;
-
-    case 'yaksa':
-      $class = 'ogre';
       break;
 
     case 'unknown_mania':

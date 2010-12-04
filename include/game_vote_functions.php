@@ -750,8 +750,9 @@ function VoteDay(){
       break;
     }
   }
-  if($SELF->IsRoleGroup('elder') || ($brownie_flag && $SELF->IsRole('human'))){
-    $vote_number++; //長老系と座敷童子が出現している村人は投票数が 1 増える
+  if($SELF->IsRoleGroup('elder') || ($SELF->IsRole('scripter') && $ROOM->date > 4) ||
+     ($brownie_flag && $SELF->IsRole('human'))){
+    $vote_number++; //長老系・5日目以降の執筆者・座敷童子生存中の村人は投票数が 1 増える
   }
 
   //サブ役職の処理
@@ -1427,17 +1428,19 @@ function AggregateVoteNight($skip = false){
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
 
     foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者の情報収集
-      $user = $USERS->ByUname($uname);
+      $user   = $USERS->ByUname($uname);
+      $target = $USERS->ByUname($target_uname);
       if(in_array($target_uname, $trap_target_list)){ //罠死判定
 	$trapped_list[] = $user->uname;
       }
-      elseif($USERS->ByUname($target_uname)->IsWolf()){ //逃亡先が人狼なら死亡
-	$USERS->Kill($user->user_no, 'WOLF_KILLED');
+      elseif(($user->IsRole('escaper') && $target->IsWolf()) ||
+	     ($user->IsRole('incubus_escaper') && $target->sex != 'female')){ //逃亡失敗判定
+	$USERS->Kill($user->user_no, 'ESCAPER_DEAD');
       }
       else{
 	//凍傷判定
-	if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
-	$escaper_target_list[$user->uname] = $target_uname; //逃亡先をセット
+	if(in_array($target->uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
+	$escaper_target_list[$user->uname] = $target->uname; //逃亡先をセット
       }
     }
     //PrintData($escaper_target_list, 'Target [escaper]');
@@ -1510,7 +1513,7 @@ function AggregateVoteNight($skip = false){
 	  if($rate <= $resist_rate) break;
 	}
       }
-      if($ROOM->date > 1 && $wolf_target->IsRole('escaper')) break; //逃亡者判定
+      if($ROOM->date > 1 && $wolf_target->IsRoleGroup('escaper')) break; //逃亡者系判定
       if(! $voted_wolf->IsRole('hungry_wolf')){ //人狼・妖狐襲撃判定 (餓狼は対象外)
 	if($wolf_target->IsWolf()){ //人狼系判定 (例：銀狼出現)
 	  if($voted_wolf->IsRole('emerald_wolf')){ //翠狼の処理
@@ -1666,7 +1669,8 @@ function AggregateVoteNight($skip = false){
       $target = $USERS->ByUname($target_uname);
       //対象が身代わり死していた場合はスキップ
       if(! in_array($target->uname, $sacrifice_list) &&
-	 ($target->IsHuntTarget() || ($user->IsRole('hunter_guard') && $target->IsFox()))){
+	 ($target->IsHuntTarget() || ($user->IsRole('hunter_guard') && $target->IsFox()) ||
+	  ($user->IsRole('reflect_guard') && $target->IsOgre()))){
 	$USERS->Kill($target->user_no, 'HUNTED');
 	$str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
 	$ROOM->SystemMessage($str, 'GUARD_HUNTED');
@@ -1712,7 +1716,7 @@ function AggregateVoteNight($skip = false){
 	$ROOM->SystemMessage($str, 'GUARD_SUCCESS');
       }
       //吸血成立判定
-      if(! $guard_flag && $target->IsLive(true) && ! $target->IsRole('escaper') &&
+      if(! $guard_flag && $target->IsLive(true) && ! $target->IsRoleGroup('escaper') &&
 	 $target->GetCamp() != 'vampire'){
 	$vampire_target_list[$user->uname][] = $target->uname;
       }
@@ -1725,8 +1729,8 @@ function AggregateVoteNight($skip = false){
 	$target = $USERS->ByUname($target_uname);
 	//吸血死判定 (吸血死より罠死の方が優先されるが、本人も罠にかかるので競合しないはず)
 	if(! $target->IsAvoid() &&
-	   (($user->IsRole('incubus_vampire')  && $target->sex == 'male') ||
-	    ($user->IsRole('succubus_vampire') && $target->sex == 'female'))){
+	   (($user->IsRole('incubus_vampire')  && $target->sex != 'female') ||
+	    ($user->IsRole('succubus_vampire') && $target->sex != 'male'))){
 	  $USERS->Kill($target->user_no, 'VAMPIRE_KILLED');
 	  continue;
 	}
@@ -1755,7 +1759,7 @@ function AggregateVoteNight($skip = false){
       if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
-      if($target->IsRole('escaper')) continue; //逃亡者は無効
+      if($target->IsRoleGroup('escaper')) continue; //逃亡者は無効
       if($target->IsRefrectAssassin()){ //反射判定
 	$assassin_target_list[$uname] = true;
 	continue;
@@ -1797,7 +1801,7 @@ function AggregateVoteNight($skip = false){
       if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
-      if($target->IsDead(true) || $target->IsRole('escaper')) continue; //無効判定
+      if($target->IsDead(true) || $target->IsRoleGroup('escaper')) continue; //無効判定
       if($target->IsRefrectAssassin()){ //反射判定
 	$ogre_target_list[$uname] = true;
 	continue;
@@ -1818,8 +1822,8 @@ function AggregateVoteNight($skip = false){
 	$reduce_rate = 7 / 10;
       }
       //方角・性別限定タイプ・酒呑童子・荼枳尼天・毘沙門天
-      elseif($user->IsRole('east_ogre', 'west_ogre', 'north_ogre', 'south_ogre', 'sacrifice_ogre',
-			   'incubus_ogre', 'succubus_yaksa', 'dowser_yaksa')){
+      elseif($user->IsRole('east_ogre', 'west_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
+			   'revive_ogre', 'sacrifice_ogre', 'succubus_yaksa', 'dowser_yaksa')){
 	$reduce_rate = 1 / 2;
       }
       elseif($user->IsRole('poison_ogre')){ //榊鬼
@@ -2351,12 +2355,18 @@ function AggregateVoteNight($skip = false){
     }
 
     //-- 反魂系レイヤー --//
-    //仙人・西蔵人形・蛇神の蘇生判定
+    //身代わり君・恋人・完全覚醒天狼なら無効
     if($wolf_target->IsDead(true) && ! $wolf_target->IsDummyBoy() && ! $wolf_target->IsLovers() &&
-       $wolf_target->wolf_killed  && ! $voted_wolf->IsSiriusWolf() && $wolf_target->IsActive() &&
-       $wolf_target->IsRole('revive_pharmacist', 'revive_doll', 'revive_brownie')){
-      $wolf_target->Revive();
-      $wolf_target->LostAbility();
+       $wolf_target->wolf_killed  && ! $voted_wolf->IsSiriusWolf()){
+      //仙人・西蔵人形・蛇神の蘇生判定
+      if($wolf_target->IsRole('revive_pharmacist', 'revive_doll', 'revive_brownie') &&
+	 $wolf_target->IsActive()){
+	$wolf_target->Revive();
+	$wolf_target->LostAbility();
+      }
+      elseif($wolf_target->IsRole('revive_ogre') && mt_rand(1, 100) <= 40){ //茨木童子の半知恵
+	$wolf_target->Revive();
+      }
     }
 
     foreach($reverse_list as $target_uname => $flag){ //反魂師の処理
@@ -2674,14 +2684,15 @@ function AggregateVoteNight($skip = false){
       'assassin' => 'soul_assassin',
       'mind_scanner' => 'clairvoyance_scanner',
       'jealousy' => 'poison_jealousy',
-      'doll' => 'doll_master',
       'brownie' => 'history_brownie',
+      'doll' => 'doll_master',
+      'escaper' => 'escaper',
       'wolf' => 'sirius_wolf',
       'mad' => 'whisper_mad',
       'fox' => 'cursed_fox',
       'child_fox' => 'jammer_fox',
       'cupid' => 'sweet_cupid',
-      'angel' => 'ark_angel',
+      'angel' => 'sacrifice_angel',
       'quiz' => 'quiz',
       'vampire' => 'soul_vampire',
       'chiroptera' => 'boss_chiroptera',
@@ -2702,8 +2713,9 @@ function AggregateVoteNight($skip = false){
       'assassin' => 'eclipse_assassin',
       'mind_scanner' => 'mind_scanner',
       'jealousy' => 'jealousy',
-      'doll' => 'silver_doll',
       'brownie' => 'brownie',
+      'doll' => 'silver_doll',
+      'escaper' => 'incubus_escaper',
       'wolf' => 'silver_wolf',
       'mad' => 'mad',
       'fox' => 'silver_fox',

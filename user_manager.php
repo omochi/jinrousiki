@@ -216,9 +216,9 @@ EOF;
     if($ROOM->IsChaosWish()){
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'medium', 'priest', 'guard',
 		 'common', 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner',
-		 'jealousy', 'doll', 'brownie', 'wolf', 'mad', 'fox', 'child_fox', 'cupid',
-		 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'ogre', 'yaksa', 'mania',
-		 'unknown_mania');
+		 'jealousy', 'brownie', 'doll', 'escaper', 'wolf', 'mad', 'fox', 'child_fox',
+		 'cupid', 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'ogre', 'yaksa',
+		 'mania', 'unknown_mania');
     }
     elseif($ROOM->IsOption('gray_random')){
       array_push($wish_role_list, 'human', 'wolf', 'mad', 'fox');
@@ -253,7 +253,7 @@ EOF;
     foreach($wish_role_list as $role){
       if($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
       $count++;
-      $alt = ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]) . '→';
+      $alt = '←' . ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]);
       $checked = $RQ_ARGS->role == $role ? ' checked' : '';
       echo <<<EOF
 <td><label for="{$role}"><input type="radio" id="{$role}" name="role" value="{$role}"{$checked}><img src="img/entry_user/role_{$role}.gif" alt="{$alt}"></label></td>

@@ -426,6 +426,7 @@ EOF;
      ($ROOM->log_mode && ! $ROOM->single_view_mode)) return $str;
 
   $result = 'win';
+  $class = NULL;
   $camp = $SELF->GetCamp(true); //所属陣営を取得
 
   if($victory == 'draw' || $victory == 'vanish'){ //引き分け系
@@ -440,13 +441,15 @@ EOF;
     $win_flag = false;
     switch($camp){
     case 'human':
-      if($SELF->IsRole('escaper')){ //逃亡者は死亡していたら敗北
-	if($SELF->IsDead()) break;
-      }
-      elseif($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
+      if($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
 	foreach($USERS->rows as $user){
 	  if($user->IsLiveRole('doll_master')) break 2;
 	}
+	$class = 'doll';
+      }
+      elseif($SELF->IsRoleGroup('escaper')){ //逃亡者系は死亡していたら敗北
+	if($SELF->IsDead()) break;
+	$class = 'escaper';
       }
       $win_flag = $victory == $camp;
       break;
@@ -484,7 +487,7 @@ EOF;
     }
 
     if($win_flag && (! $SELF->IsJoker($ROOM->date) || count($USERS->GetLivingUsers()) == 1)){
-      $class = $camp;
+      if(is_null($class)) $class = $camp;
     }
     else{
       $class  = 'none';
@@ -994,10 +997,10 @@ function GenerateDeadMan(){
 		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
 		     'DREAM_KILLED' => true, 'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
 		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'VAMPIRE_KILLED' => true,
-		     'ASSASSIN_KILLED' => true, 'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true,
-		     'POISON_DEAD_night' => true, 'LOVERS_FOLLOWED_night' => true,
-		     'REVIVE_%' => false, 'SACRIFICE' => true, 'FLOWERED_%' => false,
-		     'CONSTELLATION_%' => false, 'NOVOTED_night' => true,
+		     'ASSASSIN_KILLED' => true, 'ESCAPER_DEAD' => true, 'OGRE_KILLED' => true,
+		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
+		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
+		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'NOVOTED_night' => true,
 		     'JOKER_MOVED_night' => true));
 
   foreach($dead_type_list as $scene => $action_list){

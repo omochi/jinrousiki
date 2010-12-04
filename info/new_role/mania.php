@@ -177,14 +177,19 @@ CO するべきかどうかは、コピーした役職次第です。
   <td></td>
 </tr>
 <tr>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td><a href="human.php#history_brownie">白澤</a></td>
+  <td>Ver. 1.4.0 β16〜</td>
+</tr>
+<tr>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td><a href="human.php#doll_master">人形遣い</a></td>
   <td></td>
 </tr>
 <tr>
-  <td><a href="human.php#brownie_group">座敷童子系</a></td>
-  <td><a href="human.php#history_brownie">白澤</a></td>
-  <td>Ver. 1.4.0 β16〜</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td><a href="human.php#escaper">逃亡者</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
@@ -213,8 +218,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="lovers.php#angel_group">天使系</a></td>
-  <td><a href="lovers.php#ark_angel">大天使</a></td>
-  <td></td>
+  <td><a href="lovers.php#sacrifice_angel">守護天使</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="quiz.php#quiz_group">出題者系</a></td>
@@ -338,14 +343,19 @@ CO するべきかどうかは、コピーした役職次第です。
   <td></td>
 </tr>
 <tr>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td><a href="human.php#brownie">座敷童子</a></td>
+  <td>Ver. 1.4.0 β16〜</td>
+</tr>
+<tr>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td><a href="human.php#silver_doll">露西亜人形</a></td>
   <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
-  <td><a href="human.php#brownie_group">座敷童子系</a></td>
-  <td><a href="human.php#brownie">座敷童子</a></td>
-  <td>Ver. 1.4.0 β16〜</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td><a href="human.php#incubus_escaper">一角獣</a></td>
+  <td>Ver. 1.4.0 β22〜</td>
 </tr>
 <tr>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>

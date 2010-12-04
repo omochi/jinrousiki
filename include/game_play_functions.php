@@ -15,10 +15,9 @@ function OutputAbility(){
     $ROLE_IMG->Output('human');
   }
   elseif($SELF->IsRole('elder')) $ROLE_IMG->Output($SELF->main_role); //長老
-  elseif($SELF->IsRole('escaper')){ //逃亡者
+  elseif($SELF->IsRole('scripter')){ //執筆者
     $ROLE_IMG->Output($SELF->main_role);
-    //夜の投票
-    if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('fairy-do', 'escape_do', 'ESCAPE_DO');
+    if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL);
   }
   elseif($SELF->IsRoleGroup('mage')){ //占い師系
     $ROLE_IMG->Output($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);
@@ -200,6 +199,9 @@ function OutputAbility(){
       }
     }
   }
+  elseif($SELF->IsRoleGroup('brownie')){ //座敷童子系
+    $ROLE_IMG->Output($SELF->main_role);
+  }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系
     $ROLE_IMG->Output($SELF->main_role);
     if(! $SELF->IsRole('doll_master')){ //仲間表示
@@ -218,8 +220,11 @@ function OutputAbility(){
       unset($stack);
     }
   }
-  elseif($SELF->IsRoleGroup('brownie')){ //座敷童子系
+  elseif($SELF->IsRoleGroup('escaper')){ //逃亡者系
     $ROLE_IMG->Output($SELF->main_role);
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+      OutputVoteMessage('escape-do', 'escape_do', 'ESCAPE_DO');
+    }
   }
   elseif($SELF->IsWolf()){ //人狼系
     $ROLE_IMG->Output($SELF->main_role);

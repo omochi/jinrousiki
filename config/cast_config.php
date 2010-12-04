@@ -173,7 +173,6 @@ class CastConfig extends CastConfigBase{
   //普通闇鍋
   var $chaos_random_role_list = array(
     'human'              => 88,
-    'escaper'            => 30,
     'mage'               => 50,
     'soul_mage'          =>  5,
     'psycho_mage'        => 10,
@@ -189,6 +188,7 @@ class CastConfig extends CastConfigBase{
     'assassin'           => 20,
     'doll'               => 20,
     'doll_master'        => 10,
+    'escaper'            => 30,
     'wolf'               => 80,
     'boss_wolf'          => 10,
     'poison_wolf'        => 40,
@@ -273,12 +273,12 @@ class CastConfig extends CastConfigBase{
   //超・闇鍋
   var $chaos_hyper_random_role_list = array(
     'human'                =>  1,
-    'saint'                =>  3,
-    'executor'             =>  3,
-    'escaper'              =>  3,
+    'saint'                =>  2,
+    'executor'             =>  2,
     'elder'                =>  3,
-    'suspect'              =>  3,
-    'unconscious'          =>  3,
+    'scripter'             =>  2,
+    'suspect'              =>  2,
+    'unconscious'          =>  2,
     'mage'                 => 15,
     'soul_mage'            =>  5,
     'psycho_mage'          => 10,
@@ -306,8 +306,9 @@ class CastConfig extends CastConfigBase{
     'guard'                => 20,
     'hunter_guard'         => 10,
     'blind_guard'          =>  5,
+    'reflect_guard'        =>  5,
     'poison_guard'         =>  5,
-    'fend_guard'           => 10,
+    'fend_guard'           =>  5,
     'reporter'             => 10,
     'anti_voodoo'          => 15,
     'dummy_guard'          => 15,
@@ -346,6 +347,10 @@ class CastConfig extends CastConfigBase{
     'divorce_jealousy'     =>  3,
     'priest_jealousy'      =>  3,
     'poison_jealousy'      =>  3,
+    'brownie'              =>  2,
+    'history_brownie'      =>  2,
+    'revive_brownie'       =>  2,
+    'cursed_brownie'       =>  2,
     'doll'                 =>  5,
     'friend_doll'          =>  3,
     'phantom_doll'         =>  2,
@@ -355,10 +360,8 @@ class CastConfig extends CastConfigBase{
     'scarlet_doll'         =>  2,
     'silver_doll'          =>  2,
     'doll_master'          => 10,
-    'brownie'              =>  2,
-    'history_brownie'      =>  2,
-    'revive_brownie'       =>  2,
-    'cursed_brownie'       =>  2,
+    'escaper'              =>  3,
+    'incubus_escaper'      =>  2,
     'wolf'                 => 10,
     'boss_wolf'            =>  5,
     'gold_wolf'            => 10,
@@ -427,8 +430,8 @@ class CastConfig extends CastConfigBase{
     'rose_angel'           =>  4,
     'lily_angel'           =>  4,
     'exchange_angel'       =>  3,
-    'sacrifice_angel'      =>  3,
     'ark_angel'            =>  3,
+    'sacrifice_angel'      =>  3,
     'quiz'                 =>  2,
     'vampire'              =>  4,
     'incubus_vampire'      =>  2,
@@ -461,13 +464,14 @@ class CastConfig extends CastConfigBase{
     'ogre'                 =>  2,
     'orange_ogre'          =>  2,
     'indigo_ogre'          =>  2,
-    'poison_ogre'          =>  2,
+    'poison_ogre'          =>  1,
     'west_ogre'            =>  1,
     'east_ogre'            =>  1,
     'north_ogre'           =>  1,
     'south_ogre'           =>  1,
     'incubus_ogre'         =>  1,
     'power_ogre'           =>  1,
+    'revive_ogre'          =>  1,
     'sacrifice_ogre'       =>  1,
     'yaksa'                =>  2,
     'succubus_yaksa'       =>  1,
@@ -488,7 +492,7 @@ class CastConfig extends CastConfigBase{
     'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
     'priest' => 0.1, 'guard' => 0.15, 'common' => 0.17, 'poison' => 0.14, 'cat' => 0.1,
     'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15,
-    'quiz' => 0.15, 'vampire' => 0.15, 'ogre' => 0.12, 'yaksa' => 0.12);
+    'escaper' => 0.15, 'quiz' => 0.15, 'vampire' => 0.15, 'ogre' => 0.12, 'yaksa' => 0.12);
 
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -604,6 +608,10 @@ class CastConfig extends CastConfigBase{
       if($role_list['mind_cupid'] > 2){
 	$role_list['mind_cupid']--;
 	$role_list['exchange_angel']++;
+      }
+      if($role_list['mind_cupid'] > 2){
+	$role_list['mind_cupid']--;
+	$role_list['sweet_cupid']++;
       }
       if($role_list['wolf'] > 2){
 	$role_list['wolf']--;

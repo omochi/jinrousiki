@@ -1270,7 +1270,7 @@ Ver. 1.4.0
 <tr>
   <td><a href="human.php#escaper">逃亡者</a></td>
   <td><a href="human.php">村人</td>
-  <td><a href="human.php#human_group">村人系</a></td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
   <td class="ability">2日目の夜以降、生きている誰かの側に逃亡して生存を図ろうとする村人。<br>
@@ -1995,6 +1995,45 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">処刑投票先が毒を持っていたら中る範囲を「村人陣営以外」に変更してしまう特殊な薬師。</td>
+  <td>Ver. 1.4.0 β22</td>
+</tr>
+<tr>
+  <td><a href="human.php#incubus_escaper">一角獣</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">逃亡先が女性以外だった場合は死亡する、特殊な逃亡者。</td>
+  <td>Ver. 1.4.0 β22</td>
+</tr>
+<tr>
+  <td><a href="human.php#reflect_guard">侍</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#guard_group">狩人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="ogre.php">鬼陣営</a>も狩ることができる上位狩人。
+  </td>
+  <td>Ver. 1.4.0 β22</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#revive_ogre">茨木童子</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#psycho_mage">精神鑑定士</a>が『嘘吐き』判定を出す人の全滅」。<br>
+    人狼に襲撃されて死亡した場合、一定確率 (40%) で蘇生する。
+  </td>
+  <td>Ver. 1.4.0 β22</td>
+</tr>
+<tr>
+  <td><a href="human.php#scripter">執筆者</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#human_group">村人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">時が経つと (5 日目以降) <a href="human.php#elder">長老</a>相当の能力を得る村人。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
 </table>

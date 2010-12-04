@@ -14,7 +14,10 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
+<a href="#authority">投票数変化</a>
 <a href="#poison">毒</a>
+</p>
+<p>
 <a href="#cursed_group">呪い</a>
 <a href="#possessed">憑依</a>
 <a href="#seal">封印</a>
@@ -69,7 +72,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3><a id="sex_only">性別限定能力者</a></h3>
 <pre>
-<a href="lovers.php#angel">天使</a>・<a href="lovers.php#rose_angel">薔薇天使</a>・<a href="lovers.php#lily_angel">百合天使</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>・<a href="sub_role.php#androphobia">男性恐怖症</a>・<a href="sub_role.php#gynophobia">女性恐怖症</a>
+<a href="human.php#incubus_escaper">一角獣</a>・<a href="lovers.php#angel">天使</a>・<a href="lovers.php#rose_angel">薔薇天使</a>・<a href="lovers.php#lily_angel">百合天使</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>・<a href="sub_role.php#androphobia">男性恐怖症</a>・<a href="sub_role.php#gynophobia">女性恐怖症</a>
 </pre>
 
 <h2><a id="revive">蘇生能力者</a></h2>
@@ -79,12 +82,17 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3><a id="revive_self">自己蘇生能力者</a></h3>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="human.php#revive_brownie">蛇神</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
 
 <h2><a id="revive_limit">蘇生制限対象者</a></h2>
 <pre>
 <a href="human.php#about_revive">基本ルール[蘇生]</a>参照
+</pre>
+
+<h2><a id="authority">投票数変化能力者</a></h2>
+<pre>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#brownie">座敷童子</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="sub_role.php#authority_group">権力者系</a>
 </pre>
 
 <h2><a id="poison">毒能力者</a></h2>
