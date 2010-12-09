@@ -1,5 +1,5 @@
 <?php
-exit //未完成に付き使用しないこと。
+exit; //未完成に付き使用しないこと。
 require_once 'contenttype_set.php';  //ヘッダを強制日本語EUC-JP指定
 require_once 'game_functions.php';
 

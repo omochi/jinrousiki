@@ -58,7 +58,7 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#strong_poison">強毒者</a>・<a href="ogre.php#poison_ogre">榊鬼</a>
+<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="ability.php#poison">毒能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -110,7 +110,7 @@ OutputRolePageHeader('蝙蝠陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 他の国に実在する役職です。
-狼サイドから見ると、結果的に確実に一人殺せるので、
+狼サイドから見ると、結果的には確実に一人殺せるので、
 誰でもいいから人数を減らしたい時には便利な存在と言えますね。
 </pre>
 
@@ -143,17 +143,21 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[耐性] 精神鑑定：嘘つき / 獏襲撃：死亡</h4>
 <pre>
 本人には<a href="lovers.php#self_cupid">求愛者</a>と表示されている蝙蝠。
-矢を撃つことはできるが恋人にはならず、矢を撃った先に<a href="sub_role.php#mind_receiver">受信者</a>もつかない。
+矢を撃つことはできるが<a href="sub_role.php#lovers">恋人</a>にはならず、矢を撃った先に<a href="sub_role.php#mind_receiver">受信者</a>もつかない。
 <a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。
 
-矢を撃ったはずの恋人が死んだのに自分が後追いしていない、
+矢を撃ったはずの<a href="sub_role.php#lovers">恋人</a>が死んだのに自分が後追いしていない、
 <a href="human.php#psycho_mage">精神鑑定士</a>から「嘘つき」、<a href="human.php#sex_mage">ひよこ鑑定士</a>から「蝙蝠」判定されるなどで
 自分の正体を確認することができる。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="lovers.php#self_cupid">求愛者</a>の夢バージョンですが、扱いとしては特殊蝙蝠です。
-<a href="wolf.php#possessed_wolf">憑狼</a>が恋人を襲撃しても破綻しない状況を作るために作成しました。
+<a href="wolf.php#possessed_wolf">憑狼</a>が<a href="sub_role.php#lovers">恋人</a>を襲撃しても破綻しない状況を作るために作成しました。
 </pre>
 
 <h2><a id="fairy_group">妖精系</a></h2>
@@ -188,15 +192,15 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
   <li>悪戯の効果は重複します (複数の妖精から悪戯されたら人数分の効果が出ます)。</li>
   <li>身代わり君を悪戯の対象に選ぶ事もできます。</li>
   <li>悪戯先が人狼に襲撃されると発動するタイプは、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効になります。</li>
-  <li><a href="human.php#dummy_guard">夢守人</a>に護衛されると殺されます。</li>
+  <li><a href="human.php#dummy_guard">夢守人</a>に護衛されると死亡します。</li>
   <li><a href="human.php#dummy_poison">夢毒者</a>を処刑すると毒に中ります。</li>
-  <li><a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺されます。</li>
+  <li><a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡します。</li>
 </ol>
 <h4>Ver. 1.4.0 β9〜</h4>
 <pre>
-<a href="human.php#dummy_guard">夢守人</a>に護衛されると殺されます。
+<a href="human.php#dummy_guard">夢守人</a>に護衛されると死亡します。
 <a href="human.php#dummy_poison">夢毒者</a>を処刑すると毒に中ります。
-<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺されます。
+<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡します。
 </pre>
 
 <h3><a id="fairy">妖精</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6〜]</h3>
@@ -258,7 +262,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[悪戯能力] 発言妨害：無し / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
 悪戯が成功すると、花に関するメッセージを死亡メッセージ欄に表示できる妖精。
-初期設定は「〜さんの頭の上に〜の花が咲きました」で、全部で26種類。
+初期設定は「〜の頭の上に〜の花が咲きました」で、全部で26種類。
 メッセージの中身は管理者が設定ファイルで変更可能。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -273,7 +277,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[悪戯能力] 発言妨害：無し / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
 悪戯が成功すると、星に関するメッセージを死亡メッセージ欄に表示できる妖精。
-初期設定は「〜さんは昨夜、〜座を見ていたようです」で、全部で26種類。
+初期設定は「〜は昨夜、〜座を見ていたようです」で、全部で26種類。
 メッセージの中身は管理者が設定ファイルで変更可能。
 </pre>
 <h5>Ver. 1.4.0 β15〜</h5>

@@ -64,9 +64,17 @@ function GetRoleList($user_count){
     if($ROOM->IsOption('topping') &&
        is_array($stack = $CAST_CONF->topping_list[$ROOM->option_role->options['topping'][0]])){
       //PrintData($stack);
-      foreach($stack as $role => $count){
-	$target =& $chaos_fix_role_list[$role];
-	if(is_null($target) || $target < $count) $target = $count;
+      if(is_array($stack['fix'])){
+	foreach($stack['fix'] as $role => $count) $chaos_fix_role_list[$role] += $count;
+      }
+      if(is_array($stack['random'])){
+	foreach($stack['random'] as $key => $list){
+	  $random_list = $CAST_CONF->GenerateRandomList($list);
+	  //PrintData($random_list, $stack['count'][$key]);
+	  for($count = $stack['count'][$key]; $count > 0; $count--){
+	    $chaos_fix_role_list[GetRandom($random_list)]++;
+	  }
+	}
       }
       //PrintData($chaos_fix_role_list);
     }

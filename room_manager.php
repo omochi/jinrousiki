@@ -293,31 +293,32 @@ function CreateRoom(){
   $game_option = implode(' ', $game_option_list);
   $option_role = implode(' ', $option_role_list);
   $status = false;
+
   do{
-    //村作成
-    $time = TZTime();
-    $items = 'room_no, room_name, room_comment, establisher_ip, establish_time, ' .
-      'game_option, option_role, max_user, status, date, day_night, last_updated';
-    $values = "{$room_no}, '{$room_name}', '{$room_comment}', '{$ip_address}', NOW(), " .
-      "'{$game_option}', '{$option_role}', {$max_user}, 'waiting', 0, 'beforegame', '{$time}'";
-    if(! InsertDatabase('room', $items, $values)) break;
+    if(! $SERVER_CONF->dry_run_mode){
+      //村作成
+      $time = TZTime();
+      $items = 'room_no, room_name, room_comment, establisher_ip, establish_time, ' .
+	'game_option, option_role, max_user, status, date, day_night, last_updated';
+      $values = "{$room_no}, '{$room_name}', '{$room_comment}', '{$ip_address}', NOW(), " .
+	"'{$game_option}', '{$option_role}', {$max_user}, 'waiting', 0, 'beforegame', '{$time}'";
+      if(! InsertDatabase('room', $items, $values)) break;
 
-    //身代わり君を入村させる
-    if(strpos($game_option, 'dummy_boy') !== false &&
-       FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
-      if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
-    }
+      //身代わり君を入村させる
+      if(strpos($game_option, 'dummy_boy') !== false &&
+	 FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
+	if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
+      }
 
-    if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
-      OutputRoomAction('success', $room_name);
-      return true;
+      if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
+	OutputRoomAction('success', $room_name);
+	return true;
+      }
     }
 
     //Twitter 投稿処理
-    /*
     $twitter = new TwitterConfig();
     $twitter->Send($room_no, $room_name, $room_comment);
-    */
     //OutputSiteSummary(); //RSS更新 //テスト中
 
     OutputRoomAction('success', $room_name);

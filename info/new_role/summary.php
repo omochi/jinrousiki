@@ -185,7 +185,7 @@ Ver. 1.4.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>人狼</td>
   <td>村人</td>
-  <td class="ability">占い師に人狼と判定されてしまう村人 (表示は「村人」)。<br>
+  <td class="ability">占い師に人狼と判定されてしまう村人 (本人表記は「<a href="human.php#human">村人</a>」)。<br>
     低確率で発言が遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。</td>
   <td>Ver. 1.4.0 α9</td>
 </tr>
@@ -873,7 +873,7 @@ Ver. 1.4.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人の表記は「村人」。</td>
+  <td class="ability">他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β6</td>
 </tr>
 <tr>
@@ -882,7 +882,7 @@ Ver. 1.4.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票の最多得票者になった場合に、内訳によって処刑する人を変化させる村人。本人の表記は「村人」。</td>
+  <td class="ability">再投票の最多得票者になった場合に、内訳によって処刑する人を変化させる村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
 <tr>
@@ -1075,7 +1075,7 @@ Ver. 1.4.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票発生時に非村人に投票していた場合は吊る事が出来る村人。本人の表記は「村人」。</td>
+  <td class="ability">再投票発生時に非村人に投票していた場合は吊る事が出来る村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>

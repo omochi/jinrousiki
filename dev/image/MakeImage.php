@@ -97,11 +97,11 @@ class RoleMessageList{
 
   var $elder = array(
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|長老|です。あなたの#処刑#投票には_二票_分の価値があります。年功者の知恵を活かして村を勝利に導くのです。",
-    'type' => 'scripter');
+    'type' => 'human', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $scripter = array(
-    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|執筆者|です。一定日数後に、あなたの#処刑#投票の価値が_一票_増えます。",
-    'type' => 'human', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|執筆者|です。一定日数後に、あなたの#処刑#投票数が +1 されます。村の全てを記録して名を上げるのです。",
+    'type' => 'elder');
 
   var $mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占い師#、夜の間に村人一人を占うことで翌朝その人が「|人|」か「_狼_」か知ることができます。あなたが村人の勝利を握っています。",
@@ -116,7 +116,7 @@ class RoleMessageList{
     'type' => 'mage', 'delimiter' => array('^' => 'ogre'));
 
   var $sex_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#ひよこ鑑定士#、性別が分かる#占い師#です。また、=蝙蝠=や^鬼^を見つけることもできます。",
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#ひよこ鑑定士#、性別が分かる#占い師#です。_狼_探しは他に任せ、性の不思議を解明するのです。=蝙蝠=や^鬼^も見つかりますが些細な事。",
     'type' => 'psycho_mage', 'delimiter' => array('=' => 'chiroptera'));
 
   var $stargazer_mage = array(
@@ -148,7 +148,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'medium', '_' => 'chicken'));
 
   var $bacchus_medium = array(
-    'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#神主#です。_突然死_した人の所属陣営を知ることができます。また、=鬼=を^処刑^投票で_ショック死_させることができます。",
+    'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#神主#です。_突然死_した人の所属陣営を知ることができます。また、=鬼=を^処刑^投票で_ショック死_させることができます。\n　三度の飯より酒が好き、=鬼=がいたならさぁさぁ飲もう。飲んで飲ませて飲み比べ、最後に立つのは私だけ。=鬼=すら潰すこの私。",
     'type' => 'seal_medium', 'delimiter' => array('=' => 'ogre'));
 
   var $seal_medium = array(
@@ -172,7 +172,7 @@ class RoleMessageList{
     'type' => 'priest');
 
   var $high_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人|陣営、または死亡した|村人|陣営以外の総数を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人|陣営、または死亡した|村人|陣営以外の総数を知ることができます。\n　神に最も近いあなたなら、幾夜の祈りののち、毎夜お告げを得ることができるでしょう。神の御心を村人へ伝え、導くのです。",
     'type' => 'priest');
 
   var $revive_priest = array(
@@ -196,7 +196,7 @@ class RoleMessageList{
     'type' => 'guard', 'delimiter' => array('^' => 'no_last_words', '=' => 'vampire'));
 
   var $reflect_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#侍#です。^暗殺^を跳ね返すことができます。また、#護衛#先が=鬼=なら#狩る#ことができます。",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#侍#です。^暗殺^を跳ね返すことができます。また、#護衛#先が=鬼=なら#狩る#ことができます。\n　かかる火の粉は振り払い、浮き世の=鬼=を斬り捨てて、悪しき_狼_の凶刃から村人を守るのです！",
     'type' => 'guard', 'delimiter' => array('^' => 'assassin', '=' => 'ogre'));
 
   var $poison_guard = array(
@@ -268,7 +268,7 @@ class RoleMessageList{
     'type' => 'cure_pharmacist', 'delimiter' => array('=' => 'wolf'));
 
   var $alchemy_pharmacist = array(
-    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#錬金術師#です。_処刑_投票した人の#毒#能力を知ることができ、_処刑_された場合は#毒#を強化することができます。",
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#錬金術師#です。_処刑_投票した人の#毒#能力を知ることができ、_処刑_された場合は#毒#を強化することができます。\n　古の賢者の知識と魔法の如き錬金の秘法で#毒#を瞬時に作り変え、村に仇なす者に化学の力を思い知らせてやるのです！",
     'type' => 'pharmacist');
 
   var $assassin = array(
@@ -300,7 +300,7 @@ class RoleMessageList{
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
 
   var $clairvoyance_scanner = array(
-    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#猩々#です。二日目から誰か一人のその夜の能力の行使先が誰なのかを知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#猩々#です。二日目から誰か一人のその夜の能力の行使先が誰なのかを知ることができます。\n　夜に彷徨い酒に酔い、誰かと酒宴に興じることで、夜のひとときを共有し土産話を持ち帰るのです！",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
 
   var $whisper_scanner = array(
@@ -329,7 +329,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'chicken'));
 
   var $revive_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても_蘇生_できます。また、_蘇生_能力者の成功率を高めることができます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても_蘇生_できます。また、_蘇生_能力者の成功率を高めることができます。\n　――奇跡を願う者よ、我を崇めよ、我を讃えよ。我は#蛇神#、命と再生を司るもの。我が神威もて、汝に力を与えん。",
     'type' => 'cursed_brownie', 'delimiter' => array('_' => 'revive'));
 
   var $cursed_brownie = array(
@@ -381,7 +381,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'escaper', '_' => 'wolf'));
 
   var $incubus_escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。",
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて乙女の純潔を守るのだ！",
     'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
 
   var $wolf = array(
@@ -634,7 +634,7 @@ class RoleMessageList{
     'type' => 'cupid', 'delimiter' => array('#' => 'mind'));
 
   var $sweet_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|弁財天|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。また、_処刑_投票先を^恋耳鳴^にさせることができます。",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|弁財天|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。また、_処刑_投票先を^恋耳鳴^にさせることができます。\n　あなたの矢は種族を超えた愛となり、あなたの票は闇夜に聞こえる|恋人|の囁きを届ける。恋を奏でる詩人となり、村を愛で満たすのです！",
     'type' => 'mind_cupid', 'delimiter' => array('_' => 'vote', '^' => 'no_last_words'));
 
   var $triangle_cupid = array(
@@ -768,7 +768,7 @@ class RoleMessageList{
     'type' => 'moon_fairy');
 
   var $shadow_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|影妖精|です。夜に村人一人を指定して、その人と同じ顔になることができます。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|影妖精|です。夜に村人一人を指定して、その人と同じ顔になることができます。あなたは私？私はあなた？生き別れの双子！？",
     'type' => 'fairy');
 
   var $ice_fairy = array(
@@ -792,7 +792,7 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('#' => 'fox'));
 
   var $poison_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|榊鬼|、#毒#を持っています。_出題者陣営_の勝利、またはあなた自身の生存が勝利条件です。\n　また、夜に攫った人を=解答者=にすることができます。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|榊鬼|、#毒#を持っています。_出題者陣営_の勝利、またはあなた自身の生存が勝利条件です。\n　あなたは人々と謎掛けを愉しみ、そして、人々を愉しませる_出題者_たちと共に生きる|鬼|なのです。",
     'type' => 'ogre', 'delimiter' => array('#' => 'poison', '_' => 'quiz', '=' => 'chicken'));
 
   var $west_ogre = array(
@@ -816,11 +816,11 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('#' => 'lovers'));
 
   var $power_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|星熊童子|です。あなた自身の生存と村の人口を三分の一以下にすることが勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|星熊童子|です。あなた自身の生存と村の人口を三分の一以下にすることが勝利条件になります。\n　より永く遊戯を楽しむべく強大な|鬼|の力を以って盛者を挫き、村人達に泥沼の闘いを演じさせるのです！",
     'type' => 'ogre');
 
   var $revive_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|茨木童子|です。あなた自身の生存と#嘘吐き#の全滅が勝利条件になります。また、#人狼#に襲撃されても一定確率で_蘇生_できます。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|茨木童子|です。あなた自身の生存と#嘘つき#の全滅が勝利条件になります。また、#人狼#に襲撃されても一定確率で_蘇生_できます。\n　あなたは#嘘つき#に我慢がならなくなったので、全滅させることにしました。|鬼|の流儀で正直者だけが生きる村をその手で作るのです！",
     'type' => 'ogre', 'delimiter' => array('_' => 'revive'));
 
   var $sacrifice_ogre = array(
@@ -836,7 +836,7 @@ class RoleMessageList{
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   var $dowser_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|毘沙門天|です。あなた自身の生存とあなたよりサブ役職の所持数が多い人を全滅させることが勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|毘沙門天|です。あなた自身の生存とあなたよりサブ役職の所持数が多い人を全滅させることが勝利条件になります。\n　曰く、過ぎたるは、なお及ばざるが如し。力を持ち過ぎた者が大きな不幸を招く前に、その力を以って裁きを与えるのです！",
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   var $mania = array(
@@ -1420,24 +1420,9 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('scripter');
-#$builder->Output('sex_mage');
-#$builder->Output('bacchus_medium');
-#$builder->Output('high_priest');
-#$builder->Output('reflect_guard');
-#$builder->Output('alchemy_pharmacist');
-#$builder->Output('clairvoyance_scanner');
-#$builder->Output('revive_brownie');
 #$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');
-#$builder->Output('silver_doll');
-#$builder->Output('incubus_escaper');
-#$builder->Output('sweet_cupid');
+$builder->Output('silver_doll');
 #$builder->Output('doom_vampire');
-$builder->Output('scarlet_chiroptera');
-#$builder->Output('shadow_fairy');
-#$builder->Output('poison_ogre');
-#$builder->Output('power_ogre');
-$builder->Output('revive_ogre');
-#$builder->Output('dowser_yaksa');
+#$builder->Output('scarlet_chiroptera');

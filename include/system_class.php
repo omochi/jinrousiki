@@ -409,14 +409,23 @@ EOF;
 class TwitterConfigBase{
   //投稿処理
   function Send($id, $name, $comment){
+    global $SERVER_CONF;
     if($this->disable) return;
-    require_once(JINRO_MOD . '/twitter/Twitter.php'); //ライブラリをロード
+    require_once(JINRO_MOD . '/twitter/twitteroauth.php'); //ライブラリをロード
 
     $message = "【{$this->server}】{$id}番地に{$name}村\n〜{$comment}〜 が建ちました";
     if(strlen($this->hash) > 0) $message .= " #{$this->hash}";
-    $st =& new Services_Twitter($this->user, $this->password);
-    if($st->setUpdate(mb_convert_encoding($message, 'UTF-8', 'auto'))) return;
+    //TwitterはUTF-8
+    if($SERVER_CONF->encode != 'UTF-8'){
+      $message = mb_convert_encoding($message, 'UTF-8', $SERVER_CONF->encode);
+    }
 
+    //投稿
+    $to = new TwitterOAuth($this->key_ck, $this->key_cs, $this->key_at, $this->key_as);
+    $response = $to->OAuthRequest('https://twitter.com/statuses/update.json', 'POST',
+				  array('status' => $message));
+
+    if(! ($response === false || (strrpos($response, 'error')))) return;
     //エラー処理
     $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" .
       'ユーザ名：' . $this->user . '<br>'."\n" . 'メッセージ：' . $message;

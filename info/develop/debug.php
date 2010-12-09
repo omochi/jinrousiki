@@ -18,7 +18,15 @@ Ver. 1.4.0
 <a href="#140beta19">β19</a>
 <a href="#140beta20">β20</a>
 <a href="#140beta21">β21</a>
+<a href="#140beta22">β22</a>
 </p>
+
+<h2><a id="140beta22">Ver. 1.4.0 β22</a></h2>
+<h3>game_vote.php % 261行目付近 (2010/12/07 (Tue) 00:09)</h3>
+<pre>
+× if($SELF->IsRole('evoke_scanner')){
+○ elseif($SELF->IsRole('evoke_scanner')){
+</pre>
 
 <h2><a id="140beta21">Ver. 1.4.0 β21</a></h2>
 <h3>room_manager.php % 178行目付近 (2010/11/23 (Tue) 22:45)</h3>

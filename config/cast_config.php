@@ -488,11 +488,12 @@ class CastConfig extends CastConfigBase{
 
   //役職グループの最大出現比率 (グループ => 最大人口比率)
   var $chaos_role_group_rate_list = array(
-    'wolf' => 0.21, 'mad' => 0.13, 'fox' => 0.1, 'child_fox' => 0.08, 'cupid' => 0.1, 'angel' => 0.07,
-    'chiroptera' => 0.12, 'fairy' => 0.12, 'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1,
-    'priest' => 0.1, 'guard' => 0.15, 'common' => 0.17, 'poison' => 0.14, 'cat' => 0.1,
-    'pharmacist' => 0.15, 'assassin' => 0.15, 'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15,
-    'escaper' => 0.15, 'quiz' => 0.15, 'vampire' => 0.15, 'ogre' => 0.12, 'yaksa' => 0.12);
+    'wolf' => 0.21, 'mad' => 0.12, 'fox' => 0.1, 'child_fox' => 0.08,
+    'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1, 'priest' => 0.1, 'guard' => 0.15,
+    'common' => 0.17, 'poison' => 0.13, 'cat' => 0.1, 'pharmacist' => 0.15, 'assassin' => 0.15,
+    'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15, 'escaper' => 0.15,
+    'cupid' => 0.1, 'angel' => 0.07, 'quiz' => 0.15, 'vampire' => 0.15,
+    'chiroptera' => 0.12, 'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12);
 
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -509,12 +510,65 @@ class CastConfig extends CastConfigBase{
     'unknown_mania' => 15, 'sacrifice_mania' => 10);
 
   //固定配役追加モード
+  /*
+    fix    : 固定枠
+    random : ランダム枠 (各配列の中身は役職：出現比)
+    count  : ランダム出現数 (ランダム枠毎の出現数)
+
+    例)
+    doll_master が +1, [doll:poison_doll = 1:1] の割合でランダムに +1,
+    [scarlet_doll:silver_doll = 5:1] の割合でランダムに +2
+    'a' => array('fix'    => array('doll_master' => 1),
+		 'random' => array(array('doll'  => 1, 'poison_doll' => 1),
+				   array('scarlet_doll' => 5, 'silver_doll' => 1)),
+		 'count'  => array(1, 2)),
+   */
   var $topping_list = array(
-    'a' => array('doll' => 1, 'doll_master' => 1),
-    'b' => array('quiz' => 1, 'poison_ogre' => 1),
-    'c' => array('vampire' => 1),
-    'd' => array('poison_cat' => 1, 'resist_wolf' => 1),
-    'e' => array('anti_voodoo' => 1, 'possessed_wolf' => 1),
+    'a' => array('fix'    => array('doll_master' => 1),
+		 'random' => array(
+                    array('doll'         =>  40,
+			  'friend_doll'  =>   5,
+			  'phantom_doll' =>  10,
+			  'poison_doll'  =>  10,
+			  'doom_doll'    =>  10,
+			  'revive_doll'  =>  10,
+			  'scarlet_doll' =>  10,
+			  'silver_doll'  =>   5)),
+		 'count'  => array(1)),
+    'b' => array('fix' => array('quiz' => 1, 'poison_ogre' => 1)),
+    'c' => array('random' => array(
+                   array('vampire'           => 4,
+			 'incubus_vampire'   => 1,
+			 'succubus_vampire'  => 1,
+			 'doom_vampire'      => 1,
+			 'sacrifice_vampire' => 2,
+			 'soul_vampire'      => 1)),
+		 'count' => array(1)),
+    'd' => array('fix' => array('resist_wolf' => 1),
+		 'random' => array(
+                    array('poison_cat'    =>  4,
+			  'revive_cat'    =>  2,
+			  'sacrifice_cat' =>  2,
+			  'eclipse_cat'   =>  2)),
+		 'count'  => array(1)),
+    'e' => array('fix' => array('anti_voodoo' => 1, 'possessed_wolf' => 1)),
+    'f' => array('random' => array(
+                   array('ogre'           =>  2,
+			 'orange_ogre'    =>  2,
+			 'indigo_ogre'    =>  2,
+			 'poison_ogre'    =>  1,
+			 'west_ogre'      =>  1,
+			 'east_ogre'      =>  1,
+			 'north_ogre'     =>  1,
+			 'south_ogre'     =>  1,
+			 'incubus_ogre'   =>  1,
+			 'power_ogre'     =>  1,
+			 'revive_ogre'    =>  1,
+			 'sacrifice_ogre' =>  1,
+			 'yaksa'          =>  2,
+			 'succubus_yaksa' =>  1,
+			 'dowser_yaksa'   =>  1)),
+		 'count' => array(2)),
 			    );
 
   //サブ役職制限：EASYモード

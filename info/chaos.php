@@ -518,14 +518,19 @@ OutputInfoPageHeader('闇鍋モード');
   <li>内容は設定ファイルで変更できます</li>
   <li>初期設定は以下です<br>
     <ol>
-      <li><?php echo $GAME_OPT_MESS->topping_a ?> / 上海人形1 人形遣い1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_a ?> / 上海人形系(人形遣い以外)1 人形遣い1</li>
       <li><?php echo $GAME_OPT_MESS->topping_b ?> / 出題者1 榊鬼1</li>
-      <li><?php echo $GAME_OPT_MESS->topping_c ?> / 吸血鬼1</li>
-      <li><?php echo $GAME_OPT_MESS->topping_d ?> / 猫又1 抗毒狼1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_c ?> / 吸血鬼系1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_d ?> / 猫又系1 抗毒狼1</li>
       <li><?php echo $GAME_OPT_MESS->topping_e ?> / 厄神1 憑狼1</li>
+      <li><?php echo $GAME_OPT_MESS->topping_f ?> / 鬼陣営2</li>
     </ol>
   </li>
 </ol>
+<h3>Ver. 1.4.0 β23〜</h3>
+<pre>
+ランダム枠を作成することが出来ます。
+</pre>
 
 <h2><a id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a></h2>
 <ol>

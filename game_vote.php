@@ -258,7 +258,7 @@ function VoteNight(){
     if($SELF->IsRole('mind_scanner', 'presage_scanner')){
       if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     }
-    if($SELF->IsRole('evoke_scanner')){
+    elseif($SELF->IsRole('evoke_scanner')){
       if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
       if($ROOM->IsOpenCast()){
 	OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');

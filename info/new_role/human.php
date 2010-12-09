@@ -75,11 +75,11 @@ OutputRolePageHeader('村人陣営');
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
 再投票の最多得票者になった場合に、内訳によって処刑する人を変化させる村人。
-本人表記は「村人」。
+本人表記は「<a href="#human">村人</a>」。
 </pre>
 <ol>
   <li><a href="../spec.php#vote_day">判定</a>は<a href="#executor">執行者</a>の後</li>
-  <li>非村人 (村人陣営以外 + 恋人) を一人だけ含む → 非村人が吊られる</li>
+  <li>非村人 (村人陣営以外 + <a href="sub_role.php#lovers">恋人</a>) を一人だけ含む → 非村人が吊られる</li>
   <li>非村人が複数含まれている → 再投票</li>
   <li>全員村人 + 最多得票者の聖女は自分だけ → 自分が吊られる</li>
   <li>全員村人 + 最多得票者の聖女が複数いる → 再投票</li>
@@ -90,7 +90,7 @@ OutputRolePageHeader('村人陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#executor">執行者</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="sub_role.php#decide_group">決定者系</a>
+<a href="ability.php#decide">処刑者決定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -103,7 +103,7 @@ OutputRolePageHeader('村人陣営');
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
 再投票発生時に非村人 (村人陣営以外 + 恋人) に投票していた場合は吊る事が出来る村人。
-本人表記は「村人」。
+本人表記は「<a href="#human">村人</a>」。
 </pre>
 <ol>
   <li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php#decide_group">決定者系</a>の後</li>
@@ -124,7 +124,7 @@ OutputRolePageHeader('村人陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#saint">聖女</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="sub_role.php#decide_group">決定者系</a>
+<a href="ability.php#decide">処刑者決定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -140,7 +140,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
   <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
     例) <a href="sub_role.php#authority_group">権力者</a>ならさらに +1
   </li>
-  <li><a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
+  <li><a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -172,7 +172,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <h4>[耐性] 精神鑑定：嘘つき</h4>
 <pre>
-不審なあまり、<a href="#mage_group">占い師</a>に人狼と判定されてしまう村人で、本人表記は「村人」。
+不審なあまり、<a href="#mage_group">占い師</a>に人狼と判定されてしまう村人で、本人表記は「<a href="#human">村人</a>」。
 また、昼の間だけ、低確率で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
 
 発言が遠吠えに変換される確率は 1% (管理者は設定ファイルで変更可能)。
@@ -203,7 +203,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 精神鑑定：嘘つき / <a href="sub_role.php#mind_read">サトラレ</a>：無効</h4>
 <pre>
 他の国で言うと「自覚のない夢遊病者」。
-本人には「村人」と表示されているが、夜になると無意識に歩きまわるため
+本人には「<a href="#human">村人</a>」と表示されているが、夜になると無意識に歩きまわるため
 人狼に無意識であることが分かってしまう (<a href="wolf.php#wolf_partner">仲間表示[人狼]</a>)。
 </pre>
 <h4>関連役職</h4>
@@ -794,7 +794,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#stargazer_mage">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>
+<a href="#stargazer_mage">占星術師</a>・<a href="#clairvoyance_scanner">猩々</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1455,6 +1455,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 毒鑑定能力や対象者変更判定 (<a href="#pharmacist">薬師</a>が「解毒した」と判定する対象) は<a href="#pharmacist">薬師</a>と同じ。
 </pre>
 <ol>
+  <li>判定は処刑対象が決定された後。</li>
   <li>「対象者変更」能力が発動しても毒鑑定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
   <li><a href="sub_role.php#lovers">恋人</a>は判定対象外 (<a href="#medium_group">巫女系</a>と同じ)。</li>
   <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合、毒は不発。</li>

@@ -457,6 +457,7 @@ $SELF = $USERS->ByID(1);
 OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
 if($role_view_mode){
   foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
+  foreach(array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
   OutputHTMLFooter(true);
 }
 //OutputGameOption($ROOM->game_option, '');
