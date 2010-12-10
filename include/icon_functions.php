@@ -68,26 +68,21 @@ function OutputIconEditForm($icon_no){
 <table cellpadding="3">
 <tr><td rowspan="6"><img src="{$location}" style="border:3px solid {$selected_color};"></td>
 <td><label>アイコンの名前</label></td>
-<td>{$selected_icon_name}</td>
-<td><input type="text" name="icon_name" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
+<td><input type="text" name="icon_name" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_icon_name}"></td></tr>
 
 <tr><td><label>出典</label></td>
-<td>{$selected_appearance}</td>
-<td><input type="text" name="appearance" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
+<td><input type="text" name="appearance" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_appearance}"></td></tr>
 
 <tr><td><label>カテゴリ</label></td>
-<td>{$selected_category}</td>
-<td><input type="text" name="category" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
+<td><input type="text" name="category" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_category}"></td></tr>
 
 <tr><td><label>アイコンの作者</label></td>
-<td>{$selected_author}</td>
-<td><input type="text" name="author" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value=""></td></tr>
+<td><input type="text" name="author" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_author}"></td></tr>
 
 <tr><td><label>アイコン枠の色</label></td>
-<td>{$selected_color}</td>
-<td><input type="text" name="color" size="10px" maxlength="7" value=""> (例：#6699CC)</td></tr>
+<td><input type="text" name="color" size="10px" maxlength="7" value="{$selected_color}"> (例：#6699CC)</td></tr>
 
-<tr><td colspan="2"><label>編集パスワード</label></td>
+<tr><td><label>編集パスワード</label></td>
 <td><input type="password" name="password" size="20"></td></tr>
 
 <tr><td colspan="4"><input type="submit" value="変更"></td></tr>
@@ -126,29 +121,29 @@ EOF;
 
     //選択状態の抽出
     $selection_source = $RQ_ARGS->search ? $RQ_ARGS->$type : $_SESSION['icon_view'][$type];
-    $selected
-      = !empty($selection_source)
-        ? is_array($selection_source) ? $selection_source : array($selection_source)
-        : array();
+    //PrintData($selection_source );
+    $selected = empty($selection_source) ? array()
+      : (is_array($selection_source) ? $selection_source : array($selection_source));
     $_SESSION['icon_view'][$type] = $selected;
     //選択肢の生成
-    $sql = "SELECT DISTINCT {$type} FROM user_icon WHERE {$type} IS NOT NULL";
-    if(count($filter) > 0) $sql .= ' AND ' . implode(' AND ', $filter);
-    $list = FetchArray($sql);
+    $query = "SELECT DISTINCT {$type} FROM user_icon WHERE {$type} IS NOT NULL";
+    if(count($filter) > 0) $query .= ' AND ' . implode(' AND ', $filter);
+    $list = FetchArray($query);
     //表示
     echo <<<HTML
 <td>
 <label for="{$type}[]">{$caption}</label><br>
-<select name="{$type}[]" size="6" multiple style="width:12em;">
+<select name="{$type}[]" size="6" style="width:12em;" multiple>
 <option value="__all__">全て</option>
 
 HTML;
+    array_unshift($list, '__null__');
     foreach($list as $name){
       printf(
         '<option value="%s" %s>%s</option>',
         $name,
         in_array($name, $selected) ? 'selected' : '',
-        strlen($name) ? $name : '空欄'
+        $name == '__null__' ? 'データ無し' : (strlen($name) ? $name : '空欄')
       );
     }
     echo '</select></td>';
@@ -157,6 +152,8 @@ HTML;
 
   //検索項目と検索値のセットから抽出条件を生成します。
   function _generateInClause($type, $values){
+    if(in_array('__null__', $values)) return $type.' IS NULL';
+
     $safe_values = array();
     foreach($values as $value){
       $safe_values[] = sprintf("'%s'", mysql_real_escape_string($value));
@@ -203,7 +200,7 @@ EOF;
     echo <<<HTML
 <table>
 <caption>
-[S] 出典 / [C] カテゴリ / [A] アイコンの作者 / [U] 使用回数<br>
+[S] 出典 / [C] カテゴリ / [A] アイコンの作者<br>
 アイコンをクリックすると編集できます (要パスワード)
 </caption>
 
@@ -231,6 +228,7 @@ HTML;
     if($limit_min < 1) $limit_min = 0;
     $query .= sprintf(' LIMIT %d, %d', $limit_min, $ICON_CONF->view);
   }
+  //PrintData($query);
   $records = FetchAssoc($query);
 
   //ページリンクの作成
@@ -327,7 +325,6 @@ HTML;
   if(!empty($appearance)) $data .= '<li>[S]' . $appearance;
   if(!empty($category))   $data .= '<li>[C]' . $category;
   if(!empty($author))     $data .= '<li>[A]' . $author;
-  //$data .= '<li>[U]' . $num_used;
   echo $data;
   echo <<<HTML
 </ul>
@@ -345,29 +342,12 @@ function OutputIconDetailsForUserEntry($icon_info, $format_info) {
   $location = $ICON_CONF->path . '/' . $icon_filename;
   $wrapper_width = $icon_width + 6;
   $info_width = $frm_cellwidth - $wrapper_width;
-  //旧設定 (rev. 214 以前) 相当
   echo <<<HTML
 <td class="icon_details"><label for="icon_{$icon_no}"><img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};"><br clear="all">
 <input type="radio" id="icon_{$icon_no}" name="icon_no" value="{$icon_no}"> No. {$icon_no}<br>
 <font color="{$color}">◆</font>{$icon_name}</label></td>
 
 HTML;
-  /*
-<th>
-<input type="radio" id="icon_{$icon_no}" name="icon_no" value="{$icon_no}">
-</th>
-<td class="icon_details">
-<label for="icon_{$icon_no}">
-<div class="icon_wrapper" style="width:{$wrapper_width}px">
-<img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};">
-</div>
-<ul style="width:{$info_width}px;">
-<li>No. {$icon_no}</li>
-<li><font color="{$color}">◆</font>{$icon_name}</li>
-</ul>
-</label>
-</td>
-  */
 }
 
 function GetIconCategoryList($type, $limit = '', $query_stack = array()){

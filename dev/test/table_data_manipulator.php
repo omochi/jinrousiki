@@ -51,7 +51,7 @@ OutputHTMLHeader('Test Tools');
 //ConvertTableEncode('talk');
 //ConvertTableEncode('user_entry');
 //ConvertTalkTableEncode('talk', array('uname', 'sentence'), 238);
-//ConvertTableEncode('user_icon');
+ConvertTableEncode('user_icon');
 //ConvertTableEncode('vote');
 OutputHTMLFooter();
 //UpdateRoomInfo('room_name', 'テスト', 1);
@@ -251,8 +251,7 @@ function UpdateRoomInfo($item, $value, $id){
 }
 
 //テーブルデータの文字コード変換
-/*
-  table : TABLE  */
+/* table : TABLE  */
 function ConvertTableEncode($table){
   $max = 0;
   switch($table){

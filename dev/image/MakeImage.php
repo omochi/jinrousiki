@@ -144,7 +144,7 @@ class RoleMessageList{
     'type' => 'necromancer');
 
   var $medium = array(
-    'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#巫女#、_突然死_した人の所属陣営を知ることができます。不慮の死を遂げた人の正体を知らせ、村の推理に貢献するのです！",
+    'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#巫女#です。_突然死_した人の所属陣営を知ることができます。不慮の死を遂げた人の正体を知らせ、村の推理に貢献するのです！",
     'type' => 'human', 'delimiter' => array('#' => 'medium', '_' => 'chicken'));
 
   var $bacchus_medium = array(
@@ -308,11 +308,11 @@ class RoleMessageList{
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'common'));
 
   var $howl_scanner = array(
-    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#吠騒霊#です。二日目からあなたの夜の独り言が_人狼_にも聞こえるようになります。\n　生きているのは誰？あなたの紡ぐ言葉で_人狼_の心をざわつかせ、踊ってもらいましょう。",
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#吠騒霊#です。二日目からあなたの夜の独り言が_人狼_にも聞こえるようになります。\n　生きているのは誰？あなたの紡ぐ言葉で_人狼_達の心をざわつかせ、踊ってもらいましょう。",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
 
   var $telepath_scanner = array(
-    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#念騒霊#です。二日目からあなたの夜の独り言が_妖狐_にも聞こえるようになります。\n　どちらでもないのは誰？あなたの知恵が奏でる幻想で、_妖狐_さえも騙して笑いましょう。",
+    'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#念騒霊#です。二日目からあなたの夜の独り言が_妖狐_にも聞こえるようになります。\n　どちらでもないのは誰？あなたの知恵が奏でる幻想で、_妖狐_達さえも騙して笑いましょう。",
     'type' => 'mind_scanner', 'delimiter' => array('_' => 'fox'));
 
   var $jealousy = array(
@@ -329,7 +329,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'chicken'));
 
   var $revive_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても_蘇生_できます。また、_蘇生_能力者の成功率を高めることができます。\n　――奇跡を願う者よ、我を崇めよ、我を讃えよ。我は#蛇神#、命と再生を司るもの。我が神威もて、汝に力を与えん。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても_蘇生_できます。また、_蘇生_能力者の成功率を高めることができます。\n　――奇跡を願うものよ、我を崇めよ、我を讃えよ。我は#蛇神#、命と再生を司るもの。我が神威もて、汝に力を与えん。",
     'type' => 'cursed_brownie', 'delimiter' => array('_' => 'revive'));
 
   var $cursed_brownie = array(
@@ -506,7 +506,7 @@ class RoleMessageList{
     'type' => 'mad', 'delimiter' => array('#' => 'chicken'));
 
   var $corpse_courier_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|火車|です。あなたが投票した人が#処刑#された場合に限り、その死体を持ち去ることができます。\n　バレないように亡骸を持ち去ることで_霊能者_を無力化し、強敵の死体を収集して村を惑わせるのです！",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|火車|です。あなたが投票した人が#処刑#された場合に限り、その死体を持ち去ることができます。\n　バレないように亡骸を持ち去ることで_霊能者_を無力化し、強敵の死体を収集して村人を惑わせるのです！",
     'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $amaze_mad = array(
@@ -626,7 +626,7 @@ class RoleMessageList{
     'type' => 'cupid');
 
   var $moon_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|かぐや姫|です。初日の夜に自分と誰か一人を|恋人|同士にして、さらに|難題|を与えることができます。\n　月に戻ることを忘れる程の素敵な恋を見つけられることを祈ってます。|恋人|と|難題|を乗り越えるのです！",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|かぐや姫|です。初日の夜に自分と誰か一人を|恋人|同士にして、さらに|難題|を与えることができます。\n　月に戻ることを忘れるほどの素敵な恋を見つけられることを祈ってます。|恋人|と|難題|を乗り越えるのです！",
     'type' => 'cupid');
 
   var $mind_cupid = array(
@@ -724,11 +724,11 @@ class RoleMessageList{
     'type' => 'chiroptera', 'delimiter' => array('#' => 'common'));
 
   var $spring_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|春妖精|です。村人一人の発言に春を告げるメッセージを追加してしまいます。\n　青春―青き芽を付ける春の訪れを村人たちに告げ、|夏妖精|へとバトンを繋ぐのです。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|春妖精|です。村人一人の発言に春を告げるメッセージを追加してしまいます。\n　青春――青き芽を付ける春の訪れを村人たちに告げ、|夏妖精|へとバトンを繋ぐのです。",
     'type' => 'fairy');
 
   var $summer_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|夏妖精|です。村人一人の発言に夏を告げるメッセージを追加してしまいます。\n　朱夏―情熱燃え上がる夏の訪れを村人たちに告げ、|秋妖精|へとバトンを繋ぎましょう。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|夏妖精|です。村人一人の発言に夏を告げるメッセージを追加してしまいます。\n　朱夏――情熱燃え上がる夏の訪れを村人たちに告げ、|秋妖精|へとバトンを繋ぐのです。",
     'type' => 'fairy');
 
   var $autumn_fairy = array(
@@ -852,7 +852,7 @@ class RoleMessageList{
     'type' => 'mania');
 
   var $unknown_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|鵺|です。初日の夜に指定した人と同じ陣営になり、二日目夜からお互いに会話できます。\n　――鵺は二つの面を持っている。人側の側面と獣側の側面だ。正面から見ては？――正体不明。",
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|鵺|です。初日の夜に指定した人と同じ陣営になり、二日目夜からお互いに会話できます。\n　――鵺は二つの側面を持っている。人側の側面と獣側の側面だ。正面から見ては？――正体不明。",
     'type' => 'mania');
 
   var $sacrifice_mania = array(
@@ -1420,9 +1420,9 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('phantom_doll');
+$builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');
-$builder->Output('silver_doll');
+#$builder->Output('silver_doll');
 #$builder->Output('doom_vampire');
 #$builder->Output('scarlet_chiroptera');

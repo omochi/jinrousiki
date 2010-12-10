@@ -14,14 +14,16 @@ function EditIcon(){
   }
 
   extract($RQ_ARGS->ToArray()); //引数を展開
-  if($password != $USER_ICON->password){
-    OutputActionResult($title, 'パスワードが違います');
-  }
+  //入力データチェック
+  if(strlen($icon_name) < 1) OutputActionResult($title, 'アイコン名が空欄になっています');
+  if($password != $USER_ICON->password) OutputActionResult($title, 'パスワードが違います');
   $query_stack = array();
 
   $DB_CONF->Connect(); //DB 接続
+  $query_header = 'SELECT COUNT(icon_no) FROM user_icon WHERE ';
+
   //アイコンの名前が既に登録されていないかチェック
-  if(FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no) < 1){
+  if(FetchResult($query_header . 'icon_no = ' . $icon_no) < 1){
     OutputActionResult($title, '無効なアイコン番号です：' . $icon_no);
   }
 
@@ -32,16 +34,15 @@ function EditIcon(){
 		     'author' => 'アイコンの作者');
   foreach($text_list as $text => $label){
     $value = $RQ_ARGS->$text;
-    if(strlen($value) < 1) continue;
     if(strlen($value) > $USER_ICON->name){
       OutputActionResult($title, $label . ': ' . $USER_ICON->IconNameMaxLength());
     }
-    $query_stack[] = "{$text} = '{$value}'";
+    $query_stack[] = "{$text} = " . (strlen($value) > 0 ? "'{$value}'" : 'NULL');
   }
 
   //アイコンの名前が既に登録されていないかチェック
   if(strlen($icon_name) > 0 &&
-     FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
+     FetchResult("{$query_header} icon_name = '{$icon_name}' AND icon_no <> {$icon_no}") > 0){
     OutputActionResult($title, 'アイコン名 "' . $icon_name . '" は既に登録されています');
   }
 

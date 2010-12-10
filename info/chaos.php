@@ -527,7 +527,7 @@ OutputInfoPageHeader('闇鍋モード');
     </ol>
   </li>
 </ol>
-<h3>Ver. 1.4.0 β23〜</h3>
+<h3>Ver. 1.4.0 RC1〜</h3>
 <pre>
 ランダム枠を作成することが出来ます。
 </pre>
