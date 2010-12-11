@@ -20,6 +20,7 @@ OutputRolePageHeader('能力者逆引き');
 <p>
 <a href="#cursed_group">呪い</a>
 <a href="#possessed">憑依</a>
+<a href="#possessed_limited">憑依制限</a>
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#dummy">夢</a>
@@ -52,7 +53,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="decide">処刑者決定能力者</a></h2>
 <pre>
-<a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="sub_role.php#decide_group">決定者系</a>
+<a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="quiz.php#quiz">出題者</a>・<a href="sub_role.php#decide_group">決定者系</a>
 </pre>
 
 <h2><a id="sudden_death">ショック死発動能力者</a></h2>
@@ -113,6 +114,11 @@ OutputRolePageHeader('能力者逆引き');
 <h2><a id="possessed">憑依能力者</a></h2>
 <pre>
 <a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>
+</pre>
+
+<h2><a id="possessed_limited">憑依制限能力者</a></h2>
+<pre>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>
 </pre>
 
 <h2><a id="seal">封印対象者</a></h2>

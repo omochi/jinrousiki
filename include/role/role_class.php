@@ -24,14 +24,14 @@ class RoleManager{
 			  'random_luck');
 
   //処刑投票系能力者
-  var $vote_ability_list = array('saint', 'executor', 'agitate_mad', 'impatience', 'authority',
-				 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
+  var $vote_ability_list = array('saint', 'executor', 'agitate_mad', 'quiz', 'impatience',
+				 'authority', 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
 
   //反逆者判定
   var $rebel_list = array('rebel');
 
   //処刑者決定 (順番依存あり)
-  var $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
+  var $vote_kill_list = array('quiz', 'decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
 			      'executor', 'saint', 'agitate_mad');
 
   //ショック死

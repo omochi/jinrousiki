@@ -106,7 +106,7 @@ OutputRolePageHeader('村人陣営');
 本人表記は「<a href="#human">村人</a>」。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php#decide_group">決定者系</a>の後</li>
+  <li><a href="../spec.php#vote_day">判定</a>は<a href="quiz.php#quiz">出題者</a>の後</li>
   <li>投票先が非村人 → 非村人が吊られる</li>
   <li>投票先が村人 → 再投票</li>
   <li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人が吊られる<br>
@@ -484,6 +484,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[霊能能力] 処刑者情報：無し / 火車：無効</h4>
 <pre>
 前日の死者の<a href="../spec.php#dead">死因</a>が分かる特殊な霊能者。
+通常の<a href="#necromancer">霊能者</a>の能力は持っていない。
 死因は画面の下に表示される「〜は無残な〜」の下の行に
 「(〜は人狼に襲撃されたようです)」等と表示される。
 </pre>
@@ -520,19 +521,16 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h2><a id="medium_group">巫女系</a></h2>
 <p>
+<a href="#medium_rule">所属陣営判定法則</a>
+</p>
+<p>
 <a href="#medium">巫女</a>
 <a href="#bacchus_medium">神主</a>
 <a href="#seal_medium">封印師</a>
 <a href="#revive_medium">風祝</a>
 </p>
 
-<h3><a id="medium">巫女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
-<pre>
-突然死した人の所属陣営が分かる、霊能のような役職。
-闇鍋モードで登場する「ショック死」する人たちの情報を取るのが主な仕事だが
-<a href="#necromancer_group">霊能者</a>とは判定法則が違うので注意。
-</pre>
-<h4>所属陣営判定法則</h4>
+<h3><a id="medium_rule">所属陣営判定法則</a></h3>
 <pre>
 所属陣営とは、勝敗が決まったときの陣営で、役職表記の先頭に記載されいてる「〜陣営」を指す。
 例1) <a href="wolf.php#wolf_group">人狼系</a>・<a href="wolf.php#mad_group">狂人系</a>は「人狼」
@@ -543,13 +541,20 @@ PP ラインの計算を難しくさせるために作成してみました。
 また、メイン役職のみが判定の対象 (サブ役職は分からない)。
 つまり、恋人はサブ役職なので「恋人」と判定されるのは<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>のみ。
 </pre>
+
+<h3><a id="medium">巫女</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7〜]</h3>
+<pre>
+突然死した人の所属陣営が分かる、霊能のような役職。
+闇鍋モードで登場する「ショック死」する人たちの情報を取るのが主な仕事だが
+<a href="#necromancer_group">霊能者</a>とは<a href="#medium_rule">判定法則</a>が違うので注意。
+</pre>
 <h5>Ver. 1.4.0 β6〜</h5>
 <pre>
 <a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく出ないバグ修正 (修正前は常時村人判定)
 </pre>
 <h5>Ver. 1.4.0 α9〜</h5>
 <pre>
-恋人後追いにも対応 (後追いした恋人のみ、元の所属陣営が分かる)
+<a href="sub_role.php#lovers">恋人</a>後追いにも対応 (後追いした<a href="sub_role.php#lovers">恋人</a>のみ、元の所属陣営が分かる)
 </pre>
 <h5>Ver. 1.4.0 α8〜β11</h5>
 <pre>

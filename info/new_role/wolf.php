@@ -589,7 +589,7 @@ A は B から D への憑依がキャンセルされて B に憑依したまま
 
 <h4><a id="possessed_wolf_possessed_limited">14. 対憑依制限対象者</a></h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>などは憑依対象外なので、生存している該当者は憑狼ではない事が保証されます。
+<a href="human.php#revive_priest">天人</a>などの<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できないので、生存している該当者は憑狼ではない事が保証されます。
 また、霊界視点からは憑依者がはっきり分かるので蘇生した天人の情報は重要です。
 
 例14-1) B[村人](A[憑狼]) → C[天人]

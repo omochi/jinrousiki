@@ -5,6 +5,10 @@ OutputInfoPageHeader('開発履歴', 1);
 ?>
 <p>
 Ver. 1.4.0
+<a href="#140rc1">RC1</a>
+</p>
+<p>
+Ver. 1.4.0
 <a href="#140beta1">β1</a>
 <a href="#140beta2">β2</a>
 <a href="#140beta3">β3</a>
@@ -53,6 +57,11 @@ Ver. 1.4.0
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 </p>
+
+<h2><a id="140rc1">Ver. 1.4.0 RC1 (Rev. 234) : 2010/12/11 (Sat) 04:14</a></h2>
+<ul>
+<li>固定追加配役モード：ランダム枠の実装、F(鬼村)追加</li>
+</ul>
 
 <h2><a id="140beta22">Ver. 1.4.0 β22 (Rev. 231) : 2010/12/05 (Sun) 00:17</a></h2>
 <ul>

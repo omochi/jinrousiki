@@ -578,7 +578,7 @@ class RoleMessageList{
     'type' => 'white_fox', 'delimiter' => array('=' => 'assassin', '^' => 'guard'));
 
   var $cute_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|萌狐|です。ごくまれに発言が遠吠えになってしまいます。バレた時は笑ってごまかしましょう。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|萌狐|です。ごくまれに発言が遠吠えになってしまいます。吊られるでしょう。しかしそれがなんだと言うのです？",
     'type' => 'fox');
 
   var $elder_fox = array(
@@ -683,7 +683,7 @@ class RoleMessageList{
     'type' => 'incubus_vampire');
 
   var $doom_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|冥血鬼|です。#人狼#に襲撃されても死ぬことはありませんが、|吸血|をする際に=死の宣告=を追加してしまいます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|冥血鬼|です。#人狼#に襲撃されても死ぬことはありませんが、|吸血|をする際に=死の宣告=を追加してしまいます。\n　#狼#など無視して玩具で遊びましょう。相手はいずれ壊れてしまいますが、代わりはいくらでも用意できるのですから。",
     'type' => 'vampire', 'delimiter' => array('#' => 'wolf', '=' => 'chicken'));
 
   var $sacrifice_vampire = array(
@@ -715,7 +715,7 @@ class RoleMessageList{
     'type' => 'chiroptera', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $scarlet_chiroptera = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|紅蝙蝠|です。_人狼_からは#無意識#に、^妖狐^からは^子狐^に、=人形=からは=人形遣い=に見えています。",
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|紅蝙蝠|です。_人狼_からは#無意識#に、^妖狐^からは^子狐^に、=人形=からは=人形遣い=に見えています。\n　_人狼_から放置され、^妖狐^にはすり寄られ、=人形=から恨まれますが知った事か！生き延びろそれが|蝙蝠|。",
     'type' => 'chiroptera',
     'delimiter' => array('#' => 'human', '_' => 'wolf', '^' => 'fox', '=' => 'doll'));
 
@@ -1424,5 +1424,3 @@ $builder->Output('phantom_doll');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');
 #$builder->Output('silver_doll');
-#$builder->Output('doom_vampire');
-#$builder->Output('scarlet_chiroptera');
