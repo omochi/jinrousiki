@@ -389,15 +389,13 @@ class CopyrightConfigBase{
 //-- 音源処理の基底クラス --//
 class SoundBase{
   //音を鳴らす
-  function Output($type, $loop = false){
+  function Output($type){
     $path = JINRO_ROOT . '/' . $this->path . '/' . $this->$type . '.' . $this->extension;
-    if($loop) $loop_tag = "\n".'<param name="loop" value="true">';
-
     echo <<< EOF
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0" width="0" height="0">
 <param name="movie" value="{$path}">
-<param name="quality" value="high">{$loop_tag}
-<embed src="{$path}" type="application/x-shockwave-flash" quality="high" width="0" height="0" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+<param name="quality" value="high">
+<embed src="{$path}" type="application/x-shockwave-flash" quality="high" width="0" height="0" loop="false" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
 </embed>
 </object>
 

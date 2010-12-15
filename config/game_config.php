@@ -1,8 +1,8 @@
 <?php
 //-- 村メンテナンス・作成設定 --//
 class RoomConfig{
-  //村内の最後の発言から廃村になるまでの時間 (秒)
-  //(あまり短くすると沈黙等と競合する可能性あり)
+  //-- 村メンテナンス設定 --//
+  //村内の最後の発言から廃村になるまでの時間 (秒) (あまり短くすると沈黙等と競合する可能性あり)
   var $die_room = 1200;
 
   //最大並列プレイ可能村数
@@ -12,7 +12,7 @@ class RoomConfig{
   var $establish_wait = 120;
 
   //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
-  //この時間内であれば、過去ログページに再入村のリンクが出現します
+  //(この時間内であれば、過去ログページに再入村のリンクが出現します)
   var $clear_session_id = 86400; //24時間
 
   //村立て・入村制限
@@ -23,18 +23,18 @@ class RoomConfig{
   var $black_list_host = NULL; //ホスト名 (ブラックリスト)
   //var $black_list_host = '/localhost.localdomain/'; //入力例
 
-  //最大人数のリスト (RoomImage->max_user_list と連動させる → 現在は不要)
+  //-- 村作成設定 --//
+  var $room_name          = 90; //村名の最大文字数 (byte)
+  var $room_name_input    = 50; //村名の入力欄サイズ (文字数)
+  var $room_comment       = 90; //村の説明の最大文字数 (byte)
+  var $room_comment_input = 50; //村の説明の入力欄サイズ (文字数)
+  var $gm_password        = 50; //GM ログインパスワードの最大文字数 (byte)
+  var $gm_password_input  = 20; //GM ログインパスワードの入力欄サイズ
+  var $ng_word = '/http:\/\//i'; //入力禁止文字列 (正規表現)
+
+  //最大人数のリスト
   var $max_user_list = array(8, 11, 16, 22, 32, 50);
   var $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
-
-  //-- OutputCreateRoom() --//
-  var $room_name = 90; //村名の最大文字数 (byte)
-  var $room_comment = 90; //村の説明の最大文字数 (byte)
-  var $room_name_input = 50; //村名の入力欄サイズ
-  var $room_comment_input = 50; //村の説明の入力欄サイズ
-  var $gm_password = 50; //GM ログインパスワードの最大文字数 (byte)
-  var $gm_password_input = 20; //GM ログインパスワードの入力欄サイズ
-  var $ng_word = '/http:\/\//i'; //入力禁止文字列 (正規表現)
 
   //各オプションを有効に [true:する / false:しない]
   //デフォルトでチェックを [true:つける / false:つけない]
@@ -59,7 +59,7 @@ class RoomConfig{
   var $gerd = true; //ゲルト君モード
   var $default_gerd = false;
 
-  var $not_open_cast = true; //霊界で配役を公開しない
+  var $not_open_cast  = true; //霊界で配役を公開しない
   var $auto_open_cast = true; //霊界で配役を自動で公開する
 
   //霊界オフモードのデフォルト [NULL:無し / 'auto':自動オフ / 'full': 完全オフ ]
@@ -174,7 +174,7 @@ class RoomConfig{
 //-- ゲーム設定 --//
 class GameConfig{
   //-- 住人登録 --//
-  //入村制限 (同じ部屋に同じ IP で複数登録) (true：許可しない / false：許可する)
+  //入村制限 (同じ村に同じ IP で複数登録) (true：許可しない / false：許可する)
   var $entry_one_ip_address = true;
 
   //トリップ対応 (true：変換する / false： "#" が含まれていたらエラーを返す)
@@ -191,20 +191,20 @@ class GameConfig{
 
   //-- 投票 --//
   var $self_kick = true; //自分への KICK (true：有効 / false：無効)
-  var $kick = 3; //何票で KICK 処理を行うか
-  var $draw = 5; //再投票何回目で引き分けとするか
+  var $kick = 3; //KICK 処理を実施するのに必要な投票数
+  var $draw = 5; //引き分け処理を実施する再投票回数 (「再投票」なので実際の投票回数は +1 される)
 
   //-- 役職の能力設定 --//
-  //毒能力者を吊った際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
-  var $poison_only_voter = false; //1.3 系のデフォルトは false
+  //毒能力者を処刑した際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
+  var $poison_only_voter = false;
 
-  //狼が毒能力者を噛んだ際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
-  var $poison_only_eater = true; //1.3 系のデフォルトは false
+  //狼が毒能力者を襲撃した際に巻き込まれる対象 (true:投票者固定 / false:ランダム)
+  var $poison_only_eater = true;
 
-  var $cupid_self_shoot = 18; //キューピッドが他人撃ち可能となる最低村人数
-  var $cute_wolf_rate = 1; //萌狼の発動率 (%)
+  var $cupid_self_shoot = 18; //キューピッドが他人撃ち可能となる参加人数
+  var $cute_wolf_rate =  1; //萌狼の発動率 (%)
   var $gentleman_rate = 13; //紳士・淑女の発動率 (%)
-  var $liar_rate = 95; //狼少年の発動率 (%)
+  var $liar_rate      = 95; //狼少年の発動率 (%)
 
   //狼少年の変換テーブル
   var $liar_replace_list = array('村人' => '人狼', '人狼' => '村人',
@@ -253,12 +253,12 @@ class GameConfig{
   var $silent_length  = 25; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//
-  var $objection = 5; //最大回数
+  var $objection = 5; //使用可能回数
   var $objection_image = 'img/objection.gif'; //「異議」ありボタンの画像パス
 
   //-- 自動更新 --//
   var $auto_reload = true; //game_view.php で自動更新を有効にする / しない (サーバ負荷に注意)
-  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //自動更新モードの更新間隔(秒)のリスト
+  var $auto_reload_list = array(15, 30, 45, 60, 90, 120); //自動更新モードの更新間隔 (秒) のリスト
 
   //-- その他 --//
   var $power_gm = false; //強権 GM モード (ON：true / OFF：false)
@@ -267,11 +267,12 @@ class GameConfig{
 
 //ゲームの時間設定
 class TimeConfig{
-  //日没、夜明け残り時間ゼロでこの閾値を過ぎると投票していない人は突然死します(秒)
+  //投票待ち超過時間 (秒) (この時間を過ぎても未投票の人がいたら突然死処理されます)
   var $sudden_death = 120; //180;
 
+  //サーバダウン判定時間 (秒)
   //超過のマイナス時間がこの閾値を越えた場合はサーバが一時的にダウンしていたと判定して、
-  //超過時間をリセットします (秒)
+  //超過時間をリセットします
   var $server_disconnect = 90;
 
   //-- リアルタイム制 --//
@@ -279,10 +280,10 @@ class TimeConfig{
   var $default_night = 3; //デフォルトの夜の制限時間(分)
 
   //-- 会話を用いた仮想時間制 --//
-  //昼の制限時間(昼は12時間、spend_time=1(半角100文字以内) で 12時間 ÷ $day 進みます)
+  //昼の制限時間 (昼は12時間、spend_time=1(半角100文字以内) で 12時間 ÷ $day 進みます)
   var $day = 96;
 
-  //夜の制限時間(夜は 6時間、spend_time=1(半角100文字以内) で  6時間 ÷ $night 進みます)
+  //夜の制限時間 (夜は 6時間、spend_time=1(半角100文字以内) で  6時間 ÷ $night 進みます)
   var $night = 24;
 
   //非リアルタイム制でこの閾値を過ぎると沈黙となり、設定した時間が進みます(秒)
@@ -296,18 +297,13 @@ class TimeConfig{
 
 //-- 村のオプション画像 --//
 class RoomImage extends ImageManager{
+  /*
+    max[NN].gif という画像が該当パス内にあった場合は村の最大参加人数の表示に使用される。
+    例) max8.gif (8人村用)
+  */
   var $path      = 'room_option';
   var $extension = 'gif';
   var $class     = 'option';
-  /*
-  //村の最大人数リスト (RoomConfig->max_user_list と連動させる)
-  //現在は不使用
-  var $max_user_list = array(
-			      8 => 'img/room_option/max8.gif',   // 8人
-			     16 => 'img/room_option/max16.gif',  //16人
-			     22 => 'img/room_option/max22.gif'   //22人
-			     );
-  */
 }
 
 //-- 役職の画像 --//

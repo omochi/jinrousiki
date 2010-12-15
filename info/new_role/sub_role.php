@@ -355,7 +355,7 @@ OutputRolePageHeader('サブ役職');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#liar">狼少年</a>のカスタムバージョンです。
-各鯖で自由に編集してもらうことを前提に設計しています。
+各サーバで自由に編集してもらうことを前提に設計しています。
 </pre>
 
 <h2><a id="authority_group">権力者系 (処刑投票数変化系)</a></h2>
@@ -443,9 +443,9 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 
 <h3><a id="upper_luck_rule">基本ルール</a> [雑草魂系]</h3>
 <ol>
-  <li><a href="#chicken_group">小心者系</a>のショック死判定には影響しません (投票「人数」で行なわれます)</li>
-  <li>得票数が減る場合でもマイナスにはなりません<br>
-    例) 得票が 1 で -2 された場合 → 得票数は 0 と計算される
+  <li><a href="#chicken_group">小心者系</a>のショック死判定には影響しません (投票「人数」で判定されます)。</li>
+  <li>得票数が減る場合でもマイナスにはなりません。<br>
+    例) 得票が 1 で -2 された場合 → 得票数は 0 と計算される。
   </li>
 </ol>
 
@@ -455,7 +455,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 <h5>Ver. 1.4.0 α14〜</h5>
 <pre>
-2 日目の補正値を +2 から +4 に変更しました
+2 日目の補正値を +2 から +4 に変更。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -468,7 +468,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 <h5>Ver. 1.4.0 α14〜</h5>
 <pre>
-2 日目の補正値を -2 から -4 に変更しました
+2 日目の補正値を -2 から -4 に変更。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -918,7 +918,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="mania.php#unknown_mania_group">鵺系</a>
+<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="mania.php#unknown_mania_group">鵺系</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1094,8 +1094,9 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li>夜→昼の投票処理でゲーム終了した場合は所持者が死亡していても移動しない。</li>
   <li>陣営勝利 + 単独生存を達成した場合はジョーカーを所持しても勝利扱い。</li>
 </ol>
+<h4>移動パターン例</h4>
 <pre>
-1. 移動パターン例：ジョーカー所持者は「J」、処刑者は「A」とする。
+1. 標準パターン例：ジョーカー所持者は「J」、処刑者は「A」とする。
 例1-1) J → B → A
 J から B に移動する
 
@@ -1358,7 +1359,9 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#phantom_doll">倫敦人形</a>・<a href="human.php#revive_doll">西蔵人形</a>
+<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>
+<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

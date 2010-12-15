@@ -26,7 +26,6 @@ $RQ_ARGS->vote_times = 1;
 $RQ_ARGS->TestItems->test_users = array();
 
 $RQ_ARGS->TestItems->test_users[1] =& new User();
-$RQ_ARGS->TestItems->test_users[1]->user_no = 1;
 $RQ_ARGS->TestItems->test_users[1]->uname = 'dummy_boy';
 $RQ_ARGS->TestItems->test_users[1]->handle_name = '身代わり君';
 $RQ_ARGS->TestItems->test_users[1]->sex = 'female';
@@ -36,252 +35,187 @@ $RQ_ARGS->TestItems->test_users[1]->icon_filename = '../img/dummy_boy_user_icon.
 $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 
 $RQ_ARGS->TestItems->test_users[2] =& new User();
-$RQ_ARGS->TestItems->test_users[2]->user_no = 2;
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[2]->role = 'sirius_wolf strong_voice rebel';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
-$RQ_ARGS->TestItems->test_users[2]->icon_filename = '001.gif';
-$RQ_ARGS->TestItems->test_users[2]->color = '#DDDDDD';
 
 $RQ_ARGS->TestItems->test_users[3] =& new User();
-$RQ_ARGS->TestItems->test_users[3]->user_no = 3;
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
 $RQ_ARGS->TestItems->test_users[3]->handle_name = '暗灰';
 $RQ_ARGS->TestItems->test_users[3]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
 $RQ_ARGS->TestItems->test_users[3]->live = 'live';
-$RQ_ARGS->TestItems->test_users[3]->icon_filename = '002.gif';
-$RQ_ARGS->TestItems->test_users[3]->color = '#999999';
 
 $RQ_ARGS->TestItems->test_users[4] =& new User();
-$RQ_ARGS->TestItems->test_users[4]->user_no = 4;
 $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[4]->role = 'sex_mage authority lovers[16] mind_friend[16]';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
-$RQ_ARGS->TestItems->test_users[4]->icon_filename = '003.gif';
-$RQ_ARGS->TestItems->test_users[4]->color = '#FFD700';
 
 $RQ_ARGS->TestItems->test_users[5] =& new User();
-$RQ_ARGS->TestItems->test_users[5]->user_no = 5;
 $RQ_ARGS->TestItems->test_users[5]->uname = 'orange';
 $RQ_ARGS->TestItems->test_users[5]->handle_name = 'オレンジ';
 $RQ_ARGS->TestItems->test_users[5]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[5]->role = 'soul_mage febris[3]';
 $RQ_ARGS->TestItems->test_users[5]->live = 'live';
-$RQ_ARGS->TestItems->test_users[5]->icon_filename = '004.gif';
-$RQ_ARGS->TestItems->test_users[5]->color = '#FF9900';
 
 $RQ_ARGS->TestItems->test_users[6] =& new User();
-$RQ_ARGS->TestItems->test_users[6]->user_no = 6;
 $RQ_ARGS->TestItems->test_users[6]->uname = 'red';
 $RQ_ARGS->TestItems->test_users[6]->handle_name = '赤';
 $RQ_ARGS->TestItems->test_users[6]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[6]->role = 'dummy_necromancer liar';
 $RQ_ARGS->TestItems->test_users[6]->live = 'dead';
-$RQ_ARGS->TestItems->test_users[6]->icon_filename = '005.gif';
-$RQ_ARGS->TestItems->test_users[6]->color = '#FF0000';
 
 $RQ_ARGS->TestItems->test_users[7] =& new User();
-$RQ_ARGS->TestItems->test_users[7]->user_no = 7;
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[7]->role = 'brownie';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
-$RQ_ARGS->TestItems->test_users[7]->icon_filename = '006.gif';
-$RQ_ARGS->TestItems->test_users[7]->color = '#99CCFF';
 
 $RQ_ARGS->TestItems->test_users[8] =& new User();
-$RQ_ARGS->TestItems->test_users[8]->user_no = 8;
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[8]->role = 'poison psycho_infected good_luck';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
-$RQ_ARGS->TestItems->test_users[8]->icon_filename = '007.gif';
-$RQ_ARGS->TestItems->test_users[8]->color = '#0066FF';
 
 $RQ_ARGS->TestItems->test_users[9] =& new User();
-$RQ_ARGS->TestItems->test_users[9]->user_no = 9;
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[9]->role = 'sacrifice_cat mind_open joker[4]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
-$RQ_ARGS->TestItems->test_users[9]->icon_filename = '008.gif';
-$RQ_ARGS->TestItems->test_users[9]->color = '#00EE00';
 
 $RQ_ARGS->TestItems->test_users[10] =& new User();
-$RQ_ARGS->TestItems->test_users[10]->user_no = 10;
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[10]->role = 'assassin lovers[16] mind_friend[16] mind_friend[21] protected[21]';
 $RQ_ARGS->TestItems->test_users[10]->live = 'live';
-$RQ_ARGS->TestItems->test_users[10]->icon_filename = '009.gif';
-$RQ_ARGS->TestItems->test_users[10]->color = '#CC00CC';
 
 $RQ_ARGS->TestItems->test_users[11] =& new User();
-$RQ_ARGS->TestItems->test_users[11]->user_no = 11;
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[11]->role = 'jammer_mad silent';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
-$RQ_ARGS->TestItems->test_users[11]->icon_filename = '010.gif';
-$RQ_ARGS->TestItems->test_users[11]->color = '#FF9999';
 
 $RQ_ARGS->TestItems->test_users[12] =& new User();
-$RQ_ARGS->TestItems->test_users[12]->user_no = 12;
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[12]->role = 'trap_mad';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
-$RQ_ARGS->TestItems->test_users[12]->icon_filename = '001.gif';
-$RQ_ARGS->TestItems->test_users[12]->color = '#DDDDDD';
 
 $RQ_ARGS->TestItems->test_users[13] =& new User();
-$RQ_ARGS->TestItems->test_users[13]->user_no = 13;
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[13]->role = 'black_fox';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
-$RQ_ARGS->TestItems->test_users[13]->icon_filename = '002.gif';
-$RQ_ARGS->TestItems->test_users[13]->color = '#999999';
 
 $RQ_ARGS->TestItems->test_users[14] =& new User();
-$RQ_ARGS->TestItems->test_users[14]->user_no = 14;
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';
 $RQ_ARGS->TestItems->test_users[14]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[14]->role = 'cursed_fox death_warrant[4]';
 $RQ_ARGS->TestItems->test_users[14]->live = 'live';
-$RQ_ARGS->TestItems->test_users[14]->icon_filename = '003.gif';
-$RQ_ARGS->TestItems->test_users[14]->color = '#FFD700';
 
 $RQ_ARGS->TestItems->test_users[15] =& new User();
-$RQ_ARGS->TestItems->test_users[15]->user_no = 15;
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
 $RQ_ARGS->TestItems->test_users[15]->handle_name = '炎';
 $RQ_ARGS->TestItems->test_users[15]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[15]->role = 'miasma_fox';
 $RQ_ARGS->TestItems->test_users[15]->live = 'live';
-$RQ_ARGS->TestItems->test_users[15]->icon_filename = '004.gif';
-$RQ_ARGS->TestItems->test_users[15]->color = '#FF9900';
 
 $RQ_ARGS->TestItems->test_users[16] =& new User();
-$RQ_ARGS->TestItems->test_users[16]->user_no = 16;
 $RQ_ARGS->TestItems->test_users[16]->uname = 'scarlet';
 $RQ_ARGS->TestItems->test_users[16]->handle_name = '紅';
 $RQ_ARGS->TestItems->test_users[16]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[16]->role = 'sweet_cupid critical_luck';
 $RQ_ARGS->TestItems->test_users[16]->live = 'live';
-$RQ_ARGS->TestItems->test_users[16]->icon_filename = '005.gif';
-$RQ_ARGS->TestItems->test_users[16]->color = '#FF0000';
 
 $RQ_ARGS->TestItems->test_users[17] =& new User();
-$RQ_ARGS->TestItems->test_users[17]->user_no = 17;
 $RQ_ARGS->TestItems->test_users[17]->uname = 'sky';
 $RQ_ARGS->TestItems->test_users[17]->handle_name = '空';
 $RQ_ARGS->TestItems->test_users[17]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[17]->role = 'executor possessed[3-3]';
 $RQ_ARGS->TestItems->test_users[17]->live = 'drop';
-$RQ_ARGS->TestItems->test_users[17]->icon_filename = '006.gif';
-$RQ_ARGS->TestItems->test_users[17]->color = '#99CCFF';
 
 $RQ_ARGS->TestItems->test_users[18] =& new User();
-$RQ_ARGS->TestItems->test_users[18]->user_no = 18;
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[18]->role = 'enchant_mad';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
-$RQ_ARGS->TestItems->test_users[18]->icon_filename = '007.gif';
-$RQ_ARGS->TestItems->test_users[18]->color = '#0066FF';
 
 $RQ_ARGS->TestItems->test_users[19] =& new User();
-$RQ_ARGS->TestItems->test_users[19]->user_no = 19;
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
 $RQ_ARGS->TestItems->test_users[19]->handle_name = '陸';
 $RQ_ARGS->TestItems->test_users[19]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[19]->role = 'shadow_fairy downer_voice liar';
 $RQ_ARGS->TestItems->test_users[19]->live = 'live';
-$RQ_ARGS->TestItems->test_users[19]->icon_filename = '008.gif';
-$RQ_ARGS->TestItems->test_users[19]->color = '#00EE00';
 
 $RQ_ARGS->TestItems->test_users[20] =& new User();
-$RQ_ARGS->TestItems->test_users[20]->user_no = 20;
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire plague';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
-$RQ_ARGS->TestItems->test_users[20]->icon_filename = '009.gif';
-$RQ_ARGS->TestItems->test_users[20]->color = '#CC00CC';
 
 $RQ_ARGS->TestItems->test_users[21] =& new User();
-$RQ_ARGS->TestItems->test_users[21]->user_no = 21;
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
 $RQ_ARGS->TestItems->test_users[21]->handle_name = '桃';
 $RQ_ARGS->TestItems->test_users[21]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[21]->role = 'sacrifice_mania[10] mind_friend[21]';
 $RQ_ARGS->TestItems->test_users[21]->live = 'live';
-$RQ_ARGS->TestItems->test_users[21]->icon_filename = '010.gif';
-$RQ_ARGS->TestItems->test_users[21]->color = '#FF9999';
 
 $RQ_ARGS->TestItems->test_users[22] =& new User();
-$RQ_ARGS->TestItems->test_users[22]->user_no = 22;
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[22]->role = 'incubus_escaper';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
-$RQ_ARGS->TestItems->test_users[22]->icon_filename = '001.gif';
-$RQ_ARGS->TestItems->test_users[22]->color = '#DDDDDD';
 
 $RQ_ARGS->TestItems->test_users[23] =& new User();
-$RQ_ARGS->TestItems->test_users[23]->user_no = 23;
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
 $RQ_ARGS->TestItems->test_users[23]->role = 'scripter';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
-$RQ_ARGS->TestItems->test_users[23]->icon_filename = '002.gif';
-$RQ_ARGS->TestItems->test_users[23]->color = '#999999';
 
 $RQ_ARGS->TestItems->test_users[24] =& new User();
-$RQ_ARGS->TestItems->test_users[24]->user_no = 24;
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[24]->role = 'clairvoyance_scanner watcher';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
-$RQ_ARGS->TestItems->test_users[24]->icon_filename = '003.gif';
-$RQ_ARGS->TestItems->test_users[24]->color = '#FFD700';
 
 $RQ_ARGS->TestItems->test_users[25] =& new User();
-$RQ_ARGS->TestItems->test_users[25]->user_no = 25;
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[25]->role = 'revive_ogre disfavor mind_presage[24]';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
-$RQ_ARGS->TestItems->test_users[25]->icon_filename = '004.gif';
-$RQ_ARGS->TestItems->test_users[25]->color = '#FF9900';
 
 //$RQ_ARGS->TestItems->test_users = 30;
-foreach($RQ_ARGS->TestItems->test_users as $user){
+$icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
+			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
+foreach($RQ_ARGS->TestItems->test_users as $id => $user){
   $user->room_no = $RQ_ARGS->room_no;
-  if(is_null($user->prifile)) $user->prifile = '';
+  $user->user_no = $id;
+  if(is_null($user->profile)) $user->profile = '';
   $user->last_load_day_night = 'night';
   $user->is_system = $user->user_no == 1;
+  if($id > 1){
+    $user->color = $icon_color_list[($id - 2) % 10];
+    $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
+  }
 }
 
 //-- 仮想投票データをセット --//

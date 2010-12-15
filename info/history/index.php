@@ -16,7 +16,7 @@ OutputInfoPageHeader('サーバ更新履歴', 1);
 <h3>追加機能</h3>
 <ul>
   <li>埋毒者を吊った / 噛んだ際の巻き込まれる対象を限定できる</li>
-  <li>闇鍋モードの実装 (調整中) → <a href="../chaos.php">闇鍋モード</a></li>
+  <li>闇鍋モードの実装 → <a href="../chaos.php">闇鍋モード</a></li>
   <li>役職を大量に追加 → <a href="../new_role/" target="_top">新役職情報</a></li>
   <li>ゲームオプションを大量に追加 → <a href="../game_option.php">ゲームオプション</a></li>
 </ul>

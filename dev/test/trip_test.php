@@ -13,7 +13,5 @@ OutputHTMLHeader('トリップテストツール');
 </form>
 
 EOF;
-if($_POST['command'] == 'on'){
-  PrintData(ConvertTrip($_POST['key']), '変換結果');
-}
+if($_POST['command'] == 'on') PrintData(ConvertTrip($_POST['key']), '変換結果');
 OutputHTMLFooter();

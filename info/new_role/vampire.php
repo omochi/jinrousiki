@@ -40,7 +40,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
   <li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
   <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>の能力は有効です。</li>
-  <li><a href="human.php#escaper">逃亡者</a>との関係は<a href="human.php#escaper">逃亡者</a>を参照してください。</li>
+  <li><a href="human.php#escaper_group">逃亡者系</a>との関係は<a href="human.php#escaper_rule">基本ルール [逃亡者] </a>を参照してください。</li>
   <li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
     死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
   </li>
@@ -72,7 +72,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職です。
-式神研の闇鍋に混ぜてどの程度勝てるのか検討が付かないので、
+人狼式の闇鍋に混ぜてどの程度勝てるのか検討が付かないので、
 まずは条件を緩めに設定して様子を見てみようかと思います。
 </pre>
 
@@ -139,7 +139,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する上位吸血鬼。
-<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
@@ -161,7 +161,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[耐性] 護衛：狩り / 暗殺：反射 / 罠：有効</h4>
 <pre>
 <a href="#vampire_do_spec">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
-<a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人に護衛</a>されると殺される。
+<a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>

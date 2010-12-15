@@ -456,7 +456,7 @@ EOF;
     for($i = 0; $i < $count; $i++){ //差分を計算 (index は 0 から)
       //差分があれば性別を確認して音を鳴らす
       if((int)$objection_list[$i] > (int)$cookie_objection_list[$i]){
-	$SOUND->Output('objection_' . $USERS->ByID($i + 1)->sex, true);
+	$SOUND->Output('objection_' . $USERS->ByID($i + 1)->sex);
       }
     }
   }

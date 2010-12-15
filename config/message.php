@@ -26,7 +26,7 @@ class Message{
 
   //OutputTalkLog() : 会話、システムメッセージ出力
   var $objection = 'が「異議」を申し立てました'; //「異議」あり
-  //var $game_start = 'はゲーム開始に投票しました' //ゲーム開始投票 (現在は不使用)
+  //var $game_start = 'はゲーム開始投票をしました' //ゲーム開始投票 (現在は不使用)
   var $kick_do          = 'に KICK 投票しました'; //KICK 投票
   var $vote_do          = 'に処刑投票しました'; //処刑投票
   var $wolf_eat         = 'に狙いをつけました'; //人狼の投票
@@ -61,20 +61,18 @@ class Message{
 
   var $wolf_howl = 'アオォーン・・・'; //狼の遠吠え
   //var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
-  //var $common_talk = 'ですぅ・・・ですぅ・・・'; //共有者の小声
   var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の小声
   var $lovers_talk = 'うふふ・・・うふふ・・・'; //恋人の囁き
-  //var $lovers_talk = 'きゃっきゃうふふ・・・ちゅっちゅ！！'; //恋人の囁き
   var $howling = 'キィーーン・・・'; //スピーカーの音割れ効果音
 
   //OutputLastWords() : 遺言の表示
   var $lastwords = '夜が明けると前の日に亡くなった方の遺言書が見つかりました';
 
   //OutoutDeadManType() : 死因の表示
-  //var $vote_killed      = 'は投票の結果処刑されました'; //吊り
+  //var $vote_killed      = 'は投票の結果処刑されました'; //処刑
   var $vote_killed        = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
   var $blind_vote         = '傘化けの能力で投票結果が隠されました'; //傘化けの能力発動
-  //var $deadman           = 'は無残な姿で発見されました'; //全員に表示されるメッセージ
+  //var $deadman           = 'は無残な姿で発見されました'; //共通死亡メッセージ
   var $deadman            = 'は無残な負け犬の姿で発見されました';
   var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃
   var $hungry_wolf_killed = 'は餓狼の餌食になったようです'; //餓狼の襲撃
@@ -99,7 +97,7 @@ class Message{
   var $lovers_followed    = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
   var $vote_sudden_death  = 'はショック死しました'; //投票系ショック死
   //var $novoted            = 'は突然お亡くなりになられました'; //未投票突然死
-  var $novoted            = 'はスキマ送りされました'; //未投票突然死
+  var $novoted            = 'はスキマ送りされました';
   var $chicken            = 'は小心者だったようです'; //小心者
   var $rabbit             = 'はウサギだったようです'; //ウサギ
   var $perverseness       = 'は天邪鬼だったようです'; //天邪鬼
@@ -183,9 +181,9 @@ class Message{
   var $ability_mage_do          = '占う人を選択してください'; //占い師
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
   var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
-  var $ability_trap_do          = '罠を設置する人を選択してください'; //罠師
+  var $ability_trap_do          = '罠を設置する先を選択してください'; //罠師
   var $ability_possessed_do     = '憑依する人を選択してください'; //犬神
-  var $ability_dream_eat        = '夢を喰べる人を選択してください'; //獏
+  var $ability_dream_eat        = '夢を食べる人を選択してください'; //獏
   var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師
   var $ability_guard_do         = '護衛する人を選択してください'; //狩人
   var $ability_anti_voodoo_do   = '厄を祓う人を選択してください'; //厄神
@@ -204,11 +202,11 @@ class Message{
   //CheckSilence()
   var $silence = 'ほどの沈黙が続いた'; //沈黙で時間経過 (会話で時間経過制)
   //突然死の警告メッセージ
-  // var $sudden_death_announce = '投票完了されない方は死して地獄へ堕ちてしまいます';
+  //var $sudden_death_announce = '投票完了されない方は死して地獄へ堕ちてしまいます';
   var $sudden_death_announce = '投票完了されない方はスキマ送りされてしまいます';
-  // var $sudden_death_time = '突然死になるまで後：'; //突然死発動まで
+  //var $sudden_death_time = '突然死になるまで後：'; //突然死発動まで
   var $sudden_death_time = 'スキマ送りされるまで後：';
-  // var $sudden_death = 'さんは突然お亡くなりになられました'; //突然死
+  //var $sudden_death = 'さんは突然お亡くなりになられました'; //突然死
   var $sudden_death = 'さんは紫に連れ去られました';
 
   //投票リセット
@@ -216,8 +214,8 @@ class Message{
 
   //発言置換系役職
   var $cute_wolf = ''; //萌狼・不審者 (空なら狼の遠吠えになる)
-  // var $gentleman_header = "お待ち下さい。\n";  //紳士 (前半)
-  // var $gentleman_footer = 'さん、ハンケチーフを落としておりますぞ。'; //紳士 (後半)
+  //var $gentleman_header = "お待ち下さい。\n";  //紳士 (前半)
+  //var $gentleman_footer = 'さん、ハンケチーフを落としておりますぞ。'; //紳士 (後半)
   var $gentleman_header = "お待ち下さい。\nあぁ……";  //紳士 (前半)
   var $gentleman_footer = '様の残り湯、美味にございます……。'; //紳士 (後半)
   //var $lady_header = "お待ちなさい！\n"; //淑女 (前半)
@@ -230,8 +228,8 @@ class Message{
   var $kick_out = 'さんは席をあけわたし、村から去りました';
 
   //CheckVoteGameStart()
-  // var $chaos = '闇鍋モードでは配役は明かされません'; //闇鍋村の配役通知
-  var $chaos = '闇鍋モードだから配役は秘密☆カオスを楽しんでね♪';
+  //var $chaos = '配役隠蔽モードです'; //配役隠蔽通知 (闇鍋用)
+  var $chaos = '配役隠蔽モードだよ☆カオスを楽しんでね♪';
 
   //-- InsertRandomMessage() --//
   //GameConfig->random_message を true にすると
@@ -246,13 +244,13 @@ class GameOptionMessage{
   var $max_user              = '最大人数';
   var $wish_role             = '役割希望制';
   var $real_time             = 'リアルタイム制';
+  var $wait_morning          = '早朝待機制';
+  var $open_vote             = '投票した票数を公表する';
+  var $open_day              = 'オープニングあり';
   var $dummy_boy             = '初日の夜は身代わり君';
   var $gm_login              = '身代わり君は GM';
   var $gm_password           = 'GM ログインパスワード';
   var $gerd                  = 'ゲルト君モード';
-  var $open_vote             = '投票した票数を公表する';
-  var $open_day              = 'オープニングあり';
-  var $wait_morning          = '早朝待機制';
   var $not_open_cast         = '霊界で配役を公開しない';
   var $auto_open_cast        = '自動で霊界の配役を公開する';
   var $poison                = '埋毒者登場';
@@ -310,14 +308,14 @@ class GameOptionCaptionMessage{
   var $max_user              = '配役は<a href="info/rule.php">ルール</a>を確認して下さい';
   var $wish_role             = '希望の役割を指定できますが、なれるかは運です';
   var $real_time             = '制限時間が実時間で消費されます';
+  var $wait_morning          = '夜が明けてから一定時間の間発言ができません';
+  var $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
+  var $open_day              = 'ゲームが1日目の「昼」からスタートします';
   var $no_dummy_boy          = '身代わり君なし';
   var $dummy_boy             = '身代わり君あり (初日の夜、身代わり君が狼に食べられます)';
   var $gm_login              = '仮想 GM が身代わり君としてログインします';
   var $gm_password           = '(仮想 GM モード・クイズ村モード時の GM のパスワードです)<br>※ ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。';
   var $gerd                  = '役職が村人固定になります [村人が出現している場合のみ有効]';
-  var $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
-  var $wait_morning          = '夜が明けてから一定時間の間発言ができません';
-  var $open_day              = 'ゲームが1日目の「昼」からスタートします';
   var $no_close_cast         = '常時公開 (蘇生能力は無効です)';
   var $not_open_cast         = '常時非公開 (誰がどの役職なのか公開されません。蘇生能力は有効です)';
   var $auto_open_cast        = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
@@ -341,10 +339,9 @@ class GameOptionCaptionMessage{
   var $blinder               = '全員に「目隠し」がつきます。';
   var $critical              = '全員に「会心」「痛恨」がつきます。';
   var $joker                 = '誰か一人に「ジョーカー」がつきます。';
+  var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
   var $festival              = '管理人がカスタムする特殊設定です';
   var $replace_human         = '「村人」が全員特定の役職に入れ替わります';
-  var $full_mania            = '「村人」が全員「神話マニア」に入れ替わります';
-  var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
   var $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   var $topping               = '固定配役に追加する役職セットです';
   var $chaos_not_open_cast   = '通知無し';
