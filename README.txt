@@ -59,6 +59,7 @@ ujis_japanese_ci から utf8_unicode_ci に変更する必要があります。
 ├─include    : インクルードファイル
 ├─info       : トップ画面に表示するインフォメーション文コード他
 ├─javascript : Javascript ファイル
+├─log        : HTML化ログ置き場 (変換していない場合は不要です)
 ├─module     : mbstring エミュレータ用ファイル
 ├─rss        : RSS 配信用ファイル
 ├─swf        : 音声ファイル

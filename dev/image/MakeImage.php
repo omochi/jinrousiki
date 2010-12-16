@@ -808,7 +808,7 @@ class RoleMessageList{
     'type' => 'east_ogre');
 
   var $south_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　夏の熱さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　夏の暑さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
     'type' => 'east_ogre');
 
   var $incubus_ogre = array(
@@ -1424,4 +1424,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');
 #$builder->Output('silver_doll');
-$builder->Output('unknown_mania');
+$builder->Output('south_ogre');

@@ -377,7 +377,7 @@ $ROOM->date = 4;
 $ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
-$role_view_mode = false;
+$role_view_mode = true; #false;
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';

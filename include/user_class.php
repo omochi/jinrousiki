@@ -999,7 +999,7 @@ class UserDataSet{
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $RQ_ARGS, $ROOM;
+    global $RQ_ARGS, $ICON_CONF, $ROOM;
 
     if($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
     $base_date = $ROOM->date;

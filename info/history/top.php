@@ -4,7 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
 
-<h2><a id="140rc1">Ver. 1.4.0 RC1 (Rev. 234) : 2010/12/11 (Sat) 04:14</a></h2>
+<h2>Ver. 1.4.0 RC1 (Rev. 234) : 2010/12/11 (Sat) 04:14</h2>
 <ul>
   <li>固定追加配役モード：ランダム枠の実装、F(鬼村)追加</li>
 </ul>

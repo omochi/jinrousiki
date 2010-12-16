@@ -6,6 +6,7 @@ OutputInfoPageHeader('開発履歴', 1);
 <p>
 Ver. 1.4.0
 <a href="#140rc1">RC1</a>
+<a href="#140rc2">RC2</a>
 </p>
 <p>
 Ver. 1.4.0
@@ -57,6 +58,12 @@ Ver. 1.4.0
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 </p>
+
+<h2><a id="140rc2">Ver. 1.4.0 RC2 (Rev. 242) : 2010/12/17 (Fri) 02:42</a></h2>
+<ul>
+<li>「異議」あり音源の差し替え</li>
+<li>出題者に決定能力を追加</li>
+</ul>
 
 <h2><a id="140rc1">Ver. 1.4.0 RC1 (Rev. 234) : 2010/12/11 (Sat) 04:14</a></h2>
 <ul>

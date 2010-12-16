@@ -1,7 +1,8 @@
 <?php
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
-$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE', 'GAME_OPT_CAPT');
+$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'USER_ICON', 'ROOM_IMG',
+		      'MESSAGE', 'GAME_OPT_CAPT');
 
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
@@ -36,7 +37,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $MESSAGE;
+  global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $USER_ICON, $MESSAGE;
 
   if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
@@ -307,7 +308,8 @@ function CreateRoom(){
       //身代わり君を入村させる
       if(strpos($game_option, 'dummy_boy') !== false &&
 	 FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
-	if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password)) break;
+	if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
+			0, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
       }
 
       if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
