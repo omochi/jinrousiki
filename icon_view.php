@@ -6,4 +6,4 @@ $INIT_CONF->LoadRequest('RequestIconView'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 OutputIconPageHeader();
 OutputIconList();
-OutputIconPageFooter();
+OutputHTMLFooter();

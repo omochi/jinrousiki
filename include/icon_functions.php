@@ -2,10 +2,11 @@
 function OutputIconPageHeader(){
   OutputHTMLHeader('ユーザアイコン一覧', 'icon_view');
   echo <<<HTML
+<script type="text/javascript" src="javascript/submit_icon_search.js"></script>
 </head>
 <body>
 <a href="./">←ホームページに戻る</a><br>
-<img class="title" src="img/icon_view_title.jpg"><br>
+<img class="title" src="img/icon_view_title.jpg" title="アイコン一覧"><br>
 <div class="link"><a href="icon_upload.php">→アイコン登録</a></div>
 
 HTML;
@@ -85,7 +86,7 @@ function OutputIconEditForm($icon_no){
 <tr><td><label>編集パスワード</label></td>
 <td><input type="password" name="password" size="20"></td></tr>
 
-<tr><td colspan="4"><input type="submit" value="変更"></td></tr>
+<tr><td colspan="3"><input type="submit" value="変更"></td></tr>
 </table>
 </form>
 
@@ -96,39 +97,23 @@ EOF;
 function ConcreteOutputIconList($base_url = 'icon_view'){
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
-  //ヘッダーの出力
-  $icon_count = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0');
-  $line_header = '<tr><td colspan="10">';
-  $line_footer = '</td></tr>'."\n";
-  $url_header  = '<a href="' . $base_url . '.php?';
-  $url_option  = array();
-  $query_stack = array();
-  $category_list = GetIconCategoryList('category');
-  $all_url = $url_header;
-  if($RQ_ARGS->room_no > 0) $all_url .= 'room_no=' . $RQ_ARGS->room_no;
-  //PrintData($category_list);
-  //PrintData($RQ_ARGS);
-
-  echo <<<EOF
-<table>
-<tr>
-
-EOF;
-
+  //-- 内部関数の定義 --//
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
   function _outputSelectionByType($type, $caption, $filter = array()){
     global $RQ_ARGS;
 
     //選択状態の抽出
     $selection_source = $RQ_ARGS->search ? $RQ_ARGS->$type : $_SESSION['icon_view'][$type];
-    //PrintData($selection_source );
     $selected = empty($selection_source) ? array()
       : (is_array($selection_source) ? $selection_source : array($selection_source));
     $_SESSION['icon_view'][$type] = $selected;
+    //PrintData($selection_source);
+
     //選択肢の生成
     $query = "SELECT DISTINCT {$type} FROM user_icon WHERE {$type} IS NOT NULL";
     if(count($filter) > 0) $query .= ' AND ' . implode(' AND ', $filter);
     $list = FetchArray($query);
+
     //表示
     echo <<<HTML
 <td>
@@ -140,13 +125,13 @@ HTML;
     array_unshift($list, '__null__');
     foreach($list as $name){
       printf(
-        '<option value="%s" %s>%s</option>',
+        '<option value="%s"%s>%s</option>',
         $name,
-        in_array($name, $selected) ? 'selected' : '',
-        $name == '__null__' ? 'データ無し' : (strlen($name) ? $name : '空欄')
+        in_array($name, $selected) ? ' selected' : '',
+        $name == '__null__' ? 'データ無し' : (strlen($name) > 0 ? $name : '空欄')
       );
     }
-    echo '</select></td>';
+    echo "</select>\n</td>\n";
     return in_array('__all__', $selected) ? array() : $selected;
   }
 
@@ -156,14 +141,27 @@ HTML;
 
     $safe_values = array();
     foreach($values as $value){
-      $safe_values[] = sprintf("'%s'", mysql_real_escape_string($value));
+      $safe_values[] = sprintf("'%s'", EscapeStrings($value));
     }
     return $type.' IN ('.implode(',', $safe_values).')';
   }
 
+  //-- ヘッダ出力 --//
+  $icon_count  = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0');
+  $colspan     = $USERS_ICON->column * 2;
+  $line_header = '<tr><td colspan="' . $colspan . '">';
+  $line_footer = '</td></tr>'."\n";
+  $url_header  = '<a href="' . $base_url . '.php?';
+  $url_option  = array();
+  $query_stack = array();
+  $category_list = GetIconCategoryList('category');
+  //PrintData($category_list);
+  $all_url = $url_header;
+  if($RQ_ARGS->room_no > 0) $all_url .= 'room_no=' . $RQ_ARGS->room_no;
+  echo "<table>\n<tr>\n";
+
   //検索条件の表示
   $where_cond = array();
-
   $selected_categories = _outputSelectionByType('category', 'カテゴリ');
   if(0 < count($selected_categories)){
     foreach($selected_categories as $cat) $url_option[] = "category[]={$cat}";
@@ -181,17 +179,17 @@ HTML;
     foreach($selected_authors as $ath) $url_option[] = "author[]={$ath}";
     $where_cond[] = _generateInClause('author', $selected_authors);
   }
-  $sort_by_name_checked = $RQ_ARGS->sort_by_name ? 'checked' : '';
+  //PrintData($where_cond);
+
+  $sort_by_name_checked = $RQ_ARGS->sort_by_name ? ' checked' : '';
   echo <<<EOF
 </tr>
 <tr>
-<td colspan="10">
-<label><input id="sort_by_name" name="sort_by_name" type="checkbox" value="1" $sort_by_name_checked>名前順に並べ替える</label>
+<td colspan="{$colspan}">
+<label><input id="sort_by_name" name="sort_by_name" type="checkbox" value="1"$sort_by_name_checked>名前順に並べ替える</label>
 <input id="search" name="search" type="submit" value="検索">
 <input id="page" name="page" type="hidden" value="1">
-</td>
-</tr>
-</table>
+</td></tr></table>
 
 EOF;
 
@@ -229,25 +227,8 @@ HTML;
     $query .= sprintf(' LIMIT %d, %d', $limit_min, $ICON_CONF->view);
   }
   //PrintData($query);
+
   $records = FetchAssoc($query);
-
-  //ページリンクの作成
-  echo <<<HTML
-<script type="text/javascript"><!--
-function submitIconSearch(page) {
-  if (window.document.forms.icon_search) {
-    window.document.forms.icon_search.page.value = page;
-    window.document.forms.icon_search.submit();
-  }
-  else {
-    window.document.forms[0].page.value = page;
-    window.document.forms[0].submit();
-  }
-  return false;
-}
-//--></script>
-
-HTML;
   $query = 'SELECT COUNT(icon_no) AS total_count FROM user_icon WHERE ';
   $where_cond[] = 'icon_no > 0';
   $query .= implode(' AND ', $where_cond);
@@ -257,9 +238,9 @@ HTML;
   $PAGE_CONF->url     = $base_url;
   $PAGE_CONF->current = $RQ_ARGS->page;
   $PAGE_CONF->option  = $url_option;
-  $PAGE_CONF->attributes  = array('onclick'=>'return "return submitIconSearch(\'$page\');";');
+  $PAGE_CONF->attributes  = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
   if($RQ_ARGS->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . $RQ_ARGS->room_no;
-  echo '<td colspan="10" style="text-align:right;">';
+  echo '<td colspan="' . $colspan . '" style="text-align:right;">';
   //PrintData($PAGE_CONF, 'PAGE_CONF');
   OutputPageLink($PAGE_CONF);
   echo <<<HTML
@@ -270,22 +251,23 @@ HTML;
 <tr>
 
 HTML;
+
   //アイコン情報の表示
   $icon_list = array();
   $columns = 0;
-  if ($is_icon_view) {
+  if($is_icon_view){
     $method = 'OutputIconDetailsForIconView';
   }
-  elseif ($is_user_entry) {
+  elseif($is_user_entry){
     $method = 'OutputIconDetailsForUserEntry';
   }
-  else {
+  else{
     $method = false;
   }
-  if ($method !== false) {
+  if($method !== false){
     foreach($records as $icon_info) {
       $method($icon_info, array('cellwidth'=>162));
-      if (4 <= ++$columns) {
+      if($USER_ICON->column <= ++$columns){
         $columns = 0;
         echo '</tr><tr>';
       }
@@ -299,7 +281,7 @@ HTML;
 HTML;
 }
 
-function OutputIconDetailsForIconView($icon_info, $format_info) {
+function OutputIconDetailsForIconView($icon_info, $format_info){
   global $ICON_CONF;
 
   extract($icon_info);
@@ -334,7 +316,7 @@ HTML;
 HTML;
 }
 
-function OutputIconDetailsForUserEntry($icon_info, $format_info) {
+function OutputIconDetailsForUserEntry($icon_info, $format_info){
   global $ICON_CONF;
 
   extract($icon_info);
@@ -358,13 +340,4 @@ function GetIconCategoryList($type, $limit = '', $query_stack = array()){
     $stack[1] .= ' ' . implode(' AND ', $list);
   }
   return FetchArray(implode(" {$type} ", $stack) . $limit);
-}
-
-function AddIconURLOption(&$stack, $option){
-  global $RQ_ARGS;
-  if(is_int($RQ_ARGS->$option)) $stack[] = "{$option}={$RQ_ARGS->$option}";
-}
-
-function OutputIconPageFooter(){
-  OutputHTMLFooter();
 }

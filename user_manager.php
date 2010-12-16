@@ -160,6 +160,7 @@ function OutputEntryUserPage(){
     break;
   }
   echo <<<EOF
+<script type="text/javascript" src="javascript/submit_icon_search.js"></script>
 </head>
 <body>
 <a href="./">←戻る</a><br>
