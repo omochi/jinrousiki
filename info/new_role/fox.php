@@ -247,8 +247,8 @@ OutputRolePageHeader('妖狐陣営');
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
+  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できません</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡します</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
   <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>

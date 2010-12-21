@@ -349,7 +349,7 @@ class RoleMessageList{
     'type' => 'doll');
 
   var $phantom_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#倫敦人形#です。一度だけ_占い_を無効化してしまいます。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。",
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#倫敦人形#です。一度だけ_占い_を無効化してしまいます。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　その身が纏う霧はあなたを謎で包みこみ、正体を隠してしまいます。……味方につけたい村人たちの不審の種になるとしても。",
     'type' => 'doll', 'delimiter' => array('_' => 'mage'));
 
   var $poison_doll = array(
@@ -369,7 +369,7 @@ class RoleMessageList{
     'type' => 'doll', 'delimiter' => array('_' => 'wolf', '^' => 'fox'));
 
   var $silver_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#露西亜人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要がありますが、#人形遣い#が誰か分かりません。",
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#露西亜人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要がありますが、#人形遣い#が誰か分かりません。\n　あなたの戦いは、まず打ち倒すべき#人形遣い#を探し出すことから始まります。苦しい戦いになりますが、あきらめないで。",
     'type' => 'doll');
 
   var $doll_master = array(
@@ -478,7 +478,7 @@ class RoleMessageList{
     'type' => 'mad');
 
   var $jammer_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|月兎|です。夜の間に誰か一人の占いを妨害することができます。#占い師#を月の魔性に狂わせ、村を破滅へ導くのです！",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|月兎|です。夜の間に誰か一人の#占い#を妨害することができます。#占い師#を月の魔性に狂わせ、村を破滅へ導くのです！",
     'type' => 'mad', 'delimiter' => array('#' => 'mage'));
 
   var $voodoo_mad = array(
@@ -486,7 +486,7 @@ class RoleMessageList{
     'type' => 'jammer_mad');
 
   var $enchant_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きしてみんなに「バカな…お前は死んだはず!!」って言ってやりましょう。あなたも同じ顔ですけどね。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人を指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きして、みんなに「バカな…お前は死んだはず！」って言ってやりましょう。あなたも同じ顔ですけどね。",
     'type' => 'jammer_mad');
 
   var $dream_eater_mad = array(
@@ -606,7 +606,7 @@ class RoleMessageList{
     'type' => 'child_fox');
 
   var $jammer_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|月狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが#月兎#の真似事もできます。\n　月の光は占いの効果を歪め覆い隠す力を持つ。|子狐|でありながら身に付けたその能力を用いて、呪殺の脅威から|狐|を守り抜くのです。",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|月狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが#月兎#の真似事もできます。\n　月の光は_占い_の効果を歪め覆い隠す力を持つ。|子狐|でありながら身に付けたその能力を用いて、呪殺の脅威から|狐|を守り抜くのです。",
     'type' => 'child_fox');
 
   var $miasma_fox = array(
@@ -638,20 +638,20 @@ class RoleMessageList{
     'type' => 'mind_cupid', 'delimiter' => array('_' => 'vote', '^' => 'no_last_words'));
 
   var $triangle_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|小悪魔|です。初日の夜に誰か三人を|恋人|にしてしまいます。恋とはまた盲目。盲目なる|恋人|に、災いと嘲りあれ。",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|小悪魔|です。初日の夜に誰か三人を|恋人|にしてしまいます。淫靡な魅力で誘惑し、導き、三人の背徳的な恋を成就させるのです。",
     'type' => 'cupid');
 
   var $angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|天使|です。初日の夜に誰か二人を|恋人|にすることができます。その二人が_男_|女|だった場合はさらに#共感者#にすることができます。\n　始まりの園にありし男女の愛を繋ぐように、男女の魂に秘蹟を授けるのがあなたの使命なのです。二人の人生の先に神の祝福と喜びあれ。",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|天使|です。初日の夜に誰か二人を|恋人|にして、その二人が_男_|女|だった場合はさらに#共感者#にすることができます。\n　始まりの園にありし男女の愛を繋ぎ、その魂に秘蹟を授けることがあなたの使命。二人の人生の先に神の祝福と喜びあれ。",
     'type' => 'cupid',
     'delimiter' => array('#' => 'mind', '_' => 'sex_male'));
 
   var $rose_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|薔薇天使|です。初日の夜に誰か二人を|恋人|にすることができます。その二人が_男性_同士だった場合はさらに#共感者#にすることができます。\n　紅を帯びし薔薇の蕾を手に、戦地に有りし男たちの魂を繋ぐことがあなたの存在意義。兜が置かれるその時こそ、平和の鐘が鳴り響く時なのです。",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|薔薇天使|です。初日の夜に誰か二人を|恋人|にして、その二人が_男性_だった場合はさらに#共感者#にすることができます。\n　紅の薔薇を手に、戦地にありし男たちの魂を繋ぐ事があなたの使命。兜が置かれるその時が、平和の鐘が鳴り響く時なのです。",
     'type' => 'angel');
 
   var $lily_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|百合天使|です。初日の夜に誰か二人を|恋人|にすることができます。その二人が|女性|同士だった場合はさらに#共感者#にすることができます。\n　黄の山百合を手に、純潔なる乙女たちの魂を繋ぐことがあなたの使命。失われし楽園への道を示し、ともに歩むのです。乙女たちに神の祝福あれ。",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|百合天使|です。初日の夜に誰か二人を|恋人|にして、その二人が|女性|だった場合はさらに#共感者#にすることができます。\n　黄の山百合を手に、純潔なる乙女たちの魂を繋ぐことがあなたの使命。失われし楽園への道を示し、歩む二人を見守るのです。",
     'type' => 'angel');
 
   var $exchange_angel = array(
@@ -707,7 +707,7 @@ class RoleMessageList{
     'type' => 'chiroptera', 'delimiter' => array('#' => 'wolf'));
 
   var $boss_chiroptera = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|大蝙蝠|です。#人狼#に襲撃されても他の|蝙蝠|を犠牲にして生き延びることができます。\n　誇りを捨て情を捨て、同族の命すら糧にして、ただただ生き残ることだけを考えるのです。",
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|大蝙蝠|です。#人狼#に襲撃されても他の|蝙蝠|を犠牲にして生き延びることができます。\n　誇りを捨て情を捨て、同族の命すらも糧にして、ただただ生き残ることだけを考えるのです。",
     'type' => 'chiroptera', 'delimiter' => array('#' => 'wolf'));
 
   var $elder_chiroptera = array(
@@ -877,7 +877,7 @@ class RoleMessageList{
   var $celibacy = array('message' => "　あなたは|独身貴族|です。_恋人_に#処刑#投票されると|ショック死|してしまいます。",
 			'type' => 'chicken', 'delimiter' => array('_' => 'lovers'));
 
-  var $nervy = array('message' => "　あなたは|自信家|です。自分と同じ陣営の人に#処刑#投票にすると|ショック死|してしまいます。",
+  var $nervy = array('message' => "　あなたは|自信家|です。自分と同じ陣営の人に#処刑#投票すると|ショック死|してしまいます。",
 		     'type' => 'chicken');
 
   var $androphobia = array('message' => "　あなたは|男性恐怖症|です。_男性_に#処刑#投票すると|ショック死|してしまいます。",
@@ -885,9 +885,6 @@ class RoleMessageList{
 
   var $gynophobia = array('message' => "　あなたは|女性恐怖症|です。_女性_に#処刑#投票すると|ショック死|してしまいます。",
 			  'type' => 'chicken', 'delimiter' => array('_' => 'lovers'));
-
-  var $panelist = array('message' => "　あなたは|解答者|です。不正解だったときは_出題者_に#処刑#投票してください。",
-			'type' => 'chicken', 'delimiter' => array('_' => 'quiz'));
 
   var $febris_header = array('message' => "　あなたは|熱病|にかかっています。",
 			     'type' => 'chicken');
@@ -903,6 +900,9 @@ class RoleMessageList{
 
   var $sudden_death_footer = array('message' => "日目の昼に|ショック死|してしまいます。",
 				   'type' => 'chicken');
+
+  var $panelist = array('message' => "　あなたは|解答者|です。不正解だったときは_出題者_に#処刑#投票してください。",
+			'type' => 'chicken', 'delimiter' => array('_' => 'quiz'));
 
   var $liar = array('message' => "　あなたは|狼少年|です。「人」と「#狼#」をわざと取り違えて発言してしまいます。",
 		    'delimiter' => array('|' => 'liar', '#' => 'wolf'));
@@ -964,13 +964,13 @@ class RoleMessageList{
   var $random_luck = array('message' => "　あなたは|波乱万丈|なので#得票#数にランダムで補正がかかります。",
 			   'type' => 'upper_luck');
 
-  var $strong_voice = array('message' => "　あなたは|大声|の持ち主です。上手に活用して皆を説得しましょう！",
+  var $strong_voice = array('message' => "　あなたは|大声|なので声の大きさが大声で固定されます。",
 			    'delimiter' => array('|' => 'voice'));
 
   var $normal_voice = array('message' => "　あなたは|不器用|なので声の大きさを変えられません。",
 			    'type' => 'strong_voice');
 
-  var $weak_voice = array('message' => "　あなたは|小声|の持ち主です。説得に苦労するかもしれませんが頑張ってください。",
+  var $weak_voice = array('message' => "　あなたは|小声|なので声の大きさが小声で固定されます。 ",
 			  'type' => 'strong_voice');
 
   var $inside_voice = array('message' => "　あなたは|内弁慶|なので昼は|小声|に、夜は|大声|になります。",
@@ -1098,8 +1098,8 @@ class RoleMessageList{
   var $lovers_footer = array('message' => "と|愛し合って|います。妨害する者は誰であろうと消し、二人の愛の世界を築くのです！",
 			     'type' => 'cupid_pair');
 
-  var $quiz_chaos = array('message' => "　闇鍋モードではあなたの最大の能力である噛み無効がありません。\n　はっきり言って無理ゲーなので好き勝手にクイズでも出して遊ぶと良いでしょう。",
-			  'delimiter' => array());
+  var $quiz_chaos = array('message' => "　闇鍋モードではあなたの最大の能力である|人狼|の襲撃に対する耐性がありません。\n　はっきり言って無理ゲーなので好き勝手にクイズでも出して遊ぶと良いでしょう。",
+			  'delimiter' => array('|' => 'wolf'));
 
   var $infected_list = array('message' => "あなたの血に|感染|したのは以下の人たちです： ",
 			     'delimiter' => array('|' => 'vampire'));
@@ -1420,8 +1420,5 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('phantom_doll');
-#$builder->Output('revive_doll');
+$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');
-#$builder->Output('silver_doll');
-$builder->Output('south_ogre');

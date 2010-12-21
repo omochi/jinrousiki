@@ -83,7 +83,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3><a id="revive_self">自己蘇生能力者</a></h3>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
 
 <h2><a id="revive_limit">蘇生制限対象者</a></h2>
@@ -118,7 +118,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="possessed_limited">憑依制限能力者</a></h2>
 <pre>
-<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>
+<a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>
 </pre>
 
 <h2><a id="seal">封印対象者</a></h2>
@@ -133,6 +133,6 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="dummy">夢能力者</a></h2>
 <pre>
-<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_guard">夢守人</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
+<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_guard">夢守人</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 </body></html>

@@ -20,10 +20,9 @@ OutputInfoPageHeader('詳細な仕様');
 </p>
 
 <h3><a id="decide_role_room">村</a></h3>
-</p>
 <ol>
 <li>参加人数を取得</li>
-<li>人数毎に設定されている配役データを取得 (<a href="../rule.php" target="_top">ルール</a>参照)</li>
+<li>人数毎に設定されている配役データを取得 (<a href="cast.php">配役一覧</a>参照)</li>
 <li>特殊村なら全て差し替える</li>
 <li>通常村ならゲームオプションに応じて個別に入れ替える</li>
 <li>配役決定</li>
@@ -35,7 +34,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>ランダムな配役リストを作る</li>
 <li>身代わり君がなれる役職に当たるまで先頭からチェック</li>
 <li>全てチェックして見つからなければエラーを返す</li>
-<li>配役決定
+<li>配役決定</li>
 </ol>
 
 <h3><a id="decide_role_user">ユーザ</a></h3>
@@ -182,7 +181,7 @@ OutputInfoPageHeader('詳細な仕様');
 + 接触 (罠・逃亡・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺)
   - 罠 ＞ 逃亡失敗 →
     罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
-    狩人の狩り → 罠＞ 狩人護衛 ＞ 吸血 → 罠 ＞ 暗殺 → 凍傷判定
+    狩人の狩り → 罠 ＞ 狩人護衛 ＞ 吸血 → 罠 ＞ 暗殺 → 凍傷判定
 
   - 罠能力者 (<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>)
   - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)

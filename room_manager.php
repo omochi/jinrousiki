@@ -108,13 +108,13 @@ function CreateRoom(){
   $chaos_hyper  = $ROOM_CONF->chaos_hyper  && $_POST['special_role']  == 'chaos_hyper';
   $quiz         = $ROOM_CONF->quiz         && $_POST['special_role']  == 'quiz';
   $special_role =
-    ($ROOM_CONF->duel && $_POST['special_role']  == 'duel') ||
+    ($ROOM_CONF->duel         && $_POST['special_role']  == 'duel') ||
     ($ROOM_CONF->gray_random  && $_POST['special_role']  == 'gray_random');
   $game_option_list = array();
   $option_role_list = array();
   $check_game_option_list = array('wish_role', 'open_vote', 'open_day', 'not_open_cast');
   $check_option_role_list = array();
-  if($quiz){
+  if($quiz){ //クイズ村
     $game_option_list[] = 'quiz';
 
     //GM ログインパスワードをチェック
@@ -129,10 +129,11 @@ function CreateRoom(){
     $dummy_boy_password    = $gm_password;
   }
   else{
+    //身代わり君関連のチェック
     if($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'on'){
-      $game_option_list[]    = 'dummy_boy';
-      $dummy_boy_handle_name = '身代わり君';
-      $dummy_boy_password    = $SERVER_CONF->system_password;
+      $game_option_list[]       = 'dummy_boy';
+      $dummy_boy_handle_name    = '身代わり君';
+      $dummy_boy_password       = $SERVER_CONF->system_password;
       $check_option_role_list[] = 'gerd';
     }
     elseif($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'gm_login'){
@@ -144,17 +145,17 @@ function CreateRoom(){
       }
       EscapeStrings(&$gm_password);
       array_push($game_option_list, 'dummy_boy', 'gm_login');
-      $dummy_boy_handle_name = 'GM';
-      $dummy_boy_password    = $gm_password;
+      $dummy_boy_handle_name    = 'GM';
+      $dummy_boy_password       = $gm_password;
       $check_option_role_list[] = 'gerd';
     }
 
-    if($chaos || $chaosfull || $chaos_hyper){
+    if($chaos || $chaosfull || $chaos_hyper){ //闇鍋モード
       $game_option_list[] = $chaos ? 'chaos' : ($chaosfull ? 'chaosfull' : 'chaos_hyper');
       $check_game_option_list[] = 'secret_sub_role';
       array_push($check_option_role_list, 'topping', 'chaos_open_cast', 'chaos_open_cast_camp',
 		 'chaos_open_cast_role');
-      if($perverseness){
+      if($perverseness){ //天邪鬼村の調整
 	$option_role_list[] = 'sub_role_limit';
 	$check_option_role_list[] = 'perverseness';
       }
@@ -162,24 +163,23 @@ function CreateRoom(){
 	$check_option_role_list[] = 'sub_role_limit';
       }
     }
-    else{
-      if($special_role) $option_role_list[] = $_POST['special_role'];
-      else{
-	array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
-		   'possessed_wolf', 'sirius_wolf');
-	if(! $full_cupid) $check_option_role_list[] = 'cupid';
-	$check_option_role_list[] = 'medium';
-	if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
-	if(! $full_mania) $check_option_role_list[] = 'mania';
-      }
+    elseif($special_role){ //特殊配役モード
+      $option_role_list[] = $_POST['special_role'];
     }
-    array_push($check_option_role_list, 'liar', 'gentleman');
-    $check_option_role_list[] = $perverseness ? 'perverseness' : 'sudden_death';
-    $check_option_role_list[] = 'critical';
-    array_push($check_game_option_list, 'joker', 'deep_sleep', 'mind_open', 'blinder');
-    if(! $special_role) array_push($check_option_role_list, 'detective', 'replace_human');
-    $check_game_option_list[] = 'festival';
+    else{ //通常村
+      array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
+		 'possessed_wolf', 'sirius_wolf');
+      if(! $full_cupid) $check_option_role_list[] = 'cupid';
+      $check_option_role_list[] = 'medium';
+      if(! $full_mania) $check_option_role_list[] = 'mania';
+      if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
+    }
+    array_push($check_game_option_list, 'deep_sleep', 'mind_open', 'blinder', 'joker', 'festival');
+    array_push($check_option_role_list, 'liar', 'gentleman',
+	       $perverseness ? 'perverseness' : 'sudden_death', 'critical');
+    if(! $special_role) $check_option_role_list[] = 'detective';
   }
+  $check_option_role_list[] = 'replace_human';
 
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');

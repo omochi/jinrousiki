@@ -314,7 +314,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む) は乗っ取れません。
+身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む)・<a href="ability.php#possessed_limited">憑依制限能力者</a>は乗っ取れません。
 </pre>
 <ol>
   <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -703,11 +703,11 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
-    <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
+    <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
     <li><a href="human.php#fend_guard">忍者</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
-    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
-    <li><a href="ability.php#sacrifice">身代わり能力</a>無効</li>
+    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
+    <li><a href="ability.php#sacrifice">身代わり能力</a>・<a href="ability.php#revive_self">自己蘇生能力</a>無効</li>
     <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
   </ol>
@@ -724,7 +724,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 <pre>
 東方ウミガメ人狼のプレイヤーさんがモデルの、人狼系最終兵器です。
 LW になると処刑以外では止められなくなります。
-<a href="human.php#escaper">逃亡者</a>・<a href="fox.php">妖狐</a>は LW になっても襲撃失敗する可能性があります。
+<a href="human.php#escaper_group">逃亡者系</a>・<a href="fox.php">妖狐</a>は LW になっても襲撃失敗する可能性があります。
 </pre>
 
 <h3><a id="elder_wolf">古狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β5〜]</h3>
@@ -870,7 +870,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 相談できるので完璧な連携が取れます。
 </pre>
 
-<h3><a id="jammer_mad">月兎 (邪魔狂人)</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α19〜]</h3>
+<h3><a id="jammer_mad">月兎</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α19〜]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
 夜に投票した人の占い行動を妨害する特殊な狂人。
@@ -928,7 +928,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="chiroptera.php#fairy_group">妖精系</a>の狂人バージョンです。
+<a href="chiroptera.php#fairy_group">妖精系</a>の狂人バージョンです。「むじな」と読みます。
 客観的に存在していることを証明することができます。
 </pre>
 
@@ -969,8 +969,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>には憑依できません</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると殺されます</li>
+  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できません</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡します</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
   <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
@@ -1001,7 +1001,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>対象は<a href="human.php#escaper">逃亡者</a>・<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="ability.php#assassin">暗殺能力者</a>です。</li>
+  <li>対象は<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="ability.php#assassin">暗殺能力者</a>です。</li>
   <li>自分が<a href="#wolf_group">人狼系</a> (種類を問わない) に襲撃されたら無効になります。</li>
   <li>罠を仕掛けた先に他の罠師が罠を仕掛けていた場合は死亡します。</li>
   <li>自分にも仕掛けることができます。</li>
@@ -1082,12 +1082,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3><a id="agitate_mad">扇動者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7〜]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
-再投票の最多得票者に投票していた場合に、投票先を吊り、
+再投票の最多得票者に投票していた場合に、投票先を処刑し、
 それ以外の最多得票者をまとめてショック死させる特殊な狂人。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>事前に処刑者が決定していた場合は発動しない (判定は<a href="human.php#saint">聖女</a>の判定の後)</li>
+  <li>事前に処刑者が決定していた場合は発動しない (<a href="../spec.php#vote_day">判定</a>は<a href="human.php#saint">聖女</a>の判定の後)</li>
   <li>複数の扇動者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
   <li>最多得票者に自分が含まれていても有効 (自分の投票先が吊られて、自分はショック死する)</li>
 </ol>
@@ -1144,7 +1144,6 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <ol>
   <li>襲撃失敗 (例：狩人護衛) していた場合は無効。</li>
-  <li>襲撃者が<a href="#hungry_wolf">餓狼</a>だった場合は襲撃失敗扱い。</li>
   <li>身代わり君か、襲撃者が<a href="#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>

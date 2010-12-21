@@ -14,8 +14,9 @@ if($_POST['command'] == 'role_test'){
   case 'chaos':
   case 'chaosfull':
   case 'chaos_hyper':
-  case 'gray_random':
   case 'duel':
+  case 'gray_random':
+  case 'quiz':
     $stack->game_option[] = $_POST['game_option'];
     break;
 
@@ -46,11 +47,10 @@ if($_POST['command'] == 'role_test'){
   $try_count  = (int)$_POST['try_count'];
   $str = '%0' . strlen($try_count) . 'd回目: ';
   for($i = 1; $i <= $try_count; $i++){
-    echo sprintf($str, $i);
+    printf($str, $i);
     $role_list = GetRoleList($user_count);
     if($role_list == '') break;
-    $role_count_list = array_count_values($role_list);
-    PrintData(GenerateRoleNameList($role_count_list, true));
+    PrintData(GenerateRoleNameList(array_count_values($role_list), true));
   }
 }
 OutputHTMLFooter(true);
@@ -80,7 +80,7 @@ function OutputRoleTestForm(){
 EOF;
 
   foreach($ROOM_CONF->topping_list as $mode){
-      echo <<<EOF
+    echo <<<EOF
 <input type="radio" name="topping" value="{$mode}">{$GAME_OPT_MESS->{'topping_' . $mode}}
 
 EOF;
@@ -93,7 +93,7 @@ EOF;
 EOF;
 
   foreach($ROOM_CONF->replace_human_list as $mode){
-      echo <<<EOF
+    echo <<<EOF
 <input type="radio" name="replace_human" value="{$mode}">{$GAME_OPT_MESS->$mode}
 
 EOF;

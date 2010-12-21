@@ -437,7 +437,7 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">夜に投票した人の占い行動を妨害する特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。α21から邪魔狂人 → 月兎 に変更。</td>
+    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 α19</td>
 </tr>
 <tr>
@@ -891,7 +891,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票の最多得票者に投票していた場合に、投票先を吊り、それ以外の最多得票者をまとめてショック死させる特殊な狂人。<br>
+  <td class="ability">再投票の最多得票者に投票していた場合に、投票先を処刑し、それ以外の最多得票者をまとめてショック死させる特殊な狂人。<br>
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
@@ -1198,7 +1198,7 @@ Ver. 1.4.0
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">暗殺行動の代りに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する特殊な暗殺者。</td>
+  <td class="ability">暗殺成立時に<a href="sub_role.php#death_warrant">死の宣告</a>を付加する特殊な暗殺者。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
 <tr>
@@ -1687,7 +1687,7 @@ Ver. 1.4.0
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
-  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="wolf.php">妖狐陣営</a>の全滅」。
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="fox.php">妖狐陣営</a>の全滅」。
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
