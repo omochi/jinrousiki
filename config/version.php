@@ -1,5 +1,5 @@
 <?php
-class ScriptInfo{
+class ScriptInfo extends ScriptInfoBase{
   //パッケージのバージョン
   var $version = 'Ver. 1.4.0 RC3';
 
@@ -9,11 +9,12 @@ class ScriptInfo{
   //パッケージ化した時の Revision
   var $revision = 242;
 
-  //PHP + パッケージのバージョン情報を出力する
-  function OutputVersion(){
-    $list = array('PHP Ver. ' . PHP_VERSION,
-		  $this->version . '(Rev. ' . $this->revision . ')',
-		  'LastUpdate: ' . $this->last_update);
-    echo implode(', ', $list);
-  }
+  //パッケージ名
+  var $package = '<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式</a>';
+
+  //開発チーム名
+  var $developer = '<a href="http://sourceforge.jp/projects/jinrousiki/">式神研究同好会</a>';
+
+  //管理者 (任意)
+  var $admin = '<a href="http://twitter.com/umethyl">埋めチル＠式神研</a>';
 }

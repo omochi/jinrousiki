@@ -45,5 +45,5 @@ if($SERVER_CONF->back_page != ''){
 </td>
 </tr></table>
 
-<div class="footer"><?php $SCRIPT_INFO->OutputVersion() ?></div>
+<div class="footer"><?php $SCRIPT_INFO->Output() ?></div>
 </body></html>

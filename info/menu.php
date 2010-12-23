@@ -20,6 +20,7 @@ OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'info_menu');
 <li><a href="shared_room.php" target="body">関連サーバ村情報</a></li>
 <li><a href="copyright.php" target="body">謝辞・素材</a></li>
 <li>★☆★☆★☆★</li>
+
 <li><a href="history/" target="body">サーバ更新履歴</a></li>
 <li><a href="history/top.php" target="body">TOPページ更新履歴</a></li>
 <li>★☆★☆★☆★</li>

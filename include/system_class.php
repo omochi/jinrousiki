@@ -1384,3 +1384,27 @@ class CastConfigBase{
     return $this->FilterRoles($user_count, array('wolf', 'mad', 'fox'));
   }
 }
+
+//-- バージョン情報設定の基底クラス --//
+class ScriptInfoBase{
+  //TOPページ向けのバージョン情報を出力する
+  function Output($full = false){
+    $str = "Powered by {$this->package} {$this->version} from {$this->developer}";
+    if($this->admin) $str .= '<br>Founded by: ' . $this->admin;
+    echo $str;
+  }
+
+  //PHP + パッケージのバージョン情報を出力する
+  function OutputSystem(){
+    $php = PHP_VERSION;
+    echo <<<EOF
+<h2>パッケージ情報</h2>
+<ul>
+<li>PHP Ver. {$php}</li>
+<li>{$this->package} {$this->version} (Rev. {$this->revision})</li>
+<li>LastUpdate: {$this->last_update}</li>
+</ul>
+
+EOF;
+  }
+}
