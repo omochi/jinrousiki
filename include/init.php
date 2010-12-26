@@ -18,86 +18,90 @@ define('JINRO_MOD',  JINRO_ROOT . '/module');
 $DEBUG_MODE = true;
 
 //-- クラスを定義 --//
+/*
+  初期化の読み込みを最適化するのが目的なので、依存情報に
+  確実に読み込まれているデータを入れる必要はない。
+  逆にコード上必須ではないが常にセットで使われるデータを入れると良い。
+*/
 class InitializeConfig{
   var $path; //パス情報格納変数
   var $loaded; //ロード情報格納変数
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   var $depend_file = array(
-    'DB_CONF' => 'server_config',
-    'SERVER_CONF' => 'server_config',
-    'USER_ICON' => 'server_config',
-    'MENU_LINK' => 'server_config',
-    'SCRIPT_INFO' => 'version',
-    'SESSION' => 'system_class',
-    'ROOM_CONF' => 'game_config',
-    'GAME_CONF' => 'game_config',
-    'TIME_CONF' => 'game_config',
-    'ICON_CONF' => 'game_config',
-    'ROOM_IMG' => 'game_config',
-    'ROLE_IMG' => 'game_config',
-    'SOUND' => 'game_config',
-    'CAST_CONF' => 'cast_config',
-    'MESSAGE' => 'message',
-    'GAME_OPT_MESS' => 'message',
-    'VICT_MESS' => 'message',
-    'VOTE_MESS' => 'message',
-    'RQ_ARGS' => 'request_class',
-    'ROLES' => 'role_class',
-    'TIME_CALC' => 'time_calc',
-    'PAPARAZZI' => 'paparazzi_class',
-    'server_config' => 'system_class',
-    'game_config' => 'system_class',
-    'game_vote_functions' => 'game_functions',
+    'DB_CONF'             => 'server_config', //常時ロードされる
+    'SERVER_CONF'         => 'server_config', //常時ロードされる
+    'ROOM_CONF'           => 'game_config',
+    'GAME_CONF'           => 'game_config',
+    'TIME_CONF'           => 'game_config',
+    'ICON_CONF'           => 'game_config',
+    'ROOM_IMG'            => 'game_config',
+    'ROLE_IMG'            => 'game_config',
+    'SOUND'               => 'game_config',
+    'CAST_CONF'           => 'cast_config',
+    'MESSAGE'             => 'message',
+    'GAME_OPT_MESS'       => 'message',
+    'VICT_MESS'           => 'message',
+    'VOTE_MESS'           => 'message',
+    'SCRIPT_INFO'         => 'version',
+    'RQ_ARGS'             => 'request_class',
+    'ROLES'               => 'role_class',
+    'TIME_CALC'           => 'time_calc',
+    'PAPARAZZI'           => 'paparazzi_class',
+    'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',
-    'game_functions' => 'system_class',
-    'system_class' => array('functions', 'room_class'),
-    'icon_functions' => 'system_class',
-    'room_class' => 'option_class',
-    'user_class' => 'game_functions',
-    'role_class' => 'game_format'
+    'game_vote_functions' => 'game_functions',
+    'user_class'          => 'game_functions',
+    'server_config'       => 'system_class', //常時ロードされる
+    'system_class'        => array('functions', 'room_class'), //常時ロードされる
+    'room_class'          => 'option_class',
+    'role_class'          => 'game_format'
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   var $depend_class = array(
-    'GAME_OPT_CAPT' => 'GAME_OPT_MESS',
-    'TIME_CALC' => array('TIME_CONF', 'ROOM_CONF'),
+    'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
+    'TIME_CALC'           => array('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG',
+				   'CAST_CONF', 'ROLE_DATA'),
+    'COPYRIGHT'           => 'SCRIPT_INFO',
     'game_play_functions' => 'ROLE_IMG',
-    'user_class' => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
-    'icon_functions' => array('ICON_CONF', 'USER_ICON')
+    'user_class'          => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
+    'icon_functions'      => array('ICON_CONF', 'USER_ICON')
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   var $class_list = array(
-    'DB_CONF' => 'DatabaseConfig',
-    'SERVER_CONF' => 'ServerConfig',
-    'SCRIPT_INFO' => 'ScriptInfo',
-    'MENU_LINK' => 'MenuLinkConfig',
-    'BBS_CONF' => 'BBSConfig',
-    'SESSION' => 'Session',
-    'ROOM_CONF' => 'RoomConfig',
-    'GAME_CONF' => 'GameConfig',
-    'ROLE_DATA' => 'RoleData',
-    'CAST_CONF' => 'CastConfig',
-    'TIME_CONF' => 'TimeConfig',
-    'ICON_CONF' => 'IconConfig',
-    'USER_ICON' => 'UserIcon',
-    'ROOM_IMG' => 'RoomImage',
-    'ROLE_IMG' => 'RoleImage',
-    'SOUND' => 'Sound',
-    'COOKIE' => 'CookieDataSet',
-    'MESSAGE' => 'Message',
+    'DB_CONF'       => 'DatabaseConfig',
+    'SERVER_CONF'   => 'ServerConfig',
+    'SHARED_CONF'   => 'SharedServerConfig',
+    'USER_ICON'     => 'UserIcon',
+    'MENU_LINK'     => 'MenuLinkConfig',
+    'BBS_CONF'      => 'BBSConfig',
+    'COPYRIGHT'     => 'CopyrightConfig',
+    'SCRIPT_INFO'   => 'ScriptInfo',
+    'SESSION'       => 'Session',
+    'ROOM_CONF'     => 'RoomConfig',
+    'GAME_CONF'     => 'GameConfig',
+    'ROLE_DATA'     => 'RoleData',
+    'CAST_CONF'     => 'CastConfig',
+    'TIME_CONF'     => 'TimeConfig',
+    'ICON_CONF'     => 'IconConfig',
+    'ROOM_IMG'      => 'RoomImage',
+    'ROLE_IMG'      => 'RoleImage',
+    'SOUND'         => 'Sound',
+    'COOKIE'        => 'CookieDataSet',
+    'MESSAGE'       => 'Message',
     'GAME_OPT_MESS' => 'GameOptionMessage',
     'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
-    'VICT_MESS' => 'VictoryMessage',
-    'VOTE_MESS' => 'VoteMessage',
-    'RQ_ARGS' => 'RequestBase',
-    'ROLES' => 'RoleManager',
-    'TIME_CALC' => 'TimeCalculation',
-    'PAPARAZZI' => 'Paparazzi'
+    'VICT_MESS'     => 'VictoryMessage',
+    'VOTE_MESS'     => 'VoteMessage',
+    'RQ_ARGS'       => 'RequestBase',
+    'ROLES'         => 'RoleManager',
+    'TIME_CALC'     => 'TimeCalculation',
+    'PAPARAZZI'     => 'Paparazzi'
   );
 
-  function InitializeConfig(){ $this->__construct(); }
+  //コンストラクタ
   function __construct(){
     $this->path->root    = JINRO_ROOT;
     $this->path->config  = JINRO_CONF;
@@ -208,15 +212,7 @@ $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
 
 //-- スクリプト群の文字コード --//
 //変更する場合は全てのファイル自体の文字コードを自前で変更してください
-
-//エンコーディング指定 PHPバージョンによって指定方法が異なる
-$php_version_array = explode('.', phpversion());
-if($php_version_array[0] <= 4 && $php_version_array[1] < 3){ //4.3.x未満
-  //encoding $SERVER_CONF->encode;  //エラーが出る？
-}
-else{ //4.3.x以降
-  declare(encoding='UTF-8'); //変数を入れるとパースエラーが返るのでハードコード
-}
+declare(encoding='UTF-8'); //変数を入れるとパースエラーが返るのでハードコード
 
 //-- マルチバイト入出力指定 --//
 if(extension_loaded('mbstring')){

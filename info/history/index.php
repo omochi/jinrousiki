@@ -3,6 +3,7 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('サーバ更新履歴', 1);
 ?>
+<!-- サーバの更新履歴を残したい場合はこのページを使用してください -->
 <h2>Ver. 1.3.0 → Ver. 1.4.0</h2>
 <h3>改善点</h3>
 <ul>

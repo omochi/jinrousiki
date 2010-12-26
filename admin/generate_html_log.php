@@ -34,7 +34,7 @@ if($db_delete_mode){
 
 GenerateLogIndex(); //インデックスページ生成
 
-$INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
+$INIT_CONF->LoadFile('game_play_functions', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
 
 $room_delete = false; //DB削除設定

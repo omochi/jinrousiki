@@ -5,7 +5,7 @@ $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
 $DB_CONF->ChangeName($RQ_ARGS->db_no); //DB 名をセット
 $DB_CONF->Connect(); //DB 接続
 if($RQ_ARGS->is_room){
-  $INIT_CONF->LoadFile('game_play_functions', 'user_class', 'talk_class');
+  $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
   $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
 
   $ROOM =& new Room($RQ_ARGS);

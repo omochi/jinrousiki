@@ -1,8 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA', 'ROOM_IMG',
-		      'USER_ICON', 'GAME_OPT_MESS');
+$INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'GAME_OPT_MESS');
 OutputInfoPageHeader('仕様', 0, 'script_info');
 ?>
 <script type="text/javascript" src="../javascript/output_diff_time.js"></script>

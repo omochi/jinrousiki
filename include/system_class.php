@@ -177,6 +177,49 @@ EOF;
   }
 }
 
+//-- 村情報共有サーバ表示の基底クラス --//
+class SharedServerConfigBase extends ExternalLinkBuilder{
+  //他のサーバの部屋画面を出力
+  function Output(){
+    global $SERVER_CONF;
+
+    if($this->disable) return false;
+
+    foreach($this->server_list as $server => $array){
+      extract($array);
+      //PrintData($url, 'URL'); //テスト用
+      if($disable) continue;
+
+      if(! $this->CheckConnection($url)){ //サーバ通信状態チェック
+	$data = $this->host . ": Connection timed out ({$this->time} seconds)";
+	echo $this->GenerateSharedServerRoom($name, $url, $data);
+	continue;
+      }
+
+      //部屋情報を取得
+      if(($data = @file_get_contents($url.'room_manager.php')) == '') continue;
+      //PrintData($data, 'Data'); //テスト用
+      if($encode != '' && $encode != $this->encode){
+	$data = mb_convert_encoding($data, $this->encode, $encode);
+      }
+      if($separator != ''){
+	$split_list = mb_split($separator, $data);
+	//PrintData($split_list, 'Split'); //テスト用
+	$data = array_pop($split_list);
+      }
+      if($footer != ''){
+	if(($position = mb_strrpos($data, $footer)) === false) continue;
+	$data = mb_substr($data, 0, $position + mb_strlen($footer));
+      }
+      if($data == '') continue;
+
+      $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
+      $data = strtr($data, $replace_list);
+      echo $this->GenerateSharedServerRoom($name, $url, $data);
+    }
+  }
+}
+
 //-- 掲示板情報取得の基底クラス --//
 class BBSConfigBase extends ExternalLinkBuilder{
   function Output(){
@@ -370,6 +413,7 @@ class MenuLinkConfigBase{
 class CopyrightConfigBase{
   //投稿処理
   function Output(){
+    global $SCRIPT_INFO;
     $stack = $this->list;
     foreach($this->add_list as $class => $list){
       $stack[$class] = array_key_exists($class, $stack) ?
@@ -383,6 +427,17 @@ class CopyrightConfigBase{
       }
       echo $str . "</ul>\n";
     }
+
+    $php = PHP_VERSION;
+    echo <<<EOF
+<h2>パッケージ情報</h2>
+<ul>
+<li>PHP Ver. {$php}</li>
+<li>{$SCRIPT_INFO->package} {$SCRIPT_INFO->version} (Rev. {$SCRIPT_INFO->revision})</li>
+<li>LastUpdate: {$SCRIPT_INFO->last_update}</li>
+</ul>
+
+EOF;
   }
 }
 
@@ -1392,19 +1447,5 @@ class ScriptInfoBase{
     $str = "Powered by {$this->package} {$this->version} from {$this->developer}";
     if($this->admin) $str .= '<br>Founded by: ' . $this->admin;
     echo $str;
-  }
-
-  //PHP + パッケージのバージョン情報を出力する
-  function OutputSystem(){
-    $php = PHP_VERSION;
-    echo <<<EOF
-<h2>パッケージ情報</h2>
-<ul>
-<li>PHP Ver. {$php}</li>
-<li>{$this->package} {$this->version} (Rev. {$this->revision})</li>
-<li>LastUpdate: {$this->last_update}</li>
-</ul>
-
-EOF;
   }
 }

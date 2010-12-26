@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('TIME_CALC', 'GAME_CONF', 'CAST_CONF', 'ROLE_DATA', 'ROOM_IMG', 'ROLE_IMG');
+$INIT_CONF->LoadClass('TIME_CALC', 'ROLE_IMG');
 OutputInfoPageHeader('ルール', 0, 'rule');
 ?>
 <img src="../img/rule_title.jpg" title="ルールの説明">

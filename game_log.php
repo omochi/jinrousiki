@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('user_class', 'talk_class');
+$INIT_CONF->LoadFile('talk_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES');
 
 //-- データ収集 --//

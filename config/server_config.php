@@ -39,7 +39,7 @@ class ServerConfig{
   var $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  var $comment = '〜チルノ鯖＠ローカル〜';
+  var $comment = '〜＠ローカル〜';
 
   //サーバの文字コード
   /*
@@ -82,18 +82,28 @@ class ServerConfig{
     更新後のリビジョン番号と同じか、それより大きな値を設定すると
     admin/setup.php の処理は常時スキップされます。
   */
-  var $last_updated_revision = 213;
+  var $last_updated_revision = 246;
+
+  //村立てテストモード (村立ての DB アクセス処理をスキップします。開発者テスト用スイッチです)
+  var $dry_run_mode = false;
 
   //村情報非表示モード (村立てテストなどの開発者テスト用スイッチです)
   var $secret_room = false;
 }
 
 //-- 村情報共有サーバの設定 --//
-class SharedServerConfig extends ExternalLinkBuilder{
+class SharedServerConfig extends SharedServerConfigBase{
   var $disable = false; //無効設定 <表示を [true:無効 / false:有効] にする>
 
   //表示する他のサーバのリスト
   var $server_list = array(
+    'youmu' => array('name' => '妖夢鯖',
+		     'url' => 'http://www23.atpages.jp/youmu/',
+		     'encode' => 'UTF-8',
+		     'separator' => '<!-- atpages banner tag -->',
+		     'footer' => '</a><br>',
+		     'disable' => false),
+
     'cirno' => array('name' => 'チルノ鯖',
 		     'url' => 'http://www12.atpages.jp/cirno/',
 		     'encode' => 'UTF-8',
@@ -114,34 +124,13 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		     'separator' => '',
 		     'footer' => '',
 		     'disable' => false),
-    /*
-    'satori' => array('name' => 'さとり鯖',
-		      'url' => 'http://satori.crz.jp/',
-		      'encode' => 'EUC-JP',
-		      'separator' => '',
-		      'footer' => '',
-		      'disable' => true),
-    */
+
     'sakuya' => array('name' => '咲夜鯖',
 		      'url' => 'http://www7.atpages.jp/izayoi398/',
 		      'encode' => 'EUC-JP',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</div></small></a><br>',
 		      'disable' => false),
-    /*
-    'sasuga' => array('name' => '流石兄弟鯖',
-		      'url' => 'http://www12.atpages.jp/yaruo/jinro/',
-		      'encode' => 'EUC-JP',
-		      'separator' => '<!-- atpages banner tag -->',
-		      'footer' => '</div></small></a><br>',
-		      'disable' => true),
-    */
-    'sasugabros' => array('name' => '流石弟者鯖',
-			  'url' => 'http://www16.atpages.jp/sasugabros/',
-			  'encode' => 'UTF-8',
-			  'separator' => '<!-- atpages banner tag -->',
-			  'footer' => '</div></small></a><br>',
-			  'disable' => true),
 
     'sasugasister' => array('name' => '流石妹者鯖',
 			    'url' => 'http://www21.atpages.jp/sasugasister/',
@@ -170,34 +159,6 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		    'separator' => '<!-- atpages banner tag -->',
 		    'footer' => '</a><br>',
 		    'disable' => false),
-
-    'suigin' => array('name' => '水銀鯖',
-		      'url' => 'http://www13.atpages.jp/suigintou/',
-		      'encode' => 'UTF-8',
-		      'separator' => '<!-- atpages banner tag -->',
-		      'footer' => '</a><br>',
-		      'disable' => true),
-
-    'mohican' => array('name' => '世紀末テスト鯖',
-		       'url' => 'http://www15.atpages.jp/seikima2/jinro_php/',
-		       'encode' => 'UTF-8',
-		       'separator' => '<!-- atpages banner tag -->',
-		       'footer' => '</div></small></a><br>',
-		       'disable' => true),
-
-    'mmr' => array('name' => '世紀末鯖',
-		   'url' => 'http://www14.atpages.jp/mmr1/',
-		   'encode' => 'UTF-8',
-		   'separator' => '<!-- atpages banner tag -->',
-		   'footer' => '</div></small></a><br>',
-		   'disable' => true),
-
-    'bourbon_test' => array('name' => 'バーボンハウス鯖（仮）',
-			    'url' => 'http://www16.atpages.jp/bourbonjinro/',
-			    'encode' => 'UTF-8',
-			    'separator' => '<!-- atpages banner tag -->',
-			    'footer' => '</div></small></a><br>',
-			    'disable' => true),
 
     'bourbonhouse' => array('name' => 'バーボンハウス鯖',
 			    'url' => 'http://bourbonhouse.xsrv.jp/jinro/',
@@ -277,7 +238,8 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 		    );
   */
   var $add_list = array(
-    '式神研系' => array('チルノ鯖' => 'http://www12.atpages.jp/cirno/',
+    '式神研系' => array('妖夢鯖' => 'http://www23.atpages.jp/youmu/',
+			'チルノ鯖' => 'http://www12.atpages.jp/cirno/',
 			'Eva 鯖' => 'http://jinrou.kuroienogu.net/',
 			'SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 			'開発・バグ報告スレ' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',
@@ -286,8 +248,7 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 			      'Wiki' => 'http://www27.atwiki.jp/umigamejinnro/',
 			      '掲示板' => 'http://jbbs.livedoor.jp/netgame/2829/',
 			      'チャットルーム' => 'http://umigamejinrou.chatx2.whocares.jp/'),
-    '東方ウミガメ系予備' => array(//'さとり鯖' => 'http://satori.crz.jp/',
-				  '咲夜鯖' => 'http://www7.atpages.jp/izayoi398/'),
+    '東方ウミガメ系予備' => array('咲夜鯖' => 'http://www7.atpages.jp/izayoi398/'),
     'やる夫系' => array('流石妹者鯖' => 'http://www21.atpages.jp/sasugasister/',
 			'翠星石鯖' => 'http://alicegame.dip.jp/suisei/',
 			'蒼星石テスト鯖' => 'http://alicegame.dip.jp/sousei/',
@@ -333,7 +294,8 @@ class CopyrightConfig extends CopyrightConfigBase{
   //システム標準情報
   var $list = array('システム' =>
 		    array('PHP4 + MYSQLスクリプト' => 'http://f45.aaa.livedoor.jp/~netfilms/',
-			  'mbstringエミュレータ' => 'http://sourceforge.jp/projects/mbemulator/'
+			  'mbstringエミュレータ' => 'http://sourceforge.jp/projects/mbemulator/',
+			  'Twitter投稿モジュール' => 'https://github.com/abraham/twitteroauth'
 			  ),
 		    '写真素材' =>
 		    array('天の欠片' => 'http://keppen.web.infoseek.co.jp/'),
@@ -372,6 +334,8 @@ class TwitterConfig extends TwitterConfigBase{
   var $disable = true; //Twitter 投稿停止設定 (true:停止する / false:しない)
   var $server = 'localhost'; //サーバ名
   var $hash = ''; //ハッシュタグ (任意)
-  var $user = 'xxxx'; //ユーザ名
-  var $password = 'xxxx'; //パスワード
+  var $key_ck = 'xxxx'; //Consumer key
+  var $key_cs = 'xxxx'; //Consumer secret
+  var $key_at = 'xxxx'; //Access Token
+  var $key_as = 'xxxx'; //Access Token Secret
 }
