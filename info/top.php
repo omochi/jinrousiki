@@ -1,7 +1,7 @@
 <p>
 <h1>このサーバについて</h1>
 <font color="#FF0000">
-ここは「<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式 〜汝は人狼なりや？ 式神研究同好会版</a>」公開テスト専用サーバです。<br>
+ここは「<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式 ～汝は人狼なりや？ 式神研究同好会版</a>」公開テスト専用サーバです。<br>
 ログの保全を一切保証しません。<br>
 This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a>
 </font>
@@ -12,7 +12,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>Ver. 1.4.0 アップロード (2010/12/24 (Fri) 03:23) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#140beta22">デバッグ情報</a> (2010/12/07 (Tue) 00:09)</li> -->
+  <li>→ <a href="info/develop/debug.php#140release1">Ver. 1.4.0 デバッグ情報</a> (2010/12/28 (Tue) 19:10)</li>
   <li>バージョン情報表記の改訂</li>
 </ul>
 

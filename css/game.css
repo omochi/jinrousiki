@@ -144,7 +144,7 @@ body{ /* AA 用 */
   border-bottom: 1px dashed #C0C0C0;
 }
 .user-name{width: 200px;} /* プレイヤー名 */
-.user-name span{font-size: 8pt;} /* 〜の独り言など */
+.user-name span{font-size: 8pt;} /* ～の独り言など */
 .say{ /* 発言の中身 */
   margin-left: 1px;
   width: 1000px;
@@ -217,7 +217,7 @@ body{ /* AA 用 */
   vertical-align: middle;
   text-align: left;
 }
-.lastwords-title span{ /*〜「さんの遺言」*/
+.lastwords-title span{ /*～「さんの遺言」*/
   margin-right: 1px;
   font-size: 80%;
 }

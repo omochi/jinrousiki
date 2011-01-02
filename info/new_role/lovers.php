@@ -18,17 +18,17 @@ OutputRolePageHeader('恋人陣営');
 <a href="#triangle_cupid">小悪魔</a>
 </p>
 
-<h3><a id="cupid">キューピッド</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.2.0〜]</h3>
+<h3><a id="cupid">キューピッド</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.2.0～]</h3>
 <pre>
 恋人陣営の基本種。
 </pre>
 
-<h3><a id="self_cupid">求愛者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21〜]</h3>
+<h3><a id="self_cupid">求愛者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <pre>
 自分撃ち固定のキューピッド。
 矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
-<h5>Ver. 1.4.0 α22〜</h5>
+<h5>Ver. 1.4.0 α22～</h5>
 <pre>
 矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
@@ -43,7 +43,7 @@ OutputRolePageHeader('恋人陣営');
 思う存分自分の想いを語ってください。
 </pre>
 
-<h3><a id="moon_cupid">かぐや姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h3><a id="moon_cupid">かぐや姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <pre>
 自分撃ち固定で、矢を撃った二人に<a href="sub_role.php#challenge_lovers">難題</a>を付加するキューピッド。
 自分に矢を撃った相手を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
@@ -55,7 +55,7 @@ OutputRolePageHeader('恋人陣営');
 (死亡する) 可能性が高くなるカップルを再現してみました。
 </pre>
 
-<h3><a id="mind_cupid">女神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23〜]</h3>
+<h3><a id="mind_cupid">女神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23～]</h3>
 <pre>
 矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。
 他人撃ちの場合は、さらに自分が二人を対象にした<a href="sub_role.php#mind_receiver">受信者</a>になる。
@@ -68,7 +68,7 @@ OutputRolePageHeader('恋人陣営');
 必ず見えることになります。
 </pre>
 
-<h3><a id="sweet_cupid">弁財天</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22〜]</h3>
+<h3><a id="sweet_cupid">弁財天</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>
 <pre>
 矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。
 また、処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら
@@ -81,7 +81,7 @@ OutputRolePageHeader('恋人陣営');
 むしろ能力を発動すると不利になるので自打ちの場合は注意が必要です。
 </pre>
 
-<h3><a id="triangle_cupid">小悪魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="triangle_cupid">小悪魔</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 矢を三本撃てるキューピッド。
 他人撃ち制限などは普通のキューピッドと同じ。
@@ -101,7 +101,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#sacrifice_angel">守護天使</a>
 </p>
 
-<h3><a id="angel">天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="angel">天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する、天使系の基本種。
 </pre>
@@ -111,7 +111,7 @@ OutputRolePageHeader('恋人陣営');
 鉄板カップルが増えることを狙って作成してみました。
 </pre>
 
-<h3><a id="rose_angel">薔薇天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="rose_angel">薔薇天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 矢を撃った二人が男性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
 </pre>
@@ -121,7 +121,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#angel">天使</a>とは逆に予想外のカップリングが増えるかもしれませんね。
 </pre>
 
-<h3><a id="lily_angel">百合天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="lily_angel">百合天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 矢を撃った二人が女性だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
 </pre>
@@ -131,7 +131,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="human.php#sex_mage">ひよこ鑑定士</a>対策で性別を偽るケースがあることに気をつけましょう。
 </pre>
 
-<h3><a id="exchange_angel">魂移使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11〜]</h3>
+<h3><a id="exchange_angel">魂移使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <pre>
 矢を撃った二人を<a href="sub_role.php#possessed_exchange">交換憑依</a>させてしまう特殊な天使。
 </pre>
@@ -149,7 +149,7 @@ OutputRolePageHeader('恋人陣営');
 「たまうつし」と読みます。
 </pre>
 
-<h3><a id="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="ark_angel">大天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 他の<a href="#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。
 ただし、本人は<a href="sub_role.php#mind_sympathy">共感者</a>を作ることはできない。
@@ -160,7 +160,7 @@ OutputRolePageHeader('恋人陣営');
 組み合わせ次第で、二日目の朝に内訳をほぼ掌握することが可能になります。
 </pre>
 
-<h3><a id="sacrifice_angel">守護天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18〜]</h3>
+<h3><a id="sacrifice_angel">守護天使</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>と<a href="sub_role.php#protected">庇護者</a>を付加する上位天使。

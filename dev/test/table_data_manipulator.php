@@ -62,7 +62,7 @@ OutputHTMLFooter();
   Ver. 1.4.0 beta3 より実装されたユーザアイコンテーブルの追加情報入力支援関数
   type:[appearance / category / author] (出典 / カテゴリ / 作者)
   value: 入力内容
-  from / to: 入力対象アイコン (from 〜 to まで)
+  from / to: 入力対象アイコン (from ～ to まで)
 */
 function UpdateIconInfo($type, $value, $from, $to = NULL){
   $query = isset($to) ? "{$from} <= icon_no AND icon_no <= {$to}" : "icon_no = {$from}";

@@ -500,7 +500,7 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">前日の死者の死因が分かる特殊な霊能者。<br>
-    死因は画面の下に表示される「〜は無残な〜」の下の行に「(〜は人狼に襲撃されたようです)」等と表示される。</td>
+    死因は画面の下に表示される「～は無残な～」の下の行に「(～は人狼に襲撃されたようです)」等と表示される。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -2191,7 +2191,7 @@ Ver. 1.4.0
     <td><a href="sub_role.php#random_voter">気分屋</a></td>
     <td><a href="sub_role.php#authority_group">権力者系</a></td>
     <td>○</td>
-    <td class="ability">投票数に -1〜+1 の範囲でランダムに補正がかかる。</td>
+    <td class="ability">投票数に -1～+1 の範囲でランダムに補正がかかる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
@@ -2240,7 +2240,7 @@ Ver. 1.4.0
     <td><a href="sub_role.php#random_luck" id="sub_140alpha15">波乱万丈</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
     <td>○</td>
-    <td class="ability">処刑得票数に -2〜+2 の範囲でランダムに補正がかかる。</td>
+    <td class="ability">処刑得票数に -2～+2 の範囲でランダムに補正がかかる。</td>
     <td>Ver. 1.4.0 α15</td>
   </tr>
   <tr>

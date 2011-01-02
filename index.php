@@ -32,7 +32,7 @@ if($SERVER_CONF->back_page != ''){
 </td>
 <td>
   <fieldset>
-    <legend>Information <a href="info/history/top.php">〜過去のinformationはこちら〜</a></legend>
+    <legend>Information <a href="info/history/top.php">～過去のinformationはこちら～</a></legend>
     <div class="information"><?php include_once 'info/top.php' ?></div>
   </fieldset>
   <fieldset>

@@ -21,28 +21,28 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
-<h3>Ver. 1.4.0 β21〜</h3>
+<h3>Ver. 1.4.0 β21～</h3>
 <pre>
 <a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
 </pre>
-<h3>Ver. 1.4.0 β8〜</h3>
+<h3>Ver. 1.4.0 β8～</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
 </pre>
-<h3>Ver. 1.4.0 α24〜</h3>
+<h3>Ver. 1.4.0 α24～</h3>
 <pre>
 <a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。
 </pre>
-<h3>Ver. 1.4.0 α20〜</h3>
+<h3>Ver. 1.4.0 α20～</h3>
 <pre>
 <a href="#silver_fox">銀狐</a>は他の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>からも仲間であると分かりません。
 </pre>
-<h3>Ver. 1.4.0 α19〜</h3>
+<h3>Ver. 1.4.0 α19～</h3>
 <pre>
 <a href="#fox_group">妖狐系</a>から<a href="#child_fox">子狐</a>が誰か分かります。
 <a href="#fox_group">妖狐系</a>と<a href="#child_fox">子狐</a>は別枠で表示されます。
 </pre>
-<h3>Ver. 1.4.0 α3-7〜</h3>
+<h3>Ver. 1.4.0 α3-7～</h3>
 <pre>
 全ての妖狐は<a href="#child_fox">子狐</a>以外の<a href="#fox_group">妖狐系</a>が誰か分かります。
 <a href="#child_fox">子狐</a>は全ての妖狐が誰か分かります。
@@ -57,19 +57,19 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
-<h3>Ver. 1.4.0 β8〜</h3>
+<h3>Ver. 1.4.0 β8～</h3>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
 </pre>
-<h3>Ver. 1.4.0 α24〜</h3>
+<h3>Ver. 1.4.0 α24～</h3>
 <pre>
 <a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
 </pre>
-<h3>Ver. 1.4.0 α19〜</h3>
+<h3>Ver. 1.4.0 α19～</h3>
 <pre>
 <a href="#silver_fox">銀狐</a>は念話できません。
 </pre>
-<h3>Ver. 1.4.0 α3-7〜</h3>
+<h3>Ver. 1.4.0 α3-7～</h3>
 <pre>
 全ての<a href="#fox_group">妖狐系</a>は夜に会話(念話)できます。
 <a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
@@ -103,7 +103,7 @@ OutputRolePageHeader('妖狐陣営');
 妖狐陣営の基本種。
 </pre>
 
-<h3><a id="white_fox">白狐</a> (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
+<h3><a id="white_fox">白狐</a> (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 人狼襲撃：死亡</h4>
 <pre>
 呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する妖狐。
@@ -115,7 +115,7 @@ OutputRolePageHeader('妖狐陣営');
 村サイドにはかなりの脅威となるでしょう。
 </pre>
 
-<h3><a id="black_fox">黒狐</a> (占い結果：人狼(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α24〜]</h3>
+<h3><a id="black_fox">黒狐</a> (占い結果：人狼(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 占い結果が「人狼」、霊能結果が「妖狐」と判定される妖狐。
@@ -126,7 +126,7 @@ OutputRolePageHeader('妖狐陣営');
 人狼側から見ると、SG にできる代わりに占い師の真贋を読みづらくなる存在になります。
 </pre>
 
-<h3><a id="gold_fox">金狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="gold_fox">金狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる妖狐。
@@ -137,7 +137,7 @@ OutputRolePageHeader('妖狐陣営');
 この役職でメイン役職の総数が既存のものと合わせてちょうど 100 になりました。
 </pre>
 
-<h3><a id="phantom_fox">幻狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11〜]</h3>
+<h3><a id="phantom_fox">幻狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 占い：無効 (1回限定) / 護衛：狩り</h4>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
@@ -153,7 +153,7 @@ OutputRolePageHeader('妖狐陣営');
 二回占われると呪殺されてしまうので、どう対応するかがポイントです。
 </pre>
 
-<h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17〜]</h3>
+<h3><a id="poison_fox">管狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 毒</h4>
 <h4>[毒能力] 処刑：妖狐陣営以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
@@ -167,7 +167,7 @@ OutputRolePageHeader('妖狐陣営');
 仲間がいるときに真価を発揮します。
 </pre>
 
-<h3><a id="blue_fox">蒼狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="blue_fox">蒼狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効 + はぐれ者</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。
@@ -179,7 +179,7 @@ OutputRolePageHeader('妖狐陣営');
 「噛まれた相手に一矢報いる」タイプの能力ですね。
 </pre>
 
-<h3><a id="emerald_fox">翠狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="emerald_fox">翠狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
@@ -197,7 +197,7 @@ OutputRolePageHeader('妖狐陣営');
 一度しか使えないので、発動するタイミングや相手の選択がポイントになるかもしれません。
 </pre>
 
-<h3><a id="voodoo_fox">九尾</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h3><a id="voodoo_fox">九尾</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 夜に村人一人を選び、その人に呪いをかける妖狐。
@@ -219,7 +219,7 @@ OutputRolePageHeader('妖狐陣営');
 呪い能力を持った代わりに<a href="human.php#guard_hunt">狩人</a>にも弱くなっています。
 </pre>
 
-<h3><a id="revive_fox">仙狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β2〜]</h3>
+<h3><a id="revive_fox">仙狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：有り</h4>
 <pre>
@@ -240,7 +240,7 @@ OutputRolePageHeader('妖狐陣営');
 ケースがあるのが妖狐陣営の蘇生能力者のポイントです。
 </pre>
 
-<h3><a id="possessed_fox">憑狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9〜]</h3>
+<h3><a id="possessed_fox">憑狐</a> (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
@@ -255,7 +255,7 @@ OutputRolePageHeader('妖狐陣営');
   <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
   <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
 </ol>
-<h5>Ver. 1.4.0 β12〜</h5>
+<h5>Ver. 1.4.0 β12～</h5>
 <pre>
 <a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できません。
 </pre>
@@ -270,7 +270,7 @@ OutputRolePageHeader('妖狐陣営');
 存在自体が脅威になるタイプですね。
 </pre>
 
-<h3><a id="doom_fox">冥狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β15〜]</h3>
+<h3><a id="doom_fox">冥狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。
@@ -288,13 +288,13 @@ OutputRolePageHeader('妖狐陣営');
 発動日が違うので存在がすぐにバレることになります。
 </pre>
 
-<h3><a id="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17〜]</h3>
+<h3><a id="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 占い：呪返し / 陰陽師：死亡 / 護衛：狩り / 暗殺：反射</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
 <a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h5>Ver. 1.4.0 β9〜</h5>
+<h5>Ver. 1.4.0 β9～</h5>
 <pre>
 <a href="human.php#assassin_spec">暗殺反射</a>能力を持つ。
 </pre>
@@ -308,7 +308,7 @@ OutputRolePageHeader('妖狐陣営');
 呪いに対抗できる役職が出現するまでは狐無双が見られそうですね。
 </pre>
 
-<h3><a id="elder_fox">古狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β5〜]</h3>
+<h3><a id="elder_fox">古狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β5～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 投票数が +1 される妖狐。詳細は<a href="human.php#elder">長老</a>参照。
@@ -319,13 +319,13 @@ OutputRolePageHeader('妖狐陣営');
 狐サイドによる PP はめったに発生しないので、能力を有効活用するのは難しいでしょう。
 </pre>
 
-<h3><a id="cute_fox">萌狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
+<h3><a id="cute_fox">萌狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう妖狐。
 遠吠えの内容は<a href="human.php#suspect">不審者</a>や<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
 </pre>
-<h5>Ver. 1.4.0 β7〜</h5>
+<h5>Ver. 1.4.0 β7～</h5>
 <pre>
 遠吠えの入れ替え発動を昼限定に変更。
 </pre>
@@ -336,12 +336,12 @@ OutputRolePageHeader('妖狐陣営');
 「村人判定された人が遠吠えをした」場合、占った人は偽者です。
 </pre>
 
-<h3><a id="scarlet_fox">紅狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24〜]</h3>
+<h3><a id="scarlet_fox">紅狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。
 </pre>
-<h5>Ver. 1.4.0 β21〜</h5>
+<h5>Ver. 1.4.0 β21～</h5>
 <pre>
 <a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
 </pre>
@@ -357,7 +357,7 @@ OutputRolePageHeader('妖狐陣営');
 「<a href="human.php#unconscious">無意識</a>」が騙れば人狼視点でほぼ紅狐確定と見なされるので注意が必要です。
 </pre>
 
-<h3><a id="silver_fox">銀狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20〜]</h3>
+<h3><a id="silver_fox">銀狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="#fox_partner">仲間</a>が分からない妖狐。
@@ -393,17 +393,17 @@ OutputRolePageHeader('妖狐陣営');
   <li>夜の投票能力を持っている場合、成功率は 70% です。</li>
 </ol>
 
-<h3><a id="child_fox">子狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 α3-7〜]</h3>
+<h3><a id="child_fox">子狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 α3-7～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
 子狐系の基本種。占い能力を持つ。
 判定法則は<a href="human.php#mage">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
 </pre>
-<h5>Ver. 1.4.0 α17〜</h5>
+<h5>Ver. 1.4.0 α17～</h5>
 <pre>
 占い能力を持ちました。
 </pre>
-<h5>Ver. 1.4.0 α8〜β11</h5>
+<h5>Ver. 1.4.0 α8～β11</h5>
 <pre>
 通常闇鍋モードでは20人未満では出現しません。
 20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
@@ -416,7 +416,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="human.php#mage">占い師</a>騙りをする場合は失敗した時にどうフォローするかがポイントです。
 </pre>
 
-<h3><a id="sex_fox">雛狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β8〜]</h3>
+<h3><a id="sex_fox">雛狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β8～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>相当の能力を持つ子狐。
@@ -432,7 +432,7 @@ OutputRolePageHeader('妖狐陣営');
 村や狼が疑心暗鬼になって<a href="human.php#sex_mage">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
 </pre>
 
-<h3><a id="stargazer_fox">星狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<h3><a id="stargazer_fox">星狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：無効</h4>
 <pre>
 <a href="human.php#stargazer_mage">占星術師</a>相当の能力を持つ子狐。
@@ -442,7 +442,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="human.php#stargazer_mage">占星術師</a>の<a href="#child_fox">子狐</a>バージョンです。
 </pre>
 
-<h3><a id="jammer_fox">月狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<h3><a id="jammer_fox">月狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
 <pre>
 <a href="wolf.php#jammer_mad">月兎</a>相当の能力を持つ子狐。
 </pre>
@@ -452,7 +452,7 @@ OutputRolePageHeader('妖狐陣営');
 妖狐の最大の弱点である占いを妨害できるので、子狐系に於いては上位種となります。
 </pre>
 
-<h3><a id="miasma_fox">蟲狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13〜]</h3>
+<h3><a id="miasma_fox">蟲狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 熱病 / 処刑：熱病</h4>
 <pre>
 処刑されるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。
@@ -464,7 +464,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#poison_fox">管狐</a>の<a href="#child_fox">子狐</a>相当として、<a href="wolf.php#miasma_mad">土蜘蛛</a>能力を持たせてみました。
 </pre>
 
-<h3><a id="howl_fox">化狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β17〜]</h3>
+<h3><a id="howl_fox">化狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β17～]</h3>
 <pre>
 夜の独り言が他の人には<a href="wolf.php#wolf_howl">人狼の遠吠え</a>に見える子狐。
 </pre>

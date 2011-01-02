@@ -309,7 +309,7 @@ function CreateRoom(){
       if(strpos($game_option, 'dummy_boy') !== false &&
 	 FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
 	if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-			0, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
+			1, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
       }
 
       if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
@@ -440,7 +440,7 @@ function OutputRoomList(){
     echo <<<EOF
 <a href="login.php?room_no=$room_no">
 {$status_img}<span>[{$room_no}番地]</span>{$room_name}村<br>
-<div>〜{$room_comment}〜 {$option_img}</div>
+<div>～{$room_comment}～ {$option_img}</div>
 </a><br>
 
 EOF;
@@ -500,7 +500,7 @@ function GenerateRoomOption($option, $label = ''){
   $label .= $option;
 
   $sentence = $GAME_OPT_MESS->$option;
-  if(is_int($limit = $CAST_CONF->$option)) $sentence .= ' ('  . $limit . '人〜)';
+  if(is_int($limit = $CAST_CONF->$option)) $sentence .= ' ('  . $limit . '人～)';
 
   $caption = $GAME_OPT_CAPT->$option;
   switch($option){

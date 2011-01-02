@@ -64,35 +64,35 @@ OutputInfoPageHeader('詳細な仕様');
 </p>
 
 <h3><a id="dead_common">共通</a></h3>
-<h4>〜<?php echo $MESSAGE->sudden_death ?></h4>
+<h4>～<?php echo $MESSAGE->sudden_death ?></h4>
 <ul>
 <li>未投票突然死</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->lovers_followed ?></h4>
+<h4>～<?php echo $MESSAGE->lovers_followed ?></h4>
 <ul>
 <li><a href="new_role/sub_role.php#lovers">恋人</a>後追い</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->joker_moved ?></h4>
+<h4>～<?php echo $MESSAGE->joker_moved ?></h4>
 <ul>
 <li><a href="new_role/sub_role.php#joker">ジョーカー</a>の移動 (配役公開状態限定)</li>
 </ul>
 
 
 <h3><a id="dead_day">昼</a></h3>
-<h4>〜<?php echo $MESSAGE->vote_killed ?></h4>
+<h4>～<?php echo $MESSAGE->vote_killed ?></h4>
 <ul>
 <li>処刑</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->deadman ?></h4>
+<h4>～<?php echo $MESSAGE->deadman ?></h4>
 <ul>
 <li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
 <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->vote_sudden_death ?></h4>
+<h4>～<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
 <li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>)</li>
 </ul>
@@ -103,7 +103,7 @@ OutputInfoPageHeader('詳細な仕様');
 </ul>
 
 <h3><a id="dead_night">夜</a></h3>
-<h4>〜<?php echo $MESSAGE->deadman ?></h4>
+<h4>～<?php echo $MESSAGE->deadman ?></h4>
 <ul>
 <li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
 <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
@@ -123,22 +123,22 @@ OutputInfoPageHeader('詳細な仕様');
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
-<h4>〜<?php echo $MESSAGE->revive_success ?></h4>
+<h4>～<?php echo $MESSAGE->revive_success ?></h4>
 <ul>
 <li>蘇生 (<a href="new_role/ability.php#revive">蘇生能力者</a>)</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->revive_failed ?></h4>
+<h4>～<?php echo $MESSAGE->revive_failed ?></h4>
 <ul>
 <li>蘇生失敗 (霊界限定) (<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>)</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->flowered_a ?> (一例)</h4>
+<h4>～<?php echo $MESSAGE->flowered_a ?> (一例)</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#flower_fairy">花妖精</a>)</li>
 </ul>
 
-<h4>〜<?php echo $MESSAGE->constellation_a ?> (一例)</h4>
+<h4>～<?php echo $MESSAGE->constellation_a ?> (一例)</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#star_fairy">星妖精</a>)</li>
 </ul>
@@ -203,7 +203,7 @@ OutputInfoPageHeader('詳細な仕様');
 <pre>
 死亡後、霊界オフ状態の時に投票画面をクリックすると
 「蘇生を辞退する」(デフォルト) というボタンが出現します。
-それをクリックすると「システム：〜さんは蘇生を辞退しました」という
+それをクリックすると「システム：～さんは蘇生を辞退しました」という
 霊界発言が挿入されます。
 
 この状態でその人が蘇生先に選ばれた場合は 100% 蘇生に失敗します。

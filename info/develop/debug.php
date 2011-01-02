@@ -4,7 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('デバッグ情報', 1);
 ?>
 <p>
-Ver. 1.4.0
+<a href="#140release1">Ver. 1.4.0</a>
 <a href="#140alpha24">α24</a>
 <a href="#140beta2">β2</a>
 <a href="#140beta3">β3</a>
@@ -20,6 +20,43 @@ Ver. 1.4.0
 <a href="#140beta21">β21</a>
 <a href="#140beta22">β22</a>
 </p>
+
+<h2><a id="140release1">Ver. 1.4.0</a></h2>
+<h3>room_manager.php % 312行目付近 (2010/12/28 (Tue) 19:10)</h3>
+<pre>
+× 0, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
+○ 1, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
+</pre>
+<h3>config/server_config % 93行目付近 (2010/12/28 (Tue) 19:10)</h3>
+<h4>[before]</h4>
+<pre>
+  //表示する他のサーバのリスト
+  var $server_list = array(
+     /* 設定例
+    'cirno' => array('name' => 'チルノ鯖',
+                     'url' => 'http://www12.atpages.jp/cirno/',
+                     'encode' => 'UTF-8',
+                     'separator' =&gt; '&lt;!-- atpages banner tag --&gt;',
+                     'footer' =&gt; '&lt;/a&gt;&lt;br&gt;',
+                     'disable' => false),
+     */
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+  //表示する他のサーバのリスト
+  var $server_list = array(
+     /* 設定例
+    'cirno' => array('name' => 'チルノ鯖',
+                     'url' => 'http://www12.atpages.jp/cirno/',
+                     'encode' => 'UTF-8',
+                     'separator' =&gt; '&lt;!-- atpages banner tag --&gt;',
+                     'footer' =&gt; '&lt;/a&gt;&lt;br&gt;',
+                     'disable' => false),
+     */
+                          );
+}
+</pre>
 
 <h2><a id="140beta22">Ver. 1.4.0 β22</a></h2>
 <h3>game_vote.php % 261行目付近 (2010/12/07 (Tue) 00:09)</h3>

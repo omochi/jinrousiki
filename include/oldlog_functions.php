@@ -94,7 +94,7 @@ EOF;
 <td class="side">{$VICT_IMG->Generate($ROOM->victory_role)}</td>
 </tr>
 <tr class="list middle">
-<td class="comment side">〜 {$ROOM->comment} 〜</td>
+<td class="comment side">～ {$ROOM->comment} ～</td>
 <td class="time comment" colspan="3">{$establish_time}</td>
 </tr>
 <tr class="lower list">

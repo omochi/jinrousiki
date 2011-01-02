@@ -169,7 +169,7 @@ function OutputEntryUserPage(){
 <table class="main">
 <tr><td><img src="img/entry_user/title.gif" alt="申請書"></td></tr>
 <tr><td class="title">{$ROOM->name} 村<img src="img/entry_user/top.gif" alt="への住民登録を申請します"></td></tr>
-<tr><td class="number">〜{$ROOM->comment}〜 [{$ROOM->id} 番地]</td></tr>
+<tr><td class="number">～{$ROOM->comment}～ [{$ROOM->id} 番地]</td></tr>
 <tr><td>
 <table class="input">
 <tr>

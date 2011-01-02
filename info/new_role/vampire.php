@@ -27,7 +27,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」です。</li>
   <li><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
 </ol>
-<h3>Ver. 1.4.0 β19〜</h3>
+<h3>Ver. 1.4.0 β19～</h3>
 <pre>
 ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、
 例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。
@@ -50,7 +50,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
   </li>
 </ol>
-<h3>Ver. 1.4.0 β20〜</h3>
+<h3>Ver. 1.4.0 β20～</h3>
 <pre>
 <a href="human.php#escaper">逃亡者</a>との関係の仕様を変更。
 </pre>
@@ -64,7 +64,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#sacrifice_vampire">吸血公</a>
 <a href="#soul_vampire">吸血姫</a>
 </p>
-<h3><a id="vampire">吸血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14〜]</h3>
+<h3><a id="vampire">吸血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
 <h4>[耐性] 罠：有効</h4>
 <pre>
 吸血鬼陣営の基本種。
@@ -76,13 +76,13 @@ OutputRolePageHeader('吸血鬼陣営');
 まずは条件を緩めに設定して様子を見てみようかと思います。
 </pre>
 
-<h3><a id="incubus_vampire">青髭公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
+<h3><a id="incubus_vampire">青髭公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 護衛：狩り / 罠：有効</h4>
 <pre>
 女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h5>Ver. 1.4.0 β19〜</h5>
+<h5>Ver. 1.4.0 β19～</h5>
 <pre>
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
@@ -96,13 +96,13 @@ OutputRolePageHeader('吸血鬼陣営');
 勝利条件を考えると吸血死狙いの襲撃はあまり割りに合わないと思われます。
 </pre>
 
-<h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18〜]</h3>
+<h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 護衛：狩り / 罠：有効</h4>
 <pre>
 男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<h5>Ver. 1.4.0 β19〜</h5>
+<h5>Ver. 1.4.0 β19～</h5>
 <pre>
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
@@ -116,7 +116,7 @@ OutputRolePageHeader('吸血鬼陣営');
 村の男女構成比次第で難易度が大きく変わることになります。
 </pre>
 
-<h3><a id="doom_vampire">冥血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19〜]</h3>
+<h3><a id="doom_vampire">冥血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 罠：有効</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、<a href="sub_role.php#infected">感染者</a>に<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう吸血鬼。
@@ -134,7 +134,7 @@ OutputRolePageHeader('吸血鬼陣営');
 耐性を得た代わりに、<a href="sub_role.php#infected">感染者</a>のキープが難しくなっています。
 </pre>
 
-<h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17〜]</h3>
+<h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
 <h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り / 罠：有効</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
@@ -157,7 +157,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の吸血鬼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
 </pre>
 
-<h3><a id="soul_vampire">吸血姫</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19〜]</h3>
+<h3><a id="soul_vampire">吸血姫</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 護衛：狩り / 暗殺：反射 / 罠：有効</h4>
 <pre>
 <a href="#vampire_do_spec">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。

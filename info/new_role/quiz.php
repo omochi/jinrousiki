@@ -20,7 +20,7 @@ OutputRolePageHeader('出題者陣営');
 <p>
 <a href="#quiz">出題者</a>
 </p>
-<h3><a id="quiz">出題者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α2〜]</h3>
+<h3><a id="quiz">出題者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α2～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (クイズ村限定) / 毒：対象外</h4>
 <pre>
 <a href="../game_option.php#quiz">クイズ村</a>の GM です。闇鍋モードにも低確率で出現します。
@@ -34,11 +34,11 @@ OutputRolePageHeader('出題者陣営');
   <li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php#decide_group">決定者系</a>の後</li>
   <li>複数の出題者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
 </ol>
-<h5>Ver. 1.4.0 RC2〜</h5>
+<h5>Ver. 1.4.0 RC2～</h5>
 <pre>
 決定能力を持つ。
 </pre>
-<h5>Ver. 1.4.0 β2〜</h5>
+<h5>Ver. 1.4.0 β2～</h5>
 <pre>
 毒中りの対象外に変更
 </pre>

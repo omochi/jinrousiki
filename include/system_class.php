@@ -466,7 +466,7 @@ class TwitterConfigBase{
     if($this->disable) return;
     require_once(JINRO_MOD . '/twitter/twitteroauth.php'); //ライブラリをロード
 
-    $message = "【{$this->server}】{$id}番地に{$name}村\n〜{$comment}〜 が建ちました";
+    $message = "【{$this->server}】{$id}番地に{$name}村\n～{$comment}～ が建ちました";
     if(strlen($this->hash) > 0) $message .= " #{$this->hash}";
     //TwitterはUTF-8
     if($SERVER_CONF->encode != 'UTF-8'){

@@ -39,7 +39,7 @@ class ServerConfig{
   var $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  var $comment = '〜＠ローカル〜';
+  var $comment = '～＠ローカル～';
 
   //サーバの文字コード
   /*

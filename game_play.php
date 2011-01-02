@@ -365,7 +365,7 @@ function CheckSilence(){
   UnlockTable(); //テーブルロック解除
 }
 
-//村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
+//村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
     $COOKIE, $SOUND, $objection_list, $objection_left_count;

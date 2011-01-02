@@ -399,7 +399,7 @@ class Room{
   //村のタイトルタグを生成
   function GenerateTitleTag(){
     return '<td class="room"><span>' . $this->name . '村</span>　[' . $this->id .
-      '番地]<br>〜' . $this->comment . '〜</td>'."\n";
+      '番地]<br>～' . $this->comment . '～</td>'."\n";
   }
 }
 
