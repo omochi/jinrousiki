@@ -31,28 +31,25 @@ function CheckBlackList(){
 
 /**
  * 実行環境にダメージを与える可能性がある値が含まれているかどうか検査します。
- * @param mixed $value 検査対象の変数
- * @param boolean $found 疑わしい値が存在しているかどうかを示す値。この値がtrueの場合、強制的に詳細なスキャンが実行されます。
- * @return boolean 危険な値が発見された場合true、それ以外の場合false
+ * @param  : mixed   : $value 検査対象の変数
+ * @param  : boolean : $found 疑わしい値が存在しているかどうかを示す値。
+                       この値がtrueの場合、強制的に詳細なスキャンが実行されます。
+ * @return : boolean : 危険な値が発見された場合true、それ以外の場合false
  */
-function FindDangerValue($value, $found = false) {
-  if ($found || (strpos(str_replace('.', '', serialize($value)), '22250738585072011') !== false)) {
+function FindDangerValue($value, $found = false){
+  if($found || (strpos(str_replace('.', '', serialize($value)), '22250738585072011') !== false)){
     //文字列の中に問題の数字が埋め込まれているケースを排除する
-    if (is_array($value)) {
-      foreach ($value as $item) {
-        if (FindDangerValue($item, true)) {
-          return true;
-        }
+    if(is_array($value)){
+      foreach($value as $item){
+        if(FindDangerValue($item, true)) return true;
       }
     }
-    else {
+    else{
       $item = strval($value);
       $matches = '';
-      if (preg_match('/^([0.]*2[0125738.]{15,16}10*)e(-[0-9]+)$/i', $item, $matches)) {
+      if(preg_match('/^([0.]*2[0125738.]{15,16}1[0.]*)e(-[0-9]+)$/i', $item, $matches)){
         $exp = intval($matches[2]) + 1;
-        if (2.2250738585072011e-307 === floatval("{$matches[1]}e{$exp}")) {
-          return true;
-        }
+        if(2.2250738585072011e-307 === floatval("{$matches[1]}e{$exp}")) return true;
       }
     }
   }

@@ -207,6 +207,7 @@ if($DEBUG_MODE) $INIT_CONF->LoadClass('PAPARAZZI');
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
 $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
+if(FindDangerValue($_REQUEST)) die;
 
 //PrintData($INIT_CONF); //テスト用
 
