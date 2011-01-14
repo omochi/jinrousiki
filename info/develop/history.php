@@ -4,13 +4,15 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('開発履歴', 1);
 ?>
 <p>
-Ver. 1.4.0
+<a href="#141">Ver. 1.4.1</a>
+</p>
+<p>
+Ver. 1.4.0<br>
 <a href="#140rc1">RC1</a>
 <a href="#140rc2">RC2</a>
 <a href="#140">Release</a>
 </p>
 <p>
-Ver. 1.4.0
 <a href="#140beta1">β1</a>
 <a href="#140beta2">β2</a>
 <a href="#140beta3">β3</a>
@@ -36,7 +38,6 @@ Ver. 1.4.0
 </p>
 
 <p>
-Ver. 1.4.0
 <a href="#140alpha1">α1</a>
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-6</a>
@@ -59,6 +60,11 @@ Ver. 1.4.0
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 </p>
+
+<h2><a id="141">Ver. 1.4.1 (Rev. 265) : 2011/01/09 (Sun) 00:57</a></h2>
+<ul>
+<li>PHPの浮動小数点数に関するバグに対応</li>
+</ul>
 
 <h2><a id="140">Ver. 1.4.0 (Rev. 246) : 2010/12/24 (Fri) 03:23</a></h2>
 <ul>

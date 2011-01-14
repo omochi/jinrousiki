@@ -182,6 +182,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.4.0 β16～</td>
 </tr>
 <tr>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td><a href="human.php#soul_wizard">八卦見</a></td>
+  <td>Ver. 1.5.0 α1～</td>
+</tr>
+<tr>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td><a href="human.php#doll_master">人形遣い</a></td>
   <td></td>
@@ -346,6 +351,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td><a href="human.php#brownie">座敷童子</a></td>
   <td>Ver. 1.4.0 β16～</td>
+</tr>
+<tr>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td><a href="human.php#wizard">魔法使い</a></td>
+  <td>Ver. 1.5.0 α1～</td>
 </tr>
 <tr>
   <td><a href="human.php#doll_group">上海人形系</a></td>

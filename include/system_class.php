@@ -665,6 +665,8 @@ class RoleData{
     'revive_brownie'       => '蛇神',
     'cursed_brownie'       => '祟神',
     'history_brownie'      => '白澤',
+    'wizard'               => '魔法使い',
+    'soul_wizard'          => '八卦見',
     'doll'                 => '上海人形',
     'friend_doll'          => '仏蘭西人形',
     'phantom_doll'         => '倫敦人形',
@@ -963,6 +965,8 @@ class RoleData{
     'revive_brownie'       => '蛇',
     'cursed_brownie'       => '祟',
     'history_brownie'      => '白澤',
+    'wizard'               => '魔',
+    'soul_wizard'          => '八卦',
     'doll'                 => '上海',
     'friend_doll'          => '仏蘭',
     'phantom_doll'         => '倫敦',
@@ -1201,6 +1205,7 @@ class RoleData{
     'common' => 'common',
     'cat' => 'poison_cat',
     'brownie' => 'brownie',
+    'wizard' => 'wizard',
     'doll' => 'doll',
     'escaper' => 'escaper',
     'poison' => 'poison',
@@ -1444,8 +1449,10 @@ class CastConfigBase{
 class ScriptInfoBase{
   //TOPページ向けのバージョン情報を出力する
   function Output($full = false){
+    global $SERVER_CONF;
+
     $str = "Powered by {$this->package} {$this->version} from {$this->developer}";
-    if($this->admin) $str .= '<br>Founded by: ' . $this->admin;
+    if($SERVER_CONF->admin) $str .= '<br>Founded by: ' . $SERVER_CONF->admin;
     echo $str;
   }
 }

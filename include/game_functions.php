@@ -813,8 +813,8 @@ function OutputAbilityAction(){
       array_push($action_list, 'CUPID_DO', 'MANIA_DO');
     }
     else{
-      array_push($action_list, 'ESCAPE_DO', 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
-		 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'POISON_CAT_DO',
+      array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
+		 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'POISON_CAT_DO',
 		 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
 		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
     }
@@ -844,6 +844,10 @@ function OutputAbilityAction(){
     case 'VAMPIRE_DO':
     case 'OGRE_DO':
       echo $target.'を狙いました';
+      break;
+
+    case 'WIZARD_DO':
+      echo $target.$MESSAGE->wizard_do;
       break;
 
     case 'ESCAPE_DO':

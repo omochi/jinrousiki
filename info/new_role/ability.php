@@ -69,7 +69,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2><a id="sex">性別関連能力者</a></h2>
 <h3><a id="sex_mage">性別鑑定能力者</a></h3>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
 </pre>
 <h3><a id="sex_only">性別限定能力者</a></h3>
 <pre>

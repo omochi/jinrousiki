@@ -328,6 +328,10 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <pre>
 悪戯先が人狼に襲撃されたら、次の日の夜を全員<a href="sub_role.php#mind_open">公開者</a> (白夜) にする妖精。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#soul_wizard">八卦見</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dark_fairy">闇妖精</a>の<a href="sub_role.php#mind_open">公開者</a>バージョンです。

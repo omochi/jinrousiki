@@ -333,9 +333,9 @@ class User{
 
   //護衛制限判定
   function IsGuardLimited(){
-    return $this->IsRole('detective_common', 'reporter', 'clairvoyance_scanner', 'doll_master') ||
-      ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
-      $this->IsRoleGroup('assassin');
+    return $this->IsRole('detective_common', 'reporter', 'clairvoyance_scanner', 'soul_wizard',
+			 'doll_master') || $this->IsRoleGroup('assassin') ||
+      ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest'));
   }
 
   //暗殺反射判定
@@ -500,6 +500,7 @@ class User{
       return $this->IsVoted($vote_data, 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
     if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+    if($this->IsRoleGroup('wizard')) return $this->IsVoted($vote_data, 'WIZARD_DO');
     if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
     if($this->IsRole('trap_mad')){
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
@@ -1035,7 +1036,7 @@ class UserDataSet{
 	  $ROOM->event->earplug   |= $status_user->IsRole('moon_fairy')  && $ROOM->IsDay();
 	  $ROOM->event->grassy    |= $status_user->IsRole('grass_fairy') && $ROOM->IsDay();
 	  $ROOM->event->blinder   |= $status_user->IsRole('dark_fairy')  && $ROOM->IsDay();
-	  $ROOM->event->mind_open |= $status_user->IsRole('light_fairy');
+	  $ROOM->event->mind_open |= $status_user->IsRole('light_fairy', 'soul_wizard');
 	  if($status_user->IsRole('enchant_mad')) $ROOM->event->same_face[] = $user->user_no;
 	}
 	break;

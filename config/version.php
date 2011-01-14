@@ -14,7 +14,4 @@ class ScriptInfo extends ScriptInfoBase{
 
   //開発チーム名
   var $developer = '<a href="http://sourceforge.jp/projects/jinrousiki/">式神研究同好会</a>';
-
-  //管理者 (任意)
-  var $admin = '<a href="http://twitter.com/umethyl">埋めチル＠式神研</a>';
 }

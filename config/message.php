@@ -47,6 +47,7 @@ class Message{
   var $assassin_do      = 'に狙いをつけました'; //暗殺者の投票
   var $assassin_not_do  = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
   var $mind_scanner_do  = 'の心を読みます'; //さとりの投票
+  var $wizard_do        = 'に魔法をかけました'; //魔法使いの投票
   var $cupid_do         = 'に愛の矢を放ちました'; //キューピッドの投票
   var $fairy_do         = 'に悪戯しました'; //妖精の投票
   var $ogre_do          = 'に狙いをつけました'; //鬼の投票
@@ -191,6 +192,7 @@ class Message{
   var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
   var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
+  var $ability_wizard_do        = '魔法をかける人を選択してください'; //さとり
   var $ability_escape_do        = '逃亡する先を選択してください'; //逃亡者
   var $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   var $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
@@ -410,7 +412,6 @@ class VoteMessage{
   //OutputVoteNight()
   //投票ボタン
   var $wolf_eat         = '対象を喰い殺す (先着)'; //人狼
-  var $escape_do        = '対象の周辺に逃亡する'; //逃亡者
   var $mage_do          = '対象を占う'; //占い師
   var $voodoo_killer_do = '対象の呪いを祓う'; //陰陽師
   var $guard_do         = '対象を護衛する'; //狩人
@@ -421,6 +422,8 @@ class VoteMessage{
   var $assassin_do      = '対象を暗殺する'; //暗殺者
   var $assassin_not_do  = '誰も暗殺しない'; //暗殺者(キャンセル)
   var $mind_scanner_do  = '対象の心を読む'; //さとり
+  var $wizard_do        = '対象に魔法をかける'; //魔法使い
+  var $escape_do        = '対象の周辺に逃亡する'; //逃亡者
   var $voodoo_do        = '対象に呪いをかける'; //呪術師
   var $jammer_do        = '対象の占いを妨害する'; //月兎
   var $dream_eat        = '対象の夢を喰う'; //獏

@@ -272,6 +272,11 @@ function VoteNight(){
     }
     break;
 
+  case 'WIZARD_DO':
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
+    if(! $SELF->IsRoleGroup('wizard')) OutputVoteResult('夜：投票イベントが一致しません');
+    break;
+
   case 'WOLF_EAT':
     if(! $SELF->IsWolf()) OutputVoteResult('夜：投票イベントが一致しません');
     break;
@@ -734,6 +739,10 @@ function OutputVoteNight(){
       OutputVoteResult('夜：あなたは投票できません');
     }
     $type = 'MIND_SCANNER_DO';
+  }
+  elseif($SELF->IsRoleGroup('wizard')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は魔法を使えません');
+    $type = 'WIZARD_DO';
   }
   elseif($role_wolf = $SELF->IsWolf()){
     $type = 'WOLF_EAT';

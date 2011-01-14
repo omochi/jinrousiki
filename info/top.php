@@ -8,18 +8,22 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </p>
 
 <h1>TOPIC</h1>
-<h2>妖夢鯖の設置 (2010/12/24 (Fri) 05:16)</h2>
-
-<h2>Ver. 1.4.0 アップロード (2010/12/24 (Fri) 03:23) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.4.1 アップロード (2011/01/09 (Sun) 00:57) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#140release1">Ver. 1.4.0 デバッグ情報</a> (2010/12/28 (Tue) 19:10)</li>
-  <li>バージョン情報表記の改訂</li>
+  <!-- <li>→ <a href="info/develop/debug.php#140release1">デバッグ情報</a> (2010/12/28 (Tue) 19:10)</li> -->
+  <li>PHPの浮動小数点数に関するバグに対応</li>
+</ul>
+
+<h2>Ver. 1.3.1 アップロード (2011/01/09 (Sun) 02:34) → <a href="src/">ダウンロード</a></h2>
+<ul>
+  <li>PHPの浮動小数点数に関するバグに対応</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>魔法使い：2日目以降、夜に魔法 (様々な能力からランダム) を使うことができる</li>
+  <li>八卦見：8種の上位能力をランダムで使用できる、魔法使いの上位種。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

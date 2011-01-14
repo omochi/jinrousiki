@@ -202,6 +202,18 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('brownie')){ //座敷童子系
     $ROLE_IMG->Output($SELF->main_role);
   }
+  elseif($SELF->IsRoleGroup('wizard')){ //魔法使い系
+    $ROLE_IMG->Output($SELF->main_role);
+    if($ROOM->date > 2){
+      OutputSelfAbilityResult('MAGE_RESULT'); //占い結果
+      OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
+      OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
+      OutputSelfAbilityResult('ASSASSIN_RESULT'); //暗殺結果
+    }
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+      OutputVoteMessage('wizard-do', 'wizard_do', 'WIZARD_DO');
+    }
+  }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系
     $ROLE_IMG->Output($SELF->main_role);
     if(! $SELF->IsRole('doll_master')){ //仲間表示

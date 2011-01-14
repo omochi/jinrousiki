@@ -22,6 +22,7 @@ class MessageImageBuilder{
     'mind'		=> array('R' => 160, 'G' => 160, 'B' =>   0),
     'jealousy'		=> array('R' =>   0, 'G' => 204, 'B' =>   0),
     'brownie'		=> array('R' => 144, 'G' => 192, 'B' => 160),
+    'wizard'		=> array('R' => 187, 'G' => 136, 'B' => 204),
     'doll'		=> array('R' =>  96, 'G' =>  96, 'B' => 255),
     'escaper'		=> array('R' =>  96, 'G' =>  96, 'B' => 144),
     'wolf'		=> array('R' => 255, 'G' =>   0, 'B' =>   0),
@@ -339,6 +340,14 @@ class RoleMessageList{
   var $history_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_人狼_に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
     'type' => 'brownie', 'delimiter' => array('_' => 'wolf'));
+
+  var $wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#魔法使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができます。",
+    'type' => 'human', 'delimiter' => array('#' => 'wizard'));
+
+  var $soul_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#八卦見#です。二日目以降、夜に誰か一人に強力な#魔法#をかけることができます。\n　当たるも八卦当たらぬも八卦。あなたの知性と理性こそ、#魔法#の神髄と呼ぶべき技です。",
+    'type' => 'wizard');
 
   var $doll = array(
     'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#上海人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。自由を得るために立ち上がりましょう。",
@@ -1185,6 +1194,8 @@ class RoleMessageList{
   var $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
   var $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
   var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
+  var $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
+  var $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
   var $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
   var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした", 'type' => 'result_doll');
   var $result_phantom_doll = array('message' => "さんは|倫敦人形|でした", 'type' => 'result_doll');
@@ -1390,6 +1401,7 @@ class WishRoleList{
   var $role_mind_scanner      = array('message' => "←さとり");
   var $role_jealousy          = array('message' => "←橋姫");
   var $role_brownie           = array('message' => "←座敷童子");
+  var $role_wizard            = array('message' => "←魔法使い");
   var $role_doll              = array('message' => "←上海人形");
   var $role_escaper           = array('message' => "←逃亡者");
   var $role_wolf              = array('message' => "←人狼");
@@ -1416,9 +1428,10 @@ class WishRoleList{
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_escaper');
+#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_wizard');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-$builder->Output('revive_doll');
+$builder->Output('wizard');
+#$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');

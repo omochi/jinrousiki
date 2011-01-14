@@ -23,6 +23,7 @@ OutputRolePageHeader('村人陣営');
 <a href="#mind_scanner_group">さとり系</a>
 <a href="#jealousy_group">橋姫系</a>
 <a href="#brownie_group">座敷童子系</a>
+<a href="#wizard_group">魔法使い系</a>
 <a href="#doll_group">上海人形系</a>
 <a href="#escaper_group">逃亡者系</a>
 </p>
@@ -250,6 +251,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="#dummy_mage">夢見人</a>
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#wizard">魔法使い</a>
+</pre>
 
 <h3><a id="soul_mage">魂の占い師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：有り / 月兎：有効 / 呪い：有効</h4>
@@ -270,7 +275,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_necromancer">雲外鏡</a>・<a href="#soul_assassin">辻斬り</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
+<a href="#soul_necromancer">雲外鏡</a>・<a href="#soul_assassin">辻斬り</a>・<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -293,7 +298,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ogre.php#revive_ogre">茨木童子</a>
+<a href="#wizard">魔法使い</a>・<a href="#soul_wizard">八卦見</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -341,7 +346,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#border_priest">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="fox.php#stargazer_fox">星狐</a>
+<a href="#soul_wizard">八卦見</a>・<a href="#border_priest">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="fox.php#stargazer_fox">星狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -842,7 +847,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3><a id="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#doll_master">人形遣い</a>です</li>
+  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
@@ -878,6 +883,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>同一表示役職</h4>
 <pre>
 <a href="#dummy_guard">夢守人</a>
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#wizard">魔法使い</a>
 </pre>
 
 <h3><a id="hunter_guard">猟師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>
@@ -938,6 +947,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
 最大出現人数は1人です。
 騎士が出現した場合は出現人数と同じだけ狩人と埋毒者が減ります。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#soul_wizard">八卦見</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1522,6 +1535,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 <a href="#eclipse_assassin">蝕暗殺者</a>
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#wizard">魔法使い</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ</a> の 8 が原型です。
@@ -1536,7 +1553,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#doom_fox">冥狐</a>
+<a href="#soul_wizard">八卦見</a>・<a href="fox.php#doom_fox">冥狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1594,7 +1611,7 @@ Bの蘇生処理はキャンセル
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_mage">魂の占い師</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>
+<a href="#soul_mage">魂の占い師</a>・<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1932,6 +1949,48 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 翠星石鯖＠やる夫人狼で実施された記念村の設定を役職にしてみました。
 東方 Project の上白沢 慧音がモチーフです。
+</pre>
+
+
+<h2><a id="wizard_group">魔法使い系</a></h2>
+<p>
+<a href="#wizard_rule">基本ルール</a>
+</p>
+<p>
+<a href="#wizard">魔法使い</a>
+<a href="#soul_wizard">八卦見</a>
+</p>
+
+<h3><a id="wizard_rule">基本ルール [魔法使い]</a></h3>
+<ol>
+<li>2日目以降、夜に「魔法」を使うことができます。</li>
+<li>魔法の効果は個々に設定された役職リストからランダムに一つ選ばれます。</li>
+<li>選ばれた投票能力の仕様は元の役職と同じです (耐性は適用されません)。</li>
+</ol>
+
+<h3><a id="wizard">魔法使い</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
+<pre>
+魔法使いの基本種。
+魔法の効果は、<a href="#mage">占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#guard">狩人</a>・<a href="#assassin">暗殺者</a>のいずれか。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+テーマは「自然にギドラ CO をすることになる能力」です。
+</pre>
+
+<h3><a id="soul_wizard">八卦見</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
+<pre>
+魔法使いの上位種。
+魔法の効果は、<a href="#soul_mage">魂の占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>・<a href="#poison_guard">騎士</a>・
+<a href="#doom_assassin">死神</a>・<a href="#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
+<a href="#poison_guard">騎士</a>能力が発動しても毒を持つわけではないので注意。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「やる夫・早苗・バーボン・アイマス＋猫又鯖合同トーナメント」の
+MVP の賞品としてプレゼントしたものです。
 </pre>
 
 

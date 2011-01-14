@@ -282,7 +282,7 @@ class CastConfig extends CastConfigBase{
     'mage'                 => 15,
     'soul_mage'            =>  5,
     'psycho_mage'          => 10,
-    'sex_mage'             => 10,
+    'sex_mage'             =>  5,
     'stargazer_mage'       =>  5,
     'voodoo_killer'        => 10,
     'dummy_mage'           => 10,
@@ -351,6 +351,8 @@ class CastConfig extends CastConfigBase{
     'history_brownie'      =>  2,
     'revive_brownie'       =>  2,
     'cursed_brownie'       =>  2,
+    'wizard'               =>  3,
+    'soul_wizard'          =>  2,
     'doll'                 =>  5,
     'friend_doll'          =>  3,
     'phantom_doll'         =>  2,
@@ -491,7 +493,7 @@ class CastConfig extends CastConfigBase{
     'wolf' => 0.21, 'mad' => 0.12, 'fox' => 0.1, 'child_fox' => 0.08,
     'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1, 'priest' => 0.1, 'guard' => 0.15,
     'common' => 0.17, 'poison' => 0.13, 'cat' => 0.1, 'pharmacist' => 0.15, 'assassin' => 0.15,
-    'scanner' => 0.15, 'jealousy' => 0.1, 'doll' => 0.15, 'escaper' => 0.15,
+    'scanner' => 0.15, 'jealousy' => 0.1, 'wizard' => 0.15, 'doll' => 0.15, 'escaper' => 0.15,
     'cupid' => 0.1, 'angel' => 0.07, 'quiz' => 0.15, 'vampire' => 0.15,
     'chiroptera' => 0.12, 'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12);
 

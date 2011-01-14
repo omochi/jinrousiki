@@ -39,7 +39,7 @@ class ServerConfig{
   var $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  var $comment = '～＠ローカル～';
+  var $comment = '〜＠ローカル〜';
 
   //サーバの文字コード
   /*
@@ -176,7 +176,7 @@ class SharedServerConfig extends SharedServerConfigBase{
 
     'kotori' => array('name' => '小鳥鯖',
 		      'url' => 'http://kiterew.tv/jinro/',
-		      'encode' => 'EUC-JP',
+		      'encode' => 'UTF-8',
 		      'separator' => '',
 		      'footer' => '',
 		      'disable' => false),

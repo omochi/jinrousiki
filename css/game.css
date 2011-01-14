@@ -89,7 +89,7 @@ body{ /* AA 用 */
 }
 .victory-lovers{ /* 恋人勝利 */
   background-color: #FFFAFA;
-  color: #FF69B4; /* hotpink */
+  color: #FF69B4;
 }
 .victory-quiz{ /* 出題者勝利 */
   background-color: #9999CC;
@@ -169,11 +169,12 @@ body{ /* AA 用 */
 .game-start{      background-color: #999900;} /* ゲーム開始投票 (現在は不使用) */
 .kick-do{         background-color: #AAAA33;} /* キック投票 */
 .vote-do{         background-color: #999900;} /* 処刑投票 */
-.mage-do{         background-color: #990099;} /* 占い師 */
+.mage-do{         background-color: #9933FF;} /* 占い師 */
 .guard-do{        background-color: #0099FF;} /* 狩人 */
 .revive-do{       background-color: #009966;} /* 猫又 */
 .assassin-do{     background-color: #904040;} /* 暗殺者 */
 .mind-scanner-do{ background-color: #A0A000;} /* さとり */
+.wizard-do{       background-color: #BB88CC;} /* 魔法使い */
 .escape-do{       background-color: #606090;} /* 逃亡者 */
 .wolf-eat{        background-color: #CC3300;} /* 人狼 */
 .cupid-do{        background-color: #FF66CC;} /* キューピッド */

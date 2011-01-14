@@ -31,8 +31,8 @@ class RoleManager{
   var $rebel_list = array('rebel');
 
   //処刑者決定 (順番依存あり)
-  var $vote_kill_list = array('quiz', 'decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
-			      'executor', 'saint', 'agitate_mad');
+  var $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
+			      'quiz', 'executor', 'saint', 'agitate_mad');
 
   //ショック死
   var $sudden_death_list = array('febris', 'frostbite', 'death_warrant', 'chicken', 'rabbit',
@@ -50,7 +50,6 @@ class RoleManager{
 			 'revive_ogre', 'sacrifice_ogre', 'yaksa', 'succubus_yaksa',
 			 'dowser_yaksa');
 
-  function RoleManager(){ $this->__construct(); }
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded->file = array();
@@ -139,7 +138,6 @@ class RoleManager{
 
 //-- 役職の基底クラス --//
 class Role{
-  function Role(){ $this->__construct(); }
   function __construct(){}
 
   //-- 判定用関数 --//
@@ -170,7 +168,6 @@ class Role{
 class RoleTalkFilter extends Role{
   var $volume_list = array('weak', 'normal', 'strong');
 
-  function RoleTalkFilter(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){}
@@ -206,7 +203,6 @@ class RoleVoteAbility extends Role{
   var $data_type;
   var $decide_type;
 
-  function RoleVoteAbility(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
     $this->role = array_pop(explode('Role_', get_class($this)));

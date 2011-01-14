@@ -34,6 +34,8 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <h2><a id="table">早見表</a></h2>
 <p>
 <a href="#main_role">メイン役職</a>
+Ver. 1.5.0
+<a href="#150alpha1">α1</a><br>
 Ver. 1.4.0
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-7</a>
@@ -2035,6 +2037,28 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">時が経つと (5 日目以降) <a href="human.php#elder">長老</a>相当の能力を得る村人。</td>
   <td>Ver. 1.4.0 β22</td>
+</tr>
+<tr>
+  <td><a href="human.php#wizard" id="150alpha1">魔法使い</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">2日目以降、夜に魔法を使うことができる。<br>
+魔法の効果は、<a href="human.php#mage">占い師</a>・<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#guard">狩人</a>・<a href="human.php#assassin">暗殺者</a>のいずれか。
+  </td>
+  <td>Ver. 1.5.0 α1</td>
+</tr>
+<tr>
+  <td><a href="human.php#soul_wizard">八卦見</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">魔法使いの上位種。<br>
+    魔法の効果は、<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#stargazer_mage">占星術師</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
+  </td>
+  <td>Ver. 1.5.0 α1</td>
 </tr>
 </table>
 

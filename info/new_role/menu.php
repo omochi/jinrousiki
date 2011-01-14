@@ -26,6 +26,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a href="human.php#mind_scanner_group" target="body">さとり系</a></li>
 <li><a href="human.php#jealousy_group" target="body">橋姫系</a></li>
 <li><a href="human.php#brownie_group" target="body">座敷童子系</a></li>
+<li><a href="human.php#wizard_group" target="body">魔法使い系</a></li>
 <li><a href="human.php#doll_group" target="body">上海人形系</a></li>
 <li><a href="human.php#escaper_group" target="body">逃亡者系</a></li>
 <li>★☆★☆★☆★</li>
