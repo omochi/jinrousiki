@@ -14,11 +14,11 @@ $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
 case 'day': //昼
-  $time_message = '　日没まで ';
+  $time_message = '日没まで ';
   break;
 
 case 'night': //夜
-  $time_message = '　夜明けまで ';
+  $time_message = '夜明けまで ';
   break;
 }
 
@@ -61,8 +61,7 @@ echo <<<EOF
 <body{$on_load}>
 <a id="#game_top"></a>
 <table class="login"><tr>
-{$ROOM->GenerateTitleTag()}
-<td class="login-link">
+{$ROOM->GenerateTitleTag()}<td class="login-link">
 
 EOF;
 
@@ -94,31 +93,28 @@ if($ROOM->IsBeforeGame()){ //ゲーム開始前なら登録画面のリンクを
   echo '</td>'."\n";
 }
 echo '</tr></table>'."\n";
+if(! $ROOM->IsFinished()) OutputGameOption(); //ゲームオプションを表示
 
-
-if(! $ROOM->IsFinished()){
-  OutputGameOption(); //ゲームオプションを表示
-}
-
-echo '<table class="time-table"><tr>'."\n";
 OutputTimeTable(); //経過日数と生存人数
-
 if($ROOM->IsPlaying()){
   if($ROOM->IsRealTime()){ //リアルタイム制
     echo '<td class="real-time"><form name="realtime_form">'."\n";
-    echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
+    echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
     echo '</form></td>'."\n";
   }
   elseif($left_talk_time){ //会話で時間経過制
     echo '<td>' . $time_message . $left_talk_time . '</td>'."\n";
   }
-
-  if($left_time == 0){
-    echo '</tr><tr>'."\n" . '<td class="system-vote" colspan="2">' . $time_message .
-      $MESSAGE->vote_announce . '</td>'."\n";
-  }
 }
 echo '</tr></table>'."\n";
+if($ROOM->IsPlaying()){
+  if($left_time == 0){
+    echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
+  }
+  elseif($ROOM->IsEvent('wait_morning')){
+    echo '<div class="system-vote">' . $MESSAGE->wait_morning . '</div>'."\n";
+  }
+}
 
 OutputPlayerList(); //プレイヤーリスト
 if($ROOM->IsFinished()) OutputVictory(); //勝敗結果

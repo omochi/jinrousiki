@@ -471,11 +471,11 @@ EOF;
     break;
 
   case 'day':
-    $time_message = '　日没まで ';
+    $time_message = '日没まで ';
     break;
 
   case 'night':
-    $time_message = '　夜明けまで ';
+    $time_message = '夜明けまで ';
     break;
 
   case 'aftergame': //勝敗結果を出力して処理終了
@@ -484,16 +484,8 @@ EOF;
   }
 
   if($ROOM->IsBeforeGame()) OutputGameOption(); //ゲームオプションを説明
-  echo '<table class="time-table"><tr>'."\n";
-  if(! $ROOM->IsAfterGame()){ //ゲーム終了後以外なら、サーバとの時間ズレを表示
-    $date_str = TZDate('Y, m, j, G, i, s', $ROOM->system_time);
-    echo '<script type="text/javascript" src="javascript/output_diff_time.js"></script>'."\n";
-    echo '<td>サーバとローカルPCの時間ズレ(ラグ含)： ' . '<span><script type="text/javascript">' .
-      "output_diff_time('$date_str');" . '</script>' . '秒</span></td></td>'."\n";
-    echo '<tr>';
-  }
-  OutputTimeTable(); //経過日数と生存人数を出力
 
+  OutputTimeTable(); //経過日数と生存人数を出力
   $left_time = 0;
   if($ROOM->IsBeforeGame()){
     echo '<td class="real-time">';
@@ -507,7 +499,7 @@ EOF;
     if($real_time){ //リアルタイム制
       GetRealPassTime(&$left_time);
       echo '<td class="real-time"><form name="realtime_form">'."\n";
-      echo '<input type="text" name="output_realtime" size="50" readonly>'."\n";
+      echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
       echo '</form></td>'."\n";
     }
     else{ //仮想時間制

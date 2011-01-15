@@ -301,17 +301,18 @@ function OutputGameOption(){
 
   $query = $ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
   extract(FetchAssoc($query, true));
-  echo '<table class="time-table"><tr>'."\n" .
-    '<td>ゲームオプション：' . GenerateGameOptionImage($game_option, $option_role) .
-    GenerateMaxUserImage($max_user) . '</td>'."\n" . '</tr></table>'."\n";
+  echo '<div class="game-option">ゲームオプション：' .
+    GenerateGameOptionImage($game_option, $option_role) .
+    GenerateMaxUserImage($max_user) . '</div>'."\n";
 }
 
 //日付と生存者の人数を出力
 function OutputTimeTable(){
   global $ROOM;
 
-  if($ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければ表示しない
+  echo '<table class="time-table"><tr>'."\n"; //ヘッダを表示
 
+  if($ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
   $query = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0";
   echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
 }

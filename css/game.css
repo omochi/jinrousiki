@@ -9,16 +9,23 @@ body{ /* AA 用 */
   font-size: 15pt;
   font-weight: bold;
 }
+.game-option{ /* ゲームオプション */
+  padding: 3px;
+  vertical-align: top;
+}
+.game-option img{ /* ゲームオプション */
+  vertical-align: top;
+}
 .time-table{
-  margin-left: 3px;
   width: 100%;
   border: 0;
   border-collapse: collapse;
   vertical-align: top;
 }
 .time-table td{
-  border: 1px dotted #CCCCCC; /* 表示テスト用 */
-  vertical-align: top;
+  padding-left: 5px;
+  border: 1px dotted #CCCCCC;
+  vertical-align: middle;
   text-align: left;
 }
 .time-table span{
@@ -27,16 +34,19 @@ body{ /* AA 用 */
 }
 .real-time{ /* リアルタイムの時間表示 */
   padding-top: 5px;
-  vertical-align: top;
+  vertical-align: middle;
 }
 .real-time span{font-weight: bold;}
 .real-time input{ /* JavaScript の表示窓 */
   border: 0px solid;
+  vertical-align: middle;
   font-size:11pt;
 }
 .system-vote{ /* 投票を促すメッセージ */
+  padding: 7px;
   background-color: #CC3300;
   color: #FFFAFA;
+  font-weight: bold;
 }
 /* OutputPlayerList() */
 .player{ /* プレイヤーリスト全体の div */
@@ -170,17 +180,17 @@ body{ /* AA 用 */
 .kick-do{         background-color: #AAAA33;} /* キック投票 */
 .vote-do{         background-color: #999900;} /* 処刑投票 */
 .mage-do{         background-color: #9933FF;} /* 占い師 */
-.guard-do{        background-color: #0099FF;} /* 狩人 */
+.guard-do{        background-color: #3399FF;} /* 狩人 */
 .revive-do{       background-color: #009966;} /* 猫又 */
 .assassin-do{     background-color: #904040;} /* 暗殺者 */
 .mind-scanner-do{ background-color: #A0A000;} /* さとり */
 .wizard-do{       background-color: #BB88CC;} /* 魔法使い */
 .escape-do{       background-color: #606090;} /* 逃亡者 */
 .wolf-eat{        background-color: #CC3300;} /* 人狼 */
-.cupid-do{        background-color: #FF66CC;} /* キューピッド */
-.vampire-do{      background-color: #D000D0;} /* 吸血鬼 */
-.fairy-do{        background-color: #888888;} /* 妖精 */
-.ogre-do{         background-color: #E09000;} /* 鬼 */
+.cupid-do{        background-color: #FF88DD;} /* キューピッド */
+.vampire-do{      background-color: #A000A0;} /* 吸血鬼 */
+.fairy-do{        background-color: #666666;} /* 妖精 */
+.ogre-do{         background-color: #C07000;} /* 鬼 */
 .mania-do{        background-color: #C0A060;} /* 神話マニア */
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;
@@ -297,16 +307,17 @@ body{ /* AA 用 */
   font-size: 80%;
 }
 .caution{ /* ゲーム開始前の注意 */
-  margin: 3px 0;
-  width: 100%;
-  padding: 5px 0;
+  padding: 7px 0;
   background-color: #009900;
   color: #FFFAFA;
   text-align: center;
   font-weight: bold;
 }
 .caution span{font-size: 80%;}
-.objection{text-align: right;}/* 「異議あり」ボタン */
+.objection{ /* 「異議あり」ボタン */
+  vertical-align: middle;
+  text-align: right;
+}
 /* OutputAbility() */
 .ability{ /* 共通デザイン */
   padding: 0 3em;

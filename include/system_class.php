@@ -52,7 +52,6 @@ class Session{
   var $id;
   var $user_no;
 
-  function Session(){ $this->__construct(); }
   function __construct(){
     session_start();
     $this->Set();
@@ -127,7 +126,6 @@ class CookieDataSet{
   var $vote_times; //投票回数
   var $objection;  //「異議あり」の情報
 
-  function CookieDataSet(){ $this->__construct(); }
   function __construct(){
     $this->day_night  = $_COOKIE['day_night'];
     $this->vote_times = (int)$_COOKIE['vote_times'];
@@ -260,7 +258,6 @@ class IconConfigBase{
   var $width  = 45; //表示サイズ(幅)
   var $height = 45; //表示サイズ(高さ)
 
-  function IconConfigBase(){ $this->__construct(); }
   function __construct(){
     $this->path = JINRO_ROOT . '/' . $this->path;
     $this->dead = JINRO_IMG  . '/' . $this->dead;
@@ -488,9 +485,6 @@ class TwitterConfigBase{
 
 //-- ページ送りリンク生成クラス --//
 class PageLinkBuilder{
-  function PageLinkBuilder($file, $page, $count, $config, $title = 'Page', $type = 'page'){
-    $this->__construct($file, $page, $count, $config, $title, $type);
-  }
   function __construct($file, $page, $count, $config, $title = 'Page', $type = 'page'){
     $this->view_total = $count;
     $this->view_page  = $config->page;

@@ -16,7 +16,7 @@ class Message{
   var $entry_user = 'さんが幻想郷入りしました';
 
   //-- game_view.php & OutputGameHTMLHeader() --//
-  var $vote_announce = '時間がありません。投票してください'; //会話の制限時間切れ
+  var $vote_announce = '時間がありません。投票してください。'; //会話の制限時間切れ
   var $wait_morning = '待機時間中です。'; //早朝待機制の待機時間中
 
   //-- game_functions.php --//

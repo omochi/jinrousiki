@@ -14,8 +14,8 @@ define('JINRO_IMG',  JINRO_ROOT . '/img');
 define('JINRO_MOD',  JINRO_ROOT . '/module');
 
 //-- デバッグモードのオン/オフ --//
-$DEBUG_MODE = false;
-#$DEBUG_MODE = true;
+#$DEBUG_MODE = false;
+$DEBUG_MODE = true;
 
 //-- クラスを定義 --//
 /*
