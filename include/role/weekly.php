@@ -7,7 +7,6 @@
   ・ゲームプレイ中で生存時のみ有効 (呼び出し関数側で対応)
 */
 class Role_weekly extends Role{
-  function Role_weekly(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSay(&$sentence){

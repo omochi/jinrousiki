@@ -3,7 +3,6 @@ class OptionManager{
   var $row;
   var $options = array();
 
-  function OptionManager($value){ $this->__construct($value); }
   function __construct($value){
     $this->row = $value;
     $list = explode(' ', $this->row);

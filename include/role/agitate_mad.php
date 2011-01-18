@@ -7,7 +7,6 @@
 class Role_agitate_mad extends RoleVoteAbility{
   var $data_type = 'array';
 
-  function Role_agitate_mad(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){

@@ -10,7 +10,6 @@
   ・観戦モードにすると普通に見えてしまう
 */
 class Role_earplug extends RoleTalkFilter{
-  function Role_earplug(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function Ignored(){

@@ -5,7 +5,6 @@
   ・発動当日に投票されていなかったらショック死する
 */
 class Role_frostbite extends Role{
-  function Role_frostbite(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

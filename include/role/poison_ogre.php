@@ -8,7 +8,6 @@
 class Role_poison_ogre extends Role{
   var $resist_rate = 30;
 
-  function Role_poison_ogre(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

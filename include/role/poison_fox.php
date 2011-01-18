@@ -5,7 +5,6 @@
   ・毒：妖狐陣営以外
 */
 class Role_poison_fox extends Role{
-  function Role_poison_fox(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

@@ -5,7 +5,6 @@
   ・発動当日ならショック死する
 */
 class Role_febris extends Role{
-  function Role_febris(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

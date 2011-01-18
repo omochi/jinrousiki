@@ -7,7 +7,6 @@
 class Role_yaksa extends Role{
   var $resist_rate = 20;
 
-  function Role_yaksa(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

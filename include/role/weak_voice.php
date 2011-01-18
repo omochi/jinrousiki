@@ -6,7 +6,6 @@
   ・ゲームプレイ中で生存時のみ有効
 */
 class Role_weak_voice extends RoleTalkFilter{
-  function Role_weak_voice(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterVoice(&$volume, &$sentence){

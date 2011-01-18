@@ -61,7 +61,6 @@ class RequestBase{
 
 //-- テスト用パラメータ設定クラス --//
 class TestParams extends RequestBase{
-  function TestParams(){ $this->__construct(); }
   function __construct(){
     $this->GetItems(NULL, 'test_users', 'test_room', 'test_mode');
     $this->is_virtual_room = isset($this->test_users);
@@ -70,7 +69,6 @@ class TestParams extends RequestBase{
 
 //-- game 用共通クラス --//
 class RequestBaseGame extends RequestBase{
-  function RequestBaseGame(){ $this->__construct(); }
   function __construct(){
     global $GAME_CONF;
 
@@ -82,7 +80,6 @@ class RequestBaseGame extends RequestBase{
 
 //-- game play 用共通クラス --//
 class RequestBaseGamePlay extends RequestBaseGame{
-  function RequestBaseGamePlay(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
     $this->GetItems('IsOn', 'get.list_down', 'get.play_sound');
@@ -91,7 +88,6 @@ class RequestBaseGamePlay extends RequestBaseGame{
 
 //-- icon 用共通クラス --//
 class RequestBaseIcon extends RequestBase{
-  function RequestBaseIcon(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
     $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance',
@@ -117,7 +113,6 @@ class RequestBaseIcon extends RequestBase{
 
 //-- login.php --//
 class RequestLogin extends RequestBase{
-  function RequestLogin(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
     $this->GetItems('intval', 'get.room_no');
@@ -129,7 +124,6 @@ class RequestLogin extends RequestBase{
 
 //-- user_manager.php --//
 class RequestUserManager extends RequestBaseIcon{
-  function RequestUserManager(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
     $this->GetItems('intval', 'get.room_no', 'post.icon_no');
@@ -155,7 +149,6 @@ class RequestUserManager extends RequestBaseIcon{
 
 //-- game_play.php --//
 class RequestGamePlay extends RequestBaseGamePlay{
-  function RequestGamePlay(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
     parent::__construct();
@@ -169,7 +162,6 @@ class RequestGamePlay extends RequestBaseGamePlay{
 
 //-- game_log.php --//
 class RequestGameLog extends RequestBase{
-  function RequestGameLog(){ $this->__construct(); }
   function __construct(){
     $this->GetItems('intval', 'get.room_no', 'get.date');
     $this->GetItems(NULL, 'get.day_night');
@@ -200,7 +192,6 @@ class RequestGameVote extends RequestBaseGamePlay{
     target_no : 投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
     situation : 投票の分類 (Kick・処刑・占い・人狼襲撃など)
   */
-  function RequestGameVote(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
     $this->GetItems('intval', 'post.vote_times');
@@ -223,7 +214,6 @@ class RequestGameVote extends RequestBaseGamePlay{
 
 //-- old_log.php --//
 class RequestOldLog extends RequestBase{
-  function RequestOldLog(){ $this->__construct(); }
   function __construct(){
     $this->GetItems('intval', 'get.db_no');
     if($this->is_room = isset($_GET['room_no'])){
@@ -241,7 +231,6 @@ class RequestOldLog extends RequestBase{
 
 //-- icon_view.php --//
 class RequestIconView extends RequestBaseIcon{
-  function RequestIconView(){ $this->__construct(); }
   function __construct(){
     $this->GetIconData();
     $this->GetItems('intval', 'get.icon_no');
@@ -251,7 +240,6 @@ class RequestIconView extends RequestBaseIcon{
 
 //-- icon_edit.php --//
 class RequestIconEdit extends RequestBaseIcon{
-  function RequestIconEdit(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
     $this->GetItems('EscapeStrings', 'post.password');
@@ -260,7 +248,6 @@ class RequestIconEdit extends RequestBaseIcon{
 
 //-- icon_upload.php --//
 class RequestIconUpload extends RequestBaseIcon{
-  function RequestIconUpload(){ $this->__construct(); }
   function __construct(){
     parent::__construct();
     $this->GetItems('intval', 'file.size');
@@ -270,7 +257,6 @@ class RequestIconUpload extends RequestBaseIcon{
 
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase{
-  function RequestSrcUpload(){ $this->__construct(); }
   function __construct(){
     EncodePostData();
     $this->GetItems('EscapeStrings', 'post.name', 'post.caption', 'post.user', 'post.password');

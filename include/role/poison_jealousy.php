@@ -5,7 +5,6 @@
   ・毒：恋人
 */
 class Role_poison_jealousy extends Role{
-  function Role_poison_jealousy(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

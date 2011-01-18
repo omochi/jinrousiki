@@ -8,7 +8,6 @@
 class Role_authority extends RoleVoteAbility{
   var $data_type = 'both';
 
-  function Role_authority(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterVoteDo(&$vote_number){

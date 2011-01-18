@@ -9,7 +9,6 @@ class Role_impatience extends RoleVoteAbility{
   var $data_type = 'target';
   var $decide_type = 'decide';
 
-  function Role_impatience(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

@@ -5,7 +5,6 @@
   ・毒：人狼系 + 妖狐陣営 + 蝙蝠陣営
 */
 class Role_poison_chiroptera extends Role{
-  function Role_poison_chiroptera(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

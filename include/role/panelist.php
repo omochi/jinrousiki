@@ -6,7 +6,6 @@
   ・投票数が 0 で固定される
 */
 class Role_panelist extends Role{
-  function Role_panelist(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterVoteDo(&$vote_number){

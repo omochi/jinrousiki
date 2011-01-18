@@ -5,7 +5,6 @@
   ・恋人に投票されたらショック死する
 */
 class Role_celibacy extends Role{
-  function Role_celibacy(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

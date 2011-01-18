@@ -5,7 +5,6 @@
   ・自分の投票先に他の人が投票していなければショック死する
 */
 class Role_flattery extends Role{
-  function Role_flattery(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

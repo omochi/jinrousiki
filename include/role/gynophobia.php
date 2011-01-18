@@ -5,7 +5,6 @@
   ・女性に投票したらショック死する
 */
 class Role_gynophobia extends Role{
-  function Role_gynophobia(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

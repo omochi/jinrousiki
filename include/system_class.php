@@ -64,17 +64,7 @@ class Session{
 
   //ID リセット
   function Reset(){
-    //PHP のバージョンが古い場合は関数がないので自前で処理する
-    if(function_exists('session_regenerate_id')){
-      session_regenerate_id();
-    }
-    else{
-      $id = serialize($_SESSION);
-      session_destroy();
-      session_id(md5(uniqid(rand(), 1)));
-      session_start();
-      $_SESSION = unserialize($id);
-    }
+    session_regenerate_id();
     return $this->Set();
   }
 

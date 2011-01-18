@@ -5,7 +5,6 @@
   ・同一陣営に投票したらショック死する
 */
 class Role_nervy extends Role{
-  function Role_nervy(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

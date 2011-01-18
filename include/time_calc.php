@@ -9,7 +9,6 @@ class TimeCalculation{
   var $die_room;       //自動廃村になるまでの時間
   var $establish_wait; //次の村を立てられるまでの待ち時間
 
-  function TimeCalculation(){ $this->__construct(); }
   function __construct(){
     global $ROOM_CONF, $TIME_CONF;
 

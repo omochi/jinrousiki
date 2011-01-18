@@ -7,7 +7,6 @@
 class Role_executor extends RoleVoteAbility{
   var $data_type = 'array';
 
-  function Role_executor(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){

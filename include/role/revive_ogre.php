@@ -7,7 +7,6 @@
 class Role_revive_ogre extends Role{
   var $resist_rate = 0;
 
-  function Role_revive_ogre(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

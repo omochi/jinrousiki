@@ -7,7 +7,6 @@
 class Role_orange_ogre extends Role{
   var $resist_rate = 30;
 
-  function Role_orange_ogre(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

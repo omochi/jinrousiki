@@ -8,6 +8,5 @@ class Role_decide extends RoleVoteAbility{
   var $data_type = 'target';
   var $decide_type = 'decide';
 
-  function Role_decide(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 }

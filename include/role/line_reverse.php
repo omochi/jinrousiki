@@ -9,7 +9,6 @@
   ・最後が改行だった場合はカットされる (explode + implode の仕様)
 */
 class Role_line_reverse extends Role{
-  function Role_line_reverse(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSay(&$sentence){

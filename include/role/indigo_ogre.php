@@ -7,7 +7,6 @@
 class Role_indigo_ogre extends Role{
   var $resist_rate = 30;
 
-  function Role_indigo_ogre(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

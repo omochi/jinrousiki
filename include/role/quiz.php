@@ -7,7 +7,6 @@
 class Role_quiz extends RoleVoteAbility{
   var $data_type = 'array';
 
-  function Role_quiz(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){

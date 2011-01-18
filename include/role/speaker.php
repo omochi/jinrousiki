@@ -10,7 +10,6 @@
   ・観戦モードにすると普通に見えてしまう
 */
 class Role_speaker extends RoleTalkFilter{
-  function Role_speaker(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){

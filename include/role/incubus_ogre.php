@@ -7,7 +7,6 @@
 class Role_incubus_ogre extends Role{
   var $resist_rate = 40;
 
-  function Role_incubus_ogre(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

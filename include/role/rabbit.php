@@ -5,7 +5,6 @@
   ・投票されていなかったらショック死する
 */
 class Role_rabbit extends Role{
-  function Role_rabbit(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

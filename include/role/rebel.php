@@ -7,7 +7,6 @@
 class Role_rebel extends RoleVoteAbility{
   var $data_type = 'both';
 
-  function Role_rebel(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterRebel(&$message_list, &$count_list){

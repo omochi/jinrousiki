@@ -1,6 +1,5 @@
 <?php
 class Talk{
-  function Talk(){ $this->__construct(); }
   function __construct(){
     $this->ParseLocation();
     $this->ParseSentence();

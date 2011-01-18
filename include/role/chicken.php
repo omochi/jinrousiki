@@ -5,7 +5,6 @@
   ・投票されていたらショック死する
 */
 class Role_chicken extends Role{
-  function Role_chicken(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){

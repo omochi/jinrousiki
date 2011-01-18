@@ -5,7 +5,6 @@
   ・毒：毒能力者
 */
 class Role_guide_poison extends Role{
-  function Role_guide_poison(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

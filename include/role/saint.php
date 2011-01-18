@@ -5,7 +5,6 @@
   ・処刑投票が拮抗したら候補者の内訳によって処刑者が変化する
 */
 class Role_saint extends RoleVoteAbility{
-  function Role_saint(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){

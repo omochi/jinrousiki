@@ -7,7 +7,6 @@
 class Role_succubus_yaksa extends Role{
   var $resist_rate = 20;
 
-  function Role_succubus_yaksa(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){

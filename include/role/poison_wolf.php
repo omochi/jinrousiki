@@ -5,7 +5,6 @@
   ・毒：人狼系以外
 */
 class Role_poison_wolf extends Role{
-  function Role_poison_wolf(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){
