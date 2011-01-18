@@ -128,6 +128,9 @@ class RoomConfig{
   var $detective = true; //探偵村
   var $default_detective = false;
 
+  var $weather = true; //天候あり
+  var $default_weather = false;
+
   var $festival = true; //お祭り村
   var $default_festival = false;
 
@@ -330,7 +333,6 @@ class IconConfig extends IconConfigBase{
   var $view   = 100; //一画面に表示するアイコンの数
   var $page   = 10; //一画面に表示するページ数の数
 
-  function IconConfig(){ $this->__construct(); }
   function __construct(){ parent::__construct(); }
 }
 

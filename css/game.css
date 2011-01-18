@@ -164,9 +164,7 @@ body{ /* AA 用 */
   */
 }
 /* OutputTalkLog() */
-.system-message{ /* システムメッセージ */
-  text-align: left;
-}
+.system-message{text-align: left;} /* システムメッセージ */
 .system-message td{
   border-top: 1px dashed #C0C0C0;
   width: 1000px;
@@ -265,21 +263,19 @@ body{ /* AA 用 */
   text-align: left;
   vertical-align: middle;
 }
-.dead-type-vote{
-  color: #666600;
+.dead-type-vote{        color: #666600;}
+.dead-type-revive{      color: #009966;}
+.dead-type-lovers{      color: #FF66CC;}
+.dead-type-fairy{       color: #888888;}
+.dead-type-sudden-death{color: #33CCFF;}
+/* GenerateWeatherReport() */
+.weather{
+  padding: 7px 0 7px 6em;
+  background-color: #CCDDFF;
+  color: #000000;
+  font-weight: bold;
 }
-.dead-type-revive{
-  color: #009966;
-}
-.dead-type-lovers{
-  color: #FF66CC;
-}
-.dead-type-fairy{
-  color: #888888;
-}
-.dead-type-sudden-death{
-  color: #33CCFF;
-}
+.weather span{color: #990000;}
 /* OutputVoteListDay() */
 .vote-list{ /* 投票結果の table */
   border: 2px solid;
@@ -325,9 +321,7 @@ body{ /* AA 用 */
   font-size: 14pt;
   font-weight: bold;
 }
-.ability-dead{ /* 死んでいる場合 */
-  background-color:#CC0000;
-}
+.ability-dead{background-color:#CC0000;} /* 死んでいる場合 */
 .ability-partner{ /* 仲間の表示 */
   border: 1px solid;
   border-collapse: collapse;
@@ -345,6 +339,4 @@ body{ /* AA 用 */
   vertical-align: middle;
 }
 /* CheckSelfVote() */
-.self-vote{
-  margin: 5px 0;
-}
+.self-vote{margin: 5px 0;}

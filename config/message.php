@@ -172,6 +172,8 @@ class Message{
   var $constellation_y    = 'は昨夜、鳳凰座を見ていたようです';
   var $constellation_z    = 'は昨夜、南十字座を見ていたようです';
   var $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
+  //天候名のリスト
+  var $weather_list = array('スコール', '酸性雨', '晴嵐', '天気雨', '烈日', '強風', '風雨');
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合
@@ -276,6 +278,7 @@ class GameOptionMessage{
   var $critical              = '急所村';
   var $joker                 = 'ババ抜き村';
   var $detective             = '探偵村';
+  var $weather               = '天候あり';
   var $festival              = 'お祭り村';
   var $replace_human         = '村人置換村';
   var $full_mania            = '神話マニア村';
@@ -342,6 +345,7 @@ class GameOptionCaptionMessage{
   var $critical              = '全員に「会心」「痛恨」がつきます。';
   var $joker                 = '誰か一人に「ジョーカー」がつきます。';
   var $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
+  var $weather               = '「天候」と呼ばれる特殊イベントが発生します';
   var $festival              = '管理人がカスタムする特殊設定です';
   var $replace_human         = '「村人」が全員特定の役職に入れ替わります';
   var $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';

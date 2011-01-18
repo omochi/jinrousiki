@@ -1350,8 +1350,8 @@ function AggregateVoteNight($skip = false){
     array_push($action_list , 'MANIA_DO');
   }
   else{
-    array_push($action_list , 'ESCAPE_DO', 'DREAM_EAT', 'TRAP_MAD_DO', 'POSSESSED_DO',
-	       'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'POISON_CAT_DO', 'ASSASSIN_DO',
+    array_push($action_list , 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'POISON_CAT_DO',
+	       'ASSASSIN_DO','WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'TRAP_MAD_DO', 'POSSESSED_DO',
 	       'VAMPIRE_DO', 'OGRE_DO');
   }
   foreach($action_list as $action){
@@ -2202,8 +2202,9 @@ function AggregateVoteNight($skip = false){
 	  $result = $target->main_role;
 	}
 	else{ //占い師の処理
+	  //呪殺判定
 	  if($target->IsLive(true) && $target->IsFox() && ! $target->IsChildFox() &&
-	     ! $target->IsRole('white_fox', 'black_fox')){ //呪殺判定
+	     ! $target->IsRole('white_fox', 'black_fox') && ! $ROOM->IsEvent('no_fox_dead')){
 	    $USERS->Kill($target->user_no, 'FOX_DEAD');
 	  }
 	  $result = $target->DistinguishMage(); //占い判定
@@ -2916,6 +2917,14 @@ function AggregateVoteNight($skip = false){
 	}
       }
     }
+  }
+
+  //天候を決定
+  if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){
+    $weather = mt_rand(0, 6);
+    //$weather = 6; //テスト用
+    $ROOM->SystemMessage($weather, 'WEATHER', 2);
+    //$ROOM->SystemMessage($weather, 'WEATHER', 1); //テスト用
   }
 
   $status = $ROOM->test_mode || $ROOM->ChangeDate();

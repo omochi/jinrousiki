@@ -11,7 +11,8 @@ $RQ_ARGS->TestItems->test_room = array(
   'id' => $RQ_ARGS->room_no,
   'name' => '投票テスト村',
   'comment' => '',
-  'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 joker',
+  //'game_option'  => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 joker',
+  'game_option'  => 'dummy_boy chaosfull chaos_open_cast no_sub_role real_time:6:4 joker weather',
   'date' => 9,
   'day_night' => 'night',
   //'day_night' => 'aftergame',
@@ -359,7 +360,9 @@ $RQ_ARGS->TestItems->vote->night = array(
 );
 
 //-- 仮想システムメッセージをセット --//
-$RQ_ARGS->TestItems->system_message = array();
+$RQ_ARGS->TestItems->system_message = array(
+  5 => array('WEATHER' => array(1))
+);
 
 //-- 仮想イベントをセット --//
 $RQ_ARGS->TestItems->event = array(
@@ -451,6 +454,7 @@ do{
   OutputAbilityAction();
 
   foreach($RQ_ARGS->TestItems->system_message as $date => $date_list){
+    //PrintData($date_list, $date);
     foreach($date_list as $type => $type_list){
       switch($type){
       case 'FOX_EAT':
@@ -458,6 +462,13 @@ do{
 
       case 'VOTE_KILLED':
       case 'WOLF_KILLED':
+	foreach($type_list as $handle_name){
+	  $ROOM->event->rows[] = array('message' => $handle_name, 'type' => $type);
+	}
+	break;
+
+      case 'WEATHER':
+	if($date != $ROOM->date) continue;
 	foreach($type_list as $handle_name){
 	  $ROOM->event->rows[] = array('message' => $handle_name, 'type' => $type);
 	}
@@ -470,8 +481,11 @@ do{
       }
     }
   }
+
   $USERS->SetEvent();
   //PrintData($ROOM->event);
+  echo GenerateWeatherReport();
+
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();

@@ -19,7 +19,6 @@ class Room{
   var $single_view_mode = false;
   var $test_mode = false;
 
-  function Room($request = NULL){ $this->__construct($request); }
   function __construct($request = NULL){
     if(is_null($request)) return;
     if($request->IsVirtualRoom()){
@@ -132,9 +131,10 @@ class Room{
     $day   = $date;
     $night = $date - 1;
     if($this->IsDay() && ! ($this->watch_mode || $this->single_view_mode)) $day--;
-
+    if($this->watch_mode || $this->single_view_mode) $date++;
     $query = $this->GetQueryHeader('system_message', 'message', 'type') .
-      " AND((date = '{$day}'   AND type = 'VOTE_KILLED') OR " .
+      " AND((date = '{$date}'  AND type = 'WEATHER') OR" .
+      "     (date = '{$day}'   AND type = 'VOTE_KILLED') OR" .
       "     (date = '{$night}' AND type = 'WOLF_KILLED'))";
     $this->event->rows = FetchAssoc($query);
   }
@@ -332,9 +332,10 @@ class Room{
   }
 
   //システムメッセージ登録
-  function SystemMessage($str, $type){
+  function SystemMessage($str, $type, $add_date = 0){
     global $RQ_ARGS;
 
+    $date = $this->date + $add_date;
     if($this->test_mode){
       PrintData($str, 'SystemMessage: ' . $type);
       if(is_array($RQ_ARGS->TestItems->system_message)){
@@ -344,14 +345,14 @@ class Room{
 	  break;
 
 	default:
-	  $RQ_ARGS->TestItems->system_message[$this->date][$type][] = $str;
+	  $RQ_ARGS->TestItems->system_message[$date][$type][] = $str;
 	  break;
 	}
       }
       return true;
     }
     $items = 'room_no, date, message, type';
-    $values = "{$this->id}, {$this->date}, '{$str}', '{$type}'";
+    $values = "{$this->id}, {$date}, '{$str}', '{$type}'";
     return InsertDatabase('system_message', $items, $values);
   }
 

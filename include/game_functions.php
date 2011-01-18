@@ -605,7 +605,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $RQ_ARGS, $MESSAGE, $ROOM, $USERS, $SELF;
 
   //PrintData($talk);
   //発言ユーザを取得
@@ -763,6 +763,9 @@ function OutputTalk($talk, &$builder){
       $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, $talk->scene) : false;
 
   default:
+    if($ROOM->IsEvent('blind_talk_day') && ! $said_user->IsSelf()){
+      $talk->sentence = $MESSAGE->common_talk;
+    }
     return $builder->AddTalk($said_user, $talk);
   }
 }
@@ -1025,7 +1028,7 @@ function GenerateDeadMan(){
     $type = $type_list->day;
   }
 
-  $str = '';
+  $str = GenerateWeatherReport();
   foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
     $str .= GenerateDeadManType($stack['message'], $stack['type']);
   }
@@ -1041,6 +1044,13 @@ function GenerateDeadMan(){
     $str .= GenerateDeadManType($stack['message'], $stack['type']);
   }
   return $str;
+}
+
+//天候メッセージの生成
+function GenerateWeatherReport(){
+  global $MESSAGE, $ROOM;
+  return is_null($ROOM->event->weather) ? '' : '<div class="weather">今日の天候は<span>' .
+    $MESSAGE->weather_list[$ROOM->event->weather] . '</span>です</div>';
 }
 
 //前日に死亡メッセージの出力

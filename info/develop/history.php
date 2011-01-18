@@ -4,6 +4,10 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('開発履歴', 1);
 ?>
 <p>
+Ver. 1.5.0<br>
+<a href="#150alpha1">Ver. 1.5.0α1</a>
+</p>
+<p>
 <a href="#141">Ver. 1.4.1</a>
 </p>
 <p>
@@ -60,6 +64,11 @@ Ver. 1.4.0<br>
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 </p>
+
+<h2><a id="150alpha1">Ver. 1.5.0 α1 (Rev. 269) : 2011/01/15 (Sat) 09:16</a></h2>
+<ul>
+<li>「魔法使い」「八卦見」実装</li>
+</ul>
 
 <h2><a id="141">Ver. 1.4.1 (Rev. 265) : 2011/01/09 (Sun) 00:57</a></h2>
 <ul>

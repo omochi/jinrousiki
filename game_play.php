@@ -239,7 +239,9 @@ function Say($say){
       $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
       if(! $update) $spend_time = 0;
 
-      if($user->IsWolf(true)) //人狼
+      if($ROOM->IsEvent('blind_talk_night')) //天候：風雨
+	$location = 'self_talk';
+      elseif($user->IsWolf(true)) //人狼
 	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
       elseif($user->IsRole('whisper_mad')) //囁き狂人
 	$location = 'mad';

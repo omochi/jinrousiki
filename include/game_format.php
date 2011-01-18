@@ -5,7 +5,6 @@ class DocumentBuilder{
   var $flag;
   var $extension_list = array();
 
-  function DocumentBuilder(){ $this->__construct(); }
   function __construct(){
     global $ROOM, $USERS, $SELF;
 

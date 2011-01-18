@@ -757,7 +757,6 @@ class UserDataSet{
   var $kicked = array();
   var $names = array();
 
-  function UserDataSet($request){ $this->__construct($request); }
   function __construct($request){
     $this->room_no = $request->room_no;
     $this->LoadRoom($request);
@@ -1032,21 +1031,33 @@ class UserDataSet{
 	foreach($user->GetPartner('bad_status', true) as $id => $date){
 	  if($date != $base_date) continue;
 	  $status_user = $this->ByID($id);
-	  $ROOM->event->invisible |= $status_user->IsRole('sun_fairy')   && $ROOM->IsDay();
-	  $ROOM->event->earplug   |= $status_user->IsRole('moon_fairy')  && $ROOM->IsDay();
-	  $ROOM->event->grassy    |= $status_user->IsRole('grass_fairy') && $ROOM->IsDay();
-	  $ROOM->event->blinder   |= $status_user->IsRole('dark_fairy')  && $ROOM->IsDay();
+	  $ROOM->event->invisible |= $status_user->IsRole('sun_fairy');
+	  $ROOM->event->earplug   |= $status_user->IsRole('moon_fairy');
+	  $ROOM->event->grassy    |= $status_user->IsRole('grass_fairy');
+	  $ROOM->event->blinder   |= $status_user->IsRole('dark_fairy');
 	  $ROOM->event->mind_open |= $status_user->IsRole('light_fairy', 'soul_wizard');
 	  if($status_user->IsRole('enchant_mad')) $ROOM->event->same_face[] = $user->user_no;
 	}
 	break;
+
+      case 'WEATHER':
+	$ROOM->event->weather = (int)$event['message']; //天候データを格納
+	$stack = array('grassy', 'mower', 'blind_vote', 'no_fox_dead', 'critical',
+		       'blind_talk_day', 'blind_talk_night');
+	$ROOM->event->{$stack[$ROOM->event->weather]} = true;
+	break;
       }
     }
 
-    foreach(array('invisible', 'earplug', 'grassy', 'blinder', 'mind_open') as $role){
-      if($ROOM->IsEvent($role)){
-	foreach($this->rows as $user) $user->AddVirtualRole($role);
+    if($ROOM->IsDay()){ //昼限定
+      foreach(array('invisible', 'earplug', 'grassy', 'mower', 'blinder') as $role){
+	if($ROOM->IsEvent($role)){
+	  foreach($this->rows as $user) $user->AddVirtualRole($role);
+	}
       }
+    }
+    if($ROOM->IsEvent('mind_open')){ //昼夜両方 (現在は公開者のみ)
+      foreach($this->rows as $user) $user->AddVirtualRole('mind_open');
     }
 
     //影妖精の処理
