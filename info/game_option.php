@@ -208,6 +208,7 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#critical"><?php echo $GAME_OPT_MESS->critical ?></a></li>
   <li><a href="#joker"><?php echo $GAME_OPT_MESS->joker ?></a></li>
   <li><a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a></li>
+  <li><a href="#weather"><?php echo $GAME_OPT_MESS->weather ?></a></li>
   <li><a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a></li>
   <li><a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a></li>
   <li><a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a></li>
@@ -280,6 +281,85 @@ OutputInfoPageHeader('ゲームオプション');
   <li>このオプションを使用した場合は、身代わり君が<a href="new_role/human.php#detective_common">探偵</a>にはなりません</li>
   <li>「<a href="#gm_login"><?php echo $GAME_OPT_MESS->gm_login ?></a>」+「<a href="#not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a>」オプションと併用すると「霊界探偵モード」になります</li>
   <li>「霊界探偵モード」はゲーム開始直後に探偵が死亡して、霊界に移動します。指示は GM 経由で行います</li>
+</ul>
+
+<h3><a id="weather"><?php echo $GAME_OPT_MESS->weather ?></a> [Ver. 1.5.0 α2～]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->weather ?></li>
+  <li>発生するのは 3の倍数の日です (3 → 6 → 9 → ...)</li>
+  <li>各天候の発生率は設定ファイルで変更できます</li>
+</ul>
+<ul>
+  <li><a href="#weather_grassy">スコール</a></li>
+  <li><a href="#weather_mower">酸性雨</a></li>
+  <li><a href="#weather_blind_vote">晴嵐</a></li>
+  <li><a href="#weather_no_fox_dead">天気雨</a></li>
+  <li><a href="#weather_critical">烈日</a></li>
+  <li><a href="#weather_blind_talk_day">強風</a></li>
+  <li><a href="#weather_blind_talk_night">風雨</a></li>
+  <li><a href="#weather_full_moon">満月</a></li>
+  <li><a href="#weather_new_moon">新月</a></li>
+  <li><a href="#weather_no_contact">花曇</a></li>
+</ul>
+<h4><a id="weather_grassy">スコール</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#grassy">草原迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_mower">酸性雨</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#mower">草刈り</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_blind_vote">晴嵐</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>処刑投票結果を見ることができなくなります (<a href="new_role/wolf.php#amaze_mad">傘化け</a>相当)。</li>
+  <li>効果はその日だけなので、翌日には解除されます。</li>
+</ul>
+
+<h4><a id="weather_no_fox_dead">天気雨</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>妖狐の呪殺が発生しなくなります。</li>
+</ul>
+
+<h4><a id="weather_critical">烈日</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率が 100% になります。</li>
+</ul>
+
+<h4><a id="weather_blind_talk_day">強風</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>昼の自分以外の発言が共有者の囁きに変換されて見えます。</li>
+  <li>霊界からのログでは通常通り見ることができます。</li>
+</ul>
+
+<h4><a id="weather_blind_talk_night">風雨</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>夜の発言が全て独り言になります。</li>
+  <li>結果として、<a href="new_role/human.php#common_group">共有者系</a>の囁き・<a href="new_role/wolf.php#wolf_group">人狼系</a>の遠吠え・<a href="new_role/fox.php#fox_group">妖狐</a>の念話が消滅します。</li>
+  <li><a href="new_role/sub_role.php#mind_read_group">サトラレ系</a>には影響がありません (通常通り見えます)。</li>
+</ul>
+
+<h4><a id="weather_full_moon">満月</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>夜の投票で発生する<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#voodoo">呪術能力</a>と<a href="new_role/human.php#guard_group">狩人系</a>の能力が全て無効化されます。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
+  <li>投票を必要としない<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#cursed">呪い</a>は有効です。</li>
+  <li><a href="new_role/human.php#wizard_group">魔法</a>による能力は有効です。</li>
+</ul>
+
+<h4><a id="weather_new_moon">新月</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li>夜の投票で発生する<a href="new_role/human.php#mage_group">占い能力</a>・<a href="new_role/human.php#wizard_group">魔法能力</a>・<a href="new_role/wolf.php#wolf_group">人狼襲撃</a>・<a href="new_role/vampire.php">吸血能力</a>・<a href="new_role/chiroptera.php#fairy_group">悪戯能力</a>が全て無効化されます。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
+  <li>占い能力は<a href="new_role/fox.php#child_fox_group">子狐系</a>も含まれます。</li>
+</ul>
+
+<h4><a id="weather_no_contact">花曇</a> [Ver. 1.5.0 α2～]</h4>
+<ul>
+  <li><a href="spec.php#vote_night">接触系能力者</a>の夜の投票が全て無効化されます。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
+  <li><a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>の能力は有効、<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>の能力は無効です。</li>
 </ul>
 
 <h3><a id="festival"><?php echo $GAME_OPT_MESS->festival ?></a> [Ver. 1.4.0 β9～]</h3>

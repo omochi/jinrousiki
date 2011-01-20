@@ -175,7 +175,7 @@ class RoomConfig{
 }
 
 //-- ゲーム設定 --//
-class GameConfig{
+class GameConfig extends GameConfigBase{
   //-- 住人登録 --//
   //入村制限 (同じ村に同じ IP で複数登録) (true：許可しない / false：許可する)
   var $entry_one_ip_address = true;
@@ -266,6 +266,19 @@ class GameConfig{
   //-- その他 --//
   var $power_gm = false; //強権 GM モード (ON：true / OFF：false)
   var $random_message = false; //ランダムメッセージの挿入 (する：true / しない：false)
+
+  //天候の出現比設定 (番号と天候の対応は RoleData->weather_list 参照)
+  var $weather_list = array(
+    0 => 15,
+    1 => 15,
+    2 => 15,
+    3 => 15,
+    4 => 15,
+    5 =>  5,
+    6 =>  5,
+    7 =>  5,
+    8 =>  5,
+    9 =>  5);
 }
 
 //ゲームの時間設定

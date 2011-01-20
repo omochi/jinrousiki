@@ -1377,6 +1377,37 @@ function AggregateVoteNight($skip = false){
   foreach($USERS->rows as $user) $role_flag->{$user->main_role} = true; //役職出現判定
   //PrintData($role_flag);
 
+  //-- 天候の処理 --//
+  if($ROOM->IsOption('weather')){
+    if($ROOM->IsEvent('full_moon')){ //満月 (占い妨害・呪い・護衛無効)
+      $vote_data['GUARD_DO']       = array();
+      $vote_data['ANTI_VOODOO_DO'] = array();
+      $vote_data['REPORTER_DO']    = array();
+      $vote_data['JAMMER_MAD_DO']  = array();
+      $vote_data['VOODOO_MAD_DO']  = array();
+      $vote_data['VOODOO_FOX_DO']  = array();
+    }
+    elseif($ROOM->IsEvent('new_moon')){ //新月 (占い・魔法・人狼襲撃・吸血・悪戯無効)
+      $skip = true; //影響範囲に注意
+      $vote_data['MAGE_DO']          = array();
+      $vote_data['VOODOO_KILLER_DO'] = array();
+      $vote_data['WIZARD_DO']        = array();
+      $vote_data['CHILD_FOX_DO']     = array();
+      $vote_data['VAMPIRE_DO']       = array();
+      $vote_data['FAIRY_DO']         = array();
+    }
+    elseif($ROOM->IsEvent('no_contact')){ //花曇 (接触レイヤー無効)
+      $skip = true; //影響範囲に注意
+      $vote_data['REPORTER_DO']     = array();
+      $vote_data['ASSASSIN_DO']     = array();
+      $vote_data['MIND_SCANNER_DO'] = array();
+      $vote_data['ESCAPE_DO']       = array();
+      $vote_data['TRAP_MAD_DO']     = array();
+      $vote_data['VAMPIRE_DO']      = array();
+      $vote_data['OGRE_DO']         = array();
+    }
+  }
+
   //-- 魔法使い系の振り替え処理 --//
   if($ROOM->date > 1){
     foreach($vote_data['WIZARD_DO'] as $uname => $target_uname){
@@ -1455,7 +1486,7 @@ function AggregateVoteNight($skip = false){
       if($user->IsRole('dummy_guard')){ //夢守人は罠無効
 	$dummy_guard_target_list[$user->uname] = $target_uname;
       }
-      else{
+      elseif(! $ROOM->IsEvent('no_contact')){ //花曇ならスキップ
 	$guard_target_list[$user->uname] = $target_uname;
 	if(in_array($target_uname, $trap_target_list)) //罠死判定
 	  $trapped_list[] = $user->uname;
@@ -2921,10 +2952,10 @@ function AggregateVoteNight($skip = false){
 
   //天候を決定
   if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){
-    $weather = mt_rand(0, 6);
-    //$weather = 6; //テスト用
-    $ROOM->SystemMessage($weather, 'WEATHER', 2);
-    //$ROOM->SystemMessage($weather, 'WEATHER', 1); //テスト用
+    #$weather = $GAME_CONF->GetWeather();
+    $weather = 6; //テスト用
+    #$ROOM->SystemMessage($weather, 'WEATHER', 2);
+    $ROOM->SystemMessage($weather, 'WEATHER', 1); //テスト用
   }
 
   $status = $ROOM->test_mode || $ROOM->ChangeDate();

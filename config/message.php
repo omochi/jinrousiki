@@ -172,8 +172,6 @@ class Message{
   var $constellation_y    = 'は昨夜、鳳凰座を見ていたようです';
   var $constellation_z    = 'は昨夜、南十字座を見ていたようです';
   var $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
-  //天候名のリスト
-  var $weather_list = array('スコール', '酸性雨', '晴嵐', '天気雨', '烈日', '強風', '風雨');
 
   //OutputAbility() : 能力の表示
   var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合

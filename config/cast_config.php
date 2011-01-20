@@ -524,7 +524,7 @@ class CastConfig extends CastConfigBase{
 		 'random' => array(array('doll'  => 1, 'poison_doll' => 1),
 				   array('scarlet_doll' => 5, 'silver_doll' => 1)),
 		 'count'  => array(1, 2)),
-   */
+  */
   var $topping_list = array(
     'a' => array('fix' => array('doll_master' => 1),
 		 'random' => array(

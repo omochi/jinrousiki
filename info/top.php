@@ -23,5 +23,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>ゲームオプション「天候あり」一定日数おきに特殊イベントが発生する</li>
 </ul>

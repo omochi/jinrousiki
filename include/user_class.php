@@ -999,7 +999,7 @@ class UserDataSet{
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $RQ_ARGS, $ICON_CONF, $ROOM;
+    global $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $ROOM;
 
     if($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
     $base_date = $ROOM->date;
@@ -1042,9 +1042,7 @@ class UserDataSet{
 
       case 'WEATHER':
 	$ROOM->event->weather = (int)$event['message']; //天候データを格納
-	$stack = array('grassy', 'mower', 'blind_vote', 'no_fox_dead', 'critical',
-		       'blind_talk_day', 'blind_talk_night');
-	$ROOM->event->{$stack[$ROOM->event->weather]} = true;
+	$ROOM->event->{$ROLE_DATA->weather_list[$ROOM->event->weather]['event']} = true;
 	break;
       }
     }

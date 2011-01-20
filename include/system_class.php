@@ -1224,6 +1224,19 @@ class RoleData{
     'guard'        => array('protected'),
     'human'        => array('lost_ability'));
 
+  //天候のリスト
+  var $weather_list = array(
+     0 => array('name' => 'スコール',	'event' => 'grassy'),
+     1 => array('name' => '酸性雨',	'event' => 'mower'),
+     2 => array('name' => '晴嵐',	'event' => 'blind_vote'),
+     3 => array('name' => '天気雨',	'event' => 'no_fox_dead'),
+     4 => array('name' => '烈日',	'event' => 'critical'),
+     5 => array('name' => '強風',	'event' => 'blind_talk_day'),
+     6 => array('name' => '風雨',	'event' => 'blind_talk_night'),
+     7 => array('name' => '満月',	'event' => 'full_moon'),
+     8 => array('name' => '新月',	'event' => 'new_moon'),
+     9 => array('name' => '花曇',	'event' => 'no_contact'));
+
   //-- 関数 --//
   //役職グループ判定
   function DistinguishRoleGroup($role){
@@ -1308,8 +1321,44 @@ class RoleData{
   }
 }
 
+//-- 「福引」生成の基底クラス --//
+class LotteryBuilder{
+  //「福引き」を一定回数行ってリストに追加する
+  function AddRandom(&$list, $random_list, $count){
+    $total = count($random_list) - 1;
+    for(; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
+  }
+
+  //「比」の配列から「福引き」を作成する
+  function GenerateRandomList($list){
+    $stack = array();
+    foreach($list as $role => $rate){
+      for($i = $rate; $i > 0; $i--) $stack[] = $role;
+    }
+    return $stack;
+  }
+
+  //「比」から「確率」に変換する (テスト用)
+  function RateToProbability($list){
+    $stack = array();
+    $total_rate = array_sum($list);
+    foreach($list as $role => $rate){
+      $stack[$role] = sprintf("%01.2f", $rate / $total_rate * 100);
+    }
+    PrintData($stack);
+  }
+}
+
 //-- 配役設定の基底クラス --//
-class CastConfigBase{
+class GameConfigBase extends LotteryBuilder{
+  //天候決定
+  function GetWeather(){
+    return GetRandom($this->GenerateRandomList($this->weather_list));
+  }
+}
+
+//-- 配役設定の基底クラス --//
+class CastConfigBase extends LotteryBuilder{
   //配役テーブル出力
   function OutputCastTable($min = 0, $max = NULL){
     global $ROLE_DATA;
@@ -1340,31 +1389,6 @@ class CastConfigBase{
       if($key % 20 == 0) echo $str;
     }
     echo '</table>';
-  }
-
-  //「福引き」を一定回数行ってリストに追加する
-  function AddRandom(&$list, $random_list, $count){
-    $total = count($random_list) - 1;
-    for(; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
-  }
-
-  //「比」の配列から「福引き」を作成する
-  function GenerateRandomList($list){
-    $stack = array();
-    foreach($list as $role => $rate){
-      for($i = $rate; $i > 0; $i--) $stack[] = $role;
-    }
-    return $stack;
-  }
-
-  //「比」から「確率」に変換する (テスト用)
-  function RateToProbability($list){
-    $stack = array();
-    $total_rate = array_sum($list);
-    foreach($list as $role => $rate){
-      $stack[$role] = sprintf("%01.2f", $rate / $total_rate * 100);
-    }
-    PrintData($stack);
   }
 
   //決闘村の配役初期化処理

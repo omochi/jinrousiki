@@ -303,8 +303,9 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'sun'),
   array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'yellow'),
+  array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'orange'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'black'),
-  array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'gust'),
+  #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'gust'),
   #array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'light_blue'),
@@ -360,14 +361,14 @@ $RQ_ARGS->TestItems->vote->night = array(
 );
 
 //-- 仮想システムメッセージをセット --//
-$RQ_ARGS->TestItems->system_message = array(
-  5 => array('WEATHER' => array(1))
-);
+$RQ_ARGS->TestItems->system_message = array();
 
 //-- 仮想イベントをセット --//
 $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
+  array('type' => 'WEATHER', 'message' => 9)
+  #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
 //-- データ収集 --//

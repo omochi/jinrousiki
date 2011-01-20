@@ -763,7 +763,7 @@ function OutputTalk($talk, &$builder){
       $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, $talk->scene) : false;
 
   default:
-    if($ROOM->IsEvent('blind_talk_day') && ! $said_user->IsSelf()){
+    if($ROOM->IsEvent('blind_talk_day') && ! $said_user->IsSelf() && ! $SELF->IsDummyBoy()){
       $talk->sentence = $MESSAGE->common_talk;
     }
     return $builder->AddTalk($said_user, $talk);
@@ -1048,9 +1048,9 @@ function GenerateDeadMan(){
 
 //天候メッセージの生成
 function GenerateWeatherReport(){
-  global $MESSAGE, $ROOM;
+  global $ROLE_DATA, $ROOM;
   return is_null($ROOM->event->weather) ? '' : '<div class="weather">今日の天候は<span>' .
-    $MESSAGE->weather_list[$ROOM->event->weather] . '</span>です</div>';
+    $ROLE_DATA->weather_list[$ROOM->event->weather]['name'] . '</span>です</div>';
 }
 
 //前日に死亡メッセージの出力
