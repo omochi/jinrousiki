@@ -9,10 +9,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </p>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 α1 アップロード (2011/01/15 (Sat) 09:16) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 α2 アップロード (2011/01/21 (Fri) 07:38) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#150alpha1">デバッグ情報</a> (2010/12/28 (Tue) 19:10)</li> -->
-  <li>「魔法使い」「八卦見」実装</li>
+  <li>→ <a href="info/develop/debug.php#150alpha2">デバッグ情報</a> (2011/01/24 (Mon) 02:14)</li>
+  <li>ゲームオプション「天候あり」実装</li>
 </ul>
 
 <h1>開発状況</h1>
@@ -23,5 +23,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>ゲームオプション「天候あり」一定日数おきに特殊イベントが発生する</li>
+  <li>なし</li>
 </ul>

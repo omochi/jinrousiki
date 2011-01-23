@@ -6,6 +6,7 @@ OutputInfoPageHeader('開発履歴', 1);
 <p>
 Ver. 1.5.0<br>
 <a href="#150alpha1">Ver. 1.5.0α1</a>
+<a href="#150alpha2">Ver. 1.5.0α2</a>
 </p>
 <p>
 <a href="#141">Ver. 1.4.1</a>
@@ -64,6 +65,11 @@ Ver. 1.4.0<br>
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 </p>
+
+<h2><a id="150alpha2">Ver. 1.5.0 α2 (Rev. 273) : 2011/01/21 (Fri) 07:38</a></h2>
+<ul>
+<li>ゲームオプション「天候あり」実装</li>
+</ul>
 
 <h2><a id="150alpha1">Ver. 1.5.0 α1 (Rev. 269) : 2011/01/15 (Sat) 09:16</a></h2>
 <ul>

@@ -4,6 +4,10 @@ require_once(JINRO_ROOT . '/include/init.php');
 OutputInfoPageHeader('デバッグ情報', 1);
 ?>
 <p>
+Ver. 1.5.0
+<a href="#150alpha2">α2</a>
+</p>
+<p>
 <a href="#140release1">Ver. 1.4.0</a>
 <a href="#140alpha24">α24</a>
 <a href="#140beta2">β2</a>
@@ -20,6 +24,13 @@ OutputInfoPageHeader('デバッグ情報', 1);
 <a href="#140beta21">β21</a>
 <a href="#140beta22">β22</a>
 </p>
+
+<h2><a id="150alpha2">Ver. 1.5.0 α2</a></h2>
+<h3>include/game_vote_functions.php % 2247行目付近 (2011/01/24 (Mon) 02:14)</h3>
+<pre>
+× if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')) continue;
+○ if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy') || $wizard_target_list[$uname] == 'light_fairy') continue;
+</pre>
 
 <h2><a id="140release1">Ver. 1.4.0</a></h2>
 <h3>room_manager.php % 312行目付近 (2010/12/28 (Tue) 19:10)</h3>

@@ -39,7 +39,7 @@ class ServerConfig{
   var $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  var $comment = '〜＠ローカル〜';
+  var $comment = '';
 
   //サーバの文字コード
   /*
@@ -58,6 +58,15 @@ class ServerConfig{
   //パスワード暗号化用 salt
   #var $salt = 'xxxx';
   var $salt = 'testtest';
+
+  //村作成パスワード (NULL 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
+  var $room_password = NULL;
+
+  //村立てテストモード (村立ての DB アクセス処理をスキップします。開発者テスト用スイッチです)
+  var $dry_run_mode = false;
+
+  //村情報非表示モード (村立てテストなどの開発者テスト用スイッチです)
+  var $secret_room = false;
 
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
   var $adjust_time_difference = false;
@@ -83,12 +92,6 @@ class ServerConfig{
     admin/setup.php の処理は常時スキップされます。
   */
   var $last_updated_revision = 246;
-
-  //村立てテストモード (村立ての DB アクセス処理をスキップします。開発者テスト用スイッチです)
-  var $dry_run_mode = false;
-
-  //村情報非表示モード (村立てテストなどの開発者テスト用スイッチです)
-  var $secret_room = false;
 }
 
 //-- 村情報共有サーバの設定 --//
@@ -97,15 +100,15 @@ class SharedServerConfig extends SharedServerConfigBase{
 
   //表示する他のサーバのリスト
   var $server_list = array(
-    'youmu' => array('name' => '妖夢鯖',
-		     'url' => 'http://www23.atpages.jp/youmu/',
+    'cirno' => array('name' => 'チルノ鯖',
+		     'url' => 'http://www12.atpages.jp/cirno/',
 		     'encode' => 'UTF-8',
 		     'separator' => '<!-- atpages banner tag -->',
 		     'footer' => '</a><br>',
 		     'disable' => false),
 
-    'cirno' => array('name' => 'チルノ鯖',
-		     'url' => 'http://www12.atpages.jp/cirno/',
+    'youmu' => array('name' => '妖夢鯖',
+		     'url' => 'http://www23.atpages.jp/youmu/',
 		     'encode' => 'UTF-8',
 		     'separator' => '<!-- atpages banner tag -->',
 		     'footer' => '</a><br>',
@@ -238,8 +241,8 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 		    );
   */
   var $add_list = array(
-    '式神研系' => array('妖夢鯖' => 'http://www23.atpages.jp/youmu/',
-			'チルノ鯖' => 'http://www12.atpages.jp/cirno/',
+    '式神研系' => array('チルノ鯖' => 'http://www12.atpages.jp/cirno/',
+			'妖夢鯖' => 'http://www23.atpages.jp/youmu/',
 			'Eva 鯖' => 'http://jinrou.kuroienogu.net/',
 			'SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 			'開発・バグ報告スレ' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',

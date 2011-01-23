@@ -53,7 +53,7 @@ $RQ_ARGS->TestItems->test_users[4] =& new User();
 $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[4]->role = 'sex_mage authority lovers[16] mind_friend[16]';
+$RQ_ARGS->TestItems->test_users[4]->role = 'stargazer_mage authority lovers[16] mind_friend[16]';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[5] =& new User();
@@ -116,7 +116,7 @@ $RQ_ARGS->TestItems->test_users[13] =& new User();
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'black_fox';
+$RQ_ARGS->TestItems->test_users[13]->role = 'fox';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14] =& new User();
@@ -351,7 +351,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'orange'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'sky'),
-  array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'green'),
+  array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'black'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'white'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),

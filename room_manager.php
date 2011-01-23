@@ -73,6 +73,12 @@ function CreateRoom(){
 
   //デバッグモード時は村立て制限をしない
   if(! $DEBUG_MODE){
+    if(isset($SERVER_CONF->room_password) &&
+       $SERVER_CONF->room_password != $_POST['room_password']){ //パスワードチェック
+      OutputRoomAction('room_password');
+      return false;
+    }
+
     if(CheckBlackList()){ //ブラックリストチェック
       OutputRoomAction('black_list');
       return false;
@@ -401,6 +407,11 @@ function OutputRoomAction($type, $room_name = ''){
     echo 'サーバで設定されている村立て時間間隔を経過していません。<br>'."\n";
     echo 'しばらく時間を開けてから再度登録してください。';
     break;
+
+  case 'room_password':
+    OutputActionResultHeader('村作成 [制限事項]');
+    echo '村作成パスワードが正しくありません。<br>';
+    break;
   }
   OutputHTMLFooter(); //フッタ出力
 }
@@ -455,7 +466,7 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
-  global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+  global $SERVER_CONF, $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
   echo <<<EOF
 <form method="POST" action="room_manager.php">
@@ -480,9 +491,11 @@ EOF;
   OutputRoomOption(array('special_role'));
   OutputRoomOptionChaos();
 
+  $password = is_null($SERVER_CONF->room_password) ? '' :
+    '村作成パスワード：<input type="password" name="room_password" size="20">　';
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
-<tr><td class="make" colspan="2"><input type="submit" value=" 作成 "></td></tr>
+<tr><td class="make" colspan="2">{$password}<input type="submit" value=" 作成 "></td></tr>
 </table>
 </form>
 

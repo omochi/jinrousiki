@@ -2244,7 +2244,9 @@ function AggregateVoteNight($skip = false){
     }
 
     //占い結果を登録 (特殊占い能力者は除外)
-    if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')) continue;
+    if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy') ||
+       $wizard_target_list[$uname] == 'light_fairy') continue;
+
     $str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
     $action = $user->IsChildFox() ? 'CHILD_FOX_RESULT' : 'MAGE_RESULT';
     $ROOM->SystemMessage($str . "\t" . $result, $action);
@@ -2952,10 +2954,10 @@ function AggregateVoteNight($skip = false){
 
   //天候を決定
   if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){
-    #$weather = $GAME_CONF->GetWeather();
-    $weather = 6; //テスト用
-    #$ROOM->SystemMessage($weather, 'WEATHER', 2);
-    $ROOM->SystemMessage($weather, 'WEATHER', 1); //テスト用
+    $weather = $GAME_CONF->GetWeather();
+    //$weather = 6; //テスト用
+    $ROOM->SystemMessage($weather, 'WEATHER', 2);
+    //$ROOM->SystemMessage($weather, 'WEATHER', 1); //テスト用
   }
 
   $status = $ROOM->test_mode || $ROOM->ChangeDate();
