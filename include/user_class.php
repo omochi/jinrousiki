@@ -1042,7 +1042,7 @@ class UserDataSet{
 
       case 'WEATHER':
 	$ROOM->event->weather = (int)$event['message']; //天候データを格納
-	$ROOM->event->{$ROLE_DATA->weather_list[$ROOM->event->weather]['event']} = true;
+	$ROOM->SetWeather();
 	break;
       }
     }

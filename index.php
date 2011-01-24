@@ -39,6 +39,7 @@ if($SERVER_CONF->back_page != ''){
     <legend>ゲーム一覧</legend>
     <div class="game-list"><?php include_once 'room_manager.php' ?></div>
   </fieldset>
+  <?php $BBS_CONF->Output() ?>
   <fieldset>
     <legend>村の作成</legend><?php OutputCreateRoomPage() ?>
   </fieldset>

@@ -131,12 +131,25 @@ class Room{
     $day   = $date;
     $night = $date - 1;
     if($this->IsDay() && ! ($this->watch_mode || $this->single_view_mode)) $day--;
-    if($this->watch_mode || $this->single_view_mode) $date++;
     $query = $this->GetQueryHeader('system_message', 'message', 'type') .
-      " AND((date = '{$date}'  AND type = 'WEATHER') OR" .
+      " AND(" . ($this->log_mode ? '' : "(date = '{$date}' AND type = 'WEATHER') OR") .
       "     (date = '{$day}'   AND type = 'VOTE_KILLED') OR" .
       "     (date = '{$night}' AND type = 'WOLF_KILLED'))";
     $this->event->rows = FetchAssoc($query);
+  }
+
+  //天候判定用の情報を DB から取得する
+  function LoadWeather($shift = false){
+    global $RQ_ARGS;
+
+    if(! $this->IsPlaying()) return NULL;
+    $date = $this->date;
+    if(($shift && $RQ_ARGS->reverse_log) || $this->IsAfterGame()) $date++;
+    if($this->date == 1) $date = 2;
+    $query = $this->GetQueryHeader('system_message', 'message') .
+      " AND date = '{$date}' AND type = 'WEATHER'";
+    $result = FetchResult($query);
+    $this->event->weather = $result === false ? NULL : $result; //天候を格納
   }
 
   //投票情報をコマンド毎に分割する
@@ -303,6 +316,19 @@ class Room{
   //特殊イベント判定
   function IsEvent($type){
     return $this->event->$type;
+  }
+
+  //天候セット
+  function SetWeather(){
+    global $ROLE_DATA;
+
+    if($this->watch_mode || $this->single_view_mode){
+      $this->LoadWeather();
+      if(isset($ROLE_DATA->weather_list[$this->event->weather])){
+	$this->event->{$ROLE_DATA->weather_list[$this->event->weather]['event']} = true;
+      }
+    }
+    $this->LoadWeather(true);
   }
 
   //発言登録

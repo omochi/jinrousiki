@@ -259,6 +259,7 @@ function GenerateDateTalkLog($set_date, $set_location){
   }
   $ROOM->date = $set_date;
   $ROOM->day_night = $table_class;
+  if($set_location != 'heaven_only') $ROOM->SetWeather();
 
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk ' . $table_class);

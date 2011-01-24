@@ -1,5 +1,6 @@
 <?php
 require_once('include/init.php');
+if(FindDangerValue($_FILES)) die;
 $INIT_CONF->LoadClass('SESSION', 'ICON_CONF', 'USER_ICON');
 
 if($USER_ICON->disable_upload){

@@ -1048,8 +1048,11 @@ function GenerateDeadMan(){
 
 //天候メッセージの生成
 function GenerateWeatherReport(){
-  global $ROLE_DATA, $ROOM;
-  return is_null($ROOM->event->weather) ? '' : '<div class="weather">今日の天候は<span>' .
+  global $ROLE_DATA, $RQ_ARGS, $ROOM;
+
+  return is_null($ROOM->event->weather) ||
+    ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight()) ? '' :
+    '<div class="weather">今日の天候は<span>' .
     $ROLE_DATA->weather_list[$ROOM->event->weather]['name'] . '</span>です</div>';
 }
 
