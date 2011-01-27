@@ -23,5 +23,6 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>天候「黄砂」「虹」「ダイヤモンドダスト」「バナナの皮」「スポットライト」<br>
+    「タライ」「凪」「青天の霹靂」「涙雨」「熱帯夜」実装</li>
 </ul>

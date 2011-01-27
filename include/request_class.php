@@ -44,9 +44,9 @@ class RequestBase{
   }
 
   function ToArray(){
-    $array = array();
-    foreach($this as $key => $value) $array[$key] = $value;
-    return $array;
+    $stack = array();
+    foreach($this as $key => $value) $stack[$key] = $value;
+    return $stack;
   }
 
   function AttachTestParameters(){
@@ -98,7 +98,7 @@ class RequestBaseIcon extends RequestBase{
 
   function GetIconData(){
     $this->GetItems('SetPage', 'page');
-    $this->GetItems('EscapeStrings', 'appearance', 'category', 'author');
+    $this->GetItems('EscapeStrings', 'appearance', 'category', 'author', 'keyword');
     $this->GetItems('intval', 'sort_by_name');
     $this->GetItems('Exists', 'search');
   }

@@ -107,7 +107,8 @@ function ConcreteOutputIconList($base_url = 'icon_view'){
     $selected = empty($selection_source) ? array()
       : (is_array($selection_source) ? $selection_source : array($selection_source));
     $_SESSION['icon_view'][$type] = $selected;
-    //PrintData($selection_source);
+    //PrintData($selection_source, $type);
+    if($type == 'keyword') return $selected;
 
     //選択肢の生成
     $query = "SELECT DISTINCT {$type} FROM user_icon WHERE {$type} IS NOT NULL";
@@ -148,7 +149,7 @@ HTML;
 
   //-- ヘッダ出力 --//
   $icon_count  = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0');
-  $colspan     = $USERS_ICON->column * 2;
+  $colspan     = $USER_ICON->column * 2;
   $line_header = '<tr><td colspan="' . $colspan . '">';
   $line_footer = '</td></tr>'."\n";
   $url_header  = '<a href="' . $base_url . '.php?';
@@ -179,6 +180,12 @@ HTML;
     foreach($selected_authors as $ath) $url_option[] = "author[]={$ath}";
     $where_cond[] = _generateInClause('author', $selected_authors);
   }
+
+  $selected_keywords = _outputSelectionByType('keyword', 'キーワード'); //"キーワード"は未使用
+  if(0 < count($selected_keywords)){
+    $str = "LIKE '%{$selected_keywords[0]}%'";
+    $where_cond[] = "(category {$str} OR appearance {$str} OR author {$str} OR icon_name {$str})";
+  }
   //PrintData($where_cond);
 
   $sort_by_name_checked = $RQ_ARGS->sort_by_name ? ' checked' : '';
@@ -186,7 +193,8 @@ HTML;
 </tr>
 <tr>
 <td colspan="{$colspan}">
-<label><input id="sort_by_name" name="sort_by_name" type="checkbox" value="1"$sort_by_name_checked>名前順に並べ替える</label>
+<label for="sort_by_name"><input id="sort_by_name" name="sort_by_name" type="checkbox" value="1"$sort_by_name_checked>名前順に並べ替える</label>
+<label for="keyword">キーワード：<input id="keyword" name="keyword" type="text" value="{$selected_keywords[0]}"></label>
 <input id="search" name="search" type="submit" value="検索">
 <input id="page" name="page" type="hidden" value="1">
 </td></tr></table>
@@ -201,6 +209,8 @@ EOF;
 [S] 出典 / [C] カテゴリ / [A] アイコンの作者<br>
 アイコンをクリックすると編集できます (要パスワード)
 </caption>
+<thead>
+<tr>
 
 HTML;
   }

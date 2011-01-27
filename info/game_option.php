@@ -300,6 +300,16 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#weather_full_moon">満月</a></li>
   <li><a href="#weather_new_moon">新月</a></li>
   <li><a href="#weather_no_contact">花曇</a></li>
+  <li><a href="#weather_invisible">黄砂</a></li>
+  <li><a href="#weather_rainbow">虹</a></li>
+  <li><a href="#weather_side_reverse">ダイヤモンドダスト</a></li>
+  <li><a href="#weather_line_reverse">バナナの皮</a></li>
+  <li><a href="#weather_actor">スポットライト</a></li>
+  <li><a href="#weather_critical_luck">タライ</a></li>
+  <li><a href="#weather_no_sudden_death">凪</a></li>
+  <li><a href="#weather_thunderbolt">青天の霹靂</a></li>
+  <li><a href="#weather_no_last_words">涙雨</a></li>
+  <li><a href="#weather_no_dream">熱帯夜</a></li>
 </ul>
 <h4><a id="weather_grassy">スコール</a> [Ver. 1.5.0 α2～]</h4>
 <ul>
@@ -313,7 +323,8 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h4><a id="weather_blind_vote">晴嵐</a> [Ver. 1.5.0 α2～]</h4>
 <ul>
-  <li>処刑投票結果を見ることができなくなります (<a href="new_role/wolf.php#amaze_mad">傘化け</a>相当)。</li>
+  <li>処刑者が決定した投票結果を見ることができなくなります (<a href="new_role/wolf.php#amaze_mad">傘化け</a>相当)。</li>
+  <li>再投票は隠蔽されません。</li>
   <li>効果はその日だけなので、翌日には解除されます。</li>
 </ul>
 
@@ -329,8 +340,12 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h4><a id="weather_blind_talk_day">強風</a> [Ver. 1.5.0 α2～]</h4>
 <ul>
-  <li>昼の自分以外の発言が共有者の囁きに変換されて見えます。</li>
+  <li>自分の入村位置の上下左右の人以外の昼の発言が共有者の囁きに変換されて見えます。</li>
   <li>霊界からのログでは通常通り見ることができます。</li>
+</ul>
+<h5>Ver. 1.5.0 α3～</h5>
+<ul>
+  <li>自分以外→自分の入村位置の上下左右の人以外</li>
 </ul>
 
 <h4><a id="weather_blind_talk_night">風雨</a> [Ver. 1.5.0 α2～]</h4>
@@ -360,6 +375,61 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="spec.php#vote_night">接触系能力者</a>の夜の投票が全て無効化されます。</li>
   <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
   <li><a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>の能力は有効、<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>の能力は無効です。</li>
+</ul>
+
+<h4><a id="weather_invisible">黄砂</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#invisible">光学迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_rainbow">虹</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#rainbow">虹色迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_side_reverse">ダイヤモンドダスト</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#side_reverse">鏡面迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_line_reverse">バナナの皮</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#line_reverse">天地迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_actor">スポットライト</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#actor">役者</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_critical_luck">タライ</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#critical_luck">痛恨</a>がつきます (昼限定)。</li>
+</ul>
+
+<h4><a id="weather_no_sudden_death">凪</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>サブ役職によるショック死が発生しなくなります。</li>
+</ul>
+
+<h4><a id="weather_thunderbolt">青天の霹靂</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>処刑投票結果が出るたびにランダムで誰か一人が落雷でショック死します。</li>
+  <li>死因は「落雷を受けたようです」で、サブ役職によるショック死より優先されます。</li>
+  <li>ショック死抑制能力者 (例：<a href="new_role/human.php#cure_pharmacist">河童</a>・<a href="new_role/human.php#revive_pharmacist">仙人</a>) の能力は有効です。</li>
+  <li><a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
+</ul>
+
+<h4><a id="weather_no_last_words">涙雨</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#no_last_words">筆不精</a>がつきます。</li>
+</ul>
+
+<h4><a id="weather_no_dream">熱帯夜</a> [Ver. 1.5.0 α3～]</h4>
+<ul>
+  <li><a href="spec.php#vote_night">夢系能力者</a>の夜の投票と一部の<a href="new_role/ability.php#dummy">夢系能力者</a>の能力が無効化されます。</li>
+  <li>対象となるのは<a href="new_role/human.php#dummy_mage">夢見人</a>・<a href="new_role/human.php#dummy_necromancer">夢枕人</a>・<a href="new_role/human.php#dummy_priest">夢司祭</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>です。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3><a id="festival"><?php echo $GAME_OPT_MESS->festival ?></a> [Ver. 1.4.0 β9～]</h3>

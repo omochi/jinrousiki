@@ -763,8 +763,18 @@ function OutputTalk($talk, &$builder){
       $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, $talk->scene) : false;
 
   default:
-    if($ROOM->IsEvent('blind_talk_day') && ! $said_user->IsSelf() && ! $SELF->IsDummyBoy()){
-      $talk->sentence = $MESSAGE->common_talk;
+    //強風判定 (身代わり君と本人は対象外)
+    if($ROOM->IsEvent('blind_talk_day') &&
+       ! $builder->flag->dummy_boy && ! $builder->actor->IsSame($talk->uname)){
+      //位置判定 (観戦者以外の上下左右)
+      $actor  = $builder->actor->user_no;
+      $target = $said_user->user_no;
+      if(is_null($actor) ||
+	 ! (abs($target - $actor) == 5 ||
+	    ($target == $actor - 1 && ($target % 5) != 0) ||
+	    ($target == $actor + 1 && ($actor  % 5) != 0))){
+	$talk->sentence = $MESSAGE->common_talk;
+      }
     }
     return $builder->AddTalk($said_user, $talk);
   }
@@ -1050,10 +1060,12 @@ function GenerateDeadMan(){
 function GenerateWeatherReport(){
   global $ROLE_DATA, $RQ_ARGS, $ROOM;
 
-  return is_null($ROOM->event->weather) ||
-    ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight()) ? '' :
-    '<div class="weather">今日の天候は<span>' .
-    $ROLE_DATA->weather_list[$ROOM->event->weather]['name'] . '</span>です</div>';
+  if(is_null($ROOM->event->weather) ||
+     ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight())) return '';
+
+  $weather = $ROLE_DATA->weather_list[$ROOM->event->weather];
+  return '<div class="weather">今日の天候は<span>' . $weather['name'] . '</span>です (' .
+    $weather['caption'] . ')</div>';
 }
 
 //前日に死亡メッセージの出力

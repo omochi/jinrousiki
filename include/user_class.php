@@ -1042,20 +1042,24 @@ class UserDataSet{
 
       case 'WEATHER':
 	$ROOM->event->weather = (int)$event['message']; //天候データを格納
-	$ROOM->SetWeather();
+	$ROOM->event->{$ROLE_DATA->weather_list[$ROOM->event->weather]['event']} = true;
 	break;
       }
     }
 
     if($ROOM->IsDay()){ //昼限定
-      foreach(array('invisible', 'earplug', 'grassy', 'mower', 'blinder') as $role){
+      $stack = array('invisible', 'rainbow', 'grassy', 'side_reverse', 'line_reverse', 'actor',
+		     'critical_luck', 'no_last_words', 'blinder', 'earplug', 'mower');
+      foreach($stack as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
     }
-    if($ROOM->IsEvent('mind_open')){ //昼夜両方 (現在は公開者のみ)
-      foreach($this->rows as $user) $user->AddVirtualRole('mind_open');
+    foreach(array('no_last_words', 'mind_open') as $role){ //昼夜両方
+      if($ROOM->IsEvent($role)){
+	foreach($this->rows as $user) $user->AddVirtualRole($role);
+      }
     }
 
     //影妖精の処理

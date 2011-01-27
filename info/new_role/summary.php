@@ -1909,7 +1909,7 @@ Ver. 1.4.0
   <td>Ver. 1.4.0 β20</td>
 </tr>
 <tr>
-  <td><a href="ogre.php#sacrifice_ogre" id="140beta21">毘沙門天</a></td>
+  <td><a href="ogre.php#dowser_yaksa" id="140beta21">毘沙門天</a></td>
   <td><a href="ogre.php">鬼</td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>

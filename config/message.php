@@ -116,6 +116,7 @@ class Message{
   var $febris             = 'は熱病にかかったようです'; //熱病
   var $frostbite          = 'は凍傷にかかったようです'; //凍傷
   var $warrant            = 'は死の宣告を受けたようです'; //死の宣告
+  var $thunderbolt        = 'は落雷を受けたようです'; //青天の霹靂
   var $challenge          = 'は難題を解けなかったようです'; //難題
   //花妖精のリスト (A-Z)
   var $flowered_a         = 'の頭の上に松の花が咲きました';

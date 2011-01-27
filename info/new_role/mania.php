@@ -43,7 +43,7 @@ OutputRolePageHeader('神話マニア陣営');
 <pre>
 神話マニア陣営の基本種。能力は<a href="#rule">基本ルール</a>参照。
 コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
-コピー成立後は<a href="sub_role.php#copied">元神話マニア</a>がつく。
+役職が変化すると<a href="sub_role.php#copied">元神話マニア</a>がつく。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -70,7 +70,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <a href="human.php#mage_group">占い師系</a>・<a href="lovers.php">恋人陣営</a>・<a href="chiroptera.php#fairy_group">妖精系</a>や、<a href="human.php#mind_scanner_group">さとり系</a>・<a href="wolf.php#mad_group">狂人系</a>・<a href="fox.php">妖狐陣営</a>の一部などがこれに該当します。
 
 2. A[奇術師] → B[<a href="human.php#yama_necromancer">閻魔</a>] =&gt; A[閻魔] B[霊能者]
-入れ替わりが発生してもコピー先には特にメッセージが出ないので、
+入れ替えが発生してもコピー先には特にメッセージが出ないので、
 朝、突然役職表記が入れ替わってしまうことになります。
 
 3. A[奇術師] → B[<a href="human.php#dummy_guard">夢守人</a>] =&gt; A[夢守人] B[狩人]
@@ -274,11 +274,12 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h3><a id="dummy_mania">夢語部</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] <a href="#soul_mania">覚醒者</a></h4>
+<h4>[耐性] 精神鑑定：嘘つき (変化前) / 獏襲撃：死亡 (変化前)</h4>
 <pre>
 コピー先の基本・劣化種に変化する特殊な神話マニア。
 本人の表記は「<a href="#soul_mania">覚醒者</a>」で、仕様も同じ。
 役職が変化すると<a href="sub_role.php#copied_teller">元夢語部</a>がつく。
-変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。
+変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡する。
 </pre>
 <table>
 <tr><th>コピー元</th><th>コピー結果</th><th>設定変更</th></tr>
@@ -433,6 +434,10 @@ CO するべきかどうかは、コピーした役職次第です。
   <td></td>
 </tr>
 </table>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#soul_mania">覚醒者</a>の夢バージョンです。
@@ -494,7 +499,7 @@ CO するべきかどうかは、コピーした役職次第です。
 コピー先を辿って判定します。
 
 12. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
-コピー先を辿る途中で自分に戻った場合は村人陣営になります。
+コピー先を辿る途中で同じ人に戻った場合は村人陣営になります。
 
 13. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
 神話マニアをコピーした場合はコピー結果の陣営になります。

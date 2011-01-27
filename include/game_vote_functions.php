@@ -1105,7 +1105,9 @@ function AggregateVoteDay(){
     if($role_flag->dummy_necromancer){ //夢枕人は「村人」⇔「人狼」反転
       if($necromancer_result == 'human')    $necromancer_result = 'wolf';
       elseif($necromancer_result == 'wolf') $necromancer_result = 'human';
-      $ROOM->SystemMessage($result_header . $necromancer_result, 'DUMMY_' . $action);
+      if(! $ROOM->IsEvent('no_dream')){ //熱帯夜ならスキップ
+	$ROOM->SystemMessage($result_header . $necromancer_result, 'DUMMY_' . $action);
+      }
     }
   }
 
@@ -1166,9 +1168,21 @@ function AggregateVoteDay(){
   }
   //PrintData($cupid_list, 'QP');
 
+  $thunderbolt_list = array(); //青天の霹靂判定用
+  if($ROOM->IsEvent('thunderbolt')){
+    $stack = array();
+    foreach($user_list as $uname){
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
+    }
+    //PrintData($stack, 'ThunderboltBase');
+    $thunderbolt_list[] = GetRandom($stack);
+    //PrintData($thunderbolt_list, 'ThunderboltTarget');
+  }
+
   foreach($live_uname_list as $this_uname){
     $user = $USERS->ByUname($this_uname);
-    $reason = '';
+    $reason = in_array($ROLES->actor->user_no, $thunderbolt_list) ? 'THUNDERBOLT' : '';
 
     if($ROOM->date > 4 && $user->IsRole('challenge_lovers')){ //難題
       $stack = array_keys($vote_target_list, $vote_target_list[$user->uname]);
@@ -1185,7 +1199,7 @@ function AggregateVoteDay(){
 
     $ROLES->actor = $user;
     foreach($ROLES->Load('sudden_death') as $filter) $filter->FilterSuddenDeath($reason);
-    if($reason == '') continue;
+    if($reason == '' || $ROOM->IsEvent('no_sudden_death')) continue;
 
     if(in_array($user->uname, $cure_target_list)){ //薬師系の治療判定
       foreach(array_keys($cure_target_list, $user->uname) as $uname){ //投票者を検出
@@ -1406,6 +1420,9 @@ function AggregateVoteNight($skip = false){
       $vote_data['VAMPIRE_DO']      = array();
       $vote_data['OGRE_DO']         = array();
     }
+    elseif($ROOM->IsEvent('no_dream')){ //熱帯夜 (夢能力者無効)
+      $vote_data['DREAM_EAT'] = array();
+    }
   }
 
   //-- 魔法使い系の振り替え処理 --//
@@ -1484,15 +1501,16 @@ function AggregateVoteNight($skip = false){
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
       $user = $USERS->ByUname($uname);
       if($user->IsRole('dummy_guard')){ //夢守人は罠無効
+	if($ROOM->IsEvent('no_dream')) continue; //熱帯夜ならスキップ
 	$dummy_guard_target_list[$user->uname] = $target_uname;
       }
-      elseif(! $ROOM->IsEvent('no_contact')){ //花曇ならスキップ
-	$guard_target_list[$user->uname] = $target_uname;
-	if(in_array($target_uname, $trap_target_list)) //罠死判定
-	  $trapped_list[] = $user->uname;
-	elseif(in_array($target_uname, $snow_trap_target_list)) //凍傷判定
-	  $frostbite_list[] = $user->uname;
-      }
+      elseif($ROOM->IsEvent('no_contact')) continue; //花曇ならスキップ
+
+      $guard_target_list[$user->uname] = $target_uname;
+      if(in_array($target_uname, $trap_target_list)) //罠死判定
+	$trapped_list[] = $user->uname;
+      elseif(in_array($target_uname, $snow_trap_target_list)) //凍傷判定
+	$frostbite_list[] = $user->uname;
     }
     //PrintData($guard_target_list, 'Target [guard]');
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
@@ -2157,6 +2175,7 @@ function AggregateVoteNight($skip = false){
     }
 
     if($user->IsRole('dummy_mage')){ //夢見人の判定
+      if($ROOM->IsEvent('no_dream')) continue; //熱帯夜ならスキップ
       $result = $target->DistinguishMage(true);
     }
     elseif(in_array($user->uname, $jammer_target_list)){ //月兎・月狐の妨害判定
@@ -2894,7 +2913,7 @@ function AggregateVoteNight($skip = false){
     if($role_flag->dowser_priest){
       $ROOM->SystemMessage((int)$live_count['sub_role'], 'DOWSER_PRIEST_RESULT');
     }
-    if($role_flag->dummy_priest){
+    if($role_flag->dummy_priest && ! $ROOM->IsEvent('no_dream')){
       $ROOM->SystemMessage((int)$live_count['dream'], 'DUMMY_PRIEST_RESULT');
     }
     if($role_flag->priest_jealousy){
