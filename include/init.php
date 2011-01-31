@@ -46,7 +46,7 @@ class InitializeConfig{
     'SCRIPT_INFO'         => 'version',
     'RQ_ARGS'             => 'request_class',
     'ROLES'               => 'role_class',
-    'TIME_CALC'           => 'time_calc',
+    'TIME_CALC'           => 'info_functions',
     'PAPARAZZI'           => 'paparazzi_class',
     'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',

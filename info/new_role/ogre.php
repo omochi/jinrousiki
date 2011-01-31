@@ -1,6 +1,7 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
+$INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('鬼陣営');
 ?>
 <p>

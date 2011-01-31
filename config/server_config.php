@@ -41,6 +41,9 @@ class ServerConfig{
   //サーバのコメント
   var $comment = '';
 
+  //管理者 (任意)
+  var $admin = '';
+
   //サーバの文字コード
   /*
     変更する場合は全てのファイル自体の文字コードを自前で変更してください
@@ -119,7 +122,7 @@ class SharedServerConfig extends SharedServerConfigBase{
 		   'encode' => 'EUC-JP',
 		   'separator' => '',
 		   'footer' => '</a><br>',
-		   'disable' => false),
+		   'disable' => true),
 
     'sanae' => array('name' => '早苗鯖',
 		     'url' => 'http://alicegame.dip.jp/sanae/',
@@ -243,7 +246,7 @@ class MenuLinkConfig extends MenuLinkConfigBase{
   var $add_list = array(
     '式神研系' => array('チルノ鯖' => 'http://www12.atpages.jp/cirno/',
 			'妖夢鯖' => 'http://www23.atpages.jp/youmu/',
-			'Eva 鯖' => 'http://jinrou.kuroienogu.net/',
+			//'Eva 鯖' => 'http://jinrou.kuroienogu.net/',
 			'SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 			'開発・バグ報告スレ' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',
 			'新役職提案スレ' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50'),
@@ -287,7 +290,7 @@ class BBSConfig extends BBSConfigBase{
   var $title = '告知スレッド情報'; //表示名
   var $raw_url = 'http://jbbs.livedoor.jp/bbs/rawmode.cgi'; //データ取得用 URL
   var $view_url = 'http://jbbs.livedoor.jp/bbs/read.cgi'; //表示用 URL
-  var $thread = '/game/43883/1260623018/'; //スレッドのアドレス
+  var $thread = '/game/43883/1275564772/'; //スレッドのアドレス
   var $encode = 'EUC-JP'; //スレッドの文字コード
   var $size = 5; //表示するレスの数
 }

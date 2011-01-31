@@ -1,6 +1,7 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
+$INIT_CONF->LoadFile('info_functions');
 OutputInfoPageHeader('開発者向け情報', 1);
 ?>
 <h2>デバッグモードについて</h2>
