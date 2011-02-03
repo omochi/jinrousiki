@@ -186,7 +186,7 @@ $RQ_ARGS->TestItems->test_users[23] =& new User();
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'scripter';
+$RQ_ARGS->TestItems->test_users[23]->role = 'emissary_necromancer';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24] =& new User();
@@ -200,7 +200,7 @@ $RQ_ARGS->TestItems->test_users[25] =& new User();
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[25]->role = 'revive_ogre disfavor mind_presage[24]';
+$RQ_ARGS->TestItems->test_users[25]->role = 'sacrifice_ogre disfavor mind_presage[24]';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -255,11 +255,11 @@ $RQ_ARGS->TestItems->vote_target_day = array(
 $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'dummy_boy'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'yellow'),
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'green'),
+  #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'green'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'purple'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'frame'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'white'),
-  #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'land'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'land'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'moon'),
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sun'),
@@ -300,8 +300,8 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'gold'),
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'cloud'),
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'moon'),
-  #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'sun'),
-  array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
+  array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'sun'),
+  #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'orange'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'black'),
@@ -355,8 +355,8 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'white'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
-  array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'light_gray'),
-  #array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
+  #array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'light_gray'),
+  array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
 );
 
@@ -367,7 +367,7 @@ $RQ_ARGS->TestItems->system_message = array();
 $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 19)
+  #array('type' => 'WEATHER', 'message' => 24)
   array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
@@ -376,10 +376,10 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 3;
+$ROOM->date = 4;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $role_view_mode = false;

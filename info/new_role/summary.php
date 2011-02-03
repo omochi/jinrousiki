@@ -35,7 +35,8 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <p>
 <a href="#main_role">メイン役職</a>
 Ver. 1.5.0
-<a href="#150alpha1">α1</a><br>
+<a href="#150alpha1">α1</a>
+<a href="#150alpha3">α3</a><br>
 Ver. 1.4.0
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-7</a>
@@ -2059,6 +2060,24 @@ Ver. 1.4.0
     魔法の効果は、<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#stargazer_mage">占星術師</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
   </td>
   <td>Ver. 1.5.0 α1</td>
+</tr>
+<tr>
+  <td><a href="human.php#embalm_necromancer" id="150alpha3">死化粧師</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#necromancer_group">霊能者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑者と処刑者の投票先の人の陣営が同じかどうか分かる特殊な霊能者。</td>
+  <td>Ver. 1.5.0 α3</td>
+</tr>
+<tr>
+  <td><a href="human.php#emissary_necromancer">密偵</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#necromancer_group">霊能者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑者に投票した人に処刑者と同一陣営の人が何人いるか分かる特殊な霊能者。</td>
+  <td>Ver. 1.5.0 α3</td>
 </tr>
 </table>
 

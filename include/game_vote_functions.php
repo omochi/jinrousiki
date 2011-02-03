@@ -751,7 +751,7 @@ function VoteDay(){
   //-- 投票処理 --//
   //役職に応じて投票数を補正
   $vote_number = 1;
-  $brownie_flag = false;
+  $brownie_flag = $ROOM->IsEvent('brownie');
   foreach($USERS->rows as $user){ //座敷童子の生存判定
     if($user->IsLiveRole('brownie')){
       $brownie_flag = true;
@@ -1100,6 +1100,30 @@ function AggregateVoteDay(){
     if($role_flag->soul_necromancer){ //雲外鏡の処理
       $str = $result_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
       $ROOM->SystemMessage($str, 'SOUL_' . $action);
+    }
+
+    if($role_flag->embalm_necromancer){ //死化粧師の処理
+      $str = $result_header;
+      if($flag_stolen){
+	$str .= 'stolen';
+      }
+      else{
+	$target = $USERS->ByRealUname($vote_target_list[$vote_target->uname]); //投票先を取得
+	$str .= 'embalm_' .
+	  ($vote_target->GetCamp(true) == $target->GetCamp(true) ? 'agony' : 'reposeful');
+      }
+      $ROOM->SystemMessage($str, 'EMBALM_' . $action);
+    }
+
+    if($role_flag->emissary_necromancer){ //密偵の処理
+      $camp  = $vote_target->GetCamp(true);
+      $count = 0;
+      //処刑者への投票者を検出して同一陣営の人をカウント
+      foreach(array_keys($vote_target_list, $vote_target->uname) as $voted_uname){
+	$voted_user = $USERS->ByRealUname($voted_uname);
+	if($camp == $voted_user->GetCamp(true)) $count++;
+      }
+      $ROOM->SystemMessage($count, 'EMISSARY_' . $action);
     }
 
     if($role_flag->dummy_necromancer){ //夢枕人は「村人」⇔「人狼」反転
@@ -1599,6 +1623,10 @@ function AggregateVoteNight($skip = false){
 	  //$rate = 5; //テスト用
 	  $ROLES->actor = $wolf_target;
 	  $resist_rate = $ROLES->Load('ogre', true)->resist_rate;
+
+	  //朧月なら確定無効 (茨木童子対応で +100 にはしない。また、現在の最低値は 20%)
+	  if($ROOM->IsEvent('full_ogre')) $resist_rate *= 10;
+	  elseif($ROOM->IsEvent('seal_ogre')) $resist_rate = 0;
 	  //PrintData("{$rate} ({$resist_rate})", 'Rate [ogre resist]');
 	  if($rate <= $resist_rate) break;
 	}
@@ -1925,7 +1953,13 @@ function AggregateVoteNight($skip = false){
       else{
 	$reduce_rate = 1 / 5;
       }
-      $ogre_rate = ceil(100 * pow($reduce_rate, $ogre_times));
+
+      if($ROOM->IsEvent('full_ogre'))
+	$ogre_rate = 100;
+      elseif($ROOM->IsEvent('seal_ogre'))
+	$ogre_rate = 0;
+      else
+	$ogre_rate = ceil(100 * pow($reduce_rate, $ogre_times));
       //PrintData($rate, 'Rate [OGRE_DO]: ' . $ogre_rate);
 
       if($rate <= $ogre_rate){
@@ -1939,10 +1973,12 @@ function AggregateVoteNight($skip = false){
 	  $ogre_target_list[$target_uname] = true; //人攫い対象者リストに追加
 	}
 
-	$base_role = $user->main_role; //成功回数更新処理
-	if($ogre_times > 0) $base_role .= '[' . $ogre_times . ']';
-	$new_role = $user->main_role . '[' . ($ogre_times + 1) . ']';
-	$user->ReplaceRole($base_role, $new_role);
+	if(! $ROOM->IsEvent('full_ogre')){ //朧月ならスキップ
+	  $base_role = $user->main_role; //成功回数更新処理
+	  if($ogre_times > 0) $base_role .= '[' . $ogre_times . ']';
+	  $new_role = $user->main_role . '[' . ($ogre_times + 1) . ']';
+	  $user->ReplaceRole($base_role, $new_role);
+	}
       }
     }
 
@@ -2149,15 +2185,12 @@ function AggregateVoteNight($skip = false){
   }
   //PrintData($jammer_target_list, 'Target [jammer_mad]');
 
-  //花妖精・星妖精のメッセージ作成用リスト
-  $flower_list = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-		       'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-
   //占い能力者の処理を合成 (array_merge() は $uname が整数だと添え字と認識されるので使わないこと)
   $mage_list = array();
   foreach(array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action){
     foreach($vote_data[$action] as $uname => $target_uname) $mage_list[$uname] = $target_uname;
   }
+  $flower_list = range('A', 'Z'); //花妖精・星妖精のメッセージ作成用リスト
 
   $phantom_user_list = array();
   foreach($mage_list as $uname => $target_uname){ //占い系の処理
@@ -2466,7 +2499,9 @@ function AggregateVoteNight($skip = false){
 	$wolf_target->Revive();
 	$wolf_target->LostAbility();
       }
-      elseif($wolf_target->IsRole('revive_ogre') && mt_rand(1, 100) <= 40){ //茨木童子の半知恵
+      //茨木童子の蘇生判定
+      elseif($wolf_target->IsRole('revive_ogre') && ! $ROOM->IsEvent('seal_ogre') &&
+	     ($ROOM->IsEvent('full_ogre') || mt_rand(1, 100) <= 40)){
 	$wolf_target->Revive();
       }
     }
@@ -2525,7 +2560,13 @@ function AggregateVoteNight($skip = false){
 
 	//蘇生判定
 	$missfire_rate = 0; //誤爆率
-	if($user->IsRole('poison_cat', 'revive_medium')){
+	if($ROOM->IsEvent('full_revive')){
+	  $revive_rate = 100;
+	}
+	elseif($ROOM->IsEvent('no_revive')){
+	  $revive_rate = 0;
+	}
+	elseif($user->IsRole('poison_cat', 'revive_medium')){
 	  $revive_rate = 25;
 	}
 	elseif($user->IsRole('revive_cat')){
@@ -2621,7 +2662,8 @@ function AggregateVoteNight($skip = false){
 	}while(false);
 
 	if($result == 'success'){
-	  if($user->IsRole('revive_cat')){ //仙狸の蘇生成功カウントを更新
+	  if($ROOM->IsEvent('full_revive')); //雷雨ならスキップ
+	  elseif($user->IsRole('revive_cat')){ //仙狸の蘇生成功カウントを更新
 	    //$revive_times = (int)$user->partner_list['revive_cat'][0]; //取得済みのはず
 	    $base_role = $user->main_role;
 	    if($revive_times > 0) $base_role .= '[' . $revive_times . ']';

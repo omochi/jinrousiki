@@ -44,7 +44,6 @@ class MessageImageBuilder{
     'sex_male'		=> array('R' =>   0, 'G' =>   0, 'B' => 255)
 			  );
 
-  function MessageImageBuilder($list){ $this->__construct($list); }
   function __construct($list){
     $font = "C:\\WINDOWS\\Fonts\\" . $this->font;
     $size = ($trans = $list == 'WishRoleList') ? 12 : 10;
@@ -134,6 +133,14 @@ class RoleMessageList{
 
   var $soul_necromancer = array(
     'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#雲外鏡#、役職を知ることができる#霊能者#です。全てを見抜くその鏡で_処刑_者の正体を暴くのです！",
+    'type' => 'necromancer');
+
+  var $embalm_necromancer = array(
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#死化粧師#です。_処刑_者の投票先がその人の敵か味方かを表情を通して知ることができます。",
+    'type' => 'necromancer');
+
+  var $emissary_necromancer = array(
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#密偵#です。_処刑_者に投票した人の中に_処刑_者と同じ陣営の人が何人いるのかを知ることができます。",
     'type' => 'necromancer');
 
   var $attempt_necromancer = array(
@@ -1131,6 +1138,8 @@ class RoleMessageList{
   var $result_dummy_mage = array('message' => "さんは|夢見人|でした", 'type' => 'result_mage');
   var $result_necromancer = array('message' => "さんは|霊能者|でした", 'delimiter' => array('|' => 'necromancer'));
   var $result_soul_necromancer = array('message' => "さんは|雲外鏡|でした", 'type' => 'result_necromancer');
+  var $result_embalm_necromancer = array('message' => "さんは|死化粧師|でした", 'type' => 'result_necromancer');
+  var $result_emissary_necromancer = array('message' => "さんは|密偵|でした", 'type' => 'result_necromancer');
   var $result_attempt_necromancer = array('message' => "さんは|蟲姫|でした", 'type' => 'result_necromancer');
   var $result_yama_necromancer = array('message' => "さんは|閻魔|でした", 'type' => 'result_necromancer');
   var $result_dummy_necromancer = array('message' => "さんは|夢枕人|でした", 'type' => 'result_necromancer');
@@ -1338,12 +1347,16 @@ class RoleMessageList{
   var $result_stargazer_mage_ability = array('message' => "さんは|投票能力|を持っています", 'type' => 'result_wolf');
   var $result_stargazer_mage_nothing = array('message' => "さんは投票能力を持っていません");
   var $result_stolen = array('message' => "さんの死体が盗まれました！");
+  var $result_embalm_reposeful = array('message' => "さんの死顔は安らかな表情でした");
+  var $result_embalm_agony = array('message' => "さんの死顔は|苦悶|の表情でした", 'type' => 'result_wolf');
   var $result_attempt = array('message' => "さんは命を狙われたようです");
 
   var $mage_result = array('message' => "|占い|結果： ", 'type' => 'result_mage');
   var $voodoo_killer_success = array('message' => "さんの|解呪|に成功しました！", 'type' => 'result_mage');
   var $necromancer_result = array('message' => "|霊能|結果： ", 'type' => 'result_necromancer');
   var $medium_result = array('message' => "|神託|結果： ", 'type' => 'result_medium');
+  var $emissary_necromancer_header = array('message' => "#霊能#結果： _処刑_者に投票した_処刑_者と同一陣営の人は",
+					   'type' => 'necromancer');
   var $priest_header = array('message' => "|神託|結果： 現在、生存している#村人#陣営は",
 			     'delimiter' => array('|' => 'priest', '#' => 'human'));
   var $priest_footer = array('message' => "人です");
@@ -1432,6 +1445,9 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-$builder->Output('wizard');
+#$builder->Output('embalm_necromancer');
+#$builder->Output('emissary_necromancer');
+$builder->Output('emissary_necromancer_header');
+#$builder->Output('wizard');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');

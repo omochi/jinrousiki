@@ -719,9 +719,16 @@ function OutputSelfAbilityResult($action){
 
   case 'NECROMANCER_RESULT':
   case 'SOUL_NECROMANCER_RESULT':
+  case 'EMBALM_NECROMANCER_RESULT':
   case 'ATTEMPT_NECROMANCER_RESULT':
   case 'DUMMY_NECROMANCER_RESULT':
     $type = 'necromancer';
+    break;
+
+  case 'EMISSARY_NECROMANCER_RESULT':
+    $type = 'priest';
+    $header = 'emissary_necromancer_header';
+    $footer = 'priest_footer';
     break;
 
   case 'MEDIUM_RESULT':

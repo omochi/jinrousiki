@@ -56,11 +56,9 @@ EOF;
 
 //情報一覧ページ HTML ヘッダ出力
 function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
-  global $SERVER_CONF;
-
-  $info = $level == 0 ? './' : str_repeat('../', $level);
   $top  = str_repeat('../', $level + 1);
-  OutputHTMLHeader($SERVER_CONF->title . '[' . $title . ']', $css);
+  $info = $level == 0 ? './' : str_repeat('../', $level);
+  OutputHTMLHeader('[' . $title . ']', $css);
   echo <<<EOF
 </head>
 <body>

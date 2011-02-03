@@ -586,6 +586,8 @@ class RoleData{
     'dummy_mage'           => '夢見人',
     'necromancer'          => '霊能者',
     'soul_necromancer'     => '雲外鏡',
+    'embalm_necromancer'   => '死化粧師',
+    'emissary_necromancer' => '密偵',
     'attempt_necromancer'  => '蟲姫',
     'yama_necromancer'     => '閻魔',
     'dummy_necromancer'    => '夢枕人',
@@ -886,6 +888,8 @@ class RoleData{
     'dummy_mage'           => '夢見',
     'necromancer'          => '霊',
     'soul_necromancer'     => '雲',
+    'embalm_necromancer'   => '粧',
+    'emissary_necromancer' => '密偵',
     'attempt_necromancer'  => '蟲姫',
     'yama_necromancer'     => '閻',
     'dummy_necromancer'    => '夢枕',
@@ -1165,7 +1169,7 @@ class RoleData{
     'joker'                => '道化');
 
   //メイン役職のグループリスト (役職 => 所属グループ)
-  // このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
+  //このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
   var $main_role_group_list = array(
     'wolf' => 'wolf',
     'mad' => 'mad',
@@ -1285,7 +1289,22 @@ class RoleData{
 		'caption' => '全員 筆不精'),
     19 => array('name'    => '熱帯夜',
 		'event'   => 'no_dream',
-		'caption' => '夢能力封印'));
+		'caption' => '夢能力封印'),
+    20 => array('name'    => '朧月',
+		'event'   => 'full_ogre',
+		'caption' => '鬼強化'),
+    21 => array('name'    => '叢雲',
+		'event'   => 'seal_ogre',
+		'caption' => '鬼封印'),
+    22 => array('name'    => '雷雨',
+		'event'   => 'full_revive',
+		'caption' => '蘇生強化'),
+    23 => array('name'    => '快晴',
+		'event'   => 'no_revive',
+		'caption' => '蘇生封印'),
+    24 => array('name'    => '慈雨',
+		'event'   => 'brownie',
+		'caption' => '村人投票数 +1'));
 
   //-- 関数 --//
   //役職グループ判定

@@ -340,16 +340,24 @@ class User{
 
   //暗殺反射判定
   function IsRefrectAssassin(){
+    global $ROOM;
+
     $rate = mt_rand(1, 100);
+    $ogre = false;
+    if($this->IsOgre()){
+      if($ROOM->IsEvent('full_ogre')) $ogre = true;
+      elseif(! $ROOM->IsEvent('seal_ogre')){
+	$ogre = ($this->IsRole('sacrifice_ogre') && $rate <= 50) ||
+	  ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
+			 'power_ogre', 'revive_ogre', 'dowser_yaksa') && $rate <= 40) ||
+	  ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
+	  ($this->IsRoleGroup('yaksa') && $rate <= 20);
+      }
+    }
     return $this->IsLive(true) &&
       ($this->IsRole('reflect_guard', 'detective_common', 'cursed_fox', 'soul_vampire') ||
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
-       ($this->IsRole('cursed_brownie') && $rate <= 30) ||
-       ($this->IsRole('sacrifice_ogre') && $rate <= 50) ||
-       ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
-		      'power_ogre', 'revive_ogre', 'dowser_yaksa') && $rate <= 40) ||
-       ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
-       ($this->IsRoleGroup('yaksa') && $rate <= 20));
+       ($this->IsRole('cursed_brownie') && $rate <= 30) || $ogre);
   }
 
   //憑依制限判定

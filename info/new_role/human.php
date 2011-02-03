@@ -32,20 +32,20 @@ OutputRolePageHeader('村人陣営');
 <h2><a id="change_human_camp">所属変更</a></h2>
 <h3>Ver. 1.4.0 β22～</h3>
 <pre>
-<a href="#escaper">逃亡者</a>の所属を<a href="#human_group">村人系</a>から<a href="#escaper_group">逃亡者系</a>に変更。
+<a href="#escaper">逃亡者</a>：<a href="#human_group">村人系</a>→<a href="#escaper_group">逃亡者系</a>
 </pre>
 <h3>Ver. 1.4.0 β16～</h3>
 <pre>
-<a href="#brownie">座敷童子</a>の所属を<a href="#human_group">村人系</a>から<a href="#brownie_group">座敷童子系</a>に変更。
+<a href="#brownie">座敷童子</a>：<a href="#human_group">村人系</a>→<a href="#brownie_group">座敷童子系</a>
 </pre>
 <h3>Ver. 1.4.0 β13～</h3>
 <pre>
-<a href="mania.php#mania_group">神話マニア系</a>の所属を村人陣営から<a href="mania.php">神話マニア陣営</a>に変更。
-<a href="#medium">巫女</a>の所属を<a href="#necromancer_group">霊能者系</a>から<a href="#medium_group">巫女系</a>に変更。
+<a href="mania.php#mania_group">神話マニア系</a>：村人陣営→<a href="mania.php">神話マニア陣営</a>
+<a href="#medium">巫女</a>：<a href="#necromancer_group">霊能者系</a>→<a href="#medium_group">巫女系</a>
 </pre>
 <h3>Ver. 1.4.0 β2～</h3>
 <pre>
-<a href="#poison_cat">猫又</a>の所属を<a href="#poison_group">埋毒者系</a>から<a href="#poison_cat_group">猫又系</a>に変更。
+<a href="#poison_cat">猫又</a>：<a href="#poison_group">埋毒者系</a>→<a href="#poison_cat_group">猫又系</a>
 </pre>
 
 
@@ -220,9 +220,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 
 <h2><a id="mage_group">占い師系</a></h2>
-<p>
-<a href="#mage_rule">基本ルール</a>
-</p>
+<p><a href="#mage_rule">基本ルール</a></p>
 <p>
 <a href="#mage">占い師</a>
 <a href="#soul_mage">魂の占い師</a>
@@ -416,6 +414,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <p>
 <a href="#necromancer">霊能者</a>
 <a href="#soul_necromancer">雲外鏡</a>
+<a href="#embalm_necromancer">死化粧師</a>
+<a href="#emissary_necromancer">密偵</a>
 <a href="#attempt_necromancer">蟲姫</a>
 <a href="#yama_necromancer">閻魔</a>
 <a href="#dummy_necromancer">夢枕人</a>
@@ -449,6 +449,43 @@ PP ラインの計算を難しくさせるために作成してみました。
 占いと違ってメリットが少ないので後回しにしていましたが<a href="#dummy_necromancer">夢枕人</a>とセットで出すことで
 こっちは本人視点、判定に偽りが絶対に無いというアドバンテージが与えられます。
 しかし、「死人に口無し」故に<a href="#soul_mage">魂の占い師</a>よりもはるかに騙りやすいですね。
+</pre>
+
+<h3><a id="embalm_necromancer">死化粧師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α3～]</h3>
+<h4>[霊能能力] 処刑者情報：無し / 火車：有効</h4>
+<pre>
+処刑者と処刑者の投票先の人の陣営が同じかどうか分かる特殊な霊能者。
+霊能結果は「～さんの死顔は安らかな/苦悶の表情でした」の二種類で、
+違う陣営なら「安らかな～」、同一陣営なら「苦悶の～」と判定される。
+恋人は恋人陣営と判定される。
+通常の<a href="#necromancer">霊能者</a>の能力は持っていない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#emissary_necromancer">密偵</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方陰陽鉄のプレイヤーさんとの雑談から生まれた役職です。
+霊能や投票結果と合わせることで推理を発展させることができますが、
+非常に騙りやすいですね。
+</pre>
+
+<h3><a id="emissary_necromancer">密偵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α3～]</h3>
+<h4>[霊能能力] 処刑者情報：無し / 火車：無効</h4>
+<pre>
+処刑者に投票した人に処刑者と同一陣営の人が何人いるか分かる特殊な霊能者。
+恋人は恋人陣営と判定される。
+通常の<a href="#necromancer">霊能者</a>の能力は持っていない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#embalm_necromancer">死化粧師</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方陰陽鉄のプレイヤーさんとの雑談から生まれた役職です。
+<a href="#embalm_necromancer">死化粧師</a>と同様に投票先から推理を組み立てることが可能になります。
 </pre>
 
 <h3><a id="attempt_necromancer">蟲姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>

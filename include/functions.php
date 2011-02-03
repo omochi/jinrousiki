@@ -337,7 +337,7 @@ function ConvertTrip($str){
   return EscapeStrings($str); //特殊文字のエスケープ
 }
 
-//改行コードを <br> に変換する (nl2br() だと <br /> なので HTML 4.01 だと不向き)
+//改行コードを <br> に変換する (PHP5.3 以下の nl2br() だと <br /> 固定なので HTML 4.01 だと不向き)
 function LineToBR(&$str){
   $str = str_replace("\n", '<br>', $str);
   return $str;
