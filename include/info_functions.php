@@ -29,31 +29,6 @@ class TimeCalculation{
 }
 
 //-- 関数定義 --//
-//共有フレーム HTML ヘッダ出力
-function OutputFrameHTMLHeader($title){
-  global $SERVER_CONF;
-
-  echo <<<EOF
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
-<title>{$title}</title>
-</head>
-
-EOF;
-}
-
-//フレーム HTML フッタ出力
-function OutputFrameHTMLFooter(){
-  echo <<<EOF
-<noframes><body>
-フレーム非対応のブラウザの方は利用できません。
-</body></noframes>
-</frameset></html>
-
-EOF;
-}
-
 //情報一覧ページ HTML ヘッダ出力
 function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
   $top  = str_repeat('../', $level + 1);

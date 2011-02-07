@@ -319,7 +319,7 @@ function OutputTimeTable(){
 
 //プレイヤー一覧生成
 function GeneratePlayerList(){
-  global $DEBUG_MODE, $ICON_CONF, $ROOM, $USERS, $SELF;
+  global $SERVER_CONF, $ICON_CONF, $ROOM, $USERS, $SELF;
 
   //PrintData($ROOM->event); //テスト用
   $beforegame = $ROOM->IsBeforeGame();
@@ -360,7 +360,7 @@ function GeneratePlayerList(){
 
     //HN を追加
     $str .= $td_header . '<font color="' . $user->color . '">◆</font>' . $user->handle_name;
-    if($DEBUG_MODE) $str .= ' (' . $id . ')';
+    if($SERVER_CONF->debug_mode) $str .= ' (' . $id . ')';
     $str .= '<br>'."\n";
 
     if($open_data){ //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示

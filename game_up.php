@@ -1,10 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>汝は人狼なりや？[発言]</title>
-<link rel="stylesheet" href="css/game_up.css">
+<?php
+require_once('include/init.php');
+OutputHTMLHeader($SERVER_CONF->title . '[発言]', 'game_up');
+?>
 <link rel="stylesheet" id="day_night">
 <script type="text/javascript" src="javascript/game_up.js"></script>
 </head>

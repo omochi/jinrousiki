@@ -50,8 +50,8 @@ class RequestBase{
   }
 
   function AttachTestParameters(){
-    global $DEBUG_MODE;
-    if($DEBUG_MODE) $this->TestItems = new TestParams();
+    global $SERVER_CONF;
+    if($SERVER_CONF->debug_mode) $this->TestItems = new TestParams();
   }
 
   function IsVirtualRoom(){

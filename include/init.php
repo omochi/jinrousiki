@@ -13,10 +13,6 @@ define('JINRO_CSS',  JINRO_ROOT . '/css');
 define('JINRO_IMG',  JINRO_ROOT . '/img');
 define('JINRO_MOD',  JINRO_ROOT . '/module');
 
-//-- デバッグモードのオン/オフ --//
-#$DEBUG_MODE = false;
-$DEBUG_MODE = true;
-
 //-- クラスを定義 --//
 /*
   初期化の読み込みを最適化するのが目的なので、依存情報に
@@ -55,7 +51,8 @@ class InitializeConfig{
     'server_config'       => 'system_class', //常時ロードされる
     'system_class'        => array('functions', 'room_class'), //常時ロードされる
     'room_class'          => 'option_class',
-    'role_class'          => 'game_format'
+    'role_class'          => 'game_format',
+    'paparazzi_class'     => 'paparazzi'
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
@@ -160,6 +157,7 @@ class InitializeConfig{
 
     case 'chatengine':
     case 'feedengine':
+    case 'paparazzi':
     case 'paparazzi_class':
     case 'role_class':
       $path = $this->path->include . '/' . array_shift(explode('_', $name));
@@ -198,16 +196,16 @@ class InitializeConfig{
 }
 
 //-- 初期化処理 --//
-require_once(JINRO_INC . '/paparazzi/paparazzi.php');
-
 $INIT_CONF =& new InitializeConfig();
-if($DEBUG_MODE) $INIT_CONF->LoadClass('PAPARAZZI');
 
 //mbstring 非対応の場合、エミュレータを使用する
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
 $INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
 if(FindDangerValue($_REQUEST) || FindDangerValue($_SERVER)) die;
+
+//デバッグ用ツールをロード
+$SERVER_CONF->debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');
 
 //PrintData($INIT_CONF); //テスト用
 

@@ -372,7 +372,7 @@ function GenerateRoleNameList($role_count_list, $css = false){
 function AggregateVoteGameStart($force_start = false){
   global $CAST_CONF, $MESSAGE, $ROLE_DATA, $ROOM, $USERS;
 
-  $user_count = $USERS->GetUserCount(true); //ユーザ総数を取得
+  $user_count = $USERS->GetUserCount(); //ユーザ総数を取得
   if($ROOM->test_mode){
     $vote_count = $user_count;
   }
@@ -1527,6 +1527,7 @@ function AggregateVoteNight($skip = false){
       if($user->IsRole('dummy_guard')){ //夢守人は罠無効
 	if($ROOM->IsEvent('no_dream')) continue; //熱帯夜ならスキップ
 	$dummy_guard_target_list[$user->uname] = $target_uname;
+	continue;
       }
       elseif($ROOM->IsEvent('no_contact')) continue; //花曇ならスキップ
 

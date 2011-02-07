@@ -37,7 +37,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $DEBUG_MODE, $SERVER_CONF, $ROOM_CONF, $USER_ICON, $MESSAGE;
+  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $MESSAGE;
 
   if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
@@ -72,7 +72,7 @@ function CreateRoom(){
   $ip_address = $_SERVER['REMOTE_ADDR']; //村立てを行ったユーザの IP を取得
 
   //デバッグモード時は村立て制限をしない
-  if(! $DEBUG_MODE){
+  if(! $SERVER_CONF->debug_mode){
     if(isset($SERVER_CONF->room_password) &&
        $SERVER_CONF->room_password != $_POST['room_password']){ //パスワードチェック
       OutputRoomAction('room_password');
@@ -418,12 +418,12 @@ function OutputRoomAction($type, $room_name = ''){
 
 //村(room)のwaitingとplayingのリストを出力する
 function OutputRoomList(){
-  global $DEBUG_MODE, $SERVER_CONF, $ROOM_IMG;
+  global $SERVER_CONF, $ROOM_IMG;
 
   if($SERVER_CONF->secret_room) return; //シークレットテストモード
 
   /* RSS機能はテスト中
-  if(! $DEBUG_MODE){
+  if(! $SERVER_CONF->debug_mode){
     $filename = JINRO_ROOT.'/rss/rooms.rss';
     if(file_exists($filename)){
       $rss = FeedEngine::Initialize('site_summary.php');
@@ -457,7 +457,7 @@ function OutputRoomList(){
 
 EOF;
 
-    if($DEBUG_MODE){
+    if($SERVER_CONF->debug_mode){
       echo '<a href="admin/room_delete.php?room_no=' . $room_no . '">' .
 	$room_no . ' 番地を削除 (緊急用)</a><br>'."\n";
     }

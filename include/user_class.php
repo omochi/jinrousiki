@@ -971,13 +971,8 @@ class UserDataSet{
   }
 
   //ユーザ数カウント
-  function GetUserCount($strict = false){
-    if(! $strict) return count($this->rows);
-    $count = 0;
-    foreach($this->rows as $user){
-      if($user->user_no > 0) $count++;
-    }
-    return $count;
+  function GetUserCount($all = false){
+    return count($all ? $this->names : $this->rows);
   }
 
   //所属陣営を判定してキャッシュする

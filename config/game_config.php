@@ -190,6 +190,9 @@ class GameConfig extends GameConfigBase{
 
   //-- 表示設定 --//
   var $quote_words = false; //発言を「」で括る
+  var $replace_talk = false; //発言置換モード：発言内容の一部を強制置換する
+  var $replace_talk_list = array(); //発言置換モードの変換リスト
+  //var $replace_talk_list = array('◆' => '◇'); //流石ツール対応例
   var $display_talk_limit = 500; //ゲーム開始前後の発言表示数の限界値
 
   //-- 投票 --//

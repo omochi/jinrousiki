@@ -136,7 +136,7 @@ class RoleMessageList{
     'type' => 'necromancer');
 
   var $embalm_necromancer = array(
-    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#死化粧師#です。_処刑_者の投票先がその人の敵か味方かを表情を通して知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#死化粧師#です。_処刑_者の投票先がその人の敵か味方かを表情を通して知ることができます。\n　「そんな顔をしないで？あなたの想いは私がみんなに伝えるから…だから、どうか安らかに眠って」",
     'type' => 'necromancer');
 
   var $emissary_necromancer = array(
@@ -1445,9 +1445,7 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('embalm_necromancer');
-#$builder->Output('emissary_necromancer');
-$builder->Output('emissary_necromancer_header');
+$builder->Output('emissary_necromancer');
 #$builder->Output('wizard');
 #$builder->Output('revive_doll');
 #$builder->Output('scarlet_doll');

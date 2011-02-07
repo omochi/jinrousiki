@@ -10,7 +10,7 @@ $DB_CONF->Disconnect(); //DB 接続解除
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $DEBUG_MODE, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
+  global $SERVER_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
 
@@ -75,7 +75,7 @@ function EntryUser(){
 
   //IPアドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-  if(! $DEBUG_MODE){
+  if(! $SERVER_CONF->debug_mode){
     if(CheckBlackList()){
       OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。', '', true);
     }
@@ -96,7 +96,7 @@ function EntryUser(){
 
   $ROOM = RoomDataSet::LoadEntryUser($room_no); //DBから最大人数を取得
   $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
-  $user_count = $USERS->GetUserCount(true); //現在の KICK されていない住人の数を取得
+  $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
 
   //定員オーバーしているとき
   if($user_count >= $ROOM->max_user){

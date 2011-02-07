@@ -9,10 +9,13 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </p>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 α2 アップロード (2011/01/21 (Fri) 07:38) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 α3 アップロード (2011/02/04 (Fri) 04:03) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#150alpha2">デバッグ情報</a> (2011/01/24 (Mon) 02:14)</li>
-  <li>ゲームオプション「天候あり」実装</li>
+  <li>→ <a href="info/develop/debug.php#150alpha3">デバッグ情報</a> (2011/02/07 (Mon) 22:22)</li>
+  <li>「死化粧師」「密偵」実装</li>
+  <li>天候「黄砂」「虹」「ダイヤモンドダスト」「バナナの皮」「スポットライト」「タライ」<br>
+    「凪」「青天の霹靂」「涙雨」「熱帯夜」「朧月」「叢雲」「雷雨」「快晴」「慈雨」実装
+  </li>
 </ul>
 
 <h1>開発状況</h1>
@@ -23,6 +26,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>天候「黄砂」「虹」「ダイヤモンドダスト」「バナナの皮」「スポットライト」<br>
-    「タライ」「凪」「青天の霹靂」「涙雨」「熱帯夜」実装</li>
+  <li>なし</li>
 </ul>

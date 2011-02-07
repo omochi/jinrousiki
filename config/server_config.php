@@ -62,6 +62,10 @@ class ServerConfig{
   #var $salt = 'xxxx';
   var $salt = 'testtest';
 
+  //デバッグモードのオン/オフ
+  #var $debug_mode = false;
+  var $debug_mode = true;
+
   //村作成パスワード (NULL 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
   var $room_password = NULL;
 

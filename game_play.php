@@ -8,7 +8,7 @@ $INIT_CONF->LoadRequest('RequestGamePlay'); //引数を取得
 if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
 $DB_CONF->Connect(); //DB 接続
-$SESSION->Certify(); //セッション認証
+$SESSION->CertifyGamePlay(); //セッション認証
 
 $ROOM =& new Room($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
@@ -35,36 +35,33 @@ if($ROOM->IsBeforeGame()){
 elseif($ROOM->IsFinished()){
   $INIT_CONF->LoadClass('VICT_MESS'); //勝敗結果表示用
 }
-
-//必要なクッキーをセットする
-$objection_list = array(); //SendCookie();で格納される・異議ありの情報
-$objection_left_count = 0;  //SendCookie();で格納される・異議ありの残り回数
-SendCookie();
+SendCookie(&$OBJECTION); //必要なクッキーをセットする
 
 //-- 発言処理 --//
-ConvertSay(&$RQ_ARGS->say); //発言置換処理
+if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは bottom フレーム
+  ConvertSay(&$RQ_ARGS->say); //発言置換処理
 
-if($RQ_ARGS->say == ''){
-  CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
-}
-elseif($RQ_ARGS->last_words && ! $SELF->IsDummyBoy()){
-  EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
-}
-elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
-  Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
-}
-else{
-  CheckSilence(); //発言ができない状態ならゲーム停滞チェック
-}
+  if($RQ_ARGS->say == ''){
+    CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
+  }
+  elseif($RQ_ARGS->last_words && ! $SELF->IsDummyBoy()){
+    EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
+  }
+  elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
+    Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
+  }
+  else{
+    CheckSilence(); //発言ができない状態ならゲーム停滞チェック
+  }
 
-if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
-  $SELF->Update('last_load_day_night', $ROOM->day_night);
+  if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
+    $SELF->Update('last_load_day_night', $ROOM->day_night);
+  }
 }
 
 //-- データ出力 --//
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
-
 if(! $ROOM->heaven_mode){
   if(! $RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
   OutputAbility(); //自分の役割の説明
@@ -87,46 +84,14 @@ OutputHTMLFooter();
 
 //-- 関数 --//
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
-function SendCookie(){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $SELF, $objection_list, $objection_left_count;
+function SendCookie(&$objection_list){
+  global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  //<夜明けを音でお知らせ用>
+  //-- 夜明け --
   //クッキーに格納 (夜明けに音でお知らせで使う・有効期限一時間)
   setcookie('day_night', $ROOM->day_night, $ROOM->system_time + 3600);
 
-  //-- 「異議」ありを音でお知らせ用 --//
-  //今までに自分が「異議」ありをした回数を取得
-  $base_query = ' FROM system_message' . $ROOM->GetQuery(false)  . " AND type = 'OBJECTION' ";
-  $query = "SELECT COUNT(message) {$base_query} AND message = '{$SELF->user_no}'";
-  $self_objection_count = FetchResult($query);
-
-  //生きていて(ゲーム終了後は死者でもOK)「異議」あり、のセット要求があればセットする(最大回数以内の場合)
-  if($SELF->IsLive() && ! $ROOM->IsNight() && $RQ_ARGS->set_objection &&
-     $self_objection_count < $GAME_CONF->objection){
-    $ROOM->SystemMessage($SELF->user_no, 'OBJECTION');
-    $ROOM->Talk('OBJECTION', $SELF->uname);
-  }
-
-  //ユーザ総数を取得して人数分の「異議あり」のクッキーを構築する
-  $user_count = FetchResult($ROOM->GetQuery(false, 'user_entry') . ' AND user_no > 0');
-  // 配列をリセット (0 番目に変な値が入らない事が保証されていれば不要かな？)
-  // キックで欠番が出ると色々面倒な事になりそう
-  // $objection_list = array();
-  // unset($objection_list[0]);
-  $objection_list = array_fill(0, $user_count, 0); //index は 0 から
-
-  //message:異議ありをしたユーザ No とその回数を取得
-  $query = 'SELECT message, COUNT(message) AS count' . $base_query . 'GROUP BY message';
-  foreach(FetchAssoc($query) as $stack){
-    $objection_list[(int)$stack['message'] - 1] = (int)$stack['count'];
-  }
-  //クッキーに格納 (有効期限一時間)
-  setcookie('objection', implode(',', $objection_list), $ROOM->system_time + 3600);
-
-  //残り異議ありの回数
-  $objection_left_count = $GAME_CONF->objection - $objection_list[$SELF->user_no - 1];
-
-  //<再投票を音でお知らせ用>
+  //-- 再投票 --//
   //再投票の回数を取得
   if(($last_vote_times = $ROOM->GetVoteTimes(true)) > 0){ //クッキーに格納 (有効期限一時間)
     setcookie('vote_times', $last_vote_times, $ROOM->system_time + 3600);
@@ -134,15 +99,40 @@ function SendCookie(){
   else{ //クッキーから削除 (有効期限一時間)
     setcookie('vote_times', '', $ROOM->system_time - 3600);
   }
+
+  //-- 「異議」あり --//
+  $user_count = $USERS->GetUserCount(true); //KICK も含めたユーザ総数を取得
+  $objection_list = array_fill(0, $user_count, 0); //配列をセット (index は 0 から)
+
+  //「異議」ありをしたユーザ No とその回数を取得
+  $query = 'SELECT message, COUNT(message) AS count FROM system_message' . $ROOM->GetQuery(false) .
+    " AND type = 'OBJECTION' GROUP BY message";
+  foreach(FetchAssoc($query) as $stack){
+    $objection_list[(int)$stack['message'] - 1] = (int)$stack['count'];
+  }
+
+  //「異議」ありセット判定
+  if($RQ_ARGS->set_objection && $objection_list[$SELF->user_no - 1] < $GAME_CONF->objection &&
+     ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))){
+    $ROOM->SystemMessage($SELF->user_no, 'OBJECTION');
+    $ROOM->Talk('OBJECTION', $SELF->uname);
+    $objection_list[$SELF->user_no - 1]++; //使用回数をインクリメント
+  }
+  //クッキーに格納 (有効期限一時間)
+  setcookie('objection', implode(',', $objection_list), $ROOM->system_time + 3600);
+  $SELF->objection_count = $objection_list[$SELF->user_no - 1]; //残り異議ありの回数をセット
 }
 
 //発言置換処理
 function ConvertSay(&$say){
   global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
 
-  //リロード時・死者・ゲームプレイ中以外なら処理スキップ
-  if($say == '' || $SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
-  //if($say == '' || $SELF->IsDead()) return false; //テスト用
+  if($say == '') return false; //リロード時なら処理スキップ
+  if($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
+
+  //死者・ゲームプレイ中以外なら以降はスキップ
+  if($SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
+  //if($SELF->IsDead()) return false; //テスト用
 
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
   $ROLES->actor = $virtual_self;
@@ -155,15 +145,13 @@ function ConvertSay(&$say){
   //紳士・淑女置換
   elseif($virtual_self->IsRole('gentleman', 'lady') &&
 	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
-    $role   = $virtual_self->IsRole('gentleman') ? 'gentleman' : 'lady';
-    $header = $role . '_header';
-    $footer = $role . '_footer';
+    $role = $virtual_self->IsRole('gentleman') ? 'gentleman' : 'lady';
 
-    $stack = array();
-    foreach($USERS->rows as $user){ //自分以外の生存者の HN を取得
-      if(! $user->IsSelf() && $user->IsLive()) $stack[] = $user->handle_name;
-    }
-    $say = $MESSAGE->$header . GetRandom($stack) . $MESSAGE->$footer;
+    $stack = $USERS->GetLivingUsers(); //生存者のユーザ名を取得
+    unset($stack[array_search($virtual_self->uname, $stack)]); //自分を削除
+
+    $say = $MESSAGE->{$role . '_header'} . $USERS->GetHandleName(GetRandom($stack), true) .
+      $MESSAGE->{$role . '_footer'};
   }
   //狼少年変換
   elseif($virtual_self->IsRole('liar') && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
@@ -370,7 +358,7 @@ function CheckSilence(){
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
-    $COOKIE, $SOUND, $objection_list, $objection_left_count;
+    $COOKIE, $SOUND, $OBJECTION;
 
   $url_room   = '?room_no=' . $ROOM->id;
   $url_reload = $RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '';
@@ -454,10 +442,10 @@ EOF;
 
     //異議あり、を音で知らせる
     $cookie_objection_list = explode(',', $COOKIE->objection); //クッキーの値を配列に格納する
-    $count = count($objection_list);
+    $count = count($OBJECTION);
     for($i = 0; $i < $count; $i++){ //差分を計算 (index は 0 から)
       //差分があれば性別を確認して音を鳴らす
-      if((int)$objection_list[$i] > (int)$cookie_objection_list[$i]){
+      if((int)$OBJECTION[$i] > (int)$cookie_objection_list[$i]){
 	$SOUND->Output('objection_' . $USERS->ByID($i + 1)->sex);
       }
     }
@@ -513,12 +501,13 @@ EOF;
   if($ROOM->IsBeforeGame() ||
      ($ROOM->IsDay() && ! $ROOM->dead_mode && ! $ROOM->heaven_mode && $left_time > 0)){
     $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list . '#game_top';
+    $count = $GAME_CONF->objection - $SELF->objection_count;
     echo <<<EOF
 <td class="objection"><form method="POST" action="{$url}">
 <input type="hidden" name="set_objection" value="on">
 <input type="image" name="objimage" src="{$GAME_CONF->objection_image}" border="0">
 </form></td>
-<td>({$objection_left_count})</td>
+<td>({$count})</td>
 
 EOF;
   }

@@ -101,12 +101,37 @@ class Session{
       return true;
     }
 
-    if($exit){ //エラー処理
-      $title = 'セッション認証エラー';
-      $str = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
-      OutputActionResult($title, $str);
-    }
+    if($exit) $this->OutputError(); //エラー処理
     return false;
+  }
+
+  //認証 (game_play 専用)
+  function CertifyGamePlay(){
+    global $RQ_ARGS;
+
+    if($this->Certify(false)) return true;
+
+    //村が存在するなら観戦ページにジャンプする
+    if(FetchResult("SELECT COUNT(room_no) FROM room WHERE room_no = {$RQ_ARGS->room_no}") > 0){
+      $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
+      $title = '観戦ページにジャンプ';
+      $body .= "観戦ページに移動します。<br>\n" .
+	'切り替わらないなら <a href="' . $url . '" target="_top">ここ</a> 。'."\n" .
+	'<script type="text/javascript"><!--'."\n" .
+	'if(top != self){ top.location.href = self.location.href; }'."\n" .
+	'--></script>'."\n";
+      OutputActionResult($title, $body, $url);
+    }
+    else{
+      $this->OutputError();
+    }
+  }
+
+  //エラー出力
+  function OutputError(){
+    $title = 'セッション認証エラー';
+    $str = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
+    OutputActionResult($title, $str);
   }
 }
 

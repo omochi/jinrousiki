@@ -7,6 +7,7 @@ OutputInfoPageHeader('デバッグ情報', 1);
 <p>
 Ver. 1.5.0
 <a href="#150alpha2">α2</a>
+<a href="#150alpha3">α3</a>
 </p>
 <p>
 <a href="#140release1">Ver. 1.4.0</a>
@@ -25,6 +26,24 @@ Ver. 1.5.0
 <a href="#140beta21">β21</a>
 <a href="#140beta22">β22</a>
 </p>
+
+<h2><a id="150alpha3">Ver. 1.5.0 α3</a></h2>
+<h3>include/game_vote_functions.php % 1527行目付近 (2011/02/07 (Mon) 22:22)</h3>
+<h4>[before]</h4>
+<pre>
+if($user->IsRole('dummy_guard')){ //夢守人は罠無効
+  if($ROOM->IsEvent('no_dream')) continue; //熱帯夜ならスキップ
+  $dummy_guard_target_list[$user->uname] = $target_uname;
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+if($user->IsRole('dummy_guard')){ //夢守人は罠無効
+  if($ROOM->IsEvent('no_dream')) continue; //熱帯夜ならスキップ
+  $dummy_guard_target_list[$user->uname] = $target_uname;
+  continue;
+}
+</pre>
 
 <h2><a id="150alpha2">Ver. 1.5.0 α2</a></h2>
 <h3>include/game_vote_functions.php % 2247行目付近 (2011/01/24 (Mon) 02:14)</h3>

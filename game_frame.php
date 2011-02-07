@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>汝は人狼なりや？ [プレイ]</title>
-</head>
 <?php
+require_once('include/init.php');
+OutputFrameHTMLHeader($SERVER_CONF->title . '[プレイ]');
 $option = 'frameborder="1" framespacing="1" bordercolor="#C0C0C0"';
 $header = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
 if($_GET['play_sound'] == 'on') $header .= '&play_sound=on';
@@ -27,8 +24,4 @@ else{
 
 EOF;
 }
-?>
-<noframes><body>
-フレーム非対応のブラウザの方は利用できません。
-</body></noframes>
-</frameset></html>
+OutputFrameHTMLFooter();
