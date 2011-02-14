@@ -187,7 +187,7 @@ OutputInfoPageHeader('詳細な仕様');
   - 罠能力者 (<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>)
   - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)
   - 護衛能力者 (<a href="new_role/human.php#guard_group">狩人系</a>)
-  - 襲撃耐性能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>・<a href="new_role/human.php#fend_guard">忍者</a>・<a href="new_role/wolf.php#therian_mad">獣人</a>・<a href="new_role/fox.php#fox_group">妖狐系</a>・<a href="new_role/lovers.php#sacrifice_angel">守護天使</a>・<a href="new_role/ogre.php">鬼陣営</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a>)
+  - <a href="new_role/ability.php#resist_wolf">襲撃耐性能力者</a>
   - <a href="new_role/ability.php#sacrifice">身代わり能力者</a>
   - 吸血能力者 (<a href="new_role/vampire.php">吸血鬼陣営</a>)
   - <a href="new_role/ability.php#assassin">暗殺能力者</a>

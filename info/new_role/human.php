@@ -252,7 +252,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#wizard">魔法使い</a>
+<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>
 </pre>
 
 <h3><a id="soul_mage">魂の占い師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
@@ -274,7 +274,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_necromancer">雲外鏡</a>・<a href="#soul_assassin">辻斬り</a>・<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
+<a href="#soul_necromancer">雲外鏡</a>・<a href="#soul_assassin">辻斬り</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -345,7 +345,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>・<a href="#border_priest">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="fox.php#stargazer_fox">星狐</a>
+<a href="#awake_wizard">比丘尼</a>・<a href="#soul_wizard">八卦見</a>・<a href="#border_priest">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="fox.php#stargazer_fox">星狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -679,6 +679,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#priest">司祭</a>
 <a href="#bishop_priest">司教</a>
 <a href="#dowser_priest">探知師</a>
+<a href="#weather_priest">祈祷師</a>
 <a href="#high_priest">大司祭</a>
 <a href="#crisis_priest">預言者</a>
 <a href="#revive_priest">天人</a>
@@ -768,6 +769,25 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="lovers.php">恋人</a>の種類の特定、<a href="ability.php#possessed">憑依能力者</a>・<a href="vampire.php">吸血鬼陣営</a>の行動状況の把握に威力を発揮します。
 </pre>
 
+<h3><a id="weather_priest">祈祷師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α4～]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
+<pre>
+翌日の<a href="../weather.php">天候</a>が分かる、特殊な司祭。
+また、一定条件を満たすと天候を引き起こすことができる。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<ol>
+  <li>発動条件式は、生存者 - 村人陣営(恋人を含む) &gt; 人狼系 × 2。</li>
+  <li>発動日は 3 の倍数 + 2 日目 (5 → 8 → 11 →...)。</li>
+  <li>判定を実施するタイミングは<a href="#crisis_priest_rule">人外勝利前日判定ルール</a>と同じ。</li>
+  <li>発生する天候はランダムで、<a href="../game_option.php#weather">天候あり</a>オプションがオフでも発生する。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="../weather.php">天候</a>を知り、呼び起こす能力者としてデザインしました。
+発動条件は、人狼系とそれ以外の村人陣営以外の人数を比較しています。
+</pre>
+
 <h3><a id="high_priest">大司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
@@ -837,7 +857,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <ol>
   <li>能力の発動は 2 日目からなので、判定結果が出るのは 3 日目の昼からになります。</li>
   <li>発動していない投票もカウントされます。<br>
-    例) 人狼に噛み殺された占い師の投票もカウントされる。
+    例) 人狼に噛み殺された占い師の投票や<a href="../weather.php">天候</a>による無効化投票もカウントされる。
   </li>
 </ol>
 <h4>関連役職</h4>
@@ -1005,7 +1025,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 人狼に襲撃されると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 誰に襲撃されたのかは分からないが、耐性を失っても護衛は通常通り行える。
 狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
-身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は能力無効。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1463,7 +1487,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 昼に投票した人を解毒・ショック死抑制する特殊な薬師。
 解毒能力は<a href="#pharmacist">薬師</a>と同じ。
-抑制できるのは<a href="sub_role.php#chicken_group">小心者系</a>のみで、<a href="#seal_medium">封印師</a>・<a href="#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>によるものは対象外。
+抑制できるのはサブ役職 (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外。
 解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
 何の「治療」に成功した(毒やショック死の種類など)のかは表示されない。
 再投票時には発動しない。
@@ -1996,6 +2020,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </p>
 <p>
 <a href="#wizard">魔法使い</a>
+<a href="#awake_wizard">比丘尼</a>
 <a href="#soul_wizard">八卦見</a>
 </p>
 
@@ -2014,6 +2039,24 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 テーマは「自然にギドラ CO をすることになる能力」です。
+</pre>
+
+<h3><a id="awake_wizard">比丘尼</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α4～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (1回限定)</h4>
+<pre>
+魔法使い系の一種で、一度だけ<a href="wolf.php#wolf_group">人狼系</a> (種類を問わない) の襲撃に耐えることができる。
+人狼に襲撃されると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)が、魔法が強化される。
+魔法の効果は、初めは<a href="#mage">占い師</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>のいずれかで、成功率は 30%。
+強化後の魔法の効果は、<a href="#soul_mage">魂の占い師</a>で、成功率も 100% となる。
+身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の聖 白蓮がモチーフです。「びくに」と読みます。
 </pre>
 
 <h3><a id="soul_wizard">八卦見</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
@@ -2255,7 +2298,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#reporter">ブン屋</a>
+<a href="#reporter">ブン屋</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2269,7 +2312,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sex">性別関連能力者</a>
+<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

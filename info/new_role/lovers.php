@@ -171,7 +171,7 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -80,6 +80,10 @@ function OutputAbility(){
       if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DOWSER_PRIEST_RESULT');
       break;
 
+    case 'weather_priest': //祈祷師
+      if($ROOM->date > 1) OutputSelfAbilityResult('WEATHER_PRIEST_RESULT');
+      break;
+
     case 'border_priest': //境界師
       if($ROOM->date > 2) OutputSelfAbilityResult('BORDER_PRIEST_RESULT');
       break;
@@ -547,7 +551,9 @@ function OutputAbility(){
   array_push($fix_display_list, 'copied', 'copied_trick', 'copied_soul', 'copied_teller');
 
   $role = 'lost_ability'; //能力喪失 (舌禍狼・罠師ほか)
-  if($SELF->IsRole($role)) $ROLE_IMG->Output($role);
+  if($SELF->IsRole($role)){
+    $ROLE_IMG->Output($SELF->IsRole('awake_wizard') ? 'ability_awake_wizard' : $role);
+  }
   $fix_display_list[] = $role;
 
   if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){ //恋人
@@ -756,6 +762,11 @@ function OutputSelfAbilityResult($action){
     $footer = 'dowser_priest_footer';
     break;
 
+  case 'WEATHER_PRIEST_RESULT':
+    $type = 'weather_priest';
+    $header = 'weather_priest_header';
+    break;
+
   case 'BORDER_PRIEST_RESULT':
     $type = 'mage';
     $header = 'border_priest_header';
@@ -880,6 +891,10 @@ function OutputSelfAbilityResult($action){
 
   case 'priest':
     foreach($result_list as $result) OutputAbilityResult($header, $result, $footer);
+    break;
+
+  case 'weather_priest':
+    foreach($result_list as $result) OutputAbilityResult($header, NULL, $result);
     break;
 
   case 'crisis_priest':

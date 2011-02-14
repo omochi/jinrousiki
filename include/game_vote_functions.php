@@ -762,6 +762,8 @@ function VoteDay(){
      ($brownie_flag && $SELF->IsRole('human'))){
     $vote_number++; //長老系・5日目以降の執筆者・座敷童子生存中の村人は投票数が 1 増える
   }
+  if($ROOM->IsEvent('hyper_random_voter')) $vote_number += mt_rand(0, 5);
+  if($vote_number < 0) $vote_number = 0;
 
   //サブ役職の処理
   $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //仮想投票者をセット
@@ -913,7 +915,8 @@ function AggregateVoteDay(){
 	  }
 	  break;
 	}
-	$alchemy_flag = in_array($vote_target->uname, $alchemy_target_list);
+	$alchemy_flag = in_array($vote_target->uname, $alchemy_target_list) ||
+	  $ROOM->IsEvent('alchemy_pharmacist');
       }
 
       //毒の対象オプションをチェックして候補者リストを作成
@@ -1246,7 +1249,7 @@ function AggregateVoteDay(){
   LoversFollowed(); //恋人後追い処理
   InsertMediumMessage(); //巫女のシステムメッセージ
 
-  if($vote_kill_uname != ''){
+  if($vote_kill_uname != ''){ //夜に切り替え
     foreach($user_list as $uname){ //-- 縁切地蔵の処理 --//
       $user = $USERS->ByRealUname($uname);
       if($user->IsSame($vote_kill_uname) || ! $user->IsRole('divorce_jealousy')) continue;
@@ -1282,10 +1285,17 @@ function AggregateVoteDay(){
       $ROOM->SystemMessage($USERS->GetHandleName($vote_kill_uname, true), 'BLIND_VOTE');
       break;
     }
-  }
 
+    if($ROOM->IsEvent('frostbite')){ //-- 雪の処理 --//
+      $stack = array();
+      foreach($user_list as $uname){
+	$user = $USERS->ByRealUname($uname);
+	if($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
+      }
+      //PrintData($stack, 'FrostbiteTarget');
+      $USERS->ByID(GetRandom($stack))->AddDoom(1, 'frostbite');
+    }
 
-  if($vote_kill_uname != ''){ //夜に切り替え
     $joker_flag = ! $ROOM->IsOption('joker'); //ジョーカー移動成立フラグ
     foreach($user_list as $uname){
       $joker_user = $USERS->ByRealUname($uname);
@@ -1456,6 +1466,10 @@ function AggregateVoteNight($skip = false){
       if($user->IsRole('wizard')){
 	$stack = array('mage', 'psycho_mage', 'sex_mage', 'guard', 'assassin');
       }
+      elseif($user->IsRole('awake_wizard')){
+	$stack = $user->IsActive() ? array('mage', 'sex_mage', 'stargazer_mage') :
+	  array('soul_mage');
+      }
       elseif($user->IsRole('soul_wizard')){
 	$stack = array('soul_mage', 'psycho_mage', 'sex_mage', 'stargazer_mage',
 		       'poison_guard', 'doom_assassin', 'soul_assassin', 'light_fairy');
@@ -1586,7 +1600,8 @@ function AggregateVoteNight($skip = false){
 	$user = $USERS->ByUname($uname);
 	//夜雀・騎士は護衛制限対象外
 	$guard_flag |= $user->IsRole('blind_guard', 'poison_guard') ||
-	  $wizard_target_list[$uname] == 'poison_guard';
+	  $wizard_target_list[$uname] == 'poison_guard' || $ROOM->IsEvent('full_guard');
+	if($ROOM->IsEvent('half_guard') && mt_rand(0, 1) == 0) $guard_flag = false; //曇天の判定
 
 	if($user->IsRole('hunter_guard')) //猟師だった場合は人狼に殺される
 	  $USERS->Kill($user->user_no, 'WOLF_KILLED');
@@ -1615,7 +1630,8 @@ function AggregateVoteNight($skip = false){
 	}
 	//無条件無効タイプ (守護天使・冥血鬼・影武者)
 	if($wolf_target->IsRole('sacrifice_angel', 'doom_vampire', 'sacrifice_mania')) break;
-	if($wolf_target->IsActive('fend_guard')){ //回数限定タイプ (忍者)
+	//回数限定タイプ (忍者・比丘尼)
+	if($wolf_target->IsActive('fend_guard') || $wolf_target->IsActive('awake_wizard')){
 	  $wolf_target->LostAbility();
 	  break;
 	}
@@ -1781,18 +1797,21 @@ function AggregateVoteNight($skip = false){
   //PrintData($possessed_target_list, 'PossessedTarget [possessed_wolf]');
 
   if($ROOM->date > 1){
-    foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
-      $user = $USERS->ByUname($uname);
-      if($user->IsDead(true) || $user->IsRole('blind_guard')) continue; //スキップ判定 (死亡 / 夜雀)
+    if(! $ROOM->IsEvent('no_hunt')){
+      foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
+	$user = $USERS->ByUname($uname);
+	//スキップ判定 (死亡 / 夜雀)
+	if($user->IsDead(true) || $user->IsRole('blind_guard')) continue;
 
-      $target = $USERS->ByUname($target_uname);
-      //対象が身代わり死していた場合はスキップ
-      if(! in_array($target->uname, $sacrifice_list) &&
-	 ($target->IsHuntTarget() || ($user->IsRole('hunter_guard') && $target->IsFox()) ||
-	  ($user->IsRole('reflect_guard') && $target->IsOgre()))){
-	$USERS->Kill($target->user_no, 'HUNTED');
-	$str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
-	$ROOM->SystemMessage($str, 'GUARD_HUNTED');
+	$target = $USERS->ByUname($target_uname);
+	//対象が身代わり死していた場合はスキップ
+	if(! in_array($target->uname, $sacrifice_list) &&
+	   ($target->IsHuntTarget() || ($user->IsRole('hunter_guard') && $target->IsFox()) ||
+	    ($user->IsRole('reflect_guard') && $target->IsOgre()))){
+	  $USERS->Kill($target->user_no, 'HUNTED');
+	  $str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true);
+	  $ROOM->SystemMessage($str, 'GUARD_HUNTED');
+	}
       }
     }
 
@@ -1826,6 +1845,7 @@ function AggregateVoteNight($skip = false){
 	//護衛制限判定 (夜雀・騎士は対象外)
 	$guard_flag |= $guard_user->IsRole('blind_guard', 'poison_guard') ||
 	  ! $target->IsGuardLimited() || $wizard_target_list[$uname] == 'poison_guard';
+	if($ROOM->IsEvent('half_guard') && mt_rand(0, 1) == 0) $guard_flag = false; //曇天の判定
 
 	//夜雀だった場合は襲撃した吸血鬼を目隠しにする
 	if($guard_user->IsRole('blind_guard')) $user->AddRole('blinder');
@@ -2201,7 +2221,10 @@ function AggregateVoteNight($skip = false){
     $target = $USERS->ByRealUname($target_uname); //対象者の情報を取得
 
     $phantom_flag = false; //幻系判定フラグ
-    if($target->IsAbilityPhantom()){ //幻系の判定
+    if($ROOM->IsEvent('half_moon') && mt_rand(0, 1) == 0){ //半月の判定
+      $phantom_flag = true;
+    }
+    elseif($target->IsAbilityPhantom()){ //幻系の判定
       if(in_array($user->uname, $anti_voodoo_target_list)) //厄神の護衛判定
 	$anti_voodoo_success_list[$user->uname] = true;
       else
@@ -2218,6 +2241,9 @@ function AggregateVoteNight($skip = false){
     elseif($phantom_flag){ //幻系の判定
       $result = $user->IsRole('psycho_mage', 'sex_mage') ? 'mage_failed' : 'failed';
       $phantom_user_list[] = $target;
+    }
+    elseif($user->IsActive('awake_wizard') && mt_rand(1, 100) > 30){ //比丘尼の失敗判定
+      $result = 'failed';
     }
     //精神鑑定士の判定
     elseif($user->IsRole('psycho_mage') || $wizard_target_list[$uname] == 'psycho_mage'){
@@ -2561,29 +2587,35 @@ function AggregateVoteNight($skip = false){
 
 	//蘇生判定
 	$missfire_rate = 0; //誤爆率
-	if($ROOM->IsEvent('full_revive')){
+	if($ROOM->IsEvent('full_revive')){ //雷雨
 	  $revive_rate = 100;
+	  $missfire_rate = -1;
 	}
-	elseif($ROOM->IsEvent('no_revive')){
+	elseif($ROOM->IsEvent('no_revive')){ //快晴
 	  $revive_rate = 0;
 	}
-	elseif($user->IsRole('poison_cat', 'revive_medium')){
-	  $revive_rate = 25;
-	}
-	elseif($user->IsRole('revive_cat')){
+	elseif($user->IsRole('revive_cat')){ //仙狸
 	  $revive_times = (int)$user->partner_list['revive_cat'][0];
 	  $revive_rate = ceil(80 / pow(4, $revive_times));
 	}
-	elseif($user->IsRole('sacrifice_cat', 'revive_fox')){
+	elseif($user->IsRole('sacrifice_cat')){ //猫神
 	  $revive_rate = 100;
+	  $missfire_rate = -1;
 	}
-	elseif($user->IsRole('eclipse_cat')){
+	elseif($user->IsRole('eclipse_cat')){ //蝕仙狸
 	  $revive_rate = 40;
 	  $missfire_rate = 20;
+	}
+	elseif($user->IsRole('revive_fox')){ //仙狐
+	  $revive_rate = 100;
+	}
+	else{
+	  $revive_rate = 25;
 	}
 	$rate = mt_rand(1, 100); //蘇生判定用乱数
 	if($boost_revive) $revive_rate *= 1.3;
 	if($missfire_rate == 0) $missfire_rate = floor($revive_rate / 5);
+	if($ROOM->IsEvent('missfire_revive')) $missfire_rate *= 2;
 	//$rate = 5; //mt_rand(1, 10); //テスト用
 	//PrintData("{$revive_rate} ({$missfire_rate})", "ReviveInfo: {$user->uname} => {$target->uname}");
 	//PrintData($rate, 'ReviveRate: ' . $user->uname);
@@ -2591,7 +2623,7 @@ function AggregateVoteNight($skip = false){
 	$result = 'failed';
 	do{
 	  if($rate > $revive_rate) break; //蘇生失敗
-	  if(! $user->IsRole('sacrifice_cat') && $rate <= $missfire_rate){ //誤爆蘇生
+	  if($rate <= $missfire_rate){ //誤爆蘇生
 	    $revive_target_list = array();
 	    //現時点の身代わり君と蘇生能力者が選んだ人以外の死者と憑依者を検出
 	    foreach($USERS->rows as $revive_target){
@@ -2921,7 +2953,8 @@ function AggregateVoteNight($skip = false){
 
   $border_priest_list = array();
   $revive_priest_list = array();
-  $live_count         = array();
+  $live_count = array('total' => 0, 'human' => 0, 'wolf' => 0, 'fox' => 0, 'lovers' => 0,
+		      'human_side' => 0, 'dead' => 0, 'dream' => 0, 'sub_role' => 0);
   foreach($USERS->rows as $user){ //司祭系の情報収集
     if(! $user->IsDummyBoy()){
       if($user->IsRole('border_priest'))   $border_priest_list[] = $user;
@@ -2951,23 +2984,28 @@ function AggregateVoteNight($skip = false){
 
   if($ROOM->date > 2 && ($ROOM->date % 2) == 1){ //司祭・大司祭・探知師・夢司祭・恋司祭の処理
     if($role_flag->priest || ($role_flag->high_priest && $ROOM->date > 4)){
-      $ROOM->SystemMessage((int)$live_count['human_side'], 'PRIEST_RESULT');
+      $ROOM->SystemMessage($live_count['human_side'], 'PRIEST_RESULT');
     }
     if($role_flag->dowser_priest){
-      $ROOM->SystemMessage((int)$live_count['sub_role'], 'DOWSER_PRIEST_RESULT');
+      $ROOM->SystemMessage($live_count['sub_role'], 'DOWSER_PRIEST_RESULT');
     }
     if($role_flag->dummy_priest && ! $ROOM->IsEvent('no_dream')){
-      $ROOM->SystemMessage((int)$live_count['dream'], 'DUMMY_PRIEST_RESULT');
+      $ROOM->SystemMessage($live_count['dream'], 'DUMMY_PRIEST_RESULT');
     }
     if($role_flag->priest_jealousy){
-      $ROOM->SystemMessage((int)$live_count['lovers'], 'PRIEST_JEALOUSY_RESULT');
+      $ROOM->SystemMessage($live_count['lovers'], 'PRIEST_JEALOUSY_RESULT');
     }
   }
   //司教・大司祭の処理
   if(($ROOM->date % 2) == 0 &&
      (($role_flag->bishop_priest && $ROOM->date > 1) ||
       ($role_flag->high_priest   && $ROOM->date > 3))){
-    $ROOM->SystemMessage((int)$live_count['dead'], 'BISHOP_PRIEST_RESULT');
+    $ROOM->SystemMessage($live_count['dead'], 'BISHOP_PRIEST_RESULT');
+  }
+  //祈祷師の処理
+  if($ROOM->date > 2 && ($ROOM->date % 3) == 0 && $role_flag->weather_priest &&
+     $live_count['total'] - $live_count['human_side'] > $live_count['wolf'] * 2){
+    $ROOM->EntryWeather($GAME_CONF->GetWeather(), 2, true);
   }
   if(count($border_priest_list) > 0 && $ROOM->date > 1){ //境界師の処理
     foreach($border_priest_list as $user){
@@ -3017,9 +3055,9 @@ function AggregateVoteNight($skip = false){
   //天候を決定
   if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){
     $weather = $GAME_CONF->GetWeather();
-    //$weather = 6; //テスト用
-    $ROOM->SystemMessage($weather, 'WEATHER', 2);
-    //$ROOM->SystemMessage($weather, 'WEATHER', 1); //テスト用
+    //$weather = 37; //テスト用
+    $date = 2;
+    $ROOM->EntryWeather($weather, $date, $role_flag->weather_priest);
   }
 
   $status = $ROOM->test_mode || $ROOM->ChangeDate();

@@ -287,7 +287,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3><a id="weather"><?php echo $GAME_OPT_MESS->weather ?></a> [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->weather ?></li>
-  <li>発生するのは 3の倍数の日です (3 → 6 → 9 → ...)</li>
+  <li>発生するのは 3 の倍数の日です (3 → 6 → 9 → ...)</li>
   <li>各天候の発生率は設定ファイルで変更できます</li>
   <li>天候の詳細は専用ページを参照して下さい → <a href="weather.php">天候システム</a></li>
 </ul>

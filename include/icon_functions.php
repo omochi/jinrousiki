@@ -1,17 +1,4 @@
 <?php
-function OutputIconPageHeader(){
-  OutputHTMLHeader('ユーザアイコン一覧', 'icon_view');
-  echo <<<HTML
-<script type="text/javascript" src="javascript/submit_icon_search.js"></script>
-</head>
-<body>
-<a href="./">←ホームページに戻る</a><br>
-<img class="title" src="img/icon_view_title.jpg" title="アイコン一覧"><br>
-<div class="link"><a href="icon_upload.php">→アイコン登録</a></div>
-
-HTML;
-}
-
 function OutputIconList($base_url = 'icon_view'){
   global $RQ_ARGS;
 
@@ -119,7 +106,7 @@ function ConcreteOutputIconList($base_url = 'icon_view'){
     echo <<<HTML
 <td>
 <label for="{$type}[]">{$caption}</label><br>
-<select name="{$type}[]" size="6" style="width:12em;" multiple>
+<select name="{$type}[]" size="6" multiple>
 <option value="__all__">全て</option>
 
 HTML;
@@ -159,7 +146,7 @@ HTML;
   //PrintData($category_list);
   $all_url = $url_header;
   if($RQ_ARGS->room_no > 0) $all_url .= 'room_no=' . $RQ_ARGS->room_no;
-  echo "<table>\n<tr>\n";
+  echo "<table class=\"selector\">\n<tr>\n";
 
   //検索条件の表示
   $where_cond = array();
@@ -250,7 +237,7 @@ HTML;
   $PAGE_CONF->option  = $url_option;
   $PAGE_CONF->attributes  = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
   if($RQ_ARGS->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . $RQ_ARGS->room_no;
-  echo '<td colspan="' . $colspan . '" style="text-align:right;">';
+  echo '<td colspan="' . $colspan . '" class="page-link">';
   //PrintData($PAGE_CONF, 'PAGE_CONF');
   OutputPageLink($PAGE_CONF);
   echo <<<HTML
@@ -301,7 +288,7 @@ function OutputIconDetailsForIconView($icon_info, $format_info){
   $info_width = $frm_cellwidth - $icon_width;
   $edit_url = "icon_view.php?icon_no={$icon_no}";
   echo <<<HTML
-<td class="icon_details">
+<td class="icon-details">
 <label for="icon_{$icon_no}">
 <a href="{$edit_url}" class="icon_wrapper" style="width:{$wrapper_width}px">
 <img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};">

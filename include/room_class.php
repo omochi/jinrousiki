@@ -382,6 +382,17 @@ class Room{
     return InsertDatabase('system_message', $items, $values);
   }
 
+  //天候登録
+  function EntryWeather($id, $date, $priest = false){
+    global $ROLE_DATA;
+
+    $this->SystemMessage($id, 'WEATHER', $date);
+    if($priest){ //祈祷師の処理
+      $result = 'prediction_weather_' . $ROLE_DATA->weather_list[$id]['event'];
+      $this->SystemMessage($result, 'WEATHER_PRIEST_RESULT');
+    }
+  }
+
   //最終更新時刻を更新
   function UpdateTime($commit = false){
     if($this->test_mode) return true;

@@ -138,13 +138,15 @@ class Session{
 //-- クッキーデータのロード処理 --//
 class CookieDataSet{
   var $day_night;  //夜明け
-  var $vote_times; //投票回数
   var $objection;  //「異議あり」の情報
+  var $vote_times; //投票回数
+  var $user_count; //参加人数
 
   function __construct(){
     $this->day_night  = $_COOKIE['day_night'];
-    $this->vote_times = (int)$_COOKIE['vote_times'];
     $this->objection  = $_COOKIE['objection'];
+    $this->vote_times = (int)$_COOKIE['vote_times'];
+    $this->user_count = (int)$_COOKIE['user_count'];
   }
 }
 
@@ -623,6 +625,7 @@ class RoleData{
     'priest'               => '司祭',
     'bishop_priest'        => '司教',
     'dowser_priest'        => '探知師',
+    'weather_priest'       => '祈祷師',
     'high_priest'          => '大司祭',
     'crisis_priest'        => '預言者',
     'revive_priest'        => '天人',
@@ -677,6 +680,7 @@ class RoleData{
     'cursed_brownie'       => '祟神',
     'history_brownie'      => '白澤',
     'wizard'               => '魔法使い',
+    'awake_wizard'         => '比丘尼',
     'soul_wizard'          => '八卦見',
     'doll'                 => '上海人形',
     'friend_doll'          => '仏蘭西人形',
@@ -925,6 +929,7 @@ class RoleData{
     'priest'               => '司',
     'bishop_priest'        => '司教',
     'dowser_priest'        => '探',
+    'weather_priest'       => '祈',
     'high_priest'          => '大司',
     'crisis_priest'        => '預',
     'revive_priest'        => '天人',
@@ -979,6 +984,7 @@ class RoleData{
     'cursed_brownie'       => '祟',
     'history_brownie'      => '白澤',
     'wizard'               => '魔',
+    'awake_wizard'         => '尼',
     'soul_wizard'          => '八卦',
     'doll'                 => '上海',
     'friend_doll'          => '仏蘭',
@@ -1329,7 +1335,47 @@ class RoleData{
 		'caption' => '蘇生封印'),
     24 => array('name'    => '慈雨',
 		'event'   => 'brownie',
-		'caption' => '村人投票数 +1'));
+		'caption' => '村人投票数 +1'),
+    25 => array('name'    => '波風',
+		'event'   => 'whisper_ringing',
+		'caption' => '全員 囁耳鳴'),
+    26 => array('name'    => '小夜嵐',
+		'event'   => 'howl_ringing',
+		'caption' => '全員 吠耳鳴'),
+    27 => array('name'    => '流星群',
+		'event'   => 'sweet_ringing',
+		'caption' => '全員 恋耳鳴'),
+    28 => array('name'    => '春時雨',
+		'event'   => 'deep_sleep',
+		'caption' => '全員 爆睡者'),
+    29 => array('name'    => '木漏れ日',
+		'event'   => 'silent',
+		'caption' => '全員 無口'),
+    30 => array('name'    => '疎雨',
+		'event'   => 'missfire_revive',
+		'caption' => '蘇生誤爆率アップ'),
+    31 => array('name'    => '川霧',
+		'event'   => 'no_hunt',
+		'caption' => '護衛狩り無し'),
+    32 => array('name'    => '蒼天',
+		'event'   => 'full_guard',
+		'caption' => '護衛制限無し'),
+    33 => array('name'    => '雪',
+		'event'   => 'frostbite',
+		'caption' => '凍傷付加'),
+    34 => array('name'    => '梅雨',
+		'event'   => 'alchemy_pharmacist',
+		'caption' => '毒強化'),
+    35 => array('name'    => '雹',
+		'event'   => 'hyper_random_voter',
+		'caption' => '投票数ランダム増加'),
+    36 => array('name'    => '半月',
+		'event'   => 'half_moon',
+		'caption' => '占い妨害'),
+    37 => array('name'    => '曇天',
+		'event'   => 'half_guard',
+		'caption' => '護衛成功率低下'),
+);
 
   //-- 関数 --//
   //役職グループ判定

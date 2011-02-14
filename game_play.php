@@ -100,6 +100,11 @@ function SendCookie(&$objection_list){
     setcookie('vote_times', '', $ROOM->system_time - 3600);
   }
 
+  //-- 入村情報 --//
+  if($ROOM->IsBeforeGame()){
+    setcookie('user_count', $USERS->GetUserCount(), $ROOM->system_time + 3600);
+  }
+
   //-- 「異議」あり --//
   $user_count = $USERS->GetUserCount(true); //KICK も含めたユーザ総数を取得
   $objection_list = array_fill(0, $user_count, 0); //配列をセット (index は 0 から)
@@ -437,6 +442,17 @@ EOF;
 
   //夜明けを音でお知らせする
   if($RQ_ARGS->play_sound){
+    if($ROOM->IsBeforeGame()){ //入村・満員
+      $user_count = $USERS->GetUserCount();
+      $max_user   = FetchResult($ROOM->GetQueryHeader('room', 'max_user'));
+      if($user_count == $max_user && $COOKIE->user_count != $max_user){
+	$SOUND->Output('revote');
+      }
+      elseif($COOKIE->user_count != $user_count){
+	$SOUND->Output('morning');
+      }
+    }
+
     //夜明けの場合
     if($COOKIE->day_night != $ROOM->day_night && $ROOM->IsDay()) $SOUND->Output('morning');
 

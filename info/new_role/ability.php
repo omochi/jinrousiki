@@ -12,13 +12,14 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#guard_limit">護衛制限</a>
 <a href="#decide">処刑者決定</a>
 <a href="#sudden_death">ショック死</a>
+<a href="#resist_wolf">人狼襲撃耐性</a>
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
-<a href="#authority">投票数変化</a>
-<a href="#poison">毒</a>
 </p>
 <p>
+<a href="#authority">投票数変化</a>
+<a href="#poison">毒</a>
 <a href="#cursed_group">呪い</a>
 <a href="#possessed">憑依</a>
 <a href="#possessed_limited">憑依制限</a>
@@ -67,10 +68,20 @@ OutputRolePageHeader('能力者逆引き');
 <a href="sub_role.php#chicken">小心者</a>・<a href="sub_role.php#febris">熱病</a>・<a href="sub_role.php#frostbite">凍傷</a>・<a href="sub_role.php#death_warrant">死の宣告</a>・<a href="sub_role.php#panelist">解答者</a>参照
 </pre>
 
+<h2><a id="resist_wolf">人狼襲撃耐性能力者</a></h2>
+<h3><a id="resist_wolf_full">常時無効</a></h3>
+<pre>
+<a href="fox.php#fox_group">妖狐系</a>(<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#poison_fox">管狐</a>を除く)・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+</pre>
+<h3><a id="resist_wolf_limited">限定無効</a></h3>
+<pre>
+<a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="ogre.php">鬼陣営</a>・<a href="sub_role.php#challenge_lovers">難題</a>
+</pre>
+
 <h2><a id="sex">性別関連能力者</a></h2>
 <h3><a id="sex_mage">性別鑑定能力者</a></h3>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
 </pre>
 <h3><a id="sex_only">性別限定能力者</a></h3>
 <pre>

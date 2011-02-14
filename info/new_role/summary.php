@@ -36,7 +36,8 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="#main_role">メイン役職</a>
 Ver. 1.5.0
 <a href="#150alpha1">α1</a>
-<a href="#150alpha3">α3</a><br>
+<a href="#150alpha3">α3</a>
+<a href="#150alpha4">α4</a><br>
 Ver. 1.4.0
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-7</a>
@@ -2078,6 +2079,27 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">処刑者に投票した人に処刑者と同一陣営の人が何人いるか分かる特殊な霊能者。</td>
   <td>Ver. 1.5.0 α3</td>
+</tr>
+<tr>
+  <td><a href="human.php#awake_wizard" id="150alpha4">比丘尼</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">魔法使いの一種で、一回限定の人狼襲撃手耐性を持つ。<br>
+    魔法の効果は、初めは<a href="human.php#mage">占い師</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#stargazer_mage">占星術師</a>のいずれかで、成功率は 30%。人狼に襲撃されると<a href="human.php#soul_mage">魂の占い師</a>相当に強化される。
+  </td>
+  <td>Ver. 1.5.0 α4</td>
+</tr>
+<tr>
+  <td><a href="human.php#weather_priest">祈祷師</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#priest_group">司祭系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">翌日の<a href="../weather.php">天候</a>が分かる、特殊な司祭。
+    また、一定条件を満たすと天候を引き起こすことができる。</td>
+  <td>Ver. 1.5.0 α4</td>
 </tr>
 </table>
 

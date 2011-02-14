@@ -1,6 +1,5 @@
-body {
-  background-image: url("../img/entry_user/bg2.gif");
-}
+@import url(icon.css);
+body{background-image: url("../img/entry_user/bg2.gif");}
 table.main{
   background-image:url("../img/entry_user/bg.gif");
   border: 1px solid #000000;
@@ -46,20 +45,6 @@ legend{
   font-size:20px;
   font-weight:bold;
 }
-td.icon_details {
-  padding: 6px;
-}
-td.icon_details .icon_wrapper {
-  display:block;
-  vertical-align:middle;
-}
-td.icon_details ul {
-  list-style:none;
-  margin-left: 4px;
-  padding:0;
-  vertical-align:middle;
-}
-
 .icon{
   border: 0;
   font-size:10pt;

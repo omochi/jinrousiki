@@ -140,7 +140,7 @@ class RoleMessageList{
     'type' => 'necromancer');
 
   var $emissary_necromancer = array(
-    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#密偵#です。_処刑_者に投票した人の中に_処刑_者と同じ陣営の人が何人いるのかを知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#密偵#です。_処刑_者に投票した人の中に_処刑_者と同じ陣営の人が何人いるのかを知ることができます。\n　あなた独自の極秘情報網で敵対陣営の情報を入手し、自陣営を勝利に導くのです。慢心する相手の裏をかけ！",
     'type' => 'necromancer');
 
   var $attempt_necromancer = array(
@@ -177,6 +177,10 @@ class RoleMessageList{
 
   var $dowser_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#探知師#です。一定日数おきに現在生きている人が所有しているサブ役職の総数を知ることができます。\n　あなたの探知能力と推理力次第では、水面下にて息を潜める特殊な陣営を見抜くことも不可能ではありません。",
+    'type' => 'priest');
+
+  var $weather_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#祈祷師#です。翌日の天候を知ることができます。また、一定条件で天候を引き起こすことができます。\n　移ろう空模様を知る、あなたの祈りは天の気と交わり世界を染め上げる。天の恵みよ、あまねく者へ降り注げ。",
     'type' => 'priest');
 
   var $high_priest = array(
@@ -349,197 +353,201 @@ class RoleMessageList{
     'type' => 'brownie', 'delimiter' => array('_' => 'wolf'));
 
   var $wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#魔法使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができます。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#魔法使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができます。\n　#魔法#は様々に形を変え村に驚きをもたらします。あなたの力で奇跡を起こすのです！",
     'type' => 'human', 'delimiter' => array('#' => 'wizard'));
 
+  var $awake_wizard = array(
+			    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を持って、跳梁跋扈する物の怪より同胞を助け給え！",
+			    'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
+
   var $soul_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#八卦見#です。二日目以降、夜に誰か一人に強力な#魔法#をかけることができます。\n　当たるも八卦当たらぬも八卦。あなたの知性と理性こそ、#魔法#の神髄と呼ぶべき技です。",
-    'type' => 'wizard');
+			   'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#八卦見#です。二日目以降、夜に誰か一人に強力な#魔法#をかけることができます。\n　当たるも八卦当たらぬも八卦。あなたの知性と理性こそ、#魔法#の神髄と呼ぶべき技です。",
+			   'type' => 'wizard');
 
   var $doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#上海人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。自由を得るために立ち上がりましょう。",
-    'type' => 'human', 'delimiter' => array('#' => 'doll'));
+		    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#上海人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。自由を得るために立ち上がりましょう。",
+		    'type' => 'human', 'delimiter' => array('#' => 'doll'));
 
   var $friend_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#仏蘭西人形#です。同志の#人形#が誰か分かります。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　仲間と協力して自由を勝ち取るのです。勝利は非常に厳しいですが、みんなで頑張れば決して不可能ではありません！",
-    'type' => 'doll');
+			   'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#仏蘭西人形#です。同志の#人形#が誰か分かります。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　仲間と協力して自由を勝ち取るのです。勝利は非常に厳しいですが、みんなで頑張れば決して不可能ではありません！",
+			   'type' => 'doll');
 
   var $phantom_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#倫敦人形#です。一度だけ_占い_を無効化してしまいます。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　その身が纏う霧はあなたを謎で包みこみ、正体を隠してしまいます。……味方につけたい村人たちの不審の種になるとしても。",
-    'type' => 'doll', 'delimiter' => array('_' => 'mage'));
+			    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#倫敦人形#です。一度だけ_占い_を無効化してしまいます。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　その身が纏う霧はあなたを謎で包みこみ、正体を隠してしまいます。……味方につけたい村人たちの不審の種になるとしても。",
+			    'type' => 'doll', 'delimiter' => array('_' => 'mage'));
 
   var $poison_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#鈴蘭人形#、_毒_を持っています。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　#人形遣い#の存在を凌駕し、遣われる存在ではない事を証明した上で、自らの存在意義を見出すのです。",
-    'type' => 'doll', 'delimiter' => array('_' => 'poison'));
+			   'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#鈴蘭人形#、_毒_を持っています。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　#人形遣い#の存在を凌駕し、遣われる存在ではない事を証明した上で、自らの存在意義を見出すのです。",
+			   'type' => 'doll', 'delimiter' => array('_' => 'poison'));
 
   var $doom_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#蓬莱人形#です。_処刑_されたらあなたに投票した人からランダムで一人に^死の宣告^を行います。\n　あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。_処刑_された恨みを呪詛に変えるのです。",
-    'type' => 'doll', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
+			 'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#蓬莱人形#です。_処刑_されたらあなたに投票した人からランダムで一人に^死の宣告^を行います。\n　あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。_処刑_された恨みを呪詛に変えるのです。",
+			 'type' => 'doll', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
 
   var $revive_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#西蔵人形#です。一度だけ_人狼_に襲撃されても=蘇生=できます。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。",
-    'type' => 'doll', 'delimiter' => array('_' => 'wolf', '=' => 'revive'));
+			   'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#西蔵人形#です。一度だけ_人狼_に襲撃されても=蘇生=できます。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　あなたの命の輪は作り物。だからこそできる手段がある。例えその身に牙が立てられようとあなたの輪を今一度繋ぎ留めるのです。",
+			   'type' => 'doll', 'delimiter' => array('_' => 'wolf', '=' => 'revive'));
 
   var $scarlet_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#和蘭人形#です。_人狼_からは|無意識|に、^妖狐^からは^子狐^に、他の#人形#からは#人形遣い#に見えています。\n　あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。",
-    'type' => 'doll', 'delimiter' => array('_' => 'wolf', '^' => 'fox'));
+			    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#和蘭人形#です。_人狼_からは|無意識|に、^妖狐^からは^子狐^に、他の#人形#からは#人形遣い#に見えています。\n　あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。紅髪に惹かれる者が友か敵か見極めるのです！",
+			    'type' => 'doll', 'delimiter' => array('_' => 'wolf', '^' => 'fox'));
 
   var $silver_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#露西亜人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要がありますが、#人形遣い#が誰か分かりません。\n　あなたの戦いは、まず打ち倒すべき#人形遣い#を探し出すことから始まります。苦しい戦いになりますが、あきらめないで。",
-    'type' => 'doll');
+			   'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#露西亜人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要がありますが、#人形遣い#が誰か分かりません。\n　あなたの戦いは、まず打ち倒すべき#人形遣い#を探し出すことから始まります。苦しい戦いになりますが、あきらめないで。",
+			   'type' => 'doll');
 
   var $doll_master = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#人形遣い#です。_人狼_に襲撃されても他の#人形#を犠牲にして生き延びることができます。\n　#人形#を盾にする力で長生きしやすい立場を活かし、あなたの手腕で村を勝利に導きましょう。",
-    'type' => 'doll', 'delimiter' => array('_' => 'wolf'));
+			   'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#人形遣い#です。_人狼_に襲撃されても他の#人形#を犠牲にして生き延びることができます。\n　#人形#を盾にする力で長生きしやすい立場を活かし、あなたの手腕で村を勝利に導きましょう。",
+			   'type' => 'doll', 'delimiter' => array('_' => 'wolf'));
 
   var $escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#逃亡者#です。臆病なあなたは夜の間、誰かの家の近くに隠れて夜をすごすことになります。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで_人狼_から逃げ切るのです！",
-    'type' => 'human', 'delimiter' => array('#' => 'escaper', '_' => 'wolf'));
+		       'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#逃亡者#です。臆病なあなたは夜の間、誰かの家の近くに隠れて夜をすごすことになります。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで_人狼_から逃げ切るのです！",
+		       'type' => 'human', 'delimiter' => array('#' => 'escaper', '_' => 'wolf'));
 
   var $incubus_escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて乙女の純潔を守るのだ！",
-    'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
+			       'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて乙女の純潔を守るのだ！",
+			       'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
 
   var $wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の|人狼|と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
-    'delimiter' => array('|' => 'wolf'));
+		    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の|人狼|と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
+		    'delimiter' => array('|' => 'wolf'));
 
   var $boss_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|白狼|です。もう#占い師#を恐れる必要はありません。全てを欺き通して村人たちを皆殺しにするのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'mage'));
+			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|白狼|です。もう#占い師#を恐れる必要はありません。全てを欺き通して村人たちを皆殺しにするのです！",
+			 'type' => 'wolf', 'delimiter' => array('#' => 'mage'));
 
   var $gold_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|金狼|です。#ひよこ鑑定士#に占われると_蝙蝠_と判定されます。_蝙蝠_に疑惑の目を向けさせ、|狼|の勝利に貢献してもらうのです！",
-    'type' => 'boss_wolf', 'delimiter' => array('_' => 'chiroptera'));
+			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|金狼|です。#ひよこ鑑定士#に占われると_蝙蝠_と判定されます。_蝙蝠_に疑惑の目を向けさせ、|狼|の勝利に貢献してもらうのです！",
+			 'type' => 'boss_wolf', 'delimiter' => array('_' => 'chiroptera'));
 
   var $phantom_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|幻狼|です。一度だけ#占い#を無効化することができます。幻の|月兎|を想起させ、村を惑わせるのです！",
-    'type' => 'boss_wolf');
+			    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|幻狼|です。一度だけ#占い#を無効化することができます。幻の|月兎|を想起させ、村を惑わせるのです！",
+			    'type' => 'boss_wolf');
 
   var $cursed_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|呪狼|です。あなたを占った#占い師#を|呪返し|で殺すことができます。村を絶望の底に叩き落してやるのです！",
-    'type' => 'boss_wolf');
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|呪狼|です。あなたを占った#占い師#を|呪返し|で殺すことができます。村を絶望の底に叩き落してやるのです！",
+			   'type' => 'boss_wolf');
 
   var $wise_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|賢狼|です。#妖狐#の念話を感知することができます。人の中に潜む#狐#の吐息を正しく聞き分け、仲間に知らせるのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'fox'));
+			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|賢狼|です。#妖狐#の念話を感知することができます。人の中に潜む#狐#の吐息を正しく聞き分け、仲間に知らせるのです！",
+			 'type' => 'wolf', 'delimiter' => array('#' => 'fox'));
 
   var $poison_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|毒狼|です。たとえ_処刑_されても体内に流れる#毒#で村人一人を道連れにできます。強気に村をかく乱するのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'poison', '_' => 'vote'));
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|毒狼|です。たとえ_処刑_されても体内に流れる#毒#で村人一人を道連れにできます。強気に村をかく乱するのです！",
+			   'type' => 'wolf', 'delimiter' => array('#' => 'poison', '_' => 'vote'));
 
   var $resist_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|抗毒狼|です。一度だけ#毒#に耐えることができます。あなたへの最期の抵抗を凌ぎ、村人たちを恐怖に陥れるのです！",
-    'type' => 'poison_wolf');
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|抗毒狼|です。一度だけ#毒#に耐えることができます。あなたへの最期の抵抗を凌ぎ、村人たちを恐怖に陥れるのです！",
+			   'type' => 'poison_wolf');
 
   var $blue_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
-    'type' => 'wise_wolf', 'delimiter' => array('_' => 'mind'));
+			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
+			 'type' => 'wise_wolf', 'delimiter' => array('_' => 'mind'));
 
   var $emerald_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|翠狼|です。|人狼|を襲撃した場合はあなたと_共鳴者_になります。孤立している仲間と思い通わす心の根を育てるのです！",
-    'type' => 'blue_wolf');
+			    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|翠狼|です。|人狼|を襲撃した場合はあなたと_共鳴者_になります。孤立している仲間と思い通わす心の根を育てるのです！",
+			    'type' => 'blue_wolf');
 
   var $sex_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雛狼|です。襲撃した人の性別を知ることができますが、殺すことはできません。\n　あなたの未熟な襲撃は、小賢しい大人どもの計算を大いに狂わすことができるはずです。",
-    'type' => 'wolf');
+			'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雛狼|です。襲撃した人の性別を知ることができますが、殺すことはできません。\n　あなたの未熟な襲撃は、小賢しい大人どもの計算を大いに狂わすことができるはずです。",
+			'type' => 'wolf');
 
   var $tongue_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|舌禍狼|です。襲撃した人の役職を知ることができますが、#村人#だった場合は能力を失ってしまいます。\n　殺した能力者の血肉から正体を暴き知ることができる舌の力で、村の全容を把握して全てを手に入れましょう！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'human'));
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|舌禍狼|です。襲撃した人の役職を知ることができますが、#村人#だった場合は能力を失ってしまいます。\n　殺した能力者の血肉から正体を暴き知ることができる舌の力で、村の全容を把握して全てを手に入れましょう！",
+			   'type' => 'wolf', 'delimiter' => array('#' => 'human'));
 
   var $possessed_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|憑狼|です。襲撃した人に|憑依|することができます。その幽幻の力で肉体を奪い、多くの魂を食い荒らすのです！",
-    'type' => 'wolf');
+			      'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|憑狼|です。襲撃した人に|憑依|することができます。その幽幻の力で肉体を奪い、多くの魂を食い荒らすのです！",
+			      'type' => 'wolf');
 
   var $hungry_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|餓狼|です。仲間の|狼|や#妖狐#すら噛み殺せますが、村人は殺せません。強者のみがあなたの獲物なのです。",
-    'type' => 'wise_wolf');
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|餓狼|です。仲間の|狼|や#妖狐#すら噛み殺せますが、村人は殺せません。強者のみがあなたの獲物なのです。",
+			   'type' => 'wise_wolf');
 
   var $doom_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|冥狼|です。襲撃した人に#死の宣告#を行うことができます。|狼|に抗う者に迫り来る死の恐怖を与えて屠るのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'chicken'));
+			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|冥狼|です。襲撃した人に#死の宣告#を行うことができます。|狼|に抗う者に迫り来る死の恐怖を与えて屠るのです！",
+			 'type' => 'wolf', 'delimiter' => array('#' => 'chicken'));
 
   var $sirius_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|天狼|です。仲間が減ったら#暗殺#反射、|罠|・_毒_無効、^護衛^突破など、様々な能力が発現します。\n　最後の一人になった時、:処刑:以外であなたを止める手段はありません。孤高の生き様を魅せるのです！",
-    'type' => 'wolf',
-    'delimiter' => array('#' => 'assassin', '_' => 'poison', '^' => 'guard', ':' => 'vote'));
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|天狼|です。仲間が減ったら#暗殺#反射、|罠|・_毒_無効、^護衛^突破など、様々な能力が発現します。\n　最後の一人になった時、:処刑:以外であなたを止める手段はありません。孤高の生き様を魅せるのです！",
+			   'type' => 'wolf',
+			   'delimiter' => array('#' => 'assassin', '_' => 'poison', '^' => 'guard', ':' => 'vote'));
 
   var $elder_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|古狼|です。あなたの#処刑#投票には_二票_分の価値があります。老練の弁舌と素知らぬ村人の信頼を盾に、村人を食い殺すのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
+			  'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|古狼|です。あなたの#処刑#投票には_二票_分の価値があります。老練の弁舌と素知らぬ村人の信頼を盾に、村人を食い殺すのです！",
+			  'type' => 'wolf', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $cute_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|萌狼|です。ごくまれに発言が遠吠えになってしまいます。バレた時は笑ってごまかしましょう。",
-    'type' => 'wolf');
+			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|萌狼|です。ごくまれに発言が遠吠えになってしまいます。バレた時は笑ってごまかしましょう。",
+			 'type' => 'wolf');
 
   var $scarlet_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紅狼|です。#妖狐#からは#子狐#に、_人形_からは_人形遣い_に見えています。#妖狐#と_人形_を欺き、その鋭い牙で村を真紅に染め上げるのです！",
-    'type' => 'wise_wolf', 'delimiter' => array('_' => 'doll'));
+			    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紅狼|です。#妖狐#からは#子狐#に、_人形_からは_人形遣い_に見えています。#妖狐#と_人形_を欺き、その鋭い牙で村を真紅に染め上げるのです！",
+			    'type' => 'wise_wolf', 'delimiter' => array('_' => 'doll'));
 
   var $silver_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|銀狼|です。仲間が誰か分かりませんが、遠吠えで仲間に存在を知らせることはできます。\n　天を灼く満月の下、銀色の毛並みを輝かせて、仲間の群れと共にこの村を|狼|のものにするのです。",
-    'type' => 'wolf');
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|銀狼|です。仲間が誰か分かりませんが、遠吠えで仲間に存在を知らせることはできます。\n　天を灼く満月の下、銀色の毛並みを輝かせて、仲間の群れと共にこの村を|狼|のものにするのです。",
+			   'type' => 'wolf');
 
   var $mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狂人|です。|人狼|の勝利があなたの勝利となります。あなたはできる限り狂って場をかき乱すのです！",
-    'type' => 'wolf');
+		   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狂人|です。|人狼|の勝利があなたの勝利となります。あなたはできる限り狂って場をかき乱すのです！",
+		   'type' => 'wolf');
 
   var $fanatic_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狂信者|です。仕えるべき|人狼|が誰なのかを知ることができます。あなたの持てる全てを|人狼|に捧げ尽くすのです！",
-    'type' => 'mad');
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狂信者|です。仕えるべき|人狼|が誰なのかを知ることができます。あなたの持てる全てを|人狼|に捧げ尽くすのです！",
+			   'type' => 'mad');
 
   var $whisper_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|囁き狂人|です。夜の|人狼|の相談に参加することができます。|人狼|と完璧な連携を組んで村を殲滅するのです！",
-    'type' => 'mad');
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|囁き狂人|です。夜の|人狼|の相談に参加することができます。|人狼|と完璧な連携を組んで村を殲滅するのです！",
+			   'type' => 'mad');
 
   var $jammer_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|月兎|です。夜の間に誰か一人の#占い#を妨害することができます。#占い師#を月の魔性に狂わせ、村を破滅へ導くのです！",
-    'type' => 'mad', 'delimiter' => array('#' => 'mage'));
+			  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|月兎|です。夜の間に誰か一人の#占い#を妨害することができます。#占い師#を月の魔性に狂わせ、村を破滅へ導くのです！",
+			  'type' => 'mad', 'delimiter' => array('#' => 'mage'));
 
   var $voodoo_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|呪術師|です。夜の間に誰か一人に|呪い|をかけることができます。#占い師#を|呪い|で殲滅し、村を混乱に陥れるのです！",
-    'type' => 'jammer_mad');
+			  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|呪術師|です。夜の間に誰か一人に|呪い|をかけることができます。#占い師#を|呪い|で殲滅し、村を混乱に陥れるのです！",
+			  'type' => 'jammer_mad');
 
   var $enchant_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人を指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きして、みんなに「バカな…お前は死んだはず！」って言ってやりましょう。あなたも同じ顔ですけどね。",
-    'type' => 'jammer_mad');
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人を指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きして、みんなに「バカな…お前は死んだはず！」って言ってやりましょう。あなたも同じ顔ですけどね。",
+			   'type' => 'jammer_mad');
 
   var $dream_eater_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵たる#夢守人#に注意しながら、夢の世界にいる住人や_妖精_達を食らい尽くすのです！",
-    'type' => 'mad', 'delimiter' => array('#' => 'guard', '_' => 'chiroptera'));
+			       'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵たる#夢守人#に注意しながら、夢の世界にいる住人や_妖精_達を食らい尽くすのです！",
+			       'type' => 'mad', 'delimiter' => array('#' => 'guard', '_' => 'chiroptera'));
 
   var $possessed_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|犬神|です。一度だけ、死んだ人に|憑依|することができます。骸を傀儡人形と化し、その怨恨の赴くままに呪詛を撒き散らすのです！",
-    'type' => 'mad');
+			     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|犬神|です。一度だけ、死んだ人に|憑依|することができます。骸を傀儡人形と化し、その怨恨の赴くままに呪詛を撒き散らすのです！",
+			     'type' => 'mad');
 
   var $trap_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|罠師|です。一度だけ夜に|罠|を仕掛けることができます。|罠|を仕掛けた人の元に訪れた能力者は全員死亡します。\n　あなたの魔手は鮮やかな悪夢の芸術を生み出す。|人狼|に害成す者共を狡猾なる|罠|へとおびき寄せ、地獄に陥れるのです！",
-    'type' => 'mad');
+			'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|罠師|です。一度だけ夜に|罠|を仕掛けることができます。|罠|を仕掛けた人の元に訪れた能力者は全員死亡します。\n　あなたの魔手は鮮やかな悪夢の芸術を生み出す。|人狼|に害成す者共を狡猾なる|罠|へとおびき寄せ、地獄に陥れるのです！",
+			'type' => 'mad');
 
   var $snow_trap_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|雪女|です。夜に、触れた人を#凍傷#にする|罠|を仕掛けることができます。美しいあなたの銀雪の息吹は数多を凍えさせるのです。",
-    'type' => 'mad', 'delimiter' => array('#' => 'chicken'));
+			     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|雪女|です。夜に、触れた人を#凍傷#にする|罠|を仕掛けることができます。美しいあなたの銀雪の息吹は数多を凍えさせるのです。",
+			     'type' => 'mad', 'delimiter' => array('#' => 'chicken'));
 
   var $corpse_courier_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|火車|です。あなたが投票した人が#処刑#された場合に限り、その死体を持ち去ることができます。\n　バレないように亡骸を持ち去ることで_霊能者_を無力化し、強敵の死体を収集して村人を惑わせるのです！",
-    'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
+				  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|火車|です。あなたが投票した人が#処刑#された場合に限り、その死体を持ち去ることができます。\n　バレないように亡骸を持ち去ることで_霊能者_を無力化し、強敵の死体を収集して村人を惑わせるのです！",
+				  'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $amaze_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。\n　みんなが気になってしょうがない投票結果。それを隠すと…？さぁ、みんなをびっくりさせちゃいましょう！",
-    'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
+			 'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。\n　みんなが気になってしょうがない投票結果。それを隠すと…？さぁ、みんなをびっくりさせちゃいましょう！",
+			 'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
 
   var $agitate_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|扇動者|です。#処刑#投票先が拮抗した場合に限り、まとめて死なせることができます。\n　「人外を吊り殺せ！村に平和を！」熱狂する村人の熱意を煽り、巧みに策略を繰るのです！",
-    'type' => 'corpse_courier_mad');
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|扇動者|です。#処刑#投票先が拮抗した場合に限り、まとめて死なせることができます。\n　「人外を吊り殺せ！村に平和を！」熱狂する村人の熱意を煽り、巧みに策略を繰るのです！",
+			   'type' => 'corpse_courier_mad');
 
   var $miasma_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|土蜘蛛|です。#処刑#投票先が死ななかった場合は_熱病_にさせることができます。\n　身に孕む怨念を悪疫へと変え、村を地獄の釜の底へ叩き込み、悪夢に悩ませるのです！",
-    'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'chicken'));
+			  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|土蜘蛛|です。#処刑#投票先が死ななかった場合は_熱病_にさせることができます。\n　身に孕む怨念を悪疫へと変え、村を地獄の釜の底へ叩き込み、悪夢に悩ませるのです！",
+			  'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'chicken'));
 
   var $therian_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。その身に宿る気高き獣の血を覚醒させ、森羅万象全てを噛み殺すのです！",
-    'type' => 'mad');
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。その身に宿る気高き獣の血を覚醒させ、森羅万象全てを噛み殺すのです！",
+			   'type' => 'mad');
 
   var $fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|妖狐|、#人狼#に殺されることはありません。ただし占われると死んでしまいます。\n　村人を騙し、#人狼#を騙し、村を|妖狐|のものにするのです！",
@@ -1062,6 +1070,9 @@ class RoleMessageList{
   var $ability_poison = array('message' => "　あなたは|毒|を持っています。#処刑#されたり、_人狼_に襲撃された時に誰か一人を道連れにします。",
 			      'delimiter' => array('|' => 'poison', '#' => 'vote', '_' => 'wolf'));
 
+  var $ability_awake_wizard = array('message' => "　あなたは#人狼#の襲撃耐性を失いましたが、代わりに強力な|魔法|を使うことができます。",
+				    'delimiter' => array('|' => 'wizard', '#' => 'wolf'));
+
   var $ability_sirius_wolf = array('message' => "　残りの|狼|が二人になりました。人の繰り出す業 (#暗殺#・|罠|) は、もはやあなたを貫けません。",
 				   'type' => 'sirius_wolf');
 
@@ -1150,6 +1161,7 @@ class RoleMessageList{
   var $result_priest = array('message' => "さんは|司祭|でした", 'delimiter' => array('|' => 'priest'));
   var $result_bishop_priest = array('message' => "さんは|司教|でした", 'type' => 'result_priest');
   var $result_dowser_priest = array('message' => "さんは|探知師|でした", 'type' => 'result_priest');
+  var $result_weather_priest = array('message' => "さんは|祈祷師|でした", 'type' => 'result_priest');
   var $result_high_priest = array('message' => "さんは|大司祭|でした", 'type' => 'result_priest');
   var $result_crisis_priest = array('message' => "さんは|預言者|でした", 'type' => 'result_priest');
   var $result_revive_priest = array('message' => "さんは|天人|でした", 'type' => 'result_priest');
@@ -1204,6 +1216,7 @@ class RoleMessageList{
   var $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
   var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   var $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
+  var $result_awake_wizard = array('message' => "さんは|比丘尼|でした", 'type' => 'result_wizard');
   var $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
   var $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
   var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした", 'type' => 'result_doll');
@@ -1365,6 +1378,7 @@ class RoleMessageList{
   var $dowser_priest_header = array('message' => "|神託|結果： 現在の生存者が所有しているサブ役職の合計は",
 				    'type' => 'priest_header');
   var $dowser_priest_footer = array('message' => "個です");
+  var $weather_priest_header = array('message' => "|神託|結果： 明日の天候は", 'type' => 'priest_header');
   var $border_priest_header = array('message' => "|神託|結果： 昨夜、あなたの境界に触れた人数は",
 				    'type' => 'priest_header');
   var $crisis_priest_result = array('message' => "陣営が勝利目前です");
@@ -1381,7 +1395,8 @@ class RoleMessageList{
   var $pharmacist_nothing = array('message' => "さんは毒を持っていません");
   var $pharmacist_poison = array('message' => "さんは|毒|を持っています", 'type' => 'result_pharmacist');
   var $pharmacist_strong = array('message' => "さんは|強い毒|を持っています", 'type' => 'result_pharmacist');
-  var $pharmacist_limited = array('message' => "さんは|限定的な毒|を持っています", 'type' => 'result_pharmacist');
+  var $pharmacist_limited = array('message' => "さんは|限定的な毒|を持っています",
+				  'type' => 'result_pharmacist');
   var $pharmacist_success = array('message' => "さんの|解毒|に成功しました", 'type' => 'result_pharmacist');
   var $pharmacist_cured = array('message' => "さんの|治療|に成功しました", 'type' => 'result_pharmacist');
   var $assassin_result = array('message' => "|暗殺|結果： ", 'type' => 'result_assassin');
@@ -1394,7 +1409,46 @@ class RoleMessageList{
   var $sympathy_result = array('message' => "|共感|結果： ", 'type' => 'result_mind_scanner');
   var $presage_result_header = array('message' => "|受託|結果： ", 'type' => 'result_mind_scanner');
   var $clairvoyance_result_header = array('message' => "|透視|結果： ", 'type' => 'result_mind_scanner');
-  var $clairvoyance_result_footer = array('message' => "さんに能力を行使したようです", 'type' => 'result_mind_scanner');
+  var $clairvoyance_result_footer = array('message' => "さんに能力を行使したようです",
+					  'type' => 'result_mind_scanner');
+  var $prediction_weather_grassy = array('message' => "|スコール|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_mower = array('message' => "|酸性雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_blind_vote = array('message' => "|晴嵐|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_fox_dead = array('message' => "|天気雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_critical = array('message' => "|烈日|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_blind_talk_day = array('message' => "|強風|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_blind_talk_night = array('message' => "|風雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_full_moon = array('message' => "|満月|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_new_moon = array('message' => "|新月|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_contact = array('message' => "|花曇|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_invisible = array('message' => "|黄砂|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_rainbow = array('message' => "|虹|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_side_reverse = array('message' => "|ダイヤモンドダスト|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_line_reverse = array('message' => "|バナナの皮|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_actor = array('message' => "|スポットライト|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_critical_luck = array('message' => "|タライ|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_sudden_death = array('message' => "|凪|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_thunderbolt = array('message' => "|青天の霹靂|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_last_words = array('message' => "|涙雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_dream = array('message' => "|熱帯夜|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_full_ogre = array('message' => "|朧月|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_seal_ogre = array('message' => "|叢雲|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_full_revive = array('message' => "|雷雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_revive = array('message' => "|快晴|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_brownie = array('message' => "|慈雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_whisper_ringing = array('message' => "|波風|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_howl_ringing = array('message' => "|小夜嵐|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_sweet_ringing = array('message' => "|流星群|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_deep_sleep = array('message' => "|春時雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_silent = array('message' => "|木漏れ日|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_missfire_revive = array('message' => "|疎雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_hunt = array('message' => "|川霧|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_full_guard = array('message' => "|蒼天|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_frostbite = array('message' => "|雪|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_alchemy_pharmacist = array('message' => "|梅雨|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_hyper_random_voter = array('message' => "|雹|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_half_moon = array('message' => "|半月|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_half_guard = array('message' => "|曇天|です", 'type' => 'prediction_weather_grassy');
 }
 
 class WishRoleList{
@@ -1445,7 +1499,5 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-$builder->Output('emissary_necromancer');
+$builder->Output('prediction_weather_half_guard');
 #$builder->Output('wizard');
-#$builder->Output('revive_doll');
-#$builder->Output('scarlet_doll');

@@ -1052,14 +1052,16 @@ class UserDataSet{
 
     if($ROOM->IsDay()){ //昼限定
       $stack = array('invisible', 'rainbow', 'grassy', 'side_reverse', 'line_reverse', 'actor',
-		     'critical_luck', 'no_last_words', 'blinder', 'earplug', 'mower');
+		     'critical_luck', 'no_last_words', 'blinder', 'earplug', 'silent', 'mower');
       foreach($stack as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
     }
-    foreach(array('no_last_words', 'mind_open') as $role){ //昼夜両方
+    $stack = array('no_last_words', 'whisper_ringing', 'howl_ringing', 'sweet_ringing',
+		   'deep_sleep', 'mind_open');
+    foreach($stack as $role){ //昼夜両方
       if($ROOM->IsEvent($role)){
 	foreach($this->rows as $user) $user->AddVirtualRole($role);
       }
