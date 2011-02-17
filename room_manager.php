@@ -1,13 +1,19 @@
 <?php
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
-$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'TIME_CONF', 'USER_ICON', 'ROOM_IMG',
-		      'MESSAGE', 'GAME_OPT_CAPT');
+$INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG');
 
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
 EncodePostData();
-$_POST['command'] == 'CREATE_ROOM' ? CreateRoom() : OutputRoomList();
+if($_POST['command'] == 'CREATE_ROOM'){
+  $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
+  CreateRoom();
+}
+else{
+  $INIT_CONF->LoadClass('CAST_CONF', 'TIME_CONF', 'GAME_OPT_CAPT');
+  OutputRoomList();
+}
 $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
@@ -37,7 +43,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $MESSAGE;
+  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $MESSAGE, $TWITTER;
 
   if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
@@ -325,9 +331,7 @@ function CreateRoom(){
       }
     }
 
-    //Twitter 投稿処理
-    $twitter = new TwitterConfig();
-    $twitter->Send($room_no, $room_name, $room_comment);
+    $TWITTER->Send($room_no, $room_name, $room_comment); //Twitter 投稿処理
     //OutputSiteSummary(); //RSS更新 //テスト中
 
     OutputRoomAction('success', $room_name);

@@ -357,7 +357,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'wizard'));
 
   var $awake_wizard = array(
-			    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を持って、跳梁跋扈する物の怪より同胞を助け給え！",
+			    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を以って、跳梁跋扈する物の怪より同胞を助け給え！",
 			    'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   var $soul_wizard = array(
@@ -1449,6 +1449,8 @@ class RoleMessageList{
   var $prediction_weather_hyper_random_voter = array('message' => "|雹|です", 'type' => 'prediction_weather_grassy');
   var $prediction_weather_half_moon = array('message' => "|半月|です", 'type' => 'prediction_weather_grassy');
   var $prediction_weather_half_guard = array('message' => "|曇天|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_passion = array('message' => "|箒星|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_poison = array('message' => "|旱魃|です", 'type' => 'prediction_weather_grassy');
 }
 
 class WishRoleList{
@@ -1499,5 +1501,5 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-$builder->Output('prediction_weather_half_guard');
-#$builder->Output('wizard');
+$builder->Output('prediction_weather_no_poison');
+#$builder->Output('awake_wizard');

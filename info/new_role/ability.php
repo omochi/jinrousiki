@@ -9,6 +9,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#anti_assassin">暗殺耐性</a>
 <a href="#phantom">占い妨害</a>
 <a href="#guard_hunt">狩り</a>
+<a href="#guard">護衛</a>
 <a href="#guard_limit">護衛制限</a>
 <a href="#decide">処刑者決定</a>
 <a href="#sudden_death">ショック死</a>
@@ -46,6 +47,11 @@ OutputRolePageHeader('能力者逆引き');
 <h2><a id="guard_hunt">狩り対象者</a></h2>
 <pre>
 <a href="human.php#guard_hunt">狩人系</a>参照
+</pre>
+
+<h2><a id="guard">護衛能力者</a></h2>
+<pre>
+<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>
 </pre>
 
 <h2><a id="guard_limit">護衛制限対象者</a></h2>

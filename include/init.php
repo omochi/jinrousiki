@@ -43,6 +43,7 @@ class InitializeConfig{
     'RQ_ARGS'             => 'request_class',
     'ROLES'               => 'role_class',
     'TIME_CALC'           => 'info_functions',
+    'TWITTER'             => 'twitter',
     'PAPARAZZI'           => 'paparazzi_class',
     'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',
@@ -95,6 +96,7 @@ class InitializeConfig{
     'RQ_ARGS'       => 'RequestBase',
     'ROLES'         => 'RoleManager',
     'TIME_CALC'     => 'TimeCalculation',
+    'TWITTER'       => 'TwitterConfig',
     'PAPARAZZI'     => 'Paparazzi'
   );
 
@@ -152,6 +154,7 @@ class InitializeConfig{
       break;
 
     case 'mb-emulator':
+    case 'twitter':
       $path = $this->path->module . '/' . $name;
       break;
 

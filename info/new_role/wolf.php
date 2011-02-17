@@ -879,6 +879,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <ol>
   <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="#enchant_mad">狢</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#fairy_group">妖精系</a> (<a href="chiroptera.php#mirror_fairy">鏡妖精</a>を除く) です</li>
+  <li><a href="human.php#wizard_group">魔法</a>による占い能力にも有効です</li>
   <li>妨害された占い能力者には「～さんの占いに失敗しました」と出ます</li>
   <li>妨害が成功したかどうかは本人には分かりません</li>
   <li>呪われている人を選んだ場合は呪返しを受けます</li>

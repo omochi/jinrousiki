@@ -316,7 +316,9 @@ class User{
   function IsPoison(){
     global $ROOM;
 
-    if(! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false; //無毒・連毒者
+    //旱魃、無毒・連毒者
+    if($ROOM->IsEvent('no_poison') ||
+       ! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false;
     if($this->IsRole('poison_guard')) return $ROOM->IsNight(); //騎士
     if($this->IsRole('incubate_poison')) return $ROOM->date >= 5; //潜毒者は 5 日目以降
     if($this->IsRole('dummy_poison')) return $ROOM->IsDay(); //夢毒者
@@ -1051,46 +1053,49 @@ class UserDataSet{
     }
 
     if($ROOM->IsDay()){ //昼限定
-      $stack = array('invisible', 'rainbow', 'grassy', 'side_reverse', 'line_reverse', 'actor',
-		     'critical_luck', 'no_last_words', 'blinder', 'earplug', 'silent', 'mower');
+      $stack = array('invisible', 'rainbow', 'passion', 'grassy', 'side_reverse', 'line_reverse',
+		     'actor', 'critical_luck', 'no_last_words', 'blinder', 'earplug', 'silent',
+		     'mower');
       foreach($stack as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
     }
-    $stack = array('no_last_words', 'whisper_ringing', 'howl_ringing', 'sweet_ringing',
-		   'deep_sleep', 'mind_open');
-    foreach($stack as $role){ //昼夜両方
-      if($ROOM->IsEvent($role)){
-	foreach($this->rows as $user) $user->AddVirtualRole($role);
-      }
-    }
-
-    //影妖精の処理
-    $stack = array();
-    foreach($this->rows as $user){
-      foreach($user->GetPartner('bad_status', true) as $id => $date){
-	if($date != $ROOM->date) continue;
-	$status_user = $this->ByID($id);
-	if($status_user->IsRole('shadow_fairy')){
-	  $stack[$status_user->user_no] = array('icon'  => $user->icon_filename,
-						'color' => $user->color);
+    elseif($ROOM->IsPlaying()){
+      $stack = array('no_last_words', 'whisper_ringing', 'howl_ringing', 'sweet_ringing',
+		     'deep_sleep', 'mind_open');
+      foreach($stack as $role){ //昼夜両方
+	if($ROOM->IsEvent($role)){
+	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
-    }
-    foreach($stack as $id => $list){
-      $user = $this->ByID($id);
-      $user->color         = $list['color'];
-      $user->icon_filename = $list['icon'];
-    }
 
-    do{ //狢のアイコン入れ替え処理
-      if(! is_array($ROOM->event->same_face)) break;
-      $target = $this->ById(GetRandom($ROOM->event->same_face));
-      if(is_null($target->uname)) break;
-      foreach($this->rows as $user) $user->icon_filename = $target->icon_filename;
-    }while(false);
+      //影妖精の処理
+      $stack = array();
+      foreach($this->rows as $user){
+	foreach($user->GetPartner('bad_status', true) as $id => $date){
+	  if($date != $ROOM->date) continue;
+	  $status_user = $this->ByID($id);
+	  if($status_user->IsRole('shadow_fairy')){
+	    $stack[$status_user->user_no] = array('icon'  => $user->icon_filename,
+						  'color' => $user->color);
+	  }
+	}
+      }
+      foreach($stack as $id => $list){
+	$user = $this->ByID($id);
+	$user->color         = $list['color'];
+	$user->icon_filename = $list['icon'];
+      }
+
+      do{ //狢のアイコン入れ替え処理
+	if(! is_array($ROOM->event->same_face)) break;
+	$target = $this->ById(GetRandom($ROOM->event->same_face));
+	if(is_null($target->uname)) break;
+	foreach($this->rows as $user) $user->icon_filename = $target->icon_filename;
+      }while(false);
+    }
   }
 
   //ジョーカーの最終所持者判定

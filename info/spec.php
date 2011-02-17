@@ -179,18 +179,19 @@ OutputInfoPageHeader('詳細な仕様');
 + 恋人 (<a href="new_role/lovers.php">恋人陣営</a>)
   - 相互作用はないので投票直後に処理を行う
 
-+ 接触 (罠・逃亡・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺)
++ 接触 (罠・逃亡・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺・人攫い)
   - 罠 ＞ 逃亡失敗 →
     罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
-    狩人の狩り → 罠 ＞ 狩人護衛 ＞ 吸血 → 罠 ＞ 暗殺 → 凍傷判定
+    狩人の狩り → 罠 ＞ 狩人護衛 ＞ 吸血 →
+    罠 ＞ 暗殺 → 罠 ＞ 人攫い → 凍傷判定
 
   - 罠能力者 (<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>)
   - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)
-  - 護衛能力者 (<a href="new_role/human.php#guard_group">狩人系</a>)
+  - <a href="new_role/ability.php#guard">護衛能力者</a>
   - <a href="new_role/ability.php#resist_wolf">襲撃耐性能力者</a>
   - <a href="new_role/ability.php#sacrifice">身代わり能力者</a>
   - 吸血能力者 (<a href="new_role/vampire.php">吸血鬼陣営</a>)
-  - <a href="new_role/ability.php#assassin">暗殺能力者</a>
+  - <a href="new_role/ability.php#assassin">暗殺・人攫い能力者</a>
 
 
 + 夢 (<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>)

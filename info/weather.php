@@ -21,6 +21,12 @@ OutputInfoPageHeader('天候システム');
 </ul>
 
 <h2><a id="summary">一覧</a></h2>
+<p>
+Ver. 1.5.0
+<a href="#150alpha2">α2</a>
+<a href="#150alpha3">α3</a>
+<a href="#150alpha4">α4</a>
+</p>
 <table>
 <tr>
   <th>名称</th>
@@ -29,7 +35,7 @@ OutputInfoPageHeader('天候システム');
   <th>初登場</th>
 </tr>
 <tr>
-  <td><a href="#weather_grassy"><?php echo $ROLE_DATA->weather_list[0]['name'] ?></a></td>
+  <td><a href="#weather_grassy" id="150alpha2"><?php echo $ROLE_DATA->weather_list[0]['name'] ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
   <td><?php echo $ROLE_DATA->weather_list[0]['caption'] ?></td>
   <td>Ver. 1.5.0 α2</td>
@@ -89,7 +95,7 @@ OutputInfoPageHeader('天候システム');
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_invisible"><?php echo $ROLE_DATA->weather_list[10]['name'] ?></a></td>
+  <td><a href="#weather_invisible" id="150alpha3"><?php echo $ROLE_DATA->weather_list[10]['name'] ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
   <td><?php echo $ROLE_DATA->weather_list[10]['caption'] ?></td>
   <td>Ver. 1.5.0 α3</td>
@@ -179,7 +185,7 @@ OutputInfoPageHeader('天候システム');
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_whisper_ringing"><?php echo $ROLE_DATA->weather_list[25]['name'] ?></a></td>
+  <td><a href="#weather_whisper_ringing" id="150alpha4"><?php echo $ROLE_DATA->weather_list[25]['name'] ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
   <td><?php echo $ROLE_DATA->weather_list[25]['caption'] ?></td>
   <td>Ver. 1.5.0 α4</td>
@@ -256,12 +262,25 @@ OutputInfoPageHeader('天候システム');
   <td><?php echo $ROLE_DATA->weather_list[37]['caption'] ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
+<tr>
+  <td><a href="#weather_passion"><?php echo $ROLE_DATA->weather_list[38]['name'] ?></a></td>
+  <td><a href="#type_talk">会話妨害</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[38]['caption'] ?></td>
+  <td>Ver. 1.5.0 α4</td>
+</tr>
+<tr>
+  <td><a href="#weather_no_poison"><?php echo $ROLE_DATA->weather_list[39]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[39]['caption'] ?></td>
+  <td>Ver. 1.5.0 α4</td>
+</tr>
 </table>
 
 <h2><a id="type_talk">会話妨害</a></h2>
 <ul>
   <li><a href="#weather_invisible">黄砂</a></li>
   <li><a href="#weather_rainbow">虹</a></li>
+  <li><a href="#weather_passion">箒星</a></li>
   <li><a href="#weather_grassy">スコール</a></li>
   <li><a href="#weather_side_reverse">ダイヤモンドダスト</a></li>
   <li><a href="#weather_line_reverse">バナナの皮</a></li>
@@ -284,6 +303,11 @@ OutputInfoPageHeader('天候システム');
 <h3><a id="weather_rainbow">虹</a> [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li>全員に<a href="new_role/sub_role.php#rainbow">虹色迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h3><a id="weather_passion">箒星</a> [Ver. 1.5.0 α4～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#passion">恋色迷彩</a>がつきます (昼限定)。</li>
 </ul>
 
 <h3><a id="weather_grassy">スコール</a> [Ver. 1.5.0 α2～]</h3>
@@ -409,14 +433,14 @@ OutputInfoPageHeader('天候システム');
 <h3><a id="weather_thunderbolt">青天の霹靂</a> [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li>処刑投票結果が出るたびにランダムで誰か一人が落雷でショック死します。</li>
-  <li>死因は「落雷を受けたようです」で、サブ役職によるショック死より優先されます。</li>
-  <li>ショック死抑制能力者 (例：<a href="new_role/human.php#cure_pharmacist">河童</a>・<a href="new_role/human.php#revive_pharmacist">仙人</a>) の能力は有効です。</li>
+  <li>死因は「落雷を受けたようです」で、<a href="new_role/sub_role.php">サブ役職</a>によるショック死より優先されます。</li>
   <li><a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
+  <li>対象者に投票したショック死抑制能力者 (例：<a href="new_role/human.php#cure_pharmacist">河童</a>・<a href="new_role/human.php#revive_pharmacist">仙人</a>) の能力は有効です。</li>
 </ul>
 
 <h3><a id="weather_no_sudden_death">凪</a> [Ver. 1.5.0 α3～]</h3>
 <ul>
-  <li>サブ役職によるショック死が発生しなくなります。</li>
+  <li><a href="new_role/sub_role.php">サブ役職</a>によるショック死が発生しなくなります。</li>
 </ul>
 
 
@@ -434,6 +458,7 @@ OutputInfoPageHeader('天候システム');
   <li><a href="#weather_no_dream">熱帯夜</a></li>
   <li><a href="#weather_full_ogre">朧月</a></li>
   <li><a href="#weather_seal_ogre">叢雲</a></li>
+  <li><a href="#weather_no_poison">旱魃</a></li>
   <li><a href="#weather_full_revive">雷雨</a></li>
   <li><a href="#weather_missfire_revive">疎雨</a></li>
   <li><a href="#weather_no_revive">快晴</a></li>
@@ -452,23 +477,22 @@ OutputInfoPageHeader('天候システム');
 <h3><a id="weather_full_moon">満月</a> [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li>夜の投票で発生する<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#voodoo">呪術能力</a>と<a href="new_role/human.php#guard_group">狩人系</a>の能力が全て無効化されます。</li>
-  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
-  <li>投票を必要としない<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#cursed">呪い</a>は有効です。</li>
   <li><a href="new_role/human.php#wizard_group">魔法</a>による能力は有効です。</li>
+  <li>投票を必要としない<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#cursed">呪い</a>は有効です。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3><a id="weather_half_moon">半月</a> [Ver. 1.5.0 α4～]</h3>
 <ul>
-  <li><a href="new_role/human.php#mage_group">占い能力</a>に成功率 50% の<a href="new_role/ability.php#phantom">占い妨害能力</a>が適用されます。</li>
-  <li><a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/human.php#anti_voodoo">厄神</a>の能力は無効です。</li>
-  <li>占い能力は<a href="new_role/human.php#wizard_group">魔法</a>・<a href="new_role/fox.php#child_fox_group">子狐系</a>も含まれます。</li>
+  <li><a href="new_role/human.php#mage_group">占い能力者</a>に成功率 50% の<a href="new_role/wolf.php#jammer_mad">月兎</a>相当の能力が適用されます (対象者は<a href="new_role/wolf.php#jammer_mad">月兎</a>参照)。</li>
+  <li>対象者に対する<a href="new_role/human.php#anti_voodoo">厄神</a>の厄払い能力は有効です。</li>
 </ul>
 
 <h3><a id="weather_new_moon">新月</a> [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li>夜の投票で発生する<a href="new_role/human.php#mage_group">占い能力</a>・<a href="new_role/human.php#wizard_group">魔法能力</a>・<a href="new_role/wolf.php#wolf_group">人狼襲撃</a>・<a href="new_role/vampire.php">吸血能力</a>・<a href="new_role/chiroptera.php#fairy_group">悪戯能力</a>が全て無効化されます。</li>
-  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
   <li>占い能力は<a href="new_role/fox.php#child_fox_group">子狐系</a>も含まれます。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3><a id="weather_full_guard">蒼天</a> [Ver. 1.5.0 α4～]</h3>
@@ -478,20 +502,21 @@ OutputInfoPageHeader('天候システム');
 
 <h3><a id="weather_half_guard">曇天</a> [Ver. 1.5.0 α4～]</h3>
 <ul>
-  <li>50% の確率で<a href="new_role/human.php#guard_group">狩人系</a>の護衛が突破されます。</li>
+  <li>50% の確率で<a href="new_role/ability.php#guard">護衛能力者</a>の護衛が突破されます。</li>
+  <li><a href="new_role/wolf.php#wolf_group">人狼系</a>・<a href="new_role/vampire.php">吸血鬼陣営</a>の襲撃両方に適用され、判定は個々の襲撃毎に行われます。</li>
   <li>突破されても護衛成功メッセージは表示されます。</li>
 </ul>
 
 <h3><a id="weather_no_hunt">川霧</a> [Ver. 1.5.0 α4～]</h3>
 <ul>
-  <li><a href="spec.php#vote_night">接触系能力者</a>の<a href="new_role/human.php#guard_hunt">狩り</a>が無くなります</li>
+  <li><a href="spec.php#vote_night">接触系能力者</a>の<a href="new_role/human.php#guard_hunt">狩り</a>が無くなります。</li>
 </ul>
 
 <h3><a id="weather_no_contact">花曇</a> [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li><a href="spec.php#vote_night">接触系能力者</a>の夜の投票が全て無効化されます。</li>
-  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
   <li><a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>の能力は有効、<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>の能力は無効です。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3><a id="weather_no_dream">熱帯夜</a> [Ver. 1.5.0 α3～]</h3>
@@ -504,14 +529,20 @@ OutputInfoPageHeader('天候システム');
 <h3><a id="weather_full_ogre">朧月</a> [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 100% になります。</li>
-  <li>人攫いが成立してもカウントされません (次回の成功率が低下しません)。</li>
   <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 100% になります。</li>
+  <li>人攫いが成立してもカウントされません (次回の成功率が低下しません)。</li>
 </ul>
 
 <h3><a id="weather_seal_ogre">叢雲</a> [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 0% になります。</li>
   <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 0% になります。</li>
+</ul>
+
+<h3><a id="weather_no_poison">旱魃</a> [Ver. 1.5.0 α4～]</h3>
+<ul>
+  <li><a href="new_role/ability.php#poison">毒能力</a>が全て無効化されます。</li>
+  <li>昼夜両方に適用され、<a href="new_role/human.php#dummy_poison">夢毒者</a>も無効化されます。</li>
 </ul>
 
 <h3><a id="weather_full_revive">雷雨</a> [Ver. 1.5.0 α3～]</h3>

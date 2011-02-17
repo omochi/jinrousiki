@@ -32,8 +32,7 @@ class DatabaseConfig extends DatabaseConfigBase{
 //-- サーバ設定 --//
 class ServerConfig{
   //サーバのURL
-  #var $site_root = 'http://localhost/jinrou/';
-  var $site_root = 'http://localhost/jinro/';
+  var $site_root = 'http://localhost/jinrou/';
 
   //タイトル
   var $title = '汝は人狼なりや？';
@@ -210,6 +209,13 @@ class SharedServerConfig extends SharedServerConfigBase{
 			'encode' => 'EUC-JP',
 			'separator' => '',
 			'footer' => '',
+			'disable' => false),
+
+    'airelmas' => array('name' => 'Twitter鯖',
+			'url' => 'http://www22.atpages.jp/airelmas/jinro/',
+			'encode' => 'UTF-8',
+			'separator' => '<!-- atpages banner tag -->',
+			'footer' => '</a><br>',
 			'disable' => false)
 			   );
 }
@@ -285,6 +291,7 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 			    '掲示板' => 'http://jbbs.livedoor.jp/netgame/4598/'),
     'AC 人狼系' => array('AC 人狼鯖' => 'http://acjinrou.blue-sky-server.com/',
 			    '掲示板' => 'http://acjinrou.bbs.fc2.com/'),
+    'Twitter人狼系' => array('Twitter鯖' => 'http://www22.atpages.jp/airelmas/jinro/'),
 			);
 }
 
@@ -316,9 +323,11 @@ class CopyrightConfig extends CopyrightConfigBase{
   //追加情報
   var $add_list = array('写真素材' =>
 			array('Le moineau - すずめのおやど -' => 'http://moineau.fc2web.com/'),
+			/*
 			'アイコン素材' =>
 			array('夏蛍' => 'http://natuhotaru.yukihotaru.com/',
 			      'ジギザギのさいはて' => 'http://jigizagi.s57.xrea.com/')
+			*/
 			);
 }
 
@@ -343,9 +352,18 @@ class SourceUploadConfig{
 class TwitterConfig extends TwitterConfigBase{
   var $disable = true; //Twitter 投稿停止設定 (true:停止する / false:しない)
   var $server = 'localhost'; //サーバ名
-  var $hash = ''; //ハッシュタグ (任意)
+  var $hash = ''; //ハッシュタグ (任意、「#」は不要)
+  var $add_url    = false; //サーバの URL 追加設定 (true:追加する/false:しない)
+  var $direct_url = false; //村への直リンク追加設定 (要：$add_url:true / true: 追加する/false しない)
+  var $short_url  = false; //TinyURL を用いた URL 短縮処理設定 (true:行う / false:行わない)
   var $key_ck = 'xxxx'; //Consumer key
   var $key_cs = 'xxxx'; //Consumer secret
   var $key_at = 'xxxx'; //Access Token
   var $key_as = 'xxxx'; //Access Token Secret
+
+  //-- 関数 --//
+  //メッセージのセット
+  function GenerateMessage($id, $name, $comment){
+    return "【{$this->server}】{$id}番地に{$name}村\n～{$comment}～ が建ちました";
+  }
 }

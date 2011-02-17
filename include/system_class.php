@@ -474,17 +474,34 @@ EOF;
 
 //-- Twitter 投稿用の基底クラス --//
 class TwitterConfigBase{
+  //メッセージのセット
+  function GenerateMessage($id, $name, $comment){
+    return true;
+  }
+
   //投稿処理
   function Send($id, $name, $comment){
     global $SERVER_CONF;
     if($this->disable) return;
-    require_once(JINRO_MOD . '/twitter/twitteroauth.php'); //ライブラリをロード
 
-    $message = "【{$this->server}】{$id}番地に{$name}村\n～{$comment}～ が建ちました";
-    if(strlen($this->hash) > 0) $message .= " #{$this->hash}";
+    $message = $this->GenerateMessage($id, $name, $comment);
     //TwitterはUTF-8
     if($SERVER_CONF->encode != 'UTF-8'){
       $message = mb_convert_encoding($message, 'UTF-8', $SERVER_CONF->encode);
+    }
+    if(mb_strlen($message) > 140) $message = mb_substr($message, 0, 139);
+
+    if($this->add_url){
+      $url = $SERVER_CONF->site_root;
+      if($this->direct_url) $url .= 'login.php?room_no=' . $id;
+      if($this->short_url){
+	$short_url = @file_get_contents('http://tinyurl.com/api-create.php?url=' . $url);
+	if($short_url != '') $url = $short_url;
+      }
+      if(mb_strlen($message . $url) + 1 < 140) $message .= ' ' . $url;
+    }
+    if(strlen($this->hash) > 0 && mb_strlen($message . $this->hash) + 2 < 140){
+      $message .= " #{$this->hash}";
     }
 
     //投稿
@@ -1375,7 +1392,12 @@ class RoleData{
     37 => array('name'    => '曇天',
 		'event'   => 'half_guard',
 		'caption' => '護衛成功率低下'),
-);
+    38 => array('name'    => '箒星',
+		'event'   => 'passion',
+		'caption' => '全員 恋色迷彩'),
+    39 => array('name'    => '旱魃',
+		'event'   => 'no_poison',
+		'caption' => '毒無し'));
 
   //-- 関数 --//
   //役職グループ判定

@@ -144,7 +144,7 @@ class Role{
   function Ignored(){
     global $ROOM, $USERS, $ROLES;
     //return false; //テスト用
-    return ! $ROOM->IsPlaying() &&
+    return ! $ROOM->IsPlaying() ||
       ! ($USERS->IsVirtualLive($ROLES->actor->user_no) || $ROLES->actor->virtual_live);
   }
 
