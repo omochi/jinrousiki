@@ -102,7 +102,7 @@ $RQ_ARGS->TestItems->test_users[11] =& new User();
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'jammer_mad silent';
+$RQ_ARGS->TestItems->test_users[11]->role = 'follow_mad silent';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12] =& new User();
@@ -233,7 +233,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' =>  8, 'target_no' =>  9),
   array('id' =>  9, 'target_no' =>  7),
   array('id' => 10, 'target_no' =>  7),
-  array('id' => 11, 'target_no' => 16),
+  array('id' => 11, 'target_no' =>  3),
   array('id' => 12, 'target_no' => 25),
   array('id' => 13, 'target_no' => 25),
   array('id' => 14, 'target_no' => 25),
@@ -274,8 +274,8 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'light_blue'),
   array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'sun'),
   #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'blue'),
-  #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'cloud'),
-  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'moon'),
+  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'cherry'),
+  #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'sun'),
   #array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'dark_gray'),
   #array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'yellow'),
@@ -305,7 +305,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'moon'),
   array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'sun'),
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
-  array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'yellow'),
+  #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'orange'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'black'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'gust'),
@@ -370,8 +370,8 @@ $RQ_ARGS->TestItems->system_message = array();
 $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 38)
-  array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
+  array('type' => 'WEATHER', 'message' => 38)
+  #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
 //-- データ収集 --//
@@ -385,7 +385,6 @@ $ROOM->date = 4;
 $ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
-$role_view_mode = false;
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live';
@@ -397,9 +396,18 @@ $SELF = $USERS->ByID(1);
 
 //-- データ出力 --//
 OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
+$role_view_mode = false;
 if($role_view_mode){
-  foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
-  foreach(array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
+  $main    = true;
+  $sub     = false;
+  $weather = false;
+  if($main) foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
+  if($sub)  foreach(array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
+  if($weather){
+    foreach($ROLE_DATA->weather_list as $stack){
+      $ROLE_IMG->Output('prediction_weather_' . $stack['event']);
+    }
+  }
   OutputHTMLFooter(true);
 }
 //OutputGameOption($ROOM->game_option, '');
@@ -494,7 +502,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 23, 24) as $id){
+  foreach(array(5, 11, 24) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   #var_dump($USERS->IsOpenCast());

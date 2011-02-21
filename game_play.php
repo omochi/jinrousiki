@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
-$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF', 'ROOM_IMG');
+$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay'); //引数を取得
@@ -29,7 +29,8 @@ $SELF = $USERS->BySession(); //自分の情報をロード
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){
-  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'GAME_OPT_MESS'); //ゲームオプション表示用
+  //ゲームオプション表示用
+  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'GAME_OPT_MESS', 'ROOM_IMG');
   $ROOM->LoadVote();
 }
 elseif($ROOM->IsFinished()){

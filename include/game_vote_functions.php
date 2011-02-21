@@ -537,7 +537,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   //兼任となる役割の設定
-  $rand_keys = array_rand($fix_role_list, $user_count); //ランダムキーを取得
+  shuffle($rand_keys = array_rand($fix_role_list, $user_count)); //ランダムキーを取得
   $rand_keys_index = 0;
   $sub_role_count_list = array();
   $roled_list = array(); //配役済み番号
@@ -1235,6 +1235,39 @@ function AggregateVoteDay(){
     }
     else{
       $USERS->SuddenDeath($user->user_no, 'SUDDEN_DEATH_' . $reason);
+    }
+  }
+
+  if($role_flag->follow_mad){ //舟幽霊の処理
+    $target_stack = array(); //対象者リスト
+    $follow_stack = array(); //有効投票先リスト
+    $count = 0; //能力発動カウント
+    foreach($user_list as $uname){ //情報収集
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsLive(true) && ! $user->IsAvoid(true)) $target_stack[] = $user->user_no;
+      if($user->IsSame($vote_kill_uname) || ! $user->IsRole('follow_mad')) continue;
+
+      $target_uname = $vote_target_list[$user->uname]; //投票先を取得
+      if($target_uname == $vote_kill_uname) continue; //処刑者ならスキップ
+
+      $target = $USERS->ByRealUname($target_uname);
+      $target->suicide_flag ? $count++ : $follow_stack[$uname] = $target->user_no;
+    }
+    //PrintData($follow_stack, 'follow_mad:' . $count);
+    //PrintData($target_stack, 'BaseFollowTarget');
+
+    while($count > 0 && count($target_stack) > 0){ //道連れ処理
+      $count--;
+      shuffle($target_stack); //配列をシャッフル
+      $id = array_shift($target_stack);
+      $USERS->SuddenDeath($id, 'SUDDEN_DEATH_FOLLOWED'); //死亡処理
+
+      if(! in_array($id, $follow_stack)) continue;//連鎖判定
+      $stack = array();
+      foreach($follow_stack as $uname => $user_no){
+	$id == $user_no ? $count++ : $stack[$uname] = $user_no;
+      }
+      $follow_stack = $stack;
     }
   }
 

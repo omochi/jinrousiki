@@ -167,7 +167,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 + 役職判定順
   - <a href="new_role/quiz.php#quiz">出題者</a> →<a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 →
-    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a> → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a> → <a href="new_role/human.php#cursed_brownie">祟神</a>
+    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a> → <a href="new_role/human.php#cursed_brownie">祟神</a>
 </pre>
 
 <h3><a id="vote_night">夜</a></h3>

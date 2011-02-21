@@ -37,7 +37,8 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 Ver. 1.5.0
 <a href="#150alpha1">α1</a>
 <a href="#150alpha3">α3</a>
-<a href="#150alpha4">α4</a><br>
+<a href="#150alpha4">α4</a>
+<a href="#150alpha5">α5</a><br>
 Ver. 1.4.0
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-7</a>
@@ -2100,6 +2101,17 @@ Ver. 1.4.0
   <td class="ability">翌日の<a href="../weather.php">天候</a>が分かる、特殊な司祭。
     また、一定条件を満たすと天候を引き起こすことができる。</td>
   <td>Ver. 1.5.0 α4</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#follow_mad" id="150alpha5">舟幽霊</a></td>
+  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。<br>
+    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+  </td>
+  <td>Ver. 1.5.0 α5</td>
 </tr>
 </table>
 

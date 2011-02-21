@@ -545,6 +545,10 @@ class RoleMessageList{
 			  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|土蜘蛛|です。#処刑#投票先が死ななかった場合は_熱病_にさせることができます。\n　身に孕む怨念を悪疫へと変え、村を地獄の釜の底へ叩き込み、悪夢に悩ませるのです！",
 			  'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'chicken'));
 
+  var $follow_mad = array(
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|舟幽霊|です。#処刑#投票先が_ショック死_した場合はさらに誰か一人を_ショック死_させることができます。",
+			   'type' => 'miasma_mad');
+
   var $therian_mad = array(
 			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。その身に宿る気高き獣の血を覚醒させ、森羅万象全てを噛み殺すのです！",
 			   'type' => 'mad');
@@ -1263,6 +1267,7 @@ class RoleMessageList{
   var $result_amaze_mad = array('message' => "さんは|傘化け|でした", 'type' => 'result_mad');
   var $result_agitate_mad = array('message' => "さんは|扇動者|でした", 'type' => 'result_mad');
   var $result_miasma_mad = array('message' => "さんは|土蜘蛛|でした", 'type' => 'result_mad');
+  var $result_follow_mad = array('message' => "さんは|舟幽霊|でした", 'type' => 'result_mad');
   var $result_therian_mad = array('message' => "さんは|獣人|でした", 'type' => 'result_mad');
   var $result_fox = array('message' => "さんは|妖狐|でした", 'delimiter' => array('|' => 'fox'));
   var $result_white_fox = array('message' => "さんは|白狐|でした", 'type' => 'result_fox');
@@ -1501,5 +1506,6 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-$builder->Output('prediction_weather_no_poison');
+#$builder->Output('prediction_weather_no_poison');
 #$builder->Output('awake_wizard');
+$builder->Output('follow_mad');

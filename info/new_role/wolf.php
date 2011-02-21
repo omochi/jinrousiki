@@ -17,7 +17,7 @@ OutputRolePageHeader('人狼陣営');
 <h2><a id="wolf_rule">基本ルール</a></h2>
 <ol>
   <li>夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。<br>
-    例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない
+    例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない。
   </li>
   <li>狼が狼を襲撃した場合は失敗扱いとなる (襲撃された狼には何も表示されない)。</li>
 </ol>
@@ -140,7 +140,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 ローゼンメイデンの金糸雀がモチーフです。
 一見地味ですが存在に気づかないと見事に騙される可能性があります。
-<a href="chiroptera.php">蝙蝠陣営</a>不在が確定している場合は<a href="human.php#sex_mage">ひよこ鑑定士</a>が逆に脅威となる事に気をつけましょう。
+<a href="chiroptera.php">蝙蝠陣営</a>不在が確定している場合は<a href="human.php#sex_mage">ひよこ鑑定士</a>が逆に脅威になります。
 </pre>
 
 <h3><a id="phantom_wolf">幻狼</a> (占い結果：人狼 / 霊能結果：幻狼) [Ver. 1.4.0 β11～]</h3>
@@ -167,12 +167,12 @@ OutputRolePageHeader('人狼陣営');
 <h3><a id="cursed_wolf">呪狼</a> (占い結果：人狼(呪返し) / 霊能結果：呪狼) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
-占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼です。
-死亡した占い師の死因は「呪返し」になります。
+占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼。
+死亡した占い師の死因は「呪返し」になる。
 </pre>
 <h5>Ver. 1.4.0 β3～</h5>
 <pre>
-霊能結果を「人狼」から「呪狼」に変更しました (<a href="human.php#necromancer_rule">基本ルール [霊能]</a>対応抜け)
+霊能結果を「人狼」から「呪狼」に変更 (<a href="human.php#necromancer_rule">基本ルール [霊能]</a>対応抜け)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -221,9 +221,9 @@ OutputRolePageHeader('人狼陣営');
 <h4>[耐性] 毒：無効 (1回限定)</h4>
 <pre>
 一度だけ毒に耐えられる(毒に中っても死なない)人狼。
-処刑・襲撃両方に対応しています。
+処刑・襲撃共に有効だが、一度毒に中ると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 毒能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
-毒の対象が襲撃者に固定されます。
+毒の対象が襲撃者に固定される。
 </pre>
 <h5>Ver. 1.4.0 α24～</h5>
 <pre>
@@ -276,9 +276,9 @@ OutputRolePageHeader('人狼陣営');
 襲撃に成功した人の性別が分かるが、噛み殺せない人狼。
 </pre>
 <ol>
-  <li>性別判定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ</li>
-  <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)</li>
-  <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定されます</li>
+  <li>性別判定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ。</li>
+  <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)。</li>
+  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -315,7 +315,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む)・<a href="ability.php#possessed_limited">憑依制限能力者</a>は乗っ取れません。
+身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む)・<a href="ability.php#possessed_limited">憑依制限能力者</a>は乗っ取れない。
 </pre>
 <ol>
   <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -646,11 +646,11 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 <a href="#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>しか噛み殺せない人狼。
 </pre>
 <ol>
-  <li>仲間と分かっている狼も襲撃可能</li>
-  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」</li>
-  <li>身代わり君は役職関係なく襲撃成功扱い</li>
-  <li>人狼と妖狐以外を襲撃した場合は失敗扱い</li>
-  <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定される</li>
+  <li>仲間と分かっている狼も襲撃可能。</li>
+  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」。</li>
+  <li>身代わり君は役職関係なく襲撃成功扱い。</li>
+  <li>人狼と妖狐以外を襲撃した場合は失敗扱い。</li>
+  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -675,7 +675,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 <ol>
   <li>身代わり君には無効 (普通に死亡する)。</li>
   <li>死の宣告の発動日は投票した夜から数えて 4 日後の昼。</li>
-  <li><a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力が先に判定される。</li>
+  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
   <li><a href="fox.php">妖狐陣営</a>にも宣告可能。</li>
 </ol>
 <h5>Ver. 1.4.0 β17～</h5>
@@ -704,7 +704,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
-    <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
+    <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
     <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
     <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
@@ -816,6 +816,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#amaze_mad">傘化け</a>
 <a href="#agitate_mad">扇動者</a>
 <a href="#miasma_mad">土蜘蛛</a>
+<a href="#follow_mad">舟幽霊</a>
 <a href="#therian_mad">獣人</a>
 </p>
 
@@ -878,11 +879,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="#enchant_mad">狢</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#fairy_group">妖精系</a> (<a href="chiroptera.php#mirror_fairy">鏡妖精</a>を除く) です</li>
-  <li><a href="human.php#wizard_group">魔法</a>による占い能力にも有効です</li>
-  <li>妨害された占い能力者には「～さんの占いに失敗しました」と出ます</li>
-  <li>妨害が成功したかどうかは本人には分かりません</li>
-  <li>呪われている人を選んだ場合は呪返しを受けます</li>
+  <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="#enchant_mad">狢</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#fairy_group">妖精系</a> (<a href="chiroptera.php#mirror_fairy">鏡妖精</a>を除く)。</li>
+  <li><a href="human.php#wizard_group">魔法</a>による占い能力にも有効。</li>
+  <li>妨害に成功すると対象の占い結果が「～さんの占いに失敗しました」となる。</li>
+  <li>妨害が成功したかどうかは本人には分からない。</li>
+  <li>呪われている人を選んだ場合は呪返しを受ける。</li>
 </ol>
 <h5>Ver. 1.4.0 α21～</h5>
 <pre>
@@ -905,9 +906,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受けます</li>
-  <li>呪い持ち (<a href="#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>) を選んだ場合は本人が呪返しを受けます</li>
-  <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受けます</li>
+  <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受ける。</li>
+  <li>呪い持ち (<a href="#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>) を選んだ場合は本人が呪返しを受ける。</li>
+  <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受ける。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -945,14 +946,14 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 夢守人に殺される条件は以下。
 </pre>
 <ol>
-  <li>襲撃先が夢守人だった</li>
-  <li>夢守人に自分が護衛された</li>
-  <li>襲撃先が夢守人に護衛されていた</li>
+  <li>襲撃先が夢守人だった。</li>
+  <li>夢守人に自分が護衛された。</li>
+  <li>襲撃先が夢守人に護衛されていた。</li>
 </ol>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
-<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中ります (襲撃した場合は中らない)。
-<a href="chiroptera.php#fairy_group">妖精系</a>も殺す事ができます
+<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る (襲撃した場合は中らない)。
+<a href="chiroptera.php#fairy_group">妖精系</a>も殺す事ができる。
 </pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
@@ -960,8 +961,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-対夢系能力者専門の<a href="human.php#assassin_group">暗殺者</a>という位置づけです。「ばく」と読みます。
-夢系は基本的には村陣営なので獏は狂人相当になります。
+対<a href="ability.php#dummy">夢系能力者</a>専門の<a href="human.php#assassin_group">暗殺者</a>という位置づけです。「ばく」と読みます。
+夢系は基本的には村人陣営なので獏は狂人相当になります。
 </pre>
 
 <h3><a id="possessed_mad">犬神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
@@ -971,19 +972,19 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できません</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡します</li>
-  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
-  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
-  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
-  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
-  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
-  <li>死亡した人狼にも憑依できますが、夜の発言は独り言になり、仲間の人狼と会話できません</li>
+  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できない。</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡する。</li>
+  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
+  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
+  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けない。</li>
+  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
+  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
+  <li>死亡した人狼にも憑依できるが、夜の発言は独り言になり、仲間の人狼と会話できない。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できません。
-(<a href="#possessed_wolf">憑狼</a>が憑依できない役職には憑依できません)。
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できない。
+(<a href="#possessed_wolf">憑狼</a>が憑依できない役職には憑依できない)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1003,20 +1004,20 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>対象は<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="ability.php#assassin">暗殺能力者</a>です。</li>
-  <li>自分が<a href="#wolf_group">人狼系</a> (種類を問わない) に襲撃されたら無効になります。</li>
-  <li>罠を仕掛けた先に他の罠師が罠を仕掛けていた場合は死亡します。</li>
-  <li>自分にも仕掛けることができます。</li>
-  <li>自分に仕掛けた場合は人狼に襲撃されても有効です (人狼が死にます)。</li>
-  <li>自分に仕掛けた場合は他の罠師が罠をかけていても本人は死にません。<br>
-    (仕掛けに来た他の罠師は死にます)</li>
-  <li>自分に仕掛けて<a href="human.php#guard_group">狩人系</a>に護衛された場合は相打ちになります。</li>
-  <li><a href="human.php#assassin_group">暗殺者系</a>が罠にかかった場合、暗殺は無効になります。</li>
-  <li><a href="#sirius_wolf">天狼</a> (覚醒状態) には無効です。</li>
+  <li>対象は<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="ability.php#assassin">暗殺能力者</a>。</li>
+  <li>自分が<a href="#wolf_group">人狼系</a> (種類を問わない) に襲撃されたら罠設置が無効になる。</li>
+  <li>罠を仕掛けた先に他の罠師が罠を仕掛けていた場合は罠にかかる。</li>
+  <li>自分にも仕掛けることができる。</li>
+  <li>自分に仕掛けた場合は人狼に襲撃されても有効 (人狼が罠にかかる)。</li>
+  <li>自分に仕掛けた場合は他の罠師が罠をかけていても本人は罠にかからない。<br>
+    (仕掛けに来た他の罠師は罠にかかる)</li>
+  <li>自分に仕掛けて<a href="human.php#guard_group">狩人系</a>に護衛された場合は相打ちになる。</li>
+  <li><a href="human.php#assassin_group">暗殺者系</a>が罠にかかった場合、暗殺は無効。</li>
+  <li><a href="#sirius_wolf">天狼</a> (覚醒状態) には無効。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
-狼陣営に対<a href="human.php#assassin_group">暗殺者</a>を何か……と考案してこういう形に落ち着きました。
+人狼陣営に対<a href="human.php#assassin_group">暗殺者</a>を何か……と考案してこういう形に落ち着きました。
 一行動で多くの能力者を葬れる可能性を秘めています。
 人狼の襲撃先を外しつつ狩人の護衛先や暗殺者の襲撃先を読み切って
 ピンポイントで罠を仕掛けないといい仕事にならないので活躍するのは
@@ -1069,7 +1070,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <ol>
   <li>投票先が処刑された時点で能力が発動し、処刑者に<a href="sub_role.php#bad_status">悪戯</a>が付く。</li>
   <li>能力が発動すると死亡者メッセージ欄に「傘化けの能力で隠蔽された」と表示される。</li>
-  <li>観戦画面・配役公開されていない霊界でも効果は有効。</li>
+  <li>観戦画面・配役公開されていない霊界でも能力は有効。</li>
 </ol>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
@@ -1089,9 +1090,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>事前に処刑者が決定していた場合は発動しない (<a href="../spec.php#vote_day">判定</a>は<a href="human.php#saint">聖女</a>の判定の後)</li>
-  <li>複数の扇動者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
-  <li>最多得票者に自分が含まれていても有効 (自分の投票先が吊られて、自分はショック死する)</li>
+  <li>事前に処刑者が決定していた場合は発動しない (<a href="../spec.php#vote_day">判定</a>は<a href="human.php#saint">聖女</a>の判定の後)。</li>
+  <li>複数の扇動者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する。</li>
+  <li>最多得票者に自分が含まれていても有効 (自分の投票先が吊られて、自分はショック死する)。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -1101,7 +1102,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 他の国に実在する役職です。
 オリジナルは「昼の処刑投票を二回発生させる能力」ですが、
-より「扇動者」っぽくアレンジしてみました。
+より扇動者っぽくアレンジしてみました。
 </pre>
 
 <h3><a id="miasma_mad">土蜘蛛</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
@@ -1111,7 +1112,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>自分が処刑された場合は無効</li>
+  <li>自分が処刑された場合は無効。</li>
   <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h5>Ver. 1.4.0 β19～</h5>
@@ -1135,6 +1136,27 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ</a> の 33 が原型です。
 <a href="sub_role#febris">熱病</a>の仕様と実装がなかなか決まらず、作成決定から実装まで
 かなり間が開いてます。
+</pre>
+
+<h3><a id="follow_mad">舟幽霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
+<pre>
+処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<ol>
+  <li>自分が処刑された場合は無効。</li>
+  <li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php">サブ役職</a>の判定の後で、死因は「道連れにされた」。</li>
+  <li>複数の舟幽霊が投票していたら人数分ショック死が発生する。</li>
+  <li>舟幽霊の能力でショック死した先に別の舟幽霊が投票していたらさらにショック死が発生する。</li>
+  <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>はショック死の対象外。</li>
+  <li>舟幽霊の能力で発生するショック死に対する<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の村紗 水蜜がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/319" target="_top">新役職考案スレ</a> の 319 を参考にしています。
+<a href="human.php#cure_pharmacist">河童</a>などを騙ることでショック死発生者を狙い撃ちにする事ができます。
+ショック死の死因は問わないので、条件次第で大量のショック死が発生します。
 </pre>
 
 <h3><a id="therian_mad">獣人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>

@@ -113,6 +113,7 @@ class Message{
   var $drunk              = 'は神主に酔い潰されたようです'; //神主
   var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
+  var $followed           = 'は道連れにされたようです'; //舟幽霊
   var $febris             = 'は熱病にかかったようです'; //熱病
   var $frostbite          = 'は凍傷にかかったようです'; //凍傷
   var $warrant            = 'は死の宣告を受けたようです'; //死の宣告

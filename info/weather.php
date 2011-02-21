@@ -435,7 +435,7 @@ Ver. 1.5.0
   <li>処刑投票結果が出るたびにランダムで誰か一人が落雷でショック死します。</li>
   <li>死因は「落雷を受けたようです」で、<a href="new_role/sub_role.php">サブ役職</a>によるショック死より優先されます。</li>
   <li><a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
-  <li>対象者に投票したショック死抑制能力者 (例：<a href="new_role/human.php#cure_pharmacist">河童</a>・<a href="new_role/human.php#revive_pharmacist">仙人</a>) の能力は有効です。</li>
+  <li>対象者に投票した<a href="new_role/ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は有効です。</li>
 </ul>
 
 <h3><a id="weather_no_sudden_death">凪</a> [Ver. 1.5.0 α3～]</h3>

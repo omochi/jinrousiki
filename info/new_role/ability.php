@@ -13,6 +13,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#guard_limit">護衛制限</a>
 <a href="#decide">処刑者決定</a>
 <a href="#sudden_death">ショック死</a>
+<a href="#anti_sudden_death">ショック死抑制</a>
 <a href="#resist_wolf">人狼襲撃耐性</a>
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
@@ -72,6 +73,11 @@ OutputRolePageHeader('能力者逆引き');
 <h3><a id="sudden_death_indirect">間接発動型</a></h3>
 <pre>
 <a href="sub_role.php#chicken">小心者</a>・<a href="sub_role.php#febris">熱病</a>・<a href="sub_role.php#frostbite">凍傷</a>・<a href="sub_role.php#death_warrant">死の宣告</a>・<a href="sub_role.php#panelist">解答者</a>参照
+</pre>
+
+<h2><a id="anti_sudden_death">ショック死抑制能力者</a></h2>
+<pre>
+<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#revive_pharmacist">仙人</a>
 </pre>
 
 <h2><a id="resist_wolf">人狼襲撃耐性能力者</a></h2>

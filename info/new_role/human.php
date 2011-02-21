@@ -1146,7 +1146,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象です。
 </pre>
 <ol>
-  <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
   <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>

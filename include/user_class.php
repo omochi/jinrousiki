@@ -1062,7 +1062,7 @@ class UserDataSet{
 	}
       }
     }
-    elseif($ROOM->IsPlaying()){
+    if($ROOM->IsPlaying()){
       $stack = array('no_last_words', 'whisper_ringing', 'howl_ringing', 'sweet_ringing',
 		     'deep_sleep', 'mind_open');
       foreach($stack as $role){ //昼夜両方
