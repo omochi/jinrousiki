@@ -8,6 +8,7 @@ OutputInfoPageHeader('デバッグ情報', 1);
 Ver. 1.5.0
 <a href="#150alpha2">α2</a>
 <a href="#150alpha3">α3</a>
+<a href="#150alpha4">α4</a>
 </p>
 <p>
 <a href="#140release1">Ver. 1.4.0</a>
@@ -26,6 +27,37 @@ Ver. 1.5.0
 <a href="#140beta21">β21</a>
 <a href="#140beta22">β22</a>
 </p>
+
+<h2><a id="150alpha4">Ver. 1.5.0 α4</a></h2>
+<h3>include/game_vote_functions.php % 2648行目付近 (2011/02/24 (Thu) 08:24)</h3>
+<h4>[before]</h4>
+<pre>
+$target->ReturnPossessed('possessed_target', $ROOM->date + 1);
+</pre>
+<h4>[after]</h4>
+<pre>
+$target->ReturnPossessed('possessed_target', $ROOM->date + 1);
+$stack = $virtual_target->GetPartner('possessed');
+if($target->user_no == $stack[max(array_keys($stack))]){
+  $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1);
+}
+</pre>
+<h3>include/game_vote_functions.php % 2103行目付近 (2011/02/25 (Fri) 02:54)</h3>
+<h4>[before]</h4>
+<pre>
+else{
+  continue;
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+elseif($voted_wolf->IsRole('possessed_wolf') && $voted_wolf->IsSame($target->uname)){
+  $voted_wolf->possessed_cancel = true;
+}
+else{
+  continue;
+}
+</pre>
 
 <h2><a id="150alpha3">Ver. 1.5.0 α3</a></h2>
 <h3>include/game_vote_functions.php % 1527行目付近 (2011/02/07 (Mon) 22:22)</h3>

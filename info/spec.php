@@ -95,7 +95,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>～<?php echo $MESSAGE->vote_sudden_death ?></h4>
 <ul>
-<li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>)</li>
+<li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>・<a href="weather.php#weather_thunderbolt">天候：青天の霹靂</a>)</li>
 </ul>
 
 <h4><?php echo $MESSAGE->blind_vote ?></h4>
@@ -160,14 +160,18 @@ OutputInfoPageHeader('詳細な仕様');
 <h3><a id="vote_day">昼</a></h3>
 <pre>
 + 処理順序
-  - 投票集計 → 処刑者決定 → 役職判定 → 後追い
+  - 投票集計 → 処刑者決定 → 処刑者カウンター → 役職判定
 
 + 処刑者決定法則
-  - 単独トップ ＞ <a href="new_role/sub_role.php#decide">決定者</a> ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる
+  - 単独トップ ＞ <a href="new_role/sub_role.php#decide">決定者</a> ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる ＞
+    <a href="new_role/quiz.php#quiz">出題者</a> ＞ <a href="new_role/human.php#executor">執行者</a> ＞ <a href="new_role/human.php#saint">聖女</a> ＞ <a href="new_role/wolf.php#agitate_mad">扇動者</a> (+ ショック死)
 
-+ 役職判定順
-  - <a href="new_role/quiz.php#quiz">出題者</a> →<a href="new_role/human.php#executor">執行者</a> → <a href="new_role/human.php#saint">聖女</a> → <a href="new_role/wolf.php#agitate_mad">扇動者</a> → <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 →
-    <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a> → <a href="new_role/human.php#cursed_brownie">祟神</a>
++ 処刑者カウンター
+  - <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/human.php#doom_doll">蓬莱人形</a>・<a href="new_role/fox.php#miasma_fox">蟲狐</a>
+
++ 役職判定
+  - <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/wolf.php#miasma_mad">土蜘蛛</a>・<a href="new_role/lovers.php#sweet_cupid">弁財天</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> →
+    <a href="new_role/sub_role.php#lovers">恋人</a>後追い → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a>・<a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="weather.php#weather_frostbite">天候：雪</a>・<a href="new_role/sub_role.php#joker">ジョーカー</a>
 </pre>
 
 <h3><a id="vote_night">夜</a></h3>

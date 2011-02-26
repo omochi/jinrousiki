@@ -137,11 +137,11 @@ OutputRolePageHeader('恋人陣営');
 矢を撃った二人を<a href="sub_role.php#possessed_exchange">交換憑依</a>させてしまう特殊な天使。
 </pre>
 <ol>
-  <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わります。<br>
-    例) A-B・B-C と矢を撃たれた → A-B または B-C のどちらかだけが入れ替わる
+  <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わる。<br>
+    例) A-B・B-C と矢を撃たれた → A-B または B-C のどちらかだけが入れ替わる。
   </li>
-  <li>憑依能力者 (<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>) が対象だった場合は交換憑依は発生しません。</li>
-  <li>他人撃ちをした場合、矢を撃った本人には交換憑依が成立したかどうかは分かりません。</li>
+  <li><a href="ability.php#possessed">憑依能力者</a>が対象だった場合は交換憑依は発生しない。</li>
+  <li>他人撃ちをした場合、矢を撃った本人には交換憑依が成立したかどうかは分からない。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>

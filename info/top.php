@@ -11,7 +11,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>TOPIC</h1>
 <h2>Ver. 1.5.0 α4 アップロード (2011/02/18 (Fri) 05:06) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#150alpha3">デバッグ情報</a> (2011/02/07 (Mon) 22:22)</li> -->
+  <li>→ <a href="info/develop/debug.php#150alpha4">デバッグ情報</a> (2011/02/25 (Fri) 02:54)</li>
   <li>「比丘尼」「祈祷師」実装</li>
   <li>天候「波風」「小夜嵐」「流星群」「春時雨」「木漏れ日」「疎雨」「川霧」「蒼天」<br>
     「雪」「梅雨」「雹」「半月」「曇天」「箒星」「旱魃」実装
@@ -21,10 +21,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>舟幽霊：処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>舟幽霊：処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。</li>
+  <li>なし</li>
 </ul>

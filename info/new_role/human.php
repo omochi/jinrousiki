@@ -530,6 +530,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 通常の<a href="#necromancer">霊能者</a>の能力は持っていない。
 死因は画面の下に表示される「～は無残な～」の下の行に
 「(～は人狼に襲撃されたようです)」等と表示される。
+死亡したら能力無効。
+</pre>
+<h5>Ver. 1.4.0 α23～</h5>
+<pre>
+死亡したら能力無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -575,7 +580,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3><a id="medium_rule">所属陣営判定法則</a></h3>
 <pre>
-所属陣営とは、勝敗が決まったときの陣営で、役職表記の先頭に記載されいてる「～陣営」を指す。
+所属陣営とは、勝敗が決まったときの陣営で、役職表記の先頭に記載されている「～陣営」を指す。
 例1) <a href="wolf.php#wolf_group">人狼系</a>・<a href="wolf.php#mad_group">狂人系</a>は「人狼」
 例2) <a href="fox.php#fox_group">妖狐系</a>・<a href="fox.php#child_fox_group">子狐系</a>は「妖狐」
 例3) <a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>は「恋人」
@@ -2160,7 +2165,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <ol>
   <li>死の宣告の発動日は処刑された日から数えて2日後の昼。</li>
-  <li><a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+  <li><a href="#doll_group">上海人形系</a> (<a href="#doll_master">人形遣い</a>を除く)・<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
   <li>対象者が誰もいなかった場合は不発となる。</li>
 </ol>
 <h4>関連役職</h4>

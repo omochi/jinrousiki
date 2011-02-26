@@ -205,9 +205,9 @@ OutputRolePageHeader('妖狐陣営');
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受けます</li>
-  <li>呪われている役職を選んだ場合は本人が呪返しを受けます</li>
-  <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受けます</li>
+  <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受ける。</li>
+  <li><a href="ability.php#cursed">呪い所持者</a>を選んだ場合は本人が呪返しを受ける。</li>
+  <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受ける。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -248,17 +248,17 @@ OutputRolePageHeader('妖狐陣営');
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できません</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡します</li>
-  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗します</li>
-  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されません</li>
-  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けません</li>
-  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻されます</li>
-  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになります</li>
+  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できない。</li>
+  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡する。</li>
+  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
+  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
+  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けない。</li>
+  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
+  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できません。
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できない。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -275,7 +275,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。
-暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて4日目後の昼。
+暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
@@ -371,7 +371,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#silver_wolf">銀狼</a>の妖狐バージョンです。
-元々妖狐は出現人数が少なめなので仲間が分からなくてもさほど影響は無いと思います。
+妖狐陣営は元々出現数が少なめなので仲間が分からなくてもさほど影響は無いと思います。
 占いを騙る仲間から人狼判定を出される可能性はありますが……
 </pre>
 
@@ -457,8 +457,17 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：死亡 + 熱病 / 処刑：熱病</h4>
 <pre>
 処刑されるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。
-処刑された場合は投票した人からランダムで一人、人狼に襲撃された場合は襲撃した人狼に付加する。
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
+処刑された場合は投票した人からランダムで一人、
+人狼に襲撃された場合は襲撃した人狼に付加する。
+</pre>
+<ol>
+  <li>処刑時は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・妖狐陣営・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+  <li>人狼襲撃時は<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)には無効。</li>
+  <li>対象者が誰もいなかった場合は不発となる。</li>
+</ol>
+<h5>Ver. 1.5.0 α5～</h5>
+<pre>
+処刑された時に<a href="sub_role.php#febris">熱病</a>を付加する対象から妖狐陣営を除外
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

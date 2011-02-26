@@ -106,7 +106,7 @@ OutputRolePageHeader('人狼陣営');
 
 <h3><a id="wolf">人狼</a> (占い結果：人狼 / 霊能結果：人狼)</h3>
 <pre>
-人狼系の基本種。
+人狼陣営の基本種。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -334,6 +334,7 @@ OutputRolePageHeader('人狼陣営');
   <li><a href="#possessed_wolf_possessed_limited">対憑依制限対象者</a></li>
   <li><a href="#possessed_wolf_evoke_scanner">対イタコ</a></li>
   <li><a href="#possessed_wolf_presage_scanner">対件</a></li>
+  <li><a href="#possessed_wolf_amaze_mad">対傘化け</a></li>
 </ol>
 
 <h4><a id="possessed_wolf_system">1. 基本システム</a></h4>
@@ -625,6 +626,18 @@ B が遺言メッセージを送ると C の遺言窓が変更される。
 憑依：B[件](A[憑狼])
 C に「受託結果：B は A に襲撃されました。」と表示される。
 </pre>
+
+<h4><a id="possessed_wolf_amaze_mad">17. 対<a href="#amaze_mad">傘化け</a></a></h4>
+<pre>
+憑依中の憑狼に対しても、「能力が隠されました」というメッセージが表示されるが、
+夜になった時点で死亡することで中の人が入れ替わるので能力そのものは適用されない。
+結果として、客観的に傘化けの存在と憑依中の憑依能力者を処刑したことが分かる。
+
+例17-1) 処刑：B[村人](A[憑狼]) ← C[傘化け]
+霊能結果：B は「憑狼」でした。
+傘化けの能力で投票が隠されました。
+メッセージは表示されるが実際は隠蔽されない。
+</pre>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
 妖狐陣営に付いた<a href="mania.php#unknown_mania">鵺</a>、<a href="fox.php">妖狐陣営</a>に変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>も憑依対象外に変更
@@ -907,7 +920,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <ol>
   <li>呪われた人を占った<a href="human.php#mage_group">占い師</a>は呪返しを受ける。</li>
-  <li>呪い持ち (<a href="#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>) を選んだ場合は本人が呪返しを受ける。</li>
+  <li><a href="ability.php#cursed">呪い所持者</a>を選んだ場合は本人が呪返しを受ける。</li>
   <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受ける。</li>
 </ol>
 <h4>関連役職</h4>
@@ -983,8 +996,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>には憑依できない。
-(<a href="#possessed_wolf">憑狼</a>が憑依できない役職には憑依できない)。
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できない。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1152,6 +1164,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>はショック死の対象外。</li>
   <li>舟幽霊の能力で発生するショック死に対する<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の村紗 水蜜がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/319" target="_top">新役職考案スレ</a> の 319 を参考にしています。

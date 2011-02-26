@@ -16,15 +16,21 @@ class RoleManager{
   var $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
 			  'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
-  //処刑投票
-  var $vote_do_list = array('authority', 'critical_voter', 'random_voter', 'watcher', 'panelist');
+  //処刑投票(メイン)
+  var $vote_do_main_list = array('human', 'elder', 'scripter', 'elder_wolf', 'elder_fox',
+				 'elder_chiroptera');
+
+  //処刑投票(サブ)
+  var $vote_do_sub_list = array('authority', 'critical_voter', 'random_voter', 'watcher', 'panelist');
 
   //処刑得票
   var $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
 			  'random_luck');
 
   //処刑投票系能力者
-  var $vote_ability_list = array('saint', 'executor', 'agitate_mad', 'quiz', 'impatience',
+  var $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
+				 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
+				 'amaze_mad', 'miasma_mad', 'sweet_cupid', 'quiz', 'impatience',
 				 'authority', 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
 
   //反逆者判定
@@ -34,15 +40,25 @@ class RoleManager{
   var $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
 			      'quiz', 'executor', 'saint', 'agitate_mad');
 
+  //特殊毒能力者
+  var $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
+			   'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
+			   'poison_chiroptera', 'poison_ogre');
+
+  //処刑者カウンター
+  var $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
+
+  //処刑投票能力処理 (順番依存あり)
+  var $vote_action_list = array('seal_medium', 'bacchus_medium', 'amaze_mad', 'miasma_mad',
+				'sweet_cupid');
+
   //ショック死
   var $sudden_death_list = array('febris', 'frostbite', 'death_warrant', 'chicken', 'rabbit',
 				 'perverseness', 'flattery', 'impatience', 'celibacy', 'nervy',
 				 'androphobia', 'gynophobia', 'panelist');
 
-  //特殊毒能力者
-  var $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
-			   'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
-			   'poison_chiroptera', 'poison_ogre');
+  //処刑得票カウンター
+  var $voted_reaction_list = array('divorce_jealousy', 'cursed_brownie');
 
   //鬼陣営
   var $ogre_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
@@ -227,6 +243,11 @@ class RoleVoteAbility extends Role{
     case 'array':
       $user = $USERS->ByRealUname($ROLES->actor->uname);
       if($user->IsRole($this->role)) $ROLES->stack->{$this->role}[] = $user->uname;
+      break;
+
+    case 'action':
+      $user = $USERS->ByRealUname($ROLES->actor->uname);
+      if($user->IsRole($this->role)) $ROLES->stack->{$this->role}[$user->uname] = $uname;
       break;
     }
   }

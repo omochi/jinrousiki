@@ -379,8 +379,8 @@ Ver. 1.5.0
 
 <h2><a id="type_vote_day">処刑投票妨害</a></h2>
 <ul>
-  <li><a href="#weather_critical_luck">タライ</a></li>
   <li><a href="#weather_brownie">慈雨</a></li>
+  <li><a href="#weather_critical_luck">タライ</a></li>
   <li><a href="#weather_hyper_random_voter">雹</a></li>
   <li><a href="#weather_critical">烈日</a></li>
   <li><a href="#weather_alchemy_pharmacist">梅雨</a></li>
@@ -390,15 +390,15 @@ Ver. 1.5.0
   <li><a href="#weather_no_sudden_death">凪</a></li>
 </ul>
 
-<h3><a id="weather_critical_luck">タライ</a> [Ver. 1.5.0 α3～]</h3>
-<ul>
-  <li>全員に<a href="new_role/sub_role.php#critical_luck">痛恨</a>がつきます (昼限定)。</li>
-</ul>
-
 <h3><a id="weather_brownie">慈雨</a> [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li><a href="new_role/human.php#human">村人</a>の処刑投票数が +1 されます (<a href="new_role/human.php#brownie">座敷童子</a>相当)。</li>
   <li><a href="new_role/human.php#brownie">座敷童子</a>の効果と重複しません。</li>
+</ul>
+
+<h3><a id="weather_critical_luck">タライ</a> [Ver. 1.5.0 α3～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#critical_luck">痛恨</a>がつきます (昼限定)。</li>
 </ul>
 
 <h3><a id="weather_hyper_random_voter">雹</a> [Ver. 1.5.0 α4～]</h3>

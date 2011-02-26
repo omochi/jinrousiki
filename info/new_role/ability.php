@@ -68,7 +68,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2><a id="sudden_death">ショック死発動能力者</a></h2>
 <h3><a id="sudden_death_direct">直接発動型</a></h3>
 <pre>
-<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="sub_role.php#chicken_group">小心者系</a>
+<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 <h3><a id="sudden_death_indirect">間接発動型</a></h3>
 <pre>
