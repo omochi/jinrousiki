@@ -2,7 +2,7 @@
 /*
   ◆反逆者 (rebel)
   ○仕様
-  ・権力者と同じ人に投票すると０票になる
+  ・権力者と同じ人に投票すると権力者 -2 / 反逆者 -1
 */
 class Role_rebel extends RoleVoteAbility{
   var $data_type = 'both';
@@ -13,19 +13,24 @@ class Role_rebel extends RoleVoteAbility{
     global $ROLES;
 
     //能力発動判定
-    if(is_null($ROLES->stack->authority) || is_null($ROLES->stack->rebel) ||
-       $ROLES->stack->authority_uname != $ROLES->stack->rebel_uname) return;
+    $stack = $ROLES->stack;
+    if(is_null($stack->authority) || is_null($stack->rebel) ||
+       $stack->authority_uname != $stack->rebel_uname) return;
 
-    //権力者と反逆者の投票数を 0 にする
-    $message_list[$ROLES->stack->authority]['vote_number'] = 0;
-    $message_list[$ROLES->stack->rebel]['vote_number'] = 0;
+    //権力者 -2 / 反逆者 -1
+    $count = 0;
+    $list =& $message_list[$stack->authority]['vote_number'];
+    $list > 2 ? $count += 2 : $count += $list;
+    $list > 2 ? $list  -= 2 : $list = 0;
+
+    $list =& $message_list[$stack->rebel]['vote_number'];
+    $list > 1 ? $count++ : $count += $list;
+    $list > 1 ? $list--  : $list = 0;
 
     //投票先の得票数を補正する
-    $uname = $ROLES->stack->rebel_uname;
-    if($message_list[$uname]['voted_number'] > 3)
-      $message_list[$uname]['voted_number'] -= 3;
-    else
-      $message_list[$uname]['voted_number'] = 0;
-    $count_list[$uname] = $message_list[$uname]['voted_number'];
+    $uname = $stack->rebel_uname;
+    $list =& $message_list[$uname]['voted_number'];
+    $list > $count ? $list -= $count : $list = 0;
+    $count_list[$uname] = $list;
   }
 }

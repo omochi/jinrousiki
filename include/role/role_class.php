@@ -21,17 +21,19 @@ class RoleManager{
 				 'elder_chiroptera');
 
   //処刑投票(サブ)
-  var $vote_do_sub_list = array('authority', 'critical_voter', 'random_voter', 'watcher', 'panelist');
+  var $vote_do_sub_list = array('authority', 'critical_voter', 'random_voter', 'wirepuller_luck',
+				'watcher', 'panelist');
 
   //処刑得票
   var $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
-			  'random_luck');
+			  'random_luck', 'wirepuller_luck');
 
   //処刑投票系能力者
   var $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
 				 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
-				 'amaze_mad', 'miasma_mad', 'sweet_cupid', 'quiz', 'impatience',
-				 'authority', 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
+				 'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid', 'quiz',
+				 'impatience', 'authority', 'rebel', 'decide', 'plague', 'good_luck',
+				 'bad_luck');
 
   //反逆者判定
   var $rebel_list = array('rebel');
@@ -50,7 +52,7 @@ class RoleManager{
 
   //処刑投票能力処理 (順番依存あり)
   var $vote_action_list = array('seal_medium', 'bacchus_medium', 'amaze_mad', 'miasma_mad',
-				'sweet_cupid');
+				'critical_mad', 'sweet_cupid');
 
   //ショック死
   var $sudden_death_list = array('febris', 'frostbite', 'death_warrant', 'chicken', 'rabbit',
@@ -58,7 +60,7 @@ class RoleManager{
 				 'androphobia', 'gynophobia', 'panelist');
 
   //処刑得票カウンター
-  var $voted_reaction_list = array('divorce_jealousy', 'cursed_brownie');
+  var $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
 
   //鬼陣営
   var $ogre_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
@@ -154,7 +156,11 @@ class RoleManager{
 
 //-- 役職の基底クラス --//
 class Role{
-  function __construct(){}
+  var $role;
+
+  function __construct(){
+    $this->role = array_pop(explode('Role_', get_class($this)));
+  }
 
   //-- 判定用関数 --//
   function Ignored(){
@@ -186,7 +192,7 @@ class RoleTalkFilter extends Role{
 
   function __construct(){ parent::__construct(); }
 
-  function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){}
+  function AddTalk(   $user, $talk, &$user_info, &$volume, &$sentence){}
   function AddWhisper($role, $talk, &$user_info, &$volume, &$sentence){}
 
   function ChangeVolume($type, &$volume, &$sentence){
@@ -215,14 +221,10 @@ class RoleTalkFilter extends Role{
 
 //-- 処刑投票能力者用拡張クラス --//
 class RoleVoteAbility extends Role{
-  var $role;
   var $data_type;
   var $decide_type;
 
-  function __construct(){
-    parent::__construct();
-    $this->role = array_pop(explode('Role_', get_class($this)));
-  }
+  function __construct(){ parent::__construct(); }
 
   function SetVoteAbility($uname){
     global $ROLES, $USERS;
@@ -271,6 +273,10 @@ class RoleVoteAbility extends Role{
 	return true;
       }
       return false;
+
+    case 'array':
+    case 'action':
+      return ! is_array($ROLES->stack->{$this->role});
 
     default:
       return false;

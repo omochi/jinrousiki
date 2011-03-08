@@ -248,7 +248,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できない。</li>
+  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
   <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡する。</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
@@ -403,13 +403,6 @@ OutputRolePageHeader('妖狐陣営');
 <h5>Ver. 1.4.0 α17～</h5>
 <pre>
 占い能力を持ちました。
-</pre>
-<h5>Ver. 1.4.0 α8～β11</h5>
-<pre>
-通常闇鍋モードでは20人未満では出現しません。
-20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
-最大出現人数は1人です。
-子狐が出現した場合は出現人数と同じだけ妖狐が減ります。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

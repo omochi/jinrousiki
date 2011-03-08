@@ -75,6 +75,10 @@ OutputRolePageHeader('恋人陣営');
 また、処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら
 <a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方陰陽鉄のプレイヤーさんとの雑談から生まれた役職です。

@@ -57,6 +57,12 @@ class RequestBase{
   function IsVirtualRoom(){
     return isset($this->TestItems) && $this->TestItems->is_virtual_room;
   }
+
+  function IsRoomNo($arg){
+    $room_no = intval($arg);
+    if($room_no < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
+    return $room_no;
+  }
 }
 
 //-- テスト用パラメータ設定クラス --//
@@ -102,13 +108,6 @@ class RequestBaseIcon extends RequestBase{
     $this->GetItems('intval', 'sort_by_name');
     $this->GetItems('Exists', 'search');
   }
-
-  function SetCategory($arg){
-    if($arg == '') return NULL;
-    if($arg == 'all') return $arg;
-    $int = intval($arg);
-    return $int < 0 ? 0 : $int;
-  }
 }
 
 //-- login.php --//
@@ -126,23 +125,19 @@ class RequestLogin extends RequestBase{
 class RequestUserManager extends RequestBaseIcon{
   function __construct(){
     EncodePostData();
-    $this->GetItems('intval', 'get.room_no', 'post.icon_no');
+    $this->GetItems('IsRoomNo', 'get.room_no');
+    $this->GetItems('intval', 'post.icon_no');
     $this->GetItems('EscapeStrings', 'post.password');
     $this->GetItems('Exists', 'post.entry');
     $this->GetItems(NULL, 'post.profile', 'post.sex', 'post.role');
     $this->GetItems('IsOn', 'post.login_manually');
     $this->GetIconData();
     EscapeStrings($this->profile, false);
-    if($this->search){
-      $this->GetItems('EscapeStrings', 'post.uname', 'post.handle_name');
-    }
-    else{
+    if($this->entry){
       $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     }
-
-    if($this->room_no < 1){
-      $str = '村番号エラー：村の番号が正常ではありません。<br>'."\n".'<a href="./">←戻る</a>';
-      OutputActionResult('村人登録 [村番号エラー]', $str);
+    else{
+      $this->GetItems('EscapeStrings', 'post.uname', 'post.handle_name');
     }
   }
 }
@@ -163,7 +158,8 @@ class RequestGamePlay extends RequestBaseGamePlay{
 //-- game_log.php --//
 class RequestGameLog extends RequestBase{
   function __construct(){
-    $this->GetItems('intval', 'get.room_no', 'get.date');
+    $this->GetItems('IsRoomNo', 'get.room_no');
+    $this->GetItems('intval', 'get.date');
     $this->GetItems(NULL, 'get.day_night');
     if($this->IsInvalidScene()) OutputActionResult('引数エラー', '無効な引数です');
   }
@@ -198,10 +194,7 @@ class RequestGameVote extends RequestBaseGamePlay{
     $this->GetItems('IsOn', 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
     $this->AttachTestParameters(); //テスト用引数のロード
-    $this->SetURL();
-  }
 
-  function SetURL(){
     $url_option = 'room_no=' . $this->room_no;
     if($this->auto_reload > 0) $url_option .= '&auto_reload=' . $this->auto_reload;
     if($this->play_sound)      $url_option .= '&play_sound=on';

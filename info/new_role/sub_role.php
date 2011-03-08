@@ -379,8 +379,12 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="rebel">反逆者</a> [Ver. 1.4.0 α14～]</h3>
 <pre>
-<a href="#authority">権力者</a>と同じ人に処刑投票した場合に自分と権力者の投票数が 0 になります。
-それ以外のケースなら通常通り (1票) です。
+<a href="#authority">権力者</a>と同じ人に処刑投票した場合に自分の投票数が -1、権力者の投票数が -2 になる。
+それ以外のケースなら通常通り (1票)。
+</pre>
+<h5>Ver. 1.5.0 α5～</h5>
+<pre>
+<a href="#critical_voter">会心</a>などと重なった時に矛盾しないために説明の表現を変更
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -498,6 +502,10 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <h4>[役職表示] 表示無し</h4>
 <pre>
 5% の確率で処刑得票数が +100 されます。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#critical_mad">釣瓶落とし</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1020,7 +1028,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
   <li>毒・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
   <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
 </ol>
 <pre>
@@ -1157,12 +1165,13 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 
 <h2><a id="other_group">その他</a></h2>
 <p>
-<a href="#protected">庇護者</a>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
-<a href="#bad_status">悪戯</a>
 <a href="#infected">感染者</a>
 <a href="#psycho_infected">洗脳者</a>
+<a href="#bad_status">悪戯</a>
+<a href="#protected">庇護者</a>
+<a href="#wirepuller_luck">入道</a>
 <a href="#changed_therian">元獣人</a>
 <a href="#copied">元神話マニア</a>
 <a href="#copied_trick">元奇術師</a>
@@ -1170,6 +1179,100 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="#copied_teller">元夢語部</a>
 <a href="#lost_ability">能力喪失</a>
 </p>
+
+<h3><a id="possessed_target">憑依者</a> [Ver. 1.4.0 α24～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="ability.php#possessed">憑依能力者</a>が誰かに憑依したら付加される。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#possessed">憑依</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+憑依システム用に実装されたサブ役職です。
+恋人システムの応用で実装されています。
+</pre>
+
+<h3><a id="possessed">憑依</a> [Ver. 1.4.0 α24～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="ability.php#possessed">憑依能力者</a>に憑依されている人に付加される。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#possessed_target">憑依者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+憑依システム用に実装されたサブ役職です。
+</pre>
+
+<h3><a id="infected">感染者</a> [Ver. 1.4.0 β14～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加される。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#psycho_infected">洗脳者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>の勝敗判定用に実装されたサブ役職です。
+</pre>
+
+<h3><a id="psycho_infected">洗脳者</a> [Ver. 1.4.0 β20～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>共通の<a href="#infected">感染者</a>扱い。
+<a href="vampire.php">吸血鬼陣営</a>と<a href="ogre.php#sacrifice_ogre">酒呑童子</a>は村にいる洗脳者が誰か分かる。
+<a href="ogre.php#sacrifice_ogre">酒呑童子</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃された場合は身代わりで死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sacrifice">身代わり能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>支援能力者用に実装されたサブ役職です。
+</pre>
+
+<h3><a id="bad_status">悪戯</a> [Ver. 1.4.0 β6～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加される。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#enchant_mad">狢</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="chiroptera.php#fairy_group">妖精系</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+悪戯システム用に実装されたサブ役職です。
+<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>などで使用されています。
+</pre>
 
 <h3><a id="protected">庇護者</a> [Ver. 1.4.0 β18～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
@@ -1196,105 +1299,28 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="wolf.php#silver_wolf">銀狼</a>が仲間を襲撃した場合でも発生します。
 </pre>
 
-<h3><a id="possessed_target">憑依者</a> [Ver. 1.4.0 α24～]</h3>
+<h3><a id="wirepuller_luck">入道</a> [Ver. 1.5.0 α5～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-憑依能力者が誰かに憑依したら付加されます。
-</pre>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-役職名の表示
+付加させた人が一人でも生存している間は投票数が +2 されるが
+全員死亡すると得票数が +3 される。
+付加させた人が複数いても補正される値は同じ。
+<a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="#possessed">憑依</a>
+<a href="mania.php#wirepuller_mania">黒衣</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-憑依システム用に実装されたサブ役職です。
-恋人システムの応用で実装されています。
-</pre>
-
-<h3><a id="possessed">憑依</a> [Ver. 1.4.0 α24～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-憑依能力者に憑依されている人に付加されます。
-</pre>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-役職名の表示
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="#possessed_target">憑依者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-憑依システム用に実装されたサブ役職です。
-</pre>
-
-<h3><a id="bad_status">悪戯</a> [Ver. 1.4.0 β6～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加されます。
-</pre>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-役職名の表示
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="wolf.php#enchant_mad">狢</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="chiroptera.php#fairy_group">妖精系</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-悪戯システム用に実装されたサブ役職です。
-<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>などで使用されています。
-</pre>
-
-<h3><a id="infected">感染者</a> [Ver. 1.4.0 β14～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加されます。
-</pre>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-役職名の表示
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>・<a href="#psycho_infected">洗脳者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>の勝敗判定用に実装されたサブ役職です。
-</pre>
-
-<h3><a id="psycho_infected">洗脳者</a> [Ver. 1.4.0 β20～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>共通の<a href="#infected">感染者</a>扱いです。
-<a href="vampire.php">吸血鬼陣営</a>と<a href="ogre.php#sacrifice_ogre">酒呑童子</a>は村にいる洗脳者が誰か分かります。
-<a href="ogre.php#sacrifice_ogre">酒呑童子</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃された場合は身代わりで死亡します。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="ability.php#sacrifice">身代わり能力者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>支援能力者用に実装されたサブ役職です。
+東方 Project の雲山がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ</a> の 318 が原型です。
 </pre>
 
 <h3><a id="changed_therian">元獣人</a> [Ver. 1.4.0 β15～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-人狼に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加されます。
+人狼に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1305,11 +1331,11 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-コピー後の<a href="mania.php#mania">神話マニア</a>に付加されます。
+コピー後の<a href="mania.php#mania">神話マニア</a>に付加される。
 </pre>
 <h5>Ver. 1.4.0 β9～10</h5>
 <pre>
-コピー後の<a href="mania.php#trick_mania">奇術師</a>にも付加されます。
+コピー後の<a href="mania.php#trick_mania">奇術師</a>にも付加される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1320,7 +1346,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-コピー後の<a href="mania.php#trick_mania">奇術師</a>に付加されます。
+コピー後の<a href="mania.php#trick_mania">奇術師</a>に付加される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1331,7 +1357,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-コピー後の<a href="mania.php#soul_mania">覚醒者</a>に付加されます。
+コピー後の<a href="mania.php#soul_mania">覚醒者</a>に付加される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1342,7 +1368,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加されます。
+コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1352,7 +1378,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h3><a id="lost_ability">能力喪失</a> [Ver. 1.4.0 α13～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-発動制限付き能力者が能力を失った場合に付加されます。
+発動制限付き能力者が能力を失った場合に付加される。
 </pre>
 <h5>Ver. 1.4.0 β11～</h5>
 <pre>

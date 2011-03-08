@@ -315,7 +315,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む)・<a href="ability.php#possessed_limited">憑依制限能力者</a>は乗っ取れない。
+身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む)・<a href="ability.php#possessed_limit">憑依制限能力者</a>は乗っ取れない。
 </pre>
 <ol>
   <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -331,7 +331,7 @@ OutputRolePageHeader('人狼陣営');
   <li><a href="#possessed_wolf_reporter">対ブン屋</a></li>
   <li><a href="#possessed_wolf_assassin">対暗殺能力者</a></li>
   <li><a href="#possessed_wolf_revive">対蘇生能力者</a></li>
-  <li><a href="#possessed_wolf_possessed_limited">対憑依制限対象者</a></li>
+  <li><a href="#possessed_wolf_possessed_limit">対憑依制限対象者</a></li>
   <li><a href="#possessed_wolf_evoke_scanner">対イタコ</a></li>
   <li><a href="#possessed_wolf_presage_scanner">対件</a></li>
   <li><a href="#possessed_wolf_amaze_mad">対傘化け</a></li>
@@ -589,9 +589,9 @@ A は B から D への憑依がキャンセルされて B に憑依したまま
 蘇生：B は生き返りました (誤爆蘇生：実際に生き返るのも B)
 </pre>
 
-<h4><a id="possessed_wolf_possessed_limited">14. 対憑依制限対象者</a></h4>
+<h4><a id="possessed_wolf_possessed_limit">14. 対憑依制限対象者</a></h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>などの<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できないので、生存している該当者は憑狼ではない事が保証されます。
+<a href="human.php#revive_priest">天人</a>などの<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できないので、生存している該当者は憑狼ではない事が保証されます。
 また、霊界視点からは憑依者がはっきり分かるので蘇生した天人の情報は重要です。
 
 例14-1) B[村人](A[憑狼]) → C[天人]
@@ -720,7 +720,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
     <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
     <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
-    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
+    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
     <li><a href="ability.php#sacrifice">身代わり能力</a>・<a href="ability.php#revive_self">自己蘇生能力</a>無効</li>
     <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
@@ -829,6 +829,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#amaze_mad">傘化け</a>
 <a href="#agitate_mad">扇動者</a>
 <a href="#miasma_mad">土蜘蛛</a>
+<a href="#critical_mad">釣瓶落とし</a>
 <a href="#follow_mad">舟幽霊</a>
 <a href="#therian_mad">獣人</a>
 </p>
@@ -850,13 +851,6 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 人狼が誰か分かる上位狂人 (<a href="#wolf_partner">仲間表示</a>参照)。
 人狼からは狂信者は分からない。
-</pre>
-<h5>Ver. 1.4.0 α8～β11</h5>
-<pre>
-通常闇鍋モードでは16人未満では出現しません。
-16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
-最大出現人数は1人です。
-狂信者が出現した場合は出現人数と同じだけ狂人が減ります。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -985,7 +979,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limited">憑依制限能力者</a>には憑依できない。</li>
+  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
   <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡する。</li>
   <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
   <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
@@ -1141,13 +1135,32 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#brownie">座敷童子</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="fox.php#miasma_fox">蟲狐</a>・<a href="lovers.php#sweet_cupid">弁財天</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ</a> の 33 が原型です。
 <a href="sub_role#febris">熱病</a>の仕様と実装がなかなか決まらず、作成決定から実装まで
 かなり間が開いてます。
+</pre>
+
+<h3><a id="critical_mad">釣瓶落とし</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
+<pre>
+処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<ol>
+  <li>自分が処刑された場合は無効。</li>
+  <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#sweet_cupid">弁財天</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#miasma_mad">土蜘蛛</a>の<a href="sub_role.php#critical_luck">痛恨</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/932" target="_top">新役職考案スレ</a> の 932 が原型です。
 </pre>
 
 <h3><a id="follow_mad">舟幽霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>

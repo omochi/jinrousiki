@@ -1,10 +1,10 @@
 <?php
 /*
-  ◆神主 (bacchus_medium)
+  ◆釣瓶落とし (critical_mad)
   ○仕様
-  ・処刑投票先が鬼陣営ならショック死させる
+  ・処刑投票先が生存していたら痛恨を付加する
 */
-class Role_bacchus_medium extends RoleVoteAbility{
+class Role_critical_mad extends RoleVoteAbility{
   var $data_type = 'action';
 
   function __construct(){ parent::__construct(); }
@@ -14,11 +14,8 @@ class Role_bacchus_medium extends RoleVoteAbility{
 
     foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
       if($uname == $ROLES->stack->vote_kill_uname) continue;
-
       $target = $USERS->ByRealUname($target_uname);
-      if($target->IsLive(true) && $target->IsOgre()){
-	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_DRUNK');
-      }
+      if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddRole('critical_luck');
     }
   }
 }

@@ -9,10 +9,10 @@ class Role_cursed_brownie extends RoleVoteAbility{
 
   function __construct(){ parent::__construct(); }
 
-  function VotedReaction($vote_target_list){
+  function VoteKillReaction($vote_target_list){
     global $ROLES, $USERS;
 
-    foreach($ROLES->stack->cursed_brownie as $uname){
+    foreach($ROLES->stack->{$this->role} as $uname){
       foreach(array_keys($vote_target_list, $uname) as $voted_uname){
 	$voted_user = $USERS->ByRealUname($voted_uname);
 	if($voted_user->IsLive(true) && ! $voted_user->IsAvoid() && mt_rand(1, 10) > 7){

@@ -78,6 +78,8 @@ Ver. 1.4.0
 
 <p>
 <a href="#sub_role">サブ役職</a>
+Ver. 1.5.0
+<a href="#sub_150alpha5">α5</a><br>
 Ver. 1.4.0
 <a href="#sub_140alpha3">α3-7</a>
 <a href="#sub_140alpha9">α9</a>
@@ -634,7 +636,7 @@ Ver. 1.4.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。<br>
+  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる、司祭系の基本種。<br>
    表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
@@ -906,7 +908,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">投票先が人狼に襲撃されたら、次の日の夜を「白夜」(全員<a href="sub_role.php#mind_open">公開者</a>) にする妖精。</td>
+  <td class="ability">投票先が人狼に襲撃されたら、次の日を「白夜」(全員<a href="sub_role.php#mind_open">公開者</a>) にする妖精。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
 <tr>
@@ -1518,7 +1520,7 @@ Ver. 1.4.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の合計が分かる特殊な司祭。<br>
+  <td class="ability">一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の総数が分かる特殊な司祭。<br>
    表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
@@ -1880,7 +1882,7 @@ Ver. 1.4.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">生きている間、<a href="ability.php#revive">蘇生能力者</a>の成功率を +30% する、座敷童子系の亜種。<br>
+  <td class="ability">生きている間、<a href="ability.php#revive">蘇生能力者</a>の成功率を +30% する、座敷童子の亜種。<br>
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。</td>
   <td>Ver. 1.4.0 β20</td>
 </tr>
@@ -2109,6 +2111,37 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。<br>
+    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+  </td>
+  <td>Ver. 1.5.0 α5</td>
+</tr>
+<tr>
+  <td><a href="mania.php#wirepuller_mania">黒衣</a></td>
+  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。<br>
+    自分と投票先に<a href="sub_role.php#mind_friend">共鳴者</a>がつく (結果が表示されるのは 2 日目の朝)。
+  </td>
+  <td>Ver. 1.5.0 α5</td>
+</tr>
+<tr>
+  <td><a href="human.php#sun_brownie">八咫烏</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼に襲撃されたら、次の日を「白夜」(全員<a href="sub_role.php#mind_open">公開者</a>) に、処刑されたら次の日の昼を「宵闇」(全員<a href="sub_role.php#blinder">目隠し</a>) にする、座敷童子の亜種。</td>
+  <td>Ver. 1.5.0 α5</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#critical_mad">釣瓶落とし</a></td>
+  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。<br>
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
   </td>
   <td>Ver. 1.5.0 α5</td>
@@ -2671,6 +2704,13 @@ Ver. 1.4.0
     <td class="ability">二日目以降、恋人の独り言が専用の囁きに見えるようになる。</td>
     <td>Ver. 1.4.0 β22</td>
   </tr>
+  <tr>
+    <td><a href="sub_role.php#wirepuller_luck" id="sub_150alpha5">入道</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>○</td>
+    <td class="ability">付加させた人が一人でも生存している間は投票数が +2 されるが全員死亡すると得票数が +3 される。</td>
+    <td>Ver. 1.5.0 α5</td>
+  </tr>
 </table>
 
 <h2><a id="reference">参考リンク</a></h2>
@@ -2692,10 +2732,4 @@ Ver. 1.4.0
 <li>[能力を騙れる / 対応・排除が容易 / 発動率が低い] のどれかを満たす</li>
 <li>名称は和名・妖怪を軸にする</li>
 </ol>
-</ol>
-<h3>役職</h3>
-<h4>能力リスト</h4>
-<h4>名称リスト</h4>
-
-<h3>村編成案</h3>
 </body></html>

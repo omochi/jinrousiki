@@ -351,9 +351,10 @@ class CastConfig extends CastConfigBase{
     'priest_jealousy'      =>  3,
     'poison_jealousy'      =>  3,
     'brownie'              =>  2,
-    'history_brownie'      =>  2,
+    'sun_brownie'          =>  1,
     'revive_brownie'       =>  2,
-    'cursed_brownie'       =>  2,
+    'cursed_brownie'       =>  1,
+    'history_brownie'      =>  2,
     'wizard'               =>  3,
     'awake_wizard'         =>  3,
     'soul_wizard'          =>  2,
@@ -394,14 +395,16 @@ class CastConfig extends CastConfigBase{
     'jammer_mad'           =>  5,
     'voodoo_mad'           =>  5,
     'enchant_mad'          =>  5,
-    'dream_eater_mad'      => 10,
+    'dream_eater_mad'      =>  5,
     'possessed_mad'        =>  5,
-    'trap_mad'             => 10,
+    'trap_mad'             =>  5,
     'snow_trap_mad'        =>  5,
     'corpse_courier_mad'   =>  5,
     'amaze_mad'            =>  5,
     'agitate_mad'          =>  5,
     'miasma_mad'           =>  5,
+    'critical_mad'         =>  5,
+    'follow_mad'           =>  5,
     'therian_mad'          =>  5,
     'fox'                  =>  3,
     'white_fox'            =>  3,
@@ -483,11 +486,12 @@ class CastConfig extends CastConfigBase{
     'succubus_yaksa'       =>  1,
     'dowser_yaksa'         =>  1,
     'mania'                =>  3,
-    'trick_mania'          =>  3,
+    'trick_mania'          =>  2,
     'soul_mania'           =>  2,
     'dummy_mania'          =>  2,
-    'unknown_mania'        =>  3,
-    'sacrifice_mania'      =>  2);
+    'unknown_mania'        =>  2,
+    'sacrifice_mania'      =>  2,
+    'wirepuller_mania'     =>  2);
 
   var $chaos_min_wolf_rate = 10; //人狼の最小出現比 (総人口 / N)
   var $chaos_min_fox_rate  = 15; //妖狐の最小出現比 (総人口 / N)
@@ -512,8 +516,8 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   var $chaos_hyper_replace_human_role_list = array(
-    'mania' => 35, 'trick_mania' => 20, 'soul_mania' => 10, 'dummy_mania' => 10,
-    'unknown_mania' => 15, 'sacrifice_mania' => 10);
+    'mania' => 30, 'trick_mania' => 15, 'soul_mania' => 10, 'dummy_mania' => 10,
+    'unknown_mania' => 15, 'sacrifice_mania' => 10, 'wirepuller_mania' => 10);
 
   //固定配役追加モード
   /*

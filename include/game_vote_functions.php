@@ -548,7 +548,7 @@ function AggregateVoteGameStart($force_start = false){
 			    'challenge_lovers', 'infected', 'psycho_infected', 'copied',
 			    'copied_trick', 'copied_soul', 'copied_teller', 'possessed_target',
 			    'possessed', 'changed_therian', 'joker', 'bad_status', 'lost_ability',
-			    'protected');
+			    'protected', 'wirepuller_luck');
 
   //サブ役職テスト用
   $roled_list = array();
@@ -1227,8 +1227,8 @@ function AggregateVoteDay(){
   if($vote_kill_uname != ''){ //夜に切り替え
     //-- 得票カウンター能力者の処理 --//
     $ROLES->stack->vote_kill_uname = $vote_kill_uname;
-    foreach($ROLES->LoadFilter('voted_reaction') as $filter){
-      $filter->VotedReaction($vote_target_list);
+    foreach($ROLES->LoadFilter('vote_kill_reaction') as $filter){
+      $filter->VoteKillReaction($vote_target_list);
     }
 
     if($ROOM->IsEvent('frostbite')){ //-- 雪の処理 --//
@@ -2298,14 +2298,18 @@ function AggregateVoteNight($skip = false){
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
       $target = $USERS->ByUname($target_uname); //対象者の情報を取得
-      if($user->IsRole('unknown_mania', 'sacrifice_mania')){ //鵺系
+      if($user->IsUnknownMania()){ //鵺系
 	$user->AddMainRole($target->user_no); //コピー先をセット
 
 	//共鳴者を追加
 	$role = $user->GetID('mind_friend');
 	$user->AddRole($role);
-	//影武者は相手に庇護者を追加する
-	if($user->IsRole('sacrifice_mania')) $role .= ' ' . $user->GetID('protected');
+	if($user->IsRole('sacrifice_mania')){ //影武者は相手に庇護者を追加する
+	  $role .= ' ' . $user->GetID('protected');
+	}
+	elseif($user->IsRole('wirepuller_mania')){ //黒衣は相手に入道を追加する
+	  $role .= ' ' . $user->GetID('wirepuller_luck');
+	}
 	$target->AddRole($role);
 	continue;
       }

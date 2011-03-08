@@ -5,22 +5,15 @@
   ・処刑投票が拮抗したら自分の投票先を優先的に処刑する
 */
 class Role_quiz extends RoleVoteAbility{
-  var $data_type = 'array';
+  var $data_type = 'action';
 
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){
-    global $ROOM, $ROLES, $USERS;
+    global $ROLES;
 
-    if(parent::DecideVoteKill($uname) || ! is_array($ROLES->stack->quiz)) return;
-    $stack = array();
-    foreach($ROLES->stack->quiz as $actor_uname){ //最多得票者に投票した出題者の投票先を収集
-      $target = $USERS->ByVirtualUname($ROOM->vote[$actor_uname]['target_uname']);
-      if(in_array($target->uname, $ROLES->stack->max_voted)){ //最多得票者リストは仮想ユーザ
-	$stack[$target->uname] = true;
-      }
-    }
-    //対象を一人に固定できる時のみ有効
-    if(count($stack) == 1) $uname = array_shift(array_keys($stack));
+    if(parent::DecideVoteKill($uname)) return;
+    $stack = array_intersect($ROLES->stack->max_voted, $ROLES->stack->{$this->role});
+    if(count($stack) == 1) $uname = array_shift($stack); //対象を一人に固定できる時のみ有効
   }
 }

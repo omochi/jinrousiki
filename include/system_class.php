@@ -693,6 +693,7 @@ class RoleData{
     'priest_jealousy'      => '恋司祭',
     'poison_jealousy'      => '毒橋姫',
     'brownie'              => '座敷童子',
+    'sun_brownie'          => '八咫烏',
     'revive_brownie'       => '蛇神',
     'cursed_brownie'       => '祟神',
     'history_brownie'      => '白澤',
@@ -744,6 +745,7 @@ class RoleData{
     'amaze_mad'            => '傘化け',
     'agitate_mad'          => '扇動者',
     'miasma_mad'           => '土蜘蛛',
+    'critical_mad'         => '釣瓶落とし',
     'follow_mad'           => '舟幽霊',
     'therian_mad'          => '獣人',
     'fox'                  => '妖狐',
@@ -830,7 +832,8 @@ class RoleData{
     'soul_mania'           => '覚醒者',
     'dummy_mania'          => '夢語部',
     'unknown_mania'        => '鵺',
-    'sacrifice_mania'      => '影武者');
+    'sacrifice_mania'      => '影武者',
+    'wirepuller_mania'     => '黒衣');
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -906,6 +909,7 @@ class RoleData{
     'infected'           => '感染者',
     'psycho_infected'    => '洗脳者',
     'protected'          => '庇護者',
+    'wirepuller_luck'    => '入道',
     'changed_therian'    => '元獣人',
     'copied'             => '元神話マニア',
     'copied_trick'       => '元奇術師',
@@ -998,6 +1002,7 @@ class RoleData{
     'priest_jealousy'      => '恋司',
     'poison_jealousy'      => '毒橋',
     'brownie'              => '童',
+    'sun_brownie'          => '烏',
     'revive_brownie'       => '蛇',
     'cursed_brownie'       => '祟',
     'history_brownie'      => '白澤',
@@ -1049,6 +1054,7 @@ class RoleData{
     'amaze_mad'            => '傘',
     'agitate_mad'          => '扇',
     'miasma_mad'           => '蜘',
+    'critical_mad'         => '釣瓶',
     'follow_mad'           => '舟',
     'therian_mad'          => '獣',
     'fox'                  => '狐',
@@ -1136,6 +1142,7 @@ class RoleData{
     'dummy_mania'          => '夢語',
     'unknown_mania'        => '鵺',
     'sacrifice_mania'      => '影',
+    'wirepuller_mania'     => '黒衣',
     'chicken'              => '酉',
     'rabbit'               => '卯',
     'perverseness'         => '邪',
@@ -1207,6 +1214,7 @@ class RoleData{
     'infected'             => '染',
     'psycho_infected'      => '洗',
     'protected'            => '庇',
+    'wirepuller_luck'      => '入道',
     'copied'               => '元マ',
     'copied_trick'         => '元奇',
     'copied_soul'          => '元覚',
@@ -1251,6 +1259,7 @@ class RoleData{
     'assassin' => 'assassin',
     'scanner' => 'mind_scanner',
     'unknown_mania' => 'unknown_mania', 'sacrifice_mania' => 'unknown_mania',
+    'wirepuller_mania' => 'unknown_mania',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
@@ -1268,7 +1277,7 @@ class RoleData{
     'authority'    => array('authority', 'critical_voter', 'random_voter', 'rebel', 'watcher'),
     'decide'       => array('decide', 'plague', 'good_luck', 'bad_luck'),
     'luck'         => array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
-			    'random_luck'),
+			    'random_luck', 'wirepuller_luck'),
     'voice'        => array('strong_voice', 'normal_voice', 'weak_voice', 'upper_voice',
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'whisper_ringing',
@@ -1497,7 +1506,7 @@ class LotteryBuilder{
   function GenerateRandomList($list){
     $stack = array();
     foreach($list as $role => $rate){
-      for($i = $rate; $i > 0; $i--) $stack[] = $role;
+      for(; $rate > 0; $rate--) $stack[] = $role;
     }
     return $stack;
   }
@@ -1507,7 +1516,7 @@ class LotteryBuilder{
     $stack = array();
     $total_rate = array_sum($list);
     foreach($list as $role => $rate){
-      $stack[$role] = sprintf("%01.2f", $rate / $total_rate * 100);
+      $stack[$role] = sprintf('%01.2f', $rate / $total_rate * 100);
     }
     PrintData($stack);
   }

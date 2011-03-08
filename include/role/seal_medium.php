@@ -16,7 +16,7 @@ class Role_seal_medium extends RoleVoteAbility{
     $seal_list = array('phantom_wolf', 'resist_wolf', 'tongue_wolf',
 		       'trap_mad', 'possessed_mad',
 		       'phantom_fox', 'emerald_fox', 'revive_fox', 'possessed_fox');
-    foreach($ROLES->stack->seal_medium as $uname => $target_uname){
+    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
       if($uname == $ROLES->stack->vote_kill_uname) continue;
 
       $target = $USERS->ByRealUname($target_uname);

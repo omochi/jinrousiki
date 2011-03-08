@@ -447,20 +447,15 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h2><a id="unknown_mania_group">鵺系</a></h2>
 <p>
+<a href="#unknown_mania_rule">所属陣営判定</a>
+</p>
+<p>
 <a href="#unknown_mania">鵺</a>
 <a href="#sacrifice_mania">影武者</a>
+<a href="#wirepuller_mania">黒衣</a>
 </p>
 
-<h3><a id="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23～]</h3>
-<pre>
-初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
-所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になります。
-生存カウントは常に村人なので、実質は所属陣営不明の狂人相当です。
-
-<a href="#mania">神話マニア</a>と違い、コピー結果が出ないのでコピー先に聞かないと
-自分の所属陣営が分かりません。
-</pre>
-<h4>所属陣営の判定例</h4>
+<h3><a id="unknown_mania_rule">所属陣営判定</a></h3>
 <pre>
 1. 鵺 → <a href="human.php#human">村人</a> (村人陣営)
 擬似<a href="human.php#common_group">共有者</a>相当になります。
@@ -510,9 +505,19 @@ CO するべきかどうかは、コピーした役職次第です。
 結果として以下のようになります。
 鵺A(村人陣営) → 村人(元神話マニア) / 鵺B (人狼陣営) → 人狼
 </pre>
-<h5>Ver. 1.4.0 β19～</h5>
+<h4>Ver. 1.4.0 β19～</h4>
 <pre>
 <a href="vampire.php">吸血鬼陣営</a>をコピーした場合の勝利条件判定を変更 (<a href="vampire.php#rule">基本ルール [吸血鬼]</a>参照)。
+</pre>
+
+<h3><a id="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23～]</h3>
+<pre>
+初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
+所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
+生存カウントは常に村人なので、実質は所属陣営不明の狂人相当になる。
+
+<a href="#mania">神話マニア</a>と違い、コピー結果が出ないのでコピー先に聞かないと
+自分の所属陣営が分からない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -541,5 +546,16 @@ CO するべきかどうかは、コピーした役職次第です。
 <pre>
 <a href="lovers.php#sacrifice_angel">守護天使</a>の鵺バージョンです。
 構想自体はこちらが先で、かなり前から検討されていた能力です。
+</pre>
+
+<h3><a id="wirepuller_mania">黒衣</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<pre>
+コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。
+自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
+陣営判定法則などの基本的な仕様は<a href="#unknown_mania">鵺</a>と同じ。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の雲居 一輪がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ</a> の 318 が原型です。
 </pre>
 </body></html>

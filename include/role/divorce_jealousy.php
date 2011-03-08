@@ -1,6 +1,6 @@
 <?php
 /*
-  ◆祟神 (divorce_jealousy)
+  ◆縁切地蔵 (divorce_jealousy)
   ○仕様
   ・投票者の恋人に一定確率で恋色迷彩を付加
 */
@@ -9,10 +9,10 @@ class Role_divorce_jealousy extends RoleVoteAbility{
 
   function __construct(){ parent::__construct(); }
 
-  function VotedReaction($vote_target_list){
+  function VoteKillReaction($vote_target_list){
     global $ROLES, $USERS;
 
-    foreach($ROLES->stack->divorce_jealousy as $uname){
+    foreach($ROLES->stack->{$this->role} as $uname){
       if($uname == $ROLES->stack->vote_kill_uname) continue;
 
       foreach(array_keys($vote_target_list, $uname) as $voted_uname){

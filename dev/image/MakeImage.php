@@ -340,17 +340,21 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_投票数を +1 することができますが、あなたが_処刑_されたら誰か一人を^熱病^にしてしまいます。\n　その力で村を裕福にしてあげましょう。但しあなたが_処刑_されてしまうとたちまち村に不幸が訪れ、病に伏せる者がでてしまいます。",
     'type' => 'human', 'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'chicken'));
 
+  var $sun_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#八咫烏#です。=人狼=に襲撃されたら次の日を全員:公開者:に、_処刑_されたら次の日を全員*目隠し*にしてしまいます。\n　太陽神の御使いとして、村の天上に光り輝く太陽をもたらし昼も夜も全て一緒にまとめてフュージョンし尽くすのです！",
+    'type' => 'brownie', 'delimiter' => array('=' => 'wolf', ':' => 'mind', '*' => 'no_last_words'));
+
   var $revive_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても_蘇生_できます。また、_蘇生_能力者の成功率を高めることができます。\n　――奇跡を願うものよ、我を崇めよ、我を讃えよ。我は#蛇神#、命と再生を司るもの。我が神威もて、汝に力を与えん。",
-    'type' => 'cursed_brownie', 'delimiter' => array('_' => 'revive'));
+    'type' => 'sun_brownie', 'delimiter' => array('_' => 'revive'));
 
   var $cursed_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#祟神#、=呪い=を持っています。また、あなたを襲撃した=人狼=や_処刑_投票してきた人に^死の宣告^を行います。\n　呪われた身を呪うことなく、触れた者に不幸をもたらすその力で、村を襲う悪しき災厄を祟り返してやるのです！",
-    'type' => 'brownie', 'delimiter' => array('=' => 'wolf'));
+    'type' => 'sun_brownie');
 
   var $history_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。_人狼_に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
-    'type' => 'brownie', 'delimiter' => array('_' => 'wolf'));
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。=人狼=に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
+    'type' => 'sun_brownie');
 
   var $wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#魔法使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができます。\n　#魔法#は様々に形を変え村に驚きをもたらします。あなたの力で奇跡を起こすのです！",
@@ -544,6 +548,10 @@ class RoleMessageList{
   var $miasma_mad = array(
 			  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|土蜘蛛|です。#処刑#投票先が死ななかった場合は_熱病_にさせることができます。\n　身に孕む怨念を悪疫へと変え、村を地獄の釜の底へ叩き込み、悪夢に悩ませるのです！",
 			  'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'chicken'));
+
+  var $critical_mad = array(
+			  'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|釣瓶落とし|です。#処刑#投票先が死ななかった場合は_痛恨_にさせることができます。\n　あなたは村の意思に逆らうときに真の力が目覚めます。あなたの意思で村を覆せるのです。",
+			  'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'luck'));
 
   var $follow_mad = array(
 			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|舟幽霊|です。#処刑#投票先が_ショック死_した場合はさらに誰か一人を_ショック死_させることができます。",
@@ -764,7 +772,7 @@ class RoleMessageList{
     'type' => 'fairy');
 
   var $winter_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|冬妖精|です。村人一人の発言に冬を告げるメッセージを追加してしまいます。\n　幻冬――全ての生き物が眠る冬の訪れを村人に告げ、|春妖精|へとバトンを繋ぐのです。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|冬妖精|です。村人一人の発言に冬を告げるメッセージを追加してしまいます。\n　玄冬――全ての生き物が眠る冬の訪れを村人に告げ、|春妖精|へとバトンを繋ぐのです。",
     'type' => 'fairy');
 
   var $flower_fairy = array(
@@ -886,6 +894,10 @@ class RoleMessageList{
   var $sacrifice_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|影武者|です。初日の夜に指定した人と同じ陣営になり、その人が#人狼#に襲撃されたら身代わりになります。\n　仕えるべき主を護ることがあなたの使命。#狼#の牙が主に届くことはありません…あなたが生きている限り、決して。",
     'type' => 'mania', 'delimiter' => array('#' => 'wolf'));
+
+  var $wirepuller_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|黒衣|です。初日の夜に指定した人と同じ陣営になり、生きている間、その人の#投票#能力を強化できます。",
+    'type' => 'mania', 'delimiter' => array('#' => 'vote'));
 
   var $chicken = array('message' => "　あなたは|小心者|です。#処刑#投票時に一票でも貰うと|ショック死|してしまいます。",
 		       'delimiter' => array('|' => 'chicken', '#' => 'vote'));
@@ -1087,6 +1099,9 @@ class RoleMessageList{
 				'delimiter' => array('|' => 'lovers', '#' => 'wolf', '_' => 'assassin',
 						     '^' => 'poison', ':' => 'vote', '=' => 'chicken'));
 
+  var $wirepuller_luck = array('message' => "　あなたは|入道|です。あなたの_黒衣_が生きている間は#処刑#|投票|数が２増える代わりに死亡すると^得票^数が３増えます。",
+			   'type' => 'authority', 'delimiter' => array('_' => 'mania', '^' => 'luck'));
+
   var $lost_ability = array('message' => "　あなたは能力を失いました。");
   var $joker = array('message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先が生きていた場合に押し付けることができますが、例外があるので気をつけましょう。",
 		     'delimiter' => array('|' => 'wolf', '#' => 'vote'));
@@ -1216,6 +1231,7 @@ class RoleMessageList{
   var $result_priest_jealousy = array('message' => "さんは|恋司祭|でした", 'type' => 'result_jealousy');
   var $result_poison_jealousy = array('message' => "さんは|毒橋姫|でした", 'type' => 'result_jealousy');
   var $result_brownie = array('message' => "さんは|座敷童子|でした", 'delimiter' => array('|' => 'brownie'));
+  var $result_sun_brownie = array('message' => "さんは|八咫烏|でした", 'type' => 'result_brownie');
   var $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
   var $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
   var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
@@ -1267,6 +1283,7 @@ class RoleMessageList{
   var $result_amaze_mad = array('message' => "さんは|傘化け|でした", 'type' => 'result_mad');
   var $result_agitate_mad = array('message' => "さんは|扇動者|でした", 'type' => 'result_mad');
   var $result_miasma_mad = array('message' => "さんは|土蜘蛛|でした", 'type' => 'result_mad');
+  var $result_critical_mad = array('message' => "さんは|釣瓶落とし|でした", 'type' => 'result_mad');
   var $result_follow_mad = array('message' => "さんは|舟幽霊|でした", 'type' => 'result_mad');
   var $result_therian_mad = array('message' => "さんは|獣人|でした", 'type' => 'result_mad');
   var $result_fox = array('message' => "さんは|妖狐|でした", 'delimiter' => array('|' => 'fox'));
@@ -1355,6 +1372,7 @@ class RoleMessageList{
   var $result_dummy_mania = array('message' => "さんは|夢語部|でした", 'type' => 'result_mania');
   var $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
   var $result_sacrifice_mania = array('message' => "さんは|影武者|でした", 'type' => 'result_mania');
+  var $result_wirepuller_mania = array('message' => "さんは|黒衣|でした", 'type' => 'result_mania');
 
   var $result_failed = array('message' => "さんの占いに失敗しました");
   var $result_mage_failed = array('message' => "さんの鑑定に失敗しました");
@@ -1507,5 +1525,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
-#$builder->Output('awake_wizard');
-$builder->Output('follow_mad');
+#$builder->Output('follow_mad');
+$builder->Output('wirepuller_mania');

@@ -264,6 +264,11 @@ class User{
     return $this->IsRoleGroup('ogre', 'yaksa');
   }
 
+  //鵺系判定
+  function IsUnknownMania(){
+    return $this->IsRole('unknown_mania', 'sacrifice_mania', 'wirepuller_mania');
+  }
+
   //恋人判定
   function IsLovers(){
     return $this->IsRole('lovers');
@@ -986,7 +991,7 @@ class UserDataSet{
 
     $target = $user;
     $stack  = array();
-    while($target->IsRole('unknown_mania', 'sacrifice_mania')){ //鵺系ならコピー先を辿る
+    while($target->IsUnknownMania()){ //鵺系ならコピー先を辿る
       $id = array_shift($target->GetPartner($target->main_role, true));
       if(is_null($id) || in_array($id, $stack)) break;
       $stack[] = $id;
@@ -1014,7 +1019,10 @@ class UserDataSet{
       switch($event['type']){
       case 'VOTE_KILLED':
 	$user = $this->ByHandleName($event['message']);
-	if($user->IsRole('mirror_fairy')){
+	if($user->IsRole('sun_brownie')){
+	  $ROOM->event->blinder = true;
+	}
+	elseif($user->IsRole('mirror_fairy')){
 	  $duel_stack = array(); //決闘対象者の ID リスト
 	  foreach($user->GetPartner('mirror_fairy', true) as $key => $value){ //生存確認
 	    if($this->IsVirtualLive($key))   $duel_stack[] = $key;
@@ -1022,6 +1030,7 @@ class UserDataSet{
 	  }
 	  if(count($duel_stack) > 1) $ROOM->event->vote_duel = $duel_stack;
 	}
+
 	foreach($user->GetPartner('bad_status', true) as $id => $date){
 	  $status_user = $this->ByID($id);
 	  $ROOM->event->blind_vote |= $status_user->IsRole('amaze_mad') &&
@@ -1032,7 +1041,11 @@ class UserDataSet{
 
       case 'WOLF_KILLED':
 	$user = $this->ByHandleName($event['message']);
-	$ROOM->event->skip_night = ! $user->IsDummyBoy() && $user->IsRole('history_brownie');
+	if(! $user->IsDummyBoy()){
+	  $ROOM->event->mind_open  = $user->IsRole('sun_brownie');
+	  $ROOM->event->skip_night = $user->IsRole('history_brownie');
+	}
+
 	foreach($user->GetPartner('bad_status', true) as $id => $date){
 	  if($date != $base_date) continue;
 	  $status_user = $this->ByID($id);
@@ -1062,10 +1075,10 @@ class UserDataSet{
 	}
       }
     }
-    if($ROOM->IsPlaying()){
+    if($ROOM->IsPlaying()){ //昼夜両方
       $stack = array('no_last_words', 'whisper_ringing', 'howl_ringing', 'sweet_ringing',
 		     'deep_sleep', 'mind_open');
-      foreach($stack as $role){ //昼夜両方
+      foreach($stack as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}

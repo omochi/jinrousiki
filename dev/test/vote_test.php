@@ -53,7 +53,7 @@ $RQ_ARGS->TestItems->test_users[4] =& new User();
 $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[4]->role = 'dummy_mage authority lovers[16] mind_friend[16]';
+$RQ_ARGS->TestItems->test_users[4]->role = 'critical_mad authority lovers[16] mind_friend[16]';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[5] =& new User();
@@ -88,21 +88,21 @@ $RQ_ARGS->TestItems->test_users[9] =& new User();
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'sacrifice_cat mind_open joker[4] decide';
+$RQ_ARGS->TestItems->test_users[9]->role = 'sacrifice_cat mind_open joker[4]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10] =& new User();
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[10]->role = 'assassin lovers[16] mind_friend[16] mind_friend[21] protected[21]';
+$RQ_ARGS->TestItems->test_users[10]->role = 'agitate_mad lovers[16] mind_friend[16] mind_friend[21]';
 $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[11] =& new User();
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'possessed_mad silent';
+$RQ_ARGS->TestItems->test_users[11]->role = 'follow_mad star';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12] =& new User();
@@ -151,7 +151,7 @@ $RQ_ARGS->TestItems->test_users[18] =& new User();
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'enchant_mad';
+$RQ_ARGS->TestItems->test_users[18]->role = 'human';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19] =& new User();
@@ -172,14 +172,14 @@ $RQ_ARGS->TestItems->test_users[21] =& new User();
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
 $RQ_ARGS->TestItems->test_users[21]->handle_name = '桃';
 $RQ_ARGS->TestItems->test_users[21]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[21]->role = 'sacrifice_mania[10] mind_friend[21]';
+$RQ_ARGS->TestItems->test_users[21]->role = 'unknown_mania[10] mind_friend[21]';
 $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[22] =& new User();
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[22]->role = 'amaze_mad';
+$RQ_ARGS->TestItems->test_users[22]->role = 'critical_mad disfavor';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23] =& new User();
@@ -193,7 +193,7 @@ $RQ_ARGS->TestItems->test_users[24] =& new User();
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'awake_wizard watcher';
+$RQ_ARGS->TestItems->test_users[24]->role = 'soul_necromancer watcher';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[25] =& new User();
@@ -222,10 +222,10 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
 //-- 仮想投票データをセット --//
 $RQ_ARGS->TestItems->vote->day = array();
 $RQ_ARGS->TestItems->vote_target_day = array(
-  array('id' =>  2, 'target_no' =>  3),
+  array('id' =>  2, 'target_no' => 11),
   array('id' =>  3, 'target_no' =>  7),
   //array('id' =>  3, 'target_no' => 10),
-  array('id' =>  4, 'target_no' =>  7),
+  array('id' =>  4, 'target_no' => 11),
   array('id' =>  5, 'target_no' => 25),
   //array('id' =>  6, 'target_no' =>  3),
   //array('id' =>  7, 'target_no' =>  3),
@@ -420,7 +420,7 @@ OutputPlayerList(); //プレイヤーリスト
 #PrintData($USERS->ByID(8));
 #PrintData($USERS->ByID(22)->GetCamp());
 OutputAbility();
-//PrintData($GAME_CONF->RateToProbability($GAME_CONF->weather_list));
+#PrintData($GAME_CONF->RateToProbability($GAME_CONF->weather_list));
 
 if($ROOM->IsDay()){ //昼の投票テスト
   $self_id = $SELF->user_no;
@@ -503,7 +503,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 11, 24) as $id){
+  foreach(array(5, 23, 24) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   #var_dump($USERS->IsOpenCast());

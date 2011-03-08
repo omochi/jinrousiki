@@ -14,7 +14,7 @@ class Role_amaze_mad extends RoleVoteAbility{
 
     $flag = false;
     $vote_user = $USERS->ByRealUname($ROLES->stack->vote_kill_uname);
-    foreach($ROLES->stack->amaze_mad as $uname => $target_uname){
+    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
       if($target_uname != $ROLES->stack->vote_kill_uname) continue;
 
       $flag = true;

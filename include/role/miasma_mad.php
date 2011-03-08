@@ -12,9 +12,8 @@ class Role_miasma_mad extends RoleVoteAbility{
   function VoteAction(){
     global $ROLES, $USERS;
 
-    foreach($ROLES->stack->miasma_mad as $uname => $target_uname){
+    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
       if($uname == $ROLES->stack->vote_kill_uname) continue;
-
       $target = $USERS->ByRealUname($target_uname);
       if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddDoom(1, 'febris');
     }

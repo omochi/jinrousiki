@@ -140,16 +140,16 @@ function ConvertSay(&$say){
   if($SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
   //if($SELF->IsDead()) return false; //テスト用
 
-  $virtual_self = $USERS->ByVirtual($SELF->user_no);
-  $ROLES->actor = $virtual_self;
-
   //萌系置換 (昼限定)
-  if($ROOM->IsDay() && $virtual_self->IsRole('suspect', 'cute_wolf', 'cute_fox') &&
+  if($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox') &&
      mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
     $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
   }
+
+  $virtual_self = $USERS->ByVirtual($SELF->user_no);
+  $ROLES->actor = $virtual_self;
   //紳士・淑女置換
-  elseif($virtual_self->IsRole('gentleman', 'lady') &&
+  if($virtual_self->IsRole('gentleman', 'lady') &&
 	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
     $role = $virtual_self->IsRole('gentleman') ? 'gentleman' : 'lady';
 

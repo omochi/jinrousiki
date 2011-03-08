@@ -24,7 +24,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#poison">毒</a>
 <a href="#cursed_group">呪い</a>
 <a href="#possessed">憑依</a>
-<a href="#possessed_limited">憑依制限</a>
+<a href="#possessed_limit">憑依制限</a>
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#dummy">夢</a>
@@ -117,7 +117,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="authority">投票数変化能力者</a></h2>
 <pre>
-<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#brownie">座敷童子</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="sub_role.php#authority_group">権力者系</a>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#brownie">座敷童子</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="sub_role.php#authority_group">権力者系</a>・<a href="sub_role.php#wirepuller_luck">入道</a>
 </pre>
 
 <h2><a id="poison">毒能力者</a></h2>
@@ -140,7 +140,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>
 </pre>
 
-<h2><a id="possessed_limited">憑依制限能力者</a></h2>
+<h2><a id="possessed_limit">憑依制限能力者</a></h2>
 <pre>
 <a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>
 </pre>

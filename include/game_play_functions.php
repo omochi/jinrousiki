@@ -36,7 +36,7 @@ function OutputAbility(){
       OutputSelfAbilityResult(strtoupper($SELF->main_role) . '_RESULT');
     }
   }
-  elseif($SELF->IsRoleGroup('medium')){ //巫女
+  elseif($SELF->IsRoleGroup('medium')){ //巫女系
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 1) OutputSelfAbilityResult('MEDIUM_RESULT'); //神託結果
     if($SELF->IsRole('revive_medium') && ! $ROOM->IsOpenCast()){ //風祝
@@ -62,13 +62,17 @@ function OutputAbility(){
       break;
     }
 
+    $result = strtoupper($SELF->main_role . '_result');
     switch($SELF->main_role){ //役職に応じた神託結果を表示
     case 'priest': //司祭
-      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
+    case 'dowser_priest': //探知師
+    case 'dummy_priest': //夢司祭
+    case 'priest_jealousy': //恋司祭
+      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult($result);
       break;
 
     case 'bishop_priest': //司教
-      if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
+      if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult($result);
       break;
 
     case 'high_priest': //大司祭
@@ -76,28 +80,15 @@ function OutputAbility(){
       if($ROOM->date > 5 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
       break;
 
-    case 'dowser_priest': //探知師
-      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DOWSER_PRIEST_RESULT');
       break;
 
     case 'weather_priest': //祈祷師
-      if($ROOM->date > 1) OutputSelfAbilityResult('WEATHER_PRIEST_RESULT');
+    case 'crisis_priest': //預言者
+      if($ROOM->date > 1) OutputSelfAbilityResult($result);
       break;
 
     case 'border_priest': //境界師
-      if($ROOM->date > 2) OutputSelfAbilityResult('BORDER_PRIEST_RESULT');
-      break;
-
-    case 'crisis_priest': //預言者
-      if($ROOM->date > 1) OutputSelfAbilityResult('CRISIS_PRIEST_RESULT');
-      break;
-
-    case 'dummy_priest': //夢司祭
-      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('DUMMY_PRIEST_RESULT');
-      break;
-
-    case 'priest_jealousy': //恋司祭
-      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_JEALOUSY_RESULT');
+      if($ROOM->date > 2) OutputSelfAbilityResult($result);
       break;
     }
   }
@@ -152,8 +143,7 @@ function OutputAbility(){
     }
   }
   elseif($SELF->IsRoleGroup('pharmacist')){ //薬師系
-    $ROLE_IMG->Output($SELF->IsRole('eclipse_pharmacist') ? 'alchemy_pharmacist' :
-		      $SELF->main_role);
+    $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 2) OutputSelfAbilityResult('PHARMACIST_RESULT'); //鑑定結果
   }
   elseif($SELF->IsRoleGroup('assassin')){ //暗殺者系
@@ -658,10 +648,13 @@ function OutputAbility(){
 
     $role = 'mind_presage'; //受託者
     if($virtual_self->IsRole($role) && $ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
+
+    $role = 'wirepuller_luck'; //入道
+    if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_presage', 'mind_lonely',
 	     'mind_receiver', 'mind_friend', 'mind_sympathy', 'infected', 'psycho_infected',
-	     'possessed_target', 'possessed', 'bad_status', 'protected');
+	     'possessed_target', 'possessed', 'bad_status', 'protected', 'wirepuller_luck');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;

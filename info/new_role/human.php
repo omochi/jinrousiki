@@ -265,13 +265,6 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="fox.php#fox_group">妖狐</a>を占っても呪殺できない。
 </pre>
-<h5>Ver. 1.4.0 α8～β11</h5>
-<pre>
-<a href="../chaos.php#chaos">通常闇鍋モード</a>では16人未満では出現しません。
-16人以上で参加人数と同じ割合で出現します。(16人なら16%、50人なら50%)
-最大出現人数は1人です。
-魂の占い師が出現した場合は出現人数と同じだけ占い師が減ります。
-</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="#soul_necromancer">雲外鏡</a>・<a href="#soul_assassin">辻斬り</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
@@ -604,11 +597,6 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="sub_role.php#lovers">恋人</a>後追いにも対応 (後追いした<a href="sub_role.php#lovers">恋人</a>のみ、元の所属陣営が分かる)
 </pre>
-<h5>Ver. 1.4.0 α8～β11</h5>
-<pre>
-通常闇鍋モードではキューピッドが出現している場合は確実に出現します。
-(ただし、巫女が出現してもキューピッドが出現しているとは限りません)
-</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 式神研のオリジナル役職です。
@@ -706,7 +694,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 2. 「条件1 が成立している」または「人狼が残り一人」 + 妖狐 / 恋人が生存している
 妖狐が生存していれば「妖狐が勝利目前」、
-恋人が生存していれば「恋人が勝利目前」と判定されます
+恋人が生存していれば「恋人が勝利目前」と判定されます。
 
 3. 生存者 &lt;= 恋人 + 2
 生存者が全員恋人になると恋人勝利となります。
@@ -716,14 +704,14 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3><a id="priest">司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
-一定日数ごとに現在、生存している村人陣営の人数が分かる。
+一定日数ごとに現在、生存している村人陣営の人数が分かる、司祭系の基本種。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
   <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
-  <li>村人陣営の判定法則は<a href="#medium">巫女</a>と同じ。</li>
-  <li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に行なわれます。<br>
-    従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値です。
+  <li>村人陣営の判定法則は<a href="#medium_rule">巫女</a>と同じ。</li>
+  <li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に実施される。<br>
+    従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値となる。
   </li>
 </ol>
 <h4>同一表示役職</h4>
@@ -745,7 +733,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <ol>
   <li>判定が出るのは 3 日目以降の奇数日 (3 → 5 → 7 →...)。</li>
-  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される。</li>
+  <li><a href="#medium_rule">巫女</a>の判定と違い、<a href="sub_role.php#lovers">恋人</a>も「村人陣営以外」と判定される。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -756,13 +744,13 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3><a id="dowser_priest">探知師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
-一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の合計が分かる、特殊な司祭。
+一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の総数が分かる、特殊な司祭。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
   <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
-  <li>本人には表示されていないサブ役職もカウントされます (例：<a href="sub_role.php#decide">決定者</a>)。</li>
-  <li>複数所持できるサブ役職はまとめて一つとカウントされます (例：<a href="sub_role.php#lovers">恋人</a>)。</li>
+  <li>本人には表示されていないサブ役職もカウントされる (例：<a href="sub_role.php#decide">決定者</a>)。</li>
+  <li>複数所持できるサブ役職はまとめて一つとカウントされる (例：<a href="sub_role.php#lovers">恋人</a>)。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -778,7 +766,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
 翌日の<a href="../weather.php">天候</a>が分かる、特殊な司祭。
-また、一定条件を満たすと天候を引き起こすことができる。
+また、一定条件を満たすと<a href="../weather.php">天候</a>を引き起こすことができる。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
@@ -790,7 +778,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="../weather.php">天候</a>を知り、呼び起こす能力者としてデザインしました。
-発動条件は、人狼系とそれ以外の村人陣営以外の人数を比較しています。
+発動条件は、<a href="wolf.php#wolf_group">人狼系</a>とそれ以外の村人陣営以外の人数を比較しています。
 </pre>
 
 <h3><a id="high_priest">大司祭</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
@@ -815,7 +803,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 村の危機を告げる特殊な司祭です。
-いわゆる「鉄火場」は狂人や蝙蝠の存在 + 恋人の元の役職によって
+いわゆる「鉄火場」は<a href="wolf.php#mad_group">狂人</a>や<a href="chiroptera.php">蝙蝠</a>の存在 + <a href="sub_role.php#lovers">恋人</a>の元の役職によって
 機械的な判定ができないので判定条件を「システム的な勝敗決定前日」としました。
 </pre>
 
@@ -823,7 +811,6 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 蘇生：不可 / 憑依：無効</h4>
 <pre>
 2 日目の朝にいきなり死亡して、特定の条件を満たすと生き返る特殊な司祭。
-「霊界で配役を公開しない」オプションが有効になっていないと死亡も蘇生もしません。
 </pre>
 <h4>蘇生条件 (どれか一つを満たせば蘇生する)</h4>
 <ol>
@@ -834,18 +821,23 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>詳細な仕様</h4>
 <ol>
-  <li>2 日目の朝の死亡メッセージは「～は無惨な～」で、死因は「天に帰った」です。</li>
-  <li>一度蘇生すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li>恋人になると能力を失います (2 日目朝の死亡も起こりません)。</li>
-  <li><a href="mania.php#mania_group">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は実行されません。</li>
-  <li>2 日目朝以降に死んでも蘇生判定を満たせば生き返ります。</li>
-  <li>5 日目になると能力を失います。</li>
-  <li>蘇生対象外です (選ばれた場合は失敗する)。</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です。</li>
+  <li>「<a href="../game_option.php#not_open_cast">霊界で配役を公開しない</a>」オプションが有効になっていないと死亡も蘇生もしない。</li>
+  <li>2 日目の朝の死亡メッセージは「～は無惨な～」で、死因は「天に帰った」。</li>
+  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li><a href="sub_role.php#lovers">恋人</a>になると能力を失う (2 日目朝の死亡も起こらない)。</li>
+  <li><a href="mania.php#mania_group">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は起こらない。</li>
+  <li>2 日目朝以降に死んでも蘇生判定を満たせば蘇生する。</li>
+  <li>5 日目になると能力を失う。</li>
+  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外です (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -881,7 +873,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 一定日数ごとに現在、生存している<a href="ability.php#dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。
 本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
-狩人の護衛制限対象。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1003,13 +995,6 @@ PP ラインの計算を難しくさせるために作成してみました。
 噛まれた時のみ毒が発動する上位狩人。
 <a href="#guard_limit">護衛制限</a>の影響を受けない。
 狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
-</pre>
-<h5>Ver. 1.4.0 α8～β11</h5>
-<pre>
-通常闇鍋モードでは20人未満では出現しません。
-20人以上で参加人数と同じ割合で出現します。(20人なら20%、50人なら50%)
-最大出現人数は1人です。
-騎士が出現した場合は出現人数と同じだけ狩人と埋毒者が減ります。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1153,7 +1138,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <ol>
   <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#assassin_spec">暗殺反射</a></li>
-  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>の能力無効</li>
+  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
   <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
   <li><a href="#about_revive">蘇生</a>不可</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
@@ -1521,12 +1506,12 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
   <li>恋人になったら蘇生能力は無効。</li>
   <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
+  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#reverse_assassin">反魂師</a>
+<a href="#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1931,15 +1916,17 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h2><a id="brownie_group">座敷童子系</a></h2>
 <p>
 <a href="#brownie">座敷童子</a>
+<a href="#sun_brownie">八咫烏</a>
 <a href="#revive_brownie">蛇神</a>
 <a href="#cursed_brownie">祟神</a>
 <a href="#history_brownie">白澤</a>
 </p>
 
 <h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
-<h4>[耐性] 処刑：熱病</h4>
+<h4>[耐性] 処刑：<a href="sub_role.php#febris">熱病</a></h4>
 <pre>
-役職「<a href="#human">村人</a>」の処刑投票数を +1 する。生きている間のみ有効。
+役職「<a href="#human">村人</a>」の処刑投票数を +1 する。
+生きている間のみ有効で、複数生存していても効果は重複しない。
 処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
 <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、対象者が誰もいなかった場合は不発となる。
 </pre>
@@ -1953,27 +1940,44 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 村人表示役職の正体を絞り込むことができます。
 </pre>
 
+<h3><a id="sun_brownie">八咫烏</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<h4>[耐性] 処刑：特殊 / 人狼襲撃：特殊</h4>
+<pre>
+座敷童子の亜種で、人狼に襲撃されたら次の日を全員<a href="sub_role.php#mind_open">公開者</a> (白夜) に、
+処刑されたら次の日の昼を全員<a href="sub_role.php#blinder">目隠し</a> (宵闇) にする。
+身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="chiroptera.php#light_fairy">光妖精</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+太陽の化身と言われる伝承がモチーフです。「やたがらす」と読みます。
+一部の例外を除いて死亡することで自己証明が可能になります。
+</pre>
+
 <h3><a id="revive_brownie">蛇神</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
 <pre>
-<a href="ability.php#revive">蘇生能力者</a>の成功率を +30% (1.3倍) する、座敷童子系の亜種。
-生きている間のみ有効で、複数出現しても効果は重複しない。
+<a href="ability.php#revive">蘇生能力者</a>の成功率を +30% (1.3倍) する、座敷童子の亜種。
+生きている間のみ有効で、複数生存していても効果は重複しない。
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
-例：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 32.5% (誤爆率 6%)
 </pre>
 <ol>
-  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li>蘇生能力を失っても蘇生率向上能力は失わない。</li>
-  <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。</li>
-  <li>恋人になったら蘇生能力は無効。</li>
-  <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、蘇生能力は無効。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外。</li>
+  <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。<br>
+例：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 32.5% (誤爆率 6%)</li>
+  <li>一度蘇生すると自己蘇生能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>自己蘇生能力を失っても蘇生率向上能力は失わない。</li>
+  <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、自己蘇生能力は無効。</li>
+  <li><a href="sub_role.php#lovers">恋人</a>になったら自己蘇生能力は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、自己蘇生能力は無効。</li>
+  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#revive">蘇生能力者</a>
+<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1984,7 +1988,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="cursed_brownie">祟神</a> (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 死の宣告 (2日後) / 暗殺：反射 (30%) / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
-座敷童子系の亜種で、占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。
+座敷童子の亜種で、占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。
 また、処刑投票してきた人 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
 <a href="#assassin_spec">暗殺反射</a> (30%) を持つ。
 </pre>
@@ -1994,6 +1998,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <li>自分が処刑対象になった場合でも有効。</li>
 <li>人狼に襲撃された場合は襲撃した人狼のみに、確定で付加される。</li>
 <li><a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+<li>身代わり君の場合は能力無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -2008,9 +2013,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="history_brownie">白澤</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16～]</h3>
 <h4>[耐性] 人狼襲撃：特殊</h4>
 <pre>
-人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子系の亜種。
+人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子の亜種。
 能力が発動した場合は、専用のメッセージが表示される。
-<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2189,12 +2194,12 @@ MVP の賞品としてプレゼントしたものです。
   <li>恋人になったら蘇生能力は無効。</li>
   <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
+  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#revive">蘇生能力者</a>
+<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
