@@ -940,11 +940,22 @@ function OutputAbilityResult($header, $target, $footer = NULL){
 
 //夜の未投票メッセージ出力
 function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
-  global $MESSAGE, $ROOM;
+  global $MESSAGE, $ROOM, $USERS;
 
-  //投票済みならメッセージを表示しない
-  if(! $ROOM->test_mode && CheckSelfVoteNight($situation, $not_situation)) return false;
+  if($ROOM->test_mode) return false; //テストモードならスキップ
 
-  $str = 'ability_' . $sentence;
-  echo '<span class="ability ' . $class . '">' . $MESSAGE->$str . '</span><br>'."\n";
+  $uname = GetSelfVoteNight($situation, $not_situation);
+  if($uname === false){
+    $str = $MESSAGE->{'ability_' . $sentence};
+  }
+  elseif($situation == 'CUPID_DO'){
+    return;
+  }
+  elseif($situation == 'WOLF_EAT' || $not_situation != ''){
+    $str = '投票済み';
+  }
+  else{
+    $str = $USERS->GetHandleName($uname, true) . 'さんに投票済み';
+  }
+  echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
 }

@@ -161,11 +161,11 @@ function CheckVictory($check_draw = false){
 }
 
 //-- 投票関連 --//
-//夜の自分の投票済みチェック
-function CheckSelfVoteNight($situation, $not_situation = ''){
+//夜の自分の投票先取得
+function GetSelfVoteNight($situation, $not_situation = ''){
   global $ROOM, $SELF;
 
-  $query = $ROOM->GetQuery(true, 'vote') . ' AND ';
+  $query = $ROOM->GetQueryHeader('vote', 'uname') . ' AND ';
   if($situation == 'WOLF_EAT'){
     $query .= "situation = '{$situation}'";
   }
@@ -176,7 +176,13 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
   else{
     $query .= "uname = '{$SELF->uname}' AND situation = '{$situation}'";
   }
-  return FetchResult($query) > 0;
+
+  return FetchResult($query);
+}
+
+//夜の自分の投票済みチェック
+function CheckSelfVoteNight($situation, $not_situation = ''){
+  return GetSelfVoteNight($situation, $not_situation) > 0;
 }
 
 //-- 出力関連 --//

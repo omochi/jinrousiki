@@ -554,7 +554,7 @@ class RoleMessageList{
 			  'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'luck'));
 
   var $follow_mad = array(
-			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|舟幽霊|です。#処刑#投票先が_ショック死_した場合はさらに誰か一人を_ショック死_させることができます。",
+			   'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|舟幽霊|です。#処刑#投票先が_ショック死_した場合はさらに誰か一人を_ショック死_させることができます。\n　不条理な死は怨念を招き、溺れる死者は死者をも掴む。あなたの導きと殺意で村人を海に引きずり込むのです！",
 			   'type' => 'miasma_mad');
 
   var $therian_mad = array(
@@ -896,7 +896,7 @@ class RoleMessageList{
     'type' => 'mania', 'delimiter' => array('#' => 'wolf'));
 
   var $wirepuller_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|黒衣|です。初日の夜に指定した人と同じ陣営になり、生きている間、その人の#投票#能力を強化できます。",
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|黒衣|です。初日の夜に指定した人と同じ陣営になり、生きている間、その人の#投票#能力を強化できます。\n　己の命運と共に託すのは、ともすれば暴走しかねない強大な力。己の命在る限り、その力は護るべき仲間の為に。",
     'type' => 'mania', 'delimiter' => array('#' => 'vote'));
 
   var $chicken = array('message' => "　あなたは|小心者|です。#処刑#投票時に一票でも貰うと|ショック死|してしまいます。",
@@ -1525,5 +1525,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
-#$builder->Output('follow_mad');
-$builder->Output('wirepuller_mania');
+$builder->Output('follow_mad');
