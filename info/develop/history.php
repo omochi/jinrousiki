@@ -10,6 +10,7 @@ Ver. 1.5.0<br>
 <a href="#150alpha2">α2</a>
 <a href="#150alpha3">α3</a>
 <a href="#150alpha4">α4</a>
+<a href="#150alpha5">α5</a>
 </p>
 <p>
 <a href="#141">Ver. 1.4.1</a>
@@ -68,6 +69,12 @@ Ver. 1.4.0<br>
 <a href="#140alpha23">α23</a>
 <a href="#140alpha24">α24</a>
 </p>
+
+<h2><a id="150alpha5">Ver. 1.5.0 α5 (Rev. 297) : 2011/03/10 (Thu) 21:37</a></h2>
+<ul>
+<li>「舟幽霊」「黒衣」「釣瓶落とし」「八咫烏」実装</li>
+<li>サブ役職「入道」実装</li>
+</ul>
 
 <h2><a id="150alpha4">Ver. 1.5.0 α4 (Rev. 291) : 2011/02/18 (Fri) 05:06</a></h2>
 <ul>

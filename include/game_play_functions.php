@@ -944,18 +944,18 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
 
   if($ROOM->test_mode) return false; //テストモードならスキップ
 
-  $uname = GetSelfVoteNight($situation, $not_situation);
-  if($uname === false){
+  $stack = GetSelfVoteNight($situation, $not_situation);
+  if(count($stack) < 1){
     $str = $MESSAGE->{'ability_' . $sentence};
   }
-  elseif($situation == 'CUPID_DO'){
-    return;
-  }
-  elseif($situation == 'WOLF_EAT' || $not_situation != ''){
+  elseif($situation == 'WOLF_EAT' || $situation == 'CUPID_DO'){
     $str = '投票済み';
   }
+  elseif($not_situation != '' && $stack['situation'] == $not_situation){
+    $str = 'キャンセル投票済み';
+  }
   else{
-    $str = $USERS->GetHandleName($uname, true) . 'さんに投票済み';
+    $str = $USERS->GetHandleName($stack['target_uname'], true) . 'さんに投票済み';
   }
   echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
 }

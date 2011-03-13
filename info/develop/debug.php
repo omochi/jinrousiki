@@ -9,6 +9,7 @@ Ver. 1.5.0
 <a href="#150alpha2">α2</a>
 <a href="#150alpha3">α3</a>
 <a href="#150alpha4">α4</a>
+<a href="#150alpha5">α5</a>
 </p>
 <p>
 <a href="#140release1">Ver. 1.4.0</a>
@@ -27,6 +28,19 @@ Ver. 1.5.0
 <a href="#140beta21">β21</a>
 <a href="#140beta22">β22</a>
 </p>
+
+<h2><a id="150alpha5">Ver. 1.5.0 α5</a></h2>
+<h3>include/game_functions.php % 185行目付近 (2011/03/10 (Thu) 23:51)</h3>
+<pre>
+× return GetSelfVoteNight($situation, $not_situation) > 0;
+○ return GetSelfVoteNight($situation, $not_situation) !== false;
+</pre>
+
+<h3>include/game_functions.php % 168行目付近 (2011/03/11 (Fri) 00:43)</h3>
+<pre>
+× $query = $ROOM->GetQueryHeader('vote', 'uname') . ' AND ';
+○ $query = $ROOM->GetQueryHeader('vote', 'target_uname') . ' AND date = ' . $ROOM->date . ' AND ';
+</pre>
 
 <h2><a id="150alpha4">Ver. 1.5.0 α4</a></h2>
 <h3>include/game_vote_functions.php % 2648行目付近 (2011/02/24 (Thu) 08:24)</h3>
