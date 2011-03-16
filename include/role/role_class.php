@@ -32,8 +32,8 @@ class RoleManager{
   var $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
 				 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
 				 'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid', 'quiz',
-				 'impatience', 'authority', 'rebel', 'decide', 'plague', 'good_luck',
-				 'bad_luck');
+				 'impatience', 'authority', 'rebel', 'decide', 'plague',
+				 'good_luck', 'bad_luck');
 
   //反逆者判定
   var $rebel_list = array('rebel');

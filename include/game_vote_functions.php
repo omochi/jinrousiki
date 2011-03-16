@@ -423,7 +423,7 @@ function AggregateVoteGameStart($force_start = false){
     if(($is_gerd && in_array('human', $role_list)) || $is_quiz){ //役職固定オプション判定
       $fit_role = $is_gerd ? 'human' : 'quiz';
       if(($key = array_search($fit_role, $role_list)) !== false){
-	array_push($fix_role_list, $fit_role);
+	$fix_role_list[] = $fit_role;
 	unset($role_list[$key]);
       }
     }
@@ -439,11 +439,11 @@ function AggregateVoteGameStart($force_start = false){
 	$role = array_shift($role_list); //配役リストから先頭を抜き出す
 	foreach($stack as $disable_role){
 	  if(strpos($role, $disable_role) !== false){
-	    array_push($role_list, $role); //配役リストの末尾に戻す
+	    $role_list[] = $role; //配役リストの末尾に戻す
 	    continue 2;
 	  }
 	}
-	array_push($fix_role_list, $role);
+	$fix_role_list[] = $role;
 	break;
       }
     }
@@ -452,7 +452,7 @@ function AggregateVoteGameStart($force_start = false){
       $sentence = '身代わり君に役が与えられていません';
       OutputVoteResult($error_header . $sentence . $error_footer, $reset_flag, $reset_flag);
     }
-    array_push($fix_uname_list, 'dummy_boy'); //決定済みリストに身代わり君を追加
+    $fix_uname_list[] = 'dummy_boy'; //決定済みリストに身代わり君を追加
     unset($uname_list[array_search('dummy_boy', $uname_list)]); //身代わり君を削除
     //PrintData($fix_role_list, 'dummy_boy');
   }
@@ -480,12 +480,12 @@ function AggregateVoteGameStart($force_start = false){
 	if(($role_key = array_search($fit_role, $role_list)) === false) break;
 
 	//希望役職があれば決定
-	array_push($fix_uname_list, $uname);
-	array_push($fix_role_list, $fit_role);
+	$fix_uname_list[] = $uname;
+	$fix_role_list[]  = $fit_role;
 	unset($role_list[$role_key]);
 	continue 2;
       }while(false);
-      array_push($remain_uname_list, $uname); //決まらなかった場合は未決定リスト行き
+      $remain_uname_list[] = $uname; //決まらなかった場合は未決定リスト行き
     }
   }
   else{
@@ -665,7 +665,7 @@ function AggregateVoteGameStart($force_start = false){
   //役割をDBに更新
   $role_count_list = array();
   $detective_list  = array();
-  if($ROOM->IsOption('joker')) $role_count_list['joker'] = 1;
+  if($ROOM->IsOption('joker')) $role_count_list['joker'] = 1; //joker[2] 対策
   for($i = 0; $i < $user_count; $i++){
     $role = $fix_role_list[$i];
     $user = $USERS->ByUname($fix_uname_list[$i]);
@@ -882,7 +882,7 @@ function AggregateVoteDay(){
       $user = $USERS->ByUname($uname);
       if(! $user->IsRoleGroup('pharmacist')) continue;
 
-      $target = $USERS->ByUname($vote_target_list[$user->uname]); //投票先の情報を取得
+      $target = $USERS->ByRealUname($vote_target_list[$user->uname]); //投票先の情報を取得
       $pharmacist_target_list[$user->uname] = $target->uname;
 
       //能力発動先リストを作成
@@ -893,8 +893,8 @@ function AggregateVoteDay(){
 
       if($user->IsRole('pharmacist', 'alchemy_pharmacist')) //毒能力判定
 	$pharmacist_result_list[$user->uname] = $target->DistinguishPoison();
-      else
-	$cure_target_list[$user->uname] = $target->uname; //ショック死抑制能力者
+      else //ショック死抑制能力者
+	$cure_target_list[$user->uname] = $USERS->ByVirtual($target->user_no)->uname;
     }
 
     do{ //-- 処刑者の毒処理 --//
