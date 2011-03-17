@@ -53,7 +53,7 @@ $RQ_ARGS->TestItems->test_users[4] =& new User();
 $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[4]->role = 'chain_poison authority lovers[16] mind_friend[16]';
+$RQ_ARGS->TestItems->test_users[4]->role = 'chain_poison authority lovers[16] challenge_lovers';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[5] =& new User();
@@ -81,7 +81,7 @@ $RQ_ARGS->TestItems->test_users[8] =& new User();
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[8]->role = 'anti_voodoo psycho_infected good_luck';
+$RQ_ARGS->TestItems->test_users[8]->role = 'anti_voodoo psycho_infected';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[9] =& new User();
@@ -95,7 +95,7 @@ $RQ_ARGS->TestItems->test_users[10] =& new User();
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[10]->role = 'agitate_mad lovers[16] mind_friend[16] mind_friend[21]';
+$RQ_ARGS->TestItems->test_users[10]->role = 'agitate_mad mind_friend[21]';
 $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[11] =& new User();
@@ -109,7 +109,7 @@ $RQ_ARGS->TestItems->test_users[12] =& new User();
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'bacchus_medium';
+$RQ_ARGS->TestItems->test_users[12]->role = 'cure_pharmacist';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13] =& new User();
@@ -130,28 +130,28 @@ $RQ_ARGS->TestItems->test_users[15] =& new User();
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
 $RQ_ARGS->TestItems->test_users[15]->handle_name = '炎';
 $RQ_ARGS->TestItems->test_users[15]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[15]->role = 'amaze_mad';
+$RQ_ARGS->TestItems->test_users[15]->role = 'mad';
 $RQ_ARGS->TestItems->test_users[15]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[16] =& new User();
 $RQ_ARGS->TestItems->test_users[16]->uname = 'scarlet';
 $RQ_ARGS->TestItems->test_users[16]->handle_name = '紅';
 $RQ_ARGS->TestItems->test_users[16]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[16]->role = 'sweet_cupid critical_luck';
+$RQ_ARGS->TestItems->test_users[16]->role = 'moon_cupid critical_luck lovers[16] challenge_lovers mind_receiver[2]';
 $RQ_ARGS->TestItems->test_users[16]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[17] =& new User();
 $RQ_ARGS->TestItems->test_users[17]->uname = 'sky';
 $RQ_ARGS->TestItems->test_users[17]->handle_name = '空';
 $RQ_ARGS->TestItems->test_users[17]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[17]->role = 'strong_poison possessed[3-3] febris[3]';
+$RQ_ARGS->TestItems->test_users[17]->role = 'chain_poison possessed[3-3] febris[5] bad_luck';
 $RQ_ARGS->TestItems->test_users[17]->live = 'drop';
 
 $RQ_ARGS->TestItems->test_users[18] =& new User();
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'cure_pharmacist';
+$RQ_ARGS->TestItems->test_users[18]->role = 'alchemy_pharmacist';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19] =& new User();
@@ -165,7 +165,7 @@ $RQ_ARGS->TestItems->test_users[20] =& new User();
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire plague';
+$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[21] =& new User();
@@ -186,7 +186,7 @@ $RQ_ARGS->TestItems->test_users[23] =& new User();
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'weather_priest';
+$RQ_ARGS->TestItems->test_users[23]->role = 'divorce_jealousy';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24] =& new User();
@@ -200,7 +200,7 @@ $RQ_ARGS->TestItems->test_users[25] =& new User();
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[25]->role = 'sacrifice_ogre disfavor mind_presage[24]';
+$RQ_ARGS->TestItems->test_users[25]->role = 'chain_poison disfavor mind_presage[24]';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -238,7 +238,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' => 13, 'target_no' => 11),
   array('id' => 14, 'target_no' => 25),
   array('id' => 15, 'target_no' =>  7),
-  array('id' => 16, 'target_no' => 24),
+  array('id' => 16, 'target_no' => 23),
   //array('id' => 17, 'target_no' => 22),
   array('id' => 18, 'target_no' => 22),
   //array('id' => 18, 'target_no' => 3),
@@ -371,7 +371,7 @@ $RQ_ARGS->TestItems->system_message = array();
 $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 24)
+  #array('type' => 'WEATHER', 'message' => 17)
   #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
@@ -380,7 +380,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 3;
+$ROOM->date = 5;
 #$ROOM->day_night = 'beforegame';
 $ROOM->day_night = 'day';
 #$ROOM->day_night = 'night';

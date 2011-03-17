@@ -13,6 +13,6 @@ class Role_impatience extends RoleVoteAbility{
 
   function FilterSuddenDeath(&$reason){
     global $ROLES;
-    if($reason == '' && $ROLES->stack->revote) $reason = 'IMPATIENCE';
+    if($reason == '' && $ROLES->stack->vote_kill_uname == '') $reason = 'IMPATIENCE';
   }
 }

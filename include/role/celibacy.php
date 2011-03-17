@@ -4,15 +4,15 @@
   ○仕様
   ・恋人に投票されたらショック死する
 */
-class Role_celibacy extends Role{
+class Role_celibacy extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES, $USERS;
+    global $USERS;
 
     if($reason != '') return;
-    foreach(array_keys($ROLES->stack->target, $ROLES->actor->uname) as $uname){
-      if($USERS->ByUname($uname)->IsLovers()){
+    foreach($this->GetVotedUname() as $uname){
+      if($USERS->ByRealUname($uname)->IsLovers()){
 	$reason = 'CELIBACY';
 	break;
       }

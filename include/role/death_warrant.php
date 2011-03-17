@@ -4,13 +4,10 @@
   ○仕様
   ・発動当日ならショック死する
 */
-class Role_death_warrant extends Role{
+class Role_death_warrant extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES, $ROOM;
-    if($reason == '' && $ROOM->date == $ROLES->actor->GetDoomDate('death_warrant')){
-      $reason = 'WARRANT';
-    }
+    if($reason == '' && $this->IsDoom()) $reason = 'WARRANT';
   }
 }

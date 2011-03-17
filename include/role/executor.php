@@ -6,6 +6,7 @@
 */
 class Role_executor extends RoleVoteAbility{
   var $data_type = 'action';
+  var $decide_type = 'action';
 
   function __construct(){ parent::__construct(); }
 
@@ -14,7 +15,7 @@ class Role_executor extends RoleVoteAbility{
 
     if(parent::DecideVoteKill($uname)) return true;
     $stack = array();
-    foreach(array_intersect($ROLES->stack->max_voted, $ROLES->stack->{$this->role}) as $target){
+    foreach($this->GetMaxVotedUname() as $target){
       if($USERS->ByRealUname($target)->GetCamp(true) != 'human') $stack[$target] = true;
     }
     //対象を一人に固定できる時のみ有効

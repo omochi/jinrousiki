@@ -6,6 +6,7 @@
 */
 class Role_sweet_cupid extends RoleVoteAbility{
   var $data_type = 'action';
+  var $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

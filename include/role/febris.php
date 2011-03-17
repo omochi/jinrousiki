@@ -4,11 +4,10 @@
   ○仕様
   ・発動当日ならショック死する
 */
-class Role_febris extends Role{
+class Role_febris extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES, $ROOM;
-    if($reason == '' && $ROOM->date == $ROLES->actor->GetDoomDate('febris')) $reason = 'FEBRIS';
+    if($reason == '' && $this->IsDoom()) $reason = 'FEBRIS';
   }
 }

@@ -1448,13 +1448,17 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[薬師能力] 毒能力判定：有り / 解毒：有り / ショック死抑制：無し</h4>
 <pre>
 処刑投票先の毒能力者が分かり、処刑された場合に解毒(毒が発動しない)します。
-毒の鑑定結果は以下の 5 種類。
+毒の鑑定結果は以下の 5 種類で、処刑されたら毒鑑定・解毒能力は無効。
 
 1. 毒を持っていない (<a href="#dummy_poison">夢毒者</a>や発現前の<a href="#incubate_poison">潜毒者</a>もこれ)
 2. 毒を持っている
 3. 強い毒を持っている (<a href="#strong_poison">強毒者</a>と発現後の<a href="#incubate_poison">潜毒者</a>)
 4. 限定的な毒を持っている (<a href="#poison_guard">騎士</a>・<a href="#guide_poison">誘毒者</a>・<a href="#chain_poison">連毒者</a>・<a href="#poison_jealousy">毒橋姫</a>)
 5. 解毒に成功した (この場合は詳細な毒の種類は分からない)
+</pre>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+処刑されたら毒鑑定・解毒能力無効。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
@@ -1480,11 +1484,15 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 抑制できるのはサブ役職 (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外。
 解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
 何の「治療」に成功した(毒やショック死の種類など)のかは表示されない。
-再投票時には発動しない。
+再投票時には発動せず、処刑されたら解毒・ショック死抑制能力無効。
 
 例) A[河童] → B[村人][小心者]
 この場合、Bがショック死する条件を満たしますが、河童の能力でキャンセルされます。
 キャンセルするだけで<a href="sub_role.php#chicken">小心者</a>が消える訳ではないので注意。
+</pre>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+処刑されたら解毒・ショック死抑制能力無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1498,7 +1506,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[薬師能力] 毒能力判定：無し / 解毒：無し / ショック死抑制：有り</h4>
 <pre>
 昼に処刑投票した人のショック死を抑制する特殊な薬師。
-ショック死抑制能力は<a href="#cure_pharmacist">河童</a>と同じ。
+ショック死抑制能力は<a href="#cure_pharmacist">河童</a>と同じで、処刑されたら無効。
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
 </pre>
 <ol>
@@ -1513,6 +1521,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 <a href="#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+処刑されたらショック死抑制能力無効。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の藤原妹紅がモチーフです。
@@ -1526,12 +1538,16 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 毒鑑定能力や対象者変更判定 (<a href="#pharmacist">薬師</a>が「解毒した」と判定する対象) は<a href="#pharmacist">薬師</a>と同じ。
 </pre>
 <ol>
-  <li>判定は処刑対象が決定された後。</li>
+  <li>判定は処刑対象が決定された後で、処刑されたら無効。</li>
   <li>「対象者変更」能力が発動しても毒鑑定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
   <li><a href="sub_role.php#lovers">恋人</a>は判定対象外 (<a href="#medium_group">巫女系</a>と同じ)。</li>
   <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合、毒は不発。</li>
   <li><a href="#chain_poison">連毒者</a>に投票しても能力は発動しない (毒鑑定能力は有効)。</li>
 </ol>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+処刑されたら毒鑑定・特殊解毒能力無効。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/895" target="_top">新役職考案スレ</a> の 895 が原型です。

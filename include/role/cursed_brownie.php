@@ -6,18 +6,17 @@
 */
 class Role_cursed_brownie extends RoleVoteAbility{
   var $data_type = 'array';
+  var $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 
-  function VoteKillReaction($vote_target_list){
+  function VoteKillReaction(){
     global $ROLES, $USERS;
 
     foreach($ROLES->stack->{$this->role} as $uname){
-      foreach(array_keys($vote_target_list, $uname) as $voted_uname){
-	$voted_user = $USERS->ByRealUname($voted_uname);
-	if($voted_user->IsLive(true) && ! $voted_user->IsAvoid() && mt_rand(1, 10) > 7){
-	  $voted_user->AddDoom(2);
-	}
+      foreach($this->GetVotedUname($uname) as $voted_uname){
+	$user = $USERS->ByRealUname($voted_uname);
+	if($user->IsLive(true) && ! $user->IsAvoid() && mt_rand(1, 10) > 7) $user->AddDoom(2);
       }
     }
   }

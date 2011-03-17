@@ -5,7 +5,7 @@
   ・出題者に投票するとショック死する
   ・投票数が 0 で固定される
 */
-class Role_panelist extends Role{
+class Role_panelist extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterVoteDo(&$vote_number){
@@ -13,10 +13,6 @@ class Role_panelist extends Role{
   }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES, $USERS;
-    if($reason == '' &&
-       $USERS->ByUname($ROLES->stack->target[$ROLES->actor->uname])->IsRole('quiz')){
-      $reason = 'PANELIST';
-    }
+    if($reason == '' && $this->GetVoteUser()->IsRole('quiz')) $reason = 'PANELIST';
   }
 }

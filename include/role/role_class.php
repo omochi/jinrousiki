@@ -30,10 +30,12 @@ class RoleManager{
 
   //処刑投票系能力者
   var $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
-				 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
-				 'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid', 'quiz',
-				 'impatience', 'authority', 'rebel', 'decide', 'plague',
-				 'good_luck', 'bad_luck');
+				 'trap_common', 'pharmacist', 'cure_pharmacist',
+				 'revive_pharmacist', 'alchemy_pharmacist', 'jealousy',
+				 'divorce_jealousy', 'cursed_brownie',
+				 'agitate_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
+				 'sweet_cupid', 'quiz', 'impatience', 'authority', 'rebel',
+				 'decide', 'plague', 'good_luck', 'bad_luck');
 
   //反逆者判定
   var $rebel_list = array('rebel');
@@ -47,6 +49,12 @@ class RoleManager{
 			   'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
 			   'poison_chiroptera', 'poison_ogre');
 
+  //毒能力鑑定
+  var $distinguish_poison_list = array('pharmacist', 'alchemy_pharmacist');
+
+  //解毒判定
+  var $detox_list = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
+
   //処刑者カウンター
   var $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
 
@@ -54,10 +62,16 @@ class RoleManager{
   var $vote_action_list = array('seal_medium', 'bacchus_medium', 'amaze_mad', 'miasma_mad',
 				'critical_mad', 'sweet_cupid');
 
+  //得票カウンター
+  var $voted_reaction_list = array('trap_common', 'jealousy');
+
   //ショック死
-  var $sudden_death_list = array('febris', 'frostbite', 'death_warrant', 'chicken', 'rabbit',
-				 'perverseness', 'flattery', 'impatience', 'celibacy', 'nervy',
-				 'androphobia', 'gynophobia', 'panelist');
+  var $sudden_death_list = array('challenge_lovers', 'febris', 'frostbite', 'death_warrant',
+				 'chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
+				 'celibacy', 'nervy', 'androphobia', 'gynophobia', 'panelist');
+
+  //ショック死抑制
+  var $cure_list = array('cure_pharmacist', 'revive_pharmacist');
 
   //処刑得票カウンター
   var $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
@@ -164,7 +178,7 @@ class Role{
 
   //-- 判定用関数 --//
   function Ignored(){
-    global $ROOM, $USERS, $ROLES;
+    global $ROOM, $ROLES, $USERS;
     //return false; //テスト用
     return ! $ROOM->IsPlaying() ||
       ! ($USERS->IsVirtualLive($ROLES->actor->user_no) || $ROLES->actor->virtual_live);
@@ -224,8 +238,16 @@ class RoleVoteAbility extends Role{
   var $data_type;
   var $decide_type;
 
-  function __construct(){ parent::__construct(); }
+  function __construct(){
+    global $ROLES;
 
+    parent::__construct();
+    if($this->init_stack && ! is_array($ROLES->stack->{$this->role})){
+      $ROLES->stack->{$this->role} = array();
+    }
+ }
+
+  //投票データ収拾
   function SetVoteAbility($uname){
     global $ROLES, $USERS;
     switch($this->data_type){
@@ -254,6 +276,7 @@ class RoleVoteAbility extends Role{
     }
   }
 
+  //処刑者決定
   function DecideVoteKill(&$uname){
     global $ROLES;
 
@@ -262,24 +285,64 @@ class RoleVoteAbility extends Role{
     case 'decide':
       $target = $ROLES->stack->{$this->role};
       if(in_array($target, $ROLES->stack->vote_possible)) $uname = $target;
-      return true;
+      return false;
 
     case 'escape':
       $key = array_search($ROLES->stack->{$this->role}, $ROLES->stack->vote_possible);
-      if($key === false) return false;
+      if($key === false) return true;
       unset($ROLES->stack->vote_possible[$key]);
       if(count($ROLES->stack->vote_possible) == 1){ //候補が一人になった場合は処刑者決定
 	$uname = array_shift($ROLES->stack->vote_possible);
-	return true;
       }
       return false;
 
-    case 'array':
+    case 'same':
+      if(! is_array($ROLES->stack->{$this->role}) ||
+	 count($stack = $this->GetMaxVotedUname()) != 1) return true;
+      $uname = array_shift($stack);
+      return false;
+
     case 'action':
       return ! is_array($ROLES->stack->{$this->role});
 
     default:
       return false;
     }
+  }
+
+  //最大得票者投票者ユーザ名取得
+  function GetMaxVotedUname(){
+    global $ROLES;
+    return array_intersect($ROLES->stack->vote_possible, $ROLES->stack->{$this->role});
+  }
+
+  //投票者ユーザ取得
+  function GetVoteUser(){
+    global $ROLES, $USERS;
+    return $USERS->ByRealUname($ROLES->stack->target[$ROLES->actor->uname]);
+  }
+
+  //得票者名取得
+  function GetVotedUname($uname = NULL){
+    global $ROLES;
+    return array_keys($ROLES->stack->target, is_null($uname) ? $ROLES->actor->uname : $uname);
+  }
+
+  //投票先人数取得 (ショック死判定用)
+  function GetVoteCount(){
+    global $ROLES;
+    return $this->stack->count[$this->stack->target[$ROLES->actor->uname]];
+  }
+
+  //得票人数取得 (ショック死判定用)
+  function GetVotedCount(){
+    global $ROLES;
+    return $this->stack->count[$ROLES->actor->uname];
+  }
+
+  //発動日判定 (ショック死判定用)
+  function IsDoom(){
+    global $ROOM, $ROLES;
+    return $ROOM->date == $ROLES->actor->GetDoomDate($this->role);
   }
 }

@@ -4,12 +4,10 @@
   ○仕様
   ・発動当日に投票されていなかったらショック死する
 */
-class Role_frostbite extends Role{
+class Role_frostbite extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES, $ROOM;
-    if($reason == '' && $ROOM->date == $ROLES->actor->GetDoomDate('frostbite') &&
-       $ROLES->stack->count[$ROLES->actor->uname] == 0) $reason = 'FROSTBITE';
+    if($reason == '' && $this->IsDoom() && $this->GetVotedCount() == 0) $reason = 'FROSTBITE';
   }
 }

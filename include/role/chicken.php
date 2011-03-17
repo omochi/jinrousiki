@@ -4,11 +4,10 @@
   ○仕様
   ・投票されていたらショック死する
 */
-class Role_chicken extends Role{
+class Role_chicken extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES;
-    if($reason == '' && $ROLES->stack->count[$ROLES->actor->uname] > 0) $reason = 'CHICKEN';
+    if($reason == '' && $this->GetVotedCount() > 0) $reason = 'CHICKEN';
   }
 }

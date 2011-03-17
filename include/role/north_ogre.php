@@ -10,7 +10,7 @@ class Role_north_ogre extends Role{
   function __construct(){ parent::__construct(); }
 
   function DistinguishVictory($victory){
-    global $USERS, $ROLES;
+    global $ROLES, $USERS;
 
     if($this->IsDead() || $victory != 'human') return false;
     foreach($USERS->rows as $user){

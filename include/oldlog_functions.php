@@ -206,7 +206,7 @@ function LayoutHeaven(){
 
 //指定の日付の会話ログを生成
 function GenerateDateTalkLog($set_date, $set_location){
-  global $RQ_ARGS, $ROLES, $ROOM, $USERS;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS;
 
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
