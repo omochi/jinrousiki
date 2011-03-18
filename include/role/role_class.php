@@ -32,10 +32,9 @@ class RoleManager{
   var $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
 				 'trap_common', 'pharmacist', 'cure_pharmacist',
 				 'revive_pharmacist', 'alchemy_pharmacist', 'jealousy',
-				 'divorce_jealousy', 'cursed_brownie',
-				 'agitate_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
-				 'sweet_cupid', 'quiz', 'impatience', 'authority', 'rebel',
-				 'decide', 'plague', 'good_luck', 'bad_luck');
+				 'divorce_jealousy', 'cursed_brownie', 'agitate_mad', 'amaze_mad',
+				 'miasma_mad', 'critical_mad', 'sweet_cupid', 'quiz', 'impatience',
+				 'authority', 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
 
   //反逆者判定
   var $rebel_list = array('rebel');
@@ -44,16 +43,16 @@ class RoleManager{
   var $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
 			      'quiz', 'executor', 'saint', 'agitate_mad');
 
-  //特殊毒能力者
-  var $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
-			   'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
-			   'poison_chiroptera', 'poison_ogre');
-
   //毒能力鑑定
   var $distinguish_poison_list = array('pharmacist', 'alchemy_pharmacist');
 
   //解毒判定
   var $detox_list = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
+
+  //特殊毒能力者
+  var $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
+			   'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
+			   'poison_chiroptera', 'poison_ogre');
 
   //処刑者カウンター
   var $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
@@ -177,6 +176,11 @@ class Role{
   }
 
   //-- 判定用関数 --//
+  function GetActor(){
+    global $ROLES;
+    return $ROLES->actor;
+  }
+
   function Ignored(){
     global $ROOM, $ROLES, $USERS;
     //return false; //テスト用
@@ -310,6 +314,12 @@ class RoleVoteAbility extends Role{
     }
   }
 
+  //投票データ取得
+  function GetStack(){
+    global $ROLES;
+    return $ROLES->stack->{$this->role};
+  }
+
   //最大得票者投票者ユーザ名取得
   function GetMaxVotedUname(){
     global $ROLES;
@@ -338,6 +348,12 @@ class RoleVoteAbility extends Role{
   function GetVotedCount(){
     global $ROLES;
     return $this->stack->count[$ROLES->actor->uname];
+  }
+
+  //処刑者判定
+  function IsVoted($uname = NULL){
+    global $ROLES;
+    return $ROLES->stack->vote_kill_uname == (is_null($uname) ? $ROLES->actor->uname : $uname);
   }
 
   //発動日判定 (ショック死判定用)

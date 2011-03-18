@@ -13,7 +13,7 @@ class Role_miasma_fox extends Role{
     $stack = array(); //対象者の選出
     foreach($voter_list as $uname){
       $user = $USERS->ByRealUname($uname);
-      if(! $user->IsAvoid()&& ! $user->IsFox()) $stack[] = $user->user_no;
+      if(! $user->IsAvoid() && ! $user->IsFox()) $stack[] = $user->user_no;
     }
     //PrintData($stack, 'Target [febris]');
     if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(1, 'febris');

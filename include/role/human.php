@@ -7,19 +7,27 @@
 class Role_human extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){
-    global $ROOM, $USERS;
+  function IsBrownie(){
+    global $ROOM, $ROLES, $USERS;
 
-    if($ROOM->IsEvent('brownie')){ //天候「疎雨」判定
-      $vote_number++;
-      return;
-    }
-
-    foreach($USERS->rows as $user){ //座敷童子の生存判定
-      if($user->IsLiveRole('brownie')){
-	$vote_number++;
-	return;
+    if(is_null($ROLES->stack->is_brownie)){
+      $ROLES->stack->is_brownie = false;
+      if($ROOM->IsEvent('brownie')){ //天候「疎雨」判定
+	$ROLES->stack->is_brownie = true;
+      }
+      else{
+	foreach($USERS->rows as $user){ //座敷童子の生存判定
+	  if($user->IsLiveRole('brownie')){
+	    $ROLES->stack->is_brownie = true;
+	    break;
+	  }
+	}
       }
     }
+    return $ROLES->stack->is_brownie;
+  }
+
+  function FilterVoteDo(&$vote_number){
+    if($this->IsBrownie()) $vote_number++;
   }
 }

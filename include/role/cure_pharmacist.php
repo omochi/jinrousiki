@@ -11,22 +11,18 @@ class Role_cure_pharmacist extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function Detox(&$list){
-    global $ROLES;
-
-    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
-      if($uname != $ROLES->stack->vote_kill_uname && $this->IsSameUser($target_uname)){
-	$ROLES->actor->detox_flag = true;
+    foreach($this->GetStack() as $uname => $target_uname){
+      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
+	$this->GetActor()->detox_flag = true;
 	$list[$uname] = 'cured';
       }
     }
   }
 
   function Cure(&$list){
-    global $ROLES;
-
-    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
-      if($uname != $ROLES->stack->vote_kill_uname && $this->IsSameUser($target_uname)){
-	$ROLES->actor->cured_flag = true;
+    foreach($this->GetStack() as $uname => $target_uname){
+      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
+	$this->GetActor()->cured_flag = true;
 	$list[$uname] = 'cured';
       }
     }

@@ -11,10 +11,10 @@ class Role_miasma_mad extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function VoteAction(){
-    global $ROLES, $USERS;
+    global $USERS;
 
-    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
-      if($uname == $ROLES->stack->vote_kill_uname) continue;
+    foreach($this->GetStack() as $uname => $target_uname){
+      if($this->IsVoted($uname)) continue;
       $target = $USERS->ByRealUname($target_uname);
       if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddDoom(1, 'febris');
     }

@@ -11,21 +11,20 @@ class Role_alchemy_pharmacist extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function DistinguishPoison(&$list){
-    global $ROLES, $USERS;
+    global $USERS;
 
-    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
-      if($uname != $ROLES->stack->vote_kill_uname){
+    foreach($this->GetStack() as $uname => $target_uname){
+      if(! $this->IsVoted($uname)){
 	$list[$uname] = $USERS->ByRealUname($target_uname)->DistinguishPoison();
       }
     }
   }
 
   function Detox(&$list){
-    global $ROLES;
-
-    foreach($ROLES->stack->{$this->role} as $uname => $target_uname){
-      if($this->IsSameUser($target_uname) && ! $ROLES->actor->detox_flag){
-	$ROLES->actor->alchemy_flag = true;
+    foreach($this->GetStack() as $uname => $target_uname){
+      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname) &&
+	 ! $this->GetActor()->detox_flag){
+	$this->GetActor()->alchemy_flag = true;
       }
     }
   }
