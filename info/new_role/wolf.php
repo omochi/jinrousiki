@@ -19,11 +19,11 @@ OutputRolePageHeader('人狼陣営');
   <li>夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。<br>
     例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない。
   </li>
-  <li>狼が狼を襲撃した場合は失敗扱いとなる (襲撃された狼には何も表示されない)。</li>
+  <li>人狼が人狼を襲撃した場合は失敗扱いとなる (襲撃された人狼には何も表示されない)。</li>
 </ol>
 <h3>Ver. 1.4.0 α21～</h3>
 <pre>
-狼が狼を襲撃した場合は失敗扱いとなる。
+人狼が人狼を襲撃した場合は失敗扱いとなる。
 <a href="fox.php">妖狐</a>と違い、襲撃された方にも何も表示されない。
 人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
 </pre>
@@ -56,27 +56,27 @@ OutputRolePageHeader('人狼陣営');
 
 <h2><a id="wolf_howl">遠吠え</a></h2>
 <ol>
-  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼・<a href="fox.php#howl_fox">化狐</a></li>
-  <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼視点の遠吠えは自分以外の狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a></li>
-  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a></li>
-  <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない</li>
+  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼・<a href="fox.php#howl_fox">化狐</a>。</li>
+  <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼視点の遠吠えは自分以外の人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
+  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
+  <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない。</li>
 </ol>
 <h3>Ver. 1.4.0 β17～</h3>
 <pre>
-<a href="fox.php#howl_fox">化狐</a>の夜の独り言は人狼の遠吠えに見えます。
+<a href="fox.php#howl_fox">化狐</a>の夜の独り言は人狼の遠吠えに見える。
 </pre>
 <h3>Ver. 1.4.0 β8～</h3>
 <pre>
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になります (<a href="#silver_wolf">銀狼</a>と同じ)。
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になる (<a href="#silver_wolf">銀狼</a>と同じ)。
 </pre>
 <h3>Ver. 1.4.0 α23～</h3>
 <pre>
-<a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見えます。
-<a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えません。
+<a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見える。
+<a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない。
 </pre>
 <h3>Ver. 1.4.0 α21～</h3>
 <pre>
-<a href="#silver_wolf">銀狼</a>の独り言は遠吠えになりません。
+<a href="#silver_wolf">銀狼</a>の独り言は遠吠えにならない。
 </pre>
 
 
@@ -90,6 +90,7 @@ OutputRolePageHeader('人狼陣営');
 <a href="#wise_wolf">賢狼</a>
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
+<a href="#revive_wolf">仙狼</a>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
 <a href="#sex_wolf">雛狼</a>
@@ -237,6 +238,29 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 毒能力者の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ</a> の 25 が原型です。
 安易に CO する<a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者</a>を葬ってやりましょう！
+</pre>
+
+<h3><a id="revive_wolf">仙狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 α6～]</h3>
+<h4>[耐性] 蘇生：不可 / 憑依：無効</h4>
+<pre>
+一度だけ夜に死亡した場合に蘇生できる人狼。
+</pre>
+<ol>
+  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li>恋人になったら蘇生能力は無効。</li>
+  <li>死因は問わない (例：毒死、暗殺)</li>
+  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+  <li>蘇生処理は<a href="../spec.php#vote_night">反魂レイヤー</a>で行う。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#revive_pharmacist">仙人</a>の人狼バージョンです。
+<a href="ability.php#revive_self">自己蘇生</a>した人に疑いをかけやすくなります。
 </pre>
 
 <h3><a id="blue_wolf">蒼狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
@@ -637,6 +661,10 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 霊能結果：B は「憑狼」でした。
 傘化けの能力で投票が隠されました。
 メッセージは表示されるが実際は隠蔽されない。
+</pre>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+憑依中でも傘化けの能力が適用される
 </pre>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -1077,7 +1105,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>投票先が処刑された時点で能力が発動し、処刑者に<a href="sub_role.php#bad_status">悪戯</a>が付く。</li>
   <li>能力が発動すると死亡者メッセージ欄に「傘化けの能力で隠蔽された」と表示される。</li>
   <li>観戦画面・配役公開されていない霊界でも能力は有効。</li>
+  <li>対象が<a href="sub_role.php#possessed_target">憑依</a>中でも能力は有効。</li>
 </ol>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+対象が<a href="sub_role.php#possessed_target">憑依</a>中でも能力が適用される。
+</pre>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
 能力が発動すると死亡者メッセージ欄に「傘化けの能力で隠蔽された」と表示される。
@@ -1174,7 +1207,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php">サブ役職</a>の判定の後で、死因は「道連れにされた」。</li>
   <li>複数の舟幽霊が投票していたら人数分ショック死が発生する。</li>
   <li>舟幽霊の能力でショック死した先に別の舟幽霊が投票していたらさらにショック死が発生する。</li>
-  <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>はショック死の対象外。</li>
+  <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="quiz.php#quiz">出題者</a>・<a href="sub_role.php#challenge_lovers">難題</a>はショック死の対象外。</li>
   <li>舟幽霊の能力で発生するショック死に対する<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
 <h4>関連役職</h4>

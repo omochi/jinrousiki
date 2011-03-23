@@ -107,7 +107,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3><a id="revive_self">自己蘇生能力者</a></h3>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
 
 <h2><a id="revive_limit">蘇生制限対象者</a></h2>

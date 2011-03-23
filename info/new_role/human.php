@@ -465,11 +465,17 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 
 <h3><a id="emissary_necromancer">密偵</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α3～]</h3>
+<h4>[耐性] 護衛：制限対象</h4>
 <h4>[霊能能力] 処刑者情報：無し / 火車：無効</h4>
 <pre>
 処刑者に投票した人に処刑者と同一陣営の人が何人いるか分かる特殊な霊能者。
 恋人は恋人陣営と判定される。
 通常の<a href="#necromancer">霊能者</a>の能力は持っていない。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -632,7 +638,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>です。</li>
+  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>です。</li>
   <li>処刑先が決定されて、投票先が処刑者ではない場合に発動します。</li>
   <li>判定時に対象が死亡していた場合は無効になります。</li>
   <li>自分が処刑された場合は無効になります。</li>
@@ -902,10 +908,14 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3><a id="guard_limit">護衛制限</a></h3>
 <ol>
-  <li>制限対象は、<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#doll_master">人形遣い</a>です</li>
+  <li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#doll_master">人形遣い</a>です</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出ますが、護衛先は噛み殺されます</li>
   <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されません</li>
 </ol>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+<a href="#emissary_necromancer">密偵</a>を対象に追加。
+</pre>
 
 <h3><a id="guard_hunt">狩りルール</a></h3>
 <pre>

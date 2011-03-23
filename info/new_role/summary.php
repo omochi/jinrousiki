@@ -38,7 +38,8 @@ Ver. 1.5.0
 <a href="#150alpha1">α1</a>
 <a href="#150alpha3">α3</a>
 <a href="#150alpha4">α4</a>
-<a href="#150alpha5">α5</a><br>
+<a href="#150alpha5">α5</a>
+<a href="#150alpha6">α6</a><br>
 Ver. 1.4.0
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-7</a>
@@ -2145,6 +2146,15 @@ Ver. 1.4.0
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
   </td>
   <td>Ver. 1.5.0 α5</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#revive_wolf" id="150alpha6">仙狼</a></td>
+  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">一度だけ夜に死亡した場合に蘇生できる人狼。</td>
+  <td>Ver. 1.5.0 α6</td>
 </tr>
 </table>
 

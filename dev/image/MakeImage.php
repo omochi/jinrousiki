@@ -444,6 +444,10 @@ class RoleMessageList{
 			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|抗毒狼|です。一度だけ#毒#に耐えることができます。あなたへの最期の抵抗を凌ぎ、村人たちを恐怖に陥れるのです！",
 			   'type' => 'poison_wolf');
 
+  var $revive_wolf = array(
+			   'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|仙狼|です。一度だけ夜に死亡しても#蘇生#できます。",
+			   'type' => 'poison_wolf');
+
   var $blue_wolf = array(
 			 'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
 			 'type' => 'wise_wolf', 'delimiter' => array('_' => 'mind'));
@@ -1257,6 +1261,7 @@ class RoleMessageList{
   var $result_wise_wolf = array('message' => "さんは|賢狼|でした", 'type' => 'result_wolf');
   var $result_poison_wolf = array('message' => "さんは|毒狼|でした", 'type' => 'result_wolf');
   var $result_resist_wolf = array('message' => "さんは|抗毒狼|でした", 'type' => 'result_wolf');
+  var $result_revive_wolf = array('message' => "さんは|仙狼|でした", 'type' => 'result_wolf');
   var $result_blue_wolf = array('message' => "さんは|蒼狼|でした", 'type' => 'result_wolf');
   var $result_emerald_wolf = array('message' => "さんは|翠狼|でした", 'type' => 'result_wolf');
   var $result_sex_wolf = array('message' => "さんは|雛狼|でした", 'type' => 'result_wolf');
@@ -1525,4 +1530,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
-$builder->Output('follow_mad');
+$builder->Output('revive_wolf');

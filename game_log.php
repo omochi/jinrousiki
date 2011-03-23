@@ -10,6 +10,7 @@ $SESSION->Certify(); //セッション認証
 
 $ROOM =& new Room($RQ_ARGS); //村情報を取得
 $ROOM->log_mode = true;
+$ROOM->single_log_mode = true;
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報を取得
 $SELF = $USERS->BySession(); //自分の情報をロード

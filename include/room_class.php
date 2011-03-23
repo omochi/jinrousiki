@@ -127,7 +127,7 @@ class Room{
 
     if(! $this->IsPlaying()) return NULL;
     $date = $this->date;
-    if($this->log_mode && ! $RQ_ARGS->reverse_log) $date--;
+    if($this->log_mode && ! $this->single_log_mode && ! $RQ_ARGS->reverse_log) $date--;
     $day   = $date;
     $night = $date - 1;
     if($this->IsDay() && ! ($this->watch_mode || $this->single_view_mode)) $day--;

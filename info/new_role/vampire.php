@@ -146,7 +146,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
   <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
   <li>本人は身代わりが発生しても分からない。</li>
-  <li>人狼に遭遇した<a href="human.php#escaper">逃亡者</a>を身代わりにすることはできない。</li>
+  <li>逃亡失敗・人狼に遭遇した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h4>関連役職</h4>

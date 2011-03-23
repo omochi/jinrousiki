@@ -56,10 +56,14 @@ function InsertMediumMessage(){
   foreach($USERS->rows as $user){
     $flag |= $user->IsRoleGroup('medium');
     if($user->suicide_flag){
-      $stack[] = $USERS->GetHandleName($user->uname, true) . "\t" . $user->GetCamp();
+      $virtual_user = $USERS->ByVirtual($user->user_no);
+      $stack[$virtual_user->user_no] = $virtual_user->handle_name . "\t" . $user->GetCamp();
     }
   }
-  if($flag) foreach($stack as $str) $ROOM->SystemMessage($str, 'MEDIUM_RESULT');
+  if($flag){
+    ksort($stack);
+    foreach($stack as $str) $ROOM->SystemMessage($str, 'MEDIUM_RESULT');
+  }
 }
 
 //恋人の後追い死処理

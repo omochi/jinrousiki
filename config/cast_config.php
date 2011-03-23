@@ -109,12 +109,13 @@ class CastConfig extends CastConfigBase{
   var $chaos_hyper_wolf_list = array(
     'wolf'           => 40,
     'boss_wolf'      =>  2,
-    'gold_wolf'      =>  3,
+    'gold_wolf'      =>  2,
     'phantom_wolf'   =>  2,
     'cursed_wolf'    =>  2,
     'wise_wolf'      =>  3,
     'poison_wolf'    =>  3,
-    'resist_wolf'    =>  3,
+    'resist_wolf'    =>  2,
+    'revive_wolf'    =>  2,
     'blue_wolf'      =>  2,
     'emerald_wolf'   =>  2,
     'sex_wolf'       =>  2,
@@ -163,11 +164,12 @@ class CastConfig extends CastConfigBase{
     'cute_fox'      =>  5,
     'scarlet_fox'   =>  3,
     'silver_fox'    =>  3,
-    'child_fox'     => 10,
+    'child_fox'     =>  8,
     'sex_fox'       =>  4,
     'stargazer_fox' =>  2,
     'jammer_fox'    =>  2,
-    'miasma_fox'    =>  2);
+    'miasma_fox'    =>  2,
+    'howl_fox'      =>  2);
 
   //ランダム配役テーブル (役職名 => 出現比)
   //普通闇鍋
@@ -369,7 +371,7 @@ class CastConfig extends CastConfigBase{
     'doll_master'          => 10,
     'escaper'              =>  3,
     'incubus_escaper'      =>  2,
-    'wolf'                 => 10,
+    'wolf'                 =>  5,
     'boss_wolf'            =>  5,
     'gold_wolf'            => 10,
     'phantom_wolf'         => 10,
@@ -377,6 +379,7 @@ class CastConfig extends CastConfigBase{
     'wise_wolf'            => 10,
     'poison_wolf'          => 15,
     'resist_wolf'          => 15,
+    'revive_wolf'          =>  5,
     'blue_wolf'            => 10,
     'emerald_wolf'         => 10,
     'sex_wolf'             =>  5,
