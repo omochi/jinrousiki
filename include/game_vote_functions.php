@@ -1260,6 +1260,7 @@ function AggregateVoteNight($skip = false){
   $frostbite_list               = array(); //凍傷予定者
   $guard_target_list            = array(); //狩人系の護衛対象
   $dummy_guard_target_list      = array(); //夢守人の護衛対象
+  $wizard_target_list           = array(); //魔法使い系 (拡散型) の対象
   $escaper_target_list          = array(); //逃亡者の逃亡先
   $sacrifice_list               = array(); //身代わり死した人
   $anti_voodoo_target_list      = array(); //厄神の護衛対象
@@ -1276,8 +1277,8 @@ function AggregateVoteNight($skip = false){
   }
   elseif($ROOM->IsEvent('new_moon')){ //新月
     $skip = true; //影響範囲に注意
-    array_push($stack, 'MAGE_DO', 'VOODOO_KILLER_DO', 'WIZARD_DO', 'CHILD_FOX_DO',
-	       'VAMPIRE_DO', 'FAIRY_DO');
+    array_push($stack, 'MAGE_DO', 'VOODOO_KILLER_DO', 'WIZARD_DO', 'SPREAD_WIZARD_DO',
+	       'CHILD_FOX_DO', 'VAMPIRE_DO', 'FAIRY_DO');
   }
   elseif($ROOM->IsEvent('no_contact')){ //花曇 (さとり系に注意)
     $skip = true; //影響範囲に注意
@@ -1303,7 +1304,7 @@ function AggregateVoteNight($skip = false){
 	$stack = $user->IsActive() ? array('mage', 'sex_mage', 'stargazer_mage') :
 	  array('soul_mage');
 	break;
-      
+
       case 'soul_wizard': //八卦見
 	$stack = array('soul_mage', 'psycho_mage', 'sex_mage', 'stargazer_mage',
 		       'poison_guard', 'doom_assassin', 'soul_assassin', 'light_fairy');
@@ -1389,6 +1390,24 @@ function AggregateVoteNight($skip = false){
     //PrintData($guard_target_list, 'Target [guard]');
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
 
+    //魔法使い系 (拡散型) の情報収集
+    foreach($vote_data['SPREAD_WIZARD_DO'] as $uname => $target_list){
+      $user = $USERS->ByUname($uname);
+      $trapped   = false;
+      $frostbite = false;
+      foreach(explode(' ', $target_list) as $id){
+	$target = $USERS->ByID($id);
+	$wizard_target_list[$user->uname][] = $target->uname;
+	$trapped   |= in_array($target->uname, $trap_target_list); //罠死判定
+	$frostbite |= in_array($target->uname, $snow_trap_target_list); //凍傷判定
+      }
+      if($trapped)
+	$trapped_list[] = $user->uname;
+      elseif($frostbite)
+	$frostbite_list[] = $user->uname;
+    }
+    //PrintData($wizard_target_list, 'Target [wizard]');
+
     foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者の情報収集
       $user   = $USERS->ByUname($uname);
       $target = $USERS->ByUname($target_uname);
@@ -1428,7 +1447,12 @@ function AggregateVoteNight($skip = false){
 
     //狩人系の護衛判定
     $stack = array_keys($guard_target_list, $wolf_target->uname); //護衛者を検出
+    foreach($wizard_target_list as $uname => $target_list){ //結界師を追加
+      if(in_array($wolf_target->uname, $target_list) &&
+	 mt_rand(1, 100) <= 100 - count($target_list) * 20) $stack[] = $uname;
+    }
     //PrintData($stack, 'List [gurad]');
+
     if(count($stack) > 0){
       $guard_flag = false; //護衛成功フラグ
       //護衛制限判定
@@ -1676,9 +1700,15 @@ function AggregateVoteNight($skip = false){
 
       //狩人系の護衛判定
       $guard_flag = false; //護衛成功フラグ
-      //護衛制限判定
-      $guard_limited = ! $ROOM->IsEvent('full_guard') && $target->IsGuardLimited();
-      foreach(array_keys($guard_target_list, $target->uname) as $guard_uname){
+      $guard_limited = ! $ROOM->IsEvent('full_guard') && $target->IsGuardLimited(); //護衛制限判定
+      $stack = array_keys($guard_target_list, $target->uname); //護衛者を検出
+      foreach($wizard_target_list as $wizard_uname => $target_list){ //結界師を追加
+	if(in_array($target->uname, $target_list) &&
+	   mt_rand(1, 100) <= 100 - count($target_list) * 20) $stack[] = $wizard_uname;
+      }
+      //PrintData($stack, 'List [gurad]');
+
+      foreach($stack as $guard_uname){
 	$guard_user = $USERS->ByUname($guard_uname);
 
 	//個別護衛成功判定
@@ -2338,24 +2368,37 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      if(in_array($target_uname, $trap_target_list)){ //罠が設置されていたら死亡
+      $target = $USERS->ByUname($target_uname);
+      if(in_array($target->uname, $trap_target_list)){ //罠が設置されていたら死亡
 	$USERS->Kill($user->user_no, 'TRAPPED');
 	continue;
       }
       //凍傷判定
-      if(in_array($target_uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
+      if(in_array($target->uname, $snow_trap_target_list)) $user->AddDoom(1, 'frostbite');
 
       /*
 	複数の投票イベントを持つタイプが出現した場合は複数のメッセージを発行する必要がある
 	対象が NULL でも有効になるタイプ (キャンセル投票はスキップ) は想定していない
       */
-      foreach($vote_data as $action => $stack){
+      foreach($vote_data as $action => $vote_stack){
 	if(strpos($action, '_NOT_DO') !== false ||
-	   ! array_key_exists($target_uname, $stack)) continue;
-	$str = $user->handle_name . "\t" .
-	  $USERS->GetHandleName($target_uname, true) . "\t" .
-	  $USERS->GetHandleName($stack[$target_uname], true);
-	$ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+	   ! array_key_exists($target->uname, $vote_stack)) continue;
+	$str = $user->handle_name . "\t" . $USERS->GetHandleName($target->uname, true) . "\t";
+	$target_stack = $vote_stack[$target->uname];
+
+	if($target->IsRole('barrier_wizard')){
+	  $str_stack = array();
+	  foreach(explode(' ', $target_stack) as $id){
+	    $voted_user = $USERS->ByVirtual($id);
+	    $str_stack[$voted_user->user_no] = $str . $voted_user->handle_name;
+	  }
+	  ksort($str_stack);
+	  foreach($str_stack as $str) $ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+	}
+	else{
+	  $str .= $USERS->GetHandleName($target_stack, true);
+	  $ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+	}
 	break;
       }
     }

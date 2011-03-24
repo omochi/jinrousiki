@@ -106,6 +106,11 @@ class Talk{
 	$this->sentence = ' ' . $MESSAGE->assassin_not_do;
 	return;
 
+      case 'SPREAD_WIZARD_DO':
+	$action = 'wizard_do';
+	$this->class = 'wizard-do';
+	break;
+
       case 'VAMPIRE_DO':
 	$action = 'wolf_eat';
 	$this->class = 'vampire-do';

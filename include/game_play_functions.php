@@ -80,8 +80,6 @@ function OutputAbility(){
       if($ROOM->date > 5 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
       break;
 
-      break;
-
     case 'weather_priest': //祈祷師
     case 'crisis_priest': //預言者
       if($ROOM->date > 1) OutputSelfAbilityResult($result);
@@ -198,15 +196,30 @@ function OutputAbility(){
   }
   elseif($SELF->IsRoleGroup('wizard')){ //魔法使い系
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 2){
-      OutputSelfAbilityResult('MAGE_RESULT'); //占い結果
-      OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
-      OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
-      OutputSelfAbilityResult('ASSASSIN_RESULT'); //暗殺結果
+
+    $action = 'WIZARD_DO';
+    switch($SELF->main_role){
+    case 'wizard': //魔法使い
+      $stack = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
+      break;
+
+    case 'awake_wizard': //比丘尼
+      $stack = array('MAGE_RESULT');
+      break;
+
+    case 'barrier_wizard': //結界師
+      $stack = array('GUARD_SUCCESS');
+      $action = 'SPREAD_WIZARD_DO';
+      break;
+
+    case 'soul_wizard': //八卦見
+      $stack = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED', 'ASSASSIN_RESULT');
+      break;
     }
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
-      OutputVoteMessage('wizard-do', 'wizard_do', 'WIZARD_DO');
-    }
+
+    if($ROOM->date > 2) foreach($stack as $event) OutputSelfAbilityResult($event); //結果表示
+    //夜の投票
+    if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('wizard-do', 'wizard_do', $action);
   }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系
     $ROLE_IMG->Output($SELF->main_role);
@@ -524,11 +537,11 @@ function OutputAbility(){
   }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア
     $ROLE_IMG->Output($SELF->IsRole('dummy_mania') ? 'soul_mania' : $SELF->main_role);
-    //初日夜の投票
-    if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO');
     if($ROOM->date == 2 && $SELF->IsRole('soul_mania', 'dummy_mania')){
       OutputSelfAbilityResult('MANIA_RESULT'); //覚醒者・夢語部のコピー結果
     }
+    //初日夜の投票
+    if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO');
   }
 
   //-- ここから兼任役職 --//
@@ -942,14 +955,21 @@ function OutputAbilityResult($header, $target, $footer = NULL){
 function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   global $MESSAGE, $ROOM, $USERS;
 
-  if($ROOM->test_mode) return false; //テストモードならスキップ
-
-  $stack = GetSelfVoteNight($situation, $not_situation);
+  $stack = $ROOM->test_mode ? array() : GetSelfVoteNight($situation, $not_situation);
   if(count($stack) < 1){
     $str = $MESSAGE->{'ability_' . $sentence};
   }
   elseif($situation == 'WOLF_EAT' || $situation == 'CUPID_DO'){
     $str = '投票済み';
+  }
+  elseif($situation == 'SPREAD_WIZARD_DO'){
+    $str_stack = array();
+    foreach(explode(' ', $stack['target_uname']) as $id){
+      $user = $USERS->ByVirtual($id);
+      $str_stack[$user->user_no] = $user->handle_name;
+    }
+    ksort($str_stack);
+    $str = implode('さん ', $str_stack) . 'さんに投票済み';
   }
   elseif($not_situation != '' && $stack['situation'] == $not_situation){
     $str = 'キャンセル投票済み';

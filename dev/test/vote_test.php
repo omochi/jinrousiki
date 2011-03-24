@@ -74,7 +74,7 @@ $RQ_ARGS->TestItems->test_users[7] =& new User();
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[7]->role = 'reflect_guard';
+$RQ_ARGS->TestItems->test_users[7]->role = 'dummy_guard';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[8] =& new User();
@@ -109,7 +109,7 @@ $RQ_ARGS->TestItems->test_users[12] =& new User();
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'seal_medium';
+$RQ_ARGS->TestItems->test_users[12]->role = 'trap_mad';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13] =& new User();
@@ -186,14 +186,14 @@ $RQ_ARGS->TestItems->test_users[23] =& new User();
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'assassin';
+$RQ_ARGS->TestItems->test_users[23]->role = 'clairvoyance_scanner';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24] =& new User();
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'emissary_necromancer watcher';
+$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard watcher';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[25] =& new User();
@@ -254,32 +254,32 @@ $RQ_ARGS->TestItems->vote_target_day = array(
 
 $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'dummy_boy'),
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'moon'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'white'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'light_gray'),
   array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'sun'),
-  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'light_gray'),
+  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'blue'),
   #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'cherry'),
   #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'sun'),
   #array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'dark_gray'),
-  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'moon'),
+  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'cloud'),
   #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'cloud'),
   array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'white'),
   #array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'gust'),
   #array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'sun'),
   #array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'red'),
-  array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'dark_gray'),
-  #array('uname' => 'green', 'situation' => 'POISON_CAT_NOT_DO', 'target_uname' => NULL),
-  array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'sun'),
-  #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'dark_gray'),
+  array('uname' => 'green', 'situation' => 'POISON_CAT_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'sun'),
+  array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'light_blue'),
-  #array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'yellow'),
+  array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'white'),
   #array('uname' => 'white', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => NULL),
   #array('uname' => 'white', 'situation' => 'POSSESSED_DO',	'target_uname' => 'light_blue'),
   #array('uname' => 'white', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => NULL),
@@ -309,9 +309,11 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'moon'),
   #array('uname' => 'cloud', 'situation' => 'ESCAPE_DO', 'target_uname' => 'light_gray'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'gold'),
-  array('uname' => 'cloud', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'light_blue'),
+  #array('uname' => 'cloud', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'light_blue'),
+  array('uname' => 'cloud', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'moon'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'),
   #array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'black'),
+  array('uname' => 'moon', 'situation' => 'SPREAD_WIZARD_DO', 'target_uname' => '3 12 23'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
   array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
@@ -414,10 +416,32 @@ do{
 
   foreach($RQ_ARGS->TestItems->vote->night as $stack){
     $uname = $USERS->GetHandleName($stack['uname'], true);
-    $target_uname = $USERS->GetHandleName($stack['target_uname'], true);
+    switch($stack['situation']){
+    case 'CUPID_DO':
+      $target_stack = array();
+      foreach(explode(' ', $stack['target_uname']) as $target){
+	$target_stack[] = $USERS->GetHandleName($target, true);
+      }
+      $target_uname = implode(' ', $target_stack);
+      break;
+
+    case 'SPREAD_WIZARD_DO':
+      $target_stack = array();
+      foreach(explode(' ', $stack['target_uname']) as $id){
+	$user = $USERS->ByVirtual($id);
+	$target_stack[$user->user_no] = $user->handle_name;
+      }
+      ksort($target_stack);
+      $target_uname = implode(' ', $target_stack);
+      break;
+
+    default:
+      $target_uname = $USERS->GetHandleName($stack['target_uname'], true);
+      break;
+    }
     $stack_list[] = array('type' => $stack['situation'],
 			  'message' =>  $uname . "\t" . $target_uname);
-    $RQ_ARGS->TestItems->ablity_action_list = $stack_list;
+    $RQ_ARGS->TestItems->ability_action_list = $stack_list;
   }
   OutputAbilityAction();
 
@@ -457,7 +481,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 18, 24) as $id){
+  foreach(array(5, 23, 24) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

@@ -2156,6 +2156,16 @@ Ver. 1.4.0
   <td class="ability">一度だけ夜に死亡した場合に蘇生できる人狼。</td>
   <td>Ver. 1.5.0 α6</td>
 </tr>
+<tr>
+  <td><a href="human.php#barrier_wizard">結界師</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">魔法使いの一種で、魔法の効果は、複数 (最大 4 箇所) の<a href="human.php#guard_group">護衛</a>能力。
+  </td>
+  <td>Ver. 1.5.0 α6</td>
+</tr>
 </table>
 
 <table>

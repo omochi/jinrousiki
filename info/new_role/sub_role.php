@@ -46,7 +46,7 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="chicken">小心者</a> [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-処刑投票時に一票でも貰うとショック死します。
+処刑投票時に一票でも貰うとショック死する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -59,7 +59,7 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="rabbit">ウサギ</a> [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-処刑投票時に一票も貰えないとショック死します。
+処刑投票時に一票も貰えないとショック死する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -73,7 +73,7 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="perverseness">天邪鬼</a> [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-処刑投票時に他の人と投票先が重なるとショック死します。
+処刑投票時に他の人と投票先が重なるとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -83,7 +83,7 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="flattery">ゴマすり</a> [Ver. 1.4.0 α15～]</h3>
 <pre>
-処刑投票時に投票先が誰とも重なっていないとショック死します。
+処刑投票時に投票先が誰とも重なっていないとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -93,17 +93,17 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="impatience">短気</a> [Ver. 1.4.0 α15～]</h3>
 <pre>
-<a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死します。
+<a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-自覚のある<a href="#decide">決定者</a>で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ</a> の 80 が原型です。
+自覚のある<a href="#decide">決定者</a>で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ(80)</a> が原型です。
 その分だけ<a href="../spec.php#vote_day">判定</a>の優先度が決定者より低めになっています。
 </pre>
 
 <h3><a id="celibacy">独身貴族</a> [Ver. 1.4.0 α22～]</h3>
 <pre>
-処刑投票時に<a href="#lovers">恋人</a>から一票でも貰うとショック死します。
+処刑投票時に<a href="#lovers">恋人</a>から一票でも貰うとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -113,8 +113,8 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="nervy">自信家</a> [Ver. 1.4.0 β9～]</h3>
 <pre>
-処刑投票時に同一陣営の人に投票するとショック死します。
-<a href="#lovers">恋人</a>の場合は恋人陣営と判定されます。
+処刑投票時に同一陣営の人に投票するとショック死する。
+<a href="#lovers">恋人</a>の場合は恋人陣営と判定される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -123,7 +123,7 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="androphobia">男性恐怖症</a> [Ver. 1.4.0 β14～]</h3>
 <pre>
-処刑投票時に男性に投票するとショック死します。
+処刑投票時に男性に投票するとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -132,7 +132,7 @@ OutputRolePageHeader('サブ役職');
 
 <h3><a id="gynophobia">女性恐怖症</a> [Ver. 1.4.0 β14～]</h3>
 <pre>
-処刑投票時に女性に投票するとショック死します。
+処刑投票時に女性に投票するとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -143,8 +143,8 @@ OutputRolePageHeader('サブ役職');
 <h4>[役職表示] 発動日限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-表示された日の処刑投票集計後 (再投票になっても発動) にショック死します。
-発動条件を満たした日の昼に突然表示されて、効果は一日で消えます。
+表示された日の処刑投票集計後 (再投票になっても発動) にショック死する。
+発動条件を満たした日の昼に突然表示されて、効果は一日で消える。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -160,7 +160,7 @@ OutputRolePageHeader('サブ役職');
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 表示された日限定の<a href="#rabbit">ウサギ</a>です。
-発動条件を満たした日の昼に突然表示されて、効果は一日で消えます。
+発動条件を満たした日の昼に突然表示されて、効果は一日で消える。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -168,30 +168,30 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ</a> の 736 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ(736)</a> が原型です。
 </pre>
 
 <h3><a id="death_warrant">死の宣告</a> [Ver. 1.4.0 β10～]</h3>
 <h4>[役職表示] 発動日前限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-予告された日の処刑投票集計後 (再投票になっても発動) にショック死します。
-付加された直後から、発動日がいつか表示されます。
-複数付加された場合は、一番遅い日が適用されます。
+予告された日の処刑投票集計後 (再投票になっても発動) にショック死する。
+付加された直後から、発動日がいつか表示される。
+複数付加された場合は、一番遅い日が適用される。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/149" target="_top">新役職考案スレ</a> の 149 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/149" target="_top">新役職考案スレ(149)</a> が原型です。
 </pre>
 
 <h3><a id="panelist">解答者</a> [Ver. 1.4.0 α17～]</h3>
 <h4>[配役制限] クイズ村・役職付加専用</h4>
 <pre>
-投票数が 0 になり、<a href="quiz.php#quiz">出題者</a>に投票したらショック死します。
+投票数が 0 になり、<a href="quiz.php#quiz">出題者</a>に投票したらショック死する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -199,7 +199,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/229" target="_top">新役職考案スレ</a> の 229 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/229" target="_top">新役職考案スレ(229)</a> が原型です。
 </pre>
 
 
@@ -710,7 +710,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#blind_guard">夜雀</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>
+<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#sun_brownie">八咫烏</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -889,7 +889,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="chiroptera.php#light_fairy">光妖精</a>
+<a href="human.php#sun_brownie">八咫烏</a>・<a href="chiroptera.php#light_fairy">光妖精</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

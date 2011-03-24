@@ -827,7 +827,7 @@ function OutputAbilityAction(){
   $header = '<b>前日の夜、';
   $footer = '</b><br>'."\n";
   if($ROOM->test_mode){
-    $stack_list = $RQ_ARGS->TestItems->ablity_action_list;
+    $stack_list = $RQ_ARGS->TestItems->ability_action_list;
   }
   else{
     $yesterday = $ROOM->date - 1;
@@ -839,8 +839,8 @@ function OutputAbilityAction(){
     }
     else{
       array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
-		 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO', 'POISON_CAT_DO',
-		 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
+		 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
+		 'POISON_CAT_DO', 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
 		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
     }
     $action = '';
@@ -856,11 +856,25 @@ function OutputAbilityAction(){
   foreach($stack_list as $stack){
     list($actor, $target) = explode("\t", $stack['message']);
     echo $header.$USERS->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
-    //DB 登録時にタブ区切りで登録していないので CUPID_DO の個別の名前は取得不可
-    if($stack['type'] == 'CUPID_DO')
+    switch($stack['type']){
+    case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
+    case 'SPREAD_WIZARD_DO':
       $target = 'は '.$target;
-    else
+      break;
+
+    case 'SPREAD_WIZARD_DO':
+      $str_stack = array();
+      foreach(explode(' ', $target) as $id){
+	$str_stack[] = $USERS->ByID($id)->GenerateShortRoleName(false, true);
+      }
+      $target = 'は '.implode(' ', $str_stack);
+      break;
+
+    default:
       $target = 'は '.$USERS->ByHandleName($target)->GenerateShortRoleName(false, true).' ';
+      break;
+    }
+
     switch($stack['type']){
     case 'WOLF_EAT':
     case 'DREAM_EAT':
@@ -872,6 +886,7 @@ function OutputAbilityAction(){
       break;
 
     case 'WIZARD_DO':
+    case 'SPREAD_WIZARD_DO':
       echo $target.$MESSAGE->wizard_do;
       break;
 

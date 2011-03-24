@@ -364,6 +364,10 @@ class RoleMessageList{
 			    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を以って、跳梁跋扈する物の怪より同胞を助け給え！",
 			    'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
+  var $barrier_wizard = array(
+			    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#結界師#です。二日目以降、同時に複数の人を一定確率で_護衛_できる#魔法#をかけることができます。",
+			    'type' => 'wizard', 'delimiter' => array('_' => 'guard'));
+
   var $soul_wizard = array(
 			   'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#八卦見#です。二日目以降、夜に誰か一人に強力な#魔法#をかけることができます。\n　当たるも八卦当たらぬも八卦。あなたの知性と理性こそ、#魔法#の神髄と呼ぶべき技です。",
 			   'type' => 'wizard');
@@ -1241,6 +1245,7 @@ class RoleMessageList{
   var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   var $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
   var $result_awake_wizard = array('message' => "さんは|比丘尼|でした", 'type' => 'result_wizard');
+  var $result_barrier_wizard = array('message' => "さんは|結界師|でした", 'type' => 'result_wizard');
   var $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
   var $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
   var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした", 'type' => 'result_doll');
@@ -1530,4 +1535,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
-$builder->Output('revive_wolf');
+$builder->Output('barrier_wizard');
+#$builder->Output('revive_wolf');

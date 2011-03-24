@@ -300,7 +300,7 @@ class User{
   //護衛制限判定
   function IsGuardLimited(){
     return $this->IsRole('emissary_necromancer', 'detective_common', 'reporter',
-			 'clairvoyance_scanner', 'soul_wizard', 'doll_master') ||
+			 'clairvoyance_scanner', 'barrier_wizard', 'soul_wizard', 'doll_master') ||
       ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
       $this->IsRoleGroup('assassin');
   }
@@ -531,6 +531,7 @@ class User{
       return $this->IsVoted($vote_data, 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
     }
     if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
+    if($this->IsRole('barrier_wizard')) return $this->IsVoted($vote_data, 'SPREAD_WIZARD_DO');
     if($this->IsRoleGroup('wizard')) return $this->IsVoted($vote_data, 'WIZARD_DO');
     if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
     if($this->IsRole('trap_mad')){

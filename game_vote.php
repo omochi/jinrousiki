@@ -199,11 +199,6 @@ function VoteNight(){
   //-- イベント名と役職の整合チェック --//
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
   switch($RQ_ARGS->situation){
-  case 'ESCAPE_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
-    if(! $SELF->IsRoleGroup('escaper')) OutputVoteResult('夜：投票イベントが一致しません');
-    break;
-
   case 'MAGE_DO':
     if($SELF->IsRole('emerald_fox')){
       if(! $SELF->IsActive()) OutputVoteResult('夜：翠狐は一度しかできません');
@@ -218,24 +213,24 @@ function VoteNight(){
     break;
 
   case 'GUARD_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('guard')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     break;
 
   case 'REPORTER_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('reporter')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     break;
 
   case 'ANTI_VOODOO_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('anti_voodoo')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     break;
 
   case 'POISON_CAT_DO':
   case 'POISON_CAT_NOT_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsReviveGroup()) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if($ROOM->IsOpenCast()){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
@@ -247,10 +242,10 @@ function VoteNight(){
 
   case 'ASSASSIN_DO':
   case 'ASSASSIN_NOT_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('assassin') && ! $SELF->IsRole('doom_fox')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
     break;
 
@@ -273,8 +268,22 @@ function VoteNight(){
     break;
 
   case 'WIZARD_DO':
+    if(! $SELF->IsRoleGroup('wizard') || $SELF->IsRole('barrier_wizard')){
+      OutputVoteResult('夜：投票イベントが一致しません');
+    }
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
-    if(! $SELF->IsRoleGroup('wizard')) OutputVoteResult('夜：投票イベントが一致しません');
+    break;
+
+  case 'SPREAD_WIZARD_DO':
+    if(! $SELF->IsRole('barrier_wizard')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! is_array($RQ_ARGS->target_no)) OutputVoteResult('夜：投票データが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
+    $is_wizard = true;
+    break;
+
+  case 'ESCAPE_DO':
+    if(! $SELF->IsRoleGroup('escaper')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     break;
 
   case 'WOLF_EAT':
@@ -292,24 +301,24 @@ function VoteNight(){
     break;
 
   case 'DREAM_EAT':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('dream_eater_mad')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     break;
 
   case 'POSSESSED_DO':
   case 'POSSESSED_NOT_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRole('possessed_mad', 'possessed_fox')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
     $not_type = $RQ_ARGS->situation == 'POSSESSED_NOT_DO';
     break;
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('trap_mad')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
       OutputVoteResult('夜：罠師の罠は一度しか設置できません');
     }
@@ -327,16 +336,17 @@ function VoteNight(){
     break;
 
   case 'CUPID_DO':
-    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
+    if(! is_array($RQ_ARGS->target_no)) OutputVoteResult('夜：投票データが一致しません');
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     $is_cupid = true;
     break;
 
   case 'VAMPIRE_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsRoleGroup('vampire')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     break;
 
   case 'FAIRY_DO':
@@ -348,14 +358,14 @@ function VoteNight(){
 
   case 'OGRE_DO':
   case 'OGRE_NOT_DO':
-    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     if(! $SELF->IsOgre()) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     $not_type = $RQ_ARGS->situation == 'OGRE_NOT_DO';
     break;
 
   case 'MANIA_DO':
-    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：投票イベントが一致しません');
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     break;
 
   default:
@@ -371,20 +381,22 @@ function VoteNight(){
   if($not_type); //投票キャンセルタイプは何もしない
   elseif($is_cupid || $is_mirror_fairy){ //キューピッド系
     if($SELF->IsRole('triangle_cupid')){
-      if(count($RQ_ARGS->target_no) != 3) OutputVoteResult('夜：指定人数が三人ではありません');
+      if(count($RQ_ARGS->target_no) != 3){
+	OutputVoteResult($error_header . '指定人数は三人にしてください');
+      }
     }
     elseif(count($RQ_ARGS->target_no) != 2){
-      OutputVoteResult('夜：指定人数が二人ではありません');
+      OutputVoteResult($error_header . '指定人数は二人にしてください');
     }
 
-    $target_list = array();
     $self_shoot = false; //自分撃ちフラグを初期化
+    $target_list = array();
     foreach($RQ_ARGS->target_no as $target_no){
       $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
 
       //生存者以外と身代わり君への投票は無効
       if(! $target->IsLive() || $target->IsDummyBoy()){
-	OutputVoteResult('生存者以外と身代わり君へは投票できません');
+	OutputVoteResult($error_header . '生存者以外と身代わり君へは投票できません');
       }
 
       $target_list[] = $target;
@@ -399,6 +411,21 @@ function VoteNight(){
       elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //参加人数
 	OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
       }
+    }
+  }
+  elseif($is_wizard){ //魔法使い系 (拡散型)
+    if(count($RQ_ARGS->target_no) < 1 || 4 < count($RQ_ARGS->target_no)){ //人数チェック
+      OutputVoteResult($error_header . '指定人数は1～4人にしてください');
+    }
+
+    $target_list = array();
+    foreach($RQ_ARGS->target_no as $target_no){
+      $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
+      //自分・生存者以外・身代わり君への投票は無効
+      if($target->IsSelf() || ! $USERS->IsVirtualLive($target->user_no) || $target->IsDummyBoy()){
+	OutputVoteResult($error_header . '自分自身・生存者以外・身代わり君へは投票できません');
+      }
+      $target_list[] = $target;
     }
   }
   else{ //キューピッド系以外
@@ -492,7 +519,7 @@ function VoteNight(){
 	$lovers_a = $target_list[0];
 	$lovers_b = $target_list[1];
 	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) || $is_sacrifice ||
-	   ($SELF->IsRole('rose_angel') && $lovers_a->sex == 'male' && $lovers_b->sex == 'male') ||
+	   ($SELF->IsRole('rose_angel') && $lovers_a->sex == 'male'   && $lovers_b->sex == 'male') ||
 	   ($SELF->IsRole('lily_angel') && $lovers_a->sex == 'female' && $lovers_b->sex == 'female')){
 	  $lovers_a->AddRole('mind_sympathy');
 	  $sentence = $lovers_a->handle_name . "\t" . $lovers_b->handle_name . "\t";
@@ -520,6 +547,20 @@ function VoteNight(){
       $SELF->AddMainRole(implode('-', $id_stack));
 
       $situation     = 'CUPID_DO';
+      $target_uname  = implode(' ', $uname_stack);
+      $target_handle = implode(' ', $handle_stack);
+    }
+    elseif($is_wizard){ //魔法使い系 (拡散型) の処理
+      $uname_stack  = array();
+      $handle_stack = array();
+      foreach($target_list as $target){
+	$uname_stack[] = $USERS->ByReal($target->user_no)->user_no;
+	$handle_stack[$target->user_no] = $target->handle_name;
+      }
+      sort($uname_stack);
+      ksort($handle_stack);
+
+      $situation     = $RQ_ARGS->situation;
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
     }
@@ -628,7 +669,7 @@ EOF;
 function OutputVoteDay(){
   global $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
-  CheckScene();  //投票する状況があっているかチェック
+  CheckScene(); //投票する状況があっているかチェック
   if($ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
   $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
 
@@ -682,9 +723,9 @@ function OutputVoteNight(){
 
   //投票済みチェック
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
-  if($SELF->IsRoleGroup('escaper')){
-    if($ROOM->date == 1) OutputVoteResult('夜：初日の逃亡はできません');
-    $type = 'ESCAPE_DO';
+
+  if($role_wolf = $SELF->IsWolf()){
+    $type = 'WOLF_EAT';
   }
   elseif($SELF->IsRoleGroup('mage')){
     $type = 'MAGE_DO';
@@ -740,12 +781,18 @@ function OutputVoteNight(){
     }
     $type = 'MIND_SCANNER_DO';
   }
+  elseif($role_wizard = $SELF->IsRole('barrier_wizard')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日は魔法を使えません');
+    $type = 'SPREAD_WIZARD_DO';
+    $submit = 'wizard_do';
+  }
   elseif($SELF->IsRoleGroup('wizard')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日は魔法を使えません');
     $type = 'WIZARD_DO';
   }
-  elseif($role_wolf = $SELF->IsWolf()){
-    $type = 'WOLF_EAT';
+  elseif($SELF->IsRoleGroup('escaper')){
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の逃亡はできません');
+    $type = 'ESCAPE_DO';
   }
   elseif($SELF->IsRole('jammer_mad', 'jammer_fox')){
     $type   = 'JAMMER_MAD_DO';
@@ -759,12 +806,11 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の襲撃はできません');
     $type = 'DREAM_EAT';
   }
-  elseif($SELF->IsRole('possessed_mad', 'possessed_fox')){
+  elseif($role_revive = $SELF->IsRole('possessed_mad', 'possessed_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の憑依はできません');
     if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
     $type       = 'POSSESSED_DO';
     $not_type   = 'POSSESSED_NOT_DO';
-    $role_revive = true;
   }
   elseif($role_trap = $SELF->IsRoleGroup('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
@@ -794,7 +840,7 @@ function OutputVoteNight(){
     $type = 'CUPID_DO';
     $role_cupid = $SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera');
     $role_mirror_fairy = $SELF->IsRole('mirror_fairy');
-    $cupid_self_shoot  = $SELF->IsRole('self_cupid', 'dummy_chiroptera', 'moon_cupid') ||
+    $cupid_self_shoot  = $SELF->IsRole('self_cupid', 'moon_cupid', 'dummy_chiroptera') ||
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
   elseif($SELF->IsRoleGroup('vampire')){
@@ -834,8 +880,9 @@ function OutputVoteNight(){
   foreach($user_stack as $id => $user){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
-    $is_live = $USERS->IsVirtualLive($id);
-    $is_wolf = $role_wolf && ! $SELF->IsRole('hungry_wolf', 'silver_wolf') &&
+    $is_live  = $USERS->IsVirtualLive($id);
+    $is_avoid = ! $user->IsSelf() && ! $user->IsDummyBoy();
+    $is_wolf  = $role_wolf && ! $SELF->IsRole('hungry_wolf', 'silver_wolf') &&
       $USERS->ByReal($id)->IsWolf(true);
 
     /*
@@ -854,15 +901,16 @@ function OutputVoteNight(){
 	$checkbox = '<input type="checkbox" name="target_no[]"' . $checked . $checkbox_footer;
       }
     }
-    elseif($role_revive){
-      if(! $is_live && ! $user->IsSelf() && ! $user->IsDummyBoy()){
-	$checkbox = $checkbox_header . $checkbox_footer;
+    elseif($role_wizard){
+      if($is_live && $is_avoid){
+	$checkbox = '<input type="checkbox" name="target_no[]"' . $checkbox_footer;
       }
     }
+    elseif($role_revive){
+      if(! $is_live && $is_avoid) $checkbox = $checkbox_header . $checkbox_footer;
+    }
     elseif($role_scanner){
-      if($is_live && ! $user->IsSelf() && ! $user->IsDummyBoy()){
-	$checkbox = $checkbox_header . $checkbox_footer;
-      }
+      if($is_live && $is_avoid) $checkbox = $checkbox_header . $checkbox_footer;
     }
     elseif($role_trap){
       if($is_live) $checkbox = $checkbox_header . $checkbox_footer;
