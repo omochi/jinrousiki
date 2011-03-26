@@ -181,7 +181,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ</a> の 69 が原型です。
+他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ(69)</a> が原型です。
 <a href="human.php#soul_mage">魂の占い師</a>や<a href="fox.php#child_fox">子狐</a>も呪い殺せます。
 占い能力者側の対策は、遺言に占い先をきちんと書いておく事です。
 死体の数や状況にもよりますが、残った村人がきっと仇を討ってくれるでしょう。
@@ -208,22 +208,22 @@ OutputRolePageHeader('人狼陣営');
 <h3><a id="poison_wolf">毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12～]</h3>
 <h4>[毒能力] 処刑：人狼系以外 / 襲撃：無し / 薬師判定：有り</h4>
 <pre>
-毒能力を持った人狼。
+<a href="ability.php#poison">毒</a>能力を持った人狼。
 処刑された時に巻き込む対象の決定時に人狼系が除かれるため
 投票者ランダム設定の場合は不発となるケースがある。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#poison">埋毒者</a>の人狼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/31" target="_top">新役職考案スレ</a> の 31 が原型です。
+<a href="human.php#poison">埋毒者</a>の人狼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/31" target="_top">新役職考案スレ(31)</a> が原型です。
 吊られてもただでは死なないので、破綻を恐れず積極的に騙ると効果的です。
 </pre>
 
 <h3><a id="resist_wolf">抗毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 毒：無効 (1回限定)</h4>
 <pre>
-一度だけ毒に耐えられる(毒に中っても死なない)人狼。
+一度だけ毒に耐えられる (毒に中っても死なない) 人狼。
 処刑・襲撃共に有効だが、一度毒に中ると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
-毒能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
+<a href="ability.php#poison">毒</a>能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
 毒の対象が襲撃者に固定される。
 </pre>
 <h5>Ver. 1.4.0 α24～</h5>
@@ -236,7 +236,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-毒能力者の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ</a> の 25 が原型です。
+<a href="ability.php#poison">毒</a>能力者の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ(25)</a> が原型です。
 安易に CO する<a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者</a>を葬ってやりましょう！
 </pre>
 
@@ -247,7 +247,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <ol>
   <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li>恋人になったら蘇生能力は無効。</li>
+  <li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
   <li>死因は問わない (例：毒死、暗殺)</li>
   <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
   <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
@@ -275,13 +275,13 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 ローゼンメイデンの蒼星石がモチーフです。
 <a href="#emerald_wolf">翠狼</a>と対になるように能力をデザインしてあります。
-妖狐のコンビプレーによる騙りを妨害するのが主眼ですが、
+<a href="fox.php#fox_group">妖狐</a>のコンビプレーによる騙りを妨害するのが主眼ですが、
 妖狐は比較的単独行動が多いので活躍する機会を得るのが難しい能力だと思います。
 </pre>
 
 <h3><a id="emerald_wolf">翠狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
 <pre>
-襲撃した人が狼だった場合に自分と<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。
+襲撃した人が人狼だった場合に自分と<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -291,7 +291,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 ローゼンメイデンの翠星石がモチーフです。
 <a href="#blue_wolf">蒼狼</a>と対になるように能力をデザインしてあります。
-<a href="#silver_wolf">銀狼</a>や<a href="sub_role.php#mind_lonely">はぐれ者</a>になった狼のフォローが主眼ですが
+<a href="#silver_wolf">銀狼</a>や<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼のフォローが主眼ですが
 襲撃失敗した時の情報が増えるという副次的効果もあります。
 </pre>
 
@@ -300,7 +300,7 @@ OutputRolePageHeader('人狼陣営');
 襲撃に成功した人の性別が分かるが、噛み殺せない人狼。
 </pre>
 <ol>
-  <li>性別判定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ。</li>
+  <li>性別鑑定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ。</li>
   <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)。</li>
   <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
 </ol>
@@ -330,7 +330,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ</a> の 69 の「賢狼」が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/69" target="_top">新役職考案スレ(69)</a> の「賢狼」が原型です。
 身代わり君の正体が分かるので内訳の把握が非常に有利になります。
 </pre>
 
@@ -339,7 +339,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>を含む)・<a href="ability.php#possessed_limit">憑依制限能力者</a>は乗っ取れない。
+身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>を含む)・<a href="ability.php#possessed_limit">憑依制限能力者</a>は乗っ取れない。
 </pre>
 <ol>
   <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -715,10 +715,14 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 </pre>
 <ol>
   <li>身代わり君には無効 (普通に死亡する)。</li>
-  <li>死の宣告の発動日は投票した夜から数えて 4 日後の昼。</li>
+  <li>死の宣告の発動日は投票した夜から数えて 2 日後の昼。</li>
   <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
   <li><a href="fox.php">妖狐陣営</a>にも宣告可能。</li>
 </ol>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+死の宣告の発動日を 4 日後から 2 日後に変更。
+</pre>
 <h5>Ver. 1.4.0 β17～</h5>
 <pre>
 「<a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する」制限を解除。
@@ -726,11 +730,11 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="fox.php#doom_fox">冥狐</a>
+<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ</a> の 614 が原型です。
+<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ(614)</a> が原型です。
 </pre>
 
 <h3><a id="sirius_wolf">天狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β9～]</h3>
@@ -926,7 +930,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#anti_voodoo">厄神</a>・<a href="fox.php#jammer_fox">月狐</a>・<a href="ability.php#phantom">占い妨害能力者</a>
+<a href="human.php#anti_voodoo">厄神</a>・<a href="ability.php#phantom">占い妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -951,7 +955,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-対<a href="human.php#mage_group">占い師系</a>専門の<a href="#trap_mad">罠師</a>的存在で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/13" target="_top">新役職考案スレ</a> の 13 が原型です。
+対<a href="human.php#mage_group">占い師系</a>専門の<a href="#trap_mad">罠師</a>的存在で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/13" target="_top">新役職考案スレ(13)</a> が原型です。
 <a href="human.php#mage">占い師</a>の占い先を先読みして呪いをかけておくことで呪返しを狙うのが
 基本的な立ち回りになると思います。
 </pre>
@@ -993,6 +997,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
 初日の襲撃はできません (<a href="human.php#assassin_group">暗殺者系</a>と挙動を揃えました)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#psycho">精神鑑定関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1068,8 +1076,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-回数制限を外した代りに威力が大幅に落ちた、<a href="#trap_mad">罠師</a>の亜種です。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ</a> の 736 が原型です。
+回数制限を外した代りに威力が大幅に落ちた、<a href="#trap_mad">罠師</a>の亜種で、
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ(736)</a> が原型です。
 <a href="sub_role.php#frostbite">凍傷</a>の性質上、なった場合は CO せざるを得ないので接触系能力者を
 まとめて炙り出すことが可能になります。
 </pre>
@@ -1090,7 +1098,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#jammer_mad">月兎</a>の霊能妨害バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/48" target="_top">新役職考案スレ</a> の 48 が原型です。
+<a href="#jammer_mad">月兎</a>の霊能妨害バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/48" target="_top">新役職考案スレ(48)</a> が原型です。
 「かしゃ」と読みます。
 火車の能力が発動しているのに霊能結果を出す人は<a href="human.php#dummy_necromancer">夢枕人</a>か騙りになります。
 </pre>
@@ -1117,7 +1125,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#corpse_courier_mad">火車</a>の投票結果妨害バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/168" target="_top">新役職考案スレ</a> の 168 が原型です。
+<a href="#corpse_courier_mad">火車</a>の投票結果妨害バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/168" target="_top">新役職考案スレ(168)</a> が原型です。
 <a href="#elder_wolf">古狼</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#agitate_mad">扇動者</a>などがいると真価を発揮します。
 </pre>
 
@@ -1172,7 +1180,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ</a> の 33 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/33" target="_top">新役職考案スレ(33)</a> が原型です。
 <a href="sub_role#febris">熱病</a>の仕様と実装がなかなか決まらず、作成決定から実装まで
 かなり間が開いてます。
 </pre>
@@ -1193,7 +1201,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#miasma_mad">土蜘蛛</a>の<a href="sub_role.php#critical_luck">痛恨</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/932" target="_top">新役職考案スレ</a> の 932 が原型です。
+<a href="#miasma_mad">土蜘蛛</a>の<a href="sub_role.php#critical_luck">痛恨</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/932" target="_top">新役職考案スレ(932)</a> が原型です。
 </pre>
 
 <h3><a id="follow_mad">舟幽霊</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
@@ -1216,7 +1224,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-東方 Project の村紗 水蜜がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/319" target="_top">新役職考案スレ</a> の 319 を参考にしています。
+東方 Project の村紗 水蜜がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/319" target="_top">新役職考案スレ(319)</a> を参考にしています。
 <a href="human.php#cure_pharmacist">河童</a>などを騙ることでショック死発生者を狙い撃ちにする事ができます。
 ショック死の死因は問わないので、条件次第で大量のショック死が発生します。
 </pre>

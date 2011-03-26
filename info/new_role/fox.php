@@ -274,13 +274,13 @@ OutputRolePageHeader('妖狐陣営');
 <h3><a id="doom_fox">冥狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
-遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。
+遅効性の<a href="human.php#doom_assassin">死神</a>相当の<a href="ability.php#assassin">暗殺</a>能力を持った妖狐。
 暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="vampire.php#doom_vampire">冥血鬼</a>
+<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

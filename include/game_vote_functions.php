@@ -1007,17 +1007,55 @@ function AggregateVoteDay(){
 
     foreach($USERS->rows as $user) $role_flag->{$user->main_role} = true; //役職出現判定
     //PrintData($role_flag, 'ROLE_FLAG');
-    if($role_flag->necromancer){ //霊能者の処理
+    if($role_flag->spiritism_wizard && ! $ROOM->IsEvent('new_moon')){ //交霊術師の処理
+      $stack = array('', 'soul_', 'psycho_', 'embalm_', 'sex_'); //sex_necromancer は未実装
+      $wizard_flag->{GetRandom($stack) . 'necromancer'} = true;
+      $wizard_action = 'SPIRITISM_WIZARD_RESULT';
+      if($wizard_flag->sex_necromancer){
+	$str = $result_header . ($flag_stolen ? 'stolen' : 'sex_' . $vote_target->sex);
+	$ROOM->SystemMessage($str, $wizard_action);
+      }
+    }
+
+    $role = 'necromancer'; //霊能者の処理
+    if($role_flag->$role || $wizard_flag->$role){
       $str = $result_header . ($flag_stolen ? 'stolen' : $necromancer_result);
-      $ROOM->SystemMessage($str, $action);
+      if($role_flag->$role)   $ROOM->SystemMessage($str, $action);
+      if($wizard_flag->$role) $ROOM->SystemMessage($str, $wizard_action);
     }
 
-    if($role_flag->soul_necromancer){ //雲外鏡の処理
+    $role = 'soul_necromancer'; //雲外鏡の処理
+    if($role_flag->$role || $wizard_flag->$role){
       $str = $result_header . ($flag_stolen ? 'stolen' : $vote_target->main_role);
-      $ROOM->SystemMessage($str, 'SOUL_' . $action);
+      if($role_flag->$role)   $ROOM->SystemMessage($str, 'SOUL_' . $action);
+      if($wizard_flag->$role) $ROOM->SystemMessage($str, $wizard_action);
     }
 
-    if($role_flag->embalm_necromancer){ //死化粧師の処理
+    $role = 'psycho_necromancer'; //精神感応者の処理
+    if($role_flag->$role || $wizard_flag->$role){
+      $str = $result_header;
+      if($flag_stolen){
+	$str .= 'stolen';
+      }
+      else{ //判定は順番依存有り
+	$str .= 'psycho_necromancer_';
+	if($vote_target->IsRole('changed_therian'))
+	  $str .= 'mad';
+	elseif($vote_target->IsRoleGroup('copied'))
+	  $str .= 'mania';
+	elseif($vote_target->IsRoleGroup('mad'))
+	  $str .= 'wolf';
+	elseif($vote_target->DistinguishLiar() == 'psycho_mage_liar')
+	  $str .= 'mad';
+	else
+	  $str .= 'human';
+      }
+      if($role_flag->$role)   $ROOM->SystemMessage($str, 'PSYCHO_' . $action);
+      if($wizard_flag->$role) $ROOM->SystemMessage($str, $wizard_action);
+    }
+
+    $role = 'embalm_necromancer'; //死化粧師の処理
+    if($role_flag->$role || $wizard_flag->$role){
       $str = $result_header;
       if($flag_stolen){
 	$str .= 'stolen';
@@ -1027,7 +1065,8 @@ function AggregateVoteDay(){
 	$str .= 'embalm_' .
 	  ($vote_target->GetCamp(true) == $target->GetCamp(true) ? 'agony' : 'reposeful');
       }
-      $ROOM->SystemMessage($str, 'EMBALM_' . $action);
+      if($role_flag->$role)   $ROOM->SystemMessage($str, 'EMBALM_' . $action);
+      if($wizard_flag->$role) $ROOM->SystemMessage($str, $wizard_action);
     }
 
     if($role_flag->emissary_necromancer){ //密偵の処理
@@ -1244,8 +1283,8 @@ function AggregateVoteNight($skip = false){
   }
   else{
     array_push($stack, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'POISON_CAT_DO', 'ASSASSIN_DO',
-	       'WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'TRAP_MAD_DO', 'POSSESSED_DO', 'VAMPIRE_DO',
-	       'OGRE_DO');
+	       'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'TRAP_MAD_DO',
+	       'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO');
   }
   foreach($stack as $action){
     if(is_null($vote_data[$action])) $vote_data[$action] = array();
@@ -1527,7 +1566,7 @@ function AggregateVoteNight($skip = false){
 	  if($wolf_target->IsRole('blue_fox') && ! $voted_wolf->IsLonely()){ //蒼狐の処理
 	    $voted_wolf->AddRole('mind_lonely');
 	  }
-	  if($voted_wolf->IsRole('doom_wolf')) $wolf_target->AddDoom(4); //冥狼の処理
+	  if($voted_wolf->IsRole('doom_wolf')) $wolf_target->AddDoom(2); //冥狼の処理
 	  $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
@@ -1587,7 +1626,7 @@ function AggregateVoteNight($skip = false){
 	  if(! $wolf_target->IsWolf() && ! $wolf_target->IsFox()) break;
 	}
 	elseif($voted_wolf->IsRole('doom_wolf')){ //冥狼の処理
-	  $wolf_target->AddDoom(4);
+	  $wolf_target->AddDoom(2);
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
 	}

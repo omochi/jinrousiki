@@ -180,6 +180,6 @@ OutputRolePageHeader('恋人陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="vampire.php#sacrifice_vampire">吸血公</a>の能力を恋人陣営向けに転化してみました。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/467" target="_top">新役職考案スレ</a> の 467 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/467" target="_top">新役職考案スレ(467)</a> が原型です。
 </pre>
 </body></html>

@@ -290,7 +290,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#wizard">魔法使い</a>・<a href="#soul_wizard">八卦見</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
+<a href="ability.php#psycho">精神鑑定関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -407,6 +407,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <p>
 <a href="#necromancer">霊能者</a>
 <a href="#soul_necromancer">雲外鏡</a>
+<a href="#psycho_necromancer">精神感応者</a>
 <a href="#embalm_necromancer">死化粧師</a>
 <a href="#emissary_necromancer">密偵</a>
 <a href="#attempt_necromancer">蟲姫</a>
@@ -430,11 +431,19 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="#dummy_necromancer">夢枕人</a>
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#spiritism_wizard">交霊術師</a>
+</pre>
 
 <h3><a id="soul_necromancer">雲外鏡</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
 <h4>[霊能能力] 処刑者情報：有り / 火車：有効</h4>
 <pre>
 処刑した人の役職が分かる上位霊能者。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#spiritism_wizard">交霊術師</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -444,18 +453,41 @@ PP ラインの計算を難しくさせるために作成してみました。
 しかし、「死人に口無し」故に<a href="#soul_mage">魂の占い師</a>よりもはるかに騙りやすいですね。
 </pre>
 
+<h3><a id="psycho_necromancer">精神感応者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α6～]</h3>
+<h4>[霊能能力] 処刑者情報：特殊 / 火車：有効</h4>
+<pre>
+処刑した人の前世が分かる特殊な霊能者。
+霊能結果は「～さんの前世は [役職] でした」と表示され、以下の順番で判定される。
+</pre>
+<ol>
+  <li><a href="sub_role.php#changed_therian">元獣人</a> → 狂人</li>
+  <li><a href="sub_role.php#copied">元神話マニア</a>・<a href="sub_role.php#copied_trick">元奇術師</a>・<a href="sub_role.php#copied_soul">元覚醒者</a>・<a href="sub_role.php#copied_teller">元夢語部</a> → 神話マニア</li>
+  <li><a href="wolf.php#mad_group">狂人系</a> → 人狼</li>
+  <li><a href="#psycho_mage">精神鑑定士</a>の結果が「嘘つき」 → 狂人</li>
+  <li>それ以外 → 村人</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#spiritism_wizard">交霊術師</a>・<a href="ability.php#psycho">精神鑑定関連能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#psycho_mage">精神鑑定士</a>の霊能者バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/971" target="_top">新役職考案スレ(971)</a> が原型です。
+<a href="mania.php">神話マニア陣営</a>など、変化する役職を看破する能力がコンセプトで、
+それを「前世」と表現しています。
+</pre>
+
 <h3><a id="embalm_necromancer">死化粧師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α3～]</h3>
-<h4>[霊能能力] 処刑者情報：無し / 火車：有効</h4>
+<h4>[霊能能力] 処刑者情報：特殊 / 火車：有効</h4>
 <pre>
 処刑者と処刑者の投票先の人の陣営が同じかどうか分かる特殊な霊能者。
 霊能結果は「～さんの死顔は安らかな/苦悶の表情でした」の二種類で、
 違う陣営なら「安らかな～」、同一陣営なら「苦悶の～」と判定される。
 <a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定される。
-通常の<a href="#necromancer">霊能者</a>の能力は持っていない。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#emissary_necromancer">密偵</a>
+<a href="#emissary_necromancer">密偵</a>・<a href="#spiritism_wizard">交霊術師</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1634,7 +1666,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>・<a href="fox.php#doom_fox">冥狐</a>
+<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2032,7 +2064,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#divorce_jealousy">縁切地蔵</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="#divorce_jealousy">縁切地蔵</a>・<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2062,6 +2094,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#wizard">魔法使い</a>
 <a href="#awake_wizard">比丘尼</a>
 <a href="#barrier_wizard">結界師</a>
+<a href="#spiritism_wizard">交霊術師</a>
 <a href="#soul_wizard">八卦見</a>
 </p>
 
@@ -2104,7 +2137,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[耐性] 護衛：制限対象</h4>
 <h4>[狩人能力] 護衛：制限有り / 狩り：無し / 罠：有効</h4>
 <pre>
-魔法使いの一種で、魔法の効果は複数 (最大 4 箇所) の<a href="#guard_group">護衛</a>能力。
+魔法使いの一種で、魔法の効果は複数 (最大 4 箇所) の<a href="ability.php#guard">護衛</a>能力。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
@@ -2119,6 +2152,25 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/947" target="_top">新役職考案スレ(947)</a> が原型で、テーマは「護衛先ギドラ」です。
 100% にこそなりませんが、期待値は通常の狩人よりも高性能です。
 ただし、手を広げると罠にかかりやすくなります。
+</pre>
+
+<h3><a id="spiritism_wizard">交霊術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α6～]</h3>
+<h4>[霊能能力] 処刑者情報：特殊 / 火車：有効</h4>
+<pre>
+<a href="#necromancer_group">霊能</a>能力を持つ魔法使いの一種 (夜の投票は無し)。
+魔法の効果は、<a href="#necromancer">霊能者</a>・<a href="#soul_necromancer">雲外鏡</a>・<a href="#psycho_necromancer">精神感応者</a>・<a href="#embalm_necromancer">死化粧師</a>・性別鑑定のいずれか。
+性別鑑定結果は処刑者の役職には影響されない。
+複数出現しても霊能結果は全員共通。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#psycho">精神鑑定関連能力者</a>・<a href="ability.php#sex">性別関連能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+魔法使いの<a href="#necromancer_group">霊能</a>バージョンです。
+<a href="#sex_mage">ひよこ鑑定士</a>の霊能バージョンは存在しないので
+処刑者の性別鑑定能力はオリジナルになります。
 </pre>
 
 <h3><a id="soul_wizard">八卦見</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
@@ -2226,7 +2278,7 @@ MVP の賞品としてプレゼントしたものです。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_assassin">死神</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+<a href="#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>・<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

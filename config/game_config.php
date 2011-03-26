@@ -255,7 +255,7 @@ class GameConfig extends GameConfigBase{
   //役者の変換テーブル
   var $actor_replace_list = array('です' => 'みょん');
 
-  var $invisible_rate = 10; //光学迷彩の発言が空白に入れ替わる確率 (%)
+  var $invisible_rate = 15; //光学迷彩の発言が空白に入れ替わる割合 (%)
   var $silent_length  = 25; //無口が発言できる最大文字数
 
   //-- 「異議」あり --//

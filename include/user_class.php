@@ -247,6 +247,11 @@ class User{
     return $this->IsRoleGroup('common') && ! ($talk && $this->IsRole('dummy_common'));
   }
 
+  //魔法使い系判定
+  function IsWizard($vote = false){
+    return $this->IsRoleGroup('wizard') && ! ($vote && $this->IsRole('spiritism_wizard'));
+  }
+
   //上海人形系判定 (人形遣いは含まない)
   function IsDoll(){
     return $this->IsRoleGroup('doll') && ! $this->IsRole('doll_master');
@@ -532,7 +537,7 @@ class User{
     }
     if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
     if($this->IsRole('barrier_wizard')) return $this->IsVoted($vote_data, 'SPREAD_WIZARD_DO');
-    if($this->IsRoleGroup('wizard')) return $this->IsVoted($vote_data, 'WIZARD_DO');
+    if($this->IsWizard(true)) return $this->IsVoted($vote_data, 'WIZARD_DO');
     if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
     if($this->IsRole('trap_mad')){
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');

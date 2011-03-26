@@ -39,7 +39,7 @@ $RQ_ARGS->TestItems->test_users[2] =& new User();
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'revive_wolf strong_voice rebel';
+$RQ_ARGS->TestItems->test_users[2]->role = 'doom_wolf strong_voice rebel';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3] =& new User();
@@ -151,7 +151,7 @@ $RQ_ARGS->TestItems->test_users[18] =& new User();
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'medium';
+$RQ_ARGS->TestItems->test_users[18]->role = 'psycho_necromancer';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19] =& new User();
@@ -179,7 +179,7 @@ $RQ_ARGS->TestItems->test_users[22] =& new User();
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[22]->role = 'soul_mania[23] disfavor';
+$RQ_ARGS->TestItems->test_users[22]->role = 'revive_wolf disfavor';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23] =& new User();
@@ -193,7 +193,7 @@ $RQ_ARGS->TestItems->test_users[24] =& new User();
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard watcher';
+$RQ_ARGS->TestItems->test_users[24]->role = 'spiritism_wizard watcher';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[25] =& new User();
@@ -254,7 +254,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
 
 $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'dummy_boy'),
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'white'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'moon'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'light_gray'),
   array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'sun'),
@@ -312,11 +312,11 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'cloud', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'light_blue'),
   array('uname' => 'cloud', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'moon'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'),
-  #array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'black'),
-  array('uname' => 'moon', 'situation' => 'SPREAD_WIZARD_DO', 'target_uname' => '3 12 23'),
+  array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'black'),
+  #array('uname' => 'moon', 'situation' => 'SPREAD_WIZARD_DO', 'target_uname' => '3 12 23'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
-  array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
-  #array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
+  array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
 );
 
 //-- 仮想システムメッセージをセット --//
@@ -327,7 +327,7 @@ $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'VOTE_KILLED', 'message' => 'sky'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 19)
+  #array('type' => 'WEATHER', 'message' => 8)
   #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
@@ -338,8 +338,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 3;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 
@@ -481,7 +481,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 23, 24) as $id){
+  foreach(array(5, 18, 24) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

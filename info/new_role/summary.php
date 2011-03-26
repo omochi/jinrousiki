@@ -936,7 +936,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">襲撃した人が狼だった場合に自分と<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。</td>
+  <td class="ability">襲撃した人が人狼だった場合に自分と<a href="sub_role.php#mind_friend">共鳴者</a>にする人狼。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
 <tr>
@@ -2163,6 +2163,25 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">魔法使いの一種で、魔法の効果は、複数 (最大 4 箇所) の<a href="human.php#guard_group">護衛</a>能力。
+  </td>
+  <td>Ver. 1.5.0 α6</td>
+</tr>
+<tr>
+  <td><a href="human.php#psycho_necromancer">精神感応者</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#necromancer_group">霊能者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑した人の前世が分かる特殊な霊能者。</td>
+  <td>Ver. 1.5.0 α6</td>
+</tr>
+<tr>
+  <td><a href="human.php#spiritism_wizard">交霊術師</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#necromancer_group">霊能</a>能力を持つ魔法使いの一種。魔法の効果は、<a href="human.php#necromancer">霊能者</a>・<a href="human.php#soul_mage">雲外鏡</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#embalm_necromancer">死化粧師</a>・性別のいずれか。
   </td>
   <td>Ver. 1.5.0 α6</td>
 </tr>

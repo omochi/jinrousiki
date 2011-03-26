@@ -11,20 +11,24 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#guard_hunt">狩り</a>
 <a href="#guard">護衛</a>
 <a href="#guard_limit">護衛制限</a>
+<a href="#doom">死の宣告</a>
 <a href="#decide">処刑者決定</a>
 <a href="#sudden_death">ショック死</a>
 <a href="#anti_sudden_death">ショック死抑制</a>
+</p>
+<p>
 <a href="#resist_wolf">人狼襲撃耐性</a>
+<a href="#psycho">精神鑑定</a>
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
-</p>
-<p>
 <a href="#authority">投票数変化</a>
 <a href="#poison">毒</a>
 <a href="#cursed_group">呪い</a>
 <a href="#possessed">憑依</a>
 <a href="#possessed_limit">憑依制限</a>
+</p>
+<p>
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#dummy">夢</a>
@@ -32,7 +36,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="assassin">暗殺能力者</a></h2>
 <pre>
-<a href="human.php#assassin_group">暗殺者系</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
+<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
 </pre>
 
 <h2><a id="anti_assassin">暗殺耐性能力者</a></h2>
@@ -52,12 +56,17 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="guard">護衛能力者</a></h2>
 <pre>
-<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>
+<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#barrier_wizard">結界師</a>
 </pre>
 
 <h2><a id="guard_limit">護衛制限対象者</a></h2>
 <pre>
 <a href="human.php#guard_limit">狩人系</a>参照
+</pre>
+
+<h2><a id="doom">死の宣告能力者</a></h2>
+<pre>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 
 <h2><a id="decide">処刑者決定能力者</a></h2>
@@ -90,10 +99,15 @@ OutputRolePageHeader('能力者逆引き');
 <a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="ogre.php">鬼陣営</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 
+<h2><a id="psycho">精神鑑定関連能力者</a></h2>
+<pre>
+<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
+</pre>
+
 <h2><a id="sex">性別関連能力者</a></h2>
 <h3><a id="sex_mage">性別鑑定能力者</a></h3>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
 </pre>
 <h3><a id="sex_only">性別限定能力者</a></h3>
 <pre>

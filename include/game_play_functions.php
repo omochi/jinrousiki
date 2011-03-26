@@ -212,14 +212,20 @@ function OutputAbility(){
       $action = 'SPREAD_WIZARD_DO';
       break;
 
+    case 'spiritism_wizard': //交霊術師
+      $stack = array('SPIRITISM_WIZARD_RESULT');
+      $action = NULL;
+      break;
+
     case 'soul_wizard': //八卦見
       $stack = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED', 'ASSASSIN_RESULT');
       break;
     }
 
     if($ROOM->date > 2) foreach($stack as $event) OutputSelfAbilityResult($event); //結果表示
-    //夜の投票
-    if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('wizard-do', 'wizard_do', $action);
+    if($ROOM->date > 1 && $ROOM->IsNight() && isset($action)){ //夜の投票
+      OutputVoteMessage('wizard-do', 'wizard_do', $action);
+    }
   }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系
     $ROLE_IMG->Output($SELF->main_role);
@@ -731,9 +737,11 @@ function OutputSelfAbilityResult($action){
 
   case 'NECROMANCER_RESULT':
   case 'SOUL_NECROMANCER_RESULT':
+  case 'PSYCHO_NECROMANCER_RESULT':
   case 'EMBALM_NECROMANCER_RESULT':
   case 'ATTEMPT_NECROMANCER_RESULT':
   case 'DUMMY_NECROMANCER_RESULT':
+  case 'SPIRITISM_WIZARD_RESULT':
     $type = 'necromancer';
     break;
 

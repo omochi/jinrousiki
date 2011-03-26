@@ -268,7 +268,7 @@ function VoteNight(){
     break;
 
   case 'WIZARD_DO':
-    if(! $SELF->IsRoleGroup('wizard') || $SELF->IsRole('barrier_wizard')){
+    if(! $SELF->IsWizard(true) || $SELF->IsRole('barrier_wizard')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
@@ -786,7 +786,7 @@ function OutputVoteNight(){
     $type = 'SPREAD_WIZARD_DO';
     $submit = 'wizard_do';
   }
-  elseif($SELF->IsRoleGroup('wizard')){
+  elseif($SELF->IsWizard(true)){
     if($ROOM->date == 1) OutputVoteResult('夜：初日は魔法を使えません');
     $type = 'WIZARD_DO';
   }

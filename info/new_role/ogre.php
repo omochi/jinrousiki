@@ -211,7 +211,7 @@ OutputRolePageHeader('鬼陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ability.php#revive">蘇生能力者</a>
+<a href="ability.php#psycho">精神鑑定関連能力者</a>・<a href="ability.php#revive">蘇生能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -26,5 +26,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>精神感応者：処刑した人の前世が分かる特殊な霊能者</li>
 </ul>
