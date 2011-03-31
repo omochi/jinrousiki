@@ -62,7 +62,7 @@ OutputRolePageHeader('鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 テーマは「全陣営に対する不確定要素」です。
-<a href="wolf.php#mad_group">狂人系</a>とは似て非なる勝利条件なので狐や恋人が出現している場合は
+<a href="wolf.php#mad_group">狂人系</a>とは似て非なる勝利条件なので妖狐や恋人が出現している場合は
 逆に人狼にとって脅威になる可能性があります。
 </pre>
 
@@ -106,7 +106,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#strong_poison">強毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>
+<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ability.php#poison">毒能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -198,24 +198,26 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：死亡 + 蘇生 (40%) / 暗殺：反射 (40%) / 罠：有効 / 蘇生：不可 / 憑依：無効</h4>
 <h4>[人攫い能力] 襲撃タイプ：暗殺 / 成功率低下：1/2</h4>
 <pre>
-鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#psycho_mage">精神鑑定士</a>が『嘘吐き』判定を出す人の全滅」。
+鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#psycho_mage">精神鑑定士</a>が『嘘つき』判定を出す人の全滅」。
 人狼に襲撃されて死亡した場合、一定確率 (40%) で蘇生する。
 </pre>
 <ol>
   <li>何度蘇生しても蘇生率は一定。</li>
-  <li>恋人になったら蘇生能力は無効。</li>
+  <li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
   <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、蘇生能力は無効。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-  <li>蘇生対象外 (選ばれた場合は失敗する)。</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外。</li>
+  <li><a href="ability.php#revive_limit">蘇生制限</a>対象 (選ばれた場合は失敗する)。</li>
+  <li><a href="ability.php#possessed_limit">憑依制限</a>対象。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#psycho">精神鑑定関連能力者</a>・<a href="ability.php#revive">蘇生能力者</a>
+<a href="ability.php#psycho">精神関連能力者</a>・<a href="ability.php#revive">蘇生能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/890" target="_top">新役職考案スレ</a> の 890 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/890" target="_top">新役職考案スレ(890)</a> が原型です。
+「嘘つき」判定される人の生存カウントは基本的に村人なので
+比較的村人陣営が不利になると思われます。
 </pre>
 
 <h3><a id="sacrifice_ogre">酒呑童子</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β20～]</h3>
@@ -233,7 +235,7 @@ OutputRolePageHeader('鬼陣営');
   <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
   <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
   <li>本人は身代わりが発生しても分からない。</li>
-  <li>人狼に遭遇した<a href="human.php#escaper">逃亡者</a>を身代わりにすることはできない。</li>
+  <li>逃亡失敗・人狼に遭遇して死亡した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
@@ -249,12 +251,14 @@ OutputRolePageHeader('鬼陣営');
 <h2><a id="yaksa_group">夜叉系</a></h2>
 <p>
 <a href="#yaksa">夜叉</a>
+<a href="#betray_yaksa">夜叉丸</a>
+<a href="#cursed_yaksa">滝夜叉姫</a>
 <a href="#succubus_yaksa">荼枳尼天</a>
 <a href="#dowser_yaksa">毘沙門天</a>
 </p>
 <h3><a id="yaksa">夜叉</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (20%) / 暗殺：反射 (20%) / 罠：有効</h4>
-<h4>[人攫い能力] 襲撃タイプ：暗殺 (人狼系限定) / 成功率低下：1/5</h4>
+<h4>[人攫い能力] 襲撃タイプ：暗殺 (制限有り) / 成功率低下：1/5</h4>
 <pre>
 人攫い能力が限定された鬼陣営の亜種。
 勝利条件は「自分自身の生存 + <a href="wolf.php#wolf_group">人狼系</a> (恋人を含む) の全滅」。
@@ -266,9 +270,41 @@ OutputRolePageHeader('鬼陣営');
 相対的に精度が上がった代りに耐性が落ちています。
 </pre>
 
+<h3><a id="betray_yaksa">夜叉丸</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.5.0 α7～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (20%) / 暗殺：反射 (20%) / 罠：有効</h4>
+<h4>[人攫い能力] 襲撃タイプ：暗殺 (制限有り) / 成功率低下：1/5</h4>
+<pre>
+夜叉系の一種で勝利条件は「自分自身の生存 + <a href="chiroptera.php">蝙蝠陣営</a>の全滅 + 村人陣営の勝利」。
+蝙蝠陣営に付いた<a href="mania.php#unknown_mania_group">鵺系</a>も含まれることに注意。
+人攫いの対象が<a href="chiroptera.php">蝙蝠陣営</a>以外だった場合は無条件で失敗する。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#yaksa">夜叉</a>の対蝙蝠バージョンです。
+鈴鹿山の犬神丸の手下の鬼がモチーフです。
+</pre>
+
+<h3><a id="cursed_yaksa">滝夜叉姫</a> (占い結果：鬼(呪返し) / 霊能結果：鬼) [Ver. 1.5.0 α7～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (20%) / 占い：呪返し / 陰陽師：死亡/ 暗殺：反射 (20%) / 罠：有効</h4>
+<h4>[人攫い能力] 襲撃タイプ：暗殺 (制限有り) / 成功率低下：1/3</h4>
+<pre>
+夜叉系の一種で勝利条件は「自分自身の生存 + <a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>の全滅」。
+人攫いの対象が<a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>以外だった場合は無条件で失敗する。
+占われたら占った占い師を呪い殺し、<a href="human.php#voodoo_killer">陰陽師</a>の占いで死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#cursed_group">呪い能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#yaksa">夜叉</a>の対占い師・魔法使いバージョンです。
+平 将門の娘とされる伝説上の妖術使いがモチーフです。
+</pre>
+
 <h3><a id="succubus_yaksa">荼枳尼天</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (20%) / 暗殺：反射 (20%) / 罠：有効</h4>
-<h4>[人攫い能力] 襲撃タイプ：暗殺 (男性限定) / 成功率低下：1/2</h4>
+<h4>[人攫い能力] 襲撃タイプ：暗殺 (制限有り) / 成功率低下：1/2</h4>
 <pre>
 夜叉系の一種で勝利条件は「自分自身の生存 + 男性の全滅」。
 人攫いの対象が男性以外だった場合は無条件で失敗する。
@@ -286,10 +322,10 @@ OutputRolePageHeader('鬼陣営');
 
 <h3><a id="dowser_yaksa">毘沙門天</a> (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β21～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%) / 罠：有効</h4>
-<h4>[人攫い能力] 襲撃タイプ：暗殺 (サブ役職所持者限定) / 成功率低下：1/2</h4>
+<h4>[人攫い能力] 襲撃タイプ：暗殺 (制限有り) / 成功率低下：1/2</h4>
 <pre>
-夜叉系の一種で勝利条件は「自分自身の生存 + 自分よりサブ役職の所持数の多い人の全滅」。
-人攫いの対象がサブ役職を所持していない場合は無条件で失敗する。
+夜叉系の一種で勝利条件は「自分自身の生存 + 自分より<a href="sub_role.php">サブ役職</a>の所持数の多い人の全滅」。
+人攫いの対象が<a href="sub_role.php">サブ役職</a>を所持していない場合は無条件で失敗する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -297,9 +333,9 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#yaksa">夜叉</a>の対サブ役職バージョンです。「びしゃもんてん」と読みます。
-サブ役職の所持数は日毎に変化するので難易度は高めです。
-多数のサブ役職を付加する特殊<a href="lovers.php">キューピッド</a>、毎日サブ役職を付加していく
-<a href="vampire.php">吸血鬼</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が主な障害となります。
+<a href="#yaksa">夜叉</a>の対<a href="sub_role.php">サブ役職</a>バージョンです。「びしゃもんてん」と読みます。
+<a href="sub_role.php">サブ役職</a>の所持数は日毎に変化するので難易度は高めです。
+多数の<a href="sub_role.php">サブ役職</a>を付加する特殊<a href="lovers.php">キューピッド</a>、毎日<a href="sub_role.php">サブ役職</a>を付加していく
+<a href="vampire.php">吸血鬼陣営</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が主な障害となります。
 </pre>
 </body></html>

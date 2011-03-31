@@ -21,7 +21,7 @@ OutputRolePageHeader('人狼陣営');
   </li>
   <li>人狼が人狼を襲撃した場合は失敗扱いとなる (襲撃された人狼には何も表示されない)。</li>
 </ol>
-<h3>Ver. 1.4.0 α21～</h3>
+<h5>Ver. 1.4.0 α21～</h5>
 <pre>
 人狼が人狼を襲撃した場合は失敗扱いとなる。
 <a href="fox.php">妖狐</a>と違い、襲撃された方にも何も表示されない。
@@ -37,19 +37,19 @@ OutputRolePageHeader('人狼陣営');
   </li>
   <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
-<h3>Ver. 1.4.0 β21～</h3>
+<h5>Ver. 1.4.0 β21～</h5>
 <pre>
 <a href="human.php#unconscious">無意識</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
 </pre>
-<h3>Ver. 1.4.0 β8～</h3>
+<h5>Ver. 1.4.0 β8～</h5>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
 </pre>
-<h3>Ver. 1.4.0 α24～</h3>
+<h5>Ver. 1.4.0 α24～</h5>
 <pre>
 <a href="human.php#unconscious">無意識</a>の枠に<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示されます。
 </pre>
-<h3>Ver. 1.4.0 α21～</h3>
+<h5>Ver. 1.4.0 α21～</h5>
 <pre>
 <a href="#silver_wolf">銀狼</a>は仲間の人狼、<a href="#whisper_mad">囁き狂人</a>がいっさい分かりません。
 </pre>
@@ -61,20 +61,20 @@ OutputRolePageHeader('人狼陣営');
   <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
   <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない。</li>
 </ol>
-<h3>Ver. 1.4.0 β17～</h3>
+<h5>Ver. 1.4.0 β17～</h5>
 <pre>
 <a href="fox.php#howl_fox">化狐</a>の夜の独り言は人狼の遠吠えに見える。
 </pre>
-<h3>Ver. 1.4.0 β8～</h3>
+<h5>Ver. 1.4.0 β8～</h5>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になる (<a href="#silver_wolf">銀狼</a>と同じ)。
 </pre>
-<h3>Ver. 1.4.0 α23～</h3>
+<h5>Ver. 1.4.0 α23～</h5>
 <pre>
 <a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見える。
 <a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない。
 </pre>
-<h3>Ver. 1.4.0 α21～</h3>
+<h5>Ver. 1.4.0 α21～</h5>
 <pre>
 <a href="#silver_wolf">銀狼</a>の独り言は遠吠えにならない。
 </pre>
@@ -223,12 +223,12 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 一度だけ毒に耐えられる (毒に中っても死なない) 人狼。
 処刑・襲撃共に有効だが、一度毒に中ると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
-<a href="ability.php#poison">毒</a>能力者を襲撃した場合はサーバ設定や能力失効の有無に関わらず、
+<a href="ability.php#poison">毒</a>能力者を襲撃した場合は<a href="../script_info.php#difference_poison_eat" target="_top">サーバ設定</a>や能力失効の有無に関わらず、
 毒の対象が襲撃者に固定される。
 </pre>
 <h5>Ver. 1.4.0 α24～</h5>
 <pre>
-襲撃先が毒能力者で、投票者が抗毒狼だった場合はサーバ設定に関わらず
+襲撃先が毒能力者で、投票者が抗毒狼だった場合は<a href="../script_info.php#difference_poison_eat" target="_top">サーバ設定</a>に関わらず
 毒の対象者が投票した抗毒狼に固定されます。
 ただし、能力を失効しても固定化処理は有効です。
 つまり、<a href="human.php#poison_group">埋毒者</a>を意図的に襲撃して毒を無効化したり、
@@ -1000,7 +1000,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#psycho">精神鑑定関連能力者</a>
+<a href="ability.php#psycho">精神関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1030,7 +1030,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sacrifice_cat">猫神</a>・<a href="fox.php#possessed_fox">憑狐</a>
+<a href="human.php#sacrifice_cat">猫神</a>・<a href="ability.php#possessed">憑依能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

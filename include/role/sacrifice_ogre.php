@@ -9,7 +9,7 @@ class Role_sacrifice_ogre extends Role{
 
   function __construct(){ parent::__construct(); }
 
-  function DistinguishVictory($victory){
-    return $victory != 'human' && $this->IsLive();
-  }
+  function GetReduceRate(){ return 1 / 2; }
+
+  function DistinguishVictory($victory){ return $victory != 'human' && $this->IsLive(); }
 }

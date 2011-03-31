@@ -75,8 +75,8 @@ class CastConfig extends CastConfigBase{
   //身代わり君がならない役職グループのリスト (人狼・妖狐陣営は常時対象外なので設定不要)
   var $disable_dummy_boy_role_list = array('poison');
 
-  //-- 真・闇鍋の配役設定 --//
-  //固定配役 (普通闇鍋)
+  //-- 闇鍋モードの配役設定 --//
+  //固定配役 (闇鍋)
   var $chaos_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
   //固定配役 (真・闇鍋)
@@ -85,44 +85,44 @@ class CastConfig extends CastConfigBase{
   //固定配役 (超・闇鍋)
   var $chaos_hyper_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //人狼の最低出現枠 (役職名 => 出現比)
-  //普通闇鍋
+  //人狼系の最低出現枠 (役職名 => 出現比)
+  //闇鍋
   var $chaos_wolf_list = array(
-    'wolf'           => 60,
-    'boss_wolf'      =>  5,
-    'poison_wolf'    => 10,
-    'tongue_wolf'    =>  5,
-    'silver_wolf'    => 20);
+    'wolf'        => 60,
+    'boss_wolf'   =>  5,
+    'poison_wolf' => 10,
+    'tongue_wolf' =>  5,
+    'silver_wolf' => 20);
 
   //真・闇鍋
   var $chaosfull_wolf_list = array(
-    'wolf'           => 60,
-    'boss_wolf'      =>  5,
-    'cursed_wolf'    =>  5,
-    'poison_wolf'    =>  5,
-    'resist_wolf'    =>  5,
-    'tongue_wolf'    =>  5,
-    'cute_wolf'      => 10,
-    'silver_wolf'    =>  5);
+    'wolf'        => 60,
+    'boss_wolf'   =>  5,
+    'cursed_wolf' =>  5,
+    'poison_wolf' =>  5,
+    'resist_wolf' =>  5,
+    'tongue_wolf' =>  5,
+    'cute_wolf'   => 10,
+    'silver_wolf' =>  5);
 
   //超・闇鍋
   var $chaos_hyper_wolf_list = array(
-    'wolf'           => 40,
+    'wolf'           => 30,
     'boss_wolf'      =>  2,
-    'gold_wolf'      =>  2,
-    'phantom_wolf'   =>  2,
-    'cursed_wolf'    =>  2,
+    'gold_wolf'      =>  3,
+    'phantom_wolf'   =>  3,
+    'cursed_wolf'    =>  3,
     'wise_wolf'      =>  3,
     'poison_wolf'    =>  3,
-    'resist_wolf'    =>  2,
-    'revive_wolf'    =>  2,
-    'blue_wolf'      =>  2,
-    'emerald_wolf'   =>  2,
-    'sex_wolf'       =>  2,
+    'resist_wolf'    =>  3,
+    'revive_wolf'    =>  3,
+    'blue_wolf'      =>  3,
+    'emerald_wolf'   =>  3,
+    'sex_wolf'       =>  3,
     'tongue_wolf'    =>  2,
     'possessed_wolf' =>  2,
-    'hungry_wolf'    =>  2,
-    'doom_wolf'      =>  2,
+    'hungry_wolf'    =>  3,
+    'doom_wolf'      =>  3,
     'sirius_wolf'    =>  2,
     'elder_wolf'     =>  3,
     'cute_wolf'      => 10,
@@ -132,18 +132,18 @@ class CastConfig extends CastConfigBase{
   //妖狐の最低出現枠 (役職名 => 出現比)
   //普通闇鍋
   var $chaos_fox_list = array(
-    'fox'           => 90,
-    'child_fox'     => 10);
+    'fox'       => 90,
+    'child_fox' => 10);
 
   //真・闇鍋
   var $chaosfull_fox_list = array(
-    'fox'           => 80,
-    'white_fox'     =>  3,
-    'poison_fox'    =>  3,
-    'voodoo_fox'    =>  3,
-    'cursed_fox'    =>  3,
-    'silver_fox'    =>  3,
-    'child_fox'     =>  5);
+    'fox'        => 80,
+    'white_fox'  =>  3,
+    'poison_fox' =>  3,
+    'voodoo_fox' =>  3,
+    'cursed_fox' =>  3,
+    'silver_fox' =>  3,
+    'child_fox'  =>  5);
 
   //超・闇鍋
   var $chaos_hyper_fox_list = array(
@@ -174,38 +174,38 @@ class CastConfig extends CastConfigBase{
   //ランダム配役テーブル (役職名 => 出現比)
   //普通闇鍋
   var $chaos_random_role_list = array(
-    'human'              => 88,
-    'mage'               => 50,
-    'soul_mage'          =>  5,
-    'psycho_mage'        => 10,
-    'necromancer'        => 60,
-    'medium'             => 30,
-    'guard'              => 70,
-    'poison_guard'       =>  5,
-    'reporter'           => 15,
-    'common'             => 75,
-    'poison'             => 40,
-    'incubate_poison'    => 10,
-    'pharmacist'         => 20,
-    'assassin'           => 20,
-    'doll'               => 20,
-    'doll_master'        => 10,
-    'escaper'            => 30,
-    'wolf'               => 80,
-    'boss_wolf'          => 10,
-    'poison_wolf'        => 40,
-    'tongue_wolf'        => 20,
-    'silver_wolf'        => 30,
-    'mad'                => 60,
-    'fanatic_mad'        => 20,
-    'whisper_mad'        => 10,
-    'fox'                => 50,
-    'child_fox'          => 20,
-    'cupid'              => 30,
-    'self_cupid'         => 10,
-    'quiz'               =>  2,
-    'chiroptera'         => 50,
-    'mania'              => 10);
+    'human'           => 88,
+    'mage'            => 50,
+    'soul_mage'       =>  5,
+    'psycho_mage'     => 10,
+    'necromancer'     => 60,
+    'medium'          => 30,
+    'guard'           => 70,
+    'poison_guard'    =>  5,
+    'reporter'        => 15,
+    'common'          => 75,
+    'poison'          => 40,
+    'incubate_poison' => 10,
+    'pharmacist'      => 20,
+    'assassin'        => 20,
+    'doll'            => 20,
+    'doll_master'     => 10,
+    'escaper'         => 30,
+    'wolf'            => 80,
+    'boss_wolf'       => 10,
+    'poison_wolf'     => 40,
+    'tongue_wolf'     => 20,
+    'silver_wolf'     => 30,
+    'mad'             => 60,
+    'fanatic_mad'     => 20,
+    'whisper_mad'     => 10,
+    'fox'             => 50,
+    'child_fox'       => 20,
+    'cupid'           => 30,
+    'self_cupid'      => 10,
+    'quiz'            =>  2,
+    'chiroptera'      => 50,
+    'mania'           => 10);
 
   //真・闇鍋
   var $chaosfull_random_role_list = array(
@@ -352,9 +352,9 @@ class CastConfig extends CastConfigBase{
     'jealousy'             =>  3,
     'divorce_jealousy'     =>  3,
     'priest_jealousy'      =>  3,
-    'poison_jealousy'      =>  3,
+    'poison_jealousy'      =>  2,
     'brownie'              =>  2,
-    'sun_brownie'          =>  1,
+    'sun_brownie'          =>  2,
     'revive_brownie'       =>  2,
     'cursed_brownie'       =>  1,
     'history_brownie'      =>  2,
@@ -477,8 +477,8 @@ class CastConfig extends CastConfigBase{
     'ice_fairy'            =>  1,
     'mirror_fairy'         =>  1,
     'ogre'                 =>  2,
-    'orange_ogre'          =>  2,
-    'indigo_ogre'          =>  2,
+    'orange_ogre'          =>  1,
+    'indigo_ogre'          =>  1,
     'poison_ogre'          =>  1,
     'west_ogre'            =>  1,
     'east_ogre'            =>  1,
@@ -489,6 +489,8 @@ class CastConfig extends CastConfigBase{
     'revive_ogre'          =>  1,
     'sacrifice_ogre'       =>  1,
     'yaksa'                =>  2,
+    'betray_yaksa'         =>  1,
+    'cursed_yaksa'         =>  1,
     'succubus_yaksa'       =>  1,
     'dowser_yaksa'         =>  1,
     'mania'                =>  3,
@@ -514,7 +516,7 @@ class CastConfig extends CastConfigBase{
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
   //村人から振り返る役職 => 出現比
-  //普通闇鍋
+  //闇鍋
   var $chaos_replace_human_role_list = array('mania' => 1);
 
   //真・闇鍋
@@ -528,14 +530,14 @@ class CastConfig extends CastConfigBase{
   //固定配役追加モード
   /*
     fix    : 固定枠
-    random : ランダム枠 (各配列の中身は役職：出現比)
+    random : ランダム枠 (各配列の中身は役職 => 出現比)
     count  : ランダム出現数 (ランダム枠毎の出現数)
 
     例)
-    doll_master が +1, [doll:poison_doll = 1:1] の割合でランダムに +1,
+    doll_master が +1, [doll:poison_doll = 2:1] の割合でランダムに +1,
     [scarlet_doll:silver_doll = 5:1] の割合でランダムに +2
     'a' => array('fix'    => array('doll_master' => 1),
-		 'random' => array(array('doll'  => 1, 'poison_doll' => 1),
+		 'random' => array(array('doll'  => 2, 'poison_doll' => 1),
 				   array('scarlet_doll' => 5, 'silver_doll' => 1)),
 		 'count'  => array(1, 2)),
   */
@@ -569,21 +571,23 @@ class CastConfig extends CastConfigBase{
 		 'count'  => array(1)),
     'e' => array('fix' => array('anti_voodoo' => 1, 'possessed_wolf' => 1)),
     'f' => array('random' => array(
-                   array('ogre'           =>  2,
-			 'orange_ogre'    =>  2,
-			 'indigo_ogre'    =>  2,
-			 'poison_ogre'    =>  1,
-			 'west_ogre'      =>  1,
-			 'east_ogre'      =>  1,
-			 'north_ogre'     =>  1,
-			 'south_ogre'     =>  1,
-			 'incubus_ogre'   =>  1,
-			 'power_ogre'     =>  1,
-			 'revive_ogre'    =>  1,
-			 'sacrifice_ogre' =>  1,
-			 'yaksa'          =>  2,
-			 'succubus_yaksa' =>  1,
-			 'dowser_yaksa'   =>  1)),
+                   array('ogre'           => 15,
+			 'orange_ogre'    =>  5,
+			 'indigo_ogre'    =>  5,
+			 'poison_ogre'    =>  5,
+			 'west_ogre'      =>  3,
+			 'east_ogre'      =>  3,
+			 'north_ogre'     =>  3,
+			 'south_ogre'     =>  3,
+			 'incubus_ogre'   =>  5,
+			 'power_ogre'     =>  5,
+			 'revive_ogre'    =>  5,
+			 'sacrifice_ogre' =>  3,
+			 'yaksa'          => 15,
+			 'betray_yaksa'   => 10,
+			 'cursed_yaksa'   =>  5,
+			 'succubus_yaksa' =>  5,
+			 'dowser_yaksa'   =>  5)),
 		 'count' => array(2)),
 			    );
 
@@ -649,7 +653,6 @@ class CastConfig extends CastConfigBase{
 	$duel_fix_list['moon_cupid'] = 1;
       }
       if($user_count >= 30) $duel_fix_list['quiz'] = 1;
-
       $duel_rate_list = array('assassin' => 5, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
 			      'triangle_cupid' => 1);
     }

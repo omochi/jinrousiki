@@ -9,6 +9,10 @@ class Role_succubus_yaksa extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function Ignored($user){ return $user->sex != 'male'; }
+
+  function GetReduceRate(){ return 1 / 2; }
+
   function DistinguishVictory($victory){
     global $USERS;
 

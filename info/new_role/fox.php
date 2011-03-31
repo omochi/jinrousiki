@@ -22,28 +22,28 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
-<h3>Ver. 1.4.0 β21～</h3>
+<h5>Ver. 1.4.0 β21～</h5>
 <pre>
 <a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
 </pre>
-<h3>Ver. 1.4.0 β8～</h3>
+<h5>Ver. 1.4.0 β8～</h5>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
 </pre>
-<h3>Ver. 1.4.0 α24～</h3>
+<h5>Ver. 1.4.0 α24～</h5>
 <pre>
 <a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示されます。
 </pre>
-<h3>Ver. 1.4.0 α20～</h3>
+<h5>Ver. 1.4.0 α20～</h5>
 <pre>
 <a href="#silver_fox">銀狐</a>は他の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>からも仲間であると分かりません。
 </pre>
-<h3>Ver. 1.4.0 α19～</h3>
+<h5>Ver. 1.4.0 α19～</h5>
 <pre>
 <a href="#fox_group">妖狐系</a>から<a href="#child_fox">子狐</a>が誰か分かります。
 <a href="#fox_group">妖狐系</a>と<a href="#child_fox">子狐</a>は別枠で表示されます。
 </pre>
-<h3>Ver. 1.4.0 α3-7～</h3>
+<h5>Ver. 1.4.0 α3-7～</h5>
 <pre>
 全ての妖狐は<a href="#child_fox">子狐</a>以外の<a href="#fox_group">妖狐系</a>が誰か分かります。
 <a href="#child_fox">子狐</a>は全ての妖狐が誰か分かります。
@@ -58,19 +58,19 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
-<h3>Ver. 1.4.0 β8～</h3>
+<h5>Ver. 1.4.0 β8～</h5>
 <pre>
 <a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなります (<a href="#silver_fox">銀狐</a>と同じ)。
 </pre>
-<h3>Ver. 1.4.0 α24～</h3>
+<h5>Ver. 1.4.0 α24～</h5>
 <pre>
 <a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示されます。
 </pre>
-<h3>Ver. 1.4.0 α19～</h3>
+<h5>Ver. 1.4.0 α19～</h5>
 <pre>
 <a href="#silver_fox">銀狐</a>は念話できません。
 </pre>
-<h3>Ver. 1.4.0 α3-7～</h3>
+<h5>Ver. 1.4.0 α3-7～</h5>
 <pre>
 全ての<a href="#fox_group">妖狐系</a>は夜に会話(念話)できます。
 <a href="#child_fox_group">子狐系</a>は念話を見ることも参加することも出来ません。
@@ -163,7 +163,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#poison_group">埋毒者</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/110" target="_top">新役職考案スレ</a> の 110 が原型です。
+<a href="human.php#poison_group">埋毒者</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/110" target="_top">新役職考案スレ(110)</a> が原型です。
 「くだぎつね」と読みます。
 仲間がいるときに真価を発揮します。
 </pre>
@@ -176,21 +176,21 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#blue_wolf">蒼狼</a>の妖狐バージョンです。
-発動すると相手に正体がバレてしまうので、積極的に狙うというよりは
-「噛まれた相手に一矢報いる」タイプの能力ですね。
+発動すると相手に正体がばれてしまうので、積極的に狙うというよりは
+「襲撃してきた人狼に一矢報いる」タイプの能力ですね。
 </pre>
 
 <h3><a id="emerald_fox">翠狐</a> (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
-占った人が会話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
+占った人が<a href="#fox_talk">会話</a>できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
 </pre>
 <ol>
-  <li>能力の発動対象は<a href="#silver_fox">銀狐</a>・<a href="#child_fox_group">子狐系</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>の妖狐のいずれかです。</li>
-  <li>インターフェイスは占いと同じですが結果は何も表示されません。</li>
-  <li><a href="sub_role.php#mind_friend">共鳴者</a>を作る事に成功すると能力を失います (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li><a href="wolf.php#blue_wolf">蒼狼</a>の襲撃先を占って、占い先が<a href="sub_role.php#mind_lonely">はぐれ者</a>になってもその夜には能力は発動しません。</li>
+  <li>能力の発動対象は<a href="#silver_fox">銀狐</a>・<a href="#child_fox_group">子狐系</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>の妖狐のいずれか。</li>
+  <li>インターフェイスは占いと同じだが、結果は何も表示されない。</li>
+  <li><a href="sub_role.php#mind_friend">共鳴者</a>を作る事に成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+  <li><a href="wolf.php#blue_wolf">蒼狼</a>の襲撃先を占って、占い先が<a href="sub_role.php#mind_lonely">はぐれ者</a>になってもその夜には能力は発動しない。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -215,8 +215,8 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/58" target="_top">新役職考案スレ</a> の 58 が原型です。
-対占い・対襲撃耐性は通常の<a href="#fox">妖狐</a>と同じですが
+<a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/58" target="_top">新役職考案スレ(58)</a> が原型です。
+対占い・対人狼襲撃耐性は通常の<a href="#fox">妖狐</a>と同じですが
 呪い能力を持った代わりに<a href="human.php#guard_hunt">狩人</a>にも弱くなっています。
 </pre>
 
@@ -262,7 +262,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sacrifice_cat">猫神</a>・<a href="wolf.php#possessed_wolf">憑狼</a>
+<a href="human.php#sacrifice_cat">猫神</a>・<a href="ability.php#possessed">憑依能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -284,9 +284,9 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#doom_wolf">冥狼</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ</a> の 614 が原型です。
+<a href="wolf.php#doom_wolf">冥狼</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ(614)</a> が原型です。
 流石兄弟鯖＠やる夫人狼の管理人さんがモチーフです。
-発動日が違うので存在がすぐにバレることになります。
+発動日が違うので存在がすぐにばれることになります。
 </pre>
 
 <h3><a id="cursed_fox">天狐</a> (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
@@ -353,7 +353,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 やる夫人狼の初日呪殺アイコンの代名詞の一つである、ローゼンメイデンの真紅がモデルです。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/383" target="_top">新役職考案スレ</a> の 383 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/383" target="_top">新役職考案スレ(383)</a> が原型です。
 始めは「占い師に分かる妖狐」にしましたがバランス取りが難しいのでこういう実装になりました。
 「<a href="human.php#unconscious">無意識</a>」が騙れば人狼視点でほぼ紅狐確定と見なされるので注意が必要です。
 </pre>
@@ -362,7 +362,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="#fox_partner">仲間</a>が分からない妖狐。
-(他の妖狐・<a href="#child_fox">子狐</a>からも仲間であると分からない)
+(他の妖狐・<a href="#child_fox_group">子狐</a>からも仲間であると分からない)
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -390,8 +390,8 @@ OutputRolePageHeader('妖狐陣営');
 
 <h3><a id="child_fox_spec">基本スペック</a></h3>
 <ol>
-  <li>呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲われると殺されます。</li>
-  <li>夜の投票能力を持っている場合、成功率は 70% です。</li>
+  <li>呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する。</li>
+  <li>夜の投票能力を持っている場合、成功率は 70%。</li>
 </ol>
 
 <h3><a id="child_fox">子狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 α3-7～]</h3>
@@ -402,7 +402,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h5>Ver. 1.4.0 α17～</h5>
 <pre>
-占い能力を持ちました。
+占い能力を持つ。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -434,11 +434,17 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#stargazer_mage">占星術師</a>の<a href="#child_fox">子狐</a>バージョンです。
+仲間の騙りに合わせて<a href="human.php#stargazer_mage">占星術師</a>を騙ると効果的ですが、
+襲撃されやすいので他の役職を騙ってもいいかもしれません。
 </pre>
 
 <h3><a id="jammer_fox">月狐</a> (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
 <pre>
 <a href="wolf.php#jammer_mad">月兎</a>相当の能力を持つ子狐。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#phantom">占い妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -450,7 +456,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：死亡 + 熱病 / 処刑：熱病</h4>
 <pre>
 処刑されるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。
-処刑された場合は投票した人からランダムで一人、
+処刑された場合は投票した人からランダムで一人 (妖狐陣営を除く)、
 人狼に襲撃された場合は襲撃した人狼に付加する。
 </pre>
 <ol>
@@ -478,7 +484,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#wolf_howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/740" target="_top">新役職考案スレ</a> の 740 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/740" target="_top">新役職考案スレ(740)</a> が原型です。
 人狼の人数や<a href="wolf.php#silver_wolf">銀狼</a>の存在を誤認する可能性が出てくる事に注意しましょう。
 </pre>
 </body></html>

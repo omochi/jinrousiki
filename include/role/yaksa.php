@@ -9,6 +9,10 @@ class Role_yaksa extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function Ignored($user){ return ! $user->IsWolf(); }
+
+  function GetReduceRate(){ return 1 / 5; }
+
   function DistinguishVictory($victory){
     global $USERS;
 

@@ -486,11 +486,11 @@ EOF;
     case 'ogre':
       if($SELF->IsRoleGroup('mania')){ //神話マニア陣営は生存のみ
 	$win_flag = $SELF->IsLive();
-	break;
       }
-      //個別判定
-      $ROLES->actor = $SELF;
-      $win_flag = $ROLES->Load('ogre', true)->DistinguishVictory($victory);
+      else{ //個別判定
+	$ROLES->actor = $SELF;
+	$win_flag = $ROLES->Load('main_role', true)->DistinguishVictory($victory);
+      }
       break;
 
     default:

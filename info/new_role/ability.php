@@ -99,7 +99,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="ogre.php">鬼陣営</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 
-<h2><a id="psycho">精神鑑定関連能力者</a></h2>
+<h2><a id="psycho">精神関連能力者</a></h2>
 <pre>
 <a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
@@ -142,7 +142,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2><a id="cursed_group">呪い能力者</a></h2>
 <h3><a id="cursed">呪い所持者</a></h3>
 <pre>
-<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>
+<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="ogre.php#cursed_yaksa">滝夜叉姫</a>
 </pre>
 <h3><a id="voodoo">呪術能力者</a></h3>
 <pre>

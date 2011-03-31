@@ -9,6 +9,8 @@ class Role_indigo_ogre extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function GetReduceRate(){ return 1 / 5; }
+
   function DistinguishVictory($victory){
     global $USERS;
 

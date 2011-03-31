@@ -145,7 +145,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <pre>
 本人には<a href="lovers.php#self_cupid">求愛者</a>と表示されている蝙蝠。
 矢を撃つことはできるが<a href="sub_role.php#lovers">恋人</a>にはならず、矢を撃った先に<a href="sub_role.php#mind_receiver">受信者</a>もつかない。
-<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると殺される。
+<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡する。
 
 矢を撃ったはずの<a href="sub_role.php#lovers">恋人</a>が死んだのに自分が後追いしていない、
 <a href="human.php#psycho_mage">精神鑑定士</a>から「嘘つき」、<a href="human.php#sex_mage">ひよこ鑑定士</a>から「蝙蝠」判定されるなどで
@@ -321,7 +321,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dark_fairy">闇妖精</a>の<a href="sub_role.php#grassy">草原迷彩</a>バージョンです。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/654" target="_top">新役職考案スレ</a> の 654 が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/654" target="_top">新役職考案スレ(654)</a> が原型です。
 </pre>
 
 <h3><a id="light_fairy">光妖精</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7～]</h3>
@@ -396,6 +396,6 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <pre>
 蒼星石テスト鯖＠やる夫人狼と裏世界鯖＠東方陰陽鉄人狼のとある村がモデルです。
 システムメッセージは妖精系ですが、インターフェイスや内部処理は
-キューピッド系の処理を流用しています。
+<a href="lovers.php">キューピッド系</a>の処理を流用しています。
 </pre>
 </body></html>

@@ -28,7 +28,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」です。</li>
   <li><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
 </ol>
-<h3>Ver. 1.4.0 β19～</h3>
+<h5>Ver. 1.4.0 β19～</h5>
 <pre>
 ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、
 例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。
@@ -40,7 +40,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>襲撃先が<a href="human.php#guard_group">狩人系</a>に護衛されていた場合は失敗し、狩人には「護衛成功」のメッセージが出ます。</li>
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
   <li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
-  <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>の能力は有効です。</li>
+  <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>の能力は有効です。</li>
   <li><a href="human.php#escaper_group">逃亡者系</a>との関係は<a href="human.php#escaper_rule">基本ルール [逃亡者] </a>を参照してください。</li>
   <li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
     死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
@@ -51,7 +51,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
   </li>
 </ol>
-<h3>Ver. 1.4.0 β20～</h3>
+<h5>Ver. 1.4.0 β20～</h5>
 <pre>
 <a href="human.php#escaper">逃亡者</a>との関係の仕様を変更。
 </pre>
@@ -121,7 +121,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 罠：有効</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、<a href="sub_role.php#infected">感染者</a>に<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう吸血鬼。
-<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて4日目後の昼。
+<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
 襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
@@ -146,7 +146,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
   <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
   <li>本人は身代わりが発生しても分からない。</li>
-  <li>逃亡失敗・人狼に遭遇した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
+  <li>逃亡失敗・人狼に遭遇して死亡した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
   <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
@@ -155,7 +155,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の吸血鬼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ</a> の 728 が原型です。
+<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の吸血鬼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ(728)</a> が原型です。
 </pre>
 
 <h3><a id="soul_vampire">吸血姫</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>

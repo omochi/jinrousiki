@@ -75,12 +75,6 @@ class RoleManager{
   //処刑得票カウンター
   var $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
 
-  //鬼陣営
-  var $ogre_list = array('ogre', 'orange_ogre', 'indigo_ogre', 'poison_ogre', 'west_ogre',
-			 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'power_ogre',
-			 'revive_ogre', 'sacrifice_ogre', 'yaksa', 'succubus_yaksa',
-			 'dowser_yaksa');
-
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded->file = array();
@@ -92,16 +86,16 @@ class RoleManager{
     foreach($this->GetList($type) as $role){
       if(! $this->actor->IsRole($role)) continue;
       $stack[] = $role;
-      $this->LoadFile($role);
-      $this->LoadClass($role, 'Role_' . $role);
+      if($this->LoadFile($role)) $this->LoadClass($role, 'Role_' . $role);
     }
     $filter = $this->GetFilter($stack);
     return $shift ? array_shift($filter) : $filter;
   }
 
   function LoadFile($name){
-    if(is_null($name) || in_array($name, $this->loaded->file)) return false;
-    require_once($this->path . '/' . $name . '.php');
+    if(is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
+    if(in_array($name, $this->loaded->file)) return true;
+    require_once($file);
     $this->loaded->file[] = $name;
     return true;
   }
@@ -117,8 +111,8 @@ class RoleManager{
   }
 
   function GetList($type){
-    $name = $type . '_list';
-    $stack = $this->$name;
+    $stack = $type == 'main_role' ? array($this->actor->GetMainRole(true)) :
+      $this->{$type . '_list'};
     return is_array($stack) ? $stack : array();
   }
 

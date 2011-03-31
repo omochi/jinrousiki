@@ -290,7 +290,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#psycho">精神鑑定関連能力者</a>
+<a href="ability.php#psycho">精神関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -351,7 +351,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 月兎：無効 / 呪い：解呪</h4>
 <pre>
 対呪い専門の特殊な占い師。
-占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し(死亡メッセージは呪返しと同じ)、
+占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し(死因は「呪返し」)、
 誰かに呪いをかけられていた場合は解呪(呪返しが発動しない)する。
 呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。
 </pre>
@@ -391,7 +391,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#dummy_necromancer">夢枕人</a>・<a href="ability.php#dummy">夢能力者</a>
+<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -468,12 +468,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#spiritism_wizard">交霊術師</a>・<a href="ability.php#psycho">精神鑑定関連能力者</a>
+<a href="#spiritism_wizard">交霊術師</a>・<a href="ability.php#psycho">精神関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#psycho_mage">精神鑑定士</a>の霊能者バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/971" target="_top">新役職考案スレ(971)</a> が原型です。
-<a href="mania.php">神話マニア陣営</a>など、変化する役職を看破する能力がコンセプトで、
+「変化する役職 (例：<a href="mania.php#mania_group">神話マニア系</a>) を看破する能力」がコンセプトで、
 それを「前世」と表現しています。
 </pre>
 
@@ -592,6 +592,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 霊能結果をランダムから「村人」⇔「人狼」反転に変更
 <a href="#psycho_mage">精神鑑定士</a>から「嘘つき」判定を受けた場合は、本人視点夢枕人確定となる。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dummy_mage">夢見人</a>の霊能者バージョンです。
@@ -651,7 +655,7 @@ PP ラインの計算を難しくさせるために作成してみました。
   <li>判定時に対象が死亡していた場合は無効。</li>
   <li>自分が処刑された場合は無効、毒やショック死で死亡した場合は有効。</li>
   <li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外。</li>
-  <li>ショック死させた場合の死因は「神主に酔い潰された」で<a href="#cure_pharmacist">河童</a>の能力発動対象外。</li>
+  <li>ショック死させた場合の死因は「神主に酔い潰された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -669,12 +673,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>です。</li>
+  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>。</li>
   <li>処刑先が決定されて、投票先が処刑者ではない場合に発動する。</li>
   <li>判定時に対象が死亡していた場合は無効。</li>
   <li>自分が処刑された場合は無効、毒やショック死で死亡した場合は有効。</li>
   <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
-  <li>ショック死させた場合の死因は「封印された」で<a href="#cure_pharmacist">河童</a>の能力発動対象外。</li>
+  <li>ショック死させた場合の死因は「封印された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -691,7 +695,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
 <pre>
-<a href="#poison_cat">猫又</a>相当の蘇生能力を持った上位巫女。
+<a href="#poison_cat">猫又</a>相当の<a href="ability.php#revive">蘇生</a>能力を持った上位巫女。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1150,6 +1154,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="wolf.php#dream_eater_mad">獏</a>には圧倒的なアドバンテージを持っており、何らかの形で遭遇すると
 一方的に狩ることができる。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dummy_mage">夢見人</a>の狩人バージョンです。
@@ -1241,6 +1249,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 本人には「『相方が身代わり君』の共有者」と表示されている村人。
 が、夜に発言しても「囁き声」にはならないし、本物の共有者の声も聞こえない。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dummy_mage">夢見人</a>の共有者バージョンです。
@@ -1278,7 +1290,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[毒能力] 処刑：人狼系 + 妖狐陣営 / 襲撃：有り / 薬師判定：強い毒</h4>
 <pre>
 処刑された時の毒の対象が人外 (<a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>) 限定の上位埋毒者。本人の表記は「埋毒者」。
-毒の巻き込み対象設定 (<a href="../script_info.php" target="_top">特徴と仕様</a>参照) が「投票者ランダム」だった場合、
+毒の巻き込み対象設定 (<a href="../script_info.php#difference_poison_vote" target="_top">特徴と仕様</a>参照) が「投票者ランダム」だった場合、
 対象者が投票していなければ毒は不発になる。
 </pre>
 <h4>関連役職</h4>
@@ -1350,6 +1362,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 処刑された場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dummy_mage">夢見人</a>の埋毒者バージョンです。
@@ -1401,14 +1417,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 蘇生能力を持った<a href="#poison">埋毒者</a>。蘇生成功率は 25%。
 蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
 </pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#revive_medium">風祝</a>
-</pre>
 <h5>Ver. 1.4.0 α19～</h5>
 <pre>
 猫又が蘇生する事はありません。
 猫又が蘇生対象者に選ばれた場合は失敗扱いになります。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#revive_medium">風祝</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1562,13 +1578,13 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
   <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
   <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
-<h4>関連役職</h4>
-<pre>
-<a href="#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
-</pre>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
 処刑されたらショック死抑制能力無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2164,7 +2180,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#psycho">精神鑑定関連能力者</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="ability.php#psycho">精神関連能力者</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -39,7 +39,8 @@ Ver. 1.5.0
 <a href="#150alpha3">α3</a>
 <a href="#150alpha4">α4</a>
 <a href="#150alpha5">α5</a>
-<a href="#150alpha6">α6</a><br>
+<a href="#150alpha6">α6</a>
+<a href="#150alpha7">α7</a><br>
 Ver. 1.4.0
 <a href="#140alpha2">α2</a>
 <a href="#140alpha3">α3-7</a>
@@ -2030,7 +2031,7 @@ Ver. 1.4.0
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
-  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#psycho_mage">精神鑑定士</a>が『嘘吐き』判定を出す人の全滅」。<br>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#psycho_mage">精神鑑定士</a>が『嘘つき』判定を出す人の全滅」。<br>
     人狼に襲撃されて死亡した場合、一定確率 (40%) で蘇生する。
   </td>
   <td>Ver. 1.4.0 β22</td>
@@ -2184,6 +2185,24 @@ Ver. 1.4.0
   <td class="ability"><a href="human.php#necromancer_group">霊能</a>能力を持つ魔法使いの一種。魔法の効果は、<a href="human.php#necromancer">霊能者</a>・<a href="human.php#soul_mage">雲外鏡</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#embalm_necromancer">死化粧師</a>・性別のいずれか。
   </td>
   <td>Ver. 1.5.0 α6</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#betray_yaksa" id="150alpha7">夜叉丸</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">夜叉系の一種で勝利条件は「自分自身の生存 + <a href="chiroptera.php">蝙蝠陣営</a>の全滅 + 村人陣営の勝利」。</td>
+  <td>Ver. 1.5.0 α7</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#cursed_yaksa">滝夜叉姫</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼<br>(呪返し)</td>
+  <td>鬼</td>
+  <td class="ability">呪いを持った夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>の全滅」。</td>
+  <td>Ver. 1.5.0 α7</td>
 </tr>
 </table>
 

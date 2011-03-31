@@ -9,6 +9,8 @@ class Role_east_ogre extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function GetReduceRate(){ return 1 / 2; }
+
   function DistinguishVictory($victory){
     global $ROLES, $USERS;
 

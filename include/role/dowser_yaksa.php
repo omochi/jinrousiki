@@ -9,6 +9,10 @@ class Role_dowser_yaksa extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function Ignored($user){ return count($user->role_list) == 1; }
+
+  function GetReduceRate(){ return 1 / 2; }
+
   function DistinguishVictory($victory){
     global $ROLES, $USERS;
 

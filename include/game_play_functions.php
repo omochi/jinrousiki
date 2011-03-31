@@ -156,24 +156,20 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('scanner')){ //さとり系
     $ROLE_IMG->Output($SELF->main_role);
 
-    if($SELF->IsRole('mind_scanner', 'evoke_scanner', 'presage_scanner')){
-      if($ROOM->date == 1){
-	if($ROOM->IsNight()){ //初日夜の投票
-	  OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
-	}
-      }
-      else{ //2日目以降、自分のサトラレ/口寄せ/受託者を表示
+    if($SELF->IsRole('mind_scanner', 'presage_scanner') ||
+       ($SELF->IsRole('evoke_scanner') && ! $ROOM->IsOpenCast())){ //さとり・イタコ・件
+      if($ROOM->date > 1){ //自分のサトラレ系対象を表示
 	$stack = array();
 	switch($SELF->main_role){
-	case 'mind_scanner':
+	case 'mind_scanner': //さとり (サトラレ)
 	  $role = 'mind_read';
 	  break;
 
-	case 'evoke_scanner':
+	case 'evoke_scanner': //イタコ (口寄せ)
 	  $role = 'mind_evoke';
 	  break;
 
-	case 'presage_scanner':
+	case 'presage_scanner': //件 (受託者)
 	  $role = 'mind_presage';
 	  break;
 	}
@@ -183,8 +179,11 @@ function OutputAbility(){
 	OutputPartner($stack, 'mind_scanner_target');
 	unset($stack);
       }
+      if($ROOM->date == 1 && $ROOM->IsNight()){ //初日夜の投票
+	OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
+      }
     }
-    elseif($SELF->IsRole('clairvoyance_scanner')){
+    elseif($SELF->IsRole('clairvoyance_scanner')){ //猩々
       if($ROOM->date > 2) OutputSelfAbilityResult('CLAIRVOYANCE_RESULT'); //透視結果
       if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
 	OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
@@ -393,6 +392,10 @@ function OutputAbility(){
       unset($stack);
     }
 
+    if($ROOM->date > 1 && ! ($SELF->IsRole('white_fox', 'poison_fox') || $SELF->IsChildFox())){
+      OutputSelfAbilityResult('FOX_EAT'); //襲撃メッセージを表示
+    }
+
     if($SELF->IsRole('jammer_fox')){ //月狐
       if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO');
     }
@@ -403,19 +406,19 @@ function OutputAbility(){
     else{
       switch($SELF->main_role){
       case 'emerald_fox': //翠狐
-	if($SELF->IsActive() && $ROOM->IsNight()){
+	if($SELF->IsActive() && $ROOM->IsNight()){ //夜の投票
 	  OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO');
 	}
 	break;
 
       case 'voodoo_fox': //九尾
-	if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
+	if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO'); //夜の投票
 	break;
 
       case 'revive_fox': //仙狐
-	if($ROOM->IsOpenCast()) break;
 	if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
-	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+	//夜の投票
+	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight() && ! $ROOM->IsOpenCast()){
 	  OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
 	}
 	break;
@@ -433,10 +436,6 @@ function OutputAbility(){
 	}
 	break;
       }
-    }
-
-    if($ROOM->date > 1 && ! ($SELF->IsRole('white_fox', 'poison_fox') || $SELF->IsChildFox())){
-      OutputSelfAbilityResult('FOX_EAT'); //襲撃メッセージを表示
     }
   }
   elseif($SELF->IsRoleGroup('chiroptera')){ //蝙蝠系
@@ -475,9 +474,6 @@ function OutputAbility(){
   }
   elseif($SELF->IsOgre()){ //鬼陣営
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
-      OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
-    }
     if($ROOM->date > 2 && $SELF->IsRole('sacrifice_ogre')){ //酒呑童子
       //洗脳者を表示
       $stack = array();
@@ -486,6 +482,9 @@ function OutputAbility(){
       }
       OutputPartner($stack, 'psycho_infected_list');
       unset($stack);
+    }
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
+      OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
     }
   }
   elseif($SELF->IsRole('incubate_poison')){ //潜毒者

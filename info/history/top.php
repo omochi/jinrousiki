@@ -5,6 +5,12 @@ $INIT_CONF->LoadFile('info_functions');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
 <!-- Information の改訂履歴を残したい場合はこのページを使用してください -->
+<h2>Ver. 1.5.0 α5 アップロード (2011/03/10 (Thu) 21:37)</h2>
+<ul>
+  <li>「舟幽霊」「黒衣」「釣瓶落とし」「八咫烏」実装</li>
+  <li>サブ役職「入道」実装</li>
+</ul>
+
 <h2>Ver. 1.5.0 α4 アップロード (2011/02/18 (Fri) 05:06)</h2>
 <ul>
   <li>「比丘尼」「祈祷師」実装</li>

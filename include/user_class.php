@@ -88,9 +88,23 @@ class User{
     return is_null($role) ? $id : $role . '[' . $id . ']';
   }
 
+  //HN を取得 (システムメッセージ用)
+  function GetHandleName($uname, $result = NULL){
+    global $USERS;
+
+    $stack = array($this->handle_name, $USERS->GetHandleName($uname, true));
+    if(isset($result)) $stack[] = $result;
+    return implode("\t", $stack);
+  }
+
   //現在の役職を取得
   function GetRole(){
     return $this->updated['role'] ? $this->updated['role'] : $this->role;
+  }
+
+  //現在のメイン役職を取得
+  function GetMainRole($virtual = false){
+    return $virtual && isset($this->virtual_role) ? $this->virtual_role : $this->main_role;
   }
 
   //現在の所属陣営を取得

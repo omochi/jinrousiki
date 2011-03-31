@@ -9,6 +9,8 @@ class Role_power_ogre extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function GetReduceRate(){ return 7 / 10; }
+
   function DistinguishVictory($victory){
     global $USERS;
     return $this->IsLive() && count($USERS->GetLivingUsers()) <= ceil(count($USERS->rows) / 3);

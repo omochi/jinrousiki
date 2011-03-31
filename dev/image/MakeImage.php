@@ -369,11 +369,11 @@ class RoleMessageList{
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   var $barrier_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#結界師#です。二日目以降、同時に複数の人を一定確率で_護衛_できる#魔法#をかけることができます。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#結界師#です。二日目以降、同時に複数の人を一定確率で_護衛_できる#魔法#をかけることができます。\n　古来より伝えられし念動結界術…。その力を以って、悪しき者共から人々を守るために今、此処に発動ッ！",
     'type' => 'wizard', 'delimiter' => array('_' => 'guard'));
 
   var $spiritism_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事など出来ないのだから。",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
 
   var $soul_wizard = array(
@@ -883,13 +883,21 @@ class RoleMessageList{
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉|です。あなた自身の生存と#人狼系#の全滅が勝利条件になります。夜の闇に溶け込み、#狼#を見つけ出して滅ぼすのです。",
     'type' => 'ogre');
 
+  var $betray_yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉丸|です。あなた自身の生存、#蝙蝠陣営#の全滅、_村人陣営_の勝利が勝利条件になります。",
+    'type' => 'yaksa', 'delimiter' => array('#' => 'chiroptera', '_' => 'human'));
+
+  var $cursed_yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|滝夜叉姫|、#呪い#を持っています。あなた自身の生存と_占い師系_、^魔法使い系^の全滅が勝利条件になります。",
+    'type' => 'yaksa', 'delimiter' => array('#' => 'wolf', '_' => 'mage', '^' => 'wizard'));
+
   var $succubus_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。欲望の求めるままに、村の#男#を喰らい尽くすのです。",
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   var $dowser_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|毘沙門天|です。あなた自身の生存とあなたよりサブ役職の所持数が多い人を全滅させることが勝利条件になります。\n　曰く、過ぎたるは、なお及ばざるが如し。力を持ち過ぎた者が大きな不幸を招く前に、その力を以って裁きを与えるのです！",
-    'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
+    'type' => 'yaksa');
 
   var $mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|神話マニア|です。初日の夜に指定した人のメイン役職をコピーすることができます。\n　星の数ほどある神話。誰を相手取るかによって何が最も適切なのかを的確に選び取るのです。",
@@ -1384,6 +1392,8 @@ class RoleMessageList{
   var $result_revive_ogre = array('message' => "さんは|茨木童子|でした", 'type' => 'result_ogre');
   var $result_sacrifice_ogre = array('message' => "さんは|酒呑童子|でした", 'type' => 'result_ogre');
   var $result_yaksa = array('message' => "さんは|夜叉|でした", 'type' => 'result_ogre');
+  var $result_betray_yaksa = array('message' => "さんは|夜叉丸|でした", 'type' => 'result_yaksa');
+  var $result_cursed_yaksa = array('message' => "さんは|滝夜叉姫|でした", 'type' => 'result_yaksa');
   var $result_succubus_yaksa = array('message' => "さんは|荼枳尼天|でした", 'type' => 'result_yaksa');
   var $result_dowser_yaksa = array('message' => "さんは|毘沙門天|でした", 'type' => 'result_yaksa');
   var $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
@@ -1550,5 +1560,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
 #$builder->Output('psycho_necromancer');
-#$builder->Output('barrier_wizard');
-$builder->Output('spiritism_wizard');
+#$builder->Output('betray_yaksa');
+#$builder->Output('cursed_yaksa');
+$builder->Output('sacrifice_mania');
