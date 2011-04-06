@@ -672,7 +672,8 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'mind_read', 'mind_evoke', 'mind_presage', 'mind_lonely',
 	     'mind_receiver', 'mind_friend', 'mind_sympathy', 'infected', 'psycho_infected',
-	     'possessed_target', 'possessed', 'bad_status', 'protected', 'wirepuller_luck');
+	     'possessed_target', 'possessed', 'bad_status', 'protected', 'wirepuller_luck',
+	     'changed_therian');
 
   //これ以降はサブ役職非公開オプションの影響を受ける
   if($ROOM->IsOption('secret_sub_role')) return;

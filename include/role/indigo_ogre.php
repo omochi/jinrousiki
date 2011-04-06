@@ -16,7 +16,7 @@ class Role_indigo_ogre extends Role{
 
     if($this->IsDead() || strpos($victory, 'fox') !== false) return false;
     foreach($USERS->rows as $user){
-      if($user->IsLive() && $user->GetCamp(true) == 'fox') return false;
+      if($user->IsLive() && $user->IsCamp('fox', true)) return false;
     }
     return true;
   }

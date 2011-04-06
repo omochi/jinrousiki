@@ -525,9 +525,17 @@ OutputInfoPageHeader('闇鍋モード');
       <li><?php echo $GAME_OPT_MESS->topping_d ?> / 猫又系1 抗毒狼1</li>
       <li><?php echo $GAME_OPT_MESS->topping_e ?> / 厄神1 憑狼1</li>
       <li><?php echo $GAME_OPT_MESS->topping_f ?> / 鬼陣営2</li>
+      <li><?php echo $GAME_OPT_MESS->topping_g ?> / 狂人系1 夢系1 精神系1<br>
+	夢系：(不審者・無意識・<a href="new_role/ability.php#dummy">夢能力者</a>)<br>
+	精神系：(精神鑑定士・精神感応者・迷い人・獏・茨木童子)
+      </li>
     </ol>
   </li>
 </ol>
+<h3>Ver. 1.5.0 α7～</h3>
+<pre>
+TypeG 追加
+</pre>
 <h3>Ver. 1.4.0 RC1～</h3>
 <pre>
 ランダム枠を作成することが出来ます。

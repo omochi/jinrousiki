@@ -182,6 +182,7 @@ $SELF = $USERS->ByID(1);
 
 //-- データ出力 --//
 OutputHTMLHeader('配役テスト', 'game'); //HTMLヘッダ
+echo '</head><body>'."\n";
 OutputPlayerList(); //プレイヤーリスト
 AggregateVoteGameStart(); //配役処理
 $ROOM->date++;

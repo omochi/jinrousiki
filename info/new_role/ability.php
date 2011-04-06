@@ -101,7 +101,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2><a id="psycho">精神関連能力者</a></h2>
 <pre>
-<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
+<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#psycho_escaper">迷い人</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
 
 <h2><a id="sex">性別関連能力者</a></h2>

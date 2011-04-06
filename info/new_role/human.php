@@ -722,7 +722,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3><a id="priest_rule">基本ルール</a> [司祭]</h3>
 <ol>
-  <li>判定結果は夜も表示されたままですが、昼の処刑結果は反映されていない。</li>
+  <li>判定結果は夜も表示されたままだが、昼の処刑結果は反映されていない。</li>
   <li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象。</li>
 </ol>
 
@@ -940,6 +940,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#guard">狩人</a>
 <a href="#hunter_guard">猟師</a>
 <a href="#blind_guard">夜雀</a>
+<a href="#gatekeeper_guard">門番</a>
 <a href="#reflect_guard">侍</a>
 <a href="#poison_guard">騎士</a>
 <a href="#fend_guard">忍者</a>
@@ -969,7 +970,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 2-3. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
 2-4. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 3. <a href="#hunter_guard">猟師</a>はさらに<a href="fox.php">妖狐陣営</a>を狩ることができる。
-4. <a href="#reflect_guard">侍</a>はさらに<a href="ogre.php">鬼陣営</a>を狩ることができまる。
+4. <a href="#reflect_guard">侍</a>はさらに<a href="ogre.php">鬼陣営</a>を狩ることができる。
 5. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができる。
 6. <a href="wolf.php#dream_eater_mad">獏</a>と<a href="#dummy_guard">夢守人</a>の関係は<a href="wolf.php#dream_eater_mad">獏</a>を参照。
 7. 対象が身代わり死していた場合は狩りが発生しない (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)。
@@ -1022,6 +1023,21 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#hunter_guard">猟師</a>とは対照的に、護衛に特化した特殊狩人で、「よすずめ」と読みます。
 死体の状況を見ることで<a href="chiroptera.php#dark_fairy">闇妖精</a>と区別することができるので、
 襲撃役の<a href="wolf.php#wolf_group">人狼</a>はうっかり<a href="sub_role.php#blinder">目隠し</a> CO しないように気をつけましょう。
+</pre>
+
+<h3><a id="gatekeeper_guard">門番</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α7～]</h3>
+<h4>[狩人能力] 護衛：制限有り / 狩り：無し / 罠：有効</h4>
+<pre>
+<a href="#guard_hunt">狩り能力</a>は持たないが、護衛先の<a href="ability.php#assassin">暗殺</a>も防ぐことができる特殊な狩人。
+</pre>
+<ol>
+<li>対<a href="wolf.php#wolf_group">人狼</a>・対<a href="vampire.php">吸血鬼</a>の護衛能力は<a href="#guard">狩人</a>と同じ。</li>
+<li>対暗殺能力の護衛は<a href="#guard_limit">護衛制限</a>の影響を受けない。</li>
+<li>何かしらの襲撃を防ぐことが出来た場合は「護衛成功」メッセージが表示される。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+暗殺能力に対する護衛力を持った特殊狩人で、対<a href="ogre.php#ogre_do_spec">人攫い</a>が主眼です。
 </pre>
 
 <h3><a id="reflect_guard">侍</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>
@@ -1532,7 +1548,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/24" target="_top">新役職考案スレ</a> の 24 が原型です。「くすし」と読みます。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/24" target="_top">新役職考案スレ(24)</a> が原型で、「くすし」と読みます。
 <a href="wolf.php#poison_wolf">毒狼</a>の対抗役職です。
 <a href="#poison_group">埋毒者系</a>に対しても効果を発揮します。
 </pre>
@@ -1638,18 +1654,23 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 
 <h3><a id="assassin_spec">暗殺の仕様</a></h3>
 <ol>
-<li>暗殺対象にできない人はいません (人狼・妖狐でも選択可能)。</li>
-<li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生します。</li>
-<li>反射が発生した場合は、特殊暗殺能力者であっても即座に暗殺されます。<br>
+<li>全ての生存者を暗殺対象に選択可能 (人狼・妖狐でも可)。</li>
+<li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生する。</li>
+<li>反射が発生した場合は、特殊暗殺能力者であっても即座に暗殺される。<br>
   (例：<a href="#doom_assassin">死神</a>が反射されても暗殺で即死する)</li>
-<li><a href="#reflect_guard">侍</a>・<a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射されます。</li>
-<li><a href="#cursed_brownie">祟神</a>・<a href="ogre.php">鬼陣営</a>を対象にした場合は一定確率で反射されます。</li>
-<li>暗殺された人の死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「暗殺された」です。</li>
-<li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効です。</li>
-<li>暗殺能力者がお互いを襲撃した場合は相打ちになります。</li>
-<li>暗殺された<a href="#mage">占い師</a>の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効になります。</li>
-<li>暗殺されても<a href="#guard_group">狩人系</a>の護衛判定は有効です。</li>
+<li><a href="#reflect_guard">侍</a>・<a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射される。</li>
+<li><a href="#cursed_brownie">祟神</a>・<a href="ogre.php">鬼陣営</a>を対象にした場合は一定確率で反射される。</li>
+<li>暗殺された人の死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「暗殺された」。</li>
+<li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効。</li>
+<li>対象が<a href="#gatekeeper_guard">門番</a>に護衛されていたら無効。</li>
+<li>暗殺能力者がお互いを襲撃した場合は相打ちになる。</li>
+<li>暗殺された<a href="#mage">占い師</a>の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効。</li>
+<li>暗殺されても<a href="#guard_group">狩人系</a>の護衛判定は有効。</li>
 </ol>
+<h5>Ver. 1.5.0 α7～</h5>
+<pre>
+<a href="#gatekeeper_guard">門番</a>の実装
+</pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
 暗殺反射システムの実装
@@ -1697,10 +1718,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 詳細な判定順は<a href="../spec.php#vote_night">詳細な仕様</a>参照。
 </pre>
 <ol>
-<li>一度死んだ人の能力発動はキャンセルされます。</li>
-<li>「反魂」可能な対象は恋人以外全てです。</li>
-<li>自分が暗殺されても投票は有効です (暗殺系の処理は同時並行処理扱い)。</li>
-<li>「反魂」先が憑依能力者だった場合は、元の人が蘇生します(<a href="wolf.php#possessed_wolf_revive">憑狼</a>の処理と同じ)。</li>
+<li>一度死んだ人の能力発動はキャンセルされる。</li>
+<li>「反魂」可能な対象は<a href="sub_role.php#lovers">恋人</a>以外全て。</li>
+<li>自分が暗殺されても投票は有効 (暗殺系の処理は同時並行処理扱い)。</li>
+<li>「反魂」先が憑依されていた場合は、元の人が蘇生する (<a href="wolf.php#possessed_wolf_revive">憑狼</a>の処理と同じ)。</li>
 </ol>
 <h4>能力発動例</h4>
 <pre>
@@ -1722,7 +1743,6 @@ Bの蘇生処理はキャンセル
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の八雲 紫のスペルカード「生と死の境界」がモチーフです。
-基本的には<a href="#assassin">暗殺者</a>とほぼ同じ動きで問題ないでしょう。
 確定で人狼に噛み殺されそうな人を狙った時に真価を発揮します。
 失敗すると大惨事となりますが……
 </pre>
@@ -1733,9 +1753,9 @@ Bの蘇生処理はキャンセル
 暗殺した人の役職を知る事ができる、上位暗殺者。
 遺言を残せない。
 
-人狼が襲撃して発動する可能性のある毒能力者を暗殺した場合は、本人は毒死する。
+人狼が襲撃して発動する可能性のある<a href="ability.php#poison">毒能力者</a>を暗殺した場合は、本人は毒死する。
 例1) <a href="wolf.php#poison_wolf">毒狼</a>を襲撃したら毒死
-例2) 恋人の有無を問わず<a href="#poison_jealousy">毒橋姫</a>を襲撃したら毒死
+例2) <a href="sub_role.php#lovers">恋人</a>の有無を問わず<a href="#poison_jealousy">毒橋姫</a>を襲撃したら毒死
 例3) <a href="#chain_poison">連毒者</a>は毒能力者に中らないと発動しないので不発。
 </pre>
 <h4>関連役職</h4>
@@ -1775,7 +1795,7 @@ Bの蘇生処理はキャンセル
 
 <h3><a id="mind_scanner">さとり</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <pre>
-初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする。
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする、さとり系の基本種。
 <a href="wolf.php#wolf_howl">人狼の遠吠え</a>が一切見えない。
 </pre>
 <ol>
@@ -1828,7 +1848,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <ol>
 <li>投票結果が出るのは 2 日目以降。</li>
-<li>自分が<a href="wolf.php#wolf_group">人狼</a>に襲撃されて死亡したら<a href="sub_role.php#mind_presage">受託者</a>に自分が誰に襲撃されたかメッセージが送られる。</li>
+<li>自分が人狼に襲撃されて死亡したら<a href="sub_role.php#mind_presage">受託者</a>に自分が誰に襲撃されたかメッセージが送られる。</li>
 <li>襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
 <li>身代わり君を対象に選ぶことはできない。</li>
 </ol>
@@ -1915,7 +1935,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="jealousy">橋姫</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22～]</h3>
 <pre>
 昼の投票時に、同一<a href="lovers.php">キューピッド</a>の<a href="sub_role.php#lovers">恋人</a>が揃って自分に投票したら
-投票した<a href="sub_role.php#lovers">恋人</a>をショック死させる。
+投票した<a href="sub_role.php#lovers">恋人</a>をショック死させる、橋姫系の基本種。
 </pre>
 <h4>詳細な仕様</h4>
 <pre>
@@ -1941,7 +1961,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 対恋人役職です。
-新役職考案スレ の <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/2" target="_top">2</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/21" target="_top">21</a>、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/44" target="_top">44</a> を参考にしています。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/2" target="_top">新役職考案スレ(2)</a>・<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/21" target="_top">(21)</a>・<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/44" target="_top">(44)</a> を参考にしています。
 別れさせる処理が難しいのでこういう実装になりました。
 </pre>
 
@@ -1984,6 +2004,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="sub_role.php#lovers">恋人</a>のみに中る埋毒者で、本人の表記は「埋毒者」。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#poison">毒能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#poison_group">埋毒者</a>の亜種ですが、恋人限定なので所属は橋姫系です。
@@ -2002,7 +2026,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3><a id="brownie">座敷童子</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
 <h4>[耐性] 処刑：<a href="sub_role.php#febris">熱病</a></h4>
 <pre>
-役職「<a href="#human">村人</a>」の処刑投票数を +1 する。
+役職「<a href="#human">村人</a>」の処刑投票数を +1 する、座敷童子系の基本種。
 生きている間のみ有効で、複数生存していても効果は重複しない。
 処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
 <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、
@@ -2391,6 +2415,7 @@ MVP の賞品としてプレゼントしたものです。
 </p>
 <p>
 <a href="#escaper">逃亡者</a>
+<a href="#psycho_escaper">迷い人</a>
 <a href="#incubus_escaper">一角獣</a>
 </p>
 
@@ -2431,10 +2456,25 @@ MVP の賞品としてプレゼントしたものです。
 他国に実在する役職です。村勝利を課せられた<a href="chiroptera.php">蝙蝠</a>のような存在ですね。
 </pre>
 
+<h3><a id="psycho_escaper">迷い人</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α7～]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
+<pre>
+逃亡先が「嘘つき」(<a href="#psycho_mage">精神鑑定士</a>)だった場合は死亡する、逃亡者の亜種。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#psycho">精神関連能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+逃亡者の<a href="#psycho_mage">精神鑑定士</a>バージョンで、
+Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
+</pre>
+
 <h3><a id="incubus_escaper">一角獣</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
-逃亡先が女性以外だった場合は死亡する、特殊な逃亡者。
+逃亡先が女性以外だった場合は死亡する、逃亡者の亜種。
 </pre>
 <h4>関連役職</h4>
 <pre>

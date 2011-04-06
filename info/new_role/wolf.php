@@ -1115,7 +1115,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li>観戦画面・配役公開されていない霊界でも能力は有効。</li>
   <li>対象が<a href="sub_role.php#possessed_target">憑依</a>中でも能力は有効。</li>
 </ol>
-<h5>Ver. 1.5.0 α6～</h5>
+<h5>Ver. 1.4.8 / Ver. 1.5.0 α6～</h5>
 <pre>
 対象が<a href="sub_role.php#possessed_target">憑依</a>中でも能力が適用される。
 </pre>

@@ -16,7 +16,7 @@ class Role_saint extends RoleVoteAbility{
     foreach($ROLES->stack->vote_possible as $target_uname){ //最多得票者の情報を収集
       $user = $USERS->ByRealUname($target_uname); //$target_uname は仮想ユーザ
       if($user->IsRole('saint')) $stack[] = $target_uname;
-      if($user->GetCamp(true) != 'human') $target_stack[] = $target_uname;
+      if(! $user->IsCamp('human', true)) $target_stack[] = $target_uname;
     }
     if(count($stack) > 0 && count($target_stack) < 2){ //対象を一人に固定できる時のみ有効
       if(isset($target_stack[0])) $uname = $target_stack[0];

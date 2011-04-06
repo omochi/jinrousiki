@@ -17,7 +17,7 @@ class Role_trap_common extends RoleVoteAbility{
     $target_list = array();
     foreach(array_keys($ROLES->stack->target) as $uname){ //非村人陣営の ID と仮想ユーザ名を収集
       $user = $USERS->ByRealUname($uname);
-      if($user->GetCamp(true) != 'human'){
+      if(! $user->IsCamp('human', true)){
 	$target_list[$user->user_no] = $USERS->ByVirtual($user->user_no)->uname;
       }
     }

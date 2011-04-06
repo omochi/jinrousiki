@@ -16,7 +16,7 @@ class Role_orange_ogre extends Role{
 
     if($this->IsDead() || $victory == 'wolf') return false;
     foreach($USERS->rows as $user){
-      if($user->IsLive() && $user->GetCamp(true) == 'wolf') return false;
+      if($user->IsLive() && $user->IsCamp('wolf', true)) return false;
     }
     return true;
   }

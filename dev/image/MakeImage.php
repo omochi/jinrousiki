@@ -136,7 +136,7 @@ class RoleMessageList{
     'type' => 'necromancer');
 
   var $psycho_necromancer = array(
-    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#精神感応者#です。_処刑_者の前世を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#精神感応者#です。_処刑_者の前世を知ることができます。\n　前世に縛られし者の魂を輪廻の輪から解き放ってあげましょう。",
     'type' => 'necromancer');
 
   var $embalm_necromancer = array(
@@ -210,6 +210,10 @@ class RoleMessageList{
   var $blind_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#夜雀#です。#狩り#能力はありませんが、#護衛#先を襲撃した人外を^目隠し^にして撃退することができます。\n　静寂な夜の翼、舞うは守護の羽。その羽で大事な人を護り、_狼_に終わらぬ夜を、=吸血鬼=に迷いの夜の贈り物を。",
     'type' => 'guard', 'delimiter' => array('^' => 'no_last_words', '=' => 'vampire'));
+
+  var $gatekeeper_guard = array(
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。",
+    'type' => 'guard', 'delimiter' => array('^' => 'assassin', '=' => 'vampire'));
 
   var $reflect_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#侍#です。^暗殺^を跳ね返すことができます。また、#護衛#先が=鬼=なら#狩る#ことができます。\n　かかる火の粉は振り払い、浮き世の=鬼=を斬り捨てて、悪しき_狼_の凶刃から村人を守るのです！",
@@ -419,6 +423,10 @@ class RoleMessageList{
   var $escaper = array(
     'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#逃亡者#です。臆病なあなたは夜の間、誰かの家の近くに隠れて夜をすごすことになります。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで_人狼_から逃げ切るのです！",
     'type' => 'human', 'delimiter' => array('#' => 'escaper', '_' => 'wolf'));
+
+  var $psycho_escaper = array(
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#迷い人#です。夜の#逃亡#先が_嘘つき_か、_人狼_に襲撃されたら死んでしまいます。\n　闇夜に迷って道を尋ねて、示されたのは夜明けの家路か、それとも冥府に続く細道か。",
+    'type' => 'escaper');
 
   var $incubus_escaper = array(
     'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて乙女の純潔を守るのだ！",
@@ -884,11 +892,11 @@ class RoleMessageList{
     'type' => 'ogre');
 
   var $betray_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉丸|です。あなた自身の生存、#蝙蝠陣営#の全滅、_村人陣営_の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉丸|です。あなた自身の生存、#蝙蝠陣営#の全滅、_村人陣営_の勝利が勝利条件になります。\n　悪逆無道の主人に背いて、正義を知ったあなたは許せない。我が身可愛さに飛び回る、不義の輩を。",
     'type' => 'yaksa', 'delimiter' => array('#' => 'chiroptera', '_' => 'human'));
 
   var $cursed_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|滝夜叉姫|、#呪い#を持っています。あなた自身の生存と_占い師系_、^魔法使い系^の全滅が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|滝夜叉姫|、#呪い#を持っています。あなた自身の生存と_占い師系_、^魔法使い系^の全滅が勝利条件になります。\n　一族郎党を滅ぼされ、陰陽の使い手に敗れたあなた。これは正当な復讐。荒御魂の声に導かれ、怨敵を討つのです。",
     'type' => 'yaksa', 'delimiter' => array('#' => 'wolf', '_' => 'mage', '^' => 'wizard'));
 
   var $succubus_yaksa = array(
@@ -1214,6 +1222,7 @@ class RoleMessageList{
   var $result_guard = array('message' => "さんは|狩人|でした", 'delimiter' => array('|' => 'guard'));
   var $result_hunter_guard = array('message' => "さんは|猟師|でした", 'type' => 'result_guard');
   var $result_blind_guard = array('message' => "さんは|夜雀|でした", 'type' => 'result_guard');
+  var $result_gatekeeper_guard = array('message' => "さんは|門番|でした", 'type' => 'result_guard');
   var $result_reflect_guard = array('message' => "さんは|侍|でした", 'type' => 'result_guard');
   var $result_poison_guard = array('message' => "さんは|騎士|でした", 'type' => 'result_guard');
   var $result_fend_guard = array('message' => "さんは|忍者|でした", 'type' => 'result_guard');
@@ -1275,6 +1284,7 @@ class RoleMessageList{
   var $result_silver_doll = array('message' => "さんは|露西亜人形|でした", 'type' => 'result_doll');
   var $result_doll_master = array('message' => "さんは|人形遣い|でした", 'type' => 'result_doll');
   var $result_escaper = array('message' => "さんは|逃亡者|でした", 'delimiter' => array('|' => 'escaper'));
+  var $result_psycho_escaper = array('message' => "さんは|迷い人|でした", 'type' => 'result_escaper');
   var $result_incubus_escaper = array('message' => "さんは|一角獣|でした", 'type' => 'result_escaper');
   var $result_wolf = array('message' => "さんは|人狼|でした", 'delimiter' => array('|' => 'wolf'));
   var $result_boss_wolf = array('message' => "さんは|白狼|でした", 'type' => 'result_wolf');
@@ -1559,7 +1569,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
-#$builder->Output('psycho_necromancer');
-#$builder->Output('betray_yaksa');
-#$builder->Output('cursed_yaksa');
-$builder->Output('sacrifice_mania');
+$builder->Output('psycho_necromancer');
+#$builder->Output('gatekeeper_guard');

@@ -394,6 +394,11 @@ class User{
     return $this->IsRoleGroup('escaper') || $this->IsRole($stack);
   }
 
+  //嘘つき判定
+  function IsLiar(){
+    return $this->DistinguishLiar() == 'psycho_mage_liar';
+  }
+
   //特殊耐性判定
   function IsAvoid($quiz = false){
     $stack = array('detective_common');
@@ -434,6 +439,26 @@ class User{
 
     if($date == 1 || $ROOM->IsNight()) $date++;
     return $this->GetDoomDate('joker') == $date;
+  }
+
+  //護衛成功済み判定
+  function IsFirstGuardSuccess($uname){
+    $flag = ! (is_array($this->guard_success) && in_array($uname, $this->guard_success));
+    $this->guard_success[] = $uname;
+    return $flag;
+  }
+
+  //同一陣営判定
+  function IsCamp($camp, $win = false){
+    return $this->GetCamp($win) == $camp;
+  }
+
+  //投票済み判定
+  function IsVoted($vote_data, $action, $not_action = NULL){
+    return (isset($not_action) && is_array($vote_data[$not_action]) &&
+	    array_key_exists($this->uname, $vote_data[$not_action])) ||
+      ($action == 'WOLF_EAT' ? isset($vote_data[$action]) :
+       isset($vote_data[$action][$this->uname]));
   }
 
   //所属陣営判別 (ラッパー)
@@ -495,14 +520,6 @@ class User{
       return 'limited';
     }
     return 'poison';
-  }
-
-  //投票済み判定
-  function IsVoted($vote_data, $action, $not_action = NULL){
-    return (isset($not_action) && is_array($vote_data[$not_action]) &&
-	    array_key_exists($this->uname, $vote_data[$not_action])) ||
-      ($action == 'WOLF_EAT' ? isset($vote_data[$action]) :
-       isset($vote_data[$action][$this->uname]));
   }
 
   //未投票チェック

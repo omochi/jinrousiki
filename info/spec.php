@@ -187,7 +187,8 @@ OutputInfoPageHeader('詳細な仕様');
   - 罠 ＞ 逃亡失敗 →
     罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
     狩人の狩り → 罠 ＞ 狩人護衛 ＞ 吸血 →
-    罠 ＞ 暗殺 → 罠 ＞ 人攫い → 凍傷判定
+    罠 ＞ 無効判定 ＞ 反射判定 ＞ 暗殺 →
+    罠 ＞ 無効判定 ＞ 反射判定 ＞ 失敗判定 ＞ 人攫い → 凍傷判定
 
   - 罠能力者 (<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>)
   - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)

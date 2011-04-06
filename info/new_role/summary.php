@@ -1511,7 +1511,7 @@ Ver. 1.4.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">役職「村人」の処刑投票数を +1 する村人。<br>
+  <td class="ability">役職「村人」の処刑投票数を +1 する、座敷童子系の基本種<br>
     処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
   </td>
   <td>Ver. 1.4.0 β15</td>
@@ -1562,7 +1562,7 @@ Ver. 1.4.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子系の亜種。</td>
+  <td class="ability">人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子の亜種。</td>
   <td>Ver. 1.4.0 β16</td>
 </tr>
 <tr>
@@ -1874,7 +1874,7 @@ Ver. 1.4.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人<br>(呪返し)</td>
   <td>村人</td>
-  <td class="ability">処刑投票されるか人狼に襲撃されたら<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する、座敷童子系の亜種。<br>
+  <td class="ability">処刑投票されるか人狼に襲撃されたら<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する、座敷童子の亜種。<br>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。</td>
   <td>Ver. 1.4.0 β20</td>
 </tr>
@@ -2012,7 +2012,7 @@ Ver. 1.4.0
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">逃亡先が女性以外だった場合は死亡する、特殊な逃亡者。</td>
+  <td class="ability">逃亡先が女性以外だった場合は死亡する、逃亡者の亜種。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
 <tr>
@@ -2202,6 +2202,24 @@ Ver. 1.4.0
   <td>鬼<br>(呪返し)</td>
   <td>鬼</td>
   <td class="ability">呪いを持った夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>の全滅」。</td>
+  <td>Ver. 1.5.0 α7</td>
+</tr>
+<tr>
+  <td><a href="human.php#psycho_escaper">迷い人</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">逃亡先が「嘘つき」(<a href="human.php#psycho_mage">精神鑑定士</a>)だった場合は死亡する、逃亡者の亜種。</td>
+  <td>Ver. 1.5.0 α7</td>
+</tr>
+<tr>
+  <td><a href="human.php#gatekeeper_guard">門番</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#guard_group">狩人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#guard_hunt">狩り能力</a>は持たないが、<a href="ability.php#assassin">暗殺</a>も防ぐことができる特殊な狩人。</td>
   <td>Ver. 1.5.0 α7</td>
 </tr>
 </table>

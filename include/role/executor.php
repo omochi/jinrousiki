@@ -17,7 +17,7 @@ class Role_executor extends RoleVoteAbility{
     if(parent::DecideVoteKill($uname)) return true;
     $stack = array();
     foreach($this->GetMaxVotedUname() as $target){
-      if($USERS->ByRealUname($target)->GetCamp(true) != 'human') $stack[$target] = true;
+      if(! $USERS->ByRealUname($target)->IsCamp('human', true)) $stack[$target] = true;
     }
     if(count($stack) == 1) $uname = array_shift(array_keys($stack));
   }

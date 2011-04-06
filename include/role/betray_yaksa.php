@@ -9,7 +9,7 @@ class Role_betray_yaksa extends Role{
 
   function __construct(){ parent::__construct(); }
 
-  function Ignored($user){ return $target->GetCamp(true) != 'chiroptera'; }
+  function Ignored($user){ return ! $target->IsCamp('chiroptera', true); }
 
   function GetReduceRate(){ return 1 / 5; }
 
@@ -18,7 +18,7 @@ class Role_betray_yaksa extends Role{
 
     if($this->IsDead() || $victory != 'human') return false;
     foreach($USERS->rows as $user){
-      if($user->IsLive() && $user->GetCamp(true) == 'chiroptera') return false;
+      if($user->IsLive() && $user->IsCamp('chiroptera', true)) return false;
     }
     return true;
   }

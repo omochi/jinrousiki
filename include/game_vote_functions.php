@@ -905,7 +905,7 @@ function AggregateVoteDay(){
       if($ROLES->actor->alchemy_flag || $ROOM->IsEvent('alchemy_pharmacist')){ //錬金術師
 	$stack = array();
 	foreach($poison_target_list as $uname){
-	  if($USERS->ByRealUname($uname)->GetCamp() != 'human') $stack[] = $uname;
+	  if(! $USERS->ByRealUname($uname)->IsCamp('human')) $stack[] = $uname;
 	}
 	$poison_target_list = $stack;
       }
@@ -1045,7 +1045,7 @@ function AggregateVoteDay(){
 	  $str .= 'mania';
 	elseif($vote_target->IsRoleGroup('mad'))
 	  $str .= 'wolf';
-	elseif($vote_target->DistinguishLiar() == 'psycho_mage_liar')
+	elseif($vote_target->IsLiar())
 	  $str .= 'mad';
 	else
 	  $str .= 'human';
@@ -1074,7 +1074,7 @@ function AggregateVoteDay(){
       $count = 0;
       //処刑者への投票者を検出して同一陣営の人をカウント
       foreach(array_keys($vote_target_list, $vote_target->uname) as $uname){
-	if($camp == $USERS->ByRealUname($uname)->GetCamp(true)) $count++;
+	if($USERS->ByRealUname($uname)->IsCamp($camp, true)) $count++;
       }
       $ROOM->SystemMessage($count, 'EMISSARY_' . $action);
     }
@@ -1298,6 +1298,7 @@ function AggregateVoteNight($skip = false){
   $snow_trap_target_list        = array(); //雪女の罠の設置先
   $frostbite_list               = array(); //凍傷予定者
   $guard_target_list            = array(); //狩人系の護衛対象
+  $gatekeeper_guard_target_list = array(); //門番の護衛対象
   $dummy_guard_target_list      = array(); //夢守人の護衛対象
   $wizard_target_list           = array(); //魔法使い系 (拡散型) の対象
   $escaper_target_list          = array(); //逃亡者の逃亡先
@@ -1405,12 +1406,16 @@ function AggregateVoteNight($skip = false){
       elseif($ROOM->IsEvent('no_contact')) continue; //花曇ならスキップ
 
       $guard_target_list[$user->uname] = $target_uname;
+      if($user->IsRole('gatekeeper_guard')){ //門番の護衛先を登録
+	$gatekeeper_guard_target_list[$user->uname] = $target_uname;
+      }
       if(in_array($target_uname, $trap_target_list)) //罠死判定
 	$trapped_list[] = $user->uname;
       elseif(in_array($target_uname, $snow_trap_target_list)) //凍傷判定
 	$frostbite_list[] = $user->uname;
     }
     //PrintData($guard_target_list, 'Target [guard]');
+    //PrintData($gatekeeper_guard_target_list, 'Target [gatekeeper_guard]');
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
 
     //魔法使い系 (拡散型) の情報収集
@@ -1438,6 +1443,7 @@ function AggregateVoteNight($skip = false){
 	$trapped_list[] = $user->uname;
       }
       elseif(($user->IsRole('escaper') && $target->IsWolf()) ||
+	     ($user->IsRole('psycho_escaper') && $target->IsLiar()) ||
 	     ($user->IsRole('incubus_escaper') && $target->sex != 'female')){ //逃亡失敗判定
 	$USERS->Kill($user->user_no, 'ESCAPER_DEAD');
       }
@@ -1494,6 +1500,7 @@ function AggregateVoteNight($skip = false){
 
 	//護衛成功メッセージを登録
 	$ROOM->SystemMessage($user->GetHandleName($wolf_target->uname), 'GUARD_SUCCESS');
+	$user->guard_success[] = $wolf_target->uname;
       }
       if($guard_flag && ! $voted_wolf->IsSiriusWolf()) break; //護衛成功判定
     }
@@ -1641,7 +1648,7 @@ function AggregateVoteNight($skip = false){
     //-- 襲撃処理 --//
     //憑狼の処理
     if($voted_wolf->IsRole('possessed_wolf') && ! $wolf_target->IsDummyBoy() &&
-       $wolf_target->GetCamp(true) != 'fox' && ! $wolf_target->IsPossessedLimited()){
+       ! $wolf_target->IsCamp('fox') && ! $wolf_target->IsPossessedLimited()){
       $possessed_target_list[$voted_wolf->uname] = $wolf_target->uname;
       $wolf_target->dead_flag = true;
       //襲撃先が厄神なら憑依リセット
@@ -1683,8 +1690,8 @@ function AggregateVoteNight($skip = false){
     if(! $ROOM->IsEvent('no_hunt')){ //川霧ならスキップ
       foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
 	$user = $USERS->ByUname($uname);
-	//スキップ判定 (死亡 / 夜雀)
-	if($user->IsDead(true) || $user->IsRole('blind_guard')) continue;
+	//スキップ判定 (死亡 / 夜雀・門番)
+	if($user->IsDead(true) || $user->IsRole('blind_guard', 'gatekeeper_guard')) continue;
 
 	$target = $USERS->ByUname($target_uname);
 	//対象が身代わり死していた場合はスキップ
@@ -1737,13 +1744,15 @@ function AggregateVoteNight($skip = false){
 	  (! $guard_limited || $guard_user->IsRole(true, 'blind_guard', 'poison_guard'));
 
 	if($guard_user->IsRole('blind_guard')) $user->AddRole('blinder'); //夜雀の処理
-	//護衛成功メッセージを登録
-	$ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');
+
+	if($guard_user->IsFirstGuardSuccess($target->uname)){ //護衛成功メッセージを登録
+	  $ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');
+	}
       }
 
       //吸血成立判定
       if($target->IsLive(true) && ! $guard_flag && ! $target->IsRoleGroup('escaper') &&
-	 $target->GetCamp() != 'vampire'){
+	 ! $target->IsCamp('vampire')){
 	$vampire_target_list[$user->uname][] = $target->uname;
       }
     }
@@ -1785,6 +1794,18 @@ function AggregateVoteNight($skip = false){
       if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
+
+      $stack = array_keys($gatekeeper_guard_target_list, $target->uname); //門番の護衛判定
+      if(count($stack) > 0){
+	foreach($stack as $guard_uname){ //護衛成功メッセージを登録
+	  $guard_user = $USERS->ByUname($guard_uname);
+	  if($guard_user->IsFirstGuardSuccess($target->uname)){
+	    $ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');
+	  }
+	}
+	continue;
+      }
+
       if($target->IsRoleGroup('escaper')) continue; //逃亡者は無効
       if($target->IsRefrectAssassin()){ //反射判定
 	$assassin_target_list[$uname] = true;
@@ -1828,6 +1849,18 @@ function AggregateVoteNight($skip = false){
       if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
+
+      $stack = array_keys($gatekeeper_guard_target_list, $target->uname); //門番の護衛判定
+      if(count($stack) > 0){
+	foreach($stack as $guard_uname){ //護衛成功メッセージを登録
+	  $guard_user = $USERS->ByUname($guard_uname);
+	  if($guard_user->IsFirstGuardSuccess($target->uname)){
+	    $ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');
+	  }
+	}
+	continue;
+      }
+
       if($target->IsDead(true) || $target->IsRoleGroup('escaper')) continue; //無効判定
       if($target->IsRefrectAssassin()){ //反射判定
 	$ogre_target_list[$uname] = true;
@@ -1856,7 +1889,7 @@ function AggregateVoteNight($skip = false){
 	if(! $target->IsRole('quiz')) $target->AddRole('panelist');
       }
       elseif($user->IsRole('sacrifice_ogre')){ //酒呑童子は洗脳者を追加
-	if($target->GetCamp() != 'vampire') $target->AddRole('psycho_infected');
+	if(! $target->IsCamp('vampire')) $target->AddRole('psycho_infected');
       }
       else{
 	$ogre_target_list[$target_uname] = true; //人攫い対象者リストに追加
@@ -2795,7 +2828,7 @@ function AggregateVoteNight($skip = false){
   foreach($USERS->rows as $user){ //司祭系の情報収集
     if(! $user->IsDummyBoy() && $user->IsActive('revive_priest')) $revive_priest_list[] = $user;
     if($user->IsDead(true)){
-      if($user->GetCamp(true) != 'human') $live_count['dead']++;
+      if(! $user->IsCamp('human', true)) $live_count['dead']++;
       continue;
     }
     $live_count['total']++;
@@ -2804,7 +2837,7 @@ function AggregateVoteNight($skip = false){
     elseif($user->IsFox()) $live_count['fox']++;
     else{
       $live_count['human']++;
-      if($user->GetCamp() == 'human') $live_count['human_side']++;
+      if($user->IsCamp('human')) $live_count['human_side']++;
     }
     if($user->IsLovers()) $live_count['lovers']++;
     if($dowser_priest_flag){

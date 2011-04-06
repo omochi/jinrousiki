@@ -335,13 +335,13 @@ class RoleVoteAbility extends Role{
   //投票先人数取得 (ショック死判定用)
   function GetVoteCount(){
     global $ROLES;
-    return $this->stack->count[$this->stack->target[$ROLES->actor->uname]];
+    return $ROLES->stack->count[$ROLES->stack->target[$ROLES->actor->uname]];
   }
 
   //得票人数取得 (ショック死判定用)
   function GetVotedCount(){
     global $ROLES;
-    return $this->stack->count[$ROLES->actor->uname];
+    return $ROLES->stack->count[$ROLES->actor->uname];
   }
 
   //処刑者判定
