@@ -296,6 +296,7 @@ class GameOptionMessage{
   var $topping_e             = 'E：憑依村';
   var $topping_f             = 'F：鬼村';
   var $topping_g             = 'G：嘘吐村';
+  var $topping_h             = 'H：村人村';
   var $chaos_open_cast       = '配役を通知する';
   var $chaos_open_cast_camp  = '陣営を通知する';
   var $chaos_open_cast_role  = '役職を通知する';

@@ -32,6 +32,7 @@ OutputRolePageHeader('蝙蝠陣営');
 <a href="#cursed_chiroptera">呪蝙蝠</a>
 <a href="#boss_chiroptera">大蝙蝠</a>
 <a href="#elder_chiroptera">古蝙蝠</a>
+<a href="#cute_chiroptera">萌蝙蝠</a>
 <a href="#scarlet_chiroptera">紅蝙蝠</a>
 <a href="#dummy_chiroptera">夢求愛者</a>
 </p>
@@ -124,6 +125,18 @@ OutputRolePageHeader('蝙蝠陣営');
 <a href="human.php#elder">長老</a>の蝙蝠バージョンです。
 PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える存在ですが
 それゆえに目を付けられやすいでしょう。
+</pre>
+
+<h3><a id="cute_chiroptera">萌蝙蝠</a> (占い結果：人狼 / 霊能結果：蝙蝠) [Ver. 1.5.0 α7～]</h3>
+<pre>
+占い結果が「人狼」、霊能結果が「蝙蝠」と判定される蝙蝠。
+昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。
+遠吠えの内容は<a href="human.php#suspect">不審者</a>や<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#cute_wolf">萌狼</a>の蝙蝠バージョンです。
+霊能結果から、状況次第で<a href="vampire.php">吸血鬼</a>扱いされる可能性もあります。
 </pre>
 
 <h3><a id="scarlet_chiroptera">紅蝙蝠</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>

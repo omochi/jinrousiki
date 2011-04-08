@@ -774,6 +774,10 @@ class RoleMessageList{
     'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|古蝙蝠|です。あなたの#処刑#投票には_二票_分の価値があります。若造たちに真理を教えてやりましょう。数は力なり、と。",
     'type' => 'chiroptera', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
+  var $cute_chiroptera = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|萌蝙蝠|です。占われると#人狼#判定が出されるうえに、ごくまれに発言が遠吠えになってしまいます。",
+    'type' => 'chiroptera', 'delimiter' => array('#' => 'wolf'));
+
   var $scarlet_chiroptera = array(
     'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|紅蝙蝠|です。_人狼_からは#無意識#に、^妖狐^からは^子狐^に、=人形=からは=人形遣い=に見えています。\n　_人狼_から放置され、^妖狐^にはすり寄られ、=人形=から恨まれますが知った事か！生き延びろそれが|蝙蝠|。",
     'type' => 'chiroptera',
@@ -1372,6 +1376,7 @@ class RoleMessageList{
   var $result_cursed_chiroptera = array('message' => "さんは|呪蝙蝠|でした", 'type' => 'result_chiroptera');
   var $result_boss_chiroptera = array('message' => "さんは|大蝙蝠|でした", 'type' => 'result_chiroptera');
   var $result_elder_chiroptera = array('message' => "さんは|古蝙蝠|でした", 'type' => 'result_chiroptera');
+  var $result_cute_chiroptera = array('message' => "さんは|萌蝙蝠|でした", 'type' => 'result_chiroptera');
   var $result_scarlet_chiroptera = array('message' => "さんは|紅蝙蝠|でした", 'type' => 'result_chiroptera');
   var $result_dummy_chiroptera = array('message' => "さんは|夢求愛者|でした", 'type' => 'result_chiroptera');
   var $result_fairy = array('message' => "さんは|妖精|でした", 'type' => 'result_chiroptera');
@@ -1569,5 +1574,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_no_poison');
-$builder->Output('psycho_necromancer');
 #$builder->Output('gatekeeper_guard');
+$builder->Output('cute_chiroptera');

@@ -461,6 +461,7 @@ class CastConfig extends CastConfigBase{
     'cursed_chiroptera'    =>  2,
     'boss_chiroptera'      =>  2,
     'elder_chiroptera'     =>  2,
+    'cute_chiroptera'      =>  2,
     'scarlet_chiroptera'   =>  2,
     'dummy_chiroptera'     =>  2,
     'fairy'                =>  2,
@@ -468,11 +469,11 @@ class CastConfig extends CastConfigBase{
     'summer_fairy'         =>  2,
     'autumn_fairy'         =>  2,
     'winter_fairy'         =>  2,
-    'flower_fairy'         =>  2,
+    'flower_fairy'         =>  1,
     'star_fairy'           =>  2,
     'sun_fairy'            =>  2,
     'moon_fairy'           =>  2,
-    'grass_fairy'          =>  2,
+    'grass_fairy'          =>  1,
     'light_fairy'          =>  1,
     'dark_fairy'           =>  1,
     'shadow_fairy'         =>  1,
@@ -624,7 +625,8 @@ class CastConfig extends CastConfigBase{
 			 'psycho_escaper'     => 20,
 			 'dream_eater_mad'    => 10,
 			 'revive_ogre'        =>  5)),
-		 'count' => array(1, 1, 1))
+		 'count' => array(1, 1, 1)),
+    'h' => array('fix' => array('human' => 2))
 			    );
 
   //サブ役職制限：EASYモード

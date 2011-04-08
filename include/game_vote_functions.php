@@ -986,7 +986,7 @@ function AggregateVoteDay(){
     elseif($vote_target->IsWolf()){
       $necromancer_result = 'wolf';
     }
-    elseif($vote_target->IsRoleGroup('vampire')){
+    elseif($vote_target->IsRoleGroup('vampire') || $vote_target->IsRole('cute_chiroptera')){
       $necromancer_result = 'chiroptera';
     }
     elseif($vote_target->IsOgre()){
@@ -2495,7 +2495,7 @@ function AggregateVoteNight($skip = false){
     if(! $ROOM->IsOpenCast()){
       $boost_revive = false; //蛇神生存判定
       foreach($USERS->rows as $user){
-	if($user->IsLiveRole('revive_brownie')){
+	if($user->IsLiveRole('revive_brownie', true)){
 	  $boost_revive = true;
 	  break;
 	}

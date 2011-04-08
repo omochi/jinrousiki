@@ -141,7 +141,7 @@ function ConvertSay(&$say){
   //if($SELF->IsDead()) return false; //テスト用
 
   //萌系置換 (昼限定)
-  if($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox') &&
+  if($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox', 'cute_chiroptera') &&
      mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
     $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
   }

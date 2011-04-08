@@ -479,9 +479,9 @@ class User{
     if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
     if($this->IsOgre()) return 'ogre'; //鬼陣営は「鬼」
 
-    //白狼か完全覚醒天狼以外の人狼・黒狐・不審者は「人狼」
+    //人狼(白狼・完全覚醒天狼を除く)・不審者・黒狐・萌蝙蝠は「人狼」
     $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
-      $this->IsRole('black_fox', 'suspect');
+      $this->IsRole('suspect', 'black_fox', 'cute_chiroptera');
     return ($result xor $reverse) ? 'wolf' : 'human';
   }
 

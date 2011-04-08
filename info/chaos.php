@@ -529,12 +529,13 @@ OutputInfoPageHeader('闇鍋モード');
 	夢系：(不審者・無意識・<a href="new_role/ability.php#dummy">夢能力者</a>)<br>
 	精神系：(精神鑑定士・精神感応者・迷い人・獏・茨木童子)
       </li>
+      <li><?php echo $GAME_OPT_MESS->topping_h ?> / 村人2</li>
     </ol>
   </li>
 </ol>
 <h3>Ver. 1.5.0 α7～</h3>
 <pre>
-TypeG 追加
+TypeG・H 追加
 </pre>
 <h3>Ver. 1.4.0 RC1～</h3>
 <pre>

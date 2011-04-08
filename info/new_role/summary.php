@@ -2222,6 +2222,17 @@ Ver. 1.4.0
   <td class="ability"><a href="human.php#guard_hunt">狩り能力</a>は持たないが、<a href="ability.php#assassin">暗殺</a>も防ぐことができる特殊な狩人。</td>
   <td>Ver. 1.5.0 α7</td>
 </tr>
+<tr>
+  <td><a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a></td>
+  <td><a href="chiroptera.php">蝙蝠</a></td>
+  <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
+  <td>人狼</td>
+  <td>蝙蝠</td>
+  <td class="ability">占い結果が「人狼」、霊能結果が「蝙蝠」と判定される蝙蝠。<br>
+    昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。
+  </td>
+  <td>Ver. 1.5.0 α7</td>
+</tr>
 </table>
 
 <table>

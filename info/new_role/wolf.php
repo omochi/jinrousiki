@@ -30,28 +30,28 @@ OutputRolePageHeader('人狼陣営');
 
 <h2><a id="wolf_partner">仲間表示</a></h2>
 <ol>
-  <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かります。</li>
-  <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かります。</li>
-  <li><a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かります。<br>
-  ただし、<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
+  <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かる。</li>
+  <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かる。</li>
+  <li><a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かる。<br>
+  ただし、<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
   </li>
-  <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
+  <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
-<a href="human.php#unconscious">無意識</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示されます。
+<a href="human.php#unconscious">無意識</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
 </pre>
 <h5>Ver. 1.4.0 β8～</h5>
 <pre>
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなります (<a href="#silver_wolf">銀狼</a>と同じ)。
+<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。
 </pre>
 <h5>Ver. 1.4.0 α24～</h5>
 <pre>
-<a href="human.php#unconscious">無意識</a>の枠に<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示されます。
+<a href="human.php#unconscious">無意識</a>の枠に<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示される。
 </pre>
 <h5>Ver. 1.4.0 α21～</h5>
 <pre>
-<a href="#silver_wolf">銀狼</a>は仲間の人狼、<a href="#whisper_mad">囁き狂人</a>がいっさい分かりません。
+<a href="#silver_wolf">銀狼</a>は仲間の人狼、<a href="#whisper_mad">囁き狂人</a>が分からない。
 </pre>
 
 <h2><a id="wolf_howl">遠吠え</a></h2>
@@ -208,9 +208,9 @@ OutputRolePageHeader('人狼陣営');
 <h3><a id="poison_wolf">毒狼</a> (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12～]</h3>
 <h4>[毒能力] 処刑：人狼系以外 / 襲撃：無し / 薬師判定：有り</h4>
 <pre>
-<a href="ability.php#poison">毒</a>能力を持った人狼。
+<a href="ability.php#poison">毒能力</a>を持った人狼。
 処刑された時に巻き込む対象の決定時に人狼系が除かれるため
-投票者ランダム設定の場合は不発となるケースがある。
+<a href="../script_info.php#difference_poison_vote">投票者ランダム設定</a>の場合は不発となるケースがある。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -223,7 +223,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 一度だけ毒に耐えられる (毒に中っても死なない) 人狼。
 処刑・襲撃共に有効だが、一度毒に中ると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
-<a href="ability.php#poison">毒</a>能力者を襲撃した場合は<a href="../script_info.php#difference_poison_eat" target="_top">サーバ設定</a>や能力失効の有無に関わらず、
+<a href="ability.php#poison">毒能力者</a>を襲撃した場合は<a href="../script_info.php#difference_poison_eat" target="_top">サーバ設定</a>や能力失効の有無に関わらず、
 毒の対象が襲撃者に固定される。
 </pre>
 <h5>Ver. 1.4.0 α24～</h5>
@@ -236,7 +236,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="ability.php#poison">毒</a>能力者の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ(25)</a> が原型です。
+<a href="ability.php#poison">毒能力者</a>の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ(25)</a> が原型です。
 安易に CO する<a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者</a>を葬ってやりましょう！
 </pre>
 
@@ -339,7 +339,7 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 襲撃に成功した人を乗っ取る人狼。
 乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
-身代わり君・<a href="human.php#revive_pharmacist">仙人</a>・<a href="fox.php">妖狐陣営</a> (変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>を含む)・<a href="ability.php#possessed_limit">憑依制限能力者</a>は乗っ取れない。
+身代わり君・<a href="fox.php">妖狐陣営</a> (変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>を含む)・<a href="ability.php#possessed_limit">憑依制限能力者</a>は乗っ取れない。
 </pre>
 <ol>
   <li><a href="#possessed_wolf_system">基本システム</a></li>
@@ -573,8 +573,6 @@ A は憑依処理がキャンセルされて A のまま。
 <h4><a id="possessed_wolf_assassin">12. 対<a href="human.php#assassin_group">暗殺能力者</a></a></h4>
 <pre>
 憑狼を直接狙うことで憑依中でも殺すことができます。
-また、自分と暗殺先が同時に生き残っていることはありえないので、
-本人視点で憑狼の位置が確定します。
 
 例12-1) C[暗殺者] → B[村人](A[憑狼]) → D[村人]
 死体：B が無残な死体で発見されました (死因：「暗殺された」) (実際に死ぬのは A)
@@ -755,7 +753,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
     <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
     <li><a href="ability.php#sacrifice">身代わり能力</a>・<a href="ability.php#revive_self">自己蘇生能力</a>無効</li>
     <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
-    <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せません</li>
+    <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せない。</li>
   </ol>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
@@ -794,7 +792,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="fox.php#cute_fox">萌狐</a>
+<a href="human.php#suspect">不審者</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
