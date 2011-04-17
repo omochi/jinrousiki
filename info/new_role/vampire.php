@@ -12,7 +12,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#vampire_group">吸血鬼系</a>
 </p>
 
-<h2><a id="rule">基本ルール</a></h2>
+<h2 id="rule">基本ルール</h2>
 <ol>
   <li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
   <li>勝利条件は「生存者が自分と自分の<a href="sub_role.php#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
@@ -22,7 +22,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、<br>
     例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
   </li>
-  <li>2日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
+  <li>2 日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
   <li><a href="sub_role.php#infected">感染者</a>になっても自覚がありません。</li>
   <li>生存カウントは村人です。</li>
   <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」です。</li>
@@ -35,7 +35,7 @@ OutputRolePageHeader('吸血鬼陣営');
 コピー先の勝敗や自己の生存は不問です。
 </pre>
 
-<h2><a id="vampire_do_spec">襲撃の仕様</a></h2>
+<h2 id="vampire_do_spec">襲撃の仕様</h2>
 <ol>
   <li>襲撃先が<a href="human.php#guard_group">狩人系</a>に護衛されていた場合は失敗し、狩人には「護衛成功」のメッセージが出ます。</li>
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
@@ -56,7 +56,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="human.php#escaper">逃亡者</a>との関係の仕様を変更。
 </pre>
 
-<h2><a id="vampire_group">吸血鬼系</a></h2>
+<h2 id="vampire_group">吸血鬼系</h2>
 <p>
 <a href="#vampire">吸血鬼</a>
 <a href="#incubus_vampire">青髭公</a>
@@ -65,7 +65,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#sacrifice_vampire">吸血公</a>
 <a href="#soul_vampire">吸血姫</a>
 </p>
-<h3><a id="vampire">吸血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
+<h3><a id="vampire">吸血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
 <h4>[耐性] 罠：有効</h4>
 <pre>
 吸血鬼陣営の基本種。
@@ -77,7 +77,7 @@ OutputRolePageHeader('吸血鬼陣営');
 まずは条件を緩めに設定して様子を見てみようかと思います。
 </pre>
 
-<h3><a id="incubus_vampire">青髭公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
+<h3><a id="incubus_vampire">青髭公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 護衛：狩り / 罠：有効</h4>
 <pre>
 女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
@@ -93,11 +93,11 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#assassin_group">暗殺</a>能力を持った吸血鬼で、童話「青ひげ」がモチーフです。
+擬似的な暗殺能力を持った吸血鬼で、童話「青ひげ」がモチーフです。
 勝利条件を考えると吸血死狙いの襲撃はあまり割りに合わないと思われます。
 </pre>
 
-<h3><a id="succubus_vampire">飛縁魔</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
+<h3><a id="succubus_vampire">飛縁魔 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 護衛：狩り / 罠：有効</h4>
 <pre>
 男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。
@@ -117,7 +117,7 @@ OutputRolePageHeader('吸血鬼陣営');
 村の男女構成比次第で難易度が大きく変わることになります。
 </pre>
 
-<h3><a id="doom_vampire">冥血鬼</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
+<h3><a id="doom_vampire">冥血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 罠：有効</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、<a href="sub_role.php#infected">感染者</a>に<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう吸血鬼。
@@ -135,7 +135,7 @@ OutputRolePageHeader('吸血鬼陣営');
 耐性を得た代わりに、<a href="sub_role.php#infected">感染者</a>のキープが難しくなっています。
 </pre>
 
-<h3><a id="sacrifice_vampire">吸血公</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
+<h3><a id="sacrifice_vampire">吸血公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
 <h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り / 罠：有効</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
@@ -158,7 +158,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の吸血鬼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ(728)</a> が原型です。
 </pre>
 
-<h3><a id="soul_vampire">吸血姫</a> (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
+<h3><a id="soul_vampire">吸血姫 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 護衛：狩り / 暗殺：反射 / 罠：有効</h4>
 <pre>
 <a href="#vampire_do_spec">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。

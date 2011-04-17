@@ -13,7 +13,7 @@ OutputRolePageHeader('神話マニア陣営');
 <a href="#unknown_mania_group">鵺系</a>
 </p>
 
-<h2><a id="rule">基本ルール</a></h2>
+<h2 id="rule">基本ルール</h2>
 <ol>
   <li>初日の夜に誰か一人を選んでその人と同じ陣営に変化 (コピー) する特殊な陣営です。</li>
   <li>勝利条件はコピー先の陣営になります。</li>
@@ -22,7 +22,7 @@ OutputRolePageHeader('神話マニア陣営');
   <li>コピーが成立する前に突然死した場合の<a href="human.php#medium_group">巫女系</a>の陣営判定は「村人」です。</li>
 </ol>
 
-<h2><a id="change_mania_camp">所属変更</a></h2>
+<h2 id="change_mania_camp">所属変更</h2>
 <h3>Ver. 1.4.0 β18～</h3>
 <pre>
 <a href="#unknown_mania">鵺</a>の所属を<a href="#mania_group">神話マニア系</a>から<a href="#unknown_mania_group">鵺系</a>に変更。
@@ -32,7 +32,7 @@ OutputRolePageHeader('神話マニア陣営');
 <a href="#mania_group">神話マニア系</a>の所属を<a href="human.php">村人陣営</a>から神話マニア陣営に変更。
 </pre>
 
-<h2><a id="mania_group">神話マニア系</a></h2>
+<h2 id="mania_group">神話マニア系</h2>
 <p>
 <a href="#mania">神話マニア</a>
 <a href="#trick_mania">奇術師</a>
@@ -40,7 +40,7 @@ OutputRolePageHeader('神話マニア陣営');
 <a href="#dummy_mania">夢語部</a>
 </p>
 
-<h3><a id="mania">神話マニア</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11～]</h3>
+<h3 id="mania">神話マニア (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11～]</h3>
 <pre>
 神話マニア陣営の基本種。能力は<a href="#rule">基本ルール</a>参照。
 コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
@@ -52,7 +52,7 @@ OutputRolePageHeader('神話マニア陣営');
 CO するべきかどうかは、コピーした役職次第です。
 </pre>
 
-<h3><a id="trick_mania">奇術師</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
+<h3 id="trick_mania">奇術師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
 <pre>
 コピー先の役職を奪うことができる、特殊な神話マニア。
 コピー能力は<a href="#mania">神話マニア</a>と同じ。
@@ -96,7 +96,7 @@ CO するべきかどうかは、コピーした役職次第です。
 「相手の能力を奪う」役職を作れないかな、と思案してこういう実装になりました。
 </pre>
 
-<h3><a id="soul_mania">覚醒者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
+<h3 id="soul_mania">覚醒者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <pre>
 コピー先の上位種に変化する特殊な神話マニア。
 役職が変化すると<a href="sub_role.php#copied_soul">元覚醒者</a>がつく。
@@ -273,7 +273,7 @@ CO するべきかどうかは、コピーした役職次第です。
 能力発動のタイミングを考慮して<a href="human.php#incubate_poison">潜毒者</a>より一日早く変化処理を行っています。
 </pre>
 
-<h3><a id="dummy_mania">夢語部</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
+<h3 id="dummy_mania">夢語部 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] <a href="#soul_mania">覚醒者</a></h4>
 <h4>[耐性] 精神鑑定：嘘つき (変化前) / 獏襲撃：死亡 (変化前)</h4>
 <pre>
@@ -356,8 +356,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
-  <td><a href="human.php#wizard">魔法使い</a></td>
-  <td>Ver. 1.5.0 α1～</td>
+  <td><a href="human.php#astray_wizard">左道使い</a></td>
+  <td>Ver. 1.5.0 α8～</td>
 </tr>
 <tr>
   <td><a href="human.php#doll_group">上海人形系</a></td>
@@ -445,7 +445,7 @@ CO するべきかどうかは、コピーした役職次第です。
 最終的には自覚することができるので他の<a href="ability.php#dummy">夢系</a>と比べると対応はしやすいかもしれません。
 </pre>
 
-<h2><a id="unknown_mania_group">鵺系</a></h2>
+<h2 id="unknown_mania_group">鵺系</h2>
 <p>
 <a href="#unknown_mania_rule">所属陣営判定</a>
 </p>
@@ -455,7 +455,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <a href="#wirepuller_mania">黒衣</a>
 </p>
 
-<h3><a id="unknown_mania_rule">所属陣営判定</a></h3>
+<h3 id="unknown_mania_rule">所属陣営判定</h3>
 <pre>
 1. 鵺 → <a href="human.php#human">村人</a> (村人陣営)
 擬似<a href="human.php#common_group">共有者</a>相当になります。
@@ -510,7 +510,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <a href="vampire.php">吸血鬼陣営</a>をコピーした場合の勝利条件判定を変更 (<a href="vampire.php#rule">基本ルール [吸血鬼]</a>参照)。
 </pre>
 
-<h3><a id="unknown_mania">鵺</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23～]</h3>
+<h3 id="unknown_mania">鵺 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23～]</h3>
 <pre>
 初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
 所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
@@ -529,7 +529,7 @@ CO するべきかどうかは、コピーした役職次第です。
 「正体不明」になる事になります。とっても理不尽ですね。
 </pre>
 
-<h3><a id="sacrifice_mania">影武者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18～]</h3>
+<h3 id="sacrifice_mania">影武者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。
@@ -548,7 +548,7 @@ CO するべきかどうかは、コピーした役職次第です。
 構想自体はこちらが先で、かなり前から検討されていた能力です。
 </pre>
 
-<h3><a id="wirepuller_mania">黒衣</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<h3 id="wirepuller_mania">黒衣 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
 <pre>
 コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。
 自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。

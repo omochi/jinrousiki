@@ -319,7 +319,8 @@ class User{
   //護衛制限判定
   function IsGuardLimited(){
     return $this->IsRole('emissary_necromancer', 'detective_common', 'reporter',
-			 'clairvoyance_scanner', 'barrier_wizard', 'soul_wizard', 'doll_master') ||
+			 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard',
+			 'pierrot_wizard', 'doll_master') ||
       ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
       $this->IsRoleGroup('assassin');
   }
@@ -564,7 +565,8 @@ class User{
     if($this->IsRole('reporter')) return $this->IsVoted($vote_data, 'REPORTER_DO');
     if($this->IsRole('anti_voodoo')) return $this->IsVoted($vote_data, 'ANTI_VOODOO_DO');
     if($this->IsRoleGroup('assassin') || $this->IsRole('doom_fox')){
-      return $this->IsVoted($vote_data, 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
+      $event = $ROOM->IsEvent('force_assassin_do') ? NULL : 'ASSASSIN_NOT_DO';
+      return $this->IsVoted($vote_data, 'ASSASSIN_DO', $event);
     }
     if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
     if($this->IsRole('barrier_wizard')) return $this->IsVoted($vote_data, 'SPREAD_WIZARD_DO');
@@ -580,8 +582,10 @@ class User{
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
     }
     if($this->IsRoleGroup('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
-    if($this->IsOgre()) return $this->IsVoted($vote_data, 'OGRE_DO', 'OGRE_NOT_DO');
-
+    if($this->IsOgre()){
+      $event = $ROOM->IsEvent('force_assassin_do') ? NULL : 'OGRE_NOT_DO';
+      return $this->IsVoted($vote_data, 'OGRE_DO', $event);
+    }
     if($ROOM->IsOpenCast()) return true;
     if($this->IsReviveGroup(true)){
       return $this->IsVoted($vote_data, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
@@ -1108,9 +1112,10 @@ class UserDataSet{
 	  }
 	}
 
-	$stack = array('soul_wizard' => 'mind_open', 'sun_fairy'   => 'invisible',
-		       'moon_fairy'  => 'earplug',   'grass_fairy' => 'grassy',
-		       'light_fairy' => 'mind_open', 'dark_fairy'  => 'blinder');
+	$stack = array('soul_wizard'    => 'mind_open', 'astray_wizard' => 'blinder',
+		       'pierrot_wizard' => 'grassy',    'sun_fairy'     => 'invisible',
+		       'moon_fairy'     => 'earplug',   'grass_fairy'   => 'grassy',
+		       'light_fairy'    => 'mind_open', 'dark_fairy'    => 'blinder');
 	foreach($user->GetPartner('bad_status', true) as $id => $date){ //妖精系
 	  if($date != $base_date) continue;
 	  $status_user = $this->ByID($id);
@@ -1137,6 +1142,12 @@ class UserDataSet{
       foreach($stack as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
+	}
+      }
+      if($ROOM->IsEvent('hyper_critical')){
+	foreach($this->rows as $user){
+	  $user->AddVirtualRole('critical_voter');
+	  $user->AddVirtualRole('critical_luck');
 	}
       }
     }

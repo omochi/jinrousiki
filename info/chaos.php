@@ -22,7 +22,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a>
 </p>
 
-<h2><a id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></a></h2>
+<h2 id="wish_role"><?php echo $GAME_OPT_MESS->wish_role ?></h2>
 <pre>
 配役を先に決めてから、出現した役職グループを希望していれば
 優先的に配役される仕様です。
@@ -44,25 +44,25 @@ OutputInfoPageHeader('闇鍋モード');
 希望制オプションは強制的にオフになります
 </pre>
 
-<h2><a id="chaos_decide_role">配役決定ルーチン</a></h2>
+<h2 id="chaos_decide_role">配役決定ルーチン</h2>
 <ol>
   <li>バージョンアップで仕様が変わる可能性があります。</li>
   <li>ゲーム開始直後に勝敗が決まる可能性があります。</li>
   <li>設定ファイルで変更できるので具体的な数値はサーバ毎に違います。</li>
 </ol>
 <p>
-<a href="#chaosfull_decide_role_fix">固定出現枠</a>
-<a href="#chaosfull_decide_role_random">ランダム出現枠</a>
-<a href="#chaosfull_decide_role_example">配役決定例</a>
+<a href="#chaos_decide_role_fix">固定出現枠</a>
+<a href="#chaos_decide_role_random">ランダム出現枠</a>
+<a href="#chaos_decide_role_example">配役決定例</a>
 </p>
 
-<h3><a id="chaosfull_decide_role_fix">固定出現枠</a></h3>
+<h3 id="chaos_decide_role_fix">固定出現枠</h3>
 <pre>
 初期設定は「占い師1・人狼1」で、各難易度で個別に設定できます。
 ただし、身代わり君が占い師になる可能性もあるので CO した占い師が真であるとは限りません。
 </pre>
 
-<h3><a id="chaosfull_decide_role_random">ランダム出現枠</a></h3>
+<h3 id="chaos_decide_role_random">ランダム出現枠</h3>
 <ol>
   <li>各役職の出現率は基本的には非公開です。</li>
 
@@ -81,7 +81,7 @@ OutputInfoPageHeader('闇鍋モード');
   </li>
 </ol>
 
-<h3><a id="chaos_decide_role_example">配役決定例</a></h3>
+<h3 id="chaos_decide_role_example">配役決定例</h3>
 <ul>
   <li>村人：10人</li>
 
@@ -107,7 +107,7 @@ OutputInfoPageHeader('闇鍋モード');
 占い師系3 → 2
 占い師1　精神鑑定士1　村人1
 
-3-2. 固定枠は補正対象になりません
+3-2. 固定枠は補正対象になりません。
 霊能者系2 → 1
 霊能者1　村人1
 
@@ -135,8 +135,8 @@ OutputInfoPageHeader('闇鍋モード');
 村人1　占い師1　精神鑑定士1　霊能者1　人狼1　白狼1　神話マニア4
 </pre>
 
-<h2><a id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></a></h2>
-<h3><a id="chaos_appear_role">出現役職</a></h3>
+<h2 id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></h2>
+<h3 id="chaos_appear_role">出現役職</h3>
 <pre>
 出現する可能性のある役職は以下です。
 </pre>
@@ -187,8 +187,8 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/mania.php#mania_group">神話マニア系</a>：<a href="new_role/mania.php#mania">神話マニア</a>
 </pre>
 
-<h2><a id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a></h2>
-<h3><a id="chaosfull_appear_role">出現役職</a></h3>
+<h2 id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></h2>
+<h3 id="chaosfull_appear_role">出現役職</h3>
 <pre>
 出現する可能性のある役職は以下 (Ver. 1.4.0 α23 相当) です。
 </pre>
@@ -241,18 +241,18 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/mania.php#unknown_mania_group">鵺系</a>：<a href="new_role/mania.php#unknown_mania">鵺</a>
 </pre>
 
-<h2><a id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a></h2>
-<h3><a id="chaos_hyper_appear_role">出現役職</a></h3>
+<h2 id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></h2>
+<h3 id="chaos_hyper_appear_role">出現役職</h3>
 <pre>
 実装されているすべての役職が出現します。
 </pre>
 
-<h2><a id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?></a> (～Ver. 1.4.0 β11)</h2>
+<h2 id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (～Ver. 1.4.0 β11)</h2>
 <p>
 <a href="#chaos_old_appear_role">出現役職</a>
 <a href="#chaos_old_decide_role">配役決定ルーチン</a>
 </p>
-<h3><a id="chaos_old_appear_role">出現役職</a></h3>
+<h3 id="chaos_old_appear_role">出現役職</h3>
 <pre>
 出現する可能性のある役職は以下です
 </pre>
@@ -286,18 +286,18 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/lovers.php#cupid_group">キューピッド系</a>：<a href="new_role/lovers.php#cupid">キューピッド</a>
 </pre>
 
-<h3><a id="chaos_old_decide_role">配役決定ルーチン</a></h3>
+<h3 id="chaos_old_decide_role">配役決定ルーチン</h3>
 <pre>
 大雑把に説明すると「通常編成＋α」(多少ぶれる＆人数が増えるとレア役職登場)です。
 </pre>
 <p>
-<a href="#chaos_wolf">人狼</a>
-<a href="#chaos_fox">妖狐</a>
-<a href="#chaos_cupid">キューピッド</a>
-<a href="#chaos_other">その他</a>
+<a href="#chaos_old_wolf">人狼</a>
+<a href="#chaos_old_fox">妖狐</a>
+<a href="#chaos_old_cupid">キューピッド</a>
+<a href="#chaos_old_other">その他</a>
 </p>
 
-<h4><a id="chaos_wolf">人狼</a></h4>
+<h4 id="chaos_old_wolf">人狼</h4>
 <pre>
 ※一定数を確保します (人数が増えるごとにブレを大きくするのもありかな？)
 8人未満：1:2 = 80:20 (80%で1人、20%で2人)
@@ -338,7 +338,7 @@ OutputInfoPageHeader('闇鍋モード');
 最大出現人数は1人です。
 </pre>
 
-<h4><a id="chaos_fox">妖狐</a></h4>
+<h4 id="chaos_old_fox">妖狐</h4>
 <pre>
 ※15人未満はたまに出る程度、それ以降は出現確定
 15人未満：0:1 = 90:10 (90%で0人、10%で1人)
@@ -358,7 +358,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/fox.php#child_fox">子狐</a>が出現した場合は出現人数と同じだけ妖狐が減ります。
 </pre>
 
-<h4><a id="chaos_cupid">キューピッド</a></h4>
+<h4 id="chaos_old_cupid">キューピッド</h4>
 <pre>
 ※増減の確率の関係で確実に出現するのは40人以上となります。
 (キューピッドの出現自体をオプションで制御できるようにする予定)
@@ -373,7 +373,7 @@ OutputInfoPageHeader('闇鍋モード');
 50人：90%で3人、5%で1人増減(1人か3人)
 </pre>
 
-<h4><a id="chaos_other">その他</a></h4>
+<h4 id="chaos_old_other">その他</h4>
 <pre>
 参加人数から人狼・妖狐・キューピッドを差し引いた人数です。
 
@@ -513,11 +513,11 @@ OutputInfoPageHeader('闇鍋モード');
 出現人数の上限は規定していません。
 </pre>
 
-<h2><a id="topping"><?php echo $GAME_OPT_MESS->topping ?></a></h2>
+<h2 id="topping"><?php echo $GAME_OPT_MESS->topping ?></h2>
 <ol>
-  <li><?php echo $GAME_OPT_CAPT->topping ?></li>
-  <li>内容は設定ファイルで変更できます</li>
-  <li>初期設定は以下です<br>
+  <li><?php echo $GAME_OPT_CAPT->topping ?>。</li>
+  <li>内容は設定ファイルで変更できます。</li>
+  <li>初期設定は以下です。<br>
     <ol>
       <li><?php echo $GAME_OPT_MESS->topping_a ?> / 上海人形系(人形遣い以外)1 人形遣い1</li>
       <li><?php echo $GAME_OPT_MESS->topping_b ?> / 出題者1 榊鬼1</li>
@@ -540,36 +540,37 @@ TypeG・H 追加
 <h3>Ver. 1.4.0 RC1～</h3>
 <pre>
 ランダム枠を作成することが出来ます。
+TypeF 追加
 </pre>
 
-<h2><a id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a></h2>
+<h2 id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></h2>
 <ol>
-  <li>初日の夜に表示される陣営内訳通知に制限をかけることができます</li>
-  <li>「通知無し」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_full ?>」から選べます</li>
+  <li>初日の夜に表示される陣営内訳通知に制限をかけることができます。</li>
+  <li>「通知無し」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_full ?>」から選べます。</li>
 </ol>
 
-<h2><a id="sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a></h2>
+<h2 id="sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></h2>
 <ol>
-  <li>出現するサブ役職の種類に制限をかけることができます</li>
-  <li>「<?php echo $GAME_OPT_CAPT->no_sub_role ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_easy ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_normal ?>」「サブ役職制限なし」から選べます</li>
-  <li>内容は設定ファイルで変更できます</li>
+  <li>出現するサブ役職の種類に制限をかけることができます。</li>
+  <li>「<?php echo $GAME_OPT_CAPT->no_sub_role ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_easy ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_normal ?>」「サブ役職制限なし」から選べます。</li>
+  <li>内容は設定ファイルで変更できます。</li>
 </ol>
 <p>
 <a href="#sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a>
 <a href="#sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a>
 </p>
 
-<h3><a id="sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a></h3>
+<h3 id="sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></h3>
 <pre>
 <a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>のみ出現します。
 </pre>
 
-<h3><a id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a></h3>
+<h3 id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></h3>
 <pre>
 <a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>のみ出現します。
 </pre>
 
-<h2><a id="secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a></h2>
+<h2 id="secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></h2>
 <pre>
 一部の例外を除き、サブ役職の本人表示が無効になります。
 </pre>

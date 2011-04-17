@@ -31,88 +31,89 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="sub_role.php">サブ役職</a>
 </p>
 
-<h2><a id="table">早見表</a></h2>
+<h2 id="table">早見表</h2>
 <p>
-<a href="#main_role">メイン役職</a>
+<a href="#main_role">メイン役職</a><br>
 Ver. 1.5.0
-<a href="#150alpha1">α1</a>
-<a href="#150alpha3">α3</a>
-<a href="#150alpha4">α4</a>
-<a href="#150alpha5">α5</a>
-<a href="#150alpha6">α6</a>
-<a href="#150alpha7">α7</a><br>
+<a href="#ver150a1">α1</a>
+<a href="#ver150a3">α3</a>
+<a href="#ver150a4">α4</a>
+<a href="#ver150a5">α5</a>
+<a href="#ver150a6">α6</a>
+<a href="#ver150a7">α7</a>
+<a href="#ver150a8">α8</a><br>
 Ver. 1.4.0
-<a href="#140alpha2">α2</a>
-<a href="#140alpha3">α3-7</a>
-<a href="#140alpha9">α9</a>
-<a href="#140alpha11">α11</a>
-<a href="#140alpha12">α12</a>
-<a href="#140alpha13">α13</a>
-<a href="#140alpha14">α14</a>
-<a href="#140alpha17">α17</a>
-<a href="#140alpha18">α18</a>
-<a href="#140alpha19">α19</a>
-<a href="#140alpha20">α20</a>
-<a href="#140alpha21">α21</a>
-<a href="#140alpha22">α22</a>
-<a href="#140alpha23">α23</a>
-<a href="#140alpha24">α24</a><br>
-<a href="#140beta2">β2</a>
-<a href="#140beta5">β5</a>
-<a href="#140beta6">β6</a>
-<a href="#140beta7">β7</a>
-<a href="#140beta8">β8</a>
-<a href="#140beta9">β9</a>
-<a href="#140beta10">β10</a>
-<a href="#140beta11">β11</a>
-<a href="#140beta12">β12</a>
-<a href="#140beta13">β13</a>
-<a href="#140beta14">β14</a>
-<a href="#140beta15">β15</a>
-<a href="#140beta16">β16</a>
-<a href="#140beta17">β17</a>
-<a href="#140beta18">β18</a>
-<a href="#140beta19">β19</a>
-<a href="#140beta20">β20</a>
-<a href="#140beta21">β21</a>
-<a href="#140beta22">β22</a>
+<a href="#ver140a2">α2</a>
+<a href="#ver140a3">α3-7</a>
+<a href="#ver140a9">α9</a>
+<a href="#ver140a11">α11</a>
+<a href="#ver140a12">α12</a>
+<a href="#ver140a13">α13</a>
+<a href="#ver140a14">α14</a>
+<a href="#ver140a17">α17</a>
+<a href="#ver140a18">α18</a>
+<a href="#ver140a19">α19</a>
+<a href="#ver140a20">α20</a>
+<a href="#ver140a21">α21</a>
+<a href="#ver140a22">α22</a>
+<a href="#ver140a23">α23</a>
+<a href="#ver140a24">α24</a><br>
+<a href="#ver140b2">β2</a>
+<a href="#ver140b5">β5</a>
+<a href="#ver140b6">β6</a>
+<a href="#ver140b7">β7</a>
+<a href="#ver140b8">β8</a>
+<a href="#ver140b9">β9</a>
+<a href="#ver140b10">β10</a>
+<a href="#ver140b11">β11</a>
+<a href="#ver140b12">β12</a>
+<a href="#ver140b13">β13</a>
+<a href="#ver140b14">β14</a>
+<a href="#ver140b15">β15</a>
+<a href="#ver140b16">β16</a>
+<a href="#ver140b17">β17</a>
+<a href="#ver140b18">β18</a>
+<a href="#ver140b19">β19</a>
+<a href="#ver140b20">β20</a>
+<a href="#ver140b21">β21</a>
+<a href="#ver140b22">β22</a>
 </p>
 
 <p>
-<a href="#sub_role">サブ役職</a>
+<a href="#sub_role">サブ役職</a><br>
 Ver. 1.5.0
-<a href="#sub_150alpha5">α5</a><br>
+<a href="#sub_ver150a5">α5</a><br>
 Ver. 1.4.0
-<a href="#sub_140alpha3">α3-7</a>
-<a href="#sub_140alpha9">α9</a>
-<a href="#sub_140alpha11">α11</a>
-<a href="#sub_140alpha13">α13</a>
-<a href="#sub_140alpha14">α14</a>
-<a href="#sub_140alpha15">α15</a>
-<a href="#sub_140alpha17">α17</a>
-<a href="#sub_140alpha19">α19</a>
-<a href="#sub_140alpha21">α21</a>
-<a href="#sub_140alpha22">α22</a>
-<a href="#sub_140alpha23">α23</a>
-<a href="#sub_140alpha24">α24</a><br>
-<a href="#sub_140beta2">β2</a>
-<a href="#sub_140beta6">β6</a>
-<a href="#sub_140beta8">β8</a>
-<a href="#sub_140beta9">β9</a>
-<a href="#sub_140beta10">β10</a>
-<a href="#sub_140beta11">β11</a>
-<a href="#sub_140beta14">β14</a>
-<a href="#sub_140beta15">β15</a>
-<a href="#sub_140beta16">β16</a>
-<a href="#sub_140beta17">β17</a>
-<a href="#sub_140beta18">β18</a>
-<a href="#sub_140beta20">β20</a>
-<a href="#sub_140beta21">β21</a>
-<a href="#sub_140beta22">β22</a>
+<a href="#sub_ver140a3">α3-7</a>
+<a href="#sub_ver140a9">α9</a>
+<a href="#sub_ver140a11">α11</a>
+<a href="#sub_ver140a13">α13</a>
+<a href="#sub_ver140a14">α14</a>
+<a href="#sub_ver140a15">α15</a>
+<a href="#sub_ver140a17">α17</a>
+<a href="#sub_ver140a19">α19</a>
+<a href="#sub_ver140a21">α21</a>
+<a href="#sub_ver140a22">α22</a>
+<a href="#sub_ver140a23">α23</a>
+<a href="#sub_ver140a24">α24</a><br>
+<a href="#sub_ver140b2">β2</a>
+<a href="#sub_ver140b6">β6</a>
+<a href="#sub_ver140b8">β8</a>
+<a href="#sub_ver140b9">β9</a>
+<a href="#sub_ver140b10">β10</a>
+<a href="#sub_ver140b11">β11</a>
+<a href="#sub_ver140b14">β14</a>
+<a href="#sub_ver140b15">β15</a>
+<a href="#sub_ver140b16">β16</a>
+<a href="#sub_ver140b17">β17</a>
+<a href="#sub_ver140b18">β18</a>
+<a href="#sub_ver140b20">β20</a>
+<a href="#sub_ver140b21">β21</a>
+<a href="#sub_ver140b22">β22</a>
 </p>
 
-<table>
-<caption><a id="main_role">新役職早見表</a></caption>
+<table id="main_role">
+<caption>新役職早見表</caption>
 <tr>
   <th>名称</th>
   <th>陣営</th>
@@ -122,8 +123,8 @@ Ver. 1.4.0
   <th>能力</th>
   <th>初登場</th>
 </tr>
-<tr>
-  <td><a href="quiz.php#quiz" id="140alpha2">出題者</a></td>
+<tr id="ver140a2">
+  <td><a href="quiz.php#quiz">出題者</a></td>
   <td><a href="quiz.php">出題者</a></td>
   <td><a href="quiz.php#quiz_group">出題者系</a></td>
   <td>村人</td>
@@ -131,8 +132,8 @@ Ver. 1.4.0
   <td class="ability">クイズ村の GM。</td>
   <td>Ver. 1.4.0 α2</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#boss_wolf" id="140alpha3">白狼</a></td>
+<tr id="ver140a3">
+  <td><a href="wolf.php#boss_wolf">白狼</a></td>
   <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>村人</td>
@@ -188,8 +189,8 @@ Ver. 1.4.0
     仲間は分かるが念話はできない。占いも出来るが時々失敗する。</td>
   <td>Ver. 1.4.0 α3-7</td>
 </tr>
-<tr>
-  <td><a href="human.php#suspect" id="140alpha9">不審者</a></td>
+<tr id="ver140a9">
+  <td><a href="human.php#suspect">不審者</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>人狼</td>
@@ -198,8 +199,8 @@ Ver. 1.4.0
     低確率で発言が遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。</td>
   <td>Ver. 1.4.0 α9</td>
 </tr>
-<tr>
-  <td><a href="mania.php#mania" id="140alpha11">神話マニア</a></td>
+<tr id="ver140a11">
+  <td><a href="mania.php#mania">神話マニア</a></td>
   <td><a href="mania.php">神話マニア</td>
   <td><a href="mania.php#mania_group">神話マニア系</a></td>
   <td>村人</td>
@@ -207,8 +208,8 @@ Ver. 1.4.0
   <td class="ability">初日の夜に誰か一人を選んでその人の役職をコピーする (入れ替わるのは 2 日目の朝)。</td>
   <td>Ver. 1.4.0 α11</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#poison_wolf" id="140alpha12">毒狼</a></td>
+<tr id="ver140a12">
+  <td><a href="wolf.php#poison_wolf">毒狼</a></td>
   <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
@@ -227,8 +228,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 α12</td>
 </tr>
-<tr>
-  <td><a href="human.php#unconscious" id="140alpha13">無意識</a></td>
+<tr id="ver140a13">
+  <td><a href="human.php#unconscious">無意識</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
@@ -246,8 +247,8 @@ Ver. 1.4.0
     本人が投票した場合のみ有効で、村人だった場合は能力を失う。</td>
   <td>Ver. 1.4.0 α13</td>
 </tr>
-<tr>
-  <td><a href="human.php#reporter" id="140alpha14">ブン屋</a></td>
+<tr id="ver140a14">
+  <td><a href="human.php#reporter">ブン屋</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
@@ -275,8 +276,8 @@ Ver. 1.4.0
   <td class="ability">低確率で発言が遠吠えに入れ替わってしまう。</td>
   <td>Ver. 1.4.0 α14</td>
 </tr>
-<tr>
-  <td><a href="human.php#dummy_necromancer" id="140alpha17">夢枕人</a></td>
+<tr id="ver140a17">
+  <td><a href="human.php#dummy_necromancer">夢枕人</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
@@ -399,8 +400,8 @@ Ver. 1.4.0
   <td class="ability">呪殺されないが人狼に襲撃されると殺される妖狐。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
-<tr>
-  <td><a href="human.php#poison_cat" id="140alpha18">猫又</a></td>
+<tr id="ver140a18">
+  <td><a href="human.php#poison_cat">猫又</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
@@ -439,8 +440,8 @@ Ver. 1.4.0
     罠を仕掛けた人の元に訪れた<a href="wolf.php#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>(一部を除く)・<a href="human.php#assassin_group">暗殺者系</a>などは死亡する。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 α18</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#jammer_mad" id="140alpha19">月兎</a></td>
+<tr id="ver140a19">
+  <td><a href="wolf.php#jammer_mad">月兎</a></td>
   <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
@@ -459,8 +460,8 @@ Ver. 1.4.0
     <a href="chiroptera.php">蝙蝠</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占うと「蝙蝠」と判定される。</td>
   <td>Ver. 1.4.0 α19</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#voodoo_mad" id="140alpha20">呪術師</a></td>
+<tr id="ver140a20">
+  <td><a href="wolf.php#voodoo_mad">呪術師</a></td>
   <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
@@ -522,8 +523,8 @@ Ver. 1.4.0
     (他の妖狐、<a href="fox.php#child_fox">子狐</a>からも仲間であると分からない)</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
-<tr>
-  <td><a href="lovers.php#self_cupid" id="140alpha21">求愛者</a></td>
+<tr id="ver140a21">
+  <td><a href="lovers.php#self_cupid">求愛者</a></td>
   <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
   <td>村人</td>
@@ -603,8 +604,8 @@ Ver. 1.4.0
     何らかの形で<a href="human.php#dummy_guard">夢守人</a>に接触した場合は殺される。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
-<tr>
-  <td><a href="human.php#jealousy" id="140alpha22">橋姫</a></td>
+<tr id="ver140a22">
+  <td><a href="human.php#jealousy">橋姫</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
@@ -612,8 +613,8 @@ Ver. 1.4.0
   <td class="ability">昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら投票した恋人をショック死させる。吊られた場合は無効。</td>
   <td>Ver. 1.4.0 α22</td>
 </tr>
-<tr>
-  <td><a href="mania.php#unknown_mania" id="140alpha23">鵺</a></td>
+<tr id="ver140a23">
+  <td><a href="mania.php#unknown_mania">鵺</a></td>
   <td><a href="mania.php">神話マニア</td>
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
@@ -632,8 +633,8 @@ Ver. 1.4.0
     他人撃ちの場合は、さらに自分が二人の<a href="sub_role.php#mind_receiver">受信者</a>になる。</td>
   <td>Ver. 1.4.0 α23</td>
 </tr>
-<tr>
-  <td><a href="human.php#priest" id="140alpha24">司祭</a></td>
+<tr id="ver140a24">
+  <td><a href="human.php#priest">司祭</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
@@ -708,8 +709,8 @@ Ver. 1.4.0
     矢を撃つことはできるが恋人にはならず、<a href="sub_role.php#mind_receiver">受信者</a>もつかない。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
-<tr>
-  <td><a href="human.php#crisis_priest" id="140beta2">預言者</a></td>
+<tr id="ver140b2">
+  <td><a href="human.php#crisis_priest">預言者</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
@@ -758,8 +759,8 @@ Ver. 1.4.0
     人狼に襲撃されても死なないが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
-<tr>
-  <td><a href="human.php#elder" id="140beta5">長老</a></td>
+<tr id="ver140b5">
+  <td><a href="human.php#elder">長老</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
@@ -803,8 +804,8 @@ Ver. 1.4.0
   <td class="ability">一度だけ人狼の襲撃を耐える事ができる狩人。</td>
   <td>Ver. 1.4.0 β5</td>
 </tr>
-<tr>
-  <td><a href="human.php#trap_common" id="140beta6">策士</a></td>
+<tr id="ver140b6">
+  <td><a href="human.php#trap_common">策士</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
@@ -885,8 +886,8 @@ Ver. 1.4.0
   <td class="ability">他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β6</td>
 </tr>
-<tr>
-  <td><a href="human.php#saint" id="140beta7">聖女</a></td>
+<tr id="ver140b7">
+  <td><a href="human.php#saint">聖女</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
@@ -931,8 +932,8 @@ Ver. 1.4.0
   <td class="ability">本人が吊られたら、次の日の昼を「決選投票」(初日に投票した二人にしか投票できない) にする妖精。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#emerald_wolf" id="140beta8">翠狼</a></td>
+<tr id="ver140b8">
+  <td><a href="wolf.php#emerald_wolf">翠狼</a></td>
   <td><a href="wolf.php">人狼</td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
@@ -955,7 +956,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">占った人が会話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。<br>
+  <td class="ability">占った人が念話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。<br>
   一度発動すると能力を失う。
   </td>
   <td>Ver. 1.4.0 β8</td>
@@ -1050,8 +1051,8 @@ Ver. 1.4.0
   <td class="ability">矢を三本撃てるキューピッド。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
-<tr>
-  <td><a href="human.php#reverse_assassin" id="140beta9">反魂師</a></td>
+<tr id="ver140b9">
+  <td><a href="human.php#reverse_assassin">反魂師</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
@@ -1155,8 +1156,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
-<tr>
-  <td><a href="human.php#doll" id="140beta10">上海人形</a></td>
+<tr id="ver140b10">
+  <td><a href="human.php#doll">上海人形</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
@@ -1220,8 +1221,8 @@ Ver. 1.4.0
   表示されるのは 3日目以降の奇数日 (3 → 5 → 7 →...)。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
-<tr>
-  <td><a href="lovers.php#exchange_angel" id="140beta11">魂移使</a></td>
+<tr id="ver140b11">
+  <td><a href="lovers.php#exchange_angel">魂移使</a></td>
   <td><a href="lovers.php">恋人</td>
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
@@ -1322,8 +1323,8 @@ Ver. 1.4.0
   <td class="ability">自分撃ち固定で、矢を撃った二人に<a href="sub_role.php#challenge_lovers">難題</a>を付加するキューピッド。自分に<a href="sub_role.php#mind_receiver">受信者</a>が付く。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#hungry_wolf" id="140beta12">餓狼</a></td>
+<tr id="ver140b12">
+  <td><a href="wolf.php#hungry_wolf">餓狼</a></td>
   <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
@@ -1358,8 +1359,8 @@ Ver. 1.4.0
   <td class="ability">悪戯が成功すると、花に関するメッセージを死亡メッセージ欄に表示できる妖精。</td>
   <td>Ver. 1.4.0 β12</td>
 </tr>
-<tr>
-  <td><a href="human.php#doom_doll" id="140beta13">蓬莱人形</a></td>
+<tr id="ver140b13">
+  <td><a href="human.php#doom_doll">蓬莱人形</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
@@ -1466,8 +1467,8 @@ Ver. 1.4.0
   <td class="ability"><a href="human.php#poison_cat">猫又</a>相当の蘇生能力を持った上位巫女。</td>
   <td>Ver. 1.4.0 β13</td>
 </tr>
-<tr>
-  <td><a href="human.php#blind_guard" id="140beta14">夜雀</a></td>
+<tr id="ver140b14">
+  <td><a href="human.php#blind_guard">夜雀</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
@@ -1486,8 +1487,8 @@ Ver. 1.4.0
   <td class="ability">他国で言うカルトリーダー相当。</td>
   <td>Ver. 1.4.0 β14</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#doom_wolf" id="140beta15">冥狼</a></td>
+<tr id="ver140b15">
+  <td><a href="wolf.php#doom_wolf">冥狼</a></td>
   <td><a href="wolf.php">人狼</td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
@@ -1556,8 +1557,8 @@ Ver. 1.4.0
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
-<tr>
-  <td><a href="human.php#history_brownie" id="140beta16">白澤</a></td>
+<tr id="ver140b16">
+  <td><a href="human.php#history_brownie">白澤</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
@@ -1586,8 +1587,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 β16</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#enchant_mad" id="140beta17">狢</a></td>
+<tr id="ver140b17">
+  <td><a href="wolf.php#enchant_mad">狢</a></td>
   <td><a href="wolf.php">人狼</td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
@@ -1636,8 +1637,8 @@ Ver. 1.4.0
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
-<tr>
-  <td><a href="lovers.php#sacrifice_angel" id="140beta18">守護天使</a></td>
+<tr id="ver140b18">
+  <td><a href="lovers.php#sacrifice_angel">守護天使</a></td>
   <td><a href="lovers.php">恋人</td>
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
@@ -1722,8 +1723,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
-<tr>
-  <td><a href="human.php#divorce_jealousy" id="140beta19">縁切地蔵</a></td>
+<tr id="ver140b19">
+  <td><a href="human.php#divorce_jealousy">縁切地蔵</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
@@ -1846,8 +1847,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
-<tr>
-  <td><a href="human.php#attempt_necromancer" id="140beta20">蟲姫</a></td>
+<tr id="ver140b20">
+  <td><a href="human.php#attempt_necromancer">蟲姫</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
@@ -1915,8 +1916,8 @@ Ver. 1.4.0
   <td class="ability">自分のアイコンと色を悪戯先と同じにする妖精。</td>
   <td>Ver. 1.4.0 β20</td>
 </tr>
-<tr>
-  <td><a href="ogre.php#dowser_yaksa" id="140beta21">毘沙門天</a></td>
+<tr id="ver140b21">
+  <td><a href="ogre.php#dowser_yaksa">毘沙門天</a></td>
   <td><a href="ogre.php">鬼</td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
@@ -1979,8 +1980,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.4.0 β21</td>
 </tr>
-<tr>
-  <td><a href="human.php#clairvoyance_scanner" id="140beta22">猩々</a></td>
+<tr id="ver140b22">
+  <td><a href="human.php#clairvoyance_scanner">猩々</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
@@ -2045,8 +2046,8 @@ Ver. 1.4.0
   <td class="ability">時が経つと (5 日目以降) <a href="human.php#elder">長老</a>相当の能力を得る村人。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
-<tr>
-  <td><a href="human.php#wizard" id="150alpha1">魔法使い</a></td>
+<tr id="ver150a1">
+  <td><a href="human.php#wizard">魔法使い</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
@@ -2067,8 +2068,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.5.0 α1</td>
 </tr>
-<tr>
-  <td><a href="human.php#embalm_necromancer" id="150alpha3">死化粧師</a></td>
+<tr id="ver150a3">
+  <td><a href="human.php#embalm_necromancer">死化粧師</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
@@ -2085,8 +2086,8 @@ Ver. 1.4.0
   <td class="ability">処刑者に投票した人に処刑者と同一陣営の人が何人いるか分かる特殊な霊能者。</td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
-<tr>
-  <td><a href="human.php#awake_wizard" id="150alpha4">比丘尼</a></td>
+<tr id="ver150a4">
+  <td><a href="human.php#awake_wizard">比丘尼</a></td>
   <td><a href="human.php">村人</td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
@@ -2106,8 +2107,8 @@ Ver. 1.4.0
     また、一定条件を満たすと天候を引き起こすことができる。</td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#follow_mad" id="150alpha5">舟幽霊</a></td>
+<tr id="ver150a5">
+  <td><a href="wolf.php#follow_mad">舟幽霊</a></td>
   <td><a href="wolf.php">人狼</td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
@@ -2148,8 +2149,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.5.0 α5</td>
 </tr>
-<tr>
-  <td><a href="wolf.php#revive_wolf" id="150alpha6">仙狼</a></td>
+<tr id="ver150a6">
+  <td><a href="wolf.php#revive_wolf">仙狼</a></td>
   <td><a href="wolf.php">人狼</td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
@@ -2186,8 +2187,8 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.5.0 α6</td>
 </tr>
-<tr>
-  <td><a href="ogre.php#betray_yaksa" id="150alpha7">夜叉丸</a></td>
+<tr id="ver150a7">
+  <td><a href="ogre.php#betray_yaksa">夜叉丸</a></td>
   <td><a href="ogre.php">鬼</td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
@@ -2233,10 +2234,30 @@ Ver. 1.4.0
   </td>
   <td>Ver. 1.5.0 α7</td>
 </tr>
+<tr id="ver150a8">
+  <td><a href="human.php#pierrot_wizard">道化師</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">魔法使いの一種で、魔法の効果は、<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・特殊<a href="human.php#doom_assassin">死神</a>・<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>・特殊妖精のいずれか。
+  </td>
+  <td>Ver. 1.5.0 α8</td>
+</tr>
+<tr>
+  <td><a href="human.php#astray_wizard">左道使い</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">魔法使いの一種で、魔法の効果は、<a href="human.php#reverse_assassin">反魂師</a>・<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>のいずれか。
+  </td>
+  <td>Ver. 1.5.0 α8</td>
+</tr>
 </table>
 
-<table>
-<caption><a id="sub_role">新サブ役職早見表</a></caption>
+<table id="sub_role">
+<caption>新サブ役職早見表</caption>
   <tr>
     <th>名称</th>
     <th>所属</th>
@@ -2244,8 +2265,8 @@ Ver. 1.4.0
     <th>能力</th>
     <th>初登場</th>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#strong_voice" id="sub_140alpha3">大声</a></td>
+  <tr id="sub_ver140a3">
+    <td><a href="sub_role.php#strong_voice">大声</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
     <td class="ability">常に大声になる。</td>
@@ -2286,8 +2307,8 @@ Ver. 1.4.0
     <td class="ability">処刑投票時に他の人と投票先が重なるとショック死する。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#no_last_words" id="sub_140alpha9">筆不精</a></td>
+  <tr id="sub_ver140a9">
+    <td><a href="sub_role.php#no_last_words">筆不精</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
     <td class="ability">遺言を残せない。</td>
@@ -2307,8 +2328,8 @@ Ver. 1.4.0
     <td class="ability">自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。</td>
     <td>Ver. 1.4.0 α9</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#liar" id="sub_140alpha11">狼少年</a></td>
+  <tr id="sub_ver140a11">
+    <td><a href="sub_role.php#liar">狼少年</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
     <td class="ability">発言時に「人⇔狼」等が入れ替わる (たまに変換されないこともある)。</td>
@@ -2321,15 +2342,15 @@ Ver. 1.4.0
     <td class="ability">コピー後の<a href="mania.php#mania">神話マニア</a>に付加される。</td>
     <td>Ver. 1.4.0 α11</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#lost_ability" id="sub_140alpha13">能力喪失</a></td>
+  <tr id="sub_ver140a13">
+    <td><a href="sub_role.php#lost_ability">能力喪失</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>○</td>
     <td class="ability">発動制限付き能力者が能力を失った場合に付加される。</td>
     <td>Ver. 1.4.0 α13</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#random_voice" id="sub_140alpha14">臆病者</a></td>
+  <tr id="sub_ver140a14">
+    <td><a href="sub_role.php#random_voice">臆病者</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
     <td class="ability">声の大きさがランダムに変わる。</td>
@@ -2433,8 +2454,8 @@ Ver. 1.4.0
     <td class="ability">発言の一部が空白に入れ替わる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#random_luck" id="sub_140alpha15">波乱万丈</a></td>
+  <tr id="sub_ver140a15">
+    <td><a href="sub_role.php#random_luck">波乱万丈</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
     <td>○</td>
     <td class="ability">処刑得票数に -2～+2 の範囲でランダムに補正がかかる。</td>
@@ -2454,8 +2475,8 @@ Ver. 1.4.0
     <td class="ability"><a href="sub_role.php#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。</td>
     <td>Ver. 1.4.0 α15</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#speaker" id="sub_140alpha17">スピーカー</a></td>
+  <tr id="sub_ver140a17">
+    <td><a href="sub_role.php#speaker">スピーカー</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
     <td class="ability">発言が一段階大きく見えるようになり、大声が聞き取れなくなる。</td>
@@ -2489,22 +2510,22 @@ Ver. 1.4.0
     <td class="ability">投票数が 0 になり、<a href="quiz.php#quiz">出題者</a>に投票したらショック死する。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#weekly" id="sub_140alpha19">七曜迷彩</a></td>
+  <tr id="sub_ver140a19">
+    <td><a href="sub_role.php#weekly">七曜迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
     <td class="ability">発言に曜日が含まれていたら曜日の順番に合わせて入れ替えられてしまう。</td>
     <td>Ver. 1.4.0 α19</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#mind_read" id="sub_140alpha21">サトラレ</a></td>
+  <tr id="sub_ver140a21">
+    <td><a href="sub_role.php#mind_read">サトラレ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability"><a href="human.php#mind_scanner">さとり</a>に夜の発言が見られてしまう。</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#mind_open" id="sub_140alpha22">公開者</a></td>
+  <tr id="sub_ver140a22">
+    <td><a href="sub_role.php#mind_open">公開者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability">二日目以降の夜の発言が参加者全員に見られてしまう。</td>
@@ -2524,8 +2545,8 @@ Ver. 1.4.0
     <td class="ability">処刑投票時に<a href="sub_role.php#lovers">恋人</a>から一票でも貰うとショック死しする。</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#inside_voice" id="sub_140alpha23">内弁慶</a></td>
+  <tr id="sub_ver140a23">
+    <td><a href="sub_role.php#inside_voice">内弁慶</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
     <td>○</td>
     <td class="ability">昼は<a href="sub_role.php#weak_voice">小声</a>、夜は<a href="sub_role.php#strong_voice">大声</a>になる。</td>
@@ -2573,8 +2594,8 @@ Ver. 1.4.0
     <td class="ability">特定の人と夜に会話できるようになる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#possessed_target" id="sub_140alpha24">憑依者</a></td>
+  <tr id="sub_ver140a24">
+    <td><a href="sub_role.php#possessed_target">憑依者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>○</td>
     <td class="ability">憑依能力者が誰かに憑依したら付加される</td>
@@ -2587,22 +2608,22 @@ Ver. 1.4.0
     <td class="ability">憑依能力者に憑依されている人に付加される</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#mind_evoke" id="sub_140beta2">口寄せ</a></td>
+  <tr id="sub_ver140b2">
+    <td><a href="sub_role.php#mind_evoke">口寄せ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability">死後に特定の人の遺言窓にメッセージを送れるようになる。</td>
     <td>Ver. 1.4.0 β2</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#bad_status" id="sub_140beta6">悪戯</a></td>
+  <tr id="sub_ver140b6">
+    <td><a href="sub_role.php#bad_status">悪戯</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>×</td>
     <td class="ability">一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加される</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#mind_lonely" id="sub_140beta8">はぐれ者</a></td>
+  <tr id="sub_ver140b8">
+    <td><a href="sub_role.php#mind_lonely">はぐれ者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>○</td>
     <td class="ability">仲間が分からなくなり、会話できなくなる。</td>
@@ -2615,8 +2636,8 @@ Ver. 1.4.0
     <td class="ability">お互いの役職が分かる。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#nervy" id="sub_140beta9">自信家</a></td>
+  <tr id="sub_ver140b9">
+    <td><a href="sub_role.php#nervy">自信家</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
     <td class="ability">処刑投票時に同一陣営の人に投票するとショック死する。</td>
@@ -2629,15 +2650,15 @@ Ver. 1.4.0
     <td class="ability">表示された日の処刑投票集計後にショック死する。</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#death_warrant" id="sub_140beta10">死の宣告</a></td>
+  <tr id="sub_ver140b10">
+    <td><a href="sub_role.php#death_warrant">死の宣告</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
     <td class="ability">予告された日の処刑投票集計後にショック死する。</td>
     <td>Ver. 1.4.0 β10</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#challenge_lovers" id="sub_140beta11">難題</a></td>
+  <tr id="sub_ver140b11">
+    <td><a href="sub_role.php#challenge_lovers">難題</a></td>
     <td><a href="sub_role.php#lovers_group">恋人系</a></td>
     <td>○</td>
     <td class="ability">4日目夜までは人狼の襲撃無効・毒無効・暗殺反射を持つ。<br>
@@ -2672,8 +2693,8 @@ Ver. 1.4.0
     <td class="ability">コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#critical_voter" id="sub_140beta14">会心</a></td>
+  <tr id="sub_ver140b14">
+    <td><a href="sub_role.php#critical_voter">会心</a></td>
     <td><a href="sub_role.php#authority_group">権力者系</a></td>
     <td>×</td>
     <td class="ability">5% の確率で処刑投票数が +100 される。</td>
@@ -2735,29 +2756,29 @@ Ver. 1.4.0
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加される。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#changed_therian" id="sub_140beta15">元獣人</a></td>
+  <tr id="sub_ver140b15">
+    <td><a href="sub_role.php#changed_therian">元獣人</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>×</td>
     <td class="ability">人狼に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。</td>
     <td>Ver. 1.4.0 β15</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#frostbite" id="sub_140beta16">凍傷</a></td>
+  <tr id="sub_ver140b16">
+    <td><a href="sub_role.php#frostbite">凍傷</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
     <td>○</td>
     <td class="ability">表示された日限定の<a href="sub_role.php#rabbit">ウサギ</a>。</td>
     <td>Ver. 1.4.0 β16</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#passion" id="sub_140beta17">恋色迷彩</a></td>
+  <tr id="sub_ver140b17">
+    <td><a href="sub_role.php#passion">恋色迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
     <td>○</td>
     <td class="ability">発言時に一部のキーワードが恋人っぽい発言に入れ替わる。</td>
     <td>Ver. 1.4.0 β17</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#mind_presage" id="sub_140beta18">受託者</a></td>
+  <tr id="sub_ver140b18">
+    <td><a href="sub_role.php#mind_presage">受託者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>×</td>
     <td class="ability">付加した<a href="human.php#presage_scanner">件</a>が人狼に襲撃されて死亡したら誰に襲撃されたかメッセージが表示される。</td>
@@ -2770,29 +2791,29 @@ Ver. 1.4.0
     <td class="ability"><a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、庇護者を付加した人が身代わりで死亡する。</td>
     <td>Ver. 1.4.0 β18</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#psycho_infected" id="sub_140beta20">洗脳者</a></td>
+  <tr id="sub_ver140b20">
+    <td><a href="sub_role.php#psycho_infected">洗脳者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>×</td>
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>相当。</td>
     <td>Ver. 1.4.0 β20</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#joker" id="sub_140beta21">ジョーカー</a></td>
+  <tr id="sub_ver140b21">
+    <td><a href="sub_role.php#joker">ジョーカー</a></td>
     <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
     <td>○</td>
     <td class="ability">ゲーム終了時に所持している場合、引き分け以外は無条件で敗北扱いになる。昼の処刑投票で移動する。</td>
     <td>Ver. 1.4.0 β21</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#whisper_ringing" id="sub_140beta22">恋耳鳴</a></td>
+  <tr id="sub_ver140b22">
+    <td><a href="sub_role.php#whisper_ringing">恋耳鳴</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>○</td>
     <td class="ability">二日目以降、恋人の独り言が専用の囁きに見えるようになる。</td>
     <td>Ver. 1.4.0 β22</td>
   </tr>
-  <tr>
-    <td><a href="sub_role.php#wirepuller_luck" id="sub_150alpha5">入道</a></td>
+  <tr id="sub_ver150a5">
+    <td><a href="sub_role.php#wirepuller_luck">入道</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>○</td>
     <td class="ability">付加させた人が一人でも生存している間は投票数が +2 されるが全員死亡すると得票数が +3 される。</td>
@@ -2800,7 +2821,7 @@ Ver. 1.4.0
   </tr>
 </table>
 
-<h2><a id="reference">参考リンク</a></h2>
+<h2 id="reference">参考リンク</h2>
 <pre>
 作って欲しい役職などがあったらこちらのスレへどうぞ
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">【ネタ歓迎】あったらいいな、こんな役職【ガチ大歓迎】</a>
@@ -2809,7 +2830,7 @@ Ver. 1.4.0
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50" target="_top">新役職提案スレッド＠やる夫</a>
 </pre>
 
-<h2><a id="memo">作成予定メモ</a></h2>
+<h2 id="memo">作成予定メモ</h2>
 <h3>基本作成方針</h3>
 <ol>
 <li>単独で出現しても勝利可能</li>

@@ -6,30 +6,38 @@ OutputInfoPageHeader('デバッグ情報', 1);
 ?>
 <p>
 Ver. 1.5.0
-<a href="#150alpha2">α2</a>
-<a href="#150alpha3">α3</a>
-<a href="#150alpha4">α4</a>
-<a href="#150alpha5">α5</a>
+<a href="#ver150a2">α2</a>
+<a href="#ver150a3">α3</a>
+<a href="#ver150a4">α4</a>
+<a href="#ver150a5">α5</a>
+<a href="#ver150a7">α7</a>
 </p>
 <p>
-<a href="#140release1">Ver. 1.4.0</a>
-<a href="#140alpha24">α24</a>
-<a href="#140beta2">β2</a>
-<a href="#140beta3">β3</a>
-<a href="#140beta4">β4</a>
-<a href="#140beta11">β11</a>
-<a href="#140beta12">β12</a>
-<a href="#140beta13">β13</a>
-<a href="#140beta16">β16</a>
-<a href="#140beta17">β17</a>
-<a href="#140beta18">β18</a>
-<a href="#140beta19">β19</a>
-<a href="#140beta20">β20</a>
-<a href="#140beta21">β21</a>
-<a href="#140beta22">β22</a>
+<a href="#ver140">Ver. 1.4.0</a>
+<a href="#ver140a24">α24</a>
+<a href="#ver140b2">β2</a>
+<a href="#ver140b3">β3</a>
+<a href="#ver140b4">β4</a>
+<a href="#ver140b11">β11</a>
+<a href="#ver140b12">β12</a>
+<a href="#ver140b13">β13</a>
+<a href="#ver140b16">β16</a>
+<a href="#ver140b17">β17</a>
+<a href="#ver140b18">β18</a>
+<a href="#ver140b19">β19</a>
+<a href="#ver140b20">β20</a>
+<a href="#ver140b21">β21</a>
+<a href="#ver140b22">β22</a>
 </p>
 
-<h2><a id="150alpha5">Ver. 1.5.0 α5</a></h2>
+<h2 id="ver150a7">Ver. 1.5.0 α7</h2>
+<h3>include/role/betray_yaksa.php % 12行目付近 (2011/04/11 (Mon) 00:16)</h3>
+<pre>
+× function Ignored($user){ return ! $target->IsCamp('chiroptera', true); }
+○ function Ignored($user){ return ! $user->IsCamp('chiroptera', true); }
+</pre>
+
+<h2 id="ver150a5">Ver. 1.5.0 α5</h2>
 <h3>include/game_functions.php % 185行目付近 (2011/03/10 (Thu) 23:51)</h3>
 <pre>
 × return GetSelfVoteNight($situation, $not_situation) > 0;
@@ -42,7 +50,7 @@ Ver. 1.5.0
 ○ $query = $ROOM->GetQueryHeader('vote', 'target_uname') . ' AND date = ' . $ROOM->date . ' AND ';
 </pre>
 
-<h2><a id="150alpha4">Ver. 1.5.0 α4</a></h2>
+<h2 id="ver150a4">Ver. 1.5.0 α4</h2>
 <h3>include/game_vote_functions.php % 2648行目付近 (2011/02/24 (Thu) 08:24)</h3>
 <h4>[before]</h4>
 <pre>
@@ -73,7 +81,7 @@ else{
 }
 </pre>
 
-<h2><a id="150alpha3">Ver. 1.5.0 α3</a></h2>
+<h2 id="ver150a3">Ver. 1.5.0 α3</h2>
 <h3>include/game_vote_functions.php % 1527行目付近 (2011/02/07 (Mon) 22:22)</h3>
 <h4>[before]</h4>
 <pre>
@@ -91,14 +99,14 @@ if($user->IsRole('dummy_guard')){ //夢守人は罠無効
 }
 </pre>
 
-<h2><a id="150alpha2">Ver. 1.5.0 α2</a></h2>
+<h2 id="ver150a2">Ver. 1.5.0 α2</h2>
 <h3>include/game_vote_functions.php % 2247行目付近 (2011/01/24 (Mon) 02:14)</h3>
 <pre>
 × if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')) continue;
 ○ if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy') || $wizard_target_list[$uname] == 'light_fairy') continue;
 </pre>
 
-<h2><a id="140release1">Ver. 1.4.0</a></h2>
+<h2 id="ver140">Ver. 1.4.0</h2>
 <h3>room_manager.php % 312行目付近 (2010/12/28 (Tue) 19:10)</h3>
 <pre>
 × 0, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
@@ -135,14 +143,14 @@ if($user->IsRole('dummy_guard')){ //夢守人は罠無効
 }
 </pre>
 
-<h2><a id="140beta22">Ver. 1.4.0 β22</a></h2>
+<h2 id="ver140b22">Ver. 1.4.0 β22</h2>
 <h3>game_vote.php % 261行目付近 (2010/12/07 (Tue) 00:09)</h3>
 <pre>
 × if($SELF->IsRole('evoke_scanner')){
 ○ elseif($SELF->IsRole('evoke_scanner')){
 </pre>
 
-<h2><a id="140beta21">Ver. 1.4.0 β21</a></h2>
+<h2 id="ver140b21">Ver. 1.4.0 β21</h2>
 <h3>room_manager.php % 178行目付近 (2010/11/23 (Tue) 22:45)</h3>
 <h4>[before]</h4>
 <pre>
@@ -179,7 +187,7 @@ $stack = array();
 ○ if($user->GetCamp() == 'human') $live_count['human_side']++;
 </pre>
 
-<h2><a id="140beta20">Ver. 1.4.0 β20</a></h2>
+<h2 id="ver140b20">Ver. 1.4.0 β20</h2>
 <h3>include/game_format.php % 22行目付近 (2010/11/15 (Mon) 03:16)</h3>
 <pre>
 × $SELF->live->virtual_live = true;
@@ -211,7 +219,7 @@ foreach($vote_message_list as $id => $list) $stack[$USERS->ByID($id)->uname] = $
 $vote_message_list = $stack;
 </pre>
 
-<h2><a id="140beta19">Ver. 1.4.0 β19</a></h2>
+<h2 id="ver140b19">Ver. 1.4.0 β19</h2>
 <h3>game_play.php % 264行目付近 (2010/11/06 (Sat) 04:12)</h3>
 <h4>[before]</h4>
 <pre>
@@ -256,7 +264,7 @@ function Ignored(){
 ○ 'yaksa' => 'succubus_yaksa');
 </pre>
 
-<h2><a id="140beta18">Ver. 1.4.0 β18</a></h2>
+<h2 id="ver140b18">Ver. 1.4.0 β18</h2>
 <h3>include/user_class.php % 432行目付近 (2010/10/16 (Sat) 03:18)</h3>
 <pre>
 × if($this->IsRole('mind_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
@@ -273,7 +281,7 @@ function Ignored(){
 ○ if(FetchResult($ROOM->GetQueryHeader('room', 'day_night')) != 'beforegame'){
 </pre>
 
-<h2><a id="140beta17">Ver. 1.4.0 β17</a></h2>
+<h2 id="ver140b17">Ver. 1.4.0 β17</h2>
 <h3>include/user_class.php % 370行目付近 (2010/10/04 (Mon) 00:44)</h3>
 <pre>
 × return $result && ! $reverse ? 'wolf' : 'human';
@@ -285,7 +293,7 @@ function Ignored(){
 ○ if($uname == '') $uname = 'system';
 </pre>
 
-<h2><a id="140beta16">Ver. 1.4.0 β16</a></h2>
+<h2 id="ver140b16">Ver. 1.4.0 β16</h2>
 <h3>include/game_vote_functions.php % 1474行目付近</h3>
 <h4>[before]</h4>
 <pre>
@@ -346,7 +354,7 @@ if($target->IsRole('soul_mania', 'dummy_mania') &&
 }
 </pre>
 
-<h2><a id="140beta13">Ver. 1.4.0 β13</a></h2>
+<h2 id="ver140b13">Ver. 1.4.0 β13</h2>
 <h3>include/game_vote_functions.php % 973行目付近</h3>
 <pre>
 × $delete_role_list = array('lovers', 'admire_lovers', 'copied', 'copied_trick', 'copied_soul',
@@ -383,7 +391,7 @@ $target->ParseRoles($target->GetRole());
 ○ elseif($said_user->IsWolf() && $said_user->IsLonely()){
 </pre>
 
-<h2><a id="140beta12">Ver. 1.4.0 β12</a></h2>
+<h2 id="ver140b12">Ver. 1.4.0 β12</h2>
 <h3>include/game_vote_functinons.php % 176行目付近</h3>
 <h4>[before]</h4>
 <pre>
@@ -395,7 +403,7 @@ $target->ParseRoles($target->GetRole());
 	$CAST_CONF->AddRandom($role_list, $replace_human_list, $over_count);
 </pre>
 
-<h2><a id="140beta11">Ver. 1.4.0 β11</a></h2>
+<h2 id="ver140b11">Ver. 1.4.0 β11</h2>
 <h3>include/user_class.php % 190行目付近</h3>
 <h4>[before]</h4>
 <pre>
@@ -431,7 +439,7 @@ $target->ParseRoles($target->GetRole());
 ○ elseif($said_user->IsLonely('silver_wolf')){
 </pre>
 
-<h2><a id="140beta4">Ver. 1.4.0 β4</a></h2>
+<h2 id="ver140b4">Ver. 1.4.0 β4</h2>
 <h3>user_manager.php % 35行目付近</h3>
 <h4>[before]</h4>
 <pre>
@@ -474,7 +482,7 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 ○ $sub_role_list = array_diff($GAME_CONF->sub_role_group_list['sudden-death'], array('panelist'));
 </pre>
 
-<h2><a id="140beta3">Ver. 1.4.0 β3</a></h2>
+<h2 id="ver140b3">Ver. 1.4.0 β3</h2>
 <h3>game_play.php % 259行目付近</h3>
 <pre>
 × if($ROOM->IsPlaying() && $virtual->IsLive()){
@@ -537,7 +545,7 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 </pre>
 
 
-<h2><a id="140beta2">Ver. 1.4.0 β2</a></h2>
+<h2 id="ver140b2">Ver. 1.4.0 β2</h2>
 <h3>include/game_vote_functions.php % 1188行目</h3>
 <pre>
 × elseif(! $ROOM->IsOpenCast() && $user->IsGroup('evoke_scanner')){
@@ -550,7 +558,7 @@ $builder->AddSystemTalk($sentence, 'dummy-boy');
 ○ array_push($actor_list, '%cat', 'revive_fox');
 </pre>
 
-<h2><a id="140alpha24">Ver. 1.4.0 α24</a></h2>
+<h2 id="ver140a24">Ver. 1.4.0 α24</h2>
 <h3>game_play.php % 731 行目</h3>
 <pre>
 × $USERS->GetHandleName($target_uname) . 'さんに投票済み');

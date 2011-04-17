@@ -196,9 +196,10 @@ function OutputGamePageHeader(){
   global $SERVER_CONF, $GAME_CONF, $RQ_ARGS, $ROOM, $SELF;
 
   //引数を格納
-  $url_header = 'game_frame.php?room_no=' . $ROOM->id . '&auto_reload=' . $RQ_ARGS->auto_reload;
-  if($RQ_ARGS->play_sound) $url_header .= '&play_sound=on';
-  if($RQ_ARGS->list_down)  $url_header .= '&list_down=on';
+  $url_header = 'game_frame.php?room_no=' . $ROOM->id;
+  if($RQ_ARGS->auto_reload > 0) $url_header .= '&auto_reload=' . $RQ_ARGS->auto_reload;
+  if($RQ_ARGS->play_sound)      $url_header .= '&play_sound=on';
+  if($RQ_ARGS->list_down)       $url_header .= '&list_down=on';
 
   $title = $SERVER_CONF->title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
@@ -257,7 +258,7 @@ function OutputGamePageHeader(){
     $on_load .= 'output_realtime();';
     OutputRealTimer($start_time, $end_time);
   }
-  echo '</head>'."\n" . '<body onLoad="' . $on_load . '">'."\n".'<a id="#game_top"></a>'."\n";
+  echo '</head>'."\n" . '<body onLoad="' . $on_load . '">'."\n".'<a id="game_top"></a>'."\n";
 }
 
 //リアルタイム表示に使う JavaScript の変数を出力
@@ -288,11 +289,12 @@ function GenerateJavaScriptDate($time){
 function OutputAutoReloadLink($url){
   global $GAME_CONF, $RQ_ARGS;
 
-  $str = '[自動更新](' . $url . '0">' . ($RQ_ARGS->auto_reload == 0 ? '【手動】' : '手動') . '</a>';
+  $str = '[自動更新](' . $url . '#game_top">' .
+    ($RQ_ARGS->auto_reload > 0 ? '手動' : '【手動】') . '</a>';
   foreach($GAME_CONF->auto_reload_list as $time){
     $name = $time . '秒';
     $value = $RQ_ARGS->auto_reload == $time ? '【' . $name . '】' : $name;
-    $str .= ' ' . $url . $time . '">' . $value . '</a>';
+    $str .= ' ' . $url . '&auto_reload=' . $time . '#game_top">' . $value . '</a>';
   }
   echo $str . ')'."\n";
 }
@@ -1044,8 +1046,8 @@ function GenerateDeadMan(){
 		     'ASSASSIN_KILLED' => true, 'ESCAPER_DEAD' => true, 'OGRE_KILLED' => true,
 		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
 		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
-		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'NOVOTED_night' => true,
-		     'JOKER_MOVED_night' => true));
+		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'PIERROT_%' => false,
+		     'NOVOTED_night' => true, 'JOKER_MOVED_night' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
@@ -1120,6 +1122,7 @@ function GenerateDeadManType($name, $type){
     case 'SUDDEN_DEATH':
     case 'FLOWERED':
     case 'CONSTELLATION':
+    case 'PIERROT':
       $base_type = $implode_type;
       break;
     }
@@ -1181,6 +1184,7 @@ function GenerateDeadManType($name, $type){
 
   case 'FLOWERED':
   case 'CONSTELLATION':
+  case 'PIERROT':
     $base   = false;
     $class  = 'fairy';
     $action = strtolower($type);

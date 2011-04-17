@@ -247,6 +247,9 @@ function VoteNight(){
     }
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
+    if($ROOM->IsEvent('force_assassin_do') && $not_type){
+      OutputVoteResult('夜：天候「紅月」はキャンセル投票できません');
+    }
     break;
 
   case 'MIND_SCANNER_DO':
@@ -361,6 +364,9 @@ function VoteNight(){
     if(! $SELF->IsOgre()) OutputVoteResult('夜：投票イベントが一致しません');
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     $not_type = $RQ_ARGS->situation == 'OGRE_NOT_DO';
+    if($ROOM->IsEvent('force_assassin_do') && $not_type){
+      OutputVoteResult('夜：天候「紅月」はキャンセル投票できません');
+    }
     break;
 
   case 'MANIA_DO':
@@ -760,8 +766,8 @@ function OutputVoteNight(){
   }
   elseif($SELF->IsRoleGroup('assassin') || $SELF->IsRole('doom_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
-    $type     = 'ASSASSIN_DO';
-    $not_type = 'ASSASSIN_NOT_DO';
+    $type = 'ASSASSIN_DO';
+    if(! $ROOM->IsEvent('force_assassin_do')) $not_type = 'ASSASSIN_NOT_DO';
   }
   elseif($role_scanner = $SELF->IsRoleGroup('scanner')){
     if($SELF->IsRole('mind_scanner', 'presage_scanner')){
@@ -783,7 +789,7 @@ function OutputVoteNight(){
   }
   elseif($role_wizard = $SELF->IsRole('barrier_wizard')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日は魔法を使えません');
-    $type = 'SPREAD_WIZARD_DO';
+    $type   = 'SPREAD_WIZARD_DO';
     $submit = 'wizard_do';
   }
   elseif($SELF->IsWizard(true)){
@@ -809,8 +815,8 @@ function OutputVoteNight(){
   elseif($role_revive = $SELF->IsRole('possessed_mad', 'possessed_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の憑依はできません');
     if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
-    $type       = 'POSSESSED_DO';
-    $not_type   = 'POSSESSED_NOT_DO';
+    $type     = 'POSSESSED_DO';
+    $not_type = 'POSSESSED_NOT_DO';
   }
   elseif($role_trap = $SELF->IsRoleGroup('trap_mad')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
@@ -852,8 +858,8 @@ function OutputVoteNight(){
   }
   elseif($SELF->IsOgre()){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の人攫いはできません');
-    $type     = 'OGRE_DO';
-    $not_type = 'OGRE_NOT_DO';
+    $type = 'OGRE_DO';
+    if(! $ROOM->IsEvent('force_assassin_do')) $not_type = 'OGRE_NOT_DO';
   }
   elseif($SELF->IsRoleGroup('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外はコピーできません');

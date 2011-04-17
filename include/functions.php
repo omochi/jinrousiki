@@ -438,19 +438,19 @@ function GeneratePageLink($CONFIG, $page, $title = NULL){
 //ログへのリンクを生成
 function GenerateLogLink($url, $watch = false, $header = '', $footer = ''){
   $str = <<<EOF
-{$header} <a href="{$url}"{$footer}>正</a>
-<a href="{$url}&reverse_log=on"{$footer}>逆</a>
-<a href="{$url}&heaven_talk=on"{$footer}>霊</a>
-<a href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>逆&amp;霊</a>
-<a href="{$url}&heaven_only=on"{$footer} >逝</a>
-<a href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
+{$header} <a target="_top" href="{$url}"{$footer}>正</a>
+<a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
+<a target="_top" href="{$url}&heaven_talk=on"{$footer}>霊</a>
+<a target="_top" href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>逆&amp;霊</a>
+<a target="_top" href="{$url}&heaven_only=on"{$footer} >逝</a>
+<a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
 EOF;
 
   if($watch){
     $str .= <<<EOF
 
-<a href="{$url}&watch=on"{$footer}>観</a>
-<a href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
+<a target="_top" href="{$url}&watch=on"{$footer}>観</a>
+<a target="_top" href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
 EOF;
   }
   return $str;

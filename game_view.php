@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestBaseGame'); //引数を取得
-$url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
+$url = '<a href="game_view.php?room_no=' . $RQ_ARGS->room_no;
 
 $DB_CONF->Connect(); // DB 接続
 
@@ -37,7 +37,7 @@ if($ROOM->IsBeforeGame()) $ROOM->LoadVote();
 //-- データ出力 --//
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
-if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload != 0){ //自動更新
+if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0){ //自動更新
   echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
 }
 
@@ -59,18 +59,18 @@ if($ROOM->IsPlaying()){ //経過時間を取得
 echo <<<EOF
 </head>
 <body{$on_load}>
-<a id="#game_top"></a>
-<table class="login"><tr>
+<table id="game_top" class="login"><tr>
 {$ROOM->GenerateTitleTag()}<td class="login-link">
 
 EOF;
 
 if($GAME_CONF->auto_reload){ //自動更新設定が有効ならリンクを表示
-  echo '<a href="' . $url . '&auto_reload=' . $RQ_ARGS->auto_reload . '">[更新]</a>'."\n";
-  OutputAutoReloadLink('<a href="' . $url . '&auto_reload=');
+  echo $url . ($RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '') .
+    '#game_top">[更新]</a>'."\n";
+  OutputAutoReloadLink($url);
 }
 else{
-  echo '<a href="' . $url . '">[更新]</a>'."\n";
+  echo $url . '#game_top">[更新]</a>'."\n";
 }
 
 echo '<a href="./">[戻る]</a>';

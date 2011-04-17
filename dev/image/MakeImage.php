@@ -368,21 +368,29 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#魔法使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができます。\n　#魔法#は様々に形を変え村に驚きをもたらします。あなたの力で奇跡を起こすのです！",
     'type' => 'human', 'delimiter' => array('#' => 'wizard'));
 
+  var $soul_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#八卦見#です。二日目以降、夜に誰か一人に強力な#魔法#をかけることができます。\n　当たるも八卦当たらぬも八卦。あなたの知性と理性こそ、#魔法#の神髄と呼ぶべき技です。",
+   'type' => 'wizard');
+
   var $awake_wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を以って、跳梁跋扈する物の怪より同胞を助け給え！",
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
-
-  var $barrier_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#結界師#です。二日目以降、同時に複数の人を一定確率で_護衛_できる#魔法#をかけることができます。\n　古来より伝えられし念動結界術…。その力を以って、悪しき者共から人々を守るために今、此処に発動ッ！",
-    'type' => 'wizard', 'delimiter' => array('_' => 'guard'));
 
   var $spiritism_wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事など出来ないのだから。",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
 
-  var $soul_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#八卦見#です。二日目以降、夜に誰か一人に強力な#魔法#をかけることができます。\n　当たるも八卦当たらぬも八卦。あなたの知性と理性こそ、#魔法#の神髄と呼ぶべき技です。",
-   'type' => 'wizard');
+  var $barrier_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#結界師#です。二日目以降、同時に複数の人を一定確率で_護衛_できる#魔法#をかけることができます。\n　古来より伝えられし念動結界術…。その力を以って、悪しき者共から人々を守るために今、此処に発動ッ！",
+    'type' => 'wizard', 'delimiter' => array('_' => 'guard'));
+
+  var $astray_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#左道使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は特殊_狂人_相当です。",
+    'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
+
+  var $pierrot_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#道化師#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は_悪戯_相当です。",
+    'type' => 'wizard', 'delimiter' => array('_' => 'chiroptera'));
 
   var $doll = array(
     'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#上海人形#です。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。自由を得るために立ち上がりましょう。",
@@ -1274,10 +1282,12 @@ class RoleMessageList{
   var $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
   var $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   var $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
-  var $result_awake_wizard = array('message' => "さんは|比丘尼|でした", 'type' => 'result_wizard');
-  var $result_barrier_wizard = array('message' => "さんは|結界師|でした", 'type' => 'result_wizard');
-  var $result_spiritism_wizard = array('message' => "さんは|交霊術師|でした", 'type' => 'result_wizard');
   var $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
+  var $result_awake_wizard = array('message' => "さんは|比丘尼|でした", 'type' => 'result_wizard');
+  var $result_spiritism_wizard = array('message' => "さんは|交霊術師|でした", 'type' => 'result_wizard');
+  var $result_barrier_wizard = array('message' => "さんは|結界師|でした", 'type' => 'result_wizard');
+  var $result_astray_wizard = array('message' => "さんは|左道使い|でした", 'type' => 'result_wizard');
+  var $result_pierrot_wizard = array('message' => "さんは|道化師|でした", 'type' => 'result_wizard');
   var $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
   var $result_friend_doll = array('message' => "さんは|仏蘭西人形|でした", 'type' => 'result_doll');
   var $result_phantom_doll = array('message' => "さんは|倫敦人形|でした", 'type' => 'result_doll');
@@ -1523,6 +1533,12 @@ class RoleMessageList{
   var $prediction_weather_half_guard = array('message' => "|曇天|です", 'type' => 'prediction_weather_grassy');
   var $prediction_weather_passion = array('message' => "|箒星|です", 'type' => 'prediction_weather_grassy');
   var $prediction_weather_no_poison = array('message' => "|旱魃|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_psycho_infected = array('message' => "|濃霧|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_hyper_critical = array('message' => "|台風|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_boost_cute = array('message' => "|萌動|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_no_authority = array('message' => "|蜃気楼|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_force_assassin_do = array('message' => "|紅月|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_corpse_courier_mad = array('message' => "|砂塵嵐|です", 'type' => 'prediction_weather_grassy');
 }
 
 class WishRoleList{
@@ -1573,6 +1589,8 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('prediction_weather_no_poison');
+#$builder->Output('prediction_weather_corpse_courier_mad');
 #$builder->Output('gatekeeper_guard');
-$builder->Output('cute_chiroptera');
+#$builder->Output('astray_wizard');
+$builder->Output('pierrot_wizard');
+#$builder->Output('cute_chiroptera');

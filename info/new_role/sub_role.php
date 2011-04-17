@@ -21,13 +21,13 @@ OutputRolePageHeader('サブ役職');
 <a href="#other_group">その他</a>
 </p>
 
-<h2><a id="rule">基本ルール</a></h2>
+<h2 id="rule">基本ルール</h2>
 <pre>
 メイン役職が付加するサブ役職 (例：<a href="#lovers">恋人</a>・<a href="#mind_read">サトラレ</a>) と専用ゲームオプション (例：<a href="../game_option.php#liar">狼少年村</a>・<a href="../game_option.php#gentleman">紳士村</a>)
 以外のサブ役職は重なりません。
 </pre>
 
-<h2><a id="chicken_group">小心者系 (処刑投票ショック死系)</a></h2>
+<h2 id="chicken_group">小心者系 (処刑投票ショック死系)</h2>
 <p>
 <a href="#chicken">小心者</a>
 <a href="#rabbit">ウサギ</a>
@@ -44,7 +44,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#panelist">解答者</a>
 </p>
 
-<h3><a id="chicken">小心者</a> [Ver. 1.4.0 α3-7～]</h3>
+<h3 id="chicken">小心者 [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 処刑投票時に一票でも貰うとショック死する。
 </pre>
@@ -57,7 +57,7 @@ OutputRolePageHeader('サブ役職');
 大人数で実施できるようにしつつ進行を加速するために実装したシステムです。
 </pre>
 
-<h3><a id="rabbit">ウサギ</a> [Ver. 1.4.0 α3-7～]</h3>
+<h3 id="rabbit">ウサギ [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 処刑投票時に一票も貰えないとショック死する。
 </pre>
@@ -71,7 +71,7 @@ OutputRolePageHeader('サブ役職');
 吊り先が確定してる展開になるほど死亡率が上がる、難儀な役職ですね。
 </pre>
 
-<h3><a id="perverseness">天邪鬼</a> [Ver. 1.4.0 α3-7～]</h3>
+<h3 id="perverseness">天邪鬼 [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 処刑投票時に他の人と投票先が重なるとショック死する。
 </pre>
@@ -81,7 +81,7 @@ OutputRolePageHeader('サブ役職');
 誰も投票しない場所を読み続けるのは非常に難しいと思います。
 </pre>
 
-<h3><a id="flattery">ゴマすり</a> [Ver. 1.4.0 α15～]</h3>
+<h3 id="flattery">ゴマすり [Ver. 1.4.0 α15～]</h3>
 <pre>
 処刑投票時に投票先が誰とも重なっていないとショック死する。
 </pre>
@@ -91,7 +91,7 @@ OutputRolePageHeader('サブ役職');
 アイディアは同時に提案されていますが名称決定の関係で実装時期が遅れています。
 </pre>
 
-<h3><a id="impatience">短気</a> [Ver. 1.4.0 α15～]</h3>
+<h3 id="impatience">短気 [Ver. 1.4.0 α15～]</h3>
 <pre>
 <a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。
 </pre>
@@ -101,7 +101,7 @@ OutputRolePageHeader('サブ役職');
 その分だけ<a href="../spec.php#vote_day">判定</a>の優先度が決定者より低めになっています。
 </pre>
 
-<h3><a id="celibacy">独身貴族</a> [Ver. 1.4.0 α22～]</h3>
+<h3 id="celibacy">独身貴族 [Ver. 1.4.0 α22～]</h3>
 <pre>
 処刑投票時に<a href="#lovers">恋人</a>から一票でも貰うとショック死する。
 </pre>
@@ -111,7 +111,7 @@ OutputRolePageHeader('サブ役職');
 より理不尽な仕様となっています。
 </pre>
 
-<h3><a id="nervy">自信家</a> [Ver. 1.4.0 β9～]</h3>
+<h3 id="nervy">自信家 [Ver. 1.4.0 β9～]</h3>
 <pre>
 処刑投票時に同一陣営の人に投票するとショック死する。
 <a href="#lovers">恋人</a>の場合は恋人陣営と判定される。
@@ -121,7 +121,7 @@ OutputRolePageHeader('サブ役職');
 翠星石鯖＠やる夫人狼のとある村の RP がモデルです。
 </pre>
 
-<h3><a id="androphobia">男性恐怖症</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="androphobia">男性恐怖症 [Ver. 1.4.0 β14～]</h3>
 <pre>
 処刑投票時に男性に投票するとショック死する。
 </pre>
@@ -130,7 +130,7 @@ OutputRolePageHeader('サブ役職');
 やる夫人狼のプレイヤーさんとの雑談から生まれた役職です。
 </pre>
 
-<h3><a id="gynophobia">女性恐怖症</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="gynophobia">女性恐怖症 [Ver. 1.4.0 β14～]</h3>
 <pre>
 処刑投票時に女性に投票するとショック死する。
 </pre>
@@ -139,7 +139,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#androphobia">男性恐怖症</a>の女性バージョンです。
 </pre>
 
-<h3><a id="febris">熱病</a> [Ver. 1.4.0 β9～]</h3>
+<h3 id="febris">熱病 [Ver. 1.4.0 β9～]</h3>
 <h4>[役職表示] 発動日限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -155,7 +155,7 @@ OutputRolePageHeader('サブ役職');
 妖怪「土蜘蛛」の伝説がモチーフです。
 </pre>
 
-<h3><a id="frostbite">凍傷</a> [Ver. 1.4.0 β16～]</h3>
+<h3 id="frostbite">凍傷 [Ver. 1.4.0 β16～]</h3>
 <h4>[役職表示] 発動日限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -171,7 +171,7 @@ OutputRolePageHeader('サブ役職');
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/736" target="_top">新役職考案スレ(736)</a> が原型です。
 </pre>
 
-<h3><a id="death_warrant">死の宣告</a> [Ver. 1.4.0 β10～]</h3>
+<h3 id="death_warrant">死の宣告 [Ver. 1.4.0 β10～]</h3>
 <h4>[役職表示] 発動日前限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -188,7 +188,7 @@ OutputRolePageHeader('サブ役職');
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/149" target="_top">新役職考案スレ(149)</a> が原型です。
 </pre>
 
-<h3><a id="panelist">解答者</a> [Ver. 1.4.0 α17～]</h3>
+<h3 id="panelist">解答者 [Ver. 1.4.0 α17～]</h3>
 <h4>[配役制限] クイズ村・役職付加専用</h4>
 <pre>
 投票数が 0 になり、<a href="quiz.php#quiz">出題者</a>に投票したらショック死する。
@@ -203,7 +203,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 
 
-<h2><a id="liar_group">狼少年系 (発言変換系)</a></h2>
+<h2 id="liar_group">狼少年系 (発言変換系)</h2>
 <p>
 <a href="#liar">狼少年</a>
 <a href="#invisible">光学迷彩</a>
@@ -218,7 +218,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#actor">役者</a>
 </p>
 
-<h3><a id="liar">狼少年</a> [Ver. 1.4.0 α11～]</h3>
+<h3 id="liar">狼少年 [Ver. 1.4.0 α11～]</h3>
 <pre>
 発言時に一部のキーワードが入れ替えられてしまう。
 例：人⇔狼、白⇔黒、○⇔●
@@ -236,7 +236,7 @@ OutputRolePageHeader('サブ役職');
 結構な負担ではないでしょうか？
 </pre>
 
-<h3><a id="invisible">光学迷彩</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="invisible">光学迷彩 [Ver. 1.4.0 α14～]</h3>
 <pre>
 発言の一定割合が空白に入れ替えられてしまう。
 入れ替えられる場所はランダム。
@@ -260,7 +260,7 @@ OutputRolePageHeader('サブ役職');
 変換される割合は設定ファイルで変更できます。
 </pre>
 
-<h3><a id="rainbow">虹色迷彩</a> [Ver. 1.4.0 α17～]</h3>
+<h3 id="rainbow">虹色迷彩 [Ver. 1.4.0 α17～]</h3>
 <pre>
 発言に虹の色が含まれていたら虹の順番に合わせて入れ替えられてしまう。
 (例：赤→橙、橙→黄、黄→緑)
@@ -271,7 +271,7 @@ OutputRolePageHeader('サブ役職');
 あまり影響は無いでしょうが、ひとたびハマると対応は非常に面倒だと思われます。
 </pre>
 
-<h3><a id="weekly">七曜迷彩</a> [Ver. 1.4.0 α19～]</h3>
+<h3 id="weekly">七曜迷彩 [Ver. 1.4.0 α19～]</h3>
 <pre>
 発言に曜日が含まれていたら曜日の順番に合わせて入れ替えられてしまう。
 (例：日→月、月→火、火→水)
@@ -282,7 +282,7 @@ OutputRolePageHeader('サブ役職');
 比較的引っ掛かりやすいでしょうが、対応も簡単ですね。
 </pre>
 
-<h3><a id="passion">恋色迷彩</a> [Ver. 1.4.0 β17～]</h3>
+<h3 id="passion">恋色迷彩 [Ver. 1.4.0 β17～]</h3>
 <pre>
 発言時に一部のキーワードが恋人っぽい言葉に入れ替えられてしまう。
 </pre>
@@ -295,7 +295,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#liar">狼少年</a>の恋人バージョンで、Twitter 上の雑談から生まれた役職です。
 </pre>
 
-<h3><a id="grassy">草原迷彩</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="grassy">草原迷彩 [Ver. 1.4.0 α23～]</h3>
 <pre>
 発言の一文字毎に「w」が付加される。
 </pre>
@@ -309,7 +309,7 @@ OutputRolePageHeader('サブ役職');
 機械的につけるので<a href="human.php#mage_group">占い師</a>などにこれがつくとかなり悲惨な事になると思われます。
 </pre>
 
-<h3><a id="side_reverse">鏡面迷彩</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="side_reverse">鏡面迷彩 [Ver. 1.4.0 α23～]</h3>
 <pre>
 発言の文字の並びが一行単位で逆になる。
 </pre>
@@ -319,7 +319,7 @@ OutputRolePageHeader('サブ役職');
 理論的には回文で発言すれば影響が出ないという事になります。
 </pre>
 
-<h3><a id="line_reverse">天地迷彩</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="line_reverse">天地迷彩 [Ver. 1.4.0 α23～]</h3>
 <pre>
 発言の行の並びの上下が入れ替わる。
 </pre>
@@ -329,7 +329,7 @@ OutputRolePageHeader('サブ役職');
 対応しようと思えば簡単なので<a href="#side_reverse">鏡面迷彩</a>ほどは苦労しないと思われます。
 </pre>
 
-<h3><a id="gentleman">紳士</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="gentleman">紳士 [Ver. 1.4.0 α14～]</h3>
 <pre>
 時々発言が「紳士」な言葉に入れ替えられてしまう。
 (発言内容は設定ファイルで変更可能)
@@ -342,7 +342,7 @@ OutputRolePageHeader('サブ役職');
 どんな言葉に入れ替わるのかは管理人さんの気紛れ次第。
 </pre>
 
-<h3><a id="lady">淑女</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="lady">淑女 [Ver. 1.4.0 α14～]</h3>
 <pre>
 時々発言が「淑女」な言葉に入れ替えられてしまう。
 仕様は<a href="#gentleman">紳士</a>と同じ。
@@ -352,7 +352,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#gentleman">紳士</a>の女性バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/135" target="_top">新役職考案スレ(135)</a> が原型です。
 </pre>
 
-<h3><a id="actor">役者</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="actor">役者 [Ver. 1.4.0 β14～]</h3>
 <pre>
 発言時に一部のキーワードが入れ替えられてしまう。
 初期設定は「です」→「みょん」のみ。
@@ -363,7 +363,7 @@ OutputRolePageHeader('サブ役職');
 各サーバで自由に編集してもらうことを前提に設計しています。
 </pre>
 
-<h2><a id="authority_group">権力者系 (処刑投票数変化系)</a></h2>
+<h2 id="authority_group">権力者系 (処刑投票数変化系)</h2>
 <p>
 <a href="#authority">権力者</a>
 <a href="#rebel">反逆者</a>
@@ -372,7 +372,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#watcher">傍観者</a>
 </p>
 
-<h3><a id="authority">権力者</a></h3>
+<h3 id="authority">権力者</h3>
 <pre>
 処刑投票数が +1 される。
 </pre>
@@ -381,7 +381,7 @@ OutputRolePageHeader('サブ役職');
 <a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 
-<h3><a id="rebel">反逆者</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="rebel">反逆者 [Ver. 1.4.0 α14～]</h3>
 <pre>
 <a href="#authority">権力者</a>と同じ人に処刑投票した場合に自分の投票数が -1、権力者の投票数が -2 になる。
 それ以外のケースなら通常通り (1票)。
@@ -396,7 +396,7 @@ OutputRolePageHeader('サブ役職');
 対権力者を作成してみました。
 </pre>
 
-<h3><a id="critical_voter">会心</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="critical_voter">会心 [Ver. 1.4.0 β14～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 5% の確率で処刑投票数が +100 される。
@@ -410,7 +410,7 @@ OutputRolePageHeader('サブ役職');
 RPG でよくある「クリティカルヒット」を再現してみました。
 </pre>
 
-<h3><a id="random_voter">気分屋</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="random_voter">気分屋 [Ver. 1.4.0 α14～]</h3>
 <pre>
 投票するたびに処刑投票数が -1～+1 の範囲でランダムに補正される。
 </pre>
@@ -427,7 +427,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ(80)</a> が原型です。
 </pre>
 
-<h3><a id="watcher">傍観者</a> [Ver. 1.4.0 α9～]</h3>
+<h3 id="watcher">傍観者 [Ver. 1.4.0 α9～]</h3>
 <pre>
 処刑投票数が 0 になります (投票行為自体は必要です)。
 </pre>
@@ -437,7 +437,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 
 
-<h2><a id="upper_luck_group">雑草魂系 (処刑得票数変化系)</a></h2>
+<h2 id="upper_luck_group">雑草魂系 (処刑得票数変化系)</h2>
 <p>
 <a href="#upper_luck_rule">基本ルール</a>
 </p>
@@ -450,7 +450,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#random_luck">波乱万丈</a>
 </p>
 
-<h3><a id="upper_luck_rule">基本ルール</a> [雑草魂系]</h3>
+<h3 id="upper_luck_rule">基本ルール [雑草魂系]</h3>
 <ol>
   <li><a href="#chicken_group">小心者系</a>のショック死判定には影響しない (投票「人数」で判定される)。</li>
   <li>得票数が減る場合でもマイナスにはならない。<br>
@@ -458,7 +458,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
   </li>
 </ol>
 
-<h3><a id="upper_luck">雑草魂</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="upper_luck">雑草魂 [Ver. 1.4.0 α14～]</h3>
 <pre>
 2 日目の処刑得票数が +4 される代わりに、3 日目以降は -2 される。
 </pre>
@@ -471,7 +471,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 東方ウミガメ人狼のプレイヤーさんがモデルです。
 </pre>
 
-<h3><a id="downer_luck">一発屋</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="downer_luck">一発屋 [Ver. 1.4.0 α14～]</h3>
 <pre>
 2 日目の処刑得票数が -4 される代わりに、3日目以降は +2 される。
 </pre>
@@ -484,7 +484,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#upper_luck">雑草魂</a>の逆バージョンです。
 </pre>
 
-<h3><a id="star">人気者</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="star">人気者 [Ver. 1.4.0 α14～]</h3>
 <pre>
 処刑得票数が -1 される。
 </pre>
@@ -493,7 +493,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/64" target="_top">新役職提案スレッド＠やる夫(64)</a> が原型です。
 </pre>
 
-<h3><a id="disfavor">不人気</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="disfavor">不人気 [Ver. 1.4.0 α14～]</h3>
 <pre>
 処刑得票数が +1 される。
 </pre>
@@ -502,7 +502,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#star">人気者</a>の逆バージョンです。
 </pre>
 
-<h3><a id="critical_luck">痛恨</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="critical_luck">痛恨 [Ver. 1.4.0 β14～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 5% の確率で処刑得票数が +100 される。
@@ -516,7 +516,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#critical_voter">会心</a>の処刑得票数変化バージョンです。
 </pre>
 
-<h3><a id="random_luck">波乱万丈</a> [Ver. 1.4.0 α15～]</h3>
+<h3 id="random_luck">波乱万丈 [Ver. 1.4.0 α15～]</h3>
 <pre>
 処刑得票数が -2～+2 の範囲でランダムに補正される。
 </pre>
@@ -531,7 +531,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 
 
-<h2><a id="decide_group">決定者系 (処刑者候補変化系)</a></h2>
+<h2 id="decide_group">決定者系 (処刑者候補変化系)</h2>
 <p>
 <a href="#decide">決定者</a>
 <a href="#plague">疫病神</a>
@@ -539,7 +539,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#bad_luck">不運</a>
 </p>
 
-<h3><a id="decide">決定者</a></h3>
+<h3 id="decide">決定者</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
@@ -549,7 +549,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#impatience">短気</a>
 </pre>
 
-<h3><a id="plague">疫病神</a> [Ver. 1.4.0 α9～]</h3>
+<h3 id="plague">疫病神 [Ver. 1.4.0 α9～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分の投票先が最多得票者で処刑者候補が複数いた場合、候補から除外される。
@@ -559,7 +559,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#decide">決定者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ(8)</a> が原型です。
 </pre>
 
-<h3><a id="good_luck">幸運</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="good_luck">幸運 [Ver. 1.4.0 α14～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分が最多得票者で処刑者候補が複数いた場合、候補から除外される。
@@ -570,7 +570,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
 </pre>
 
-<h3><a id="bad_luck">不運</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="bad_luck">不運 [Ver. 1.4.0 α14～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
@@ -581,7 +581,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 
 
-<h2><a id="strong_voice_group">大声系 (発言変化系)</a></h2>
+<h2 id="strong_voice_group">大声系 (発言変化系)</h2>
 <p>
 <a href="#strong_voice">大声</a>
 <a href="#normal_voice">不器用</a>
@@ -593,7 +593,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#random_voice">臆病者</a>
 </p>
 
-<h3><a id="strong_voice">大声</a> [Ver. 1.4.0 α3-7～]</h3>
+<h3 id="strong_voice">大声 [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 発言が常に大声になる。
 </pre>
@@ -603,7 +603,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 ただのネタと思うこと無かれ。
 </pre>
 
-<h3><a id="normal_voice">不器用</a> [Ver. 1.4.0 α3-7～]</h3>
+<h3 id="normal_voice">不器用 [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 発言の大きさを変えられない。
 </pre>
@@ -612,7 +612,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#strong_voice">大声</a>の発言固定バージョンです。
 </pre>
 
-<h3><a id="weak_voice">小声</a> [Ver. 1.4.0 α3-7～]</h3>
+<h3 id="weak_voice">小声 [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 発言が常に小声になる。
 </pre>
@@ -621,7 +621,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#strong_voice">大声</a>の小声固定バージョンです。
 </pre>
 
-<h3><a id="inside_voice">内弁慶</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="inside_voice">内弁慶 [Ver. 1.4.0 α23～]</h3>
 <pre>
 昼は<a href="#weak_voice">小声</a>・夜は<a href="#strong_voice">大声</a>になる。
 </pre>
@@ -630,7 +630,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だと圧倒的に不利だと思ったので捻ってみました。
 </pre>
 
-<h3><a id="outside_voice">外弁慶</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="outside_voice">外弁慶 [Ver. 1.4.0 α23～]</h3>
 <pre>
 昼は<a href="#strong_voice">大声</a>・夜は<a href="#weak_voice">小声</a>になる。
 </pre>
@@ -639,7 +639,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#inside_voice">内弁慶</a>の逆バージョンです。
 </pre>
 
-<h3><a id="upper_voice">メガホン</a> [Ver. 1.4.0 α17～]</h3>
+<h3 id="upper_voice">メガホン [Ver. 1.4.0 α17～]</h3>
 <pre>
 発言が一段階大きくなり、大声は音割れして聞き取れなくなる。
 </pre>
@@ -652,7 +652,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#strong_voice">大声</a>の上方シフトバージョンです。
 </pre>
 
-<h3><a id="downer_voice">マスク</a> [Ver. 1.4.0 α17～]</h3>
+<h3 id="downer_voice">マスク [Ver. 1.4.0 α17～]</h3>
 <pre>
 発言が一段階小さくなり、小声は聞き取れなくなる。
 小声は共有者の囁きに入れ替わる。
@@ -666,7 +666,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#upper_voice">メガホン</a>の逆バージョンです。
 </pre>
 
-<h3><a id="random_voice">臆病者</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="random_voice">臆病者 [Ver. 1.4.0 α14～]</h3>
 <pre>
 声の大きさがランダムに変わる。
 </pre>
@@ -677,7 +677,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 
 
-<h2><a id="no_last_words_group">筆不精系 (発言封印系)</a></h2>
+<h2 id="no_last_words_group">筆不精系 (発言封印系)</h2>
 <p>
 <a href="#no_last_words">筆不精</a>
 <a href="#blinder">目隠し</a>
@@ -691,7 +691,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#mower">草刈り</a>
 </p>
 
-<h3><a id="no_last_words">筆不精</a> [Ver. 1.4.0 α9～]</h3>
+<h3 id="no_last_words">筆不精 [Ver. 1.4.0 α9～]</h3>
 <pre>
 遺言を残せない。
 </pre>
@@ -707,7 +707,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 昼の発言がより盛り上がるといいな、と思って作ってみました。
 </pre>
 
-<h3><a id="blinder">目隠し</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="blinder">目隠し [Ver. 1.4.0 α14～]</h3>
 <pre>
 発言者の名前が見えない (空白になる)。
 </pre>
@@ -725,7 +725,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/66" target="_top">新役職考案スレ(66)</a> が原型です。
 </pre>
 
-<h3><a id="earplug">耳栓</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="earplug">耳栓 [Ver. 1.4.0 α14～]</h3>
 <pre>
 発言が一段階小さく見えるようになり、小声が聞き取れなくなる。
 小声は共有者の囁きに入れ替わる。
@@ -748,7 +748,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 聞こえないなら取れ？ネタにマジレスしてはいけません。
 </pre>
 
-<h3><a id="speaker">スピーカー</a> [Ver. 1.4.0 α17～]</h3>
+<h3 id="speaker">スピーカー [Ver. 1.4.0 α17～]</h3>
 <pre>
 発言が一段階大きく見えるようになり、<a href="#strong_voice">大声</a>が音割れして聞き取れなくなる。
 大声は<a href="#upper_voice">メガホン</a>の大声と同じ。
@@ -758,7 +758,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#earplug">耳栓</a>の逆バージョンです。
 </pre>
 
-<h3><a id="whisper_ringing">囁耳鳴</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="whisper_ringing">囁耳鳴 [Ver. 1.4.0 β14～]</h3>
 <pre>
 他人の独り言が共有者の囁きに見えるようになる。
 <a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>・<a href="fox.php#fox_talk">妖狐の念話</a>は「独り言」ではないので影響しない。
@@ -772,7 +772,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#howl_ringing">吠耳鳴</a>の共有者の囁きバージョンです。
 </pre>
 
-<h3><a id="howl_ringing">吠耳鳴</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="howl_ringing">吠耳鳴 [Ver. 1.4.0 β14～]</h3>
 <pre>
 他人の独り言が人狼の遠吠えに見えるようになる。
 <a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>・<a href="fox.php#fox_talk">妖狐の念話</a>は「独り言」ではないので影響しない。
@@ -782,7 +782,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 遠吠えの数で狼の人数を推測するケースがあるのでそれの妨害を狙ってみました。
 </pre>
 
-<h3><a id="sweet_ringing">恋耳鳴</a> [Ver. 1.4.0 β22～]</h3>
+<h3 id="sweet_ringing">恋耳鳴 [Ver. 1.4.0 β22～]</h3>
 <pre>
 二日目以降、恋人の独り言が専用の囁き声に見えるようになる。
 <a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>・<a href="fox.php#fox_talk">妖狐の念話</a>は「独り言」ではないので影響しない。
@@ -798,7 +798,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#howl_ringing">吠耳鳴</a>の対恋人バージョンです。
 </pre>
 
-<h3><a id="deep_sleep">爆睡者</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="deep_sleep">爆睡者 [Ver. 1.4.0 β14～]</h3>
 <pre>
 <a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>が一切見えなくなる。
 他の耳鳴系と重複していても表示されない。
@@ -812,7 +812,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#howl_ringing">吠耳鳴</a>の逆アプローチです。
 </pre>
 
-<h3><a id="silent">無口</a> [Ver. 1.4.0 α14～]</h3>
+<h3 id="silent">無口 [Ver. 1.4.0 α14～]</h3>
 <pre>
 発言の文字数に制限がかかり、制限を越えるとそれ以降が「……」になる。
 </pre>
@@ -823,7 +823,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 影響が出ない程度にしてあります。
 </pre>
 
-<h3><a id="mower">草刈り</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="mower">草刈り [Ver. 1.4.0 α23～]</h3>
 <pre>
 発言から「w」が削られる。
 </pre>
@@ -834,7 +834,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 とっても理不尽ですね。
 </pre>
 
-<h2><a id="mind_read_group">サトラレ系 (夜発言公開系)</a></h2>
+<h2 id="mind_read_group">サトラレ系 (夜発言公開系)</h2>
 <p>
 <a href="#mind_read_rule">基本ルール</a>
 </p>
@@ -849,14 +849,14 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#mind_lonely">はぐれ者</a>
 </p>
 
-<h3><a id="mind_read_rule">基本ルール</a> [サトラレ系]</h3>
+<h3 id="mind_read_rule">基本ルール [サトラレ系]</h3>
 <ol>
   <li><a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。</li>
   <li>死者の発言を直接見ることはできない。</li>
   <li>効力を失っても役職表示は消えない。</li>
 </ol>
 
-<h3><a id="mind_read">サトラレ</a> [Ver. 1.4.0 α21～]</h3>
+<h3 id="mind_read">サトラレ [Ver. 1.4.0 α21～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 夜の発言が<a href="human.php#mind_scanner">さとり</a>に見られてしまう。
@@ -882,7 +882,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 夜に相談できる人外にこれが付くとかなり大変になると思われます。
 </pre>
 
-<h3><a id="mind_open">公開者</a> [Ver. 1.4.0 α22～]</h3>
+<h3 id="mind_open">公開者 [Ver. 1.4.0 α22～]</h3>
 <pre>
 夜の発言が参加者全員に見られてしまう。
 </pre>
@@ -906,7 +906,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 くれぐれもうっかり自分の役職をつぶやかないように注意してください。
 </pre>
 
-<h3><a id="mind_receiver">受信者</a> [Ver. 1.4.0 α22～]</h3>
+<h3 id="mind_receiver">受信者 [Ver. 1.4.0 α22～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 特定の人の夜の発言を見ることができる。
@@ -927,7 +927,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 返事をしないように気をつけましょう。
 </pre>
 
-<h3><a id="mind_friend">共鳴者</a> [Ver. 1.4.0 α23～]</h3>
+<h3 id="mind_friend">共鳴者 [Ver. 1.4.0 α23～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 特定の人と夜に会話できるようになる。
@@ -944,7 +944,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 見えるのか、非常にややこしい状況になりますね。
 </pre>
 
-<h3><a id="mind_sympathy">共感者</a> [Ver. 1.4.0 β8～]</h3>
+<h3 id="mind_sympathy">共感者 [Ver. 1.4.0 β8～]</h3>
 <h4>[役職表示] 2 日目限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -961,7 +961,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 配置次第では<a href="#mind_friend">共鳴者</a>以上の効果を得ることが出来るでしょう。
 </pre>
 
-<h3><a id="mind_evoke">口寄せ</a> [Ver. 1.4.0 β2～]</h3>
+<h3 id="mind_evoke">口寄せ [Ver. 1.4.0 β2～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 死後に<a href="human.php#evoke_scanner">イタコ</a>の遺言窓にメッセージを送ることができる。
@@ -982,7 +982,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 当然ですが、霊界オフモードにしないと機能しません。
 </pre>
 
-<h3><a id="mind_presage">受託者</a> [Ver. 1.4.0 β18～]</h3>
+<h3 id="mind_presage">受託者 [Ver. 1.4.0 β18～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -997,7 +997,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 テーマは「ダイイング・メッセージを受け取る人」です。
 </pre>
 
-<h3><a id="mind_lonely">はぐれ者</a> [Ver. 1.4.0 β8～]</h3>
+<h3 id="mind_lonely">はぐれ者 [Ver. 1.4.0 β8～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 仲間が分からなくなり、会話できなくなる。
@@ -1012,21 +1012,21 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 分かっていても堂々と告発できないジレンマにどう対処するのかがポイントです。
 </pre>
 
-<h2><a id="lovers_group">恋人系</a></h2>
+<h2 id="lovers_group">恋人系</h2>
 <p>
 <a href="#lovers">恋人</a>
 <a href="#challenge_lovers">難題</a>
 <a href="#possessed_exchange">交換憑依</a>
 </p>
 
-<h3><a id="lovers">恋人</a> [Ver. 1.2.0～]</h3>
+<h3 id="lovers">恋人 [Ver. 1.2.0～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 勝利条件が<a href="lovers.php">恋人陣営</a>に変化する。
 表示されている相手が死亡すると自分も死亡する (後追い)。
 </pre>
 
-<h3><a id="challenge_lovers">難題</a> [Ver. 1.4.0 β11～]</h3>
+<h3 id="challenge_lovers">難題 [Ver. 1.4.0 β11～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <h4>[耐性] 人狼襲撃：無効 / 暗殺：反射</h4>
 <pre>
@@ -1056,7 +1056,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 かぐや姫の不老不死の秘薬の伝説がモチーフです。
 </pre>
 
-<h3><a id="possessed_exchange">交換憑依</a> [Ver. 1.4.0 β11～]</h3>
+<h3 id="possessed_exchange">交換憑依 [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] 2 日目限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1082,12 +1082,12 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="lovers.php#exchange_angel">魂移使</a>の処理用に実装されたサブ役職です。
 </pre>
 
-<h2><a id="joker_group">ジョーカー系</a></h2>
+<h2 id="joker_group">ジョーカー系</h2>
 <p>
 <a href="#joker">ジョーカー</a>
 </p>
 
-<h3><a id="joker">ジョーカー</a> [Ver. 1.4.0 β21～]</h3>
+<h3 id="joker">ジョーカー [Ver. 1.4.0 β21～]</h3>
 <h4>[配役制限] ババ抜き村専用</h4>
 <pre>
 ゲーム終了時に所持している場合、引き分け以外は無条件で敗北扱いになる。
@@ -1171,7 +1171,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 この場合、C がジョーカーを所持したままだが、C は勝利扱いとなる。
 </pre>
 
-<h2><a id="other_group">その他</a></h2>
+<h2 id="other_group">その他</h2>
 <p>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
@@ -1188,7 +1188,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="#lost_ability">能力喪失</a>
 </p>
 
-<h3><a id="possessed_target">憑依者</a> [Ver. 1.4.0 α24～]</h3>
+<h3 id="possessed_target">憑依者 [Ver. 1.4.0 α24～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 <a href="ability.php#possessed">憑依能力者</a>が誰かに憑依したら付加される。
@@ -1207,7 +1207,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 恋人システムの応用で実装されています。
 </pre>
 
-<h3><a id="possessed">憑依</a> [Ver. 1.4.0 α24～]</h3>
+<h3 id="possessed">憑依 [Ver. 1.4.0 α24～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1226,7 +1226,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 憑依システム用に実装されたサブ役職です。
 </pre>
 
-<h3><a id="infected">感染者</a> [Ver. 1.4.0 β14～]</h3>
+<h3 id="infected">感染者 [Ver. 1.4.0 β14～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1245,7 +1245,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="vampire.php">吸血鬼陣営</a>の勝敗判定用に実装されたサブ役職です。
 </pre>
 
-<h3><a id="psycho_infected">洗脳者</a> [Ver. 1.4.0 β20～]</h3>
+<h3 id="psycho_infected">洗脳者 [Ver. 1.4.0 β20～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1262,7 +1262,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="vampire.php">吸血鬼陣営</a>支援能力者用に実装されたサブ役職です。
 </pre>
 
-<h3><a id="bad_status">悪戯</a> [Ver. 1.4.0 β6～]</h3>
+<h3 id="bad_status">悪戯 [Ver. 1.4.0 β6～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1282,7 +1282,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>などで使用されています。
 </pre>
 
-<h3><a id="protected">庇護者</a> [Ver. 1.4.0 β18～]</h3>
+<h3 id="protected">庇護者 [Ver. 1.4.0 β18～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <h4>[耐性] 人狼襲撃：身代わり</h4>
@@ -1308,7 +1308,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="wolf.php#silver_wolf">銀狼</a>が仲間を襲撃した場合でも発生します。
 </pre>
 
-<h3><a id="wirepuller_luck">入道</a> [Ver. 1.5.0 α5～]</h3>
+<h3 id="wirepuller_luck">入道 [Ver. 1.5.0 α5～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 付加させた人が一人でも生存している間は投票数が +2 されるが
@@ -1325,7 +1325,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 東方 Project の雲山がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
 </pre>
 
-<h3><a id="changed_therian">元獣人</a> [Ver. 1.4.0 β15～]</h3>
+<h3 id="changed_therian">元獣人 [Ver. 1.4.0 β15～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1336,7 +1336,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="wolf.php#therian_mad">獣人</a>用に実装されたサブ役職です。
 </pre>
 
-<h3><a id="copied">元神話マニア</a> [Ver. 1.4.0 α11～]</h3>
+<h3 id="copied">元神話マニア [Ver. 1.4.0 α11～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1351,7 +1351,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="mania.php#mania">神話マニア</a>用に実装されたサブ役職です。
 </pre>
 
-<h3><a id="copied_trick">元奇術師</a> [Ver. 1.4.0 β11～]</h3>
+<h3 id="copied_trick">元奇術師 [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1362,7 +1362,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 交換コピーの発動をログで確認できるようにするために後から実装されたサブ役職です。
 </pre>
 
-<h3><a id="copied_soul">元覚醒者</a> [Ver. 1.4.0 β11～]</h3>
+<h3 id="copied_soul">元覚醒者 [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1373,7 +1373,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 他の<a href="mania.php#mania_group">神話マニア系</a>とログで区別できるようにするために実装されたサブ役職です。
 </pre>
 
-<h3><a id="copied_teller">元夢語部</a> [Ver. 1.4.0 β11～]</h3>
+<h3 id="copied_teller">元夢語部 [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1384,7 +1384,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="human.php#psycho_mage">精神鑑定士</a>や<a href="wolf.php#dream_eater_mad">獏</a>の判定に影響しないように他の元マニア系とは違い、完全に別名にしてあります。
 </pre>
 
-<h3><a id="lost_ability">能力喪失</a> [Ver. 1.4.0 α13～]</h3>
+<h3 id="lost_ability">能力喪失 [Ver. 1.4.0 α13～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
 発動制限付き能力者が能力を失った場合に付加される。
@@ -1395,7 +1395,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#phantom_doll">倫敦人形</a>・<a href="human.php#revive_doll">西蔵人形</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#phantom_doll">倫敦人形</a>・<a href="human.php#revive_doll">西蔵人形</a>
 <a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>
 <a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>
 </pre>

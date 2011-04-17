@@ -142,7 +142,7 @@ function ConvertSay(&$say){
 
   //萌系置換 (昼限定)
   if($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox', 'cute_chiroptera') &&
-     mt_rand(1, 100) <= $GAME_CONF->cute_wolf_rate){
+     mt_rand(1, 100) <= ($GAME_CONF->cute_wolf_rate * ($ROOM->IsEvent('boost_cute') ? 5 : 1))){
     $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
   }
 
@@ -427,18 +427,18 @@ EOF;
   if(! $ROOM->IsAfterGame()){ //ゲーム終了後は自動更新しない
     $url_header = '<a target="_top" href="game_frame.php' . $url_room .
       $url_dead . $url_heaven . $url_list;
-    OutputAutoReloadLink($url_header . $url_sound  . '&auto_reload=');
+    OutputAutoReloadLink($url_header . $url_sound);
 
-    $url = $url_header . $url_reload . '&play_sound=';
+    $url = $url_header . $url_reload;
     echo ' [音でお知らせ](' .
-      ($RQ_ARGS->play_sound ?  'on ' . $url . 'off">off</a>' : $url . 'on">on</a> off') .
-      ')'."\n";
+      ($RQ_ARGS->play_sound ? 'on ' . $url . '#game_top">off</a>' :
+       $url . '&play_sound=on#game_top">on</a> off') . ')'."\n";
   }
 
   //プレイヤーリストの表示位置
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
-    $url_reload . $url_sound  . '&list_down=' . ($RQ_ARGS->list_down ? 'off">↑' : 'on">↓') .
-    'リスト</a>'."\n";
+    $url_reload . $url_sound  .
+    ($RQ_ARGS->list_down ? '#game_top">↑' : '&list_down=on#game_top">↓') . 'リスト</a>'."\n";
   if($ROOM->IsFinished()) OutputLogLink();
 
   //夜明けを音でお知らせする

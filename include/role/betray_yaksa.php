@@ -9,7 +9,7 @@ class Role_betray_yaksa extends Role{
 
   function __construct(){ parent::__construct(); }
 
-  function Ignored($user){ return ! $target->IsCamp('chiroptera', true); }
+  function Ignored($user){ return ! $user->IsCamp('chiroptera', true); }
 
   function GetReduceRate(){ return 1 / 5; }
 

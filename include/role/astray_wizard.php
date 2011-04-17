@@ -1,0 +1,15 @@
+<?php
+/*
+  ◆左道使い
+  ○仕様
+  ・魔法：月兎・呪術師・獏・雪女・冥狐
+*/
+class Role_astray_wizard extends Role{
+  function __construct(){ parent::__construct(); }
+
+  function GetRole(){
+    $stack = array('reverse_assassin', 'jammer_mad', 'voodoo_mad', 'dream_eater_mad',
+		   'snow_trap_mad', 'doom_fox', 'dark_fairy');
+    return GetRandom($stack);
+  }
+}

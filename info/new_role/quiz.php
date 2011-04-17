@@ -11,17 +11,17 @@ OutputRolePageHeader('出題者陣営');
 <a href="#quiz_group">出題者系</a>
 </p>
 
-<h2><a id="rule">基本ルール</a></h2>
+<h2 id="rule">基本ルール</h2>
 <ol>
   <li>勝利条件は「生存者が出題者陣営のみになっていること」です。</li>
   <li>生存カウントは村人です。</li>
 </ol>
 
-<h2><a id="quiz_group">出題者系</a></h2>
+<h2 id="quiz_group">出題者系</h2>
 <p>
 <a href="#quiz">出題者</a>
 </p>
-<h3><a id="quiz">出題者</a> (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α2～]</h3>
+<h3 id="quiz">出題者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α2～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (クイズ村限定) / 毒：対象外</h4>
 <pre>
 <a href="../game_option.php#quiz">クイズ村</a>の GM です。闇鍋モードにも低確率で出現します。

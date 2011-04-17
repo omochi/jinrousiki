@@ -196,28 +196,33 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('wizard')){ //魔法使い系
     $ROLE_IMG->Output($SELF->main_role);
 
+    $stack  = array();
     $action = 'WIZARD_DO';
     switch($SELF->main_role){
     case 'wizard': //魔法使い
-      $stack = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
-      break;
-
-    case 'awake_wizard': //比丘尼
-      $stack = array('MAGE_RESULT');
-      break;
-
-    case 'barrier_wizard': //結界師
-      $stack = array('GUARD_SUCCESS');
-      $action = 'SPREAD_WIZARD_DO';
-      break;
-
-    case 'spiritism_wizard': //交霊術師
-      $stack = array('SPIRITISM_WIZARD_RESULT');
-      $action = NULL;
+      array_push($stack, 'MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
       break;
 
     case 'soul_wizard': //八卦見
-      $stack = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED', 'ASSASSIN_RESULT');
+      array_push($stack, 'MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED', 'ASSASSIN_RESULT');
+      break;
+
+    case 'awake_wizard': //比丘尼
+      $stack[] = 'MAGE_RESULT';
+      break;
+
+    case 'spiritism_wizard': //交霊術師
+      $stack[] = 'SPIRITISM_WIZARD_RESULT';
+      $action = NULL;
+      break;
+
+    case 'barrier_wizard': //結界師
+      $stack[] = 'GUARD_SUCCESS';
+      $action = 'SPREAD_WIZARD_DO';
+      break;
+
+    case 'pierrot_wizard': //道化師
+      $stack[] = 'MAGE_RESULT';
       break;
     }
 
@@ -257,8 +262,11 @@ function OutputAbility(){
     $stack = array();
     foreach($USERS->rows as $user){
       if($user->IsSelf()) continue;
-      if($user->IsWolf(true)){
+      if($user->IsRole('possessed_wolf')){
 	$stack['wolf'][] = $USERS->GetHandleName($user->uname, true);
+      }
+      elseif($user->IsWolf(true)){
+	$stack['wolf'][] = $user->handle_name;
       }
       elseif($user->IsRole('whisper_mad')){
 	$stack['mad'][] = $user->handle_name;
@@ -380,7 +388,10 @@ function OutputAbility(){
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsSelf()) continue;
-	if($user->IsFox(true)){
+	if($user->IsRole('possessed_fox')){
+	  $stack['fox'][] = $USERS->GetHandleName($user->uname, true);
+	}
+	elseif($user->IsFox(true)){
 	  $stack['fox'][] = $user->handle_name;
 	}
 	elseif($user->IsChildFox() || $user->IsRoleGroup('scarlet')){

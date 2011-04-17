@@ -173,6 +173,33 @@ class Message{
   var $constellation_x    = 'は昨夜、竜座を見ていたようです';
   var $constellation_y    = 'は昨夜、鳳凰座を見ていたようです';
   var $constellation_z    = 'は昨夜、南十字座を見ていたようです';
+  //星妖精のリスト (A-Z)
+  var $pierrot_a          = 'は昨夜、玉乗りをしていたようです';
+  var $pierrot_b          = 'は昨夜、綱渡りをしていたようです';
+  var $pierrot_c          = 'は昨夜、火の輪くぐりをしていたようです';
+  var $pierrot_d          = 'は昨夜、パントマイムをしていたようです';
+  var $pierrot_e          = 'は昨夜、ジャグリングをしていたようです';
+  var $pierrot_f          = 'は昨夜、空中ブランコをしていたようです';
+  var $pierrot_g          = 'は昨夜、ナイフ投げをしていたようです';
+  var $pierrot_h          = 'は昨夜、必殺技の練習をしていたようです';
+  var $pierrot_i          = 'は昨夜、自分の二つ名を考えていたようです';
+  var $pierrot_j          = 'は昨夜、腕の包帯を抑えてうめいていたようです';
+  var $pierrot_k          = 'は昨夜、筋トレをしていたようです';
+  var $pierrot_l          = 'は昨夜、双眸に月輪を映していたようです';
+  var $pierrot_m          = 'は昨夜、流れ星に祈りを捧げていたようです';
+  var $pierrot_n          = 'は昨夜、鏡の中の自分をずっと見つめていたようです';
+  var $pierrot_o          = 'は昨夜、輝いていたようです';
+  var $pierrot_p          = 'は昨夜、ポエムを詠んでいたようです';
+  var $pierrot_q          = 'は昨夜、ぬいぐるみに恋の悩みを相談していたようです';
+  var $pierrot_r          = 'は昨夜、ラブレターを書いていたようです';
+  var $pierrot_s          = 'は昨夜、枕を抱えてバタバタしていたようです';
+  var $pierrot_t          = 'は昨夜、部屋の隅で泣いていたようです';
+  var $pierrot_u          = 'は昨夜、死亡フラグが立っていたようです';
+  var $pierrot_v          = 'は昨夜、タンスの角に小指をぶつけたようです';
+  var $pierrot_w          = 'は昨夜、男装していたようです';
+  var $pierrot_x          = 'は昨夜、女装していたようです';
+  var $pierrot_y          = 'は昨夜、ブラフに引っかかったようです';
+  var $pierrot_z          = 'は昨夜、命乞いの練習をしていたようです';
   var $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
 
   //OutputAbility() : 能力の表示

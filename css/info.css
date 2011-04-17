@@ -29,9 +29,7 @@ h5{
   background-color: #DDDDDD;
   font-size: 90%;
 }
-pre{
-  padding-bottom: 10px;
-}
+pre{padding-bottom: 10px;}
 .menu{
   border: 1px solid #CC3300;
   padding: 5px 1px;
@@ -65,4 +63,4 @@ th, td{
   text-align: center;
   white-space: nowrap;
 }
-td{ font-size: 90%; }
+td{font-size: 90%;}

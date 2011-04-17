@@ -21,7 +21,7 @@ class Role_dummy_mania extends Role{
       'mind_scanner' => 'mind_scanner',
       'jealousy'     => 'jealousy',
       'brownie'      => 'brownie',
-      'wizard'       => 'wizard',
+      'wizard'       => 'astray_wizard',
       'doll'         => 'silver_doll',
       'escaper'      => 'incubus_escaper',
       'wolf'         => 'silver_wolf',
