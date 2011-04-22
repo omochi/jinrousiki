@@ -2,15 +2,15 @@
 class Paparazzi{
   var $version = 'paparazzi Ver. 2.0 beta2';
   var $date;
+  var $memory;
   var $time;
   var $log;
 
-  function Paparazzi(){ $this->__construct(); }
-
   function __construct(){
-    $this->date = date('Y-m-d H:i:s');
-    $this->time = microtime();
-    $this->log  = array();
+    $this->date   = date('Y-m-d H:i:s');
+    $this->time   = microtime();
+    $this->memory = memory_get_usage();
+    $this->log    = array();
   }
 
   function GetElapsedTime(){
@@ -18,9 +18,10 @@ class Paparazzi{
   }
 
   function shot($comment, $category = 'general'){
-    $this->log[] = array('time' => $this->GetElapsedTime(),
+    $this->log[] = array('time'     => $this->GetElapsedTime(),
+			 'memory'   => memory_get_usage() - $this->memory,
 			 'category' => $category,
-			 'comment' => $comment);
+			 'comment'  => $comment);
     return $comment;
   }
 
@@ -37,7 +38,7 @@ class Paparazzi{
       extract($item, EXTR_PREFIX_ALL, 'unsafe');
       $category = EscapeStrings($unsafe_category);
       $comment  = EscapeStrings($unsafe_comment);
-      $output .= "<dt>($unsafe_time)</dt><dd>$category : $comment</dd>";
+      $output .= "<dt>($unsafe_time) : $unsafe_memory</dt><dd>$category : $comment</dd>";
     }
     return $output . '</dl>';
   }

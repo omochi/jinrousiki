@@ -135,7 +135,7 @@ OutputInfoPageHeader('闇鍋モード');
 村人1　占い師1　精神鑑定士1　霊能者1　人狼1　白狼1　神話マニア4
 </pre>
 
-<h2 id="chaos"><?php echo $GAME_OPT_MESS->chaos ?></h2>
+<h2 id="chaos"><?php echo $GAME_OPT_MESS->chaos ?> [Ver. 1.4.0 α1～]</h2>
 <h3 id="chaos_appear_role">出現役職</h3>
 <pre>
 出現する可能性のある役職は以下です。
@@ -187,7 +187,12 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/mania.php#mania_group">神話マニア系</a>：<a href="new_role/mania.php#mania">神話マニア</a>
 </pre>
 
-<h2 id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></h2>
+<h5>Ver. 1.4.0 β12～</h5>
+<pre>
+配役ルーチンを変更
+</pre>
+
+<h2 id="chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?> [Ver. 1.4.0 α1～]</h2>
 <h3 id="chaosfull_appear_role">出現役職</h3>
 <pre>
 出現する可能性のある役職は以下 (Ver. 1.4.0 α23 相当) です。
@@ -241,13 +246,18 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/mania.php#unknown_mania_group">鵺系</a>：<a href="new_role/mania.php#unknown_mania">鵺</a>
 </pre>
 
-<h2 id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></h2>
+<h5>Ver. 1.4.0 β12～</h5>
+<pre>
+配役を Ver. 1.4.0 α23 相当に変更
+</pre>
+
+<h2 id="chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?> [Ver. 1.4.0 β12～]</h2>
 <h3 id="chaos_hyper_appear_role">出現役職</h3>
 <pre>
 実装されているすべての役職が出現します。
 </pre>
 
-<h2 id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (～Ver. 1.4.0 β11)</h2>
+<h2 id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定) [Ver. 1.4.0 α1～β11]</h2>
 <p>
 <a href="#chaos_old_appear_role">出現役職</a>
 <a href="#chaos_old_decide_role">配役決定ルーチン</a>
@@ -513,7 +523,7 @@ OutputInfoPageHeader('闇鍋モード');
 出現人数の上限は規定していません。
 </pre>
 
-<h2 id="topping"><?php echo $GAME_OPT_MESS->topping ?></h2>
+<h2 id="topping"><?php echo $GAME_OPT_MESS->topping ?> [Ver. 1.4.0 β19～]</h2>
 <ol>
   <li><?php echo $GAME_OPT_CAPT->topping ?>。</li>
   <li>内容は設定ファイルで変更できます。</li>
@@ -543,13 +553,17 @@ TypeG・H 追加
 TypeF 追加
 </pre>
 
-<h2 id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></h2>
+<h2 id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?> [Ver. 1.4.0 α14～]</h2>
 <ol>
   <li>初日の夜に表示される陣営内訳通知に制限をかけることができます。</li>
   <li>「通知無し」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_full ?>」から選べます。</li>
 </ol>
+<h3>Ver. 1.4.0 α20～</h3>
+<pre>
+「<?php echo $GAME_OPT_CAPT->chaos_open_cast_camp ?>」「<?php echo $GAME_OPT_CAPT->chaos_open_cast_role ?>」実装
+</pre>
 
-<h2 id="sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></h2>
+<h2 id="sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?> [Ver. 1.4.0 α14～]</h2>
 <ol>
   <li>出現するサブ役職の種類に制限をかけることができます。</li>
   <li>「<?php echo $GAME_OPT_CAPT->no_sub_role ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_easy ?>」「<?php echo $GAME_OPT_CAPT->sub_role_limit_normal ?>」「サブ役職制限なし」から選べます。</li>
@@ -560,17 +574,17 @@ TypeF 追加
 <a href="#sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a>
 </p>
 
-<h3 id="sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></h3>
+<h3 id="sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?> [Ver. 1.4.0 β14～]</h3>
 <pre>
 <a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>のみ出現します。
 </pre>
 
-<h3 id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></h3>
+<h3 id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?> [Ver. 1.4.0 β14～]</h3>
 <pre>
 <a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>のみ出現します。
 </pre>
 
-<h2 id="secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></h2>
+<h2 id="secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?> [Ver. 1.4.0 α14～]</h2>
 <pre>
 一部の例外を除き、サブ役職の本人表示が無効になります。
 </pre>

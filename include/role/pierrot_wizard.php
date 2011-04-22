@@ -8,6 +8,10 @@ class Role_pierrot_wizard extends Role{
   function __construct(){ parent::__construct(); }
 
   function GetRole(){
+    global $ROOM;
+
+    if($ROOM->IsEvent('full_wizard')) return 'soul_mage';
+    if($ROOM->IsEvent('debilitate_wizard')) return 'sex_mage';
     $stack = array('soul_mage', 'sex_mage', 'doom_assassin', 'pierrot_fairy',
 		   'flower_fairy', 'star_fairy', 'grass_fairy', 'ice_fairy');
     return GetRandom($stack);

@@ -110,7 +110,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
 <li>身代わり (<a href="new_role/ability.php#sacrifice">身代わり能力者</a>)</li>
 <li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
-<li>罠 (<a href="new_role/wolf.php#trap_mad">罠師</a>)</li>
+<li>罠 (<a href="new_role/ability.php#trap">罠能力者</a>)</li>
 <li>逃亡失敗 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)</li>
 <li>吸血 (<a href="new_role/vampire.php#incubus_vampire">青髭公</a>・<a href="new_role/vampire.php#succubus_vampire">飛縁魔</a>)</li>
 <li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
@@ -144,6 +144,11 @@ OutputInfoPageHeader('詳細な仕様');
 <li>悪戯 (<a href="new_role/chiroptera.php#star_fairy">星妖精</a>)</li>
 </ul>
 
+<h4>～<?php echo $MESSAGE->pierrot_a ?> (一例)</h4>
+<ul>
+<li>魔法 (<a href="new_role/human.php#pierrot_wizard">道化師</a>)</li>
+</ul>
+
 <h2 id="vote">投票処理の仕様</h2>
 <p>
 <a href="#vote_legend">判例</a>
@@ -171,7 +176,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 + 役職判定
   - <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/wolf.php#miasma_mad">土蜘蛛</a>・<a href="new_role/lovers.php#sweet_cupid">弁財天</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/sub_role.php#chicken_group">ショック死</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> →
-    <a href="new_role/sub_role.php#lovers">恋人</a>後追い → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a>・<a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="weather.php#weather_frostbite">天候：雪</a>・<a href="new_role/sub_role.php#joker">ジョーカー</a>
+    <a href="new_role/sub_role.php#lovers">恋人</a>後追い → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a>・<a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="weather.php">天候</a>・<a href="new_role/sub_role.php#joker">ジョーカー</a>
 </pre>
 
 <h3 id="vote_night">夜</h3>
@@ -190,7 +195,7 @@ OutputInfoPageHeader('詳細な仕様');
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 暗殺 →
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 失敗判定 ＞ 人攫い → 凍傷判定
 
-  - 罠能力者 (<a href="new_role/wolf.php#trap_mad">罠師</a>・<a href="new_role/wolf.php#snow_trap_mad">雪女</a>)
+  - <a href="new_role/ability.php#trap">罠能力者</a>
   - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)
   - <a href="new_role/ability.php#guard">護衛能力者</a>
   - <a href="new_role/ability.php#resist_wolf">襲撃耐性能力者</a>

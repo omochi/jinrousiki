@@ -94,8 +94,11 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#emerald_fox">翠狐</a>
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
+</p>
+<p>
 <a href="#possessed_fox">憑狐</a>
 <a href="#doom_fox">冥狐</a>
+<a href="#trap_fox">狡狐</a>
 <a href="#cursed_fox">天狐</a>
 <a href="#elder_fox">古狐</a>
 <a href="#cute_fox">萌狐</a>
@@ -135,7 +138,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="gold_fox">金狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる妖狐。
+<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が「<a href="chiroptera.php">蝙蝠</a>」になる妖狐。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -164,7 +167,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[毒能力] 処刑：妖狐陣営以外 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った妖狐。毒の対象は妖狐陣営以外。
-<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら殺されて毒が発動する。
+<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら死亡して毒が発動する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -294,6 +297,23 @@ OutputRolePageHeader('妖狐陣営');
 発動日が違うので存在がすぐにばれることになります。
 </pre>
 
+<h3 id="trap_fox">狡狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.5.0 α8～]</h3>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
+<pre>
+一度だけ夜に誰か一人に罠を仕掛けることができる妖狐。
+罠に関する仕様は<a href="wolf.php#trap_mad">罠師</a>と同じで、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#trap">罠能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#trap_mad">罠師</a>の妖狐バージョンです。
+狩人と人狼狙いで襲撃されそうな人に仕掛けるのもよし、
+味方を暗殺の脅威から護衛するのもよしですね。
+</pre>
+
 <h3 id="cursed_fox">天狐 (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 占い：呪返し / 陰陽師：死亡 / 護衛：狩り / 暗殺：反射</h4>
 <pre>
@@ -329,7 +349,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう妖狐。
-遠吠えの内容・発動率は<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
+遠吠えの内容・発動率は<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
 </pre>
 <h5>Ver. 1.4.0 β7～</h5>
 <pre>

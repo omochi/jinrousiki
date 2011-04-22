@@ -19,6 +19,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
+  <li>左道使い：特殊狂人相当の魔法を使える魔法使いの一種</li>
   <li>道化師：妖精相当の魔法を使える魔法使いの一種</li>
   <li>天候「濃霧」：洗脳者付加</li>
   <li>天候「台風」：全員 会心・痛恨</li>
@@ -30,5 +31,9 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>左道使い：特殊狂人相当の魔法を使える魔法使いの一種</li>
+  <li>天候「霧雨」：魔法強化</li>
+  <li>天候「木枯らし」：魔法弱体化</li>
+  <li>天候確率変動システム実装</li>
+  <li>狡狐：一度だけ夜に誰か一人に罠を仕掛けることができる妖狐</li>
+  <li>狡狼：一定期間後、自分に罠を設置することができる人狼。</li>
 </ul>

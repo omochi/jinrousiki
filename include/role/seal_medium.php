@@ -16,7 +16,7 @@ class Role_seal_medium extends RoleVoteAbility{
     //封印対象者リスト
     $seal_list = array('phantom_wolf', 'resist_wolf', 'revive_wolf', 'tongue_wolf',
 		       'trap_mad', 'possessed_mad',
-		       'phantom_fox', 'emerald_fox', 'revive_fox', 'possessed_fox');
+		       'phantom_fox', 'emerald_fox', 'revive_fox', 'possessed_fox', 'trap_fox');
     foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
 

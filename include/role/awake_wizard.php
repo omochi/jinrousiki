@@ -8,8 +8,12 @@ class Role_awake_wizard extends Role{
   function __construct(){ parent::__construct(); }
 
   function GetRole(){
-    $stack = $this->GetActor()->IsActive() ? array('mage', 'sex_mage', 'stargazer_mage') :
-      array('soul_mage');
+    global $ROOM;
+
+    $active = $this->GetActor()->IsActive();
+    if($ROOM->IsEvent('full_wizard')) return $active ? 'mage' : 'soul_mage';
+    if($ROOM->IsEvent('debilitate_wizard')) return $active ? 'sex_mage' : 'soul_mage';
+    $stack =  $active ? array('mage', 'sex_mage', 'stargazer_mage') : array('soul_mage');
     return GetRandom($stack);
   }
 }

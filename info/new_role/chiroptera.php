@@ -131,7 +131,11 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <pre>
 占い結果が「人狼」、霊能結果が「蝙蝠」と判定される蝙蝠。
 昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。
-遠吠えの内容・発動率は<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
+遠吠えの内容・発動率は<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#suspect">不審者</a>・<a href="fox.php#cute_fox">萌狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -189,6 +193,8 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="#sun_fairy">日妖精</a>
 <a href="#moon_fairy">月妖精</a>
 <a href="#grass_fairy">草妖精</a>
+</p>
+<p>
 <a href="#light_fairy">光妖精</a>
 <a href="#dark_fairy">闇妖精</a>
 <a href="#shadow_fairy">影妖精</a>

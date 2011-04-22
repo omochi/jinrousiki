@@ -212,7 +212,7 @@ class RoleMessageList{
     'type' => 'guard', 'delimiter' => array('^' => 'no_last_words', '=' => 'vampire'));
 
   var $gatekeeper_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。\n　あなたの仕事は狼を倒す事ではありません。護るべき人を護る仕事を全うしましょう。",
     'type' => 'guard', 'delimiter' => array('^' => 'assassin', '=' => 'vampire'));
 
   var $reflect_guard = array(
@@ -385,11 +385,11 @@ class RoleMessageList{
     'type' => 'wizard', 'delimiter' => array('_' => 'guard'));
 
   var $astray_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#左道使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は特殊_狂人_相当です。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#左道使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は特殊_狂人_相当です。\n　千変万化の嘘を手に、あなたは悪逆無道の夜を往く。敬虔に年を累ねた師父たちを、異装の獣の皿へと載せましょう。",
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   var $pierrot_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#道化師#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は_悪戯_相当です。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#道化師#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は_悪戯_相当です。\n　変幻自在におどけてみせよう♪何が出るかはおたのしみ♪今宵の宴に添えるは悲喜劇！さあさとくと御覧あれ♪ ",
     'type' => 'wizard', 'delimiter' => array('_' => 'chiroptera'));
 
   var $doll = array(
@@ -476,6 +476,10 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|仙狼|です。一度だけ夜に死亡しても#蘇生#できます。夜の帳がある限り終わることの無き恐怖を思い知らせるのです！",
     'type' => 'poison_wolf');
 
+  var $trap_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|狡狼|です。一定日数後に、あなたの元に訪れた人を|罠|で撃退することができます。\n　我が叡智に見抜けぬ人の動き無し。我が命を狙う無法者と我が身に近づく愚か者に災厄を。",
+    'type' => 'poison_wolf');
+
   var $blue_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
     'type' => 'wise_wolf', 'delimiter' => array('_' => 'mind'));
@@ -558,7 +562,7 @@ class RoleMessageList{
     'type' => 'mad');
 
   var $trap_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|罠師|です。一度だけ夜に|罠|を仕掛けることができます。|罠|を仕掛けた人の元に訪れた能力者は全員死亡します。\n　あなたの魔手は鮮やかな悪夢の芸術を生み出す。|人狼|に害成す者共を狡猾なる|罠|へとおびき寄せ、地獄に陥れるのです！",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|罠師|です。一度だけ夜に|罠|を仕掛けることができます。|罠|を仕掛けた人の元に訪れた人は全員死亡します。\n　あなたの魔手は鮮やかな悪夢の芸術を生み出す。|人狼|に害成す者を狡猾なる|罠|へと誘き寄せ、地獄に陥れるのです！",
     'type' => 'mad');
 
   var $snow_trap_mad = array(
@@ -640,6 +644,10 @@ class RoleMessageList{
   var $doom_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|冥狐|です。夜に誰か一人に#死の宣告#を行うことができます。村の支配者は誰なのか、死を以て教えてやるのです。",
     'type' => 'fox', 'delimiter' => array('#' => 'chicken'));
+
+  var $trap_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|狡狐|です。一度だけ夜に#罠#を仕掛けることができます。",
+    'type' => 'fox');
 
   var $cursed_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|天狐|です。_占い師_を#呪返し#で、=暗殺=を反射で撃退することができますが、^狩人^には殺されてしまいます。\n　偽りを身に纏い、話術を飾りに舞うように村を駆け巡り、網の目のように張り巡らせた策謀の上を踊るのです！",
@@ -783,7 +791,7 @@ class RoleMessageList{
     'type' => 'chiroptera', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $cute_chiroptera = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|萌蝙蝠|です。占われると#人狼#判定が出されるうえに、ごくまれに発言が遠吠えになってしまいます。",
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|萌蝙蝠|です。占われると#人狼#判定が出されるうえに、ごくまれに発言が遠吠えになってしまいます。\n　この逆境を武器にして、自由で茶目っ気がある愛らしい生き様を、村人や人外共に見せ付けてやるのです。",
     'type' => 'chiroptera', 'delimiter' => array('#' => 'wolf'));
 
   var $scarlet_chiroptera = array(
@@ -868,19 +876,19 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('#' => 'poison', '_' => 'quiz', '=' => 'chicken'));
 
   var $west_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　雨にも負けず、静かに村の為に生き続け、西に生きることに疲れた人がいたら、行って楽にしてあげましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　雨にも負けず、静かに村の為に生き続け、西に生きることに疲れた人がいたら、行って楽にしてあげましょう！",
     'type' => 'east_ogre');
 
   var $east_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　風にも負けず、決して怒らずに村の為に生き続け、東に病気の人がいれば、行ってその感染源を絶ちましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　風にも負けず、決して怒らずに村の為に生き続け、東に病気の人がいれば、行ってその感染源を絶ちましょう！",
     'type' => 'ogre', 'delimiter' => array('#' => 'human'));
 
   var $north_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　水の冷たさにも負けず、欲も無く村の為に生き続け、北に喧嘩や訴訟があれば、行って成敗してやりましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　水の冷たさにも負けず、欲も無く村の為に生き続け、北に喧嘩や訴訟があれば、行って成敗してやりましょう！",
     'type' => 'east_ogre');
 
   var $south_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人#陣営の勝利が勝利条件になります。\n　夏の暑さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　夏の暑さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
     'type' => 'east_ogre');
 
   var $incubus_ogre = array(
@@ -896,7 +904,7 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('_' => 'revive'));
 
   var $sacrifice_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と_村人_陣営以外の勝利が勝利条件になります。また、夜に攫った人を^洗脳者^にして\n　#人狼#に襲撃されたときの身代わりにできます。杯を酌み交わすために人を攫い、妖どもを率いて百鬼夜行の長となるのです！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と_村人陣営_以外の勝利が勝利条件になります。また、夜に攫った人を^洗脳者^にして\n　#人狼#に襲撃されたときの身代わりにできます。杯を酌み交わすために人を攫い、妖どもを率いて百鬼夜行の長となるのです！",
     'type' => 'ogre', 'delimiter' => array('_' => 'human', '^' => 'vampire', '=' => 'chicken'));
 
   var $yaksa = array(
@@ -1133,6 +1141,9 @@ class RoleMessageList{
   var $ability_awake_wizard = array('message' => "　あなたは#人狼#の襲撃耐性を失いましたが、代わりに強力な|魔法|を使うことができます。",
 				    'delimiter' => array('|' => 'wizard', '#' => 'wolf'));
 
+  var $ability_trap_wolf = array('message' => "　|罠|の設置が完了しました。",
+				   'type' => 'sirius_wolf');
+
   var $ability_sirius_wolf = array('message' => "　残りの|狼|が二人になりました。人の繰り出す業 (#暗殺#・|罠|) は、もはやあなたを貫けません。",
 				   'type' => 'sirius_wolf');
 
@@ -1309,6 +1320,7 @@ class RoleMessageList{
   var $result_poison_wolf = array('message' => "さんは|毒狼|でした", 'type' => 'result_wolf');
   var $result_resist_wolf = array('message' => "さんは|抗毒狼|でした", 'type' => 'result_wolf');
   var $result_revive_wolf = array('message' => "さんは|仙狼|でした", 'type' => 'result_wolf');
+  var $result_trap_wolf = array('message' => "さんは|狡狼|でした", 'type' => 'result_wolf');
   var $result_blue_wolf = array('message' => "さんは|蒼狼|でした", 'type' => 'result_wolf');
   var $result_emerald_wolf = array('message' => "さんは|翠狼|でした", 'type' => 'result_wolf');
   var $result_sex_wolf = array('message' => "さんは|雛狼|でした", 'type' => 'result_wolf');
@@ -1350,6 +1362,7 @@ class RoleMessageList{
   var $result_revive_fox = array('message' => "さんは|仙狐|でした", 'type' => 'result_fox');
   var $result_possessed_fox = array('message' => "さんは|憑狐|でした", 'type' => 'result_fox');
   var $result_doom_fox = array('message' => "さんは|冥狐|でした", 'type' => 'result_fox');
+  var $result_trap_fox = array('message' => "さんは|狡狐|でした", 'type' => 'result_fox');
   var $result_cursed_fox = array('message' => "さんは|天狐|でした", 'type' => 'result_fox');
   var $result_elder_fox = array('message' => "さんは|古狐|でした", 'type' => 'result_fox');
   var $result_cute_fox = array('message' => "さんは|萌狐|でした", 'type' => 'result_fox');
@@ -1493,52 +1506,54 @@ class RoleMessageList{
   var $clairvoyance_result_header = array('message' => "|透視|結果： ", 'type' => 'result_mind_scanner');
   var $clairvoyance_result_footer = array('message' => "さんに能力を行使したようです",
 					  'type' => 'result_mind_scanner');
-  var $prediction_weather_grassy = array('message' => "|スコール|です", 'delimiter' => array('|' => 'wolf'));
-  var $prediction_weather_mower = array('message' => "|酸性雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_blind_vote = array('message' => "|晴嵐|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_fox_dead = array('message' => "|天気雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_critical = array('message' => "|烈日|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_blind_talk_day = array('message' => "|強風|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_blind_talk_night = array('message' => "|風雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_full_moon = array('message' => "|満月|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_new_moon = array('message' => "|新月|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_contact = array('message' => "|花曇|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_invisible = array('message' => "|黄砂|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_rainbow = array('message' => "|虹|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_side_reverse = array('message' => "|ダイヤモンドダスト|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_line_reverse = array('message' => "|バナナの皮|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_actor = array('message' => "|スポットライト|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_critical_luck = array('message' => "|タライ|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_sudden_death = array('message' => "|凪|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_thunderbolt = array('message' => "|青天の霹靂|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_last_words = array('message' => "|涙雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_dream = array('message' => "|熱帯夜|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_full_ogre = array('message' => "|朧月|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_seal_ogre = array('message' => "|叢雲|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_full_revive = array('message' => "|雷雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_revive = array('message' => "|快晴|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_brownie = array('message' => "|慈雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_whisper_ringing = array('message' => "|波風|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_howl_ringing = array('message' => "|小夜嵐|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_sweet_ringing = array('message' => "|流星群|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_deep_sleep = array('message' => "|春時雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_silent = array('message' => "|木漏れ日|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_missfire_revive = array('message' => "|疎雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_hunt = array('message' => "|川霧|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_full_guard = array('message' => "|蒼天|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_frostbite = array('message' => "|雪|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_alchemy_pharmacist = array('message' => "|梅雨|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_hyper_random_voter = array('message' => "|雹|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_half_moon = array('message' => "|半月|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_half_guard = array('message' => "|曇天|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_passion = array('message' => "|箒星|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_poison = array('message' => "|旱魃|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_psycho_infected = array('message' => "|濃霧|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_hyper_critical = array('message' => "|台風|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_boost_cute = array('message' => "|萌動|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_no_authority = array('message' => "|蜃気楼|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_force_assassin_do = array('message' => "|紅月|です", 'type' => 'prediction_weather_grassy');
-  var $prediction_weather_corpse_courier_mad = array('message' => "|砂塵嵐|です", 'type' => 'prediction_weather_grassy');
+  var $prediction_weather_grassy = array('message' => "|スコール|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_mower = array('message' => "|酸性雨|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_blind_vote = array('message' => "|晴嵐|です", 'delimiter' => array('|' => 'vote'));
+  var $prediction_weather_no_fox_dead = array('message' => "|天気雨|です", 'delimiter' => array('|' => 'mage'));
+  var $prediction_weather_critical = array('message' => "|烈日|です", 'delimiter' => array('|' => 'authority'));
+  var $prediction_weather_blind_talk_day = array('message' => "|強風|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_blind_talk_night = array('message' => "|風雨|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_full_moon = array('message' => "|満月|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_new_moon = array('message' => "|新月|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_no_contact = array('message' => "|花曇|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_invisible = array('message' => "|黄砂|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_rainbow = array('message' => "|虹|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_side_reverse = array('message' => "|ダイヤモンドダスト|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_line_reverse = array('message' => "|バナナの皮|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_actor = array('message' => "|スポットライト|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_critical_luck = array('message' => "|タライ|です", 'delimiter' => array('|' => 'luck'));
+  var $prediction_weather_no_sudden_death = array('message' => "|凪|です", 'delimiter' => array('|' => 'chicken'));
+  var $prediction_weather_thunderbolt = array('message' => "|青天の霹靂|です", 'delimiter' => array('|' => 'chicken'));
+  var $prediction_weather_no_last_words = array('message' => "|涙雨|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_no_dream = array('message' => "|熱帯夜|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_full_ogre = array('message' => "|朧月|です", 'delimiter' => array('|' => 'ogre'));
+  var $prediction_weather_seal_ogre = array('message' => "|叢雲|です", 'delimiter' => array('|' => 'ogre'));
+  var $prediction_weather_full_revive = array('message' => "|雷雨|です", 'delimiter' => array('|' => 'revive'));
+  var $prediction_weather_no_revive = array('message' => "|快晴|です", 'delimiter' => array('|' => 'revive'));
+  var $prediction_weather_brownie = array('message' => "|慈雨|です", 'delimiter' => array('|' => 'brownie'));
+  var $prediction_weather_whisper_ringing = array('message' => "|波風|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_howl_ringing = array('message' => "|小夜嵐|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_sweet_ringing = array('message' => "|流星群|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_deep_sleep = array('message' => "|春時雨|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_silent = array('message' => "|木漏れ日|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_missfire_revive = array('message' => "|疎雨|です", 'delimiter' => array('|' => 'revive'));
+  var $prediction_weather_no_hunt = array('message' => "|川霧|です", 'delimiter' => array('|' => 'guard'));
+  var $prediction_weather_full_guard = array('message' => "|蒼天|です", 'delimiter' => array('|' => 'guard'));
+  var $prediction_weather_frostbite = array('message' => "|雪|です", 'delimiter' => array('|' => 'chicken'));
+  var $prediction_weather_alchemy_pharmacist = array('message' => "|梅雨|です", 'delimiter' => array('|' => 'poison'));
+  var $prediction_weather_hyper_random_voter = array('message' => "|雹|です", 'delimiter' => array('|' => 'authority'));
+  var $prediction_weather_half_moon = array('message' => "|半月|です", 'delimiter' => array('|' => 'mage'));
+  var $prediction_weather_half_guard = array('message' => "|曇天|です", 'delimiter' => array('|' => 'guard'));
+  var $prediction_weather_passion = array('message' => "|箒星|です", 'delimiter' => array('|' => 'liar'));
+  var $prediction_weather_no_poison = array('message' => "|旱魃|です", 'delimiter' => array('|' => 'poison'));
+  var $prediction_weather_psycho_infected = array('message' => "|濃霧|です", 'delimiter' => array('|' => 'vampire'));
+  var $prediction_weather_hyper_critical = array('message' => "|台風|です", 'delimiter' => array('|' => 'authority'));
+  var $prediction_weather_boost_cute = array('message' => "|萌動|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_no_authority = array('message' => "|蜃気楼|です", 'delimiter' => array('|' => 'authority'));
+  var $prediction_weather_force_assassin_do = array('message' => "|紅月|です", 'delimiter' => array('|' => 'assassin'));
+  var $prediction_weather_corpse_courier_mad = array('message' => "|砂塵嵐|です", 'delimiter' => array('|' => 'necromancer'));
+  var $prediction_weather_full_wizard = array('message' => "|霧雨|です", 'delimiter' => array('|' => 'wizard'));
+  var $prediction_weather_debilitate_wizard = array('message' => "|木枯らし|です", 'delimiter' => array('|' => 'wizard'));
 }
 
 class WishRoleList{
@@ -1589,8 +1604,5 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('prediction_weather_corpse_courier_mad');
-#$builder->Output('gatekeeper_guard');
-#$builder->Output('astray_wizard');
-$builder->Output('pierrot_wizard');
-#$builder->Output('cute_chiroptera');
+#$builder->Output('prediction_weather_thunderbolt');
+$builder->Output('trap_fox');

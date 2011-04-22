@@ -185,7 +185,7 @@ Ver. 1.4.0
   <td><a href="fox.php#child_fox_group">子狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>子狐</td>
-  <td class="ability">呪殺されないが人狼に襲撃されると殺される妖狐。<br>
+  <td class="ability">呪殺されないが人狼に襲撃されると死亡する。<br>
     仲間は分かるが念話はできない。占いも出来るが時々失敗する。</td>
   <td>Ver. 1.4.0 α3-7</td>
 </tr>
@@ -379,7 +379,7 @@ Ver. 1.4.0
   <td>村人<br>(呪返し)</td>
   <td>妖狐</td>
   <td class="ability">占われたら占った占い師を呪い殺す妖狐。<br>
-    人狼に襲撃されても死なないが、<a href="human.php#voodoo_killer">陰陽師</a>に占われるか<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+    <a href="human.php#voodoo_killer">陰陽師</a>に占われるか<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -397,7 +397,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>妖狐</td>
-  <td class="ability">呪殺されないが人狼に襲撃されると殺される妖狐。</td>
+  <td class="ability">呪殺されない代わりに人狼に襲撃されると死亡する妖狐。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr id="ver140a18">
@@ -477,8 +477,7 @@ Ver. 1.4.0
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
   <td class="ability">夜に村人一人を選び、その人に呪いをかける妖狐。<br>
-    呪われた人を占った占い師は呪返しを受ける。
-    人狼に襲撃されても死なないが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+    呪われた人を占った占い師は呪返しを受ける。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -520,7 +519,7 @@ Ver. 1.4.0
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
   <td class="ability">仲間が分からない妖狐。<br>
-    (他の妖狐、<a href="fox.php#child_fox">子狐</a>からも仲間であると分からない)</td>
+    (他の妖狐、<a href="fox.php#child_fox_group">子狐</a>からも仲間であると分からない)</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr id="ver140a21">
@@ -678,7 +677,7 @@ Ver. 1.4.0
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
   <td class="ability">低確率で発言が遠吠えに入れ替わってしまう妖狐。<br>
-  遠吠えの内容は<a href="human.php#suspect">不審者</a>や<a href="wolf.php#cute_wolf">萌狼</a>と同じ。</td>
+  遠吠えの内容は<a href="wolf.php#cute_wolf">萌狼</a>と同じ。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -756,7 +755,7 @@ Ver. 1.4.0
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
   <td class="ability">蘇生能力を持った妖狐。成功率は 100% だが、一度成功すると能力を失う。<br>
-    人狼に襲撃されても死なないが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr id="ver140b5">
@@ -976,7 +975,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる人狼。</td>
+  <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が「<a href="chiroptera.php">蝙蝠</a>」になる人狼。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
 <tr>
@@ -985,7 +984,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる妖狐。</td>
+  <td class="ability"><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が「<a href="chiroptera.php">蝙蝠</a>」になる妖狐。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
 <tr>
@@ -1374,7 +1373,7 @@ Ver. 1.4.0
   <td><a href="fox.php#child_fox_group">子狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>子狐</td>
-  <td class="ability">吊られるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。</td>
+  <td class="ability">処刑されるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。</td>
   <td>Ver. 1.4.0 β13</td>
 </tr>
 <tr>
@@ -1501,7 +1500,7 @@ Ver. 1.4.0
   <td><a href="fox.php">妖狐</a></td>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
-  <td>妖狐</td>
+  <td>村人</td>
   <td class="ability">遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。<br>
     <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β15</td>
@@ -2252,6 +2251,25 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">魔法使いの一種で、魔法の効果は、<a href="human.php#reverse_assassin">反魂師</a>・<a href="wolf.php#jammer_mad">月兎</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>のいずれか。
   </td>
+  <td>Ver. 1.5.0 α8</td>
+</tr>
+<tr>
+  <td><a href="fox.php#trap_fox">狡狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability">一度だけ夜に誰か一人に罠を仕掛けることができる妖狐。<br>
+    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td>Ver. 1.5.0 α8</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#trap_wolf">狡狼</a></td>
+  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">一定期間後 (5日目以降)、自分に罠を設置することができる人狼。</td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 </table>

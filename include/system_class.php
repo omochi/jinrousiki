@@ -727,6 +727,7 @@ class RoleData{
     'poison_wolf'          => '毒狼',
     'resist_wolf'          => '抗毒狼',
     'revive_wolf'          => '仙狼',
+    'trap_wolf'            => '狡狼',
     'blue_wolf'            => '蒼狼',
     'emerald_wolf'         => '翠狼',
     'sex_wolf'             => '雛狼',
@@ -768,6 +769,7 @@ class RoleData{
     'revive_fox'           => '仙狐',
     'possessed_fox'        => '憑狐',
     'doom_fox'             => '冥狐',
+    'trap_fox'             => '狡狐',
     'cursed_fox'           => '天狐',
     'elder_fox'            => '古狐',
     'cute_fox'             => '萌狐',
@@ -1047,6 +1049,7 @@ class RoleData{
     'poison_wolf'          => '毒狼',
     'resist_wolf'          => '抗狼',
     'revive_wolf'          => '仙狼',
+    'trap_wolf'            => '狡狼',
     'blue_wolf'            => '蒼狼',
     'emerald_wolf'         => '翠狼',
     'sex_wolf'             => '雛狼',
@@ -1088,6 +1091,7 @@ class RoleData{
     'revive_fox'           => '仙狐',
     'possessed_fox'        => '憑狐',
     'doom_fox'             => '冥狐',
+    'trap_fox'             => '狡狐',
     'cursed_fox'           => '天狐',
     'elder_fox'            => '古狐',
     'cute_fox'             => '萌狐',
@@ -1449,7 +1453,13 @@ class RoleData{
 		'caption' => '暗殺キャンセル投票不可'),
     45 => array('name'    => '砂塵嵐',
 		'event'   => 'corpse_courier_mad',
-		'caption' => '霊能結果妨害'));
+		'caption' => '霊能結果妨害'),
+    46 => array('name'    => '霧雨',
+		'event'   => 'full_wizard',
+		'caption' => '魔法強化'),
+    47 => array('name'    => '木枯らし',
+		'event'   => 'debilitate_wizard',
+		'caption' => '魔法弱体化'));
 
   //-- 関数 --//
   //役職グループ判定

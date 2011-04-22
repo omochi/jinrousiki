@@ -673,7 +673,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>。</li>
+  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>。</li>
   <li>処刑先が決定されて、投票先が処刑者ではない場合に発動する。</li>
   <li>判定時に対象が死亡していた場合は無効。</li>
   <li>自分が処刑された場合は無効、毒やショック死で死亡した場合は有効。</li>
@@ -817,6 +817,7 @@ PP ラインの計算を難しくさせるために作成してみました。
   <li>判定は 3 の倍数の日の夜 (3 → 6 → 9 →...) で、発動はその 2 日後 (5 → 8 → 11 →...)。</li>
   <li>判定を実施するタイミングは<a href="#crisis_priest_rule">人外勝利前日判定ルール</a>と同じ。</li>
   <li>発生する天候はランダムで、<a href="../game_option.php#weather">天候あり</a>オプションがオフでも発生する。</li>
+  <li>天候発動判定時に<a href="#revive_priest">天人</a>の蘇生判定は反映されていない。</li>
   <li>生存している祈祷師がいなければ天候は発動しない。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
@@ -966,7 +967,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 1. 狩り能力があるのは<a href="#guard">狩人</a>・<a href="#hunter_guard">猟師</a>・<a href="#reflect_guard">侍</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>。
 2. 対象は特殊狂人・特殊妖狐・特殊吸血鬼・特殊蝙蝠。
 2-1. 特殊狂人 (<a href="wolf.php#mad">狂人</a>・<a href="wolf.php#fanatic_mad">狂信者</a>・<a href="wolf.php#whisper_mad">囁き狂人</a>以外の<a href="wolf.php#mad_group">狂人系</a>)
-2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
+2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
 2-3. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
 2-4. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 3. <a href="#hunter_guard">猟師</a>はさらに<a href="fox.php">妖狐陣営</a>を狩ることができる。
@@ -1333,7 +1334,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#scripter">執筆者</a>・<a href="mania.php#soul_mania">覚醒者</a>
+<a href="#scripter">執筆者</a>・<a href="wolf.php#trap_wolf">狡狼</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2156,6 +2157,14 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 魔法使いの基本種。
 魔法の効果は、<a href="#mage">占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#guard">狩人</a>・<a href="#assassin">暗殺者</a>のいずれか。
 </pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+<a href="#mage">占い師</a>固定。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+<a href="#sex_mage">ひよこ鑑定士</a>固定。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 テーマは「自然にギドラ CO をすることになる能力」です。
@@ -2169,6 +2178,14 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#doom_assassin">死神</a>・<a href="#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
 <a href="#poison_guard">騎士</a>能力が発動しても毒を持つわけではないので注意。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+<a href="#soul_mage">魂の占い師</a>固定。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+<a href="#sex_mage">ひよこ鑑定士</a>固定。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2184,6 +2201,16 @@ MVP の賞品としてプレゼントしたものです。
 魔法の効果は、初めは<a href="#mage">占い師</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>のいずれかで、成功率は 30%。
 強化後の魔法の効果は、<a href="#soul_mage">魂の占い師</a>で、成功率も 100% となる。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
+</pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+強化前：<a href="#mage">占い師</a>固定 (成功率は影響なし)。
+強化後：<a href="#soul_mage">魂の占い師</a>固定 (実質変化なし)。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+強化前：<a href="#sex_mage">ひよこ鑑定士</a>固定 (成功率は影響なし)。
+強化後：<a href="#soul_mage">魂の占い師</a>固定 (実質変化なし)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2201,6 +2228,14 @@ MVP の賞品としてプレゼントしたものです。
 魔法の効果は、<a href="#necromancer">霊能者</a>・<a href="#soul_necromancer">雲外鏡</a>・<a href="#psycho_necromancer">精神感応者</a>・<a href="#embalm_necromancer">死化粧師</a>・性別鑑定のいずれか。
 性別鑑定結果は処刑者の役職には影響されない。
 複数出現しても霊能結果は全員共通。
+</pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+<a href="#soul_necromancer">雲外鏡</a>固定。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+性別鑑定固定。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2227,6 +2262,14 @@ MVP の賞品としてプレゼントしたものです。
   <li>自分を護衛することはできない。</li>
   <li><a href="#clairvoyance_scanner">猩々</a>が尾行した場合は全ての護衛先が表示される。</li>
 </ol>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+成功率 +25% (1.25倍)。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+成功率 -25% (0.75倍)。
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/947" target="_top">新役職考案スレ(947)</a> が原型で、テーマは「護衛先ギドラ」です。
@@ -2240,6 +2283,14 @@ MVP の賞品としてプレゼントしたものです。
 <a href="fox.php#doom_fox">冥狐</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>のいずれか。
 耐性は適用されないので<a href="#guard_hunt">狩り</a>の対象にはならないが、
 <a href="wolf.php#dream_eater_mad">獏</a>能力が発動すると<a href="#dummy_guard">夢守人</a>の能力が適用されるので注意 (<a href="wolf.php#dream_eater_mad">獏</a>参照)。
+</pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+<a href="#reverse_assassin">反魂師</a>固定。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+<a href="chiroptera.php#dark_fairy">闇妖精</a>固定。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2255,6 +2306,14 @@ MVP の賞品としてプレゼントしたものです。
 「特殊<a href="#doom_assassin">死神</a>」による<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 2～10 日後の昼。
 「特殊妖精」のメッセージは「～は昨夜、～していたようです」で、全部で26種類。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+<a href="#soul_mage">魂の占い師</a>固定。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+<a href="#sex_mage">ひよこ鑑定士</a>固定。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -49,6 +49,8 @@ OutputRolePageHeader('鬼陣営');
 <a href="#south_ogre">隠行鬼</a>
 <a href="#incubus_ogre">般若</a>
 <a href="#power_ogre">星熊童子</a>
+</p>
+<p>
 <a href="#revive_ogre">茨木童子</a>
 <a href="#sacrifice_ogre">酒呑童子</a>
 </p>

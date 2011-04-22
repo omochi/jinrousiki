@@ -8,6 +8,7 @@ OutputInfoPageHeader('天候システム');
 <p>
 <a href="#game_option">関連オプション</a>
 <a href="#summary">一覧</a>
+<a href="#boost">確率変動</a>
 </p>
 <p>
 <a href="#type_talk">会話妨害</a>
@@ -311,7 +312,91 @@ Ver. 1.5.0
   <td><?php echo $ROLE_DATA->weather_list[45]['caption'] ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
+
+<tr>
+  <td><a href="#weather_full_wizard"><?php echo $ROLE_DATA->weather_list[46]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[46]['caption'] ?></td>
+  <td>Ver. 1.5.0 α8</td>
+</tr>
+
+<tr>
+  <td><a href="#weather_debilitate_wizard"><?php echo $ROLE_DATA->weather_list[47]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[47]['caption'] ?></td>
+  <td>Ver. 1.5.0 α8</td>
+</tr>
 </table>
+
+<h2 id="boost">確率変動 [Ver. 1.5.0 α8～]</h2>
+<ol>
+  <li>妖狐陣営 &gt; 人狼系</li>
+  <ul>
+    <li><a href="#weather_no_fox_dead">天気雨</a>・<a href="#weather_half_moon">半月</a>・<a href="#weather_new_moon">新月</a>・<a href="#weather_no_hunt">川霧</a>の発生率が下がります。</li>
+  </ul>
+  <li>[(生存数 - 2) / 2] (繰上げ) - 人狼系 - 妖狐陣営 &gt; 2</li>
+  <ul>
+    <li><a href="#weather_hyper_critical">台風</a>・<a href="#weather_hyper_random_voter">雹</a>・<a href="#weather_frostbite">雪</a>・<a href="#weather_corpse_courier_mad">砂塵嵐</a>・<a href="#weather_thunderbolt">青天の霹靂</a>・<a href="#weather_no_last_words">涙雨</a>・<a href="#weather_half_guard">曇天</a>・<a href="#weather_missfire_revive">疎雨</a>・<a href="#weather_no_revive">快晴</a>・<a href="#weather_full_ogre">朧月</a>・<a href="#weather_debilitate_wizard">木枯らし</a>の発生率が上がります。</li>
+    <li><a href="#weather_blind_talk_night">風雨</a>・<a href="#weather_alchemy_pharmacist">梅雨</a>・<a href="#weather_no_sudden_death">凪</a>・<a href="#weather_full_moon">満月</a>・<a href="#weather_full_guard">蒼天</a>・<a href="#weather_no_contact">花曇</a>・<a href="#weather_full_revive">雷雨</a>・<a href="#weather_full_wizard">霧雨</a>の発生率が下がります。</li>
+  </ul>
+  <li>[(生存数 - 2) / 2] (繰上げ) - 人狼系 - 妖狐陣営 &lt; 1</li>
+  <ul>
+    <li><a href="#weather_boost_cute">萌動</a>・<a href="#weather_blind_talk_night">風雨</a>・<a href="#weather_alchemy_pharmacist">梅雨</a>・<a href="#weather_full_moon">満月</a>・<a href="#weather_new_moon">新月</a>・<a href="#weather_full_guard">蒼天</a>・<a href="#weather_no_contact">花曇</a>・<a href="#weather_full_wizard">霧雨</a>の発生率が上がります。</li>
+    <li><a href="#weather_blind_talk_day">強風</a>・<a href="#weather_critical">烈日</a>・<a href="#weather_frostbite">雪</a>・<a href="#weather_corpse_courier_mad">砂塵嵐</a>・<a href="#weather_thunderbolt">青天の霹靂</a>・<a href="#weather_no_last_words">涙雨</a>・<a href="#weather_half_guard">曇天</a>・<a href="#weather_no_poison">旱魃</a>・<a href="#weather_no_revive">快晴</a>・<a href="#weather_debilitate_wizard">木枯らし</a>の発生率が下がります。</li>
+  </ul>
+  <li><a href="new_role/human.php#human">村人</a>・<a href="new_role/human.php#brownie">座敷童子</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_brownie">慈雨</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/human.php#suspect">不審者</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_boost_cute">萌動</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/human.php#jealousy_group">橋姫系</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_sweet_ringing">流星群</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/human.php#revive_brownie">蛇神</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_full_revive">雷雨</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="new_role/wolf.php#follow_mad">舟幽霊</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_thunderbolt">青天の霹靂</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/wolf.php#jammer_mad">月兎</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_half_moon">半月</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/wolf.php#trap_mad">罠師</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_half_guard">曇天</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/wolf.php#snow_trap_mad">雪女</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_frostbite">雪</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/wolf.php#corpse_courier_mad">火車</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_corpse_courier_mad">砂塵嵐</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/wolf.php#amaze_mad">傘化け</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_blind_vote">晴嵐</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/wolf.php#critical_mad">釣瓶落とし</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_critical">烈日</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/vampire.php#vampire_group">吸血鬼系</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_psycho_infected">濃霧</a>の発生率が上がります。</li>
+  </ul>
+  <li><a href="new_role/chiroptera.php#fairy_group">妖精系</a></li>
+  <ul>
+    <li>生存者の人数分、<a href="#weather_silent">木漏れ日</a>の発生率が上がります。</li>
+  </ul>
+</ol>
 
 <h2 id="type_talk">会話妨害</h2>
 <ul>
@@ -524,6 +609,8 @@ Ver. 1.5.0
   <li><a href="#weather_force_assassin_do">紅月</a></li>
   <li><a href="#weather_full_ogre">朧月</a></li>
   <li><a href="#weather_seal_ogre">叢雲</a></li>
+  <li><a href="#weather_full_wizard">霧雨</a></li>
+  <li><a href="#weather_debilitate_wizard">木枯らし</a></li>
   <li><a href="#weather_psycho_infected">濃霧</a></li>
   <li><a href="#weather_no_dream">熱帯夜</a></li>
 </ul>
@@ -579,7 +666,7 @@ Ver. 1.5.0
 <h3 id="weather_no_contact">花曇 [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li><a href="spec.php#vote_night">接触系能力者</a>の夜の投票が全て無効化されます。</li>
-  <li><a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>の能力は有効、<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>の能力は無効です。</li>
+  <li><a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>の能力は有効、<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>・<a href="new_role/wolf.php#trap_wolf">狡狼</a>の能力は無効です。</li>
   <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
@@ -624,6 +711,16 @@ Ver. 1.5.0
 <ul>
   <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 0% になります。</li>
   <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 0% になります。</li>
+</ul>
+
+<h3 id="weather_full_wizard">霧雨 [Ver. 1.5.0 α8～]</h3>
+<ul>
+  <li><a href="new_role/human.php#wizard_group">魔法使い系</a>の魔法が強化されます (詳細は個々の取説参照)。</li>
+</ul>
+
+<h3 id="weather_debilitate_wizard">木枯らし [Ver. 1.5.0 α8～]</h3>
+<ul>
+  <li><a href="new_role/human.php#wizard_group">魔法使い系</a>の魔法が弱体化します (詳細は個々の取説参照)。</li>
 </ul>
 
 <h3 id="weather_psycho_infected">濃霧 [Ver. 1.5.0 α8～]</h3>

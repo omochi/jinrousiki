@@ -1019,7 +1019,12 @@ function AggregateVoteDay(){
     foreach($USERS->rows as $user) $role_flag->{$user->main_role} = true; //役職出現判定
     //PrintData($role_flag, 'ROLE_FLAG');
     if($role_flag->spiritism_wizard && ! $ROOM->IsEvent('new_moon')){ //交霊術師の処理
-      $stack = array('', 'soul_', 'psycho_', 'embalm_', 'sex_'); //sex_necromancer は未実装
+      if($ROOM->IsEvent('full_wizard')) //霧雨
+	$stack = array('soul_');
+      elseif($ROOM->IsEvent('debilitate_wizard')) //木枯らし
+	$stack = array('sex_');
+      else
+	$stack = array('', 'soul_', 'psycho_', 'embalm_', 'sex_'); //sex_necromancer は未実装
       $wizard_flag->{GetRandom($stack) . 'necromancer'} = true;
       $wizard_action = 'SPIRITISM_WIZARD_RESULT';
       if($wizard_flag->sex_necromancer){
@@ -1310,7 +1315,6 @@ function AggregateVoteNight($skip = false){
   foreach($stack as $action){
     if(is_null($vote_data[$action])) $vote_data[$action] = array();
   }
-  unset($stack);
   //PrintData($vote_data);
 
   //-- 変数の初期化 --//
@@ -1350,13 +1354,14 @@ function AggregateVoteNight($skip = false){
     $stack[] = 'DREAM_EAT';
   }
   foreach($stack as $action) $vote_data[$action] = array();
-  unset($stack);
 
   //-- 魔法使い系の振り替え処理 --//
   if($ROOM->date > 1){
     foreach($vote_data['WIZARD_DO'] as $uname => $target_uname){
       $ROLES->actor = $USERS->ByUname($uname);
       $role = $ROLES->Load('main_role', true)->GetRole();
+      $ROLES->actor->virtual_role = $role; //仮想役職を登録
+      //PrintData($role, "Wizard: {$uname}");
       if(strpos($role, 'mage') !== false){
 	$vote_data['MAGE_DO'][$uname] = $target_uname;
       }
@@ -1381,8 +1386,6 @@ function AggregateVoteNight($skip = false){
       elseif(strpos($role, 'fairy') !== false){
 	$vote_data['FAIRY_DO'][$uname] = $target_uname;
       }
-      $ROLES->actor->virtual_role = $role; //仮想役職を登録
-      //PrintData($role, "Wizard: {$uname}");
     }
   }
 
@@ -1397,14 +1400,21 @@ function AggregateVoteNight($skip = false){
   if($ROOM->date > 1){
     foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //罠能力者の情報収集
       $user = $USERS->ByUname($uname);
-      if($user->IsRole('trap_mad')) $user->LostAbility(); //罠師は一度設置したら能力失効
 
       //人狼に狙われていたら自分自身への設置以外は無効
       if($user->IsSame($wolf_target->uname) && ! $user->IsSame($target_uname)) continue;
-      if($user->IsRole('trap_mad')) //役職別に罠をセット
+      if($user->IsRole('trap_mad', 'trap_fox')){ //役職別に罠をセット
 	$trap_target_list[$user->uname] = $target_uname;
-      else
+	$user->LostAbility(); //罠師・狡狐は一度設置したら能力喪失
+      }
+      else{
 	$snow_trap_target_list[$user->uname] = $target_uname;
+      }
+    }
+    if($ROOM->date > 4 && ! $ROOM->IsEvent('no_contact')){ //狡狼の自動設置判定 (花曇は無効)
+      foreach($USERS->rows as $user){
+	if($user->IsLiveRole('trap_wolf')) $trap_target_list[$user->uname] = $user->uname;
+      }
     }
     //PrintData($trap_target_list, 'List [trap_mad]');
     //PrintData($snow_trap_target_list, 'List [snow_trap_mad]');
@@ -1416,7 +1426,9 @@ function AggregateVoteNight($skip = false){
     }
 
     foreach($snow_trap_target_list as $uname => $target_uname){ //雪女の罠死判定
-      if(in_array($target_uname, $trap_target_list)) $trapped_list[] = $uname;
+      if($uname != $target_uname && in_array($target_uname, $trap_target_list)){
+	$trapped_list[] = $uname;
+      }
     }
 
     //雪女が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は凍傷になる
@@ -1426,7 +1438,9 @@ function AggregateVoteNight($skip = false){
     }
 
     foreach($trap_target_list as $uname => $target_uname){ //罠師の凍傷判定
-      if(in_array($target_uname, $snow_trap_target_list)) $frostbite_list[] = $uname;
+      if($uname != $target_uname && in_array($target_uname, $snow_trap_target_list)){
+	$frostbite_list[] = $uname;
+      }
     }
 
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
@@ -1453,23 +1467,22 @@ function AggregateVoteNight($skip = false){
 
     //魔法使い系 (拡散型) の情報収集
     foreach($vote_data['SPREAD_WIZARD_DO'] as $uname => $target_list){
-      $user = $USERS->ByUname($uname);
       $trapped   = false;
       $frostbite = false;
       foreach(explode(' ', $target_list) as $id){
-	$target = $USERS->ByID($id);
-	$wizard_target_list[$user->uname][] = $target->uname;
-	$trapped   |= in_array($target->uname, $trap_target_list); //罠死判定
-	$frostbite |= in_array($target->uname, $snow_trap_target_list); //凍傷判定
+	$target_uname = $USERS->ByID($id)->uname;
+	$wizard_target_list[$uname][] = $target_uname;
+	$trapped   |= in_array($target_uname, $trap_target_list); //罠死判定
+	$frostbite |= in_array($target_uname, $snow_trap_target_list); //凍傷判定
       }
       if($trapped)
-	$trapped_list[] = $user->uname;
+	$trapped_list[] = $uname;
       elseif($frostbite)
-	$frostbite_list[] = $user->uname;
+	$frostbite_list[] = $uname;
     }
     //PrintData($wizard_target_list, 'Target [wizard]');
 
-    foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者の情報収集
+    foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者系の情報収集
       $user   = $USERS->ByUname($uname);
       $target = $USERS->ByUname($target_uname);
       if(in_array($target_uname, $trap_target_list)){ //罠死判定
@@ -1509,9 +1522,11 @@ function AggregateVoteNight($skip = false){
 
     //狩人系の護衛判定
     $stack = array_keys($guard_target_list, $wolf_target->uname); //護衛者を検出
+    $rate = $ROOM->IsEvent('full_wizard') ? 1.25 :
+      ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
     foreach($wizard_target_list as $uname => $target_list){ //結界師を追加
       if(in_array($wolf_target->uname, $target_list) &&
-	 mt_rand(1, 100) <= 100 - count($target_list) * 20) $stack[] = $uname;
+	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $stack[] = $uname;
     }
     //PrintData($stack, 'List [gurad]');
 
@@ -1763,9 +1778,11 @@ function AggregateVoteNight($skip = false){
       $guard_flag = false; //護衛成功フラグ
       $guard_limited = ! $ROOM->IsEvent('full_guard') && $target->IsGuardLimited(); //護衛制限判定
       $stack = array_keys($guard_target_list, $target->uname); //護衛者を検出
+      $rate = $ROOM->IsEvent('full_wizard') ? 1.25 :
+	($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
       foreach($wizard_target_list as $wizard_uname => $target_list){ //結界師を追加
 	if(in_array($target->uname, $target_list) &&
-	   mt_rand(1, 100) <= 100 - count($target_list) * 20) $stack[] = $wizard_uname;
+	   mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $stack[] = $wizard_uname;
       }
       //PrintData($stack, 'List [gurad]');
 
@@ -2904,17 +2921,14 @@ function AggregateVoteNight($skip = false){
       $ROOM->SystemMessage($live_count['lovers'], 'PRIEST_JEALOUSY_RESULT');
     }
   }
+
   //司教・大司祭の処理
   if(($ROOM->date % 2) == 0 &&
      ((count($role_flag->bishop_priest) > 0 && $ROOM->date > 1) ||
       (count($role_flag->high_priest)   > 0 && $ROOM->date > 3))){
     $ROOM->SystemMessage($live_count['dead'], 'BISHOP_PRIEST_RESULT');
   }
-  //祈祷師の処理
-  if($weather_priest_flag && $ROOM->date > 2 && ($ROOM->date % 3) == 0 &&
-     $live_count['total'] - $live_count['human_side'] > $live_count['wolf'] * 2){
-    $ROOM->EntryWeather($GAME_CONF->GetWeather(), 2, true);
-  }
+
   if(count($role_flag->border_priest) > 0 && $ROOM->date > 1){ //境界師の処理
     foreach($role_flag->border_priest as $uname){
       $user  = $USERS->ByUname($uname);
@@ -2960,7 +2974,62 @@ function AggregateVoteNight($skip = false){
     }
   }
 
-  if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){ //天候を決定
+  //祈祷師・天候あり判定
+  if(($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1) ||
+     ($weather_priest_flag && $ROOM->date > 2 && ($ROOM->date % 3) == 0 &&
+      $live_count['total'] - $live_count['human_side'] > $live_count['wolf'] * 2)){
+    //天候補正処理
+    $vote_margin = ceil(($live_count['total'] - 2) / 2) - $live_count['wolf'] - $live_count['fox'];
+    //PrintData($vote_margin, 'VoteMargin');
+
+    $target =& $GAME_CONF->weather_list;
+    if($live_count['fox'] > $live_count['wolf']){ //妖狐陣営優勢
+      foreach(array(3, 8, 31, 36) as $id){
+	$target[$id] = ceil($target[$id] * 0.8);
+      }
+    }
+
+    if($vote_margin > 2){ //村人陣営優勢
+      foreach(array(17, 18, 20, 23, 30, 33, 35, 37, 41, 45, 47) as $id){
+	$target[$id] = ceil($target[$id] * 1.2);
+      }
+      foreach(array(6, 7, 9, 16, 22, 32, 34, 46) as $id){
+	$target[$id] = ceil($target[$id] * 0.8);
+      }
+    }
+    elseif($vote_marget < 1){ //村人陣営劣勢
+      foreach(array(6, 7, 8, 9, 32, 34, 42, 46) as $id){
+	$target[$id] = ceil($target[$id] * 1.2);
+      }
+      foreach(array(4, 5, 17, 18, 23, 33, 37, 39, 45, 47) as $id){
+	$target[$id] = ceil($target[$id] * 0.8);
+      }
+    }
+
+    $stack = array(
+      'human' => 24, 'suspect' => 42, 'bacchus_medium' => 21, 'brownie' => 24,
+      'revive_brownie' => 22, 'cursed_brownie' => 17, 'jammer_mad' => 36, 'trap_mad' => 37,
+      'snow_trap_mad' => 33, 'corpse_courier_mad' => 45, 'amaze_mad' => 2, 'critical_mad' => 4,
+      'follow_mad' => 17);
+    foreach($role_flag as $role => $list){
+      $id = NULL;
+      if(array_key_exists($role, $stack))
+	$id = $stack[$role];
+      elseif(strpos($role, 'jealousy') !== false)
+	$id = 27;
+      elseif(strpos($role, 'vampire') !== false)
+	$id = 40;
+      elseif(strpos($role, 'fairy') !== false)
+	$id = 29;
+      //PrintData($role, $id);
+      if(isset($id)) $target[$id] = ceil($target[$id] * (1 + count($list) * 0.1));
+    }
+    /*
+    PrintData($GAME_CONF->weather_list);
+    $stack = array();
+    for($i = 0; $i < 20; $i++) $stack[$GAME_CONF->GetWeather()]++;
+    PrintData($stack);
+    */
     $weather = $GAME_CONF->GetWeather();
     //$weather = 44; //テスト用
     $date = 2;

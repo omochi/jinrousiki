@@ -313,7 +313,8 @@ class User{
     return ($this->IsRoleGroup('mad') && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
       ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire')) ||
       $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
-		    'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera');
+		    'trap_fox', 'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera',
+		    'boss_chiroptera');
   }
 
   //護衛制限判定
@@ -572,7 +573,7 @@ class User{
     if($this->IsRole('barrier_wizard')) return $this->IsVoted($vote_data, 'SPREAD_WIZARD_DO');
     if($this->IsWizard(true)) return $this->IsVoted($vote_data, 'WIZARD_DO');
     if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
-    if($this->IsRole('trap_mad')){
+    if($this->IsRole('trap_mad', 'trap_fox')){
       return ! $this->IsActive() || $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
     }
     if($this->IsRole('snow_trap_mad')){

@@ -17,7 +17,7 @@ function OutputAbility(){
   elseif($SELF->IsRole('elder')) $ROLE_IMG->Output($SELF->main_role); //長老
   elseif($SELF->IsRole('scripter')){ //執筆者
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL);
+    if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL); //能力発現
   }
   elseif($SELF->IsRoleGroup('mage')){ //占い師系
     $ROLE_IMG->Output($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);
@@ -285,6 +285,10 @@ function OutputAbility(){
     unset($stack);
 
     switch($SELF->main_role){ //特殊狼の処理
+    case 'trap_wolf': //狡狼
+      if($ROOM->date > 4) OutputAbilityResult('ability_trap_wolf', NULL); //罠設置
+      break;
+
     case 'tongue_wolf': //舌禍狼
       if($ROOM->date > 1) OutputSelfAbilityResult('TONGUE_WOLF_RESULT'); //噛み結果
       break;
@@ -444,6 +448,12 @@ function OutputAbility(){
       case 'doom_fox': //冥狐
 	if($ROOM->date > 1 && $ROOM->IsNight()){ //夜の投票
 	  OutputVoteMessage('assassin-do', 'assassin_do', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO');
+	}
+	break;
+
+      case 'trap_fox': //狡狐
+	if($SELF->IsActive() && $ROOM->date > 1 && $ROOM->IsNight()){
+	  OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
 	}
 	break;
       }

@@ -201,7 +201,7 @@ function VoteNight(){
   switch($RQ_ARGS->situation){
   case 'MAGE_DO':
     if($SELF->IsRole('emerald_fox')){
-      if(! $SELF->IsActive()) OutputVoteResult('夜：翠狐は一度しかできません');
+      if(! $SELF->IsActive()) OutputVoteResult('夜：能力喪失しています');
     }
     elseif(! $SELF->IsRoleGroup('mage')){
       OutputVoteResult('夜：投票イベントが一致しません');
@@ -235,7 +235,7 @@ function VoteNight(){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
     if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
-      OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
+      OutputVoteResult('夜：能力喪失しています');
     }
     $not_type = $RQ_ARGS->situation == 'POISON_CAT_NOT_DO';
     break;
@@ -294,9 +294,7 @@ function VoteNight(){
     break;
 
   case 'JAMMER_MAD_DO':
-    if(! $SELF->IsRole('jammer_mad', 'jammer_fox')){
-      OutputVoteResult('夜：投票イベントが一致しません');
-    }
+    if(! $SELF->IsRoleGroup('jammer')) OutputVoteResult('夜：投票イベントが一致しません');
     break;
 
   case 'VOODOO_MAD_DO':
@@ -314,16 +312,18 @@ function VoteNight(){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
-    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：能力喪失しています');
     $not_type = $RQ_ARGS->situation == 'POSSESSED_NOT_DO';
     break;
 
   case 'TRAP_MAD_DO':
   case 'TRAP_MAD_NOT_DO':
-    if(! $SELF->IsRoleGroup('trap_mad')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! $SELF->IsRoleGroup('trap_mad') && ! $SELF->IsRole('trap_fox')){
+      OutputVoteResult('夜：投票イベントが一致しません');
+    }
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
-    if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
-      OutputVoteResult('夜：罠師の罠は一度しか設置できません');
+    if($SELF->IsRole('trap_mad', 'trap_fox') && ! $SELF->IsActive()){
+      OutputVoteResult('夜：能力喪失しています');
     }
     $not_type = $RQ_ARGS->situation == 'TRAP_MAD_NOT_DO';
     break;
@@ -339,7 +339,7 @@ function VoteNight(){
     break;
 
   case 'CUPID_DO':
-    if(! $SELF->IsRoleGroup('cupid', 'angel', 'dummy_chiroptera')){
+    if(! $SELF->IsRoleGroup('cupid', 'angel') && ! $SELF->IsRole('dummy_chiroptera')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
     if(! is_array($RQ_ARGS->target_no)) OutputVoteResult('夜：投票データが一致しません');
@@ -757,7 +757,7 @@ function OutputVoteNight(){
       OutputVoteResult('夜：「霊界で配役を公開しない」オプションがオフの時は投票できません');
     }
     if($SELF->IsRole('revive_fox') && ! $SELF->IsActive()){
-      OutputVoteResult('夜：仙狐の蘇生は一度しかできません');
+      OutputVoteResult('夜：能力喪失しています');
     }
     $type       = 'POISON_CAT_DO';
     $not_type   = 'POISON_CAT_NOT_DO';
@@ -800,7 +800,7 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の逃亡はできません');
     $type = 'ESCAPE_DO';
   }
-  elseif($SELF->IsRole('jammer_mad', 'jammer_fox')){
+  elseif($SELF->IsRoleGroup('jammer')){
     $type   = 'JAMMER_MAD_DO';
     $submit = 'jammer_do';
   }
@@ -814,14 +814,14 @@ function OutputVoteNight(){
   }
   elseif($role_revive = $SELF->IsRole('possessed_mad', 'possessed_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の憑依はできません');
-    if(! $SELF->IsActive()) OutputVoteResult('夜：憑依は一度しかできません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：能力喪失しています');
     $type     = 'POSSESSED_DO';
     $not_type = 'POSSESSED_NOT_DO';
   }
-  elseif($role_trap = $SELF->IsRoleGroup('trap_mad')){
+  elseif($role_trap = $SELF->IsRoleGroup('trap_mad') || $SELF->IsRole('trap_fox')){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の罠設置はできません');
-    if($SELF->IsRole('trap_mad') && ! $SELF->IsActive()){
-      OutputVoteResult('夜：罠師の罠は一度しか設置できません');
+    if($SELF->IsRole('trap_mad', 'trap_fox') && ! $SELF->IsActive()){
+      OutputVoteResult('夜：能力喪失しています');
     }
     $type       = 'TRAP_MAD_DO';
     $not_type   = 'TRAP_MAD_NOT_DO';
@@ -833,7 +833,7 @@ function OutputVoteNight(){
     $submit = 'voodoo_do';
   }
   elseif($SELF->IsRole('emerald_fox')){
-    if(! $SELF->IsActive()) OutputVoteResult('夜：占いは一度しかできません');
+    if(! $SELF->IsActive()) OutputVoteResult('夜：能力喪失しています');
     $type   = 'MAGE_DO';
     $submit = 'mage_do';
   }

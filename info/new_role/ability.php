@@ -32,11 +32,12 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#dummy">夢</a>
+<a href="#trap">罠</a>
 </p>
 
 <h2 id="assassin">暗殺能力者</h2>
 <pre>
-<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
+<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#astray_wizard">左道使い</a>・<a href="human.php#pierrot_wizard">道化師</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
 </pre>
 
 <h2 id="anti_assassin">暗殺耐性能力者</h2>
@@ -197,5 +198,15 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="dummy">夢能力者</h2>
 <pre>
 <a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_guard">夢守人</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
+</pre>
+
+<h2 id="trap">罠能力者</h2>
+<h3 id="trap_day">処刑投票カウンター型</h3>
+<pre>
+<a href="human.php#trap_common">策士</a>
+</pre>
+<h3 id="trap_night">夜投票型</h3>
+<pre>
+<a href="human.php#astray_wizard">左道使い</a>・<a href="wolf.php#trap_wolf">狡狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="fox.php#trap_fox">狡狐</a>
 </pre>
 </body></html>

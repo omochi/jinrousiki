@@ -91,6 +91,9 @@ OutputRolePageHeader('人狼陣営');
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
 <a href="#revive_wolf">仙狼</a>
+<a href="#trap_wolf">狡狼</a>
+</p>
+<p>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
 <a href="#sex_wolf">雛狼</a>
@@ -101,6 +104,8 @@ OutputRolePageHeader('人狼陣営');
 <a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
+</p>
+<p>
 <a href="#scarlet_wolf">紅狼</a>
 <a href="#silver_wolf">銀狼</a>
 </p>
@@ -131,7 +136,7 @@ OutputRolePageHeader('人狼陣営');
 
 <h3 id="gold_wolf">金狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が<a href="chiroptera.php">蝙蝠</a>になる人狼。
+<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が「<a href="chiroptera.php">蝙蝠</a>」になる人狼。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -261,6 +266,27 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 <a href="human.php#revive_pharmacist">仙人</a>の人狼バージョンです。
 <a href="ability.php#revive_self">自己蘇生</a>した人に疑いをかけやすくなります。
+</pre>
+
+<h3 id="trap_wolf">狡狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 α8～]</h3>
+<pre>
+一定期間後 (5日目以降)、自分に罠を設置することができる人狼。
+</pre>
+<ol>
+  <li>能力が発現すると本人に追加のシステムメッセージが表示される。</li>
+  <li>罠に関する仕様は<a href="#trap_mad">罠師</a>と同じ。</li>
+  <li>処理上は常に自分で自分に罠を設置している扱い。<br>
+    ただし、<a href="human.php#clairvoyance_scanner">猩々</a>の判定には反映されない。
+  </li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#incubate_poison">潜毒者</a>・<a href="ability.php#trap">罠能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="fox.php#trap_fox">狡狐</a>の人狼バージョンです。
+騙りの腕次第で接触系能力者を一網打尽にすることができます。
 </pre>
 
 <h3 id="blue_wolf">蒼狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
@@ -743,7 +769,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
   <li>狼が残り二人になると、以下の能力を持つ (覚醒状態)。</li>
   <ol>
     <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-    <li><a href="#trap_mad">罠師</a>・<a href="#snow_trap_mad">雪女</a>の罠無効</li>
+    <li><a href="ability.php#trap_night">罠 (夜投票型)</a>無効</li>
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
@@ -855,6 +881,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#possessed_mad">犬神</a>
 <a href="#trap_mad">罠師</a>
 <a href="#snow_trap_mad">雪女</a>
+</p>
+<p>
 <a href="#corpse_courier_mad">火車</a>
 <a href="#amaze_mad">傘化け</a>
 <a href="#agitate_mad">扇動者</a>
@@ -1055,6 +1083,19 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
   <li><a href="human.php#assassin_group">暗殺者系</a>が罠にかかった場合、暗殺は無効。</li>
   <li><a href="#sirius_wolf">天狼</a> (覚醒状態) には無効。</li>
 </ol>
+<h5>Ver. 1.5.0 α8～</h5>
+<pre>
+自分に仕掛けた場合はあらゆる罠にかからない。
+</pre>
+<h5>Ver. 1.4.0 β16～</h5>
+<pre>
+自分に仕掛けた場合でも別種の罠には掛かる。
+例) 罠師が自己設置+そこに<a href="#snow_trap_mad">雪女</a>の罠→ 罠師は<a href="sub_role.php#frostbite">凍傷</a>・雪女は罠死
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#trap">罠能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 人狼陣営に対<a href="human.php#assassin_group">暗殺者</a>を何か……と考案してこういう形に落ち着きました。
@@ -1074,7 +1115,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#astray_wizard">左道使い</a>
+<a href="ability.php#trap">罠能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
