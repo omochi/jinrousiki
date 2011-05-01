@@ -2,7 +2,7 @@
 /*
   ◆座敷童子 (brownie)
   ○仕様
-  ・処刑されたら投票者から死の宣告を行う
+  ・処刑：熱病
 */
 class Role_brownie extends Role{
   function __construct(){ parent::__construct(); }

@@ -117,8 +117,16 @@ body{ /* AA 用 */
   background-color: #E09000;
   color: #FFFAFA;
 }
-.victory-none{ /* 引き分け・廃村 */
+.victory-draw{ /* 引き分け */
+  background-color: #CCEECC;
+  color: #000000;
+}
+.victory-lose{ /* 敗北 */
   background-color: #000000;
+  color: #FFFAFA;
+}
+.victory-none{ /* 廃村 */
+  background-color: #AAAAAA;
   color: #FFFAFA;
 }
 /* OutputRevoteList() */

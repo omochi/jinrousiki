@@ -116,7 +116,7 @@ function CheckVictory($check_draw = false){
   //-- 吸血鬼の勝利判定 --//
   $vampire = false;
   $living_id_list = array(); //生存者の ID リスト
-  $infected_list = array(); //吸血鬼 => 感染者リスト
+  $infected_list  = array(); //吸血鬼 => 感染者リスト
   foreach($USERS->GetLivingUsers(true) as $uname){
     $user = $USERS->ByUname($uname);
     $user->ReparseRoles();
@@ -224,7 +224,7 @@ function OutputGamePageHeader(){
   //ゲーム中、死んで霊話モードに行くとき
   if($ROOM->IsPlaying() && $SELF->IsDead() &&
      ! ($ROOM->log_mode || $ROOM->dead_mode || $ROOM->heaven_mode)){
-    $jump_url =  $url_header . '&dead_mode=on';
+    $jump_url = $url_header . '&dead_mode=on';
     $sentence .= '天国モードに切り替えます。';
   }
   elseif($ROOM->IsAfterGame() && $ROOM->dead_mode){ //ゲームが終了して霊話から戻るとき
@@ -289,12 +289,12 @@ function GenerateJavaScriptDate($time){
 function OutputAutoReloadLink($url){
   global $GAME_CONF, $RQ_ARGS;
 
-  $str = '[自動更新](' . $url . '#game_top">' .
+  $str = '[自動更新](' . $url . '">' .
     ($RQ_ARGS->auto_reload > 0 ? '手動' : '【手動】') . '</a>';
   foreach($GAME_CONF->auto_reload_list as $time){
     $name = $time . '秒';
     $value = $RQ_ARGS->auto_reload == $time ? '【' . $name . '】' : $name;
-    $str .= ' ' . $url . '&auto_reload=' . $time . '#game_top">' . $value . '</a>';
+    $str .= ' ' . $url . '&auto_reload=' . $time . '">' . $value . '</a>';
   }
   echo $str . ')'."\n";
 }
@@ -418,7 +418,7 @@ function GenerateVictory(){
   case 'draw': //引き分け
   case 'vanish': //全滅
   case 'quiz_dead': //クイズ村 GM 死亡
-    $class = 'none';
+    $class = 'draw';
     break;
 
   //廃村系
@@ -444,11 +444,11 @@ EOF;
   $camp = $SELF->GetCamp(true); //所属陣営を取得
 
   if($victory == 'draw' || $victory == 'vanish'){ //引き分け系
-    $class  = 'none';
+    $class  = 'draw';
     $result = 'draw';
   }
   elseif($victory == 'quiz_dead'){ //出題者死亡
-    $class  = 'none';
+    $class  = $camp == 'quiz' ? 'lose' : 'draw';
     $result = $camp == 'quiz' ? 'lose' : 'draw';
   }
   else{
@@ -468,8 +468,18 @@ EOF;
       $win_flag = $victory == $camp;
       break;
 
+    case 'wolf':
+      if($SELF->IsRole('immolate_mad')){ //殉教者は能力発現がなければ敗北
+	if(! $SELF->IsRole('muster_ability')) break;
+      }
+      $win_flag = $victory == $camp;
+      break;
+
     case 'fox':
-      $win_flag = (strpos($victory, $camp) !== false);
+      if($SELF->IsRole('immolate_fox')){ //野狐禅は能力発現がなければ敗北
+	if(! $SELF->IsRole('muster_ability')) break;
+      }
+      $win_flag = strpos($victory, $camp) !== false;
       break;
 
     case 'vampire': //吸血鬼陣営は生き残った者だけが勝利
@@ -504,7 +514,7 @@ EOF;
       if(is_null($class)) $class = $camp;
     }
     else{
-      $class  = 'none';
+      $class  = 'lose';
       $result = 'lose';
     }
   }

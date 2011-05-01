@@ -1102,7 +1102,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[狩人能力] 護衛：特殊 / 狩り：無し / 罠：有効</h4>
 <pre>
 夜に投票(尾行)した人が人狼に襲撃された場合に、誰が襲撃したか分かる特殊な狩人。
-狩人の<a href="#guard_limit">護衛制限</a>対象で、遺言を残せない。
+狩人の<a href="#guard_limit">護衛制限</a>対象で、<a href="ability.php#last_words_limit">遺言</a>を残せない。
 </pre>
 <ol>
   <li><a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>を尾行したら死亡する (死亡メッセージは「無惨な～」、死因は「人外尾行」)。</li>
@@ -1756,7 +1756,7 @@ Bの蘇生処理はキャンセル
 <h4>[耐性] 護衛：制限対象 / 罠：有効 / 遺言：不可</h4>
 <pre>
 暗殺した人の役職を知る事ができる、上位暗殺者。
-遺言を残せない。
+<a href="ability.php#last_words_limit">遺言</a>を残せない。
 
 人狼が襲撃して発動する可能性のある<a href="ability.php#poison">毒能力者</a>を暗殺した場合は、本人は毒死する。
 例1) <a href="wolf.php#poison_wolf">毒狼</a>を襲撃したら毒死
@@ -1832,7 +1832,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <ol>
 <li>投票結果が出るのは 2 日目以降。</li>
 <li><a href="sub_role.php#mind_evoke">口寄せ</a>先が死亡したら霊界から遺言窓を介してメッセージを受け取ることができる。</li>
-<li>自分では遺言を変更できない。</li>
+<li>自分では<a href="ability.php#last_words_limit">遺言</a>を変更できない。</li>
 <li>自分の遺言欄に何か表示されていても遺言は残らない。</li>
 <li>身代わり君を対象に選ぶことはできない。</li>
 </ol>
@@ -2154,7 +2154,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="wizard">魔法使い (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
 <pre>
-魔法使いの基本種。
+魔法使い系の基本種。
 魔法の効果は、<a href="#mage">占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#guard">狩人</a>・<a href="#assassin">暗殺者</a>のいずれか。
 </pre>
 <h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
@@ -2174,8 +2174,8 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
 魔法使いの上位種。
-魔法の効果は、<a href="#soul_mage">魂の占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>・<a href="#poison_guard">騎士</a>・
-<a href="#doom_assassin">死神</a>・<a href="#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
+魔法の効果は、<a href="#soul_mage">魂の占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>・
+<a href="#poison_guard">騎士</a>・<a href="#doom_assassin">死神</a>・<a href="#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
 <a href="#poison_guard">騎士</a>能力が発動しても毒を持つわけではないので注意。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
@@ -2346,7 +2346,7 @@ MVP の賞品としてプレゼントしたものです。
 <li><a href="#doll_master">人形遣い</a>が誰か分かる。</li>
 <li><a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
 </ol>
-<h4>Ver. 1.4.0 β21～</h4>
+<h5>Ver. 1.4.0 β21～</h5>
 <pre>
 <a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
 </pre>
@@ -2510,6 +2510,8 @@ MVP の賞品としてプレゼントしたものです。
 <a href="#escaper">逃亡者</a>
 <a href="#psycho_escaper">迷い人</a>
 <a href="#incubus_escaper">一角獣</a>
+<a href="#succubus_escaper">水妖姫</a>
+<a href="#doom_escaper">半鳥女</a>
 </p>
 
 <h3 id="escaper_rule">基本ルール [逃亡者]</h3>
@@ -2529,9 +2531,13 @@ MVP の賞品としてプレゼントしたものです。
 <li>逃亡先が護衛などで<a href="vampire.php">吸血鬼</a>の襲撃が失敗しても吸血される。</li>
 <li>遺言を残せない。</li>
 </ol>
-<h4>Ver. 1.4.0 β20～</h4>
+<h5>Ver. 1.4.0 β20～</h5>
 <pre>
 吸血鬼の襲撃に関する仕様を変更。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#anti_assassin">暗殺耐性能力者</a>・<a href="ability.php#last_words_limit">遺言制限能力者</a>
 </pre>
 
 <h3 id="escaper">逃亡者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
@@ -2542,7 +2548,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#reporter">ブン屋</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
+<a href="#reporter">ブン屋</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2571,10 +2577,43 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="#succubus_escaper">水妖姫</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/830" target="_top">新役職考案スレ(830)</a> が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/830" target="_top">新役職考案スレ(830)</a> が原型で、ユニコーンがモチーフです。
+女性の人狼が一番安全な逃亡先になります。
+</pre>
+
+<h3 id="succubus_escaper">水妖姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
+<pre>
+逃亡先が男性以外だった場合は死亡する、逃亡者の亜種。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#incubus_escaper">一角獣</a>・<a href="ability.php#sex">性別関連能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#incubus_escaper">一角獣</a>の対男性バージョンで、ウンディーネがモチーフです。
+命名に悩んだこともあって実装のタイミングが一角獣よりかなり遅れています。
+</pre>
+
+<h3 id="doom_escaper">半鳥女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
+<pre>
+逃亡先が<a href="sub_role.php#death_warrant">死の宣告</a>を受けている場合は死亡する、逃亡者の亜種。
+宣告日がすでに過ぎている場合でも死亡する。
+逃亡先に<a href="sub_role.php#death_warrant">死の宣告</a>を行う (発動日は投票した夜から数えて 4 日後の昼)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#doom">死の宣告能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ハーピーがモチーフです。
+同じ場所に逃亡できないので難易度は高めです。
 </pre>
 </body></html>

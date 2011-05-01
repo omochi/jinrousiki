@@ -120,6 +120,10 @@ OutputRolePageHeader('蝙蝠陣営');
 <pre>
 処刑投票数が +1 される蝙蝠。詳細は<a href="human.php#elder">長老</a>参照。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#elder">長老</a>の蝙蝠バージョンです。
@@ -135,7 +139,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="fox.php#cute_fox">萌狐</a>
+<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -149,7 +153,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -216,7 +220,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
   <li><a href="human.php#dummy_poison">夢毒者</a>を処刑すると毒に中ります。</li>
   <li><a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡します。</li>
 </ol>
-<h4>Ver. 1.4.0 β9～</h4>
+<h5>Ver. 1.4.0 β9～</h5>
 <pre>
 <a href="human.php#dummy_guard">夢守人</a>に護衛されると死亡します。
 <a href="human.php#dummy_poison">夢毒者</a>を処刑すると毒に中ります。

@@ -28,6 +28,7 @@ Ver. 1.5.0
 <a href="#ver150a3">α3</a>
 <a href="#ver150a4">α4</a>
 <a href="#ver150a8">α8</a>
+<a href="#ver150a9">α9</a>
 </p>
 <table>
 <tr>
@@ -312,23 +313,64 @@ Ver. 1.5.0
   <td><?php echo $ROLE_DATA->weather_list[45]['caption'] ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
-
 <tr>
   <td><a href="#weather_full_wizard"><?php echo $ROLE_DATA->weather_list[46]['name'] ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
   <td><?php echo $ROLE_DATA->weather_list[46]['caption'] ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
-
 <tr>
   <td><a href="#weather_debilitate_wizard"><?php echo $ROLE_DATA->weather_list[47]['name'] ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
   <td><?php echo $ROLE_DATA->weather_list[47]['caption'] ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
+<tr id="ver150a9">
+  <td><a href="#weather_no_trap"><?php echo $ROLE_DATA->weather_list[48]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[48]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="#weather_no_sacrifice"><?php echo $ROLE_DATA->weather_list[49]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[49]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="#weather_no_reflect_assassin"><?php echo $ROLE_DATA->weather_list[50]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[50]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="#weather_no_cursed"><?php echo $ROLE_DATA->weather_list[51]['name'] ?></a></td>
+  <td><a href="#type_ability">能力強化・封印</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[51]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="#weather_blinder"><?php echo $ROLE_DATA->weather_list[52]['name'] ?></a></td>
+  <td><a href="#type_talk">会話妨害</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[52]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="#weather_mind_open"><?php echo $ROLE_DATA->weather_list[53]['name'] ?></a></td>
+  <td><a href="#type_talk">会話妨害</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[53]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="#weather_aurora"><?php echo $ROLE_DATA->weather_list[54]['name'] ?></a></td>
+  <td><a href="#type_talk">会話妨害</a></td>
+  <td><?php echo $ROLE_DATA->weather_list[54]['caption'] ?></td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
 </table>
 
 <h2 id="boost">確率変動 [Ver. 1.5.0 α8～]</h2>
+<h3>陣営補正</h3>
 <ol>
   <li>妖狐陣営 &gt; 人狼系</li>
   <ul>
@@ -344,79 +386,108 @@ Ver. 1.5.0
     <li><a href="#weather_boost_cute">萌動</a>・<a href="#weather_blind_talk_night">風雨</a>・<a href="#weather_alchemy_pharmacist">梅雨</a>・<a href="#weather_full_moon">満月</a>・<a href="#weather_new_moon">新月</a>・<a href="#weather_full_guard">蒼天</a>・<a href="#weather_no_contact">花曇</a>・<a href="#weather_full_wizard">霧雨</a>の発生率が上がります。</li>
     <li><a href="#weather_blind_talk_day">強風</a>・<a href="#weather_critical">烈日</a>・<a href="#weather_frostbite">雪</a>・<a href="#weather_corpse_courier_mad">砂塵嵐</a>・<a href="#weather_thunderbolt">青天の霹靂</a>・<a href="#weather_no_last_words">涙雨</a>・<a href="#weather_half_guard">曇天</a>・<a href="#weather_no_poison">旱魃</a>・<a href="#weather_no_revive">快晴</a>・<a href="#weather_debilitate_wizard">木枯らし</a>の発生率が下がります。</li>
   </ul>
-  <li><a href="new_role/human.php#human">村人</a>・<a href="new_role/human.php#brownie">座敷童子</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_brownie">慈雨</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/human.php#suspect">不審者</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_boost_cute">萌動</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/human.php#jealousy_group">橋姫系</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_sweet_ringing">流星群</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/human.php#revive_brownie">蛇神</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_full_revive">雷雨</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="new_role/wolf.php#follow_mad">舟幽霊</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_thunderbolt">青天の霹靂</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/wolf.php#jammer_mad">月兎</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_half_moon">半月</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/wolf.php#trap_mad">罠師</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_half_guard">曇天</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/wolf.php#snow_trap_mad">雪女</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_frostbite">雪</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/wolf.php#corpse_courier_mad">火車</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_corpse_courier_mad">砂塵嵐</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/wolf.php#amaze_mad">傘化け</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_blind_vote">晴嵐</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/wolf.php#critical_mad">釣瓶落とし</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_critical">烈日</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/vampire.php#vampire_group">吸血鬼系</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_psycho_infected">濃霧</a>の発生率が上がります。</li>
-  </ul>
-  <li><a href="new_role/chiroptera.php#fairy_group">妖精系</a></li>
-  <ul>
-    <li>生存者の人数分、<a href="#weather_silent">木漏れ日</a>の発生率が上がります。</li>
-  </ul>
 </ol>
+<h3>役職補正</h3>
+<ul>
+  <li>特定の役職が生存していた場合、その人数分、対応する天候の発生率が上がります。</li>
+</ul>
+<table>
+<tr>
+  <th>天候</th>
+  <th>役職</th>
+  <th>設定変更</th>
+</tr>
+<tr>
+  <td><a href="#weather_sweet_ringing">流星群</a></td>
+  <td><a href="new_role/human.php#jealousy_group">橋姫系</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_silent">木漏れ日</a></td>
+  <td><a href="new_role/chiroptera.php#fairy_group">妖精系</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_boost_cute">萌動</a></td>
+  <td><a href="new_role/human.php#suspect">不審者</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_brownie">慈雨</a></td>
+  <td><a href="new_role/human.php#human">村人</a>・<a href="new_role/human.php#brownie">座敷童子</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_critical">烈日</a></td>
+  <td><a href="new_role/wolf.php#critical_mad">釣瓶落とし</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_frostbite">雪</a></td>
+  <td><a href="new_role/wolf.php#snow_trap_mad">雪女</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_corpse_courier_mad">砂塵嵐</a></td>
+  <td><a href="new_role/wolf.php#corpse_courier_mad">火車</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_blind_vote">晴嵐</a></td>
+  <td><a href="new_role/wolf.php#amaze_mad">傘化け</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_thunderbolt">青天の霹靂</a></td>
+  <td><a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="new_role/wolf.php#follow_mad">舟幽霊</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_half_moon">半月</a></td>
+  <td><a href="new_role/wolf.php#jammer_mad">月兎</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_half_guard">曇天</a></td>
+  <td><a href="new_role/wolf.php#trap_mad">罠師</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_full_revive">雷雨</a></td>
+  <td><a href="new_role/human.php#revive_brownie">蛇神</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><a href="#weather_psycho_infected">濃霧</a></td>
+  <td><a href="new_role/vampire.php#vampire_group">吸血鬼系</a></td>
+  <td></td>
+</tr>
+</table>
 
 <h2 id="type_talk">会話妨害</h2>
-<ul>
-  <li><a href="#weather_invisible">黄砂</a></li>
-  <li><a href="#weather_rainbow">虹</a></li>
-  <li><a href="#weather_passion">箒星</a></li>
-  <li><a href="#weather_grassy">スコール</a></li>
-  <li><a href="#weather_side_reverse">ダイヤモンドダスト</a></li>
-  <li><a href="#weather_line_reverse">バナナの皮</a></li>
-  <li><a href="#weather_actor">スポットライト</a></li>
-  <li><a href="#weather_whisper_ringing">波風</a></li>
-  <li><a href="#weather_howl_ringing">小夜嵐</a></li>
-  <li><a href="#weather_sweet_ringing">流星群</a></li>
-  <li><a href="#weather_deep_sleep">春時雨</a></li>
-  <li><a href="#weather_silent">木漏れ日</a></li>
-  <li><a href="#weather_mower">酸性雨</a></li>
-  <li><a href="#weather_boost_cute">萌動</a></li>
-  <li><a href="#weather_blind_talk_day">強風</a></li>
-  <li><a href="#weather_blind_talk_night">風雨</a></li>
-</ul>
+<p>
+<a href="#weather_invisible">黄砂</a>
+<a href="#weather_rainbow">虹</a>
+<a href="#weather_passion">箒星</a>
+<a href="#weather_grassy">スコール</a>
+<a href="#weather_side_reverse">ダイヤモンドダスト</a>
+<a href="#weather_line_reverse">バナナの皮</a>
+<a href="#weather_actor">スポットライト</a>
+<a href="#weather_blinder">宵闇</a>
+<a href="#weather_whisper_ringing">波風</a>
+<a href="#weather_howl_ringing">小夜嵐</a>
+</p>
+<p>
+<a href="#weather_sweet_ringing">流星群</a>
+<a href="#weather_deep_sleep">春時雨</a>
+<a href="#weather_silent">木漏れ日</a>
+<a href="#weather_mower">酸性雨</a>
+<a href="#weather_mind_open">白夜</a>
+<a href="#weather_aurora">極光</a>
+<a href="#weather_boost_cute">萌動</a>
+<a href="#weather_blind_talk_day">強風</a>
+<a href="#weather_blind_talk_night">風雨</a>
+</p>
 
 <h3 id="weather_invisible">黄砂 [Ver. 1.5.0 α3～]</h3>
 <ul>
@@ -453,6 +524,11 @@ Ver. 1.5.0
   <li>全員に<a href="new_role/sub_role.php#actor">役者</a>がつきます (昼限定)。</li>
 </ul>
 
+<h3 id="weather_blinder">宵闇 [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#blinder">目隠し</a>がつきます (昼限定)。</li>
+</ul>
+
 <h3 id="weather_whisper_ringing">波風 [Ver. 1.5.0 α4～]</h3>
 <ul>
   <li>全員に<a href="new_role/sub_role.php#whisper_ringing">囁耳鳴</a>がつきます。</li>
@@ -483,6 +559,16 @@ Ver. 1.5.0
   <li>全員に<a href="new_role/sub_role.php#mower">草刈り</a>がつきます (昼限定)。</li>
 </ul>
 
+<h3 id="weather_mind_open">白夜 [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#mind_open">公開者</a>がつきます。</li>
+</ul>
+
+<h3 id="weather_aurora">極光 [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#blinder">目隠し</a> (昼限定)・<a href="new_role/sub_role.php#mind_open">公開者</a>がつきます。</li>
+</ul>
+
 <h3 id="weather_boost_cute">萌動 [Ver. 1.5.0 α8～]</h3>
 <ul>
   <li><a href="new_role/human.php#suspect">不審者</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>・<a href="new_role/fox.php#cute_fox">萌狐</a>・<a href="new_role/chiroptera.php#cute_chiroptera">萌蝙蝠</a>の昼の発言が遠吠えに変換される確率が 5 倍になります。</li>
@@ -501,25 +587,27 @@ Ver. 1.5.0
 <h3 id="weather_blind_talk_night">風雨 [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li>夜の発言が全て独り言になります。</li>
-  <li>結果として、<a href="new_role/human.php#common_group">共有者系</a>の囁き・<a href="new_role/wolf.php#wolf_group">人狼系</a>の遠吠え・<a href="new_role/fox.php#fox_group">妖狐</a>の念話が消滅します。</li>
+  <li>結果として、<a href="new_role/human.php#common_group">共有者系</a>の囁き・会話ができる<a href="new_role/wolf.php#wolf_group">人狼系</a>の遠吠え・会話ができる<a href="new_role/fox.php#fox_group">妖狐</a>の念話が消滅します。</li>
   <li><a href="new_role/sub_role.php#mind_read_group">サトラレ系</a>には影響がありません (通常通り見えます)。</li>
 </ul>
 
 <h2 id="type_vote_day">処刑投票妨害</h2>
-<ul>
-  <li><a href="#weather_brownie">慈雨</a></li>
-  <li><a href="#weather_critical_luck">タライ</a></li>
-  <li><a href="#weather_hyper_critical">台風</a></li>
-  <li><a href="#weather_hyper_random_voter">雹</a></li>
-  <li><a href="#weather_critical">烈日</a></li>
-  <li><a href="#weather_no_authority">蜃気楼</a></li>
-  <li><a href="#weather_alchemy_pharmacist">梅雨</a></li>
-  <li><a href="#weather_frostbite">雪</a></li>
-  <li><a href="#weather_corpse_courier_mad">砂塵嵐</a></li>
-  <li><a href="#weather_blind_vote">晴嵐</a></li>
-  <li><a href="#weather_thunderbolt">青天の霹靂</a></li>
-  <li><a href="#weather_no_sudden_death">凪</a></li>
-</ul>
+<p>
+<a href="#weather_brownie">慈雨</a>
+<a href="#weather_critical_luck">タライ</a>
+<a href="#weather_hyper_critical">台風</a>
+<a href="#weather_hyper_random_voter">雹</a>
+<a href="#weather_critical">烈日</a>
+<a href="#weather_no_authority">蜃気楼</a>
+<a href="#weather_alchemy_pharmacist">梅雨</a>
+<a href="#weather_frostbite">雪</a>
+<a href="#weather_corpse_courier_mad">砂塵嵐</a>
+<a href="#weather_blind_vote">晴嵐</a>
+</p>
+<p>
+<a href="#weather_thunderbolt">青天の霹靂</a>
+<a href="#weather_no_sudden_death">凪</a>
+</p>
 
 <h3 id="weather_brownie">慈雨 [Ver. 1.5.0 α3～]</h3>
 <ul>
@@ -572,8 +660,8 @@ Ver. 1.5.0
 
 <h3 id="weather_blind_vote">晴嵐 [Ver. 1.5.0 α2～]</h3>
 <ul>
-  <li>処刑者が決定した投票結果を見ることができなくなります (<a href="new_role/wolf.php#amaze_mad">傘化け</a>相当)。</li>
-  <li>再投票は隠蔽されません。</li>
+  <li>処刑者に<a href="new_role/wolf.php#amaze_mad">傘化け</a>の能力が適用されます。</li>
+  <li>再投票中は隠蔽されません。</li>
   <li>効果はその日だけなので、翌日には解除されます。</li>
 </ul>
 
@@ -592,44 +680,53 @@ Ver. 1.5.0
 
 
 <h2 id="type_ability">能力強化・封印</h2>
-<ul>
-  <li><a href="#weather_no_last_words">涙雨</a></li>
-  <li><a href="#weather_no_fox_dead">天気雨</a></li>
-  <li><a href="#weather_full_moon">満月</a></li>
-  <li><a href="#weather_half_moon">半月</a></li>
-  <li><a href="#weather_new_moon">新月</a></li>
-  <li><a href="#weather_full_guard">蒼天</a></li>
-  <li><a href="#weather_half_guard">曇天</a></li>
-  <li><a href="#weather_no_hunt">川霧</a></li>
-  <li><a href="#weather_no_contact">花曇</a></li>
-  <li><a href="#weather_no_poison">旱魃</a></li>
-  <li><a href="#weather_full_revive">雷雨</a></li>
-  <li><a href="#weather_missfire_revive">疎雨</a></li>
-  <li><a href="#weather_no_revive">快晴</a></li>
-  <li><a href="#weather_force_assassin_do">紅月</a></li>
-  <li><a href="#weather_full_ogre">朧月</a></li>
-  <li><a href="#weather_seal_ogre">叢雲</a></li>
-  <li><a href="#weather_full_wizard">霧雨</a></li>
-  <li><a href="#weather_debilitate_wizard">木枯らし</a></li>
-  <li><a href="#weather_psycho_infected">濃霧</a></li>
-  <li><a href="#weather_no_dream">熱帯夜</a></li>
-</ul>
-
-<h3 id="weather_no_last_words">涙雨 [Ver. 1.5.0 α3～]</h3>
-<ul>
-  <li>全員に<a href="new_role/sub_role.php#no_last_words">筆不精</a>がつきます。</li>
-</ul>
+<p>
+<a href="#weather_no_fox_dead">天気雨</a>
+<a href="#weather_no_cursed">月蝕</a>
+<a href="#weather_full_moon">満月</a>
+<a href="#weather_half_moon">半月</a>
+<a href="#weather_new_moon">新月</a>
+<a href="#weather_full_wizard">霧雨</a>
+<a href="#weather_debilitate_wizard">木枯らし</a>
+<a href="#weather_full_guard">蒼天</a>
+<a href="#weather_half_guard">曇天</a>
+<a href="#weather_no_hunt">川霧</a>
+</p>
+<p>
+<a href="#weather_no_sacrifice">蛍火</a>
+<a href="#weather_force_assassin_do">紅月</a>
+<a href="#weather_no_reflect_assassin">日蝕</a>
+<a href="#weather_full_ogre">朧月</a>
+<a href="#weather_seal_ogre">叢雲</a>
+<a href="#weather_no_trap">雪明り</a>
+<a href="#weather_no_contact">花曇</a>
+<a href="#weather_no_poison">旱魃</a>
+<a href="#weather_full_revive">雷雨</a>
+<a href="#weather_missfire_revive">疎雨</a>
+</p>
+<p>
+<a href="#weather_no_revive">快晴</a>
+<a href="#weather_no_dream">熱帯夜</a>
+<a href="#weather_psycho_infected">濃霧</a>
+<a href="#weather_no_last_words">涙雨</a>
+</p>
 
 <h3 id="weather_no_fox_dead">天気雨 [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li>妖狐の呪殺が発生しなくなります。</li>
 </ul>
 
+<h3 id="weather_no_cursed">月蝕 [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li><a href="new_role/ability.php#cursed">呪い所持者</a>による呪返しが無効化されます。</li>
+  <li><a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/ability.php#voodoo">呪術</a>による呪返しは有効です。</li>
+</ul>
+
 <h3 id="weather_full_moon">満月 [Ver. 1.5.0 α2～]</h3>
 <ul>
-  <li>夜の投票で発生する<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#voodoo">呪術能力</a>と<a href="new_role/human.php#guard_group">狩人系</a>の能力が全て無効化されます。</li>
+  <li>夜の投票に伴う<a href="new_role/ability.php#phantom">占い妨害</a>・<a href="new_role/ability.php#voodoo">呪術</a>と<a href="new_role/human.php#guard_group">狩人系</a>の能力が無効化されます。</li>
   <li><a href="new_role/human.php#wizard_group">魔法</a>による能力は有効です。</li>
-  <li>投票を必要としない<a href="new_role/ability.php#phantom">占い妨害能力</a>・<a href="new_role/ability.php#cursed">呪い</a>は有効です。</li>
+  <li>投票を必要としない<a href="new_role/ability.php#phantom_reactive">占い妨害</a>・<a href="new_role/ability.php#cursed">呪い</a>は有効です。</li>
   <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
@@ -641,9 +738,19 @@ Ver. 1.5.0
 
 <h3 id="weather_new_moon">新月 [Ver. 1.5.0 α2～]</h3>
 <ul>
-  <li>夜の投票で発生する<a href="new_role/human.php#mage_group">占い能力</a>・<a href="new_role/human.php#wizard_group">魔法能力</a>・<a href="new_role/wolf.php#wolf_group">人狼襲撃</a>・<a href="new_role/vampire.php">吸血能力</a>・<a href="new_role/chiroptera.php#fairy_group">悪戯能力</a>が全て無効化されます。</li>
+  <li>夜の投票に伴う<a href="new_role/human.php#mage_group">占い</a>・<a href="new_role/human.php#wizard_group">魔法</a>・<a href="new_role/wolf.php#wolf_group">人狼襲撃</a>・<a href="new_role/vampire.php">吸血</a>・<a href="new_role/chiroptera.php#fairy_group">悪戯</a>が無効化されます。</li>
   <li>占い能力は<a href="new_role/fox.php#emerald_fox">翠狐</a>・<a href="new_role/fox.php#child_fox_group">子狐系</a>も含まれます。</li>
   <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
+</ul>
+
+<h3 id="weather_full_wizard">霧雨 [Ver. 1.5.0 α8～]</h3>
+<ul>
+  <li><a href="new_role/human.php#wizard_group">魔法使い系</a>の魔法が強化されます (詳細は個々の取説参照)。</li>
+</ul>
+
+<h3 id="weather_debilitate_wizard">木枯らし [Ver. 1.5.0 α8～]</h3>
+<ul>
+  <li><a href="new_role/human.php#wizard_group">魔法使い系</a>の魔法が弱体化します (詳細は個々の取説参照)。</li>
 </ul>
 
 <h3 id="weather_full_guard">蒼天 [Ver. 1.5.0 α4～]</h3>
@@ -660,19 +767,55 @@ Ver. 1.5.0
 
 <h3 id="weather_no_hunt">川霧 [Ver. 1.5.0 α4～]</h3>
 <ul>
-  <li><a href="spec.php#vote_night">接触系能力者</a>の<a href="new_role/human.php#guard_hunt">狩り</a>が無くなります。</li>
+  <li><a href="spec.php#vote_night">接触系能力者</a>の<a href="new_role/human.php#guard_hunt">狩り</a>が無効化されます。</li>
+</ul>
+
+<h3 id="weather_no_sacrifice">蛍火 [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li><a href="new_role/ability.php#sacrifice_active">身代わり能力</a>が無効化されます。</li>
+</ul>
+
+<h3 id="weather_force_assassin_do">紅月 [Ver. 1.5.0 α8～]</h3>
+<ul>
+  <li><a href="new_role/ability.php#assassin">暗殺能力者</a>がキャンセル投票を選択できなくなります。</li>
+</ul>
+
+<h3 id="weather_no_reflect_assassin">日蝕 [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li><a href="new_role/human.php#assassin_spec">暗殺反射</a>が無効化されます。</li>
+  <li><a href="new_role/human.php#eclipse_assassin">蝕暗殺者</a>にも適用されます。</li>
+</ul>
+
+<h3 id="weather_full_ogre">朧月 [Ver. 1.5.0 α3～]</h3>
+<ul>
+  <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 100% になります。</li>
+  <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 100% になります。</li>
+  <li>人攫いが成立してもカウントされません (次回の成功率が低下しません)。</li>
+</ul>
+
+<h3 id="weather_seal_ogre">叢雲 [Ver. 1.5.0 α3～]</h3>
+<ul>
+  <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 0% になります。</li>
+  <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 0% になります。</li>
+</ul>
+
+<h3 id="weather_no_trap">雪明り [Ver. 1.5.0 α9～]</h3>
+<ul>
+  <li>夜の投票に伴う<a href="new_role/ability.php#trap">罠</a>が無効化されます。</li>
+  <li><a href="new_role/human.php#wizard_group">魔法</a>による能力は有効、<a href="new_role/wolf.php#trap_wolf">狡狼</a>の能力は無効です。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3 id="weather_no_contact">花曇 [Ver. 1.5.0 α2～]</h3>
 <ul>
-  <li><a href="spec.php#vote_night">接触系能力者</a>の夜の投票が全て無効化されます。</li>
+  <li><a href="spec.php#vote_night">接触系能力者</a>の夜の投票が無効化されます。</li>
   <li><a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>の能力は有効、<a href="new_role/human.php#reporter">ブン屋</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>・<a href="new_role/wolf.php#trap_wolf">狡狼</a>の能力は無効です。</li>
   <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3 id="weather_no_poison">旱魃 [Ver. 1.5.0 α4～]</h3>
 <ul>
-  <li><a href="new_role/ability.php#poison">毒能力</a>が全て無効化されます。</li>
+  <li><a href="new_role/ability.php#poison">毒能力</a>が無効化されます。</li>
   <li>昼夜両方に適用され、<a href="new_role/human.php#dummy_poison">夢毒者</a>も無効化されます。</li>
 </ul>
 
@@ -693,34 +836,18 @@ Ver. 1.5.0
 <h3 id="weather_no_revive">快晴 [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li><a href="new_role/ability.php#revive_other">他者蘇生能力者</a>の蘇生率が 0% になります。</li>
+  <li><a href="new_role/human.php#revive_priest">天人</a>以外の<a href="new_role/ability.php#revive_self">自己蘇生能力者</a>の蘇生が無効化されます。</li>
+</ul>
+<h5>Ver. 1.5.0 α9～</h5>
+<ul>
+  <li><a href="new_role/human.php#revive_priest">天人</a>以外の<a href="new_role/ability.php#revive_self">自己蘇生能力者</a>の蘇生が無効化されます。</li>
 </ul>
 
-<h3 id="weather_force_assassin_do">紅月 [Ver. 1.5.0 α8～]</h3>
+<h3 id="weather_no_dream">熱帯夜 [Ver. 1.5.0 α3～]</h3>
 <ul>
-  <li><a href="new_role/ability.php#assassin">暗殺能力者</a>がキャンセル投票を選択できなくなります。</li>
-</ul>
-
-<h3 id="weather_full_ogre">朧月 [Ver. 1.5.0 α3～]</h3>
-<ul>
-  <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 100% になります。</li>
-  <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 100% になります。</li>
-  <li>人攫いが成立してもカウントされません (次回の成功率が低下しません)。</li>
-</ul>
-
-<h3 id="weather_seal_ogre">叢雲 [Ver. 1.5.0 α3～]</h3>
-<ul>
-  <li><a href="new_role/ogre.php">鬼陣営</a>の人狼襲撃無効・暗殺反射・人攫いの成功率が 0% になります。</li>
-  <li><a href="new_role/ogre.php#revive_ogre">茨木童子</a>の蘇生率が 0% になります。</li>
-</ul>
-
-<h3 id="weather_full_wizard">霧雨 [Ver. 1.5.0 α8～]</h3>
-<ul>
-  <li><a href="new_role/human.php#wizard_group">魔法使い系</a>の魔法が強化されます (詳細は個々の取説参照)。</li>
-</ul>
-
-<h3 id="weather_debilitate_wizard">木枯らし [Ver. 1.5.0 α8～]</h3>
-<ul>
-  <li><a href="new_role/human.php#wizard_group">魔法使い系</a>の魔法が弱体化します (詳細は個々の取説参照)。</li>
+  <li><a href="spec.php#vote_night">夢系能力者</a>の夜の投票と一部の<a href="new_role/ability.php#dummy">夢系能力者</a>の能力が無効化されます。</li>
+  <li>対象となるのは<a href="new_role/human.php#dummy_mage">夢見人</a>・<a href="new_role/human.php#dummy_necromancer">夢枕人</a>・<a href="new_role/human.php#dummy_priest">夢司祭</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>です。</li>
+  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>
 
 <h3 id="weather_psycho_infected">濃霧 [Ver. 1.5.0 α8～]</h3>
@@ -730,10 +857,8 @@ Ver. 1.5.0
     <a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
 </ul>
 
-<h3 id="weather_no_dream">熱帯夜 [Ver. 1.5.0 α3～]</h3>
+<h3 id="weather_no_last_words">涙雨 [Ver. 1.5.0 α3～]</h3>
 <ul>
-  <li><a href="spec.php#vote_night">夢系能力者</a>の夜の投票と一部の<a href="new_role/ability.php#dummy">夢系能力者</a>の能力が無効化されます。</li>
-  <li>対象となるのは<a href="new_role/human.php#dummy_mage">夢見人</a>・<a href="new_role/human.php#dummy_necromancer">夢枕人</a>・<a href="new_role/human.php#dummy_priest">夢司祭</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>です。</li>
-  <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
+  <li>全員に<a href="new_role/sub_role.php#no_last_words">筆不精</a>がつきます。</li>
 </ul>
 </body></html>

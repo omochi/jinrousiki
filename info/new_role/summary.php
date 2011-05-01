@@ -41,7 +41,8 @@ Ver. 1.5.0
 <a href="#ver150a5">α5</a>
 <a href="#ver150a6">α6</a>
 <a href="#ver150a7">α7</a>
-<a href="#ver150a8">α8</a><br>
+<a href="#ver150a8">α8</a>
+<a href="#ver150a9">α9</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -82,7 +83,8 @@ Ver. 1.4.0
 <p>
 <a href="#sub_role">サブ役職</a><br>
 Ver. 1.5.0
-<a href="#sub_ver150a5">α5</a><br>
+<a href="#sub_ver150a5">α5</a>
+<a href="#sub_ver150a9">α9</a><br>
 Ver. 1.4.0
 <a href="#sub_ver140a3">α3-7</a>
 <a href="#sub_ver140a9">α9</a>
@@ -2272,6 +2274,43 @@ Ver. 1.4.0
   <td class="ability">一定期間後 (5日目以降)、自分に罠を設置することができる人狼。</td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
+<tr id="ver150a9">
+  <td><a href="human.php#succubus_escaper">水妖姫</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">逃亡先が男性以外だった場合は死亡する、逃亡者の亜種。</td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="human.php#doom_escaper">半鳥女</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">逃亡先が死の宣告を受けていた場合は死亡する、逃亡者の亜種。逃亡先に死の宣告を行う。</td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#immolate_mad">殉教者</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼陣営勝利に加えて、人狼に襲撃されることが勝利条件の特殊な狂人。<br>
+    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr>
+  <td><a href="fox.php#immolate_fox">野狐禅</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability">妖狐陣営勝利に加えて、人狼に襲撃されることが勝利条件の妖狐。</td>
+  <td>Ver. 1.5.0 α9</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -2836,6 +2875,13 @@ Ver. 1.4.0
     <td>○</td>
     <td class="ability">付加させた人が一人でも生存している間は投票数が +2 されるが全員死亡すると得票数が +3 される。</td>
     <td>Ver. 1.5.0 α5</td>
+  </tr>
+  <tr id="sub_ver150a9">
+    <td><a href="sub_role.php#muster_ability">能力発現</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>○</td>
+    <td class="ability">発動制限付き能力者が能力を得た場合に付加される。</td>
+    <td>Ver. 1.5.0 α9</td>
   </tr>
 </table>
 

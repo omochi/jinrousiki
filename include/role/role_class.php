@@ -75,6 +75,14 @@ class RoleManager{
   //処刑得票カウンター
   var $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
 
+  //身代わり能力者
+  var $sacrifice_list = array('doll_master', 'sacrifice_vampire', 'boss_chiroptera',
+			      'sacrifice_ogre');
+
+  //人狼襲撃カウンター
+  var $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',
+				     'miasma_fox');
+
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded->file = array();

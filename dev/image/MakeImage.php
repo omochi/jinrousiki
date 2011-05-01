@@ -440,6 +440,14 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて乙女の純潔を守るのだ！",
     'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
 
+  var $succubus_escaper = array(
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#水妖姫#です。夜の#逃亡#先が^男性^以外か、_人狼_に襲撃されたら死んでしまいます。",
+    'type' => 'escaper', 'delimiter' => array('^' => 'sex_male'));
+
+  var $doom_escaper = array(
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#半鳥女#です。夜の#逃亡#先に^死の宣告^を行い、#逃亡#先が^死の宣告^を受けているか、_人狼_に襲撃されたら死んでしまいます。",
+    'type' => 'escaper', 'delimiter' => array('^' => 'chicken'));
+
   var $wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の|人狼|と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
     'delimiter' => array('|' => 'wolf'));
@@ -597,6 +605,10 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獣人|です。|人狼|に襲撃されると|人狼|に変化します。その身に宿る気高き獣の血を覚醒させ、森羅万象全てを噛み殺すのです！",
     'type' => 'mad');
 
+  var $immolate_mad = array(
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|殉教者|です。|人狼陣営|の勝利と|人狼|に襲撃されることが勝利条件になります。",
+    'type' => 'mad');
+
   var $fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|妖狐|、#人狼#に殺されることはありません。ただし占われると死んでしまいます。\n　村人を騙し、#人狼#を騙し、村を|妖狐|のものにするのです！",
     'delimiter' => array('|' => 'fox', '#' => 'wolf'));
@@ -646,7 +658,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('#' => 'chicken'));
 
   var $trap_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|狡狐|です。一度だけ夜に#罠#を仕掛けることができます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|狡狐|です。一度だけ夜に#罠#を仕掛けることができます。巧みな話術で#人狼#と能力者を誘導し、死の罠へと引きずり込むのです。",
     'type' => 'fox');
 
   var $cursed_fox = array(
@@ -667,6 +679,10 @@ class RoleMessageList{
 
   var $silver_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|銀狐|です。仲間を誰も知ることができず、仲間もあなたのことを知りません。\n　月下の雪原に煌めく銀の毛皮を身に纏い、孤独であっても村を|狐|のものにするのです。",
+    'type' => 'fox');
+
+  var $immolate_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|野狐禅|です。|妖狐陣営|の勝利と#人狼#に襲撃されることが勝利条件になります。",
     'type' => 'fox');
 
   var $child_fox = array(
@@ -1158,6 +1174,7 @@ class RoleMessageList{
 			   'type' => 'authority', 'delimiter' => array('_' => 'mania', '^' => 'luck'));
 
   var $lost_ability = array('message' => "　あなたは能力を失いました。");
+  var $muster_ability = array('message' => "　あなたの能力が発現しました。");
   var $joker = array('message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先が生きていた場合に押し付けることができますが、例外があるので気をつけましょう。",
 		     'delimiter' => array('|' => 'wolf', '#' => 'vote'));
 
@@ -1311,6 +1328,8 @@ class RoleMessageList{
   var $result_escaper = array('message' => "さんは|逃亡者|でした", 'delimiter' => array('|' => 'escaper'));
   var $result_psycho_escaper = array('message' => "さんは|迷い人|でした", 'type' => 'result_escaper');
   var $result_incubus_escaper = array('message' => "さんは|一角獣|でした", 'type' => 'result_escaper');
+  var $result_succubus_escaper = array('message' => "さんは|水妖姫|でした", 'type' => 'result_escaper');
+  var $result_doom_escaper = array('message' => "さんは|半鳥女|でした", 'type' => 'result_escaper');
   var $result_wolf = array('message' => "さんは|人狼|でした", 'delimiter' => array('|' => 'wolf'));
   var $result_boss_wolf = array('message' => "さんは|白狼|でした", 'type' => 'result_wolf');
   var $result_gold_wolf = array('message' => "さんは|金狼|でした", 'type' => 'result_wolf');
@@ -1350,6 +1369,7 @@ class RoleMessageList{
   var $result_critical_mad = array('message' => "さんは|釣瓶落とし|でした", 'type' => 'result_mad');
   var $result_follow_mad = array('message' => "さんは|舟幽霊|でした", 'type' => 'result_mad');
   var $result_therian_mad = array('message' => "さんは|獣人|でした", 'type' => 'result_mad');
+  var $result_immolate_mad = array('message' => "さんは|殉教者|でした", 'type' => 'result_mad');
   var $result_fox = array('message' => "さんは|妖狐|でした", 'delimiter' => array('|' => 'fox'));
   var $result_white_fox = array('message' => "さんは|白狐|でした", 'type' => 'result_fox');
   var $result_black_fox = array('message' => "さんは|黒狐|でした", 'type' => 'result_fox');
@@ -1368,6 +1388,7 @@ class RoleMessageList{
   var $result_cute_fox = array('message' => "さんは|萌狐|でした", 'type' => 'result_fox');
   var $result_scarlet_fox = array('message' => "さんは|紅狐|でした", 'type' => 'result_fox');
   var $result_silver_fox = array('message' => "さんは|銀狐|でした", 'type' => 'result_fox');
+  var $result_immolate_fox = array('message' => "さんは|野狐禅|でした", 'type' => 'result_fox');
   var $result_child_fox = array('message' => "さんは|子狐|でした", 'type' => 'result_fox');
   var $result_sex_fox = array('message' => "さんは|雛狐|でした", 'type' => 'result_child_fox');
   var $result_stargazer_fox = array('message' => "さんは|星狐|でした", 'type' => 'result_child_fox');
@@ -1554,6 +1575,13 @@ class RoleMessageList{
   var $prediction_weather_corpse_courier_mad = array('message' => "|砂塵嵐|です", 'delimiter' => array('|' => 'necromancer'));
   var $prediction_weather_full_wizard = array('message' => "|霧雨|です", 'delimiter' => array('|' => 'wizard'));
   var $prediction_weather_debilitate_wizard = array('message' => "|木枯らし|です", 'delimiter' => array('|' => 'wizard'));
+  var $prediction_weather_no_trap = array('message' => "|雪明り|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_no_sacrifice = array('message' => "|蛍火|です", 'delimiter' => array('|' => 'wolf'));
+  var $prediction_weather_no_reflect_assassin = array('message' => "|日蝕|です", 'delimiter' => array('|' => 'assassin'));
+  var $prediction_weather_no_cursed = array('message' => "|月蝕|です", 'delimiter' => array('|' => 'mage'));
+  var $prediction_weather_blinder = array('message' => "|宵闇|です", 'delimiter' => array('|' => 'no_last_words'));
+  var $prediction_weather_mind_open = array('message' => "|白夜|です", 'delimiter' => array('|' => 'mind'));
+  var $prediction_weather_aurora = array('message' => "|極光|です", 'delimiter' => array('|' => 'no_last_words'));
 }
 
 class WishRoleList{
@@ -1604,5 +1632,8 @@ class WishRoleList{
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
-#$builder->Output('prediction_weather_thunderbolt');
-$builder->Output('trap_fox');
+#$builder->Output('prediction_weather_aurora');
+#$builder->Output('succubus_escaper');
+#$builder->Output('doom_escaper');
+#$builder->Output('immolate_mad');
+$builder->Output('immolate_fox');

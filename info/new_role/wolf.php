@@ -801,6 +801,10 @@ LW になると処刑以外では止められなくなります。
 <pre>
 処刑投票数が +1 される人狼。詳細は<a href="human.php#elder">長老</a>参照。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#elder">長老</a>の人狼バージョンです。
@@ -835,7 +839,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -890,6 +894,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#critical_mad">釣瓶落とし</a>
 <a href="#follow_mad">舟幽霊</a>
 <a href="#therian_mad">獣人</a>
+<a href="#immolate_mad">殉教者</a>
 </p>
 
 <h3 id="mad_rule">基本ルール</h3>
@@ -940,11 +945,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3 id="jammer_mad">月兎 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α19～]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
-夜に投票した人の占い行動を妨害する特殊な狂人。
+夜に投票した人の占い能力を妨害する特殊な狂人。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="#enchant_mad">狢</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#fairy_group">妖精系</a> (<a href="chiroptera.php#mirror_fairy">鏡妖精</a>を除く)。</li>
+  <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox">子狐</a>・<a href="fox.php#sex_fox">雛狐</a>・<a href="fox.php#stargazer_fox">星狐</a>と<br>
+    <a href="#enchant_mad">狢</a>・<a href="chiroptera.php#fairy_group">妖精系</a> (<a href="chiroptera.php#mirror_fairy">鏡妖精</a>を除く)。</li>
   <li><a href="human.php#wizard_group">魔法</a>による占い能力にも有効。</li>
   <li>妨害に成功すると対象の占い結果が「～さんの占いに失敗しました」となる。</li>
   <li>妨害が成功したかどうかは本人には分からない。</li>
@@ -1240,7 +1246,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="lovers.php#sweet_cupid">弁財天</a>
+<a href="#miasma_mad">土蜘蛛</a>・<a href="lovers.php#sweet_cupid">弁財天</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1292,5 +1298,28 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 他の国に実在する役職です。
 襲撃を引き寄せつつ、そのまま生き残るのは非常に難しいと思われます。
 これを想起して襲撃される狂人が増える可能性もありますね。
+</pre>
+
+<h3 id="immolate_mad">殉教者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 精神鑑定：嘘つき / 護衛：狩り</h4>
+<pre>
+人狼陣営勝利に加えて、人狼に襲撃されることが勝利条件の特殊な狂人。
+人狼 (種類は問わない) に襲撃されたら「<a href="sub_role.php#muster_ability">能力発現</a>」がつく。
+<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+</pre>
+<ol>
+  <li><a href="sub_role.php#muster_ability">能力発現</a>がついていれば生死は問わない。</li>
+  <li><a href="sub_role.php#muster_ability">能力発現</a>がついても襲撃自体は成功扱い (人狼の襲撃なら通常通り死亡する)。</li>
+  <li>襲撃失敗 (例：狩人護衛) していた場合は無効。</li>
+  <li>身代わり君か、襲撃者が<a href="#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は<a href="sub_role.php#muster_ability">能力発現</a>はつかない。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#immolate_fox">野狐禅</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「人狼に襲撃される」ことが勝利条件の特殊役職は他国に実在します。
+それを元に狂人系の劣化種としてデザインしました。
 </pre>
 </body></html>

@@ -31,6 +31,7 @@ OutputRolePageHeader('能力者逆引き');
 <p>
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
+<a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
 <a href="#trap">罠</a>
 </p>
@@ -73,7 +74,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="doom">死の宣告能力者</h2>
 <h3 id="doom_active">能動型</h3>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#astray_wizard">左道使い</a>・<a href="human.php#pierrot_wizard">道化師</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#astray_wizard">左道使い</a>・<a href="human.php#pierrot_wizard">道化師</a>・<a href="human.php#doom_escaper">半鳥女</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 <h3 id="doom_reactive">受動型</h3>
 <pre>
@@ -127,7 +128,8 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="sex_only">限定能力者</h3>
 <pre>
-<a href="human.php#incubus_escaper">一角獣</a>・<a href="lovers.php#angel">天使</a>・<a href="lovers.php#rose_angel">薔薇天使</a>・<a href="lovers.php#lily_angel">百合天使</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>・<a href="sub_role.php#androphobia">男性恐怖症</a>・<a href="sub_role.php#gynophobia">女性恐怖症</a>
+<a href="human.php#incubus_escaper">一角獣</a>・<a href="human.php#succubus_escaper">水妖姫</a>・<a href="lovers.php#angel">天使</a>・<a href="lovers.php#rose_angel">薔薇天使</a>・<a href="lovers.php#lily_angel">百合天使</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>・
+<a href="sub_role.php#androphobia">男性恐怖症</a>・<a href="sub_role.php#gynophobia">女性恐怖症</a>
 </pre>
 
 <h2 id="revive">蘇生能力者</h2>
@@ -193,6 +195,11 @@ OutputRolePageHeader('能力者逆引き');
 <h3 id="sacrifice_reactive">受動型</h3>
 <pre>
 <a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#psycho_infected">洗脳者</a>
+</pre>
+
+<h2 id="last_words_limit">遺言制限能力者</h2>
+<pre>
+<a href="human.php#reporter">ブン屋</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#evoke_scanner">イタコ</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="sub_role.php#no_last_words">筆不精</a>・<a href="sub_role.php#possessed_exchange">交換憑依</a>
 </pre>
 
 <h2 id="dummy">夢能力者</h2>

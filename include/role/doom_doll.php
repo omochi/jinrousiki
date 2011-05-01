@@ -2,7 +2,7 @@
 /*
   ◆蓬莱人形 (doom_doll)
   ○仕様
-  ・処刑されたら処刑者から人形以外に死の宣告を行う
+  ・処刑：死の宣告 (人形以外)
 */
 class Role_doom_doll extends Role{
   function __construct(){ parent::__construct(); }

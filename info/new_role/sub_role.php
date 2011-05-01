@@ -38,6 +38,8 @@ OutputRolePageHeader('サブ役職');
 <a href="#nervy">自信家</a>
 <a href="#androphobia">男性恐怖症</a>
 <a href="#gynophobia">女性恐怖症</a>
+</p>
+<p>
 <a href="#febris">熱病</a>
 <a href="#frostbite">凍傷</a>
 <a href="#death_warrant">死の宣告</a>
@@ -697,7 +699,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#escaper">逃亡者</a>・<a href="human.php#reporter">ブン屋</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#evoke_scanner">イタコ</a>・<a href="#possessed_exchange">交換憑依</a>
+<a href="ability.php#last_words_limit">遺言制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1066,7 +1068,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
   <li>憑依先の相手と完全に入れ替わり、実質他人にログインしているような状態になる。</li>
   <li>2 日目に入れ替わる相手が誰か予告が表示されて、3 日目に入れ替えが実行される。</li>
   <li><a href="#mind_sympathy">共感者</a>が付加されるので事前に相手の役職が分かる。</li>
-  <li>交換憑依が発生した二人は死亡しても遺言が表示されない。</li>
+  <li>交換憑依が発生した二人は死亡しても<a href="ability.php#last_words_limit">遺言</a>が表示されない。</li>
   <li>入れ替え前に遺言を残しておくと、入れ替わった後で相方にメッセージを残せる事になる。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
@@ -1180,12 +1182,15 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <a href="#bad_status">悪戯</a>
 <a href="#protected">庇護者</a>
 <a href="#wirepuller_luck">入道</a>
+<a href="#lost_ability">能力喪失</a>
+<a href="#muster_ability">能力発現</a>
+</p>
+<p>
 <a href="#changed_therian">元獣人</a>
 <a href="#copied">元神話マニア</a>
 <a href="#copied_trick">元奇術師</a>
 <a href="#copied_soul">元覚醒者</a>
 <a href="#copied_teller">元夢語部</a>
-<a href="#lost_ability">能力喪失</a>
 </p>
 
 <h3 id="possessed_target">憑依者 [Ver. 1.4.0 α24～]</h3>
@@ -1325,6 +1330,41 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 東方 Project の雲山がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
 </pre>
 
+<h3 id="lost_ability">能力喪失 [Ver. 1.4.0 α13～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+発動制限付き能力者が能力を失った場合に付加される。
+</pre>
+<h5>Ver. 1.4.0 β11～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#phantom_doll">倫敦人形</a>・<a href="human.php#revive_doll">西蔵人形</a>
+<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>
+<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#tongue_wolf">舌禍狼</a>用に実装されたサブ役職ですが、汎用的に使用されています。
+一部の能力者は<a href="human.php#seal_medium">封印師</a>の能力の対象になります。
+</pre>
+
+<h3 id="muster_ability">能力発現 [Ver. 1.5.0 α9～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+発動制限付き能力者が能力を得た場合に付加される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#immolate_mad">殉教者</a>・<a href="fox.php#immolate_fox">野狐禅</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#immolate_mad">殉教者</a>用に実装されたサブ役職です。
+</pre>
+
 <h3 id="changed_therian">元獣人 [Ver. 1.4.0 β15～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
@@ -1382,26 +1422,5 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#psycho_mage">精神鑑定士</a>や<a href="wolf.php#dream_eater_mad">獏</a>の判定に影響しないように他の元マニア系とは違い、完全に別名にしてあります。
-</pre>
-
-<h3 id="lost_ability">能力喪失 [Ver. 1.4.0 α13～]</h3>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-発動制限付き能力者が能力を失った場合に付加される。
-</pre>
-<h5>Ver. 1.4.0 β11～</h5>
-<pre>
-役職名の表示
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#phantom_doll">倫敦人形</a>・<a href="human.php#revive_doll">西蔵人形</a>
-<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>
-<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="wolf.php#tongue_wolf">舌禍狼</a>用に実装されたサブ役職ですが、汎用的に使用されています。
-一部の能力者は<a href="human.php#seal_medium">封印師</a>の能力の対象になります。
 </pre>
 </body></html>

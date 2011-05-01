@@ -2,7 +2,8 @@
 /*
   ◆祟神 (cursed_brownie)
   ○仕様
-  ・投票者に一定確率で死の宣告を付加
+  ・処刑得票：死の宣告 (一定確率)
+  ・人狼襲撃：死の宣告
 */
 class Role_cursed_brownie extends RoleVoteAbility{
   var $data_type = 'array';
@@ -20,4 +21,6 @@ class Role_cursed_brownie extends RoleVoteAbility{
       }
     }
   }
+
+  function WolfEatCounter($user){ $user->AddDoom(2); }
 }

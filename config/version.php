@@ -1,13 +1,13 @@
 <?php
 class ScriptInfo extends ScriptInfoBase{
   //パッケージのバージョン
-  var $version = 'Ver. 1.5.0 alpha8';
+  var $version = 'Ver. 1.5.0 alpha9';
 
   //パッケージの最終更新日
-  var $last_update = '2011/04/10 (Sun) 07:11';
+  var $last_update = '2011/04/23 (Sat) 16:30';
 
   //パッケージ化した時の Revision
-  var $revision = 313;
+  var $revision = 317;
 
   //パッケージ名
   var $package = '<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式</a>';

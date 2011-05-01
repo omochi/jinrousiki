@@ -425,8 +425,8 @@ function GeneratePageLink($CONFIG, $page, $title = NULL){
   array_unshift($list, $option);
   $url = $CONFIG->url . '.php?' . implode('&', $list);
   $attributes = array();
-  if (isset($CONFIG->attributes)) {
-    foreach($CONFIG->attributes as $attr => $value) {
+  if(isset($CONFIG->attributes)){
+    foreach($CONFIG->attributes as $attr => $value){
       $attributes[] = $attr . '="'. eval($value) . '"';
     }
   }

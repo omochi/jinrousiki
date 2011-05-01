@@ -548,7 +548,7 @@ function AggregateVoteGameStart($force_start = false){
 			    'challenge_lovers', 'infected', 'psycho_infected', 'copied',
 			    'copied_trick', 'copied_soul', 'copied_teller', 'possessed_target',
 			    'possessed', 'changed_therian', 'joker', 'bad_status', 'lost_ability',
-			    'protected', 'wirepuller_luck');
+			    'muster_ability', 'protected', 'wirepuller_luck');
 
   //サブ役職テスト用
   $roled_list = array();
@@ -1350,6 +1350,9 @@ function AggregateVoteNight($skip = false){
     array_push($stack, 'REPORTER_DO', 'ASSASSIN_DO', 'MIND_SCANNER_DO', 'ESCAPE_DO',
 	       'TRAP_MAD_DO', 'VAMPIRE_DO', 'OGRE_DO');
   }
+  elseif($ROOM->IsEvent('no_trap')){ //雪明り
+    $stack[] = 'TRAP_MAD_DO';
+  }
   elseif($ROOM->IsEvent('no_dream')){ //熱帯夜
     $stack[] = 'DREAM_EAT';
   }
@@ -1368,19 +1371,19 @@ function AggregateVoteNight($skip = false){
       elseif(strpos($role, 'guard') !== false){
 	$vote_data['GUARD_DO'][$uname] = $target_uname;
       }
-      elseif(strpos($role, 'assassin') !== false || strpos($role, 'doom_fox') !== false){
+      elseif(strpos($role, 'assassin') !== false || $role == 'doom_fox'){
 	$vote_data['ASSASSIN_DO'][$uname] = $target_uname;
       }
-      elseif(strpos($role, 'jammer_mad') !== false){
+      elseif($role == 'jammer_mad'){
 	$vote_data['JAMMER_MAD_DO'][$uname] = $target_uname;
       }
-      elseif(strpos($role, 'voodoo_mad') !== false){
+      elseif($role == 'voodoo_mad'){
 	$vote_data['VOODOO_MAD_DO'][$uname] = $target_uname;
       }
-      elseif(strpos($role, 'dream_eater_mad') !== false){
+      elseif($role == 'dream_eater_mad'){
 	$vote_data['DREAM_EAT'][$uname] = $target_uname;
       }
-      elseif(strpos($role, 'snow_trap_mad') !== false){
+      elseif($role == 'snow_trap_mad'){
 	$vote_data['TRAP_MAD_DO'][$uname] = $target_uname;
       }
       elseif(strpos($role, 'fairy') !== false){
@@ -1411,7 +1414,9 @@ function AggregateVoteNight($skip = false){
 	$snow_trap_target_list[$user->uname] = $target_uname;
       }
     }
-    if($ROOM->date > 4 && ! $ROOM->IsEvent('no_contact')){ //狡狼の自動設置判定 (花曇は無効)
+
+    //狡狼の自動設置判定 (花曇・雪明りは無効)
+    if($ROOM->date > 4 && ! $ROOM->IsEvent('no_contact') && ! $ROOM->IsEvent('no_trap')){
       foreach($USERS->rows as $user){
 	if($user->IsLiveRole('trap_wolf')) $trap_target_list[$user->uname] = $user->uname;
       }
@@ -1485,17 +1490,17 @@ function AggregateVoteNight($skip = false){
     foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者系の情報収集
       $user   = $USERS->ByUname($uname);
       $target = $USERS->ByUname($target_uname);
+      $ROLES->actor = $user;
       if(in_array($target_uname, $trap_target_list)){ //罠死判定
 	$trapped_list[] = $user->uname;
       }
-      elseif(($user->IsRole('escaper') && $target->IsWolf()) ||
-	     ($user->IsRole('psycho_escaper') && $target->IsLiar()) ||
-	     ($user->IsRole('incubus_escaper') && $target->sex != 'female')){ //逃亡失敗判定
+      elseif($ROLES->Load('main_role', true)->EscapeFailed($target)){ //逃亡失敗判定
 	$USERS->Kill($user->user_no, 'ESCAPER_DEAD');
       }
       else{
 	//凍傷判定
 	if(in_array($target->uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
+	if($user->IsRole('doom_escaper')) $target->AddDoom(4); //半鳥女の処理
 	$escaper_target_list[$user->uname] = $target->uname; //逃亡先をセット
       }
     }
@@ -1556,7 +1561,7 @@ function AggregateVoteNight($skip = false){
     if(! $wolf_target->IsDummyBoy()){ //特殊能力者判定 (身代わり君は対象外)
       if(! $voted_wolf->IsSiriusWolf()){ //特殊襲撃失敗判定 (サブの判定が先/完全覚醒天狼は無効)
 	if($wolf_target->IsChallengeLovers()) break; //難題判定
-	if($wolf_target->IsRole('protected')){ //庇護者判定
+	if($wolf_target->IsRole('protected') && ! $ROOM->IsEvent('no_sacrifice')){ //庇護者判定
 	  $stack = array();
 	  foreach($wolf_target->GetPartner('protected') as $id){ //生存中の身代わり能力者を検出
 	    if($USERS->ByID($id)->IsLive(true)) $stack[] = $id;
@@ -1605,6 +1610,8 @@ function AggregateVoteNight($skip = false){
 	    $voted_wolf->AddRole('mind_lonely');
 	  }
 	  if($voted_wolf->IsRole('doom_wolf')) $wolf_target->AddDoom(2); //冥狼の処理
+	  //野狐禅の処理
+	  if($wolf_target->IsRole('immolate_fox')) $wolf_target->AddRole('muster_ability');
 	  $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
@@ -1618,40 +1625,21 @@ function AggregateVoteNight($skip = false){
 	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
 	  break;
 	}
+	//殉教者の処理
+	if($wolf_target->IsRole('immolate_mad')) $wolf_target->AddRole('muster_ability');
 
-	//身代わり能力者判定
-	$stack = array();
-	if($wolf_target->IsRole('doll_master')){ //人形遣い (人形系)
-	  foreach($USERS->rows as $user){
-	    if($user->IsLive(true) && $user->IsDoll()) $stack[] = $user->user_no;
-	  }
-	}
-	elseif($wolf_target->IsRole('sacrifice_vampire')){ //吸血公 (自分の感染者)
-	  foreach($USERS->rows as $user){
-	    if($user->IsLive(true) && $user->IsPartner('infected', $wolf_target->user_no)){
-	      $stack[] = $user->user_no;
+	if(! $ROOM->IsEvent('no_sacrifice')){ //身代わり能力者判定
+	  $ROLES->actor = $wolf_target;
+	  foreach($ROLES->Load('sacrifice') as $filter){
+	    $stack = $filter->GetSacrificeList();
+	    //PrintData($stack, 'List [Sacrifice]');
+	    if(count($stack) > 0){
+	      $target = $USERS->ByID(GetRandom($stack));
+	      $USERS->Kill($target->user_no, 'SACRIFICE');
+	      $sacrifice_list[] = $target->uname;
+	      break;
 	    }
 	  }
-	}
-	elseif($wolf_target->IsRole('boss_chiroptera')){ //大蝙蝠 (蝙蝠陣営)
-	  foreach($USERS->rows as $user){
-	    if(! $user->IsSame($wolf_target->uname) &&
-	       $user->IsLiveRoleGroup('chiroptera', 'fairy')) $stack[] = $user->user_no;
-	  }
-	}
-	elseif($wolf_target->IsRole('sacrifice_ogre')){ //酒呑童子 (洗脳者)
-	  foreach($USERS->rows as $user){
-	    if(! $user->IsSame($wolf_target->uname) && $user->IsLiveRole('psycho_infected', true)){
-	      $stack[] = $user->user_no;
-	    }
-	  }
-	}
-
-	if(count($stack) > 0){
-	  $target = $USERS->ByID(GetRandom($stack));
-	  $USERS->Kill($target->user_no, 'SACRIFICE');
-	  $sacrifice_list[] = $target->uname;
-	  break;
 	}
 
 	if($voted_wolf->IsRole('sex_wolf')){ //雛狼の処理
@@ -1669,27 +1657,9 @@ function AggregateVoteNight($skip = false){
 	  break;
 	}
 
-	if($wolf_target->IsRole('ghost_common')){ //亡霊嬢の場合は小心者が付く
-	  $voted_wolf->AddRole('chicken');
-	}
-	elseif($wolf_target->IsRole('presage_scanner')){ //件の処理
-	  $stack = array(); //受託者を検出
-	  foreach($USERS->rows as $user){
-	    if($user->IsPartner('mind_presage', $wolf_target->user_no)) $stack[] = $user->user_no;
-	  }
-	  if(count($stack) > 0){
-	    $str = $USERS->ByID(array_shift($stack))->handle_name . "\t" .
-	      $USERS->GetHandleName($wolf_target->uname, true) . "\t" .
-	      $USERS->GetHandleName($voted_wolf->uname, true);
-	    $ROOM->SystemMessage($str, 'PRESAGE_RESULT');
-	  }
-	}
-	elseif($wolf_target->IsRole('cursed_brownie')){ //祟神の場合は死の宣告が付く
-	  $voted_wolf->AddDoom(2);
-	}
-	elseif($wolf_target->IsRole('miasma_fox')){ //蟲狐の場合は熱病が付く
-	  $voted_wolf->AddDoom(1, 'febris');
-	}
+	//人狼襲撃カウンター処理
+	$ROLES->actor = $wolf_target;
+	foreach($ROLES->Load('wolf_eat_counter') as $filter) $filter->WolfEatCounter($voted_wolf);
       }
     }
 
@@ -1802,7 +1772,7 @@ function AggregateVoteNight($skip = false){
 
       //吸血成立判定
       if($target->IsLive(true) && ! $guard_flag && ! $target->IsRoleGroup('escaper') &&
-	 ! $target->IsCamp('vampire')){
+	 ! $target->IsCamp('vampire') && ! in_array($target->uname, $trapped_list)){
 	$vampire_target_list[$user->uname][] = $target->uname;
       }
     }
@@ -1812,7 +1782,7 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       foreach($stack as $target_uname){
 	$target = $USERS->ByUname($target_uname);
-	//吸血死判定 (吸血死より罠死の方が優先されるが、本人も罠にかかるので競合しないはず)
+	//吸血死判定 (吸血死より罠死の方が優先されることに注意)
 	if(! $target->IsAvoid() &&
 	   (($user->IsRole('incubus_vampire')  && $target->sex != 'female') ||
 	    ($user->IsRole('succubus_vampire') && $target->sex != 'male'))){
@@ -1871,7 +1841,7 @@ function AggregateVoteNight($skip = false){
       if($user->IsRoleGroup(true, 'doom')){ //死の宣告能力者の処理
 	$date = $user->IsRole(true, 'doom_fox') ? 4 :
 	  ($user->IsRole('pierrot_wizard') ? GetRandom(range(2, 10)) : 2);
-	$USERS->ByVirtualUname($target_uname)->AddDoom($date);
+	$target->AddDoom($date);
 	continue;
       }
 
@@ -1882,7 +1852,8 @@ function AggregateVoteNight($skip = false){
 	//暗殺先が毒能力者なら死亡
 	if($target->IsPoison()) $USERS->Kill($user->user_no, 'POISON_DEAD_night');
       }
-      elseif($user->IsRole('eclipse_assassin')){ //蝕暗殺者の自滅判定
+      //蝕暗殺者の自滅判定
+      elseif(! $ROOM->IsEvent('no_reflect_assassin') && $user->IsRole('eclipse_assassin')){
 	if(mt_rand(1, 100) <= 30) $target_uname = $uname;
       }
       $assassin_target_list[$target_uname] = true; //暗殺対象者リストに追加
@@ -2104,7 +2075,7 @@ function AggregateVoteNight($skip = false){
     if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
     $target = $USERS->ByUname($target_uname);
-    if($target->IsLiveRoleGroup('cursed')){ //呪返し判定
+    if(! $ROOM->IsEvent('no_cursed') && $target->IsLiveRoleGroup('cursed')){ //呪返し判定
       if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
 	$anti_voodoo_success_list[$user->uname] = true;
       }
@@ -2139,7 +2110,7 @@ function AggregateVoteNight($skip = false){
 
     $target = $USERS->ByUname($target_uname); //対象者の情報を取得
     //呪返し判定
-    if(($target->IsRoleGroup('cursed') && ! $target->IsDead(true)) ||
+    if((! $ROOM->IsEvent('no_cursed') && $target->IsLiveRoleGroup('cursed')) ||
        in_array($target->uname, $voodoo_target_list)){
       if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
 	$anti_voodoo_success_list[$user->uname] = true;
@@ -2217,7 +2188,8 @@ function AggregateVoteNight($skip = false){
       }
       else{
 	//呪返し判定
-	if($target->IsLiveRoleGroup('cursed') || in_array($target->uname, $voodoo_target_list)){
+	if((! $ROOM->IsEvent('no_cursed') &&$target->IsLiveRoleGroup('cursed')) ||
+	   in_array($target->uname, $voodoo_target_list)){
 	  if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
 	    $anti_voodoo_success_list[$user->uname] = true;
 	  }
@@ -2487,28 +2459,30 @@ function AggregateVoteNight($skip = false){
   }
 
   //-- 反魂系レイヤー --//
-  //身代わり君・恋人・完全覚醒天狼なら無効
-  if($wolf_target->IsDead(true) && ! $wolf_target->IsDummyBoy() && ! $wolf_target->IsLovers() &&
-     $wolf_target->wolf_killed  && ! $voted_wolf->IsSiriusWolf()){
-    //仙人・蛇神・西蔵人形の蘇生判定
-    if($wolf_target->IsRole('revive_pharmacist', 'revive_brownie', 'revive_doll') &&
-       $wolf_target->IsActive()){
-      $wolf_target->Revive();
-      $wolf_target->LostAbility();
+  if(! $ROOM->IsEvent('no_revive')){ //快晴なら無効
+    //身代わり君・恋人・完全覚醒天狼なら無効
+    if($wolf_target->IsDead(true) && ! $wolf_target->IsDummyBoy() && ! $wolf_target->IsLovers() &&
+       $wolf_target->wolf_killed  && ! $voted_wolf->IsSiriusWolf()){
+      //仙人・蛇神・西蔵人形の蘇生判定
+      if($wolf_target->IsRole('revive_pharmacist', 'revive_brownie', 'revive_doll') &&
+	 $wolf_target->IsActive()){
+	$wolf_target->Revive();
+	$wolf_target->LostAbility();
+      }
+      //茨木童子の蘇生判定
+      elseif($wolf_target->IsRole('revive_ogre') && ! $ROOM->IsEvent('seal_ogre') &&
+	     ($ROOM->IsEvent('full_ogre') || mt_rand(1, 100) <= 40)){
+	$wolf_target->Revive();
+      }
     }
-    //茨木童子の蘇生判定
-    elseif($wolf_target->IsRole('revive_ogre') && ! $ROOM->IsEvent('seal_ogre') &&
-	   ($ROOM->IsEvent('full_ogre') || mt_rand(1, 100) <= 40)){
-      $wolf_target->Revive();
-    }
-  }
 
-  foreach($USERS->rows as $user){ //仙狼の処理
-    //夜に死亡 + 能力が有効な場合のみ蘇生する
-    if($user->IsActive('revive_wolf') && ! $user->IsLovers() && $user->IsLive() &&
-       $user->IsDead(true)){
-      $user->Revive();
-      $user->LostAbility();
+    foreach($USERS->rows as $user){ //仙狼の処理
+      //夜に死亡 + 能力が有効な場合のみ蘇生する
+      if($user->IsActive('revive_wolf') && ! $user->IsLovers() && $user->IsLive() &&
+	 $user->IsDead(true)){
+	$user->Revive();
+	$user->LostAbility();
+      }
     }
   }
 

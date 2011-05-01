@@ -579,10 +579,14 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'copied', 'copied_trick', 'copied_soul', 'copied_teller');
 
-  $role = 'lost_ability'; //能力喪失 (舌禍狼・罠師ほか)
+  $role = 'lost_ability'; //能力喪失 (舌禍狼ほか)
   if($SELF->IsRole($role)){
     $ROLE_IMG->Output($SELF->IsRole('awake_wizard') ? 'ability_awake_wizard' : $role);
   }
+  $fix_display_list[] = $role;
+
+  $role = 'muster_ability'; //能力発現 (殉教者ほか)
+  if($SELF->IsRole($role)) $ROLE_IMG->Output($role);
   $fix_display_list[] = $role;
 
   if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){ //恋人

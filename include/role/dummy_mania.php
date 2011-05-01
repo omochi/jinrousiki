@@ -2,7 +2,7 @@
 /*
   ◆夢語部
   ○仕様
-  ・コピー先の基本・劣化種に変化する
+  ・コピー結果：基本・劣化種
 */
 class Role_dummy_mania extends Role{
   var $copied = 'copied_teller';
@@ -23,9 +23,9 @@ class Role_dummy_mania extends Role{
       'brownie'      => 'brownie',
       'wizard'       => 'astray_wizard',
       'doll'         => 'silver_doll',
-      'escaper'      => 'incubus_escaper',
+      'escaper'      => 'doom_escaper',
       'wolf'         => 'silver_wolf',
-      'mad'          => 'mad',
+      'mad'          => 'immolate_mad',
       'fox'          => 'silver_fox',
       'child_fox'    => 'sex_fox',
       'cupid'        => 'self_cupid',

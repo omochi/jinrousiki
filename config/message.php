@@ -60,9 +60,9 @@ class Message{
   var $skip_night = '白澤の能力で夜が飛ばされました……'; //白澤の能力発動
   var $dummy_boy = '◆身代わり君　'; //仮想GMモード用ヘッダー
 
-  var $wolf_howl = 'アオォーン・・・'; //狼の遠吠え
-  //var $common_talk = 'ヒソヒソ・・・'; //共有者の小声
-  var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の小声
+  var $wolf_howl = 'アオォーン・・・'; //人狼の遠吠え
+  //var $common_talk = 'ヒソヒソ・・・'; //共有者の囁き
+  var $common_talk = 'あーうー・・・あーうー・・・'; //共有者の囁き
   var $lovers_talk = 'うふふ・・・うふふ・・・'; //恋人の囁き
   var $howling = 'キィーーン・・・'; //スピーカーの音割れ効果音
 
@@ -72,30 +72,30 @@ class Message{
   //OutoutDeadManType() : 死因の表示
   //var $vote_killed      = 'は投票の結果処刑されました'; //処刑
   var $vote_killed        = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
-  var $blind_vote         = '傘化けの能力で投票結果が隠されました'; //傘化けの能力発動
+  var $blind_vote         = '傘化けの能力で投票結果が隠されました'; //傘化け
   //var $deadman           = 'は無残な姿で発見されました'; //共通死亡メッセージ
   var $deadman            = 'は無残な負け犬の姿で発見されました';
-  var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼の襲撃
-  var $hungry_wolf_killed = 'は餓狼の餌食になったようです'; //餓狼の襲撃
+  var $wolf_killed        = 'は人狼の餌食になったようです'; //人狼襲撃
+  var $hungry_wolf_killed = 'は餓狼の餌食になったようです'; //餓狼襲撃
   var $possessed          = 'は誰かに憑依したようです'; //憑依
-  var $possessed_targeted = 'は憑狼に憑依されたようです'; //憑狼の襲撃
+  var $possessed_targeted = 'は憑狼に憑依されたようです'; //憑狼襲撃
   var $possessed_reset    = 'は憑依から開放されたようです'; //憑依リセット
-  var $dream_killed       = 'は獏の餌食になったようです'; //獏の襲撃
+  var $dream_killed       = 'は獏の餌食になったようです'; //夢食い
   var $trapped            = 'は罠にかかって死亡したようです'; //罠
-  var $fox_dead           = '(妖狐) は占い師に呪い殺されたようです'; //狐呪殺
+  var $fox_dead           = '(妖狐) は占い師に呪い殺されたようです'; //呪殺
   var $cursed             = 'は呪詛に呪い殺されたようです'; //呪返し
   var $hunted             = 'は狩人に狩られたようです'; //狩人の狩り
   var $reporter_duty      = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
-  var $escaper_dead       = 'は逃亡に失敗したようです'; //逃亡者の逃亡失敗
-  var $poison_dead        = 'は毒に冒され死亡したようです'; //埋毒者の道連れ
-  var $vampire_killed     = 'は血を吸い尽くされたようです'; //吸血鬼の襲撃
-  var $assassin_killed    = 'は暗殺されたようです'; //暗殺者の襲撃
-  var $ogre_killed        = 'は鬼に攫われたようです'; //鬼の襲撃
-  var $priest_returned    = 'は天に帰ったようです'; //天人の帰還
+  var $escaper_dead       = 'は逃亡に失敗したようです'; //逃亡失敗
+  var $poison_dead        = 'は毒に冒され死亡したようです'; //毒
+  var $vampire_killed     = 'は血を吸い尽くされたようです'; //吸血
+  var $assassin_killed    = 'は暗殺されたようです'; //暗殺
+  var $ogre_killed        = 'は鬼に攫われたようです'; //人攫い
+  var $priest_returned    = 'は天に帰ったようです'; //天人帰還
   var $revive_success     = 'は生き返りました'; //蘇生成功
   var $revive_failed      = 'の蘇生に失敗したようです'; //蘇生失敗
-  var $sacrifice          = 'は誰かの犠牲となって死亡したようです'; //身代わり死
-  var $lovers_followed    = 'は恋人の後を追い自殺しました'; //恋人の後追い自殺
+  var $sacrifice          = 'は誰かの犠牲となって死亡したようです'; //身代わり
+  var $lovers_followed    = 'は恋人の後を追い自殺しました'; //恋人の後追い
   var $vote_sudden_death  = 'はショック死しました'; //投票系ショック死
   //var $novoted            = 'は突然お亡くなりになられました'; //未投票突然死
   var $novoted            = 'はスキマ送りされました';
@@ -111,7 +111,7 @@ class Message{
   var $panelist           = 'は解答者 (不正解) だったようです'; //解答者
   var $sealed             = 'は封印されたようです'; //封印師
   var $drunk              = 'は神主に酔い潰されたようです'; //神主
-  var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫の妬み返し
+  var $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫
   var $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   var $followed           = 'は道連れにされたようです'; //舟幽霊
   var $febris             = 'は熱病にかかったようです'; //熱病
@@ -173,7 +173,7 @@ class Message{
   var $constellation_x    = 'は昨夜、竜座を見ていたようです';
   var $constellation_y    = 'は昨夜、鳳凰座を見ていたようです';
   var $constellation_z    = 'は昨夜、南十字座を見ていたようです';
-  //星妖精のリスト (A-Z)
+  //道化師のリスト (A-Z)
   var $pierrot_a          = 'は昨夜、玉乗りをしていたようです';
   var $pierrot_b          = 'は昨夜、綱渡りをしていたようです';
   var $pierrot_c          = 'は昨夜、火の輪くぐりをしていたようです';
@@ -203,26 +203,24 @@ class Message{
   var $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
 
   //OutputAbility() : 能力の表示
-  var $ability_dead = 'アナタは息絶えました・・・'; //死んでいる場合
-
-  //CheckNightVote() : 夜の投票
-  var $ability_vote             = '処刑する人を選択してください'; //昼の処刑投票
+  var $ability_dead             = 'アナタは息絶えました・・・'; //死者
+  var $ability_vote             = '処刑する人を選択してください'; //処刑
   var $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
   var $ability_mage_do          = '占う人を選択してください'; //占い師
   var $ability_voodoo_killer_do = '呪いを祓う人を選択してください'; //陰陽師
-  var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
-  var $ability_trap_do          = '罠を設置する先を選択してください'; //罠師
-  var $ability_possessed_do     = '憑依する人を選択してください'; //犬神
-  var $ability_dream_eat        = '夢を食べる人を選択してください'; //獏
-  var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師
   var $ability_guard_do         = '護衛する人を選択してください'; //狩人
   var $ability_anti_voodoo_do   = '厄を祓う人を選択してください'; //厄神
   var $ability_reporter_do      = '尾行する人を選択してください'; //ブン屋
   var $ability_revive_do        = '蘇生する人を選択してください'; //猫又
   var $ability_assassin_do      = '暗殺する人を選択してください'; //暗殺者
   var $ability_mind_scanner_do  = '心を読む人を選択してください'; //さとり
-  var $ability_wizard_do        = '魔法をかける人を選択してください'; //さとり
+  var $ability_wizard_do        = '魔法をかける人を選択してください'; //魔法使い
   var $ability_escape_do        = '逃亡する先を選択してください'; //逃亡者
+  var $ability_jammer_do        = '占いを妨害する人を選択してください'; //月兎
+  var $ability_voodoo_do        = '呪いをかける人を選択してください'; //呪術師
+  var $ability_trap_do          = '罠を設置する先を選択してください'; //罠師
+  var $ability_possessed_do     = '憑依する人を選択してください'; //犬神
+  var $ability_dream_eat        = '夢を食べる人を選択してください'; //獏
   var $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   var $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精

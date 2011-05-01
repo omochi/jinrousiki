@@ -355,6 +355,7 @@ class User{
   function IsRefrectAssassin(){
     global $ROOM;
 
+    if($ROOM->IsEvent('no_reflect_assassin')) return false;
     $rate = mt_rand(1, 100);
     $ogre = false;
     if($this->IsOgre()){
@@ -1134,21 +1135,23 @@ class UserDataSet{
       }
     }
     $ROOM->date = $room_date; //日付を元に戻す
+    if($ROOM->IsEvent('hyper_critical')){
+      $ROOM->event->critical_voter = true;
+      $ROOM->event->critical_luck  = true;
+    }
+    elseif($ROOM->IsEvent('aurora')){
+      $ROOM->event->blinder   = true;
+      $ROOM->event->mind_open = true;
+    }
     //PrintData($ROOM->event);
 
     if($ROOM->IsDay()){ //昼限定
       $stack = array('invisible', 'rainbow', 'passion', 'grassy', 'side_reverse', 'line_reverse',
-		     'actor', 'critical_luck', 'no_last_words', 'blinder', 'earplug', 'silent',
-		     'mower');
+		     'actor', 'critical_voter', 'critical_luck', 'no_last_words', 'blinder',
+		     'earplug', 'silent', 'mower');
       foreach($stack as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
-	}
-      }
-      if($ROOM->IsEvent('hyper_critical')){
-	foreach($this->rows as $user){
-	  $user->AddVirtualRole('critical_voter');
-	  $user->AddVirtualRole('critical_luck');
 	}
       }
     }

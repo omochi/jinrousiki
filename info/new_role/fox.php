@@ -104,6 +104,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#cute_fox">萌狐</a>
 <a href="#scarlet_fox">紅狐</a>
 <a href="#silver_fox">銀狐</a>
+<a href="#immolate_fox">野狐禅</a>
 </p>
 
 <h3 id="fox">妖狐 (占い結果：村人(呪殺) / 霊能結果：村人)</h3>
@@ -117,6 +118,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する妖狐。
 <a href="#child_fox">子狐</a>との違いは占いができない代わりに他の妖狐と<a href="#fox_talk">念話</a>ができる事。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#boss_wolf">白狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -139,6 +144,10 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>の判定が「<a href="chiroptera.php">蝙蝠</a>」になる妖狐。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#gold_wolf">金狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -181,6 +190,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#blue_wolf">蒼狼</a>・<a href="#emerald_fox">翠狐</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#blue_wolf">蒼狼</a>の妖狐バージョンです。
@@ -200,6 +213,10 @@ OutputRolePageHeader('妖狐陣営');
   <li><a href="sub_role.php#mind_friend">共鳴者</a>を作る事に成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
   <li><a href="wolf.php#blue_wolf">蒼狼</a>の襲撃先を占って、占い先が<a href="sub_role.php#mind_lonely">はぐれ者</a>になってもその夜には能力は発動しない。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="#blue_fox">蒼狐</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#emerald_wolf">翠狼</a>の妖狐バージョンです。
@@ -339,6 +356,10 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 投票数が +1 される妖狐。詳細は<a href="human.php#elder">長老</a>参照。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#elder">長老</a>の妖狐バージョンです。
@@ -357,7 +378,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>
+<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -395,13 +416,33 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#silver_doll">露西亜人形</a>
+<a href="human.php#silver_doll">露西亜人形</a>・<a href="wolf.php#silver_wolf">銀狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#silver_wolf">銀狼</a>の妖狐バージョンです。
 妖狐陣営は元々出現数が少なめなので仲間が分からなくてもさほど影響は無いと思います。
 占いを騙る仲間から人狼判定を出される可能性はありますが……
+</pre>
+
+
+<h3 id="immolate_fox">野狐禅 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
+<h4>[耐性] 人狼襲撃：無効+特殊</h4>
+<pre>
+妖狐陣営勝利に加えて、人狼に襲撃されることが勝利条件の妖狐。
+人狼 (<a href="wolf.php#hungry_wolf">餓狼</a>を除く) に襲撃されたら「<a href="sub_role.php#muster_ability">能力発現</a>」がつく。
+</pre>
+<ol>
+  <li><a href="sub_role.php#muster_ability">能力発現</a>がついていれば生死は問わない。</li>
+  <li>襲撃失敗 (例：狩人護衛) していた場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#immolate_mad">殉教者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#immolate_mad">殉教者</a>の妖狐バージョンです。
 </pre>
 
 <h2 id="child_fox_group">子狐系</h2>

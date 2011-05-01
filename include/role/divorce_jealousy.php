@@ -2,7 +2,7 @@
 /*
   ◆縁切地蔵 (divorce_jealousy)
   ○仕様
-  ・投票者の恋人に一定確率で恋色迷彩を付加
+  ・処刑得票：恋色迷彩 (恋人・一定確率)
 */
 class Role_divorce_jealousy extends RoleVoteAbility{
   var $data_type = 'array';

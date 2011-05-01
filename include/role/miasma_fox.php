@@ -2,7 +2,8 @@
 /*
   ◆蟲狐 (miasma_fox)
   ○仕様
-  ・処刑されたら投票者から妖狐以外に死の宣告を行う
+  ・処刑：熱病 (妖狐陣営以外)
+  ・人狼襲撃：熱病
 */
 class Role_miasma_fox extends Role{
   function __construct(){ parent::__construct(); }
@@ -18,4 +19,6 @@ class Role_miasma_fox extends Role{
     //PrintData($stack, 'Target [febris]');
     if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(1, 'febris');
   }
+
+  function WolfEatCounter($user){ $user->AddDoom(1, 'febris'); }
 }

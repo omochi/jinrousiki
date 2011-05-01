@@ -66,11 +66,11 @@ EOF;
 
 if($GAME_CONF->auto_reload){ //自動更新設定が有効ならリンクを表示
   echo $url . ($RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '') .
-    '#game_top">[更新]</a>'."\n";
+    '">[更新]</a>'."\n";
   OutputAutoReloadLink($url);
 }
 else{
-  echo $url . '#game_top">[更新]</a>'."\n";
+  echo $url . '">[更新]</a>'."\n";
 }
 
 echo '<a href="./">[戻る]</a>';

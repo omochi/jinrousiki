@@ -110,6 +110,7 @@ CO するべきかどうかは、コピーした役職次第です。
   <li>神話マニア陣営を選んだ場合は村人になる。</li>
   <li>蘇生されるケースがあるので、死亡していても変化処理は行われる。</li>
 </ol>
+<h4>コピー結果一覧</h4>
 <table>
 <tr><th>コピー元</th><th>コピー結果</th><th>設定変更</th></tr>
 <tr>
@@ -282,6 +283,7 @@ CO するべきかどうかは、コピーした役職次第です。
 役職が変化すると<a href="sub_role.php#copied_teller">元夢語部</a>がつく。
 変化前に<a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡する。
 </pre>
+<h4>コピー結果一覧</h4>
 <table>
 <tr><th>コピー元</th><th>コピー結果</th><th>設定変更</th></tr>
 <tr>
@@ -366,8 +368,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
-  <td><a href="human.php#incubus_escaper">一角獣</a></td>
-  <td>Ver. 1.4.0 β22～</td>
+  <td><a href="human.php#doom_escaper">半鳥女</a></td>
+  <td>Ver. 1.5.0 α9～</td>
 </tr>
 <tr>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
@@ -376,8 +378,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
-  <td><a href="wolf.php#mad">狂人</a></td>
-  <td></td>
+  <td><a href="wolf.php#immolate_mad">殉教者</a></td>
+  <td>Ver. 1.5.0 α9～</td>
 </tr>
 <tr>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
