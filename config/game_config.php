@@ -150,7 +150,7 @@ class RoomConfig{
 
   var $topping = true; //固定配役追加モード
   //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる
-  var $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'); //配役タイプ
+  var $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'); //配役タイプ
 
   var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
   var $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)

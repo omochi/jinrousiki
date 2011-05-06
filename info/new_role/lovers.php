@@ -16,6 +16,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#moon_cupid">かぐや姫</a>
 <a href="#mind_cupid">女神</a>
 <a href="#sweet_cupid">弁財天</a>
+<a href="#minstrel_cupid">吟遊詩人</a>
 <a href="#triangle_cupid">小悪魔</a>
 </p>
 
@@ -86,6 +87,17 @@ OutputRolePageHeader('恋人陣営');
 むしろ能力を発動すると不利になるので自分撃ちの場合は注意が必要です。
 </pre>
 
+<h3 id="minstrel_cupid">吟遊詩人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
+<pre>
+2日目夜以降、全ての<a href="sub_role.php#lovers">恋人</a>に一方的に声が届く上位キューピッド。
+相手には誰の声が聞こえているのか分かるが、仲間表示などには何も出ない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#whisper_scanner">囁騒霊</a>のキューピッドバージョンで<a href="#mind_cupid">女神</a>の逆アプローチです。
+暗号などを上手く使うことで恋人たちの司令塔になることができます。
+</pre>
+
 <h3 id="triangle_cupid">小悪魔 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 矢を三本撃てるキューピッド。
@@ -104,6 +116,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#exchange_angel">魂移使</a>
 <a href="#ark_angel">大天使</a>
 <a href="#sacrifice_angel">守護天使</a>
+<a href="#scarlet_angel">紅天使</a>
 </p>
 
 <h3 id="angel">天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
@@ -181,5 +194,21 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 <a href="vampire.php#sacrifice_vampire">吸血公</a>の能力を恋人陣営向けに転化してみました。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/467" target="_top">新役職考案スレ(467)</a> が原型です。
+</pre>
+
+<h3 id="scarlet_angel">紅天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な天使。
+夜に<a href="human.php#unconscious">無意識</a>が誰か分かる (人狼系の<a href="wolf.php#wolf_partner">仲間表示</a>参照)。
+矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#scarlet_wolf">紅狼</a>の天使バージョンです。
+ある程度他の陣営の配置が分かるので恋人選定時に有利になります。
 </pre>
 </body></html>

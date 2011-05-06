@@ -220,8 +220,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
-  <td><a href="lovers.php#sweet_cupid">弁財天</a></td>
-  <td>Ver. 1.4.0 β22～</td>
+  <td><a href="lovers.php#minstrel_cupid">吟遊詩人</a></td>
+  <td>Ver. 1.5.0 β1～</td>
 </tr>
 <tr>
   <td><a href="lovers.php#angel_group">天使系</a></td>

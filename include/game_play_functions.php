@@ -533,6 +533,18 @@ function OutputAbility(){
     if($SELF->IsRole('ark_angel') && $ROOM->date == 2){
       OutputSelfAbilityResult('SYMPATHY_RESULT'); //大天使は共感者情報を全て見ることが出来る
     }
+    elseif($SELF->IsRole('scarlet_angel') && $ROOM->IsNight()){ //紅天使は夜に無意識枠が見える
+      $stack = array();
+      foreach($USERS->rows as $user){
+	if($user->IsSelf()) continue;
+	if($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
+	  $stack[] = $user->handle_name;
+	}
+      }
+      OutputPartner($stack, 'unconscious_list');
+      unset($stack);
+    }
+
     //初日夜の投票
     if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO');
   }

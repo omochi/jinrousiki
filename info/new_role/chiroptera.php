@@ -153,7 +153,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -202,6 +202,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="#light_fairy">光妖精</a>
 <a href="#dark_fairy">闇妖精</a>
 <a href="#shadow_fairy">影妖精</a>
+<a href="#greater_fairy">大妖精</a>
 <a href="#ice_fairy">氷妖精</a>
 <a href="#mirror_fairy">鏡妖精</a>
 </p>
@@ -404,6 +405,18 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <pre>
 小鳥鯖＠アイマス人狼の管理人さんへの誕生日プレゼントです。
 似た名前の人を選ぶと会話が非常に分かりにくくなることになります。
+</pre>
+
+<h3 id="greater_fairy">大妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
+<h4>[悪戯能力] 発言妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
+<pre>
+発言のたびに追加される文字列がランダムで変化する妖精。
+追加する文字列は「<a href="human.php#common_group">共有者</a>の囁き」「春ですよー」「夏ですよー」
+「秋ですよー」「冬ですよー」のいずれか。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#fairy">妖精</a>・<a href="#spring_fairy">春妖精</a>・<a href="#summer_fairy">夏妖精</a>・<a href="#autumn_fairy">秋妖精</a>・<a href="#winter_fairy">冬妖精</a>の複合バージョンです。
 </pre>
 
 <h3 id="ice_fairy">氷妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16～]</h3>

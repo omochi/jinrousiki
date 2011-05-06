@@ -666,7 +666,8 @@ function OutputTalk($talk, &$builder){
     ($ROOM->date > 1 && ($said_user->IsRole('mind_open') ||
 			 ($builder->flag->common && $said_user->IsRole('whisper_scanner')) ||
 			 ($builder->flag->wolf   && $said_user->IsRole('howl_scanner')) ||
-			 ($builder->flag->fox    && $said_user->IsRole('telepath_scanner')))) ||
+			 ($builder->flag->fox    && $said_user->IsRole('telepath_scanner')) ||
+			 ($builder->flag->lovers && $said_user->IsRole('minstrel_cupid')))) ||
     ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf) ||
     ($real_user->IsRole('possessed_mad')  && $said_user->IsSame($builder->actor->uname)) ||
     ($real_user->IsRole('possessed_fox')  && $builder->flag->fox);
@@ -744,7 +745,7 @@ function OutputTalk($talk, &$builder){
       case 'mad': //囁き狂人
 	if($builder->flag->wolf || $flag_mind_read)
 	  return $builder->AddTalk($said_user, $talk);
-	elseif($builder->flag->lovers && $said_user->IsLovers())
+	elseif($builder->flag->sweet && $said_user->IsLovers())
 	  return $builder->AddWhisper('lovers', $talk);
 	else
 	  return false;
@@ -754,7 +755,7 @@ function OutputTalk($talk, &$builder){
 	  return $builder->AddTalk($said_user, $talk);
 	elseif($SELF->IsRole('wise_wolf'))
 	  return $builder->AddWhisper('common', $talk);
-	elseif($builder->flag->lovers && $said_user->IsLovers())
+	elseif($builder->flag->sweet && $said_user->IsLovers())
 	  return $builder->AddWhisper('lovers', $talk);
 	else
 	  return false;
@@ -771,7 +772,7 @@ function OutputTalk($talk, &$builder){
 	       $said_user->IsRole('howl_fox') || $builder->flag->howl){
 	  return $builder->AddWhisper('wolf', $talk);
 	}
-	elseif($builder->flag->lovers && $said_user->IsLovers()){ //恋耳鳴判定
+	elseif($builder->flag->sweet && $said_user->IsLovers()){ //恋耳鳴判定
 	  return $builder->AddWhisper('lovers', $talk);
 	}
 	else{

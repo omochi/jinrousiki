@@ -194,7 +194,7 @@ function AggregateVoteKick($target){
 
 //夜の投票処理
 function VoteNight(){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- イベント名と役職の整合チェック --//
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
@@ -484,12 +484,8 @@ function VoteNight(){
     if($is_cupid){ //キューピッド系の処理
       $uname_stack  = array();
       $handle_stack = array();
-      $is_self      = $SELF->IsRole('self_cupid');
-      $is_moon      = $SELF->IsRole('moon_cupid');
-      $is_mind      = $SELF->IsRole('mind_cupid');
-      $is_sweet     = $SELF->IsRole('sweet_cupid');
+      $ROLES->actor = $SELF;
       $is_dummy     = $SELF->IsRole('dummy_chiroptera');
-      $is_sacrifice = $SELF->IsRole('sacrifice_angel');
       foreach($target_list as $target){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
@@ -500,23 +496,8 @@ function VoteNight(){
 	}
 
 	$role = $SELF->GetID('lovers'); //役職に恋人を追加
-	if($is_self){ //求愛者：相手に受信者を追加
-	  if(! $target->IsSelf()) $role .= ' ' . $SELF->GetID('mind_receiver');
-	}
-	elseif($is_moon){ //かぐや姫：両方に難題 + 自分に受信者を追加
-	  $role .= ' challenge_lovers';
-	  if(! $target->IsSelf()) $SELF->AddRole($target->GetID('mind_receiver'));
-	}
-	elseif($is_mind){ //女神：両方に共鳴者 + 他人撃ちなら自分に受信者を追加
-	  $role .= ' ' . $SELF->GetID('mind_friend');
-	  if(! $self_shoot) $SELF->AddRole($target->GetID('mind_receiver'));
-	}
-	elseif($is_sweet){ //弁財天：両方に共鳴者
-	  $role .= ' ' . $SELF->GetID('mind_friend');
-	}
-	elseif($is_sacrifice){ //守護天使：自分以外に庇護者を追加
-	  if(! $target->IsSelf()) $role .= ' ' . $SELF->GetID('protected');
-	}
+	//特殊キューピッドの処理
+	$ROLES->Load('main_role', true)->AddLoversRole($role, $target, $self_shoot);
 	$target->AddRole($role);
 	$target->ReparseRoles(); //再パース (魂移使判定用)
       }
@@ -524,9 +505,7 @@ function VoteNight(){
       if($SELF->IsRoleGroup('angel')){ //天使系の処理
 	$lovers_a = $target_list[0];
 	$lovers_b = $target_list[1];
-	if(($SELF->IsRole('angel') && $lovers_a->sex != $lovers_b->sex) || $is_sacrifice ||
-	   ($SELF->IsRole('rose_angel') && $lovers_a->sex == 'male'   && $lovers_b->sex == 'male') ||
-	   ($SELF->IsRole('lily_angel') && $lovers_a->sex == 'female' && $lovers_b->sex == 'female')){
+	if($ROLES->Load('main_role', true)->IsSympathy($lovers_a, $lovers_b)){
 	  $lovers_a->AddRole('mind_sympathy');
 	  $sentence = $lovers_a->handle_name . "\t" . $lovers_b->handle_name . "\t";
 	  $ROOM->SystemMessage($sentence . $lovers_b->main_role, 'SYMPATHY_RESULT');

@@ -8,9 +8,13 @@ class RoleManager{
   //発言表示
   var $talk_list = array('blinder', 'earplug', 'speaker');
 
+  //悪戯発言変換
+  var $say_bad_status_list = array('fairy', 'spring_fairy', 'summer_fairy', 'autumn_fairy',
+				   'winter_fairy', 'greater_fairy');
+
   //発言変換
-  var $say_list = array('rainbow', 'weekly', 'passion', 'actor', 'grassy', 'invisible', 'mower',
-			'silent', 'side_reverse', 'line_reverse');
+  var $say_list = array('liar', 'rainbow', 'weekly', 'passion', 'actor', 'grassy', 'invisible',
+			'mower', 'silent', 'side_reverse', 'line_reverse');
 
   //声量
   var $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',

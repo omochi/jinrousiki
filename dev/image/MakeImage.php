@@ -441,7 +441,7 @@ class RoleMessageList{
     'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
 
   var $succubus_escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#水妖姫#です。夜の#逃亡#先が^男性^以外か、_人狼_に襲撃されたら死んでしまいます。",
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#水妖姫#です。夜の#逃亡#先が^男性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　あなたは男性に愛され、結ばれることで魂を得ます。最後まで生き残り魂を得ましょう。",
     'type' => 'escaper', 'delimiter' => array('^' => 'sex_male'));
 
   var $doom_escaper = array(
@@ -729,6 +729,10 @@ class RoleMessageList{
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|弁財天|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。また、_処刑_投票先を^恋耳鳴^にさせることができます。\n　あなたの矢は種族を超えた愛となり、あなたの票は闇夜に聞こえる|恋人|の囁きを届ける。恋を奏でる詩人となり、村を愛で満たすのです！",
     'type' => 'mind_cupid', 'delimiter' => array('_' => 'vote', '^' => 'no_last_words'));
 
+  var $minstrel_cupid = array(
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|吟遊詩人|です。二日目からあなたの夜の独り言が|恋人|にも聞こえるようになります。",
+    'type' => 'cupid');
+
   var $triangle_cupid = array(
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|小悪魔|です。初日の夜に誰か三人を|恋人|にしてしまいます。淫靡な魅力で誘惑し、導き、三人の背徳的な恋を成就させるのです。",
     'type' => 'cupid');
@@ -757,6 +761,11 @@ class RoleMessageList{
   var $sacrifice_angel = array(
     'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|守護天使|です。あなたの|恋人|が#人狼#に襲撃されても自分の命と引き換えに守ることができます。\n　愛する人を想う幸せな夜を壊す獣の手から二人を_庇護_し、命に代えても護るべき愛の存在を示すのです。",
     'type' => 'angel', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
+
+  var $scarlet_angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|紅天使|です。_無意識_が誰か分かりますが、^人狼^からは_無意識_に、=妖狐=からは=子狐=に、:人形:からは:人形遣い:に見えています。",
+    'type' => 'angel',
+    'delimiter' => array('_' => 'human', '^' => 'wolf', '=' => 'fox', ':' => 'doll'));
 
   var $quiz = array(
     'message' => "[役割] [|出題者|陣営] [|出題者|系]\n　あなたは|出題者|です。この村の難易度はあなたの口先三寸で決まります。頑張って皆を楽しませれば、それがあなたの勝利です。",
@@ -865,6 +874,10 @@ class RoleMessageList{
 
   var $shadow_fairy = array(
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|影妖精|です。夜に村人一人を指定して、その人と同じ顔になることができます。あなたは私？私はあなた？生き別れの双子！？",
+    'type' => 'fairy');
+
+  var $greater_fairy = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|大妖精|です。村人一人の発言にランダムにメッセージを追加してしまいます。",
     'type' => 'fairy');
 
   var $ice_fairy = array(
@@ -1400,6 +1413,7 @@ class RoleMessageList{
   var $result_moon_cupid = array('message' => "さんは|かぐや姫|でした", 'type' => 'result_cupid');
   var $result_mind_cupid = array('message' => "さんは|女神|でした", 'type' => 'result_cupid');
   var $result_sweet_cupid = array('message' => "さんは|弁財天|でした", 'type' => 'result_cupid');
+  var $result_minstrel_cupid = array('message' => "さんは|吟遊詩人|でした", 'type' => 'result_cupid');
   var $result_triangle_cupid = array('message' => "さんは|小悪魔|でした", 'type' => 'result_cupid');
   var $result_angel = array('message' => "さんは|天使|でした", 'type' => 'result_cupid');
   var $result_rose_angel = array('message' => "さんは|薔薇天使|でした", 'type' => 'result_angel');
@@ -1407,6 +1421,7 @@ class RoleMessageList{
   var $result_exchange_angel = array('message' => "さんは|魂移使|でした", 'type' => 'result_angel');
   var $result_ark_angel = array('message' => "さんは|大天使|でした", 'type' => 'result_angel');
   var $result_sacrifice_angel = array('message' => "さんは|守護天使|でした", 'type' => 'result_angel');
+  var $result_scarlet_angel = array('message' => "さんは|紅天使|でした", 'type' => 'result_angel');
   var $result_lovers = array('message' => "さんは|恋人|でした", 'type' => 'result_cupid');
   var $result_quiz = array('message' => "さんは|出題者|でした", 'delimiter' => array('|' => 'quiz'));
   var $result_vampire = array('message' => "さんは|吸血鬼|でした", 'delimiter' => array('|' => 'vampire'));
@@ -1436,6 +1451,7 @@ class RoleMessageList{
   var $result_light_fairy = array('message' => "さんは|光妖精|でした", 'type' => 'result_fairy');
   var $result_dark_fairy = array('message' => "さんは|闇妖精|でした", 'type' => 'result_fairy');
   var $result_shadow_fairy = array('message' => "さんは|影妖精|でした", 'type' => 'result_fairy');
+  var $result_greater_fairy = array('message' => "さんは|大妖精|でした", 'type' => 'result_fairy');
   var $result_ice_fairy = array('message' => "さんは|氷妖精|でした", 'type' => 'result_fairy');
   var $result_mirror_fairy = array('message' => "さんは|鏡妖精|でした", 'type' => 'result_fairy');
   var $result_ogre = array('message' => "さんは|鬼|でした", 'delimiter' => array('|' => 'ogre'));
@@ -1633,7 +1649,9 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_aurora');
-#$builder->Output('succubus_escaper');
 #$builder->Output('doom_escaper');
 #$builder->Output('immolate_mad');
-$builder->Output('immolate_fox');
+#$builder->Output('immolate_fox');
+#$builder->Output('minstrel_cupid');
+$builder->Output('scarlet_angel');
+#$builder->Output('greater_fairy');

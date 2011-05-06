@@ -42,7 +42,8 @@ Ver. 1.5.0
 <a href="#ver150a6">α6</a>
 <a href="#ver150a7">α7</a>
 <a href="#ver150a8">α8</a>
-<a href="#ver150a9">α9</a><br>
+<a href="#ver150a9">α9</a>
+<a href="#ver150b1">β1</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -2310,6 +2311,33 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">妖狐陣営勝利に加えて、人狼に襲撃されることが勝利条件の妖狐。</td>
   <td>Ver. 1.5.0 α9</td>
+</tr>
+<tr id="ver150b1">
+  <td><a href="chiroptera.php#greater_fairy">大妖精</a></td>
+  <td><a href="chiroptera.php">蝙蝠</a></td>
+  <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">発言のたびに追加される文字列がランダムで変化する妖精。</td>
+  <td>Ver. 1.5.0 β1</td>
+</tr>
+<tr>
+  <td><a href="lovers.php#minstrel_cupid">吟遊詩人</a></td>
+  <td><a href="lovers.php">恋人</a></td>
+  <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">2日目夜以降、全ての<a href="sub_role.php#lovers">恋人</a>に一方的に声が届く上位キューピッド。</td>
+  <td>Ver. 1.5.0 β1</td>
+</tr>
+<tr>
+  <td><a href="lovers.php#scarlet_angel">紅天使</a></td>
+  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php#angel_group">天使系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な天使。<br>夜に<a href="human.php#unconscious">無意識</a>が誰か分かり、矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。</td>
+  <td>Ver. 1.5.0 β1</td>
 </tr>
 </table>
 

@@ -140,17 +140,10 @@ function ConvertSay(&$say){
   if($SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
   //if($SELF->IsDead()) return false; //テスト用
 
-  //萌系置換 (昼限定)
-  if($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox', 'cute_chiroptera') &&
-     mt_rand(1, 100) <= ($GAME_CONF->cute_wolf_rate * ($ROOM->IsEvent('boost_cute') ? 5 : 1))){
-    $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
-  }
+  $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
 
-  $virtual_self = $USERS->ByVirtual($SELF->user_no);
-  $ROLES->actor = $virtual_self;
   //紳士・淑女置換
-  if($virtual_self->IsRole('gentleman', 'lady') &&
-	 mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
+  if($virtual_self->IsRole('gentleman', 'lady') && mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
     $role = $virtual_self->IsRole('gentleman') ? 'gentleman' : 'lady';
 
     $stack = $USERS->GetLivingUsers(); //生存者のユーザ名を取得
@@ -159,26 +152,19 @@ function ConvertSay(&$say){
     $say = $MESSAGE->{$role . '_header'} . $USERS->GetHandleName(GetRandom($stack), true) .
       $MESSAGE->{$role . '_footer'};
   }
-  //狼少年変換
-  elseif($virtual_self->IsRole('liar') && mt_rand(1, 100) <= $GAME_CONF->liar_rate){
-    $say = strtr($say, $GAME_CONF->liar_replace_list);
+  //萌系置換 (昼限定)
+  elseif($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox', 'cute_chiroptera') &&
+	 mt_rand(1, 100) <= ($GAME_CONF->cute_wolf_rate * ($ROOM->IsEvent('boost_cute') ? 5 : 1))){
+    $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
   }
 
-  if($virtual_self->IsRole('bad_status')){ //妖精の処理
-    $stack = array('spring_fairy' => '春', 'summer_fairy' => '夏',
-		   'autumn_fairy' => '秋', 'winter_fairy' => '冬');
-    foreach($virtual_self->GetPartner('bad_status') as $id => $date){
-      if($date != $ROOM->date) continue;
-      $user = $USERS->ByID($id);
-      if($user->IsRole('fairy')){
-	$say = $MESSAGE->common_talk . $say;
-      }
-      elseif(array_key_exists($user->main_role, $stack)){
-	$say = $stack[$user->main_role] . 'ですよー' . $say;
-      }
-    }
+  foreach($virtual_self->GetPartner('bad_status', true) as $id => $date){ //妖精の処理
+    if($date != $ROOM->date) continue;
+    $ROLES->actor = $USERS->ByID($id);
+    foreach($ROLES->Load('say_bad_status') as $filter) $filter->FilterSay($say);
   }
 
+  $ROLES->actor = $virtual_self;
   foreach($ROLES->Load('say') as $filter) $filter->FilterSay($say); //他のサブ役職の処理
 }
 
@@ -188,6 +174,7 @@ function EntryLastWords($say){
 
   if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
 
+  if($say == ' ') $say = NULL; //スペースだけなら「消去」
   if($SELF->IsLive()){ //登録しない役職をチェック
     if(! $SELF->IsLastWordsLimited()) $SELF->Update('last_words', $say);
   }

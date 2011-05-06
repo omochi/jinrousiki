@@ -28,7 +28,7 @@ class Role_soul_mania extends Role{
       'mad'          => 'whisper_mad',
       'fox'          => 'cursed_fox',
       'child_fox'    => 'jammer_fox',
-      'cupid'        => 'sweet_cupid',
+      'cupid'        => 'minstrel_cupid',
       'angel'        => 'sacrifice_angel',
       'quiz'         => 'quiz',
       'vampire'      => 'soul_vampire',
