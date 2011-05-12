@@ -35,7 +35,8 @@ class Role_soul_mania extends Role{
       'chiroptera'   => 'boss_chiroptera',
       'fairy'        => 'ice_fairy',
       'ogre'         => 'sacrifice_ogre',
-      'yaksa'        => 'dowser_yaksa');
+      'yaksa'        => 'dowser_yaksa',
+      'duelist'      => 'valkyrja_duelist');
 
   function __construct(){ parent::__construct(); }
 

@@ -544,11 +544,11 @@ function AggregateVoteGameStart($force_start = false){
   //割り振り対象外役職のリスト
   $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'mind_read',
 			    'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
-			    'mind_presage',  'mind_lonely', 'lovers', 'possessed_exchange',
-			    'challenge_lovers', 'infected', 'psycho_infected', 'copied',
-			    'copied_trick', 'copied_soul', 'copied_teller', 'possessed_target',
-			    'possessed', 'changed_therian', 'joker', 'bad_status', 'lost_ability',
-			    'muster_ability', 'protected', 'wirepuller_luck');
+			    'mind_presage',  'mind_lonely', 'lovers', 'challenge_lovers',
+			    'possessed_exchange', 'joker', 'rival', 'possessed_target', 'possessed',
+			    'infected', 'psycho_infected', 'bad_status', 'protected',
+			    'wirepuller_luck', 'lost_ability', 'muster_ability', 'changed_therian',
+			    'copied', 'copied_trick', 'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   $roled_list = array();

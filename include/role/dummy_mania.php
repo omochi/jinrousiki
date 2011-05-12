@@ -35,7 +35,8 @@ class Role_dummy_mania extends Role{
       'chiroptera'   => 'dummy_chiroptera',
       'fairy'        => 'mirror_fairy',
       'ogre'         => 'incubus_ogre',
-      'yaksa'        => 'succubus_yaksa');
+      'yaksa'        => 'succubus_yaksa',
+      'duelist'      => 'duelist');
 
   function __construct(){ parent::__construct(); }
 

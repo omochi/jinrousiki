@@ -18,6 +18,7 @@ OutputRolePageHeader('神話マニア陣営');
   <li>初日の夜に誰か一人を選んでその人と同じ陣営に変化 (コピー) する特殊な陣営です。</li>
   <li>勝利条件はコピー先の陣営になります。</li>
   <li>コピーの結果が反映されるのは 2 日目の朝です。</a>
+  <li>コピーが成立した時点で所属陣営はコピー先に変更されます。</a>
   <li>なんらかの理由でコピーが成立しなかった場合は村人陣営と扱われます。</li>
   <li>コピーが成立する前に突然死した場合の<a href="human.php#medium_group">巫女系</a>の陣営判定は「村人」です。</li>
 </ol>
@@ -42,7 +43,7 @@ OutputRolePageHeader('神話マニア陣営');
 
 <h3 id="mania">神話マニア (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11～]</h3>
 <pre>
-神話マニア陣営の基本種。能力は<a href="#rule">基本ルール</a>参照。
+神話マニア陣営の基本種。
 コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
 役職が変化すると<a href="sub_role.php#copied">元神話マニア</a>がつく。
 </pre>
@@ -54,7 +55,7 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h3 id="trick_mania">奇術師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
 <pre>
-コピー先の役職を奪うことができる、特殊な神話マニア。
+コピー先の役職を奪うことができる特殊な神話マニア。
 コピー能力は<a href="#mania">神話マニア</a>と同じ。
 役職が変化すると<a href="sub_role.php#copied_trick">元奇術師</a>がつく。
 </pre>
@@ -68,7 +69,8 @@ CO するべきかどうかは、コピーした役職次第です。
 <pre>
 1. A[奇術師] → B[<a href="human.php#soul_mage">魂の占い師</a>] =&gt; A[魂の占い師] B[魂の占い師]
 初日に投票しているので入れ替えは発生しません。
-<a href="human.php#mage_group">占い師系</a>・<a href="lovers.php">恋人陣営</a>・<a href="chiroptera.php#fairy_group">妖精系</a>や、<a href="human.php#mind_scanner_group">さとり系</a>・<a href="wolf.php#mad_group">狂人系</a>・<a href="fox.php">妖狐陣営</a>の一部などがこれに該当します。
+<a href="human.php#mage_group">占い師系</a>・<a href="lovers.php">恋人陣営</a>・<a href="chiroptera.php#fairy_group">妖精系</a>や、<a href="human.php#mind_scanner_group">さとり系</a>・<a href="wolf.php#mad_group">狂人系</a>・<a href="fox.php">妖狐陣営</a>の一部などが
+これに該当します。
 
 2. A[奇術師] → B[<a href="human.php#yama_necromancer">閻魔</a>] =&gt; A[閻魔] B[霊能者]
 入れ替えが発生してもコピー先には特にメッセージが出ないので、
@@ -109,6 +111,7 @@ CO するべきかどうかは、コピーした役職次第です。
   <li>4 日目の朝にどの役職になったのか分かる。</li>
   <li>神話マニア陣営を選んだ場合は村人になる。</li>
   <li>蘇生されるケースがあるので、死亡していても変化処理は行われる。</li>
+  <li>蘇生能力者などに変化するケースがあるので、変化するまでは霊界は公開されない。</li>
 </ol>
 <h4>コピー結果一覧</h4>
 <table>
@@ -259,6 +262,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.4.0 β21～</td>
 </tr>
 <tr>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td><a href="duelist.php#valkyrja_duelist">戦乙女</a></td>
+  <td>Ver. 1.5.0 β1～</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -267,6 +275,10 @@ CO するべきかどうかは、コピーした役職次第です。
 <h4>同一表示役職</h4>
 <pre>
 <a href="#dummy_mania">夢語部</a>
+</pre>
+<h5>Ver. 1.4.0 β14～</h5>
+<pre>
+変化するまでは霊界は公開されない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -432,6 +444,11 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.4.0 β19～</td>
 </tr>
 <tr>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td><a href="duelist.php#duelist">決闘者</a></td>
+  <td>Ver. 1.5.0 β1～</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -440,6 +457,10 @@ CO するべきかどうかは、コピーした役職次第です。
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#dummy">夢能力者</a>
+</pre>
+<h5>Ver. 1.4.0 β14～</h5>
+<pre>
+変化するまでは霊界は公開されない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -484,25 +505,28 @@ CO するべきかどうかは、コピーした役職次第です。
 8. 鵺 → <a href="ogre.php#ogre">鬼</a> (鬼陣営)
 勝利条件は<a href="ogre.php#rule">基本ルール [鬼]</a>参照。
 
-9. 鵺 → <a href="wolf.php#wolf">人狼</a>[恋人] (人狼陣営)
+9. 鵺 → <a href="duelist.php#duelist">決闘者</a> (決闘者陣営)
+勝利条件は<a href="duelist.php#rule">基本ルール [決闘者]</a>参照。
+
+10. 鵺 → <a href="wolf.php#wolf">人狼</a>[恋人] (人狼陣営)
 サブ役職は判定対象外 (<a href="human.php#medium">巫女</a>と同じ) なので
 コピー先と勝利陣営が異なる、例外ケースとなります。
 
-10. 鵺 → <a href="wolf.php#wolf">人狼</a>[<a href="sub_role.php#mind_read">サトラレ</a>] (人狼陣営)
+11. 鵺 → <a href="wolf.php#wolf">人狼</a>[<a href="sub_role.php#mind_read">サトラレ</a>] (人狼陣営)
 コピー先が村人陣営の<a href="human.php#mind_scanner">さとり</a>に会話を覗かれている状態なので
 コピー先からの情報入手が難しくなります。
 
-11. 鵺A → 鵺B → <a href="wolf.php#wolf">人狼</a> (全員人狼陣営)
+12. 鵺A → 鵺B → <a href="wolf.php#wolf">人狼</a> (全員人狼陣営)
 コピー先が鵺だった場合は鵺以外の役職に当たるまで
 コピー先を辿って判定します。
 
-12. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
+13. 鵺A → 鵺B → 鵺C → 鵺A (全員村人陣営)
 コピー先を辿る途中で同じ人に戻った場合は村人陣営になります。
 
-13. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
+14. 鵺 → <a href="#mania">神話マニア</a> → <a href="fox.php#fox">妖狐</a> (妖狐陣営)
 神話マニアをコピーした場合はコピー結果の陣営になります。
 
-14. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
+15. 鵺A → <a href="#mania">神話マニア</a> → 鵺B → <a href="wolf.php#wolf">人狼</a>
 神話マニアは鵺をコピーしたら村人になるので鵺のリンクが切れます。
 結果として以下のようになります。
 鵺A(村人陣営) → 村人(元神話マニア) / 鵺B (人狼陣営) → 人狼

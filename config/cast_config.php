@@ -448,18 +448,18 @@ class CastConfig extends CastConfigBase{
     'jammer_fox'           =>  3,
     'miasma_fox'           =>  3,
     'howl_fox'             =>  3,
-    'cupid'                =>  4,
-    'self_cupid'           =>  3,
-    'moon_cupid'           =>  3,
+    'cupid'                =>  3,
+    'self_cupid'           =>  4,
+    'moon_cupid'           =>  2,
     'mind_cupid'           =>  3,
     'sweet_cupid'          =>  2,
     'minstrel_cupid'       =>  2,
     'triangle_cupid'       =>  2,
-    'angel'                =>  4,
-    'rose_angel'           =>  4,
-    'lily_angel'           =>  4,
+    'angel'                =>  3,
+    'rose_angel'           =>  3,
+    'lily_angel'           =>  3,
     'exchange_angel'       =>  2,
-    'ark_angel'            =>  3,
+    'ark_angel'            =>  2,
     'sacrifice_angel'      =>  2,
     'scarlet_angel'        =>  2,
     'quiz'                 =>  2,
@@ -510,6 +510,9 @@ class CastConfig extends CastConfigBase{
     'cursed_yaksa'         =>  1,
     'succubus_yaksa'       =>  1,
     'dowser_yaksa'         =>  1,
+    'duelist'              =>  3,
+    'valkyrja_duelist'     =>  1,
+    'triangle_duelist'     =>  1,
     'mania'                =>  3,
     'trick_mania'          =>  2,
     'soul_mania'           =>  2,
@@ -524,11 +527,11 @@ class CastConfig extends CastConfigBase{
   //役職グループの最大出現比率 (グループ => 最大人口比率)
   var $chaos_role_group_rate_list = array(
     'wolf' => 0.21, 'mad' => 0.12, 'fox' => 0.1, 'child_fox' => 0.08,
-    'mage' => 0.18, 'necromancer' => 0.15, 'medium' => 0.1, 'priest' => 0.1, 'guard' => 0.15,
-    'common' => 0.17, 'poison' => 0.13, 'cat' => 0.1, 'pharmacist' => 0.15, 'assassin' => 0.15,
+    'mage' => 0.17, 'necromancer' => 0.15, 'medium' => 0.1, 'priest' => 0.1, 'guard' => 0.15,
+    'common' => 0.15, 'poison' => 0.13, 'cat' => 0.1, 'pharmacist' => 0.15, 'assassin' => 0.15,
     'scanner' => 0.15, 'jealousy' => 0.1, 'wizard' => 0.15, 'doll' => 0.15, 'escaper' => 0.15,
-    'cupid' => 0.1, 'angel' => 0.07, 'quiz' => 0.15, 'vampire' => 0.15,
-    'chiroptera' => 0.12, 'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12);
+    'cupid' => 0.1, 'angel' => 0.07, 'quiz' => 0.15, 'vampire' => 0.15, 'chiroptera' => 0.12,
+    'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12, 'duelist' => 0.08);
 
   //村人の出現上限補正
   var $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -661,7 +664,12 @@ class CastConfig extends CastConfigBase{
 			 'ark_angel'       =>  5,
 			 'sacrifice_angel' =>  5,
 			 'scarlet_angel'   =>  5)),
-		 'count' => array(1, 2))
+		 'count' => array(1, 2)),
+    'j' => array('random' => array(
+		   array('duelist'          => 5,
+			 'valkyrja_duelist' => 3,
+			 'triangle_duelist' => 2)),
+		 'count' => array(1))
 			    );
 
   //サブ役職制限：EASYモード

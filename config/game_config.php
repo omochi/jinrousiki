@@ -150,7 +150,7 @@ class RoomConfig{
 
   var $topping = true; //固定配役追加モード
   //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる
-  var $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'); //配役タイプ
+  var $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'); //配役タイプ
 
   var $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
   var $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)
@@ -198,7 +198,7 @@ class GameConfig extends GameConfigBase{
   //-- 投票 --//
   var $self_kick = true; //自分への KICK (true：有効 / false：無効)
   var $kick = 3; //KICK 処理を実施するのに必要な投票数
-  var $draw = 5; //引き分け処理を実施する再投票回数 (「再投票」なので実際の投票回数は +1 される)
+  var $draw = 4; //引き分け処理を実施する再投票回数 (「再投票」なので実際の投票回数は +1 される)
 
   //-- 役職の能力設定 --//
   //毒能力者を処刑した際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)

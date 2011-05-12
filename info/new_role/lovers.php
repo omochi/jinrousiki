@@ -24,6 +24,10 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 恋人陣営の基本種。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="duelist.php#valkyrja_duelist">戦乙女</a>
+</pre>
 
 <h3 id="self_cupid">求愛者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <pre>
@@ -37,6 +41,10 @@ OutputRolePageHeader('恋人陣営');
 <h4>同一表示役職</h4>
 <pre>
 <a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="duelist.php#duelist">決闘者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -102,6 +110,10 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 矢を三本撃てるキューピッド。
 他人撃ち制限などは普通のキューピッドと同じ。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="duelist.php#triangle_duelist">舞首</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

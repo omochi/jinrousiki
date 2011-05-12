@@ -113,9 +113,9 @@ class Session{
 
     //村が存在するなら観戦ページにジャンプする
     if(FetchResult("SELECT COUNT(room_no) FROM room WHERE room_no = {$RQ_ARGS->room_no}") > 0){
-      $url = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
+      $url   = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
       $title = '観戦ページにジャンプ';
-      $body .= "観戦ページに移動します。<br>\n" .
+      $body  = "観戦ページに移動します。<br>\n" .
 	'切り替わらないなら <a href="' . $url . '" target="_top">ここ</a> 。'."\n" .
 	'<script type="text/javascript"><!--'."\n" .
 	'if(top != self){ top.location.href = self.location.href; }'."\n" .
@@ -130,8 +130,8 @@ class Session{
   //エラー出力
   function OutputError(){
     $title = 'セッション認証エラー';
-    $str = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
-    OutputActionResult($title, $str);
+    $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
+    OutputActionResult($title, $body);
   }
 }
 
@@ -685,8 +685,8 @@ class RoleData{
     'eclipse_assassin'     => '蝕暗殺者',
     'mind_scanner'         => 'さとり',
     'evoke_scanner'        => 'イタコ',
-    'clairvoyance_scanner' => '猩々',
     'presage_scanner'      => '件',
+    'clairvoyance_scanner' => '猩々',
     'whisper_scanner'      => '囁騒霊',
     'howl_scanner'         => '吠騒霊',
     'telepath_scanner'     => '念騒霊',
@@ -819,17 +819,17 @@ class RoleData{
     'summer_fairy'         => '夏妖精',
     'autumn_fairy'         => '秋妖精',
     'winter_fairy'         => '冬妖精',
-    'flower_fairy'         => '花妖精',
-    'star_fairy'           => '星妖精',
-    'sun_fairy'            => '日妖精',
-    'moon_fairy'           => '月妖精',
-    'grass_fairy'          => '草妖精',
+    'greater_fairy'        => '大妖精',
     'light_fairy'          => '光妖精',
     'dark_fairy'           => '闇妖精',
+    'grass_fairy'          => '草妖精',
+    'sun_fairy'            => '日妖精',
+    'moon_fairy'           => '月妖精',
+    'star_fairy'           => '星妖精',
+    'flower_fairy'         => '花妖精',
     'shadow_fairy'         => '影妖精',
-    'greater_fairy'        => '大妖精',
-    'ice_fairy'            => '氷妖精',
     'mirror_fairy'         => '鏡妖精',
+    'ice_fairy'            => '氷妖精',
     'ogre'                 => '鬼',
     'orange_ogre'          => '前鬼',
     'indigo_ogre'          => '後鬼',
@@ -847,6 +847,9 @@ class RoleData{
     'cursed_yaksa'         => '滝夜叉姫',
     'succubus_yaksa'       => '荼枳尼天',
     'dowser_yaksa'         => '毘沙門天',
+    'duelist'              => '決闘者',
+    'valkyrja_duelist'     => '戦乙女',
+    'triangle_duelist'     => '舞首',
     'mania'                => '神話マニア',
     'trick_mania'          => '奇術師',
     'soul_mania'           => '覚醒者',
@@ -883,27 +886,27 @@ class RoleData{
     'lady'               => '淑女',
     'actor'              => '役者',
     'authority'          => '権力者',
+    'rebel'              => '反逆者',
     'critical_voter'     => '会心',
     'random_voter'       => '気分屋',
-    'rebel'              => '反逆者',
     'watcher'            => '傍観者',
-    'decide'             => '決定者',
-    'plague'             => '疫病神',
-    'good_luck'          => '幸運',
-    'bad_luck'           => '不運',
     'upper_luck'         => '雑草魂',
     'downer_luck'        => '一発屋',
     'star'               => '人気者',
     'disfavor'           => '不人気',
     'critical_luck'      => '痛恨',
     'random_luck'        => '波乱万丈',
+    'decide'             => '決定者',
+    'plague'             => '疫病神',
+    'good_luck'          => '幸運',
+    'bad_luck'           => '不運',
     'strong_voice'       => '大声',
     'normal_voice'       => '不器用',
     'weak_voice'         => '小声',
-    'upper_voice'        => 'メガホン',
-    'downer_voice'       => 'マスク',
     'inside_voice'       => '内弁慶',
     'outside_voice'      => '外弁慶',
+    'upper_voice'        => 'メガホン',
+    'downer_voice'       => 'マスク',
     'random_voice'       => '臆病者',
     'no_last_words'      => '筆不精',
     'blinder'            => '目隠し',
@@ -924,23 +927,24 @@ class RoleData{
     'mind_presage'       => '受託者',
     'mind_lonely'        => 'はぐれ者',
     'lovers'             => '恋人',
-    'possessed_exchange' => '交換憑依',
     'challenge_lovers'   => '難題',
+    'possessed_exchange' => '交換憑依',
+    'joker'              => 'ジョーカー',
+    'rival'              => '宿敵',
+    'possessed_target'   => '憑依者',
+    'possessed'          => '憑依',
     'infected'           => '感染者',
     'psycho_infected'    => '洗脳者',
+    'bad_status'         => '悪戯',
     'protected'          => '庇護者',
     'wirepuller_luck'    => '入道',
+    'lost_ability'       => '能力喪失',
+    'muster_ability'     => '能力発現',
     'changed_therian'    => '元獣人',
     'copied'             => '元神話マニア',
     'copied_trick'       => '元奇術師',
     'copied_soul'        => '元覚醒者',
-    'copied_teller'      => '元夢語部',
-    'possessed_target'   => '憑依者',
-    'possessed'          => '憑依',
-    'bad_status'         => '悪戯',
-    'lost_ability'       => '能力喪失',
-    'muster_ability'       => '能力発現',
-    'joker'              => 'ジョーカー');
+    'copied_teller'      => '元夢語部');
 
   //役職の省略名 (過去ログ用)
   var $short_role_list = array(
@@ -962,7 +966,7 @@ class RoleData{
     'soul_necromancer'     => '雲',
     'psycho_necromancer'   => '心霊',
     'embalm_necromancer'   => '粧',
-    'emissary_necromancer' => '密偵',
+    'emissary_necromancer' => '密',
     'attempt_necromancer'  => '蟲姫',
     'yama_necromancer'     => '閻',
     'dummy_necromancer'    => '夢枕',
@@ -971,7 +975,7 @@ class RoleData{
     'seal_medium'          => '封',
     'revive_medium'        => '風',
     'priest'               => '司',
-    'bishop_priest'        => '司教',
+    'bishop_priest'        => '教',
     'dowser_priest'        => '探',
     'weather_priest'       => '祈',
     'high_priest'          => '大司',
@@ -1028,7 +1032,7 @@ class RoleData{
     'sun_brownie'          => '烏',
     'revive_brownie'       => '蛇',
     'cursed_brownie'       => '祟',
-    'history_brownie'      => '白澤',
+    'history_brownie'      => '澤',
     'wizard'               => '魔',
     'soul_wizard'          => '八卦',
     'awake_wizard'         => '尼',
@@ -1086,7 +1090,7 @@ class RoleData{
     'amaze_mad'            => '傘',
     'agitate_mad'          => '扇',
     'miasma_mad'           => '蜘',
-    'critical_mad'         => '釣瓶',
+    'critical_mad'         => '釣',
     'follow_mad'           => '舟',
     'therian_mad'          => '獣',
     'immolate_mad'         => '殉',
@@ -1116,10 +1120,10 @@ class RoleData{
     'miasma_fox'           => '蟲狐',
     'howl_fox'             => '化狐',
     'cupid'                => 'QP',
-    'self_cupid'           => '求愛',
+    'self_cupid'           => '求',
     'moon_cupid'           => '姫',
     'mind_cupid'           => '女神',
-    'sweet_cupid'          => '弁天',
+    'sweet_cupid'          => '弁',
     'minstrel_cupid'       => '吟',
     'triangle_cupid'       => '小悪',
     'angel'                => '天使',
@@ -1149,17 +1153,17 @@ class RoleData{
     'summer_fairy'         => '夏精',
     'autumn_fairy'         => '秋精',
     'winter_fairy'         => '冬精',
-    'flower_fairy'         => '花精',
-    'star_fairy'           => '星精',
-    'sun_fairy'            => '日精',
-    'moon_fairy'           => '月精',
-    'grass_fairy'          => '草精',
+    'greater_fairy'        => '大精',
     'light_fairy'          => '光精',
     'dark_fairy'           => '闇精',
+    'grass_fairy'          => '草精',
+    'sun_fairy'            => '日精',
+    'moon_fairy'           => '月精',
+    'star_fairy'           => '星精',
+    'flower_fairy'         => '花精',
     'shadow_fairy'         => '影精',
-    'greater_fairy'        => '大精',
-    'ice_fairy'            => '氷精',
     'mirror_fairy'         => '鏡精',
+    'ice_fairy'            => '氷精',
     'ogre'                 => '鬼',
     'orange_ogre'          => '前鬼',
     'indigo_ogre'          => '後鬼',
@@ -1168,15 +1172,18 @@ class RoleData{
     'east_ogre'            => '風鬼',
     'north_ogre'           => '水鬼',
     'south_ogre'           => '隠鬼',
-    'incubus_ogre'         => '般若',
+    'incubus_ogre'         => '般',
     'power_ogre'           => '星熊',
     'revive_ogre'          => '茨木',
     'sacrifice_ogre'       => '酒呑',
-    'yaksa'                => '夜叉',
+    'yaksa'                => '夜',
     'betray_yaksa'         => '叉丸',
-    'cursed_yaksa'         => '滝叉',
+    'cursed_yaksa'         => '滝',
     'succubus_yaksa'       => '荼',
     'dowser_yaksa'         => '毘',
+    'duelist'              => '闘',
+    'valkyrja_duelist'     => '戦',
+    'triangle_duelist'     => '舞',
     'mania'                => 'マ',
     'trick_mania'          => '奇',
     'soul_mania'           => '覚醒',
@@ -1209,27 +1216,27 @@ class RoleData{
     'lady'                 => '淑',
     'actor'                => '役',
     'authority'            => '権',
+    'rebel'                => '反',
     'critical_voter'       => '会',
     'random_voter'         => '気',
-    'rebel'                => '反',
     'watcher'              => '傍',
-    'decide'               => '決',
-    'plague'               => '疫',
-    'good_luck'            => '幸',
-    'bad_luck'             => '不運',
     'upper_luck'           => '雑',
     'downer_luck'          => '一発',
     'star'                 => '人気',
     'disfavor'             => '不人',
     'critical_luck'        => '痛',
     'random_luck'          => '乱',
+    'decide'               => '決',
+    'plague'               => '疫',
+    'good_luck'            => '幸',
+    'bad_luck'             => '不運',
     'strong_voice'         => '大',
     'normal_voice'         => '不',
     'weak_voice'           => '小',
-    'upper_voice'          => '拡声',
-    'downer_voice'         => '覆',
     'inside_voice'         => '内弁',
     'outside_voice'        => '外弁',
+    'upper_voice'          => '拡声',
+    'downer_voice'         => '覆',
     'random_voice'         => '臆',
     'no_last_words'        => '筆',
     'blinder'              => '目',
@@ -1243,30 +1250,31 @@ class RoleData{
     'mower'                => '草刈',
     'mind_read'            => '漏',
     'mind_evoke'           => '口寄',
-    'mind_presage'         => '受託',
+    'mind_presage'         => '託',
     'mind_open'            => '公',
     'mind_receiver'        => '受',
     'mind_friend'          => '鳴',
     'mind_sympathy'        => '感',
     'mind_lonely'          => '逸',
     'lovers'               => '恋',
-    'possessed_exchange'   => '換',
     'challenge_lovers'     => '難',
+    'possessed_exchange'   => '換',
+    'joker'                => '道化',
+    'rival'                => '宿',
+    'possessed_target'     => '憑',
+    'possessed'            => '被憑',
     'infected'             => '染',
     'psycho_infected'      => '洗',
+    'bad_status'           => '戯',
     'protected'            => '庇',
     'wirepuller_luck'      => '入道',
+    'lost_ability'         => '失',
+    'muster_ability'       => '発',
+    'changed_therian'      => '元獣',
     'copied'               => '元マ',
     'copied_trick'         => '元奇',
     'copied_soul'          => '元覚',
-    'copied_teller'        => '元語',
-    'changed_therian'      => '元獣',
-    'possessed_target'     => '憑',
-    'possessed'            => '被憑',
-    'bad_status'           => '戯',
-    'lost_ability'         => '失',
-    'muster_ability'       => '発',
-    'joker'                => '道化');
+    'copied_teller'        => '元語');
 
   //メイン役職のグループリスト (役職 => 所属グループ)
   //このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
@@ -1284,6 +1292,7 @@ class RoleData{
     'fairy' => 'fairy',
     'ogre' => 'ogre',
     'yaksa' => 'yaksa',
+    'duelist' => 'duelist',
     'mage' => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer',
     'medium' => 'medium',
@@ -1292,21 +1301,23 @@ class RoleData{
     'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
     'common' => 'common',
     'cat' => 'poison_cat',
+    'pharmacist' => 'pharmacist',
+    'assassin' => 'assassin',
+    'scanner' => 'mind_scanner',
     'brownie' => 'brownie',
     'wizard' => 'wizard',
     'doll' => 'doll',
     'escaper' => 'escaper',
     'poison' => 'poison',
-    'pharmacist' => 'pharmacist',
-    'assassin' => 'assassin',
-    'scanner' => 'mind_scanner',
     'unknown_mania' => 'unknown_mania', 'sacrifice_mania' => 'unknown_mania',
     'wirepuller_mania' => 'unknown_mania',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
+  //このリストの表示順に PlayerList の役職が表示される
   var $sub_role_group_list = array(
     'lovers'       => array('lovers', 'possessed_exchange', 'challenge_lovers'),
+    'duelist'      => array('rival'),
     'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
 			    'mind_evoke', 'mind_presage', 'mind_lonely'),
     'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'),
@@ -1524,6 +1535,7 @@ class RoleData{
 
     case 'quiz':
     case 'vampire':
+    case 'duelist':
       return $camp;
 
     case 'chiroptera':
@@ -1653,14 +1665,10 @@ class CastConfigBase extends LotteryBuilder{
   }
 
   //決闘村の配役初期化処理
-  function InitializeDuel($user_count){
-    return true;
-  }
+  function InitializeDuel($user_count){ return true; }
 
   //決闘村の配役最終処理
-  function FinalizeDuel($user_count, &$role_list){
-    return true;
-  }
+  function FinalizeDuel($user_count, &$role_list){ return true; }
 
   //決闘村の配役処理
   function SetDuel($user_count){

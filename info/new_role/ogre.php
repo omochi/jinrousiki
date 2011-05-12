@@ -17,11 +17,10 @@ OutputRolePageHeader('鬼陣営');
 <ol>
   <li>勝利条件が個々によって違う特殊陣営です。</li>
   <li>共通の勝利条件は「自分自身の生存」で、<a href="chiroptera.php">蝙蝠陣営</a>同様、他陣営の勝敗と競合しません。</li>
-  <li>ゲーム終了時に鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、<br>
-    例外的に勝利条件は「自身の生存のみ」となります。
+  <li>鬼陣営をコピーした変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>と<a href="mania.php#unknown_mania_group">鵺系</a>の勝利条件は「自身の生存のみ」です。
   </li>
   <li><a href="sub_role.php#lovers">恋人</a>は<a href="lovers.php">恋人陣営</a>と判定します (例：恋人の人狼は人狼陣営とはカウントしない)。</li>
-  <li>2日目以降の夜に村人一人を攫う (<a href="human.php#assassin_spec">暗殺</a>の一種) ことができます。</li>
+  <li>2 日目以降の夜に村人一人を攫う (<a href="human.php#assassin_spec">暗殺</a>の一種) ことができます。</li>
   <li>人狼に襲撃されても一定確率で無効化します (襲撃は失敗扱い)。</li>
   <li>襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効です。</a>
   <li><a href="human.php#assassin_spec">暗殺</a>を一定確率で反射します。</li>

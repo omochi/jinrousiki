@@ -13,9 +13,7 @@ body{ /* AA 用 */
   padding: 3px;
   vertical-align: top;
 }
-.game-option img{ /* ゲームオプション */
-  vertical-align: top;
-}
+.game-option img{vertical-align: top;}
 .time-table{
   width: 100%;
   border: 0;
@@ -117,6 +115,10 @@ body{ /* AA 用 */
   background-color: #E09000;
   color: #FFFAFA;
 }
+.victory-duelist{ /* 決闘者勝利 */
+  background-color: #F05070;
+  color: #FFFAFA;
+}
 .victory-draw{ /* 引き分け */
   background-color: #CCEECC;
   color: #000000;
@@ -143,7 +145,7 @@ body{ /* AA 用 */
   border-collapse: collapse;
   width: 100%
 }
-.normal{font-size:12pt;} /* 通常の発言 */
+.normal{font-size: 12pt;} /* 通常の発言 */
 .strong{  /* 大声 */
   font-size: 20pt;
   font-weight: bold;
@@ -158,9 +160,7 @@ body{ /* AA 用 */
   text-align: left;
   vertical-align: middle;
 }
-.user-talk td{
-  border-bottom: 1px dashed #C0C0C0;
-}
+.user-talk td{border-bottom: 1px dashed #C0C0C0;}
 .user-name{width: 200px;} /* プレイヤー名 */
 .user-name span{font-size: 8pt;} /* ～の独り言など */
 .say{ /* 発言の中身 */
@@ -197,6 +197,7 @@ body{ /* AA 用 */
 .vampire-do{      background-color: #A000A0;} /* 吸血鬼 */
 .fairy-do{        background-color: #666666;} /* 妖精 */
 .ogre-do{         background-color: #C07000;} /* 鬼 */
+.duelist-do{      background-color: #D04060;} /* 決闘者 */
 .mania-do{        background-color: #C0A060;} /* 神話マニア */
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;
@@ -329,7 +330,7 @@ body{ /* AA 用 */
   font-size: 14pt;
   font-weight: bold;
 }
-.ability-dead{background-color:#CC0000;} /* 死んでいる場合 */
+.ability-dead{background-color: #CC0000;} /* 死んでいる場合 */
 .ability-partner{ /* 仲間の表示 */
   border: 1px solid;
   border-collapse: collapse;

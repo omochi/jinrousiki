@@ -219,7 +219,7 @@ EOF;
 		 'common', 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner',
 		 'jealousy', 'brownie', 'wizard', 'doll', 'escaper', 'wolf', 'mad', 'fox',
 		 'child_fox', 'cupid', 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'ogre',
-		 'yaksa', 'mania', 'unknown_mania');
+		 'yaksa', 'duelist', 'mania', 'unknown_mania');
     }
     elseif($ROOM->IsOption('gray_random')){
       array_push($wish_role_list, 'human', 'wolf', 'mad', 'fox');

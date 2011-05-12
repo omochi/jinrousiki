@@ -385,7 +385,7 @@ function OutputAbility(){
       break;
     }
   }
-  elseif($SELF->IsFox()){ //妖狐系
+  elseif($SELF->IsFox()){ //妖狐陣営
     $ROLE_IMG->Output($SELF->main_role);
 
     if(! $SELF->IsLonely()){ //仲間表示
@@ -519,7 +519,7 @@ function OutputAbility(){
     $ROLE_IMG->Output('human');
   }
   elseif($SELF->IsRoleGroup('poison')) $ROLE_IMG->Output('poison'); //埋毒者系
-  elseif($SELF->IsRoleGroup('cupid', 'angel')){ //キューピッド系
+  elseif($SELF->IsRoleGroup('cupid', 'angel')){ //恋人陣営
     $ROLE_IMG->Output($SELF->main_role);
 
     //自分が矢を打った恋人 (自分自身含む) を表示
@@ -548,12 +548,12 @@ function OutputAbility(){
     //初日夜の投票
     if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO');
   }
-  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //橋姫
+  elseif($SELF->IsRoleGroup('jealousy')) $ROLE_IMG->Output($SELF->main_role); //橋姫系
   elseif($SELF->IsRole('quiz')){ //出題者
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
   }
-  elseif($SELF->IsRoleGroup('vampire')){ //吸血鬼系
+  elseif($SELF->IsRoleGroup('vampire')){ //吸血鬼陣営
     $ROLE_IMG->Output($SELF->main_role);
 
     if($ROOM->date > 2){ //自分の感染者と洗脳者を表示
@@ -571,6 +571,21 @@ function OutputAbility(){
     if($SELF->IsRole('soul_vampire')) OutputSelfAbilityResult('VAMPIRE_RESULT'); //吸血姫の吸血結果
     if($ROOM->date > 1 && $ROOM->IsNight()){
       OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO'); //夜の投票
+    }
+  }
+  elseif($SELF->IsRoleGroup('duelist')){ //決闘者陣営
+    $ROLE_IMG->Output($SELF->main_role);
+
+    //自分が結びつけた宿敵 (自分自身含む) を表示
+    $stack = array();
+    foreach($USERS->rows as $user){
+      if($user->IsPartner('rival', $SELF->user_no)) $stack[] = $user->handle_name;
+    }
+    OutputPartner($stack, 'duelist_pair');
+    unset($stack);
+
+    if($ROOM->date == 1 && $ROOM->IsNight()){ //初日夜の投票
+      OutputVoteMessage('duelist-do', 'duelist_do', 'DUELIST_DO');
     }
   }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア
@@ -602,14 +617,15 @@ function OutputAbility(){
   $fix_display_list[] = $role;
 
   if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){ //恋人
+    $stack = array();
     foreach($USERS->rows as $user){
       if(! $user->IsSelf() &&
 	 ($user->IsPartner('lovers', $SELF->partner_list) ||
 	  $SELF->IsPartner('dummy_chiroptera', $user->user_no))){
-	$lovers_partner[] = $USERS->GetHandleName($user->uname, true);
+	$stack[] = $USERS->GetHandleName($user->uname, true);
       }
     }
-    OutputPartner($lovers_partner, 'partner_header', 'lovers_footer');
+    OutputPartner($stack, 'partner_header', 'lovers_footer');
   }
   $fix_display_list[] = 'lovers';
 
@@ -632,6 +648,17 @@ function OutputAbility(){
   $role = 'joker'; //ジョーカー
   if($SELF->IsJoker($ROOM->date)) $ROLE_IMG->Output($role);
   $fix_display_list[] = $role;
+
+  if($SELF->IsRival()){ //宿敵
+    $stack = array();
+    foreach($USERS->rows as $user){
+      if(! $user->IsSelf() && $user->IsPartner('rival', $SELF->partner_list)){
+	$stack[] = $USERS->GetHandleName($user->uname, true);
+      }
+    }
+    OutputPartner($stack, 'partner_header', 'rival_footer');
+  }
+  $fix_display_list[] = 'rival';
 
   //ここからは憑依先の役職を表示
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
@@ -1004,7 +1031,7 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   if(count($stack) < 1){
     $str = $MESSAGE->{'ability_' . $sentence};
   }
-  elseif($situation == 'WOLF_EAT' || $situation == 'CUPID_DO'){
+  elseif($situation == 'WOLF_EAT' || $situation == 'CUPID_DO' || $situation == 'DUELIST_DO'){
     $str = '投票済み';
   }
   elseif($situation == 'SPREAD_WIZARD_DO'){

@@ -369,6 +369,13 @@ function VoteNight(){
     }
     break;
 
+  case 'DUELIST_DO':
+    if(! $SELF->IsRoleGroup('duelist')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! is_array($RQ_ARGS->target_no)) OutputVoteResult('夜：投票データが一致しません');
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    $is_duelist = true;
+    break;
+
   case 'MANIA_DO':
     if(! $SELF->IsRoleGroup('mania')) OutputVoteResult('夜：投票イベントが一致しません');
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
@@ -385,7 +392,22 @@ function VoteNight(){
   $error_header = '夜：投票先が正しくありません<br>'; //エラーメッセージのヘッダ
 
   if($not_type); //投票キャンセルタイプは何もしない
-  elseif($is_cupid || $is_mirror_fairy){ //キューピッド系
+  elseif($is_wizard){ //魔法使い系 (拡散型)
+    if(count($RQ_ARGS->target_no) < 1 || 4 < count($RQ_ARGS->target_no)){ //人数チェック
+      OutputVoteResult($error_header . '指定人数は1～4人にしてください');
+    }
+
+    $target_list = array();
+    foreach($RQ_ARGS->target_no as $target_no){
+      $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
+      //自分・生存者以外・身代わり君への投票は無効
+      if($target->IsSelf() || ! $USERS->IsVirtualLive($target->user_no) || $target->IsDummyBoy()){
+	OutputVoteResult($error_header . '自分自身・生存者以外・身代わり君へは投票できません');
+      }
+      $target_list[] = $target;
+    }
+  }
+  elseif($is_cupid || $is_mirror_fairy){ //恋人陣営
     if($SELF->IsRole('triangle_cupid')){
       if(count($RQ_ARGS->target_no) != 3){
 	OutputVoteResult($error_header . '指定人数は三人にしてください');
@@ -419,19 +441,38 @@ function VoteNight(){
       }
     }
   }
-  elseif($is_wizard){ //魔法使い系 (拡散型)
-    if(count($RQ_ARGS->target_no) < 1 || 4 < count($RQ_ARGS->target_no)){ //人数チェック
-      OutputVoteResult($error_header . '指定人数は1～4人にしてください');
+  elseif($is_duelist){ //決闘者陣営
+    if($SELF->IsRole('triangle_duelist')){
+      if(count($RQ_ARGS->target_no) != 3){
+	OutputVoteResult($error_header . '指定人数は三人にしてください');
+      }
+    }
+    elseif(count($RQ_ARGS->target_no) != 2){
+      OutputVoteResult($error_header . '指定人数は二人にしてください');
     }
 
+    $self_shoot = false; //自分撃ちフラグを初期化
     $target_list = array();
     foreach($RQ_ARGS->target_no as $target_no){
       $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
-      //自分・生存者以外・身代わり君への投票は無効
-      if($target->IsSelf() || ! $USERS->IsVirtualLive($target->user_no) || $target->IsDummyBoy()){
-	OutputVoteResult($error_header . '自分自身・生存者以外・身代わり君へは投票できません');
+
+      //生存者以外と身代わり君への投票は無効
+      if(! $target->IsLive() || $target->IsDummyBoy()){
+	OutputVoteResult($error_header . '生存者以外と身代わり君へは投票できません');
       }
+
       $target_list[] = $target;
+      $self_shoot |= $target->IsSelf(); //自分撃ち判定
+    }
+
+    //自分撃ちでは無い場合は特定のケースでエラーを返す
+    if(! $self_shoot){
+      if($SELF->IsRole('duelist')){ //決闘者
+	OutputVoteResult($error_header . '決闘者は必ず自分を対象に含めてください');
+      }
+      elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //参加人数
+	OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
+      }
     }
   }
   else{ //キューピッド系以外
@@ -481,7 +522,21 @@ function VoteNight(){
     $ROOM->Talk($RQ_ARGS->situation, $SELF->uname);
   }
   else{
-    if($is_cupid){ //キューピッド系の処理
+    if($is_wizard){ //魔法使い系 (拡散型) の処理
+      $uname_stack  = array();
+      $handle_stack = array();
+      foreach($target_list as $target){
+	$uname_stack[] = $USERS->ByReal($target->user_no)->user_no;
+	$handle_stack[$target->user_no] = $target->handle_name;
+      }
+      sort($uname_stack);
+      ksort($handle_stack);
+
+      $situation     = $RQ_ARGS->situation;
+      $target_uname  = implode(' ', $uname_stack);
+      $target_handle = implode(' ', $handle_stack);
+    }
+    elseif($is_cupid){ //恋人陣営の処理
       $uname_stack  = array();
       $handle_stack = array();
       $ROLES->actor = $SELF;
@@ -535,15 +590,19 @@ function VoteNight(){
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
     }
-    elseif($is_wizard){ //魔法使い系 (拡散型) の処理
+    elseif($is_duelist){ //決闘者陣営の処理
       $uname_stack  = array();
       $handle_stack = array();
+      $ROLES->actor = $SELF;
       foreach($target_list as $target){
-	$uname_stack[] = $USERS->ByReal($target->user_no)->user_no;
-	$handle_stack[$target->user_no] = $target->handle_name;
+	$uname_stack[]  = $target->uname;
+	$handle_stack[] = $target->handle_name;
+
+	$role = $SELF->GetID('rival'); //役職に宿敵を追加
+	//特殊決闘者の処理 (予約)
+	$ROLES->Load('main_role', true)->AddRivalRole($role, $target, $self_shoot);
+	$target->AddRole($role);
       }
-      sort($uname_stack);
-      ksort($handle_stack);
 
       $situation     = $RQ_ARGS->situation;
       $target_uname  = implode(' ', $uname_stack);
@@ -839,6 +898,13 @@ function OutputVoteNight(){
     if($ROOM->date == 1) OutputVoteResult('夜：初日の人攫いはできません');
     $type = 'OGRE_DO';
     if(! $ROOM->IsEvent('force_assassin_do')) $not_type = 'OGRE_NOT_DO';
+  }
+  elseif($SELF->IsRoleGroup('duelist')){
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
+    $type = 'DUELIST_DO';
+    $role_cupid = true;
+    $cupid_self_shoot  = $SELF->IsRole('duelist') ||
+      $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
   elseif($SELF->IsRoleGroup('mania')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外はコピーできません');

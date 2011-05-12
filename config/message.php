@@ -52,6 +52,7 @@ class Message{
   var $fairy_do         = 'に悪戯しました'; //妖精の投票
   var $ogre_do          = 'に狙いをつけました'; //鬼の投票
   var $ogre_not_do      = 'は人攫いを行いませんでした'; //鬼のキャンセル投票
+  var $duelist_do       = 'に宿命を結び付けました'; //決闘者の投票
   var $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
 
   var $morning_header = '朝日が昇り'; //朝のヘッダー
@@ -225,6 +226,7 @@ class Message{
   var $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   var $ability_fairy_do         = '悪戯する人を選択してください'; //妖精
   var $ability_ogre_do          = '攫う人を選択してください'; //鬼
+  var $ability_duelist_do       = '結びつける人を選択してください'; //決闘者
   var $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
 
   //-- game_play.php --//
@@ -323,6 +325,7 @@ class GameOptionMessage{
   var $topping_g             = 'G：嘘吐村';
   var $topping_h             = 'H：村人村';
   var $topping_i             = 'I：恋人村';
+  var $topping_j             = 'J：宿敵村';
   var $chaos_open_cast       = '配役を通知する';
   var $chaos_open_cast_camp  = '陣営を通知する';
   var $chaos_open_cast_role  = '役職を通知する';
@@ -468,6 +471,7 @@ class VoteMessage{
   var $fairy_do         = '対象に悪戯する'; //妖精
   var $ogre_do          = '対象を攫う'; //鬼
   var $ogre_not_do      = '誰も攫わない'; //鬼(キャンセル)
+  var $duelist_do       = '対象を結びつける'; //決闘者
   var $mania_do         = '対象を真似る'; //神話マニア
   var $revive_refuse    = '蘇生を辞退する'; //蘇生辞退
 }

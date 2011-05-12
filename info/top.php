@@ -26,5 +26,8 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>決闘者：初日夜に自分と誰か一人を宿敵にする。</li>
+  <li>戦乙女：自分撃ち固定制限がない決闘者。</li>
+  <li>舞首：宿敵を三人作れる決闘者。</li>
+  <li>宿敵：決闘者陣営が付加し、勝利条件が追加される。</li>
 </ul>

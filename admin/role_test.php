@@ -79,7 +79,10 @@ function OutputRoleTestForm(){
 
 EOF;
 
+  $count = 0;
   foreach($ROOM_CONF->topping_list as $mode){
+    $count++;
+    if($count > 0 && $count % 6 == 0) echo "<br>\n";
     echo <<<EOF
 <input type="radio" name="topping" value="{$mode}">{$GAME_OPT_MESS->{'topping_' . $mode}}
 

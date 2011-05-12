@@ -7,21 +7,19 @@ class User{
   var $suicide_flag = false;
   var $revive_flag = false;
 
-  function ParseCompoundParameters(){
-    $this->ParseRoles();
-  }
+  function ParseCompoundParameters(){ $this->ParseRoles(); }
 
   //指定したユーザーデータのセットを名前つき配列にして返します。
   //このメソッドは extract 関数を使用してオブジェクトのプロパティを
   //迅速にローカルに展開するために使用できます。 (現在は未使用)
   function ToArray($type = NULL){
     switch($type){
-      case 'profiles':
-	$result['profile'] = $this->profile;
-	$result['color'] = $this->color;
-	$result['icon_width'] = $this->icon_width;
-	$result['icon_height'] = $this->icon_height;
-	break;
+    case 'profiles':
+      $result['profile'] = $this->profile;
+      $result['color'] = $this->color;
+      $result['icon_width'] = $this->icon_width;
+      $result['icon_height'] = $this->icon_height;
+      break;
 
     case 'flags':
       $result['dead_flag'] = $this->dead_flag;
@@ -308,6 +306,11 @@ class User{
     return $this->IsRole('lovers');
   }
 
+  //宿敵判定
+  function IsRival(){
+    return $this->IsRole('rival');
+  }
+
   //狩り判定
   function IsHuntTarget(){
     return ($this->IsRoleGroup('mad') && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
@@ -554,6 +557,7 @@ class User{
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
+      if($this->IsRoleGroup('duelist')) return $this->IsVoted($vote_data, 'DUELIST_DO');
       if($this->IsRoleGroup('mania')) return $this->IsVoted($vote_data, 'MANIA_DO');
 
       if($ROOM->IsOpenCast()) return true;
@@ -638,6 +642,10 @@ class User{
 
 	case 'infected':
 	  $str .= '<span class="vampire">' . $name . '</span>';
+	  break;
+
+	case 'rival':
+	  $str .= '<span class="duelist">' . $name . '</span>';
 	  break;
 
 	default:

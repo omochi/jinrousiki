@@ -505,9 +505,41 @@ EOF;
       }
       break;
 
+    case 'duelist':
+      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営は生存のみ
+	$win_flag = $SELF->IsLive();
+      }
+      else{ //決闘者は宿敵が単独生存なら勝利 (宿敵を持たない場合は生存のみ)
+	$rival_count = 0;
+	$live_count  = 0;
+	foreach($USERS->rows as $user){
+	  if($user->IsPartner('rival', $SELF->user_no)){
+	    $rival_count++;
+	    if($user->IsLive()) $live_count++;
+	  }
+	}
+	$win_flag = $rival_count > 0 ? $live_count == 1 : $SELF->IsLive();
+      }
+      break;
+
     default:
       $win_flag = $victory == $camp;
       break;
+    }
+
+    if($win_flag && $SELF->IsRival() && ! $SELF->IsLovers()){ //宿敵判定
+      if($SELF->IsDead()){ //死亡していたら敗北
+	$win_flag = false;
+      }
+      else{
+	foreach($USERS->rows as $user){ //自分以外の宿敵生存者がいたら敗北
+	  if(! $user->IsSelf() && $user->IsPartner('rival', $SELF->partner_list) &&
+	     $user->IsLive()){
+	    $win_flag = false;
+	    break;
+	  }
+	}
+      }
     }
 
     if($win_flag && (! $SELF->IsJoker($ROOM->date) || count($USERS->GetLivingUsers()) == 1)){
@@ -848,7 +880,7 @@ function OutputAbilityAction(){
 			 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO',
 			 'FAIRY_DO');
     if($yesterday == 1){
-      array_push($action_list, 'CUPID_DO', 'MANIA_DO');
+      array_push($action_list, 'CUPID_DO', 'DUELIST_DO', 'MANIA_DO');
     }
     else{
       array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
@@ -871,11 +903,12 @@ function OutputAbilityAction(){
     echo $header.$USERS->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
     switch($stack['type']){
     case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
+    case 'DUELIST_DO':
     case 'SPREAD_WIZARD_DO':
       $target = 'は '.$target;
       break;
 
-    case 'SPREAD_WIZARD_DO':
+    case 'SPREAD_WIZARD_DO': //テストコード
       $str_stack = array();
       foreach(explode(' ', $target) as $id){
 	$str_stack[] = $USERS->ByID($id)->GenerateShortRoleName(false, true);
@@ -979,6 +1012,10 @@ function OutputAbilityAction(){
 
     case 'FAIRY_DO':
       echo $target.$MESSAGE->fairy_do;
+      break;
+
+    case 'DUELIST_DO':
+      echo $target.$MESSAGE->duelist_do;
       break;
 
     case 'MANIA_DO':

@@ -16,6 +16,8 @@ OutputRolePageHeader('サブ役職');
 <a href="#strong_voice_group">大声系</a>
 <a href="#no_last_words_group">筆不精系</a>
 <a href="#mind_read_group">サトラレ系</a>
+</p>
+<p>
 <a href="#lovers_group">恋人系</a>
 <a href="#joker_group">ジョーカー系</a>
 <a href="#other_group">その他</a>
@@ -1087,6 +1089,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h2 id="joker_group">ジョーカー系</h2>
 <p>
 <a href="#joker">ジョーカー</a>
+<a href="#rival">宿敵</a>
 </p>
 
 <h3 id="joker">ジョーカー [Ver. 1.4.0 β21～]</h3>
@@ -1171,6 +1174,17 @@ A-C が J に投票して、J が処刑、ランダム移動で C にジョー�
 夜に A が C を襲撃した場合は A と B が生存し、C がジョーカーを所持して人狼陣営勝利、
 A が B を襲撃した場合は A が毒死して C の単独生存、つまり出題者陣営勝利となる。
 この場合、C がジョーカーを所持したままだが、C は勝利扱いとなる。
+</pre>
+
+<h3 id="rival">宿敵 [Ver. 1.5.0 β1～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="duelist.php">決闘者陣営</a>が付加し、勝利条件が追加される。
+詳細は<a href="duelist.php#rival">宿敵の仕様</a>参照
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="duelist.php">決闘者陣営</a>の勝敗判定用に実装されたサブ役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/780" target="_top">新役職考案スレ(780)</a> が原型です。
 </pre>
 
 <h2 id="other_group">その他</h2>

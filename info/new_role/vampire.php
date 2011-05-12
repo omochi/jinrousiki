@@ -25,8 +25,7 @@ OutputRolePageHeader('吸血鬼陣営');
   <li>2 日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
   <li><a href="sub_role.php#infected">感染者</a>になっても自覚がありません。</li>
   <li>生存カウントは村人です。</li>
-  <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」です。</li>
-  <li><a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
+  <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
 </ol>
 <h5>Ver. 1.4.0 β19～</h5>
 <pre>

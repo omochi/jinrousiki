@@ -43,7 +43,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a href="lovers.php#angel_group" target="body">天使系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="quiz.php" target="body">&lt;出題者陣営&gt;</a></li>
-<li><a href="quiz.php#quiz" target="body">出題者系</a></li>
+<li><a href="quiz.php#quiz_group" target="body">出題者系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="vampire.php" target="body">&lt;吸血鬼陣営&gt;</a></li>
 <li><a href="vampire.php#vampire_group" target="body">吸血鬼系</a></li>
@@ -55,6 +55,9 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a href="ogre.php" target="body">&lt;鬼陣営&gt;</a></li>
 <li><a href="ogre.php#ogre_group" target="body">鬼系</a></li>
 <li><a href="ogre.php#yaksa_group" target="body">夜叉系</a></li>
+<li>★☆★☆★☆★</li>
+<li><a href="duelist.php" target="body">&lt;決闘者陣営&gt;</a></li>
+<li><a href="duelist.php#duelist_group" target="body">決闘者系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a href="mania.php" target="body">&lt;神話マニア陣営&gt;</a></li>
 <li><a href="mania.php#mania_group" target="body">神話マニア系</a></li>

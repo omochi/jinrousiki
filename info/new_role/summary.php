@@ -25,8 +25,11 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <a href="lovers.php">恋人陣営</a>
 <a href="quiz.php">出題者陣営</a>
 <a href="vampire.php">吸血鬼陣営</a>
+</p>
+<p>
 <a href="chiroptera.php">蝙蝠陣営</a>
 <a href="ogre.php">鬼陣営</a>
+<a href="duelist.php">決闘者陣営</a>
 <a href="mania.php">神話マニア陣営</a>
 <a href="sub_role.php">サブ役職</a>
 </p>
@@ -85,7 +88,8 @@ Ver. 1.4.0
 <a href="#sub_role">サブ役職</a><br>
 Ver. 1.5.0
 <a href="#sub_ver150a5">α5</a>
-<a href="#sub_ver150a9">α9</a><br>
+<a href="#sub_ver150a9">α9</a>
+<a href="#sub_ver150b1">β1</a><br>
 Ver. 1.4.0
 <a href="#sub_ver140a3">α3-7</a>
 <a href="#sub_ver140a9">α9</a>
@@ -1144,7 +1148,7 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">コピー先が「初日投票をしてなかった」場合はその役職を奪い取り、
-手はその系統の基本職に入れ替わってしまう、特殊な神話マニア。</td>
+手はその系統の基本職に入れ替わってしまう特殊な神話マニア。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -2339,6 +2343,34 @@ Ver. 1.4.0
   <td class="ability"><a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な天使。<br>夜に<a href="human.php#unconscious">無意識</a>が誰か分かり、矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。</td>
   <td>Ver. 1.5.0 β1</td>
 </tr>
+<tr>
+  <td><a href="duelist.php#duelist">決闘者</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">初日夜に自分と誰か一人を<a href="duelist.php#rival">宿敵</a>にする。<br>
+    矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。</td>
+  <td>Ver. 1.5.0 β1</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#valkyrja_duelist">戦乙女</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">自分撃ち固定制限がない決闘者。</td>
+  <td>Ver. 1.5.0 β1</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#triangle_duelist">舞首</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">宿敵を三人作れる決闘者。</td>
+  <td>Ver. 1.5.0 β1</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -2911,14 +2943,23 @@ Ver. 1.4.0
     <td class="ability">発動制限付き能力者が能力を得た場合に付加される。</td>
     <td>Ver. 1.5.0 α9</td>
   </tr>
+  <tr id="sub_ver150b1">
+    <td><a href="sub_role.php#rival">宿敵</a></td>
+    <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
+    <td>○</td>
+    <td class="ability"><a href="duelist.php">決闘者陣営</a>が付加し、勝利条件が追加される。</td>
+    <td>Ver. 1.5.0 β1</td>
+  </tr>
 </table>
 
 <h2 id="reference">参考リンク</h2>
 <pre>
 作って欲しい役職などがあったらこちらのスレへどうぞ
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">【ネタ歓迎】あったらいいな、こんな役職【ガチ大歓迎】</a>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/l50" target="_top">【ネタ歓迎】あったらいいな、こんな役職 2【ガチ大歓迎】</a>
 
 参考スレッド
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/l50" target="_top">【ネタ歓迎】あったらいいな、こんな役職【ガチ大歓迎】</a>
+
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/game/48159/1243197597/l50" target="_top">新役職提案スレッド＠やる夫</a>
 </pre>
 

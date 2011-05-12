@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
-$INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'GAME_OPT_MESS');
+$INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'MESSAGE', 'GAME_OPT_MESS');
 OutputInfoPageHeader('仕様', 0, 'script_info');
 ?>
 <script type="text/javascript" src="../javascript/output_diff_time.js"></script>
@@ -10,7 +10,7 @@ OutputInfoPageHeader('仕様', 0, 'script_info');
 <ul>
   <li><a href="#environment">ゲームに参加するために必要な環境</a></li>
   <li><a href="#difference">他のスクリプトとどこが違うの？</a></li>
-  <li><a href="#faq">FAQ よくある質問と答え</a></li>
+  <li><a href="#faq">FAQ (よくある質問と答え)</a></li>
 </ul>
 
 <h2 id="environment">ゲームに参加するために必要な環境</h2>
@@ -67,13 +67,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div class="info">
 このスクリプトではゲームマスターは居ません、村を作成した人は改めて住民登録をしてゲームにご参加ください。<br>
 ゲームを開始するにはプレイヤー全員が「ゲームの開始」に投票する必要があります。<br>
-ゲーム中の仮想時間 (昼12時間、夜6時間) を経過した後に [<?php echo $TIME_CALC->sudden_death ?>] 経過すると投票していない人は自動で突然死となります。<br>
+ゲーム中の仮想時間 (昼12時間、夜6時間) を経過した後に [ <?php echo $TIME_CALC->sudden_death ?> ] 経過すると投票していない人は自動で突然死となります。<br>
 突然死が発生するとその日の投票がリセットされて再投票となります、注意してください。
 </div>
 
 <h3 id="difference_icon">ユーザの似顔絵などを表すユーザアイコンを自由にアップロードできます</h3>
 <div class="info">
-<a href="../icon_upload.php" target="_top">専用のページ</a>から [<?php echo $USER_ICON->IconSizeMax() . '、容量 ' . $USER_ICON->IconFileSizeMax() ?>] のファイルをアップロードできます。
+<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php echo $USER_ICON->IconSizeMax() . '、容量 ' . $USER_ICON->IconFileSizeMax() ?> ] のファイルをアップロードできます。
 </div>
 
 <h3 id="difference_message">システムメッセージを画像に</h3>
@@ -86,13 +86,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div class="info">
 再投票が何度も続くとゲームが進まなくなります。<br>
 この場合、やむを得ず引き分けとすることが必要です。<br>
-[<?php echo $GAME_CONF->draw ?>回] 再投票が続いた場合は自動的に引き分けとなり、ゲームは終了します。
+[ <?php echo $GAME_CONF->draw ?>回 ] 再投票が続いた場合は自動的に引き分けとなり、ゲームは終了します。
 </div>
 
 <h3 id="difference_deadman">死亡者の順序がランダム表示</h3>
 <div class="info">
-人狼に襲われて死亡した場合、妖狐が占われて死亡した場合、埋毒者に道連れにされた場合、表示されるメッセージは「～は無残な姿で発見されました」となります。<br>
-また、恋人が後追いした場合、表示されるメッセージは「～は恋人の後を追って自殺しました」となります。<br>
+人狼に襲われて死亡した場合、妖狐が占われて死亡した場合、埋毒者に道連れにされた場合、表示されるメッセージは「～<?php echo $MESSAGE->deadman ?>」となります。<br>
+また、恋人が後追いした場合、表示されるメッセージは「～<?php echo $MESSAGE->lovers_followed ?>」となります。<br>
 表示される順番ですが、どの死に方をした人が上に表示されるということはなく順序がランダムに表示されます。<br>
 注意しなければいけないことはリロードするたびにランダムに順序が変更されるということです。
 </div>
@@ -136,7 +136,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_night_talk">夜の独り言</h3>
 <div class="info">
 人狼、共有者以外は夜中会話することは出来ませんが、発言すると独り言となり、本人と死亡者(天国モード)からは見ることができます。<br>
-ただし、「霊界で配役を公開しない」オプションが設定されている場合は見えません。<br>
+ただし、「<a href="game_option.php#not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a>」オプションが設定されている場合は見えません。<br>
 暇つぶしにでも使ってください。
 </div>
 
@@ -145,7 +145,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_sound">音でお知らせ</h3>
 <div class="info">
-「音でお知らせ」をOnにすると、「夜が明けたとき」「再投票になったとき」「異議ありのとき」に音でお知らせしてくれます。<br>
+「音でお知らせ」をOnにすると、「夜が明けた時」「再投票になった時」「異議ありの時」に音でお知らせしてくれます。<br>
+Ver. 1.4.4 / Ver. 1.5.0 α4 からは「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」にも音がなります。<br>
 「異議あり」については次で説明します。
 </div>
 
@@ -154,7 +155,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 ゲーム前、ゲーム中の昼に右上に「異議あり」のボタンがあります。<br>
 このボタンを押すと特殊なメッセージと音で皆に知らせることができます。<br>
 ボタンに右にカッコ内で表示されている数字は残り回数です。<br>
-<?php echo $GAME_CONF->objection ?> 回「異議あり」を使用すると二度と使えなくなります。
+[ <?php echo $GAME_CONF->objection ?> 回 ] 「異議あり」を使用すると二度と使えなくなります。
 </div>
 
 <h3 id="difference_last_words">遺言</h3>
@@ -164,7 +165,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 遺言でさらなる情報を得て、推理の材料にしてください。<br>
 設定方法は発言の文字の大きさ(強く発言する・通常どおり発言する・弱く発言する)の欄の一番下に「遺言を残す」という項目があります。<br>
 この項目を選択して文章を送信すれば遺言がセットされます。<br>
-死亡後は遺言のセットはできません。
+死亡後は遺言のセットはできません。<br>
+Ver. 1.5.0 β1 からは、「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。
 </div>
 
 <h3 id="difference_max_user">村の最大人数を制限できます</h3>
@@ -200,7 +202,7 @@ echo $str;
 
 <h3 id="difference_die_room">自動廃村</h3>
 <div class="info">
-ゲームが開始されない場合、最後に発言された時間から [<?php echo $TIME_CALC->die_room ?>] 放置されると自動で村は廃墟になります。<br>
+ゲームが開始されない場合、最後に発言された時間から [ <?php echo $TIME_CALC->die_room ?> ] 放置されると自動で村は廃墟になります。<br>
 手動で廃村にする方法はありません、連絡用の掲示板やゲーム内の発言で村に登録しないように促してください。
 </div>
 
@@ -237,14 +239,14 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->
 
 <h3 id="difference_spend_time">非リアルタイム制の会話の時間消費の上限</h3>
 <div class="info">
-半角100文字(全角50文字)で 昼： [<?php echo $TIME_CALC->spend_day ?>] 夜：[<?php echo $TIME_CALC->spend_night ?>] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字(全角200文字)までの消費時間までしか増えません。<br>
+半角100文字(全角50文字)で 昼： [ <?php echo $TIME_CALC->spend_day ?> ] 夜：[ <?php echo $TIME_CALC->spend_night ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字(全角200文字)までの消費時間までしか増えません。<br>
 半角400文字以上で発言しても消費される時間は半角400文字分と同じです。
 </div>
 
 <h3 id="difference_silence">強制沈黙</h3>
 <div class="info">
-非リアルタイム制の場合、誰も発言をせず [<?php echo $TIME_CALC->silence ?>] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
-消費される時間は 昼： [<?php echo $TIME_CALC->silence_day ?>] 夜： [<?php echo $TIME_CALC->silence_night ?>]です。
+非リアルタイム制の場合、誰も発言をせず [ <?php echo $TIME_CALC->silence ?> ] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
+消費される時間は 昼： [ <?php echo $TIME_CALC->silence_day ?> ] 夜： [ <?php echo $TIME_CALC->silence_night ?> ]です。
 </div>
 
 <h3 id="difference_escape_talk">半角 &yen; マークは発言できません</h3>
@@ -262,7 +264,7 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->
 同じ名前を狙うのなら、半角数字を全角にしたり工夫してください。
 </div>
 
-<h2 id="faq">FAQ よくある質問と答え</h2>
+<h2 id="faq">FAQ (よくある質問と答え)</h2>
 <ul>
   <li><a href="#faq_session">セッションエラーと表示されました</a></li>
   <li><a href="#faq_login">ログインするには</a></li>
@@ -297,6 +299,7 @@ Cookie は有効にしてください。
 
 <h3 id="faq_heaven_mode">死亡して天国モードに行く場合に画面がおかしくなる</h3>
 <div class="info">
+自動ジャンプは JavaScript で実装されているので、ブラウザ依存でおかしくなっている可能性があります。<br>
 Mac では一応対策されているつもりです。<br>
 あとタブブラウザでなる場合もあるそうです。<br>
 もし画面が変になりましたら再ログインするか、それでもダメなら公式の連絡掲示板に詳しく状況を報告していただければ助かります。<br>
