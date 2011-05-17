@@ -541,12 +541,13 @@ OutputInfoPageHeader('闇鍋モード');
       </li>
       <li><?php echo $GAME_OPT_MESS->topping_h ?> / 村人2</li>
       <li><?php echo $GAME_OPT_MESS->topping_i ?> / 橋姫系1 恋人陣営2</li>
+      <li><?php echo $GAME_OPT_MESS->topping_j ?> / 決闘者陣営1</li>
     </ol>
   </li>
 </ol>
 <h3>Ver. 1.5.0 β1～</h3>
 <pre>
-TypeI 追加
+TypeI・J 追加
 </pre>
 <h3>Ver. 1.5.0 α7～</h3>
 <pre>

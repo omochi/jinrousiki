@@ -182,6 +182,10 @@ OutputRolePageHeader('妖狐陣営');
 毒を持った妖狐。毒の対象は妖狐陣営以外。
 <a href="wolf.php#wolf_group">人狼</a>に襲撃されたら死亡して毒が発動する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#poison">毒能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#poison_group">埋毒者</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/110" target="_top">新役職考案スレ(110)</a> が原型です。
@@ -253,8 +257,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：有り</h4>
 <pre>
-蘇生能力を持った妖狐。
-蘇生に関するルールは<a href="human.php#about_revive">基本ルール [蘇生]</a>参照。
+<a href="human.php#revive_rule">蘇生能力</a>を持った妖狐。
 蘇生成功率は 100% で、一度成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
@@ -303,7 +306,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="doom_fox">冥狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
-遅効性の<a href="human.php#doom_assassin">死神</a>相当の<a href="ability.php#assassin">暗殺</a>能力を持った妖狐。
+遅効性の<a href="human.php#doom_assassin">死神</a>相当の<a href="ability.php#assassin">暗殺能力</a>を持った妖狐。
 暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
@@ -431,7 +434,7 @@ OutputRolePageHeader('妖狐陣営');
 
 
 <h3 id="immolate_fox">野狐禅 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
-<h4>[耐性] 人狼襲撃：無効+特殊</h4>
+<h4>[耐性] 人狼襲撃：無効 + 能力発現</h4>
 <pre>
 妖狐陣営勝利に加えて、人狼に襲撃されることが勝利条件の妖狐。
 人狼 (<a href="wolf.php#hungry_wolf">餓狼</a>を除く) に襲撃されたら「<a href="sub_role.php#muster_ability">能力発現</a>」がつく。
@@ -451,7 +454,7 @@ OutputRolePageHeader('妖狐陣営');
 
 <h2 id="child_fox_group">子狐系</h2>
 <p>
-<a href="#child_fox_spec">基本スペック</a>
+<a href="#child_fox_rule">基本ルール</a>
 </p>
 <p>
 <a href="#child_fox">子狐</a>
@@ -462,7 +465,7 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#howl_fox">化狐</a>
 </p>
 
-<h3 id="child_fox_spec">基本スペック</h3>
+<h3 id="child_fox_rule">基本ルール</h3>
 <ol>
   <li>呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する。</li>
   <li>夜の投票能力を持っている場合、成功率は 70%。</li>

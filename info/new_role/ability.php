@@ -38,7 +38,8 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="assassin">暗殺能力者</h2>
 <pre>
-<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#astray_wizard">左道使い</a>・<a href="human.php#pierrot_wizard">道化師</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
+<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#assassin">暗殺者</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_assassin">辻斬り</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="human.php#reverse_assassin">反魂師</a>)
+<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
 </pre>
 
 <h2 id="anti_assassin">暗殺耐性能力者</h2>
@@ -49,7 +50,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="phantom">占い妨害能力者</h2>
 <h3 id="phantom_active">能動型</h3>
 <pre>
-<a href="human.php#astray_wizard">左道使い</a>・<a href="wolf.php#jammer_mad">月兎</a>・<a href="fox.php#jammer_fox">月狐</a>
+<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#jammer_mad">月兎</a>)・<a href="wolf.php#jammer_mad">月兎</a>・<a href="fox.php#jammer_fox">月狐</a>
 </pre>
 <h3 id="phantom_reactive">受動型</h3>
 <pre>
@@ -63,7 +64,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="guard">護衛能力者</h2>
 <pre>
-<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#barrier_wizard">結界師</a>
+<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#guard">狩人</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#poison_guard">騎士</a>)・<a href="human.php#barrier_wizard">結界師</a>
 </pre>
 
 <h2 id="guard_limit">護衛制限対象者</h2>
@@ -74,7 +75,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="doom">死の宣告能力者</h2>
 <h3 id="doom_active">能動型</h3>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#astray_wizard">左道使い</a>・<a href="human.php#pierrot_wizard">道化師</a>・<a href="human.php#doom_escaper">半鳥女</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="fox.php#doom_fox">冥狐</a>)・<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#doom_escaper">半鳥女</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
 </pre>
 <h3 id="doom_reactive">受動型</h3>
 <pre>
@@ -114,17 +115,18 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="psycho">精神関連能力者</h2>
 <h3 id="psycho_mage">鑑定能力者</h3>
 <pre>
-<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#spiritism_wizard">交霊術師</a>
+<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#psycho_mage">精神鑑定士</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#psycho_mage">精神鑑定士</a>)・<a href="human.php#spiritism_wizard">交霊術師</a>
 </pre>
 <h3 id="psycho_only">限定能力者</h3>
 <pre>
-<a href="human.php#astray_wizard">左道使い</a>・<a href="human.php#psycho_escaper">迷い人</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
+<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#dream_eater_mad">獏</a>)・<a href="human.php#psycho_escaper">迷い人</a>・<a href="wolf.php#dream_eater_mad">獏</a>・<a href="ogre.php#revive_ogre">茨木童子</a>
 </pre>
 
 <h2 id="sex">性別関連能力者</h2>
 <h3 id="sex_mage">鑑定能力者</h3>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>・<a href="human.php#soul_wizard">八卦見</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#pierrot_wizard">道化師</a>・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#sex_mage">ひよこ鑑定士</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#sex_mage">ひよこ鑑定士</a>)・<a href="human.php#awake_wizard">比丘尼</a>(<a href="human.php#sex_mage">ひよこ鑑定士</a>)
+<a href="human.php#spiritism_wizard">交霊術師</a>・<a href="human.php#pierrot_wizard">道化師</a>(<a href="human.php#sex_mage">ひよこ鑑定士</a>)・<a href="wolf.php#sex_wolf">雛狼</a>・<a href="fox.php#sex_fox">雛狐</a>
 </pre>
 <h3 id="sex_only">限定能力者</h3>
 <pre>
@@ -144,7 +146,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="revive_limit">蘇生制限対象者</h2>
 <pre>
-<a href="human.php#about_revive">基本ルール[蘇生]</a>参照
+<a href="human.php#revive_rule">基本ルール[蘇生]</a>参照
 </pre>
 
 <h2 id="authority">投票数変化能力者</h2>
@@ -165,7 +167,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="cursed_group">呪い能力者</h2>
 <h3 id="voodoo">呪術能力者 (能動型)</h3>
 <pre>
-<a href="human.php#astray_wizard">左道使い</a>・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="fox.php#voodoo_fox">九尾</a>
+<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#voodoo_mad">呪術師</a>)・<a href="wolf.php#voodoo_mad">呪術師</a>・<a href="fox.php#voodoo_fox">九尾</a>
 </pre>
 <h3 id="cursed">呪い所持者 (受動型)</h3>
 <pre>
@@ -214,6 +216,6 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="trap_night">夜投票型</h3>
 <pre>
-<a href="human.php#astray_wizard">左道使い</a>・<a href="wolf.php#trap_wolf">狡狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="fox.php#trap_fox">狡狐</a>
+<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="wolf.php#trap_wolf">狡狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="fox.php#trap_fox">狡狐</a>
 </pre>
 </body></html>

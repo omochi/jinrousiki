@@ -6,7 +6,7 @@ OutputRolePageHeader('吸血鬼陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
-<a href="#vampire_do_spec">襲撃の仕様</a>
+<a href="#vampire_do_spec">吸血の仕様</a>
 </p>
 <p>
 <a href="#vampire_group">吸血鬼系</a>
@@ -16,25 +16,25 @@ OutputRolePageHeader('吸血鬼陣営');
 <ol>
   <li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
   <li>勝利条件は「生存者が自分と自分の<a href="sub_role.php#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
-  <li><a href="sub_role.php#psycho_infected">洗脳者</a>がいる場合は<a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>と扱われます。</li>
   <li>生存者が自分一人だけになった場合も勝利となります。</li>
   <li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
-  <li>ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、<br>
-    例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
+  <li>吸血鬼陣営をコピーした変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>と<a href="mania.php#unknown_mania_group">鵺系</a>の勝利条件は<br>
+    例外的に「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
   </li>
   <li>2 日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
   <li><a href="sub_role.php#infected">感染者</a>になっても自覚がありません。</li>
+  <li><a href="sub_role.php#psycho_infected">洗脳者</a>がいる場合は<a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>と扱われます。</li>
   <li>生存カウントは村人です。</li>
   <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
 </ol>
 <h5>Ver. 1.4.0 β19～</h5>
 <pre>
-ゲーム終了時に吸血鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>がいた場合、
-例外的に勝利条件は「吸血鬼陣営の誰かが勝利」となります。
+吸血鬼陣営をコピーした変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>と<a href="mania.php#unknown_mania_group">鵺系</a>の勝利条件は
+例外的に「吸血鬼陣営の誰かが勝利」となります。
 コピー先の勝敗や自己の生存は不問です。
 </pre>
 
-<h2 id="vampire_do_spec">襲撃の仕様</h2>
+<h2 id="vampire_do_spec">吸血の仕様</h2>
 <ol>
   <li>襲撃先が<a href="human.php#guard_group">狩人系</a>に護衛されていた場合は失敗し、狩人には「護衛成功」のメッセージが出ます。</li>
   <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>

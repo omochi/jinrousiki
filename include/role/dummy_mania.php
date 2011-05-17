@@ -16,7 +16,7 @@ class Role_dummy_mania extends Role{
       'common'       => 'dummy_common',
       'poison'       => 'dummy_poison',
       'poison_cat'   => 'eclipse_cat',
-      'pharmacist'   => 'cure_pharmacist',
+      'pharmacist'   => 'centaurus_pharmacist',
       'assassin'     => 'eclipse_assassin',
       'mind_scanner' => 'mind_scanner',
       'jealousy'     => 'jealousy',

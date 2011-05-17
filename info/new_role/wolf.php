@@ -773,7 +773,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
   <li>狼が残り二人になると、以下の能力を持つ (覚醒状態)。</li>
   <ol>
     <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-    <li><a href="ability.php#trap_night">罠 (夜投票型)</a>無効</li>
+    <li><a href="ability.php#trap_night">罠 (夜投票型)</a> 無効</li>
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
@@ -1212,7 +1212,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
+  <li><a href="../spec.php#vote_day">判定</a>時に対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
   <li>自分が処刑された場合は無効。</li>
+  <li>自分が毒やショック死で死亡した場合でも有効。</li>
   <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h5>Ver. 1.4.0 β19～</h5>
@@ -1245,7 +1247,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
+  <li><a href="../spec.php#vote_day">判定</a>時に対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
   <li>自分が処刑された場合は無効。</li>
+  <li>自分が毒やショック死で死亡した場合でも有効。</li>
   <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h4>関連役職</h4>

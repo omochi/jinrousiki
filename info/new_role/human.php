@@ -570,8 +570,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="../spec.php#dead">死因</a>が多岐にわたる闇鍋用の特殊霊能者です。
-死因が分かるだけなので昼の毒巻き込まれや暗殺された人等、
-死者の役職が分からない可能性もある点に注意してください。
+死因が分かるだけなので昼の毒死や暗殺等、死者の役職が分からない可能性も
+ある点に注意してください。
 </pre>
 
 <h3 id="dummy_necromancer">夢枕人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -628,12 +628,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="medium">巫女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <pre>
 突然死した人の所属陣営が分かる、霊能のような役職。
-闇鍋モードで登場する「ショック死」する人たちの情報を取るのが主な仕事だが
+<a href="../chaos.php">闇鍋モード</a>で登場する「ショック死」する人たちの情報を取るのが主な仕事だが
 <a href="#necromancer_group">霊能者</a>とは<a href="#medium_rule">判定法則</a>が違うので注意。
 </pre>
 <h5>Ver. 1.4.0 β6～</h5>
 <pre>
-<a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく出ないバグ修正 (修正前は常時村人判定)
+<a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく出ないバグ修正 (修正前は常時「村人」判定)
 </pre>
 <h5>Ver. 1.4.0 α9～</h5>
 <pre>
@@ -641,8 +641,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-式神研のオリジナル役職です。
-闇鍋モードで大量の突然死が出ることになったので作ってみましたが
+人狼式のオリジナル役職です。
+<a href="../chaos.php">闇鍋モード</a>で大量の突然死が出ることになったので作ってみましたが
 霊能者より地味な存在ですね。騙るのも容易なのでなかなか報われないかもしれません。
 </pre>
 
@@ -651,9 +651,9 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が<a href="ogre.php">鬼陣営</a>だった場合にショック死させることができる上位巫女。
 </pre>
 <ol>
-  <li>処刑先が決定されて、投票先が処刑者ではない場合に発動する。</li>
-  <li>判定時に対象が死亡していた場合は無効。</li>
-  <li>自分が処刑された場合は無効、毒やショック死で死亡した場合は有効。</li>
+  <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+  <li>自分が処刑された場合は無効。</li>
+  <li>自分が毒やショック死で死亡した場合でも有効。</li>
   <li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外。</li>
   <li>ショック死させた場合の死因は「神主に酔い潰された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
@@ -674,9 +674,9 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <ol>
   <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>。</li>
-  <li>処刑先が決定されて、投票先が処刑者ではない場合に発動する。</li>
-  <li>判定時に対象が死亡していた場合は無効。</li>
-  <li>自分が処刑された場合は無効、毒やショック死で死亡した場合は有効。</li>
+  <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+  <li>自分が処刑された場合は無効。</li>
+  <li>自分が毒やショック死で死亡した場合でも有効。</li>
   <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
   <li>ショック死させた場合の死因は「封印された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
@@ -695,7 +695,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
 <pre>
-<a href="#poison_cat">猫又</a>相当の<a href="ability.php#revive">蘇生</a>能力を持った上位巫女。
+<a href="#poison_cat">猫又</a>相当の<a href="ability.php#revive">蘇生能力</a>を持った上位巫女。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -706,7 +706,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h2 id="priest_group">司祭系</h2>
 <p>
 <a href="#priest_rule">基本ルール</a>
-<a href="#crisis_priest_rule">人外勝利前日判定ルール</a>
+<a href="#crisis_priest_spec">人外勝利前日判定の仕様</a>
 </p>
 <p>
 <a href="#priest">司祭</a>
@@ -726,7 +726,7 @@ PP ラインの計算を難しくさせるために作成してみました。
   <li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象。</li>
 </ol>
 
-<h3 id="crisis_priest_rule">人外勝利前日判定ルール</h3>
+<h3 id="crisis_priest_spec">人外勝利前日判定の仕様</h3>
 <pre>
 1. 生存者 - (人狼 + 妖狐) &lt;= 人狼 + 2
 その日の処刑が人狼以外 + 夜に人狼の襲撃が成立すると人狼勝利となります。
@@ -761,8 +761,9 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/72" target="_top">新役職考案スレ(72)</a> が原型です。
-オリジナルは配役非通知設定の闇鍋用役職なので、能力を発動した時点で生存している
-役職の内訳が完全に分かりますが、式神研バージョンはかなり情報が絞られています。
+オリジナルは配役非通知設定の闇鍋モード用役職なので、能力を発動した時点で
+生存している役職の内訳が完全に分かりますが、人狼式バージョンはかなり情報が
+絞られています。
 </pre>
 
 <h3 id="bishop_priest">司教 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>
@@ -815,7 +816,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <ol>
   <li>発動条件式は、生存者 - 村人陣営(恋人を含む) &gt; 人狼系 × 2。</li>
   <li>判定は 3 の倍数の日の夜 (3 → 6 → 9 →...) で、発動はその 2 日後 (5 → 8 → 11 →...)。</li>
-  <li>判定を実施するタイミングは<a href="#crisis_priest_rule">人外勝利前日判定ルール</a>と同じ。</li>
+  <li>判定を実施するタイミングは<a href="#crisis_priest_spec">人外勝利前日判定</a>と同じ。</li>
   <li>発生する天候はランダムで、<a href="../game_option.php#weather">天候あり</a>オプションがオフでも発生する。</li>
   <li>天候発動判定時に<a href="#revive_priest">天人</a>の蘇生判定は反映されていない。</li>
   <li>生存している祈祷師がいなければ天候は発動しない。</li>
@@ -846,7 +847,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="crisis_priest">預言者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
-<a href="#crisis_priest_rule">人外勝利前日</a>を判定する特殊な司祭。表示は「村人」。
+<a href="#crisis_priest_spec">人外勝利前日</a>を判定する特殊な司祭。表示は「村人」。
 条件を満たした場合のみ、どの陣営が有利なのかメッセージが表示される。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -863,7 +864,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>蘇生条件 (どれか一つを満たせば蘇生する)</h4>
 <ol>
-  <li>「<a href="#crisis_priest_rule">人外勝利前日</a>」である。</li>
+  <li>「<a href="#crisis_priest_spec">人外勝利前日</a>」である。</li>
   <li>5 日目である。</li>
   <li>村の人口が半分以下になった。</li>
   <li>生存している人狼が一人になった。</li>
@@ -935,7 +936,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h2 id="guard_group">狩人系</h2>
 <p>
 <a href="#guard_limit">護衛制限</a>
-<a href="#guard_hunt">狩りルール</a>
+<a href="#guard_hunt">狩りの仕様</a>
 </p>
 <p>
 <a href="#guard">狩人</a>
@@ -962,7 +963,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#emissary_necromancer">密偵</a>を対象に追加。
 </pre>
 
-<h3 id="guard_hunt">狩りルール</h3>
+<h3 id="guard_hunt">狩りの仕様</h3>
 <pre>
 1. 狩り能力があるのは<a href="#guard">狩人</a>・<a href="#hunter_guard">猟師</a>・<a href="#reflect_guard">侍</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>。
 2. 対象は特殊狂人・特殊妖狐・特殊吸血鬼・特殊蝙蝠。
@@ -978,11 +979,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h5>Ver. 1.4.0 β14～</h5>
 <pre>
-対象が身代わり死していた場合は狩りが発生しません (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)
+対象が身代わり死していた場合は狩りが発生しない (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など)。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
-<a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができます
+<a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができる。
 </pre>
 
 <h3 id="guard">狩人 (占い結果：村人 / 霊能結果：村人)</h3>
@@ -1002,8 +1003,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="hunter_guard">猟師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>
 <h4>[狩人能力] 護衛：制限有り / 狩り：有り / 罠：有効</h4>
 <pre>
-狩り能力に特化した特殊な狩人。
-通常の狩り能力 (<a href="#guard_hunt">狩りルール</a>) に加えて、<a href="fox.php">妖狐陣営</a>も狩る事ができる。
+<a href="#guard_hunt">狩り能力</a>に特化した特殊な狩人。
+通常の<a href="#guard_hunt">狩り能力</a>に加えて、<a href="fox.php">妖狐陣営</a>も狩る事ができる。
 護衛先が<a href="wolf.php#wolf_group">人狼</a> (種類を問わない) に襲撃された場合は本人が死亡する (死因は「人狼の襲撃」)。
 <a href="vampire.php">吸血鬼</a>の襲撃から護衛した場合は死亡しない。
 </pre>
@@ -1021,9 +1022,9 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#hunter_guard">猟師</a>とは対照的に、護衛に特化した特殊狩人で、「よすずめ」と読みます。
+<a href="#hunter_guard">猟師</a>とは対照的に護衛に特化した特殊狩人で「よすずめ」と読みます。
 死体の状況を見ることで<a href="chiroptera.php#dark_fairy">闇妖精</a>と区別することができるので、
-襲撃役の<a href="wolf.php#wolf_group">人狼</a>はうっかり<a href="sub_role.php#blinder">目隠し</a> CO しないように気をつけましょう。
+襲撃役の人狼はうっかり<a href="sub_role.php#blinder">目隠し</a> CO しないように気をつけましょう。
 </pre>
 
 <h3 id="gatekeeper_guard">門番 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α7～]</h3>
@@ -1046,7 +1047,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[狩人能力] 護衛：制限有り / 狩り：有り / 罠：有効</h4>
 <pre>
 <a href="#assassin_spec">暗殺反射</a>能力を持つ上位狩人。
-通常の狩り能力 (<a href="#guard_hunt">狩りルール</a>) に加えて、<a href="ogre.php">鬼陣営</a>も狩る事ができる。
+通常の<a href="#guard_hunt">狩り能力</a>に加えて、<a href="ogre.php">鬼陣営</a>も狩る事ができる。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1063,7 +1064,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="wolf.php#wolf_group">人狼</a>に襲撃された時のみ毒が発動する上位狩人。
 <a href="#guard_limit">護衛制限</a>の影響を受けない。
-狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
+狩り能力は<a href="#guard_hunt">狩りの仕様</a>を参照。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1083,7 +1084,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 一度だけ<a href="wolf.php#wolf_group">人狼</a> (種類を問わない) の襲撃に耐えることができる上位狩人。
 人狼に襲撃されると耐性を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。
 誰に襲撃されたのかは分からないが、耐性を失っても護衛は通常通り行える。
-狩り能力は<a href="#guard_hunt">狩りルール</a>を参照。
+狩り能力は<a href="#guard_hunt">狩りの仕様</a>を参照。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 </pre>
 <h4>関連役職</h4>
@@ -1204,15 +1205,15 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="detective_common">探偵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>
 <h4>[耐性] 護衛：制限対象 / 毒：対象外 / 蘇生：不可 / 暗殺：反射 / 憑依：無効</h4>
 <pre>
-様々な特殊耐性を持つ、上位共有者。
+様々な特殊耐性を持つ上位共有者。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>毒・<a href="#doom_doll">蓬莱人形</a>・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+  <li>毒・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
   <li><a href="#assassin_spec">暗殺反射</a></li>
   <li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
   <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
-  <li><a href="#about_revive">蘇生</a>不可</li>
+  <li><a href="#revive_rule">蘇生</a>不可</li>
   <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
@@ -1221,12 +1222,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-闇鍋モードでも探偵村を実施できるようにチューニングした上位共有者です。
+闇鍋モードでも<a href="../game_option.php#detective">探偵村</a>を実施できるようにチューニングした上位共有者です。
 </pre>
 
 <h3 id="trap_common">策士 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>
 <pre>
-昼の投票時に、その時点で生存している村人陣営以外の人全てから投票されたら
+処刑投票時に、その時点で生存している村人陣営以外の人全てから投票されたら
 まとめて死亡させる上位共有者。
 </pre>
 <ol>
@@ -1238,11 +1239,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
-圧倒的不利な状況をたった一回の投票でひっくり返す、究極の対 PP 兵器です。
+圧倒的不利な状況をたった一回の処刑投票でひっくり返す、究極の対 PP 兵器です。
 <a href="#jealousy">橋姫</a>同様、役職の存在による抑止力の発生が主眼です。
-
-「自分は村人だから投票しない」と主張されたらそれまでなので、能力を前面に出して
-自分に投票させる作戦は通用しないでしょう。
+「自分は村人だから投票しない」と主張されたらそれまでなので、
+能力を前面に出して自分に投票させる作戦は通用しないでしょう。
 </pre>
 
 <h3 id="ghost_common">亡霊嬢 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>
@@ -1397,7 +1397,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 
 <h2 id="poison_cat_group">猫又系</h2>
 <p>
-<a href="#about_revive">基本ルール</a>
+<a href="#revive_rule">基本ルール</a>
 </p>
 <p>
 <a href="#poison_cat">猫又</a>
@@ -1406,7 +1406,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#eclipse_cat">蝕仙狸</a>
 </p>
 
-<h3 id="about_revive">基本ルール [蘇生]</h3>
+<h3 id="revive_rule">基本ルール [蘇生]</h3>
 <ol>
   <li><a href="../game_option.php#not_open_cast">霊界で配役を公開しない</a>オプションが有効になっていないと蘇生行動はできない。</li>
   <li>投票可能になるのは 2 日目の夜からで、「蘇生する / しない」を必ず投票する必要がある。</li>
@@ -1431,8 +1431,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
 <h4>[毒能力] 処刑：有り / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
-蘇生能力を持った<a href="#poison">埋毒者</a>。蘇生成功率は 25%。
-蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
+<a href="#revive_rule">蘇生能力</a>を持った<a href="#poison">埋毒者</a>。蘇生成功率は 25%。
 </pre>
 <h5>Ver. 1.4.0 α19～</h5>
 <pre>
@@ -1454,8 +1453,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[耐性] 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：80% (初期値) / 誤爆：有り</h4>
 <pre>
-毒能力を失った代わりに高い蘇生能力を持った猫又の上位種。
-蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
+毒能力を失った代わりに高い<a href="#revive_rule">蘇生能力</a>を持った猫又の上位種。
 蘇生成功率は 80% で、成功するたびに成功率が 1/4 になる。
 80% → 20% → 5% → 2% → 1% (以後は 1% で固定)
 </pre>
@@ -1478,8 +1476,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[耐性] 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：無し</h4>
 <pre>
-毒能力を失った代わりに確実な蘇生に特化した猫又の亜種。
-蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
+毒能力を失った代わりに確実な<a href="#revive_rule">蘇生能力</a>に特化した猫又の亜種。
 蘇生成功率は 100% で、例外的に誤爆率が 0% に設定されているが、成功すると自分が死亡する。
 複数の猫神が同時に同じ人を蘇生しようとした場合は「全員成功」扱いとなり、本人は死亡する。
 </pre>
@@ -1498,8 +1495,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[耐性] 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：40% / 誤爆：有り (特殊)</h4>
 <pre>
-誤爆率が高く設定されている猫又の亜種。本人の表記は「<a href="#revive_cat">仙狸</a>」。
-蘇生に関するルールは<a href="#about_revive">基本ルール [蘇生]</a>参照。
+<a href="#revive_rule">誤爆率</a>が高く設定されている猫又の亜種。本人の表記は「<a href="#revive_cat">仙狸</a>」。
 蘇生成功率は 40%、誤爆率は 20% で固定。
 </pre>
 <h5>Ver. 1.4.0 β18～</h5>
@@ -1509,7 +1505,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#poison_cat">猫又</a>の劣化種として、夢系ではなく蝕系を採用してみました。
-<a href="#about_revive">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が 2.5倍になっています。
+<a href="#revive_rule">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が 2.5倍になっています。
 実質、誤爆率だけが上がった<a href="#poison_cat">猫又</a>相当になります。
 </pre>
 
@@ -1520,13 +1516,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#cure_pharmacist">河童</a>
 <a href="#revive_pharmacist">仙人</a>
 <a href="#alchemy_pharmacist">錬金術師</a>
+<a href="#centaurus_pharmacist">人馬</a>
 </p>
 
 <h3 id="pharmacist">薬師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α12～]</h3>
 <h4>[薬師能力] 毒能力判定：有り / 解毒：有り / ショック死抑制：無し</h4>
 <pre>
-処刑投票先の毒能力者が分かり、処刑された場合に解毒 (毒が発動しない) する。
-毒の鑑定結果は以下の 5 種類で、処刑されたら毒鑑定・解毒能力は無効。
+処刑投票先の毒能力が分かり、処刑された場合に解毒 (毒が発動しない) する。
+毒能力の判定結果は以下の 5 種類で、処刑されたら毒能力判定・解毒能力は無効。
 
 1. 毒を持っていない (<a href="#dummy_poison">夢毒者</a>や発現前の<a href="#incubate_poison">潜毒者</a>もこれ)
 2. 毒を持っている
@@ -1536,7 +1533,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
-処刑されたら毒鑑定・解毒能力無効。
+処刑されたら毒能力判定・解毒能力無効。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
@@ -1545,27 +1542,26 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
-解毒成功だけでなく、前日に投票した人の詳細な毒能力が分かる
+解毒成功だけでなく、前日に投票した人の詳細な毒能力が分かる。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/24" target="_top">新役職考案スレ(24)</a> が原型で、「くすし」と読みます。
-<a href="wolf.php#poison_wolf">毒狼</a>の対抗役職です。
-<a href="#poison_group">埋毒者系</a>に対しても効果を発揮します。
+<a href="wolf.php#poison_wolf">毒狼</a>の対抗役職で、<a href="#poison_group">埋毒者系</a>に対しても効果を発揮します。
 </pre>
 
 <h3 id="cure_pharmacist">河童 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
 <h4>[薬師能力] 毒能力判定：無し / 解毒：有り / ショック死抑制：有り</h4>
 <pre>
-昼に投票した人を解毒・ショック死抑制する特殊な薬師。
+処刑投票先の人を解毒・ショック死抑制する特殊な薬師。
 解毒能力は<a href="#pharmacist">薬師</a>と同じ。
 抑制できるのはサブ役職 (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外。
 解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
-何の「治療」に成功した(毒やショック死の種類など)のかは表示されない。
+何の「治療」に成功した (毒やショック死の種類など) のかは表示されない。
 再投票時には発動せず、処刑されたら解毒・ショック死抑制能力無効。
 
 例) A[河童] → B[村人][小心者]
-この場合、Bがショック死する条件を満たしますが、河童の能力でキャンセルされます。
+この場合、B がショック死する条件を満たすが、河童の能力でキャンセルされる。
 キャンセルするだけで<a href="sub_role.php#chicken">小心者</a>が消える訳ではないので注意。
 </pre>
 <h5>Ver. 1.5.0 α6～</h5>
@@ -1613,18 +1609,18 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[薬師能力] 毒能力判定：有り / 解毒：特殊 / ショック死抑制：無し</h4>
 <pre>
 処刑投票先が毒を持っていたら中る範囲を「村人陣営以外」に変更してしまう特殊な薬師。
-毒鑑定能力や対象者変更判定 (<a href="#pharmacist">薬師</a>が「解毒した」と判定する対象) は<a href="#pharmacist">薬師</a>と同じ。
+毒能力判定や対象者変更判定 (<a href="#pharmacist">薬師</a>が「解毒した」と判定する対象) は<a href="#pharmacist">薬師</a>と同じ。
 </pre>
 <ol>
-  <li>判定は処刑対象が決定された後で、処刑されたら無効。</li>
-  <li>「対象者変更」能力が発動しても毒鑑定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
+  <li>判定は処刑者決定後で、自分が処刑されたら無効。</li>
+  <li>対象者変更能力が発動しても毒能力判定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
   <li><a href="sub_role.php#lovers">恋人</a>は判定対象外 (<a href="#medium_group">巫女系</a>と同じ)。</li>
   <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合、毒は不発。</li>
-  <li><a href="#chain_poison">連毒者</a>に投票しても能力は発動しない (毒鑑定能力は有効)。</li>
+  <li><a href="#chain_poison">連毒者</a>に投票しても能力は発動しない (毒能力判定は有効)。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
-処刑されたら毒鑑定・特殊解毒能力無効。
+処刑されたら毒能力判定・特殊解毒能力無効。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1633,6 +1629,21 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#pharmacist">薬師</a>で解毒してしまう方がいいケースもあります。
 </pre>
 
+<h3 id="centaurus_pharmacist">人馬 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β2～]</h3>
+<h4>[薬師能力] 毒能力判定：特殊 / 解毒：無し / ショック死抑制：無し</h4>
+<pre>
+処刑投票先が毒を持っていたら毒死してしまう特殊な薬師。
+</pre>
+<ol>
+  <li>毒死する条件は、<a href="#pharmacist">薬師</a>の毒能力判定が「毒を持っていない」以外になる場合。</li>
+  <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合でも毒死する。</li>
+  <li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、投票先が処刑されても有効。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#escaper">逃亡者</a>の薬師バージョンで、ケンタウロスがモチーフです。
+<a href="sub_role.php#lovers">恋人</a>や<a href="sub_role.php#rival">宿敵</a>がつくと能力が枷になってしまうので要注意です。
+</pre>
 
 <h2 id="assassin_group">暗殺者系</h2>
 <p>
@@ -2302,7 +2313,7 @@ MVP の賞品としてプレゼントしたものです。
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
 魔法使いの一種で、魔法の効果は、<a href="#soul_mage">魂の占い師</a>・<a href="#sex_mage">ひよこ鑑定士</a>・特殊<a href="#doom_assassin">死神</a>・
-<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>・特殊妖精のいずれか。
+<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>・特殊妖精のいずれか。
 「特殊<a href="#doom_assassin">死神</a>」による<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 2～10 日後の昼。
 「特殊妖精」のメッセージは「～は昨夜、～していたようです」で、全部で26種類。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
@@ -2502,7 +2513,7 @@ MVP の賞品としてプレゼントしたものです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project のアリス・マーガトロイドがモチーフです。
-他の国に実在する役職を式神研の闇鍋向きにアレンジしてみました。
+他の国に実在する役職を人狼式の闇鍋向きにアレンジしてみました。
 </pre>
 
 
@@ -2552,7 +2563,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#reporter">ブン屋</a>
+<a href="#reporter">ブン屋</a>・<a href="#centaurus_pharmacist">人馬</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

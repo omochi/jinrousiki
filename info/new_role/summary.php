@@ -46,7 +46,8 @@ Ver. 1.5.0
 <a href="#ver150a7">α7</a>
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
-<a href="#ver150b1">β1</a><br>
+<a href="#ver150b1">β1</a>
+<a href="#ver150b2">β2</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -1082,7 +1083,7 @@ Ver. 1.4.0
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">昼に投票した人を解毒・ショック死抑制する特殊な薬師。</td>
+  <td class="ability">投票投票先の人を解毒・ショック死抑制する特殊な薬師。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -1549,7 +1550,7 @@ Ver. 1.4.0
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑投票した人のショック死を抑制する特殊な薬師。<br>
+  <td class="ability">処刑投票先の人のショック死を抑制する特殊な薬師。<br>
     人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
@@ -2246,7 +2247,7 @@ Ver. 1.4.0
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">魔法使いの一種で、魔法の効果は、<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・特殊<a href="human.php#doom_assassin">死神</a>・<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>・特殊妖精のいずれか。
+  <td class="ability">魔法使いの一種で、魔法の効果は、<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>・特殊<a href="human.php#doom_assassin">死神</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>・特殊妖精のいずれか。
   </td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
@@ -2370,6 +2371,15 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">宿敵を三人作れる決闘者。</td>
   <td>Ver. 1.5.0 β1</td>
+</tr>
+<tr id="ver150b2">
+  <td><a href="human.php#centaurus_pharmacist">人馬</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#pharmacist_group">薬師系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が毒を持っていたら毒死してしまう特殊な薬師。</td>
+  <td>Ver. 1.5.0 β2</td>
 </tr>
 </table>
 

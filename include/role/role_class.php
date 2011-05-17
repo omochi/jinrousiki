@@ -35,10 +35,11 @@ class RoleManager{
   //処刑投票系能力者
   var $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
 				 'trap_common', 'pharmacist', 'cure_pharmacist',
-				 'revive_pharmacist', 'alchemy_pharmacist', 'jealousy',
-				 'divorce_jealousy', 'cursed_brownie', 'agitate_mad', 'amaze_mad',
-				 'miasma_mad', 'critical_mad', 'sweet_cupid', 'quiz', 'impatience',
-				 'authority', 'rebel', 'decide', 'plague', 'good_luck', 'bad_luck');
+				 'revive_pharmacist', 'alchemy_pharmacist', 'centaurus_pharmacist',
+				 'jealousy', 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
+				 'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid', 'quiz',
+				 'impatience', 'authority', 'rebel', 'decide', 'plague',
+				 'good_luck', 'bad_luck');
 
   //反逆者判定
   var $rebel_list = array('rebel');
@@ -62,8 +63,8 @@ class RoleManager{
   var $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
 
   //処刑投票能力処理 (順番依存あり)
-  var $vote_action_list = array('seal_medium', 'bacchus_medium', 'amaze_mad', 'miasma_mad',
-				'critical_mad', 'sweet_cupid');
+  var $vote_action_list = array('seal_medium', 'bacchus_medium', 'centaurus_pharmacist',
+				'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid');
 
   //得票カウンター
   var $voted_reaction_list = array('trap_common', 'jealousy');

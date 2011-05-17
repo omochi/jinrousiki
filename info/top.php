@@ -9,25 +9,21 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </p>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 α9 アップロード (2011/05/02 (Mon) 02:19) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β1 アップロード (2011/05/13 (Fri) 02:49) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150a7">デバッグ情報</a> (2011/04/11 (Mon) 00:16)</li> -->
-  <li>「水妖姫」「半鳥女」「殉教者」「半鳥女」実装</li>
-  <li>天候「雪明り」「蛍火」「日蝕」「月蝕」「宵闇」「白夜」「極光」実装</li>
+  <li>「大妖精」「吟遊詩人」「紅天使」「決闘者」「戦乙女」「舞首」実装</li>
+  <li>サブ役職「宿敵」実装</li>
+  <li>固定追加配役モード：I(恋人村)・J(宿敵村)追加</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>大妖精：発言のたびに追加される文字列がランダムで変化する妖精</li>
-  <li>吟遊詩人：2日目夜以降、全ての恋人に一方的に声が届く上位キューピッド</li>
-  <li>紅天使：人狼から無意識に、妖狐陣営から子狐に、人形から人形遣いに見える特殊な天使</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>決闘者：初日夜に自分と誰か一人を宿敵にする。</li>
-  <li>戦乙女：自分撃ち固定制限がない決闘者。</li>
-  <li>舞首：宿敵を三人作れる決闘者。</li>
-  <li>宿敵：決闘者陣営が付加し、勝利条件が追加される。</li>
+  <li>人馬：処刑投票先が毒を持っていたら毒死してしまう特殊な薬師</li>
 </ul>

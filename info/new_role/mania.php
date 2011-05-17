@@ -15,7 +15,7 @@ OutputRolePageHeader('神話マニア陣営');
 
 <h2 id="rule">基本ルール</h2>
 <ol>
-  <li>初日の夜に誰か一人を選んでその人と同じ陣営に変化 (コピー) する特殊な陣営です。</li>
+  <li>初日の夜に誰か一人を選んでその人と同じ陣営に変化 (コピー) する特殊陣営です。</li>
   <li>勝利条件はコピー先の陣営になります。</li>
   <li>コピーの結果が反映されるのは 2 日目の朝です。</a>
   <li>コピーが成立した時点で所属陣営はコピー先に変更されます。</a>
@@ -345,8 +345,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
-  <td><a href="human.php#cure_pharmacist">河童</a></td>
-  <td></td>
+  <td><a href="human.php#centaurus_pharmacist">人馬</a></td>
+  <td>Ver. 1.5.0 β2～</td>
 </tr>
 <tr>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>

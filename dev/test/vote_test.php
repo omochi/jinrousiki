@@ -109,7 +109,7 @@ $RQ_ARGS->TestItems->test_users[12] =& new User();
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'trap_mad';
+$RQ_ARGS->TestItems->test_users[12]->role = 'centaurus_pharmacist';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13] =& new User();
@@ -151,7 +151,7 @@ $RQ_ARGS->TestItems->test_users[18] =& new User();
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'unconscious';
+$RQ_ARGS->TestItems->test_users[18]->role = 'medium';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19] =& new User();
@@ -179,7 +179,7 @@ $RQ_ARGS->TestItems->test_users[22] =& new User();
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[22]->role = 'duelist disfavor';
+$RQ_ARGS->TestItems->test_users[22]->role = 'valkyrja_duelist disfavor';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23] =& new User();
@@ -234,7 +234,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' =>  9, 'target_no' =>  3),
   array('id' => 10, 'target_no' =>  3),
   array('id' => 11, 'target_no' =>  3),
-  array('id' => 12, 'target_no' => 25),
+  array('id' => 12, 'target_no' => 14),
   array('id' => 13, 'target_no' => 11),
   array('id' => 14, 'target_no' => 25),
   array('id' => 15, 'target_no' =>  7),
@@ -279,7 +279,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'light_blue'),
-  array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'white'),
+  #array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'white'),
   #array('uname' => 'white', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => NULL),
   #array('uname' => 'white', 'situation' => 'POSSESSED_DO',	'target_uname' => 'light_blue'),
   #array('uname' => 'white', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => NULL),
@@ -342,8 +342,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 5;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 

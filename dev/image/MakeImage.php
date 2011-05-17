@@ -292,6 +292,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#錬金術師#です。_処刑_投票した人の#毒#能力を知ることができ、_処刑_された場合は#毒#を強化することができます。\n　古の賢者の知識と魔法の如き錬金の秘法で#毒#を瞬時に作り変え、村に仇なす者に化学の力を思い知らせてやるのです！",
     'type' => 'pharmacist');
 
+  var $centaurus_pharmacist = array(
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#人馬#です。_処刑_投票した人が#毒#能力を持っていたら死んでしまいます。",
+    'type' => 'pharmacist');
+
   var $assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#暗殺者#です。夜に村人一人を#暗殺#することができます。闇の内に人外を消し、村の平和の為に暗躍するのです！",
     'type' => 'human', 'delimiter' => array('#' => 'assassin'));
@@ -378,7 +382,7 @@ class RoleMessageList{
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   var $spiritism_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事などできないのだから。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ、知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事などできないのだから。",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
 
   var $barrier_wizard = array(
@@ -555,16 +559,16 @@ class RoleMessageList{
     'type' => 'mad', 'delimiter' => array('#' => 'mage'));
 
   var $voodoo_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|呪術師|です。夜の間に誰か一人に|呪い|をかけることができます。#占い師#を|呪い|で殲滅し、村を混乱に陥れるのです！",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|呪術師|です。夜の間に誰か一人に|呪い|をかけることができます。#占い師#を|呪い|で抹殺し、村を混乱に陥れるのです！",
     'type' => 'jammer_mad');
 
   var $enchant_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人を指定して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きして、みんなに「バカな…お前は死んだはず！」って言ってやりましょう。あなたも同じ顔ですけどね。",
-    'type' => 'jammer_mad');
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人に#悪戯#して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きして、みんなに「バカな…お前は死んだはず！」って言ってやりましょう。あなたも同じ顔ですけどね。",
+    'type' => 'mad', 'delimiter' => array('#' => 'chiroptera'));
 
   var $dream_eater_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵たる#夢守人#に注意しながら、夢の世界にいる住人や_妖精_達を食らい尽くすのです！",
-    'type' => 'mad', 'delimiter' => array('#' => 'guard', '_' => 'chiroptera'));
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵たる_夢守人_に注意しながら、夢の世界にいる住人や#妖精#達を食らい尽くすのです！",
+    'type' => 'enchant_mad', 'delimiter' => array('_' => 'guard'));
 
   var $possessed_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|犬神|です。一度だけ、死んだ人に|憑依|することができます。骸を傀儡人形と化し、その怨恨の赴くままに呪詛を撒き散らすのです！",
@@ -607,7 +611,7 @@ class RoleMessageList{
     'type' => 'mad');
 
   var $immolate_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|殉教者|です。|人狼陣営|の勝利と|人狼|に襲撃されることが勝利条件になります。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|殉教者|です。|人狼陣営|の勝利と|人狼|に襲撃されることが勝利条件になります。\n　業深きあなたは、|狼|への献身の果てに贖罪されます。絶え間ない信仰が勝利の鍵です！",
     'type' => 'mad');
 
   var $fox = array(
@@ -635,7 +639,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('#' => 'poison'));
 
   var $blue_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|蒼狐|です。あなたを襲撃した#人狼#を_はぐれ者_にすることができます。\n　返す刀で遠吠えを引き裂き仲間と切り離し、#人狼#の群れを瓦解させるのです！",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|蒼狐|です。あなたを襲撃した#人狼#を_はぐれ者_にすることができます。返す刀で遠吠えを引き裂いて#人狼#の群れを瓦解させるのです！",
     'type' => 'fox', 'delimiter' => array('_' => 'mind'));
 
   var $emerald_fox = array(
@@ -675,7 +679,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   var $scarlet_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紅狐|です。#人狼#からは_無意識_に、^人形^からは^人形遣い^に見えています。\n　無力な村人や^人形遣い^を生贄に仕立て上げ、|狐|の勝利に貢献してもらうのです！",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紅狐|です。#人狼#からは_無意識_に、^人形^からは^人形遣い^に見えています。無力な_村人_や^人形遣い^を生贄に仕立て上げるのです！",
     'type' => 'fox', 'delimiter' => array('_' => 'human', '^' => 'doll'));
 
   var $silver_fox = array(
@@ -719,7 +723,7 @@ class RoleMessageList{
     'type' => 'cupid');
 
   var $moon_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|かぐや姫|です。初日の夜に自分と誰か一人を|恋人|同士にして、さらに|難題|を与えることができます。\n　月に戻ることを忘れるほどの素敵な恋を見つけられることを祈ってます。|恋人|と|難題|を乗り越えるのです！",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|かぐや姫|です。初日の夜に自分と誰か一人を|恋人|同士にして、さらに|難題|を与えることができます。\n　月に戻ることを忘れる程の素敵な恋を見つけられることを祈っています。|恋人|と|難題|を乗り越えるのです！",
     'type' => 'cupid');
 
   var $mind_cupid = array(
@@ -826,7 +830,7 @@ class RoleMessageList{
     'delimiter' => array('#' => 'human', '_' => 'wolf', '^' => 'fox', '=' => 'doll'));
 
   var $fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|妖精|です。村人一人の発言に#共有者#の囁きを追加してしまいます。\n　仕事に忙しい四季の仲間達を尻目に、|悪戯|で村人をからかって遊ぶのです！",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|妖精|です。村人一人の発言に#共有者#の囁きを追加してしまいます。白のキャンバスに絵を描くように、遊び心で村を彩るのです。",
     'type' => 'chiroptera', 'delimiter' => array('#' => 'common'));
 
   var $spring_fairy = array(
@@ -850,43 +854,43 @@ class RoleMessageList{
     'type' => 'sun_fairy');
 
   var $light_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|光妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を全員_公開者_にしてしまいます。\n　あなたがいる限り、村に本当の夜は来ません。思う存分夜更かしを楽しみましょう。人外には嫌われると思いますが。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|光妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_公開者_にしてしまいます。\n　あなたがいる限り、村に本当の夜は来ません。思う存分夜更かしを楽しみましょう。人外には嫌われると思いますが。",
     'type' => 'sun_fairy', 'delimiter' => array('_' => 'mind'));
 
   var $dark_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|闇妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を全員_目隠し_にしてしまいます。\n　誰が誰かも分からない、真っ暗闇の中。慌てふためく間抜けな村人たちを、心ゆくまでからかい倒してやりましょう！",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|闇妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_目隠し_にしてしまいます。\n　誰が誰かも分からない、真っ暗闇の中。慌てふためく間抜けな村人たちを、心ゆくまでからかい倒してやりましょう！",
     'type' => 'moon_fairy');
 
   var $grass_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|草妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を全員_草原迷彩_にしてしまいます。\n　どw うw しw てw だw ろw うw 、w 草w がw 生w えw るw だw けw でw みw んw なw 笑w 顔w にw なw れw るw んw だw",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|草妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_草原迷彩_にしてしまいます。\n　どw うw しw てw だw ろw うw 、w 草w がw 生w えw るw だw けw でw みw んw なw 笑w 顔w にw なw れw るw んw だw",
     'type' => 'sun_fairy');
 
   var $sun_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|日妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を全員_光学迷彩_にしてしまいます。\n　目が眩んで慌てふためいている村人達を笑ってやりましょう。自分の目も眩んでるので少し見え辛いかもしれませんが。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|日妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_光学迷彩_にしてしまいます。\n　目が眩んで慌てふためいている村人達を笑ってやりましょう。自分の目も眩んでるので少し見え辛いかもしれませんが。",
     'type' => 'fairy', 'delimiter' => array('#' => 'wolf', '_' => 'liar'));
 
   var $moon_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|月妖精|です。夜に村人一人を指定して、その人が#人狼#に襲撃されたら次の日を全員_耳栓_にしてしまいます。\n　耳が遠くなって混乱している村人達を笑ってやりましょう。自分の耳も遠いので少し聞こえ辛いかもしれませんが。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|月妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_耳栓_にしてしまいます。\n　耳が遠くなって混乱している村人達を笑ってやりましょう。自分の耳も遠いので少し聞こえ辛いかもしれませんが。",
     'type' => 'sun_fairy', 'delimiter' => array('_' => 'no_last_words'));
 
   var $star_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|星妖精|です。夜に村人一人を指定して、その人がどんな星座を見ていたか、みんなに知らせることができます。\n　ロマンチックな気分に浸る村人を笑ってやりましょう。え、笑いの種にならないだろうって？細かいことは気にしない。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|星妖精|です。夜に村人一人に|悪戯|して、その人がどんな星座を見ていたか、みんなに知らせることができます。\n　ロマンチックな気分に浸る村人を笑ってやりましょう。え、笑いの種にならないだろうって？細かいことは気にしない。",
     'type' => 'fairy');
 
   var $flower_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|花妖精|です。村人一人の頭の上に花を咲かせることができます。\n　特に効力は有りませんが、頭に花の咲いた者達をからかってやるのです！",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|花妖精|です。夜に村人一人に|悪戯|して、その人の頭の上に花を咲かせることができます。\n　四季折々の花をあちこちに咲かせ、殺伐とした村を無邪気な華々で溢れかえらせてしまうのです！",
     'type' => 'fairy');
 
   var $shadow_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|影妖精|です。夜に村人一人を指定して、その人と同じ顔になることができます。あなたは私？私はあなた？生き別れの双子！？",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|影妖精|です。夜に村人一人に|悪戯|して、その人と同じ顔になることができます。あなたは私？私はあなた？生き別れの双子！？",
     'type' => 'fairy');
 
   var $mirror_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人を指名して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。\n　鏡界――合わせ鏡の無限次元に佇みながら、鏡の世界を体に埋め込むその力。姿見に自らを写しつつ、村人は何を思うのか。",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人に|悪戯|して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。\n　鏡界――合わせ鏡の無限次元に佇みながら、鏡の世界を体に埋め込むその力。姿見に自らを写しつつ、村人は何を思うのか。",
     'type' => 'fairy');
 
   var $ice_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人を指定して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように|悪戯|して追い払いましょう！",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人に|悪戯|して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように|悪戯|して追い払いましょう！",
     'type' => 'fairy', 'delimiter' => array('#' => 'chicken'));
 
   var $ogre = array(
@@ -1392,6 +1396,7 @@ class RoleMessageList{
   var $result_common = array('message' => "さんは|共有者|でした", 'delimiter' => array('|' => 'common'));
   var $result_detective_common = array('message' => "さんは|探偵|でした", 'type' => 'result_common');
   var $result_trap_common = array('message' => "さんは|策士|でした", 'type' => 'result_common');
+  var $result_sacrifice_common = array('message' => "さんは|首領|でした", 'type' => 'result_common');
   var $result_ghost_common = array('message' => "さんは|亡霊嬢|でした", 'type' => 'result_common');
   var $result_dummy_common = array('message' => "さんは|夢共有者|でした", 'type' => 'result_common');
   var $result_poison = array('message' => "さんは|埋毒者|でした", 'delimiter' => array('|' => 'poison'));
@@ -1408,6 +1413,7 @@ class RoleMessageList{
   var $result_cure_pharmacist = array('message' => "さんは|河童|でした", 'type' => 'result_pharmacist');
   var $result_revive_pharmacist = array('message' => "さんは|仙人|でした", 'type' => 'result_pharmacist');
   var $result_alchemy_pharmacist = array('message' => "さんは|錬金術師|でした", 'type' => 'result_pharmacist');
+  var $result_centaurus_pharmacist = array('message' => "さんは|人馬|でした", 'type' => 'result_pharmacist');
   var $result_assassin = array('message' => "さんは|暗殺者|でした", 'delimiter' => array('|' => 'assassin'));
   var $result_doom_assassin = array('message' => "さんは|死神|でした", 'type' => 'assassin');
   var $result_reverse_assassin = array('message' => "さんは|反魂師|でした", 'type' => 'assassin');
@@ -1765,7 +1771,8 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_aurora');
-$builder->Output('immolate_mad');
+$builder->Output('result_sacrifice_common');
+#$builder->Output('centaurus_pharmacist');
 #$builder->Output('duelist');
-#$builder->Output('valkyrja_duelist');
+$builder->Output('valkyrja_duelist');
 #$builder->Output('triangle_duelist');

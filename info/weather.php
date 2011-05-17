@@ -817,6 +817,7 @@ Ver. 1.5.0
 <ul>
   <li><a href="new_role/ability.php#poison">毒能力</a>が無効化されます。</li>
   <li>昼夜両方に適用され、<a href="new_role/human.php#dummy_poison">夢毒者</a>も無効化されます。</li>
+  <li><a href="new_role/human.php#pharmacist_group">薬師系</a>の毒能力鑑定には影響しません。</li>
 </ul>
 
 <h3 id="weather_full_revive">雷雨 [Ver. 1.5.0 α3～]</h3>
