@@ -322,8 +322,8 @@ class User{
 
   //護衛制限判定
   function IsGuardLimited(){
-    return $this->IsRole('emissary_necromancer', 'detective_common', 'reporter',
-			 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard',
+    return $this->IsRole('emissary_necromancer', 'detective_common', 'sacrifice_common',
+			 'reporter', 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard',
 			 'pierrot_wizard', 'doll_master') ||
       ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
       $this->IsRoleGroup('assassin');

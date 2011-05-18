@@ -40,6 +40,10 @@ OutputRolePageHeader('蝙蝠陣営');
 <pre>
 蝙蝠陣営の基本種。能力は何も持っていない。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#sacrifice_common">首領</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 他の国に実在する役職です。

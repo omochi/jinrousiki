@@ -126,7 +126,7 @@ class RoleMessageList{
 
   var $voodoo_killer = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#陰陽師#です。夜の間に村人一人を占うことでその人の_呪い_を祓うことができます。\n　_呪い_や_憑依_の力で村を陥れようと目論む人外たちを#呪返し#で祓い去り、村を清めるのです！",
-    'type' => 'mage', 'delimiter' => array('_' => 'wolf'));
+    'type' => 'mage');
 
   var $necromancer = array(
     'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#霊能者#、その日の_処刑_者が「|人|」か「^狼^」か翌日の朝に知ることができます。\n　地味ですがあなたの努力次第で大きく貢献することも不可能ではありません。",
@@ -149,8 +149,8 @@ class RoleMessageList{
     'type' => 'necromancer');
 
   var $attempt_necromancer = array(
-    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#蟲姫#です。前日の夜に^人狼^の襲撃、_暗殺_を免れた人と=蘇生=に失敗した人を知ることができます。\n　可愛い虫たちが知らせる生死の予兆を感じ取り、命を弄ぶ異能者どもに正しき人の道を悟らせるのです！",
-    'type' => 'necromancer', 'delimiter' => array('_' => 'assassin', '=' => 'revive'));
+    'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#蟲姫#です。前日の夜に^人狼^の襲撃、=暗殺=を免れた人と:蘇生:に失敗した人を知ることができます。\n　可愛い虫たちが知らせる生死の予兆を感じ取り、命を弄ぶ異能者どもに正しき人の道を悟らせるのです！",
+    'type' => 'necromancer', 'delimiter' => array('=' => 'assassin', ':' => 'revive'));
 
   var $yama_necromancer = array(
     'message' => "[役割] [|村人|陣営] [#霊能者#系]\n　あなたは#閻魔#です。前日の死者の死因を知ることができます。魂に沙汰を下すその力で死者に白黒はっきりつけてやりましょう！",
@@ -162,11 +162,11 @@ class RoleMessageList{
 
   var $bacchus_medium = array(
     'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#神主#です。_突然死_した人の所属陣営を知ることができます。また、=鬼=を^処刑^投票で_ショック死_させることができます。\n　三度の飯より酒が好き、=鬼=がいたならさぁさぁ飲もう。飲んで飲ませて飲み比べ、最後に立つのは私だけ。=鬼=すら潰すこの私。",
-    'type' => 'seal_medium', 'delimiter' => array('=' => 'ogre'));
+    'type' => 'medium', 'delimiter' => array('^' => 'vote', '=' => 'ogre'));
 
   var $seal_medium = array(
     'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#封印師#です。_突然死_した人の所属陣営を知ることができます。また、^処刑^投票した人の限定能力を封じることができます。\n　あなたに与えられたのは破邪の聖印。数多の邪悪は、その輝きの前には無力です。その力を振るい、無辜なる村人を救うのです！",
-    'type' => 'medium', 'delimiter' => array('^' => 'vote'));
+    'type' => 'bacchus_medium');
 
   var $revive_medium = array(
     'message' => "[役割] [|村人|陣営] [#巫女#系]\n　あなたは#風祝#です。_突然死_した人の所属陣営を知ることができます。また、死んだ人を誰か一人^蘇生^できます。\n　あなたが持ちしは奇跡の力。神の御力をもって死した村人の魂を呼び戻し、彼らの心に安寧をもたらすのです！",
@@ -214,11 +214,11 @@ class RoleMessageList{
 
   var $gatekeeper_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。\n　あなたの仕事は狼を倒す事ではありません。護るべき人を護る仕事を全うしましょう。",
-    'type' => 'guard', 'delimiter' => array('^' => 'assassin', '=' => 'vampire'));
+    'type' => 'guard', 'delimiter' => array('^' => 'assassin'));
 
   var $reflect_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#侍#です。^暗殺^を跳ね返すことができます。また、#護衛#先が=鬼=なら#狩る#ことができます。\n　かかる火の粉は振り払い、浮き世の=鬼=を斬り捨てて、悪しき_狼_の凶刃から村人を守るのです！",
-    'type' => 'guard', 'delimiter' => array('^' => 'assassin', '=' => 'ogre'));
+    'type' => 'gatekeeper_guard', 'delimiter' => array('=' => 'ogre'));
 
   var $poison_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#騎士#です。夜の間に村人一人を_人狼_から護ることができます。もし、あなたが_人狼_に襲われたら刺し違えてでも倒すのです！",
@@ -230,7 +230,7 @@ class RoleMessageList{
 
   var $reporter = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#ブン屋#です。#尾行#先が_人狼_に襲撃されたら襲撃した人が誰か知ることができます。\n　_人狼_や^妖狐^に気取られぬよう、慎重かつ大胆に行動して華麗にスクープを入手するのです！",
-    'type' => 'guard', 'delimiter' => array('^' => 'fox'));
+    'type' => 'hunter_guard');
 
   var $anti_voodoo = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#厄神#です。夜の間に村人一人の災厄を祓うことができます。_呪い_から^占い師^を護り、村を浄化するのです！",
@@ -247,6 +247,10 @@ class RoleMessageList{
   var $trap_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#策士#です。他の#共有者#が誰であるか知ることができます。また、|村人|以外の票を全て集めたらまとめて_罠_にかけることができます。\n　権謀術数が渦巻く村で、勝利を確信して数の暴威を振るう人外達に策とはどういうものか、その身の破滅と引き換えに教えてあげましょう。",
     'type' => 'common', 'delimiter' => array('_' => 'wolf'));
+
+  var $sacrifice_common = array(
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#首領#です。#共有者#が誰であるか知ることができます。また、_人狼_に襲撃されても|村人|と^蝙蝠^を犠牲にして生き延びることができます。",
+    'type' => 'trap_common', 'delimiter' => array('^' => 'chiroptera'));
 
   var $ghost_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#亡霊嬢#です。他の#共有者#が誰であるか知ることができます。また、あなたを襲った_人狼_を^小心者^にしてしまいます。\n　あなたの魂魄は、黄泉への誘い水。^ショック死^の恐怖に怯える_狼_が因果の報いを受けるまで、冥府で幽雅に見守りましょう。",
@@ -326,7 +330,7 @@ class RoleMessageList{
 
   var $clairvoyance_scanner = array(
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#猩々#です。二日目から誰か一人のその夜の能力の行使先が誰なのかを知ることができます。\n　夜に彷徨い酒に酔い、誰かと酒宴に興じることで、夜のひとときを共有し土産話を持ち帰るのです！",
-    'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
+    'type' => 'presage_scanner');
 
   var $whisper_scanner = array(
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#囁騒霊#です。二日目からあなたの夜の独り言が_共有者_にも聞こえるようになります。\n　死んでしまったのは誰？あなたの口ずさむ悲しみを、_共有者_たちにも知ってもらいましょう。",
@@ -334,7 +338,7 @@ class RoleMessageList{
 
   var $howl_scanner = array(
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#吠騒霊#です。二日目からあなたの夜の独り言が_人狼_にも聞こえるようになります。\n　生きているのは誰？あなたの紡ぐ言葉で_人狼_達の心をざわつかせ、踊ってもらいましょう。",
-    'type' => 'mind_scanner', 'delimiter' => array('_' => 'wolf'));
+    'type' => 'presage_scanner');
 
   var $telepath_scanner = array(
     'message' => "[役割] [|村人|陣営] [#さとり#系]\n　あなたは#念騒霊#です。二日目からあなたの夜の独り言が_妖狐_にも聞こえるようになります。\n　どちらでもないのは誰？あなたの知恵が奏でる幻想で、_妖狐_達さえも騙して笑いましょう。",
@@ -391,7 +395,7 @@ class RoleMessageList{
 
   var $astray_wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#左道使い#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は特殊_狂人_相当です。\n　千変万化の嘘を手に、あなたは悪逆無道の夜を往く。敬虔に年を累ねた師父たちを、異装の獣の皿へと載せましょう。",
-    'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
+    'type' => 'awake_wizard');
 
   var $pierrot_wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#道化師#です。二日目以降、夜に誰か一人に#魔法#をかけることができますが、主な効果は_悪戯_相当です。\n　変幻自在におどけてみせよう♪何が出るかはおたのしみ♪今宵の宴に添えるは悲喜劇！さあさとくと御覧あれ♪ ",
@@ -1771,7 +1775,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_aurora');
-$builder->Output('result_sacrifice_common');
+#$builder->Output('sacrifice_common');
 #$builder->Output('centaurus_pharmacist');
 #$builder->Output('duelist');
 $builder->Output('valkyrja_duelist');

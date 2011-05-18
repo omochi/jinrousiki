@@ -2381,6 +2381,15 @@ Ver. 1.4.0
   <td class="ability">処刑投票先が毒を持っていたら毒死してしまう特殊な薬師。</td>
   <td>Ver. 1.5.0 β2</td>
 </tr>
+<tr>
+  <td><a href="human.php#sacrifice_common">首領</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#common_group">共有者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="human.php#human">村人</a>と<a href="chiroptera.php#chiroptera">蝙蝠</a>を身代わりにして生き延びる事ができる上位共有者。</td>
+  <td>Ver. 1.5.0 β2</td>
+</tr>
 </table>
 
 <table id="sub_role">

@@ -1637,7 +1637,7 @@ function AggregateVoteNight($skip = false){
 	      $target = $USERS->ByID(GetRandom($stack));
 	      $USERS->Kill($target->user_no, 'SACRIFICE');
 	      $sacrifice_list[] = $target->uname;
-	      break;
+	      break 2;
 	    }
 	  }
 	}

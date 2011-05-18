@@ -11,6 +11,7 @@ Ver. 1.5.0
 <a href="#ver150a4">α4</a>
 <a href="#ver150a5">α5</a>
 <a href="#ver150a7">α7</a>
+<a href="#ver150b1">β1</a>
 </p>
 <p>
 <a href="#ver140">Ver. 1.4.0</a>
@@ -29,6 +30,13 @@ Ver. 1.5.0
 <a href="#ver140b21">β21</a>
 <a href="#ver140b22">β22</a>
 </p>
+
+<h2 id="ver150b1">Ver. 1.5.0 β1</h2>
+<h3>include/game_vote_functions.php % 1640行目付近 (2011/05/19 (Thu) 02:55)</h3>
+<pre>
+× break;
+○ break 2;
+</pre>
 
 <h2 id="ver150a7">Ver. 1.5.0 α7</h2>
 <h3>include/role/betray_yaksa.php % 12行目付近 (2011/04/11 (Mon) 00:16)</h3>

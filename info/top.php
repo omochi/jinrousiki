@@ -11,7 +11,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>TOPIC</h1>
 <h2>Ver. 1.5.0 β1 アップロード (2011/05/13 (Fri) 02:49) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#ver150a7">デバッグ情報</a> (2011/04/11 (Mon) 00:16)</li> -->
+  <li>→ <a href="info/develop/debug.php#ver150b1">デバッグ情報</a> (2011/05/19 (Thu) 02:55)</li>
   <li>「大妖精」「吟遊詩人」「紅天使」「決闘者」「戦乙女」「舞首」実装</li>
   <li>サブ役職「宿敵」実装</li>
   <li>固定追加配役モード：I(恋人村)・J(宿敵村)追加</li>
@@ -20,10 +20,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>人馬：処刑投票先が毒を持っていたら毒死してしまう特殊な薬師</li>
+  <li>首領：人狼に襲撃された時に、村人と蝙蝠を身代わりにして生き延びる事ができる上位共有者</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>人馬：処刑投票先が毒を持っていたら毒死してしまう特殊な薬師</li>
+  <li>なし</li>
 </ul>

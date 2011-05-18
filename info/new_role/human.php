@@ -70,7 +70,7 @@ OutputRolePageHeader('村人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#brownie">座敷童子</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>
+<a href="#sacrifice_common">首領</a>・<a href="#brownie">座敷童子</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>
 </pre>
 
 <h3 id="saint">聖女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7～]</h3>
@@ -953,8 +953,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="guard_limit">護衛制限</h3>
 <ol>
-  <li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#assassin_group">暗殺者系</a><br>
-    <a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
+  <li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a><br>
+    <a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
   <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出るが、護衛先は死亡する。</li>
   <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されない。</li>
 </ol>
@@ -1189,6 +1189,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#common">共有者</a>
 <a href="#detective_common">探偵</a>
 <a href="#trap_common">策士</a>
+<a href="#sacrifice_common">首領</a>
 <a href="#ghost_common">亡霊嬢</a>
 <a href="#dummy_common">夢共有者</a>
 </p>
@@ -1243,6 +1244,30 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#jealousy">橋姫</a>同様、役職の存在による抑止力の発生が主眼です。
 「自分は村人だから投票しない」と主張されたらそれまでなので、
 能力を前面に出して自分に投票させる作戦は通用しないでしょう。
+</pre>
+
+<h3 id="sacrifice_common">首領 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β2～]</h3>
+<h4>[耐性] 人狼襲撃：身代わり / 護衛：制限対象</h4>
+<h4>[身代わり能力] 村人・蝙蝠</h4>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="#human">村人</a>と<a href="chiroptera.php#chiroptera">蝙蝠</a>を身代わりにして生き延びる事ができる上位共有者。
+狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<ol>
+  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+  <li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
+  <li>本人は身代わりが発生しても分からない。</li>
+  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sacrifice">身代わり能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+世紀末鯖＠やる夫人狼のオリジナル役職「聖帝」を元にアレンジしました。
+「<a href="mania.php#mania_group">神話マニア</a>をコピーして村人になった」騙りと<a href="chiroptera.php#chiroptera_group">蝙蝠系</a>の種類騙りなどに
+対するトラップが主眼です。
 </pre>
 
 <h3 id="ghost_common">亡霊嬢 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>

@@ -39,7 +39,7 @@ $RQ_ARGS->TestItems->test_users[2] =& new User();
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'sex_wolf strong_voice rebel';
+$RQ_ARGS->TestItems->test_users[2]->role = 'wolf strong_voice rebel';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3] =& new User();
@@ -109,7 +109,7 @@ $RQ_ARGS->TestItems->test_users[12] =& new User();
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'centaurus_pharmacist';
+$RQ_ARGS->TestItems->test_users[12]->role = 'poison_chiroptera';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13] =& new User();
@@ -151,7 +151,7 @@ $RQ_ARGS->TestItems->test_users[18] =& new User();
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'medium';
+$RQ_ARGS->TestItems->test_users[18]->role = 'human';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19] =& new User();
@@ -165,7 +165,7 @@ $RQ_ARGS->TestItems->test_users[20] =& new User();
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'incubus_vampire rival[22]';
+$RQ_ARGS->TestItems->test_users[20]->role = 'incubus_vampire';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[21] =& new User();
@@ -179,14 +179,14 @@ $RQ_ARGS->TestItems->test_users[22] =& new User();
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[22]->role = 'valkyrja_duelist disfavor';
+$RQ_ARGS->TestItems->test_users[22]->role = 'priest disfavor';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23] =& new User();
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'immolate_fox rival[22]';
+$RQ_ARGS->TestItems->test_users[23]->role = 'sacrifice_common';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24] =& new User();
@@ -342,8 +342,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 5;
 #$ROOM->day_night = 'beforegame';
-$ROOM->day_night = 'day';
-#$ROOM->day_night = 'night';
+#$ROOM->day_night = 'day';
+$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 

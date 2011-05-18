@@ -192,7 +192,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="sacrifice">身代わり能力者</h2>
 <h3 id="sacrifice_active">能動型</h3>
 <pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="sub_role.php#protected">庇護者</a>
+<a href="human.php#sacrifice_common">首領</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="sub_role.php#protected">庇護者</a>
 </pre>
 <h3 id="sacrifice_reactive">受動型</h3>
 <pre>
