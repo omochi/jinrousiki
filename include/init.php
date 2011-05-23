@@ -20,11 +20,11 @@ define('JINRO_MOD',  JINRO_ROOT . '/module');
   逆にコード上必須ではないが常にセットで使われるデータを入れると良い。
 */
 class InitializeConfig{
-  var $path; //パス情報格納変数
-  var $loaded; //ロード情報格納変数
+  public $path; //パス情報格納変数
+  public $loaded; //ロード情報格納変数
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
-  var $depend_file = array(
+  public $depend_file = array(
     'DB_CONF'             => 'server_config', //常時ロードされる
     'SERVER_CONF'         => 'server_config', //常時ロードされる
     'ROOM_CONF'           => 'game_config',
@@ -57,7 +57,7 @@ class InitializeConfig{
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
-  var $depend_class = array(
+  public $depend_class = array(
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
     'TIME_CALC'           => array('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG',
 				   'CAST_CONF', 'ROLE_DATA'),
@@ -68,7 +68,7 @@ class InitializeConfig{
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
-  var $class_list = array(
+  public $class_list = array(
     'DB_CONF'       => 'DatabaseConfig',
     'SERVER_CONF'   => 'ServerConfig',
     'SHARED_CONF'   => 'SharedServerConfig',

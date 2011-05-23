@@ -10,15 +10,16 @@ OutputRolePageHeader('サブ役職');
 <p>
 <a href="#chicken_group">小心者系</a>
 <a href="#liar_group">狼少年系</a>
+<a href="#decide_group">決定者系</a>
 <a href="#authority_group">権力者系</a>
 <a href="#upper_luck_group">雑草魂系</a>
-<a href="#decide_group">決定者系</a>
 <a href="#strong_voice_group">大声系</a>
 <a href="#no_last_words_group">筆不精系</a>
 <a href="#mind_read_group">サトラレ系</a>
 </p>
 <p>
 <a href="#lovers_group">恋人系</a>
+<a href="#infected_group">感染者系</a>
 <a href="#joker_group">ジョーカー系</a>
 <a href="#other_group">その他</a>
 </p>
@@ -29,17 +30,17 @@ OutputRolePageHeader('サブ役職');
 以外のサブ役職は重なりません。
 </pre>
 
-<h2 id="chicken_group">小心者系 (処刑投票ショック死系)</h2>
+<h2 id="chicken_group">小心者系 (処刑投票ショック死)</h2>
 <p>
 <a href="#chicken">小心者</a>
 <a href="#rabbit">ウサギ</a>
 <a href="#perverseness">天邪鬼</a>
 <a href="#flattery">ゴマすり</a>
-<a href="#impatience">短気</a>
 <a href="#celibacy">独身貴族</a>
 <a href="#nervy">自信家</a>
 <a href="#androphobia">男性恐怖症</a>
 <a href="#gynophobia">女性恐怖症</a>
+<a href="#impatience">短気</a>
 </p>
 <p>
 <a href="#febris">熱病</a>
@@ -54,7 +55,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#ghost_common">亡霊嬢</a>
+<a href="human.php#ghost_common">亡霊嬢</a>・<a href="#rabbit">ウサギ</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -79,6 +80,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 処刑投票時に他の人と投票先が重なるとショック死する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#flattery">ゴマすり</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方ウミガメ人狼のプレイヤーさん達に提供してもらったアイディアが原型です。
@@ -95,23 +100,13 @@ OutputRolePageHeader('サブ役職');
 アイディアは同時に提案されていますが名称決定の関係で実装時期が遅れています。
 </pre>
 
-<h3 id="impatience">短気 [Ver. 1.4.0 α15～]</h3>
-<pre>
-<a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-自覚のある<a href="#decide">決定者</a>で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ(80)</a> が原型です。
-その分だけ<a href="../spec.php#vote_day">判定</a>の優先度が決定者より低めになっています。
-</pre>
-
 <h3 id="celibacy">独身貴族 [Ver. 1.4.0 α22～]</h3>
 <pre>
 処刑投票時に<a href="#lovers">恋人</a>から一票でも貰うとショック死する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#jealousy">橋姫</a>同様、対<a href="#lovers">恋人</a>用役職ですが、こっちは小心者系という事もあって
+<a href="human.php#jealousy_group">橋姫系</a>同様、対<a href="#lovers">恋人</a>用役職ですが、こちらは小心者系という事もあって
 より理不尽な仕様となっています。
 </pre>
 
@@ -129,6 +124,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 処刑投票時に男性に投票するとショック死する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#gynophobia">女性恐怖症</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 やる夫人狼のプレイヤーさんとの雑談から生まれた役職です。
@@ -141,6 +140,16 @@ OutputRolePageHeader('サブ役職');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#androphobia">男性恐怖症</a>の女性バージョンです。
+</pre>
+
+<h3 id="impatience">短気 [Ver. 1.4.0 α15～]</h3>
+<pre>
+<a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+自覚のある<a href="#decide">決定者</a>で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ(80)</a> が原型です。
+その分だけ<a href="../spec.php#vote_day">判定</a>の優先度が決定者より低めになっています。
 </pre>
 
 <h3 id="febris">熱病 [Ver. 1.4.0 β9～]</h3>
@@ -163,7 +172,7 @@ OutputRolePageHeader('サブ役職');
 <h4>[役職表示] 発動日限定</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-表示された日限定の<a href="#rabbit">ウサギ</a>です。
+表示された日限定の<a href="#rabbit">ウサギ</a>相当。
 発動条件を満たした日の昼に突然表示されて、効果は一日で消える。
 </pre>
 <h4>関連役職</h4>
@@ -207,30 +216,33 @@ OutputRolePageHeader('サブ役職');
 </pre>
 
 
-<h2 id="liar_group">狼少年系 (発言変換系)</h2>
+<h2 id="liar_group">狼少年系 (発言変換)</h2>
 <p>
 <a href="#liar">狼少年</a>
-<a href="#invisible">光学迷彩</a>
+<a href="#actor">役者</a>
+<a href="#passion">恋色迷彩</a>
 <a href="#rainbow">虹色迷彩</a>
 <a href="#weekly">七曜迷彩</a>
-<a href="#passion">恋色迷彩</a>
 <a href="#grassy">草原迷彩</a>
+<a href="#invisible">光学迷彩</a>
 <a href="#side_reverse">鏡面迷彩</a>
 <a href="#line_reverse">天地迷彩</a>
+</p>
+<p>
 <a href="#gentleman">紳士</a>
 <a href="#lady">淑女</a>
-<a href="#actor">役者</a>
 </p>
 
 <h3 id="liar">狼少年 [Ver. 1.4.0 α11～]</h3>
 <pre>
 発言時に一部のキーワードが入れ替えられてしまう。
+たまに変換されないことがある (発動率は管理者設定)。
 例：人⇔狼、白⇔黒、○⇔●
 </pre>
 <h5>Ver. 1.4.0 α14～</h5>
 <pre>
-変換対象キーワードが増えました (何が変わるかは自ら試してください)。
-時々変換されないことがあります (たまには真実を語るのです)。
+変換対象キーワードを追加。
+発動率を管理者設定で変更できる仕様に変更。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -240,28 +252,28 @@ OutputRolePageHeader('サブ役職');
 結構な負担ではないでしょうか？
 </pre>
 
-<h3 id="invisible">光学迷彩 [Ver. 1.4.0 α14～]</h3>
+<h3 id="actor">役者 [Ver. 1.4.0 β14～]</h3>
 <pre>
-発言の一定割合が空白に入れ替えられてしまう。
-入れ替えられる場所はランダム。
-</pre>
-<h5>Ver. 1.5.0 α6～</h5>
-<pre>
-一定確率で消える→一定割合が確定で消える
-</pre>
-<h5>Ver. 1.4.0 α17～</h5>
-<pre>
-変換率を落とした代わりに文字数が増えると変換率がアップする。
-一定文字数を超えると完全に消える。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="chiroptera.php#sun_fairy">日妖精</a>
+発言時に一部のキーワードが入れ替えられてしまう。
+初期設定は「です」→「みょん」のみ。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
-変換される割合は設定ファイルで変更できます。
+<a href="#liar">狼少年</a>のカスタムバージョンです。
+各サーバで自由に編集してもらうことを前提に設計しています。
+</pre>
+
+<h3 id="passion">恋色迷彩 [Ver. 1.4.0 β17～]</h3>
+<pre>
+発言時に一部のキーワードが恋人っぽい言葉に入れ替えられてしまう。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#divorce_jealousy">縁切地蔵</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#liar">狼少年</a>の恋人バージョンで、Twitter 上の雑談から生まれた役職です。
 </pre>
 
 <h3 id="rainbow">虹色迷彩 [Ver. 1.4.0 α17～]</h3>
@@ -286,19 +298,6 @@ OutputRolePageHeader('サブ役職');
 比較的引っ掛かりやすいでしょうが、対応も簡単ですね。
 </pre>
 
-<h3 id="passion">恋色迷彩 [Ver. 1.4.0 β17～]</h3>
-<pre>
-発言時に一部のキーワードが恋人っぽい言葉に入れ替えられてしまう。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="human.php#divorce_jealousy">縁切地蔵</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#liar">狼少年</a>の恋人バージョンで、Twitter 上の雑談から生まれた役職です。
-</pre>
-
 <h3 id="grassy">草原迷彩 [Ver. 1.4.0 α23～]</h3>
 <pre>
 発言の一文字毎に「w」が付加される。
@@ -311,6 +310,30 @@ OutputRolePageHeader('サブ役職');
 <pre>
 いわゆる Vipper の再現です。
 機械的につけるので<a href="human.php#mage_group">占い師</a>などにこれがつくとかなり悲惨な事になると思われます。
+</pre>
+
+<h3 id="invisible">光学迷彩 [Ver. 1.4.0 α14～]</h3>
+<pre>
+発言の一定割合が空白に入れ替えられてしまう。
+入れ替えられる場所はランダム。
+</pre>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+一定確率で消える→一定割合が確定で消える
+</pre>
+<h5>Ver. 1.4.0 α17～</h5>
+<pre>
+変換率を落とした代わりに文字数が増えると変換率がアップする。
+一定文字数を超えると完全に消える。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="chiroptera.php#sun_fairy">日妖精</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
+変換される割合は設定ファイルで変更できます。
 </pre>
 
 <h3 id="side_reverse">鏡面迷彩 [Ver. 1.4.0 α23～]</h3>
@@ -356,22 +379,62 @@ OutputRolePageHeader('サブ役職');
 <a href="#gentleman">紳士</a>の女性バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/135" target="_top">新役職考案スレ(135)</a> が原型です。
 </pre>
 
-<h3 id="actor">役者 [Ver. 1.4.0 β14～]</h3>
+
+<h2 id="decide_group">決定者系 (処刑者候補変化)</h2>
+<p>
+<a href="#decide">決定者</a>
+<a href="#plague">疫病神</a>
+<a href="#good_luck">幸運</a>
+<a href="#bad_luck">不運</a>
+</p>
+
+<h3 id="decide">決定者</h3>
+<h4>[役職表示] 表示無し</h4>
 <pre>
-発言時に一部のキーワードが入れ替えられてしまう。
-初期設定は「です」→「みょん」のみ。
+自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#impatience">短気</a>
+</pre>
+
+<h3 id="plague">疫病神 [Ver. 1.4.0 α9～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+自分の投票先が最多得票者で処刑者候補が複数いた場合、候補から除外される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#liar">狼少年</a>のカスタムバージョンです。
-各サーバで自由に編集してもらうことを前提に設計しています。
+<a href="#decide">決定者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ(8)</a> が原型です。
 </pre>
 
-<h2 id="authority_group">権力者系 (処刑投票数変化系)</h2>
+<h3 id="good_luck">幸運 [Ver. 1.4.0 α14～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+自分が最多得票者で処刑者候補が複数いた場合、候補から除外される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+本人に付随する決定者系能力です。
+東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
+</pre>
+
+<h3 id="bad_luck">不運 [Ver. 1.4.0 α14～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+自分が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#good_luck">幸運</a>の逆バージョンです。
+</pre>
+
+
+<h2 id="authority_group">権力者系 (処刑投票数変化)</h2>
 <p>
 <a href="#authority">権力者</a>
-<a href="#rebel">反逆者</a>
 <a href="#critical_voter">会心</a>
+<a href="#rebel">反逆者</a>
 <a href="#random_voter">気分屋</a>
 <a href="#watcher">傍観者</a>
 </p>
@@ -383,6 +446,20 @@ OutputRolePageHeader('サブ役職');
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+
+<h3 id="critical_voter">会心 [Ver. 1.4.0 β14～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+5% の確率で処刑投票数が +100 される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#critical_luck">痛恨</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+RPG でよくある「クリティカルヒット」を再現してみました。
 </pre>
 
 <h3 id="rebel">反逆者 [Ver. 1.4.0 α14～]</h3>
@@ -398,20 +475,6 @@ OutputRolePageHeader('サブ役職');
 <pre>
 東方ウミガメ人狼のプレイヤーさんが実際にやってしまった失敗をヒントに
 対権力者を作成してみました。
-</pre>
-
-<h3 id="critical_voter">会心 [Ver. 1.4.0 β14～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<pre>
-5% の確率で処刑投票数が +100 される。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#critical_luck">痛恨</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-RPG でよくある「クリティカルヒット」を再現してみました。
 </pre>
 
 <h3 id="random_voter">気分屋 [Ver. 1.4.0 α14～]</h3>
@@ -441,7 +504,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 
 
-<h2 id="upper_luck_group">雑草魂系 (処刑得票数変化系)</h2>
+<h2 id="upper_luck_group">雑草魂系 (処刑得票数変化)</h2>
 <p>
 <a href="#upper_luck_rule">基本ルール</a>
 </p>
@@ -535,57 +598,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 
 
-<h2 id="decide_group">決定者系 (処刑者候補変化系)</h2>
-<p>
-<a href="#decide">決定者</a>
-<a href="#plague">疫病神</a>
-<a href="#good_luck">幸運</a>
-<a href="#bad_luck">不運</a>
-</p>
-
-<h3 id="decide">決定者</h3>
-<h4>[役職表示] 表示無し</h4>
-<pre>
-自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#impatience">短気</a>
-</pre>
-
-<h3 id="plague">疫病神 [Ver. 1.4.0 α9～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<pre>
-自分の投票先が最多得票者で処刑者候補が複数いた場合、候補から除外される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#decide">決定者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ(8)</a> が原型です。
-</pre>
-
-<h3 id="good_luck">幸運 [Ver. 1.4.0 α14～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<pre>
-自分が最多得票者で処刑者候補が複数いた場合、候補から除外される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-本人に付随する決定者系能力です。
-東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
-</pre>
-
-<h3 id="bad_luck">不運 [Ver. 1.4.0 α14～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<pre>
-自分が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#good_luck">幸運</a>の逆バージョンです。
-</pre>
-
-
-<h2 id="strong_voice_group">大声系 (発言変化系)</h2>
+<h2 id="strong_voice_group">大声系 (声量変化)</h2>
 <p>
 <a href="#strong_voice">大声</a>
 <a href="#normal_voice">不器用</a>
@@ -681,7 +694,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 
 
-<h2 id="no_last_words_group">筆不精系 (発言封印系)</h2>
+<h2 id="no_last_words_group">筆不精系 (発言封印)</h2>
 <p>
 <a href="#no_last_words">筆不精</a>
 <a href="#blinder">目隠し</a>
@@ -838,7 +851,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 とっても理不尽ですね。
 </pre>
 
-<h2 id="mind_read_group">サトラレ系 (夜発言公開系)</h2>
+<h2 id="mind_read_group">サトラレ系 (夜発言公開)</h2>
 <p>
 <a href="#mind_read_rule">基本ルール</a>
 </p>
@@ -1016,6 +1029,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 分かっていても堂々と告発できないジレンマにどう対処するのかがポイントです。
 </pre>
 
+
 <h2 id="lovers_group">恋人系</h2>
 <p>
 <a href="#lovers">恋人</a>
@@ -1085,6 +1099,50 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <pre>
 <a href="lovers.php#exchange_angel">魂移使</a>の処理用に実装されたサブ役職です。
 </pre>
+
+
+<h2 id="infected_group">感染者系</h2>
+<p>
+<a href="#infected">感染者</a>
+<a href="#psycho_infected">洗脳者</a>
+</p>
+
+<h3 id="infected">感染者 [Ver. 1.4.0 β14～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加される。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#psycho_infected">洗脳者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>の勝敗判定用に実装されたサブ役職です。
+</pre>
+
+<h3 id="psycho_infected">洗脳者 [Ver. 1.4.0 β20～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>共通の<a href="#infected">感染者</a>扱い。
+<a href="vampire.php">吸血鬼陣営</a>と<a href="ogre.php#sacrifice_ogre">酒呑童子</a>は村にいる洗脳者が誰か分かる。
+<a href="ogre.php#sacrifice_ogre">酒呑童子</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃された場合は身代わりで死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sacrifice">身代わり能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="vampire.php">吸血鬼陣営</a>支援能力者用に実装されたサブ役職です。
+</pre>
+
 
 <h2 id="joker_group">ジョーカー系</h2>
 <p>
@@ -1191,8 +1249,6 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <p>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
-<a href="#infected">感染者</a>
-<a href="#psycho_infected">洗脳者</a>
 <a href="#bad_status">悪戯</a>
 <a href="#protected">庇護者</a>
 <a href="#wirepuller_luck">入道</a>
@@ -1243,42 +1299,6 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 <h4>[作成者からのコメント]</h4>
 <pre>
 憑依システム用に実装されたサブ役職です。
-</pre>
-
-<h3 id="infected">感染者 [Ver. 1.4.0 β14～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加される。
-</pre>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-役職名の表示
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#psycho_infected">洗脳者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>の勝敗判定用に実装されたサブ役職です。
-</pre>
-
-<h3 id="psycho_infected">洗脳者 [Ver. 1.4.0 β20～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>共通の<a href="#infected">感染者</a>扱い。
-<a href="vampire.php">吸血鬼陣営</a>と<a href="ogre.php#sacrifice_ogre">酒呑童子</a>は村にいる洗脳者が誰か分かる。
-<a href="ogre.php#sacrifice_ogre">酒呑童子</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃された場合は身代わりで死亡する。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="ability.php#sacrifice">身代わり能力者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="vampire.php">吸血鬼陣営</a>支援能力者用に実装されたサブ役職です。
 </pre>
 
 <h3 id="bad_status">悪戯 [Ver. 1.4.0 β6～]</h3>

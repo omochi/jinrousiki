@@ -5,8 +5,8 @@
   ・処刑投票先が鬼陣営ならショック死させる
 */
 class Role_bacchus_medium extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

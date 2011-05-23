@@ -7,9 +7,9 @@
 class Role_greater_fairy extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterSay(&$sentence){
+  function FilterSay(&$str){
     global $MESSAGE;
     $stack = array($MESSAGE->common_talk, '春ですよー', '夏ですよー', '秋ですよー', '冬ですよー');
-    $sentence = GetRandom($stack) . $sentence;
+    $str = GetRandom($stack) . $str;
   }
 }

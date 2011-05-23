@@ -6,8 +6,8 @@
   ・再投票になったらショック死する
 */
 class Role_impatience extends RoleVoteAbility{
-  var $data_type = 'target';
-  var $decide_type = 'decide';
+  public $data_type = 'target';
+  public $decide_type = 'decide';
 
   function __construct(){ parent::__construct(); }
 

@@ -5,8 +5,8 @@
   ・非村人陣営の人全てから投票されたらまとめて死亡させる
 */
 class Role_trap_common extends RoleVoteAbility{
-  var $data_type = 'array';
-  var $init_stack = true;
+  public $data_type = 'array';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

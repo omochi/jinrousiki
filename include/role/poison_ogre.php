@@ -6,7 +6,7 @@
   ・毒：人狼系 + 妖狐陣営 + 鬼陣営
 */
 class Role_poison_ogre extends Role{
-  var $resist_rate = 30;
+  public $resist_rate = 30;
 
   function __construct(){ parent::__construct(); }
 

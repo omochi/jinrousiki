@@ -210,7 +210,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+<a href="#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2485,7 +2485,7 @@ MVP の賞品としてプレゼントしたものです。
 
 <h3 id="scarlet_doll">和蘭人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、他の人形から<a href="#doll_master">人形遣い</a>に見える人形。
+<a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、他の<a href="#doll_rule">人形</a>から<a href="#doll_master">人形遣い</a>に見える人形。
 </pre>
 <h4>関連役職</h4>
 <pre>

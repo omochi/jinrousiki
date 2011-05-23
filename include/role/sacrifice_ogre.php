@@ -6,7 +6,7 @@
   ・身代わり対象者：洗脳者
 */
 class Role_sacrifice_ogre extends Role{
-  var $resist_rate = 0;
+  public $resist_rate = 0;
 
   function __construct(){ parent::__construct(); }
 

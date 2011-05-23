@@ -1,11 +1,11 @@
 <?php
 class User{
-  var $main_role;
-  var $role_list = array();
-  var $partner_list = array();
-  var $dead_flag = false;
-  var $suicide_flag = false;
-  var $revive_flag = false;
+  public $main_role;
+  public $role_list    = array();
+  public $partner_list = array();
+  public $dead_flag    = false;
+  public $suicide_flag = false;
+  public $revive_flag  = false;
 
   function ParseCompoundParameters(){ $this->ParseRoles(); }
 
@@ -834,10 +834,10 @@ EOF;
 }
 
 class UserDataSet{
-  var $room_no;
-  var $rows = array();
-  var $kicked = array();
-  var $names = array();
+  public $room_no;
+  public $rows = array();
+  public $kicked = array();
+  public $names = array();
 
   function __construct($request){
     $this->room_no = $request->room_no;

@@ -5,7 +5,7 @@
   ・勝利条件：自分自身の生存 + 人狼陣営の全滅
 */
 class Role_orange_ogre extends Role{
-  var $resist_rate = 30;
+  public $resist_rate = 30;
 
   function __construct(){ parent::__construct(); }
 

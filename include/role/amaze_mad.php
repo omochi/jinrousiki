@@ -5,8 +5,8 @@
   ・処刑投票先が処刑されたら投票結果を隠蔽する
 */
 class Role_amaze_mad extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

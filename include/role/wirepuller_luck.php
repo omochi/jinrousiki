@@ -8,20 +8,20 @@
 class Role_wirepuller_luck extends Role{
   function __construct(){ parent::__construct(); }
 
-  function IsLivePartner(){
-    global $ROLES, $USERS;
-
-    foreach($ROLES->actor->GetPartner($this->role) as $id){
-      if($USERS->ByID($id)->IsLive()) return true;
-    }
-    return false;
-  }
-
   function FilterVoteDo(&$vote_number){
     if($this->IsLivePartner()) $vote_number += 2;
   }
 
   function FilterVoted(&$voted_number){
     if(! $this->IsLivePartner()) $voted_number += 3;
+  }
+
+  private function IsLivePartner(){
+    global $ROLES, $USERS;
+
+    foreach($ROLES->actor->GetPartner($this->role) as $id){
+      if($USERS->ByID($id)->IsLive()) return true;
+    }
+    return false;
   }
 }

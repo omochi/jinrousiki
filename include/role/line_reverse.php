@@ -11,7 +11,7 @@
 class Role_line_reverse extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterSay(&$sentence){
-    $sentence = implode("\n", array_reverse(explode("\n", $sentence)));
+  function FilterSay(&$str){
+    $str = implode("\n", array_reverse(explode("\n", $str)));
   }
 }

@@ -5,7 +5,7 @@
   ・勝利条件：自分自身の生存 + 自分よりサブ役職の所持数が多い人の全滅
 */
 class Role_dowser_yaksa extends Role{
-  var $resist_rate = 40;
+  public $resist_rate = 40;
 
   function __construct(){ parent::__construct(); }
 

@@ -5,8 +5,8 @@
   ・処刑得票：恋色迷彩 (恋人・一定確率)
 */
 class Role_divorce_jealousy extends RoleVoteAbility{
-  var $data_type = 'array';
-  var $init_stack = true;
+  public $data_type = 'array';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

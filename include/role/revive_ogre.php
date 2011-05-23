@@ -5,7 +5,7 @@
   ・勝利条件：自分自身の生存 + 嘘吐きの全滅
 */
 class Role_revive_ogre extends Role{
-  var $resist_rate = 0;
+  public $resist_rate = 0;
 
   function __construct(){ parent::__construct(); }
 

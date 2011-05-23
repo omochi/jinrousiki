@@ -1,9 +1,9 @@
 <?php
 //-- 発言処理の基底クラス --//
 class DocumentBuilder{
-  var $actor;
-  var $flag;
-  var $extension_list = array();
+  public $actor;
+  public $flag;
+  public $extension_list = array();
 
   function __construct(){
     global $ROOM, $USERS, $SELF;

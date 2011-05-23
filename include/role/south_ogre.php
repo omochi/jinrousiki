@@ -5,7 +5,7 @@
   ・勝利条件：自分自身の生存 + 自分と同列の下側にいる人の全滅 + 村人陣営の勝利
 */
 class Role_south_ogre extends Role{
-  var $resist_rate = 40;
+  public $resist_rate = 40;
 
   function __construct(){ parent::__construct(); }
 

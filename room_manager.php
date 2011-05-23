@@ -558,19 +558,21 @@ EOF;
 function GenerateTextForm($option){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
+  $type = 'text';
   switch($option){
   case 'room_name':
     $footer = ' 村';
     break;
 
   case 'gm_password':
+    $type = 'password';
     $footer = '<span class="explain">' . $GAME_OPT_CAPT->gm_password . '</span>';
     break;
   }
   return <<<EOF
 <tr>
 <td><label>{$GAME_OPT_MESS->$option}：</label></td>
-<td><input type="text" name="{$option}" size="{$ROOM_CONF->{$option . '_input'}}">{$footer}</td>
+<td><input type="{$type}" name="{$option}" size="{$ROOM_CONF->{$option . '_input'}}">{$footer}</td>
 </tr>
 
 EOF;

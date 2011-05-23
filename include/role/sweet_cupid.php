@@ -6,8 +6,8 @@
   ・追加役職：両方に共鳴者
 */
 class Role_sweet_cupid extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

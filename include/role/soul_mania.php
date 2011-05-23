@@ -5,8 +5,8 @@
   ・コピー先の上位種に変化する
 */
 class Role_soul_mania extends Role{
-  var $copied = 'copied_soul';
-  var $copy_list = array(
+  public $copied = 'copied_soul';
+  public $copy_list = array(
       'human'        => 'executor',
       'mage'         => 'soul_mage',
       'necromancer'  => 'soul_necromancer',

@@ -149,9 +149,6 @@ function VoteKick(){
   if(is_array($vote_data) && in_array($target->uname, $vote_data)){
     OutputVoteResult("Kick：{$target->handle_name} さんへ Kick 投票済み", true);
   }
-  //PrintData($ROOM->vote); //テスト用
-  //OutputVoteResult('Kick：テスト', true);
-  //return;
 
   if($SELF->Vote('KICK_DO', $target->uname)){ //投票処理
     $ROOM->Talk("KICK_DO\t" . $target->handle_name, $SELF->uname); //投票しました通知
@@ -721,6 +718,14 @@ function OutputVoteDay(){
   $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
     "AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
   if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
+  if(is_array($ROOM->event->vote_duel)){ //特殊イベントを取得
+    $user_stack = array();
+    foreach($ROOM->event->vote_duel as $id) $user_stack[$id] = $USERS->rows[$id];
+  }
+  else{
+    $user_stack = $USERS->rows;
+  }
+  $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想投票者を取得
 
   OutputVotePageHeader();
   echo <<<EOF
@@ -730,13 +735,10 @@ function OutputVoteDay(){
 
 EOF;
 
-  $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想投票者を取得
-  $count  = 0;
-  $vote_duel = $ROOM->event->vote_duel; //特殊イベントを取得
   $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
-  foreach($USERS->rows as $id => $user){
+  $count = 0;
+  foreach($user_stack as $id => $user){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
-    if(is_array($vote_duel) && ! in_array($id, $vote_duel)) continue;
     $count++;
     $is_live = $USERS->IsVirtualLive($id);
 
@@ -873,7 +875,6 @@ function OutputVoteNight(){
   elseif($SELF->IsRole('emerald_fox')){
     if(! $SELF->IsActive()) OutputVoteResult('夜：能力喪失しています');
     $type   = 'MAGE_DO';
-    $submit = 'mage_do';
   }
   elseif($SELF->IsChildFox(true)){
     $type   = 'CHILD_FOX_DO';
@@ -907,7 +908,7 @@ function OutputVoteNight(){
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
   elseif($SELF->IsRoleGroup('mania')){
-    if($ROOM->date != 1) OutputVoteResult('夜：初日以外はコピーできません');
+    if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     $type = 'MANIA_DO';
   }
   else{
@@ -927,6 +928,8 @@ function OutputVoteNight(){
 
   OutputVotePageHeader();
   echo '<table class="vote-page"><tr>'."\n";
+  $radio_header    = '<input type="radio" name="target_no"';
+  $checkbox_header = '<input type="checkbox" name="target_no[]"';
   $count = 0;
   foreach($user_stack as $id => $user){
     if($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
@@ -944,30 +947,27 @@ function OutputVoteNight(){
       ($is_wolf ? $ICON_CONF->wolf : $ICON_CONF->path . '/' . $user->icon_filename);
 
     $checkbox = '';
-    $checkbox_header = '<input type="radio" name="target_no"';
     $checkbox_footer = ' id="' . $id . '"value="' . $id . '">'."\n";
     if($role_cupid || $role_mirror_fairy){
       if($is_live && ! $user->IsDummyBoy()){
 	$checked = ($role_cupid && $cupid_self_shoot && $user->IsSelf()) ? ' checked' : '';
-	$checkbox = '<input type="checkbox" name="target_no[]"' . $checked . $checkbox_footer;
+	$checkbox = $checkbox_header . $checked . $checkbox_footer;
       }
     }
     elseif($role_wizard){
-      if($is_live && $is_avoid){
-	$checkbox = '<input type="checkbox" name="target_no[]"' . $checkbox_footer;
-      }
-    }
-    elseif($role_revive){
-      if(! $is_live && $is_avoid) $checkbox = $checkbox_header . $checkbox_footer;
-    }
-    elseif($role_scanner){
       if($is_live && $is_avoid) $checkbox = $checkbox_header . $checkbox_footer;
     }
+    elseif($role_revive){
+      if(! $is_live && $is_avoid) $checkbox = $radio_header . $checkbox_footer;
+    }
+    elseif($role_scanner){
+      if($is_live && $is_avoid) $checkbox = $radio_header . $checkbox_footer;
+    }
     elseif($role_trap){
-      if($is_live) $checkbox = $checkbox_header . $checkbox_footer;
+      if($is_live) $checkbox = $radio_header . $checkbox_footer;
     }
     elseif($is_live && ! $user->IsSelf() && ! $is_wolf){
-      $checkbox = $checkbox_header . $checkbox_footer;
+      $checkbox = $radio_header . $checkbox_footer;
     }
     echo $user->GenerateVoteTag($path, $checkbox);
   }

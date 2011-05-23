@@ -5,7 +5,7 @@
   ・勝利条件：自分自身の生存 + 蝙蝠陣営の全滅 + 村人陣営の勝利
 */
 class Role_betray_yaksa extends Role{
-  var $resist_rate = 20;
+  public $resist_rate = 20;
 
   function __construct(){ parent::__construct(); }
 

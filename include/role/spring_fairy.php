@@ -7,7 +7,7 @@
 class Role_spring_fairy extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterSay(&$sentence){
-    $sentence = '春ですよー' . $sentence;
+  function FilterSay(&$str){
+    $str = '春ですよー' . $str;
   }
 }

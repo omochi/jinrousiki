@@ -1,23 +1,23 @@
 <?php
 //-- 個別の村情報の基底クラス --//
 class Room{
-  var $id;
-  var $name;
-  var $comment;
-  var $game_option = '';
-  var $option_role = '';
-  var $date;
-  var $day_night;
-  var $status;
-  var $system_time;
-  var $sudden_death;
-  var $view_mode = false;
-  var $dead_mode = false;
-  var $heaven_mode = false;
-  var $log_mode = false;
-  var $watch_mode = false;
-  var $single_view_mode = false;
-  var $test_mode = false;
+  public $id;
+  public $name;
+  public $comment;
+  public $game_option = '';
+  public $option_role = '';
+  public $date;
+  public $day_night;
+  public $status;
+  public $system_time;
+  public $sudden_death;
+  public $view_mode = false;
+  public $dead_mode = false;
+  public $heaven_mode = false;
+  public $log_mode = false;
+  public $watch_mode = false;
+  public $single_view_mode = false;
+  public $test_mode = false;
 
   function __construct($request = NULL){
     if(is_null($request)) return;
@@ -442,7 +442,7 @@ class Room{
 }
 
 class RoomDataSet{
-  var $rows = array();
+  public $rows = array();
 
   function LoadFinishedRoom($room_no){
     $query = <<<EOF

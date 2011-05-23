@@ -9,10 +9,10 @@
 class Role_silent extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterSay(&$sentence){
+  function FilterSay(&$str){
     global $GAME_CONF;
-    if(mb_strlen($sentence) > $GAME_CONF->silent_length){
-      $sentence = mb_substr($sentence, 0, $GAME_CONF->silent_length) . '……';
+    if(mb_strlen($str) > $GAME_CONF->silent_length){
+      $str = mb_substr($str, 0, $GAME_CONF->silent_length) . '……';
     }
   }
 }

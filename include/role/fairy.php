@@ -7,8 +7,8 @@
 class Role_fairy extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterSay(&$sentence){
+  function FilterSay(&$str){
     global $MESSAGE;
-    $sentence = $MESSAGE->common_talk . $sentence;
+    $str = $MESSAGE->common_talk . $str;
   }
 }

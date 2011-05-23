@@ -5,7 +5,7 @@
   ・権力者と同じ人に投票すると権力者 -2 / 反逆者 -1
 */
 class Role_rebel extends RoleVoteAbility{
-  var $data_type = 'both';
+  public $data_type = 'both';
 
   function __construct(){ parent::__construct(); }
 

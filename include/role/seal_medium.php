@@ -5,8 +5,8 @@
   ・処刑投票先が回数限定の能力を持っている人外なら封印する
 */
 class Role_seal_medium extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

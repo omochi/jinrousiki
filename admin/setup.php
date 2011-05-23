@@ -21,24 +21,24 @@ OutputHTMLFooter(); //HTMLフッタ
 class DefaultIcon{
   //ユーザアイコンディレクトリ：setup.php からの相対パス
   //実際に運用する際は TOP からの相対パス (IconConfig->path) を参照する点に注意
-  var $path   = '../user_icon';  //アイコン名のリスト
+  public $path   = '../user_icon';  //アイコン名のリスト
 
-  var $name = array('明灰', '暗灰', '黄色', 'オレンジ', '赤', '水色', '青', '緑', '紫', 'さくら色');
+  public $name = array('明灰', '暗灰', '黄色', 'オレンジ', '赤', '水色', '青', '緑', '紫', 'さくら色');
 
   //アイコンの色 (アイコンのファイル名は必ず001～の数字にしてください), 幅, 高さ
-  var $color = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
-		     '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-  var $width  = array(32, 32, 32, 32, 32, 32, 32, 32, 32, 32);
-  var $height = array(32, 32, 32, 32, 32, 32, 32, 32, 32, 32);
+  public $color = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
+			'#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
+  public $width  = array(32, 32, 32, 32, 32, 32, 32, 32, 32, 32);
+  public $height = array(32, 32, 32, 32, 32, 32, 32, 32, 32, 32);
 }
 
 //身代わり君アイコン
 class DummyBoyIcon{
-  var $path   = '../img/dummy_boy_user_icon.jpg'; //IconConfig->path からの相対パス
-  var $name   = '身代わり君用'; //名前
-  var $color  = '#000000'; //色
-  var $width  = 45; //幅
-  var $height = 45; //高さ
+  public $path   = '../img/dummy_boy_user_icon.jpg'; //IconConfig->path からの相対パス
+  public $name   = '身代わり君用'; //名前
+  public $color  = '#000000'; //色
+  public $width  = 45; //幅
+  public $height = 45; //高さ
 }
 
 //-- 関数 --//

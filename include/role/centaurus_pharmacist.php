@@ -5,8 +5,8 @@
   ・処刑投票先が毒を持っていたら死亡する
 */
 class Role_centaurus_pharmacist extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

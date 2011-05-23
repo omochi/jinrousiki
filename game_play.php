@@ -45,7 +45,7 @@ if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは b
   if($RQ_ARGS->say == ''){
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
   }
-  elseif($RQ_ARGS->last_words && ! $SELF->IsDummyBoy()){
+  elseif($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame())){
     EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
   }
   elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){

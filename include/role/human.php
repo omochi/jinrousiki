@@ -7,7 +7,11 @@
 class Role_human extends Role{
   function __construct(){ parent::__construct(); }
 
-  function IsBrownie(){
+  function FilterVoteDo(&$vote_number){
+    if($this->IsBrownie()) $vote_number++;
+  }
+
+  private function IsBrownie(){
     global $ROOM, $ROLES, $USERS;
 
     if(is_null($ROLES->stack->is_brownie)){
@@ -25,9 +29,5 @@ class Role_human extends Role{
       }
     }
     return $ROLES->stack->is_brownie;
-  }
-
-  function FilterVoteDo(&$vote_number){
-    if($this->IsBrownie()) $vote_number++;
   }
 }

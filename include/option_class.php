@@ -1,7 +1,7 @@
 <?php
 class OptionManager{
-  var $row;
-  var $options = array();
+  public $row;
+  public $options = array();
 
   function __construct($value){
     $this->row = $value;

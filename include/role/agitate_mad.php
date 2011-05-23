@@ -5,8 +5,8 @@
   ・処刑投票が拮抗したら自分の投票先を処刑し、残りをまとめてショック死させる
 */
 class Role_agitate_mad extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $decide_type = 'same';
+  public $data_type = 'action';
+  public $decide_type = 'same';
 
   function __construct(){ parent::__construct(); }
 

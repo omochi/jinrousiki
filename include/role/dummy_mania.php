@@ -5,8 +5,8 @@
   ・コピー結果：基本・劣化種
 */
 class Role_dummy_mania extends Role{
-  var $copied = 'copied_teller';
-  var $copy_list = array(
+  public $copied = 'copied_teller';
+  public $copy_list = array(
       'human'        => 'suspect',
       'mage'         => 'dummy_mage',
       'necromancer'  => 'dummy_necromancer',

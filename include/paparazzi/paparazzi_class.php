@@ -1,10 +1,10 @@
 <?php
 class Paparazzi{
-  var $version = 'paparazzi Ver. 2.0 beta2';
-  var $date;
-  var $memory;
-  var $time;
-  var $log;
+  public $version = 'paparazzi Ver. 2.0 beta2';
+  public $date;
+  public $memory;
+  public $time;
+  public $log;
 
   function __construct(){
     $this->date   = date('Y-m-d H:i:s');

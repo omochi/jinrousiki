@@ -5,8 +5,8 @@
   ・処刑投票先が生存していたら熱病を付加する
 */
 class Role_miasma_mad extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

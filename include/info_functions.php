@@ -2,14 +2,14 @@
 //-- クラス定義 --//
 //時間設定表示用クラス
 class TimeCalculation{
-  var $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
-  var $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
-  var $silence_day;    //非リアルタイム制の沈黙で経過する時間 (昼)
-  var $silence_night;  //非リアルタイム制の沈黙で経過する時間 (夜)
-  var $silence;        //非リアルタイム制の沈黙になるまでの時間
-  var $sudden_death;   //制限時間を消費後に突然死するまでの時間
-  var $die_room;       //自動廃村になるまでの時間
-  var $establish_wait; //次の村を立てられるまでの待ち時間
+  public $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
+  public $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
+  public $silence_day;    //非リアルタイム制の沈黙で経過する時間 (昼)
+  public $silence_night;  //非リアルタイム制の沈黙で経過する時間 (夜)
+  public $silence;        //非リアルタイム制の沈黙になるまでの時間
+  public $sudden_death;   //制限時間を消費後に突然死するまでの時間
+  public $die_room;       //自動廃村になるまでの時間
+  public $establish_wait; //次の村を立てられるまでの待ち時間
 
   function __construct(){
     global $ROOM_CONF, $TIME_CONF;

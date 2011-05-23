@@ -6,8 +6,8 @@
   ・対象を一人に固定できる時のみ有効
 */
 class Role_executor extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $decide_type = 'action';
+  public $data_type = 'action';
+  public $decide_type = 'action';
 
   function __construct(){ parent::__construct(); }
 

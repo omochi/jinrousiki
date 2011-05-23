@@ -397,11 +397,11 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="scarlet_fox">紅狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。
+<a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。
 </pre>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
-<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
+<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
 </pre>
 <h4>関連役職</h4>
 <pre>

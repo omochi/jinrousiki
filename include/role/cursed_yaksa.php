@@ -5,7 +5,7 @@
   ・勝利条件：自分自身の生存 + 占い師系・魔法使い系の全滅
 */
 class Role_cursed_yaksa extends Role{
-  var $resist_rate = 20;
+  public $resist_rate = 20;
 
   function __construct(){ parent::__construct(); }
 

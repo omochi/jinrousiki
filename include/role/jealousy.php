@@ -5,8 +5,8 @@
   ・同一キューピッドの恋人が揃って自分に投票したらショック死させる
 */
 class Role_jealousy extends RoleVoteAbility{
-  var $data_type = 'array';
-  var $init_stack = true;
+  public $data_type = 'array';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

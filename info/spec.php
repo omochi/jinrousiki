@@ -54,8 +54,13 @@ OutputInfoPageHeader('詳細な仕様');
 <li>ゲーム開始前のユーザの「役職」は「希望役職」です</li>
 <li>単独の KICK 投票でユーザを蹴りだせます</li>
 <li>ゲーム中は「遺言」発言をすると専用システムメッセージになります</li>
+<li>ゲーム開始前のみ遺言を変更できます</li>
 <li>投票能力がある役職であっても投票することはできません</li>
 </ol>
+<h3>Ver. 1.5.0 β2～</h3>
+<p>
+ゲーム開始前のみ遺言を変更できます
+</p>
 
 <h2 id="dead">死因一覧</h2>
 <p>
@@ -65,17 +70,17 @@ OutputInfoPageHeader('詳細な仕様');
 </p>
 
 <h3 id="dead_common">共通</h3>
-<h4>～<?php echo $MESSAGE->sudden_death ?></h4>
+<h4>～<?php echo $MESSAGE->sudden_death ?> [Ver. 1.4.0 β13～]</h4>
 <ul>
 <li>未投票突然死</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->lovers_followed ?></h4>
+<h4>～<?php echo $MESSAGE->lovers_followed ?> [Ver. 1.2.0～]</h4>
 <ul>
 <li><a href="new_role/sub_role.php#lovers">恋人</a>後追い</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->joker_moved ?></h4>
+<h4>～<?php echo $MESSAGE->joker_moved ?> [Ver. 1.4.0 β21～]</h4>
 <ul>
 <li><a href="new_role/sub_role.php#joker">ジョーカー</a>の移動 (配役公開状態限定)</li>
 </ul>
@@ -93,12 +98,12 @@ OutputInfoPageHeader('詳細な仕様');
 <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->vote_sudden_death ?></h4>
+<h4>～<?php echo $MESSAGE->vote_sudden_death ?> [Ver. 1.4.0 α3-7～]</h4>
 <ul>
 <li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>・<a href="weather.php#weather_thunderbolt">天候：青天の霹靂</a>)</li>
 </ul>
 
-<h4><?php echo $MESSAGE->blind_vote ?></h4>
+<h4><?php echo $MESSAGE->blind_vote ?> [Ver. 1.4.0 β21～]</h4>
 <ul>
 <li><a href="new_role/wolf.php#amaze_mad">傘化け</a>の能力発動</li>
 </ul>
@@ -115,7 +120,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>吸血 (<a href="new_role/vampire.php#incubus_vampire">青髭公</a>・<a href="new_role/vampire.php#succubus_vampire">飛縁魔</a>)</li>
 <li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
 <li>人攫い (<a href="new_role/ogre.php">鬼陣営</a>)</li>
-<li><a href="new_role/human.php#guard_hunt">狩り</a> (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
+<li>狩り (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
 <li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
 <li>呪殺 (<a href="new_role/human.php#mage">占い師</a>)</li>
 <li>呪返し (<a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/ability.php#cursed_group">呪い能力者</a>)</li>
@@ -124,27 +129,27 @@ OutputInfoPageHeader('詳細な仕様');
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
 </ul>
-<h4>～<?php echo $MESSAGE->revive_success ?></h4>
+<h4>～<?php echo $MESSAGE->revive_success ?> [Ver. 1.4.0 α18～]</h4>
 <ul>
 <li>蘇生 (<a href="new_role/ability.php#revive">蘇生能力者</a>)</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->revive_failed ?></h4>
+<h4>～<?php echo $MESSAGE->revive_failed ?> [Ver. 1.4.0 α18～]</h4>
 <ul>
 <li>蘇生失敗 (霊界限定) (<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>)</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->flowered_a ?> (一例)</h4>
+<h4>～<?php echo $MESSAGE->flowered_a ?> (一例) [Ver. 1.4.0 β12～]</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#flower_fairy">花妖精</a>)</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->constellation_a ?> (一例)</h4>
+<h4>～<?php echo $MESSAGE->constellation_a ?> (一例) [Ver. 1.4.0 β13～]</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#star_fairy">星妖精</a>)</li>
 </ul>
 
-<h4>～<?php echo $MESSAGE->pierrot_a ?> (一例)</h4>
+<h4>～<?php echo $MESSAGE->pierrot_a ?> (一例) [Ver. 1.5.0 α8～]</h4>
 <ul>
 <li>魔法 (<a href="new_role/human.php#pierrot_wizard">道化師</a>)</li>
 </ul>
@@ -211,7 +216,7 @@ OutputInfoPageHeader('詳細な仕様');
   - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺)
 </pre>
 
-<h2 id="revive_refuse">蘇生辞退システム</h2>
+<h2 id="revive_refuse">蘇生辞退システム [Ver. 1.4.0 β7～]</h2>
 <pre>
 死亡後、霊界オフ状態の時に投票画面をクリックすると
 「蘇生を辞退する」(デフォルト) というボタンが出現します。

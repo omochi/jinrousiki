@@ -6,9 +6,11 @@
   ・ゲームプレイ中で生存時のみ有効 (呼び出し関数側で対応)
 */
 class Role_mower extends Role{
+  public $replace_list = array('w' => '', 'ｗ' => '', 'W' => '', 'Ｗ' => '');
+
   function __construct(){ parent::__construct(); }
 
-  function FilterSay(&$sentence){
-    $sentence = strtr($sentence, array('w' => '', 'ｗ' => '', 'W' => '', 'Ｗ' => ''));
+  function FilterSay(&$str){
+    $str = strtr($str, $this->replace_list);
   }
 }

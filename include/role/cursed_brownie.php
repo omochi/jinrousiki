@@ -6,8 +6,8 @@
   ・人狼襲撃：死の宣告
 */
 class Role_cursed_brownie extends RoleVoteAbility{
-  var $data_type = 'array';
-  var $init_stack = true;
+  public $data_type = 'array';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 

@@ -49,8 +49,8 @@ class DatabaseConfigBase{
 
 //-- セッション管理クラス --//
 class Session{
-  var $id;
-  var $user_no;
+  public $id;
+  public $user_no;
 
   function __construct(){
     session_start();
@@ -137,10 +137,10 @@ class Session{
 
 //-- クッキーデータのロード処理 --//
 class CookieDataSet{
-  var $day_night;  //夜明け
-  var $objection;  //「異議あり」の情報
-  var $vote_times; //投票回数
-  var $user_count; //参加人数
+  public $day_night;  //夜明け
+  public $objection;  //「異議あり」の情報
+  public $vote_times; //投票回数
+  public $user_count; //参加人数
 
   function __construct(){
     $this->day_night  = $_COOKIE['day_night'];
@@ -152,7 +152,7 @@ class CookieDataSet{
 
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder{
-  var $time = 2; //タイムアウト時間 (秒)
+  public $time = 2; //タイムアウト時間 (秒)
 
   //サーバ通信状態チェック
   function CheckConnection($url){
@@ -269,11 +269,11 @@ class BBSConfigBase extends ExternalLinkBuilder{
 //ゲームプレイ時のアイコン表示設定の基底クラス --//
 class IconConfigBase{
   //初期設定
-  var $path   = 'user_icon'; //ユーザアイコンのパス
-  var $dead   = 'grave.gif'; //死者
-  var $wolf   = 'wolf.gif';  //狼
-  var $width  = 45; //表示サイズ(幅)
-  var $height = 45; //表示サイズ(高さ)
+  public $path   = 'user_icon'; //ユーザアイコンのパス
+  public $dead   = 'grave.gif'; //死者
+  public $wolf   = 'wolf.gif';  //狼
+  public $width  = 45; //表示サイズ(幅)
+  public $height = 45; //表示サイズ(高さ)
 
   function __construct(){
     $this->path = JINRO_ROOT . '/' . $this->path;
@@ -613,7 +613,7 @@ class RoleData{
   //-- 役職名の翻訳 --//
   //メイン役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
-  var $main_role_list = array(
+  public $main_role_list = array(
     'human'                => '村人',
     'saint'                => '聖女',
     'executor'             => '執行者',
@@ -862,34 +862,38 @@ class RoleData{
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
-  var $sub_role_list = array(
+  public $sub_role_list = array(
     'chicken'            => '小心者',
     'rabbit'             => 'ウサギ',
     'perverseness'       => '天邪鬼',
     'flattery'           => 'ゴマすり',
-    'impatience'         => '短気',
     'celibacy'           => '独身貴族',
     'nervy'              => '自信家',
     'androphobia'        => '男性恐怖症',
     'gynophobia'         => '女性恐怖症',
+    'impatience'         => '短気',
     'febris'             => '熱病',
     'frostbite'          => '凍傷',
     'death_warrant'      => '死の宣告',
     'panelist'           => '解答者',
     'liar'               => '狼少年',
-    'invisible'          => '光学迷彩',
+    'actor'              => '役者',
+    'passion'            => '恋色迷彩',
     'rainbow'            => '虹色迷彩',
     'weekly'             => '七曜迷彩',
-    'passion'            => '恋色迷彩',
     'grassy'             => '草原迷彩',
+    'invisible'          => '光学迷彩',
     'side_reverse'       => '鏡面迷彩',
     'line_reverse'       => '天地迷彩',
     'gentleman'          => '紳士',
     'lady'               => '淑女',
-    'actor'              => '役者',
+    'decide'             => '決定者',
+    'plague'             => '疫病神',
+    'good_luck'          => '幸運',
+    'bad_luck'           => '不運',
     'authority'          => '権力者',
-    'rebel'              => '反逆者',
     'critical_voter'     => '会心',
+    'rebel'              => '反逆者',
     'random_voter'       => '気分屋',
     'watcher'            => '傍観者',
     'upper_luck'         => '雑草魂',
@@ -898,10 +902,6 @@ class RoleData{
     'disfavor'           => '不人気',
     'critical_luck'      => '痛恨',
     'random_luck'        => '波乱万丈',
-    'decide'             => '決定者',
-    'plague'             => '疫病神',
-    'good_luck'          => '幸運',
-    'bad_luck'           => '不運',
     'strong_voice'       => '大声',
     'normal_voice'       => '不器用',
     'weak_voice'         => '小声',
@@ -931,12 +931,12 @@ class RoleData{
     'lovers'             => '恋人',
     'challenge_lovers'   => '難題',
     'possessed_exchange' => '交換憑依',
+    'infected'           => '感染者',
+    'psycho_infected'    => '洗脳者',
     'joker'              => 'ジョーカー',
     'rival'              => '宿敵',
     'possessed_target'   => '憑依者',
     'possessed'          => '憑依',
-    'infected'           => '感染者',
-    'psycho_infected'    => '洗脳者',
     'bad_status'         => '悪戯',
     'protected'          => '庇護者',
     'wirepuller_luck'    => '入道',
@@ -949,7 +949,7 @@ class RoleData{
     'copied_teller'      => '元夢語部');
 
   //役職の省略名 (過去ログ用)
-  var $short_role_list = array(
+  public $short_role_list = array(
     'human'                => '村',
     'saint'                => '聖',
     'executor'             => '執行',
@@ -1199,29 +1199,33 @@ class RoleData{
     'rabbit'               => '卯',
     'perverseness'         => '邪',
     'flattery'             => '胡麻',
-    'impatience'           => '短',
     'celibacy'             => '独',
     'nervy'                => '信',
     'androphobia'          => '男恐',
     'gynophobia'           => '女恐',
+    'impatience'           => '短',
     'febris'               => '熱',
     'frostbite'            => '凍',
     'death_warrant'        => '宣',
     'panelist'             => '解',
     'liar'                 => '嘘',
-    'invisible'            => '光迷',
+    'actor'                => '役',
+    'passion'              => '恋迷',
     'rainbow'              => '虹迷',
     'weekly'               => '曜迷',
-    'passion'              => '恋迷',
     'grassy'               => '草迷',
+    'invisible'            => '光迷',
     'side_reverse'         => '鏡迷',
     'line_reverse'         => '天迷',
     'gentleman'            => '紳',
     'lady'                 => '淑',
-    'actor'                => '役',
+    'decide'               => '決',
+    'plague'               => '疫',
+    'good_luck'            => '幸',
+    'bad_luck'             => '不運',
     'authority'            => '権',
-    'rebel'                => '反',
     'critical_voter'       => '会',
+    'rebel'                => '反',
     'random_voter'         => '気',
     'watcher'              => '傍',
     'upper_luck'           => '雑',
@@ -1230,10 +1234,6 @@ class RoleData{
     'disfavor'             => '不人',
     'critical_luck'        => '痛',
     'random_luck'          => '乱',
-    'decide'               => '決',
-    'plague'               => '疫',
-    'good_luck'            => '幸',
-    'bad_luck'             => '不運',
     'strong_voice'         => '大',
     'normal_voice'         => '不',
     'weak_voice'           => '小',
@@ -1263,12 +1263,12 @@ class RoleData{
     'lovers'               => '恋',
     'challenge_lovers'     => '難',
     'possessed_exchange'   => '換',
+    'infected'             => '染',
+    'psycho_infected'      => '洗',
     'joker'                => '道化',
     'rival'                => '宿',
     'possessed_target'     => '憑',
     'possessed'            => '被憑',
-    'infected'             => '染',
-    'psycho_infected'      => '洗',
     'bad_status'           => '戯',
     'protected'            => '庇',
     'wirepuller_luck'      => '入道',
@@ -1282,7 +1282,7 @@ class RoleData{
 
   //メイン役職のグループリスト (役職 => 所属グループ)
   //このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
-  var $main_role_group_list = array(
+  public $main_role_group_list = array(
     'wolf' => 'wolf',
     'mad' => 'mad',
     'child_fox' => 'child_fox', 'sex_fox' => 'child_fox', 'stargazer_fox' => 'child_fox',
@@ -1319,34 +1319,34 @@ class RoleData{
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
   //このリストの表示順に PlayerList の役職が表示される
-  var $sub_role_group_list = array(
-    'lovers'       => array('lovers', 'possessed_exchange', 'challenge_lovers'),
+  public $sub_role_group_list = array(
+    'lovers'       => array('lovers', 'challenge_lovers', 'possessed_exchange'),
     'duelist'      => array('rival'),
-    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend', 'mind_sympathy',
-			    'mind_evoke', 'mind_presage', 'mind_lonely'),
-    'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'),
+    'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
+			    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely'),
     'vampire'      => array('infected', 'psycho_infected'),
-    'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'impatience',
-			    'celibacy', 'nervy', 'androphobia', 'gynophobia', 'febris', 'frostbite',
+    'sudden-death' => array('chicken', 'rabbit', 'perverseness', 'flattery', 'celibacy', 'nervy',
+			    'androphobia', 'gynophobia', 'impatience', 'febris', 'frostbite',
 			    'death_warrant', 'panelist'),
-    'convert'      => array('liar', 'invisible', 'rainbow', 'weekly', 'passion', 'grassy',
-			    'side_reverse', 'line_reverse', 'gentleman', 'lady', 'actor'),
-    'authority'    => array('authority', 'critical_voter', 'random_voter', 'rebel', 'watcher',
-			    'wirepuller_luck'),
+    'convert'      => array('liar', 'actor', 'passion', 'rainbow', 'weekly', 'grassy', 'invisible',
+			    'side_reverse', 'line_reverse', 'gentleman', 'lady'),
     'decide'       => array('decide', 'plague', 'good_luck', 'bad_luck'),
+    'authority'    => array('authority', 'critical_voter', 'rebel', 'random_voter', 'watcher',
+			    'wirepuller_luck'),
     'luck'         => array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
 			    'random_luck'),
     'voice'        => array('strong_voice', 'normal_voice', 'weak_voice', 'upper_voice',
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'whisper_ringing',
 			    'howl_ringing', 'sweet_ringing', 'deep_sleep', 'silent', 'mower'),
-    'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
-    'chiroptera'   => array('joker', 'bad_status'),
     'guard'        => array('protected'),
-    'human'        => array('lost_ability', 'muster_ability'));
+    'chiroptera'   => array('joker', 'bad_status'),
+    'human'        => array('lost_ability', 'muster_ability'),
+    'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
+    'mania'        => array('copied', 'copied_trick', 'copied_soul', 'copied_teller'));
 
   //天候のリスト
-  var $weather_list = array(
+  public $weather_list = array(
      0 => array('name'    => 'スコール',
 		'event'   => 'grassy',
 		'caption' => '全員 草原迷彩'),

@@ -6,7 +6,7 @@
   ・反逆者と同じ人に投票すると 0 票になる
 */
 class Role_authority extends RoleVoteAbility{
-  var $data_type = 'both';
+  public $data_type = 'both';
 
   function __construct(){ parent::__construct(); }
 

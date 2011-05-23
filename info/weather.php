@@ -466,13 +466,13 @@ Ver. 1.5.0
 
 <h2 id="type_talk">会話妨害</h2>
 <p>
-<a href="#weather_invisible">黄砂</a>
-<a href="#weather_rainbow">虹</a>
+<a href="#weather_actor">スポットライト</a>
 <a href="#weather_passion">箒星</a>
+<a href="#weather_rainbow">虹</a>
 <a href="#weather_grassy">スコール</a>
+<a href="#weather_invisible">黄砂</a>
 <a href="#weather_side_reverse">ダイヤモンドダスト</a>
 <a href="#weather_line_reverse">バナナの皮</a>
-<a href="#weather_actor">スポットライト</a>
 <a href="#weather_blinder">宵闇</a>
 <a href="#weather_whisper_ringing">波風</a>
 <a href="#weather_howl_ringing">小夜嵐</a>
@@ -489,14 +489,9 @@ Ver. 1.5.0
 <a href="#weather_blind_talk_night">風雨</a>
 </p>
 
-<h3 id="weather_invisible">黄砂 [Ver. 1.5.0 α3～]</h3>
+<h3 id="weather_actor">スポットライト [Ver. 1.5.0 α3～]</h3>
 <ul>
-  <li>全員に<a href="new_role/sub_role.php#invisible">光学迷彩</a>がつきます (昼限定)。</li>
-</ul>
-
-<h3 id="weather_rainbow">虹 [Ver. 1.5.0 α3～]</h3>
-<ul>
-  <li>全員に<a href="new_role/sub_role.php#rainbow">虹色迷彩</a>がつきます (昼限定)。</li>
+  <li>全員に<a href="new_role/sub_role.php#actor">役者</a>がつきます (昼限定)。</li>
 </ul>
 
 <h3 id="weather_passion">箒星 [Ver. 1.5.0 α4～]</h3>
@@ -504,9 +499,19 @@ Ver. 1.5.0
   <li>全員に<a href="new_role/sub_role.php#passion">恋色迷彩</a>がつきます (昼限定)。</li>
 </ul>
 
+<h3 id="weather_rainbow">虹 [Ver. 1.5.0 α3～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#rainbow">虹色迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
 <h3 id="weather_grassy">スコール [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li>全員に<a href="new_role/sub_role.php#grassy">草原迷彩</a>がつきます (昼限定)。</li>
+</ul>
+
+<h3 id="weather_invisible">黄砂 [Ver. 1.5.0 α3～]</h3>
+<ul>
+  <li>全員に<a href="new_role/sub_role.php#invisible">光学迷彩</a>がつきます (昼限定)。</li>
 </ul>
 
 <h3 id="weather_side_reverse">ダイヤモンドダスト [Ver. 1.5.0 α3～]</h3>
@@ -517,11 +522,6 @@ Ver. 1.5.0
 <h3 id="weather_line_reverse">バナナの皮 [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li>全員に<a href="new_role/sub_role.php#line_reverse">天地迷彩</a>がつきます (昼限定)。</li>
-</ul>
-
-<h3 id="weather_actor">スポットライト [Ver. 1.5.0 α3～]</h3>
-<ul>
-  <li>全員に<a href="new_role/sub_role.php#actor">役者</a>がつきます (昼限定)。</li>
 </ul>
 
 <h3 id="weather_blinder">宵闇 [Ver. 1.5.0 α9～]</h3>

@@ -5,7 +5,7 @@
   ・勝利条件：自分自身と人狼系の生存
 */
 class Role_ogre extends Role{
-  var $resist_rate = 30;
+  public $resist_rate = 30;
 
   function __construct(){ parent::__construct(); }
 

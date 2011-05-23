@@ -5,8 +5,8 @@
   ・処刑投票が拮抗したら自分が候補から除外される
 */
 class Role_good_luck extends RoleVoteAbility{
-  var $data_type = 'self';
-  var $decide_type = 'escape';
+  public $data_type = 'self';
+  public $decide_type = 'escape';
 
   function __construct(){ parent::__construct(); }
 }

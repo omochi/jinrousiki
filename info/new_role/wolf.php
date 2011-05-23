@@ -835,11 +835,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3 id="scarlet_wolf">紅狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24～]</h3>
 <pre>
-<a href="fox.php#child_fox">妖狐陣営</a>から<a href="fox.php#child_fox">子狐</a>に、<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。
+<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。
 </pre>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
-<a href="human.php#doll_group">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
+<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える。
 </pre>
 <h4>関連役職</h4>
 <pre>

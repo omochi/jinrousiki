@@ -5,8 +5,8 @@
   ・処刑投票先の毒の種類が分かり、解毒効果が「村人陣営以外」になる
 */
 class Role_alchemy_pharmacist extends RoleVoteAbility{
-  var $data_type = 'action';
-  var $init_stack = true;
+  public $data_type = 'action';
+  public $init_stack = true;
 
   function __construct(){ parent::__construct(); }
 
