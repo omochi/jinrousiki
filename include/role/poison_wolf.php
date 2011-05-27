@@ -3,6 +3,7 @@
   ◆毒狼
   ○仕様
   ・毒：人狼系以外
+  ・襲撃毒死回避：人狼系
 */
 class Role_poison_wolf extends Role{
   function __construct(){ parent::__construct(); }
@@ -16,4 +17,6 @@ class Role_poison_wolf extends Role{
     }
     $list = $stack;
   }
+
+  function AvoidPoisonEat($user){ return $user->IsWolf(); }
 }

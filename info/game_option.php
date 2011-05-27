@@ -202,22 +202,32 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2 id="special_option">特殊村設定</h2>
 <ul>
+  <li><a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a></li>
   <li><a href="#liar"><?php echo $GAME_OPT_MESS->liar ?></a></li>
   <li><a href="#gentleman"><?php echo $GAME_OPT_MESS->gentleman ?></a></li>
+  <li><a href="#deep_sleep"><?php echo $GAME_OPT_MESS->deep_sleep ?></a></li>
+  <li><a href="#blinder"><?php echo $GAME_OPT_MESS->blinder ?></a></li>
+  <li><a href="#mind_open"><?php echo $GAME_OPT_MESS->mind_open ?></a></li>
+  <li><a href="#critical"><?php echo $GAME_OPT_MESS->critical ?></a></li>
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a></li>
   <li><a href="#perverseness"><?php echo $GAME_OPT_MESS->perverseness ?></a></li>
-  <li><a href="#deep_sleep"><?php echo $GAME_OPT_MESS->deep_sleep ?></a></li>
-  <li><a href="#mind_open"><?php echo $GAME_OPT_MESS->mind_open ?></a></li>
-  <li><a href="#blinder"><?php echo $GAME_OPT_MESS->blinder ?></a></li>
-  <li><a href="#critical"><?php echo $GAME_OPT_MESS->critical ?></a></li>
   <li><a href="#joker"><?php echo $GAME_OPT_MESS->joker ?></a></li>
-  <li><a href="#detective"><?php echo $GAME_OPT_MESS->detective ?></a></li>
   <li><a href="#weather"><?php echo $GAME_OPT_MESS->weather ?></a></li>
   <li><a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a></li>
   <li><a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a></li>
   <li><a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a></li>
-  <li><a href="#full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a></li>
   <li><a href="#full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a></li>
+  <li><a href="#full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a></li>
+</ul>
+
+<h3 id="detective"><?php echo $GAME_OPT_MESS->detective ?> [Ver. 1.4.0 β10～]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->detective ?></li>
+  <li>普通村の場合は、共有者がいれば共有者を、いなければ村人を一人<a href="new_role/human.php#detective_common">探偵</a>に入れ替えます</li>
+  <li><a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>の場合は固定枠に<a href="new_role/human.php#detective_common">探偵</a>が追加されます</li>
+  <li>このオプションを使用した場合は、身代わり君が<a href="new_role/human.php#detective_common">探偵</a>にはなりません</li>
+  <li>「<a href="#gm_login"><?php echo $GAME_OPT_MESS->gm_login ?></a>」+「<a href="#not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a>」オプションと併用すると「霊界探偵モード」になります</li>
+  <li>「霊界探偵モード」はゲーム開始直後に探偵が死亡して、霊界に移動します。指示は GM 経由で行います</li>
 </ul>
 
 <h3 id="liar"><?php echo $GAME_OPT_MESS->liar ?> [Ver. 1.4.0 α14～]</h3>
@@ -230,6 +240,31 @@ OutputInfoPageHeader('ゲームオプション');
   <li><?php echo $GAME_OPT_CAPT->gentleman ?></li>
   <li><a href="new_role/sub_role.php#gentleman">紳士</a>・<a href="new_role/sub_role.php#lady">淑女</a>の発動率はランダム付加の場合と同じです</li>
   <li><a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>でランダムに付加される時は個々の性別を参照していません</li>
+</ul>
+
+<h3 id="deep_sleep"><?php echo $GAME_OPT_MESS->deep_sleep ?> [Ver. 1.4.0 β18～]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->deep_sleep ?></li>
+  <li>観戦している人にも<a href="new_role/sub_role.php#deep_sleep">爆睡者</a>がつきます</li>
+  <li>結果として、<a href="new_role/human.php#common_group">共有者</a>を騙ることが可能になります</li>
+</ul>
+
+<h3 id="blinder"><?php echo $GAME_OPT_MESS->blinder ?> [Ver. 1.4.0 β18～]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->blinder ?></li>
+  <li>観戦している人にも<a href="new_role/sub_role.php#blinder">目隠し</a>がつきます</li>
+</ul>
+
+<h3 id="mind_open"><?php echo $GAME_OPT_MESS->mind_open ?> [Ver. 1.4.0 β18～]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->mind_open ?></li>
+  <li><a href="new_role/sub_role.php#mind_open">公開者</a>の影響で、観戦している人も夜の発言を見ることができます</li>
+</ul>
+
+<h3 id="critical"><?php echo $GAME_OPT_MESS->critical ?> [Ver. 1.4.0 β15～]</h3>
+<ul>
+  <li><?php echo $GAME_OPT_CAPT->critical ?></li>
+  <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率はランダム付加の場合と同じです</li>
 </ul>
 
 <h3 id="sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?> [Ver. 1.4.0 α14～]</h3>
@@ -246,45 +281,10 @@ OutputInfoPageHeader('ゲームオプション');
   <li><a href="#sudden_death"><?php echo $GAME_OPT_MESS->sudden_death ?></a>と併用できません</li>
 </ul>
 
-<h3 id="deep_sleep"><?php echo $GAME_OPT_MESS->deep_sleep ?> [Ver. 1.4.0 β18～]</h3>
-<ul>
-  <li><?php echo $GAME_OPT_CAPT->deep_sleep ?></li>
-  <li>観戦している人にも<a href="new_role/sub_role.php#deep_sleep">爆睡者</a>がつきます</li>
-  <li>結果として、<a href="new_role/human.php#common_group">共有者</a>を騙ることが可能になります</li>
-</ul>
-
-<h3 id="mind_open"><?php echo $GAME_OPT_MESS->mind_open ?> [Ver. 1.4.0 β18～]</h3>
-<ul>
-  <li><?php echo $GAME_OPT_CAPT->mind_open ?></li>
-  <li><a href="new_role/sub_role.php#mind_open">公開者</a>の影響で、観戦している人も夜の発言を見ることができます</li>
-</ul>
-
-<h3 id="blinder"><?php echo $GAME_OPT_MESS->blinder ?> [Ver. 1.4.0 β18～]</h3>
-<ul>
-  <li><?php echo $GAME_OPT_CAPT->blinder ?></li>
-  <li>観戦している人にも<a href="new_role/sub_role.php#blinder">目隠し</a>がつきます</li>
-</ul>
-
-<h3 id="critical"><?php echo $GAME_OPT_MESS->critical ?> [Ver. 1.4.0 β15～]</h3>
-<ul>
-  <li><?php echo $GAME_OPT_CAPT->critical ?></li>
-  <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率はランダム付加の場合と同じです</li>
-</ul>
-
 <h3 id="joker"><?php echo $GAME_OPT_MESS->joker ?> [Ver. 1.4.0 β21～]</h3>
 <ul>
   <li><?php echo $GAME_OPT_CAPT->joker ?></li>
   <li>ゲーム終了時に<a href="new_role/sub_role.php#joker">ジョーカー</a>を所持していると無条件で敗北になります</li>
-</ul>
-
-<h3 id="detective"><?php echo $GAME_OPT_MESS->detective ?> [Ver. 1.4.0 β10～]</h3>
-<ul>
-  <li><?php echo $GAME_OPT_CAPT->detective ?></li>
-  <li>普通村の場合は、共有者がいれば共有者を、いなければ村人を一人<a href="new_role/human.php#detective_common">探偵</a>に入れ替えます</li>
-  <li><a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>の場合は固定枠に<a href="new_role/human.php#detective_common">探偵</a>が追加されます</li>
-  <li>このオプションを使用した場合は、身代わり君が<a href="new_role/human.php#detective_common">探偵</a>にはなりません</li>
-  <li>「<a href="#gm_login"><?php echo $GAME_OPT_MESS->gm_login ?></a>」+「<a href="#not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a>」オプションと併用すると「霊界探偵モード」になります</li>
-  <li>「霊界探偵モード」はゲーム開始直後に探偵が死亡して、霊界に移動します。指示は GM 経由で行います</li>
 </ul>
 
 <h3 id="weather"><?php echo $GAME_OPT_MESS->weather ?> [Ver. 1.5.0 α2～]</h3>
@@ -346,14 +346,14 @@ OutputInfoPageHeader('ゲームオプション');
   <li>村人が全員<a href="new_role/mania.php#mania">神話マニア</a>になります</li>
 </ul>
 
-<h4 id="full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?> [Ver. 1.4.0 β14～]</h4>
-<ul>
-  <li>村人が全員<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>になります</li>
-</ul>
-
 <h4 id="full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?> [Ver. 1.4.0 β14～]</h4>
 <ul>
   <li>村人が全員<a href="new_role/lovers.php#cupid">キューピッド</a>になります</li>
+</ul>
+
+<h4 id="full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?> [Ver. 1.4.0 β14～]</h4>
+<ul>
+  <li>村人が全員<a href="new_role/chiroptera.php#chiroptera">蝙蝠</a>になります</li>
 </ul>
 
 

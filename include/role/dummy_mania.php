@@ -2,7 +2,8 @@
 /*
   ◆夢語部
   ○仕様
-  ・コピー結果：基本・劣化種
+  ・コピー：特殊
+  ・変化：基本・劣化種
 */
 class Role_dummy_mania extends Role{
   public $copied = 'copied_teller';
@@ -39,6 +40,11 @@ class Role_dummy_mania extends Role{
       'duelist'      => 'duelist');
 
   function __construct(){ parent::__construct(); }
+
+  function Copy($user, $vote_data){
+    $this->GetActor()->AddMainRole($user->user_no);
+    return $user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup();
+  }
 
   function GetRole($user){
     return $user->IsRoleGroup('mania', 'copied') ? 'human' :

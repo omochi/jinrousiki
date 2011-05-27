@@ -2,8 +2,10 @@
 /*
   ◆難題 (challenge_lovers)
   ○仕様
-  ・5 日目以降恋人の相方と同じ人に投票しないとショック死する。
-  ・複数の恋人がいる場合は誰か一人と同じならショック死しない。
+  ・ショック死
+    + 5 日目以降恋人の相方と同じ人に投票しないとショック死する。
+    + 複数の恋人がいる場合は誰か一人と同じならショック死しない。
+  ・人狼襲撃耐性：5 日目以内
 */
 class Role_challenge_lovers extends Role{
   function __construct(){ parent::__construct(); }
@@ -35,4 +37,6 @@ class Role_challenge_lovers extends Role{
     }
     $reason = 'CHALLENGE';
   }
+
+  function WolfEatResist(){ return $this->GetActor()->IsChallengeLovers(); }
 }

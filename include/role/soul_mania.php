@@ -2,7 +2,8 @@
 /*
   ◆覚醒者
   ○仕様
-  ・コピー先の上位種に変化する
+  ・コピー：特殊
+  ・変化：上位種
 */
 class Role_soul_mania extends Role{
   public $copied = 'copied_soul';
@@ -39,6 +40,11 @@ class Role_soul_mania extends Role{
       'duelist'      => 'valkyrja_duelist');
 
   function __construct(){ parent::__construct(); }
+
+  function Copy($user, $vote_data){
+    $this->GetActor()->AddMainRole($user->user_no);
+    return $user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup();
+  }
 
   function GetRole($user){
     return $user->IsRoleGroup('mania', 'copied') ? 'human' :

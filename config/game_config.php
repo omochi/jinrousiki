@@ -93,10 +93,13 @@ class RoomConfig{
   public $default_mania = false;
 
   public $decide = true; //決定者出現 (必要人数は CastConfig->decide 参照)
-  public $default_decide = true;
+  public $default_decide = false;
 
   public $authority = true; //権力者出現 (必要人数は CastConfig->authority 参照)
-  public $default_authority = true;
+  public $default_authority = false;
+
+  public $detective = true; //探偵村
+  public $default_detective = false;
 
   public $liar = true; //狼少年村
   public $default_liar = false;
@@ -104,29 +107,26 @@ class RoomConfig{
   public $gentleman = true; //紳士・淑女村
   public $default_gentleman = false;
 
+  public $deep_sleep = true; //静寂村
+  public $default_deep_sleep = false;
+
+  public $blinder = true; //宵闇村
+  public $default_blinder = false;
+
+  public $mind_open = true; //白夜村
+  public $default_mind_open = false;
+
+  public $critical = true; //急所村
+  public $default_critical = false;
+
   public $sudden_death = true; //虚弱体質村
   public $default_sudden_death = false;
 
   public $perverseness = true; //天邪鬼村
   public $default_perverseness = false;
 
-  public $deep_sleep = true; //静寂村
-  public $default_deep_sleep = false;
-
-  public $mind_open = true; //白夜村
-  public $default_mind_open = false;
-
-  public $blinder = true; //宵闇村
-  public $default_blinder = false;
-
-  public $critical = true; //急所村
-  public $default_critical = false;
-
   public $joker = true; //ババ抜き村
   public $default_joker = false;
-
-  public $detective = true; //探偵村
-  public $default_detective = false;
 
   public $weather = true; //天候あり
   public $default_weather = false;
@@ -139,7 +139,7 @@ class RoomConfig{
   public $full_chiroptera = true; //蝙蝠村
   public $full_cupid = true; //キューピッド村
   //置換モードの内訳 (replace_human：管理人カスタムモード)
-  public $replace_human_list = array('full_mania', 'full_chiroptera', 'full_cupid',
+  public $replace_human_list = array('full_mania', 'full_cupid', 'full_chiroptera',
 				     'replace_human');
 
   //特殊配役村の内訳
@@ -152,7 +152,7 @@ class RoomConfig{
 
   public $topping = true; //固定配役追加モード
   //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる
-  public $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'); //配役タイプ
+  public $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k');
 
   public $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
   public $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)

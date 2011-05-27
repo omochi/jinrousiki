@@ -465,12 +465,12 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   $str = '';
   $display_order_list = array(
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'wait_morning', 'open_vote',
-    'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf',
-    'poison_wolf', 'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide',
-    'authority', 'liar', 'gentleman', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open',
-    'blinder', 'critical', 'joker', 'detective', 'weather', 'festival', 'full_mania', 'full_chiroptera',
-    'full_cupid', 'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper',
-    'topping', 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
+    'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
+    'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'detective',
+    'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open', 'sudden_death', 'perverseness',
+    'critical', 'joker', 'weather', 'festival', 'full_mania', 'full_chiroptera', 'full_cupid',
+    'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'topping',
+    'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
     'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
 
   foreach($display_order_list as $option){

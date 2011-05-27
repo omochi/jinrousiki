@@ -29,8 +29,14 @@ class DatabaseConfigBase{
     unset($this->db_handle); //ハンドルをクリア
   }
 
+  //データベース名変更
+  function ChangeName($id){
+    if(is_null($name = $this->name_list[$id - 1])) return;
+    $this->name = $name;
+  }
+
   //エラー出力 ($header, $exit は Connect() 参照)
-  function OutputError($header, $exit, $title, $type){
+  private function OutputError($header, $exit, $title, $type){
     $str = $title . ': ' . $type; //エラーメッセージ作成
     if($header){
       echo '<font color="#FF0000">' . $str . '</font><br>';
@@ -38,12 +44,6 @@ class DatabaseConfigBase{
       return false;
     }
     OutputActionResult($title, $str);
-  }
-
-  //データベース名変更
-  function ChangeName($id){
-    if(is_null($name = $this->name_list[$id - 1])) return;
-    $this->name = $name;
   }
 }
 
@@ -57,7 +57,7 @@ class Session{
     $this->Set();
   }
 
-  //ID セット
+  //ID セット (private)
   function Set(){
     return $this->id = session_id();
   }
@@ -73,7 +73,7 @@ class Session{
     return $uniq ? $this->GetUniq() : $this->id;
   }
 
-  //DB に登録されているセッション ID と被らないようにする
+  //DB に登録されているセッション ID と被らないようにする (private)
   function GetUniq(){
     $query = 'SELECT COUNT(room_no) FROM user_entry WHERE session_id = ';
     do{
@@ -128,7 +128,7 @@ class Session{
   }
 
   //エラー出力
-  function OutputError(){
+  private function OutputError(){
     $title = 'セッション認証エラー';
     $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
     OutputActionResult($title, $body);
@@ -154,7 +154,7 @@ class CookieDataSet{
 class ExternalLinkBuilder{
   public $time = 2; //タイムアウト時間 (秒)
 
-  //サーバ通信状態チェック
+  //サーバ通信状態チェック (private)
   function CheckConnection($url){
     $url_stack = explode('/', $url);
     $this->host = $url_stack[2];
@@ -307,7 +307,7 @@ class UserIconBase{
 
 //-- 画像管理の基底クラス --//
 class ImageManager{
-  //画像のファイルパス取得
+  //画像のファイルパス取得 (private)
   function GetPath($name){
     return JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extension;
   }
@@ -406,19 +406,19 @@ class MenuLinkConfigBase{
   }
 
   //ヘッダ追加
-  function AddHeader($title){
+  private function AddHeader($title){
     $this->str .= '<div class="menu">' . $title . "</div>\n<ul>\n";
   }
 
   //リンク生成
-  function AddLink($list){
+  private function AddLink($list){
     $header = $this->header . '<a href="';
     $footer = '</a>' . $this->footer;
     foreach($list as $name => $url) $this->str .= $header . $url . '">' . $name . $footer;
   }
 
   //フッタ追加
-  function AddFooter(){
+  private function AddFooter(){
     $this->str .= "</ul>\n";
   }
 }
@@ -533,7 +533,7 @@ class PageLinkBuilder{
     $this->SetPage($page);
   }
 
-  //表示するページのアドレスをセット
+  //表示するページのアドレスをセット (private)
   function SetPage($page){
     $total = ceil($this->view_total / $this->view_count);
     $start = $page == 'all' ? 1 : $page;

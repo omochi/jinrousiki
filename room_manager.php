@@ -186,11 +186,11 @@ function CreateRoom(){
       if(! $full_mania) $check_option_role_list[] = 'mania';
       if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
     }
-    array_push($check_game_option_list, 'deep_sleep', 'mind_open', 'blinder', 'joker',
+    array_push($check_game_option_list, 'deep_sleep', 'blinder', 'mind_open', 'joker',
 	       'weather', 'festival');
-    array_push($check_option_role_list, 'liar', 'gentleman',
-	       $perverseness ? 'perverseness' : 'sudden_death', 'critical');
     if(! $special_role) $check_option_role_list[] = 'detective';
+    array_push($check_option_role_list, 'liar', 'gentleman', 'critical',
+	       $perverseness ? 'perverseness' : 'sudden_death');
   }
   $check_option_role_list[] = 'replace_human';
 
@@ -488,8 +488,9 @@ EOF;
 		 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority');
   OutputRoomOption($stack, 'role');
 
-  $stack = array('liar', 'gentleman', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open',
-		 'blinder', 'critical', 'joker', 'detective', 'weather', 'festival', 'replace_human');
+  $stack = array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open',
+		 'critical', 'sudden_death', 'perverseness',  'joker', 'weather', 'festival',
+		 'replace_human');
   OutputRoomOption($stack, 'role');
 
   OutputRoomOption(array('special_role'));

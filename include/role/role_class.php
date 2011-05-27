@@ -80,13 +80,33 @@ class RoleManager{
   //処刑得票カウンター
   public $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
 
+  //人狼襲撃耐性 (順番依存あり)
+  public $wolf_eat_resist_list = array('challenge_lovers', 'protected', 'sacrifice_angel',
+				       'doom_vampire', 'sacrifice_mania', 'fend_guard',
+				       'awake_wizard');
+
   //身代わり能力者
   public $sacrifice_list = array('sacrifice_common', 'doll_master', 'sacrifice_vampire',
 				 'boss_chiroptera', 'sacrifice_ogre');
 
+  //妖狐襲撃能力
+  public $fox_eat_action_list = array('blue_wolf', 'doom_wolf');
+
+  //妖狐襲撃カウンター
+  public $fox_eat_counter_list = array('blue_fox', 'immolate_fox');
+
+  //人狼襲撃得票カウンター
+  public $wolf_eat_reaction_list = array('therian_mad', 'immolate_mad');
+
+  //人狼襲撃能力
+  public $wolf_eat_action_list = array('sex_wolf', 'hungry_wolf', 'doom_wolf');
+
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',
 					'miasma_fox');
+
+  //襲撃毒死回避
+  public $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');
 
   function __construct(){
     $this->path = JINRO_INC . '/role';
@@ -97,7 +117,8 @@ class RoleManager{
   function Load($type, $shift = false){
     $stack = array();
     foreach($this->GetList($type) as $role){
-      if(! $this->actor->IsRole($role)) continue;
+      if(! ($type == 'main_role' ? $this->actor->IsRole(true, $role) :
+	    $this->actor->IsRole($role))) continue;
       $stack[] = $role;
       if($this->LoadFile($role)) $this->LoadClass($role, 'Role_' . $role);
     }

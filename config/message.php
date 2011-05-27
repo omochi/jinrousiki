@@ -326,6 +326,7 @@ class GameOptionMessage{
   public $topping_h             = 'H：村人村';
   public $topping_i             = 'I：恋人村';
   public $topping_j             = 'J：宿敵村';
+  public $topping_k             = 'K：覚醒村';
   public $chaos_open_cast       = '配役を通知する';
   public $chaos_open_cast_camp  = '陣営を通知する';
   public $chaos_open_cast_role  = '役職を通知する';

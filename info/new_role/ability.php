@@ -115,7 +115,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="psycho">精神関連能力者</h2>
 <h3 id="psycho_mage">鑑定能力者</h3>
 <pre>
-<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#psycho_mage">精神鑑定士</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#psycho_mage">精神鑑定士</a>)・<a href="human.php#spiritism_wizard">交霊術師</a>
+<a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#psycho_mage">精神鑑定士</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#psycho_mage">精神鑑定士</a>)・<a href="human.php#spiritism_wizard">交霊術師</a>(<a href="human.php#psycho_necromancer">精神感応者</a>)
 </pre>
 <h3 id="psycho_only">限定能力者</h3>
 <pre>

@@ -2,7 +2,8 @@
 /*
   ◆吸血公
   ○仕様
-  ・身代わり対象者：自分の感染者
+  ・身代わり：自分の感染者
+  ・吸血：通常
 */
 class Role_sacrifice_vampire extends Role{
   function __construct(){ parent::__construct(); }
@@ -18,4 +19,6 @@ class Role_sacrifice_vampire extends Role{
     }
     return $stack;
   }
+
+  function Infect($user){ $user->AddRole($this->GetActor()->GetID('infected')); }
 }

@@ -3,6 +3,7 @@
   ◆誘毒者
   ○仕様
   ・毒：毒能力者
+  ・襲撃毒死回避：毒能力者以外
 */
 class Role_guide_poison extends Role{
   function __construct(){ parent::__construct(); }
@@ -16,4 +17,6 @@ class Role_guide_poison extends Role{
     }
     $list = $stack;
   }
+
+  function AvoidPoisonEat($user){ return ! $user->IsRoleGroup('poison'); }
 }

@@ -247,7 +247,7 @@ OutputRolePageHeader('サブ役職');
 <h4>[作成者からのコメント]</h4>
 <pre>
 流石兄弟鯖＠やる夫人狼の管理人さんとの会話から生まれた役職です。
-<a href="human.php#mage_group">占い師</a>がそれと知らずに CO すると大変なことになりそうです。
+占い師がそれと知らずに CO すると大変なことになりそうです。
 回避するのは簡単ですがそれを意識しないといけないだけでも
 結構な負担ではないでしょうか？
 </pre>
@@ -309,7 +309,7 @@ OutputRolePageHeader('サブ役職');
 <h4>[作成者からのコメント]</h4>
 <pre>
 いわゆる Vipper の再現です。
-機械的につけるので<a href="human.php#mage_group">占い師</a>などにこれがつくとかなり悲惨な事になると思われます。
+機械的につけるので占い師などにこれがつくとかなり悲惨な事になると思われます。
 </pre>
 
 <h3 id="invisible">光学迷彩 [Ver. 1.4.0 α14～]</h3>
@@ -496,7 +496,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 
 <h3 id="watcher">傍観者 [Ver. 1.4.0 α9～]</h3>
 <pre>
-処刑投票数が 0 になります (投票行為自体は必要です)。
+処刑投票数が 0 になる (投票行為自体は必要)。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -935,7 +935,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="lovers.php#self_cupid">求愛者</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>・<a href="lovers.php#mind_cupid">女神</a>
+<a href="lovers.php#self_cupid">求愛者</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="duelist.php#duelist">決闘者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
