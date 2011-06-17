@@ -367,10 +367,12 @@ function VoteNight(){
     break;
 
   case 'DUELIST_DO':
-    if(! $SELF->IsRoleGroup('duelist')) OutputVoteResult('夜：投票イベントが一致しません');
+    if(! $SELF->IsDuelist()) OutputVoteResult('夜：投票イベントが一致しません');
     if(! is_array($RQ_ARGS->target_no)) OutputVoteResult('夜：投票データが一致しません');
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
-    $is_duelist = true;
+    $is_duelist = $SELF->IsRoleGroup('duelist');
+    $is_avenger = $SELF->IsRoleGroup('avenger');
+    $is_patron  = $SELF->IsRoleGroup('patron');
     break;
 
   case 'MANIA_DO':
@@ -438,7 +440,7 @@ function VoteNight(){
       }
     }
   }
-  elseif($is_duelist){ //決闘者陣営
+  elseif($is_duelist){ //決闘者系
     if($SELF->IsRole('triangle_duelist')){
       if(count($RQ_ARGS->target_no) != 3){
 	OutputVoteResult($error_header . '指定人数は三人にしてください');
@@ -470,6 +472,34 @@ function VoteNight(){
       elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //参加人数
 	OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
       }
+    }
+  }
+  elseif($is_avenger || $is_patron){ //復讐者系・後援者系
+    if($SELF->IsRole('avenger')){
+      $target_count = floor($USERS->GetUserCount() / 4);
+      if(count($RQ_ARGS->target_no) != $target_count){
+	OutputVoteResult($error_header . '指定人数は' . $target_count . '人にしてください');
+      }
+    }
+    elseif($SELF->IsRole('patron')){
+      if(count($RQ_ARGS->target_no) != 1){
+	OutputVoteResult($error_header . '指定人数は一人にしてください');
+      }
+    }
+
+    $target_list = array();
+    foreach($RQ_ARGS->target_no as $target_no){
+      $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
+
+      //自分への投票は無効
+      if($target->IsSelf()) OutputVoteResult($error_header . '自分へは投票できません');
+
+      //生存者以外と身代わり君への投票は無効
+      if(! $target->IsLive() || $target->IsDummyBoy() || $target->IsSelf()){
+	OutputVoteResult($error_header . '生存者以外と身代わり君へは投票できません');
+      }
+
+      $target_list[] = $target;
     }
   }
   else{ //キューピッド系以外
@@ -587,7 +617,7 @@ function VoteNight(){
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
     }
-    elseif($is_duelist){ //決闘者陣営の処理
+    elseif($is_duelist || $is_avenger || $is_patron){ //決闘者陣営の処理
       $uname_stack  = array();
       $handle_stack = array();
       $ROLES->actor = $SELF;
@@ -595,9 +625,21 @@ function VoteNight(){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
 
-	$role = $SELF->GetID('rival'); //役職に宿敵を追加
-	//特殊決闘者の処理 (予約)
-	$ROLES->Load('main_role', true)->AddRivalRole($role, $target, $self_shoot);
+	if($is_duelist){
+	  $role = $SELF->GetID('rival'); //役職に宿敵を追加
+	  //特殊決闘者の処理
+	  $ROLES->Load('main_role', true)->AddRivalRole($role, $target, $self_shoot);
+	}
+	elseif($is_avenger){
+	  $role = $SELF->GetID('enemy'); //役職に仇敵を追加
+	  //特殊復讐者の処理
+	  $ROLES->Load('main_role', true)->AddEnemyRole($role, $target);
+	}
+	elseif($is_patron){
+	  $role = $SELF->GetID('supported'); //役職に受援者を追加
+	  //特殊後援者の処理
+	  $ROLES->Load('main_role', true)->AddSupportedRole($role, $target);
+	}
 	$target->AddRole($role);
       }
 
@@ -900,10 +942,11 @@ function OutputVoteNight(){
     $type = 'OGRE_DO';
     if(! $ROOM->IsEvent('force_assassin_do')) $not_type = 'OGRE_NOT_DO';
   }
-  elseif($SELF->IsRoleGroup('duelist')){
+  elseif($SELF->IsDuelist()){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     $type = 'DUELIST_DO';
-    $role_cupid = true;
+    $role_cupid   = $SELF->IsRoleGroup('duelist');
+    $role_avenger = $SELF->IsRoleGroup('avenger', 'patron');
     $cupid_self_shoot  = $SELF->IsRole('duelist') ||
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
@@ -952,6 +995,11 @@ function OutputVoteNight(){
       if($is_live && ! $user->IsDummyBoy()){
 	$checked = ($role_cupid && $cupid_self_shoot && $user->IsSelf()) ? ' checked' : '';
 	$checkbox = $checkbox_header . $checked . $checkbox_footer;
+      }
+    }
+    elseif($role_avenger){
+      if($is_live && ! $user->IsDummyBoy() && ! $user->IsSelf()){
+	$checkbox = $checkbox_header . $checkbox_footer;
       }
     }
     elseif($role_wizard){

@@ -6,7 +6,8 @@ OutputRolePageHeader('吸血鬼陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
-<a href="#vampire_do_spec">吸血の仕様</a>
+<a href="#vampire_do">吸血の仕様</a>
+<a href="#infected">感染者の仕様</a>
 </p>
 <p>
 <a href="#vampire_group">吸血鬼系</a>
@@ -14,18 +15,16 @@ OutputRolePageHeader('吸血鬼陣営');
 
 <h2 id="rule">基本ルール</h2>
 <ol>
-  <li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
-  <li>勝利条件は「生存者が自分と自分の<a href="sub_role.php#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
-  <li>生存者が自分一人だけになった場合も勝利となります。</li>
-  <li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
-  <li>吸血鬼陣営をコピーした変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>と<a href="mania.php#unknown_mania_group">鵺系</a>の勝利条件は<br>
-    例外的に「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
-  </li>
-  <li>2 日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
-  <li><a href="sub_role.php#infected">感染者</a>になっても自覚がありません。</li>
-  <li><a href="sub_role.php#psycho_infected">洗脳者</a>がいる場合は<a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>と扱われます。</li>
-  <li>生存カウントは村人です。</li>
-  <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
+<li>他国の「カルトリーダー」・「笛吹き」に相当します。</li>
+<li>勝利条件は「生存者が自分と自分の<a href="#infected">感染者</a>のみになっていること」で、本人だけが勝利扱いになります。</li>
+<li>生存者が自分一人だけになった場合も勝利となります。</li>
+<li>勝利条件を満たした時に恋人が生存していた場合は<a href="lovers.php">恋人陣営</a>勝利になります。</li>
+<li>吸血鬼陣営をコピーした変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>と<a href="mania.php#unknown_mania_group">鵺系</a>の勝利条件は<br>
+  例外的に「吸血鬼陣営の誰かが勝利」となります。コピー先の勝敗や自己の生存は不問です。
+</li>
+<li>2 日目以降の夜に村人一人を襲撃して<a href="sub_role.php#infected">感染者</a>にすることができます。</li>
+<li>生存カウントは村人です。</li>
+<li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
 </ol>
 <h5>Ver. 1.4.0 β19～</h5>
 <pre>
@@ -34,26 +33,33 @@ OutputRolePageHeader('吸血鬼陣営');
 コピー先の勝敗や自己の生存は不問です。
 </pre>
 
-<h2 id="vampire_do_spec">吸血の仕様</h2>
+<h2 id="vampire_do">吸血の仕様</h2>
 <ol>
-  <li>襲撃先が<a href="human.php#guard_group">狩人系</a>に護衛されていた場合は失敗し、狩人には「護衛成功」のメッセージが出ます。</li>
-  <li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
-  <li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
-  <li><a href="human.php#blind_guard">夜雀</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>の能力は有効です。</li>
-  <li><a href="human.php#escaper_group">逃亡者系</a>との関係は<a href="human.php#escaper_rule">基本ルール [逃亡者] </a>を参照してください。</li>
-  <li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
-    死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
-  </li>
-  <li>吸血鬼陣営の人を襲撃した場合は無条件で失敗し、吸血死も発生しません。<br>
-    (<a href="mania.php#unknown_mania">鵺</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>にも適用されます)。
-  </li>
-  <li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
-  </li>
+<li>襲撃先が<a href="human.php#guard_group">狩人系</a>に護衛されていた場合は失敗し、狩人には「護衛成功」のメッセージが出ます。</li>
+<li><a href="human.php#guard_group">狩人系</a>の護衛判定は<a href="human.php#guard_limit">護衛制限</a>が適用されます。</li>
+<li><a href="human.php#hunter_guard">猟師</a>が護衛しても死亡しません。</li>
+<li><a href="human.php#blind_guard">夜雀</a>・<a href="ability.php#trap">罠能力者</a>の能力は有効です。</li>
+<li><a href="human.php#escaper_group">逃亡者系</a>との関係は<a href="human.php#escaper_rule">基本ルール [逃亡者] </a>を参照してください。</li>
+<li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
+  死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
+</li>
+<li>吸血鬼陣営の人を襲撃した場合は無条件で失敗し、吸血死も発生しません。<br>
+  (変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>にも適用されます)。
+</li>
+<li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
+</li>
 </ol>
 <h5>Ver. 1.4.0 β20～</h5>
 <pre>
 <a href="human.php#escaper">逃亡者</a>との関係の仕様を変更。
 </pre>
+
+<h2 id="infected">感染者の仕様</h2>
+<ol>
+<li><a href="sub_role.php#infected">感染者</a>になっても自覚がありません。</li>
+<li><a href="sub_role.php#psycho_infected">洗脳者</a>がいる場合は吸血鬼陣営共通の<a href="sub_role.php#infected">感染者</a>と扱われます。</li>
+</ol>
+
 
 <h2 id="vampire_group">吸血鬼系</h2>
 <p>
@@ -64,6 +70,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#sacrifice_vampire">吸血公</a>
 <a href="#soul_vampire">吸血姫</a>
 </p>
+
 <h3><a id="vampire">吸血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
 <h4>[耐性] 罠：有効</h4>
 <pre>
@@ -72,8 +79,8 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 他国に実在する役職です。
-人狼式の闇鍋に混ぜてどの程度勝てるのか検討が付かないので、
-まずは条件を緩めに設定して様子を見てみようかと思います。
+<a href="#rule">勝利条件</a>の性質上、短期決戦を狙うことで簡単に勝利を阻むことができますが
+対妖狐が疎かになってしまうジレンマが存在します。
 </pre>
 
 <h3><a id="incubus_vampire">青髭公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
@@ -93,7 +100,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 擬似的な暗殺能力を持った吸血鬼で、童話「青ひげ」がモチーフです。
-勝利条件を考えると吸血死狙いの襲撃はあまり割りに合わないと思われます。
+勝利条件を考えると吸血死狙いの襲撃は効率が悪いと思われます。
 </pre>
 
 <h3><a id="succubus_vampire">飛縁魔 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
@@ -138,15 +145,15 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り / 罠：有効</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>が身代わりで死亡する上位吸血鬼。
+<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、自分の<a href="sub_role.php#infected">感染者</a>を身代わりにして生き延びることができる上位吸血鬼。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
-  <li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
-  <li>本人は身代わりが発生しても分からない。</li>
-  <li>逃亡失敗・人狼に遭遇して死亡した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+<li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+<li>代わりに死んだ人の死因は「誰かの犠牲となって死亡したようです」。</li>
+<li>本人は身代わりが発生しても分からない。</li>
+<li>逃亡失敗・人狼に遭遇して死亡した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -155,12 +162,13 @@ OutputRolePageHeader('吸血鬼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の吸血鬼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/728" target="_top">新役職考案スレ(728)</a> が原型です。
+対人狼において高い生存力を持つので強気に騙ることができます。
 </pre>
 
 <h3><a id="soul_vampire">吸血姫 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 護衛：狩り / 暗殺：反射 / 罠：有効</h4>
 <pre>
-<a href="#vampire_do_spec">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
+<a href="#vampire_do">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
 <a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>

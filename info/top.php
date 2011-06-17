@@ -9,19 +9,26 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </p>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 β1 アップロード (2011/05/13 (Fri) 02:49) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β2 アップロード (2011/05/27 (Fri) 18:42) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b1">デバッグ情報</a> (2011/05/19 (Thu) 02:55)</li>
-  <li>「大妖精」「吟遊詩人」「紅天使」「決闘者」「戦乙女」「舞首」実装</li>
-  <li>サブ役職「宿敵」実装</li>
-  <li>固定追加配役モード：I(恋人村)・J(宿敵村)追加</li>
+  <!-- <li>→ <a href="info/develop/debug.php#ver150b1">デバッグ情報</a> (2011/05/19 (Thu) 02:55)</li> -->
+  <li>「人馬」「首領」実装</li>
+  <li>固定追加配役モード：K(覚醒村)追加</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>人馬：処刑投票先が毒を持っていたら毒死してしまう特殊な薬師</li>
-  <li>首領：人狼に襲撃された時に、村人と蝙蝠を身代わりにして生き延びる事ができる上位共有者</li>
+  <li>無精者：処刑投票数が -1 される。</li>
+  <li>わらしべ長者：5日目以降、処刑投票数が +1 される。</li>
+  <li>没落者：5日目以降、処刑投票数が -1 される。</li>
+  <li>燕返し：自分と投票先が最多得票者だった場合、投票先が優先的に処刑される。</li>
+  <li>脱落者：自分と投票先が最多得票者だった場合、自分が優先的に処刑される。</li>
+  <li>黒幕：宿敵に加えて、死の宣告を付加する決闘者。</li>
+  <li>復讐者：村の人口の四分の一を仇敵にする決闘者陣営の亜種。</li>
+  <li>仇敵：復讐者系が付加する。</li>
+  <li>後援者：村人一人を受援者にする決闘者陣営の亜種。</li>
+  <li>受援者：後援者系が付加する。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

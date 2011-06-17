@@ -37,7 +37,9 @@ class Role_soul_mania extends Role{
       'fairy'        => 'ice_fairy',
       'ogre'         => 'sacrifice_ogre',
       'yaksa'        => 'dowser_yaksa',
-      'duelist'      => 'valkyrja_duelist');
+      'duelist'      => 'valkyrja_duelist',
+      'avenger'      => 'avenger',
+      'patron'       => 'patron');
 
   function __construct(){ parent::__construct(); }
 

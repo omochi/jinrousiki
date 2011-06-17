@@ -4,9 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('村人陣営');
 ?>
-<p>
-<a href="#change_human_camp">所属変更</a>
-</p>
+<p><a href="#change_group">所属変更</a></p>
 <p>
 <a href="#human_group">村人系</a>
 <a href="#mage_group">占い師系</a>
@@ -29,7 +27,7 @@ OutputRolePageHeader('村人陣営');
 <a href="#escaper_group">逃亡者系</a>
 </p>
 
-<h2 id="change_human_camp">所属変更</h2>
+<h2 id="change_group">所属変更</h2>
 <h3>Ver. 1.4.0 β22～</h3>
 <pre>
 <a href="#escaper">逃亡者</a>：<a href="#human_group">村人系</a>→<a href="#escaper_group">逃亡者系</a>
@@ -80,15 +78,15 @@ OutputRolePageHeader('村人陣営');
 本人表記は「<a href="#human">村人</a>」。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">判定</a>は<a href="#executor">執行者</a>の後</li>
-  <li>非村人 (村人陣営以外 + <a href="sub_role.php#lovers">恋人</a>) を一人だけ含む → 非村人が吊られる</li>
-  <li>非村人が複数含まれている → 再投票</li>
-  <li>全員村人 + 最多得票者の聖女は自分だけ → 自分が吊られる</li>
-  <li>全員村人 + 最多得票者の聖女が複数いる → 再投票</li>
-  <li>自分が恋人だった場合は自分も非村人扱い<br>
-    例1) 聖女・聖女[恋人]・村人 → 聖女[恋人] が吊られる<br>
-    例2) 聖女[恋人]・人狼 → 再投票
-  </li>
+<li><a href="../spec.php#vote_day">判定</a>は<a href="#executor">執行者</a>の後</li>
+<li>非村人 (村人陣営以外 + <a href="sub_role.php#lovers">恋人</a>) を一人だけ含む → 非村人が吊られる</li>
+<li>非村人が複数含まれている → 再投票</li>
+<li>全員村人 + 最多得票者の聖女は自分だけ → 自分が吊られる</li>
+<li>全員村人 + 最多得票者の聖女が複数いる → 再投票</li>
+<li>自分が恋人だった場合は自分も非村人扱い<br>
+  例1) 聖女・聖女[恋人]・村人 → 聖女[恋人] が吊られる<br>
+  例2) 聖女[恋人]・人狼 → 再投票
+</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -108,21 +106,21 @@ OutputRolePageHeader('村人陣営');
 本人表記は「<a href="#human">村人</a>」。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">判定</a>は<a href="quiz.php#quiz">出題者</a>の後</li>
-  <li>投票先が非村人 → 非村人が吊られる</li>
-  <li>投票先が村人 → 再投票</li>
-  <li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人が吊られる<br>
-    例) 執行者A → 村人A、執行者B → 村人B、執行者C → 人狼A<br>
-    　=&gt; 人狼A が吊られる
-  </li>
-  <li>執行者が複数 + 複数が同じ非村人に投票 → 非村人が吊られる<br>
-    例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 人狼A<br>
-    　=&gt; 人狼A が吊られる
-  </li>
-  <li>執行者が複数 + 別々の非村人に投票 → 再投票<br>
-    例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 妖狐A<br>
-    　=&gt; 再投票
-  </li>
+<li><a href="../spec.php#vote_day">判定</a>は<a href="quiz.php#quiz">出題者</a>の後</li>
+<li>投票先が非村人 → 非村人が吊られる</li>
+<li>投票先が村人 → 再投票</li>
+<li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人が吊られる<br>
+  例) 執行者A → 村人A、執行者B → 村人B、執行者C → 人狼A<br>
+  　=&gt; 人狼A が吊られる
+</li>
+<li>執行者が複数 + 複数が同じ非村人に投票 → 非村人が吊られる<br>
+  例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 人狼A<br>
+  　=&gt; 人狼A が吊られる
+</li>
+<li>執行者が複数 + 別々の非村人に投票 → 再投票<br>
+  例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 妖狐A<br>
+  　=&gt; 再投票
+</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -139,10 +137,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 処刑投票数が +1 される村人。
 </pre>
 <ol>
-  <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
-    例) <a href="sub_role.php#authority_group">権力者</a>ならさらに +1
-  </li>
-  <li><a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
+<li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
+  例) <a href="sub_role.php#authority_group">権力者</a>ならさらに +1
+</li>
+<li><a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -401,9 +399,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 
 <h2 id="necromancer_group">霊能者系</h2>
-<p>
-<a href="#necromancer_rule">基本ルール</a>
-</p>
+<p><a href="#necromancer_rule">基本ルール</a></p>
 <p>
 <a href="#necromancer">霊能者</a>
 <a href="#soul_necromancer">雲外鏡</a>
@@ -460,11 +456,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 霊能結果は「～さんの前世は [役職] でした」と表示され、以下の順番で判定される。
 </pre>
 <ol>
-  <li><a href="sub_role.php#changed_therian">元獣人</a> → 狂人</li>
-  <li><a href="sub_role.php#copied">元神話マニア</a>・<a href="sub_role.php#copied_trick">元奇術師</a>・<a href="sub_role.php#copied_soul">元覚醒者</a>・<a href="sub_role.php#copied_teller">元夢語部</a> → 神話マニア</li>
-  <li><a href="wolf.php#mad_group">狂人系</a> → 人狼</li>
-  <li><a href="#psycho_mage">精神鑑定士</a>の結果が「嘘つき」 → 狂人</li>
-  <li>それ以外 → 村人</li>
+<li><a href="sub_role.php#changed_therian">元獣人</a> → 狂人</li>
+<li><a href="sub_role.php#copied">元神話マニア</a>・<a href="sub_role.php#copied_trick">元奇術師</a>・<a href="sub_role.php#copied_soul">元覚醒者</a>・<a href="sub_role.php#copied_teller">元夢語部</a> → 神話マニア</li>
+<li><a href="wolf.php#mad_group">狂人系</a> → 人狼</li>
+<li><a href="#psycho_mage">精神鑑定士</a>の結果が「嘘つき」 → 狂人</li>
+<li>それ以外 → 村人</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -602,10 +598,9 @@ PP ラインの計算を難しくさせるために作成してみました。
 完全ランダムでは霊能結果が全く役に立たなくなるので白黒反転に変更しました。
 </pre>
 
+
 <h2 id="medium_group">巫女系</h2>
-<p>
-<a href="#medium_rule">所属陣営判定法則</a>
-</p>
+<p><a href="#medium_rule">所属陣営判定法則</a></p>
 <p>
 <a href="#medium">巫女</a>
 <a href="#bacchus_medium">神主</a>
@@ -651,11 +646,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が<a href="ogre.php">鬼陣営</a>だった場合にショック死させることができる上位巫女。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-  <li>自分が処刑された場合は無効。</li>
-  <li>自分が毒やショック死で死亡した場合でも有効。</li>
-  <li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外。</li>
-  <li>ショック死させた場合の死因は「神主に酔い潰された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外。</li>
+<li>ショック死させた場合の死因は「神主に酔い潰された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -673,12 +668,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-  <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>。</li>
-  <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-  <li>自分が処刑された場合は無効。</li>
-  <li>自分が毒やショック死で死亡した場合でも有効。</li>
-  <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
-  <li>ショック死させた場合の死因は「封印された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
+<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
+<li>ショック死させた場合の死因は「封印された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -703,10 +698,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 「奇跡」を蘇生能力に読み替えてみました。
 </pre>
 
+
 <h2 id="priest_group">司祭系</h2>
 <p>
 <a href="#priest_rule">基本ルール</a>
-<a href="#crisis_priest_spec">人外勝利前日判定の仕様</a>
+<a href="#crisis_priest_rule">人外勝利前日判定の仕様</a>
 </p>
 <p>
 <a href="#priest">司祭</a>
@@ -722,11 +718,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="priest_rule">基本ルール [司祭]</h3>
 <ol>
-  <li>判定結果は夜も表示されたままだが、昼の処刑結果は反映されていない。</li>
-  <li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象。</li>
+<li>判定結果は夜も表示されたままだが、昼の処刑結果は反映されていない。</li>
+<li><a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>以外は狩人の<a href="#guard_limit">護衛制限</a>対象。</li>
 </ol>
 
-<h3 id="crisis_priest_spec">人外勝利前日判定の仕様</h3>
+<h3 id="crisis_priest_rule">人外勝利前日判定の仕様</h3>
 <pre>
 1. 生存者 - (人狼 + 妖狐) &lt;= 人狼 + 2
 その日の処刑が人狼以外 + 夜に人狼の襲撃が成立すると人狼勝利となります。
@@ -748,11 +744,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
-  <li>村人陣営の判定法則は<a href="#medium_rule">巫女</a>と同じ。</li>
-  <li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に実施される。<br>
-    従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値となる。
-  </li>
+<li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
+<li>村人陣営の判定法則は<a href="#medium_rule">巫女</a>と同じ。</li>
+<li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に実施される。<br>
+  従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値となる。
+</li>
 </ol>
 <h4>同一表示役職</h4>
 <pre>
@@ -773,8 +769,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>判定が出るのは 3 日目以降の奇数日 (3 → 5 → 7 →...)。</li>
-  <li><a href="#medium_rule">巫女</a>の判定と違い、<a href="sub_role.php#lovers">恋人</a>も「村人陣営以外」と判定される。</li>
+<li>判定が出るのは 3 日目以降の奇数日 (3 → 5 → 7 →...)。</li>
+<li><a href="#medium_rule">巫女</a>の判定と違い、<a href="sub_role.php#lovers">恋人</a>も「村人陣営以外」と判定される。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -789,12 +785,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
-  <li>本人には表示されていないサブ役職もカウントされる (例：<a href="sub_role.php#decide">決定者</a>)。</li>
-  <li>複数所持できるサブ役職はまとめて一つとカウントされる (例：<a href="sub_role.php#lovers">恋人</a>)。</li>
-  <li><a href="#revive_priest">天人</a>の蘇生判定は探知師の判定の後に実施される。<br>
-    従って、蘇生した<a href="#revive_priest">天人</a>が所持しているサブ役職はカウントされていない。
-  </li>
+<li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
+<li>本人には表示されていないサブ役職もカウントされる (例：<a href="sub_role.php#decide">決定者</a>)。</li>
+<li>複数所持できるサブ役職はまとめて一つとカウントされる (例：<a href="sub_role.php#lovers">恋人</a>)。</li>
+<li><a href="#revive_priest">天人</a>の蘇生判定は探知師の判定の後に実施される。<br>
+  従って、蘇生した<a href="#revive_priest">天人</a>が所持しているサブ役職はカウントされていない。
+</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -814,12 +810,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>発動条件式は、生存者 - 村人陣営(恋人を含む) &gt; 人狼系 × 2。</li>
-  <li>判定は 3 の倍数の日の夜 (3 → 6 → 9 →...) で、発動はその 2 日後 (5 → 8 → 11 →...)。</li>
-  <li>判定を実施するタイミングは<a href="#crisis_priest_spec">人外勝利前日判定</a>と同じ。</li>
-  <li>発生する天候はランダムで、<a href="../game_option.php#weather">天候あり</a>オプションがオフでも発生する。</li>
-  <li>天候発動判定時に<a href="#revive_priest">天人</a>の蘇生判定は反映されていない。</li>
-  <li>生存している祈祷師がいなければ天候は発動しない。</li>
+<li>発動条件式は、生存者 - 村人陣営(恋人を含む) &gt; 人狼系 × 2。</li>
+<li>判定は 3 の倍数の日の夜 (3 → 6 → 9 →...) で、発動はその 2 日後 (5 → 8 → 11 →...)。</li>
+<li>判定を実施するタイミングは<a href="#crisis_priest_rule">人外勝利前日判定</a>と同じ。</li>
+<li>発生する天候はランダムで、<a href="../game_option.php#weather">天候あり</a>オプションがオフでも発生する。</li>
+<li>天候発動判定時に<a href="#revive_priest">天人</a>の蘇生判定は反映されていない。</li>
+<li>生存している祈祷師がいなければ天候は発動しない。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
@@ -847,7 +843,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="crisis_priest">預言者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
-<a href="#crisis_priest_spec">人外勝利前日</a>を判定する特殊な司祭。表示は「村人」。
+<a href="#crisis_priest_rule">人外勝利前日</a>を判定する特殊な司祭。表示は「村人」。
 条件を満たした場合のみ、どの陣営が有利なのかメッセージが表示される。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -864,22 +860,22 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>蘇生条件 (どれか一つを満たせば蘇生する)</h4>
 <ol>
-  <li>「<a href="#crisis_priest_spec">人外勝利前日</a>」である。</li>
-  <li>5 日目である。</li>
-  <li>村の人口が半分以下になった。</li>
-  <li>生存している人狼が一人になった。</li>
+<li>「<a href="#crisis_priest_rule">人外勝利前日</a>」である。</li>
+<li>5 日目である。</li>
+<li>村の人口が半分以下になった。</li>
+<li>生存している人狼が一人になった。</li>
 </ol>
 <h4>詳細な仕様</h4>
 <ol>
-  <li>「<a href="../game_option.php#not_open_cast">霊界で配役を公開しない</a>」オプションが有効になっていないと死亡も蘇生もしない。</li>
-  <li>2 日目の朝の死亡メッセージは「～は無惨な～」で、死因は「天に帰った」。</li>
-  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li><a href="sub_role.php#lovers">恋人</a>になると能力を失う (2 日目朝の死亡も起こらない)。</li>
-  <li><a href="mania.php#mania_group">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は起こらない。</li>
-  <li>2 日目朝以降に死んでも蘇生判定を満たせば蘇生する。</li>
-  <li>5 日目になると能力を失う。</li>
-  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+<li>「<a href="../game_option.php#not_open_cast">霊界で配役を公開しない</a>」オプションが有効になっていないと死亡も蘇生もしない。</li>
+<li>2 日目の朝の死亡メッセージは「～は無惨な～」で、死因は「天に帰った」。</li>
+<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li><a href="sub_role.php#lovers">恋人</a>になると能力を失う (2 日目朝の死亡も起こらない)。</li>
+<li><a href="mania.php#mania_group">神話マニア</a>がコピーした場合は 2 日目朝の死亡処理は起こらない。</li>
+<li>2 日目朝以降に死んでも蘇生判定を満たせば蘇生する。</li>
+<li>5 日目になると能力を失う。</li>
+<li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+<li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
@@ -902,10 +898,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>能力の発動は 2 日目からなので、判定結果が出るのは 3 日目の昼からになる。</li>
-  <li>発動していない投票もカウントされる。<br>
-    例) 人狼に噛み殺された占い師の投票や<a href="../weather.php">天候</a>による無効化投票もカウントされる。
-  </li>
+<li>能力の発動は 2 日目からなので、判定結果が出るのは 3 日目の昼からになる。</li>
+<li>発動していない投票もカウントされる。<br>
+  例) 人狼に噛み殺された占い師の投票や<a href="../weather.php">天候</a>による無効化投票もカウントされる。
+</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -953,10 +949,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="guard_limit">護衛制限</h3>
 <ol>
-  <li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a><br>
-    <a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
-  <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出るが、護衛先は死亡する。</li>
-  <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されない。</li>
+<li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a><br>
+  <a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
+<li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出るが、護衛先は死亡する。</li>
+<li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されない。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
@@ -1039,7 +1035,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
-暗殺能力に対する護衛力を持った特殊狩人で、対<a href="ogre.php#ogre_do_spec">人攫い</a>が主眼です。
+暗殺能力に対する護衛力を持った特殊狩人で、対<a href="ogre.php#ogre_do">人攫い</a>が主眼です。
 </pre>
 
 <h3 id="reflect_guard">侍 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>
@@ -1210,12 +1206,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>毒・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
-  <li><a href="#assassin_spec">暗殺反射</a></li>
-  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
-  <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
-  <li><a href="#revive_rule">蘇生</a>不可</li>
-  <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
+<li>毒・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+<li><a href="#assassin_spec">暗殺反射</a></li>
+<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
+<li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
+<li><a href="#revive_rule">蘇生</a>不可</li>
+<li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
@@ -1232,11 +1228,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 まとめて死亡させる上位共有者。
 </pre>
 <ol>
-  <li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される。</li>
-  <li>一人でも村人陣営の人から投票されると無効。</li>
-  <li>発動した場合に巻き込んだ人の死因は「罠」。</li>
-  <li>自分が吊られたり、再投票になっても有効。</li>
-  <li>本人が<a href="sub_role.php#lovers">恋人</a>になった場合は自分自身が「非村人陣営」になるので発動できない。</li>
+<li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される。</li>
+<li>一人でも村人陣営の人から投票されると無効。</li>
+<li>発動した場合に巻き込んだ人の死因は「罠」。</li>
+<li>自分が吊られたり、再投票になっても有効。</li>
+<li>本人が<a href="sub_role.php#lovers">恋人</a>になった場合は自分自身が「非村人陣営」になるので発動できない。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1254,10 +1250,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
-  <li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
-  <li>本人は身代わりが発生しても分からない。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+<li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+<li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
+<li>本人は身代わりが発生しても分からない。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -1421,9 +1417,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 
 
 <h2 id="poison_cat_group">猫又系</h2>
-<p>
-<a href="#revive_rule">基本ルール</a>
-</p>
+<p><a href="#revive_rule">基本ルール</a></p>
 <p>
 <a href="#poison_cat">猫又</a>
 <a href="#revive_cat">仙狸</a>
@@ -1433,14 +1427,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 
 <h3 id="revive_rule">基本ルール [蘇生]</h3>
 <ol>
-  <li><a href="../game_option.php#not_open_cast">霊界で配役を公開しない</a>オプションが有効になっていないと蘇生行動はできない。</li>
-  <li>投票可能になるのは 2 日目の夜からで、「蘇生する / しない」を必ず投票する必要がある。</li>
-  <li>投票できるのは、身代わり君以外の死者で、「蘇生しない」を選ぶこともできる。</li>
-  <li>蘇生成功率のうち、1/5 は指定した人以外が対象になる「誤爆蘇生」となる。<br>
-    例) 25% : 成功 : 20% / 誤爆 :  5%</li>
-  <li>身代わり君・蘇生能力者 (猫又系・<a href="#revive_priest">天人</a>など)・<a href="sub_role.php#lovers">恋人</a>・<a href="#detective_common">探偵</a>は蘇生できない。</li>
-  <li>蘇生対象外の人が選ばれた場合は確実に失敗する。</li>
-  <li>蘇生に失敗した場合は霊界と<a href="#attempt_necromancer">蟲姫</a>にだけ見えるシステムメッセージが表示される。</li>
+<li><a href="../game_option.php#not_open_cast">霊界で配役を公開しない</a>オプションが有効になっていないと蘇生行動はできない。</li>
+<li>投票可能になるのは 2 日目の夜からで、「蘇生する / しない」を必ず投票する必要がある。</li>
+<li>投票できるのは、身代わり君以外の死者で、「蘇生しない」を選ぶこともできる。</li>
+<li>蘇生成功率のうち、1/5 は指定した人以外が対象になる「誤爆蘇生」となる。<br>
+  例) 25% : 成功 : 20% / 誤爆 :  5%</li>
+<li>身代わり君・蘇生能力者 (猫又系・<a href="#revive_priest">天人</a>など)・<a href="sub_role.php#lovers">恋人</a>・<a href="#detective_common">探偵</a>は蘇生できない。</li>
+<li>蘇生対象外の人が選ばれた場合は確実に失敗する。</li>
+<li>蘇生に失敗した場合は霊界と<a href="#attempt_necromancer">蟲姫</a>にだけ見えるシステムメッセージが表示される。</li>
 </ol>
 <h5>Ver. 1.4.0 β2～</h5>
 <pre>
@@ -1609,12 +1603,12 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
 </pre>
 <ol>
-  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li>恋人になったら蘇生能力は無効。</li>
-  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li>恋人になったら蘇生能力は無効。</li>
+<li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+<li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+<li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
@@ -1637,11 +1631,11 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 毒能力判定や対象者変更判定 (<a href="#pharmacist">薬師</a>が「解毒した」と判定する対象) は<a href="#pharmacist">薬師</a>と同じ。
 </pre>
 <ol>
-  <li>判定は処刑者決定後で、自分が処刑されたら無効。</li>
-  <li>対象者変更能力が発動しても毒能力判定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
-  <li><a href="sub_role.php#lovers">恋人</a>は判定対象外 (<a href="#medium_group">巫女系</a>と同じ)。</li>
-  <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合、毒は不発。</li>
-  <li><a href="#chain_poison">連毒者</a>に投票しても能力は発動しない (毒能力判定は有効)。</li>
+<li>判定は処刑者決定後で、自分が処刑されたら無効。</li>
+<li>対象者変更能力が発動しても毒能力判定結果は変わらない (処刑した場合でも毒の種類が分かる)。</li>
+<li><a href="sub_role.php#lovers">恋人</a>は判定対象外 (<a href="#medium_group">巫女系</a>と同じ)。</li>
+<li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合、毒は不発。</li>
+<li><a href="#chain_poison">連毒者</a>に投票しても能力は発動しない (毒能力判定は有効)。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
@@ -1660,15 +1654,16 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 処刑投票先が毒を持っていたら毒死してしまう特殊な薬師。
 </pre>
 <ol>
-  <li>毒死する条件は、<a href="#pharmacist">薬師</a>の毒能力判定が「毒を持っていない」以外になる場合。</li>
-  <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合でも毒死する。</li>
-  <li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、投票先が処刑されても有効。</li>
+<li>毒死する条件は、<a href="#pharmacist">薬師</a>の毒能力判定が「毒を持っていない」以外になる場合。</li>
+<li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合でも毒死する。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、投票先が処刑されても有効。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#escaper">逃亡者</a>の薬師バージョンで、ケンタウロスがモチーフです。
 <a href="sub_role.php#lovers">恋人</a>や<a href="sub_role.php#rival">宿敵</a>がつくと能力が枷になってしまうので要注意です。
 </pre>
+
 
 <h2 id="assassin_group">暗殺者系</h2>
 <p>
@@ -2108,15 +2103,15 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
 </pre>
 <ol>
-  <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。<br>
-例：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 32.5% (誤爆率 6%)</li>
-  <li>一度蘇生すると自己蘇生能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li>自己蘇生能力を失っても蘇生率向上能力は失わない。</li>
-  <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、自己蘇生能力は無効。</li>
-  <li><a href="sub_role.php#lovers">恋人</a>になったら自己蘇生能力は無効。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、自己蘇生能力は無効。</li>
-  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+<li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。<br>
+：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 32.5% (誤爆率 6%)</li>
+<li>一度蘇生すると自己蘇生能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li>自己蘇生能力を失っても蘇生率向上能力は失わない。</li>
+<li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、自己蘇生能力は無効。</li>
+<li><a href="sub_role.php#lovers">恋人</a>になったら自己蘇生能力は無効。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、自己蘇生能力は無効。</li>
+<li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+<li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -2168,9 +2163,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 
 <h2 id="wizard_group">魔法使い系</h2>
-<p>
-<a href="#wizard_rule">基本ルール</a>
-</p>
+<p><a href="#wizard_rule">基本ルール</a></p>
 <p>
 <a href="#wizard">魔法使い</a>
 <a href="#soul_wizard">八卦見</a>
@@ -2292,12 +2285,12 @@ MVP の賞品としてプレゼントしたものです。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>護衛能力は<a href="#guard">狩人</a>と同じだが、<a href="#guard_hunt">狩り</a>能力は持たない。</li>
-  <li>護衛成功率は 100 - (護衛箇所数 × 20) %。</li>
-  <li>護衛に失敗した場合は襲撃先を選択していた場合でも何も表示されない。</li>
-  <li>他の護衛先で罠死した場合でも護衛は有効。</li>
-  <li>自分を護衛することはできない。</li>
-  <li><a href="#clairvoyance_scanner">猩々</a>が尾行した場合は全ての護衛先が表示される。</li>
+<li>護衛能力は<a href="#guard">狩人</a>と同じだが、<a href="#guard_hunt">狩り</a>能力は持たない。</li>
+<li>護衛成功率は 100 - (護衛箇所数 × 20) %。</li>
+<li>護衛に失敗した場合は襲撃先を選択していた場合でも何も表示されない。</li>
+<li>他の護衛先で罠死した場合でも護衛は有効。</li>
+<li>自分を護衛することはできない。</li>
+<li><a href="#clairvoyance_scanner">猩々</a>が尾行した場合は全ての護衛先が表示される。</li>
 </ol>
 <h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
 <pre>
@@ -2360,9 +2353,7 @@ MVP の賞品としてプレゼントしたものです。
 
 
 <h2 id="doll_group">上海人形系</h2>
-<p>
-<a href="#doll_rule">基本ルール</a>
-</p>
+<p><a href="#doll_rule">基本ルール</a></p>
 <p>
 <a href="#doll">上海人形</a>
 <a href="#friend_doll">仏蘭西人形</a>
@@ -2467,12 +2458,12 @@ MVP の賞品としてプレゼントしたものです。
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する人形。
 </pre>
 <ol>
-  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li>恋人になったら蘇生能力は無効。</li>
-  <li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li>恋人になったら蘇生能力は無効。</li>
+<li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+<li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
+<li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -2520,12 +2511,12 @@ MVP の賞品としてプレゼントしたものです。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
-  <li>勝利条件は通常の村人陣営相当。</li>
-  <li>人形が誰なのかは分からない。</li>
-  <li><a href="wolf.php#wolf_group">人狼</a>に襲撃された際に人形が生存していたら、ランダムで誰か一人が身代わりに死亡する。</li>
-  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
-  <li>本人は身代わりが発生しても分からない。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+<li>勝利条件は通常の村人陣営相当。</li>
+<li>人形が誰なのかは分からない。</li>
+<li><a href="wolf.php#wolf_group">人狼</a>に襲撃された際に人形が生存していたら、ランダムで誰か一人が身代わりに死亡する。</li>
+<li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+<li>本人は身代わりが発生しても分からない。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -2544,9 +2535,7 @@ MVP の賞品としてプレゼントしたものです。
 
 
 <h2 id="escaper_group">逃亡者系</h2>
-<p>
-<a href="#escaper_rule">基本ルール</a>
-</p>
+<p><a href="#escaper_rule">基本ルール</a></p>
 <p>
 <a href="#escaper">逃亡者</a>
 <a href="#psycho_escaper">迷い人</a>

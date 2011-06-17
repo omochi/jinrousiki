@@ -7,9 +7,7 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <body>
 
 <h1>新役職情報</h1>
-<ul>
-  <li>バージョンアップするたびに仕様が変わる可能性があります</li>
-</ul>
+<ul><li>バージョンアップするたびに仕様が変わる可能性があります</li></ul>
 <p>
 <a href="../" target="_top">&lt;=情報一覧</a>
 <a href="./" target="_top">←メニュー</a>
@@ -47,7 +45,8 @@ Ver. 1.5.0
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
 <a href="#ver150b1">β1</a>
-<a href="#ver150b2">β2</a><br>
+<a href="#ver150b2">β2</a>
+<a href="#ver150b3">β3</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -90,7 +89,8 @@ Ver. 1.4.0
 Ver. 1.5.0
 <a href="#sub_ver150a5">α5</a>
 <a href="#sub_ver150a9">α9</a>
-<a href="#sub_ver150b1">β1</a><br>
+<a href="#sub_ver150b1">β1</a>
+<a href="#sub_ver150b3">β3</a><br>
 Ver. 1.4.0
 <a href="#sub_ver140a3">α3-7</a>
 <a href="#sub_ver140a9">α9</a>
@@ -1662,7 +1662,6 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。<br>
-    自分と投票先に<a href="sub_role.php#mind_friend">共鳴者</a>がつく (結果が表示されるのは 2 日目の朝)。
     人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
   </td>
   <td>Ver. 1.4.0 β18</td>
@@ -1747,7 +1746,7 @@ Ver. 1.4.0
   <td>鬼</td>
   <td>鬼</td>
   <td class="ability">鬼系の一種で、勝利条件は「<a href="quiz.php">出題者陣営</a>の勝利、または自分自身の生存」。<br>
-    劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持ち、<a href="ogre.php#ogre_do_spec">人攫い</a>の効果が<a href="sub_role.php#panelist">解答者</a>の付加になる。
+    劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持ち、<a href="ogre.php#ogre_do">人攫い</a>の効果が<a href="sub_role.php#panelist">解答者</a>の付加になる。
   </td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
@@ -1768,7 +1767,7 @@ Ver. 1.4.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability"><a href="vampire.php#vampire_do_spec">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
+  <td class="ability"><a href="vampire.php#vampire_do">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
     <a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
   </td>
   <td>Ver. 1.4.0 β19</td>
@@ -1871,7 +1870,7 @@ Ver. 1.4.0
   <td>鬼</td>
   <td>鬼</td>
   <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + 村人陣営以外の勝利」。<br>
-    <a href="ogre.php#ogre_do_spec">人攫い</a>の効果が<a href="sub_role.php#psycho_infected">洗脳者</a>の付加になり、人狼に襲撃されたら<a href="sub_role.php#psycho_infected">洗脳者</a>を身代わりにして生き延びることができる
+    <a href="ogre.php#ogre_do">人攫い</a>の効果が<a href="sub_role.php#psycho_infected">洗脳者</a>の付加になり、人狼に襲撃されたら<a href="sub_role.php#psycho_infected">洗脳者</a>を身代わりにして生き延びることができる
 。
   </td>
   <td>Ver. 1.4.0 β20</td>
@@ -2131,9 +2130,7 @@ Ver. 1.4.0
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。<br>
-    自分と投票先に<a href="sub_role.php#mind_friend">共鳴者</a>がつく (結果が表示されるのは 2 日目の朝)。
-  </td>
+  <td class="ability">コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。</td>
   <td>Ver. 1.5.0 α5</td>
 </tr>
 <tr>
@@ -2350,7 +2347,7 @@ Ver. 1.4.0
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">初日夜に自分と誰か一人を<a href="duelist.php#rival">宿敵</a>にする。<br>
+  <td class="ability">初日夜に自分と誰か一人を<a href="sub_role.php#rival">宿敵</a>にする。<br>
     矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。</td>
   <td>Ver. 1.5.0 β1</td>
 </tr>
@@ -2390,6 +2387,33 @@ Ver. 1.4.0
   <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="human.php#human">村人</a>と<a href="chiroptera.php#chiroptera">蝙蝠</a>を身代わりにして生き延びる事ができる上位共有者。</td>
   <td>Ver. 1.5.0 β2</td>
 </tr>
+<tr id="ver150b3">
+  <td><a href="duelist.php#doom_duelist">黒幕</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">宿敵に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する決闘者。</td>
+  <td>Ver. 1.5.0 β3</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#avenger">復讐者</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">初日夜に村の人口の四分の一を<a href="sub_role.php#enemy">仇敵</a>にする、復讐者系の基本種。</td>
+  <td>Ver. 1.5.0 β3</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#patron">後援者</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">初日夜に誰か一人を<a href="sub_role.php#supported">受援者</a>にする、後援者系の基本種。</td>
+  <td>Ver. 1.5.0 β3</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -2404,399 +2428,399 @@ Ver. 1.4.0
   <tr id="sub_ver140a3">
     <td><a href="sub_role.php#strong_voice">大声</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">常に大声になる。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#normal_voice">不器用</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言の大きさを変えられない。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#weak_voice">小声</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">常に小声になる。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#chicken">小心者</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に一票でも貰うとショック死する。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#rabbit">ウサギ</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に一票も貰えないとショック死する。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#perverseness">天邪鬼</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に他の人と投票先が重なるとショック死する。</td>
     <td>Ver. 1.4.0 α3-7</td>
   </tr>
   <tr id="sub_ver140a9">
     <td><a href="sub_role.php#no_last_words">筆不精</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">遺言を残せない。</td>
     <td>Ver. 1.4.0 α9</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#watcher">傍観者</a></td>
     <td><a href="sub_role.php#authority_group">権力者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">投票数が 0 になる。</td>
     <td>Ver. 1.4.0 α9</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#plague">疫病神</a></td>
     <td><a href="sub_role.php#decide_group">決定者系</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">自分の投票先が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。</td>
     <td>Ver. 1.4.0 α9</td>
   </tr>
   <tr id="sub_ver140a11">
     <td><a href="sub_role.php#liar">狼少年</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言時に「人⇔狼」等が入れ替わる (たまに変換されないこともある)。</td>
     <td>Ver. 1.4.0 α11</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#copied">元神話マニア</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#mania">神話マニア</a>に付加される。</td>
     <td>Ver. 1.4.0 α11</td>
   </tr>
   <tr id="sub_ver140a13">
     <td><a href="sub_role.php#lost_ability">能力喪失</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">発動制限付き能力者が能力を失った場合に付加される。</td>
     <td>Ver. 1.4.0 α13</td>
   </tr>
   <tr id="sub_ver140a14">
     <td><a href="sub_role.php#random_voice">臆病者</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">声の大きさがランダムに変わる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#earplug">耳栓</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言が一段階小さく見えるようになり、小声が聞き取れなくなる (共有者の囁きに入れ替わる)。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#good_luck">幸運</a></td>
     <td><a href="sub_role.php#decide_group">決定者系</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">自分が最多得票者で処刑者候補が複数いた場合、候補から除外される。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#bad_luck">不運</a></td>
     <td><a href="sub_role.php#decide_group">決定者系</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">自分が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#upper_luck">雑草魂</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">2日目の処刑得票数が +4 される代わりに、3日目以降は -2 される。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#downer_luck">一発屋</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">2日目の処刑得票数が -4 される代わりに、3日目以降は +2 される。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#star">人気者</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑得票数が -1 される。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#disfavor">不人気</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑得票数が +1 される。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#random_voter">気分屋</a></td>
     <td><a href="sub_role.php#authority_group">権力者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">投票数に -1～+1 の範囲でランダムに補正がかかる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#rebel">反逆者</a></td>
     <td><a href="sub_role.php#authority">権力者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability"><a href="sub_role.php#authority">権力者</a>と同じ人に投票した場合に自分と<a href="sub_role.php#authority">権力者</a>の投票数が 0 になる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#gentleman">紳士</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">時々発言が「紳士」な言葉に入れ替わる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#lady">淑女</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">時々発言が「淑女」な言葉に入れ替わる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#blinder">目隠し</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言者の名前が見えない (空白に見える)。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#silent">無口</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言の文字数に制限がかかる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#invisible">光学迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言の一部が空白に入れ替わる。</td>
     <td>Ver. 1.4.0 α14</td>
   </tr>
   <tr id="sub_ver140a15">
     <td><a href="sub_role.php#random_luck">波乱万丈</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑得票数に -2～+2 の範囲でランダムに補正がかかる。</td>
     <td>Ver. 1.4.0 α15</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#flattery">ゴマすり</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に投票先が誰とも重なっていないとショック死する。</td>
     <td>Ver. 1.4.0 α15</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#impatience">短気</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability"><a href="sub_role.php#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。</td>
     <td>Ver. 1.4.0 α15</td>
   </tr>
   <tr id="sub_ver140a17">
     <td><a href="sub_role.php#speaker">スピーカー</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言が一段階大きく見えるようになり、大声が聞き取れなくなる。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#upper_voice">メガホン</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言が一段階大きくなり、大声は音割れして聞き取れなくなる。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#downer_voice">マスク</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言が一段階小さくなり、小声は聞き取れなくなる (共有者の囁きに入れ替わる)。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#rainbow">虹色迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言に虹の色が含まれていたら虹の順番に合わせて入れ替えられてしまう。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#panelist">解答者</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">投票数が 0 になり、<a href="quiz.php#quiz">出題者</a>に投票したらショック死する。</td>
     <td>Ver. 1.4.0 α17</td>
   </tr>
   <tr id="sub_ver140a19">
     <td><a href="sub_role.php#weekly">七曜迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言に曜日が含まれていたら曜日の順番に合わせて入れ替えられてしまう。</td>
     <td>Ver. 1.4.0 α19</td>
   </tr>
   <tr id="sub_ver140a21">
     <td><a href="sub_role.php#mind_read">サトラレ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability"><a href="human.php#mind_scanner">さとり</a>に夜の発言が見られてしまう。</td>
     <td>Ver. 1.4.0 α21</td>
   </tr>
   <tr id="sub_ver140a22">
     <td><a href="sub_role.php#mind_open">公開者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
-    <td class="ability">二日目以降の夜の発言が参加者全員に見られてしまう。</td>
+    <td>強制</td>
+    <td class="ability">2日目以降の夜の発言が参加者全員に見られてしまう。</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_receiver">受信者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">特定の人の夜の発言が見えるようになる。</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#celibacy">独身貴族</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に<a href="sub_role.php#lovers">恋人</a>から一票でも貰うとショック死しする。</td>
     <td>Ver. 1.4.0 α22</td>
   </tr>
   <tr id="sub_ver140a23">
     <td><a href="sub_role.php#inside_voice">内弁慶</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">昼は<a href="sub_role.php#weak_voice">小声</a>、夜は<a href="sub_role.php#strong_voice">大声</a>になる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#outside_voice">外弁慶</a></td>
     <td><a href="sub_role.php#strong_voice_group">大声系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">昼は<a href="sub_role.php#strong_voice">大声</a>、夜は<a href="sub_role.php#weak_voice">小声</a>になる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mower">草刈り</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言から「w」が削られる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#grassy">草原迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言の一文字毎に「w」が付加される。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#side_reverse">鏡面迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言の文字の並びが一行単位で逆になる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#line_reverse">天地迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言の行の並びの上下が入れ替わる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_friend">共鳴者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">特定の人と夜に会話できるようになる。</td>
     <td>Ver. 1.4.0 α23</td>
   </tr>
   <tr id="sub_ver140a24">
     <td><a href="sub_role.php#possessed_target">憑依者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">憑依能力者が誰かに憑依したら付加される</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#possessed">憑依</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">憑依能力者に憑依されている人に付加される</td>
     <td>Ver. 1.4.0 α24</td>
   </tr>
   <tr id="sub_ver140b2">
     <td><a href="sub_role.php#mind_evoke">口寄せ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">死後に特定の人の遺言窓にメッセージを送れるようになる。</td>
     <td>Ver. 1.4.0 β2</td>
   </tr>
   <tr id="sub_ver140b6">
     <td><a href="sub_role.php#bad_status">悪戯</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加される</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr id="sub_ver140b8">
     <td><a href="sub_role.php#mind_lonely">はぐれ者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">仲間が分からなくなり、会話できなくなる。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#mind_sympathy">共感者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">お互いの役職が分かる。</td>
     <td>Ver. 1.4.0 β8</td>
   </tr>
   <tr id="sub_ver140b9">
     <td><a href="sub_role.php#nervy">自信家</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に同一陣営の人に投票するとショック死する。</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#febris">熱病</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">表示された日の処刑投票集計後にショック死する。</td>
     <td>Ver. 1.4.0 β9</td>
   </tr>
   <tr id="sub_ver140b10">
     <td><a href="sub_role.php#death_warrant">死の宣告</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">予告された日の処刑投票集計後にショック死する。</td>
     <td>Ver. 1.4.0 β10</td>
   </tr>
   <tr id="sub_ver140b11">
     <td><a href="sub_role.php#challenge_lovers">難題</a></td>
     <td><a href="sub_role.php#lovers_group">恋人系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">4日目夜までは人狼の襲撃無効・毒無効・暗殺反射を持つ。<br>
       5日目以降は恋人の相方と同じ人に投票しないとショック死する。</td>
     <td>Ver. 1.4.0 β11</td>
@@ -2804,170 +2828,219 @@ Ver. 1.4.0
   <tr>
     <td><a href="sub_role.php#possessed_exchange">交換憑依</a></td>
     <td><a href="sub_role.php#lovers_group">恋人系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">指定された相手と入れ替わる。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#copied_trick">元奇術師</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#trick_mania">奇術師</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#copied_soul">元覚醒者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#soul_mania">覚醒者</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#copied_teller">元夢語部</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr id="sub_ver140b14">
     <td><a href="sub_role.php#critical_voter">会心</a></td>
     <td><a href="sub_role.php#authority_group">権力者系</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">5% の確率で処刑投票数が +100 される。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#critical_luck">痛恨</a></td>
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">5% の確率で処刑得票数が +100 される。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#whisper_ringing">囁耳鳴</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">他人の独り言が共有者の囁きに見えるようになる。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#howl_ringing">吠耳鳴</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">他人の独り言が人狼の遠吠えに見えるようになる。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#deep_sleep">爆睡者</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">共有の囁き・人狼の遠吠えが一切見えなくなる。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#actor">役者</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言時に一部のキーワードが入れ替わる。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#androphobia">男性恐怖症</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に男性に投票するとショック死する。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#gynophobia">女性恐怖症</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">処刑投票時に女性に投票するとショック死する。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#infected">感染者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加される。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr id="sub_ver140b15">
     <td><a href="sub_role.php#changed_therian">元獣人</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">人狼に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。</td>
     <td>Ver. 1.4.0 β15</td>
   </tr>
   <tr id="sub_ver140b16">
     <td><a href="sub_role.php#frostbite">凍傷</a></td>
     <td><a href="sub_role.php#chicken_group">小心者系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">表示された日限定の<a href="sub_role.php#rabbit">ウサギ</a>。</td>
     <td>Ver. 1.4.0 β16</td>
   </tr>
   <tr id="sub_ver140b17">
     <td><a href="sub_role.php#passion">恋色迷彩</a></td>
     <td><a href="sub_role.php#liar_group">狼少年系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">発言時に一部のキーワードが恋人っぽい発言に入れ替わる。</td>
     <td>Ver. 1.4.0 β17</td>
   </tr>
   <tr id="sub_ver140b18">
     <td><a href="sub_role.php#mind_presage">受託者</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability">付加した<a href="human.php#presage_scanner">件</a>が人狼に襲撃されて死亡したら誰に襲撃されたかメッセージが表示される。</td>
     <td>Ver. 1.4.0 β18</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#protected">庇護者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability"><a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、庇護者を付加した人が身代わりで死亡する。</td>
     <td>Ver. 1.4.0 β18</td>
   </tr>
   <tr id="sub_ver140b20">
     <td><a href="sub_role.php#psycho_infected">洗脳者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>×</td>
+    <td>無し</td>
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>相当。</td>
     <td>Ver. 1.4.0 β20</td>
   </tr>
   <tr id="sub_ver140b21">
     <td><a href="sub_role.php#joker">ジョーカー</a></td>
     <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">ゲーム終了時に所持している場合、引き分け以外は無条件で敗北扱いになる。昼の処刑投票で移動する。</td>
     <td>Ver. 1.4.0 β21</td>
   </tr>
   <tr id="sub_ver140b22">
     <td><a href="sub_role.php#whisper_ringing">恋耳鳴</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
-    <td>○</td>
+    <td>有り</td>
     <td class="ability">二日目以降、恋人の独り言が専用の囁きに見えるようになる。</td>
     <td>Ver. 1.4.0 β22</td>
   </tr>
   <tr id="sub_ver150a5">
     <td><a href="sub_role.php#wirepuller_luck">入道</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">付加させた人が一人でも生存している間は投票数が +2 されるが全員死亡すると得票数が +3 される。</td>
     <td>Ver. 1.5.0 α5</td>
   </tr>
   <tr id="sub_ver150a9">
     <td><a href="sub_role.php#muster_ability">能力発現</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability">発動制限付き能力者が能力を得た場合に付加される。</td>
     <td>Ver. 1.5.0 α9</td>
   </tr>
   <tr id="sub_ver150b1">
     <td><a href="sub_role.php#rival">宿敵</a></td>
     <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
-    <td>○</td>
+    <td>強制</td>
     <td class="ability"><a href="duelist.php">決闘者陣営</a>が付加し、勝利条件が追加される。</td>
     <td>Ver. 1.5.0 β1</td>
+  </tr>
+  <tr id="sub_ver150b3">
+    <td><a href="sub_role.php#reduce_voter">無精者</a></td>
+    <td><a href="sub_role.php#authority_group">権力者系</a></td>
+    <td>有り</td>
+    <td class="ability">処刑投票数が -1 される。</td>
+    <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#upper_voter">わらしべ長者</a></td>
+    <td><a href="sub_role.php#authority_group">権力者系</a></td>
+    <td>有り</td>
+    <td class="ability">5日目以降、処刑投票数が +1 される。</td>
+    <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#downer_voter">没落者</a></td>
+    <td><a href="sub_role.php#authority_group">権力者系</a></td>
+    <td>有り</td>
+    <td class="ability">5日目以降、処刑投票数が -1 される。</td>
+    <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#counter_decide">燕返し</a></td>
+    <td><a href="sub_role.php#decide_group">決定者系</a></td>
+    <td>無し</td>
+    <td class="ability">自分と投票先が最多得票者だった場合、投票先が優先的に処刑される。</td>
+    <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#dropout">脱落者</a></td>
+    <td><a href="sub_role.php#decide_group">決定者系</a></td>
+    <td>無し</td>
+    <td class="ability">自分と投票先が最多得票者だった場合、自分が優先的に処刑される。</td>
+    <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#enemy">仇敵</a></td>
+    <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
+    <td>無し</td>
+    <td class="ability"><a href="duelist.php#avenger_group">復讐者系</a>が付加する。</td>
+    <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#supported">受援者</a></td>
+    <td><a href="sub_role.php#joker_group">ジョーカー系</a></td>
+    <td>無し</td>
+    <td class="ability"><a href="duelist.php#patron_group">後援者系</a>が付加する。</td>
+    <td>Ver. 1.5.0 β3</td>
   </tr>
 </table>
 

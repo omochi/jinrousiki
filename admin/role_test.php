@@ -38,6 +38,8 @@ if($_POST['command'] == 'role_test'){
   if(array_search($_POST['topping'], $ROOM_CONF->topping_list) !== false){
     $stack->option_role[] = 'topping:' . $_POST['topping'];
   }
+  if($_POST['limit_off'] == 'on') $CAST_CONF->chaos_role_group_rate_list = array();
+
   $RQ_ARGS->TestItems->test_room['game_option'] = implode(' ', $stack->game_option);
   $RQ_ARGS->TestItems->test_room['option_role'] = implode(' ', $stack->option_role);
   $ROOM = new Room($RQ_ARGS);
@@ -103,6 +105,7 @@ EOF;
   }
   echo <<<EOF
 <input type="checkbox" name="festival" value="on">お祭り
+<input type="checkbox" name="limit_off" value="on">リミッタオフ
 </form>
 
 EOF;

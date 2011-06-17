@@ -8,6 +8,7 @@ OutputInfoPageHeader('詳細な仕様');
 <p>
 <a href="#decide_role">配役決定ルーチン</a>
 <a href="#dummy_boy">身代わり君 (GM)</a>
+<a href="#win">勝利判定</a>
 <a href="#dead">死因一覧</a>
 <a href="#vote">投票</a>
 <a href="#revive_refuse">蘇生辞退システム</a>
@@ -61,6 +62,36 @@ OutputInfoPageHeader('詳細な仕様');
 <p>
 ゲーム開始前のみ遺言を変更できます
 </p>
+
+<h2 id="win">勝利判定</h2>
+<ol>
+<li>吸血鬼支配 (生存者を全て感染させた吸血鬼がいる)
+  <ol>
+  <li>恋人生存 → 恋人勝利</li>
+  <li>恋人全滅 → 吸血鬼勝利</li>
+  </ol>
+</li>
+<li>人狼全滅
+  <ol>
+  <li>生存者が全て出題者陣営 → 出題者勝利</li>
+  <li>恋人生存 → 恋人勝利</li>
+  <li>妖狐生存 → 妖狐勝利</li>
+  <li>吸血鬼単独生存 → 吸血鬼勝利</li>
+  <li>それ以外の生存者がいる → 村人勝利</li>
+  <li>生存者なし → 引き分け</li>
+  </ol>
+</li>
+<li>人狼支配 (村人カウントが人狼以下になる)
+  <ol>
+  <li>恋人生存 → 恋人勝利</li>
+  <li>妖狐生存 → 妖狐勝利</li>
+  <li>恋人・妖狐全滅 → 人狼勝利</li>
+  </ol>
+</li>
+<li>恋人支配 (生存者が全て恋人) → 恋人勝利</li>
+<li>出題者死亡 (クイズ村限定) → 引き分け</li>
+<li>規定数以上の再投票 → 引き分け</li>
+</ol>
 
 <h2 id="dead">死因一覧</h2>
 <p>
@@ -173,8 +204,8 @@ OutputInfoPageHeader('詳細な仕様');
   - 投票集計 → 処刑者決定 → 処刑者カウンター → 役職判定
 
 + 処刑者決定法則
-  - 単独トップ ＞ <a href="new_role/sub_role.php#decide">決定者</a> ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞ <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる ＞
-    <a href="new_role/quiz.php#quiz">出題者</a> ＞ <a href="new_role/human.php#executor">執行者</a> ＞ <a href="new_role/human.php#saint">聖女</a> ＞ <a href="new_role/wolf.php#agitate_mad">扇動者</a> (+ ショック死)
+  - 単独トップ ＞ <a href="new_role/sub_role.php#decide">決定者</a> ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#counter_decide">燕返し</a> ＞ <a href="new_role/sub_role.php#dropout">脱落者</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞
+    <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる ＞ <a href="new_role/quiz.php#quiz">出題者</a> ＞ <a href="new_role/human.php#executor">執行者</a> ＞ <a href="new_role/human.php#saint">聖女</a> ＞ <a href="new_role/wolf.php#agitate_mad">扇動者</a> (+ ショック死)
 
 + 処刑者カウンター
   - <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/human.php#doom_doll">蓬莱人形</a>・<a href="new_role/fox.php#miasma_fox">蟲狐</a>

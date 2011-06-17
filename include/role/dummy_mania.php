@@ -37,7 +37,9 @@ class Role_dummy_mania extends Role{
       'fairy'        => 'mirror_fairy',
       'ogre'         => 'incubus_ogre',
       'yaksa'        => 'succubus_yaksa',
-      'duelist'      => 'duelist');
+      'duelist'      => 'duelist',
+      'avenger'      => 'avenger',
+      'patron'       => 'patron');
 
   function __construct(){ parent::__construct(); }
 

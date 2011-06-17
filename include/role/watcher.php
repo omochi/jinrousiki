@@ -7,7 +7,5 @@
 class Role_watcher extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){
-    $vote_number = 0;
-  }
+  function FilterVoteDo(&$vote_number){ $vote_number = 0; }
 }

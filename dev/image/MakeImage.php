@@ -76,8 +76,7 @@ class MessageImageBuilder{
 
   function Output($name){
     header('Content-Type: image/gif');
-    $image = $this->Generate($name);
-    imagegif($image);
+    imagegif($this->Generate($name));
   }
 
   //まとめて画像ファイル生成
@@ -86,7 +85,7 @@ class MessageImageBuilder{
       $image = $this->Generate($name);
       imagegif($image, "./test/{$name}.gif"); //出力先ディレクトリのパーミッションに注意
       imagedestroy($image);
-      echo "$name<br>";
+      echo $name . '<br>';
     }
   }
 }
@@ -249,7 +248,7 @@ class RoleMessageList{
     'type' => 'common', 'delimiter' => array('_' => 'wolf'));
 
   public $sacrifice_common = array(
-    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#首領#です。#共有者#が誰であるか知ることができます。また、_人狼_に襲撃されても|村人|と^蝙蝠^を犠牲にして生き延びることができます。",
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#首領#です。#共有者#が誰であるか知ることができます。また、_人狼_に襲撃されても|村人|と^蝙蝠^を犠牲にして生き延びることができます。\n　覇者を窺う憎き^蝙蝠^をも己が糧にし、全ての_人狼_を村から駆逐せん。その志は共に生きる仲間、そして志半ばで倒れた村人たちの弔いの為に！",
     'type' => 'trap_common', 'delimiter' => array('^' => 'chiroptera'));
 
   public $ghost_common = array(
@@ -297,7 +296,7 @@ class RoleMessageList{
     'type' => 'pharmacist');
 
   public $centaurus_pharmacist = array(
-    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#人馬#です。_処刑_投票した人が#毒#能力を持っていたら死んでしまいます。",
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#人馬#です。_処刑_投票した人が#毒#能力を持っていたら死んでしまいます。#毒#に触れるだけで死ぬ体なら、#毒#を見つけて死になさい。",
     'type' => 'pharmacist');
 
   public $assassin = array(
@@ -965,15 +964,27 @@ class RoleMessageList{
     'type' => 'yaksa');
 
   public $duelist = array(
-    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|決闘者|です。初日の夜に自分と誰か一人を|宿敵|同士にします。",
+    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|決闘者|です。初日の夜に自分と誰か一人を|宿敵|同士にします。強敵の屍を乗り越え勝利の凱歌を上げるのです！",
     'delimiter' => array('|' => 'duelist'));
 
   public $valkyrja_duelist = array(
     'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|戦乙女|です。初日の夜に誰か二人を|宿敵|同士にします。死地を駆け抜け、勝者に栄光を、死者に天上の宴を与えるのです！",
     'type' => 'duelist');
 
+  public $doom_duelist = array(
+    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|黒幕|です。初日の夜に誰か二人を|宿敵|同士にして、さらに#死の宣告#を与えてしまいます。\n　宿命に踊らされる二人の物語を、影から演出してやりましょう。舞台の幕が切れる、その時まで。",
+    'type' => 'duelist', 'delimiter' => array('#' => 'chicken'));
+
   public $triangle_duelist = array(
-    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|舞首|です。初日の夜に誰か三人を|宿敵|同士にしてしまいます。",
+    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|舞首|です。初日の夜に誰か三人を|宿敵|同士にしてしまいます。現世で生前の決着をつける為に彼らには犠牲になってもらいましょう。",
+    'type' => 'duelist');
+
+  public $avenger = array(
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|復讐者|です。初日の夜に村の人口の四分の一の|仇敵|を選び、全て倒すことが勝利条件になります。\n　復讐するは我にあり。そのため、そのためだけに生き続ける。たとえ待ち受けるものが地獄だとしても…",
+    'type' => 'duelist');
+
+  public $patron = array(
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|後援者|です。初日の夜に誰か一人を|受援者|にし、その生存が勝利条件となります。\n　あなたは誰かのための足長おじさんです。その誰かに気づかれなくとも、尽くしましょう。",
     'type' => 'duelist');
 
   public $mania = array(
@@ -1107,6 +1118,18 @@ class RoleMessageList{
   public $authority = array(
     'message' => "　あなたは|権力者|です。あなたの#処刑#投票は|二票|分の効果があります。",
     'delimiter' => array('|' => 'authority', '#' => 'vote'));
+
+  public $reduce_voter = array(
+    'message' => "　あなたは|無精者|なので、#処刑#投票数が１減ります",
+    'type' => 'authority');
+
+  public $upper_voter = array(
+    'message' => "　あなたは|わらしべ長者|です。５日目以降、#処刑#投票数が１増えます。",
+    'type' => 'authority');
+
+  public $downer_voter = array(
+    'message' => "　あなたは|没落者|です。５日目以降、#処刑#投票数が１減ります。",
+    'type' => 'authority');
 
   public $rebel = array(
     'message' => "　あなたは|反逆者|です。|権力者|と同じ人に#処刑#投票した場合、あなたと|権力者|の投票数が０になります。",
@@ -1351,6 +1374,14 @@ class RoleMessageList{
     'message' => "と|宿敵|同士です。全て倒し、生き残ることが勝利条件に追加されます。",
     'type' => 'duelist_pair');
 
+  public $avenger_target = array(
+    'message' => "あなたの|仇敵|は以下の人たちです： ",
+    'delimiter' => array('|' => 'duelist'));
+
+  public $patron_target = array(
+    'message' => "あなたの|受援者|は以下の人たちです： ",
+    'delimiter' => array('|' => 'duelist'));
+
   public $result_human = array('message' => "さんは|村人|でした", 'delimiter' => array('|' => 'human'));
   public $result_saint = array('message' => "さんは|聖女|でした", 'type' => 'result_human');
   public $result_executor = array('message' => "さんは|執行者|でした", 'type' => 'result_human');
@@ -1589,7 +1620,10 @@ class RoleMessageList{
   public $result_dowser_yaksa = array('message' => "さんは|毘沙門天|でした", 'type' => 'result_yaksa');
   public $result_duelist = array('message' => "さんは|決闘者|でした", 'delimiter' => array('|' => 'duelist'));
   public $result_valkyrja_duelist = array('message' => "さんは|戦乙女|でした", 'type' => 'duelist');
+  public $result_doom_duelist = array('message' => "さんは|黒幕|でした", 'type' => 'duelist');
   public $result_triangle_duelist = array('message' => "さんは|舞首|でした", 'type' => 'duelist');
+  public $result_avenger = array('message' => "さんは|復讐者|でした", 'type' => 'duelist');
+  public $result_patron = array('message' => "さんは|後援者|でした", 'type' => 'duelist');
   public $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   public $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
   public $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
@@ -1764,18 +1798,16 @@ class WishRoleList{
   public $role_ogre             = array('message' => "←鬼");
   public $role_yaksa            = array('message' => "←夜叉");
   public $role_duelist          = array('message' => "←決闘者");
+  public $role_avenger          = array('message' => "←復讐者");
+  public $role_patron           = array('message' => "←後援者");
   public $role_mania            = array('message' => "←神話マニア");
   public $role_unknown_mania    = array('message' => "←鵺");
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_duelist');
+#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_aurora');
-$builder->Output('rainbow');
-#$builder->Output('sacrifice_common');
-#$builder->Output('centaurus_pharmacist');
-#$builder->Output('duelist');
-#$builder->Output('triangle_duelist');
+$builder->Output('patron');

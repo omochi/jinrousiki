@@ -5,9 +5,31 @@ $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('恋人陣営');
 ?>
 <p>
+<a href="#rule">基本ルール</a>
+<a href="#cupid_do">投票の仕様</a>
+</p>
+<p>
 <a href="#cupid_group">キューピッド系</a>
 <a href="#angel_group">天使系</a>
 </p>
+
+<h2 id="rule">基本ルール</h2>
+<ol>
+<li>初日の夜に「<a href="sub_role.php#lovers">恋人</a>」を作る陣営です。</li>
+<li>勝利条件は「人狼が全滅、または村人カウントが人狼以下になった時に恋人が生存していること」です。</li>
+<li><a href="vampire.php">吸血鬼陣営</a>が勝利条件を満たした時に恋人が生存していた場合は恋人陣営勝利になります。</li>
+<li>恋人陣営が勝利していれば自身や自分の作った恋人の生死は不問です。</li>
+<li>生存カウントは村人です。</li>
+<li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「性別」です。</li>
+</ol>
+
+<h2 id="cupid_do">投票の仕様</h2>
+<ol>
+<li>初日の夜に「<a href="sub_role.php#lovers">恋人</a>」にする人を二人選びます (人数は例外あり)。</li>
+<li>投票結果は即座に反映されます。</li>
+<li>自分以外を恋人の対象に選ぶことができる (<a href="../rule.php#system_vote">他人撃ち</a>) 人数の制限は管理者設定項目です。</li>
+</ol>
+
 
 <h2 id="cupid_group">キューピッド系</h2>
 <p>
@@ -109,7 +131,7 @@ OutputRolePageHeader('恋人陣営');
 <h3 id="triangle_cupid">小悪魔 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
 矢を三本撃てるキューピッド。
-他人撃ち制限などは普通のキューピッドと同じ。
+<a href="../rule.php#system_vote">他人撃ち</a>制限などは普通のキューピッドと同じ。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -119,6 +141,7 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 翠星石鯖＠やる夫人狼で一時的に施されていた改造に別名を与えてみました。
 </pre>
+
 
 <h2 id="angel_group">天使系</h2>
 <p>
@@ -166,11 +189,11 @@ OutputRolePageHeader('恋人陣営');
 矢を撃った二人を<a href="sub_role.php#possessed_exchange">交換憑依</a>させてしまう特殊な天使。
 </pre>
 <ol>
-  <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わる。<br>
-    例) A-B・B-C と矢を撃たれた → A-B または B-C のどちらかだけが入れ替わる。
-  </li>
-  <li><a href="ability.php#possessed">憑依能力者</a>が対象だった場合は交換憑依は発生しない。</li>
-  <li>他人撃ちをした場合、矢を撃った本人には交換憑依が成立したかどうかは分からない。</li>
+<li>矢が競合した場合は抽選が発生し、一組だけが入れ替わる。<br>
+  例) A-B・B-C と矢を撃たれた → A-B または B-C のどちらかだけが入れ替わる。
+</li>
+<li><a href="ability.php#possessed">憑依能力者</a>が対象だった場合は交換憑依は発生しない。</li>
+<li>他人撃ちをした場合、矢を撃った本人には交換憑依が成立したかどうかは分からない。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>

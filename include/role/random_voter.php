@@ -7,7 +7,5 @@
 class Role_random_voter extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){
-    $vote_number += mt_rand(0, 2) - 1;
-  }
+  function FilterVoteDo(&$vote_number){ $vote_number += mt_rand(0, 2) - 1; }
 }

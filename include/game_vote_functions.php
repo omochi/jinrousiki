@@ -429,13 +429,12 @@ function AggregateVoteGameStart($force_start = false){
     }
     else{
       shuffle($role_list); //配列をシャッフル
-      $stack = $CAST_CONF->disable_dummy_boy_role_list; //身代わり君の対象役職リスト
-      array_push($stack, 'wolf', 'fox'); //常時対象外の役職追加
-      //探偵村なら身代わり君の対象外役職に追加する
+      $stack = $CAST_CONF->disable_dummy_boy_role_list; //身代わり君の対象外役職リスト
+      array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
+      //探偵村なら探偵を追加
       if($is_detective && ! in_array('detective_common', $stack)) $stack[] = 'detective_common';
 
-      $count = count($role_list);
-      for($i = 0; $i < $count; $i++){
+      for($i = count($role_list); $i > 0; $i--){
 	$role = array_shift($role_list); //配役リストから先頭を抜き出す
 	foreach($stack as $disable_role){
 	  if(strpos($role, $disable_role) !== false){
@@ -544,14 +543,14 @@ function AggregateVoteGameStart($force_start = false){
   //割り振り対象外役職のリスト
   $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'mind_read',
 			    'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
-			    'mind_presage',  'mind_lonely', 'lovers', 'challenge_lovers',
-			    'possessed_exchange', 'joker', 'rival', 'possessed_target', 'possessed',
-			    'infected', 'psycho_infected', 'bad_status', 'protected',
-			    'wirepuller_luck', 'lost_ability', 'muster_ability', 'changed_therian',
-			    'copied', 'copied_trick', 'copied_soul', 'copied_teller');
+			    'mind_presage', 'mind_lonely', 'lovers', 'challenge_lovers',
+			    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
+			    'possessed_target', 'possessed', 'infected', 'psycho_infected',
+			    'bad_status', 'protected', 'wirepuller_luck', 'lost_ability',
+			    'muster_ability', 'changed_therian', 'copied', 'copied_trick',
+			    'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
-  $roled_list = array();
   /*
   $stack = array('whisper_ringing', 'howl_ringing', 'critical_luck');
   $delete_role_list = array_merge($delete_role_list, $stack);
@@ -631,8 +630,6 @@ function AggregateVoteGameStart($force_start = false){
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_normal_list;
     else
       $sub_role_keys = array_keys($ROLE_DATA->sub_role_list);
-    //$sub_role_keys = array('authority', 'rebel', 'upper_luck', 'random_voter'); //テスト用
-    //array_push($delete_role_list, 'earplug', 'speaker'); //テスト用
     //PrintData($delete_role_list, 'DeleteRoleList');
 
     $sub_role_keys = array_diff($sub_role_keys, $delete_role_list);
@@ -711,7 +708,7 @@ function AggregateVoteGameStart($force_start = false){
   }
   if($ROOM->test_mode) return true;
 
-  $ROOM->SystemMessage(1, 'VOTE_TIMES'); //初日の処刑投票のカウントを1に初期化(再投票で増える)
+  $ROOM->SystemMessage(1, 'VOTE_TIMES'); //処刑投票カウントを初期化 (再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
   $ROOM->DeleteVote(); //今までの投票を全部削除
   CheckVictory(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
@@ -1095,12 +1092,10 @@ function AggregateVoteDay(){
       $ROOM->SystemMessage($count, 'EMISSARY_' . $action);
     }
 
-    if($role_flag->dummy_necromancer){ //夢枕人は「村人」⇔「人狼」反転
+    if($role_flag->dummy_necromancer && ! $ROOM->IsEvent('no_dream')){ //夢枕人の処理
       if($necromancer_result == 'human')    $necromancer_result = 'wolf';
       elseif($necromancer_result == 'wolf') $necromancer_result = 'human';
-      if(! $ROOM->IsEvent('no_dream')){ //熱帯夜ならスキップ
-	$ROOM->SystemMessage($result_header . $necromancer_result, 'DUMMY_' . $action);
-      }
+      $ROOM->SystemMessage($result_header . $necromancer_result, 'DUMMY_' . $action);
     }
   }
 

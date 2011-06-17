@@ -5,28 +5,14 @@ $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('人狼陣営');
 ?>
 <p>
-<a href="#wolf_rule">基本ルール</a>
 <a href="#wolf_partner">仲間表示</a>
 <a href="#wolf_howl">遠吠え</a>
+<a href="#wolf_eat">襲撃の仕様</a>
 </p>
 <p>
 <a href="#wolf_group">人狼系</a>
 <a href="#mad_group">狂人系</a>
 </p>
-
-<h2 id="wolf_rule">基本ルール</h2>
-<ol>
-  <li>夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。<br>
-    例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない。
-  </li>
-  <li>人狼が人狼を襲撃した場合は失敗扱いとなる (襲撃された人狼には何も表示されない)。</li>
-</ol>
-<h5>Ver. 1.4.0 α21～</h5>
-<pre>
-人狼が人狼を襲撃した場合は失敗扱いとなる。
-<a href="fox.php">妖狐</a>と違い、襲撃された方にも何も表示されない。
-人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
-</pre>
 
 <h2 id="wolf_partner">仲間表示</h2>
 <ol>
@@ -81,6 +67,20 @@ OutputRolePageHeader('人狼陣営');
 <h5>Ver. 1.4.0 α21～</h5>
 <pre>
 <a href="#silver_wolf">銀狼</a>の独り言は遠吠えにならない。
+</pre>
+
+<h2 id="wolf_eat">襲撃の仕様</h2>
+<ol>
+  <li>夜の襲撃投票は全人狼共通で、最初に投票したものだけが有効になる。<br>
+    例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない。
+  </li>
+  <li>人狼が人狼を襲撃した場合は失敗扱いとなる (襲撃された人狼には何も表示されない)。</li>
+</ol>
+<h5>Ver. 1.4.0 α21～</h5>
+<pre>
+人狼が人狼を襲撃した場合は失敗扱いとなる。
+<a href="fox.php">妖狐</a>と違い、襲撃された方にも何も表示されない。
+人狼と<a href="#silver_wolf">銀狼</a>は互いに認識できないので、味方を襲撃する可能性がある。
 </pre>
 
 
@@ -782,7 +782,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
     <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
     <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
     <li><a href="ability.php#sacrifice">身代わり能力</a>・<a href="ability.php#revive_self">自己蘇生能力</a>無効</li>
-    <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
+    <li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せない。</li>
   </ol>
 </ol>
@@ -1001,7 +1001,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h4>[悪戯能力] タイプ：迷彩 / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
 悪戯先が人狼に襲撃されたら、次の日、全員のアイコンを襲撃された人にする特殊な狂人。
-<a href="sub_role.php#bad_status">悪戯</a>の仕様は<a href="chiroptera.php#fairy_do_spec">妖精系</a>と同じで、対象が複数いた場合はリロードするたびにランダムで表示される。
+<a href="sub_role.php#bad_status">悪戯</a>の仕様は<a href="chiroptera.php#fairy_do">妖精系</a>と同じで、対象が複数いた場合はリロードするたびにランダムで表示される。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>[作成者からのコメント]</h4>

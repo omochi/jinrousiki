@@ -315,6 +315,11 @@ class User{
     return $this->IsRoleGroup('ogre', 'yaksa');
   }
 
+  //決闘者陣営判定
+  function IsDuelist(){
+    return $this->IsRoleGroup('duelist', 'avenger', 'patron');
+  }
+
   //鵺系判定
   function IsUnknownMania(){
     return $this->IsRole('unknown_mania', 'sacrifice_mania', 'wirepuller_mania');
@@ -557,7 +562,7 @@ class User{
       if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
-      if($this->IsRoleGroup('duelist')) return $this->IsVoted($vote_data, 'DUELIST_DO');
+      if($this->IsDuelist()) return $this->IsVoted($vote_data, 'DUELIST_DO');
       if($this->IsRoleGroup('mania')) return $this->IsVoted($vote_data, 'MANIA_DO');
 
       if($ROOM->IsOpenCast()) return true;
@@ -646,6 +651,8 @@ class User{
 	  break;
 
 	case 'rival':
+	case 'enemy':
+	case 'supported':
 	  $str .= '<span class="duelist">' . $name . '</span>';
 	  break;
 

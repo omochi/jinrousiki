@@ -75,7 +75,8 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="doom">死の宣告能力者</h2>
 <h3 id="doom_active">能動型</h3>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="fox.php#doom_fox">冥狐</a>)・<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#doom_escaper">半鳥女</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="fox.php#doom_fox">冥狐</a>)・<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#doom_escaper">半鳥女</a>
+<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="duelist.php#doom_duelist">黒幕</a>
 </pre>
 <h3 id="doom_reactive">受動型</h3>
 <pre>

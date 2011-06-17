@@ -10,7 +10,5 @@ class Role_authority extends RoleVoteAbility{
 
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){
-    $vote_number++;
-  }
+  function FilterVoteDo(&$vote_number){ $vote_number++; }
 }

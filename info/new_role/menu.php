@@ -58,6 +58,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li>★☆★☆★☆★</li>
 <li><a target="body" href="duelist.php">&lt;決闘者陣営&gt;</a></li>
 <li><a target="body" href="duelist.php#duelist_group">決闘者系</a></li>
+<li><a target="body" href="duelist.php#avenger_group">復讐者系</a></li>
 <li>★☆★☆★☆★</li>
 <li><a target="body" href="mania.php">&lt;神話マニア陣営&gt;</a></li>
 <li><a target="body" href="mania.php#mania_group">神話マニア系</a></li>

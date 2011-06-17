@@ -8,12 +8,12 @@ class Role_saint extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){
-    global $ROLES, $USERS;
+    global $USERS;
 
     if(parent::DecideVoteKill($uname)) return true;
     $stack = array();
     $target_stack = array();
-    foreach($ROLES->stack->vote_possible as $target_uname){ //最多得票者の情報を収集
+    foreach($this->GetVotePossible() as $target_uname){ //最多得票者の情報を収集
       $user = $USERS->ByRealUname($target_uname); //$target_uname は仮想ユーザ
       if($user->IsRole('saint')) $stack[] = $target_uname;
       if(! $user->IsCamp('human', true)) $target_stack[] = $target_uname;

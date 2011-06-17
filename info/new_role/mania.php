@@ -6,7 +6,7 @@ OutputRolePageHeader('神話マニア陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
-<a href="#change_mania_camp">所属変更</a>
+<a href="#change_group">所属変更</a>
 </p>
 <p>
 <a href="#mania_group">神話マニア系</a>
@@ -23,14 +23,14 @@ OutputRolePageHeader('神話マニア陣営');
   <li>コピーが成立する前に突然死した場合の<a href="human.php#medium_group">巫女系</a>の陣営判定は「村人」です。</li>
 </ol>
 
-<h2 id="change_mania_camp">所属変更</h2>
+<h2 id="change_group">所属変更</h2>
 <h3>Ver. 1.4.0 β18～</h3>
 <pre>
-<a href="#unknown_mania">鵺</a>の所属を<a href="#mania_group">神話マニア系</a>から<a href="#unknown_mania_group">鵺系</a>に変更。
+<a href="#unknown_mania">鵺</a>：<a href="#mania_group">神話マニア系</a>→<a href="#unknown_mania_group">鵺系</a>
 </pre>
 <h3>Ver. 1.4.0 β13～</h3>
 <pre>
-<a href="#mania_group">神話マニア系</a>の所属を<a href="human.php">村人陣営</a>から神話マニア陣営に変更。
+<a href="#mania_group">神話マニア系</a>：<a href="human.php">村人陣営</a>→神話マニア陣営
 </pre>
 
 <h2 id="mania_group">神話マニア系</h2>
@@ -267,6 +267,16 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.5.0 β1～</td>
 </tr>
 <tr>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td><a href="duelist.php#avenger">復讐者</a></td>
+  <td>Ver. 1.5.0 β3～</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td><a href="duelist.php#patron">後援者</a></td>
+  <td>Ver. 1.5.0 β3～</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -449,6 +459,16 @@ CO するべきかどうかは、コピーした役職次第です。
   <td>Ver. 1.5.0 β1～</td>
 </tr>
 <tr>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td><a href="duelist.php#avenger">復讐者</a></td>
+  <td>Ver. 1.5.0 β3～</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td><a href="duelist.php#patron">後援者</a></td>
+  <td>Ver. 1.5.0 β3～</td>
+</tr>
+<tr>
   <td>神話マニア陣営</td>
   <td><a href="human.php#human">村人</a></td>
   <td></td>
@@ -470,7 +490,8 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h2 id="unknown_mania_group">鵺系</h2>
 <p>
-<a href="#unknown_mania_rule">所属陣営判定</a>
+<a href="#unknown_mania_rule">基本ルール</a>
+<a href="#unknown_mania_camp">所属陣営判定</a>
 </p>
 <p>
 <a href="#unknown_mania">鵺</a>
@@ -478,7 +499,16 @@ CO するべきかどうかは、コピーした役職次第です。
 <a href="#wirepuller_mania">黒衣</a>
 </p>
 
-<h3 id="unknown_mania_rule">所属陣営判定</h3>
+<h3 id="unknown_mania_rule">基本ルール [鵺系]</h3>
+<ol>
+<li>初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。</li>
+<li>所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。</li>
+<li>生存カウントは常に村人なので、実質は所属陣営不明の狂人相当になる。</li>
+<li><a href="#mania">神話マニア</a>と違い、コピー結果が出ないのでコピー先に聞かないと
+自分の所属陣営が分からない。</li>
+</ol>
+
+<h3 id="unknown_mania_camp">所属陣営判定</h3>
 <pre>
 1. 鵺 → <a href="human.php#human">村人</a> (村人陣営)
 擬似<a href="human.php#common_group">共有者</a>相当になります。
@@ -538,16 +568,11 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h3 id="unknown_mania">鵺 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α23～]</h3>
 <pre>
-初日の夜に誰か一人を選んでその人と同じ所属陣営になる、特殊な神話マニア。
-所属陣営が変更されるのは 2 日目の朝で、自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
-生存カウントは常に村人なので、実質は所属陣営不明の狂人相当になる。
-
-<a href="#mania">神話マニア</a>と違い、コピー結果が出ないのでコピー先に聞かないと
-自分の所属陣営が分からない。
+鵺系の基本種。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-やる夫人狼の薔薇 GM に、「初心者の指南用に使える役職」を
+やる夫人狼の薔薇 GM に「初心者の指南用に使える役職」を
 要請されてこういう実装にしてみました。
 鵺が初心者をコピーして指南するイメージですね。
 
@@ -559,8 +584,6 @@ CO するべきかどうかは、コピーした役職次第です。
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
 コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。
-自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
-陣営判定法則などの基本的な仕様は<a href="#unknown_mania">鵺</a>と同じ。
 人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
 襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 </pre>
@@ -577,11 +600,11 @@ CO するべきかどうかは、コピーした役職次第です。
 <h3 id="wirepuller_mania">黒衣 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
 <pre>
 コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。
-自分と相手が<a href="sub_role.php#mind_friend">共鳴者</a>になる。
-陣営判定法則などの基本的な仕様は<a href="#unknown_mania">鵺</a>と同じ。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の雲居 一輪がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
+能力の性質上、自分が死ぬとコピー先が吊られやすくなってしまうので
+立ち回りに工夫が必要になります。
 </pre>
 </body></html>

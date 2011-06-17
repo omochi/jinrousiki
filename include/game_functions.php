@@ -509,16 +509,42 @@ EOF;
       if($SELF->IsRoleGroup('mania')){ //神話マニア陣営は生存のみ
 	$win_flag = $SELF->IsLive();
       }
-      else{ //決闘者は宿敵が単独生存なら勝利 (宿敵を持たない場合は生存のみ)
-	$rival_count = 0;
-	$live_count  = 0;
+      //決闘者系は宿敵が単独生存なら勝利 (宿敵を持たない場合は生存のみ)
+      elseif($SELF->IsRoleGroup('duelist')){
+	$target_count = 0;
+	$live_count   = 0;
 	foreach($USERS->rows as $user){
 	  if($user->IsPartner('rival', $SELF->user_no)){
-	    $rival_count++;
+	    $target_count++;
 	    if($user->IsLive()) $live_count++;
 	  }
 	}
-	$win_flag = $rival_count > 0 ? $live_count == 1 : $SELF->IsLive();
+	$win_flag = $target_count > 0 ? $live_count == 1 : $SELF->IsLive();
+      }
+      //復讐者系は仇敵が全滅なら勝利 (仇敵を持たない場合は生存のみ)
+      elseif($SELF->IsRoleGroup('avenger')){
+	$target_count = 0;
+	foreach($USERS->rows as $user){
+	  if($user->IsPartner('enemy', $SELF->user_no)){
+	    $target_count++;
+	    if($user->IsLive()) break 2;
+	  }
+	}
+	$win_flag = $target_count > 0 ? true : $SELF->IsLive();
+      }
+      //後援者系は受援者が一人でも生存していたら勝利 (受援者を持たない場合は生存のみ)
+      elseif($SELF->IsRoleGroup('patron')){
+	$target_count = 0;
+	foreach($USERS->rows as $user){
+	  if($user->IsPartner('supported', $SELF->user_no)){
+	    $target_count++;
+	    if($user->IsLive()){
+	      $win_flag = true;
+	      break 2;
+	    }
+	  }
+	}
+	$win_flag = $target_count > 0 ? false : $SELF->IsLive();
       }
       break;
 

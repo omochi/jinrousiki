@@ -444,11 +444,11 @@ class CastConfig extends CastConfigBase{
     'scarlet_fox'          =>  3,
     'silver_fox'           =>  3,
     'immolate_fox'         =>  3,
-    'child_fox'            =>  5,
+    'child_fox'            =>  3,
     'sex_fox'              =>  3,
-    'stargazer_fox'        =>  3,
-    'jammer_fox'           =>  3,
-    'miasma_fox'           =>  3,
+    'stargazer_fox'        =>  2,
+    'jammer_fox'           =>  2,
+    'miasma_fox'           =>  2,
     'howl_fox'             =>  3,
     'cupid'                =>  3,
     'self_cupid'           =>  4,
@@ -471,19 +471,19 @@ class CastConfig extends CastConfigBase{
     'doom_vampire'         =>  2,
     'sacrifice_vampire'    =>  2,
     'soul_vampire'         =>  2,
-    'chiroptera'           =>  2,
+    'chiroptera'           =>  4,
     'poison_chiroptera'    =>  2,
     'cursed_chiroptera'    =>  2,
     'boss_chiroptera'      =>  2,
     'elder_chiroptera'     =>  2,
-    'cute_chiroptera'      =>  2,
-    'scarlet_chiroptera'   =>  2,
-    'dummy_chiroptera'     =>  2,
-    'fairy'                =>  3,
-    'spring_fairy'         =>  2,
-    'summer_fairy'         =>  2,
-    'autumn_fairy'         =>  2,
-    'winter_fairy'         =>  2,
+    'cute_chiroptera'      =>  3,
+    'scarlet_chiroptera'   =>  3,
+    'dummy_chiroptera'     =>  3,
+    'fairy'                =>  1,
+    'spring_fairy'         =>  1,
+    'summer_fairy'         =>  1,
+    'autumn_fairy'         =>  1,
+    'winter_fairy'         =>  1,
     'flower_fairy'         =>  1,
     'star_fairy'           =>  1,
     'sun_fairy'            =>  1,
@@ -514,7 +514,10 @@ class CastConfig extends CastConfigBase{
     'dowser_yaksa'         =>  1,
     'duelist'              =>  3,
     'valkyrja_duelist'     =>  1,
+    'doom_duelist'         =>  1,
     'triangle_duelist'     =>  1,
+    'avenger'              =>  2,
+    'patron'               =>  2,
     'mania'                =>  3,
     'trick_mania'          =>  2,
     'soul_mania'           =>  2,
@@ -533,7 +536,8 @@ class CastConfig extends CastConfigBase{
     'common' => 0.15, 'poison' => 0.13, 'cat' => 0.1, 'pharmacist' => 0.15, 'assassin' => 0.15,
     'scanner' => 0.15, 'jealousy' => 0.1, 'wizard' => 0.15, 'doll' => 0.15, 'escaper' => 0.15,
     'cupid' => 0.1, 'angel' => 0.07, 'quiz' => 0.15, 'vampire' => 0.15, 'chiroptera' => 0.12,
-    'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12, 'duelist' => 0.08);
+    'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12, 'duelist' => 0.07, 'avenger' => 0.07,
+    'patron' => 0.08);
 
   //村人の出現上限補正
   public $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
@@ -668,9 +672,12 @@ class CastConfig extends CastConfigBase{
 			 'scarlet_angel'   =>  5)),
 		 'count' => array(1, 2)),
     'j' => array('random' => array(
-		   array('duelist'          => 5,
-			 'valkyrja_duelist' => 3,
-			 'triangle_duelist' => 2)),
+		   array('duelist'          => 15,
+			 'valkyrja_duelist' => 15,
+			 'doom_duelist'     => 10,
+			 'triangle_duelist' => 10,
+			 'avenger'          => 20,
+			 'patron'           => 30)),
 		 'count' => array(1)),
     'k' => array('random' => array(
 		   array('executor'             => 10,
@@ -706,22 +713,27 @@ class CastConfig extends CastConfigBase{
 			 'ice_fairy'        =>  5,
 			 'sacrifice_ogre'   =>  5,
 			 'dowser_yaksa'     => 10,
-			 'valkyrja_duelist' => 15,
-			 'soul_mania'       =>  5)),
+			 'valkyrja_duelist' =>  4,
+			 'avenger'          =>  3,
+			 'patron'           =>  3,
+			 'soul_mania'       =>  5,
+			 'sacrifice_mania'  =>  5)),
 		 'count' => array(1, 1, 1))
 			    );
 
   //サブ役職制限：EASYモード
   public $chaos_sub_role_limit_easy_list = array(
-    'authority', 'critical_voter', 'random_voter', 'rebel', 'watcher', 'decide', 'plague',
-    'good_luck', 'bad_luck');
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority',
+    'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter', 'rebel',
+    'watcher');
 
   //サブ役職制限：NORMALモード
   public $chaos_sub_role_limit_normal_list = array(
-    'authority', 'critical_voter', 'random_voter', 'rebel', 'watcher', 'decide', 'plague',
-    'good_luck', 'bad_luck', 'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
-    'random_luck', 'strong_voice', 'normal_voice', 'weak_voice', 'upper_voice', 'downer_voice',
-    'inside_voice', 'outside_voice', 'random_voice');
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority',
+    'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter', 'rebel',
+    'watcher', 'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck', 'random_luck',
+    'strong_voice', 'normal_voice', 'weak_voice', 'upper_voice', 'downer_voice', 'inside_voice',
+    'outside_voice', 'random_voice');
 
   //お祭り村専用配役テーブル
   public $festival_role_list = array(

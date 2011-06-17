@@ -4,9 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('サブ役職');
 ?>
-<p>
-<a href="#rule">基本ルール</a>
-</p>
+<p><a href="#rule">基本ルール</a></p>
 <p>
 <a href="#chicken_group">小心者系</a>
 <a href="#liar_group">狼少年系</a>
@@ -26,9 +24,12 @@ OutputRolePageHeader('サブ役職');
 
 <h2 id="rule">基本ルール</h2>
 <pre>
-メイン役職が付加するサブ役職 (例：<a href="#lovers">恋人</a>・<a href="#mind_read">サトラレ</a>) と専用ゲームオプション (例：<a href="../game_option.php#liar">狼少年村</a>・<a href="../game_option.php#gentleman">紳士村</a>)
-以外のサブ役職は重なりません。
+ランダム配布されるサブ役職は一人一つで、同一のサブ役職を持つ人は以下の例外のみです。
 </pre>
+<ol>
+<li>メイン役職が付加するタイプ (例：<a href="#lovers">恋人</a>・<a href="#mind_read">サトラレ</a>)</li>
+<li>専用ゲームオプション (例：<a href="../game_option.php#liar">狼少年村</a>・<a href="../game_option.php#gentleman">紳士・淑女村</a>)</li>
+</ol>
 
 <h2 id="chicken_group">小心者系 (処刑投票ショック死)</h2>
 <p>
@@ -384,6 +385,8 @@ OutputRolePageHeader('サブ役職');
 <p>
 <a href="#decide">決定者</a>
 <a href="#plague">疫病神</a>
+<a href="#counter_decide">燕返し</a>
+<a href="#dropout">脱落者</a>
 <a href="#good_luck">幸運</a>
 <a href="#bad_luck">不運</a>
 </p>
@@ -408,6 +411,27 @@ OutputRolePageHeader('サブ役職');
 <a href="#decide">決定者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ(8)</a> が原型です。
 </pre>
 
+<h3 id="counter_decide">燕返し [Ver. 1.5.0 β3～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+自分と投票先が最多得票者だった場合、投票先が優先的に処刑される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+決選投票向けの決定能力です。
+相互投票を想定してはいますが、それは必要条件ではありません。
+</pre>
+
+<h3 id="dropout">脱落者 [Ver. 1.5.0 β3～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<pre>
+自分と投票先が最多得票者だった場合、自分が優先的に処刑される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#counter_decide">燕返し</a>の逆バージョンです。
+</pre>
+
 <h3 id="good_luck">幸運 [Ver. 1.4.0 α14～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
@@ -415,7 +439,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-本人に付随する決定者系能力です。
+本人に付随する決定能力です。
 東方ウミガメ人狼のプレイヤーさんから提供してもらったアイディアが原型です。
 </pre>
 
@@ -433,6 +457,9 @@ OutputRolePageHeader('サブ役職');
 <h2 id="authority_group">権力者系 (処刑投票数変化)</h2>
 <p>
 <a href="#authority">権力者</a>
+<a href="#reduce_voter">無精者</a>
+<a href="#upper_voter">わらしべ長者</a>
+<a href="#downer_voter">没落者</a>
 <a href="#critical_voter">会心</a>
 <a href="#rebel">反逆者</a>
 <a href="#random_voter">気分屋</a>
@@ -446,6 +473,34 @@ OutputRolePageHeader('サブ役職');
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+
+<h3 id="reduce_voter">無精者 [Ver. 1.5.0 β3～]</h3>
+<pre>
+処刑投票数が -1 される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#authority">権力者</a>の逆バージョンです。
+<a href="human.php#elder">長老</a>などにこれがつくと能力が相殺されることになります。
+</pre>
+
+<h3 id="upper_voter">わらしべ長者 [Ver. 1.5.0 β3～]</h3>
+<pre>
+5日目以降、処刑投票数が +1 される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#scripter">執筆者</a>の能力をサブ役職に転化してみました。
+</pre>
+
+<h3 id="downer_voter">没落者 [Ver. 1.5.0 β3～]</h3>
+<pre>
+5日目以降、処刑投票数が -1 される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#upper_voter">わらしべ長者</a>の逆バージョンです。
 </pre>
 
 <h3 id="critical_voter">会心 [Ver. 1.4.0 β14～]</h3>
@@ -519,10 +574,10 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 
 <h3 id="upper_luck_rule">基本ルール [雑草魂系]</h3>
 <ol>
-  <li><a href="#chicken_group">小心者系</a>のショック死判定には影響しない (投票「人数」で判定される)。</li>
-  <li>得票数が減る場合でもマイナスにはならない。<br>
-    例) 得票が 1 で -2 された場合 → 得票数は 0 と計算される。
-  </li>
+<li><a href="#chicken_group">小心者系</a>のショック死判定には影響しない (投票「人数」で判定される)。</li>
+<li>得票数が減る場合でもマイナスにはならない。<br>
+  例) 得票が 1 で -2 された場合 → 得票数は 0 と計算される。
+</li>
 </ol>
 
 <h3 id="upper_luck">雑草魂 [Ver. 1.4.0 α14～]</h3>
@@ -868,9 +923,9 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 
 <h3 id="mind_read_rule">基本ルール [サトラレ系]</h3>
 <ol>
-  <li><a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。</li>
-  <li>死者の発言を直接見ることはできない。</li>
-  <li>効力を失っても役職表示は消えない。</li>
+<li><a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。</li>
+<li>死者の発言を直接見ることはできない。</li>
+<li>効力を失っても役職表示は消えない。</li>
 </ol>
 
 <h3 id="mind_read">サトラレ [Ver. 1.4.0 α21～]</h3>
@@ -879,11 +934,11 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 夜の発言が<a href="human.php#mind_scanner">さとり</a>に見られてしまう。
 </pre>
 <ol>
-  <li>2 日目の朝から表示されて、その夜以降から効力が適用される。</li>
-  <li>夜の発言に常時「～の独り言」が付く。</li>
-  <li>誰に見られているのかは分からない。</li>
-  <li>死亡した<a href="human.php#mind_scanner">さとり</a>は自分の<a href="#mind_read">サトラレ</a>の発言を見ることができなくなる。</li>
-  <li>自分が<a href="human.php#unconscious">無意識</a>の場合は無効化される。</li>
+<li>2 日目の朝から表示されて、その夜以降から効力が適用される。</li>
+<li>夜の発言に常時「～の独り言」が付く。</li>
+<li>誰に見られているのかは分からない。</li>
+<li>死亡した<a href="human.php#mind_scanner">さとり</a>は自分の<a href="#mind_read">サトラレ</a>の発言を見ることができなくなる。</li>
+<li>自分が<a href="human.php#unconscious">無意識</a>の場合は無効化される。</li>
 </ol>
 <h5>Ver. 1.4.0 β7～</h5>
 <pre>
@@ -904,8 +959,8 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 夜の発言が参加者全員に見られてしまう。
 </pre>
 <ol>
-  <li>初日の夜から表示されるが、効力が適用されるのは 2 日目の夜以降。</li>
-  <li>夜の発言に常時「～の独り言」が付く。</li>
+<li>初日の夜から表示されるが、効力が適用されるのは 2 日目の夜以降。</li>
+<li>夜の発言に常時「～の独り言」が付く。</li>
 </ol>
 <h5>Ver. 1.4.0 β7～</h5>
 <pre>
@@ -929,8 +984,8 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 特定の人の夜の発言を見ることができる。
 </pre>
 <ol>
-  <li>2 日目の朝から表示されて、その夜以降から効力が適用される。</li>
-  <li>誰の発言を見ているのか分かる。</li>
+<li>2 日目の朝から表示されて、その夜以降から効力が適用される。</li>
+<li>誰の発言を見ているのか分かる。</li>
 </ol>
 </pre>
 <h4>関連役職</h4>
@@ -984,10 +1039,10 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 死後に<a href="human.php#evoke_scanner">イタコ</a>の遺言窓にメッセージを送ることができる。
 </pre>
 <ol>
-  <li>生きている時から表示される (死んでも表示される)。</li>
-  <li>生きている間は通常通り自分の遺言窓が更新される。</li>
-  <li>死んでから「遺言を残す」で発言すると<a href="human.php#evoke_scanner">イタコ</a>の遺言窓が更新される。</li>
-  <li><a href="human.php#reporter">ブン屋</a>・<a href="#no_last_words">筆不精</a>など、生きている間は遺言を残せない役職でも有効。</li>
+<li>生きている時から表示される (死んでも表示される)。</li>
+<li>生きている間は通常通り自分の遺言窓が更新される。</li>
+<li>死んでから「遺言を残す」で発言すると<a href="human.php#evoke_scanner">イタコ</a>の遺言窓が更新される。</li>
+<li><a href="human.php#reporter">ブン屋</a>・<a href="#no_last_words">筆不精</a>など、生きている間は遺言を残せない役職でも有効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -1051,11 +1106,11 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 4 日目夜までは以下の耐性を持つ。
 </pre>
 <ol>
-  <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
-  <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
-  <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-  <li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
-  <li><a href="vampire.php#vampire_do_spec">吸血死</a>無効</li>
+<li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
+<li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+<li><a href="human.php#assassin_spec">暗殺反射</a></li>
+<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
+<li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
 </ol>
 <pre>
 5 日目以降は恋人の相方と同じ人に投票しないとショック死する。
@@ -1081,11 +1136,11 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 指定された相手と入れ替わる。
 </pre>
 <ol>
-  <li>憑依先の相手と完全に入れ替わり、実質他人にログインしているような状態になる。</li>
-  <li>2 日目に入れ替わる相手が誰か予告が表示されて、3 日目に入れ替えが実行される。</li>
-  <li><a href="#mind_sympathy">共感者</a>が付加されるので事前に相手の役職が分かる。</li>
-  <li>交換憑依が発生した二人は死亡しても<a href="ability.php#last_words_limit">遺言</a>が表示されない。</li>
-  <li>入れ替え前に遺言を残しておくと、入れ替わった後で相方にメッセージを残せる事になる。</li>
+<li>憑依先の相手と完全に入れ替わり、実質他人にログインしているような状態になる。</li>
+<li>2 日目に入れ替わる相手が誰か予告が表示されて、3 日目に入れ替えが実行される。</li>
+<li><a href="#mind_sympathy">共感者</a>が付加されるので事前に相手の役職が分かる。</li>
+<li>交換憑依が発生した二人は死亡しても<a href="ability.php#last_words_limit">遺言</a>が表示されない。</li>
+<li>入れ替え前に遺言を残しておくと、入れ替わった後で相方にメッセージを残せる事になる。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -1148,6 +1203,8 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <p>
 <a href="#joker">ジョーカー</a>
 <a href="#rival">宿敵</a>
+<a href="#enemy">仇敵</a>
+<a href="#supported">受援者</a>
 </p>
 
 <h3 id="joker">ジョーカー [Ver. 1.4.0 β21～]</h3>
@@ -1156,23 +1213,23 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 ゲーム終了時に所持している場合、引き分け以外は無条件で敗北扱いになる。
 </pre>
 <ol>
-  <li>処刑投票先に移動する。</li>
-  <li>移動判定は処刑者が決定した後。</li>
-  <li>移動判定時に死亡している人には移動しない。</li>
-  <li>所持者が処刑された場合は前日所持者以外の投票者からランダムに移動する。<br>
-    ただし、昼の処刑直後にゲームが終了した場合は移動しない。
-  </li>
-  <li>投票先が処刑された場合は移動しない。<br>
-    ただし、昼の処刑直後にゲームが終了した場合は移動する。
-  </li>
-  <li>投票先から投票された場合、投票先には移動しない。</li>
-  <li>投票先から投票されていた場合、他の自分に投票した人からランダムに移動する。</li>
-  <li>前日にジョーカーを所持していた人には移動しない。</li>
-  <li>自分が処刑された直後にゲームが終了した場合は本人が所持したままになる。</li>
-  <li>移動先候補がない場合は本人が引き続き所持する。</li>
-  <li>所持者が死亡した場合は生存者の誰か (例外なし) に移動する。</li>
-  <li>夜→昼の投票処理でゲーム終了した場合は所持者が死亡していても移動しない。</li>
-  <li>陣営勝利 + 単独生存を達成した場合はジョーカーを所持しても勝利扱い。</li>
+<li>処刑投票先に移動する。</li>
+<li>移動判定は処刑者が決定した後。</li>
+<li>移動判定時に死亡している人には移動しない。</li>
+<li>所持者が処刑された場合は前日所持者以外の投票者からランダムに移動する。<br>
+  ただし、昼の処刑直後にゲームが終了した場合は移動しない。
+</li>
+<li>投票先が処刑された場合は移動しない。<br>
+  ただし、昼の処刑直後にゲームが終了した場合は移動する。
+</li>
+<li>投票先から投票された場合、投票先には移動しない。</li>
+<li>投票先から投票されていた場合、他の自分に投票した人からランダムに移動する。</li>
+<li>前日にジョーカーを所持していた人には移動しない。</li>
+<li>自分が処刑された直後にゲームが終了した場合は本人が所持したままになる。</li>
+<li>移動先候補がない場合は本人が引き続き所持する。</li>
+<li>所持者が死亡した場合は生存者の誰か (例外なし) に移動する。</li>
+<li>夜→昼の投票処理でゲーム終了した場合は所持者が死亡していても移動しない。</li>
+<li>陣営勝利 + 単独生存を達成した場合はジョーカーを所持しても勝利扱い。</li>
 </ol>
 <h4>移動パターン例</h4>
 <pre>
@@ -1233,17 +1290,88 @@ A-C が J に投票して、J が処刑、ランダム移動で C にジョー�
 A が B を襲撃した場合は A が毒死して C の単独生存、つまり出題者陣営勝利となる。
 この場合、C がジョーカーを所持したままだが、C は勝利扱いとなる。
 </pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/" target="_top">新役職考案スレ()</a> が原型です。
+人狼でババ抜きの駆け引きを表現しようと思案した結果、こういう実装になりました。
+</pre>
 
 <h3 id="rival">宿敵 [Ver. 1.5.0 β1～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-<a href="duelist.php">決闘者陣営</a>が付加し、勝利条件が追加される。
-詳細は<a href="duelist.php#rival">宿敵の仕様</a>参照
+<a href="duelist.php#duelist_group">決闘者系</a>が付加し、勝利条件が追加される。
+</pre>
+<ol>
+<li>勝利条件に「自分の宿敵が全員死亡し、自分だけが生存している」ことが追加される。</li>
+<li><a href="#lovers">恋人</a>になった場合は、宿敵は無効化される。</li>
+</ol>
+<h4>勝利条件例</h4>
+<pre>
+1. X[戦乙女] → A-B / A[村人] B[人狼]
+X：「A、B どちらかのみの生存」
+A：「村人陣営の勝利」+「Bの死亡」+「自分自身の生存」
+B：「人狼陣営の勝利」+「Aの死亡」+「自分自身の生存」
+決闘者陣営が絡んだ場合の基本パターンになります。
+別陣営が対象になった場合は基本的には生存勝利のみで
+条件をほぼ満たせることになります。
+
+2. X[決闘者] → X-A / X[決闘者] A[妖狐]
+X：「Aの死亡」+「自分自身の生存」
+A：「妖狐陣営の勝利」+「Xの死亡」+「自分自身の生存」
+自打ちの場合、決闘者は自分自身で宿敵の条件を満たす必要があります。
+
+3. X[戦乙女] → A-B、Y[戦乙女] B-C / A[人狼] B[狂人] C[人狼]
+X：「A、B どちらかのみの生存」
+Y：「B、C どちらかのみの生存」
+A：「人狼陣営の勝利」+「Bの死亡」+「自分自身の生存」
+B：「人狼陣営の勝利」+「A、Cの死亡」+「自分自身の生存」
+C：「人狼陣営の勝利」+「Bの死亡」+「自分自身の生存」
+A・C が生存、B が死亡して人狼陣営が勝利することで B 以外は全員勝利になります。
+
+4. X[決闘者] → A-B、A[求愛者] → X-A / X[決闘者][恋人] A[求愛者][恋人] B[共有者]
+X：「恋人陣営の勝利」
+A：「恋人陣営の勝利」
+B：「村人陣営の勝利」+「Aの死亡」+「自分自身の生存」
+恋人になった時点で宿敵は勝利条件から除かれます
+
+5. X[決闘者] → A-B、A[求愛者] A-B / A[求愛者][恋人] B[共有者][恋人]
+X：「A、B どちらかのみの生存」 (実質勝利不可能)
+A：「恋人陣営の勝利」
+B：「恋人陣営の勝利」
+恋人同士を宿敵にしてしまうと決闘者は勝利条件を満たすことが不可能になります。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="duelist.php">決闘者陣営</a>の勝敗判定用に実装されたサブ役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/780" target="_top">新役職考案スレ(780)</a> が原型です。
+<a href="duelist.php#duelist_group">決闘者系</a>の勝敗判定用に実装されたサブ役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/780" target="_top">新役職考案スレ(780)</a> が原型です。
+<a href="ogre.php">鬼陣営</a>のような勝利条件を追加設定された状態に相当します。
 </pre>
+
+<h3 id="enemy">仇敵 [Ver. 1.5.0 β3～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="duelist.php#avenger_group">復讐者系</a>が付加する。
+自覚はなく、本人の勝利条件には影響しない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="duelist.php#avenger_group">復讐者系</a>の勝利条件判定に実装されたサブ役職です。
+<a href="human.php#doll_group">上海人形系</a>から見た<a href="human.php#doll_master">人形遣い</a>に相当します。
+</pre>
+
+<h3 id="supported">受援者 [Ver. 1.5.0 β3～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="duelist.php#patron_group">後援者系</a>が付加する。
+自覚はなく、本人の勝利条件には影響しない。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="duelist.php#patron_group">後援者系</a>の勝利条件判定に実装されたサブ役職です。
+<a href="lovers.php">キューピッド</a>から見た自分の<a href="#lovers">恋人</a>や、<a href="mania.php#unknown_mania_group">鵺</a>から見たコピー先に相当します。
+</pre>
+
 
 <h2 id="other_group">その他</h2>
 <p>

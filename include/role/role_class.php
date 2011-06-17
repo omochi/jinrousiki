@@ -25,8 +25,9 @@ class RoleManager{
 				    'elder_chiroptera');
 
   //処刑投票(サブ)
-  public $vote_do_sub_list = array('authority', 'critical_voter', 'random_voter', 'wirepuller_luck',
-				   'watcher', 'panelist');
+  public $vote_do_sub_list = array('authority', 'reduce_voter', 'upper_voter', 'downer_voter',
+				   'critical_voter', 'random_voter', 'wirepuller_luck', 'watcher',
+				   'panelist');
 
   //処刑得票
   public $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
@@ -39,14 +40,15 @@ class RoleManager{
 				    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy',
 				    'cursed_brownie', 'agitate_mad', 'amaze_mad', 'miasma_mad',
 				    'critical_mad', 'sweet_cupid', 'quiz', 'impatience', 'decide',
-				    'plague', 'good_luck', 'bad_luck', 'authority', 'rebel');
+				    'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck',
+				    'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
 
   //処刑者決定 (順番依存あり)
-  public $vote_kill_list = array('decide', 'bad_luck', 'impatience', 'good_luck', 'plague',
-				 'quiz', 'executor', 'saint', 'agitate_mad');
+  public $vote_kill_list = array('decide', 'bad_luck', 'counter_decide', 'dropout', 'impatience',
+				 'good_luck', 'plague', 'quiz', 'executor', 'saint', 'agitate_mad');
 
   //毒能力鑑定
   public $distinguish_poison_list = array('pharmacist', 'alchemy_pharmacist');
@@ -282,6 +284,7 @@ class RoleVoteAbility extends Role{
   //投票データ収拾
   function SetVoteAbility($uname){
     global $ROLES, $USERS;
+
     switch($this->data_type){
     case 'self':
       $ROLES->stack->{$this->role} = $ROLES->actor->uname;
@@ -346,6 +349,12 @@ class RoleVoteAbility extends Role{
   function GetStack(){
     global $ROLES;
     return $ROLES->stack->{$this->role};
+  }
+
+  //最大得票者リスト取得
+  function GetVotePossible(){
+    global $ROLES;
+    return $ROLES->stack->vote_possible;
   }
 
   //最大得票者投票者ユーザ名取得

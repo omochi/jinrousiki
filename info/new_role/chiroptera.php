@@ -4,9 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('蝙蝠陣営');
 ?>
-<p>
-<a href="#rule">基本ルール</a>
-</p>
+<p><a href="#rule">基本ルール</a></p>
 <p>
 <a href="#chiroptera_group">蝙蝠系</a>
 <a href="#fairy_group">妖精系</a>
@@ -14,14 +12,14 @@ OutputRolePageHeader('蝙蝠陣営');
 
 <h2 id="rule">基本ルール</h2>
 <ol>
-  <li>自分が生き残ったら勝利、死んだら敗北となる特殊陣営です。</li>
-  <li>他陣営の勝敗と競合しません。<br>
-    例) 村人陣営 + 生き残った蝙蝠が勝利
-  </li>
-  <li>自分以外の蝙蝠の生死と勝敗は無関係です。</li>
-  <li>他の蝙蝠がいても誰か分かりません。</li>
-  <li>生存カウントは村人です。</li>
-  <li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「蝙蝠」です。</li>
+<li>自分が生き残ったら勝利、死んだら敗北となる特殊陣営です。</li>
+<li>他陣営の勝敗と競合しません。<br>
+  例) 村人陣営 + 生き残った蝙蝠が勝利
+</li>
+<li>自分以外の蝙蝠の生死と勝敗は無関係です。</li>
+<li>他の蝙蝠がいても誰か分かりません。</li>
+<li>生存カウントは村人です。</li>
+<li><a href="human.php#psycho_mage">精神鑑定士</a>の判定は「正常」、<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「蝙蝠」です。</li>
 </ol>
 
 <h2 id="chiroptera_group">蝙蝠系</h2>
@@ -85,7 +83,7 @@ OutputRolePageHeader('蝙蝠陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#cursed_wolf">呪狼</a>の蝙蝠バージョンです。
-どちらかと言うと、これを騙る狼や狐が非常にやっかいですね。
+どちらかと言うと、これを騙る狼や狐がやっかいですね。
 素直に CO しても信用を取るのは難しいでしょう。
 </pre>
 
@@ -97,15 +95,15 @@ OutputRolePageHeader('蝙蝠陣営');
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
-  <li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
-  <li>本人は身代わりが発生しても分からない。</li>
-  <li>他の大蝙蝠が襲撃された場合は自分が身代わりになる可能性がある。</li>
-  <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+<li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+<li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
+<li>本人は身代わりが発生しても分からない。</li>
+<li>他の大蝙蝠が襲撃された場合は自分が身代わりになる可能性がある。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
-身代わり君が大蝙蝠になる可能性があります。
+身代わり君が大蝙蝠になる可能性がある。
 身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。
 </pre>
 <h4>関連役職</h4>
@@ -161,6 +159,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="fox.php#scarlet_fox">紅狐</a>の蝙蝠バージョンです。
+色々な陣営から敵視されやすいので生き延びるのが難しい役職ですね。
 </pre>
 
 <h3 id="dummy_chiroptera">夢求愛者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
@@ -185,12 +184,12 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="wolf.php#possessed_wolf">憑狼</a>が<a href="sub_role.php#lovers">恋人</a>を襲撃しても破綻しない状況を作るために作成しました。
 </pre>
 
+
 <h2 id="fairy_group">妖精系</h2>
 <p>
 <a href="#fairy_rule">基本ルール</a>
-<a href="#fairy_do_spec">悪戯の仕様</a>
+<a href="#fairy_do">悪戯の仕様</a>
 <a href="#bad_status">悪戯の種類</a>
-</p>
 </p>
 <p>
 <a href="#fairy">妖精</a>
@@ -215,11 +214,10 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 
 <h3 id="fairy_rule">基本ルール [妖精系]</h3>
 <ol>
-  <li>蝙蝠陣営の<a href="#rule">基本ルール</a>が適用されます。</li>
-  <li>夜に誰か一人に投票して、対象に<a href="#fairy_do_spec">悪戯</a>します。</li>
-  <li><a href="human.php#dummy_guard">夢守人</a>に護衛されると死亡します。</li>
-  <li><a href="human.php#dummy_poison">夢毒者</a>を処刑すると毒に中ります。</li>
-  <li><a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡します。</li>
+<li>夜に誰か一人に投票して、対象に<a href="#fairy_do">悪戯</a>します。</li>
+<li><a href="human.php#dummy_guard">夢守人</a>に護衛されると死亡します。</li>
+<li><a href="human.php#dummy_poison">夢毒者</a>を処刑すると毒に中ります。</li>
+<li><a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡します。</li>
 </ol>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
@@ -228,24 +226,24 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="wolf.php#dream_eater_mad">獏</a>に襲撃されると死亡します。
 </pre>
 
-<h3 id="fairy_do_spec">悪戯の仕様</h3>
+<h3 id="fairy_do">悪戯の仕様</h3>
 <ol>
-  <li>占いカテゴリに属し、呪い・占い妨害・厄払いの影響を受けます (例外あり)。</li>
-  <li>結果は本人には何も表示されません。</li>
-  <li>対象にサブ役職「<a href="sub_role.php#bad_status">悪戯</a>」が付加されます (例外あり)。</li>
-  <li>悪戯の効果は重複します (複数の妖精から悪戯されたら人数分の効果が出ます)。</li>
-  <li>身代わり君を悪戯の対象に選ぶ事もできます。</li>
+<li>占いカテゴリに属し、呪い・占い妨害・厄払いの影響を受けます (例外あり)。</li>
+<li>結果は本人には何も表示されません。</li>
+<li>対象にサブ役職「<a href="sub_role.php#bad_status">悪戯</a>」が付加されます (例外あり)。</li>
+<li>悪戯の効果は重複します (複数の妖精から悪戯されたら人数分の効果が出ます)。</li>
+<li>身代わり君を悪戯の対象に選ぶ事もできます。</li>
 </ol>
 
 <h3 id="bad_status">悪戯の種類</h3>
 <ol>
-  <li>発言妨害<br>対象の発言の先頭に無意味な文字列を追加する (昼間限定)。</li>
-  <li>迷彩<br>悪戯先が人狼に襲撃されると、全員に特定のサブ役職が付加される (当日限定)。<br>
-    <a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。</li>
-  <li>死亡欄妨害<br>死亡メッセージ欄に無意味な文字列を表示する。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
-  <li>アイコンコピー<br>詳細は<a href="#shadow_fairy">影妖精</a>参照。</li>
-  <li>決選投票<br>詳細は<a href="#mirror_fairy">鏡妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
-  <li>凍傷<br>詳細は<a href="#ice_fairy">氷妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
+<li>発言妨害<br>対象の発言の先頭に無意味な文字列を追加する (昼間限定)。</li>
+<li>迷彩<br>悪戯先が人狼に襲撃されると、全員に特定のサブ役職が付加される (当日限定)。<br>
+  <a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。</li>
+<li>死亡欄妨害<br>死亡メッセージ欄に無意味な文字列を表示する。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
+<li>アイコンコピー<br>詳細は<a href="#shadow_fairy">影妖精</a>参照。</li>
+<li>決選投票<br>詳細は<a href="#mirror_fairy">鏡妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
+<li>凍傷<br>詳細は<a href="#ice_fairy">氷妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
 </ol>
 
 <h3 id="fairy">妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>
@@ -266,7 +264,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-東方 Project のリリーホワイトがモデルで、妖精系作成の着想となった存在です。
+東方 Project のリリーホワイトがモデルで、妖精系実装の着想となった存在です。
 </pre>
 
 <h3 id="summer_fairy">夏妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>
@@ -313,6 +311,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#fairy">妖精</a>・<a href="#spring_fairy">春妖精</a>・<a href="#summer_fairy">夏妖精</a>・<a href="#autumn_fairy">秋妖精</a>・<a href="#winter_fairy">冬妖精</a>の複合バージョンです。
+妖精の上位種ではありますが、無意味です。
 </pre>
 
 <h3 id="light_fairy">光妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7～]</h3>
@@ -358,8 +357,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#dark_fairy">闇妖精</a>の<a href="sub_role.php#grassy">草原迷彩</a>バージョンです。
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/654" target="_top">新役職考案スレ(654)</a> が原型です。
+<a href="#dark_fairy">闇妖精</a>の<a href="sub_role.php#grassy">草原迷彩</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/654" target="_top">新役職考案スレ(654)</a> が原型です。
 </pre>
 
 <h3 id="sun_fairy">日妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>
@@ -430,8 +428,8 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 自分のアイコンと色を悪戯先と同じにする妖精。
 </pre>
 <ol>
-  <li>悪戯先が両方とも影妖精だった場合はお互いが入れ替わります</li>
-  <li><a href="wolf.php#enchant_mad">狢</a>の能力が発動した場合は色だけが適用されます</li>
+<li>悪戯先が両方とも影妖精だった場合はお互いが入れ替わります</li>
+<li><a href="wolf.php#enchant_mad">狢</a>の能力が発動した場合は色だけが適用されます</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -445,9 +443,9 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 本人が吊られたら、次の日の昼を「決選投票」(初日に選んだ二人にしか投票できない) にする妖精。
 </pre>
 <ol>
-  <li>昼の投票画面を見る事で能力発動を確認できます</li>
-  <li>対象に選んだ二人が両方生存している時だけ有効です</li>
-  <li>対象が何らかの理由で昼に死亡した場合は即座に解除されます</li>
+<li>昼の投票画面を見る事で能力発動を確認できます</li>
+<li>対象に選んだ二人が両方生存している時だけ有効です</li>
+<li>対象が何らかの理由で昼に死亡した場合は即座に解除されます</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>

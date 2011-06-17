@@ -659,7 +659,12 @@ OutputInfoPageHeader('闇鍋モード');
 人狼：<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#possessed_wolf">憑狼</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>
 
 他：<a href="new_role/fox.php#cursed_fox">天狐</a>・<a href="new_role/fox.php#jammer_fox">月狐</a>・<a href="new_role/lovers.php#minstrel_cupid">吟遊詩人</a>・<a href="new_role/lovers.php#sacrifice_angel">守護天使</a>・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/vampire.php#soul_vampire">吸血姫</a>
-　　<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="new_role/chiroptera.php#ice_fairy">氷妖精</a>・<a href="new_role/ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="new_role/ogre.php#dowser_yaksa">毘沙門天</a>・<a href="new_role/duelist.php#valkyrja_duelist">戦乙女</a>・<a href="new_role/mania.php#soul_mania">覚醒者</a>
+　　<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="new_role/chiroptera.php#ice_fairy">氷妖精</a>・<a href="new_role/ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="new_role/ogre.php#dowser_yaksa">毘沙門天</a>・<a href="new_role/duelist.php#valkyrja_duelist">戦乙女</a>・<a href="new_role/duelist.php#avenger">復讐者</a>・<a href="new_role/duelist.php#patron">後援者</a>
+　　<a href="new_role/mania.php#soul_mania">覚醒者</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>
+</pre>
+<h4>Ver. 1.5.0 β3～</h4>
+<pre>
+他：<a href="new_role/duelist.php#avenger">復讐者</a>・<a href="new_role/duelist.php#patron">後援者</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>追加
 </pre>
 
 <h2 id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?> [Ver. 1.4.0 α14～]</h2>

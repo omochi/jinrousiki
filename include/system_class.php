@@ -851,7 +851,10 @@ class RoleData{
     'dowser_yaksa'         => '毘沙門天',
     'duelist'              => '決闘者',
     'valkyrja_duelist'     => '戦乙女',
+    'doom_duelist'         => '黒幕',
     'triangle_duelist'     => '舞首',
+    'avenger'              => '復讐者',
+    'patron'               => '後援者',
     'mania'                => '神話マニア',
     'trick_mania'          => '奇術師',
     'soul_mania'           => '覚醒者',
@@ -889,9 +892,14 @@ class RoleData{
     'lady'               => '淑女',
     'decide'             => '決定者',
     'plague'             => '疫病神',
+    'counter_decide'     => '燕返し',
+    'dropout'            => '脱落者',
     'good_luck'          => '幸運',
     'bad_luck'           => '不運',
     'authority'          => '権力者',
+    'reduce_voter'       => '無精者',
+    'upper_voter'        => 'わらしべ長者',
+    'downer_voter'       => '没落者',
     'critical_voter'     => '会心',
     'rebel'              => '反逆者',
     'random_voter'       => '気分屋',
@@ -935,6 +943,8 @@ class RoleData{
     'psycho_infected'    => '洗脳者',
     'joker'              => 'ジョーカー',
     'rival'              => '宿敵',
+    'enemy'              => '仇敵',
+    'supported'          => '受援者',
     'possessed_target'   => '憑依者',
     'possessed'          => '憑依',
     'bad_status'         => '悪戯',
@@ -1187,7 +1197,10 @@ class RoleData{
     'dowser_yaksa'         => '毘',
     'duelist'              => '闘',
     'valkyrja_duelist'     => '戦',
+    'doom_duelist'         => '幕',
     'triangle_duelist'     => '舞',
+    'avenger'              => '讐',
+    'patron'               => '後援',
     'mania'                => 'マ',
     'trick_mania'          => '奇',
     'soul_mania'           => '覚醒',
@@ -1221,9 +1234,14 @@ class RoleData{
     'lady'                 => '淑',
     'decide'               => '決',
     'plague'               => '疫',
+    'counter_decide'       => '燕',
+    'dropout'              => '脱',
     'good_luck'            => '幸',
     'bad_luck'             => '不運',
     'authority'            => '権',
+    'reduce_voter'         => '無精',
+    'upper_voter'          => '藁',
+    'downer_voter'         => '没',
     'critical_voter'       => '会',
     'rebel'                => '反',
     'random_voter'         => '気',
@@ -1267,6 +1285,8 @@ class RoleData{
     'psycho_infected'      => '洗',
     'joker'                => '道化',
     'rival'                => '宿',
+    'enemy'                => '仇',
+    'supported'            => '援',
     'possessed_target'     => '憑',
     'possessed'            => '被憑',
     'bad_status'           => '戯',
@@ -1297,6 +1317,8 @@ class RoleData{
     'ogre' => 'ogre',
     'yaksa' => 'yaksa',
     'duelist' => 'duelist',
+    'avenger' => 'avenger',
+    'patron' => 'patron',
     'mage' => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer',
     'medium' => 'medium',
@@ -1321,7 +1343,7 @@ class RoleData{
   //このリストの表示順に PlayerList の役職が表示される
   public $sub_role_group_list = array(
     'lovers'       => array('lovers', 'challenge_lovers', 'possessed_exchange'),
-    'duelist'      => array('rival'),
+    'duelist'      => array('rival', 'enemy', 'supported'),
     'mind'         => array('mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
 			    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely'),
     'vampire'      => array('infected', 'psycho_infected'),
@@ -1330,8 +1352,10 @@ class RoleData{
 			    'death_warrant', 'panelist'),
     'convert'      => array('liar', 'actor', 'passion', 'rainbow', 'weekly', 'grassy', 'invisible',
 			    'side_reverse', 'line_reverse', 'gentleman', 'lady'),
-    'decide'       => array('decide', 'plague', 'good_luck', 'bad_luck'),
-    'authority'    => array('authority', 'critical_voter', 'rebel', 'random_voter', 'watcher',
+    'decide'       => array('decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
+			    'bad_luck'),
+    'authority'    => array('authority', 'reduce_voter', 'upper_voter', 'downer_voter',
+			    'critical_voter', 'rebel', 'random_voter', 'watcher',
 			    'wirepuller_luck'),
     'luck'         => array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
 			    'random_luck'),
@@ -1539,7 +1563,6 @@ class RoleData{
 
     case 'quiz':
     case 'vampire':
-    case 'duelist':
       return $camp;
 
     case 'chiroptera':
@@ -1549,6 +1572,11 @@ class RoleData{
     case 'ogre':
     case 'yaksa':
       return 'ogre';
+
+    case 'duelist':
+    case 'avenger':
+    case 'patron':
+      return 'duelist';
 
     case 'mania':
     case 'unknown_mania':
