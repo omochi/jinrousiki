@@ -1048,17 +1048,16 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h4>[耐性] 精神鑑定：嘘つき / 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡する。</li>
-  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
-  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
-  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けない。</li>
-  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
-  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
-  <li>死亡した人狼にも憑依できるが、夜の発言は独り言になり、仲間の人狼と会話できない。</li>
+<li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
+<li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
+<li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
+<li>憑依を実行した時に占い能力者に占われても憑依妨害は受けない。</li>
+<li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
+<li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
+<li>死亡した人狼にも憑依できるが、夜の発言は独り言になり、仲間の人狼と会話できない。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>

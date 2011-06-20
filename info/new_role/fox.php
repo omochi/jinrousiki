@@ -17,10 +17,12 @@ OutputRolePageHeader('妖狐陣営');
 <ol>
 <li>全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かる。</li>
 <li><a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示される (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>相当)。<br>
-分けている基準は「<a href="#fox_talk">念話</a>ができるかどうか」。
+
 </li>
-<li><a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
-<li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_fox">銀狐</a>と同じ)。</li>
+<li><a href="#fox_group">妖狐系</a>は「深遠なる妖狐の智を持つ同胞は以下の人たちです」と表示され、<a href="#fox_talk">念話</a>ができる。</li>
+<li><a href="#child_fox_group">子狐系</a>は「妖狐に与する仲間は以下の人たちです」と表示され、<br>
+同じ枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+<li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなり、仲間リストからも消える (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 <li><a href="#possessed_fox">憑狐</a>が憑依すると仲間表示が憑依先の名前に変更される。</li>
 </ol>
 <h5>Ver. 1.5.0 β1～</h5>
@@ -129,8 +131,8 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#boss_wolf">白狼</a>の妖狐バージョンです。狼サイドからは村人と大差ないですが
-村サイドにはかなりの脅威となるでしょう。
+<a href="wolf.php#boss_wolf">白狼</a>の妖狐バージョンです。
+占いでは捉まらないので、騙りであると分かっても狂人と区別するのが難しい存在です。
 </pre>
 
 <h3 id="black_fox">黒狐 (占い結果：人狼(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α24～]</h3>
@@ -141,7 +143,8 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 呪殺されない代わりに人狼扱いされる妖狐です。
-人狼側から見ると、SG にできる代わりに占い師の真贋を読みづらくなる存在になります。
+人狼側から見ると、占い師の真贋が読みづらくなる上に霊能者騙りの障害となるので
+非常に厄介な存在です。
 </pre>
 
 <h3 id="gold_fox">金狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
@@ -189,8 +192,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#poison_group">埋毒者</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/110" target="_top">新役職考案スレ(110)</a> が原型です。
-「くだぎつね」と読みます。
-仲間がいるときに真価を発揮します。
+「くだぎつね」と読みます。仲間がいるときに真価を発揮します。
 </pre>
 
 <h3 id="blue_fox">蒼狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
@@ -235,13 +237,8 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
 <pre>
 夜に村人一人を選び、その人に呪いをかける妖狐。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+呪い能力は<a href="wolf.php#voodoo_mad">呪術師</a>参照。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
-<ol>
-  <li>呪われた人を占った<a href="human.php#mage_group">占い能力者</a>は呪返しを受ける。</li>
-  <li><a href="ability.php#cursed">呪い所持者</a>を選んだ場合は本人が呪返しを受ける。</li>
-  <li>呪いをかけた人が他の人にも呪いをかけられていた場合は本人が呪返しを受ける。</li>
-</ol>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#cursed_group">呪い能力者</a>
@@ -277,16 +274,15 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
-  <li><a href="human.php#voodoo_killer">陰陽師</a>に占われると死亡する。</li>
-  <li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
-  <li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
-  <li>憑依を実行した時に占い能力者に占われても憑依妨害は受けない。</li>
-  <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
-  <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
+<li>身代わり君・<a href="wolf.php">人狼陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
+<li>憑依を実行した時に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依に失敗する。</li>
+<li>憑依を実行しなければ<a href="human.php#anti_voodoo">厄神</a>に護衛されても「厄払い成功」とは判定されない。</li>
+<li>憑依を実行した時に占い能力者に占われても憑依妨害は受けない。</li>
+<li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
+<li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
@@ -334,7 +330,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#trap_mad">罠師</a>の妖狐バージョンです。
-狩人と人狼狙いで襲撃されそうな人に仕掛けるのもよし、
+狩人・人狼狙いで襲撃されそうな人に仕掛けるのもよし、
 味方を暗殺の脅威から護衛するのもよしですね。
 </pre>
 
@@ -342,7 +338,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 占い：呪返し / 陰陽師：死亡 / 護衛：狩り / 暗殺：反射</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
-<a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
@@ -370,7 +366,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#elder">長老</a>の妖狐バージョンです。
-狐サイドによる PP はめったに発生しないので、能力を有効活用するのは難しいでしょう。
+妖狐陣営による PP はめったに発生しないので、能力を有効活用するのは難しいでしょう。
 </pre>
 
 <h3 id="cute_fox">萌狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
@@ -412,14 +408,12 @@ OutputRolePageHeader('妖狐陣営');
 やる夫人狼の初日呪殺アイコンの代名詞の一つである、ローゼンメイデンの真紅がモデルです。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/383" target="_top">新役職考案スレ(383)</a> が原型です。
 始めは「占い師に分かる妖狐」にしましたがバランス取りが難しいのでこういう実装になりました。
-「<a href="human.php#unconscious">無意識</a>」が騙れば人狼視点でほぼ紅狐確定と見なされるので注意が必要です。
 </pre>
 
 <h3 id="silver_fox">銀狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-<a href="#fox_partner">仲間</a>が分からない妖狐。
-(他の妖狐・<a href="#child_fox_group">子狐</a>からも仲間であると分からない)
+<a href="#fox_partner">仲間</a>が分からない妖狐 (他の妖狐・<a href="#child_fox_group">子狐</a>からも仲間であると分からない)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -450,6 +444,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#immolate_mad">殉教者</a>の妖狐バージョンです。
+襲撃されて生き残ることは難しいので難易度は高めです。
 </pre>
 
 <h2 id="child_fox_group">子狐系</h2>
@@ -538,7 +533,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <ol>
   <li>処刑時は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・妖狐陣営・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
-  <li>人狼襲撃時は<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)には無効。</li>
+  <li>人狼襲撃時は<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) には無効。</li>
   <li>対象者が誰もいなかった場合は不発となる。</li>
 </ol>
 <h5>Ver. 1.5.0 α5～</h5>

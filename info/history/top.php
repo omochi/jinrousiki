@@ -5,6 +5,12 @@ $INIT_CONF->LoadFile('info_functions');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
 <!-- Information の改訂履歴を残したい場合はこのページを使用してください -->
+<h2>Ver. 1.5.0 β2 アップロード (2011/05/27 (Fri) 18:42)</h2>
+<ul>
+  <li>「人馬」「首領」実装</li>
+  <li>固定追加配役モード：K(覚醒村)追加</li>
+</ul>
+
 <h2>Ver. 1.5.0 β1 アップロード (2011/05/13 (Fri) 02:49)</h2>
 <ul>
   <li>「大妖精」「吟遊詩人」「紅天使」「決闘者」「戦乙女」「舞首」実装</li>
@@ -63,10 +69,5 @@ OutputInfoPageHeader('過去の Information', 1);
 <h2>Ver. 1.5.0 α2 アップロード (2011/01/21 (Fri) 07:38)</h2>
 <ul>
   <li>ゲームオプション「天候あり」実装</li>
-</ul>
-
-<h2>Ver. 1.5.0 α1 アップロード (2011/01/15 (Sat) 09:16)</h2>
-<ul>
-  <li>「魔法使い」「八卦見」実装</li>
 </ul>
 </body></html>
