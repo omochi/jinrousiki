@@ -541,14 +541,14 @@ function AggregateVoteGameStart($force_start = false){
   $sub_role_count_list = array();
   $roled_list = array(); //配役済み番号
   //割り振り対象外役職のリスト
-  $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'mind_read',
-			    'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
-			    'mind_presage', 'mind_lonely', 'lovers', 'challenge_lovers',
-			    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
-			    'possessed_target', 'possessed', 'infected', 'psycho_infected',
-			    'bad_status', 'protected', 'wirepuller_luck', 'lost_ability',
-			    'muster_ability', 'changed_therian', 'copied', 'copied_trick',
-			    'copied_soul', 'copied_teller');
+  $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'day_voter',
+			    'mind_read', 'mind_receiver', 'mind_friend', 'mind_sympathy',
+			    'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
+			    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival',
+			    'enemy', 'supported', 'possessed_target', 'possessed', 'infected',
+			    'psycho_infected', 'bad_status', 'protected', 'wirepuller_luck',
+			    'lost_ability', 'muster_ability', 'changed_therian', 'copied',
+			    'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   /*
@@ -1487,16 +1487,17 @@ function AggregateVoteNight($skip = false){
       $user   = $USERS->ByUname($uname);
       $target = $USERS->ByUname($target_uname);
       $ROLES->actor = $user;
+      $filter = $ROLES->Load('main_role', true);
       if(in_array($target_uname, $trap_target_list)){ //罠死判定
 	$trapped_list[] = $user->uname;
       }
-      elseif($ROLES->Load('main_role', true)->EscapeFailed($target)){ //逃亡失敗判定
+      elseif($filter->EscapeFailed($target)){ //逃亡失敗判定
 	$USERS->Kill($user->user_no, 'ESCAPER_DEAD');
       }
       else{
 	//凍傷判定
 	if(in_array($target->uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
-	if($user->IsRole('doom_escaper')) $target->AddDoom(4); //半鳥女の処理
+	$filter->EscapeAction($target); //逃亡処理
 	$escaper_target_list[$user->uname] = $target->uname; //逃亡先をセット
       }
     }
@@ -2214,7 +2215,8 @@ function AggregateVoteNight($skip = false){
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
       $ROLES->actor = $user;
-      $ROLES->Load('main_role', true)->AddScanRole($USERS->ByUname($target_uname));
+      $role = $ROLES->Load('main_role', true)->mind_role;
+      $USERS->ByUname($target_uname)->AddRole($user->GetID($role));
     }
 
     foreach($vote_data['MANIA_DO'] as $uname => $target_uname){ //神話マニア系の処理
@@ -2372,9 +2374,9 @@ function AggregateVoteNight($skip = false){
     //身代わり君・恋人・完全覚醒天狼なら無効
     if($wolf_target->IsDead(true) && ! $wolf_target->IsDummyBoy() && ! $wolf_target->IsLovers() &&
        $wolf_target->wolf_killed  && ! $voted_wolf->IsSiriusWolf()){
-      //仙人・蛇神・西蔵人形の蘇生判定
-      if($wolf_target->IsRole('revive_pharmacist', 'revive_brownie', 'revive_doll') &&
-	 $wolf_target->IsActive()){
+      //仙人・蛇神・西蔵人形・夜刀神の蘇生判定
+      if($wolf_target->IsRole('revive_pharmacist', 'revive_brownie', 'revive_doll',
+			      'revive_avenger') && $wolf_target->IsActive()){
 	$wolf_target->Revive();
 	$wolf_target->LostAbility();
       }

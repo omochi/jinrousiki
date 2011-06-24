@@ -7,5 +7,5 @@
 class Role_unknown_mania extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddManiaRole(&$role){ return true; }
+  function AddManiaRole(&$role){}
 }

@@ -250,7 +250,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>
+<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="sub_role.php#sheep_wisp">羊皮</a>
 </pre>
 
 <h3 id="soul_mage">魂の占い師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
@@ -336,7 +336,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#border_priest">境界師</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="fox.php#stargazer_fox">星狐</a>
+<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -668,7 +668,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>。</li>
+<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="duelist.php#revive_avenger">夜刀神</a>。</li>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 <li>自分が毒やショック死で死亡した場合でも有効。</li>
@@ -905,7 +905,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#stargazer_mage">占星術師</a>・<a href="#clairvoyance_scanner">猩々</a>
+<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -967,6 +967,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
 2-3. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
 2-4. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+2-5. 特殊復讐者 (<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>)
 3. <a href="#hunter_guard">猟師</a>はさらに<a href="fox.php">妖狐陣営</a>を狩ることができる。
 4. <a href="#reflect_guard">侍</a>はさらに<a href="ogre.php">鬼陣営</a>を狩ることができる。
 5. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができる。
@@ -1208,7 +1209,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <ol>
 <li>毒・<a href="#brownie">座敷童子</a>・<a href="#cursed_brownie">祟神</a>・<a href="#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
 <li><a href="#assassin_spec">暗殺反射</a></li>
-<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
+<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#critical_avenger">狂骨</a>の能力無効</li>
 <li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
 <li><a href="#revive_rule">蘇生</a>不可</li>
 <li><a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外</li>
@@ -1687,17 +1688,17 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h3 id="assassin_spec">暗殺の仕様</h3>
 <ol>
 <li>全ての生存者を暗殺対象に選択可能 (人狼・妖狐でも可)。</li>
-<li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生する。</li>
-<li>反射が発生した場合は、特殊暗殺能力者であっても即座に暗殺される。<br>
+<li>暗殺された人の死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「暗殺された」。</li>
+<li>暗殺能力者がお互いを襲撃した場合は相打ちになる。</li>
+<li>暗殺された<a href="#mage">占い師</a>の呪殺・<a href="#poison_cat">猫又</a>の蘇生は無効、<a href="#guard_group">狩人系</a>の護衛判定は有効。</li>
+<li>人狼の襲撃・<a href="wolf.php#trap_mad">罠師</a>の罠で死亡したら暗殺は無効。</li>
+<li><a href="#escaper_group">逃亡者系</a>を対象にした場合は無効。</li>
+<li>対象が<a href="#gatekeeper_guard">門番</a>に護衛されていたら無効。</li>
+<li>特定の条件で「暗殺反射」(自分で自分を暗殺すること) が発生し、<br>
+  その場合は特殊暗殺能力者であっても即座に暗殺される。<br>
   (例：<a href="#doom_assassin">死神</a>が反射されても暗殺で即死する)</li>
 <li><a href="#reflect_guard">侍</a>・<a href="#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="fox.php#cursed_fox">天狐</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は反射される。</li>
 <li><a href="#cursed_brownie">祟神</a>・<a href="ogre.php">鬼陣営</a>を対象にした場合は一定確率で反射される。</li>
-<li>暗殺された人の死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「暗殺された」。</li>
-<li>人狼に襲撃されたり、<a href="wolf.php#trap_mad">罠師</a>の罠にかかると暗殺は無効。</li>
-<li>対象が<a href="#gatekeeper_guard">門番</a>に護衛されていたら無効。</li>
-<li>暗殺能力者がお互いを襲撃した場合は相打ちになる。</li>
-<li>暗殺された<a href="#mage">占い師</a>の呪殺、<a href="#poison_cat">猫又</a>の蘇生は無効。</li>
-<li>暗殺されても<a href="#guard_group">狩人系</a>の護衛判定は有効。</li>
 </ol>
 <h5>Ver. 1.5.0 α7～</h5>
 <pre>
@@ -1915,7 +1916,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#stargazer_mage">占星術師</a>・<a href="#border_priest">境界師</a>・<a href="#reporter">ブン屋</a>
+<a href="#reporter">ブン屋</a>・<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2012,7 +2013,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#cursed_brownie">祟神</a>
+<a href="ability.php#vote_reaction">処刑得票付加能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2126,12 +2127,12 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="cursed_brownie">祟神 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 死の宣告 (2日後) / 暗殺：反射 (30%) / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
-座敷童子の亜種で、占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。
-また、処刑投票してきた人 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
+呪いを持った座敷童子の亜種。
+処刑投票してきた人 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
 <a href="#assassin_spec">暗殺反射</a> (30%) を持つ。
 </pre>
 <ol>
-<li>判定は処刑対象が決定された後で、付加率は 30%。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、付加率は 30%。</li>
 <li>付加判定は個々で行う (例：5人投票してきたら5回、個々で判定)。</li>
 <li>自分が処刑対象になった場合でも有効。</li>
 <li>人狼に襲撃された場合は襲撃した人狼のみに、確定で付加される。</li>
@@ -2140,7 +2141,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#divorce_jealousy">縁切地蔵</a>・<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="ability.php#vote_reaction">処刑得票付加能力者</a>・<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2542,14 +2543,14 @@ MVP の賞品としてプレゼントしたものです。
 <a href="#incubus_escaper">一角獣</a>
 <a href="#succubus_escaper">水妖姫</a>
 <a href="#doom_escaper">半鳥女</a>
+<a href="#divine_escaper">麒麟</a>
 </p>
 
 <h3 id="escaper_rule">基本ルール [逃亡者]</h3>
 <ol>
 <li>勝利条件は「村人陣営の勝利 + 自分自身の生存」。</li>
 <li>2日目の夜以降、生きている誰かの側に逃亡する。</li>
-<li>逃亡中は<a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に直接狙われても無効 (襲撃は失敗扱い)。</li>
-<li><a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に狙われていたことを自覚できない。</li>
+<li>逃亡中は<a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に直接狙われても無効 (襲撃は失敗扱いで、自覚できない)。</li>
 <li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡する (死因は「罠」)。</a>
 <li>逃亡先の役職などによって死亡することがある (死因は「逃亡失敗」)。</li>
 <li>逃亡先が<a href="#escaper">逃亡者</a>など、不在であっても「逃亡失敗」の条件を満たせば死亡する。</li>
@@ -2573,8 +2574,7 @@ MVP の賞品としてプレゼントしたものです。
 <h3 id="escaper">逃亡者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
-逃亡者系の基本種。
-逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は死亡する。
+逃亡者系の基本種。逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2588,7 +2588,7 @@ MVP の賞品としてプレゼントしたものです。
 <h3 id="psycho_escaper">迷い人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α7～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
-逃亡先が「嘘つき」(<a href="#psycho_mage">精神鑑定士</a>)だった場合は死亡する、逃亡者の亜種。
+逃亡先が「嘘つき」(<a href="#psycho_mage">精神鑑定士</a>)だった場合は死亡する、特殊な逃亡者。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2603,7 +2603,7 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <h3 id="incubus_escaper">一角獣 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
-逃亡先が女性以外だった場合は死亡する、逃亡者の亜種。
+逃亡先が女性以外だった場合は死亡する、特殊な逃亡者。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2618,7 +2618,7 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <h3 id="succubus_escaper">水妖姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
-逃亡先が男性以外だった場合は死亡する、逃亡者の亜種。
+逃亡先が男性以外だった場合は死亡する、特殊な逃亡者。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2633,7 +2633,7 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <h3 id="doom_escaper">半鳥女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
 <pre>
-逃亡先が<a href="sub_role.php#death_warrant">死の宣告</a>を受けている場合は死亡する、逃亡者の亜種。
+逃亡先が<a href="sub_role.php#death_warrant">死の宣告</a>を受けている場合は死亡する、特殊な逃亡者。
 宣告日がすでに過ぎている場合でも死亡する。
 逃亡先に<a href="sub_role.php#death_warrant">死の宣告</a>を行う (発動日は投票した夜から数えて 4 日後の昼)。
 </pre>
@@ -2645,5 +2645,16 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 ハーピーがモチーフです。
 同じ場所に逃亡できないので難易度は高めです。
+</pre>
+
+<h3 id="divine_escaper">麒麟 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
+<h4>[耐性] 人狼襲撃：特殊 / 暗殺：無効 / 罠：有効 / 遺言：不可</h4>
+<pre>
+逃亡先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="#assassin_group">暗殺者系</a>・<a href="ogre.php">鬼陣営</a>だった場合は死亡する、特殊な逃亡者。
+逃亡先が村人陣営 (<a href="sub_role.php#lovers">恋人</a>も含む) なら、翌日発動の<a href="sub_role.php#day_voter">一日村長</a>を付加する。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+穢れを嫌い、偉人が生まれる時に現れる瑞獣の伝承がモチーフです。
 </pre>
 </body></html>

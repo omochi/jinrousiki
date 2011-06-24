@@ -46,7 +46,8 @@ Ver. 1.5.0
 <a href="#ver150a9">α9</a>
 <a href="#ver150b1">β1</a>
 <a href="#ver150b2">β2</a>
-<a href="#ver150b3">β3</a><br>
+<a href="#ver150b3">β3</a>
+<a href="#ver150b4">β4</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -90,7 +91,8 @@ Ver. 1.5.0
 <a href="#sub_ver150a5">α5</a>
 <a href="#sub_ver150a9">α9</a>
 <a href="#sub_ver150b1">β1</a>
-<a href="#sub_ver150b3">β3</a><br>
+<a href="#sub_ver150b3">β3</a>
+<a href="#sub_ver150b4">β4</a><br>
 Ver. 1.4.0
 <a href="#sub_ver140a3">α3-7</a>
 <a href="#sub_ver140a9">α9</a>
@@ -1073,8 +1075,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role.php#febris">熱病</a>にする特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">処刑投票先に<a href="sub_role.php#febris">熱病</a>を付加する特殊な狂人。<br><a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -1650,8 +1651,7 @@ Ver. 1.4.0
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>と<a href="sub_role.php#protected">庇護者</a>を付加する上位天使。
-人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+  <td class="ability">矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>と<a href="sub_role.php#protected">庇護者</a>を付加する上位天使。人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
@@ -1661,8 +1661,7 @@ Ver. 1.4.0
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。<br>
-    人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+  <td class="ability">コピー先に<a href="sub_role.php#protected">庇護者</a>を付加する上位鵺。<br>人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
   </td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
@@ -1881,8 +1880,7 @@ Ver. 1.4.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人<br>(呪返し)</td>
   <td>村人</td>
-  <td class="ability">処刑投票されるか人狼に襲撃されたら<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する、座敷童子の亜種。<br>
-占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺してしまう。</td>
+  <td class="ability">呪いをもった座敷童子の亜種。処刑投票されるか人狼に襲撃されたら<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。</td>
   <td>Ver. 1.4.0 β20</td>
 </tr>
 <tr>
@@ -2001,7 +1999,7 @@ Ver. 1.4.0
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。<br>処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。</td>
+  <td class="ability">矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。<br>処刑投票先に<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
 <tr>
@@ -2019,7 +2017,7 @@ Ver. 1.4.0
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">逃亡先が女性以外だった場合は死亡する、逃亡者の亜種。</td>
+  <td class="ability">逃亡先が女性以外だった場合は死亡する、特殊な逃亡者。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
 <tr>
@@ -2148,8 +2146,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+  <td class="ability">処刑投票に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。<br><a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
   </td>
   <td>Ver. 1.5.0 α5</td>
 </tr>
@@ -2215,7 +2212,7 @@ Ver. 1.4.0
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">逃亡先が「嘘つき」(<a href="human.php#psycho_mage">精神鑑定士</a>)だった場合は死亡する、逃亡者の亜種。</td>
+  <td class="ability">逃亡先が「嘘つき」(<a href="human.php#psycho_mage">精神鑑定士</a>)だった場合は死亡する、特殊な逃亡者。</td>
   <td>Ver. 1.5.0 α7</td>
 </tr>
 <tr>
@@ -2283,7 +2280,7 @@ Ver. 1.4.0
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">逃亡先が男性以外だった場合は死亡する、逃亡者の亜種。</td>
+  <td class="ability">逃亡先が男性以外だった場合は死亡する、特殊な逃亡者。</td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
@@ -2292,7 +2289,8 @@ Ver. 1.4.0
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">逃亡先が死の宣告を受けていた場合は死亡する、逃亡者の亜種。逃亡先に死の宣告を行う。</td>
+  <td class="ability">逃亡先が<a href="sub_role.php#death_warrant">死の宣告</a>を受けていた場合は死亡する、特殊な逃亡者。<br>
+    逃亡先に<a href="sub_role.php#death_warrant">死の宣告</a> (4日後) を行う。</td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
@@ -2366,7 +2364,7 @@ Ver. 1.4.0
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">宿敵を三人作れる決闘者。</td>
+  <td class="ability"><a href="sub_role.php#rival">宿敵</a>を三人作る特殊な決闘者。</td>
   <td>Ver. 1.5.0 β1</td>
 </tr>
 <tr id="ver150b2">
@@ -2393,7 +2391,7 @@ Ver. 1.4.0
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">宿敵に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する決闘者。</td>
+  <td class="ability"><a href="sub_role.php#rival">宿敵</a>に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊な決闘者。</td>
   <td>Ver. 1.5.0 β3</td>
 </tr>
 <tr>
@@ -2413,6 +2411,89 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">初日夜に誰か一人を<a href="sub_role.php#supported">受援者</a>にする、後援者系の基本種。</td>
   <td>Ver. 1.5.0 β3</td>
+</tr>
+<tr id="ver150b4">
+  <td><a href="mania.php#basic_mania">求道者</a></td>
+  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php#mania_group">神話マニア系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">コピー先の基本種に変化する特殊な神話マニア。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#poison_avenger">山わろ</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持つ特殊な復讐者。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#cursed_avenger">がしゃどくろ</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td>村人<br>(呪返し)</td>
+  <td>村人</td>
+  <td class="ability">呪いを持った特殊な復讐者。処刑投票先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>なら<a href="sub_role.php#death_warrant">死の宣告</a> (4日後)を付加する。<br><a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#critical_avenger">狂骨</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#critical_mad">釣瓶落とし</a>相当の能力を持つ特殊な復讐者。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="human.php#divine_escaper">麒麟</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#escaper_group">逃亡者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">逃亡先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="human.php#assassin_group">暗殺者系</a>・<a href="ogre.php">鬼陣営</a>だった場合は死亡する、特殊な逃亡者。<br>
+逃亡先が村人陣営 (<a href="sub_role.php#lovers">恋人</a>も含む) なら、翌日発動の<a href="sub_role.php#day_voter">一日村長</a>を付加する。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#sacrifice_patron">身代わり地蔵</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#protected">庇護者</a>を付加する上位後援者。<br>人狼に襲撃されても死亡しない (襲撃は失敗扱い)。
+  </td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#revive_avenger">夜刀神</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する特殊な復讐者。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#shepherd_patron">羊飼い</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人口の六分の一の受援者を作ることができるが、<a href="sub_role.php#mind_sheep">羊</a>を付加してしまう特殊な後援者。</td>
+  <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#critical_duelist">剣闘士</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">自分撃ち固定で、<a href="sub_role.php#critical_voter">会心</a>相当の能力を持つ上位決闘者。</td>
+  <td>Ver. 1.5.0 β4</td>
 </tr>
 </table>
 
@@ -2911,7 +2992,7 @@ Ver. 1.4.0
   </tr>
   <tr>
     <td><a href="sub_role.php#infected">感染者</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#infected_group">感染者系</a></td>
     <td>無し</td>
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>の人に襲撃された人に付加される。</td>
     <td>Ver. 1.4.0 β14</td>
@@ -2953,7 +3034,7 @@ Ver. 1.4.0
   </tr>
   <tr id="sub_ver140b20">
     <td><a href="sub_role.php#psycho_infected">洗脳者</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#infected_group">感染者系</a></td>
     <td>無し</td>
     <td class="ability"><a href="vampire.php">吸血鬼陣営</a>共通の<a href="sub_role.php#infected">感染者</a>相当。</td>
     <td>Ver. 1.4.0 β20</td>
@@ -3041,6 +3122,27 @@ Ver. 1.4.0
     <td>無し</td>
     <td class="ability"><a href="duelist.php#patron_group">後援者系</a>が付加する。</td>
     <td>Ver. 1.5.0 β3</td>
+  </tr>
+  <tr id="sub_ver150b4">
+    <td><a href="sub_role.php#copied_basic">元求道者</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>無し</td>
+    <td class="ability">コピー後の<a href="mania.php#basic_mania">求道者</a>に付加される。</td>
+    <td>Ver. 1.5.0 β4</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#mind_sheep">羊</a></td>
+    <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
+    <td>強制</td>
+    <td class="ability">付加した<a href="duelist.php#shepherd_patron">羊飼い</a>が誰か分かり、人狼に襲撃されたら<a href="sub_role.php#sheep_wisp">羊皮</a>を付加する。</td>
+    <td>Ver. 1.5.0 β4</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#sheep_wisp">羊皮</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>強制</td>
+    <td class="ability">表示された日に占い師に占われると村人判定が出る。</td>
+    <td>Ver. 1.5.0 β4</td>
   </tr>
 </table>
 

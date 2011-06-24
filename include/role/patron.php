@@ -7,5 +7,5 @@
 class Role_patron extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddSupportedRole(&$role, $user){ return true; }
+  function AddSupportedRole(&$role, $user){}
 }

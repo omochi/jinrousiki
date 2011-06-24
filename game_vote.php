@@ -466,8 +466,8 @@ function VoteNight(){
 
     //自分撃ちでは無い場合は特定のケースでエラーを返す
     if(! $self_shoot){
-      if($SELF->IsRole('duelist')){ //決闘者
-	OutputVoteResult($error_header . '決闘者は必ず自分を対象に含めてください');
+      if($SELF->IsRole('duelist', 'critical_duelist')){ //決闘者・剣闘士
+	OutputVoteResult($error_header . '決闘者・剣闘士は必ず自分を対象に含めてください');
       }
       elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //参加人数
 	OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
@@ -475,13 +475,20 @@ function VoteNight(){
     }
   }
   elseif($is_avenger || $is_patron){ //復讐者系・後援者系
-    if($SELF->IsRole('avenger')){
+    if($is_avenger){
       $target_count = floor($USERS->GetUserCount() / 4);
       if(count($RQ_ARGS->target_no) != $target_count){
 	OutputVoteResult($error_header . '指定人数は' . $target_count . '人にしてください');
       }
     }
-    elseif($SELF->IsRole('patron')){
+    elseif($SELF->IsRole('shepherd_patron')){
+      $target_count = floor($USERS->GetUserCount() / 6);
+      if($target_count < 1) $target_count++;
+      if(count($RQ_ARGS->target_no) != $target_count){
+	OutputVoteResult($error_header . '指定人数は' . $target_count . '人にしてください');
+      }
+    }
+    elseif($SELF->IsRoleGroup('patron')){
       if(count($RQ_ARGS->target_no) != 1){
 	OutputVoteResult($error_header . '指定人数は一人にしてください');
       }
@@ -566,8 +573,10 @@ function VoteNight(){
     elseif($is_cupid){ //恋人陣営の処理
       $uname_stack  = array();
       $handle_stack = array();
-      $ROLES->actor = $SELF;
-      $is_dummy     = $SELF->IsRole('dummy_chiroptera');
+      if(! ($is_dummy = $SELF->IsRole('dummy_chiroptera'))){
+	$ROLES->actor = $SELF;
+	$filter = $ROLES->Load('main_role', true);
+      }
       foreach($target_list as $target){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
@@ -578,8 +587,7 @@ function VoteNight(){
 	}
 
 	$role = $SELF->GetID('lovers'); //役職に恋人を追加
-	//特殊キューピッドの処理
-	$ROLES->Load('main_role', true)->AddLoversRole($role, $target, $self_shoot);
+	$filter->AddLoversRole($role, $target, $self_shoot); //特殊キューピッドの処理
 	$target->AddRole($role);
 	$target->ReparseRoles(); //再パース (魂移使判定用)
       }
@@ -587,7 +595,7 @@ function VoteNight(){
       if($SELF->IsRoleGroup('angel')){ //天使系の処理
 	$lovers_a = $target_list[0];
 	$lovers_b = $target_list[1];
-	if($ROLES->Load('main_role', true)->IsSympathy($lovers_a, $lovers_b)){
+	if($filter->IsSympathy($lovers_a, $lovers_b)){
 	  $lovers_a->AddRole('mind_sympathy');
 	  $sentence = $lovers_a->handle_name . "\t" . $lovers_b->handle_name . "\t";
 	  $ROOM->SystemMessage($sentence . $lovers_b->main_role, 'SYMPATHY_RESULT');
@@ -621,24 +629,22 @@ function VoteNight(){
       $uname_stack  = array();
       $handle_stack = array();
       $ROLES->actor = $SELF;
+      $filter = $ROLES->Load('main_role', true);
       foreach($target_list as $target){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
 
 	if($is_duelist){
 	  $role = $SELF->GetID('rival'); //役職に宿敵を追加
-	  //特殊決闘者の処理
-	  $ROLES->Load('main_role', true)->AddRivalRole($role, $target, $self_shoot);
+	  $filter->AddRivalRole($role, $target, $self_shoot); //特殊決闘者の処理
 	}
 	elseif($is_avenger){
 	  $role = $SELF->GetID('enemy'); //役職に仇敵を追加
-	  //特殊復讐者の処理
-	  $ROLES->Load('main_role', true)->AddEnemyRole($role, $target);
+	  $filter->AddEnemyRole($role, $target); //特殊復讐者の処理
 	}
 	elseif($is_patron){
 	  $role = $SELF->GetID('supported'); //役職に受援者を追加
-	  //特殊後援者の処理
-	  $ROLES->Load('main_role', true)->AddSupportedRole($role, $target);
+	  $filter->AddSupportedRole($role, $target); //特殊後援者の処理
 	}
 	$target->AddRole($role);
       }

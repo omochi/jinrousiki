@@ -16,7 +16,7 @@ OutputRolePageHeader('恋人陣営');
 <h2 id="rule">基本ルール</h2>
 <ol>
 <li>初日の夜に「<a href="sub_role.php#lovers">恋人</a>」を作る陣営です。</li>
-<li>勝利条件は「人狼が全滅、または村人カウントが人狼以下になった時に恋人が生存していること」です。</li>
+<li><a href="../spec.php#win">勝利条件</a>は「人狼が全滅、または村人カウントが人狼以下になった時に恋人が生存していること」です。</li>
 <li><a href="vampire.php">吸血鬼陣営</a>が勝利条件を満たした時に恋人が生存していた場合は恋人陣営勝利になります。</li>
 <li>恋人陣営が勝利していれば自身や自分の作った恋人の生死は不問です。</li>
 <li>生存カウントは村人です。</li>
@@ -103,12 +103,16 @@ OutputRolePageHeader('恋人陣営');
 <h3 id="sweet_cupid">弁財天 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>
 <pre>
 矢を撃った二人を<a href="sub_role.php#mind_friend">共鳴者</a>にする上位キューピッド。
-また、処刑者決定後に、自分が処刑されず、投票先が処刑者ではなかったら
-<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。
+処刑投票先に<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。
 </pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>
+<a href="ability.php#vote_action">処刑投票付加能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -156,7 +160,7 @@ OutputRolePageHeader('恋人陣営');
 
 <h3 id="angel">天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
-矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する、天使系の基本種。
+天使系の基本種。矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

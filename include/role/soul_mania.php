@@ -24,7 +24,7 @@ class Role_soul_mania extends Role{
       'brownie'      => 'history_brownie',
       'wizard'       => 'soul_wizard',
       'doll'         => 'doll_master',
-      'escaper'      => 'escaper',
+      'escaper'      => 'divine_escaper',
       'wolf'         => 'sirius_wolf',
       'mad'          => 'whisper_mad',
       'fox'          => 'cursed_fox',
@@ -37,9 +37,9 @@ class Role_soul_mania extends Role{
       'fairy'        => 'ice_fairy',
       'ogre'         => 'sacrifice_ogre',
       'yaksa'        => 'dowser_yaksa',
-      'duelist'      => 'valkyrja_duelist',
-      'avenger'      => 'avenger',
-      'patron'       => 'patron');
+      'duelist'      => 'critical_duelist',
+      'avenger'      => 'revive_avenger',
+      'patron'       => 'sacrifice_patron');
 
   function __construct(){ parent::__construct(); }
 

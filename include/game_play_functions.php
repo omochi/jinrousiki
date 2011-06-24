@@ -515,6 +515,33 @@ function OutputAbility(){
       OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
     }
   }
+  elseif($SELF->IsDuelist()){ //決闘者陣営
+    $ROLE_IMG->Output($SELF->main_role);
+
+    //自分の勝利条件対象を表示
+    if($SELF->IsRoleGroup('duelist')){ //決闘者系
+      $role   = 'rival';
+      $header = 'duelist_pair';
+    }
+    elseif($SELF->IsRoleGroup('avenger')){ //復讐者系
+      $role   = 'enemy';
+      $header = 'avenger_target';
+    }
+    elseif($SELF->IsRoleGroup('patron')){ //後援者系
+      $role   = 'supported';
+      $header = 'patron_target';
+    }
+    $stack = array();
+    foreach($USERS->rows as $user){
+      if($user->IsPartner($role, $SELF->user_no)) $stack[] = $user->handle_name;
+    }
+    OutputPartner($stack, $header);
+    unset($stack);
+
+    if($ROOM->date == 1 && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('duelist-do', 'duelist_do', 'DUELIST_DO');
+    }
+  }
   elseif($SELF->IsRole('incubate_poison')){ //潜毒者
     $ROLE_IMG->Output($SELF->main_role);
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL); //能力発現
@@ -574,33 +601,6 @@ function OutputAbility(){
       OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO');
     }
   }
-  elseif($SELF->IsDuelist()){ //決闘者陣営
-    $ROLE_IMG->Output($SELF->main_role);
-
-    //自分の勝利条件対象を表示
-    if($SELF->IsRoleGroup('duelist')){ //決闘者系
-      $role   = 'rival';
-      $header = 'duelist_pair';
-    }
-    elseif($SELF->IsRoleGroup('avenger')){ //復讐者系
-      $role   = 'enemy';
-      $header = 'avenger_target';
-    }
-    elseif($SELF->IsRoleGroup('patron')){ //後援者系
-      $role   = 'supported';
-      $header = 'patron_target';
-    }
-    $stack = array();
-    foreach($USERS->rows as $user){
-      if($user->IsPartner($role, $SELF->user_no)) $stack[] = $user->handle_name;
-    }
-    OutputPartner($stack, $header);
-    unset($stack);
-
-    if($ROOM->date == 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('duelist-do', 'duelist_do', 'DUELIST_DO');
-    }
-  }
   elseif($SELF->IsRoleGroup('mania')){ //神話マニア陣営
     $ROLE_IMG->Output($SELF->IsRole('dummy_mania') ? 'soul_mania' : $SELF->main_role);
     if($ROOM->date == 2 && $SELF->IsRole('soul_mania', 'dummy_mania')){ //覚醒者・夢語部
@@ -614,11 +614,12 @@ function OutputAbility(){
   $fix_display_list = array(); //常時表示する役職リスト
 
   //元神話マニア系
-  if(($ROOM->date == 2 && $SELF->IsRole('copied', 'copied_trick')) ||
+  if(($ROOM->date == 2 && $SELF->IsRole('copied', 'copied_trick', 'copied_basic')) ||
      ($ROOM->date == 4 && $SELF->IsRole('copied_soul', 'copied_teller'))){
     OutputSelfAbilityResult('MANIA_RESULT'); //コピー結果
   }
-  array_push($fix_display_list, 'copied', 'copied_trick', 'copied_soul', 'copied_teller');
+  array_push($fix_display_list, 'copied', 'copied_trick', 'copied_basic', 'copied_soul',
+	     'copied_teller');
 
   $role = 'lost_ability'; //能力喪失 (比丘尼は別画像)
   if($SELF->IsRole($role)){
@@ -678,7 +679,7 @@ function OutputAbility(){
   //-- ここからは憑依先の役職を表示 --//
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
-  //特殊小心者系
+  //特殊小心者・権力者系
   $role = 'febris'; //熱病
   if($virtual_self->IsRole($role) &&
      ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
@@ -696,9 +697,14 @@ function OutputAbility(){
      ($date = $virtual_self->GetDoomDate($role)) >= $ROOM->date){
     OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
   }
-  array_push($fix_display_list, 'febris', 'frostbite', 'death_warrant');
 
-  //サトラレ系・入道
+  $role = 'day_voter'; //一日村長
+  if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
+    $ROLE_IMG->Output($role);
+  }
+  array_push($fix_display_list, 'febris', 'frostbite', 'death_warrant', 'day_voter');
+
+  //サトラレ系・羊皮・入道
   $role = 'mind_open'; //公開者
   if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
 
@@ -742,14 +748,33 @@ function OutputAbility(){
       if($ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
     }
 
+    $role = 'mind_sheep'; //羊
+    if($virtual_self->IsRole($role)){
+      $ROLE_IMG->Output($role);
+
+      $stack = array();
+      foreach($virtual_self->GetPartner($role, true) as $id){
+	$stack[$id] = $USERS->ById($id)->handle_name;
+      }
+      ksort($stack);
+      OutputPartner($stack, 'shepherd_patron_list');
+      unset($stack);
+    }
+
     $role = 'mind_presage'; //受託者
     if($virtual_self->IsRole($role) && $ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
+
+    $role = 'sheep_wisp'; //羊皮
+    if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
+      $ROLE_IMG->Output($role);
+    }
 
     $role = 'wirepuller_luck'; //入道
     if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
   }
   array_push($fix_display_list, 'mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
-	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'wirepuller_luck');
+	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep',
+	     'sheep_wisp', 'wirepuller_luck');
 
   //-- これ以降はサブ役職非公開オプションの影響を受ける --//
   if($ROOM->IsOption('secret_sub_role')) return;

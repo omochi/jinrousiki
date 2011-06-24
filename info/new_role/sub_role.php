@@ -464,6 +464,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#rebel">反逆者</a>
 <a href="#random_voter">気分屋</a>
 <a href="#watcher">傍観者</a>
+<a href="#day_voter">一日村長</a>
 </p>
 
 <h3 id="authority">権力者</h3>
@@ -510,7 +511,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#critical_luck">痛恨</a>
+<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="#critical_luck">痛恨</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -556,6 +557,21 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ(8)</a> が原型です。
+</pre>
+
+<h3 id="day_voter">一日村長 [Ver. 1.5.0 β4～]</h3>
+<h4>[役職表示] 発動日限定</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+表示された日の限定の<a href="#authority">権力者</a>。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#divine_escaper">麒麟</a>・<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#febris">熱病</a>の権力者バージョンです。
 </pre>
 
 
@@ -919,6 +935,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="#mind_evoke">口寄せ</a>
 <a href="#mind_presage">受託者</a>
 <a href="#mind_lonely">はぐれ者</a>
+<a href="#mind_sheep">羊</a>
 </p>
 
 <h3 id="mind_read_rule">基本ルール [サトラレ系]</h3>
@@ -1084,6 +1101,19 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 分かっていても堂々と告発できないジレンマにどう対処するのかがポイントです。
 </pre>
 
+<h3 id="mind_sheep">羊 [Ver. 1.5.0 β5～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<h4>[耐性] 人狼襲撃：羊皮</h4>
+<pre>
+付加した<a href="duelist.php#shepherd_patron">羊飼い</a>が誰か分かる。
+<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) 以外の人狼に襲撃されたら<a href="#sheep_wisp">羊皮</a>を付加する。
+</pre>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="duelist.php#shepherd_patron">羊飼い</a>用に実装されたサブ役職です。
+</pre>
+
 
 <h2 id="lovers_group">恋人系</h2>
 <p>
@@ -1109,7 +1139,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
 <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
 <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>の能力無効</li>
+<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>の能力無効</li>
 <li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
 </ol>
 <pre>
@@ -1378,6 +1408,7 @@ B：「恋人陣営の勝利」
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
 <a href="#bad_status">悪戯</a>
+<a href="#sheep_wisp">羊皮</a>
 <a href="#protected">庇護者</a>
 <a href="#wirepuller_luck">入道</a>
 <a href="#lost_ability">能力喪失</a>
@@ -1387,6 +1418,7 @@ B：「恋人陣営の勝利」
 <a href="#changed_therian">元獣人</a>
 <a href="#copied">元神話マニア</a>
 <a href="#copied_trick">元奇術師</a>
+<a href="#copied_basic">元求道者</a>
 <a href="#copied_soul">元覚醒者</a>
 <a href="#copied_teller">元夢語部</a>
 </p>
@@ -1449,6 +1481,27 @@ B：「恋人陣営の勝利」
 <a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>などで使用されています。
 </pre>
 
+<h3 id="sheep_wisp">羊皮 [Ver. 1.5.0 β4～]</h3>
+<h4>[役職表示] 発動日限定</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+表示された日に<a href="human.php#mage">占い師</a>に占われると村人判定が出る。
+</pre>
+<ol>
+<li>占いが成立した時のみ有効 (<a href="ability.php#phantom">占い妨害</a>・<a href="ability.php#cursed">呪い</a>の判定が優先される)。</li>
+<li><a href="human.php#soul_mage">魂の占い師</a>には無効。</li>
+<li><a href="human.php#dummy_mage">夢見人</a>は結果が反転される (結果として人狼判定が出る)。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#mind_sheep">羊</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+自覚があるので、遺言に残すことで村は対応できます。
+どちらかというとそれを利用して占いを一日潰せることに価値があるのかもしれません。
+</pre>
+
 <h3 id="protected">庇護者 [Ver. 1.4.0 β18～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
@@ -1456,8 +1509,7 @@ B：「恋人陣営の勝利」
 <h4>[身代わり能力] 庇護者付加者</h4>
 <pre>
 <a href="wolf.php#wolf_group">人狼</a> (種類は問わない) に襲撃された時に、庇護者を付加した人が身代わりで死亡する。
-判定は<a href="#challenge_lovers">難題</a>の後で、基本役職の能力による人狼襲撃耐性判定 (例：<a href="human.php#escaper">逃亡者</a>・<a href="fox.php#fox">妖狐</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) 
-よりも優先される。
+判定は<a href="#challenge_lovers">難題</a>の後で、基本役職の能力による人狼襲撃耐性判定 (例：<a href="human.php#escaper">逃亡者</a>・<a href="fox.php#fox">妖狐</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) よりも優先される。
 </pre>
 <ol>
   <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
@@ -1564,6 +1616,17 @@ B：「恋人陣営の勝利」
 交換コピーの発動をログで確認できるようにするために後から実装されたサブ役職です。
 </pre>
 
+<h3 id="copied_basic">元求道者 [Ver. 1.5.0 β4～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+コピー後の<a href="mania.php#basic_mania">求道者</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="mania.php#basic_mania">求道者</a>用に実装されたサブ役職です。
+</pre>
+
 <h3 id="copied_soul">元覚醒者 [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
@@ -1583,6 +1646,6 @@ B：「恋人陣営の勝利」
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#psycho_mage">精神鑑定士</a>や<a href="wolf.php#dream_eater_mad">獏</a>の判定に影響しないように他の元マニア系とは違い、完全に別名にしてあります。
+<a href="human.php#psycho_mage">精神鑑定士</a>や<a href="wolf.php#dream_eater_mad">獏</a>の判定に影響しないように他の元神話マニア系とは違い、完全に別名にしてあります。
 </pre>
 </body></html>

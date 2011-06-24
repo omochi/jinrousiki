@@ -8,8 +8,7 @@ class Role_mind_cupid extends Role{
   function __construct(){ parent::__construct(); }
 
   function AddLoversRole(&$role, $user, $flag){
-    global $SELF;
-    $role .= ' ' . $SELF->GetID('mind_friend');
-    if(! $flag) $SELF->AddRole($user->GetID('mind_receiver'));
+    $role .= ' ' . $this->GetActor()->GetID('mind_friend');
+    if(! $flag) $this->GetActor()->AddRole($user->GetID('mind_receiver'));
   }
 }

@@ -8,7 +8,7 @@
 class Role_ark_angel extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddLoversRole(&$role, $user, $flag){ return true; }
+  function AddLoversRole(&$role, $user, $flag){}
 
   function IsSympathy($lovers_a, $lovers_b){ return false; }
 }

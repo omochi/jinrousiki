@@ -779,8 +779,8 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
   <ol>
     <li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外 (処刑・襲撃両対応)</li>
     <li><a href="human.php#guard_group">狩人系</a>の護衛無効</li>
-    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
-    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="#therian_mad">獣人</a>の能力無効</li>
+    <li><a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="ogre.php">鬼陣営</a>・<a href="duelist.php#sacrifice_patron">身代わり地蔵</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#challenge_lovers">難題</a>の耐性無効</li>
+    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="#miasma_mad">土蜘蛛</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="#therian_mad">獣人</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>・<a href="sub_role.php#mind_sheep">羊</a>の能力無効</li>
     <li><a href="ability.php#sacrifice">身代わり能力</a>・<a href="ability.php#revive_self">自己蘇生能力</a>無効</li>
     <li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せない。</li>
@@ -1207,14 +1207,14 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3 id="miasma_mad">土蜘蛛 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
-処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role.php#febris">熱病</a>にする特殊な狂人。
+処刑投票先に<a href="sub_role.php#febris">熱病</a>を付加する特殊な狂人。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">判定</a>時に対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-  <li>自分が処刑された場合は無効。</li>
-  <li>自分が毒やショック死で死亡した場合でも有効。</li>
-  <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li>自分が処刑された場合は無効。</li>
+<li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h5>Ver. 1.4.0 β19～</h5>
 <pre>
@@ -1230,7 +1230,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#brownie">座敷童子</a>・<a href="#critical_mad">釣瓶落とし</a>・<a href="fox.php#miasma_fox">蟲狐</a>・<a href="lovers.php#sweet_cupid">弁財天</a>
+<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#brownie">座敷童子</a>・<a href="fox.php#miasma_fox">蟲狐</a>・<a href="ability.php#vote_action">処刑投票付加能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1242,18 +1242,18 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h3 id="critical_mad">釣瓶落とし (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
 <h4>[耐性] 精神鑑定：嘘つき / 護衛：狩り</h4>
 <pre>
-処刑者決定後に、投票先が処刑者ではなかったら<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。
+処刑投票先に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-  <li><a href="../spec.php#vote_day">判定</a>時に対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-  <li>自分が処刑された場合は無効。</li>
-  <li>自分が毒やショック死で死亡した場合でも有効。</li>
-  <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li>自分が処刑された場合は無効。</li>
+<li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#miasma_mad">土蜘蛛</a>・<a href="lovers.php#sweet_cupid">弁財天</a>
+<a href="ability.php#vote_action">処刑投票付加能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

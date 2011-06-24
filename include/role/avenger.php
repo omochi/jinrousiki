@@ -7,5 +7,5 @@
 class Role_avenger extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddEnemyRole(&$role, $user){ return true; }
+  function AddEnemyRole(&$role, $user){}
 }

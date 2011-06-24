@@ -22,12 +22,12 @@ class RoleManager{
 
   //処刑投票(メイン)
   public $vote_do_main_list = array('human', 'elder', 'scripter', 'elder_wolf', 'elder_fox',
-				    'elder_chiroptera');
+				    'elder_chiroptera', 'critical_duelist');
 
   //処刑投票(サブ)
   public $vote_do_sub_list = array('authority', 'reduce_voter', 'upper_voter', 'downer_voter',
-				   'critical_voter', 'random_voter', 'wirepuller_luck', 'watcher',
-				   'panelist');
+				   'critical_voter', 'random_voter', 'day_voter', 'wirepuller_luck',
+				   'watcher', 'panelist');
 
   //処刑得票
   public $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
@@ -39,8 +39,9 @@ class RoleManager{
 				    'revive_pharmacist', 'alchemy_pharmacist',
 				    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy',
 				    'cursed_brownie', 'agitate_mad', 'amaze_mad', 'miasma_mad',
-				    'critical_mad', 'sweet_cupid', 'quiz', 'impatience', 'decide',
-				    'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck',
+				    'critical_mad', 'sweet_cupid', 'quiz', 'cursed_avenger',
+				    'critical_avenger', 'impatience', 'decide', 'plague',
+				    'counter_decide', 'dropout', 'good_luck', 'bad_luck',
 				    'authority', 'rebel');
 
   //反逆者判定
@@ -59,14 +60,15 @@ class RoleManager{
   //特殊毒能力者
   public $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
 			      'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
-			      'poison_chiroptera', 'poison_ogre');
+			      'poison_chiroptera', 'poison_ogre', 'poison_avenger');
 
   //処刑者カウンター
   public $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
 
   //処刑投票能力処理 (順番依存あり)
   public $vote_action_list = array('seal_medium', 'bacchus_medium', 'centaurus_pharmacist',
-				   'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid');
+				   'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger',
+				   'cursed_avenger', 'sweet_cupid');
 
   //得票カウンター
   public $voted_reaction_list = array('trap_common', 'jealousy');
@@ -84,8 +86,8 @@ class RoleManager{
 
   //人狼襲撃耐性 (順番依存あり)
   public $wolf_eat_resist_list = array('challenge_lovers', 'protected', 'sacrifice_angel',
-				       'doom_vampire', 'sacrifice_mania', 'fend_guard',
-				       'awake_wizard');
+				       'doom_vampire', 'sacrifice_patron', 'sacrifice_mania',
+				       'fend_guard', 'awake_wizard');
 
   //身代わり能力者
   public $sacrifice_list = array('sacrifice_common', 'doll_master', 'sacrifice_vampire',
@@ -105,7 +107,7 @@ class RoleManager{
 
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',
-					'miasma_fox');
+					'miasma_fox', 'mind_sheep');
 
   //襲撃毒死回避
   public $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');

@@ -5,6 +5,8 @@
   ・コピー：交換コピー
 */
 class Role_trick_mania extends Role{
+  public $copied = 'copied_trick';
+
   function __construct(){ parent::__construct(); }
 
   function Copy($user, $vote_data){
@@ -26,8 +28,8 @@ class Role_trick_mania extends Role{
       }
       $result = $user->main_role;
     }
-    $this->GetActor()->ReplaceRole('trick_mania', $result);
-    $this->GetActor()->AddRole('copied_trick');
+    $this->GetActor()->ReplaceRole($this->role, $result);
+    $this->GetActor()->AddRole($this->copied);
     if(! $flag && ! $user->IsDummyBoy()){
       $user->ReplaceRole($user->main_role, $user->DistinguishRoleGroup());
     }

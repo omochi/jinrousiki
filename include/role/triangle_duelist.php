@@ -7,5 +7,5 @@
 class Role_triangle_duelist extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddRivalRole(&$role, $user, $flag){ return true; }
+  function AddRivalRole(&$role, $user, $flag){}
 }

@@ -15,12 +15,12 @@ OutputRolePageHeader('神話マニア陣営');
 
 <h2 id="rule">基本ルール</h2>
 <ol>
-  <li>初日の夜に誰か一人を選んでその人と同じ陣営に変化 (コピー) する特殊陣営です。</li>
-  <li>勝利条件はコピー先の陣営になります。</li>
-  <li>コピーの結果が反映されるのは 2 日目の朝です。</a>
-  <li>コピーが成立した時点で所属陣営はコピー先に変更されます。</a>
-  <li>なんらかの理由でコピーが成立しなかった場合は村人陣営と扱われます。</li>
-  <li>コピーが成立する前に突然死した場合の<a href="human.php#medium_group">巫女系</a>の陣営判定は「村人」です。</li>
+<li>初日の夜に誰か一人を選んでその人と同じ陣営に変化 (コピー) する特殊陣営です。</li>
+<li>勝利条件はコピー先の陣営になります。</li>
+<li>コピーの結果が反映されるのは 2 日目の朝です。</a>
+<li>コピーが成立した時点で所属陣営はコピー先に変更されます。</a>
+<li>なんらかの理由でコピーが成立しなかった場合は村人陣営と扱われます。</li>
+<li>コピーが成立する前に突然死した場合の<a href="human.php#medium_group">巫女系</a>の陣営判定は「村人」です。</li>
 </ol>
 
 <h2 id="change_group">所属変更</h2>
@@ -37,6 +37,7 @@ OutputRolePageHeader('神話マニア陣営');
 <p>
 <a href="#mania">神話マニア</a>
 <a href="#trick_mania">奇術師</a>
+<a href="#basic_mania">求道者</a>
 <a href="#soul_mania">覚醒者</a>
 <a href="#dummy_mania">夢語部</a>
 </p>
@@ -44,7 +45,7 @@ OutputRolePageHeader('神話マニア陣営');
 <h3 id="mania">神話マニア (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α11～]</h3>
 <pre>
 神話マニア陣営の基本種。
-コピー結果は相手の基本役職で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
+コピー結果は相手のメイン役職で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
 役職が変化すると<a href="sub_role.php#copied">元神話マニア</a>がつく。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -60,9 +61,9 @@ CO するべきかどうかは、コピーした役職次第です。
 役職が変化すると<a href="sub_role.php#copied_trick">元奇術師</a>がつく。
 </pre>
 <ol>
-  <li>入れ替え対象は「初日の夜に投票をしてなかった人」。</li>
-  <li>入れ替えが発生すると、コピー先はその系統の基本職に変化する。</li>
-  <li>身代わり君・<a href="human.php#revive_priest">天人</a>は入れ替え対象外。</li>
+<li>入れ替え対象は「初日の夜に投票をしてなかった人」。</li>
+<li>入れ替えが発生すると、コピー先はその系統の基本職に変化する。</li>
+<li>身代わり君・<a href="human.php#revive_priest">天人</a>は入れ替え対象外。</li>
 </ol>
 </pre>
 <h4>コピーの結果例</h4>
@@ -96,6 +97,27 @@ CO するべきかどうかは、コピーした役職次第です。
 <pre>
 「所属陣営は初日の夜の投票で確定する」というルールの範囲内で
 「相手の能力を奪う」役職を作れないかな、と思案してこういう実装になりました。
+</pre>
+
+<h3 id="basic_mania">求道者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
+<pre>
+コピー先の基本種に変化する特殊な神話マニア。
+コピー結果は相手のメイン役職の基本種で、神話マニア陣営を選んだ場合は<a href="human.php#human">村人</a>になる。
+役職が変化すると<a href="sub_role.php#copied_basic">元求道者</a>がつく。
+</pre>
+<h4>コピーの結果例</h4>
+<pre>
+1. A[求道者] → B[<a href="human.php#soul_mage">魂の占い師</a>] =&gt; A[占い師] B[魂の占い師]
+基本種とは、～陣営～系と表記されている部分の「～系」に該当します。
+
+2. A[求道者] → B[<a href="human.php#dummy_guard">夢守人</a>] =&gt; A[狩人] B[夢守人]
+コピー結果は本人が変化した役職が表示されるので、
+コピー先の役職を正確に知ることはできません。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#trick_mania">奇術師</a>の逆バージョンです。
+コピー先の正確な役職は分からないので騙りに使いやすいと思います。
 </pre>
 
 <h3 id="soul_mania">覚醒者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
@@ -198,8 +220,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
-  <td><a href="human.php#escaper">逃亡者</a></td>
-  <td>Ver. 1.4.0 β22～</td>
+  <td><a href="human.php#divine_escaper">麒麟</a></td>
+  <td>Ver. 1.5.0 β4～</td>
 </tr>
 <tr>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
@@ -263,18 +285,18 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
-  <td><a href="duelist.php#valkyrja_duelist">戦乙女</a></td>
-  <td>Ver. 1.5.0 β1～</td>
+  <td><a href="duelist.php#critical_duelist">剣闘士</a></td>
+  <td>Ver. 1.5.0 β4～</td>
 </tr>
 <tr>
   <td><a href="duelist.php#avenger_group">復讐者系</a></td>
-  <td><a href="duelist.php#avenger">復讐者</a></td>
-  <td>Ver. 1.5.0 β3～</td>
+  <td><a href="duelist.php#revive_avenger">夜刀神</a></td>
+  <td>Ver. 1.5.0 β4～</td>
 </tr>
 <tr>
   <td><a href="duelist.php#patron_group">後援者系</a></td>
-  <td><a href="duelist.php#patron">後援者</a></td>
-  <td>Ver. 1.5.0 β3～</td>
+  <td><a href="duelist.php#sacrifice_patron">身代わり地蔵</a></td>
+  <td>Ver. 1.5.0 β4～</td>
 </tr>
 <tr>
   <td>神話マニア陣営</td>

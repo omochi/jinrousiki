@@ -367,7 +367,7 @@ class User{
   function IsHuntTarget(){
     return $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
 			 'trap_fox', 'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera',
-			 'boss_chiroptera') ||
+			 'boss_chiroptera', 'cursed_avenger', 'critical_avenger') ||
       ($this->IsRoleGroup('mad')     && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
       ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire'));
   }
@@ -486,13 +486,20 @@ class User{
 
   //占い師の判定
   function DistinguishMage($reverse = false){
-    //吸血鬼陣営・大蝙蝠は「蝙蝠」
-    if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
-    if($this->IsOgre()) return 'ogre'; //鬼陣営は「鬼」
+    global $ROOM;
 
-    //人狼(白狼・完全覚醒天狼を除く)・不審者・黒狐・萌蝙蝠は「人狼」
-    $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
-      $this->IsRole('suspect', 'black_fox', 'cute_chiroptera');
+    if($this->IsRole('sheep_wisp') && $this->GetDoomDate('sheep_wisp') == $ROOM->date){ //羊皮判定
+      $result = false;
+    }
+    else{
+      //吸血鬼陣営・大蝙蝠は「蝙蝠」
+      if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
+      if($this->IsOgre()) return 'ogre'; //鬼陣営は「鬼」
+
+      //人狼(白狼・完全覚醒天狼を除く)・不審者・黒狐・萌蝙蝠は「人狼」
+      $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
+	$this->IsRole('suspect', 'black_fox', 'cute_chiroptera');
+    }
     return ($result xor $reverse) ? 'wolf' : 'human';
   }
 

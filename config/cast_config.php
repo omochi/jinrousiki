@@ -7,7 +7,7 @@ class CastConfig extends CastConfigBase{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   public $role_list = array(
-     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
+     4 => array('human' =>  1, 'wolf' => 1, 'shepherd_patron' => 1, 'mad' => 1),
      5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -409,7 +409,7 @@ class CastConfig extends CastConfigBase{
     'silver_wolf'          => 10,
     'mad'                  => 10,
     'fanatic_mad'          =>  6,
-    'whisper_mad'          =>  4,
+    'whisper_mad'          =>  3,
     'jammer_mad'           =>  5,
     'voodoo_mad'           =>  4,
     'enchant_mad'          =>  5,
@@ -421,8 +421,8 @@ class CastConfig extends CastConfigBase{
     'amaze_mad'            =>  4,
     'agitate_mad'          =>  5,
     'miasma_mad'           =>  4,
-    'critical_mad'         =>  4,
-    'follow_mad'           =>  5,
+    'critical_mad'         =>  3,
+    'follow_mad'           =>  4,
     'therian_mad'          =>  5,
     'immolate_mad'         =>  4,
     'fox'                  =>  3,
@@ -516,15 +516,21 @@ class CastConfig extends CastConfigBase{
     'valkyrja_duelist'     =>  1,
     'doom_duelist'         =>  1,
     'triangle_duelist'     =>  1,
-    'avenger'              =>  2,
-    'patron'               =>  2,
-    'mania'                =>  3,
+    'avenger'              =>  1,
+    'poison_avenger'       =>  1,
+    'cursed_avenger'       =>  1,
+    'critical_avenger'     =>  1,
+    'revive_avenger'       =>  1,
+    'patron'               =>  1,
+    'sacrifice_patron'     =>  1,
+    'mania'                =>  2,
     'trick_mania'          =>  2,
+    'basic_mania'          =>  2,
     'soul_mania'           =>  2,
     'dummy_mania'          =>  2,
     'unknown_mania'        =>  2,
     'sacrifice_mania'      =>  2,
-    'wirepuller_mania'     =>  2);
+    'wirepuller_mania'     =>  1);
 
   public $chaos_min_wolf_rate = 10; //人狼の最小出現比 (総人口 / N)
   public $chaos_min_fox_rate  = 15; //妖狐の最小出現比 (総人口 / N)
@@ -550,8 +556,14 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   public $chaos_hyper_replace_human_role_list = array(
-    'mania' => 30, 'trick_mania' => 15, 'soul_mania' => 10, 'dummy_mania' => 10,
-    'unknown_mania' => 15, 'sacrifice_mania' => 10, 'wirepuller_mania' => 10);
+    'mania'            => 20,
+    'trick_mania'      => 15,
+    'basic_mania'      => 15,
+    'soul_mania'       => 10,
+    'dummy_mania'      => 10,
+    'unknown_mania'    => 15,
+    'sacrifice_mania'  => 10,
+    'wirepuller_mania' =>  5);
 
   //固定配役追加モード
   /*
@@ -676,8 +688,13 @@ class CastConfig extends CastConfigBase{
 			 'valkyrja_duelist' => 15,
 			 'doom_duelist'     => 10,
 			 'triangle_duelist' => 10,
-			 'avenger'          => 20,
-			 'patron'           => 30)),
+			 'avenger'          =>  6,
+			 'poison_avenger'   =>  4,
+			 'cursed_avenger'   =>  3,
+			 'critical_avenger' =>  4,
+			 'revive_avenger'   =>  3,
+			 'patron'           => 20,
+			 'sacrifice_patron' => 10)),
 		 'count' => array(1)),
     'k' => array('random' => array(
 		   array('executor'             => 10,
@@ -696,7 +713,7 @@ class CastConfig extends CastConfigBase{
 			 'history_brownie'      =>  5,
 			 'soul_wizard'          =>  5,
 			 'doll_master'          => 10,
-			 'escaper'              => 10),
+			 'divine_escaper'       => 10),
                    array('boss_wolf'      => 2,
 			 'resist_wolf'    => 2,
 			 'tongue_wolf'    => 2,
@@ -714,8 +731,8 @@ class CastConfig extends CastConfigBase{
 			 'sacrifice_ogre'   =>  5,
 			 'dowser_yaksa'     => 10,
 			 'valkyrja_duelist' =>  4,
-			 'avenger'          =>  3,
-			 'patron'           =>  3,
+			 'revive_avenger'   =>  3,
+			 'sacrifice_patron' =>  3,
 			 'soul_mania'       =>  5,
 			 'sacrifice_mania'  =>  5)),
 		 'count' => array(1, 1, 1))

@@ -110,7 +110,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ability.php#poison">毒能力者</a>
+<a href="ability.php#poison">毒能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

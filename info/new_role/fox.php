@@ -493,7 +493,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#sex_mage">ひよこ鑑定士</a>の<a href="#child_fox">子狐</a>バージョンです。
+<a href="human.php#sex_mage">ひよこ鑑定士</a>の子狐バージョンです。
 能力よりも、存在自体が脅威となるタイプですね。
 村や狼が疑心暗鬼になって<a href="human.php#sex_mage">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
 </pre>
@@ -503,9 +503,13 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 <a href="human.php#stargazer_mage">占星術師</a>相当の能力を持つ子狐。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#stargazer_mage">占星術師</a>の<a href="#child_fox">子狐</a>バージョンです。
+<a href="human.php#stargazer_mage">占星術師</a>の子狐バージョンです。
 仲間の騙りに合わせて<a href="human.php#stargazer_mage">占星術師</a>を騙ると効果的ですが、
 襲撃されやすいので他の役職を騙ってもいいかもしれません。
 </pre>
@@ -520,7 +524,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#jammer_mad">月兎</a>の<a href="#child_fox">子狐</a>バージョンです。
+<a href="wolf.php#jammer_mad">月兎</a>の子狐バージョンです。
 妖狐の最大の弱点である占いを妨害できるので、子狐系に於いては上位種となります。
 </pre>
 
@@ -532,9 +536,9 @@ OutputRolePageHeader('妖狐陣営');
 人狼に襲撃された場合は襲撃した人狼に付加する。
 </pre>
 <ol>
-  <li>処刑時は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・妖狐陣営・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
-  <li>人狼襲撃時は<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) には無効。</li>
-  <li>対象者が誰もいなかった場合は不発となる。</li>
+<li>処刑時は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・妖狐陣営・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+<li>人狼襲撃時は<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) には無効。</li>
+<li>対象者が誰もいなかった場合は不発となる。</li>
 </ol>
 <h5>Ver. 1.5.0 α5～</h5>
 <pre>
@@ -542,7 +546,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#poison_fox">管狐</a>の<a href="#child_fox">子狐</a>相当として、<a href="wolf.php#miasma_mad">土蜘蛛</a>能力を持たせてみました。
+<a href="#poison_fox">管狐</a>の子狐相当として、<a href="wolf.php#miasma_mad">土蜘蛛</a>能力を持たせてみました。
 </pre>
 
 <h3 id="howl_fox">化狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β17～]</h3>

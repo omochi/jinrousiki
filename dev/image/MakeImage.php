@@ -456,6 +456,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#半鳥女#です。夜の#逃亡#先に^死の宣告^を行い、#逃亡#先が^死の宣告^を受けているか、_人狼_に襲撃されたら死んでしまいます。\n　わが身に積もる不幸を嘆く時間はありません。つむじ風の様に駆け巡り、闇夜に集いし迷える魂を等しく冥界へと導きましょう。",
     'type' => 'escaper', 'delimiter' => array('^' => 'chicken'));
 
+  public $divine_escaper = array(
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#麒麟#です。夜の#逃亡#先に^一日村長^を与え、#逃亡#先が_人狼_・:暗殺者:・=鬼=か、_人狼_に襲撃されたら死んでしまいます。\n　仁の心を持つ君主が生まれると姿を現す聖なる獣であるあなた。舞い降りた先は自然と皆の尊敬を得ることでしょう。",
+    'type' => 'escaper', 'delimiter' => array('^' => 'authority', ':' => 'assassin', '=' => 'ogre'));
+
   public $wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|人狼|です。夜の間に他の|人狼|と協力し村人一人を殺害できます。あなたはその強力な力で村人を喰い殺すのです！",
     'delimiter' => array('|' => 'wolf'));
@@ -975,6 +979,10 @@ class RoleMessageList{
     'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|黒幕|です。初日の夜に誰か二人を|宿敵|同士にして、さらに#死の宣告#を与えてしまいます。\n　宿命に踊らされる二人の物語を、影から演出してやりましょう。舞台の幕が切れる、その時まで。",
     'type' => 'duelist', 'delimiter' => array('#' => 'chicken'));
 
+  public $critical_duelist = array(
+    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|剣闘士|です。初日の夜に自分と誰か一人を|宿敵|同士にします。また、稀に#処刑#投票数が +100 されます。",
+    'type' => 'duelist', 'delimiter' => array('#' => 'vote'));
+
   public $triangle_duelist = array(
     'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|舞首|です。初日の夜に誰か三人を|宿敵|同士にしてしまいます。現世で生前の決着をつける為に彼らには犠牲になってもらいましょう。",
     'type' => 'duelist');
@@ -983,9 +991,33 @@ class RoleMessageList{
     'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|復讐者|です。初日の夜に村の人口の四分の一の|仇敵|を選び、全て倒すことが勝利条件になります。\n　復讐するは我にあり。そのため、そのためだけに生き続ける。たとえ待ち受けるものが地獄だとしても…",
     'type' => 'duelist');
 
+  public $poison_avenger = array(
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|山わろ|です。#人狼#・_妖狐_・あなたの|仇敵|にのみ中る^毒^を持っています。\n　山を穢し、あなたをも害する愚か者たちに祟りという名の報復を与えるのです！",
+    'type' => 'avenger', 'delimiter' => array('#' => 'wolf', '_' => 'fox', '^' => 'poison'));
+
+  public $cursed_avenger = array(
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|がしゃどくろ|、#呪い#を持っています。また、:処刑:投票先が#人狼#か_妖狐_だった場合は=死の宣告=を行います。\n　あなたの怨敵たちを滅ぼし、ついでに死体を野ざらしに放置する罰当たりをじわじわと握りつぶしてやるのです！",
+    'type' => 'poison_avenger', 'delimiter' => array(':' => 'vote', '=' => 'chicken'));
+
+  public $critical_avenger = array(
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|狂骨|です。#処刑#投票先が死ななかった場合は_痛恨_にさせることができます。\n　井戸には底があろうとも、我が落ちしは底なしの怨み。必ず晴らしてみせようぞ…！",
+    'type' => 'poison_avenger', 'delimiter' => array('#' => 'vote', '_' => 'luck'));
+
+  public $revive_avenger = array(
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|夜刀神|です。一度だけ#人狼#に襲撃されても^蘇生^できます。",
+    'type' => 'cursed_avenger');
+
   public $patron = array(
     'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|後援者|です。初日の夜に誰か一人を|受援者|にし、その生存が勝利条件となります。\n　あなたは誰かのための足長おじさんです。その誰かに気づかれなくとも、尽くしましょう。",
     'type' => 'duelist');
+
+  public $sacrifice_patron = array(
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|身代わり地蔵|です。あなたの|受援者|が#人狼#に襲撃されても自分の命と引き換えに守ることができます。",
+    'type' => 'duelist', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
+
+  public $shepherd_patron = array(
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|羊飼い|です。初日の夜に村の人口の六分の一を|受援者|にできますが、さらに_羊_を与えてしまいます。",
+    'type' => 'duelist', 'delimiter' => array('#' => 'wolf', '_' => 'mind'));
 
   public $mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|神話マニア|です。初日の夜に指定した人のメイン役職をコピーすることができます。\n　星の数ほどある神話。誰を相手取るかによって何が最も適切なのかを的確に選び取るのです！",
@@ -993,6 +1025,10 @@ class RoleMessageList{
 
   public $trick_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|奇術師|です。初日の夜に指定した人が何もしていなければ役職を奪うことができます。\n　奪い取った相手の能力、その力を使いこなして魅せるのです。#村人#表示でも絶対に泣きません。",
+    'type' => 'mania', 'delimiter' => array('#' => 'human'));
+
+  public $basic_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|求道者|です。初日の夜に指定した人のメイン役職の基本種に変化します。",
     'type' => 'mania', 'delimiter' => array('#' => 'human'));
 
   public $soul_mania = array(
@@ -1143,6 +1179,10 @@ class RoleMessageList{
     'message' => "　あなたは|傍観者|です。#処刑#投票を行っても|０票|と扱われてしまいます。",
     'type' => 'authority');
 
+  public $day_voter = array(
+    'message' => "　あなたは|一日村長|です。今日の#処刑#投票数が１増えます。",
+    'type' => 'authority');
+
   public $upper_luck = array(
     'message' => "　あなたは|雑草魂|の持ち主です。最初の#処刑#投票の#得票#が４増える代わりにそれ以降は２減ります。",
     'delimiter' => array('|' => 'luck', '#' => 'vote'));
@@ -1263,6 +1303,14 @@ class RoleMessageList{
     'message' => "　あなたは|はぐれ者|なので仲間と会話できません。",
     'type' => 'mind_read');
 
+  public $mind_sheep = array(
+    'message' => "　あなたは|羊|です。あなたの#羊飼い#が誰か知ることができますが、_人狼_に襲撃されると^羊皮^を与えてしまいます。",
+    'type' => 'mind_read', 'delimiter' => array('#' => 'duelist', '_' => 'wolf', '^' => 'mage'));
+
+  public $sheep_wisp = array(
+    'message' => "　あなたは|羊皮|を身に付けているので今日の#占い#結果は_村人_判定になります。",
+    'type' => 'result_mage', 'delimiter' => array('#' => 'mage', '_' => 'human'));
+
   public $challenge_lovers = array(
     'message' => "　あなたは|難題|に挑戦しています。5日目昼になるまでは#人狼#の襲撃・_暗殺_・^毒^などを無効化できますが\n　それ以降は能力を失う上に、|恋人|の相方と:処刑:投票先を合わせないと=ショック死=してしまいます。",
     'delimiter' => array('|' => 'lovers', '#' => 'wolf', '_' => 'assassin',
@@ -1382,6 +1430,10 @@ class RoleMessageList{
     'message' => "あなたの|受援者|は以下の人たちです： ",
     'delimiter' => array('|' => 'duelist'));
 
+  public $shepherd_patron_list = array(
+    'message' => "あなたを見守る|羊飼い|は以下の人たちです： ",
+    'delimiter' => array('|' => 'duelist'));
+
   public $result_human = array('message' => "さんは|村人|でした", 'delimiter' => array('|' => 'human'));
   public $result_saint = array('message' => "さんは|聖女|でした", 'type' => 'result_human');
   public $result_executor = array('message' => "さんは|執行者|でした", 'type' => 'result_human');
@@ -1490,6 +1542,7 @@ class RoleMessageList{
   public $result_incubus_escaper = array('message' => "さんは|一角獣|でした", 'type' => 'result_escaper');
   public $result_succubus_escaper = array('message' => "さんは|水妖姫|でした", 'type' => 'result_escaper');
   public $result_doom_escaper = array('message' => "さんは|半鳥女|でした", 'type' => 'result_escaper');
+  public $result_divine_escaper = array('message' => "さんは|麒麟|でした", 'type' => 'result_escaper');
   public $result_wolf = array('message' => "さんは|人狼|でした", 'delimiter' => array('|' => 'wolf'));
   public $result_boss_wolf = array('message' => "さんは|白狼|でした", 'type' => 'result_wolf');
   public $result_gold_wolf = array('message' => "さんは|金狼|でした", 'type' => 'result_wolf');
@@ -1621,11 +1674,19 @@ class RoleMessageList{
   public $result_duelist = array('message' => "さんは|決闘者|でした", 'delimiter' => array('|' => 'duelist'));
   public $result_valkyrja_duelist = array('message' => "さんは|戦乙女|でした", 'type' => 'duelist');
   public $result_doom_duelist = array('message' => "さんは|黒幕|でした", 'type' => 'duelist');
+  public $result_critical_duelist = array('message' => "さんは|剣闘士|でした", 'type' => 'duelist');
   public $result_triangle_duelist = array('message' => "さんは|舞首|でした", 'type' => 'duelist');
   public $result_avenger = array('message' => "さんは|復讐者|でした", 'type' => 'duelist');
+  public $result_poison_avenger = array('message' => "さんは|山わろ|でした", 'type' => 'result_avenger');
+  public $result_cursed_avenger = array('message' => "さんは|がしゃどくろ|でした", 'type' => 'result_avenger');
+  public $result_critical_avenger = array('message' => "さんは|狂骨|でした", 'type' => 'result_avenger');
+  public $result_revive_avenger = array('message' => "さんは|夜刀神|でした", 'type' => 'result_avenger');
   public $result_patron = array('message' => "さんは|後援者|でした", 'type' => 'duelist');
+  public $result_sacrifice_patron = array('message' => "さんは|身代わり地蔵|でした", 'type' => 'result_patron');
+  public $result_shepherd_patron = array('message' => "さんは|羊飼い|でした", 'type' => 'result_patron');
   public $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   public $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
+  public $result_basic_mania = array('message' => "さんは|求道者|でした", 'type' => 'result_mania');
   public $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
   public $result_dummy_mania = array('message' => "さんは|夢語部|でした", 'type' => 'result_mania');
   public $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
@@ -1808,6 +1869,13 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
-#$builder->Output('poison'); //128
 #$builder->Output('prediction_weather_aurora');
-$builder->Output('patron');
+#$builder->Output('poison'); //128
+#$builder->Output('divine_escaper');
+$builder->Output('critical_duelist');
+#$builder->Output('cursed_avenger');
+#$builder->Output('revive_avenger');
+#$builder->Output('sacrifice_patron');
+#$builder->Output('shepherd_patron');
+#$builder->Output('basic_mania');
+#$builder->Output('sheep_wisp');

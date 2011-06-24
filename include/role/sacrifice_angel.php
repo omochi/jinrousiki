@@ -10,8 +10,7 @@ class Role_sacrifice_angel extends Role{
   function __construct(){ parent::__construct(); }
 
   function AddLoversRole(&$role, $user, $flag){
-    global $SELF;
-    if(! $user->IsSelf()) $role .= ' ' . $SELF->GetID('protected');
+    if(! $this->IsSameUser($user->uname)) $role .= ' ' . $this->GetActor()->GetID('protected');
   }
 
   function IsSympathy($lovers_a, $lovers_b){ return true; }
