@@ -98,6 +98,10 @@ OutputRolePageHeader('決闘者陣営');
 <pre>
 自分撃ち固定で、<a href="sub_role.php#critical_voter">会心</a>相当 (<a href="../weather.php#weather_critical">烈日</a>は無効) の能力を持つ上位決闘者。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#critical_avenger">狂骨</a>の逆アプローチです。
@@ -272,12 +276,9 @@ OutputRolePageHeader('決闘者陣営');
 人口の六分の一の<a href="sub_role.php#supported">受援者</a>を作ることができるが、<a href="sub_role.php#mind_sheep">羊</a>を付加してしまう特殊な後援者。
 人口判定は端数切り捨てで、6人以下の場合は1人 (例：22人村なら3人)。
 </pre>
-<h4>関連役職</h4>
-<pre>
-<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
-</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="mania.php#sacrifice_mania">影武者</a>の後援者バージョンです。
+「<a href="sub_role.php#supported">受援者</a>を複数持てる代りに人狼から狙われやすい後援者」がコンセプトです。
+お互いを認識できる点をどう活かすかがポイントです。
 </pre>
 </body></html>
