@@ -40,23 +40,27 @@ function GetRoleList($user_count){
 
   if($ROOM->IsOptionGroup('chaos')){ //闇鍋モード
     $random_role_list = array(); //ランダム配役結果
-    foreach(array('chaos', 'chaosfull', 'chaos_hyper') as $option){ //グレードを検出
+    foreach(array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso') as $option){ //グレードを検出
       if($ROOM->IsOption($option)){
 	$base_name = $option;
+	$chaos_verso = $base_name == 'chaos_verso';
 	break;
       }
     }
+
     $fix_role_name = $base_name . '_fix_role_list';
+    $random_name   = $base_name . '_random_role_list';
     $wolf_name     = $base_name . '_wolf_list';
     $fox_name      = $base_name . '_fox_list';
-    $random_name   = $base_name . '_random_role_list';
     $human_name    = $base_name . '_replace_human_role_list';
 
     $chaos_fix_role_list = $CAST_CONF->$fix_role_name;
-    $random_wolf_list    = $CAST_CONF->GenerateRandomList($CAST_CONF->$wolf_name);
-    $random_fox_list     = $CAST_CONF->GenerateRandomList($CAST_CONF->$fox_name);
     $random_full_list    = $CAST_CONF->GenerateRandomList($CAST_CONF->$random_name);
-    $replace_human_list  = $CAST_CONF->GenerateRandomList($CAST_CONF->$human_name);
+    if(! $chaos_verso){
+      $random_wolf_list   = $CAST_CONF->GenerateRandomList($CAST_CONF->$wolf_name);
+      $random_fox_list    = $CAST_CONF->GenerateRandomList($CAST_CONF->$fox_name);
+      $replace_human_list = $CAST_CONF->GenerateRandomList($CAST_CONF->$human_name);
+    }
     //PrintData(array_sum($CAST_CONF->$random_name));
 
     //-- 最小補正 --//
@@ -78,7 +82,7 @@ function GetRoleList($user_count){
       }
       //PrintData($chaos_fix_role_list);
     }
-    //if(false) $chaos_fix_role_list['human'] = $role_list['human']; //テスト用
+    //$chaos_fix_role_list['human'] = $role_list['human']; //テスト用
 
     //ゲルト君モードなら固定枠に村人を追加する
     if($is_gerd && is_null($target =& $chaos_fix_role_list['human'])) $target = 1;
@@ -86,26 +90,31 @@ function GetRoleList($user_count){
     //探偵村なら固定枠に探偵を追加する
     if($is_detective && is_null($target =& $chaos_fix_role_list['detective_common'])) $target = 1;
 
-    foreach($chaos_fix_role_list as $key => $value){ //最小補正用リスト
-      $fix_role_group_list[$ROLE_DATA->DistinguishRoleGroup($key)] = $value;
+    if(! $chaos_verso){ //-- 最小出現補正 --//
+      $fix_role_group_list = array();
+      foreach($chaos_fix_role_list as $key => $value){ //最小補正用リスト
+	$fix_role_group_list[$ROLE_DATA->DistinguishRoleGroup($key)] = $value;
+      }
+      //PrintData($fix_role_group_list, 'FixRole');
+
+      //人狼
+      //PrintData($random_wolf_list);
+      //$CAST_CONF->RateToProbability($CAST_CONF->$wolf_name); //テスト用
+
+      $add_count = round($user_count / $CAST_CONF->chaos_min_wolf_rate)
+	- $fix_role_group_list['wolf'];
+      $CAST_CONF->AddRandom($random_role_list, $random_wolf_list, $add_count);
+      //PrintData($random_role_list);
+
+      //妖狐
+      //PrintData($random_fox_list);
+      //$CAST_CONF->RateToProbability($CAST_CONF->$fox_name); //テスト用
+
+      $add_count = floor($user_count / $CAST_CONF->chaos_min_fox_rate)
+	- $fix_role_group_list['fox'];
+      $CAST_CONF->AddRandom($random_role_list, $random_fox_list, $add_count);
+      //PrintData($random_role_list);
     }
-    //PrintData($fix_role_group_list, 'FixRole');
-
-    //人狼
-    //PrintData($random_wolf_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->$wolf_name); //テスト用
-
-    $add_count = round($user_count / $CAST_CONF->chaos_min_wolf_rate) - $fix_role_group_list['wolf'];
-    $CAST_CONF->AddRandom($random_role_list, $random_wolf_list, $add_count);
-    //PrintData($random_role_list);
-
-    //妖狐
-    //PrintData($random_fox_list);
-    //$CAST_CONF->RateToProbability($CAST_CONF->$fox_name); //テスト用
-
-    $add_count = floor($user_count / $CAST_CONF->chaos_min_fox_rate) - $fix_role_group_list['fox'];
-    $CAST_CONF->AddRandom($random_role_list, $random_fox_list, $add_count);
-    //PrintData($random_role_list);
 
     //-- ランダム配役 --//
     //PrintData($random_full_list);
@@ -119,48 +128,70 @@ function GetRoleList($user_count){
     foreach($chaos_fix_role_list as $key => $value) $role_list[$key] += (int)$value;
     //PrintData($role_list, '1st_list');
 
-    //役職グループ毎に集計
-    foreach($role_list as $key => $value){
-      $role_group = $ROLE_DATA->DistinguishRoleGroup($key);
-      $role_group_list->{$role_group}[$key] = $value;
-    }
-    foreach($random_role_list as $key => $value){ //補正用リスト
-      $role_group = $ROLE_DATA->DistinguishRoleGroup($key);
-      $random_role_group_list->{$role_group}[$key] = $value;
-    }
-
-    //-- 最大補正 --//
-    foreach($CAST_CONF->chaos_role_group_rate_list as $name => $rate){
-      $target =& $random_role_group_list->$name;
-      if(! (is_array($role_group_list->$name) && is_array($target))) continue;
-      $over_count = array_sum($role_group_list->$name) - round($user_count * $rate);
-      //if($over_count > 0) PrintData($over_count, $name); //テスト用
-      for(; $over_count > 0; $over_count--){
-	if(array_sum($target) < 1) break;
-	//PrintData($target, "　　$over_count: before");
-	arsort($target);
-	//PrintData($target, "　　$over_count: after");
-	$key = key($target);
-	//PrintData($key, "　　target");
-	$target[$key]--;
-	$role_list[$key]--;
+    if($chaos_verso){ //-- 裏・闇鍋モード補正 --//
+      $rest_count = $user_count - ($role_list['wolf'] + $role_list['fox']);
+      foreach($CAST_CONF->disable_dummy_boy_role_list as $disable_role){
+	$rest_count -= $role_list[$disable_role];
+      }
+      if($rest_count < 1){
+	if(count($role_list['wolf']) > 1)     $reduce_role = 'wolf';
+	elseif(count($role_list['fox'])  > 0) $reduce_role = 'fox';
+	else{
+	  foreach($CAST_CONF->disable_dummy_boy_role_list as $disable_role){
+	    if($role_list[$disable_role] > 0){
+	      $reduce_role = $disable_role;
+	      break;
+	    }
+	  }
+	}
+	$role_list[$reduce_role]--;
 	$role_list['human']++;
-	//PrintData($target, "　　$over_count: delete");
-
-	//0 になった役職はリストから除く
-	if($role_list[$key] < 1) unset($role_list[$key]);
-	if($target[$key]    < 1) unset($target[$key]);
+	//PrintData($reduce_role);
       }
     }
-    //PrintData($role_list, '2nd_list');
+    else{ //-- 最大補正 --//
+      //役職グループ毎に集計
+      foreach($role_list as $key => $value){
+	$role_group = $ROLE_DATA->DistinguishRoleGroup($key);
+	$role_group_list->{$role_group}[$key] = $value;
+      }
+      foreach($random_role_list as $key => $value){ //補正用リスト
+	$role_group = $ROLE_DATA->DistinguishRoleGroup($key);
+	$random_role_group_list->{$role_group}[$key] = $value;
+      }
 
-    //神話マニア村以外なら一定数以上の村人を別の役職に振り返る
-    if(! $ROOM->IsReplaceHumanGroup()){
-      $over_count = $role_list['human'] - round($user_count * $CAST_CONF->chaos_max_human_rate);
-      if($over_count > 0){
-	$CAST_CONF->AddRandom($role_list, $replace_human_list, $over_count);
-	$role_list['human'] -= $over_count;
-	//PrintData($role_list, '3rd_list');
+      foreach($CAST_CONF->chaos_role_group_rate_list as $name => $rate){
+	$target =& $random_role_group_list->$name;
+	if(! (is_array($role_group_list->$name) && is_array($target))) continue;
+	$over_count = array_sum($role_group_list->$name) - round($user_count * $rate);
+	//if($over_count > 0) PrintData($over_count, $name); //テスト用
+	for(; $over_count > 0; $over_count--){
+	  if(array_sum($target) < 1) break;
+	  //PrintData($target, "　　$over_count: before");
+	  arsort($target);
+	  //PrintData($target, "　　$over_count: after");
+	  $key = key($target);
+	  //PrintData($key, "　　target");
+	  $target[$key]--;
+	  $role_list[$key]--;
+	  $role_list['human']++;
+	  //PrintData($target, "　　$over_count: delete");
+
+	  //0 になった役職はリストから除く
+	  if($role_list[$key] < 1) unset($role_list[$key]);
+	  if($target[$key]    < 1) unset($target[$key]);
+	}
+      }
+      //PrintData($role_list, '2nd_list');
+
+      //神話マニア村以外なら一定数以上の村人を別の役職に振り返る
+      if(! $ROOM->IsReplaceHumanGroup()){
+	$over_count = $role_list['human'] - round($user_count * $CAST_CONF->chaos_max_human_rate);
+	if($over_count > 0){
+	  $CAST_CONF->AddRandom($role_list, $replace_human_list, $over_count);
+	  $role_list['human'] -= $over_count;
+	  //PrintData($role_list, '3rd_list');
+	}
       }
     }
   }

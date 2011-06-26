@@ -469,9 +469,9 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'detective',
     'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open', 'sudden_death', 'perverseness',
     'critical', 'joker', 'weather', 'festival', 'full_mania', 'full_chiroptera', 'full_cupid',
-    'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'topping',
-    'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
-    'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
+    'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper',
+    'chaos_verso', 'topping', 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role',
+    'secret_sub_role', 'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;

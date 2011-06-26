@@ -243,7 +243,7 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

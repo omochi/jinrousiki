@@ -295,7 +295,7 @@ OutputRolePageHeader('鬼陣営');
 <pre>
 夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>の全滅」。
 人攫いの対象が<a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>以外だった場合は無条件で失敗する。
-占われたら占った占い師を呪い殺し、<a href="human.php#voodoo_killer">陰陽師</a>の占いで死亡する。
+呪いを持ち、<a href="human.php#voodoo_killer">陰陽師</a>の占いで死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>

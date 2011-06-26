@@ -8,6 +8,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <div class="menu">新役職情報</div>
 <ul>
 <li><a target="body" href="summary.php">&lt;早見表&gt;</a></li>
+<li><a target="body" href="ability.php">&lt;能力者逆引き&gt;</a></li>
 <li><a target="_top" href="../">← 情報一覧</a></li>
 <li><a target="_top" href="../../">← TOP</a></li>
 <li>★☆★☆★☆★</li>

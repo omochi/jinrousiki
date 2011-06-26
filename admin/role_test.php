@@ -14,6 +14,7 @@ if($_POST['command'] == 'role_test'){
   case 'chaos':
   case 'chaosfull':
   case 'chaos_hyper':
+  case 'chaos_verso':
   case 'duel':
   case 'gray_random':
   case 'quiz':
@@ -72,6 +73,7 @@ function OutputRoleTestForm(){
 <input type="radio" name="game_option" value="chaos">闇鍋
 <input type="radio" name="game_option" value="chaosfull">真・闇鍋
 <input type="radio" name="game_option" value="chaos_hyper" checked>超・闇鍋
+<input type="radio" name="game_option" value="chaos_verso">裏・闇鍋
 <input type="radio" name="game_option" value="duel">決闘
 <input type="radio" name="game_option" value="duel_auto_open_cast">自動公開決闘
 <input type="radio" name="game_option" value="duel_not_open_cast">非公開決闘

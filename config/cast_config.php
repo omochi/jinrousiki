@@ -7,7 +7,7 @@ class CastConfig extends CastConfigBase{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   public $role_list = array(
-     4 => array('human' =>  1, 'wolf' => 1, 'shepherd_patron' => 1, 'mad' => 1),
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -84,6 +84,9 @@ class CastConfig extends CastConfigBase{
 
   //固定配役 (超・闇鍋)
   public $chaos_hyper_fix_role_list = array('mage' => 1, 'wolf' => 1);
+
+  //固定配役 (裏・闇鍋)
+  public $chaos_verso_fix_role_list = array();
 
   //人狼系の最低出現枠 (役職名 => 出現比)
   //闇鍋
@@ -533,6 +536,21 @@ class CastConfig extends CastConfigBase{
     'unknown_mania'        =>  2,
     'sacrifice_mania'      =>  2,
     'wirepuller_mania'     =>  1);
+
+  //裏・闇鍋
+  public $chaos_verso_random_role_list = array(
+    'human'           => 14,
+    'mage'            => 10,
+    'necromancer'     => 10,
+    'guard'           =>  5,
+    'common'          => 10,
+    'poison'          =>  5,
+    'assassin'        =>  5,
+    'wolf'            => 20,
+    'mad'             => 10,
+    'fanatic_mad'     =>  5,
+    'fox'             =>  5,
+    'quiz'            =>  1);
 
   public $chaos_min_wolf_rate = 10; //人狼の最小出現比 (総人口 / N)
   public $chaos_min_fox_rate  = 15; //妖狐の最小出現比 (総人口 / N)

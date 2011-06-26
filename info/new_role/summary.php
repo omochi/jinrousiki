@@ -3131,6 +3131,13 @@ Ver. 1.4.0
     <td>Ver. 1.5.0 β4</td>
   </tr>
   <tr>
+    <td><a href="sub_role.php#day_voter">一日村長</a></td>
+    <td><a href="sub_role.php#authority_group">権力者系</a></td>
+    <td>強制</td>
+    <td class="ability">表示された日の限定の<a href="sub_role.php#authority">権力者</a>。</td>
+    <td>Ver. 1.5.0 β4</td>
+  </tr>
+  <tr>
     <td><a href="sub_role.php#mind_sheep">羊</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>強制</td>

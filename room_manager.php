@@ -118,6 +118,7 @@ function CreateRoom(){
   $chaos        = $ROOM_CONF->chaos        && $_POST['special_role']  == 'chaos';
   $chaosfull    = $ROOM_CONF->chaosfull    && $_POST['special_role']  == 'chaosfull';
   $chaos_hyper  = $ROOM_CONF->chaos_hyper  && $_POST['special_role']  == 'chaos_hyper';
+  $chaos_verso  = $ROOM_CONF->chaos_verso  && $_POST['special_role']  == 'chaos_verso';
   $quiz         = $ROOM_CONF->quiz         && $_POST['special_role']  == 'quiz';
   $special_role =
     ($ROOM_CONF->duel         && $_POST['special_role']  == 'duel') ||
@@ -162,8 +163,8 @@ function CreateRoom(){
       $check_option_role_list[] = 'gerd';
     }
 
-    if($chaos || $chaosfull || $chaos_hyper){ //闇鍋モード
-      $game_option_list[] = $chaos ? 'chaos' : ($chaosfull ? 'chaosfull' : 'chaos_hyper');
+    if($chaos || $chaosfull || $chaos_hyper || $chaos_verso){ //闇鍋モード
+      $game_option_list[] = $_POST['special_role'];
       $check_game_option_list[] = 'secret_sub_role';
       array_push($check_option_role_list, 'topping', 'chaos_open_cast', 'chaos_open_cast_camp',
 		 'chaos_open_cast_role');

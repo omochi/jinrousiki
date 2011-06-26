@@ -13,6 +13,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>
 <a href="#chaosfull"><?php echo $GAME_OPT_MESS->chaosfull ?></a>
 <a href="#chaos_hyper"><?php echo $GAME_OPT_MESS->chaos_hyper ?></a>
+<a href="#chaos_verso"><?php echo $GAME_OPT_MESS->chaos_verso ?></a>
 <a href="#chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定)</a>
 </p>
 <p>
@@ -289,6 +290,52 @@ OutputInfoPageHeader('闇鍋モード');
 <pre>
 実装されているすべての役職が出現します。
 </pre>
+
+<h2 id="chaos_verso"><?php echo $GAME_OPT_MESS->chaos_verso ?> [Ver. 1.5.0 β5～]</h2>
+<ol>
+<li><a href="#decide_role_fix">固定出現枠</a>が存在しません (初期設定)。</li>
+<li><a href="#decide_role_random">ランダム出現枠</a>の欄に記載されている補正処理が一切行われません。<br>
+  結果として、ゲーム開始時点で勝敗が決定している可能性が他のモードよりも高くなります。
+</li>
+</ol>
+<h3 id="chaos_verso_appear_role">出現役職</h3>
+<pre>
+出現する可能性のある役職は以下です。
+</pre>
+<p>
+<a href="#chaos_verso_human">村人陣営</a>
+<a href="#chaos_verso_wolf">人狼陣営</a>
+<a href="#chaos_verso_fox">妖狐陣営</a>
+<a href="#chaos_verso_quiz">出題者陣営</a>
+</p>
+
+<h4 id="chaos_verso_human"><a href="new_role/human.php">村人陣営</a></h4>
+<pre>
+<a href="new_role/human.php#human_group">村人系</a>：<a href="new_role/human.php#human">村人</a>
+<a href="new_role/human.php#mage_group">占い師系</a>：<a href="new_role/human.php#mage">占い師</a>
+<a href="new_role/human.php#necromancer_group">霊能者系</a>：<a href="new_role/human.php#necromancer">霊能者</a>
+<a href="new_role/human.php#guard_group">狩人系</a>：<a href="new_role/human.php#guard">狩人</a>
+<a href="new_role/human.php#common_group">共有者系</a>：<a href="new_role/human.php#common">共有者</a>
+<a href="new_role/human.php#poison_group">埋毒者系</a>：<a href="new_role/human.php#poison">埋毒者</a>
+<a href="new_role/human.php#assassin_group">暗殺者系</a>：<a href="new_role/human.php#assassin">暗殺者</a>
+</pre>
+
+<h4 id="chaos_verso_wolf"><a href="new_role/wolf.php">人狼陣営</a></h4>
+<pre>
+<a href="new_role/wolf.php#wolf_group">人狼系</a>：<a href="new_role/wolf.php#wolf">人狼</a>
+<a href="new_role/wolf.php#mad_group">狂人系</a>：<a href="new_role/wolf.php#mad">狂人</a>・<a href="new_role/wolf.php#fanatic_mad">狂信者</a>
+</pre>
+
+<h4 id="chaos_verso_fox"><a href="new_role/fox.php">妖狐陣営</a></h4>
+<pre>
+<a href="new_role/fox.php#fox_group">妖狐系</a>：<a href="new_role/fox.php#fox">妖狐</a>
+</pre>
+
+<h4 id="chaos_verso_quiz"><a href="new_role/quiz.php">出題者陣営</a></h4>
+<pre>
+<a href="new_role/quiz.php#quiz_group">出題者系</a>：<a href="new_role/quiz.php#quiz">出題者</a>
+</pre>
+
 
 <h2 id="chaos_old"><?php echo $GAME_OPT_MESS->chaos ?> (旧設定) [Ver. 1.4.0 α1～β11]</h2>
 <p>

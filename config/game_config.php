@@ -143,12 +143,13 @@ class RoomConfig{
 				     'replace_human');
 
   //特殊配役村の内訳
-  public $special_role_list = array('chaos', 'chaosfull', 'chaos_hyper', 'duel', 'gray_random',
-				    'quiz');
+  public $special_role_list = array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'duel',
+				    'gray_random', 'quiz');
 
   public $chaos = true; //闇鍋モード
   public $chaosfull = true; //真・闇鍋モード
   public $chaos_hyper = true; //超・闇鍋モード
+  public $chaos_verso = true; //裏・闇鍋モード
 
   public $topping = true; //固定配役追加モード
   //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる

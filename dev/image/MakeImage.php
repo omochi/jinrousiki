@@ -457,7 +457,7 @@ class RoleMessageList{
     'type' => 'escaper', 'delimiter' => array('^' => 'chicken'));
 
   public $divine_escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#麒麟#です。夜の#逃亡#先に^一日村長^を与え、#逃亡#先が_人狼_・:暗殺者:・=鬼=か、_人狼_に襲撃されたら死んでしまいます。",
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#麒麟#です。夜の#逃亡#先が|村人陣営|なら^一日村長^を与え、#逃亡#先が_人狼_・:暗殺者:・=鬼=か、_人狼_に襲撃されたら死んでしまいます。\n　仁の心を持つ君主が生まれると姿を現す吉兆の霊獣。君主となるべきものの下に宿り、王として相応しき存在であると証明するのです。",
     'type' => 'escaper', 'delimiter' => array('^' => 'authority', ':' => 'assassin', '=' => 'ogre'));
 
   public $wolf = array(
@@ -1016,7 +1016,7 @@ class RoleMessageList{
     'type' => 'duelist', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
 
   public $shepherd_patron = array(
-    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|羊飼い|です。初日の夜に村の人口の六分の一を|受援者|にできますが、さらに_羊_を与えてしまいます。",
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|羊飼い|です。初日の夜に村の人口の六分の一を|受援者|にできますが、さらに_羊_を与えてしまいます。\n　慈愛を食み生きる愛しい_羊_達、_羊_達を命に代えても恐ろしい#狼#の牙から守り切り、生の道へと導くのです。",
     'type' => 'duelist', 'delimiter' => array('#' => 'wolf', '_' => 'mind'));
 
   public $mania = array(
@@ -1871,7 +1871,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('divine_escaper');
 #$builder->Output('critical_duelist');
-#$builder->Output('cursed_avenger');
-$builder->Output('shepherd_patron');
+$builder->Output('cursed_avenger');

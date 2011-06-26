@@ -24,9 +24,9 @@ OutputInfoPageHeader('詳細な仕様');
 <h3 id="decide_role_room">村</h3>
 <ol>
 <li>参加人数を取得</li>
-<li>人数毎に設定されている配役データを取得 (<a href="cast.php">配役一覧</a>参照)</li>
+<li>人数毎に設定されている<a href="cast.php">配役データ</a>を取得</li>
 <li>特殊村なら全て差し替える</li>
-<li>通常村ならゲームオプションに応じて個別に入れ替える</li>
+<li>通常村なら<a href="game_option.php">ゲームオプション</a>に応じて個別に入れ替える</li>
 <li>配役決定</li>
 </ol>
 
@@ -34,14 +34,14 @@ OutputInfoPageHeader('詳細な仕様');
 <ol>
 <li>配役を取得</li>
 <li>ランダムな配役リストを作る</li>
-<li>身代わり君がなれる役職に当たるまで先頭からチェック</li>
+<li><a href="script_info.php#difference_dummy_boy">身代わり君がなれる役職</a>に当たるまで先頭からチェック</li>
 <li>全てチェックして見つからなければエラーを返す</li>
 <li>配役決定</li>
 </ol>
 
 <h3 id="decide_role_user">ユーザ</h3>
 <ol>
-<li>身代わり君の配役を決定してユーザリストから「決定済みリスト」へ移動</li>
+<li><a href="#decide_role_dummy_boy">身代わり君の配役</a>を決定してユーザリストから「決定済みリスト」へ移動</li>
 <li>ランダムなユーザリストを作る</li>
 <li>リストの先頭の人の希望役職を確認</li>
 <li>何か希望してて空きがあればその人の役が決定、「決定済みリスト」へ移動</li>
@@ -59,9 +59,9 @@ OutputInfoPageHeader('詳細な仕様');
 <li>投票能力がある役職であっても投票することはできません</li>
 </ol>
 <h3>Ver. 1.5.0 β2～</h3>
-<p>
+<pre>
 ゲーム開始前のみ遺言を変更できます
-</p>
+</pre>
 
 <h2 id="win">勝利判定</h2>
 <ol>
@@ -92,6 +92,9 @@ OutputInfoPageHeader('詳細な仕様');
 <li>出題者死亡 (クイズ村限定) → 引き分け</li>
 <li>規定数以上の再投票 → 引き分け</li>
 </ol>
+<pre>
+※ 村が引き分けになった場合は全員が引き分け扱いになります。
+</pre>
 
 <h2 id="dead">死因一覧</h2>
 <p>
@@ -125,7 +128,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 <h4>～<?php echo $MESSAGE->deadman ?></h4>
 <ul>
-<li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
+<li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>・<a href="new_role/human.php#centaurus_pharmacist">人馬</a>)</li>
 <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
@@ -145,7 +148,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
 <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
 <li>身代わり (<a href="new_role/ability.php#sacrifice">身代わり能力者</a>)</li>
-<li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>)</li>
+<li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>・<a href="new_role/human.php#soul_assassin">辻斬り</a>)</li>
 <li>罠 (<a href="new_role/ability.php#trap">罠能力者</a>)</li>
 <li>逃亡失敗 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)</li>
 <li>吸血 (<a href="new_role/vampire.php#incubus_vampire">青髭公</a>・<a href="new_role/vampire.php#succubus_vampire">飛縁魔</a>)</li>

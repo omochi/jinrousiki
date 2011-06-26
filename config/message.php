@@ -315,6 +315,7 @@ class GameOptionMessage{
   public $chaos                 = '闇鍋モード';
   public $chaosfull             = '真・闇鍋モード';
   public $chaos_hyper           = '超・闇鍋モード';
+  public $chaos_verso           = '裏・闇鍋モード';
   public $topping               = '固定配役追加モード';
   public $topping_a             = 'A：人形村';
   public $topping_b             = 'B：出題村';

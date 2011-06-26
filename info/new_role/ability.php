@@ -29,7 +29,9 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#poison">毒</a>
 </p>
 <p>
+<a href="#partner">仲間情報妨害</a>
 <a href="#cursed_group">呪い</a>
+<a href="#talk_convert">発言変換</a>
 <a href="#possessed">憑依</a>
 <a href="#possessed_limit">憑依制限</a>
 <a href="#seal">封印</a>
@@ -102,11 +104,11 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 
 <h2 id="sudden_death">ショック死発動能力者</h2>
-<h3 id="sudden_death_direct">直接発動型</h3>
+<h3 id="sudden_death_direct">直接型</h3>
 <pre>
 <a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
-<h3 id="sudden_death_indirect">間接発動型</h3>
+<h3 id="sudden_death_indirect">間接型</h3>
 <pre>
 <a href="sub_role.php#chicken">小心者</a>・<a href="sub_role.php#febris">熱病</a>・<a href="sub_role.php#frostbite">凍傷</a>・<a href="sub_role.php#death_warrant">死の宣告</a>・<a href="sub_role.php#panelist">解答者</a>参照
 </pre>
@@ -183,6 +185,16 @@ OutputRolePageHeader('能力者逆引き');
 <a href="human.php#poison_guard">騎士</a>・<a href="human.php#poison_group">埋毒者系</a>・<a href="human.php#poison_cat">猫又</a>・<a href="human.php#poison_jealousy">毒橋姫</a>・<a href="human.php#poison_doll">鈴蘭人形</a>・<a href="wolf.php#poison_wolf">毒狼</a>・<a href="fox.php#poison_fox">管狐</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="duelist.php#poison_avenger">山わろ</a>
 </pre>
 
+<h2 id="partner">仲間情報妨害能力者</h2>
+<h3 id="partner_silver">隠蔽型 (銀系)</h3>
+<pre>
+<a href="human.php#silver_doll">露西亜人形</a>・<a href="wolf.php#silver_wolf">銀狼</a>・<a href="fox.php#silver_fox">銀狐</a>
+</pre>
+<h3 id="partner_scarlet">混入型 (紅系)</h3>
+<pre>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+</pre>
+
 <h2 id="cursed_group">呪い能力者</h2>
 <h3 id="voodoo">呪術能力者 (能動型)</h3>
 <pre>
@@ -191,6 +203,16 @@ OutputRolePageHeader('能力者逆引き');
 <h3 id="cursed">呪い所持者 (受動型)</h3>
 <pre>
 <a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="ogre.php#cursed_yaksa">滝夜叉姫</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>
+</pre>
+
+<h2 id="talk_convert">発言変換能力者</h2>
+<h3 id="talk_convert_direct">直接型</h3>
+<pre>
+<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="sub_role.php#liar_group">狼少年系</a>・<a href="sub_role.php#silent">無口</a>・<a href="sub_role.php#mower">草刈り</a>
+</pre>
+<h3 id="talk_convert_indirect">間接型</h3>
+<pre>
+<a href="chiroptera.php#spring_fairy">春妖精</a>・<a href="chiroptera.php#summer_fairy">夏妖精</a>・<a href="chiroptera.php#autumn_fairy">秋妖精</a>・<a href="chiroptera.php#winter_fairy">冬妖精</a>・<a href="chiroptera.php#greater_fairy">大妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#sun_fairy">日妖精</a>
 </pre>
 
 <h2 id="possessed">憑依能力者</h2>
