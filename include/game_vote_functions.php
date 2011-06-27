@@ -163,7 +163,7 @@ function GetRoleList($user_count){
       foreach($CAST_CONF->chaos_role_group_rate_list as $name => $rate){
 	$target =& $random_role_group_list->$name;
 	if(! (is_array($role_group_list->$name) && is_array($target))) continue;
-	$over_count = array_sum($role_group_list->$name) - round($user_count * $rate);
+	$over_count = array_sum($role_group_list->$name) - round($user_count / $rate);
 	//if($over_count > 0) PrintData($over_count, $name); //テスト用
 	for(; $over_count > 0; $over_count--){
 	  if(array_sum($target) < 1) break;
@@ -186,7 +186,7 @@ function GetRoleList($user_count){
 
       //神話マニア村以外なら一定数以上の村人を別の役職に振り返る
       if(! $ROOM->IsReplaceHumanGroup()){
-	$over_count = $role_list['human'] - round($user_count * $CAST_CONF->chaos_max_human_rate);
+	$over_count = $role_list['human'] - round($user_count / $CAST_CONF->chaos_max_human_rate);
 	if($over_count > 0){
 	  $CAST_CONF->AddRandom($role_list, $replace_human_list, $over_count);
 	  $role_list['human'] -= $over_count;

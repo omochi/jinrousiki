@@ -69,26 +69,28 @@ class CastConfig extends CastConfigBase{
   public $decide         = 16; //決定者 [兼任]
   public $authority      = 16; //権力者 [兼任]
 
-  //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されません)
+  //希望制で役職希望が通る確率 (%) (身代わり君がいる場合は 100% にしても保証されない)
   public $wish_role_rate = 100;
 
-  //身代わり君がならない役職グループのリスト (人狼・妖狐陣営は常時対象外なので設定不要)
+  //身代わり君がならない役職グループのリスト (人狼・妖狐は常時対象外なので設定不要)
   public $disable_dummy_boy_role_list = array('poison');
 
-  //-- 闇鍋モードの配役設定 --//
-  //固定配役 (闇鍋)
+  //-- 闇鍋モード --//
+  //-- 固定枠 --//
+  //闇鍋
   public $chaos_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //固定配役 (真・闇鍋)
+  //真・闇鍋
   public $chaosfull_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //固定配役 (超・闇鍋)
+  //超・闇鍋
   public $chaos_hyper_fix_role_list = array('mage' => 1, 'wolf' => 1);
 
-  //固定配役 (裏・闇鍋)
+  //裏・闇鍋
   public $chaos_verso_fix_role_list = array();
 
-  //人狼系の最低出現枠 (役職名 => 出現比)
+  //-- 配役テーブル --//
+  //人狼の最小出現枠 (役職名 => 出現比)
   //闇鍋
   public $chaos_wolf_list = array(
     'wolf'        => 60,
@@ -133,8 +135,8 @@ class CastConfig extends CastConfigBase{
     'scarlet_wolf'   =>  3,
     'silver_wolf'    => 10);
 
-  //妖狐の最低出現枠 (役職名 => 出現比)
-  //普通闇鍋
+  //妖狐の最小出現枠 (役職名 => 出現比)
+  //闇鍋
   public $chaos_fox_list = array(
     'fox'       => 90,
     'child_fox' => 10);
@@ -178,7 +180,7 @@ class CastConfig extends CastConfigBase{
     'howl_fox'      =>  2);
 
   //ランダム配役テーブル (役職名 => 出現比)
-  //普通闇鍋
+  //闇鍋
   public $chaos_random_role_list = array(
     'human'           => 88,
     'mage'            => 50,
@@ -539,34 +541,19 @@ class CastConfig extends CastConfigBase{
 
   //裏・闇鍋
   public $chaos_verso_random_role_list = array(
-    'human'           => 14,
-    'mage'            => 10,
-    'necromancer'     => 10,
-    'guard'           =>  5,
-    'common'          => 10,
-    'poison'          =>  5,
-    'assassin'        =>  5,
-    'wolf'            => 20,
-    'mad'             => 10,
-    'fanatic_mad'     =>  5,
-    'fox'             =>  5,
-    'quiz'            =>  1);
+    'human'       => 14,
+    'mage'        => 10,
+    'necromancer' => 10,
+    'guard'       =>  5,
+    'common'      => 10,
+    'poison'      =>  5,
+    'assassin'    =>  5,
+    'wolf'        => 20,
+    'mad'         => 10,
+    'fanatic_mad' =>  5,
+    'fox'         =>  5,
+    'quiz'        =>  1);
 
-  public $chaos_min_wolf_rate = 10; //人狼の最小出現比 (総人口 / N)
-  public $chaos_min_fox_rate  = 15; //妖狐の最小出現比 (総人口 / N)
-
-  //役職グループの最大出現比率 (グループ => 最大人口比率)
-  public $chaos_role_group_rate_list = array(
-    'wolf' => 0.21, 'mad' => 0.12, 'fox' => 0.1, 'child_fox' => 0.08,
-    'mage' => 0.17, 'necromancer' => 0.15, 'medium' => 0.1, 'priest' => 0.1, 'guard' => 0.15,
-    'common' => 0.15, 'poison' => 0.13, 'cat' => 0.1, 'pharmacist' => 0.15, 'assassin' => 0.15,
-    'scanner' => 0.15, 'jealousy' => 0.1, 'wizard' => 0.15, 'doll' => 0.15, 'escaper' => 0.15,
-    'cupid' => 0.1, 'angel' => 0.07, 'quiz' => 0.15, 'vampire' => 0.15, 'chiroptera' => 0.12,
-    'fairy' => 0.12, 'ogre' => 0.12, 'yaksa' => 0.12, 'duelist' => 0.07, 'avenger' => 0.07,
-    'patron' => 0.08);
-
-  //村人の出現上限補正
-  public $chaos_max_human_rate = 0.1; //村人の最大人口比 (1.0 = 100%)
   //村人から振り返る役職 => 出現比
   //闇鍋
   public $chaos_replace_human_role_list = array('mania' => 1);
@@ -585,7 +572,45 @@ class CastConfig extends CastConfigBase{
     'sacrifice_mania'  => 10,
     'wirepuller_mania' =>  5);
 
-  //固定配役追加モード
+  //-- 出現補正値 --//
+  public $chaos_min_wolf_rate  = 10; //人狼の最小出現比 (総人口 / N)
+  public $chaos_min_fox_rate   = 15; //妖狐の最小出現比 (総人口 / N)
+  public $chaos_max_human_rate = 10; //村人の最大出現比 (総人口 / N)
+
+  //役職グループの最大出現比 (グループ => 総人口 / N)
+  public $chaos_role_group_rate_list = array(
+    'mage'        =>  6.2,
+    'necromancer' =>  6.7,
+    'medium'      =>  8,
+    'priest'      =>  6.7,
+    'guard'       =>  7.1,
+    'common'      =>  6.7,
+    'poison'      =>  7.1,
+    'cat'         => 10,
+    'pharmacist'  =>  6.7,
+    'assassin'    =>  7.1,
+    'scanner'     =>  6.7,
+    'jealousy'    =>  8,
+    'wizard'      =>  6.7,
+    'doll'        =>  6.7,
+    'escaper'     =>  7.1,
+    'wolf'        =>  4.8,
+    'mad'         =>  7.1,
+    'fox'         => 10,
+    'child_fox'   => 12,
+    'cupid'       => 10,
+    'angel'       => 12,
+    'quiz'        =>  6.7,
+    'vampire'     =>  6.7,
+    'chiroptera'  =>  8,
+    'fairy'       =>  8,
+    'ogre'        =>  8,
+    'yaksa'       =>  8,
+    'duelist'     => 14.2,
+    'avenger'     => 14.2,
+    'patron'      => 12);
+
+  //-- 固定配役追加モード --//
   /*
     fix    : 固定枠
     random : ランダム枠 (各配列の中身は役職 => 出現比)
@@ -602,14 +627,14 @@ class CastConfig extends CastConfigBase{
   public $topping_list = array(
     'a' => array('fix' => array('doll_master' => 1),
 		 'random' => array(
-                    array('doll'         =>  30,
-			  'friend_doll'  =>   5,
-			  'phantom_doll' =>  10,
-			  'poison_doll'  =>  15,
-			  'doom_doll'    =>  15,
-			  'revive_doll'  =>  10,
-			  'scarlet_doll' =>  10,
-			  'silver_doll'  =>   5)),
+                    array('doll'         => 30,
+			  'friend_doll'  =>  5,
+			  'phantom_doll' => 10,
+			  'poison_doll'  => 15,
+			  'doom_doll'    => 15,
+			  'revive_doll'  => 10,
+			  'scarlet_doll' => 10,
+			  'silver_doll'  =>  5)),
 		 'count'  => array(1)),
     'b' => array('fix' => array('quiz' => 1, 'poison_ogre' => 1)),
     'c' => array('random' => array(
@@ -622,10 +647,10 @@ class CastConfig extends CastConfigBase{
 		 'count' => array(1)),
     'd' => array('fix' => array('resist_wolf' => 1),
 		 'random' => array(
-                    array('poison_cat'    =>  4,
-			  'revive_cat'    =>  2,
-			  'sacrifice_cat' =>  2,
-			  'eclipse_cat'   =>  2)),
+                    array('poison_cat'    => 4,
+			  'revive_cat'    => 2,
+			  'sacrifice_cat' => 2,
+			  'eclipse_cat'   => 2)),
 		 'count'  => array(1)),
     'e' => array('fix' => array('anti_voodoo' => 1, 'possessed_wolf' => 1)),
     'f' => array('random' => array(
