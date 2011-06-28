@@ -265,7 +265,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_necromancer">雲外鏡</a>・<a href="#soul_assassin">辻斬り</a>・<a href="#soul_wizard">八卦見</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#pierrot_wizard">道化師</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
+<a href="#soul_wizard">八卦見</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#pierrot_wizard">道化師</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -439,7 +439,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#spiritism_wizard">交霊術師</a>
+<a href="#spiritism_wizard">交霊術師</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1797,7 +1797,7 @@ Bの蘇生処理はキャンセル
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_mage">魂の占い師</a>・<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>
+<a href="#soul_wizard">八卦見</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2269,7 +2269,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#psycho">精神関連能力者</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -37,7 +37,10 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#last_words_limit">遺言制限</a>
+<a href="#soul">役職鑑定</a>
 <a href="#dummy">夢</a>
+</p>
+<p>
 <a href="#trap">罠</a>
 </p>
 
@@ -243,6 +246,17 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="last_words_limit">遺言制限能力者</h2>
 <pre>
 <a href="human.php#reporter">ブン屋</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#evoke_scanner">イタコ</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="sub_role.php#no_last_words">筆不精</a>・<a href="sub_role.php#possessed_exchange">交換憑依</a>
+</pre>
+
+<h2 id="soul">役職鑑定能力者</h2>
+<h3 id="soul_high">上位種型</h3>
+<pre>
+<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#soul_necromancer">雲外鏡</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#soul_assassin">辻斬り</a>)・<a href="human.php#awake_wizard">比丘尼</a>(<a href="human.php#soul_mage">魂の占い師</a>)
+<a href="human.php#spiritism_wizard">交霊術師</a>(<a href="human.php#soul_necromancer">雲外鏡</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="human.php#soul_mage">魂の占い師</a>)・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>
+</pre>
+<h3 id="soul_copy">コピー型</h3>
+<pre>
+<a href="duelist.php#soul_patron">家神</a>・<a href="mania.php#mania_group">神話マニア系</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
 </pre>
 
 <h2 id="dummy">夢能力者</h2>

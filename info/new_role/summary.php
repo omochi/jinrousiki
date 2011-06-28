@@ -47,7 +47,8 @@ Ver. 1.5.0
 <a href="#ver150b1">β1</a>
 <a href="#ver150b2">β2</a>
 <a href="#ver150b3">β3</a>
-<a href="#ver150b4">β4</a><br>
+<a href="#ver150b4">β4</a>
+<a href="#ver150b6">β6</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -2494,6 +2495,15 @@ Ver. 1.4.0
   <td>村人</td>
   <td class="ability">自分撃ち固定で、<a href="sub_role.php#critical_voter">会心</a>相当の能力を持つ上位決闘者。</td>
   <td>Ver. 1.5.0 β4</td>
+</tr>
+<tr id="ver150b6">
+  <td><a href="duelist.php#soul_patron">家神</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="sub_role.php#supported">受援者</a>の役職が分かる上位後援者。</td>
+  <td>Ver. 1.5.0 β6</td>
 </tr>
 </table>
 

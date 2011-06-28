@@ -19,6 +19,7 @@ Ver. 1.5.0<br>
 <a href="#ver150b2">β2</a>
 <a href="#ver150b3">β3</a>
 <a href="#ver150b4">β4</a>
+<a href="#ver150b5">β5</a>
 </p>
 <p>
 <a href="#ver141">Ver. 1.4.1</a>
@@ -77,6 +78,11 @@ Ver. 1.4.0<br>
 <a href="#ver140a23">α23</a>
 <a href="#ver140a24">α24</a>
 </p>
+
+<h2 id="ver150b5">Ver. 1.5.0 β5 (Rev. 357) : 2011/06/27 (Mon) 20:18</h2>
+<ul>
+<li>「裏・闇鍋モード」オプション実装</li>
+</ul>
 
 <h2 id="ver150b4">Ver. 1.5.0 β4 (Rev. 355) : 2011/06/25 (Sat) 05:46</h2>
 <ul>

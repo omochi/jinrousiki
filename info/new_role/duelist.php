@@ -234,6 +234,7 @@ OutputRolePageHeader('決闘者陣営');
 <p><a href="#patron_rule">基本ルール</a></p>
 <p>
 <a href="#patron">後援者</a>
+<a href="#soul_patron">家神</a>
 <a href="#sacrifice_patron">身代わり地蔵</a>
 <a href="#shepherd_patron">羊飼い</a>
 </p>
@@ -242,17 +243,33 @@ OutputRolePageHeader('決闘者陣営');
 <ol>
 <li>初日の夜に一定数の「<a href="sub_role.php#supported">受援者</a>」を作ります。</li>
 <li>勝利条件は「自分の作った受援者が一人以上生存していること」で、自身の生死は不問です。</li>
+<li><a href="sub_role.php#supported">受援者</a>の人数は明記していない場合は一人です。</li>
 </ol>
 
 <h3 id="patron">後援者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β3～]</h3>
 <pre>
-後援者系の基本種。<a href="sub_role.php#supported">受援者</a>の人数は一人。
+後援者系の基本種。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#avenger">復讐者</a>の逆バージョンです。
 決闘者陣営の中では比較的勝利条件は緩めですが「事故」に弱いので
 運に左右されやすいとも言えます。
+</pre>
+
+<h3 id="soul_patron">家神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<pre>
+<a href="sub_role.php#supported">受援者</a>の役職が分かる上位後援者。
+役職は1日目時点のもので、2日目にのみ表示される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#soul">役職鑑定能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="mania.php">神話マニア陣営</a>の後援者バージョンです。
+相手の正体を知ることで最適な支援方針を検討しやすくなります。
 </pre>
 
 <h3 id="sacrifice_patron">身代わり地蔵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>

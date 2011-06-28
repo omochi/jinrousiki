@@ -1011,6 +1011,10 @@ class RoleMessageList{
     'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|後援者|です。初日の夜に誰か一人を|受援者|にし、その生存が勝利条件となります。\n　あなたは誰かのための足長おじさんです。その誰かに気づかれなくとも、尽くしましょう。",
     'type' => 'duelist');
 
+  public $soul_patron = array(
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|家神|です。初日の夜に誰か一人を|受援者|にし、その役職を知ることができます。",
+    'type' => 'duelist', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
+
   public $sacrifice_patron = array(
     'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|身代わり地蔵|です。あなたの|受援者|が#人狼#に襲撃されても自分の命と引き換えに守ることができます。\n　#人狼#の襲撃などものともしない石の体と全てを救おうとする慈悲の心で、己の生命を賭けて信者を救うのです。",
     'type' => 'duelist', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
@@ -1682,6 +1686,7 @@ class RoleMessageList{
   public $result_critical_avenger = array('message' => "さんは|狂骨|でした", 'type' => 'result_avenger');
   public $result_revive_avenger = array('message' => "さんは|夜刀神|でした", 'type' => 'result_avenger');
   public $result_patron = array('message' => "さんは|後援者|でした", 'type' => 'duelist');
+  public $result_soul_patron = array('message' => "さんは|家神|でした", 'type' => 'result_patron');
   public $result_sacrifice_patron = array('message' => "さんは|身代わり地蔵|でした", 'type' => 'result_patron');
   public $result_shepherd_patron = array('message' => "さんは|羊飼い|でした", 'type' => 'result_patron');
   public $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
@@ -1872,4 +1877,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 #$builder->Output('critical_duelist');
-$builder->Output('cursed_avenger');
+#$builder->Output('cursed_avenger');
+$builder->Output('soul_patron');

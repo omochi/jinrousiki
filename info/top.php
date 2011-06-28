@@ -9,20 +9,19 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </p>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 β4 アップロード (2011/06/25 (Sat) 05:46) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β5 アップロード (2011/06/27 (Mon) 20:18) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#ver150b1">デバッグ情報</a> (2011/05/19 (Thu) 02:55)</li> -->
-  <li>「求道者」「山わろ」「がしゃどくろ」「狂骨」「麒麟」「身代わり地蔵」<br>「夜刀神」「羊飼い」「剣闘士」実装</li>
-  <li>サブ役職「元求道者」「一日村長」「羊」「羊皮」実装</li>
+  <li>→ <a href="info/develop/debug.php#ver150b5">デバッグ情報</a> (2011/06/29 (Wed) 00:21)</li>
+  <li>「裏・闇鍋モード」オプション実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>家神：受援者の役職が分かる上位後援者。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>裏・闇鍋モード実装</li>
+  <li>なし</li>
 </ul>

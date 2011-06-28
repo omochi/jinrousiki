@@ -324,12 +324,11 @@ function OutputAbility(){
       $stack = array();
       foreach($USERS->rows as $user){
 	if($user->IsRole('possessed_wolf')){
-	  $stack['wolf'][] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
+	  $stack[] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
 	}
 	elseif($user->IsWolf(true)){
-	  $stack['wolf'][] = $user->handle_name;
+	  $stack[] = $user->handle_name;
 	}
-	if($user->IsWolf(true)) $stack[] = $USERS->GetHandleName($user->uname, true);
       }
       OutputPartner($stack, 'wolf_partner');
       unset($stack);
@@ -538,6 +537,9 @@ function OutputAbility(){
     OutputPartner($stack, $header);
     unset($stack);
 
+    if($ROOM->date == 2 && $SELF->IsRole('soul_patron')){ //家神
+      OutputSelfAbilityResult('PATRON_RESULT'); //
+    }
     if($ROOM->date == 1 && $ROOM->IsNight()){ //投票
       OutputVoteMessage('duelist-do', 'duelist_do', 'DUELIST_DO');
     }
@@ -960,6 +962,7 @@ function OutputSelfAbilityResult($action){
     break;
 
   case 'MANIA_RESULT':
+  case 'PATRON_RESULT':
     $type = 'mage';
     break;
 

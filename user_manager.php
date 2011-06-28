@@ -13,108 +13,109 @@ function EntryUser(){
   global $SERVER_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
+  if($GAME_CONF->trip && $trip != '') $uname .= ConvertTrip('#'.$trip); //トリップ変換
+  $back_url = '<br><a href="user_manager.php?room_no=' . $room_no . '">戻る</a>'; //バックリンク
 
   //記入漏れチェック
   $title = '村人登録 [入力エラー]';
-  $sentence = 'が空です (空白と改行コードは自動で削除されます)';
-  if($uname == '')       OutputActionResult($title, 'ユーザ名'     . $sentence);
-  if($handle_name == '') OutputActionResult($title, '村人の名前'   . $sentence);
-  if($password == '')    OutputActionResult($title, 'パスワード'   . $sentence);
-  if($profile == '')     OutputActionResult($title, 'プロフィール' . $sentence);
-  if(empty($sex))        OutputActionResult($title, '性別が入力されていません');
-  if(empty($icon_no))    OutputActionResult($title, 'アイコン番号が入力されていません');
+  $str = 'が空です (空白と改行コードは自動で削除されます)' . $back_url;
+  if($uname == '')       OutputActionResult($title, 'ユーザ名'     . $str);
+  if($handle_name == '') OutputActionResult($title, '村人の名前'   . $str);
+  if($password == '')    OutputActionResult($title, 'パスワード'   . $str);
+  if($profile == '')     OutputActionResult($title, 'プロフィール' . $str);
+  if(empty($sex))        OutputActionResult($title, '性別が入力されていません' . $back_url);
+  if(empty($icon_no))    OutputActionResult($title, 'アイコン番号が入力されていません' . $back_url);
 
   //文字数制限チェック
+  $str = '文字まで' . $back_url;
   if(strlen($uname) > $GAME_CONF->entry_uname_limit){
-    OutputActionResult($title, 'ユーザ名は' . $GAME_CONF->entry_uname_limit . '文字まで');
+    OutputActionResult($title, 'ユーザ名は' . $GAME_CONF->entry_uname_limit . $str);
   }
   if(strlen($handle_name) > $GAME_CONF->entry_uname_limit){
-    OutputActionResult($title, '村人の名前は' . $GAME_CONF->entry_uname_limit . '文字まで');
+    OutputActionResult($title, '村人の名前は' . $GAME_CONF->entry_uname_limit . $str);
   }
   if(strlen($profile) > $GAME_CONF->entry_profile_limit){
-    OutputActionResult($title, 'プロフィールは' . $GAME_CONF->entry_profile_limit . '文字まで');
+    OutputActionResult($title, 'プロフィールは' . $GAME_CONF->entry_profile_limit . $str);
   }
 
   //例外チェック
   if($uname == 'dummy_boy' || $uname == 'system'){
-    OutputActionResult($title, 'ユーザ名「' . $uname . '」は使用できません');
+    OutputActionResult($title, 'ユーザ名「' . $uname . '」は使用できません' . $back_url);
   }
   if($handle_name == '身代わり君' || $handle_name == 'システム'){
-    OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません');
+    OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません' . $back_url);
   }
-  if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です');
+  if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です' . $back_url);
 
   $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no;
-  if($icon_no < 1 || FetchResult($query) < 1) OutputActionResult($title, '無効なアイコン番号です');
-
-  //テーブルをロック
-  if(! LockTable()){
-    OutputActionResult('村人登録 [サーバエラー]',
-		       'サーバが混雑しています。<br>'."\n".'再度登録してください');
+  if($icon_no < 1 || FetchResult($query) < 1){
+    OutputActionResult($title, '無効なアイコン番号です' . $back_url);
   }
 
-  //項目被りチェック
-  //比較演算子は大文字・小文字を区別しないのでクエリで直に判定する
+  if(! LockTable()){ //DB をロック
+    OutputActionResult('村人登録 [サーバエラー]',
+		       'サーバが混雑しています。<br>'."\n".'再度登録してください' . $back_url);
+  }
+
+  //重複チェック (比較演算子は大文字・小文字を区別しないのでクエリで直に判定する)
   $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
 
   //キックされた人と同じユーザ名
   if(FetchResult($query . "uname = '{$uname}' AND live = 'kick'") > 0){
     OutputActionResult('村人登録 [キックされたユーザ]',
 		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
-		       '別の名前にしてください。', '', true);
+		       '別の名前にしてください。' . $back_url, '', true);
   }
 
-  //ユーザ名、村人名
+  //ユーザ名・村人名
   $query .= "live = 'live' AND ";
   if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     OutputActionResult('村人登録 [重複登録エラー]',
 		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
-		       '別の名前にしてください。', '', true);
+		       '別の名前にしてください。' . $back_url, '', true);
   }
-  //OutputActionResult('トリップテスト', $uname . '<br>' . $handle_name);
+  //OutputActionResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
 
-  //IPアドレスチェック
-  $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
+  //IP アドレスチェック
+  $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
   if(! $SERVER_CONF->debug_mode){
-    if(CheckBlackList()){
-      OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。', '', true);
-    }
-    elseif($GAME_CONF->entry_one_ip_address &&
-	   FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
+    if($GAME_CONF->entry_one_ip_address &&
+       FetchResult("{$query} ip_address = '{$ip_address}'") > 0){
       OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。', '', true);
     }
+    elseif(CheckBlackList()){
+      OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。', '', true);
+    }
   }
 
-  //DBから最大人数を取得
-  $ROOM = RoomDataSet::LoadEntryUser($room_no);
+  $ROOM = RoomDataSet::LoadEntryUser($room_no); //DB から現在の村情報を取得
+  if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){ //ゲーム開始判定
+    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています', '', true);
+  }
 
+  //DB から現在のユーザ情報を取得
   $request = new RequestBase();
   $request->room_no = $room_no;
   $request->entry_user = true;
   $USERS = new UserDataSet($request);
   //PrintData($USERS); //テスト用
 
-  $ROOM = RoomDataSet::LoadEntryUser($room_no); //DBから最大人数を取得
-  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
   $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
-
-  if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){ //ゲーム開始判定
-    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています', '', true);
-  }
   if($user_count >= $ROOM->max_user){ //定員オーバー判定
     OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
   }
-
-  //クッキーの初期化
-  $ROOM->system_time = TZTime(); //現在時刻を取得
-  $cookie_time = $ROOM->system_time - 3600;
-  setcookie('day_night',  '', $cookie_time);
-  setcookie('vote_times', '', $cookie_time);
-  setcookie('objection',  '', $cookie_time);
+  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
 
   //DB にユーザデータを登録
   if(InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
 		$sex, $role, $SESSION->Get(true))){
+    //クッキーの初期化
+    $ROOM->system_time = TZTime(); //現在時刻を取得
+    $cookie_time = $ROOM->system_time - 3600;
+    setcookie('day_night',  '', $cookie_time);
+    setcookie('vote_times', '', $cookie_time);
+    setcookie('objection',  '', $cookie_time);
+
     $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
     $url = 'game_frame.php?room_no=' . $room_no;
     $user_count++;
@@ -144,9 +145,6 @@ function OutputEntryUserPage(){
     OutputActionResult('村人登録 [入村不可]', $str . 'すでにゲームが開始されています。');
   }
   $ROOM->ParseOption(true);
-  $trip = '(トリップ使用' . ($GAME_CONF->trip ? '可能' : '不可') . ')';
-
-  OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
   $path = 'img/entry_user';
   $male_checked   = '';
   $female_checked = '';
@@ -159,6 +157,31 @@ function OutputEntryUserPage(){
     $female_checked = ' checked';
     break;
   }
+  if($GAME_CONF->trip){
+    $uname_form = <<<EOF
+<tr>
+<td class="img"><img src="{$path}/uname.gif" alt="ユーザ名"></td>
+<td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
+<td>＃ <input type="text" name="trip" size="15" maxlength="15" value="{$RQ_ARGS->trip}"></td>
+</tr>
+<tr>
+<td></td>
+<td colspan="2" class="explain">普段は表示されず、他のユーザ名がわかるのは死亡したときとゲーム終了後のみです<br>＃の右側はトリップ専用入力欄です。</td>
+</tr>
+
+EOF;
+  }
+  else{
+    $uname_form = <<<EOF
+<tr>
+<td class="img"><img src="{$path}/uname.gif" alt="ユーザ名"></td>
+<td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
+<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです(トリップ使用不可)</td>
+</tr>
+
+EOF;
+  }
+  OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
   echo <<<EOF
 <script type="text/javascript" src="javascript/submit_icon_search.js"></script>
 </head>
@@ -172,11 +195,7 @@ function OutputEntryUserPage(){
 <tr><td class="number">～{$ROOM->comment}～ [{$ROOM->id} 番地]</td></tr>
 <tr><td>
 <table class="input">
-<tr>
-<td class="img"><img src="{$path}/uname.gif" alt="ユーザ名"></td>
-<td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
-<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです{$trip}</td>
-</tr>
+{$uname_form}
 <tr>
 <td class="img"><img src="{$path}/handle_name.gif" alt="村人の名前"></td>
 <td><input type="text" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
