@@ -806,6 +806,11 @@ class RoleMessageList{
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血姫|です。あなたの|感染者|の役職を知ることができ、#暗殺#を跳ね返すことができます。\n　夜の姫が持ちしは眷属の本質を知る力。村の全てを紐解くその知を以て、夜の楽園を創るのです！ ",
     'type' => 'vampire', 'delimiter' => array('#' => 'assassin'));
 
+  public $scarlet_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|屍鬼|です。#人狼#からは_無意識_に、^妖狐^からは^子狐^に、=人形=からは=人形遣い=に見えています。",
+    'type' => 'vampire',
+    'delimiter' => array('#' => 'wolf', '_' => 'human', '^' => 'fox', '=' => 'doll'));
+
   public $chiroptera = array(
     'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|蝙蝠|、生き残れば勝利です。勝ち馬に乗り、いずれの存在からも疎まれながらも強く生き抜くのです！",
     'delimiter' => array('|' => 'chiroptera'));
@@ -1006,6 +1011,10 @@ class RoleMessageList{
   public $revive_avenger = array(
     'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|夜刀神|です。一度だけ#人狼#に襲撃されても^蘇生^できます。まだ死ねない、この復讐を果たすまで。まだ、死ねない…！",
     'type' => 'cursed_avenger');
+
+  public $cute_avenger = array(
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|草履大将|です。占われると#人狼#判定が出されるうえに、ごくまれに発言が遠吠えになってしまいます。",
+    'type' => 'poison_avenger');
 
   public $patron = array(
     'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|後援者|です。初日の夜に誰か一人を|受援者|にし、その生存が勝利条件となります。\n　あなたは誰かのための足長おじさんです。その誰かに気づかれなくとも、尽くしましょう。",
@@ -1470,6 +1479,7 @@ class RoleMessageList{
   public $result_weather_priest = array('message' => "さんは|祈祷師|でした", 'type' => 'result_priest');
   public $result_high_priest = array('message' => "さんは|大司祭|でした", 'type' => 'result_priest');
   public $result_crisis_priest = array('message' => "さんは|預言者|でした", 'type' => 'result_priest');
+  public $result_widow_priest = array('message' => "さんは|未亡人|でした", 'type' => 'result_priest');
   public $result_revive_priest = array('message' => "さんは|天人|でした", 'type' => 'result_priest');
   public $result_border_priest = array('message' => "さんは|境界師|でした", 'type' => 'result_priest');
   public $result_dummy_priest = array('message' => "さんは|夢司祭|でした", 'type' => 'result_priest');
@@ -1634,6 +1644,7 @@ class RoleMessageList{
   public $result_doom_vampire = array('message' => "さんは|冥血鬼|でした", 'type' => 'result_vampire');
   public $result_sacrifice_vampire = array('message' => "さんは|吸血公|でした", 'type' => 'result_vampire');
   public $result_soul_vampire = array('message' => "さんは|吸血姫|でした", 'type' => 'result_vampire');
+  public $result_scarlet_vampire = array('message' => "さんは|屍鬼|でした", 'type' => 'result_vampire');
   public $result_chiroptera = array('message' => "さんは|蝙蝠|でした", 'delimiter' => array('|' => 'chiroptera'));
   public $result_poison_chiroptera = array('message' => "さんは|毒蝙蝠|でした", 'type' => 'result_chiroptera');
   public $result_cursed_chiroptera = array('message' => "さんは|呪蝙蝠|でした", 'type' => 'result_chiroptera');
@@ -1685,6 +1696,7 @@ class RoleMessageList{
   public $result_cursed_avenger = array('message' => "さんは|がしゃどくろ|でした", 'type' => 'result_avenger');
   public $result_critical_avenger = array('message' => "さんは|狂骨|でした", 'type' => 'result_avenger');
   public $result_revive_avenger = array('message' => "さんは|夜刀神|でした", 'type' => 'result_avenger');
+  public $result_cute_avenger = array('message' => "さんは|草履大将|でした", 'type' => 'result_avenger');
   public $result_patron = array('message' => "さんは|後援者|でした", 'type' => 'duelist');
   public $result_soul_patron = array('message' => "さんは|家神|でした", 'type' => 'result_patron');
   public $result_sacrifice_patron = array('message' => "さんは|身代わり地蔵|でした", 'type' => 'result_patron');
@@ -1876,6 +1888,9 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
+$builder->Output('result_widow_priest');
+#$builder->Output('scarlet_vampire');
 #$builder->Output('critical_duelist');
 #$builder->Output('cursed_avenger');
-$builder->Output('soul_patron');
+#$builder->Output('cute_avenger');
+#$builder->Output('soul_patron');

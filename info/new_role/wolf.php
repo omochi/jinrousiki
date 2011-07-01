@@ -19,10 +19,14 @@ OutputRolePageHeader('人狼陣営');
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かる。</li>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かる。</li>
   <li><a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かる。<br>
-  ただし、<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
+  ただし、<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
   </li>
   <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
+<h5>Ver. 1.5.0 β6～</h5>
+<pre>
+<a href="human.php#unconscious">無意識</a>の枠に<a href="vampire.php#scarlet_vampire">屍鬼</a>も混ざって表示される。
+</pre>
 <h5>Ver. 1.5.0 β1～</h5>
 <pre>
 <a href="human.php#unconscious">無意識</a>の枠に<a href="lovers.php#scarlet_angel">紅天使</a>も混ざって表示される。

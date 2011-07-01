@@ -45,6 +45,11 @@ OutputPartner($stack, 'wolf_partner');
 }
 OutputPartner($stack['wolf'], 'wolf_partner');
 </pre>
+<h3>include/role/mind_scanner.php % 8行目付近 (2011/07/01 (Fri) 01:42)</h3>
+<pre>
+× public $mind_role = 'mind_role';
+○ public $mind_role = 'mind_read';
+</pre>
 
 <h2 id="ver150b1">Ver. 1.5.0 β1</h2>
 <h3>include/game_vote_functions.php % 1640行目付近 (2011/05/19 (Thu) 02:55)</h3>

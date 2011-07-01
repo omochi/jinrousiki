@@ -409,8 +409,8 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="#weather_boost_cute">萌動</a></td>
-  <td><a href="new_role/human.php#suspect">不審者</a></td>
-  <td></td>
+  <td><a href="new_role/ability.php#talk_convert_cute">発言変換能力者 (遠吠え置換型)</a></td>
+  <td>Ver. 1.5.0 β6～</td>
 </tr>
 <tr>
   <td><a href="#weather_brownie">慈雨</a></td>
@@ -419,8 +419,8 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="#weather_critical">烈日</a></td>
-  <td><a href="new_role/wolf.php#critical_mad">釣瓶落とし</a></td>
-  <td></td>
+  <td><a href="new_role/wolf.php#critical_mad">釣瓶落とし</a>・<a href="new_role/duelist.php#critical_avenger">狂骨</a></td>
+  <td>Ver. 1.5.0 β6～</td>
 </tr>
 <tr>
   <td><a href="#weather_frostbite">雪</a></td>
@@ -571,7 +571,7 @@ Ver. 1.5.0
 
 <h3 id="weather_boost_cute">萌動 [Ver. 1.5.0 α8～]</h3>
 <ul>
-  <li><a href="new_role/human.php#suspect">不審者</a>・<a href="new_role/wolf.php#cute_wolf">萌狼</a>・<a href="new_role/fox.php#cute_fox">萌狐</a>・<a href="new_role/chiroptera.php#cute_chiroptera">萌蝙蝠</a>の昼の発言が遠吠えに変換される確率が 5 倍になります。</li>
+  <li><a href="new_role/ability.php#talk_convert_cute">発言変換能力者 (遠吠え置換型)</a> の昼の発言が遠吠えに変換される確率が 5 倍になります。</li>
 </ul>
 
 <h3 id="weather_blind_talk_day">強風 [Ver. 1.5.0 α2～]</h3>

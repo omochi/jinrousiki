@@ -195,7 +195,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="partner_scarlet">混入型 (紅系)</h3>
 <pre>
-<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
 </pre>
 
 <h2 id="cursed_group">呪い能力者</h2>
@@ -211,11 +211,15 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="talk_convert">発言変換能力者</h2>
 <h3 id="talk_convert_direct">直接型</h3>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="sub_role.php#liar_group">狼少年系</a>・<a href="sub_role.php#silent">無口</a>・<a href="sub_role.php#mower">草刈り</a>
+<a href="sub_role.php#liar_group">狼少年系</a>・<a href="sub_role.php#silent">無口</a>・<a href="sub_role.php#mower">草刈り</a>
 </pre>
 <h3 id="talk_convert_indirect">間接型</h3>
 <pre>
 <a href="chiroptera.php#spring_fairy">春妖精</a>・<a href="chiroptera.php#summer_fairy">夏妖精</a>・<a href="chiroptera.php#autumn_fairy">秋妖精</a>・<a href="chiroptera.php#winter_fairy">冬妖精</a>・<a href="chiroptera.php#greater_fairy">大妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#sun_fairy">日妖精</a>
+</pre>
+<h3 id="talk_convert_cute">遠吠え置換型 (萌系)</h3>
+<pre>
+<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>
 </pre>
 
 <h2 id="possessed">憑依能力者</h2>
@@ -256,7 +260,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="soul_copy">コピー型</h3>
 <pre>
-<a href="duelist.php#soul_patron">家神</a>・<a href="mania.php#mania_group">神話マニア系</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
+<a href="human.php#widow_priest">未亡人</a>・<a href="duelist.php#soul_patron">家神</a>・<a href="mania.php#mania_group">神話マニア系</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
 </pre>
 
 <h2 id="dummy">夢能力者</h2>

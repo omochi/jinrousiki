@@ -153,7 +153,7 @@ function ConvertSay(&$say){
       $MESSAGE->{$role . '_footer'};
   }
   //萌系置換 (昼限定)
-  elseif($ROOM->IsDay() && $SELF->IsRole('suspect', 'cute_wolf', 'cute_fox', 'cute_chiroptera') &&
+  elseif($ROOM->IsDay() && ($SELF->IsRole('suspect') || $SELF->IsRoleGroup('cute')) &&
 	 mt_rand(1, 100) <= ($GAME_CONF->cute_wolf_rate * ($ROOM->IsEvent('boost_cute') ? 5 : 1))){
     $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
   }

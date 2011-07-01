@@ -53,6 +53,7 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('priest')){ //司祭系・恋司祭
     switch($SELF->main_role){ //役職名表示
     case 'crisis_priest': //預言者
+    case 'widow_priest':  //未亡人
       $ROLE_IMG->Output('human');
       break;
 

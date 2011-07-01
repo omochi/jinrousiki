@@ -57,7 +57,7 @@ OutputRolePageHeader('決闘者陣営');
 <h3 id="duelist">決闘者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
 <pre>
 決闘者陣営の基本種。
-自分撃ち固定で、矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
+自分撃ち固定で、<a href="sub_role.php#rival">宿敵</a>の相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -65,7 +65,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する「邪気悪魔」をアレンジしたもので、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/780" target="_top">新役職考案スレ(780)</a> が原型です。
+他国に実在する「邪気悪魔」をアレンジしたもので、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/780" target="_top">新役職考案スレ(780)</a> が原型です。
 投票能力はほぼ<a href="lovers.php">恋人陣営</a>互換です。
 </pre>
 
@@ -127,6 +127,7 @@ OutputRolePageHeader('決闘者陣営');
 <a href="#cursed_avenger">がしゃどくろ</a>
 <a href="#critical_avenger">狂骨</a>
 <a href="#revive_avenger">夜刀神</a>
+<a href="#cute_avenger">草履大将</a>
 </p>
 
 <h2 id="avenger_rule">基本ルール [復讐者系]</h2>
@@ -227,6 +228,21 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#revive_pharmacist">仙人</a>の復讐者バージョンです。「やとのかみ」と読みます。
+</pre>
+
+<h3 id="cute_avenger">草履大将 (占い結果：人狼 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<pre>
+占い結果が「人狼」と判定される劣化復讐者。
+昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。
+遠吠えの内容・発動率は<a href="wolf.php#cute_wolf">萌狼</a>と同じ。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#talk_convert">発言変換能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#cute_wolf">萌狼</a>の復讐者バージョンです。
 </pre>
 
 

@@ -452,8 +452,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
-  <td><a href="vampire.php#vampire">吸血鬼</a></td>
-  <td>Ver. 1.4.0 β14～</td>
+  <td><a href="vampire.php#scarlet_vampire">屍鬼</a></td>
+  <td>Ver. 1.5.0 β6～</td>
 </tr>
 <tr>
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
@@ -482,8 +482,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="duelist.php#avenger_group">復讐者系</a></td>
-  <td><a href="duelist.php#avenger">復讐者</a></td>
-  <td>Ver. 1.5.0 β3～</td>
+  <td><a href="duelist.php#cute_avenger">草履大将</a></td>
+  <td>Ver. 1.5.0 β6～</td>
 </tr>
 <tr>
   <td><a href="duelist.php#patron_group">後援者系</a></td>

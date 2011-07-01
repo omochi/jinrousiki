@@ -64,7 +64,7 @@ OutputRolePageHeader('村人陣営');
 </pre>
 <h4>同一表示役職</h4>
 <pre>
-<a href="#saint">聖女</a>・<a href="#executor">執行者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#chain_poison">連毒者</a>
+<a href="#saint">聖女</a>・<a href="#executor">執行者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#chain_poison">連毒者</a>
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -208,7 +208,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -711,6 +711,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#weather_priest">祈祷師</a>
 <a href="#high_priest">大司祭</a>
 <a href="#crisis_priest">預言者</a>
+<a href="#widow_priest">未亡人</a>
 <a href="#revive_priest">天人</a>
 <a href="#border_priest">境界師</a>
 <a href="#dummy_priest">夢司祭</a>
@@ -853,6 +854,27 @@ PP ラインの計算を難しくさせるために作成してみました。
 機械的な判定ができないので判定条件を「システム的な勝敗決定前日」としました。
 </pre>
 
+<h3 id="widow_priest">未亡人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<h4>[役職表示] <a href="#human">村人</a></h4>
+<pre>
+身代わり君の役職が分かる特殊な司祭。表示は「村人」。
+</pre>
+<ol>
+<li>2 日目昼に身代わり君と<a href="sub_role.php#mind_sympathy">共感者</a>になることで、身代わり君の役職が分かる。</li>
+<li>処理は 1 日目夜の集計時に実施されるので<a href="mania.php">神話マニア</a>がコピーした場合は無効。</li>
+<li>身代わり君がいない場合は無効。</li>
+<li>身代わり君自身には<a href="sub_role.php#mind_sympathy">共感者</a>はつかない。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#soul">役職鑑定能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方ウミガメ人狼のプレイヤーさんがモデルです。
+身代わり君の正体が分かることでレアケースを潰すことができますが、騙りやすいですね。
+</pre>
+
 <h3 id="revive_priest">天人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>
 <h4>[耐性] 蘇生：不可 / 憑依：無効</h4>
 <pre>
@@ -894,7 +916,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="border_priest">境界師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β12～]</h3>
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
-2日目以降、「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。
+2 日目以降「夜、自分に何らかの投票をした人の数」が分かる、特殊な司祭。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
@@ -920,6 +942,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 一定日数ごとに現在、生存している<a href="ability.php#dummy">夢系能力者</a>と<a href="chiroptera.php#fairy_group">妖精系</a>の人数が分かる特殊な司祭。
 本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -949,7 +975,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="guard_limit">護衛制限</h3>
 <ol>
-<li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a><br>
+<li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a><br>
   <a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
 <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出るが、護衛先は死亡する。</li>
 <li><a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されない。</li>
@@ -965,7 +991,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 2. 対象は特殊狂人・特殊妖狐・特殊吸血鬼・特殊蝙蝠。
 2-1. 特殊狂人 (<a href="wolf.php#mad">狂人</a>・<a href="wolf.php#fanatic_mad">狂信者</a>・<a href="wolf.php#whisper_mad">囁き狂人</a>以外の<a href="wolf.php#mad_group">狂人系</a>)
 2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
-2-3. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
+2-3. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
 2-4. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
 2-5. 特殊復讐者 (<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>)
 3. <a href="#hunter_guard">猟師</a>はさらに<a href="fox.php">妖狐陣営</a>を狩ることができる。
@@ -2373,8 +2399,12 @@ MVP の賞品としてプレゼントしたものです。
 <li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村人陣営の勝利」で、自身の生死は不問。</li>
 <li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になる。</li>
 <li><a href="#doll_master">人形遣い</a>が誰か分かる。</li>
-<li><a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+<li><a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
 </ol>
+<h5>Ver. 1.5.0 β6～</h5>
+<pre>
+<a href="#doll_master">人形遣い</a>の枠に<a href="vampire.php#scarlet_vampire">屍鬼</a>も混ざって表示される。
+</pre>
 <h5>Ver. 1.5.0 β1～</h5>
 <pre>
 <a href="#doll_master">人形遣い</a>の枠に<a href="lovers.php#scarlet_angel">紅天使</a>も混ざって表示される。

@@ -146,7 +146,7 @@ $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire';
+$RQ_ARGS->TestItems->test_users[20]->role = 'scarlet_vampire';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
@@ -164,7 +164,7 @@ $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'soul_patron';
+$RQ_ARGS->TestItems->test_users[23]->role = 'widow_priest';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
@@ -451,7 +451,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 15, 23) as $id){
+  foreach(array(5, 15, 23, 13, 20) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

@@ -158,8 +158,7 @@ Ver. 1.4.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">占った人の役職が分かる上位占い師。<br>
-    妖狐を呪殺できないが呪返しは受ける。</td>
+  <td class="ability">占った人の役職が分かる上位占い師。<br>妖狐を呪殺できないが呪返しは受ける。</td>
   <td>Ver. 1.4.0 α3-7</td>
 </tr>
 <tr>
@@ -177,8 +176,7 @@ Ver. 1.4.0
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">毒を持った上位狩人 (吊られても毒は発動しない)。<br>
-    <a href="human.php#guard_limit">護衛制限</a>の影響を受けない。</td>
+  <td class="ability">毒を持った上位狩人 (処刑時は毒は発動しない)。<br><a href="human.php#guard_limit">護衛制限</a>の影響を受けない。</td>
   <td>Ver. 1.4.0 α3-7</td>
 </tr>
 <tr>
@@ -196,8 +194,7 @@ Ver. 1.4.0
   <td><a href="fox.php#child_fox_group">子狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>子狐</td>
-  <td class="ability">呪殺されないが人狼に襲撃されると死亡する。<br>
-    仲間は分かるが念話はできない。占いも出来るが時々失敗する。</td>
+  <td class="ability">呪殺されないが人狼に襲撃されると死亡する。<br>仲間は分かるが念話はできない。占いも出来るが時々失敗する。</td>
   <td>Ver. 1.4.0 α3-7</td>
 </tr>
 <tr id="ver140a9">
@@ -206,8 +203,7 @@ Ver. 1.4.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>人狼</td>
   <td>村人</td>
-  <td class="ability">占い師に人狼と判定されてしまう村人 (本人表記は「<a href="human.php#human">村人</a>」)。<br>
-    低確率で発言が遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。</td>
+  <td class="ability">占い師に人狼と判定されてしまう村人 (本人表記は「<a href="human.php#human">村人</a>」)。<br>低確率で発言が遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。</td>
   <td>Ver. 1.4.0 α9</td>
 </tr>
 <tr id="ver140a11">
@@ -234,8 +230,7 @@ Ver. 1.4.0
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">昼に投票した人が毒を持っているか翌朝に分かる。<br>
-    毒持ちを吊ったときに、投票していたら解毒 (毒が発動しない) する。
+  <td class="ability">処刑投票先の毒能力が分かる。処刑者が毒能力者の場合は解毒 (毒が発動しない) する。
   </td>
   <td>Ver. 1.4.0 α12</td>
 </tr>
@@ -284,7 +279,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">低確率で発言が遠吠えに入れ替わってしまう。</td>
+  <td class="ability">低確率で発言が遠吠えに入れ替わってしまう人狼。</td>
   <td>Ver. 1.4.0 α14</td>
 </tr>
 <tr id="ver140a17">
@@ -370,8 +365,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼<br>(呪返し)</td>
   <td>呪狼</td>
-  <td class="ability">占われたら占った占い師を呪い殺す人狼。<br>
-    <a href="human.php#voodoo_killer">陰陽師</a>に占われたら殺される。</td>
+  <td class="ability">呪いを持った人狼。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -389,8 +383,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪返し)</td>
   <td>妖狐</td>
-  <td class="ability">占われたら占った占い師を呪い殺す妖狐。<br>
-    <a href="human.php#voodoo_killer">陰陽師</a>に占われるか<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">呪い・<a href="human.php#assassin_spec">暗殺反射</a>能力を持った妖狐。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -448,7 +441,7 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">一度だけ夜に村人一人に罠を仕掛けることができる特殊な狂人。<br>
-    罠を仕掛けた人の元に訪れた<a href="wolf.php#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>(一部を除く)・<a href="human.php#assassin_group">暗殺者系</a>などは死亡する。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+    罠を仕掛けた人の元に訪れた<a href="wolf.php#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>(一部を除く)・<a href="human.php#assassin_group">暗殺者系</a>などは死亡する。</td>
   <td>Ver. 1.4.0 α18</td>
 </tr>
 <tr id="ver140a19">
@@ -457,8 +450,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">夜に投票した人の占い行動を妨害する特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">夜に投票した人の占い行動を妨害する特殊な狂人。</td>
   <td>Ver. 1.4.0 α19</td>
 </tr>
 <tr>
@@ -477,8 +469,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">夜に投票した人に呪いをかける特殊な狂人。<br>
-    呪われた人を占った占い師は呪返しを受ける。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">夜の投票先に呪いをかける特殊な狂人。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -487,8 +478,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">夜に村人一人を選び、その人に呪いをかける妖狐。<br>
-    呪われた人を占った占い師は呪返しを受ける。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">夜の投票先にに呪いをかける妖狐。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -548,7 +538,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">生き残ったら勝利になる。<br>他の陣営の勝敗とは競合しない。</td>
+  <td class="ability">生き残ったら勝利になる。他陣営の勝敗とは競合しない。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr>
@@ -557,9 +547,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">毒を持った蝙蝠。毒の対象は [<a href="wolf.php#wolf_group">人狼系</a> + <a href="fox.php">妖狐陣営</a> + <a href="chiroptera.php">蝙蝠陣営</a>]。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持った蝙蝠。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr>
@@ -568,9 +556,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>村人<br>(呪返し)</td>
   <td>村人</td>
-  <td class="ability">占われたら占った占い師を呪い殺す蝙蝠。<br>
-    <a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">呪いを持った蝙蝠。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr>
@@ -649,8 +635,7 @@ Ver. 1.4.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる、司祭系の基本種。<br>
-   表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
+  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。<br>表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -715,8 +700,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">本人には<a href="lovers.php#self_cupid">求愛者</a>と表示されている蝙蝠。<br>
-    矢を撃つことはできるが恋人にはならず、<a href="sub_role.php#mind_receiver">受信者</a>もつかない。</td>
+  <td class="ability">本人には<a href="lovers.php#self_cupid">求愛者</a>と表示されている蝙蝠。<br>矢を撃つことはできるが恋人にはならず、<a href="sub_role.php#mind_receiver">受信者</a>もつかない。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr id="ver140b2">
@@ -829,8 +813,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">投票先の発言の先頭に共有者の囁きを追加する。<br>
-    呪い・占い妨害・厄払いの影響を受ける。</td>
+  <td class="ability">投票先の発言の先頭に共有者の囁きを追加する。</td>
   <td>Ver. 1.4.0 β6</td>
 </tr>
 <tr>
@@ -1160,9 +1143,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>蝙蝠</td>
   <td>村人</td>
-  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、他の蝙蝠陣営を身代わりにして生き延びる事ができる蝙蝠。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">身代わり能力を持った上位蝙蝠。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr id="ver140b10">
@@ -1642,8 +1623,7 @@ Ver. 1.4.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability">人狼に襲撃された時、自分の感染者を身代わりして生き延びることができる吸血鬼。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">身代わり能力を持つ上位吸血鬼。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
 <tr id="ver140b18">
@@ -1713,9 +1693,7 @@ Ver. 1.4.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability">女性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (男性なら吸血死)。
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">女性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼。</td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
 <tr>
@@ -1724,9 +1702,7 @@ Ver. 1.4.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability">男性しか<a href="sub_role.php#infected">感染者</a>にできない吸血鬼 (女性なら吸血死)。
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">男性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼。</td>
   <td>Ver. 1.4.0 β18</td>
 </tr>
 <tr id="ver140b19">
@@ -1756,9 +1732,7 @@ Ver. 1.4.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、<a href="sub_role.php#infected">感染者</a>に<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう吸血鬼。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、吸血先に<a href="sub_role.php#infected">感染者</a>と<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう吸血鬼。</td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
 <tr>
@@ -1767,9 +1741,7 @@ Ver. 1.4.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability"><a href="vampire.php#vampire_do">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
-    <a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability"><a href="human.php#assassin_spec">暗殺反射</a>を持ち、<a href="vampire.php#infected">感染者</a>の役職が分かる上位吸血鬼。</td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
 <tr>
@@ -2231,9 +2203,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>人狼</td>
   <td>蝙蝠</td>
-  <td class="ability">占い結果が「人狼」、霊能結果が「蝙蝠」と判定される蝙蝠。<br>
-    昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。
-  </td>
+  <td class="ability">占い結果が「人狼」、霊能結果が「蝙蝠」と判定される蝙蝠。<br>昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。</td>
   <td>Ver. 1.5.0 α7</td>
 </tr>
 <tr id="ver150a8">
@@ -2346,8 +2316,7 @@ Ver. 1.4.0
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">初日夜に自分と誰か一人を<a href="sub_role.php#rival">宿敵</a>にする。<br>
-    矢を撃った相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。</td>
+  <td class="ability">初日夜に自分と誰か一人を<a href="sub_role.php#rival">宿敵</a>にする。<br><a href="sub_role.php#rival">宿敵</a>の相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。</td>
   <td>Ver. 1.5.0 β1</td>
 </tr>
 <tr>
@@ -2503,6 +2472,34 @@ Ver. 1.4.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability"><a href="sub_role.php#supported">受援者</a>の役職が分かる上位後援者。</td>
+  <td>Ver. 1.5.0 β6</td>
+</tr>
+<tr>
+  <td><a href="vampire.php#scarlet_vampire">屍鬼</a></td>
+  <td><a href="vampire.php">吸血鬼</a></td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability"><a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
+  </td>
+  <td>Ver. 1.5.0 β6</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#cute_avenger">草履大将</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#avenger_group">復讐者系</a></td>
+  <td>人狼</td>
+  <td>村人</td>
+  <td class="ability">占い結果が「人狼」と判定される劣化復讐者。昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。</td>
+  <td>Ver. 1.5.0 β6</td>
+</tr>
+<tr>
+  <td><a href="human.php#widow_priest">未亡人</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#priest_group">司祭系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">身代わり君の役職が分かる特殊な司祭。表示は「村人」。</td>
   <td>Ver. 1.5.0 β6</td>
 </tr>
 </table>

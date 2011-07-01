@@ -21,10 +21,14 @@ OutputRolePageHeader('妖狐陣営');
 </li>
 <li><a href="#fox_group">妖狐系</a>は「深遠なる妖狐の智を持つ同胞は以下の人たちです」と表示され、<a href="#fox_talk">念話</a>ができる。</li>
 <li><a href="#child_fox_group">子狐系</a>は「妖狐に与する仲間は以下の人たちです」と表示され、<br>
-同じ枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+同じ枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなり、仲間リストからも消える (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 <li><a href="#possessed_fox">憑狐</a>が憑依すると仲間表示が憑依先の名前に変更される。</li>
 </ol>
+<h5>Ver. 1.5.0 β6～</h5>
+<pre>
+<a href="#child_fox_group">子狐系</a>の枠に<a href="vampire.php#scarlet_vampire">屍鬼</a>も混ざって表示される。
+</pre>
 <h5>Ver. 1.5.0 β1～</h5>
 <pre>
 <a href="#child_fox_group">子狐系</a>の枠に<a href="lovers.php#scarlet_angel">紅天使</a>も混ざって表示される。

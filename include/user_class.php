@@ -369,7 +369,7 @@ class User{
 			 'trap_fox', 'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera',
 			 'boss_chiroptera', 'cursed_avenger', 'critical_avenger') ||
       ($this->IsRoleGroup('mad')     && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
-      ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire'));
+      ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire', 'scarlet_vampire'));
   }
 
   //護衛制限判定
@@ -377,7 +377,8 @@ class User{
     return $this->IsRole('emissary_necromancer', 'detective_common', 'sacrifice_common',
 			 'reporter', 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard',
 			 'pierrot_wizard', 'doll_master') ||
-      ($this->IsRoleGroup('priest') && ! $this->IsRole('revive_priest', 'crisis_priest')) ||
+      ($this->IsRoleGroup('priest') &&
+       ! $this->IsRole('revive_priest', 'crisis_priest', 'widow_priest')) ||
       $this->IsRoleGroup('assassin');
   }
 
@@ -496,9 +497,9 @@ class User{
       if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
       if($this->IsOgre()) return 'ogre'; //鬼陣営は「鬼」
 
-      //人狼(白狼・完全覚醒天狼を除く)・不審者・黒狐・萌蝙蝠は「人狼」
+      //人狼(白狼・完全覚醒天狼を除く)・不審者・黒狐・萌蝙蝠・草履大将は「人狼」
       $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
-	$this->IsRole('suspect', 'black_fox', 'cute_chiroptera');
+	$this->IsRole('suspect', 'black_fox', 'cute_chiroptera', 'cute_avenger');
     }
     return ($result xor $reverse) ? 'wolf' : 'human';
   }

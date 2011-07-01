@@ -190,13 +190,6 @@ class SharedServerConfig extends SharedServerConfigBase{
 		      'footer' => '',
 		      'disable' => false),
 
-    'bourbon' => array('name' => 'バーボン鯖',
-		       'url' => 'http://www.freedom.xii.jp/jinro/',
-		       'encode' => 'EUC-JP',
-		       'separator' => '',
-		       'footer' => '',
-		       'disable' => false),
-
     'nekomata' => array('name' => '猫又鯖',
 			'url' => 'http://jinro.blue-sky-server.com/',
 			'encode' => 'UTF-8',
@@ -285,12 +278,11 @@ class MenuLinkConfig extends MenuLinkConfigBase{
     '東方陰陽鉄系予備' => array('旧バーボンハウス鯖' => 'http://www16.atpages.jp/bourbonjinro/'),
     'iM@S系' => array('小鳥鯖' => 'http://kiterew.tv/jinro/',
 		      'Wiki' => 'http://www38.atwiki.jp/ijinrou/'),
-    'バーボン鯖系' => array('バーボン鯖' => 'http://www.freedom.xii.jp/jinro/',
-			    '猫又鯖' => 'http://jinro.blue-sky-server.com/',
-			    'Wiki' => 'http://wikiwiki.jp/jinro/',
-			    '掲示板' => 'http://jbbs.livedoor.jp/netgame/4598/'),
+    '猫又系' => array('猫又鯖' => 'http://jinro.blue-sky-server.com/',
+		      'Wiki' => 'http://wikiwiki.jp/jinro/',
+		      '掲示板' => 'http://jbbs.livedoor.jp/netgame/4598/'),
     'AC 人狼系' => array('AC 人狼鯖' => 'http://acjinrou.blue-sky-server.com/',
-			    '掲示板' => 'http://acjinrou.bbs.fc2.com/'),
+			 '掲示板' => 'http://acjinrou.bbs.fc2.com/'),
     'Twitter人狼系' => array('Twitter鯖' => 'http://www22.atpages.jp/airelmas/jinro/'),
 			);
 }

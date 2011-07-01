@@ -44,7 +44,7 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する役職です。
+他国に実在する役職です。
 他陣営はいかに自陣の PP に引き込むかがポイントです。
 </pre>
 
@@ -52,8 +52,7 @@ OutputRolePageHeader('蝙蝠陣営');
 <h4>[耐性] 護衛：狩り</h4>
 <h4>[毒能力] 処刑：人狼系 + 妖狐陣営 + 蝙蝠陣営 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
-毒を持った蝙蝠で、毒能力は劣化<a href="human.php#strong_poison">強毒者</a>相当。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持った蝙蝠。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h5>Ver. 1.4.0 α22～</h5>
 <pre>
@@ -73,8 +72,7 @@ OutputRolePageHeader('蝙蝠陣営');
 <h3 id="cursed_chiroptera">呪蝙蝠 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <h4>[耐性] 占い：呪返し / 陰陽師：死亡 / 護衛：狩り</h4>
 <pre>
-占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す蝙蝠。
-<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+呪いを持った蝙蝠。<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -91,10 +89,10 @@ OutputRolePageHeader('蝙蝠陣営');
 <h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
 <h4>[身代わり能力] 蝙蝠陣営</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、他の蝙蝠陣営を身代わりにして生き延びる事ができる蝙蝠。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+身代わり能力を持った上位蝙蝠。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
+<li>身代わりの対象は他の蝙蝠陣営。</li>
 <li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
 <li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
 <li>本人は身代わりが発生しても分からない。</li>
@@ -112,9 +110,9 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する役職です。
+他国に実在する役職です。
 狼サイドから見ると、結果的には確実に一人殺せるので、
-誰でもいいから人数を減らしたい時には便利な存在と言えますね。
+誰でもいいから人数を減らしたい時には便利な存在と言えます。
 </pre>
 
 <h3 id="elder_chiroptera">古蝙蝠 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5～]</h3>

@@ -8,7 +8,7 @@ OutputRoleTestForm();
 if($_POST['command'] == 'role_test'){
   $RQ_ARGS =& new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
-  $stack->game_option = array();
+  $stack->game_option = array('dummy_boy');
   $stack->option_role = array();
   switch($_POST['game_option']){
   case 'chaos':
@@ -31,7 +31,9 @@ if($_POST['command'] == 'role_test'){
     $stack->option_role[] = 'not_open_cast';
     break;
   }
-  if($_POST['festival'] == 'on') $stack->game_option[] = ' festival';
+  foreach(array('festival', 'gerd', 'detective') as $option){
+    if($_POST[$option] == 'on') $stack->game_option[] = ' '.$option;
+  }
 
   if(array_search($_POST['replace_human'], $ROOM_CONF->replace_human_list) !== false){
     $stack->option_role[] = $_POST['replace_human'];
@@ -107,6 +109,8 @@ EOF;
   }
   echo <<<EOF
 <input type="checkbox" name="festival" value="on">お祭り
+<input type="checkbox" name="gerd" value="on">ゲルト君モード
+<input type="checkbox" name="detective" value="on">探偵村
 <input type="checkbox" name="limit_off" value="on">リミッタオフ
 </form>
 

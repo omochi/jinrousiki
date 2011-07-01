@@ -32,13 +32,13 @@ class Role_dummy_mania extends Role{
       'cupid'        => 'self_cupid',
       'angel'        => 'angel',
       'quiz'         => 'quiz',
-      'vampire'      => 'vampire',
+      'vampire'      => 'scarlet_vampire',
       'chiroptera'   => 'dummy_chiroptera',
       'fairy'        => 'mirror_fairy',
       'ogre'         => 'incubus_ogre',
       'yaksa'        => 'succubus_yaksa',
       'duelist'      => 'duelist',
-      'avenger'      => 'avenger',
+      'avenger'      => 'cute_avenger',
       'patron'       => 'patron');
 
   function __construct(){ parent::__construct(); }

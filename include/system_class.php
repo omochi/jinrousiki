@@ -646,6 +646,7 @@ class RoleData{
     'weather_priest'       => '祈祷師',
     'high_priest'          => '大司祭',
     'crisis_priest'        => '預言者',
+    'widow_priest'         => '未亡人',
     'revive_priest'        => '天人',
     'border_priest'        => '境界師',
     'dummy_priest'         => '夢司祭',
@@ -809,6 +810,7 @@ class RoleData{
     'doom_vampire'         => '冥血鬼',
     'sacrifice_vampire'    => '吸血公',
     'soul_vampire'         => '吸血姫',
+    'scarlet_vampire'      => '屍鬼',
     'chiroptera'           => '蝙蝠',
     'poison_chiroptera'    => '毒蝙蝠',
     'cursed_chiroptera'    => '呪蝙蝠',
@@ -860,6 +862,7 @@ class RoleData{
     'cursed_avenger'       => 'がしゃどくろ',
     'critical_avenger'     => '狂骨',
     'revive_avenger'       => '夜刀神',
+    'cute_avenger'         => '草履大将',
     'patron'               => '後援者',
     'soul_patron'          => '家神',
     'sacrifice_patron'     => '身代わり地蔵',
@@ -1006,6 +1009,7 @@ class RoleData{
     'weather_priest'       => '祈',
     'high_priest'          => '大司',
     'crisis_priest'        => '預',
+    'widow_priest'         => '未',
     'revive_priest'        => '天人',
     'border_priest'        => '境',
     'dummy_priest'         => '夢司',
@@ -1169,6 +1173,7 @@ class RoleData{
     'doom_vampire'         => '冥血',
     'sacrifice_vampire'    => '血公',
     'soul_vampire'         => '血姫',
+    'scarlet_vampire'      => '屍',
     'chiroptera'           => '蝙',
     'poison_chiroptera'    => '毒蝙',
     'cursed_chiroptera'    => '呪蝙',
@@ -1220,6 +1225,7 @@ class RoleData{
     'cursed_avenger'       => '餓紗',
     'critical_avenger'     => '骨',
     'revive_avenger'       => '夜刀',
+    'cute_avenger'         => '草履',
     'patron'               => '後援',
     'soul_patron'          => '家',
     'sacrifice_patron'     => '地蔵',
@@ -1724,6 +1730,18 @@ class CastConfigBase extends LotteryBuilder{
       if($key % 20 == 0) echo $str;
     }
     echo '</table>';
+  }
+
+  //身代わり君の配役対象外役職リスト取得
+  function GetDummyBoyRoleList(){
+    global $ROOM;
+
+    $stack = $this->disable_dummy_boy_role_list; //サーバ個別設定を取得
+    array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
+    if($ROOM->IsOption('detective') && ! in_array('detective_common', $stack)){ //探偵村対応
+      $stack[] = 'detective_common';
+    }
+    return $stack;
   }
 
   //決闘村の配役初期化処理

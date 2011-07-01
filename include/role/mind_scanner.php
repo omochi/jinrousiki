@@ -5,7 +5,7 @@
   ・追加役職：サトラレ
 */
 class Role_mind_scanner extends Role{
-  public $mind_role = 'mind_role';
+  public $mind_role = 'mind_read';
 
   function __construct(){ parent::__construct(); }
 }
