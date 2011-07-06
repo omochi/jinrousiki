@@ -19,6 +19,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#lovers_group">恋人系</a>
 <a href="#infected_group">感染者系</a>
 <a href="#joker_group">ジョーカー系</a>
+<a href="#copied_group">元神話マニア系</a>
 <a href="#other_group">その他</a>
 </p>
 
@@ -209,7 +210,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ogre.php#poison_ogre">榊鬼</a>
+<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="#watcher">傍観者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -464,7 +465,10 @@ OutputRolePageHeader('サブ役職');
 <a href="#rebel">反逆者</a>
 <a href="#random_voter">気分屋</a>
 <a href="#watcher">傍観者</a>
+</p>
+<p>
 <a href="#day_voter">一日村長</a>
+<a href="#wirepuller_luck">入道</a>
 </p>
 
 <h3 id="authority">権力者</h3>
@@ -479,6 +483,10 @@ OutputRolePageHeader('サブ役職');
 <h3 id="reduce_voter">無精者 [Ver. 1.5.0 β3～]</h3>
 <pre>
 処刑投票数が -1 される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -554,6 +562,10 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <pre>
 処刑投票数が 0 になる (投票行為自体は必要)。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#panelist">解答者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/8" target="_top">新役職考案スレ(8)</a> が原型です。
@@ -574,6 +586,23 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#febris">熱病</a>の権力者バージョンです。
 </pre>
 
+<h3 id="wirepuller_luck">入道 [Ver. 1.5.0 α5～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+付加させた人が一人でも生存している間は投票数が +2 されるが
+全員死亡すると得票数が +3 される。
+付加させた人が複数いても補正される値は同じ。
+<a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#wirepuller_mania">黒衣</a>・<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の雲山がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
+</pre>
+
 
 <h2 id="upper_luck_group">雑草魂系 (処刑得票数変化)</h2>
 <p>
@@ -586,6 +615,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <a href="#disfavor">不人気</a>
 <a href="#critical_luck">痛恨</a>
 <a href="#random_luck">波乱万丈</a>
+<a href="#occupied_luck">ひんな持ち</a>
 </p>
 
 <h3 id="upper_luck_rule">基本ルール [雑草魂系]</h3>
@@ -647,7 +677,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#critical_mad">釣瓶落とし</a>
+<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -666,6 +696,23 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 <pre>
 <a href="#random_voice">臆病者</a>の処刑得票数変化バージョンです。
 波乱万丈らしくするために、変動の程度には補正をかけていません。
+</pre>
+
+<h3 id="occupied_luck">ひんな持ち [Ver. 1.5.0 β6～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+処刑得票数が付加させた人が一人でも生存している間は +1、
+全員死亡すると +3 される。
+付加させた人が複数いても補正される値は同じ。
+<a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="duelist.php#critical_patron">ひんな神</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#wirepuller_luck">入道</a>の劣化バージョンで<a href="duelist.php#critical_patron">ひんな神</a>用に実装されたサブ役職です。
 </pre>
 
 
@@ -1042,7 +1089,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="lovers.php#angel_group">天使系</a>・<a href="#possessed_exchange">交換憑依</a>
+<a href="human.php#widow_priest">未亡人</a>・<a href="lovers.php#angel_group">天使系</a>・<a href="#possessed_exchange">交換憑依</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1403,6 +1450,76 @@ B：「恋人陣営の勝利」
 </pre>
 
 
+<h2 id="copied_group">元神話マニア系</h2>
+<p>
+<a href="#copied">元神話マニア</a>
+<a href="#copied_trick">元奇術師</a>
+<a href="#copied_basic">元求道者</a>
+<a href="#copied_soul">元覚醒者</a>
+<a href="#copied_teller">元夢語部</a>
+</p>
+
+
+<h3 id="copied">元神話マニア [Ver. 1.4.0 α11～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+コピー後の<a href="mania.php#mania">神話マニア</a>に付加される。
+</pre>
+<h5>Ver. 1.4.0 β9～10</h5>
+<pre>
+コピー後の<a href="mania.php#trick_mania">奇術師</a>にも付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="mania.php#mania">神話マニア</a>用に実装されたサブ役職です。
+</pre>
+
+<h3 id="copied_trick">元奇術師 [Ver. 1.4.0 β11～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+コピー後の<a href="mania.php#trick_mania">奇術師</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+交換コピーの発動をログで確認できるようにするために後から実装されたサブ役職です。
+</pre>
+
+<h3 id="copied_basic">元求道者 [Ver. 1.5.0 β4～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+コピー後の<a href="mania.php#basic_mania">求道者</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="mania.php#basic_mania">求道者</a>用に実装されたサブ役職です。
+</pre>
+
+<h3 id="copied_soul">元覚醒者 [Ver. 1.4.0 β11～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+コピー後の<a href="mania.php#soul_mania">覚醒者</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他の<a href="mania.php#mania_group">神話マニア系</a>とログで区別できるようにするために実装されたサブ役職です。
+</pre>
+
+<h3 id="copied_teller">元夢語部 [Ver. 1.4.0 β11～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#psycho_mage">精神鑑定士</a>や<a href="wolf.php#dream_eater_mad">獏</a>の判定に影響しないように他の元神話マニア系とは違い、完全に別名にしてあります。
+</pre>
+
+
 <h2 id="other_group">その他</h2>
 <p>
 <a href="#possessed_target">憑依者</a>
@@ -1410,17 +1527,9 @@ B：「恋人陣営の勝利」
 <a href="#bad_status">悪戯</a>
 <a href="#sheep_wisp">羊皮</a>
 <a href="#protected">庇護者</a>
-<a href="#wirepuller_luck">入道</a>
 <a href="#lost_ability">能力喪失</a>
 <a href="#muster_ability">能力発現</a>
-</p>
-<p>
 <a href="#changed_therian">元獣人</a>
-<a href="#copied">元神話マニア</a>
-<a href="#copied_trick">元奇術師</a>
-<a href="#copied_basic">元求道者</a>
-<a href="#copied_soul">元覚醒者</a>
-<a href="#copied_teller">元夢語部</a>
 </p>
 
 <h3 id="possessed_target">憑依者 [Ver. 1.4.0 α24～]</h3>
@@ -1527,23 +1636,6 @@ B：「恋人陣営の勝利」
 <a href="wolf.php#silver_wolf">銀狼</a>が仲間を襲撃した場合でも発生します。
 </pre>
 
-<h3 id="wirepuller_luck">入道 [Ver. 1.5.0 α5～]</h3>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-付加させた人が一人でも生存している間は投票数が +2 されるが
-全員死亡すると得票数が +3 される。
-付加させた人が複数いても補正される値は同じ。
-<a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="mania.php#wirepuller_mania">黒衣</a>・<a href="ability.php#authority">投票数変化能力者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-東方 Project の雲山がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
-</pre>
-
 <h3 id="lost_ability">能力喪失 [Ver. 1.4.0 α13～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
@@ -1588,64 +1680,5 @@ B：「恋人陣営の勝利」
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#therian_mad">獣人</a>用に実装されたサブ役職です。
-</pre>
-
-<h3 id="copied">元神話マニア [Ver. 1.4.0 α11～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-コピー後の<a href="mania.php#mania">神話マニア</a>に付加される。
-</pre>
-<h5>Ver. 1.4.0 β9～10</h5>
-<pre>
-コピー後の<a href="mania.php#trick_mania">奇術師</a>にも付加される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="mania.php#mania">神話マニア</a>用に実装されたサブ役職です。
-</pre>
-
-<h3 id="copied_trick">元奇術師 [Ver. 1.4.0 β11～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-コピー後の<a href="mania.php#trick_mania">奇術師</a>に付加される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-交換コピーの発動をログで確認できるようにするために後から実装されたサブ役職です。
-</pre>
-
-<h3 id="copied_basic">元求道者 [Ver. 1.5.0 β4～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-コピー後の<a href="mania.php#basic_mania">求道者</a>に付加される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="mania.php#basic_mania">求道者</a>用に実装されたサブ役職です。
-</pre>
-
-<h3 id="copied_soul">元覚醒者 [Ver. 1.4.0 β11～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-コピー後の<a href="mania.php#soul_mania">覚醒者</a>に付加される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-他の<a href="mania.php#mania_group">神話マニア系</a>とログで区別できるようにするために実装されたサブ役職です。
-</pre>
-
-<h3 id="copied_teller">元夢語部 [Ver. 1.4.0 β11～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加される。
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="human.php#psycho_mage">精神鑑定士</a>や<a href="wolf.php#dream_eater_mad">獏</a>の判定に影響しないように他の元神話マニア系とは違い、完全に別名にしてあります。
 </pre>
 </body></html>

@@ -93,7 +93,8 @@ Ver. 1.5.0
 <a href="#sub_ver150a9">α9</a>
 <a href="#sub_ver150b1">β1</a>
 <a href="#sub_ver150b3">β3</a>
-<a href="#sub_ver150b4">β4</a><br>
+<a href="#sub_ver150b4">β4</a>
+<a href="#sub_ver150b6">β6</a><br>
 Ver. 1.4.0
 <a href="#sub_ver140a3">α3-7</a>
 <a href="#sub_ver140a9">α9</a>
@@ -430,8 +431,7 @@ Ver. 1.4.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">村人の心理状態を判定する特殊な占い師。<br>
-    <a href="wolf.php#mad_group">狂人系</a>・<a href="ability.php#dummy">夢系</a>・<a href="human.php#suspect">不審者</a>・<a href="human.php#unconscious">無意識</a>を占うと「嘘をついている」と判定される。</td>
+  <td class="ability">「嘘つき」を探し出す特殊な占い師</td>
   <td>Ver. 1.4.0 α18</td>
 </tr>
 <tr>
@@ -459,8 +459,7 @@ Ver. 1.4.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">村人の性別を判別する特殊な占い師。<br>
-    <a href="chiroptera.php">蝙蝠</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占うと「蝙蝠」と判定される。</td>
+  <td class="ability">性別を判別する特殊な占い師。</td>
   <td>Ver. 1.4.0 α19</td>
 </tr>
 <tr id="ver140a20">
@@ -478,7 +477,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">夜の投票先にに呪いをかける妖狐。</td>
+  <td class="ability">夜の投票先に呪いをかける妖狐。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -498,9 +497,7 @@ Ver. 1.4.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">対呪い専門の特殊な占い師。<br>
-    占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し、誰かに呪いをかけられていた場合は解呪して、呪返しの発動をキャンセルする。呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。呪殺の死亡メッセージは「呪返し」と同じ。
-  </td>
+  <td class="ability">対呪い専門の特殊な占い師。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -509,8 +506,7 @@ Ver. 1.4.0
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">前日の死者の死因が分かる特殊な霊能者。<br>
-    死因は画面の下に表示される「～は無残な～」の下の行に「(～は人狼に襲撃されたようです)」等と表示される。</td>
+  <td class="ability">前日の死者の死因が分かる特殊な霊能者。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr>
@@ -1032,7 +1028,7 @@ Ver. 1.4.0
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">他の<a href="lovers.php#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。</td>
+  <td class="ability">他の人が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
 <tr>
@@ -1077,7 +1073,7 @@ Ver. 1.4.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票発生時に非村人に投票していた場合は吊る事が出来る村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
+  <td class="ability">再投票発生時に非村人に投票していた場合は吊る事ができる村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -2502,6 +2498,24 @@ Ver. 1.4.0
   <td class="ability">身代わり君の役職が分かる特殊な司祭。表示は「村人」。</td>
   <td>Ver. 1.5.0 β6</td>
 </tr>
+<tr>
+  <td><a href="duelist.php#cowboy_duelist">無鉄砲者</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">自分撃ち固定で、<a href="sub_role.php#reduce_voter">無精者</a>相当の能力を持つ劣化決闘者。</td>
+  <td>Ver. 1.5.0 β6</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#critical_patron">ひんな神</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="sub_role.php#critical_luck">痛恨</a>相当の能力を持ち、<a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#occupied_luck">ひんな持ち</a>を付加する劣化後援者。</td>
+  <td>Ver. 1.5.0 β6</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -3062,7 +3076,7 @@ Ver. 1.4.0
   </tr>
   <tr id="sub_ver150a5">
     <td><a href="sub_role.php#wirepuller_luck">入道</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#authority_group">権力者系</a></td>
     <td>強制</td>
     <td class="ability">付加させた人が一人でも生存している間は投票数が +2 されるが全員死亡すると得票数が +3 される。</td>
     <td>Ver. 1.5.0 α5</td>
@@ -3157,6 +3171,13 @@ Ver. 1.4.0
     <td>強制</td>
     <td class="ability">表示された日に占い師に占われると村人判定が出る。</td>
     <td>Ver. 1.5.0 β4</td>
+  </tr>
+  <tr id="sub_ver150b6">
+    <td><a href="sub_role.php#occupied_luck">ひんな持ち</a></td>
+    <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
+    <td>強制</td>
+    <td class="ability">得票数が付加させた人が一人でも生存している間は +1、全員死亡すると +3 される。</td>
+    <td>Ver. 1.5.0 β6</td>
   </tr>
 </table>
 

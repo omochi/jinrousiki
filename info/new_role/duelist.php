@@ -43,6 +43,7 @@ OutputRolePageHeader('決闘者陣営');
 <a href="#doom_duelist">黒幕</a>
 <a href="#critical_duelist">剣闘士</a>
 <a href="#triangle_duelist">舞首</a>
+<a href="#cowboy_duelist">無鉄砲者</a>
 </p>
 
 <h2 id="duelist_rule">基本ルール [決闘者系]</h2>
@@ -118,6 +119,18 @@ OutputRolePageHeader('決闘者陣営');
 単純に巻き込まれて迷惑する人が増えるだけの存在と言えます。
 </pre>
 
+<h3 id="cowboy_duelist">無鉄砲者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<pre>
+自分撃ち固定で、<a href="sub_role.php#reduce_voter">無精者</a>相当の能力を持つ劣化決闘者。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+流石兄弟鯖＠やる夫人狼のオリジナル役職「ニート」を元にアレンジしました。
+</pre>
 
 <h2 id="avenger_group">復讐者系</h2>
 <p><a href="#avenger_rule">基本ルール</a></p>
@@ -165,7 +178,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 
 <h3 id="cursed_avenger">がしゃどくろ (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
-<h4>[耐性] 占い：呪返し / 陰陽師：死亡 / 護衛：狩り</h4>
+<h4>[耐性] 護衛：狩り / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
 呪いを持った特殊な復讐者。処刑投票先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>なら<a href="sub_role.php#death_warrant">死の宣告</a> (4日後)を付加する。
 <a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -201,7 +214,7 @@ OutputRolePageHeader('決闘者陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票付加能力者</a>
+<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -209,7 +222,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 
 <h3 id="revive_avenger">夜刀神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
-<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効 / 封印：有効</h4>
 <pre>
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する特殊な復讐者。
 </pre>
@@ -253,6 +266,7 @@ OutputRolePageHeader('決闘者陣営');
 <a href="#soul_patron">家神</a>
 <a href="#sacrifice_patron">身代わり地蔵</a>
 <a href="#shepherd_patron">羊飼い</a>
+<a href="#critical_patron">ひんな神</a>
 </p>
 
 <h2 id="patron_rule">基本ルール [後援者系]</h2>
@@ -313,5 +327,18 @@ OutputRolePageHeader('決闘者陣営');
 <pre>
 「<a href="sub_role.php#supported">受援者</a>を複数持てる代りに人狼から狙われやすい後援者」がコンセプトです。
 お互いを認識できる点をどう活かすかがポイントです。
+</pre>
+
+<h3 id="critical_patron">ひんな神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<pre>
+<a href="sub_role.php#critical_luck">痛恨</a>相当 (<a href="../weather.php#weather_critical">烈日</a>は無効) の能力を持ち、<a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#occupied_luck">ひんな持ち</a>を付加する劣化後援者。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="mania.php#wirepuller_mania">黒衣</a>・<a href="#critical_duelist">剣闘士</a>の逆アプローチです。人形神と書いて「ひんながみ」と読みます。
 </pre>
 </body></html>

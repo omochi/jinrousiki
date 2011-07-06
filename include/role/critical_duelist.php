@@ -3,7 +3,7 @@
   ◆剣闘士 (critical_duelist)
   ○仕様
   ・追加役職：なし
-  ・処刑投票：5% の確率で投票数が +100 される
+  ・投票数：+100 (5%)
 */
 class Role_critical_duelist extends Role{
   function __construct(){ parent::__construct(); }

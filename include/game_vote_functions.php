@@ -282,6 +282,7 @@ function GetRoleList($user_count){
   $count = $role_list['human'];
   if($ROOM->IsOption('gerd') && $count > 0) $count--; //ゲルト君モードなら一人確保
   $CAST_CONF->ReplaceHuman($role_list, $count);
+  $CAST_CONF->ChangeMad($role_list, $role_list['mad']); //狂人置換村
 
   //$is_single_role = true;
   $is_single_role = false;
@@ -570,13 +571,14 @@ function AggregateVoteGameStart($force_start = false){
   $roled_list = array(); //配役済み番号
   //割り振り対象外役職のリスト
   $delete_role_list = array('febris', 'frostbite', 'death_warrant', 'panelist', 'day_voter',
-			    'mind_read', 'mind_receiver', 'mind_friend', 'mind_sympathy',
-			    'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
-			    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival',
-			    'enemy', 'supported', 'possessed_target', 'possessed', 'infected',
-			    'psycho_infected', 'bad_status', 'protected', 'wirepuller_luck',
-			    'lost_ability', 'muster_ability', 'changed_therian', 'copied',
-			    'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
+			    'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver',
+			    'mind_friend', 'mind_sympathy', 'mind_evoke', 'mind_presage',
+			    'mind_lonely', 'mind_sheep', 'sheep_wisp', 'lovers', 'challenge_lovers',
+			    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
+			    'possessed_target', 'possessed', 'infected', 'psycho_infected',
+			    'bad_status', 'protected', 'lost_ability', 'muster_ability',
+			    'changed_therian', 'copied', 'copied_trick', 'copied_basic',
+			    'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   /*
@@ -776,11 +778,11 @@ function VoteDay(){
   //-- 投票処理 --//
   $vote_number = 1; //投票数を初期化
 
-  //メイン役職の処理
+  //メイン役職の補正
   $ROLES->actor = $SELF; //投票者をセット
   foreach($ROLES->Load('vote_do_main') as $filter) $filter->FilterVoteDo($vote_number);
 
-  //サブ役職の処理
+  //サブ役職の補正
   if(! $ROOM->IsEvent('no_authority')){ //蜃気楼ならスキップ
     $ROLES->actor = $USERS->ByVirtual($SELF->user_no); //仮想投票者をセット
     foreach($ROLES->Load('vote_do_sub') as $filter) $filter->FilterVoteDo($vote_number);
@@ -818,6 +820,7 @@ function AggregateVoteDay(){
   $vote_target_list       = array(); //投票リスト (ユーザ名 => 投票先ユーザ名)
   $vote_count_list        = array(); //得票リスト (ユーザ名 => 投票数)
   $pharmacist_result_list = array(); //薬師系の鑑定結果
+  if($ROOM->IsOption('joker')) $joker_id = $USERS->SetJoker(); //現在のジョーカー所持者の ID
 
   //-- 投票データ収集 --//
   foreach($ROOM->vote as $uname => $list){ //初期得票データを収集
@@ -833,10 +836,13 @@ function AggregateVoteDay(){
     $vote_number  = (int)$list['vote_number']; //投票数
     $voted_number = (int)$vote_count_list[$user->uname]; //得票数
 
+    $ROLES->actor = $user; //得票者をセット
+    //メイン役職の得票補正
+    foreach($ROLES->Load('voted_main') as $filter) $filter->FilterVoted($voted_number);
+
     //サブ役職の得票補正
-    $ROLES->actor = $user;
     if(! $ROOM->IsEvent('no_authority')){ //蜃気楼ならスキップ
-      foreach($ROLES->Load('voted') as $filter) $filter->FilterVoted($voted_number);
+      foreach($ROLES->Load('voted_sub') as $filter) $filter->FilterVoted($voted_number);
       //if($user->IsRole('critical_luck')) $voted_number += 100; //テスト用 (痛恨強制発動)
     }
     if($voted_number < 0) $voted_number = 0; //マイナスになっていたら 0 にする
@@ -1232,26 +1238,24 @@ function AggregateVoteDay(){
 
     $joker_flag = ! $ROOM->IsOption('joker'); //ジョーカー移動成立フラグ
     if(! $joker_flag){ //ジョーカー移動判定
-      foreach($user_list as $uname){
-	$joker_user = $USERS->ByRealUname($uname);
-	if(! $joker_user->IsJoker($ROOM->date)) continue; //現在の所持者判定
+      $joker_user   = $USERS->ByID($joker_id); //現在の所持者を取得
+      $virtual_user = $USERS->ByVirtual($joker_user->user_no); //仮想ユーザを取得
 
-	$virtual_user = $USERS->ByVirtual($joker_user->user_no);
-	$joker_target_uname = $vote_target_list[$virtual_user->uname]; //ジョーカーの投票先
-	$joker_voted_list = array_keys($vote_target_list, $virtual_user->uname); //ジョーカー投票者
-	$joker_target_list = array(); //移動可能者リスト
-	foreach($joker_voted_list as $voter_uname){
-	  $voter = $USERS->ByRealUname($voter_uname);
-	  if($voter->IsLive(true) && ! $voter->IsJoker($ROOM->date - 1)){ //死者と前日所持者を除外
-	    $joker_target_list[] = $voter_uname;
-	  }
+      $joker_target_uname = $vote_target_list[$virtual_user->uname]; //ジョーカーの投票先
+      $joker_voted_list   = array_keys($vote_target_list, $virtual_user->uname); //ジョーカー投票者
+      $joker_target_list  = array(); //移動可能者リスト
+      foreach($joker_voted_list as $voter_uname){
+	$voter = $USERS->ByRealUname($voter_uname);
+	if($voter->IsLive(true) && ! $voter->IsJoker($ROOM->date - 1)){ //死者と前日所持者を除外
+	  $joker_target_list[] = $voter_uname;
 	}
-	//PrintData($joker_voted_list, $joker_target_uname);
-	//PrintData($joker_target_list, 'Target[joker]');
+      }
+      //PrintData($joker_voted_list, $joker_target_uname);
+      //PrintData($joker_target_list, 'Target[joker]');
 
-	if($joker_target_uname == $vote_kill_uname || $joker_user->IsSame($vote_kill_uname)){
-	  break; //対象者か現在のジョーカー所持者が処刑者なら無効
-	}
+      do{ //移動判定ルーチン
+	//対象者か現在のジョーカー所持者が処刑者なら無効
+	if($joker_target_uname == $vote_kill_uname || $joker_user->IsSame($vote_kill_uname)) break;
 
 	if(in_array($joker_target_uname, $joker_voted_list)){ //相互投票なら無効
 	  //複数から投票されていた場合は残りからランダム
@@ -1266,13 +1270,13 @@ function AggregateVoteDay(){
 	}
 	$USERS->ByRealUname($joker_target_uname)->AddJoker();
 	$joker_flag = true;
-	break;
-      }
+      }while(false);
     }
+
     $ROOM->ChangeNight();
     if(CheckVictory()){
       if(! $joker_flag){ //ゲーム終了時のみ、処刑先への移動許可 (それ以外なら本人継承)
-	$joker_target_uname == $vote_kill_uname && ! $joker_user->IsSame($vote_kill_uname) ?
+	($joker_target_uname == $vote_kill_uname && ! $joker_user->IsSame($vote_kill_uname)) ?
 	  $USERS->ByRealUname($joker_target_uname)->AddJoker() : $joker_user->AddJoker();
       }
     }
@@ -1301,7 +1305,8 @@ function AggregateVoteDay(){
     //システムメッセージ
     $ROOM->SystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
     $ROOM->Talk("再投票になりました( {$RQ_ARGS->vote_times} 回目)");
-    CheckVictory(true); //勝敗判定
+    //勝敗判定＆ジョーカー処理
+    if(CheckVictory(true) && $ROOM->IsOption('joker')) $USERS->ByID($joker_id)->AddJoker();
   }
   $ROOM->UpdateTime(true); //最終書き込み時刻を更新
 }
@@ -1717,6 +1722,7 @@ function AggregateVoteNight($skip = false){
     }
 
     $vampire_target_list = array(); //吸血対象者リスト
+    $vampire_killed_list = array(); //吸血死対象者リスト
     foreach($vote_data['VAMPIRE_DO'] as $uname => $target_uname){ //吸血鬼の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1765,14 +1771,25 @@ function AggregateVoteNight($skip = false){
 	}
       }
 
-      //吸血成立判定
-      if($target->IsLive(true) && ! $guard_flag && ! $target->IsRoleGroup('escaper') &&
-	 ! $target->IsCamp('vampire') && ! in_array($target->uname, $trapped_list)){
+      //スキップ判定
+      if($target->IsDead(true) || $guard_flag || $target->IsRoleGroup('escaper') ||
+	 in_array($target->uname, $trapped_list)) continue;
+
+      if($target->IsRoleGroup('vampire')){ //吸血鬼襲撃判定
+	if($target->IsRole('doom_vampire')) continue; //冥血鬼は無効
+	$id = $target->IsRole('soul_vampire') ? $user->user_no : $target->user_no; //吸血姫は反射
+	$vampire_killed_list[$id] = true;
+      }
+      elseif(! $target->IsCamp('vampire')){ //吸血成立判定
 	$vampire_target_list[$user->uname][] = $target->uname;
       }
     }
-
     //PrintData($vampire_target_list, 'Target [vampire]');
+    //PrintData($vampire_killed_list, 'Target [vampire_killed]');
+
+    //吸血死処理 (罠死の方が優先されることに注意)
+    foreach($vampire_killed_list as $id => $flag) $USERS->Kill($id, 'VAMPIRE_KILLED');
+
     //吸血処理 (吸血死より罠死の方が優先されることに注意)
     foreach($vampire_target_list as $uname => $stack){
       $ROLES->actor = $USERS->ByUname($uname);

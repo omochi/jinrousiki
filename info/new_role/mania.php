@@ -320,7 +320,7 @@ CO するべきかどうかは、コピーした役職次第です。
 
 <h3 id="dummy_mania">夢語部 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <h4>[役職表示] <a href="#soul_mania">覚醒者</a></h4>
-<h4>[耐性] 精神鑑定：嘘つき (変化前) / 獏襲撃：死亡 (変化前)</h4>
+<h4>[耐性] 獏襲撃：死亡 (変化前) / 精神鑑定：嘘つき (変化前)</h4>
 <pre>
 コピー先の基本・劣化種に変化する特殊な神話マニア。
 本人の表記は「<a href="#soul_mania">覚醒者</a>」で、仕様も同じ。
@@ -477,8 +477,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
-  <td><a href="duelist.php#duelist">決闘者</a></td>
-  <td>Ver. 1.5.0 β1～</td>
+  <td><a href="duelist.php#cowboy_duelist">無鉄砲者</a></td>
+  <td>Ver. 1.5.0 β6～</td>
 </tr>
 <tr>
   <td><a href="duelist.php#avenger_group">復讐者系</a></td>
@@ -487,8 +487,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="duelist.php#patron_group">後援者系</a></td>
-  <td><a href="duelist.php#patron">後援者</a></td>
-  <td>Ver. 1.5.0 β3～</td>
+  <td><a href="duelist.php#critical_patron">ひんな神</a></td>
+  <td>Ver. 1.5.0 β6～</td>
 </tr>
 <tr>
   <td>神話マニア陣営</td>

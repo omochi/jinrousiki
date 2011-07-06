@@ -78,13 +78,13 @@ $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
 //エラーページ出力
-function OutputVoteError($title, $sentence = NULL){
+function OutputVoteError($title, $str = NULL){
   global $RQ_ARGS;
 
   $header = '<div align="center"><a id="game_top"></a>';
   $footer = "<br>\n" . $RQ_ARGS->back_url . '</div>';
-  if(is_null($sentence)) $sentence = 'プログラムエラーです。管理者に問い合わせてください。';
-  OutputActionResult('投票エラー [' . $title .']', $header . $sentence . $footer);
+  if(is_null($str)) $str = 'プログラムエラーです。管理者に問い合わせてください。';
+  OutputActionResult('投票エラー [' . $title . ']', $header . $str . $footer);
 }
 
 //テーブルを排他的ロック
@@ -244,7 +244,7 @@ function VoteNight(){
     }
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     $not_type = $RQ_ARGS->situation == 'ASSASSIN_NOT_DO';
-    if($ROOM->IsEvent('force_assassin_do') && $not_type){
+    if($not_type && $ROOM->IsEvent('force_assassin_do')){
       OutputVoteResult('夜：天候「紅月」はキャンセル投票できません');
     }
     break;
@@ -361,7 +361,7 @@ function VoteNight(){
     if(! $SELF->IsOgre()) OutputVoteResult('夜：投票イベントが一致しません');
     if($ROOM->date == 1) OutputVoteResult('夜：初日は投票できません');
     $not_type = $RQ_ARGS->situation == 'OGRE_NOT_DO';
-    if($ROOM->IsEvent('force_assassin_do') && $not_type){
+    if($not_type && $ROOM->IsEvent('force_assassin_do')){
       OutputVoteResult('夜：天候「紅月」はキャンセル投票できません');
     }
     break;
@@ -406,8 +406,8 @@ function VoteNight(){
       $target_list[] = $target;
     }
   }
-  elseif($is_cupid || $is_mirror_fairy){ //恋人陣営
-    if($SELF->IsRole('triangle_cupid')){
+  elseif($is_cupid || $is_mirror_fairy || $is_duelist){ //恋人陣営・決闘者系
+    if($SELF->IsRole('triangle_cupid', 'triangle_duelist')){ //三人固定役職
       if(count($RQ_ARGS->target_no) != 3){
 	OutputVoteResult($error_header . '指定人数は三人にしてください');
       }
@@ -421,8 +421,7 @@ function VoteNight(){
     foreach($RQ_ARGS->target_no as $target_no){
       $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
 
-      //生存者以外と身代わり君への投票は無効
-      if(! $target->IsLive() || $target->IsDummyBoy()){
+      if(! $target->IsLive() || $target->IsDummyBoy()){ //生存者以外と身代わり君への投票は無効
 	OutputVoteResult($error_header . '生存者以外と身代わり君へは投票できません');
       }
 
@@ -430,44 +429,10 @@ function VoteNight(){
       $self_shoot |= $target->IsSelf(); //自分撃ち判定
     }
 
-    //自分撃ちでは無い場合は特定のケースでエラーを返す
-    if($is_cupid && ! $self_shoot){
-      if($SELF->IsRole('self_cupid', 'moon_cupid', 'dummy_chiroptera')){ //求愛者
-	OutputVoteResult($error_header . '求愛者・かぐや姫は必ず自分を対象に含めてください');
-      }
-      elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //参加人数
-	OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
-      }
-    }
-  }
-  elseif($is_duelist){ //決闘者系
-    if($SELF->IsRole('triangle_duelist')){
-      if(count($RQ_ARGS->target_no) != 3){
-	OutputVoteResult($error_header . '指定人数は三人にしてください');
-      }
-    }
-    elseif(count($RQ_ARGS->target_no) != 2){
-      OutputVoteResult($error_header . '指定人数は二人にしてください');
-    }
-
-    $self_shoot = false; //自分撃ちフラグを初期化
-    $target_list = array();
-    foreach($RQ_ARGS->target_no as $target_no){
-      $target = $USERS->ByID($target_no); //投票先のユーザ情報を取得
-
-      //生存者以外と身代わり君への投票は無効
-      if(! $target->IsLive() || $target->IsDummyBoy()){
-	OutputVoteResult($error_header . '生存者以外と身代わり君へは投票できません');
-      }
-
-      $target_list[] = $target;
-      $self_shoot |= $target->IsSelf(); //自分撃ち判定
-    }
-
-    //自分撃ちでは無い場合は特定のケースでエラーを返す
-    if(! $self_shoot){
-      if($SELF->IsRole('duelist', 'critical_duelist')){ //決闘者・剣闘士
-	OutputVoteResult($error_header . '決闘者・剣闘士は必ず自分を対象に含めてください');
+    if(($is_cupid || $is_duelist) && ! $self_shoot){ //自分撃ちエラー判定
+      if($SELF->IsRole('self_cupid', 'moon_cupid', 'dummy_chiroptera',
+		       'duelist', 'critical_duelist', 'cowboy_duelist')){ //自分撃ち固定役職
+	OutputVoteResult($error_header . '必ず自分を対象に含めてください');
       }
       elseif($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot){ //参加人数
 	OutputVoteResult($error_header . '少人数村の場合は、必ず自分を対象に含めてください');
@@ -475,20 +440,20 @@ function VoteNight(){
     }
   }
   elseif($is_avenger || $is_patron){ //復讐者系・後援者系
-    if($is_avenger){
+    if($is_avenger){ //復讐者系
       $target_count = floor($USERS->GetUserCount() / 4);
       if(count($RQ_ARGS->target_no) != $target_count){
 	OutputVoteResult($error_header . '指定人数は' . $target_count . '人にしてください');
       }
     }
-    elseif($SELF->IsRole('shepherd_patron')){
+    elseif($SELF->IsRole('shepherd_patron')){ //羊飼い
       $target_count = floor($USERS->GetUserCount() / 6);
       if($target_count < 1) $target_count++;
       if(count($RQ_ARGS->target_no) != $target_count){
 	OutputVoteResult($error_header . '指定人数は' . $target_count . '人にしてください');
       }
     }
-    elseif($SELF->IsRoleGroup('patron')){
+    elseif($is_patron){ //後援者系
       if(count($RQ_ARGS->target_no) != 1){
 	OutputVoteResult($error_header . '指定人数は一人にしてください');
       }
@@ -509,11 +474,11 @@ function VoteNight(){
       $target_list[] = $target;
     }
   }
-  else{ //キューピッド系以外
+  else{ //標準
     $target  = $USERS->ByID($RQ_ARGS->target_no); //投票先のユーザ情報を取得
     $is_live = $USERS->IsVirtualLive($target->user_no); //仮想的な生死を判定
 
-    if($RQ_ARGS->situation != 'TRAP_MAD_DO' && $target->IsSelf()){ //罠師以外は自分への投票は無効
+    if($RQ_ARGS->situation != 'TRAP_MAD_DO' && $target->IsSelf()){ //罠以外は自分への投票は無効
       OutputVoteResult($error_header . '自分には投票できません');
     }
 

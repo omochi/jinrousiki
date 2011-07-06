@@ -35,8 +35,10 @@ if($_POST['command'] == 'role_test'){
     if($_POST[$option] == 'on') $stack->game_option[] = ' '.$option;
   }
 
-  if(array_search($_POST['replace_human'], $ROOM_CONF->replace_human_list) !== false){
-    $stack->option_role[] = $_POST['replace_human'];
+  foreach(array('replace_human', 'change_mad') as $option){
+    if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
+      $stack->option_role[] = $_POST[$option];
+    }
   }
   if(array_search($_POST['topping'], $ROOM_CONF->topping_list) !== false){
     $stack->option_role[] = 'topping:' . $_POST['topping'];
@@ -68,10 +70,10 @@ function OutputRoleTestForm(){
 <body>
 <form method="POST" action="role_test.php">
 <input type="hidden" name="command" value="role_test">
-<label>人数</label><input type="text" name="user_count" size="3" value="20">
+<label>人数</label><input type="text" name="user_count" size="2" value="20">
 <label>試行回数</label><input type="text" name="try_count" size="2" value="100">
 <input type="submit" value=" 実 行 "><br>
-<input type="radio" name="game_option" value="">普通村
+<input type="radio" name="game_option" value="">普通
 <input type="radio" name="game_option" value="chaos">闇鍋
 <input type="radio" name="game_option" value="chaosfull">真・闇鍋
 <input type="radio" name="game_option" value="chaos_hyper" checked>超・闇鍋
@@ -81,37 +83,49 @@ function OutputRoleTestForm(){
 <input type="radio" name="game_option" value="duel_not_open_cast">非公開決闘
 <input type="radio" name="game_option" value="gray_random">グレラン
 <input type="radio" name="game_option" value="quiz">クイズ<br>
-<input type="radio" name="topping" value="" checked>追加無し
+<input type="radio" name="topping" value="" checked>標準
 
 EOF;
 
   $count = 0;
   foreach($ROOM_CONF->topping_list as $mode){
     $count++;
-    if($count > 0 && $count % 6 == 0) echo "<br>\n";
+    if($count > 0 && $count % 8 == 0) echo "<br>\n";
     echo <<<EOF
-<input type="radio" name="topping" value="{$mode}">{$GAME_OPT_MESS->{'topping_' . $mode}}
+<input type="radio" name="topping" value="{$mode}">{$GAME_OPT_MESS->{'topping_'.$mode}}
 
 EOF;
   }
 
   echo <<<EOF
 <br>
-<input type="radio" name="replace_human" value="" checked>置換無し
+<input type="radio" name="replace_human" value="" checked>標準
 
 EOF;
-
   foreach($ROOM_CONF->replace_human_list as $mode){
     echo <<<EOF
 <input type="radio" name="replace_human" value="{$mode}">{$GAME_OPT_MESS->$mode}
 
 EOF;
   }
+
   echo <<<EOF
-<input type="checkbox" name="festival" value="on">お祭り
-<input type="checkbox" name="gerd" value="on">ゲルト君モード
-<input type="checkbox" name="detective" value="on">探偵村
-<input type="checkbox" name="limit_off" value="on">リミッタオフ
+<br>
+<input type="radio" name="change_mad" value="" checked>標準
+
+EOF;
+  foreach($ROOM_CONF->change_mad_list as $mode){
+    echo <<<EOF
+<input type="radio" name="change_mad" value="{$mode}">{$GAME_OPT_MESS->$mode}
+
+EOF;
+  }
+
+  echo <<<EOF
+<input type="checkbox" value="on" name="festival">お祭り
+<input type="checkbox" value="on" name="gerd">ゲルト君
+<input type="checkbox" value="on" name="detective">探偵
+<input type="checkbox" value="on" name="limit_off">リミッタオフ
 </form>
 
 EOF;

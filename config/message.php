@@ -311,6 +311,9 @@ class GameOptionMessage{
   public $full_mania            = '神話マニア村';
   public $full_chiroptera       = '蝙蝠村';
   public $full_cupid            = 'キューピッド村';
+  public $change_mad            = '狂人置換村';
+  public $change_fanatic_mad    = '狂信者村';
+  public $change_whisper_mad    = '囁き狂人村';
   public $special_role          = '特殊配役モード';
   public $chaos                 = '闇鍋モード';
   public $chaosfull             = '真・闇鍋モード';
@@ -381,6 +384,7 @@ class GameOptionCaptionMessage{
   public $weather               = '「天候」と呼ばれる特殊イベントが発生します';
   public $festival              = '管理人がカスタムする特殊設定です';
   public $replace_human         = '「村人」が全員特定の役職に入れ替わります';
+  public $change_mad            = '「狂人」が全員特定の役職に入れ替わります';
   public $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   public $topping               = '固定配役に追加する役職セットです';
   public $chaos_not_open_cast   = '通知無し';

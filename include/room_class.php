@@ -250,14 +250,14 @@ class Room{
 
   //村人置換村グループオプション判定
   function IsReplaceHumanGroup(){
-    return $this->IsOption('replace_human') || $this->IsOption('full_mania') ||
-      $this->IsOption('full_chiroptera') || $this->IsOption('full_cupid');
+    return $this->IsOption('replace_human') || $this->IsOptionGroup('full_');
   }
 
   //闇鍋式希望制オプション判定
   function IsChaosWish(){
     return $this->IsOptionGroup('chaos') || $this->IsOption('duel') ||
-      $this->IsOption('festival') || $this->IsReplaceHumanGroup();
+      $this->IsOption('festival') || $this->IsReplaceHumanGroup() ||
+      $this->IsOptionGroup('change_');
   }
 
   //霊界公開判定

@@ -208,13 +208,18 @@ OutputRolePageHeader('恋人陣営');
 
 <h3 id="ark_angel">大天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
-他の<a href="#angel_group">天使系</a>が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。
+他の人が作成した<a href="sub_role.php#mind_sympathy">共感者</a>の結果を見ることができる上位天使。
 ただし、本人は<a href="sub_role.php#mind_sympathy">共感者</a>を作ることはできない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#angel">天使</a>の作成中の状態に別名を与えてみました。
 組み合わせ次第で、二日目の朝に内訳をほぼ掌握することが可能になります。
+<a href="human.php#widow_priest">未亡人</a>が作った<a href="sub_role.php#mind_sympathy">共感者</a>も見ることができます。
 </pre>
 
 <h3 id="sacrifice_angel">守護天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18～]</h3>

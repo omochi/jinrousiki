@@ -682,7 +682,7 @@ function OutputAbility(){
   //-- ここからは憑依先の役職を表示 --//
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
-  //特殊小心者・権力者系
+  //期間限定表示タイプ (特殊小心者・権力者系)
   $role = 'febris'; //熱病
   if($virtual_self->IsRole($role) &&
      ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
@@ -707,7 +707,15 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'febris', 'frostbite', 'death_warrant', 'day_voter');
 
-  //サトラレ系・羊皮・入道
+  //特殊権力・雑草魂系
+  if($ROOM->date > 1){ //表示は 2 日目以降
+    foreach(array('wirepuller_luck', 'occupied_luck') as $role){ //入道・ひんな持ち
+      if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
+    }
+  }
+  array_push($fix_display_list, 'wirepuller_luck', 'occupied_luck');
+
+  //サトラレ系・羊皮
   $role = 'mind_open'; //公開者
   if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
 
@@ -771,9 +779,6 @@ function OutputAbility(){
     if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
       $ROLE_IMG->Output($role);
     }
-
-    $role = 'wirepuller_luck'; //入道
-    if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
   }
   array_push($fix_display_list, 'mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
 	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep',

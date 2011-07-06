@@ -468,10 +468,11 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
     'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'detective',
     'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open', 'sudden_death', 'perverseness',
-    'critical', 'joker', 'weather', 'festival', 'full_mania', 'full_chiroptera', 'full_cupid',
-    'replace_human', 'duel', 'gray_random', 'quiz', 'chaos', 'chaosfull', 'chaos_hyper',
-    'chaos_verso', 'topping', 'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role',
-    'secret_sub_role', 'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
+    'critical', 'joker', 'weather', 'festival', 'replace_human', 'full_mania', 'full_chiroptera',
+    'full_cupid', 'change_mad', 'change_fanatic_mad', 'change_whisper_mad', 'duel', 'gray_random',
+    'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'chaos_open_cast',
+    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
+    'sub_role_limit_easy', 'sub_role_limit_normal');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;
@@ -511,7 +512,7 @@ function GenerateHTMLHeader($title, $css = 'action'){
 
   $css_path = JINRO_CSS . '/' . $css . '.css';
   return <<<EOF
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="ja"><head>
 <meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
 <meta http-equiv="Content-Style-Type" content="text/css">

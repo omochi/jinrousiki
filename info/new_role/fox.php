@@ -167,7 +167,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="phantom_fox">幻狐 (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β11～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 占い：無効 (1回限定) / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 占い：無効 (1回限定) / 封印：有効</h4>
 <pre>
 一度だけ、自分が占われても占い妨害をする事ができる妖狐。
 妨害能力は<a href="wolf.php#phantom_wolf">幻狼</a>参照。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -216,7 +216,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="emerald_fox">翠狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
-<h4>[耐性] 人狼襲撃：無効</h4>
+<h4>[耐性] 人狼襲撃：無効 / 封印：有効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
 占った人が<a href="#fox_talk">念話</a>できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
@@ -255,7 +255,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="revive_fox">仙狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 蘇生：不可</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 蘇生：不可 / 封印：有効</h4>
 <h4>[蘇生能力] 成功率：100% (1回限定) / 誤爆：有り</h4>
 <pre>
 <a href="human.php#revive_rule">蘇生能力</a>を持った妖狐。
@@ -275,7 +275,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="possessed_fox">憑狐 (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 陰陽師：死亡 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 陰陽師：死亡 / 封印：有効</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
 <a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -304,7 +304,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="doom_fox">冥狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 / 罠：有効 / 護衛：狩り</h4>
 <pre>
 遅効性の<a href="human.php#doom_assassin">死神</a>相当の<a href="ability.php#assassin">暗殺能力</a>を持った妖狐。
 暗殺能力は<a href="human.php#doom_assassin">死神</a>と同じで、<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
@@ -322,7 +322,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="trap_fox">狡狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.5.0 α8～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 封印：有効</h4>
 <pre>
 一度だけ夜に誰か一人に罠を仕掛けることができる妖狐。
 罠に関する仕様は<a href="wolf.php#trap_mad">罠師</a>と同じで、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -339,7 +339,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="cursed_fox">天狐 (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 占い：呪返し / 陰陽師：死亡 / 護衛：狩り / 暗殺：反射</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 暗殺：反射 / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
 占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
 <a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -547,6 +547,10 @@ OutputRolePageHeader('妖狐陣営');
 <h5>Ver. 1.5.0 α5～</h5>
 <pre>
 処刑された時に<a href="sub_role.php#febris">熱病</a>を付加する対象から妖狐陣営を除外
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

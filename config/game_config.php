@@ -36,8 +36,12 @@ class RoomConfig{
   public $max_user_list = array(8, 11, 16, 22, 32, 50);
   public $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
 
-  //各オプションを有効に [true:する / false:しない]
-  //デフォルトでチェックを [true:つける / false:つけない]
+  //-- オプション出現設定 --//
+  /* 例：役割希望制 (wish_role)
+    オプション名 ($wish_role)    ：オプションを有効に   [true:する   / false:しない]
+    初期設定 ($default_wish_role)：初期状態でチェックを [true:つける / false:つけない]
+  */
+  //-- 基本設定 --//
   public $wish_role = true; //役割希望制
   public $default_wish_role = false;
 
@@ -53,51 +57,56 @@ class RoomConfig{
   public $open_day = true; //オープニングあり
   public $default_open_day = false;
 
+  //-- 身代わり君設定 --//
   public $dummy_boy = true; //初日の夜は身代わり君
   public $default_dummy_boy = true;
 
   public $gerd = true; //ゲルト君モード
   public $default_gerd = false;
 
+  //-- 霊界公開設定 --//
   public $not_open_cast  = true; //霊界で配役を公開しない
   public $auto_open_cast = true; //霊界で配役を自動で公開する
 
   //霊界オフモードのデフォルト [NULL:無し / 'auto':自動オフ / 'full': 完全オフ ]
   public $default_not_open_cast = 'auto';
 
-  public $poison = true; //埋毒者出現 (必要人数は CastConfig->poison 参照)
+  //-- 追加役職設定 --//
+  //必要人数は CastConfig の同名オプション名参照 (例： $poison => CastConfig->poison)
+  public $poison = true; //埋毒者
   public $default_poison = true;
 
-  public $assassin = true; //暗殺者出現 (必要人数は CastConfig->assassin 参照)
+  public $assassin = true; //暗殺者
   public $default_assassin = false;
 
-  public $boss_wolf = true; //白狼出現 (必要人数は CastConfig->boss_wolf 参照)
+  public $boss_wolf = true; //白狼
   public $default_boss_wolf = false;
 
-  public $poison_wolf = true; //毒狼出現 (必要人数は CastConfig->poison_wolf 参照)
+  public $poison_wolf = true; //毒狼
   public $default_poison_wolf = false;
 
-  public $possessed_wolf = true; //憑狼出現 (必要人数は CastConfig->possessed_wolf 参照)
+  public $possessed_wolf = true; //憑狼
   public $default_possessed_wolf = false;
 
-  public $sirius_wolf = true; //天狼出現 (必要人数は CastConfig->sirius_wolf 参照)
+  public $sirius_wolf = true; //天狼
   public $default_sirius_wolf = false;
 
-  public $cupid = true; //キューピッド出現 (必要人数は CastConfig->cupid 参照)
+  public $cupid = true; //キューピッド
   public $default_cupid = false;
 
-  public $medium = true; //巫女出現 (必要人数は CastConfig->medium 参照)
+  public $medium = true; //巫女
   public $default_medium = false;
 
-  public $mania = true; //神話マニア出現 (必要人数は CastConfig->mania 参照)
+  public $mania = true; //神話マニア
   public $default_mania = false;
 
-  public $decide = true; //決定者出現 (必要人数は CastConfig->decide 参照)
+  public $decide = true; //決定者
   public $default_decide = false;
 
-  public $authority = true; //権力者出現 (必要人数は CastConfig->authority 参照)
+  public $authority = true; //権力者
   public $default_authority = false;
 
+  //-- 特殊村設定 --//
   public $detective = true; //探偵村
   public $default_detective = false;
 
@@ -134,47 +143,54 @@ class RoomConfig{
   public $festival = true; //お祭り村
   public $default_festival = false;
 
-  public $replace_human = true; //村人置換村
-  public $full_mania = true; //神話マニア村
+  public $replace_human   = true; //村人置換村 (管理人カスタムモード)
+  public $full_cupid      = true; //キューピッド村
   public $full_chiroptera = true; //蝙蝠村
-  public $full_cupid = true; //キューピッド村
-  //置換モードの内訳 (replace_human：管理人カスタムモード)
-  public $replace_human_list = array('full_mania', 'full_cupid', 'full_chiroptera',
-				     'replace_human');
+  public $full_mania      = true; //神話マニア村
+  //村人置換モードの内訳
+  public $replace_human_list = array('replace_human', 'full_cupid', 'full_chiroptera', 'full_mania');
 
-  //特殊配役村の内訳
+  public $change_mad         = true; //狂人置換村 (管理人カスタムモード)
+  public $change_fanatic_mad = true; //狂信者村
+  public $change_whisper_mad = true; //囁き狂人村
+  //狂人置換モードの内訳
+  public $change_mad_list = array('change_mad', 'change_fanatic_mad', 'change_whisper_mad');
+
+  //-- 特殊配役モード --//
+  public $chaos       = true; //闇鍋モード
+  public $chaosfull   = true; //真・闇鍋モード
+  public $chaos_hyper = true; //超・闇鍋モード
+  public $chaos_verso = true; //裏・闇鍋モード
+  public $duel        = true; //決闘村
+  public $gray_random = true; //グレラン村
+  public $quiz        = true; //クイズ村
+  //特殊配役モードの内訳
   public $special_role_list = array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'duel',
 				    'gray_random', 'quiz');
 
-  public $chaos = true; //闇鍋モード
-  public $chaosfull = true; //真・闇鍋モード
-  public $chaos_hyper = true; //超・闇鍋モード
-  public $chaos_verso = true; //裏・闇鍋モード
-
+  //-- 闇鍋モード専用設定 --//
   public $topping = true; //固定配役追加モード
   //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる
   public $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k');
 
-  public $chaos_open_cast = true; //配役内訳を表示する (闇鍋モード専用オプション)
-  public $chaos_open_cast_camp = true; //陣営毎の総数を表示する (闇鍋モード専用オプション)
-  public $chaos_open_cast_role = true; //役職の種類毎の総数を表示する (闇鍋モード専用オプション)
-
+  //配役通知設定
+  public $chaos_open_cast      = true; //配役内訳を表示する
+  public $chaos_open_cast_camp = true; //陣営通知
+  public $chaos_open_cast_role = true; //役職通知
   //通知モードのデフォルト [NULL:無し / 'camp':陣営 / 'role':役職 / 'full':完全]
   public $default_chaos_open_cast = 'camp'; //陣営通知
 
-  public $secret_sub_role = true; //サブ役職を本人に通知しない (闇鍋モード専用オプション)
-  public $default_secret_sub_role = false;
-
-  public $sub_role_limit = true; //サブ役職制限 (闇鍋モード専用オプション)
+  //サブ役職制限
+  public $sub_role_limit        = true; //サブ役職制限
   public $sub_role_limit_easy   = true; //サブ役職制限：EASYモード
   public $sub_role_limit_normal = true; //サブ役職制限：NORMALモード
-  public $no_sub_role = true; //サブ役職をつけない
+  public $no_sub_role           = true; //サブ役職をつけない
   //サブ役職制限のデフォルト [NULL:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード]
   public $default_sub_role_limit = 'no'; //つけない (no_sub_role)
 
-  public $duel = true; //決闘村
-  public $gray_random = true; //グレラン村
-  public $quiz = true; //クイズ村
+  //その他
+  public $secret_sub_role = true; //サブ役職を本人に通知しない
+  public $default_secret_sub_role = false;
 }
 
 //-- ゲーム設定 --//
@@ -249,7 +265,8 @@ class GameConfig extends GameConfigBase{
 //ゲームの時間設定
 class TimeConfig{
   //投票待ち超過時間 (秒) (この時間を過ぎても未投票の人がいたら突然死処理されます)
-  public $sudden_death = 120; //180;
+  public $sudden_death = 120;
+  #public $sudden_death = 180;
 
   //サーバダウン判定時間 (秒)
   //超過のマイナス時間がこの閾値を越えた場合はサーバが一時的にダウンしていたと判定して、
@@ -257,8 +274,8 @@ class TimeConfig{
   public $server_disconnect = 90;
 
   //-- リアルタイム制 --//
-  public $default_day   = 5; //デフォルトの昼の制限時間(分)
-  public $default_night = 3; //デフォルトの夜の制限時間(分)
+  public $default_day   = 5; //昼の制限時間の初期値 (分)
+  public $default_night = 3; //夜の制限時間の初期値 (分)
 
   //-- 会話を用いた仮想時間制 --//
   //昼の制限時間 (昼は12時間、spend_time=1(半角100文字以内) で 12時間 ÷ $day 進みます)
@@ -273,7 +290,7 @@ class TimeConfig{
   //沈黙経過時間 (12時間 ÷ $day(昼) or 6時間 ÷ $night (夜) の $silence_pass 倍の時間が進みます)
   public $silence_pass = 8;
 
-  public $wait_morning = 15; //早朝待機制の待機時間(秒)
+  public $wait_morning = 15; //早朝待機制の待機時間 (秒)
 }
 
 //-- 村のオプション画像 --//

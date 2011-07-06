@@ -368,7 +368,8 @@ class User{
     return $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
 			 'trap_fox', 'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera',
 			 'boss_chiroptera', 'cursed_avenger', 'critical_avenger') ||
-      ($this->IsRoleGroup('mad')     && ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad')) ||
+      ($this->IsRoleGroup('mad') &&
+       ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'therian_mad', 'immolate_mad')) ||
       ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire', 'scarlet_vampire'));
   }
 
@@ -1218,16 +1219,19 @@ class UserDataSet{
 
   //ジョーカーの最終所持者判定
   function SetJoker(){
-    global $ROOM;
-
-    $stack = array();
+    $id = NULL;
+    $max_date = 1;
     foreach($this->rows as $user){
       if(! $user->IsRole('joker')) continue;
-      $stack[$user->user_no] = $user->GetDoomDate('joker');
+      $date = $user->GetDoomDate('joker');
+      if($date > $max_date || ($date == $max_date && $user->IsLive())){
+	$id = $user->user_no;
+	$max_date = $date;
+      }
       $user->joker_flag = false;
     }
-    //PrintData($stack);
-    $this->ByID(array_search(max($stack), $stack))->joker_flag = true;
+    $this->ByID($id)->joker_flag = true;
+    return $id;
   }
 
   //役職の出現判定関数 (現在は不使用)

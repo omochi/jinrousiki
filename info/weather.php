@@ -634,13 +634,13 @@ Ver. 1.5.0
 <h3 id="weather_critical">烈日 [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率が 100% になります。</li>
-  <li>メイン役職による補正は無効です (例：<a href="new_role/duelist.php#critical_duelist">剣闘士</a>)。</li>
+  <li>メイン役職による補正は無効です (例：<a href="new_role/duelist.php#critical_duelist">剣闘士</a>・<a href="new_role/duelist.php#critical_patron">ひんな神</a>)。</li>
 </ul>
 
 <h3 id="weather_no_authority">蜃気楼 [Ver. 1.5.0 α8～]</h3>
 <ul>
   <li><a href="new_role/sub_role.php">サブ役職</a>による投票数/得票数補正が無効化されます。</li>
-  <li>メイン役職による補正は有効です (例：<a href="new_role/human.php#elder">長老</a>・<a href="new_role/human.php#brownie">座敷童子</a>)。</li>
+  <li>メイン役職による補正は有効です (例：<a href="new_role/human.php#elder">長老</a>・<a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/duelist.php#critical_patron">ひんな神</a>)。</li>
 </ul>
 
 <h3 id="weather_alchemy_pharmacist">梅雨 [Ver. 1.5.0 α4～]</h3>

@@ -40,15 +40,23 @@ OutputRolePageHeader('吸血鬼陣営');
 <li><a href="human.php#hunter_guard">猟師</a>が護衛成功しても死亡しません。</li>
 <li><a href="human.php#blind_guard">夜雀</a>・<a href="ability.php#trap">罠能力者</a>の能力は有効です。</li>
 <li><a href="human.php#escaper_group">逃亡者系</a>との関係は<a href="human.php#escaper_rule">基本ルール [逃亡者] </a>を参照してください。</li>
-<li>一部の吸血鬼は襲撃先を殺してしまいます (吸血死)。<br>
+<li>一定の条件で襲撃先が死亡します (吸血死)。<br>
   死亡メッセージは人狼の襲撃と同じで、死因は「血を吸い尽くされた」です。
 </li>
-<li>吸血鬼陣営の人を襲撃した場合は無条件で失敗し、吸血死も発生しません。<br>
-  (変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>にも適用されます)。
+<li>吸血鬼が吸血鬼を襲撃すると吸血死が発生します。相互襲撃の場合は相討ちとなります。</li>
+<li><a href="#incubus_vampire">青髭公</a>・<a href="#succubus_vampire">飛縁魔</a>は一定の条件で襲撃先を吸血死させます。<br>
+  <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
 </li>
-<li>吸血死は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
+<li><a href="#doom_vampire">冥血鬼</a>は吸血鬼の襲撃を無効化します。</li>
+<li><a href="#soul_vampire">吸血姫</a>は吸血鬼の襲撃を反射し、襲撃した吸血鬼が吸血死します。<br>
+  <a href="#soul_vampire">吸血姫</a>が相互襲撃した場合は互いに反射して相討ちとなります。
 </li>
+<li>変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>を襲撃した場合は無条件で失敗し、吸血死も発生しません。</li>
 </ol>
+<h5>Ver. 1.5.0 β6～</h5>
+<pre>
+吸血鬼同士の襲撃に関する仕様を変更。
+</pre>
 <h5>Ver. 1.4.0 β20～</h5>
 <pre>
 <a href="human.php#escaper">逃亡者</a>との関係の仕様を変更。
@@ -73,7 +81,6 @@ OutputRolePageHeader('吸血鬼陣営');
 </p>
 
 <h3><a id="vampire">吸血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
-<h4>[耐性] 罠：有効</h4>
 <pre>
 吸血鬼陣営の基本種。
 </pre>
@@ -85,7 +92,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="incubus_vampire">青髭公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
-<h4>[耐性] 護衛：狩り / 罠：有効</h4>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 女性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼 (女性以外なら吸血死)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -105,7 +112,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="succubus_vampire">飛縁魔 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
-<h4>[耐性] 護衛：狩り / 罠：有効</h4>
+<h4>[耐性] 護衛：狩り</h4>
 <pre>
 男性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼 (男性以外なら吸血死)。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -125,11 +132,11 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="doom_vampire">冥血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 罠：有効</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 吸血襲撃：無効</h4>
 <pre>
 吸血先に<a href="sub_role.php#infected">感染者</a>と<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう特殊な吸血鬼。
 <a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
-<a href="wolf.php#wolf_group">人狼</a>の襲撃を無効化するが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="wolf.php#wolf_group">人狼</a>・<a href="#vampire_do">吸血鬼</a>の襲撃を無効化するが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 </pre>
 <h4>関連役職</h4>
@@ -143,7 +150,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="sacrifice_vampire">吸血公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
-<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り / 罠：有効</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
 身代わり能力を持つ上位吸血鬼。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -167,10 +174,10 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3><a id="soul_vampire">吸血姫 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
-<h4>[耐性] 護衛：狩り / 暗殺：反射 / 罠：有効</h4>
+<h4>[耐性] 護衛：狩り / 吸血襲撃：反射 / 暗殺：反射</h4>
 <pre>
 <a href="#vampire_do">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
-<a href="human.php#assassin_spec">暗殺反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="human.php#assassin_spec">暗殺反射</a>・<a href="#vampire_do">吸血反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>

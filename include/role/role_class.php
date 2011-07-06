@@ -22,16 +22,19 @@ class RoleManager{
 
   //処刑投票(メイン)
   public $vote_do_main_list = array('human', 'elder', 'scripter', 'elder_wolf', 'elder_fox',
-				    'elder_chiroptera', 'critical_duelist');
+				    'elder_chiroptera', 'critical_duelist', 'cowboy_duelist');
 
   //処刑投票(サブ)
   public $vote_do_sub_list = array('authority', 'reduce_voter', 'upper_voter', 'downer_voter',
 				   'critical_voter', 'random_voter', 'day_voter', 'wirepuller_luck',
 				   'watcher', 'panelist');
 
-  //処刑得票
-  public $voted_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
-			     'random_luck', 'wirepuller_luck');
+  //処刑得票 (メイン)
+  public $voted_main_list = array('critical_patron');
+
+  //処刑得票 (サブ)
+  public $voted_sub_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
+				 'random_luck', 'occupied_luck', 'wirepuller_luck');
 
   //処刑投票系能力者
   public $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
@@ -233,6 +236,15 @@ class Role{
   function IsDead($strict = false){
     global $ROLES;
     return $ROLES->actor->IsDead($strict);
+  }
+
+  function IsLivePartner(){
+    global $ROLES, $USERS;
+
+    foreach($ROLES->actor->GetPartner($this->role) as $id){
+      if($USERS->ByID($id)->IsLive()) return true;
+    }
+    return false;
   }
 }
 

@@ -193,7 +193,7 @@ function CreateRoom(){
     array_push($check_option_role_list, 'liar', 'gentleman', 'critical',
 	       $perverseness ? 'perverseness' : 'sudden_death');
   }
-  $check_option_role_list[] = 'replace_human';
+  array_push($check_option_role_list, 'replace_human', 'change_mad');
 
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');
@@ -224,11 +224,15 @@ function CreateRoom(){
 
     switch($option){
     case 'replace_human':
+    case 'change_mad':
       switch($target = $_POST[$option]){
+      case 'replace_human':
       case 'full_mania':
       case 'full_chiroptera':
       case 'full_cupid':
-      case 'replace_human':
+      case 'change_mad':
+      case 'change_fanatic_mad':
+      case 'change_whisper_mad':
 	if($ROOM_CONF->$target){
 	  $option = $target;
 	  break 2;
@@ -491,7 +495,7 @@ EOF;
 
   $stack = array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open',
 		 'critical', 'sudden_death', 'perverseness',  'joker', 'weather', 'festival',
-		 'replace_human');
+		 'replace_human', 'change_mad');
   OutputRoomOption($stack, 'role');
 
   OutputRoomOption(array('special_role'));
@@ -531,6 +535,7 @@ function GenerateRoomOption($option, $label = ''){
 
   case 'max_user':
   case 'replace_human':
+  case 'change_mad':
   case 'special_role':
   case 'topping':
     return GenerateSelector($option);
@@ -596,6 +601,7 @@ function GenerateSelector($option){
     break;
 
   case 'replace_human':
+  case 'change_mad':
   case 'special_role':
     $label = 'モード名';
     $str = '<option value="" selected>なし</option>';

@@ -26,9 +26,10 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#revive_limit">蘇生制限</a>
 <a href="#authority">投票数変化</a>
 <a href="#stargazer">投票能力鑑定</a>
-<a href="#poison">毒</a>
+<a href="#luck">得票数変化</a>
 </p>
 <p>
+<a href="#poison">毒</a>
 <a href="#partner">仲間情報妨害</a>
 <a href="#cursed_group">呪い</a>
 <a href="#talk_convert">発言変換</a>
@@ -38,15 +39,15 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#sacrifice">身代わり</a>
 <a href="#last_words_limit">遺言制限</a>
 <a href="#soul">役職鑑定</a>
-<a href="#dummy">夢</a>
 </p>
 <p>
+<a href="#dummy">夢</a>
 <a href="#trap">罠</a>
 </p>
 
 <h2 id="assassin">暗殺能力者</h2>
 <pre>
-<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#assassin">暗殺者</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_assassin">辻斬り</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="human.php#reverse_assassin">反魂師</a>)
+<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#assassin">暗殺者</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_assassin">辻斬り</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="human.php#reverse_assassin">反魂師</a>・<a href="fox.php#doom_fox">冥狐</a>)
 <a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
 </pre>
 
@@ -113,7 +114,8 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
 <pre>
-<a href="sub_role.php#chicken">小心者</a>・<a href="sub_role.php#febris">熱病</a>・<a href="sub_role.php#frostbite">凍傷</a>・<a href="sub_role.php#death_warrant">死の宣告</a>・<a href="sub_role.php#panelist">解答者</a>参照
+<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)
+<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="chiroptera.php#ice_fairy">氷妖精</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="#doom">死の宣告能力者</a>(<a href="sub_role.php#death_warrant">死の宣告</a>)
 </pre>
 
 <h2 id="anti_sudden_death">ショック死抑制能力者</h2>
@@ -171,16 +173,26 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="authority">投票数変化能力者</h2>
 <h3 id="authority_direct">直接型</h3>
 <pre>
-<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="sub_role.php#authority_group">権力者系</a>・<a href="sub_role.php#wirepuller_luck">入道</a>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>・<a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#authority_group">権力者系</a>
 </pre>
 <h3 id="authority_indirect">間接型</h3>
 <pre>
-<a href="human.php#brownie">座敷童子</a>・<a href="human.php#divine_escaper">麒麟</a>・<a href="mania.php#wirepuller_mania">黒衣</a>
+<a href="human.php#brownie">座敷童子</a>(<a href="human.php#human">村人</a>)・<a href="human.php#divine_escaper">麒麟</a>(<a href="sub_role.php#day_voter">一日村長</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="mania.php#wirepuller_mania">黒衣</a>(<a href="sub_role.php#wirepuller_luck">入道</a>)
 </pre>
 
 <h2 id="stargazer">投票能力鑑定関連能力者</h2>
 <pre>
 <a href="human.php#stargazer_mage">占星術師</a>・<a href="human.php#border_priest">境界師</a>・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#stargazer_mage">占星術師</a>)・<a href="human.php#awake_wizard">比丘尼</a>(<a href="human.php#stargazer_mage">占星術師</a>)・<a href="fox.php#stargazer_fox">星狐</a>
+</pre>
+
+<h2 id="luck">得票数変化能力者</h2>
+<h3 id="luck_direct">直接型</h3>
+<pre>
+<a href="duelist.php#critical_patron">ひんな神</a>・<a href="sub_role.php#wirepuller_luck">入道</a>・<a href="sub_role.php#upper_luck_group">雑草魂系</a>
+</pre>
+<h3 id="luck_indirect">間接型</h3>
+<pre>
+<a href="wolf.php#critical_mad">釣瓶落とし</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="duelist.php#critical_avenger">狂骨</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="duelist.php#critical_patron">ひんな神</a>(<a href="sub_role.php#occupied_luck">ひんな持ち</a>)
 </pre>
 
 <h2 id="poison">毒能力者</h2>
@@ -253,14 +265,14 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 
 <h2 id="soul">役職鑑定能力者</h2>
-<h3 id="soul_high">上位種型</h3>
+<h3 id="soul_high">上位型</h3>
 <pre>
 <a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#soul_necromancer">雲外鏡</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#soul_mage">魂の占い師</a>・<a href="human.php#soul_assassin">辻斬り</a>)・<a href="human.php#awake_wizard">比丘尼</a>(<a href="human.php#soul_mage">魂の占い師</a>)
 <a href="human.php#spiritism_wizard">交霊術師</a>(<a href="human.php#soul_necromancer">雲外鏡</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="human.php#soul_mage">魂の占い師</a>)・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="vampire.php#soul_vampire">吸血姫</a>
 </pre>
 <h3 id="soul_copy">コピー型</h3>
 <pre>
-<a href="human.php#widow_priest">未亡人</a>・<a href="duelist.php#soul_patron">家神</a>・<a href="mania.php#mania_group">神話マニア系</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
+<a href="human.php#widow_priest">未亡人</a>(<a href="sub_role.php#mind_sympathy">共感者</a>)・<a href="lovers.php#ark_angel">大天使</a>(<a href="sub_role.php#mind_sympathy">共感者</a>)・<a href="duelist.php#soul_patron">家神</a>・<a href="mania.php#mania_group">神話マニア系</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
 </pre>
 
 <h2 id="dummy">夢能力者</h2>

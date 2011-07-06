@@ -70,7 +70,7 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 
 <h3 id="cursed_chiroptera">呪蝙蝠 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
-<h4>[耐性] 占い：呪返し / 陰陽師：死亡 / 護衛：狩り</h4>
+<h4>[耐性] 護衛：狩り / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
 呪いを持った蝙蝠。<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
@@ -162,7 +162,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 
 <h3 id="dummy_chiroptera">夢求愛者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[役職表示] <a href="lovers.php#self_cupid">求愛者</a></h4>
-<h4>[耐性] 精神鑑定：嘘つき / 獏襲撃：死亡</h4>
+<h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
 <pre>
 本人には<a href="lovers.php#self_cupid">求愛者</a>と表示されている蝙蝠。
 矢を撃つことはできるが<a href="sub_role.php#lovers">恋人</a>にはならず、矢を撃った先に<a href="sub_role.php#mind_receiver">受信者</a>もつかない。
@@ -460,7 +460,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#pierrot_wizard">道化師</a>
+<a href="human.php#pierrot_wizard">道化師</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
