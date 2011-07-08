@@ -493,7 +493,7 @@ function OutputAbility(){
   }
   elseif($SELF->IsRoleGroup('fairy')){ //妖精系
     $ROLE_IMG->Output($SELF->main_role);
-    if($SELF->IsRole('mirror_fairy')){ //鏡妖精
+    if($SELF->IsRole('mirror_fairy', 'sweet_fairy')){ //鏡妖精・恋妖精
       if($ROOM->date == 1 && $ROOM->IsNight()){ //投票
 	OutputVoteMessage('fairy-do', 'fairy_do', 'CUPID_DO');
       }
@@ -634,18 +634,24 @@ function OutputAbility(){
   if($SELF->IsRole($role)) $ROLE_IMG->Output($role);
   $fix_display_list[] = $role;
 
-  //恋人系
+  //恋人系・悲恋人
   $role = 'lovers'; //恋人
-  if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){
-    $stack = array();
-    foreach($USERS->rows as $user){
-      if(! $user->IsSelf() &&
-	 ($user->IsPartner($role, $SELF->partner_list) ||
-	  $SELF->IsPartner('dummy_chiroptera', $user->user_no))){
-	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依を追跡する
+  if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera', 'sweet_status')){
+    //悲恋人のみの場合、2 日目以降はシーク不要なのでスキップ
+    if($ROOM->date == 1 || $SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){
+      $stack = array();
+      foreach($USERS->rows as $user){
+	if($user->IsSelf()) continue;
+	if($user->IsPartner($role, $SELF->partner_list) ||
+	   $SELF->IsPartner('dummy_chiroptera', $user->user_no) ||
+	   ($ROOM->date == 1 && $user->IsPartner('sweet_status', $SELF->partner_list))){
+	  $stack[] = $USERS->GetHandleName($user->uname, true); //憑依を追跡する
+	}
       }
     }
     OutputPartner($stack, 'partner_header', 'lovers_footer');
+    $role = 'sweet_status';
+    if($ROOM->date == 2 && $SELF->IsRole($role)) $ROLE_IMG->Output($role);
   }
 
   $role = 'challenge_lovers'; //難題
@@ -661,7 +667,7 @@ function OutputAbility(){
 	OutputAbilityResult('partner_header', $SELF->handle_name, 'possessed_target');
     }while(false);
   }
-  array_push($fix_display_list, 'lovers', 'challenge_lovers', 'possessed_exchange');
+  array_push($fix_display_list, 'lovers', 'challenge_lovers', 'possessed_exchange', 'sweet_status');
 
   //ジョーカー系
   $role = 'joker'; //ジョーカー
@@ -789,9 +795,9 @@ function OutputAbility(){
 
   $role_keys_list    = array_keys($ROLE_DATA->sub_role_list);
   $hide_display_list = array('decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
-			     'bad_luck', 'critical_voter', 'critical_luck', 'infected',
-			     'psycho_infected', 'enemy', 'supported', 'possessed_target',
-			     'possessed', 'bad_status', 'protected','changed_therian');
+			     'bad_luck', 'critical_voter', 'critical_luck', 'enemy', 'supported',
+			     'infected', 'psycho_infected', 'possessed_target', 'possessed',
+			     'bad_status', 'protected','changed_therian');
   $not_display_list  = array_merge($fix_display_list, $hide_display_list);
   $display_list      = array_diff($role_keys_list, $not_display_list);
   $target_list       = array_intersect($display_list, array_slice($virtual_self->role_list, 1));

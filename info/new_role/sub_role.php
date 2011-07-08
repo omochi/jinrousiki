@@ -19,6 +19,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#lovers_group">恋人系</a>
 <a href="#infected_group">感染者系</a>
 <a href="#joker_group">ジョーカー系</a>
+<a href="#bad_status_group">悪戯系</a>
 <a href="#copied_group">元神話マニア系</a>
 <a href="#other_group">その他</a>
 </p>
@@ -1450,6 +1451,46 @@ B：「恋人陣営の勝利」
 </pre>
 
 
+<h2 id="bad_status_group">悪戯系</h2>
+<p>
+<a href="#bad_status">悪戯</a>
+<a href="#sweet_status">悲恋</a>
+</p>
+
+<h3 id="bad_status">悪戯 [Ver. 1.4.0 β6～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+一部の<a href="chiroptera.php#fairy_group">妖精系</a>などが夜の投票時に付加する。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+役職名の表示
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#enchant_mad">狢</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="chiroptera.php#fairy_group">妖精系</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+悪戯システム用に実装されたサブ役職です。
+主に<a href="chiroptera.php#fairy_group">妖精系</a>で使用されています。
+</pre>
+
+<h3 id="sweet_status">悲恋 [Ver. 1.5.0 β6～]</h3>
+<h4>[役職表示] 特殊</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+一日目のみ、付加した<a href="chiroptera.php#sweet_fairy">恋妖精</a>のもう一人の悲恋と<a href="#lovers">恋人</a>であるように表示される。
+二日目以降は恋人表示が消え、二日目のみ、「あなたは恋人と別れました」という
+システムメッセージが表示される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="chiroptera.php#sweet_fairy">恋妖精</a>用に実装されたサブ役職です。
+</pre>
+
+
 <h2 id="copied_group">元神話マニア系</h2>
 <p>
 <a href="#copied">元神話マニア</a>
@@ -1458,7 +1499,6 @@ B：「恋人陣営の勝利」
 <a href="#copied_soul">元覚醒者</a>
 <a href="#copied_teller">元夢語部</a>
 </p>
-
 
 <h3 id="copied">元神話マニア [Ver. 1.4.0 α11～]</h3>
 <h4>[役職表示] 表示無し</h4>
@@ -1524,7 +1564,6 @@ B：「恋人陣営の勝利」
 <p>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
-<a href="#bad_status">悪戯</a>
 <a href="#sheep_wisp">羊皮</a>
 <a href="#protected">庇護者</a>
 <a href="#lost_ability">能力喪失</a>
@@ -1568,26 +1607,6 @@ B：「恋人陣営の勝利」
 <h4>[作成者からのコメント]</h4>
 <pre>
 憑依システム用に実装されたサブ役職です。
-</pre>
-
-<h3 id="bad_status">悪戯 [Ver. 1.4.0 β6～]</h3>
-<h4>[役職表示] 表示無し</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加される。
-</pre>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-役職名の表示
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="wolf.php#enchant_mad">狢</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="chiroptera.php#fairy_group">妖精系</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-悪戯システム用に実装されたサブ役職です。
-<a href="chiroptera.php#flower_fairy">花妖精</a>・<a href="chiroptera.php#star_fairy">星妖精</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>以外の<a href="chiroptera.php#fairy_group">妖精系</a>などで使用されています。
 </pre>
 
 <h3 id="sheep_wisp">羊皮 [Ver. 1.5.0 β4～]</h3>

@@ -929,6 +929,7 @@ function OutputAbilityAction(){
     echo $header.$USERS->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
     switch($stack['type']){
     case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
+    case 'FAIRY_DO':
     case 'DUELIST_DO':
     case 'SPREAD_WIZARD_DO':
       $target = 'は '.$target;

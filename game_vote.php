@@ -353,7 +353,7 @@ function VoteNight(){
     if(! $SELF->IsRoleGroup('fairy') && ! $SELF->IsRole('enchant_mad')){
       OutputVoteResult('夜：投票イベントが一致しません');
     }
-    $is_mirror_fairy = $SELF->IsRole('mirror_fairy');
+    $is_mirror_fairy = $SELF->IsRole('mirror_fairy', 'sweet_fairy');
     break;
 
   case 'OGRE_DO':
@@ -575,16 +575,18 @@ function VoteNight(){
       $target_uname  = implode(' ', $uname_stack);
       $target_handle = implode(' ', $handle_stack);
     }
-    elseif($is_mirror_fairy){ //鏡妖精の処理
+    elseif($is_mirror_fairy){ //鏡妖精・恋妖精の処理
       $id_stack     = array();
       $uname_stack  = array();
       $handle_stack = array();
+      $is_sweet     = $SELF->IsRole('sweet_fairy'); //恋妖精判定
       foreach($target_list as $target){ //情報収集
 	$id_stack[]     = strval($target->user_no);
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
+	if($is_sweet) $target->AddRole($SELF->GetID('sweet_status')); //恋妖精の処理
       }
-      $SELF->AddMainRole(implode('-', $id_stack));
+      if(! $is_sweet) $SELF->AddMainRole(implode('-', $id_stack)); //鏡妖精の処理
 
       $situation     = 'CUPID_DO';
       $target_uname  = implode(' ', $uname_stack);
@@ -893,11 +895,12 @@ function OutputVoteNight(){
     $type   = 'CHILD_FOX_DO';
     $submit = 'mage_do';
   }
-  elseif($SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera', 'mirror_fairy')){
+  elseif($SELF->IsRoleGroup('cupid', 'angel') ||
+	 $SELF->IsRole('dummy_chiroptera', 'mirror_fairy', 'sweet_fairy')){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     $type = 'CUPID_DO';
     $role_cupid = $SELF->IsRoleGroup('cupid', 'angel') || $SELF->IsRole('dummy_chiroptera');
-    $role_mirror_fairy = $SELF->IsRole('mirror_fairy');
+    $role_mirror_fairy = $SELF->IsRole('mirror_fairy', 'sweet_fairy');
     $cupid_self_shoot  = $SELF->IsRole('self_cupid', 'moon_cupid', 'dummy_chiroptera') ||
       $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
   }
@@ -929,7 +932,8 @@ function OutputVoteNight(){
     OutputVoteResult('夜：あなたは投票できません');
   }
   CheckAlreadyVote($type, $not_type);
-  if($role_mirror_fairy) $type = 'FAIRY_DO'; //鏡妖精は表示だけ妖精系 (内部処理はキューピッド系)
+  //鏡妖精・恋妖精は表示だけ妖精系 (内部処理はキューピッド系)
+  if($role_mirror_fairy) $type = 'FAIRY_DO';
 
   //身代わり君使用 or クイズ村の時は身代わり君だけしか選べない
   if($role_wolf && (($ROOM->IsDummyBoy() && $ROOM->date == 1) || $ROOM->IsQuiz())){

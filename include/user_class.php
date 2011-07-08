@@ -559,7 +559,7 @@ class User{
     }
     if($this->IsRole('voodoo_fox')) return $this->IsVoted($vote_data, 'VOODOO_FOX_DO');
     if($this->IsChildFox(true)) return $this->IsVoted($vote_data, 'CHILD_FOX_DO');
-    if(($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy')) ||
+    if(($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy', 'sweet_fairy')) ||
        $this->IsRole('enchant_mad')){
       return $this->IsVoted($vote_data, 'FAIRY_DO');
     }
@@ -568,7 +568,8 @@ class User{
       if($this->IsRole('mind_scanner', 'presage_scanner')){
 	return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
       }
-      if($this->IsRoleGroup('cupid', 'angel') || $this->IsRole('dummy_chiroptera', 'mirror_fairy')){
+      if($this->IsRoleGroup('cupid', 'angel') ||
+	 $this->IsRole('dummy_chiroptera', 'mirror_fairy', 'sweet_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
       if($this->IsDuelist()) return $this->IsVoted($vote_data, 'DUELIST_DO');

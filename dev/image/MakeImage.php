@@ -901,6 +901,10 @@ class RoleMessageList{
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|鏡妖精|です。初日の夜に誰か二人に|悪戯|して、自分が吊られたら次の日の投票先をその二人に限定してしまいます。\n　鏡界――合わせ鏡の無限次元に佇みながら、鏡の世界を体に埋め込むその力。姿見に自らを写しつつ、村人は何を思うのか。",
     'type' => 'fairy');
 
+  public $sweet_fairy = array(
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|恋妖精|です。初日の夜に誰か二人に|悪戯|して、|悲恋|を与えてしまいます。",
+    'type' => 'fairy');
+
   public $ice_fairy = array(
     'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|氷妖精|です。夜に村人一人に|悪戯|して、その人を#凍傷#にしてしまいます。たまに自分に跳ね返ることがあります。\n　妖精として力強く生き残るために、あなたが敵だとみなした相手には、自由にさせないように|悪戯|して追い払いましょう！",
     'type' => 'fairy', 'delimiter' => array('#' => 'chicken'));
@@ -1350,6 +1354,10 @@ class RoleMessageList{
     'message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先が生きていた場合に押し付けることができますが、例外があるので気をつけましょう。",
     'delimiter' => array('|' => 'wolf', '#' => 'vote'));
 
+  public $sweet_status = array(
+    'message' => "　あなたは|恋人|と別れました……",
+    'type' => 'challenge_lovers');
+
   public $lost_ability = array('message' => "　あなたは能力を失いました。");
 
   public $muster_ability = array('message' => "　あなたの能力が発現しました。");
@@ -1681,6 +1689,7 @@ class RoleMessageList{
   public $result_flower_fairy = array('message' => "さんは|花妖精|でした", 'type' => 'result_fairy');
   public $result_shadow_fairy = array('message' => "さんは|影妖精|でした", 'type' => 'result_fairy');
   public $result_mirror_fairy = array('message' => "さんは|鏡妖精|でした", 'type' => 'result_fairy');
+  public $result_sweet_fairy = array('message' => "さんは|恋妖精|でした", 'type' => 'result_fairy');
   public $result_ice_fairy = array('message' => "さんは|氷妖精|でした", 'type' => 'result_fairy');
   public $result_ogre = array('message' => "さんは|鬼|でした", 'delimiter' => array('|' => 'ogre'));
   public $result_orange_ogre = array('message' => "さんは|前鬼|でした", 'type' => 'result_ogre');
@@ -1903,6 +1912,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('cowboy_duelist');
+#$builder->Output('sweet_fairy');
+$builder->Output('cowboy_duelist');
 #$builder->Output('cute_avenger');
-$builder->Output('critical_patron');
+#$builder->Output('critical_patron');

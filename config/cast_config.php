@@ -487,7 +487,7 @@ class CastConfig extends CastConfigBase{
     'cute_chiroptera'      =>  3,
     'scarlet_chiroptera'   =>  3,
     'dummy_chiroptera'     =>  3,
-    'fairy'                =>  2,
+    'fairy'                =>  1,
     'spring_fairy'         =>  1,
     'summer_fairy'         =>  1,
     'autumn_fairy'         =>  1,
@@ -501,8 +501,9 @@ class CastConfig extends CastConfigBase{
     'dark_fairy'           =>  1,
     'shadow_fairy'         =>  1,
     'greater_fairy'        =>  1,
-    'ice_fairy'            =>  1,
     'mirror_fairy'         =>  1,
+    'sweet_fairy'          =>  1,
+    'ice_fairy'            =>  1,
     'ogre'                 =>  1,
     'orange_ogre'          =>  1,
     'indigo_ogre'          =>  1,
@@ -854,7 +855,7 @@ class CastConfig extends CastConfigBase{
     elseif($ROOM->IsOption('auto_open_cast')){ //自動公開
       //-- 恋色決闘 --//
       $duel_fix_list = array();
-      if($user_count >= 15) $duel_fix_list['howl_scanner'] = 1;
+      if($user_count >= 15) $duel_fix_list['sweet_fairy'] = 1;
       if($user_count >= 20) $duel_fix_list['enchant_mad'] = 1;
       if($user_count >= 25){
 	$duel_fix_list['sirius_wolf'] = 1;
@@ -886,11 +887,11 @@ class CastConfig extends CastConfigBase{
 	$role_list['self_cupid']--;
 	$role_list['dummy_chiroptera']++;
       }
-      if($role_list['mind_cupid'] > 2){
+      if($role_list['mind_cupid'] > 3){
 	$role_list['mind_cupid']--;
 	$role_list['exchange_angel']++;
       }
-      if($role_list['mind_cupid'] > 2){
+      if($role_list['mind_cupid'] > 3){
 	$role_list['mind_cupid']--;
 	$role_list['sweet_cupid']++;
       }

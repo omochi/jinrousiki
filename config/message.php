@@ -18,6 +18,7 @@ class Message{
   //-- game_view.php & OutputGameHTMLHeader() --//
   public $vote_announce = '時間がありません。投票してください。'; //会話の制限時間切れ
   public $wait_morning = '待機時間中です。'; //早朝待機制の待機時間中
+  public $close_cast = '配役隠蔽中です。'; //配役隠蔽通知 (霊界自動公開モード用)
 
   //-- game_functions.php --//
   //OutputRevoteList() : 再投票アナウンス

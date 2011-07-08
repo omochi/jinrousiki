@@ -576,9 +576,9 @@ function AggregateVoteGameStart($force_start = false){
 			    'mind_lonely', 'mind_sheep', 'sheep_wisp', 'lovers', 'challenge_lovers',
 			    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
 			    'possessed_target', 'possessed', 'infected', 'psycho_infected',
-			    'bad_status', 'protected', 'lost_ability', 'muster_ability',
-			    'changed_therian', 'copied', 'copied_trick', 'copied_basic',
-			    'copied_soul', 'copied_teller');
+			    'bad_status', 'sweet_status', 'protected', 'lost_ability',
+			    'muster_ability', 'changed_therian', 'copied', 'copied_trick',
+			    'copied_basic', 'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   /*

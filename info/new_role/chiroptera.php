@@ -207,6 +207,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="#flower_fairy">花妖精</a>
 <a href="#shadow_fairy">影妖精</a>
 <a href="#mirror_fairy">鏡妖精</a>
+<a href="#sweet_fairy">恋妖精</a>
 <a href="#ice_fairy">氷妖精</a>
 </p>
 
@@ -240,7 +241,8 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
   <a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。</li>
 <li>死亡欄妨害<br>死亡メッセージ欄に無意味な文字列を表示する。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
 <li>アイコンコピー<br>詳細は<a href="#shadow_fairy">影妖精</a>参照。</li>
-<li>決選投票<br>詳細は<a href="#mirror_fairy">鏡妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
+<li>決選投票<br>詳細は<a href="#mirror_fairy">鏡妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。<br>悪戯ができるのは一日目のみで、対象は身代わり君以外の誰か二人。</li>
+<li>悲恋<br>詳細は<a href="#sweet_fairy">恋妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。<br>悪戯ができるのは一日目のみで、対象は身代わり君以外の誰か二人。</li>
 <li>凍傷<br>詳細は<a href="#ice_fairy">氷妖精</a>参照。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
 </ol>
 
@@ -441,9 +443,8 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 本人が吊られたら、次の日の昼を「決選投票」(初日に選んだ二人にしか投票できない) にする妖精。
 </pre>
 <ol>
-<li>昼の投票画面を見る事で能力発動を確認できます</li>
-<li>対象に選んだ二人が両方生存している時だけ有効です</li>
-<li>対象が何らかの理由で昼に死亡した場合は即座に解除されます</li>
+<li>昼の投票画面を見る事で能力発動を確認できる。</li>
+<li>対象に選んだ二人が両方生存している時のみ有効で、<br>対象が何らかの理由で昼に死亡した場合は即座に解除される。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -452,10 +453,20 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <a href="lovers.php">キューピッド系</a>の処理を流用しています。
 </pre>
 
+<h3 id="sweet_fairy">恋妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<h4>[悪戯能力] タイプ：悲恋 / 占い妨害：無効 / 呪い：無効</h4>
+<pre>
+悪戯先に<a href="sub_role.php#sweet_status">悲恋</a>を付加する妖精。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+水銀燈鯖＠やる夫人狼のとある村で発生したバグがモデルです。
+</pre>
+
 <h3 id="ice_fairy">氷妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16～]</h3>
 <h4>[悪戯能力] タイプ：凍傷 / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-悪戯先を<a href="sub_role.php#frostbite">凍傷</a>にする妖精。
+悪戯先に<a href="sub_role.php#frostbite">凍傷</a>を付加する妖精。
 成功率は 70% で、失敗すると自分が<a href="sub_role.php#frostbite">凍傷</a>になる。
 </pre>
 <h4>関連役職</h4>

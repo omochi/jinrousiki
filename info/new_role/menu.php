@@ -78,6 +78,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a target="body" href="sub_role.php#lovers_group">恋人系</a></li>
 <li><a target="body" href="sub_role.php#infected_group">感染者系</a></li>
 <li><a target="body" href="sub_role.php#joker_group">ジョーカー系</a></li>
+<li><a target="body" href="sub_role.php#bad_status_group">悪戯系</a></li>
 <li><a target="body" href="sub_role.php#copied_group">元神話マニア系</a></li>
 <li><a target="body" href="sub_role.php#other_group">その他</a></li>
 </ul>

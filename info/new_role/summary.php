@@ -35,20 +35,6 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <h2 id="table">早見表</h2>
 <p>
 <a href="#main_role">メイン役職</a><br>
-Ver. 1.5.0
-<a href="#ver150a1">α1</a>
-<a href="#ver150a3">α3</a>
-<a href="#ver150a4">α4</a>
-<a href="#ver150a5">α5</a>
-<a href="#ver150a6">α6</a>
-<a href="#ver150a7">α7</a>
-<a href="#ver150a8">α8</a>
-<a href="#ver150a9">α9</a>
-<a href="#ver150b1">β1</a>
-<a href="#ver150b2">β2</a>
-<a href="#ver150b3">β3</a>
-<a href="#ver150b4">β4</a>
-<a href="#ver150b6">β6</a><br>
 Ver. 1.4.0
 <a href="#ver140a2">α2</a>
 <a href="#ver140a3">α3-7</a>
@@ -83,18 +69,25 @@ Ver. 1.4.0
 <a href="#ver140b19">β19</a>
 <a href="#ver140b20">β20</a>
 <a href="#ver140b21">β21</a>
-<a href="#ver140b22">β22</a>
+<a href="#ver140b22">β22</a><br>
+Ver. 1.5.0
+<a href="#ver150a1">α1</a>
+<a href="#ver150a3">α3</a>
+<a href="#ver150a4">α4</a>
+<a href="#ver150a5">α5</a>
+<a href="#ver150a6">α6</a>
+<a href="#ver150a7">α7</a>
+<a href="#ver150a8">α8</a>
+<a href="#ver150a9">α9</a>
+<a href="#ver150b1">β1</a>
+<a href="#ver150b2">β2</a>
+<a href="#ver150b3">β3</a>
+<a href="#ver150b4">β4</a>
+<a href="#ver150b6">β6</a>
 </p>
 
 <p>
 <a href="#sub_role">サブ役職</a><br>
-Ver. 1.5.0
-<a href="#sub_ver150a5">α5</a>
-<a href="#sub_ver150a9">α9</a>
-<a href="#sub_ver150b1">β1</a>
-<a href="#sub_ver150b3">β3</a>
-<a href="#sub_ver150b4">β4</a>
-<a href="#sub_ver150b6">β6</a><br>
 Ver. 1.4.0
 <a href="#sub_ver140a3">α3-7</a>
 <a href="#sub_ver140a9">α9</a>
@@ -121,7 +114,14 @@ Ver. 1.4.0
 <a href="#sub_ver140b18">β18</a>
 <a href="#sub_ver140b20">β20</a>
 <a href="#sub_ver140b21">β21</a>
-<a href="#sub_ver140b22">β22</a>
+<a href="#sub_ver140b22">β22</a><br>
+Ver. 1.5.0
+<a href="#sub_ver150a5">α5</a>
+<a href="#sub_ver150a9">α9</a>
+<a href="#sub_ver150b1">β1</a>
+<a href="#sub_ver150b3">β3</a>
+<a href="#sub_ver150b4">β4</a>
+<a href="#sub_ver150b6">β6</a>
 </p>
 
 <table id="main_role">
@@ -440,8 +440,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一度だけ夜に村人一人に罠を仕掛けることができる特殊な狂人。<br>
-    罠を仕掛けた人の元に訪れた<a href="wolf.php#wolf_group">人狼系</a>・<a href="human.php#guard_group">狩人系</a>(一部を除く)・<a href="human.php#assassin_group">暗殺者系</a>などは死亡する。</td>
+  <td class="ability">一度だけ、夜に誰か一人に罠を仕掛けることができる特殊な狂人。</td>
   <td>Ver. 1.4.0 α18</td>
 </tr>
 <tr id="ver140a19">
@@ -450,7 +449,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">夜に投票した人の占い行動を妨害する特殊な狂人。</td>
+  <td class="ability">夜に投票した人の占い能力を妨害する特殊な狂人。</td>
   <td>Ver. 1.4.0 α19</td>
 </tr>
 <tr>
@@ -582,8 +581,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">自分の投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。<br>
-    <a href="human.php#dummy_necromancer">夢枕人</a>には影響しない。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">処刑投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr>
@@ -592,8 +590,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">夜に投票した夢系能力者・<a href="chiroptera.php#fairy_group">妖精系</a>を殺すことができる特殊な狂人。<br>
-    何らかの形で<a href="human.php#dummy_guard">夢守人</a>に接触した場合は殺される。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">夜の投票先が夢系能力者・<a href="chiroptera.php#fairy_group">妖精系</a>なら殺すことができる特殊な狂人。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr id="ver140a22">
@@ -890,8 +887,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票の最多得票者に投票していた場合に、投票先を処刑し、それ以外の最多得票者をまとめてショック死させる特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">再投票の最多得票者に投票していた場合に、投票先を処刑し、それ以外の最多得票者をまとめてショック死させる特殊な狂人。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
 <tr>
@@ -1055,7 +1051,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑投票先に<a href="sub_role.php#febris">熱病</a>を付加する特殊な狂人。<br><a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">処刑投票先に<a href="sub_role.php#febris">熱病</a>を付加する特殊な狂人。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -1082,8 +1078,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一度だけ、死体に憑依できる特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">一度だけ、死体に憑依できる特殊な狂人。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -1092,8 +1087,7 @@ Ver. 1.4.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>妖狐</td>
-  <td class="ability">一度だけ、死体に憑依できる妖狐。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">一度だけ、死体に憑依できる妖狐。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -1539,8 +1533,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">人狼 (種類は問わない) に襲撃されたら「人狼」に変化する、特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">人狼に襲撃されたら「人狼」に変化する、特殊な狂人。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
 <tr id="ver140b16">
@@ -1558,8 +1551,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability"><a href="sub_role.php#frostbite">凍傷</a>になる罠を何回でも仕掛けることができる、特殊な<a href="wolf.php#trap_mad">罠師</a>。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability"><a href="sub_role.php#frostbite">凍傷</a>になる罠を何回でも仕掛けることができる特殊な狂人。</td>
   <td>Ver. 1.4.0 β16</td>
 </tr>
 <tr>
@@ -1568,9 +1560,7 @@ Ver. 1.4.0
   <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">悪戯先を<a href="sub_role.php#frostbite">凍傷</a>にする妖精。<br>
-    成功率は 70% で、失敗すると自分が<a href="sub_role.php#frostbite">凍傷</a>になる。
-  </td>
+  <td class="ability">悪戯先に<a href="sub_role.php#frostbite">凍傷</a>を付加する妖精。</td>
   <td>Ver. 1.4.0 β16</td>
 </tr>
 <tr id="ver140b17">
@@ -1579,9 +1569,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">投票先が人狼に襲撃されたら、次の日、全員のアイコンを襲撃された人にする特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">夜の投票先が人狼に襲撃されたら、次の日、全員のアイコンを襲撃された人にする特殊な狂人。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
 <tr>
@@ -1746,9 +1734,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">自分の投票先が処刑されたら投票結果を隠蔽できる特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">処刑投票先が処刑されたら投票結果を隠蔽できる特殊な狂人。</td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
 <tr>
@@ -2086,9 +2072,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。</td>
   <td>Ver. 1.5.0 α5</td>
 </tr>
 <tr>
@@ -2115,8 +2099,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑投票に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。<br><a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
-  </td>
+  <td class="ability">処刑投票に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。</td>
   <td>Ver. 1.5.0 α5</td>
 </tr>
 <tr id="ver150a6">
@@ -2266,8 +2249,7 @@ Ver. 1.4.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">人狼陣営勝利に加えて、人狼に襲撃されることが勝利条件の特殊な狂人。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">人狼陣営勝利に加えて、人狼に襲撃されることが勝利条件の特殊な狂人。</td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
@@ -2516,6 +2498,15 @@ Ver. 1.4.0
   <td class="ability"><a href="sub_role.php#critical_luck">痛恨</a>相当の能力を持ち、<a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#occupied_luck">ひんな持ち</a>を付加する劣化後援者。</td>
   <td>Ver. 1.5.0 β6</td>
 </tr>
+<tr>
+  <td><a href="chiroptera.php#sweet_fairy">恋妖精</a></td>
+  <td><a href="chiroptera.php">蝙蝠</a></td>
+  <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">悪戯先に<a href="sub_role.php#sweet_status">悲恋</a>を付加する妖精。</td>
+  <td>Ver. 1.5.0 β6</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -2599,7 +2590,7 @@ Ver. 1.4.0
   </tr>
   <tr>
     <td><a href="sub_role.php#copied">元神話マニア</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#copied_group">元神話マニア系</a></td>
     <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#mania">神話マニア</a>に付加される。</td>
     <td>Ver. 1.4.0 α11</td>
@@ -2874,14 +2865,14 @@ Ver. 1.4.0
     <td><a href="sub_role.php#mind_evoke">口寄せ</a></td>
     <td><a href="sub_role.php#mind_read_group">サトラレ系</a></td>
     <td>強制</td>
-    <td class="ability">死後に特定の人の遺言窓にメッセージを送れるようになる。</td>
+    <td class="ability">死後に<a href="human.php#evoke_scanner">イタコ</a>の遺言窓にメッセージを送れるようになる。</td>
     <td>Ver. 1.4.0 β2</td>
   </tr>
   <tr id="sub_ver140b6">
     <td><a href="sub_role.php#bad_status">悪戯</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#bad_status_group">悪戯</a></td>
     <td>無し</td>
-    <td class="ability">一部の<a href="chiroptera.php#fairy_group">妖精系</a>などに悪戯されている人に付加される</td>
+    <td class="ability">一部の<a href="chiroptera.php#fairy_group">妖精系</a>などが夜の投票時に付加する。</td>
     <td>Ver. 1.4.0 β6</td>
   </tr>
   <tr id="sub_ver140b8">
@@ -2936,21 +2927,21 @@ Ver. 1.4.0
   </tr>
   <tr>
     <td><a href="sub_role.php#copied_trick">元奇術師</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#copied_group">元神話マニア系</a></td>
     <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#trick_mania">奇術師</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#copied_soul">元覚醒者</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#copied_group">元神話マニア系</a></td>
     <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#soul_mania">覚醒者</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
   </tr>
   <tr>
     <td><a href="sub_role.php#copied_teller">元夢語部</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#copied_group">元神話マニア系</a></td>
     <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#dummy_mania">夢語部</a>に付加される。</td>
     <td>Ver. 1.4.0 β11</td>
@@ -2987,7 +2978,7 @@ Ver. 1.4.0
     <td><a href="sub_role.php#deep_sleep">爆睡者</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>有り</td>
-    <td class="ability">共有の囁き・人狼の遠吠えが一切見えなくなる。</td>
+    <td class="ability">共有者の囁き・人狼の遠吠えが一切見えなくなる。</td>
     <td>Ver. 1.4.0 β14</td>
   </tr>
   <tr>
@@ -3146,7 +3137,7 @@ Ver. 1.4.0
   </tr>
   <tr id="sub_ver150b4">
     <td><a href="sub_role.php#copied_basic">元求道者</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#copied_group">元神話マニア系</a></td>
     <td>無し</td>
     <td class="ability">コピー後の<a href="mania.php#basic_mania">求道者</a>に付加される。</td>
     <td>Ver. 1.5.0 β4</td>
@@ -3177,6 +3168,13 @@ Ver. 1.4.0
     <td><a href="sub_role.php#upper_luck_group">雑草魂系</a></td>
     <td>強制</td>
     <td class="ability">得票数が付加させた人が一人でも生存している間は +1、全員死亡すると +3 される。</td>
+    <td>Ver. 1.5.0 β6</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#sweet_status">悲恋</a></td>
+    <td><a href="sub_role.php#bad_status_group">悪戯系</a></td>
+    <td>強制</td>
+    <td class="ability">一日目のみ、付加した<a href="chiroptera.php#sweet_fairy">恋妖精</a>のもう一人の悲恋と<a href="sub_role.php#lovers">恋人</a>であるように表示される。</td>
     <td>Ver. 1.5.0 β6</td>
   </tr>
 </table>

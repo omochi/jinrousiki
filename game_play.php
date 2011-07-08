@@ -28,13 +28,12 @@ $SELF = $USERS->BySession(); //自分の情報をロード
 #PrintData($SELF);
 
 //シーンに応じた追加クラスをロード
-if($ROOM->IsBeforeGame()){
-  //ゲームオプション表示用
+if($ROOM->IsBeforeGame()){ //ゲームオプション表示
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'GAME_OPT_MESS', 'ROOM_IMG');
   $ROOM->LoadVote();
 }
-elseif($ROOM->IsFinished()){
-  $INIT_CONF->LoadClass('VICT_MESS'); //勝敗結果表示用
+elseif($ROOM->IsFinished()){ //勝敗結果表示
+  $INIT_CONF->LoadClass('VICT_MESS');
 }
 SendCookie(&$OBJECTION); //必要なクッキーをセットする
 
@@ -58,6 +57,9 @@ if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは b
   if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
     $SELF->Update('last_load_day_night', $ROOM->day_night);
   }
+}
+elseif($ROOM->dead_mode && $ROOM->IsPlaying() && $SELF->IsDummyBoy()){
+  SetSuddenDeathTime();
 }
 
 //-- データ出力 --//
@@ -348,6 +350,19 @@ function CheckSilence(){
   UnlockTable(); //テーブルロック解除
 }
 
+//超過時間セット
+function SetSuddenDeathTime(){
+  global $TIME_CONF, $ROOM;
+
+  //最終発言時刻からの差分を取得
+  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
+  $last_updated_pass_time = FetchResult($query);
+
+  //経過時間を取得
+  $ROOM->IsRealTime() ? GetRealPassTime(&$left_time) : GetTalkPassTime(&$left_time, true);
+  if($left_time == 0) $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
+}
+
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
@@ -527,6 +542,10 @@ EOF;
   }
   elseif($ROOM->IsEvent('wait_morning')){
     echo '<div class="system-vote">' . $MESSAGE->wait_morning . '</div>'."\n";
+  }
+
+  if($SELF->IsDead() && $ROOM->IsOption('auto_open_cast') && ! $ROOM->IsOpenCast()){
+    echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
   }
 }
 
