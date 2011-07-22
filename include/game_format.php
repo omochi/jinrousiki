@@ -9,15 +9,17 @@ class DocumentBuilder{
     global $ROOM, $USERS, $SELF;
 
     $this->actor = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
-    if(is_null($this->actor->live) || ! $ROOM->IsOpenCast()){ //観戦モード判定
+    //観戦モード判定
+    if((is_null($this->actor->live) || ! $ROOM->IsOpenCast()) && ! $ROOM->IsFinished()){
       foreach(array('blinder', 'earplug') as $role){ //本人視点が変化するタイプ
-	if($ROOM->IsEvent($role) || ($ROOM->IsOption($role) && ! $ROOM->IsFinished())){
+	if(($ROOM->IsEvent($role) && $ROOM->IsDay()) || $ROOM->IsOption($role)){
 	  $this->actor->virtual_live = true;
 	  $this->actor->role_list[] = $role;
 	}
       }
+
       $role = 'deep_sleep'; //爆睡者は処理の位置が違うので個別対応
-      if($ROOM->IsOption($role) && ! $ROOM->IsFinished()){
+      if($ROOM->IsOption($role)){
 	$SELF->virtual_live = true;
 	$SELF->role_list[] = $role;
       }

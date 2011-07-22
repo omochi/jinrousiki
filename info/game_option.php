@@ -6,12 +6,12 @@ $INIT_CONF->LoadClass('CAST_CONF', 'GAME_OPT_CAPT');
 OutputInfoPageHeader('ゲームオプション');
 ?>
 <p>
-<a href="#basic_option">基本設定</a>
-<a href="#dummy_boy_option">身代わり君設定</a>
-<a href="#open_cast_option">霊界公開設定</a>
-<a href="#add_role_option">追加役職設定</a>
-<a href="#special_option">特殊村設定</a>
-<a href="#special_role_option">特殊配役設定</a>
+<a href="#basic_option">基本</a>
+<a href="#dummy_boy_option">身代わり君</a>
+<a href="#open_cast_option">霊界公開</a>
+<a href="#add_role_option">追加役職</a>
+<a href="#special_option">特殊村</a>
+<a href="#special_role_option">特殊配役</a>
 </p>
 
 <h2 id="basic_option">基本設定</h2>
@@ -33,12 +33,12 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="real_time"><?php echo $GAME_OPT_MESS->real_time ?></h3>
 <ul>
 <li><?php echo $GAME_OPT_CAPT->real_time ?></li>
-<li>昼と夜を個別に設定できます</li>
+<li>昼と夜を個別に設定できます → <a href="script_info.php#difference_real_time">初期設定</a></li>
 </ul>
 
 <h3 id="wait_morning"><?php echo $GAME_OPT_MESS->wait_morning ?> [Ver. 1.4.0 β17～]</h3>
 <ul>
-<li><?php echo $GAME_OPT_CAPT->wait_morning ?></li>
+<li><?php echo $GAME_OPT_CAPT->wait_morning ?> → <a href="script_info.php#difference_wait_morning">待機時間設定</a></li>
 <li>発言が制限されている間は画面の上方に「待機時間中です」という趣旨のメッセージが表示されます</li>
 </ul>
 
@@ -66,13 +66,13 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="dummy_boy"><?php echo $GAME_OPT_MESS->dummy_boy ?></h3>
 <ul>
 <li>初日の夜、身代わり君が狼に食べられます</li>
-<li>身代わり君がなれる役職には制限があります</li>
+<li><a href="script_info.php#difference_dummy_boy">身代わり君がなれる役職</a>には制限があります</li>
 <li>身代わり君は、基本的には能力は発動しません</li>
 </ul>
 
 <h3 id="gm_login"><?php echo $GAME_OPT_MESS->gm_login ?> [Ver. 1.4.0 α18～]</h3>
 <ul>
-<li>仮想 GM が身代わり君としてログインします</li>
+<li>仮想 GM が身代わり君としてログインします → <a href="spec.php#dummy_boy">仕様</a></li>
 <li>村を作成する際にログインパスワードの入力が必要です</li>
 <li>身代わり君のユーザ名は「dummy_boy」です</li>
 </ul>
@@ -109,7 +109,12 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="auto_open_cast"><?php echo $GAME_OPT_MESS->auto_open_cast ?> [Ver. 1.4.0 β3～]</h3>
 <ul>
 <li>蘇生能力者などが能力を持っている間だけ霊界が非公開になります</li>
+<li>非公開中の霊界モードには「隠蔽中」という趣旨のメッセージが画面に表示されます</li>
 </ul>
+<h4>Ver. 1.5.0 β6～</h4>
+<pre>
+非公開中の霊界モードには「隠蔽中」という趣旨のメッセージが画面に表示されます
+</pre>
 
 
 <h2 id="add_role_option">追加役職設定</h2>

@@ -251,7 +251,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="sub_role.php#sheep_wisp">羊皮</a>
+<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="sub_role.php#wisp_group">鬼火系</a>
 </pre>
 
 <h3 id="soul_mage">魂の占い師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
@@ -283,10 +283,6 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
 それ以外は「正常である」と判定される。
 </pre>
-<h5>Ver. 1.4.0 β18～</h5>
-<pre>
-<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
-</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#psycho">精神関連能力者</a>
@@ -303,20 +299,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 占い妨害：有効 / 呪い：無効</h4>
 <pre>
 性別を判別する特殊な占い師。
-<a href="chiroptera.php">蝙蝠陣営</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
+<a href="chiroptera.php">蝙蝠陣営</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>・<a href="sub_role.php#gold_wisp">松明丸</a>を占った場合は「蝙蝠」と判定される。
 <a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
-</pre>
-<h5>Ver. 1.4.0 β18～</h5>
-<pre>
-<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
-</pre>
-<h5>Ver. 1.4.0 β8～</h5>
-<pre>
-<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>を占った場合は「蝙蝠」と判定される。
-</pre>
-<h5>Ver. 1.4.0 α21～</h5>
-<pre>
-<a href="chiroptera.php">蝙蝠陣営</a>を占った場合は「蝙蝠」と判定される。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -669,7 +653,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="duelist.php#revive_avenger">夜刀神</a>。</li>
+<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#fire_wolf">火狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="duelist.php#revive_avenger">夜刀神</a>。</li>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 <li>自分が毒やショック死で死亡した場合でも有効。</li>
@@ -1468,7 +1452,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <li>投票できるのは、身代わり君以外の死者で、「蘇生しない」を選ぶこともできる。</li>
 <li>蘇生成功率のうち、1/5 は指定した人以外が対象になる「誤爆蘇生」となる。<br>
   例) 25% : 成功 : 20% / 誤爆 :  5%</li>
-<li>身代わり君・蘇生能力者 (猫又系・<a href="#revive_priest">天人</a>など)・<a href="sub_role.php#lovers">恋人</a>・<a href="#detective_common">探偵</a>は蘇生できない。</li>
+<li>身代わり君・<a href="ability.php#revive">蘇生能力者</a>・<a href="sub_role.php#lovers">恋人</a>・<a href="#detective_common">探偵</a>は蘇生できない。</li>
 <li>蘇生対象外の人が選ばれた場合は確実に失敗する。</li>
 <li>蘇生に失敗した場合は霊界と<a href="#attempt_necromancer">蟲姫</a>にだけ見えるシステムメッセージが表示される。</li>
 </ol>
@@ -2410,17 +2394,9 @@ MVP の賞品としてプレゼントしたものです。
 <li><a href="#doll_master">人形遣い</a>が誰か分かる。</li>
 <li><a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
 </ol>
-<h5>Ver. 1.5.0 β6～</h5>
-<pre>
-<a href="#doll_master">人形遣い</a>の枠に<a href="vampire.php#scarlet_vampire">屍鬼</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.5.0 β1～</h5>
-<pre>
-<a href="#doll_master">人形遣い</a>の枠に<a href="lovers.php#scarlet_angel">紅天使</a>も混ざって表示される。
-</pre>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
-<a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
+<a href="#doll_master">人形遣い</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示される。
 </pre>
 
 <h3 id="doll">上海人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>

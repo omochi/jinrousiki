@@ -97,16 +97,16 @@ class RoleManager{
 				 'boss_chiroptera', 'sacrifice_ogre');
 
   //妖狐襲撃能力
-  public $fox_eat_action_list = array('blue_wolf', 'doom_wolf');
+  public $fox_eat_action_list = array('blue_wolf', 'fire_wolf', 'doom_wolf');
 
   //妖狐襲撃カウンター
-  public $fox_eat_counter_list = array('blue_fox', 'immolate_fox');
+  public $fox_eat_counter_list = array('blue_fox', 'spell_fox', 'immolate_fox');
 
   //人狼襲撃得票カウンター
   public $wolf_eat_reaction_list = array('therian_mad', 'immolate_mad');
 
   //人狼襲撃能力
-  public $wolf_eat_action_list = array('sex_wolf', 'hungry_wolf', 'doom_wolf');
+  public $wolf_eat_action_list = array('doom_wolf', 'fire_wolf', 'sex_wolf', 'hungry_wolf');
 
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',

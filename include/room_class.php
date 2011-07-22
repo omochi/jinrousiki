@@ -220,6 +220,13 @@ class Room{
     return $this->event->rows;
   }
 
+  //特殊オプションの配役データ取得
+  function GetOptionList($option){
+    global $CAST_CONF;
+    return $this->IsOption($option) ?
+      $CAST_CONF->{$option.'_list'}[$this->option_role->options[$option][0]] : array();
+  }
+
   //オプション判定
   function IsOption($option){
     return in_array($option, $this->option_list);

@@ -160,9 +160,9 @@ function OutputEntryUserPage(){
   if($GAME_CONF->trip){
     $uname_form = <<<EOF
 <tr>
-<td class="img"><img src="{$path}/uname.gif" alt="ユーザ名"></td>
-<td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
-<td>＃ <input type="text" name="trip" size="15" maxlength="15" value="{$RQ_ARGS->trip}"></td>
+<td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
+<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
+<td><label for="trip">＃</lable> <input type="text" id="trip" name="trip" size="15" maxlength="15" value="{$RQ_ARGS->trip}"></td>
 </tr>
 <tr>
 <td></td>
@@ -174,8 +174,8 @@ EOF;
   else{
     $uname_form = <<<EOF
 <tr>
-<td class="img"><img src="{$path}/uname.gif" alt="ユーザ名"></td>
-<td><input type="text" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
+<td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
+<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
 <td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです(トリップ使用不可)</td>
 </tr>
 
@@ -197,13 +197,13 @@ EOF;
 <table class="input">
 {$uname_form}
 <tr>
-<td class="img"><img src="{$path}/handle_name.gif" alt="村人の名前"></td>
-<td><input type="text" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
+<td class="img"><label for="handle_name"><img src="{$path}/handle_name.gif" alt="村人の名前"></label></td>
+<td><input type="text" id="handle_name" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
 <td class="explain">村で表示される名前です</td>
 </tr>
 <tr>
-<td class="img"><img src="{$path}/password.gif" alt="パスワード"></td>
-<td><input type="password" name="password" size="30" maxlength="30"></td>
+<td class="img"><label for="password"><img src="{$path}/password.gif" alt="パスワード"></label></td>
+<td><input type="password" id="password" name="password" size="30" maxlength="30" value=""></td>
 <td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
 </tr>
 <tr>
@@ -215,9 +215,9 @@ EOF;
 <td class="explain">特に意味は無いかも……</td>
 </tr>
 <tr>
-<td class="img"><img src="{$path}/profile.gif" alt="プロフィール"></td>
+<td class="img"><label for="profile"><img src="{$path}/profile.gif" alt="プロフィール"></label></td>
 <td colspan="2">
-<textarea name="profile" cols="30" rows="2">{$RQ_ARGS->profile}</textarea>
+<textarea id="profile" name="profile" cols="30" rows="2">{$RQ_ARGS->profile}</textarea>
 </td>
 </tr>
 <tr>

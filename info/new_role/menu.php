@@ -75,6 +75,7 @@ OutputHTMLHeader('新役職情報 - [メニュー]', 'info_menu');
 <li><a target="body" href="sub_role.php#strong_voice_group">大声系</a></li>
 <li><a target="body" href="sub_role.php#no_last_words_group">筆不精系</a></li>
 <li><a target="body" href="sub_role.php#mind_read_group">サトラレ系</a></li>
+<li><a target="body" href="sub_role.php#wisp_group">鬼火系</a></li>
 <li><a target="body" href="sub_role.php#lovers_group">恋人系</a></li>
 <li><a target="body" href="sub_role.php#infected_group">感染者系</a></li>
 <li><a target="body" href="sub_role.php#joker_group">ジョーカー系</a></li>

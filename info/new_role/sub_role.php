@@ -14,6 +14,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#strong_voice_group">大声系</a>
 <a href="#no_last_words_group">筆不精系</a>
 <a href="#mind_read_group">サトラレ系</a>
+<a href="#wisp_group">鬼火系</a>
 </p>
 <p>
 <a href="#lovers_group">恋人系</a>
@@ -71,12 +72,12 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#frostbite">凍傷</a>
+<a href="#chicken">小心者</a>・<a href="#frostbite">凍傷</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#chicken">小心者</a>の逆バージョンです。
-吊り先が確定してる展開になるほど死亡率が上がる、難儀な役職ですね。
+処刑先が確定してる展開になるほど死亡率が上がる、難儀な役職ですね。
 </pre>
 
 <h3 id="perverseness">天邪鬼 [Ver. 1.4.0 α3-7～]</h3>
@@ -96,6 +97,10 @@ OutputRolePageHeader('サブ役職');
 <h3 id="flattery">ゴマすり [Ver. 1.4.0 α15～]</h3>
 <pre>
 処刑投票時に投票先が誰とも重なっていないとショック死する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#perverseness">天邪鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1163,6 +1168,100 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 
 
+<h2 id="wisp_group">鬼火系 (占い妨害)</h2>
+<p>
+<a href="#wisp_rule">基本ルール</a>
+</p>
+<p>
+<a href="#wisp">鬼火</a>
+<a href="#black_wisp">天火</a>
+<a href="#spell_wisp">狐火</a>
+<a href="#foughten_wisp">古戦場火</a>
+<a href="#gold_wisp">松明丸</a>
+<a href="#sheep_wisp">羊皮</a>
+</p>
+
+<h3 id="wisp_rule">基本ルール [鬼火系]</h3>
+<ol>
+<li><a href="../chaos.php#secret_sub_role">サブ役職非公開</a>設定でも必ず表示される。</li>
+<li>占いが成立した時のみ有効 (<a href="ability.php#phantom">占い妨害</a>・<a href="ability.php#cursed">呪い</a>の判定が優先される)。</li>
+<li><a href="human.php#soul_mage">魂の占い師</a>には無効。</li>
+<li><a href="human.php#dummy_mage">夢見人</a>は「村人・人狼」の結果が反転される。</li>
+<li>複数重なった場合の優先順位は<a href="../spec.php#vote_night">判定</a>の項目参照。</li>
+</ol>
+
+<h3 id="wisp">鬼火 [Ver. 1.5.0β7～]</h3>
+<pre>
+<a href="human.php#mage">占い師</a>に占われると「鬼」判定が出る。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+能力の観点から<a href="ogre.php">鬼陣営</a>を乗っ取ることは難しいので
+占い結果が実質「正体不明」になることが主眼となります。
+</pre>
+
+<h3 id="black_wisp">天火 [Ver. 1.5.0β7～]</h3>
+<pre>
+<a href="human.php#mage">占い師</a>に占われると「人狼」判定が出る。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#fire_wolf">火狼</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+呪殺される妖狐にこれがつくと複雑な状況になります。
+</pre>
+
+<h3 id="spell_wisp">狐火 [Ver. 1.5.0β7～]</h3>
+<pre>
+<a href="human.php#mage">占い師</a>に占われると呪殺される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#spell_fox">宙狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="ability.php#last_words_limit">遺言</a>を残せない役職にこれがつくと悲劇を引き起こす可能性があります。
+</pre>
+
+<h3 id="foughten_wisp">古戦場火 [Ver. 1.5.0β7～]</h3>
+<pre>
+<a href="human.php#mage">占い師</a>に占われると「蝙蝠」判定が出る。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+主に<a href="vampire.php">吸血鬼</a>扱いされることになりますが、比較的害は少ないので
+占われるまで伏せて占い師の真贋を見極める手もあります。
+</pre>
+
+<h3 id="gold_wisp">松明丸 [Ver. 1.5.0β7～]</h3>
+<pre>
+<a href="human.php#sex_mage">ひよこ鑑定士</a>に占われると「蝙蝠」判定が出る。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="chiroptera.php">蝙蝠</a>を乗っ取ることができるので比較的使い出がある能力かもしれません。
+</pre>
+
+<h3 id="sheep_wisp">羊皮 [Ver. 1.5.0 β4～]</h3>
+<h4>[役職表示] 発動日限定</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+表示された日に<a href="human.php#mage">占い師</a>に占われると村人判定が出る。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#mind_sheep">羊</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+自覚があるので、遺言に残すことで村は対応できます。
+どちらかというとそれを利用して占いを一日潰せることに価値があるのかもしれません。
+</pre>
+
+
 <h2 id="lovers_group">恋人系</h2>
 <p>
 <a href="#lovers">恋人</a>
@@ -1564,7 +1663,6 @@ B：「恋人陣営の勝利」
 <p>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
-<a href="#sheep_wisp">羊皮</a>
 <a href="#protected">庇護者</a>
 <a href="#lost_ability">能力喪失</a>
 <a href="#muster_ability">能力発現</a>
@@ -1609,27 +1707,6 @@ B：「恋人陣営の勝利」
 憑依システム用に実装されたサブ役職です。
 </pre>
 
-<h3 id="sheep_wisp">羊皮 [Ver. 1.5.0 β4～]</h3>
-<h4>[役職表示] 発動日限定</h4>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-表示された日に<a href="human.php#mage">占い師</a>に占われると村人判定が出る。
-</pre>
-<ol>
-<li>占いが成立した時のみ有効 (<a href="ability.php#phantom">占い妨害</a>・<a href="ability.php#cursed">呪い</a>の判定が優先される)。</li>
-<li><a href="human.php#soul_mage">魂の占い師</a>には無効。</li>
-<li><a href="human.php#dummy_mage">夢見人</a>は結果が反転される (結果として人狼判定が出る)。</li>
-</ol>
-<h4>関連役職</h4>
-<pre>
-<a href="#mind_sheep">羊</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-自覚があるので、遺言に残すことで村は対応できます。
-どちらかというとそれを利用して占いを一日潰せることに価値があるのかもしれません。
-</pre>
-
 <h3 id="protected">庇護者 [Ver. 1.4.0 β18～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
@@ -1667,8 +1744,9 @@ B：「恋人陣営の勝利」
 <h4>関連役職</h4>
 <pre>
 <a href="human.php#revive_priest">天人</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#phantom_doll">倫敦人形</a>・<a href="human.php#revive_doll">西蔵人形</a>
-<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>
-<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>
+<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#fire_wolf">火狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>
+<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>
+<a href="duelist.php#revive_avenger">夜刀神</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

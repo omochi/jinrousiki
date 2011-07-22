@@ -215,7 +215,7 @@ OutputInfoPageHeader('詳細な仕様');
 
 + 役職判定
   - <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#centaurus_pharmacist">人馬</a> → <a href="new_role/ability.php#vote_action">処刑投票付加能力者</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> →
-    <a href="new_role/sub_role.php#chicken_group">ショック死</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> → <a href="new_role/sub_role.php#lovers">恋人</a>後追い → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a>・<a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="weather.php">天候</a>・<a href="new_role/sub_role.php#joker">ジョーカー</a>
+    <a href="new_role/sub_role.php#chicken_group">小心者系</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> → <a href="new_role/sub_role.php#lovers">恋人</a>後追い → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a>・<a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="weather.php">天候</a>・<a href="new_role/sub_role.php#joker">ジョーカー</a>
 </pre>
 
 <h3 id="vote_night">夜</h3>
@@ -230,7 +230,7 @@ OutputInfoPageHeader('詳細な仕様');
 + 接触 (罠・逃亡・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺・人攫い)
   - 罠 ＞ 逃亡失敗 →
     罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
-    狩人の狩り → 罠 ＞ 狩人護衛 ＞ 吸血 →
+    狩人の狩り → 罠能力者の罠死 → 罠 ＞ 狩人護衛 ＞ 吸血 →
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 暗殺 →
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 失敗判定 ＞ 人攫い → 凍傷判定
 
@@ -247,7 +247,10 @@ OutputInfoPageHeader('詳細な仕様');
   - 夢守人護衛 ＞ 獏襲撃 → 夢守人の狩り
 
 + 占い (<a href="new_role/human.php#mage_group">占い師系</a>他・<a href="new_role/human.php#anti_voodoo">厄神</a>・<a href="new_role/wolf.php#jammer_mad">月兎</a>他・<a href="new_role/wolf.php#voodoo_mad">呪術師</a>他)
-  - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺)
+  - 厄払い ＞ 占い妨害 ＞ 呪い ＞ 占い (呪殺・<a href="new_role/sub_role.php#spell_wisp">狐火</a>)
+
++ 占い判定 (<a href="new_role/sub_role.php#wisp_group">鬼火系</a>)
+  - <a href="new_role/sub_role.php#sheep_wisp">羊皮</a> ＞ <a href="new_role/sub_role.php#wisp">鬼火</a> ＞ <a href="new_role/sub_role.php#foughten_wisp">古戦場火</a> ＞ <a href="new_role/sub_role.php#black_wisp">天火</a> ＞ 役職別判定
 </pre>
 
 <h2 id="revive_refuse">蘇生辞退システム [Ver. 1.4.0 β7～]</h2>

@@ -7,5 +7,5 @@
 class Role_hungry_wolf extends Role{
   function __construct(){ parent::__construct(); }
 
-  function WolfEatAction($user){ return ! $user->IsWolf() && ! $user->IsFox(); }
+  function WolfEatAction($user){ return ! $user->IsRoleGroup('wolf', 'fox'); }
 }

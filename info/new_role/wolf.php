@@ -23,30 +23,6 @@ OutputRolePageHeader('人狼陣営');
   </li>
   <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
-<h5>Ver. 1.5.0 β6～</h5>
-<pre>
-<a href="human.php#unconscious">無意識</a>の枠に<a href="vampire.php#scarlet_vampire">屍鬼</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.5.0 β1～</h5>
-<pre>
-<a href="human.php#unconscious">無意識</a>の枠に<a href="lovers.php#scarlet_angel">紅天使</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.4.0 β21～</h5>
-<pre>
-<a href="human.php#unconscious">無意識</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.4.0 β8～</h5>
-<pre>
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。
-</pre>
-<h5>Ver. 1.4.0 α24～</h5>
-<pre>
-<a href="human.php#unconscious">無意識</a>の枠に<a href="fox.php#scarlet_fox">紅狐</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.4.0 α21～</h5>
-<pre>
-<a href="#silver_wolf">銀狼</a>は仲間の人狼、<a href="#whisper_mad">囁き狂人</a>が分からない。
-</pre>
 
 <h2 id="wolf_howl">遠吠え</h2>
 <ol>
@@ -55,14 +31,6 @@ OutputRolePageHeader('人狼陣営');
   <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
   <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない。</li>
 </ol>
-<h5>Ver. 1.4.0 β17～</h5>
-<pre>
-<a href="fox.php#howl_fox">化狐</a>の夜の独り言は人狼の遠吠えに見える。
-</pre>
-<h5>Ver. 1.4.0 β8～</h5>
-<pre>
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になる (<a href="#silver_wolf">銀狼</a>と同じ)。
-</pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
 <a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見える。
@@ -79,6 +47,8 @@ OutputRolePageHeader('人狼陣営');
     例) <a href="#silver_wolf">銀狼</a>が先に投票したら他の人狼は投票できない。
   </li>
   <li>人狼が人狼を襲撃した場合は失敗扱いとなる (襲撃された人狼には何も表示されない)。</li>
+  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用され、失敗扱いとなる。</li>
+  <li>殺傷能力が無い・限定されているタイプの能力は身代わり君には適用されない。</li>
 </ol>
 <h5>Ver. 1.4.0 α21～</h5>
 <pre>
@@ -92,6 +62,7 @@ OutputRolePageHeader('人狼陣営');
 <p>
 <a href="#wolf">人狼</a>
 <a href="#boss_wolf">白狼</a>
+<a href="#mist_wolf">霧狼</a>
 <a href="#gold_wolf">金狼</a>
 <a href="#phantom_wolf">幻狼</a>
 <a href="#cursed_wolf">呪狼</a>
@@ -99,21 +70,22 @@ OutputRolePageHeader('人狼陣営');
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
 <a href="#revive_wolf">仙狼</a>
-<a href="#trap_wolf">狡狼</a>
 </p>
 <p>
+<a href="#trap_wolf">狡狼</a>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
+<a href="#doom_wolf">冥狼</a>
+<a href="#fire_wolf">火狼</a>
 <a href="#sex_wolf">雛狼</a>
+<a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
-<a href="#hungry_wolf">餓狼</a>
-<a href="#doom_wolf">冥狼</a>
 <a href="#sirius_wolf">天狼</a>
-<a href="#elder_wolf">古狼</a>
-<a href="#cute_wolf">萌狼</a>
 </p>
 <p>
+<a href="#elder_wolf">古狼</a>
+<a href="#cute_wolf">萌狼</a>
 <a href="#scarlet_wolf">紅狼</a>
 <a href="#silver_wolf">銀狼</a>
 </p>
@@ -129,17 +101,30 @@ OutputRolePageHeader('人狼陣営');
 
 <h3 id="boss_wolf">白狼 (占い結果：村人 / 霊能結果：白狼) [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-他の国で言う「大狼」。
-<a href="human.php#mage_group">占い師</a>を欺けるが、<a href="human.php#necromancer_group">霊能者</a>には見抜かれる。
+占い結果が「村人」、霊能結果が「白狼」と判定される人狼。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#sirius_wolf">天狼</a>・<a href="fox.php#white_fox">白狐</a>
+<a href="ability.php#mage_human">特殊占い判定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-シンプルな能力ですが、効果は絶大です。
+他国の「大狼」に相当します。シンプルな能力ですが、効果は絶大です。
 占いが怖くないので LW を担うことを前提に立ち回ると効果的でしょう。
+</pre>
+
+<h3 id="mist_wolf">霧狼 (占い結果：蝙蝠 / 霊能結果：霧狼) [Ver. 1.5.0 β7～]</h3>
+<pre>
+占い結果が「蝙蝠」、霊能結果が「霧狼」と判定される人狼。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#mage_chiroptera">特殊占い判定能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#boss_wolf">白狼</a>の蝙蝠判定バージョンです。
+主に<a href="vampire.php">吸血鬼陣営</a>枠の乗っ取りを狙うことになります。
 </pre>
 
 <h3 id="gold_wolf">金狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
@@ -163,10 +148,10 @@ OutputRolePageHeader('人狼陣営');
 一度だけ、自分が占われても占い妨害をする事ができる人狼。
 </pre>
 <ol>
-  <li>占い妨害が可能な対象は<a href="#jammer_mad">月兎</a>と同じ。</li>
-  <li>対象になった占い能力者が<a href="human.php#anti_voodoo">厄神</a>に護衛されていたら無効化される。</li>
-  <li>同じ晩であれば複数の占い能力者に占われても有効。</li>
-  <li>一度占われると占い妨害能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li>占い妨害が可能な対象は<a href="#jammer_mad">月兎</a>と同じ。</li>
+<li>同じ晩であれば複数の占い能力者に占われても有効。</li>
+<li>対象になった占い能力者が<a href="human.php#anti_voodoo">厄神</a>に護衛されていたら無効化される。</li>
+<li>一度占われると占い妨害能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -212,7 +197,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-名称は他の国に実在しますが、仕様はオリジナルです。
+名称は他国に実在しますが、仕様はオリジナルです。
 狼サイドから妖狐の生存がわかります。
 <a href="fox.php#silver_fox">銀狐</a>や<a href="fox.php#child_fox">子狐</a>など、念話できない妖狐の
 生存は感知できないので注意してください。
@@ -259,16 +244,13 @@ OutputRolePageHeader('人狼陣営');
 一度だけ夜に死亡した場合に蘇生できる人狼。
 </pre>
 <ol>
-  <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-  <li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
-  <li>死因は問わない (例：毒死、暗殺)</li>
-  <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-  <li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
-  <li>蘇生処理は<a href="../spec.php#vote_night">反魂レイヤー</a>で行う。</li>
+<li>死因は問わない (例：毒死、暗殺) が、一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
+<li>蘇生処理は<a href="../spec.php#vote_night">反魂レイヤー</a>で行う。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>
+<a href="human.php#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -278,18 +260,22 @@ OutputRolePageHeader('人狼陣営');
 
 <h3 id="trap_wolf">狡狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 α8～]</h3>
 <pre>
-一定期間後 (5日目以降)、自分に罠を設置することができる人狼。
+一定期間後 (3日目以降)、自分に罠を設置することができる人狼。
 </pre>
 <ol>
-  <li>能力が発現すると本人に追加のシステムメッセージが表示される。</li>
-  <li>罠に関する仕様は<a href="#trap_mad">罠師</a>と同じ。</li>
-  <li>処理上は常に自分で自分に罠を設置している扱い。<br>
-    ただし、<a href="human.php#clairvoyance_scanner">猩々</a>の判定には反映されない。
-  </li>
+<li>能力が発現すると本人に追加のシステムメッセージが表示される。</li>
+<li>罠に関する仕様は<a href="#trap_mad">罠師</a>と同じ。</li>
+<li>処理上は常に自分で自分に罠を設置している扱い。<br>
+  ただし、<a href="human.php#clairvoyance_scanner">猩々</a>の判定には反映されない。
+</li>
 </ol>
+<h5>Ver. 1.5.0 β7～</h5>
+<pre>
+罠の発動日を 5 日目から 3 日目に変更。
+</pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#incubate_poison">潜毒者</a>・<a href="ability.php#trap">罠能力者</a>
+<a href="ability.php#trap">罠能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -329,14 +315,78 @@ OutputRolePageHeader('人狼陣営');
 襲撃失敗した時の情報が増えるという副次的効果もあります。
 </pre>
 
+<h3 id="doom_wolf">冥狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β15～]</h3>
+<pre>
+襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人狼。
+</pre>
+<ol>
+  <li>死の宣告の発動日は投票した夜から数えて 2 日後の昼。</li>
+  <li><a href="fox.php">妖狐陣営</a>にも宣告可能。</li>
+</ol>
+<h5>Ver. 1.5.0 α6～</h5>
+<pre>
+死の宣告の発動日を 4 日後から 2 日後に変更。
+</pre>
+<h5>Ver. 1.4.0 β17～</h5>
+<pre>
+「<a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する」制限を解除。
+<a href="fox.php">妖狐陣営</a>にも宣告できる仕様に変更。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ(614)</a> が原型です。
+強化されたことで、<a href="ability.php#poison">毒能力者</a>・<a href="fox.php">妖狐</a>の排除に向いた能力を獲得しています。
+</pre>
+
+<h3 id="fire_wolf">火狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 β7～]</h3>
+<h4>[耐性] 封印：有効</h4>
+<pre>
+一度だけ、襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。
+<a href="fox.php">妖狐陣営</a>にも付加可能。
+付加に成功すると能力を失い (<a href="sub_role.php#lost_ability">能力喪失</a>)、普通に噛み殺せるようになる。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="fox.php#spell_fox">宙狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#doom_wolf">冥狼</a>の<a href="sub_role.php#black_wisp">天火</a>バージョンです。
+襲撃失敗時の対応に幅を持たせることができます。
+</pre>
+
 <h3 id="sex_wolf">雛狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
 <pre>
 襲撃に成功した人の性別が分かるが、噛み殺せない人狼。
+性別鑑定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ。
+</pre>
+<h5>Ver. 1.4.0 β15～</h5>
+<pre>
+<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力適用
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#sex">性別関連能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="fox.php#sex_fox">雛狐</a>の人狼バージョンです。
+能力そのものよりも副次的効果の方が重要です (いわゆる空襲撃が可能になります)。
+この狼が LW になると非常に辛い事になるので気をつけましょう。
+</pre>
+
+<h3 id="hungry_wolf">餓狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12～]</h3>
+<pre>
+<a href="#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>しか噛み殺せない人狼。
 </pre>
 <ol>
-  <li>性別鑑定能力は<a href="human.php#sex_mage">ひよこ鑑定士</a>と同じ。</li>
-  <li>身代わり君には無効 (普通に噛み殺せる代わりに性別は分からない)。</li>
-  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
+  <li>仲間と分かっている狼も襲撃可能。</li>
+  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」。</li>
+  <li>人狼と妖狐以外を襲撃した場合は失敗扱い。</li>
 </ol>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -344,13 +394,14 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#hungry_wolf">餓狼</a>・<a href="#doom_wolf">冥狼</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="fox.php#sex_fox">雛狐</a>の人狼バージョンです。
-能力そのものよりも副次的効果の方が重要です (いわゆる空襲撃が可能になります)。
-この狼が LW になると非常に辛い事になるので気をつけましょう。
+東方ウミガメ人狼のプレイヤーさんがモデルの、対<a href="fox.php">妖狐陣営</a>の切り札です。
+狼飽和状態の妖狐勝利を仲間や村人確定の人を襲撃することで防ぐことができます。
+死因が違うので<a href="human.php#yama_necromancer">閻魔</a>が天敵になります。
+<a href="#sex_wolf">雛狼</a>同様、LW にしないように戦略を練りましょう。
 </pre>
 
 <h3 id="tongue_wolf">舌禍狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α13～]</h3>
@@ -715,61 +766,6 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 人狼の楽しみの一つである「RP」をどこまでまねる事ができるか、ぜひ挑戦してみてください。
 </pre>
 
-<h3 id="hungry_wolf">餓狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12～]</h3>
-<pre>
-<a href="#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>しか噛み殺せない人狼。
-</pre>
-<ol>
-  <li>仲間と分かっている狼も襲撃可能。</li>
-  <li>襲撃が成功した場合の死因は「餓狼の餌食になった」。</li>
-  <li>身代わり君は役職関係なく襲撃成功扱い。</li>
-  <li>人狼と妖狐以外を襲撃した場合は失敗扱い。</li>
-  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
-</ol>
-<h5>Ver. 1.4.0 β15～</h5>
-<pre>
-<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の身代わり能力適用
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#sex_wolf">雛狼</a>・<a href="#doom_wolf">冥狼</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-東方ウミガメ人狼のプレイヤーさんがモデルの、対<a href="fox.php">妖狐陣営</a>の切り札です。
-狼飽和状態の妖狐勝利を仲間や村人確定の人を襲撃することで防ぐことができます。
-死因が違うので<a href="human.php#yama_necromancer">閻魔</a>が天敵になります。
-<a href="#sex_wolf">雛狼</a>同様、LW にしないように戦略を練りましょう。
-</pre>
-
-<h3 id="doom_wolf">冥狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β15～]</h3>
-<pre>
-襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人狼。
-</pre>
-<ol>
-  <li>身代わり君には無効 (普通に死亡する)。</li>
-  <li>死の宣告の発動日は投票した夜から数えて 2 日後の昼。</li>
-  <li><a href="ability.php#sacrifice">身代わり能力</a> (例：<a href="human.php#doll_master">人形遣い</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>) が先に適用される。</li>
-  <li><a href="fox.php">妖狐陣営</a>にも宣告可能。</li>
-</ol>
-<h5>Ver. 1.5.0 α6～</h5>
-<pre>
-死の宣告の発動日を 4 日後から 2 日後に変更。
-</pre>
-<h5>Ver. 1.4.0 β17～</h5>
-<pre>
-「<a href="#wolf_group">人狼系</a>以外の毒能力者を襲撃したら本人は毒死する」制限を解除。
-<a href="fox.php">妖狐陣営</a>にも宣告できる仕様に変更。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ(614)</a> が原型です。
-</pre>
-
 <h3 id="sirius_wolf">天狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β9～]</h3>
 <h4>[耐性] 罠：特殊 / 毒：特殊 / 暗殺：特殊 </h4>
 <pre>
@@ -875,7 +871,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-他の国に実在する役職です。
+他国に実在する役職です。
 仲間と連携が取れないので動き方が難しくなると思います。
 仲間に襲撃されて狐扱いされて吊られる可能性も……
 </pre>

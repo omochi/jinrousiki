@@ -40,8 +40,10 @@ if($_POST['command'] == 'role_test'){
       $stack->option_role[] = $_POST[$option];
     }
   }
-  if(array_search($_POST['topping'], $ROOM_CONF->topping_list) !== false){
-    $stack->option_role[] = 'topping:' . $_POST['topping'];
+  foreach(array('topping', 'boost_rate') as $option){
+    if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
+      $stack->option_role[] = $option . ':' . $_POST[$option];
+    }
   }
   if($_POST['limit_off'] == 'on') $CAST_CONF->chaos_role_group_rate_list = array();
 
@@ -83,42 +85,43 @@ function OutputRoleTestForm(){
 <input type="radio" name="game_option" value="duel_not_open_cast">非公開決闘
 <input type="radio" name="game_option" value="gray_random">グレラン
 <input type="radio" name="game_option" value="quiz">クイズ<br>
-<input type="radio" name="topping" value="" checked>標準
 
 EOF;
 
-  $count = 0;
-  foreach($ROOM_CONF->topping_list as $mode){
-    $count++;
-    if($count > 0 && $count % 8 == 0) echo "<br>\n";
+  foreach(array('topping', 'boost_rate') as $option){
     echo <<<EOF
-<input type="radio" name="topping" value="{$mode}">{$GAME_OPT_MESS->{'topping_'.$mode}}
+<input type="radio" name="{$option}" value="" checked>標準
 
 EOF;
+
+    $count = 0;
+    foreach($ROOM_CONF->{$option.'_list'} as $mode){
+      $count++;
+      if($count > 0 && $count % 8 == 0) echo "<br>\n";
+      echo <<<EOF
+<input type="radio" name="{$option}" value="{$mode}">{$GAME_OPT_MESS->{$option.'_'.$mode}}
+
+EOF;
+    }
+    echo "<br>\n";
   }
 
-  echo <<<EOF
-<br>
-<input type="radio" name="replace_human" value="" checked>標準
-
-EOF;
-  foreach($ROOM_CONF->replace_human_list as $mode){
+  foreach(array('replace_human', 'change_mad') as $option){
     echo <<<EOF
-<input type="radio" name="replace_human" value="{$mode}">{$GAME_OPT_MESS->$mode}
+<input type="radio" name="{$option}" value="" checked>標準
 
 EOF;
-  }
 
-  echo <<<EOF
-<br>
-<input type="radio" name="change_mad" value="" checked>標準
-
-EOF;
-  foreach($ROOM_CONF->change_mad_list as $mode){
-    echo <<<EOF
-<input type="radio" name="change_mad" value="{$mode}">{$GAME_OPT_MESS->$mode}
+    $count = 0;
+    foreach($ROOM_CONF->{$option.'_list'} as $mode){
+      $count++;
+      if($count > 0 && $count % 8 == 0) echo "<br>\n";
+      echo <<<EOF
+<input type="radio" name="{$option}" value="{$mode}">{$GAME_OPT_MESS->$mode}
 
 EOF;
+    }
+    echo "<br>\n";
   }
 
   echo <<<EOF

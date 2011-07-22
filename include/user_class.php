@@ -247,7 +247,7 @@ class User{
     }
   }
 
-  //失効タイプの役職判定
+  //能力喪失判定
   function IsActive($role = NULL){
     return (is_null($role) || $this->IsRole($role)) &&
       ! $this->lost_flag && ! $this->IsRole('lost_ability');
@@ -293,7 +293,7 @@ class User{
     return $this->$type;
   }
 
-  //妖狐系判定
+  //妖狐陣営判定
   function IsFox($talk = false){
     return $this->IsRoleGroup('fox') && ! ($talk && ($this->IsChildFox() || $this->IsLonely()));
   }
@@ -412,23 +412,32 @@ class User{
   function IsRefrectAssassin(){
     global $ROOM;
 
-    if($ROOM->IsEvent('no_reflect_assassin')) return false;
-    $rate = mt_rand(1, 100);
-    $ogre = false;
-    if($this->IsOgre()){
-      if($ROOM->IsEvent('full_ogre')) $ogre = true;
-      elseif(! $ROOM->IsEvent('seal_ogre')){
-	$ogre = ($this->IsRole('sacrifice_ogre') && $rate <= 50) ||
-	  ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
-			 'power_ogre', 'revive_ogre', 'dowser_yaksa') && $rate <= 40) ||
-	  ($this->IsRoleGroup('ogre')  && $rate <= 30) ||
-	  ($this->IsRoleGroup('yaksa') && $rate <= 20);
-      }
+    if($ROOM->IsEvent('no_reflect_assassin') || $this->IsDead(true)) return false; //無効判定
+
+    //常時反射
+    if($this->IsRole('reflect_guard', 'detective_common', 'cursed_fox', 'soul_vampire') ||
+       $this->IsSiriusWolf(false) || $this->IsChallengeLovers()) return true;
+
+    //確率反射
+    if($this->IsRole('cursed_brownie')) $rate = 30;
+    elseif($this->IsOgre()){
+      //天候判定
+      if($ROOM->IsEvent('full_ogre')) return true;
+      if($ROOM->IsEvent('seal_ogre')) return false;
+
+      if($this->IsRole('sacrifice_ogre'))
+	$rate = 50;
+      elseif($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
+			   'power_ogre', 'revive_ogre', 'dowser_yaksa'))
+	$rate = 40;
+      elseif($this->IsRoleGroup('yaksa'))
+	$rate = 20;
+      else
+	$rate = 30;
     }
-    return $this->IsLive(true) &&
-      ($this->IsRole('reflect_guard', 'detective_common', 'cursed_fox', 'soul_vampire') ||
-       $this->IsSiriusWolf(false) || $this->IsChallengeLovers() ||
-       ($this->IsRole('cursed_brownie') && $rate <= 30) || $ogre);
+    else return false;
+
+    return $rate >= mt_rand(1, 100);
   }
 
   //憑依能力者判定 (被憑依者とコード上で区別するための関数)
@@ -490,18 +499,23 @@ class User{
   function DistinguishMage($reverse = false){
     global $ROOM;
 
-    if($this->IsRole('sheep_wisp') && $this->GetDoomDate('sheep_wisp') == $ROOM->date){ //羊皮判定
-      $result = false;
+    //鬼火系判定
+    if($this->IsRole('sheep_wisp') && $this->GetDoomDate('sheep_wisp') == $ROOM->date){
+      return $reverse ? 'wolf' : 'human';
     }
-    else{
-      //吸血鬼陣営・大蝙蝠は「蝙蝠」
-      if($this->IsRoleGroup('vampire') || $this->IsRole('boss_chiroptera')) return 'chiroptera';
-      if($this->IsOgre()) return 'ogre'; //鬼陣営は「鬼」
+    if($this->IsRole('wisp'))          return 'ogre';
+    if($this->IsRole('foughten_wisp')) return 'chiroptera';
+    if($this->IsRole('black_wisp'))    return $reverse ? 'human' : 'wolf' ;
 
-      //人狼(白狼・完全覚醒天狼を除く)・不審者・黒狐・萌蝙蝠・草履大将は「人狼」
-      $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
-	$this->IsRole('suspect', 'black_fox', 'cute_chiroptera', 'cute_avenger');
+    //特殊役職判定
+    if($this->IsOgre()) return 'ogre';
+    if($this->IsRoleGroup('vampire', 'mist') || $this->IsRole('boss_chiroptera')){
+      return 'chiroptera';
     }
+
+    //人狼判定
+    $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
+      $this->IsRole('suspect', 'black_fox', 'cute_chiroptera', 'cute_avenger');
     return ($result xor $reverse) ? 'wolf' : 'human';
   }
 
@@ -514,8 +528,8 @@ class User{
 
   //ひよこ鑑定士の判定
   function DistinguishSex(){
-    return $this->IsOgre() ? 'ogre' :
-      ($this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex);
+    return $this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' :
+      ($this->IsOgre() ? 'ogre' : 'sex_' . $this->sex);
   }
 
   //占星術師の判定
@@ -527,6 +541,8 @@ class User{
 
   //薬師の毒鑑定
   function DistinguishPoison(){
+    global $ROOM;
+
     //非毒能力者・夢毒者
     if(! $this->IsRoleGroup('poison') || $this->IsRole('dummy_poison')) return 'nothing';
 

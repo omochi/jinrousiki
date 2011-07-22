@@ -84,6 +84,7 @@ Ver. 1.5.0
 <a href="#ver150b3">β3</a>
 <a href="#ver150b4">β4</a>
 <a href="#ver150b6">β6</a>
+<a href="#ver150b7">β7</a>
 </p>
 
 <p>
@@ -122,6 +123,7 @@ Ver. 1.5.0
 <a href="#sub_ver150b3">β3</a>
 <a href="#sub_ver150b4">β4</a>
 <a href="#sub_ver150b6">β6</a>
+<a href="#sub_ver150b7">β7</a>
 </p>
 
 <table id="main_role">
@@ -250,8 +252,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">襲撃に成功した人の役職が分かる人狼。<br>
-    本人が投票した場合のみ有効で、村人だった場合は能力を失う。</td>
+  <td class="ability">襲撃に成功した人の役職が分かる人狼。</td>
   <td>Ver. 1.4.0 α13</td>
 </tr>
 <tr id="ver140a14">
@@ -260,8 +261,7 @@ Ver. 1.5.0
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">尾行した人が噛まれた場合に、噛んだ人狼が誰か分かる特殊な狩人。<br>
-    遺言を残せない。人外 (狼と狐) を尾行したら殺される。</td>
+  <td class="ability">尾行した人が噛まれた場合に、噛んだ人狼が誰か分かる特殊な狩人。</td>
   <td>Ver. 1.4.0 α14</td>
 </tr>
 <tr>
@@ -299,9 +299,7 @@ Ver. 1.5.0
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">狩人と思い込んでいる村人 (表示は「狩人」)。<br>
-    常に護衛成功メッセージが出るが誰も護衛していない。
-    何らかの形で<a href="wolf.php#dream_eater_mad">獏</a>に接触した場合は狩ることができる。</td>
+  <td class="ability">狩人と思い込んでいる村人 (表示は「狩人」)。<br>常に護衛成功メッセージが出るが誰も護衛していない。何らかの形で<a href="wolf.php#dream_eater_mad">獏</a>に接触した場合は狩ることができる。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -320,8 +318,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">埋毒者と思い込んでいる村人 (表示は「埋毒者」)。<br>
-    吊られた場合は<a href="wolf.php#dream_eater_mad">獏</a>のみを巻き込む (<a href="human.php#pharmacist_group">薬師系</a>による解毒は不可)。</td>
+  <td class="ability">埋毒者と思い込んでいる村人 (表示は「埋毒者」)。<br>処刑された場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -411,8 +408,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">蘇生能力を持った特殊な埋毒者。<br>
-  蘇生成功率は 25% 程度で選んだ人と違う人が復活することもある。</td>
+  <td class="ability">蘇生能力を持った特殊な埋毒者。</td>
   <td>Ver. 1.4.0 α18</td>
 </tr>
 <tr>
@@ -514,8 +510,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">仲間が分からない妖狐。<br>
-    (他の妖狐、<a href="fox.php#child_fox_group">子狐</a>からも仲間であると分からない)</td>
+  <td class="ability">仲間が分からない妖狐。</td>
   <td>Ver. 1.4.0 α20</td>
 </tr>
 <tr id="ver140a21">
@@ -560,8 +555,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">仲間が分からない人狼。<br>
-    (他の人狼、<a href="wolf.php#fanatic_mad">狂信者</a>、<a href="wolf.php#whisper_mad">囁き狂人</a>からも仲間であると分からない)</td>
+  <td class="ability">仲間が分からない人狼。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr>
@@ -570,9 +564,7 @@ Ver. 1.5.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする。<br>
-    投票結果が出るのは 2 日目以降で、<a href="human.php#unconscious">無意識</a>の発言は読めない。狼の遠吠えが見えない。
-  </td>
+  <td class="ability">初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする。</td>
   <td>Ver. 1.4.0 α21</td>
 </tr>
 <tr>
@@ -599,7 +591,7 @@ Ver. 1.5.0
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら投票した恋人をショック死させる。吊られた場合は無効。</td>
+  <td class="ability">昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら投票した恋人をショック死させる。</td>
   <td>Ver. 1.4.0 α22</td>
 </tr>
 <tr id="ver140a23">
@@ -628,7 +620,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。<br>表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
+  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -646,7 +638,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability"><a href="fox.php">妖狐陣営</a>の念話が共有者の囁きに変換されて聞こえる人狼。</td>
+  <td class="ability"><a href="fox.php#fox_talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる人狼。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -655,8 +647,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>憑狼</td>
-  <td class="ability">襲撃に成功した人を乗っ取る人狼。<br>
-    身代わり君・<a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a>・妖狐は乗っ取れない。</td>
+  <td class="ability">襲撃に成功した人を乗っ取る人狼。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -665,8 +656,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">低確率で発言が遠吠えに入れ替わってしまう妖狐。<br>
-  遠吠えの内容は<a href="wolf.php#cute_wolf">萌狼</a>と同じ。</td>
+  <td class="ability">低確率で発言が遠吠えに入れ替わってしまう妖狐。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -702,8 +692,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">今が「人外勝利前日」が分かる特殊な司祭 (表示は「村人」)。<br>
-    「人外勝利前日である」と判定された場合は、どの陣営が有利なのかメッセージが表示される。</td>
+  <td class="ability">今が「人外勝利前日」が分かる特殊な司祭 (表示は「村人」)。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr>
@@ -712,8 +701,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">二日目の朝にいきなり死亡して、「人外勝利前日」「5日目以降」「人口半減」「LW」のどれかを満たすと生き返る特殊な司祭。<br>
-    恋人になると能力を失う。</td>
+  <td class="ability">二日目の朝にいきなり死亡して、一定の条件を満たすと生き返る特殊な司祭。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr>
@@ -722,8 +710,7 @@ Ver. 1.5.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にする。<br>
-    投票結果が出るのは 2 日目以降。自分の遺言欄に何が表示されていても遺言は残らない。</td>
+  <td class="ability">初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_evoke">口寄せ</a>にする。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr>
@@ -732,8 +719,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">毒能力を失った代わりに高い蘇生能力を持った猫又の上位種。<br>
-  蘇生成功率は 80% で蘇生に成功するたびに成功率が 1/4 になる。</td>
+  <td class="ability">毒能力を失った代わりに高い蘇生能力を持った猫又の上位種。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr>
@@ -742,8 +728,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">蘇生能力を持った妖狐。成功率は 100% だが、一度成功すると能力を失う。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">一度だけ成功率 100% の蘇生ができる妖狐。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr id="ver140b5">
@@ -941,9 +926,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">占った人が念話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。<br>
-  一度発動すると能力を失う。
-  </td>
+  <td class="ability">一度だけ、占った人が念話できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
 <tr>
@@ -952,7 +935,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability"><a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。</td>
+  <td class="ability">人狼に襲撃されたら襲撃してきた人狼を<a href="sub_role.php#mind_lonely">はぐれ者</a>にする妖狐。</td>
   <td>Ver. 1.4.0 β8</td>
 </tr>
 <tr>
@@ -1197,8 +1180,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、特殊な司祭。<br>
-  表示されるのは 3日目以降の奇数日 (3 → 5 → 7 →...)。</td>
+  <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、特殊な司祭。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
 <tr id="ver140b11">
@@ -1244,8 +1226,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>妖狐</td>
-  <td class="ability">一度だけ、自分が占われても占い妨害をする事ができる妖狐。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">一度だけ、自分が占われても占い妨害をする事ができる妖狐。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -1482,8 +1463,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">遅効性の<a href="human.php#doom_assassin">死神</a>相当の暗殺能力を持った妖狐。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
 <tr>
@@ -1503,8 +1483,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の総数が分かる特殊な司祭。<br>
-   表示されるのは 4日目以降の偶数日 (4 → 6 → 8 →...)。</td>
+  <td class="ability">一定日数ごとに現在の生存者が所持している<a href="sub_role.php">サブ役職</a>の総数が分かる特殊な司祭。</td>
   <td>Ver. 1.4.0 β15</td>
 </tr>
 <tr>
@@ -1597,8 +1576,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">誤爆率 (20%) が高めに設定された猫又の劣化種。<br>
-  蘇生成功率 40% で、本人表記は<a href="human.php#revive_cat">仙狸</a>。</td>
+  <td class="ability">誤爆率が高めに設定された猫又の劣化種。本人表記は<a href="human.php#revive_cat">仙狸</a>。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
 <tr>
@@ -2211,8 +2189,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability">一度だけ夜に誰か一人に罠を仕掛けることができる妖狐。<br>
-    <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。</td>
+  <td class="ability">一度だけ夜に誰か一人に罠を仕掛けることができる妖狐。</td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
@@ -2221,7 +2198,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">一定期間後 (5日目以降)、自分に罠を設置することができる人狼。</td>
+  <td class="ability">一定期間後 (3日目以降)、自分に罠を設置することができる人狼。</td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr id="ver150a9">
@@ -2506,6 +2483,42 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">悪戯先に<a href="sub_role.php#sweet_status">悲恋</a>を付加する妖精。</td>
   <td>Ver. 1.5.0 β6</td>
+</tr>
+<tr id="ver150b7">
+  <td><a href="wolf.php#fire_wolf">火狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">一度だけ、襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。</td>
+  <td>Ver. 1.5.0 β7</td>
+</tr>
+<tr>
+  <td><a href="fox.php#spell_fox">宙狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability">一度だけ、人狼に襲撃されたら襲撃してきた人狼に<a href="sub_role.php#spell_wisp">狐火</a>を付加する妖狐。</td>
+  <td>Ver. 1.5.0 β7</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#mist_wolf">霧狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>蝙蝠</td>
+  <td>霧狼</td>
+  <td class="ability">占い結果が「蝙蝠」、霊能結果が「霧狼」と判定される人狼。</td>
+  <td>Ver. 1.5.0 β7</td>
+</tr>
+<tr>
+  <td><a href="fox.php#mist_fox">霧狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>蝙蝠<br>(呪殺無し)</td>
+  <td>妖狐</td>
+  <td class="ability">占い結果が「蝙蝠」、霊能結果が「妖狐」と判定される妖狐。</td>
+  <td>Ver. 1.5.0 β7</td>
 </tr>
 </table>
 
@@ -3158,7 +3171,7 @@ Ver. 1.5.0
   </tr>
   <tr>
     <td><a href="sub_role.php#sheep_wisp">羊皮</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#wisp_group">鬼火系</a></td>
     <td>強制</td>
     <td class="ability">表示された日に占い師に占われると村人判定が出る。</td>
     <td>Ver. 1.5.0 β4</td>
@@ -3176,6 +3189,41 @@ Ver. 1.5.0
     <td>強制</td>
     <td class="ability">一日目のみ、付加した<a href="chiroptera.php#sweet_fairy">恋妖精</a>のもう一人の悲恋と<a href="sub_role.php#lovers">恋人</a>であるように表示される。</td>
     <td>Ver. 1.5.0 β6</td>
+  </tr>
+  <tr id="sub_ver150b7">
+    <td><a href="sub_role.php#wisp">鬼火</a></td>
+    <td><a href="sub_role.php#wisp_group">鬼火系</a></td>
+    <td>強制</td>
+    <td class="ability">占い師に占われると鬼判定が出る。</td>
+    <td>Ver. 1.5.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#black_wisp">天火</a></td>
+    <td><a href="sub_role.php#wisp_group">鬼火系</a></td>
+    <td>強制</td>
+    <td class="ability">占い師に占われると人狼判定が出る。</td>
+    <td>Ver. 1.5.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#spell_wisp">狐火</a></td>
+    <td><a href="sub_role.php#wisp_group">鬼火系</a></td>
+    <td>強制</td>
+    <td class="ability">占い師に占われると呪殺される。</td>
+    <td>Ver. 1.5.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#foughten_wisp">古戦場火</a></td>
+    <td><a href="sub_role.php#wisp_group">鬼火系</a></td>
+    <td>強制</td>
+    <td class="ability">占い師に占われると蝙蝠判定が出る。</td>
+    <td>Ver. 1.5.0 β7</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#gold_wisp">松明丸</a></td>
+    <td><a href="sub_role.php#wisp_group">鬼火系</a></td>
+    <td>強制</td>
+    <td class="ability">ひよこ鑑定士に占われると蝙蝠判定が出る。</td>
+    <td>Ver. 1.5.0 β7</td>
   </tr>
 </table>
 

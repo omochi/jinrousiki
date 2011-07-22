@@ -286,15 +286,15 @@ function OutputAbility(){
 
     switch($SELF->main_role){
     case 'trap_wolf': //狡狼
-      if($ROOM->date > 4) OutputAbilityResult('ability_trap_wolf', NULL); //罠設置
-      break;
-
-    case 'tongue_wolf': //舌禍狼
-      if($ROOM->date > 1) OutputSelfAbilityResult('TONGUE_WOLF_RESULT'); //襲撃結果
+      if($ROOM->date > 2) OutputAbilityResult('ability_trap_wolf', NULL); //罠設置
       break;
 
     case 'sex_wolf': //雛狼
       if($ROOM->date > 1) OutputSelfAbilityResult('SEX_WOLF_RESULT'); //襲撃結果
+      break;
+
+    case 'tongue_wolf': //舌禍狼
+      if($ROOM->date > 1) OutputSelfAbilityResult('TONGUE_WOLF_RESULT'); //襲撃結果
       break;
 
     case 'possessed_wolf': //憑狼
@@ -648,8 +648,8 @@ function OutputAbility(){
 	  $stack[] = $USERS->GetHandleName($user->uname, true); //憑依を追跡する
 	}
       }
+      OutputPartner($stack, 'partner_header', 'lovers_footer');
     }
-    OutputPartner($stack, 'partner_header', 'lovers_footer');
     $role = 'sweet_status';
     if($ROOM->date == 2 && $SELF->IsRole($role)) $ROLE_IMG->Output($role);
   }
@@ -721,7 +721,7 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'wirepuller_luck', 'occupied_luck');
 
-  //サトラレ系・羊皮
+  //サトラレ系
   $role = 'mind_open'; //公開者
   if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
 
@@ -780,15 +780,22 @@ function OutputAbility(){
 
     $role = 'mind_presage'; //受託者
     if($virtual_self->IsRole($role) && $ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
+  }
+  array_push($fix_display_list, 'mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
+	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep');
 
+  //鬼火系
+  foreach(array('wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp') as $role){
+    if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
+  }
+  if($ROOM->date > 1){
     $role = 'sheep_wisp'; //羊皮
     if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
       $ROLE_IMG->Output($role);
     }
   }
-  array_push($fix_display_list, 'mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
-	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep',
-	     'sheep_wisp', 'wirepuller_luck');
+  array_push($fix_display_list, 'wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp',
+	     'sheep_wisp');
 
   //-- これ以降はサブ役職非公開オプションの影響を受ける --//
   if($ROOM->IsOption('secret_sub_role')) return;

@@ -1,4 +1,12 @@
 <?php
+/*
+  変更履歴 from Ver. 1.5.0β6
+  + GameOptionMessage
+    - 追加：$boost_rate、$boost_rate_a、$boost_rate_b
+
+  + GameOptionCaptionMessage
+    - 追加：$boost_rate
+*/
 //-- 基本システムメッセージ --//
 class Message{
   //-- room_manger.php --//
@@ -332,6 +340,9 @@ class GameOptionMessage{
   public $topping_i             = 'I：恋人村';
   public $topping_j             = 'J：宿敵村';
   public $topping_k             = 'K：覚醒村';
+  public $boost_rate            = '出現率変動モード';
+  public $boost_rate_a          = 'A：新顔村';
+  public $boost_rate_b          = 'B：平等村';
   public $chaos_open_cast       = '配役を通知する';
   public $chaos_open_cast_camp  = '陣営を通知する';
   public $chaos_open_cast_role  = '役職を通知する';
@@ -388,6 +399,7 @@ class GameOptionCaptionMessage{
   public $change_mad            = '「狂人」が全員特定の役職に入れ替わります';
   public $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   public $topping               = '固定配役に追加する役職セットです';
+  public $boost_rate            = '役職の出現率に補正がかかります';
   public $chaos_not_open_cast   = '通知無し';
   public $chaos_open_cast_camp  = '陣営通知 (陣営毎の合計を通知)';
   public $chaos_open_cast_role  = '役職通知 (役職の種類別に合計を通知)';

@@ -7,6 +7,7 @@ OutputRolePageHeader('能力者逆引き');
 <p>
 <a href="#assassin">暗殺</a>
 <a href="#anti_assassin">暗殺耐性</a>
+<a href="#mage">占い</a>
 <a href="#phantom">占い妨害</a>
 <a href="#guard_hunt">狩り</a>
 <a href="#guard">護衛</a>
@@ -14,9 +15,9 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#doom">死の宣告</a>
 <a href="#decide">処刑者決定</a>
 <a href="#vote_action">処刑投票付加</a>
-<a href="#vote_reaction">処刑得票付加</a>
 </p>
 <p>
+<a href="#vote_reaction">処刑得票付加</a>
 <a href="#sudden_death">ショック死</a>
 <a href="#anti_sudden_death">ショック死抑制</a>
 <a href="#resist_wolf">人狼襲撃耐性</a>
@@ -26,9 +27,9 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#revive_limit">蘇生制限</a>
 <a href="#authority">投票数変化</a>
 <a href="#stargazer">投票能力鑑定</a>
-<a href="#luck">得票数変化</a>
 </p>
 <p>
+<a href="#luck">得票数変化</a>
 <a href="#poison">毒</a>
 <a href="#partner">仲間情報妨害</a>
 <a href="#cursed_group">呪い</a>
@@ -37,10 +38,10 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#possessed_limit">憑依制限</a>
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
-<a href="#last_words_limit">遺言制限</a>
 <a href="#soul">役職鑑定</a>
 </p>
 <p>
+<a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
 <a href="#trap">罠</a>
 </p>
@@ -54,6 +55,24 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="anti_assassin">暗殺耐性能力者</h2>
 <pre>
 <a href="human.php#assassin_spec">暗殺の仕様</a>参照
+</pre>
+
+<h2 id="mage">占い (特殊判定)</h2>
+<h3 id="mage_human">村人 (白系)</h3>
+<pre>
+<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="sub_role.php#sheep_wisp">羊皮</a>
+</pre>
+<h3 id="mage_wolf">人狼</h3>
+<pre>
+<a href="human.php#suspect">不審者</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="sub_role.php#black_wisp">天火</a>
+</pre>
+<h3 id="mage_chiroptera">蝙蝠</h3>
+<pre>
+<a href="wolf.php#mist_wolf">霧狐</a>・<a href="fox.php#mist_fox">霧狐</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#foughten_wisp">古戦場火</a>
+</pre>
+<h3 id="mage_ogre">鬼</h3>
+<pre>
+<a href="ogre.php">鬼陣営</a>・<a href="sub_role.php#wisp">鬼火</a>
 </pre>
 
 <h2 id="phantom">占い妨害能力者</h2>
@@ -151,7 +170,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="sex_only">限定能力者</h3>
 <pre>
-<a href="human.php#incubus_escaper">一角獣</a>・<a href="human.php#succubus_escaper">水妖姫</a>・<a href="lovers.php#angel">天使</a>・<a href="lovers.php#rose_angel">薔薇天使</a>・<a href="lovers.php#lily_angel">百合天使</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>・
+<a href="human.php#incubus_escaper">一角獣</a>・<a href="human.php#succubus_escaper">水妖姫</a>・<a href="lovers.php#angel">天使</a>・<a href="lovers.php#rose_angel">薔薇天使</a>・<a href="lovers.php#lily_angel">百合天使</a>・<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>
 <a href="sub_role.php#androphobia">男性恐怖症</a>・<a href="sub_role.php#gynophobia">女性恐怖症</a>
 </pre>
 
@@ -259,11 +278,6 @@ OutputRolePageHeader('能力者逆引き');
 <a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="duelist.php#sacrifice_patron">身代わり地蔵</a>・<a href="mania.php#sacrifice_mania">影武者</a>・<a href="sub_role.php#psycho_infected">洗脳者</a>
 </pre>
 
-<h2 id="last_words_limit">遺言制限能力者</h2>
-<pre>
-<a href="human.php#reporter">ブン屋</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#evoke_scanner">イタコ</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="sub_role.php#no_last_words">筆不精</a>・<a href="sub_role.php#possessed_exchange">交換憑依</a>
-</pre>
-
 <h2 id="soul">役職鑑定能力者</h2>
 <h3 id="soul_high">上位型</h3>
 <pre>
@@ -273,6 +287,11 @@ OutputRolePageHeader('能力者逆引き');
 <h3 id="soul_copy">コピー型</h3>
 <pre>
 <a href="human.php#widow_priest">未亡人</a>(<a href="sub_role.php#mind_sympathy">共感者</a>)・<a href="lovers.php#ark_angel">大天使</a>(<a href="sub_role.php#mind_sympathy">共感者</a>)・<a href="duelist.php#soul_patron">家神</a>・<a href="mania.php#mania_group">神話マニア系</a>・<a href="sub_role.php#mind_sympathy">共感者</a>
+</pre>
+
+<h2 id="last_words_limit">遺言制限能力者</h2>
+<pre>
+<a href="human.php#reporter">ブン屋</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#evoke_scanner">イタコ</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="sub_role.php#no_last_words">筆不精</a>・<a href="sub_role.php#possessed_exchange">交換憑依</a>
 </pre>
 
 <h2 id="dummy">夢能力者</h2>

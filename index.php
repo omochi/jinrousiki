@@ -7,7 +7,7 @@ if($SERVER_CONF->back_page != ''){
   echo '<a href="' . $SERVER_CONF->back_page . '">←戻る</a><br>'."\n";
 }
 ?>
-<a href="./"><img src="img/top_title.jpg"></a>
+<a href="./"><img src="img/top_title.jpg" title="汝は人狼なりや？" alt="汝は人狼なりや？"></a>
 <div class="comment"><?php echo $SERVER_CONF->comment ?></div>
 <noscript>&lt;&lt; JavaScriptを有効にしてください &gt;&gt;</noscript>
 <table class="main"><tr>

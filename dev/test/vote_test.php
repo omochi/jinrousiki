@@ -38,7 +38,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'wolf strong_voice rebel joker[2]';
+$RQ_ARGS->TestItems->test_users[2]->role = 'mist_wolf strong_voice rebel joker[2]';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -68,7 +68,7 @@ $RQ_ARGS->TestItems->test_users[6]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[7]->role = 'hunter_guard joker[3]';
+$RQ_ARGS->TestItems->test_users[7]->role = 'reflect_guard joker[3]';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
@@ -104,13 +104,13 @@ $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'wolf watcher changed_therian';
+$RQ_ARGS->TestItems->test_users[13]->role = 'mage watcher';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';
 $RQ_ARGS->TestItems->test_users[14]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[14]->role = 'scarlet_fox lovers[16] death_warrant[3] enemy[12]';
+$RQ_ARGS->TestItems->test_users[14]->role = 'mist_fox lovers[16] death_warrant[3] enemy[12]';
 $RQ_ARGS->TestItems->test_users[14]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
@@ -134,7 +134,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'drop';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'suspect reduce_voter sheep_wisp[4]';
+$RQ_ARGS->TestItems->test_users[18]->role = 'human reduce_voter sheep_wisp[3] black_wisp spell_wisp';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -230,26 +230,26 @@ $RQ_ARGS->TestItems->vote_target_day = array(
 
 $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'dummy_boy'), //
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sea'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'gold'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sea'),
-  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'sea'),
-  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'cloud'),
-  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'sea'),
+  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
+  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
+  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'white'),
   #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'cloud'),
   array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'white'),
   #array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'red'),
   array('uname' => 'green', 'situation' => 'POISON_CAT_NOT_DO', 'target_uname' => NULL),
-  #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'cloud'),
-  array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
+  array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'light_blue'),
+  #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'yellow'),
   array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'yellow'),
-  #array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'rose'),
+  #array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'white'),
   array('uname' => 'white', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => NULL),
   #array('uname' => 'white', 'situation' => 'POSSESSED_DO',	'target_uname' => 'light_blue'),
   #array('uname' => 'white', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => NULL),
   #array('uname' => 'white', 'situation' => 'ANTI_VOODOO_DO',	'target_uname' => 'yellow'),
-  #array('uname' => 'black', 'situation' => 'MAGE_DO', 'target_uname' => 'light_blue'),
+  array('uname' => 'black', 'situation' => 'MAGE_DO', 'target_uname' => 'sea'),
   #array('uname' => 'gold', 'situation' => 'VOODOO_FOX_DO',	'target_uname' => 'light_blue'),
   #array('uname' => 'gold', 'situation' => 'POSSESSED_DO',	'target_uname' => 'dark_gray'),
   #array('uname' => 'gold', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => NULL),
@@ -265,7 +265,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'sea', 'situation' => 'FAIRY_DO', 'target_uname' => 'gust'),
   array('uname' => 'land', 'situation' => 'FAIRY_DO', 'target_uname' => 'rose'),
   array('uname' => 'rose', 'situation' => 'VAMPIRE_DO', 'target_uname' => 'cloud'),
-  array('uname' => 'peach', 'situation' => 'MANIA_DO', 'target_uname' => 'sea'), //
+  #array('uname' => 'peach', 'situation' => 'MANIA_DO', 'target_uname' => 'sea'), //
   #array('uname' => 'gust', 'situation' => 'ESCAPE_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'gust', 'situation' => 'FAIRY_DO', 'target_uname' => 'rose'),
   #array('uname' => 'gust', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
@@ -278,7 +278,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'cloud', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'light_blue'),
   #array('uname' => 'cloud', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'moon'),
   #array('uname' => 'cloud', 'situation' => 'VAMPIRE_DO', 'target_uname' => 'rose'),
-  array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'), //
+  #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'), //
   #array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'white'),
   #array('uname' => 'moon', 'situation' => 'SPREAD_WIZARD_DO', 'target_uname' => '12 13'),
   #array('uname' => 'moon', 'situation' => 'SPREAD_WIZARD_DO', 'target_uname' => '12'),
@@ -322,16 +322,20 @@ $SELF = $USERS->ByID(1);
 //-- データ出力 --//
 OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
 echo '</head><body>'."\n";
-$role_view_mode = true; false;
+$role_view_mode = false;
 if($role_view_mode){
   $main    = true;
   $sub     = false;
+  $result  = false;
   $weather = false;
   if($main) foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
   if($sub)  foreach(array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
+  if($result){
+    foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
+  }
   if($weather){
     foreach($ROLE_DATA->weather_list as $stack){
-      $ROLE_IMG->Output('prediction_weather_' . $stack['event']);
+      $ROLE_IMG->Output('prediction_weather_'.$stack['event']);
     }
   }
   OutputHTMLFooter(true);
@@ -453,7 +457,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 22, 23) as $id){
+  foreach(array(5, 18, 23, 2, 14) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

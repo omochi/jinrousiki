@@ -79,8 +79,8 @@ if($ROOM->IsFinished()) OutputLogLink();
 echo <<<EOF
 </td></tr>
 <tr><td><form method="POST" action="login.php?room_no={$ROOM->id}">
-<label>ユーザ名</label><input type="text" name="uname" size="20">
-<label>パスワード</label><input type="password" class="login-password" name="password" size="20">
+<label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">
+<label for="login_password">パスワード</label><input type="password" class="login-password" id="login_password" name="password" size="20" value="">
 <input type="hidden" name="login_manually" value="on">
 <input type="submit" value="ログイン">
 </form></td>

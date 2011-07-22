@@ -1,4 +1,11 @@
 <?php
+/*
+  変更履歴 from Ver. 1.5.0β6
+  + 追加
+    - $boost_rate_list
+  + 変更
+    - $chaos_hyper_wolf_list, $chaos_hyper_fox_list, $chaos_hyper_random_role_list
+*/
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
   //-- 配役テーブル --//
@@ -114,21 +121,23 @@ class CastConfig extends CastConfigBase{
   public $chaos_hyper_wolf_list = array(
     'wolf'           => 30,
     'boss_wolf'      =>  2,
+    'mist_wolf'      =>  2,
     'gold_wolf'      =>  3,
     'phantom_wolf'   =>  2,
     'cursed_wolf'    =>  2,
     'wise_wolf'      =>  3,
     'poison_wolf'    =>  3,
-    'resist_wolf'    =>  3,
-    'revive_wolf'    =>  3,
+    'resist_wolf'    =>  2,
+    'revive_wolf'    =>  2,
     'trap_wolf'      =>  2,
     'blue_wolf'      =>  3,
     'emerald_wolf'   =>  3,
+    'doom_wolf'      =>  2,
+    'fire_wolf'      =>  2,
     'sex_wolf'       =>  3,
+    'hungry_wolf'    =>  3,
     'tongue_wolf'    =>  2,
     'possessed_wolf' =>  2,
-    'hungry_wolf'    =>  3,
-    'doom_wolf'      =>  3,
     'sirius_wolf'    =>  2,
     'elder_wolf'     =>  3,
     'cute_wolf'      => 10,
@@ -153,13 +162,15 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   public $chaos_hyper_fox_list = array(
-    'fox'           => 35,
+    'fox'           => 30,
     'white_fox'     =>  2,
     'black_fox'     =>  2,
-    'gold_fox'      =>  2,
+    'mist_fox'      =>  2,
+    'gold_fox'      =>  3,
     'phantom_fox'   =>  2,
     'poison_fox'    =>  3,
     'blue_fox'      =>  3,
+    'spell_fox'     =>  2,
     'emerald_fox'   =>  3,
     'voodoo_fox'    =>  2,
     'revive_fox'    =>  2,
@@ -394,8 +405,9 @@ class CastConfig extends CastConfigBase{
     'divine_escaper'       =>  1,
     'wolf'                 =>  5,
     'boss_wolf'            =>  5,
-    'gold_wolf'            => 10,
-    'phantom_wolf'         => 10,
+    'mist_wolf'            =>  5,
+    'gold_wolf'            =>  5,
+    'phantom_wolf'         =>  5,
     'cursed_wolf'          =>  5,
     'wise_wolf'            => 10,
     'poison_wolf'          => 15,
@@ -404,11 +416,12 @@ class CastConfig extends CastConfigBase{
     'trap_wolf'            =>  5,
     'blue_wolf'            => 10,
     'emerald_wolf'         => 10,
+    'doom_wolf'            =>  5,
+    'fire_wolf'            =>  5,
     'sex_wolf'             =>  5,
+    'hungry_wolf'          =>  5,
     'tongue_wolf'          => 10,
     'possessed_wolf'       =>  5,
-    'hungry_wolf'          =>  5,
-    'doom_wolf'            =>  5,
     'sirius_wolf'          =>  5,
     'elder_wolf'           => 10,
     'cute_wolf'            => 10,
@@ -435,11 +448,13 @@ class CastConfig extends CastConfigBase{
     'fox'                  =>  4,
     'white_fox'            =>  2,
     'black_fox'            =>  2,
-    'gold_fox'             =>  3,
-    'phantom_fox'          =>  3,
+    'mist_fox'             =>  2,
+    'gold_fox'             =>  2,
+    'phantom_fox'          =>  2,
     'poison_fox'           =>  3,
-    'blue_fox'             =>  3,
-    'emerald_fox'          =>  3,
+    'blue_fox'             =>  2,
+    'spell_fox'            =>  2,
+    'emerald_fox'          =>  2,
     'voodoo_fox'           =>  2,
     'revive_fox'           =>  2,
     'possessed_fox'        =>  2,
@@ -797,6 +812,29 @@ class CastConfig extends CastConfigBase{
 			 'sacrifice_mania'  =>  5)),
 		 'count' => array(1, 1, 1))
 			    );
+
+  //-- 出現率変動モード --//
+  /* 役職 => 倍率 (0 なら出現しなくなる) */
+  public $boost_rate_list = array(
+    'a' => array('mist_wolf' => 8,
+		 'fire_wolf' => 8,
+		 'mist_fox'  => 8,
+		 'spell_fox' => 8),
+    'b' => array('elder'            => 0,
+		 'scripter'         => 0,
+		 'brownie'          => 0,
+		 'divine_escaper'   => 0,
+		 'elder_wolf'       => 0,
+		 'elder_fox'        => 0,
+		 'elder_chiroptera' => 0,
+		 'critical_mad'     => 0,
+		 'poison_ogre'      => 0,
+		 'critical_duelist' => 0,
+		 'cowboy_duelist'   => 0,
+		 'critical_avenger' => 0,
+		 'critical_patron'  => 0,
+		 'wirepuller_mania' => 0)
+			       );
 
   //サブ役職制限：EASYモード
   public $chaos_sub_role_limit_easy_list = array(

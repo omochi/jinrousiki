@@ -6,7 +6,7 @@ $INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'MESSAGE', 'GAME_OPT_MESS');
 OutputInfoPageHeader('仕様', 0, 'script_info');
 ?>
 <script type="text/javascript" src="../javascript/output_diff_time.js"></script>
-<img src="../img/script_info_title.jpg">
+<img src="../img/script_info_title.jpg" title="スクリプトの仕様" alt="スクリプトの仕様">
 <ul>
   <li><a href="#environment">ゲームに参加するために必要な環境</a></li>
   <li><a href="#difference">他のスクリプトとどこが違うの？</a></li>
@@ -19,7 +19,6 @@ OutputInfoPageHeader('仕様', 0, 'script_info');
 <ul>
   <li>JavaScript を有効にする</li>
   <li>Cookie を有効にする</li>
-  <li>PC の時計をサーバと合わせる → Ver. 1.4.0 β4 から不要になりました</li>
 </ul>
 動作確認しているブラウザは Windows Internet Explorer 8、FireFox、Opera です。<br>
 また画面の解像度は 1024x768 以上が望ましいです。<br>
@@ -27,9 +26,13 @@ OutputInfoPageHeader('仕様', 0, 'script_info');
 
 <h2 id="difference">他のスクリプトとどこが違うの？</h2>
 <div class="info">
+この PHP+MySQL 用のスクリプトは、「<a href="http://f45.aaa.livedoor.jp/~netfilms/">汝は人狼なりや？の PHP+MySQL 移植版(from ふたば)</a>」のソースコードを基に改良・新機能を追加したものです。<br>
+以下は、基にしたスクリプトの説明です。
+<blockquote>
 この PHP+MySQL 用のスクリプトは人狼 CGI(perl) スクリプトの本家、<a href="http://park1.wakwak.com/~aa1/table/index.htm" target="_blank">Table@</a>さんのシステムを参考に改良をしたものです。<br>
 Perl から PHP にすることで動作を高速にし、排他制御を MySQL に任せることでロックエラーの回避を目的に作成されました。<br>
 本家のスクリプトとは多少の違いがあります、下記にその内容を記載します。
+</blockquote>
 </div>
 <ul>
   <li><a href="#difference_gm">ゲームマスターの必要の無いシステムです</a></li>
@@ -58,6 +61,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
   <li><a href="#difference_real_time">リアルタイム制オプション</a></li>
   <li><a href="#difference_spend_time">非リアルタイム制の会話の時間消費の上限</a></li>
   <li><a href="#difference_silence">強制沈黙</a></li>
+  <li><a href="#difference_wait_morning">早朝待機制オプション</a></li>
+  <li><a href="#difference_trip">トリップ</a></li>
   <li><a href="#difference_escape_talk">半角 \ マークは発言できません</a></li>
   <li><a href="#difference_escape_room">半角 \ マークやシングルクオーテーション ’ は村名やユーザ名には使用できません</a></li>
   <li><a href="#difference_user_name">他の人と同じ名前のユーザ名やハンドルネームは登録できません</a></li>
@@ -73,7 +78,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_icon">ユーザの似顔絵などを表すユーザアイコンを自由にアップロードできます</h3>
 <div class="info">
-<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php echo $USER_ICON->IconSizeMax() . '、容量 ' . $USER_ICON->IconFileSizeMax() ?> ] のファイルをアップロードできます。
+<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php echo $USER_ICON->IconSizeMax() . '、容量 ' . $USER_ICON->IconFileSizeMax() ?> ] のファイルをアップロードできます。<br>
+登録数の上限は [ <?php echo $USER_ICON->number ?>個 ] です。
 </div>
 
 <h3 id="difference_message">システムメッセージを画像に</h3>
@@ -115,13 +121,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 勝率の低い妖狐のバランスを取るためにこのようになっています。
 </div>
 
-<h3 id="difference_poison_vote">埋毒者を吊った際に巻き添えにする対象を限定可能</h3>
+<h3 id="difference_poison_vote">埋毒者を吊った際に巻き添えにする対象を限定可能 [Ver. 1.3.1～ / Ver. 1.4.0 α12～]</h3>
 <div class="info">
 サーバ管理者がゲーム設定を変更する事で埋毒者を吊った際に巻き添えにする対象を限定する事が可能です。<br>
 現在の設定は [ <?php echo ($GAME_CONF->poison_only_voter ? '投票者' : '生存者全員') ?>からランダム ] です。
 </div>
 
-<h3 id="difference_poison_eat">人狼が埋毒者を襲撃した際に巻き添えになる対象を限定可能</h3>
+<h3 id="difference_poison_eat">人狼が埋毒者を襲撃した際に巻き添えになる対象を限定可能 [Ver. 1.3.0～]</h3>
 <div class="info">
 サーバ管理者がゲーム設定を変更する事で人狼が埋毒者を襲撃した際に巻き添えになる対象を限定する事が可能です。<br>
 現在の設定は [ <?php echo ($GAME_CONF->poison_only_eater ? '襲撃者固定' : '人狼全員からランダム') ?> ] です。
@@ -145,9 +151,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_sound">音でお知らせ</h3>
 <div class="info">
-「音でお知らせ」をOnにすると、「夜が明けた時」「再投票になった時」「異議ありの時」に音でお知らせしてくれます。<br>
-Ver. 1.4.4 / Ver. 1.5.0 α4 からは「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」にも音がなります。<br>
-「異議あり」については次で説明します。
+「音でお知らせ」をOnにすると、「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」<br>
+「夜が明けた時」「再投票になった時」「異議ありの時」に音でお知らせしてくれます。<br>
+「異議あり」については<a href="#difference_objection">別項目</a>で説明します。
+</div>
+<h4>Ver. 1.4.4～ / Ver. 1.5.0 α4～</h4>
+<div class="info">
+「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」にも音がなります。
 </div>
 
 <h3 id="difference_objection">異議ありボタン</h3>
@@ -165,28 +175,32 @@ Ver. 1.4.4 / Ver. 1.5.0 α4 からは「ゲーム開始前で人数が変動し�
 遺言でさらなる情報を得て、推理の材料にしてください。<br>
 設定方法は発言の文字の大きさ(強く発言する・通常どおり発言する・弱く発言する)の欄の一番下に「遺言を残す」という項目があります。<br>
 この項目を選択して文章を送信すれば遺言がセットされます。<br>
-死亡後は遺言のセットはできません。<br>
-Ver. 1.5.0 β1 からは、「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。
+「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。<br>
+死亡後は遺言のセットはできません。
+</div>
+<h4>Ver. 1.5.0 β1～</h4>
+<div class="info">
+「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。
 </div>
 
 <h3 id="difference_max_user">村の最大人数を制限できます</h3>
 <div class="info">
 <?php
-$str = '[' . implode('人]、[', $ROOM_CONF->max_user_list);
+$str = '[ ' . implode('人・', $ROOM_CONF->max_user_list);
 $min_user = min(array_keys($CAST_CONF->role_list));
-$str .= '人] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
-$str .= "ただしゲームを開始するには最低 [{$min_user}人] の村人が必要です。";
+$str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
+$str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
 echo $str;
 ?>
 </div>
 
-<h3 id="difference_active_room">同時稼働できる村の数</h3>
+<h3 id="difference_active_room">同時稼働できる村の数 [Ver. 1.4.0 α19～]</h3>
 <div class="info">
 サーバ負荷の調整のため、同時稼働できる村の数をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo $ROOM_CONF->max_active_room ?>村まで ] です。
+現在の設定は [ <?php echo $ROOM_CONF->max_active_room ?>村 ] までです。
 </div>
 
-<h3 id="difference_establish_wait">次の村を立てられるまでの待ち時間</h3>
+<h3 id="difference_establish_wait">次の村を立てられるまでの待ち時間 [Ver. 1.4.0 β1～]</h3>
 <div class="info">
 打ち合わせミスや、リロードによる多重村立て事故を防ぐため、一つの村が立ってから次の村を立てられるまでの待ち時間をサーバ管理者が設定できます。<br>
 現在の設定は [ <?php echo $TIME_CALC->establish_wait ?> ] です。
@@ -214,32 +228,34 @@ echo $str;
 <h3 id="difference_dummy_boy">初日の夜は身代わり君</h3>
 <div class="info">
 初日の夜に一度も発言することなく人狼に襲われて、ゲームに参加したとはいえない！と思ったことはありませんか？<br>
-村を作成するときに「初日の夜は身代わり君」にチェックを入れると初日の夜、人狼は身代わり君しか襲えないようになります。<br>
+村を作成するときに「<a href="game_option.php#dummy_boy">初日の夜は身代わり君</a>」にチェックを入れると初日の夜、人狼は身代わり君しか襲えないようになります。<br>
 身代わり君はプレイヤーが操作するのではなく、初日に襲われる為だけに存在します。<br>
-割り当てられる役割は [人狼] [妖狐]<?php
-$str = '';
+割り当てられる役割は [ <?php
+$stack = array('人狼', '妖狐');
 foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
-  $str .= ' [' . $ROLE_DATA->main_role_list[$role] . ']';
+  $stack[] = $ROLE_DATA->main_role_list[$role];
 }
-echo $str;
-?> 以外のどれかランダムに設定されます。<br>
+echo implode($stack, '・');
+?> ] 以外のどれかランダムに設定されます。
 </div>
 
 <h3 id="difference_real_time">リアルタイム制オプション</h3>
 <div class="info">
-村を作成するときに「リアルタイム制」にチェックを入れると、ゲーム中の仮想時間 (昼12時間、夜6時間) が発言により消費されるのではなく固定された実時間で消費されていきます。<br>
+村を作成するときに「<a href="game_option.php#real_time">リアルタイム制</a>」にチェックを入れると、ゲーム中の仮想時間 (昼12時間、夜6時間) が発言により消費されるのではなく固定された実時間で消費されていきます。<br>
 設定される時間は村を作成する人が決定することができます
-(デフォルト 昼： [<?php echo $TIME_CONF->default_day ?>分]　夜： [<?php echo $TIME_CONF->default_night ?>分])。<br>
+(デフォルト 昼： [ <?php echo $TIME_CONF->default_day ?>分 ]　夜： [ <?php echo $TIME_CONF->default_night ?>分 ])。<br>
 その村に設定された制限時間を知るには、ゲーム一覧のゲームオプションアイコン、リアルタイム制用 <?php echo
 $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
-		    '分　夜： ' . $TIME_CONF->default_night . '分') ?> にマウスポインタを合わせることで表示されます。<br>
-実時間の残り時間がおかしな場合は PC とサーバの時計がズレている可能性があります。<br>
-→ Ver. 1.4.0 β4 から不要になりました。
+		    '分　夜： ' . $TIME_CONF->default_night . '分') ?> にマウスポインタを合わせることで表示されます。
+</div>
+<h4>Ver. 1.4.0 β4～</h4>
+<div class="info">
+PC の時計をサーバと合わせる必要がなくなりました。
 </div>
 
 <h3 id="difference_spend_time">非リアルタイム制の会話の時間消費の上限</h3>
 <div class="info">
-半角100文字(全角50文字)で 昼： [ <?php echo $TIME_CALC->spend_day ?> ] 夜：[ <?php echo $TIME_CALC->spend_night ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字(全角200文字)までの消費時間までしか増えません。<br>
+半角100文字 (全角50文字) で 昼： [ <?php echo $TIME_CALC->spend_day ?> ] 夜：[ <?php echo $TIME_CALC->spend_night ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字 (全角200文字) までの消費時間までしか増えません。<br>
 半角400文字以上で発言しても消費される時間は半角400文字分と同じです。
 </div>
 
@@ -247,6 +263,23 @@ $ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->
 <div class="info">
 非リアルタイム制の場合、誰も発言をせず [ <?php echo $TIME_CALC->silence ?> ] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
 消費される時間は 昼： [ <?php echo $TIME_CALC->silence_day ?> ] 夜： [ <?php echo $TIME_CALC->silence_night ?> ]です。
+</div>
+
+<h3 id="difference_wait_morning">早朝待機制オプション [Ver. 1.4.0 β17～]</h3>
+<div class="info">
+村を作成するときに「<a href="game_option.php#wait_morning">早朝待機制</a>」にチェックを入れると、夜明け後 [ <?php echo $TIME_CONF->wait_morning ?>秒 ] の間は発言ができません。<br>
+これにより、昼の発言開始のタイミングを揃えることができます。
+</div>
+
+<h3 id="difference_trip">トリップ [Ver. 1.4.0 β8～]</h3>
+<div class="info">
+村人登録時に、ユーザ名の入力欄にユーザ名に続けて「#任意の文字列」と入力することでトリップ変換されます。<br>
+また、ユーザ名の「#」の右側のトリップ入力専用欄を使用することで「#」の入力の手間を省くことができます。<br>
+現在の設定は [ トリップ使用<?php echo ($GAME_CONF->trip ? '可' : '不可') ?> ] になっています。
+</div>
+<h4>Ver. 1.5.0 β6～</h4>
+<div class="info">
+トリップ入力専用欄の実装。
 </div>
 
 <h3 id="difference_escape_talk">半角 &yen; マークは発言できません</h3>

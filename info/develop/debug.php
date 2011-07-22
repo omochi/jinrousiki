@@ -32,6 +32,19 @@ Ver. 1.5.0
 <a href="#ver140b22">β22</a>
 </p>
 
+<h2 id="ver150b6">Ver. 1.5.0 β6</h2>
+<h3>include/game_play_functions.php % 651行目付近 (2011/07/12 (Tue) 03:41)</h3>
+<h4>[before]</h4>
+<pre>
+}
+OutputPartner($stack, 'partner_header', 'lovers_footer');
+</pre>
+<h4>[after]</h4>
+<pre>
+  OutputPartner($stack, 'partner_header', 'lovers_footer');
+}
+</pre>
+
 <h2 id="ver150b5">Ver. 1.5.0 β5</h2>
 <h3>include/game_play_functions.php % 332行目付近 (2011/06/29 (Wed) 00:21)</h3>
 <h4>[before]</h4>

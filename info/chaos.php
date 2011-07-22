@@ -18,6 +18,7 @@ OutputInfoPageHeader('闇鍋モード');
 </p>
 <p>
 <a href="#topping"><?php echo $GAME_OPT_MESS->topping ?></a>
+<a href="#boost_rate"><?php echo $GAME_OPT_MESS->boost_rate ?></a>
 <a href="#chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a>
 <a href="#sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a>
 <a href="#secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a>
@@ -718,6 +719,28 @@ OutputInfoPageHeader('闇鍋モード');
 <pre>
 他：<a href="new_role/duelist.php#avenger">復讐者</a>・<a href="new_role/duelist.php#patron">後援者</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>追加
 </pre>
+
+<h2 id="boost_rate"><?php echo $GAME_OPT_MESS->boost_rate ?> [Ver. 1.5.0 β7～]</h2>
+<ol>
+<li><?php echo $GAME_OPT_CAPT->boost_rate ?>。</li>
+<li>固定配役には干渉しません。</li>
+<li>内容は設定ファイルで変更できます。</li>
+</ol>
+<p>
+<a href="#boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?></a>
+<a href="#boost_rate_b"><?php echo $GAME_OPT_MESS->boost_rate_b ?></a>
+</p>
+
+<h3 id="boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?> [Ver. 1.5.0 β7～]</h3>
+<pre>
+該当バージョンで新しく実装された役職の出現率が上がります。
+</pre>
+
+<h3 id="boost_rate_b"><?php echo $GAME_OPT_MESS->boost_rate_b ?> [Ver. 1.5.0 β7～]</h3>
+<pre>
+<a href="new_role/ability.php#authority">投票数変化能力者</a>・<a href="new_role/ability.php#luck">得票数変化能力者</a>に属するメイン役職の出現率が 0 になります。
+</pre>
+
 
 <h2 id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?> [Ver. 1.4.0 α14～]</h2>
 <pre>

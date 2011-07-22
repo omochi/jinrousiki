@@ -726,6 +726,7 @@ class RoleData{
     'divine_escaper'       => '麒麟',
     'wolf'                 => '人狼',
     'boss_wolf'            => '白狼',
+    'mist_wolf'            => '霧狼',
     'gold_wolf'            => '金狼',
     'phantom_wolf'         => '幻狼',
     'cursed_wolf'          => '呪狼',
@@ -736,11 +737,12 @@ class RoleData{
     'trap_wolf'            => '狡狼',
     'blue_wolf'            => '蒼狼',
     'emerald_wolf'         => '翠狼',
+    'doom_wolf'            => '冥狼',
+    'fire_wolf'            => '火狼',
     'sex_wolf'             => '雛狼',
+    'hungry_wolf'          => '餓狼',
     'tongue_wolf'          => '舌禍狼',
     'possessed_wolf'       => '憑狼',
-    'hungry_wolf'          => '餓狼',
-    'doom_wolf'            => '冥狼',
     'sirius_wolf'          => '天狼',
     'elder_wolf'           => '古狼',
     'cute_wolf'            => '萌狼',
@@ -767,10 +769,12 @@ class RoleData{
     'fox'                  => '妖狐',
     'white_fox'            => '白狐',
     'black_fox'            => '黒狐',
+    'mist_fox'             => '霧狐',
     'gold_fox'             => '金狐',
     'phantom_fox'          => '幻狐',
     'poison_fox'           => '管狐',
     'blue_fox'             => '蒼狐',
+    'spell_fox'            => '宙狐',
     'emerald_fox'          => '翠狐',
     'voodoo_fox'           => '九尾',
     'revive_fox'           => '仙狐',
@@ -956,6 +960,11 @@ class RoleData{
     'mind_presage'       => '受託者',
     'mind_lonely'        => 'はぐれ者',
     'mind_sheep'         => '羊',
+    'wisp'               => '鬼火',
+    'black_wisp'         => '天火',
+    'spell_wisp'         => '狐火',
+    'foughten_wisp'      => '古戦場火',
+    'gold_wisp'          => '松明丸',
     'sheep_wisp'         => '羊皮',
     'lovers'             => '恋人',
     'challenge_lovers'   => '難題',
@@ -1094,6 +1103,7 @@ class RoleData{
     'divine_escaper'       => '麒',
     'wolf'                 => '狼',
     'boss_wolf'            => '白狼',
+    'mist_wolf'            => '霧狼',
     'gold_wolf'            => '金狼',
     'phantom_wolf'         => '幻狼',
     'cursed_wolf'          => '呪狼',
@@ -1104,11 +1114,12 @@ class RoleData{
     'trap_wolf'            => '狡狼',
     'blue_wolf'            => '蒼狼',
     'emerald_wolf'         => '翠狼',
+    'doom_wolf'            => '冥狼',
+    'fire_wolf'            => '火狼',
     'sex_wolf'             => '雛狼',
+    'hungry_wolf'          => '餓狼',
     'tongue_wolf'          => '舌狼',
     'possessed_wolf'       => '憑狼',
-    'hungry_wolf'          => '餓狼',
-    'doom_wolf'            => '冥狼',
     'sirius_wolf'          => '天狼',
     'elder_wolf'           => '古狼',
     'cute_wolf'            => '萌狼',
@@ -1135,10 +1146,12 @@ class RoleData{
     'fox'                  => '狐',
     'white_fox'            => '白狐',
     'black_fox'            => '黒狐',
+    'mist_fox'             => '霧狐',
     'gold_fox'             => '金狐',
     'phantom_fox'          => '幻狐',
     'poison_fox'           => '管狐',
     'blue_fox'             => '蒼狐',
+    'spell_fox'            => '宙狐',
     'emerald_fox'          => '翠狐',
     'voodoo_fox'           => '九尾',
     'revive_fox'           => '仙狐',
@@ -1320,6 +1333,11 @@ class RoleData{
     'mind_sympathy'        => '感',
     'mind_lonely'          => '逸',
     'mind_sheep'           => '羊',
+    'wisp'                 => '鬼火',
+    'black_wisp'           => '天火',
+    'spell_wisp'           => '狐火',
+    'foughten_wisp'        => '古戦',
+    'gold_wisp'            => '松明',
     'sheep_wisp'           => '羊皮',
     'lovers'               => '恋',
     'challenge_lovers'     => '難',
@@ -1408,7 +1426,8 @@ class RoleData{
 			    'downer_voice', 'inside_voice', 'outside_voice', 'random_voice'),
     'seal'         => array('no_last_words', 'blinder', 'earplug', 'speaker', 'whisper_ringing',
 			    'howl_ringing', 'sweet_ringing', 'deep_sleep', 'silent', 'mower'),
-    'mage'         => array('sheep_wisp'),
+    'wisp'         => array('wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp',
+			    'sheep_wisp'),
     'chiroptera'   => array('joker', 'bad_status', 'sweet_status'),
     'guard'        => array('protected'),
     'human'        => array('lost_ability', 'muster_ability'),
@@ -1740,6 +1759,15 @@ class CastConfigBase extends LotteryBuilder{
       if($key % 20 == 0) echo $str;
     }
     echo '</table>';
+  }
+
+  //闇鍋モードの配役リスト取得
+  function GetChaosRateList($name, $filter){
+    $list = $this->$name;
+    foreach($filter as $role => $rate){ //出現率補正
+      if(array_key_exists($role, $list)) $list[$role] = round($list[$role] * $rate);
+    }
+    return $list;
   }
 
   //身代わり君の配役対象外役職リスト取得

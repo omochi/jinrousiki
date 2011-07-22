@@ -106,6 +106,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#critical_avenger">狂骨</a>の逆アプローチです。
+<a href="sub_role.php#rival">宿敵</a>が共有者であっても運次第で吊ることが可能となります。
 </pre>
 
 <h3 id="triangle_duelist">舞首 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
@@ -130,6 +131,8 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 流石兄弟鯖＠やる夫人狼のオリジナル役職「ニート」を元にアレンジしました。
+自力で<a href="sub_role.php#rival">宿敵</a>を倒すのが非常に難しいという点において劣化種ではありますが、
+村も狼も積極的に排除する理由があまり無いため、案外生き残れるかもしれません。
 </pre>
 
 <h2 id="avenger_group">復讐者系</h2>
@@ -164,7 +167,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[毒能力] 処刑：人狼系 + 妖狐陣営 + 自分の仇敵 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 毒を持った特殊な復讐者。
-毒の対象は、人狼系、妖狐陣営、自分の仇敵のいずれか。
+毒の対象は、人狼系・妖狐陣営・自分の仇敵のいずれか。
 自分の仇敵であっても、毒の対象外だった場合は中らない。
 </pre>
 <h4>関連役職</h4>
@@ -219,6 +222,8 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#critical_mad">釣瓶落とし</a>の復讐者バージョンです。
+<a href="sub_role.php#enemy">仇敵</a>全員に<a href="sub_role.php#critical_luck">痛恨</a>を付加できたとしても、まとめて倒せるわけではないので
+運がよければ一人くらいは<a href="sub_role.php#critical_luck">痛恨</a>で落せる程度に考えておくといいでしょう。
 </pre>
 
 <h3 id="revive_avenger">夜刀神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
@@ -241,6 +246,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#revive_pharmacist">仙人</a>の復讐者バージョンです。「やとのかみ」と読みます。
+<a href="sub_role.php#enemy">仇敵</a>の排除にはあまり効きませんが、復讐者として絵になる能力ですね。
 </pre>
 
 <h3 id="cute_avenger">草履大将 (占い結果：人狼 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
@@ -256,6 +262,8 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#cute_wolf">萌狼</a>の復讐者バージョンです。
+自己の生存は勝利条件には含まれていませんが、自分が吊られやすくなることで
+<a href="sub_role.php#enemy">仇敵</a>排除の障害になると思われます。
 </pre>
 
 
@@ -299,7 +307,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="mania.php">神話マニア陣営</a>の後援者バージョンです。
-相手の正体を知ることで最適な支援方針を検討しやすくなります。
+相手の正体を知ることで最適な支援方針を検討することができます。
 </pre>
 
 <h3 id="sacrifice_patron">身代わり地蔵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
@@ -316,6 +324,8 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="mania.php#sacrifice_mania">影武者</a>の後援者バージョンです。
+勝利条件を考えると身代わりになることよりも自分が狙われるように
+立ち回るほうがいいかもしれません。
 </pre>
 
 <h3 id="shepherd_patron">羊飼い (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
@@ -340,5 +350,6 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="mania.php#wirepuller_mania">黒衣</a>・<a href="#critical_duelist">剣闘士</a>の逆アプローチです。人形神と書いて「ひんながみ」と読みます。
+能力上、対象者が露出しやすいので難易度は高めです。
 </pre>
 </body></html>

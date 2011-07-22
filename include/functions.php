@@ -470,9 +470,9 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open', 'sudden_death', 'perverseness',
     'critical', 'joker', 'weather', 'festival', 'replace_human', 'full_mania', 'full_chiroptera',
     'full_cupid', 'change_mad', 'change_fanatic_mad', 'change_whisper_mad', 'duel', 'gray_random',
-    'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'chaos_open_cast',
-    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
-    'sub_role_limit_easy', 'sub_role_limit_normal');
+    'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate',
+    'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
+    'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;
@@ -488,6 +488,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
       break;
 
     case 'topping':
+    case 'boost_rate':
       $type = $stack->options[$option][0];
       $sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
       $footer = '['. strtoupper($type) . ']';
@@ -512,7 +513,7 @@ function GenerateHTMLHeader($title, $css = 'action'){
 
   $css_path = JINRO_CSS . '/' . $css . '.css';
   return <<<EOF
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja"><head>
 <meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
 <meta http-equiv="Content-Style-Type" content="text/css">

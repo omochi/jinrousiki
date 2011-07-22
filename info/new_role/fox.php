@@ -25,33 +25,9 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなり、仲間リストからも消える (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 <li><a href="#possessed_fox">憑狐</a>が憑依すると仲間表示が憑依先の名前に変更される。</li>
 </ol>
-<h5>Ver. 1.5.0 β6～</h5>
-<pre>
-<a href="#child_fox_group">子狐系</a>の枠に<a href="vampire.php#scarlet_vampire">屍鬼</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.5.0 β1～</h5>
-<pre>
-<a href="#child_fox_group">子狐系</a>の枠に<a href="lovers.php#scarlet_angel">紅天使</a>も混ざって表示される。
-</pre>
 <h5>Ver. 1.5.0 α8～</h5>
 <pre>
 <a href="#possessed_fox">憑狐</a>が憑依すると仲間表示が憑依先の名前に変更される。
-</pre>
-<h5>Ver. 1.4.0 β21～</h5>
-<pre>
-<a href="#child_fox_group">子狐系</a>の枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.4.0 β8～</h5>
-<pre>
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_fox">銀狐</a>と同じ)。
-</pre>
-<h5>Ver. 1.4.0 α24～</h5>
-<pre>
-<a href="#child_fox_group">子狐系</a>の枠に<a href="wolf.php#scarlet_wolf">紅狼</a>も混ざって表示される。
-</pre>
-<h5>Ver. 1.4.0 α20～</h5>
-<pre>
-<a href="#silver_fox">銀狐</a>は他の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>からも仲間であると分からない。
 </pre>
 <h5>Ver. 1.4.0 α19～</h5>
 <pre>
@@ -73,18 +49,6 @@ OutputRolePageHeader('妖狐陣営');
 <li><a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示される。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなる (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
-<h5>Ver. 1.4.0 β8～</h5>
-<pre>
-<a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなる (<a href="#silver_fox">銀狐</a>と同じ)。
-</pre>
-<h5>Ver. 1.4.0 α24～</h5>
-<pre>
-<a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示される。
-</pre>
-<h5>Ver. 1.4.0 α19～</h5>
-<pre>
-<a href="#silver_fox">銀狐</a>は念話できない。
-</pre>
 <h5>Ver. 1.4.0 α3-7～</h5>
 <pre>
 全ての<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できない。
@@ -97,15 +61,17 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#fox">妖狐</a>
 <a href="#white_fox">白狐</a>
 <a href="#black_fox">黒狐</a>
+<a href="#mist_fox">霧狐</a>
 <a href="#gold_fox">金狐</a>
 <a href="#phantom_fox">幻狐</a>
 <a href="#poison_fox">管狐</a>
 <a href="#blue_fox">蒼狐</a>
+<a href="#spell_fox">宙狐</a>
 <a href="#emerald_fox">翠狐</a>
-<a href="#voodoo_fox">九尾</a>
-<a href="#revive_fox">仙狐</a>
 </p>
 <p>
+<a href="#voodoo_fox">九尾</a>
+<a href="#revive_fox">仙狐</a>
 <a href="#possessed_fox">憑狐</a>
 <a href="#doom_fox">冥狐</a>
 <a href="#trap_fox">狡狐</a>
@@ -114,6 +80,8 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#cute_fox">萌狐</a>
 <a href="#scarlet_fox">紅狐</a>
 <a href="#silver_fox">銀狐</a>
+</p>
+<p>
 <a href="#immolate_fox">野狐禅</a>
 </p>
 
@@ -149,6 +117,20 @@ OutputRolePageHeader('妖狐陣営');
 呪殺されない代わりに人狼扱いされる妖狐です。
 人狼側から見ると、占い師の真贋が読みづらくなる上に霊能者騙りの障害となるので
 非常に厄介な存在です。
+</pre>
+
+<h3 id="mist_fox">霧狐 (占い結果：蝙蝠(呪殺無し) / 霊能結果：妖狐) [Ver. 1.5.0 β7～]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+占い結果が「蝙蝠」、霊能結果が「妖狐」と判定される妖狐。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#mist_wolf">霧狼</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#mist_wolf">霧狼</a>の妖狐バージョンです。
 </pre>
 
 <h3 id="gold_fox">金狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
@@ -206,7 +188,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#blue_wolf">蒼狼</a>・<a href="#emerald_fox">翠狐</a>
+<a href="wolf.php#blue_wolf">蒼狼</a>・<a href="#spell_fox">宙狐</a>・<a href="#emerald_fox">翠狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -215,11 +197,28 @@ OutputRolePageHeader('妖狐陣営');
 「襲撃してきた人狼に一矢報いる」タイプの能力ですね。
 </pre>
 
+<h3 id="spell_fox">宙狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.5.0 β7～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (常時) + 狐火 (一回限定) / 封印：有効</h4>
+<pre>
+一度だけ、<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら襲撃してきた人狼に<a href="sub_role.php#spell_wisp">狐火</a>を付加する妖狐。
+付加に成功すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>) が、喪失後に襲撃されても死亡しない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#fire_wolf">火狼</a>・<a href="#blue_fox">蒼狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#blue_fox">蒼狐</a>の<a href="sub_role.php#spell_wisp">狐火</a>バージョンです。
+狼を呪殺させることで狐候補を押し付けることが出来ますが、
+呪殺した占い師に村の信用を与えてしまうことにもなります。
+</pre>
+
 <h3 id="emerald_fox">翠狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 封印：有効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
-占った人が<a href="#fox_talk">念話</a>できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
+一度だけ、占った人が<a href="#fox_talk">念話</a>できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
 </pre>
 <ol>
   <li>能力の発動対象は<a href="#silver_fox">銀狐</a>・<a href="#child_fox_group">子狐系</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>の妖狐のいずれか。</li>

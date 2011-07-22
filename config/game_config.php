@@ -1,4 +1,9 @@
 <?php
+/*
+  変更履歴 from Ver. 1.5.0β6
+  + RoomConfig
+    - 追加：$boost_rate、$boost_rate_list
+*/
 //-- 村メンテナンス・作成設定 --//
 class RoomConfig{
   //-- 村メンテナンス設定 --//
@@ -172,6 +177,10 @@ class RoomConfig{
   public $topping = true; //固定配役追加モード
   //GameOptionImage->topping_* @ message_config.php / CastConfig->topping_list と対応させる
   public $topping_list = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k');
+
+  public $boost_rate = true; //出現率変動モード
+  //GameOptionImage->boost_rate_* @ message_config.php / CastConfig->boost_rate_list と対応させる
+  public $boost_rate_list = array('a', 'b');
 
   //配役通知設定
   public $chaos_open_cast      = true; //配役内訳を表示する
