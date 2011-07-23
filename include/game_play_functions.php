@@ -242,7 +242,7 @@ function OutputAbility(){
       $flag  = $SELF->IsRole('friend_doll'); //人形表示判定 (仏蘭西人形)
       foreach($USERS->rows as $user){
 	if($user->IsSelf()) continue;
-	if($user->IsRole('doll_master') || $user->IsRoleGroup('scarlet')){
+	if($user->IsRole('doll_master', 'puppet_mage') || $user->IsRoleGroup('scarlet')){
 	  $stack['master'][] = $user->handle_name;
 	}
 	if($flag && $user->IsDoll()) $stack['doll'][] = $user->handle_name;

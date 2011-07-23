@@ -222,6 +222,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <p><a href="#mage_rule">基本ルール</a></p>
 <p>
 <a href="#mage">占い師</a>
+<a href="#puppet_mage">傀儡師</a>
 <a href="#soul_mage">魂の占い師</a>
 <a href="#psycho_mage">精神鑑定士</a>
 <a href="#sex_mage">ひよこ鑑定士</a>
@@ -252,6 +253,23 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>関連役職</h4>
 <pre>
 <a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="sub_role.php#wisp_group">鬼火系</a>
+</pre>
+
+<h3 id="puppet_mage">傀儡師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β7～]</h3>
+<h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
+<pre>
+<a href="#doll_rule">人形</a>から<a href="#doll_master">人形遣い</a>に見える特殊な占い師。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+いわゆる紅系人外の騙り先要員です。
+人形に告発されるので潜伏は難しいですが<a href="#dummy_mage">夢見人</a>でない事を自覚できるので
+動きやすいかも知れません。
+紅系と違い、人狼・妖狐からは見えないので注意して下さい。
 </pre>
 
 <h3 id="soul_mage">魂の占い師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
@@ -2392,7 +2410,7 @@ MVP の賞品としてプレゼントしたものです。
 <li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村人陣営の勝利」で、自身の生死は不問。</li>
 <li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になる。</li>
 <li><a href="#doll_master">人形遣い</a>が誰か分かる。</li>
-<li><a href="#doll_master">人形遣い</a>の枠に<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+<li><a href="#doll_master">人形遣い</a>の枠に<a href="#puppet_mage">傀儡師</a>・<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
 </ol>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>

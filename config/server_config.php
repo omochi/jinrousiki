@@ -205,7 +205,7 @@ class SharedServerConfig extends SharedServerConfigBase{
 			'disable' => false),
 
     'airelmas' => array('name' => 'Twitter鯖',
-			'url' => 'http://www22.atpages.jp/airelmas/jinro/',
+			'url' => 'http://www28.atpages.jp/pururiru/jinrou/',
 			'encode' => 'UTF-8',
 			'separator' => '<!-- atpages banner tag -->',
 			'footer' => '</a><br>',
@@ -270,7 +270,8 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 			    '薔薇姉妹鯖' => 'http://www13.atpages.jp/yaranai/',
 			    '水銀鯖' => 'http://www13.atpages.jp/suigintou/',
 			    '金糸雀保管庫' => 'http://www15.atpages.jp/kanaria/',
-			    '世紀末鯖' => 'http://www14.atpages.jp/mmr1/'),
+			    '世紀末鯖' => 'http://www14.atpages.jp/mmr1/',
+			    '平賀鯖' => 'http://yarujin.m29.coreserver.jp/hiraga/'),
     '東方陰陽鉄系' => array('バーボンハウス鯖' => 'http://bourbonhouse.xsrv.jp/jinro/',
 			'裏世界鯖' => 'http://dynamis.xsrv.jp/jinro/',
 			'ミストさんテスト鯖' => 'http://bourbonhouse.xsrv.jp/test/',
@@ -283,7 +284,7 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 		      '掲示板' => 'http://jbbs.livedoor.jp/netgame/4598/'),
     'AC 人狼系' => array('AC 人狼鯖' => 'http://acjinrou.blue-sky-server.com/',
 			 '掲示板' => 'http://acjinrou.bbs.fc2.com/'),
-    'Twitter人狼系' => array('Twitter鯖' => 'http://www22.atpages.jp/airelmas/jinro/'),
+    'Twitter人狼系' => array('Twitter鯖' => 'http://www28.atpages.jp/pururiru/jinrou/')
 			);
 }
 

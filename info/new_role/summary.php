@@ -85,6 +85,7 @@ Ver. 1.5.0
 <a href="#ver150b4">β4</a>
 <a href="#ver150b6">β6</a>
 <a href="#ver150b7">β7</a>
+<a href="#ver150b8">β8</a>
 </p>
 
 <p>
@@ -2519,6 +2520,15 @@ Ver. 1.5.0
   <td>妖狐</td>
   <td class="ability">占い結果が「蝙蝠」、霊能結果が「妖狐」と判定される妖狐。</td>
   <td>Ver. 1.5.0 β7</td>
+</tr>
+<tr id="ver150b8">
+  <td><a href="human.php#puppet_mage">傀儡師</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#mage_group">占い師系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な占い師。</td>
+  <td>Ver. 1.5.0 β8</td>
 </tr>
 </table>
 

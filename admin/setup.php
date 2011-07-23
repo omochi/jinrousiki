@@ -247,6 +247,7 @@ function CheckTable(){
 	$flag->category    |= ($row['Field'] == 'category');
 	$flag->author      |= ($row['Field'] == 'author');
 	$flag->regist_date |= ($row['Field'] == 'regist_date');
+	$flag->disable     |= ($row['Field'] == 'disable');
       }
     }
 
@@ -268,6 +269,10 @@ function CheckTable(){
     if(! $flag->regist_date){
       $status = mysql_query($query . 'regist_date DATETIME') ? $success : $failed;
       echo $title . 'regist_date' . $status . $footer;
+    }
+    if(! $flag->disable){
+      $status = mysql_query($query . 'disable BOOL') ? $success : $failed;
+      echo $title . 'disable' . $status . $footer;
     }
   }
 

@@ -47,7 +47,7 @@ function EntryUser(){
   }
   if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です' . $back_url);
 
-  $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = ' . $icon_no;
+  $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE disable IS NOT TRUE AND icon_no = '.$icon_no;
   if($icon_no < 1 || FetchResult($query) < 1){
     OutputActionResult($title, '無効なアイコン番号です' . $back_url);
   }

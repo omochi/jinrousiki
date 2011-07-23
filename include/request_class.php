@@ -236,6 +236,7 @@ class RequestIconEdit extends RequestBaseIcon{
   function __construct(){
     parent::__construct();
     $this->GetItems('EscapeStrings', 'post.password');
+    $this->GetItems('IsOn', 'post.disable');
   }
 }
 

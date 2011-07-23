@@ -50,28 +50,32 @@ function OutputIconEditForm($icon_no){
   foreach(FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected) {
     extract($selected, EXTR_PREFIX_ALL, 'selected');
     $location = $ICON_CONF->path . '/' . $selected_icon_filename;
+    $checked  = $selected_disable > 0 ? ' checked' : '';
     echo <<<EOF
 <form method="POST" action="icon_edit.php">
 <input type="hidden" name="icon_no" value="{$selected_icon_no}">
 <table cellpadding="3">
-<tr><td rowspan="6"><img src="{$location}" style="border:3px solid {$selected_color};"></td>
-<td><label>アイコンの名前</label></td>
-<td><input type="text" name="icon_name" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_icon_name}"></td></tr>
+<tr><td rowspan="7"><img src="{$location}" style="border:3px solid {$selected_color};"></td>
+<td><label for="name">アイコンの名前</label></td>
+<td><input type="text" id="name" name="icon_name" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_icon_name}"></td></tr>
 
-<tr><td><label>出典</label></td>
-<td><input type="text" name="appearance" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_appearance}"></td></tr>
+<tr><td><label for="appearance">出典</label></td>
+<td><input type="text" id="appearance" name="appearance" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_appearance}"></td></tr>
 
-<tr><td><label>カテゴリ</label></td>
-<td><input type="text" name="category" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_category}"></td></tr>
+<tr><td><label for="category">カテゴリ</label></td>
+<td><input type="text" id="category" name="category" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_category}"></td></tr>
 
-<tr><td><label>アイコンの作者</label></td>
-<td><input type="text" name="author" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_author}"></td></tr>
+<tr><td><label for="author">アイコンの作者</label></td>
+<td><input type="text" id="author" name="author" maxlength="{$icon_name_length_max}" size="{$icon_name_length_max}" value="{$selected_author}"></td></tr>
 
-<tr><td><label>アイコン枠の色</label></td>
-<td><input type="text" name="color" size="10px" maxlength="7" value="{$selected_color}"> (例：#6699CC)</td></tr>
+<tr><td><label for="color">アイコン枠の色</label></td>
+<td><input type="text" id="color" name="color" size="10px" maxlength="7" value="{$selected_color}"> (例：#6699CC)</td></tr>
 
-<tr><td><label>編集パスワード</label></td>
-<td><input type="password" name="password" size="20"></td></tr>
+<tr><td><label for="disable">非表示</label></td>
+<td><input type="checkbox" id="disable" name="disable" value="on"{$checked}></td></tr>
+
+<tr><td><label for="password">編集パスワード</label></td>
+<td><input type="password" id="password" name="password" size="20" value=""></td></tr>
 
 <tr><td colspan="3"><input type="submit" value="変更"></td></tr>
 </table>
@@ -135,7 +139,7 @@ HTML;
   }
 
   //-- ヘッダ出力 --//
-  $icon_count  = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0');
+  //$icon_count  = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0'); //不使用
   $colspan     = $USER_ICON->column * 2;
   $line_header = '<tr><td colspan="' . $colspan . '">';
   $line_footer = '</td></tr>'."\n";
@@ -150,6 +154,7 @@ HTML;
 
   //検索条件の表示
   $where_cond = array();
+  if($base_url == 'user_manager') $where_cond[] = "disable IS NOT TRUE";
   $selected_categories = _outputSelectionByType('category', 'カテゴリ');
   if(0 < count($selected_categories)){
     foreach($selected_categories as $cat) $url_option[] = "category[]={$cat}";
@@ -168,7 +173,7 @@ HTML;
     $where_cond[] = _generateInClause('author', $selected_authors);
   }
 
-  $selected_keywords = _outputSelectionByType('keyword', 'キーワード'); //"キーワード"は未使用
+  $selected_keywords = _outputSelectionByType('keyword', 'キーワード');
   if(0 < count($selected_keywords)){
     $str = "LIKE '%{$selected_keywords[0]}%'";
     $where_cond[] = "(category {$str} OR appearance {$str} OR author {$str} OR icon_name {$str})";
@@ -287,6 +292,7 @@ function OutputIconDetailsForIconView($icon_info, $format_info){
   $wrapper_width = $icon_width + 6;
   $info_width = $frm_cellwidth - $icon_width;
   $edit_url = "icon_view.php?icon_no={$icon_no}";
+  if($disable > 0) $icon_name = '<s>'.$icon_name.'</s>';
   echo <<<HTML
 <td class="icon-details">
 <label for="icon_{$icon_no}">
@@ -301,9 +307,9 @@ function OutputIconDetailsForIconView($icon_info, $format_info){
 HTML;
 
   $data = '';
-  if(!empty($appearance)) $data .= '<li>[S]' . $appearance;
-  if(!empty($category))   $data .= '<li>[C]' . $category;
-  if(!empty($author))     $data .= '<li>[A]' . $author;
+  if(! empty($appearance)) $data .= '<li>[S]' . $appearance;
+  if(! empty($category))   $data .= '<li>[C]' . $category;
+  if(! empty($author))     $data .= '<li>[A]' . $author;
   echo $data;
   echo <<<HTML
 </ul>

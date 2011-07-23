@@ -58,6 +58,11 @@ function EditIcon(){
     $query_stack[] = "color = '{$color}'";
   }
 
+  //非表示フラグチェック
+  if(FetchResult("{$query_header} icon_no = {$icon_no} AND disable = TRUE") > 0 !== $disable){
+    $query_stack[] = 'disable = ' . ($disable ? 'TRUE' : 'FALSE');
+  }
+
   if(count($query_stack) < 1){
     OutputActionResult($title, '変更内容はありません');
   }
