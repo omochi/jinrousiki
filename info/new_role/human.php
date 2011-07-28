@@ -190,7 +190,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#talk_convert">発言変換能力者</a>
+<a href="ability.php#mage_wolf">特殊占い判定能力者</a>・<a href="ability.php#talk_convert">発言変換能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -255,7 +255,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="sub_role.php#wisp_group">鬼火系</a>
 </pre>
 
-<h3 id="puppet_mage">傀儡師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β7～]</h3>
+<h3 id="puppet_mage">傀儡師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
 <h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
 <a href="#doll_rule">人形</a>から<a href="#doll_master">人形遣い</a>に見える特殊な占い師。
@@ -973,6 +973,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#fend_guard">忍者</a>
 <a href="#reporter">ブン屋</a>
 <a href="#anti_voodoo">厄神</a>
+<a href="#elder_guard">老兵</a>
 <a href="#dummy_guard">夢守人</a>
 </p>
 
@@ -1180,6 +1181,23 @@ PP ラインの計算を難しくさせるために作成してみました。
 通常の狩人が狂人・妖狐でも護衛成功してしまうのと同様に
 狂人や妖狐にも占い妨害や呪返しを受ける役職がいるので、
 「厄払い成功＝対象者は村陣営」とは限らない点に注意してください。
+</pre>
+
+<h3 id="elder_guard">老兵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
+<h4>[狩人能力] 護衛：制限有り / 狩り：無し / 罠：有効</h4>
+<pre>
+処刑投票数が +1 される特殊な狩人。処刑投票能力の詳細は<a href="#elder">長老</a>参照。
+<a href="#guard_hunt">狩り能力</a>を持たず、護衛成功率は 70%。
+護衛に失敗した場合は襲撃先を選択していた場合でも何も表示されない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#elder">長老</a>の狩人バージョンで、いわゆる古系人外の騙り先要員です。
+護衛能力は一箇所護衛で成功率が下がった<a href="#barrier_wizard">結界師</a>相当になります。
 </pre>
 
 <h3 id="dummy_guard">夢守人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -2166,7 +2184,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 呪いを持った座敷童子の亜種。
 処刑投票してきた人 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
-<a href="#assassin_spec">暗殺反射</a> (30%) を持つ。
+<a href="#assassin_spec">暗殺反射</a> (30%) を持ち、<a href="#voodoo_killer">陰陽師</a>の占いで死亡する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、付加率は 30%。</li>
@@ -2411,6 +2429,7 @@ MVP の賞品としてプレゼントしたものです。
 <li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になる。</li>
 <li><a href="#doll_master">人形遣い</a>が誰か分かる。</li>
 <li><a href="#doll_master">人形遣い</a>の枠に<a href="#puppet_mage">傀儡師</a>・<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+<li><a href="#doll_master">人形遣い</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら身代わりで死亡する。</li>
 </ol>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
@@ -2453,6 +2472,8 @@ MVP の賞品としてプレゼントしたものです。
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「霧の倫敦人形」がモチーフで、
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/865" target="_top">新役職考案スレ(865)</a> が原型です。倫敦は「ロンドン」と読みます。
+妨害能力ではありますが、占い騙りを看破できるので立ち回り次第では
+大きな成果を上げることができます。
 </pre>
 
 <h3 id="poison_doll">鈴蘭人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>
@@ -2463,6 +2484,7 @@ MVP の賞品としてプレゼントしたものです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project のメディスン・メランコリーがモデルです。
+<a href="#doll_master">人形遣い</a>の身代わりで死亡した場合は毒が発動しない点に注意して下さい。
 </pre>
 
 <h3 id="doom_doll">蓬莱人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>
@@ -2471,7 +2493,7 @@ MVP の賞品としてプレゼントしたものです。
 処刑された時に、自分に投票した人からランダムで一人に<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人形。
 </pre>
 <ol>
-  <li>死の宣告の発動日は処刑された日から数えて2日後の昼。</li>
+  <li>死の宣告の発動日は処刑された日から数えて 2 日後の昼。</li>
   <li><a href="#doll_group">上海人形系</a> (<a href="#doll_master">人形遣い</a>を除く)・<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
   <li>対象者が誰もいなかった場合は不発となる。</li>
 </ol>
@@ -2507,6 +2529,7 @@ MVP の賞品としてプレゼントしたものです。
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「輪廻の西蔵人形」がモチーフで、
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/865" target="_top">新役職考案スレ(865)</a> が原型です。西蔵は「チベット」と読みます。
+<a href="#doll_master">人形遣い</a>の身代わりになると蘇生能力が発動しない点に注意して下さい。
 </pre>
 
 <h3 id="scarlet_doll">和蘭人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
@@ -2521,6 +2544,7 @@ MVP の賞品としてプレゼントしたものです。
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「紅毛の和蘭人形」がモチーフで、
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/872" target="_top">新役職考案スレ(872)</a> が原型です。和蘭は「オランダ」と読みます。
+いわゆる紅系人外が仲間情報から破綻しない騙り先となります。
 </pre>
 
 <h3 id="silver_doll">露西亜人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
@@ -2535,6 +2559,7 @@ MVP の賞品としてプレゼントしたものです。
 <pre>
 東方 Project のアリス・マーガトロイドのスペルカード「白亜の露西亜人形」がモチーフで、
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/872" target="_top">新役職考案スレ(872)</a> が原型です。露西亜は「ロシア」と読みます。
+勝利条件に関わる情報が隠蔽されているので、他と比べても厳しめの劣化種となります。
 </pre>
 
 <h3 id="doll_master">人形遣い (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>
@@ -2581,18 +2606,20 @@ MVP の賞品としてプレゼントしたものです。
 
 <h3 id="escaper_rule">基本ルール [逃亡者]</h3>
 <ol>
-<li>勝利条件は「村人陣営の勝利 + 自分自身の生存」。</li>
+<li>勝利条件は「自分自身の生存 + 村人陣営の勝利」。</li>
 <li>2日目の夜以降、生きている誰かの側に逃亡する。</li>
 <li>逃亡中は<a href="wolf.php#wolf_group">人狼</a>・<a href="vampire.php">吸血鬼</a>に直接狙われても無効 (襲撃は失敗扱いで、自覚できない)。</li>
-<li>逃亡先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡する (死因は「罠」)。</a>
-<li>逃亡先の役職などによって死亡することがある (死因は「逃亡失敗」)。</li>
-<li>逃亡先が<a href="#escaper">逃亡者</a>など、不在であっても「逃亡失敗」の条件を満たせば死亡する。</li>
-<li>逃亡先が<a href="wolf.php#wolf_group">人狼</a> (種類不問) に襲撃されたら死亡する (死因は「人狼襲撃」)。</li>
-<li>逃亡先が護衛や耐性 (例：<a href="fox.php#fox">妖狐</a>) などで<a href="wolf.php#wolf_group">人狼</a>の襲撃が失敗しても死亡する。</li>
-<li><a href="ability.php#assassin">暗殺</a>は無効。</li>
+<li>逃亡先の役職などによって死亡することがある (死因は「逃亡失敗」)。<br>
+  逃亡先が<a href="#escaper">逃亡者</a>など、不在であっても条件を満たせば死亡する。
+</li>
+<li>逃亡先が<a href="wolf.php#wolf_group">人狼</a> (種類不問) に襲撃されたら死亡する (死因は「人狼襲撃」)。<br>
+  護衛や耐性 (例：<a href="fox.php#fox">妖狐</a>) などで<a href="wolf.php#wolf_group">人狼</a>の襲撃が失敗しても死亡する。
+</li>
+<li><a href="ability.php#trap">罠能力</a>は有効、<a href="ability.php#assassin">暗殺能力</a>は無効。</a>
 <li>逃亡先が<a href="vampire.php">吸血鬼</a>だった場合は吸血される。</li>
-<li>逃亡先が<a href="vampire.php">吸血鬼</a>に襲撃されたら吸血される。</li>
-<li>逃亡先が護衛などで<a href="vampire.php">吸血鬼</a>の襲撃が失敗しても吸血される。</li>
+<li>逃亡先が<a href="vampire.php">吸血鬼</a>に襲撃されたら吸血される。<br>
+  護衛などで<a href="vampire.php">吸血鬼</a>の襲撃が失敗しても吸血される。
+</li>
 <li>遺言を残せない。</li>
 </ol>
 <h5>Ver. 1.4.0 β20～</h5>
@@ -2621,7 +2648,7 @@ MVP の賞品としてプレゼントしたものです。
 <h3 id="psycho_escaper">迷い人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α7～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 罠：有効 / 暗殺：無効 / 遺言：不可</h4>
 <pre>
-逃亡先が「嘘つき」(<a href="#psycho_mage">精神鑑定士</a>)だった場合は死亡する、特殊な逃亡者。
+逃亡先が「嘘つき」(<a href="#psycho_mage">精神鑑定士</a>) だった場合は死亡する、特殊な逃亡者。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2660,13 +2687,13 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#incubus_escaper">一角獣</a>の対男性バージョンで、ウンディーネがモチーフです。
-命名に悩んだこともあって実装のタイミングが一角獣よりかなり遅れています。
+命名に悩んだこともあって実装のタイミングが<a href="#incubus_escaper">一角獣</a>よりかなり遅れています。
 </pre>
 
 <h3 id="doom_escaper">半鳥女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 罠：有効 / 暗殺：無効 / 遺言：不可</h4>
 <pre>
-逃亡先が<a href="sub_role.php#death_warrant">死の宣告</a>を受けている場合は死亡する、特殊な逃亡者。
+逃亡先が<a href="sub_role.php#death_warrant">死の宣告</a>を受けていた場合は死亡する、特殊な逃亡者。
 宣告日がすでに過ぎている場合でも死亡する。
 逃亡先に<a href="sub_role.php#death_warrant">死の宣告</a>を行う (発動日は投票した夜から数えて 4 日後の昼)。
 </pre>
@@ -2689,5 +2716,7 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 穢れを嫌い、偉人が生まれる時に現れる瑞獣の伝承がモチーフです。
+放っておくと確定村人が増えていくので、人狼は逃亡先を狙って
+襲撃をする価値が出てきます。
 </pre>
 </body></html>

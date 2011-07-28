@@ -1391,6 +1391,7 @@ function AggregateVoteNight($skip = false){
     foreach($vote_data['WIZARD_DO'] as $uname => $target_uname){
       $ROLES->actor = $USERS->ByUname($uname);
       $role = $ROLES->Load('main_role', true)->GetRole();
+      $role = 'hunter_guard';
       $ROLES->actor->virtual_role = $role; //仮想役職を登録
       //PrintData($role, "Wizard: {$uname}");
       if(strpos($role, 'mage') !== false){
@@ -1476,6 +1477,7 @@ function AggregateVoteNight($skip = false){
       }
     }
 
+    $half_guard = $ROOM->IsEvent('half_guard'); //曇天
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
       $user = $USERS->ByUname($uname);
       if($user->IsRole('dummy_guard')){ //夢守人は罠無効
@@ -1499,6 +1501,8 @@ function AggregateVoteNight($skip = false){
     //PrintData($dummy_guard_target_list, 'Target [dummy_guard]');
 
     //魔法使い系 (拡散型) の情報収集
+    $barrier_rate = $ROOM->IsEvent('full_wizard') ? 1.25 :
+      ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1); //結界師の成功率係数
     foreach($vote_data['SPREAD_WIZARD_DO'] as $uname => $target_list){
       $trapped   = false;
       $frostbite = false;
@@ -1556,11 +1560,9 @@ function AggregateVoteNight($skip = false){
 
     //狩人系の護衛判定
     $stack = array_keys($guard_target_list, $wolf_target->uname); //護衛者を検出
-    $rate = $ROOM->IsEvent('full_wizard') ? 1.25 :
-      ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
     foreach($wizard_target_list as $uname => $target_list){ //結界師を追加
       if(in_array($wolf_target->uname, $target_list) &&
-	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $stack[] = $uname;
+	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $barrier_rate) $stack[] = $uname;
     }
     //PrintData($stack, 'List [gurad]');
 
@@ -1570,15 +1572,13 @@ function AggregateVoteNight($skip = false){
       $guard_limited = ! $ROOM->IsEvent('full_guard') && $wolf_target->IsGuardLimited();
       foreach($stack as $uname){
 	$user = $USERS->ByUname($uname);
+	$ROLES->actor = $user;
+	$filter = $ROLES->Load('main_role', true);
+	
+	if($flag = $filter->GuardFailed()) continue; //個別護衛成功判定
+	$guard_flag |= ! ($half_guard && mt_rand(0, 1) > 0) && (! $guard_limited || is_null($flag));
 
-	//個別護衛成功判定
-	$guard_flag |= ! ($ROOM->IsEvent('half_guard') && mt_rand(0, 1) > 0) &&
-	  (! $guard_limited || $user->IsRole(true, 'blind_guard', 'poison_guard'));
-
-	if($user->IsRole('hunter_guard')) //猟師の処理
-	  $USERS->Kill($user->user_no, 'WOLF_KILLED');
-	elseif($user->IsRole('blind_guard')) //夜雀の処理
-	  $voted_wolf->AddRole('blinder');
+	$filter->GuardAction($voted_wolf); //護衛処理
 
 	//護衛成功メッセージを登録
 	$ROOM->SystemMessage($user->GetHandleName($wolf_target->uname), 'GUARD_SUCCESS');
@@ -1751,11 +1751,11 @@ function AggregateVoteNight($skip = false){
       $guard_flag = false; //護衛成功フラグ
       $guard_limited = ! $ROOM->IsEvent('full_guard') && $target->IsGuardLimited(); //護衛制限判定
       $stack = array_keys($guard_target_list, $target->uname); //護衛者を検出
-      $rate = $ROOM->IsEvent('full_wizard') ? 1.25 :
-	($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
       foreach($wizard_target_list as $wizard_uname => $target_list){ //結界師を追加
 	if(in_array($target->uname, $target_list) &&
-	   mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $stack[] = $wizard_uname;
+	   mt_rand(1, 100) <= (100 - count($target_list) * 20) * $barrier_rate){
+	  $stack[] = $wizard_uname;
+	}
       }
       //PrintData($stack, 'List [gurad]');
 
@@ -1763,11 +1763,13 @@ function AggregateVoteNight($skip = false){
 	$guard_user = $USERS->ByUname($guard_uname);
 	if($guard_user->IsDead(true)) continue; //直前に死んでいたら無効
 
-	//個別護衛成功判定
-	$guard_flag |= ! ($ROOM->IsEvent('half_guard') && mt_rand(0, 1) > 0) &&
-	  (! $guard_limited || $guard_user->IsRole(true, 'blind_guard', 'poison_guard'));
+	$ROLES->actor = $guard_user;
+	$filter = $ROLES->Load('main_role', true);
 
-	if($guard_user->IsRole('blind_guard')) $user->AddRole('blinder'); //夜雀の処理
+	if($flag = $filter->GuardFailed()) continue; //個別護衛成功判定
+	$guard_flag |= ! ($half_guard && mt_rand(0, 1) > 0) && (! $guard_limited || is_null($flag));
+
+	$filter->GuardAction($user, true); //護衛処理
 
 	if($guard_user->IsFirstGuardSuccess($target->uname)){ //護衛成功メッセージを登録
 	  $ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');

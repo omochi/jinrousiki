@@ -106,7 +106,7 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="ability.php#mage_chiroptera">特殊占い判定能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -138,7 +138,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#talk_convert">発言変換能力者</a>
+<a href="ability.php#mage_human">特殊占い判定能力者</a>・<a href="ability.php#talk_convert">発言変換能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

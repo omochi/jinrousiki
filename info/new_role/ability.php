@@ -43,6 +43,7 @@ OutputRolePageHeader('能力者逆引き');
 <p>
 <a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
+<a href="#necromancer">霊能</a>
 <a href="#trap">罠</a>
 </p>
 
@@ -68,7 +69,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="mage_chiroptera">蝙蝠</h3>
 <pre>
-<a href="wolf.php#mist_wolf">霧狐</a>・<a href="fox.php#mist_fox">霧狐</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#foughten_wisp">古戦場火</a>
+<a href="wolf.php#mist_wolf">霧狼</a>・<a href="fox.php#mist_fox">霧狐</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="sub_role.php#foughten_wisp">古戦場火</a>
 </pre>
 <h3 id="mage_ogre">鬼</h3>
 <pre>
@@ -92,7 +93,8 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="guard">護衛能力者</h2>
 <pre>
-<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#guard">狩人</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#poison_guard">騎士</a>)・<a href="human.php#barrier_wizard">結界師</a>
+<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#elder_guard">老兵</a>
+<a href="human.php#wizard">魔法使い</a>(<a href="human.php#guard">狩人</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#poison_guard">騎士</a>)・<a href="human.php#barrier_wizard">結界師</a>
 </pre>
 
 <h2 id="guard_limit">護衛制限対象者</h2>
@@ -133,8 +135,9 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
 <pre>
-<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)
-<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="chiroptera.php#ice_fairy">氷妖精</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="#doom">死の宣告能力者</a>(<a href="sub_role.php#death_warrant">死の宣告</a>)
+<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="chiroptera.php#ice_fairy">氷妖精</a>)
+<a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="lovers.php#moon_cupid">かぐや姫</a>(<a href="sub_role.php#challenge_lovers">難題</a>)
+<a href="chiroptera.php#ice_fairy">氷妖精</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="#doom">死の宣告能力者</a>(<a href="sub_role.php#death_warrant">死の宣告</a>)
 </pre>
 
 <h2 id="anti_sudden_death">ショック死抑制能力者</h2>
@@ -192,7 +195,8 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="authority">投票数変化能力者</h2>
 <h3 id="authority_direct">直接型</h3>
 <pre>
-<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>・<a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#authority_group">権力者系</a>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
+<a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#authority_group">権力者系</a>
 </pre>
 <h3 id="authority_indirect">間接型</h3>
 <pre>
@@ -297,6 +301,28 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="dummy">夢能力者</h2>
 <pre>
 <a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_guard">夢守人</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
+</pre>
+
+<h2 id="necromancer">霊能 (特殊判定)</h2>
+<h3 id="necromancer_role">役職 (特殊人狼)</h3>
+<pre>
+<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#mist_wolf">霧狼</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>
+</pre>
+<h3 id="necromancer_fox">妖狐</h3>
+<pre>
+<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="fox.php#mist_fox">霧狐</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#cursed_fox">天狐</a>
+</pre>
+<h3 id="necromancer_child_fox">子狐</h3>
+<pre>
+<a href="fox.php#child_fox_group">子狐系</a>
+</pre>
+<h3 id="necromancer_chiroptera">蝙蝠</h3>
+<pre>
+<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="vampire.php">吸血鬼陣営</a>
+</pre>
+<h3 id="necromancer_ogre">鬼</h3>
+<pre>
+<a href="ogre.php">鬼陣営</a>
 </pre>
 
 <h2 id="trap">罠能力者</h2>

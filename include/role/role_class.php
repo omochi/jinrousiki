@@ -21,8 +21,9 @@ class RoleManager{
 			     'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
   //処刑投票(メイン)
-  public $vote_do_main_list = array('human', 'elder', 'scripter', 'elder_wolf', 'elder_fox',
-				    'elder_chiroptera', 'critical_duelist', 'cowboy_duelist');
+  public $vote_do_main_list = array('human', 'elder', 'scripter', 'elder_guard', 'elder_wolf',
+				    'elder_fox', 'elder_chiroptera', 'critical_duelist',
+				    'cowboy_duelist');
 
   //処刑投票(サブ)
   public $vote_do_sub_list = array('authority', 'reduce_voter', 'upper_voter', 'downer_voter',

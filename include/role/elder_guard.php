@@ -1,15 +1,18 @@
 <?php
 /*
-  ◆門番 (gatekeeper_guard)
+  ◆老兵 (elder_guard)
   ○仕様
-  ・護衛失敗：通常
+  ・投票数：+1
+  ・護衛失敗：30%
   ・護衛処理：なし
   ・狩り：なし
 */
-class Role_gatekeeper_guard extends Role{
+class Role_elder_guard extends Role{
   function __construct(){ parent::__construct(); }
 
-  function GuardFailed(){ return false; }
+  function FilterVoteDo(&$vote_number){ $vote_number++; }
+
+  function GuardFailed(){ return mt_rand(0, 9) < 3; }
 
   function GuardAction($user, $flag = false){}
 

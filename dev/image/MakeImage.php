@@ -240,6 +240,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#厄神#です。夜の間に村人一人の災厄を祓うことができます。_呪い_から^占い師^を護り、村を浄化するのです！",
     'type' => 'guard', 'delimiter' => array('_' => 'wolf', '^' => 'mage'));
 
+  public $elder_guard = array(
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#老兵#です。あなたの^処刑^投票には:二票:分の価値がありますが、#狩り#能力を持たず、時々#護衛#に失敗します。",
+    'type' => 'guard', 'delimiter' => array('^' => 'vote', ':' => 'authority'));
+
   public $common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#共有者#、他の#共有者#が誰であるか知ることができます。生存期間が他と比べ永い能力です。\n　あなたは推理する時間が与えられたのです。悩みなさい！",
     'type' => 'human', 'delimiter' => array('#' => 'common'));
@@ -475,7 +479,7 @@ class RoleMessageList{
     'type' => 'wolf', 'delimiter' => array('#' => 'mage'));
 
   public $mist_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|霧狼|です。#占い師#に占われると_蝙蝠_と判定されます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|霧狼|です。#占い師#に占われると_蝙蝠_と判定されます。紛いの羽音で村の目を欺き、夜霧に紛れて村を混乱へ導くのです！",
     'type' => 'boss_wolf', 'delimiter' => array('_' => 'chiroptera'));
 
   public $gold_wolf = array(
@@ -648,8 +652,8 @@ class RoleMessageList{
     'type' => 'white_fox');
 
   public $mist_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|霧狐|です。占われても呪殺されませんが、:蝙蝠:判定が出されるうえに、^霊能者^には見抜かれてしまいます。",
-    'type' => 'white_fox', 'delimiter' => array(':' => 'chiroptera'));
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|霧狐|です。占われても呪殺されませんが、:蝙蝠:判定が出されるうえに、^霊能者^には見抜かれてしまいます。\n　其の身に負うは闇の宿命、夜の王たる=吸血鬼=の証。深く静かな霧の中で機会を窺い、全ての敵を騙し抜くのです！",
+    'type' => 'white_fox', 'delimiter' => array(':' => 'chiroptera', '=' => 'vampire'));
 
   public $gold_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|金狐|です。_ひよこ鑑定士_に占われると:蝙蝠:と判定されます。:蝙蝠:に村や#狼#の矛先を向けさせ、その隙に|狐|の勝利を頂くのです！",
@@ -1061,7 +1065,7 @@ class RoleMessageList{
     'type' => 'sacrifice_patron', 'delimiter' => array('^' => 'mind'));
 
   public $critical_patron = array(
-    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|ひんな神|です。初日の夜に誰か一人を|受援者|にし、さらに#ひんな持ち#を与えます。また、稀に_処刑_#得票数#が +100 されます。",
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|ひんな神|です。初日の夜に誰か一人を|受援者|にし、さらに#ひんな持ち#を与えます。また、稀に_処刑_#得票数#が +100 されます。\n　死人の土から造られて、あなたは望まぬ願いを叶え続けるだろう。願いの対価を刺し与え、時は来たぞと硬い地の下に還るでしょう。",
     'type' => 'patron', 'delimiter' => array('#' => 'luck', '_' => 'vote'));
 
   public $mania = array(
@@ -1553,6 +1557,7 @@ class RoleMessageList{
   public $result_fend_guard = array('message' => "さんは|忍者|でした", 'type' => 'result_guard');
   public $result_reporter = array('message' => "さんは|ブン屋|でした", 'type' => 'result_guard');
   public $result_anti_voodoo = array('message' => "さんは|厄神|でした", 'type' => 'result_guard');
+  public $result_elder_guard = array('message' => "さんは|老兵|でした", 'type' => 'result_guard');
   public $result_dummy_guard = array('message' => "さんは|夢守人|でした", 'type' => 'result_guard');
   public $result_common = array('message' => "さんは|共有者|でした", 'delimiter' => array('|' => 'common'));
   public $result_detective_common = array('message' => "さんは|探偵|でした", 'type' => 'result_common');
@@ -1956,9 +1961,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('puppet_mage');
-#$builder->Output('mist_wolf');
+#$builder->Output('puppet_mage');
+$builder->Output('elder_guard');
 #$builder->Output('fire_wolf');
 #$builder->Output('spell_fox');
-#$builder->Output('mist_fox');
-#$builder->Output('critical_patron');

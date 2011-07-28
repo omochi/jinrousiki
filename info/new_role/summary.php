@@ -1126,7 +1126,7 @@ Ver. 1.5.0
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">他の国で言う「奴隷」。<br>勝利条件は「<a href="human.php#doll_master">人形遣い</a>が全員死亡している＋村が勝利」で、自身の生死は不問。<br>
+  <td class="ability">他の国で言う「奴隷」。<br>勝利条件は「<a href="human.php#doll_master">人形遣い</a>が全員死亡している + 村人陣営の勝利」で、自身の生死は不問。<br>
     <href="human.php#doll_master">人形遣い</a>が人狼に襲撃されたら代わりに死亡する。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
@@ -2143,7 +2143,7 @@ Ver. 1.5.0
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">逃亡先が「嘘つき」(<a href="human.php#psycho_mage">精神鑑定士</a>)だった場合は死亡する、特殊な逃亡者。</td>
+  <td class="ability">逃亡先が「嘘つき」だった場合は死亡する、特殊な逃亡者。</td>
   <td>Ver. 1.5.0 α7</td>
 </tr>
 <tr>
@@ -2528,6 +2528,15 @@ Ver. 1.5.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability"><a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な占い師。</td>
+  <td>Ver. 1.5.0 β8</td>
+</tr>
+<tr>
+  <td><a href="human.php#elder_guard">老兵</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#guard_group">狩人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票数が +1 される特殊な狩人。<a href="human.php#guard_hunt">狩り能力</a>を持たず、護衛成功率は 70%。</td>
   <td>Ver. 1.5.0 β8</td>
 </tr>
 </table>

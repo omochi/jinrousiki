@@ -630,12 +630,18 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#topping_i"><?php echo $GAME_OPT_MESS->topping_i ?></a>
 <a href="#topping_j"><?php echo $GAME_OPT_MESS->topping_j ?></a>
 <a href="#topping_k"><?php echo $GAME_OPT_MESS->topping_k ?></a>
+<a href="#topping_l"><?php echo $GAME_OPT_MESS->topping_l ?></a>
 </p>
 
 <h3 id="topping_a"><?php echo $GAME_OPT_MESS->topping_a ?> [Ver. 1.4.0 β19～]</h3>
 <pre>
-<a href="new_role/human.php#doll_group">上海人形系</a>(<a href="new_role/human.php#doll_master">人形遣い</a>以外)1　<a href="new_role/human.php#doll_master">人形遣い</a>1
+<a href="new_role/human.php#doll_group">上海人形系</a>(<a href="new_role/human.php#doll_master">人形遣い</a>以外)1　<a href="new_role/human.php#doll_rule">人形遣い枠</a>2 (<a href="new_role/human.php#doll_master">人形遣い</a>1・それ以外1)
 </pre>
+<h4>Ver. 1.5.0 β8～</h4>
+<pre>
+人形遣い1 → 人形遣い枠2 (人形遣い1・それ以外1)
+</pre>
+
 <h4>Ver. 1.4.0 RC1～</h4>
 <pre>
 上海人形1 → 上海人形系(人形遣い以外)1
@@ -699,7 +705,7 @@ OutputInfoPageHeader('闇鍋モード');
 
 <h3 id="topping_k"><?php echo $GAME_OPT_MESS->topping_k ?> [Ver. 1.5.0 β2～]</h3>
 <pre>
-上位種3　(村人陣営1・人狼陣営1・他陣営1)
+上位種3 (村人陣営1・人狼陣営1・他陣営1)
 
 村人：<a href="new_role/human.php#executor">執行者</a>・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#soul_necromancer">雲外鏡</a>・<a href="new_role/human.php#revive_medium">風祝</a>・<a href="new_role/human.php#high_priest">大司祭</a>・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#ghost_common">亡霊嬢</a>・<a href="new_role/human.php#strong_poison">強毒者</a>・<a href="new_role/human.php#revive_cat">仙狸</a>
 　　　<a href="new_role/human.php#alchemy_pharmacist">錬金術師</a>・<a href="new_role/human.php#soul_assassin">辻斬り</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>・<a href="new_role/human.php#poison_jealousy">毒橋姫</a>・<a href="new_role/human.php#history_brownie">白澤</a>・<a href="new_role/human.php#soul_wizard">八卦見</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/human.php#divine_escaper">麒麟</a>
@@ -720,6 +726,12 @@ OutputInfoPageHeader('闇鍋モード');
 他：<a href="new_role/duelist.php#avenger">復讐者</a>・<a href="new_role/duelist.php#patron">後援者</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>追加
 </pre>
 
+<h3 id="topping_l"><?php echo $GAME_OPT_MESS->topping_l ?> [Ver. 1.5.0 β8～]</h3>
+<pre>
+<a href="new_role/human.php#ghost_common">亡霊嬢</a>1　<a href="new_role/wolf.php#boss_wolf">白狼</a>1　<a href="new_role/wolf.php#silver_wolf">銀狼</a>1　<a href="new_role/fox.php#howl_fox">化狐</a>1
+</pre>
+
+
 <h2 id="boost_rate"><?php echo $GAME_OPT_MESS->boost_rate ?> [Ver. 1.5.0 β7～]</h2>
 <ol>
 <li><?php echo $GAME_OPT_CAPT->boost_rate ?>。</li>
@@ -729,6 +741,7 @@ OutputInfoPageHeader('闇鍋モード');
 <p>
 <a href="#boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?></a>
 <a href="#boost_rate_b"><?php echo $GAME_OPT_MESS->boost_rate_b ?></a>
+<a href="#boost_rate_c"><?php echo $GAME_OPT_MESS->boost_rate_c ?></a>
 </p>
 
 <h3 id="boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?> [Ver. 1.5.0 β7～]</h3>
@@ -739,6 +752,13 @@ OutputInfoPageHeader('闇鍋モード');
 <h3 id="boost_rate_b"><?php echo $GAME_OPT_MESS->boost_rate_b ?> [Ver. 1.5.0 β7～]</h3>
 <pre>
 <a href="new_role/ability.php#authority">投票数変化能力者</a>・<a href="new_role/ability.php#luck">得票数変化能力者</a>に属するメイン役職の出現率が 0 になります。
+</pre>
+
+<h3 id="boost_rate_c"><?php echo $GAME_OPT_MESS->boost_rate_c ?> [Ver. 1.5.0 β8～]</h3>
+<pre>
+各系統の基本職の出現率が 0 になります。
+役職グループの<a href="#decide_role_random">上限補正</a>の振り替えで<a href="new_role/human.php#human">村人</a>が出現する可能性があります。
+村人の<a href="#decide_role_random">上限補正</a>の振り替えでは基本職は出現しません。
 </pre>
 
 

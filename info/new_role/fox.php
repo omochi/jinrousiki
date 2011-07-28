@@ -51,7 +51,7 @@ OutputRolePageHeader('妖狐陣営');
 </ol>
 <h5>Ver. 1.4.0 α3-7～</h5>
 <pre>
-全ての<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できない。
+全ての<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できる。
 <a href="#child_fox_group">子狐系</a>は念話を見ることも参加することもできない。
 </pre>
 
@@ -99,7 +99,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#boss_wolf">白狼</a>
+<a href="ability.php#mage_human">特殊占い判定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -112,11 +112,15 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 占い結果が「人狼」、霊能結果が「妖狐」と判定される妖狐。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#mage_wolf">特殊占い判定能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 呪殺されない代わりに人狼扱いされる妖狐です。
-人狼側から見ると、占い師の真贋が読みづらくなる上に霊能者騙りの障害となるので
-非常に厄介な存在です。
+人狼側から見ると、占い師の真贋が読みづらくなる上に
+霊能者騙りの障害となるので非常に厄介な存在です。
 </pre>
 
 <h3 id="mist_fox">霧狐 (占い結果：蝙蝠(呪殺無し) / 霊能結果：妖狐) [Ver. 1.5.0 β7～]</h3>
@@ -126,11 +130,12 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#mist_wolf">霧狼</a>
+<a href="ability.php#mage_chiroptera">特殊占い判定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#mist_wolf">霧狼</a>の妖狐バージョンです。
+<a href="human.php#dummy_mage">夢見人</a>にも捉まるので対占いは辛いですが、騙りを把握しやすくなります。
 </pre>
 
 <h3 id="gold_fox">金狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
@@ -340,8 +345,9 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="cursed_fox">天狐 (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 暗殺：反射 / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
-占われたら占った<a href="human.php#mage_group">占い師</a>を呪い殺す妖狐。
-<a href="human.php#assassin_spec">暗殺反射</a>能力を持ち、<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+呪い・<a href="human.php#assassin_spec">暗殺反射</a>能力を持った妖狐。
+自分を占った<a href="human.php#mage_group">占い師</a>を呪い殺すことができる (死因は「呪返し」)。
+<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>

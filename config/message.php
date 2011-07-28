@@ -1,11 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β6
+  変更履歴 from Ver. 1.5.0β7
   + GameOptionMessage
-    - 追加：$boost_rate、$boost_rate_a、$boost_rate_b
-
-  + GameOptionCaptionMessage
-    - 追加：$boost_rate
+    - 追加：$topping_l、$boost_rate_c
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -340,9 +337,11 @@ class GameOptionMessage{
   public $topping_i             = 'I：恋人村';
   public $topping_j             = 'J：宿敵村';
   public $topping_k             = 'K：覚醒村';
+  public $topping_l             = 'L：白銀村';
   public $boost_rate            = '出現率変動モード';
   public $boost_rate_a          = 'A：新顔村';
   public $boost_rate_b          = 'B：平等村';
+  public $boost_rate_c          = 'C：派生村';
   public $chaos_open_cast       = '配役を通知する';
   public $chaos_open_cast_camp  = '陣営を通知する';
   public $chaos_open_cast_role  = '役職を通知する';

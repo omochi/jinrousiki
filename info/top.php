@@ -10,7 +10,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>Ver. 1.5.0 β7 アップロード (2011/07/23 (Sat) 05:03) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b6">デバッグ情報</a> (2011/07/12 (Tue) 03:41)</li> -->
-  <li>出現率変動モード：「新顔村」「平等村」オプション実装</li>
+  <li>「出現率変動モード」オプション実装</li>
   <li>「火狼」「宙狐」「霧狼」「霧狐」実装</li>
   <li>サブ役職「鬼火」「天火」「狐火」「古戦場火」「松明丸」実装</li>
 </ul>
@@ -18,10 +18,12 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>傀儡師：人形から人形遣いに見える特殊な占い師</li>
+  <li>老兵：処刑投票数が +1 される特殊な狩人。</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>固定配役追加モード：L(白銀村)追加</li>
+  <li>出現率変動モード：C(派生村)追加</li>
 </ul>

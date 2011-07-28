@@ -166,8 +166,9 @@ OutputRolePageHeader('人狼陣営');
 <h3 id="cursed_wolf">呪狼 (占い結果：人狼(呪返し) / 霊能結果：呪狼) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
-占われたら占ってきた<a href="human.php#mage_group">占い師</a>を呪い殺す人狼。
-死亡した占い師の死因は「呪返し」になる。
+呪いを持った人狼。
+自分を占った<a href="human.php#mage_group">占い師</a>を呪い殺すことができる (死因は「呪返し」)。
+<a href="human.php#voodoo_killer">陰陽師</a>の占いで死亡する。
 </pre>
 <h5>Ver. 1.4.0 β3～</h5>
 <pre>
