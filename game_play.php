@@ -19,14 +19,6 @@ $ROOM->sudden_death = 0; //突然死実行までの残り時間
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
-//-- テスト用 --//
-#$SELF->ChangeRole('soul_mania[5]');
-#$SELF->Update('icon_no', 30);
-#$SELF->AddRole('possessed_target[2-2]');
-#$SELF->Update('live', 'live');
-#$SELF->Update('live', 'dead');
-#PrintData($SELF);
-
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){ //ゲームオプション表示
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'GAME_OPT_MESS', 'ROOM_IMG');
@@ -415,7 +407,7 @@ function OutputGameHeader(){
     echo $ROOM->GenerateTitleTag() . '<td class="view-option">'."\n";
     if($SELF->IsDead() && $ROOM->dead_mode){ //死亡者の場合の、真ん中の全表示地上モード
       $url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload .
-	$url_sound . $url_list . '#game_top';
+	$url_sound . $url_list;
 
       echo <<<EOF
 <form method="POST" action="{$url}" name="reload_middle_frame" target="middle">
@@ -433,14 +425,14 @@ EOF;
 
     $url = $url_header . $url_reload;
     echo ' [音でお知らせ](' .
-      ($RQ_ARGS->play_sound ? 'on ' . $url . '#game_top">off</a>' :
-       $url . '&play_sound=on#game_top">on</a> off') . ')'."\n";
+      ($RQ_ARGS->play_sound ? 'on ' . $url . '">off</a>' :
+       $url . '&play_sound=on">on</a> off') . ')'."\n";
   }
 
   //プレイヤーリストの表示位置
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
     $url_reload . $url_sound  .
-    ($RQ_ARGS->list_down ? '#game_top">↑' : '&list_down=on#game_top">↓') . 'リスト</a>'."\n";
+    ($RQ_ARGS->list_down ? '">↑' : '&list_down=on">↓') . 'リスト</a>'."\n";
   if($ROOM->IsFinished()) OutputLogLink();
 
   //夜明けを音でお知らせする
@@ -519,7 +511,7 @@ EOF;
   //異議あり、のボタン(夜と死者モード以外)
   if($ROOM->IsBeforeGame() ||
      ($ROOM->IsDay() && ! $ROOM->dead_mode && ! $ROOM->heaven_mode && $left_time > 0)){
-    $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list . '#game_top';
+    $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list;
     $count = $GAME_CONF->objection - $SELF->objection_count;
     echo <<<EOF
 <td class="objection"><form method="POST" action="{$url}">
@@ -535,7 +527,6 @@ EOF;
   if(! $ROOM->IsPlaying()) return;
   if($left_time == 0){
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
-    //PrintData($ROOM->sudden_death); //テスト用
     if($ROOM->sudden_death > 0){
       echo $MESSAGE->sudden_death_time . ConvertTime($ROOM->sudden_death) . '<br>'."\n";
     }
@@ -554,8 +545,9 @@ function OutputHeavenTalkLog(){
   global $ROOM, $USERS;
 
   //出力条件をチェック
-  // if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
+  //if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
+  $is_open = $ROOM->IsOpenCast(); //霊界公開判定
   $builder =& new DocumentBuilder();
   $builder->BeginTalk('talk');
   foreach($ROOM->LoadTalk(true) as $talk){
@@ -563,8 +555,7 @@ function OutputHeavenTalkLog(){
 
     $symbol = '<font color="' . $user->color . '">◆</font>';
     $handle_name = $user->handle_name;
-    //霊界で役職が公開されている場合のみ HN を追加
-    if($ROOM->IsOpenCast()) $handle_name .= '<span>(' . $talk->uname . ')</span>';
+    if($is_open) $handle_name .= '<span>(' . $talk->uname . ')</span>'; //HN 追加処理
 
     $builder->RawAddTalk($symbol, $handle_name, $talk->sentence, $talk->font_type);
   }
@@ -582,7 +573,7 @@ function CheckSelfVoteDay(){
   $query = 'SELECT target_uname FROM vote' . $ROOM->GetQuery() .
     " AND situation = 'VOTE_KILL' AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
   $target_uname = FetchResult($query);
-  $str .= ($target_uname === false ? '<font color="red">まだ投票していません</font>' :
+  $str .= ($target_uname === false ? '<font color="#FF0000">まだ投票していません</font>' :
 	   $USERS->GetHandleName($target_uname, true) . ' さんに投票済み') . '</div>'."\n";
   if($target_uname === false){
     $str .= '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>'."\n";

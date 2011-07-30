@@ -8,15 +8,14 @@
 class Role_miasma_fox extends Role{
   function __construct(){ parent::__construct(); }
 
-  function VoteKillCounter($voter_list){
+  function VoteKillCounter($list){
     global $USERS;
 
-    $stack = array(); //対象者の選出
-    foreach($voter_list as $uname){
+    $stack = array();
+    foreach($list as $uname){
       $user = $USERS->ByRealUname($uname);
       if(! $user->IsAvoid() && ! $user->IsFox()) $stack[] = $user->user_no;
     }
-    //PrintData($stack, 'Target [febris]');
     if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(1, 'febris');
   }
 

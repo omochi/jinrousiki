@@ -366,8 +366,9 @@ class User{
   //狩り対象判定
   function IsHuntTarget(){
     return $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
-			 'trap_fox', 'cursed_fox', 'poison_chiroptera', 'cursed_chiroptera',
-			 'boss_chiroptera', 'cursed_avenger', 'critical_avenger') ||
+			 'trap_fox', 'cursed_fox', 'cursed_angel', 'poison_chiroptera',
+			 'cursed_chiroptera', 'boss_chiroptera', 'cursed_avenger',
+			 'critical_avenger') ||
       ($this->IsRoleGroup('mad') &&
        ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'therian_mad', 'immolate_mad')) ||
       ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire', 'scarlet_vampire'));

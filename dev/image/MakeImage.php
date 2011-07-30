@@ -109,7 +109,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'mage', '_' => 'wolf'));
 
   public $puppet_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#傀儡師#、^人形^から^人形遣い^に見えている#占い師#です。",
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#傀儡師#、^人形^から^人形遣い^に見えている#占い師#です。#占い#の力と^人形^の協力で、一気に人外を炙り出すのです！",
     'type' => 'mage', 'delimiter' => array('^' => 'doll'));
 
   public $soul_mage = array(
@@ -672,7 +672,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('_' => 'mind'));
 
   public $spell_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|宙狐|です。一度だけ、あなたを襲撃した#人狼#に_狐火_を灯すことができます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|宙狐|です。一度だけ、あなたを襲撃した#人狼#に_狐火_を灯すことができます。\n　飛んで火に入る#人狼#を、化かして騙して煙に巻き、村に混沌なる火種を撒くのです！",
     'type' => 'fox', 'delimiter' => array('_' => 'wisp'));
 
   public $emerald_fox = array(
@@ -775,6 +775,10 @@ class RoleMessageList{
     'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|小悪魔|です。初日の夜に誰か三人を|恋人|にしてしまいます。淫靡な魅力で誘惑し、導き、三人の背徳的な恋を成就させるのです！",
     'type' => 'cupid');
 
+  public $snow_cupid = array(
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|寒戸婆|です。初日の夜に誰か二人を|恋人|にすることができます。また、#処刑#投票先が|恋人|だったら_凍傷_にしてしまいます。\n　お山に見初められ、戻ろうにも帰らねばならず。いっそ望まぬ恋ならば、節くれだった青女の指先で、剥がして六花を咲かそうぞ。",
+    'type' => 'cupid', 'delimiter' => array('#' => 'vote', '_' => 'chicken'));
+
   public $angel = array(
     'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|天使|です。初日の夜に誰か二人を|恋人|にして、その二人が_男_|女|だった場合はさらに#共感者#にすることができます。\n　始まりの園にありし男女の愛を繋ぎ、その魂に秘蹟を授けることがあなたの使命。二人の人生の先に神の祝福と喜びあれ。",
     'type' => 'cupid', 'delimiter' => array('#' => 'mind', '_' => 'sex_male'));
@@ -803,6 +807,10 @@ class RoleMessageList{
     'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|紅天使|です。^無意識^が誰か分かりますが、:人狼:からは^無意識^に、=妖狐=からは=子狐=に、*人形*からは*人形遣い*に見えています。\n　散華――鮮血の上、月の光に輝く紅の衣は時として真紅の水鏡。瞳の奥の哀れな虚像を嘲りながら、無為の者に囁きかけるのです！",
     'type' => 'angel',
     'delimiter' => array('^' => 'human', ':' => 'wolf', '=' => 'fox', '*' => 'doll'));
+
+  public $cursed_angel = array(
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|堕天使|、_呪い_を持っています。初日の夜に誰か二人を|恋人|にして、その二人が別陣営ならさらに#共感者#にすることができます。\n　また、|恋人|に^処刑^投票されると:ショック死:してしまいます。",
+    'type' => 'angel', 'delimiter' => array('_' => 'wolf', '^' => 'vote', ':' => 'chicken'));
 
   public $quiz = array(
     'message' => "[役割] [|出題者|陣営] [|出題者|系]\n　あなたは|出題者|です。この村の難易度はあなたの口先三寸で決まります。頑張って皆を楽しませれば、それがあなたの勝利です。",
@@ -1699,6 +1707,7 @@ class RoleMessageList{
   public $result_sweet_cupid = array('message' => "さんは|弁財天|でした", 'type' => 'result_cupid');
   public $result_minstrel_cupid = array('message' => "さんは|吟遊詩人|でした", 'type' => 'result_cupid');
   public $result_triangle_cupid = array('message' => "さんは|小悪魔|でした", 'type' => 'result_cupid');
+  public $result_snow_cupid = array('message' => "さんは|寒戸婆|でした", 'type' => 'result_cupid');
   public $result_angel = array('message' => "さんは|天使|でした", 'type' => 'result_cupid');
   public $result_rose_angel = array('message' => "さんは|薔薇天使|でした", 'type' => 'result_angel');
   public $result_lily_angel = array('message' => "さんは|百合天使|でした", 'type' => 'result_angel');
@@ -1706,6 +1715,7 @@ class RoleMessageList{
   public $result_ark_angel = array('message' => "さんは|大天使|でした", 'type' => 'result_angel');
   public $result_sacrifice_angel = array('message' => "さんは|守護天使|でした", 'type' => 'result_angel');
   public $result_scarlet_angel = array('message' => "さんは|紅天使|でした", 'type' => 'result_angel');
+  public $result_cursed_angel = array('message' => "さんは|堕天使|でした", 'type' => 'result_angel');
   public $result_lovers = array('message' => "さんは|恋人|でした", 'type' => 'result_cupid');
   public $result_quiz = array('message' => "さんは|出題者|でした", 'delimiter' => array('|' => 'quiz'));
   public $result_vampire = array('message' => "さんは|吸血鬼|でした", 'delimiter' => array('|' => 'vampire'));
@@ -1961,7 +1971,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('puppet_mage');
-$builder->Output('elder_guard');
+#$builder->Output('elder_guard');
 #$builder->Output('fire_wolf');
-#$builder->Output('spell_fox');
+$builder->Output('cursed_angel');

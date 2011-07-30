@@ -13,7 +13,7 @@ if($_GET['play_sound']  == 'on') $url_argv .= '&play_sound=on';
 if($_GET['dead_mode']   == 'on') $url_argv .= '&dead_mode=on';
 if($_GET['heaven_mode'] == 'on') $url_argv .= '&heaven_mode=on';
 if($_GET['list_down']   == 'on') $url_argv .= '&list_down=on';
-$header = '<form method="POST" action="game_play.php' . $url_argv . '#game_top" target="bottom" ';
+$header = '<form method="POST" action="game_play.php' . $url_argv . '" target="bottom" ';
 
 //ページ読み込み時に自動でリロードするダミー送信フォーム
 echo $header . 'name="reload_game"></form>'."\n";
@@ -34,7 +34,7 @@ echo $header . 'class="input-say" name="send" onSubmit="' . $submit . '">'."\n";
 <option value="weak">弱く発言する</option>
 <option value="last_words">遺言を残す</option>
 </select><br>
-<?php echo '[<a class="vote" href="game_vote.php' . $url_argv . '#game_top">投票/占う/護衛</a>]' ?>
+<?php echo '[<a class="vote" href="game_vote.php' . $url_argv . '">投票/占う/護衛</a>]' ?>
 <a class="top-link" href="./" target="_top">TOP</a>
 </td>
 </tr></table>

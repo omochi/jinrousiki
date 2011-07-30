@@ -214,7 +214,7 @@ OutputInfoPageHeader('詳細な仕様');
   - <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/human.php#doom_doll">蓬莱人形</a>・<a href="new_role/fox.php#miasma_fox">蟲狐</a>
 
 + 役職判定
-  - <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#centaurus_pharmacist">人馬</a> → <a href="new_role/ability.php#vote_action">処刑投票付加能力者</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> →
+  - <a href="new_role/human.php#seal_medium">封印師</a> → <a href="new_role/human.php#bacchus_medium">神主</a> → <a href="new_role/human.php#centaurus_pharmacist">人馬</a> → <a href="new_role/ability.php#vote_action">処刑投票付加能力者</a> → <a href="new_role/human.php#trap_common">策士</a> → <a href="new_role/human.php#jealousy">橋姫</a> → <a href="new_role/lovers.php#cursed_angel">堕天使</a> →
     <a href="new_role/sub_role.php#chicken_group">小心者系</a> → <a href="new_role/wolf.php#follow_mad">舟幽霊</a> → <a href="new_role/sub_role.php#lovers">恋人</a>後追い → <a href="new_role/human.php#divorce_jealousy">縁切地蔵</a>・<a href="new_role/human.php#cursed_brownie">祟神</a>・<a href="weather.php">天候</a>・<a href="new_role/sub_role.php#joker">ジョーカー</a>
 </pre>
 

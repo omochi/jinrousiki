@@ -992,12 +992,13 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="guard_hunt">狩りの仕様</h3>
 <pre>
 1. 狩り能力があるのは<a href="#guard">狩人</a>・<a href="#hunter_guard">猟師</a>・<a href="#reflect_guard">侍</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>。
-2. 対象は特殊狂人・特殊妖狐・特殊吸血鬼・特殊蝙蝠。
+2. 対象は特殊狂人・特殊妖狐・特殊天使・特殊吸血鬼・特殊蝙蝠・特殊復讐者。
 2-1. 特殊狂人 (<a href="wolf.php#mad">狂人</a>・<a href="wolf.php#fanatic_mad">狂信者</a>・<a href="wolf.php#whisper_mad">囁き狂人</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="wolf.php#immolate_mad">殉教者</a>以外の<a href="wolf.php#mad_group">狂人系</a>)
 2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
-2-3. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
-2-4. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
-2-5. 特殊復讐者 (<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>)
+2-3. 特殊天使 (<a href="lovers.php#cursed_angel">堕天使</a>)
+2-4. 特殊吸血鬼 (<a href="vampire.php#vampire">吸血鬼</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>以外の<a href="vampire.php#vampire_group">吸血鬼系</a>)
+2-5. 特殊蝙蝠 (<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>)
+2-6. 特殊復讐者 (<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>)
 3. <a href="#hunter_guard">猟師</a>はさらに<a href="fox.php">妖狐陣営</a>を狩ることができる。
 4. <a href="#reflect_guard">侍</a>はさらに<a href="ogre.php">鬼陣営</a>を狩ることができる。
 5. <a href="#dummy_guard">夢守人</a>は<a href="chiroptera.php#fairy_group">妖精系</a>を狩ることができる。

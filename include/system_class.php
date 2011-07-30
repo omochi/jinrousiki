@@ -93,8 +93,8 @@ class Session{
     //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
 
     //セッション ID による認証
-    $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no} " .
-      "AND session_id ='{$this->id}' AND user_no > 0";
+    $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no}" .
+      " AND session_id = '{$this->id}' AND user_no > 0";
     $stack = FetchArray($query);
     if(count($stack) == 1){
       $this->user_no = $stack[0];
@@ -165,7 +165,6 @@ class ExternalLinkBuilder{
     $data = fgets($io, 128);
     $stream_stack = stream_get_meta_data($io);
     fclose($io);
-    //PrintData($data, 'Connection');
     return ! $stream_stack['timed_out'];
   }
 
@@ -485,8 +484,7 @@ class TwitterConfigBase{
     if($this->disable) return;
 
     $message = $this->GenerateMessage($id, $name, $comment);
-    //TwitterはUTF-8
-    if($SERVER_CONF->encode != 'UTF-8'){
+    if($SERVER_CONF->encode != 'UTF-8'){ //Twitter は UTF-8
       $message = mb_convert_encoding($message, 'UTF-8', $SERVER_CONF->encode);
     }
     if(mb_strlen($message) > 140) $message = mb_substr($message, 0, 139);
@@ -802,6 +800,7 @@ class RoleData{
     'sweet_cupid'          => '弁財天',
     'minstrel_cupid'       => '吟遊詩人',
     'triangle_cupid'       => '小悪魔',
+    'snow_cupid'           => '寒戸婆',
     'angel'                => '天使',
     'rose_angel'           => '薔薇天使',
     'lily_angel'           => '百合天使',
@@ -809,6 +808,7 @@ class RoleData{
     'ark_angel'            => '大天使',
     'sacrifice_angel'      => '守護天使',
     'scarlet_angel'        => '紅天使',
+    'cursed_angel'         => '堕天使',
     'quiz'                 => '出題者',
     'vampire'              => '吸血鬼',
     'incubus_vampire'      => '青髭公',
@@ -1181,6 +1181,7 @@ class RoleData{
     'sweet_cupid'          => '弁',
     'minstrel_cupid'       => '吟',
     'triangle_cupid'       => '小悪',
+    'snow_cupid'           => '寒',
     'angel'                => '天使',
     'rose_angel'           => '薔天',
     'lily_angel'           => '百天',
@@ -1188,6 +1189,7 @@ class RoleData{
     'ark_angel'            => '大天',
     'sacrifice_angel'      => '守天',
     'scarlet_angel'        => '紅天',
+    'cursed_angel'         => '堕天',
     'quiz'                 => 'GM',
     'vampire'              => '血',
     'incubus_vampire'      => '髭',

@@ -2539,6 +2539,24 @@ Ver. 1.5.0
   <td class="ability">処刑投票数が +1 される特殊な狩人。<a href="human.php#guard_hunt">狩り能力</a>を持たず、護衛成功率は 70%。</td>
   <td>Ver. 1.5.0 β8</td>
 </tr>
+<tr>
+  <td><a href="lovers.php#snow_cupid">寒戸婆</a></td>
+  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が恋人なら<a href="sub_role.php#frostbite">凍傷</a>を付加してしまうキューピッド。</td>
+  <td>Ver. 1.5.0 β8</td>
+</tr>
+<tr>
+  <td><a href="lovers.php#cursed_angel">堕天使</a></td>
+  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php#angel_group">天使系</a></td>
+  <td>村人<br>(呪返し)</td>
+  <td>村人</td>
+  <td class="ability">呪いを持ち、矢を撃った二人が別陣営だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。<br><a href="sub_role.php#lovers">恋人</a>に処刑投票されるとショック死する。</td>
+  <td>Ver. 1.5.0 β8</td>
+</tr>
 </table>
 
 <table id="sub_role">

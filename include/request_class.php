@@ -199,7 +199,6 @@ class RequestGameVote extends RequestBaseGamePlay{
     if($this->auto_reload > 0) $url_option .= '&auto_reload=' . $this->auto_reload;
     if($this->play_sound)      $url_option .= '&play_sound=on';
     if($this->list_down)       $url_option .= '&list_down=on';
-    $url_option .= '#game_top';
     $this->post_url = 'game_vote.php?' . $url_option;
     $this->back_url = '<a href="game_up.php?' . $url_option . '">←戻る &amp; reload</a>';
   }

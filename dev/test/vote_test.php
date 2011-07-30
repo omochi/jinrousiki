@@ -152,7 +152,7 @@ $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
 $RQ_ARGS->TestItems->test_users[21]->handle_name = '桃';
 $RQ_ARGS->TestItems->test_users[21]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[21]->role = 'cupid lovers[21]';
+$RQ_ARGS->TestItems->test_users[21]->role = 'snow_cupid lovers[21]';
 $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
@@ -220,7 +220,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   //array('id' => 18, 'target_no' => 3),
   array('id' => 19, 'target_no' => 22),
   array('id' => 20, 'target_no' => 22),
-  array('id' => 21, 'target_no' => 22),
+  array('id' => 21, 'target_no' => 24),
   array('id' => 22, 'target_no' => 25),
   array('id' => 23, 'target_no' =>  8),
   array('id' => 24, 'target_no' => 25),
@@ -457,7 +457,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 18, 23, 4) as $id){
+  foreach(array(5, 18, 21) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

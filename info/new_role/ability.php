@@ -120,7 +120,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="vote_action">処刑投票付加能力者</h2>
 <pre>
-<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 </pre>
 
 <h2 id="vote_reaction">処刑得票付加能力者</h2>
@@ -131,12 +131,12 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="sudden_death">ショック死発動能力者</h2>
 <h3 id="sudden_death_direct">直接型</h3>
 <pre>
-<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
+<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="lovers.php#cursed_angel">堕天使</a>・<a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
 <pre>
 <a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="chiroptera.php#ice_fairy">氷妖精</a>)
-<a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="lovers.php#moon_cupid">かぐや姫</a>(<a href="sub_role.php#challenge_lovers">難題</a>)
+<a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="lovers.php#moon_cupid">かぐや姫</a>(<a href="sub_role.php#challenge_lovers">難題</a>)・<a href="lovers.php#snow_cupid">寒戸婆</a>(<a href="sub_role.php#frostbite">凍傷</a>)
 <a href="chiroptera.php#ice_fairy">氷妖精</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="#doom">死の宣告能力者</a>(<a href="sub_role.php#death_warrant">死の宣告</a>)
 </pre>
 
@@ -240,7 +240,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="cursed">呪い所持者 (受動型)</h3>
 <pre>
-<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="ogre.php#cursed_yaksa">滝夜叉姫</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>
+<a href="human.php#cursed_brownie">祟神</a>・<a href="wolf.php#cursed_wolf">呪狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="lovers.php#cursed_angel">堕天使</a>・<a href="chiroptera.php#cursed_chiroptera">呪蝙蝠</a>・<a href="ogre.php#cursed_yaksa">滝夜叉姫</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>
 </pre>
 
 <h2 id="talk_convert">発言変換能力者</h2>

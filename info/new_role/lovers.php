@@ -40,6 +40,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#sweet_cupid">弁財天</a>
 <a href="#minstrel_cupid">吟遊詩人</a>
 <a href="#triangle_cupid">小悪魔</a>
+<a href="#snow_cupid">寒戸婆</a>
 </p>
 
 <h3 id="cupid">キューピッド (占い結果：村人 / 霊能結果：村人) [Ver. 1.2.0～]</h3>
@@ -146,6 +147,25 @@ OutputRolePageHeader('恋人陣営');
 翠星石鯖＠やる夫人狼で一時的に施されていた改造に別名を与えてみました。
 </pre>
 
+<h3 id="snow_cupid">寒戸婆 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
+<pre>
+処刑投票先が恋人なら<a href="sub_role.php#frostbite">凍傷</a>を付加してしまうキューピッド。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+寒戸の婆(さむとのばば) 伝承がモチーフです。
+恋人を死なせてしまう可能性がある劣化種としてデザインしました。
+</pre>
+
 
 <h2 id="angel_group">天使系</h2>
 <p>
@@ -156,6 +176,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#ark_angel">大天使</a>
 <a href="#sacrifice_angel">守護天使</a>
 <a href="#scarlet_angel">紅天使</a>
+<a href="#cursed_angel">堕天使</a>
 </p>
 
 <h3 id="angel">天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
@@ -254,5 +275,25 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 <a href="wolf.php#scarlet_wolf">紅狼</a>の天使バージョンです。
 ある程度他の陣営の配置が分かるので恋人選定時に有利になります。
+</pre>
+
+<h3 id="cursed_angel">堕天使 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
+<h4>[耐性] 護衛：狩り / 占い：呪返し / 陰陽師：死亡</h4>
+<pre>
+呪いを持ち、矢を撃った二人が別陣営だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
+陣営の判定法則は<a href="human.php#medium_rule">巫女</a>と同じ。
+<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。<a href="sub_role.php#lovers">恋人</a>に処刑投票されるとショック死する。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>はショック死処理の直前で再投票でも有効。</li>
+<li>ショック死した場合の死因は「封印された」。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+天使系の劣化種として<a href="sub_role.php#celibacy">独身貴族</a>相当の能力を持たせてみました。
 </pre>
 </body></html>

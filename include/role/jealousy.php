@@ -11,10 +11,10 @@ class Role_jealousy extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function VotedReaction(){
-    global $ROLES, $USERS;
+    global $USERS;
 
-    foreach($ROLES->stack->{$this->role} as $uname){
-      if($uname == $ROLES->stack->vote_kill_uname) continue;
+    foreach($this->GetStack() as $uname){
+      if($this->IsVoted($uname)) continue;
 
       $cupid_list = array(); //橋姫に投票したユーザのキューピッドの ID => 恋人の ID
       foreach($this->GetVotedUname($uname) as $voted_uname){

@@ -1391,7 +1391,6 @@ function AggregateVoteNight($skip = false){
     foreach($vote_data['WIZARD_DO'] as $uname => $target_uname){
       $ROLES->actor = $USERS->ByUname($uname);
       $role = $ROLES->Load('main_role', true)->GetRole();
-      $role = 'hunter_guard';
       $ROLES->actor->virtual_role = $role; //仮想役職を登録
       //PrintData($role, "Wizard: {$uname}");
       if(strpos($role, 'mage') !== false){

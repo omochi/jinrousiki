@@ -112,6 +112,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 処刑投票時に<a href="#lovers">恋人</a>から一票でも貰うとショック死する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#cursed_angel">堕天使</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#jealousy_group">橋姫系</a>同様、対<a href="#lovers">恋人</a>用役職ですが、こちらは小心者系という事もあって
@@ -185,7 +189,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>
+<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

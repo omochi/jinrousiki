@@ -11,10 +11,10 @@ class Role_divorce_jealousy extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function VoteKillReaction(){
-    global $ROLES, $USERS;
+    global $USERS;
 
-    foreach($ROLES->stack->{$this->role} as $uname){
-      if($uname == $ROLES->stack->vote_kill_uname) continue;
+    foreach($this->GetStack() as $uname){
+      if($this->IsVoted($uname)) continue;
 
       foreach($this->GetVotedUname($uname) as $voted_uname){
 	$user = $USERS->ByRealUname($voted_uname);

@@ -437,13 +437,13 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
-  <td><a href="lovers.php#self_cupid">求愛者</a></td>
-  <td></td>
+  <td><a href="lovers.php#snow_cupid">寒戸婆</a></td>
+  <td>Ver. 1.5.0 β8～</td>
 </tr>
 <tr>
   <td><a href="lovers.php#angel_group">天使系</a></td>
-  <td><a href="lovers.php#angel">天使</a></td>
-  <td></td>
+  <td><a href="lovers.php#cursed_angel">堕天使</a></td>
+  <td>Ver. 1.5.0 β8～</td>
 </tr>
 <tr>
   <td><a href="quiz.php#quiz_group">出題者系</a></td>

@@ -43,10 +43,10 @@ class RoleManager{
 				    'revive_pharmacist', 'alchemy_pharmacist',
 				    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy',
 				    'cursed_brownie', 'agitate_mad', 'amaze_mad', 'miasma_mad',
-				    'critical_mad', 'sweet_cupid', 'quiz', 'cursed_avenger',
-				    'critical_avenger', 'impatience', 'decide', 'plague',
-				    'counter_decide', 'dropout', 'good_luck', 'bad_luck',
-				    'authority', 'rebel');
+				    'critical_mad', 'sweet_cupid', 'snow_cupid', 'cursed_angel',
+				    'quiz', 'cursed_avenger', 'critical_avenger', 'impatience',
+				    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
+				    'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -72,10 +72,10 @@ class RoleManager{
   //処刑投票能力処理 (順番依存あり)
   public $vote_action_list = array('seal_medium', 'bacchus_medium', 'centaurus_pharmacist',
 				   'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger',
-				   'cursed_avenger', 'sweet_cupid');
+				   'cursed_avenger', 'sweet_cupid', 'snow_cupid');
 
   //得票カウンター
-  public $voted_reaction_list = array('trap_common', 'jealousy');
+  public $voted_reaction_list = array('trap_common', 'jealousy', 'cursed_angel');
 
   //ショック死
   public $sudden_death_list = array('challenge_lovers', 'febris', 'frostbite', 'death_warrant',

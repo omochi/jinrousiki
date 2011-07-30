@@ -1,10 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β6
-  + 追加
-    - $boost_rate_list
+  変更履歴 from Ver. 1.5.0β7
   + 変更
-    - $chaos_hyper_wolf_list, $chaos_hyper_fox_list, $chaos_hyper_random_role_list
+    - $chaos_hyper_random_role_list, $topping_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -475,19 +473,21 @@ class CastConfig extends CastConfigBase{
     'miasma_fox'           =>  2,
     'howl_fox'             =>  3,
     'cupid'                =>  3,
-    'self_cupid'           =>  4,
+    'self_cupid'           =>  3,
     'moon_cupid'           =>  2,
-    'mind_cupid'           =>  3,
+    'mind_cupid'           =>  2,
     'sweet_cupid'          =>  2,
     'minstrel_cupid'       =>  2,
     'triangle_cupid'       =>  2,
+    'snow_cupid'           =>  2,
     'angel'                =>  3,
-    'rose_angel'           =>  3,
-    'lily_angel'           =>  3,
+    'rose_angel'           =>  2,
+    'lily_angel'           =>  2,
     'exchange_angel'       =>  2,
     'ark_angel'            =>  2,
     'sacrifice_angel'      =>  2,
     'scarlet_angel'        =>  2,
+    'cursed_angel'         =>  2,
     'quiz'                 =>  2,
     'vampire'              =>  4,
     'incubus_vampire'      =>  2,
@@ -497,13 +497,13 @@ class CastConfig extends CastConfigBase{
     'soul_vampire'         =>  1,
     'scarlet_vampire'      =>  2,
     'chiroptera'           =>  4,
-    'poison_chiroptera'    =>  2,
+    'poison_chiroptera'    =>  3,
     'cursed_chiroptera'    =>  2,
     'boss_chiroptera'      =>  2,
     'elder_chiroptera'     =>  2,
     'cute_chiroptera'      =>  3,
     'scarlet_chiroptera'   =>  3,
-    'dummy_chiroptera'     =>  3,
+    'dummy_chiroptera'     =>  2,
     'fairy'                =>  1,
     'spring_fairy'         =>  1,
     'summer_fairy'         =>  1,
@@ -747,19 +747,21 @@ class CastConfig extends CastConfigBase{
 			 'priest_jealousy'  => 2,
 			 'poison_jealousy'  => 1),
                    array('cupid'           => 10,
-			 'self_cupid'      => 10,
+			 'self_cupid'      =>  8,
 			 'moon_cupid'      =>  5,
-			 'mind_cupid'      => 10,
+			 'mind_cupid'      =>  3,
 			 'sweet_cupid'     =>  5,
-			 'minstrel_cupid'  =>  5,
-			 'triangle_cupid'  =>  5,
-			 'angel'           => 10,
-			 'rose_angel'      => 10,
-			 'lily_angel'      => 10,
+			 'minstrel_cupid'  =>  3,
+			 'triangle_cupid'  =>  8,
+			 'snow_cupid'      =>  8,
+			 'angel'           =>  8,
+			 'rose_angel'      =>  8,
+			 'lily_angel'      =>  8,
 			 'exchange_angel'  =>  5,
 			 'ark_angel'       =>  5,
 			 'sacrifice_angel' =>  5,
-			 'scarlet_angel'   =>  5)),
+			 'scarlet_angel'   =>  5,
+			 'cursed_angel'    =>  6)),
 		 'count' => array(1, 2)),
     'j' => array('random' => array(
 		   array('duelist'          => 15,
@@ -827,8 +829,10 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('puppet_mage' => 8,
-		 'elder_guard' => 3),
+    'a' => array('puppet_mage'  => 8,
+		 'elder_guard'  => 6,
+		 'snow_cupid'   => 7,
+		 'cursed_angel' => 8),
     'b' => array('elder'            => 0,
 		 'scripter'         => 0,
 		 'elder_guard'      => 0,
