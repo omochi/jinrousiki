@@ -400,10 +400,11 @@ function OutputPlayerList(){
 
 //勝敗結果の生成
 function GenerateVictory(){
-  global $VICT_MESS, $ROOM, $ROLES, $USERS, $SELF;
+  global $VICT_MESS, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
-  $victory = FetchResult($ROOM->GetQueryHeader('room', 'victory_role'));
+  $victory = $ROOM->test_mode ? $RQ_ARGS->TestItems->victory :
+    FetchResult($ROOM->GetQueryHeader('room', 'victory_role'));
   $class   = $victory;
   $winner  = $victory;
 
@@ -443,25 +444,29 @@ EOF;
   $class = NULL;
   $camp = $SELF->GetCamp(true); //所属陣営を取得
 
-  if($victory == 'draw' || $victory == 'vanish'){ //引き分け系
+  switch($victory){
+  case 'draw':   //引き分け
+  case 'vanish': //全滅
     $class  = 'draw';
     $result = 'draw';
-  }
-  elseif($victory == 'quiz_dead'){ //出題者死亡
+    break;
+
+  case 'quiz_dead': //出題者死亡
     $class  = $camp == 'quiz' ? 'lose' : 'draw';
     $result = $camp == 'quiz' ? 'lose' : 'draw';
-  }
-  else{
+    break;
+
+  default:
     $win_flag = false;
     switch($camp){
     case 'human':
-      if($SELF->IsDoll()){ //人形系は人形遣いが生存していたら敗北
+      if($SELF->IsDoll()){ //人形
 	foreach($USERS->rows as $user){
 	  if($user->IsLiveRole('doll_master')) break 2;
 	}
 	$class = 'doll';
       }
-      elseif($SELF->IsRoleGroup('escaper')){ //逃亡者系は死亡していたら敗北
+      elseif($SELF->IsRoleGroup('escaper')){ //逃亡者系
 	if($SELF->IsDead()) break;
 	$class = 'escaper';
       }
@@ -469,48 +474,38 @@ EOF;
       break;
 
     case 'wolf':
-      if($SELF->IsRole('immolate_mad')){ //殉教者は能力発現がなければ敗北
-	if(! $SELF->IsRole('muster_ability')) break;
-      }
+      if($SELF->IsRole('immolate_mad') && ! $SELF->IsRole('muster_ability')) break; //殉教者
       $win_flag = $victory == $camp;
       break;
 
     case 'fox':
-      if($SELF->IsRole('immolate_fox')){ //野狐禅は能力発現がなければ敗北
-	if(! $SELF->IsRole('muster_ability')) break;
-      }
+      if($SELF->IsRole('immolate_fox') && ! $SELF->IsRole('muster_ability')) break; //野狐禅
       $win_flag = strpos($victory, $camp) !== false;
       break;
 
-    case 'vampire': //吸血鬼陣営は生き残った者だけが勝利
-      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営がコピーした場合は陣営の勝敗依存
-	$win_flag = $victory == $camp;
-      }
-      else{
-	$win_flag = $victory == $camp && $SELF->IsLive();
-      }
+    case 'vampire':
+      $win_flag = $victory == $camp && ($SELF->IsRoleGroup('mania') || $SELF->IsLive());
       break;
 
-    case 'chiroptera': //蝙蝠陣営は生きていれば勝利
+    case 'chiroptera':
       $win_flag = $SELF->IsLive();
       break;
 
     case 'ogre':
-      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営は生存のみ
+      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営
 	$win_flag = $SELF->IsLive();
       }
       else{ //個別判定
 	$ROLES->actor = $SELF;
-	$win_flag = $ROLES->Load('main_role', true)->DistinguishVictory($victory);
+	$win_flag = $ROLES->Load('main_role', true)->Win($victory);
       }
       break;
 
     case 'duelist':
-      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営は生存のみ
+      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営
 	$win_flag = $SELF->IsLive();
       }
-      //決闘者系は宿敵が単独生存なら勝利 (宿敵を持たない場合は生存のみ)
-      elseif($SELF->IsRoleGroup('duelist')){
+      elseif($SELF->IsRoleGroup('duelist')){ //決闘者系
 	$target_count = 0;
 	$live_count   = 0;
 	foreach($USERS->rows as $user){
@@ -521,8 +516,7 @@ EOF;
 	}
 	$win_flag = $target_count > 0 ? $live_count == 1 : $SELF->IsLive();
       }
-      //復讐者系は仇敵が全滅なら勝利 (仇敵を持たない場合は生存のみ)
-      elseif($SELF->IsRoleGroup('avenger')){
+      elseif($SELF->IsRoleGroup('avenger')){ //復讐者系
 	$target_count = 0;
 	foreach($USERS->rows as $user){
 	  if($user->IsPartner('enemy', $SELF->user_no)){
@@ -530,10 +524,9 @@ EOF;
 	    if($user->IsLive()) break 2;
 	  }
 	}
-	$win_flag = $target_count > 0 ? true : $SELF->IsLive();
+	$win_flag = $target_count > 0 || $SELF->IsLive();
       }
-      //後援者系は受援者が一人でも生存していたら勝利 (受援者を持たない場合は生存のみ)
-      elseif($SELF->IsRoleGroup('patron')){
+      elseif($SELF->IsRoleGroup('patron')){ //後援者系
 	$target_count = 0;
 	foreach($USERS->rows as $user){
 	  if($user->IsPartner('supported', $SELF->user_no)){
@@ -544,7 +537,7 @@ EOF;
 	    }
 	  }
 	}
-	$win_flag = $target_count > 0 ? false : $SELF->IsLive();
+	$win_flag = $target_count == 0 && $SELF->IsLive();
       }
       break;
 
@@ -553,7 +546,8 @@ EOF;
       break;
     }
 
-    if($win_flag && $SELF->IsRival() && ! $SELF->IsLovers()){ //宿敵判定
+    //ジョーカー系判定
+    if($win_flag && $SELF->IsRival() && ! $SELF->IsLovers()){ //宿敵
       if($SELF->IsDead()){ //死亡していたら敗北
 	$win_flag = false;
       }
@@ -568,13 +562,15 @@ EOF;
       }
     }
 
-    if($win_flag && (! $SELF->IsJoker($ROOM->date) || count($USERS->GetLivingUsers()) == 1)){
+    if($win_flag && (! $SELF->IsJoker($ROOM->date) ||
+		     ($SELF->IsLive() && count($USERS->GetLivingUsers()) == 1))){
       if(is_null($class)) $class = $camp;
     }
     else{
       $class  = 'lose';
       $result = 'lose';
     }
+    break;
   }
   $result = 'self_' . $result;
 
@@ -721,7 +717,7 @@ function OutputTalk($talk, &$builder){
 
   //特殊発言表示判定 (公開者 / 騒霊 / 憑依能力者)
   $flag_mind_read = $is_mind_read ||
-    ($ROOM->date > 1 && ($said_user->IsRole('mind_open') ||
+    ($ROOM->date > 1 && ($said_user->IsRole('leader_common', 'mind_open') ||
 			 ($builder->flag->common && $said_user->IsRole('whisper_scanner')) ||
 			 ($builder->flag->wolf   && $said_user->IsRole('howl_scanner')) ||
 			 ($builder->flag->fox    && $said_user->IsRole('telepath_scanner')) ||
@@ -860,6 +856,28 @@ function OutputTalk($talk, &$builder){
     }
     return $builder->AddTalk($said_user, $talk);
   }
+}
+
+//天国の霊話ログ出力
+function OutputHeavenTalkLog(){
+  global $ROOM, $USERS;
+
+  //出力条件をチェック
+  //if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
+
+  $is_open = $ROOM->IsOpenCast(); //霊界公開判定
+  $builder =& new DocumentBuilder();
+  $builder->BeginTalk('talk');
+  foreach($ROOM->LoadTalk(true) as $talk){
+    $user = $USERS->ByUname($talk->uname); //ユーザを取得
+
+    $symbol = '<font color="' . $user->color . '">◆</font>';
+    $handle_name = $user->handle_name;
+    if($is_open) $handle_name .= '<span>(' . $talk->uname . ')</span>'; //HN 追加処理
+
+    $builder->RawAddTalk($symbol, $handle_name, $talk->sentence, $talk->font_type);
+  }
+  $builder->EndTalk();
 }
 
 //[村立て / ゲーム開始 / ゲーム終了] 時刻を出力
@@ -1054,7 +1072,7 @@ function OutputAbilityAction(){
 }
 
 //死亡者の遺言を生成
-function GenerateLastWords(){
+function GenerateLastWords($shift = false){
   global $MESSAGE, $ROOM;
 
   //ゲーム中以外は出力しない
@@ -1062,6 +1080,7 @@ function GenerateLastWords(){
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;
+  if($shift) $set_date++;
   $query = $ROOM->GetQueryHeader('system_message', 'message') .
     " AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
   $array = FetchArray($query);
@@ -1091,8 +1110,8 @@ EOF;
 }
 
 //死亡者の遺言を出力
-function OutputLastWords(){
-  if(is_null($str = GenerateLastWords())) return false;
+function OutputLastWords($shift = false){
+  if(is_null($str = GenerateLastWords($shift))) return false;
   echo $str;
 }
 

@@ -192,7 +192,7 @@ OutputRolePageHeader('吸血鬼陣営');
 
 <h3><a id="scarlet_vampire">屍鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.5.0 β6～]</h3>
 <pre>
-<a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
+<a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
 </pre>
 <h4>関連役職</h4>
 <pre>

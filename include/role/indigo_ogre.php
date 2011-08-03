@@ -11,7 +11,7 @@ class Role_indigo_ogre extends Role{
 
   function GetReduceRate(){ return 1 / 5; }
 
-  function DistinguishVictory($victory){
+  function Win($victory){
     global $USERS;
 
     if($this->IsDead() || strpos($victory, 'fox') !== false) return false;

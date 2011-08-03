@@ -15,7 +15,7 @@ class Role_cursed_yaksa extends Role{
 
   function GetReduceRate(){ return 1 / 3; }
 
-  function DistinguishVictory($victory){
+  function Win($victory){
     global $USERS;
 
     if($this->IsDead()) return false;

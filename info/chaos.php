@@ -742,6 +742,8 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?></a>
 <a href="#boost_rate_b"><?php echo $GAME_OPT_MESS->boost_rate_b ?></a>
 <a href="#boost_rate_c"><?php echo $GAME_OPT_MESS->boost_rate_c ?></a>
+<a href="#boost_rate_d"><?php echo $GAME_OPT_MESS->boost_rate_d ?></a>
+<a href="#boost_rate_e"><?php echo $GAME_OPT_MESS->boost_rate_e ?></a>
 </p>
 
 <h3 id="boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?> [Ver. 1.5.0 β7～]</h3>
@@ -759,6 +761,16 @@ OutputInfoPageHeader('闇鍋モード');
 各系統の基本職の出現率が 0 になります。
 役職グループの<a href="#decide_role_random">上限補正</a>の振り替えで<a href="new_role/human.php#human">村人</a>が出現する可能性があります。
 村人の<a href="#decide_role_random">上限補正</a>の振り替えでは基本職は出現しません。
+</pre>
+
+<h3 id="boost_rate_d"><?php echo $GAME_OPT_MESS->boost_rate_d ?> [Ver. 1.5.0 β9～]</h3>
+<pre>
+<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>の出現率が 0 になります。
+</pre>
+
+<h3 id="boost_rate_e"><?php echo $GAME_OPT_MESS->boost_rate_e ?> [Ver. 1.5.0 β9～]</h3>
+<pre>
+<a href="new_role/lovers.php#exchange_angel">魂移使</a>・<a href="new_role/ability.php#possessed">憑依能力者</a>の出現率が 0 になります。
 </pre>
 
 

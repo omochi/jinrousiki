@@ -63,7 +63,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <ol>
 <li>入れ替え対象は「初日の夜に投票をしてなかった人」。</li>
 <li>入れ替えが発生すると、コピー先はその系統の基本職に変化する。</li>
-<li>身代わり君・<a href="human.php#revive_priest">天人</a>は入れ替え対象外。</li>
+<li>身代わり君・<a href="human.php#widow_priest">未亡人</a>・<a href="human.php#revive_priest">天人</a>は入れ替え対象外。</li>
 </ol>
 </pre>
 <h4>コピーの結果例</h4>
@@ -88,6 +88,10 @@ CO するべきかどうかは、コピーした役職次第です。
 
 6. A[奇術師] → B[<a href="wolf.php#trap_mad">罠師</a>] =&gt; A[罠師] B[狂人]
 初日に投票していない狂人は入れ替えが発生します。
+</pre>
+<h5>Ver. 1.5.0 β9～</h5>
+<pre>
+<a href="human.php#widow_priest">未亡人</a>を入れ替え対象外に変更。
 </pre>
 <h5>Ver. 1.4.0 β11～</h5>
 <pre>

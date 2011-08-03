@@ -13,11 +13,11 @@ class Role_dowser_yaksa extends Role{
 
   function GetReduceRate(){ return 1 / 2; }
 
-  function DistinguishVictory($victory){
-    global $ROLES, $USERS;
+  function Win($victory){
+    global $USERS;
 
     if($this->IsDead()) return false;
-    $count = count($ROLES->actor->role_list);
+    $count = count($this->GetActor()->role_list);
     foreach($USERS->rows as $user){
       if($user->IsLive() && count($user->role_list) > $count) return false;
     }

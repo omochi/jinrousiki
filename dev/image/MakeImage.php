@@ -241,12 +241,16 @@ class RoleMessageList{
     'type' => 'guard', 'delimiter' => array('_' => 'wolf', '^' => 'mage'));
 
   public $elder_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#老兵#です。あなたの^処刑^投票には:二票:分の価値がありますが、#狩り#能力を持たず、時々#護衛#に失敗します。",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#老兵#です。あなたの^処刑^投票には:二票:分の価値がありますが、#狩り#能力を持たず、時々#護衛#に失敗します。\n　若者たちは老成なあなたを疎うかも知れません。#老兵#は死なず、ただ消え去るのみ。兵として務めを果たすのです。",
     'type' => 'guard', 'delimiter' => array('^' => 'vote', ':' => 'authority'));
 
   public $common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#共有者#、他の#共有者#が誰であるか知ることができます。生存期間が他と比べ永い能力です。\n　あなたは推理する時間が与えられたのです。悩みなさい！",
     'type' => 'human', 'delimiter' => array('#' => 'common'));
+
+  public $leader_common = array(
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#指導者#です。他の#共有者#が誰であるか知ることができます。また、二日目以降、夜の発言が全員に見えます。",
+    'type' => 'common');
 
   public $detective_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#探偵#です。他の#共有者#が誰であるか知ることができます。また、_毒_や^暗殺^で死ぬことはありません。\n　あなたの推理と決断力が問われる事になります。この難事件を見事解決し、名実ともに名探偵になるのです！",
@@ -1568,6 +1572,7 @@ class RoleMessageList{
   public $result_elder_guard = array('message' => "さんは|老兵|でした", 'type' => 'result_guard');
   public $result_dummy_guard = array('message' => "さんは|夢守人|でした", 'type' => 'result_guard');
   public $result_common = array('message' => "さんは|共有者|でした", 'delimiter' => array('|' => 'common'));
+  public $result_leader_common = array('message' => "さんは|指導者|でした", 'type' => 'result_common');
   public $result_detective_common = array('message' => "さんは|探偵|でした", 'type' => 'result_common');
   public $result_trap_common = array('message' => "さんは|策士|でした", 'type' => 'result_common');
   public $result_sacrifice_common = array('message' => "さんは|首領|でした", 'type' => 'result_common');
@@ -1971,6 +1976,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('elder_guard');
+$builder->Output('leader_common');
 #$builder->Output('fire_wolf');
-$builder->Output('cursed_angel');
+#$builder->Output('cursed_angel');

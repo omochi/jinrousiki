@@ -11,12 +11,12 @@ class Role_revive_ogre extends Role{
 
   function GetReduceRate(){ return 1 / 2; }
 
-  function DistinguishVictory($victory){
+  function Win($victory){
     global $USERS;
 
     if($this->IsDead()) return false;
     foreach($USERS->rows as $user){
-      if($user->IsLive() && $user->DistinguishLiar() == 'psycho_mage_liar') return false;
+      if($user->IsLive() && $user->IsLiar()) return false;
     }
     return true;
   }

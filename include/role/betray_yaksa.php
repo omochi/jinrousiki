@@ -13,7 +13,7 @@ class Role_betray_yaksa extends Role{
 
   function GetReduceRate(){ return 1 / 5; }
 
-  function DistinguishVictory($victory){
+  function Win($victory){
     global $USERS;
 
     if($this->IsDead() || $victory != 'human') return false;

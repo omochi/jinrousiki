@@ -11,7 +11,7 @@ class Role_south_ogre extends Role{
 
   function GetReduceRate(){ return 1 / 2; }
 
-  function DistinguishVictory($victory){
+  function Win($victory){
     global $USERS, $ROLES;
 
     if($this->IsDead() || $victory != 'human') return false;

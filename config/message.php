@@ -342,6 +342,8 @@ class GameOptionMessage{
   public $boost_rate_a          = 'A：新顔村';
   public $boost_rate_b          = 'B：平等村';
   public $boost_rate_c          = 'C：派生村';
+  public $boost_rate_d          = 'D：封蘇村';
+  public $boost_rate_e          = 'E：封憑村';
   public $chaos_open_cast       = '配役を通知する';
   public $chaos_open_cast_camp  = '陣営を通知する';
   public $chaos_open_cast_role  = '役職を通知する';

@@ -134,7 +134,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'drop';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'human reduce_voter sheep_wisp[3] black_wisp spell_wisp';
+$RQ_ARGS->TestItems->test_users[18]->role = 'leader_common reduce_voter sheep_wisp[3] black_wisp spell_wisp';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -176,7 +176,7 @@ $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[25]->role = 'ogre disfavor mind_presage[24]';
+$RQ_ARGS->TestItems->test_users[25]->role = 'betray_yaksa disfavor mind_presage[24]';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -289,6 +289,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 
 //-- 仮想システムメッセージをセット --//
 $RQ_ARGS->TestItems->system_message = array();
+$RQ_ARGS->TestItems->victory = 'human';
 
 //-- 仮想イベントをセット --//
 $RQ_ARGS->TestItems->event = array(
@@ -312,11 +313,11 @@ $ROOM->day_night = 'night';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-#foreach($USERS->rows as $user) $user->live = 'live';
+//foreach($USERS->rows as $user) $user->live = 'dead';
 #$USERS->ByID(9)->live = 'live';
 #$SELF =& new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(22);
+#$SELF = $USERS->ByID(25);
 #$SELF = $USERS->TraceExchange(14);
 
 //-- データ出力 --//
@@ -380,6 +381,12 @@ elseif($ROOM->IsNight()){ // 夜の投票テスト
   AggregateVoteNight();
   $ROOM->date++;
   $ROOM->day_night = 'day';
+}
+elseif($ROOM->IsAfterGame()){ //勝敗判定表示
+  $INIT_CONF->LoadClass('VICT_MESS');
+  $ROOM->log_mode = false;
+  OutputVictory();
+  OutputHTMLFooter(); //HTMLフッタ
 }
 //PrintData($RQ_ARGS->TestItems->system_message);
 

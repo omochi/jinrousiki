@@ -129,10 +129,11 @@ function GenerateLogIndex(){
   $RQ_ARGS->reverse = 'off';
   $LOG_CONF =& new OldLogConfig(); //設定をロード
   if($RQ_ARGS->max_room_no < 1) return false;
-  $end_page = ceil($RQ_ARGS->max_room_no / $LOG_CONF->view);
+  $end_page = ceil(($RQ_ARGS->max_room_no - $RQ_ARGS->min_room_no + 1) / $LOG_CONF->view);
   for($i = 1; $i <= $end_page; $i++){
     $RQ_ARGS->page = $i;
-    file_put_contents("../log/{$RQ_ARGS->prefix}index{$i}.html",  GenerateFinishedRooms($i));
+    $index = $RQ_ARGS->index_no - $i + 1;
+    file_put_contents("../log/{$RQ_ARGS->prefix}index{$index}.html",  GenerateFinishedRooms($i));
   }
 }
 

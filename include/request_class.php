@@ -173,6 +173,10 @@ class RequestGameLog extends RequestBase{
     case 'night':
       return $this->date < 1;
 
+    case 'aftergame':
+    case 'heaven':
+      return false;
+
     default:
       return true;
     }

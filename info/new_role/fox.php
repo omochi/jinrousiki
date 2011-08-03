@@ -5,21 +5,21 @@ $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('妖狐陣営');
 ?>
 <p>
-<a href="#fox_partner">仲間表示</a>
-<a href="#fox_talk">夜の会話 (念話)</a>
+<a href="#partner">仲間表示</a>
+<a href="#talk">夜の会話 (念話)</a>
 </p>
 <p>
 <a href="#fox_group">妖狐系</a>
 <a href="#child_fox_group">子狐系</a>
 </p>
 
-<h2 id="fox_partner">仲間表示</h2>
+<h2 id="partner">仲間表示</h2>
 <ol>
 <li>全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かる。</li>
 <li><a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示される (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>相当)。<br>
 
 </li>
-<li><a href="#fox_group">妖狐系</a>は「深遠なる妖狐の智を持つ同胞は以下の人たちです」と表示され、<a href="#fox_talk">念話</a>ができる。</li>
+<li><a href="#fox_group">妖狐系</a>は「深遠なる妖狐の智を持つ同胞は以下の人たちです」と表示され、<a href="#talk">念話</a>ができる。</li>
 <li><a href="#child_fox_group">子狐系</a>は「妖狐に与する仲間は以下の人たちです」と表示され、<br>
 同じ枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなり、仲間リストからも消える (<a href="#silver_fox">銀狐</a>と同じ)。</li>
@@ -41,9 +41,10 @@ OutputRolePageHeader('妖狐陣営');
 同一の枠で表示されるので種類は不明。
 </pre>
 
-<h2 id="fox_talk">夜の会話 (念話)</h2>
+<h2 id="talk">夜の会話 (念話)</h2>
 <ol>
 <li><a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>は夜に会話 (念話) できる。</li>
+<li>2日目以降は<a href="human.php#telepath_scanner">念騒霊</a>の独り言も表示される。<a href="human.php#leader_common">指導者</a>の発言とは区別できない。</li>
 <li>他人からはいっさい見えない。</li>
 <li><a href="#child_fox_group">子狐系</a>は念話を見ることも参加することもできない。</li>
 <li><a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示される。</li>
@@ -95,7 +96,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：死亡</h4>
 <pre>
 呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する妖狐。
-<a href="#child_fox">子狐</a>との違いは占いができない代わりに他の妖狐と<a href="#fox_talk">念話</a>ができる事。
+<a href="#child_fox">子狐</a>との違いは占いができない代わりに他の妖狐と<a href="#talk">念話</a>ができる事。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -223,7 +224,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：無効 / 封印：有効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
-一度だけ、占った人が<a href="#fox_talk">念話</a>できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
+一度だけ、占った人が<a href="#talk">念話</a>できない妖狐だった場合に自分と占った人を<a href="sub_role.php#mind_friend">共鳴者</a>にする妖狐。
 </pre>
 <ol>
   <li>能力の発動対象は<a href="#silver_fox">銀狐</a>・<a href="#child_fox_group">子狐系</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>の妖狐のいずれか。</li>
@@ -402,7 +403,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="scarlet_fox">紅狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-<a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。
+<a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。
 </pre>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
@@ -422,7 +423,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="silver_fox">銀狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α20～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-<a href="#fox_partner">仲間</a>が分からない妖狐 (他の妖狐・<a href="#child_fox_group">子狐</a>からも仲間であると分からない)。
+<a href="#partner">仲間</a>が分からない妖狐 (他の妖狐・<a href="#child_fox_group">子狐</a>からも仲間であると分からない)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -534,7 +535,7 @@ OutputRolePageHeader('妖狐陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#jammer_mad">月兎</a>の子狐バージョンです。
-妖狐の最大の弱点である占いを妨害できるので、子狐系に於いては上位種となります。
+妖狐の最大の弱点である占いを妨害できるので、子狐系に於いては<a href="mania.php#soul_mania">上位種</a>となります。
 </pre>
 
 <h3 id="miasma_fox">蟲狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
@@ -564,7 +565,7 @@ OutputRolePageHeader('妖狐陣営');
 
 <h3 id="howl_fox">化狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β17～]</h3>
 <pre>
-夜の独り言が他の人には<a href="wolf.php#wolf_howl">人狼の遠吠え</a>に見える子狐。
+夜の独り言が他の人には<a href="wolf.php#howl">人狼の遠吠え</a>に見える子狐。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -572,7 +573,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="wolf.php#wolf_howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
+<a href="wolf.php#howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/740" target="_top">新役職考案スレ(740)</a> が原型です。
 人狼の人数や<a href="wolf.php#silver_wolf">銀狼</a>の存在を誤認する可能性が出てくる事に注意しましょう。
 </pre>

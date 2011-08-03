@@ -12,7 +12,7 @@ class Role_sacrifice_ogre extends Role{
 
   function GetReduceRate(){ return 1 / 2; }
 
-  function DistinguishVictory($victory){ return $victory != 'human' && $this->IsLive(); }
+  function Win($victory){ return $victory != 'human' && $this->IsLive(); }
 
   function GetSacrificeList(){
     global $USERS;

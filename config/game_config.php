@@ -180,7 +180,7 @@ class RoomConfig{
 
   public $boost_rate = true; //出現率変動モード
   //GameOptionImage->boost_rate_* @ message_config.php / CastConfig->boost_rate_list と対応させる
-  public $boost_rate_list = array('a', 'b', 'c');
+  public $boost_rate_list = array('a', 'b', 'c', 'd', 'e');
 
   //配役通知設定
   public $chaos_open_cast      = true; //配役内訳を表示する

@@ -13,7 +13,7 @@ class Role_succubus_yaksa extends Role{
 
   function GetReduceRate(){ return 1 / 2; }
 
-  function DistinguishVictory($victory){
+  function Win($victory){
     global $USERS;
 
     if($this->IsDead()) return false;

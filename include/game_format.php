@@ -103,7 +103,7 @@ EOF;
 
     $user_info = '<font style="color:'.$user->color.'">◆</font>'.$handle_name;
     if(($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')) ||
-       ($user->IsRole('mind_read', 'mind_open') && $ROOM->IsNight())){
+       ($user->IsRole('leader_common', 'mind_read', 'mind_open') && $ROOM->IsNight())){
       $user_info .= '<span>の独り言</span>';
     }
     $volume = $talk->font_type;

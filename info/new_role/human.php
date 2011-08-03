@@ -205,7 +205,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 他の国で言うと「自覚のない夢遊病者」。
 本人には「<a href="#human">村人</a>」と表示されているが、夜になると無意識に歩きまわるため
-人狼 (<a href="wolf.php#wolf_partner">仲間表示</a>) に無意識であることが分かってしまう。
+人狼 (<a href="wolf.php#partner">仲間表示</a>) に無意識であることが分かってしまう。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1236,6 +1236,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h2 id="common_group">共有者系</h2>
 <p>
 <a href="#common">共有者</a>
+<a href="#leader_common">指導者</a>
 <a href="#detective_common">探偵</a>
 <a href="#trap_common">策士</a>
 <a href="#sacrifice_common">首領</a>
@@ -1250,6 +1251,21 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>同一表示役職</h4>
 <pre>
 <a href="#dummy_common">夢共有者</a>
+</pre>
+
+<h3 id="leader_common">指導者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
+<pre>
+<a href="sub_role.php#mind_open">公開者</a>相当の能力を持った上位共有者。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#howl_scanner">吠騒霊</a>・<a href="#telepath_scanner">念騒霊</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ミストさんテスト鯖＠東方陰陽鉄人狼のオリジナル役職です。
+<a href="wolf.php#talk">人狼</a>からは<a href="#howl_scanner">吠騒霊</a>と、<a href="fox.php#talk">妖狐</a>からは<a href="#telepath_scanner">念騒霊</a>と区別がつかないので
+立ち回り次第で騙すことができます。
 </pre>
 
 <h3 id="detective_common">探偵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>
@@ -1299,7 +1315,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 人狼襲撃：身代わり / 護衛：制限対象</h4>
 <h4>[身代わり能力] 村人・蝙蝠</h4>
 <pre>
-<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="#human">村人</a>と<a href="chiroptera.php#chiroptera">蝙蝠</a>を身代わりにして生き延びる事ができる上位共有者。
+<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、役職「<a href="#human">村人</a>・<a href="chiroptera.php#chiroptera">蝙蝠</a>」を身代わりにして生き延びる事ができる上位共有者。
 狩人の<a href="#guard_limit">護衛制限</a>対象。
 </pre>
 <ol>
@@ -1545,7 +1561,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 仙狸 (センリ) とは、中国の猫の妖怪です (「狸」は山猫の意)。
 東方陰陽鉄人狼のプレイヤーさんのコメントを参考に同じ猫の妖怪である
-<a href="#poison_cat">猫又</a>の上位種として実装してみました。
+<a href="#poison_cat">猫又</a>の<a href="mania.php#soul_mania">上位種</a>として実装してみました。
 </pre>
 
 <h3 id="sacrifice_cat">猫神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
@@ -1889,7 +1905,7 @@ Bの蘇生処理はキャンセル
 <h3 id="mind_scanner">さとり (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <pre>
 初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする、さとり系の基本種。
-<a href="wolf.php#wolf_howl">人狼の遠吠え</a>が一切見えない。
+<a href="wolf.php#howl">人狼の遠吠え</a>が一切見えない。
 </pre>
 <ol>
 <li>結果が出るのは 2 日目以降。</li>
@@ -1901,7 +1917,7 @@ Bの蘇生処理はキャンセル
 </pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
-<a href="wolf.php#wolf_howl">人狼の遠吠え</a>が一切見えない。
+<a href="wolf.php#howl">人狼の遠吠え</a>が一切見えない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1995,8 +2011,12 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="howl_scanner">吠騒霊 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <pre>
-2日目夜以降、<a href="wolf.php#wolf_group">人狼系</a>に一方的に声が届く特殊なさとり。
+2日目夜以降、<a href="wolf.php#talk">人狼系</a>に一方的に声が届く特殊なさとり。
 相手には誰の声が聞こえているのか分かるが、仲間表示などには何も出ない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#leader_common">指導者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2006,13 +2026,17 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="telepath_scanner">念騒霊 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <pre>
-2日目夜以降、<a href="fox.php#fox_group">妖狐系</a>に一方的に声が届く特殊なさとり。
+2日目夜以降、<a href="fox.php#talk">妖狐系</a>に一方的に声が届く特殊なさとり。
 相手には誰の声が聞こえているのか分かるが、仲間表示などには何も出ない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#leader_common">指導者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#whisper_scanner">囁騒霊</a>の対妖狐バージョンです。
-妖狐の<a href="fox.php#fox_talk">念話</a>に同時に表示される形で実装していますが、妖狐の発言ではないので
+妖狐の<a href="fox.php#talk">念話</a>に同時に表示される形で実装していますが、妖狐の発言ではないので
 <a href="wolf.php#wise_wolf">賢狼</a>は感知できません。
 </pre>
 
@@ -2535,7 +2559,7 @@ MVP の賞品としてプレゼントしたものです。
 
 <h3 id="scarlet_doll">和蘭人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
 <pre>
-<a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、他の<a href="#doll_rule">人形</a>から<a href="#doll_master">人形遣い</a>に見える人形。
+<a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、他の<a href="#doll_rule">人形</a>から<a href="#doll_master">人形遣い</a>に見える人形。
 </pre>
 <h4>関連役職</h4>
 <pre>

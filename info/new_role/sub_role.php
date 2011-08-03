@@ -906,7 +906,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3 id="whisper_ringing">囁耳鳴 [Ver. 1.4.0 β14～]</h3>
 <pre>
 他人の独り言が共有者の囁きに見えるようになる。
-<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>・<a href="fox.php#fox_talk">妖狐の念話</a>は「独り言」ではないので影響しない。
+<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#howl">人狼の遠吠え</a>・<a href="fox.php#talk">妖狐の念話</a>は「独り言」ではないので影響しない。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -920,7 +920,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3 id="howl_ringing">吠耳鳴 [Ver. 1.4.0 β14～]</h3>
 <pre>
 他人の独り言が人狼の遠吠えに見えるようになる。
-<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>・<a href="fox.php#fox_talk">妖狐の念話</a>は「独り言」ではないので影響しない。
+<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#howl">人狼の遠吠え</a>・<a href="fox.php#talk">妖狐の念話</a>は「独り言」ではないので影響しない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -930,7 +930,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h3 id="sweet_ringing">恋耳鳴 [Ver. 1.4.0 β22～]</h3>
 <pre>
 二日目以降、恋人の独り言が専用の囁き声に見えるようになる。
-<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>・<a href="fox.php#fox_talk">妖狐の念話</a>は「独り言」ではないので影響しない。
+<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#howl">人狼の遠吠え</a>・<a href="fox.php#talk">妖狐の念話</a>は「独り言」ではないので影響しない。
 <a href="human.php#dummy_common">夢共有者</a>や<a href="human.php#mind_scanner">さとり</a>が元々見えない発言は見えない。
 <a href="wolf.php#wise_wolf">賢狼</a>の能力にも変化はない。
 </pre>
@@ -945,7 +945,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 
 <h3 id="deep_sleep">爆睡者 [Ver. 1.4.0 β14～]</h3>
 <pre>
-<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#wolf_howl">人狼の遠吠え</a>が一切見えなくなる。
+<a href="human.php#common_group">共有の囁き</a>・<a href="wolf.php#howl">人狼の遠吠え</a>が一切見えなくなる。
 他の耳鳴系と重複していても表示されない。
 </pre>
 <h4>関連役職</h4>
@@ -1043,7 +1043,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sun_brownie">八咫烏</a>・<a href="chiroptera.php#light_fairy">光妖精</a>
+<a href="human.php#leader_common">指導者</a>・<a href="human.php#sun_brownie">八咫烏</a>・<a href="chiroptera.php#light_fairy">光妖精</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

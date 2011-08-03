@@ -86,6 +86,7 @@ Ver. 1.5.0
 <a href="#ver150b6">β6</a>
 <a href="#ver150b7">β7</a>
 <a href="#ver150b8">β8</a>
+<a href="#ver150b9">β9</a>
 </p>
 
 <p>
@@ -630,7 +631,7 @@ Ver. 1.5.0
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
-  <td class="ability"><a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。</td>
+  <td class="ability"><a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える妖狐。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -639,7 +640,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability"><a href="fox.php#fox_talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる人狼。</td>
+  <td class="ability"><a href="fox.php#talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる人狼。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -675,7 +676,7 @@ Ver. 1.5.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability"><a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。</td>
+  <td class="ability"><a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -1264,7 +1265,7 @@ Ver. 1.5.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">2日目夜以降、<a href="wolf.php#wolf_group">人狼系</a>に一方的に声が届く特殊なさとり。</td>
+  <td class="ability">2日目夜以降、<a href="wolf.php#talk">人狼系</a>に一方的に声が届く特殊なさとり。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -1273,7 +1274,7 @@ Ver. 1.5.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">2日目夜以降、<a href="fox.php#fox_group">妖狐系</a>に一方的に声が届く特殊なさとり。</td>
+  <td class="ability">2日目夜以降、<a href="fox.php#talk">妖狐系</a>に一方的に声が届く特殊なさとり。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -1896,7 +1897,7 @@ Ver. 1.5.0
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability"><a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、他の<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人形。</td>
+  <td class="ability"><a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、他の<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人形。</td>
   <td>Ver. 1.4.0 β21</td>
 </tr>
 <tr>
@@ -1914,7 +1915,7 @@ Ver. 1.5.0
   <td><a href="chiroptera.php#chiroptera_group">蝙蝠系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability"><a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える蝙蝠。
+  <td class="ability"><a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える蝙蝠。
   </td>
   <td>Ver. 1.4.0 β21</td>
 </tr>
@@ -2263,7 +2264,7 @@ Ver. 1.5.0
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability"><a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な天使。<br>夜に<a href="human.php#unconscious">無意識</a>が誰か分かり、矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。</td>
+  <td class="ability"><a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な天使。<br>夜に<a href="human.php#unconscious">無意識</a>が誰か分かり、矢を撃った相手に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。</td>
   <td>Ver. 1.5.0 β1</td>
 </tr>
 <tr>
@@ -2436,7 +2437,7 @@ Ver. 1.5.0
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
-  <td class="ability"><a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
+  <td class="ability"><a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
   </td>
   <td>Ver. 1.5.0 β6</td>
 </tr>
@@ -2556,6 +2557,15 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">呪いを持ち、矢を撃った二人が別陣営だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。<br><a href="sub_role.php#lovers">恋人</a>に処刑投票されるとショック死する。</td>
   <td>Ver. 1.5.0 β8</td>
+</tr>
+<tr id="ver150b9">
+  <td><a href="human.php#leader_common">指導者</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#common_group">共有者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="sub_role.php#mind_open">公開者</a>相当の能力を持った上位共有者。</td>
+  <td>Ver. 1.5.0 β9</td>
 </tr>
 </table>
 

@@ -15,29 +15,75 @@ $ROOM->single_log_mode = true;
 $USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報を取得
 $SELF = $USERS->BySession(); //自分の情報をロード
 
-if(! ($SELF->IsDead() || $ROOM->IsAfterGame())){ //死者かゲーム終了後だけ
+if(! ($SELF->IsDead() || $ROOM->IsFinished())){ //死者かゲーム終了後だけ
   OutputActionResult('ログ閲覧認証エラー',
 		     'ログ閲覧認証エラー：<a href="./" target="_top">トップページ</a>' .
 		     'からログインしなおしてください');
 }
-if($ROOM->date < $RQ_ARGS->date ||
-   ($ROOM->date == $RQ_ARGS->date && ($ROOM->IsDay() || $ROOM->day_night == $RQ_ARGS->day_night))){
-  OutputActionResult('入力データエラー', '入力データエラー：無効な日時です');
-}
 
-$ROOM->date      = $RQ_ARGS->date;
-$ROOM->day_night = $RQ_ARGS->day_night;
-$USERS->SetEvent(true);
+switch($RQ_ARGS->day_night){
+case 'aftergame':
+case 'heaven':
+  if(! $ROOM->IsFinished()){
+    OutputActionResult('入力データエラー', '入力データエラー：まだゲームが終了していません');
+  }
+  break;
+
+default:
+  if($ROOM->date < $RQ_ARGS->date ||
+     ($ROOM->date == $RQ_ARGS->date &&
+      ($ROOM->IsDay() || $ROOM->day_night == $RQ_ARGS->day_night))){
+    OutputActionResult('入力データエラー', '入力データエラー：無効な日時です');
+  }
+
+  $ROOM->last_date = $ROOM->date;
+  $ROOM->date      = $RQ_ARGS->date;
+  $ROOM->day_night = $RQ_ARGS->day_night;
+  $USERS->SetEvent(true);
+  break;
+}
 
 //-- ログ出力 --//
 OutputGamePageHeader(); //HTMLヘッダ
 
-echo '<table><tr><td width="1000" align="right">ログ閲覧 ' . $ROOM->date . ' 日目 (' .
-  ($ROOM->IsBeforeGame() ? '開始前' : ($ROOM->IsDay() ? '昼' : '夜')) . ')</td></tr></table>'."\n";
+$str = '<table><tr><td width="1000" align="right">ログ閲覧 ';
+switch($RQ_ARGS->day_night){
+case 'beforegame':
+  $str .= '(開始前)';
+  break;
 
-OutputTalkLog();       //会話ログ
-OutputAbilityAction(); //能力発揮
-OutputLastWords();     //遺言
-OutputDeadMan();       //死亡者
-if($ROOM->IsNight()) OutputVoteList(); //投票結果
+case 'day':
+  $str .= $ROOM->date . ' 日目 (昼)';
+  break;
+
+case 'night':
+  $str .= $ROOM->date . ' 日目 (夜)';
+  break;
+
+case 'aftergame':
+  $str .= $ROOM->date . ' 日目 (終了後)';
+  break;
+
+case 'heaven':
+  $str .= '(霊界)';
+  break;
+}
+echo $str . '</td></tr></table>'."\n";
+
+if($RQ_ARGS->day_night == 'heaven'){
+  $ROOM->heaven_mode = true;
+  OutputHeavenTalkLog(); //霊界会話ログ
+}
+else{
+  OutputTalkLog(); //会話ログ
+  if($ROOM->IsPlaying()){
+    OutputAbilityAction(); //能力発揮
+    OutputLastWords();     //遺言
+    OutputDeadMan();       //死亡者
+  }
+  elseif($ROOM->IsAfterGame()){
+    OutputLastWords(true); //遺言(昼終了時限定)
+  }
+  if($ROOM->IsNight()) OutputVoteList(); //投票結果
+}
 OutputHTMLFooter(); //HTMLフッタ

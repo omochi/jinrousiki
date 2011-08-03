@@ -14,9 +14,9 @@ $DB_CONF->ChangeName($RQ_ARGS->db_no); //DB 名をセット
 $DB_CONF->Connect(); //DB 接続
 
 $RQ_ARGS->generate_index = true;
-$RQ_ARGS->index_no = 1; //インデックスページの開始番号 (現在は 1 で固定)
-$RQ_ARGS->min_room_no = 1; //インデックス化する村の開始番号 (現在は 1 で固定)
-$RQ_ARGS->max_room_no = 1; //インデックス化する村の終了番号
+$RQ_ARGS->index_no = 7; //インデックスページの開始番号
+$RQ_ARGS->min_room_no = 301; //インデックス化する村の開始番号
+$RQ_ARGS->max_room_no = 350; //インデックス化する村の終了番号
 $RQ_ARGS->prefix = ''; //各ページの先頭につける文字列 (テスト / 上書き回避用)
 $RQ_ARGS->add_role = true;
 $RQ_ARGS->heaven_talk = true;

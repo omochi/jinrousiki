@@ -116,7 +116,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="lovers.php#triangle_cupid">小悪魔</a>の決闘者バージョンです。
-勝利条件の仕様上、対象を増やしても有利になるわけではないので
+<a href="#duelist_rule">勝利条件</a>の仕様上、対象を増やしても有利になるわけではないので
 単純に巻き込まれて迷惑する人が増えるだけの存在と言えます。
 </pre>
 
@@ -131,7 +131,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 流石兄弟鯖＠やる夫人狼のオリジナル役職「ニート」を元にアレンジしました。
-自力で<a href="sub_role.php#rival">宿敵</a>を倒すのが非常に難しいという点において劣化種ではありますが、
+自力で<a href="sub_role.php#rival">宿敵</a>を倒すのが非常に難しいという点において<a href="mania.php#dummy_mania">劣化種</a>ではありますが、
 村も狼も積極的に排除する理由があまり無いため、案外生き残れるかもしれません。
 </pre>
 
@@ -307,7 +307,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="mania.php">神話マニア陣営</a>の後援者バージョンです。
-相手の正体を知ることで最適な支援方針を検討することができます。
+相手の正体を知ることで最適な支援方針を構築することができます。
 </pre>
 
 <h3 id="sacrifice_patron">身代わり地蔵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
@@ -324,7 +324,7 @@ OutputRolePageHeader('決闘者陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="mania.php#sacrifice_mania">影武者</a>の後援者バージョンです。
-勝利条件を考えると身代わりになることよりも自分が狙われるように
+<a href="#patron_rule">勝利条件</a>を考えると身代わりになることよりも自分が狙われるように
 立ち回るほうがいいかもしれません。
 </pre>
 
@@ -349,7 +349,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="mania.php#wirepuller_mania">黒衣</a>・<a href="#critical_duelist">剣闘士</a>の逆アプローチです。人形神と書いて「ひんながみ」と読みます。
+<a href="mania.php#wirepuller_mania">黒衣</a>・<a href="#critical_duelist">剣闘士</a>の逆アプローチです。「人形神」と書いて「ひんながみ」と読みます。
 能力上、対象者が露出しやすいので難易度は高めです。
 </pre>
 </body></html>

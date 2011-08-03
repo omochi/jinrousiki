@@ -12,7 +12,7 @@ class Role_poison_ogre extends Role{
 
   function GetReduceRate(){ return 1 / 3; }
 
-  function DistinguishVictory($victory){ return $victory == 'quiz' || $this->IsLive(); }
+  function Win($victory){ return $victory == 'quiz' || $this->IsLive(); }
 
   function FilterPoisonTarget(&$list){
     global $USERS;

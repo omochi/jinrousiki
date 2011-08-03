@@ -5,8 +5,9 @@ $INIT_CONF->LoadFile('info_functions');
 OutputRolePageHeader('人狼陣営');
 ?>
 <p>
-<a href="#wolf_partner">仲間表示</a>
-<a href="#wolf_howl">遠吠え</a>
+<a href="#partner">仲間表示</a>
+<a href="#talk">会話</a>
+<a href="#howl">遠吠え</a>
 <a href="#wolf_eat">襲撃の仕様</a>
 </p>
 <p>
@@ -14,7 +15,7 @@ OutputRolePageHeader('人狼陣営');
 <a href="#mad_group">狂人系</a>
 </p>
 
-<h2 id="wolf_partner">仲間表示</h2>
+<h2 id="partner">仲間表示</h2>
 <ol>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かる。</li>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かる。</li>
@@ -24,7 +25,15 @@ OutputRolePageHeader('人狼陣営');
   <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
 
-<h2 id="wolf_howl">遠吠え</h2>
+<h2 id="talk">夜の会話</h2>
+<ol>
+<li><a href="#silver_wolf">銀狼</a>以外の<a href="#wolf_group">人狼系</a>・<a href="#whisper_mad">囁き狂人</a>は夜に会話できる。</li>
+<li>2日目以降は<a href="human.php#howl_scanner">吠騒霊</a>の独り言も表示される。<a href="human.php#leader_common">指導者</a>の発言とは区別できない。</li>
+<li>他人からは<a href="#howl">遠吠え</a>に見える (<a href="#whisper_mad">囁き狂人</a>を除く)。</li>
+<li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、会話に参加できなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
+</ol>
+
+<h2 id="howl">遠吠え</h2>
 <ol>
   <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼・<a href="fox.php#howl_fox">化狐</a>。</li>
   <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼視点の遠吠えは自分以外の人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
@@ -188,7 +197,7 @@ OutputRolePageHeader('人狼陣営');
 
 <h3 id="wise_wolf">賢狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24～]</h3>
 <pre>
-<a href="fox.php#fox_talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる人狼。
+<a href="fox.php#talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる人狼。
 結果として、念話ができる妖狐が生存していることだけが分かる。
 本物の<a href="human.php#common_group">共有者</a>の囁きと混ざって表示されるので本人には区別できない。
 </pre>
@@ -838,7 +847,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3 id="scarlet_wolf">紅狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24～]</h3>
 <pre>
-<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。
+<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える人狼。
 </pre>
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
@@ -858,13 +867,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3 id="silver_wolf">銀狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α21～]</h3>
 <pre>
-<a href="#wolf_partner">仲間</a>が分からない人狼。
+<a href="#partner">仲間</a>が分からない人狼。
 (他の人狼・<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>からも仲間であると分からない)
-人狼同士の会話もできず、発言は他の人からは<a href="#wolf_howl">遠吠え</a>に見える。
+人狼同士の会話もできず、発言は他の人からは<a href="#howl">遠吠え</a>に見える。
 </pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
-独り言が他の人から<a href="#wolf_howl">遠吠え</a>に見える。
+独り言が他の人から<a href="#howl">遠吠え</a>に見える。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -917,7 +926,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3 id="fanatic_mad">狂信者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-人狼が誰か分かる上位狂人 (<a href="#wolf_partner">仲間表示</a>参照)。
+人狼が誰か分かる上位狂人 (<a href="#partner">仲間表示</a>参照)。
 人狼からは狂信者は分からない。
 </pre>
 <h4>関連役職</h4>
@@ -933,7 +942,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 
 <h3 id="whisper_mad">囁き狂人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
 <pre>
-人狼の夜の会話に参加できる上位狂人 (<a href="#wolf_partner">仲間表示</a>参照)。
+人狼の夜の会話に参加できる上位狂人 (<a href="#partner">仲間表示</a>参照)。
 人狼と違い、発言が遠吠えに変換されない。
 </pre>
 <h4>関連役職</h4>
@@ -1332,6 +1341,6 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h4>[作成者からのコメント]</h4>
 <pre>
 「人狼に襲撃される」ことが勝利条件の特殊役職は他国に実在します。
-それを元に狂人系の劣化種としてデザインしました。
+それを元に狂人系の<a href="mania.php#dummy_mania">劣化種</a>としてデザインしました。
 </pre>
 </body></html>

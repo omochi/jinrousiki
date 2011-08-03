@@ -148,7 +148,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 
 <h3 id="scarlet_chiroptera">紅蝙蝠 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β21～]</h3>
 <pre>
-<a href="wolf.php#wolf_partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#fox_partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える蝙蝠。
+<a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える蝙蝠。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -236,8 +236,8 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 
 <h3 id="bad_status">悪戯の種類</h3>
 <ol>
-<li>発言妨害<br>対象の発言の先頭に無意味な文字列を追加する (昼間限定)。</li>
-<li>迷彩<br>悪戯先が人狼に襲撃されると、全員に特定のサブ役職が付加される (当日限定)。<br>
+<li>発言妨害<br>対象の発言の先頭に無意味な文字列を追加する (当日限定)。</li>
+<li>迷彩<br>悪戯先が人狼に襲撃されると、全員に特定のサブ役職が付加される (昼間限定/例外あり)。<br>
   <a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。</li>
 <li>死亡欄妨害<br>死亡メッセージ欄に無意味な文字列を表示する。「<a href="sub_role.php#bad_status">悪戯</a>」はつかない。</li>
 <li>アイコンコピー<br>詳細は<a href="#shadow_fairy">影妖精</a>参照。</li>
@@ -326,6 +326,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dark_fairy">闇妖精</a>の<a href="sub_role.php#mind_open">公開者</a>バージョンです。
+効果の特性上、例外的に当日の夜まで影響が出ます。
 白夜になると会話能力が妨害されるので人外サイドが特に不利になります。
 うかつに CO したら即座に噛み殺される事でしょう。
 </pre>
@@ -358,6 +359,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#dark_fairy">闇妖精</a>の<a href="sub_role.php#grassy">草原迷彩</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/654" target="_top">新役職考案スレ(654)</a> が原型です。
+迷惑度が高いので自己証明をし過ぎると死が近づくことでしょう。
 </pre>
 
 <h3 id="sun_fairy">日妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>

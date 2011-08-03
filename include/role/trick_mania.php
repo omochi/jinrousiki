@@ -15,7 +15,7 @@ class Role_trick_mania extends Role{
       $result = 'human';
       $flag = true;
     }
-    elseif($user->IsRole('revive_priest')){ //天人は交換コピー対象外
+    elseif($user->IsRole('widow_priest', 'revive_priest')){ //未亡人・天人は交換コピー対象外
       $result = $user->main_role;
       $flag = true;
     }
