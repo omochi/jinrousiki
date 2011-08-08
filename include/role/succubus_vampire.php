@@ -10,7 +10,7 @@ class Role_succubus_vampire extends Role{
   function Infect($user){
     global $USERS;
 
-    if($user->sex == 'male')
+    if($user->IsMale())
       $user->AddRole($this->GetActor()->GetID('infected'));
     elseif(! $user->IsAvoid())
       $USERS->Kill($user->user_no, 'VAMPIRE_KILLED');

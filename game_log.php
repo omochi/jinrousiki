@@ -24,7 +24,7 @@ if(! ($SELF->IsDead() || $ROOM->IsFinished())){ //死者かゲーム終了後だ
 switch($RQ_ARGS->day_night){
 case 'aftergame':
 case 'heaven':
-  if(! $ROOM->IsFinished()){
+  if(! $ROOM->IsFinished()){ //霊界・ゲーム終了後はゲーム終了後のみ
     OutputActionResult('入力データエラー', '入力データエラー：まだゲームが終了していません');
   }
   break;
@@ -32,7 +32,7 @@ case 'heaven':
 default:
   if($ROOM->date < $RQ_ARGS->date ||
      ($ROOM->date == $RQ_ARGS->date &&
-      ($ROOM->IsDay() || $ROOM->day_night == $RQ_ARGS->day_night))){
+      ($ROOM->IsDay() || $ROOM->day_night == $RQ_ARGS->day_night))){ //「未来」判定
     OutputActionResult('入力データエラー', '入力データエラー：無効な日時です');
   }
 
@@ -46,7 +46,7 @@ default:
 //-- ログ出力 --//
 OutputGamePageHeader(); //HTMLヘッダ
 
-$str = '<table><tr><td width="1000" align="right">ログ閲覧 ';
+$str = '<h1>ログ閲覧 ';
 switch($RQ_ARGS->day_night){
 case 'beforegame':
   $str .= '(開始前)';
@@ -68,18 +68,18 @@ case 'heaven':
   $str .= '(霊界)';
   break;
 }
-echo $str . '</td></tr></table>'."\n";
+echo $str . '</h1>'."\n";
 
 if($RQ_ARGS->day_night == 'heaven'){
-  $ROOM->heaven_mode = true;
+  $ROOM->heaven_mode = true; //念のためセット
   OutputHeavenTalkLog(); //霊界会話ログ
 }
 else{
   OutputTalkLog(); //会話ログ
-  if($ROOM->IsPlaying()){
-    OutputAbilityAction(); //能力発揮
-    OutputLastWords();     //遺言
-    OutputDeadMan();       //死亡者
+  if($ROOM->IsPlaying()){ //プレイ中は投票結果・遺言・死者を表示
+    OutputAbilityAction();
+    OutputLastWords();
+    OutputDeadMan();
   }
   elseif($ROOM->IsAfterGame()){
     OutputLastWords(true); //遺言(昼終了時限定)

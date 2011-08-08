@@ -515,7 +515,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
+<a href="ability.php#stargazer">投票能力鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

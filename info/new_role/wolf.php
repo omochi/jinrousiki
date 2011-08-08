@@ -203,7 +203,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#telepath_scanner">念騒霊</a>
+<a href="human.php#telepath_scanner">念騒霊</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1218,8 +1218,8 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
@@ -1237,7 +1237,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#cure_pharmacist">河童</a>・<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="human.php#cure_pharmacist">河童</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1253,14 +1253,14 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 <li><a href="human.php#detective_common">探偵</a>・<a href="#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

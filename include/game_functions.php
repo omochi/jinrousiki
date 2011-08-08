@@ -258,7 +258,8 @@ function OutputGamePageHeader(){
     $on_load .= 'output_realtime();';
     OutputRealTimer($start_time, $end_time);
   }
-  echo '</head>'."\n" . '<body onLoad="' . $on_load . '">'."\n".'<a id="game_top"></a>'."\n";
+  $body = isset($on_load) ? '<body onLoad="' . $on_load . '">' : '<body>';
+  echo '</head>'."\n".$body."\n".'<a id="game_top"></a>'."\n";
 }
 
 //リアルタイム表示に使う JavaScript の変数を出力
@@ -807,7 +808,7 @@ function OutputTalk($talk, &$builder){
       case 'fox': //妖狐
 	if($builder->flag->fox || $flag_mind_read)
 	  return $builder->AddTalk($said_user, $talk);
-	elseif($SELF->IsRole('wise_wolf'))
+	elseif($SELF->IsRole('wise_wolf', 'wise_ogre'))
 	  return $builder->AddWhisper('common', $talk);
 	elseif($builder->flag->sweet && $said_user->IsLovers())
 	  return $builder->AddWhisper('lovers', $talk);

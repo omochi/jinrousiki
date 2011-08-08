@@ -1,6 +1,6 @@
 <?php
 /*
-  ◆夜叉
+  ◆夜叉 (yaksa)
   ○仕様
   ・勝利条件：自分自身の生存 + 人狼系の全滅
 */
@@ -14,11 +14,9 @@ class Role_yaksa extends Role{
   function GetReduceRate(){ return 1 / 5; }
 
   function Win($victory){
-    global $USERS;
-
-    if($this->IsDead() || $victory == 'wolf') return false;
-    foreach($USERS->rows as $user){
-      if($user->IsLiveRoleGroup('wolf')) return false;
+    if($victory == 'wolf' || $this->IsDead()) return false;
+    foreach($this->GetUser() as $user){
+      if($user->IsLive() && ! $this->Ignored($user)) return false;
     }
     return true;
   }

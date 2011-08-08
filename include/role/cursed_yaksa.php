@@ -16,13 +16,9 @@ class Role_cursed_yaksa extends Role{
   function GetReduceRate(){ return 1 / 3; }
 
   function Win($victory){
-    global $USERS;
-
     if($this->IsDead()) return false;
-    foreach($USERS->rows as $user){
-      if($user->IsLiveRoleGroup('mage', 'wizard') || $user->IsLiveRole('voodoo_killer')){
-	return false;
-      }
+    foreach($this->GetUser() as $user){
+      if($user->IsLive() && ! $this->Ignored($user)) return false;
     }
     return true;
   }

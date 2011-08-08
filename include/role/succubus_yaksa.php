@@ -9,18 +9,14 @@ class Role_succubus_yaksa extends Role{
 
   function __construct(){ parent::__construct(); }
 
-  function Ignored($user){ return $user->sex != 'male'; }
+  function Ignored($user){ return ! $user->IsMale(); }
 
   function GetReduceRate(){ return 1 / 2; }
 
   function Win($victory){
-    global $USERS;
-
     if($this->IsDead()) return false;
-    foreach($USERS->rows as $user){
-      if(! $this->IsSameUser($user->uname) && $user->IsLive() && $user->sex == 'male'){
-	return false;
-      }
+    foreach($this->GetUser() as $user){
+      if(! $this->IsSameUser($user->uname) && $user->IsLive() && $user->IsMale()) return false;
     }
     return true;
   }

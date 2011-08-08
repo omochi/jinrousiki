@@ -2567,6 +2567,51 @@ Ver. 1.5.0
   <td class="ability"><a href="sub_role.php#mind_open">公開者</a>相当の能力を持った上位共有者。</td>
   <td>Ver. 1.5.0 β9</td>
 </tr>
+<tr>
+  <td><a href="human.php#snipe_poison">狙毒者</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#poison_group">埋毒者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先と同陣営の人のみに中る特殊な埋毒者。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
+<tr>
+  <td><a href="human.php#cute_mage">萌占い師</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#mage_group">占い師系</a></td>
+  <td>人狼</td>
+  <td>村人</td>
+  <td class="ability">占い結果が「人狼」と判定される劣化占い師(表示は「占い師」)。<br>昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
+<tr>
+  <td><a href="human.php#eclipse_medium">蝕巫女</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#medium_group">巫女系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">再投票になるとショック死する劣化巫女(表示は「巫女」)。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#power_yaksa">阿修羅</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">夜叉系の一種で、勝利条件は「自分自身の生存 + 生存陣営数が出現陣営の半分以下」。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#wise_ogre">夜行鬼</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#common_group">共有者系</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php#fox_group">妖狐系</a>の全滅」。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -3119,7 +3164,7 @@ Ver. 1.5.0
     <td>Ver. 1.4.0 β21</td>
   </tr>
   <tr id="sub_ver140b22">
-    <td><a href="sub_role.php#whisper_ringing">恋耳鳴</a></td>
+    <td><a href="sub_role.php#sweet_ringing">恋耳鳴</a></td>
     <td><a href="sub_role.php#no_last_words_group">筆不精系</a></td>
     <td>有り</td>
     <td class="ability">二日目以降、恋人の独り言が専用の囁きに見えるようになる。</td>

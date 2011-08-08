@@ -11,7 +11,7 @@ class Role_dummy_mania extends Role{
       'human'        => 'suspect',
       'mage'         => 'dummy_mage',
       'necromancer'  => 'dummy_necromancer',
-      'medium'       => 'medium',
+      'medium'       => 'eclipse_medium',
       'priest'       => 'dummy_priest',
       'guard'        => 'dummy_guard',
       'common'       => 'dummy_common',

@@ -50,9 +50,10 @@ OutputRolePageHeader('鬼陣営');
 <a href="#north_ogre">水鬼</a>
 <a href="#south_ogre">隠行鬼</a>
 <a href="#incubus_ogre">般若</a>
-<a href="#power_ogre">星熊童子</a>
+<a href="#wise_ogre">夜行鬼</a>
 </p>
 <p>
+<a href="#power_ogre">星熊童子</a>
 <a href="#revive_ogre">茨木童子</a>
 <a href="#sacrifice_ogre">酒呑童子</a>
 </p>
@@ -186,12 +187,33 @@ OutputRolePageHeader('鬼陣営');
 仮に、村人が全員女性だった場合は単独生存を達成しないと勝てないことになります。
 </pre>
 
+<h3 id="wise_ogre">夜行鬼 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.5.0 β9～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
+<h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/2</h4>
+<pre>
+鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#common_group">共有者系</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php#fox_group">妖狐系</a>の全滅」。
+<a href="fox.php#talk">妖狐の念話</a>が<a href="human.php#common_group">共有者</a>の囁きに変換されて聞こえる (<a href="wolf.php#wise_wolf">賢狼</a>と同じ)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="wolf.php#wise_wolf">賢狼</a>・<a href="#yaksa">夜叉</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「夜行さん」の伝承がモチーフで、「夜会話の沈黙」がコンセプトです。
+夜の発言を感知できない役職が混ざっていることに注意してください。
+</pre>
+
 <h3 id="power_ogre">星熊童子 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β21～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：7/10</h4>
 <pre>
 鬼系の一種で、勝利条件は「自分自身の生存 + 村の人口を三分の一以下にする」。
 人口判定は端数切り上げ (例：22人村なら8人以下)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#power_yaksa">阿修羅</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -260,6 +282,7 @@ OutputRolePageHeader('鬼陣営');
 <a href="#betray_yaksa">夜叉丸</a>
 <a href="#cursed_yaksa">滝夜叉姫</a>
 <a href="#succubus_yaksa">荼枳尼天</a>
+<a href="#power_yaksa">阿修羅</a>
 <a href="#dowser_yaksa">毘沙門天</a>
 </p>
 
@@ -324,6 +347,28 @@ OutputRolePageHeader('鬼陣営');
 <pre>
 <a href="#yaksa">夜叉</a>の対男性バージョンです。「だきにてん」と読みます。
 性別を偽って入村する人もいるので勝利するのは難しいと思われます。
+</pre>
+
+<h3 id="power_yaksa">阿修羅 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.5.0 β9～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (30%) / 暗殺：反射 (30%)</h4>
+<h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：3/5</h4>
+<pre>
+夜叉系の一種で、勝利条件は「自分自身の生存 + 生存陣営数が出現陣営の半分以下」。
+人攫いの対象が村人陣営だった場合は無条件で失敗する。
+</pre>
+<ol>
+<li>陣営数判定は端数切り上げ (例：5陣営なら3陣営以下)。</li>
+<li>判定はゲーム終了時の状態で行うので、神話マニア陣営はカウントされない。</li>
+<li><a href="#rule">ルール</a>通り、恋人は恋人陣営と判定する。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#power_ogre">星熊童子</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#power_ogre">星熊童子</a>の陣営数規制バージョンです。
+人攫いの制限を考慮すると、村人・人狼・鬼が残るように仕向けると安定します。
 </pre>
 
 <h3 id="dowser_yaksa">毘沙門天 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β21～]</h3>

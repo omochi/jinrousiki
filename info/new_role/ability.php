@@ -14,10 +14,10 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#guard_limit">護衛制限</a>
 <a href="#doom">死の宣告</a>
 <a href="#decide">処刑者決定</a>
-<a href="#vote_action">処刑投票付加</a>
+<a href="#vote_action">処刑投票</a>
 </p>
 <p>
-<a href="#vote_reaction">処刑得票付加</a>
+<a href="#vote_reaction">処刑得票</a>
 <a href="#sudden_death">ショック死</a>
 <a href="#anti_sudden_death">ショック死抑制</a>
 <a href="#resist_wolf">人狼襲撃耐性</a>
@@ -25,10 +25,11 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
+<a href="#same">同一表示</a>
 <a href="#authority">投票数変化</a>
-<a href="#stargazer">投票能力鑑定</a>
 </p>
 <p>
+<a href="#stargazer">投票能力</a>
 <a href="#luck">得票数変化</a>
 <a href="#poison">毒</a>
 <a href="#partner">仲間情報妨害</a>
@@ -38,9 +39,9 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#possessed_limit">憑依制限</a>
 <a href="#seal">封印</a>
 <a href="#sacrifice">身代わり</a>
-<a href="#soul">役職鑑定</a>
 </p>
 <p>
+<a href="#soul">役職鑑定</a>
 <a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
 <a href="#necromancer">霊能</a>
@@ -48,9 +49,14 @@ OutputRolePageHeader('能力者逆引き');
 </p>
 
 <h2 id="assassin">暗殺能力者</h2>
+<h3 id="assassin_kill">暗殺型</h3>
 <pre>
-<a href="human.php#assassin_group">暗殺者系</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#assassin">暗殺者</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_assassin">辻斬り</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="human.php#reverse_assassin">反魂師</a>・<a href="fox.php#doom_fox">冥狐</a>)
-<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="fox.php#doom_fox">冥狐</a>・<a href="ogre.php">鬼陣営</a>
+<a href="human.php#assassin">暗殺者</a>・<a href="human.php#reverse_assassin">反魂師</a>・<a href="human.php#soul_assassin">辻斬り</a>・<a href="human.php#eclipse_assassin">蝕暗殺者</a>・<a href="human.php#wizard">魔法使い</a>(<a href="human.php#assassin">暗殺者</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#soul_assassin">辻斬り</a>)
+<a href="human.php#astray_wizard">左道使い</a>(<a href="human.php#reverse_assassin">反魂師</a>)・<a href="ogre.php">鬼陣営</a>
+</pre>
+<h3 id="assassin_doom">死の宣告型</h3>
+<pre>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="fox.php#doom_fox">冥狐</a>)・<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)・<a href="fox.php#doom_fox">冥狐</a>
 </pre>
 
 <h2 id="anti_assassin">暗殺耐性能力者</h2>
@@ -65,7 +71,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="mage_wolf">人狼</h3>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>・<a href="sub_role.php#black_wisp">天火</a>
+<a href="human.php#suspect">不審者</a>・<a href="human.php#cute_mage">萌占い師</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>・<a href="sub_role.php#black_wisp">天火</a>
 </pre>
 <h3 id="mage_chiroptera">蝙蝠</h3>
 <pre>
@@ -88,7 +94,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="guard_hunt">狩り対象者</h2>
 <pre>
-<a href="human.php#guard_hunt">狩人系</a>参照
+<a href="human.php#guard_hunt">狩りの仕様</a>参照
 </pre>
 
 <h2 id="guard">護衛能力者</h2>
@@ -118,12 +124,12 @@ OutputRolePageHeader('能力者逆引き');
 <a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="quiz.php#quiz">出題者</a>・<a href="sub_role.php#decide_group">決定者系</a>
 </pre>
 
-<h2 id="vote_action">処刑投票付加能力者</h2>
+<h2 id="vote_action">処刑投票能力者</h2>
 <pre>
 <a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 </pre>
 
-<h2 id="vote_reaction">処刑得票付加能力者</h2>
+<h2 id="vote_reaction">処刑得票能力者</h2>
 <pre>
 <a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="human.php#cursed_brownie">祟神</a>
 </pre>
@@ -131,7 +137,8 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="sudden_death">ショック死発動能力者</h2>
 <h3 id="sudden_death_direct">直接型</h3>
 <pre>
-<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="lovers.php#cursed_angel">堕天使</a>・<a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
+<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#eclipse_medium">蝕巫女</a>・<a href="human.php#jealousy">橋姫</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="lovers.php#cursed_angel">堕天使</a>
+<a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
 <pre>
@@ -192,6 +199,12 @@ OutputRolePageHeader('能力者逆引き');
 <a href="human.php#revive_rule">基本ルール[蘇生]</a>参照
 </pre>
 
+<h2 id="same">同一表示役職</h2>
+<pre>
+<a href="human.php#human">村人</a>・<a href="human.php#mage">占い師</a>・<a href="human.php#necromancer">霊能者</a>・<a href="human.php#medium">巫女</a>・<a href="human.php#priest">司祭</a>・<a href="human.php#guard">狩人</a>・<a href="human.php#common">共有者</a>・<a href="human.php#poison">埋毒者</a>・<a href="human.php#revive_cat">仙狸</a>・<a href="human.php#assassin">暗殺者</a>
+<a href="lovers.php#self_cupid">求愛者</a>・<a href="mania.php#soul_mania">覚醒者</a>
+</pre>
+
 <h2 id="authority">投票数変化能力者</h2>
 <h3 id="authority_direct">直接型</h3>
 <pre>
@@ -203,7 +216,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="human.php#brownie">座敷童子</a>(<a href="human.php#human">村人</a>)・<a href="human.php#divine_escaper">麒麟</a>(<a href="sub_role.php#day_voter">一日村長</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="mania.php#wirepuller_mania">黒衣</a>(<a href="sub_role.php#wirepuller_luck">入道</a>)
 </pre>
 
-<h2 id="stargazer">投票能力鑑定関連能力者</h2>
+<h2 id="stargazer">投票能力鑑定能力者</h2>
 <pre>
 <a href="human.php#stargazer_mage">占星術師</a>・<a href="human.php#border_priest">境界師</a>・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#stargazer_mage">占星術師</a>)・<a href="human.php#awake_wizard">比丘尼</a>(<a href="human.php#stargazer_mage">占星術師</a>)・<a href="fox.php#stargazer_fox">星狐</a>
 </pre>
@@ -254,7 +267,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="talk_convert_cute">遠吠え置換型 (萌系)</h3>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>
+<a href="human.php#suspect">不審者</a>・<a href="human.php#cute_mage">萌占い師</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>
 </pre>
 
 <h2 id="possessed">憑依能力者</h2>

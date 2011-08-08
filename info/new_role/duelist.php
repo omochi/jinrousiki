@@ -187,15 +187,15 @@ OutputRolePageHeader('決闘者陣営');
 <a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>時に対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
-<li>変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="mania.php#unknown_mania_group">鵺系</a>は対象外。</li>
 <li><a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
+<li>変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>、<a href="mania.php#unknown_mania_group">鵺系</a>は対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -210,14 +210,14 @@ OutputRolePageHeader('決闘者陣営');
 <a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>時に対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 <li><a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

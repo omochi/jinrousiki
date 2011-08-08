@@ -158,6 +158,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 <a href="#decide">決定者</a>と同等の能力がある代わりに再投票になるとショック死する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#eclipse_medium">蝕巫女</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 自覚のある<a href="#decide">決定者</a>で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/80" target="_top">新役職考案スレ(80)</a> が原型です。

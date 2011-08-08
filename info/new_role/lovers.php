@@ -107,13 +107,13 @@ OutputRolePageHeader('恋人陣営');
 処刑投票先に<a href="sub_role.php#sweet_ringing">恋耳鳴</a>を付加する。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票付加能力者</a>
+<a href="ability.php#vote_action">処刑投票能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -152,13 +152,13 @@ OutputRolePageHeader('恋人陣営');
 処刑投票先が恋人なら<a href="sub_role.php#frostbite">凍傷</a>を付加してしまうキューピッド。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、その時点で対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票付加能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -285,9 +285,13 @@ OutputRolePageHeader('恋人陣営');
 <a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。<a href="sub_role.php#lovers">恋人</a>に処刑投票されるとショック死する。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>はショック死処理の直前で再投票でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>はショック死処理内部で行う。</li>
 <li>ショック死した場合の死因は「封印された」。</li>
 </ol>
+<h5>Ver. 1.5.0 β9～</h5>
+<pre>
+<a href="../spec.php#vote_day">判定</a>順をショック死処理の直前からショック死処理内部に変更
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>

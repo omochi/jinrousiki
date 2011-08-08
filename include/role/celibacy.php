@@ -2,7 +2,7 @@
 /*
   ◆独身貴族 (celibacy)
   ○仕様
-  ・恋人に投票されたらショック死する
+  ・ショック死：恋人からの得票
 */
 class Role_celibacy extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }

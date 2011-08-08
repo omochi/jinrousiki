@@ -1135,35 +1135,36 @@ function AggregateVoteDay(){
   //-- 得票カウンター処理 --//
   foreach($ROLES->LoadFilter('voted_reaction') as $filter) $filter->VotedReaction();
 
-  //-- サブ役職のショック死処理 --//
-  if(! $ROOM->IsEvent('no_sudden_death')){ //凪ならスキップ
-    //判定用データを登録
-    $ROLES->stack->count  = array_count_values($vote_target_list); //投票者対象ユーザ名 => 人数
-    //PrintData($ROLES->stack->count, 'count');
+  //-- ショック死処理 --//
+  //判定用データを登録
+  $ROLES->stack->count = array_count_values($vote_target_list); //投票者対象ユーザ名 => 人数
+  //PrintData($ROLES->stack->count, 'count');
 
-    $thunderbolt_list = array(); //青天の霹靂判定用
-    if($ROOM->IsEvent('thunderbolt')){
-      $stack = array();
-      foreach($user_list as $uname){
-	$user = $USERS->ByRealUname($uname);
-	if($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
-      }
-      //PrintData($stack, 'ThunderboltBase');
-      $thunderbolt_list[] = $USERS->ByVirtual(GetRandom($stack))->uname;
-      //PrintData($thunderbolt_list, 'ThunderboltTarget');
+  $thunderbolt_list = array(); //青天の霹靂判定用
+  if($ROOM->IsEvent('thunderbolt')){
+    $stack = array();
+    foreach($user_list as $uname){
+      $user = $USERS->ByRealUname($uname);
+      if($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
     }
+    //PrintData($stack, 'ThunderboltBase');
+    $thunderbolt_list[] = $USERS->ByVirtual(GetRandom($stack))->uname;
+    //PrintData($thunderbolt_list, 'ThunderboltTarget');
+  }
 
-    foreach($live_uname_list as $uname){
-      $ROLES->actor = $USERS->ByUname($uname); //$live_uname_list は仮想ユーザ名
-      $reason = in_array($uname, $thunderbolt_list) ? 'THUNDERBOLT' : '';
-      foreach($ROLES->Load('sudden_death') as $filter) $filter->FilterSuddenDeath($reason);
-      if($reason == '') continue;
+  foreach($live_uname_list as $uname){
+    $ROLES->actor = $USERS->ByUname($uname); //$live_uname_list は仮想ユーザ名
+    $reason = in_array($uname, $thunderbolt_list) ? 'THUNDERBOLT' : '';
+    if(! $ROOM->IsEvent('no_sudden_death')){ //凪ならスキップ
+      foreach($ROLES->Load('sudden_death_sub') as $filter) $filter->FilterSuddenDeath($reason);
+    }
+    foreach($ROLES->Load('sudden_death_main') as $filter) $filter->FilterSuddenDeath($reason);
+    if($reason == '') continue;
 
-      //薬師系の治療判定
-      foreach($ROLES->LoadFilter('cure') as $filter) $filter->Cure($pharmacist_result_list);
-      if(! $ROLES->actor->cured_flag){
-	$USERS->SuddenDeath($ROLES->actor->user_no, 'SUDDEN_DEATH_' . $reason);
-      }
+    //薬師系の治療判定
+    foreach($ROLES->LoadFilter('cure') as $filter) $filter->Cure($pharmacist_result_list);
+    if(! $ROLES->actor->cured_flag){
+      $USERS->SuddenDeath($ROLES->actor->user_no, 'SUDDEN_DEATH_' . $reason);
     }
   }
 

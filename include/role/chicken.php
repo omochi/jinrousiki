@@ -2,7 +2,7 @@
 /*
   ◆小心者 (chicken)
   ○仕様
-  ・投票されていたらショック死する
+  ・ショック死：得票
 */
 class Role_chicken extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }

@@ -228,16 +228,17 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#sex_mage">ひよこ鑑定士</a>
 <a href="#stargazer_mage">占星術師</a>
 <a href="#voodoo_killer">陰陽師</a>
+<a href="#cute_mage">萌占い師</a>
 <a href="#dummy_mage">夢見人</a>
 </p>
 
 <h3 id="mage_rule">基本ルール [占い]</h3>
 <ol>
-  <li>占い能力は人狼の襲撃や暗殺などで事前に死んでいたら無効になる。<br>
-    例) 人狼に噛まれた占い師が妖狐を占っていても無効。
+  <li>占い能力は人狼の襲撃や暗殺などで事前に死亡していた場合は無効。<br>
+    例) 人狼の襲撃で死亡した占い師が妖狐を占っていても無効。
   </li>
-  <li>占い対象先が同様の理由で事前に死んでいたら対象の能力は無効になる。<br>
-    例) <a href="#assassin">暗殺者</a>に殺された<a href="wolf.php#cursed_wolf">呪狼</a>を占っても呪返しは受けない。
+  <li>占い対象先が同様の理由で事前に死亡していた場合、対象の能力は無効。<br>
+    例) 暗殺された<a href="wolf.php#cursed_wolf">呪狼</a>を占っても呪返しは受けない。
   </li>
 </ol>
 
@@ -248,7 +249,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
-<a href="#dummy_mage">夢見人</a>
+<a href="#cute_mage">萌占い師</a>・<a href="#dummy_mage">夢見人</a>
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -339,7 +340,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
+<a href="ability.php#stargazer">投票能力鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -369,6 +370,22 @@ PP ラインの計算を難しくさせるために作成してみました。
 そもそも呪い系がレアなので役に立つのか分かりませんが……
 </pre>
 
+<h3 id="cute_mage">萌占い師 (占い結果：人狼 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
+<h4>[役職表示] <a href="#mage">占い師</a></h4>
+<h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
+<pre>
+占い結果が「人狼」と判定される劣化占い師。本人表記は「占い師」。
+昼の間だけ、低確率で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#talk_convert_cute">発言変換能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#cute_wolf">萌狼</a>の占い師バージョンで、いわゆる萌系人外の騙り先要員です。
+騙る場合は本人には自覚が無いことに注意してください。
+</pre>
 
 <h3 id="dummy_mage">夢見人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α14～]</h3>
 <h4>[役職表示] <a href="#mage">占い師</a></h4>
@@ -416,9 +433,9 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="necromancer_rule">基本ルール [霊能]</h3>
 <pre>
-村人陣営が勝利する為には吊らないといけない人外なのに、占いでは人外判定を出せないか
+村人陣営が勝利する為には排除する必要がある人外なのに、占いでは人外判定を出せないか
 何らかの妨害を受ける役職は霊能で分かります (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="fox.php#cursed_fox">天狐</a>・<a href="fox.php#child_fox">子狐</a>)。
-詳細は個々の役職の霊能結果を確認してください。
+詳細は個々の役職の霊能結果を確認してください。 → <a href="ability.php#necromancer">霊能(特殊判定)</a>
 </pre>
 
 <h3 id="necromancer">霊能者 (占い結果：村人 / 霊能結果：村人)</h3>
@@ -486,7 +503,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#emissary_necromancer">密偵</a>・<a href="#spiritism_wizard">交霊術師</a>
+<a href="#emissary_necromancer">密偵</a>・<a href="#snipe_poison">狙毒者</a>・<a href="#spiritism_wizard">交霊術師</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -609,33 +626,38 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#bacchus_medium">神主</a>
 <a href="#seal_medium">封印師</a>
 <a href="#revive_medium">風祝</a>
+<a href="#eclipse_medium">蝕巫女</a>
 </p>
 
 <h3 id="medium_rule">所属陣営判定法則</h3>
 <pre>
-所属陣営とは、勝敗が決まった時の陣営で、役職表記の先頭に記載されている「～陣営」を指す。
+「所属陣営」とは、役職表記の先頭に記載されている「～陣営」を指す。
+判定の対象はメイン役職のみで、サブ役職は対象外。
+従って、<a href="sub_role.php#lovers">恋人</a>はサブ役職なので「恋人」と判定されるのは<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>のみ。
+
 例1) <a href="wolf.php#wolf_group">人狼系</a>・<a href="wolf.php#mad_group">狂人系</a>は「人狼」
 例2) <a href="fox.php#fox_group">妖狐系</a>・<a href="fox.php#child_fox_group">子狐系</a>は「妖狐」
 例3) <a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>は「恋人」
 例4) <a href="chiroptera.php#chiroptera_group">蝙蝠系</a>・<a href="chiroptera.php#fairy_group">妖精系</a>は「蝙蝠」
-
-また、メイン役職のみが判定の対象 (サブ役職は分からない)。
-つまり、恋人はサブ役職なので「恋人」と判定されるのは<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>のみ。
 </pre>
 
 <h3 id="medium">巫女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-突然死した人の所属陣営が分かる、霊能のような役職。
+突然死した人と後追いした<a href="sub_role.php#lovers">恋人</a>の所属陣営が分かる、巫女系の基本種。
 <a href="../chaos.php">闇鍋モード</a>で登場する「ショック死」する人たちの情報を取るのが主な仕事だが
 <a href="#necromancer_group">霊能者</a>とは<a href="#medium_rule">判定法則</a>が違うので注意。
 </pre>
 <h5>Ver. 1.4.0 β6～</h5>
 <pre>
-<a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく出ないバグ修正 (修正前は常時「村人」判定)
+<a href="mania.php#unknown_mania">鵺</a>の所属陣営が正しく判定されないバグ修正 (修正前は常時「村人」判定)
 </pre>
 <h5>Ver. 1.4.0 α9～</h5>
 <pre>
 <a href="sub_role.php#lovers">恋人</a>後追いにも対応 (後追いした<a href="sub_role.php#lovers">恋人</a>のみ、元の所属陣営が分かる)
+</pre>
+<h4>同一表示役職</h4>
+<pre>
+<a href="#eclipse_medium">蝕巫女</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -649,11 +671,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が<a href="ogre.php">鬼陣営</a>だった場合にショック死させることができる上位巫女。
 </pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が処刑された場合は無効。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
-<li>鬼陣営をコピーした<a href="mania.php#unknown_mania_group">鵺系</a>・変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>は対象外。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
 <li>ショック死させた場合の死因は「神主に酔い潰された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+<li>変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>、<a href="mania.php#unknown_mania_group">鵺系</a>は対象外。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -672,11 +694,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <ol>
 <li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#fire_wolf">火狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="duelist.php#revive_avenger">夜刀神</a>。</li>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が処刑された場合は無効。</li>
-<li>自分が毒やショック死で死亡した場合でも有効。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
 <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
 <li>ショック死させた場合の死因は「封印された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -699,6 +721,25 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 東方 Project の東風谷 早苗がモチーフで、「かぜはふり」と読みます。
 「奇跡」を蘇生能力に読み替えてみました。
+</pre>
+
+<h3 id="eclipse_medium">蝕巫女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
+<h4>[役職表示] <a href="#medium">巫女</a></h4>
+<pre>
+再投票になるとショック死する劣化巫女。本人の表記は「<a href="#medium">巫女</a>」。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>はショック死処理内部で行う。</li>
+<li>ショック死した場合の死因は「封印された」。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="sub_role.php#impatience">短気</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+巫女の<a href="mania.php#dummy_mania">劣化種</a>として、夢系ではなく蝕系を採用してみました。
+決定能力を失った<a href="sub_role.php#impatience">短気</a>に相当し、死ぬことで自己証明にはなります。
 </pre>
 
 
@@ -930,7 +971,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
+<a href="ability.php#stargazer">投票能力鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1297,11 +1338,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 まとめて死亡させる上位共有者。
 </pre>
 <ol>
-<li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営」以外と判定される。</li>
+<li><a href="#medium">巫女</a>の判定と違い、恋人も「村人陣営以外」と判定される。</li>
 <li>一人でも村人陣営の人から投票されると無効。</li>
 <li>発動した場合に巻き込んだ人の死因は「罠」。</li>
-<li>自分が吊られたり、再投票になっても有効。</li>
-<li>本人が<a href="sub_role.php#lovers">恋人</a>になった場合は自分自身が「非村人陣営」になるので発動できない。</li>
+<li>自分が処刑されたり、再投票になっても有効。</li>
+<li>自分が<a href="sub_role.php#lovers">恋人</a>になった場合は自分自身が「非村人陣営」になるので発動できない。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1378,6 +1419,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#strong_poison">強毒者</a>
 <a href="#incubate_poison">潜毒者</a>
 <a href="#guide_poison">誘毒者</a>
+<a href="#snipe_poison">狙毒者</a>
 <a href="#chain_poison">連毒者</a>
 <a href="#dummy_poison">夢毒者</a>
 </p>
@@ -1406,7 +1448,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#incubate_poison">潜毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>
+<a href="#incubate_poison">潜毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="duelist.php#poison_avenger">山わろ</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1418,9 +1460,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="incubate_poison">潜毒者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
 <h4>[毒能力] 処刑：無し → 人狼系 + 妖狐陣営 / 襲撃：無し → 有り / 薬師判定：無し → 強い毒</h4>
 <pre>
-一定期間後 (5 日目以降) に毒を持つ特殊な埋毒者。
+一定期間後 (5 日目以降) に<a href="#strong_poison">強毒者</a>相当の毒を持つ特殊な埋毒者。
 毒を持ったら本人に追加のシステムメッセージが表示される。
-毒能力は<a href="#strong_poison">強毒者</a>相当。
 </pre>
 <h5>Ver. 1.4.0 α20～</h5>
 <pre>
@@ -1445,6 +1486,23 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="#pharmacist_group">薬師系</a>と違うアプローチで毒能力を持った人外を仕留めることができますが
 毒と名のつく役職全てが対象なので<a href="#poison_guard">騎士</a>・<a href="#chain_poison">連毒者</a>に中ると大惨事になります。
+</pre>
+
+<h3 id="snipe_poison">狙毒者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
+<h4>[毒能力] 処刑：特殊 / 襲撃：有り / 薬師判定：有り</h4>
+<pre>
+処刑された場合、処刑投票先と同陣営の人のみに中る特殊な埋毒者。
+<a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#embalm_necromancer">死化粧師</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+指向性を持った埋毒者で、確定人外を見つけたらそこに投票して処刑されることで
+芋蔓式に人外を仕留めることが可能になります。
+安直な吊り稼ぎを狙った<a href="ability.php#talk_convert_cute">萌系</a>騙りに対する牽制が狙いです。
 </pre>
 
 <h3 id="chain_poison">連毒者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>
@@ -1988,7 +2046,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#reporter">ブン屋</a>・<a href="ability.php#stargazer">投票能力鑑定関連能力者</a>
+<a href="#reporter">ブン屋</a>・<a href="ability.php#stargazer">投票能力鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2093,7 +2151,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_reaction">処刑得票付加能力者</a>
+<a href="ability.php#vote_reaction">処刑得票能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2221,7 +2279,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_reaction">処刑得票付加能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

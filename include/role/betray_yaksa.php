@@ -1,6 +1,6 @@
 <?php
 /*
-  ◆夜叉丸
+  ◆夜叉丸 (betray_yaksa)
   ○仕様
   ・勝利条件：自分自身の生存 + 蝙蝠陣営の全滅 + 村人陣営の勝利
 */
@@ -14,11 +14,9 @@ class Role_betray_yaksa extends Role{
   function GetReduceRate(){ return 1 / 5; }
 
   function Win($victory){
-    global $USERS;
-
-    if($this->IsDead() || $victory != 'human') return false;
-    foreach($USERS->rows as $user){
-      if($user->IsLive() && $user->IsCamp('chiroptera', true)) return false;
+    if($victory != 'human' || $this->IsDead()) return false;
+    foreach($this->GetUser() as $user){
+      if($user->IsLive() && ! $this->Ignored($user)) return false;
     }
     return true;
   }

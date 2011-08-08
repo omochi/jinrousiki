@@ -21,32 +21,30 @@ class RoleManager{
 			     'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
   //処刑投票(メイン)
-  public $vote_do_main_list = array('human', 'elder', 'scripter', 'elder_guard', 'elder_wolf',
-				    'elder_fox', 'elder_chiroptera', 'critical_duelist',
-				    'cowboy_duelist');
+  public $vote_do_main_list = array(
+    'human', 'elder', 'scripter', 'elder_guard', 'elder_wolf', 'elder_fox', 'elder_chiroptera',
+    'critical_duelist', 'cowboy_duelist');
 
   //処刑投票(サブ)
-  public $vote_do_sub_list = array('authority', 'reduce_voter', 'upper_voter', 'downer_voter',
-				   'critical_voter', 'random_voter', 'day_voter', 'wirepuller_luck',
-				   'watcher', 'panelist');
+  public $vote_do_sub_list = array(
+    'authority', 'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter',
+    'day_voter', 'wirepuller_luck', 'watcher', 'panelist');
 
-  //処刑得票 (メイン)
+  //処刑得票(メイン)
   public $voted_main_list = array('critical_patron');
 
-  //処刑得票 (サブ)
+  //処刑得票(サブ)
   public $voted_sub_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
 				 'random_luck', 'occupied_luck', 'wirepuller_luck');
 
-  //処刑投票系能力者
-  public $vote_ability_list = array('saint', 'executor', 'bacchus_medium', 'seal_medium',
-				    'trap_common', 'pharmacist', 'cure_pharmacist',
-				    'revive_pharmacist', 'alchemy_pharmacist',
-				    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy',
-				    'cursed_brownie', 'agitate_mad', 'amaze_mad', 'miasma_mad',
-				    'critical_mad', 'sweet_cupid', 'snow_cupid', 'cursed_angel',
-				    'quiz', 'cursed_avenger', 'critical_avenger', 'impatience',
-				    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
-				    'bad_luck', 'authority', 'rebel');
+  //処刑投票能力者
+  public $vote_ability_list = array(
+    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'snipe_poison',
+    'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
+    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
+    'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid', 'snow_cupid', 'quiz',
+    'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide',
+    'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -62,25 +60,29 @@ class RoleManager{
   public $detox_list = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
 
   //特殊毒能力者
-  public $poison_list = array('strong_poison', 'incubate_poison', 'guide_poison', 'dummy_poison',
-			      'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox',
-			      'poison_chiroptera', 'poison_ogre', 'poison_avenger');
+  public $poison_list = array(
+    'strong_poison', 'incubate_poison', 'guide_poison', 'snipe_poison', 'dummy_poison',
+    'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox', 'poison_chiroptera',
+    'poison_ogre', 'poison_avenger');
 
   //処刑者カウンター
   public $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
 
   //処刑投票能力処理 (順番依存あり)
-  public $vote_action_list = array('seal_medium', 'bacchus_medium', 'centaurus_pharmacist',
-				   'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger',
-				   'cursed_avenger', 'sweet_cupid', 'snow_cupid');
+  public $vote_action_list = array(
+    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'amaze_mad', 'miasma_mad',
+    'critical_mad', 'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid');
 
   //得票カウンター
-  public $voted_reaction_list = array('trap_common', 'jealousy', 'cursed_angel');
+  public $voted_reaction_list = array('trap_common', 'jealousy');
 
-  //ショック死
-  public $sudden_death_list = array('challenge_lovers', 'febris', 'frostbite', 'death_warrant',
-				    'panelist', 'chicken', 'rabbit', 'perverseness', 'flattery',
-				    'celibacy', 'nervy', 'androphobia', 'gynophobia', 'impatience');
+  //ショック死(メイン)
+  public $sudden_death_main_list = array('eclipse_medium', 'cursed_angel');
+
+  //ショック死(サブ) (順番依存あり)
+  public $sudden_death_sub_list = array(
+    'challenge_lovers', 'febris', 'frostbite', 'death_warrant', 'panelist', 'chicken', 'rabbit',
+    'perverseness', 'flattery', 'celibacy', 'nervy', 'androphobia', 'gynophobia', 'impatience');
 
   //ショック死抑制
   public $cure_list = array('cure_pharmacist', 'revive_pharmacist');
@@ -89,9 +91,9 @@ class RoleManager{
   public $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
 
   //人狼襲撃耐性 (順番依存あり)
-  public $wolf_eat_resist_list = array('challenge_lovers', 'protected', 'sacrifice_angel',
-				       'doom_vampire', 'sacrifice_patron', 'sacrifice_mania',
-				       'fend_guard', 'awake_wizard');
+  public $wolf_eat_resist_list = array(
+    'challenge_lovers', 'protected', 'sacrifice_angel', 'doom_vampire', 'sacrifice_patron',
+    'sacrifice_mania', 'fend_guard', 'awake_wizard');
 
   //身代わり能力者
   public $sacrifice_list = array('sacrifice_common', 'doll_master', 'sacrifice_vampire',
@@ -217,6 +219,11 @@ class Role{
     return $ROLES->actor;
   }
 
+  function GetUser(){
+    global $USERS;
+    return $USERS->rows;
+  }
+
   function Ignored(){
     global $ROOM, $ROLES, $USERS;
     //return false; //テスト用
@@ -286,6 +293,7 @@ class RoleTalkFilter extends Role{
 class RoleVoteAbility extends Role{
   public $data_type;
   public $decide_type;
+  public $init_stack;
 
   function __construct(){
     global $ROLES;
@@ -294,7 +302,7 @@ class RoleVoteAbility extends Role{
     if($this->init_stack && ! is_array($ROLES->stack->{$this->role})){
       $ROLES->stack->{$this->role} = array();
     }
- }
+  }
 
   //投票データ収拾
   function SetVoteAbility($uname){
@@ -400,6 +408,12 @@ class RoleVoteAbility extends Role{
   function GetVotedCount(){
     global $ROLES;
     return $ROLES->stack->count[$ROLES->actor->uname];
+  }
+
+  //処刑者名取得
+  function GetVoteKillUname(){
+    global $ROLES;
+    return $ROLES->stack->vote_kill_uname;
   }
 
   //処刑者判定

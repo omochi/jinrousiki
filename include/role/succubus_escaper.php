@@ -8,7 +8,7 @@
 class Role_succubus_escaper extends Role{
   function __construct(){ parent::__construct(); }
 
-  function EscapeFailed($user){ return $user->sex != 'male'; }
+  function EscapeFailed($user){ return ! $user->IsMale(); }
 
   function EscapeAction($user){}
 }

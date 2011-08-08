@@ -351,8 +351,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#medium_group">巫女系</a></td>
-  <td><a href="human.php#medium">巫女</a></td>
-  <td></td>
+  <td><a href="human.php#eclipse_medium">蝕巫女</a></td>
+  <td>Ver. 1.5.0 β9～</td>
 </tr>
 <tr>
   <td><a href="human.php#priest_group">司祭系</a></td>

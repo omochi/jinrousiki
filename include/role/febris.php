@@ -2,7 +2,7 @@
 /*
   ◆熱病 (febris)
   ○仕様
-  ・発動当日ならショック死する
+  ・ショック死：発動当日
 */
 class Role_febris extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }

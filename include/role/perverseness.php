@@ -2,7 +2,7 @@
 /*
   ◆天邪鬼 (perverseness)
   ○仕様
-  ・自分の投票先に複数の人が投票していたらショック死する
+  ・ショック死：自分の投票先に複数の人が投票している
 */
 class Role_perverseness extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }

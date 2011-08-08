@@ -2,7 +2,7 @@
 /*
   ◆凍傷 (frostbite)
   ○仕様
-  ・発動当日に投票されていなかったらショック死する
+  ・ショック死：発動当日に無得票
 */
 class Role_frostbite extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }

@@ -349,3 +349,10 @@ body{ /* AA 用 */
 }
 /* CheckSelfVote() */
 .self-vote{margin: 5px 0;}
+/* game_log.php */
+h1{
+  margin: 0;
+  font-size: 120%;
+  font-weight: normal;
+  text-align: right;
+}

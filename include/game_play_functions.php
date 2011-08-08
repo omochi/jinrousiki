@@ -15,8 +15,8 @@ function OutputAbility(){
   if($SELF->IsRole('human', 'saint', 'executor', 'suspect', 'unconscious', 'chain_poison')){
     $ROLE_IMG->Output('human');
   }
-  //長老・誘毒者・座敷童子系
-  elseif($SELF->IsRole('elder', 'guide_poison') || $SELF->IsRoleGroup('brownie')){
+  //長老・誘毒者・狙毒者・座敷童子系
+  elseif($SELF->IsRole('elder', 'guide_poison', 'snipe_poison') || $SELF->IsRoleGroup('brownie')){
     $ROLE_IMG->Output($SELF->main_role);
   }
   elseif($SELF->IsRole('scripter')){ //執筆者
@@ -24,7 +24,7 @@ function OutputAbility(){
     if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL); //能力発現
   }
   elseif($SELF->IsRoleGroup('mage')){ //占い師系
-    $ROLE_IMG->Output($SELF->IsRole('dummy_mage') ? 'mage' : $SELF->main_role);
+    $ROLE_IMG->Output($SELF->IsRole('cute_mage', 'dummy_mage') ? 'mage' : $SELF->main_role);
     if($ROOM->date > 1) OutputSelfAbilityResult('MAGE_RESULT'); //占い結果
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO'); //投票
   }
@@ -41,7 +41,7 @@ function OutputAbility(){
     }
   }
   elseif($SELF->IsRoleGroup('medium')){ //巫女系
-    $ROLE_IMG->Output($SELF->main_role);
+    $ROLE_IMG->Output($SELF->IsRole('eclipse_medium') ? 'medium' : $SELF->main_role);
     if($ROOM->date > 1) OutputSelfAbilityResult('MEDIUM_RESULT'); //神託結果
     if($SELF->IsRole('revive_medium') && ! $ROOM->IsOpenCast()){ //風祝
       if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果

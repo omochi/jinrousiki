@@ -259,6 +259,16 @@ class User{
       ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
   }
 
+  //男性判定
+  function IsMale(){
+    return $this->sex == 'male';
+  }
+
+  //女性判定
+  function IsFemale(){
+    return $this->sex == 'female';
+  }
+
   //共有者系判定
   function IsCommon($talk = false){
     return $this->IsRoleGroup('common') && ! ($talk && $this->IsRole('dummy_common'));
@@ -429,8 +439,10 @@ class User{
       if($this->IsRole('sacrifice_ogre'))
 	$rate = 50;
       elseif($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
-			   'power_ogre', 'revive_ogre', 'dowser_yaksa'))
+			   'wise_ogre', 'power_ogre', 'revive_ogre', 'power_yaksa', 'dowser_yaksa'))
 	$rate = 40;
+      elseif($this->IsRole('power_yaksa'))
+	$rate = 30;
       elseif($this->IsRoleGroup('yaksa'))
 	$rate = 20;
       else
@@ -516,7 +528,7 @@ class User{
 
     //人狼判定
     $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
-      $this->IsRole('suspect', 'black_fox', 'cute_chiroptera', 'cute_avenger');
+      $this->IsRole('suspect', 'cute_mage', 'black_fox', 'cute_chiroptera', 'cute_avenger');
     return ($result xor $reverse) ? 'wolf' : 'human';
   }
 
@@ -1268,10 +1280,10 @@ class UserDataSet{
     $evoke_scanner = array();
     $mind_evoke    = array();
     foreach($this->rows as $user){
+      if($user->IsDummyBoy()) continue;
       if($user->IsRole('mind_evoke')){
 	$mind_evoke = array_merge($mind_evoke, $user->GetPartner('mind_evoke'));
       }
-      if($user->IsDummyBoy()) continue;
       if($user->IsReviveGroup(true)){
 	if($user->IsLive()) return false;
       }
@@ -1285,8 +1297,7 @@ class UserDataSet{
 	}
       }
       elseif($user->IsRole('soul_mania', 'dummy_mania')){
-	if($ROOM->date == 1) return false;
-	if(is_array($user->GetPartner($user->main_role))) return false;
+	if($ROOM->date == 1 || is_array($user->GetPartner($user->main_role))) return false;
       }
     }
     return count(array_intersect($evoke_scanner, $mind_evoke)) < 1;

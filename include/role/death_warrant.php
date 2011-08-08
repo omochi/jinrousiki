@@ -2,7 +2,7 @@
 /*
   ◆死の宣告 (death_warrant)
   ○仕様
-  ・発動当日ならショック死する
+  ・ショック死：発動当日
 */
 class Role_death_warrant extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }

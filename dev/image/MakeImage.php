@@ -280,6 +280,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#埋毒者#系]\n　あなたは#誘毒者#です。あなたの#毒#は#毒#能力者にしか中りません。#毒#を以って#毒#を制すのです。",
     'type' => 'poison');
 
+  public $snipe_poison = array(
+    'message' => "[役割] [|村人|陣営] [#埋毒者#系]\n　あなたは#狙毒者#です。^処刑^された場合はあなたの^処刑^投票先の人と同じ陣営の人に#毒#が中ります。",
+    'type' => 'poison');
+
   public $poison_cat = array(
     'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#猫又#、#毒#を持っています。また、死んだ人を誰か一人#蘇生#できます。飼ってくれた家の恩を村を救うことで返すのです！",
     'type' => 'human', 'delimiter' => array('#' => 'poison'));
@@ -531,7 +535,7 @@ class RoleMessageList{
     'type' => 'wolf', 'delimiter' => array('#' => 'chicken'));
 
   public $fire_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|火狼|です。一度だけ襲撃した人を噛み殺す代りに#天火#を灯すことができます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|火狼|です。一度だけ襲撃した人を噛み殺す代りに#天火#を灯すことができます。\n　炎の牙にて業火を齎し、敵対者を炭の衣で粧しましょう。反撃の狼煙をあげるのです！",
     'type' => 'wolf', 'delimiter' => array('#' => 'wisp'));
 
   public $sex_wolf = array(
@@ -961,24 +965,28 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('#' => 'poison', '_' => 'quiz', '=' => 'chicken'));
 
   public $west_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　雨にも負けず、静かに村の為に生き続け、西に生きることに疲れた人がいたら、行って楽にしてあげましょう！",
-    'type' => 'ogre', 'delimiter' => array('#' => 'human'));
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|金鬼|です。あなた自身の生存、あなたより左にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　雨にも負けず、静かに村の為に生き続け、西に生きることに疲れた人がいたら、行って楽にしてあげましょう！",
+    'type' => 'ogre', 'delimiter' => array('_' => 'human'));
 
   public $east_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　風にも負けず、決して怒らずに村の為に生き続け、東に病気の人がいれば、行ってその感染源を絶ちましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　風にも負けず、決して怒らずに村の為に生き続け、東に病気の人がいれば、行ってその感染源を絶ちましょう！",
     'type' => 'weat_ogre');
 
   public $north_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　水の冷たさにも負けず、欲も無く村の為に生き続け、北に喧嘩や訴訟があれば、行って成敗してやりましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　水の冷たさにも負けず、欲も無く村の為に生き続け、北に喧嘩や訴訟があれば、行って成敗してやりましょう！",
     'type' => 'weat_ogre');
 
   public $south_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、#村人陣営#の勝利が勝利条件になります。\n　夏の暑さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　夏の暑さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
     'type' => 'weat_ogre');
 
   public $incubus_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と#女性#の全滅が勝利条件になります。嫉妬の念を力に変えて村から#女性#を追い出すのです！",
-    'type' => 'ogre', 'delimiter' => array('#' => 'lovers'));
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と_女性_の全滅が勝利条件になります。嫉妬の念を力に変えて村から_女性_を追い出すのです！",
+    'type' => 'ogre', 'delimiter' => array('_' => 'lovers'));
+
+  public $wise_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|夜行鬼|です。^妖狐^の念話を感知することができます。あなた自身の生存と_共有者系_・#人狼系#・^妖狐系^の全滅が勝利条件になります。",
+    'type' => 'ogre', 'delimiter' => array('_' => 'common', '^' => 'fox'));
 
   public $power_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|星熊童子|です。あなた自身の生存と村の人口を三分の一以下にすることが勝利条件になります。\n　より永く遊戯を楽しむべく強大な|鬼|の力を以って盛者を挫き、村人達に泥沼の闘いを演じさせるのです！",
@@ -1007,6 +1015,10 @@ class RoleMessageList{
   public $succubus_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。欲望の求めるままに、村の#男#を喰らい尽くすのです！",
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
+
+  public $power_yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|阿修羅|です。あなた自身の生存と生存陣営数を全陣営の半分以下にすることが勝利条件になります。",
+    'type' => 'yaksa');
 
   public $dowser_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|毘沙門天|です。あなた自身の生存とあなたよりサブ役職の所持数が多い人を全滅させることが勝利条件になります。\n　曰く、過ぎたるは、なお及ばざるが如し。力を持ち過ぎた者が大きな不幸を招く前に、その力を以って裁きを与えるのです！",
@@ -1537,6 +1549,7 @@ class RoleMessageList{
   public $result_sex_mage = array('message' => "さんは|ひよこ鑑定士|でした", 'type' => 'result_mage');
   public $result_stargazer_mage = array('message' => "さんは|占星術師|でした", 'type' => 'result_mage');
   public $result_voodoo_killer = array('message' => "さんは|陰陽師|でした", 'type' => 'result_mage');
+  public $result_cute_mage = array('message' => "さんは|萌占い師|でした", 'type' => 'result_mage');
   public $result_dummy_mage = array('message' => "さんは|夢見人|でした", 'type' => 'result_mage');
   public $result_necromancer = array('message' => "さんは|霊能者|でした", 'delimiter' => array('|' => 'necromancer'));
   public $result_soul_necromancer = array('message' => "さんは|雲外鏡|でした", 'type' => 'result_necromancer');
@@ -1550,6 +1563,7 @@ class RoleMessageList{
   public $result_bacchus_medium = array('message' => "さんは|神主|でした", 'type' => 'result_medium');
   public $result_seal_medium = array('message' => "さんは|封印師|でした", 'type' => 'result_medium');
   public $result_revive_medium = array('message' => "さんは|風祝|でした", 'type' => 'result_medium');
+  public $result_eclipse_medium = array('message' => "さんは|蝕巫女|でした", 'type' => 'result_medium');
   public $result_priest = array('message' => "さんは|司祭|でした", 'delimiter' => array('|' => 'priest'));
   public $result_bishop_priest = array('message' => "さんは|司教|でした", 'type' => 'result_priest');
   public $result_dowser_priest = array('message' => "さんは|探知師|でした", 'type' => 'result_priest');
@@ -1582,6 +1596,7 @@ class RoleMessageList{
   public $result_strong_poison = array('message' => "さんは|強毒者|でした", 'type' => 'result_poison');
   public $result_incubate_poison = array('message' => "さんは|潜毒者|でした", 'type' => 'result_poison');
   public $result_guide_poison = array('message' => "さんは|誘毒者|でした", 'type' => 'result_poison');
+  public $result_snipe_poison = array('message' => "さんは|狙毒者|でした", 'type' => 'result_poison');
   public $result_chain_poison = array('message' => "さんは|連毒者|でした", 'type' => 'result_poison');
   public $result_dummy_poison = array('message' => "さんは|夢毒者|でした", 'type' => 'result_poison');
   public $result_poison_cat = array('message' => "さんは|猫又|でした", 'type' => 'result_poison');
@@ -1764,6 +1779,7 @@ class RoleMessageList{
   public $result_north_ogre = array('message' => "さんは|水鬼|でした", 'type' => 'result_ogre');
   public $result_south_ogre = array('message' => "さんは|隠行鬼|でした", 'type' => 'result_ogre');
   public $result_incubus_ogre = array('message' => "さんは|般若|でした", 'type' => 'result_ogre');
+  public $result_wise_ogre = array('message' => "さんは|夜行鬼|でした", 'type' => 'result_ogre');
   public $result_power_ogre = array('message' => "さんは|星熊童子|でした", 'type' => 'result_ogre');
   public $result_revive_ogre = array('message' => "さんは|茨木童子|でした", 'type' => 'result_ogre');
   public $result_sacrifice_ogre = array('message' => "さんは|酒呑童子|でした", 'type' => 'result_ogre');
@@ -1771,6 +1787,7 @@ class RoleMessageList{
   public $result_betray_yaksa = array('message' => "さんは|夜叉丸|でした", 'type' => 'result_yaksa');
   public $result_cursed_yaksa = array('message' => "さんは|滝夜叉姫|でした", 'type' => 'result_yaksa');
   public $result_succubus_yaksa = array('message' => "さんは|荼枳尼天|でした", 'type' => 'result_yaksa');
+  public $result_power_yaksa = array('message' => "さんは|阿修羅|でした", 'type' => 'result_yaksa');
   public $result_dowser_yaksa = array('message' => "さんは|毘沙門天|でした", 'type' => 'result_yaksa');
   public $result_duelist = array('message' => "さんは|決闘者|でした", 'delimiter' => array('|' => 'duelist'));
   public $result_valkyrja_duelist = array('message' => "さんは|戦乙女|でした", 'type' => 'duelist');
@@ -1976,6 +1993,8 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('leader_common');
-#$builder->Output('fire_wolf');
+#$builder->Output('leader_common');
+#$builder->Output('snipe_poison');
 #$builder->Output('cursed_angel');
+$builder->Output('wise_ogre');
+#$builder->Output('power_yaksa');

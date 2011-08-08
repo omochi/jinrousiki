@@ -2,8 +2,8 @@
 /*
   ◆短気 (impatience)
   ○仕様
-  ・優先順位が低めの決定者相当
-  ・再投票になったらショック死する
+  ・処刑者決定：優先順位が低めの決定者相当
+  ・ショック死：再投票
 */
 class Role_impatience extends RoleVoteAbility{
   public $data_type = 'target';
@@ -12,7 +12,6 @@ class Role_impatience extends RoleVoteAbility{
   function __construct(){ parent::__construct(); }
 
   function FilterSuddenDeath(&$reason){
-    global $ROLES;
-    if($reason == '' && $ROLES->stack->vote_kill_uname == '') $reason = 'IMPATIENCE';
+    if($reason == '' && $this->GetVoteKillUname() == '')  $reason = 'IMPATIENCE';
   }
 }

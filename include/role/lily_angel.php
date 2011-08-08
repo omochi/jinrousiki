@@ -11,6 +11,6 @@ class Role_lily_angel extends Role{
   function AddLoversRole(&$role, $user, $flag){}
 
   function IsSympathy($lovers_a, $lovers_b){
-    return $lovers_a->sex == 'female' && $lovers_b->sex == 'female';
+    return $lovers_a->IsFemale() && $lovers_b->IsFemale();
   }
 }
