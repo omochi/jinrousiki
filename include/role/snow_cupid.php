@@ -11,7 +11,7 @@ class Role_snow_cupid extends RoleVoteAbility{
 
   function __construct(){ parent::__construct(); }
 
-  function AddLoversRole(&$role, $user, $flag){}
+  function GetRole($user, $flag){ return $this->GetActor()->GetID('lovers'); }
 
   function VoteAction(){
     global $USERS;

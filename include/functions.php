@@ -472,7 +472,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'full_cupid', 'change_mad', 'change_fanatic_mad', 'change_whisper_mad', 'duel', 'gray_random',
     'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate',
     'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
-    'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal');
+    'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;

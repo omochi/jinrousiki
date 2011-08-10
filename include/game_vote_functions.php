@@ -657,6 +657,8 @@ function AggregateVoteGameStart($force_start = false){
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_easy_list;
     elseif($ROOM->IsOption('sub_role_limit_normal'))
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_normal_list;
+    elseif($ROOM->IsOption('sub_role_limit_hard'))
+       $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_hard_list;
     else
       $sub_role_keys = array_keys($ROLE_DATA->sub_role_list);
     //PrintData($delete_role_list, 'DeleteRoleList');
@@ -2270,28 +2272,23 @@ function AggregateVoteNight($skip = false){
       $USERS->ByUname($target_uname)->AddRole($user->GetID($role));
     }
 
-    foreach($vote_data['MANIA_DO'] as $uname => $target_uname){ //神話マニア系の処理
+    foreach($vote_data['MANIA_DO'] as $uname => $target_uname){ //神話マニア陣営の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
       $ROLES->actor = $user;
+      $filter = $ROLES->Load('main_role', true);
       $target = $USERS->ByUname($target_uname); //対象者の情報を取得
       if($user->IsUnknownMania()){ //鵺系
 	$user->AddMainRole($target->user_no); //コピー先をセット
-
-	//共鳴者を追加
-	$role = $user->GetID('mind_friend');
-	$user->AddRole($role);
-
-	$ROLES->Load('main_role', true)->AddManiaRole(&$role); //追加役職を取得
-	$target->AddRole($role);
-	continue;
+	$user->AddRole($role = $user->GetID('mind_friend')); //共鳴者を追加
+	$target->AddRole($filter->AddRole($role)); //コピー先に役職を追加
       }
-
-      $result = $ROLES->Load('main_role', true)->Copy($target, $vote_data); //コピー処理
-      //コピー結果を出力
-      $str = $user->handle_name . "\t" . $target->handle_name . "\t" . $result;
-      $ROOM->SystemMessage($str, 'MANIA_RESULT');
+      else{ //神話マニア系
+	$str = $user->handle_name . "\t" . $target->handle_name . "\t" .
+	  $filter->Copy($target, $vote_data); //コピー結果
+	$ROOM->SystemMessage($str, 'MANIA_RESULT');
+      }
     }
 
     if(! $ROOM->IsOpenCast()){
@@ -2775,10 +2772,7 @@ function AggregateVoteNight($skip = false){
       $target = $USERS->ById($user->GetMainRoleTarget());
       //PrintData($target->DistinguishRoleGroup(), $user->uname);
       $ROLES->actor = $user;
-      $filter = $ROLES->Load('main_role', true);
-      $result = $filter->GetRole($target);
-      $user->ReplaceRole($target->GetID($user->main_role), $result);
-      $user->AddRole($filter->copied);
+      $result = $ROLES->Load('main_role', true)->ChangeRole($target);
       $ROOM->SystemMessage(str_repeat($user->handle_name . "\t", 2) . $result, 'MANIA_RESULT');
     }
   }

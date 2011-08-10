@@ -177,7 +177,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#brownie">座敷童子</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#brownie">座敷童子</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="fox.php#miasma_fox">蟲狐</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -691,7 +691,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

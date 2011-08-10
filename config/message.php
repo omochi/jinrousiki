@@ -1,8 +1,10 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β7
+  変更履歴 from Ver. 1.5.0β8
   + GameOptionMessage
-    - 追加：$topping_l、$boost_rate_c
+    - 追加：$boost_rate_d, $boost_rate_e, $sub_role_limit_hard
+  + GameOptionCaptionMessage
+    - 追加：$sub_role_limit_hard
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -351,6 +353,7 @@ class GameOptionMessage{
   public $sub_role_limit        = 'サブ役職制限';
   public $sub_role_limit_easy   = 'サブ役職制限：EASYモード';
   public $sub_role_limit_normal = 'サブ役職制限：NORMALモード';
+  public $sub_role_limit_hard   = 'サブ役職制限：HARDモード';
   public $secret_sub_role       = 'サブ役職を表示しない';
   public $duel                  = '決闘村';
   public $gray_random           = 'グレラン村';
@@ -408,6 +411,7 @@ class GameOptionCaptionMessage{
   public $no_sub_role           = 'サブ役職をつけない';
   public $sub_role_limit_easy   = 'サブ役職制限：EASYモード';
   public $sub_role_limit_normal = 'サブ役職制限：NORMALモード';
+  public $sub_role_limit_hard   = 'サブ役職制限：HARDモード';
   public $sub_role_limit_none   = 'サブ役職制限なし';
   public $secret_sub_role       = 'サブ役職が分からなくなります：闇鍋モード専用オプション';
 }

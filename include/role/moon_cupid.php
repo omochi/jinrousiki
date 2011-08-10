@@ -7,8 +7,8 @@
 class Role_moon_cupid extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddLoversRole(&$role, $user, $flag){
-    $role .= ' challenge_lovers';
+  function GetRole($user, $flag){
     if(! $this->IsSameUser($user->uname)) $this->GetActor()->AddRole($user->GetID('mind_receiver'));
+    return $this->GetActor()->GetID('lovers') . ' challenge_lovers';
   }
 }

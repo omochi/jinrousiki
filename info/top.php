@@ -28,5 +28,8 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
+  <li>サブ役職制限：HARDモード追加</li>
   <li>夜行鬼：鬼系の一種で、勝利条件は「自分自身の生存 + 共有者系・人狼系・妖狐系の全滅」</li>
+  <li>蛇姫：処刑投票先が恋人なら一定確率で熱病を付加する上位橋姫</li>
+  <li>人魚：処刑投票先が恋人なら自分に痛恨を付加してしまう劣化橋姫</li>
 </ul>

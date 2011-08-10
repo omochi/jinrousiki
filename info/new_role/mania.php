@@ -204,8 +204,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
-  <td><a href="human.php#poison_jealousy">毒橋姫</a></td>
-  <td></td>
+  <td><a href="human.php#miasma_jealousy">蛇姫</a></td>
+  <td>Ver. 1.5.0 β9～</td>
 </tr>
 <tr>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
@@ -396,8 +396,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
-  <td><a href="human.php#jealousy">橋姫</a></td>
-  <td></td>
+  <td><a href="human.php#critical_jealousy">人魚</a></td>
+  <td>Ver. 1.5.0 β9～</td>
 </tr>
 <tr>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>

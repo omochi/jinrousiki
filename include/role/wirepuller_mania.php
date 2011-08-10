@@ -7,5 +7,5 @@
 class Role_wirepuller_mania extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddManiaRole(&$role){ $role .= ' ' . $this->GetActor()->GetID('wirepuller_luck'); }
+  function AddRole($role){ return $role . ' ' . $this->GetActor()->GetID('wirepuller_luck'); }
 }

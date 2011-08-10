@@ -24,6 +24,6 @@ class Role_power_yaksa extends Role{
       $camp_list[$camp] = true;
       if($user->IsLive()) $live_list[$camp] = true;
     }
-    return count(array_keys($live_list)) <= ceil(count(array_keys($camp_list)) / 2);
+    return count($live_list) <= ceil(count($camp_list) / 2);
   }
 }

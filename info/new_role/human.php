@@ -2105,6 +2105,8 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#divorce_jealousy">縁切地蔵</a>
 <a href="#priest_jealousy">恋司祭</a>
 <a href="#poison_jealousy">毒橋姫</a>
+<a href="#miasma_jealousy">蛇姫</a>
+<a href="#critical_jealousy">人魚</a>
 </p>
 
 <h3 id="jealousy">橋姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22～]</h3>
@@ -2186,6 +2188,42 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#poison_group">埋毒者</a>の亜種ですが、恋人限定なので所属は橋姫系です。
+</pre>
+
+<h3 id="miasma_jealousy">蛇姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
+<pre>
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する上位橋姫。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+安珍・清姫伝説がモチーフです。
+</pre>
+
+<h3 id="critical_jealousy">人魚 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
+<pre>
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう劣化橋姫。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合は無効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+人魚姫がモチーフです。
 </pre>
 
 

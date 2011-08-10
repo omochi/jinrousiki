@@ -8,7 +8,7 @@
 class Role_sacrifice_mania extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddManiaRole(&$role){ $role .= ' ' . $this->GetActor()->GetID('protected'); }
+  function AddRole($role){ return $role . ' ' . $this->GetActor()->GetID('protected'); }
 
   function WolfEatResist(){ return true; }
 }

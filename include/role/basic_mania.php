@@ -10,9 +10,12 @@ class Role_basic_mania extends Role{
   function __construct(){ parent::__construct(); }
 
   function Copy($user, $vote_data){
-    $result = $user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup();
-    $this->GetActor()->ReplaceRole($this->role, $result);
+    return $this->ChangeRole($user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup());
+  }
+
+  private function ChangeRole($role){
+    $this->GetActor()->ReplaceRole($this->role, $role);
     $this->GetActor()->AddRole($this->copied);
-    return $result;
+    return $role;
   }
 }

@@ -7,9 +7,10 @@
 class Role_soul_patron extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddSupportedRole(&$role, $user){
+  function GetRole($user){
     global $ROOM;
     $str = $this->GetActor()->handle_name . "\t" . $user->handle_name . "\t" . $user->main_role;
     $ROOM->SystemMessage($str, 'PATRON_RESULT');
+    return $this->GetActor()->GetID('supported');
   }
 }

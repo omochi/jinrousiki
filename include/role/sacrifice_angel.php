@@ -9,8 +9,10 @@
 class Role_sacrifice_angel extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddLoversRole(&$role, $user, $flag){
+  function GetRole($user, $flag){
+    $role = $this->GetActor()->GetID('lovers');
     if(! $this->IsSameUser($user->uname)) $role .= ' ' . $this->GetActor()->GetID('protected');
+    return $role;
   }
 
   function IsSympathy($lovers_a, $lovers_b){ return true; }

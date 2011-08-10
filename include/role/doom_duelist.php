@@ -7,5 +7,5 @@
 class Role_doom_duelist extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddRivalRole(&$role, $user, $flag){ $role .= ' death_warrant[7]'; }
+  function GetRole($user){ return $this->GetActor()->GetID('rival') . ' death_warrant[7]'; }
 }

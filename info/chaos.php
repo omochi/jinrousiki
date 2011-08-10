@@ -20,6 +20,8 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#topping"><?php echo $GAME_OPT_MESS->topping ?></a>
 <a href="#boost_rate"><?php echo $GAME_OPT_MESS->boost_rate ?></a>
 <a href="#chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?></a>
+</p>
+<p>
 <a href="#sub_role_limit"><?php echo $GAME_OPT_MESS->sub_role_limit ?></a>
 <a href="#secret_sub_role"><?php echo $GAME_OPT_MESS->secret_sub_role ?></a>
 </p>
@@ -708,13 +710,17 @@ OutputInfoPageHeader('闇鍋モード');
 上位種3 (村人陣営1・人狼陣営1・他陣営1)
 
 村人：<a href="new_role/human.php#executor">執行者</a>・<a href="new_role/human.php#soul_mage">魂の占い師</a>・<a href="new_role/human.php#soul_necromancer">雲外鏡</a>・<a href="new_role/human.php#revive_medium">風祝</a>・<a href="new_role/human.php#high_priest">大司祭</a>・<a href="new_role/human.php#poison_guard">騎士</a>・<a href="new_role/human.php#ghost_common">亡霊嬢</a>・<a href="new_role/human.php#strong_poison">強毒者</a>・<a href="new_role/human.php#revive_cat">仙狸</a>
-　　　<a href="new_role/human.php#alchemy_pharmacist">錬金術師</a>・<a href="new_role/human.php#soul_assassin">辻斬り</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>・<a href="new_role/human.php#poison_jealousy">毒橋姫</a>・<a href="new_role/human.php#history_brownie">白澤</a>・<a href="new_role/human.php#soul_wizard">八卦見</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/human.php#divine_escaper">麒麟</a>
+　　　<a href="new_role/human.php#alchemy_pharmacist">錬金術師</a>・<a href="new_role/human.php#soul_assassin">辻斬り</a>・<a href="new_role/human.php#clairvoyance_scanner">猩々</a>・<a href="new_role/human.php#miasma_jealousy">蛇姫</a>・<a href="new_role/human.php#history_brownie">白澤</a>・<a href="new_role/human.php#soul_wizard">八卦見</a>・<a href="new_role/human.php#doll_master">人形遣い</a>・<a href="new_role/human.php#divine_escaper">麒麟</a>
 
 人狼：<a href="new_role/wolf.php#boss_wolf">白狼</a>・<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/wolf.php#tongue_wolf">舌禍狼</a>・<a href="new_role/wolf.php#possessed_wolf">憑狼</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a>・<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>
 
 他：<a href="new_role/fox.php#cursed_fox">天狐</a>・<a href="new_role/fox.php#jammer_fox">月狐</a>・<a href="new_role/lovers.php#minstrel_cupid">吟遊詩人</a>・<a href="new_role/lovers.php#sacrifice_angel">守護天使</a>・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/vampire.php#soul_vampire">吸血姫</a>
 　　<a href="new_role/chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="new_role/chiroptera.php#ice_fairy">氷妖精</a>・<a href="new_role/ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="new_role/ogre.php#dowser_yaksa">毘沙門天</a>・<a href="new_role/duelist.php#critical_duelist">剣闘士</a>・<a href="new_role/duelist.php#revive_avenger">夜刀神</a>・<a href="new_role/duelist.php#sacrifice_patron">身代わり地蔵</a>
 　　<a href="new_role/mania.php#soul_mania">覚醒者</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>
+</pre>
+<h4>Ver. 1.5.0 β9～</h4>
+<pre>
+村人：<a href="new_role/human.php#poison_jealousy">毒橋姫</a>→<a href="new_role/human.php#miasma_jealousy">蛇姫</a>
 </pre>
 <h4>Ver. 1.5.0 β4～</h4>
 <pre>
@@ -816,6 +822,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#no_sub_role"><?php echo $GAME_OPT_MESS->no_sub_role ?></a>
 <a href="#sub_role_limit_easy"><?php echo $GAME_OPT_MESS->sub_role_limit_easy ?></a>
 <a href="#sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?></a>
+<a href="#sub_role_limit_hard"><?php echo $GAME_OPT_MESS->sub_role_limit_hard ?></a>
 <a href="#sub_role_limit_none">サブ役職制限なし</a>
 </p>
 
@@ -831,7 +838,16 @@ OutputInfoPageHeader('闇鍋モード');
 
 <h3 id="sub_role_limit_normal"><?php echo $GAME_OPT_MESS->sub_role_limit_normal ?> [Ver. 1.4.0 β14～]</h3>
 <pre>
-<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>のみ出現します。
+<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#wisp_group">鬼火系</a>のみ出現します。
+</pre>
+<h4>Ver. 1.5.0 β9～</h4>
+<pre>
+<a href="new_role/sub_role.php#strong_voice_group">大声系</a> → <a href="new_role/sub_role.php#wisp_group">鬼火系</a>
+</pre>
+
+<h3 id="sub_role_limit_hard"><?php echo $GAME_OPT_MESS->sub_role_limit_hard ?> [Ver. 1.5.0 β9～]</h3>
+<pre>
+<a href="new_role/sub_role.php#decide_group">決定者系</a>・<a href="new_role/sub_role.php#authority_group">権力者系</a>・<a href="new_role/sub_role.php#upper_luck_group">雑草魂系</a>・<a href="new_role/sub_role.php#strong_voice_group">大声系</a>・<a href="new_role/sub_role.php#mind_read_group">サトラレ系</a>・<a href="new_role/sub_role.php#wisp_group">鬼火系</a>のみ出現します。
 </pre>
 
 <h3 id="sub_role_limit_none">サブ役職制限なし [Ver. 1.4.0 α1～]</h3>

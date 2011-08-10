@@ -20,7 +20,7 @@ class Role_soul_mania extends Role{
       'pharmacist'   => 'alchemy_pharmacist',
       'assassin'     => 'soul_assassin',
       'mind_scanner' => 'clairvoyance_scanner',
-      'jealousy'     => 'poison_jealousy',
+      'jealousy'     => 'miasma_jealousy',
       'brownie'      => 'history_brownie',
       'wizard'       => 'soul_wizard',
       'doll'         => 'doll_master',
@@ -48,8 +48,12 @@ class Role_soul_mania extends Role{
     return $user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup();
   }
 
-  function GetRole($user){
-    return $user->IsRoleGroup('mania', 'copied') ? 'human' :
-      $this->copy_list[$user->DistinguishRoleGroup()];
+  function ChangeRole($user){
+    $role = $user->IsRoleGroup('mania', 'copied') ? 'human' :
+      $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];
+
+    $this->GetActor()->ReplaceRole($this->role, $role);
+    $this->GetActor()->AddRole($this->copied);
+    return $role;
   }
 }

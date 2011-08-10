@@ -8,7 +8,9 @@
 class Role_sacrifice_patron extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddSupportedRole(&$role, $user){ $role .= ' ' . $this->GetActor()->GetID('protected'); }
+  function GetRole($user){
+    return $this->GetActor()->GetID('supported') . ' ' . $this->GetActor()->GetID('protected');
+  }
 
   function WolfEatResist(){ return true; }
 }

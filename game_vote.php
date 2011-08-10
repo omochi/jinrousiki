@@ -530,9 +530,7 @@ function VoteNight(){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
 
-	$role = $SELF->GetID('lovers'); //役職に恋人を追加
-	$filter->AddLoversRole($role, $target, $self_shoot); //特殊キューピッドの処理
-	$target->AddRole($role);
+	$target->AddRole($filter->GetRole($target, $self_shoot)); //役職追加
 	$target->ReparseRoles(); //再パース (魂移使判定用)
       }
 
@@ -580,19 +578,7 @@ function VoteNight(){
 	$uname_stack[]  = $target->uname;
 	$handle_stack[] = $target->handle_name;
 
-	if($is_duelist){
-	  $role = $SELF->GetID('rival'); //役職に宿敵を追加
-	  $filter->AddRivalRole($role, $target, $self_shoot); //特殊決闘者の処理
-	}
-	elseif($is_avenger){
-	  $role = $SELF->GetID('enemy'); //役職に仇敵を追加
-	  $filter->AddEnemyRole($role, $target); //特殊復讐者の処理
-	}
-	elseif($is_patron){
-	  $role = $SELF->GetID('supported'); //役職に受援者を追加
-	  $filter->AddSupportedRole($role, $target); //特殊後援者の処理
-	}
-	$target->AddRole($role);
+	$target->AddRole($filter->GetRole($target)); //役職をセット
       }
 
       $situation     = $RQ_ARGS->situation;

@@ -8,7 +8,7 @@
 class Role_cowboy_duelist extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddRivalRole(&$role, $user, $flag){}
+  function GetRole($user){ return $this->GetActor()->GetID('rival'); }
 
   function FilterVoteDo(&$vote_number){ $vote_number--; }
 }

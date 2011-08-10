@@ -249,7 +249,7 @@ class RoleMessageList{
     'type' => 'human', 'delimiter' => array('#' => 'common'));
 
   public $leader_common = array(
-    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#指導者#です。他の#共有者#が誰であるか知ることができます。また、二日目以降、夜の発言が全員に見えます。",
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#指導者#です。他の#共有者#が誰であるか知ることができます。また、二日目以降、夜の発言が全員に見えます。\n　あなたの声は村を動かす原動力。昼も夜も声を響かせ叫び続け、村人と共に歩み、勇気を与える『リーダー』であれ！",
     'type' => 'common');
 
   public $detective_common = array(
@@ -281,7 +281,7 @@ class RoleMessageList{
     'type' => 'poison');
 
   public $snipe_poison = array(
-    'message' => "[役割] [|村人|陣営] [#埋毒者#系]\n　あなたは#狙毒者#です。^処刑^された場合はあなたの^処刑^投票先の人と同じ陣営の人に#毒#が中ります。",
+    'message' => "[役割] [|村人|陣営] [#埋毒者#系]\n　あなたは#狙毒者#です。^処刑^された場合はあなたの^処刑^投票先の人と同じ陣営の人に#毒#が中ります。\n　敵対する者を狙い撃ち、その命を奪いましょう。自らの命を以って、敵を撃つ弾丸とするのです！",
     'type' => 'poison');
 
   public $poison_cat = array(
@@ -368,6 +368,14 @@ class RoleMessageList{
   public $divorce_jealousy = array(
     'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#縁切地蔵#です。あなたに^処刑^投票してきた_恋人_を一定確率で=恋色迷彩=にすることができます。\n　恋は得てして盲目。その言葉をも惑わし、幸せな時に終焉を。恋の終着を、その目で見届けるのです！",
     'type' => 'jealousy', 'delimiter' => array('=' => 'liar'));
+
+  public $miasma_jealousy = array(
+    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#蛇姫#です。^処刑^投票先が_恋人_だった場合は一定確率で:熱病:にさせることができます。",
+    'type' => 'jealousy');
+
+  public $critical_jealousy = array(
+    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#人魚#です。^処刑^投票先が_恋人_だった場合は自分に=痛恨=がついてしまいます。",
+    'type' => 'jealousy', 'delimiter' => array('=' => 'luck'));
 
   public $brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_^投票数^を +1 することができますが、あなたが_処刑_されたら誰か一人を:熱病:にしてしまいます。\n　その力で村を裕福にしてあげましょう。但しあなたが_処刑_されてしまうとたちまち村に不幸が訪れ、病に伏せる者がでてしまいます。",
@@ -817,7 +825,7 @@ class RoleMessageList{
     'delimiter' => array('^' => 'human', ':' => 'wolf', '=' => 'fox', '*' => 'doll'));
 
   public $cursed_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|堕天使|、_呪い_を持っています。初日の夜に誰か二人を|恋人|にして、その二人が別陣営ならさらに#共感者#にすることができます。\n　また、|恋人|に^処刑^投票されると:ショック死:してしまいます。",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|堕天使|、_呪い_を持っています。初日の夜に誰か二人を|恋人|にして、その二人が別陣営ならさらに#共感者#にすることができます。\n　また、|恋人|に^処刑^投票されると:ショック死:してしまいます。堕天したその身と矢を以って、繋がれし|恋人|達の勝利の礎となるのです！",
     'type' => 'angel', 'delimiter' => array('_' => 'wolf', '^' => 'vote', ':' => 'chicken'));
 
   public $quiz = array(
@@ -985,7 +993,7 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('_' => 'lovers'));
 
   public $wise_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|夜行鬼|です。^妖狐^の念話を感知することができます。あなた自身の生存と_共有者系_・#人狼系#・^妖狐系^の全滅が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|夜行鬼|です。^妖狐^の念話を感知することができます。あなた自身の生存と_共有者系_・#人狼系#・^妖狐系^の全滅が勝利条件になります。\n　首無し馬に跨って、あなたは夜をさまようだろう。夜に騒ぐモノを見つけては、永い夢を見させてやるといい。孤独があなたの伴侶だから。",
     'type' => 'ogre', 'delimiter' => array('_' => 'common', '^' => 'fox'));
 
   public $power_ogre = array(
@@ -1009,7 +1017,7 @@ class RoleMessageList{
     'type' => 'yaksa', 'delimiter' => array('#' => 'chiroptera', '_' => 'human'));
 
   public $cursed_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|滝夜叉姫|、#呪い#を持っています。あなた自身の生存と_占い師系_、^魔法使い系^の全滅が勝利条件になります。\n　一族郎党を滅ぼされ、陰陽の使い手に敗れたあなた。これは正当な復讐。荒御魂の声に導かれ、怨敵を討つのです。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|滝夜叉姫|、#呪い#を持っています。あなた自身の生存と_占い師系_・^魔法使い系^の全滅が勝利条件になります。\n　一族郎党を滅ぼされ、陰陽の使い手に敗れたあなた。これは正当な復讐。荒御魂の声に導かれ、敵を討つのです。",
     'type' => 'yaksa', 'delimiter' => array('#' => 'wolf', '_' => 'mage', '^' => 'wizard'));
 
   public $succubus_yaksa = array(
@@ -1017,7 +1025,7 @@ class RoleMessageList{
     'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
 
   public $power_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|阿修羅|です。あなた自身の生存と生存陣営数を全陣営の半分以下にすることが勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|阿修羅|です。あなた自身の生存と生存陣営数を全陣営の半分以下にすることが勝利条件になります。\n　あなたの眼前では、常に闘争がその道を塞ぎます。どんな手を使ってでも、闘いの果てへと辿り着くのです！",
     'type' => 'yaksa');
 
   public $dowser_yaksa = array(
@@ -1102,7 +1110,7 @@ class RoleMessageList{
 
   public $basic_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|求道者|です。初日の夜に指定した人のメイン役職の基本種に変化します。\n　夢にも惑わされず、蝕にも侵されず、ただひたすらに己の本分を全うするのです！",
-    'type' => 'mania', 'delimiter' => array('#' => 'human'));
+    'type' => 'mania');
 
   public $soul_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|覚醒者|です。初日の夜に指定した人と関連した能力に後日、目覚める事になります。\n　数日間、自らの内でその能力を育み、より強き力を持ったものとして新たに君臨するのです！",
@@ -1624,6 +1632,8 @@ class RoleMessageList{
   public $result_divorce_jealousy = array('message' => "さんは|縁切地蔵|でした", 'type' => 'result_jealousy');
   public $result_priest_jealousy = array('message' => "さんは|恋司祭|でした", 'type' => 'result_jealousy');
   public $result_poison_jealousy = array('message' => "さんは|毒橋姫|でした", 'type' => 'result_jealousy');
+  public $result_miasma_jealousy = array('message' => "さんは|蛇姫|でした", 'type' => 'result_jealousy');
+  public $result_critical_jealousy = array('message' => "さんは|人魚|でした", 'type' => 'result_jealousy');
   public $result_brownie = array('message' => "さんは|座敷童子|でした", 'delimiter' => array('|' => 'brownie'));
   public $result_sun_brownie = array('message' => "さんは|八咫烏|でした", 'type' => 'result_brownie');
   public $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
@@ -1993,8 +2003,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('leader_common');
-#$builder->Output('snipe_poison');
-#$builder->Output('cursed_angel');
-$builder->Output('wise_ogre');
-#$builder->Output('power_yaksa');
+#$builder->Output('miasma_jealousy');
+$builder->Output('critical_jealousy');
+#$builder->Output('cursed_yaksa');

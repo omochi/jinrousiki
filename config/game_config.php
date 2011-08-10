@@ -1,8 +1,9 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β7
+  変更履歴 from Ver. 1.5.0β8
   + RoomConfig
-    - 変更：$topping_list、$boost_rate_list
+    - 追加：$sub_role_limit_hard
+    - 変更：$boost_rate_list
 */
 //-- 村メンテナンス・作成設定 --//
 class RoomConfig{
@@ -193,8 +194,10 @@ class RoomConfig{
   public $sub_role_limit        = true; //サブ役職制限
   public $sub_role_limit_easy   = true; //サブ役職制限：EASYモード
   public $sub_role_limit_normal = true; //サブ役職制限：NORMALモード
+  public $sub_role_limit_hard   = true; //サブ役職制限：HARDモード
   public $no_sub_role           = true; //サブ役職をつけない
-  //サブ役職制限のデフォルト [NULL:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード]
+  //サブ役職制限のデフォルト
+  //[NULL:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード / hard:HARDモード]
   public $default_sub_role_limit = 'no'; //つけない (no_sub_role)
 
   //その他

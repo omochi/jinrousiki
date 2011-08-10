@@ -41,10 +41,10 @@ class RoleManager{
   public $vote_ability_list = array(
     'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'snipe_poison',
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
-    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'cursed_brownie', 'agitate_mad',
-    'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid', 'snow_cupid', 'quiz',
-    'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide',
-    'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
+    'cursed_brownie', 'agitate_mad', 'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid',
+    'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague',
+    'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -70,8 +70,9 @@ class RoleManager{
 
   //処刑投票能力処理 (順番依存あり)
   public $vote_action_list = array(
-    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'amaze_mad', 'miasma_mad',
-    'critical_mad', 'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid');
+    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'miasma_jealousy', 'critical_jealousy',
+    'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger', 'cursed_avenger', 'sweet_cupid',
+    'snow_cupid');
 
   //得票カウンター
   public $voted_reaction_list = array('trap_common', 'jealousy');

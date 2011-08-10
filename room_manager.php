@@ -248,14 +248,17 @@ function CreateRoom(){
       break;
 
     case 'chaos_open_cast':
+      if(! $ROOM_CONF->$option) continue 2;
       switch($target = $_POST[$option]){
       case 'full':
 	break 2;
 
       case 'camp':
       case 'role':
-	$option .= '_' . $target;
-	break 2;
+	if($ROOM_CONF->{'_' . $target}){
+	  $option .= '_' . $target;
+	  break 2;
+	}
       }
       continue 2;
 
@@ -264,6 +267,7 @@ function CreateRoom(){
       case 'no_sub_role':
       case 'sub_role_limit_easy':
       case 'sub_role_limit_normal':
+      case 'sub_role_limit_hard':
 	if($ROOM_CONF->$target){
 	  $option = $target;
 	  break 2;
@@ -744,11 +748,17 @@ function OutputRoomOptionChaos(){
       break;
 
     case 'camp':
-      $checked_chaos_open_cast_camp = ' id="chaos_open_cast" checked';
+      if($ROOM_CONF->chaos_open_cast_camp)
+	$checked_chaos_open_cast_camp = ' id="chaos_open_cast" checked';
+      else
+	$checked_chaos_open_cast_none = ' id="chaos_open_cast" checked';
       break;
 
     case 'role':
-      $checked_chaos_open_cast_role = ' id="chaos_open_cast" checked';
+      if($ROOM_CONF->chaos_open_cast_role)
+	$checked_chaos_open_cast_role = ' id="chaos_open_cast" checked';
+      else
+	$checked_chaos_open_cast_none = ' id="chaos_open_cast" checked';
       break;
 
     default:
@@ -756,19 +766,31 @@ function OutputRoomOptionChaos(){
       break;
     }
 
-    echo <<<EOF
+    $str = <<<EOF
 <tr>
 <td><label for="chaos_open_cast">{$GAME_OPT_MESS->chaos_open_cast}：</label></td>
 <td class="explain">
 <input type="radio" name="chaos_open_cast" value=""{$checked_chaos_open_cast_none}>
 {$GAME_OPT_CAPT->chaos_not_open_cast}<br>
 
+EOF;
+
+  if($ROOM_CONF->chaos_open_cast_camp){
+    $str .= <<<EOF
 <input type="radio" name="chaos_open_cast" value="camp"{$checked_chaos_open_cast_camp}>
 {$GAME_OPT_CAPT->chaos_open_cast_camp}<br>
 
+EOF;
+  }
+  if($ROOM_CONF->chaos_open_cast_role){
+    $str .= <<<EOF
 <input type="radio" name="chaos_open_cast" value="role"{$checked_chaos_open_cast_role}>
 {$GAME_OPT_CAPT->chaos_open_cast_role}<br>
 
+EOF;
+  }
+
+echo $str .= <<<EOF
 <input type="radio" name="chaos_open_cast" value="full"{$checked_chaos_open_cast_full}>
 {$GAME_OPT_CAPT->chaos_open_cast_full}
 </td>
@@ -780,15 +802,31 @@ EOF;
   if($ROOM_CONF->sub_role_limit){
     switch($ROOM_CONF->default_sub_role_limit){
     case 'no':
-      $checked_no_sub_role = ' id="sub_role_limit" checked';
+      if($ROOM_CONF->no_sub_role)
+	$checked_no_sub_role = ' id="sub_role_limit" checked';
+      else
+	$checked_sub_role_limit_none = ' id="sub_role_limit" checked';
       break;
 
     case 'easy':
-      $checked_sub_role_limit_easy = ' id="sub_role_limit" checked';
+      if($ROOM_CONF->sub_role_limit_easy)
+	$checked_sub_role_limit_easy = ' id="sub_role_limit" checked';
+      else
+	$checked_sub_role_limit_none = ' id="sub_role_limit" checked';
       break;
 
     case 'normal':
-      $checked_sub_role_limit_normal = ' id="sub_role_limit" checked';
+      if($ROOM_CONF->sub_role_limit_normal)
+	$checked_sub_role_limit_normal = ' id="sub_role_limit" checked';
+      else
+	$checked_sub_role_limit_none = ' id="sub_role_limit" checked';
+      break;
+
+    case 'hard':
+      if($ROOM_CONF->sub_role_limit_hard)
+	$checked_sub_role_limit_hard = ' id="sub_role_limit" checked';
+      else
+	$checked_sub_role_limit_none = ' id="sub_role_limit" checked';
       break;
 
     default:
@@ -796,19 +834,43 @@ EOF;
       break;
     }
 
-    echo <<<EOF
+    $str = <<<EOF
 <tr>
 <td><label for="sub_role_limit">{$GAME_OPT_MESS->sub_role_limit}：</label></td>
 <td class="explain">
+
+EOF;
+
+    if($ROOM_CONF->no_sub_role){
+      $str .= <<<EOF
 <input type="radio" name="sub_role_limit" value="no_sub_role"{$checked_no_sub_role}>
 {$GAME_OPT_CAPT->no_sub_role}<br>
 
+EOF;
+    }
+    if($ROOM_CONF->sub_role_limit_easy){
+      $str .= <<<EOF
 <input type="radio" name="sub_role_limit" value="sub_role_limit_easy"{$checked_sub_role_limit_easy}>
 {$GAME_OPT_CAPT->sub_role_limit_easy}<br>
 
+EOF;
+    }
+    if($ROOM_CONF->sub_role_limit_normal){
+      $str .= <<<EOF
 <input type="radio" name="sub_role_limit" value="sub_role_limit_normal"{$checked_sub_role_limit_normal}>
 {$GAME_OPT_CAPT->sub_role_limit_normal}<br>
 
+EOF;
+    }
+    if($ROOM_CONF->sub_role_limit_hard){
+      $str .= <<<EOF
+<input type="radio" name="sub_role_limit" value="sub_role_limit_hard"{$checked_sub_role_limit_hard}>
+{$GAME_OPT_CAPT->sub_role_limit_hard}<br>
+
+EOF;
+    }
+
+    echo $str .= <<<EOF
 <input type="radio" name="sub_role_limit" value=""{$checked_sub_role_limit_none}>
 {$GAME_OPT_CAPT->sub_role_limit_none}<br>
 </td>

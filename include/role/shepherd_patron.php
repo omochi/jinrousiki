@@ -7,5 +7,7 @@
 class Role_shepherd_patron extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddSupportedRole(&$role, $user){ $role .= ' ' . $this->GetActor()->GetID('mind_sheep'); }
+  function GetRole($user){
+    return $this->GetActor()->GetID('supported') . ' ' . $this->GetActor()->GetID('mind_sheep');
+  }
 }

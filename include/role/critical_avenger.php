@@ -11,7 +11,7 @@ class Role_critical_avenger extends RoleVoteAbility{
 
   function __construct(){ parent::__construct(); }
 
-  function AddEnemyRole(&$role, $user){}
+  function GetRole($user){ return $this->GetActor()->GetID('enemy'); }
 
   function VoteAction(){
     global $USERS;

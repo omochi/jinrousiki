@@ -8,8 +8,8 @@
 class Role_critical_patron extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddSupportedRole(&$role, $user){
-    $role .= ' ' . $this->GetActor()->GetID('occupied_luck');
+  function GetRole($user){
+    return $this->GetActor()->GetID('supported') . ' ' . $this->GetActor()->GetID('occupied_luck');
   }
 
   function FilterVoted(&$voted_number){

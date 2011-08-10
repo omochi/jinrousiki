@@ -1,8 +1,11 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β7
+  変更履歴 from Ver. 1.5.0β8
   + 変更
-    - $chaos_hyper_random_role_list, $topping_list, $boost_rate_list
+    - $chaos_hyper_random_role_list, $topping_list, $boost_rate_list,
+      $chaos_sub_role_limit_normal_list
+  + 追加
+    - $chaos_sub_role_limit_hard_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -376,10 +379,12 @@ class CastConfig extends CastConfigBase{
     'whisper_scanner'      =>  2,
     'howl_scanner'         =>  2,
     'telepath_scanner'     =>  2,
-    'jealousy'             =>  3,
-    'divorce_jealousy'     =>  3,
+    'jealousy'             =>  2,
+    'divorce_jealousy'     =>  2,
     'priest_jealousy'      =>  2,
-    'poison_jealousy'      =>  2,
+    'poison_jealousy'      =>  1,
+    'miasma_jealousy'      =>  1,
+    'critical_jealousy'    =>  2,
     'brownie'              =>  2,
     'sun_brownie'          =>  2,
     'revive_brownie'       =>  2,
@@ -750,10 +755,12 @@ class CastConfig extends CastConfigBase{
 		 'count' => array(1, 1, 1)),
     'h' => array('fix' => array('human' => 2)),
     'i' => array('random' => array(
-		   array('jealousy'         => 4,
-			 'divorce_jealousy' => 3,
-			 'priest_jealousy'  => 2,
-			 'poison_jealousy'  => 1),
+		   array('jealousy'          => 30,
+			 'divorce_jealousy'  => 20,
+			 'priest_jealousy'   => 15,
+			 'poison_jealousy'   => 10,
+			 'miasma_jealousy'   =>  5,
+			 'critical_jealousy' => 20),
                    array('cupid'           => 10,
 			 'self_cupid'      =>  8,
 			 'moon_cupid'      =>  5,
@@ -803,7 +810,7 @@ class CastConfig extends CastConfigBase{
 			 'alchemy_pharmacist'   => 6,
 			 'soul_assassin'        => 4,
 			 'clairvoyance_scanner' => 6,
-			 'poison_jealousy'      => 6,
+			 'miasma_jealousy'      => 6,
 			 'history_brownie'      => 6,
 			 'soul_wizard'          => 6,
 			 'doll_master'          => 8,
@@ -837,27 +844,30 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('cute_mage'      => 7,
-		 'eclipse_medium' => 8,
-		 'leader_common'  => 8,
-		 'snipe_poison'   => 6,
-		 'wise_ogre'      => 9,
-		 'power_yaksa'    => 9),
-    'b' => array('elder'            => 0,
-		 'scripter'         => 0,
-		 'elder_guard'      => 0,
-		 'brownie'          => 0,
-		 'divine_escaper'   => 0,
-		 'elder_wolf'       => 0,
-		 'elder_fox'        => 0,
-		 'elder_chiroptera' => 0,
-		 'critical_mad'     => 0,
-		 'poison_ogre'      => 0,
-		 'critical_duelist' => 0,
-		 'cowboy_duelist'   => 0,
-		 'critical_avenger' => 0,
-		 'critical_patron'  => 0,
-		 'wirepuller_mania' => 0),
+    'a' => array('cute_mage'         => 7,
+		 'eclipse_medium'    => 8,
+		 'leader_common'     => 8,
+		 'snipe_poison'      => 6,
+		 'miasma_jealousy'   => 9,
+		 'critical_jealousy' => 6,
+		 'wise_ogre'         => 9,
+		 'power_yaksa'       => 9),
+    'b' => array('elder'             => 0,
+		 'scripter'          => 0,
+		 'elder_guard'       => 0,
+		 'critical_jealousy' => 0,
+		 'brownie'           => 0,
+		 'divine_escaper'    => 0,
+		 'elder_wolf'        => 0,
+		 'elder_fox'         => 0,
+		 'elder_chiroptera'  => 0,
+		 'critical_mad'      => 0,
+		 'poison_ogre'       => 0,
+		 'critical_duelist'  => 0,
+		 'cowboy_duelist'    => 0,
+		 'critical_avenger'  => 0,
+		 'critical_patron'   => 0,
+		 'wirepuller_mania'  => 0),
     'c' => array('human'         => 0,
 		 'mage'          => 0,
 		 'necromancer'   => 0,
@@ -915,8 +925,16 @@ class CastConfig extends CastConfigBase{
     'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority',
     'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter', 'rebel',
     'watcher', 'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck', 'random_luck',
+    'wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp');
+
+  //サブ役職制限：HARDモード
+  public $chaos_sub_role_limit_hard_list = array(
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority',
+    'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter', 'rebel',
+    'watcher', 'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck', 'random_luck',
     'strong_voice', 'normal_voice', 'weak_voice', 'upper_voice', 'downer_voice', 'inside_voice',
-    'outside_voice', 'random_voice');
+    'outside_voice', 'random_voice', 'mind_open', 'wisp', 'black_wisp', 'spell_wisp',
+    'foughten_wisp', 'gold_wisp');
 
   //お祭り村専用配役テーブル
   public $festival_role_list = array(

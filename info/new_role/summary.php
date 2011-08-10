@@ -2612,6 +2612,24 @@ Ver. 1.5.0
   <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#common_group">共有者系</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php#fox_group">妖狐系</a>の全滅」。</td>
   <td>Ver. 1.5.0 β9</td>
 </tr>
+<tr>
+  <td><a href="human.php#miasma_jealousy">蛇姫</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#jealousy_group">橋姫系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率で<a href="sub_role.php#febris">熱病</a>を付加する上位橋姫。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
+<tr>
+  <td><a href="human.php#critical_jealousy">人魚</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#jealousy_group">橋姫系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう劣化橋姫。</td>
+  <td>Ver. 1.5.0 β9</td>
+</tr>
 </table>
 
 <table id="sub_role">

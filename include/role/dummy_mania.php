@@ -20,7 +20,7 @@ class Role_dummy_mania extends Role{
       'pharmacist'   => 'centaurus_pharmacist',
       'assassin'     => 'eclipse_assassin',
       'mind_scanner' => 'mind_scanner',
-      'jealousy'     => 'jealousy',
+      'jealousy'     => 'critical_jealousy',
       'brownie'      => 'brownie',
       'wizard'       => 'astray_wizard',
       'doll'         => 'silver_doll',
@@ -48,8 +48,12 @@ class Role_dummy_mania extends Role{
     return $user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup();
   }
 
-  function GetRole($user){
-    return $user->IsRoleGroup('mania', 'copied') ? 'human' :
-      $this->copy_list[$user->DistinguishRoleGroup()];
+  function ChangeRole($user){
+    $role = $user->IsRoleGroup('mania', 'copied') ? 'human' :
+      $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];
+
+    $this->GetActor()->ReplaceRole($this->role, $role);
+    $this->GetActor()->AddRole($this->copied);
+    return $role;
   }
 }

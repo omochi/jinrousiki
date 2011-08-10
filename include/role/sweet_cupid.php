@@ -11,8 +11,8 @@ class Role_sweet_cupid extends RoleVoteAbility{
 
   function __construct(){ parent::__construct(); }
 
-  function AddLoversRole(&$role, $user, $flag){
-    $role .= ' ' . $this->GetActor()->GetID('mind_friend');
+  function GetRole($user, $flag){
+    return $this->GetActor()->GetID('lovers') . ' ' . $this->GetActor()->GetID('mind_friend');
   }
 
   function VoteAction(){

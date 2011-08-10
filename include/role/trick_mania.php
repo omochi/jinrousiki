@@ -10,29 +10,22 @@ class Role_trick_mania extends Role{
   function __construct(){ parent::__construct(); }
 
   function Copy($user, $vote_data){
-    $flag = false;
-    if($user->IsRoleGroup('mania')){ //神話マニア陣営を選択した場合は村人
-      $result = 'human';
-      $flag = true;
+    if($user->IsRoleGroup('mania')) return $this->ChangeRole('human'); //神話マニア陣営は村人固定
+
+    $role = $user->main_role;
+    if($user->IsRole('widow_priest', 'revive_priest')) return $this->ChangeRole($role); //例外判定
+
+    foreach($vote_data as $stack){ //交換コピー判定
+      if(array_key_exists($user->uname, $stack)) return $this->ChangeRole($role);
     }
-    elseif($user->IsRole('widow_priest', 'revive_priest')){ //未亡人・天人は交換コピー対象外
-      $result = $user->main_role;
-      $flag = true;
-    }
-    else{
-      foreach($vote_data as $stack){ //交換コピー判定
-	if(array_key_exists($user->uname, $stack)){
-	  $flag = true;
-	  break;
-	}
-      }
-      $result = $user->main_role;
-    }
-    $this->GetActor()->ReplaceRole($this->role, $result);
+    if(! $user->IsDummyBoy()) $user->ReplaceRole($role, $user->DistinguishRoleGroup());
+
+    return $this->ChangeRole($role);
+  }
+
+  private function ChangeRole($role){
+    $this->GetActor()->ReplaceRole($this->role, $role);
     $this->GetActor()->AddRole($this->copied);
-    if(! $flag && ! $user->IsDummyBoy()){
-      $user->ReplaceRole($user->main_role, $user->DistinguishRoleGroup());
-    }
-    return $result;
+    return $role;
   }
 }

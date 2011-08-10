@@ -34,6 +34,7 @@ $RQ_ARGS->TestItems->test_room['game_option'] .= ' chaos_hyper';
 $RQ_ARGS->TestItems->test_room['option_role'] .= ' chaos_open_cast_camp';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' sub_role_limit_easy';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' sub_role_limit_normal';
+#$RQ_ARGS->TestItems->test_room['option_role'] .= ' sub_role_limit_hard';
 $RQ_ARGS->TestItems->is_virtual_room = true;
 $RQ_ARGS->vote_times = 1;
 $RQ_ARGS->TestItems->test_users = array();
