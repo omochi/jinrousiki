@@ -1,10 +1,14 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β8
+  変更履歴 from Ver. 1.5.0β9
+  + Message
+    - 変更：$fox_dead, $reporter_duty, $jealosy
   + GameOptionMessage
-    - 追加：$boost_rate_d, $boost_rate_e, $sub_role_limit_hard
+    - 追加：$full_mad, $full_quiz, $full_vampire, $full_unknown_mania, $change_common,
+            $change_hermit_common, $change_immolate_mad
   + GameOptionCaptionMessage
-    - 追加：$sub_role_limit_hard
+    - 追加：$change_common
+    - 変更：$open_day
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -91,10 +95,10 @@ class Message{
   public $possessed_reset    = 'は憑依から開放されたようです'; //憑依リセット
   public $dream_killed       = 'は獏の餌食になったようです'; //夢食い
   public $trapped            = 'は罠にかかって死亡したようです'; //罠
-  public $fox_dead           = '(妖狐) は占い師に呪い殺されたようです'; //呪殺
+  public $fox_dead           = 'は占い師に呪い殺されたようです'; //呪殺
   public $cursed             = 'は呪詛に呪い殺されたようです'; //呪返し
   public $hunted             = 'は狩人に狩られたようです'; //狩人の狩り
-  public $reporter_duty      = '(ブン屋) は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
+  public $reporter_duty      = 'は人外を尾行してしまい、襲われたようです'; //ブン屋の殉職
   public $escaper_dead       = 'は逃亡に失敗したようです'; //逃亡失敗
   public $poison_dead        = 'は毒に冒され死亡したようです'; //毒
   public $vampire_killed     = 'は血を吸い尽くされたようです'; //吸血
@@ -120,7 +124,7 @@ class Message{
   public $panelist           = 'は解答者 (不正解) だったようです'; //解答者
   public $sealed             = 'は封印されたようです'; //封印師
   public $drunk              = 'は神主に酔い潰されたようです'; //神主
-  public $jealousy           = '(恋人) は橋姫に妬まれたようです'; //橋姫
+  public $jealousy           = 'は橋姫に妬まれたようです'; //橋姫
   public $agitated           = 'は扇動に巻き込まれたようです'; //扇動者
   public $followed           = 'は道連れにされたようです'; //舟幽霊
   public $febris             = 'は熱病にかかったようです'; //熱病
@@ -316,12 +320,19 @@ class GameOptionMessage{
   public $weather               = '天候あり';
   public $festival              = 'お祭り村';
   public $replace_human         = '村人置換村';
-  public $full_mania            = '神話マニア村';
+  public $full_mad              = '狂人村';
   public $full_chiroptera       = '蝙蝠村';
   public $full_cupid            = 'キューピッド村';
+  public $full_quiz             = '出題者村';
+  public $full_vampire          = '吸血鬼村';
+  public $full_mania            = '神話マニア村';
+  public $full_unknown_mania    = '鵺村';
+  public $change_common         = '共有者置換村';
+  public $change_hermit_common  = '隠者村';
   public $change_mad            = '狂人置換村';
   public $change_fanatic_mad    = '狂信者村';
   public $change_whisper_mad    = '囁き狂人村';
+  public $change_immolate_mad   = '殉教者村';
   public $special_role          = '特殊配役モード';
   public $chaos                 = '闇鍋モード';
   public $chaosfull             = '真・闇鍋モード';
@@ -367,7 +378,7 @@ class GameOptionCaptionMessage{
   public $real_time             = '制限時間が実時間で消費されます';
   public $wait_morning          = '夜が明けてから一定時間の間発言ができません';
   public $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
-  public $open_day              = 'ゲームが1日目の「昼」からスタートします';
+  public $open_day              = 'ゲームが1日目「昼」からスタートします';
   public $no_dummy_boy          = '身代わり君なし';
   public $dummy_boy             = '身代わり君あり (初日の夜、身代わり君が狼に食べられます)';
   public $gm_login              = '仮想 GM が身代わり君としてログインします';
@@ -400,6 +411,7 @@ class GameOptionCaptionMessage{
   public $weather               = '「天候」と呼ばれる特殊イベントが発生します';
   public $festival              = '管理人がカスタムする特殊設定です';
   public $replace_human         = '「村人」が全員特定の役職に入れ替わります';
+  public $change_common         = '「共有者」が全員特定の役職に入れ替わります';
   public $change_mad            = '「狂人」が全員特定の役職に入れ替わります';
   public $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   public $topping               = '固定配役に追加する役職セットです';

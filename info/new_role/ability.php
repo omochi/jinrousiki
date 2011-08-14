@@ -142,7 +142,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
 <pre>
-<a href="human.php#miasma_jealousy">蛇姫</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="chiroptera.php#ice_fairy">氷妖精</a>)
+<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#miasma_jealousy">蛇姫</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="chiroptera.php#ice_fairy">氷妖精</a>)
 <a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="lovers.php#moon_cupid">かぐや姫</a>(<a href="sub_role.php#challenge_lovers">難題</a>)・<a href="lovers.php#snow_cupid">寒戸婆</a>(<a href="sub_role.php#frostbite">凍傷</a>)
 <a href="chiroptera.php#ice_fairy">氷妖精</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="#doom">死の宣告能力者</a>(<a href="sub_role.php#death_warrant">死の宣告</a>)
 </pre>

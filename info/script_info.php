@@ -78,7 +78,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_icon">ユーザの似顔絵などを表すユーザアイコンを自由にアップロードできます</h3>
 <div class="info">
-<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php echo $USER_ICON->IconSizeMax() . '、容量 ' . $USER_ICON->IconFileSizeMax() ?> ] のファイルをアップロードできます。<br>
+<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php echo $USER_ICON->MaxIconSize() . '、容量 ' . $USER_ICON->MaxFileSize() ?> ] のファイルをアップロードできます。<br>
 登録数の上限は [ <?php echo $USER_ICON->number ?>個 ] です。
 </div>
 
@@ -185,13 +185,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_max_user">村の最大人数を制限できます</h3>
 <div class="info">
-<?php
-$str = '[ ' . implode('人・', $ROOM_CONF->max_user_list);
-$min_user = min(array_keys($CAST_CONF->role_list));
-$str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
-$str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
-echo $str;
-?>
+<?php OutputMaxUser() ?>
 </div>
 
 <h3 id="difference_active_room">同時稼働できる村の数 [Ver. 1.4.0 α19～]</h3>
@@ -230,13 +224,7 @@ echo $str;
 初日の夜に一度も発言することなく人狼に襲われて、ゲームに参加したとはいえない！と思ったことはありませんか？<br>
 村を作成するときに「<a href="game_option.php#dummy_boy">初日の夜は身代わり君</a>」にチェックを入れると初日の夜、人狼は身代わり君しか襲えないようになります。<br>
 身代わり君はプレイヤーが操作するのではなく、初日に襲われる為だけに存在します。<br>
-割り当てられる役割は [ <?php
-$stack = array('人狼', '妖狐');
-foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
-  $stack[] = $ROLE_DATA->main_role_list[$role];
-}
-echo implode($stack, '・');
-?> ] 以外のどれかランダムに設定されます。
+割り当てられる役割は [ <?php OutputDisableDummyBoyRole() ?> ] 以外のどれかランダムに設定されます。
 </div>
 
 <h3 id="difference_real_time">リアルタイム制オプション</h3>

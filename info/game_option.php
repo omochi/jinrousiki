@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
-$INIT_CONF->LoadClass('CAST_CONF', 'GAME_OPT_CAPT');
+$INIT_CONF->LoadClass('ROLE_DATA', 'CAST_CONF', 'GAME_OPT_CAPT');
 OutputInfoPageHeader('ゲームオプション');
 ?>
 <p>
@@ -136,43 +136,43 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h3 id="poison"><?php echo $GAME_OPT_MESS->poison ?></h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->poison ?>人以上になったら<a href="new_role/human.php#poison">埋毒者</a>が登場します</li>
+<li><?php OutputAddRole('poison') ?></li>
 <li><?php echo $GAME_OPT_CAPT->poison ?></li>
 </ul>
 
 <h3 id="assassin"><?php echo $GAME_OPT_MESS->assassin ?> [Ver. 1.4.0 β4～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->assassin ?>人以上になったら<a href="new_role/human.php#assassin">暗殺者</a>が登場します</li>
+<li><?php OutputAddRole('assassin') ?></li>
 <li><?php echo $GAME_OPT_CAPT->assassin ?></li>
 </ul>
 
 <h3 id="boss_wolf"><?php echo $GAME_OPT_MESS->boss_wolf ?> [Ver. 1.4.0 α3-7～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->boss_wolf ?>人以上になったら<a href="new_role/wolf.php#boss_wolf">白狼</a>が登場します</li>
+<li><?php OutputAddRole('boss_wolf') ?></li>
 <li><?php echo $GAME_OPT_CAPT->boss_wolf ?></li>
 </ul>
 
 <h3 id="poison_wolf"><?php echo $GAME_OPT_MESS->poison_wolf ?> [Ver. 1.4.0 α14～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->poison_wolf ?>人以上になったら<a href="new_role/wolf.php#poison_wolf">毒狼</a>が登場します</li>
+<li><?php OutputAddRole('poison_wolf') ?></li>
 <li><?php echo $GAME_OPT_CAPT->poison_wolf ?></li>
 </ul>
 
 <h3 id="possessed_wolf"><?php echo $GAME_OPT_MESS->possessed_wolf ?> [Ver. 1.4.0 β4～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->possessed_wolf ?>人以上になったら<a href="new_role/wolf.php#possessed_wolf">憑狼</a>が登場します</li>
+<li><?php OutputAddRole('possessed_wolf') ?></li>
 <li><?php echo $GAME_OPT_CAPT->possessed_wolf ?></li>
 </ul>
 
 <h3 id="sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?> [Ver. 1.4.0 β9～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->sirius_wolf ?>人以上になったら<a href="new_role/wolf.php#sirius_wolf">天狼</a>が登場します</li>
+<li><?php OutputAddRole('sirius_wolf') ?></li>
 <li><?php echo $GAME_OPT_CAPT->sirius_wolf ?></li>
 </ul>
 
 <h3 id="cupid"><?php echo $GAME_OPT_MESS->cupid ?> [Ver. 1.2.0～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->cupid ?>人以上になったら<a href="new_role/lovers.php#cupid">キューピッド</a>が登場します</li>
+<li><?php OutputAddRole('cupid') ?></li>
 <li><?php echo $GAME_OPT_CAPT->cupid ?></li>
 </ul>
 <h4>Ver. 1.4.0 β17～</h4>
@@ -182,26 +182,26 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h3 id="medium"><?php echo $GAME_OPT_MESS->medium ?> [Ver. 1.4.0 α14～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->medium ?>人以上になったら<a href="new_role/human.php#medium">巫女</a>が登場します</li>
+<li><?php OutputAddRole('medium') ?></li>
 <li><?php echo $GAME_OPT_CAPT->medium ?></li>
 </ul>
 
 <h3 id="mania"><?php echo $GAME_OPT_MESS->mania ?> [Ver. 1.4.0 α14～]</h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->mania ?>人以上になったら<a href="new_role/mania.php#mania">神話マニア</a>が登場します</li>
+<li><?php OutputAddRole('mania') ?></li>
 <li><?php echo $GAME_OPT_CAPT->mania ?></li>
 </ul>
 
 <h3 id="decide"><?php echo $GAME_OPT_MESS->decide ?></h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->decide ?>人以上になったら<a href="new_role/sub_role.php#decide">決定者</a>が登場します</li>
+<li><?php OutputAddRole('decide') ?></li>
 <li><?php echo $GAME_OPT_CAPT->decide ?></li>
 <li>自分が決定者であることはわかりません</li>
 </ul>
 
 <h3 id="authority"><?php echo $GAME_OPT_MESS->authority ?></h3>
 <ul>
-<li>村の人口が<?php echo $CAST_CONF->authority ?>人以上になったら<a href="new_role/sub_role.php#authority">権力者</a>が登場します</li>
+<li><?php OutputAddRole('authority') ?></li>
 <li><?php echo $GAME_OPT_CAPT->authority ?></li>
 <li>自分が権力者であることはわかります</li>
 </ul>
@@ -223,15 +223,23 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#joker"><?php echo $GAME_OPT_MESS->joker ?></a>
 <a href="#weather"><?php echo $GAME_OPT_MESS->weather ?></a>
 <a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>
-<a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a>
-<a href="#full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a>
-<a href="#full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a>
-<a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>
 </p>
 <p>
+<a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a>
+<a href="#full_mad"><?php echo $GAME_OPT_MESS->full_mad ?></a>
+<a href="#full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a>
+<a href="#full_quiz"><?php echo $GAME_OPT_MESS->full_quiz ?></a>
+<a href="#full_vampire"><?php echo $GAME_OPT_MESS->full_vampire ?></a>
+<a href="#full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?></a>
+<a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>
+<a href="#full_unknown_mania"><?php echo $GAME_OPT_MESS->full_unknown_mania ?></a>
+<p>
+<a href="#change_common"><?php echo $GAME_OPT_MESS->change_common ?></a>
+<a href="#change_hermit_common"><?php echo $GAME_OPT_MESS->change_hermit_common ?></a>
 <a href="#change_mad"><?php echo $GAME_OPT_MESS->change_mad ?></a>
 <a href="#change_fanatic_mad"><?php echo $GAME_OPT_MESS->change_fanatic_mad ?></a>
 <a href="#change_whisper_mad"><?php echo $GAME_OPT_MESS->change_whisper_mad ?></a>
+<a href="#change_immolate_mad"><?php echo $GAME_OPT_MESS->change_immolate_mad ?></a>
 </p>
 
 <h3 id="detective"><?php echo $GAME_OPT_MESS->detective ?> [Ver. 1.4.0 β10～]</h3>
@@ -316,23 +324,8 @@ OutputInfoPageHeader('ゲームオプション');
 <li>編成の初期設定はバージョンアップ時に変更される事があります</li>
 <li><a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a>・<a href="#special_role_option">特殊配役設定</a>は無効になります</li>
 </ul>
+<?php OutputFestivalList() ?>
 <pre>
- 8人：村人2　占い師1　霊能者1　人狼1　狂人1　囁き狂人1　妖狐1
- 9人：村人3　狩人3　人狼2　蝙蝠1
-10人：村人2　占い師1　霊能者1　狩人1　逃亡者1　人狼2　狂人1　妖狐1
-11人：賢狼1　月兎7　九尾2　妖精1
-12人：村人5　占い師1　霊能者1　狩人1　人狼2　狂人1　吸血鬼1
-13人：村人4　占い師1　霊能者1　狩人1　上海人形1　人形遣い1　人狼2　狂信者1　蝙蝠1
-14人：村人6　占い師1　霊能者1　狩人1　共有者1　人狼2　狂人1　月兎1
-15人：埋毒者3　人狼3　狂信者1　妖狐1　蝙蝠6　大蝙蝠1
-16人：村人7　占い師1　霊能者1　狩人1　共有者2　人狼3　囁き狂人1
-17人：村人6　占い師1　霊能者1　狩人1　共有者2　逃亡者1　人狼3　狂人1　妖狐1
-18人：村人7　占い師1　霊能者1　狩人1　共有者2　人狼3　狂人1　妖狐1　吸血鬼1
-19人：村人7　占い師1　霊能者1　狩人1　共有者2　猫又1　人狼4　狂人1　妖狐1
-20人：村人5　占い師1　霊能者1　狩人1　共有者2　上海人形1　人形遣い1　人狼4　狂信者1　妖狐1　子狐1　蝙蝠1
-21人：埋毒者7　連毒者2　毒狼4　抗毒狼1　管狐2　出題者3　毒蝙蝠2
-22人：村人8　占い師1　霊能者1　狩人1　共有者2　猫又1　人狼4　白狼1　狂人1　妖狐1　子狐1
-
 出展：
  9人：狩人村 (特殊F) ＠桃栗鯖
 10人：逃亡者村 (特殊R) ＠桃栗鯖
@@ -350,14 +343,28 @@ OutputInfoPageHeader('ゲームオプション');
 <li><?php echo $GAME_OPT_CAPT->replace_human ?></li>
 <li><a href="#full_mania"><?php echo $GAME_OPT_MESS->full_mania ?></a>を拡張して実装したオプションです</li>
 <li>表記が村人となる役職が存在する事に注意してください</li>
-<li>「<?php echo $GAME_OPT_MESS->replace_human ?>」は管理人がカスタムすることを前提にしたオプションです<br>
-  現在の初期設定は全員<a href="new_role/human.php#escaper">逃亡者</a>になります
-</li>
+<li>「<?php echo $GAME_OPT_MESS->replace_human ?>」<?php OutputReplaceRole('replace_human') ?></li>
+</ul>
+
+<h4 id="full_mad"><?php echo $GAME_OPT_MESS->full_mad ?> [Ver. 1.5.0 β10～]</h4>
+<ul>
+<li>村人が全員<a href="new_role/wolf.php#mad">狂人</a>になります</li>
+<li><a href="#change_mad"><?php echo $GAME_OPT_MESS->change_mad ?></a>より先に処理されます</li>
 </ul>
 
 <h4 id="full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?> [Ver. 1.4.0 β14～]</h4>
 <ul>
 <li>村人が全員<a href="new_role/lovers.php#cupid">キューピッド</a>になります</li>
+</ul>
+
+<h4 id="full_quiz"><?php echo $GAME_OPT_MESS->full_quiz ?> [Ver. 1.5.0 β10～]</h4>
+<ul>
+<li>村人が全員<a href="new_role/quiz.php#quiz">出題者</a>になります</li>
+</ul>
+
+<h4 id="full_vampire"><?php echo $GAME_OPT_MESS->full_vampire ?> [Ver. 1.5.0 β10～]</h4>
+<ul>
+<li>村人が全員<a href="new_role/vampire.php#vampire">吸血鬼</a>になります</li>
 </ul>
 
 <h4 id="full_chiroptera"><?php echo $GAME_OPT_MESS->full_chiroptera ?> [Ver. 1.4.0 β14～]</h4>
@@ -370,12 +377,27 @@ OutputInfoPageHeader('ゲームオプション');
 <li>村人が全員<a href="new_role/mania.php#mania">神話マニア</a>になります</li>
 </ul>
 
+<h4 id="full_unknown_mania"><?php echo $GAME_OPT_MESS->full_unknown_mania ?> [Ver. 1.5.0 β10～]</h4>
+<ul>
+<li>村人が全員<a href="new_role/mania.php#unknown_mania">鵺</a>になります</li>
+</ul>
+
+<h3 id="change_common"><?php echo $GAME_OPT_MESS->change_common ?> [Ver. 1.5.0 β10～]</h3>
+<ul>
+<li><?php echo $GAME_OPT_CAPT->change_common ?></li>
+<li>「<?php echo $GAME_OPT_MESS->change_common ?>」<?php OutputReplaceRole('change_common') ?></li>
+</ul>
+
+<h3 id="change_hermit_common"><?php echo $GAME_OPT_MESS->change_hermit_common ?> [Ver. 1.5.0 β10～]</h3>
+<ul>
+<li>共有者が全員<a href="new_role/human.php#hermit_common">隠者</a>になります</li>
+</ul>
+
 <h3 id="change_mad"><?php echo $GAME_OPT_MESS->change_mad ?> [Ver. 1.5.0 β6～]</h3>
 <ul>
 <li><?php echo $GAME_OPT_CAPT->change_mad ?></li>
-<li>「<?php echo $GAME_OPT_MESS->change_mad ?>」は管理人がカスタムすることを前提にしたオプションです<br>
-  現在の初期設定は全員<a href="new_role/wolf.php#jammer_mad">月兎</a>になります
-</li>
+<li>「<?php echo $GAME_OPT_MESS->change_mad ?>」<?php OutputReplaceRole('change_mad') ?></li>
+<li><a href="#full_mad"><?php echo $GAME_OPT_MESS->full_mad ?></a>の処理が先に適用されます</li>
 </ul>
 
 <h3 id="change_fanatic_mad"><?php echo $GAME_OPT_MESS->change_fanatic_mad ?> [Ver. 1.5.0 β6～]</h3>
@@ -388,6 +410,10 @@ OutputInfoPageHeader('ゲームオプション');
 <li>狂人が全員<a href="new_role/wolf.php#whisper_mad">囁き狂人</a>になります</li>
 </ul>
 
+<h3 id="change_immolate_mad"><?php echo $GAME_OPT_MESS->change_immolate_mad ?> [Ver. 1.5.0 β10～]</h3>
+<ul>
+<li>狂人が全員<a href="new_role/wolf.php#immolate_mad">殉教者</a>になります</li>
+</ul>
 
 <h2 id="special_role_option">特殊配役設定</h2>
 <p>

@@ -193,7 +193,7 @@ function CreateRoom(){
     array_push($check_option_role_list, 'liar', 'gentleman', 'critical',
 	       $perverseness ? 'perverseness' : 'sudden_death');
   }
-  array_push($check_option_role_list, 'replace_human', 'change_mad');
+  array_push($check_option_role_list, 'replace_human', 'change_common', 'change_mad');
 
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');
@@ -224,15 +224,23 @@ function CreateRoom(){
 
     switch($option){
     case 'replace_human':
+    case 'change_common':
     case 'change_mad':
       switch($target = $_POST[$option]){
       case 'replace_human':
-      case 'full_mania':
-      case 'full_chiroptera':
+      case 'full_mad':
       case 'full_cupid':
+      case 'full_quiz':
+      case 'full_vampire':
+      case 'full_chiroptera':
+      case 'full_mania':
+      case 'full_unknown_mania':
+      case 'change_common':
+      case 'change_hermit_common':
       case 'change_mad':
       case 'change_fanatic_mad':
       case 'change_whisper_mad':
+      case 'change_immolate_mad':
 	if($ROOM_CONF->$target){
 	  $option = $target;
 	  break 2;
@@ -248,18 +256,16 @@ function CreateRoom(){
       break;
 
     case 'chaos_open_cast':
-      if(! $ROOM_CONF->$option) continue 2;
       switch($target = $_POST[$option]){
       case 'full':
-	break 2;
+	break;
 
       case 'camp':
       case 'role':
-	if($ROOM_CONF->{'_' . $target}){
-	  $option .= '_' . $target;
-	  break 2;
-	}
+	$option .= '_' . $target;
+	break;
       }
+      if($ROOM_CONF->$option) break;
       continue 2;
 
     case 'sub_role_limit':
@@ -500,7 +506,7 @@ EOF;
 
   $stack = array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open',
 		 'critical', 'sudden_death', 'perverseness',  'joker', 'weather', 'festival',
-		 'replace_human', 'change_mad');
+		 'replace_human', 'change_common', 'change_mad');
   OutputRoomOption($stack, 'role');
 
   OutputRoomOption(array('special_role'));
@@ -533,6 +539,7 @@ function GenerateRoomOption($option, $label = ''){
 
   case 'max_user':
   case 'replace_human':
+  case 'change_common':
   case 'change_mad':
   case 'special_role':
   case 'topping':
@@ -609,6 +616,7 @@ function GenerateSelector($option){
     break;
 
   case 'replace_human':
+  case 'change_common':
   case 'change_mad':
   case 'special_role':
     $label = 'モード名';

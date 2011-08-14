@@ -35,7 +35,7 @@ if($_POST['command'] == 'role_test'){
     if($_POST[$option] == 'on') $stack->game_option[] = ' '.$option;
   }
 
-  foreach(array('replace_human', 'change_mad') as $option){
+  foreach(array('replace_human', 'change_common', 'change_mad') as $option){
     if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
       $stack->option_role[] = $_POST[$option];
     }
@@ -97,7 +97,7 @@ EOF;
     $count = 0;
     foreach($ROOM_CONF->{$option.'_list'} as $mode){
       $count++;
-      if($count > 0 && $count % 8 == 0) echo "<br>\n";
+      if($count > 0 && $count % 9 == 0) echo "<br>\n";
       echo <<<EOF
 <input type="radio" name="{$option}" value="{$mode}">{$GAME_OPT_MESS->{$option.'_'.$mode}}
 
@@ -106,7 +106,7 @@ EOF;
     echo "<br>\n";
   }
 
-  foreach(array('replace_human', 'change_mad') as $option){
+  foreach(array('replace_human', 'change_common', 'change_mad') as $option){
     echo <<<EOF
 <input type="radio" name="{$option}" value="" checked>標準
 
@@ -115,7 +115,7 @@ EOF;
     $count = 0;
     foreach($ROOM_CONF->{$option.'_list'} as $mode){
       $count++;
-      if($count > 0 && $count % 8 == 0) echo "<br>\n";
+      if($count > 0 && $count % 9 == 0) echo "<br>\n";
       echo <<<EOF
 <input type="radio" name="{$option}" value="{$mode}">{$GAME_OPT_MESS->$mode}
 

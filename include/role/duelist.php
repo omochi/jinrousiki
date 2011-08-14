@@ -8,7 +8,7 @@ class Role_duelist extends Role{
   function __construct(){ parent::__construct(); }
 
   function GetRole($user){
-    $role = $this->GetActor()->GetID('rival')
+    $role = $this->GetActor()->GetID('rival');
     if(! $this->IsSameUser($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
     return $role;
   }

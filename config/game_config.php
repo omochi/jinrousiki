@@ -1,10 +1,12 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β8
+  変更履歴 from Ver. 1.5.0β9
   + RoomConfig
-    - 追加：$sub_role_limit_hard
-    - 変更：$boost_rate_list
+    - 追加：$full_mad, $full_quiz, $full_vampire, $full_unknown_mania
+            $change_common, $change_hermit_common, $change_common_list, $change_immolate_mad,
+    - 変更：$replace_human_list, $change_mad_list
 */
+
 //-- 村メンテナンス・作成設定 --//
 class RoomConfig{
   //-- 村メンテナンス設定 --//
@@ -149,18 +151,31 @@ class RoomConfig{
   public $festival = true; //お祭り村
   public $default_festival = false;
 
-  public $replace_human   = true; //村人置換村 (管理人カスタムモード)
-  public $full_cupid      = true; //キューピッド村
-  public $full_chiroptera = true; //蝙蝠村
-  public $full_mania      = true; //神話マニア村
+  public $replace_human      = true; //村人置換村 (管理人カスタムモード)
+  public $full_mad           = true; //狂人村
+  public $full_cupid         = true; //キューピッド村
+  public $full_quiz          = true; //出題者村
+  public $full_vampire       = true; //吸血鬼村
+  public $full_chiroptera    = true; //蝙蝠村
+  public $full_mania         = true; //神話マニア村
+  public $full_unknown_mania = true; //鵺村
   //村人置換モードの内訳
-  public $replace_human_list = array('replace_human', 'full_cupid', 'full_chiroptera', 'full_mania');
+  public $replace_human_list = array(
+    'replace_human', 'full_mad', 'full_cupid', 'full_quiz', 'full_vampire', 'full_chiroptera',
+    'full_mania', 'full_unknown_mania');
 
-  public $change_mad         = true; //狂人置換村 (管理人カスタムモード)
-  public $change_fanatic_mad = true; //狂信者村
-  public $change_whisper_mad = true; //囁き狂人村
+  public $change_common        = true; //共有者置換村 (管理人カスタムモード)
+  public $change_hermit_common = true; //隠者村
+  //共有者置換モードの内訳
+  public $change_common_list = array('change_common', 'change_hermit_common');
+
+  public $change_mad          = true; //狂人置換村 (管理人カスタムモード)
+  public $change_fanatic_mad  = true; //狂信者村
+  public $change_whisper_mad  = true; //囁き狂人村
+  public $change_immolate_mad = true; //殉教者村
   //狂人置換モードの内訳
-  public $change_mad_list = array('change_mad', 'change_fanatic_mad', 'change_whisper_mad');
+  public $change_mad_list = array('change_mad', 'change_fanatic_mad', 'change_whisper_mad',
+				  'change_immolate_mad');
 
   //-- 特殊配役モード --//
   public $chaos       = true; //闇鍋モード

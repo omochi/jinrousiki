@@ -112,7 +112,7 @@ class Session{
     if($this->Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
-    if(FetchResult("SELECT COUNT(room_no) FROM room WHERE room_no = {$RQ_ARGS->room_no}") > 0){
+    if(FetchResult('SELECT COUNT(room_no) FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0){
       $url   = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .
@@ -191,80 +191,6 @@ EOF;
   }
 }
 
-//-- 村情報共有サーバ表示の基底クラス --//
-class SharedServerConfigBase extends ExternalLinkBuilder{
-  //他のサーバの部屋画面を出力
-  function Output(){
-    global $SERVER_CONF;
-
-    if($this->disable) return false;
-
-    foreach($this->server_list as $server => $array){
-      extract($array);
-      //PrintData($url, 'URL'); //テスト用
-      if($disable) continue;
-
-      if(! $this->CheckConnection($url)){ //サーバ通信状態チェック
-	$data = $this->host . ": Connection timed out ({$this->time} seconds)";
-	echo $this->GenerateSharedServerRoom($name, $url, $data);
-	continue;
-      }
-
-      //部屋情報を取得
-      if(($data = @file_get_contents($url.'room_manager.php')) == '') continue;
-      //PrintData($data, 'Data'); //テスト用
-      if($encode != '' && $encode != $this->encode){
-	$data = mb_convert_encoding($data, $this->encode, $encode);
-      }
-      if($separator != ''){
-	$split_list = mb_split($separator, $data);
-	//PrintData($split_list, 'Split'); //テスト用
-	$data = array_pop($split_list);
-      }
-      if($footer != ''){
-	if(($position = mb_strrpos($data, $footer)) === false) continue;
-	$data = mb_substr($data, 0, $position + mb_strlen($footer));
-      }
-      if($data == '') continue;
-
-      $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
-      $data = strtr($data, $replace_list);
-      echo $this->GenerateSharedServerRoom($name, $url, $data);
-    }
-  }
-}
-
-//-- 掲示板情報取得の基底クラス --//
-class BBSConfigBase extends ExternalLinkBuilder{
-  function Output(){
-    global $SERVER_CONF;
-
-    if($this->disable) return;
-    if(! $this->CheckConnection($this->raw_url)){
-      echo $this->GenerateBBS($this->host . ": Connection timed out ({$this->time} seconds)");
-      return;
-    }
-
-    //スレッド情報を取得
-    $url = $this->raw_url . $this->thread . 'l' . $this->size . 'n';
-    if(($data = @file_get_contents($url)) == '') return;
-    //PrintData($data, 'Data'); //テスト用
-    if($this->encode != $SERVER_CONF->encode){
-      $data = mb_convert_encoding($data, $SERVER_CONF->encode, $this->encode);
-    }
-    $str = '';
-    $str_stack = explode("\n", $data);
-    array_pop($str_stack);
-    foreach($str_stack as $res){
-      $res_stack = explode('<>', $res);
-      $str .= '<dt>' . $res_stack[0] . ' : <font color="#008800"><b>' . $res_stack[1] .
-	'</b></font> : ' . $res_stack[3] . ' ID : ' . $res_stack[6] . '</dt>' . "\n" .
-	'</dt><dd>' . $res_stack[4] . '</dd>';
-    }
-    echo $this->GenerateBBS($str);
-  }
-}
-
 //ゲームプレイ時のアイコン表示設定の基底クラス --//
 class IconConfigBase{
   //初期設定
@@ -289,17 +215,17 @@ class IconConfigBase{
 //-- ユーザアイコン管理の基底クラス --//
 class UserIconBase{
   // アイコンの文字数
-  function IconNameMaxLength(){
+  function MaxNameLength(){
     return '半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
   }
 
   // アイコンのファイルサイズ
-  function IconFileSizeMax(){
+  function MaxFileSize(){
     return ($this->size > 1024 ? floor($this->size / 1024) . 'k' : $this->size) . 'Byte まで';
   }
 
   // アイコンの縦横のサイズ
-  function IconSizeMax(){
+  function MaxIconSize(){
     return '幅' . $this->width . 'ピクセル × 高さ' . $this->height . 'ピクセルまで';
   }
 }
@@ -380,80 +306,6 @@ class VictoryImageBase extends ImageManager{
   }
 }
 
-//-- メニューリンク表示用の基底クラス --//
-class MenuLinkConfigBase{
-  //交流用サイト表示
-  function Output(){
-    //初期化処理
-    $this->str = '';
-    $this->header = '<li>';
-    $this->footer = "</li>\n";
-
-    $this->AddHeader('交流用サイト');
-    $this->AddLink($this->list);
-    $this->AddFooter();
-
-    if(count($this->add_list) > 0){
-      $this->AddHeader('外部リンク');
-      foreach($this->add_list as $group => $list){
-	$this->str .= $this->header . $group . $this->footer;
-	$this->AddLink($list);
-      }
-      $this->AddFooter();
-    }
-    echo $this->str;
-  }
-
-  //ヘッダ追加
-  private function AddHeader($title){
-    $this->str .= '<div class="menu">' . $title . "</div>\n<ul>\n";
-  }
-
-  //リンク生成
-  private function AddLink($list){
-    $header = $this->header . '<a href="';
-    $footer = '</a>' . $this->footer;
-    foreach($list as $name => $url) $this->str .= $header . $url . '">' . $name . $footer;
-  }
-
-  //フッタ追加
-  private function AddFooter(){
-    $this->str .= "</ul>\n";
-  }
-}
-
-//-- Copyright 表示用の基底クラス --//
-class CopyrightConfigBase{
-  //投稿処理
-  function Output(){
-    global $SCRIPT_INFO;
-    $stack = $this->list;
-    foreach($this->add_list as $class => $list){
-      $stack[$class] = array_key_exists($class, $stack) ?
-	array_merge($stack[$class], $list) : $list;
-    }
-
-    foreach($stack as $class => $list){
-      $str = '<h2>' . $class . "</h2>\n<ul>\n";
-      foreach($list as $name => $url){
-	$str .= '<li><a href="' . $url . '">' . $name . "</a></li>\n";
-      }
-      echo $str . "</ul>\n";
-    }
-
-    $php = PHP_VERSION;
-    echo <<<EOF
-<h2>パッケージ情報</h2>
-<ul>
-<li>PHP Ver. {$php}</li>
-<li>{$SCRIPT_INFO->package} {$SCRIPT_INFO->version} (Rev. {$SCRIPT_INFO->revision})</li>
-<li>LastUpdate: {$SCRIPT_INFO->last_update}</li>
-</ul>
-
-EOF;
-  }
-}
-
 //-- 音源処理の基底クラス --//
 class SoundBase{
   //音を鳴らす
@@ -481,6 +333,7 @@ class TwitterConfigBase{
   //投稿処理
   function Send($id, $name, $comment){
     global $SERVER_CONF;
+
     if($this->disable) return;
 
     $message = $this->GenerateMessage($id, $name, $comment);
@@ -512,97 +365,6 @@ class TwitterConfigBase{
     $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" .
       'ユーザ名：' . $this->user . '<br>'."\n" . 'メッセージ：' . $message;
     PrintData($sentence);
-  }
-}
-
-//-- ページ送りリンク生成クラス --//
-class PageLinkBuilder{
-  function __construct($file, $page, $count, $config, $title = 'Page', $type = 'page'){
-    $this->view_total = $count;
-    $this->view_page  = $config->page;
-    $this->view_count = $config->view;
-    $this->reverse    = $config->reverse;
-
-    $this->file   = $file;
-    $this->url    = '<a href="' . $file . '.php?';
-    $this->title  = $title;
-    $this->type   = $type;
-    $this->option = array();
-    $this->SetPage($page);
-  }
-
-  //表示するページのアドレスをセット (private)
-  function SetPage($page){
-    $total = ceil($this->view_total / $this->view_count);
-    $start = $page == 'all' ? 1 : $page;
-    if($total - $start < $this->view_page){ //残りページが少ない場合は表示開始位置をずらす
-      $start = $total - $this->view_page + 1;
-      if($start < 1) $start = 1;
-    }
-    $end = $start + $this->view_page - 1;
-    if($end > $total) $end = $total;
-
-    $this->page->set   = $page;
-    $this->page->total = $total;
-    $this->page->start = $start;
-    $this->page->end   = $end;
-
-    $this->limit = $page == 'all' ? '' : $this->view_count * ($page - 1);
-    $this->query = $page == 'all' ? '' : sprintf(' LIMIT %d, %d', $this->limit, $this->view_count);
-  }
-
-  //オプションを追加する
-  function AddOption($type, $value = 'on'){
-    $this->option[$type] = $type . '=' . $value;
-  }
-
-  //ページ送り用のリンクタグを作成する
-  function GenerateTag($page, $title = NULL, $force = false){
-    if($page == $this->page->set && ! $force) return '[' . $page . ']';
-    if(is_null($title)) $title = '[' . $page . ']';
-    if($this->file == 'index'){
-      $footer = $page . '.html';
-    }
-    else{
-      $list = $this->option;
-      array_unshift($list, $this->type . '=' . $page);
-      $footer = implode('&', $list);
-    }
-    return $this->url . $footer . '">' . $title . '</a>';
-  }
-
-  //ページリンクを生成する
-  function Generate(){
-    $url_stack = array('[' . $this->title . ']');
-    if($this->file == 'index') $url_stack[] = '[<a href="index.html">new</a>]';
-    if($this->page->start > 1 && $this->page->total > $this->view_page){
-      $url_stack[] = $this->GenerateTag(1, '[1]...');
-      $url_stack[] = $this->GenerateTag($this->page->start - 1, '&lt;&lt;');
-    }
-
-    for($i = $this->page->start; $i <= $this->page->end; $i++){
-      $url_stack[] = $this->GenerateTag($i);
-    }
-
-    if($this->page->end < $this->page->total){
-      $url_stack[] = $this->GenerateTag($this->page->end + 1, '&gt;&gt;');
-      $url_stack[] = $this->GenerateTag($this->page->total, '...[' . $this->page->total . ']');
-    }
-    if($this->file != 'index') $url_stack[] = $this->GenerateTag('all');
-
-    if($this->file == 'old_log'){
-      $this->AddOption('reverse', $this->set_reverse ? 'off' : 'on');
-      $url_stack[] = '[表示順]';
-      $url_stack[] = $this->set_reverse ? '新↓古' : '古↓新';
-      $name = ($this->set_reverse xor $this->reverse) ? '元に戻す' : '入れ替える';
-      $url_stack[] =  $this->GenerateTag($this->page->set, $name, true);
-    }
-    return $this->header . implode(' ', $url_stack) . $this->footer;
-  }
-
-  //ページリンクを出力する
-  function Output(){
-    echo $this->Generate();
   }
 }
 
@@ -668,6 +430,7 @@ class RoleData{
     'trap_common'          => '策士',
     'sacrifice_common'     => '首領',
     'ghost_common'         => '亡霊嬢',
+    'hermit_common'        => '隠者',
     'dummy_common'         => '夢共有者',
     'poison'               => '埋毒者',
     'strong_poison'        => '強毒者',
@@ -1057,6 +820,7 @@ class RoleData{
     'trap_common'          => '策',
     'sacrifice_common'     => '領',
     'ghost_common'         => '亡',
+    'hermit_common'        => '隠',
     'dummy_common'         => '夢共',
     'poison'               => '毒',
     'strong_poison'        => '強毒',
@@ -1711,6 +1475,28 @@ class RoleData{
     return '<' . $tag . ' class="' . $this->DistinguishRoleClass($role) . '">' .
       $this->main_role_list[$role] . '</' . $tag .'>';
   }
+
+  //役職の説明ページへのリンク生成
+  function GenerateRoleLink($role){
+    if(array_key_exists($role, $this->sub_role_list)){
+      $url  = 'sub_role';
+      $name = $this->sub_role_list[$role];
+    }
+    elseif($this->DistinguishCamp($role, true) == 'mania'){
+      $url  = 'mania';
+      $name = $this->main_role_list[$role];
+    }
+    else{
+      $url  = $this->DistinguishCamp($role);
+      $name = $this->main_role_list[$role];
+    }
+    return '<a href="new_role/' . $url . '.php#' . $role . '">' . $name . '</a>';
+  }
+
+  //役職名のソート
+  function SortRole($list){
+    return array_intersect(array_keys($this->main_role_list), $list);
+  }
 }
 
 //-- 「福引」生成の基底クラス --//
@@ -1751,38 +1537,6 @@ class GameConfigBase extends LotteryBuilder{
 
 //-- 配役設定の基底クラス --//
 class CastConfigBase extends LotteryBuilder{
-  //配役テーブル出力
-  function OutputCastTable($min = 0, $max = NULL){
-    global $ROLE_DATA;
-
-    //設定されている役職名を取得
-    $stack = array();
-    foreach($this->role_list as $key => $value){
-      if($key < $min) continue;
-      $stack = array_merge($stack, array_keys($value));
-      if($key == $max) break;
-    }
-    //表示順を決定
-    $role_list = array_intersect(array_keys($ROLE_DATA->main_role_list), array_unique($stack));
-
-    $header = '<table class="member">';
-    $str = '<tr><th>人口</th>';
-    foreach($role_list as $role) $str .= $ROLE_DATA->GenerateMainRoleTag($role, 'th');
-    $str .= '</tr>'."\n";
-    echo $header . $str;
-
-    //人数毎の配役を表示
-    foreach($this->role_list as $key => $value){
-      if($key < $min) continue;
-      $tag = "<td><strong>{$key}</strong></td>";
-      foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
-      echo '<tr>' . $tag . '</tr>'."\n";
-      if($key == $max) break;
-      if($key % 20 == 0) echo $str;
-    }
-    echo '</table>';
-  }
-
   //闇鍋モードの配役リスト取得
   function GetChaosRateList($name, $filter){
     $list = $this->$name;
@@ -1802,6 +1556,44 @@ class CastConfigBase extends LotteryBuilder{
       $stack[] = 'detective_common';
     }
     return $stack;
+  }
+
+  //村人置換村の処理
+  function ReplaceRole(&$role_list){
+    global $ROOM;
+
+    $stack = array();
+    foreach(array_keys($ROOM->option_role->options) as $option){ //処理順にオプションを登録
+      if($option == 'replace_human' || strpos($option, 'full_') === 0)
+	$stack[0][] = $option;
+      elseif(strpos($option, 'change_') === 0)
+	$stack[1][] = $option;
+    }
+    //PrintData($stack);
+
+    foreach($stack as $order => $option_list){
+      foreach($option_list as $option){
+	if(array_key_exists($option, $this->replace_role_list)){ //管理者設定
+	  $target = $this->replace_role_list[$option];
+	  $role   = array_pop(explode('_', $option));
+	}
+	elseif($order == 0){ //村人置換
+	  $target = array_pop(explode('_', $option, 2));
+	  $role   = 'human';
+	}
+	else{ //共有者・狂人置換
+	  $target = array_pop(explode('_', $option, 2));
+	  $role   = array_pop(explode('_', $target));
+	}
+
+	$count = $role_list[$role];
+	if($role == 'human' && $ROOM->IsOption('gerd')) $count--; //ゲルト君モード
+	if($count > 0){ //置換処理
+	  $role_list[$target] += $count;
+	  $role_list[$role]   -= $count;
+	}
+      }
+    }
   }
 
   //決闘村の配役初期化処理
@@ -1859,17 +1651,5 @@ class CastConfigBase extends LotteryBuilder{
   //グレラン村の配役処理
   function SetGrayRandom($user_count){
     return $this->FilterRoles($user_count, array('wolf', 'mad', 'fox'));
-  }
-}
-
-//-- バージョン情報設定の基底クラス --//
-class ScriptInfoBase{
-  //TOPページ向けのバージョン情報を出力する
-  function Output($full = false){
-    global $SERVER_CONF;
-
-    $str = "Powered by {$this->package} {$this->version} from {$this->developer}";
-    if($SERVER_CONF->admin) $str .= '<br>Founded by: ' . $SERVER_CONF->admin;
-    echo $str;
   }
 }

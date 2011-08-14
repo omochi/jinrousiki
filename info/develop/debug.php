@@ -13,6 +13,7 @@ Ver. 1.5.0
 <a href="#ver150a7">α7</a>
 <a href="#ver150b1">β1</a>
 <a href="#ver150b5">β5</a>
+<a href="#ver150b9">β9</a>
 </p>
 <p>
 <a href="#ver140">Ver. 1.4.0</a>
@@ -31,6 +32,47 @@ Ver. 1.5.0
 <a href="#ver140b21">β21</a>
 <a href="#ver140b22">β22</a>
 </p>
+
+<h2 id="ver150b9">Ver. 1.5.0 β</h2>
+<h3>room_manager.php % 250行目付近 (2011/08/11 (Thu) 13:19)</h3>
+<h4>[before]</h4>
+<pre>
+case 'chaos_open_cast':
+  if(! $ROOM_CONF->$option) continue 2;
+  switch($target = $_POST[$option]){
+  case 'full':
+    break 2;
+
+  case 'camp':
+  case 'role':
+    if($ROOM_CONF->{'_' . $target}){
+      $option .= '_' . $target;
+      break 2;
+    }
+  }
+  continue 2;
+</pre>
+<h4>[after]</h4>
+<pre>
+case 'chaos_open_cast':
+  switch($target = $_POST[$option]){
+  case 'full':
+    break;
+
+  case 'camp':
+  case 'role':
+    $option .= '_' . $target;
+    break;
+  }
+  if($ROOM_CONF->$option) break;
+  continue 2;
+</pre>
+
+<h3>include/role/duelist.php % 11行目付近 (2011/08/14 (Sun) 00:59)</h3>
+<pre>
+× $role = $this->GetActor()->GetID('rival')
+○ $role = $this->GetActor()->GetID('rival');
+</pre>
 
 <h2 id="ver150b6">Ver. 1.5.0 β6</h2>
 <h3>include/game_play_functions.php % 651行目付近 (2011/07/12 (Tue) 03:41)</h3>

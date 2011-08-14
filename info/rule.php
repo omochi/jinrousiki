@@ -62,7 +62,7 @@ OutputInfoPageHeader('ルール', 0, 'rule');
     （キューピッドはオプション指定時のみ登場します。また、恋人は兼任役職となります）</li>
 </ul>
 
-<?php $CAST_CONF->OutputCastTable(8, 22); ?>
+<?php OutputCastTable(8, 22); ?>
 
 <h3 id="rule_role">[役割紹介]</h3>
 <div class="info">　登場する役割について詳しく説明します。</div>

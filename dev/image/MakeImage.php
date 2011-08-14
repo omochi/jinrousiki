@@ -268,6 +268,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#亡霊嬢#です。他の#共有者#が誰であるか知ることができます。また、あなたを襲った_人狼_を^小心者^にしてしまいます。\n　あなたの魂魄は、黄泉への誘い水。^ショック死^の恐怖に怯える_狼_が因果の報いを受けるまで、冥府で幽雅に見守りましょう。",
     'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
 
+  public $hermit_common = array(
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#隠者#です。他の#共有者#が誰であるか知ることができますが、あなたの声は仲間の#共有者#以外には届きません。",
+    'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
+
   public $poison = array(
     'message' => "[役割] [|村人|陣営] [#埋毒者#系]\n　あなたは#埋毒者#です。_人狼_に襲われた場合は_人狼_の中から、^処刑^された場合は生きている村の人たちの中からランダムで一人道連れにします。",
     'type' => 'human', 'delimiter' => array('#' => 'poison', '_' => 'wolf', '^' => 'vote'));
@@ -1599,6 +1603,7 @@ class RoleMessageList{
   public $result_trap_common = array('message' => "さんは|策士|でした", 'type' => 'result_common');
   public $result_sacrifice_common = array('message' => "さんは|首領|でした", 'type' => 'result_common');
   public $result_ghost_common = array('message' => "さんは|亡霊嬢|でした", 'type' => 'result_common');
+  public $result_hermit_common = array('message' => "さんは|隠者|でした", 'type' => 'result_common');
   public $result_dummy_common = array('message' => "さんは|夢共有者|でした", 'type' => 'result_common');
   public $result_poison = array('message' => "さんは|埋毒者|でした", 'delimiter' => array('|' => 'poison'));
   public $result_strong_poison = array('message' => "さんは|強毒者|でした", 'type' => 'result_poison');
@@ -2003,6 +2008,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
+$builder->Output('hermit_common');
 #$builder->Output('miasma_jealousy');
-$builder->Output('critical_jealousy');
-#$builder->Output('cursed_yaksa');
+#$builder->Output('critical_jealousy');

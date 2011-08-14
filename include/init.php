@@ -43,6 +43,9 @@ class InitializeConfig{
     'RQ_ARGS'             => 'request_class',
     'ROLES'               => 'role_class',
     'TIME_CALC'           => 'info_functions',
+    'SHARED_CONF'         => 'info_functions',
+    'COPYRIGHT'           => 'info_functions',
+    'MENU_LINK'           => 'index_functions',
     'TWITTER'             => 'twitter',
     'PAPARAZZI'           => 'paparazzi_class',
     'talk_class'          => 'user_class',
@@ -64,7 +67,8 @@ class InitializeConfig{
     'COPYRIGHT'           => 'SCRIPT_INFO',
     'game_play_functions' => 'ROLE_IMG',
     'user_class'          => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
-    'icon_functions'      => array('ICON_CONF', 'USER_ICON')
+    'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
+    'index_functions'     => array('SCRIPT_INFO', 'BBS_CONF')
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
@@ -73,7 +77,7 @@ class InitializeConfig{
     'SERVER_CONF'   => 'ServerConfig',
     'SHARED_CONF'   => 'SharedServerConfig',
     'USER_ICON'     => 'UserIcon',
-    'MENU_LINK'     => 'MenuLinkConfig',
+    'MENU_LINK'     => 'MenuLinkBuilder',
     'BBS_CONF'      => 'BBSConfig',
     'COPYRIGHT'     => 'CopyrightConfig',
     'SCRIPT_INFO'   => 'ScriptInfo',

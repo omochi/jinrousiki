@@ -1820,7 +1820,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <li>全ての生存者を暗殺対象に選択可能 (人狼・妖狐でも可)。</li>
 <li>暗殺された人の死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「暗殺された」。</li>
 <li>暗殺能力者がお互いを襲撃した場合は相打ちになる。</li>
-<li>暗殺された<a href="#mage">占い師</a>の呪殺・<a href="#poison_cat">猫又</a>の蘇生は無効、<a href="#guard_group">狩人系</a>の護衛判定は有効。</li>
+<li>暗殺された<a href="#mage">占い師</a>の呪殺・<a href="#poison_cat_group">猫又</a>の蘇生は無効、<a href="#guard_group">狩人系</a>の護衛判定は有効。</li>
 <li>人狼の襲撃・<a href="wolf.php#trap_mad">罠師</a>の罠で死亡したら暗殺は無効。</li>
 <li><a href="#escaper_group">逃亡者系</a>を対象にした場合は無効。</li>
 <li>対象が<a href="#gatekeeper_guard">門番</a>に護衛されていたら無効。</li>
@@ -1881,7 +1881,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 詳細な判定順は<a href="../spec.php#vote_night">詳細な仕様</a>参照。
 </pre>
 <ol>
-<li>一度死んだ人の能力発動はキャンセルされる。</li>
+<li>一度死亡した人の能力発動はキャンセルされる。</li>
 <li>「反魂」可能な対象は<a href="sub_role.php#lovers">恋人</a>以外全て。</li>
 <li>自分が暗殺されても投票は有効 (暗殺系の処理は同時並行処理扱い)。</li>
 <li>「反魂」先が憑依されていた場合は、元の人が蘇生する (<a href="wolf.php#possessed_wolf_revive">憑狼</a>の処理と同じ)。</li>
@@ -1917,7 +1917,7 @@ Bの蘇生処理はキャンセル
 <h3 id="soul_assassin">辻斬り (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>
 <h4>[耐性] 罠：有効 / 護衛：制限対象 / 遺言：不可</h4>
 <pre>
-暗殺した人の役職を知る事ができる、上位暗殺者。
+暗殺した人の役職を知る事ができる、<a href="mania.php#soul_mania">上位</a>暗殺者。
 <a href="ability.php#last_words_limit">遺言</a>を残せない。
 
 人狼が襲撃して発動する可能性のある<a href="ability.php#poison">毒能力者</a>を暗殺した場合は、本人は毒死する。
@@ -1938,7 +1938,7 @@ Bの蘇生処理はキャンセル
 <h4>[役職表示] <a href="#assassin">暗殺者</a></h4>
 <h4>[耐性] 罠：有効 / 護衛：制限対象</h4>
 <pre>
-30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する劣化暗殺者。本人の表記は「<a href="#assassin">暗殺者</a>」。
+30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する<a href="mania.php#dummy_mania">劣化</a>暗殺者。本人の表記は「<a href="#assassin">暗殺者</a>」。
 <a href="#psycho_mage">精神鑑定士</a>の鑑定結果は「正常」。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -2145,12 +2145,9 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="divorce_jealousy">縁切地蔵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19～]</h3>
 <pre>
 自分に処刑投票してきた<a href="sub_role.php#lovers">恋人</a>に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+<a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が処刑された場合は無効。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
-<ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後。</li>
-<li>自分が処刑された場合は発動しない。</li>
-</ol>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#vote_reaction">処刑得票能力者</a>
@@ -2178,7 +2175,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[役職表示] <a href="#poison">埋毒者</a></h4>
 <h4>[毒能力] 処刑：恋人 / 襲撃：恋人 / 薬師判定：限定的</h4>
 <pre>
-<a href="sub_role.php#lovers">恋人</a>のみに中る埋毒者で、本人の表記は「埋毒者」。
+<a href="sub_role.php#lovers">恋人</a>のみに中る埋毒者。本人表記は「埋毒者」。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <h4>関連役職</h4>
@@ -2192,7 +2189,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="miasma_jealousy">蛇姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
-処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する上位橋姫。
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する<a href="mania.php#soul_mania">上位</a>橋姫。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
@@ -2206,11 +2203,12 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 安珍・清姫伝説がモチーフです。
+能動的に恋人を狙うことができますが、確率依存である点に注意してください。
 </pre>
 
 <h3 id="critical_jealousy">人魚 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
-処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう劣化橋姫。
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう<a href="mania.php#dummy_mania">劣化</a>橋姫。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合は無効。</li>
@@ -2224,6 +2222,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 人魚姫がモチーフです。
+<a href="sub_role.php#critical_luck">痛恨</a>が発動することで投票履歴から恋人候補を絞ることができます。
 </pre>
 
 

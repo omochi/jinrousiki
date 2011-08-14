@@ -1,11 +1,13 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β8
+  変更履歴 from Ver. 1.5.0β9
   + 変更
     - $chaos_hyper_random_role_list, $topping_list, $boost_rate_list,
       $chaos_sub_role_limit_normal_list
   + 追加
-    - $chaos_sub_role_limit_hard_list
+    - $chaos_sub_role_limit_hard_list, $replace_role_list
+  + 削除
+    - function ReplaceHuman(), function ChangeMad()
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -82,6 +84,13 @@ class CastConfig extends CastConfigBase{
 
   //身代わり君がならない役職グループのリスト (人狼・妖狐は常時対象外なので設定不要)
   public $disable_dummy_boy_role_list = array('poison');
+
+  //-- 役職置換モード --//
+  //オプション名 => 置換先役職
+  public $replace_role_list = array(
+    'replace_human' => 'escaper',
+    'change_common' => 'leader_common',
+    'change_mad'    => 'jammer_mad');
 
   //-- 闇鍋モード --//
   //-- 固定枠 --//
@@ -939,7 +948,7 @@ class CastConfig extends CastConfigBase{
   //お祭り村専用配役テーブル
   public $festival_role_list = array(
      8 => array('human' => 2, 'mage' => 1, 'necromancer' => 1, 'wolf' => 1, 'mad' => 1, 'whisper_mad' => 1, 'fox' => 1),
-     9 => array('human' => 3 , 'guard' => 3, 'wolf' => 2, 'chiroptera' => 1),
+     9 => array('human' => 3, 'guard' => 3, 'wolf' => 2, 'chiroptera' => 1),
     10 => array('human' => 2, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'escaper' => 1, 'wolf' => 2, 'mad' => 1, 'fox' => 1),
     11 => array('wise_wolf' => 1, 'jammer_mad' => 7, 'voodoo_fox' => 2, 'fairy' => 1),
     12 => array('human' => 5, 'mage' => 1, 'necromancer' => 1, 'guard' => 1, 'wolf' => 2, 'mad' => 1, 'vampire' => 1),
@@ -1025,46 +1034,6 @@ class CastConfig extends CastConfigBase{
       }
     }
     else{ //常時公開
-    }
-  }
-
-  //村人置換村の処理
-  function ReplaceHuman(&$role_list, $count){
-    global $ROOM;
-
-    if($ROOM->IsOption('replace_human')){ //村人置換村
-      $role_list['escaper'] += $count;
-      $role_list['human'] -= $count;
-    }
-    elseif($ROOM->IsOption('full_cupid')){ //キューピッド村
-      $role_list['cupid'] += $count;
-      $role_list['human'] -= $count;
-    }
-    elseif($ROOM->IsOption('full_chiroptera')){ //蝙蝠村
-      $role_list['chiroptera'] += $count;
-      $role_list['human'] -= $count;
-    }
-    elseif($ROOM->IsOption('full_mania')){ //神話マニア村
-      $role_list['mania'] += $count;
-      $role_list['human'] -= $count;
-    }
-  }
-
-  //狂人置換村の処理
-  function ChangeMad(&$role_list, $count){
-    global $ROOM;
-
-    if($ROOM->IsOption('change_mad')){ //狂人置換村
-      $role_list['jammer_mad'] += $count;
-      $role_list['mad'] -= $count;
-    }
-    elseif($ROOM->IsOption('change_fanatic_mad')){ //狂信者村
-      $role_list['fanatic_mad'] += $count;
-      $role_list['mad'] -= $count;
-    }
-    elseif($ROOM->IsOption('change_whisper_mad')){ //囁き狂人村
-      $role_list['whisper_mad'] += $count;
-      $role_list['mad'] -= $count;
     }
   }
 }

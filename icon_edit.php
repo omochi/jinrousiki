@@ -28,14 +28,14 @@ function EditIcon(){
   }
 
   //アイコン名の文字列長のチェック
-  $text_list = array('icon_name' => 'アイコン名',
+  $text_list = array('icon_name'  => 'アイコン名',
 		     'appearance' => '出典',
-		     'category' => 'カテゴリ',
-		     'author' => 'アイコンの作者');
+		     'category'   => 'カテゴリ',
+		     'author'     => 'アイコンの作者');
   foreach($text_list as $text => $label){
     $value = $RQ_ARGS->$text;
     if(strlen($value) > $USER_ICON->name){
-      OutputActionResult($title, $label . ': ' . $USER_ICON->IconNameMaxLength());
+      OutputActionResult($title, $label . ': ' . $USER_ICON->MaxNameLength());
     }
     $query_stack[] = "{$text} = " . (strlen($value) > 0 ? "'{$value}'" : 'NULL');
   }
@@ -49,10 +49,10 @@ function EditIcon(){
   //色指定のチェック
   if(strlen($color) > 0){
     if(strlen($color) != 7 && ! preg_match('/^#[0123456789abcdefABCDEF]{6}/', $color)){
-      $sentence = '色指定が正しくありません。<br>'."\n" .
+      $str = '色指定が正しくありません。<br>'."\n" .
 	'指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
 	'送信された色指定 → <span class="color">' . $color . '</span>';
-      OutputActionResult($title, $sentence);
+      OutputActionResult($title, $str);
     }
     $color = strtoupper($color);
     $query_stack[] = "color = '{$color}'";
@@ -70,8 +70,8 @@ function EditIcon(){
   //OutputActionResult($title, $query); //テスト用
 
   if(! mysql_query('LOCK TABLES user_icon WRITE')){ //user_icon テーブルをロック
-    $sentence = "サーバが混雑しています。<br>\n時間を置いてから再登録をお願いします。";
-    OutputActionResult($title, $sentence);
+    $str = "サーバが混雑しています。<br>\n時間を置いてから再登録をお願いします。";
+    OutputActionResult($title, $str);
   }
   SendQuery($query, true);
   OutputActionResult($title, '編集完了', 'icon_view.php?icon_no=' . $icon_no, true);

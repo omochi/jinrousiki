@@ -61,3 +61,88 @@ function OutputRolePageHeader($title){
 
 EOF;
 }
+
+//村の最大人数設定出力
+function OutputMaxUser(){
+  global $ROOM_CONF, $CAST_CONF;
+
+  $str = '[ ' . implode('人・', $ROOM_CONF->max_user_list);
+  $min_user = min(array_keys($CAST_CONF->role_list));
+  $str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
+  $str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
+  echo $str;
+}
+
+//身代わり君がなれない役職のリスト出力
+function OutputDisableDummyBoyRole(){
+  global $ROLE_DATA, $CAST_CONF;
+
+  $stack = array('人狼', '妖狐');
+  foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
+    $stack[] = $ROLE_DATA->main_role_list[$role];
+  }
+  echo implode($stack, '・');
+}
+
+//配役テーブル出力
+function OutputCastTable($min = 0, $max = NULL){
+  global $ROLE_DATA, $CAST_CONF;
+
+  //設定されている役職名を取得
+  $stack = array();
+  foreach($CAST_CONF->role_list as $key => $value){
+    if($key < $min) continue;
+    $stack = array_merge($stack, array_keys($value));
+    if($key == $max) break;
+  }
+  $role_list = $ROLE_DATA->SortRole(array_unique($stack)); //表示順を決定
+
+  $header = '<table class="member">';
+  $str = '<tr><th>人口</th>';
+  foreach($role_list as $role) $str .= $ROLE_DATA->GenerateMainRoleTag($role, 'th');
+  $str .= '</tr>'."\n";
+  echo $header . $str;
+
+  //人数毎の配役を表示
+  foreach($CAST_CONF->role_list as $key => $value){
+    if($key < $min) continue;
+    $tag = "<td><strong>{$key}</strong></td>";
+    foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
+    echo '<tr>' . $tag . '</tr>'."\n";
+    if($key == $max) break;
+    if($key % 20 == 0) echo $str;
+  }
+  echo '</table>';
+}
+
+//追加役職の人数と説明ページリンク出力
+function OutputAddRole($role){
+  global $ROLE_DATA, $CAST_CONF;
+  echo '村の人口が' . $CAST_CONF->$role . '人以上になったら' .
+    $ROLE_DATA->GenerateRoleLink($role) . 'が登場します';
+}
+
+//お祭り村の配役リスト出力
+function OutputFestivalList(){
+  global $ROLE_DATA, $CAST_CONF;
+
+  $stack  = $CAST_CONF->festival_role_list;
+  $format = '%' . strlen(max(array_keys($stack))) . 's人：';
+  $str    = '<pre>'."\n";
+  ksort($stack); //人数順に並び替え
+  foreach($stack as $count => $list){
+    $order_stack = array();
+    foreach($ROLE_DATA->SortRole(array_keys($list)) as $role){ //役職順に並び替え
+      $order_stack[] = $ROLE_DATA->main_role_list[$role] . $list[$role];
+    }
+    $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
+  }
+  echo $str . '</pre>'."\n";
+}
+
+//村人置換系オプションのサーバ設定出力
+function OutputReplaceRole($option){
+  global $ROLE_DATA, $CAST_CONF;
+  echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
+    $ROLE_DATA->GenerateRoleLink($CAST_CONF->replace_role_list[$option]) . 'になります';
+}

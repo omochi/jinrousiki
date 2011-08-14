@@ -101,7 +101,7 @@ class ServerConfig{
 }
 
 //-- 村情報共有サーバの設定 --//
-class SharedServerConfig extends SharedServerConfigBase{
+class SharedServerConfig extends ExternalLinkBuilder{
   var $disable = false; //無効設定 <表示を [true:無効 / false:有効] にする>
 
   //表示する他のサーバのリスト
@@ -228,7 +228,7 @@ class UserIcon extends UserIconBase{
 }
 
 //メニューリンク表示設定
-class MenuLinkConfig extends MenuLinkConfigBase{
+class MenuLinkConfig{
   var $list = array('SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 		    '開発・バグ報告スレ' =>
 		    'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',
@@ -289,7 +289,7 @@ class MenuLinkConfig extends MenuLinkConfigBase{
 }
 
 //告知スレッド表示設定
-class BBSConfig extends BBSConfigBase{
+class BBSConfig extends ExternalLinkBuilder{
   var $disable = true; //表示無効設定 (true:無効にする / false:しない)
   var $title = '告知スレッド情報'; //表示名
   var $raw_url = 'http://jbbs.livedoor.jp/bbs/rawmode.cgi'; //データ取得用 URL
@@ -300,7 +300,7 @@ class BBSConfig extends BBSConfigBase{
 }
 
 //素材情報設定
-class CopyrightConfig extends CopyrightConfigBase{
+class CopyrightConfig{
   //システム標準情報
   var $list = array('システム' =>
 		    array('PHP4 + MYSQLスクリプト' => 'http://f45.aaa.livedoor.jp/~netfilms/',

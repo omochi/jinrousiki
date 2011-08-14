@@ -277,12 +277,7 @@ function GetRoleList($user_count){
       }
     }
   }
-
-  //-- 村人置換村 --//
-  $count = $role_list['human'];
-  if($ROOM->IsOption('gerd') && $count > 0) $count--; //ゲルト君モードなら一人確保
-  $CAST_CONF->ReplaceHuman($role_list, $count);
-  $CAST_CONF->ChangeMad($role_list, $role_list['mad']); //狂人置換村
+  $CAST_CONF->ReplaceRole($role_list); //村人置換村
 
   //$is_single_role = true;
   $is_single_role = false;
