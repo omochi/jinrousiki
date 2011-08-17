@@ -565,7 +565,11 @@ OutputRolePageHeader('妖狐陣営');
 
 <h3 id="howl_fox">化狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β17～]</h3>
 <pre>
-夜の独り言が他の人には<a href="wolf.php#howl">人狼の遠吠え</a>に見える子狐。
+二日目以降の夜の独り言が他の人には<a href="wolf.php#howl">人狼の遠吠え</a>に見える子狐。
+</pre>
+<h5>Ver. 1.5.0 β10～</h5>
+<pre>
+夜の独り言が<a href="wolf.php#howl">人狼の遠吠え</a>に見える日を二日目以降に変更
 </pre>
 <h4>関連役職</h4>
 <pre>

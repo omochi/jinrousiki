@@ -358,8 +358,8 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-要するに、「鏡面迷彩」→「彩迷面鏡」になると言う事です。
-理論的には回文で発言すれば影響が出ないという事になります。
+例えば「鏡面迷彩」→「彩迷面鏡」と変換されます。
+理論的には回文で発言すれば影響が出ない事になります。
 </pre>
 
 <h3 id="line_reverse">天地迷彩 [Ver. 1.4.0 α23～]</h3>
@@ -368,7 +368,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-常に一行で発言をしている場合は影響がでませんし
+常に一行で発言をしている場合は影響が出ませんし
 対応しようと思えば簡単なので<a href="#side_reverse">鏡面迷彩</a>ほどは苦労しないと思われます。
 </pre>
 
@@ -413,13 +413,17 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#impatience">短気</a>
+<a href="#impatience">短気</a>・<a href="#plague">疫病神</a>
 </pre>
 
 <h3 id="plague">疫病神 [Ver. 1.4.0 α9～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分の投票先が最多得票者で処刑者候補が複数いた場合、候補から除外される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#decide">決定者</a>・<a href="#good_luck">幸運</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -430,6 +434,10 @@ OutputRolePageHeader('サブ役職');
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分と投票先が最多得票者だった場合、投票先が優先的に処刑される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#dropout">脱落者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -442,6 +450,10 @@ OutputRolePageHeader('サブ役職');
 <pre>
 自分と投票先が最多得票者だった場合、自分が優先的に処刑される。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#counter_decide">燕返し</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#counter_decide">燕返し</a>の逆バージョンです。
@@ -451,6 +463,10 @@ OutputRolePageHeader('サブ役職');
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分が最多得票者で処刑者候補が複数いた場合、候補から除外される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#plague">疫病神</a>・<a href="#bad_luck">不運</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -462,6 +478,10 @@ OutputRolePageHeader('サブ役職');
 <h4>[役職表示] 表示無し</h4>
 <pre>
 自分が最多得票者で処刑者候補が複数いた場合、優先的に処刑される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#decide">決定者</a>・<a href="#good_luck">幸運</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

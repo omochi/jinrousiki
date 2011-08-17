@@ -800,8 +800,14 @@ function OutputTalk($talk, &$builder){
 	  return false;
 
       case 'wolf': //人狼
-	return ($builder->flag->wolf || $flag_mind_read) ? $builder->AddTalk($said_user, $talk)
-	  : $builder->AddWhisper('wolf', $talk);
+	if($builder->flag->wolf || $flag_mind_read)
+	  return $builder->AddTalk($said_user, $talk);
+	elseif(! $said_user->IsRole('quiet_wolf')) //静狼は見えない
+	  return $builder->AddWhisper('wolf', $talk);
+	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
+	  return $builder->AddWhisper('lovers', $talk);
+	else
+	  return false;
 
       case 'mad': //囁き狂人
 	if($builder->flag->wolf || $flag_mind_read)

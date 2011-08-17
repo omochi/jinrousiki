@@ -208,7 +208,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="authority">投票数変化能力者</h2>
 <h3 id="authority_direct">直接型</h3>
 <pre>
-<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#critical_common">暴君</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
 <a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#authority_group">権力者系</a>
 </pre>
 <h3 id="authority_indirect">間接型</h3>
@@ -224,7 +224,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="luck">得票数変化能力者</h2>
 <h3 id="luck_direct">直接型</h3>
 <pre>
-<a href="duelist.php#critical_patron">ひんな神</a>・<a href="sub_role.php#wirepuller_luck">入道</a>・<a href="sub_role.php#upper_luck_group">雑草魂系</a>
+<a href="human.php#critical_common">暴君</a>・<a href="duelist.php#critical_patron">ひんな神</a>・<a href="sub_role.php#wirepuller_luck">入道</a>・<a href="sub_role.php#upper_luck_group">雑草魂系</a>
 </pre>
 <h3 id="luck_indirect">間接型</h3>
 <pre>

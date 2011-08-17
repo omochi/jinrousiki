@@ -1282,6 +1282,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#trap_common">策士</a>
 <a href="#sacrifice_common">首領</a>
 <a href="#ghost_common">亡霊嬢</a>
+<a href="#critical_common">暴君</a>
+<a href="#hermit_common">隠者</a>
 <a href="#dummy_common">夢共有者</a>
 </p>
 
@@ -1392,6 +1394,31 @@ PP ラインの計算を難しくさせるために作成してみました。
 東方ウミガメ人狼のプレイヤーさんがモデルです。
 即死こそしませんが、<a href="wolf.php#resist_wolf">抗毒狼</a>でも無効化できないので非常に強力です。
 <a href="#trap_common">策士</a>同様、人狼陣営にとっては役職の存在自体が脅威になるでしょう。
+</pre>
+
+<h3 id="critical_common">暴君 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β10～]</h3>
+<pre>
+処刑投票数が +1 されるが、<a href="sub_role.php#critical_luck">痛恨</a>相当 (<a href="../weather.php#weather_critical">烈日</a>は無効) の能力も持つ特殊な共有者。
+処刑投票能力の詳細は<a href="#elder">長老</a>参照。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/81" target="_top">新役職考案スレ2(81)</a> が原型です。
+</pre>
+
+<h3 id="hermit_common">隠者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β10～]</h3>
+<pre>
+夜の発言が「囁き声」にならない劣化共有者。
+仲間情報は通常の<a href="#common">共有者</a>と同じ。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他国に実在する共有者の仕様に相当します。
+隠者のみの場合は複数いても他の人からは存在が見えません。
 </pre>
 
 <h3 id="dummy_common">夢共有者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -2059,6 +2086,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 2日目夜以降、<a href="#common_group">共有者系</a>に一方的に声が届く特殊なさとり。
 相手には誰の声が聞こえているのか分かるが、仲間表示などには何も出ない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="lovers.php#minstrel_cupid">吟遊詩人</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

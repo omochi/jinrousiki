@@ -87,6 +87,7 @@ Ver. 1.5.0
 <a href="#ver150b7">β7</a>
 <a href="#ver150b8">β8</a>
 <a href="#ver150b9">β9</a>
+<a href="#ver150b10">β10</a>
 </p>
 
 <p>
@@ -2629,6 +2630,42 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう劣化橋姫。</td>
   <td>Ver. 1.5.0 β9</td>
+</tr>
+<tr id="ver150b10">
+  <td><a href="human.php#hermit_common">隠者</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#common_group">共有者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">夜の発言が「囁き声」にならない劣化共有者。</td>
+  <td>Ver. 1.5.0 β10</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#hariti_yaksa">鬼子母神</a></td>
+  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="fox.php#child_fox_group">子狐系</a>・<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>の全滅 + 村人陣営以外の勝利」。</td>
+  <td>Ver. 1.5.0 β10</td>
+</tr>
+<tr>
+  <td><a href="human.php#critical_common">暴君</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#common_group">共有者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票数が +1 されるが、<a href="sub_role.php#critical_luck">痛恨</a>相当の能力も持つ特殊な共有者。</td>
+  <td>Ver. 1.5.0 β10</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#quiet_wolf">静狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">夜の会話が<a href="wolf.php#howl">人狼の遠吠え</a>に変換されない人狼。</td>
+  <td>Ver. 1.5.0 β10</td>
 </tr>
 </table>
 

@@ -268,9 +268,13 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#亡霊嬢#です。他の#共有者#が誰であるか知ることができます。また、あなたを襲った_人狼_を^小心者^にしてしまいます。\n　あなたの魂魄は、黄泉への誘い水。^ショック死^の恐怖に怯える_狼_が因果の報いを受けるまで、冥府で幽雅に見守りましょう。",
     'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
 
+  public $critical_common = array(
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#暴君#です。他の#共有者#が誰であるか知ることができます。また、_処刑_^投票数^が +1 されますが、稀に:得票数:が +100 されます。",
+    'type' => 'common', 'delimiter' => array('_' => 'vote', '^' => 'authority', ':' => 'luck'));
+
   public $hermit_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#隠者#です。他の#共有者#が誰であるか知ることができますが、あなたの声は仲間の#共有者#以外には届きません。",
-    'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
+    'type' => 'common');
 
   public $poison = array(
     'message' => "[役割] [|村人|陣営] [#埋毒者#系]\n　あなたは#埋毒者#です。_人狼_に襲われた場合は_人狼_の中から、^処刑^された場合は生きている村の人たちの中からランダムで一人道連れにします。",
@@ -378,7 +382,7 @@ class RoleMessageList{
     'type' => 'jealousy');
 
   public $critical_jealousy = array(
-    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#人魚#です。^処刑^投票先が_恋人_だった場合は自分に=痛恨=がついてしまいます。",
+    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#人魚#です。^処刑^投票先が_恋人_だった場合は自分に=痛恨=がついてしまいます。叶わぬ恋の痛みを、あなたは知るでしょう。",
     'type' => 'jealousy', 'delimiter' => array('=' => 'luck'));
 
   public $brownie = array(
@@ -514,21 +518,25 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|呪狼|です。あなたを占った#占い師#を|呪返し|で殺すことができます。村を絶望の底に叩き落してやるのです！",
     'type' => 'boss_wolf');
 
+  public $quiet_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|静狼|です。あなたの遠吠えは村人には聞こえません。",
+    'type' => 'wolf');
+
   public $wise_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|賢狼|です。#妖狐#の念話を感知することができます。人の中に潜む#狐#の吐息を正しく聞き分け、仲間に知らせるのです！",
     'type' => 'wolf', 'delimiter' => array('#' => 'fox'));
 
   public $poison_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|毒狼|です。たとえ_処刑_されても体内に流れる#毒#で村人一人を道連れにできます。強気に村をかく乱するのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'poison', '_' => 'vote'));
+    'type' => 'resist_wolf', 'delimiter' => array('_' => 'vote'));
 
   public $resist_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|抗毒狼|です。一度だけ#毒#に耐えることができます。あなたへの最期の抵抗を凌ぎ、村人たちを恐怖に陥れるのです！",
-    'type' => 'poison_wolf');
+    'type' => 'wolf', 'delimiter' => array('#' => 'poison'));
 
   public $revive_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|仙狼|です。一度だけ夜に死亡しても#蘇生#できます。夜の帳がある限り終わることの無き恐怖を思い知らせるのです！",
-    'type' => 'poison_wolf');
+    'type' => 'wolf', 'delimiter' => array('#' => 'revive'));
 
   public $trap_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|狡狼|です。一定日数後に、あなたの元に訪れた人を|罠|で撃退することができます。\n　我が叡智に見抜けぬ人の動き無し。我が命を狙う無法者と我が身に近づく愚か者に災厄を。",
@@ -629,23 +637,23 @@ class RoleMessageList{
 
   public $corpse_courier_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|火車|です。あなたが投票した人が#処刑#された場合に限り、その死体を持ち去ることができます。\n　バレないように亡骸を持ち去ることで_霊能者_を無力化し、強敵の死体を収集して村人を惑わせるのです！",
-    'type' => 'mad', 'delimiter' => array('#' => 'vote', '_' => 'necromancer'));
+    'type' => 'amaze_mad', 'delimiter' => array('_' => 'necromancer'));
 
   public $amaze_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|傘化け|です。あなたが投票した人が#処刑#された場合に限り、投票結果を隠蔽することができます。\n　みんなが気になってしょうがない投票結果。それを隠すと…？さぁ、みんなをびっくりさせちゃいましょう！",
-    'type' => 'corpse_courier_mad');
+    'type' => 'mad', 'delimiter' => array('#' => 'vote'));
 
   public $agitate_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|扇動者|です。#処刑#投票先が拮抗した場合に限り、まとめて死なせることができます。\n　「人外を吊り殺せ！村に平和を！」熱狂する村人の熱意を煽り、巧みに策略を繰るのです！",
-    'type' => 'corpse_courier_mad');
+    'type' => 'amaze_mad');
 
   public $miasma_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|土蜘蛛|です。#処刑#投票先が死ななかった場合は_熱病_にさせることができます。\n　身に孕む怨念を悪疫へと変え、村を地獄の釜の底へ叩き込み、悪夢に悩ませるのです！",
-    'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'chicken'));
+    'type' => 'amaze_mad', 'delimiter' => array('_' => 'chicken'));
 
   public $critical_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|釣瓶落とし|です。#処刑#投票先が死ななかった場合は_痛恨_にさせることができます。\n　あなたは村の意思に逆らうときに真の力が目覚めます。あなたの意思で村を覆せるのです。",
-    'type' => 'corpse_courier_mad', 'delimiter' => array('_' => 'luck'));
+    'type' => 'amaze_mad', 'delimiter' => array('_' => 'luck'));
 
   public $follow_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|舟幽霊|です。#処刑#投票先が_ショック死_した場合はさらに誰か一人を_ショック死_させることができます。\n　不条理な死は怨念を招き、溺れる死者は死者をも掴む。あなたの導きと殺意で村人を海に引きずり込むのです！",
@@ -1009,24 +1017,28 @@ class RoleMessageList{
     'type' => 'ogre', 'delimiter' => array('_' => 'revive'));
 
   public $sacrifice_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と_村人陣営_以外の勝利が勝利条件になります。また、夜に攫った人を^洗脳者^にして\n　#人狼#に襲撃されたときの身代わりにできます。杯を酌み交わすために人を攫い、妖どもを率いて百鬼夜行の長となるのです！",
-    'type' => 'ogre', 'delimiter' => array('_' => 'human', '^' => 'vampire', '=' => 'chicken'));
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|酒呑童子|です。あなた自身の生存と#村人陣営以外#の勝利が勝利条件になります。また、夜に攫った人を_洗脳者_にして\n　#人狼#に襲撃されたときの身代わりにできます。杯を酌み交わすために人を攫い、妖どもを率いて百鬼夜行の長となるのです！",
+    'type' => 'ogre', 'delimiter' => array('_' => 'vampire'));
 
   public $yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉|です。あなた自身の生存と#人狼系#の全滅が勝利条件になります。夜の闇に溶け込み、#狼#を見つけ出して滅ぼすのです！",
     'type' => 'ogre');
 
   public $betray_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉丸|です。あなた自身の生存、#蝙蝠陣営#の全滅、_村人陣営_の勝利が勝利条件になります。\n　悪逆無道の主人に背いて、正義を知ったあなたは許せない。我が身可愛さに飛び回る、不義の輩を。",
-    'type' => 'yaksa', 'delimiter' => array('#' => 'chiroptera', '_' => 'human'));
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|夜叉丸|です。あなた自身の生存、_蝙蝠陣営_の全滅、^村人陣営^の勝利が勝利条件になります。\n　悪逆無道の主人に背いて、正義を知ったあなたは許せない。我が身可愛さに飛び回る、不義の輩を。",
+    'type' => 'yaksa', 'delimiter' => array('_' => 'chiroptera', '^' => 'human'));
 
   public $cursed_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|滝夜叉姫|、#呪い#を持っています。あなた自身の生存と_占い師系_・^魔法使い系^の全滅が勝利条件になります。\n　一族郎党を滅ぼされ、陰陽の使い手に敗れたあなた。これは正当な復讐。荒御魂の声に導かれ、敵を討つのです。",
-    'type' => 'yaksa', 'delimiter' => array('#' => 'wolf', '_' => 'mage', '^' => 'wizard'));
+    'type' => 'yaksa', 'delimiter' => array('_' => 'mage', '^' => 'wizard'));
 
   public $succubus_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と#男性#の全滅が勝利条件になります。欲望の求めるままに、村の#男#を喰らい尽くすのです！",
-    'type' => 'yaksa', 'delimiter' => array('#' => 'sex_male'));
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|荼枳尼天|です。あなた自身の生存と_男性_の全滅が勝利条件になります。欲望の求めるままに、村の#男#を喰らい尽くすのです！",
+    'type' => 'yaksa', 'delimiter' => array('_' => 'sex_male'));
+
+  public $hariti_yaksa = array(
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。",
+    'type' => 'yaksa', 'delimiter' => array('_' => 'fox', '^' => 'lovers'));
 
   public $power_yaksa = array(
     'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|阿修羅|です。あなた自身の生存と生存陣営数を全陣営の半分以下にすることが勝利条件になります。\n　あなたの眼前では、常に闘争がその道を塞ぎます。どんな手を使ってでも、闘いの果てへと辿り着くのです！",
@@ -1603,6 +1615,7 @@ class RoleMessageList{
   public $result_trap_common = array('message' => "さんは|策士|でした", 'type' => 'result_common');
   public $result_sacrifice_common = array('message' => "さんは|首領|でした", 'type' => 'result_common');
   public $result_ghost_common = array('message' => "さんは|亡霊嬢|でした", 'type' => 'result_common');
+  public $result_critical_common = array('message' => "さんは|暴君|でした", 'type' => 'result_common');
   public $result_hermit_common = array('message' => "さんは|隠者|でした", 'type' => 'result_common');
   public $result_dummy_common = array('message' => "さんは|夢共有者|でした", 'type' => 'result_common');
   public $result_poison = array('message' => "さんは|埋毒者|でした", 'delimiter' => array('|' => 'poison'));
@@ -1672,6 +1685,7 @@ class RoleMessageList{
   public $result_gold_wolf = array('message' => "さんは|金狼|でした", 'type' => 'result_wolf');
   public $result_phantom_wolf = array('message' => "さんは|幻狼|でした", 'type' => 'result_wolf');
   public $result_cursed_wolf = array('message' => "さんは|呪狼|でした", 'type' => 'result_wolf');
+  public $result_quiet_wolf = array('message' => "さんは|静狼|でした", 'type' => 'result_wolf');
   public $result_wise_wolf = array('message' => "さんは|賢狼|でした", 'type' => 'result_wolf');
   public $result_poison_wolf = array('message' => "さんは|毒狼|でした", 'type' => 'result_wolf');
   public $result_resist_wolf = array('message' => "さんは|抗毒狼|でした", 'type' => 'result_wolf');
@@ -1802,6 +1816,7 @@ class RoleMessageList{
   public $result_betray_yaksa = array('message' => "さんは|夜叉丸|でした", 'type' => 'result_yaksa');
   public $result_cursed_yaksa = array('message' => "さんは|滝夜叉姫|でした", 'type' => 'result_yaksa');
   public $result_succubus_yaksa = array('message' => "さんは|荼枳尼天|でした", 'type' => 'result_yaksa');
+  public $result_hariti_yaksa = array('message' => "さんは|鬼子母神|でした", 'type' => 'result_yaksa');
   public $result_power_yaksa = array('message' => "さんは|阿修羅|でした", 'type' => 'result_yaksa');
   public $result_dowser_yaksa = array('message' => "さんは|毘沙門天|でした", 'type' => 'result_yaksa');
   public $result_duelist = array('message' => "さんは|決闘者|でした", 'delimiter' => array('|' => 'duelist'));
@@ -2008,6 +2023,8 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('hermit_common');
+#$builder->Output('critical_common');
+#$builder->Output('hermit_common');
 #$builder->Output('miasma_jealousy');
-#$builder->Output('critical_jealousy');
+$builder->Output('quiet_wolf');
+#$builder->Output('hariti_yaksa');

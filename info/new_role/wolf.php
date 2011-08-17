@@ -35,11 +35,15 @@ OutputRolePageHeader('人狼陣営');
 
 <h2 id="howl">遠吠え</h2>
 <ol>
-  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼・<a href="fox.php#howl_fox">化狐</a>。</li>
+  <li>人狼視点の遠吠えは<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼・<a href="fox.php#howl_fox">化狐</a> (二日目以降)。</li>
   <li><a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼視点の遠吠えは自分以外の人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
-  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
+  <li>村人視点の遠吠えは<a href="#silver_wolf">銀狼</a>も含めた<a href="#quiet_wolf">静狼</a>以外の人狼 (種類は不明) と<a href="fox.php#howl_fox">化狐</a>。</li>
   <li><a href="human.php#mind_scanner">さとり</a>には遠吠えはいっさい見えない。</li>
 </ol>
+<h5>Ver. 1.5.0 β10～</h5>
+<pre>
+<a href="#silver_wolf">銀狼</a>・<a href="sub_role.php#mind_lonely">はぐれ者</a>になった人狼視点の遠吠えが見えるのは二日目以降 (一日目は見えない)。
+</pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
 <a href="#silver_wolf">銀狼</a>の独り言が他の人に遠吠えに見える。
@@ -75,12 +79,13 @@ OutputRolePageHeader('人狼陣営');
 <a href="#gold_wolf">金狼</a>
 <a href="#phantom_wolf">幻狼</a>
 <a href="#cursed_wolf">呪狼</a>
+<a href="#quiet_wolf">静狼</a>
 <a href="#wise_wolf">賢狼</a>
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
-<a href="#revive_wolf">仙狼</a>
 </p>
 <p>
+<a href="#revive_wolf">仙狼</a>
 <a href="#trap_wolf">狡狼</a>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
@@ -90,9 +95,9 @@ OutputRolePageHeader('人狼陣営');
 <a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
-<a href="#sirius_wolf">天狼</a>
 </p>
 <p>
+<a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
 <a href="#scarlet_wolf">紅狼</a>
@@ -193,6 +198,19 @@ OutputRolePageHeader('人狼陣営');
 <a href="human.php#soul_mage">魂の占い師</a>や<a href="fox.php#child_fox">子狐</a>も呪い殺せます。
 占い能力者側の対策は、遺言に占い先をきちんと書いておく事です。
 死体の数や状況にもよりますが、残った村人がきっと仇を討ってくれるでしょう。
+</pre>
+
+<h3 id="quiet_wolf">静狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 β10～]</h3>
+<pre>
+夜の会話が<a href="#howl">人狼の遠吠え</a>に変換されない人狼。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#howl_fox">化狐</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="fox.php#howl_fox">化狐</a>と逆のアプローチで<a href="#howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
 </pre>
 
 <h3 id="wise_wolf">賢狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α24～]</h3>
@@ -869,7 +887,12 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 <a href="#partner">仲間</a>が分からない人狼。
 (他の人狼・<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>からも仲間であると分からない)
-人狼同士の会話もできず、発言は他の人からは<a href="#howl">遠吠え</a>に見える。
+二日目以降の夜の独り言が他の人には<a href="wolf.php#howl">人狼の遠吠え</a>に見える。
+人狼同士の会話もできない。
+</pre>
+<h5>Ver. 1.5.0 β10～</h5>
+<pre>
+夜の独り言が<a href="#howl">遠吠え</a>に見える日を二日目以降に変更
 </pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>

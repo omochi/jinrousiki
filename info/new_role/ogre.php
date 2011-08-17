@@ -21,8 +21,7 @@ OutputRolePageHeader('鬼陣営');
 </li>
 <li><a href="sub_role.php#lovers">恋人</a>は<a href="lovers.php">恋人陣営</a>と判定します (例：恋人の人狼は人狼陣営とはカウントしない)。</li>
 <li>2 日目以降の夜に村人一人を攫う (<a href="human.php#assassin_spec">暗殺</a>の一種) ことができます。</li>
-<li>人狼に襲撃されても一定確率で無効化します (襲撃は失敗扱い)。</li>
-<li>襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効です。</a>
+<li><a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) 以外の人狼に襲撃されても一定確率で無効化します (襲撃は失敗扱い)。</li>
 <li><a href="human.php#assassin_spec">暗殺</a>を一定確率で反射します。</li>
 <li>生存カウントは村人です。</li>
 <li><a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「鬼」です。</li>
@@ -35,7 +34,7 @@ OutputRolePageHeader('鬼陣営');
 <li>攫われた人の死亡メッセージは人狼の襲撃と同じで、死因は「鬼に攫われた」です。</li>
 <li>人攫いの種類にかかわらず、<a href="ability.php#trap">罠</a>は有効です。</li>
 <li>人攫いが成立するたびに成功率が低下 (下限は 1%) します (例：100% → 20% → 4% → 1%)。</li>
-<li><a href="#yaksa_group">夜叉系</a>は人攫いが成功する対象が個々で限定されています。</li>
+<li><a href="#yaksa_group">夜叉系</a>は人攫いが成立する対象が個々で限定されています。</li>
 </ol>
 
 
@@ -65,6 +64,10 @@ OutputRolePageHeader('鬼陣営');
 鬼陣営の基本種。勝利条件は「自分自身と<a href="wolf.php#wolf_group">人狼系</a> (種類・恋人不問) の生存」。
 人狼が一人でも生存していればいいので、人狼陣営の勝利を目指す必要はない。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#orange_ogre">前鬼</a>・<a href="#wise_ogre">夜行鬼</a>・<a href="#yaksa">夜叉</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 テーマは「全陣営に対する不確定要素」です。
@@ -77,7 +80,11 @@ OutputRolePageHeader('鬼陣営');
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/5</h4>
 <pre>
 鬼系の一種で、勝利条件は「自分自身の生存 + <a href="wolf.php">人狼陣営</a>の全滅」。
-<a href="wolf.php#mad_group">狂人</a>や人狼陣営に付いた<a href="mania.php#unknown_mania_group">鵺系</a>も含まれることに注意。
+<a href="wolf.php#mad_group">狂人系</a>や人狼陣営に付いた<a href="mania.php#unknown_mania_group">鵺系</a>も含まれることに注意。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#ogre">鬼</a>・<a href="#wise_ogre">夜行鬼</a>・<a href="#yaksa">夜叉</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -93,6 +100,10 @@ OutputRolePageHeader('鬼陣営');
 妖狐陣営に付いた<a href="mania.php#unknown_mania_group">鵺系</a>も含まれることに注意。
 妖狐陣営が出現していない場合は自己の生存のみで勝利となる。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#wise_ogre">夜行鬼</a>・<a href="#hariti_yaksa">鬼子母神</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#orange_ogre">前鬼</a>の対妖狐バージョンです。
@@ -105,10 +116,10 @@ OutputRolePageHeader('鬼陣営');
 <h4>[毒能力] 処刑：人狼系 + 妖狐陣営 + 鬼陣営 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
 鬼系の一種で、勝利条件は「<a href="quiz.php">出題者陣営</a>の勝利、または自分自身の生存」。
-毒能力は劣化<a href="human.php#strong_poison">強毒者</a>相当。
-<a href="#ogre_do">人攫い</a>の効果は<a href="sub_role.php#panelist">解答者</a>の付加で、対象が<a href="quiz.php#quiz">出題者</a>だった場合は無効。
 <a href="quiz.php">出題者陣営</a>が出現して敗北しても自分が生存していれば勝利となる。
 逆に、<a href="quiz.php">出題者陣営</a>が勝利していれば死亡していても勝利となる。
+毒能力は劣化<a href="human.php#strong_poison">強毒者</a>相当。
+<a href="#ogre_do">人攫い</a>の効果は<a href="sub_role.php#panelist">解答者</a>の付加で、対象が<a href="quiz.php#quiz">出題者</a>だった場合は無効。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -124,12 +135,17 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/2</h4>
 <pre>
-鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の左側にいる人の全滅 + 村人陣営の勝利」。
+鬼系の一種で、勝利条件は
+「自分自身の生存 + 自分と同列の左側にいる人の全滅 + 村人陣営の勝利」。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#east_ogre">風鬼</a>・<a href="#north_ogre">水鬼</a>・<a href="#south_ogre">隠行鬼</a>・<a href="#betray_yaksa">夜叉丸</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 入村位置に依存するタイプで、藤原千方の四鬼がモチーフです。
-陰陽五行に当てはめて金気＝西と見立てています。
+陰陽五行に当てはめて金気を西と見立てています。
 名前に「金」が付いていますが、<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>と能力の関連はありません。
 </pre>
 
@@ -137,11 +153,16 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/2</h4>
 <pre>
-鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の右側にいる人の全滅 + 村人陣営の勝利」。
+鬼系の一種で、勝利条件は
+「自分自身の生存 + 自分と同列の右側にいる人の全滅 + 村人陣営の勝利」。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#west_ogre">金鬼</a>・<a href="#north_ogre">水鬼</a>・<a href="#south_ogre">隠行鬼</a>・<a href="#betray_yaksa">夜叉丸</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#west_ogre">金鬼</a>の対右側バージョンです。木気＝東と見立てています。
+<a href="#west_ogre">金鬼</a>の対右側バージョンです。木気を東と見立てています。
 右端にいる場合は最初から条件を一つクリアしていることになります。
 </pre>
 
@@ -149,11 +170,16 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/2</h4>
 <pre>
-鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の上側にいる人の全滅 + 村人陣営の勝利」。
+鬼系の一種で、勝利条件は
+「自分自身の生存 + 自分と同列の上側にいる人の全滅 + 村人陣営の勝利」。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#west_ogre">金鬼</a>・<a href="#east_ogre">風鬼</a>・<a href="#south_ogre">隠行鬼</a>・<a href="#betray_yaksa">夜叉丸</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#west_ogre">金鬼</a>の対上側バージョンです。水気＝北と見立てています。
+<a href="#west_ogre">金鬼</a>の対上側バージョンです。水気を北と見立てています。
 勝利条件が厳しいので他の鬼系と比べると能力がやや高めに設定されています。
 </pre>
 
@@ -161,12 +187,17 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/2</h4>
 <pre>
-鬼系の一種で、勝利条件は「自分自身の生存 + 自分と同列の下側にいる人の全滅 + 村人陣営の勝利」。
+鬼系の一種で、勝利条件は
+「自分自身の生存 + 自分と同列の下側にいる人の全滅 + 村人陣営の勝利」。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#west_ogre">金鬼</a>・<a href="#east_ogre">風鬼</a>・<a href="#north_ogre">水鬼</a>・<a href="#betray_yaksa">夜叉丸</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#west_ogre">金鬼</a>の対下側バージョンです。
-隠行鬼は火鬼と言われることもあり、火気＝南と見立てています。
+隠行鬼は火鬼と言われることもあり、火気を南と見立てています。
 四鬼系は互いの位置によって敵にも味方にもなるのが厄介なところですね。
 </pre>
 
@@ -196,7 +227,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#wise_wolf">賢狼</a>
+<a href="wolf.php#wise_wolf">賢狼</a>・<a href="#ogre">鬼</a>・<a href="#orange_ogre">前鬼</a>・<a href="#indigo_ogre">後鬼</a>・<a href="#yaksa">夜叉</a>・<a href="#hariti_yaksa">鬼子母神</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -267,7 +298,7 @@ OutputRolePageHeader('鬼陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="#hariti_yaksa">鬼子母神</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -282,6 +313,7 @@ OutputRolePageHeader('鬼陣営');
 <a href="#betray_yaksa">夜叉丸</a>
 <a href="#cursed_yaksa">滝夜叉姫</a>
 <a href="#succubus_yaksa">荼枳尼天</a>
+<a href="#hariti_yaksa">鬼子母神</a>
 <a href="#power_yaksa">阿修羅</a>
 <a href="#dowser_yaksa">毘沙門天</a>
 </p>
@@ -292,6 +324,10 @@ OutputRolePageHeader('鬼陣営');
 <pre>
 夜叉系の基本種。勝利条件は「自分自身の生存 + <a href="wolf.php#wolf_group">人狼系</a> (恋人を含む) の全滅」。
 人攫いの対象が<a href="wolf.php#wolf_group">人狼系</a>以外だった場合は無条件で失敗する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#ogre">鬼</a>・<a href="#orange_ogre">前鬼</a>・<a href="#wise_ogre">夜行鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -306,6 +342,10 @@ OutputRolePageHeader('鬼陣営');
 夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="chiroptera.php">蝙蝠陣営</a>の全滅 + 村人陣営の勝利」。
 蝙蝠陣営に付いた<a href="mania.php#unknown_mania_group">鵺系</a>も含まれることに注意。
 人攫いの対象が<a href="chiroptera.php">蝙蝠陣営</a>以外だった場合は無条件で失敗する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#west_ogre">金鬼</a>・<a href="#east_ogre">風鬼</a>・<a href="#north_ogre">水鬼</a>・<a href="#south_ogre">隠行鬼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -327,7 +367,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#yaksa">夜叉</a>の対占い師・魔法使いバージョンです。
+<a href="#yaksa">夜叉</a>の対占い師・魔法使いバージョンです。「たきやしゃひめ」と読みます。
 平 将門の娘とされる伝説の妖術使いがモチーフです。
 </pre>
 
@@ -336,8 +376,8 @@ OutputRolePageHeader('鬼陣営');
 <h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：1/2</h4>
 <pre>
 夜叉系の一種で、勝利条件は「自分自身の生存 + 男性の全滅」。
-人攫いの対象が男性以外だった場合は無条件で失敗する。
 自分自身の性別は勝利条件には影響しない。
+人攫いの対象が男性以外だった場合は無条件で失敗する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -349,11 +389,31 @@ OutputRolePageHeader('鬼陣営');
 性別を偽って入村する人もいるので勝利するのは難しいと思われます。
 </pre>
 
+<h3 id="hariti_yaksa">鬼子母神 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.5.0 β10～]</h3>
+<h4>[耐性] 人狼襲撃：無効 (20%) / 暗殺：反射 (20%)</h4>
+<h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：1/2</h4>
+<pre>
+夜叉系の一種で、勝利条件は
+「自分自身の生存 + 殲滅対象(下記)の全滅 + 村人陣営以外の勝利」。
+殲滅対象は<a href="fox.php#child_fox_group">子狐系</a>・<a href="lovers.php#cupid_group">キューピッド系</a>・<a href="lovers.php#angel_group">天使系</a>。
+殲滅対象に付いた<a href="mania.php#unknown_mania_group">鵺系</a>、<a href="sub_role.php#lovers">恋人</a>は勝利条件には影響しない。
+人攫いの対象が殲滅対象以外だった場合は無条件で失敗する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#indigo_ogre">後鬼</a>・<a href="#wise_ogre">夜行鬼</a>・<a href="#sacrifice_ogre">酒呑童子</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#yaksa">夜叉</a>の対子狐・恋人陣営バージョンです。「きしもじん」と読みます。
+</pre>
+
 <h3 id="power_yaksa">阿修羅 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.5.0 β9～]</h3>
 <h4>[耐性] 人狼襲撃：無効 (30%) / 暗殺：反射 (30%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：3/5</h4>
 <pre>
-夜叉系の一種で、勝利条件は「自分自身の生存 + 生存陣営数が出現陣営の半分以下」。
+夜叉系の一種で、勝利条件は
+「自分自身の生存 + 生存陣営数が出現陣営の半分以下」。
 人攫いの対象が村人陣営 (恋人は除く) だった場合は無条件で失敗する。
 </pre>
 <ol>
@@ -367,7 +427,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#power_ogre">星熊童子</a>の陣営数規制バージョンです。
+<a href="#power_ogre">星熊童子</a>の陣営数規制バージョンです。「あしゅら」と読みます。
 人攫いの制限を考慮すると、村人・人狼・鬼が残るように仕向けると安定します。
 </pre>
 
@@ -375,7 +435,8 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (40%) / 暗殺：反射 (40%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：1/2</h4>
 <pre>
-夜叉系の一種で、勝利条件は「自分自身の生存 + 自分より<a href="sub_role.php">サブ役職</a>の所持数の多い人の全滅」。
+夜叉系の一種で、勝利条件は
+「自分自身の生存 + 自分より<a href="sub_role.php">サブ役職</a>の所持数の多い人の全滅」。
 人攫いの対象が<a href="sub_role.php">サブ役職</a>を所持していない場合は無条件で失敗する。
 </pre>
 <h4>関連役職</h4>

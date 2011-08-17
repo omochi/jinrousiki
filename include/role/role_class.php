@@ -22,8 +22,8 @@ class RoleManager{
 
   //処刑投票(メイン)
   public $vote_do_main_list = array(
-    'human', 'elder', 'scripter', 'elder_guard', 'elder_wolf', 'elder_fox', 'elder_chiroptera',
-    'critical_duelist', 'cowboy_duelist');
+    'human', 'elder', 'scripter', 'elder_guard', 'critical_common', 'elder_wolf', 'elder_fox',
+    'elder_chiroptera', 'critical_duelist', 'cowboy_duelist');
 
   //処刑投票(サブ)
   public $vote_do_sub_list = array(
@@ -31,7 +31,7 @@ class RoleManager{
     'day_voter', 'wirepuller_luck', 'watcher', 'panelist');
 
   //処刑得票(メイン)
-  public $voted_main_list = array('critical_patron');
+  public $voted_main_list = array('critical_common', 'critical_patron');
 
   //処刑得票(サブ)
   public $voted_sub_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',

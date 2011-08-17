@@ -3,6 +3,31 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
 $INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'MESSAGE', 'GAME_OPT_MESS');
+
+//-- 関数定義 --//
+//村の最大人数設定出力
+function OutputMaxUser(){
+  global $ROOM_CONF, $CAST_CONF;
+
+  $str = '[ ' . implode('人・', $ROOM_CONF->max_user_list);
+  $min_user = min(array_keys($CAST_CONF->role_list));
+  $str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
+  $str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
+  echo $str;
+}
+
+//身代わり君がなれない役職のリスト出力
+function OutputDisableDummyBoyRole(){
+  global $ROLE_DATA, $CAST_CONF;
+
+  $stack = array('人狼', '妖狐');
+  foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
+    $stack[] = $ROLE_DATA->main_role_list[$role];
+  }
+  echo implode($stack, '・');
+}
+
+//-- 表示 --//
 OutputInfoPageHeader('仕様', 0, 'script_info');
 ?>
 <script type="text/javascript" src="../javascript/output_diff_time.js"></script>
