@@ -2,7 +2,7 @@
 /*
   ◆人馬 (centaurus_pharmacist)
   ○仕様
-  ・処刑投票先が毒を持っていたら死亡する
+  ・処刑投票：投票先が毒を持っていたら死亡する
 */
 class Role_centaurus_pharmacist extends RoleVoteAbility{
   public $data_type = 'action';

@@ -2,7 +2,7 @@
 /*
   ◆河童 (cure_pharmacist)
   ○仕様
-  ・処刑投票先を解毒/ショック死抑制できる
+  ・解毒/ショック死抑制
 */
 class Role_cure_pharmacist extends RoleVoteAbility{
   public $data_type = 'action';

@@ -113,7 +113,7 @@ OutputRolePageHeader('恋人陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票能力者</a>
+<a href="human.php#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -2,7 +2,7 @@
 /*
   ◆仙人 (revive_pharmacist)
   ○仕様
-  ・処刑投票先のショック死抑制ができる
+  ・ショック死抑制
 */
 class Role_revive_pharmacist extends RoleVoteAbility{
   public $data_type = 'action';

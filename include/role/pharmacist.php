@@ -2,7 +2,7 @@
 /*
   ◆薬師 (pharmacist)
   ○仕様
-  ・処刑投票先の毒の種類が分かり、解毒できる
+  ・毒能力鑑定/解毒
 */
 class Role_pharmacist extends RoleVoteAbility{
   public $data_type = 'action';

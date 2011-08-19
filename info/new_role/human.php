@@ -1745,6 +1745,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 処刑されたら解毒・ショック死抑制能力無効。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#philosophy_wizard">賢者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/17" target="_top">新役職考案スレ(17)</a> が原型です。
@@ -1798,6 +1802,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
 処刑されたら毒能力判定・特殊解毒能力無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#philosophy_wizard">賢者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2229,7 +2237,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2376,6 +2384,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#soul_wizard">八卦見</a>
 <a href="#awake_wizard">比丘尼</a>
 <a href="#spiritism_wizard">交霊術師</a>
+<a href="#philosophy_wizard">賢者</a>
 <a href="#barrier_wizard">結界師</a>
 <a href="#astray_wizard">左道使い</a>
 <a href="#pierrot_wizard">道化師</a>
@@ -2482,6 +2491,26 @@ MVP の賞品としてプレゼントしたものです。
 魔法使いの<a href="#necromancer_group">霊能</a>バージョンです。
 <a href="#sex_mage">ひよこ鑑定士</a>の霊能バージョンは存在しないので
 処刑者の性別鑑定能力はオリジナルになります。
+</pre>
+
+<h3 id="philosophy_wizard">賢者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β10～]</h3>
+<pre>
+<a href="ability.php#vote_action">処刑投票</a>能力ベースの魔法を持つ魔法使いの一種 (夜の投票は無し)。
+魔法の効果は、<a href="#cure_pharmacist">河童</a>・<a href="#alchemy_pharmacist">錬金術師</a>・<a href="#miasma_jealousy">蛇姫</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>
+<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>のいずれか。
+耐性は適用されないので<a href="#guard_hunt">狩り</a>の対象にはならない。
+</pre>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+<a href="#alchemy_pharmacist">錬金術師</a>固定。
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+<a href="wolf.php#corpse_courier_mad">火車</a>固定。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+魔法使いの<a href="ability.php#vote_action">処刑投票</a>能力ギドラタイプです。
 </pre>
 
 <h3 id="barrier_wizard">結界師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α6～]</h3>

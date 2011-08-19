@@ -3,8 +3,11 @@
   ◆左道使い
   ○仕様
   ・魔法：反魂師・月兎・呪術師・獏・雪女・冥狐・闇妖精
+  ・魔法結果：なし
 */
 class Role_astray_wizard extends Role{
+  public $action = 'WIZARD_DO';
+
   function __construct(){ parent::__construct(); }
 
   function GetRole(){
@@ -16,4 +19,6 @@ class Role_astray_wizard extends Role{
 		   'snow_trap_mad', 'doom_fox', 'dark_fairy');
     return GetRandom($stack);
   }
+
+  function OutputResult(){}
 }

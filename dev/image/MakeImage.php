@@ -269,11 +269,11 @@ class RoleMessageList{
     'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
 
   public $critical_common = array(
-    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#暴君#です。他の#共有者#が誰であるか知ることができます。また、_処刑_^投票数^が +1 されますが、稀に:得票数:が +100 されます。",
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#暴君#です。他の#共有者#が誰であるか知ることができます。また、_処刑_^投票数^が +1 されますが、稀に:得票数:が +100 されます。\n　王たるもの堂々と生き、王の言葉は絶対と知れ。阻むものは全て薙ぎ払い己が道を闊歩せよ。華散りし時さえも豪華絢爛、盛大に散れ！",
     'type' => 'common', 'delimiter' => array('_' => 'vote', '^' => 'authority', ':' => 'luck'));
 
   public $hermit_common = array(
-    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#隠者#です。他の#共有者#が誰であるか知ることができますが、あなたの声は仲間の#共有者#以外には届きません。",
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#隠者#です。他の#共有者#が誰であるか知ることができますが、あなたの声は仲間の#共有者#以外には届きません。\n　現世との交わりを絶ち生活する、その声は特別な意味を持ちません。しかしその知恵は村を救う武器となるでしょう。",
     'type' => 'common');
 
   public $poison = array(
@@ -422,6 +422,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ、知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事などできないのだから。",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
 
+  public $philosophy_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#賢者#です。_処刑_投票で発動する#魔法#を使うことができます。",
+    'type' => 'wizard', 'delimiter' => array('_' => 'vote'));
+
   public $barrier_wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#結界師#です。二日目以降、同時に複数の人を一定確率で_護衛_できる#魔法#をかけることができます。\n　古来より伝えられし念動結界術…。その力を以って、悪しき者共から人々を守るために今、此処に発動ッ！",
     'type' => 'wizard', 'delimiter' => array('_' => 'guard'));
@@ -519,7 +523,7 @@ class RoleMessageList{
     'type' => 'boss_wolf');
 
   public $quiet_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|静狼|です。あなたの遠吠えは村人には聞こえません。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|静狼|です。あなたの遠吠えは村人には聞こえません。あなたの作る静寂は疑念となり、村人を騙す力となるのです。",
     'type' => 'wolf');
 
   public $wise_wolf = array(
@@ -1662,6 +1666,7 @@ class RoleMessageList{
   public $result_awake_wizard = array('message' => "さんは|比丘尼|でした", 'type' => 'result_wizard');
   public $result_spiritism_wizard = array('message' => "さんは|交霊術師|でした", 'type' => 'result_wizard');
   public $result_barrier_wizard = array('message' => "さんは|結界師|でした", 'type' => 'result_wizard');
+  public $result_philosophy_wizard = array('message' => "さんは|賢者|でした", 'type' => 'result_wizard');
   public $result_astray_wizard = array('message' => "さんは|左道使い|でした", 'type' => 'result_wizard');
   public $result_pierrot_wizard = array('message' => "さんは|道化師|でした", 'type' => 'result_wizard');
   public $result_doll = array('message' => "さんは|上海人形|でした", 'delimiter' => array('|' => 'doll'));
@@ -2023,8 +2028,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('critical_common');
-#$builder->Output('hermit_common');
-#$builder->Output('miasma_jealousy');
-$builder->Output('quiet_wolf');
+$builder->Output('miasma_jealousy');
+#$builder->Output('philosophy_wizard');
 #$builder->Output('hariti_yaksa');

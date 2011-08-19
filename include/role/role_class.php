@@ -42,9 +42,10 @@ class RoleManager{
     'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'snipe_poison',
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
-    'cursed_brownie', 'agitate_mad', 'amaze_mad', 'miasma_mad', 'critical_mad', 'sweet_cupid',
-    'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague',
-    'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
+    'critical_mad', 'follow_mad', 'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger',
+    'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
+    'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -71,8 +72,8 @@ class RoleManager{
   //処刑投票能力処理 (順番依存あり)
   public $vote_action_list = array(
     'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'miasma_jealousy', 'critical_jealousy',
-    'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger', 'cursed_avenger', 'sweet_cupid',
-    'snow_cupid');
+    'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger',
+    'cursed_avenger', 'sweet_cupid', 'snow_cupid');
 
   //得票カウンター
   public $voted_reaction_list = array('trap_common', 'jealousy');
@@ -90,6 +91,9 @@ class RoleManager{
 
   //処刑得票カウンター
   public $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
+
+  //道連れ
+  public $followed_list = array('follow_mad');
 
   //人狼襲撃耐性 (順番依存あり)
   public $wolf_eat_resist_list = array(
@@ -220,6 +224,11 @@ class Role{
     return $ROLES->actor;
   }
 
+  function GetUname($uname = NULL){
+    global $ROLES;
+    return is_null($uname) ? $ROLES->actor->uname : $uname;
+  }
+
   function GetUser(){
     global $USERS;
     return $USERS->rows;
@@ -330,7 +339,7 @@ class RoleVoteAbility extends Role{
 
     case 'action':
       $user = $USERS->ByRealUname($ROLES->actor->uname);
-      if($user->IsRole($this->role)) $ROLES->stack->{$this->role}[$user->uname] = $uname;
+      if($user->IsRole(true, $this->role)) $ROLES->stack->{$this->role}[$user->uname] = $uname;
       break;
     }
   }
@@ -388,15 +397,15 @@ class RoleVoteAbility extends Role{
   }
 
   //投票者ユーザ取得
-  function GetVoteUser(){
+  function GetVoteUser($uname = NULL){
     global $ROLES, $USERS;
-    return $USERS->ByRealUname($ROLES->stack->target[$ROLES->actor->uname]);
+    return $USERS->ByRealUname($ROLES->stack->target[$this->GetUname($uname)]);
   }
 
   //得票者名取得
   function GetVotedUname($uname = NULL){
     global $ROLES;
-    return array_keys($ROLES->stack->target, is_null($uname) ? $ROLES->actor->uname : $uname);
+    return array_keys($ROLES->stack->target, $this->GetUname($uname));
   }
 
   //投票先人数取得 (ショック死判定用)
@@ -420,12 +429,12 @@ class RoleVoteAbility extends Role{
   //処刑者判定
   function IsVoted($uname = NULL){
     global $ROLES;
-    return $ROLES->stack->vote_kill_uname == (is_null($uname) ? $ROLES->actor->uname : $uname);
+    return $ROLES->stack->vote_kill_uname == $this->GetUname($uname);
   }
 
   //発動日判定 (ショック死判定用)
   function IsDoom(){
     global $ROOM, $ROLES;
-    return $ROOM->date == $ROLES->actor->GetDoomDate($this->role);
+    return $ROLES->actor->GetDoomDate($this->role) == $ROOM->date;
   }
 }

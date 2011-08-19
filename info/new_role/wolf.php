@@ -210,6 +210,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/17" target="_top">新役職考案スレ2(17)</a> が原型です。
 <a href="fox.php#howl_fox">化狐</a>と逆のアプローチで<a href="#howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
 </pre>
 
@@ -1176,7 +1177,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#necromancer_group">霊能者系</a>・<a href="#amaze_mad">傘化け</a>
+<a href="human.php#necromancer_group">霊能者系</a>・<a href="human.php#philosophy_wizard">賢者</a>・<a href="#amaze_mad">傘化け</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1260,7 +1261,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#cure_pharmacist">河童</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1283,7 +1284,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="human.php#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

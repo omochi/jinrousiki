@@ -2,7 +2,7 @@
 /*
   ◆錬金術師 (alchemy_pharmacist)
   ○仕様
-  ・処刑投票先の毒の種類が分かり、解毒効果が「村人陣営以外」になる
+  ・毒能力鑑定/毒対象変化(村人陣営以外)
 */
 class Role_alchemy_pharmacist extends RoleVoteAbility{
   public $data_type = 'action';
@@ -27,5 +27,15 @@ class Role_alchemy_pharmacist extends RoleVoteAbility{
 	$this->GetActor()->alchemy_flag = true;
       }
     }
+  }
+
+  function FilterPoisonTarget(&$list){
+    global $USERS;
+
+    $stack = array();
+    foreach($list as $uname){
+      if(! $USERS->ByRealUname($uname)->IsCamp('human')) $stack[] = $uname;
+    }
+    $list = $stack;
   }
 }

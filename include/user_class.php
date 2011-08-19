@@ -7,43 +7,13 @@ class User{
   public $suicide_flag = false;
   public $revive_flag  = false;
 
-  function ParseCompoundParameters(){ $this->ParseRoles(); }
-
-  //指定したユーザーデータのセットを名前つき配列にして返します。
-  //このメソッドは extract 関数を使用してオブジェクトのプロパティを
-  //迅速にローカルに展開するために使用できます。 (現在は未使用)
-  function ToArray($type = NULL){
-    switch($type){
-    case 'profiles':
-      $result['profile'] = $this->profile;
-      $result['color'] = $this->color;
-      $result['icon_width'] = $this->icon_width;
-      $result['icon_height'] = $this->icon_height;
-      break;
-
-    case 'flags':
-      $result['dead_flag'] = $this->dead_flag;
-      $result['suicide_flag'] = $this->suicide_flag;
-      $result['revive_flag'] = $this->revive_flag;
-      break;
-
-    case 'roles':
-      $result['main_role'] = $this->main_role;
-      $result['role_list'] = $this->role_list;
-      $result['partner_list'] = $this->partner_list;
-      break;
-
-    default:
-      return array('user_no'     => $this->user_no,
-		   'uname'       => $this->uname,
-		   'handle_name' => $this->handle_name,
-		   'role'        => $this->role,
-		   'profile'     => $this->profile,
-		   'icon'        => $this->icon_filename,
-		   'color'       => $this->color);
-    }
-    return $result;
+  function __construct($role = NULL){
+    if(is_null($role)) return;
+    $this->role = $role;
+    $this->ParseCompoundParameters();
   }
+
+  function ParseCompoundParameters(){ $this->ParseRoles(); }
 
   //役職情報の展開処理
   function ParseRoles($role = NULL){
@@ -76,8 +46,38 @@ class User{
   }
 
   //役職の再パース処理
-  function ReparseRoles(){
-    $this->ParseRoles($this->GetRole());
+  function ReparseRoles(){ $this->ParseRoles($this->GetRole()); }
+
+  //指定したユーザーデータのセットを名前つき配列にして返します。
+  //このメソッドは extract 関数を使用してオブジェクトのプロパティを
+  //迅速にローカルに展開するために使用できます。 (現在は未使用)
+  function ToArray($type = NULL){
+    switch($type){
+    case 'profiles':
+      return array('profile'     => $this->profile,
+		   'color'       => $this->color,
+		   'icon_width'  => $this->icon_width,
+		   'icon_height' => $this->icon_height);
+
+    case 'flags':
+      return array('dead_flag'    => $this->dead_flag,
+		   'suicide_flag' => $this->suicide_flag,
+		   'revive_flag'  => $this->revive_flag);
+
+    case 'roles':
+      return array('main_role'    => $this->main_role,
+		   'role_list'    => $this->role_list,
+		   'partner_list' => $this->partner_list);
+
+    default:
+      return array('user_no'     => $this->user_no,
+		   'uname'       => $this->uname,
+		   'handle_name' => $this->handle_name,
+		   'role'        => $this->role,
+		   'profile'     => $this->profile,
+		   'icon'        => $this->icon_filename,
+		   'color'       => $this->color);
+    }
   }
 
   //ユーザ番号を取得
@@ -138,9 +138,7 @@ class User{
   }
 
   //死の宣告系の宣告日を取得
-  function GetDoomDate($role){
-    return max($this->GetPartner($role));
-  }
+  function GetDoomDate($role){ return max($this->GetPartner($role)); }
 
   //現在の仮想的な生死情報
   function IsDeadFlag($strict = false){
@@ -164,19 +162,13 @@ class User{
   }
 
   //蘇生辞退フラグ判定
-  function IsDrop(){
-    return $this->live == 'drop';
-  }
+  function IsDrop(){ return $this->live == 'drop'; }
 
   //同一ユーザ判定
-  function IsSame($uname){
-    return $this->uname == $uname;
-  }
+  function IsSame($uname){ return $this->uname == $uname; }
 
   //同一 HN 判定
-  function IsSameName($handle_name){
-    return $this->handle_name == $handle_name;
-  }
+  function IsSameName($handle_name){ return $this->handle_name == $handle_name; }
 
   //自分と同一ユーザ判定
   function IsSelf(){
@@ -231,9 +223,7 @@ class User{
   }
 
   //同一陣営判定
-  function IsCamp($camp, $win = false){
-    return $this->GetCamp($win) == $camp;
-  }
+  function IsCamp($camp, $win = false){ return $this->GetCamp($win) == $camp; }
 
   //拡張判定
   function IsPartner($type, $target){
@@ -260,14 +250,10 @@ class User{
   }
 
   //男性判定
-  function IsMale(){
-    return $this->sex == 'male';
-  }
+  function IsMale(){ return $this->sex == 'male'; }
 
   //女性判定
-  function IsFemale(){
-    return $this->sex == 'female';
-  }
+  function IsFemale(){ return $this->sex == 'female'; }
 
   //共有者系判定
   function IsCommon($talk = false){
@@ -276,7 +262,8 @@ class User{
 
   //魔法使い系判定
   function IsWizard($vote = false){
-    return $this->IsRoleGroup('wizard') && ! ($vote && $this->IsRole('spiritism_wizard'));
+    return $this->IsRoleGroup('wizard') &&
+      ! ($vote && $this->IsRole('spiritism_wizard', 'philosophy_wizard'));
   }
 
   //上海人形系判定 (人形遣いは含まない)
@@ -321,14 +308,10 @@ class User{
   }
 
   //鬼陣営判定
-  function IsOgre(){
-    return $this->IsRoleGroup('ogre', 'yaksa');
-  }
+  function IsOgre(){ return $this->IsRoleGroup('ogre', 'yaksa'); }
 
   //決闘者陣営判定
-  function IsDuelist(){
-    return $this->IsRoleGroup('duelist', 'avenger', 'patron');
-  }
+  function IsDuelist(){ return $this->IsRoleGroup('duelist', 'avenger', 'patron'); }
 
   //鵺系判定
   function IsUnknownMania(){
@@ -336,9 +319,7 @@ class User{
   }
 
   //恋人判定
-  function IsLovers(){
-    return $this->IsRole('lovers');
-  }
+  function IsLovers(){ return $this->IsRole('lovers'); }
 
   //難題耐性判定
   function IsChallengeLovers(){
@@ -362,9 +343,7 @@ class User{
   }
 
   //宿敵判定
-  function IsRival(){
-    return $this->IsRole('rival');
-  }
+  function IsRival(){ return $this->IsRole('rival'); }
 
   //護衛成功済み判定
   function IsFirstGuardSuccess($uname){
@@ -375,10 +354,10 @@ class User{
 
   //狩り対象判定
   function IsHuntTarget(){
-    return $this->IsRole('phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox',
-			 'trap_fox', 'cursed_fox', 'cursed_angel', 'poison_chiroptera',
-			 'cursed_chiroptera', 'boss_chiroptera', 'cursed_avenger',
-			 'critical_avenger') ||
+    return $this->IsRole(
+      'phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox', 'trap_fox',
+      'cursed_fox', 'cursed_angel', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',
+      'cursed_avenger', 'critical_avenger') ||
       ($this->IsRoleGroup('mad') &&
        ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'therian_mad', 'immolate_mad')) ||
       ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire', 'scarlet_vampire'));
@@ -386,9 +365,9 @@ class User{
 
   //護衛制限判定
   function IsGuardLimited(){
-    return $this->IsRole('emissary_necromancer', 'detective_common', 'sacrifice_common',
-			 'reporter', 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard',
-			 'pierrot_wizard', 'doll_master') ||
+    return $this->IsRole(
+      'emissary_necromancer', 'detective_common', 'sacrifice_common', 'reporter',
+      'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard', 'doll_master') ||
       ($this->IsRoleGroup('priest') &&
        ! $this->IsRole('revive_priest', 'crisis_priest', 'widow_priest')) ||
       $this->IsRoleGroup('assassin');
@@ -470,9 +449,7 @@ class User{
   }
 
   //嘘つき判定
-  function IsLiar(){
-    return $this->DistinguishLiar() == 'psycho_mage_liar';
-  }
+  function IsLiar(){ return $this->DistinguishLiar() == 'psycho_mage_liar'; }
 
   //遺言制限判定
   function IsLastWordsLimited($save = false){
@@ -541,8 +518,8 @@ class User{
 
   //ひよこ鑑定士の判定
   function DistinguishSex(){
-    return $this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' :
-      ($this->IsOgre() ? 'ogre' : 'sex_' . $this->sex);
+    return $this->IsOgre() ? 'ogre' :
+      ($this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex);
   }
 
   //占星術師の判定
@@ -550,6 +527,21 @@ class User{
     global $ROOM;
     return array_key_exists($this->uname, $ROOM->vote) || $this->IsWolf() ?
       'stargazer_mage_ability' : 'stargazer_mage_nothing';
+  }
+
+  //霊能者の判定
+  function DistinguishNecromancer($reverse = false){
+    if($this->IsOgre()) return 'ogre';
+    if($this->IsRoleGroup('vampire') || $this->IsRole('cute_chiroptera')) return 'chiroptera';
+    if($this->IsChildFox()) return 'child_fox';
+    if($this->IsRole('white_fox', 'black_fox', 'mist_fox', 'phantom_fox', 'possessed_fox',
+		     'cursed_fox')){
+      return 'fox';
+    }
+    if($this->IsRole('boss_wolf', 'mist_wolf', 'phantom_wolf', 'cursed_wolf', 'possessed_wolf')){
+      return $this->main_role;
+    }
+    return ($this->IsWolf() xor $reverse) ? 'wolf' : 'human';
   }
 
   //薬師の毒鑑定

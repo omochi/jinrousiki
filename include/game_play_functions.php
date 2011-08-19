@@ -1,7 +1,7 @@
 <?php
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $USERS, $SELF;
+  global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $ROLES, $USERS, $SELF;
 
   if(! $ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
@@ -200,39 +200,11 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('wizard')){ //魔法使い系
     $ROLE_IMG->Output($SELF->main_role);
 
-    $stack  = array();
-    $action = 'WIZARD_DO';
-    switch($SELF->main_role){
-    case 'wizard': //魔法使い
-      array_push($stack, 'MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
-      break;
-
-    case 'soul_wizard': //八卦見
-      array_push($stack, 'MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED', 'ASSASSIN_RESULT');
-      break;
-
-    case 'awake_wizard': //比丘尼
-      $stack[] = 'MAGE_RESULT';
-      break;
-
-    case 'spiritism_wizard': //交霊術師
-      $stack[] = 'SPIRITISM_WIZARD_RESULT';
-      $action = NULL;
-      break;
-
-    case 'barrier_wizard': //結界師
-      $stack[] = 'GUARD_SUCCESS';
-      $action = 'SPREAD_WIZARD_DO';
-      break;
-
-    case 'pierrot_wizard': //道化師
-      $stack[] = 'MAGE_RESULT';
-      break;
-    }
-
-    if($ROOM->date > 2) foreach($stack as $event) OutputSelfAbilityResult($event); //結果表示
-    if(isset($action) && $ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('wizard-do', 'wizard_do', $action);
+    $ROLES->actor = $SELF;
+    $filter = $ROLES->Load('main_role', true);
+    if($ROOM->date > 2) $filter->OutputResult(); //結果表示
+    if(isset($filter->action) && $ROOM->date > 1 && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('wizard-do', 'wizard_do', $filter->action);
     }
   }
   elseif($SELF->IsRoleGroup('doll')){ //上海人形系

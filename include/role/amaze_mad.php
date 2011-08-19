@@ -2,7 +2,7 @@
 /*
   ◆傘化け (amaze_mad)
   ○仕様
-  ・処刑投票先が処刑されたら投票結果を隠蔽する
+  ・処刑投票：投票先が生存していたら投票結果を隠蔽する
 */
 class Role_amaze_mad extends RoleVoteAbility{
   public $data_type = 'action';

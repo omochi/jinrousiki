@@ -2,7 +2,7 @@
 /*
   ◆封印師 (seal_medium)
   ○仕様
-  ・処刑投票先が回数限定の能力を持っている人外なら封印する
+  ・処刑投票：投票先が回数限定の能力を持っている人外なら封印する
 */
 class Role_seal_medium extends RoleVoteAbility{
   public $data_type = 'action';

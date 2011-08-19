@@ -2,7 +2,7 @@
 /*
   ◆土蜘蛛 (miasma_mad)
   ○仕様
-  ・処刑投票先が生存していたら熱病を付加する
+  ・処刑投票：投票先が生存していたら熱病を付加する
 */
 class Role_miasma_mad extends RoleVoteAbility{
   public $data_type = 'action';

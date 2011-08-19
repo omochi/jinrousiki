@@ -2,7 +2,7 @@
 /*
   ◆神主 (bacchus_medium)
   ○仕様
-  ・処刑投票先が鬼陣営ならショック死させる
+  ・処刑投票：投票先が鬼陣営ならショック死させる
 */
 class Role_bacchus_medium extends RoleVoteAbility{
   public $data_type = 'action';
