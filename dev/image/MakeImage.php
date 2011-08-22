@@ -332,6 +332,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#死神#です。夜に村人一人に_死の宣告_を行うことができます。命の灯火を継ぐも絶つもあなた次第です。",
     'type' => 'assassin', 'delimiter' => array('_' => 'chicken'));
 
+  public $select_assassin = array(
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#おしら様#です。夜に村人一人を#オシラ遊び#の対象に選ぶことができます。",
+    'type' => 'assassin');
+
   public $reverse_assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#反魂師#です。夜に選んだ人が生きていたら#暗殺#し、死んでいたら_蘇生_することができます。\n　あなたの秘術は生死を操る禁忌。夜陰にその力を振るい、村のための舞台を秘密裏に整えるのです。",
     'type' => 'assassin', 'delimiter' => array('_' => 'revive'));
@@ -378,7 +382,7 @@ class RoleMessageList{
     'type' => 'jealousy', 'delimiter' => array('=' => 'liar'));
 
   public $miasma_jealousy = array(
-    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#蛇姫#です。^処刑^投票先が_恋人_だった場合は一定確率で:熱病:にさせることができます。",
+    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#蛇姫#です。^処刑^投票先が_恋人_だった場合は一定確率で:熱病:にさせることができます。\n　蛇に変じ絡みついて逃しゃしませぬ。恋に狂えば燃ゆる想いに焦がれ果てるが定めでしょう？",
     'type' => 'jealousy');
 
   public $critical_jealousy = array(
@@ -423,7 +427,7 @@ class RoleMessageList{
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
 
   public $philosophy_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#賢者#です。_処刑_投票で発動する#魔法#を使うことができます。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#賢者#です。_処刑_投票で発動する#魔法#を使うことができます。七曜と知識の融合。その力で、静かな読書の時を取り戻すのです！",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote'));
 
   public $barrier_wizard = array(
@@ -1041,7 +1045,7 @@ class RoleMessageList{
     'type' => 'yaksa', 'delimiter' => array('_' => 'sex_male'));
 
   public $hariti_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。\n　村に生きる子と紡ぐ存在を消し去りましょう。自分の愛すべき子が居ない今、彼等の存在はただ目障りなだけなのだから。",
     'type' => 'yaksa', 'delimiter' => array('_' => 'fox', '^' => 'lovers'));
 
   public $power_yaksa = array(
@@ -1453,6 +1457,10 @@ class RoleMessageList{
     'message' => "　あなたは|恋人|と別れました……",
     'type' => 'challenge_lovers');
 
+  public $death_selected = array(
+    'message' => "　あなたは|オシラ遊び|の生贄に選ばれたので今夜死亡します。",
+    'delimiter' => array('|' => 'assassin'));
+
   public $lost_ability = array('message' => "　あなたは能力を失いました。");
 
   public $muster_ability = array('message' => "　あなたの能力が発現しました。");
@@ -1639,10 +1647,11 @@ class RoleMessageList{
   public $result_alchemy_pharmacist = array('message' => "さんは|錬金術師|でした", 'type' => 'result_pharmacist');
   public $result_centaurus_pharmacist = array('message' => "さんは|人馬|でした", 'type' => 'result_pharmacist');
   public $result_assassin = array('message' => "さんは|暗殺者|でした", 'delimiter' => array('|' => 'assassin'));
-  public $result_doom_assassin = array('message' => "さんは|死神|でした", 'type' => 'assassin');
-  public $result_reverse_assassin = array('message' => "さんは|反魂師|でした", 'type' => 'assassin');
-  public $result_soul_assassin = array('message' => "さんは|辻斬り|でした", 'type' => 'assassin');
-  public $result_eclipse_assassin = array('message' => "さんは|蝕暗殺者|でした", 'type' => 'assassin');
+  public $result_doom_assassin = array('message' => "さんは|死神|でした", 'type' => 'result_assassin');
+  public $result_select_assassin = array('message' => "さんは|おしら様|でした", 'type' => 'result_assassin');
+  public $result_reverse_assassin = array('message' => "さんは|反魂師|でした", 'type' => 'result_assassin');
+  public $result_soul_assassin = array('message' => "さんは|辻斬り|でした", 'type' => 'result_assassin');
+  public $result_eclipse_assassin = array('message' => "さんは|蝕暗殺者|でした", 'type' => 'result_assassin');
   public $result_mind_scanner = array('message' => "さんは|さとり|でした", 'delimiter' => array('|' => 'mind'));
   public $result_evoke_scanner = array('message' => "さんは|イタコ|でした", 'type' => 'result_mind_scanner');
   public $result_presage_scanner = array('message' => "さんは|件|でした", 'type' => 'result_mind_scanner');
@@ -2028,6 +2037,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('miasma_jealousy');
-#$builder->Output('philosophy_wizard');
+$builder->Output('select_assassin');
 #$builder->Output('hariti_yaksa');

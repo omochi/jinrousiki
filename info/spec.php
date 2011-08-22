@@ -161,7 +161,7 @@ OutputInfoPageHeader('詳細な仕様');
 <li>憑依 (<a href="new_role/ability.php#possessed">憑依能力者</a>)</li>
 <li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
-<li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>)</li>
+<li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>・<a href="new_role/sub_role.php#death_selected">オシラ遊び</a>)</li>
 </ul>
 <h4>～<?php echo $MESSAGE->revive_success ?> [Ver. 1.4.0 α18～]</h4>
 <ul>
@@ -233,7 +233,7 @@ OutputInfoPageHeader('詳細な仕様');
     罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
     狩人の狩り → 罠能力者の罠死 → 罠 ＞ 狩人護衛 ＞ 吸血 →
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 暗殺 →
-    罠 ＞ 無効判定 ＞ 反射判定 ＞ 失敗判定 ＞ 人攫い → 凍傷判定
+    罠 ＞ 無効判定 ＞ 反射判定 ＞ 失敗判定 ＞ 人攫い → 凍傷判定 → <a href="new_role/sub_role.php#death_selected">オシラ遊び</a>
 
   - <a href="new_role/ability.php#trap">罠能力者</a>
   - 逃亡能力者 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)

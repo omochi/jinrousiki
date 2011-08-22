@@ -1839,6 +1839,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <p>
 <a href="#assassin">暗殺者</a>
 <a href="#doom_assassin">死神</a>
+<a href="#select_assassin">おしら様</a>
 <a href="#reverse_assassin">反魂師</a>
 <a href="#soul_assassin">辻斬り</a>
 <a href="#eclipse_assassin">蝕暗殺者</a>
@@ -1907,6 +1908,18 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 「寿命を延ばすこともできる暗殺者」がコンセプトで、
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/85" target="_top">新役職考案スレ(85)</a> が原型です。
+</pre>
+
+<h3 id="select_assassin">おしら様 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β11～]</h3>
+<h4>[耐性] 罠：有効 / 護衛：制限対象</h4>
+<pre>
+暗殺成立時に<a href="sub_role.php#death_selected">オシラ遊び</a>を付加する特殊な暗殺者。
+オシラ遊びの発動日は投票した夜から数えて次の日の夜。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+時間差暗殺能力者です。
+主に<a href="../game_option.php#duel">決闘村</a>で「最期の夜を迎えた恋人」を演出するのが狙いです。
 </pre>
 
 <h3 id="reverse_assassin">反魂師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>

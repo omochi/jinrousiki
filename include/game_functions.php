@@ -290,8 +290,7 @@ function GenerateJavaScriptDate($time){
 function OutputAutoReloadLink($url){
   global $GAME_CONF, $RQ_ARGS;
 
-  $str = '[自動更新](' . $url . '">' .
-    ($RQ_ARGS->auto_reload > 0 ? '手動' : '【手動】') . '</a>';
+  $str = '[自動更新](' . $url . '">' . ($RQ_ARGS->auto_reload > 0 ? '手動' : '【手動】') . '</a>';
   foreach($GAME_CONF->auto_reload_list as $time){
     $name = $time . '秒';
     $value = $RQ_ARGS->auto_reload == $time ? '【' . $name . '】' : $name;

@@ -1,24 +1,16 @@
 <?php
 /*
-  ◆左道使い
+  ◆左道使い (astray_wizard)
   ○仕様
   ・魔法：反魂師・月兎・呪術師・獏・雪女・冥狐・闇妖精
-  ・魔法結果：なし
 */
-class Role_astray_wizard extends Role{
-  public $action = 'WIZARD_DO';
+RoleManager::LoadFile('wizard');
+class Role_astray_wizard extends Role_wizard{
+  public $wizard_list = array(
+    'reverse_assassin' => 'ASSASSIN_DO', 'jammer_mad' => 'JAMMER_MAD_DO',
+    'voodoo_mad' => 'VOODOO_MAD_DO', 'dream_eater_mad' => 'DREAM_EAT',
+    'snow_trap_mad' => 'TRAP_MAD_DO', 'doom_fox' => 'ASSASSIN_DO', 'dark_fairy' => 'FAIRY_DO');
+  public $result_list = array();
 
   function __construct(){ parent::__construct(); }
-
-  function GetRole(){
-    global $ROOM;
-
-    if($ROOM->IsEvent('full_wizard')) return 'reverse_assassin';
-    if($ROOM->IsEvent('debilitate_wizard')) return 'dark_fairy';
-    $stack = array('reverse_assassin', 'jammer_mad', 'voodoo_mad', 'dream_eater_mad',
-		   'snow_trap_mad', 'doom_fox', 'dark_fairy');
-    return GetRandom($stack);
-  }
-
-  function OutputResult(){}
 }

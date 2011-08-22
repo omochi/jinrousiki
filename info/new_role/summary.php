@@ -88,6 +88,7 @@ Ver. 1.5.0
 <a href="#ver150b8">β8</a>
 <a href="#ver150b9">β9</a>
 <a href="#ver150b10">β10</a>
+<a href="#ver150b11">β11</a>
 </p>
 
 <p>
@@ -127,6 +128,7 @@ Ver. 1.5.0
 <a href="#sub_ver150b4">β4</a>
 <a href="#sub_ver150b6">β6</a>
 <a href="#sub_ver150b7">β7</a>
+<a href="#sub_ver150b11">β11</a>
 </p>
 
 <table id="main_role">
@@ -2677,6 +2679,15 @@ Ver. 1.5.0
   </td>
   <td>Ver. 1.5.0 β10</td>
 </tr>
+<tr id="ver150b11">
+  <td><a href="human.php#select_assassin">おしら様</a></td>
+  <td><a href="human.php">村人</td>
+  <td><a href="human.php#assassin_group">暗殺者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">暗殺成立時に<a href="sub_role.php#death_selected">オシラ遊び</a>を付加する特殊な暗殺者。</td>
+  <td>Ver. 1.5.0 β11</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -3381,6 +3392,13 @@ Ver. 1.5.0
     <td>強制</td>
     <td class="ability">ひよこ鑑定士に占われると蝙蝠判定が出る。</td>
     <td>Ver. 1.5.0 β7</td>
+  </tr>
+  <tr id="sub_ver150b11">
+    <td><a href="sub_role.php#death_selected">オシラ遊び</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>強制</td>
+    <td class="ability">表示された日の夜に死亡する。</td>
+    <td>Ver. 1.5.0 β11</td>
   </tr>
 </table>
 

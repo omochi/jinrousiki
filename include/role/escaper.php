@@ -10,5 +10,5 @@ class Role_escaper extends Role{
 
   function EscapeFailed($user){ return $user->IsWolf(); }
 
-  function EscapeAction($user){}
+  function Escape($user){}
 }

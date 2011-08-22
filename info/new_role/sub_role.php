@@ -1691,6 +1691,7 @@ B：「恋人陣営の勝利」
 <p>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
+<a href="#death_selected">オシラ遊び</a>
 <a href="#protected">庇護者</a>
 <a href="#lost_ability">能力喪失</a>
 <a href="#muster_ability">能力発現</a>
@@ -1733,6 +1734,22 @@ B：「恋人陣営の勝利」
 <h4>[作成者からのコメント]</h4>
 <pre>
 憑依システム用に実装されたサブ役職です。
+</pre>
+
+<h3 id="death_selected">オシラ遊び [Ver. 1.5.0 β11～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+表示された日の夜に死亡する。
+<a href="../spec.php#vote_night">判定</a>は人攫いの後で、死因は「天に帰った」。
+<a href="human.php#history_brownie">白澤</a>の能力が発動しても死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#select_assassin">おしら様</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#select_assassin">おしら様</a>用に実装されたサブ役職です。
 </pre>
 
 <h3 id="protected">庇護者 [Ver. 1.4.0 β18～]</h3>

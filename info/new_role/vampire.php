@@ -80,7 +80,7 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="#scarlet_vampire">屍鬼</a>
 </p>
 
-<h3><a id="vampire">吸血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
+<h3 id="vampire">吸血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
 <pre>
 吸血鬼陣営の基本種。
 </pre>
@@ -91,7 +91,7 @@ OutputRolePageHeader('吸血鬼陣営');
 対妖狐が疎かになってしまうジレンマが存在します。
 </pre>
 
-<h3><a id="incubus_vampire">青髭公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
+<h3 id="incubus_vampire">青髭公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 護衛：狩り</h4>
 <pre>
 女性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼 (女性以外なら吸血死)。
@@ -111,7 +111,7 @@ OutputRolePageHeader('吸血鬼陣営');
 勝利条件を考えると吸血死狙いの襲撃は効率が悪いと思われます。
 </pre>
 
-<h3><a id="succubus_vampire">飛縁魔 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
+<h3 id="succubus_vampire">飛縁魔 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 護衛：狩り</h4>
 <pre>
 男性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼 (男性以外なら吸血死)。
@@ -131,7 +131,7 @@ OutputRolePageHeader('吸血鬼陣営');
 村の男女構成比次第で難易度が大きく変わることになります。
 </pre>
 
-<h3><a id="doom_vampire">冥血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
+<h3 id="doom_vampire">冥血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 吸血襲撃：無効</h4>
 <pre>
 吸血先に<a href="sub_role.php#infected">感染者</a>と<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう特殊な吸血鬼。
@@ -149,7 +149,7 @@ OutputRolePageHeader('吸血鬼陣営');
 耐性を得た代わりに、<a href="sub_role.php#infected">感染者</a>のキープが難しくなっています。
 </pre>
 
-<h3><a id="sacrifice_vampire">吸血公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
+<h3 id="sacrifice_vampire">吸血公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
 <h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
@@ -173,7 +173,7 @@ OutputRolePageHeader('吸血鬼陣営');
 対人狼において高い生存力を持つので強気に騙ることができます。
 </pre>
 
-<h3><a id="soul_vampire">吸血姫 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
+<h3 id="soul_vampire">吸血姫 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
 <h4>[耐性] 護衛：狩り / 吸血襲撃：反射 / 暗殺：反射</h4>
 <pre>
 <a href="#vampire_do">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
@@ -190,7 +190,7 @@ OutputRolePageHeader('吸血鬼陣営');
 護衛を引きつけてもダメなので難易度は高いと思われます。
 </pre>
 
-<h3><a id="scarlet_vampire">屍鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.5.0 β6～]</h3>
+<h3 id="scarlet_vampire">屍鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.5.0 β6～]</h3>
 <pre>
 <a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
 </pre>

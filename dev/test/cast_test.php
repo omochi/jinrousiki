@@ -8,16 +8,11 @@ $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadRequest('RequestBaseGame');
 $RQ_ARGS->room_no = 1;
 $RQ_ARGS->TestItems->test_room = array(
-  'id' => $RQ_ARGS->room_no,
-  'name' => '配役テスト村',
-  'comment' => '',
-  'game_option'  => 'dummy_boy real_time:6:4',
+  'id' => $RQ_ARGS->room_no, 'name' => '配役テスト村', 'comment' => '',
+  'game_option' => 'dummy_boy real_time:6:4 wish_role',
   'option_role' => '',
-  'date' => 0,
-  'day_night' => 'beforegame',
-  'status' => 'waiting'
+  'date' => 0, 'day_night' => 'beforegame', 'status' => 'waiting'
 );
-$RQ_ARGS->TestItems->test_room['game_option'] .= ' wish_role';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' chaosfull';
 $RQ_ARGS->TestItems->test_room['game_option'] .= ' chaos_hyper';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' deep_sleep';
@@ -27,8 +22,8 @@ $RQ_ARGS->TestItems->test_room['game_option'] .= ' chaos_hyper';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' detective';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' joker';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' sudden_death';
-#$RQ_ARGS->TestItems->test_room['option_role'] .= ' full_mania';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' replace_human';
+#$RQ_ARGS->TestItems->test_room['option_role'] .= ' full_mania';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' chaos_open_cast';
 #$RQ_ARGS->TestItems->test_room['option_role'] .= ' chaos_open_cast_role';
 $RQ_ARGS->TestItems->test_room['option_role'] .= ' chaos_open_cast_camp';
@@ -92,7 +87,7 @@ $RQ_ARGS->TestItems->test_users[12]->role = '';
 
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
-$RQ_ARGS->TestItems->test_users[13]->role = 'wolf';
+$RQ_ARGS->TestItems->test_users[13]->role = 'wizard';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';

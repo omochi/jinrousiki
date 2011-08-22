@@ -660,7 +660,7 @@ function OutputAbility(){
   //-- ここからは憑依先の役職を表示 --//
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
-  //期間限定表示タイプ (特殊小心者・権力者系)
+  //期間限定表示タイプ (特殊小心者・権力者系・オシラ遊び)
   $role = 'febris'; //熱病
   if($virtual_self->IsRole($role) &&
      ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
@@ -679,11 +679,13 @@ function OutputAbility(){
     OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
   }
 
-  $role = 'day_voter'; //一日村長
-  if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
-    $ROLE_IMG->Output($role);
+  foreach(array('death_selected', 'day_voter') as $role){ //オシラ遊び・一日村長
+    if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
+      $ROLE_IMG->Output($role);
+    }
   }
-  array_push($fix_display_list, 'febris', 'frostbite', 'death_warrant', 'day_voter');
+  array_push($fix_display_list, 'febris', 'frostbite', 'death_warrant', 'death_selected',
+	     'day_voter');
 
   //特殊権力・雑草魂系
   if($ROOM->date > 1){ //表示は 2 日目以降

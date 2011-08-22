@@ -822,9 +822,11 @@ EOF;
     $this->lost_flag = true;
   }
 
-  function ReturnPossessed($type, $date){
+  function ReturnPossessed($type){
+    global $ROOM;
+
+    $date = $ROOM->date + 1;
     $this->AddRole("${type}[{$date}-{$this->user_no}]");
-    return true;
   }
 
   //遺言を取得して保存する

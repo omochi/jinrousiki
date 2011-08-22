@@ -569,9 +569,9 @@ function AggregateVoteGameStart($force_start = false){
     'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
     'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp', 'lovers', 'challenge_lovers',
     'possessed_exchange', 'joker', 'rival', 'enemy', 'supported', 'possessed_target', 'possessed',
-    'infected', 'psycho_infected', 'bad_status', 'sweet_status', 'protected', 'lost_ability',
-    'muster_ability', 'changed_therian', 'copied', 'copied_trick', 'copied_basic', 'copied_soul',
-    'copied_teller');
+    'infected', 'psycho_infected', 'bad_status', 'sweet_status', 'death_selected', 'protected',
+    'lost_ability', 'muster_ability', 'changed_therian', 'copied', 'copied_trick', 'copied_basic',
+    'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   /*
@@ -1253,33 +1253,10 @@ function AggregateVoteNight($skip = false){
   if($ROOM->date > 1){
     foreach($vote_data['WIZARD_DO'] as $uname => $target_uname){
       $ROLES->actor = $USERS->ByUname($uname);
-      $role = $ROLES->Load('main_role', true)->GetRole();
+      list($role, $action) = $ROLES->Load('main_role', true)->GetRole();
       $ROLES->actor->virtual_role = $role; //仮想役職を登録
-      //PrintData($role, "Wizard: {$uname}");
-      if(strpos($role, 'mage') !== false){
-	$vote_data['MAGE_DO'][$uname] = $target_uname;
-      }
-      elseif(strpos($role, 'guard') !== false){
-	$vote_data['GUARD_DO'][$uname] = $target_uname;
-      }
-      elseif(strpos($role, 'assassin') !== false || $role == 'doom_fox'){
-	$vote_data['ASSASSIN_DO'][$uname] = $target_uname;
-      }
-      elseif($role == 'jammer_mad'){
-	$vote_data['JAMMER_MAD_DO'][$uname] = $target_uname;
-      }
-      elseif($role == 'voodoo_mad'){
-	$vote_data['VOODOO_MAD_DO'][$uname] = $target_uname;
-      }
-      elseif($role == 'dream_eater_mad'){
-	$vote_data['DREAM_EAT'][$uname] = $target_uname;
-      }
-      elseif($role == 'snow_trap_mad'){
-	$vote_data['TRAP_MAD_DO'][$uname] = $target_uname;
-      }
-      elseif(strpos($role, 'fairy') !== false){
-	$vote_data['FAIRY_DO'][$uname] = $target_uname;
-      }
+      //PrintData($role, "Wizard: {$uname}: {$action}");
+      $vote_data[$action][$uname] = $target_uname;
     }
   }
 
@@ -1395,7 +1372,7 @@ function AggregateVoteNight($skip = false){
       else{
 	//凍傷判定
 	if(in_array($target->uname, $snow_trap_target_list)) $frostbite_list[] = $user->uname;
-	$filter->EscapeAction($target); //逃亡処理
+	$filter->Escape($target); //逃亡処理
 	$escaper_target_list[$user->uname] = $target->uname; //逃亡先をセット
       }
     }
@@ -1460,11 +1437,7 @@ function AggregateVoteNight($skip = false){
 	  $rate = mt_rand(1, 100); //襲撃成功判定乱数
 	  //$rate = 5; //テスト用
 	  $ROLES->actor = $wolf_target;
-	  $resist_rate = $ROLES->Load('main_role', true)->resist_rate;
-
-	  //朧月なら確定無効 (茨木童子対応で +100 にはしない。また、現在の最低値は 20%)
-	  if($ROOM->IsEvent('full_ogre')) $resist_rate *= 10;
-	  elseif($ROOM->IsEvent('seal_ogre')) $resist_rate = 0;
+	  $resist_rate = $ROLES->Load('main_role', true)->GetResistRate();
 	  //PrintData("{$rate} ({$resist_rate})", 'Rate [ogre resist]');
 	  if($rate <= $resist_rate) break;
 	}
@@ -1695,31 +1668,9 @@ function AggregateVoteNight($skip = false){
 	continue;
       }
 
-      if($user->IsRole(true, 'reverse_assassin')){ //反魂対象者をリストに追加
-	$reverse_assassin_target_list[$uname] = $target_uname;
-	continue;
-      }
-      if($target->IsDead(true)) continue; //直前に死んでいたらスキップ
-
-      if($user->IsRoleGroup(true, 'doom')){ //死の宣告能力者の処理
-	$date = $user->IsRole(true, 'doom_fox') ? 4 :
-	  ($user->IsRole('pierrot_wizard') ? GetRandom(range(2, 10)) : 2);
-	$target->AddDoom($date);
-	continue;
-      }
-
-      if($user->IsRole(true, 'soul_assassin')){ //辻斬りの処理
-	$str = $user->GetHandleName($target->uname, $target->main_role);
-	$ROOM->SystemMessage($str, 'ASSASSIN_RESULT'); //役職を登録
-
-	//暗殺先が毒能力者なら死亡
-	if($target->IsPoison()) $USERS->Kill($user->user_no, 'POISON_DEAD_night');
-      }
-      //蝕暗殺者の自滅判定
-      elseif(! $ROOM->IsEvent('no_reflect_assassin') && $user->IsRole('eclipse_assassin')){
-	if(mt_rand(1, 100) <= 30) $target_uname = $uname;
-      }
-      $assassin_target_list[$target_uname] = true; //暗殺対象者リストに追加
+      $ROLES->actor = $user;
+      $ROLES->Load('main_role', true)->Assassin($target, $assassin_target_list,
+						$reverse_assassin_target_list);
     }
     //PrintData($assassin_target_list, 'Target [assassin]');
     foreach($assassin_target_list as $uname => $flag){ //暗殺処理
@@ -1759,31 +1710,17 @@ function AggregateVoteNight($skip = false){
 
       $ROLES->actor = $user;
       $filter = $ROLES->Load('main_role', true);
-      if($user->IsRoleGroup('yaksa') && $filter->Ignored($target)) continue; //夜叉系の無効判定
+      if($filter->Ignored($target)) continue; //無効判定
 
       //人攫い成功判定
       $rate = mt_rand(1, 100); //襲撃成功判定乱数
       //$rate = 5; //テスト用
       $ogre_times = (int)$user->GetMainRoleTarget();
-      //$ogre_times = 1; //テスト用
-      if($ROOM->IsEvent('full_ogre'))
-	$ogre_rate = 100;
-      elseif($ROOM->IsEvent('seal_ogre'))
-	$ogre_rate = 0;
-      else
-	$ogre_rate = ceil(100 * pow($filter->GetReduceRate(), $ogre_times));
+      $ogre_rate  = $filter->GetAssassinRate($ogre_times);
       //PrintData($rate, 'Rate [OGRE_DO]: ' . $ogre_rate);
 
       if($rate > $ogre_rate) continue; //成功判定
-      if($user->IsRole('poison_ogre')){ //榊鬼は解答者を追加
-	if(! $target->IsRole('quiz')) $target->AddRole('panelist');
-      }
-      elseif($user->IsRole('sacrifice_ogre')){ //酒呑童子は洗脳者を追加
-	if(! $target->IsCamp('vampire')) $target->AddRole('psycho_infected');
-      }
-      else{
-	$ogre_target_list[$target_uname] = true; //人攫い対象者リストに追加
-      }
+      $filter->Assassin($target, $ogre_target_list); //人攫い処理
 
       if($ROOM->IsEvent('full_ogre')) continue; //朧月ならスキップ
       $base_role = $user->main_role; //成功回数更新処理
@@ -1798,6 +1735,16 @@ function AggregateVoteNight($skip = false){
     //PrintData($ogre_target_list, 'Target [ogre]');
     foreach($ogre_target_list as $uname => $flag){ //人攫い処理
       $USERS->Kill($USERS->UnameToNumber($uname), 'OGRE_KILLED');
+    }
+
+    //オシラ遊びの処理
+    $role = 'death_selected';
+    foreach($USERS->rows as $user){
+      if($user->IsDead(true)) continue;
+      $virtual = $USERS->ByVirtual($user->user_no);
+      if($virtual->IsRole($role) && $virtual->GetDoomDate($role) == $ROOM->date){
+	$USERS->Kill($user->user_no, 'PRIEST_RETURNED');
+      }
     }
 
     $reverse_list = array(); //反魂対象リスト
@@ -2312,10 +2259,10 @@ function AggregateVoteNight($skip = false){
       if($target->IsPossessedGroup()){ //憑依能力者対応
 	if($target->revive_flag) break; //蘇生済みならスキップ
 
-	$virtual_target = $USERS->ByVirtual($target->user_no);
-	if($target != $virtual_target){ //憑依中ならリセット
-	  $target->ReturnPossessed('possessed_target', $ROOM->date + 1); //本人
-	  $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1); //憑依先
+	$virtual = $USERS->ByVirtual($target->user_no);
+	if($target != $virtual){ //憑依中ならリセット
+	  $target->ReturnPossessed('possessed_target'); //本人
+	  $virtual->ReturnPossessed('possessed'); //憑依先
 	}
 
 	//憑依予定者が居たらキャンセル
@@ -2330,14 +2277,13 @@ function AggregateVoteNight($skip = false){
 	}
 
 	//特殊ケースなのでベタに処理
-	$virtual_target->Update('live', 'live');
-	$virtual_target->revive_flag = true;
-	$ROOM->SystemMessage($virtual_target->handle_name, 'REVIVE_SUCCESS');
+	$virtual->Update('live', 'live');
+	$virtual->revive_flag = true;
+	$ROOM->SystemMessage($virtual->handle_name, 'REVIVE_SUCCESS');
       }
       else{
-	if($target != $USERS->ByReal($target->user_no)){ //憑依されていたらリセット
-	  $target->ReturnPossessed('possessed', $ROOM->date + 1);
-	}
+	//憑依されていたらリセット
+	if($target != $USERS->ByReal($target->user_no)) $target->ReturnPossessed('possessed');
 	$target->Revive(); //蘇生処理
       }
     }
@@ -2410,30 +2356,31 @@ function AggregateVoteNight($skip = false){
 	  if($target->IsPossessedGroup()){ //憑依能力者対応
 	    if($target->revive_flag) break; //蘇生済みならスキップ
 
-	    $virtual_target = $USERS->ByVirtual($target->user_no);
+	    $virtual = $USERS->ByVirtual($target->user_no);
 	    if($target->IsDead()){ //確定死者
-	      if($target != $virtual_target){ //憑依後に死亡していた場合はリセット処理を行う
-		$target->ReturnPossessed('possessed_target', $ROOM->date + 1);
+	      if($target != $virtual){ //憑依後に死亡していた場合はリセット処理を行う
+		$target->ReturnPossessed('possessed_target');
+
 		//憑依先が他の憑依能力者に憑依されていないのならリセット処理を行う
-		$stack = $virtual_target->GetPartner('possessed');
+		$stack = $virtual->GetPartner('possessed');
 		if($target->user_no == $stack[max(array_keys($stack))]){
-		  $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1);
+		  $virtual->ReturnPossessed('possessed');
 		}
 	      }
 	    }
 	    elseif($target->IsLive(true)){ //生存者 (憑依状態確定)
-	      if($virtual_target->IsDrop()){ //蘇生辞退者対応
+	      if($virtual->IsDrop()){ //蘇生辞退者対応
 		$result = 'failed';
 		break;
 	      }
 
 	      //見かけ上の蘇生処理
-	      $target->ReturnPossessed('possessed_target', $ROOM->date + 1);
+	      $target->ReturnPossessed('possessed_target');
 	      $ROOM->SystemMessage($target->handle_name, 'REVIVE_SUCCESS');
 
 	      //本当の死者の蘇生処理
-	      $virtual_target->Revive(true);
-	      $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1);
+	      $virtual->Revive(true);
+	      $virtual->ReturnPossessed('possessed');
 
 	      //憑依予定者が居たらキャンセル
   	      if(array_key_exists($target->uname, $possessed_target_list)){
@@ -2443,9 +2390,9 @@ function AggregateVoteNight($skip = false){
 	      break;
 	    }
 	    else{ //当夜に死んだケース
-	      if($target != $virtual_target){ //憑依中ならリセット
-		$target->ReturnPossessed('possessed_target', $ROOM->date + 1); //本人
-		$virtual_target->ReturnPossessed('possessed', $ROOM->date + 1); //憑依先
+	      if($target != $virtual){ //憑依中ならリセット
+		$target->ReturnPossessed('possessed_target'); //本人
+		$virtual->ReturnPossessed('possessed'); //憑依先
 	      }
 
 	      //憑依予定者が居たらキャンセル
@@ -2456,7 +2403,7 @@ function AggregateVoteNight($skip = false){
 	    }
 	  }
 	  elseif($target != $USERS->ByReal($target->user_no)){ //憑依されていたらリセット
-	    $target->ReturnPossessed('possessed', $ROOM->date + 1);
+	    $target->ReturnPossessed('possessed');
 	  }
 	  $target->Revive(); //蘇生処理
 	}while(false);
@@ -2521,10 +2468,9 @@ function AggregateVoteNight($skip = false){
   //-- 憑依処理 --//
   $possessed_date = $ROOM->date + 1; //憑依する日を取得
   foreach($possessed_target_list as $uname => $target_uname){
-    $user         = $USERS->ByUname($uname); //憑依者
-    $target       = $USERS->ByUname($target_uname); //憑依予定先
-    $virtual_user = $USERS->ByVirtual($user->user_no); //現在の憑依先
-    $array = array(); //一時処理
+    $user    = $USERS->ByUname($uname); //憑依者
+    $target  = $USERS->ByUname($target_uname); //憑依予定先
+    $virtual = $USERS->ByVirtual($user->user_no); //現在の憑依先
 
     if($user->IsDead(true)){ //憑依者死亡
       $target->dead_flag = false; //死亡フラグをリセット
@@ -2538,15 +2484,15 @@ function AggregateVoteNight($skip = false){
 	if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
       }
 
-      if($user != $virtual_user){ //憑依中なら元の体に戻される
+      if($user != $virtual){ //憑依中なら元の体に戻される
 	//憑依先のリセット処理
-	$virtual_user->ReturnPossessed('possessed', $possessed_date);
-	$virtual_user->SaveLastWords();
-	$ROOM->SystemMessage($virtual_user->handle_name, 'POSSESSED_RESET');
+	$virtual->ReturnPossessed('possessed');
+	$virtual->SaveLastWords();
+	$ROOM->SystemMessage($virtual->handle_name, 'POSSESSED_RESET');
 
 	//見かけ上の蘇生処理
-	$user->ReturnPossessed('possessed_target', $possessed_date);
-	$user->SaveLastWords($virtual_user->handle_name);
+	$user->ReturnPossessed('possessed_target');
+	$user->SaveLastWords($virtual->handle_name);
 	$ROOM->SystemMessage($user->handle_name, 'REVIVE_SUCCESS');
       }
       continue;
@@ -2572,14 +2518,14 @@ function AggregateVoteNight($skip = false){
 
       //憑依処理
       $user->AddRole("possessed_target[{$possessed_date}-{$target->user_no}]");
-      $ROOM->SystemMessage($virtual_user->handle_name, 'POSSESSED');
-      $user->SaveLastWords($virtual_user->handle_name);
+      $ROOM->SystemMessage($virtual->handle_name, 'POSSESSED');
+      $user->SaveLastWords($virtual->handle_name);
       $user->Update('last_words', '');
     }
 
-    if($user != $virtual_user){
-      $virtual_user->ReturnPossessed('possessed', $possessed_date);
-      if($user->IsLive(true)) $virtual_user->SaveLastWords();
+    if($user != $virtual){
+      $virtual->ReturnPossessed('possessed');
+      if($user->IsLive(true)) $virtual->SaveLastWords();
     }
   }
 

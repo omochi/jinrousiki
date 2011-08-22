@@ -3,12 +3,10 @@
   ◆水妖姫 (succubus_escaper)
   ○仕様
   ・逃亡失敗：男性以外
-  ・逃亡処理：なし
 */
-class Role_succubus_escaper extends Role{
+RoleManager::LoadFile('escaper');
+class Role_succubus_escaper extends Role_escaper{
   function __construct(){ parent::__construct(); }
 
   function EscapeFailed($user){ return ! $user->IsMale(); }
-
-  function EscapeAction($user){}
 }

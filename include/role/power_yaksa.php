@@ -3,6 +3,7 @@
   ◆阿修羅 (power_yaksa)
   ○仕様
   ・勝利条件：自分自身の生存 + 生存陣営数が出現陣営の半分以下
+  ・人攫い無効：村人陣営
 */
 class Role_power_yaksa extends Role{
   public $resist_rate = 30;

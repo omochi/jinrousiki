@@ -7,23 +7,18 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 β9 アップロード (2011/08/11 (Thu) 02:09) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β10 アップロード (2011/08/20 (Sat) 02:49) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b9">デバッグ情報</a> (2011/08/14 (Sun) 00:59)</li>
-  <li>「指導者」「狙毒者」「萌占い師」「蝕巫女」「阿修羅」「夜行鬼」「蛇姫」「人魚」実装</li>
-  <li>サブ役職制限：HARDモード追加</li>
-  <li>出現率変動モード：D(封蘇村)・E(封憑村)追加</li>
+  <!-- <li>→ <a href="info/develop/debug.php#ver150b9">デバッグ情報</a> (2011/08/14 (Sun) 00:59)</li> -->
+  <li>「狂人村」「出題者村」「吸血鬼村」「鵺村」「殉教者村」「共有者置換村」オプション実装</li>
+  <li>「隠者」「鬼子母神」「暴君」「静狼」「賢者」実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>「狂人村」「出題者村」「吸血鬼村」「鵺村」「殉教者村」オプション実装</li>
-  <li>「共有者置換村」オプション実装</li>
-  <li>隠者：囁きが表示されない劣化共有者</li>
-  <li>鬼子母神：夜叉系の一種で、勝利条件は<br>　「自分自身の生存 + 子狐系・キューピッド系・天使系の全滅 + 村人陣営以外の勝利」</li>
-  <li>暴君：処刑投票数が +1 されるが、痛恨相当の能力も持つ特殊な共有者</li>
-  <li>静狼：夜の会話が人狼の遠吠えに変換されない人狼</li>
+  <li>おしら様：暗殺成立時にオシラ遊びを付加する特殊な暗殺者</li>
+  <li>オシラ遊び：表示された日の夜に死亡する</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

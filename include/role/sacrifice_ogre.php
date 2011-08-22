@@ -3,14 +3,21 @@
   ◆酒呑童子 (sacrifice_ogre)
   ○仕様
   ・勝利条件：自分自身の生存 + 村人陣営以外の勝利
+  ・人攫い無効：吸血鬼陣営
+  ・人攫い：洗脳者付加
   ・身代わり対象者：洗脳者
 */
-class Role_sacrifice_ogre extends Role{
-  public $resist_rate = 0;
+RoleManager::LoadFile('ogre');
+class Role_sacrifice_ogre extends Role_ogre{
+  public $reduce_rate = 2;
 
   function __construct(){ parent::__construct(); }
 
-  function GetReduceRate(){ return 1 / 2; }
+  function GetResistRate(){ return 0; }
+
+  function Ignored($user){ return $user->IsCamp('vampire'); }
+
+  function Assassin($user, &$list){ $user->AddRole('psycho_infected'); }
 
   function Win($victory){ return $victory != 'human' && $this->IsLive(); }
 
