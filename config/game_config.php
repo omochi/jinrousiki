@@ -1,10 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β9
+  変更履歴 from Ver. 1.5.0β10
   + RoomConfig
-    - 追加：$full_mad, $full_quiz, $full_vampire, $full_unknown_mania
-            $change_common, $change_hermit_common, $change_common_list, $change_immolate_mad,
-    - 変更：$replace_human_list, $change_mad_list
+    - 追加：$death_note, $defautl_death_note
 */
 
 //-- 村メンテナンス・作成設定 --//
@@ -144,6 +142,9 @@ class RoomConfig{
 
   public $joker = true; //ババ抜き村
   public $default_joker = false;
+
+  public $death_note = true; //デスノート村
+  public $default_death_note = false;
 
   public $weather = true; //天候あり
   public $default_weather = false;

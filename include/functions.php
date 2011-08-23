@@ -468,13 +468,13 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
     'possessed_wolf', 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority', 'detective',
     'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open', 'sudden_death', 'perverseness',
-    'critical', 'joker', 'weather', 'festival', 'replace_human', 'full_mad', 'full_cupid',
-    'full_quiz', 'full_vampire', 'full_chiroptera', 'full_mania', 'full_unknown_mania',
-    'change_common', 'change_hermit_common', 'change_mad', 'change_fanatic_mad',
-    'change_whisper_mad', 'change_immolate_mad', 'duel', 'gray_random', 'quiz', 'chaos',
-    'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate', 'chaos_open_cast',
-    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
-    'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
+    'critical', 'joker', 'death_note', 'weather', 'festival', 'replace_human', 'full_mad',
+    'full_cupid', 'full_quiz', 'full_vampire', 'full_chiroptera', 'full_mania',
+    'full_unknown_mania', 'change_common', 'change_hermit_common', 'change_mad',
+    'change_fanatic_mad', 'change_whisper_mad', 'change_immolate_mad', 'duel', 'gray_random',
+    'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate',
+    'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
+    'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
 
   foreach($display_order_list as $option){
     if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;

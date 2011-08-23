@@ -256,6 +256,7 @@ OutputInfoPageHeader('ゲームオプション');
 </p>
 <p>
 <a href="#joker"><?php echo $GAME_OPT_MESS->joker ?></a>
+<a href="#death_note"><?php echo $GAME_OPT_MESS->death_note ?></a>
 <a href="#weather"><?php echo $GAME_OPT_MESS->weather ?></a>
 <a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>
 </p>
@@ -342,6 +343,13 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li><?php echo $GAME_OPT_CAPT->joker ?></li>
 <li>ゲーム終了時に<a href="new_role/sub_role.php#joker">ジョーカー</a>を所持していると無条件で敗北になります</li>
+</ul>
+
+<h3 id="death_note"><?php echo $GAME_OPT_MESS->death_note ?> [Ver. 1.4.0 β21～]</h3>
+<ul>
+<li><?php echo $GAME_OPT_CAPT->death_note ?></li>
+<li>毎日、夜→昼の処理終了時の生存者からランダムで一人に<a href="new_role/sub_role.php#death_note">デスノート</a>が配布されます</li>
+<li>配布状況は配役公開状態の霊界からのみ見ることができます。</li>
 </ul>
 
 <h3 id="weather"><?php echo $GAME_OPT_MESS->weather ?> [Ver. 1.5.0 α2～]</h3>

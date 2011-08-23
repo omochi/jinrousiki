@@ -231,7 +231,7 @@ OutputInfoPageHeader('詳細な仕様');
 + 接触 (罠・逃亡・護衛・身代わり・人狼襲撃・狩り・吸血・暗殺・人攫い)
   - 罠 ＞ 逃亡失敗 →
     罠 ＞ 狩人護衛 ＞ <a href="new_role/sub_role.php#challenge_lovers">難題</a> ＞ <a href="new_role/sub_role.php#protected">庇護者</a> ＞ 襲撃耐性 ＞ 身代わり ＞ 人狼襲撃 →
-    狩人の狩り → 罠能力者の罠死 → 罠 ＞ 狩人護衛 ＞ 吸血 →
+    <a href="new_role/sub_role.php#death_note">デスノート</a> → 狩人の狩り → 罠能力者の罠死 → 罠 ＞ 狩人護衛 ＞ 吸血 →
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 暗殺 →
     罠 ＞ 無効判定 ＞ 反射判定 ＞ 失敗判定 ＞ 人攫い → 凍傷判定 → <a href="new_role/sub_role.php#death_selected">オシラ遊び</a>
 

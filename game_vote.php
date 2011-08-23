@@ -375,6 +375,12 @@ function VoteNight(){
     if($ROOM->date != 1) OutputVoteResult('夜：初日以外は投票できません');
     break;
 
+  case 'DEATH_NOTE_DO':
+  case 'DEATH_NOTE_NOT_DO':
+    if(! $SELF->IsDoomRole('death_note')) OutputVoteResult('夜：投票イベントが一致しません');
+    $not_type = $RQ_ARGS->situation == 'DEATH_NOTE_NOT_DO';
+    break;
+
   default:
     OutputVoteResult('夜：あなたは投票できません');
     break;
@@ -745,7 +751,17 @@ function OutputVoteNight(){
   //投票済みチェック
   if($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
 
-  if($role_wolf = $SELF->IsWolf()){
+  if($SELF->IsDoomRole('death_note')){ //デスノート
+    if($ROOM->date == 1) OutputVoteResult('夜：初日の暗殺はできません');
+    if(! CheckSelfVoteNight('DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')){
+      $type       = 'DEATH_NOTE_DO';
+      $not_type   = 'DEATH_NOTE_NOT_DO';
+      $death_note = true;
+    }
+  }
+
+  if($death_note);
+  elseif($role_wolf = $SELF->IsWolf()){
     $type = 'WOLF_EAT';
   }
   elseif($SELF->IsRoleGroup('mage')){

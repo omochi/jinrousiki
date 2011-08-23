@@ -568,10 +568,10 @@ function AggregateVoteGameStart($force_start = false){
     'febris', 'frostbite', 'death_warrant', 'panelist', 'day_voter', 'wirepuller_luck',
     'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
     'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp', 'lovers', 'challenge_lovers',
-    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported', 'possessed_target', 'possessed',
-    'infected', 'psycho_infected', 'bad_status', 'sweet_status', 'death_selected', 'protected',
-    'lost_ability', 'muster_ability', 'changed_therian', 'copied', 'copied_trick', 'copied_basic',
-    'copied_soul', 'copied_teller');
+    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported', 'death_note', 'death_selected',
+    'possessed_target', 'possessed', 'infected', 'psycho_infected', 'bad_status', 'sweet_status',
+    'protected', 'lost_ability', 'muster_ability', 'changed_therian', 'copied', 'copied_trick',
+    'copied_basic', 'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   /*
@@ -1201,7 +1201,7 @@ function AggregateVoteNight($skip = false){
   else{
     array_push($stack, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'POISON_CAT_DO', 'ASSASSIN_DO',
 	       'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'TRAP_MAD_DO',
-	       'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO');
+	       'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO', 'DEATH_NOTE_DO');
   }
   foreach($stack as $action){
     if(is_null($vote_data[$action])) $vote_data[$action] = array();
@@ -1539,6 +1539,12 @@ function AggregateVoteNight($skip = false){
   //PrintData($possessed_target_list, 'PossessedTarget [possessed_wolf]');
 
   if($ROOM->date > 1){
+    foreach($vote_data['DEATH_NOTE_DO'] as $uname => $target_uname){ //デスノートの処理
+      $user = $USERS->ByUname($uname);
+      if($user->IsDead(true)) continue; //直前に死んでいたら無効
+      $USERS->Kill($USERS->UnameToNumber($target_uname), 'ASSASSIN_KILLED');
+    }
+
     if(! $ROOM->IsEvent('no_hunt')){ //川霧ならスキップ
       foreach($guard_target_list as $uname => $target_uname){ //狩人系の狩り判定
 	$user = $USERS->ByUname($uname);
@@ -2219,7 +2225,6 @@ function AggregateVoteNight($skip = false){
 	  $str .= $USERS->GetHandleName($target_stack, true);
 	  $ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
 	}
-	break;
       }
     }
   }
@@ -2403,7 +2408,9 @@ function AggregateVoteNight($skip = false){
 	    }
 	  }
 	  elseif($target != $USERS->ByReal($target->user_no)){ //憑依されていたらリセット
+	    PrintData($target->uname);
 	    $target->ReturnPossessed('possessed');
+	    #$USERS->ByReal($target->user_no)->ReturnPossessed('possessed_target');
 	  }
 	  $target->Revive(); //蘇生処理
 	}while(false);
@@ -2758,8 +2765,9 @@ function AggregateVoteNight($skip = false){
     $ROOM->EntryWeather($weather, $date, $weather_priest_flag);
   }
 
-  $status = $ROOM->test_mode || $ROOM->ChangeDate();
+  $status = $ROOM->ChangeDate();
   if($ROOM->test_mode || ! $status) $USERS->ResetJoker(true); //ジョーカー再配置処理
+  if($ROOM->IsOption('death_note')) $USERS->ResetDeathNote(); //デスノートの再配布処理
   return $status;
 }
 

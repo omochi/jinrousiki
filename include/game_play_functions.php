@@ -657,20 +657,27 @@ function OutputAbility(){
   }
   array_push($fix_display_list, 'joker', 'rival');
 
+  $role = 'death_note'; //デスノート
+  if($SELF->IsDoomRole($role)){
+    $ROLE_IMG->Output($role);
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('death-note-do', 'death_note_do', 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
+    }
+  }
+  $fix_display_list[] = 'death_note';
+
   //-- ここからは憑依先の役職を表示 --//
   $virtual_self = $USERS->ByVirtual($SELF->user_no);
 
-  //期間限定表示タイプ (特殊小心者・権力者系・オシラ遊び)
-  $role = 'febris'; //熱病
-  if($virtual_self->IsRole($role) &&
-     ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
-    OutputAbilityResult('febris_header', $date, 'sudden_death_footer');
-  }
+  //期間限定表示タイプ (オシラ遊び・特殊小心者・権力者系)
+  $role = 'death_selected'; //オシラ遊び
+  if($virtual_self->IsDoomRole($role)) $ROLE_IMG->Output($role);
 
-  $role = 'frostbite'; //凍傷
-  if($virtual_self->IsRole($role) &&
-     ($date = $virtual_self->GetDoomDate($role)) == $ROOM->date){
-    OutputAbilityResult('frostbite_header', $date, 'frostbite_footer');
+  //熱病・凍傷
+  foreach(array('febris' => 'sudden_death', 'frostbite' => 'frostbite') as $role => $footer){
+    if($virtual_self->IsDoomRole($role)){
+      OutputAbilityResult($role . '_header', $ROOM->date, $footer . '_footer');
+    }
   }
 
   $role = 'death_warrant'; //死の宣告
@@ -679,12 +686,9 @@ function OutputAbility(){
     OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
   }
 
-  foreach(array('death_selected', 'day_voter') as $role){ //オシラ遊び・一日村長
-    if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
-      $ROLE_IMG->Output($role);
-    }
-  }
-  array_push($fix_display_list, 'febris', 'frostbite', 'death_warrant', 'death_selected',
+  $role = 'day_voter'; //一日村長
+  if($virtual_self->IsDoomRole($role)) $ROLE_IMG->Output($role);
+  array_push($fix_display_list, 'death_selected', 'febris', 'frostbite', 'death_warrant',
 	     'day_voter');
 
   //特殊権力・雑草魂系
@@ -753,7 +757,7 @@ function OutputAbility(){
     }
 
     $role = 'mind_presage'; //受託者
-    if($virtual_self->IsRole($role) && $ROOM->date > 2) OutputSelfAbilityResult('PRESAGE_RESULT');
+    if($ROOM->date > 2 && $virtual_self->IsRole($role)) OutputSelfAbilityResult('PRESAGE_RESULT');
   }
   array_push($fix_display_list, 'mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
 	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep');
@@ -764,9 +768,7 @@ function OutputAbility(){
   }
   if($ROOM->date > 1){
     $role = 'sheep_wisp'; //羊皮
-    if($virtual_self->IsRole($role) && $virtual_self->GetDoomDate($role) == $ROOM->date){
-      $ROLE_IMG->Output($role);
-    }
+    if($virtual_self->IsDoomRole($role)) $ROLE_IMG->Output($role);
   }
   array_push($fix_display_list, 'wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp',
 	     'sheep_wisp');
@@ -774,15 +776,12 @@ function OutputAbility(){
   //-- これ以降はサブ役職非公開オプションの影響を受ける --//
   if($ROOM->IsOption('secret_sub_role')) return;
 
-  $role_keys_list    = array_keys($ROLE_DATA->sub_role_list);
-  $hide_display_list = array('decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
-			     'bad_luck', 'critical_voter', 'critical_luck', 'enemy', 'supported',
-			     'infected', 'psycho_infected', 'possessed_target', 'possessed',
-			     'bad_status', 'protected','changed_therian');
-  $not_display_list  = array_merge($fix_display_list, $hide_display_list);
-  $display_list      = array_diff($role_keys_list, $not_display_list);
-  $target_list       = array_intersect($display_list, array_slice($virtual_self->role_list, 1));
-
+  array_push(
+    $fix_display_list, 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck',
+    'critical_voter', 'critical_luck', 'enemy', 'supported', 'infected', 'psycho_infected',
+    'possessed_target', 'possessed', 'bad_status', 'protected','changed_therian');
+  $display_list = array_diff(array_keys($ROLE_DATA->sub_role_list), $fix_display_list);
+  $target_list  = array_intersect($display_list, array_slice($virtual_self->role_list, 1));
   foreach($target_list as $role) $ROLE_IMG->Output($role);
 }
 

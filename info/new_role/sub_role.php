@@ -20,6 +20,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#lovers_group">恋人系</a>
 <a href="#infected_group">感染者系</a>
 <a href="#joker_group">ジョーカー系</a>
+<a href="#death_note_group">デスノート系</a>
 <a href="#bad_status_group">悪戯系</a>
 <a href="#copied_group">元神話マニア系</a>
 <a href="#other_group">その他</a>
@@ -1497,7 +1498,7 @@ A が B を襲撃した場合は A が毒死して C の単独生存、つまり
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/" target="_top">新役職考案スレ()</a> が原型です。
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/127" target="_top">新役職考案スレ(127)</a> が原型です。
 人狼でババ抜きの駆け引きを表現しようと思案した結果、こういう実装になりました。
 </pre>
 
@@ -1575,6 +1576,50 @@ B：「恋人陣営の勝利」
 <pre>
 <a href="duelist.php#patron_group">後援者系</a>の勝利条件判定に実装されたサブ役職です。
 <a href="lovers.php">キューピッド</a>から見た自分の<a href="#lovers">恋人</a>や、<a href="mania.php#unknown_mania_group">鵺</a>から見たコピー先に相当します。
+</pre>
+
+<h2 id="death_note_group">デスノート系</h2>
+<p>
+<a href="#death_note">デスノート</a>
+<a href="#death_selected">オシラ遊び</a>
+</p>
+
+<h3 id="death_note">デスノート [Ver. 1.5.0 β11～]</h3>
+<h4>[役職表示] 発動日限定</h4>
+<h4>[配役制限] デスノート村専用</h4>
+<pre>
+夜に誰か一人を死亡させることができる。
+有効期限は表示された日のみ (実行しなくても失効する)。
+</pre>
+<ol>
+<li>投票インターフェイスは<a href="human.php#assassin_group">暗殺</a>と同じ。</li>
+<li>「暗殺する / しない」を必ず投票する必要がある。</li>
+<li>どの役職に割り当てられてもデスノートの投票処理が優先される。<br>
+  例) 占い師 + デスノート：デスノートの投票を済ませるまで占い師の投票はできない。
+</li>
+<li><a href="../spec.php#vote_night">判定</a>は人狼襲撃の後で、判定時に死亡していた場合は無効。</li>
+<li>暗殺反射などの耐性は一切適用されない。</li>
+<li>死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">判定</a>は「暗殺された」。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他国に実在するサブ役職を人狼式向けにアレンジしたものです。
+</pre>
+
+<h3 id="death_selected">オシラ遊び [Ver. 1.5.0 β11～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+表示された日の夜に死亡する。
+<a href="../spec.php#vote_night">判定</a>は人攫いの後で、死因は「天に帰った」。
+<a href="human.php#history_brownie">白澤</a>の能力が発動しても死亡する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#select_assassin">おしら様</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#select_assassin">おしら様</a>用に実装されたサブ役職です。
 </pre>
 
 
@@ -1691,7 +1736,6 @@ B：「恋人陣営の勝利」
 <p>
 <a href="#possessed_target">憑依者</a>
 <a href="#possessed">憑依</a>
-<a href="#death_selected">オシラ遊び</a>
 <a href="#protected">庇護者</a>
 <a href="#lost_ability">能力喪失</a>
 <a href="#muster_ability">能力発現</a>
@@ -1734,22 +1778,6 @@ B：「恋人陣営の勝利」
 <h4>[作成者からのコメント]</h4>
 <pre>
 憑依システム用に実装されたサブ役職です。
-</pre>
-
-<h3 id="death_selected">オシラ遊び [Ver. 1.5.0 β11～]</h3>
-<h4>[配役制限] 役職付加専用</h4>
-<pre>
-表示された日の夜に死亡する。
-<a href="../spec.php#vote_night">判定</a>は人攫いの後で、死因は「天に帰った」。
-<a href="human.php#history_brownie">白澤</a>の能力が発動しても死亡する。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="human.php#select_assassin">おしら様</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="human.php#select_assassin">おしら様</a>用に実装されたサブ役職です。
 </pre>
 
 <h3 id="protected">庇護者 [Ver. 1.4.0 β18～]</h3>

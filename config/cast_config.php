@@ -379,8 +379,9 @@ class CastConfig extends CastConfigBase{
     'revive_pharmacist'    =>  3,
     'alchemy_pharmacist'   =>  3,
     'centaurus_pharmacist' =>  4,
-    'assassin'             =>  5,
-    'doom_assassin'        =>  3,
+    'assassin'             =>  4,
+    'doom_assassin'        =>  2,
+    'select_assassin'      =>  2,
     'reverse_assassin'     =>  2,
     'soul_assassin'        =>  2,
     'eclipse_assassin'     =>  3,
@@ -860,11 +861,7 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('critical_common'   => 5,
-		 'hermit_common'     => 5,
-		 'philosophy_wizard' => 9,
-		 'quiet_wolf'        => 7,
-		 'hariti_yaksa'      => 9),
+    'a' => array('select_assassin'   => 5),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,

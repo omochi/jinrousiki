@@ -106,7 +106,7 @@ class Room{
       foreach($vote_list as $list){
 	$uname = $list['uname'];
 	unset($list['uname']);
-	$stack[$uname] = $list;
+	$this->IsDay() ? $stack[$uname] = $list : $stack[$uname][] = $list;
       }
     }
     $this->vote = $stack;
@@ -155,8 +155,15 @@ class Room{
   //投票情報をコマンド毎に分割する
   function ParseVote(){
     $stack = array();
-    foreach($this->vote as $uname => $list){
-      $stack[$list['situation']][$uname] = $list['target_uname'];
+    foreach($this->vote as $uname => $vote_stack){
+      if($this->IsDay()){
+	$stack[$vote_stack['situation']][$uname] = $vote_stack['target_uname'];
+      }
+      else{
+	foreach($vote_stack as $list){
+	  $stack[$list['situation']][$uname] = $list['target_uname'];
+	}
+      }
     }
     return $stack;
   }
@@ -418,6 +425,7 @@ class Room{
   function ChangeDate(){
     $this->date++;
     $this->day_night = 'day';
+    if($this->test_mode) return true;
     SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day'" . $this->GetQuery(false));
 
     //夜が明けた通知

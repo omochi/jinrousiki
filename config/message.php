@@ -2,7 +2,6 @@
 /*
   変更履歴 from Ver. 1.5.0β9
   + Message
-    - 変更：$fox_dead, $reporter_duty, $jealosy
   + GameOptionMessage
     - 追加：$full_mad, $full_quiz, $full_vampire, $full_unknown_mania, $change_common,
             $change_hermit_common, $change_immolate_mad
@@ -39,33 +38,37 @@ class Message{
   //OutputTalkLog() : 会話、システムメッセージ出力
   public $objection = 'が「異議」を申し立てました'; //「異議」あり
   //public $game_start = 'はゲーム開始投票をしました' //ゲーム開始投票 (現在は不使用)
-  public $kick_do          = 'に KICK 投票しました'; //KICK 投票
-  public $vote_do          = 'に処刑投票しました'; //処刑投票
-  public $wolf_eat         = 'に狙いをつけました'; //人狼の投票
-  public $escape_do        = 'の周辺に逃亡しました'; //逃亡者の投票
-  public $mage_do          = 'を占います'; //占い師の投票
-  public $voodoo_killer_do = 'の呪いを祓います'; //陰陽師の投票
-  public $jammer_do        = 'の占いを妨害します'; //月兎の投票
-  public $trap_do          = 'の周辺に罠を仕掛けました'; //罠師の投票
-  public $trap_not_do      = 'は罠設置を行いませんでした'; //罠師のキャンセル投票
-  public $possessed_do     = 'に憑依します'; //犬神の投票
-  public $possessed_not_do = 'は憑依を行いませんでした'; //犬神のキャンセル投票
-  public $voodoo_do        = 'に呪いをかけます'; //呪術師の投票
-  public $guard_do         = 'の護衛に付きました'; //狩人の投票
-  public $anti_voodoo_do   = 'の厄を祓います'; //厄神の投票
-  public $reporter_do      = 'を尾行しました'; //ブン屋の投票
-  public $revive_do        = 'に蘇生処置をしました'; //猫又の投票
-  public $revive_not_do    = 'は蘇生処置をしませんでした'; //猫又のキャンセル投票
-  public $assassin_do      = 'に狙いをつけました'; //暗殺者の投票
-  public $assassin_not_do  = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
-  public $mind_scanner_do  = 'の心を読みます'; //さとりの投票
-  public $wizard_do        = 'に魔法をかけました'; //魔法使いの投票
-  public $cupid_do         = 'に愛の矢を放ちました'; //キューピッドの投票
-  public $fairy_do         = 'に悪戯しました'; //妖精の投票
-  public $ogre_do          = 'に狙いをつけました'; //鬼の投票
-  public $ogre_not_do      = 'は人攫いを行いませんでした'; //鬼のキャンセル投票
-  public $duelist_do       = 'に宿命を結び付けました'; //決闘者の投票
-  public $mania_do         = 'の能力を真似ることにしました'; //神話マニアの投票
+  public $kick_do           = 'に KICK 投票しました'; //KICK 投票
+  public $vote_do           = 'に処刑投票しました'; //処刑投票
+  public $wolf_eat          = 'に狙いをつけました'; //人狼の投票
+  public $escape_do         = 'の周辺に逃亡しました'; //逃亡者の投票
+  public $mage_do           = 'を占います'; //占い師の投票
+  public $voodoo_killer_do  = 'の呪いを祓います'; //陰陽師の投票
+  public $jammer_do         = 'の占いを妨害します'; //月兎の投票
+  public $trap_do           = 'の周辺に罠を仕掛けました'; //罠師の投票
+  public $trap_not_do       = 'は罠設置を行いませんでした'; //罠師のキャンセル投票
+  public $possessed_do      = 'に憑依します'; //犬神の投票
+  public $possessed_not_do  = 'は憑依を行いませんでした'; //犬神のキャンセル投票
+  public $voodoo_do         = 'に呪いをかけます'; //呪術師の投票
+  public $dream_eat         = 'に狙いをつけました'; //獏の投票
+  public $guard_do          = 'の護衛に付きました'; //狩人の投票
+  public $anti_voodoo_do    = 'の厄を祓います'; //厄神の投票
+  public $reporter_do       = 'を尾行しました'; //ブン屋の投票
+  public $revive_do         = 'に蘇生処置をしました'; //猫又の投票
+  public $revive_not_do     = 'は蘇生処置をしませんでした'; //猫又のキャンセル投票
+  public $assassin_do       = 'に狙いをつけました'; //暗殺者の投票
+  public $assassin_not_do   = 'は暗殺を行いませんでした'; //暗殺者のキャンセル投票
+  public $mind_scanner_do   = 'の心を読みます'; //さとりの投票
+  public $wizard_do         = 'に魔法をかけました'; //魔法使いの投票
+  public $cupid_do          = 'に愛の矢を放ちました'; //キューピッドの投票
+  public $vampire_do        = 'に狙いをつけました'; //吸血鬼の投票
+  public $fairy_do          = 'に悪戯しました'; //妖精の投票
+  public $ogre_do           = 'に狙いをつけました'; //鬼の投票
+  public $ogre_not_do       = 'は人攫いを行いませんでした'; //鬼のキャンセル投票
+  public $duelist_do        = 'に宿命を結び付けました'; //決闘者の投票
+  public $mania_do          = 'の能力を真似ることにしました'; //神話マニアの投票
+  public $death_note_do     = 'の名前を書きました'; //デスノートの投票
+  public $death_note_not_do = 'はデスノートを使いませんでした'; //デスノートのキャンセル投票
 
   public $morning_header = '朝日が昇り'; //朝のヘッダー
   public $morning_footer = '日目の朝がやってきました'; //朝のフッター
@@ -133,6 +136,8 @@ class Message{
   public $thunderbolt        = 'は落雷を受けたようです'; //青天の霹靂
   public $challenge          = 'は難題を解けなかったようです'; //難題
   public $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
+  public $death_note_moved   = 'にデスノートが移動したようです'; //デスノートの移動
+
   //花妖精のリスト (A-Z)
   public $flowered_a = 'の頭の上に松の花が咲きました';
   public $flowered_b = 'の頭の上に梅の花が咲きました';
@@ -240,6 +245,7 @@ class Message{
   public $ability_ogre_do          = '攫う人を選択してください'; //鬼
   public $ability_duelist_do       = '結びつける人を選択してください'; //決闘者
   public $ability_mania_do         = '能力を真似る人を選択してください'; //神話マニア
+  public $ability_death_note_do    = '名前を書く人を選択してください'; //デスノート
 
   //-- game_play.php --//
   //CheckSilence()
@@ -316,6 +322,7 @@ class GameOptionMessage{
   public $blinder               = '宵闇村';
   public $critical              = '急所村';
   public $joker                 = 'ババ抜き村';
+  public $death_note            = 'デスノート村';
   public $detective             = '探偵村';
   public $weather               = '天候あり';
   public $festival              = 'お祭り村';
@@ -402,11 +409,12 @@ class GameOptionCaptionMessage{
   public $gentleman             = '全員に性別に応じた「紳士」「淑女」がつきます';
   public $sudden_death          = '全員に投票でショック死するサブ役職のどれかがつきます';
   public $perverseness          = '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります';
-  public $deep_sleep            = '全員に「爆睡者」がつきます。';
-  public $mind_open             = '全員に「公開者」がつきます。';
-  public $blinder               = '全員に「目隠し」がつきます。';
+  public $deep_sleep            = '全員に「爆睡者」がつきます';
+  public $mind_open             = '全員に「公開者」がつきます';
+  public $blinder               = '全員に「目隠し」がつきます';
   public $critical              = '全員に「会心」「痛恨」がつきます。';
-  public $joker                 = '誰か一人に「ジョーカー」がつきます。';
+  public $joker                 = '誰か一人に「ジョーカー」がつきます';
+  public $death_note            = '毎日、誰か一人に「デスノート」が与えられます';
   public $detective             = '「探偵」が登場し、初日の夜に全員に公表されます';
   public $weather               = '「天候」と呼ばれる特殊イベントが発生します';
   public $festival              = '管理人がカスタムする特殊設定です';
@@ -482,32 +490,34 @@ class VoteMessage{
 
   //OutputVoteNight()
   //投票ボタン
-  public $wolf_eat         = '対象を喰い殺す (先着)'; //人狼
-  public $mage_do          = '対象を占う'; //占い師
-  public $voodoo_killer_do = '対象の呪いを祓う'; //陰陽師
-  public $guard_do         = '対象を護衛する'; //狩人
-  public $anti_voodoo_do   = '対象の厄を祓う'; //厄神
-  public $reporter_do      = '対象を尾行する'; //ブン屋
-  public $revive_do        = '対象を蘇生する'; //猫又
-  public $revive_not_do    = '誰も蘇生しない'; //猫又(キャンセル)
-  public $assassin_do      = '対象を暗殺する'; //暗殺者
-  public $assassin_not_do  = '誰も暗殺しない'; //暗殺者(キャンセル)
-  public $mind_scanner_do  = '対象の心を読む'; //さとり
-  public $wizard_do        = '対象に魔法をかける'; //魔法使い
-  public $escape_do        = '対象の周辺に逃亡する'; //逃亡者
-  public $voodoo_do        = '対象に呪いをかける'; //呪術師
-  public $jammer_do        = '対象の占いを妨害する'; //月兎
-  public $dream_eat        = '対象の夢を喰う'; //獏
-  public $trap_do          = '対象の周辺に罠を設置する'; //罠師
-  public $trap_not_do      = '罠を設置しない'; //罠師(キャンセル)
-  public $possessed_do     = '対象に憑依する'; //犬神
-  public $possessed_not_do = '誰にも憑依しない'; //犬神(キャンセル)
-  public $cupid_do         = '対象に愛の矢を放つ'; //キューピッド
-  public $vampire_do       = '対象を吸血する'; //吸血鬼
-  public $fairy_do         = '対象に悪戯する'; //妖精
-  public $ogre_do          = '対象を攫う'; //鬼
-  public $ogre_not_do      = '誰も攫わない'; //鬼(キャンセル)
-  public $duelist_do       = '対象を結びつける'; //決闘者
-  public $mania_do         = '対象を真似る'; //神話マニア
-  public $revive_refuse    = '蘇生を辞退する'; //蘇生辞退
+  public $wolf_eat          = '対象を喰い殺す (先着)'; //人狼
+  public $mage_do           = '対象を占う'; //占い師
+  public $voodoo_killer_do  = '対象の呪いを祓う'; //陰陽師
+  public $guard_do          = '対象を護衛する'; //狩人
+  public $anti_voodoo_do    = '対象の厄を祓う'; //厄神
+  public $reporter_do       = '対象を尾行する'; //ブン屋
+  public $revive_do         = '対象を蘇生する'; //猫又
+  public $revive_not_do     = '誰も蘇生しない'; //猫又(キャンセル)
+  public $assassin_do       = '対象を暗殺する'; //暗殺者
+  public $assassin_not_do   = '誰も暗殺しない'; //暗殺者(キャンセル)
+  public $mind_scanner_do   = '対象の心を読む'; //さとり
+  public $wizard_do         = '対象に魔法をかける'; //魔法使い
+  public $escape_do         = '対象の周辺に逃亡する'; //逃亡者
+  public $voodoo_do         = '対象に呪いをかける'; //呪術師
+  public $jammer_do         = '対象の占いを妨害する'; //月兎
+  public $dream_eat         = '対象の夢を喰う'; //獏
+  public $trap_do           = '対象の周辺に罠を設置する'; //罠師
+  public $trap_not_do       = '罠を設置しない'; //罠師(キャンセル)
+  public $possessed_do      = '対象に憑依する'; //犬神
+  public $possessed_not_do  = '誰にも憑依しない'; //犬神(キャンセル)
+  public $cupid_do          = '対象に愛の矢を放つ'; //キューピッド
+  public $vampire_do        = '対象を吸血する'; //吸血鬼
+  public $fairy_do          = '対象に悪戯する'; //妖精
+  public $ogre_do           = '対象を攫う'; //鬼
+  public $ogre_not_do       = '誰も攫わない'; //鬼(キャンセル)
+  public $duelist_do        = '対象を結びつける'; //決闘者
+  public $mania_do          = '対象を真似る'; //神話マニア
+  public $death_note_do     = '対象の名前を書く'; //デスノート
+  public $death_note_not_do = '誰の名前も書かない'; //デスノート(キャンセル)
+  public $revive_refuse     = '蘇生を辞退する'; //蘇生辞退
 }

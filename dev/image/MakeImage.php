@@ -1457,6 +1457,10 @@ class RoleMessageList{
     'message' => "　あなたは|恋人|と別れました……",
     'type' => 'challenge_lovers');
 
+  public $death_note = array(
+    'message' => "　あなたは|デスノート|を所持しています。",
+    'delimiter' => array('|' => 'assassin'));
+
   public $death_selected = array(
     'message' => "　あなたは|オシラ遊び|の生贄に選ばれたので今夜死亡します。",
     'delimiter' => array('|' => 'assassin'));
@@ -2037,5 +2041,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('select_assassin');
+#$builder->Output('select_assassin');
 #$builder->Output('hariti_yaksa');
+$builder->Output('death_note');

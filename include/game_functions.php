@@ -938,7 +938,8 @@ function OutputAbilityAction(){
       array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
 		 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
 		 'POISON_CAT_DO', 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
-		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO');
+		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO',
+		 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
     }
     $action = '';
     foreach($action_list as $this_action){
@@ -961,7 +962,7 @@ function OutputAbilityAction(){
       $target = 'は '.$target;
       break;
 
-    case 'SPREAD_WIZARD_DO': //テストコード
+    case 'SPREAD_WIZARD_DO': //テストコード (現在は不使用)
       $str_stack = array();
       foreach(explode(' ', $target) as $id){
 	$str_stack[] = $USERS->ByID($id)->GenerateShortRoleName(false, true);
@@ -975,22 +976,47 @@ function OutputAbilityAction(){
     }
 
     switch($stack['type']){
+    case 'GUARD_DO':
+    case 'REPORTER_DO':
+    case 'ASSASSIN_DO':
+    case 'WIZARD_DO':
+    case 'ESCAPE_DO':
     case 'WOLF_EAT':
     case 'DREAM_EAT':
-    case 'POSSESSED_DO':
-    case 'ASSASSIN_DO':
+    case 'CUPID_DO':
     case 'VAMPIRE_DO':
+    case 'FAIRY_DO':
     case 'OGRE_DO':
-      echo $target.'を狙いました';
+    case 'DUELIST_DO':
+    case 'DEATH_NOTE_DO':
+      echo $target.$MESSAGE->{strtolower($stack['type'])};
       break;
 
-    case 'WIZARD_DO':
+    case 'ASSASSIN_NOT_DO':
+    case 'POSSESSED_NOT_DO':
+    case 'OGRE_NOT_DO':
+    case 'DEATH_NOTE_NOT_DO':
+      echo $MESSAGE->{strtolower($stack['type'])};
+      break;
+
+    case 'POISON_CAT_DO':
+      echo $target.$MESSAGE->revive_do;
+      break;
+
+    case 'POISON_CAT_NOT_DO':
+      echo $MESSAGE->revive_not_do;
+      break;
+
     case 'SPREAD_WIZARD_DO':
       echo $target.$MESSAGE->wizard_do;
       break;
 
-    case 'ESCAPE_DO':
-      echo $target.$MESSAGE->escape_do;
+    case 'TRAP_MAD_DO':
+      echo $target.$MESSAGE->trap_do;
+      break;
+
+    case 'TRAP_MAD_NOT_DO':
+      echo $MESSAGE->trap_not_do;
       break;
 
     case 'MAGE_DO':
@@ -1002,28 +1028,16 @@ function OutputAbilityAction(){
       echo $target.'の呪いを祓いました';
       break;
 
+    case 'ANTI_VOODOO_DO':
+      echo $target.'の厄を祓いました';
+      break;
+
+    case 'MIND_SCANNER_DO':
+      echo $target.'の心を読みました';
+      break;
+
     case 'JAMMER_MAD_DO':
       echo $target.'の占いを妨害しました';
-      break;
-
-    case 'TRAP_MAD_DO':
-      echo $target.$MESSAGE->trap_do;
-      break;
-
-    case 'TRAP_MAD_NOT_DO':
-      echo $MESSAGE->trap_not_do;
-      break;
-
-    case 'POISON_CAT_DO':
-      echo $target.$MESSAGE->revive_do;
-      break;
-
-    case 'POISON_CAT_NOT_DO':
-      echo $MESSAGE->revive_not_do;
-      break;
-
-    case 'POSSESSED_NOT_DO':
-      echo $MESSAGE->possessed_not_do;
       break;
 
     case 'VOODOO_MAD_DO':
@@ -1031,44 +1045,8 @@ function OutputAbilityAction(){
       echo $target.'に呪いをかけました';
       break;
 
-    case 'GUARD_DO':
-      echo $target.$MESSAGE->guard_do;
-      break;
-
-    case 'ANTI_VOODOO_DO':
-      echo $target.'の厄を祓いました';
-      break;
-
-    case 'REPORTER_DO':
-      echo $target.$MESSAGE->reporter_do;
-      break;
-
-    case 'ASSASSIN_NOT_DO':
-      echo $MESSAGE->assassin_not_do;
-      break;
-
-    case 'OGRE_NOT_DO':
-      echo $MESSAGE->ogre_not_do;
-      break;
-
-    case 'MIND_SCANNER_DO':
-      echo $target.'の心を読みました';
-      break;
-
-    case 'POISON_CAT_DO':
-      echo $target.$MESSAGE->revive_do;
-      break;
-
-    case 'CUPID_DO':
-      echo $target.$MESSAGE->cupid_do;
-      break;
-
-    case 'FAIRY_DO':
-      echo $target.$MESSAGE->fairy_do;
-      break;
-
-    case 'DUELIST_DO':
-      echo $target.$MESSAGE->duelist_do;
+    case 'POSSESSED_DO':
+      echo $target.'を狙いました';
       break;
 
     case 'MANIA_DO':
@@ -1137,19 +1115,20 @@ function GenerateDeadMan(){
 
   //死亡タイプリスト
   $dead_type_list = array(
-    'day' => array('VOTE_KILLED' => true, 'BLIND_VOTE' => true, 'POISON_DEAD_day' => true,
-		   'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false, 'NOVOTED_day' => true,
-		   'JOKER_MOVED_day' => true),
+    'day' => array(
+      'VOTE_KILLED' => true, 'BLIND_VOTE' => true, 'POISON_DEAD_day' => true,
+      'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false, 'NOVOTED_day' => true,
+      'JOKER_MOVED_day' => true),
 
-    'night' => array('WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
-		     'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true,
-		     'DREAM_KILLED' => true, 'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true,
-		     'HUNTED' => true, 'REPORTER_DUTY' => true, 'VAMPIRE_KILLED' => true,
-		     'ASSASSIN_KILLED' => true, 'ESCAPER_DEAD' => true, 'OGRE_KILLED' => true,
-		     'PRIEST_RETURNED' => true, 'POISON_DEAD_night' => true,
-		     'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false, 'SACRIFICE' => true,
-		     'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'PIERROT_%' => false,
-		     'NOVOTED_night' => true, 'JOKER_MOVED_night' => true));
+    'night' => array(
+      'WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
+      'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true, 'DREAM_KILLED' => true,
+      'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true, 'HUNTED' => true,
+      'REPORTER_DUTY' => true, 'VAMPIRE_KILLED' => true, 'ASSASSIN_KILLED' => true,
+      'ESCAPER_DEAD' => true, 'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true,
+      'POISON_DEAD_night' => true, 'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false,
+      'SACRIFICE' => true, 'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'PIERROT_%' => false,
+      'NOVOTED_night' => true, 'JOKER_MOVED_night' => true, 'DEATH_NOTE_MOVED' => true));
 
   foreach($dead_type_list as $scene => $action_list){
     $query_list = array();
@@ -1293,6 +1272,7 @@ function GenerateDeadManType($name, $type){
     break;
 
   case 'JOKER_MOVED':
+  case 'DEATH_NOTE_MOVED':
     if(! $open_reason) return;
     $base  = false;
     $class = 'fairy';

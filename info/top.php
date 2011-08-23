@@ -17,8 +17,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
+  <li>「デスノート村」オプション実装</li>
   <li>おしら様：暗殺成立時にオシラ遊びを付加する特殊な暗殺者</li>
   <li>オシラ遊び：表示された日の夜に死亡する</li>
+  <li>デスノート：夜に誰か一人を死亡させることができる</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

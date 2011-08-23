@@ -345,6 +345,12 @@ class User{
   //宿敵判定
   function IsRival(){ return $this->IsRole('rival'); }
 
+  //期間限定表示役職
+  function IsDoomRole($role){
+    global $ROOM;
+    return $this->IsRole($role) && $this->GetDoomDate($role) == $ROOM->date;
+  }
+
   //護衛成功済み判定
   function IsFirstGuardSuccess($uname){
     $flag = ! (is_array($this->guard_success) && in_array($uname, $this->guard_success));
@@ -568,6 +574,9 @@ class User{
     global $ROOM;
 
     if($this->IsDummyBoy() || $this->IsDead()) return true;
+    if($this->IsDoomRole('death_note')){
+      if(! $this->IsVoted($vote_data, 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')) return false;
+    }
     if($this->IsWolf()) return $this->IsVoted($vote_data, 'WOLF_EAT');
     if($this->IsRoleGroup('mage')) return $this->IsVoted($vote_data, 'MAGE_DO');
     if($this->IsRole('voodoo_killer')) return $this->IsVoted($vote_data, 'VOODOO_KILLER_DO');
@@ -646,8 +655,20 @@ class User{
     foreach($ROLE_DATA->sub_role_group_list as $class => $role_list){
       foreach($role_list as $sub_role){
 	if(! $this->IsRole($sub_role)) continue;
-	$joker = $sub_role == 'joker' && $this->IsJoker($ROOM->date);
-	$str .= $ROLE_DATA->GenerateRoleTag($sub_role, $joker ? 'wolf' : $class, true);
+	switch($sub_role){
+	case 'joker':
+	  $css = $this->IsJoker($ROOM->date) ? $class : 'chiroptera';
+	  break;
+
+	case 'death_note':
+	  $css = $this->IsDoomRole($sub_role) ? $class : 'chiroptera';
+	  break;
+
+	default:
+	  $css = $class;
+	  break;
+	}
+	$str .= $ROLE_DATA->GenerateRoleTag($sub_role, $css, true);
 	if(++$count >= $role_count) break 2;
       }
     }
@@ -1364,7 +1385,7 @@ class UserDataSet{
     return true;
   }
 
-  //ジョーカーの再配置処理
+  //ジョーカーの再配布処理
   function ResetJoker($decriment = false){
     global $ROOM;
 
@@ -1373,9 +1394,23 @@ class UserDataSet{
     foreach($this->rows as $user){
       if($user->IsDead(true)) continue;
       if($user->IsJoker($ROOM->date)) return; //現在の所持者が生存していた場合はスキップ
-      $stack[] = $user->user_no;
+      $stack[] = $user;
     }
-    if(count($stack) > 0) $this->ByID(GetRandom($stack))->AddJoker($decriment);
+    if(count($stack) > 0) GetRandom($stack)->AddJoker($decriment);
+  }
+
+  //デスノートの再配布処理
+  function ResetDeathNote(){
+    global $ROOM;
+
+    $stack = array();
+    foreach($this->rows as $user){
+      if($user->IsLive(true)) $stack[] = $user;
+    }
+    if(count($stack) < 1) return;
+    $user = GetRandom($stack);
+    $user->AddDoom(0, 'death_note');
+    $ROOM->SystemMessage($user->handle_name, 'DEATH_NOTE_MOVED', -1);
   }
 
   //仮想役職リストの保存 (ログ処理用)

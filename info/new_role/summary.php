@@ -3395,9 +3395,16 @@ Ver. 1.5.0
   </tr>
   <tr id="sub_ver150b11">
     <td><a href="sub_role.php#death_selected">オシラ遊び</a></td>
-    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td><a href="sub_role.php#death_note_group">デスノート系</a></td>
     <td>強制</td>
     <td class="ability">表示された日の夜に死亡する。</td>
+    <td>Ver. 1.5.0 β11</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#death_note">デスノート</a></td>
+    <td><a href="sub_role.php#death_note_group">デスノート系</a></td>
+    <td>強制</td>
+    <td class="ability">夜に誰か一人を死亡させることができる。</td>
     <td>Ver. 1.5.0 β11</td>
   </tr>
 </table>
