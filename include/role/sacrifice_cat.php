@@ -2,16 +2,15 @@
 /*
   ◆猫神 (sacrifice_cat)
   ○仕様
-  ・蘇生率：100%
-  ・誤爆率：無し
+  ・蘇生率：100% / 誤爆無し
   ・蘇生後：死亡
 */
-class Role_sacrifice_cat extends Role{
-  public $missfire_rate = -1;
+RoleManager::LoadFile('poison_cat');
+class Role_sacrifice_cat extends Role_poison_cat{
+  public $revive_rate   = 100;
+  public $missfire_rate =  -1;
 
   function __construct(){ parent::__construct(); }
-
-  function GetRate(){ return 100; }
 
   function AfterRevive(){
     global $USERS;

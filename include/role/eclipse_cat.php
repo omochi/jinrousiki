@@ -2,16 +2,12 @@
 /*
   ◆蝕仙狸 (eclipse_cat)
   ○仕様
-  ・蘇生率：40%
-  ・誤爆率：20%
-  ・蘇生後：なし
+  ・蘇生率：40% / 誤爆率：20%
 */
-class Role_eclipse_cat extends Role{
+RoleManager::LoadFile('poison_cat');
+class Role_eclipse_cat extends Role_poison_cat{
+  public $revive_rate   = 40;
   public $missfire_rate = 20;
 
   function __construct(){ parent::__construct(); }
-
-  function GetRate(){ return 40; }
-
-  function AfterRevive(){}
 }

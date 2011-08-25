@@ -2688,6 +2688,15 @@ Ver. 1.5.0
   <td class="ability">暗殺成立時に<a href="sub_role.php#death_selected">オシラ遊び</a>を付加する特殊な暗殺者。</td>
   <td>Ver. 1.5.0 β11</td>
 </tr>
+<tr>
+  <td><a href="human.php#missfire_cat">常世神</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#poison_cat_group">猫又系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">誤爆蘇生しかしない猫又の亜種。</td>
+  <td>Ver. 1.5.0 β11</td>
+</tr>
 </table>
 
 <table id="sub_role">

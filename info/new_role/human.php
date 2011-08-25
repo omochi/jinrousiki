@@ -1580,6 +1580,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <a href="#poison_cat">猫又</a>
 <a href="#revive_cat">仙狸</a>
 <a href="#sacrifice_cat">猫神</a>
+<a href="#missfire_cat">常世神</a>
 <a href="#eclipse_cat">蝕仙狸</a>
 </p>
 
@@ -1665,6 +1666,19 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>が能力を発動した時に蘇生能力者が誰もいないと
 正体がばれてしまうので、同じ状況に見える村陣営種を用意しました。
+</pre>
+
+<h3 id="missfire_cat">常世神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β11～]</h3>
+<h4>[耐性] 蘇生：不可</h4>
+<h4>[蘇生能力] 成功率：30% / 誤爆：有り (特殊)</h4>
+<pre>
+<a href="#revive_rule">誤爆蘇生</a>しかしない猫又の亜種。
+蘇生成功率は 30%、誤爆率も 30% で固定。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#eclipse_cat">蝕仙狸</a>と違い、自覚があるので動き方が異なってくると思われます。
+<a href="../weather.php">天候</a>や<a href="#revive_brownie">蛇神</a>が絡んでくると通常蘇生も狙えます。
 </pre>
 
 <h3 id="eclipse_cat">蝕仙狸 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17～]</h3>
@@ -2332,7 +2346,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <ol>
 <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。<br>
-：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 32.5% (誤爆率 6%)</li>
+例：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 33% (誤爆率 6%)</li>
 <li>一度蘇生すると自己蘇生能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
 <li>自己蘇生能力を失っても蘇生率向上能力は失わない。</li>
 <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、自己蘇生能力は無効。</li>

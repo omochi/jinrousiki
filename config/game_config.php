@@ -1,6 +1,6 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β10
+  変更履歴 from Ver. 1.5.0β11
   + RoomConfig
     - 追加：$death_note, $defautl_death_note
 */

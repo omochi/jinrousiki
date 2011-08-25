@@ -2312,23 +2312,9 @@ function AggregateVoteNight($skip = false){
 	$target = $USERS->ByUname($target_uname); //対象者の情報を取得
 
 	//蘇生判定
-	if($ROOM->IsEvent('full_revive')){ //雷雨
-	  $revive_rate   = 100;
-	  $missfire_rate = -1;
-	}
-	elseif($ROOM->IsEvent('no_revive')){ //快晴
-	  $revive_rate   = 0;
-	  $missfire_rate = -1;
-	}
-	else{
-	  $revive_rate   = $filter->GetRate();
-	  $missfire_rate = $filter->missfire_rate;
-	}
+	$revive_rate   = $filter->GetReviveRate($boost_revive);
+	$missfire_rate = $filter->GetMissfireRate($revive_rate);
 	$rate = mt_rand(1, 100); //蘇生判定用乱数
-	if($boost_revive) $revive_rate *= 1.3;
-	if($revive_rate > 100) $revive_rate = 100; //上限は 100%
-	if($missfire_rate == 0) $missfire_rate = floor($revive_rate / 5);
-	if($ROOM->IsEvent('missfire_revive')) $missfire_rate *= 2;
 	//$rate = 5; //mt_rand(1, 10); //テスト用
 	//PrintData("{$revive_rate} ({$missfire_rate})", "ReviveInfo: $uname => $target_uname");
 	//PrintData($rate, 'ReviveRate: ' . $user->uname);

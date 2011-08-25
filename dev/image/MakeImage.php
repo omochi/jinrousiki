@@ -304,6 +304,9 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#猫神#です。死んだ人を誰か一人、確実に#蘇生#することができますが自分は死んでしまいます。\n　あなたが残せる最後の御業は「等価を以て魂を反す」こと。死を以て、輪廻の輪へと魂を導くのです。",
     'type' => 'poison_cat');
 
+  public $missfire_cat = array(
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#常世神#です。あなたの#蘇生#は必ず誤爆してしまいます。",
+    'type' => 'poison_cat');
   public $pharmacist = array(
     'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#薬師#です。_処刑_投票した人を#解毒#するか、#毒#能力を知ることができます。|村人|への二次被害を未然に防ぐのです！",
     'type' => 'poison', 'delimiter' => array('_' => 'vote'));
@@ -1045,7 +1048,7 @@ class RoleMessageList{
     'type' => 'yaksa', 'delimiter' => array('_' => 'sex_male'));
 
   public $hariti_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。\n　村に生きる子と紡ぐ存在を消し去りましょう。自分の愛すべき子が居ない今、彼等の存在はただ目障りなだけなのだから。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。\n　自分の愛すべき子が居ない今、彼等の存在はただ目障りなだけ。守り神ではなく鬼へと戻り村にすら悪意をふりまくのです。",
     'type' => 'yaksa', 'delimiter' => array('_' => 'fox', '^' => 'lovers'));
 
   public $power_yaksa = array(
@@ -1451,14 +1454,14 @@ class RoleMessageList{
 
   public $joker = array(
     'message' => "　あなたは|ジョーカー|を所持しています。所持したままゲーム終了すると無条件で敗北になります。\n　#処刑#投票先が生きていた場合に押し付けることができますが、例外があるので気をつけましょう。",
-    'delimiter' => array('|' => 'wolf', '#' => 'vote'));
+    'delimiter' => array('|' => 'duelist', '#' => 'vote'));
 
   public $sweet_status = array(
     'message' => "　あなたは|恋人|と別れました……",
     'type' => 'challenge_lovers');
 
   public $death_note = array(
-    'message' => "　あなたは|デスノート|を所持しています。",
+    'message' => "　あなたは|デスノート|を所持しています。夜に村人一人を|暗殺|することができます。",
     'delimiter' => array('|' => 'assassin'));
 
   public $death_selected = array(
@@ -1644,6 +1647,7 @@ class RoleMessageList{
   public $result_poison_cat = array('message' => "さんは|猫又|でした", 'type' => 'result_poison');
   public $result_revive_cat = array('message' => "さんは|仙狸|でした", 'type' => 'result_poison_cat');
   public $result_sacrifice_cat = array('message' => "さんは|猫神|でした", 'type' => 'result_poison_cat');
+  public $result_missfire_cat = array('message' => "さんは|常世神|でした", 'type' => 'result_poison_cat');
   public $result_eclipse_cat = array('message' => "さんは|蝕仙狸|でした", 'type' => 'result_poison_cat');
   public $result_pharmacist = array('message' => "さんは|薬師|でした", 'type' => 'result_poison');
   public $result_cure_pharmacist = array('message' => "さんは|河童|でした", 'type' => 'result_pharmacist');
@@ -2042,5 +2046,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 #$builder->Output('select_assassin');
-#$builder->Output('hariti_yaksa');
-$builder->Output('death_note');
+#$builder->Output('missfire_cat');
+$builder->Output('hariti_yaksa');

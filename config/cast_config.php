@@ -1,13 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β9
+  変更履歴 from Ver. 1.5.0β10
   + 変更
     - $chaos_hyper_random_role_list, $topping_list, $boost_rate_list,
-      $chaos_sub_role_limit_normal_list
-  + 追加
-    - $chaos_sub_role_limit_hard_list, $replace_role_list
-  + 削除
-    - function ReplaceHuman(), function ChangeMad()
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -18,7 +13,7 @@ class CastConfig extends CastConfigBase{
   */
   public $role_list = array(
      4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     5 => array('wolf' =>   1, 'mage' => 2, 'mad' => 2),
+     5 => array('wolf'  =>  1, 'mage' => 2, 'mad'  => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
      8 => array('human' =>  5, 'wolf' => 2, 'mage' => 1),
@@ -370,9 +365,10 @@ class CastConfig extends CastConfigBase{
     'snipe_poison'         =>  6,
     'chain_poison'         =>  6,
     'dummy_poison'         =>  9,
-    'poison_cat'           =>  5,
+    'poison_cat'           =>  4,
     'revive_cat'           =>  3,
-    'sacrifice_cat'        =>  4,
+    'sacrifice_cat'        =>  3,
+    'missfire_cat'         =>  2,
     'eclipse_cat'          =>  3,
     'pharmacist'           =>  6,
     'cure_pharmacist'      =>  4,
@@ -707,9 +703,10 @@ class CastConfig extends CastConfigBase{
 		 'count' => array(1)),
     'd' => array('fix' => array('resist_wolf' => 1),
 		 'random' => array(
-                    array('poison_cat'    => 4,
+                    array('poison_cat'    => 3,
 			  'revive_cat'    => 2,
 			  'sacrifice_cat' => 2,
+			  'missfire_cat'  => 1,
 			  'eclipse_cat'   => 2)),
 		 'count'  => array(1)),
     'e' => array('fix' => array('anti_voodoo' => 1, 'possessed_wolf' => 1)),
@@ -861,7 +858,8 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('select_assassin'   => 5),
+    'a' => array('missfire_cat'    => 10,
+		 'select_assassin' => 10),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,
@@ -918,6 +916,7 @@ class CastConfig extends CastConfigBase{
 		 'poison_cat'    => 0,
 		 'revive_cat'    => 0,
 		 'sacrifice_cat' => 0,
+		 'missfire_cat'  => 0,
 		 'eclipse_cat'   => 0,
 		 'revive_fox'    => 0),
     'e' => array('possessed_wolf' => 0,

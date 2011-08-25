@@ -2,16 +2,17 @@
 /*
   ◆仙狸 (revive_cat)
   ○仕様
-  ・蘇生率：80% (減衰 1/4)
-  ・誤爆率：通常
+  ・蘇生率：80% (減衰 1/4) / 誤爆有り
   ・蘇生後：蘇生回数更新
 */
-class Role_revive_cat extends Role{
-  public $missfire_rate = 0;
+RoleManager::LoadFile('poison_cat');
+class Role_revive_cat extends Role_poison_cat{
+  public $revive_rate   = 80;
+  public $missfire_rate =  0;
 
   function __construct(){ parent::__construct(); }
 
-  function GetRate(){ return ceil(80 / pow(4, $this->GetTimes())); }
+  function GetRate(){ return ceil(parent::GetRate() / pow(4, $this->GetTimes())); }
 
   function AfterRevive(){
     $times = $this->GetTimes();

@@ -1,13 +1,17 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β9
+  変更履歴 from Ver. 1.5.0β10
   + Message
   + GameOptionMessage
-    - 追加：$full_mad, $full_quiz, $full_vampire, $full_unknown_mania, $change_common,
-            $change_hermit_common, $change_immolate_mad
+    - 追加：$dream_eat, $vampire_do, $death_note_do, $death_note_not_do,
+            $death_note_moved, $ability_death_note_do
+  + GameOptionMessage
+    - 追加：$death_note
   + GameOptionCaptionMessage
-    - 追加：$change_common
-    - 変更：$open_day
+    - 追加：$death_note
+    - 変更：$deep_sleep, $mind_open, $blinder, $joker
+  + VoteMessage
+    - 追加：$death_note_do, $death_note_not_do
 */
 //-- 基本システムメッセージ --//
 class Message{

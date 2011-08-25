@@ -25,5 +25,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>常世神：誤爆蘇生しかしない猫又の亜種</li>
 </ul>
