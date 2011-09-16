@@ -153,6 +153,10 @@ OutputInfoPageHeader('ゲームオプション');
 
 
 <h2 id="add_role_option">追加役職設定</h2>
+<ul>
+<li>置換元の役職が足りない場合は出現しないことがあります。<br>
+(例：村人1の場合、<?php echo $GAME_OPT_MESS->poison ?>は適用されない)</li>
+</ul>
 <p>
 <a href="#poison"><?php echo $GAME_OPT_MESS->poison ?></a>
 <a href="#assassin"><?php echo $GAME_OPT_MESS->assassin ?></a>
@@ -160,6 +164,8 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#poison_wolf"><?php echo $GAME_OPT_MESS->poison_wolf ?></a>
 <a href="#possessed_wolf"><?php echo $GAME_OPT_MESS->possessed_wolf ?></a>
 <a href="#sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?></a>
+<a href="#fox"><?php echo $GAME_OPT_MESS->fox ?></a>
+<a href="#child_fox"><?php echo $GAME_OPT_MESS->child_fox ?></a>
 </p>
 <p>
 <a href="#cupid"><?php echo $GAME_OPT_MESS->cupid ?></a>
@@ -203,6 +209,18 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li><?php OutputAddRole('sirius_wolf') ?></li>
 <li><?php echo $GAME_OPT_CAPT->sirius_wolf ?></li>
+</ul>
+
+<h3 id="fox"><?php echo $GAME_OPT_MESS->fox ?> [Ver. 1.5.0 β12～]</h3>
+<ul>
+<li><?php OutputAddRole('fox') ?></li>
+<li><?php echo $GAME_OPT_CAPT->fox ?></li>
+</ul>
+
+<h3 id="child_fox"><?php echo $GAME_OPT_MESS->child_fox ?> [Ver. 1.5.0 β12～]</h3>
+<ul>
+<li><?php OutputAddRole('child_fox') ?></li>
+<li><?php echo $GAME_OPT_CAPT->child_fox ?></li>
 </ul>
 
 <h3 id="cupid"><?php echo $GAME_OPT_MESS->cupid ?> [Ver. 1.2.0～]</h3>

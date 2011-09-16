@@ -49,69 +49,58 @@ function CreateRoom(){
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
 
-  //入力データのエラーチェック
-  $room_name    = $_POST['room_name'];
-  $room_comment = $_POST['room_comment'];
-  EscapeStrings($room_name);
-  EscapeStrings($room_comment);
-  if($room_name == '' || $room_comment == ''){ //未入力チェック
-    OutputRoomAction('empty');
-    return false;
+  //-- 入力データのエラーチェック --//
+  //村の名前・説明のデータチェック
+  foreach(array('room_name' => '村の名前', 'room_comment' => '村の説明') as $str => $name){
+    $$str = $_POST[$str];
+    EscapeStrings($$str);
+    if($$str == ''){ //未入力チェック
+      OutputRoomAction('empty', $name);
+      return false;
+    }
+    if(strlen($$str) > $ROOM_CONF->$str || preg_match($ROOM_CONF->ng_word, $$str)){ //文字列チェック
+      OutputRoomAction('comment', $name);
+      return false;
+    }
   }
 
-  //文字列チェック
-  if(strlen($room_name)    > $ROOM_CONF->room_name ||
-     strlen($room_comment) > $ROOM_CONF->room_comment ||
-     preg_match($ROOM_CONF->ng_word, $room_name) ||
-     preg_match($ROOM_CONF->ng_word, $room_comment)){
-    OutputRoomAction('comment');
-    return false;
-  }
-
-  //指定された人数の配役があるかチェック
+  //最大人数チェック
   $max_user = (int)$_POST['max_user'];
   if(! in_array($max_user, $ROOM_CONF->max_user_list)){
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
-  $query = "FROM room WHERE status <> 'finished'"; //チェック用の共通クエリ
-  $ip_address = $_SERVER['REMOTE_ADDR']; //村立てを行ったユーザの IP を取得
+  $ip_address = $_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
+  if(! $SERVER_CONF->debug_mode){ //デバッグモード時は村作成制限をスキップ
+    $str = 'room_password'; //パスワードチェック
+    if(isset($SERVER_CONF->$str) && $_POST[$str] != $SERVER_CONF->$str){
+      OutputActionResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
+    }
 
-  //デバッグモード時は村立て制限をしない
-  if(! $SERVER_CONF->debug_mode){
-    if(isset($SERVER_CONF->room_password) &&
-       $SERVER_CONF->room_password != $_POST['room_password']){ //パスワードチェック
-      OutputRoomAction('room_password');
+    //ブラックリストチェック
+    if(CheckBlackList()) OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
+
+    $query = "FROM room WHERE status <> 'finished'"; //チェック用の共通クエリ
+    $time = FetchResult("SELECT MAX(establish_time) {$query}"); //連続作成制限チェック
+    if(isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait){
+      OutputRoomAction('establish_wait');
       return false;
     }
 
-    if(CheckBlackList()){ //ブラックリストチェック
-      OutputRoomAction('black_list');
-      return false;
-    }
-
-    //同じユーザが立てた村が終了していなければ新しい村を作らない
-    if(FetchResult("SELECT COUNT(room_no) {$query} AND establisher_ip = '{$ip_address}'") > 0){
-      OutputRoomAction('over_establish');
-      return false;
-    }
-
-    //最大並列村数を超えているようであれば新しい村を作らない
-    if(FetchResult('SELECT COUNT(room_no)' . $query) >= $ROOM_CONF->max_active_room){
+    //最大稼働数チェック
+    if(FetchResult("SELECT COUNT(room_no) {$query}") >= $ROOM_CONF->max_active_room){
       OutputRoomAction('full');
       return false;
     }
 
-    //連続村立て制限チェック
-    $time_stamp = FetchResult("SELECT establish_time {$query} ORDER BY room_no DESC");
-    if(isset($time_stamp) &&
-       TZTime() - ConvertTimeStamp($time_stamp, false) <= $ROOM_CONF->establish_wait){
-      OutputRoomAction('establish_wait');
+    //同一ユーザの連続作成チェック (終了していなければエラー処理)
+    if(FetchResult("SELECT COUNT(room_no) {$query} AND establisher_ip = '{$ip_address}'") > 0){
+      OutputRoomAction('over_establish');
       return false;
     }
   }
 
-  //ゲームオプションをセット
+  //-- ゲームオプションをセット --//
   $perverseness = $ROOM_CONF->perverseness && $_POST['perverseness']  == 'on';
   $full_mania   = $ROOM_CONF->full_mania   && $_POST['replace_human'] == 'full_mania';
   $full_cupid   = $ROOM_CONF->full_cupid   && $_POST['replace_human'] == 'full_cupid';
@@ -128,16 +117,13 @@ function CreateRoom(){
   $check_game_option_list = array('wish_role', 'open_vote', 'open_day', 'not_open_cast');
   $check_option_role_list = array();
   if($quiz){ //クイズ村
-    $game_option_list[] = 'quiz';
-
-    //GM ログインパスワードをチェック
-    $gm_password = $_POST['gm_password'];
-    EscapeStrings(&$gm_password);
+    $gm_password = $_POST['gm_password']; //GM ログインパスワードをチェック
+    EscapeStrings($gm_password);
     if($gm_password == ''){
       OutputRoomAction('no_password');
       return false;
     }
-    $game_option_list[]    = 'dummy_boy';
+    array_push($game_option_list, 'dummy_boy', 'quiz');
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $gm_password;
   }
@@ -150,13 +136,12 @@ function CreateRoom(){
       $check_option_role_list[] = 'gerd';
     }
     elseif($ROOM_CONF->dummy_boy && $_POST['dummy_boy'] == 'gm_login'){
-      //GM ログインパスワードをチェック
-      $gm_password = $_POST['gm_password'];
+      $gm_password = $_POST['gm_password']; //GM ログインパスワードをチェック
+      EscapeStrings($gm_password);
       if($gm_password == ''){
 	OutputRoomAction('no_password');
 	return false;
       }
-      EscapeStrings(&$gm_password);
       array_push($game_option_list, 'dummy_boy', 'gm_login');
       $dummy_boy_handle_name    = 'GM';
       $dummy_boy_password       = $gm_password;
@@ -167,21 +152,14 @@ function CreateRoom(){
       $game_option_list[] = $_POST['special_role'];
       $check_game_option_list[] = 'secret_sub_role';
       array_push($check_option_role_list, 'topping', 'boost_rate', 'chaos_open_cast',
-		 'chaos_open_cast_camp', 'chaos_open_cast_role');
-      if($perverseness){ //天邪鬼村の調整
-	$option_role_list[] = 'sub_role_limit';
-	$check_option_role_list[] = 'perverseness';
-      }
-      else{
-	$check_option_role_list[] = 'sub_role_limit';
-      }
+		 'sub_role_limit');
     }
     elseif($special_role){ //特殊配役モード
       $option_role_list[] = $_POST['special_role'];
     }
     else{ //通常村
       array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
-		 'possessed_wolf', 'sirius_wolf');
+		 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox');
       if(! $full_cupid) $check_option_role_list[] = 'cupid';
       $check_option_role_list[] = 'medium';
       if(! $full_mania) $check_option_role_list[] = 'mania';
@@ -191,32 +169,32 @@ function CreateRoom(){
 	       'death_note', 'weather', 'festival');
     if(! $special_role) $check_option_role_list[] = 'detective';
     array_push($check_option_role_list, 'liar', 'gentleman', 'critical',
-	       $perverseness ? 'perverseness' : 'sudden_death');
+	       $perverseness ? 'perverseness' : 'sudden_death', 'replace_human', 'change_common',
+	       'change_mad');
   }
-  array_push($check_option_role_list, 'replace_human', 'change_common', 'change_mad');
 
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');
   foreach($check_game_option_list as $option){
     if(! $ROOM_CONF->$option) continue;
-    if($option == 'not_open_cast'){
-      switch($_POST[$option]){
-      case 'full':
-	$option = 'not_open_cast';
-	break;
 
+    switch($option){
+    case 'not_open_cast':
+      switch($target = $_POST[$option]){
+      case 'not':
       case 'auto':
-	$option = 'auto_open_cast';
-	break;
-
-      default:
-	continue 2;
+	$option = $target . '_open_cast';
+	if($ROOM_CONF->$option) break 2;
       }
+      continue 2;
+
+    default:
+      if($_POST[$option] != 'on') continue 2;
     }
-    elseif($_POST[$option] != 'on') continue;
     $game_option_list[] = $option;
   }
   //PrintData($game_option_list);
+
 
   //PrintData($check_option_role_list, 'CheckOptionRole');
   foreach($check_option_role_list as $option){
@@ -226,27 +204,11 @@ function CreateRoom(){
     case 'replace_human':
     case 'change_common':
     case 'change_mad':
-      switch($target = $_POST[$option]){
-      case 'replace_human':
-      case 'full_mad':
-      case 'full_cupid':
-      case 'full_quiz':
-      case 'full_vampire':
-      case 'full_chiroptera':
-      case 'full_mania':
-      case 'full_unknown_mania':
-      case 'change_common':
-      case 'change_hermit_common':
-      case 'change_mad':
-      case 'change_fanatic_mad':
-      case 'change_whisper_mad':
-      case 'change_immolate_mad':
-	if($ROOM_CONF->$target){
-	  $option = $target;
-	  break 2;
-	}
-      }
-      continue 2;
+      $target = $_POST[$option];
+      if(empty($target) || ! $ROOM_CONF->$target ||
+	 ! in_array($target, $ROOM_CONF->{$option.'_list'})) continue 2;
+      $option = $target;
+      break;
 
     case 'topping':
     case 'boost_rate':
@@ -258,14 +220,13 @@ function CreateRoom(){
     case 'chaos_open_cast':
       switch($target = $_POST[$option]){
       case 'full':
-	break;
+	break 2;
 
       case 'camp':
       case 'role':
 	$option .= '_' . $target;
-	break;
+	if($ROOM_CONF->$option) break 2;
       }
-      if($ROOM_CONF->$option) break;
       continue 2;
 
     case 'sub_role_limit':
@@ -316,13 +277,11 @@ function CreateRoom(){
     return false;
   }
 
-  //降順にルーム No を取得して最も大きな No を取得
-  $room_no = FetchResult('SELECT room_no FROM room ORDER BY room_no DESC') + 1;
-
   //登録
+  $room_no     = FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
   $game_option = implode(' ', $game_option_list);
   $option_role = implode(' ', $option_role_list);
-  $status = false;
+  $status      = false;
 
   do{
     if(! $SERVER_CONF->dry_run_mode){
@@ -335,7 +294,7 @@ function CreateRoom(){
       if(! InsertDatabase('room', $items, $values)) break;
 
       //身代わり君を入村させる
-      if(strpos($game_option, 'dummy_boy') !== false &&
+      if(in_array('dummy_boy', $game_option_list) &&
 	 FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
 	if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
 			1, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
@@ -358,7 +317,7 @@ function CreateRoom(){
 }
 
 //結果出力 (CreateRoom() 用)
-function OutputRoomAction($type, $room_name = ''){
+function OutputRoomAction($type, $str = ''){
   global $SERVER_CONF;
 
   switch($type){
@@ -366,48 +325,21 @@ function OutputRoomAction($type, $room_name = ''){
     OutputActionResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
     echo '以下の項目を再度ご確認ください。<br>';
-    echo '<ul><li>村の名前が記入されていない。</li>';
-    echo '<li>村の説明が記入されていない。</li></ul>';
-    break;
-
-  case 'no_password':
-    OutputActionResultHeader('村作成 [入力エラー]');
-    echo '有効な GM ログインパスワードが設定されていません。<br>';
+    echo "<ul><li>{$str}が記入されていない。</li>";
     break;
 
   case 'comment':
     OutputActionResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
     echo '以下の項目を再度ご確認ください。<br>';
-    echo '<ul><li>村の名前・村の説明の文字数が長すぎる</li>';
-    echo '<li>村の名前・村の説明に入力禁止文字列が含まれている。</li></ul>';
+    echo "<ul><li>{$str}の文字数が長すぎる。</li>";
+    echo "<li>{$str}に入力禁止文字列が含まれている。</li></ul>";
     break;
 
-  case 'time':
-    OutputActionResultHeader('村作成 [入力エラー]');
-    echo 'エラーが発生しました。<br>';
-    echo '以下の項目を再度ご確認ください。<br>';
-    echo '<ul><li>リアルタイム制の昼、夜の時間を記入していない。</li>';
-    echo '<li>リアルタイム制の昼、夜の時間を全角で入力している</li>';
-    echo '<li>リアルタイム制の昼、夜の時間が0以下、または99以上である</li>';
-    echo '<li>リアルタイム制の昼、夜の時間が数字ではない、または異常な文字列</li></ul>';
-    break;
-
-  case 'success':
-    OutputActionResultHeader('村作成', $SERVER_CONF->site_root);
-    echo $room_name . ' 村を作成しました。トップページに飛びます。';
-    echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
-    break;
-
-  case 'busy':
-    OutputActionResultHeader('村作成 [データベースエラー]');
-    echo 'データベースサーバが混雑しています。<br>'."\n";
-    echo '時間を置いて再度登録してください。';
-    break;
-
-  case 'black_list':
+  case 'establish_wait':
     OutputActionResultHeader('村作成 [制限事項]');
-    echo '村立て制限ホストです。';
+    echo 'サーバで設定されている村立て許可時間間隔を経過していません。<br>'."\n";
+    echo 'しばらく時間を開けてから再度登録してください。';
     break;
 
   case 'full':
@@ -419,18 +351,34 @@ function OutputRoomAction($type, $room_name = ''){
   case 'over_establish':
     OutputActionResultHeader('村作成 [制限事項]');
     echo 'あなたが立てた村が現在稼働中です。<br>'."\n";
-    echo '立てた村で決着がつくのを待ってから再度登録してください。';
+    echo '立てた村の決着がつくのを待ってから再度登録してください。';
     break;
 
-  case 'establish_wait':
-    OutputActionResultHeader('村作成 [制限事項]');
-    echo 'サーバで設定されている村立て時間間隔を経過していません。<br>'."\n";
-    echo 'しばらく時間を開けてから再度登録してください。';
+  case 'no_password':
+    OutputActionResultHeader('村作成 [入力エラー]');
+    echo '有効な GM ログインパスワードが設定されていません。';
     break;
 
-  case 'room_password':
-    OutputActionResultHeader('村作成 [制限事項]');
-    echo '村作成パスワードが正しくありません。<br>';
+  case 'time':
+    OutputActionResultHeader('村作成 [入力エラー]');
+    echo 'エラーが発生しました。<br>';
+    echo '以下の項目を再度ご確認ください。<br>';
+    echo '<ul><li>リアルタイム制の昼・夜の時間を記入していない。</li>';
+    echo '<li>リアルタイム制の昼・夜の時間が 0 以下、または 99 以上である。</li>';
+    echo '<li>リアルタイム制の昼・夜の時間を全角で入力している。</li>';
+    echo '<li>リアルタイム制の昼・夜の時間が数字ではない。</li></ul>';
+    break;
+
+  case 'busy':
+    OutputActionResultHeader('村作成 [データベースエラー]');
+    echo 'データベースサーバが混雑しています。<br>'."\n";
+    echo '時間を置いて再度登録してください。';
+    break;
+
+  case 'success':
+    OutputActionResultHeader('村作成', $SERVER_CONF->site_root);
+    echo $str . ' 村を作成しました。トップページに飛びます。';
+    echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
     break;
   }
   OutputHTMLFooter(); //フッタ出力
@@ -501,7 +449,8 @@ EOF;
   OutputRoomOptionOpenCast();
 
   $stack = array('poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-		 'sirius_wolf', 'cupid', 'medium', 'mania', 'decide', 'authority');
+		 'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania',
+		 'decide', 'authority');
   OutputRoomOption($stack, 'role');
 
   $stack = array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open',
@@ -726,7 +675,7 @@ function OutputRoomOptionOpenCast(){
 <input type="radio" name="not_open_cast" value=""{$checked_open}>
 {$GAME_OPT_CAPT->no_close_cast}<br>
 
-<input type="radio" name="not_open_cast" value="full"{$checked_full}>
+<input type="radio" name="not_open_cast" value="not"{$checked_full}>
 {$GAME_OPT_CAPT->not_open_cast}<br>
 
 EOF;

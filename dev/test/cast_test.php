@@ -33,7 +33,7 @@ $RQ_ARGS->TestItems->test_room['option_role'] .= ' chaos_open_cast_camp';
 $RQ_ARGS->TestItems->is_virtual_room = true;
 $RQ_ARGS->vote_times = 1;
 $RQ_ARGS->TestItems->test_users = array();
-for($id = 1; $id <= 22; $id++) $RQ_ARGS->TestItems->test_users[$id] =& new User();
+for($id = 1; $id <= 22; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
 
 $RQ_ARGS->TestItems->test_users[1]->uname = 'dummy_boy';
 $RQ_ARGS->TestItems->test_users[1]->handle_name = '身代わり君';
@@ -148,12 +148,12 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
 
 //-- データ収集 --//
 //$DB_CONF->Connect(); // DB 接続
-$ROOM =& new Room($RQ_ARGS); //村情報を取得
+$ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode  = true;
 $ROOM->day_night = 'beforegame';
 
-$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByID(1);
 
 //-- データ出力 --//

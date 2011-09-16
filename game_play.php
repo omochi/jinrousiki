@@ -10,13 +10,13 @@ if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお�
 $DB_CONF->Connect(); //DB 接続
 $SESSION->CertifyGamePlay(); //セッション認証
 
-$ROOM =& new Room($RQ_ARGS); //村情報をロード
+$ROOM = new Room($RQ_ARGS); //村情報をロード
 $ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
 $ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
 $ROOM->system_time  = TZTime(); //現在時刻を取得
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
-$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //シーンに応じた追加クラスをロード
@@ -27,11 +27,11 @@ if($ROOM->IsBeforeGame()){ //ゲームオプション表示
 elseif($ROOM->IsFinished()){ //勝敗結果表示
   $INIT_CONF->LoadClass('VICT_MESS');
 }
-SendCookie(&$OBJECTION); //必要なクッキーをセットする
+SendCookie($OBJECTION); //必要なクッキーをセットする
 
 //-- 発言処理 --//
 if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは bottom フレーム
-  ConvertSay(&$RQ_ARGS->say); //発言置換処理
+  ConvertSay($RQ_ARGS->say); //発言置換処理
 
   if($RQ_ARGS->say == ''){
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
@@ -184,11 +184,11 @@ function Say($say){
 
   $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
   if($ROOM->IsRealTime()){ //リアルタイム制
-    GetRealPassTime(&$left_time);
+    GetRealPassTime($left_time);
     $spend_time = 0; //会話で時間経過制の方は無効にする
   }
   else{ //会話で時間経過制
-    GetTalkPassTime(&$left_time); //経過時間の和
+    GetTalkPassTime($left_time); //経過時間の和
     $spend_time = floor(strlen($say) / 100); //経過時間
     if($spend_time < 1) $spend_time = 1; //最小は 1
     elseif($spend_time > 4) $spend_time = 4; //最大は 4
@@ -258,9 +258,9 @@ function CheckSilence(){
 
   //経過時間を取得
   if($ROOM->IsRealTime()) //リアルタイム制
-    GetRealPassTime(&$left_time);
+    GetRealPassTime($left_time);
   else //仮想時間制
-    $silence_pass_time = GetTalkPassTime(&$left_time, true);
+    $silence_pass_time = GetTalkPassTime($left_time, true);
 
   if(! $ROOM->IsRealTime() && $left_time > 0){ //仮想時間制の沈黙判定
     if($last_updated_pass_time > $TIME_CONF->silence){
@@ -349,7 +349,7 @@ function SetSuddenDeathTime(){
   $last_updated_pass_time = FetchResult($query);
 
   //経過時間を取得
-  $ROOM->IsRealTime() ? GetRealPassTime(&$left_time) : GetTalkPassTime(&$left_time, true);
+  $ROOM->IsRealTime() ? GetRealPassTime($left_time) : GetTalkPassTime($left_time, true);
   if($left_time == 0) $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
 }
 
@@ -500,13 +500,13 @@ EOF;
   }
   if($ROOM->IsPlaying()){
     if($ROOM->IsRealTime()){ //リアルタイム制
-      GetRealPassTime(&$left_time);
+      GetRealPassTime($left_time);
       echo '<td class="real-time"><form name="realtime_form">'."\n";
       echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
       echo '</form></td>'."\n";
     }
     else{ //仮想時間制
-      echo '<td>' . $time_message . GetTalkPassTime(&$left_time) . '</td>'."\n";
+      echo '<td>' . $time_message . GetTalkPassTime($left_time) . '</td>'."\n";
     }
   }
 
@@ -518,9 +518,8 @@ EOF;
     echo <<<EOF
 <td class="objection"><form method="POST" action="{$url}">
 <input type="hidden" name="set_objection" value="on">
-<input type="image" name="objimage" src="{$GAME_CONF->objection_image}" border="0">
-</form></td>
-<td>({$count})</td>
+<input type="image" name="objimage" src="{$GAME_CONF->objection_image}">
+({$count})</form></td>
 
 EOF;
   }
@@ -570,7 +569,7 @@ function OutputSelfLastWords(){
   $query = 'SELECT last_words FROM user_entry' . $ROOM->GetQuery(false) .
     " AND uname = '{$SELF->uname}' AND user_no > 0";
   if(($str = FetchResult($query)) == '') return false;
-  LineToBR(&$str); //改行コードを変換
+  LineToBR($str); //改行コードを変換
   if($str == '') return false;
 
   echo <<<EOF

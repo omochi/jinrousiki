@@ -146,7 +146,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#gold_wolf">金狼</a>
+<a href="wolf.php#gold_wolf">金狼</a>・<a href="sub_role.php#gold_wisp">松明丸</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -211,7 +211,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#fire_wolf">火狼</a>・<a href="#blue_fox">蒼狐</a>
+<a href="#blue_fox">蒼狐</a>・<a href="ability.php#wisp">鬼火付加能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

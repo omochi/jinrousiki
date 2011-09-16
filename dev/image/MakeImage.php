@@ -5,6 +5,10 @@ class MessageImageBuilder{
   public $font = 'azuki.ttf';
   #public $font = 'yutaCo2_ttc_027.ttc';
   #public $font = 'aquafont.ttf';
+  #public $font = 'azukiP.ttf';
+
+  public $font_path = "C:\\WINDOWS\\Fonts\\";
+  #public $font_path = '/Library/Fonts';
 
   public $generator;
   public $list;
@@ -47,7 +51,7 @@ class MessageImageBuilder{
 			  );
 
   function __construct($list){
-    $font = "C:\\WINDOWS\\Fonts\\" . $this->font;
+    $font = $this->font_path . $this->font;
     $size = ($trans = $list == 'WishRoleList') ? 12 : 10;
     $this->generator = new MessageImageGenerator($font, $size, 3, 3, $trans);
     $this->list = new $list();
@@ -2046,5 +2050,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 #$builder->Output('select_assassin');
-#$builder->Output('missfire_cat');
-$builder->Output('hariti_yaksa');
+$builder->Output('missfire_cat');
+#$builder->Output('hariti_yaksa');

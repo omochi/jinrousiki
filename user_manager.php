@@ -260,6 +260,7 @@ EOF;
       }
       if($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
       if($ROOM->IsOption('sirius_wolf')) $wish_role_list[] = 'sirius_wolf';
+      if($ROOM->IsOption('child_fox')) $wish_role_list[] = 'child_fox';
       if($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
       if($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
       if($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){

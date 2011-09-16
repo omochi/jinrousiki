@@ -673,7 +673,7 @@ function GenerateVoteList($raw_data, $date){
 function OutputTalkLog(){
   global $ROOM;
 
-  $builder =& new DocumentBuilder();
+  $builder = new DocumentBuilder();
   $builder->BeginTalk('talk');
   foreach($ROOM->LoadTalk() as $talk) OutputTalk($talk, $builder); //会話出力
   OutputTimeStamp($builder);
@@ -874,7 +874,7 @@ function OutputHeavenTalkLog(){
   //if($SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
   $is_open = $ROOM->IsOpenCast(); //霊界公開判定
-  $builder =& new DocumentBuilder();
+  $builder = new DocumentBuilder();
   $builder->BeginTalk('talk');
   foreach($ROOM->LoadTalk(true) as $talk){
     $user = $USERS->ByUname($talk->uname); //ユーザを取得
@@ -892,7 +892,7 @@ function OutputHeavenTalkLog(){
 function OutputTimeStamp($builder){
   global $ROOM;
 
-  $talk =& new Talk();
+  $talk = new Talk();
   if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
     $type = 'establish_time';
     $talk->sentence = '村作成';
@@ -1082,7 +1082,7 @@ EOF;
 
   foreach($array as $result){
     list($handle_name, $sentence) = explode("\t", $result, 2);
-    LineToBR(&$sentence);
+    LineToBR($sentence);
 
     $str .= <<<EOF
 <tr>

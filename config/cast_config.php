@@ -1,8 +1,9 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β10
+  変更履歴 from Ver. 1.5.0β11
   + 変更
-    - $chaos_hyper_random_role_list, $topping_list, $boost_rate_list,
+    - $fox, $child_fox, $chaos_hyper_random_role_list, $chaos_hyper_replace_human_role_list,
+      $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -66,8 +67,10 @@ class CastConfig extends CastConfigBase{
   public $assassin       = 22; //暗殺者 [村人2 → 暗殺者1、人狼1]
   public $boss_wolf      = 18; //白狼 [人狼1 → 白狼]
   public $poison_wolf    = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
-  public $possessed_wolf = 17; //憑狼 [人狼1 → 憑狼1]
-  public $sirius_wolf    = 17; //天狼 [人狼1 → 天狼1]
+  public $possessed_wolf =  8; //憑狼 [人狼1 → 憑狼1]
+  public $sirius_wolf    =  8; //天狼 [人狼1 → 天狼1]
+  public $fox            =  8; //妖狐 [村人1 → 妖狐1]
+  public $child_fox      =  8; //子狐 [妖狐1 → 子狐1]
   public $cupid          = 16; //キューピッド [村人1 → キューピッド1]
   public $medium         = 20; //巫女 (+ 女神) [村人2 → 巫女1、女神1]
   public $mania          = 16; //神話マニア [村人1 → 神話マニア1]
@@ -583,9 +586,11 @@ class CastConfig extends CastConfigBase{
     'basic_mania'          =>  2,
     'soul_mania'           =>  2,
     'dummy_mania'          =>  2,
-    'unknown_mania'        =>  2,
-    'sacrifice_mania'      =>  2,
-    'wirepuller_mania'     =>  1);
+    'unknown_mania'        =>  1,
+    'wirepuller_mania'     =>  1,
+    'fire_mania'           =>  1,
+    'sacrifice_mania'      =>  1,
+    'revive_mania'         =>  1);
 
   //裏・闇鍋
   public $chaos_verso_random_role_list = array(
@@ -612,13 +617,15 @@ class CastConfig extends CastConfigBase{
   //超・闇鍋
   public $chaos_hyper_replace_human_role_list = array(
     'mania'            => 20,
-    'trick_mania'      => 15,
-    'basic_mania'      => 15,
-    'soul_mania'       => 10,
-    'dummy_mania'      => 10,
-    'unknown_mania'    => 15,
-    'sacrifice_mania'  => 10,
-    'wirepuller_mania' =>  5);
+    'trick_mania'      => 12,
+    'basic_mania'      => 12,
+    'soul_mania'       =>  9,
+    'dummy_mania'      =>  7,
+    'unknown_mania'    => 12,
+    'wirepuller_mania' =>  9,
+    'fire_mania'       =>  9,
+    'sacrifice_mania'  =>  5,
+    'revive_mania'     =>  5);
 
   //-- 出現補正値 --//
   public $chaos_min_wolf_rate  = 10; //人狼の最小出現比 (総人口 / N)
@@ -858,8 +865,8 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('missfire_cat'    => 10,
-		 'select_assassin' => 10),
+    'a' => array('fire_mania'   => 10,
+		 'revive_mania' => 10),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,
@@ -918,7 +925,8 @@ class CastConfig extends CastConfigBase{
 		 'sacrifice_cat' => 0,
 		 'missfire_cat'  => 0,
 		 'eclipse_cat'   => 0,
-		 'revive_fox'    => 0),
+		 'revive_fox'    => 0,
+		 'revive_mania'  => 0),
     'e' => array('possessed_wolf' => 0,
 		 'possessed_mad'  => 0,
 		 'possessed_fox'  => 0,
@@ -997,8 +1005,8 @@ class CastConfig extends CastConfigBase{
 	$duel_fix_list['moon_cupid'] = 1;
       }
       if($user_count >= 30) $duel_fix_list['quiz'] = 1;
-      $duel_rate_list = array('assassin' => 5, 'wolf' => 3, 'self_cupid' => 1, 'mind_cupid' => 4,
-			      'triangle_cupid' => 1);
+      $duel_rate_list = array('select_assassin' => 5, 'wolf' => 3, 'self_cupid' => 1,
+			      'mind_cupid' => 4, 'triangle_cupid' => 1);
     }
     else{ //常時公開
       //-- 暗殺決闘 --//

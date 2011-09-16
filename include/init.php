@@ -192,7 +192,7 @@ class InitializeConfig{
     $this->LoadDependence($name);
 
     if(is_null($class_name = $this->class_list[$name])) return false;
-    $GLOBALS[$name] =& new $class_name();
+    $GLOBALS[$name] = new $class_name();
     $this->loaded->class[] = $name;
     return true;
   }
@@ -203,7 +203,7 @@ class InitializeConfig{
 }
 
 //-- 初期化処理 --//
-$INIT_CONF =& new InitializeConfig();
+$INIT_CONF = new InitializeConfig();
 
 //mbstring 非対応の場合、エミュレータを使用する
 if(! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
@@ -217,8 +217,11 @@ $SERVER_CONF->debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->Load
 //PrintData($INIT_CONF); //テスト用
 
 //-- スクリプト群の文字コード --//
-//変更する場合は全てのファイル自体の文字コードを自前で変更してください
-declare(encoding='UTF-8'); //変数を入れるとパースエラーが返るのでハードコード
+/*
+  変更する場合は全てのファイル自体の文字コードを自前で変更してください
+  declare encoding は --enable-zend-multibyte が有効な PHP でのみ機能します
+*/
+//declare(encoding='UTF-8');
 
 //-- マルチバイト入出力指定 --//
 if(extension_loaded('mbstring')){
@@ -228,11 +231,8 @@ if(extension_loaded('mbstring')){
   mb_http_output($SERVER_CONF->encode);
 }
 
-//-- 海外のサーバでも動くようにヘッダ強制指定 --//
-//海外サーバ等で文字化けする場合に指定します
-/*
-if(! headers_sent()){ //ヘッダがまだ何も送信されていない場合送信する
+//-- ヘッダ強制指定 --//
+if($SERVER_CONF->set_header_encode && ! headers_sent()){ //ヘッダ未送信時にセットする
   header("Content-type: text/html; charset={$SERVER_CONF->encode}");
   header('Content-Language: ja');
 }
-*/

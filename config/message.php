@@ -1,17 +1,11 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β10
+  変更履歴 from Ver. 1.5.0β11
   + Message
   + GameOptionMessage
-    - 追加：$dream_eat, $vampire_do, $death_note_do, $death_note_not_do,
-            $death_note_moved, $ability_death_note_do
-  + GameOptionMessage
-    - 追加：$death_note
+    - 追加：$fox, $child_fox
   + GameOptionCaptionMessage
-    - 追加：$death_note
-    - 変更：$deep_sleep, $mind_open, $blinder, $joker
-  + VoteMessage
-    - 追加：$death_note_do, $death_note_not_do
+    - 追加：$fox, $child_fox
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -312,6 +306,8 @@ class GameOptionMessage{
   public $poison_wolf           = '毒狼登場';
   public $possessed_wolf        = '憑狼登場';
   public $sirius_wolf           = '天狼登場';
+  public $fox                   = '妖狐追加';
+  public $child_fox             = '子狐登場';
   public $cupid                 = 'キューピッド登場';
   public $medium                = '巫女登場';
   public $mania                 = '神話マニア登場';
@@ -404,6 +400,8 @@ class GameOptionCaptionMessage{
   public $poison_wolf           = '吊られた時にランダムで村人一人を巻き添えにする狼です。<br>　　　[人狼1→毒狼1、村人1→薬師1]';
   public $possessed_wolf        = '噛んだ人に憑依して乗っ取ってしまう狼です。[人狼1→憑狼1]';
   public $sirius_wolf           = '仲間が減ると特殊能力が発現する狼です。[人狼1→天狼1]';
+  public $fox                   = '妖狐をもう一人追加します。[村人1→妖狐1]';
+  public $child_fox             = '限定的な占い能力を持ち、占い結果が「村人」、霊能結果が「子狐」となる妖狐です。<br>　　　[妖狐1→子狐1]';
   public $cupid                 = '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]';
   public $medium                = '突然死した人の所属陣営が分かる特殊な霊能者です。[村人2→巫女1、女神1]';
   public $mania                 = '初日夜に他の村人の役職をコピーする特殊な役職です。[村人1→神話マニア1]';

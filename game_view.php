@@ -9,7 +9,7 @@ $url = '<a href="game_view.php?room_no=' . $RQ_ARGS->room_no;
 
 $DB_CONF->Connect(); // DB 接続
 
-$ROOM =& new Room($RQ_ARGS); //村情報をロード
+$ROOM = new Room($RQ_ARGS); //村情報をロード
 $ROOM->view_mode = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
@@ -30,8 +30,8 @@ else{
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
 }
 
-$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF  =& new User();
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$SELF  = new User();
 if($ROOM->IsBeforeGame()) $ROOM->LoadVote();
 
 //-- データ出力 --//
@@ -46,13 +46,13 @@ echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n"
 
 if($ROOM->IsPlaying()){ //経過時間を取得
   if($ROOM->IsRealTime()){ //リアルタイム制
-    list($start_time, $end_time) = GetRealPassTime(&$left_time, true);
+    list($start_time, $end_time) = GetRealPassTime($left_time, true);
     $on_load = ' onLoad="output_realtime();"';
     OutputRealTimer($start_time, $end_time);
   }
   else{ //会話で時間経過制
     $INIT_CONF->LoadClass('TIME_CONF');
-    $left_talk_time = GetTalkPassTime(&$left_time);
+    $left_talk_time = GetTalkPassTime($left_time);
   }
 }
 
@@ -77,8 +77,9 @@ echo '<a href="./">[戻る]</a>';
 if($ROOM->IsFinished()) OutputLogLink();
 
 echo <<<EOF
-</td></tr>
-<tr><td><form method="POST" action="login.php?room_no={$ROOM->id}">
+</td></tr></table>
+<table class="login"><tr>
+<td><form method="POST" action="login.php?room_no={$ROOM->id}">
 <label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">
 <label for="login_password">パスワード</label><input type="password" class="login-password" id="login_password" name="password" size="20" value="">
 <input type="hidden" name="login_manually" value="on">

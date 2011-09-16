@@ -147,17 +147,17 @@ OutputInfoPageHeader('詳細な仕様');
 <ul>
 <li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
 <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
-<li>身代わり (<a href="new_role/ability.php#sacrifice">身代わり能力者</a>)</li>
+<li>身代わり (<a href="new_role/ability.php#sacrifice">身代わり能力者</a>・<a href="new_role/human.php#sacrifice_cat">猫神</a>)</li>
 <li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>・<a href="new_role/human.php#soul_assassin">辻斬り</a>)</li>
 <li>罠 (<a href="new_role/ability.php#trap">罠能力者</a>)</li>
 <li>逃亡失敗 (<a href="new_role/human.php#escaper_group">逃亡者系</a>)</li>
-<li>吸血 (<a href="new_role/vampire.php#incubus_vampire">青髭公</a>・<a href="new_role/vampire.php#succubus_vampire">飛縁魔</a>)</li>
-<li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>)</li>
-<li>人攫い (<a href="new_role/ogre.php">鬼陣営</a>)</li>
 <li>狩り (<a href="new_role/human.php#guard_group">狩人系</a>)</li>
+<li>吸血 (<a href="new_role/vampire.php">吸血鬼陣営</a>)</li>
+<li>暗殺 (<a href="new_role/human.php#assassin_group">暗殺者系</a>・<a href="new_role/sub_role.php#death_note">デスノート</a>)</li>
+<li>人攫い (<a href="new_role/ogre.php">鬼陣営</a>)</li>
 <li>夢食い (<a href="new_role/wolf.php#dream_eater_mad">獏</a>)</li>
-<li>呪殺 (<a href="new_role/human.php#mage">占い師</a>)</li>
-<li>呪返し (<a href="new_role/human.php#voodoo_killer">陰陽師</a>・<a href="new_role/ability.php#cursed_group">呪い能力者</a>)</li>
+<li>呪殺 (<a href="new_role/human.php#mage_group">占い師系</a>)</li>
+<li>呪返し (<a href="new_role/ability.php#cursed_group">呪い能力者</a>・<a href="new_role/human.php#voodoo_killer">陰陽師</a>)</li>
 <li>憑依 (<a href="new_role/ability.php#possessed">憑依能力者</a>)</li>
 <li>憑依解放 (<a href="new_role/human.php#anti_voodoo">厄神</a>)</li>
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
@@ -166,6 +166,7 @@ OutputInfoPageHeader('詳細な仕様');
 <h4>～<?php echo $MESSAGE->revive_success ?> [Ver. 1.4.0 α18～]</h4>
 <ul>
 <li>蘇生 (<a href="new_role/ability.php#revive">蘇生能力者</a>)</li>
+<li>憑依・憑依解放 (<a href="new_role/ability.php#possessed">憑依能力者</a>)</li>
 </ul>
 
 <h4>～<?php echo $MESSAGE->revive_failed ?> [Ver. 1.4.0 α18～]</h4>

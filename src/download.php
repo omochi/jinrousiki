@@ -24,6 +24,14 @@ EOF;
 echo $caption;
 ?>
 <tr>
+<td class="link"><a href="fix/jinrousiki-1.3.1.zip">Ver. 1.3.1</a></td>
+<td class="type">zip</td>
+<td class="size">1.27 Mbyte</td>
+<td class="explain">Ver. 1.3.1　PHPの浮動小数点数に関するバグに対応</td>
+<td class="name">埋めチル</td>
+<td class="date">2011/01/09</td>
+</tr>
+<tr>
 <td class="link"><a href="fix/jinro_php_1.3.0.zip">Ver. 1.3.0</a></td>
 <td class="type">zip</td>
 <td class="size">1.25 Mbyte</td>

@@ -248,7 +248,7 @@ class ImageManager{
     if($this->class != '') $str .= ' class="' . $this->class . '"';
     $str .= ' src="' . $this->GetPath($name) . '"';
     if(isset($alt)){
-      EscapeStrings(&$alt);
+      EscapeStrings($alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
     }
     $str .= '>';
@@ -360,11 +360,12 @@ class TwitterConfigBase{
     $response = $to->OAuthRequest('https://twitter.com/statuses/update.json', 'POST',
 				  array('status' => $message));
 
-    if(! ($response === false || (strrpos($response, 'error')))) return;
+    if(! ($response === false || (strrpos($response, 'error')))) return true;
     //エラー処理
     $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" .
       'ユーザ名：' . $this->user . '<br>'."\n" . 'メッセージ：' . $message;
     PrintData($sentence);
+    return false;
   }
 }
 
@@ -659,8 +660,10 @@ class RoleData{
     'soul_mania'           => '覚醒者',
     'dummy_mania'          => '夢語部',
     'unknown_mania'        => '鵺',
+    'wirepuller_mania'     => '黒衣',
+    'fire_mania'           => '青行灯',
     'sacrifice_mania'      => '影武者',
-    'wirepuller_mania'     => '黒衣');
+    'revive_mania'         => '五徳猫');
 
   //サブ役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -1057,8 +1060,10 @@ class RoleData{
     'soul_mania'           => '覚醒',
     'dummy_mania'          => '夢語',
     'unknown_mania'        => '鵺',
-    'sacrifice_mania'      => '影',
     'wirepuller_mania'     => '衣',
+    'fire_mania'           => '青',
+    'sacrifice_mania'      => '影',
+    'revive_mania'         => '徳',
     'chicken'              => '酉',
     'rabbit'               => '卯',
     'perverseness'         => '邪',
@@ -1199,8 +1204,9 @@ class RoleData{
     'doll' => 'doll',
     'escaper' => 'escaper',
     'poison' => 'poison',
-    'unknown_mania' => 'unknown_mania', 'sacrifice_mania' => 'unknown_mania',
-    'wirepuller_mania' => 'unknown_mania',
+    'unknown_mania' => 'unknown_mania', 'wirepuller_mania' => 'unknown_mania',
+    'fire_mania' => 'unknown_mania', 'sacrifice_mania' => 'unknown_mania',
+    'revive_mania' => 'unknown_mania',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)

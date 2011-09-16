@@ -2,7 +2,7 @@
 /*
   変更履歴 from Ver. 1.5.0β11
   + RoomConfig
-    - 追加：$death_note, $defautl_death_note
+    - 追加：$fox, $default_fox, $child_fox, $default_child_fox
 */
 
 //-- 村メンテナンス・作成設定 --//
@@ -96,6 +96,12 @@ class RoomConfig{
 
   public $sirius_wolf = true; //天狼
   public $default_sirius_wolf = false;
+
+  public $fox = true; //妖狐
+  public $default_fox = false;
+
+  public $child_fox = true; //子狐
+  public $default_child_fox = false;
 
   public $cupid = true; //キューピッド
   public $default_cupid = false;

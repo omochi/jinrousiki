@@ -51,8 +51,15 @@ OutputRolePageHeader('吸血鬼陣営');
 <li><a href="#soul_vampire">吸血姫</a>は吸血鬼の襲撃を反射し、襲撃した吸血鬼が吸血死します。<br>
   <a href="#soul_vampire">吸血姫</a>が相互襲撃した場合は互いに反射して相討ちとなります。
 </li>
-<li>変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>を襲撃した場合は無条件で失敗し、吸血死も発生しません。</li>
+<li>吸血鬼をコピーした変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>が襲撃された場合は吸血死します。</li>
+<li><a href="mania.php#unknown_mania_group">鵺系</a>はコピー先に関係なく吸血できます。</li>
 </ol>
+<h5>Ver. 1.5.0 β12～</h5>
+<pre>
+吸血鬼をコピーした<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="mania.php#unknown_mania_group">鵺系</a>に関する仕様を変更。
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>：吸血無効→吸血死
+<a href="mania.php#unknown_mania_group">鵺系</a>：吸血無効→吸血有効
+</pre>
 <h5>Ver. 1.5.0 β6～</h5>
 <pre>
 吸血鬼同士の襲撃に関する仕様を変更。

@@ -521,8 +521,10 @@ CO するべきかどうかは、コピーした役職次第です。
 </p>
 <p>
 <a href="#unknown_mania">鵺</a>
-<a href="#sacrifice_mania">影武者</a>
 <a href="#wirepuller_mania">黒衣</a>
+<a href="#fire_mania">青行灯</a>
+<a href="#sacrifice_mania">影武者</a>
+<a href="#revive_mania">五徳猫</a>
 </p>
 
 <h3 id="unknown_mania_rule">基本ルール [鵺系]</h3>
@@ -606,6 +608,31 @@ CO するべきかどうかは、コピーした役職次第です。
 「正体不明」になる事になります。とっても理不尽ですね。
 </pre>
 
+<h3 id="wirepuller_mania">黒衣 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<pre>
+コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する特殊な鵺。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の雲居 一輪がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
+能力の性質上、自分が死ぬとコピー先が吊られやすくなってしまうので
+立ち回りに工夫が必要になります。
+</pre>
+
+<h3 id="fire_mania">青行灯 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β12～]</h3>
+<pre>
+コピー先に<a href="sub_role.php#wisp">鬼火</a>を付加する特殊な鵺。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#wisp">鬼火付加能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#fire_wolf">火狼</a>の鵺バージョンです。
+コピー先の占い結果が実質「正体不明」になります。
+</pre>
+
 <h3 id="sacrifice_mania">影武者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β18～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
@@ -623,14 +650,25 @@ CO するべきかどうかは、コピーした役職次第です。
 構想自体はこちらが先で、かなり前から検討されていた能力です。
 </pre>
 
-<h3 id="wirepuller_mania">黒衣 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<h3 id="revive_mania">五徳猫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β12～]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + コピー先蘇生 / 蘇生：不可</h4>
 <pre>
-コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。
+人狼の襲撃で死亡したらコピー先を蘇生する上位鵺。
+<a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。
+</pre>
+<ol>
+<li>蘇生<a href="../spec.php#vote_night">判定</a>は人狼襲撃成立直後で、その時点でコピー先が死亡している場合に有効となる。</li>
+<li>コピー先が<a href="ability.php#revive_limit">蘇生制限対象者</a>だった場合は無効。</li>
+<li>人狼の襲撃以外で死亡した場合 (例：暗殺) は無効。</li>
+<li>身代わり君・コピー成立前・襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-東方 Project の雲居 一輪がモチーフで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/318" target="_top">新役職考案スレ(318)</a> が原型です。
-能力の性質上、自分が死ぬとコピー先が吊られやすくなってしまうので
-立ち回りに工夫が必要になります。
+<a href="human.php#presage_scanner">件</a>と<a href="human.php#sacrifice_cat">猫神</a>を合わせたような能力で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/65" target="_top">新役職考案スレ2(65)</a> が原型です。
+条件次第で<a href="ability.php#possessed">憑依能力者</a>も騙ることができます。
 </pre>
 </body></html>

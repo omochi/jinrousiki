@@ -37,9 +37,7 @@ class PageLinkBuilder{
   }
 
   //オプションを追加する
-  function AddOption($type, $value = 'on'){
-    $this->option[$type] = $type . '=' . $value;
-  }
+  function AddOption($type, $value = 'on'){ $this->option[$type] = $type . '=' . $value; }
 
   //ページ送り用のリンクタグを作成する
   function GenerateTag($page, $title = NULL, $force = false){
@@ -86,9 +84,7 @@ class PageLinkBuilder{
   }
 
   //ページリンクを出力する
-  function Output(){
-    echo $this->Generate();
-  }
+  function Output(){ echo $this->Generate(); }
 }
 
 //-- 関数 --//
@@ -97,34 +93,20 @@ function GenerateFinishedRooms($page){
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
+  $title = $SERVER_CONF->title . ' [過去ログ]';
   $room_count = FetchResult("SELECT COUNT(status) FROM room WHERE status = 'finished'");
   if($room_count < 1){
-    OutputActionResult($SERVER_CONF->title . ' [過去ログ]',
-		       'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
+    OutputActionResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }
 
-  $back_url = $RQ_ARGS->generate_index ? '../' : './';
-  $img_url  = $RQ_ARGS->generate_index ? '../img/old_log_title.jpg' : 'img/old_log_title.jpg';
-  $str = GenerateHTMLHeader($SERVER_CONF->title . ' [過去ログ]', 'old_log_list');
-  $str .= <<<EOF
-</head>
-<body id="room_list">
-<p><a href="{$back_url}">←戻る</a></p>
-<img src="{$img_url}"><br>
-<div align="center">
-<table><tr><td class="list">
-
-EOF;
-
-  $LOG_CONF =& new OldLogConfig(); //設定をロード
+  //ページリンクデータの生成
+  $LOG_CONF = new OldLogConfig(); //設定をロード
   $is_reverse = empty($RQ_ARGS->reverse) ? $LOG_CONF->reverse : ($RQ_ARGS->reverse == 'on');
-  $current_time = TZTime(); // 現在時刻の取得
-
-  //ページリンクの出力
   if($RQ_ARGS->generate_index){
     if(is_int($RQ_ARGS->max_room_no) && $RQ_ARGS->max_room_no > 0 &&
-       $room_count > $RQ_ARGS->max_room_no) $room_count = $RQ_ARGS->max_room_no;
-
+       $room_count > $RQ_ARGS->max_room_no){
+      $room_count = $RQ_ARGS->max_room_no;
+    }
     $builder = new PageLinkBuilder('index', $RQ_ARGS->page, $room_count, $LOG_CONF);
     $builder->set_reverse = $is_reverse;
     $builder->url = '<a href="index';
@@ -137,8 +119,17 @@ EOF;
       $builder->AddOption('db_no', $RQ_ARGS->db_no);
     }
   }
-  $str .= $builder->Generate();
-  $str .= <<<EOF
+
+  $back_url = $RQ_ARGS->generate_index ? '../' : './';
+  $img_url  = $RQ_ARGS->generate_index ? '../' : '';
+  $str = GenerateHTMLHeader($title, 'old_log_list') . <<<EOF
+</head>
+<body id="room_list">
+<p><a href="{$back_url}">←戻る</a></p>
+<img src="{$img_url}img/old_log_title.jpg"><br>
+<div align="center">
+<table><tr><td class="list">
+{$builder->Generate()}
 </td></tr>
 <tr><td>
 <table class="main">
@@ -146,80 +137,77 @@ EOF;
 
 EOF;
 
-  //全部表示の場合、一ページで全部表示する。それ以外は設定した数ごと表示
+  //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
+  $ROOM_DATA = new RoomDataSet();
+  $VICT_IMG  = new VictoryImage();
+  $current_time = TZTime(); // 現在時刻の取得
+
   $query = "SELECT room_no FROM room WHERE status = 'finished' ORDER BY room_no";
   if($is_reverse) $query .= ' DESC';
   if($RQ_ARGS->page != 'all'){
     $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->view * ($RQ_ARGS->page - 1), $LOG_CONF->view);
   }
-  $room_no_list = FetchArray($query);
-
-  $VICT_IMG =& new VictoryImage();
-  $ROOM_DATA =& new RoomDataSet();
-  foreach($room_no_list as $room_no){
+  foreach(FetchArray($query) as $room_no){
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
     $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
     $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
     if($RQ_ARGS->generate_index){
       $base_url = $ROOM->id . '.html';
-      $login = '';
-      $log_link_str = '(<a href="' .  $ROOM->id . 'r.html">逆</a>)';
+      $login    = '';
+      $log_link = '(<a href="' .  $ROOM->id . 'r.html">逆</a>)';
     }
     else{
       $base_url = 'old_log.php?room_no=' . $ROOM->id;
       if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0) $base_url .= '&db_no=' . $RQ_ARGS->db_no;
       $login = $current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
 	'<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
-      $log_link_str = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
+      $log_link = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
 	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
     }
-    $game_option_img = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
-    $max_user_img    = GenerateMaxUserImage($ROOM->max_user);
+    $max_user    = GenerateMaxUserImage($ROOM->max_user);
+    $game_option = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
 
     $str .= <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">{$ROOM->id}</td>
 <td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} 村</a>
-<td class="upper">{$ROOM->user_count} {$max_user_img}</td>
+<td class="upper">{$ROOM->user_count} {$max_user}</td>
 <td class="upper">{$ROOM->date}</td>
 <td class="side">{$VICT_IMG->Generate($ROOM->victory_role)}</td>
 </tr>
 <tr class="list middle">
-<td class="comment side">～ {$ROOM->comment} ～</td>
+<td class="comment side">～{$ROOM->comment}～</td>
 <td class="time comment" colspan="3">{$establish_time}</td>
 </tr>
 <tr class="lower list">
 <td class="comment">
-{$login}{$log_link_str}
+{$login}{$log_link}
 </td>
-<td colspan="3">{$game_option_img}</td>
+<td colspan="3">{$game_option}</td>
 </tr>
 
 EOF;
   }
 
-  $str .= <<<EOF
+  return $str . <<<EOF
 </table>
 </td></tr>
 </table>
 </div>
 
 EOF;
-  return $str;
 }
 
 //過去ログ一覧表示
-function OutputFinishedRooms($page){
-  echo GenerateFinishedRooms($page);
-}
+function OutputFinishedRooms($page){ echo GenerateFinishedRooms($page); }
 
 //過去ログ一覧のHTML化処理
 function GenerateLogIndex(){
   global $RQ_ARGS;
 
   $RQ_ARGS->reverse = 'off';
-  $LOG_CONF =& new OldLogConfig(); //設定をロード
+  $LOG_CONF = new OldLogConfig(); //設定をロード
   if($RQ_ARGS->max_room_no < 1) return false;
   $end_page = ceil(($RQ_ARGS->max_room_no - $RQ_ARGS->min_room_no + 1) / $LOG_CONF->view);
   for($i = 1; $i <= $end_page; $i++){
@@ -233,38 +221,30 @@ function GenerateLogIndex(){
 function GenerateOldLog(){
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
-  //変数をセット
-  $base_title = $SERVER_CONF->title . ' [過去ログ]';
-  $back_url = $RQ_ARGS->generate_index ? 'index.html' : 'old_log.php';
-  $url = "<br>\n<a href=\"${back_url}\">←戻る</a>\n";
-
-  if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){
-    OutputActionResult($base_title, 'まだこの部屋のログは閲覧できません。' . $url);
+  $base_title = $SERVER_CONF->title . ' [過去ログ]'; //
+  if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){ //閲覧判定
+    $url = $RQ_ARGS->generate_index ? 'index.html' : 'old_log.php';
+    $str = 'まだこの部屋のログは閲覧できません。<br>'."\n".'<a href="'.$url.'">←戻る</a>'."\n";
+    OutputActionResult($base_title, $str);
   }
-  if($ROOM->watch_mode) $ROOM->status = 'playing';
+  if($ROOM->watch_mode){
+    $ROOM->status    = 'playing';
+    $ROOM->day_night = 'day';
+  }
   $title = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
+  $log   = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
 
-  //戻る先を前のページにする
-  $referer_url = sprintf("%s", $_SERVER['HTTP_REFERER']);
-  $referer = strpos($referer_url, $SERVER_CONF->site_root . 'old_log.php') === 0 ?
-    $referer_url : 'old_log.php';
-
-  $str = GenerateHTMLHeader($title, 'old_log');
-  $str .= <<<EOF
+  return GenerateHTMLHeader($title, 'old_log') . <<<EOF
 </head>
 <body>
-<a href="{$referer}">←戻る</a><br>
+<a href="old_log.php">←戻る</a><br>
 {$ROOM->GenerateTitleTag()}
+{$log}
 EOF;
-  if($ROOM->watch_mode) $ROOM->day_night = 'day';
-  $str .= GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
-  return $str;
 }
 
 //指定の部屋番号のログを出力する
-function OutputOldLog(){
-  echo GenerateOldLog();
-}
+function OutputOldLog(){ echo GenerateOldLog(); }
 
 //通常のログ表示順を表現します。
 function LayoutTalkLog(){
@@ -354,7 +334,7 @@ function GenerateDateTalkLog($set_date, $set_location){
   $ROOM->day_night = $table_class;
   if($set_location != 'heaven_only') $ROOM->SetWeather();
 
-  $builder =& new DocumentBuilder();
+  $builder = new DocumentBuilder();
   $builder->BeginTalk('talk ' . $table_class);
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
   //if($ROOM->watch_mode) $builder->AddSystemTalk($ROOM->date . print_r($ROOM->event, true));

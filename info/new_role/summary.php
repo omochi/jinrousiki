@@ -89,6 +89,7 @@ Ver. 1.5.0
 <a href="#ver150b9">β9</a>
 <a href="#ver150b10">β10</a>
 <a href="#ver150b11">β11</a>
+<a href="#ver150b12">β12</a>
 </p>
 
 <p>
@@ -2064,7 +2065,7 @@ Ver. 1.5.0
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する上位鵺。</td>
+  <td class="ability">コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する特殊な鵺。</td>
   <td>Ver. 1.5.0 α5</td>
 </tr>
 <tr>
@@ -2696,6 +2697,24 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">誤爆蘇生しかしない猫又の亜種。</td>
   <td>Ver. 1.5.0 β11</td>
+</tr>
+<tr id="ver150b12">
+  <td><a href="mania.php#fire_mania">青行灯</a></td>
+  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">コピー先に<a href="sub_role.php#wisp">鬼火</a>を付加する特殊な鵺。</td>
+  <td>Ver. 1.5.0 β12</td>
+</tr>
+<tr>
+  <td><a href="mania.php#revive_mania">五徳猫</a></td>
+  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼の襲撃で死亡したらコピー先を蘇生する上位鵺。</td>
+  <td>Ver. 1.5.0 β12</td>
 </tr>
 </table>
 

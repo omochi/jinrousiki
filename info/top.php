@@ -7,23 +7,23 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 β10 アップロード (2011/08/20 (Sat) 02:49) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β11 アップロード (2011/08/25 (Thu) 23:28) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#ver150b9">デバッグ情報</a> (2011/08/14 (Sun) 00:59)</li> -->
-  <li>「狂人村」「出題者村」「吸血鬼村」「鵺村」「殉教者村」「共有者置換村」オプション実装</li>
-  <li>「隠者」「鬼子母神」「暴君」「静狼」「賢者」実装</li>
+  <li>→ <a href="info/develop/debug.php#ver150b11">デバッグ情報</a> (2011/08/30 (Tue) 16:56)</li>
+  <li>「デスノート村」オプション実装</li>
+  <li>「おしら様」「常世神」実装</li>
+  <li>サブ役職「オシラ遊び」「デスノート」実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>「デスノート村」オプション実装</li>
-  <li>おしら様：暗殺成立時にオシラ遊びを付加する特殊な暗殺者</li>
-  <li>オシラ遊び：表示された日の夜に死亡する</li>
-  <li>デスノート：夜に誰か一人を死亡させることができる</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>常世神：誤爆蘇生しかしない猫又の亜種</li>
+  <li>「妖狐追加」「子狐登場」オプション実装</li>
+  <li>青行灯：コピー先に鬼火を付加する特殊な鵺</li>
+  <li>五徳猫：人狼の襲撃で死亡したらコピー先を蘇生する上位鵺</li>
 </ul>

@@ -9,14 +9,15 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#anti_assassin">暗殺耐性</a>
 <a href="#mage">占い</a>
 <a href="#phantom">占い妨害</a>
+<a href="#wisp">鬼火</a>
 <a href="#guard_hunt">狩り</a>
 <a href="#guard">護衛</a>
 <a href="#guard_limit">護衛制限</a>
 <a href="#doom">死の宣告</a>
 <a href="#decide">処刑者決定</a>
-<a href="#vote_action">処刑投票</a>
 </p>
 <p>
+<a href="#vote_action">処刑投票</a>
 <a href="#vote_reaction">処刑得票</a>
 <a href="#sudden_death">ショック死</a>
 <a href="#anti_sudden_death">ショック死抑制</a>
@@ -26,9 +27,9 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
 <a href="#same">同一表示</a>
-<a href="#authority">投票数変化</a>
 </p>
 <p>
+<a href="#authority">投票数変化</a>
 <a href="#stargazer">投票能力</a>
 <a href="#luck">得票数変化</a>
 <a href="#poison">毒</a>
@@ -38,9 +39,9 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#possessed">憑依</a>
 <a href="#possessed_limit">憑依制限</a>
 <a href="#seal">封印</a>
-<a href="#sacrifice">身代わり</a>
 </p>
 <p>
+<a href="#sacrifice">身代わり</a>
 <a href="#soul">役職鑑定</a>
 <a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
@@ -92,6 +93,11 @@ OutputRolePageHeader('能力者逆引き');
 <h3 id="phantom_reactive">受動型</h3>
 <pre>
 <a href="human.php#phantom_doll">倫敦人形</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="fox.php#phantom_fox">幻狐</a>
+</pre>
+
+<h2 id="wisp">鬼火付加能力者</h2>
+<pre>
+<a href="wolf.php#fire_wolf">火狼</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="mania.php#fire_mania">青行灯</a>
 </pre>
 
 <h2 id="guard_hunt">狩り対象者</h2>
@@ -195,7 +201,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="revive">蘇生能力者</h2>
 <h3 id="revive_other">他者蘇生型</h3>
 <pre>
-<a href="human.php#revive_medium">風祝</a>・<a href="human.php#poison_cat_group">猫又系</a>・<a href="fox.php#revive_fox">仙狐</a>
+<a href="human.php#revive_medium">風祝</a>・<a href="human.php#poison_cat_group">猫又系</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="mania.php#revive_mania">五徳猫</a>
 </pre>
 <h3 id="revive_self">自己蘇生型</h3>
 <pre>

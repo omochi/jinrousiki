@@ -6,7 +6,7 @@ $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('裏・闇鍋モード配役テストツール', 'role_table');
 OutputRoleTestForm();
 if($_POST['command'] == 'role_test'){
-  $RQ_ARGS =& new RequestBase();
+  $RQ_ARGS = new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $stack->game_option = array('chaos_verso');
   $stack->option_role = array();

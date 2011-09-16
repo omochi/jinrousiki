@@ -17,7 +17,7 @@ function OutputVoteResult($sentence, $reset_vote = false){
 
   if($reset_vote) $ROOM->DeleteVote(); //今までの投票を全部削除
   $title  = $SERVER_CONF->title . ' [投票結果]';
-  $header = '<div align="center"><a id="#game_top"></a>';
+  $header = '<div id="game_top" align="center">';
   $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
   OutputActionResult($title, $header . $sentence . $footer, '', true);
 }
@@ -204,28 +204,43 @@ function GetRoleList($user_count){
     $role_list = $CAST_CONF->SetQuiz($user_count);
   }
   else{ //通常村
+    //探偵 (共有 or 村人 → 探偵)
+    if($ROOM->IsOption('detective')){
+      if($role_list['common'] > 0){
+	$role_list['common']--;
+	$role_list['detective_common']++;
+      }
+      elseif($role_list['human'] > 0){
+	$role_list['human']--;
+	$role_list['detective_common']++;
+      }
+    }
+
     //埋毒者 (村人2 → 埋毒者1・人狼1)
-    if($ROOM->IsOption('poison') && $user_count >= $CAST_CONF->poison){
+    if($ROOM->IsOption('poison') && $user_count >= $CAST_CONF->poison && $role_list['human'] > 1){
       $role_list['human'] -= 2;
       $role_list['poison']++;
       $role_list['wolf']++;
     }
 
     //暗殺者 (村人2 → 暗殺者1・人狼1)
-    if($ROOM->IsOption('assassin') && $user_count >= $CAST_CONF->assassin){
+    if($ROOM->IsOption('assassin') && $user_count >= $CAST_CONF->assassin &&
+       $role_list['human'] > 1){
       $role_list['human'] -= 2;
       $role_list['assassin']++;
       $role_list['wolf']++;
     }
 
     //白狼 (人狼 → 白狼)
-    if($ROOM->IsOption('boss_wolf') && $user_count >= $CAST_CONF->boss_wolf){
+    if($ROOM->IsOption('boss_wolf') && $user_count >= $CAST_CONF->boss_wolf &&
+       $role_list['wolf'] > 0){
       $role_list['wolf']--;
       $role_list['boss_wolf']++;
     }
 
     //毒狼 (人狼 → 毒狼、村人 → 薬師)
-    if($ROOM->IsOption('poison_wolf') && $user_count >= $CAST_CONF->poison_wolf){
+    if($ROOM->IsOption('poison_wolf') && $user_count >= $CAST_CONF->poison_wolf &&
+       $role_list['wolf'] > 0 && $role_list['human'] > 0){
       $role_list['wolf']--;
       $role_list['poison_wolf']++;
       $role_list['human']--;
@@ -233,26 +248,41 @@ function GetRoleList($user_count){
     }
 
     //憑狼 (人狼 → 憑狼)
-    if($ROOM->IsOption('possessed_wolf') && $user_count >= $CAST_CONF->possessed_wolf){
+    if($ROOM->IsOption('possessed_wolf') && $user_count >= $CAST_CONF->possessed_wolf &&
+       $role_list['wolf'] > 0){
       $role_list['wolf']--;
       $role_list['possessed_wolf']++;
     }
 
     //天狼 (人狼 → 天狼)
-    if($ROOM->IsOption('sirius_wolf') && $user_count >= $CAST_CONF->sirius_wolf){
+    if($ROOM->IsOption('sirius_wolf') && $user_count >= $CAST_CONF->sirius_wolf &&
+       $role_list['wolf'] > 0){
       $role_list['wolf']--;
       $role_list['sirius_wolf']++;
     }
 
+    //妖狐 (村人 → 妖狐)
+    if($ROOM->IsOption('fox') && $user_count >= $CAST_CONF->fox && $role_list['human'] > 0){
+      $role_list['human']--;
+      $role_list['fox']++;
+    }
+
+    //子狐 (妖狐 → 子狐)
+    if($ROOM->IsOption('child_fox') && $user_count >= $CAST_CONF->child_fox &&
+       $role_list['fox'] > 0){
+      $role_list['fox']--;
+      $role_list['child_fox']++;
+    }
+
     //キューピッド (村人 → キューピッド)
     if($ROOM->IsOption('cupid') && ! $ROOM->IsOption('full_cupid') &&
-       $user_count >= $CAST_CONF->cupid){
+       $user_count >= $CAST_CONF->cupid && $role_list['human'] > 0){
       $role_list['human']--;
       $role_list['cupid']++;
     }
 
     //巫女 (村人2 → 巫女1・女神1)
-    if($ROOM->IsOption('medium') && $user_count >= $CAST_CONF->medium){
+    if($ROOM->IsOption('medium') && $user_count >= $CAST_CONF->medium && $role_list['human'] > 1){
       $role_list['human'] -= 2;
       $role_list['medium']++;
       $role_list['mind_cupid']++;
@@ -260,21 +290,9 @@ function GetRoleList($user_count){
 
     //神話マニア (村人 → 神話マニア)
     if($ROOM->IsOption('mania') && ! $ROOM->IsOption('full_mania') &&
-       $user_count >= $CAST_CONF->mania){
+       $user_count >= $CAST_CONF->mania && $role_list['human'] > 0){
       $role_list['human']--;
       $role_list['mania']++;
-    }
-
-    //探偵 (共有 or 村人 → 探偵)
-    if($ROOM->IsOption('detective')){
-      if($role_list['common'] > 0){
-	$role_list['common']--;
-	$role_list['detective_common']++;
-      }
-      else{
-	$role_list['human']--;
-	$role_list['detective_common']++;
-      }
     }
   }
   $CAST_CONF->ReplaceRole($role_list); //村人置換村
@@ -559,7 +577,8 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   //兼任となる役割の設定
-  shuffle($rand_keys = array_rand($fix_role_list, $user_count)); //ランダムキーを取得
+  $rand_keys = array_keys($fix_role_list); //人数分の ID リストを取得
+  shuffle($rand_keys); //シャッフルしてランダムキーに変換
   $rand_keys_index = 0;
   $sub_role_count_list = array();
   $roled_list = array(); //配役済み番号
@@ -851,7 +870,7 @@ function AggregateVoteDay(){
     $vote_count_list[$user->uname]     = $voted_number;
     if($USERS->ByReal($user->user_no)->IsRole('philosophy_wizard')){ //賢者の魔法発動
       $user->virtual_role = $ROLES->Load('main_role', true)->GetRole();
-      $ROLES->actor =& new User($user->virtual_role);
+      $ROLES->actor = new User($user->virtual_role);
       $ROLES->actor->uname = $user->uname;
     }
     foreach($ROLES->Load('vote_ability') as $filter) $filter->SetVoteAbility($target->uname);
@@ -932,7 +951,7 @@ function AggregateVoteDay(){
 
       //特殊毒の場合はターゲットが限定される
       if($ROLES->actor->alchemy_flag || $ROOM->IsEvent('alchemy_pharmacist')){ //錬金術師
-	$ROLES->actor =& new User('alchemy_pharmacist');
+	$ROLES->actor = new User('alchemy_pharmacist');
 	$ROLES->Load('main_role', true)->FilterPoisonTarget($poison_target_list);
       }
       else{
@@ -1001,7 +1020,7 @@ function AggregateVoteDay(){
     foreach($USERS->rows as $user) $role_flag->{$user->main_role} = true; //役職出現判定
     //PrintData($role_flag, 'ROLE_FLAG');
     if($role_flag->spiritism_wizard && ! $ROOM->IsEvent('new_moon')){ //交霊術師の処理
-      $ROLES->actor =& new User('spiritism_wizard');
+      $ROLES->actor = new User('spiritism_wizard');
       $filter = $ROLES->Load('main_role', true);
       $wizard_flag->{$filter->GetRole()} = true;
       $wizard_action = 'SPIRITISM_WIZARD_RESULT';
@@ -1015,7 +1034,7 @@ function AggregateVoteDay(){
     foreach($stack as $header){
       $role = $header . 'necromancer';
       if($role_flag->$role || $wizard_flag->$role){
-	$ROLES->actor =& new User($role);
+	$ROLES->actor = new User($role);
 	$result = $ROLES->Load('main_role', true)->Necromancer($vote_target, $stolen_flag);
 	if(is_null($result)) continue;
 	$str = $result_header . $result;
@@ -1261,8 +1280,8 @@ function AggregateVoteNight($skip = false){
   }
 
   //-- 接触系レイヤー --//
-  $voted_wolf  =& new User();
-  $wolf_target =& new User();
+  $voted_wolf  = new User();
+  $wolf_target = new User();
   foreach($vote_data['WOLF_EAT'] as $uname => $target_uname){ //人狼の情報収集
     $voted_wolf  = $USERS->ByUname($uname);
     $wolf_target = $USERS->ByUname($target_uname);
@@ -1620,12 +1639,14 @@ function AggregateVoteNight($skip = false){
       //スキップ判定
       if($target->IsDead(true) || $guard_flag || $target->IsRoleGroup('escaper')) continue;
 
-      if($target->IsRoleGroup('vampire')){ //吸血鬼襲撃判定
+      //吸血鬼襲撃判定
+      if($target->IsRoleGroup('vampire') ||
+	 ($target->IsRole('soul_mania', 'dummy_mania') && $target->IsCamp('vampire'))){
 	if($target->IsRole('doom_vampire')) continue; //冥血鬼は無効
 	$id = $target->IsRole('soul_vampire') ? $user->user_no : $target->user_no; //吸血姫は反射
 	$vampire_killed_list[$id] = true;
       }
-      elseif(! $target->IsCamp('vampire')){ //吸血成立判定
+      else{
 	$vampire_target_list[$user->uname][] = $target->uname;
       }
     }
@@ -2541,7 +2562,8 @@ function AggregateVoteNight($skip = false){
   if($ROOM->date == 3){ //覚醒者・夢語部のコピー処理
     foreach($USERS->rows as $user){
       if($user->IsDummyBoy() || ! $user->IsRole('soul_mania', 'dummy_mania')) continue;
-      $target = $USERS->ById($user->GetMainRoleTarget());
+      if(is_null($id = $user->GetMainRoleTarget())) continue;
+      $target = $USERS->ById($id);
       //PrintData($target->DistinguishRoleGroup(), $user->uname);
       $ROLES->actor = $user;
       $result = $ROLES->Load('main_role', true)->ChangeRole($target);
@@ -2635,8 +2657,10 @@ function AggregateVoteNight($skip = false){
     foreach($role_flag->border_priest as $uname){
       $user  = $USERS->ByUname($uname);
       $count = 0;
-      foreach($ROOM->vote as $stack){
-	if($user->IsSame($stack['target_uname'])) $count++;
+      foreach($ROOM->vote as $vote_stack){
+	foreach($vote_stack as $stack){
+	  if($user->IsSame($stack['target_uname'])) $count++;
+	}
       }
       $ROOM->SystemMessage($user->handle_name . "\t" . $count, 'BORDER_PRIEST_RESULT');
     }

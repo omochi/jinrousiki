@@ -6,7 +6,7 @@ $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('配役テストツール', 'role_table');
 OutputRoleTestForm();
 if($_POST['command'] == 'role_test'){
-  $RQ_ARGS =& new RequestBase();
+  $RQ_ARGS = new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $stack->game_option = array('dummy_boy');
   $stack->option_role = array();
@@ -31,8 +31,12 @@ if($_POST['command'] == 'role_test'){
     $stack->option_role[] = 'not_open_cast';
     break;
   }
-  foreach(array('festival', 'gerd', 'detective') as $option){
-    if($_POST[$option] == 'on') $stack->game_option[] = ' '.$option;
+  foreach(array('festival') as $option){
+    if($_POST[$option] == 'on') $stack->game_option[] = $option;
+  }
+  foreach(array('gerd', 'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+		'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective') as $option){
+    if($_POST[$option] == 'on') $stack->option_role[] = $option;
   }
 
   foreach(array('replace_human', 'change_common', 'change_mad') as $option){
@@ -124,12 +128,16 @@ EOF;
     echo "<br>\n";
   }
 
-  echo <<<EOF
-<input type="checkbox" value="on" name="festival">お祭り
-<input type="checkbox" value="on" name="gerd">ゲルト君
-<input type="checkbox" value="on" name="detective">探偵
-<input type="checkbox" value="on" name="limit_off">リミッタオフ
-</form>
+  $stack = array(
+     'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'boss_wolf' => '白狼',
+     'poison_wolf' => '毒狼', 'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐',
+     'cupid' => 'QP', 'medium' => '巫女', 'mania' => 'マニア','detective' => '探偵',
+     'festival' => 'お祭り', 'limit_off' => 'リミッタオフ');
+  foreach($stack as $option => $name){
+    echo <<<EOF
+<input type="checkbox" value="on" name="{$option}">{$name}
 
 EOF;
+  }
+  echo "</form>\n";
 }

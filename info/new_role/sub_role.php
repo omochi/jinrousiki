@@ -1198,9 +1198,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 
 
 <h2 id="wisp_group">鬼火系 (占い妨害)</h2>
-<p>
-<a href="#wisp_rule">基本ルール</a>
-</p>
+<p><a href="#wisp_rule">基本ルール</a></p>
 <p>
 <a href="#wisp">鬼火</a>
 <a href="#black_wisp">天火</a>
@@ -1219,9 +1217,13 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <li>複数重なった場合の優先順位は<a href="../spec.php#vote_night">判定</a>の項目参照。</li>
 </ol>
 
-<h3 id="wisp">鬼火 [Ver. 1.5.0β7～]</h3>
+<h3 id="wisp">鬼火 [Ver. 1.5.0 β7～]</h3>
 <pre>
 <a href="human.php#mage">占い師</a>に占われると「鬼」判定が出る。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#fire_mania">青行灯</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1229,7 +1231,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 占い結果が実質「正体不明」になることが主眼となります。
 </pre>
 
-<h3 id="black_wisp">天火 [Ver. 1.5.0β7～]</h3>
+<h3 id="black_wisp">天火 [Ver. 1.5.0 β7～]</h3>
 <pre>
 <a href="human.php#mage">占い師</a>に占われると「人狼」判定が出る。
 </pre>
@@ -1242,7 +1244,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 呪殺される妖狐にこれがつくと複雑な状況になります。
 </pre>
 
-<h3 id="spell_wisp">狐火 [Ver. 1.5.0β7～]</h3>
+<h3 id="spell_wisp">狐火 [Ver. 1.5.0 β7～]</h3>
 <pre>
 <a href="human.php#mage">占い師</a>に占われると呪殺される。
 </pre>
@@ -1255,7 +1257,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <a href="ability.php#last_words_limit">遺言</a>を残せない役職にこれがつくと悲劇を引き起こす可能性があります。
 </pre>
 
-<h3 id="foughten_wisp">古戦場火 [Ver. 1.5.0β7～]</h3>
+<h3 id="foughten_wisp">古戦場火 [Ver. 1.5.0 β7～]</h3>
 <pre>
 <a href="human.php#mage">占い師</a>に占われると「蝙蝠」判定が出る。
 </pre>
@@ -1265,7 +1267,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 占われるまで伏せて占い師の真贋を見極める手もあります。
 </pre>
 
-<h3 id="gold_wisp">松明丸 [Ver. 1.5.0β7～]</h3>
+<h3 id="gold_wisp">松明丸 [Ver. 1.5.0 β7～]</h3>
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>に占われると「蝙蝠」判定が出る。
 </pre>
@@ -1562,7 +1564,7 @@ B：「恋人陣営の勝利」
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="duelist.php#avenger_group">復讐者系</a>の勝利条件判定に実装されたサブ役職です。
-<a href="human.php#doll_group">上海人形系</a>から見た<a href="human.php#doll_master">人形遣い</a>に相当します。
+<a href="human.php#doll_group">上海人形</a>から見た<a href="human.php#doll_master">人形遣い</a>に相当します。
 </pre>
 
 <h3 id="supported">受援者 [Ver. 1.5.0 β3～]</h3>
@@ -1599,7 +1601,7 @@ B：「恋人陣営の勝利」
 </li>
 <li><a href="../spec.php#vote_night">判定</a>は人狼襲撃の後で、判定時に死亡していた場合は無効。</li>
 <li>暗殺反射などの耐性は一切適用されない。</li>
-<li>死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">判定</a>は「暗殺された」。</li>
+<li>死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「暗殺された」。</li>
 </ol>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1633,7 +1635,7 @@ B：「恋人陣営の勝利」
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-一部の<a href="chiroptera.php#fairy_group">妖精系</a>などが夜の投票時に付加する。
+主に<a href="chiroptera.php#fairy_group">妖精</a>が夜の投票時に付加する。
 </pre>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -1802,7 +1804,7 @@ B：「恋人陣営の勝利」
 <h4>[作成者からのコメント]</h4>
 <pre>
 身代わり能力者を与えるサブ役職です。誰が誰を、という判定はしていないので
-<a href="wolf.php#silver_wolf">銀狼</a>が仲間を襲撃した場合でも発生します。
+<a href="wolf.php#silver_wolf">銀狼</a>が仲間を襲撃した場合でも発動します。
 </pre>
 
 <h3 id="lost_ability">能力喪失 [Ver. 1.4.0 α13～]</h3>

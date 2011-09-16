@@ -315,7 +315,8 @@ class User{
 
   //鵺系判定
   function IsUnknownMania(){
-    return $this->IsRole('unknown_mania', 'sacrifice_mania', 'wirepuller_mania');
+    return $this->IsRole('unknown_mania', 'sacrifice_mania', 'fire_mania', 'revive_mania',
+			 'wirepuller_mania');
   }
 
   //恋人判定
@@ -1129,8 +1130,8 @@ class UserDataSet{
 
     //覚醒者・夢語部ならコピー先を辿る
     if($target->IsRole('soul_mania', 'dummy_mania') &&
-       is_array($stack = $target->GetPartner($target->main_role))){
-      $target = $this->ByID(array_shift($stack));
+       ! is_null($id = $target->GetMainRoleTarget())){
+      $target = $this->ByID($id);
       if($target->IsRoleGroup('mania')) $target = $user; //神話マニア系なら元に戻す
     }
     $user->$type = $target->DistinguishCamp();
@@ -1299,7 +1300,7 @@ class UserDataSet{
       if($user->IsRole('mind_evoke')){
 	$mind_evoke = array_merge($mind_evoke, $user->GetPartner('mind_evoke'));
       }
-      if($user->IsReviveGroup(true)){
+      if($user->IsReviveGroup(true) || $user->IsRole('revive_mania')){
 	if($user->IsLive()) return false;
       }
       elseif($user->IsRole('revive_priest')){
@@ -1312,7 +1313,7 @@ class UserDataSet{
 	}
       }
       elseif($user->IsRole('soul_mania', 'dummy_mania')){
-	if($ROOM->date == 1 || is_array($user->GetPartner($user->main_role))) return false;
+	if($ROOM->date == 1 || ! is_null($user->GetMainRoleTarget())) return false;
       }
     }
     return count(array_intersect($evoke_scanner, $mind_evoke)) < 1;

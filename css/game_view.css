@@ -6,6 +6,7 @@
 }
 .login-link{text-align: right;} /* 更新 & 戻る  */
 .login-link span{font-weight: bold;} /* 住民登録 */
+.login form{margin-bottom: 0;}
 .login label{ /* ユーザ名 & パスワード */
   margin-right: 5px;
   font-weight: bold;

@@ -118,7 +118,7 @@ class RoleManager{
 
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',
-					'miasma_fox', 'mind_sheep');
+					'miasma_fox', 'revive_mania', 'mind_sheep');
 
   //襲撃毒死回避
   public $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');
@@ -151,7 +151,7 @@ class RoleManager{
 
   function LoadClass($name, $class){
     if(is_null($name) || in_array($name, $this->loaded->class)) return false;
-    $this->loaded->class[$name] =& new $class();
+    $this->loaded->class[$name] = new $class();
     return true;
   }
 

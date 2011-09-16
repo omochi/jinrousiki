@@ -14,6 +14,7 @@ Ver. 1.5.0
 <a href="#ver150b1">β1</a>
 <a href="#ver150b5">β5</a>
 <a href="#ver150b9">β9</a>
+<a href="#ver150b11">β11</a>
 </p>
 <p>
 <a href="#ver140">Ver. 1.4.0</a>
@@ -33,7 +34,39 @@ Ver. 1.5.0
 <a href="#ver140b22">β22</a>
 </p>
 
-<h2 id="ver150b9">Ver. 1.5.0 β</h2>
+<h2 id="ver150b11">Ver. 1.5.0 β11</h2>
+<h3>room_manager.php % 265行目付近 (2011/08/27 (Sat) 05:20)</h3>
+<h4>[before]</h4>
+<pre>
+  break;
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+  break;
+
+default:
+  continue 3;
+}
+</pre>
+
+<h3>include/game_vote_functions.php % 2638行目付近 (2011/08/30 (Tue) 16:56)</h3>
+<h4>[before]</h4>
+<pre>
+foreach($ROOM->vote as $stack){
+ if($user->IsSame($stack['target_uname'])) $count++;
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+foreach($ROOM->vote as $vote_stack){
+  foreach($vote_stack as $stack){
+    if($user->IsSame($stack['target_uname'])) $count++;
+  }
+}
+</pre>
+
+<h2 id="ver150b9">Ver. 1.5.0 β9</h2>
 <h3>room_manager.php % 250行目付近 (2011/08/11 (Thu) 13:19)</h3>
 <h4>[before]</h4>
 <pre>

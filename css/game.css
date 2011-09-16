@@ -22,7 +22,8 @@ body{ /* AA 用 */
 }
 .time-table td{
   padding-left: 5px;
-  border: 1px dotted #CCCCCC;
+  border: 0;
+  border-collapse: collapse;
   vertical-align: middle;
   text-align: left;
 }
@@ -35,6 +36,7 @@ body{ /* AA 用 */
   vertical-align: middle;
 }
 .real-time span{font-weight: bold;}
+.real-time form{margin-bottom: 0;}
 .real-time input{ /* JavaScript の表示窓 */
   border: 0px solid;
   vertical-align: middle;
@@ -320,7 +322,9 @@ body{ /* AA 用 */
   font-weight: bold;
 }
 .caution span{font-size: 80%;}
-.objection{ /* 「異議あり」ボタン */
+.objection{vertical-align: middle;} /* 「異議あり」ボタン */
+.objection form{
+  margin-bottom: 0;
   vertical-align: middle;
   text-align: right;
 }

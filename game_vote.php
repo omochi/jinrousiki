@@ -8,11 +8,11 @@ $INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得
 $DB_CONF->Connect(); //DB 接続
 $SESSION->Certify(); //セッション認証
 
-$ROOM =& new Room($RQ_ARGS); //村情報をロード
+$ROOM = new Room($RQ_ARGS); //村情報をロード
 if($ROOM->IsFinished()) OutputVoteError('ゲーム終了', 'ゲームは終了しました');
 $ROOM->system_time = TZTime(); //現在時刻を取得
 
-$USERS =& new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //ロック処理
