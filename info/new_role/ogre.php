@@ -227,7 +227,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#wise_wolf">賢狼</a>・<a href="#ogre">鬼</a>・<a href="#orange_ogre">前鬼</a>・<a href="#indigo_ogre">後鬼</a>・<a href="#yaksa">夜叉</a>・<a href="#hariti_yaksa">鬼子母神</a>
+<a href="#ogre">鬼</a>・<a href="#orange_ogre">前鬼</a>・<a href="#indigo_ogre">後鬼</a>・<a href="#yaksa">夜叉</a>・<a href="#hariti_yaksa">鬼子母神</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

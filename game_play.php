@@ -250,7 +250,7 @@ function Write($say, $location, $spend_time, $update = false){
 function CheckSilence(){
   global $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
-  if(! $ROOM->IsPlaying() || ! LockTable('game')) return false; //スキップ判定 + テーブルロック
+  if(! $ROOM->IsPlaying() || LockTable('game')) return false; //スキップ判定 + テーブルロック
 
   //最終発言時刻からの差分を取得
   $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');

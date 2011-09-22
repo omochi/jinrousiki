@@ -55,6 +55,7 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#real_time"><?php echo $GAME_OPT_MESS->real_time ?></a>
 <a href="#wait_morning"><?php echo $GAME_OPT_MESS->wait_morning ?></a>
 <a href="#open_vote"><?php echo $GAME_OPT_MESS->open_vote ?></a>
+<a href="#seal_message"><?php echo $GAME_OPT_MESS->seal_message ?></a>
 <a href="#open_day"><?php echo $GAME_OPT_MESS->open_day ?></a>
 </p>
 
@@ -81,6 +82,21 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li>昼の処刑投票数が公開されます</li>
 <li><?php echo $GAME_OPT_CAPT->open_vote ?></li>
+</ul>
+
+<h3 id="seal_message"><?php echo $GAME_OPT_MESS->seal_message ?> [Ver. 1.5.0 β12～]</h3>
+<ul>
+<li><?php echo $GAME_OPT_CAPT->seal_message ?></li>
+<li>対象となるのは以下です
+  <ul>
+    <li><a href="new_role/human.php#voodoo_killer">陰陽師</a>の解呪成功</li>
+    <li><a href="new_role/human.php#guard_hunt">狩り</a>成功</li>
+    <li><a href="new_role/human.php#anti_voodoo">厄神</a>の厄払い成功</li>
+    <li><a href="new_role/fox.php">妖狐</a>への人狼襲撃</li>
+    <li><a href="new_role/ability.php#guard">護衛能力者</a>の護衛成功</li>
+    <li><a href="new_role/ability.php#revive_other">蘇生能力者</a>の蘇生結果</li>
+  </ul>
+</li>
 </ul>
 
 <h3 id="open_day"><?php echo $GAME_OPT_MESS->open_day ?> [Ver. 1.4.0 β12～]</h3>

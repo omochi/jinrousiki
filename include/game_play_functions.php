@@ -30,7 +30,9 @@ function OutputAbility(){
   }
   elseif($SELF->IsRole('voodoo_killer')){ //陰陽師
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 1) OutputSelfAbilityResult('VOODOO_KILLER_SUCCESS'); //解呪結果
+    if($ROOM->date > 1 && ! $ROOM->IsOption('seal_message')){
+      OutputSelfAbilityResult('VOODOO_KILLER_SUCCESS'); //解呪結果
+    }
     //投票
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'voodoo_killer_do', 'VOODOO_KILLER_DO');
   }
@@ -51,55 +53,16 @@ function OutputAbility(){
     }
   }
   elseif($SELF->IsRoleGroup('priest')){ //司祭系・恋司祭
-    switch($SELF->main_role){ //役職名表示
-    case 'crisis_priest': //預言者
-    case 'widow_priest':  //未亡人
-      $ROLE_IMG->Output('human');
-      break;
-
-    case 'dummy_priest':    //夢司祭
-    case 'priest_jealousy': //恋司祭
-      $ROLE_IMG->Output('priest');
-      break;
-
-    default:
-      $ROLE_IMG->Output($SELF->main_role);
-      break;
-    }
-
-    $result = strtoupper($SELF->main_role) . '_RESULT';
-    switch($SELF->main_role){ //神託結果
-    case 'priest':          //司祭
-    case 'dowser_priest':   //探知師
-    case 'dummy_priest':    //夢司祭
-    case 'priest_jealousy': //恋司祭
-      if($ROOM->date > 3 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult($result);
-      break;
-
-    case 'bishop_priest': //司教
-      if($ROOM->date > 2 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult($result);
-      break;
-
-    case 'high_priest': //大司祭
-      if($ROOM->date > 4 && ($ROOM->date % 2) == 1) OutputSelfAbilityResult('BISHOP_PRIEST_RESULT');
-      if($ROOM->date > 5 && ($ROOM->date % 2) == 0) OutputSelfAbilityResult('PRIEST_RESULT');
-      break;
-
-    case 'weather_priest': //祈祷師
-    case 'crisis_priest':  //預言者
-      if($ROOM->date > 1) OutputSelfAbilityResult($result);
-      break;
-
-    case 'border_priest': //境界師
-      if($ROOM->date > 2) OutputSelfAbilityResult($result);
-      break;
-    }
+    $ROLES->actor = $SELF;
+    $filter = $ROLES->Load('main_role', true);
+    $ROLE_IMG->Output($filter->display_role);
+    $filter->OutputResult();
   }
   elseif($SELF->IsRoleGroup('guard')){ //狩人系
     $ROLE_IMG->Output($SELF->IsRole('dummy_guard') ? 'guard' : $SELF->main_role);
     if($ROOM->date > 2){
       OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
-      OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
+      if(! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
     }
     //投票
     if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('guard-do', 'guard_do', 'GUARD_DO');
@@ -113,7 +76,9 @@ function OutputAbility(){
   }
   elseif($SELF->IsRole('anti_voodoo')){ //厄神
     $ROLE_IMG->Output($SELF->main_role);
-    if($ROOM->date > 2) OutputSelfAbilityResult('ANTI_VOODOO_SUCCESS'); //厄払い結果
+    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
+      OutputSelfAbilityResult('ANTI_VOODOO_SUCCESS'); //厄払い結果
+    }
     if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
       OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO');
     }
@@ -138,7 +103,9 @@ function OutputAbility(){
   elseif($SELF->IsRoleGroup('cat')){ //猫又系
     $ROLE_IMG->Output($SELF->IsRole('eclipse_cat') ? 'revive_cat' : $SELF->main_role);
     if(! $ROOM->IsOpenCast()){
-      if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
+      if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
+	OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
+      }
       if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
 	OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
       }
@@ -388,7 +355,9 @@ function OutputAbility(){
       OutputPartner($stack['child_fox'], 'child_fox_partner'); //子狐系
       unset($stack);
     }
-    if($ROOM->date > 1 && $SELF->IsResistFox()) OutputSelfAbilityResult('FOX_EAT'); //人狼襲撃
+    if($ROOM->date > 1 && ! $ROOM->IsOption('seal_message') && $SELF->IsResistFox()){
+      OutputSelfAbilityResult('FOX_EAT'); //人狼襲撃
+    }
 
     if($SELF->IsRole('jammer_fox')){ //月狐
       if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO'); //投票

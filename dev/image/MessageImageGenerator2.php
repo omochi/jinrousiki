@@ -20,7 +20,7 @@ class Delimiter{
     $g RGB色指定の緑成分値
     $b RGB色指定の青成分値
   */
-  function Delimiter($c, $r, $g, $b) {
+  function __construct($c, $r, $g, $b){
     $this->c = $c;
     $this->r = $r;
     $this->g = $g;
@@ -39,7 +39,6 @@ class MessageImageGenerator{
   public $def_bgc;  // デフォルト背景色のRGB値
   public $is_trans; // 背景色を透明にするかどうか
   public $delimiters; // デリミタ情報、色を格納する配列
-
   /*
     コンストラクタ
     $font 使用するTrueTypeフォントのパス
@@ -47,8 +46,8 @@ class MessageImageGenerator{
     $x_margin マージン幅
     $y_margin マージン高さ
   */
-  function MessageImageGenerator($font = "C:\\WINDOWS\\Fonts\\msgothic.ttc", $size = 12,
-				 $x_margin = 5, $y_margin = 2, $is_trans = false) {
+  function __construct($font = "C:\\WINDOWS\\Fonts\\msgothic.ttc", $size = 12,
+		       $x_margin = 5, $y_margin = 2, $is_trans = false){
     $this->font = $font;
     $this->size = $size;
     $this->x_margin = $x_margin;
@@ -60,7 +59,7 @@ class MessageImageGenerator{
 
     //フォント幅・高さの測定。もっといい定跡があればそちらに変更する予定。
     $r_a   = imagettfbbox($this->size, 0, $this->font, "A");
-    $r_a2  = imagettfbbox($this->size, 0, $this->font, "AA");
+    $r_a2  = imagettfbbox($this->size, 0, $this->font, "A");
     $r_a2v = imagettfbbox($this->size, 0, $this->font, "A\nA");
     $this->width  = $r_a2[2]  - $r_a[2];
     $this->height = $r_a2v[1] - $r_a[1];
@@ -130,6 +129,14 @@ class MessageImageGenerator{
     return $regex_str . ']/';
   }
   /*
+    文字データの整形処理
+    必要なら文字コード変換や正規表現の処理を実行する
+  */
+  function GetMessage($str, $regex){
+    $message = $regex == '' ? $str : preg_replace($regex, '', $str);
+    return mb_convert_encoding($message, 'UTF-8', 'auto');
+  }
+  /*
     役職説明、能力実行結果などのメッセージ用画像ファイルを生成する関数
     $msg 作成したいメッセージ文。改行有効。||で囲んだ部分を指定した色で書く
     返り値 画像データ
@@ -141,9 +148,7 @@ class MessageImageGenerator{
     //$plain_msg_len = strlen($plain_msg);
     //echo "plain_r: $plain_msg_len ";
     $regex_str = $this->GenerateDelimiterRegEx();
-    $plain_msg = $regex_str == '' ? mb_convert_encoding($msg, 'UTF-8', 'auto')
-                                  : mb_convert_encoding(preg_replace($regex_str, '', $msg),
-							'UTF-8', 'auto');
+    $plain_msg = $this->GetMessage($msg, $regex_str);
     //print $plain_msg;
     $plain_r = imagettfbbox($this->size, 0, $this->font, $plain_msg);
     //print_r($plain_r);
@@ -165,15 +170,11 @@ class MessageImageGenerator{
     $y_disp = $this->y_margin;
     foreach($msg_lines as $line){
       // この行でどれだけ消費するか計算
-      //print $line;
-      $line_len = strlen($line);
-      $line_plain = $regex_str == '' ? mb_convert_encoding($line, 'UTF-8', 'auto')
-                                     : mb_convert_encoding(preg_replace($regex_str, '', $line),
-							   'UTF-8', 'auto');
+      //echo $line.'<br>';
+      $line_len = mb_strlen($line);
+      $line_plain = $this->GetMessage($line, $regex_str);
       $r = imagettfbbox($this->size, 0, $this->font, $line_plain);
-      //echo "line_r: $line_len ";
-      //print_r($r);
-      //echo "<br>";
+      //echo "line_r: $line_len "; print_r($r); echo "<br>";
 
       // 強調部分の色を変えつつ表示
       $array_msg = $regex_str == '' ? array(array($line, 0))
@@ -182,12 +183,10 @@ class MessageImageGenerator{
       //print_r ($array_msg);
       $str_total = '';
       for($i = 0; $i < count($array_msg); $i++){
-	$str_len = strlen($array_msg[$i][0]);
-	//echo "str_r: $str_len -> ";
-	//echo $array_msg[$i][0];
-	//echo "<br>";
+	$str_len = mb_strlen($array_msg[$i][0]);
+	//echo 'str_r: ' . $str_len . ' -> "' . $array_msg[$i][0] . '"<br>';
 	$str = mb_convert_encoding($array_msg[$i][0], 'UTF-8', 'auto');
-	//print "$str <br>";
+	//echo $str.'<br>';
 	$str_total .= $str;
 	$r_str       = imagettfbbox($this->size, 0, $this->font, $str);
 	$r_str_total = imagettfbbox($this->size, 0, $this->font, $str_total);
@@ -196,8 +195,7 @@ class MessageImageGenerator{
 
 	// 文字色の決定
 	if($array_msg[$i][1] > 0){
-	  //echo $str_len;
-	  //echo "<br>";
+	  //echo $str_len . "<br>";
 	  $c_d = $this->GetDelimiter($line[$array_msg[$i][1] - 1]);
 	  if($d_stack[0] == $c_d->c){
 	    //既に同じデリミタがスタックにある→現在の色指定を解除
@@ -213,7 +211,7 @@ class MessageImageGenerator{
 	}
 	
 	//文字列の描画
-	imagettftext($img, $this->size, 0, $this->x_margin + $r_str_total[2] - $r_str[2],
+	imagettftext($img, $this->size, 0, $this->x_margin + $r_str_total[2] - $r_str[2] -2,
 		     0 - $r[5] + $y_disp, $color, $this->font, $str);
 	//Boldにするときは下の行も実行
 	/*

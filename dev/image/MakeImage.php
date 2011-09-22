@@ -2,10 +2,10 @@
 require_once('MessageImageGenerator2.php');
 
 class MessageImageBuilder{
-  public $font = 'azuki.ttf';
+  public $font = 'azukiL.ttf';
+  #public $font = 'azukiP.ttf';
   #public $font = 'yutaCo2_ttc_027.ttc';
   #public $font = 'aquafont.ttf';
-  #public $font = 'azukiP.ttf';
 
   public $font_path = "C:\\WINDOWS\\Fonts\\";
   #public $font_path = '/Library/Fonts';
@@ -82,6 +82,10 @@ class MessageImageBuilder{
   function Output($name){
     header('Content-Type: image/gif');
     imagegif($this->Generate($name));
+  }
+
+  function Test($name){
+    $this->Generate($name);
   }
 
   //まとめて画像ファイル生成
@@ -309,7 +313,7 @@ class RoleMessageList{
     'type' => 'poison_cat');
 
   public $missfire_cat = array(
-    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#常世神#です。あなたの#蘇生#は必ず誤爆してしまいます。",
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#常世神#です。あなたの#蘇生#は必ず誤爆してしまいます。根の国から招かれ葉を食らう。あなたは甘い夢を売り付けるだろう。",
     'type' => 'poison_cat');
   public $pharmacist = array(
     'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#薬師#です。_処刑_投票した人を#解毒#するか、#毒#能力を知ることができます。|村人|への二次被害を未然に防ぐのです！",
@@ -799,7 +803,7 @@ class RoleMessageList{
     'type' => 'cupid');
 
   public $moon_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|かぐや姫|です。初日の夜に自分と誰か一人を|恋人|同士にして、さらに|難題|を与えることができます。\n　月に戻ることを忘れる程の素敵な恋を見つけられることを祈っています。|恋人|と|難題|を乗り越えるのです！",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|かぐや姫|です。初日の夜に自分と誰か一人を|恋人|同士にして、さらに|難題|を与えることができます。\n　月に戻ることを忘れるほどの素敵な恋を見つけられることを祈っています。|恋人|と|難題|を乗り越えるのです！",
     'type' => 'cupid');
 
   public $mind_cupid = array(
@@ -807,7 +811,7 @@ class RoleMessageList{
     'type' => 'cupid', 'delimiter' => array('#' => 'mind'));
 
   public $sweet_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|弁財天|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。また、_処刑_投票先を^恋耳鳴^にさせることができます。\n　あなたの矢は種族を超えた愛となり、あなたの票は闇夜に聞こえる|恋人|の囁きを届ける。恋を奏でる詩人となり、村を愛で満たすのです！",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|弁財天|です。初日の夜に誰か二人を#共鳴者#つきの|恋人|にすることができます。また、_処刑_投票先を^恋耳鳴^にさせることができます。\n　あなたの矢は種族を超えた愛となり、あなたの投票は闇夜に聞こえる|恋人|の囁きを届ける。恋を奏でる詩人となり、村を愛で満たすのです！",
     'type' => 'mind_cupid', 'delimiter' => array('_' => 'vote', '^' => 'no_last_words'));
 
   public $minstrel_cupid = array(
@@ -835,7 +839,7 @@ class RoleMessageList{
     'type' => 'angel');
 
   public $exchange_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|魂移使|です。初日の夜に誰か二人を|恋人|にすることができます。さらに、#共感者#にして二人の精神を入れ替えてしまいます。\n　|恋人|の強い絆は、魂をも愛の奔流に飲み込みます。愛する人をゆっくりと見つめる機会を与えることで、真実の愛を教えるのです！",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|魂移使|です。初日の夜に誰か二人を|恋人|にすることができます。さらに、#共感者#にして二人の精神を入れ替えてしまいます。\n　|恋人|の強い絆は魂をも愛の奔流に飲み込みます。愛する人をゆっくりと見つめる機会を与えることで、真実の愛に気付かせるのです！",
     'type' => 'angel');
 
   public $ark_angel = array(
@@ -843,7 +847,7 @@ class RoleMessageList{
     'type' => 'angel');
 
   public $sacrifice_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|守護天使|です。あなたの|恋人|が^人狼^に襲撃されても自分の命と引き換えに守ることができます。\n　愛する人を想う幸せな夜を壊す獣の手から二人を:庇護:し、命に代えても護るべき愛の存在を示すのです！",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|守護天使|です。あなたの|恋人|が^人狼^に襲撃されても自分の命と引き換えに守ることができます。\n　愛する人を想う幸せな夜を壊す獣の手から二人を:庇護:し、命に代えても護るべき愛の存在を示すのです!",
     'type' => 'angel', 'delimiter' => array('^' => 'wolf', ':' => 'guard'));
 
   public $scarlet_angel = array(
@@ -852,7 +856,7 @@ class RoleMessageList{
     'delimiter' => array('^' => 'human', ':' => 'wolf', '=' => 'fox', '*' => 'doll'));
 
   public $cursed_angel = array(
-    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|堕天使|、_呪い_を持っています。初日の夜に誰か二人を|恋人|にして、その二人が別陣営ならさらに#共感者#にすることができます。\n　また、|恋人|に^処刑^投票されると:ショック死:してしまいます。堕天したその身と矢を以って、繋がれし|恋人|達の勝利の礎となるのです！",
+    'message' => "[役割] [|恋人|陣営] [|天使|系]\n　あなたは|堕天使|、_呪い_を持っています。初日の夜に誰か二人を|恋人|にして、その二人が別陣営ならさらに#共感者#にすることができます。\n　また、|恋人|に^処刑^投票されると:ショック死:してしまいます。堕天したその身と矢を以って、繋がれし|恋人|たちの勝利の礎となるのです！",
     'type' => 'angel', 'delimiter' => array('_' => 'wolf', '^' => 'vote', ':' => 'chicken'));
 
   public $quiz = array(
@@ -1151,13 +1155,21 @@ class RoleMessageList{
     'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|鵺|です。初日の夜に指定した人と同じ陣営になり、二日目夜からお互いに#会話#できます。\n　――|鵺|は二つの側面を持っている。人側の側面と獣側の側面だ。正面から見ては？――正体不明。",
     'type' => 'mania', 'delimiter' => array('#' => 'mind'));
 
+  public $wirepuller_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|黒衣|です。初日の夜に指定した人と同じ陣営になり、生きている間、その人の#投票#能力を強化できます。\n　己の命運と共に託すのは、ともすれば暴走しかねない強大な力。己の命在る限り、その力は護るべき仲間の為に。",
+    'type' => 'mania', 'delimiter' => array('#' => 'vote'));
+
+  public $fire_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|青行灯|です。初日の夜に指定した人と同じ陣営になり、その人に#鬼火#を与えます。",
+    'type' => 'mania', 'delimiter' => array('#' => 'wisp'));
+
   public $sacrifice_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|影武者|です。初日の夜に指定した人と同じ陣営になり、その人が#人狼#に襲撃されたら身代わりになります。\n　仕えるべき主を護ることがあなたの使命。#狼#の牙が主に届くことはありません…あなたが生きている限り、決して。",
     'type' => 'mania', 'delimiter' => array('#' => 'wolf'));
 
-  public $wirepuller_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|黒衣|です。初日の夜に指定した人と同じ陣営になり、生きている間、その人の#投票#能力を強化できます。\n　己の命運と共に託すのは、ともすれば暴走しかねない強大な力。己の命在る限り、その力は護るべき仲間の為に。",
-    'type' => 'mania', 'delimiter' => array('#' => 'vote'));
+  public $revive_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|五徳猫|です。初日の夜に指定した人と同じ陣営になり、あなたが#人狼#に襲撃で死亡したら、その人を_蘇生_できます。",
+    'type' => 'mania', 'delimiter' => array('#' => 'wolf', '_' => 'revive'));
 
   public $chicken = array(
     'message' => "　あなたは|小心者|です。#処刑#投票時に一票でも貰うと|ショック死|してしまいます。",
@@ -1868,8 +1880,10 @@ class RoleMessageList{
   public $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
   public $result_dummy_mania = array('message' => "さんは|夢語部|でした", 'type' => 'result_mania');
   public $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
-  public $result_sacrifice_mania = array('message' => "さんは|影武者|でした", 'type' => 'result_mania');
+  public $result_fire_mania = array('message' => "さんは|青行灯|でした", 'type' => 'result_mania');
   public $result_wirepuller_mania = array('message' => "さんは|黒衣|でした", 'type' => 'result_mania');
+  public $result_sacrifice_mania = array('message' => "さんは|影武者|でした", 'type' => 'result_mania');
+  public $result_revive_mania = array('message' => "さんは|五徳猫|でした", 'type' => 'result_mania');
 
   public $result_failed = array('message' => "さんの占いに失敗しました");
   public $result_mage_failed = array('message' => "さんの鑑定に失敗しました");
@@ -2047,8 +2061,10 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
+//$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('select_assassin');
-$builder->Output('missfire_cat');
+$builder->Output('select_assassin');
 #$builder->Output('hariti_yaksa');
+#$builder->Output('fire_mania');
+#$builder->Output('revive_mania');

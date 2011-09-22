@@ -114,7 +114,8 @@ function CreateRoom(){
     ($ROOM_CONF->gray_random  && $_POST['special_role']  == 'gray_random');
   $game_option_list = array();
   $option_role_list = array();
-  $check_game_option_list = array('wish_role', 'open_vote', 'open_day', 'not_open_cast');
+  $check_game_option_list = array('wish_role', 'open_vote', 'seal_message', 'open_day',
+				  'not_open_cast');
   $check_option_role_list = array();
   if($quiz){ //クイズ村
     $gm_password = $_POST['gm_password']; //GM ログインパスワードをチェック
@@ -272,7 +273,7 @@ function CreateRoom(){
   //OutputHTMLFooter(true);
 
   //テーブルをロック
-  if(! LockTable()){
+  if(LockTable()){
     OutputRoomAction('busy');
     return false;
   }
@@ -444,7 +445,8 @@ function OutputCreateRoomPage(){
 EOF;
 
   OutputRoomOption(array('room_name', 'room_comment', 'max_user'), '', false);
-  OutputRoomOption(array('wish_role', 'real_time', 'wait_morning', 'open_vote', 'open_day'));
+  OutputRoomOption(array('wish_role', 'real_time', 'wait_morning', 'open_vote', 'seal_message',
+			 'open_day'));
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
 

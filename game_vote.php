@@ -16,7 +16,7 @@ $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //ロック処理
-if(! LockTable('game')) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');
+if(LockTable('game')) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');
 
 //-- メインルーチン --//
 if($RQ_ARGS->vote){ //投票処理

@@ -2,7 +2,8 @@
 /*
   変更履歴 from Ver. 1.5.0β11
   + RoomConfig
-    - 追加：$fox, $default_fox, $child_fox, $default_child_fox
+    - 追加：$seal_message, $default_seal_message, $fox, $default_fox,
+            $child_fox, $default_child_fox
 */
 
 //-- 村メンテナンス・作成設定 --//
@@ -59,6 +60,9 @@ class RoomConfig{
 
   public $open_vote = true; //投票した票数を公表する
   public $default_open_vote = false;
+
+  public $seal_message = true; //天啓封印
+  public $default_seal_message = false;
 
   public $open_day = true; //オープニングあり
   public $default_open_day = false;

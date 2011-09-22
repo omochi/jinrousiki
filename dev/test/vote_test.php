@@ -21,6 +21,7 @@ $RQ_ARGS->TestItems->test_room = array(
 );
 $RQ_ARGS->TestItems->test_room['game_option'] .= ' not_open_cast';
 $RQ_ARGS->TestItems->test_room['game_option'] .= ' open_vote death_note';
+#$RQ_ARGS->TestItems->test_room['game_option'] .= ' seal_message';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' quiz';
 $RQ_ARGS->TestItems->is_virtual_room = true;
 $RQ_ARGS->vote_times = 1;
@@ -30,7 +31,7 @@ for($id = 1; $id <= 25; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User()
 $RQ_ARGS->TestItems->test_users[1]->uname = 'dummy_boy';
 $RQ_ARGS->TestItems->test_users[1]->handle_name = '身代わり君';
 $RQ_ARGS->TestItems->test_users[1]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[1]->role = 'unconscious';
+$RQ_ARGS->TestItems->test_users[1]->role = 'revive_priest';
 $RQ_ARGS->TestItems->test_users[1]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[1]->icon_filename = '../img/dummy_boy_user_icon.jpg';
 $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
@@ -68,13 +69,13 @@ $RQ_ARGS->TestItems->test_users[6]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[7]->role = 'hunter_guard';
+$RQ_ARGS->TestItems->test_users[7]->role = 'high_priest';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[8]->role = 'anti_voodoo';
+$RQ_ARGS->TestItems->test_users[8]->role = 'attempt_necromancer';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
@@ -86,7 +87,7 @@ $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[10]->role = 'revive_brownie death_note[5]';
+$RQ_ARGS->TestItems->test_users[10]->role = 'weather_priest death_note[5]';
 $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
@@ -247,13 +248,13 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'black'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'gold'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sea'),
-  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'purple'),
+  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'light_blue'),
   array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
-  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'peach'),
-  #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'cloud'),
-  array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'white'),
+  #array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'peach'),
+  #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'peach'),
+  #array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'white'),
   array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'frame'),
   #array('uname' => 'green', 'situation' => 'POISON_CAT_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'gust'),
@@ -293,7 +294,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'cloud', 'situation' => 'ESCAPE_DO', 'target_uname' => 'sea'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'gold'),
   #array('uname' => 'cloud', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'light_blue'),
-  array('uname' => 'cloud', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'purple'),
+  #array('uname' => 'cloud', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'purple'),
   #array('uname' => 'cloud', 'situation' => 'VAMPIRE_DO', 'target_uname' => 'rose'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'),
   #array('uname' => 'moon', 'situation' => 'WIZARD_DO', 'target_uname' => 'white'),
@@ -322,7 +323,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 3;
+$ROOM->date = 7;
 #$ROOM->day_night = 'beforegame';
 #$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';
@@ -500,7 +501,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 18, 22, 23) as $id){
+  foreach(array(5, 18, 22, 7, 8) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

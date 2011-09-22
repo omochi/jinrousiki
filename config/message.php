@@ -3,9 +3,9 @@
   変更履歴 from Ver. 1.5.0β11
   + Message
   + GameOptionMessage
-    - 追加：$fox, $child_fox
+    - 追加：$seal_message, $fox, $child_fox
   + GameOptionCaptionMessage
-    - 追加：$fox, $child_fox
+    - 追加：$seal_message, $fox, $child_fox
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -293,6 +293,7 @@ class GameOptionMessage{
   public $real_time             = 'リアルタイム制';
   public $wait_morning          = '早朝待機制';
   public $open_vote             = '投票した票数を公表する';
+  public $seal_message          = '天啓封印';
   public $open_day              = 'オープニングあり';
   public $dummy_boy             = '初日の夜は身代わり君';
   public $gm_login              = '身代わり君は GM';
@@ -385,6 +386,7 @@ class GameOptionCaptionMessage{
   public $real_time             = '制限時間が実時間で消費されます';
   public $wait_morning          = '夜が明けてから一定時間の間発言ができません';
   public $open_vote             = '「権力者」などのサブ役職が分かりやすくなります';
+  public $seal_message          = '一部の個人通知メッセージが表示されなくなります';
   public $open_day              = 'ゲームが1日目「昼」からスタートします';
   public $no_dummy_boy          = '身代わり君なし';
   public $dummy_boy             = '身代わり君あり (初日の夜、身代わり君が狼に食べられます)';

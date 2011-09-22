@@ -52,7 +52,7 @@ function EntryUser(){
     OutputActionResult($title, '無効なアイコン番号です' . $back_url);
   }
 
-  if(! LockTable()){ //DB をロック
+  if(LockTable()){ //DB をロック
     OutputActionResult('村人登録 [サーバエラー]',
 		       'サーバが混雑しています。<br>'."\n".'再度登録してください' . $back_url);
   }
