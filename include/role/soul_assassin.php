@@ -4,7 +4,9 @@
   ○仕様
   ・暗殺：役職判定 + 毒死(毒能力者)
 */
-class Role_soul_assassin extends Role{
+RoleManager::LoadFile('assassin');
+class Role_soul_assassin extends Role_assassin{
+  public $result = 'ASSASSIN_RESULT';
   function __construct(){ parent::__construct(); }
 
   function Assassin($user, &$list, &$reverse){

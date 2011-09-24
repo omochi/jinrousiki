@@ -8,16 +8,37 @@
 class Role_poison_cat extends Role{
   public $revive_rate   = 25;
   public $missfire_rate =  0;
-
   function __construct(){ parent::__construct(); }
 
+  //役職情報表示
+  function OutputAbility(){
+    parent::OutputAbility();
+    $this->OutputReviveAbility();
+  }
+
+  //蘇生情報表示
+  function OutputReviveAbility(){
+    global $ROOM;
+
+    if($ROOM->IsOpenCast()) return;
+    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
+      OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
+    }
+    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+    }
+  }
+
+  //天候情報取得
   protected function GetEvent(){
     global $ROOM;
     return $ROOM->IsEvent('full_revive') ? 100 : ($ROOM->IsEvent('no_revive') ? 0 : NULL);
   }
 
+  //基礎蘇生率取得
   function GetRate(){ return $this->revive_rate; }
 
+  //蘇生率取得
   function GetReviveRate($flag){
     $event = $this->GetEvent();
     $rate  = is_null($event) ? $this->GetRate() : $event;
@@ -25,6 +46,7 @@ class Role_poison_cat extends Role{
     return $rate > 100 ? 100 : $rate;
   }
 
+  //誤爆率取得
   function GetMissfireRate($revive_rate){
     global $ROOM;
 
@@ -34,5 +56,6 @@ class Role_poison_cat extends Role{
     return $rate > $revive_rate ? $revive_rate : $rate;
   }
 
+  //蘇生後処理
   function AfterRevive(){}
 }

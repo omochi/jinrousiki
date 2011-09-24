@@ -8,7 +8,6 @@
 RoleManager::LoadFile('yaksa');
 class Role_succubus_yaksa extends Role_yaksa{
   public $reduce_rate = 2;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){ return ! $user->IsMale(); }

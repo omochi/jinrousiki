@@ -2,13 +2,11 @@
 /*
   ◆天使 (angel)
   ○仕様
-  ・追加役職：なし
   ・共感者判定：男女
 */
-class Role_angel extends Role{
+RoleManager::LoadFile('cupid');
+class Role_angel extends Role_cupid{
   function __construct(){ parent::__construct(); }
-
-  function GetRole($user, $flag){ return $this->GetActor()->GetID('lovers'); }
 
   function IsSympathy($lovers_a, $lovers_b){ return $lovers_a->sex != $lovers_b->sex; }
 }

@@ -7,7 +7,6 @@
 RoleManager::LoadFile('yaksa');
 class Role_hariti_yaksa extends Role_yaksa{
   public $reduce_rate = 2;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){

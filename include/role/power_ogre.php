@@ -7,7 +7,6 @@
 RoleManager::LoadFile('ogre');
 class Role_power_ogre extends Role_ogre{
   public $resist_rate = 40;
-
   function __construct(){ parent::__construct(); }
 
   protected function GetReduceRate(){ return 7 / 10; }

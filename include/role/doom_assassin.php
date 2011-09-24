@@ -4,7 +4,8 @@
   ○仕様
   ・暗殺：死の宣告 (2日後)
 */
-class Role_doom_assassin extends Role{
+RoleManager::LoadFile('assassin');
+class Role_doom_assassin extends Role_assassin{
   function __construct(){ parent::__construct(); }
 
   function Assassin($user, &$list, &$reverse){

@@ -5,7 +5,8 @@
   ・投票数：+1
   ・得票数：+100 (5%)
 */
-class Role_critical_common extends Role{
+RoleManager::LoadFile('common');
+class Role_critical_common extends Role_common{
   function __construct(){ parent::__construct(); }
 
   function FilterVoteDo(&$vote_number){ $vote_number++; }

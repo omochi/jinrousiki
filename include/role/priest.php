@@ -6,46 +6,16 @@
   ・結果表示：偶数日 (4日目以降)
 */
 class Role_priest extends Role{
-  public $display_role = NULL;
-  public $result_date  = 'even';
-  public $priest_type  = 'human_side';
+  public $result_date = 'even';
+  public $priest_type = 'human_side';
 
-  function __construct(){
-    parent::__construct();
-    if(is_null($this->display_role)) $this->display_role = $this->role;
-  }
+  function __construct(){ parent::__construct(); }
 
-  //司祭能力
-  function Priest($role_flag, $data){
+  //役職情報表示
+  function OutputAbility(){
     global $ROOM;
 
-    switch($this->result_date){
-    case 'even':
-      $flag = $ROOM->date > 2 && ($ROOM->date % 2) == 1;
-      break;
-
-    case 'odd':
-      $flag = $ROOM->date > 3 && ($ROOM->date % 2) == 0;
-      break;
-
-    case 'both':
-      $role = ($ROOM->date % 2) == 1 ? 'priest' : 'bishop_priest';
-      $flag = $ROOM->date > 3 && ! in_array($role, $data->list);
-      break;
-
-    default:
-      $flag = false;
-      break;
-    }
-    if(! $flag) return;
-    $result = $data->count[isset($type) ? $type : $this->priest_type];
-    $ROOM->SystemMessage($result, $this->GetEvent($role));
-  }
-
-  //結果表示
-  function OutputResult(){
-    global $ROOM;
-
+    parent::OutputAbility();
     switch($this->result_date){
     case 'even':
       $flag = $ROOM->date > 3 && ($ROOM->date % 2) == 0;
@@ -73,6 +43,33 @@ class Role_priest extends Role{
       break;
     }
     if($flag) OutputSelfAbilityResult($this->GetEvent($role));
+  }
+
+  //司祭能力
+  function Priest($role_flag, $data){
+    global $ROOM;
+
+    switch($this->result_date){
+    case 'even':
+      $flag = $ROOM->date > 2 && ($ROOM->date % 2) == 1;
+      break;
+
+    case 'odd':
+      $flag = $ROOM->date > 3 && ($ROOM->date % 2) == 0;
+      break;
+
+    case 'both':
+      $role = ($ROOM->date % 2) == 1 ? 'priest' : 'bishop_priest';
+      $flag = $ROOM->date > 3 && ! in_array($role, $data->list);
+      break;
+
+    default:
+      $flag = false;
+      break;
+    }
+    if(! $flag) return;
+    $result = $data->count[isset($type) ? $type : $this->priest_type];
+    $ROOM->SystemMessage($result, $this->GetEvent($role));
   }
 
   //イベント名取得

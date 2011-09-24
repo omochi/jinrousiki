@@ -4,7 +4,8 @@
   ○仕様
   ・霊能：死を免れた人
 */
-class Role_attempt_necromancer extends Role{
+RoleManager::LoadFile('necromancer');
+class Role_attempt_necromancer extends Role_necromancer{
   function __construct(){ parent::__construct(); }
 
   function Necromancer($user, $data){

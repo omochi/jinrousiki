@@ -5,7 +5,8 @@
   ・毒：人狼系以外
   ・襲撃毒死回避：人狼系
 */
-class Role_poison_wolf extends Role{
+RoleManager::LoadFile('wolf');
+class Role_poison_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

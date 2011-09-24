@@ -4,7 +4,8 @@
   ○仕様
   ・追加役職：受信者 (自分→相手)
 */
-class Role_self_cupid extends Role{
+RoleManager::LoadFile('cupid');
+class Role_self_cupid extends Role_cupid{
   function __construct(){ parent::__construct(); }
 
   function GetRole($user, $flag){

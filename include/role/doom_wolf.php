@@ -1,11 +1,12 @@
 <?php
 /*
-  ◆冥狼
+  ◆冥狼 (doom_wolf)
   ○仕様
   ・妖狐襲撃：死の宣告
   ・襲撃：死の宣告
 */
-class Role_doom_wolf extends Role{
+RoleManager::LoadFile('wolf');
+class Role_doom_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
   function FoxEatAction($user){ $user->AddDoom(2); }

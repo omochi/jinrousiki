@@ -9,7 +9,6 @@ RoleManager::LoadFile('poison_cat');
 class Role_sacrifice_cat extends Role_poison_cat{
   public $revive_rate   = 100;
   public $missfire_rate =  -1;
-
   function __construct(){ parent::__construct(); }
 
   function AfterRevive(){

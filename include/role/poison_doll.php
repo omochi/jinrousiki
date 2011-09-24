@@ -4,7 +4,8 @@
   ○仕様
   ・毒：上海人形系以外 (人形遣いは毒対象)
 */
-class Role_poison_doll extends Role{
+RoleManager::LoadFile('doll');
+class Role_poison_doll extends Role_doll{
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

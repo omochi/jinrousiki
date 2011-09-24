@@ -4,7 +4,8 @@
   ○仕様
   ・暗殺：反魂
 */
-class Role_reverse_assassin extends Role{
+RoleManager::LoadFile('assassin');
+class Role_reverse_assassin extends Role_assassin{
   function __construct(){ parent::__construct(); }
 
   function Assassin($user, &$list, &$reverse){ $reverse[$this->GetActor()->uname] = $user->uname; }

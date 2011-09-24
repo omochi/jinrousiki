@@ -2,10 +2,17 @@
 /*
   ◆執筆者 (scripter)
   ○仕様
-  ・5日目以降、投票数が +1 される
+  ・投票数：+1 (5日目以降)
 */
 class Role_scripter extends Role{
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){
+    global $ROOM;
+
+    parent::OutputAbility();
+    if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL); //能力発現
+  }
 
   function FilterVoteDo(&$vote_number){
     global $ROOM;

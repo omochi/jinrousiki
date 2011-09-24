@@ -4,7 +4,8 @@
   ○仕様
   ・追加役職：両方に共鳴者 + 他人撃ちなら自分に受信者
 */
-class Role_mind_cupid extends Role{
+RoleManager::LoadFile('cupid');
+class Role_mind_cupid extends Role_cupid{
   function __construct(){ parent::__construct(); }
 
   function GetRole($user, $flag){

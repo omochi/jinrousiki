@@ -355,7 +355,7 @@ function GenerateDateTalkLog($set_date, $set_location){
       $builder->BeginTalk('talk ' . $talk->scene);
       break;
     }
-    OutputTalk($talk, &$builder); //会話出力
+    OutputTalk($talk, $builder); //会話出力
   }
 
   if(! $RQ_ARGS->reverse_log) OutputTimeStamp($builder);

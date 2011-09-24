@@ -8,7 +8,6 @@ RoleManager::LoadFile('ogre');
 class Role_west_ogre extends Role_ogre{
   public $resist_rate = 40;
   public $reduce_rate = 2;
-
   function __construct(){ parent::__construct(); }
 
   function Win($victory){

@@ -2,9 +2,12 @@
 /*
   ◆蝕暗殺者 (eclipse_assassin)
   ○仕様
+  ・役職表示：暗殺者
   ・暗殺：確率反射
 */
-class Role_eclipse_assassin extends Role{
+RoleManager::LoadFile('assassin');
+class Role_eclipse_assassin extends Role_assassin{
+  public $display_role = 'assassin';
   function __construct(){ parent::__construct(); }
 
   function Assassin($user, &$list, &$reverse){

@@ -8,7 +8,6 @@
 RoleManager::LoadFile('ogre');
 class Role_yaksa extends Role_ogre{
   public $resist_rate = 20;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){ return ! $user->IsWolf(); }

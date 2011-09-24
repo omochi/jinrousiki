@@ -9,7 +9,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>TOPIC</h1>
 <h2>Ver. 1.5.0 β11 アップロード (2011/08/25 (Thu) 23:28) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b11">デバッグ情報</a> (2011/08/30 (Tue) 16:56)</li>
+  <li>→ <a href="info/develop/debug.php#ver150b11">デバッグ情報</a> (2011/09/23 (Fri) 01:13)</li>
   <li>「デスノート村」オプション実装</li>
   <li>「おしら様」「常世神」実装</li>
   <li>サブ役職「オシラ遊び」「デスノート」実装</li>
@@ -25,5 +25,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>「護衛成功表示封印」オプション実装</li>
+  <li>「天啓封印」オプション実装</li>
 </ul>

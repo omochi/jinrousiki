@@ -2,13 +2,17 @@
 /*
   ◆大天使 (ark_angel)
   ○仕様
-  ・追加役職：なし
+  ・特殊表示：共感者
   ・共感者判定：無効
 */
-class Role_ark_angel extends Role{
+RoleManager::LoadFile('angel');
+class Role_ark_angel extends Role_angel{
   function __construct(){ parent::__construct(); }
 
-  function GetRole($user, $flag){ return $this->GetActor()->GetID('lovers'); }
+  function OutputCupidAbility(){
+    global $ROOM;
+    if($ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
+  }
 
   function IsSympathy($lovers_a, $lovers_b){ return false; }
 }

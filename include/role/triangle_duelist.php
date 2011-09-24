@@ -2,10 +2,8 @@
 /*
   ◆舞首 (triangle_duelist)
   ○仕様
-  ・追加役職：なし
 */
-class Role_triangle_duelist extends Role{
+RoleManager::LoadFile('valkyrja_duelist');
+class Role_triangle_duelist extends Role_valkyrja_duelist{
   function __construct(){ parent::__construct(); }
-
-  function GetRole($user){ return $this->GetActor()->GetID('rival'); }
 }

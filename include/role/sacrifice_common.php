@@ -4,7 +4,8 @@
   ○仕様
   ・身代わり対象者：村人・蝙蝠
 */
-class Role_sacrifice_common extends Role{
+RoleManager::LoadFile('common');
+class Role_sacrifice_common extends Role_common{
   function __construct(){ parent::__construct(); }
 
   function GetSacrificeList(){

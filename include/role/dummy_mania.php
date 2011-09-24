@@ -2,10 +2,13 @@
 /*
   ◆夢語部
   ○仕様
+  ・役職表示：覚醒者
   ・コピー：特殊
   ・変化：基本・劣化種
 */
-class Role_dummy_mania extends Role{
+RoleManager::LoadFile('soul_mania');
+class Role_dummy_mania extends Role_soul_mania{
+  public $display_role = 'soul_mania';
   public $copied = 'copied_teller';
   public $copy_list = array(
       'human'        => 'suspect',
@@ -42,18 +45,4 @@ class Role_dummy_mania extends Role{
       'patron'       => 'critical_patron');
 
   function __construct(){ parent::__construct(); }
-
-  function Copy($user, $vote_data){
-    $this->GetActor()->AddMainRole($user->user_no);
-    return $user->IsRoleGroup('mania') ? 'human' : $user->DistinguishRoleGroup();
-  }
-
-  function ChangeRole($user){
-    $role = $user->IsRoleGroup('mania', 'copied') ? 'human' :
-      $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];
-
-    $this->GetActor()->ReplaceRole($this->role, $role);
-    $this->GetActor()->AddRole($this->copied);
-    return $role;
-  }
 }

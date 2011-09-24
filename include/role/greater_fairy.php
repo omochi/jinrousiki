@@ -4,7 +4,8 @@
   ○仕様
   ・悪戯：文頭に妖精・春妖精・夏妖精・秋妖精・冬妖精相当のいずれかを追加する
 */
-class Role_greater_fairy extends Role{
+RoleManager::LoadFile('fairy');
+class Role_greater_fairy extends Role_fairy{
   function __construct(){ parent::__construct(); }
 
   function FilterSay(&$str){

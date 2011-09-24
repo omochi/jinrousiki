@@ -8,7 +8,6 @@
 RoleManager::LoadFile('yaksa');
 class Role_cursed_yaksa extends Role_yaksa{
   public $reduce_rate = 3;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){

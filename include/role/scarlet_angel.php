@@ -2,13 +2,26 @@
 /*
   ◆紅天使 (scarlet_angel)
   ○仕様
-  ・追加役職：なし
+  ・特殊表示：無意識枠
   ・共感者判定：常時有効
 */
-class Role_scarlet_angel extends Role{
+RoleManager::LoadFile('angel');
+class Role_scarlet_angel extends Role_angel{
   function __construct(){ parent::__construct(); }
 
-  function GetRole($user, $flag){ return $this->GetActor()->GetID('lovers'); }
+  function OutputCupidAbility(){
+    global $ROOM, $USERS;
+
+    if(! $ROOM->IsNight()) return;
+    $stack = array();
+    foreach($USERS->rows as $user){
+      if($this->IsSameUser($user->uname) || $user->IsWolf()) continue;
+      if($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
+	$stack[] = $user->handle_name;
+      }
+    }
+    OutputPartner($stack, 'unconscious_list');
+  }
 
   function IsSympathy($lovers_a, $lovers_b){ return true; }
 }

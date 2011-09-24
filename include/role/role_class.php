@@ -216,6 +216,14 @@ class Role{
 
   function __construct(){
     $this->role = array_pop(explode('Role_', get_class($this)));
+    if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+  }
+
+  function LoadMix($role){
+    $filter = 'Role_' . $role;
+    $this->filter = new $filter();
+    $this->filter->role = $this->role;
+    if(isset($this->display_role)) $this->filter->display_role = $this->display_role;
   }
 
   //-- 判定用関数 --//
@@ -264,6 +272,13 @@ class Role{
     }
     return false;
   }
+
+  function OutputImage(){
+    global $ROLE_IMG;
+    $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
+  }
+
+  function OutputAbility(){ $this->OutputImage(); }
 }
 
 //-- 発言フィルタリング用拡張クラス --//

@@ -5,8 +5,10 @@
   ・コピー：特殊
   ・変化：上位種
 */
-class Role_soul_mania extends Role{
+RoleManager::LoadFile('mania');
+class Role_soul_mania extends Role_mania{
   public $copied = 'copied_soul';
+  public $delay_copy = true;
   public $copy_list = array(
       'human'        => 'executor',
       'mage'         => 'soul_mage',

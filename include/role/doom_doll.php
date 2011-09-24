@@ -4,7 +4,8 @@
   ○仕様
   ・処刑：死の宣告 (人形以外)
 */
-class Role_doom_doll extends Role{
+RoleManager::LoadFile('doll');
+class Role_doom_doll extends Role_doll{
   function __construct(){ parent::__construct(); }
 
   function VoteKillCounter($list){

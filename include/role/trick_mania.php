@@ -4,7 +4,8 @@
   ○仕様
   ・コピー：交換コピー
 */
-class Role_trick_mania extends Role{
+RoleManager::LoadFile('mania');
+class Role_trick_mania extends Role_mania{
   public $copied = 'copied_trick';
 
   function __construct(){ parent::__construct(); }
@@ -21,11 +22,5 @@ class Role_trick_mania extends Role{
     if(! $user->IsDummyBoy()) $user->ReplaceRole($role, $user->DistinguishRoleGroup());
 
     return $this->ChangeRole($role);
-  }
-
-  private function ChangeRole($role){
-    $this->GetActor()->ReplaceRole($this->role, $role);
-    $this->GetActor()->AddRole($this->copied);
-    return $role;
   }
 }

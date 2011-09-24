@@ -1,11 +1,12 @@
 <?php
 /*
-  ◆火狼
+  ◆火狼 (fire_wolf)
   ○仕様
   ・妖狐襲撃：天火 (一回限定)
   ・襲撃：天火 (一回限定)
 */
-class Role_fire_wolf extends Role{
+RoleManager::LoadFile('wolf');
+class Role_fire_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
   function FoxEatAction($user){

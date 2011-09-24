@@ -4,7 +4,9 @@
   ○仕様
   ・処刑投票：投票先が回数限定の能力を持っている人外なら封印する
 */
+RoleManager::LoadFile('medium');
 class Role_seal_medium extends RoleVoteAbility{
+  public $mix_in = 'medium';
   public $data_type = 'action';
   public $init_stack = true;
   public $seal_list = array(
@@ -14,6 +16,8 @@ class Role_seal_medium extends RoleVoteAbility{
     'revive_avenger');
 
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function VoteAction(){
     global $USERS;

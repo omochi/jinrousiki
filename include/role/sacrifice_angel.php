@@ -6,7 +6,8 @@
   ・共感者判定：常時有効
   ・人狼襲撃耐性：常時無効
 */
-class Role_sacrifice_angel extends Role{
+RoleManager::LoadFile('angel');
+class Role_sacrifice_angel extends Role_angel{
   function __construct(){ parent::__construct(); }
 
   function GetRole($user, $flag){

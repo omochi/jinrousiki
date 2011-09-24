@@ -4,7 +4,8 @@
   ○仕様
   ・追加役職：なし
 */
-class Role_unknown_mania extends Role{
+RoleManager::LoadFile('mania');
+class Role_unknown_mania extends Role_mania{
   function __construct(){ parent::__construct(); }
 
   function AddRole($role){ return $role; }

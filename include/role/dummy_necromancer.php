@@ -4,7 +4,9 @@
   ○仕様
   ・霊能：村人・人狼反転
 */
-class Role_dummy_necromancer extends Role{
+RoleManager::LoadFile('necromancer');
+class Role_dummy_necromancer extends Role_necromancer{
+  public $display_role = 'necromancer';
   function __construct(){ parent::__construct(); }
 
   function Necromancer($user, $flag){

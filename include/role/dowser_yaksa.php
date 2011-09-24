@@ -9,7 +9,6 @@ RoleManager::LoadFile('yaksa');
 class Role_dowser_yaksa extends Role_yaksa{
   public $resist_rate = 40;
   public $reduce_rate = 2;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){ return count($user->role_list) == 1; }

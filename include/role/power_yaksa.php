@@ -5,9 +5,9 @@
   ・勝利条件：自分自身の生存 + 生存陣営数が出現陣営の半分以下
   ・人攫い無効：村人陣営
 */
-class Role_power_yaksa extends Role{
+RoleManager::LoadFile('yaksa');
+class Role_power_yaksa extends Role_yaksa{
   public $resist_rate = 30;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){ return $user->IsCamp('human', true); }

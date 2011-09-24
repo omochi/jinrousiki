@@ -4,8 +4,12 @@
   ○仕様
   ・霊能：処刑者の投票先と同陣営の人数
 */
+RoleManager::LoadFile('necromancer');
 class Role_emissary_necromancer extends RoleVoteAbility{
+  public $mix_in = 'necromancer';
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function Necromancer($user, $flag){
     global $USERS;

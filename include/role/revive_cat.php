@@ -9,7 +9,6 @@ RoleManager::LoadFile('poison_cat');
 class Role_revive_cat extends Role_poison_cat{
   public $revive_rate   = 80;
   public $missfire_rate =  0;
-
   function __construct(){ parent::__construct(); }
 
   function GetRate(){ return ceil(parent::GetRate() / pow(4, $this->GetTimes())); }

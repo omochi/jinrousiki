@@ -4,27 +4,12 @@
   ○仕様
   ・解毒/ショック死抑制
 */
-class Role_cure_pharmacist extends RoleVoteAbility{
-  public $data_type = 'action';
-  public $init_stack = true;
-
+RoleManager::LoadFile('pharmacist');
+class Role_cure_pharmacist extends Role_pharmacist{
   function __construct(){ parent::__construct(); }
 
-  function Detox(&$list){
-    foreach($this->GetStack() as $uname => $target_uname){
-      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
-	$this->GetActor()->detox_flag = true;
-	$list[$uname] = 'cured';
-      }
-    }
-  }
-
-  function Cure(&$list){
-    foreach($this->GetStack() as $uname => $target_uname){
-      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
-	$this->GetActor()->cured_flag = true;
-	$list[$uname] = 'cured';
-      }
-    }
+  function SetDetoxFlag(&$list, $uname){
+    $this->GetActor()->detox_flag = true;
+    $list[$uname] = 'cured';
   }
 }

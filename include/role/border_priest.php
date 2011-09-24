@@ -7,7 +7,7 @@
 */
 RoleManager::LoadFile('priest');
 class Role_border_priest extends Role_priest{
-  public $result_date  = 'third';
+  public $result_date = 'third';
 
   function __construct(){ parent::__construct(); }
 

@@ -4,7 +4,8 @@
   ○仕様
   ・霊能：前世 (順番依存有り)
 */
-class Role_psycho_necromancer extends Role{
+RoleManager::LoadFile('necromancer');
+class Role_psycho_necromancer extends Role_necromancer{
   function __construct(){ parent::__construct(); }
 
   function Necromancer($user, $flag){

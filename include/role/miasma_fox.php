@@ -5,7 +5,9 @@
   ・処刑：熱病 (妖狐陣営以外)
   ・人狼襲撃：熱病
 */
-class Role_miasma_fox extends Role{
+RoleManager::LoadFile('child_fox');
+class Role_miasma_fox extends Role_child_fox{
+  public $result = NULL;
   function __construct(){ parent::__construct(); }
 
   function VoteKillCounter($list){

@@ -6,7 +6,8 @@
   ・護衛処理：目隠し
   ・狩り：なし
 */
-class Role_blind_guard extends Role{
+RoleManager::LoadFile('guard');
+class Role_blind_guard extends Role_guard{
   function __construct(){ parent::__construct(); }
 
   function GuardFailed(){ return NULL; }

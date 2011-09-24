@@ -4,11 +4,14 @@
   ○仕様
   ・処刑投票：投票先が鬼陣営ならショック死させる
 */
+RoleManager::LoadFile('medium');
 class Role_bacchus_medium extends RoleVoteAbility{
+  public $mix_in = 'medium';
   public $data_type = 'action';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function VoteAction(){
     global $USERS;

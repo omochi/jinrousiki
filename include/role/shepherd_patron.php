@@ -4,10 +4,8 @@
   ○仕様
   ・追加役職：羊
 */
-class Role_shepherd_patron extends Role{
+RoleManager::LoadFile('patron');
+class Role_shepherd_patron extends Role_patron{
+  public $patron_role = 'mind_sheep';
   function __construct(){ parent::__construct(); }
-
-  function GetRole($user){
-    return $this->GetActor()->GetID('supported') . ' ' . $this->GetActor()->GetID('mind_sheep');
-  }
 }

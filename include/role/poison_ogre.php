@@ -10,7 +10,6 @@
 RoleManager::LoadFile('ogre');
 class Role_poison_ogre extends Role_ogre{
   public $reduce_rate = 3;
-
   function __construct(){ parent::__construct(); }
 
   function Ignored($user){ return $user->IsRole('quiz'); }

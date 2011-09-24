@@ -4,7 +4,8 @@
   ○仕様
   ・追加役職：両方に難題 + 自分に受信者
 */
-class Role_moon_cupid extends Role{
+RoleManager::LoadFile('cupid');
+class Role_moon_cupid extends Role_cupid{
   function __construct(){ parent::__construct(); }
 
   function GetRole($user, $flag){

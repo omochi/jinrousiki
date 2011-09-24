@@ -5,9 +5,9 @@
   ・追加役職：受託者
   ・人狼襲撃：受託者に襲撃者を通知
 */
-class Role_presage_scanner extends Role{
+RoleManager::LoadFile('mind_scanner');
+class Role_presage_scanner extends Role_mind_scanner{
   public $mind_role = 'mind_presage';
-
   function __construct(){ parent::__construct(); }
 
   function WolfEatCounter($target){

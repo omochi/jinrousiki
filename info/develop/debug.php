@@ -66,6 +66,17 @@ foreach($ROOM->vote as $vote_stack){
 }
 </pre>
 
+<h3>include/role/power_yaksa.php % 8行目付近 (2011/09/23 (Fri) 01:13)</h3>
+<h4>[before]</h4>
+<pre>
+class Role_power_yaksa extends Role{
+</pre>
+<h4>[after]</h4>
+<pre>
+RoleManager::LoadFile('yaksa');
+class Role_power_yaksa extends Role_yaksa{
+</pre>
+
 <h2 id="ver150b9">Ver. 1.5.0 β9</h2>
 <h3>room_manager.php % 250行目付近 (2011/08/11 (Thu) 13:19)</h3>
 <h4>[before]</h4>

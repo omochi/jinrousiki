@@ -10,8 +10,18 @@
 RoleManager::LoadFile('ogre');
 class Role_sacrifice_ogre extends Role_ogre{
   public $reduce_rate = 2;
-
   function __construct(){ parent::__construct(); }
+
+  function OutputOgreAbility(){
+    global $ROOM, $USERS;
+
+    if($ROOM->date < 1) return;
+    $stack = array();
+    foreach($USERS->rows as $user){
+      if($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;
+    }
+    OutputPartner($stack, 'psycho_infected_list');
+  }
 
   function GetResistRate(){ return 0; }
 

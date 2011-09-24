@@ -7,7 +7,6 @@
 class Role_follow_mad extends RoleVoteAbility{
   public $data_type = 'action';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
 
   function Followed($user_list){

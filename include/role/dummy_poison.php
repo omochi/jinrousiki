@@ -5,6 +5,7 @@
   ・毒：獏・妖精系
 */
 class Role_dummy_poison extends Role{
+  public $display_role = 'poison';
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

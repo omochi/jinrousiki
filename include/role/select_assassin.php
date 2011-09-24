@@ -4,7 +4,8 @@
   ○仕様
   ・暗殺：オシラ遊び付加
 */
-class Role_select_assassin extends Role{
+RoleManager::LoadFile('assassin');
+class Role_select_assassin extends Role_assassin{
   function __construct(){ parent::__construct(); }
 
   function Assassin($user, &$list, &$reverse){

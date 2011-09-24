@@ -4,7 +4,8 @@
   ○仕様
   ・悪戯：文頭に「夏ですよー」を追加する
 */
-class Role_summer_fairy extends Role{
+RoleManager::LoadFile('fairy');
+class Role_summer_fairy extends Role_fairy{
   function __construct(){ parent::__construct(); }
 
   function FilterSay(&$str){

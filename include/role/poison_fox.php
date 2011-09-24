@@ -4,7 +4,8 @@
   ○仕様
   ・毒：妖狐陣営以外
 */
-class Role_poison_fox extends Role{
+RoleManager::LoadFile('fox');
+class Role_poison_fox extends Role_fox{
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

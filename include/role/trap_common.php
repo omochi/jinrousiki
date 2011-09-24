@@ -4,11 +4,14 @@
   ○仕様
   ・非村人陣営の人全てから投票されたらまとめて死亡させる
 */
+RoleManager::LoadFile('common');
 class Role_trap_common extends RoleVoteAbility{
+  public $mix_in = 'common';
   public $data_type = 'array';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function VotedReaction(){
     global $ROLES, $USERS;

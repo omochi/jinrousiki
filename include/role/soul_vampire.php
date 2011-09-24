@@ -4,7 +4,9 @@
   ○仕様
   ・吸血：通常 + 役職取得
 */
-class Role_soul_vampire extends Role{
+RoleManager::LoadFile('vampire');
+class Role_soul_vampire extends Role_vampire{
+  public $result = 'VAMPIRE_RESULT';
   function __construct(){ parent::__construct(); }
 
   function Infect($user){
@@ -12,6 +14,6 @@ class Role_soul_vampire extends Role{
 
     $user->AddRole($this->GetActor()->GetID('infected'));
     $str = $this->GetActor()->GetHandleName($user->uname, $user->main_role);
-    $ROOM->SystemMessage($str, 'VAMPIRE_RESULT');
+    $ROOM->SystemMessage($str, $this->result);
   }
 }

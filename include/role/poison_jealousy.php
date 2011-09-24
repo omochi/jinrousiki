@@ -6,6 +6,7 @@
   ・襲撃毒死回避：恋人以外
 */
 class Role_poison_jealousy extends Role{
+  public $display_role = 'poison';
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

@@ -2,9 +2,11 @@
 /*
   ◆聖女 (saint)
   ○仕様
-  ・処刑投票が拮抗したら候補者の内訳によって処刑者が変化する
+  ・役職表示：村人
+  ・決定能力：候補者の内訳によって変化する
 */
 class Role_saint extends RoleVoteAbility{
+  public $display_role = 'human';
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){

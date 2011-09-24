@@ -7,6 +7,13 @@
 class Role_incubate_poison extends Role{
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){
+    global $ROOM;
+
+    parent::OutputAbility();
+    if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL); //能力発現
+  }
+
   function FilterPoisonTarget(&$list){
     global $USERS;
 

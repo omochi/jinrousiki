@@ -2,12 +2,11 @@
 /*
   ◆扇動者 (agitate_mad)
   ○仕様
-  ・処刑投票が拮抗したら自分の投票先を処刑し、残りをまとめてショック死させる
+  ・決定能力：自分の投票先を処刑し、残りをまとめてショック死させる
 */
 class Role_agitate_mad extends RoleVoteAbility{
   public $data_type = 'action';
   public $decide_type = 'same';
-
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(&$uname){

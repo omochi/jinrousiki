@@ -7,5 +7,12 @@
 class Role_necromancer extends Role{
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){
+    global $ROOM;
+
+    parent::OutputAbility();
+    if($ROOM->date > 2) OutputSelfAbilityResult(strtoupper($this->role) . '_RESULT');
+  }
+
   function Necromancer($user, $flag){ return $flag ? 'stolen' : $user->DistinguishNecromancer(); }
 }

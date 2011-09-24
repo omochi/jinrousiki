@@ -5,12 +5,10 @@
   ・追加役職：庇護者
   ・人狼襲撃耐性：常時無効
 */
-class Role_sacrifice_patron extends Role{
+RoleManager::LoadFile('patron');
+class Role_sacrifice_patron extends Role_patron{
+  public $patron_role = 'protected';
   function __construct(){ parent::__construct(); }
-
-  function GetRole($user){
-    return $this->GetActor()->GetID('supported') . ' ' . $this->GetActor()->GetID('protected');
-  }
 
   function WolfEatResist(){ return true; }
 }

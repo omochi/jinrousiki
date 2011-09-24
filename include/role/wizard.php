@@ -13,6 +13,16 @@ class Role_wizard extends Role{
 
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){
+    global $ROOM;
+
+    parent::OutputAbility();
+    if($ROOM->date > 2) foreach($this->result_list as $result) OutputSelfAbilityResult($result);
+    if(isset($this->action) && $ROOM->date > 1 && $ROOM->IsNight()){
+      OutputVoteMessage('wizard-do', 'wizard_do', $this->action);
+    }
+  }
+
   function GetWizardList(){ return $this->wizard_list; }
 
   function GetRole(){
@@ -24,9 +34,5 @@ class Role_wizard extends Role{
     $role = $ROOM->IsEvent('full_wizard') ? array_shift($stack) :
       ($ROOM->IsEvent('debilitate_wizard') ? array_pop($stack) : GetRandom($stack));
     return is_null($this->action) ? $role : array($role, $wizard_list[$role]);
-  }
-
-  function OutputResult(){
-    foreach($this->result_list as $result) OutputSelfAbilityResult($result);
   }
 }

@@ -2,13 +2,11 @@
 /*
   ◆山わろ (poison_avenger)
   ○仕様
-  ・追加役職：なし
   ・毒：人狼系 + 妖狐陣営 + 自分の仇敵
 */
-class Role_poison_avenger extends Role{
+RoleManager::LoadFile('avenger');
+class Role_poison_avenger extends Role_avenger{
   function __construct(){ parent::__construct(); }
-
-  function GetRole($user){ return $this->GetActor()->GetID('enemy'); }
 
   function FilterPoisonTarget(&$list){
     global $USERS;
