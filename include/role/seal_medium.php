@@ -14,10 +14,7 @@ class Role_seal_medium extends RoleVoteAbility{
     'trap_mad', 'possessed_mad',
     'phantom_fox', 'spell_fox', 'emerald_fox', 'revive_fox', 'possessed_fox', 'trap_fox',
     'revive_avenger');
-
   function __construct(){ parent::__construct(); }
-
-  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function VoteAction(){
     global $USERS;

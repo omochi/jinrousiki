@@ -10,10 +10,7 @@ class Role_sweet_cupid extends RoleVoteAbility{
   public $mix_in = 'cupid';
   public $data_type = 'action';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
-
-  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function GetRole($user, $flag){
     return $this->GetActor()->GetID('lovers') . ' ' . $this->GetActor()->GetID('mind_friend');

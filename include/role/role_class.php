@@ -104,17 +104,8 @@ class RoleManager{
   public $sacrifice_list = array('sacrifice_common', 'doll_master', 'sacrifice_vampire',
 				 'boss_chiroptera', 'sacrifice_ogre');
 
-  //妖狐襲撃能力
-  public $fox_eat_action_list = array('blue_wolf', 'fire_wolf', 'doom_wolf');
-
-  //妖狐襲撃カウンター
-  public $fox_eat_counter_list = array('blue_fox', 'spell_fox', 'immolate_fox');
-
   //人狼襲撃得票カウンター
   public $wolf_eat_reaction_list = array('therian_mad', 'immolate_mad');
-
-  //人狼襲撃能力
-  public $wolf_eat_action_list = array('doom_wolf', 'fire_wolf', 'sex_wolf', 'hungry_wolf');
 
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',
@@ -217,6 +208,18 @@ class Role{
   function __construct(){
     $this->role = array_pop(explode('Role_', get_class($this)));
     if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+  }
+
+  function __call($name, $args){
+    if(! is_object($this->filter)){
+      PrintData('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
+      return false;
+    }
+    if(! method_exists($this->filter, $name)){
+      PrintData('Error: Method not found: ' . get_class($this) . ": {$name}()");
+      return false;
+    }
+    return call_user_func_array(array($this->filter, $name), $args);
   }
 
   function LoadMix($role){

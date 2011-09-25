@@ -15,6 +15,7 @@ Ver. 1.5.0
 <a href="#ver150b5">β5</a>
 <a href="#ver150b9">β9</a>
 <a href="#ver150b11">β11</a>
+<a href="#ver150b12">β12</a>
 </p>
 <p>
 <a href="#ver140">Ver. 1.4.0</a>
@@ -33,6 +34,27 @@ Ver. 1.5.0
 <a href="#ver140b21">β21</a>
 <a href="#ver140b22">β22</a>
 </p>
+
+<h2 id="ver150b12">Ver. 1.5.0 β12</h2>
+<h3>include/role/role_class.php % 217行目付近 (2011/09/26 (Mon) 04:07)</h3>
+<h4>[before]</h4>
+<pre>
+  function __construct(){
+    $this->role = array_pop(explode('Role_', get_class($this)));
+    if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+  }
+</pre>
+<h4>[after]</h4>
+<pre>
+  function __construct(){
+    $this->role = array_pop(explode('Role_', get_class($this)));
+    if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+  }
+
+  function __call($name, $args){
+    return call_user_func_array(array($this->filter, $name), $args);
+  }
+</pre>
 
 <h2 id="ver150b11">Ver. 1.5.0 β11</h2>
 <h3>room_manager.php % 265行目付近 (2011/08/27 (Sat) 05:20)</h3>

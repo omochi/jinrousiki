@@ -8,5 +8,7 @@ RoleManager::LoadFile('fox');
 class Role_blue_fox extends Role_fox{
   function __construct(){ parent::__construct(); }
 
-  function FoxEatCounter($user){ if(! $user->IsLonely()) $user->AddRole('mind_lonely'); }
+  function FoxEatCounter($user){
+    if(! $user->IsLonely()) $user->AddRole('mind_lonely');
+  }
 }

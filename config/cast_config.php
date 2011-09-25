@@ -1,9 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β11
+  変更履歴 from Ver. 1.5.0β12
   + 変更
-    - $fox, $child_fox, $chaos_hyper_random_role_list, $chaos_hyper_replace_human_role_list,
-      $boost_rate_list
+    - $chaos_hyper_random_role_list, $chaos_hyper_replace_human_role_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{

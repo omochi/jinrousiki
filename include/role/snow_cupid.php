@@ -9,10 +9,7 @@ class Role_snow_cupid extends RoleVoteAbility{
   public $mix_in = 'cupid';
   public $data_type = 'action';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
-
-  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function VoteAction(){
     global $USERS;

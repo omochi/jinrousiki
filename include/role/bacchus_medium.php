@@ -11,8 +11,6 @@ class Role_bacchus_medium extends RoleVoteAbility{
   public $init_stack = true;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){ $this->filter->OutputAbility(); }
-
   function VoteAction(){
     global $USERS;
 

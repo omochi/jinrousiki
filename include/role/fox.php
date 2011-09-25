@@ -37,4 +37,7 @@ class Role_fox extends Role{
 
   //特殊妖狐の情報表示
   function OutputFoxAbility(){}
+
+  //人狼襲撃カウンター
+  function FoxEatCounter($user){}
 }

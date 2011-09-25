@@ -10,16 +10,16 @@ class Role_fire_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
   function FoxEatAction($user){
-    if(! $this->GetActor()->IsActive()) return false;
+    if(! $this->actor->IsActive()) return false;
     $user->AddRole('black_wisp');
-    $this->GetActor()->LostAbility();
+    $this->actor->LostAbility();
   }
 
   function WolfEatAction($user){
-    if(! $this->GetActor()->IsActive()) return false;
+    if(! $this->actor->IsActive()) return false;
     $user->AddRole('black_wisp');
     $user->wolf_killed = true; //尾行判定は成功扱い
-    $this->GetActor()->LostAbility();
+    $this->actor->LostAbility();
     return true;
   }
 }

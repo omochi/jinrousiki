@@ -39,4 +39,54 @@ class Role_wolf extends Role{
 
   //特殊狼の情報表示
   function OutputWolfAbility(){}
+
+  //人狼襲撃失敗判定
+  function WolfEatSkip($user){
+    global $ROOM, $ROLES;
+
+    if($user->IsWolf()){ //人狼系判定 (例：銀狼出現)
+      $this->WolfEatSkipAction($user);
+      $user->wolf_killed = true; //尾行判定は成功扱い
+      return true;
+    }
+    if($user->IsResistFox()){ //妖狐判定
+      $this->FoxEatAction($user); //妖狐襲撃処理
+      $ROLES->actor = $user; //妖狐襲撃カウンター処理
+      $ROLES->Load('main_role', true)->FoxEatCounter($this->actor);
+
+      //人狼襲撃メッセージを登録
+      if(! $ROOM->IsOption('seal_message')) $ROOM->SystemMessage($user->handle_name, 'FOX_EAT');
+      $user->wolf_killed = true; //尾行判定は成功扱い
+      return true;
+    }
+    return false;
+  }
+
+  //人狼襲撃失敗処理
+  function WolfEatSkipAction($user){}
+
+  //妖狐襲撃処理
+  function FoxEatAction($user){}
+
+  //人狼襲撃処理
+  function WolfEatAction($user){}
+
+  //人狼襲撃死亡処理
+  function WolfKill($user, $list){
+    global $USERS;
+    $USERS->Kill($user->user_no, 'WOLF_KILLED');
+  }
+
+  //毒対象者選出
+  function GetPoisonTarget(){
+    global $GAME_CONF, $USERS;
+    return $GAME_CONF->poison_only_eater ? $this->actor :
+      $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
+  }
+
+  //毒死処理
+  function PoisonDead(){
+    global $USERS;
+    $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night');
+  }
 }

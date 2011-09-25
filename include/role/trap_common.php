@@ -11,8 +11,6 @@ class Role_trap_common extends RoleVoteAbility{
   public $init_stack = true;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){ $this->filter->OutputAbility(); }
-
   function VotedReaction(){
     global $ROLES, $USERS;
 

@@ -9,8 +9,6 @@ class Role_embalm_necromancer extends RoleVoteAbility{
   public $mix_in = 'necromancer';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){ $this->filter->OutputAbility(); }
-
   function Necromancer($user, $flag){
     if($flag) return 'stolen';
     $target = $this->GetVoteUser($user->uname)->GetCamp(true);

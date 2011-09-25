@@ -2,7 +2,6 @@
 /*
   ◆狂骨 (critical_avenger)
   ○仕様
-  ・追加役職：なし
   ・処刑投票：投票先が生存していたら痛恨を付加する (釣瓶落とし相当)
 */
 RoleManager::LoadFile('avenger');
@@ -11,10 +10,6 @@ class Role_critical_avenger extends RoleVoteAbility{
   public $data_type = 'action';
   public $init_stack = true;
   function __construct(){ parent::__construct(); }
-
-  function OutputAbility(){ $this->filter->OutputAbility(); }
-
-  function GetRole($user){ return $this->filter->GetRole($user); }
 
   function VoteAction(){
     global $USERS;

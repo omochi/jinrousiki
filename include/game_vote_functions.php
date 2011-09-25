@@ -1197,10 +1197,10 @@ function AggregateVoteNight($skip = false){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   $ROOM->LoadVote(); //投票情報を取得
-  //PrintData($ROOM->vote, 'Vote Row');
+  //PrintData($ROOM->vote, 'VoteRow');
 
   $vote_data = $ROOM->ParseVote(); //コマンド毎に分割
-  //PrintData($vote_data, 'Vote Data');
+  //PrintData($vote_data, 'VoteData');
 
   if(! $skip){
     foreach($USERS->rows as $user){ //未投票チェック
@@ -1445,6 +1445,9 @@ function AggregateVoteNight($skip = false){
       if($guard_flag && ! $voted_wolf->IsSiriusWolf()) break; //護衛成功判定
     }
 
+    $ROLES->actor = $voted_wolf;
+    $wolf_filter  = $ROLES->Load('main_role', true);
+    $wolf_filter->actor = $voted_wolf;
     if(! $wolf_target->IsDummyBoy()){ //特殊能力者判定 (身代わり君は対象外)
       if(! $voted_wolf->IsSiriusWolf()){ //特殊襲撃失敗判定 (サブの判定が先/完全覚醒天狼は無効)
 	$ROLES->actor = $wolf_target;
@@ -1462,31 +1465,7 @@ function AggregateVoteNight($skip = false){
 	}
       }
       if($ROOM->date > 1 && $wolf_target->IsRoleGroup('escaper')) break; //逃亡者系判定
-      if(! $voted_wolf->IsRole('hungry_wolf')){ //人狼・妖狐襲撃判定 (餓狼は対象外)
-	if($wolf_target->IsWolf()){ //人狼系判定 (例：銀狼出現)
-	  if($voted_wolf->IsRole('emerald_wolf')){ //翠狼の処理
-	    $role = $voted_wolf->GetID('mind_friend');
-	    $voted_wolf->AddRole($role);
-	    $wolf_target->AddRole($role);
-	  }
-	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
-	  break;
-	}
-	if($wolf_target->IsResistFox()){ //妖狐判定
-	  $ROLES->actor = $voted_wolf; //妖狐襲撃能力処理
-	  foreach($ROLES->Load('fox_eat_action') as $filter) $filter->FoxEatAction($wolf_target);
-
-	  $ROLES->actor = $wolf_target; //妖狐襲撃カウンター処理
-	  foreach($ROLES->Load('fox_eat_counter') as $filter) $filter->FoxEatCounter($voted_wolf);
-
-	  if(! $ROOM->IsOption('seal_message')){ //人狼襲撃メッセージを登録
-	    $ROOM->SystemMessage($wolf_target->handle_name, 'FOX_EAT');
-	  }
-	  $wolf_target->wolf_killed = true; //尾行判定は成功扱い
-	  break;
-	}
-      }
-
+      if($wolf_filter->WolfEatSkip($wolf_target)) break; //人狼襲撃失敗判定
       if(! $voted_wolf->IsSiriusWolf()){ //特殊能力者の処理 (完全覚醒天狼は無効)
 	$ROLES->actor = $wolf_target; //人狼襲撃得票カウンター処理
 	foreach($ROLES->Load('wolf_eat_reaction') as $filter){
@@ -1506,11 +1485,7 @@ function AggregateVoteNight($skip = false){
 	    }
 	  }
 	}
-
-	$ROLES->actor = $voted_wolf; //人狼襲撃能力処理
-	foreach($ROLES->Load('wolf_eat_action') as $filter){
-	  if($filter->WolfEatAction($wolf_target)) break 2;
-	}
+	if($wolf_filter->WolfEatAction($wolf_target)) break; //人狼襲撃能力処理
 
 	$ROLES->actor = $wolf_target;  //人狼襲撃カウンター処理
 	foreach($ROLES->Load('wolf_eat_counter') as $filter) $filter->WolfEatCounter($voted_wolf);
@@ -1518,43 +1493,18 @@ function AggregateVoteNight($skip = false){
     }
 
     //-- 襲撃処理 --//
-    //憑狼の処理
-    if($voted_wolf->IsRole('possessed_wolf') && ! $wolf_target->IsDummyBoy() &&
-       ! $wolf_target->IsCamp('fox') && ! $wolf_target->IsPossessedLimited()){
-      $possessed_target_list[$voted_wolf->uname] = $wolf_target->uname;
-      $wolf_target->dead_flag = true;
-      //襲撃先が厄神なら憑依リセット
-      if($wolf_target->IsRole('anti_voodoo')) $voted_wolf->possessed_reset = true;
-    }
-    else{
-      $action = $voted_wolf->IsRole('hungry_wolf') ? 'HUNGRY_WOLF_KILLED' : 'WOLF_KILLED';
-      $USERS->Kill($wolf_target->user_no, $action); //通常狼の襲撃処理
-    }
-    $wolf_target->wolf_killed = true;
-
-    if($voted_wolf->IsActive('tongue_wolf')){ //舌禍狼の処理
-      if($wolf_target->IsRole('human')) $voted_wolf->LostAbility(); //村人なら能力失効
-      $str = $voted_wolf->GetHandleName($wolf_target->uname, $wolf_target->main_role);
-      $ROOM->SystemMessage($str, 'TONGUE_WOLF_RESULT');
-    }
+    $wolf_filter->WolfKill($wolf_target, $possessed_target_list);
 
     if($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()){ //-- 毒死判定 --//
-      //襲撃者が抗毒狼か、襲撃者固定設定なら対象固定
-      if($voted_wolf->IsRole('resist_wolf') || $GAME_CONF->poison_only_eater)
-	$poison_target = $voted_wolf;
-      else //生きている狼からランダム選出
-	$poison_target = $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
-
+      $poison_target = $wolf_filter->GetPoisonTarget(); //対象選出
       $ROLES->actor = $wolf_target; //襲撃毒死回避判定
       foreach($ROLES->Load('avoid_poison_eat') as $filter){
 	if($filter->AvoidPoisonEat($poison_target)) break 2;
       }
       if($poison_target->IsChallengeLovers()) break; //難題なら無効
 
-      if($poison_target->IsActive('resist_wolf')) //抗毒狼の処理
-	$poison_target->LostAbility();
-      else
-	$USERS->Kill($poison_target->user_no, 'POISON_DEAD_night'); //毒死処理
+      $ROLES->actor = $poison_target; //毒死処理
+      $ROLES->Load('main_role', true)->PoisonDead();
     }
   }while(false);
   //PrintData($possessed_target_list, 'PossessedTarget [possessed_wolf]');
