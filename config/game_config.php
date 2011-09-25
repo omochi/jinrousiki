@@ -4,6 +4,7 @@
   + RoomConfig
     - 追加：$seal_message, $default_seal_message, $fox, $default_fox,
             $child_fox, $default_child_fox
+    - 変更：$boost_rate_list
 */
 
 //-- 村メンテナンス・作成設定 --//
@@ -207,7 +208,7 @@ class RoomConfig{
 
   public $boost_rate = true; //出現率変動モード
   //GameOptionImage->boost_rate_* @ message_config.php / CastConfig->boost_rate_list と対応させる
-  public $boost_rate_list = array('a', 'b', 'c', 'd', 'e');
+  public $boost_rate_list = array('a', 'b', 'c', 'd', 'e', 'f');
 
   //配役通知設定
   public $chaos_open_cast      = true; //配役内訳を表示する

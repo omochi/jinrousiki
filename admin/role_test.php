@@ -38,7 +38,6 @@ if($_POST['command'] == 'role_test'){
 		'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective') as $option){
     if($_POST[$option] == 'on') $stack->option_role[] = $option;
   }
-
   foreach(array('replace_human', 'change_common', 'change_mad') as $option){
     if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
       $stack->option_role[] = $_POST[$option];
@@ -48,6 +47,12 @@ if($_POST['command'] == 'role_test'){
     if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
       $stack->option_role[] = $option . ':' . $_POST[$option];
     }
+  }
+  switch($_POST['chaos_open_cast']){
+  case 'camp':
+  case 'role':
+    $stack->game_option[] = 'chaos_open_cast' . '_' . $_POST['chaos_open_cast'];
+    break;
   }
   if($_POST['limit_off'] == 'on') $CAST_CONF->chaos_role_group_rate_list = array();
 
@@ -139,5 +144,13 @@ EOF;
 
 EOF;
   }
-  echo "</form>\n";
+    echo <<<EOF
+<br>
+<input type="radio" value="full" name="chaos_open_cast" checked>標準
+<input type="radio" value="camp" name="chaos_open_cast">陣営
+<input type="radio" value="role" name="chaos_open_cast">役職
+<br>
+</form>
+
+EOF;
 }

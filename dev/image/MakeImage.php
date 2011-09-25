@@ -2064,7 +2064,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('select_assassin');
-#$builder->Output('hariti_yaksa');
+#$builder->Output('select_assassin');
+$builder->Output('hariti_yaksa');
 #$builder->Output('fire_mania');
 #$builder->Output('revive_mania');

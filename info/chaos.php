@@ -751,6 +751,7 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="#boost_rate_c"><?php echo $GAME_OPT_MESS->boost_rate_c ?></a>
 <a href="#boost_rate_d"><?php echo $GAME_OPT_MESS->boost_rate_d ?></a>
 <a href="#boost_rate_e"><?php echo $GAME_OPT_MESS->boost_rate_e ?></a>
+<a href="#boost_rate_f"><?php echo $GAME_OPT_MESS->boost_rate_f ?></a>
 </p>
 
 <h3 id="boost_rate_a"><?php echo $GAME_OPT_MESS->boost_rate_a ?> [Ver. 1.5.0 β7～]</h3>
@@ -780,6 +781,10 @@ OutputInfoPageHeader('闇鍋モード');
 <a href="new_role/lovers.php#exchange_angel">魂移使</a>・<a href="new_role/ability.php#possessed">憑依能力者</a>の出現率が 0 になります。
 </pre>
 
+<h3 id="boost_rate_f"><?php echo $GAME_OPT_MESS->boost_rate_f ?> [Ver. 1.5.0 β12～]</h3>
+<pre>
+<a href="new_role/chiroptera.php">蝙蝠陣営</a>・<a href="new_role/ogre.php">鬼陣営</a>・<a href="new_role/duelist.php">決闘者陣営</a>の出現率が 0 になります。
+</pre>
 
 <h2 id="chaos_open_cast"><?php echo $GAME_OPT_MESS->chaos_open_cast ?> [Ver. 1.4.0 α14～]</h2>
 <pre>

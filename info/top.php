@@ -26,4 +26,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
   <li>「天啓封印」オプション実装</li>
+  <li>出現率変動モード：F(合戦村)追加</li>
 </ul>

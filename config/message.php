@@ -3,7 +3,8 @@
   変更履歴 from Ver. 1.5.0β11
   + Message
   + GameOptionMessage
-    - 追加：$seal_message, $fox, $child_fox
+    - 追加：$seal_message, $fox, $child_fox, $boost_rate_f;
+
   + GameOptionCaptionMessage
     - 追加：$seal_message, $fox, $child_fox
 */
@@ -365,6 +366,7 @@ class GameOptionMessage{
   public $boost_rate_c          = 'C：派生村';
   public $boost_rate_d          = 'D：封蘇村';
   public $boost_rate_e          = 'E：封憑村';
+  public $boost_rate_f          = 'F：合戦村';
   public $chaos_open_cast       = '配役を通知する';
   public $chaos_open_cast_camp  = '陣営を通知する';
   public $chaos_open_cast_role  = '役職を通知する';
