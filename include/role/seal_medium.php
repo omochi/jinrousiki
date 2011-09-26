@@ -16,6 +16,8 @@ class Role_seal_medium extends RoleVoteAbility{
     'revive_avenger');
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){ $this->filter->OutputAbility(); }
+
   function VoteAction(){
     global $USERS;
 

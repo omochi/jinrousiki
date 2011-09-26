@@ -13,7 +13,7 @@ class Role_divine_escaper extends Role_escaper{
     return $user->IsWolf() || $user->IsRoleGroup('assassin') || $user->IsOgre();
   }
 
-  function Escape($user){
+  function EscapeAction($user){
     if($user->IsCamp('human')) $user->AddDoom(1, 'day_voter');
   }
 }

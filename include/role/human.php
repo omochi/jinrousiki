@@ -12,7 +12,7 @@ class Role_human extends Role{
   }
 
   private function IsBrownie(){
-    global $ROOM, $ROLES, $USERS;
+    global $ROOM, $ROLES;
 
     if(is_null($ROLES->stack->is_brownie)){
       $ROLES->stack->is_brownie = false;
@@ -20,7 +20,7 @@ class Role_human extends Role{
 	$ROLES->stack->is_brownie = true;
       }
       else{
-	foreach($USERS->rows as $user){ //座敷童子の生存判定
+	foreach($this->GetUser() as $user){ //座敷童子の生存判定
 	  if($user->IsLiveRole('brownie')){
 	    $ROLES->stack->is_brownie = true;
 	    break;

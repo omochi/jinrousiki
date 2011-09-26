@@ -4,6 +4,8 @@
   ○仕様
 */
 RoleManager::LoadFile('avenger');
+RoleManager::LoadFile('revive_pharmacist');
 class Role_revive_avenger extends Role_avenger{
+  public $mix_in = 'revive_pharmacist';
   function __construct(){ parent::__construct(); }
 }

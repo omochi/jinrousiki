@@ -9,10 +9,8 @@ class Role_sacrifice_vampire extends Role_vampire{
   function __construct(){ parent::__construct(); }
 
   function GetSacrificeList(){
-    global $USERS;
-
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($user->IsLive(true) && $user->IsPartner('infected', $this->GetActor()->user_no)){
 	$stack[] = $user->user_no;
       }

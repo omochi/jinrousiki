@@ -114,6 +114,10 @@ class RoleManager{
   //襲撃毒死回避
   public $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');
 
+  //復活
+  public $resurrect_list = array(
+    'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_ogre', 'revive_avenger');
+
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded->file = array();
@@ -222,6 +226,7 @@ class Role{
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
+  //Mixin のロード
   function LoadMix($role){
     $filter = 'Role_' . $role;
     $this->filter = new $filter();
@@ -235,42 +240,53 @@ class Role{
     return $ROLES->actor;
   }
 
+  //ユーザ名取得
   function GetUname($uname = NULL){
     global $ROLES;
     return is_null($uname) ? $ROLES->actor->uname : $uname;
   }
 
+  //ユーザ情報取得
   function GetUser(){
     global $USERS;
     return $USERS->rows;
   }
 
+  //データ取得
+  function GetStack($data = NULL){
+    global $ROLES;
+    $target = is_null($data) ? $this->role : $data;
+    return $ROLES->stack->$target;
+  }
+
+  //襲撃者取得
+  function GetVoter(){ return $this->GetStack('voted_wolf'); }
+
+  //人狼襲撃対象者取得
+  function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
+
+  //スキップ判定
   function Ignored(){
-    global $ROOM, $ROLES, $USERS;
+    global $ROOM, $USERS;
     //return false; //テスト用
     return ! $ROOM->IsPlaying() ||
-      ! ($USERS->IsVirtualLive($ROLES->actor->user_no) || $ROLES->actor->virtual_live);
+      ! ($USERS->IsVirtualLive($this->GetActor()->user_no) || $this->GetActor()->virtual_live);
   }
 
-  function IsSameUser($uname){
-    global $ROLES;
-    return $ROLES->actor->IsSame($uname);
-  }
+  //同一ユーザ判定
+  function IsSameUser($uname){ return $this->GetActor()->IsSame($uname); }
 
-  function IsLive($strict = false){
-    global $ROLES;
-    return $ROLES->actor->IsLive($strict);
-  }
+  //生存判定
+  function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }
 
-  function IsDead($strict = false){
-    global $ROLES;
-    return $ROLES->actor->IsDead($strict);
-  }
+  //死亡判定
+  function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
 
+  //生存仲間判定
   function IsLivePartner(){
-    global $ROLES, $USERS;
+    global $USERS;
 
-    foreach($ROLES->actor->GetPartner($this->role) as $id){
+    foreach($this->GetActor()->GetPartner($this->role) as $id){
       if($USERS->ByID($id)->IsLive()) return true;
     }
     return false;
@@ -394,12 +410,6 @@ class RoleVoteAbility extends Role{
     default:
       return false;
     }
-  }
-
-  //投票データ取得
-  function GetStack(){
-    global $ROLES;
-    return $ROLES->stack->{$this->role};
   }
 
   //最大得票者リスト取得

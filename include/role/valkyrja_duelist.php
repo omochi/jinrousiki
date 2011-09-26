@@ -11,12 +11,12 @@ class Role_valkyrja_duelist extends Role{
 
   //役職情報表示
   function OutputAbility(){
-    global $ROOM, $USERS;
+    global $ROOM;
 
     parent::OutputAbility();
     $id = $this->GetActor()->user_no;
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($user->IsPartner($this->partner_role, $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, $this->partner_header);

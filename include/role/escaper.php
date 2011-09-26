@@ -18,9 +18,29 @@ class Role_escaper extends Role{
     }
   }
 
+  //逃亡処理
+  function Escape($user){
+    global $USERS, $ROLES;
+
+    $actor = $this->GetActor();
+    if(in_array($user->uname, $ROLES->stack->trap)){ //罠死判定
+      $USERS->Kill($actor->user_no, 'TRAPPED');
+    }
+    elseif($this->EscapeFailed($user)){ //逃亡失敗判定
+      $USERS->Kill($actor->user_no, 'ESCAPER_DEAD');
+    }
+    else{
+      if(in_array($user->uname, $ROLES->stack->snow_trap)){ //凍傷判定
+	$ROLES->stack->frostbite[] = $actor->uname;
+      }
+      $this->EscapeAction($user); //逃亡処理
+      $ROLES->stack->escaper[$actor->uname] = $user->uname; //逃亡先をセット
+    }
+  }
+
   //逃亡失敗判定
   function EscapeFailed($user){ return $user->IsWolf(); }
 
-  //逃亡処理
-  function Escape($user){}
+  //逃亡後処理
+  function EscapeAction($user){}
 }

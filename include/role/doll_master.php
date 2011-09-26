@@ -8,10 +8,8 @@ class Role_doll_master extends Role{
   function __construct(){ parent::__construct(); }
 
   function GetSacrificeList(){
-    global $USERS;
-
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($user->IsLive(true) && $user->IsDoll()) $stack[] = $user->user_no;
     }
     return $stack;

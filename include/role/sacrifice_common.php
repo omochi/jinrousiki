@@ -9,10 +9,8 @@ class Role_sacrifice_common extends Role_common{
   function __construct(){ parent::__construct(); }
 
   function GetSacrificeList(){
-    global $USERS;
-
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($user->IsLive(true) && $user->IsRole('human', 'chiroptera')) $stack[] = $user->user_no;
     }
     return $stack;

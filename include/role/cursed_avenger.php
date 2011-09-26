@@ -11,6 +11,8 @@ class Role_cursed_avenger extends RoleVoteAbility{
   public $init_stack = true;
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){ $this->filter->OutputAbility(); }
+
   function VoteAction(){
     global $USERS;
 

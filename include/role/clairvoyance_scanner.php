@@ -16,4 +16,33 @@ class Role_clairvoyance_scanner extends Role_mind_scanner{
     global $ROOM;
     return $ROOM->date > 1;
   }
+
+  /*
+    複数の投票イベントを持つタイプが出現した場合は複数のメッセージを発行する必要がある
+    対象が NULL でも有効になるタイプ (キャンセル投票はスキップ) は想定していない
+  */
+  function Report($user){
+    global $ROOM, $USERS, $ROLES;
+
+    foreach($ROLES->stack->vote_data as $action => $vote_stack){
+      if(strpos($action, '_NOT_DO') !== false ||
+	 ! array_key_exists($user->uname, $vote_stack)) continue;
+      $str = $this->GetActor()->GetHandleName($user->uname) . "\t";
+      $target_stack = $vote_stack[$user->uname];
+
+      if($user->IsRole('barrier_wizard')){
+	$str_stack = array();
+	foreach(explode(' ', $target_stack) as $id){
+	  $voted_user = $USERS->ByVirtual($id);
+	  $str_stack[$voted_user->user_no] = $str . $voted_user->handle_name;
+	}
+	ksort($str_stack);
+	foreach($str_stack as $str) $ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+      }
+      else{
+	$str .= $USERS->GetHandleName($target_stack, true);
+	$ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+      }
+    }
+  }
 }

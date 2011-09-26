@@ -11,5 +11,5 @@ class Role_doom_escaper extends Role_escaper{
 
   function EscapeFailed($user){ return $user->IsRole('death_warrant'); }
 
-  function Escape($user){ $user->AddDoom(4); }
+  function EscapeAction($user){ $user->AddDoom(4); }
 }

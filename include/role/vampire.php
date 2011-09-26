@@ -9,14 +9,14 @@ class Role_vampire extends Role{
 
   //役職情報表示
   function OutputAbility(){
-    global $ROOM, $USERS;
+    global $ROOM;
 
     parent::OutputAbility();
     if($ROOM->date > 2){
       //自分の感染者と洗脳者を表示
       $id = $this->GetActor()->user_no;
       $stack = array();
-      foreach($USERS->rows as $user){
+      foreach($this->GetUser() as $user){
 	if($user->IsPartner('infected', $id)) $stack['infected'][] = $user->handle_name;
 	if($user->IsRole('psycho_infected')) $stack['psycho_infected'][] = $user->handle_name;
       }

@@ -15,12 +15,10 @@ class Role_power_yaksa extends Role_yaksa{
   function GetReduceRate(){ return 3 / 5; }
 
   function Win($victory){
-    global $USERS;
-
     if($this->IsDead()) return false;
     $camp_list = array();
     $live_list = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       $camp = $user->GetCamp(true);
       $camp_list[$camp] = true;
       if($user->IsLive()) $live_list[$camp] = true;

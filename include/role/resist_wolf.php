@@ -9,7 +9,7 @@ RoleManager::LoadFile('wolf');
 class Role_resist_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
-  function GetPoisonTarget(){ return $this->actor; }
+  function GetPoisonTarget(){ return $this->GetVoter(); }
 
   function PoisonDead(){
     $this->GetActor()->IsActive() ? $this->GetActor()->LostAbility() : parent::PoisonDead();

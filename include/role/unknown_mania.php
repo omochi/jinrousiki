@@ -12,7 +12,7 @@ class Role_unknown_mania extends Role_mania{
     $this->copied = $this->GetActor()->GetID('mind_friend');
   }
 
-  function CopyAction($user, $role, $vote_data){
+  function CopyAction($user, $role){
     $user->AddRole($this->copied . (is_null($role) ? '' : ' ' . $role));
   }
 

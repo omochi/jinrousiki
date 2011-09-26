@@ -9,13 +9,13 @@ class Role_cupid extends Role{
 
   //役職情報表示
   function OutputAbility(){
-    global $ROOM, $USERS;
+    global $ROOM;
 
     parent::OutputAbility();
     //自分が矢を打った恋人 (自分自身含む) を表示
     $id = $this->GetActor()->user_no;
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'cupid_pair');

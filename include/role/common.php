@@ -9,12 +9,10 @@ class Role_common extends Role{
 
   //役職情報表示
   function OutputAbility(){
-    global $USERS;
-
     parent::OutputAbility();
     //仲間表示
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($this->IsSameUser($user->uname)) continue;
       if($this->IsCommonParter($user)) $stack[] = $user->handle_name;
     }

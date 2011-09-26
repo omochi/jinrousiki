@@ -7,7 +7,6 @@
 RoleManager::LoadFile('priest');
 class Role_revive_priest extends Role_priest{
   public $result_date = NULL;
-
   function __construct(){ parent::__construct(); }
 
   function Priest($role_flag, $data){
@@ -26,5 +25,15 @@ class Role_revive_priest extends Role_priest{
 	$user->LostAbility();
       }
     }
+  }
+
+  //帰還処理
+  function PriestReturn(){
+    global $USERS;
+
+    $user = $this->GetActor();
+    if($user->IsDummyBoy()) return;
+    if($user->IsLovers()) $user->LostAbility();
+    elseif($user->IsLive(true)) $USERS->Kill($user->user_no, 'PRIEST_RETURNED');
   }
 }

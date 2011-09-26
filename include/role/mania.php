@@ -18,12 +18,12 @@ class Role_mania extends Role{
   }
 
   //コピー処理
-  function Copy($user, $vote_data){
+  function Copy($user){
     global $ROOM;
 
     $actor = $this->GetActor();
     $role  = $this->GetRole($user);
-    $this->CopyAction($user, $role, $vote_data);
+    $this->CopyAction($user, $role);
 
     $this->delay_copy || $this->camp_copy ? $actor->AddMainRole($user->user_no) :
       $actor->ReplaceRole($this->role, $role);
@@ -35,7 +35,7 @@ class Role_mania extends Role{
   }
 
   //特殊コピー処理
-  function CopyAction($user, $role, $vote_data){}
+  function CopyAction($user, $role){}
 
   //コピー結果役職取得
   function GetRole($user){

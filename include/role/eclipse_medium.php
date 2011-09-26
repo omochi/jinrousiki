@@ -10,6 +10,8 @@ class Role_eclipse_medium extends RoleVoteAbility{
   public $mix_in = 'medium';
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){ $this->filter->OutputAbility(); }
+
   function FilterSuddenDeath(&$reason){
     if($reason == '' && $this->GetVoteKillUname() == '') $reason = 'SEALED';
   }

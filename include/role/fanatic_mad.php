@@ -11,7 +11,7 @@ class Role_fanatic_mad extends Role{
 
     parent::OutputAbility();
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($user->IsRole('possessed_wolf')){
 	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
       }

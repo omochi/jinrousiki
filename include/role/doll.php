@@ -8,12 +8,10 @@ class Role_doll extends Role{
 
   //役職情報表示
   function OutputAbility(){
-    global $USERS;
-
     parent::OutputAbility();
     $stack = array();
     $flag  = $this->doll_partner; //人形表示判定
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($this->IsSameUser($user->uname)) continue;
       if($user->IsRole('doll_master', 'puppet_mage') || $user->IsRoleGroup('scarlet')){
 	$stack['master'][] = $user->handle_name;

@@ -13,7 +13,7 @@ class Role_fox extends Role{
     parent::OutputAbility();
     if(! $this->GetActor()->IsLonely()){ //仲間表示
       $stack = array();
-      foreach($USERS->rows as $user){
+      foreach($this->GetUser() as $user){
 	if($this->IsSameUser($user->uname)) continue;
 	if($user->IsRole('possessed_fox')){
 	  $stack['fox'][] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する

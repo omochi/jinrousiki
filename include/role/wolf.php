@@ -13,7 +13,7 @@ class Role_wolf extends Role{
     parent::OutputAbility();
     //仲間情報を収集
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($this->IsSameUser($user->uname)) continue;
       if($user->IsRole('possessed_wolf')){
 	$stack['wolf'][] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
@@ -52,7 +52,7 @@ class Role_wolf extends Role{
     if($user->IsResistFox()){ //妖狐判定
       $this->FoxEatAction($user); //妖狐襲撃処理
       $ROLES->actor = $user; //妖狐襲撃カウンター処理
-      $ROLES->Load('main_role', true)->FoxEatCounter($this->actor);
+      $ROLES->Load('main_role', true)->FoxEatCounter($this->GetVoter());
 
       //人狼襲撃メッセージを登録
       if(! $ROOM->IsOption('seal_message')) $ROOM->SystemMessage($user->handle_name, 'FOX_EAT');
@@ -80,7 +80,7 @@ class Role_wolf extends Role{
   //毒対象者選出
   function GetPoisonTarget(){
     global $GAME_CONF, $USERS;
-    return $GAME_CONF->poison_only_eater ? $this->actor :
+    return $GAME_CONF->poison_only_eater ? $this->GetVoter() :
       $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
   }
 

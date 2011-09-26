@@ -10,11 +10,11 @@ class Role_scarlet_angel extends Role_angel{
   function __construct(){ parent::__construct(); }
 
   function OutputCupidAbility(){
-    global $ROOM, $USERS;
+    global $ROOM;
 
     if(! $ROOM->IsNight()) return;
     $stack = array();
-    foreach($USERS->rows as $user){
+    foreach($this->GetUser() as $user){
       if($this->IsSameUser($user->uname) || $user->IsWolf()) continue;
       if($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
 	$stack[] = $user->handle_name;
