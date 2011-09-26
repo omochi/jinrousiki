@@ -8,5 +8,5 @@ RoleManager::LoadFile('unknown_mania');
 class Role_wirepuller_mania extends Role_unknown_mania{
   function __construct(){ parent::__construct(); }
 
-  function AddRole($role){ return $role . ' ' . $this->GetActor()->GetID('wirepuller_luck'); }
+  function GetCopyRole($user){ return $user->GetID('wirepuller_luck'); }
 }

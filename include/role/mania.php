@@ -6,7 +6,6 @@
 */
 class Role_mania extends Role{
   public $copied = 'copied';
-
   function __construct(){ parent::__construct(); }
 
   //役職情報表示
@@ -20,13 +19,29 @@ class Role_mania extends Role{
 
   //コピー処理
   function Copy($user, $vote_data){
-    return $this->ChangeRole($user->IsRoleGroup('mania') ? 'human' : $user->main_role);
+    global $ROOM;
+
+    $actor = $this->GetActor();
+    $role  = $this->GetRole($user);
+    $this->CopyAction($user, $role, $vote_data);
+
+    $this->delay_copy || $this->camp_copy ? $actor->AddMainRole($user->user_no) :
+      $actor->ReplaceRole($this->role, $role);
+    if(! $this->delay_copy) $actor->AddRole($this->copied);
+
+    if($this->camp_copy) return;
+    $str = $actor->handle_name . "\t" . $user->handle_name . "\t" . $role;
+    $ROOM->SystemMessage($str, 'MANIA_RESULT');  //コピー結果
   }
 
-  //役職変化処理
-  function ChangeRole($role){
-    $this->GetActor()->ReplaceRole($this->role, $role);
-    $this->GetActor()->AddRole($this->copied);
-    return $role;
+  //特殊コピー処理
+  function CopyAction($user, $role, $vote_data){}
+
+  //コピー結果役職取得
+  function GetRole($user){
+    return $user->IsRoleGroup('mania') ? 'human' : $this->GetCopyRole($user);
   }
+
+  //コピー役職取得
+  function GetCopyRole($user){ return $user->main_role; }
 }

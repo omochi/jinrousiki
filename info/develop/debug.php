@@ -56,6 +56,18 @@ Ver. 1.5.0
   }
 </pre>
 
+<h3>include/game_vote_functions.php % 2433行目付近 (2011/09/26 (Mon) 19:25)</h3>
+<h4>[before]</h4>
+<pre>
+PrintData($target->uname);
+$target->ReturnPossessed('possessed');
+#$USERS->ByReal($target->user_no)->ReturnPossessed('possessed_target');
+</pre>
+<h4>[after]</h4>
+<pre>
+$target->ReturnPossessed('possessed');
+</pre>
+
 <h2 id="ver150b11">Ver. 1.5.0 β11</h2>
 <h3>room_manager.php % 265行目付近 (2011/08/27 (Sat) 05:20)</h3>
 <h4>[before]</h4>

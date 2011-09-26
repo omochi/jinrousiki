@@ -2076,18 +2076,7 @@ function AggregateVoteNight($skip = false){
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
       $ROLES->actor = $user;
-      $filter = $ROLES->Load('main_role', true);
-      $target = $USERS->ByUname($target_uname); //対象者の情報を取得
-      if($user->IsUnknownMania()){ //鵺系
-	$user->AddMainRole($target->user_no); //コピー先をセット
-	$user->AddRole($role = $user->GetID('mind_friend')); //共鳴者を追加
-	$target->AddRole($filter->AddRole($role)); //コピー先に役職を追加
-      }
-      else{ //神話マニア系
-	$str = $user->handle_name . "\t" . $target->handle_name . "\t" .
-	  $filter->Copy($target, $vote_data); //コピー結果
-	$ROOM->SystemMessage($str, 'MANIA_RESULT');
-      }
+      $ROLES->Load('main_role', true)->Copy($USERS->ByUname($target_uname), $vote_data);
     }
 
     if(! $ROOM->IsOpenCast()){
@@ -2380,9 +2369,7 @@ function AggregateVoteNight($skip = false){
 	    }
 	  }
 	  elseif($target != $USERS->ByReal($target->user_no)){ //憑依されていたらリセット
-	    PrintData($target->uname);
 	    $target->ReturnPossessed('possessed');
-	    #$USERS->ByReal($target->user_no)->ReturnPossessed('possessed_target');
 	  }
 	  $target->Revive(); //蘇生処理
 	}while(false);
@@ -2532,11 +2519,8 @@ function AggregateVoteNight($skip = false){
     foreach($USERS->rows as $user){
       if($user->IsDummyBoy() || ! $user->IsRole('soul_mania', 'dummy_mania')) continue;
       if(is_null($id = $user->GetMainRoleTarget())) continue;
-      $target = $USERS->ById($id);
-      //PrintData($target->DistinguishRoleGroup(), $user->uname);
       $ROLES->actor = $user;
-      $result = $ROLES->Load('main_role', true)->ChangeRole($target);
-      $ROOM->SystemMessage(str_repeat($user->handle_name . "\t", 2) . $result, 'MANIA_RESULT');
+      $ROLES->Load('main_role', true)->DelayCopy($USERS->ById($id));
     }
   }
 

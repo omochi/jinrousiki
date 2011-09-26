@@ -9,7 +9,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>TOPIC</h1>
 <h2>Ver. 1.5.0 β12 アップロード (2011/09/25 (Sun) 22:32) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b12">デバッグ情報</a> (2011/09/26 (Mon) 04:07)</li>
+  <li>→ <a href="info/develop/debug.php#ver150b12">デバッグ情報</a> (2011/09/26 (Mon) 19:25)</li>
   <li>「妖狐追加」「子狐登場」「天啓封印」オプション実装</li>
   <li>「青行灯」「五徳猫」実装</li>
   <li>出現率変動モード：F(合戦村)追加</li>
