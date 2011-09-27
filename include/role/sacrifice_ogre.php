@@ -27,7 +27,7 @@ class Role_sacrifice_ogre extends Role_ogre{
 
   function Ignored($user){ return $user->IsCamp('vampire'); }
 
-  function Assassin($user, &$list){ $user->AddRole('psycho_infected'); }
+  function AssassinAction($user){ $user->AddRole('psycho_infected'); }
 
   function Win($victory){ return $victory != 'human' && $this->IsLive(); }
 

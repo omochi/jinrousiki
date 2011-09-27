@@ -16,7 +16,7 @@ class Role_doom_fox extends Role_fox{
     }
   }
 
-  function Assassin($user, &$list, &$reverse){
+  function Assassin($user){
     if($user->IsLive(true)) $user->AddDoom(4, 'death_warrant');
   }
 }

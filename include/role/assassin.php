@@ -19,7 +19,16 @@ class Role_assassin extends Role{
   }
 
   //暗殺処理
-  function Assassin($user, &$list, &$reverse){
-    if($user->IsLive(true)) $list[$user->uname] = true;
+  function Assassin($user){
+    global $ROLES;
+    if($user->IsLive(true)) $ROLES->stack->assassin[$user->uname] = true;
+  }
+
+  //暗殺死処理
+  function AssassinKill(){
+    global $USERS;
+    foreach($this->GetStack() as $uname => $flag){
+      $USERS->Kill($USERS->UnameToNumber($uname), 'OGRE_KILLED');
+    }
   }
 }

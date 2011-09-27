@@ -14,7 +14,7 @@ class Role_poison_ogre extends Role_ogre{
 
   function Ignored($user){ return $user->IsRole('quiz'); }
 
-  function Assassin($user, &$list){ $user->AddRole('panelist'); }
+  function AssassinAction($user){ $user->AddRole('panelist'); }
 
   function Win($victory){ return $victory == 'quiz' || $this->IsLive(); }
 

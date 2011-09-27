@@ -15,7 +15,7 @@ class Role_pierrot_wizard extends Role_wizard{
 
   function __construct(){ parent::__construct(); }
 
-  function Assassin($user, &$list, &$reverse){
+  function Assassin($user){
     if($user->IsLive(true)) $user->AddDoom(mt_rand(2, 10), 'death_warrant');
   }
 }

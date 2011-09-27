@@ -1240,7 +1240,7 @@ function AggregateVoteNight($skip = false){
   $ROLES->stack->sacrifice        = array(); //身代わり死した人
   $anti_voodoo_target_list        = array(); //厄神の護衛対象
   $anti_voodoo_success_list       = array(); //厄払い成功者
-  $reverse_assassin_target_list   = array(); //反魂師の対象
+  $ROLES->stack->reverse_assassin = array(); //反魂師の対象
   $possessed_target_list          = array(); //憑依予定者 => 憑依成立フラグ
   $possessed_target_id_list       = array(); //憑依対象者
 
@@ -1546,7 +1546,7 @@ function AggregateVoteNight($skip = false){
       foreach($stack as $target_uname) $filter->Infect($USERS->ByUname($target_uname));
     }
 
-    $assassin_target_list = array(); //暗殺対象者リスト
+    $ROLES->stack->assassin = array(); //暗殺対象者リスト
     foreach($vote_data['ASSASSIN_DO'] as $uname => $target_uname){ //暗殺者の情報収集
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1554,42 +1554,28 @@ function AggregateVoteNight($skip = false){
       foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
 	if($filter->TrapStack($user, $target_uname)) continue 2;
       }
+      foreach($ROLES->LoadFilter('guard_assassin') as $filter){ //門番の護衛判定
+	if($filter->GuardAssassin($target_uname)) continue 2;
+      }
 
       $target = $USERS->ByUname($target_uname);
-      /*
-      foreach($ROLES->LoadFilter('guard_assassin') as $filter){
-	PrintData($filter);
-      }
-      */
-      $stack = array_keys($ROLES->stack->gatekeeper_guard, $target->uname); //門番の護衛判定
-      if(count($stack) > 0){
-	//護衛成功メッセージを登録
-	if($ROOM->IsOption('seal_message')) continue;
-	foreach($stack as $guard_uname){
-	  $guard_user = $USERS->ByUname($guard_uname);
-	  if($guard_user->IsFirstGuardSuccess($target->uname)){
-	    $ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');
-	  }
-	}
-	continue;
-      }
-
       if($target->IsRoleGroup('escaper')) continue; //逃亡者は無効
       if($target->IsRefrectAssassin()){ //反射判定
-	$assassin_target_list[$uname] = true;
+	$ROLES->stack->assassin[$uname] = true;
 	continue;
       }
 
       $ROLES->actor = $user;
-      $ROLES->Load('main_role', true)->Assassin($target, $assassin_target_list,
-						$reverse_assassin_target_list);
+      $ROLES->Load('main_role', true)->Assassin($target);
     }
-    //PrintData($assassin_target_list, 'Target [assassin]');
-    foreach($assassin_target_list as $uname => $flag){ //暗殺処理
-      $USERS->Kill($USERS->UnameToNumber($uname), 'ASSASSIN_KILLED');
+    //PrintData($ROLES->stack->assassin, 'Target [assassin]');
+    if(count($ROLES->stack->assassin) > 0){ //暗殺処理
+      $ROLES->actor = new User('assassin');
+      $ROLES->Load('main_role', true)->AssassinKill();
     }
+    unset($ROLES->stack->assassin);
 
-    $ogre_target_list = array(); //人攫い対象者リスト
+    $ROLES->stack->ogre = array(); //人攫い対象者リスト
     foreach($vote_data['OGRE_DO'] as $uname => $target_uname){ //鬼の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -1597,58 +1583,28 @@ function AggregateVoteNight($skip = false){
       foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
 	if($filter->DelayTrap($user, $target_uname)) continue 2;
       }
+      foreach($ROLES->LoadFilter('guard_assassin') as $filter){ //門番の護衛判定
+	if($filter->GuardAssassin($target_uname)) continue 2;
+      }
 
       $target = $USERS->ByUname($target_uname);
-      /*
-      foreach($ROLES->LoadFilter('guard_assassin') as $filter){
-	PrintData($filter);
-      }
-      */
-      $stack = array_keys($ROLES->stack->gatekeeper_guard, $target->uname); //門番の護衛判定
-      if(count($stack) > 0){
-	//護衛成功メッセージを登録
-	if($ROOM->IsOption('seal_message')) continue;
-	foreach($stack as $guard_uname){
-	  $guard_user = $USERS->ByUname($guard_uname);
-	  if($guard_user->IsFirstGuardSuccess($target->uname)){
-	    $ROOM->SystemMessage($guard_user->GetHandleName($target->uname), 'GUARD_SUCCESS');
-	  }
-	}
-	continue;
-      }
-
       if($target->IsDead(true) || $target->IsRoleGroup('escaper')) continue; //無効判定
       if($target->IsRefrectAssassin()){ //反射判定
-	$ogre_target_list[$uname] = true;
+	$ROLES->stack->ogre[$user->user_no] = true;
 	continue;
       }
 
       $ROLES->actor = $user;
-      $filter = $ROLES->Load('main_role', true);
-      if($filter->Ignored($target)) continue; //無効判定
-
-      //人攫い成功判定
-      $rate = mt_rand(1, 100); //襲撃成功判定乱数
-      //$rate = 5; //テスト用
-      $ogre_times = (int)$user->GetMainRoleTarget();
-      $ogre_rate  = $filter->GetAssassinRate($ogre_times);
-      //PrintData($rate, 'Rate [OGRE_DO]: ' . $ogre_rate);
-
-      if($rate > $ogre_rate) continue; //成功判定
-      $filter->Assassin($target, $ogre_target_list); //人攫い処理
-
-      if($ROOM->IsEvent('full_ogre')) continue; //朧月ならスキップ
-      $base_role = $user->main_role; //成功回数更新処理
-      if($ogre_times > 0) $base_role .= '[' . $ogre_times . ']';
-      $new_role = $user->main_role . '[' . ($ogre_times + 1) . ']';
-      $user->ReplaceRole($base_role, $new_role);
+      $ROLES->Load('main_role', true)->Assassin($target);
     }
     foreach($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
 
-    //PrintData($ogre_target_list, 'Target [ogre]');
-    foreach($ogre_target_list as $uname => $flag){ //人攫い処理
-      $USERS->Kill($USERS->UnameToNumber($uname), 'OGRE_KILLED');
+    //PrintData($ROLES->stack->ogre, 'Target [ogre]');
+    if(count($ROLES->stack->ogre) > 0){ //人攫い処理
+      $ROLES->actor = new User('ogre');
+      $ROLES->Load('main_role', true)->AssassinKill();
     }
+    unset($ROLES->stack->ogre);
 
     //オシラ遊びの処理
     $role = 'death_selected';
@@ -1660,20 +1616,18 @@ function AggregateVoteNight($skip = false){
       }
     }
 
-    $reverse_list = array(); //反魂対象リスト
-    foreach($reverse_assassin_target_list as $uname => $target_uname){
-      $target = $USERS->ByUname($target_uname);
-      if($target->IsLive(true))
-	$USERS->Kill($target->user_no, 'ASSASSIN_KILLED');
-      elseif(! $target->IsLovers())
-	$reverse_list[$target_uname] = ! $reverse_list[$target_uname];
+    $ROLES->stack->reverse = array(); //反魂対象リスト
+    if(count($ROLES->stack->reverse_assassin) > 0){ //反魂師の暗殺処理
+      $ROLES->actor = new User('reverse_assassin');
+      $ROLES->Load('main_role', true)->AssassinKill();
     }
-    //PrintData($reverse_list, 'ReverseList'); //テスト用
+    //PrintData($ROLES->stack->reverse, 'ReverseList'); //テスト用
 
     foreach($ROLES->stack->frostbite as $uname){ //凍傷処理
       $target = $USERS->ByUname($uname);
       if($target->IsLive(true)) $target->AddDoom(1, 'frostbite');
     }
+    unset($ROLES->stack->frostbite);
 
     //-- 夢系レイヤー --//
     foreach($vote_data['DREAM_EAT'] as $uname => $target_uname){ //獏の処理
@@ -2050,7 +2004,7 @@ function AggregateVoteNight($skip = false){
   }
 
   if($ROOM->date > 1){
-    foreach($reverse_list as $target_uname => $flag){ //反魂師の処理
+    foreach($ROLES->stack->reverse as $target_uname => $flag){ //反魂師の処理
       if(! $flag) continue;
       $target = $USERS->ByUname($target_uname);
       if($target->IsPossessedGroup()){ //憑依能力者対応
