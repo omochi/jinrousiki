@@ -1168,7 +1168,7 @@ class RoleMessageList{
     'type' => 'mania', 'delimiter' => array('#' => 'wolf'));
 
   public $revive_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|五徳猫|です。初日の夜に指定した人と同じ陣営になり、あなたが#人狼#に襲撃で死亡したら、その人を_蘇生_できます。",
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|五徳猫|です。初日の夜に指定した人と同じ陣営になり、あなたが#人狼#に襲撃で死亡したら、その人を_蘇生_できます。\n　その頭上に五徳を頂き選ばれし者に自分の身を捧げ、仁・義・礼・知・信。五徳の如く忘れた二徳以上の徳を与えましょう。",
     'type' => 'mania', 'delimiter' => array('#' => 'wolf', '_' => 'revive'));
 
   public $chicken = array(
@@ -2067,4 +2067,3 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('select_assassin');
 $builder->Output('hariti_yaksa');
 #$builder->Output('fire_mania');
-#$builder->Output('revive_mania');

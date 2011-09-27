@@ -114,6 +114,12 @@ class RoleManager{
   //襲撃毒死回避
   public $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');
 
+  //罠
+  public $trap_list = array('trap_mad', 'snow_trap_mad');
+
+  //暗殺防衛
+  public $guard_assassin_list = array('gatekeeper_guard');
+
   //復活
   public $resurrect_list = array(
     'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_ogre', 'revive_avenger');
@@ -145,13 +151,24 @@ class RoleManager{
   }
 
   function LoadClass($name, $class){
-    if(is_null($name) || in_array($name, $this->loaded->class)) return false;
+    if(is_null($name) || is_object($this->loaded->class[$name])) return false;
     $this->loaded->class[$name] = new $class();
     return true;
   }
 
+  function LoadMix($name){
+    if(! $this->LoadFile($name)) return NULL;
+    $class = 'Role_' . $name;
+    return new $class();
+  }
+
   function LoadFilter($type){
     return $this->GetFilter($this->GetList($type));
+  }
+
+  function SetClass($role){
+    $this->LoadFile($role);
+    return $this->LoadClass($role, 'Role_' . $role);
   }
 
   function GetList($type){
@@ -210,8 +227,15 @@ class Role{
   public $role;
 
   function __construct(){
+    global $ROLES;
+
     $this->role = array_pop(explode('Role_', get_class($this)));
-    if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+    if(isset($this->mix_in)){
+      $this->filter = $ROLES->LoadMix($this->mix_in);
+      $this->filter->role = $this->role;
+      //PrintData(get_class_vars(get_class($this)));
+      if(isset($this->display_role)) $this->filter->display_role = $this->display_role;
+    }
   }
 
   function __call($name, $args){
@@ -226,14 +250,6 @@ class Role{
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
-  //Mixin のロード
-  function LoadMix($role){
-    $filter = 'Role_' . $role;
-    $this->filter = new $filter();
-    $this->filter->role = $this->role;
-    if(isset($this->display_role)) $this->filter->display_role = $this->display_role;
-  }
-
   //-- 判定用関数 --//
   function GetActor(){
     global $ROLES;
@@ -241,10 +257,7 @@ class Role{
   }
 
   //ユーザ名取得
-  function GetUname($uname = NULL){
-    global $ROLES;
-    return is_null($uname) ? $ROLES->actor->uname : $uname;
-  }
+  function GetUname($uname = NULL){ return is_null($uname) ? $this->GetActor()->uname : $uname; }
 
   //ユーザ情報取得
   function GetUser(){

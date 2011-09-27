@@ -31,10 +31,9 @@ class Role_guard extends Role{
     $user = $this->GetActor();
     $ROLES->stack->guard[$user->uname] = $uname;
 
-    if(in_array($uname, $ROLES->stack->trap)) //罠死判定
-      $ROLES->stack->trapped[] = $user->uname;
-    elseif(in_array($uname, $ROLES->stack->snow_trap)) //凍傷判定
-      $ROLES->stack->frostbite[] = $user->uname;
+    foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+      if($filter->DelayTrap($user, $uname)) break;
+    }
     return true;
   }
 
@@ -44,6 +43,18 @@ class Role_guard extends Role{
   //護衛処理
   function GuardAction($user, $flag = false){}
 
+  //狩り
+  function Hunt($user){
+    global $ROOM, $USERS, $ROLES;
+
+    //対象が身代わり死していた場合はスキップ
+    if(in_array($user->uname, $ROLES->stack->sacrifice) || ! $this->IsHunt($user)) return false;
+    $USERS->Kill($user->user_no, 'HUNTED');
+    if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
+      $ROOM->SystemMessage($this->GetActor()->GetHandleName($user->uname), 'GUARD_HUNTED');
+    }
+  }
+
   //狩り対象判定
-  function IsHuntTarget($user){ return $user->IsHuntTarget(); }
+  function IsHunt($user){ return $user->IsHuntTarget(); }
 }

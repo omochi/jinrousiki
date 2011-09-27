@@ -1237,7 +1237,7 @@ function AggregateVoteNight($skip = false){
   $ROLES->stack->dummy_guard      = array(); //夢守人の護衛対象
   $wizard_target_list             = array(); //魔法使い系 (拡散型) の対象
   $ROLES->stack->escaper          = array(); //逃亡者の逃亡先
-  $sacrifice_list                 = array(); //身代わり死した人
+  $ROLES->stack->sacrifice        = array(); //身代わり死した人
   $anti_voodoo_target_list        = array(); //厄神の護衛対象
   $anti_voodoo_success_list       = array(); //厄払い成功者
   $reverse_assassin_target_list   = array(); //反魂師の対象
@@ -1291,52 +1291,27 @@ function AggregateVoteNight($skip = false){
   $ROLES->stack->wolf_target = $wolf_target;
 
   if($ROOM->date > 1){
-    foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //罠能力者の情報収集
-      $user = $USERS->ByUname($uname);
-
-      //人狼に狙われていたら自分自身への設置以外は無効
-      if($user->IsSame($wolf_target->uname) && ! $user->IsSame($target_uname)) continue;
-      if($user->IsRole('trap_mad', 'trap_fox')){ //役職別に罠をセット
-	$ROLES->stack->trap[$user->uname] = $target_uname;
-	$user->LostAbility(); //罠師・狡狐は一度設置したら能力喪失
-      }
-      else{
-	$ROLES->stack->snow_trap[$user->uname] = $target_uname;
-      }
+    foreach($vote_data['TRAP_MAD_DO'] as $uname => $target_uname){ //罠能力者の設置処理
+      $ROLES->actor = $USERS->ByUname($uname);
+      $ROLES->Load('main_role', true)->SetTrap($target_uname);
     }
 
-    //狡狼の自動設置判定 (花曇・雪明りは無効)
+    //狡狼の自動罠設置判定 (花曇・雪明りは無効)
     if($ROOM->date > 2 && ! $ROOM->IsEvent('no_contact') && ! $ROOM->IsEvent('no_trap')){
       foreach($USERS->rows as $user){
-	if($user->IsLiveRole('trap_wolf')) $ROLES->stack->trap[$user->uname] = $user->uname;
-      }
-    }
-    //PrintData($ROLES->stack->trap, 'List [trap_mad]');
-    //PrintData($ROLES->stack->snow_trap, 'List [snow_trap_mad]');
-
-    //罠師が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は死亡
-    $stack = array_count_values($ROLES->stack->trap);
-    foreach($ROLES->stack->trap as $uname => $target_uname){
-      if($uname != $target_uname && $stack[$target_uname] > 1) $ROLES->stack->trapped[] = $uname;
-    }
-
-    foreach($ROLES->stack->snow_trap as $uname => $target_uname){ //雪女の罠死判定
-      if($uname != $target_uname && in_array($target_uname, $ROLES->stack->trap)){
-	$ROLES->stack->trapped[] = $uname;
+	if($user->IsLiveRole('trap_wolf')){
+	  $ROLES->actor = $user;
+	  $ROLES->Load('main_role', true)->SetTrap($user->uname);
+	}
       }
     }
 
-    //雪女が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は凍傷になる
-    $stack = array_count_values($ROLES->stack->snow_trap);
-    foreach($ROLES->stack->snow_trap as $uname => $target_uname){
-      if($uname != $target_uname && $stack[$target_uname] > 1) $ROLES->stack->frostbite[] = $uname;
-    }
-
-    foreach($ROLES->stack->trap as $uname => $target_uname){ //罠師の凍傷判定
-      if($uname != $target_uname && in_array($target_uname, $ROLES->stack->snow_trap)){
-	$ROLES->stack->frostbite[] = $uname;
-      }
-    }
+    if(count($ROLES->stack->trap) > 0) $ROLES->SetClass('trap_mad');
+    foreach($ROLES->LoadFilter('trap') as $filter) $filter->TrapToTrap(); //罠能力者の罠判定
+    //PrintData($ROLES->stack->trap, 'Target [trap]');
+    //PrintData($ROLES->stack->snow_trap, 'Target [snow_trap]');
+    //PrintData($ROLES->stack->trapped, 'Trapped [trap]');
+    //PrintData($ROLES->stack->frostbite, 'Frostbite [trap]');
 
     $half_guard = $ROOM->IsEvent('half_guard'); //曇天
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
@@ -1371,19 +1346,14 @@ function AggregateVoteNight($skip = false){
       $ROLES->Load('main_role', true)->Escape($USERS->ByUname($target_uname));
     }
     //PrintData($ROLES->stack->escaper, 'Target [escaper]');
-    //PrintData($ROLES->stack->frostbite, 'Target [escaper/frostbite]');
   }
 
   do{ //人狼の襲撃成功判定
     if($skip || $ROOM->IsQuiz()) break; //スキップモード・クイズ村仕様
 
     if(! $voted_wolf->IsSiriusWolf(false)){ //罠判定 (覚醒天狼は無効)
-      if(in_array($wolf_target->uname, $ROLES->stack->trap)){ //罠死判定
-	$USERS->Kill($voted_wolf->user_no, 'TRAPPED');
-	break;
-      }
-      if(in_array($wolf_target->uname, $ROLES->stack->snow_trap)){ //凍傷判定
-	$ROLES->stack->frostbite[] = $voted_wolf->uname;
+      foreach($ROLES->LoadFilter('trap') as $filter){
+	if($filter->TrapStack($voted_wolf, $ROLES->stack->wolf_target->uname)) break;
       }
     }
 
@@ -1431,12 +1401,8 @@ function AggregateVoteNight($skip = false){
 	}
 
 	if($wolf_target->IsOgre()){ //確率無効タイプ (鬼陣営)
-	  $rate = mt_rand(1, 100); //襲撃成功判定乱数
-	  //$rate = 5; //テスト用
 	  $ROLES->actor = $wolf_target;
-	  $resist_rate = $ROLES->Load('main_role', true)->GetResistRate();
-	  //PrintData("{$rate} ({$resist_rate})", 'Rate [ogre resist]');
-	  if($rate <= $resist_rate) break;
+	  if($ROLES->Load('main_role', true)->WolfEatResist()) break;
 	}
       }
       if($ROOM->date > 1 && $wolf_target->IsRoleGroup('escaper')) break; //逃亡者系判定
@@ -1455,7 +1421,7 @@ function AggregateVoteNight($skip = false){
 	    if(count($stack) > 0){
 	      $target = $USERS->ByID(GetRandom($stack));
 	      $USERS->Kill($target->user_no, 'SACRIFICE');
-	      $sacrifice_list[] = $target->uname;
+	      $ROLES->stack->sacrifice[] = $target->uname;
 	      break 2;
 	    }
 	  }
@@ -1497,22 +1463,11 @@ function AggregateVoteNight($skip = false){
 	$user = $USERS->ByUname($uname);
 	if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-	$target = $USERS->ByUname($target_uname);
 	$ROLES->actor = $user;
-	//対象が身代わり死していた場合はスキップ
-	if(! in_array($target->uname, $sacrifice_list) &&
-	   $ROLES->Load('main_role', true)->IsHuntTarget($target)){
-	  $USERS->Kill($target->user_no, 'HUNTED');
-	  if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
-	    $ROOM->SystemMessage($user->GetHandleName($target->uname), 'GUARD_HUNTED');
-	  }
-	}
+	$ROLES->Load('main_role', true)->Hunt($USERS->ByUname($target_uname));
       }
     }
-
-    //罠死処理
-    foreach($ROLES->stack->trapped as $uname) $USERS->Kill($USERS->UnameToNumber($uname), 'TRAPPED');
-    $ROLES->stack->trapped = array();
+    foreach($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
 
     $vampire_target_list = array(); //吸血対象者リスト
     $vampire_killed_list = array(); //吸血死対象者リスト
@@ -1520,12 +1475,9 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      if(in_array($target_uname, $ROLES->stack->trap)){ //罠死判定
-	$ROLES->stack->trapped[] = $user->user_no;
-	continue;
+      foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+	if($filter->DelayTrap($user, $target_uname)) continue 2;
       }
-      //凍傷判定
-      if(in_array($target_uname, $ROLES->stack->snow_trap)) $ROLES->stack->frostbite[] = $user->uname;
 
       //吸血鬼に逃亡した逃亡者を対象者リストに追加
       foreach(array_keys($ROLES->stack->escaper, $user->uname) as $escaper_uname){
@@ -1584,8 +1536,7 @@ function AggregateVoteNight($skip = false){
     //PrintData($vampire_target_list, 'Target [vampire]');
     //PrintData($vampire_killed_list, 'Target [vampire_killed]');
 
-    foreach($ROLES->stack->trapped as $id) $USERS->Kill($id, 'TRAPPED'); //罠死処理
-    $ROLES->stack->trapped = array();
+    foreach($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
     foreach($vampire_killed_list as $id => $flag) $USERS->Kill($id, 'VAMPIRE_KILLED'); //吸血死処理
 
     //吸血処理
@@ -1600,15 +1551,16 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      if(in_array($target_uname, $ROLES->stack->trap)){ //罠死判定
-	$USERS->Kill($user->user_no, 'TRAPPED');
-	continue;
+      foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+	if($filter->TrapStack($user, $target_uname)) continue 2;
       }
-      //凍傷判定
-      if(in_array($target_uname, $ROLES->stack->snow_trap)) $ROLES->stack->frostbite[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
-
+      /*
+      foreach($ROLES->LoadFilter('guard_assassin') as $filter){
+	PrintData($filter);
+      }
+      */
       $stack = array_keys($ROLES->stack->gatekeeper_guard, $target->uname); //門番の護衛判定
       if(count($stack) > 0){
 	//護衛成功メッセージを登録
@@ -1642,15 +1594,16 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      if(in_array($target_uname, $ROLES->stack->trap)){ //罠死判定
-	$ROLES->stack->trapped[] = $user->user_no;
-	continue;
+      foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+	if($filter->DelayTrap($user, $target_uname)) continue 2;
       }
-      //凍傷判定
-      if(in_array($target_uname, $ROLES->stack->snow_trap)) $ROLES->stack->frostbite[] = $user->uname;
 
       $target = $USERS->ByUname($target_uname);
-
+      /*
+      foreach($ROLES->LoadFilter('guard_assassin') as $filter){
+	PrintData($filter);
+      }
+      */
       $stack = array_keys($ROLES->stack->gatekeeper_guard, $target->uname); //門番の護衛判定
       if(count($stack) > 0){
 	//護衛成功メッセージを登録
@@ -1690,9 +1643,7 @@ function AggregateVoteNight($skip = false){
       $new_role = $user->main_role . '[' . ($ogre_times + 1) . ']';
       $user->ReplaceRole($base_role, $new_role);
     }
-
-    foreach($ROLES->stack->trapped as $id) $USERS->Kill($id, 'TRAPPED'); //罠死処理
-    $ROLES->stack->trapped = array();
+    foreach($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
 
     //PrintData($ogre_target_list, 'Target [ogre]');
     foreach($ogre_target_list as $uname => $flag){ //人攫い処理
@@ -2077,16 +2028,11 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      $target = $USERS->ByUname($target_uname); //対象者の情報を取得
-      if(in_array($target->uname, $ROLES->stack->trap)){ //罠が設置されていたら死亡
-	$USERS->Kill($user->user_no, 'TRAPPED');
-	continue;
+      foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+	if($filter->TrapKill($user, $target_uname)) continue 2;
       }
-      //凍傷判定
-      if(in_array($target->uname, $ROLES->stack->snow_trap)) $user->AddDoom(1, 'frostbite');
-
       $ROLES->actor = $user;
-      $ROLES->Load('main_role', true)->Report($target);
+      $ROLES->Load('main_role', true)->Report($USERS->ByUname($target_uname));
     }
   }
 

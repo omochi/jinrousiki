@@ -14,5 +14,5 @@ class Role_blind_guard extends Role_guard{
 
   function GuardAction($user, $flag = false){ $user->AddRole('blinder'); }
 
-  function IsHuntTarget($user){ return false; }
+  function IsHunt($user){ return false; }
 }

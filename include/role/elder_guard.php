@@ -14,5 +14,5 @@ class Role_elder_guard extends Role_guard{
 
   function GuardFailed(){ return mt_rand(0, 9) < 3; }
 
-  function IsHuntTarget($user){ return false; }
+  function IsHunt($user){ return false; }
 }

@@ -16,5 +16,5 @@ class Role_gatekeeper_guard extends Role_guard{
     return true;
   }
 
-  function IsHuntTarget($user){ return false; }
+  function IsHunt($user){ return false; }
 }

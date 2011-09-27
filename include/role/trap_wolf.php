@@ -11,4 +11,9 @@ class Role_trap_wolf extends Role_wolf{
     global $ROOM;
     if($ROOM->date > 2) OutputAbilityResult('ability_trap_wolf', NULL);
   }
+
+  function SetTrap($uname){
+    global $ROLES;
+    $ROLES->stack->trap[$uname] = $uname;
+  }
 }

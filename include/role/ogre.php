@@ -30,6 +30,15 @@ class Role_ogre extends Role{
     return $ROOM->IsEvent('full_ogre') ? 100 : ($ROOM->IsEvent('seal_ogre') ? 0 : NULL);
   }
 
+  //人狼襲撃耐性判定
+  function WolfEatResist(){
+    $rate = mt_rand(1, 100);
+    //$rate = 5; //テスト用
+    $resist_rate = $this->GetResistRate();
+    //PrintData("{$rate} ({$resist_rate})", 'Rate [ogre resist]');
+    return $rate <= $resist_rate;
+  }
+
   //人狼襲撃耐性率取得
   function GetResistRate(){
     $event = $this->GetEvent();

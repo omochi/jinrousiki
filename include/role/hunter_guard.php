@@ -14,5 +14,5 @@ class Role_hunter_guard extends Role_guard{
     if(! $flag) $USERS->Kill($this->GetActor()->user_no, 'WOLF_KILLED');
   }
 
-  function IsHuntTarget($user){ return $user->IsHuntTarget() || $user->IsFox(); }
+  function IsHunt($user){ return $user->IsHuntTarget() || $user->IsFox(); }
 }
