@@ -23,6 +23,7 @@ class Room{
     if(is_null($request)) return;
     if($request->IsVirtualRoom()){
       $stack = $request->TestItems->test_room;
+      $this->event = new StdClass();
       $this->event->rows = $request->TestItems->event;
     }
     else{
@@ -178,6 +179,7 @@ class Room{
       array_keys($this->game_option->options);
 
     if($this->IsRealTime()){
+      $this->real_time = new StdClass();
       $this->real_time->day   = $this->game_option->options['real_time'][0];
       $this->real_time->night = $this->game_option->options['real_time'][1];
     }
@@ -329,7 +331,7 @@ class Room{
 
   //特殊イベント判定
   function IsEvent($type){
-    return $this->event->$type;
+    return method_exists($this->event, $type) && $this->event->$type;
   }
 
   //天候セット

@@ -41,23 +41,23 @@ $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
 $room_delete = false; //DB削除設定
 for($i = $RQ_ARGS->min_room_no; $i <= $RQ_ARGS->max_room_no; $i++){
   $RQ_ARGS->room_no = $i;
-  $ROOM = new Room($RQ_ARGS);
+  $ROOM =& new Room($RQ_ARGS);
   $ROOM->log_mode = true;
   $ROOM->last_date = $ROOM->date;
 
-  $USERS = new UserDataSet($RQ_ARGS);
-  $SELF  = new User();
+  $USERS =& new UserDataSet($RQ_ARGS);
+  $SELF  =& new User();
 
   $RQ_ARGS->reverse_log = false;
   file_put_contents("../log/{$RQ_ARGS->prefix}{$i}.html", GenerateOldLog());
 
   $RQ_ARGS->reverse_log = true;
-  $ROOM = new Room($RQ_ARGS);
+  $ROOM =& new Room($RQ_ARGS);
   $ROOM->log_mode = true;
   $ROOM->last_date = $ROOM->date;
 
-  $USERS = new UserDataSet($RQ_ARGS);
-  $SELF  = new User();
+  $USERS =& new UserDataSet($RQ_ARGS);
+  $SELF  =& new User();
   file_put_contents("../log/{$RQ_ARGS->prefix}{$i}r.html", GenerateOldLog());
   if($room_delete) DeleteRoom($i);
 }

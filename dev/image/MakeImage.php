@@ -2,13 +2,13 @@
 require_once('MessageImageGenerator2.php');
 
 class MessageImageBuilder{
-  public $font = 'azukiL.ttf';
+  public $font = 'azuki.ttf';
   #public $font = 'azukiP.ttf';
   #public $font = 'yutaCo2_ttc_027.ttc';
   #public $font = 'aquafont.ttf';
 
   public $font_path = "C:\\WINDOWS\\Fonts\\";
-  #public $font_path = '/Library/Fonts';
+  //public $font_path = '/Library/Fonts';
 
   public $generator;
   public $list;
@@ -82,6 +82,13 @@ class MessageImageBuilder{
   function Output($name){
     header('Content-Type: image/gif');
     imagegif($this->Generate($name));
+  }
+
+  function Save($name){
+    $image = $this->Generate($name);
+    imagegif($image, "./test/{$name}.gif"); //出力先ディレクトリのパーミッションに注意
+    imagedestroy($image);
+    echo $name . '<br>';
   }
 
   function Test($name){
@@ -404,6 +411,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_^投票数^を +1 することができますが、あなたが_処刑_されたら誰か一人を:熱病:にしてしまいます。\n　その力で村を裕福にしてあげましょう。但しあなたが_処刑_されてしまうとたちまち村に不幸が訪れ、病に伏せる者がでてしまいます。",
     'type' => 'human',
     'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'authority', ':' => 'chicken'));
+
+  public $echo_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#山彦#です。時々、昼の発言時に直前の誰かの発言を#反響#してしまいます。",
+    'type' => 'brownie');
 
   public $sun_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#八咫烏#です。=人狼=に襲撃されたら次の日を全員*公開者*に、_処刑_されたら次の日を全員~目隠し~にしてしまいます。\n　太陽神の御使いとして、村の天上に光り輝く太陽をもたらし昼も夜も全て一緒にまとめてフュージョンし尽くすのです！",
@@ -1690,6 +1701,7 @@ class RoleMessageList{
   public $result_miasma_jealousy = array('message' => "さんは|蛇姫|でした", 'type' => 'result_jealousy');
   public $result_critical_jealousy = array('message' => "さんは|人魚|でした", 'type' => 'result_jealousy');
   public $result_brownie = array('message' => "さんは|座敷童子|でした", 'delimiter' => array('|' => 'brownie'));
+  public $result_echo_brownie = array('message' => "さんは|山彦|でした", 'type' => 'result_brownie');
   public $result_sun_brownie = array('message' => "さんは|八咫烏|でした", 'type' => 'result_brownie');
   public $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
   public $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
@@ -2061,9 +2073,11 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
-//$builder->Test('poison_ogre');
+#$builder->Save('poison_ogre');
+#$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 #$builder->Output('select_assassin');
-$builder->Output('hariti_yaksa');
+$builder->Output('echo_brownie');
+#$builder->Output('hariti_yaksa');
 #$builder->Output('fire_mania');

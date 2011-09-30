@@ -7,7 +7,7 @@ if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
 EncodePostData();
 if($_POST['command'] == 'CREATE_ROOM'){
-  $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
+  $INIT_CONF->LoadClass('USER_ICON', 'TWITTER');
   CreateRoom();
 }
 else{
@@ -20,6 +20,8 @@ $DB_CONF->Disconnect(); //DB 接続解除
 //村のメンテナンス処理
 function MaintenanceRoom(){
   global $ROOM_CONF;
+
+  if($SERVER_CONF->disable_maintenance) return; //スキップ判定
 
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
@@ -43,8 +45,9 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $MESSAGE, $TWITTER;
+  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $TWITTER;
 
+  if($SERVER_CONF->disable_establish) OutputActionResult('村作成 [制限事項]', '村作成はできません');
   if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
@@ -436,6 +439,11 @@ EOF;
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
   global $SERVER_CONF, $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
+
+  if($SERVER_CONF->disable_establish){
+    echo '村作成はできません';
+    return;
+  }
 
   echo <<<EOF
 <form method="POST" action="room_manager.php">

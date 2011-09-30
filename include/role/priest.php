@@ -55,7 +55,7 @@ class Role_priest extends Role{
       break;
 
     case 'odd':
-      $flag = $ROOM->date > 3 && ($ROOM->date % 2) == 0;
+      $flag = $ROOM->date > 1 && ($ROOM->date % 2) == 0;
       break;
 
     case 'both':

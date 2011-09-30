@@ -235,10 +235,10 @@ function drawboldtext($image, $size, $angle, $x_cord, $y_cord, $color, $fontfile
    {
      ImageTTFText($image, $size, $angle, $x_cord+$_x[$n], $y_cord+$_y[$n], $color, $fontfile, $text);
    }
-}*/
-
+}
+*/
 /*
-header("Content-Type: image/png");
+header("Content-Type: image/gif");
 $gen = new MessageImageGenerator("C:\\WINDOWS\\Fonts\\uzura.ttf", 12, 5, 2, false);
 $gen->AddDelimiter(new Delimiter("|",255,0,0));
 $gen->AddDelimiter(new Delimiter("#",0,0,255));

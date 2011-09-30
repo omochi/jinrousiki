@@ -1235,7 +1235,7 @@ function AggregateVoteNight($skip = false){
   $ROLES->stack->guard            = array(); //狩人系の護衛対象
   $ROLES->stack->gatekeeper_guard = array(); //門番の護衛対象
   $ROLES->stack->dummy_guard      = array(); //夢守人の護衛対象
-  $wizard_target_list             = array(); //魔法使い系 (拡散型) の対象
+  $ROLES->stack->spread_wizard    = array(); //結界師の護衛対象
   $ROLES->stack->escaper          = array(); //逃亡者の逃亡先
   $ROLES->stack->sacrifice        = array(); //身代わり死した人
   $anti_voodoo_target_list        = array(); //厄神の護衛対象
@@ -1318,28 +1318,16 @@ function AggregateVoteNight($skip = false){
       $ROLES->actor = $USERS->ByUname($uname);
       $ROLES->Load('main_role', true)->SetGuardTarget($target_uname);
     }
+    if(count($ROLES->stack->guard) > 0) $ROLES->SetClass('guard');
     //PrintData($ROLES->stack->guard, 'Target [guard]');
     //PrintData($ROLES->stack->gatekeeper_guard, 'Target [gatekeeper_guard]');
     //PrintData($ROLES->stack->dummy_guard, 'Target [dummy_guard]');
 
-    //魔法使い系 (拡散型) の情報収集
-    $barrier_rate = $ROOM->IsEvent('full_wizard') ? 1.25 :
-      ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1); //結界師の成功率係数
-    foreach($vote_data['SPREAD_WIZARD_DO'] as $uname => $target_list){
-      $trapped   = false;
-      $frostbite = false;
-      foreach(explode(' ', $target_list) as $id){
-	$target_uname = $USERS->ByID($id)->uname;
-	$wizard_target_list[$uname][] = $target_uname;
-	$trapped   |= in_array($target_uname, $ROLES->stack->trap); //罠死判定
-	$frostbite |= in_array($target_uname, $ROLES->stack->snow_trap); //凍傷判定
-      }
-      if($trapped)
-	$ROLES->stack->trapped[] = $uname;
-      elseif($frostbite)
-	$ROLES->stack->frostbite[] = $uname;
+    foreach($vote_data['SPREAD_WIZARD_DO'] as $uname => $target_list){ //結界師の情報収集
+      $ROLES->actor = $USERS->ByUname($uname);
+      $ROLES->Load('main_role', true)->SetGuardTarget($target_list);
     }
-    //PrintData($wizard_target_list, 'Target [wizard]');
+    //PrintData($ROLES->stack->spread_wizard, 'Target [wizard]');
 
     foreach($vote_data['ESCAPE_DO'] as $uname => $target_uname){ //逃亡者系の情報収集
       $ROLES->actor = $USERS->ByUname($uname);
@@ -1362,11 +1350,8 @@ function AggregateVoteNight($skip = false){
       $USERS->Kill($USERS->UnameToNumber($uname), 'WOLF_KILLED'); //死亡処理
     }
 
-    //狩人系の護衛判定
-    $stack = array_keys($ROLES->stack->guard, $wolf_target->uname); //護衛者を検出
-    foreach($wizard_target_list as $uname => $target_list){ //結界師を追加
-      if(in_array($wolf_target->uname, $target_list) &&
-	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $barrier_rate) $stack[] = $uname;
+    foreach($ROLES->LoadFilter('guard') as $filter){ //狩人系の護衛判定
+      $filter->GetGuard($ROLES->stack->wolf_target->uname, $stack);
     }
     //PrintData($stack, 'List [gurad]');
 
@@ -1383,10 +1368,10 @@ function AggregateVoteNight($skip = false){
 	$guard_flag |= ! ($half_guard && mt_rand(0, 1) > 0) && (! $guard_limited || is_null($flag));
 
 	$filter->GuardAction($voted_wolf); //護衛処理
-	if(! $ROOM->IsOption('seal_message')){ //護衛成功メッセージを登録
+	if(! $ROOM->IsOption('seal_message') &&
+	   $user->IsFirstGuardSuccess($wolf_target->uname)){ //護衛成功メッセージを登録
 	  $ROOM->SystemMessage($user->GetHandleName($wolf_target->uname), 'GUARD_SUCCESS');
 	}
-	$user->guard_success[] = $wolf_target->uname;
       }
       if($guard_flag && ! $voted_wolf->IsSiriusWolf()) break; //護衛成功判定
     }
@@ -1492,14 +1477,9 @@ function AggregateVoteNight($skip = false){
       //狩人系の護衛判定
       $guard_flag = false; //護衛成功フラグ
       $guard_limited = ! $ROOM->IsEvent('full_guard') && $target->IsGuardLimited(); //護衛制限判定
-      $stack = array_keys($ROLES->stack->guard, $target->uname); //護衛者を検出
-      foreach($wizard_target_list as $wizard_uname => $target_list){ //結界師を追加
-	if(in_array($target->uname, $target_list) &&
-	   mt_rand(1, 100) <= (100 - count($target_list) * 20) * $barrier_rate){
-	  $stack[] = $wizard_uname;
-	}
-      }
-      //PrintData($stack, 'List [gurad]');
+      //護衛者を検出
+      foreach($ROLES->LoadFilter('guard') as $filter) $filter->GetGuard($target->uname, $stack);
+      //PrintData($stack, 'List [gurad/vampire]');
 
       foreach($stack as $guard_uname){
 	$guard_user = $USERS->ByUname($guard_uname);
@@ -1621,6 +1601,7 @@ function AggregateVoteNight($skip = false){
       $ROLES->actor = new User('reverse_assassin');
       $ROLES->Load('main_role', true)->AssassinKill();
     }
+    unset($ROLES->stack->reverse_assassin);
     //PrintData($ROLES->stack->reverse, 'ReverseList'); //テスト用
 
     foreach($ROLES->stack->frostbite as $uname){ //凍傷処理

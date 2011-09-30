@@ -1,12 +1,9 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β11
+  変更履歴 from Ver. 1.5.0β12
   + Message
   + GameOptionMessage
-    - 追加：$seal_message, $fox, $child_fox, $boost_rate_f;
-
   + GameOptionCaptionMessage
-    - 追加：$seal_message, $fox, $child_fox
 */
 //-- 基本システムメッセージ --//
 class Message{

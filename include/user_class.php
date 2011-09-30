@@ -138,7 +138,10 @@ class User{
   }
 
   //死の宣告系の宣告日を取得
-  function GetDoomDate($role){ return max($this->GetPartner($role)); }
+  function GetDoomDate($role){
+
+    return max($this->GetPartner($role));
+  }
 
   //現在の仮想的な生死情報
   function IsDeadFlag($strict = false){

@@ -37,6 +37,12 @@ class Role_guard extends Role{
     return true;
   }
 
+  //護衛成功者検出
+  function GetGuard($uname, &$list){
+    global $ROLES;
+    $list = array_keys($ROLES->stack->guard, $uname);
+  }
+
   //護衛失敗判定
   function GuardFailed(){ return false; }
 

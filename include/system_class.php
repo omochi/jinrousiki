@@ -1,6 +1,7 @@
 <?php
 //-- データベース処理の基底クラス --//
 class DatabaseConfigBase{
+  public $db_handle;
   //データベース接続
   /*
     $header : HTML ヘッダ出力情報 [true: 出力済み / false: 未出力]
@@ -31,8 +32,8 @@ class DatabaseConfigBase{
 
   //データベース名変更
   function ChangeName($id){
-    if(is_null($name = $this->name_list[$id - 1])) return;
-    $this->name = $name;
+    $id--;
+    if(in_array($id, $this->name_list)) $this->name = $this->name_list[$id];
   }
 
   //エラー出力 ($header, $exit は Connect() 参照)
@@ -264,7 +265,7 @@ class ImageManager{
 
 //-- 勝利陣営の画像処理の基底クラス --//
 class VictoryImageBase extends ImageManager{
-  function Generate($name){
+  function Generate($name, $alt = NULL, $table = NULL){
     switch($name){
     case 'human':
       $alt = '村人勝利';
@@ -471,6 +472,7 @@ class RoleData{
     'miasma_jealousy'      => '蛇姫',
     'critical_jealousy'    => '人魚',
     'brownie'              => '座敷童子',
+    'echo_brownie'         => '山彦',
     'sun_brownie'          => '八咫烏',
     'revive_brownie'       => '蛇神',
     'cursed_brownie'       => '祟神',
@@ -871,6 +873,7 @@ class RoleData{
     'miasma_jealousy'      => '蛇姫',
     'critical_jealousy'    => '魚',
     'brownie'              => '童',
+    'echo_brownie'         => '彦',
     'sun_brownie'          => '烏',
     'revive_brownie'       => '蛇',
     'cursed_brownie'       => '祟',

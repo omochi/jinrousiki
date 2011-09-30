@@ -4,7 +4,7 @@ class RequestBase{
   function GetItems($items){
     $spec_list = func_get_args();
     $processor = array_shift($spec_list);
-    $src_list  = array('get' => $_GET, 'post' => $_POST, 'file' => $_FILES['file']);
+    $src_list  = @array('get' => $_GET, 'post' => $_POST, 'file' => $_FILES['file']);
     foreach($spec_list as $spec){
       list($src, $item) = explode('.', $spec);
       if(array_key_exists($src, $src_list)){

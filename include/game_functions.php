@@ -791,8 +791,10 @@ function OutputTalk($talk, &$builder){
       case 'common': //共有者
 	if($builder->flag->common || $flag_mind_read)
 	  return $builder->AddTalk($said_user, $talk);
-	elseif(! $said_user->IsRole('hermit_common')) //隠者は見えない
+	elseif(! $said_user->IsRole('hermit_common')){ //隠者は見えない
+	  //for($i = 0; $i < mt_rand(0, 2); $i++) $builder->AddWhisper('common', $talk);
 	  return $builder->AddWhisper('common', $talk);
+	}
 	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
 	  return $builder->AddWhisper('lovers', $talk);
 	else
@@ -801,8 +803,10 @@ function OutputTalk($talk, &$builder){
       case 'wolf': //人狼
 	if($builder->flag->wolf || $flag_mind_read)
 	  return $builder->AddTalk($said_user, $talk);
-	elseif(! $said_user->IsRole('quiet_wolf')) //静狼は見えない
+	elseif(! $said_user->IsRole('quiet_wolf')){ //静狼は見えない
+	  //for($i = 0; $i < mt_rand(0, 2); $i++) $builder->AddWhisper('wolf', $talk);
 	  return $builder->AddWhisper('wolf', $talk);
+	}
 	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
 	  return $builder->AddWhisper('lovers', $talk);
 	else

@@ -33,18 +33,14 @@ SendCookie($OBJECTION); //必要なクッキーをセットする
 if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは bottom フレーム
   ConvertSay($RQ_ARGS->say); //発言置換処理
 
-  if($RQ_ARGS->say == ''){
+  if($RQ_ARGS->say == '')
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
-  }
-  elseif($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame())){
+  elseif($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame()))
     EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
-  }
-  elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night){
+  elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night)
     Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
-  }
-  else{
+  else
     CheckSilence(); //発言ができない状態ならゲーム停滞チェック
-  }
 
   if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
     $SELF->Update('last_load_day_night', $ROOM->day_night);
@@ -194,39 +190,40 @@ function Say($say){
     elseif($spend_time > 4) $spend_time = 4; //最大は 4
   }
 
-  if(! $ROOM->IsPlaying()){ //ゲーム開始前後はそのまま発言
-    Write($say, $ROOM->day_night, 0, true);
-  }
+  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->day_night, 0, true); //ゲーム開始前後
   //身代わり君 (仮想 GM 対応) は遺言を専用のシステムメッセージに切り替え
-  elseif($SELF->IsDummyBoy() && $RQ_ARGS->last_words){
-    Write($say, "{$ROOM->day_night} dummy_boy", 0); //発言時間を更新しない
+  if($SELF->IsDummyBoy() && $RQ_ARGS->last_words){
+    return Write($say, "{$ROOM->day_night} dummy_boy", 0); //発言時間を更新しない
   }
-  elseif($SELF->IsDead()){ //死亡者の霊話
-    Write($say, 'heaven', 0); //発言時間を更新しない
+  if($SELF->IsDead()) Write($say, 'heaven', 0); //死者の霊話 (発言更新を更新しない
+
+  if($left_time < 1) return; //制限時間外ならスキップ (ここに来るのは生存者のみのはず)
+  if($ROOM->IsDay()){ //昼はそのまま発言
+    if($ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
+    if($SELF->IsRole('echo_brownie') && mt_rand(1, 10) < 3){ //山彦の処理
+      $query = 'SELECT sentence FROM talk' . $ROOM->GetQuery() .
+	' AND location = "' . $ROOM->day_night . '" ORDER BY talk_id DESC LIMIT 5';
+      $stack = FetchArray($query);
+      if(count($stack) > 0) Write(GetRandom($stack), $ROOM->day_night, 0);
+    }
+    Write($say, 'day', $spend_time, true);
   }
-  elseif($SELF->IsLive() && $left_time > 0){ //生存者で制限時間内
-    if($ROOM->IsDay()){ //昼はそのまま発言
-      if(! $ROOM->IsEvent('wait_morning')) Write($say, 'day', $spend_time, true);
-    }
-    elseif($ROOM->IsNight()){ //夜は役職毎に分ける
-      $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
-      if(! $update) $spend_time = 0;
+  elseif($ROOM->IsNight()){ //夜は役職毎に分ける
+    if($ROOM->IsEvent('blind_talk_night')) //天候：風雨
+      $location = 'self_talk';
+    elseif($user->IsWolf(true)) //人狼
+      $location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
+    elseif($user->IsRole('whisper_mad')) //囁き狂人
+      $location = 'mad';
+    elseif($user->IsCommon(true)) //共有者
+      $location = 'common';
+    elseif($user->IsFox(true)) //妖狐
+      $location = 'fox';
+    else //独り言
+      $location = 'self_talk';
 
-      if($ROOM->IsEvent('blind_talk_night')) //天候：風雨
-	$location = 'self_talk';
-      elseif($user->IsWolf(true)) //人狼
-	$location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
-      elseif($user->IsRole('whisper_mad')) //囁き狂人
-	$location = 'mad';
-      elseif($user->IsCommon(true)) //共有者
-	$location = 'common';
-      elseif($user->IsFox(true)) //妖狐
-	$location = 'fox';
-      else //独り言
-	$location = 'self_talk';
-
-      Write($say, 'night ' . $location, $spend_time, $update);
-    }
+    $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
+    Write($say, 'night ' . $location, $update ? $spend_time : 0, $update);
   }
 }
 

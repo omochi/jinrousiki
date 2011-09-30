@@ -106,10 +106,12 @@ class InitializeConfig{
 
   //コンストラクタ
   function __construct(){
+    $this->path = new StdClass();
     $this->path->root    = JINRO_ROOT;
     $this->path->config  = JINRO_CONF;
     $this->path->include = JINRO_INC;
     $this->path->module  = JINRO_MOD;
+    $this->loaded = new StdClass();
     $this->loaded->file  = array();
     $this->loaded->class = array();
   }
@@ -130,11 +132,8 @@ class InitializeConfig{
 
   //依存解決処理
   function LoadDependence($name){
-    $depend_file = $this->depend_file[$name];
-    if(! is_null($depend_file)) $this->LoadFile($depend_file);
-
-    $depend_class = $this->depend_class[$name];
-    if(! is_null($depend_class)) $this->LoadClass($depend_class);
+    if(array_key_exists($name, $this->depend_file)) $this->LoadFile($this->depend_file[$name]);
+    if(array_key_exists($name, $this->depend_class)) $this->LoadClass($this->depend_class[$name]);
   }
 
   function LoadFile($name){
@@ -167,7 +166,7 @@ class InitializeConfig{
     case 'paparazzi':
     case 'paparazzi_class':
     case 'role_class':
-      $path = $this->path->include . '/' . array_shift(explode('_', $name));
+      $path = $this->path->include . '/' . @array_shift(explode('_', $name));
       break;
 
     default:

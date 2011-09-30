@@ -77,10 +77,16 @@ class ServerConfig{
   //村作成パスワード (NULL 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
   public $room_password = NULL;
 
-  //村立てテストモード (村立ての DB アクセス処理をスキップします。開発者テスト用スイッチです)
+  //村作成テストモード (村作成時の DB アクセス処理をスキップします。開発者テスト用スイッチです)
   public $dry_run_mode = false;
 
-  //村情報非表示モード (村立てテストなどの開発者テスト用スイッチです)
+  //村作成禁止 (true にすると村の作成画面が表示されず、村を作成できなくなります)
+  public $disable_establish = false;
+
+  //村メンテナンス停止 (true にすると村の自動廃村処理などが実行されなくなります)
+  public $disable_maintenance = false;
+
+  //村情報非表示モード (村作成テストなどの開発者テスト用スイッチです)
   public $secret_room = false;
 
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
@@ -211,7 +217,7 @@ class SharedServerConfig extends ExternalLinkBuilder{
 			'encode' => 'EUC-JP',
 			'separator' => '',
 			'footer' => '',
-			'disable' => false),
+			'disable' => true),
 
     'prg_i' => array('name' => 'Twitter鯖',
 		     'url' => 'http://www28.atpages.jp/pururiru/jinrou/',

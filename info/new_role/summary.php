@@ -78,7 +78,7 @@ Ver. 1.5.0
 <a href="#ver150a6">α6</a>
 <a href="#ver150a7">α7</a>
 <a href="#ver150a8">α8</a>
-<a href="#ver150a9">α9</a>
+<a href="#ver150a9">α9</a><br>
 <a href="#ver150b1">β1</a>
 <a href="#ver150b2">β2</a>
 <a href="#ver150b3">β3</a>
@@ -90,6 +90,7 @@ Ver. 1.5.0
 <a href="#ver150b10">β10</a>
 <a href="#ver150b11">β11</a>
 <a href="#ver150b12">β12</a>
+<a href="#ver150b13">β13</a>
 </p>
 
 <p>
@@ -123,7 +124,7 @@ Ver. 1.4.0
 <a href="#sub_ver140b22">β22</a><br>
 Ver. 1.5.0
 <a href="#sub_ver150a5">α5</a>
-<a href="#sub_ver150a9">α9</a>
+<a href="#sub_ver150a9">α9</a><br>
 <a href="#sub_ver150b1">β1</a>
 <a href="#sub_ver150b3">β3</a>
 <a href="#sub_ver150b4">β4</a>
@@ -2715,6 +2716,15 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">人狼の襲撃で死亡したらコピー先を蘇生する上位鵺。</td>
   <td>Ver. 1.5.0 β12</td>
+</tr>
+<tr id="ver150b13">
+  <td><a href="human.php#echo_brownie">山彦</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">昼の発言時に一定確率で直前の発言を発言 (反響) してしまう座敷童子の亜種。</td>
+  <td>Ver. 1.5.0 β13</td>
 </tr>
 </table>
 

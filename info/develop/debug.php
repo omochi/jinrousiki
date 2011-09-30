@@ -39,21 +39,21 @@ Ver. 1.5.0
 <h3>include/role/role_class.php % 217行目付近 (2011/09/26 (Mon) 04:07)</h3>
 <h4>[before]</h4>
 <pre>
-function __construct(){
-  $this->role = array_pop(explode('Role_', get_class($this)));
-  if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
-}
+  function __construct(){
+    $this->role = array_pop(explode('Role_', get_class($this)));
+    if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+  }
 </pre>
 <h4>[after]</h4>
 <pre>
-function __construct(){
-  $this->role = array_pop(explode('Role_', get_class($this)));
-  if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
-}
+  function __construct(){
+    $this->role = array_pop(explode('Role_', get_class($this)));
+    if(isset($this->mix_in)) $this->LoadMix($this->mix_in);
+  }
 
-function __call($name, $args){
-  return call_user_func_array(array($this->filter, $name), $args);
-}
+  function __call($name, $args){
+    return call_user_func_array(array($this->filter, $name), $args);
+  }
 </pre>
 
 <h3>include/game_vote_functions.php % 2433行目付近 (2011/09/26 (Mon) 19:25)</h3>
@@ -66,6 +66,12 @@ $target->ReturnPossessed('possessed');
 <h4>[after]</h4>
 <pre>
 $target->ReturnPossessed('possessed');
+</pre>
+
+<h3>include/role/priest.php % 58行目付近 (2011/09/29 (Thu) 03:20)</h3>
+<pre>
+× $flag = $ROOM->date > 3 && ($ROOM->date % 2) == 0;
+○ $flag = $ROOM->date > 1 && ($ROOM->date % 2) == 0;
 </pre>
 
 <h2 id="ver150b11">Ver. 1.5.0 β11</h2>

@@ -117,6 +117,9 @@ class RoleManager{
   //罠
   public $trap_list = array('trap_mad', 'snow_trap_mad');
 
+  //護衛能力者
+  public $guard_list = array('guard', 'barrier_wizard');
+
   //暗殺防衛
   public $guard_assassin_list = array('gatekeeper_guard');
 
@@ -126,6 +129,7 @@ class RoleManager{
 
   function __construct(){
     $this->path = JINRO_INC . '/role';
+    $this->loaded = new StdClass();
     $this->loaded->file = array();
     $this->loaded->class = array();
   }
