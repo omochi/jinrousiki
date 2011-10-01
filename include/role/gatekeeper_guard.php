@@ -9,10 +9,8 @@ class Role_gatekeeper_guard extends Role_guard{
   function __construct(){ parent::__construct(); }
 
   function SetGuardTarget($uname){
-    global $ROLES;
-
     if(! parent::SetGuardTarget($uname)) return false;
-    $ROLES->stack->gatekeeper_guard[$this->GetActor()->uname] = $uname;
+    $this->AddGuardStack($uname);
     return true;
   }
 

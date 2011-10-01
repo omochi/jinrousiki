@@ -12,4 +12,25 @@ class Role_dream_eater_mad extends Role{
     parent::OutputAbility();
     if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'dream_eat', 'DREAM_EAT');
   }
+
+  //夢食い処理
+  function DreamEat($user){
+    global $ROOM, $USERS, $ROLES;
+
+    $actor = $this->GetActor();
+    if($user->IsLiveRole('dummy_guard', true)){ //対象が夢守人なら返り討ちに合う
+      $USERS->Kill($actor->user_no, 'HUNTED');
+      if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
+	$ROOM->SystemMessage($user->handle_name . "\t" . $actor->handle_name, 'GUARD_HUNTED');
+      }
+      return;
+    }
+
+    foreach($ROLES->LoadFilter('dummy_guard') as $filter){ //夢守人の護衛判定
+      if($filter->GuardDream($actor, $user->uname)) return;
+    }
+
+    //夢食い判定 (夢系能力者・妖精系)
+    if($user->IsRoleGroup('dummy', 'fairy')) $USERS->Kill($user->user_no, 'DREAM_KILLED');
+  }
 }

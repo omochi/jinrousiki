@@ -1518,6 +1518,7 @@ function AggregateVoteNight($skip = false){
 
     foreach($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
     foreach($vampire_killed_list as $id => $flag) $USERS->Kill($id, 'VAMPIRE_KILLED'); //吸血死処理
+    unset($vampire_killed_list);
 
     //吸血処理
     foreach($vampire_target_list as $uname => $stack){
@@ -1525,6 +1526,7 @@ function AggregateVoteNight($skip = false){
       $filter = $ROLES->Load('main_role', true);
       foreach($stack as $target_uname) $filter->Infect($USERS->ByUname($target_uname));
     }
+    unset($vampire_target_list);
 
     $ROLES->stack->assassin = array(); //暗殺対象者リスト
     foreach($vote_data['ASSASSIN_DO'] as $uname => $target_uname){ //暗殺者の情報収集
@@ -1615,60 +1617,13 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      $target = $USERS->ByUname($target_uname); //対象者の情報を取得
-      $str = "\t" . $user->handle_name;
-
-      if($target->IsLiveRole('dummy_guard', true)){ //対象が夢守人なら返り討ちに合う
-	$USERS->Kill($user->user_no, 'HUNTED');
-	if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
-	  $ROOM->SystemMessage($target->handle_name . $str, 'GUARD_HUNTED');
-	}
-	continue;
-      }
-
-      if(in_array($target->uname, $ROLES->stack->dummy_guard)){ //夢守人の護衛判定
-	$hunted_flag = false;
-	foreach(array_keys($ROLES->stack->dummy_guard, $target->uname) as $uname){ //護衛者を検出
-	  $guard_user = $USERS->ByUname($uname);
-	  if($guard_user->IsDead(true)) continue; //直前に死んでいたら無効
-	  $hunted_flag = true;
-	  if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
-	    $ROOM->SystemMessage($guard_user->handle_name . $str, 'GUARD_HUNTED');
-	  }
-	}
-
-	if($hunted_flag){
-	  $USERS->Kill($user->user_no, 'HUNTED');
-	  continue;
-	}
-      }
-
-      //夢食い判定 (夢系能力者・妖精系)
-      if($target->IsRoleGroup('dummy', 'fairy')) $USERS->Kill($target->user_no, 'DREAM_KILLED');
+      $ROLES->actor = $user;
+      $ROLES->Load('main_role', true)->DreamEat($USERS->ByUname($target_uname));
     }
 
     $hunted_list = array(); //狩り成功者リスト
-    foreach($ROLES->stack->dummy_guard as $uname => $target_uname){ //夢守人の処理
-      $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //直前に死んでいたら無効
-
-      $target = $USERS->ByUname($target_uname);
-      if(($target->IsRole('dream_eater_mad') || $target->IsRoleGroup('fairy')) &&
-	 $target->IsLive(true)){ //狩り判定 (獏・妖精系)
-	$hunted_list[$user->handle_name] = $target;
-      }
-
-      //常時護衛成功メッセージだけが出る
-      $ROOM->SystemMessage($user->GetHandleName($target->uname), 'GUARD_SUCCESS');
-    }
-
-    foreach($hunted_list as $handle_name => $target){ //夢狩り処理
-      $USERS->Kill($target->user_no, 'HUNTED');
-      //憑依能力者は対象外なので仮想ユーザを引く必要なし
-      if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
-	$ROOM->SystemMessage($handle_name . "\t" . $target->handle_name, 'GUARD_HUNTED');
-      }
-    }
+    foreach($ROLES->LoadFilter('dummy_guard') as $filter) $filter->DreamGuard($hunted_list);
+    foreach($ROLES->LoadFilter('dummy_guard') as $filter) $filter->DreamHunt($hunted_list);
     unset($hunted_list);
 
     //-- 呪い系レイヤー --//

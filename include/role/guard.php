@@ -28,20 +28,21 @@ class Role_guard extends Role{
 
     if($ROOM->IsEvent('no_contact')) return false; //花曇ならスキップ
 
-    $user = $this->GetActor();
-    $ROLES->stack->guard[$user->uname] = $uname;
-
+    $this->AddGuardStack($uname, 'guard');
     foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
-      if($filter->DelayTrap($user, $uname)) break;
+      if($filter->DelayTrap($this->GetActor(), $uname)) break;
     }
     return true;
   }
 
-  //護衛成功者検出
-  function GetGuard($uname, &$list){
+  //護衛先情報追加
+  function AddGuardStack($uname, $role = NULL){
     global $ROLES;
-    $list = array_keys($ROLES->stack->guard, $uname);
+    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetActor()->uname] = $uname;
   }
+
+  //護衛成功者検出
+  function GetGuard($uname, &$list){ $list = array_keys($this->GetStack('guard'), $uname); }
 
   //護衛失敗判定
   function GuardFailed(){ return false; }

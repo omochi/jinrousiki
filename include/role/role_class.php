@@ -123,6 +123,9 @@ class RoleManager{
   //暗殺防衛
   public $guard_assassin_list = array('gatekeeper_guard');
 
+  //夢護衛
+  public $dummy_guard_list = array('dummy_guard');
+
   //復活
   public $resurrect_list = array(
     'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_ogre', 'revive_avenger');
@@ -130,7 +133,7 @@ class RoleManager{
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded = new StdClass();
-    $this->loaded->file = array();
+    $this->loaded->file  = array();
     $this->loaded->class = array();
   }
 
@@ -270,9 +273,9 @@ class Role{
   }
 
   //データ取得
-  function GetStack($data = NULL){
+  function GetStack($name = NULL){
     global $ROLES;
-    $target = is_null($data) ? $this->role : $data;
+    $target = is_null($name) ? $this->role : $name;
     return $ROLES->stack->$target;
   }
 
