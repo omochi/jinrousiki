@@ -126,6 +126,9 @@ class RoleManager{
   //夢護衛
   public $dummy_guard_list = array('dummy_guard');
 
+  //厄払い
+  public $anti_voodoo_list = array('anti_voodoo');
+
   //復活
   public $resurrect_list = array(
     'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_ogre', 'revive_avenger');
@@ -284,6 +287,18 @@ class Role{
 
   //人狼襲撃対象者取得
   function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
+
+  //データ追加
+  function AddStack($uname, $role = NULL){
+    global $ROLES;
+    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetActor()->uname] = $uname;
+  }
+
+  //成功データ追加
+  function AddSuccess($target, $data = NULL, $null = false){
+    global $ROLES;
+    $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? NULL : true;
+  }
 
   //スキップ判定
   function Ignored(){

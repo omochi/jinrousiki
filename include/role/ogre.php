@@ -80,10 +80,7 @@ class Role_ogre extends Role{
   }
 
   //人攫い実行処理
-  function AssassinAction($user){
-    global $ROLES;
-    $ROLES->stack->ogre[$user->user_no] = true;
-  }
+  function AssassinAction($user){ $this->AddSuccess($user->user_no, 'ogre'); }
 
   //人攫い死処理
   function AssassinKill(){

@@ -10,14 +10,11 @@ class Role_soul_assassin extends Role_assassin{
   function __construct(){ parent::__construct(); }
 
   function Assassin($user){
-    global $ROOM, $USERS, $ROLES;
+    global $ROOM, $USERS;
 
-    if($user->IsDead(true)) return;
+    if(! parent::Assassin($user)) return false;
     $str = $this->GetActor()->GetHandleName($user->uname, $user->main_role);
     $ROOM->SystemMessage($str, 'ASSASSIN_RESULT');
-
-    //暗殺先が毒能力者なら死亡
-    if($user->IsPoison()) $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night');
-    $ROLES->stack->assassin[$user->uname] = true;
+    if($user->IsPoison()) $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night'); //毒死判定
   }
 }

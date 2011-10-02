@@ -10,7 +10,7 @@ class Role_gatekeeper_guard extends Role_guard{
 
   function SetGuardTarget($uname){
     if(! parent::SetGuardTarget($uname)) return false;
-    $this->AddGuardStack($uname);
+    $this->AddStack($uname);
     return true;
   }
 

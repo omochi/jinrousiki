@@ -1228,21 +1228,20 @@ function AggregateVoteNight($skip = false){
   //PrintData($vote_data);
 
   //-- 変数の初期化 --//
-  $ROLES->stack->trap             = array(); //罠師の罠の設置先
-  $ROLES->stack->trapped          = array(); //罠死予定者
-  $ROLES->stack->snow_trap        = array(); //雪女の罠の設置先
-  $ROLES->stack->frostbite        = array(); //凍傷予定者
-  $ROLES->stack->guard            = array(); //狩人系の護衛対象
-  $ROLES->stack->gatekeeper_guard = array(); //門番の護衛対象
-  $ROLES->stack->dummy_guard      = array(); //夢守人の護衛対象
-  $ROLES->stack->spread_wizard    = array(); //結界師の護衛対象
-  $ROLES->stack->escaper          = array(); //逃亡者の逃亡先
-  $ROLES->stack->sacrifice        = array(); //身代わり死した人
-  $anti_voodoo_target_list        = array(); //厄神の護衛対象
-  $anti_voodoo_success_list       = array(); //厄払い成功者
-  $ROLES->stack->reverse_assassin = array(); //反魂師の対象
-  $possessed_target_list          = array(); //憑依予定者 => 憑依成立フラグ
-  $possessed_target_id_list       = array(); //憑依対象者
+  $ROLES->stack->trap                = array(); //罠師の罠の設置先
+  $ROLES->stack->trapped             = array(); //罠死予定者
+  $ROLES->stack->snow_trap           = array(); //雪女の罠の設置先
+  $ROLES->stack->frostbite           = array(); //凍傷予定者
+  $ROLES->stack->guard               = array(); //狩人系の護衛対象
+  $ROLES->stack->gatekeeper_guard    = array(); //門番の護衛対象
+  $ROLES->stack->dummy_guard         = array(); //夢守人の護衛対象
+  $ROLES->stack->spread_wizard       = array(); //結界師の護衛対象
+  $ROLES->stack->escaper             = array(); //逃亡者の逃亡先
+  $ROLES->stack->sacrifice           = array(); //身代わり死した人
+  $ROLES->stack->anti_voodoo         = array(); //厄神の護衛対象
+  $ROLES->stack->anti_voodoo_success = array(); //厄払い成功者
+  $ROLES->stack->reverse_assassin    = array(); //反魂師の対象
+  $ROLES->stack->possessed           = array(); //憑依予定者 => 憑依成立フラグ
 
   //-- 天候の処理 --//
   $stack = array();
@@ -1309,9 +1308,7 @@ function AggregateVoteNight($skip = false){
     if(count($ROLES->stack->trap) > 0) $ROLES->SetClass('trap_mad');
     foreach($ROLES->LoadFilter('trap') as $filter) $filter->TrapToTrap(); //罠能力者の罠判定
     //PrintData($ROLES->stack->trap, 'Target [trap]');
-    //PrintData($ROLES->stack->snow_trap, 'Target [snow_trap]');
-    //PrintData($ROLES->stack->trapped, 'Trapped [trap]');
-    //PrintData($ROLES->stack->frostbite, 'Frostbite [trap]');
+    //PrintData($ROLES->stack->trapped, 'Trap [trap]');
 
     $half_guard = $ROOM->IsEvent('half_guard'); //曇天
     foreach($vote_data['GUARD_DO'] as $uname => $target_uname){ //狩人系の護衛先をセット
@@ -1320,8 +1317,6 @@ function AggregateVoteNight($skip = false){
     }
     if(count($ROLES->stack->guard) > 0) $ROLES->SetClass('guard');
     //PrintData($ROLES->stack->guard, 'Target [guard]');
-    //PrintData($ROLES->stack->gatekeeper_guard, 'Target [gatekeeper_guard]');
-    //PrintData($ROLES->stack->dummy_guard, 'Target [dummy_guard]');
 
     foreach($vote_data['SPREAD_WIZARD_DO'] as $uname => $target_list){ //結界師の情報収集
       $ROLES->actor = $USERS->ByUname($uname);
@@ -1419,7 +1414,7 @@ function AggregateVoteNight($skip = false){
     }
 
     //-- 襲撃処理 --//
-    $wolf_filter->WolfKill($wolf_target, $possessed_target_list);
+    $wolf_filter->WolfKill($wolf_target, $ROLES->stack->possessed);
     $wolf_target->wolf_killed = true;
 
     if($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()){ //-- 毒死判定 --//
@@ -1434,7 +1429,7 @@ function AggregateVoteNight($skip = false){
       $ROLES->Load('main_role', true)->PoisonDead();
     }
   }while(false);
-  //PrintData($possessed_target_list, 'PossessedTarget [possessed_wolf]');
+  //PrintData($ROLES->stack->possessed, 'Possessed [possessed_wolf]');
 
   if($ROOM->date > 1){
     foreach($vote_data['DEATH_NOTE_DO'] as $uname => $target_uname){ //デスノートの処理
@@ -1543,7 +1538,7 @@ function AggregateVoteNight($skip = false){
       $target = $USERS->ByUname($target_uname);
       if($target->IsRoleGroup('escaper')) continue; //逃亡者は無効
       if($target->IsRefrectAssassin()){ //反射判定
-	$ROLES->stack->assassin[$uname] = true;
+	$ROLES->stack->assassin[$user->user_no] = true;
 	continue;
       }
 
@@ -1631,93 +1626,40 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      $target = $USERS->ByUname($target_uname);
-      $anti_voodoo_target_list[$user->uname] = $target->uname;
-
-      //憑依予定先ならキャンセル
-      $possessed_list = array_keys($possessed_target_list, $target->uname);
-      if(count($possessed_list) > 0){
-	foreach($possessed_list as $possessed_uname){
-	  $USERS->ByUname($possessed_uname)->possessed_cancel = true;
-	}
-      }
-      //憑依者なら強制送還
-      elseif($target->IsPossessedGroup() && $target != $USERS->ByVirtual($target->user_no)){
-	if(! array_key_exists($target->uname, $possessed_target_list)){
-	  $possessed_target_list[$target->uname] = NULL; //憑依リストに追加
-	}
-	$target->possessed_reset = true;
-      }
-      //襲撃を行った憑狼ならキャンセル
-      elseif($voted_wolf->IsRole('possessed_wolf') && $voted_wolf->IsSame($target->uname)){
-	$voted_wolf->possessed_cancel = true;
-      }
-      else{
-	continue;
-      }
-      $anti_voodoo_success_list[$target->uname] = true;
+      $ROLES->actor = $user;
+      $ROLES->Load('main_role', true)->SetGuard($USERS->ByUname($target_uname));
     }
-    //PrintData($possessed_target_list, 'PossessedTarget [anti_voodoo]'); //テスト用
+    //PrintData($ROLES->stack->anti_voodoo, 'Target [anti_voodoo]');
   }
 
-  $voodoo_killer_target_list  = array(); //陰陽師の解呪対象リスト
-  $voodoo_killer_success_list = array(); //陰陽師の解呪成功者対象リスト
+  $ROLES->stack->voodoo_killer         = array(); //陰陽師の解呪対象リスト
+  $ROLES->stack->voodoo_killer_success = array(); //陰陽師の解呪成功者対象リスト
   foreach($vote_data['VOODOO_KILLER_DO'] as $uname => $target_uname){ //陰陽師の情報収集
     $user = $USERS->ByUname($uname);
     if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-    $target = $USERS->ByUname($target_uname);
-
-    //呪殺判定 (呪い所持者・憑依能力者)
-    if($target->IsLive(true) && ($target->IsRoleGroup('cursed') || $target->IsPossessedGroup())){
-      $USERS->Kill($target->user_no, 'CURSED');
-      $voodoo_killer_success_list[$target->uname] = true;
-    }
-
-    //憑依予定先ならキャンセル
-    $possessed_list = array_keys($possessed_target_list, $target->uname);
-    if(count($possessed_list) > 0){
-      foreach($possessed_list as $possessed_uname){
-	$USERS->ByUname($possessed_uname)->possessed_cancel = true;
-      }
-      $voodoo_killer_success_list[$target->uname] = true;
-    }
-
-    $voodoo_killer_target_list[$user->uname] = $target->uname; //解呪対象リストに追加
+    $ROLES->actor = $user;
+    $ROLES->Load('main_role', true)->Mage($USERS->ByUname($target_uname));
   }
+  //PrintData($ROLES->stack->voodoo_killer, 'Target [voodoo_killer]');
+  //PrintData($ROLES->stack->voodoo_killer_success, 'Success [voodoo_killer]');
 
   //呪術系能力者の処理
-  $voodoo_target_list = array(); //呪術系能力者の対象リスト
+  $ROLES->stack->voodoo = array(); //呪術系能力者の対象リスト
   foreach($vote_data['VOODOO_MAD_DO'] + $vote_data['VOODOO_FOX_DO'] as $uname => $target_uname){
     $user = $USERS->ByUname($uname);
     if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-    $target = $USERS->ByUname($target_uname);
-    if(! $ROOM->IsEvent('no_cursed') && $target->IsLiveRoleGroup('cursed')){ //呪返し判定
-      if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
-	$anti_voodoo_success_list[$user->uname] = true;
-      }
-      else{
-	$USERS->Kill($user->user_no, 'CURSED');
-	continue;
-      }
-    }
-
-    if(in_array($target->uname, $voodoo_killer_target_list)) //陰陽師の解呪判定
-      $voodoo_killer_success_list[$target->uname] = true;
-    else
-      $voodoo_target_list[$user->uname] = $target->uname;
+    $ROLES->actor = $user;
+    $ROLES->Load('main_role', true)->SetVoodoo($USERS->ByUname($target_uname));
   }
+  //PrintData($ROLES->stack->voodoo, 'Target [voodoo]');
+  //PrintData($ROLES->stack->voodoo_killer_success, 'Success [voodoo_killer/voodoo]');
+  //PrintData($ROLES->stack->anti_voodoo_success, 'Success [anti_voodoo/voodoo]');
 
-  //呪術系能力者の対象先が重なった場合は呪返しを受ける
-  $voodoo_count_list = array_count_values($voodoo_target_list);
-  foreach($voodoo_target_list as $uname => $target_uname){
-    if($voodoo_count_list[$target_uname] < 2) continue;
-
-    if(in_array($uname, $anti_voodoo_target_list)) //厄神の護衛判定
-      $anti_voodoo_success_list[$uname] = true;
-    else
-      $USERS->Kill($USERS->UnameToNumber($uname), 'CURSED');
+  if(count($ROLES->stack->voodoo) > 0){ //呪術系能力者の対象先が重なった場合は呪返しを受ける
+    $ROLES->actor = new User('voodoo_mad');
+    $ROLES->Load('main_role', true)->VoodooToVoodoo();
   }
 
   //-- 占い系レイヤー --//
@@ -1729,9 +1671,9 @@ function AggregateVoteNight($skip = false){
     $target = $USERS->ByUname($target_uname); //対象者の情報を取得
     //呪返し判定
     if((! $ROOM->IsEvent('no_cursed') && $target->IsLiveRoleGroup('cursed')) ||
-       in_array($target->uname, $voodoo_target_list)){
-      if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
-	$anti_voodoo_success_list[$user->uname] = true;
+       in_array($target->uname, $ROLES->stack->voodoo)){
+      if(in_array($user->uname, $ROLES->stack->anti_voodoo)){ //厄神の護衛判定
+	$ROLES->stack->anti_voodoo_success[$user->uname] = true;
       }
       else{
 	$USERS->Kill($user->user_no, 'CURSED');
@@ -1739,8 +1681,8 @@ function AggregateVoteNight($skip = false){
       }
     }
 
-    if(in_array($target->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
-      $anti_voodoo_success_list[$target->uname] = true;
+    if(in_array($target->uname, $ROLES->stack->anti_voodoo)){ //厄神の護衛判定
+      $ROLES->stack->anti_voodoo_success[$target->uname] = true;
     }
     else{ //妨害対象者リストに追加
       if($user->IsRole('jammer_fox') && mt_rand(1, 10) > 7) continue; //月狐は一定確率で失敗する
@@ -1748,6 +1690,7 @@ function AggregateVoteNight($skip = false){
     }
   }
   //PrintData($jammer_target_list, 'Target [jammer_mad]');
+  //PrintData($ROLES->stack->anti_voodoo_success, 'Success [anti_voodoo/jammer]');
 
   //占い能力者の処理を合成 (array_merge() は $uname が整数だと添え字と認識されるので使わないこと)
   $mage_list = array();
@@ -1772,8 +1715,8 @@ function AggregateVoteNight($skip = false){
       $phantom_flag   = $target->IsAbilityPhantom(); //幻系の判定
       //厄神の護衛判定
       if(($half_moon_flag || $phantom_flag) &&
-	 in_array($user->uname, $anti_voodoo_target_list)){
-	$anti_voodoo_success_list[$user->uname] = true;
+	 in_array($user->uname, $ROLES->stack->anti_voodoo)){
+	$ROLES->stack->anti_voodoo_success[$user->uname] = true;
 	$phantom_flag   = false;
 	$half_moon_flag = false;
       }
@@ -1807,9 +1750,9 @@ function AggregateVoteNight($skip = false){
       else{
 	//呪返し判定
 	if((! $ROOM->IsEvent('no_cursed') && $target->IsLiveRoleGroup('cursed')) ||
-	   in_array($target->uname, $voodoo_target_list)){
-	  if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
-	    $anti_voodoo_success_list[$user->uname] = true;
+	   in_array($target->uname, $ROLES->stack->voodoo)){
+	  if(in_array($user->uname, $ROLES->stack->anti_voodoo)){ //厄神の護衛判定
+	    $ROLES->stack->anti_voodoo_success[$user->uname] = true;
 	  }
 	  else{
 	    $USERS->Kill($user->user_no, 'CURSED');
@@ -1849,7 +1792,7 @@ function AggregateVoteNight($skip = false){
 	  $target->AddRole("bad_status[{$user->user_no}-{$target_date}]");
 	}
 	else{
-	  if(array_key_exists($target->uname, $possessed_target_list)){ //憑依キャンセル判定
+	  if(array_key_exists($target->uname, $ROLES->stack->possessed)){ //憑依キャンセル判定
 	    $target->possessed_cancel = true;
 	  }
 
@@ -1953,13 +1896,13 @@ function AggregateVoteNight($skip = false){
 	}
 
 	//憑依予定者が居たらキャンセル
-	if(array_key_exists($target->uname, $possessed_target_list)){
+	if(array_key_exists($target->uname, $ROLES->stack->possessed)){
 	  $target->possessed_reset  = false;
 	  $target->possessed_cancel = true;
 	}
-	elseif(in_array($target->uname, $possessed_target_list)){
+	elseif(in_array($target->uname, $ROLES->stack->possessed)){
 	  //憑依中の犬神に憑依しようとした憑狼を検出
-	  $stack = array_keys($possessed_target_list, $target->uname);
+	  $stack = array_keys($ROLES->stack->possessed, $target->uname);
 	  $USERS->ByUname($stack[0])->possessed_cancel = true;
 	}
 
@@ -2056,7 +1999,7 @@ function AggregateVoteNight($skip = false){
 	      $virtual->ReturnPossessed('possessed');
 
 	      //憑依予定者が居たらキャンセル
-  	      if(array_key_exists($target->uname, $possessed_target_list)){
+  	      if(array_key_exists($target->uname, $ROLES->stack->possessed)){
 		$target->possessed_reset  = false;
 		$target->possessed_cancel = true;
 	      }
@@ -2069,7 +2012,7 @@ function AggregateVoteNight($skip = false){
 	      }
 
 	      //憑依予定者が居たらキャンセル
-	      if(array_key_exists($target->uname, $possessed_target_list)){
+	      if(array_key_exists($target->uname, $ROLES->stack->possessed)){
 		$target->possessed_reset  = false;
 		$target->possessed_cancel = true;
 	      }
@@ -2096,7 +2039,7 @@ function AggregateVoteNight($skip = false){
   }
 
   //-- 憑依レイヤー --//
-  //PrintData($possessed_target_list, 'Target [possessed_wolf]');
+  //PrintData($ROLES->stack->possessed, 'Target [possessed_wolf]');
   if($ROOM->date > 1){
     //憑依能力者の処理
     $possessed_do_stack = array(); //有効憑依情報リスト (死亡判定と厄神リセット判定)
@@ -2104,8 +2047,8 @@ function AggregateVoteNight($skip = false){
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true) || $user->revive_flag) continue; //直前に死んでいたら無効 (蘇生でも無効)
 
-      if(in_array($user->uname, $anti_voodoo_target_list)){ //厄神の護衛判定
-	$anti_voodoo_success_list[$user->uname] = true;
+      if(in_array($user->uname, $ROLES->stack->anti_voodoo)){ //厄神の護衛判定
+	$ROLES->stack->anti_voodoo_success[$user->uname] = true;
 	continue;
       }
       $possessed_do_stack[$uname] = $target_uname;
@@ -2135,14 +2078,14 @@ function AggregateVoteNight($skip = false){
       case 'lovers':
 	continue 2;
       }
-      $possessed_target_list[$user->uname] = $target_uname;
+      $ROLES->stack->possessed[$user->uname] = $target_uname;
     }
-    //PrintData($possessed_target_list, 'Target [Possessed]');
+    //PrintData($ROLES->stack->possessed, 'Target [Possessed]');
   }
 
   //-- 憑依処理 --//
   $possessed_date = $ROOM->date + 1; //憑依する日を取得
-  foreach($possessed_target_list as $uname => $target_uname){
+  foreach($ROLES->stack->possessed as $uname => $target_uname){
     $user    = $USERS->ByUname($uname); //憑依者
     $target  = $USERS->ByUname($target_uname); //憑依予定先
     $virtual = $USERS->ByVirtual($user->user_no); //現在の憑依先
@@ -2205,18 +2148,18 @@ function AggregateVoteNight($skip = false){
   }
 
   if(! $ROOM->IsOption('seal_message')){
-    //PrintData($voodoo_killer_success_list, 'SUCCESS [voodoo_killer]');
-    foreach($voodoo_killer_success_list as $target_uname => $flag){ //陰陽師の解呪結果処理
+    //PrintData($ROLES->stack->voodoo_killer_success, 'SUCCESS [voodoo_killer]');
+    foreach($ROLES->stack->voodoo_killer_success as $target_uname => $flag){ //陰陽師の解呪結果処理
       $str = "\t" . $USERS->GetHandleName($target_uname, true);
-      foreach(array_keys($voodoo_killer_target_list, $target_uname) as $uname){ //成功者を検出
+      foreach(array_keys($ROLES->stack->voodoo_killer, $target_uname) as $uname){ //成功者を検出
 	$ROOM->SystemMessage($USERS->GetHandleName($uname) . $str, 'VOODOO_KILLER_SUCCESS');
       }
     }
 
-    //PrintData($anti_voodoo_success_list, 'SUCCESS [anti_voodoo]');
-    foreach($anti_voodoo_success_list as $target_uname => $flag){ //厄神の厄払い結果処理
+    //PrintData($ROLES->stack->anti_voodoo_success, 'SUCCESS [anti_voodoo]');
+    foreach($ROLES->stack->anti_voodoo_success as $target_uname => $flag){ //厄神の厄払い結果処理
       $str = "\t" . $USERS->GetHandleName($target_uname, true);
-      foreach(array_keys($anti_voodoo_target_list, $target_uname) as $uname){ //成功者を検出
+      foreach(array_keys($ROLES->stack->anti_voodoo, $target_uname) as $uname){ //成功者を検出
 	$ROOM->SystemMessage($USERS->GetHandleName($uname) . $str, 'ANTI_VOODOO_SUCCESS');
       }
     }

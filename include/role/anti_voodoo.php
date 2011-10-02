@@ -17,4 +17,38 @@ class Role_anti_voodoo extends Role{
       OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO');
     }
   }
+
+  //厄払い先セット
+  function SetGuard($user){
+    global $USERS;
+
+    $this->AddStack($user->uname);
+    if(count($stack = array_keys($this->GetStack('possessed'), $user->uname)) > 0){ //憑依妨害判定
+      foreach($stack as $uname) $USERS->ByUname($uname)->possessed_cancel = true;
+    }
+    //憑依者なら強制送還
+    elseif($user->IsPossessedGroup() && $user != $USERS->ByVirtual($user->user_no)){
+      if(! array_key_exists($user->uname, $this->GetStack('possessed'))){
+	$this->AddSuccess($user->uname, 'possessed', true); //憑依リストに追加
+      }
+      $user->possessed_reset = true;
+    }
+    //襲撃を行った憑狼ならキャンセル
+    elseif($this->GetVoter()->IsRole('possessed_wolf') && $this->GetVoter()->IsSame($user->uname)){
+      $this->GetVoter()->possessed_cancel = true;
+    }
+    else return;
+    $this->AddSuccess($user->uname, 'anti_voodoo_success');
+  }
+
+  //厄払い処理
+  function GuardCurse($user){
+    global $USERS;
+
+    if($flag = in_array($user->uname, $this->GetStack()))
+      $this->AddSuccess($user->uname, 'anti_voodoo_success');
+    else
+      $USERS->Kill($user->user_no, 'CURSED');
+    return ! $flag;
+  }
 }

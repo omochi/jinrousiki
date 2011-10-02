@@ -11,11 +11,11 @@ class Role_eclipse_assassin extends Role_assassin{
   function __construct(){ parent::__construct(); }
 
   function Assassin($user){
-    global $ROOM, $ROLES;
+    global $ROOM;
 
-    if($user->IsDead(true)) return;
-    $uname = $ROOM->IsEvent('no_reflect_assassin') || mt_rand(1, 10) > 3 ?
-      $user->uname : $this->GetActor()->uname;
-    $ROLES->stack->assassin[$uname] = true;
+    if($user->IsDead(true)) return false;
+    $target = $ROOM->IsEvent('no_reflect_assassin') || mt_rand(1, 10) > 3 ? $user :
+      $this->GetActor();
+    parent::Assassin($target);
   }
 }

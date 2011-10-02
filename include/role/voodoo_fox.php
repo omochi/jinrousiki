@@ -5,6 +5,7 @@
 */
 RoleManager::LoadFile('fox');
 class Role_voodoo_fox extends Role_fox{
+  public $mix_in = 'voodoo_mad';
   function __construct(){ parent::__construct(); }
 
   function OutputFoxAbility(){
