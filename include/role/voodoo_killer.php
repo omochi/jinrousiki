@@ -2,6 +2,7 @@
 /*
   ◆陰陽師 (voodoo_killer)
   ○仕様
+  ・占い：解呪
 */
 class Role_voodoo_killer extends Role{
   function __construct(){ parent::__construct(); }
@@ -18,7 +19,7 @@ class Role_voodoo_killer extends Role{
     if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'voodoo_killer_do', 'VOODOO_KILLER_DO');
   }
 
-  //解呪処理
+  //占い
   function Mage($user){
     global $USERS;
 

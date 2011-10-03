@@ -133,6 +133,23 @@ class RoleManager{
   public $resurrect_list = array(
     'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_ogre', 'revive_avenger');
 
+  //特殊イベント (昼)
+  public $event_day_list = array('sun_brownie', 'mirror_fairy');
+
+  //特殊イベント (夜)
+  public $event_night_list = array('sun_brownie', 'history_brownie');
+
+  //悪戯 (昼)
+  public $bad_status_day_list = array('amaze_mad');
+
+  //悪戯 (夜)
+  public $bad_status_night_list = array(
+    'soul_wizard', 'astray_wizard', 'pierrot_wizard', 'enchant_mad', 'light_fairy', 'dark_fairy',
+    'grass_fairy', 'sun_fairy', 'moon_fairy');
+
+  //悪戯 (迷彩/アイコン変更)
+  public $change_face_list = array('enchant_mad');
+
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->loaded = new StdClass();
@@ -161,7 +178,10 @@ class RoleManager{
   }
 
   function LoadClass($name, $class){
-    if(is_null($name) || is_object($this->loaded->class[$name])) return false;
+    if(is_null($name) ||
+       (array_key_exists($name, $this->loaded->class) && is_object($this->loaded->class[$name]))){
+      return false;
+    }
     $this->loaded->class[$name] = new $class();
     return true;
   }
@@ -174,6 +194,11 @@ class RoleManager{
 
   function LoadFilter($type){
     return $this->GetFilter($this->GetList($type));
+  }
+
+  function LoadMain($user){
+    $this->actor = $user;
+    return $this->Load('main_role', true);
   }
 
   function SetClass($role){
@@ -190,6 +215,7 @@ class RoleManager{
   function GetFilter($list){
     $stack = array();
     foreach($list as $key){ //順番依存があるので配列関数を使わないで処理する
+      if(! array_key_exists($key, $this->loaded->class)) continue;
       if(is_object(($class = $this->loaded->class[$key]))) $stack[] = $class;
     }
     return $stack;
@@ -378,7 +404,7 @@ class RoleVoteAbility extends Role{
     global $ROLES;
 
     parent::__construct();
-    if($this->init_stack && ! is_array($ROLES->stack->{$this->role})){
+    if($this->init_stack && ! property_exists($ROLES->stack, $this->role)){
       $ROLES->stack->{$this->role} = array();
     }
   }

@@ -2,12 +2,11 @@
 /*
   ◆橋姫 (jealousy)
   ○仕様
-  ・同一キューピッドの恋人が揃って自分に投票したらショック死させる
+  ・処刑得票：ショック死 (同一キューピッド恋人限定)
 */
 class Role_jealousy extends RoleVoteAbility{
   public $data_type = 'array';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
 
   function VotedReaction(){

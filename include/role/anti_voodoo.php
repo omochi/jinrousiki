@@ -41,14 +41,27 @@ class Role_anti_voodoo extends Role{
     $this->AddSuccess($user->uname, 'anti_voodoo_success');
   }
 
-  //厄払い処理
+  //厄払い成立判定
+  function IsGuard($uname){
+    if(! in_array($uname, $this->GetStack())) return false;
+    $this->AddSuccess($uname, 'anti_voodoo_success');
+    return true;
+  }
+
+  //対呪い処理
   function GuardCurse($user){
     global $USERS;
 
-    if($flag = in_array($user->uname, $this->GetStack()))
-      $this->AddSuccess($user->uname, 'anti_voodoo_success');
-    else
-      $USERS->Kill($user->user_no, 'CURSED');
+    if($this->IsGuard($user->uname)) return false;
+    $USERS->Kill($user->user_no, 'CURSED');
+    return true;
+  }
+
+  //対占い妨害処理
+  function GuardJammer($uname){
+    if($flag = in_array($uname, $this->GetStack())){
+      $this->AddSuccess($uname, 'anti_voodoo_success');
+    }
     return ! $flag;
   }
 }

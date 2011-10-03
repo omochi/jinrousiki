@@ -8,7 +8,7 @@ class Role_dummy_guard extends Role_guard{
   public $display_role = 'guard';
   function __construct(){ parent::__construct(); }
 
-  function SetGuardTarget($uname){
+  function SetGuard($uname){
     global $ROOM;
     if(! $ROOM->IsEvent('no_dream')) $this->AddStack($uname); //熱帯夜ならスキップ
     return false;

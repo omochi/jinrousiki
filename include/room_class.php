@@ -16,6 +16,7 @@ class Room{
   public $heaven_mode = false;
   public $log_mode = false;
   public $watch_mode = false;
+  public $single_log_mode = false;
   public $single_view_mode = false;
   public $test_mode = false;
 
@@ -280,7 +281,7 @@ class Room{
   function IsOpenCast(){
     global $USERS;
 
-    if(is_null($this->open_cast)){ //未設定ならキャッシュする
+    if(! property_exists($this, 'open_cast')){ //未設定ならキャッシュする
       if($this->IsOption('not_open_cast')) //常時非公開
 	$this->open_cast = false;
       elseif($this->IsOption('auto_open_cast')) //自動公開
@@ -331,7 +332,7 @@ class Room{
 
   //特殊イベント判定
   function IsEvent($type){
-    return method_exists($this->event, $type) && $this->event->$type;
+    return property_exists($this->event, $type) ? $this->event->$type : NULL;
   }
 
   //天候セット

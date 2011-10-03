@@ -276,7 +276,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="soul_mage">魂の占い師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-占った人の役職が分かる上位占い師。
+占った人の役職が分かる<a href="mania.php#soul_mania">上位</a>占い師。
 <a href="fox.php#fox_group">妖狐</a>を占っても呪殺できないが、占い妨害や呪返しは受けるので注意。
 </pre>
 <h5>Ver. 1.4.0 α15～</h5>
@@ -350,7 +350,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 
 <h3 id="voodoo_killer">陰陽師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20～]</h3>
-<h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 月兎：無効 / 呪い：解呪</h4>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 占い妨害：無効 / 呪い：解呪</h4>
 <pre>
 対呪い専門の特殊な占い師。
 占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し(死因は「呪返し」)、
@@ -390,7 +390,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="dummy_mage">夢見人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α14～]</h3>
 <h4>[役職表示] <a href="#mage">占い師</a></h4>
 <h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
-<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：無効 / 呪い：無効</h4>
+<h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 占い妨害：無効 / 呪い：無効</h4>
 <pre>
 「村人」と「人狼」が逆に判定される占い師。本人表記は「占い師」。
 呪殺できない代わりに呪返しも受けない。
@@ -2177,7 +2177,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="jealousy">橋姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22～]</h3>
 <pre>
-昼の投票時に、同一<a href="lovers.php">キューピッド</a>の<a href="sub_role.php#lovers">恋人</a>が揃って自分に投票したら
+処刑投票時に、同一<a href="lovers.php">キューピッド</a>の<a href="sub_role.php#lovers">恋人</a>が揃って自分に投票したら
 投票した<a href="sub_role.php#lovers">恋人</a>をショック死させる、橋姫系の基本種。
 </pre>
 <h4>詳細な仕様</h4>
@@ -2221,6 +2221,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 発動機会が増えた代りに効果や発動率が<a href="#jealousy">橋姫</a>よりもかなり抑えられています。
+<a href="sub_role.php#passion">恋色迷彩</a>は発動しても気付きにくいので発言を注視する必要があります。
 </pre>
 
 <h3 id="priest_jealousy">恋司祭 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17～]</h3>
@@ -2229,11 +2230,11 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 一定日数ごとに現在、生存している<a href="sub_role.php#lovers">恋人</a>の人数が分かる特殊な司祭。
 本人表記は「<a href="#priest">司祭</a>」で能力の発動日などの仕様も同じ。
-狩人の<a href="#guard_limit">護衛制限</a>対象。
+狩人の<a href="#guard_limit">護衛制限</a>対象で、<a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#priest">司祭</a>の対恋人バージョンで、所属は橋姫系になります。
+<a href="#priest">司祭</a>の対<a href="sub_role.php#lovers">恋人</a>バージョンで、所属は橋姫系になります。
 判定法則が全然違うので他の司祭表示役職と区別しやすいですが、騙りやすいですね。
 </pre>
 
@@ -2250,12 +2251,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#poison_group">埋毒者</a>の亜種ですが、恋人限定なので所属は橋姫系です。
+<a href="#poison_group">埋毒者</a>の亜種ですが、<a href="sub_role.php#lovers">恋人</a>限定なので所属は橋姫系です。
 </pre>
 
 <h3 id="miasma_jealousy">蛇姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
 処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する<a href="mania.php#soul_mania">上位</a>橋姫。
+<a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
@@ -2269,12 +2271,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 安珍・清姫伝説がモチーフです。
-能動的に恋人を狙うことができますが、確率依存である点に注意してください。
+能動的に<a href="sub_role.php#lovers">恋人</a>を狙うことができますが、確率依存である点に注意してください。
 </pre>
 
 <h3 id="critical_jealousy">人魚 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
 処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう<a href="mania.php#dummy_mania">劣化</a>橋姫。
+<a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合は無効。</li>
@@ -2462,7 +2465,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="soul_wizard">八卦見 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
 <h4>[耐性] 護衛：制限対象</h4>
 <pre>
-魔法使いの上位種。
+魔法使いの<a href="mania.php#soul_mania">上位</a>種。
 魔法の効果は、<a href="#soul_mage">魂の占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>・
 <a href="#poison_guard">騎士</a>・<a href="#doom_assassin">死神</a>・<a href="#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
 <a href="#poison_guard">騎士</a>能力が発動しても毒を持つわけではないので注意。
@@ -2533,15 +2536,14 @@ MVP の賞品としてプレゼントしたものです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 魔法使いの<a href="#necromancer_group">霊能</a>バージョンです。
-<a href="#sex_mage">ひよこ鑑定士</a>の霊能バージョンは存在しないので
-処刑者の性別鑑定能力はオリジナルになります。
+<a href="#sex_mage">ひよこ鑑定士</a>の霊能バージョンは存在しないので性別鑑定はオリジナルになります。
 </pre>
 
 <h3 id="philosophy_wizard">賢者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β10～]</h3>
 <pre>
 <a href="ability.php#vote_action">処刑投票</a>能力ベースの魔法を持つ魔法使いの一種 (夜の投票は無し)。
-魔法の効果は、<a href="#cure_pharmacist">河童</a>・<a href="#alchemy_pharmacist">錬金術師</a>・<a href="#miasma_jealousy">蛇姫</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>
-<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>のいずれか。
+魔法の効果は、<a href="#cure_pharmacist">河童</a>・<a href="#alchemy_pharmacist">錬金術師</a>・<a href="#miasma_jealousy">蛇姫</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・
+<a href="lovers.php#sweet_cupid">弁財天</a>のいずれか。
 耐性は適用されないので<a href="#guard_hunt">狩り</a>の対象にはならない。
 </pre>
 <h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
@@ -2555,6 +2557,7 @@ MVP の賞品としてプレゼントしたものです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 魔法使いの<a href="ability.php#vote_action">処刑投票</a>能力ギドラタイプです。
+魔法は七曜を見立てて選択しています。
 </pre>
 
 <h3 id="barrier_wizard">結界師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α6～]</h3>

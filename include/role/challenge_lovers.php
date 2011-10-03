@@ -15,7 +15,7 @@ class Role_challenge_lovers extends Role{
 
     if($reason != '' || $ROOM->date < 5) return;
 
-    if(! is_array($ROLES->stack->cupid_list)){ //QP のデータをセット
+    if(! property_exists($ROLES->stack, 'cupid_list')){ //QP のデータをセット
       $stack = array();
       foreach(array_keys($ROLES->stack->target) as $uname){
 	$user = $USERS->ByRealUname($uname);

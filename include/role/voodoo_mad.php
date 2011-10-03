@@ -17,10 +17,9 @@ class Role_voodoo_mad extends Role{
   function SetVoodoo($user){
     global $ROOM, $USERS, $ROLES;
 
-    $actor = $this->GetActor();
     if(! $ROOM->IsEvent('no_cursed') && $user->IsLiveRoleGroup('cursed')){ //呪返し判定
       foreach($ROLES->LoadFilter('anti_voodoo') as $filter){ //厄神の護衛判定
-	if($filter->GuardCurse($actor)) return;
+	if($filter->GuardCurse($this->GetActor())) return false;
       }
     }
     if(in_array($user->uname, $this->GetStack('voodoo_killer'))) //陰陽師の解呪判定

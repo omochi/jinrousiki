@@ -2,12 +2,11 @@
 /*
   ◆縁切地蔵 (divorce_jealousy)
   ○仕様
-  ・処刑得票：恋色迷彩 (恋人・一定確率)
+  ・処刑得票：恋色迷彩付加 (恋人・一定確率)
 */
 class Role_divorce_jealousy extends RoleVoteAbility{
   public $data_type = 'array';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
 
   function VoteKillReaction(){

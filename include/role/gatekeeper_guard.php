@@ -8,8 +8,8 @@ RoleManager::LoadFile('guard');
 class Role_gatekeeper_guard extends Role_guard{
   function __construct(){ parent::__construct(); }
 
-  function SetGuardTarget($uname){
-    if(! parent::SetGuardTarget($uname)) return false;
+  function SetGuard($uname){
+    if(! parent::SetGuard($uname)) return false;
     $this->AddStack($uname);
     return true;
   }

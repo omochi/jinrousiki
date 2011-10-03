@@ -1306,6 +1306,10 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 勝利条件が<a href="lovers.php">恋人陣営</a>に変化する。
 表示されている相手が死亡すると自分も死亡する (後追い)。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#sweet_status">悲恋</a>
+</pre>
 
 <h3 id="challenge_lovers">難題 [Ver. 1.4.0 β11～]</h3>
 <h4>[配役制限] 役職付加専用</h4>

@@ -3,9 +3,11 @@ class User{
   public $main_role;
   public $role_list    = array();
   public $partner_list = array();
+  public $updated      = array();
   public $dead_flag    = false;
   public $suicide_flag = false;
   public $revive_flag  = false;
+  public $lost_flag    = false;
 
   function __construct($role = NULL){
     if(is_null($role)) return;
@@ -97,7 +99,7 @@ class User{
 
   //現在の役職を取得
   function GetRole(){
-    return $this->updated['role'] ? $this->updated['role'] : $this->role;
+    return array_key_exists('role', $this->updated) ? $this->updated['role'] : $this->role;
   }
 
   //現在のメイン役職を取得
@@ -110,13 +112,13 @@ class User{
     global $USERS;
 
     $type = $win ? 'win_camp' : 'main_camp';
-    if(is_null($this->$type)) $USERS->SetCamp($this, $type);
+    if(! property_exists($this, $type)) $USERS->SetCamp($this, $type);
     return $this->$type;
   }
 
   //拡張情報を取得
   function GetPartner($type, $fill = false){
-    $stack = $this->partner_list[$type];
+    $stack = array_key_exists($type, $this->partner_list) ? $this->partner_list[$type] : NULL;
     return is_array($stack) ? $stack : ($fill ? array() : NULL);
   }
 
@@ -337,7 +339,7 @@ class User{
 
     if(! $this->IsRole('joker')) return false;
     if($ROOM->IsFinished()){
-      if(is_null($this->joker_flag)) $USERS->SetJoker();
+      if(! property_exists($this, 'joker_flag')) $USERS->SetJoker();
       return $this->joker_flag;
     }
     elseif($this->IsDead()) return false;
@@ -357,7 +359,7 @@ class User{
 
   //護衛成功済み判定
   function IsFirstGuardSuccess($uname){
-    $flag = ! (is_array($this->guard_success) && in_array($uname, $this->guard_success));
+    $flag = ! (property_exists($this, 'guard_success') && in_array($uname, $this->guard_success));
     $this->guard_success[] = $uname;
     return $flag;
   }
@@ -405,7 +407,8 @@ class User{
   //蘇生制限判定
   function IsReviveLimited(){
     return $this->IsRoleGroup('cat', 'revive') || $this->IsRole('detective_common') ||
-      $this->IsLovers() || $this->IsDrop() || $this->possessed_reset;
+      $this->IsLovers() || $this->IsDrop() ||
+      (property_exists($this, 'possessed_reset') && $this->possessed_reset);
   }
 
   //暗殺反射判定
@@ -477,7 +480,8 @@ class User{
 
   //投票済み判定
   function IsVoted($vote_data, $action, $not_action = NULL){
-    return (isset($not_action) && is_array($vote_data[$not_action]) &&
+    return (isset($not_action) && array_key_exists($not_action, $vote_data) &&
+	    is_array($vote_data[$not_action]) &&
 	    array_key_exists($this->uname, $vote_data[$not_action])) ||
       ($action == 'WOLF_EAT' ? isset($vote_data[$action]) :
        isset($vote_data[$action][$this->uname]));
@@ -683,6 +687,7 @@ class User{
   function GenerateShortRoleName($heaven = false, $main_only = false){
     global $ROLE_DATA, $USERS;
 
+    if(empty($this->main_role)) return;
     //メイン役職を取得
     $camp = $this->GetCamp();
     $name = $ROLE_DATA->short_role_list[$this->main_role];
@@ -1016,7 +1021,7 @@ class UserDataSet{
 
   //ユーザ名 -> ユーザ ID 変換
   function UnameToNumber($uname){
-    return $this->names[$uname];
+    return array_key_exists($uname, $this->names) ? $this->names[$uname] : NULL;
   }
 
   //HN -> ユーザ名変換
@@ -1102,7 +1107,7 @@ class UserDataSet{
   //HN 取得
   function GetHandleName($uname, $virtual = false){
     $user = $virtual ? $this->ByVirtualUname($uname) : $this->ByUname($uname);
-    return $user->handle_name;
+    return property_exists($user, 'handle_name') ? $user->handle_name : '';
   }
 
   //役職情報取得
@@ -1142,7 +1147,7 @@ class UserDataSet{
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $ROOM;
+    global $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $ROOM, $ROLES;
 
     if($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
     $room_date = $ROOM->date; //現在の日付を確保
@@ -1156,24 +1161,12 @@ class UserDataSet{
 	if((! $ROOM->log_mode || $ROOM->single_log_mode) && $ROOM->IsDay()) $ROOM->date--;
 	$user = $this->ByRealUname($this->HandleNameToUname($event['message']));
 	//PrintData($user->handle_name, "VOTE_KILLED: {$room_date} ({$ROOM->date})");
-	if($user->IsRole('sun_brownie')){ //八咫烏
-	  $ROOM->event->blinder = true;
-	}
-	elseif($user->IsRole('mirror_fairy')){ //鏡妖精
-	  $stack = array(); //決選投票対象者の ID リスト
-	  foreach($user->GetPartner('mirror_fairy', true) as $key => $value){ //生存確認
-	    if($this->IsVirtualLive($key))   $stack[] = $key;
-	    if($this->IsVirtualLive($value)) $stack[] = $value;
-	  }
-	  if(count($stack) > 1) $ROOM->event->vote_duel = $stack;
-	}
-
-	foreach($user->GetPartner('bad_status', true) as $id => $date){ //傘化け
-	  $status_user = $this->ByID($id);
-	  if($status_user->IsRole('amaze_mad') && $date == $ROOM->date){
-	    $ROOM->event->blind_vote = true;
-	    break;
-	  }
+	$ROLES->actor = $user;
+	foreach($ROLES->Load('event_day') as $filter) $filter->SetEvent('day');
+	foreach($user->GetPartner('bad_status', true) as $id => $date){ //悪戯
+	  if($date != $ROOM->date) continue;
+	  $ROLES->actor = $this->ByID($id);
+	  foreach($ROLES->Load('bad_status_day') as $filter) $filter->SetEvent($user);
 	}
 	break;
 
@@ -1182,23 +1175,13 @@ class UserDataSet{
 	$user = $this->ByRealUname($this->HandleNameToUname($event['message']));
 	//PrintData($user->handle_name, "WOLF_KILLED: {$room_date} ({$ROOM->date})");
 	if(! $user->IsDummyBoy()){ //座敷童子系
-	  $stack = array('sun_brownie' => 'mind_open', 'history_brownie' => 'skip_night');
-	  foreach($stack as $role => $event){
-	    if($user->IsRole($role)) $ROOM->event->$event = true;
-	  }
+	  $ROLES->actor = $user;
+	  foreach($ROLES->Load('event_night') as $filter) $filter->SetEvent('night');
 	}
-
-	$stack = array('soul_wizard'    => 'mind_open', 'astray_wizard' => 'blinder',
-		       'pierrot_wizard' => 'grassy',    'sun_fairy'     => 'invisible',
-		       'moon_fairy'     => 'earplug',   'grass_fairy'   => 'grassy',
-		       'light_fairy'    => 'mind_open', 'dark_fairy'    => 'blinder');
-	foreach($user->GetPartner('bad_status', true) as $id => $date){ //妖精系
+	foreach($user->GetPartner('bad_status', true) as $id => $date){ //悪戯
 	  if($date != $base_date) continue;
-	  $status_user = $this->ByID($id);
-	  foreach($stack as $role => $event){
-	    if($status_user->IsRole($role)) $ROOM->event->$event = true;
-	  }
-	  if($status_user->IsRole('enchant_mad')) $ROOM->event->same_face[] = $user->user_no;
+	  $ROLES->actor = $this->ByID($id);
+	  foreach($ROLES->Load('bad_status_night') as $filter) $filter->SetEvent($user);
 	}
 	break;
 
@@ -1238,31 +1221,8 @@ class UserDataSet{
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
-
-      //影妖精の処理
-      $stack = array();
-      foreach($this->rows as $user){
-	foreach($user->GetPartner('bad_status', true) as $id => $date){
-	  if($date != $base_date) continue;
-	  $status_user = $this->ByID($id);
-	  if($status_user->IsRole('shadow_fairy')){
-	    $stack[$status_user->user_no] = array('icon'  => $user->icon_filename,
-						  'color' => $user->color);
-	  }
-	}
-      }
-      foreach($stack as $id => $list){
-	$user = $this->ByID($id);
-	$user->color         = $list['color'];
-	$user->icon_filename = $list['icon'];
-      }
-
-      do{ //狢のアイコン入れ替え処理
-	if(! is_array($ROOM->event->same_face)) break;
-	$target = $this->ById(GetRandom($ROOM->event->same_face));
-	if(is_null($target->uname)) break;
-	foreach($this->rows as $user) $user->icon_filename = $target->icon_filename;
-      }while(false);
+      $ROLES->LoadMain(new User('shadow_fairy'))->BadStatus($base_date); //影妖精の処理
+      foreach($ROLES->LoadFilter('change_face') as $filter) $filter->BadStatus(); //狢の処理
     }
   }
 

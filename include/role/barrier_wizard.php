@@ -10,10 +10,9 @@ class Role_barrier_wizard extends Role_wizard{
   public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
   public $result_list = array('GUARD_SUCCESS');
   public $action = 'SPREAD_WIZARD_DO';
-
   function __construct(){ parent::__construct(); }
 
-  function SetGuardTarget($list){
+  function SetGuard($list){
     global $USERS, $ROLES;
 
     $uname     = $this->GetActor()->uname;

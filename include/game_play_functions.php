@@ -11,8 +11,7 @@ function OutputAbility(){
     return;
   }
 
-  $ROLES->actor = $SELF;
-  $ROLES->Load('main_role', true)->OutputAbility(); //メイン役職
+  $ROLES->LoadMain($SELF)->OutputAbility(); //メイン役職
 
   //-- ここからサブ役職 --//
   $fix_display_list = array(); //常時表示する役職リスト
@@ -404,7 +403,8 @@ function OutputSelfAbilityResult($action){
 
   $target_date = $ROOM->date - 1;
   if($ROOM->test_mode){
-    $stack = $RQ_ARGS->TestItems->system_message[$target_date][$action];
+    $stack = $RQ_ARGS->TestItems->system_message[$target_date];
+    $stack = array_key_exists($action, $stack) ? $stack[$action] : NULL;
     $result_list = is_array($stack) ? $stack : array();
   }
   else{

@@ -23,7 +23,7 @@ class Role_guard extends Role{
   }
 
   //護衛先セット
-  function SetGuardTarget($uname){
+  function SetGuard($uname){
     global $ROOM, $ROLES;
 
     if($ROOM->IsEvent('no_contact')) return false; //花曇ならスキップ

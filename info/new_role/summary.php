@@ -598,7 +598,7 @@ Ver. 1.5.0
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">昼の投票時に、同一キューピッドの恋人が揃って自分に投票したら投票した恋人をショック死させる。</td>
+  <td class="ability">処刑投票時に、同一キューピッドの恋人が揃って自分に投票したら投票した恋人をショック死させる。</td>
   <td>Ver. 1.4.0 α22</td>
 </tr>
 <tr id="ver140a23">
@@ -906,7 +906,7 @@ Ver. 1.5.0
   <td><a href="chiroptera.php#fairy_group">妖精系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">本人が吊られたら、次の日の昼を「決選投票」(初日に投票した二人にしか投票できない) にする妖精。</td>
+  <td class="ability">本人が処刑されたら、次の日の昼を「決選投票」(初日に投票した二人にしか投票できない) にする妖精。</td>
   <td>Ver. 1.4.0 β7</td>
 </tr>
 <tr id="ver140b8">
@@ -2102,7 +2102,7 @@ Ver. 1.5.0
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">魔法使いの一種で、魔法の効果は、複数 (最大 4 箇所) の<a href="human.php#guard_group">護衛</a>能力。
+  <td class="ability">魔法使いの一種で、魔法の効果は、複数 (最大 4 箇所) の<a href="ability.php#guard">護衛</a>能力。
   </td>
   <td>Ver. 1.5.0 α6</td>
 </tr>
@@ -2121,7 +2121,7 @@ Ver. 1.5.0
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability"><a href="human.php#necromancer_group">霊能</a>能力を持つ魔法使いの一種。魔法の効果は、<a href="human.php#necromancer">霊能者</a>・<a href="human.php#soul_mage">雲外鏡</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#embalm_necromancer">死化粧師</a>・性別のいずれか。
+  <td class="ability"><a href="human.php#necromancer_group">霊能</a>能力を持つ魔法使いの一種。魔法の効果は、<a href="human.php#necromancer">霊能者</a>・<a href="human.php#soul_necromancer">雲外鏡</a>・<a href="human.php#psycho_necromancer">精神感応者</a>・<a href="human.php#embalm_necromancer">死化粧師</a>・性別鑑定のいずれか。
   </td>
   <td>Ver. 1.5.0 α6</td>
 </tr>

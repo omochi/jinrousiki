@@ -492,13 +492,8 @@ EOF;
       break;
 
     case 'ogre':
-      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営
-	$win_flag = $SELF->IsLive();
-      }
-      else{ //個別判定
-	$ROLES->actor = $SELF;
-	$win_flag = $ROLES->Load('main_role', true)->Win($victory);
-      }
+      $win_flag = $SELF->IsRoleGroup('mania') ? $SELF->IsLive()
+	: $ROLES->LoadMain($SELF)->Win($victory);
       break;
 
     case 'duelist':
@@ -655,9 +650,7 @@ function GenerateVoteList($raw_data, $date){
 		   $header . $target_name, '</tr>');
     $table_stack[$vote_times][] = implode('</td>', $stack);
   }
-
   if(! $RQ_ARGS->reverse_log) krsort($table_stack); //正順なら逆転させる
-
   $str = '';
   $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
   $footer = ' 回目)</td>';
@@ -1173,7 +1166,7 @@ function GenerateDeadMan(){
 function GenerateWeatherReport(){
   global $ROLE_DATA, $RQ_ARGS, $ROOM;
 
-  if(is_null($ROOM->event->weather) ||
+  if(! property_exists($ROOM->event, 'weather') ||
      ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight())) return '';
 
   $weather = $ROLE_DATA->weather_list[$ROOM->event->weather];

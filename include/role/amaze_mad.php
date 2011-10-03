@@ -3,26 +3,30 @@
   ◆傘化け (amaze_mad)
   ○仕様
   ・処刑投票：投票先が生存していたら投票結果を隠蔽する
+  ・悪戯：投票結果隠蔽
 */
 class Role_amaze_mad extends RoleVoteAbility{
   public $data_type = 'action';
   public $init_stack = true;
+  public $bad_status = 'blind_vote';
   function __construct(){ parent::__construct(); }
 
   function VoteAction(){
-    global $ROOM, $ROLES, $USERS;
+    global $ROOM, $USERS;
 
-    $flag = false;
-    $vote_user = $USERS->ByRealUname($ROLES->stack->vote_kill_uname);
+    $flag   = false;
+    $target = $USERS->ByRealUname($this->GetVoteKillUname());
     foreach($this->GetStack() as $uname => $target_uname){
       if(! $this->IsVoted($target_uname)) continue;
-
       $flag = true;
-      $user = $USERS->ByUname($uname);
-      $vote_user->AddRole("bad_status[{$user->user_no}-{$ROOM->date}]");
+      $id   = $USERS->ByUname($uname)->user_no;
+      $target->AddRole("bad_status[{$id}-{$ROOM->date}]");
     }
-    if($flag){
-      $ROOM->SystemMessage($USERS->GetHandleName($vote_user->uname, true), 'BLIND_VOTE');
-    }
+    if($flag) $ROOM->SystemMessage($USERS->GetHandleName($target->uname, true), 'BLIND_VOTE');
+  }
+
+  function SetEvent($user){
+    global $ROOM;
+    $ROOM->event->{$this->bad_status} = true;
   }
 }

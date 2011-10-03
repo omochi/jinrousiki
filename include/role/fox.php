@@ -12,22 +12,22 @@ class Role_fox extends Role{
 
     parent::OutputAbility();
     if(! $this->GetActor()->IsLonely()){ //仲間表示
-      $stack = array();
+      $fox_list       = array();
+      $child_fox_list = array();
       foreach($this->GetUser() as $user){
 	if($this->IsSameUser($user->uname)) continue;
 	if($user->IsRole('possessed_fox')){
-	  $stack['fox'][] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
+	  $fox_list[] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
 	}
 	elseif($user->IsFox(true)){
-	  $stack['fox'][] = $user->handle_name;
+	  $fox_list[] = $user->handle_name;
 	}
 	elseif($user->IsChildFox() || $user->IsRoleGroup('scarlet')){
-	  $stack['child_fox'][] = $user->handle_name;
+	  $child_fox_list[] = $user->handle_name;
 	}
       }
-      OutputPartner($stack['fox'], 'fox_partner'); //妖狐系
-      OutputPartner($stack['child_fox'], 'child_fox_partner'); //子狐系
-      unset($stack);
+      OutputPartner($fox_list, 'fox_partner'); //妖狐系
+      OutputPartner($child_fox_list, 'child_fox_partner'); //子狐系
     }
     if($ROOM->date > 1 && ! $ROOM->IsOption('seal_message') && $this->GetActor()->IsResistFox()){
       OutputSelfAbilityResult('FOX_EAT'); //人狼襲撃

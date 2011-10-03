@@ -12,27 +12,29 @@ class Role_wolf extends Role{
 
     parent::OutputAbility();
     //仲間情報を収集
-    $stack = array();
+    $wolf_list        = array();
+    $mad_list         = array();
+    $unconscious_list = array();
     foreach($this->GetUser() as $user){
       if($this->IsSameUser($user->uname)) continue;
       if($user->IsRole('possessed_wolf')){
-	$stack['wolf'][] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
+	$wolf_list[] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
       }
       elseif($user->IsWolf(true)){
-	$stack['wolf'][] = $user->handle_name;
+	$wolf_list[] = $user->handle_name;
       }
       elseif($user->IsRole('whisper_mad')){
-	$stack['mad'][] = $user->handle_name;
+	$mad_list[] = $user->handle_name;
       }
       elseif($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
-	$stack['unconscious'][] = $user->handle_name;
+	$uncoscious_list[] = $user->handle_name;
       }
     }
     if($this->GetActor()->IsWolf(true)){
-      OutputPartner($stack['wolf'], 'wolf_partner'); //人狼
-      OutputPartner($stack['mad'], 'mad_partner'); //囁き狂人
+      OutputPartner($wolf_list, 'wolf_partner'); //人狼
+      OutputPartner($mad_list, 'mad_partner'); //囁き狂人
     }
-    if($ROOM->IsNight()) OutputPartner($stack['unconscious'], 'unconscious_list'); //無意識
+    if($ROOM->IsNight()) OutputPartner($uncoscious_list, 'unconscious_list'); //無意識
     $this->OutputWolfAbility();
     if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //投票
   }

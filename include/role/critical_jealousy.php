@@ -2,12 +2,11 @@
 /*
   ◆人魚 (critical_jealousy)
   ○仕様
-  ・処刑投票：投票先が恋人なら自分に痛恨を付加する
+  ・処刑投票：痛恨獲得 (恋人限定)
 */
 class Role_critical_jealousy extends RoleVoteAbility{
   public $data_type = 'action';
   public $init_stack = true;
-
   function __construct(){ parent::__construct(); }
 
   function VoteAction(){

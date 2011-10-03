@@ -107,8 +107,8 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="guard">護衛能力者</h2>
 <pre>
-<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#elder_guard">老兵</a>
-<a href="human.php#wizard">魔法使い</a>(<a href="human.php#guard">狩人</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#poison_guard">騎士</a>)・<a href="human.php#barrier_wizard">結界師</a>
+<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#barrier_wizard">結界師</a>
+<a href="human.php#wizard">魔法使い</a>(<a href="human.php#guard">狩人</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#poison_guard">騎士</a>)
 </pre>
 
 <h2 id="guard_limit">護衛制限対象者</h2>
