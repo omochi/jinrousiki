@@ -5,9 +5,10 @@
   ・吸血：通常
 */
 class Role_vampire extends Role{
+  public $action = 'VAMPIRE_DO';
+  public $ignore_message = '初日は襲撃できません';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
@@ -15,18 +16,26 @@ class Role_vampire extends Role{
     if($ROOM->date > 2){
       //自分の感染者と洗脳者を表示
       $id = $this->GetActor()->user_no;
-      $stack = array();
+      $partner = 'infected';
+      $role    = 'psycho_infected';
+      $pertner_list = array();
+      $role_list    = array();
       foreach($this->GetUser() as $user){
-	if($user->IsPartner('infected', $id)) $stack['infected'][] = $user->handle_name;
-	if($user->IsRole('psycho_infected')) $stack['psycho_infected'][] = $user->handle_name;
+	if($user->IsPartner($partner, $id)) $partner_list[] = $user->handle_name;
+	if($user->IsRole($role)) $role_list[] = $user->handle_name;
       }
-      OutputPartner($stack['infected'], 'infected_list');
-      OutputPartner($stack['psycho_infected'], 'psycho_infected_list');
+      OutputPartner($partner_list, $partner . '_list');
+      OutputPartner($role_list, $role . '_list');
       if(isset($this->result)) OutputSelfAbilityResult($this->result);
     }
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('vampire-do', 'vampire_do', 'VAMPIRE_DO');
+    if($this->IsVote() && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('vampire-do', 'vampire_do', $this->action);
     }
+  }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
   }
 
   //吸血処理

@@ -6,7 +6,6 @@
 class Role_fox extends Role{
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM, $USERS;
 

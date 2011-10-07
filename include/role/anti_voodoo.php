@@ -4,18 +4,26 @@
   ○仕様
 */
 class Role_anti_voodoo extends Role{
+  public $action = 'ANTI_VOODOO_DO';
+  public $result = 'ANTI_VOODOO_SUCCESS';
+  public $ignore_message = '初日の厄払いはできません';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
     global $ROOM;
 
     parent::OutputAbility();
-    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
-      OutputSelfAbilityResult('ANTI_VOODOO_SUCCESS'); //厄払い結果
+    //厄払い結果
+    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult($this->result);
+    if($this->IsVote() && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('guard-do', 'anti_voodoo_do', $this->action);
     }
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('guard-do', 'anti_voodoo_do', 'ANTI_VOODOO_DO');
-    }
+  }
+
+  //投票能力判定
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
   }
 
   //厄払い先セット
@@ -38,13 +46,13 @@ class Role_anti_voodoo extends Role{
       $this->GetVoter()->possessed_cancel = true;
     }
     else return;
-    $this->AddSuccess($user->uname, 'anti_voodoo_success');
+    $this->AddSuccess($user->uname, $this->role . '_success');
   }
 
   //厄払い成立判定
   function IsGuard($uname){
     if(! in_array($uname, $this->GetStack())) return false;
-    $this->AddSuccess($uname, 'anti_voodoo_success');
+    $this->AddSuccess($uname, $this->role . '_success');
     return true;
   }
 
@@ -57,11 +65,15 @@ class Role_anti_voodoo extends Role{
     return true;
   }
 
-  //対占い妨害処理
-  function GuardJammer($uname){
-    if($flag = in_array($uname, $this->GetStack())){
-      $this->AddSuccess($uname, 'anti_voodoo_success');
+  //成功結果登録
+  function SaveSuccess(){
+    global $ROOM, $USERS;
+
+    foreach($this->GetStack($this->role . '_success') as $target_uname => $flag){
+      $str = "\t" . $USERS->GetHandleName($target_uname, true);
+      foreach(array_keys($this->GetStack(), $target_uname) as $uname){ //成功者を検出
+	$ROOM->SystemMessage($USERS->GetHandleName($uname) . $str, $this->result);
+      }
     }
-    return ! $flag;
   }
 }

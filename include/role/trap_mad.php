@@ -4,23 +4,41 @@
   ○仕様
 */
 class Role_trap_mad extends Role{
+  public $action = 'TRAP_MAD_DO';
+  public $not_action = 'TRAP_MAD_NOT_DO';
+  public $submit = 'trap_do';
+  public $not_submit = 'trap_not_do';
+  public $ignore_message = '初日は罠を設置できません';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
     parent::OutputAbility();
-    $this->OutputTrapAbility();
+    $this->OutputAction();
   }
 
-  //罠能力表示
-  function OutputTrapAbility(){
+  function OutputAction(){
     global $ROOM;
-    if($ROOM->date > 1 && $ROOM->IsNight() && $this->IsVoteTrap()){
-      OutputVoteMessage('wolf-eat', 'trap_do', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
+    if($this->IsVote() && $this->IsVoteTrap() && $ROOM->IsNight()){
+      OutputVoteMessage('wolf-eat', $this->submit, $this->action, $this->not_action);
     }
+  }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
   }
 
   //罠能力判定
   function IsVoteTrap(){ return $this->GetActor()->IsActive(); }
+
+  function IgnoreVote(){
+    if(! is_null($str = parent::IgnoreVote())) return $str;
+    return $this->IsVoteTrap() ? NULL : '能力喪失しています';
+  }
+
+  function IsVoteCheckbox($user, $live){ return $live; }
+
+  function IgnoreVoteNight($user, $live){ return $live ? NULL : '生存者以外には投票できません'; }
 
   //罠設置
   function SetTrap($uname){

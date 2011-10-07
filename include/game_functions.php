@@ -492,48 +492,9 @@ EOF;
       break;
 
     case 'ogre':
+    case 'duelist':
       $win_flag = $SELF->IsRoleGroup('mania') ? $SELF->IsLive()
 	: $ROLES->LoadMain($SELF)->Win($victory);
-      break;
-
-    case 'duelist':
-      if($SELF->IsRoleGroup('mania')){ //神話マニア陣営
-	$win_flag = $SELF->IsLive();
-      }
-      elseif($SELF->IsRoleGroup('duelist')){ //決闘者系
-	$target_count = 0;
-	$live_count   = 0;
-	foreach($USERS->rows as $user){
-	  if($user->IsPartner('rival', $SELF->user_no)){
-	    $target_count++;
-	    if($user->IsLive()) $live_count++;
-	  }
-	}
-	$win_flag = $target_count > 0 ? $live_count == 1 : $SELF->IsLive();
-      }
-      elseif($SELF->IsRoleGroup('avenger')){ //復讐者系
-	$target_count = 0;
-	foreach($USERS->rows as $user){
-	  if($user->IsPartner('enemy', $SELF->user_no)){
-	    $target_count++;
-	    if($user->IsLive()) break 2;
-	  }
-	}
-	$win_flag = $target_count > 0 || $SELF->IsLive();
-      }
-      elseif($SELF->IsRoleGroup('patron')){ //後援者系
-	$target_count = 0;
-	foreach($USERS->rows as $user){
-	  if($user->IsPartner('supported', $SELF->user_no)){
-	    $target_count++;
-	    if($user->IsLive()){
-	      $win_flag = true;
-	      break 2;
-	    }
-	  }
-	}
-	$win_flag = $target_count == 0 && $SELF->IsLive();
-      }
       break;
 
     default:

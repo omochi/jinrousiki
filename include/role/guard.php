@@ -7,9 +7,10 @@
   ・狩り：通常
 */
 class Role_guard extends Role{
+  public $action = 'GUARD_DO';
+  public $ignore_message = '初日は護衛できません';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
@@ -18,8 +19,14 @@ class Role_guard extends Role{
       OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
       if(! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
     }
-    //投票
-    if($ROOM->date > 1 && $ROOM->IsNight()) OutputVoteMessage('guard-do', 'guard_do', 'GUARD_DO');
+    if($this->IsVote() && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('guard-do', 'guard_do', $this->action);
+    }
+  }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
   }
 
   //護衛先セット

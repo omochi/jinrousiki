@@ -5,14 +5,11 @@
   ・ショック死：再投票
 */
 RoleManager::LoadFile('medium');
-class Role_eclipse_medium extends RoleVoteAbility{
+class Role_eclipse_medium extends Role_medium{
   public $display_role = 'medium';
-  public $mix_in = 'medium';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){ $this->filter->OutputAbility(); }
-
   function FilterSuddenDeath(&$reason){
-    if($reason == '' && $this->GetVoteKillUname() == '') $reason = 'SEALED';
+    if($reason == '' && $this->GetStack('vote_kill_uname') == '') $reason = 'SEALED';
   }
 }

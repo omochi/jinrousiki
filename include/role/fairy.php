@@ -12,15 +12,16 @@ class Role_fairy extends Role{
 
   //役職情報表示
   function OutputAbility(){
+    global $ROOM;
+
     parent::OutputAbility();
-    if($this->IsVote()) OutputVoteMessage('fairy-do', 'fairy_do', $this->action);
+    if($this->IsVote() && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('fairy-do', 'fairy_do', $this->action);
+    }
   }
 
   //投票能力判定
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->IsNight();
-  }
+  function IsVote(){ return true; }
 
   //占い (悪戯)
   function Mage($user){

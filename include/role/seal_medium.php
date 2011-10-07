@@ -4,11 +4,8 @@
   ○仕様
   ・処刑投票：投票先が回数限定の能力を持っている人外なら封印する
 */
-RoleManager::LoadFile('medium');
-class Role_seal_medium extends RoleVoteAbility{
-  public $mix_in = 'medium';
-  public $data_type = 'action';
-  public $init_stack = true;
+RoleManager::LoadFile('bacchus_medium');
+class Role_seal_medium extends Role_bacchus_medium{
   public $seal_list = array(
     'phantom_wolf', 'resist_wolf', 'revive_wolf', 'fire_wolf', 'tongue_wolf',
     'trap_mad', 'possessed_mad',
@@ -16,14 +13,12 @@ class Role_seal_medium extends RoleVoteAbility{
     'revive_avenger');
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){ $this->filter->OutputAbility(); }
-
   function VoteAction(){
     global $USERS;
 
-    foreach($this->GetStack() as $uname => $target_uname){
+    if(! is_array($stack = $this->GetStack())) return;
+    foreach($stack as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
-
       $target = $USERS->ByRealUname($target_uname);
       if($target->IsLive(true) && $target->IsRole($this->seal_list)){
 	$target->IsActive() ? $target->LostAbility() :

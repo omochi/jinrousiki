@@ -5,16 +5,16 @@
 */
 RoleManager::LoadFile('fox');
 class Role_possessed_fox extends Role_fox{
+  public $mix_in = 'possessed_mad';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){
-    global $ROOM;
+  function OutputFoxAbility(){ $this->filter->OutputAction(); }
 
-    if($this->GetActor()->IsActive()){
-      if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-	OutputVoteMessage('wolf-eat', 'possessed_do', 'POSSESSED_DO', 'POSSESSED_NOT_DO');
-      }
-    }
-    elseif($ROOM->date > 2) OutputPossessedTarget(); //現在の憑依先
-  }
+  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+
+  function GetVoteIconPath($user, $live){ return $this->filter->GetVoteIconPath($user, $live); }
+
+  function IsVoteCheckbox($user, $live){ return $this->filter->IsVoteCheckbox($user, $live); }
+
+  function IgnoreVoteNight($user, $live){ return $this->filter->IgnoreVoteNight($user, $live); }
 }

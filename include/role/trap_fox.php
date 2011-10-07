@@ -4,10 +4,15 @@
   ○仕様
 */
 RoleManager::LoadFile('fox');
-RoleManager::LoadFile('trap_mad');
 class Role_trap_fox extends Role_fox{
   public $mix_in = 'trap_mad';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){ $this->OutputTrapAbility(); }
+  function OutputFoxAbility(){ $this->filter->OutputAction(); }
+
+  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+
+  function IsVoteCheckbox($user, $live){ return $this->filter->IsVoteCheckbox($user, $live); }
+
+  function IgnoreVoteNight($user, $live){ return $this->filter->IgnoreVoteNight($user, $live); }
 }

@@ -10,6 +10,7 @@ class Role_wizard extends Role{
     'assassin' => 'ASSASSIN_DO', 'sex_mage' => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
   public $action = 'WIZARD_DO';
+  public $ignore_message = '初日は魔法を使えません';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
@@ -22,8 +23,15 @@ class Role_wizard extends Role{
     }
   }
 
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
+  }
+
+  //魔法リスト取得
   function GetWizardList(){ return $this->wizard_list; }
 
+  //魔法取得
   function GetRole(){
     global $ROOM;
 

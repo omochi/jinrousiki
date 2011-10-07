@@ -5,18 +5,20 @@
   ・占い：通常
 */
 class Role_mage extends Role{
+  public $action = 'MAGE_DO';
   public $result = 'MAGE_RESULT';
   public $mage_failed = 'failed';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
     parent::OutputAbility();
     if($ROOM->date > 1) OutputSelfAbilityResult($this->result);
-    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'MAGE_DO');
+    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', $this->action);
   }
+
+  function IsVote(){ return true; }
 
   //占い
   function Mage($user){

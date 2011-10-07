@@ -6,16 +6,22 @@
   ・逃亡処理：なし
 */
 class Role_escaper extends Role{
+  public $action = 'ESCAPE_DO';
+  public $ignore_message = '初日は逃亡できません';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
     parent::OutputAbility();
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('escape-do', 'escape_do', 'ESCAPE_DO');
+    if($this->IsVote() && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('escape-do', 'escape_do', $this->action);
     }
+  }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
   }
 
   //逃亡処理

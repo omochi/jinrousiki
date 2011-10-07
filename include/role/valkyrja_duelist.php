@@ -5,11 +5,15 @@
   ・追加役職：なし
 */
 class Role_valkyrja_duelist extends Role{
+  public $action = 'DUELIST_DO';
+  public $ignore_message = '初日以外は投票できません';
   public $partner_role   = 'rival';
   public $partner_header = 'duelist_pair';
+  public $check_self_shoot = true;
+  public $self_shoot = false;
+  public $shoot_count = 2;
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
@@ -21,10 +25,95 @@ class Role_valkyrja_duelist extends Role{
     }
     OutputPartner($stack, $this->partner_header);
     if($ROOM->date == 2 && isset($this->result)) OutputSelfAbilityResult($this->result);
-    if($ROOM->date == 1 && $ROOM->IsNight()){
-      OutputVoteMessage('duelist-do', 'duelist_do', 'DUELIST_DO');
+    if($this->IsVote() && $ROOM->IsNight()){
+      OutputVoteMessage('duelist-do', 'duelist_do', $this->action);
     }
   }
 
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date == 1;
+  }
+
+  function SetVoteNight(){
+    global $GAME_CONF, $USERS;
+
+    parent::SetVoteNight();
+    $self_shoot = $this->check_self_shoot && $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
+    $this->SetStack($self_shoot, 'self_shoot');
+  }
+
+  function GetVoteCheckbox($user, $id, $live){
+    return $this->IsVoteCheckbox($user, $live) ?
+      '<input type="checkbox" name="target_no[]"' .
+      ($this->IsSelfShoot() && $this->IsSameUser($user->uname) ? ' checked' : '') .
+      ' id="' . $id . '" value="' . $id . '">'."\n" : '';
+  }
+
+  function IsVoteCheckbox($user, $live){ return $live && ! $user->IsDummyBoy(); }
+
+  //自分撃ち判定
+  function IsSelfShoot(){ return $this->GetStack('self_shoot') || $this->self_shoot; }
+
+  function VoteNight(){
+    global $USERS;
+
+    $stack = $this->GetVoteNightTarget();
+    //人数チェック
+    $count = $this->GetVoteNightTargetCount();
+    if(count($stack) != $count) return '指定人数は' . $count . '人にしてください';
+
+    $self_shoot = false; //自分撃ちフラグ
+    $user_list  = array();
+    foreach($stack as $id){
+      $user = $USERS->ByID($id); //投票先のユーザ情報を取得
+      if(! $user->IsLive() || $user->IsDummyBoy()){ //例外処理
+	return '生存者以外と身代わり君には投票できません';
+      }
+      $user_list[] = $user;
+      $self_shoot |= $this->IsSameUser($user->uname); //自分撃ち判定
+    }
+
+    if(! $self_shoot){ //自分撃ちエラー判定
+      $str = '必ず自分を対象に含めてください';
+      if($this->self_shoot)    return $str; //自分撃ち固定役職
+      if($this->IsSelfShoot()) return '少人数村の場合は、' . $str; //参加人数
+    }
+    $this->VoteNightAction($user_list, $self_shoot);
+    return NULL;
+  }
+
+  //投票人数取得
+  function GetVoteNightTargetCount(){ return $this->shoot_count; }
+
+  //決闘者陣営の投票処理
+  function VoteNightAction($list){
+    $uname_stack  = array();
+    $handle_stack = array();
+    foreach($list as $user){
+      $uname_stack[]  = $user->uname;
+      $handle_stack[] = $user->handle_name;
+      $user->AddRole($this->GetRole($user)); //役職追加
+    }
+    $this->SetStack(implode(' ', $uname_stack), 'target_uname');
+    $this->SetStack(implode(' ', $handle_stack), 'target_handle');
+  }
+
+  //追加役職取得
   function GetRole($user){ return $this->GetActor()->GetID($this->partner_role); }
+
+  //勝利判定
+  function Win($victory){
+    $actor  = $this->GetActor();
+    $id     = $actor->user_no;
+    $target = 0;
+    $count  = 0;
+    foreach($this->GetUser() as $user){
+      if($user->IsPartner($this->partner_role, $id)){
+	$target++;
+	if($user->IsLive()) $count++;
+      }
+    }
+    return $target > 0 ? $count == 1 : $actor->IsLive();
+  }
 }

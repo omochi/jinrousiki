@@ -4,6 +4,7 @@
   ○仕様
 */
 class Role_dummy_chiroptera extends Role{
+  public $mix_in = 'self_cupid';
   public $display_role = 'self_cupid';
   function __construct(){ parent::__construct(); }
 
@@ -21,7 +22,27 @@ class Role_dummy_chiroptera extends Role{
       foreach($stack as $id) $stack_pair[] = $USERS->ById($id)->handle_name;
       OutputPartner($stack_pair, 'cupid_pair');
     }
+    $this->OutputAction();
+  }
 
-    if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('cupid-do', 'cupid_do', 'CUPID_DO');
+  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+
+  function GetVoteCheckbox($user, $id, $live){
+    return $this->filter->GetVoteCheckbox($user, $id, $live);
+  }
+
+  function CheckVoteNight(){ $this->filter->CheckVoteNight(); }
+
+  function VoteNightAction($list, $flag){
+    $uname_stack  = array();
+    $handle_stack = array();
+    foreach($list as $user){
+      $uname_stack[]  = $user->uname;
+      $handle_stack[] = $user->handle_name;
+      if(! $this->IsSameUser($user->uname)) $this->GetActor()->AddMainRole($user->user_no);
+    }
+
+    $this->SetStack(implode(' ', $uname_stack), 'target_uname');
+    $this->SetStack(implode(' ', $handle_stack), 'target_handle');
   }
 }

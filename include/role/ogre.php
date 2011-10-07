@@ -5,19 +5,33 @@
   ・勝利条件：自分自身と人狼系の生存
 */
 class Role_ogre extends Role{
+  public $action = 'OGRE_DO';
+  public $not_action = 'OGRE_NOT_DO';
   public $resist_rate = 30;
   public $reduce_rate = 5;
+  public $ignore_message = '初日は人攫いできません';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
     parent::OutputAbility();
     $this->OutputOgreAbility();
-    if($ROOM->date > 1 && $ROOM->IsNight()){
-      OutputVoteMessage('ogre-do', 'ogre_do', 'OGRE_DO', 'OGRE_NOT_DO');
+    if($this->IsVote() && $ROOM->IsNight()){
+      OutputVoteMessage('ogre-do', 'ogre_do', $this->action, $this->not_action);
     }
+  }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
+  }
+
+  function SetVoteNight(){
+    global $ROOM;
+
+    parent::SetVoteNight();
+    if($ROOM->IsEvent('force_assassin_do')) $this->SetStack(NULL, 'not_action');
   }
 
   //特殊鬼の情報表示

@@ -5,7 +5,9 @@
   ・コピー：メイン役職
 */
 class Role_mania extends Role{
+  public $action = 'MANIA_DO';
   public $copied = 'copied';
+  public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
   //役職情報表示
@@ -14,7 +16,14 @@ class Role_mania extends Role{
 
     parent::OutputAbility();
     if($ROOM->date == 2 && $this->delay_copy) OutputSelfAbilityResult('MANIA_RESULT');
-    if($ROOM->date == 1 && $ROOM->IsNight()) OutputVoteMessage('mania-do', 'mania_do', 'MANIA_DO');
+    if($this->IsVote() && $ROOM->IsNight()){
+      OutputVoteMessage('mania-do', 'mania_do', $this->action);
+    }
+  }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date == 1;
   }
 
   //コピー処理

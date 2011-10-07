@@ -4,9 +4,9 @@
   ○仕様
 */
 class Role_wolf extends Role{
+  public $action = 'WOLF_EAT';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM, $USERS;
 
@@ -36,11 +36,54 @@ class Role_wolf extends Role{
     }
     if($ROOM->IsNight()) OutputPartner($uncoscious_list, 'unconscious_list'); //無意識
     $this->OutputWolfAbility();
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', 'WOLF_EAT'); //投票
+    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', $this->action); //投票
   }
 
   //特殊狼の情報表示
   function OutputWolfAbility(){}
+
+  function GetVoteTargetUser(){
+    global $ROOM;
+
+    $stack = parent::GetVoteTargetUser();
+    if(($ROOM->IsDummyBoy() && $ROOM->date == 1) || $ROOM->IsQuiz()){ //身代わり君適用判定
+      $stack = array(1 => $stack[1]); //dummy_boy = 1番は保証されている？
+    }
+    return $stack;
+  }
+
+  function GetVoteIconPath($user, $live){
+    global $ICON_CONF;
+    return ! $live ? $ICON_CONF->dead :
+      ($this->IsWolfPartner($user->user_no) ? $ICON_CONF->wolf :
+       $ICON_CONF->path . '/' . $user->icon_filename);
+  }
+
+  //仲間狼判定
+  function IsWolfPartner($id){
+    global $USERS;
+    return $USERS->ByReal($id)->IsWolf(true);
+  }
+
+  function IsVoteCheckbox($user, $live){
+    return parent::IsVoteCheckbox($user, $live) && $this->IsWolfEatTarget($user->user_no);
+  }
+
+  //仲間狼襲撃可能判定
+  function IsWolfEatTarget($id){ return ! $this->IsWolfPartner($id); }
+
+  function IgnoreVoteNight($user, $live){
+    global $ROOM, $USERS;
+
+    if(! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
+    if(! $this->IsWolfEatTarget($user->user_no)) return '狼同士には投票できません'; //仲間狼判定
+    //クイズ村は GM 以外無効
+    if($ROOM->IsQuiz() && ! $user->IsDummyBoy()) return 'クイズ村では GM 以外に投票できません';
+    if($ROOM->IsDummyBoy() && $ROOM->date == 1 && ! $user->IsDummyBoy()){ //身代わり君判定
+      return '身代わり君使用の場合は、身代わり君以外に投票できません';
+    }
+    return NULL;
+  }
 
   //人狼襲撃失敗判定
   function WolfEatSkip($user){

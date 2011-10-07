@@ -190,14 +190,14 @@ class User{
   //役職判定
   function IsRole($role){
     $stack = func_get_args();
-    $role_list = $this->role_list;
-    if($stack[0] === true){
+    $list  = $this->role_list;
+    if($stack[0] === true){ //仮想役職対応
       array_shift($stack);
-      if(isset($this->virtual_role)) $role_list[] = $this->virtual_role;
+      if(isset($this->virtual_role)) $list[] = $this->virtual_role;
     }
     if(is_array($stack[0])) $stack = $stack[0];
-    return count($stack) > 1 ? count(array_intersect($stack, $role_list)) > 0 :
-      in_array($stack[0], $role_list);
+    return count($stack) > 1 ? count(array_intersect($stack, $list)) > 0 :
+      in_array($stack[0], $list);
   }
 
   //役職グループ判定
@@ -886,8 +886,11 @@ EOF;
 	$stack = array('uname' => $this->uname, 'target_uname' => $target,
 		       'vote_number' => $vote_number);
 	$RQ_ARGS->TestItems->vote->day[$this->uname] = $stack;
+	//PrintData($stack, 'Vote');
       }
-      //PrintData($stack, 'Vote');
+      else{
+	PrintData("{$action}: {$target}", 'Vote');
+      }
       return true;
     }
     $items = 'room_no, date, uname, situation';

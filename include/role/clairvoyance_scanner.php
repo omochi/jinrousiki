@@ -10,6 +10,7 @@ RoleManager::LoadFile('mind_scanner');
 class Role_clairvoyance_scanner extends Role_mind_scanner{
   public $mind_role = NULL;
   public $result = 'CLAIRVOYANCE_RESULT';
+  public $ignore_message = '初日は透視できません';
   function __construct(){ parent::__construct(); }
 
   function IsVote(){

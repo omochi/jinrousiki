@@ -6,10 +6,12 @@
 RoleManager::LoadFile('fox');
 class Role_voodoo_fox extends Role_fox{
   public $mix_in = 'voodoo_mad';
+  public $action = 'VOODOO_FOX_DO';
+  public $submit = 'voodoo_do';
   function __construct(){ parent::__construct(); }
 
   function OutputFoxAbility(){
     global $ROOM;
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_FOX_DO');
+    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', $this->submit, $this->action);
   }
 }

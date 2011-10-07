@@ -10,7 +10,41 @@ class Role_barrier_wizard extends Role_wizard{
   public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
   public $result_list = array('GUARD_SUCCESS');
   public $action = 'SPREAD_WIZARD_DO';
+  public $submit = 'wizard_do';
   function __construct(){ parent::__construct(); }
+
+  function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
+
+  function VoteNight(){
+    global $USERS;
+
+    $stack = $this->GetVoteNightTarget();
+    //人数チェック
+    if(count($stack) < 1 || 4 < count($stack)) return '指定人数は1～4人にしてください';
+
+    $user_list = array();
+    foreach($stack as $id){
+      $user = $USERS->ByID($id);
+      //例外判定
+      if($this->IsSameUser($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()){
+	return '自分自身・生存者以外・身代わり君には投票できません';
+      }
+      $user_list[$id] = $user;
+    }
+
+    $uname_stack  = array();
+    $handle_stack = array();
+    foreach($user_list as $id => $user){
+      $uname_stack[] = $USERS->ByReal($id)->user_no;
+      $handle_stack[$id] = $user->handle_name;
+    }
+    sort($uname_stack);
+    ksort($handle_stack);
+
+    $this->SetStack(implode(' ', $uname_stack), 'target_uname');
+    $this->SetStack(implode(' ', $handle_stack), 'target_handle');
+    return NULL;
+  }
 
   function SetGuard($list){
     global $USERS, $ROLES;

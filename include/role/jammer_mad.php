@@ -4,13 +4,18 @@
   ○仕様
 */
 class Role_jammer_mad extends Role{
+  public $action = 'JAMMER_MAD_DO';
+  public $submit = 'jammer_do';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
-    global $ROOM;
-
     parent::OutputAbility();
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'jammer_do', 'JAMMER_MAD_DO');
+    $this->OutputAction();
+  }
+
+  function OutputAction(){
+    global $ROOM;
+    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', $this->submit, $this->action);
   }
 
   //妨害対象セット

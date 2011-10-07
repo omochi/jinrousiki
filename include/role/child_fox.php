@@ -7,7 +7,9 @@
 RoleManager::LoadFile('fox');
 class Role_child_fox extends Role_fox{
   public $mix_in = 'mage';
+  public $action = 'CHILD_FOX_DO';
   public $result = 'CHILD_FOX_RESULT';
+  public $submit = 'mage_do';
   public $mage_failed = 'failed';
   function __construct(){ parent::__construct(); }
 
@@ -16,7 +18,7 @@ class Role_child_fox extends Role_fox{
 
     if(is_null($this->result)) return;
     if($ROOM->date > 1) OutputSelfAbilityResult($this->result); //占い結果
-    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', 'CHILD_FOX_DO'); //投票
+    if($ROOM->IsNight()) OutputVoteMessage('mage-do', $this->submit, $this->action); //投票
   }
 
   function Mage($user){

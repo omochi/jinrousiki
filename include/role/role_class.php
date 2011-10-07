@@ -124,7 +124,7 @@ class RoleManager{
   public $guard_assassin_list = array('gatekeeper_guard');
 
   //夢護衛
-  public $dummy_guard_list = array('dummy_guard');
+  public $guard_dream_list = array('dummy_guard');
 
   //厄払い
   public $anti_voodoo_list = array('anti_voodoo');
@@ -152,6 +152,7 @@ class RoleManager{
 
   function __construct(){
     $this->path = JINRO_INC . '/role';
+    $this->stack  = new StdClass();
     $this->loaded = new StdClass();
     $this->loaded->file  = array();
     $this->loaded->class = array();
@@ -261,7 +262,11 @@ class RoleManager{
 //-- 役職の基底クラス --//
 class Role{
   public $role;
-
+  public $action;
+  public $not_action;
+  public $submit;
+  public $not_submit;
+  public $ignore_message;
   function __construct(){
     global $ROLES;
 
@@ -274,6 +279,7 @@ class Role{
     }
   }
 
+  //Mixin 呼び出し用
   function __call($name, $args){
     if(! is_object($this->filter)){
       PrintData('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
@@ -286,7 +292,8 @@ class Role{
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
-  //-- 判定用関数 --//
+  //-- 汎用関数 --//
+  //ユーザ取得
   function GetActor(){
     global $ROLES;
     return $ROLES->actor;
@@ -305,33 +312,13 @@ class Role{
   function GetStack($name = NULL){
     global $ROLES;
     $target = is_null($name) ? $this->role : $name;
-    return $ROLES->stack->$target;
+    return property_exists($ROLES->stack, $target) ? $ROLES->stack->$target : NULL;
   }
-
-  //襲撃者取得
-  function GetVoter(){ return $this->GetStack('voted_wolf'); }
-
-  //人狼襲撃対象者取得
-  function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
 
   //データ追加
   function AddStack($uname, $role = NULL){
     global $ROLES;
     $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetActor()->uname] = $uname;
-  }
-
-  //成功データ追加
-  function AddSuccess($target, $data = NULL, $null = false){
-    global $ROLES;
-    $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? NULL : true;
-  }
-
-  //スキップ判定
-  function Ignored(){
-    global $ROOM, $USERS;
-    //return false; //テスト用
-    return ! $ROOM->IsPlaying() ||
-      ! ($USERS->IsVirtualLive($this->GetActor()->user_no) || $this->GetActor()->virtual_live);
   }
 
   //同一ユーザ判定
@@ -343,6 +330,42 @@ class Role{
   //死亡判定
   function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
 
+  //スキップ判定
+  function Ignored(){
+    global $ROOM, $USERS;
+    //return false; //テスト用
+    return ! $ROOM->IsPlaying() ||
+      ! ($USERS->IsVirtualLive($this->GetActor()->user_no) || $this->GetActor()->virtual_live);
+  }
+
+  //データセット
+  function SetStack($data, $role = NULL){
+    global $ROLES;
+    $ROLES->stack->{is_null($role) ? $this->role : $role} = $data;
+  }
+
+  //-- 役職情報表示 --//
+  //役職情報表示
+  function OutputAbility(){ $this->OutputImage(); }
+
+  //役職画像表示
+  function OutputImage(){
+    global $ROLE_IMG;
+    $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
+  }
+
+  //-- 処刑投票処理 --//
+  //処刑者判定
+  function IsVoted($uname = NULL){
+    return $this->GetStack('vote_kill_uname') == $this->GetUname($uname);
+  }
+
+  //得票者名取得
+  function GetVotedUname($uname = NULL){
+    return array_keys($this->GetStack('target'), $this->GetUname($uname));
+  }
+
+  //-- 処刑集計処理 --//
   //生存仲間判定
   function IsLivePartner(){
     global $USERS;
@@ -353,12 +376,99 @@ class Role{
     return false;
   }
 
-  function OutputImage(){
-    global $ROLE_IMG;
-    $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
+  //-- 投票データ表示 (夜) --//
+  //投票データセット (夜)
+  function SetVoteNight(){
+    if(is_null($this->action)){
+      OutputVoteResult('夜：あなたは投票できません');
+    }
+    else{
+      if(! is_null($str = $this->IgnoreVote())) OutputVoteResult('夜：' . $str);
+      foreach(array('', 'not_') as $header){
+	foreach(array('action', 'submit') as $data){
+	  $this->SetStack($this->{$header . $data}, $header . $data);
+	}
+      }
+    }
   }
 
-  function OutputAbility(){ $this->OutputImage(); }
+  //投票スキップ判定
+  function IgnoreVote(){ return $this->IsVote() ? NULL : $this->ignore_message; }
+
+  //投票能力判定
+  function IsVote(){ return false; }
+
+  //-- 投票画面表示 (夜) --//
+  //投票対象ユーザ取得
+  function GetVoteTargetUser(){
+    global $USERS;
+    return $USERS->rows;
+  }
+
+  //投票のアイコンパス取得
+  function GetVoteIconPath($user, $live){
+    global $ICON_CONF;
+    return $live ? $ICON_CONF->path . '/' . $user->icon_filename : $ICON_CONF->dead;
+  }
+
+  //投票のチェックボックス取得
+  function GetVoteCheckbox($user, $id, $live){
+    return $this->IsVoteCheckbox($user, $live) ?
+      $this->GetVoteCheckboxHeader() . ' id="' . $id . '" value="' . $id . '">'."\n" : '';
+  }
+
+  //投票対象判定
+  function IsVoteCheckbox($user, $live){ return $live && ! $this->IsSameUser($user->uname); }
+
+  //投票のチェックボックスヘッダ取得
+  function GetVoteCheckboxHeader(){ return '<input type="radio" name="target_no"'; }
+
+  //-- 投票処理 (夜) --//
+  //投票結果チェック (夜)
+  function CheckVoteNight(){
+    global $RQ_ARGS;
+
+    $this->SetStack($RQ_ARGS->situation, 'message');
+    if(! is_null($str = $this->VoteNight())){
+      OutputVoteResult('夜：投票先が正しくありません<br>'."\n" . $str);
+    }
+  }
+
+  //投票処理 (夜)
+  function VoteNight(){
+    global $USERS;
+
+    $user = $USERS->ByID($this->GetVoteNightTarget());
+    $live = $USERS->IsVirtualLive($user->user_no); //仮想的な生死を判定
+    if(! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
+    $this->SetStack($USERS->ByReal($user->user_no)->uname, 'target_uname');
+    $this->SetStack($user->handle_name, 'target_handle');
+    return NULL;
+  }
+
+  //投票対象者取得 (夜)
+  function GetVoteNightTarget(){
+    global $RQ_ARGS;
+    return $RQ_ARGS->target_no;
+  }
+
+  //投票スキップ判定 (夜)
+  function IgnoreVoteNight($user, $live){
+    return ! $live || $this->IsSameUser($user->uname) ? '自分・生存者以外には投票できません' : NULL;
+  }
+
+  //-- 投票集計処理 (夜) --//
+  //成功データ追加
+  function AddSuccess($target, $data = NULL, $null = false){
+    global $ROLES;
+    $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? NULL : true;
+  }
+
+  //襲撃者取得
+  function GetVoter(){ return $this->GetStack('voted_wolf'); }
+
+  //人狼襲撃対象者取得
+  function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
 }
 
 //-- 発言フィルタリング用拡張クラス --//
@@ -399,7 +509,6 @@ class RoleVoteAbility extends Role{
   public $data_type;
   public $decide_type;
   public $init_stack;
-
   function __construct(){
     global $ROLES;
 
@@ -408,6 +517,9 @@ class RoleVoteAbility extends Role{
       $ROLES->stack->{$this->role} = array();
     }
   }
+
+  //投票データセット (昼)
+  function SetVoteDay($uname){ $this->SetVoteAbility($uname); }
 
   //投票データ収拾
   function SetVoteAbility($uname){
@@ -491,12 +603,6 @@ class RoleVoteAbility extends Role{
     return $USERS->ByRealUname($ROLES->stack->target[$this->GetUname($uname)]);
   }
 
-  //得票者名取得
-  function GetVotedUname($uname = NULL){
-    global $ROLES;
-    return array_keys($ROLES->stack->target, $this->GetUname($uname));
-  }
-
   //投票先人数取得 (ショック死判定用)
   function GetVoteCount(){
     global $ROLES;
@@ -513,12 +619,6 @@ class RoleVoteAbility extends Role{
   function GetVoteKillUname(){
     global $ROLES;
     return $ROLES->stack->vote_kill_uname;
-  }
-
-  //処刑者判定
-  function IsVoted($uname = NULL){
-    global $ROLES;
-    return $ROLES->stack->vote_kill_uname == $this->GetUname($uname);
   }
 
   //発動日判定 (ショック死判定用)

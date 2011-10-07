@@ -1,12 +1,13 @@
 <?php
+//error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF', 'GAME_OPT_MESS', 'ROLE_DATA');
 $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('配役テストツール', 'role_table');
 OutputRoleTestForm();
-if($_POST['command'] == 'role_test'){
-  $RQ_ARGS =& new RequestBase();
+if(array_key_exists('command', $_POST) && $_POST['command'] == 'role_test'){
+  $RQ_ARGS = new RequestBase();
   $RQ_ARGS->TestItems->is_virtual_room = true;
   $stack->game_option = array('dummy_boy');
   $stack->option_role = array();
@@ -32,11 +33,15 @@ if($_POST['command'] == 'role_test'){
     break;
   }
   foreach(array('festival') as $option){
-    if($_POST[$option] == 'on') $stack->game_option[] = $option;
+    if(array_key_exists($option, $_POST) && $_POST[$option] == 'on'){
+      $stack->game_option[] = $option;
+    }
   }
   foreach(array('gerd', 'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
 		'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective') as $option){
-    if($_POST[$option] == 'on') $stack->option_role[] = $option;
+    if(array_key_exists($option, $_POST) && $_POST[$option] == 'on'){
+      $stack->option_role[] = $option;
+    }
   }
 
   foreach(array('replace_human', 'change_common', 'change_mad') as $option){

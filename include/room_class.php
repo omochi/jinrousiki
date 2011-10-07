@@ -28,6 +28,7 @@ class Room{
       $this->event->rows = $request->TestItems->event;
     }
     else{
+      $this->event = new StdClass();
       $stack = $this->LoadRoom($request->room_no);
     }
     foreach($stack as $name => $value) $this->$name = $value;

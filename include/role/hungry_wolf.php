@@ -8,6 +8,8 @@ RoleManager::LoadFile('wolf');
 class Role_hungry_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
+  function IsWolfEatTarget($id){ return true; }
+
   function WolfEatSkip($user){ return false; }
 
   function WolfEatAction($user){ return ! $user->IsRoleGroup('wolf', 'fox'); }

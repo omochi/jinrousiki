@@ -24,4 +24,45 @@ class Role_reverse_assassin extends Role_assassin{
 	$ROLES->stack->reverse[$target_uname] = ! $ROLES->stack->reverse[$target_uname];
     }
   }
+
+  //反魂処理
+  function Resurrect(){
+    global $ROOM, $USERS;
+
+    $role = 'possessed';
+    foreach($this->GetStack('reverse') as $uname => $flag){
+      if(! $flag) continue;
+      $user = $USERS->ByUname($uname);
+      if($user->IsPossessedGroup()){ //憑依能力者対応
+	if($user->revive_flag) continue; //蘇生済みならスキップ
+
+	$virtual = $USERS->ByVirtual($user->user_no);
+	if($user != $virtual){ //憑依中ならリセット
+	  $user->ReturnPossessed('possessed_target'); //本人
+	  $virtual->ReturnPossessed($role); //憑依先
+	}
+
+	//憑依予定者が居たらキャンセル
+	if(array_key_exists($user->uname, $this->GetStack($role))){
+	  $user->possessed_reset  = false;
+	  $user->possessed_cancel = true;
+	}
+	elseif(in_array($user->uname, $this->GetStack($role))){
+	  //憑依中の犬神に憑依しようとした憑狼を検出
+	  $stack = array_keys($this->GetStack($role), $user->uname);
+	  $USERS->ByUname($stack[0])->possessed_cancel = true;
+	}
+
+	//特殊ケースなのでベタに処理
+	$virtual->Update('live', 'live');
+	$virtual->revive_flag = true;
+	$ROOM->SystemMessage($virtual->handle_name, 'REVIVE_SUCCESS');
+      }
+      else{
+	//憑依されていたらリセット
+	if($user != $USERS->ByReal($user->user_no)) $user->ReturnPossessed($role);
+	$user->Revive(); //蘇生処理
+      }
+    }
+  }
 }

@@ -6,11 +6,15 @@
   ・蘇生後：なし
 */
 class Role_poison_cat extends Role{
+  public $action = 'POISON_CAT_DO';
+  public $not_action = 'POISON_CAT_NOT_DO';
+  public $submit = 'revive_do';
+  public $not_submit = 'revive_not_do';
+  public $ignore_message = '初日は蘇生できません';
   public $revive_rate   = 25;
   public $missfire_rate =  0;
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     parent::OutputAbility();
     $this->OutputReviveAbility();
@@ -24,10 +28,34 @@ class Role_poison_cat extends Role{
     if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
       OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
     }
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('revive-do', 'revive_do', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
+    if($this->IsVote() && $ROOM->IsNight()){ //投票
+      OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
     }
   }
+
+  function IsVote(){
+    global $ROOM;
+    return $ROOM->date > 1;
+  }
+
+  function IgnoreVote(){
+    global $ROOM;
+
+    if(! is_null($str = parent::IgnoreVote())) return $str;
+    return $ROOM->IsOpenCast() ?
+      '「霊界で配役を公開しない」オプションがオフの時は投票できません' : NULL;
+  }
+
+  function GetVoteIconPath($user, $live){
+    global $ICON_CONF;
+    return $ICON_CONF->path . '/' . $user->icon_filename;
+  }
+
+  function IsVoteCheckbox($user, $live){
+    return ! $live && ! $this->IsSameUser($user->uname) && ! $user->IsDummyBoy();
+  }
+
+  function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : NULL; }
 
   //天候情報取得
   protected function GetEvent(){

@@ -4,13 +4,18 @@
   ○仕様
 */
 class Role_voodoo_mad extends Role{
+  public $action = 'VOODOO_MAD_DO';
+  public $submit = 'voodoo_do';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
-    global $ROOM;
-
     parent::OutputAbility();
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'voodoo_do', 'VOODOO_MAD_DO');
+    $this->OutputAction();
+  }
+
+  function OutputAction(){
+    global $ROOM;
+    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', $this->submit, $this->action);
   }
 
   //呪術対象セット

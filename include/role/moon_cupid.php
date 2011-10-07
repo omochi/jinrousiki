@@ -6,6 +6,7 @@
 */
 RoleManager::LoadFile('cupid');
 class Role_moon_cupid extends Role_cupid{
+  public $self_shoot = true;
   function __construct(){ parent::__construct(); }
 
   function GetRole($user, $flag){

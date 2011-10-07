@@ -6,11 +6,8 @@
   ・ショック死：恋人からの得票
 */
 RoleManager::LoadFile('angel');
-class Role_cursed_angel extends RoleVoteAbility{
-  public $mix_in = 'angel';
+class Role_cursed_angel extends Role_angel{
   function __construct(){ parent::__construct(); }
-
-  function OutputAbility(){ $this->filter->OutputAbility(); }
 
   function IsSympathy($lovers_a, $lovers_b){ return $lovers_a->GetCamp() != $lovers_b->GetCamp(); }
 

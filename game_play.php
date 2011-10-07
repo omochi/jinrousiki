@@ -201,10 +201,13 @@ function Say($say){
   if($ROOM->IsDay()){ //昼はそのまま発言
     if($ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
     if($SELF->IsRole('echo_brownie') && mt_rand(1, 10) < 3){ //山彦の処理
-      $query = 'SELECT sentence FROM talk' . $ROOM->GetQuery() .
+      $query = 'SELECT uname, sentence FROM talk' . $ROOM->GetQuery() .
 	' AND location = "' . $ROOM->day_night . '" ORDER BY talk_id DESC LIMIT 5';
-      $stack = FetchArray($query);
-      if(count($stack) > 0) Write(GetRandom($stack), $ROOM->day_night, 0);
+      $stack = FetchAssoc($query);
+      if(count($stack) > 0 && ! $SELF->IsSame($stack[0]['uname'])){ //連続発言検出
+	$str = GetRandom($stack);
+	Write($str['sentence'], $ROOM->day_night, 0);
+      }
     }
     Write($say, 'day', $spend_time, true);
   }

@@ -7,11 +7,12 @@
   ・投票：1日目のみ
 */
 class Role_mind_scanner extends Role{
+  public $action = 'MIND_SCANNER_DO';
   public $mind_role = 'mind_read';
   public $result = NULL;
+  public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
@@ -26,14 +27,22 @@ class Role_mind_scanner extends Role{
       OutputPartner($stack, 'mind_scanner_target');
     }
     if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', 'MIND_SCANNER_DO');
+      OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', $this->action);
     }
   }
 
-  //投票能力判定
   function IsVote(){
     global $ROOM;
     return $ROOM->date == 1;
+  }
+
+  function IsVoteCheckbox($user, $live){
+    return parent::IsVoteCheckbox($user, $live) && ! $user->IsDummyBoy();
+  }
+
+  function IgnoreVoteNight($user, $live){
+    if(! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
+    return $user->IsDummyBoy() ? '身代わり君には投票できません' : NULL;
   }
 
   //透視処理

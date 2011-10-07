@@ -15,6 +15,8 @@ class Role_enchant_mad extends Role{
     if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO');
   }
 
+  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+
   function SetEvent($user){
     global $ROOM;
     $ROOM->event->same_face[] = $user->user_no;

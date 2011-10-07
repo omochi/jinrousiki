@@ -4,7 +4,6 @@
   ○仕様
   ・蘇生率：25% / 誤爆有り
 */
-RoleManager::LoadFile('medium');
 RoleManager::LoadFile('poison_cat');
 class Role_revive_medium extends Role_poison_cat{
   public $mix_in = 'medium';

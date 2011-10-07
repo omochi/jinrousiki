@@ -7,6 +7,7 @@
 */
 RoleManager::LoadFile('child_fox');
 class Role_miasma_fox extends Role_child_fox{
+  public $action = NULL;
   public $result = NULL;
   function __construct(){ parent::__construct(); }
 
