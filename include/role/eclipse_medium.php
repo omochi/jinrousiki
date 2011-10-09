@@ -6,10 +6,14 @@
 */
 RoleManager::LoadFile('medium');
 class Role_eclipse_medium extends Role_medium{
+  public $mix_in = 'chicken';
   public $display_role = 'medium';
+  public $sudden_death = 'SEALED';
   function __construct(){ parent::__construct(); }
 
-  function FilterSuddenDeath(&$reason){
-    if($reason == '' && $this->GetStack('vote_kill_uname') == '') $reason = 'SEALED';
+  function SuddenDeath(){
+    if(! $this->IgnoreSuddenDeath() && $this->GetStack('vote_kill_uname') == ''){
+      $this->SetSuddenDeath($this->sudden_death);
+    }
   }
 }

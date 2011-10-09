@@ -4,15 +4,19 @@
   ○仕様
   ・処刑得票：ショック死 (同一キューピッド恋人限定)
 */
-class Role_jealousy extends RoleVoteAbility{
-  public $data_type = 'array';
-  public $init_stack = true;
+class Role_jealousy extends Role{
   function __construct(){ parent::__construct(); }
+
+  function SetVoteDay($uname){
+    global $USERS;
+    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
+  }
 
   function VotedReaction(){
     global $USERS;
 
-    foreach($this->GetStack() as $uname){
+    if(! is_array($stack = $this->GetStack())) return;
+    foreach($stack as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
 
       $cupid_list = array(); //橋姫に投票したユーザのキューピッドの ID => 恋人の ID

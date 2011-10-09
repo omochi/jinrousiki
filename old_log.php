@@ -9,6 +9,7 @@ if($RQ_ARGS->is_room){
   $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
 
   $ROOM = new Room($RQ_ARGS);
+  $ROOM->LoadOption();
   $ROOM->log_mode = true;
   $ROOM->watch_mode = $RQ_ARGS->watch;
   $ROOM->single_view_mode = $RQ_ARGS->user_no > 0;
@@ -21,7 +22,7 @@ if($RQ_ARGS->is_room){
   OutputOldLog();
 }
 else{
-  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
+  $INIT_CONF->LoadClass('ROOM_CONF');
   OutputFinishedRooms($RQ_ARGS->page);
 }
 OutputHTMLFooter();

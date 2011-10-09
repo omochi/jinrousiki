@@ -4,52 +4,72 @@
   ○仕様
   ・毒能力鑑定/解毒
 */
-class Role_pharmacist extends RoleVoteAbility{
-  public $data_type = 'action';
-  public $init_stack = true;
+class Role_pharmacist extends Role{
+  public $result = 'PHARMACIST_RESULT';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
     parent::OutputAbility();
-    if($ROOM->date > 2) OutputSelfAbilityResult('PHARMACIST_RESULT'); //鑑定結果
+    if($ROOM->date > 2) OutputSelfAbilityResult($this->result); //鑑定結果
+  }
+
+  function SetVoteDay($uname){
+    global $USERS;
+    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
   }
 
   //毒能力鑑定
-  function DistinguishPoison(&$list){
+  function DistinguishPoison(){
     global $USERS;
 
-    foreach($this->GetStack() as $uname => $target_uname){
+    if(! is_array($stack = $this->GetStack())) return;
+    foreach($stack as $uname => $target_uname){
       if(! $this->IsVoted($uname)){
-	$list[$uname] = $USERS->ByRealUname($target_uname)->DistinguishPoison();
+	$result = $USERS->ByRealUname($target_uname)->DistinguishPoison();
+	$this->AddStack($result, 'pharmacist_result', $uname);
       }
     }
   }
 
   //解毒処理
-  function Detox(&$list){
-    foreach($this->GetStack() as $uname => $target_uname){
+  function Detox(){
+    if(! is_array($stack = $this->GetStack())) return;
+    foreach($stack as $uname => $target_uname){
       if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
-	$this->SetDetoxFlag($list, $uname);
+	$this->SetDetoxFlag($target_uname);
       }
     }
   }
 
   //解毒フラグセット
-  function SetDetoxFlag(&$list, $uname){
+  function SetDetoxFlag($uname){
     $this->GetActor()->detox_flag = true;
-    $list[$uname] = 'success';
+    $this->AddStack('success', 'pharmacist_result', $uname);
   }
 
   //ショック死抑制処理
-  function Cure(&$list){
-    foreach($this->GetStack() as $uname => $target_uname){
+  function Cure(){
+    if(! is_array($stack = $this->GetStack())) return;
+    foreach($stack as $uname => $target_uname){
       if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
 	$this->GetActor()->cured_flag = true;
-	$list[$uname] = 'cured';
+	$this->AddStack('cured', 'pharmacist_result', $uname);
       }
+    }
+  }
+
+  //鑑定結果登録
+  function SaveResult(){
+    global $ROOM, $USERS;
+
+    foreach($this->GetStack($this->role . '_result') as $uname => $result){
+      $user = $USERS->ByUname($uname);
+      $list = $this->GetStack($user->GetMainRole(true));
+      $handle_name = $USERS->GetHandleName($list[$user->uname], true);
+      $str = $user->handle_name . "\t" . $handle_name . "\t" . $result;
+      $ROOM->SystemMessage($str, $this->result);
     }
   }
 }

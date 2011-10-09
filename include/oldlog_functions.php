@@ -231,14 +231,16 @@ function GenerateOldLog(){
     $ROOM->status    = 'playing';
     $ROOM->day_night = 'day';
   }
-  $title = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
-  $log   = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
+  $title  = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
+  $option = GenerateGameOptionImage($ROOM->game_option->row, $ROOM->option_role->row);
+  $log    = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
 
   return GenerateHTMLHeader($title, 'old_log') . <<<EOF
 </head>
 <body>
 <a href="old_log.php">←戻る</a><br>
-{$ROOM->GenerateTitleTag()}
+{$ROOM->GenerateTitleTag()}<br>
+{$option}<br>
 {$log}
 EOF;
 }

@@ -4,10 +4,10 @@
   ○仕様
   ・ショック死：自分の投票先に複数の人が投票している
 */
-class Role_perverseness extends RoleVoteAbility{
+RoleManager::LoadFile('chicken');
+class Role_perverseness extends Role_chicken{
+  public $sudden_death = 'PERVERSENESS';
   function __construct(){ parent::__construct(); }
 
-  function FilterSuddenDeath(&$reason){
-    if($reason == '' && $this->GetVoteCount() > 1) $reason = 'PERVERSENESS';
-  }
+  function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->GetVoteCount() > 1; }
 }

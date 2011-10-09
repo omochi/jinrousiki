@@ -280,7 +280,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 
 <h3 id="possessed_fox">憑狐 (占い結果：村人(呪殺) / 霊能結果：妖狐) [Ver. 1.4.0 β9～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 陰陽師：死亡 / 封印：有効</h4>
+<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 陰陽師：死亡 / 封印：有効 / 憑依：無効</h4>
 <pre>
 一度だけ、死体に憑依することができる妖狐。
 <a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
@@ -293,6 +293,10 @@ OutputRolePageHeader('妖狐陣営');
 <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
 <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
 </ol>
+<h5>Ver. 1.4.11 / Ver. 1.5.0 β13～</h5>
+<pre>
+憑依無効
+</pre>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
 <a href="human.php#revive_priest">天人</a>・<a href="human.php#detective_common">探偵</a> (<a href="wolf.php#possessed_wolf">憑狼</a>が憑依できない役職) には憑依できない。

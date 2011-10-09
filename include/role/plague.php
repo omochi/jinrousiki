@@ -2,11 +2,11 @@
 /*
   ◆疫病神 (plague)
   ○仕様
-  ・処刑投票が拮抗したら自分の投票先が候補から除外される
+  ・処刑者決定：除外 (自分の投票先)
 */
-class Role_plague extends RoleVoteAbility{
-  public $data_type = 'target';
-  public $decide_type = 'escape';
-
+RoleManager::LoadFile('decide');
+class Role_plague extends Role_decide{
   function __construct(){ parent::__construct(); }
+
+  function DecideVoteKill(){ $this->DecideVoteKillEscape(); }
 }

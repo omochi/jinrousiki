@@ -858,7 +858,7 @@ function AggregateVoteDay(){
   $vote_message_list = array(); //システムメッセージ用 (ユーザID => array())
   $vote_target_list  = array(); //投票リスト (ユーザ名 => 投票先ユーザ名)
   $vote_count_list   = array(); //得票リスト (ユーザ名 => 投票数)
-  $pharmacist_list   = array(); //薬師系の鑑定結果
+  $ROLES->stack->pharmacist_result = array(); //薬師系の鑑定結果
   if($ROOM->IsOption('joker')) $joker_id = $USERS->SetJoker(); //現在のジョーカー所持者の ID
 
   //-- 投票データ収集 --//
@@ -899,15 +899,14 @@ function AggregateVoteDay(){
     $vote_target_list[$user->uname]    = $target->uname;
     $vote_count_list[$user->uname]     = $voted_number;
     if($USERS->ByReal($user->user_no)->IsRole('philosophy_wizard')){ //賢者の魔法発動
-      $user->virtual_role = $ROLES->Load('main_role', true)->GetRole();
-      $ROLES->actor = new User($user->virtual_role);
-      $ROLES->actor->uname = $user->uname;
+      $ROLES->actor->virtual_role = $ROLES->LoadMain($ROLES->actor)->GetRole();
+      //PrintData($user->virtual_role, 'Wizard: ' . $user->uname);
     }
-    foreach($ROLES->Load('vote_ability') as $filter) $filter->SetVoteDay($target->uname);
+    foreach($ROLES->Load('vote_day', false, true) as $filter) $filter->SetVoteDay($target->uname);
   }
   $ROLES->stack->target = $vote_target_list;
   //PrintData($ROLES->stack, 'RoleStack');
-  ksort($vote_message_list);
+  ksort($vote_message_list); //投票順をソート (憑依対応)
   $stack = array();
   foreach($vote_message_list as $id => $list) $stack[$USERS->ByID($id)->uname] = $list;
   $vote_message_list = $stack;
@@ -917,7 +916,7 @@ function AggregateVoteDay(){
   //PrintData($vote_count_list, 'VoteCount');
   if(! $ROOM->IsEvent('no_authority')){ //蜃気楼ならスキップ
     foreach($ROLES->LoadFilter('rebel') as $filter){
-      $filter->FilterRebel($vote_message_list, $vote_count_list);
+      $filter->Rebel($vote_message_list, $vote_count_list);
     }
   }
 
@@ -934,31 +933,29 @@ function AggregateVoteDay(){
   }
 
   //-- 処刑者決定処理 --//
-  $vote_kill_uname = ''; //処刑者 (ユーザ名)
+  $ROLES->stack->vote_kill_uname = ''; //処刑者 (ユーザ名)
   //最大得票数のユーザ名 (処刑候補者) のリストを取得
   $ROLES->stack->max_voted = array_keys($vote_count_list, $max_voted_number);
   //PrintData($ROLES->stack->max_voted, 'MaxVoted');
   if(count($ROLES->stack->max_voted) == 1){ //一人だけなら決定
-    $vote_kill_uname = array_shift($ROLES->stack->max_voted);
+    $ROLES->stack->vote_kill_uname = array_shift($ROLES->stack->max_voted);
   }
   else{ //決定能力者判定
     $ROLES->stack->vote_possible = $ROLES->stack->max_voted;
-    foreach($ROLES->LoadFilter('vote_kill') as $filter) $filter->DecideVoteKill($vote_kill_uname);
+    foreach($ROLES->LoadFilter('vote_kill') as $filter) $filter->DecideVoteKill();
   }
-  $ROLES->stack->vote_kill_uname = $vote_kill_uname;
-  //PrintData($vote_kill_uname, 'VoteTarget');
+  //PrintData($ROLES->stack->vote_kill_uname, 'VoteTarget');
 
-  if($vote_kill_uname != ''){ //-- 処刑実行処理 --//
+  if($ROLES->stack->vote_kill_uname != ''){ //-- 処刑実行処理 --//
     //-- 処刑者情報収取 --//
-    $vote_target = $USERS->ByRealUname($vote_kill_uname); //ユーザ情報を取得
+    $vote_target = $USERS->ByRealUname($ROLES->stack->vote_kill_uname); //ユーザ情報を取得
     $USERS->Kill($vote_target->user_no, 'VOTE_KILLED'); //処刑処理
     //処刑者を生存者リストから除く
-    unset($live_uname_list[array_search($vote_kill_uname, $live_uname_list)]);
+    unset($live_uname_list[array_search($ROLES->stack->vote_kill_uname, $live_uname_list)]);
     $voter_list = array_keys($vote_target_list, $vote_target->uname); //投票した人を取得
 
-    foreach($ROLES->LoadFilter('distinguish_poison') as $filter){ //薬師系の情報収集
-      $filter->DistinguishPoison($pharmacist_list);
-    }
+    //薬師系の毒鑑定処理
+    foreach($ROLES->LoadFilter('distinguish_poison') as $filter) $filter->DistinguishPoison();
 
     do{ //-- 処刑者の毒処理 --//
       if(! $vote_target->IsPoison()) break; //毒能力の発動判定
@@ -966,10 +963,9 @@ function AggregateVoteDay(){
       //薬師系の解毒判定 (夢毒者は対象外)
       $ROLES->actor = $USERS->ByVirtual($vote_target->user_no); //投票データは仮想ユーザ
       if(! $vote_target->IsRole('dummy_poison')){
-	foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox($pharmacist_list);
-	if($ROLES->actor->detox_flag) break;
+	foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
+	if(property_exists($ROLES->actor, 'detox_flag')) break;
       }
-
       $poison_target_list = array(); //毒の対象リスト
 
       //毒の対象オプションをチェックして初期候補者リストを作成
@@ -980,8 +976,9 @@ function AggregateVoteDay(){
       }
 
       //特殊毒の場合はターゲットが限定される
-      if($ROLES->actor->alchemy_flag || $ROOM->IsEvent('alchemy_pharmacist')){ //錬金術師
-	$ROLES->LoadMain(new User('alchemy_pharmacist'))->FilterPoisonTarget($poison_target_list);
+      $role = 'alchemy_pharmacist'; //錬金術師
+      if(property_exists($ROLES->actor, $role . '_flag') || $ROOM->IsEvent($role)){
+	$ROLES->LoadMain(new User($role))->FilterPoisonTarget($poison_target_list);
       }
       else{
 	$ROLES->actor = $vote_target;
@@ -996,43 +993,10 @@ function AggregateVoteDay(){
       }
       $USERS->Kill($poison_target->user_no, 'POISON_DEAD_day'); //死亡処理
 
-      //-- 連毒者の処理 --//
-      if(! $poison_target->IsRole('chain_poison')) break; //連毒者判定
-      $ROLES->actor = $USERS->ByVirtual($poison_target->user_no); //解毒判定
-      foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox($pharmacist_list);
-      if($ROLES->actor->detox_flag) break;
-
-      $target_stack = array();
-      foreach($USERS->GetLivingUsers(true) as $uname){ //生存者から常時対象外の役職を除く
-	$user = $USERS->ByRealUname($uname);
-	if(! $user->IsAvoid(true)) $target_stack[] = $user->user_no;
-      }
-      //PrintData($target_stack, 'BaseChainPoisonTarget');
-
-      $chain_count = 1; //連鎖カウントを初期化
-      while($chain_count > 0){
-	$chain_count--;
-	shuffle($target_stack); //配列をシャッフル
-	for($i = 0; $i < 2; $i++){
-	  if(count($target_stack) < 1) break 2;
-	  $id = array_shift($target_stack);
-	  $target = $USERS->ByReal($id);
-
-	  if($target->IsActive('resist_wolf')){ //抗毒判定
-	    $target->LostAbility();
-	    $target_stack[] = $id;
-	    continue;
-	  }
-	  $USERS->Kill($id, 'POISON_DEAD_day'); //死亡処理
-
-	  if(! $target->IsRole('chain_poison')) continue; //連鎖判定
-	  $ROLES->actor = $USERS->ByVirtual($target->user_no); //解毒判定
-	  foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox($pharmacist_list);
-	  if(! $ROLES->actor->detox_flag) $chain_count++;
-	}
-      }
+      $role = 'chain_poison'; //連毒者の処理
+      if($poison_target->IsRole($role)) $ROLES->LoadMain(new User($role))->Poison($poison_target);
     }while(false);
-    //PrintData($pharmacist_list, 'EndDetox');
+    //PrintData($ROLES->stack->pharmacist_result, 'EndDetox');
 
     //-- 処刑者カウンター処理 --//
     $ROLES->actor = $vote_target;
@@ -1042,7 +1006,6 @@ function AggregateVoteDay(){
     foreach($ROLES->LoadFilter('vote_action') as $filter) $filter->VoteAction();
 
     //-- 霊能者系の処理 --//
-    $result_header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
     //火車の妨害判定
     $stolen_flag = $ROOM->IsEvent('corpse_courier_mad') ||
       (property_exists($vote_target, 'stolen_flag') && $vote_target->stolen_flag);
@@ -1063,17 +1026,17 @@ function AggregateVoteDay(){
       $wizard_flag->{$filter->GetRole()} = true;
       $wizard_action = 'SPIRITISM_WIZARD_RESULT';
       if(property_exists($wizard_flag, 'sex_necromancer')){
+	$header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
 	$result = $filter->Necromancer($vote_target, $stolen_flag);
-	$ROOM->SystemMessage($result_header . $result, $wizard_action);
+	$ROOM->SystemMessage($header . $result, $wizard_action);
       }
     }
 
     foreach($stack as $header){
       $role = $header . 'necromancer';
       if($role_flag->$role || $wizard_flag->$role){
-	$result = $ROLES->LoadMain(new User($role))->Necromancer($vote_target, $stolen_flag);
-	if(is_null($result)) continue;
-	$str = $result_header . $result;
+	$str = $ROLES->LoadMain(new User($role))->Necromancer($vote_target, $stolen_flag);
+	if(is_null($str)) continue;
 	if($role_flag->$role)   $ROOM->SystemMessage($str, strtoupper($role . '_result'));
 	if($wizard_flag->$role) $ROOM->SystemMessage($str, $wizard_action);
       }
@@ -1103,34 +1066,31 @@ function AggregateVoteDay(){
   foreach($live_uname_list as $uname){
     $ROLES->actor = $USERS->ByUname($uname); //$live_uname_list は仮想ユーザ名
     $ROLES->actor->cured_flag = false;
-    $reason = in_array($uname, $thunderbolt_list) ? 'THUNDERBOLT' : '';
+    $ROLES->stack->sudden_death = in_array($uname, $thunderbolt_list) ? 'THUNDERBOLT' : '';
     if(! $ROOM->IsEvent('no_sudden_death')){ //凪ならスキップ
-      foreach($ROLES->Load('sudden_death_sub') as $filter) $filter->FilterSuddenDeath($reason);
+      foreach($ROLES->Load('sudden_death_sub') as $filter) $filter->SuddenDeath();
     }
-    foreach($ROLES->Load('sudden_death_main') as $filter) $filter->FilterSuddenDeath($reason);
-    if($reason == '') continue;
+    foreach($ROLES->Load('sudden_death_main') as $filter) $filter->SuddenDeath();
+    if($ROLES->stack->sudden_death == '') continue;
 
-    //薬師系の治療判定
-    foreach($ROLES->LoadFilter('cure') as $filter) $filter->Cure($pharmacist_list);
+    foreach($ROLES->LoadFilter('cure') as $filter) $filter->Cure(); //薬師系の治療判定
     if(! $ROLES->actor->cured_flag){
-      $USERS->SuddenDeath($ROLES->actor->user_no, 'SUDDEN_DEATH_' . $reason);
+      $USERS->SuddenDeath($ROLES->actor->user_no, 'SUDDEN_DEATH_' . $ROLES->stack->sudden_death);
     }
   }
 
   foreach($ROLES->LoadFilter('followed') as $filter) $filter->Followed($user_list); //道連れ処理
 
-  foreach($pharmacist_list as $uname => $result){ //薬師系の鑑定結果を登録
-    $user = $USERS->ByUname($uname);
-    $target_uname = $ROLES->stack->{$user->GetMainRole(true)}[$user->uname];
-    $handle_name  = $USERS->GetHandleName($target_uname, true);
-    $sentence = $user->handle_name . "\t" . $handle_name . "\t" . $result;
-    $ROOM->SystemMessage($sentence, 'PHARMACIST_RESULT');
-  }
+  $role = 'pharmacist'; //薬師系の鑑定結果を登録
+  $name = $role . '_result';
+  //PrintData($ROLES->stack->$name, "Result [{$role}]");
+  if(count($ROLES->stack->$name) > 0) $ROLES->LoadMain(new User($role))->SaveResult();
+  unset($ROLES->stack->$name);
 
   LoversFollowed(); //恋人後追い処理
   InsertMediumMessage(); //巫女のシステムメッセージ
 
-  if($vote_kill_uname != ''){ //夜に切り替え
+  if($ROLES->stack->vote_kill_uname != ''){ //夜に切り替え
     //-- 処刑得票カウンターの処理 --//
     foreach($ROLES->LoadFilter('vote_kill_reaction') as $filter) $filter->VoteKillReaction();
 
@@ -1173,7 +1133,8 @@ function AggregateVoteDay(){
 
       do{ //移動判定ルーチン
 	//対象者か現在のジョーカー所持者が処刑者なら無効
-	if($joker_target_uname == $vote_kill_uname || $joker_user->IsSame($vote_kill_uname)) break;
+	if($joker_target_uname == $ROLES->stack->vote_kill_uname ||
+	   $joker_user->IsSame($ROLES->stack->vote_kill_uname)) break;
 
 	if(in_array($joker_target_uname, $joker_voted_list)){ //相互投票なら無効
 	  //複数から投票されていた場合は残りからランダム
@@ -1194,7 +1155,8 @@ function AggregateVoteDay(){
     $ROOM->ChangeNight();
     if(CheckVictory()){
       if(! $joker_flag){ //ゲーム終了時のみ、処刑先への移動許可 (それ以外なら本人継承)
-	($joker_target_uname == $vote_kill_uname && ! $joker_user->IsSame($vote_kill_uname)) ?
+	($joker_target_uname == $ROLES->stack->vote_kill_uname &&
+	 ! $joker_user->IsSame($ROLES->stack->vote_kill_uname)) ?
 	  $USERS->ByRealUname($joker_target_uname)->AddJoker() : $joker_user->AddJoker();
       }
     }
@@ -1203,7 +1165,7 @@ function AggregateVoteDay(){
 	//生きていたら本人継承 / 処刑者なら前日所持者以外の投票者ランダム / 死亡なら完全ランダム
 	if($joker_user->IsLive(true))
 	  $joker_user->AddJoker();
-	elseif($joker_user->IsSame($vote_kill_uname) && count($joker_target_list) > 0)
+	elseif($joker_user->IsSame($ROLES->stack->vote_kill_uname) && count($joker_target_list) > 0)
 	  $USERS->ByRealUname(GetRandom($joker_target_list))->AddJoker();
 	else
 	  $USERS->ByRealUname(GetRandom($USERS->GetLivingUsers(true)))->AddJoker();

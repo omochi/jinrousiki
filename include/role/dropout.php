@@ -2,18 +2,19 @@
 /*
   ◆脱落者 (dropout)
   ○仕様
-  ・自身と処刑投票が最多得票者なら自分が処刑される
+  ・処刑者決定：自分 + 自身と処刑投票が最多得票者
 */
-class Role_dropout extends RoleVoteAbility{
-  public $data_type = 'action';
-
+RoleManager::LoadFile('decide');
+class Role_dropout extends Role_decide{
   function __construct(){ parent::__construct(); }
 
-  function DecideVoteKill(&$uname){
-    if(parent::DecideVoteKill($uname)) return true;
+  function SetVoteDay($uname){ $this->AddStack($uname); }
+
+  function DecideVoteKill(){
+    if($this->GetVoteKill() != '') return;
     $stack = $this->GetVotePossible();
     foreach($this->GetStack() as $actor => $target){
-      if(in_array($actor,  $stack) && in_array($target, $stack)) $uname = $actor;
+      if(in_array($actor,  $stack) && in_array($target, $stack)) $this->SetVoteKill($actor);
     }
   }
 }

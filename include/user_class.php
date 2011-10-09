@@ -453,7 +453,8 @@ class User{
   //憑依制限判定
   function IsPossessedLimited(){
     return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist',
-			 'revive_brownie', 'revive_doll', 'revive_wolf', 'revive_ogre');
+			 'revive_brownie', 'revive_doll', 'revive_wolf', 'revive_ogre') ||
+      $this->IsPossessedGroup();
   }
 
   //幻系能力判定

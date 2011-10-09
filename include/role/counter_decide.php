@@ -2,18 +2,19 @@
 /*
   ◆燕返し (counter_decide)
   ○仕様
-  ・自身と処刑投票が最多得票者なら自分の投票先が処刑される
+  ・処刑者決定：自分の投票先 + 自身と投票先が最多得票者
 */
-class Role_counter_decide extends RoleVoteAbility{
-  public $data_type = 'action';
-
+RoleManager::LoadFile('decide');
+class Role_counter_decide extends Role_decide{
   function __construct(){ parent::__construct(); }
 
-  function DecideVoteKill(&$uname){
-    if(parent::DecideVoteKill($uname)) return true;
+  function SetVoteDay($uname){ $this->AddStack($uname); }
+
+  function DecideVoteKill(){
+    if($this->GetVoteKill() != '') return;
     $stack = $this->GetVotePossible();
     foreach($this->GetStack() as $actor => $target){
-      if(in_array($actor,  $stack) && in_array($target, $stack)) $uname = $target;
+      if(in_array($actor,  $stack) && in_array($target, $stack)) $this->SetVoteKill($target);
     }
   }
 }

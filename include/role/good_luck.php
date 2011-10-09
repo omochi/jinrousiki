@@ -2,11 +2,13 @@
 /*
   ◆幸運 (good_luck)
   ○仕様
-  ・処刑投票が拮抗したら自分が候補から除外される
+  ・処刑者決定：除外 (自分)
 */
-class Role_good_luck extends RoleVoteAbility{
-  public $data_type = 'self';
-  public $decide_type = 'escape';
-
+RoleManager::LoadFile('decide');
+class Role_good_luck extends Role_decide{
   function __construct(){ parent::__construct(); }
+
+  function SetVoteDay($uname){ $this->SetStack($this->GetUname()); }
+
+  function DecideVoteKill(){ $this->DecideVoteKillEscape(); }
 }

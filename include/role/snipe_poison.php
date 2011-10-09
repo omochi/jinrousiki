@@ -4,7 +4,7 @@
   ○仕様
   ・毒：処刑投票先と同陣営(恋人は恋人陣営)
 */
-class Role_snipe_poison extends RoleVoteAbility{
+class Role_snipe_poison extends Role{
   function __construct(){ parent::__construct(); }
 
   function FilterPoisonTarget(&$list){

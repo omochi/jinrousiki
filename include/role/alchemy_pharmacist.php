@@ -8,8 +8,9 @@ RoleManager::LoadFile('pharmacist');
 class Role_alchemy_pharmacist extends Role_pharmacist{
   function __construct(){ parent::__construct(); }
 
-  function SetDetoxFlag(&$list, $uname){
-    if(! $this->GetActor()->detox_flag) $this->GetActor()->alchemy_flag = true;
+  function SetDetoxFlag($uname){
+    $actor = $this->GetActor();
+    if(! property_exists($actor, 'detox_flag')) $actor->{$this->role . '_flag'} = true;
   }
 
   function FilterPoisonTarget(&$list){

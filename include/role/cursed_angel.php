@@ -7,17 +7,19 @@
 */
 RoleManager::LoadFile('angel');
 class Role_cursed_angel extends Role_angel{
+  public $mix_in = 'chicken';
+  public $sudden_death = 'SEALED';
   function __construct(){ parent::__construct(); }
 
   function IsSympathy($lovers_a, $lovers_b){ return $lovers_a->GetCamp() != $lovers_b->GetCamp(); }
 
-  function FilterSuddenDeath(&$reason){
+  function SuddenDeath(){
     global $USERS;
 
-    if($reason != '') return;
+    if($this->IgnoreSuddenDeath()) return;
     foreach($this->GetVotedUname() as $uname){
       if($USERS->ByRealUname($uname)->IsLovers()){
-	$reason = 'SEALED';
+	$this->SetSuddenDeath($this->sudden_death);
 	break;
       }
     }

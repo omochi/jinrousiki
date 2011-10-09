@@ -54,13 +54,13 @@ $RQ_ARGS->TestItems->test_users[3]->live = 'live';
 $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[4]->role = 'dummy_mage authority lovers[16] challenge_lovers';
+$RQ_ARGS->TestItems->test_users[4]->role = 'dummy_mage lovers[16] challenge_lovers frostbite[6]';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[5]->uname = 'orange';
 $RQ_ARGS->TestItems->test_users[5]->handle_name = 'オレンジ';
 $RQ_ARGS->TestItems->test_users[5]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[5]->role = 'soul_mage febris[3]';
+$RQ_ARGS->TestItems->test_users[5]->role = 'soul_mage febris[2]';
 $RQ_ARGS->TestItems->test_users[5]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[6]->uname = 'red';
@@ -72,7 +72,7 @@ $RQ_ARGS->TestItems->test_users[6]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[7]->role = 'philosophy_wizard';
+$RQ_ARGS->TestItems->test_users[7]->role = 'dummy_guard';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
@@ -84,7 +84,7 @@ $RQ_ARGS->TestItems->test_users[8]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'poison_cat joker[6]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'missfire_cat joker[6]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
@@ -96,25 +96,25 @@ $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'jammer_fox disfavor';
+$RQ_ARGS->TestItems->test_users[11]->role = 'cursed_brownie disfavor bad_luck';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'spiritism_wizard';
+$RQ_ARGS->TestItems->test_users[12]->role = 'cursed_angel';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'eclipse_medium';
+$RQ_ARGS->TestItems->test_users[13]->role = 'follow_mad';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';
 $RQ_ARGS->TestItems->test_users[14]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[14]->role = 'amaze_mad';
+$RQ_ARGS->TestItems->test_users[14]->role = 'necromancer';
 $RQ_ARGS->TestItems->test_users[14]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
@@ -132,7 +132,7 @@ $RQ_ARGS->TestItems->test_users[16]->live = 'live';
 $RQ_ARGS->TestItems->test_users[17]->uname = 'sky';
 $RQ_ARGS->TestItems->test_users[17]->handle_name = '空';
 $RQ_ARGS->TestItems->test_users[17]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[17]->role = 'vampire possessed[3-3]';
+$RQ_ARGS->TestItems->test_users[17]->role = 'trap_common possessed[3-3] disfavor';
 $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
@@ -150,7 +150,7 @@ $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire mind_friend[23]';
+$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire mind_friend[23] frostbite[6]';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
@@ -162,25 +162,25 @@ $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[22]->role = 'seal_medium';
+$RQ_ARGS->TestItems->test_users[22]->role = 'pierrot_wizard authority';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'cursed_avenger mind_friend[23]';
+$RQ_ARGS->TestItems->test_users[23]->role = 'cursed_angel mind_friend[23]';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard';
+$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard rebel';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[25]->role = 'emerald_fox lost_ability';
+$RQ_ARGS->TestItems->test_users[25]->role = 'ogre lost_ability disfavor';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -210,7 +210,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' =>  5, 'target_no' => 25),
   //array('id' =>  6, 'target_no' =>  3),
   //array('id' =>  7, 'target_no' =>  3),
-  array('id' =>  7, 'target_no' =>  5),
+  array('id' =>  7, 'target_no' => 25),
   //array('id' =>  8, 'target_no' =>  9),
   array('id' =>  9, 'target_no' =>  3),
   array('id' => 10, 'target_no' =>  3),
@@ -557,7 +557,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 18, 22, 4, 23) as $id){
+  foreach(array(5, 18, 22, 4, 13) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

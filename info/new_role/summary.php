@@ -164,7 +164,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#soul_mage">魂の占い師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -173,7 +173,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#medium">巫女</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#medium_group">巫女系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -182,7 +182,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#poison_guard">騎士</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -209,7 +209,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a9">
   <td><a href="human.php#suspect">不審者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>人狼</td>
   <td>村人</td>
@@ -218,7 +218,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a11">
   <td><a href="mania.php#mania">神話マニア</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#mania_group">神話マニア系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -236,7 +236,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#pharmacist">薬師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -246,7 +246,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a13">
   <td><a href="human.php#unconscious">無意識</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -264,7 +264,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a14">
   <td><a href="human.php#reporter">ブン屋</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -273,7 +273,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#dummy_mage">夢見人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -292,7 +292,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a17">
   <td><a href="human.php#dummy_necromancer">夢枕人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -302,7 +302,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#dummy_guard">夢守人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -311,7 +311,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#dummy_common">夢共有者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -321,7 +321,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#dummy_poison">夢毒者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -330,7 +330,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#soul_necromancer">雲外鏡</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -339,7 +339,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#strong_poison">強毒者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -348,7 +348,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#incubate_poison">潜毒者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -411,7 +411,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a18">
   <td><a href="human.php#poison_cat">猫又</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -420,7 +420,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#assassin">暗殺者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -430,7 +430,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#psycho_mage">精神鑑定士</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -457,7 +457,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#sex_mage">ひよこ鑑定士</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -484,7 +484,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#anti_voodoo">厄神</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -495,7 +495,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#voodoo_killer">陰陽師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -504,7 +504,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#yama_necromancer">閻魔</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -567,7 +567,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#mind_scanner">さとり</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -594,7 +594,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a22">
   <td><a href="human.php#jealousy">橋姫</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -603,7 +603,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a23">
   <td><a href="mania.php#unknown_mania">鵺</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -613,7 +613,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="lovers.php#mind_cupid">女神</a></td>
-  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -623,7 +623,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140a24">
   <td><a href="human.php#priest">司祭</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -641,7 +641,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#wise_wolf">賢狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -650,7 +650,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#possessed_wolf">憑狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>憑狼</td>
@@ -677,7 +677,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#scarlet_wolf">紅狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -695,7 +695,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b2">
   <td><a href="human.php#crisis_priest">預言者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -704,7 +704,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#revive_priest">天人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -713,7 +713,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#evoke_scanner">イタコ</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -740,7 +740,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b5">
   <td><a href="human.php#elder">長老</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -749,7 +749,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#elder_wolf">古狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -776,7 +776,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#fend_guard">忍者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -785,7 +785,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b6">
   <td><a href="human.php#trap_common">策士</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -839,7 +839,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#ghost_common">亡霊嬢</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -848,7 +848,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#poison_jealousy">毒橋姫</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -857,7 +857,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#chain_poison">連毒者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -866,7 +866,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b7">
   <td><a href="human.php#saint">聖女</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -875,7 +875,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#agitate_mad">扇動者</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -911,7 +911,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b8">
   <td><a href="wolf.php#emerald_wolf">翠狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -920,7 +920,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#blue_wolf">蒼狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -947,7 +947,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#gold_wolf">金狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -965,7 +965,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#sex_wolf">雛狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -1028,7 +1028,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b9">
   <td><a href="human.php#reverse_assassin">反魂師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1037,7 +1037,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#miasma_mad">土蜘蛛</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1046,7 +1046,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#cure_pharmacist">河童</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1055,7 +1055,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#executor">執行者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1064,7 +1064,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#possessed_mad">犬神</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1082,7 +1082,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#sacrifice_cat">猫神</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1091,7 +1091,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#sirius_wolf">天狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -1100,7 +1100,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#eclipse_assassin">蝕暗殺者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1109,7 +1109,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="mania.php#trick_mania">奇術師</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#mania_group">神話マニア系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1128,7 +1128,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b10">
   <td><a href="human.php#doll">上海人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1138,7 +1138,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#doll_master">人形遣い</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1147,7 +1147,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#poison_doll">鈴蘭人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1156,7 +1156,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#friend_doll">仏蘭西人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1165,7 +1165,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#detective_common">探偵</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1174,7 +1174,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#doom_assassin">死神</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1183,7 +1183,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#bishop_priest">司教</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1192,7 +1192,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b11">
   <td><a href="lovers.php#exchange_angel">魂移使</a></td>
-  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1201,7 +1201,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="mania.php#soul_mania">覚醒者</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#mania_group">神話マニア系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1210,7 +1210,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="mania.php#dummy_mania">夢語部</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#mania_group">神話マニア系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1220,7 +1220,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#phantom_wolf">幻狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>幻狼</td>
@@ -1238,7 +1238,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#guide_poison">誘毒者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1247,7 +1247,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#escaper">逃亡者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1257,7 +1257,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#whisper_scanner">囁騒霊</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1266,7 +1266,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#howl_scanner">吠騒霊</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1275,7 +1275,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#telepath_scanner">念騒霊</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1302,7 +1302,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#stargazer_mage">占星術師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1311,7 +1311,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#border_priest">境界師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1329,7 +1329,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b13">
   <td><a href="human.php#doom_doll">蓬莱人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1401,7 +1401,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#hunter_guard">猟師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1410,7 +1410,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#soul_assassin">辻斬り</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1419,7 +1419,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#seal_medium">封印師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#medium_group">巫女系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1428,7 +1428,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#revive_medium">風祝</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#medium_group">巫女系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1437,7 +1437,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b14">
   <td><a href="human.php#blind_guard">夜雀</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1448,7 +1448,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="vampire.php#vampire">吸血鬼</a></td>
-  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
@@ -1457,7 +1457,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b15">
   <td><a href="wolf.php#doom_wolf">冥狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -1505,7 +1505,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#revive_pharmacist">仙人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1515,7 +1515,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#therian_mad">獣人</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1524,7 +1524,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b16">
   <td><a href="human.php#history_brownie">白澤</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1551,7 +1551,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b17">
   <td><a href="wolf.php#enchant_mad">狢</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1569,7 +1569,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#priest_jealousy">恋司祭</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1588,7 +1588,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="vampire.php#sacrifice_vampire">吸血公</a></td>
-  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
@@ -1597,7 +1597,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b18">
   <td><a href="lovers.php#sacrifice_angel">守護天使</a></td>
-  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1607,7 +1607,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="mania.php#sacrifice_mania">影武者</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1617,7 +1617,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#presage_scanner">件</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1628,7 +1628,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#ogre">鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1638,7 +1638,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#orange_ogre">前鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1648,7 +1648,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#indigo_ogre">後鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1658,7 +1658,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="vampire.php#incubus_vampire">青髭公</a></td>
-  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
@@ -1667,7 +1667,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="vampire.php#succubus_vampire">飛縁魔</a></td>
-  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
@@ -1676,7 +1676,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b19">
   <td><a href="human.php#divorce_jealousy">縁切地蔵</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1686,7 +1686,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#poison_ogre">榊鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1697,7 +1697,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="vampire.php#doom_vampire">冥血鬼</a></td>
-  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
@@ -1706,7 +1706,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="vampire.php#soul_vampire">吸血姫</a></td>
-  <td><a href="vampire.php">吸血鬼</td>
+  <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>
   <td>蝙蝠</td>
@@ -1715,7 +1715,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#amaze_mad">傘化け</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1724,7 +1724,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#west_ogre">金鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1734,7 +1734,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#east_ogre">風鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1744,7 +1744,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#north_ogre">水鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1754,7 +1754,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#south_ogre">隠行鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1764,7 +1764,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#yaksa">夜叉</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1774,7 +1774,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#incubus_ogre">般若</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1784,7 +1784,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#succubus_yaksa">荼枳尼天</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1794,7 +1794,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b20">
   <td><a href="human.php#attempt_necromancer">蟲姫</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1804,7 +1804,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#sacrifice_ogre">酒呑童子</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1816,7 +1816,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#cursed_brownie">祟神</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人<br>(呪返し)</td>
   <td>村人</td>
@@ -1825,7 +1825,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#revive_brownie">蛇神</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1835,7 +1835,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#phantom_doll">倫敦人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1844,7 +1844,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#revive_doll">西蔵人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1862,7 +1862,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b21">
   <td><a href="ogre.php#dowser_yaksa">毘沙門天</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1871,7 +1871,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#power_ogre">星熊童子</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1880,7 +1880,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#high_priest">大司祭</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1889,7 +1889,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#bacchus_medium">神主</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#medium_group">巫女系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1898,7 +1898,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#scarlet_doll">和蘭人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1907,7 +1907,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#silver_doll">露西亜人形</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#doll_group">上海人形系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1926,7 +1926,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver140b22">
   <td><a href="human.php#clairvoyance_scanner">猩々</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1944,7 +1944,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#alchemy_pharmacist">錬金術師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1953,7 +1953,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#incubus_escaper">一角獣</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1962,7 +1962,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#reflect_guard">侍</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1972,7 +1972,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#revive_ogre">茨木童子</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -1983,7 +1983,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#scripter">執筆者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -1992,7 +1992,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a1">
   <td><a href="human.php#wizard">魔法使い</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2003,7 +2003,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#soul_wizard">八卦見</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2014,7 +2014,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a3">
   <td><a href="human.php#embalm_necromancer">死化粧師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2023,7 +2023,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#emissary_necromancer">密偵</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2032,7 +2032,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a4">
   <td><a href="human.php#awake_wizard">比丘尼</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2043,7 +2043,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#weather_priest">祈祷師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2053,7 +2053,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a5">
   <td><a href="wolf.php#follow_mad">舟幽霊</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2062,7 +2062,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="mania.php#wirepuller_mania">黒衣</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2071,7 +2071,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#sun_brownie">八咫烏</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2080,7 +2080,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#critical_mad">釣瓶落とし</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2089,7 +2089,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a6">
   <td><a href="wolf.php#revive_wolf">仙狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -2098,7 +2098,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#barrier_wizard">結界師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2108,7 +2108,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#psycho_necromancer">精神感応者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2117,7 +2117,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#spiritism_wizard">交霊術師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2127,7 +2127,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a7">
   <td><a href="ogre.php#betray_yaksa">夜叉丸</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -2136,7 +2136,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#cursed_yaksa">滝夜叉姫</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼<br>(呪返し)</td>
   <td>鬼</td>
@@ -2145,7 +2145,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#psycho_escaper">迷い人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2154,7 +2154,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#gatekeeper_guard">門番</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2172,7 +2172,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a8">
   <td><a href="human.php#pierrot_wizard">道化師</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2182,7 +2182,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#astray_wizard">左道使い</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2201,7 +2201,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="wolf.php#trap_wolf">狡狼</a></td>
-  <td><a href="wolf.php">人狼</td>
+  <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
@@ -2210,7 +2210,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150a9">
   <td><a href="human.php#succubus_escaper">水妖姫</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2219,7 +2219,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#doom_escaper">半鳥女</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2265,7 +2265,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="lovers.php#scarlet_angel">紅天使</a></td>
-  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2301,7 +2301,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150b2">
   <td><a href="human.php#centaurus_pharmacist">人馬</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2310,7 +2310,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#sacrifice_common">首領</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2346,7 +2346,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150b4">
   <td><a href="mania.php#basic_mania">求道者</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#mania_group">神話マニア系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2382,7 +2382,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#divine_escaper">麒麟</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#escaper_group">逃亡者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2457,7 +2457,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#widow_priest">未亡人</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2538,7 +2538,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#elder_guard">老兵</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2547,7 +2547,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="lovers.php#snow_cupid">寒戸婆</a></td>
-  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2556,7 +2556,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="lovers.php#cursed_angel">堕天使</a></td>
-  <td><a href="lovers.php">恋人</td>
+  <td><a href="lovers.php">恋人</a></td>
   <td><a href="lovers.php#angel_group">天使系</a></td>
   <td>村人<br>(呪返し)</td>
   <td>村人</td>
@@ -2565,7 +2565,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150b9">
   <td><a href="human.php#leader_common">指導者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2574,7 +2574,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#snipe_poison">狙毒者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2592,7 +2592,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#eclipse_medium">蝕巫女</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#medium_group">巫女系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2601,7 +2601,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#power_yaksa">阿修羅</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -2610,7 +2610,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#wise_ogre">夜行鬼</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#ogre_group">鬼系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -2619,7 +2619,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#miasma_jealousy">蛇姫</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2628,7 +2628,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#critical_jealousy">人魚</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2637,7 +2637,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150b10">
   <td><a href="human.php#hermit_common">隠者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2646,7 +2646,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="ogre.php#hariti_yaksa">鬼子母神</a></td>
-  <td><a href="ogre.php">鬼</td>
+  <td><a href="ogre.php">鬼</a></td>
   <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
   <td>鬼</td>
   <td>鬼</td>
@@ -2655,7 +2655,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#critical_common">暴君</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2673,7 +2673,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="human.php#philosophy_wizard">賢者</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2683,7 +2683,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150b11">
   <td><a href="human.php#select_assassin">おしら様</a></td>
-  <td><a href="human.php">村人</td>
+  <td><a href="human.php">村人</a></td>
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2701,7 +2701,7 @@ Ver. 1.5.0
 </tr>
 <tr id="ver150b12">
   <td><a href="mania.php#fire_mania">青行灯</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>
@@ -2710,7 +2710,7 @@ Ver. 1.5.0
 </tr>
 <tr>
   <td><a href="mania.php#revive_mania">五徳猫</a></td>
-  <td><a href="mania.php">神話マニア</td>
+  <td><a href="mania.php">神話マニア</a></td>
   <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
   <td>村人</td>
   <td>村人</td>

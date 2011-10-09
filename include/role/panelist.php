@@ -2,15 +2,17 @@
 /*
   ◆解答者 (panelist)
   ○仕様
-  ・処刑投票：投票数が 0 で固定される
   ・ショック死：出題者に投票する
+  ・処刑投票：投票数が 0 で固定される
 */
-class Role_panelist extends RoleVoteAbility{
+RoleManager::LoadFile('chicken');
+class Role_panelist extends Role_chicken{
+  public $sudden_death = 'PANELIST';
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){ $vote_number = 0; }
-
-  function FilterSuddenDeath(&$reason){
-    if($reason == '' && $this->GetVoteUser()->IsRole('quiz')) $reason = 'PANELIST';
+  function IsSuddenDeath(){
+    return ! $this->IgnoreSuddenDeath() && $this->GetVoteUser()->IsRole('quiz');
   }
+
+  function FilterVoteDo(&$vote_number){ $vote_number = 0; }
 }

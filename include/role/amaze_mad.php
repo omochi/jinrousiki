@@ -2,7 +2,7 @@
 /*
   ◆傘化け (amaze_mad)
   ○仕様
-  ・処刑投票：投票先が生存していたら投票結果を隠蔽する
+  ・処刑投票：悪戯付加 (投票結果隠蔽用)
   ・悪戯：投票結果隠蔽
 */
 RoleManager::LoadFile('corpse_courier_mad');

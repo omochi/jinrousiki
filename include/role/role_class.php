@@ -38,7 +38,7 @@ class RoleManager{
 				 'random_luck', 'occupied_luck', 'wirepuller_luck');
 
   //処刑投票能力者
-  public $vote_ability_list = array(
+  public $vote_day_list = array(
     'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'snipe_poison',
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
@@ -158,11 +158,11 @@ class RoleManager{
     $this->loaded->class = array();
   }
 
-  function Load($type, $shift = false){
+  function Load($type, $shift = false, $virtual = false){
     $stack = array();
+    $virtual |= $type == 'main_role';
     foreach($this->GetList($type) as $role){
-      if(! ($type == 'main_role' ? $this->actor->IsRole(true, $role) :
-	    $this->actor->IsRole($role))) continue;
+      if(! ($virtual ? $this->actor->IsRole(true, $role) : $this->actor->IsRole($role))) continue;
       $stack[] = $role;
       if($this->LoadFile($role)) $this->LoadClass($role, 'Role_' . $role);
     }
@@ -316,9 +316,9 @@ class Role{
   }
 
   //データ追加
-  function AddStack($uname, $role = NULL){
+  function AddStack($target_uname, $role = NULL, $uname = NULL){
     global $ROLES;
-    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetActor()->uname] = $uname;
+    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $target_uname;
   }
 
   //同一ユーザ判定
@@ -355,6 +355,17 @@ class Role{
   }
 
   //-- 処刑投票処理 --//
+  //生存仲間判定
+  function IsLivePartner(){
+    global $USERS;
+
+    foreach($this->GetActor()->GetPartner($this->role) as $id){
+      if($USERS->ByID($id)->IsLive()) return true;
+    }
+    return false;
+  }
+
+  //-- 処刑集計処理 --//
   //処刑者判定
   function IsVoted($uname = NULL){
     return $this->GetStack('vote_kill_uname') == $this->GetUname($uname);
@@ -365,15 +376,10 @@ class Role{
     return array_keys($this->GetStack('target'), $this->GetUname($uname));
   }
 
-  //-- 処刑集計処理 --//
-  //生存仲間判定
-  function IsLivePartner(){
-    global $USERS;
-
-    foreach($this->GetActor()->GetPartner($this->role) as $id){
-      if($USERS->ByID($id)->IsLive()) return true;
-    }
-    return false;
+  //投票者ユーザ取得
+  function GetVoteUser($uname = NULL){
+    global $ROLES, $USERS;
+    return $USERS->ByRealUname($ROLES->stack->target[$this->GetUname($uname)]);
   }
 
   //-- 投票データ表示 (夜) --//
@@ -501,129 +507,5 @@ class RoleTalkFilter extends Role{
 	$volume = $this->volume_list[$key];
       break;
     }
-  }
-}
-
-//-- 処刑投票能力者用拡張クラス --//
-class RoleVoteAbility extends Role{
-  public $data_type;
-  public $decide_type;
-  public $init_stack;
-  function __construct(){
-    global $ROLES;
-
-    parent::__construct();
-    if($this->init_stack && ! property_exists($ROLES->stack, $this->role)){
-      $ROLES->stack->{$this->role} = array();
-    }
-  }
-
-  //投票データセット (昼)
-  function SetVoteDay($uname){ $this->SetVoteAbility($uname); }
-
-  //投票データ収拾
-  function SetVoteAbility($uname){
-    global $ROLES, $USERS;
-
-    switch($this->data_type){
-    case 'self':
-      $ROLES->stack->{$this->role} = $ROLES->actor->uname;
-      break;
-
-    case 'target':
-      $ROLES->stack->{$this->role} = $uname;
-      break;
-
-    case 'both':
-      $ROLES->stack->{$this->role} = $ROLES->actor->uname;
-      $ROLES->stack->{$this->role . '_uname'} = $uname;
-      break;
-
-    case 'array':
-      $user = $USERS->ByRealUname($ROLES->actor->uname);
-      if($user->IsRole($this->role)) $ROLES->stack->{$this->role}[] = $user->uname;
-      break;
-
-    case 'action':
-      $user = $USERS->ByRealUname($ROLES->actor->uname);
-      if($user->IsRole(true, $this->role)) $ROLES->stack->{$this->role}[$user->uname] = $uname;
-      break;
-    }
-  }
-
-  //処刑者決定
-  function DecideVoteKill(&$uname){
-    global $ROLES;
-
-    if($uname != '') return true;
-    switch($this->decide_type){
-    case 'decide':
-      $target = $ROLES->stack->{$this->role};
-      if(in_array($target, $ROLES->stack->vote_possible)) $uname = $target;
-      return false;
-
-    case 'escape':
-      $key = array_search($ROLES->stack->{$this->role}, $ROLES->stack->vote_possible);
-      if($key === false) return true;
-      unset($ROLES->stack->vote_possible[$key]);
-      if(count($ROLES->stack->vote_possible) == 1){ //候補が一人になった場合は処刑者決定
-	$uname = array_shift($ROLES->stack->vote_possible);
-      }
-      return false;
-
-    case 'same':
-      if(! is_array($ROLES->stack->{$this->role}) ||
-	 count($stack = $this->GetMaxVotedUname()) != 1) return true;
-      $uname = array_shift($stack);
-      return false;
-
-    case 'action':
-      return ! is_array($ROLES->stack->{$this->role});
-
-    default:
-      return false;
-    }
-  }
-
-  //最大得票者リスト取得
-  function GetVotePossible(){
-    global $ROLES;
-    return $ROLES->stack->vote_possible;
-  }
-
-  //最大得票者投票者ユーザ名取得
-  function GetMaxVotedUname(){
-    global $ROLES;
-    return array_intersect($ROLES->stack->vote_possible, $ROLES->stack->{$this->role});
-  }
-
-  //投票者ユーザ取得
-  function GetVoteUser($uname = NULL){
-    global $ROLES, $USERS;
-    return $USERS->ByRealUname($ROLES->stack->target[$this->GetUname($uname)]);
-  }
-
-  //投票先人数取得 (ショック死判定用)
-  function GetVoteCount(){
-    global $ROLES;
-    return $ROLES->stack->count[$ROLES->stack->target[$ROLES->actor->uname]];
-  }
-
-  //得票人数取得 (ショック死判定用)
-  function GetVotedCount(){
-    global $ROLES;
-    return $ROLES->stack->count[$ROLES->actor->uname];
-  }
-
-  //処刑者名取得
-  function GetVoteKillUname(){
-    global $ROLES;
-    return $ROLES->stack->vote_kill_uname;
-  }
-
-  //発動日判定 (ショック死判定用)
-  function IsDoom(){
-    global $ROOM, $ROLES;
-    return $ROLES->actor->GetDoomDate($this->role) == $ROOM->date;
   }
 }

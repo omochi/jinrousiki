@@ -75,8 +75,7 @@ class MessageImageGenerator{
         return;
       }
     }
-    // 新しいデリミタを追加する
-    array_push($this->delimiters, $nd);
+    array_push($this->delimiters, $nd); // 新しいデリミタを追加する
   }
   /*
     登録されているデリミタを削除する関数
@@ -141,7 +140,7 @@ class MessageImageGenerator{
     $msg 作成したいメッセージ文。改行有効。||で囲んだ部分を指定した色で書く
     返り値 画像データ
   */
-  function GetImage($msg) {
+  function GetImage($msg, $calib = array()) {
     //スタック用配列。一番下にどのデリミタともマッチしない文字列をセットしておく
     $d_stack = array("default");
 
@@ -151,25 +150,21 @@ class MessageImageGenerator{
     $plain_msg = $this->GetMessage($msg, $regex_str);
     //print $plain_msg;
     $plain_r = imagettfbbox($this->size, 0, $this->font, $plain_msg);
-    //print_r($plain_r);
-    //echo "<br>";
+    //echo print_r($plain_r, true) . '<br>';
 
     // 画像の生成
     $img = imagecreatetruecolor($plain_r[2] - $plain_r[6] + $this->x_margin * 2,
 				$plain_r[3] - $plain_r[7] + $this->y_margin * 2);
     $col_char = imagecolorallocate($img, $this->def_col[0], $this->def_col[1], $this->def_col[2]);
     $col_back = imagecolorallocate($img, $this->def_bgc[0], $this->def_bgc[1], $this->def_bgc[2]);
-    // 文字描画色をデフォルト文字色に設定
-    $color = $col_char;
-    // 背景を透明色に設定する場合
-    if($this->is_trans) imagecolortransparent($img, $col_back);
+    $color = $col_char; // 文字描画色をデフォルト文字色に設定
+    if($this->is_trans) imagecolortransparent($img, $col_back); // 背景を透明色に設定する場合
     imagefill($img, 0, 0, $col_back);
 
     // 各行ごとに処理
-    $msg_lines = preg_split('/\n/', $msg, -1, PREG_SPLIT_NO_EMPTY);
     $y_disp = $this->y_margin;
-    foreach($msg_lines as $line){
-      // この行でどれだけ消費するか計算
+    foreach(preg_split('/\n/', $msg, -1, PREG_SPLIT_NO_EMPTY) as $line){
+      //この行でどれだけ消費するか計算
       //echo $line.'<br>';
       $line_len = mb_strlen($line);
       $line_plain = $this->GetMessage($line, $regex_str);
@@ -180,8 +175,9 @@ class MessageImageGenerator{
       $array_msg = $regex_str == '' ? array(array($line, 0))
                                     : preg_split($regex_str, $line, -1, PREG_SPLIT_OFFSET_CAPTURE);
       //$x_disp = $this->x_margin;
-      //print_r ($array_msg);
+      //echo print_r($array_msg, true) . '<br>';
       $str_total = '';
+      $r_str_old = ''; //位置補正用
       for($i = 0; $i < count($array_msg); $i++){
 	$str_len = mb_strlen($array_msg[$i][0]);
 	//echo 'str_r: ' . $str_len . ' -> "' . $array_msg[$i][0] . '"<br>';
@@ -190,12 +186,17 @@ class MessageImageGenerator{
 	$str_total .= $str;
 	$r_str       = imagettfbbox($this->size, 0, $this->font, $str);
 	$r_str_total = imagettfbbox($this->size, 0, $this->font, $str_total);
-	//print_r($r_str);
-	//echo "<br>";
+	if(is_array($r_str_old) && count($calib) > 0){ //位置補正処理
+	  $diff = $r_str_total[2] - ($r_str[2] + $r_str_old[2]);
+	  if($diff != 0) $r_str[2] += floor($diff * array_shift($calib));
+	}
+	$r_str_old = $r_str_total; //補正用の現在値を保存
+	//echo print_r($r_str, true) . '<br>';
+	//echo print_r($r_str_total, true) . '<br>';
 
 	// 文字色の決定
 	if($array_msg[$i][1] > 0){
-	  //echo $str_len . "<br>";
+	  //echo $str_len . '<br>';
 	  $c_d = $this->GetDelimiter($line[$array_msg[$i][1] - 1]);
 	  if($d_stack[0] == $c_d->c){
 	    //既に同じデリミタがスタックにある→現在の色指定を解除
@@ -206,12 +207,12 @@ class MessageImageGenerator{
 	    //現在のデリミタをスタックに追加
 	    array_unshift($d_stack, $c_d->c);
 	  }
-	  //echo "$d_stack[0] <br>";
+	  //echo $d_stack[0] . '<br>';
 	  $color = imagecolorallocate($img, $c_d->r, $c_d->g, $c_d->b);
 	}
 	
 	//文字列の描画
-	imagettftext($img, $this->size, 0, $this->x_margin + $r_str_total[2] - $r_str[2] -2,
+	imagettftext($img, $this->size, 0, $this->x_margin + $r_str_total[2] - $r_str[2] - 2,
 		     0 - $r[5] + $y_disp, $color, $this->font, $str);
 	//Boldにするときは下の行も実行
 	/*

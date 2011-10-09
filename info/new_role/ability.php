@@ -294,7 +294,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="possessed_limit">憑依制限能力者</h2>
 <pre>
-<a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>
+<a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>・<a href="#possessed">憑依能力者</a>
 </pre>
 
 <h2 id="seal">封印対象者</h2>

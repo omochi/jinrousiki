@@ -8,8 +8,8 @@ RoleManager::LoadFile('pharmacist');
 class Role_cure_pharmacist extends Role_pharmacist{
   function __construct(){ parent::__construct(); }
 
-  function SetDetoxFlag(&$list, $uname){
+  function SetDetoxFlag($uname){
     $this->GetActor()->detox_flag = true;
-    $list[$uname] = 'cured';
+    $this->AddStack('cured', 'pharmacist_result', $uname);
   }
 }

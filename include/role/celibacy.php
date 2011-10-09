@@ -4,16 +4,18 @@
   ○仕様
   ・ショック死：恋人からの得票
 */
-class Role_celibacy extends RoleVoteAbility{
+RoleManager::LoadFile('chicken');
+class Role_celibacy extends Role_chicken{
+  public $sudden_death = 'CELIBACY';
   function __construct(){ parent::__construct(); }
 
-  function FilterSuddenDeath(&$reason){
+  function SuddenDeath(){
     global $USERS;
 
-    if($reason != '') return;
+    if($this->IgnoreSuddenDeath()) return;
     foreach($this->GetVotedUname() as $uname){
       if($USERS->ByRealUname($uname)->IsLovers()){
-	$reason = 'CELIBACY';
+	$this->SetSuddenDeath($this->sudden_death);
 	break;
       }
     }

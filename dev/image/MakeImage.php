@@ -4,8 +4,9 @@ require_once('MessageImageGenerator2.php');
 class MessageImageBuilder{
   public $font = 'azuki.ttf';
   #public $font = 'azukiP.ttf';
-  #public $font = 'yutaCo2_ttc_027.ttc';
+  #public $font = 'uzura.ttf';
   #public $font = 'aquafont.ttf';
+  #public $font = 'Osaka.ttc';
 
   public $font_path = "C:\\WINDOWS\\Fonts\\";
   //public $font_path = '/Library/Fonts';
@@ -74,14 +75,14 @@ class MessageImageBuilder{
     $this->AddDelimiter($list);
   }
 
-  function Generate($name){
+  function Generate($name, $calib = array()){
     $this->SetDelimiter($this->list->$name);
-    return $this->generator->GetImage($this->list->{$name}['message']);
+    return $this->generator->GetImage($this->list->{$name}['message'], $calib);
   }
 
-  function Output($name){
+  function Output($name, $calib = array()){
     header('Content-Type: image/gif');
-    imagegif($this->Generate($name));
+    imagegif($this->Generate($name, $calib));
   }
 
   function Save($name){
@@ -91,9 +92,7 @@ class MessageImageBuilder{
     echo $name . '<br>';
   }
 
-  function Test($name){
-    $this->Generate($name);
-  }
+  function Test($name){ $this->Generate($name); }
 
   //まとめて画像ファイル生成
   function OutputAll(){
@@ -2073,7 +2072,8 @@ class WishRoleList{
 #$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
-#$builder->Save('poison_ogre');
+//$builder->Output('mirror_fairy', array(1, 1, 1, 0, 0.5, 0, 1, -0.5)); //位置調整
+#$builder->Save('mirror_fairy');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
