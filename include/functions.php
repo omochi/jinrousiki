@@ -125,6 +125,19 @@ function FetchObject($query, $class, $shift = false){
   return $shift ? array_shift($array) : $array;
 }
 
+//talk 専用 DB 取得関数 (負荷実験テスト用)
+function FetchTalk($query, $class, $reverse){
+  global $GAME_CONF, $ROOM;
+
+  $stack = array();
+  foreach(FetchObject($query, $class) as $object) $stack[$object->talk_id] = $object;
+  if(! $reverse) krsort($stack);
+  if(! $ROOM->IsPlaying() && $GAME_CONF->display_talk_limit > 0){
+    $stack = array_slice($stack, 0, $GAME_CONF->display_talk_limit);
+  }
+  return $stack;
+}
+
 //データベース登録のラッパー関数
 function InsertDatabase($table, $items, $values){
   return SendQuery("INSERT INTO {$table}({$items}) VALUES({$values})", true);

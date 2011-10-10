@@ -221,6 +221,7 @@ function GenerateLogIndex(){
 function GenerateOldLog(){
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
+  shot('Header');
   $base_title = $SERVER_CONF->title . ' [過去ログ]'; //
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){ //閲覧判定
     $url = $RQ_ARGS->generate_index ? 'index.html' : 'old_log.php';
@@ -233,14 +234,16 @@ function GenerateOldLog(){
   }
   $title  = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
   $option = GenerateGameOptionImage($ROOM->game_option->row, $ROOM->option_role->row);
+  shot('StartTalk');
   $log    = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
-
+  shot('EndTalk');
+  $test = CollectLog();
   return GenerateHTMLHeader($title, 'old_log') . <<<EOF
 </head>
 <body>
 <a href="old_log.php">←戻る</a><br>
 {$ROOM->GenerateTitleTag()}<br>
-{$option}<br>
+{$option}<br>{$test}
 {$log}
 EOF;
 }
@@ -281,11 +284,17 @@ function LayoutHeaven(){
 
 //指定の日付の会話ログを生成
 function GenerateDateTalkLog($set_date, $set_location){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS;
+  global $SERVER_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS;
 
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
-  $query = "SELECT uname, sentence, font_type, location FROM talk WHERE room_no = {$ROOM->id} AND ";
+  if($SERVER_CONF->sort_talk_by_php){
+    $query = "SELECT talk_id, uname, sentence, font_type, location " .
+      "FROM talk WHERE room_no = {$ROOM->id} AND ";
+  }
+  else{
+    $query = "SELECT uname, sentence, font_type, location FROM talk WHERE room_no = {$ROOM->id} AND ";
+  }
   switch($set_location){
   case 'beforegame':
   case 'aftergame':
@@ -313,10 +322,14 @@ function GenerateDateTalkLog($set_date, $set_location){
     }
     break;
   }
-  $query .= ' ORDER BY talk_id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
-  //PrintData($query, $set_location);
-  $talk_list = FetchObject($query, 'Talk');
-
+  if($SERVER_CONF->sort_talk_by_php){
+    $talk_list = FetchTalk($query, 'Talk', $RQ_ARGS->reverse_log);
+  }
+  else{
+    $query .= ' ORDER BY talk_id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
+    //PrintData($query, $set_location);
+    $talk_list = FetchObject($query, 'Talk');
+  }
   //-- 仮想稼動モードテスト用 --//
   //global $USERS, $SELF;
   //$SELF = $USERS->rows[3];

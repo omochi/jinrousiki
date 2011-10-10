@@ -1127,7 +1127,7 @@ function GenerateDeadMan(){
 function GenerateWeatherReport(){
   global $ROLE_DATA, $RQ_ARGS, $ROOM;
 
-  if(! property_exists($ROOM->event, 'weather') ||
+  if(! property_exists($ROOM->event, 'weather') || ! $ROOM->event->weather ||
      ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight())) return '';
 
   $weather = $ROLE_DATA->weather_list[$ROOM->event->weather];

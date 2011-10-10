@@ -4,15 +4,21 @@
   ○仕様
   ・蘇生率：25% / 誤爆有り
 */
-RoleManager::LoadFile('poison_cat');
-class Role_revive_medium extends Role_poison_cat{
-  public $mix_in = 'medium';
-  public $revive_rate   = 25;
-  public $missfire_rate =  0;
+RoleManager::LoadFile('medium');
+class Role_revive_medium extends Role_medium{
+  public $mix_in = 'poison_cat';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
-    $this->filter->OutputAbility();
+    parent::OutputAbility();
     $this->OutputReviveAbility();
   }
+
+  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+
+  function GetVoteIconPath($user, $live){ return $this->filter->GetVoteIconPath($user, $live); }
+
+  function IsVoteCheckbox($user, $live){ return $this->filter->IsVoteCheckbox($user, $live); }
+
+  function IgnoreVoteNight($user, $live){ return $this->filter->IgnoreVoteNight($user, $live); }
 }

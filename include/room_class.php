@@ -56,8 +56,14 @@ class Room{
 
   //発言を取得する
   function LoadTalk($heaven = false){
-    global $GAME_CONF;
+    global $SERVER_CONF, $GAME_CONF;
 
+    if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
+      $query = 'SELECT talk_id, uname, sentence, font_type, location FROM talk' .
+	$this->GetQuery(! $heaven) . ' AND location LIKE ' .
+	($heaven ? "'heaven'" : "'{$this->day_night}%'");
+    return FetchTalk($query, 'Talk', false);
+    }
     $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
       ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
       ' ORDER BY talk_id DESC';

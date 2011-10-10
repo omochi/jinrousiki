@@ -403,7 +403,8 @@ function OutputSelfAbilityResult($action){
 
   $target_date = $ROOM->date - 1;
   if($ROOM->test_mode){
-    $stack = $RQ_ARGS->TestItems->system_message[$target_date];
+    $stack = $RQ_ARGS->TestItems->system_message;
+    $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : NULL;
     $stack = is_array($stack) && array_key_exists($action, $stack) ? $stack[$action] : NULL;
     $result_list = is_array($stack) ? $stack : array();
   }

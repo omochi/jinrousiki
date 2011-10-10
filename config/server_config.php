@@ -89,6 +89,10 @@ class ServerConfig{
   //村情報非表示モード (村作成テストなどの開発者テスト用スイッチです)
   public $secret_room = false;
 
+  //talk テーブルのソート処理をクエリではなく、PHP で行います
+  //負荷テスト実験用に一時的に設置したスイッチです (廃止される可能性があります)
+  public $sort_talk_by_php = true;
+
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
   public $adjust_time_difference = false;
 
