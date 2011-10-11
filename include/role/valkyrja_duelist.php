@@ -46,7 +46,7 @@ class Role_valkyrja_duelist extends Role{
   function GetVoteCheckbox($user, $id, $live){
     return $this->IsVoteCheckbox($user, $live) ?
       '<input type="checkbox" name="target_no[]"' .
-      ($this->IsSelfShoot() && $this->IsSameUser($user->uname) ? ' checked' : '') .
+      ($this->IsSelfShoot() && $this->IsActor($user->uname) ? ' checked' : '') .
       ' id="' . $id . '" value="' . $id . '">'."\n" : '';
   }
 
@@ -71,7 +71,7 @@ class Role_valkyrja_duelist extends Role{
 	return '生存者以外と身代わり君には投票できません';
       }
       $user_list[] = $user;
-      $self_shoot |= $this->IsSameUser($user->uname); //自分撃ち判定
+      $self_shoot |= $this->IsActor($user->uname); //自分撃ち判定
     }
 
     if(! $self_shoot){ //自分撃ちエラー判定

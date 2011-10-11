@@ -34,7 +34,7 @@ class Role_sacrifice_ogre extends Role_ogre{
   function GetSacrificeList(){
     $stack = array();
     foreach($this->GetUser() as $user){
-      if(! $this->IsSameUser($user->uname) && $user->IsLiveRole('psycho_infected', true)){
+      if(! $this->IsActor($user->uname) && $user->IsLiveRole('psycho_infected', true)){
 	$stack[] = $user->user_no;
       }
     }

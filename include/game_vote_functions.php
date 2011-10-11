@@ -1542,7 +1542,7 @@ function AggregateVoteNight($skip = false){
       $ROLES->LoadMain($poison_target)->PoisonDead(); //毒死処理
     }
   }while(false);
-  //PrintData($ROLES->stack->possessed, 'Possessed [possessed_wolf]');
+  //PrintData($ROLES->stack->possessed, 'Possessed [wolf]');
 
   if($ROOM->date > 1){
     foreach($vote_data['DEATH_NOTE_DO'] as $uname => $target_uname){ //デスノートの処理
@@ -1834,118 +1834,29 @@ function AggregateVoteNight($skip = false){
 	$ROLES->LoadMain($user)->Revive($USERS->ByUname($target_uname));
       }
     }
-  }
 
-  //-- 憑依レイヤー --//
-  //PrintData($ROLES->stack->possessed, 'Target [possessed_wolf]');
-  if($ROOM->date > 1){
+    //-- 憑依レイヤー --//
     //憑依能力者の処理
-    $possessed_do_stack = array(); //有効憑依情報リスト (死亡判定と厄神リセット判定)
+    $ROLES->stack->possessed_dead = array(); //有効憑依情報リスト
     foreach($vote_data['POSSESSED_DO'] as $uname => $target_uname){
       $user = $USERS->ByUname($uname);
-      if($user->IsDead(true) || $user->revive_flag) continue; //直前に死んでいたら無効 (蘇生でも無効)
-
-      if(in_array($user->uname, $ROLES->stack->anti_voodoo)){ //厄神の護衛判定
-	$ROLES->stack->anti_voodoo_success[$user->uname] = true;
-	continue;
-      }
-      $possessed_do_stack[$uname] = $target_uname;
+      if($user->IsDead(true) || $user->revive_flag) continue; //直前に死亡・蘇生なら無効
+      $ROLES->LoadMain($user)->SetPossessed($USERS->ByUname($target_uname));
     }
-
-    foreach($possessed_do_stack as $uname => $target_uname){ //憑依能力者の処理
-      $user = $USERS->ByUname($uname);
-
-      //失敗判定1：憑依先が競合 / 誰かが憑依してる
-      if(count(array_keys($possessed_do_stack, $target_uname)) > 1 ||
-	 ! $USERS->ByRealUname($target_uname)->IsSame($target_uname)) continue;
-
-      $target = $USERS->ByUname($target_uname);
-      //失敗判定2：蘇生されている / 憑狼の憑依制限役職である //憑依能力者を憑依制限に追加する
-      if($target->revive_flag || $target->IsPossessedLimited()) continue;
-
-      //失敗判定3：人狼 ⇔ 妖狐 と恋人陣営には憑依できない
-      switch($target->GetCamp(true)){
-      case 'wolf':
-	if($user->IsRole('possessed_fox')) continue 2;
-	break;
-
-      case 'fox':
-	if($user->IsRole('possessed_mad')) continue 2;
-	break;
-
-      case 'lovers':
-	continue 2;
-      }
-      $ROLES->stack->possessed[$user->uname] = $target_uname;
-    }
-    //PrintData($ROLES->stack->possessed, 'Target [Possessed]');
+    $role = 'possessed_mad';
+    $name = 'possessed_dead';
+    //PrintData($ROLES->stack->$name, "Target [{$role}]");
+    if(count($ROLES->stack->$name) > 0) $ROLES->LoadMain(new User($role))->Possessed();
+    unset($ROLES->stack->$name);
+    //PrintData($ROLES->stack->possessed, 'Possessed [mad/fox]');
   }
 
   //-- 憑依処理 --//
-  $possessed_date = $ROOM->date + 1; //憑依する日を取得
-  foreach($ROLES->stack->possessed as $uname => $target_uname){
-    $user    = $USERS->ByUname($uname); //憑依者
-    $target  = $USERS->ByUname($target_uname); //憑依予定先
-    $virtual = $USERS->ByVirtual($user->user_no); //現在の憑依先
-    if(! property_exists($user, 'possessed_reset'))  $user->possessed_reset  = NULL;
-    if(! property_exists($user, 'possessed_cancel')) $user->possessed_cancel = NULL;
-
-    if($user->IsDead(true)){ //憑依者死亡
-      $target->dead_flag = false; //死亡フラグをリセット
-      $USERS->Kill($target->user_no, 'WOLF_KILLED');
-      if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
-    }
-    elseif($user->possessed_reset){ //憑依リセット
-      if(isset($target->user_no)){
-	$target->dead_flag = false; //死亡フラグをリセット
-	$USERS->Kill($target->user_no, 'WOLF_KILLED');
-	if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
-      }
-
-      if($user != $virtual){ //憑依中なら元の体に戻される
-	//憑依先のリセット処理
-	$virtual->ReturnPossessed('possessed');
-	$virtual->SaveLastWords();
-	$ROOM->SystemMessage($virtual->handle_name, 'POSSESSED_RESET');
-
-	//見かけ上の蘇生処理
-	$user->ReturnPossessed('possessed_target');
-	$user->SaveLastWords($virtual->handle_name);
-	$ROOM->SystemMessage($user->handle_name, 'REVIVE_SUCCESS');
-      }
-      continue;
-    }
-    elseif($user->possessed_cancel || $target->revive_flag){ //憑依失敗
-      $target->dead_flag = false; //死亡フラグをリセット
-      $USERS->Kill($target->user_no, 'WOLF_KILLED');
-      if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
-      continue;
-    }
-    else{ //憑依成功
-      if($user->IsRole('possessed_wolf')){
-	$target->dead_flag = false; //死亡フラグをリセット
-	$USERS->Kill($target->user_no, 'POSSESSED_TARGETED'); //憑依先の死亡処理
-	//憑依先が誰かに憑依しているケースがあるので仮想ユーザで上書きする
-	$target = $USERS->ByVirtual($target->user_no);
-      }
-      else{
-	$ROOM->SystemMessage($target->handle_name, 'REVIVE_SUCCESS');
-	$user->LostAbility();
-      }
-      $target->AddRole("possessed[{$possessed_date}-{$user->user_no}]");
-
-      //憑依処理
-      $user->AddRole("possessed_target[{$possessed_date}-{$target->user_no}]");
-      $ROOM->SystemMessage($virtual->handle_name, 'POSSESSED');
-      $user->SaveLastWords($virtual->handle_name);
-      $user->Update('last_words', '');
-    }
-
-    if($user != $virtual){
-      $virtual->ReturnPossessed('possessed');
-      if($user->IsLive(true)) $virtual->SaveLastWords();
-    }
-  }
+  $role = 'possessed_wolf';
+  $name = 'possessed';
+  //PrintData($ROLES->stack->$name, "Target [{$role}]");
+  if(count($ROLES->stack->$name) > 0) $ROLES->LoadMain(new User($role))->Possessed();
+  unset($ROLES->stack->$name);
 
   if(! $ROOM->IsOption('seal_message')){  //陰陽師・厄神の成功結果登録
     foreach(array('voodoo_killer', 'anti_voodoo') as $role){

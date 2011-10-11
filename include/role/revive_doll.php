@@ -4,7 +4,6 @@
   ○仕様
 */
 RoleManager::LoadFile('doll');
-RoleManager::LoadFile('revive_pharmacist');
 class Role_revive_doll extends Role_doll{
   public $mix_in = 'revive_pharmacist';
   function __construct(){ parent::__construct(); }

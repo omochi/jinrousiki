@@ -13,7 +13,7 @@ class Role_incubus_ogre extends Role_ogre{
   function Win($victory){
     if($this->IsDead()) return false;
     foreach($this->GetUser() as $user){
-      if(! $this->IsSameUser($user->uname) && $user->IsLive() && $user->IsFemale()) return false;
+      if(! $this->IsActor($user->uname) && $user->IsLive() && $user->IsFemale()) return false;
     }
     return true;
   }

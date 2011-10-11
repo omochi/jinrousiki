@@ -15,7 +15,7 @@ class Role_scarlet_angel extends Role_angel{
     if(! $ROOM->IsNight()) return;
     $stack = array();
     foreach($this->GetUser() as $user){
-      if($this->IsSameUser($user->uname) || $user->IsWolf()) continue;
+      if($this->IsActor($user->uname) || $user->IsWolf()) continue;
       if($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
 	$stack[] = $user->handle_name;
       }

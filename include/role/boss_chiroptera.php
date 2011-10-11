@@ -10,8 +10,9 @@ class Role_boss_chiroptera extends Role{
   function GetSacrificeList(){
     $stack = array();
     foreach($this->GetUser() as $user){
-      if(! $this->IsSameUser($user->uname) &&
-	 $user->IsLiveRoleGroup('chiroptera', 'fairy')) $stack[] = $user->user_no;
+      if(! $this->IsActor($user->uname) && $user->IsLiveRoleGroup('chiroptera', 'fairy')){
+	$stack[] = $user->user_no;
+      }
     }
     return $stack;
   }

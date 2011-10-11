@@ -2,9 +2,10 @@
 /*
   ◆犬神 (possessed_mad)
   ○仕様
+  ・憑依無効陣営：妖狐/恋人
 */
 class Role_possessed_mad extends Role{
-  public $action = 'POSSESSED_DO';
+  public $action     = 'POSSESSED_DO';
   public $not_action = 'POSSESSED_NOT_DO';
   public $ignore_message = '初日は憑依できません';
   function __construct(){ parent::__construct(); }
@@ -41,8 +42,36 @@ class Role_possessed_mad extends Role{
   }
 
   function IsVoteCheckbox($user, $live){
-    return ! $live && ! $this->IsSameUser($user->uname) && ! $user->IsDummyBoy();
+    return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();
   }
 
   function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : NULL; }
+
+  //憑依情報セット
+  function SetPossessed($user){
+    global $ROLES, $USERS;
+
+    foreach($ROLES->LoadFilter('anti_voodoo') as $filter){ //厄神の護衛判定
+      if($filter->IsGuard($this->GetUname())) return false;
+    }
+
+    //無効判定 (蘇生/憑依制限/無効陣営/憑依済み)
+    $class = $this->GetClass($method = 'Ignored');
+    if($user->revive_flag || $user->IsPossessedLimited() || $class::$method($user->GetCamp(true)) ||
+       ! $USERS->ByRealUname($user->uname)->IsSame($user->uname)) return false;
+    $this->AddStack($user->uname, 'possessed_dead');
+  }
+
+  //無効陣営判定
+  function Ignored($camp){ return $camp == 'fox' || $camp == 'lovers'; }
+
+  //憑依情報登録
+  function Possessed(){
+    $stack = $this->GetStack('possessed_dead');
+    foreach($stack as $uname => $target_uname){
+      if(count(array_keys($stack, $target_uname)) == 1){ //競合判定
+	$this->AddStack($target_uname, 'possessed', $uname);
+      }
+    }
+  }
 }

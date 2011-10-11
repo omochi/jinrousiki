@@ -53,7 +53,7 @@ class Role_poison_cat extends Role{
   }
 
   function IsVoteCheckbox($user, $live){
-    return ! $live && ! $this->IsSameUser($user->uname) && ! $user->IsDummyBoy();
+    return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();
   }
 
   function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : NULL; }

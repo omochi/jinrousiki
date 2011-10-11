@@ -13,7 +13,7 @@ class Role_common extends Role{
     //仲間表示
     $stack = array();
     foreach($this->GetUser() as $user){
-      if($this->IsSameUser($user->uname)) continue;
+      if($this->IsActor($user->uname)) continue;
       if($this->IsCommonParter($user)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'common_partner');

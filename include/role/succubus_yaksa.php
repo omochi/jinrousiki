@@ -15,7 +15,7 @@ class Role_succubus_yaksa extends Role_yaksa{
   function Win($victory){
     if($this->IsDead()) return false;
     foreach($this->GetUser() as $user){
-      if(! $this->IsSameUser($user->uname) && $user->IsLive() && $user->IsMale()) return false;
+      if(! $this->IsActor($user->uname) && $user->IsLive() && $user->IsMale()) return false;
     }
     return true;
   }

@@ -344,12 +344,10 @@ function GeneratePlayerList(){
     $count++;
 
     //ゲーム開始投票をしていたら背景色を変える
-    if($beforegame && ($user->IsDummyBoy(true) || isset($ROOM->vote[$user->uname]))){
+    if($beforegame && ($user->IsDummyBoy(true) || isset($ROOM->vote[$user->uname])))
       $td_header = '<td class="already-vote">';
-    }
-    else{
+    else
       $td_header = '<td>';
-    }
 
     //ユーザプロフィールと枠線の色を追加
     //Alt, Title 内の改行はブラウザ依存あり (Firefox 系は無効)
@@ -394,9 +392,7 @@ function GeneratePlayerList(){
 }
 
 //プレイヤー一覧出力
-function OutputPlayerList(){
-  echo GeneratePlayerList();
-}
+function OutputPlayerList(){ echo GeneratePlayerList(); }
 
 //勝敗結果の生成
 function GenerateVictory(){
@@ -409,20 +405,21 @@ function GenerateVictory(){
   $winner  = $victory;
 
   switch($victory){ //特殊ケース対応
-  //妖狐勝利系
+  //妖狐勝利
   case 'fox1':
   case 'fox2':
-    $class = 'fox';
+    $victory = 'fox';
+    $class   = $victory;
     break;
 
-  //引き分け系
+  //引き分け
   case 'draw': //引き分け
   case 'vanish': //全滅
   case 'quiz_dead': //クイズ村 GM 死亡
     $class = 'draw';
     break;
 
-  //廃村系
+  //廃村
   case NULL:
     $class  = 'none';
     $winner = $ROOM->date > 0 ? 'unfinished' : 'none';
@@ -436,51 +433,34 @@ function GenerateVictory(){
 EOF;
 
   //-- 個々の勝敗結果 --//
-  //勝敗未決定、観戦モード、ログ閲覧モードならスキップ
-  if(is_null($victory) || $ROOM->view_mode ||
-     ($ROOM->log_mode && ! $ROOM->single_view_mode)) return $str;
+  //スキップ判定 (勝敗未決定/観戦モード/ログ閲覧モード)
+  if(is_null($victory) || $ROOM->view_mode || ($ROOM->log_mode && ! $ROOM->single_view_mode)){
+    return $str;
+  }
 
   $result = 'win';
-  $class = NULL;
-  $camp = $SELF->GetCamp(true); //所属陣営を取得
+  $class  = NULL;
+  $camp   = $SELF->GetCamp(true); //所属陣営を取得
 
   switch($victory){
   case 'draw':   //引き分け
   case 'vanish': //全滅
-    $class  = 'draw';
     $result = 'draw';
+    $class  = $result;
     break;
 
   case 'quiz_dead': //出題者死亡
-    $class  = $camp == 'quiz' ? 'lose' : 'draw';
     $result = $camp == 'quiz' ? 'lose' : 'draw';
+    $class  = $result;
     break;
 
   default:
-    $win_flag = false;
+    $ROLES->stack->class = NULL;
     switch($camp){
     case 'human':
-      if($SELF->IsDoll()){ //人形
-	foreach($USERS->rows as $user){
-	  if($user->IsLiveRole('doll_master')) break 2;
-	}
-	$class = 'doll';
-      }
-      elseif($SELF->IsRoleGroup('escaper')){ //逃亡者系
-	if($SELF->IsDead()) break;
-	$class = 'escaper';
-      }
-      $win_flag = $victory == $camp;
-      break;
-
     case 'wolf':
-      if($SELF->IsRole('immolate_mad') && ! $SELF->IsRole('muster_ability')) break; //殉教者
-      $win_flag = $victory == $camp;
-      break;
-
     case 'fox':
-      if($SELF->IsRole('immolate_fox') && ! $SELF->IsRole('muster_ability')) break; //野狐禅
-      $win_flag = strpos($victory, $camp) !== false;
+      $win_flag = $victory == $camp && $ROLES->LoadMain($SELF)->Win($victory);
       break;
 
     case 'vampire':
@@ -502,29 +482,17 @@ EOF;
       break;
     }
 
-    //ジョーカー系判定
-    if($win_flag && $SELF->IsRival() && ! $SELF->IsLovers()){ //宿敵
-      if($SELF->IsDead()){ //死亡していたら敗北
-	$win_flag = false;
-      }
-      else{
-	foreach($USERS->rows as $user){ //自分以外の宿敵生存者がいたら敗北
-	  if(! $user->IsSelf() && $user->IsPartner('rival', $SELF->partner_list) &&
-	     $user->IsLive()){
-	    $win_flag = false;
-	    break;
-	  }
-	}
-      }
+    if($win_flag){ //ジョーカー系判定
+      $ROLES->actor = $SELF;
+      foreach($ROLES->Load('joker') as $filter) $filter->FilterWin($win_flag);
     }
 
-    if($win_flag && (! $SELF->IsJoker($ROOM->date) ||
-		     ($SELF->IsLive() && count($USERS->GetLivingUsers()) == 1))){
-      if(is_null($class)) $class = $camp;
+    if($win_flag){
+      $class = is_null($ROLES->stack->class) ? $camp : $ROLES->stack->class;
     }
     else{
-      $class  = 'lose';
       $result = 'lose';
+      $class  = $result;
     }
     break;
   }
@@ -539,9 +507,7 @@ EOF;
 }
 
 //勝敗結果の出力
-function OutputVictory(){
-  echo GenerateVictory();
-}
+function OutputVictory(){ echo GenerateVictory(); }
 
 //投票の集計生成
 function GenerateVoteResult(){

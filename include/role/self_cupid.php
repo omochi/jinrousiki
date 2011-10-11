@@ -11,7 +11,7 @@ class Role_self_cupid extends Role_cupid{
 
   function GetRole($user, $flag){
     $role = $this->GetActor()->GetID('lovers');
-    if(! $this->IsSameUser($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
+    if(! $this->IsActor($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
     return $role;
   }
 }

@@ -11,7 +11,7 @@ class Role_duelist extends Role_valkyrja_duelist{
 
   function GetRole($user){
     $role = parent::GetRole($user);
-    if(! $this->IsSameUser($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
+    if(! $this->IsActor($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
     return $role;
   }
 }

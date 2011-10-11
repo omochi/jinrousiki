@@ -4,6 +4,7 @@
   ○仕様
   ・逃亡失敗：人狼系
   ・逃亡処理：なし
+  ・勝利：生存
 */
 class Role_escaper extends Role{
   public $action = 'ESCAPE_DO';
@@ -49,4 +50,9 @@ class Role_escaper extends Role{
 
   //逃亡後処理
   function EscapeAction($user){}
+
+  function Win($victory){
+    $this->SetStack('escaper', 'class');
+    return $this->IsLive();
+  }
 }

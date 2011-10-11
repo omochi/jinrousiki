@@ -2,6 +2,7 @@
 /*
   ◆憑狐 (possessed_fox)
   ○仕様
+  ・憑依無効陣営：人狼/恋人
 */
 RoleManager::LoadFile('fox');
 class Role_possessed_fox extends Role_fox{
@@ -17,4 +18,6 @@ class Role_possessed_fox extends Role_fox{
   function IsVoteCheckbox($user, $live){ return $this->filter->IsVoteCheckbox($user, $live); }
 
   function IgnoreVoteNight($user, $live){ return $this->filter->IgnoreVoteNight($user, $live); }
+
+  function Ignored($camp){ return $camp == 'wolf' || $camp == 'lovers'; }
 }

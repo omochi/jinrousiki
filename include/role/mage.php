@@ -31,20 +31,20 @@ class Role_mage extends Role{
 
   //占い失敗判定
   function IsJammer($user){
-    global $ROOM;
+    global $ROOM, $ROLES;
 
-    $actor = $this->GetActor();
+    $uname     = $this->GetUname();
     $half_moon = $ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月の判定
     $phantom   = $user->IsAbilityPhantom(); //幻系の判定
 
-    //厄神の護衛判定
-    if(($half_moon || $phantom) && in_array($actor->uname, $this->GetStack('anti_voodoo'))){
-      $this->AddSuccess($actor->uname, 'anti_voodoo_success');
-      return false;
+    if(($half_moon || $phantom)){ //厄神の護衛判定
+      foreach($ROLES->LoadFilter('anti_voodoo') as $filter){
+	if($filter->IsGuard($uname)) return false;
+      }
     }
 
     //占い妨害判定
-    if($half_moon || in_array($actor->uname, $this->GetStack('jammer'))) return true;
+    if($half_moon || in_array($uname, $this->GetStack('jammer'))) return true;
     if($phantom){
       $this->AddSuccess($user->user_no, 'phantom');
       return true;
@@ -54,7 +54,7 @@ class Role_mage extends Role{
 
   //呪返し判定
   function IsCursed($user){
-    global $ROOM, $USERS, $ROLES;
+    global $ROOM, $ROLES, $USERS;
 
     if((! $ROOM->IsEvent('no_cursed') && $user->IsLiveRoleGroup('cursed')) ||
        in_array($user->uname, $this->GetStack('voodoo'))){

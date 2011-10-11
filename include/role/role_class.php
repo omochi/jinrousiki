@@ -150,6 +150,9 @@ class RoleManager{
   //悪戯 (迷彩/アイコン変更)
   public $change_face_list = array('enchant_mad');
 
+  //特殊勝敗判定 (ジョーカー系)
+  public $joker_list = array('joker', 'rival');
+
   function __construct(){
     $this->path = JINRO_INC . '/role';
     $this->stack  = new StdClass();
@@ -292,6 +295,11 @@ class Role{
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
+  function GetClass($method){
+    $self   = 'Role_' . $this->role;
+    return method_exists($self, $method) ? $self : $this;
+  }
+
   //-- 汎用関数 --//
   //ユーザ取得
   function GetActor(){
@@ -322,13 +330,7 @@ class Role{
   }
 
   //同一ユーザ判定
-  function IsSameUser($uname){ return $this->GetActor()->IsSame($uname); }
-
-  //生存判定
-  function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }
-
-  //死亡判定
-  function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
+  function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
 
   //スキップ判定
   function Ignored(){
@@ -424,7 +426,7 @@ class Role{
   }
 
   //投票対象判定
-  function IsVoteCheckbox($user, $live){ return $live && ! $this->IsSameUser($user->uname); }
+  function IsVoteCheckbox($user, $live){ return $live && ! $this->IsActor($user->uname); }
 
   //投票のチェックボックスヘッダ取得
   function GetVoteCheckboxHeader(){ return '<input type="radio" name="target_no"'; }
@@ -460,7 +462,7 @@ class Role{
 
   //投票スキップ判定 (夜)
   function IgnoreVoteNight($user, $live){
-    return ! $live || $this->IsSameUser($user->uname) ? '自分・生存者以外には投票できません' : NULL;
+    return ! $live || $this->IsActor($user->uname) ? '自分・生存者以外には投票できません' : NULL;
   }
 
   //-- 投票集計処理 (夜) --//
@@ -475,6 +477,16 @@ class Role{
 
   //人狼襲撃対象者取得
   function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
+
+  //-- 勝敗判定 --//
+  //勝利判定
+  function Win($victory){ return true; }
+
+  //生存判定
+  function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }
+
+  //死亡判定
+  function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
 }
 
 //-- 発言フィルタリング用拡張クラス --//

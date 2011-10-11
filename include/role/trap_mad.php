@@ -4,9 +4,9 @@
   ○仕様
 */
 class Role_trap_mad extends Role{
-  public $action = 'TRAP_MAD_DO';
+  public $action     = 'TRAP_MAD_DO';
   public $not_action = 'TRAP_MAD_NOT_DO';
-  public $submit = 'trap_do';
+  public $submit     = 'trap_do';
   public $not_submit = 'trap_not_do';
   public $ignore_message = '初日は罠を設置できません';
   function __construct(){ parent::__construct(); }
@@ -43,7 +43,7 @@ class Role_trap_mad extends Role{
   //罠設置
   function SetTrap($uname){
     //人狼に狙われていたら自分自身への設置以外は無効
-    if($this->IsSameUser($this->GetWolfTarget()->uname) && ! $this->IsSameUser($uname)) return;
+    if($this->IsActor($this->GetWolfTarget()->uname) && ! $this->IsActor($uname)) return;
     $this->SetTrapAction($this->GetActor(), $uname);
   }
 

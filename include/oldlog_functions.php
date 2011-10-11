@@ -103,10 +103,8 @@ function GenerateFinishedRooms($page){
   $LOG_CONF = new OldLogConfig(); //設定をロード
   $is_reverse = empty($RQ_ARGS->reverse) ? $LOG_CONF->reverse : ($RQ_ARGS->reverse == 'on');
   if($RQ_ARGS->generate_index){
-    if(is_int($RQ_ARGS->max_room_no) && $RQ_ARGS->max_room_no > 0 &&
-       $room_count > $RQ_ARGS->max_room_no){
-      $room_count = $RQ_ARGS->max_room_no;
-    }
+    $max = $RQ_ARGS->max_room_no;
+    if(is_int($max) && $max > 0 && $room_count > $max) $room_count = $max;
     $builder = new PageLinkBuilder('index', $RQ_ARGS->page, $room_count, $LOG_CONF);
     $builder->set_reverse = $is_reverse;
     $builder->url = '<a href="index';
@@ -115,9 +113,8 @@ function GenerateFinishedRooms($page){
     $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
     $builder->set_reverse = $is_reverse;
     $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
-    if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0){
-      $builder->AddOption('db_no', $RQ_ARGS->db_no);
-    }
+    $db_no = $RQ_ARGS->db_no;
+    if(is_int($db_no) && $db_no > 0) $builder->AddOption('db_no', $db_no);
   }
 
   $back_url = $RQ_ARGS->generate_index ? '../' : './';
@@ -221,7 +218,6 @@ function GenerateLogIndex(){
 function GenerateOldLog(){
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
-  shot('Header');
   $base_title = $SERVER_CONF->title . ' [過去ログ]'; //
   if(! $ROOM->IsFinished() || ! $ROOM->IsAfterGame()){ //閲覧判定
     $url = $RQ_ARGS->generate_index ? 'index.html' : 'old_log.php';
@@ -234,16 +230,13 @@ function GenerateOldLog(){
   }
   $title  = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
   $option = GenerateGameOptionImage($ROOM->game_option->row, $ROOM->option_role->row);
-  shot('StartTalk');
   $log    = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
-  shot('EndTalk');
-  $test = CollectLog();
   return GenerateHTMLHeader($title, 'old_log') . <<<EOF
 </head>
 <body>
 <a href="old_log.php">←戻る</a><br>
 {$ROOM->GenerateTitleTag()}<br>
-{$option}<br>{$test}
+{$option}<br>
 {$log}
 EOF;
 }

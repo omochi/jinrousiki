@@ -26,7 +26,7 @@ class Role_barrier_wizard extends Role_wizard{
     foreach($stack as $id){
       $user = $USERS->ByID($id);
       //例外判定
-      if($this->IsSameUser($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()){
+      if($this->IsActor($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()){
 	return '自分自身・生存者以外・身代わり君には投票できません';
       }
       $user_list[$id] = $user;

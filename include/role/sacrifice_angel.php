@@ -12,7 +12,7 @@ class Role_sacrifice_angel extends Role_angel{
 
   function GetRole($user, $flag){
     $role = $this->GetActor()->GetID('lovers');
-    if(! $this->IsSameUser($user->uname)) $role .= ' ' . $this->GetActor()->GetID('protected');
+    if(! $this->IsActor($user->uname)) $role .= ' ' . $this->GetActor()->GetID('protected');
     return $role;
   }
 

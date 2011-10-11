@@ -12,7 +12,7 @@ class Role_avenger extends Role_valkyrja_duelist{
   function __construct(){ parent::__construct(); }
 
   function IsVoteCheckbox($user, $live){
-    return parent::IsVoteCheckbox($user, $live) && ! $this->IsSameUser($user->uname);
+    return parent::IsVoteCheckbox($user, $live) && ! $this->IsActor($user->uname);
   }
 
   function VoteNight(){
@@ -26,7 +26,7 @@ class Role_avenger extends Role_valkyrja_duelist{
     $user_list  = array();
     foreach($stack as $id){
       $user = $USERS->ByID($id);
-      if($this->IsSameUser($user->uname) || ! $user->IsLive() || $user->IsDummyBoy()){ //例外判定
+      if($this->IsActor($user->uname) || ! $user->IsLive() || $user->IsDummyBoy()){ //例外判定
 	return '自分自身・生存者以外・身代わり君には投票できません';
       }
       $user_list[] = $user;

@@ -37,7 +37,7 @@ class Role_pharmacist extends Role{
   function Detox(){
     if(! is_array($stack = $this->GetStack())) return;
     foreach($stack as $uname => $target_uname){
-      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
+      if(! $this->IsVoted($uname) && $this->IsActor($target_uname)){
 	$this->SetDetoxFlag($target_uname);
       }
     }
@@ -53,7 +53,7 @@ class Role_pharmacist extends Role{
   function Cure(){
     if(! is_array($stack = $this->GetStack())) return;
     foreach($stack as $uname => $target_uname){
-      if(! $this->IsVoted($uname) && $this->IsSameUser($target_uname)){
+      if(! $this->IsVoted($uname) && $this->IsActor($target_uname)){
 	$this->GetActor()->cured_flag = true;
 	$this->AddStack('cured', 'pharmacist_result', $uname);
       }
