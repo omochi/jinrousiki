@@ -1,9 +1,7 @@
 <?php
 //-- 基礎関数 --//
 //配列からランダムに一つ取り出す
-function GetRandom($array){
-  return $array[array_rand($array)];
-}
+function GetRandom($array){ return $array[array_rand($array)]; }
 
 //-- 時間関連 --//
 //リアルタイムの経過時間
@@ -105,7 +103,7 @@ function CheckVictory($check_draw = false){
 
   if($ROOM->test_mode) return false;
 
-  //コピー系がいるのでキャッシュを更新するかクエリから引くこと
+  //コピー能力者がいるのでキャッシュを更新するかクエリから引くこと
   $query_count = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0 AND ";
   $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
   $wolf   = FetchResult($query_count . "role LIKE '%wolf%'"); //人狼

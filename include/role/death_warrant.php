@@ -8,4 +8,11 @@ RoleManager::LoadFile('febris');
 class Role_death_warrant extends Role_febris{
   public $sudden_death = 'WARRANT';
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){
+    global $ROOM;
+    if(($date = $this->GetActor()->GetDoomDate($this->role)) >= $ROOM->date){
+      OutputAbilityResult($this->role . '_header', $date, 'sudden_death_footer');
+    }
+  }
 }

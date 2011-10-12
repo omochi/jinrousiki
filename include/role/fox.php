@@ -2,8 +2,10 @@
 /*
   ◆妖狐 (fox)
   ○仕様
+  ・人狼襲撃耐性：有り
 */
 class Role_fox extends Role{
+  public $resist_wolf = true;
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
@@ -28,7 +30,7 @@ class Role_fox extends Role{
       OutputPartner($fox_list, 'fox_partner'); //妖狐系
       OutputPartner($child_fox_list, 'child_fox_partner'); //子狐系
     }
-    if($ROOM->date > 1 && ! $ROOM->IsOption('seal_message') && $this->GetActor()->IsResistFox()){
+    if($this->resist_wolf && $ROOM->date > 1 && ! $ROOM->IsOption('seal_message')){
       OutputSelfAbilityResult('FOX_EAT'); //人狼襲撃
     }
     $this->OutputFoxAbility();

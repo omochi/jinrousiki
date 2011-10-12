@@ -94,9 +94,11 @@ class Role_wolf extends Role{
       $user->wolf_killed = true; //尾行判定は成功扱い
       return true;
     }
-    if($user->IsResistFox()){ //妖狐判定
+    if($user->IsFox()){ //妖狐判定
+      $filter = $ROLES->LoadMain($user);
+      if(! $filter->resist_wolf) return false;
       $this->FoxEatAction($user); //妖狐襲撃処理
-      $ROLES->LoadMain($user)->FoxEatCounter($this->GetVoter()); //妖狐襲撃カウンター処理
+      $filter->FoxEatCounter($this->GetVoter()); //妖狐襲撃カウンター処理
 
       //人狼襲撃メッセージを登録
       if(! $ROOM->IsOption('seal_message')) $ROOM->SystemMessage($user->handle_name, 'FOX_EAT');

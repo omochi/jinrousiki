@@ -7,6 +7,11 @@
 class Role_joker extends Role{
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){
+    global $ROOM;
+    if($this->GetActor()->IsJoker($ROOM->date)) parent::OutputAbility();
+  }
+
   function FilterWin(&$flag){
     global $ROOM, $USERS;
     $flag = ! $this->GetActor()->IsJoker($ROOM->date) ||

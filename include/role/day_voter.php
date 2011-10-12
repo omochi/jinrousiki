@@ -7,6 +7,10 @@
 class Role_day_voter extends Role{
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){
+    if($this->GetActor()->IsDoomRole($this->role)) parent::OutputAbility();
+  }
+
   function FilterVoteDo(&$vote_number){
     global $ROOM;
     if($this->GetActor()->GetDoomDate($this->role) == $ROOM->date) $vote_number++;

@@ -7,6 +7,16 @@
 class Role_rival extends Role{
   function __construct(){ parent::__construct(); }
 
+  function OutputAbility(){
+    $target = $this->GetActor()->partner_list;
+    $stack  = array();
+    foreach($this->GetUser() as $user){
+      if($this->IsActor($user->uname)) continue;
+      if($user->IsPartner($this->role, $target)) $stack[] = $user->handle_name; //憑依は追跡しない
+    }
+    OutputPartner($stack, 'partner_header', 'rival_footer');
+  }
+
   function FilterWin(&$flag){
     if(! $flag || $this->GetActor()->IsLovers()) return;
     if($this->IsDead()){

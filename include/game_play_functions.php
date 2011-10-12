@@ -10,206 +10,26 @@ function OutputAbility(){
     if($SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
     return;
   }
-
   $ROLES->LoadMain($SELF)->OutputAbility(); //メイン役職
 
   //-- ここからサブ役職 --//
-  $fix_display_list = array(); //常時表示する役職リスト
-
-  //元神話マニア系
-  if(($ROOM->date == 2 && $SELF->IsRole('copied', 'copied_trick', 'copied_basic')) ||
-     ($ROOM->date == 4 && $SELF->IsRole('copied_soul', 'copied_teller'))){
-    OutputSelfAbilityResult('MANIA_RESULT'); //コピー結果
-  }
-  array_push($fix_display_list, 'copied', 'copied_trick', 'copied_basic', 'copied_soul',
-	     'copied_teller');
-
-  $role = 'lost_ability'; //能力喪失 (比丘尼は別画像)
-  if($SELF->IsRole($role)){
-    $ROLE_IMG->Output($SELF->IsRole('awake_wizard') ? 'ability_awake_wizard' : $role);
-  }
-  $fix_display_list[] = $role;
-
-  $role = 'muster_ability'; //能力発現
-  if($SELF->IsRole($role)) $ROLE_IMG->Output($role);
-  $fix_display_list[] = $role;
-
-  //恋人系・悲恋人
-  $role = 'lovers'; //恋人
-  if($SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera', 'sweet_status')){
-    //悲恋人のみの場合、2 日目以降はシーク不要なのでスキップ
-    if($ROOM->date == 1 || $SELF->IsLovers() || $SELF->IsRole('dummy_chiroptera')){
-      $stack = array();
-      foreach($USERS->rows as $user){
-	if($user->IsSelf()) continue;
-	if($user->IsPartner($role, $SELF->partner_list) ||
-	   $SELF->IsPartner('dummy_chiroptera', $user->user_no) ||
-	   ($ROOM->date == 1 && $user->IsPartner('sweet_status', $SELF->partner_list))){
-	  $stack[] = $USERS->GetHandleName($user->uname, true); //憑依を追跡する
-	}
-      }
-      OutputPartner($stack, 'partner_header', 'lovers_footer');
-    }
-    $role = 'sweet_status';
-    if($ROOM->date == 2 && $SELF->IsRole($role)) $ROLE_IMG->Output($role);
-  }
-
-  $role = 'challenge_lovers'; //難題
-  if($ROOM->date > 1 && $SELF->IsRole($role)) $ROLE_IMG->Output($role);
-
-  $role = 'possessed_exchange'; //交換憑依
-  if($SELF->IsRole($role)){
-    do{ //現在の憑依先を表示
-      if(! is_array($stack = $SELF->GetPartner($role))) break;
-      if(is_null($target = $USERS->ByID(array_shift($stack))->handle_name)) break;
-      $ROOM->date < 3 ?
-	OutputAbilityResult('exchange_header', $target, 'exchange_footer') :
-	OutputAbilityResult('partner_header', $SELF->handle_name, 'possessed_target');
-    }while(false);
-  }
-  array_push($fix_display_list, 'lovers', 'challenge_lovers', 'possessed_exchange', 'sweet_status');
-
-  //ジョーカー系
-  $role = 'joker'; //ジョーカー
-  if($SELF->IsJoker($ROOM->date)) $ROLE_IMG->Output($role);
-
-  $role = 'rival'; //宿敵
-  if($SELF->IsRival()){
-    $stack = array();
-    foreach($USERS->rows as $user){
-      if(! $user->IsSelf() && $user->IsPartner($role, $SELF->partner_list)){
-	$stack[] = $user->handle_name; //憑依は追跡しない
-      }
-    }
-    OutputPartner($stack, 'partner_header', 'rival_footer');
-  }
-  array_push($fix_display_list, 'joker', 'rival');
-
-  $role = 'death_note'; //デスノート
-  if($SELF->IsDoomRole($role)){
-    $ROLE_IMG->Output($role);
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('death-note-do', 'death_note_do', 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
-    }
-  }
-  $fix_display_list[] = 'death_note';
+  foreach($ROLES->Load('display_real') as $filter) $filter->OutputAbility();
 
   //-- ここからは憑依先の役職を表示 --//
-  $virtual_self = $USERS->ByVirtual($SELF->user_no);
-
-  //期間限定表示タイプ (オシラ遊び・特殊小心者・権力者系)
-  $role = 'death_selected'; //オシラ遊び
-  if($virtual_self->IsDoomRole($role)) $ROLE_IMG->Output($role);
-
-  //熱病・凍傷
-  foreach(array('febris' => 'sudden_death', 'frostbite' => 'frostbite') as $role => $footer){
-    if($virtual_self->IsDoomRole($role)){
-      OutputAbilityResult($role . '_header', $ROOM->date, $footer . '_footer');
-    }
-  }
-
-  $role = 'death_warrant'; //死の宣告
-  if($virtual_self->IsRole($role) &&
-     ($date = $virtual_self->GetDoomDate($role)) >= $ROOM->date){
-    OutputAbilityResult('death_warrant_header', $date, 'sudden_death_footer');
-  }
-
-  $role = 'day_voter'; //一日村長
-  if($virtual_self->IsDoomRole($role)) $ROLE_IMG->Output($role);
-  array_push($fix_display_list, 'death_selected', 'febris', 'frostbite', 'death_warrant',
-	     'day_voter');
-
-  //特殊権力・雑草魂系
-  if($ROOM->date > 1){ //表示は 2 日目以降
-    foreach(array('wirepuller_luck', 'occupied_luck') as $role){ //入道・ひんな持ち
-      if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
-    }
-  }
-  array_push($fix_display_list, 'wirepuller_luck', 'occupied_luck');
-
-  //サトラレ系
-  $role = 'mind_open'; //公開者
-  if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
-
-  if($ROOM->date > 1){ //サトラレ系の表示は 2 日目以降
-    foreach(array('mind_read', 'mind_evoke', 'mind_lonely') as $role){ //サトラレ・口寄せ・はぐれ者
-      if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
-    }
-
-    $role = 'mind_receiver'; //受信者
-    if($virtual_self->IsRole($role)){
-      $ROLE_IMG->Output($role);
-
-      $stack = array();
-      foreach($virtual_self->GetPartner($role, true) as $id){
-	$stack[$id] = $USERS->ById($id)->handle_name;
-      }
-      ksort($stack);
-      OutputPartner($stack, 'mind_scanner_target');
-      unset($stack);
-    }
-
-    $role = 'mind_friend'; //共鳴者
-    if($virtual_self->IsRole($role)){
-      $ROLE_IMG->Output($role);
-
-      $stack = array();
-      foreach($USERS->rows as $user){
-	if(! $user->IsSame($virtual_self->uname) &&
-	   $user->IsPartner($role, $virtual_self->partner_list)){
-	  $stack[$user->user_no] = $user->handle_name;
-	}
-      }
-      ksort($stack);
-      OutputPartner($stack, 'mind_friend_list');
-      unset($stack);
-    }
-
-    $role = 'mind_sympathy'; //共感者
-    if($virtual_self->IsRole($role)){
-      $ROLE_IMG->Output($role);
-      if($ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
-    }
-
-    $role = 'mind_sheep'; //羊
-    if($virtual_self->IsRole($role)){
-      $ROLE_IMG->Output($role);
-
-      $stack = array();
-      foreach($virtual_self->GetPartner($role, true) as $id){
-	$stack[$id] = $USERS->ById($id)->handle_name;
-      }
-      ksort($stack);
-      OutputPartner($stack, 'shepherd_patron_list');
-      unset($stack);
-    }
-
-    $role = 'mind_presage'; //受託者
-    if($ROOM->date > 2 && $virtual_self->IsRole($role)) OutputSelfAbilityResult('PRESAGE_RESULT');
-  }
-  array_push($fix_display_list, 'mind_read', 'mind_open', 'mind_receiver', 'mind_friend',
-	     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep');
-
-  //鬼火系
-  foreach(array('wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp') as $role){
-    if($virtual_self->IsRole($role)) $ROLE_IMG->Output($role);
-  }
-  if($ROOM->date > 1){
-    $role = 'sheep_wisp'; //羊皮
-    if($virtual_self->IsDoomRole($role)) $ROLE_IMG->Output($role);
-  }
-  array_push($fix_display_list, 'wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp',
-	     'sheep_wisp');
+  $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
+  foreach($ROLES->Load('display_virtual') as $filter) $filter->OutputAbility();
 
   //-- これ以降はサブ役職非公開オプションの影響を受ける --//
   if($ROOM->IsOption('secret_sub_role')) return;
 
-  array_push(
-    $fix_display_list, 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck',
-    'critical_voter', 'critical_luck', 'enemy', 'supported', 'infected', 'psycho_infected',
-    'possessed_target', 'possessed', 'bad_status', 'protected','changed_therian');
-  $display_list = array_diff(array_keys($ROLE_DATA->sub_role_list), $fix_display_list);
-  $target_list  = array_intersect($display_list, array_slice($virtual_self->role_list, 1));
+  $stack = array();
+  foreach(array('real', 'virtual', 'none') as $name){
+    $stack = array_merge($stack, $ROLES->{'display_' . $name . '_list'});
+  }
+  //PrintData($stack);
+  $display_list = array_diff(array_keys($ROLE_DATA->sub_role_list), $stack);
+  $target_list  = array_intersect($display_list, array_slice($ROLES->actor->role_list, 1));
+  //PrintData($target_list);
   foreach($target_list as $role) $ROLE_IMG->Output($role);
 }
 

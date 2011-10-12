@@ -2,6 +2,7 @@
 /*
   ◆夢共有者 (dummy_common)
   ○仕様
+  ・役職表示：共有者
   ・仲間表示：身代わり君
 */
 RoleManager::LoadFile('common');

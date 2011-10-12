@@ -2,7 +2,7 @@
 /*
   ◆策士 (trap_common)
   ○仕様
-  ・処刑得票：非村人陣営の人全てから投票されたらまとめて死亡させる
+  ・処刑得票：罠死 (非村人陣営の人全てからの得票)
 */
 RoleManager::LoadFile('common');
 class Role_trap_common extends Role_common{

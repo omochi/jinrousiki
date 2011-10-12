@@ -2,11 +2,13 @@
 /*
   ◆子狐 (child_fox)
   ○仕様
+  ・人狼襲撃耐性：無し
   ・占い：通常
 */
 RoleManager::LoadFile('fox');
 class Role_child_fox extends Role_fox{
   public $mix_in = 'mage';
+  public $resist_wolf = false;
   public $action = 'CHILD_FOX_DO';
   public $result = 'CHILD_FOX_RESULT';
   public $submit = 'mage_do';

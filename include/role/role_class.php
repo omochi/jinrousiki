@@ -5,6 +5,25 @@ class RoleManager{
   public $loaded;
   public $actor;
 
+  //常時表示サブ役職 (本体 / 順番依存あり)
+  public $display_real_list = array(
+    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller', 'lost_ability',
+    'muster_ability', 'lovers', 'sweet_status', 'challenge_lovers', 'possessed_exchange', 'joker',
+    'rival', 'death_note');
+
+  //常時表示サブ役職 (仮想 / 順番依存あり)
+  public $display_virtual_list = array(
+    'death_selected', 'febris', 'frostbite', 'death_warrant', 'day_voter', 'wirepuller_luck',
+    'occupied_luck', 'mind_open', 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
+    'mind_friend', 'mind_sympathy', 'mind_sheep', 'mind_presage', 'wisp', 'black_wisp',
+    'spell_wisp', 'foughten_wisp', 'gold_wisp', 'sheep_wisp');
+
+  //非表示サブ役職 (呼び出し抑制用)
+  public $display_none_list = array(
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'critical_voter',
+    'critical_luck', 'enemy', 'supported', 'infected', 'psycho_infected', 'possessed_target',
+    'possessed', 'bad_status', 'protected','changed_therian');
+
   //発言表示
   public $talk_list = array('blinder', 'earplug', 'speaker');
 
@@ -100,12 +119,10 @@ class RoleManager{
     'challenge_lovers', 'protected', 'sacrifice_angel', 'doom_vampire', 'sacrifice_patron',
     'sacrifice_mania', 'fend_guard', 'awake_wizard');
 
-  //身代わり能力者
-  public $sacrifice_list = array('sacrifice_common', 'doll_master', 'sacrifice_vampire',
-				 'boss_chiroptera', 'sacrifice_ogre');
-
-  //人狼襲撃得票カウンター
-  public $wolf_eat_reaction_list = array('therian_mad', 'immolate_mad');
+  //人狼襲撃得票カウンター (+ 身代わり能力者)
+  public $wolf_eat_reaction_list = array(
+    'therian_mad', 'immolate_mad', 'sacrifice_common', 'doll_master', 'sacrifice_vampire',
+    'boss_chiroptera', 'sacrifice_ogre');
 
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',

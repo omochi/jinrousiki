@@ -249,10 +249,7 @@ class User{
   }
 
   //孤立系役職判定
-  function IsLonely($role = NULL){
-    return (is_null($role) || $this->IsRole($role)) &&
-      ($this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'));
-  }
+  function IsLonely(){ return $this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'); }
 
   //男性判定
   function IsMale(){ return $this->sex == 'male'; }
@@ -305,11 +302,6 @@ class User{
     $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
     if(! $vote) array_push($stack, 'miasma_fox', 'howl_fox');
     return $this->IsRole($stack);
-  }
-
-  //襲撃耐性妖狐判定
-  function IsResistFox(){
-    return $this->IsFox() && ! $this->IsRole('white_fox', 'poison_fox') && ! $this->IsChildFox();
   }
 
   //鬼陣営判定

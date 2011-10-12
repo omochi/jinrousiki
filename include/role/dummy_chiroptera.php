@@ -12,17 +12,21 @@ class Role_dummy_chiroptera extends Role{
     global $ROOM, $USERS;
 
     parent::OutputAbility();
-    //自分が矢を打った(つもり)の恋人 (自分自身含む) を表示
-    $user  = $this->GetActor();
-    $stack = $user->GetPartner($this->role);
-    if(is_array($stack)){
+    $user   = $this->GetActor();
+    $target = $user->GetPartner($this->role);
+    $stack  = $target;
+    if(is_array($stack)){ //仮想恋人作成結果を表示
       $stack[] = $user->user_no;
       asort($stack);
-      $stack_pair = array();
-      foreach($stack as $id) $stack_pair[] = $USERS->ById($id)->handle_name;
-      OutputPartner($stack_pair, 'cupid_pair');
+      $pair = array();
+      foreach($stack as $id) $pair[] = $USERS->ById($id)->handle_name;
+      OutputPartner($pair, 'cupid_pair');
     }
     $this->OutputAction();
+    if(! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
+    $lovers = array(); //仮想恋人を表示 (憑依を追跡する)
+    foreach($target as $id) $lovers[] = $USERS->GetHandleName($USERS->ById($id)->uname, true);
+    OutputPartner($lovers, 'partner_header', 'lovers_footer');
   }
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }

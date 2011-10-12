@@ -1466,6 +1466,7 @@ function AggregateVoteNight($skip = false){
     }
 
     //狩人系の護衛判定
+    $stack = array();
     foreach($ROLES->LoadFilter('guard') as $filter) $filter->GetGuard($wolf_target->uname, $stack);
     //PrintData($stack, 'List [gurad]');
 
@@ -1502,23 +1503,9 @@ function AggregateVoteNight($skip = false){
       if($ROOM->date > 1 && $wolf_target->IsRoleGroup('escaper')) break; //逃亡者系判定
       if($wolf_filter->WolfEatSkip($wolf_target)) break; //人狼襲撃失敗判定
       if(! $voted_wolf->IsSiriusWolf()){ //特殊能力者の処理 (完全覚醒天狼は無効)
-	$ROLES->actor = $wolf_target; //人狼襲撃得票カウンター処理
+	$ROLES->actor = $wolf_target; //人狼襲撃得票カウンター + 身代わり能力者処理
 	foreach($ROLES->Load('wolf_eat_reaction') as $filter){
 	  if($filter->WolfEatReaction()) break 2;
-	}
-
-	if(! $ROOM->IsEvent('no_sacrifice')){ //身代わり能力者判定
-	  $ROLES->actor = $wolf_target;
-	  foreach($ROLES->Load('sacrifice') as $filter){
-	    $stack = $filter->GetSacrificeList();
-	    //PrintData($stack, 'List [Sacrifice]');
-	    if(count($stack) > 0){
-	      $target = $USERS->ByID(GetRandom($stack));
-	      $USERS->Kill($target->user_no, 'SACRIFICE');
-	      $ROLES->stack->sacrifice[] = $target->uname;
-	      break 2;
-	    }
-	  }
 	}
 	if($wolf_filter->WolfEatAction($wolf_target)) break; //人狼襲撃能力処理
 
@@ -1584,6 +1571,7 @@ function AggregateVoteNight($skip = false){
       $guard_flag = false; //護衛成功フラグ
       $guard_limited = ! $ROOM->IsEvent('full_guard') && $target->IsGuardLimited(); //護衛制限判定
       //護衛者を検出
+      $stack = array();
       foreach($ROLES->LoadFilter('guard') as $filter) $filter->GetGuard($target->uname, $stack);
       //PrintData($stack, 'List [gurad/vampire]');
 
@@ -1660,21 +1648,7 @@ function AggregateVoteNight($skip = false){
     foreach($vote_data['OGRE_DO'] as $uname => $target_uname){ //鬼の処理
       $user = $USERS->ByUname($uname);
       if($user->IsDead(true)) continue; //直前に死んでいたら無効
-
-      foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
-	if($filter->DelayTrap($user, $target_uname)) continue 2;
-      }
-      foreach($ROLES->LoadFilter('guard_assassin') as $filter){ //門番の護衛判定
-	if($filter->GuardAssassin($target_uname)) continue 2;
-      }
-
-      $target = $USERS->ByUname($target_uname);
-      if($target->IsDead(true) || $target->IsRoleGroup('escaper')) continue; //無効判定
-      if($target->IsRefrectAssassin()){ //反射判定
-	$ROLES->stack->ogre[$user->user_no] = true;
-	continue;
-      }
-      $ROLES->LoadMain($user)->Assassin($target);
+      $ROLES->LoadMain($user)->SetAssassin($USERS->ByUname($target_uname));
     }
     foreach($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
     $role = 'ogre'; //人攫い処理

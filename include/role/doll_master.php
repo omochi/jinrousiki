@@ -5,13 +5,8 @@
   ・身代わり対象者：人形
 */
 class Role_doll_master extends Role{
+  public $mix_in = 'protected';
   function __construct(){ parent::__construct(); }
 
-  function GetSacrificeList(){
-    $stack = array();
-    foreach($this->GetUser() as $user){
-      if($user->IsLive(true) && $user->IsDoll()) $stack[] = $user->user_no;
-    }
-    return $stack;
-  }
+  function IsSacrifice($user){ return $user->IsDoll(); }
 }
