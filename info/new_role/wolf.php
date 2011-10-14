@@ -453,7 +453,7 @@ OutputRolePageHeader('人狼陣営');
 <h4>[耐性] 占い：特殊 / 陰陽師：死亡 / 憑依：無効</h4>
 <pre>
 襲撃に成功した人を乗っ取る人狼。
-乗っ取るのはアイコンと<a href="sub_role.php#lovers">恋人</a>を除くサブ役職全て。
+乗っ取るのはアイコンと<a href="sub_role.php#lovers_group">恋人系</a>・<a href="sub_role.php#infected_group">感染者系</a>・<a href="sub_role.php#joker_group">ジョーカー系</a>を除くサブ役職全て。
 身代わり君・<a href="fox.php">妖狐陣営</a> (変化前の<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>や<a href="mania.php#unknown_mania_group">鵺系</a>を含む)・<a href="ability.php#possessed_limit">憑依制限能力者</a>は乗っ取れない。
 </pre>
 <ol>

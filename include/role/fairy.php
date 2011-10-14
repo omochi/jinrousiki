@@ -3,6 +3,7 @@
   ◆妖精 (fairy)
   ○仕様
   ・悪戯：発言妨害 (共有者の囁き)
+  ・発言変換：悪戯
 */
 class Role_fairy extends Role{
   public $mix_in = 'mage';
@@ -10,7 +11,6 @@ class Role_fairy extends Role{
   public $bad_status = NULL;
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 
@@ -20,7 +20,6 @@ class Role_fairy extends Role{
     }
   }
 
-  //投票能力判定
   function IsVote(){ return true; }
 
   //占い (悪戯)
@@ -37,7 +36,7 @@ class Role_fairy extends Role{
   }
 
   //発言変換 (悪戯)
-  function FilterSay(&$str){ $str = $this->GetBadStatus() . $str; }
+  function ConvertSay(){ $this->SetStack($this->GetBadStatus() . $this->GetStack('say'), 'say'); }
 
   //悪戯内容取得
   function GetBadStatus(){

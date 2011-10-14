@@ -954,39 +954,30 @@ function AggregateVoteDay(){
     unset($live_uname_list[array_search($ROLES->stack->vote_kill_uname, $live_uname_list)]);
     $voter_list = array_keys($vote_target_list, $vote_target->uname); //投票した人を取得
 
-    //薬師系の毒鑑定処理
-    foreach($ROLES->LoadFilter('distinguish_poison') as $filter) $filter->DistinguishPoison();
+    //薬師系の毒鑑定情報収集
+    foreach($ROLES->LoadFilter('distinguish_poison') as $filter) $filter->SetDetox();
 
     do{ //-- 処刑者の毒処理 --//
       if(! $vote_target->IsPoison()) break; //毒能力の発動判定
 
       //薬師系の解毒判定 (夢毒者は対象外)
       $ROLES->actor = $USERS->ByVirtual($vote_target->user_no); //投票データは仮想ユーザ
+      $role = 'alchemy_pharmacist'; //錬金術師
+      $ROLES->actor->detox = false;
+      $ROLES->actor->$role = false;
       if(! $vote_target->IsRole('dummy_poison')){
 	foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
-	if(property_exists($ROLES->actor, 'detox_flag')) break;
+	if($ROLES->actor->detox) break;
       }
-      $poison_target_list = array(); //毒の対象リスト
 
-      //毒の対象オプションをチェックして初期候補者リストを作成
+      //毒の対象オプションをチェックして初期候補者リストを作成後に対象者を取得
       $stack = $GAME_CONF->poison_only_voter ? $voter_list : $live_uname_list;
-      foreach($stack as $uname){ //常時対象外の役職を除く
-	$user = $USERS->ByRealUname($uname);
-	if($user->IsLive(true) && ! $user->IsAvoid(true)) $poison_target_list[] = $uname;
-      }
-
-      //特殊毒の場合はターゲットが限定される
-      $role = 'alchemy_pharmacist'; //錬金術師
-      if(property_exists($ROLES->actor, $role . '_flag') || $ROOM->IsEvent($role)){
-	$ROLES->LoadMain(new User($role))->FilterPoisonTarget($poison_target_list);
-      }
-      else{
-	$ROLES->actor = $vote_target;
-	foreach($ROLES->Load('poison') as $filter) $filter->FilterPoisonTarget($poison_target_list);
-      }
+      $user  = $ROLES->actor->$role || $ROOM->IsEvent($role) ? new User($role) : $vote_target;
+      $poison_target_list = $ROLES->LoadMain($user)->GetPoisonVoteTarget($stack);
+      //PrintData($poison_target_list, 'Target [poison]');
       if(count($poison_target_list) < 1) break;
-      $poison_target = $USERS->ByRealUname(GetRandom($poison_target_list)); //対象者を決定
 
+      $poison_target = $USERS->ByID(GetRandom($poison_target_list)); //対象者を決定
       if($poison_target->IsActive('resist_wolf')){ //抗毒判定
 	$poison_target->LostAbility();
 	break;
@@ -1519,7 +1510,7 @@ function AggregateVoteNight($skip = false){
     $wolf_target->wolf_killed = true;
 
     if($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()){ //-- 毒死判定 --//
-      $poison_target = $wolf_filter->GetPoisonTarget(); //対象選出
+      $poison_target = $wolf_filter->GetPoisonEatTarget(); //対象選出
       if($poison_target->IsChallengeLovers()) break; //難題なら無効
 
       $ROLES->actor = $wolf_target; //襲撃毒死回避判定

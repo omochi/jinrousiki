@@ -13,9 +13,9 @@ class Role_chain_poison extends Role{
     global $ROOM, $ROLES, $USERS;
 
     $ROLES->actor = $USERS->ByVirtual($user->user_no); //解毒判定
-    $ROLES->actor->detox_flag = false;
+    $ROLES->actor->detox = false;
     foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
-    if($ROLES->actor->detox_flag) return;
+    if($ROLES->actor->detox) return;
 
     $stack = array();
     foreach($USERS->GetLivingUsers(true) as $uname){ //生存者から常時対象外の役職を除く
@@ -43,9 +43,9 @@ class Role_chain_poison extends Role{
 
 	if(! $target->IsRole($this->role)) continue; //連鎖判定
 	$ROLES->actor = $USERS->ByVirtual($target->user_no); //解毒判定
-	$ROLES->actor->detox_flag = false;
+	$ROLES->actor->detox = false;
 	foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
-	if(! $ROLES->actor->detox_flag) $count++;
+	if(! $ROLES->actor->detox) $count++;
       }
     }
   }

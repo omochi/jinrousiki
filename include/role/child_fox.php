@@ -32,5 +32,5 @@ class Role_child_fox extends Role_fox{
     $this->SaveMageResult($user, $result, $this->result);
   }
 
-  function GetMageResult($user){ return $user->DistinguishMage(); }
+  function GetMageResult($user){ return $this->DistinguishMage($user); }
 }

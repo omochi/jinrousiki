@@ -6,9 +6,10 @@
   ・蘇生後：なし
 */
 class Role_poison_cat extends Role{
-  public $action = 'POISON_CAT_DO';
+  public $mix_in = 'poison';
+  public $action     = 'POISON_CAT_DO';
   public $not_action = 'POISON_CAT_NOT_DO';
-  public $submit = 'revive_do';
+  public $submit     = 'revive_do';
   public $not_submit = 'revive_not_do';
   public $ignore_message = '初日は蘇生できません';
   public $revive_rate = 25;

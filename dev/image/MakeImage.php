@@ -350,7 +350,7 @@ class RoleMessageList{
     'type' => 'assassin', 'delimiter' => array('_' => 'chicken'));
 
   public $select_assassin = array(
-    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#おしら様#です。夜に村人一人を#オシラ遊び#の対象に選ぶことができます。",
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#おしら様#です。夜に村人一人を#オシラ遊び#の対象に選ぶことができます。村の敵に命日を定め、天に召して平和を願いましょう。",
     'type' => 'assassin');
 
   public $reverse_assassin = array(
@@ -701,20 +701,20 @@ class RoleMessageList{
     'delimiter' => array('|' => 'fox', '#' => 'wolf'));
 
   public $white_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。_占い師_を騙すことができますが、^霊能者^には見抜かれてしまいます。\n　また、#人狼#に襲撃されると殺されてしまいます。巧みに#狼#を欺き、勝利を奪うのです！",
-    'type' => 'phantom_fox', 'delimiter' => array('^' => 'necromancer'));
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。占われても呪殺されませんが、_霊能者_には見抜かれ、#人狼#に襲撃されると殺されてしまいます。",
+    'type' => 'fox', 'delimiter' => array('_' => 'necromancer'));
 
   public $black_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|黒狐|です。占われても呪殺されませんが、#人狼#判定が出されるうえに、^霊能者^には見抜かれてしまいます。\n　黒き体色は闇にまぎれ、鮮やかなる虚飾の世界を彩る。あなたの話術で#人狼#を騙し、村に夜の帳を下ろすのです。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|黒狐|です。占われても呪殺されませんが、#人狼#判定が出される上に、_霊能者_には見抜かれてしまいます。\n　黒き体色は闇にまぎれ、鮮やかなる虚飾の世界を彩る。あなたの話術で#人狼#を騙し、村に夜の帳を下ろすのです。",
     'type' => 'white_fox');
 
   public $mist_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|霧狐|です。占われても呪殺されませんが、:蝙蝠:判定が出されるうえに、^霊能者^には見抜かれてしまいます。\n　其の身に負うは闇の宿命、夜の王たる=吸血鬼=の証。深く静かな霧の中で機会を窺い、全ての敵を騙し抜くのです！",
-    'type' => 'white_fox', 'delimiter' => array(':' => 'chiroptera', '=' => 'vampire'));
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|霧狐|です。占われても呪殺されませんが、^蝙蝠^判定が出される上に、_霊能者_には見抜かれてしまいます。\n　其の身に負うは闇の宿命、夜の王たる:吸血鬼:の証。深く静かな霧の中で機会を窺い、全ての敵を騙し抜くのです！",
+    'type' => 'white_fox', 'delimiter' => array('^' => 'chiroptera', ':' => 'vampire'));
 
   public $gold_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|金狐|です。_ひよこ鑑定士_に占われると:蝙蝠:と判定されます。:蝙蝠:に村や#狼#の矛先を向けさせ、その隙に|狐|の勝利を頂くのです！",
-    'type' => 'mist_fox');
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|金狐|です。_ひよこ鑑定士_に占われると^蝙蝠^と判定されます。^蝙蝠^に村や#狼#の矛先を向けさせ、その隙に|狐|の勝利を頂くのです！",
+    'type' => 'phantom_fox', 'delimiter' => array('^' => 'chiroptera'));
 
   public $phantom_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|幻狐|です。一度だけ_占い_を無効化することができます。_占い師_を煙に巻き、村を幻へと誘うのです。",
@@ -731,6 +731,10 @@ class RoleMessageList{
   public $spell_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|宙狐|です。一度だけ、あなたを襲撃した#人狼#に_狐火_を灯すことができます。\n　飛んで火に入る#人狼#を、化かして騙して煙に巻き、村に混沌なる火種を撒くのです！",
     'type' => 'fox', 'delimiter' => array('_' => 'wisp'));
+
+  public $sacrifice_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白蔵主|です。占われても呪殺されず、#人狼#に襲撃されても|子狐|と_蝙蝠_を犠牲にして生き延びることができます。",
+    'type' => 'fox', 'delimiter' => array('_' => 'chiroptera'));
 
   public $emerald_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|翠狐|です。占った人が念話できない|妖狐|だった場合はあなたと_共鳴者_になります。\n　気持ちを通わす心の根を張り巡らせて、仲間と連携してこの村を|妖狐|のものとするのです！",
@@ -757,7 +761,7 @@ class RoleMessageList{
     'type' => 'fox');
 
   public $cursed_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|天狐|です。_占い師_を#呪返し#で、^暗殺^を反射で撃退することができますが、:狩人:には殺されてしまいます。\n　偽りを身に纏い、話術を飾りに舞うように村を駆け巡り、網の目のように張り巡らせた策謀の上を踊るのです！",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|天狐|です。_占い_を#呪返し#で、^暗殺^を反射で撃退することができますが、:狩人:には殺されてしまいます。\n　偽りを身に纏い、話術を飾りに舞うように村を駆け巡り、網の目のように張り巡らせた策謀の上を踊るのです！",
     'type' => 'voodoo_fox', 'delimiter' => array('^' => 'assassin', ':' => 'guard'));
 
   public $cute_fox = array(
@@ -781,19 +785,19 @@ class RoleMessageList{
     'type' => 'fox');
 
   public $child_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|子狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが_占い_の真似事もできます。\n　例え子供でも|狐|は|狐|。子供ならば子供としての戦い方をするだけです。父や母すら利用する、立派な|狐|になって村を支配しましょう！",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|子狐|です。占われても呪殺されませんが、#人狼#の襲撃には耐えられません。また、時々失敗しますが_占い_の真似事もできます。\n　例え子供でも|狐|は|狐|。子供ならば子供としての戦い方をするだけです。父や母すらも利用する、立派な|狐|になって村を支配しましょう！",
     'type' => 'fox', 'delimiter' => array('_' => 'mage'));
 
   public $sex_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|雛狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが_ひよこ鑑定士_の真似事もできます。\n　^蝙蝠^を見抜く目は仲間の助けにならないかもしれません。しかし、奇妙にも大人たちの曇った瞳には無実な人があなたに見えるようなのです。",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|雛狐|です。占われても呪殺されませんが、#人狼#の襲撃には耐えられません。また、時々失敗しますが_ひよこ鑑定士_の真似事もできます。\n　^蝙蝠^を見抜く目は仲間の助けにはならないかもしれません。しかし、奇妙にも大人たちの曇った瞳には無実な人があなたに見えるようなのです。",
     'type' => 'child_fox', 'delimiter' => array('^' => 'chiroptera'));
 
   public $stargazer_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|星狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが_占星術師_の真似事もできます。\n　あなたは星に願いを込めた|狐|。たまに願わないことがあってもその想いを胸に刻みつつ、夜には静かに動き、村を動かす人を探るのです！",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|星狐|です。占われても呪殺されませんが、#人狼#の襲撃には耐えられません。また、時々失敗しますが_占星術師_の真似事もできます。\n　あなたは星に願いを込めた|子狐|。たまに願わないことがあってもその想いを胸に刻みつつ、夜には静かに動き、村を動かす人を探るのです！",
     'type' => 'child_fox');
 
   public $jammer_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|月狐|です。占われても死にませんが、#人狼#に襲われると死んでしまいます。また、時々失敗しますが#月兎#の真似事もできます。\n　月の光は_占い_の効果を歪め覆い隠す力を持つ。|子狐|でありながら身に付けたその能力を用いて、呪殺の脅威から|狐|を守り抜くのです！",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|月狐|です。占われても呪殺されませんが、#人狼#の襲撃には耐えられません。また、時々失敗しますが#月兎#の真似事もできます。\n　月の光は_占い_の効果を歪め覆い隠す力を持つ。|子狐|でありながら身に付けたその能力を用いて、呪殺の脅威から仲間を守り抜くのです！",
     'type' => 'child_fox');
 
   public $miasma_fox = array(
@@ -1780,6 +1784,7 @@ class RoleMessageList{
   public $result_poison_fox = array('message' => "さんは|管狐|でした", 'type' => 'result_fox');
   public $result_blue_fox = array('message' => "さんは|蒼狐|でした", 'type' => 'result_fox');
   public $result_spell_fox = array('message' => "さんは|宙狐|でした", 'type' => 'result_fox');
+  public $result_sacrifice_fox = array('message' => "さんは|白蔵主|でした", 'type' => 'result_fox');
   public $result_emerald_fox = array('message' => "さんは|翠狐|でした", 'type' => 'result_fox');
   public $result_voodoo_fox = array('message' => "さんは|九尾|でした", 'type' => 'result_fox');
   public $result_revive_fox = array('message' => "さんは|仙狐|でした", 'type' => 'result_fox');
@@ -2077,7 +2082,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('select_assassin');
-$builder->Output('echo_brownie');
+#$builder->Output('echo_brownie');
+#$builder->Output('white_fox');
+$builder->Output('sacrifice_fox');
 #$builder->Output('hariti_yaksa');
-#$builder->Output('fire_mania');

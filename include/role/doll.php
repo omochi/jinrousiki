@@ -2,8 +2,8 @@
 /*
   ◆上海人形 (doll)
   ○仕様
-  ・仲間表示：人形遣い枠
   ・勝利：人形遣い死亡
+  ・仲間表示：人形遣い枠
 */
 class Role_doll extends Role{
   public $display_partner = true;
@@ -20,7 +20,7 @@ class Role_doll extends Role{
       if($user->IsRole('doll_master', 'puppet_mage') || $user->IsRoleGroup('scarlet')){
 	$stack[] = $user->handle_name;
       }
-      if($this->display_doll && $user->IsDoll()) $doll_stack[] = $user->handle_name;
+      if($this->display_doll && $this->IsDoll($user)) $doll_stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'doll_master_list'); //人形遣い枠
     if($this->display_doll) OutputPartner($doll_stack, 'doll_partner'); //人形
@@ -33,4 +33,7 @@ class Role_doll extends Role{
     }
     return true;
   }
+
+  //人形判定
+  function IsDoll($user){ return $user->IsRoleGroup('doll') && ! $user->IsRole('doll_master'); }
 }

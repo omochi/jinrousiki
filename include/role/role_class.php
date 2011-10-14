@@ -27,11 +27,18 @@ class RoleManager{
   //発言表示
   public $talk_list = array('blinder', 'earplug', 'speaker');
 
+  //発言置換 (仮想)
+  public $say_convert_virtual_list = array('gentleman', 'lady');
+
+  //発言置換 (本体)
+  public $say_convert_list = array('suspect', 'cute_mage', 'cute_wolf', 'cute_fox',
+				   'cute_chiroptera', 'cute_avenger');
+
   //悪戯発言変換
   public $say_bad_status_list = array('fairy', 'spring_fairy', 'summer_fairy', 'autumn_fairy',
 				      'winter_fairy', 'greater_fairy');
 
-  //発言変換
+  //発言変換 (順番依存あり)
   public $say_list = array('passion', 'actor', 'liar', 'rainbow', 'weekly', 'grassy', 'invisible',
 			   'side_reverse', 'line_reverse', 'mower', 'silent');
 
@@ -58,13 +65,12 @@ class RoleManager{
 
   //処刑投票能力者
   public $vote_day_list = array(
-    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'snipe_poison',
-    'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
-    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
-    'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
-    'critical_mad', 'follow_mad', 'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger',
-    'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
-    'bad_luck', 'authority', 'rebel');
+    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'pharmacist',
+    'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist', 'centaurus_pharmacist',
+    'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy', 'cursed_brownie',
+    'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad', 'critical_mad', 'follow_mad',
+    'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience',
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -78,12 +84,6 @@ class RoleManager{
 
   //解毒判定
   public $detox_list = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
-
-  //特殊毒能力者
-  public $poison_list = array(
-    'strong_poison', 'incubate_poison', 'guide_poison', 'snipe_poison', 'dummy_poison',
-    'poison_jealousy', 'poison_doll', 'poison_wolf', 'poison_fox', 'poison_chiroptera',
-    'poison_ogre', 'poison_avenger');
 
   //処刑者カウンター
   public $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
@@ -121,8 +121,8 @@ class RoleManager{
 
   //人狼襲撃得票カウンター (+ 身代わり能力者)
   public $wolf_eat_reaction_list = array(
-    'therian_mad', 'immolate_mad', 'sacrifice_common', 'doll_master', 'sacrifice_vampire',
-    'boss_chiroptera', 'sacrifice_ogre');
+    'therian_mad', 'immolate_mad', 'sacrifice_common', 'doll_master', 'sacrifice_fox',
+    'sacrifice_vampire', 'boss_chiroptera', 'sacrifice_ogre');
 
   //人狼襲撃カウンター
   public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',

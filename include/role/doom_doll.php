@@ -14,7 +14,7 @@ class Role_doom_doll extends Role_doll{
     $stack = array();
     foreach($list as $uname){
       $user = $USERS->ByRealUname($uname);
-      if(! $user->IsAvoid() && ! $user->IsDoll()) $stack[] = $user->user_no;
+      if(! $user->IsAvoid() && ! $this->IsDoll($user)) $stack[] = $user->user_no;
     }
     if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(2);
   }

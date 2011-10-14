@@ -20,17 +20,36 @@ class Role_pharmacist extends Role{
     if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
   }
 
-  //毒能力鑑定
-  function DistinguishPoison(){
+  //毒能力情報セット
+  function SetDetox(){
     global $USERS;
 
     if(! is_array($stack = $this->GetStack())) return;
     foreach($stack as $uname => $target_uname){
       if(! $this->IsVoted($uname)){
-	$result = $USERS->ByRealUname($target_uname)->DistinguishPoison();
+	$result = $this->DistinguishPoison($USERS->ByRealUname($target_uname));
 	$this->AddStack($result, 'pharmacist_result', $uname);
       }
     }
+  }
+
+  //毒能力鑑定
+  function DistinguishPoison($user){
+    global $ROOM;
+
+    //非毒能力者・夢毒者
+    if(! $user->IsRoleGroup('poison') || $user->IsRole('dummy_poison')) return 'nothing';
+
+    if($user->IsRole('strong_poison')) return 'strong'; //強毒者
+
+    //潜毒者は 5 日目以降に強毒を持つ
+    if($user->IsRole('incubate_poison')) return $ROOM->date >= 5 ? 'strong' : 'nothing';
+
+    //騎士・誘毒者・連毒者・毒橋姫
+    if($user->IsRole('poison_guard', 'guide_poison', 'chain_poison', 'poison_jealousy')){
+      return 'limited';
+    }
+    return 'poison';
   }
 
   //解毒処理
@@ -38,14 +57,14 @@ class Role_pharmacist extends Role{
     if(! is_array($stack = $this->GetStack())) return;
     foreach($stack as $uname => $target_uname){
       if(! $this->IsVoted($uname) && $this->IsActor($target_uname)){
-	$this->SetDetoxFlag($target_uname);
+	$this->SetDetoxFlag($uname);
       }
     }
   }
 
   //解毒フラグセット
   function SetDetoxFlag($uname){
-    $this->GetActor()->detox_flag = true;
+    $this->GetActor()->detox = true;
     $this->AddStack('success', 'pharmacist_result', $uname);
   }
 

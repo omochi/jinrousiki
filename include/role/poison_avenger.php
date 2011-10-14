@@ -6,17 +6,11 @@
 */
 RoleManager::LoadFile('avenger');
 class Role_poison_avenger extends Role_avenger{
+  public $mix_in = 'poison';
   function __construct(){ parent::__construct(); }
 
-  function FilterPoisonTarget(&$list){
-    global $USERS;
-
-    $id = $this->GetActor()->user_no;
-    $stack = array();
-    foreach($list as $uname){
-      $user = $USERS->ByRealUname($uname);
-      if($user->IsRoleGroup('wolf', 'fox') || $user->IsPartner('enemy', $id)) $stack[] = $uname;
-    }
-    $list = $stack;
+  function IsPoisonTarget($user){
+    return $user->IsRoleGroup('wolf', 'fox') ||
+      $user->IsPartner('enemy', $this->GetActor()->user_no);
   }
 }

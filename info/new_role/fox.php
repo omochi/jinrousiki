@@ -47,7 +47,7 @@ OutputRolePageHeader('妖狐陣営');
 <li>2日目以降は<a href="human.php#telepath_scanner">念騒霊</a>の独り言も表示される。<a href="human.php#leader_common">指導者</a>の発言とは区別できない。</li>
 <li>他人からはいっさい見えない。</li>
 <li><a href="#child_fox_group">子狐系</a>は念話を見ることも参加することもできない。</li>
-<li><a href="wolf.php#wise_wolf">賢狼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示される。</li>
+<li><a href="wolf.php#wise_wolf">賢狼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>には念話が<a href="human.php#common_group">共有者</a>の囁きに変換されて表示される。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると夜の発言が独り言になり、念話に参加できなくなる (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 </ol>
 <h5>Ver. 1.4.0 α3-7～</h5>
@@ -68,9 +68,10 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#poison_fox">管狐</a>
 <a href="#blue_fox">蒼狐</a>
 <a href="#spell_fox">宙狐</a>
-<a href="#emerald_fox">翠狐</a>
+<a href="#sacrifice_fox">白蔵主</a>
 </p>
 <p>
+<a href="#emerald_fox">翠狐</a>
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
 <a href="#possessed_fox">憑狐</a>
@@ -80,9 +81,9 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#elder_fox">古狐</a>
 <a href="#cute_fox">萌狐</a>
 <a href="#scarlet_fox">紅狐</a>
-<a href="#silver_fox">銀狐</a>
 </p>
 <p>
+<a href="#silver_fox">銀狐</a>
 <a href="#immolate_fox">野狐禅</a>
 </p>
 
@@ -220,6 +221,30 @@ OutputRolePageHeader('妖狐陣営');
 呪殺した占い師に村の信用を与えてしまうことにもなります。
 </pre>
 
+<h3 id="sacrifice_fox">白蔵主 (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.5.0 β13～]</h3>
+<h4>[耐性] 人狼襲撃：身代わり</h4>
+<h4>[身代わり能力] 子狐系・蝙蝠系</h4>
+<pre>
+占いで呪殺されず、<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="#child_fox_group">子狐系</a>・<a href="chiroptera.php#chiroptera_group">蝙蝠系</a>を身代わりにして
+生き延びる事ができる妖狐。
+</pre>
+<ol>
+<li>身代わりが発生した場合、<a href="wolf.php#wolf_group">人狼</a>の襲撃は失敗扱い。</li>
+<li>身代わりで死亡した人の死因は「誰かの犠牲となって死亡したようです」。</li>
+<li>本人は身代わりが発生しても分からない。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#mage_human">特殊占い判定能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/119" target="_top">新役職考案スレ2(119)</a> が原型です。
+対占い耐性も含めて高い生存力を持ちますが、身代わり発生を人狼に察知されてしまうと
+襲撃され続けることで逆に子狐ごと根絶やしにされてしまうリスクがあります。
+</pre>
+
 <h3 id="emerald_fox">翠狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <h4>[耐性] 人狼襲撃：無効 / 封印：有効</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
@@ -344,7 +369,7 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 <a href="wolf.php#trap_mad">罠師</a>の妖狐バージョンです。
 狩人・人狼狙いで襲撃されそうな人に仕掛けるのもよし、
-味方を暗殺の脅威から護衛するのもよしですね。
+味方を暗殺の脅威から保護するのもよしですね。
 </pre>
 
 <h3 id="cursed_fox">天狐 (占い結果：村人(呪返し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>

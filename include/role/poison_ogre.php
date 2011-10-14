@@ -9,6 +9,7 @@
 */
 RoleManager::LoadFile('ogre');
 class Role_poison_ogre extends Role_ogre{
+  public $mix_in = 'poison';
   public $reduce_rate = 3;
   function __construct(){ parent::__construct(); }
 
@@ -18,15 +19,5 @@ class Role_poison_ogre extends Role_ogre{
 
   function Assassin($user){ $user->AddRole('panelist'); }
 
-  function FilterPoisonTarget(&$list){
-    global $USERS;
-
-    $stack = array();
-    foreach($list as $uname){
-      if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox', 'ogre', 'yaksa')){
-	$stack[] = $uname;
-      }
-    }
-    $list = $stack;
-  }
+  function IsPoisonTarget($user){ return $user->IsRoleGroup('wolf', 'fox', 'ogre', 'yaksa'); }
 }

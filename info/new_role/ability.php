@@ -69,7 +69,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="mage">占い (特殊判定)</h2>
 <h3 id="mage_human">村人 (白系)</h3>
 <pre>
-<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="sub_role.php#sheep_wisp">羊皮</a>
+<a href="wolf.php#boss_wolf">白狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#sacrifice_fox">白蔵主</a>・<a href="sub_role.php#sheep_wisp">羊皮</a>
 </pre>
 <h3 id="mage_wolf">人狼</h3>
 <pre>
@@ -305,7 +305,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="sacrifice">身代わり能力者</h2>
 <h3 id="sacrifice_active">能動型</h3>
 <pre>
-<a href="human.php#sacrifice_common">首領</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="sub_role.php#protected">庇護者</a>
+<a href="human.php#sacrifice_common">首領</a>・<a href="human.php#doll_master">人形遣い</a>・<a href="fox.php#sacrifice_fox">白蔵主</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>・<a href="ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="sub_role.php#protected">庇護者</a>
 </pre>
 <h3 id="sacrifice_reactive">受動型</h3>
 <pre>
@@ -341,7 +341,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="necromancer_fox">妖狐</h3>
 <pre>
-<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="fox.php#mist_fox">霧狐</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#cursed_fox">天狐</a>
+<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="fox.php#mist_fox">霧狐</a>・<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#sacrifice_fox">白蔵主</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#cursed_fox">天狐</a>
 </pre>
 <h3 id="necromancer_child_fox">子狐</h3>
 <pre>

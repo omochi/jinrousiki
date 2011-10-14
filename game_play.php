@@ -117,45 +117,6 @@ function SendCookie(&$objection_list){
   $SELF->objection_count = $objection_list[$SELF->user_no - 1]; //残り回数をセット
 }
 
-//発言置換処理
-function ConvertSay(&$say){
-  global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
-
-  if($say == '') return false; //リロード時なら処理スキップ
-  if($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
-
-  //死者・ゲームプレイ中以外なら以降はスキップ
-  if($SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
-  //if($SELF->IsDead()) return false; //テスト用
-
-  $virtual_self = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
-
-  //紳士・淑女置換
-  if($virtual_self->IsRole('gentleman', 'lady') && mt_rand(1, 100) <= $GAME_CONF->gentleman_rate){
-    $role = $virtual_self->IsRole('gentleman') ? 'gentleman' : 'lady';
-
-    $stack = $USERS->GetLivingUsers(); //生存者のユーザ名を取得
-    unset($stack[array_search($virtual_self->uname, $stack)]); //自分を削除
-
-    $say = $MESSAGE->{$role . '_header'} . $USERS->GetHandleName(GetRandom($stack), true) .
-      $MESSAGE->{$role . '_footer'};
-  }
-  //萌系置換 (昼限定)
-  elseif($ROOM->IsDay() && ($SELF->IsRole('suspect') || $SELF->IsRoleGroup('cute')) &&
-	 mt_rand(1, 100) <= ($GAME_CONF->cute_wolf_rate * ($ROOM->IsEvent('boost_cute') ? 5 : 1))){
-    $say = $MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl;
-  }
-
-  foreach($virtual_self->GetPartner('bad_status', true) as $id => $date){ //妖精の処理
-    if($date != $ROOM->date) continue;
-    $ROLES->actor = $USERS->ByID($id);
-    foreach($ROLES->Load('say_bad_status') as $filter) $filter->FilterSay($say);
-  }
-
-  $ROLES->actor = $virtual_self;
-  foreach($ROLES->Load('say') as $filter) $filter->FilterSay($say); //他のサブ役職の処理
-}
-
 //遺言登録
 function EntryLastWords($say){
   global $ROOM, $USERS, $SELF;

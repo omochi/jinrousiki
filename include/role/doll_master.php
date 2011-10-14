@@ -2,11 +2,17 @@
 /*
   ◆人形遣い (doll_master)
   ○仕様
+  ・勝利：通常
+  ・仲間表示：なし
   ・身代わり対象者：人形
 */
-class Role_doll_master extends Role{
+RoleManager::LoadFile('doll');
+class Role_doll_master extends Role_doll{
   public $mix_in = 'protected';
+  public $display_partner = false;
   function __construct(){ parent::__construct(); }
 
-  function IsSacrifice($user){ return $user->IsDoll(); }
+  function Win($victory){ return true; }
+
+  function IsSacrifice($user){ return Role_doll::IsDoll($user); }
 }

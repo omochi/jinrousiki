@@ -12,6 +12,6 @@ class Role_dummy_necromancer extends Role_necromancer{
   function Necromancer($user, $flag){
     global $ROOM, $USERS;
     return $ROOM->IsEvent('no_dream') ? NULL :
-      $USERS->GetHandleName($user->uname, true) . "\t" . $user->DistinguishNecromancer(true);
+      $USERS->GetHandleName($user->uname, true) . "\t" . $this->DistinguishNecromancer($user, true);
   }
 }

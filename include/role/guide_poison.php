@@ -5,18 +5,11 @@
   ・毒：毒能力者
   ・襲撃毒死回避：毒能力者以外
 */
-class Role_guide_poison extends Role{
+RoleManager::LoadFile('poison');
+class Role_guide_poison extends Role_poison{
   function __construct(){ parent::__construct(); }
 
-  function FilterPoisonTarget(&$list){
-    global $USERS;
-
-    $stack = array();
-    foreach($list as $uname){
-      if($USERS->ByRealUname($uname)->IsRoleGroup('poison')) $stack[] = $uname;
-    }
-    $list = $stack;
-  }
+  function IsPoisonTarget($user){ return $user->IsRoleGroup('poison'); }
 
   function AvoidPoisonEat($user){ return ! $user->IsRoleGroup('poison'); }
 }

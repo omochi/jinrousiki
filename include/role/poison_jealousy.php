@@ -6,18 +6,11 @@
   ・襲撃毒死回避：恋人以外
 */
 class Role_poison_jealousy extends Role{
+  public $mix_in = 'poison';
   public $display_role = 'poison';
   function __construct(){ parent::__construct(); }
 
-  function FilterPoisonTarget(&$list){
-    global $USERS;
-
-    $stack = array();
-    foreach($list as $uname){
-      if($USERS->ByRealUname($uname)->IsLovers()) $stack[] = $uname;
-    }
-    $list = $stack;
-  }
+  function IsPoisonTarget($user){ return $user->IsLovers(); }
 
   function AvoidPoisonEat($user){ return ! $user->IsLovers(); }
 }

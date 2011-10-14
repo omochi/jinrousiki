@@ -9,5 +9,12 @@ class Role_stargazer_mage extends Role_psycho_mage{
   public $mage_failed = 'failed';
   function __construct(){ parent::__construct(); }
 
-  function GetMageResult($user){ return $user->DistinguishVoteAbility(); }
+  function GetMageResult($user){ return $this->Stargazer($user); }
+
+  //投票能力鑑定
+  function Stargazer($user){
+    global $ROOM;
+    return array_key_exists($user->uname, $ROOM->vote) || $user->IsWolf() ?
+      'stargazer_mage_ability' : 'stargazer_mage_nothing';
+  }
 }

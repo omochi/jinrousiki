@@ -28,7 +28,7 @@ class Role_protected extends Role{
   function Sacrifice($stack){
     global $USERS;
 
-    PrintData($stack, "Sacrifice [{$this->role}]");
+    //PrintData($stack, "Sacrifice [{$this->role}]");
     if(count($stack) < 1) return false;
     $USERS->Kill(GetRandom($stack), 'SACRIFICE');
     return true;

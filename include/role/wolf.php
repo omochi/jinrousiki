@@ -27,14 +27,14 @@ class Role_wolf extends Role{
 	$mad_list[] = $user->handle_name;
       }
       elseif($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
-	$uncoscious_list[] = $user->handle_name;
+	$unconscious_list[] = $user->handle_name;
       }
     }
     if($this->GetActor()->IsWolf(true)){
       OutputPartner($wolf_list, 'wolf_partner'); //人狼
       OutputPartner($mad_list, 'mad_partner'); //囁き狂人
     }
-    if($ROOM->IsNight()) OutputPartner($uncoscious_list, 'unconscious_list'); //無意識
+    if($ROOM->IsNight()) OutputPartner($unconscious_list, 'unconscious_list'); //無意識
     $this->OutputWolfAbility();
     if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', $this->action); //投票
   }
@@ -123,8 +123,8 @@ class Role_wolf extends Role{
     $USERS->Kill($user->user_no, 'WOLF_KILLED');
   }
 
-  //毒対象者選出
-  function GetPoisonTarget(){
+  //毒対象者選出 (襲撃)
+  function GetPoisonEatTarget(){
     global $GAME_CONF, $USERS;
     return $GAME_CONF->poison_only_eater ? $this->GetVoter() :
       $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));

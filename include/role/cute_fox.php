@@ -5,5 +5,6 @@
 */
 RoleManager::LoadFile('fox');
 class Role_cute_fox extends Role_fox{
+  public $mix_in = 'suspect';
   function __construct(){ parent::__construct(); }
 }

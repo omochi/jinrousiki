@@ -13,6 +13,6 @@ class Role_dummy_mage extends Role_mage{
   function Mage($user){
     global $ROOM;
     if($ROOM->IsEvent('no_dream')) return; //熱帯夜ならスキップ
-    $this->SaveMageResult($user, $user->DistinguishMage(true), $this->result);
+    $this->SaveMageResult($user, $this->DistinguishMage($user, true), $this->result);
   }
 }

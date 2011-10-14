@@ -7,9 +7,10 @@
 */
 RoleManager::LoadFile('child_fox');
 class Role_stargazer_fox extends Role_child_fox{
+  public $mix_in = 'stargazer_mage';
   function __construct(){ parent::__construct(); }
 
   function IsCursed($user){ return false; }
 
-  function GetMageResult($user){ return $user->DistinguishVoteAbility(); }
+  function GetMageResult($user){ return $this->Stargazer($user); }
 }

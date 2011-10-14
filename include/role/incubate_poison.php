@@ -4,7 +4,8 @@
   ○仕様
   ・毒：人狼系 + 妖狐陣営 (5日目以降)
 */
-class Role_incubate_poison extends Role{
+RoleManager::LoadFile('poison');
+class Role_incubate_poison extends Role_poison{
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
@@ -14,13 +15,5 @@ class Role_incubate_poison extends Role{
     if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL); //能力発現
   }
 
-  function FilterPoisonTarget(&$list){
-    global $USERS;
-
-    $stack = array();
-    foreach($list as $uname){
-      if($USERS->ByRealUname($uname)->IsRoleGroup('wolf', 'fox')) $stack[] = $uname;
-    }
-    $list = $stack;
-  }
+  function IsPoisonTarget($user){ return $user->IsRoleGroup('wolf', 'fox'); }
 }

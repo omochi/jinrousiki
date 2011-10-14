@@ -38,6 +38,7 @@ class Role_challenge_lovers extends Role{
 
     $id = $this->GetActor()->user_no;
     foreach($this->GetActor()->GetPartner('lovers') as $cupid_id){
+      if(! array_key_exists($cupid_id, $cupid_list)) return;
       foreach($cupid_list[$cupid_id] as $lovers_id){
 	if($lovers_id != $id && in_array($USERS->ByID($lovers_id)->uname, $stack)) return;
       }

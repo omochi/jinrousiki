@@ -1,4 +1,40 @@
 <?php
+//発言置換処理
+function ConvertSay(&$say){
+  global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
+
+  if($say == '') return false; //リロード時なら処理スキップ
+  if($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
+
+  //死者・ゲームプレイ中以外なら以降はスキップ
+  if($SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
+  //if($SELF->IsDead()) return false; //テスト用
+
+  $ROLES->stack->say = $say;
+  $ROLES->actor = ($virtual = $USERS->ByVirtual($SELF->user_no)); //仮想ユーザを取得
+  do{ //発言置換処理
+    foreach($ROLES->Load('say_convert_virtual') as $filter){
+      if($filter->ConvertSay()) break 2;
+    }
+    $ROLES->actor = $SELF;
+    foreach($ROLES->Load('say_convert') as $filter){
+      if($filter->ConvertSay()) break 2;
+    }
+  }
+  while(false);
+
+  foreach($virtual->GetPartner('bad_status', true) as $id => $date){ //妖精の処理
+    if($date != $ROOM->date) continue;
+    $ROLES->actor = $USERS->ByID($id);
+    foreach($ROLES->Load('say_bad_status') as $filter) $filter->ConvertSay();
+  }
+
+  $ROLES->actor = $virtual;
+  foreach($ROLES->Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
+  $say = $ROLES->stack->say;
+  unset($ROLES->stack->say);
+}
+
 //能力の種類とその説明を出力
 function OutputAbility(){
   global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $ROLES, $USERS, $SELF;

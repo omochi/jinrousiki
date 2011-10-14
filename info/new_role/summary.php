@@ -2726,6 +2726,15 @@ Ver. 1.5.0
   <td class="ability">昼の発言時に一定確率で直前の発言を発言 (反響) してしまう座敷童子の亜種。</td>
   <td>Ver. 1.5.0 β13</td>
 </tr>
+<tr>
+  <td><a href="fox.php#white_fox">白蔵主</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺無し)</td>
+  <td>妖狐</td>
+  <td class="ability">占いで呪殺されず、<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#chiroptera_group">蝙蝠系</a>を身代わりにして生き延びる事ができる妖狐。</td>
+  <td>Ver. 1.5.0 β13</td>
+</tr>
 </table>
 
 <table id="sub_role">

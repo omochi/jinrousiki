@@ -59,9 +59,7 @@ class Session{
   }
 
   //ID セット (private)
-  function Set(){
-    return $this->id = session_id();
-  }
+  function Set(){ return $this->id = session_id(); }
 
   //ID リセット
   function Reset(){
@@ -70,9 +68,7 @@ class Session{
   }
 
   //ID 取得
-  function Get($uniq = false){
-    return $uniq ? $this->GetUniq() : $this->id;
-  }
+  function Get($uniq = false){ return $uniq ? $this->GetUniq() : $this->id; }
 
   //DB に登録されているセッション ID と被らないようにする (private)
   function GetUniq(){
@@ -84,9 +80,7 @@ class Session{
   }
 
   //認証したユーザの ID 取得
-  function GetUser(){
-    return $this->user_no;
-  }
+  function GetUser(){ return $this->user_no; }
 
   //認証
   function Certify($exit = true){
@@ -208,9 +202,7 @@ class IconConfigBase{
     $this->tag  = $this->GenerateTag();
   }
 
-  function GenerateTag(){
-    return ' width="' . $this->width . '" height="' . $this->height . '"';
-  }
+  function GenerateTag(){ return ' width="' . $this->width . '" height="' . $this->height . '"'; }
 }
 
 //-- ユーザアイコン管理の基底クラス --//
@@ -239,9 +231,7 @@ class ImageManager{
   }
 
   //画像の存在確認
-  function Exists($name){
-    return file_exists($this->GetPath($name));
-  }
+  function Exists($name){ return file_exists($this->GetPath($name)); }
 
   //画像タグ生成
   function Generate($name, $alt = NULL, $table = false){
@@ -258,9 +248,7 @@ class ImageManager{
   }
 
   //画像出力
-  function Output($name){
-    echo $this->Generate($name) . "<br>\n";
-  }
+  function Output($name){ echo $this->Generate($name) . "<br>\n"; }
 }
 
 //-- 勝利陣営の画像処理の基底クラス --//
@@ -327,9 +315,7 @@ EOF;
 //-- Twitter 投稿用の基底クラス --//
 class TwitterConfigBase{
   //メッセージのセット
-  function GenerateMessage($id, $name, $comment){
-    return true;
-  }
+  function GenerateMessage($id, $name, $comment){ return true; }
 
   //投稿処理
   function Send($id, $name, $comment){
@@ -552,6 +538,7 @@ class RoleData{
     'poison_fox'           => '管狐',
     'blue_fox'             => '蒼狐',
     'spell_fox'            => '宙狐',
+    'sacrifice_fox'        => '白蔵主',
     'emerald_fox'          => '翠狐',
     'voodoo_fox'           => '九尾',
     'revive_fox'           => '仙狐',
@@ -953,6 +940,7 @@ class RoleData{
     'poison_fox'           => '管狐',
     'blue_fox'             => '蒼狐',
     'spell_fox'            => '宙狐',
+    'sacrifice_fox'        => '白蔵',
     'emerald_fox'          => '翠狐',
     'voodoo_fox'           => '九尾',
     'revive_fox'           => '仙狐',
@@ -1520,9 +1508,7 @@ class RoleData{
   }
 
   //役職名のソート
-  function SortRole($list){
-    return array_intersect(array_keys($this->main_role_list), $list);
-  }
+  function SortRole($list){ return array_intersect(array_keys($this->main_role_list), $list); }
 }
 
 //-- 「福引」生成の基底クラス --//
@@ -1556,9 +1542,7 @@ class LotteryBuilder{
 //-- 配役設定の基底クラス --//
 class GameConfigBase extends LotteryBuilder{
   //天候決定
-  function GetWeather(){
-    return GetRandom($this->GenerateRandomList($this->weather_list));
-  }
+  function GetWeather(){ return GetRandom($this->GenerateRandomList($this->weather_list)); }
 }
 
 //-- 配役設定の基底クラス --//

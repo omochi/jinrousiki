@@ -9,7 +9,7 @@ class Role_cure_pharmacist extends Role_pharmacist{
   function __construct(){ parent::__construct(); }
 
   function SetDetoxFlag($uname){
-    $this->GetActor()->detox_flag = true;
+    $this->GetActor()->detox = true;
     $this->AddStack('cured', 'pharmacist_result', $uname);
   }
 }

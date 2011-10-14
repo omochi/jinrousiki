@@ -2,10 +2,11 @@
 /*
   ◆雛狼 (sex_wolf)
   ○仕様
-  ・襲撃：性別判定
+  ・襲撃：性別鑑定
 */
 RoleManager::LoadFile('wolf');
 class Role_sex_wolf extends Role_wolf{
+  public $mix_in = 'sex_mage';
   public $result = 'SEX_WOLF_RESULT';
   function __construct(){ parent::__construct(); }
 
@@ -17,7 +18,7 @@ class Role_sex_wolf extends Role_wolf{
   function WolfEatAction($user){
     global $ROOM;
 
-    $str = $this->GetActor()->GetHandleName($user->uname, $user->DistinguishSex());
+    $str = $this->GetActor()->GetHandleName($user->uname, $this->DistinguishSex($user));
     $ROOM->SystemMessage($str, $this->result);
     $user->wolf_killed = true; //尾行判定は成功扱い
     return true;

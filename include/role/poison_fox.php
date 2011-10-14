@@ -7,16 +7,9 @@
 */
 RoleManager::LoadFile('fox');
 class Role_poison_fox extends Role_fox{
+  public $mix_in = 'poison';
   public $resist_wolf = false;
   function __construct(){ parent::__construct(); }
 
-  function FilterPoisonTarget(&$list){
-    global $USERS;
-
-    $stack = array();
-    foreach($list as $uname){
-      if(! $USERS->ByRealUname($uname)->IsFox()) $stack[] = $uname;
-    }
-    $list = $stack;
-  }
+  function IsPoisonTarget($user){ return ! $user->IsFox(); }
 }

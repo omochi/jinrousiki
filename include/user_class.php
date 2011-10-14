@@ -82,7 +82,7 @@ class User{
     }
   }
 
-  //ユーザ番号を取得
+  //ユーザ ID を取得
   function GetID($role = NULL){
     $id = $this->user_no;
     return is_null($role) ? $id : $role . '[' . $id . ']';
@@ -97,17 +97,17 @@ class User{
     return implode("\t", $stack);
   }
 
-  //現在の役職を取得
+  //役職を取得
   function GetRole(){
     return array_key_exists('role', $this->updated) ? $this->updated['role'] : $this->role;
   }
 
-  //現在のメイン役職を取得
+  //メイン役職を取得
   function GetMainRole($virtual = false){
     return $virtual && isset($this->virtual_role) ? $this->virtual_role : $this->main_role;
   }
 
-  //現在の所属陣営を取得
+  //所属陣営を取得
   function GetCamp($win = false){
     global $USERS;
 
@@ -140,12 +140,9 @@ class User{
   }
 
   //死の宣告系の宣告日を取得
-  function GetDoomDate($role){
+  function GetDoomDate($role){ return max($this->GetPartner($role)); }
 
-    return max($this->GetPartner($role));
-  }
-
-  //現在の仮想的な生死情報
+  //仮想的な生死判定
   function IsDeadFlag($strict = false){
     if(! $strict) return NULL;
     if($this->suicide_flag) return true;
@@ -262,17 +259,6 @@ class User{
     return $this->IsRoleGroup('common') && ! ($talk && $this->IsRole('dummy_common'));
   }
 
-  //魔法使い系判定
-  function IsWizard($vote = false){
-    return $this->IsRoleGroup('wizard') &&
-      ! ($vote && $this->IsRole('spiritism_wizard', 'philosophy_wizard'));
-  }
-
-  //上海人形系判定 (人形遣いは含まない)
-  function IsDoll(){
-    return $this->IsRoleGroup('doll') && ! $this->IsRole('doll_master');
-  }
-
   //人狼系判定
   function IsWolf($talk = false){
     return $this->IsRoleGroup('wolf') && ! ($talk && $this->IsLonely());
@@ -340,9 +326,6 @@ class User{
     return $this->GetDoomDate('joker') == $date;
   }
 
-  //宿敵判定
-  function IsRival(){ return $this->IsRole('rival'); }
-
   //期間限定表示役職
   function IsDoomRole($role){
     global $ROOM;
@@ -354,17 +337,6 @@ class User{
     $flag = ! (property_exists($this, 'guard_success') && in_array($uname, $this->guard_success));
     $this->guard_success[] = $uname;
     return $flag;
-  }
-
-  //狩り対象判定
-  function IsHuntTarget(){
-    return $this->IsRole(
-      'phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox', 'trap_fox',
-      'cursed_fox', 'cursed_angel', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',
-      'cursed_avenger', 'critical_avenger') ||
-      ($this->IsRoleGroup('mad') &&
-       ! $this->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'therian_mad', 'immolate_mad')) ||
-      ($this->IsRoleGroup('vampire') && ! $this->IsRole('vampire', 'scarlet_vampire'));
   }
 
   //護衛制限判定
@@ -449,11 +421,6 @@ class User{
       $this->IsPossessedGroup();
   }
 
-  //幻系能力判定
-  function IsAbilityPhantom(){
-    return $this->IsLiveRoleGroup('phantom') && $this->IsActive();
-  }
-
   //嘘つき判定
   function IsLiar(){ return $this->DistinguishLiar() == 'psycho_mage_liar'; }
 
@@ -492,82 +459,11 @@ class User{
     return $ROLE_DATA->DistinguishRoleGroup($this->main_role);
   }
 
-  //占い師の判定
-  function DistinguishMage($reverse = false){
-    global $ROOM;
-
-    //鬼火系判定
-    if($this->IsRole('sheep_wisp') && $this->GetDoomDate('sheep_wisp') == $ROOM->date){
-      return $reverse ? 'wolf' : 'human';
-    }
-    if($this->IsRole('wisp'))          return 'ogre';
-    if($this->IsRole('foughten_wisp')) return 'chiroptera';
-    if($this->IsRole('black_wisp'))    return $reverse ? 'human' : 'wolf' ;
-
-    //特殊役職判定
-    if($this->IsOgre()) return 'ogre';
-    if($this->IsRoleGroup('vampire', 'mist') || $this->IsRole('boss_chiroptera')){
-      return 'chiroptera';
-    }
-
-    //人狼判定
-    $result = ($this->IsWolf() && ! $this->IsRole('boss_wolf') && ! $this->IsSiriusWolf()) ||
-      $this->IsRole('suspect', 'cute_mage', 'black_fox', 'cute_chiroptera', 'cute_avenger');
-    return ($result xor $reverse) ? 'wolf' : 'human';
-  }
-
-  //精神鑑定士の判定
+  //精神鑑定
   function DistinguishLiar(){
     return $this->IsOgre() ? 'ogre' :
       ($this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
        'psycho_mage_liar' : 'psycho_mage_normal');
-  }
-
-  //ひよこ鑑定士の判定
-  function DistinguishSex(){
-    return $this->IsOgre() ? 'ogre' :
-      ($this->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $this->sex);
-  }
-
-  //占星術師の判定
-  function DistinguishVoteAbility(){
-    global $ROOM;
-    return array_key_exists($this->uname, $ROOM->vote) || $this->IsWolf() ?
-      'stargazer_mage_ability' : 'stargazer_mage_nothing';
-  }
-
-  //霊能者の判定
-  function DistinguishNecromancer($reverse = false){
-    if($this->IsOgre()) return 'ogre';
-    if($this->IsRoleGroup('vampire') || $this->IsRole('cute_chiroptera')) return 'chiroptera';
-    if($this->IsChildFox()) return 'child_fox';
-    if($this->IsRole('white_fox', 'black_fox', 'mist_fox', 'phantom_fox', 'possessed_fox',
-		     'cursed_fox')){
-      return 'fox';
-    }
-    if($this->IsRole('boss_wolf', 'mist_wolf', 'phantom_wolf', 'cursed_wolf', 'possessed_wolf')){
-      return $this->main_role;
-    }
-    return ($this->IsWolf() xor $reverse) ? 'wolf' : 'human';
-  }
-
-  //薬師の毒鑑定
-  function DistinguishPoison(){
-    global $ROOM;
-
-    //非毒能力者・夢毒者
-    if(! $this->IsRoleGroup('poison') || $this->IsRole('dummy_poison')) return 'nothing';
-
-    if($this->IsRole('strong_poison')) return 'strong'; //強毒者
-
-    //潜毒者は 5 日目以降に強毒を持つ
-    if($this->IsRole('incubate_poison')) return $ROOM->date >= 5 ? 'strong' : 'nothing';
-
-    //騎士・誘毒者・連毒者・毒橋姫
-    if($this->IsRole('poison_guard', 'guide_poison', 'chain_poison', 'poison_jealousy')){
-      return 'limited';
-    }
-    return 'poison';
   }
 
   //未投票チェック
@@ -621,7 +517,9 @@ class User{
     }
     if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
     if($this->IsRole('barrier_wizard')) return $this->IsVoted($vote_data, 'SPREAD_WIZARD_DO');
-    if($this->IsWizard(true)) return $this->IsVoted($vote_data, 'WIZARD_DO');
+    if($this->IsRoleGroup('wizard') && ! $this->IsRole('spiritism_wizard', 'philosophy_wizard')){
+      return $this->IsVoted($vote_data, 'WIZARD_DO');
+    }
     if($this->IsRoleGroup('escaper')) return $this->IsVoted($vote_data, 'ESCAPE_DO');
     if($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
     if($this->IsRole('trap_mad', 'trap_fox')){
