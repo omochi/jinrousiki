@@ -2,7 +2,8 @@
 /*
   変更履歴 from Ver. 1.5.0β12
   + 変更
-    - $chaos_hyper_random_role_list, $chaos_hyper_replace_human_role_list, $boost_rate_list
+    - $chaos_hyper_fox_list, $chaos_hyper_random_role_list, $chaos_hyper_replace_human_role_list,
+      $topping_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -456,18 +457,19 @@ class CastConfig extends CastConfigBase{
     'whisper_mad'          =>  3,
     'jammer_mad'           =>  5,
     'voodoo_mad'           =>  4,
-    'enchant_mad'          =>  5,
+    'enchant_mad'          =>  4,
     'dream_eater_mad'      =>  5,
     'possessed_mad'        =>  4,
     'trap_mad'             =>  5,
     'snow_trap_mad'        =>  4,
     'corpse_courier_mad'   =>  5,
     'amaze_mad'            =>  4,
-    'agitate_mad'          =>  5,
-    'miasma_mad'           =>  4,
+    'agitate_mad'          =>  3,
+    'miasma_mad'           =>  3,
     'critical_mad'         =>  4,
     'follow_mad'           =>  4,
     'therian_mad'          =>  4,
+    'revive_mad'           =>  4,
     'immolate_mad'         =>  5,
     'fox'                  =>  5,
     'white_fox'            =>  2,
@@ -502,8 +504,9 @@ class CastConfig extends CastConfigBase{
     'moon_cupid'           =>  2,
     'mind_cupid'           =>  2,
     'sweet_cupid'          =>  2,
-    'minstrel_cupid'       =>  2,
+    'minstrel_cupid'       =>  1,
     'triangle_cupid'       =>  2,
+    'revive_cupid'         =>  1,
     'snow_cupid'           =>  2,
     'angel'                =>  3,
     'rose_angel'           =>  2,
@@ -568,9 +571,9 @@ class CastConfig extends CastConfigBase{
     'dowser_yaksa'         =>  1,
     'duelist'              =>  1,
     'valkyrja_duelist'     =>  1,
-    'doom_duelist'         =>  1,
     'critical_duelist'     =>  1,
     'triangle_duelist'     =>  1,
+    'doom_duelist'         =>  1,
     'cowboy_duelist'       =>  1,
     'avenger'              =>  1,
     'poison_avenger'       =>  1,
@@ -583,15 +586,16 @@ class CastConfig extends CastConfigBase{
     'sacrifice_patron'     =>  1,
     'shepherd_patron'      =>  1,
     'critical_patron'      =>  2,
-    'mania'                =>  2,
+    'mania'                =>  3,
     'trick_mania'          =>  2,
     'basic_mania'          =>  2,
-    'soul_mania'           =>  2,
-    'dummy_mania'          =>  2,
+    'soul_mania'           =>  1,
+    'dummy_mania'          =>  1,
     'unknown_mania'        =>  1,
     'wirepuller_mania'     =>  1,
     'fire_mania'           =>  1,
     'sacrifice_mania'      =>  1,
+    'resurrect_mania'      =>  1,
     'revive_mania'         =>  1);
 
   //裏・闇鍋
@@ -623,11 +627,12 @@ class CastConfig extends CastConfigBase{
     'basic_mania'      => 12,
     'soul_mania'       =>  9,
     'dummy_mania'      =>  7,
-    'unknown_mania'    => 12,
-    'wirepuller_mania' =>  9,
-    'fire_mania'       =>  9,
-    'sacrifice_mania'  =>  5,
-    'revive_mania'     =>  5);
+    'unknown_mania'    => 10,
+    'wirepuller_mania' =>  6,
+    'fire_mania'       =>  6,
+    'sacrifice_mania'  =>  6,
+    'resurrect_mania'  =>  6,
+    'revive_mania'     =>  6);
 
   //-- 出現補正値 --//
   public $chaos_min_wolf_rate  = 10; //人狼の最小出現比 (総人口 / N)
@@ -743,7 +748,7 @@ class CastConfig extends CastConfigBase{
 		 'count' => array(2)),
     'g' => array('random' => array(
 		   array('mad'                => 10,
-			 'fanatic_mad'        => 10,
+			 'fanatic_mad'        =>  5,
 			 'whisper_mad'        =>  5,
 			 'jammer_mad'         =>  5,
 			 'voodoo_mad'         =>  5,
@@ -759,6 +764,7 @@ class CastConfig extends CastConfigBase{
 			 'critical_mad'       =>  5,
 			 'follow_mad'         =>  5,
 			 'therian_mad'        =>  5,
+			 'revive_mad'         =>  5,
 			 'immolate_mad'       =>  5),
                    array('suspect'           => 1,
 			 'unconscious'       => 1,
@@ -790,7 +796,8 @@ class CastConfig extends CastConfigBase{
 			 'mind_cupid'      =>  3,
 			 'sweet_cupid'     =>  5,
 			 'minstrel_cupid'  =>  3,
-			 'triangle_cupid'  =>  8,
+			 'triangle_cupid'  =>  5,
+			 'revive_cupid'    =>  3,
 			 'snow_cupid'      =>  8,
 			 'angel'           =>  8,
 			 'rose_angel'      =>  8,
@@ -804,9 +811,9 @@ class CastConfig extends CastConfigBase{
     'j' => array('random' => array(
 		   array('duelist'          => 15,
 			 'valkyrja_duelist' => 10,
-			 'doom_duelist'     =>  5,
 			 'critical_duelist' =>  5,
 			 'triangle_duelist' =>  5,
+			 'doom_duelist'     =>  5,
 			 'cowboy_duelist'   => 10,
 			 'avenger'          =>  5,
 			 'poison_avenger'   =>  3,
@@ -867,8 +874,11 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('echo_brownie'  => 10,
-		 'sacrifice_fox' => 10),
+    'a' => array('echo_brownie'    => 10,
+		 'revive_mad'      =>  7,
+		 'sacrifice_fox'   => 10,
+		 'revive_cupid'    => 20,
+		 'resurrect_mania' => 15),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,

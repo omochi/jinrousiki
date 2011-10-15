@@ -119,7 +119,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="doom">死の宣告能力者</h2>
 <h3 id="doom_active">能動型</h3>
 <pre>
-<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_escaper">半鳥女</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="duelist.php#doom_duelist">黒幕</a>
+<a href="human.php#doom_assassin">死神</a>・<a href="human.php#doom_escaper">半鳥女</a>・<a href="wolf.php#doom_wolf">冥狼</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="duelist.php#doom_duelist">黒幕</a>
 <a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#doom_assassin">死神</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="fox.php#doom_fox">冥狐</a>)・<a href="human.php#pierrot_wizard">道化師</a>(特殊<a href="human.php#doom_assassin">死神</a>)
 </pre>
 <h3 id="doom_reactive">受動型</h3>
@@ -205,7 +205,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="revive_self">自己蘇生型</h3>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="ogre.php#revive_ogre">茨木童子</a>・<a href="duelist.php#revive_avenger">夜刀神</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="ogre.php#revive_ogre">茨木童子</a>・<a href="duelist.php#revive_avenger">夜刀神</a>・<a href="mania.php#resurrect_mania">僵尸</a>
 </pre>
 
 <h2 id="revive_limit">蘇生制限対象者</h2>

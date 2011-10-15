@@ -49,10 +49,10 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 
 <h3 id="poison_chiroptera">毒蝙蝠 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <h4>[毒能力] 処刑：人狼系 + 妖狐陣営 + 蝙蝠陣営 / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
-劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持った蝙蝠。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+劣化<a href="human.php#strong_poison">強毒者</a>相当の毒を持った蝙蝠。
 </pre>
 <h5>Ver. 1.4.0 α22～</h5>
 <pre>
@@ -70,9 +70,9 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 
 <h3 id="cursed_chiroptera">呪蝙蝠 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
-<h4>[耐性] 護衛：狩り / 占い：呪返し / 陰陽師：死亡</h4>
+<h4>[耐性] 狩り：有効 / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
-呪いを持った蝙蝠。<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+呪いを持った蝙蝠。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -86,10 +86,10 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 
 <h3 id="boss_chiroptera">大蝙蝠 (占い結果：蝙蝠 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
-<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 狩り：有効</h4>
 <h4>[身代わり能力] 蝙蝠陣営</h4>
 <pre>
-身代わり能力を持った上位蝙蝠。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+身代わり能力を持った上位蝙蝠。
 </pre>
 <ol>
 <li>身代わりの対象は他の蝙蝠陣営。</li>

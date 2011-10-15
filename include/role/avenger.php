@@ -26,8 +26,8 @@ class Role_avenger extends Role_valkyrja_duelist{
     $user_list  = array();
     foreach($stack as $id){
       $user = $USERS->ByID($id);
-      if($this->IsActor($user->uname) || ! $user->IsLive() || $user->IsDummyBoy()){ //例外判定
-	return '自分自身・生存者以外・身代わり君には投票できません';
+      if($this->IsActor($user->uname) || $user->IsDead() || $user->IsDummyBoy()){ //例外判定
+	return '自分・死者・身代わり君には投票できません';
       }
       $user_list[] = $user;
     }

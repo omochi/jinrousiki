@@ -99,10 +99,9 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3 id="incubus_vampire">青髭公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 女性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼 (女性以外なら吸血死)。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h5>Ver. 1.4.0 β19～</h5>
 <pre>
@@ -119,10 +118,9 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3 id="succubus_vampire">飛縁魔 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β18～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 男性しか<a href="sub_role.php#infected">感染者</a>にできない特殊な吸血鬼 (男性以外なら吸血死)。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h5>Ver. 1.4.0 β19～</h5>
 <pre>
@@ -139,11 +137,11 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3 id="doom_vampire">冥血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
-<h4>[耐性] 人狼襲撃：無効 / 護衛：狩り / 吸血襲撃：無効</h4>
+<h4>[耐性] 人狼襲撃：無効 / 狩り：有効 / 吸血襲撃：無効</h4>
 <pre>
 吸血先に<a href="sub_role.php#infected">感染者</a>と<a href="sub_role.php#death_warrant">死の宣告</a>を同時につけてしまう特殊な吸血鬼。
 <a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した夜から数えて 4 日目後の昼。
-<a href="wolf.php#wolf_group">人狼</a>・<a href="#vampire_do">吸血鬼</a>の襲撃を無効化するが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="wolf.php#wolf_group">人狼</a>・<a href="#vampire_do">吸血鬼</a>の襲撃を無効化する。
 襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は耐性無効。
 </pre>
 <h4>関連役職</h4>
@@ -157,10 +155,10 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3 id="sacrifice_vampire">吸血公 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β17～]</h3>
-<h4>[耐性] 人狼襲撃：身代わり / 護衛：狩り</h4>
+<h4>[耐性] 人狼襲撃：身代わり / 狩り：有効</h4>
 <h4>[身代わり能力] 自分の感染者</h4>
 <pre>
-身代わり能力を持つ上位吸血鬼。<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+身代わり能力を持つ上位吸血鬼。
 </pre>
 <ol>
 <li>身代わりの対象は自分の<a href="sub_role.php#infected">感染者</a>。</li>
@@ -181,10 +179,10 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3 id="soul_vampire">吸血姫 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>
-<h4>[耐性] 護衛：狩り / 吸血襲撃：反射 / 暗殺：反射</h4>
+<h4>[耐性] 狩り：有効 / 吸血襲撃：反射 / 暗殺：反射</h4>
 <pre>
 <a href="#vampire_do">感染</a>させる事に成功した人の役職を知ることができる上位吸血鬼。
-<a href="human.php#assassin_spec">暗殺反射</a>・<a href="#vampire_do">吸血反射</a>を持つが、<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
+<a href="human.php#assassin_spec">暗殺反射</a>・<a href="#vampire_do">吸血反射</a>を持つ。
 </pre>
 <h4>関連役職</h4>
 <pre>

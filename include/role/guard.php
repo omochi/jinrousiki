@@ -73,7 +73,8 @@ class Role_guard extends Role{
       'cursed_fox', 'cursed_angel', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',
       'cursed_avenger', 'critical_avenger') ||
       ($user->IsRoleGroup('mad') &&
-       ! $user->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'therian_mad', 'immolate_mad')) ||
+       ! $user->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'therian_mad', 'revive_mad',
+		       'immolate_mad')) ||
       ($user->IsRoleGroup('vampire') && ! $user->IsRole('vampire', 'scarlet_vampire'));
   }
 }

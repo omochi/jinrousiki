@@ -137,9 +137,14 @@ function EntryLastWords($say){
 
 //発言
 function Say($say){
-  global $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
-  $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
+  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->day_night, 0, true); //ゲーム開始前後
+  if($SELF->IsDummyBoy() && $RQ_ARGS->last_words){ //身代わり君のシステムメッセージ (遺言)
+    return Write($say, "{$ROOM->day_night} dummy_boy", 0);
+  }
+  if($SELF->IsDead()) return Write($say, 'heaven', 0); //死者の霊話
+
   if($ROOM->IsRealTime()){ //リアルタイム制
     GetRealPassTime($left_time);
     $spend_time = 0; //会話で時間経過制の方は無効にする
@@ -150,45 +155,30 @@ function Say($say){
     if($spend_time < 1) $spend_time = 1; //最小は 1
     elseif($spend_time > 4) $spend_time = 4; //最大は 4
   }
-
-  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->day_night, 0, true); //ゲーム開始前後
-  //身代わり君 (仮想 GM 対応) は遺言を専用のシステムメッセージに切り替え
-  if($SELF->IsDummyBoy() && $RQ_ARGS->last_words){
-    return Write($say, "{$ROOM->day_night} dummy_boy", 0); //発言時間を更新しない
-  }
-  if($SELF->IsDead()) Write($say, 'heaven', 0); //死者の霊話 (発言更新を更新しない
-
   if($left_time < 1) return; //制限時間外ならスキップ (ここに来るのは生存者のみのはず)
+
   if($ROOM->IsDay()){ //昼はそのまま発言
     if($ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
-    if($SELF->IsRole('echo_brownie') && mt_rand(1, 10) < 3){ //山彦の処理
-      $query = 'SELECT uname, sentence FROM talk' . $ROOM->GetQuery() .
-	' AND location = "' . $ROOM->day_night . '" ORDER BY talk_id DESC LIMIT 5';
-      $stack = FetchAssoc($query);
-      if(count($stack) > 0 && ! $SELF->IsSame($stack[0]['uname'])){ //連続発言検出
-	$str = GetRandom($stack);
-	Write($str['sentence'], $ROOM->day_night, 0);
-      }
-    }
-    Write($say, 'day', $spend_time, true);
+    if($SELF->IsRole('echo_brownie')) $ROLES->LoadMain($SELF)->EchoSay(); //山彦の処理
+    return Write($say, $ROOM->day_night, $spend_time, true);
   }
-  elseif($ROOM->IsNight()){ //夜は役職毎に分ける
-    if($ROOM->IsEvent('blind_talk_night')) //天候：風雨
-      $location = 'self_talk';
-    elseif($user->IsWolf(true)) //人狼
-      $location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
-    elseif($user->IsRole('whisper_mad')) //囁き狂人
-      $location = 'mad';
-    elseif($user->IsCommon(true)) //共有者
-      $location = 'common';
-    elseif($user->IsFox(true)) //妖狐
-      $location = 'fox';
-    else //独り言
-      $location = 'self_talk';
+  //if($ROOM->IsNight()){ //夜は役職毎に分ける
+  $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
+  if($ROOM->IsEvent('blind_talk_night')) //天候：風雨
+    $location = 'self_talk';
+  elseif($user->IsWolf(true)) //人狼
+    $location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
+  elseif($user->IsRole('whisper_mad')) //囁き狂人
+    $location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'mad'; //犬神判定
+  elseif($user->IsCommon(true)) //共有者
+    $location = 'common';
+  elseif($user->IsFox(true)) //妖狐
+    $location = 'fox';
+  else //独り言
+    $location = 'self_talk';
 
-    $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
-    Write($say, 'night ' . $location, $update ? $spend_time : 0, $update);
-  }
+  $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
+  return Write($say, 'night ' . $location, $update ? $spend_time : 0, $update);
 }
 
 //発言を DB に登録する

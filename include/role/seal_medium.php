@@ -8,9 +8,9 @@ RoleManager::LoadFile('bacchus_medium');
 class Role_seal_medium extends Role_bacchus_medium{
   public $seal_list = array(
     'phantom_wolf', 'resist_wolf', 'revive_wolf', 'fire_wolf', 'tongue_wolf',
-    'trap_mad', 'possessed_mad',
+    'trap_mad', 'possessed_mad', 'revive_mad',
     'phantom_fox', 'spell_fox', 'emerald_fox', 'revive_fox', 'possessed_fox', 'trap_fox',
-    'revive_avenger');
+    'revive_cupid', 'revive_avenger');
   function __construct(){ parent::__construct(); }
 
   function VoteAction(){

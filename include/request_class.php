@@ -68,7 +68,7 @@ class RequestBase{
 //-- テスト用パラメータ設定クラス --//
 class TestParams extends RequestBase{
   function __construct(){
-    $this->GetItems(NULL, 'test_users', 'test_room', 'test_mode');
+    $this->GetItems(NULL, 'post.test_users', 'post.test_room', 'post.test_mode');
     $this->is_virtual_room = isset($this->test_users);
   }
 }

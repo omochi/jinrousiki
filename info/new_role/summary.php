@@ -2727,12 +2727,39 @@ Ver. 1.5.0
   <td>Ver. 1.5.0 β13</td>
 </tr>
 <tr>
-  <td><a href="fox.php#white_fox">白蔵主</a></td>
+  <td><a href="fox.php#sacrifice_fox">白蔵主</a></td>
   <td><a href="fox.php">妖狐</a></td>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺無し)</td>
   <td>妖狐</td>
   <td class="ability">占いで呪殺されず、<a href="wolf.php#wolf_group">人狼</a>に襲撃された時に、<a href="fox.php#child_fox_group">子狐系</a>・<a href="chiroptera.php#chiroptera_group">蝙蝠系</a>を身代わりにして生き延びる事ができる妖狐。</td>
+  <td>Ver. 1.5.0 β13</td>
+</tr>
+<tr>
+  <td><a href="mania.php#resurrect_mania">僵尸</a></td>
+  <td><a href="mania.php">神話マニア</a></td>
+  <td><a href="mania.php#unknown_mania_group">鵺系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼に襲撃されて死亡した場合、一定確率で蘇生する上位鵺。</td>
+  <td>Ver. 1.5.0 β13</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#revive_mad">尸解仙</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する特殊な狂人。</td>
+  <td>Ver. 1.5.0 β13</td>
+</tr>
+<tr>
+  <td><a href="lovers.php#revive_cupid">邪仙</a></td>
+  <td><a href="lovers.php">恋人</a></td>
+  <td><a href="lovers.php#cupid_group">キューピッド系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">恋人に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊なキューピッド。人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する</td>
   <td>Ver. 1.5.0 β13</td>
 </tr>
 </table>

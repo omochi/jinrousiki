@@ -298,8 +298,8 @@ class User{
 
   //鵺系判定
   function IsUnknownMania(){
-    return $this->IsRole('unknown_mania', 'sacrifice_mania', 'fire_mania', 'revive_mania',
-			 'wirepuller_mania');
+    return $this->IsRole('unknown_mania', 'wirepuller_mania', 'fire_mania', 'sacrifice_mania',
+			 'resurrect_mania', 'revive_mania');
   }
 
   //恋人判定
@@ -370,8 +370,8 @@ class User{
 
   //蘇生制限判定
   function IsReviveLimited(){
-    return $this->IsRoleGroup('cat', 'revive') || $this->IsRole('detective_common') ||
-      $this->IsLovers() || $this->IsDrop() ||
+    return $this->IsRoleGroup('cat', 'revive') || $this->IsLovers() || $this->IsDrop() ||
+      $this->IsRole('detective_common', 'resurrect_mania') ||
       (property_exists($this, 'possessed_reset') && $this->possessed_reset);
   }
 
@@ -416,9 +416,10 @@ class User{
 
   //憑依制限判定
   function IsPossessedLimited(){
-    return $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist',
-			 'revive_brownie', 'revive_doll', 'revive_wolf', 'revive_ogre') ||
-      $this->IsPossessedGroup();
+    return $this->IsPossessedGroup() ||
+      $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist', 'revive_brownie',
+		    'revive_doll', 'revive_wolf', 'revive_mad', 'revive_cupid', 'revive_ogre',
+		    'revive_avenger', 'resurrect_mania');
   }
 
   //嘘つき判定

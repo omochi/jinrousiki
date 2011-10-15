@@ -169,7 +169,7 @@ OutputRolePageHeader('人狼陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#phantom">占い妨害能力者</a>
+<a href="ability.php#phantom">占い妨害能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -182,7 +182,6 @@ OutputRolePageHeader('人狼陣営');
 <pre>
 呪いを持った人狼。
 自分を占った<a href="human.php#mage_group">占い師</a>を呪い殺すことができる (死因は「呪返し」)。
-<a href="human.php#voodoo_killer">陰陽師</a>の占いで死亡する。
 </pre>
 <h5>Ver. 1.4.0 β3～</h5>
 <pre>
@@ -261,6 +260,10 @@ OutputRolePageHeader('人狼陣営');
 つまり、<a href="human.php#poison_group">埋毒者</a>を意図的に襲撃して毒を無効化したり、
 能力失効後にわざと毒に中りにいく事が可能になります。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#seal">封印対象者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="ability.php#poison">毒能力者</a>の対抗役職で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/25" target="_top">新役職考案スレ(25)</a> が原型です。
@@ -274,12 +277,12 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <ol>
 <li>死因は問わない (例：毒死、暗殺) が、一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-<li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
+<li><a href="sub_role.php#lovers">恋人</a>になったら無効。</li>
 <li>蘇生処理は<a href="../spec.php#vote_night">反魂レイヤー</a>で行う。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
+<a href="human.php#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -380,7 +383,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#wisp">鬼火付加能力者</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#wisp">鬼火付加能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -441,7 +444,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="ability.php#soul">役職鑑定能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -938,6 +941,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#critical_mad">釣瓶落とし</a>
 <a href="#follow_mad">舟幽霊</a>
 <a href="#therian_mad">獣人</a>
+<a href="#revive_mad">尸解仙</a>
 <a href="#immolate_mad">殉教者</a>
 </p>
 
@@ -984,10 +988,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="jammer_mad">月兎 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α19～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 夜に投票した人の占い能力を妨害する特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>妨害可能な役職は<a href="human.php#mage_group">占い師系</a> (<a href="human.php#voodoo_killer">陰陽師</a>・<a href="human.php#dummy_mage">夢見人</a>を除く)・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#child_fox">子狐</a>・<a href="fox.php#sex_fox">雛狐</a>・<a href="fox.php#stargazer_fox">星狐</a>と<br>
@@ -1012,10 +1015,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="voodoo_mad">呪術師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α20～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 夜に投票した人に呪いをかける特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>呪われた人を占った<a href="human.php#mage_group">占い能力者</a>は呪返しを受ける。</li>
@@ -1034,12 +1036,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="enchant_mad">狢 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <h4>[悪戯能力] タイプ：迷彩 / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
 悪戯先が人狼に襲撃されたら、次の日、全員のアイコンを襲撃された人にする特殊な狂人。
 <a href="sub_role.php#bad_status">悪戯</a>の仕様は<a href="chiroptera.php#fairy_do">妖精系</a>と同じで、対象が複数いた場合は表示するたびにランダムに選択される。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1048,11 +1049,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="dream_eater_mad">獏 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 夜に投票した人が<a href="ability.php#dummy">夢系能力者</a>か<a href="chiroptera.php#fairy_group">妖精系</a>なら殺すことができる特殊な狂人。
 死因は「獏の餌食になった」で、<a href="mania.php#dummy_mania">夢語部</a>は変化前なら殺すことができる。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡し、<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
+<a href="human.php#dummy_poison">夢毒者</a>を吊ると「毒」に中る。
 
 以下の形で<a href="human.php#dummy_guard">夢守人</a>に遭遇した場合は死亡する (死因は「狩り」)。
 </pre>
@@ -1081,10 +1082,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="possessed_mad">犬神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
-<h4>[耐性] 護衛：狩り / 陰陽師：死亡 / 封印：有効 / 憑依：無効</h4>
+<h4>[耐性] 狩り：有効 / 陰陽師：死亡 / 封印：有効 / 憑依：無効</h4>
 <pre>
 一度だけ、死体に憑依することができる特殊な狂人。
-<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
 <li>身代わり君・<a href="fox.php">妖狐陣営</a>・<a href="lovers.php">恋人陣営</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>には憑依できない。</li>
@@ -1105,7 +1105,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sacrifice_cat">猫神</a>・<a href="ability.php#possessed">憑依能力者</a>
+<a href="human.php#sacrifice_cat">猫神</a>・<a href="ability.php#possessed">憑依能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1114,11 +1114,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="trap_mad">罠師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18～]</h3>
-<h4>[耐性] 罠：有効 / 護衛：狩り / 封印：有効</h4>
+<h4>[耐性] 罠：有効 / 狩り：有効 / 封印：有効</h4>
 <pre>
 一度だけ、夜に誰か一人に罠を仕掛けることができる特殊な狂人。
 罠を仕掛けられた人の元に訪れた接触行動系能力者は全員死亡する。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>対象は<a href="human.php#guard_group">狩人系</a> (<a href="human.php#anti_voodoo">厄神</a>・<a href="human.php#dummy_guard">夢守人</a>は対象外)・<a href="human.php#clairvoyance_scanner">猩々</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="#wolf_group">人狼系</a>・<a href="vampire.php">吸血鬼陣営</a>・<a href="ability.php#assassin">暗殺能力者</a>。</li>
@@ -1143,7 +1142,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#trap">罠能力者</a>
+<a href="ability.php#trap">罠能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1155,12 +1154,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="snow_trap_mad">雪女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16～]</h3>
-<h4>[耐性] 罠：有効 / 護衛：狩り</h4>
+<h4>[耐性] 罠：有効 / 狩り：有効</h4>
 <pre>
 <a href="sub_role.php#frostbite">凍傷</a>になる罠を何回でも仕掛けることができる特殊な狂人。
 罠に関する仕様は<a href="#trap_mad">罠師</a>と同じだが、殺傷能力はないので
 罠にかかった人の能力を無効化することはできない。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1174,10 +1172,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="corpse_courier_mad">火車 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 処刑投票先が処刑されたら霊能結果を隠蔽できる特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>投票先が処刑された時点で能力が発動する。</li>
@@ -1195,10 +1192,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="amaze_mad">傘化け (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 処刑投票先が処刑されたら投票結果を隠蔽できる特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>処刑投票先が処刑された時点で能力が発動し、処刑者に<a href="sub_role.php#bad_status">悪戯</a>が付く。</li>
@@ -1221,11 +1217,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="agitate_mad">扇動者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β7～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 再投票の最多得票者に投票していた場合に、投票先を処刑し、
 それ以外の最多得票者をまとめてショック死させる特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>事前に処刑者が決定していた場合は発動しない (<a href="../spec.php#vote_day">判定</a>は<a href="human.php#saint">聖女</a>の判定の後)。</li>
@@ -1244,10 +1239,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="miasma_mad">土蜘蛛 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 処刑投票先に<a href="sub_role.php#febris">熱病</a>を付加する特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
@@ -1279,10 +1273,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="critical_mad">釣瓶落とし (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 処刑投票先に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
@@ -1301,10 +1294,9 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 
 <h3 id="follow_mad">舟幽霊 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 処刑者決定後に、投票先がショック死していたら、誰か一人をさらにショック死させる特殊な狂人。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
   <li>自分が処刑された場合は無効。</li>
@@ -1348,6 +1340,26 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 他国に実在する役職です。
 襲撃を引き寄せつつ、そのまま生き残るのは非常に難しいと思われます。
 これを想起して襲撃される狂人が増える可能性もありますね。
+</pre>
+
+<h3 id="revive_mad">尸解仙 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β13～]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効 / 封印：有効</h4>
+<pre>
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する特殊な狂人。
+</pre>
+<ol>
+<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li>恋人になったら無効。</li>
+<li>人狼の襲撃以外で死亡した場合は無効 (例：暗殺)。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#revive_pharmacist">仙人</a>の狂人バージョンで、「しかいせん」と読みます。
 </pre>
 
 <h3 id="immolate_mad">殉教者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α9～]</h3>

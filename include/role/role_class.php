@@ -148,7 +148,8 @@ class RoleManager{
 
   //復活
   public $resurrect_list = array(
-    'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_ogre', 'revive_avenger');
+    'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_mad', 'revive_cupid',
+    'revive_ogre', 'revive_avenger', 'resurrect_mania');
 
   //特殊イベント (昼)
   public $event_day_list = array('sun_brownie', 'mirror_fairy');
@@ -313,8 +314,8 @@ class Role{
   }
 
   function GetClass($method){
-    $self   = 'Role_' . $this->role;
-    return method_exists($self, $method) ? $self : $this;
+    $class = 'Role_' . $this->role;
+    return method_exists($class, $method) ? new $class() : $this;
   }
 
   //-- 汎用関数 --//
@@ -379,7 +380,7 @@ class Role{
     global $USERS;
 
     foreach($this->GetActor()->GetPartner($this->role) as $id){
-      if($USERS->ByID($id)->IsLive()) return true;
+      if($USERS->ByID($id)->IsLive(true)) return true;
     }
     return false;
   }

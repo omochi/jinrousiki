@@ -8,8 +8,8 @@ RoleManager::LoadFile('cupid');
 class Role_mind_cupid extends Role_cupid{
   function __construct(){ parent::__construct(); }
 
-  function GetRole($user, $flag){
+  function AddCupidRole($user, $flag){
+    $user->AddRole($this->GetActor()->GetID('mind_friend'));
     if(! $flag) $this->GetActor()->AddRole($user->GetID('mind_receiver'));
-    return $this->GetActor()->GetID('lovers') . ' ' . $this->GetActor()->GetID('mind_friend');
   }
 }

@@ -57,7 +57,7 @@ class Role_possessed_mad extends Role{
 
     //無効判定 (蘇生/憑依制限/無効陣営/憑依済み)
     $class = $this->GetClass($method = 'Ignored');
-    if($user->revive_flag || $user->IsPossessedLimited() || $class::$method($user->GetCamp(true)) ||
+    if($user->revive_flag || $user->IsPossessedLimited() || $class->$method($user->GetCamp(true)) ||
        ! $USERS->ByRealUname($user->uname)->IsSame($user->uname)) return false;
     $this->AddStack($user->uname, 'possessed_dead');
   }

@@ -9,9 +9,7 @@ class Role_self_cupid extends Role_cupid{
   public $self_shoot = true;
   function __construct(){ parent::__construct(); }
 
-  function GetRole($user, $flag){
-    $role = $this->GetActor()->GetID('lovers');
-    if(! $this->IsActor($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
-    return $role;
+  function AddCupidRole($user, $flag){
+    if(! $this->IsActor($user->uname)) $user->AddRole($this->GetActor()->GetID('mind_receiver'));
   }
 }

@@ -524,6 +524,7 @@ CO するべきかどうかは、コピーした役職次第です。
 <a href="#wirepuller_mania">黒衣</a>
 <a href="#fire_mania">青行灯</a>
 <a href="#sacrifice_mania">影武者</a>
+<a href="#resurrect_mania">僵尸</a>
 <a href="#revive_mania">五徳猫</a>
 </p>
 
@@ -650,6 +651,28 @@ CO するべきかどうかは、コピーした役職次第です。
 構想自体はこちらが先で、かなり前から検討されていた能力です。
 </pre>
 
+<h3 id="resurrect_mania">僵尸 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β13～]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (40%) / 蘇生：不可 / 憑依：無効</h4>
+<pre>
+人狼に襲撃されて死亡した場合、一定確率 (40%) で蘇生する上位鵺。
+</pre>
+<ol>
+<li>コピー先が生存している間のみ有効。</li>
+<li>何度蘇生しても蘇生率は一定 (<a href="../weather.php#weather_full_revive">天候</a>の影響は受ける)。</li>
+<li><a href="sub_role.php#lovers">恋人</a>になったら無効。</li>
+<li>人狼の襲撃以外で死亡した場合は無効 (例：<a href="ability.php#assassin">暗殺</a>)。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="ogre.php#revive_ogre">茨木童子</a>の鵺バージョンで、東方 Project の宮古 芳香がモチーフです。
+「キョンシー」と読みます。
+</pre>
+
 <h3 id="revive_mania">五徳猫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β12～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + コピー先蘇生 / 蘇生：不可</h4>
 <pre>
@@ -662,6 +685,10 @@ CO するべきかどうかは、コピーした役職次第です。
 <li>人狼の襲撃以外で死亡した場合 (例：暗殺) は無効。</li>
 <li>身代わり君・コピー成立前・襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
 </ol>
+<h5>Ver. 1.5.0 β13～</h5>
+<pre>
+<a href="../weather.php#weather_no_revive">天候「快晴」</a>の影響を受ける
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#revive">蘇生能力者</a>

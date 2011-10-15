@@ -1190,7 +1190,7 @@ function CheckVoteNight(){
   foreach(array('', 'not_') as $header){   //データを初期化
     foreach(array('action', 'submit') as $data) $ROLES->stack->{$header . $data} = NULL;
   }
-  if($SELF->IsDoomRole('death_note')){ //デスノート
+  if($death_note = $SELF->IsDoomRole('death_note')){ //デスノート
     /*
       配役設定上、初日に配布されることはなく、バグで配布された場合でも
       集計処理は実施されないので、ここではそのまま投票させておく。
@@ -1202,8 +1202,8 @@ function CheckVoteNight(){
       $ROLES->actor->uname = $SELF->uname; //同一ユーザ判定用
       $ROLES->stack->action     = 'DEATH_NOTE_DO';
       $ROLES->stack->not_action = 'DEATH_NOTE_NOT_DO';
-      $death_note = true;
     }
+    else $death_note = false;
   }
   if(! $death_note){
     $filter = $ROLES->LoadMain($SELF);

@@ -23,7 +23,7 @@ class DatabaseConfigBase{
 
   //データベースとの接続を閉じる
   function Disconnect($unlock = false){
-    if(is_null($this->db_handle)) return;
+    if(empty($this->db_handle)) return;
 
     if($unlock) UnlockTable(); //ロック解除
     mysql_close($this->db_handle);
@@ -528,6 +528,7 @@ class RoleData{
     'critical_mad'         => '釣瓶落とし',
     'follow_mad'           => '舟幽霊',
     'therian_mad'          => '獣人',
+    'revive_mad'           => '尸解仙',
     'immolate_mad'         => '殉教者',
     'fox'                  => '妖狐',
     'white_fox'            => '白狐',
@@ -564,6 +565,7 @@ class RoleData{
     'sweet_cupid'          => '弁財天',
     'minstrel_cupid'       => '吟遊詩人',
     'triangle_cupid'       => '小悪魔',
+    'revive_cupid'         => '邪仙',
     'snow_cupid'           => '寒戸婆',
     'angel'                => '天使',
     'rose_angel'           => '薔薇天使',
@@ -628,9 +630,9 @@ class RoleData{
     'dowser_yaksa'         => '毘沙門天',
     'duelist'              => '決闘者',
     'valkyrja_duelist'     => '戦乙女',
-    'doom_duelist'         => '黒幕',
     'critical_duelist'     => '剣闘士',
     'triangle_duelist'     => '舞首',
+    'doom_duelist'         => '黒幕',
     'cowboy_duelist'       => '無鉄砲者',
     'avenger'              => '復讐者',
     'poison_avenger'       => '山わろ',
@@ -652,6 +654,7 @@ class RoleData{
     'wirepuller_mania'     => '黒衣',
     'fire_mania'           => '青行灯',
     'sacrifice_mania'      => '影武者',
+    'resurrect_mania'      => '僵尸',
     'revive_mania'         => '五徳猫');
 
   //サブ役職のリスト (コード名 => 表示名)
@@ -930,6 +933,7 @@ class RoleData{
     'critical_mad'         => '釣',
     'follow_mad'           => '舟',
     'therian_mad'          => '獣',
+    'revive_mad'           => '尸',
     'immolate_mad'         => '殉',
     'fox'                  => '狐',
     'white_fox'            => '白狐',
@@ -966,6 +970,7 @@ class RoleData{
     'sweet_cupid'          => '弁',
     'minstrel_cupid'       => '吟',
     'triangle_cupid'       => '小悪',
+    'revive_cupid'         => '邪仙',
     'snow_cupid'           => '寒',
     'angel'                => '天使',
     'rose_angel'           => '薔天',
@@ -1030,9 +1035,9 @@ class RoleData{
     'dowser_yaksa'         => '毘',
     'duelist'              => '闘',
     'valkyrja_duelist'     => '戦',
-    'doom_duelist'         => '幕',
     'critical_duelist'     => '剣',
     'triangle_duelist'     => '舞',
+    'doom_duelist'         => '幕',
     'cowboy_duelist'       => '無鉄',
     'avenger'              => '讐',
     'poison_avenger'       => '山',
@@ -1054,6 +1059,7 @@ class RoleData{
     'wirepuller_mania'     => '衣',
     'fire_mania'           => '青',
     'sacrifice_mania'      => '影',
+    'resurrect_mania'      => '僵',
     'revive_mania'         => '徳',
     'chicken'              => '酉',
     'rabbit'               => '卯',
@@ -1197,7 +1203,7 @@ class RoleData{
     'poison' => 'poison',
     'unknown_mania' => 'unknown_mania', 'wirepuller_mania' => 'unknown_mania',
     'fire_mania' => 'unknown_mania', 'sacrifice_mania' => 'unknown_mania',
-    'revive_mania' => 'unknown_mania',
+    'resurrect_mania' => 'unknown_mania', 'revive_mania' => 'unknown_mania',
     'mania' => 'mania');
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)

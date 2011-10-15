@@ -823,7 +823,7 @@ Ver. 1.5.0
 
 <h3 id="weather_full_revive">雷雨 [Ver. 1.5.0 α3～]</h3>
 <ul>
-  <li><a href="new_role/ability.php#revive_other">他者蘇生能力者</a>の蘇生率が 100%、誤爆率が 0% になります。</li>
+  <li><a href="new_role/ability.php#revive_other">他者蘇生能力者</a>・<a href="new_role/mania.php#resurrect_mania">僵尸</a>の蘇生率が 100%、誤爆率が 0% になります。</li>
   <li>蘇生が成立してもカウントされません。<br>
     (<a href="new_role/human.php#revive_cat">仙狸</a>の成功率低下・<a href="new_role/human.php#sacrifice_cat">猫神</a>の身代わり死・<a href="new_role/fox.php#revive_fox">仙狐</a>の能力喪失が発生しない)
   </li>
@@ -838,7 +838,11 @@ Ver. 1.5.0
 <h3 id="weather_no_revive">快晴 [Ver. 1.5.0 α3～]</h3>
 <ul>
   <li><a href="new_role/ability.php#revive_other">他者蘇生能力者</a>の蘇生率が 0% になります。</li>
-  <li><a href="new_role/human.php#revive_priest">天人</a>以外の<a href="new_role/ability.php#revive_self">自己蘇生能力者</a>の蘇生が無効化されます。</li>
+  <li><a href="new_role/mania.php#revive_mania">五徳猫</a>・<a href="new_role/human.php#revive_priest">天人</a>以外の<a href="new_role/ability.php#revive_self">自己蘇生能力者</a>の蘇生が無効化されます。</li>
+</ul>
+<h5>Ver. 1.5.0 β13～</h5>
+<ul>
+  <li><a href="new_role/mania.php#revive_mania">五徳猫</a>の蘇生が無効化されます。</li>
 </ul>
 <h5>Ver. 1.5.0 α9～</h5>
 <ul>

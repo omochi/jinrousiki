@@ -9,10 +9,9 @@ class Role_soul_patron extends Role_patron{
   public $result = 'PATRON_RESULT';
   function __construct(){ parent::__construct(); }
 
-  function GetRole($user){
+  function AddDuelistRole($user){
     global $ROOM;
     $str = $this->GetActor()->handle_name . "\t" . $user->handle_name . "\t" . $user->main_role;
     $ROOM->SystemMessage($str, $this->result);
-    return parent::GetRole($user);
   }
 }

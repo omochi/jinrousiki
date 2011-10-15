@@ -1,10 +1,7 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β11
-  + RoomConfig
-    - 追加：$seal_message, $default_seal_message, $fox, $default_fox,
-            $child_fox, $default_child_fox
-    - 変更：$boost_rate_list
+  変更履歴 from Ver. 1.5.0β12
+  + なし
 */
 
 //-- 村メンテナンス・作成設定 --//

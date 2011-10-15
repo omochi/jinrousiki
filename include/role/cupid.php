@@ -12,8 +12,6 @@ class Role_cupid extends Role{
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
-    global $ROOM;
-
     parent::OutputAbility();
     //自分が矢を打った恋人 (自分自身含む) を表示
     $id = $this->GetActor()->user_no;
@@ -43,7 +41,6 @@ class Role_cupid extends Role{
 
   function SetVoteNight(){
     global $GAME_CONF, $USERS;
-
     parent::SetVoteNight();
     $this->SetStack($USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot, 'self_shoot');
   }
@@ -70,23 +67,19 @@ class Role_cupid extends Role{
     $user_list  = array();
     foreach($stack as $id){
       $user = $USERS->ByID($id);
-      if(! $user->IsLive() || $user->IsDummyBoy()){ //例外判定
-	return '生存者以外と身代わり君には投票できません';
-      }
+      //例外判定
+      if($user->IsDead() || $user->IsDummyBoy()) return '死者と身代わり君には投票できません';
       $user_list[] = $user;
       $self_shoot |= $this->IsActor($user->uname); //自分撃ち判定
     }
 
-    //自分撃ちエラー判定
-    if(! $self_shoot){
+    if(! $self_shoot){ //自分撃ちエラー判定
       $str = '必ず自分を対象に含めてください';
       if($this->self_shoot)    return $str; //自分撃ち固定役職
       if($this->IsSelfShoot()) return '少人数村の場合は、' . $str; //参加人数
     }
-    $method = 'VoteNightAction';
-    $self   = 'Role_' . $this->role;
-    $class  = method_exists($self, $method) ? $self : $this;
-    $class::$method($user_list, $self_shoot);
+    $class = $this->GetClass($method = 'VoteNightAction');
+    $class->$method($user_list, $self_shoot);
     return NULL;
   }
 
@@ -95,18 +88,20 @@ class Role_cupid extends Role{
 
   //キューピッドの投票処理
   function VoteNightAction($list, $flag){
+    $role = $this->GetActor()->GetID('lovers');
     $uname_stack  = array();
     $handle_stack = array();
     foreach($list as $user){
       $uname_stack[]  = $user->uname;
       $handle_stack[] = $user->handle_name;
-      $user->AddRole($this->GetRole($user, $flag)); //役職追加
+      $user->AddRole($role); //恋人セット
+      $this->AddCupidRole($user, $flag); //役職追加
       $user->ReparseRoles(); //再パース (魂移使判定用：反映が保障されているのは恋人のみ)
     }
     $this->SetStack(implode(' ', $uname_stack), 'target_uname');
     $this->SetStack(implode(' ', $handle_stack), 'target_handle');
   }
 
-  //追加役職セット
-  function GetRole($user, $flag){ return $this->GetActor()->GetID('lovers'); }
+  //役職追加処理
+  function AddCupidRole($user, $flag){}
 }

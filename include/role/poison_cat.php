@@ -43,9 +43,9 @@ class Role_poison_cat extends Role{
 
     if(! is_null($str = parent::IgnoreVote())) return $str;
     if($ROOM->IsOpenCast()) return '「霊界で配役を公開しない」オプションがオフの時は投票できません';
-    $self   = 'Role_' . $this->role;
-    $method = 'IgnoreVoteAction';
-    return method_exists($self, $method) ? $self::$method() : NULL;
+    $self  = 'Role_' . $this->role;
+    $class = $this->GetClass($method = 'IgnoreVoteAction');
+    return method_exists($self, $method) ? $class->$method() : NULL;
   }
 
   function GetVoteIconPath($user, $live){
@@ -67,10 +67,8 @@ class Role_poison_cat extends Role{
     $result = is_null($target) || ! $this->ReviveUser($target) ? 'failed' : 'success';
     if($result == 'success'){
       if(! $ROOM->IsEvent('full_revive')){ //雷雨ならスキップ
-	$self   = 'Role_' . $this->role;
-	$method = 'ReviveAction';
-	$class  = method_exists($self, $method) ? $self : $this;
-	$class::$method();
+	$class = $this->GetClass($method = 'ReviveAction');
+	$class->$method();
       }
     }
     else{
@@ -87,10 +85,8 @@ class Role_poison_cat extends Role{
 
     //蘇生データ取得
     $event  = $ROOM->IsEvent('full_revive') ? 100 : ($ROOM->IsEvent('no_revive') ? 0 : NULL);
-    $self   = 'Role_' . $this->role;
-    $method = 'GetReviveRate';
-    $class  = method_exists($self, $method) ? $self : $this;
-    $revive = is_null($event) ? $class::$method() : $event; //蘇生率
+    $class  = $this->GetClass($method = 'GetReviveRate');
+    $revive = is_null($event) ? $class->$method() : $event; //蘇生率
     if($this->IsBoostRevive()) $revive = ceil($revive * 1.3);
     if($revive > 100) $revive = 100;
 

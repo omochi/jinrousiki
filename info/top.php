@@ -23,5 +23,8 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>白蔵主：身代わり能力を持った妖狐</li>
+  <li>僵尸：自己蘇生能力を持った鵺</li>
+  <li>尸解仙：自己蘇生能力を持った狂人</li>
+  <li>邪仙：自己蘇生能力を持ち、恋人に死の宣告を付加するキューピッド</li>
 </ul>

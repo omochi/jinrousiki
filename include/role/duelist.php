@@ -9,9 +9,7 @@ class Role_duelist extends Role_valkyrja_duelist{
   public $self_shoot = true;
   function __construct(){ parent::__construct(); }
 
-  function GetRole($user){
-    $role = parent::GetRole($user);
-    if(! $this->IsActor($user->uname)) $role .= ' ' . $this->GetActor()->GetID('mind_receiver');
-    return $role;
+  function AddDuelistRole($user){
+    if(! $this->IsActor($user->uname)) $user->AddRole($this->GetActor()->GetID('mind_receiver'));
   }
 }

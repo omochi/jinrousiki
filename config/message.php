@@ -2,8 +2,7 @@
 /*
   変更履歴 from Ver. 1.5.0β12
   + Message
-  + GameOptionMessage
-  + GameOptionCaptionMessage
+    - 変更：$entry_user
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -19,7 +18,7 @@ class Message{
   //EntryUser() : ユーザ登録
   //入村メッセージ
   //public $entry_user = 'さんが村の集会場にやってきました'
-  public $entry_user = 'さんが幻想郷入りしました';
+  public $entry_user = 'さんが幻想入りしました';
 
   //-- game_view.php & OutputGameHTMLHeader() --//
   public $vote_announce = '時間がありません。投票してください。'; //会話の制限時間切れ

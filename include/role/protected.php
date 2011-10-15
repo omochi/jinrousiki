@@ -40,7 +40,7 @@ class Role_protected extends Role{
     $stack = array();
     $class = $this->GetClass($method = 'IsSacrifice');
     foreach($this->GetUser() as $user){
-      if($user->IsLive(true) && $class::$method($user)) $stack[] = $user->user_no;
+      if($user->IsLive(true) && $class->$method($user)) $stack[] = $user->user_no;
     }
     return $this->Sacrifice($stack);
   }

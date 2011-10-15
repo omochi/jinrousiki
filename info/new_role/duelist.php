@@ -40,9 +40,9 @@ OutputRolePageHeader('決闘者陣営');
 <p>
 <a href="#duelist">決闘者</a>
 <a href="#valkyrja_duelist">戦乙女</a>
-<a href="#doom_duelist">黒幕</a>
 <a href="#critical_duelist">剣闘士</a>
 <a href="#triangle_duelist">舞首</a>
+<a href="#doom_duelist">黒幕</a>
 <a href="#cowboy_duelist">無鉄砲者</a>
 </p>
 
@@ -80,21 +80,6 @@ OutputRolePageHeader('決闘者陣営');
 能力的にはこちらが標準ですが、名称の都合で基本種を変更しています。
 </pre>
 
-<h3 id="doom_duelist">黒幕 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β3～]</h3>
-<pre>
-<a href="sub_role.php#rival">宿敵</a>に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊な決闘者。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="ability.php#doom">死の宣告能力者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-「一週間戦争」がテーマです。
-<a href="sub_role.php#death_warrant">死の宣告</a>は適用直後に表示されるので対象者はすぐ自覚できます。
-一部のレアケースを除いて短期決戦が必要となるので難易度は高めです。
-</pre>
-
 <h3 id="critical_duelist">剣闘士 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
 <pre>
 自分撃ち固定で、<a href="sub_role.php#critical_voter">会心</a>相当 (<a href="../weather.php#weather_critical">烈日</a>は無効) の能力を持つ上位決闘者。
@@ -118,6 +103,21 @@ OutputRolePageHeader('決闘者陣営');
 <a href="lovers.php#triangle_cupid">小悪魔</a>の決闘者バージョンです。
 <a href="#duelist_rule">勝利条件</a>の仕様上、対象を増やしても有利になるわけではないので
 単純に巻き込まれて迷惑する人が増えるだけの存在と言えます。
+</pre>
+
+<h3 id="doom_duelist">黒幕 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β3～]</h3>
+<pre>
+<a href="sub_role.php#rival">宿敵</a>に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊な決闘者。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#doom">死の宣告能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「一週間戦争」がテーマです。
+<a href="sub_role.php#death_warrant">死の宣告</a>は適用直後に表示されるので対象者はすぐ自覚できます。
+一部のレアケースを除いて短期決戦が必要となるので難易度は高めです。
 </pre>
 
 <h3 id="cowboy_duelist">無鉄砲者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
@@ -181,10 +181,9 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 
 <h3 id="cursed_avenger">がしゃどくろ (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
-<h4>[耐性] 護衛：狩り / 占い：呪返し / 陰陽師：死亡</h4>
+<h4>[耐性] 狩り：有効 / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
 呪いを持った特殊な復讐者。処刑投票先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>なら<a href="sub_role.php#death_warrant">死の宣告</a> (4日後)を付加する。
-<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
@@ -204,10 +203,9 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 
 <h3 id="critical_avenger">狂骨 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
-<h4>[耐性] 護衛：狩り</h4>
+<h4>[耐性] 狩り：有効</h4>
 <pre>
 処刑投票先に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な復讐者。
-<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
@@ -233,19 +231,17 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <ol>
 <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-<li>恋人になったら蘇生能力は無効。</li>
-<li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
-<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-<li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-<li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+<li>恋人になったら無効。</li>
+<li>人狼の襲撃以外で死亡した場合は無効 (例：暗殺)。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
+<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="human.php#revive_pharmacist">仙人</a>の復讐者バージョンです。「やとのかみ」と読みます。
+<a href="human.php#revive_pharmacist">仙人</a>の復讐者バージョンで、「やとのかみ」と読みます。
 <a href="sub_role.php#enemy">仇敵</a>の排除にはあまり効きませんが、復讐者として絵になる能力ですね。
 </pre>
 

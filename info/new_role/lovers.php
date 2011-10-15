@@ -40,6 +40,7 @@ OutputRolePageHeader('恋人陣営');
 <a href="#sweet_cupid">弁財天</a>
 <a href="#minstrel_cupid">吟遊詩人</a>
 <a href="#triangle_cupid">小悪魔</a>
+<a href="#revive_cupid">邪仙</a>
 <a href="#snow_cupid">寒戸婆</a>
 </p>
 
@@ -145,6 +146,27 @@ OutputRolePageHeader('恋人陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 翠星石鯖＠やる夫人狼で一時的に施されていた改造に別名を与えてみました。
+</pre>
+
+<h3 id="revive_cupid">邪仙 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β13～]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効 / 封印：有効</h4>
+<pre>
+恋人に<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊なキューピッド。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
+</pre>
+<ol>
+<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
+<li>恋人になったら無効。</li>
+<li>人狼の襲撃以外で死亡した場合は無効 (例：暗殺)。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#revive_pharmacist">仙人</a>と<a href="duelist.php#doom_duelist">黒幕</a>を合わせたような能力で、東方 Project の霍 青娥がモチーフです。
 </pre>
 
 <h3 id="snow_cupid">寒戸婆 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
@@ -278,11 +300,11 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 
 <h3 id="cursed_angel">堕天使 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
-<h4>[耐性] 護衛：狩り / 占い：呪返し / 陰陽師：死亡</h4>
+<h4>[耐性] 狩り：有効 / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
 呪いを持ち、矢を撃った二人が別陣営だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
 陣営の判定法則は<a href="human.php#medium_rule">巫女</a>と同じ。
-<a href="human.php#voodoo_killer">陰陽師</a>の占い・<a href="human.php#guard_hunt">狩人の護衛</a>で死亡する。<a href="sub_role.php#lovers">恋人</a>に処刑投票されるとショック死する。
+<a href="sub_role.php#lovers">恋人</a>に処刑投票されるとショック死する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>はショック死処理内部で行う。</li>

@@ -264,8 +264,6 @@ OutputRolePageHeader('鬼陣営');
 <li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
 <li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、蘇生能力は無効。</li>
 <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-<li><a href="ability.php#revive_limit">蘇生制限</a>対象 (選ばれた場合は失敗する)。</li>
-<li><a href="ability.php#possessed_limit">憑依制限</a>対象。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -357,9 +355,8 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (20%) / 暗殺：反射 (20%) / 占い：呪返し / 陰陽師：死亡</h4>
 <h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：1/3</h4>
 <pre>
-夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>の全滅」。
+呪いを持った夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>の全滅」。
 人攫いの対象が<a href="human.php#mage_group">占い師系</a>・<a href="human.php#wizard_group">魔法使い系</a>以外だった場合は無条件で失敗する。
-呪いを持ち、<a href="human.php#voodoo_killer">陰陽師</a>の占いで死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>
