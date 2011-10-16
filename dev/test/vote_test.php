@@ -72,7 +72,7 @@ $RQ_ARGS->TestItems->test_users[6]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[7]->role = 'gatekeeper_guard';
+$RQ_ARGS->TestItems->test_users[7]->role = 'gatekeeper_guard speaker mind_read[23]';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
@@ -84,7 +84,7 @@ $RQ_ARGS->TestItems->test_users[8]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'revive_medium joker[6]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'revive_medium joker[6] mind_open';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
@@ -114,13 +114,13 @@ $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';
 $RQ_ARGS->TestItems->test_users[14]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[14]->role = 'doll_master';
+$RQ_ARGS->TestItems->test_users[14]->role = 'common';
 $RQ_ARGS->TestItems->test_users[14]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
 $RQ_ARGS->TestItems->test_users[15]->handle_name = '炎';
 $RQ_ARGS->TestItems->test_users[15]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
+$RQ_ARGS->TestItems->test_users[15]->role = 'possessed_mad possessed_target[4-6] lost_ability';
 $RQ_ARGS->TestItems->test_users[15]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[16]->uname = 'scarlet';
@@ -168,7 +168,7 @@ $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'revive_cupid mind_friend[23]';
+$RQ_ARGS->TestItems->test_users[23]->role = 'mind_scanner mind_friend[23]';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
@@ -326,8 +326,9 @@ $RQ_ARGS->TestItems->event = array(
 );
 
 //-- 仮想発現をセット --//
-//$RQ_ARGS->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
-$RQ_ARGS->say = '';
+$RQ_ARGS->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
+#$RQ_ARGS->say = '';
+$RQ_ARGS->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
 $DB_CONF->Connect(); // DB 接続
@@ -345,12 +346,12 @@ $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(23);
+$SELF = $USERS->ByID(15);
 #$SELF = $USERS->TraceExchange(14);
 
 //-- データ出力 --//
 $vote_view_mode = false;
-if($vote_view_mode){
+if($vote_view_mode){ //投票表示モード
   $INIT_CONF->LoadClass('VOTE_MESS');
   $stack = new RequestGameVote();
   $RQ_ARGS->vote = $stack->vote;
@@ -398,9 +399,58 @@ if($vote_view_mode){
   OutputHTMLFooter(true);
 }
 OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
+$talk_view_mode = true; false;
+if($talk_view_mode){ //発言表示モード
+  echo '<link rel="stylesheet" href="../../css/game_' . $ROOM->day_night . '.css">';
+  echo '</head><body>'."\n";
+  $INIT_CONF->LoadFile('talk_class');
+  //$query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
+  $RQ_ARGS->add_role = false;
+  $RQ_ARGS->TestItems->talk_data = new StdClass();
+  $RQ_ARGS->TestItems->talk_data->day = array(
+    array('uname' => 'light_blue', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'えっ'),
+    array('uname' => 'green', 'location' => 'day system', 'font_type' => NULL,
+	  'sentence' => 'OBJECTION	緑'),
+    array('uname' => 'dark_gray', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'ﾁﾗｯ'),
+    array('uname' => 'yellow', 'location' => 'day', 'font_type' => 'strong',
+	  'sentence' => "占いCO\n黒は●"),
+    array('uname' => 'light_gray', 'location' => 'day', 'font_type' => 'normal', 'sentence' => 'おはよう'),
+    array('uname' => 'system', 'location' => 'day system', 'font_type' => NULL,
+	  'sentence' => 'MORNING	' . $ROOM->date),
+  );
+  $RQ_ARGS->TestItems->talk_data->night = array(
+    array('uname' => 'cloud', 'location' => 'night self_talk', 'font_type' => 'normal',
+	  'sentence' => '吸血鬼なんだ'),
+    array('uname' => 'light_blue', 'location' => 'night self_talk', 'font_type' => 'weak',
+	  'sentence' => 'えっ'),
+    array('uname' => 'gold', 'location' => 'night common', 'font_type' => 'normal',
+	  'sentence' => 'やあやあ'),
+    array('uname' => 'rose', 'location' => 'night self_talk', 'font_type' => 'strong',
+	  'sentence' => '誰吸血しようかな'),
+    array('uname' => 'frame', 'location' => 'night self_talk', 'font_type' => 'normal',
+	  'sentence' => 'どうしよう'),
+    array('uname' => 'green', 'location' => 'night self_talk', 'font_type' => 'normal',
+	  'sentence' => 'てすてす'),
+    array('uname' => 'dark_gray', 'location' => 'night self_talk', 'font_type' => 'weak',
+	  'sentence' => 'ﾁﾗｯ'),
+    array('uname' => 'yellow', 'location' => 'night self_talk', 'font_type' => 'strong',
+	  'sentence' => "占いCO\n黒は●"),
+    array('uname' => 'light_gray', 'location' => 'night wolf', 'font_type' => 'normal',
+	  'sentence' => '生き延びたか'),
+    array('uname' => 'system', 'location' => 'night system', 'font_type' => NULL, 'sentence' => 'NIGHT')
+  );
+  $RQ_ARGS->TestItems->talk = array();
+  foreach($RQ_ARGS->TestItems->talk_data->{$ROOM->day_night} as $stack){
+    $RQ_ARGS->TestItems->talk[] = new Talk($stack);
+  }
+  //PrintData($RQ_ARGS->TestItems->talk);
+  OutputPlayerList();
+  OutputTalkLog();
+  OutputHTMLFooter(true);
+}
 echo '</head><body>'."\n";
 $role_view_mode = false;
-if($role_view_mode){
+if($role_view_mode){ //画像表示モード
   $main    = true;
   $sub     = false;
   $result  = false;
@@ -418,7 +468,7 @@ if($role_view_mode){
   OutputHTMLFooter(true);
 }
 $cast_view_mode = false;
-if($cast_view_mode){
+if($cast_view_mode){ //配役情報表示モード
   $INIT_CONF->LoadClass('CAST_CONF');
   //PrintData($CAST_CONF->RateToProbability($CAST_CONF->chaos_hyper_random_role_list));
   //PrintData(array_sum($CAST_CONF->chaos_hyper_random_role_list));
@@ -441,21 +491,11 @@ if($cast_view_mode){
   OutputHTMLFooter(true);
 }
 
-//OutputGameOption($ROOM->game_option, '');
 OutputPlayerList(); //プレイヤーリスト
-//PrintData($ROOM);
-//PrintData($ROOM->event);
-//PrintData($USERS);
-//PrintData($SELF);
-//PrintData($USERS->ByID(8));
-//PrintData($USERS->ByID(22)->GetCamp());
 OutputAbility();
-//PrintData($GAME_CONF->RateToProbability($GAME_CONF->weather_list));
-//PrintData(array_keys($ROLES->loaded->class));
 if($RQ_ARGS->say != ''){ //発言変換テスト
   ConvertSay($RQ_ARGS->say);
-  LineToBR($RQ_ARGS->say);
-  PrintData($RQ_ARGS->say);
+  Write($RQ_ARGS->say, 'day', 0);
 }
 if($ROOM->IsDay()){ //昼の投票テスト
   $self_id = $SELF->user_no;

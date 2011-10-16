@@ -600,7 +600,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $RQ_ARGS, $MESSAGE, $ROOM, $USERS, $SELF;
+  global $RQ_ARGS, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
 
   //PrintData($talk);
   //発言ユーザを取得
@@ -612,10 +612,17 @@ function OutputTalk($talk, &$builder){
     $USERS->ByVirtualUname($talk->uname);
 
   //基本パラメータを取得
-  $symbol      = '<font color="' . $said_user->color . '">◆</font>';
-  $handle_name = $said_user->handle_name;
-  $sentence    = $talk->sentence;
-  $font_type   = $talk->font_type;
+  if($talk->uname == 'system'){
+    $symbol      = '';
+    $handle_name = '';
+    $said_user->user_no = 0;
+  }
+  else{
+    $symbol      = '<font color="' . $said_user->color . '">◆</font>';
+    $handle_name = $said_user->handle_name;
+  }
+  $sentence  = $talk->sentence;
+  $font_type = $talk->font_type;
 
   //実ユーザを取得
   if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
@@ -626,23 +633,19 @@ function OutputTalk($talk, &$builder){
     $real_user = $USERS->ByRealUname($talk->uname);
   }
 
-  //サトラレ系表示判定 (サトラレ / 受信者 / 共鳴者)
-  $is_mind_read = $builder->flag->mind_read &&
-    (($said_user->IsPartner('mind_read', $builder->actor->user_no) &&
-      ! $said_user->IsRole('unconscious')) ||
-     $builder->actor->IsPartner('mind_receiver', $said_user->user_no) ||
-     $said_user->IsPartner('mind_friend', $builder->actor->partner_list));
+  $flag_mind_read = false; //特殊発言透過判定
+  $ROLES->actor = $said_user;
+  foreach($ROLES->Load('mind_read') as $filter) $flag_mind_read |= $filter->IsMindRead();
 
-  //特殊発言表示判定 (公開者 / 騒霊 / 憑依能力者)
-  $flag_mind_read = $is_mind_read ||
-    ($ROOM->date > 1 && ($said_user->IsRole('leader_common', 'mind_open') ||
-			 ($builder->flag->common && $said_user->IsRole('whisper_scanner')) ||
-			 ($builder->flag->wolf   && $said_user->IsRole('howl_scanner')) ||
-			 ($builder->flag->fox    && $said_user->IsRole('telepath_scanner')) ||
-			 ($builder->flag->lovers && $said_user->IsRole('minstrel_cupid')))) ||
-    ($real_user->IsRole('possessed_wolf') && $builder->flag->wolf) ||
-    ($real_user->IsRole('possessed_mad')  && $said_user->IsSame($builder->actor->uname)) ||
-    ($real_user->IsRole('possessed_fox')  && $builder->flag->fox);
+  $ROLES->actor = $builder->actor;
+  foreach($ROLES->Load('mind_read_active') as $filter){
+    $flag_mind_read |= $filter->IsMindReadActive($said_user);
+  }
+
+  $ROLES->actor = $real_user;
+  foreach($ROLES->Load('mind_read_possessed') as $filter){
+    $flag_mind_read |= $filter->IsMindReadPossessed($said_user);
+  }
 
   if($talk->type == 'system' && isset($talk->action)){ //投票情報
     /*
@@ -709,10 +712,8 @@ function OutputTalk($talk, &$builder){
       case 'common': //共有者
 	if($builder->flag->common || $flag_mind_read)
 	  return $builder->AddTalk($said_user, $talk);
-	elseif(! $said_user->IsRole('hermit_common')){ //隠者は見えない
-	  //for($i = 0; $i < mt_rand(0, 2); $i++) $builder->AddWhisper('common', $talk);
+	elseif(! $said_user->IsRole('hermit_common')) //隠者は見えない
 	  return $builder->AddWhisper('common', $talk);
-	}
 	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
 	  return $builder->AddWhisper('lovers', $talk);
 	else
@@ -721,10 +722,8 @@ function OutputTalk($talk, &$builder){
       case 'wolf': //人狼
 	if($builder->flag->wolf || $flag_mind_read)
 	  return $builder->AddTalk($said_user, $talk);
-	elseif(! $said_user->IsRole('quiet_wolf')){ //静狼は見えない
-	  //for($i = 0; $i < mt_rand(0, 2); $i++) $builder->AddWhisper('wolf', $talk);
+	elseif(! $said_user->IsRole('quiet_wolf')) //静狼は見えない
 	  return $builder->AddWhisper('wolf', $talk);
-	}
 	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
 	  return $builder->AddWhisper('lovers', $talk);
 	else

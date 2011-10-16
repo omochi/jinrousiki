@@ -1,6 +1,15 @@
 <?php
 class Talk{
-  function __construct(){
+  public $uname;
+  public $location;
+  public $scene;
+  public $type;
+  public $sentence;
+  public $font_type;
+  function __construct($list = NULL){
+    if(is_array($list)){
+      foreach($list as $key => $data) $this->$key = $data;
+    }
     $this->ParseLocation();
     $this->ParseSentence();
   }
@@ -8,7 +17,7 @@ class Talk{
   function ParseLocation($location = NULL){
     if(! is_null($location)) $this->location = $location; //初期化処理
 
-    list($scene, $type) = explode(' ', $this->location);
+    @list($scene, $type) = explode(' ', $this->location);
     $this->scene = $scene;
     $this->type  = $type;
   }

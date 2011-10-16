@@ -231,6 +231,7 @@ class User{
   function IsPartner($type, $target){
     if(is_null($partner_list = $this->GetPartner($type))) return false;
     if(is_array($target)){
+      if(! array_key_exists($type, $target)) return false;
       if(! is_array($target_list = $target[$type])) return false;
       return count(array_intersect($partner_list, $target_list)) > 0;
     }

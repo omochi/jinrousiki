@@ -13,6 +13,8 @@ class Role_possessed_wolf extends Role_wolf{
     if($ROOM->date > 1) OutputPossessedTarget(); //現在の憑依先
   }
 
+  function IsMindReadPossessed($user){ return $this->GetTalkFlag('wolf'); }
+
   function WolfKill($user, &$list){
     if($user->IsDummyBoy() || $user->IsCamp('fox') || $user->IsPossessedLimited()){ //スキップ判定
       parent::WolfKill($user, $list);

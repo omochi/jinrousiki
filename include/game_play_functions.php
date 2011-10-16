@@ -35,6 +35,22 @@ function ConvertSay(&$say){
   unset($ROLES->stack->say);
 }
 
+//発言を DB に登録する
+function Write($say, $location, $spend_time, $update = false){
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+
+  //声の大きさを決定
+  $voice = $RQ_ARGS->font_type;
+  if($ROOM->IsPlaying() && $SELF->IsLive()){
+    $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
+    foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
+  }
+
+  $ROOM->Talk($say, $SELF->uname, $location, $voice, $spend_time);
+  if($update) $ROOM->UpdateTime();
+  SendCommit();
+}
+
 //能力の種類とその説明を出力
 function OutputAbility(){
   global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $ROLES, $USERS, $SELF;

@@ -7,24 +7,19 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 β12 アップロード (2011/09/25 (Sun) 22:32) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β13 アップロード (2011/10/15 (Sat) 20:57) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b12">デバッグ情報</a> (2011/09/29 (Thu) 03:20)</li>
-  <li>「妖狐追加」「子狐登場」「天啓封印」オプション実装</li>
-  <li>「青行灯」「五徳猫」実装</li>
-  <li>出現率変動モード：F(合戦村)追加</li>
+  <!-- <li>→ <a href="info/develop/debug.php#ver150b12">デバッグ情報</a> (2011/09/29 (Thu) 03:20)</li> -->
+  <li>「山彦」「白蔵主」「僵尸」「尸解仙」「邪仙」実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>山彦：昼に一定確率で直前の発言を反響する座敷童子の亜種</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>白蔵主：身代わり能力を持った妖狐</li>
-  <li>僵尸：自己蘇生能力を持った鵺</li>
-  <li>尸解仙：自己蘇生能力を持った狂人</li>
-  <li>邪仙：自己蘇生能力を持ち、恋人に死の宣告を付加するキューピッド</li>
+  <li>なし</li>
 </ul>

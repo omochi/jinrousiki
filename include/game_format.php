@@ -3,7 +3,7 @@
 class DocumentBuilder{
   public $actor;
   public $flag;
-  public $extension_list = array();
+  public $filter = array();
 
   function __construct(){
     global $ROOM, $USERS, $SELF;
@@ -24,16 +24,19 @@ class DocumentBuilder{
 	$SELF->role_list[] = $role;
       }
     }
-    $this->LoadExtension();
+    $this->LoadFilter();
     $this->SetFlag();
   }
 
   //フィルタ対象役職の情報をロード
-  function LoadExtension(){
+  function LoadFilter(){
     global $ROLES;
 
     $ROLES->actor = $this->actor;
-    $this->extension_list = $ROLES->Load('talk');
+    if(! property_exists($ROLES->actor, 'virtual_live')) $ROLES->actor->virtual_live = false;
+    $this->filter = $ROLES->Load('talk');
+    $ROLES->stack->viewer = $ROLES->actor;
+    $ROLES->stack->builder = $this;
   }
 
   //フィルタ用フラグをセット
@@ -65,25 +68,23 @@ class DocumentBuilder{
   }
 
   //発言テーブルヘッダ作成
-  function BeginTalk($class){
-    $this->cache = '<table class="' . $class . '">' . "\n";
-  }
+  function BeginTalk($class){ $this->cache = '<table class="' . $class . '">' . "\n"; }
 
   //基礎発言処理
-  function RawAddTalk($symbol, $user_info, $sentence, $volume, $row_class = '',
+  function RawAddTalk($symbol, $user_info, $str, $volume, $row_class = '',
 		      $user_class = '', $say_class = ''){
     global $GAME_CONF;
 
     if($row_class  != '') $row_class  = ' ' . $row_class;
     if($user_class != '') $user_class = ' ' . $user_class;
     if($say_class  != '') $say_class  = ' ' . $say_class;
-    LineToBR($sentence);
-    if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
+    LineToBR($str);
+    if($GAME_CONF->quote_words) $str = '「' . $str . '」';
 
     $this->cache .= <<<EOF
 <tr class="user-talk{$row_class}">
 <td class="user-name{$user_class}">{$symbol}{$user_info}</td>
-<td class="say{$say_class} {$volume}">{$sentence}</td>
+<td class="say{$say_class} {$volume}">{$str}</td>
 </tr>
 
 EOF;
@@ -97,8 +98,8 @@ EOF;
     //表示情報を抽出
     $handle_name = $user->handle_name;
     if($RQ_ARGS->add_role){ //役職表示モード対応
-      $real_user = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
-      $handle_name .= $real_user->GenerateShortRoleName();
+      $real = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
+      $handle_name .= $real->GenerateShortRoleName();
     }
 
     $user_info = '<font style="color:'.$user->color.'">◆</font>'.$handle_name;
@@ -108,8 +109,8 @@ EOF;
     }
     $volume = $talk->font_type;
     $sentence = $talk->sentence;
-    foreach($this->extension_list as $extension){ //フィルタリング処理
-      $extension->AddTalk($user, $talk, $user_info, $volume, $sentence);
+    foreach($this->filter as $filter){ //フィルタリング処理
+      $filter->AddTalk($user, $talk, $user_info, $volume, $sentence);
     }
     return $this->RawAddTalk('', $user_info, $sentence, $volume);
   }
@@ -121,28 +122,28 @@ EOF;
     if(($user_info = $ROLES->GetWhisperingUserInfo($role, $user_class)) === false) return false;
     $volume = $talk->font_type;
     $sentence = $ROLES->GetWhisperingSound($role, $talk, $say_class);
-    foreach($this->extension_list as $extension){ //フィルタリング処理
-      $extension->AddWhisper($role, $talk, $user_info, $volume, $sentence);
+    foreach($this->filter as $filter){ //フィルタリング処理
+      $filter->AddWhisper($role, $talk, $user_info, $volume, $sentence);
     }
     return $this->RawAddTalk('', $user_info, $sentence, $volume, '', $user_class, $say_class);
   }
 
-  function AddSystemTalk($sentence, $class = 'system-user'){
-    LineToBR($sentence);
+  function AddSystemTalk($str, $class = 'system-user'){
+    LineToBR($str);
     $this->cache .= <<<EOF
 <tr>
-<td class="{$class}" colspan="2">{$sentence}</td>
+<td class="{$class}" colspan="2">{$str}</td>
 </tr>
 
 EOF;
     return true;
   }
 
-  function AddSystemMessage($class, $sentence, $add_class = ''){
+  function AddSystemMessage($class, $str, $add_class = ''){
     if($add_class != '') $add_class = ' ' . $add_class;
     $this->cache .= <<<EOF
 <tr class="system-message{$add_class}">
-<td class="{$class}" colspan="2">{$sentence}</td>
+<td class="{$class}" colspan="2">{$str}</td>
 </tr>
 
 EOF;
@@ -155,7 +156,5 @@ EOF;
     return $str;
   }
 
-  function EndTalk(){
-    echo $this->RefreshTalk();
-  }
+  function EndTalk(){ echo $this->RefreshTalk(); }
 }

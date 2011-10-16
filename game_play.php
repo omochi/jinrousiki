@@ -181,22 +181,6 @@ function Say($say){
   return Write($say, 'night ' . $location, $update ? $spend_time : 0, $update);
 }
 
-//発言を DB に登録する
-function Write($say, $location, $spend_time, $update = false){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
-
-  //声の大きさを決定
-  $voice = $RQ_ARGS->font_type;
-  if($ROOM->IsPlaying() && $SELF->IsLive()){
-    $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
-    foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
-  }
-
-  $ROOM->Talk($say, $SELF->uname, $location, $voice, $spend_time);
-  if($update) $ROOM->UpdateTime();
-  SendCommit();
-}
-
 //ゲーム停滞のチェック
 function CheckSilence(){
   global $TIME_CONF, $MESSAGE, $ROOM, $USERS;

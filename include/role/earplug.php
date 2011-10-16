@@ -9,20 +9,22 @@
   ○問題点
   ・観戦モードにすると普通に見えてしまう
 */
-class Role_earplug extends RoleTalkFilter{
+RoleManager::LoadFile('strong_voice');
+class Role_earplug extends Role_strong_voice{
+  public $mix_in = 'blinder';
   function __construct(){ parent::__construct(); }
 
-  function Ignored(){
+  function IgnoreTalk(){
     global $ROOM;
-    return parent::Ignored() ||
+    return parent::IgnoreTalk() || ! $ROOM->IsPlaying() ||
       ($ROOM->log_mode && $ROOM->IsEvent('earplug') && ! $ROOM->IsDay());
   }
 
-  function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
-    $this->ChangeVolume('down', $volume, $sentence);
+  function AddTalk($user, $talk, &$user_info, &$voice, &$str){
+    if(! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str, false);
   }
 
-  function AddWhisper($role, $talk, &$user_info, &$volume, &$sentence){
-    if($role == 'wolf') $this->ChangeVolume('down', $volume, $sentence);
+  function AddWhisper($role, $talk, &$user_info, &$voice, &$str){
+    if(! $this->IgnoreTalk() && $role == 'wolf') $this->ShiftVoice($voice, $str, false);
   }
 }

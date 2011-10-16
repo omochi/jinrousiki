@@ -27,6 +27,17 @@ class RoleManager{
   //発言表示
   public $talk_list = array('blinder', 'earplug', 'speaker');
 
+  //閲覧判定
+  public $mind_read_list = array(
+    'leader_common', 'whisper_scanner', 'howl_scanner', 'telepath_scanner','minstrel_cupid',
+    'mind_read', 'mind_friend', 'mind_open');
+
+  //閲覧判定 (能動型)
+  public $mind_read_active_list = array('mind_receiver');
+
+  //閲覧判定 (憑依型)
+  public $mind_read_possessed_list = array('possessed_wolf', 'possessed_mad', 'possessed_fox');
+
   //発言置換 (仮想)
   public $say_convert_virtual_list = array('gentleman', 'lady');
 
@@ -350,14 +361,6 @@ class Role{
   //同一ユーザ判定
   function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
 
-  //スキップ判定
-  function Ignored(){
-    global $ROOM, $USERS;
-    //return false; //テスト用
-    return ! $ROOM->IsPlaying() ||
-      ! ($USERS->IsVirtualLive($this->GetActor()->user_no) || $this->GetActor()->virtual_live);
-  }
-
   //データセット
   function SetStack($data, $role = NULL){
     global $ROLES;
@@ -373,6 +376,13 @@ class Role{
     global $ROLE_IMG;
     $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
   }
+
+  //-- 発言処理 --//
+  //閲覧者取得
+  function GetViewer(){ return $this->GetStack('viewer'); }
+
+  //閲覧者情報取得
+  function GetTalkFlag($data){ return $this->GetStack('builder')->flag->$data; }
 
   //-- 処刑投票処理 --//
   //生存仲間判定
@@ -505,37 +515,4 @@ class Role{
 
   //死亡判定
   function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
-}
-
-//-- 発言フィルタリング用拡張クラス --//
-class RoleTalkFilter extends Role{
-  public $volume_list = array('weak', 'normal', 'strong');
-
-  function __construct(){ parent::__construct(); }
-
-  function AddTalk(   $user, $talk, &$user_info, &$volume, &$sentence){}
-  function AddWhisper($role, $talk, &$user_info, &$volume, &$sentence){}
-
-  function ChangeVolume($type, &$volume, &$sentence){
-    global $MESSAGE;
-
-    if($this->Ignored()) return;
-    switch($type){
-    case 'up':
-      if(($key = array_search($volume, $this->volume_list)) === false) return;
-      if(++$key >= count($this->volume_list))
-	$sentence = $MESSAGE->howling;
-      else
-	$volume = $this->volume_list[$key];
-      break;
-
-    case 'down':
-      if(($key = array_search($volume, $this->volume_list)) === false) return;
-      if(--$key < 0)
-	$sentence = $MESSAGE->common_talk;
-      else
-	$volume = $this->volume_list[$key];
-      break;
-    }
-  }
 }

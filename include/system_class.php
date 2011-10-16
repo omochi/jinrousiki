@@ -32,8 +32,8 @@ class DatabaseConfigBase{
 
   //データベース名変更
   function ChangeName($id){
-    $id--;
-    if(in_array($id, $this->name_list)) $this->name = $this->name_list[$id];
+    if(is_null($name = $this->name_list[$id - 1])) return;
+    $this->name = $name;
   }
 
   //エラー出力 ($header, $exit は Connect() 参照)

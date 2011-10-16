@@ -18,4 +18,9 @@ class Role_mind_receiver extends Role{
     ksort($stack);
     OutputPartner($stack, 'mind_scanner_target');
   }
+
+  function IsMindReadActive($user){
+    return $this->GetTalkFlag('mind_read') &&
+      $this->GetActor()->IsPartner($this->role, $user->user_no);
+  }
 }

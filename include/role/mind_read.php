@@ -10,4 +10,10 @@ class Role_mind_read extends Role{
     global $ROOM;
     if($ROOM->date > 1) parent::OutputAbility();
   }
+
+  function IsMindRead(){
+    return $this->GetTalkFlag('mind_read') &&
+      $this->GetActor()->IsPartner($this->role, $this->GetViewer()->user_no) &&
+      ! $this->GetActor()->IsRole('unconscious');
+  }
 }

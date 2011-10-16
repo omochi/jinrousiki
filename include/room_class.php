@@ -56,13 +56,14 @@ class Room{
 
   //発言を取得する
   function LoadTalk($heaven = false){
-    global $SERVER_CONF, $GAME_CONF;
+    global $SERVER_CONF, $GAME_CONF, $RQ_ARGS;
 
+    if($RQ_ARGS->IsVirtualRoom()) return $RQ_ARGS->TestItems->talk;
     if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
       $query = 'SELECT talk_id, uname, sentence, font_type, location FROM talk' .
 	$this->GetQuery(! $heaven) . ' AND location LIKE ' .
 	($heaven ? "'heaven'" : "'{$this->day_night}%'");
-    return FetchTalk($query, 'Talk', false);
+      return FetchTalk($query, 'Talk', false);
     }
     $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
       ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
@@ -360,7 +361,7 @@ class Room{
     if($uname == '') $uname = 'system';
     if($location == '') $location = $this->day_night . ' system';
     if($this->test_mode){
-      PrintData($sentence, 'Talk: ' . $uname . ': '. $location);
+      PrintData(LineToBR($sentence), "Talk: {$uname}: {$location}: {$font_type}");
       return true;
     }
 

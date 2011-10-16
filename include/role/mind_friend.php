@@ -20,4 +20,9 @@ class Role_mind_friend extends Role{
     ksort($stack);
     OutputPartner($stack, $this->role . '_list');
   }
+
+  function IsMindRead(){
+    return $this->GetTalkFlag('mind_read') &&
+      $this->GetActor()->IsPartner($this->role, $this->GetViewer()->partner_list);
+  }
 }

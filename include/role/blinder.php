@@ -9,13 +9,24 @@
   ○問題点
   ・観戦モードにすると普通に見えてしまう
 */
-class Role_blinder extends RoleTalkFilter{
+class Role_blinder extends Role{
   function __construct(){ parent::__construct(); }
 
-  function AddTalk($user, $talk, &$user_info, &$volume, &$sentence){
+  //発言フィルタ
+  function AddTalk($user, $talk, &$user_info, &$voice, &$str){
     global $ROOM;
 
-    if($this->Ignored() || ! $ROOM->IsDay() || $this->IsActor($user->uname)) return;
+    if($this->IgnoreTalk() || ! $ROOM->IsDay() || $this->GetViewer()->IsSame($user->uname)) return;
     $user_info = '<font style="color:' . $user->color . '">◆</font>';
+  }
+
+  //囁きフィルタ
+  function AddWhisper($role, $talk, &$user_info, &$voice, &$str){}
+
+  //スキップ判定
+  function IgnoreTalk(){
+    global $USERS;
+    return  ! $this->GetViewer()->virtual_live &&
+      ! $USERS->IsVirtualLive($this->GetViewer()->user_no);
   }
 }

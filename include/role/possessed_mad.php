@@ -31,6 +31,8 @@ class Role_possessed_mad extends Role{
     return $ROOM->date > 1;
   }
 
+  function IsMindReadPossessed($user){ return $user->IsSame($this->GetViewer()->uname); }
+
   function IgnoreVote(){
     if(! is_null($str = parent::IgnoreVote())) return $str;
     return $this->GetActor()->IsActive() ? NULL : '能力喪失しています';
@@ -56,14 +58,14 @@ class Role_possessed_mad extends Role{
     }
 
     //無効判定 (蘇生/憑依制限/無効陣営/憑依済み)
-    $class = $this->GetClass($method = 'Ignored');
+    $class = $this->GetClass($method = 'IgnorePossessed');
     if($user->revive_flag || $user->IsPossessedLimited() || $class->$method($user->GetCamp(true)) ||
        ! $USERS->ByRealUname($user->uname)->IsSame($user->uname)) return false;
     $this->AddStack($user->uname, 'possessed_dead');
   }
 
   //無効陣営判定
-  function Ignored($camp){ return $camp == 'fox' || $camp == 'lovers'; }
+  function IgnorePossessed($camp){ return $camp == 'fox' || $camp == 'lovers'; }
 
   //憑依情報登録
   function Possessed(){

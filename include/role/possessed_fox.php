@@ -11,6 +11,8 @@ class Role_possessed_fox extends Role_fox{
 
   function OutputFoxAbility(){ $this->filter->OutputAction(); }
 
+  function IsMindReadPossessed($user){ return $this->GetTalkFlag('fox'); }
+
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 
   function GetVoteIconPath($user, $live){ return $this->filter->GetVoteIconPath($user, $live); }
@@ -19,5 +21,5 @@ class Role_possessed_fox extends Role_fox{
 
   function IgnoreVoteNight($user, $live){ return $this->filter->IgnoreVoteNight($user, $live); }
 
-  function Ignored($camp){ return $camp == 'wolf' || $camp == 'lovers'; }
+  function IgnorePossessed($camp){ return $camp == 'wolf' || $camp == 'lovers'; }
 }

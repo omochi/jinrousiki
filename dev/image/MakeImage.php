@@ -412,7 +412,7 @@ class RoleMessageList{
     'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'authority', ':' => 'chicken'));
 
   public $echo_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#山彦#です。時々、昼の発言時に直前の誰かの発言を#反響#してしまいます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#山彦#です。時々、昼の発言時に直前の誰かの発言を#反響#してしまいます。細かいことはおいて叫びましょう！やっほー！っほー…！",
     'type' => 'brownie');
 
   public $sun_brownie = array(
@@ -693,7 +693,7 @@ class RoleMessageList{
     'type' => 'mad');
 
   public $revive_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|尸解仙|です。一度だけ|人狼|に襲撃されても#蘇生#できます。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|尸解仙|です。一度だけ|人狼|に襲撃されても#蘇生#できます。眠り続けた信奉者よ、捧ぐ主は今来たり。道教の秘術しかと見せ付けよ！",
     'type' => 'mad', 'delimiter' => array('#' => 'revive'));
 
   public $immolate_mad = array(
@@ -705,7 +705,7 @@ class RoleMessageList{
     'delimiter' => array('|' => 'fox', '#' => 'wolf'));
 
   public $white_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。占われても呪殺されませんが、_霊能者_には見抜かれ、#人狼#に襲撃されると殺されてしまいます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白狐|です。占われても呪殺されませんが、_霊能者_には見抜かれ、#人狼#に襲撃されると殺されてしまいます。\n　毛皮に映る虚ろな白は時に儚くも清き物。シルクの白を以て霊眼と無垢を欺き、愚かな村を|妖狐|の物とするのです。",
     'type' => 'fox', 'delimiter' => array('_' => 'necromancer'));
 
   public $black_fox = array(
@@ -841,7 +841,7 @@ class RoleMessageList{
     'type' => 'cupid');
 
   public $revive_cupid = array(
-    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|邪仙|です。初日の夜に誰か二人を|恋人|にし、さらに#死の宣告#を与えてしまいます。また、一度だけ_人狼_に襲撃されても^蘇生^できます。",
+    'message' => "[役割] [|恋人|陣営] [|キューピッド|系]\n　あなたは|邪仙|です。初日の夜に誰か二人を|恋人|にし、さらに#死の宣告#を与えてしまいます。また、一度だけ_人狼_に襲撃されても^蘇生^できます。\n　限られた時間を愛し合いつつ生きる二人を演出しましょう。それは悲劇に見えるでしょうが、あなたにとっては喜劇となるに違いありません。",
     'type' => 'cupid', 'delimiter' => array('#' => 'chicken', '_' => 'wolf', '^' => 'revive'));
 
   public $snow_cupid = array(
@@ -2097,10 +2097,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('echo_brownie');
-#$builder->Output('revive_mad');
-#$builder->Output('white_fox');
-#$builder->Output('sacrifice_fox');
-$builder->Output('revive_cupid');
-#$builder->Output('hariti_yaksa');
+$builder->Output('sacrifice_fox'); #
+#$builder->Output('hariti_yaksa'); //
 #$builder->Output('resurrect_mania');
