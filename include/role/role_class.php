@@ -145,13 +145,13 @@ class RoleManager{
   //罠
   public $trap_list = array('trap_mad', 'snow_trap_mad');
 
-  //護衛能力者
+  //護衛
   public $guard_list = array('guard', 'barrier_wizard');
 
-  //暗殺防衛
+  //対暗殺護衛
   public $guard_assassin_list = array('gatekeeper_guard');
 
-  //夢護衛
+  //対夢護衛
   public $guard_dream_list = array('dummy_guard');
 
   //厄払い
@@ -500,8 +500,11 @@ class Role{
     $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? NULL : true;
   }
 
-  //襲撃者取得
-  function GetVoter(){ return $this->GetStack('voted_wolf'); }
+  //投票者取得
+  function GetVoter(){ return $this->GetStack('voter'); }
+
+  //襲撃人狼取得
+  function GetWolfVoter(){ return $this->GetStack('voted_wolf'); }
 
   //人狼襲撃対象者取得
   function GetWolfTarget(){ return $this->GetStack('wolf_target'); }

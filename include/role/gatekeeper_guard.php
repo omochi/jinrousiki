@@ -14,9 +14,9 @@ class Role_gatekeeper_guard extends Role_guard{
     return true;
   }
 
-  function IsHunt($user){ return false; }
+  protected function IsHunt($user){ return false; }
 
-  //暗殺防衛
+  //対暗殺護衛
   function GuardAssassin($uname){
     global $ROOM, $USERS;
 

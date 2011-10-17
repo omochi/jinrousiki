@@ -9,9 +9,7 @@ RoleManager::LoadFile('common');
 class Role_critical_common extends Role_common{
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){ $vote_number++; }
+  function FilterVoteDo(&$number){ $number++; }
 
-  function FilterVoted(&$voted_number){
-    if(mt_rand(1, 100) <= 5) $voted_number += 100;
-  }
+  function FilterVoted(&$number){ if(mt_rand(1, 100) <= 5) $number += 100; }
 }

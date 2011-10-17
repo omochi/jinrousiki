@@ -9,10 +9,7 @@ class Role_snow_trap_mad extends Role_trap_mad{
 
   function IsVoteTrap(){ return true; }
 
-  function SetTrapAction($user, $uname){
-    global $ROLES;
-    $ROLES->stack->snow_trap[$user->uname] = $uname;
-  }
+  function SetTrapAction($user, $uname){ $this->AddStack($uname, 'snow_trap', $user->uname); }
 
   function TrapToTrap(){
     global $ROLES;

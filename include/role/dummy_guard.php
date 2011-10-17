@@ -10,7 +10,7 @@ class Role_dummy_guard extends Role_guard{
 
   function SetGuard($uname){
     global $ROOM;
-    if(! $ROOM->IsEvent('no_dream')) $this->AddStack($uname); //熱帯夜ならスキップ
+    if(! $ROOM->IsEvent('no_dream')) $this->AddStack($uname); //スキップ判定 (熱帯夜)
     return false;
   }
 

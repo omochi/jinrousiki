@@ -18,6 +18,7 @@ class Room{
   public $watch_mode = false;
   public $single_log_mode = false;
   public $single_view_mode = false;
+  public $personal_mode = false;
   public $test_mode = false;
 
   function __construct($request = NULL){
@@ -162,6 +163,17 @@ class Room{
     $this->event->weather = $result === false ? NULL : $result; //天候を格納
   }
 
+  //勝敗情報を DB から取得する
+  function LoadVictory(){
+    global $RQ_ARGS;
+
+    if(! property_exists($this, 'victory')){
+      $this->victory = $this->test_mode ? $RQ_ARGS->TestItems->victory :
+	FetchResult($this->GetQueryHeader('room', 'victory_role'));
+    }
+    return $this->victory;
+  }
+
   //投票情報をコマンド毎に分割する
   function ParseVote(){
     $stack = array();
@@ -246,9 +258,7 @@ class Room{
   }
 
   //オプション判定
-  function IsOption($option){
-    return in_array($option, $this->option_list);
-  }
+  function IsOption($option){ return in_array($option, $this->option_list); }
 
   //オプショングループ判定
   function IsOptionGroup($option){
@@ -259,19 +269,13 @@ class Room{
   }
 
   //リアルタイム制判定
-  function IsRealTime(){
-    return $this->IsOption('real_time');
-  }
+  function IsRealTime(){ return $this->IsOption('real_time'); }
 
   //身代わり君使用判定
-  function IsDummyBoy(){
-    return $this->IsOption('dummy_boy');
-  }
+  function IsDummyBoy(){ return $this->IsOption('dummy_boy'); }
 
   //クイズ村判定
-  function IsQuiz(){
-    return $this->IsOption('quiz');
-  }
+  function IsQuiz(){ return $this->IsOption('quiz'); }
 
   //村人置換村グループオプション判定
   function IsReplaceHumanGroup(){
@@ -309,34 +313,22 @@ class Room{
   }
 
   //ゲーム開始前判定
-  function IsBeforeGame(){
-    return $this->day_night == 'beforegame';
-  }
+  function IsBeforeGame(){ return $this->day_night == 'beforegame'; }
 
   //ゲーム中 (昼) 判定
-  function IsDay(){
-    return $this->day_night == 'day';
-  }
+  function IsDay(){ return $this->day_night == 'day'; }
 
   //ゲーム中 (夜) 判定
-  function IsNight(){
-    return $this->day_night == 'night';
-  }
+  function IsNight(){ return $this->day_night == 'night'; }
 
   //ゲーム終了後判定
-  function IsAfterGame(){
-    return $this->day_night == 'aftergame';
-  }
+  function IsAfterGame(){ return $this->day_night == 'aftergame'; }
 
   //ゲーム中判定 (仮想処理をする為、status では判定しない)
-  function IsPlaying(){
-    return $this->IsDay() || $this->IsNight();
-  }
+  function IsPlaying(){ return $this->IsDay() || $this->IsNight(); }
 
   //ゲーム終了判定
-  function IsFinished(){
-    return $this->status == 'finished';
-  }
+  function IsFinished(){ return $this->status == 'finished'; }
 
   //特殊イベント判定
   function IsEvent($type){

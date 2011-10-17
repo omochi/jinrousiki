@@ -7,10 +7,11 @@
 class Role_mania extends Role{
   public $action = 'MANIA_DO';
   public $copied = 'copied';
+  public $delay_copy = false;
+  public $camp_copy  = false;
   public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
     global $ROOM;
 

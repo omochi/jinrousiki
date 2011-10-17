@@ -315,6 +315,7 @@ function GenerateDateTalkLog($set_date, $set_location){
     }
     break;
   }
+  if($ROOM->personal_mode) $query .= " AND uname = 'system'"; //個人結果表示モード
   if($SERVER_CONF->sort_talk_by_php){
     $talk_list = FetchTalk($query, 'Talk', $RQ_ARGS->reverse_log);
   }

@@ -215,7 +215,7 @@ class RequestOldLog extends RequestBase{
     if($this->is_room = isset($_GET['room_no'])){
       $this->GetItems('intval', 'get.room_no', 'get.user_no');
       $this->GetItems('IsOn', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only',
-		      'get.watch', 'get.add_role');
+		      'get.watch', 'get.add_role', 'get.personal_result');
       $this->AttachTestParameters();
     }
     else{

@@ -20,7 +20,6 @@ class Role_anti_voodoo extends Role{
     }
   }
 
-  //投票能力判定
   function IsVote(){
     global $ROOM;
     return $ROOM->date > 1;
@@ -42,8 +41,9 @@ class Role_anti_voodoo extends Role{
       $user->possessed_reset = true;
     }
     //襲撃を行った憑狼ならキャンセル
-    elseif($this->GetVoter()->IsRole('possessed_wolf') && $this->GetVoter()->IsSame($user->uname)){
-      $this->GetVoter()->possessed_cancel = true;
+    elseif($this->GetWolfVoter()->IsRole('possessed_wolf') &&
+	   $this->GetWolfVoter()->IsSame($user->uname)){
+      $this->GetWolfVoter()->possessed_cancel = true;
     }
     else return;
     $this->AddSuccess($user->uname, $this->role . '_success');

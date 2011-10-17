@@ -13,7 +13,7 @@ class Role_revive_pharmacist extends Role_pharmacist{
   function IsResurrect(){
     $actor = $this->GetActor();
     return $actor->IsDead(true) && ! $actor->IsDummyBoy() && ! $actor->IsLovers() &&
-      $actor->wolf_killed  && ! $this->GetVoter()->IsSiriusWolf();
+      $actor->wolf_killed  && ! $this->GetWolfVoter()->IsSiriusWolf();
   }
 
   //復活処理

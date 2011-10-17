@@ -23,9 +23,9 @@ class Role_clairvoyance_scanner extends Role_mind_scanner{
     対象が NULL でも有効になるタイプ (キャンセル投票はスキップ) は想定していない
   */
   function Report($user){
-    global $ROOM, $USERS, $ROLES;
+    global $ROOM, $USERS;
 
-    foreach($ROLES->stack->vote_data as $action => $vote_stack){
+    foreach($this->GetStack('vote_data') as $action => $vote_stack){
       if(strpos($action, '_NOT_DO') !== false ||
 	 ! array_key_exists($user->uname, $vote_stack)) continue;
       $str = $this->GetActor()->GetHandleName($user->uname) . "\t";
@@ -38,11 +38,10 @@ class Role_clairvoyance_scanner extends Role_mind_scanner{
 	  $str_stack[$voted_user->user_no] = $str . $voted_user->handle_name;
 	}
 	ksort($str_stack);
-	foreach($str_stack as $str) $ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+	foreach($str_stack as $str) $ROOM->SystemMessage($str, $this->result);
       }
       else{
-	$str .= $USERS->GetHandleName($target_stack, true);
-	$ROOM->SystemMessage($str, 'CLAIRVOYANCE_RESULT');
+	$ROOM->SystemMessage($str . $USERS->GetHandleName($target_stack, true), $this->result);
       }
     }
   }

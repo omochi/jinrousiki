@@ -365,6 +365,9 @@ function GeneratePlayerList(){
       $path = $ICON_CONF->dead; //アイコンを死亡アイコンに入れ替え
       $str .= ' onMouseout="this.src=' . "'$path'" . '"';
     }
+    if($ROOM->personal_mode){
+      $live .= "<br>\n(" . GenerateVictory($user->user_no) . ')';
+    }
     $str .= $ICON_CONF->tag . ' src="' . $path . '"></td>'."\n";
 
     //HN を追加
@@ -393,12 +396,11 @@ function GeneratePlayerList(){
 function OutputPlayerList(){ echo GeneratePlayerList(); }
 
 //勝敗結果の生成
-function GenerateVictory(){
+function GenerateVictory($id = 0){
   global $VICT_MESS, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
-  $victory = $ROOM->test_mode ? $RQ_ARGS->TestItems->victory :
-    FetchResult($ROOM->GetQueryHeader('room', 'victory_role'));
+  $victory = $ROOM->LoadVictory();
   $class   = $victory;
   $winner  = $victory;
 
@@ -432,13 +434,15 @@ EOF;
 
   //-- 個々の勝敗結果 --//
   //スキップ判定 (勝敗未決定/観戦モード/ログ閲覧モード)
-  if(is_null($victory) || $ROOM->view_mode || ($ROOM->log_mode && ! $ROOM->single_view_mode)){
-    return $str;
+  if(is_null($victory) || $ROOM->view_mode ||
+     ($ROOM->log_mode && ! $ROOM->single_view_mode && ! $ROOM->personal_mode)){
+    return $id > 0 ? '不明' : $str;
   }
 
   $result = 'win';
   $class  = NULL;
-  $camp   = $SELF->GetCamp(true); //所属陣営を取得
+  $user   = $id > 0 ? $USERS->ByID($id) : $SELF;
+  $camp   = $user->GetCamp(true); //所属陣営を取得
 
   switch($victory){
   case 'draw':   //引き分け
@@ -458,21 +462,21 @@ EOF;
     case 'human':
     case 'wolf':
     case 'fox':
-      $win_flag = $victory == $camp && $ROLES->LoadMain($SELF)->Win($victory);
+      $win_flag = $victory == $camp && $ROLES->LoadMain($user)->Win($victory);
       break;
 
     case 'vampire':
-      $win_flag = $victory == $camp && ($SELF->IsRoleGroup('mania') || $SELF->IsLive());
+      $win_flag = $victory == $camp && ($SELF->IsRoleGroup('mania') || $user->IsLive());
       break;
 
     case 'chiroptera':
-      $win_flag = $SELF->IsLive();
+      $win_flag = $user->IsLive();
       break;
 
     case 'ogre':
     case 'duelist':
-      $win_flag = $SELF->IsRoleGroup('mania') ? $SELF->IsLive()
-	: $ROLES->LoadMain($SELF)->Win($victory);
+      $win_flag = $user->IsRoleGroup('mania') ? $user->IsLive()
+	: $ROLES->LoadMain($user)->Win($victory);
       break;
 
     default:
@@ -481,7 +485,7 @@ EOF;
     }
 
     if($win_flag){ //ジョーカー系判定
-      $ROLES->actor = $SELF;
+      $ROLES->actor = $user;
       foreach($ROLES->Load('joker') as $filter) $filter->FilterWin($win_flag);
     }
 
@@ -493,6 +497,21 @@ EOF;
       $class  = $result;
     }
     break;
+  }
+  if($id > 0){
+    switch($result){
+    case 'win':
+      return '勝利';
+
+    case 'lose':
+      return '敗北';
+
+    case 'draw':
+      return '引分';
+
+    case 'win':
+      return '不明';
+    }
   }
   $result = 'self_' . $result;
 
@@ -551,6 +570,7 @@ function OutputRevoteList(){
 function GetVoteList($date){
   global $ROOM;
 
+  if($ROOM->personal_mode) return NULL; //スキップ判定
   //指定された日付の投票結果を取得
   $query = $ROOM->GetQueryHeader('system_message', 'message') .
     " AND date = {$date} and type = 'VOTE_KILL'";
@@ -982,8 +1002,7 @@ function OutputAbilityAction(){
 function GenerateLastWords($shift = false){
   global $MESSAGE, $ROOM;
 
-  //ゲーム中以外は出力しない
-  if(! ($ROOM->IsPlaying() || $ROOM->log_mode)) return NULL;
+  if(! ($ROOM->IsPlaying() || $ROOM->log_mode) || $ROOM->personal_mode) return NULL; //スキップ判定
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;

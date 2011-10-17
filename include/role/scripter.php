@@ -14,8 +14,8 @@ class Role_scripter extends Role{
     if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL); //能力発現
   }
 
-  function FilterVoteDo(&$vote_number){
+  function FilterVoteDo(&$number){
     global $ROOM;
-    if($ROOM->date > 4) $vote_number++;
+    if($ROOM->date > 4) $number++;
   }
 }

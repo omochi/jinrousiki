@@ -6,10 +6,10 @@
 */
 RoleManager::LoadFile('wizard');
 class Role_philosophy_wizard extends Role_wizard{
+  public $action = NULL;
   public $wizard_list = array(
     'alchemy_pharmacist', 'cure_pharmacist', 'miasma_jealousy', 'miasma_mad', 'critical_mad',
     'sweet_cupid', 'corpse_courier_mad');
   public $result_list = array('PHARMACIST_RESULT');
-  public $action = NULL;
   function __construct(){ parent::__construct(); }
 }

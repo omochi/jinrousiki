@@ -5,12 +5,12 @@
   ・魔法：占い師・精神鑑定士・ひよこ鑑定士・狩人・暗殺者
 */
 class Role_wizard extends Role{
+  public $action = 'WIZARD_DO';
+  public $ignore_message = '初日は魔法を使えません';
   public $wizard_list = array(
     'mage' => 'MAGE_DO', 'psycho_mage' => 'MAGE_DO', 'guard' => 'GUARD_DO',
     'assassin' => 'ASSASSIN_DO', 'sex_mage' => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
-  public $action = 'WIZARD_DO';
-  public $ignore_message = '初日は魔法を使えません';
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
@@ -28,19 +28,18 @@ class Role_wizard extends Role{
     return $ROOM->date > 1;
   }
 
-  //魔法リスト取得
-  function GetWizardList(){ return $this->wizard_list; }
-
-  //魔法取得
-  function GetRole(){
+  //魔法セット (返り値：昼：魔法 / 夜：投票タイプ)
+  function SetWizard(){
     global $ROOM;
 
-    $wizard_list = $this->GetWizardList();
-    $stack = is_null($this->action) ? $wizard_list : array_keys($wizard_list);
-
-    $role = $ROOM->IsEvent('full_wizard') ? array_shift($stack) :
+    $list  = $this->GetWizard();
+    $stack = is_null($this->action) ? $list : array_keys($list);
+    $role  = $ROOM->IsEvent('full_wizard') ? array_shift($stack) :
       ($ROOM->IsEvent('debilitate_wizard') ? array_pop($stack) : GetRandom($stack));
-    return is_null($this->action) ? $role :
-      array(is_int($role) ? $this->role : $role, $wizard_list[$role]);
+    $this->GetActor()->virtual_role = is_int($role) ? $this->role : $role; //仮想役職を登録
+    return is_null($this->action) ? $role : $list[$role];
   }
+
+  //魔法リスト取得
+  protected function GetWizard(){ return $this->wizard_list; }
 }

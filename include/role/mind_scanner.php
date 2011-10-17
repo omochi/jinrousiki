@@ -45,6 +45,6 @@ class Role_mind_scanner extends Role{
     return $user->IsDummyBoy() ? '身代わり君には投票できません' : NULL;
   }
 
-  //透視処理
+  //透視
   function MindScan($user){ $user->AddRole($this->GetActor()->GetID($this->mind_role)); }
 }

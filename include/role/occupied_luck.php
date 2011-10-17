@@ -2,7 +2,7 @@
 /*
   ◆ひんな持ち (occupied_luck)
   ○仕様
-  ・得票数：付加者が誰か生きていれば +1 / 全員死んでいたら +3
+  ・得票数：+1 (付加者生存) / +3 (付加者全滅)
 */
 class Role_occupied_luck extends Role{
   function __construct(){ parent::__construct(); }
@@ -12,5 +12,5 @@ class Role_occupied_luck extends Role{
     if($ROOM->date > 1) parent::OutputAbility();
   }
 
-  function FilterVoted(&$voted_number){ $voted_number += $this->IsLivePartner() ? 1 : 3; }
+  function FilterVoted(&$number){ $number += $this->IsLivePartner() ? 1 : 3; }
 }

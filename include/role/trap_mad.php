@@ -38,19 +38,18 @@ class Role_trap_mad extends Role{
 
   function IsVoteCheckbox($user, $live){ return $live; }
 
-  function IgnoreVoteNight($user, $live){ return $live ? NULL : '生存者以外には投票できません'; }
+  function IgnoreVoteNight($user, $live){ return $live ? NULL : '死者には投票できません'; }
 
   //罠設置
   function SetTrap($uname){
-    //人狼に狙われていたら自分自身への設置以外は無効
+    //人狼に狙われていたら自己設置以外は無効
     if($this->IsActor($this->GetWolfTarget()->uname) && ! $this->IsActor($uname)) return;
     $this->SetTrapAction($this->GetActor(), $uname);
   }
 
   //罠設置後処理
   function SetTrapAction($user, $uname){
-    global $ROLES;
-    $ROLES->stack->trap[$user->uname] = $uname;
+    $this->AddStack($uname, 'trap', $user->uname);
     $user->LostAbility();
   }
 

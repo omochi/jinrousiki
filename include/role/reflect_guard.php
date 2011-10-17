@@ -8,5 +8,5 @@ RoleManager::LoadFile('guard');
 class Role_reflect_guard extends Role_guard{
   function __construct(){ parent::__construct(); }
 
-  function IsHunt($user){ return $this->IsHuntTarget($user) || $user->IsOgre(); }
+  protected function IsHunt($user){ return parent::IsHunt($user) || $user->IsOgre(); }
 }

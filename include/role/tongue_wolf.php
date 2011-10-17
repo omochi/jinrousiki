@@ -18,8 +18,8 @@ class Role_tongue_wolf extends Role_wolf{
     global $ROOM;
 
     parent::WolfKill($user, $list);
-    if($user->IsRole('human')) $this->GetVoter()->LostAbility(); //村人なら能力失効
-    $str = $this->GetVoter()->GetHandleName($user->uname, $user->main_role);
+    if($user->IsRole('human')) $this->GetWolfVoter()->LostAbility(); //村人なら能力失効
+    $str = $this->GetWolfVoter()->GetHandleName($user->uname, $user->main_role);
     $ROOM->SystemMessage($str, $this->result);
   }
 }

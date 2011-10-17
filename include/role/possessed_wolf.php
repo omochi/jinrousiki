@@ -20,9 +20,9 @@ class Role_possessed_wolf extends Role_wolf{
       parent::WolfKill($user, $list);
       return;
     }
-    $list[$this->GetVoter()->uname] = $user->uname;
+    $list[$this->GetWolfVoter()->uname] = $user->uname;
     $user->dead_flag = true;
-    if($user->IsRole('anti_voodoo')) $this->GetVoter()->possessed_reset = true; //憑依リセット判定
+    if($user->IsRole('anti_voodoo')) $this->GetWolfVoter()->possessed_reset = true; //憑依リセット判定
   }
 
   //憑依処理

@@ -16,6 +16,7 @@ Ver. 1.5.0
 <a href="#ver150b9">β9</a>
 <a href="#ver150b11">β11</a>
 <a href="#ver150b12">β12</a>
+<a href="#ver150b13">β13</a>
 </p>
 <p>
 <a href="#ver140">Ver. 1.4.0</a>
@@ -34,6 +35,13 @@ Ver. 1.5.0
 <a href="#ver140b21">β21</a>
 <a href="#ver140b22">β22</a>
 </p>
+
+<h2 id="ver150b13">Ver. 1.5.0 β13</h2>
+<h3>include/role/resurrect_mania.php % 15行目付近 (2011/10/16 (Sun) 21:19)</h3>
+<pre>
+× mt_rand(1, 100) <= $ROOM->IsEvent('full_revive') ? 100 : 40){
+○ mt_rand(1, 100) <= ($ROOM->IsEvent('full_revive') ? 100 : 40)){
+</pre>
 
 <h2 id="ver150b12">Ver. 1.5.0 β12</h2>
 <h3>include/role/role_class.php % 217行目付近 (2011/09/26 (Mon) 04:07)</h3>

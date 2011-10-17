@@ -9,7 +9,5 @@ class Role_critical_duelist extends Role_valkyrja_duelist{
   public $self_shoot = true;
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){
-    if(mt_rand(1, 100) <= 5) $vote_number += 100;
-  }
+  function FilterVoteDo(&$number){ if(mt_rand(1, 100) <= 5) $number += 100; }
 }

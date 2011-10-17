@@ -98,7 +98,7 @@ class Role_wolf extends Role{
       $filter = $ROLES->LoadMain($user);
       if(! $filter->resist_wolf) return false;
       $this->FoxEatAction($user); //妖狐襲撃処理
-      $filter->FoxEatCounter($this->GetVoter()); //妖狐襲撃カウンター処理
+      $filter->FoxEatCounter($this->GetWolfVoter()); //妖狐襲撃カウンター処理
 
       //人狼襲撃メッセージを登録
       if(! $ROOM->IsOption('seal_message')) $ROOM->SystemMessage($user->handle_name, 'FOX_EAT');
@@ -126,7 +126,7 @@ class Role_wolf extends Role{
   //毒対象者選出 (襲撃)
   function GetPoisonEatTarget(){
     global $GAME_CONF, $USERS;
-    return $GAME_CONF->poison_only_eater ? $this->GetVoter() :
+    return $GAME_CONF->poison_only_eater ? $this->GetWolfVoter() :
       $USERS->ByUname(GetRandom($USERS->GetLivingWolves()));
   }
 

@@ -9,7 +9,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>TOPIC</h1>
 <h2>Ver. 1.5.0 β13 アップロード (2011/10/15 (Sat) 20:57) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#ver150b12">デバッグ情報</a> (2011/09/29 (Thu) 03:20)</li> -->
+  <li>→ <a href="info/develop/debug.php#ver150b13">デバッグ情報</a> (2011/10/16 (Sun) 21:19)</li>
   <li>「山彦」「白蔵主」「僵尸」「尸解仙」「邪仙」実装</li>
 </ul>
 

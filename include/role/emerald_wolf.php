@@ -9,8 +9,8 @@ class Role_emerald_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
   function WolfEatSkipAction($user){
-    $role = $this->GetVoter()->GetID('mind_friend');
-    $this->GetVoter()->AddRole($role);
+    $role = $this->GetWolfVoter()->GetID('mind_friend');
+    $this->GetWolfVoter()->AddRole($role);
     $user->AddRole($role);
   }
 }

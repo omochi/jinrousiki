@@ -2,7 +2,7 @@
 /*
   ◆一日村長 (day_voter)
   ○仕様
-  ・表示された日のみ、投票数が +1 される
+  ・投票数：+1 (当日限定)
 */
 class Role_day_voter extends Role{
   function __construct(){ parent::__construct(); }
@@ -11,8 +11,8 @@ class Role_day_voter extends Role{
     if($this->GetActor()->IsDoomRole($this->role)) parent::OutputAbility();
   }
 
-  function FilterVoteDo(&$vote_number){
+  function FilterVoteDo(&$number){
     global $ROOM;
-    if($this->GetActor()->GetDoomDate($this->role) == $ROOM->date) $vote_number++;
+    if($this->GetActor()->GetDoomDate($this->role) == $ROOM->date) $number++;
   }
 }

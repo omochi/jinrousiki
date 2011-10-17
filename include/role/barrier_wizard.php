@@ -7,10 +7,10 @@
 */
 RoleManager::LoadFile('wizard');
 class Role_barrier_wizard extends Role_wizard{
-  public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
-  public $result_list = array('GUARD_SUCCESS');
   public $action = 'SPREAD_WIZARD_DO';
   public $submit = 'wizard_do';
+  public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
+  public $result_list = array('GUARD_SUCCESS');
   function __construct(){ parent::__construct(); }
 
   function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
@@ -27,7 +27,7 @@ class Role_barrier_wizard extends Role_wizard{
       $user = $USERS->ByID($id);
       //例外判定
       if($this->IsActor($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()){
-	return '自分自身・生存者以外・身代わり君には投票できません';
+	return '自分・死者・身代わり君には投票できません';
       }
       $user_list[$id] = $user;
     }
@@ -64,20 +64,21 @@ class Role_barrier_wizard extends Role_wizard{
       $ROLES->stack->frostbite[] = $uname;
   }
 
-  function GetRate(){
-    global $ROOM;
-    return $ROOM->IsEvent('full_wizard') ? 1.25 : ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
-  }
-
   function GetGuard($uname, &$list){
-    $rate  = $this->GetRate();
+    $rate  = $this->GetGuardRate();
     foreach($this->GetStack() as $target_uname => $target_list){
       if(in_array($uname, $target_list) &&
 	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $list[] = $target_uname;
     }
   }
 
+  //護衛成功係数取得
+  private function GetGuardRate(){
+    global $ROOM;
+    return $ROOM->IsEvent('full_wizard') ? 1.25 : ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
+  }
+
   function GuardFailed(){ return false; }
 
-  function GuardAction($user, $flag = false){}
+  function GuardAction($user, $flag){}
 }

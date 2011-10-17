@@ -2,32 +2,26 @@
 /*
   ◆村人 (human)
   ○仕様
-  ・座敷童子が生存している or 天候「疎雨」時、投票数が +1 される
+  ・投票数：+1 (座敷童子生存 / 天候「疎雨」)
 */
 class Role_human extends Role{
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){
-    if($this->IsBrownie()) $vote_number++;
-  }
+  function FilterVoteDo(&$number){ if($this->IsBrownie()) $number++; }
 
+  //投票数増加判定
   private function IsBrownie(){
-    global $ROOM, $ROLES;
+    global $ROOM;
 
-    if(is_null($ROLES->stack->is_brownie)){
-      $ROLES->stack->is_brownie = false;
-      if($ROOM->IsEvent('brownie')){ //天候「疎雨」判定
-	$ROLES->stack->is_brownie = true;
+    if(is_null($flag = $this->GetStack())){
+      $role = 'brownie';
+      $flag = $ROOM->IsEvent($role); //天候判定
+      foreach($this->GetUser() as $user){ //座敷童子の生存判定
+	if($flag) break;
+	$flag = $user->IsLiveRole($role);
       }
-      else{
-	foreach($this->GetUser() as $user){ //座敷童子の生存判定
-	  if($user->IsLiveRole('brownie')){
-	    $ROLES->stack->is_brownie = true;
-	    break;
-	  }
-	}
-      }
+      $this->SetStack($flag);
     }
-    return $ROLES->stack->is_brownie;
+    return $flag;
   }
 }

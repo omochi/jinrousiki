@@ -79,6 +79,7 @@ class Role_weather_priest extends Role_priest{
     $weather = $GAME_CONF->GetWeather();
     //$weather = 44; //テスト用
     $date = 2;
-    $ROOM->EntryWeather($weather, $date, count($role_flag->weather_priest) > 0);
+    $flag = property_exists($role_flag, 'weather_priest') && count($role_flag->weather_priest) > 0;
+    $ROOM->EntryWeather($weather, $date, $flag);
   }
 }

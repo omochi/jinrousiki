@@ -2,8 +2,8 @@
 /*
   ◆解答者 (panelist)
   ○仕様
-  ・ショック死：出題者に投票する
-  ・処刑投票：投票数が 0 で固定される
+  ・ショック死：出題者投票
+  ・投票数：0
 */
 RoleManager::LoadFile('chicken');
 class Role_panelist extends Role_chicken{
@@ -14,5 +14,5 @@ class Role_panelist extends Role_chicken{
     return ! $this->IgnoreSuddenDeath() && $this->GetVoteUser()->IsRole('quiz');
   }
 
-  function FilterVoteDo(&$vote_number){ $vote_number = 0; }
+  function FilterVoteDo(&$number){ $number = 0; }
 }

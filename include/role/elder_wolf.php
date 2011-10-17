@@ -8,5 +8,5 @@ RoleManager::LoadFile('wolf');
 class Role_elder_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$vote_number){ $vote_number++; }
+  function FilterVoteDo(&$number){ $number++; }
 }

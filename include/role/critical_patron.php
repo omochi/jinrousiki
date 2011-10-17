@@ -10,7 +10,5 @@ class Role_critical_patron extends Role_patron{
   public $patron_role = 'occupied_luck';
   function __construct(){ parent::__construct(); }
 
-  function FilterVoted(&$voted_number){
-    if(mt_rand(1, 100) <= 5) $voted_number += 100;
-  }
+  function FilterVoted(&$number){ if(mt_rand(1, 100) <= 5) $number += 100; }
 }
