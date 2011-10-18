@@ -9,18 +9,16 @@ class Role_critical_avenger extends Role_avenger{
   function __construct(){ parent::__construct(); }
 
   function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole($this->role)) $this->AddStack($uname);
+    $this->InitStack();
+    if($this->IsRealActor()) $this->AddStack($uname);
   }
 
   function VoteAction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
+    foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
-      $target = $USERS->ByRealUname($target_uname);
-      if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddRole('critical_luck');
+      $user = $USERS->ByRealUname($target_uname);
+      if($user->IsLive(true) && ! $user->IsAvoid()) $user->AddRole('critical_luck');
     }
   }
 }

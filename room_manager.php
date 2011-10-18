@@ -7,7 +7,7 @@ if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
 EncodePostData();
 if($_POST['command'] == 'CREATE_ROOM'){
-  $INIT_CONF->LoadClass('USER_ICON', 'TWITTER');
+  $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
   CreateRoom();
 }
 else{

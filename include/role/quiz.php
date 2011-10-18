@@ -10,15 +10,11 @@ class Role_quiz extends Role{
 
   function OutputAbility(){
     global $ROLE_IMG, $ROOM;
-
     parent::OutputAbility();
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
   }
 
-  function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
-  }
+  function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
 
   function DecideVoteKill(){ $this->DecideVoteKillSame(); }
 }

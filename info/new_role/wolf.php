@@ -92,11 +92,12 @@ OutputRolePageHeader('人狼陣営');
 <a href="#doom_wolf">冥狼</a>
 <a href="#fire_wolf">火狼</a>
 <a href="#sex_wolf">雛狼</a>
+<a href="#sharp_wolf">鋭狼</a>
 <a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
-<a href="#possessed_wolf">憑狼</a>
 </p>
 <p>
+<a href="#possessed_wolf">憑狼</a>
 <a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
@@ -366,7 +367,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
+<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -383,7 +384,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#wisp">鬼火付加能力者</a>・<a href="ability.php#seal">封印対象者</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#wisp">鬼火付加能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -402,13 +403,28 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="fox.php#sex_fox">雛狐</a>の人狼バージョンです。
 能力そのものよりも副次的効果の方が重要です (いわゆる空襲撃が可能になります)。
 この狼が LW になると非常に辛い事になるので気をつけましょう。
+</pre>
+
+<h3 id="sharp_wolf">鋭狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 β14～]</h3>
+<pre>
+<a href="#mad_group">狂人系</a>と人狼が襲撃して発動する可能性のある<a href="ability.php#poison">毒能力者</a> (<a href="human.php#soul_assassin">辻斬り</a>と同じ) を
+襲撃した場合は回避する (噛み殺さない) 人狼。
+回避した場合は襲撃失敗扱いで、本人に専用のメッセージが表示される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/117" target="_top">新役職考案スレ2(117)</a> が原型です。
 </pre>
 
 <h3 id="hungry_wolf">餓狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12～]</h3>
@@ -426,7 +442,7 @@ OutputRolePageHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

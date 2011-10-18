@@ -13,14 +13,14 @@ class Role_chicken extends Role{
     if($this->IsSuddenDeath()) $this->SetSuddenDeath($this->sudden_death);
   }
 
-  //ショック死セット済み判定
-  function IgnoreSuddenDeath(){ return $this->GetStack('sudden_death') != ''; }
+  //ショック死データ登録
+  function SetSuddenDeath($type){ $this->SetStack($type, 'sudden_death'); }
 
   //ショック死セット判定
   function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->GetVotedCount() > 0; }
 
-  //ショック死データ登録
-  function SetSuddenDeath($type){ $this->SetStack($type, 'sudden_death'); }
+  //ショック死セット済み判定
+  function IgnoreSuddenDeath(){ return $this->GetStack('sudden_death') != ''; }
 
   //投票先人数取得
   function GetVoteCount(){

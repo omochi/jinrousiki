@@ -10,9 +10,7 @@ class Role_centaurus_pharmacist extends Role_pharmacist{
 
   function VoteAction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
+    foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
       if($this->DistinguishPoison($USERS->ByRealUname($target_uname)) != 'nothing'){
 	$USERS->Kill($USERS->UnameToNumber($uname), 'POISON_DEAD_day');

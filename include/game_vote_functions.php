@@ -1438,6 +1438,8 @@ function AggregateVoteNight($skip = false){
   }
 
   do{ //人狼の襲撃成功判定
+    $wolf_target->wolf_eat    = false;
+    $wolf_target->wolf_killed = false;
     if($skip || $ROOM->IsQuiz()) break; //スキップモード・クイズ村仕様
 
     if(! $voted_wolf->IsSiriusWolf(false)){ //罠判定 (覚醒天狼は無効)
@@ -1481,6 +1483,7 @@ function AggregateVoteNight($skip = false){
 
     //-- 襲撃処理 --//
     $wolf_filter->WolfKill($wolf_target, $ROLES->stack->possessed);
+    $wolf_target->wolf_eat    = true;
     $wolf_target->wolf_killed = true;
 
     if($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()){ //-- 毒死判定 --//

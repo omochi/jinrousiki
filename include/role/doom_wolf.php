@@ -13,7 +13,7 @@ class Role_doom_wolf extends Role_wolf{
 
   function WolfEatAction($user){
     $user->AddDoom(2);
-    $user->wolf_killed = true; //尾行判定は成功扱い
+    $user->wolf_eat = true; //襲撃は成功扱い
     return true;
   }
 }

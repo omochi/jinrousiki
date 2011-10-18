@@ -18,7 +18,7 @@ class Role_fire_wolf extends Role_wolf{
   function WolfEatAction($user){
     if(! $this->GetWolfVoter()->IsActive()) return false;
     $user->AddRole('black_wisp');
-    $user->wolf_killed = true; //尾行判定は成功扱い
+    $user->wolf_eat = true; //襲撃は成功扱い
     $this->GetWolfVoter()->LostAbility();
     return true;
   }

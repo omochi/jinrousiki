@@ -9,19 +9,18 @@ RoleManager::LoadFile('pharmacist');
 class Role_revive_pharmacist extends Role_pharmacist{
   function __construct(){ parent::__construct(); }
 
-  //復活判定
-  function IsResurrect(){
-    $actor = $this->GetActor();
-    return $actor->IsDead(true) && ! $actor->IsDummyBoy() && ! $actor->IsLovers() &&
-      $actor->wolf_killed  && ! $this->GetWolfVoter()->IsSiriusWolf();
-  }
-
   //復活処理
   function Resurrect(){
     $user = $this->GetActor();
-    if($this->IsResurrect() && $user->IsActive()){
+    if($this->IsResurrect($user) && $user->IsActive()){
       $user->Revive();
       $user->LostAbility();
     }
+  }
+
+  //復活判定
+  protected function IsResurrect($user){
+    return $user->wolf_killed && $user->IsDead(true) && ! $user->IsDummyBoy() &&
+      ! $user->IsLovers() && ! $this->GetWolfVoter()->IsSiriusWolf();
   }
 }

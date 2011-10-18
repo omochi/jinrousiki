@@ -43,6 +43,12 @@ Ver. 1.5.0
 ○ mt_rand(1, 100) <= ($ROOM->IsEvent('full_revive') ? 100 : 40)){
 </pre>
 
+<h3>room_manager.php % 10行目付近 (2011/10/17 (Mon) 21:02)</h3>
+<pre>
+× $INIT_CONF->LoadClass('USER_ICON', 'TWITTER');
+○ $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
+</pre>
+
 <h2 id="ver150b12">Ver. 1.5.0 β12</h2>
 <h3>include/role/role_class.php % 217行目付近 (2011/09/26 (Mon) 04:07)</h3>
 <h4>[before]</h4>

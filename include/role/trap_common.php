@@ -8,10 +8,7 @@ RoleManager::LoadFile('common');
 class Role_trap_common extends Role_common{
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
-  }
+  function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
 
   function VotedReaction(){
     global $USERS;

@@ -31,7 +31,7 @@ class Role_reporter extends Role{
 
     $target = $this->GetWolfTarget();
     if($user->IsSame($target->uname)){ //尾行成功
-      if(! $user->wolf_killed) return; //人狼に襲撃されていなかったらスキップ
+      if(! $user->wolf_eat) return; //人狼襲撃が失敗していたらスキップ
       $result = $USERS->GetHandleName($this->GetWolfVoter()->uname, true);
       $str    = $this->GetActor()->GetHandleName($target->uname, $result);
       $ROOM->SystemMessage($str, $this->result);

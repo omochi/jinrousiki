@@ -22,10 +22,8 @@ class Role_revive_ogre extends Role_ogre{
   function GetResistRate(){ return 0; }
 
   function Resurrect(){
-    global $ROOM;
-    if($this->IsResurrect() && ! $ROOM->IsEvent('seal_ogre') &&
-       ($ROOM->IsEvent('full_ogre') || mt_rand(1, 100) <= 40)){
-      $this->GetActor()->Revive();
-    }
+    $user = $this->GetActor();
+    $rate = is_null($event = $this->GetEvent()) ? 40 : $event;
+    if($this->IsResurrect($user) && mt_rand(1, 100) <= $rate) $user->Revive();
   }
 }

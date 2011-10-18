@@ -1990,7 +1990,7 @@ Bの蘇生処理はキャンセル
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>・<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#sharp_wolf">鋭狼</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

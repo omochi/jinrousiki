@@ -8,15 +8,13 @@ class Role_corpse_courier_mad extends Role{
   function __construct(){ parent::__construct(); }
 
   function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
+    $this->InitStack();
+    if($this->IsRealActor()) $this->AddStack($uname);
   }
 
   function VoteAction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
+    foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($target_uname)){
 	$USERS->ByRealUname($target_uname)->stolen_flag = true;
 	return;

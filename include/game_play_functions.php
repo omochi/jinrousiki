@@ -232,8 +232,9 @@ function OutputSelfAbilityResult($action){
     $footer = 'clairvoyance_result_footer';
     break;
 
-  case 'TONGUE_WOLF_RESULT':
   case 'SEX_WOLF_RESULT':
+  case 'SHARP_WOLF_RESULT':
+  case 'TONGUE_WOLF_RESULT':
     $type = 'mage';
     $header = 'wolf_result';
     break;

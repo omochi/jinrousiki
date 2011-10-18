@@ -91,6 +91,7 @@ Ver. 1.5.0
 <a href="#ver150b11">β11</a>
 <a href="#ver150b12">β12</a>
 <a href="#ver150b13">β13</a>
+<a href="#ver150b14">β14</a>
 </p>
 
 <p>
@@ -2761,6 +2762,15 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">恋人に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊なキューピッド。人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する</td>
   <td>Ver. 1.5.0 β13</td>
+</tr>
+<tr id="ver150b14">
+  <td><a href="wolf.php#sharp_wolf">鋭狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability"><a href="wolf.php#mad_group">狂人系</a>と<a href="ability.php#poison">毒能力者</a>を襲撃した場合は回避する人狼。</td>
+  <td>Ver. 1.5.0 β14</td>
 </tr>
 </table>
 

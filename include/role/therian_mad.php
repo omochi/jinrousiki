@@ -11,7 +11,7 @@ class Role_therian_mad extends Role{
     $user = $this->GetActor();
     $user->ReplaceRole($user->main_role, 'wolf');
     $user->AddRole('changed_therian');
-    $user->wolf_killed = true; //尾行判定は成功扱い
+    $user->wolf_eat = true; //襲撃は成功扱い
     return true;
   }
 }

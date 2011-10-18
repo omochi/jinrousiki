@@ -6,23 +6,23 @@
 */
 RoleManager::LoadFile('medium');
 class Role_bacchus_medium extends Role_medium{
+  public $sudden_death = 'DRUNK';
   function __construct(){ parent::__construct(); }
 
   function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole($this->role)) $this->AddStack($uname);
+    $this->InitStack();
+    if($this->IsRealActor()) $this->AddStack($uname);
   }
 
   function VoteAction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
+    foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
-      $target = $USERS->ByRealUname($target_uname);
-      if($target->IsLive(true) && $target->IsOgre()){
-	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_DRUNK');
-      }
+      $this->ActiveSuddenDeath($USERS->ByRealUname($target_uname));
     }
+  }
+
+  protected function ActiveSuddenDeath($user){
+    if($user->IsLive(true) && $user->IsOgre()) $this->SuddenDeathKill($user->user_no);
   }
 }

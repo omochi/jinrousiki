@@ -324,69 +324,84 @@ class Role{
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
-  function GetClass($method){
+  protected function GetClass($method){
     $class = 'Role_' . $this->role;
     return method_exists($class, $method) ? new $class() : $this;
   }
 
   //-- 汎用関数 --//
   //ユーザ取得
-  function GetActor(){
+  protected function GetActor(){
     global $ROLES;
     return $ROLES->actor;
   }
 
   //ユーザ名取得
-  function GetUname($uname = NULL){ return is_null($uname) ? $this->GetActor()->uname : $uname; }
+  protected function GetUname($uname = NULL){
+    return is_null($uname) ? $this->GetActor()->uname : $uname;
+  }
 
   //ユーザ情報取得
-  function GetUser(){
+  protected function GetUser(){
     global $USERS;
     return $USERS->rows;
   }
 
+  //データ初期化
+  protected function InitStack($name = NULL){
+    global $ROLES;
+    $data = is_null($name) ? $this->role : $name;
+    if(! property_exists($ROLES->stack, $data)) $ROLES->stack->$data = array();
+  }
+
   //データ取得
-  function GetStack($name = NULL){
+  protected function GetStack($name = NULL, $fill = false){
     global $ROLES;
-    $target = is_null($name) ? $this->role : $name;
-    return property_exists($ROLES->stack, $target) ? $ROLES->stack->$target : NULL;
+    $data = is_null($name) ? $this->role : $name;
+    return property_exists($ROLES->stack, $data) ? $ROLES->stack->$data : ($fill ? array() : NULL);
   }
-
-  //データ追加
-  function AddStack($target_uname, $role = NULL, $uname = NULL){
-    global $ROLES;
-    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $target_uname;
-  }
-
-  //同一ユーザ判定
-  function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
 
   //データセット
-  function SetStack($data, $role = NULL){
+  protected function SetStack($data, $role = NULL){
     global $ROLES;
     $ROLES->stack->{is_null($role) ? $this->role : $role} = $data;
   }
+
+  //データ追加
+  protected function AddStack($data, $role = NULL, $uname = NULL){
+    global $ROLES;
+    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
+  }
+
+  //同一ユーザ判定
+  protected function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
 
   //-- 役職情報表示 --//
   //役職情報表示
   function OutputAbility(){ $this->OutputImage(); }
 
   //役職画像表示
-  function OutputImage(){
+  protected function OutputImage(){
     global $ROLE_IMG;
     $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
   }
 
   //-- 発言処理 --//
   //閲覧者取得
-  function GetViewer(){ return $this->GetStack('viewer'); }
+  protected function GetViewer(){ return $this->GetStack('viewer'); }
 
   //閲覧者情報取得
-  function GetTalkFlag($data){ return $this->GetStack('builder')->flag->$data; }
+  protected function GetTalkFlag($data){ return $this->GetStack('builder')->flag->$data; }
 
   //-- 処刑投票処理 --//
+  //実ユーザ判定
+  protected function IsRealActor(){
+    global $USERS;
+    return $USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role);
+  }
+
   //生存仲間判定
-  function IsLivePartner(){
+  protected function IsLivePartner(){
     global $USERS;
 
     foreach($this->GetActor()->GetPartner($this->role) as $id){
@@ -395,19 +410,24 @@ class Role{
     return false;
   }
 
+  protected function SuddenDeathKill($id){
+    global $USERS;
+    $USERS->SuddenDeath($id, 'SUDDEN_DEATH_' . $this->sudden_death);
+  }
+
   //-- 処刑集計処理 --//
   //処刑者判定
-  function IsVoted($uname = NULL){
+  protected function IsVoted($uname = NULL){
     return $this->GetStack('vote_kill_uname') == $this->GetUname($uname);
   }
 
   //得票者名取得
-  function GetVotedUname($uname = NULL){
+  protected function GetVotedUname($uname = NULL){
     return array_keys($this->GetStack('target'), $this->GetUname($uname));
   }
 
   //投票者ユーザ取得
-  function GetVoteUser($uname = NULL){
+  protected function GetVoteUser($uname = NULL){
     global $ROLES, $USERS;
     return $USERS->ByRealUname($ROLES->stack->target[$this->GetUname($uname)]);
   }
@@ -454,7 +474,7 @@ class Role{
   }
 
   //投票対象判定
-  function IsVoteCheckbox($user, $live){ return $live && ! $this->IsActor($user->uname); }
+  protected function IsVoteCheckbox($user, $live){ return $live && ! $this->IsActor($user->uname); }
 
   //投票のチェックボックスヘッダ取得
   function GetVoteCheckboxHeader(){ return '<input type="radio" name="target_no"'; }
@@ -490,32 +510,32 @@ class Role{
 
   //投票スキップ判定 (夜)
   function IgnoreVoteNight($user, $live){
-    return ! $live || $this->IsActor($user->uname) ? '自分・生存者以外には投票できません' : NULL;
+    return ! $live || $this->IsActor($user->uname) ? '自分・死者には投票できません' : NULL;
   }
 
   //-- 投票集計処理 (夜) --//
   //成功データ追加
-  function AddSuccess($target, $data = NULL, $null = false){
+  protected function AddSuccess($target, $data = NULL, $null = false){
     global $ROLES;
     $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? NULL : true;
   }
 
   //投票者取得
-  function GetVoter(){ return $this->GetStack('voter'); }
+  protected function GetVoter(){ return $this->GetStack('voter'); }
 
   //襲撃人狼取得
-  function GetWolfVoter(){ return $this->GetStack('voted_wolf'); }
+  protected function GetWolfVoter(){ return $this->GetStack('voted_wolf'); }
 
   //人狼襲撃対象者取得
-  function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
+  protected function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
 
   //-- 勝敗判定 --//
   //勝利判定
   function Win($victory){ return true; }
 
   //生存判定
-  function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }
+  protected function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }
 
   //死亡判定
-  function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
+  protected function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
 }

@@ -591,6 +591,10 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雛狼|です。襲撃した人の性別を知ることができますが、殺すことはできません。\n　あなたの未熟な襲撃は、小賢しい大人どもの計算を大いに狂わすことができるはずです。",
     'type' => 'wolf');
 
+  public $sharp_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|鋭狼|です。襲撃した人が|狂人|か#毒#を持っていた場合は襲撃を回避することができます。",
+    'type' => 'wolf', 'delimiter' => array('#' => 'poison'));
+
   public $hungry_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|餓狼|です。仲間の|狼|や#妖狐#すら噛み殺せますが、村人は殺せません。強者のみがあなたの獲物なのです。",
     'type' => 'wise_wolf');
@@ -1761,9 +1765,10 @@ class RoleMessageList{
   public $result_doom_wolf = array('message' => "さんは|冥狼|でした", 'type' => 'result_wolf');
   public $result_fire_wolf = array('message' => "さんは|火狼|でした", 'type' => 'result_wolf');
   public $result_sex_wolf = array('message' => "さんは|雛狼|でした", 'type' => 'result_wolf');
+  public $result_sharp_wolf = array('message' => "さんは|鋭狼|でした", 'type' => 'result_wolf');
+  public $result_hungry_wolf = array('message' => "さんは|餓狼|でした", 'type' => 'result_wolf');
   public $result_tongue_wolf = array('message' => "さんは|舌禍狼|でした", 'type' => 'result_wolf');
   public $result_possessed_wolf = array('message' => "さんは|憑狼|でした", 'type' => 'result_wolf');
-  public $result_hungry_wolf = array('message' => "さんは|餓狼|でした", 'type' => 'result_wolf');
   public $result_sirius_wolf = array('message' => "さんは|天狼|でした", 'type' => 'result_wolf');
   public $result_elder_wolf = array('message' => "さんは|古狼|でした", 'type' => 'result_wolf');
   public $result_cute_wolf   = array('message' => "さんは|萌狼|でした", 'type' => 'result_wolf');
@@ -1932,6 +1937,7 @@ class RoleMessageList{
   public $result_embalm_reposeful = array('message' => "さんの死顔は安らかな表情でした");
   public $result_embalm_agony = array('message' => "さんの死顔は|苦悶|の表情でした", 'type' => 'result_wolf');
   public $result_attempt = array('message' => "さんは命を狙われたようです");
+  public $result_wolf_avoid = array('message' => "さんへの|襲撃|を回避しました", 'type' => 'result_wolf');
 
   public $mage_result = array('message' => "|占い|結果： ", 'type' => 'result_mage');
   public $voodoo_killer_success = array('message' => "さんの|解呪|に成功しました！", 'type' => 'result_mage');
@@ -2097,6 +2103,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
+#$builder->Output('sharp_wolf');
 #$builder->Output('sacrifice_fox'); #
 #$builder->Output('hariti_yaksa'); //
 $builder->Output('resurrect_mania'); //

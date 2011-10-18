@@ -91,7 +91,7 @@ class Role_wolf extends Role{
 
     if($user->IsWolf()){ //人狼系判定 (例：銀狼出現)
       $this->WolfEatSkipAction($user);
-      $user->wolf_killed = true; //尾行判定は成功扱い
+      $user->wolf_eat = true; //襲撃は成功扱い
       return true;
     }
     if($user->IsFox()){ //妖狐判定
@@ -102,7 +102,7 @@ class Role_wolf extends Role{
 
       //人狼襲撃メッセージを登録
       if(! $ROOM->IsOption('seal_message')) $ROOM->SystemMessage($user->handle_name, 'FOX_EAT');
-      $user->wolf_killed = true; //尾行判定は成功扱い
+      $user->wolf_eat = true; //襲撃は成功扱い
       return true;
     }
     return false;

@@ -5,12 +5,10 @@
   ・道連れ：投票先がショック死していたら誰か一人をさらにショック死させる
 */
 class Role_follow_mad extends Role{
+  public $sudden_death = 'FOLLOWED';
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
-  }
+  function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
 
   function Followed($user_list){
     global $USERS;
@@ -38,7 +36,7 @@ class Role_follow_mad extends Role{
       $count--;
       shuffle($target_stack); //配列をシャッフル
       $id = array_shift($target_stack);
-      $USERS->SuddenDeath($id, 'SUDDEN_DEATH_FOLLOWED'); //死亡処理
+      $this->SuddenDeathKill($id); //死亡処理
 
       if(! in_array($id, $follow_stack)) continue;//連鎖判定
       $stack = array();

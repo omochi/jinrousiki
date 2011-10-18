@@ -20,7 +20,7 @@ class Role_sex_wolf extends Role_wolf{
 
     $str = $this->GetActor()->GetHandleName($user->uname, $this->DistinguishSex($user));
     $ROOM->SystemMessage($str, $this->result);
-    $user->wolf_killed = true; //尾行判定は成功扱い
+    $user->wolf_eat = true; //襲撃は成功扱い
     return true;
   }
 }

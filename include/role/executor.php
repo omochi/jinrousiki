@@ -10,18 +10,15 @@ class Role_executor extends Role{
   public $display_role = 'human';
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
-    global $USERS;
-    if($USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role)) $this->AddStack($uname);
-  }
+  function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
 
   function DecideVoteKill(){
     global $USERS;
 
     if($this->GetVoteKill() != '' || ! is_array($this->GetStack())) return;
     $stack = array();
-    foreach($this->GetMaxVotedUname() as $target){
-      if(! $USERS->ByRealUname($target)->IsCamp('human', true)) $stack[$target] = true;
+    foreach($this->GetMaxVotedUname() as $uname){
+      if(! $USERS->ByRealUname($uname)->IsCamp('human', true)) $stack[$uname] = true;
     }
     if(count($stack) == 1) $this->SetVoteKill(array_shift(array_keys($stack)));
   }
