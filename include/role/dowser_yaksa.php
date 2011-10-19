@@ -20,5 +20,5 @@ class Role_dowser_yaksa extends Role_yaksa{
     return true;
   }
 
-  function IgnoreAssassin($user){ return count($user->role_list) == 1; }
+  protected function IgnoreAssassin($user){ return count($user->role_list) == 1; }
 }

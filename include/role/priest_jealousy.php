@@ -5,9 +5,12 @@
   ・役職表示：司祭
   ・司祭：恋人
 */
-RoleManager::LoadFile('priest');
-class Role_priest_jealousy extends Role_priest{
+class Role_priest_jealousy extends Role{
+  public $mix_in = 'priest';
   public $display_role = 'priest';
-  public $priest_type  = 'lovers';
   function __construct(){ parent::__construct(); }
+
+  function OutputAbility(){ $this->filter->OutputAbility(); }
+
+  function GetPriestType(){ return 'lovers'; }
 }

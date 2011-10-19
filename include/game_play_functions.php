@@ -178,16 +178,22 @@ function OutputSelfAbilityResult($action){
     $header = 'weather_priest_header';
     break;
 
-  case 'BORDER_PRIEST_RESULT':
-    $type = 'mage';
-    $header = 'border_priest_header';
-    $footer = 'priest_footer';
-    break;
-
   case 'CRISIS_PRIEST_RESULT':
     $type = 'crisis_priest';
     $header = 'side_';
     $footer = 'crisis_priest_result';
+    break;
+
+  case 'HOLY_PRIEST_RESULT':
+    $type = 'guard';
+    $header = 'holy_priest_header';
+    $footer = 'dowser_priest_footer';
+    break;
+
+  case 'BORDER_PRIEST_RESULT':
+    $type = 'guard';
+    $header = 'border_priest_header';
+    $footer = 'priest_footer';
     break;
 
   case 'GUARD_SUCCESS':
@@ -319,7 +325,7 @@ function OutputSelfAbilityResult($action){
   case 'guard':
     foreach($result_list as $result){
       list($actor, $target) = explode("\t", $result);
-      if($SELF->IsSameName($actor)) OutputAbilityResult(NULL, $target, $footer);
+      if($SELF->IsSameName($actor)) OutputAbilityResult($header, $target, $footer);
     }
     break;
 

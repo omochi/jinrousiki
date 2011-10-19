@@ -278,7 +278,7 @@ OutputRolePageHeader('鬼陣営');
 
 <h3 id="sacrifice_ogre">酒呑童子 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β20～]</h3>
 <h4>[耐性] 人狼襲撃：身代わり / 暗殺：反射 (50%)</h4>
-<h4>[人攫い能力] タイプ：<a href="sub_role.php#psycho_infected">洗脳者</a>付加 / 成功率低下：1/2</h4>
+<h4>[人攫い能力] タイプ：<a href="sub_role.php#psycho_infected">洗脳者</a>付加 / 成功率低下：3/5</h4>
 <h4>[身代わり能力] 洗脳者</h4>
 <pre>
 鬼系の一種で、勝利条件は「自分自身の生存 + 村人陣営以外の勝利」。
@@ -294,6 +294,10 @@ OutputRolePageHeader('鬼陣営');
 <li>逃亡失敗・人狼に遭遇して死亡した<a href="human.php#escaper_group">逃亡者系</a>を身代わりにすることはできない。</li>
 <li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、身代わり能力は無効。</li>
 </ol>
+<h5>Ver. 1.5.0 β14～</h5>
+<pre>
+成功率低下：1/2 → 3/5
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="#hariti_yaksa">鬼子母神</a>・<a href="ability.php#sacrifice">身代わり能力者</a>

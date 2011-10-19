@@ -10,7 +10,6 @@
 RoleManager::LoadFile('ogre');
 class Role_sacrifice_ogre extends Role_ogre{
   public $mix_in = 'protected';
-  public $reduce_rate = 2;
   function __construct(){ parent::__construct(); }
 
   function OutputOgreAbility(){
@@ -28,9 +27,11 @@ class Role_sacrifice_ogre extends Role_ogre{
 
   function GetResistRate(){ return 0; }
 
-  function IgnoreAssassin($user){ return $user->IsCamp('vampire'); }
+  protected function GetReduceRate(){ return 3 / 5; }
 
-  function Assassin($user){ $user->AddRole('psycho_infected'); }
+  protected function IgnoreAssassin($user){ return $user->IsCamp('vampire'); }
+
+  protected function Assassin($user){ $user->AddRole('psycho_infected'); }
 
   function IsSacrifice($user){
     return ! $this->IsActor($user->uname) && $user->IsRole('psycho_infected');

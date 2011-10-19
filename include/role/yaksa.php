@@ -19,7 +19,7 @@ class Role_yaksa extends Role_ogre{
   }
 
   //勝利無効判定
-  function IgnoreWin($victory){ return $victory == 'wolf'; }
+  protected function IgnoreWin($victory){ return $victory == 'wolf'; }
 
-  function IgnoreAssassin($user){ return ! $user->IsWolf(); }
+  protected function IgnoreAssassin($user){ return ! $user->IsWolf(); }
 }

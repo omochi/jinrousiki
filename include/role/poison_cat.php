@@ -72,7 +72,7 @@ class Role_poison_cat extends Role{
       }
     }
     else{
-      $ROOM->SystemMessage($this->GetActor()->handle_name, 'REVIVE_FAILED');
+      $ROOM->SystemMessage($USERS->GetHandleName($user->uname), 'REVIVE_FAILED');
     }
     if($ROOM->IsOption('seal_message')) return; //蘇生結果を登録 (天啓封印ならスキップ)
     $str = $this->GetActor()->handle_name . "\t" . $USERS->GetHandleName($user->uname);

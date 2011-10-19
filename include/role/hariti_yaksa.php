@@ -9,9 +9,9 @@ class Role_hariti_yaksa extends Role_yaksa{
   public $reduce_rate = 2;
   function __construct(){ parent::__construct(); }
 
-  function IgnoreWin($victory){ return $victory == 'human'; }
+  protected function IgnoreWin($victory){ return $victory == 'human'; }
 
-  function IgnoreAssassin($user){
+  protected function IgnoreAssassin($user){
     return ! ($user->IsChildFox() || $user->IsRoleGroup('cupid', 'angel'));
   }
 }

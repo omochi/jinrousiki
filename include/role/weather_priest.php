@@ -2,14 +2,16 @@
 /*
   ◆祈祷師 (weather_priest)
   ○仕様
-  ・司祭：天候発動
-  ・結果表示：2日目以降
+  ・司祭：天候発動 (2日目以降)
 */
 RoleManager::LoadFile('priest');
 class Role_weather_priest extends Role_priest{
-  public $result_date = 'second';
-
   function __construct(){ parent::__construct(); }
+
+  protected function GetOutputRole(){
+    global $ROOM;
+    return $ROOM->date > 1 ? $this->role : NULL;
+  }
 
   function Priest($role_flag, $data){
     global $GAME_CONF, $ROOM;

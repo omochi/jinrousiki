@@ -15,9 +15,9 @@ class Role_poison_ogre extends Role_ogre{
 
   function Win($victory){ return $victory == 'quiz' || $this->IsLive(); }
 
-  function IgnoreAssassin($user){ return $user->IsRole('quiz'); }
+  protected function IgnoreAssassin($user){ return $user->IsRole('quiz'); }
 
-  function Assassin($user){ $user->AddRole('panelist'); }
+  protected function Assassin($user){ $user->AddRole('panelist'); }
 
   function IsPoisonTarget($user){ return $user->IsRoleGroup('wolf', 'fox', 'ogre', 'yaksa'); }
 }

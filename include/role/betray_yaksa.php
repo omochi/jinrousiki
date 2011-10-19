@@ -9,7 +9,7 @@ RoleManager::LoadFile('yaksa');
 class Role_betray_yaksa extends Role_yaksa{
   function __construct(){ parent::__construct(); }
 
-  function IgnoreWin($victory){ return $victory != 'human'; }
+  protected function IgnoreWin($victory){ return $victory != 'human'; }
 
-  function IgnoreAssassin($user){ return ! $user->IsCamp('chiroptera', true); }
+  protected function IgnoreAssassin($user){ return ! $user->IsCamp('chiroptera', true); }
 }

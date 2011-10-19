@@ -403,7 +403,6 @@ class Role{
   //生存仲間判定
   protected function IsLivePartner(){
     global $USERS;
-
     foreach($this->GetActor()->GetPartner($this->role) as $id){
       if($USERS->ByID($id)->IsLive(true)) return true;
     }

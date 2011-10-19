@@ -31,7 +31,6 @@ class Role_ogre extends Role{
     return $ROOM->date > 1;
   }
 
-  //勝利判定
   function Win($victory){
     if($this->IsDead()) return false;
     if($victory == 'wolf') return true;
@@ -65,12 +64,12 @@ class Role_ogre extends Role{
     if($this->IgnoreAssassin($user)) return; //個別無効判定
 
     //人攫い成功判定
-    $rand = mt_rand(1, 100); //人攫い成功判定乱数
-    //$rand = 5; //テスト用
     $times = (int)$this->GetActor()->GetMainRoleTarget();
-    $rate  = $this->GetAssassinRate($times);
+    $event = $this->GetEvent();
+    $rate  = is_null($event) ? ceil(100 * pow($this->GetReduceRate(), $times)) : $event;
+    $rand  = mt_rand(1, 100); //人攫い成功判定乱数
+    //$rand = 5; //テスト用
     //PrintData($rand, 'Rate [OGRE_DO]: ' . $rate);
-
     if($rand > $rate) return; //成功判定
     $this->Assassin($user);
 
@@ -81,13 +80,7 @@ class Role_ogre extends Role{
   }
 
   //人攫い失敗判定
-  function IgnoreAssassin($user){}
-
-  //人攫い成功率取得
-  function GetAssassinRate($times){
-    $event = $this->GetEvent();
-    return is_null($event) ? ceil(100 * pow($this->GetReduceRate(), $times)) : $event;
-  }
+  protected function IgnoreAssassin($user){ return false; }
 
   //天候情報取得
   protected function GetEvent(){
@@ -98,10 +91,10 @@ class Role_ogre extends Role{
   //人攫い成功減衰率取得
   protected function GetReduceRate(){ return 1 / $this->reduce_rate; }
 
-  //人攫い処理
-  function Assassin($user){ $this->AddSuccess($user->user_no, 'ogre'); }
+  //人攫い
+  protected function Assassin($user){ $this->AddSuccess($user->user_no, 'ogre'); }
 
-  //人攫い死処理
+  //人攫い死
   function AssassinKill(){
     global $USERS;
     foreach($this->GetStack() as $id => $flag) $USERS->Kill($id, 'OGRE_KILLED');

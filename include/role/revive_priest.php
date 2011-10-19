@@ -2,12 +2,13 @@
 /*
   ◆天人 (revive_priest)
   ○仕様
-  ・結果表示：なし
+  ・司祭：蘇生
 */
 RoleManager::LoadFile('priest');
 class Role_revive_priest extends Role_priest{
-  public $result_date = NULL;
   function __construct(){ parent::__construct(); }
+
+  protected function GetOutputRole(){ return NULL; }
 
   function Priest($role_flag, $data){
     global $ROOM, $USERS;
@@ -27,7 +28,7 @@ class Role_revive_priest extends Role_priest{
     }
   }
 
-  //帰還処理
+  //帰還
   function PriestReturn(){
     global $USERS;
 

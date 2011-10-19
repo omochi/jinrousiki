@@ -425,6 +425,8 @@ OutputRolePageHeader('人狼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/117" target="_top">新役職考案スレ2(117)</a> が原型です。
+人狼視点で騙りを把握している人の正体を絞り込むことができます。
+回避した場合でも恋人の可能性は残るので注意しましょう。
 </pre>
 
 <h3 id="hungry_wolf">餓狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β12～]</h3>

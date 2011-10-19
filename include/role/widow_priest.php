@@ -4,14 +4,13 @@
   ○仕様
   ・役職表示：村人
   ・司祭：共感者 (身代わり君)
-  ・結果表示：特殊 (共感者)
 */
 RoleManager::LoadFile('priest');
 class Role_widow_priest extends Role_priest{
   public $display_role = 'human';
-  public $result_date  = NULL;
-
   function __construct(){ parent::__construct(); }
+
+  protected function GetOutputRole(){ return NULL; }
 
   function Priest($role_flag, $data){
     global $ROOM, $USERS;

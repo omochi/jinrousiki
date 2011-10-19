@@ -210,6 +210,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人陣営|、または死亡した_村人陣営以外_の総数を知ることができます。\n　神に最も近いあなたなら、幾夜の祈りののち、毎夜お告げを得ることができるでしょう。神の御心を村人へ伝え、導くのです！",
     'type' => 'bishop_priest');
 
+  public $holy_priest = array(
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#聖徳道士#です。一定日数後に身代わり君とあなたを含めた周囲の人の勝利陣営の総数を知ることができます。",
+    'type' => 'bishop_priest');
+
   public $revive_priest = array(
     'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#天人#です。初日に一度天に帰って下界の様子を眺める事になります。後で颯爽と降臨して華麗に村を勝利に導きましょう！",
     'type' => 'priest');
@@ -741,7 +745,7 @@ class RoleMessageList{
     'type' => 'fox', 'delimiter' => array('_' => 'wisp'));
 
   public $sacrifice_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白蔵主|です。占われても呪殺されず、#人狼#に襲撃されても|子狐|と_蝙蝠_を犠牲にして生き延びることができます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|白蔵主|です。占われても呪殺されず、#人狼#に襲撃されても|子狐|と_蝙蝠_を犠牲にして生き延びることができます。\n　あなたの命で誰かが助かるのなら、誰かの命であなたが助かっても良いでしょう。誰かの為にも最後まで生きるのです。",
     'type' => 'fox', 'delimiter' => array('_' => 'chiroptera'));
 
   public $emerald_fox = array(
@@ -1194,7 +1198,7 @@ class RoleMessageList{
     'type' => 'mania', 'delimiter' => array('#' => 'wolf'));
 
   public $resurrect_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|僵尸|です。初日の夜に指定した人と同じ陣営になり、#人狼#に襲撃されても、その人が生きている間は一定確率で_蘇生_できます。",
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|僵尸|です。初日の夜に指定した人と同じ陣営になり、#人狼#に襲撃されても、その人が生きている間は一定確率で_蘇生_できます。\n　死して尚動き続ける魄のみの体。額に札を貼られた今、あなたは道士に従う他ありません。敵の吐息を嗅ぎ分け、主の為に戦うのです。",
     'type' => 'mania', 'delimiter' => array('#' => 'wolf', '_' => 'revive'));
 
   public $revive_mania = array(
@@ -1660,6 +1664,7 @@ class RoleMessageList{
   public $result_high_priest = array('message' => "さんは|大司祭|でした", 'type' => 'result_priest');
   public $result_crisis_priest = array('message' => "さんは|預言者|でした", 'type' => 'result_priest');
   public $result_widow_priest = array('message' => "さんは|未亡人|でした", 'type' => 'result_priest');
+  public $result_holy_priest = array('message' => "さんは|聖徳道士|でした", 'type' => 'result_priest');
   public $result_revive_priest = array('message' => "さんは|天人|でした", 'type' => 'result_priest');
   public $result_border_priest = array('message' => "さんは|境界師|でした", 'type' => 'result_priest');
   public $result_dummy_priest = array('message' => "さんは|夢司祭|でした", 'type' => 'result_priest');
@@ -1958,13 +1963,16 @@ class RoleMessageList{
     'type' => 'priest_header');
   public $dowser_priest_footer = array('message' => "個です");
   public $weather_priest_header = array('message' => "|神託|結果： 明日の天候は", 'type' => 'priest_header');
-  public $border_priest_header = array(
-    'message' => "|神託|結果： 昨夜、あなたの境界に触れた人数は",
-    'type' => 'priest_header');
   public $crisis_priest_result = array('message' => "陣営が勝利目前です");
   public $side_wolf = array('message' => "|人狼|", 'type' => 'result_wolf');
   public $side_fox = array('message' => "|妖狐|", 'type' => 'result_fox');
   public $side_lovers = array('message' => "|恋人|", 'type' => 'result_cupid');
+  public $holy_priest_header = array(
+    'message' => "|神託|結果： 該当者たちの勝利陣営の合計は",
+    'type' => 'priest_header');
+  public $border_priest_header = array(
+    'message' => "|神託|結果： 昨夜、あなたの境界に触れた人数は",
+    'type' => 'priest_header');
   public $guard_hunted = array('message' => "さんを|狩る|ことに成功しました！", 'type' => 'result_guard');
   public $guard_success = array('message' => "さん|護衛|成功！", 'type' => 'result_guard');
   public $reporter_result_header = array('message' => "|張り込み|結果： ", 'type' => 'result_guard');
@@ -2103,7 +2111,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
+#$builder->Output('holy_priest');
+$builder->Output('holy_priest_header');
 #$builder->Output('sharp_wolf');
-#$builder->Output('sacrifice_fox'); #
 #$builder->Output('hariti_yaksa'); //
-$builder->Output('resurrect_mania'); //

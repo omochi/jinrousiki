@@ -10,9 +10,9 @@ class Role_cursed_yaksa extends Role_yaksa{
   public $reduce_rate = 3;
   function __construct(){ parent::__construct(); }
 
-  function IgnoreWin($victory){ return false; }
+  protected function IgnoreWin($victory){ return false; }
 
-  function IgnoreAssassin($user){
+  protected function IgnoreAssassin($user){
     return ! ($user->IsRoleGroup('mage', 'wizard') || $user->IsRole('voodoo_killer'));
   }
 }

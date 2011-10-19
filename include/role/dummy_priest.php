@@ -4,7 +4,6 @@
   ○仕様
   ・役職表示：司祭
   ・司祭：夢系 + 妖精系
-  ・結果表示：偶数日 (4日目以降)
 */
 RoleManager::LoadFile('priest');
 class Role_dummy_priest extends Role_priest{

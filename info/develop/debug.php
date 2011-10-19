@@ -49,6 +49,23 @@ Ver. 1.5.0
 ○ $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
 </pre>
 
+<h3>include/role/poison_cat.php % 75行目付近 (2011/10/18 (Tue) 21:14)</h3>
+<pre>
+× $ROOM->SystemMessage($this->GetActor()->handle_name, 'REVIVE_FAILED');
+○ $ROOM->SystemMessage($USERS->GetHandleName($user->uname), 'REVIVE_FAILED');
+</pre>
+
+<h3>include/role/priest.php % 62行目付近 (2011/10/19 (Wed) 03:19)</h3>
+<h4>[before]</h4>
+<pre>
+$role = ($ROOM->date % 2) == 1 ? 'priest' : 'bishop_priest';
+</pre>
+<h4>[after]</h4>
+<pre>
+$role = ($ROOM->date % 2) == 1 ? 'priest' : 'bishop_priest';
+$type = ($ROOM->date % 2) == 1 ? 'human_side' : 'dead';
+</pre>
+
 <h2 id="ver150b12">Ver. 1.5.0 β12</h2>
 <h3>include/role/role_class.php % 217行目付近 (2011/09/26 (Mon) 04:07)</h3>
 <h4>[before]</h4>

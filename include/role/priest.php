@@ -2,86 +2,54 @@
 /*
   ◆司祭 (priest)
   ○仕様
-  ・司祭：村人陣営
-  ・結果表示：偶数日 (4日目以降)
+  ・司祭：村人陣営 (偶数日 / 4日目以降)
 */
 class Role_priest extends Role{
-  public $result_date = 'even';
   public $priest_type = 'human_side';
-
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
   function OutputAbility(){
-    global $ROOM;
-
     parent::OutputAbility();
-    switch($this->result_date){
-    case 'even':
-      $flag = $ROOM->date > 3 && ($ROOM->date % 2) == 0;
-      break;
+    if(is_null($role = $this->GetOutputRole())) return;
+    OutputSelfAbilityResult($this->GetEvent($role));
+  }
 
-    case 'odd':
-      $flag = $ROOM->date > 2 && ($ROOM->date % 2) == 1;
-      break;
+  //司祭結果表示役職取得
+  protected function GetOutputRole(){
+    global $ROOM;
+    return $ROOM->date > 3 && ($ROOM->date % 2) == 0 ? $this->role : NULL;
+  }
 
-    case 'both':
-      $role = ($ROOM->date % 2) == 0 ? 'priest' : 'bishop_priest';
-      $flag = $ROOM->date > 4;
-      break;
-
-    case 'second':
-      $flag = $ROOM->date > 1;
-      break;
-
-    case 'third':
-      $flag = $ROOM->date > 2;
-      break;
-
-    default:
-      $flag = false;
-      break;
-    }
-    if($flag) OutputSelfAbilityResult($this->GetEvent($role));
+  //イベント名取得
+  protected function GetEvent($role = NULL){
+    return strtoupper(isset($role) ? $role : $this->role) . '_RESULT';
   }
 
   //司祭能力
   function Priest($role_flag, $data){
     global $ROOM;
 
-    switch($this->result_date){
-    case 'even':
-      $flag = $ROOM->date > 2 && ($ROOM->date % 2) == 1;
-      break;
-
-    case 'odd':
-      $flag = $ROOM->date > 1 && ($ROOM->date % 2) == 0;
-      break;
-
-    case 'both':
-      $role = ($ROOM->date % 2) == 1 ? 'priest' : 'bishop_priest';
-      $flag = $ROOM->date > 3 && ! in_array($role, $data->list);
-      break;
-
-    default:
-      $flag = false;
-      break;
-    }
-    if(! $flag) return;
-    $result = $data->count[isset($type) ? $type : $this->priest_type];
+    if(is_null($role = $this->GetPriestRole($data->list))) return;
+    $class  = $this->GetClass($method = 'GetPriestType');
+    $result = $data->count[$class->$method()];
     $ROOM->SystemMessage($result, $this->GetEvent($role));
   }
 
-  //イベント名取得
-  function GetEvent($role = NULL){
-    return strtoupper(isset($role) ? $role : $this->role) . '_RESULT';
+  //司祭能力発動判定
+  protected function GetPriestRole($list){
+    global $ROOM;
+    return $ROOM->date > 2 && ($ROOM->date % 2) == 1 ? $this->role : NULL;
   }
 
+  //司祭能力対象取得
+  function GetPriestType(){ return $this->priest_type; }
+
   //情報収集
-  function AggregatePriest($role_flag, &$data){
+  function AggregatePriest($role_flag){
     global $ROOM, $USERS;
 
     $flag = false;
+    $data = new StdClass();
     $data->list  = array();
     $data->count = array('total' => 0, 'human' => 0, 'wolf' => 0, 'fox' => 0, 'lovers' => 0,
 			 'human_side' => 0, 'dead' => 0, 'dream' => 0, 'sub_role' => 0);
@@ -90,7 +58,7 @@ class Role_priest extends Role{
       if(! $user->IsRoleGroup('priest') ||
 	 ($user->IsRole('dummy_priest') && $ROOM->IsEvent('no_dream'))) continue;
       $data->list[] = $role;
-      $flag |= ! $user->IsRole('widow_priest', 'border_priest');
+      $flag |= ! $user->IsRole('widow_priest', 'holy_priest', 'border_priest');
     }
     if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){ //天候判定
       $flag = true;

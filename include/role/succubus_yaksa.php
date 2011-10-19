@@ -18,5 +18,5 @@ class Role_succubus_yaksa extends Role_yaksa{
     return true;
   }
 
-  function IgnoreAssassin($user){ return ! $user->IsMale(); }
+  protected function IgnoreAssassin($user){ return ! $user->IsMale(); }
 }

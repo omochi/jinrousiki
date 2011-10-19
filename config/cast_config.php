@@ -1,9 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β12
+  変更履歴 from Ver. 1.5.0β13
   + 変更
-    - $chaos_hyper_fox_list, $chaos_hyper_random_role_list, $chaos_hyper_replace_human_role_list,
-      $topping_list, $boost_rate_list
+    - $chaos_hyper_wolf_list, $chaos_hyper_random_role_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -127,7 +126,7 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   public $chaos_hyper_wolf_list = array(
-    'wolf'           => 30,
+    'wolf'           => 25,
     'boss_wolf'      =>  2,
     'mist_wolf'      =>  2,
     'gold_wolf'      =>  3,
@@ -139,11 +138,12 @@ class CastConfig extends CastConfigBase{
     'resist_wolf'    =>  2,
     'revive_wolf'    =>  2,
     'trap_wolf'      =>  2,
-    'blue_wolf'      =>  2,
-    'emerald_wolf'   =>  2,
+    'blue_wolf'      =>  3,
+    'emerald_wolf'   =>  3,
     'doom_wolf'      =>  2,
     'fire_wolf'      =>  2,
     'sex_wolf'       =>  3,
+    'sharp_wolf'     =>  2,
     'hungry_wolf'    =>  3,
     'tongue_wolf'    =>  2,
     'possessed_wolf' =>  2,
@@ -333,14 +333,15 @@ class CastConfig extends CastConfigBase{
     'revive_medium'        =>  3,
     'eclipse_medium'       =>  3,
     'priest'               =>  5,
-    'bishop_priest'        =>  3,
+    'bishop_priest'        =>  2,
     'dowser_priest'        =>  2,
     'weather_priest'       =>  2,
     'high_priest'          =>  2,
     'crisis_priest'        =>  3,
     'widow_priest'         =>  2,
+    'holy_priest'          =>  2,
     'revive_priest'        => 10,
-    'border_priest'        =>  3,
+    'border_priest'        =>  2,
     'dummy_priest'         =>  3,
     'guard'                => 12,
     'hunter_guard'         =>  9,
@@ -444,8 +445,9 @@ class CastConfig extends CastConfigBase{
     'doom_wolf'            =>  5,
     'fire_wolf'            =>  5,
     'sex_wolf'             =>  5,
+    'sharp_wolf'           =>  5,
     'hungry_wolf'          =>  5,
-    'tongue_wolf'          => 10,
+    'tongue_wolf'          =>  5,
     'possessed_wolf'       =>  5,
     'sirius_wolf'          =>  5,
     'elder_wolf'           =>  5,
@@ -874,11 +876,8 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('echo_brownie'    => 10,
-		 'revive_mad'      =>  7,
-		 'sacrifice_fox'   => 10,
-		 'revive_cupid'    => 20,
-		 'resurrect_mania' => 15),
+    'a' => array('holy_priest' => 10,
+		 'sharp_wolf'  =>  7),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,

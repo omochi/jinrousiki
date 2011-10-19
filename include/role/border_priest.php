@@ -2,14 +2,16 @@
 /*
   ◆境界師 (border_priest)
   ○仕様
-  ・司祭：自分への投票人数
-  ・結果表示：3日目以降
+  ・司祭：自分への投票人数 (2日目以降)
 */
 RoleManager::LoadFile('priest');
 class Role_border_priest extends Role_priest{
-  public $result_date = 'third';
-
   function __construct(){ parent::__construct(); }
+
+  protected function GetOutputRole(){
+    global $ROOM;
+    return $ROOM->date > 2 ? $this->role : NULL;
+  }
 
   function Priest($role_flag, $data){
     global $ROOM, $USERS;

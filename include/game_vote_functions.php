@@ -1757,8 +1757,9 @@ function AggregateVoteNight($skip = false){
   //-- 司祭系レイヤー --//
   $role_flag = new StdClass(); //役職出現判定フラグを初期化
   foreach($USERS->rows as $user){ //生存者 + 能力発動前の天人を検出
+    if($user->IsDummyBoy()) continue;
     if(($user->IsLive(true) && ! $user->IsRole('revive_priest')) ||
-       (! $ROOM->IsOpenCast() && ! $user->IsDummyBoy() && $user->IsActive('revive_priest'))){
+       (! $ROOM->IsOpenCast() && $user->IsActive('revive_priest'))){
       $role_flag->{$user->main_role}[$user->user_no] = $user->uname;
     }
   }
@@ -1769,7 +1770,7 @@ function AggregateVoteNight($skip = false){
     $ROLES->LoadMain(new User($role))->Necromancer($wolf_target, $vote_data);
   }
 
-  $ROLES->LoadMain(new User('priest'))->AggregatePriest($role_flag, $priest_data);
+  $priest_data = $ROLES->LoadMain(new User('priest'))->AggregatePriest($role_flag);
   //PrintData($priest_data->list, 'PriestList');
   //PrintData($priest_data->count, 'LiveCount');
   //PrintData($priest_data->crisis, 'Crisis');

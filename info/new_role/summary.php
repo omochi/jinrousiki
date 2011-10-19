@@ -628,7 +628,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、生存している村人陣営の人数が分かる。</td>
+  <td class="ability">一定日数ごとに現在の生存している村人陣営の人数が分かる。</td>
   <td>Ver. 1.4.0 α24</td>
 </tr>
 <tr>
@@ -1188,7 +1188,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">一定日数ごとに現在、死亡している村人陣営以外の人数が分かる、特殊な司祭。</td>
+  <td class="ability">一定日数ごとに現在の死亡している村人陣営以外の人数が分かる、特殊な司祭。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
 <tr id="ver140b11">
@@ -2770,6 +2770,15 @@ Ver. 1.5.0
   <td>人狼</td>
   <td>人狼</td>
   <td class="ability"><a href="wolf.php#mad_group">狂人系</a>と<a href="ability.php#poison">毒能力者</a>を襲撃した場合は回避する人狼。</td>
+  <td>Ver. 1.5.0 β14</td>
+</tr>
+<tr>
+  <td><a href="human.php#holy_priest">聖徳道士</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#priest_group">司祭系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">身代わり君と自分を含めた周囲の人の勝利陣営の総数が分かる、特殊な司祭。</td>
   <td>Ver. 1.5.0 β14</td>
 </tr>
 </table>

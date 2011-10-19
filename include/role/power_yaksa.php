@@ -22,7 +22,7 @@ class Role_power_yaksa extends Role_yaksa{
     return count($live_list) <= ceil(count($camp_list) / 2);
   }
 
-  function IgnoreAssassin($user){ return $user->IsCamp('human', true); }
+  protected function IgnoreAssassin($user){ return $user->IsCamp('human', true); }
 
   function GetReduceRate(){ return 3 / 5; }
 }

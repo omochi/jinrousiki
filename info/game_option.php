@@ -92,6 +92,7 @@ OutputInfoPageHeader('ゲームオプション');
     <li><a href="new_role/human.php#voodoo_killer">陰陽師</a>の解呪成功</li>
     <li><a href="new_role/human.php#guard_hunt">狩り</a>成功</li>
     <li><a href="new_role/human.php#anti_voodoo">厄神</a>の厄払い成功</li>
+    <li><a href="new_role/wolf.php#sharp_wolf">鋭狼</a>の襲撃回避</li>
     <li><a href="new_role/fox.php">妖狐</a>への人狼襲撃</li>
     <li><a href="new_role/ability.php#guard">護衛能力者</a>の護衛成功</li>
     <li><a href="new_role/ability.php#revive_other">蘇生能力者</a>の蘇生結果</li>
