@@ -10,5 +10,5 @@ class Role_dummy_common extends Role_common{
   public $display_role = 'common';
   function __construct(){ parent::__construct(); }
 
-  function IsCommonParter($user){ return $user->IsDummyBoy(); }
+  protected function IsCommonPartner($user){ return $user->IsDummyBoy(); }
 }

@@ -42,7 +42,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'sex_wolf';
+$RQ_ARGS->TestItems->test_users[2]->role = 'sharp_wolf speaker';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -72,7 +72,7 @@ $RQ_ARGS->TestItems->test_users[6]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
 $RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
 $RQ_ARGS->TestItems->test_users[7]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[7]->role = 'reflect_guard speaker mind_read[23]';
+$RQ_ARGS->TestItems->test_users[7]->role = 'reflect_guard speaker';
 $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
@@ -84,7 +84,7 @@ $RQ_ARGS->TestItems->test_users[8]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'revive_medium joker[6] mind_open';
+$RQ_ARGS->TestItems->test_users[9]->role = 'revive_medium joker[6]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
@@ -96,25 +96,25 @@ $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'poison disfavor';
+$RQ_ARGS->TestItems->test_users[11]->role = 'whisper_mad disfavor';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'snow_trap_mad';
+$RQ_ARGS->TestItems->test_users[12]->role = 'snow_trap_mad sweet_ringing';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'holy_priest';
+$RQ_ARGS->TestItems->test_users[13]->role = 'sacrifice_fox';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';
 $RQ_ARGS->TestItems->test_users[14]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[14]->role = 'spiritism_wizard';
+$RQ_ARGS->TestItems->test_users[14]->role = 'hermit_common';
 $RQ_ARGS->TestItems->test_users[14]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
@@ -132,19 +132,19 @@ $RQ_ARGS->TestItems->test_users[16]->live = 'live';
 $RQ_ARGS->TestItems->test_users[17]->uname = 'sky';
 $RQ_ARGS->TestItems->test_users[17]->handle_name = '空';
 $RQ_ARGS->TestItems->test_users[17]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[17]->role = 'silver_doll possessed[3-3] disfavor';
+$RQ_ARGS->TestItems->test_users[17]->role = 'silver_doll possessed[3-3] disfavor deep_sleep';
 $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'sacrifice_fox reduce_voter';
+$RQ_ARGS->TestItems->test_users[18]->role = 'hermit_common reduce_voter copied';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
 $RQ_ARGS->TestItems->test_users[19]->handle_name = '陸';
 $RQ_ARGS->TestItems->test_users[19]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[19]->role = 'greater_fairy psycho_infected';
+$RQ_ARGS->TestItems->test_users[19]->role = 'light_fairy psycho_infected';
 $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
@@ -162,25 +162,25 @@ $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[22]->role = 'psycho_escaper authority';
+$RQ_ARGS->TestItems->test_users[22]->role = 'psycho_escaper authority sweet_ringing';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'soul_vampire mind_friend[23]';
+$RQ_ARGS->TestItems->test_users[23]->role = 'doom_vampire mind_friend[23]';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard rebel';
+$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard rebel blinder';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[25]->role = 'revive_ogre disfavor';
+$RQ_ARGS->TestItems->test_users[25]->role = 'wise_ogre disfavor';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -252,7 +252,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sun'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sea'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
   array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
   array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'moon'),
@@ -321,7 +321,7 @@ $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'VOTE_KILLED', 'message' => 'sky'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  array('type' => 'WEATHER', 'message' => 20)
+  #array('type' => 'WEATHER', 'message' => 28)
   #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
@@ -346,7 +346,7 @@ $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(15);
+#$SELF = $USERS->ByID(12);
 #$SELF = $USERS->TraceExchange(14);
 
 //-- データ出力 --//
@@ -408,6 +408,7 @@ if($talk_view_mode){ //発言表示モード
   $RQ_ARGS->add_role = false;
   $RQ_ARGS->TestItems->talk_data = new StdClass();
   $RQ_ARGS->TestItems->talk_data->day = array(
+    array('uname' => 'moon', 'location' => 'day', 'font_type' => 'normal', 'sentence' => '●かー'),
     array('uname' => 'light_blue', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'えっ'),
     array('uname' => 'green', 'location' => 'day system', 'font_type' => NULL,
 	  'sentence' => 'OBJECTION	緑'),
@@ -423,12 +424,17 @@ if($talk_view_mode){ //発言表示モード
 	  'sentence' => '吸血鬼なんだ'),
     array('uname' => 'light_blue', 'location' => 'night self_talk', 'font_type' => 'weak',
 	  'sentence' => 'えっ'),
+    array('uname' => 'moon', 'location' => 'night self_talk', 'font_type' => 'normal',
+	  'sentence' => 'あーうー'),
     array('uname' => 'gold', 'location' => 'night common', 'font_type' => 'normal',
 	  'sentence' => 'やあやあ'),
     array('uname' => 'rose', 'location' => 'night self_talk', 'font_type' => 'strong',
 	  'sentence' => '誰吸血しようかな'),
     array('uname' => 'frame', 'location' => 'night self_talk', 'font_type' => 'normal',
 	  'sentence' => 'どうしよう'),
+    array('uname' => 'black', 'location' => 'night fox', 'font_type' => 'weak',
+	  'sentence' => '占い師早く死んで欲しいなぁ'),
+    array('uname' => 'cherry', 'location' => 'night mad', 'font_type' => 'weak', 'sentence' => 'やあ'),
     array('uname' => 'green', 'location' => 'night self_talk', 'font_type' => 'normal',
 	  'sentence' => 'てすてす'),
     array('uname' => 'dark_gray', 'location' => 'night self_talk', 'font_type' => 'weak',
@@ -445,6 +451,7 @@ if($talk_view_mode){ //発言表示モード
   }
   //PrintData($RQ_ARGS->TestItems->talk);
   OutputPlayerList();
+  if($SELF->user_no > 0) OutputAbility();
   OutputTalkLog();
   OutputHTMLFooter(true);
 }

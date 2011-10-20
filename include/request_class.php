@@ -89,6 +89,7 @@ class RequestBaseGamePlay extends RequestBaseGame{
   function __construct(){
     parent::__construct();
     $this->GetItems('IsOn', 'get.list_down', 'get.play_sound');
+    $this->add_role = NULL;
   }
 }
 

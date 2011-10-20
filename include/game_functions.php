@@ -233,6 +233,7 @@ function OutputGamePageHeader(){
     $jump_url = $url_header;
     $sentence .= 'ゲーム画面に飛びます。';
   }
+  else $jump_url = '';
 
   if($jump_url != ''){ //移動先が設定されていたら画面切り替え
     $sentence .= $anchor_header . $jump_url . $anchor_footer;
@@ -620,190 +621,182 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $RQ_ARGS, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
+  global $MESSAGE, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //PrintData($talk);
   //発言ユーザを取得
   /*
     $uname は必ず $talk から取得すること。
-    $USERS にはシステムユーザー 'system' が存在しないため、$said_user は常に NULL になっている。
+    $USERS にはシステムユーザー 'system' が存在しないため、$actor は常に NULL になっている。
   */
-  $said_user = $talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
+  $actor = $talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
     $USERS->ByVirtualUname($talk->uname);
 
   //基本パラメータを取得
   if($talk->uname == 'system'){
-    $symbol      = '';
-    $handle_name = '';
-    $said_user->user_no = 0;
+    $symbol = '';
+    $name   = '';
+    $actor->user_no = 0;
   }
   else{
-    $symbol      = '<font color="' . $said_user->color . '">◆</font>';
-    $handle_name = $said_user->handle_name;
+    $symbol = '<font color="' . $actor->color . '">◆</font>';
+    $name   = $actor->handle_name;
   }
-  $sentence  = $talk->sentence;
-  $font_type = $talk->font_type;
 
   //実ユーザを取得
-  if($RQ_ARGS->add_role && $said_user->user_no > 0){ //役職表示モード対応
-    $real_user = $talk->scene == 'heaven' ? $said_user : $USERS->ByReal($said_user->user_no);
-    $handle_name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
+  if($RQ_ARGS->add_role && $actor->user_no > 0){ //役職表示モード対応
+    $real_user = $talk->scene == 'heaven' ? $actor : $USERS->ByReal($actor->user_no);
+    $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
   }
   else{
     $real_user = $USERS->ByRealUname($talk->uname);
   }
 
-  $flag_mind_read = false; //特殊発言透過判定
-  $ROLES->actor = $said_user;
-  foreach($ROLES->Load('mind_read') as $filter) $flag_mind_read |= $filter->IsMindRead();
-
-  $ROLES->actor = $builder->actor;
-  foreach($ROLES->Load('mind_read_active') as $filter){
-    $flag_mind_read |= $filter->IsMindReadActive($said_user);
-  }
-
-  $ROLES->actor = $real_user;
-  foreach($ROLES->Load('mind_read_possessed') as $filter){
-    $flag_mind_read |= $filter->IsMindReadPossessed($said_user);
-  }
-
   if($talk->type == 'system' && isset($talk->action)){ //投票情報
-    /*
-      + ゲーム開始前の投票 (KICK 等) は常時表示
-      + 「異議」ありは常時表示
-    */
     switch($talk->action){
-    case 'OBJECTION':
-      return $builder->AddSystemMessage('objection-' . $said_user->sex, $handle_name . $sentence);
-
-    case 'GAMESTART_DO':
+    case 'GAMESTART_DO': //現在は不使用
       return true;
 
-    default:
+    case 'OBJECTION': //「異議」ありは常時表示
+      return $builder->AddSystemMessage('objection-' . $actor->sex, $name . $talk->sentence);
+
+    default: //ゲーム開始前の投票 (例：KICK) は常時表示
       return $builder->flag->open_talk || $ROOM->IsBeforeGame() ?
-	$builder->AddSystemMessage($talk->class, $handle_name . $sentence) : false;
+	$builder->AddSystemMessage($talk->class, $name . $talk->sentence) : false;
     }
   }
-
-  //システムメッセージ
-  if($talk->uname == 'system') return $builder->AddSystemTalk($sentence);
+  if($talk->uname == 'system') return $builder->AddSystemTalk($talk->sentence); //システムメッセージ
 
   //身代わり君専用システムメッセージ
-  if($talk->type == 'dummy_boy') return $builder->AddSystemTalk($sentence, 'dummy-boy');
+  if($talk->type == 'dummy_boy') return $builder->AddSystemTalk($talk->sentence, 'dummy-boy');
 
   switch($talk->scene){
+  case 'day':
+    //強風判定 (身代わり君と本人は対象外)
+    if($ROOM->IsEvent('blind_talk_day') &&
+       ! $builder->flag->dummy_boy && ! $builder->actor->IsSame($talk->uname)){
+      //位置判定 (観戦者以外の上下左右)
+      $viewer = $builder->actor->user_no;
+      $target = $actor->user_no;
+      if(is_null($viewer) ||
+	 ! (abs($target - $viewer) == 5 ||
+	    ($target == $viewer - 1 && ($target % 5) != 0) ||
+	    ($target == $viewer + 1 && ($viewer % 5) != 0))){
+	$talk->sentence = $MESSAGE->common_talk;
+      }
+    }
+    return $builder->AddTalk($actor, $talk);
+
   case 'night':
     if($builder->flag->open_talk){
-      $talk_class = '';
+      $class = '';
+      $voice = $talk->font_type;
       switch($talk->type){
       case 'common':
-	$handle_name .= '<span>(共有者)</span>';
-	$talk_class = 'night-common';
-	$font_type .= ' night-common';
+	$name .= '<span>(共有者)</span>';
+	$class = 'night-common';
+	$voice .= ' ' . $class;
 	break;
 
       case 'wolf':
-	$handle_name .= '<span>(人狼)</span>';
-	$talk_class = 'night-wolf';
-	$font_type .= ' night-wolf';
+	$name .= '<span>(人狼)</span>';
+	$class = 'night-wolf';
+	$voice .= ' ' . $class;
 	break;
 
       case 'mad':
-	$handle_name .= '<span>(囁き狂人)</span>';
-	$talk_class = 'night-wolf';
-	$font_type .= ' night-wolf';
+	$name .= '<span>(囁き狂人)</span>';
+	$class = 'night-wolf';
+	$voice .= ' ' . $class;
 	break;
 
       case 'fox':
-	$handle_name .= '<span>(妖狐)</span>';
-	$talk_class = 'night-fox';
-	$font_type .= ' night-fox';
+	$name .= '<span>(妖狐)</span>';
+	$class = 'night-fox';
+	$voice .= ' ' . $class;
 	break;
 
       case 'self_talk':
-	$handle_name .= '<span>の独り言</span>';
-	$talk_class = 'night-self-talk';
+	$name .= '<span>の独り言</span>';
+	$class = 'night-self-talk';
 	break;
       }
-      return $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, '', $talk_class);
+      return $builder->RawAddTalk($symbol, $name, $talk->sentence, $voice, '', $class);
     }
     else{
+      $mind_read = false; //特殊発言透過判定
+      $ROLES->actor = $actor;
+      foreach($ROLES->Load('mind_read') as $filter) $mind_read |= $filter->IsMindRead();
+
+      $ROLES->actor = $builder->actor;
+      foreach($ROLES->Load('mind_read_active') as $filter){
+	$mind_read |= $filter->IsMindReadActive($actor);
+      }
+
+      $ROLES->actor = $real_user;
+      foreach($ROLES->Load('mind_read_possessed') as $filter){
+	$mind_read |= $filter->IsMindReadPossessed($actor);
+      }
+
+      $ROLES->actor = $actor;
       switch($talk->type){
       case 'common': //共有者
-	if($builder->flag->common || $flag_mind_read)
-	  return $builder->AddTalk($said_user, $talk);
-	elseif(! $said_user->IsRole('hermit_common')) //隠者は見えない
-	  return $builder->AddWhisper('common', $talk);
-	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
-	  return $builder->AddWhisper('lovers', $talk);
-	else
-	  return false;
+	if($builder->flag->common || $mind_read) return $builder->AddTalk($actor, $talk);
+	if($ROLES->LoadMain($actor)->Whisper($builder, $talk->font_type)) return;
+	foreach($ROLES->Load('talk_whisper') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	return false;
 
       case 'wolf': //人狼
-	if($builder->flag->wolf || $flag_mind_read)
-	  return $builder->AddTalk($said_user, $talk);
-	elseif(! $said_user->IsRole('quiet_wolf')) //静狼は見えない
-	  return $builder->AddWhisper('wolf', $talk);
-	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
-	  return $builder->AddWhisper('lovers', $talk);
-	else
-	  return false;
+	if($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk);
+	if($ROLES->LoadMain($actor)->Howl($builder, $talk->font_type)) return;
+	foreach($ROLES->Load('talk_whisper') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	return false;
 
       case 'mad': //囁き狂人
-	if($builder->flag->wolf || $flag_mind_read)
-	  return $builder->AddTalk($said_user, $talk);
-	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
-	  return $builder->AddWhisper('lovers', $talk);
-	else
-	  return false;
+	if($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk);
+	foreach($ROLES->Load('talk_whisper') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	return false;
 
       case 'fox': //妖狐
-	if($builder->flag->fox || $flag_mind_read)
-	  return $builder->AddTalk($said_user, $talk);
-	elseif($SELF->IsRole('wise_wolf', 'wise_ogre'))
-	  return $builder->AddWhisper('common', $talk);
-	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
-	  return $builder->AddWhisper('lovers', $talk);
-	else
-	  return false;
+	if($builder->flag->fox || $mind_read) return $builder->AddTalk($actor, $talk);
+	$ROLES->actor = $SELF;
+	foreach($ROLES->Load('talk_fox') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	$ROLES->actor = $actor;
+	foreach($ROLES->Load('talk_whisper') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	return false;
 
       case 'self_talk': //独り言
-	if($builder->flag->dummy_boy || $flag_mind_read || $builder->actor->IsSame($talk->uname))
-	  return $builder->AddTalk($said_user, $talk);
-	elseif($builder->flag->whisper) //囁耳鳴
-	  return $builder->AddWhisper('common', $talk);
-	//遠吠え判定 (孤立した狼 / 化狐 / 吠耳鳴)
-	elseif($builder->flag->howl ||
-	       ($ROOM->date > 1 && (($said_user->IsWolf() && $said_user->IsLonely()) ||
-				    $said_user->IsRole('howl_fox'))))
-	  return $builder->AddWhisper('wolf', $talk);
-	elseif($builder->flag->sweet && $said_user->IsLovers()) //恋耳鳴
-	  return $builder->AddWhisper('lovers', $talk);
-	else
-	  return false;
+	if($builder->flag->dummy_boy || $mind_read || $builder->actor->IsSame($talk->uname)){
+	  return $builder->AddTalk($actor, $talk);
+	}
+	foreach($ROLES->Load('talk_self') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	$ROLES->actor = $builder->actor;
+	foreach($ROLES->Load('talk_ringing') as $filter){
+	  if($filter->Whisper($builder, $talk->font_type)) return;
+	}
+	return false;
       }
     }
     return false;
 
   case 'heaven':
-    return $builder->flag->open_talk ?
-      $builder->RawAddTalk($symbol, $handle_name, $sentence, $font_type, $talk->scene) : false;
+    return ! $builder->flag->open_talk ? false :
+      $builder->RawAddTalk($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
 
   default:
-    //強風判定 (身代わり君と本人は対象外)
-    if($ROOM->IsEvent('blind_talk_day') &&
-       ! $builder->flag->dummy_boy && ! $builder->actor->IsSame($talk->uname)){
-      //位置判定 (観戦者以外の上下左右)
-      $actor  = $builder->actor->user_no;
-      $target = $said_user->user_no;
-      if(is_null($actor) ||
-	 ! (abs($target - $actor) == 5 ||
-	    ($target == $actor - 1 && ($target % 5) != 0) ||
-	    ($target == $actor + 1 && ($actor  % 5) != 0))){
-	$talk->sentence = $MESSAGE->common_talk;
-      }
-    }
-    return $builder->AddTalk($said_user, $talk);
+    return $builder->AddTalk($actor, $talk);
   }
 }
 

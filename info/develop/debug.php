@@ -66,6 +66,17 @@ $role = ($ROOM->date % 2) == 1 ? 'priest' : 'bishop_priest';
 $type = ($ROOM->date % 2) == 1 ? 'human_side' : 'dead';
 </pre>
 
+<h3>include/room_class.php % 31行目付近 (2011/10/20 (Thu) 01:00)</h3>
+<h4>[before]</h4>
+<pre>
+$this->event = new StdClass();
+$stack = $this->LoadRoom($request->room_no);
+</pre>
+<h4>[after]</h4>
+<pre>
+$stack = $this->LoadRoom($request->room_no);
+</pre>
+
 <h2 id="ver150b12">Ver. 1.5.0 β12</h2>
 <h3>include/role/role_class.php % 217行目付近 (2011/09/26 (Mon) 04:07)</h3>
 <h4>[before]</h4>

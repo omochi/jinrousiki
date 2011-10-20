@@ -27,6 +27,18 @@ class RoleManager{
   //発言表示
   public $talk_list = array('blinder', 'earplug', 'speaker');
 
+  //発言表示 (囁き)
+  public $talk_whisper_list = array('lovers');
+
+  //発言表示 (妖狐)
+  public $talk_fox_list = array('wise_wolf', 'wise_ogre');
+
+  //発言表示 (独り言)
+  public $talk_self_list = array('silver_wolf', 'howl_fox', 'mind_lonely', 'lovers');
+
+  //発言表示 (耳鳴)
+  public $talk_ringing_list = array('whisper_ringing', 'howl_ringing');
+
   //閲覧判定
   public $mind_read_list = array(
     'leader_common', 'whisper_scanner', 'howl_scanner', 'telepath_scanner','minstrel_cupid',
@@ -252,42 +264,6 @@ class RoleManager{
       if(is_object(($class = $this->loaded->class[$key]))) $stack[] = $class;
     }
     return $stack;
-  }
-
-  function GetWhisperingUserInfo($role, &$class){
-    global $ROOM, $SELF;
-
-    if($SELF->IsRole('deep_sleep')) return false; //爆睡者にはいっさい見えない
-    switch($role){
-    case 'common': //共有者のささやき
-      if($SELF->IsRole('dummy_common')) return false; //夢共有者には見えない
-      $class = 'talk-common';
-      return '共有者の小声';
-
-    case 'wolf': //人狼の遠吠え
-      if($SELF->IsRole('mind_scanner')) return false; //さとりには見えない
-      return '狼の遠吠え';
-
-    case 'lovers': //恋人の囁き
-      return '恋人の囁き';
-    }
-    return false;
-  }
-
-  function GetWhisperingSound($role, $talk, &$class){
-    global $MESSAGE;
-
-    switch($role){
-    case 'common':
-      $class = 'say-common';
-      return $MESSAGE->common_talk;
-
-    case 'wolf':
-      return $MESSAGE->wolf_howl;
-
-    case 'lovers':
-      return $MESSAGE->lovers_talk;
-    }
   }
 }
 

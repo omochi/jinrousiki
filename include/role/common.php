@@ -12,11 +12,21 @@ class Role_common extends Role{
     $stack = array();
     foreach($this->GetUser() as $user){
       if($this->IsActor($user->uname)) continue;
-      if($this->IsCommonParter($user)) $stack[] = $user->handle_name;
+      if($this->IsCommonPartner($user)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'common_partner');
   }
 
   //仲間判定
-  function IsCommonParter($user){ return $user->IsCommon(true); }
+  protected function IsCommonPartner($user){ return $user->IsCommon(true); }
+
+  //囁き
+  function Whisper($builder, $voice){
+    global $MESSAGE;
+
+    if(! $builder->flag->common_whisper) return false; //スキップ判定
+    $str = $MESSAGE->common_talk;
+    $builder->RawAddTalk('', '共有者の小声', $str, $voice, '', 'talk-common', 'say-common');
+    return true;
+  }
 }

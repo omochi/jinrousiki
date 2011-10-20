@@ -29,7 +29,6 @@ class Room{
       $this->event->rows = $request->TestItems->event;
     }
     else{
-      $this->event = new StdClass();
       $stack = $this->LoadRoom($request->room_no);
     }
     foreach($stack as $name => $value) $this->$name = $value;
@@ -238,7 +237,7 @@ class Room{
   //投票回数を取得する
   function GetVoteTimes($revote = false){
     $value = $revote ? 'revote_times' : 'vote_times';
-    if(is_null($this->$value)) $this->$value = $this->LoadVoteTimes($revote);
+    if(! property_exists($this, $value)) $this->$value = $this->LoadVoteTimes($revote);
     return $this->$value;
   }
 
@@ -246,7 +245,7 @@ class Room{
   function GetEvent($force = false){
     if(! $this->IsPlaying()) return array();
     if($force) unset($this->event);
-    if(is_null($this->event)) $this->LoadEvent();
+    if(! property_exists($this, 'event')) $this->LoadEvent();
     return $this->event->rows;
   }
 
@@ -332,6 +331,7 @@ class Room{
 
   //特殊イベント判定
   function IsEvent($type){
+    if(! property_exists($this, 'event')) $this->event = new StdClass();
     return property_exists($this->event, $type) ? $this->event->$type : NULL;
   }
 

@@ -1,6 +1,9 @@
 <?php
 class User{
+  public $uname;
+  public $user_no;
   public $main_role;
+  public $live;
   public $role_list    = array();
   public $partner_list = array();
   public $updated      = array();
@@ -817,7 +820,7 @@ class UserDataSet{
       $user_list = $request->TestItems->test_users;
       if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
-    elseif($request->entry_user){ //入村処理用
+    elseif(property_exists($request, 'entry_user') && $request->entry_user){ //入村処理用
       $user_list = $this->RetriveByEntryUser($request->room_no);
     }
     else{
@@ -911,9 +914,7 @@ class UserDataSet{
   }
 
   //ユーザ ID -> ユーザ名変換
-  function NumberToUname($user_no){
-    return $this->rows[$user_no]->uname;
-  }
+  function NumberToUname($id){ return $this->rows[$id]->uname; }
 
   //ユーザ名 -> ユーザ ID 変換
   function UnameToNumber($uname){
@@ -929,15 +930,13 @@ class UserDataSet{
   }
 
   //ユーザ情報取得 (ユーザ ID 経由)
-  function ByID($user_no){
-    if(is_null($user_no)) return new User();
-    return $user_no > 0 ? $this->rows[$user_no] : $this->kicked[$user_no];
+  function ByID($id){
+    if(is_null($id)) return new User();
+    return $id > 0 ? $this->rows[$id] : $this->kicked[$id];
   }
 
   //ユーザ情報取得 (ユーザ名経由)
-  function ByUname($uname){
-    return $this->ByID($this->UnameToNumber($uname));
-  }
+  function ByUname($uname){ return $this->ByID($this->UnameToNumber($uname)); }
 
   //ユーザ情報取得 (HN 経由)
   function ByHandleName($handle_name){
@@ -968,37 +967,29 @@ class UserDataSet{
   }
 
   //交換憑依情報追跡
-  function TraceExchange($user_no){
+  function TraceExchange($id){
     global $ROOM;
 
-    $user = $this->ByID($user_no);
-    $type = 'possessed_exchange';
-    if(! $user->IsRole($type) || ! $ROOM->IsPlaying() ||
+    $user = $this->ByID($id);
+    $role = 'possessed_exchange';
+    if(! $user->IsRole($role) || ! $ROOM->IsPlaying() ||
        (! $ROOM->log_mode && $user->IsDead())) return $user;
 
-    $stack = $user->GetPartner($type);
+    $stack = $user->GetPartner($role);
     return is_array($stack) && $ROOM->date > 2 ? $this->ByID(array_shift($stack)) : $user;
   }
 
   //ユーザ情報取得 (憑依先ユーザ ID 経由)
-  function ByVirtual($user_no){
-    return $this->TraceVirtual($user_no, 'possessed_target');
-  }
+  function ByVirtual($id){ return $this->TraceVirtual($id, 'possessed_target'); }
 
   //ユーザ情報取得 (憑依元ユーザ ID 経由)
-  function ByReal($user_no){
-    return $this->TraceVirtual($user_no, 'possessed');
-  }
+  function ByReal($id){ return $this->TraceVirtual($id, 'possessed'); }
 
   //ユーザ情報取得 (憑依先ユーザ名経由)
-  function ByVirtualUname($uname){
-    return $this->ByVirtual($this->UnameToNumber($uname));
-  }
+  function ByVirtualUname($uname){ return $this->ByVirtual($this->UnameToNumber($uname)); }
 
   //ユーザ情報取得 (憑依元ユーザ名経由)
-  function ByRealUname($uname){
-    return $this->ByReal($this->UnameToNumber($uname));
-  }
+  function ByRealUname($uname){ return $this->ByReal($this->UnameToNumber($uname)); }
 
   //HN 取得
   function GetHandleName($uname, $virtual = false){
@@ -1007,14 +998,10 @@ class UserDataSet{
   }
 
   //役職情報取得
-  function GetRole($uname){
-    return $this->ByUname($uname)->role;
-  }
+  function GetRole($uname){ return $this->ByUname($uname)->role; }
 
   //ユーザ数カウント
-  function GetUserCount($all = false){
-    return count($all ? $this->names : $this->rows);
-  }
+  function GetUserCount($all = false){ return count($all ? $this->names : $this->rows); }
 
   //所属陣営を判定してキャッシュする
   function SetCamp($user, $type){
@@ -1043,7 +1030,7 @@ class UserDataSet{
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $ROOM, $ROLES;
+    global $ROLE_DATA, $RQ_ARGS, $ROOM, $ROLES;
 
     if($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
     $room_date = $ROOM->date; //現在の日付を確保
@@ -1200,7 +1187,7 @@ class UserDataSet{
     return $stack;
   }
 
-  //生存している狼を取得する
+  //生存している人狼を取得する
   function GetLivingWolves(){
     $stack = array();
     foreach($this->rows as $user){
@@ -1259,7 +1246,7 @@ class UserDataSet{
     if(count($stack) > 0) GetRandom($stack)->AddJoker($decriment);
   }
 
-  //デスノートの再配布処理
+  //デスノートの再配布処理 (オプションチェック判定は不要？)
   function ResetDeathNote(){
     global $ROOM;
 
