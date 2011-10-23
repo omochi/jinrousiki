@@ -15,7 +15,7 @@ class Role_soul_wizard extends Role_wizard{
   public $bad_status = 'mind_open';
   function __construct(){ parent::__construct(); }
 
-  function SetEvent($user){
+  function SetBadStatus($user){
     global $ROOM;
     $ROOM->event->{$this->bad_status} = true;
   }

@@ -105,62 +105,61 @@ $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByID(1);
 
 //テストデータ設定
-$USERS->rows[9]->live = 'dead';
-$USERS->rows[9]->color = '#000000';
+$USERS->rows[3]->live = 'dead';
+$USERS->rows[7]->live = 'dead';
+$USERS->rows[8]->live = 'dead';
 
 if(false){
   switch(intval($_GET['dummy_boy'])){
   case '1':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/dummy_boy/dummy_boy_01.jpg';
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/icon/normal/dummy_boy/dummy_boy_01.jpg';
     break;
 
   case '2':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/dummy_boy/dummy_boy_02.gif';
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/icon/normal/dummy_boy/dummy_boy_02.gif';
     break;
 
   case '3':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/dummy_boy/gerd.jpg';
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/icon/normal/dummy_boy/gerd.jpg';
     break;
   }
 
-  switch(intval($_GET['dead'])){
-  case '1':
-  case '4':
-  case '5':
-  case '6':
-  case '7':
-  case '8':
-  case '10':
-  case '11':
-  case '12':
-  case '13':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/dead/dead_' .
-      sprintf('%02d', intval($_GET['dead'])) . '.gif';
-    break;
-
-  case '2':
-  case '3':
-  case '9':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/dead/dead_0' . intval($_GET['dead']) . '.jpg';
-    break;
+  $dead_list = array();
+  $dead = intval($_GET['dead']);
+  if(array_key_exists($dead - 1, $dead_list)){
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/normal/dead/' . $dead_list[$dead];
   }
 
-  switch(intval($_GET['wolf'])){
-  case '1':
+  $wolf = intval($_GET['wolf']) - 1;
+  switch($wolf){
+  case '0':
     $ICON_CONF->dead = $ICON_CONF->wolf;
     break;
 
+  case '1':
   case '2':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/wolf/wolf_01.gif';
-    break;
-
   case '3':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/wolf/wolf_02.gif';
-    break;
-
   case '4':
-    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/img/wolf/wolf_03.gif';
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/normal/wolf/wolf_0' . $wolf . '.gif';
     break;
+  }
+
+  $t_dummy_list = array();
+  $t_dummy = is_null($_GET['t_dummy_boy']) ? -1 : intval($_GET['t_dummy_boy']);
+  if(array_key_exists($t_dummy, $t_dummy_list)){
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/icon/touhou/dummy_boy/' . $t_dummy_list[$t_dummy];
+  }
+
+  $t_wolf_list = array();
+  $t_wolf = is_null($_GET['t_wolf']) ? -1 : intval($_GET['t_wolf']);
+  if(array_key_exists($t_wolf, $t_wolf_list)){
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/icon/touhou/wolf/' . $t_wolf_list[$t_wolf];
+  }
+
+  $t_dead_list = array();
+  $t_dead = is_null($_GET['t_dead']) ? -1 : intval($_GET['t_dead']);
+  if(array_key_exists($t_dead, $t_dead_list)){
+    $ICON_CONF->dead = JINRO_ROOT . '/dev/skin/icon/touhou/dead/' . $t_dead_list[$t_dead];
   }
 }
 
@@ -168,5 +167,97 @@ if(false){
 OutputHTMLHeader('表示テスト', 'game'); //HTMLヘッダ
 echo '<link rel="stylesheet" href="' . JINRO_CSS . '/game_' . $ROOM->day_night . '.css">'."\n";
 echo '</head><body>'."\n";
+//PrintData($ROOM->day_night, $_GET['day_night']);
 OutputPlayerList(); //プレイヤーリスト
+OutputHTMLFooter(true); //HTMLフッタ
+
+//PrintData($USERS->rows[1]);
+//PrintData($dead_list);
+echo <<<EOF
+[昼]：<br>
+身代わり君：
+<a href="view_test.php?dummy_boy=1">1</a> /
+<a href="view_test.php?dummy_boy=2">2</a> /
+<a href="view_test.php?dummy_boy=3">3</a><br>
+人狼：
+<a href="view_test.php?wolf=1">1</a> /
+<a href="view_test.php?wolf=2">2</a> /
+<a href="view_test.php?wolf=3">3</a> /
+<a href="view_test.php?wolf=4">4</a> /
+<a href="view_test.php?wolf=5">5</a><br>
+死亡：
+EOF;
+
+foreach(array_keys($dead_list) as $id){
+  echo '<a href="view_test.php?dead=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+身代わり君(東方)：
+EOF;
+foreach(array_keys($t_dummy_list) as $id){
+  echo '<a href="view_test.php?t_dummy_boy=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+人狼(東方)：
+EOF;
+foreach(array_keys($t_wolf_list) as $id){
+  echo '<a href="view_test.php?t_wolf=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+死亡(東方)：
+EOF;
+foreach(array_keys($t_dead_list) as $id){
+  echo '<a href="view_test.php?t_dead=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+<br><br>
+[夜]：<br>
+身代わり君：
+<a href="view_test.php?day_night=night&dummy_boy=1">1</a> /
+<a href="view_test.php?day_night=night&dummy_boy=2">2</a> /
+<a href="view_test.php?day_night=night&dummy_boy=3">3</a><br>
+人狼：
+<a href="view_test.php?day_night=night&wolf=1">1</a> /
+<a href="view_test.php?day_night=night&wolf=2">2</a> /
+<a href="view_test.php?day_night=night&wolf=3">3</a> /
+<a href="view_test.php?day_night=night&wolf=4">4</a> /
+<a href="view_test.php?day_night=night&wolf=5">5</a><br>
+死亡：
+EOF;
+foreach(array_keys($dead_list) as $id){
+  echo '<a href="view_test.php?day_night=night&dead=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+身代わり君(東方)：
+EOF;
+foreach(array_keys($t_dummy_list) as $id){
+  echo '<a href="view_test.php?day_night=night&t_dummy_boy=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+人狼(東方)：
+EOF;
+foreach(array_keys($t_wolf_list) as $id){
+  echo '<a href="view_test.php?day_night=night&t_wolf=' . $id . '">' . $id . '</a> /'."\n";
+}
+
+echo <<<EOF
+<br>
+死亡(東方)：
+EOF;
+foreach(array_keys($t_dead_list) as $id){
+  echo '<a href="view_test.php?day_night=night&t_dead=' . $id . '">' . $id . '</a> /'."\n";
+}
+
 OutputHTMLFooter(); //HTMLフッタ

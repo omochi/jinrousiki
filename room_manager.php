@@ -162,7 +162,7 @@ function CreateRoom(){
       $option_role_list[] = $_POST['special_role'];
     }
     else{ //通常村
-      array_push($check_option_role_list, 'poison', 'assassin', 'boss_wolf', 'poison_wolf',
+      array_push($check_option_role_list, 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
 		 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox');
       if(! $full_cupid) $check_option_role_list[] = 'cupid';
       $check_option_role_list[] = 'medium';
@@ -458,7 +458,7 @@ EOF;
   OutputRoomOptionDummyBoy();
   OutputRoomOptionOpenCast();
 
-  $stack = array('poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+  $stack = array('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
 		 'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania',
 		 'decide', 'authority');
   OutputRoomOption($stack, 'role');

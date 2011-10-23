@@ -211,7 +211,7 @@ class RoleMessageList{
     'type' => 'bishop_priest');
 
   public $holy_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#聖徳道士#です。一定日数後に身代わり君とあなたを含めた周囲の人の勝利陣営の総数を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#聖徳道士#です。一定日数後に身代わり君とあなたを含めた周囲の人の所属陣営の総数を知ることができます。",
     'type' => 'bishop_priest');
 
   public $revive_priest = array(
@@ -285,6 +285,10 @@ class RoleMessageList{
   public $ghost_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#亡霊嬢#です。他の#共有者#が誰であるか知ることができます。また、あなたを襲った_人狼_を^小心者^にしてしまいます。\n　あなたの魂魄は、黄泉への誘い水。^ショック死^の恐怖に怯える_狼_が因果の報いを受けるまで、冥府で幽雅に見守りましょう。",
     'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
+
+  public $spell_common = array(
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#葛の葉#です。他の#共有者#が誰であるか知ることができ、_処刑_投票先が人外だったら^魔が言^を与えますが、占われると:呪殺:されます。",
+    'type' => 'common', 'delimiter' => array('_' => 'vote', '^' => 'liar', ':' => 'mage'));
 
   public $critical_common = array(
     'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#暴君#です。他の#共有者#が誰であるか知ることができます。また、_処刑_^投票数^が +1 されますが、稀に:得票数:が +100 されます。\n　王たるもの堂々と生き、王の言葉は絶対と知れ。阻むものは全て薙ぎ払い己が道を闊歩せよ。華散りし時さえも豪華絢爛、盛大に散れ！",
@@ -1309,6 +1313,10 @@ class RoleMessageList{
     'message' => "　あなたは|淑女|なので時々#淑女#な発言をしてしまいます。",
     'type' => 'liar', 'delimiter' => array('#' => 'lovers'));
 
+  public $cute_camouflage = array(
+    'message' => "　あなたは|魔が言|に囚われたので発言が高確率で遠吠えになってしまいます。",
+    'type' => 'liar');
+
   public $authority = array(
     'message' => "　あなたは|権力者|です。あなたの#処刑#投票は|二票|分の効果があります。",
     'delimiter' => array('|' => 'authority', '#' => 'vote'));
@@ -1685,6 +1693,7 @@ class RoleMessageList{
   public $result_trap_common = array('message' => "さんは|策士|でした", 'type' => 'result_common');
   public $result_sacrifice_common = array('message' => "さんは|首領|でした", 'type' => 'result_common');
   public $result_ghost_common = array('message' => "さんは|亡霊嬢|でした", 'type' => 'result_common');
+  public $result_spell_common = array('message' => "さんは|葛の葉|でした", 'type' => 'result_common');
   public $result_critical_common = array('message' => "さんは|暴君|でした", 'type' => 'result_common');
   public $result_hermit_common = array('message' => "さんは|隠者|でした", 'type' => 'result_common');
   public $result_dummy_common = array('message' => "さんは|夢共有者|でした", 'type' => 'result_common');
@@ -2111,6 +2120,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('holy_priest');
+#$builder->Output('holy_priest');
+$builder->Output('spell_common');
 #$builder->Output('sharp_wolf');
 #$builder->Output('hariti_yaksa'); //

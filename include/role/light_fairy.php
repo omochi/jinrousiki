@@ -9,7 +9,7 @@ class Role_light_fairy extends Role_fairy{
   public $bad_status = 'mind_open';
   function __construct(){ parent::__construct(); }
 
-  function SetEvent($user){
+  function SetBadStatus($user){
     global $ROOM;
     $ROOM->event->{$this->bad_status} = true;
   }

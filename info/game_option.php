@@ -6,10 +6,10 @@ $INIT_CONF->LoadClass('ROLE_DATA', 'CAST_CONF', 'GAME_OPT_CAPT');
 
 //-- 関数定義 --//
 //追加役職の人数と説明ページリンク出力
-function OutputAddRole($role){
+function OutputAddRole($role, $add = false){
   global $ROLE_DATA, $CAST_CONF;
   echo '村の人口が' . $CAST_CONF->$role . '人以上になったら' .
-    $ROLE_DATA->GenerateRoleLink($role) . 'が登場します';
+    $ROLE_DATA->GenerateRoleLink($role) . ($add ? 'を追加' : 'が登場') . 'します';
 }
 
 //お祭り村の配役リスト出力
@@ -156,7 +156,12 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li>誰がどの役職なのかゲーム終了まで公開されません</li>
 <li>蘇生能力は有効になります</li>
+<li><a href="spec.php#dummy_boy">身代わり君</a>が<a href="spec.php#revive_refuse">蘇生辞退</a>すると<a href="#auto_open_cast"><?php echo $GAME_OPT_MESS->auto_open_cast ?></a>相当になります。
 </ul>
+<h4>Ver. 1.5.0 β14～</h4>
+<pre>
+身代わり君の蘇生辞退で自動公開モード相当に移行。
+</pre>
 
 <h3 id="auto_open_cast"><?php echo $GAME_OPT_MESS->auto_open_cast ?> [Ver. 1.4.0 β3～]</h3>
 <ul>
@@ -177,14 +182,15 @@ OutputInfoPageHeader('ゲームオプション');
 <p>
 <a href="#poison"><?php echo $GAME_OPT_MESS->poison ?></a>
 <a href="#assassin"><?php echo $GAME_OPT_MESS->assassin ?></a>
+<a href="#wolf"><?php echo $GAME_OPT_MESS->wolf ?></a>
 <a href="#boss_wolf"><?php echo $GAME_OPT_MESS->boss_wolf ?></a>
 <a href="#poison_wolf"><?php echo $GAME_OPT_MESS->poison_wolf ?></a>
 <a href="#possessed_wolf"><?php echo $GAME_OPT_MESS->possessed_wolf ?></a>
 <a href="#sirius_wolf"><?php echo $GAME_OPT_MESS->sirius_wolf ?></a>
 <a href="#fox"><?php echo $GAME_OPT_MESS->fox ?></a>
-<a href="#child_fox"><?php echo $GAME_OPT_MESS->child_fox ?></a>
 </p>
 <p>
+<a href="#child_fox"><?php echo $GAME_OPT_MESS->child_fox ?></a>
 <a href="#cupid"><?php echo $GAME_OPT_MESS->cupid ?></a>
 <a href="#medium"><?php echo $GAME_OPT_MESS->medium ?></a>
 <a href="#mania"><?php echo $GAME_OPT_MESS->mania ?></a>
@@ -202,6 +208,12 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li><?php OutputAddRole('assassin') ?></li>
 <li><?php echo $GAME_OPT_CAPT->assassin ?></li>
+</ul>
+
+<h3 id="wolf"><?php echo $GAME_OPT_MESS->wolf ?> [Ver. 1.5.0 β14～]</h3>
+<ul>
+<li><?php OutputAddRole('wolf', true) ?></li>
+<li><?php echo $GAME_OPT_CAPT->wolf ?></li>
 </ul>
 
 <h3 id="boss_wolf"><?php echo $GAME_OPT_MESS->boss_wolf ?> [Ver. 1.4.0 α3-7～]</h3>
@@ -230,7 +242,7 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h3 id="fox"><?php echo $GAME_OPT_MESS->fox ?> [Ver. 1.5.0 β12～]</h3>
 <ul>
-<li><?php OutputAddRole('fox') ?></li>
+<li><?php OutputAddRole('fox', true) ?></li>
 <li><?php echo $GAME_OPT_CAPT->fox ?></li>
 </ul>
 

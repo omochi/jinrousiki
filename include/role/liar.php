@@ -23,8 +23,8 @@ class Role_liar extends Role_passion{
     'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう');
   function __construct(){ parent::__construct(); }
 
-  function GetConvertSayList(){
+  protected function GetConvertSayList(){
     global $GAME_CONF;
-    return mt_rand(1, 100) <= $GAME_CONF->liar_rate ? parent::GetConvertSayList() : NULL;
+    return mt_rand(1, 100) > $GAME_CONF->liar_rate ? NULL : parent::GetConvertSayList();
   }
 }

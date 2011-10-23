@@ -21,8 +21,8 @@ class Role_mirror_fairy extends Role_fairy{
 
   function IsVoteCheckbox($user, $live){ return $live && ! $user->IsDummyBoy(); }
 
-  function SetEvent($type){
-    global $ROOM, $USERS;
+  function SetEvent($USERS, $type){
+    global $ROOM;
 
     $stack = array(); //決選投票対象者の ID リスト
     foreach($this->GetActor()->GetPartner($this->role, true) as $key => $value){ //生存確認

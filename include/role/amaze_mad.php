@@ -25,7 +25,7 @@ class Role_amaze_mad extends Role_corpse_courier_mad{
     if($flag) $ROOM->SystemMessage($USERS->GetHandleName($target->uname, true), 'BLIND_VOTE');
   }
 
-  function SetEvent($user){
+  function SetBadStatus($user){
     global $ROOM;
     $ROOM->event->{$this->bad_status} = true;
   }

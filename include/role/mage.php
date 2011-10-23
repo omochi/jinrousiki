@@ -76,7 +76,7 @@ class Role_mage extends Role{
     if($user->IsLive(true) && ! $ROOM->IsEvent('no_fox_dead') &&
        (($user->IsFox() && ! $user->IsChildFox() &&
 	 ! $user->IsRole('white_fox', 'black_fox', 'mist_fox', 'sacrifice_fox')) ||
-	$user->IsRole('spell_wisp'))){
+	$user->IsRoleGroup('spell'))){
       $USERS->Kill($user->user_no, 'FOX_DEAD');
     }
     return $this->DistinguishMage($user); //占い判定

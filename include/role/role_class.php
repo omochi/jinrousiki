@@ -51,7 +51,7 @@ class RoleManager{
   public $mind_read_possessed_list = array('possessed_wolf', 'possessed_mad', 'possessed_fox');
 
   //発言置換 (仮想)
-  public $say_convert_virtual_list = array('gentleman', 'lady');
+  public $say_convert_virtual_list = array('cute_camouflage', 'gentleman', 'lady');
 
   //発言置換 (本体)
   public $say_convert_list = array('suspect', 'cute_mage', 'cute_wolf', 'cute_fox',
@@ -88,12 +88,13 @@ class RoleManager{
 
   //処刑投票能力者
   public $vote_day_list = array(
-    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'pharmacist',
-    'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist', 'centaurus_pharmacist',
-    'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy', 'cursed_brownie',
-    'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad', 'critical_mad', 'follow_mad',
-    'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience',
-    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'spell_common',
+    'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
+    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
+    'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
+    'critical_mad', 'follow_mad', 'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger',
+    'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
+    'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -113,9 +114,9 @@ class RoleManager{
 
   //処刑投票能力処理 (順番依存あり)
   public $vote_action_list = array(
-    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'miasma_jealousy', 'critical_jealousy',
-    'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad', 'critical_avenger',
-    'cursed_avenger', 'sweet_cupid', 'snow_cupid');
+    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
+    'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
+    'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid');
 
   //得票カウンター
   public $voted_reaction_list = array('trap_common', 'jealousy');
@@ -187,6 +188,15 @@ class RoleManager{
   public $bad_status_night_list = array(
     'soul_wizard', 'astray_wizard', 'pierrot_wizard', 'enchant_mad', 'light_fairy', 'dark_fairy',
     'grass_fairy', 'sun_fairy', 'moon_fairy');
+
+  //イベントセット用
+  public $event_virtual_list = array('no_last_words', 'whisper_ringing', 'howl_ringing',
+				     'sweet_ringing', 'deep_sleep', 'mind_open');
+
+  //イベントセット用 (昼限定)
+  public $event_virtual_day_list = array(
+    'actor', 'passion', 'rainbow', 'grassy', 'invisible', 'side_reverse', 'line_reverse',
+    'critical_voter', 'critical_luck', 'blinder', 'earplug', 'silent', 'mower');
 
   //悪戯 (迷彩/アイコン変更)
   public $change_face_list = array('enchant_mad');

@@ -258,6 +258,13 @@ function GetRoleList($user_count){
       $role_list['wolf']++;
     }
 
+    //人狼 (村人 → 人狼)
+    if($ROOM->IsOption('wolf') && $user_count >= $CAST_CONF->wolf &&
+       $role_list['human'] > 0){
+      $role_list['human']--;
+      $role_list['wolf']++;
+    }
+
     //白狼 (人狼 → 白狼)
     if($ROOM->IsOption('boss_wolf') && $user_count >= $CAST_CONF->boss_wolf &&
        $role_list['wolf'] > 0){
@@ -611,13 +618,13 @@ function AggregateVoteGameStart($force_start = false){
   $roled_list = array(); //配役済み番号
   //割り振り対象外役職のリスト
   $delete_role_list = array(
-    'febris', 'frostbite', 'death_warrant', 'panelist', 'day_voter', 'wirepuller_luck',
-    'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend', 'mind_sympathy', 'mind_evoke',
-    'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp', 'lovers', 'challenge_lovers',
-    'possessed_exchange', 'joker', 'rival', 'enemy', 'supported', 'death_note', 'death_selected',
-    'possessed_target', 'possessed', 'infected', 'psycho_infected', 'bad_status', 'sweet_status',
-    'protected', 'lost_ability', 'muster_ability', 'changed_therian', 'copied', 'copied_trick',
-    'copied_basic', 'copied_soul', 'copied_teller');
+    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'day_voter',
+    'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
+    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
+    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
+    'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
+    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_therian',
+    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
 
   //サブ役職テスト用
   /*

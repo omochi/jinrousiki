@@ -132,6 +132,7 @@ Ver. 1.5.0
 <a href="#sub_ver150b6">β6</a>
 <a href="#sub_ver150b7">β7</a>
 <a href="#sub_ver150b11">β11</a>
+<a href="#sub_ver150b14">β14</a>
 </p>
 
 <table id="main_role">
@@ -2778,7 +2779,18 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">身代わり君と自分を含めた周囲の人の勝利陣営の総数が分かる、特殊な司祭。</td>
+  <td class="ability">身代わり君と自分を含めた周囲の人の所属陣営の総数が分かる、特殊な司祭。</td>
+  <td>Ver. 1.5.0 β14</td>
+</tr>
+<tr>
+  <td><a href="human.php#spell_common">葛の葉</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#common_group">共有者系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#mage_group">占い師</a>に占われると呪殺される特殊な共有者。<br>
+処刑投票先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>・<a href="sub_role.php#lovers">恋人</a>なら<a href="sub_role.php#cute_camouflage">魔が言</a>を付加する。
+</td>
   <td>Ver. 1.5.0 β14</td>
 </tr>
 </table>
@@ -3499,6 +3511,13 @@ Ver. 1.5.0
     <td>強制</td>
     <td class="ability">夜に誰か一人を死亡させることができる。</td>
     <td>Ver. 1.5.0 β11</td>
+  </tr>
+  <tr id="sub_ver150b14">
+    <td><a href="sub_role.php#cute_camouflage">魔が言</a></td>
+    <td><a href="sub_role.php#liar_group">狼少年系</a></td>
+    <td>有り</td>
+    <td class="ability">昼の間だけ、高確率で発言が人狼の遠吠えに入れ替わってしまう。</td>
+    <td>Ver. 1.5.0 β14</td>
   </tr>
 </table>
 

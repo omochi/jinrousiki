@@ -37,7 +37,7 @@ if(array_key_exists('command', $_POST) && $_POST['command'] == 'role_test'){
       $stack->game_option[] = $option;
     }
   }
-  foreach(array('gerd', 'poison', 'assassin', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
+  foreach(array('gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
 		'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective') as $option){
     if(array_key_exists($option, $_POST) && $_POST[$option] == 'on'){
       $stack->option_role[] = $option;
@@ -134,10 +134,10 @@ EOF;
   }
 
   $stack = array(
-     'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'boss_wolf' => '白狼',
-     'poison_wolf' => '毒狼', 'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐',
-     'cupid' => 'QP', 'medium' => '巫女', 'mania' => 'マニア','detective' => '探偵',
-     'festival' => 'お祭り', 'limit_off' => 'リミッタオフ');
+     'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'wolf' => '人狼', 
+     'boss_wolf' => '白狼', 'poison_wolf' => '毒狼', 'possessed_wolf' => '憑狼', 'fox' => '妖狐',
+     'child_fox' => '子狐', 'cupid' => 'QP', 'medium' => '巫女', 'mania' => 'マニア',
+     'detective' => '探偵', 'festival' => 'お祭り', 'limit_off' => 'リミッタオフ');
   foreach($stack as $option => $name){
     echo <<<EOF
 <input type="checkbox" value="on" name="{$option}">{$name}

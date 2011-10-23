@@ -8,7 +8,7 @@ class Role_history_brownie extends Role{
   public $event_night = 'skip_night';
   function __construct(){ parent::__construct(); }
 
-  function SetEvent($type){
+  function SetEvent($USERS, $type){
     global $ROOM;
     $ROOM->event->{$this->{'event_' . $type}} = true;
   }

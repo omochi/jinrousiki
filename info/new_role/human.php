@@ -918,7 +918,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="holy_priest">聖徳道士 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β14～]</h3>
 <h4>[耐性] 護衛制限：有り</h4>
 <pre>
-身代わり君と自分を含めた周囲の人の勝利陣営の総数が分かる、特殊な司祭。
+身代わり君と自分を含めた周囲の人の所属陣営の総数が分かる、特殊な司祭。
 </pre>
 <ol>
 <li>能力の発動は 4 日目夜で、結果は 5 日目にのみ表示される。</li>
@@ -1299,6 +1299,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <a href="#trap_common">策士</a>
 <a href="#sacrifice_common">首領</a>
 <a href="#ghost_common">亡霊嬢</a>
+<a href="#spell_common">葛の葉</a>
 <a href="#critical_common">暴君</a>
 <a href="#hermit_common">隠者</a>
 <a href="#dummy_common">夢共有者</a>
@@ -1409,6 +1410,22 @@ PP ラインの計算を難しくさせるために作成してみました。
 東方ウミガメ人狼のプレイヤーさんがモデルです。
 即死こそしませんが、<a href="wolf.php#resist_wolf">抗毒狼</a>でも無効化できないので非常に強力です。
 <a href="#trap_common">策士</a>同様、人狼陣営にとっては役職の存在自体が脅威になるでしょう。
+</pre>
+
+<h3 id="spell_common">葛の葉 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.5.0 β14～]</h3>
+<h4>[耐性] 護衛制限：有り</h4>
+<pre>
+<a href="#mage_group">占い師</a>に占われると呪殺される特殊な共有者。
+処刑投票先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>・<a href="sub_role.php#lovers">恋人</a>なら<a href="sub_role.php#cute_camouflage">魔が言</a>を付加する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#vote_action">処刑投票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+妖術を使える狐だけど人間に与した者、という伝承がモチーフです。
+占い師が夢確認で共有者を占うアプローチに対するリスクとなります。
 </pre>
 
 <h3 id="critical_common">暴君 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β10～]</h3>

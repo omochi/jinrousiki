@@ -26,5 +26,5 @@ class Role_passion extends Role{
     $this->SetStack(strtr($this->GetStack('say'), $stack), 'say');
   }
 
-  function GetConvertSayList(){ return $this->convert_say_list; }
+  protected function GetConvertSayList(){ return $this->convert_say_list; }
 }

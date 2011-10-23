@@ -134,7 +134,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="vote_action">処刑投票能力者</h2>
 <pre>
-<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>)
 </pre>
 
@@ -284,7 +284,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="talk_convert_cute">遠吠え置換型 (萌系)</h3>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="human.php#cute_mage">萌占い師</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>
+<a href="human.php#suspect">不審者</a>・<a href="human.php#cute_mage">萌占い師</a>・<a href="wolf.php#cute_wolf">萌狼</a>・<a href="fox.php#cute_fox">萌狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>・<a href="sub_role.php#cute_camouflage">魔が言</a>
 </pre>
 
 <h2 id="possessed">憑依能力者</h2>

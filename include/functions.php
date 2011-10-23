@@ -478,7 +478,7 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
   $str = '';
   $display_order_list = array(
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'wait_morning', 'open_vote',
-    'seal_message', 'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin',
+    'seal_message', 'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'wolf',
     'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid',
     'medium', 'mania', 'decide', 'authority', 'detective', 'liar', 'gentleman', 'deep_sleep',
     'blinder', 'mind_open', 'sudden_death', 'perverseness', 'critical', 'joker', 'death_note',

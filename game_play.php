@@ -471,7 +471,7 @@ EOF;
     echo '<div class="system-vote">' . $MESSAGE->wait_morning . '</div>'."\n";
   }
 
-  if($SELF->IsDead() && $ROOM->IsOption('auto_open_cast') && ! $ROOM->IsOpenCast()){
+  if($SELF->IsDead() && ! $ROOM->IsOpenCast()){
     echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
   }
 }

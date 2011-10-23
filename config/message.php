@@ -1,8 +1,10 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β12
-  + Message
-    - 変更：$entry_user
+  変更履歴 from Ver. 1.5.0β13
+  + GameOptionMessage
+    - 追加：$wolf
+  + GameOptionCaptionMessage
+    - 追加：$wolf
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -300,6 +302,7 @@ class GameOptionMessage{
   public $auto_open_cast        = '自動で霊界の配役を公開する';
   public $poison                = '埋毒者登場';
   public $assassin              = '暗殺者登場';
+  public $wolf                  = '人狼追加';
   public $boss_wolf             = '白狼登場';
   public $poison_wolf           = '毒狼登場';
   public $possessed_wolf        = '憑狼登場';
@@ -396,6 +399,7 @@ class GameOptionCaptionMessage{
   public $auto_open_cast        = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
   public $poison                = '処刑されたり狼に食べられた場合、道連れにします。[村人2→埋毒1、人狼1]';
   public $assassin              = '夜に村人一人を殺すことができます。[村人2→暗殺者1、人狼1]';
+  public $wolf                  = '人狼をもう一人追加します。[村人1→人狼1]';
   public $boss_wolf             = '占い結果が「村人」、霊能結果が「白狼」と表示される狼です。[人狼1→白狼1]';
   public $poison_wolf           = '吊られた時にランダムで村人一人を巻き添えにする狼です。<br>　　　[人狼1→毒狼1、村人1→薬師1]';
   public $possessed_wolf        = '噛んだ人に憑依して乗っ取ってしまう狼です。[人狼1→憑狼1]';

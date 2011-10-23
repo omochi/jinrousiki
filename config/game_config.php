@@ -1,7 +1,10 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β12
-  + なし
+  変更履歴 from Ver. 1.5.0β13
+  + RoomConfig
+    - 追加：$wolf, $default_wolf
+  + IconConfig
+    - 変更：$dead
 */
 
 //-- 村メンテナンス・作成設定 --//
@@ -87,6 +90,9 @@ class RoomConfig{
   public $assassin = true; //暗殺者
   public $default_assassin = false;
 
+  public $wolf = true; //人狼追加
+  public $default_wolf = false;
+
   public $boss_wolf = true; //白狼
   public $default_boss_wolf = false;
 
@@ -99,7 +105,7 @@ class RoomConfig{
   public $sirius_wolf = true; //天狼
   public $default_sirius_wolf = false;
 
-  public $fox = true; //妖狐
+  public $fox = true; //妖狐追加
   public $default_fox = false;
 
   public $child_fox = true; //子狐
@@ -357,7 +363,7 @@ class VictoryImage extends VictoryImageBase{
 //ゲームプレイ時のアイコン表示設定
 class IconConfig extends IconConfigBase{
   public $path   = 'user_icon'; //ユーザアイコンのパス
-  public $dead   = 'grave.gif'; //死者
+  public $dead   = 'grave.jpg'; //死者
   public $wolf   = 'wolf.gif';  //狼
   public $width  = 45; //表示サイズ(幅)
   public $height = 45; //表示サイズ(高さ)

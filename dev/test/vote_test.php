@@ -96,7 +96,7 @@ $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'whisper_mad disfavor';
+$RQ_ARGS->TestItems->test_users[11]->role = 'whisper_mad';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
@@ -108,13 +108,13 @@ $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'sacrifice_fox';
+$RQ_ARGS->TestItems->test_users[13]->role = 'sacrifice_fox cute_camouflage';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
 $RQ_ARGS->TestItems->test_users[14]->handle_name = '金';
 $RQ_ARGS->TestItems->test_users[14]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[14]->role = 'hermit_common';
+$RQ_ARGS->TestItems->test_users[14]->role = 'spell_common';
 $RQ_ARGS->TestItems->test_users[14]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[15]->uname = 'frame';
@@ -216,8 +216,8 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' => 10, 'target_no' =>  3),
   array('id' => 11, 'target_no' =>  3),
   array('id' => 12, 'target_no' => 14),
-  array('id' => 13, 'target_no' => 11),
-  array('id' => 14, 'target_no' => 25),
+  array('id' => 13, 'target_no' => 14),
+  array('id' => 14, 'target_no' =>  4),
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 23),
   //array('id' => 17, 'target_no' => 22),
@@ -252,11 +252,11 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'sea'),
+  array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'gold'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
-  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
-  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'moon'),
-  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'sun'),
+  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'sea'),
+  array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
+  array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'gold'),
   #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'peach'),
   array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'yellow'),
   array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'frame'),
@@ -326,8 +326,8 @@ $RQ_ARGS->TestItems->event = array(
 );
 
 //-- 仮想発現をセット --//
-//$RQ_ARGS->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
-$RQ_ARGS->say = '';
+$RQ_ARGS->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
+#$RQ_ARGS->say = '';
 $RQ_ARGS->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
@@ -337,8 +337,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 4;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -346,7 +346,7 @@ $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
 $SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(12);
+#$SELF = $USERS->ByID(13);
 #$SELF = $USERS->TraceExchange(14);
 
 //-- データ出力 --//
@@ -614,7 +614,7 @@ do{
   $ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  foreach(array(5, 18, 2, 9, 13, 21) as $id){
+  foreach(array(5, 18, 2, 9, 13, 14, 21) as $id){
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());

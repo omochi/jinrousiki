@@ -293,12 +293,16 @@ class Room{
     global $USERS;
 
     if(! property_exists($this, 'open_cast')){ //未設定ならキャッシュする
-      if($this->IsOption('not_open_cast')) //常時非公開
-	$this->open_cast = false;
-      elseif($this->IsOption('auto_open_cast')) //自動公開
+      if($this->IsOption('not_open_cast')){ //常時非公開
+	$user = $USERS->ByID(1); //身代わり君の蘇生辞退判定
+	$this->open_cast = $user->IsDummyBoy() && $user->IsDrop() && $USERS->IsOpenCast();
+      }
+      elseif($this->IsOption('auto_open_cast')){ //自動公開
 	$this->open_cast = $USERS->IsOpenCast();
-      else
-	$this->open_cast = true; //常時公開
+      }
+      else{ //常時公開
+	$this->open_cast = true;
+      }
     }
     return $this->open_cast;
   }

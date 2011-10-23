@@ -346,7 +346,7 @@ class User{
   //護衛制限判定
   function IsGuardLimited(){
     return $this->IsRole(
-      'emissary_necromancer', 'detective_common', 'sacrifice_common', 'reporter',
+      'emissary_necromancer', 'detective_common', 'sacrifice_common', 'spell_common', 'reporter',
       'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard', 'doll_master') ||
       ($this->IsRoleGroup('priest') &&
        ! $this->IsRole('revive_priest', 'crisis_priest', 'widow_priest')) ||
@@ -1045,11 +1045,11 @@ class UserDataSet{
 	$user = $this->ByRealUname($this->HandleNameToUname($event['message']));
 	//PrintData($user->handle_name, "VOTE_KILLED: {$room_date} ({$ROOM->date})");
 	$ROLES->actor = $user;
-	foreach($ROLES->Load('event_day') as $filter) $filter->SetEvent('day');
+	foreach($ROLES->Load('event_day') as $filter) $filter->SetEvent($this, 'day');
 	foreach($user->GetPartner('bad_status', true) as $id => $date){ //悪戯
 	  if($date != $ROOM->date) continue;
 	  $ROLES->actor = $this->ByID($id);
-	  foreach($ROLES->Load('bad_status_day') as $filter) $filter->SetEvent($user);
+	  foreach($ROLES->Load('bad_status_day') as $filter) $filter->SetBadStatus($user);
 	}
 	break;
 
@@ -1059,12 +1059,12 @@ class UserDataSet{
 	//PrintData($user->handle_name, "WOLF_KILLED: {$room_date} ({$ROOM->date})");
 	if(! $user->IsDummyBoy()){ //座敷童子系
 	  $ROLES->actor = $user;
-	  foreach($ROLES->Load('event_night') as $filter) $filter->SetEvent('night');
+	  foreach($ROLES->Load('event_night') as $filter) $filter->SetEvent($this, 'night');
 	}
 	foreach($user->GetPartner('bad_status', true) as $id => $date){ //悪戯
 	  if($date != $base_date) continue;
 	  $ROLES->actor = $this->ByID($id);
-	  foreach($ROLES->Load('bad_status_night') as $filter) $filter->SetEvent($user);
+	  foreach($ROLES->Load('bad_status_night') as $filter) $filter->SetBadStatus($user);
 	}
 	break;
 
@@ -1086,10 +1086,7 @@ class UserDataSet{
     //PrintData($ROOM->event);
 
     if($ROOM->IsDay()){ //昼限定
-      $stack = array('actor', 'passion', 'rainbow', 'grassy', 'invisible', 'side_reverse',
-		     'line_reverse', 'critical_voter', 'critical_luck', 'blinder', 'earplug',
-		     'silent', 'mower');
-      foreach($stack as $role){
+      foreach($ROLES->event_virtual_day_list as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
@@ -1097,15 +1094,13 @@ class UserDataSet{
     }
 
     if($ROOM->IsPlaying()){ //昼夜両方
-      $stack = array('no_last_words', 'whisper_ringing', 'howl_ringing', 'sweet_ringing',
-		     'deep_sleep', 'mind_open');
-      foreach($stack as $role){
+      foreach($ROLES->event_virtual_list as $role){
 	if($ROOM->IsEvent($role)){
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
-      $ROLES->LoadMain(new User('shadow_fairy'))->BadStatus($base_date); //影妖精の処理
-      foreach($ROLES->LoadFilter('change_face') as $filter) $filter->BadStatus(); //狢の処理
+      $ROLES->LoadMain(new User('shadow_fairy'))->BadStatus($this, $base_date); //影妖精の処理
+      foreach($ROLES->LoadFilter('change_face') as $filter) $filter->BadStatus($this); //狢の処理
     }
   }
 

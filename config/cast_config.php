@@ -1,8 +1,8 @@
 <?php
 /*
   変更履歴 from Ver. 1.5.0β13
-  + 変更
-    - $chaos_hyper_wolf_list, $chaos_hyper_random_role_list, $boost_rate_list
+  + 追加：$wolf
+  + 変更：$chaos_hyper_wolf_list, $chaos_hyper_random_role_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -12,8 +12,7 @@ class CastConfig extends CastConfigBase{
     ゲーム参加人数と配役名の人数の合計が合わない場合はゲーム開始投票時にエラーが返る
   */
   public $role_list = array(
-     #4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
-     4 => array('light_fairy' =>  3, 'wolf' => 1),
+     4 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'mad' => 1),
      5 => array('wolf'  =>  1, 'mage' => 2, 'mad'  => 2),
      6 => array('human' =>  1, 'wolf' => 1, 'mage' => 1, 'poison' => 1, 'fox' => 1, 'cupid' => 1),
      7 => array('human' =>  3, 'wolf' => 1, 'mage' => 1, 'guard' => 1, 'fox' => 1),
@@ -65,11 +64,12 @@ class CastConfig extends CastConfigBase{
   //各役職の出現に必要な人数を設定する
   public $poison         = 20; //埋毒者 [村人2 → 埋毒者1、人狼1]
   public $assassin       = 22; //暗殺者 [村人2 → 暗殺者1、人狼1]
+  public $wolf           = 20; //人狼追加 [村人1 → 人狼1]
   public $boss_wolf      = 18; //白狼 [人狼1 → 白狼]
   public $poison_wolf    = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
   public $possessed_wolf =  8; //憑狼 [人狼1 → 憑狼1]
   public $sirius_wolf    =  8; //天狼 [人狼1 → 天狼1]
-  public $fox            =  8; //妖狐 [村人1 → 妖狐1]
+  public $fox            =  8; //妖狐追加 [村人1 → 妖狐1]
   public $child_fox      =  8; //子狐 [妖狐1 → 子狐1]
   public $cupid          = 16; //キューピッド [村人1 → キューピッド1]
   public $medium         = 20; //巫女 (+ 女神) [村人2 → 巫女1、女神1]
@@ -357,12 +357,13 @@ class CastConfig extends CastConfigBase{
     'dummy_guard'          =>  9,
     'common'               => 25,
     'leader_common'        =>  4,
-    'detective_common'     =>  6,
-    'trap_common'          =>  6,
-    'sacrifice_common'     =>  6,
+    'detective_common'     =>  4,
+    'trap_common'          =>  5,
+    'sacrifice_common'     =>  5,
     'ghost_common'         =>  3,
-    'critical_common'      =>  5,
-    'hermit_common'        =>  5,
+    'spell_common'         =>  4,
+    'critical_common'      =>  4,
+    'hermit_common'        =>  6,
     'dummy_common'         => 15,
     'poison'               => 12,
     'strong_poison'        =>  3,
@@ -877,8 +878,9 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('holy_priest' => 10,
-		 'sharp_wolf'  =>  7),
+    'a' => array('holy_priest'  => 10,
+		 'spell_common' => 10,
+		 'sharp_wolf'   =>  7),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,

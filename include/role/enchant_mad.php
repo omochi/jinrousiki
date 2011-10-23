@@ -17,13 +17,13 @@ class Role_enchant_mad extends Role{
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 
-  function SetEvent($user){
+  function SetBadStatus($user){
     global $ROOM;
     $ROOM->event->same_face[] = $user->user_no;
   }
 
-  function BadStatus(){
-    global $ROOM, $USERS;
+  function BadStatus($USERS){
+    global $ROOM;
 
     if(! property_exists($ROOM->event, 'same_face')) return;
     $target = $USERS->ById(GetRandom($ROOM->event->same_face));

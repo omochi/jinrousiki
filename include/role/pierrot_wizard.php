@@ -30,7 +30,7 @@ class Role_pierrot_wizard extends Role_wizard{
     $ROOM->SystemMessage($USERS->GetHandleName($user->uname), $result);
   }
 
-  function SetEvent($user){
+  function SetBadStatus($user){
     global $ROOM;
     $ROOM->event->{$this->bad_status} = true;
   }

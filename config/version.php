@@ -1,10 +1,10 @@
 <?php
 class ScriptInfo{
   //パッケージのバージョン
-  public $version = 'Ver. 1.5.0 beta13';
+  public $version = 'Ver. 1.5.0 beta14';
 
   //パッケージの最終更新日
-  public $last_update = '2011/10/15 (Sat) 20:57';
+  public $last_update = '2011/10/21 (Fri) 00:36';
 
   //パッケージ化した時の Revision
   public $revision = 404;

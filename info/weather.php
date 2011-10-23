@@ -571,7 +571,7 @@ Ver. 1.5.0
 
 <h3 id="weather_boost_cute">萌動 [Ver. 1.5.0 α8～]</h3>
 <ul>
-  <li><a href="new_role/ability.php#talk_convert_cute">発言変換能力者 (遠吠え置換型)</a> の昼の発言が遠吠えに変換される確率が 5 倍になります。</li>
+  <li><a href="new_role/ability.php#talk_convert_cute">発言変換能力者 (遠吠え置換型)</a> に属するメイン役職の発言変換発動率が 5 倍になります。</li>
 </ul>
 
 <h3 id="weather_blind_talk_day">強風 [Ver. 1.5.0 α2～]</h3>

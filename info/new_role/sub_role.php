@@ -248,6 +248,7 @@ OutputRolePageHeader('サブ役職');
 <p>
 <a href="#gentleman">紳士</a>
 <a href="#lady">淑女</a>
+<a href="#cute_camouflage">魔が言</a>
 </p>
 
 <h3 id="liar">狼少年 [Ver. 1.4.0 α11～]</h3>
@@ -394,6 +395,16 @@ OutputRolePageHeader('サブ役職');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#gentleman">紳士</a>の女性バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/135" target="_top">新役職考案スレ(135)</a> が原型です。
+</pre>
+
+<h3 id="cute_camouflage">魔が言 [Ver. 1.5.0 β14～]</h3>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+昼の間だけ、高確率 (10%) で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#cute_wolf">萌狼</a>のサブ役職バージョンです。
 </pre>
 
 
