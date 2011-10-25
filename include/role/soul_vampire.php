@@ -10,6 +10,11 @@ class Role_soul_vampire extends Role_vampire{
   public $result = 'VAMPIRE_RESULT';
   function __construct(){ parent::__construct(); }
 
+  protected function OutputResult(){
+    global $ROOM;
+    if($ROOM->date > 2) OutputSelfAbilityResult($this->result);
+  }
+
   protected function InfectVampire($user){
     $this->AddSuccess($this->GetActor()->user_no, 'vampire_kill');
   }

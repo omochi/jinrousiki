@@ -35,7 +35,7 @@ class Role_patron extends Role_valkyrja_duelist{
     return NULL;
   }
 
-  function AddDuelistRole($user){
+  protected function AddDuelistRole($user){
     if(isset($this->patron_role)) $user->AddRole($this->GetActor()->GetID($this->patron_role));
   }
 

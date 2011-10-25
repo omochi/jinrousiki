@@ -10,7 +10,7 @@ class Role_priest_jealousy extends Role{
   public $display_role = 'priest';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){ $this->filter->OutputAbility(); }
+  function OutputResult(){ $this->filter->OutputResult(); }
 
   function GetPriestType(){ return 'lovers'; }
 }

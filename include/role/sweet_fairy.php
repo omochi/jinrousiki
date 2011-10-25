@@ -10,10 +10,7 @@ class Role_sweet_fairy extends Role_fairy{
   public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date == 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
 
   function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
 

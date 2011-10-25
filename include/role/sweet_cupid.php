@@ -9,7 +9,9 @@ RoleManager::LoadFile('cupid');
 class Role_sweet_cupid extends Role_cupid{
   function __construct(){ parent::__construct(); }
 
-  function AddCupidRole($user, $flag){ $user->AddRole($this->GetActor()->GetID('mind_friend')); }
+  protected function AddCupidRole($user, $flag){
+    $user->AddRole($this->GetActor()->GetID('mind_friend'));
+  }
 
   function SetVoteDay($uname){
     $this->InitStack();

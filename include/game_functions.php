@@ -356,7 +356,7 @@ function GeneratePlayerList(){
 
     //生死情報に応じたアイコンを設定
     $path = $ICON_CONF->path . '/' . $user->icon_filename;
-    if($beforegame || $USERS->IsVirtualLive($id)){
+    if($beforegame || $ROOM->watch_mode || $USERS->IsVirtualLive($id)){
       $live = '(生存中)';
     }
     else{
@@ -443,6 +443,7 @@ EOF;
   $result = 'win';
   $class  = NULL;
   $user   = $id > 0 ? $USERS->ByID($id) : $SELF;
+  if($user->user_no < 1) return;
   $camp   = $user->GetCamp(true); //所属陣営を取得
 
   switch($victory){

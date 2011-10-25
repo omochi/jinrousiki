@@ -9,7 +9,14 @@ class Role_possessed_fox extends Role_fox{
   public $mix_in = 'possessed_mad';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){ $this->filter->OutputAction(); }
+  protected function OutputResult(){
+    $this->filter->OutputResult();
+    parent::OutputResult();
+  }
+
+  function OutputAction(){ $this->filter->OutputAction(); }
+
+  function IsVote(){ return $this->filter->IsVote(); }
 
   function IsMindReadPossessed($user){ return $this->GetTalkFlag('fox'); }
 

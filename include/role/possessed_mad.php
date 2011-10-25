@@ -10,26 +10,19 @@ class Role_possessed_mad extends Role{
   public $ignore_message = '初日は憑依できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    $this->OutputAction();
+  //Mixin あり
+  function OutputResult(){
+    global $ROOM;
+    if($ROOM->date > 2 && ! $this->GetActor()->IsActive()) OutputPossessedTarget(); //現在の憑依先
   }
 
   function OutputAction(){
-    global $ROOM;
-
     if($this->GetActor()->IsActive()){
-      if($this->IsVote() && $ROOM->IsNight()){
-	OutputVoteMessage('wolf-eat', 'possessed_do', $this->action, $this->not_action);
-      }
+      OutputVoteMessage('wolf-eat', 'possessed_do', $this->action, $this->not_action);
     }
-    elseif($ROOM->date > 2) OutputPossessedTarget(); //現在の憑依先
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   function IsMindReadPossessed($user){ return $user->IsSame($this->GetViewer()->uname); }
 

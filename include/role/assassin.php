@@ -8,28 +8,13 @@ class Role_assassin extends Role{
   public $action     = 'ASSASSIN_DO';
   public $not_action = 'ASSASSIN_NOT_DO';
   public $ignore_message = '初日は暗殺できません';
-  public $result = NULL;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-
-    parent::OutputAbility();
-    if($ROOM->date > 2 && isset($this->result)) OutputSelfAbilityResult($this->result); //暗殺結果
-    $this->OutputAction();
-  }
-
   function OutputAction(){
-    global $ROOM;
-    if($this->IsVote() && $ROOM->IsNight()){
-      OutputVoteMessage('assassin-do', 'assassin_do', $this->action, $this->not_action);
-    }
+    OutputVoteMessage('assassin-do', 'assassin_do', $this->action, $this->not_action);
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   function SetVoteNight(){
     global $ROOM;

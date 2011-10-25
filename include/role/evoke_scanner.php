@@ -9,6 +9,8 @@ class Role_evoke_scanner extends Role_mind_scanner{
   public $mind_role = 'mind_evoke';
   function __construct(){ parent::__construct(); }
 
+  function IsVote(){ global $ROOM; return parent::IsVote() && ! $ROOM->IsOpenCast(); }
+
   function IgnoreVote(){
     global $ROOM;
 

@@ -8,15 +8,7 @@ class Role_voodoo_mad extends Role{
   public $submit = 'voodoo_do';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    $this->OutputAction();
-  }
-
-  function OutputAction(){
-    global $ROOM;
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', $this->submit, $this->action);
-  }
+  function OutputAction(){ OutputVoteMessage('wolf-eat', $this->submit, $this->action); }
 
   //呪術対象セット
   function SetVoodoo($user){

@@ -9,8 +9,9 @@
 RoleManager::LoadFile('doll');
 class Role_doll_master extends Role_doll{
   public $mix_in = 'protected';
-  public $display_partner = false;
   function __construct(){ parent::__construct(); }
+
+  protected function OutputPartner(){ return; }
 
   function Win($victory){ return true; }
 

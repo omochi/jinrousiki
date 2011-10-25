@@ -13,23 +13,11 @@ class Role_ogre extends Role{
   public $ignore_message = '初日は人攫いできません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-
-    parent::OutputAbility();
-    $this->OutputOgreAbility();
-    if($this->IsVote() && $ROOM->IsNight()){
-      OutputVoteMessage('ogre-do', 'ogre_do', $this->action, $this->not_action);
-    }
+  function OutputAction(){
+    OutputVoteMessage('ogre-do', 'ogre_do', $this->action, $this->not_action);
   }
 
-  //特殊鬼の情報表示
-  function OutputOgreAbility(){}
-
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   function Win($victory){
     if($this->IsDead()) return false;

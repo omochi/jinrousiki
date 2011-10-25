@@ -9,7 +9,7 @@ class Role_sharp_wolf extends Role_wolf{
   public $result = 'SHARP_WOLF_RESULT';
   function __construct(){ parent::__construct(); }
 
-  function OutputWolfAbility(){
+  protected function OutputResult(){
     global $ROOM;
     if($ROOM->date > 1 && ! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult($this->result);
   }

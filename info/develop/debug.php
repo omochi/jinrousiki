@@ -17,6 +17,7 @@ Ver. 1.5.0
 <a href="#ver150b11">β11</a>
 <a href="#ver150b12">β12</a>
 <a href="#ver150b13">β13</a>
+<a href="#ver150b14">β14</a>
 </p>
 <p>
 <a href="#ver140">Ver. 1.4.0</a>
@@ -35,6 +36,64 @@ Ver. 1.5.0
 <a href="#ver140b21">β21</a>
 <a href="#ver140b22">β22</a>
 </p>
+
+<h2 id="ver150b14">Ver. 1.5.0 β14</h2>
+<h3>include/role/resurrect_mania.php % 14行目付近 (2011/10/24 (Mon) 22:06)</h3>
+<pre>
+× if($this->IsResurrect() && $this->IsLivePartner() &&
+○ if($this->IsResurrect($this->GetActor()) && $this->IsLivePartner() &&
+</pre>
+
+<h3>include/role/mania.php % 40行目付近 (2011/10/24 (Mon) 22:26)</h3>
+<pre>
+× if(! $this->delay_copy) $actor->AddRole($this->copied);
+○ if(! $this->delay_copy) $actor->AddRole($this->GetCopiedRole());
+</pre>
+
+<h3>include/role/mania.php % 56行目付近 (2011/10/24 (Mon) 22:26)</h3>
+<h4>[before]</h4>
+<pre>
+function GetCopyRole($user){ return $user->main_role; }
+</pre>
+<h4>[after]</h4>
+<pre>
+function GetCopyRole($user){ return $user->main_role; }
+
+function GetCopiedRole(){ return $this->copied; }
+</pre>
+
+<h3>include/role/unknown_mania.php % 10行目付近 (2011/10/24 (Mon) 22:26)</h3>
+<h4>[before]</h4>
+<pre>
+function __construct(){
+  parent::__construct();
+  $this->copied = $this->GetActor()->GetID('mind_friend');
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+function __construct(){ parent::__construct(); }
+
+function GetCopiedRole(){ return $this->GetActor()->GetID('mind_friend'); }
+</pre>
+
+<h3>include/role/autumn_fairy.php % 9行目付近 (2011/10/24 (Mon) 22:49)</h3>
+<pre>
+× public $bad_stauts = '秋ですよー';
+○ public $bad_status = '秋ですよー';
+</pre>
+
+<h3>include/role/winter_fairy.php % 9行目付近 (2011/10/24 (Mon) 22:49)</h3>
+<pre>
+× public $bad_stauts = '冬ですよー';
+○ public $bad_status = '冬ですよー';
+</pre>
+
+<h3>include/role/sex_wolf.php % 21行目付近 (2011/10/25 (Tue) 20:50)</h3>
+<pre>
+× $str = $this->GetActor()->GetHandleName($user->uname, $this->DistinguishSex($user));
+○ $str = $this->GetWolfVoter()->GetHandleName($user->uname, $this->DistinguishSex($user));
+</pre>
 
 <h2 id="ver150b13">Ver. 1.5.0 β13</h2>
 <h3>include/role/resurrect_mania.php % 15行目付近 (2011/10/16 (Sun) 21:19)</h3>

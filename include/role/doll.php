@@ -6,13 +6,10 @@
   ・仲間表示：人形遣い枠
 */
 class Role_doll extends Role{
-  public $display_partner = true;
-  public $display_doll    = false;
+  public $display_doll = false;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    if(! $this->display_partner) return; //仲間情報表示
+  protected function OutputPartner(){
     $stack = array();
     if($this->display_doll) $doll_stack = array(); //人形表示判定
     foreach($this->GetUser() as $user){

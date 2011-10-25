@@ -4,7 +4,7 @@
   ○仕様
   ・魔法：魂の占い師・ひよこ鑑定士・暗殺(特殊)・草妖精・星妖精・花妖精・氷妖精・妖精(特殊)
   ・暗殺：死の宣告 (2-10日後)
-  ・悪戯：死亡欄妨害 (特殊) / 迷彩 (草原迷彩/光妖精)
+  ・悪戯：死亡欄妨害 (特殊) / 迷彩 (草原迷彩/草妖精)
 */
 RoleManager::LoadFile('wizard');
 class Role_pierrot_wizard extends Role_wizard{

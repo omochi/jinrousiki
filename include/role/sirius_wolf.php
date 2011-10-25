@@ -7,7 +7,7 @@ RoleManager::LoadFile('wolf');
 class Role_sirius_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
-  function OutputWolfAbility(){
+  protected function OutputResult(){
     global $USERS;
 
     switch(strval(count($USERS->GetLivingWolves()))){ //覚醒状態

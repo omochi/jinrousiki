@@ -7,7 +7,7 @@ RoleManager::LoadFile('wolf');
 class Role_trap_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
-  function OutputWolfAbility(){
+  protected function OutputResult(){
     global $ROOM;
     if($ROOM->date > 2) OutputAbilityResult('ability_trap_wolf', NULL);
   }

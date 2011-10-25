@@ -2,6 +2,7 @@
 /*
   ◆キューピッド (cupid)
   ○仕様
+  ・仲間表示：自分が矢を打った恋人 (自分自身含む)
   ・追加役職：なし
 */
 class Role_cupid extends Role{
@@ -11,33 +12,18 @@ class Role_cupid extends Role{
   public $shoot_count = 2;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    //自分が矢を打った恋人 (自分自身含む) を表示
+  protected function OutputPartner(){
     $id = $this->GetActor()->user_no;
     $stack = array();
     foreach($this->GetUser() as $user){
       if($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'cupid_pair');
-    $this->OutputCupidAbility();
-    $this->OutputAction();
   }
 
-  //特殊キューピッドの情報表示
-  function OutputCupidAbility(){}
+  function OutputAction(){ OutputVoteMessage('cupid-do', 'cupid_do', $this->action); }
 
-  function OutputAction(){
-    global $ROOM;
-    if($this->IsVote() && $ROOM->IsNight()){
-      OutputVoteMessage('cupid-do', 'cupid_do', $this->action);
-    }
-  }
-
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date == 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
 
   function SetVoteNight(){
     global $GAME_CONF, $USERS;
@@ -103,5 +89,5 @@ class Role_cupid extends Role{
   }
 
   //役職追加処理
-  function AddCupidRole($user, $flag){}
+  protected function AddCupidRole($user, $flag){}
 }

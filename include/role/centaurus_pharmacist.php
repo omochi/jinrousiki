@@ -8,6 +8,8 @@ RoleManager::LoadFile('pharmacist');
 class Role_centaurus_pharmacist extends Role_pharmacist{
   function __construct(){ parent::__construct(); }
 
+  protected function OutputResult(){ return; }
+
   function VoteAction(){
     global $USERS;
     foreach($this->GetStack() as $uname => $target_uname){

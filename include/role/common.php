@@ -7,8 +7,7 @@
 class Role_common extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
+  protected function OutputPartner(){
     $stack = array();
     foreach($this->GetUser() as $user){
       if($this->IsActor($user->uname)) continue;

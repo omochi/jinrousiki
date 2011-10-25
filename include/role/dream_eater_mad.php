@@ -8,19 +8,9 @@ class Role_dream_eater_mad extends Role{
   public $ignore_message = '初日は襲撃できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
+  function OutputAction(){ OutputVoteMessage('wolf-eat', 'dream_eat', $this->action); }
 
-    parent::OutputAbility();
-    if($this->IsVote() && $ROOM->IsNight()){
-      OutputVoteMessage('wolf-eat', 'dream_eat', $this->action);
-    }
-  }
-
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   //夢食い処理
   function DreamEat($user){

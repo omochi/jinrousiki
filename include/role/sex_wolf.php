@@ -10,7 +10,7 @@ class Role_sex_wolf extends Role_wolf{
   public $result = 'SEX_WOLF_RESULT';
   function __construct(){ parent::__construct(); }
 
-  function OutputWolfAbility(){
+  protected function OutputResult(){
     global $ROOM;
     if($ROOM->date > 1) OutputSelfAbilityResult($this->result);
   }
@@ -18,7 +18,7 @@ class Role_sex_wolf extends Role_wolf{
   function WolfEatAction($user){
     global $ROOM;
 
-    $str = $this->GetActor()->GetHandleName($user->uname, $this->DistinguishSex($user));
+    $str = $this->GetWolfVoter()->GetHandleName($user->uname, $this->DistinguishSex($user));
     $ROOM->SystemMessage($str, $this->result);
     $user->wolf_eat = true; //襲撃は成功扱い
     return true;

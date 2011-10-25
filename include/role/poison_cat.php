@@ -15,28 +15,19 @@ class Role_poison_cat extends Role{
   public $revive_rate = 25;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    $this->OutputReviveAbility();
-  }
-
-  //蘇生情報表示
-  function OutputReviveAbility(){
+  //Mixin あり
+  function OutputResult(){
     global $ROOM;
-
-    if($ROOM->IsOpenCast()) return;
-    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
-      OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
-    }
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
+    if($ROOM->date > 2 && ! $ROOM->IsOpenCast() && ! $ROOM->IsOption('seal_message')){
+      OutputSelfAbilityResult('POISON_CAT_RESULT');
     }
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
+  function OutputAction(){
+    OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
   }
+
+  function IsVote(){ global $ROOM; return $ROOM->date > 1 && ! $ROOM->IsOpenCast(); }
 
   function IgnoreVote(){
     global $ROOM;

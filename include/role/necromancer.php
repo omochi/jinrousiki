@@ -7,10 +7,8 @@
 class Role_necromancer extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
     if($ROOM->date > 2) OutputSelfAbilityResult(strtoupper($this->role) . '_RESULT');
   }
 
@@ -22,7 +20,7 @@ class Role_necromancer extends Role{
   }
 
   //霊能判定
-  function DistinguishNecromancer($user, $reverse = false){
+  protected function DistinguishNecromancer($user, $reverse = false){
     if($user->IsOgre()) return 'ogre';
     if($user->IsRoleGroup('vampire') || $user->IsRole('cute_chiroptera')) return 'chiroptera';
     if($user->IsChildFox()) return 'child_fox';

@@ -9,10 +9,14 @@ class Role_revive_medium extends Role_medium{
   public $mix_in = 'poison_cat';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    $this->OutputReviveAbility();
+  protected function OutputResult(){
+    parent::OutputResult();
+    $this->filter->OutputResult();
   }
+
+  function OutputAction(){ $this->filter->OutputAction(); }
+
+  function IsVote(){ return $this->filter->IsVote(); }
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 

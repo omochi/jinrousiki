@@ -6,26 +6,16 @@
 */
 class Role_mania extends Role{
   public $action = 'MANIA_DO';
+  public $result = 'MANIA_RESULT';
   public $copied = 'copied';
   public $delay_copy = false;
   public $camp_copy  = false;
   public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
+  function OutputAction(){ OutputVoteMessage('mania-do', 'mania_do', $this->action); }
 
-    parent::OutputAbility();
-    if($ROOM->date == 2 && $this->delay_copy) OutputSelfAbilityResult('MANIA_RESULT');
-    if($this->IsVote() && $ROOM->IsNight()){
-      OutputVoteMessage('mania-do', 'mania_do', $this->action);
-    }
-  }
-
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date == 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
 
   //コピー処理
   function Copy($user){
@@ -37,21 +27,24 @@ class Role_mania extends Role{
 
     $this->delay_copy || $this->camp_copy ? $actor->AddMainRole($user->user_no) :
       $actor->ReplaceRole($this->role, $role);
-    if(! $this->delay_copy) $actor->AddRole($this->copied);
+    if(! $this->delay_copy) $actor->AddRole($this->GetCopiedRole());
 
     if($this->camp_copy) return;
     $str = $actor->handle_name . "\t" . $user->handle_name . "\t" . $role;
-    $ROOM->SystemMessage($str, 'MANIA_RESULT');  //コピー結果
+    $ROOM->SystemMessage($str, $this->result);  //コピー結果
   }
 
-  //特殊コピー処理
-  function CopyAction($user, $role){}
-
   //コピー結果役職取得
-  function GetRole($user){
+  protected function GetRole($user){
     return $user->IsRoleGroup('mania') ? 'human' : $this->GetCopyRole($user);
   }
 
   //コピー役職取得
-  function GetCopyRole($user){ return $user->main_role; }
+  protected function GetCopyRole($user){ return $user->main_role; }
+
+  //特殊コピー処理
+  protected function CopyAction($user, $role){}
+
+  //コピー変化後役職取得
+  protected function GetCopiedRole(){ return $this->copied; }
 }

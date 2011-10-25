@@ -15,22 +15,21 @@ class Role_child_fox extends Role_fox{
   public $mage_failed = 'failed';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    if(is_null($this->result)) return;
-    if($ROOM->date > 1) OutputSelfAbilityResult($this->result); //占い結果
-    if($ROOM->IsNight()) OutputVoteMessage('mage-do', $this->submit, $this->action); //投票
+    if(isset($this->result) && $ROOM->date > 1) OutputSelfAbilityResult($this->result);
   }
+
+  function OutputAction(){ OutputVoteMessage('mage-do', $this->submit, $this->action); }
 
   function Mage($user){
     if($this->IsJammer($user)){
       return $this->SaveMageResult($user, $this->mage_failed, $this->result);
     }
     if($this->IsCursed($user)) return false;
-    $result = mt_rand(1, 10) > 7 ? $this->mage_failed : $this->GetMageResult($user);
+    $result = mt_rand(0, 9) < 7 ? $this->GetMageResult($user) : $this->mage_failed;
     $this->SaveMageResult($user, $result, $this->result);
   }
 
-  function GetMageResult($user){ return $this->DistinguishMage($user); }
+  protected function GetMageResult($user){ return $this->DistinguishMage($user); }
 }

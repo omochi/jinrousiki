@@ -8,10 +8,9 @@ class Role_dummy_chiroptera extends Role{
   public $display_role = 'self_cupid';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM, $USERS;
+  protected function OutputPartner(){
+    global $USERS;
 
-    parent::OutputAbility();
     $user   = $this->GetActor();
     $target = $user->GetPartner($this->role);
     $stack  = $target;
@@ -22,7 +21,7 @@ class Role_dummy_chiroptera extends Role{
       foreach($stack as $id) $pair[] = $USERS->ById($id)->handle_name;
       OutputPartner($pair, 'cupid_pair');
     }
-    $this->OutputAction();
+    $this->filter->OutputAction();
     if(! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
     $lovers = array(); //仮想恋人を表示 (憑依を追跡する)
     foreach($target as $id) $lovers[] = $USERS->GetHandleName($USERS->ById($id)->uname, true);

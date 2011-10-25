@@ -44,8 +44,14 @@ class Role_soul_mania extends Role_mania{
     'patron'       => 'sacrifice_patron');
   function __construct(){ parent::__construct(); }
 
-  function GetCopyRole($user){ return $user->DistinguishRoleGroup(); }
+  protected function OutputResult(){
+    global $ROOM;
+    if($ROOM->date == 2) OutputSelfAbilityResult($this->result);
+  }
 
+  protected function GetCopyRole($user){ return $user->DistinguishRoleGroup(); }
+
+  //覚醒コピー
   function DelayCopy($user){
     global $ROOM;
 
@@ -54,6 +60,6 @@ class Role_soul_mania extends Role_mania{
       $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];
     $actor->ReplaceRole($this->role, $role);
     $actor->AddRole($this->copied);
-    $ROOM->SystemMessage(str_repeat($actor->handle_name . "\t", 2) . $role, 'MANIA_RESULT');
+    $ROOM->SystemMessage(str_repeat($actor->handle_name . "\t", 2) . $role, $this->result);
   }
 }

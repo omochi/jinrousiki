@@ -11,7 +11,9 @@ class Role_cursed_angel extends Role_angel{
   public $sudden_death = 'SEALED';
   function __construct(){ parent::__construct(); }
 
-  function IsSympathy($lovers_a, $lovers_b){ return $lovers_a->GetCamp() != $lovers_b->GetCamp(); }
+  protected function IsSympathy($lovers_a, $lovers_b){
+    return $lovers_a->GetCamp() != $lovers_b->GetCamp();
+  }
 
   function SuddenDeath(){
     global $USERS;

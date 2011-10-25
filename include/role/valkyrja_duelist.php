@@ -2,6 +2,7 @@
 /*
   ◆戦乙女 (valkyrja_duelist)
   ○仕様
+  ・仲間表示：自分の勝利条件対象者
   ・追加役職：なし
 */
 class Role_valkyrja_duelist extends Role{
@@ -14,26 +15,18 @@ class Role_valkyrja_duelist extends Role{
   public $shoot_count = 2;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-
-    parent::OutputAbility();
+  protected function OutputPartner(){
     $id = $this->GetActor()->user_no;
     $stack = array();
     foreach($this->GetUser() as $user){
       if($user->IsPartner($this->partner_role, $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, $this->partner_header);
-    if($ROOM->date == 2 && isset($this->result)) OutputSelfAbilityResult($this->result);
-    if($this->IsVote() && $ROOM->IsNight()){
-      OutputVoteMessage('duelist-do', 'duelist_do', $this->action);
-    }
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date == 1;
-  }
+  function OutputAction(){ OutputVoteMessage('duelist-do', 'duelist_do', $this->action); }
+
+  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
 
   function SetVoteNight(){
     global $GAME_CONF, $USERS;
@@ -101,7 +94,7 @@ class Role_valkyrja_duelist extends Role{
   }
 
   //役職追加処理
-  function AddDuelistRole($user){}
+  protected function AddDuelistRole($user){}
 
   //勝利判定
   function Win($victory){

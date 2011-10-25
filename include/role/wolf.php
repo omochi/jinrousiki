@@ -7,11 +7,9 @@ class Role_wolf extends Role{
   public $action = 'WOLF_EAT';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputPartner(){
     global $ROOM, $USERS;
 
-    parent::OutputAbility();
-    //仲間情報を収集
     $wolf_list        = array();
     $mad_list         = array();
     $unconscious_list = array();
@@ -35,12 +33,9 @@ class Role_wolf extends Role{
       OutputPartner($mad_list, 'mad_partner'); //囁き狂人
     }
     if($ROOM->IsNight()) OutputPartner($unconscious_list, 'unconscious_list'); //無意識
-    $this->OutputWolfAbility();
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', 'wolf_eat', $this->action); //投票
   }
 
-  //特殊狼の情報表示
-  function OutputWolfAbility(){}
+  function OutputAction(){ OutputVoteMessage('wolf-eat', 'wolf_eat', $this->action); }
 
   //遠吠え
   function Howl($builder, $voice){

@@ -11,16 +11,7 @@ class Role_fairy extends Role{
   public $bad_status = NULL;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-
-    parent::OutputAbility();
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('fairy-do', 'fairy_do', $this->action);
-    }
-  }
-
-  function IsVote(){ return true; }
+  function OutputAction(){ OutputVoteMessage('fairy-do', 'fairy_do', $this->action); }
 
   //占い (悪戯)
   function Mage($user){
@@ -39,7 +30,7 @@ class Role_fairy extends Role{
   function ConvertSay(){ $this->SetStack($this->GetBadStatus() . $this->GetStack('say'), 'say'); }
 
   //悪戯内容取得
-  function GetBadStatus(){
+  protected function GetBadStatus(){
     global $MESSAGE;
     return is_null($this->bad_status) ? $MESSAGE->common_talk : $this->bad_status;
   }

@@ -10,15 +10,12 @@ class Role_mage extends Role{
   public $mage_failed = 'failed';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
     if($ROOM->date > 1) OutputSelfAbilityResult($this->result);
-    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'mage_do', $this->action);
   }
 
-  function IsVote(){ return true; }
+  function OutputAction(){ OutputVoteMessage('mage-do', 'mage_do', $this->action); }
 
   //占い
   function Mage($user){
@@ -33,18 +30,18 @@ class Role_mage extends Role{
   function IsJammer($user){
     global $ROOM, $ROLES;
 
-    $uname     = $this->GetUname();
-    $half_moon = $ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月の判定
-    $phantom   = $user->IsLiveRoleGroup('phantom') && $user->IsActive(); //幻系の判定
+    $uname   = $this->GetUname();
+    $half    = $ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月の判定
+    $phantom = $user->IsLiveRoleGroup('phantom') && $user->IsActive(); //幻系の判定
 
-    if(($half_moon || $phantom)){ //厄神の護衛判定
+    if($half || $phantom){ //厄神の護衛判定
       foreach($ROLES->LoadFilter('anti_voodoo') as $filter){
 	if($filter->IsGuard($uname)) return false;
       }
     }
 
     //占い妨害判定
-    if($half_moon || in_array($uname, $this->GetStack('jammer'))) return true;
+    if($half || in_array($uname, $this->GetStack('jammer'))) return true;
     if($phantom){
       $this->AddSuccess($user->user_no, 'phantom');
       return true;

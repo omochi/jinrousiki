@@ -11,22 +11,13 @@ class Role_trap_mad extends Role{
   public $ignore_message = '初日は罠を設置できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    $this->OutputAction();
-  }
-
   function OutputAction(){
-    global $ROOM;
-    if($this->IsVote() && $this->IsVoteTrap() && $ROOM->IsNight()){
+    if($this->IsVoteTrap()){
       OutputVoteMessage('wolf-eat', $this->submit, $this->action, $this->not_action);
     }
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   //罠能力判定
   function IsVoteTrap(){ return $this->GetActor()->IsActive(); }

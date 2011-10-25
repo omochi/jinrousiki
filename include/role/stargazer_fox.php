@@ -12,5 +12,5 @@ class Role_stargazer_fox extends Role_child_fox{
 
   function IsCursed($user){ return false; }
 
-  function GetMageResult($user){ return $this->Stargazer($user); }
+  protected function GetMageResult($user){ return $this->Stargazer($user); }
 }

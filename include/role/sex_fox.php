@@ -13,5 +13,5 @@ class Role_sex_fox extends Role_child_fox{
 
   function IsCursed($user){ return false; }
 
-  function GetMageResult($user){ return $this->DistinguishSex($user); }
+  protected function GetMageResult($user){ return $this->DistinguishSex($user); }
 }

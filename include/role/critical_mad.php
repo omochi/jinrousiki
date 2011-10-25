@@ -10,9 +10,7 @@ class Role_critical_mad extends Role_corpse_courier_mad{
 
   function VoteAction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
+    foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
       $target = $USERS->ByRealUname($target_uname);
       if($target->IsLive(true) && ! $target->IsAvoid()) $target->AddRole('critical_luck');

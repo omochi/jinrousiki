@@ -287,7 +287,7 @@ class RoleMessageList{
     'type' => 'trap_common', 'delimiter' => array('^' => 'chicken'));
 
   public $spell_common = array(
-    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#葛の葉#です。他の#共有者#が誰であるか知ることができ、_処刑_投票先が人外だったら^魔が言^を与えますが、占われると:呪殺:されます。",
+    'message' => "[役割] [|村人|陣営] [#共有者#系]\n　あなたは#葛の葉#です。他の#共有者#が誰であるか知ることができ、_処刑_投票先が人外だったら^魔が言^を与えますが、占われると:呪殺:されます。\n　とある森の白き狐には村人たちへ返しきれぬ大恩があります。言霊を巧みに操り、受けた恩を返すときがやってきました。今がその時です！",
     'type' => 'common', 'delimiter' => array('_' => 'vote', '^' => 'liar', ':' => 'mage'));
 
   public $critical_common = array(
@@ -2120,7 +2120,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('holy_priest');
-$builder->Output('spell_common');
+$builder->Output('holy_priest');
 #$builder->Output('sharp_wolf');
 #$builder->Output('hariti_yaksa'); //

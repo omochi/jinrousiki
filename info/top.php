@@ -7,22 +7,22 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 1.5.0 β13 アップロード (2011/10/15 (Sat) 20:57) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 1.5.0 β14 アップロード (2011/10/23 (Sun) 21:12) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b13">デバッグ情報</a> (2011/10/20 (Thu) 01:00)</li>
-  <li>「山彦」「白蔵主」「僵尸」「尸解仙」「邪仙」実装</li>
+  <li>→ <a href="info/develop/debug.php#ver150b14">デバッグ情報</a> (2011/10/25 (Tue) 20:50)</li>
+  <li>「人狼追加」オプション実装</li>
+  <li>「鋭狼」「聖徳道士」「葛の葉」実装</li>
+  <li>サブ役職「魔が言」実装</li>
+  <li>スキン画像追加</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>鋭狼：狂人系と毒能力者を襲撃した場合は回避する人狼。</li>
-  <li>聖徳道士：身代わり君と自分を含めた周囲の人の所属陣営の総数が分かる、特殊な司祭</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>「人狼追加」オプション実装</li>
-  <li>葛の葉：処刑投票先が人狼系・妖狐・恋人なら魔が言を付加するが呪殺される特殊な共有者</li>
-  <li>魔が言：高確率で発言が人狼の遠吠えに入れ替わってしまう</li>
+  <li>なし</li>
 </ul>

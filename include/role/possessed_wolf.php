@@ -8,7 +8,7 @@ RoleManager::LoadFile('wolf');
 class Role_possessed_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
-  function OutputWolfAbility(){
+  protected function OutputResult(){
     global $ROOM;
     if($ROOM->date > 1) OutputPossessedTarget(); //現在の憑依先
   }
@@ -22,7 +22,8 @@ class Role_possessed_wolf extends Role_wolf{
     }
     $list[$this->GetWolfVoter()->uname] = $user->uname;
     $user->dead_flag = true;
-    if($user->IsRole('anti_voodoo')) $this->GetWolfVoter()->possessed_reset = true; //憑依リセット判定
+    //憑依リセット判定
+    if($user->IsRole('anti_voodoo')) $this->GetWolfVoter()->possessed_reset = true;
   }
 
   //憑依処理

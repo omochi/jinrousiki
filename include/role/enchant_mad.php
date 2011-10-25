@@ -8,12 +8,9 @@ class Role_enchant_mad extends Role{
   public $mix_in = 'fairy';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
+  function OutputAction(){ $this->filter->OutputAction(); }
 
-    parent::OutputAbility();
-    if($ROOM->IsNight()) OutputVoteMessage('fairy-do', 'fairy_do', 'FAIRY_DO');
-  }
+  function IsVote(){ return $this->filter->IsVote(); }
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 

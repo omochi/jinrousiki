@@ -113,6 +113,7 @@ function GenerateFinishedRooms($page){
     $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
     $builder->set_reverse = $is_reverse;
     $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
+    $builder->AddOption('watch', $RQ_ARGS->watch ? 'on' : 'off');
     $db_no = $RQ_ARGS->db_no;
     if(is_int($db_no) && $db_no > 0) $builder->AddOption('db_no', $db_no);
   }
@@ -164,14 +165,14 @@ EOF;
     }
     $max_user    = GenerateMaxUserImage($ROOM->max_user);
     $game_option = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
-
+    $victory     = $RQ_ARGS->watch ? '-' : $VICT_IMG->Generate($ROOM->victory_role);
     $str .= <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">{$ROOM->id}</td>
 <td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} 村</a>
 <td class="upper">{$ROOM->user_count} {$max_user}</td>
 <td class="upper">{$ROOM->date}</td>
-<td class="side">{$VICT_IMG->Generate($ROOM->victory_role)}</td>
+<td class="side">{$victory}</td>
 </tr>
 <tr class="list middle">
 <td class="comment side">～{$ROOM->comment}～</td>
@@ -231,12 +232,16 @@ function GenerateOldLog(){
   $title  = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
   $option = GenerateGameOptionImage($ROOM->game_option->row, $ROOM->option_role->row);
   $log    = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
+  $link = '<a href="#beforegame">前</a>'."\n";
+  for($i = 1; $i <= $ROOM->last_date ; $i++) $link .= '<a href="#date'.$i.'">'.$i.'</a>'."\n";
+  $link .= '<a href="#aftergame">後</a>'."\n";
   return GenerateHTMLHeader($title, 'old_log') . <<<EOF
 </head>
 <body>
 <a href="old_log.php">←戻る</a><br>
 {$ROOM->GenerateTitleTag()}<br>
 {$option}<br>
+{$link}<br>
 {$log}
 EOF;
 }
@@ -344,7 +349,8 @@ function GenerateDateTalkLog($set_date, $set_location){
   if($set_location != 'heaven_only') $ROOM->SetWeather();
 
   $builder = new DocumentBuilder();
-  $builder->BeginTalk('talk ' . $table_class);
+  $id = $ROOM->IsPlaying() ? 'date' . $ROOM->date : $ROOM->day_night;
+  $builder->BeginTalk('talk ' . $table_class, $id);
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
   //if($ROOM->watch_mode) $builder->AddSystemTalk($ROOM->date . print_r($ROOM->event, true));
 

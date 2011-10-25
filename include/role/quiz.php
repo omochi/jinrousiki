@@ -8,9 +8,8 @@ class Role_quiz extends Role{
   public $mix_in = 'decide';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROLE_IMG, $ROOM;
-    parent::OutputAbility();
     if($ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
   }
 

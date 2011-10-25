@@ -13,10 +13,12 @@ class Role_clairvoyance_scanner extends Role_mind_scanner{
   public $ignore_message = '初日は透視できません';
   function __construct(){ parent::__construct(); }
 
-  function IsVote(){
+  protected function OutputResult(){
     global $ROOM;
-    return $ROOM->date > 1;
+    if($ROOM->date > 2) OutputSelfAbilityResult($this->result);
   }
+
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   /*
     複数の投票イベントを持つタイプが出現した場合は複数のメッセージを発行する必要がある

@@ -362,15 +362,33 @@ class Role{
   //同一ユーザ判定
   protected function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
 
+  //投票能力判定
+  function IsVote(){ return ! is_null($this->action); }
+
   //-- 役職情報表示 --//
   //役職情報表示
-  function OutputAbility(){ $this->OutputImage(); }
+  function OutputAbility(){
+    global $ROOM;
+    $this->OutputImage();
+    $this->OutputPartner();
+    $this->OutputResult();
+    if($this->IsVote() && $ROOM->IsNight()) $this->OutputAction();
+  }
 
   //役職画像表示
   protected function OutputImage(){
     global $ROLE_IMG;
     $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
   }
+
+  //仲間情報表示
+  protected function OutputPartner(){}
+
+  //能力結果表示
+  protected function OutputResult(){}
+
+  //投票能力表示
+  function OutputAction(){}
 
   //-- 発言処理 --//
   //閲覧者取得
@@ -435,9 +453,6 @@ class Role{
 
   //投票スキップ判定
   function IgnoreVote(){ return $this->IsVote() ? NULL : $this->ignore_message; }
-
-  //投票能力判定
-  function IsVote(){ return false; }
 
   //-- 投票画面表示 (夜) --//
   //投票対象ユーザ取得

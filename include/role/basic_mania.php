@@ -9,5 +9,5 @@ class Role_basic_mania extends Role_mania{
   public $copied = 'copied_basic';
   function __construct(){ parent::__construct(); }
 
-  function GetCopyRole($user){ return $user->DistinguishRoleGroup(); }
+  protected function GetCopyRole($user){ return $user->DistinguishRoleGroup(); }
 }

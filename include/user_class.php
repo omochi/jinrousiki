@@ -274,7 +274,7 @@ class User{
 
     if(! $this->IsRole('sirius_wolf')) return false;
     $type = $full ? 'ability_full_sirius_wolf' : 'ability_sirius_wolf';
-    if(is_null($this->$type)){
+    if(! property_exists($this, $type)){
       $stack = $USERS->GetLivingWolves();
       $this->ability_sirius_wolf      = count($stack) < 3;
       $this->ability_full_sirius_wolf = count($stack) == 1;

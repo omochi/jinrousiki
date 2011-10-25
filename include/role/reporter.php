@@ -10,20 +10,14 @@ class Role_reporter extends Role{
   public $ignore_message = '初日の尾行はできません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
-    if($ROOM->date > 2) OutputSelfAbilityResult($this->result); //尾行結果
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('guard-do', 'reporter_do', $this->action);
-    }
+    if($ROOM->date > 2) OutputSelfAbilityResult($this->result);
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function OutputAction(){ OutputVoteMessage('guard-do', 'reporter_do', $this->action); }
+
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   //尾行
   function Report($user){

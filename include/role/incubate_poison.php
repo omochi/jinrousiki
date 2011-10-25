@@ -8,11 +8,9 @@ RoleManager::LoadFile('poison');
 class Role_incubate_poison extends Role_poison{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
-    if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL); //能力発現
+    if($ROOM->date > 4) OutputAbilityResult('ability_poison', NULL);
   }
 
   function IsPoisonTarget($user){ return $user->IsRoleGroup('wolf', 'fox'); }

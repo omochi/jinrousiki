@@ -25,5 +25,5 @@ class Role_angel extends Role_cupid{
     $ROOM->SystemMessage($sentence . $lovers_a->main_role, 'SYMPATHY_RESULT');
   }
 
-  function IsSympathy($lovers_a, $lovers_b){ return $lovers_a->sex != $lovers_b->sex; }
+  protected function IsSympathy($lovers_a, $lovers_b){ return $lovers_a->sex != $lovers_b->sex; }
 }

@@ -9,21 +9,14 @@ class Role_anti_voodoo extends Role{
   public $ignore_message = '初日の厄払いはできません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
-    //厄払い結果
     if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult($this->result);
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('guard-do', 'anti_voodoo_do', $this->action);
-    }
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function OutputAction(){ OutputVoteMessage('guard-do', 'anti_voodoo_do', $this->action); }
+
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   //厄払い先セット
   function SetGuard($user){

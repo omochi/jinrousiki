@@ -11,19 +11,9 @@ class Role_escaper extends Role{
   public $ignore_message = '初日は逃亡できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
+  function OutputAction(){ OutputVoteMessage('escape-do', 'escape_do', $this->action); }
 
-    parent::OutputAbility();
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('escape-do', 'escape_do', $this->action);
-    }
-  }
-
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   //逃亡処理
   function Escape($user){

@@ -6,6 +6,6 @@
 */
 RoleManager::LoadFile('fairy');
 class Role_autumn_fairy extends Role_fairy{
-  public $bad_stauts = '秋ですよー';
+  public $bad_status = '秋ですよー';
   function __construct(){ parent::__construct(); }
 }

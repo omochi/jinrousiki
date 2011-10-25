@@ -9,32 +9,24 @@
 class Role_mind_scanner extends Role{
   public $action = 'MIND_SCANNER_DO';
   public $mind_role = 'mind_read';
-  public $result = NULL;
   public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputPartner(){
     global $ROOM;
 
-    parent::OutputAbility();
-    if($ROOM->date > 2 && isset($this->result)) OutputSelfAbilityResult($this->result);
-    if($ROOM->date > 1 && isset($this->mind_role)){
-      $id = $this->GetActor()->user_no;
-      $stack = array();
-      foreach($this->GetUser() as $user){
-	if($user->IsPartner($this->mind_role, $id)) $stack[] = $user->handle_name;
-      }
-      OutputPartner($stack, 'mind_scanner_target');
+    if($ROOM->date < 2 || is_null($this->mind_role)) return;
+    $id = $this->GetActor()->user_no;
+    $stack = array();
+    foreach($this->GetUser() as $user){
+      if($user->IsPartner($this->mind_role, $id)) $stack[] = $user->handle_name;
     }
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', $this->action);
-    }
+    OutputPartner($stack, 'mind_scanner_target');
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date == 1;
-  }
+  function OutputAction(){ OutputVoteMessage('mind-scanner-do', 'mind_scanner_do', $this->action); }
+
+  function IsVote(){ global $ROOM; return parent::IsVote() && $ROOM->date == 1; }
 
   function IsVoteCheckbox($user, $live){
     return parent::IsVoteCheckbox($user, $live) && ! $user->IsDummyBoy();

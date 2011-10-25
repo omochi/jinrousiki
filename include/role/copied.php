@@ -5,11 +5,12 @@
   ・結果表示：2日目
 */
 class Role_copied extends Role{
+  public $result = 'MANIA_RESULT';
   public $display_date = 2;
   function __construct(){ parent::__construct(); }
 
   function OutputAbility(){
     global $ROOM;
-    if($ROOM->date == $this->display_date) OutputSelfAbilityResult('MANIA_RESULT');
+    if($ROOM->date == $this->display_date) OutputSelfAbilityResult($this->result);
   }
 }

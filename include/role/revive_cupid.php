@@ -9,5 +9,5 @@ class Role_revive_cupid extends Role_cupid{
   public $mix_in = 'revive_pharmacist';
   function __construct(){ parent::__construct(); }
 
-  function AddCupidRole($user, $flag){ $user->AddRole('death_warrant[7]'); }
+  protected function AddCupidRole($user, $flag){ $user->AddRole('death_warrant[7]'); }
 }

@@ -8,7 +8,9 @@ class Role_trap_fox extends Role_fox{
   public $mix_in = 'trap_mad';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){ $this->filter->OutputAction(); }
+  function OutputAction(){ $this->filter->OutputAction(); }
+
+  function IsVote(){ return $this->filter->IsVote(); }
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 

@@ -9,19 +9,12 @@ class Role_voodoo_killer extends Role{
   public $result = 'VOODOO_KILLER_SUCCESS';
   function __construct(){ parent::__construct(); }
 
-  //役職情報表示
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
-    //解呪結果
     if($ROOM->date > 1 && ! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult($this->result);
-    //投票
-    if($ROOM->IsNight()) OutputVoteMessage('mage-do', 'voodoo_killer_do', $this->action);
   }
 
-  //投票能力判定
-  function IsVote(){ return true; }
+  function OutputAction(){ OutputVoteMessage('mage-do', 'voodoo_killer_do', $this->action); }
 
   //占い
   function Mage($user){

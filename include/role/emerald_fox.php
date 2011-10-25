@@ -10,12 +10,8 @@ class Role_emerald_fox extends Role_fox{
   public $action = 'MAGE_DO';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){
-    global $ROOM;
-
-    if($ROOM->IsNight() && $this->GetActor()->IsActive()){
-      OutputVoteMessage('mage-do', 'mage_do', $this->action);
-    }
+  function OutputAction(){
+    if($this->GetActor()->IsActive()) OutputVoteMessage('mage-do', 'mage_do', $this->action);
   }
 
   function IgnoreVote(){

@@ -6,10 +6,8 @@
 class Role_medium extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
     if($ROOM->date > 1) OutputSelfAbilityResult('MEDIUM_RESULT');
   }
 }

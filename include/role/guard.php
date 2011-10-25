@@ -11,23 +11,16 @@ class Role_guard extends Role{
   public $ignore_message = '初日は護衛できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
-    if($ROOM->date > 2){
-      OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
-      if(! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
-    }
-    if($this->IsVote() && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('guard-do', 'guard_do', $this->action);
-    }
+    if($ROOM->date < 1) return;
+    OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
+    if(! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function OutputAction(){ OutputVoteMessage('guard-do', 'guard_do', $this->action); }
+
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
   //護衛先セット
   function SetGuard($uname){

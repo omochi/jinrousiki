@@ -69,7 +69,10 @@ class DocumentBuilder{
   }
 
   //発言テーブルヘッダ作成
-  function BeginTalk($class){ $this->cache = '<table class="' . $class . '">' . "\n"; }
+  function BeginTalk($class, $id = NULL){
+    $this->cache = '<table' . (is_null($id) ? '' : ' id="' . $id . '"') .
+      ' class="' . $class . '">' . "\n";
+  }
 
   //基礎発言処理
   function RawAddTalk($symbol, $user_info, $str, $voice, $row_class = '',

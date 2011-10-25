@@ -5,6 +5,12 @@ $INIT_CONF->LoadFile('info_functions');
 OutputInfoPageHeader('過去の Information', 1);
 ?>
 <!-- Information の改訂履歴を残したい場合はこのページを使用してください -->
+
+<h2>Ver. 1.5.0 β13 アップロード (2011/10/15 (Sat) 20:57)</h2>
+<ul>
+  <li>「山彦」「白蔵主」「僵尸」「尸解仙」「邪仙」実装</li>
+</ul>
+
 <h2>Ver. 1.5.0 β12 アップロード (2011/09/25 (Sun) 22:32)</h2>
 <ul>
   <li>「妖狐追加」「子狐登場」「天啓封印」オプション実装</li>

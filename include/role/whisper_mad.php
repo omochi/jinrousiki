@@ -6,24 +6,24 @@
 class Role_whisper_mad extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputPartner(){
     global $USERS;
 
-    parent::OutputAbility();
-    $stack = array();
-    foreach($USERS->rows as $user){
-      if($user->IsSelf()) continue;
+    $wolf = array();
+    $mad  = array();
+    foreach($this->GetUser() as $user){
+      if($this->IsActor($user->uname)) continue;
       if($user->IsRole('possessed_wolf')){
-	$stack['wolf'][] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
+	$wolf[] = $USERS->GetHandleName($user->uname, true); //憑依先を追跡する
       }
       elseif($user->IsWolf(true)){
-	$stack['wolf'][] = $user->handle_name;
+	$wolf[] = $user->handle_name;
       }
-      elseif($user->IsRole('whisper_mad')){
-	$stack['mad'][] = $user->handle_name;
+      elseif($user->IsRole($this->role)){
+	$mad[] = $user->handle_name;
       }
     }
-    OutputPartner($stack['wolf'], 'wolf_partner');
-    OutputPartner($stack['mad'], 'mad_partner');
+    OutputPartner($wolf, 'wolf_partner');
+    OutputPartner($mad, 'mad_partner');
   }
 }

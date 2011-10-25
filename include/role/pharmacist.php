@@ -8,9 +8,8 @@ class Role_pharmacist extends Role{
   public $result = 'PHARMACIST_RESULT';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-    parent::OutputAbility();
     if($ROOM->date > 2) OutputSelfAbilityResult($this->result);
   }
 

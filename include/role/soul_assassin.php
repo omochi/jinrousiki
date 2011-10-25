@@ -9,12 +9,17 @@ class Role_soul_assassin extends Role_assassin{
   public $result = 'ASSASSIN_RESULT';
   function __construct(){ parent::__construct(); }
 
+  protected function OutputResult(){
+    global $ROOM;
+    if($ROOM->date > 2) OutputSelfAbilityResult($this->result);
+  }
+
   function Assassin($user){
     global $ROOM, $USERS;
 
     if(! parent::Assassin($user)) return false;
     $str = $this->GetActor()->GetHandleName($user->uname, $user->main_role);
-    $ROOM->SystemMessage($str, 'ASSASSIN_RESULT');
+    $ROOM->SystemMessage($str, $this->result);
     if($user->IsPoison()) $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night'); //毒死判定
   }
 }

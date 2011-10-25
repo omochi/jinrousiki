@@ -8,8 +8,8 @@ class Role_priest extends Role{
   public $priest_type = 'human_side';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
+  //Mixin あり
+  function OutputResult(){
     if(is_null($role = $this->GetOutputRole())) return;
     OutputSelfAbilityResult($this->GetEvent($role));
   }

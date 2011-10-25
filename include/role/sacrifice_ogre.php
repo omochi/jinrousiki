@@ -3,6 +3,7 @@
   ◆酒呑童子 (sacrifice_ogre)
   ○仕様
   ・勝利：生存 + 村人陣営以外勝利
+  ・仲間表示：洗脳者
   ・人攫い無効：吸血鬼陣営
   ・人攫い：洗脳者付加
   ・身代わり対象者：洗脳者
@@ -12,10 +13,11 @@ class Role_sacrifice_ogre extends Role_ogre{
   public $mix_in = 'protected';
   function __construct(){ parent::__construct(); }
 
-  function OutputOgreAbility(){
+  protected function OutputPartner(){
     global $ROOM;
 
-    if($ROOM->date < 1) return;
+    /* 2日目の時点で洗脳者が発生する特殊イベントを実装したら対応すること */
+    if($ROOM->date < 2) return;
     $stack = array();
     foreach($this->GetUser() as $user){
       if($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;

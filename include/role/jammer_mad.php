@@ -8,15 +8,7 @@ class Role_jammer_mad extends Role{
   public $submit = 'jammer_do';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    parent::OutputAbility();
-    $this->OutputAction();
-  }
-
-  function OutputAction(){
-    global $ROOM;
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', $this->submit, $this->action);
-  }
+  function OutputAction(){ OutputVoteMessage('wolf-eat', $this->submit, $this->action); }
 
   //妨害対象セット
   function SetJammer($user){

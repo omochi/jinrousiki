@@ -9,7 +9,7 @@ class Role_tongue_wolf extends Role_wolf{
   public $result = 'TONGUE_WOLF_RESULT';
   function __construct(){ parent::__construct(); }
 
-  function OutputWolfAbility(){
+  protected function OutputResult(){
     global $ROOM;
     if($ROOM->date > 1) OutputSelfAbilityResult($this->result);
   }

@@ -9,7 +9,7 @@ class Role_trick_mania extends Role_mania{
   public $copied = 'copied_trick';
   function __construct(){ parent::__construct(); }
 
-  function CopyAction($user, $role){
+  protected function CopyAction($user, $role){
     //スキップ判定
     if($role == 'human' || $user->IsDummyBoy() || $user->IsRole('widow_priest', 'revive_priest')){
       return;

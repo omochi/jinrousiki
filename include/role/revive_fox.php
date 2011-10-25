@@ -8,20 +8,24 @@
 RoleManager::LoadFile('fox');
 class Role_revive_fox extends Role_fox{
   public $mix_in = 'poison_cat';
-  public $action = 'POISON_CAT_DO';
+  public $action     = 'POISON_CAT_DO';
   public $not_action = 'POISON_CAT_NOT_DO';
-  public $submit = 'revive_do';
+  public $submit     = 'revive_do';
   public $not_submit = 'revive_not_do';
   public $ignore_message = '初日は蘇生できません';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){
+  protected function OutputResult(){
     global $ROOM;
+    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
+      OutputSelfAbilityResult('POISON_CAT_RESULT');
+    }
+    parent::OutputResult();
+  }
 
-    if($ROOM->date > 2) OutputSelfAbilityResult('POISON_CAT_RESULT'); //蘇生結果
-    //投票
-    if($this->IsVote() && $this->GetActor()->IsActive() && $ROOM->IsNight() &&
-       ! $ROOM->IsOpenCast()){
+  function OutputAction(){
+    global $ROOM;
+    if($this->GetActor()->IsActive() && ! $ROOM->IsOpenCast()){
       OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
     }
   }

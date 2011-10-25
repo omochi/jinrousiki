@@ -10,8 +10,5 @@ class Role_voodoo_fox extends Role_fox{
   public $submit = 'voodoo_do';
   function __construct(){ parent::__construct(); }
 
-  function OutputFoxAbility(){
-    global $ROOM;
-    if($ROOM->IsNight()) OutputVoteMessage('wolf-eat', $this->submit, $this->action);
-  }
+  function OutputAction(){ OutputVoteMessage('wolf-eat', $this->submit, $this->action); }
 }

@@ -13,20 +13,14 @@ class Role_wizard extends Role{
   public $result_list = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-
-    parent::OutputAbility();
     if($ROOM->date > 2) foreach($this->result_list as $result) OutputSelfAbilityResult($result);
-    if(isset($this->action) && $ROOM->date > 1 && $ROOM->IsNight()){
-      OutputVoteMessage('wizard-do', 'wizard_do', $this->action);
-    }
   }
 
-  function IsVote(){
-    global $ROOM;
-    return $ROOM->date > 1;
-  }
+  function OutputAction(){ OutputVoteMessage('wizard-do', 'wizard_do', $this->action); }
+
+  function IsVote(){ global $ROOM; return parent::IsVote() && $ROOM->date > 1; }
 
   //魔法セット (返り値：昼：魔法 / 夜：投票タイプ)
   function SetWizard(){

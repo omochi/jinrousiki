@@ -8,7 +8,7 @@ RoleManager::LoadFile('angel');
 class Role_exchange_angel extends Role_angel{
   function __construct(){ parent::__construct(); }
 
-  function IsSympathy($lovers_a, $lovers_b){ return false; }
+  protected function IsSympathy($lovers_a, $lovers_b){ return false; }
 
   //交換憑依処理
   function Exchange(){

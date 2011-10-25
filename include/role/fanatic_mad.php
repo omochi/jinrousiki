@@ -6,10 +6,9 @@
 class Role_fanatic_mad extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputPartner(){
     global $USERS;
 
-    parent::OutputAbility();
     $stack = array();
     foreach($this->GetUser() as $user){
       if($user->IsRole('possessed_wolf')){

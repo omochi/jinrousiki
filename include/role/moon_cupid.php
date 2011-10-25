@@ -9,7 +9,7 @@ class Role_moon_cupid extends Role_cupid{
   public $self_shoot = true;
   function __construct(){ parent::__construct(); }
 
-  function AddCupidRole($user, $flag){
+  protected function AddCupidRole($user, $flag){
     $user->AddRole('challenge_lovers');
     if(! $this->IsActor($user->uname)) $this->GetActor()->AddRole($user->GetID('mind_receiver'));
   }

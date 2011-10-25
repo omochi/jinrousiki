@@ -7,15 +7,9 @@
 class Role_scripter extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
+  function OutputResult(){ if($this->IsActive()) OutputAbilityResult('ability_scripter', NULL); }
 
-    parent::OutputAbility();
-    if($ROOM->date > 4) OutputAbilityResult('ability_scripter', NULL); //能力発現
-  }
+  function FilterVoteDo(&$number){ if($this->IsActive()) $number++; }
 
-  function FilterVoteDo(&$number){
-    global $ROOM;
-    if($ROOM->date > 4) $number++;
-  }
+  private function IsActive(){ global $ROOM; return $ROOM->date > 4; }
 }
