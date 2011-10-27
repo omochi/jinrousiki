@@ -6,7 +6,9 @@
 class Role_possessed_exchange extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputImage(){ return; }
+
+  protected function OutputResult(){
     global $ROOM, $USERS;
 
     if(! is_array($stack = $this->GetActor()->GetPartner($this->role))) return;

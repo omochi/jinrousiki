@@ -91,10 +91,10 @@ class RoleManager{
     'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'spell_common',
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
-    'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
-    'critical_mad', 'follow_mad', 'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger',
-    'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck',
-    'bad_luck', 'authority', 'rebel');
+    'thunder_brownie', 'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad',
+    'miasma_mad', 'critical_mad', 'follow_mad', 'sweet_cupid', 'snow_cupid', 'quiz',
+    'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide',
+    'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -120,6 +120,9 @@ class RoleManager{
 
   //得票カウンター
   public $voted_reaction_list = array('trap_common', 'jealousy');
+
+  //落雷判定
+  public $thunderbolt_list = array('thunder_brownie');
 
   //ショック死(メイン)
   public $sudden_death_main_list = array('eclipse_medium', 'cursed_angel');
@@ -362,6 +365,12 @@ class Role{
   //同一ユーザ判定
   protected function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
 
+  //発動日判定
+  protected function IsDoom(){
+    global $ROOM;
+    return $this->GetActor()->GetDoomDate($this->role) == $ROOM->date;
+  }
+
   //投票能力判定
   function IsVote(){ return ! is_null($this->action); }
 
@@ -369,11 +378,15 @@ class Role{
   //役職情報表示
   function OutputAbility(){
     global $ROOM;
+    if($this->IgnoreAbility()) return;
     $this->OutputImage();
     $this->OutputPartner();
     $this->OutputResult();
     if($this->IsVote() && $ROOM->IsNight()) $this->OutputAction();
   }
+
+  //役職情報表示判定
+  protected function IgnoreAbility(){ return false; }
 
   //役職画像表示
   protected function OutputImage(){
@@ -419,9 +432,15 @@ class Role{
   }
 
   //-- 処刑集計処理 --//
+  //処刑者ユーザ名取得
+  protected function GetVoteKill(){ return $this->GetStack('vote_kill_uname'); }
+
+  //処刑実行判定
+  protected function IsVoteKill(){ return $this->GetVoteKill() != ''; }
+
   //処刑者判定
   protected function IsVoted($uname = NULL){
-    return $this->GetStack('vote_kill_uname') == $this->GetUname($uname);
+    return $this->GetVoteKill() == $this->GetUname($uname);
   }
 
   //得票者名取得
@@ -429,10 +448,16 @@ class Role{
     return array_keys($this->GetStack('target'), $this->GetUname($uname));
   }
 
+  //投票先ユーザ名取得
+  protected function GetVoteTargetUname($uname = NULL){
+    $stack = $this->GetStack('target');
+    return $stack[$this->GetUname($uname)];
+  }
+
   //投票者ユーザ取得
   protected function GetVoteUser($uname = NULL){
-    global $ROLES, $USERS;
-    return $USERS->ByRealUname($ROLES->stack->target[$this->GetUname($uname)]);
+    global $USERS;
+    return $USERS->ByRealUname($this->GetVoteTargetUname($uname));
   }
 
   //-- 投票データ表示 (夜) --//

@@ -6,8 +6,5 @@
 class Role_mind_evoke extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-    if($ROOM->date > 1) parent::OutputAbility();
-  }
+  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
 }

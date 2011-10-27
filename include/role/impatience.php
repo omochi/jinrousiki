@@ -11,7 +11,5 @@ class Role_impatience extends Role_chicken{
   public $sudden_death = 'IMPATIENCE';
   function __construct(){ parent::__construct(); }
 
-  function IsSuddenDeath(){
-    return ! $this->IgnoreSuddenDeath() && $this->GetStack('vote_kill_uname') == '';
-  }
+  function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && ! $this->IsVoteKill(); }
 }

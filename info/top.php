@@ -9,7 +9,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>TOPIC</h1>
 <h2>Ver. 1.5.0 β14 アップロード (2011/10/23 (Sun) 21:12) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <li>→ <a href="info/develop/debug.php#ver150b14">デバッグ情報</a> (2011/10/25 (Tue) 20:50)</li>
+  <li>→ <a href="info/develop/debug.php#ver150b14">デバッグ情報</a> (2011/10/25 (Tue) 22:23)</li>
   <li>「人狼追加」オプション実装</li>
   <li>「鋭狼」「聖徳道士」「葛の葉」実装</li>
   <li>サブ役職「魔が言」実装</li>

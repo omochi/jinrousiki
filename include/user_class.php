@@ -316,7 +316,7 @@ class User{
   }
 
   //ジョーカー所持者判定
-  function IsJoker($date){
+  function IsJoker($shift = false){
     global $ROOM, $USERS;
 
     if(! $this->IsRole('joker')) return false;
@@ -326,6 +326,7 @@ class User{
     }
     elseif($this->IsDead()) return false;
 
+    $date = $ROOM->date - ($shift ? 0 : 1);
     if($date == 1 || $ROOM->IsNight()) $date++;
     return $this->GetDoomDate('joker') == $date;
   }
@@ -550,7 +551,7 @@ class User{
 
   //役職情報から表示情報を作成する
   function GenerateRoleName($main_only = false){
-    global $ROOM, $ROLE_DATA;
+    global $ROLE_DATA;
 
     $str = $ROLE_DATA->GenerateRoleTag($this->main_role); //メイン役職
     if($main_only) return $str;
@@ -561,7 +562,7 @@ class User{
 	if(! $this->IsRole($sub_role)) continue;
 	switch($sub_role){
 	case 'joker':
-	  $css = $this->IsJoker($ROOM->date) ? $class : 'chiroptera';
+	  $css = $this->IsJoker() ? $class : 'chiroptera';
 	  break;
 
 	case 'death_note':
@@ -713,17 +714,17 @@ EOF;
   }
 
   //ジョーカーの移動処理
-  function AddJoker($decriment = false){
+  function AddJoker($shift = false){
     global $ROOM;
 
-    if($decriment){ //一時的に前日に巻戻す
+    if($shift){ //一時的に前日に巻戻す
       $ROOM->date--;
       $ROOM->day_night = 'night';
     }
     $this->AddDoom(1, 'joker');
     $ROOM->SystemMessage($this->handle_name, 'JOKER_MOVED_' . $ROOM->day_night);
 
-    if($decriment){ //日時を元に戻す
+    if($shift){ //日時を元に戻す
       $ROOM->date++;
       $ROOM->day_night = 'day';
     }
@@ -932,7 +933,8 @@ class UserDataSet{
   //ユーザ情報取得 (ユーザ ID 経由)
   function ByID($id){
     if(is_null($id)) return new User();
-    return $id > 0 ? $this->rows[$id] : $this->kicked[$id];
+    $stack = $this->{ $id > 0 ? 'rows' : 'kicked' };
+    return array_key_exists($id, $stack) ? $stack[$id] : new User();
   }
 
   //ユーザ情報取得 (ユーザ名経由)
@@ -1228,17 +1230,17 @@ class UserDataSet{
   }
 
   //ジョーカーの再配布処理
-  function ResetJoker($decriment = false){
+  function ResetJoker($shift = false){
     global $ROOM;
 
     if(! $ROOM->IsOption('joker')) return false;
     $stack = array();
     foreach($this->rows as $user){
       if($user->IsDead(true)) continue;
-      if($user->IsJoker($ROOM->date)) return; //現在の所持者が生存していた場合はスキップ
+      if($user->IsJoker()) return; //現在の所持者が生存していた場合はスキップ
       $stack[] = $user;
     }
-    if(count($stack) > 0) GetRandom($stack)->AddJoker($decriment);
+    if(count($stack) > 0) GetRandom($stack)->AddJoker($shift);
   }
 
   //デスノートの再配布処理 (オプションチェック判定は不要？)

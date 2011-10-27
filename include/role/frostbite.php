@@ -9,11 +9,9 @@ class Role_frostbite extends Role_febris{
   public $sudden_death = 'FROSTBITE';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputResult(){
     global $ROOM;
-    if($this->GetActor()->IsDoomRole($this->role)){
-      OutputAbilityResult($this->role . '_header', $ROOM->date, $this->role . '_footer');
-    }
+    OutputAbilityResult($this->role . '_header', $ROOM->date, $this->role . '_footer');
   }
 
   function IsSuddenDeath(){ return parent::IsSuddenDeath() && $this->GetVotedCount() == 0; }

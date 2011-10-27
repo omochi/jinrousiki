@@ -7,10 +7,7 @@
 class Role_occupied_luck extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-    if($ROOM->date > 1) parent::OutputAbility();
-  }
+  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
 
   function FilterVoted(&$number){ $number += $this->IsLivePartner() ? 1 : 3; }
 }

@@ -431,6 +431,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても*蘇生*できます。また、*蘇生*能力者の成功率を高めることができます。\n　――奇跡を願うものよ、我を崇めよ、我を讃えよ。我は#蛇神#、命と再生を司るもの。我が神威もて、汝に力を与えん。",
     'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
 
+  public $thunder_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#雷公#です。_再投票_時に最多得票者だった場合は誰か一人を:ショック死:させてしまいます。",
+    'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
+
   public $cursed_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#祟神#、=呪い=を持っています。また、あなたを襲撃した=人狼=や_処刑_投票してきた人に:死の宣告:を行います。\n　呪われた身を呪うことなく、触れた者に不幸をもたらすその力で、村を襲う悪しき災厄を祟り返してやるのです。",
     'type' => 'history_brownie');
@@ -1490,8 +1494,8 @@ class RoleMessageList{
     'type' => 'wisp', 'delimiter' => array('_' => 'wolf'));
 
   public $spell_wisp = array(
-    'message' => "　あなたの周囲に|狐火|が灯っているので#占い師#に占われると_呪殺_されてしまいます。",
-    'type' => 'black_wisp', 'delimiter' => array('_' => 'wolf'));
+    'message' => "　あなたの周囲に|狐火|が灯っているので#占い師#に占われると#呪殺#されてしまいます。",
+    'type' => 'black_wisp');
 
   public $foughten_wisp = array(
     'message' => "　あなたの周囲に|古戦場火|が灯っているので#占い#結果が_蝙蝠_判定になります。",
@@ -1736,8 +1740,9 @@ class RoleMessageList{
   public $result_brownie = array('message' => "さんは|座敷童子|でした", 'delimiter' => array('|' => 'brownie'));
   public $result_echo_brownie = array('message' => "さんは|山彦|でした", 'type' => 'result_brownie');
   public $result_sun_brownie = array('message' => "さんは|八咫烏|でした", 'type' => 'result_brownie');
-  public $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
   public $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
+  public $result_thunder_brownie = array('message' => "さんは|雷公|でした", 'type' => 'result_brownie');
+  public $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
   public $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   public $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
   public $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
@@ -2120,6 +2125,8 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('holy_priest');
+#$builder->Output('holy_priest');
+#$builder->Output('thunder_brownie');
 #$builder->Output('sharp_wolf');
 #$builder->Output('hariti_yaksa'); //
+$builder->Output('challenge_lovers');

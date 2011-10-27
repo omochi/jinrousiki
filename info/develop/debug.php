@@ -95,6 +95,17 @@ function GetCopiedRole(){ return $this->GetActor()->GetID('mind_friend'); }
 ○ $str = $this->GetWolfVoter()->GetHandleName($user->uname, $this->DistinguishSex($user));
 </pre>
 
+<h3>include/role/assassin.php % 56行目付近 (2011/10/25 (Tue) 22:23)</h3>
+<h4>[before]</h4>
+<pre>
+$this->Assassin($user);
+</pre>
+<h4>[after]</h4>
+<pre>
+$class = $this->GetClass($method = 'Assassin');
+$class->$method($user);
+</pre>
+
 <h2 id="ver150b13">Ver. 1.5.0 β13</h2>
 <h3>include/role/resurrect_mania.php % 15行目付近 (2011/10/16 (Sun) 21:19)</h3>
 <pre>

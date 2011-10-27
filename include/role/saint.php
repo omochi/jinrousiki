@@ -13,7 +13,7 @@ class Role_saint extends Role{
   function DecideVoteKill(){
     global $USERS;
 
-    if($this->GetVoteKill() != '') return;
+    if($this->IsVoteKill()) return;
     $stack = array();
     $target_stack = array();
     foreach($this->GetVotePossible() as $target_uname){ //最多得票者の情報を収集

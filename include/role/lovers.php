@@ -6,7 +6,9 @@
 class Role_lovers extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputImage(){ return; }
+
+  protected function OutputPartner(){
     global $ROOM, $USERS;
 
     $target = $this->GetActor()->partner_list;
@@ -15,8 +17,8 @@ class Role_lovers extends Role{
       if($this->IsActor($user->uname)) continue;
       if($user->IsPartner($this->role, $target) ||
 	 $this->GetActor()->IsPartner('dummy_chiroptera', $user->user_no) ||
-	 ($ROOM->date == 1 && $user->IsPartner('sweet_status', $target))){
-	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依を追跡する
+	 ($ROOM->date == 1 && $user->IsPartner('sweet_status', $target))){ //夢求愛者・悲恋対応
+	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依追跡
       }
     }
     OutputPartner($stack, 'partner_header', 'lovers_footer');

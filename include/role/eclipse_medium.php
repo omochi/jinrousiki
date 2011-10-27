@@ -12,7 +12,7 @@ class Role_eclipse_medium extends Role_medium{
   function __construct(){ parent::__construct(); }
 
   function SuddenDeath(){
-    if(! $this->IgnoreSuddenDeath() && $this->GetStack('vote_kill_uname') == ''){
+    if(! $this->IgnoreSuddenDeath() && $this->GetVoteKill() == ''){
       $this->SetSuddenDeath($this->sudden_death);
     }
   }

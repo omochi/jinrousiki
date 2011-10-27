@@ -11,7 +11,7 @@ class Role_dropout extends Role_decide{
   function SetVoteDay($uname){ $this->AddStack($uname); }
 
   function DecideVoteKill(){
-    if($this->GetVoteKill() != '') return;
+    if($this->IsVoteKill()) return;
     $stack = $this->GetVotePossible();
     foreach($this->GetStack() as $actor => $target){
       if(in_array($actor,  $stack) && in_array($target, $stack)) $this->SetVoteKill($actor);

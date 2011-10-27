@@ -7,11 +7,11 @@
 class Role_mind_sheep extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM, $USERS;
+  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
 
-    if($ROOM->date < 2) return;
-    parent::OutputAbility();
+  protected function OutputPartner(){
+    global $USERS;
+
     $stack = array();
     foreach($this->GetActor()->GetPartner($this->role, true) as $id){
       $stack[$id] = $USERS->ById($id)->handle_name;

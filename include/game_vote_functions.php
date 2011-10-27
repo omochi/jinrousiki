@@ -798,11 +798,10 @@ function VoteDay(){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
-
   $target = $USERS->ByReal($RQ_ARGS->target_no); //投票先のユーザ情報を取得
-  if($target->uname == '') OutputVoteResult('処刑：投票先が指定されていません');
-  if($target->IsSelf())    OutputVoteResult('処刑：自分には投票できません');
-  if(! $target->IsLive())  OutputVoteResult('処刑：生存者以外には投票できません');
+  if(is_null($target->user_no)) OutputVoteResult('処刑：無効な投票先です');
+  if($target->IsSelf()) OutputVoteResult('処刑：自分には投票できません');
+  if($target->IsDead()) OutputVoteResult('処刑：死者には投票できません');
 
   //特殊イベントを取得
   $vote_duel = property_exists($ROOM->event, 'vote_duel') ? $ROOM->event->vote_duel : NULL;
@@ -866,7 +865,8 @@ function AggregateVoteDay(){
   $vote_target_list  = array(); //投票リスト (ユーザ名 => 投票先ユーザ名)
   $vote_count_list   = array(); //得票リスト (ユーザ名 => 投票数)
   $ROLES->stack->pharmacist_result = array(); //薬師系の鑑定結果
-  if($ROOM->IsOption('joker')) $joker_id = $USERS->SetJoker(); //現在のジョーカー所持者の ID
+  //現在のジョーカー所持者の ID
+  if($ROOM->IsOption('joker')) $ROLES->stack->joker_id = $USERS->SetJoker();
 
   //-- 投票データ収集 --//
   foreach($ROOM->vote as $uname => $list){ //初期得票データを収集
@@ -998,12 +998,12 @@ function AggregateVoteDay(){
     foreach($ROLES->Load('vote_kill_counter') as $filter) $filter->VoteKillCounter($voter_list);
 
     //-- 特殊投票発動者の処理 --//
+    $vote_target->stolen_flag = false;
     foreach($ROLES->LoadFilter('vote_action') as $filter) $filter->VoteAction();
 
     //-- 霊能者系の処理 --//
     //火車の妨害判定
-    $stolen_flag = $ROOM->IsEvent('corpse_courier_mad') ||
-      (property_exists($vote_target, 'stolen_flag') && $vote_target->stolen_flag);
+    $stolen_flag = $ROOM->IsEvent('corpse_courier_mad') || $vote_target->stolen_flag;
 
     $role_flag   = new StdClass();
     $wizard_flag = new StdClass();
@@ -1046,22 +1046,17 @@ function AggregateVoteDay(){
   $ROLES->stack->count = array_count_values($vote_target_list); //投票者対象ユーザ名 => 人数
   //PrintData($ROLES->stack->count, 'count');
 
-  $thunderbolt_list = array(); //青天の霹靂判定用
-  if($ROOM->IsEvent('thunderbolt')){
-    $stack = array();
-    foreach($user_list as $uname){
-      $user = $USERS->ByRealUname($uname);
-      if($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
-    }
-    //PrintData($stack, 'ThunderboltBase');
-    $thunderbolt_list[] = $USERS->ByVirtual(GetRandom($stack))->uname;
-    //PrintData($thunderbolt_list, 'ThunderboltTarget');
-  }
+  $ROLES->stack->thunderbolt = array(); //青天の霹靂判定用
+  if($ROOM->IsEvent('thunderbolt'))
+    $ROLES->LoadMain(new User('thunder_brownie'))->SetThunderboltTarget($user_list);
+  else
+    foreach($ROLES->LoadFilter('thunderbolt') as $filter) $filter->SetThunderbolt($user_list);
+  //PrintData($ROLES->stack->thunderbolt, 'ThunderboltTarget');
 
   foreach($live_uname_list as $uname){
     $ROLES->actor = $USERS->ByUname($uname); //$live_uname_list は仮想ユーザ名
     $ROLES->actor->cured_flag = false;
-    $ROLES->stack->sudden_death = in_array($uname, $thunderbolt_list) ? 'THUNDERBOLT' : '';
+    $ROLES->stack->sudden_death = in_array($uname, $ROLES->stack->thunderbolt) ? 'THUNDERBOLT' : '';
     if(! $ROOM->IsEvent('no_sudden_death')){ //凪ならスキップ
       foreach($ROLES->Load('sudden_death_sub') as $filter) $filter->SuddenDeath();
     }
@@ -1109,62 +1104,17 @@ function AggregateVoteDay(){
       $USERS->ByID(GetRandom($stack))->AddRole('psycho_infected');
     }
 
-    $joker_flag = ! $ROOM->IsOption('joker'); //ジョーカー移動成立フラグ
-    if(! $joker_flag){ //ジョーカー移動判定
-      $joker_user   = $USERS->ByID($joker_id); //現在の所持者を取得
-      $virtual_user = $USERS->ByVirtual($joker_user->user_no); //仮想ユーザを取得
-
-      $joker_target_uname = $vote_target_list[$virtual_user->uname]; //ジョーカーの投票先
-      $joker_voted_list   = array_keys($vote_target_list, $virtual_user->uname); //ジョーカー投票者
-      $joker_target_list  = array(); //移動可能者リスト
-      foreach($joker_voted_list as $voter_uname){
-	$voter = $USERS->ByRealUname($voter_uname);
-	if($voter->IsLive(true) && ! $voter->IsJoker($ROOM->date - 1)){ //死者と前日所持者を除外
-	  $joker_target_list[] = $voter_uname;
-	}
-      }
-      //PrintData($joker_voted_list, $joker_target_uname);
-      //PrintData($joker_target_list, 'Target[joker]');
-
-      do{ //移動判定ルーチン
-	//対象者か現在のジョーカー所持者が処刑者なら無効
-	if($joker_target_uname == $ROLES->stack->vote_kill_uname ||
-	   $joker_user->IsSame($ROLES->stack->vote_kill_uname)) break;
-
-	if(in_array($joker_target_uname, $joker_voted_list)){ //相互投票なら無効
-	  //複数から投票されていた場合は残りからランダム
-	  unset($joker_target_list[array_search($joker_target_uname, $joker_target_list)]);
-	  //PrintData($joker_target_list, 'ReduceTarget');
-	  if(count($joker_target_list) == 0) break;
-	  $joker_target_uname = GetRandom($joker_target_list);
-	}
-	elseif($USERS->ByRealUname($joker_target_uname)->IsDead(true)){ //対象者が死亡していた場合
-	  if(count($joker_target_list) == 0) break;
-	  $joker_target_uname = GetRandom($joker_target_list); //ジョーカー投票者から選出
-	}
-	$USERS->ByRealUname($joker_target_uname)->AddJoker();
-	$joker_flag = true;
-      }while(false);
+    if($joker_flag = $ROOM->IsOption('joker')){ //ジョーカー移動判定
+      $joker_filter = $ROLES->LoadMain(new User('joker'));
+      $joker_flag   = $joker_filter->SetJoker();
     }
 
     $ROOM->ChangeNight();
     if(CheckVictory()){
-      if(! $joker_flag){ //ゲーム終了時のみ、処刑先への移動許可 (それ以外なら本人継承)
-	($joker_target_uname == $ROLES->stack->vote_kill_uname &&
-	 ! $joker_user->IsSame($ROLES->stack->vote_kill_uname)) ?
-	  $USERS->ByRealUname($joker_target_uname)->AddJoker() : $joker_user->AddJoker();
-      }
+      if($joker_flag) $joker_filter->FinishJoker();
     }
     else{
-      if(! $joker_flag){
-	//生きていたら本人継承 / 処刑者なら前日所持者以外の投票者ランダム / 死亡なら完全ランダム
-	if($joker_user->IsLive(true))
-	  $joker_user->AddJoker();
-	elseif($joker_user->IsSame($ROLES->stack->vote_kill_uname) && count($joker_target_list) > 0)
-	  $USERS->ByRealUname(GetRandom($joker_target_list))->AddJoker();
-	else
-	  $USERS->ByRealUname(GetRandom($USERS->GetLivingUsers(true)))->AddJoker();
-      }
+      if($joker_flag) $joker_filter->ResetJoker();
       InsertRandomMessage(); //ランダムメッセージ
     }
     if($ROOM->test_mode) return $vote_message_list;
@@ -1180,8 +1130,9 @@ function AggregateVoteDay(){
     //システムメッセージ
     $ROOM->SystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
     $ROOM->Talk("再投票になりました( {$RQ_ARGS->vote_times} 回目)");
-    //勝敗判定＆ジョーカー処理
-    if(CheckVictory(true) && $ROOM->IsOption('joker')) $USERS->ByID($joker_id)->AddJoker();
+    if(CheckVictory(true) && $ROOM->IsOption('joker')){ //勝敗判定＆ジョーカー処理
+      $USERS->ByID($ROLES->stack->joker_id)->AddJoker();
+    }
   }
   $ROOM->UpdateTime(true); //最終書き込み時刻を更新
 }

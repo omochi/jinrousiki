@@ -7,7 +7,9 @@
 class Role_rival extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputImage(){ return; }
+
+  protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;
     $stack  = array();
     foreach($this->GetUser() as $user){

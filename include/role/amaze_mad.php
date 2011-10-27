@@ -13,10 +13,9 @@ class Role_amaze_mad extends Role_corpse_courier_mad{
   function VoteAction(){
     global $ROOM, $USERS;
 
-    if(! is_array($stack = $this->GetStack())) return;
     $flag   = false;
-    $target = $USERS->ByRealUname($this->GetStack('vote_kill_uname'));
-    foreach($stack as $uname => $target_uname){
+    $target = $USERS->ByRealUname($this->GetVoteKill());
+    foreach($this->GetStack() as $uname => $target_uname){
       if(! $this->IsVoted($target_uname)) continue;
       $flag = true;
       $id   = $USERS->ByUname($uname)->user_no;

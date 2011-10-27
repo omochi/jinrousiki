@@ -22,8 +22,9 @@ class Role_dummy_chiroptera extends Role{
       OutputPartner($pair, 'cupid_pair');
     }
     $this->filter->OutputAction();
+    //仮想恋人を表示 (憑依追跡 / 恋人・悲恋持ちなら処理委託)
     if(! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
-    $lovers = array(); //仮想恋人を表示 (憑依を追跡する)
+    $lovers = array();
     foreach($target as $id) $lovers[] = $USERS->GetHandleName($USERS->ById($id)->uname, true);
     OutputPartner($lovers, 'partner_header', 'lovers_footer');
   }

@@ -2330,6 +2330,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#echo_brownie">山彦</a>
 <a href="#sun_brownie">八咫烏</a>
 <a href="#revive_brownie">蛇神</a>
+<a href="#thunder_brownie">雷公</a>
 <a href="#cursed_brownie">祟神</a>
 <a href="#history_brownie">白澤</a>
 </p>
@@ -2411,6 +2412,22 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 再生の象徴と言われる伝承がモチーフです。
 <a href="ability.php#revive">蘇生能力者</a>が出現しなかったケースを考慮して<a href="#revive_pharmacist">仙人</a>相当の能力も持たせてあります。
+</pre>
+
+<h3 id="thunder_brownie">雷公 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β15～]</h3>
+<pre>
+再投票の最多得票者になったら、誰か一人をショック死させる座敷童子の亜種。
+</pre>
+<ol>
+<li>ショック死の内容は<a href="../weather.php#weather_thunderbolt">青天の霹靂</a>相当。</li>
+<li>条件を満たした雷公が複数いても効果の発動は一度だけ。</li>
+<li><a href="../weather.php#weather_thunderbolt">青天の霹靂</a>と同時に条件を満たした場合は<a href="../weather.php#weather_thunderbolt">青天の霹靂</a>のみ発動する。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 </pre>
 
 <h3 id="cursed_brownie">祟神 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>

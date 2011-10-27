@@ -9,9 +9,7 @@ class Role_chicken extends Role{
   function __construct(){ parent::__construct(); }
 
   //ショック死判定
-  function SuddenDeath(){
-    if($this->IsSuddenDeath()) $this->SetSuddenDeath($this->sudden_death);
-  }
+  function SuddenDeath(){ if($this->IsSuddenDeath()) $this->SetSuddenDeath($this->sudden_death); }
 
   //ショック死データ登録
   function SetSuddenDeath($type){ $this->SetStack($type, 'sudden_death'); }
@@ -23,22 +21,16 @@ class Role_chicken extends Role{
   function IgnoreSuddenDeath(){ return $this->GetStack('sudden_death') != ''; }
 
   //投票先人数取得
-  function GetVoteCount(){
-    $count  = $this->GetStack('count');
-    $target = $this->GetStack('target');
-    $key    = $target[$this->GetUname()];
-    return array_key_exists($key, $count) ? $count[$key] : 0;
+  protected function GetVoteTargetCount(){
+    $count = $this->GetStack('count');
+    $uname = $this->GetVoteTargetUname();
+    return array_key_exists($uname, $count) ? $count[$uname] : 0;
   }
 
   //得票人数取得
-  function GetVotedCount(){
-    $count  = $this->GetStack('count');
-    return array_key_exists($this->GetUname(), $count) ? $count[$this->GetUname()] : 0;
-  }
-
-  //発動日判定
-  function IsDoom(){
-    global $ROOM;
-    return $this->GetActor()->GetDoomDate($this->role) == $ROOM->date;
+  protected function GetVotedCount(){
+    $count = $this->GetStack('count');
+    $uname = $this->GetUname();
+    return array_key_exists($uname, $count) ? $count[$uname] : 0;
   }
 }

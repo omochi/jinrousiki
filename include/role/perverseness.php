@@ -9,5 +9,7 @@ class Role_perverseness extends Role_chicken{
   public $sudden_death = 'PERVERSENESS';
   function __construct(){ parent::__construct(); }
 
-  function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->GetVoteCount() > 1; }
+  function IsSuddenDeath(){
+    return ! $this->IgnoreSuddenDeath() && $this->GetVoteTargetCount() > 1;
+  }
 }

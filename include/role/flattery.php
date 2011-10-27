@@ -9,5 +9,7 @@ class Role_flattery extends Role_chicken{
   public $sudden_death = 'FLATTERY';
   function __construct(){ parent::__construct(); }
 
-  function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->GetVoteCount() < 2; }
+  function IsSuddenDeath(){
+    return ! $this->IgnoreSuddenDeath() && $this->GetVoteTargetCount() < 2;
+  }
 }

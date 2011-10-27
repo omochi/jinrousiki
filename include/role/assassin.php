@@ -38,7 +38,8 @@ class Role_assassin extends Role{
       $this->AddSuccess($actor->user_no, 'assassin');
       return;
     }
-    $this->Assassin($user);
+    $class = $this->GetClass($method = 'Assassin');
+    $class->$method($user);
   }
 
   //暗殺処理 (protected)

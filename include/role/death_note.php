@@ -8,13 +8,11 @@ class Role_death_note extends Role{
   public $not_action = 'DEATH_NOTE_NOT_DO';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
+  protected function IgnoreAbility(){ return ! $this->IsDoom(); }
 
-    if(! $this->GetActor()->IsDoomRole($this->role)) return;
-    parent::OutputAbility();
-    if($ROOM->date > 1 && $ROOM->IsNight()){ //投票
-      OutputVoteMessage('death-note-do', 'death_note_do', $this->action, $this->not_action);
-    }
+  function OutputAction(){
+    OutputVoteMessage('death-note-do', 'death_note_do', $this->action, $this->not_action);
   }
+
+  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 }

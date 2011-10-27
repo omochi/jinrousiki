@@ -8,10 +8,7 @@
 class Role_mind_friend extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-    if($ROOM->date > 1) parent::OutputAbility();
-  }
+  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
 
   protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;

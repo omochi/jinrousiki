@@ -9,8 +9,10 @@ class Role_copied extends Role{
   public $display_date = 2;
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputImage(){ return; }
+
+  protected function OutputResult(){
     global $ROOM;
-    if($ROOM->date == $this->display_date) OutputSelfAbilityResult($this->result);
+    if($this->display_date == $ROOM->date) OutputSelfAbilityResult($this->result);
   }
 }

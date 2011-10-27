@@ -11,13 +11,10 @@ class Role_decide extends Role{
 
   //処刑者決定
   function DecideVoteKill(){
-    if($this->GetVoteKill() != '') return;
+    if($this->IsVoteKill()) return;
     $target = $this->GetStack();
     if(in_array($target, $this->GetVotePossible())) $this->SetVoteKill($target);
   }
-
-  //処刑者ユーザ名取得
-  function GetVoteKill(){ return $this->GetStack('vote_kill_uname'); }
 
   //処刑者ユーザ名登録
   function SetVoteKill($uname){ return $this->SetStack($uname, 'vote_kill_uname'); }
@@ -27,7 +24,7 @@ class Role_decide extends Role{
 
   //処刑者除外
   function DecideVoteKillEscape(){
-    if($this->GetVoteKill() != '') return;
+    if($this->IsVoteKill()) return;
     $stack = & $this->GetVotePossible();
     $key = array_search($this->GetStack(), $stack);
     if($key === false) return;
@@ -38,7 +35,7 @@ class Role_decide extends Role{
 
   //単一処刑者候補判定
   function DecideVoteKillSame(){
-    if($this->GetVoteKill() != '' || ! is_array($this->GetStack()) ||
+    if($this->IsVoteKill() || ! is_array($this->GetStack()) ||
        count($stack = $this->GetMaxVotedUname()) != 1) return true;
     $this->SetVoteKill(array_shift($stack));
     return false;

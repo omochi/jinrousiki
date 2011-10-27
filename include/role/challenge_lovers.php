@@ -12,10 +12,7 @@ class Role_challenge_lovers extends Role{
   public $sudden_death = 'CHALLENGE';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
-    global $ROOM;
-    if($ROOM->date > 1) parent::OutputAbility();
-  }
+  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
 
   function SuddenDeath(){
     global $ROOM, $USERS;

@@ -6,26 +6,24 @@
 class Role_sweet_status extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputImage(){
     global $ROOM;
-    OutputPartner($this->GetLovers(), 'partner_header', 'lovers_footer');
-    if($ROOM->date == 2) parent::OutputAbility();
+    if($ROOM->date == 2) parent::OutputImage();
   }
 
-  //仮想恋人も含めた恋人を取得
-  function GetLovers(){
+  protected function OutputPartner(){
     global $ROOM, $USERS;
 
     $stack = array();
     $actor = $this->GetActor();
-    if($actor->IsRole('lovers')) return $stack; //恋人入りなら恋人側で処理
+    if($actor->IsRole('lovers')) return; //恋人持ちなら処理委託
     foreach($this->GetUser() as $user){
       if($this->IsActor($user->uname)) continue;
       if($actor->IsPartner('dummy_chiroptera', $user->user_no) ||
-	 ($ROOM->date == 1 && $user->IsPartner($this->role, $actor->partner_list))){
-	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依を追跡する
+	 ($ROOM->date == 1 && $user->IsPartner($this->role, $actor->partner_list))){ //夢求愛者対応
+	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依追跡
       }
     }
-    return $stack;
+    OutputPartner($stack, 'partner_header', 'lovers_footer');
   }
 }

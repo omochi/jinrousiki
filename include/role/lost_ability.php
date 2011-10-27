@@ -7,8 +7,8 @@
 class Role_lost_ability extends Role{
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function OutputImage(){
     if($this->GetActor()->IsRole('awake_wizard')) $this->display_role = 'ability_awake_wizard';
-    parent::OutputAbility();
+    parent::OutputImage();
   }
 }

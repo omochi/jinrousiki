@@ -9,11 +9,13 @@ class Role_febris extends Role_chicken{
   public $sudden_death = 'FEBRIS';
   function __construct(){ parent::__construct(); }
 
-  function OutputAbility(){
+  protected function IgnoreAbility(){ return ! $this->IsDoom(); }
+
+  protected function OutputImage(){ return; }
+
+  protected function OutputResult(){
     global $ROOM;
-    if($this->GetActor()->IsDoomRole($this->role)){
-      OutputAbilityResult($this->role . '_header', $ROOM->date, 'sudden_death_footer');
-    }
+    OutputAbilityResult($this->role . '_header', $ROOM->date, 'sudden_death_footer');
   }
 
   function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->IsDoom(); }

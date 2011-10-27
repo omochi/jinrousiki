@@ -15,7 +15,7 @@ class Role_executor extends Role{
   function DecideVoteKill(){
     global $USERS;
 
-    if($this->GetVoteKill() != '' || ! is_array($this->GetStack())) return;
+    if($this->IsVoteKill() || ! is_array($this->GetStack())) return;
     $stack = array();
     foreach($this->GetMaxVotedUname() as $uname){
       if(! $USERS->ByRealUname($uname)->IsCamp('human', true)) $stack[$uname] = true;
