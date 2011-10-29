@@ -11,6 +11,4 @@ class Role_eclipse_cat extends Role_poison_cat{
   public $revive_rate   = 40;
   public $missfire_rate = 20;
   function __construct(){ parent::__construct(); }
-
-  function GetMissfireRate($rate){ return $this->missfire_rate; }
 }

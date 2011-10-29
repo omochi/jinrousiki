@@ -92,6 +92,7 @@ Ver. 1.5.0
 <a href="#ver150b12">β12</a>
 <a href="#ver150b13">β13</a>
 <a href="#ver150b14">β14</a>
+<a href="#ver150b15">β15</a>
 </p>
 
 <p>
@@ -2792,6 +2793,24 @@ Ver. 1.5.0
 処刑投票先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>・<a href="sub_role.php#lovers">恋人</a>なら<a href="sub_role.php#cute_camouflage">魔が言</a>を付加する。
 </td>
   <td>Ver. 1.5.0 β14</td>
+</tr>
+<tr id="ver150b15">
+  <td><a href="human.php#thunder_brownie">雷公</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">再投票の最多得票者になったら、誰か一人をショック死させる座敷童子の亜種。</td>
+  <td>Ver. 1.5.0 β15</td>
+</tr>
+<tr>
+  <td><a href="human.php#mimic_wizard">物真似師</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#wizard_group">魔法使い系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">魔法使いの一種で、魔法の効果は<a href="human.php#mage">占い師</a>(成功率50%)と<a href="human.php#necromancer">霊能者</a>(成功率50%)。</td>
+  <td>Ver. 1.5.0 β15</td>
 </tr>
 </table>
 

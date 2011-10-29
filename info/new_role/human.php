@@ -253,7 +253,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="sub_role.php#wisp_group">鬼火系</a>
+<a href="#wizard">魔法使い</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#mimic_wizard">物真似師</a>・<a href="sub_role.php#wisp_group">鬼火系</a>
 </pre>
 
 <h3 id="puppet_mage">傀儡師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
@@ -449,7 +449,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#spiritism_wizard">交霊術師</a>
+<a href="#mimic_wizard">物真似師</a>・<a href="#spiritism_wizard">交霊術師</a>
 </pre>
 
 <h3 id="soul_necromancer">雲外鏡 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -2425,9 +2425,11 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
+東方 Project の蘇我 屠自古がモチーフです。
 </pre>
 
 <h3 id="cursed_brownie">祟神 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
@@ -2474,6 +2476,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="#wizard">魔法使い</a>
 <a href="#soul_wizard">八卦見</a>
 <a href="#awake_wizard">比丘尼</a>
+<a href="#mimic_wizard">物真似師</a>
 <a href="#spiritism_wizard">交霊術師</a>
 <a href="#philosophy_wizard">賢者</a>
 <a href="#barrier_wizard">結界師</a>
@@ -2554,6 +2557,27 @@ MVP の賞品としてプレゼントしたものです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の聖 白蓮がモチーフで、「びくに」と読みます。
+</pre>
+
+<h3 id="mimic_wizard">物真似師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β15～]</h3>
+<pre>
+魔法使いの一種で、魔法の効果は<a href="#mage">占い師</a>(成功率50%)と<a href="#necromancer">霊能者</a>(成功率50%)。
+</pre>
+<ol>
+<li>霊能の発動は三日目以降 (従って、結果が表示されるのは四日目以降)。</li>
+<li>霊能の発動に失敗した場合、結果表示は<a href="wolf.php#corpse_courier_mad">火車</a>の能力発動時と同じになる。</li>
+</ol>
+<h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
+<pre>
+成功率 100%
+</pre>
+<h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
+<pre>
+成功率 0%
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+占い師-霊能者のギドラやスライド CO がテーマです。
 </pre>
 
 <h3 id="spiritism_wizard">交霊術師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α6～]</h3>

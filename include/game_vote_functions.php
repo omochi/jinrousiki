@@ -1015,15 +1015,22 @@ function AggregateVoteDay(){
     }
     foreach($USERS->rows as $user) $role_flag->{$user->main_role} = true; //役職出現判定
     //PrintData($role_flag, 'ROLE_FLAG');
-    $role = 'spiritism_wizard';
-    if(property_exists($role_flag, $role) && ! $ROOM->IsEvent('new_moon')){ //交霊術師の処理
-      $filter = $ROLES->LoadMain(new User($role));
-      $wizard_flag->{$filter->SetWizard()} = true;
-      $wizard_action = 'SPIRITISM_WIZARD_RESULT';
-      if(property_exists($wizard_flag, 'sex_necromancer')){
-	$header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
-	$result = $filter->Necromancer($vote_target, $stolen_flag);
-	$ROOM->SystemMessage($header . $result, $wizard_action);
+    if(! $ROOM->IsEvent('new_moon')){ //新月ならスキップ
+      $role = 'mimic_wizard';
+      if(property_exists($role_flag, $role)){ //物真似師の処理
+	$ROLES->LoadMain(new User($role))->Necromancer($vote_target, $stolen_flag);
+      }
+
+      $role = 'spiritism_wizard';
+      if(property_exists($role_flag, $role)){ //交霊術師の処理
+	$filter = $ROLES->LoadMain(new User($role));
+	$wizard_flag->{$filter->SetWizard()} = true;
+	$wizard_action = 'SPIRITISM_WIZARD_RESULT';
+	if(property_exists($wizard_flag, 'sex_necromancer')){
+	  $header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
+	  $result = $filter->Necromancer($vote_target, $stolen_flag);
+	  $ROOM->SystemMessage($header . $result, $wizard_action);
+	}
       }
     }
 

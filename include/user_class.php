@@ -472,6 +472,21 @@ class User{
        'psycho_mage_liar' : 'psycho_mage_normal');
   }
 
+  //霊能鑑定
+  function DistinguishNecromancer($reverse = false){
+    if($this->IsOgre()) return 'ogre';
+    if($this->IsRoleGroup('vampire') || $this->IsRole('cute_chiroptera')) return 'chiroptera';
+    if($this->IsChildFox()) return 'child_fox';
+    if($this->IsRole('white_fox', 'black_fox', 'mist_fox', 'phantom_fox', 'sacrifice_fox',
+		     'possessed_fox', 'cursed_fox')){
+      return 'fox';
+    }
+    if($this->IsRole('boss_wolf', 'mist_wolf', 'phantom_wolf', 'cursed_wolf', 'possessed_wolf')){
+      return $this->main_role;
+    }
+    return ($this->IsWolf() xor $reverse) ? 'wolf' : 'human';
+  }
+
   //未投票チェック
   function CheckVote($vote_data){
     global $ROOM;

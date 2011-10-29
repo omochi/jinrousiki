@@ -455,6 +455,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を以って、跳梁跋扈する物の怪より同胞を助け給え！",
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
+  public $mimic_wizard = array(
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#物真似師#です。#魔法#で二日目以降に_占い_、三日目以降に^霊能^相当の結果を同時に得ることが出来ますが成功率は半々です。",
+    'type' => 'wizard', 'delimiter' => array('_' => 'mage', '^' => 'necromancer'));
+
   public $spiritism_wizard = array(
     'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ、知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事などできないのだから。",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
@@ -1747,6 +1751,7 @@ class RoleMessageList{
   public $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
   public $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
   public $result_awake_wizard = array('message' => "さんは|比丘尼|でした", 'type' => 'result_wizard');
+  public $result_mimic_wizard = array('message' => "さんは|物真似師|でした", 'type' => 'result_wizard');
   public $result_spiritism_wizard = array('message' => "さんは|交霊術師|でした", 'type' => 'result_wizard');
   public $result_barrier_wizard = array('message' => "さんは|結界師|でした", 'type' => 'result_wizard');
   public $result_philosophy_wizard = array('message' => "さんは|賢者|でした", 'type' => 'result_wizard');
@@ -2127,6 +2132,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 #$builder->Output('holy_priest');
 #$builder->Output('thunder_brownie');
+$builder->Output('mimic_wizard');
 #$builder->Output('sharp_wolf');
 #$builder->Output('hariti_yaksa'); //
-$builder->Output('challenge_lovers');

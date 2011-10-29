@@ -318,6 +318,8 @@ class Role{
     return method_exists($class, $method) ? new $class() : $this;
   }
 
+  //function __get($name){ return NULL; } //メモ
+
   //-- 汎用関数 --//
   //ユーザ取得
   protected function GetActor(){

@@ -11,8 +11,6 @@ class Role_sacrifice_cat extends Role_poison_cat{
   public $missfire_rate =   0;
   function __construct(){ parent::__construct(); }
 
-  function GetMissfireRate($rate){ return $this->missfire_rate; }
-
   function ReviveAction(){
     global $USERS;
     $USERS->Kill($this->GetActor()->user_no, 'SACRIFICE');

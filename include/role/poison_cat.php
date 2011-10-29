@@ -13,6 +13,7 @@ class Role_poison_cat extends Role{
   public $not_submit = 'revive_not_do';
   public $ignore_message = '初日は蘇生できません';
   public $revive_rate = 25;
+  public $missfire_rate;
   function __construct(){ parent::__construct(); }
 
   //Mixin あり
@@ -50,7 +51,7 @@ class Role_poison_cat extends Role{
 
   function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : NULL; }
 
-  //蘇生処理
+  //蘇生
   function Revive($user){
     global $ROOM, $USERS;
 
@@ -63,10 +64,11 @@ class Role_poison_cat extends Role{
       }
     }
     else{
-      $ROOM->SystemMessage($USERS->GetHandleName($user->uname), 'REVIVE_FAILED');
+      $target = $user;
+      $ROOM->SystemMessage($USERS->GetHandleName($target->uname), 'REVIVE_FAILED');
     }
     if($ROOM->IsOption('seal_message')) return; //蘇生結果を登録 (天啓封印ならスキップ)
-    $str = $this->GetActor()->handle_name . "\t" . $USERS->GetHandleName($user->uname);
+    $str = $this->GetActor()->handle_name . "\t" . $USERS->GetHandleName($target->uname);
     $ROOM->SystemMessage($str . "\t" . $result, 'POISON_CAT_RESULT');
   }
 
@@ -77,11 +79,12 @@ class Role_poison_cat extends Role{
     //蘇生データ取得
     $event  = $ROOM->IsEvent('full_revive') ? 100 : ($ROOM->IsEvent('no_revive') ? 0 : NULL);
     $class  = $this->GetClass($method = 'GetReviveRate');
-    $revive = is_null($event) ? $class->$method() : $event; //蘇生率
+    $revive = isset($event) ? $event : $class->$method(); //蘇生率
     if($this->IsBoostRevive()) $revive = ceil($revive * 1.3);
     if($revive > 100) $revive = 100;
 
-    $missfire = is_null($event) ? $this->GetMissfireRate($revive) : 0; //誤爆率
+    $missfire = isset($event) ? 0 :
+      (isset($this->missfire_rate) ? $this->missfire_rate : floor($revive / 5)); //誤爆率
     if($ROOM->IsEvent('missfire_revive')) $missfire *= 2;
     if($missfire > $revive) $missfire = $revive;
 
@@ -113,7 +116,7 @@ class Role_poison_cat extends Role{
   function GetReviveRate(){ return $this->revive_rate; }
 
   //蘇生率強化判定
-  function IsBoostRevive(){
+  protected function IsBoostRevive(){
     $data = 'boost_revive';
     if(! is_null($flag = $this->GetStack($data))) return $flag;
     $flag = false;
@@ -127,10 +130,7 @@ class Role_poison_cat extends Role{
     return $flag;
   }
 
-  //誤爆率取得
-  function GetMissfireRate($rate){ return floor($rate / 5); }
-
-  //蘇生実行処理
+  //蘇生実行
   function ReviveUser($user){
     global $ROOM, $USERS;
 
