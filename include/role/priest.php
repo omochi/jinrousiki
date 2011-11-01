@@ -26,13 +26,13 @@ class Role_priest extends Role{
   }
 
   //司祭能力
-  function Priest($role_flag, $data){
+  function Priest($role_flag){
     global $ROOM;
 
+    $data = $this->GetStack('priest');
     if(is_null($role = $this->GetPriestRole($data->list))) return;
-    $class  = $this->GetClass($method = 'GetPriestType');
-    $result = $data->count[$class->$method()];
-    $ROOM->SystemMessage($result, $this->GetEvent($role));
+    $class = $this->GetClass($method = 'GetPriestType');
+    $ROOM->SystemMessage($data->count[$class->$method()], $this->GetEvent($role));
   }
 
   //司祭能力発動判定
@@ -46,28 +46,31 @@ class Role_priest extends Role{
 
   //情報収集
   function AggregatePriest($role_flag){
-    global $ROOM, $USERS;
+    global $ROOM, $ROLES;
 
     $flag = false;
     $data = new StdClass();
     $data->list  = array();
     $data->count = array('total' => 0, 'human' => 0, 'wolf' => 0, 'fox' => 0, 'lovers' => 0,
 			 'human_side' => 0, 'dead' => 0, 'dream' => 0, 'sub_role' => 0);
+    $this->SetStack($data);
     foreach($role_flag as $role => $stack){ //司祭系の出現判定
       $user = new User($role);
-      if(! $user->IsRoleGroup('priest') ||
-	 ($user->IsRole('dummy_priest') && $ROOM->IsEvent('no_dream'))) continue;
-      $data->list[] = $role;
-      $flag |= ! $user->IsRole('widow_priest', 'holy_priest', 'border_priest');
+      if($user->IsRoleGroup('priest')) $flag |= $ROLES->LoadMain($user)->SetPriest();
     }
+    $data = $this->GetStack();
     if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){ //天候判定
+      $role = 'weather_priest';
       $flag = true;
-      $data->weather = true;
-      if(! in_array('weather_priest', $data->list)) $data->list[] = 'weather_priest';
+      $data->$role = true;
+      if(! in_array($role, $data->list)) $data->list[] = $role;
     }
-    if(! $flag) return $data;
+    if(! $flag){
+      $this->SetStack($data);
+      return;
+    }
 
-    foreach($USERS->rows as $user){ //陣営情報収集
+    foreach($this->GetUser() as $user){ //陣営情報収集
       if($user->IsDead(true)){
 	if(! $user->IsCamp('human', true)) $data->count['dead']++;
 	continue;
@@ -111,6 +114,14 @@ class Role_priest extends Role{
 	  $data->crisis = 'wolf';
       }
     }
-    return $data;
+    $this->SetStack($data);
+  }
+
+  //司祭情報セット
+  protected function SetPriest(){
+    $stack = $this->GetStack('priest');
+    $stack->list[] = $this->role;
+    $this->SetStack($stack, 'priest');
+    return true;
   }
 }

@@ -13,10 +13,15 @@ class Role_holy_priest extends Role_priest{
     return $ROOM->date == 5 ? $this->role : NULL;
   }
 
-  function Priest($role_flag, $data){
+  protected function SetPriest(){
+    global $ROOM;
+    if($ROOM->date == 4) parent::SetPriest();
+    return false;
+  }
+
+  function Priest($role_flag){
     global $ROOM, $USERS;
 
-    if($ROOM->date != 4) return false;
     $event = $this->GetEvent();
     $max   = count($this->GetUser());
     foreach($role_flag->{$this->role} as $uname){

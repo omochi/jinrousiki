@@ -1735,12 +1735,12 @@ function AggregateVoteNight($skip = false){
     $ROLES->LoadMain(new User($role))->Necromancer($wolf_target, $vote_data);
   }
 
-  $priest_data = $ROLES->LoadMain(new User('priest'))->AggregatePriest($role_flag);
-  //PrintData($priest_data->list, 'PriestList');
-  //PrintData($priest_data->count, 'LiveCount');
-  //PrintData($priest_data->crisis, 'Crisis');
-  foreach($priest_data->list as $role){
-    $ROLES->LoadMain(new User($role))->Priest($role_flag, $priest_data);
+  $ROLES->LoadMain(new User('priest'))->AggregatePriest($role_flag);
+  //PrintData($ROLES->stack->priest->list, 'PriestList');
+  //PrintData($ROLES->stack->priest->count, 'LiveCount');
+  //PrintData($ROLES->stack->priest->crisis, 'Crisis');
+  foreach($ROLES->stack->priest->list as $role){
+    $ROLES->LoadMain(new User($role))->Priest($role_flag);
   }
 
   $status = $ROOM->ChangeDate();

@@ -13,10 +13,15 @@ class Role_border_priest extends Role_priest{
     return $ROOM->date > 2 ? $this->role : NULL;
   }
 
-  function Priest($role_flag, $data){
+  protected function SetPriest(){
+    global $ROOM;
+    if($ROOM->date > 1) parent::SetPriest();
+    return false;
+  }
+
+  function Priest($role_flag){
     global $ROOM, $USERS;
 
-    if($ROOM->date < 2) return false;
     $event = $this->GetEvent();
     foreach($role_flag->{$this->role} as $uname){
       $user  = $USERS->ByUname($uname);

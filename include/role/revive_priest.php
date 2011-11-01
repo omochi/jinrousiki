@@ -10,10 +10,11 @@ class Role_revive_priest extends Role_priest{
 
   protected function GetOutputRole(){ return NULL; }
 
-  function Priest($role_flag, $data){
+  function Priest($role_flag){
     global $ROOM, $USERS;
 
-    if($ROOM->date != 4 && $data->crisis == '' && $data->count['wolf'] != 1 &&
+    $data = $this->GetStack('priest');
+    if($ROOM->date != 4 && ! property_exists($data, 'crisis') && $data->count['wolf'] != 1 &&
        count($USERS->rows) < $data->count['total'] * 2) return false;
 
     foreach($role_flag->{$this->role} as $uname){

@@ -12,10 +12,14 @@ class Role_widow_priest extends Role_priest{
 
   protected function GetOutputRole(){ return NULL; }
 
-  function Priest($role_flag, $data){
-    global $ROOM, $USERS;
+  protected function SetPriest(){
+    global $ROOM;
+    if($ROOM->date == 1 && $ROOM->IsDummyBoy()) parent::SetPriest();
+    return false;
+  }
 
-    if($ROOM->date != 1 || ! $ROOM->IsDummyBoy()) return false;
+  function Priest($role_flag){
+    global $ROOM, $USERS;
 
     $dummy_boy = $USERS->ByID(1);
     $str = "\t" . $dummy_boy->handle_name . "\t" . $dummy_boy->main_role;

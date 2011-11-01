@@ -138,7 +138,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'cursed_fox joker[4]';
+$RQ_ARGS->TestItems->test_users[18]->role = 'holy_priest joker[4]';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -162,7 +162,7 @@ $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[22]->role = 'mimic_wizard reduce_voter';
+$RQ_ARGS->TestItems->test_users[22]->role = 'bishop_priest reduce_voter';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
@@ -255,7 +255,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 $RQ_ARGS->TestItems->vote->night = array(
   array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'black'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
-  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'light_gray'),
+  array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'purple'),
   array('uname' => 'orange', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
   array('uname' => 'light_blue', 'situation' => 'GUARD_DO', 'target_uname' => 'sea'),
   #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'peach'),
@@ -297,7 +297,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'gust', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
   #array('uname' => 'gust', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'gust', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
-  array('uname' => 'gust', 'situation' => 'WIZARD_DO', 'target_uname' => 'sea'),
+  #array('uname' => 'gust', 'situation' => 'WIZARD_DO', 'target_uname' => 'sea'),
   array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'sea'),
   #array('uname' => 'cloud', 'situation' => 'ESCAPE_DO', 'target_uname' => 'cherry'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'gold'),
@@ -322,7 +322,7 @@ $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'VOTE_KILLED', 'message' => 'sky'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 17)
+  array('type' => 'WEATHER', 'message' => 19)
   #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 

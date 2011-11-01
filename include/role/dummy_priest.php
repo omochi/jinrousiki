@@ -10,4 +10,9 @@ class Role_dummy_priest extends Role_priest{
   public $display_role = 'priest';
   public $priest_type  = 'dream';
   function __construct(){ parent::__construct(); }
+
+  protected function SetPriest(){
+    global $ROOM;
+    return ! $ROOM->IsEvent('no_dream') && parent::SetPriest();
+  }
 }

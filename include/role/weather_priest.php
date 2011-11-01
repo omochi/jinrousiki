@@ -13,11 +13,12 @@ class Role_weather_priest extends Role_priest{
     return $ROOM->date > 1 ? $this->role : NULL;
   }
 
-  function Priest($role_flag, $data){
+  function Priest($role_flag){
     global $GAME_CONF, $ROOM;
 
+    $data = $this->GetStack('priest');
     //スキップ判定
-    if(! ($data->weather ||
+    if(! ($data->{$this->role} ||
 	  ($ROOM->date > 2 && ($ROOM->date % 3) == 0 &&
 	   $data->count['total'] - $data->count['human_side'] > $data->count['wolf'] * 2))){
       return false;
@@ -81,7 +82,7 @@ class Role_weather_priest extends Role_priest{
     $weather = $GAME_CONF->GetWeather();
     //$weather = 44; //テスト用
     $date = 2;
-    $flag = property_exists($role_flag, 'weather_priest') && count($role_flag->weather_priest) > 0;
+    $flag = property_exists($role_flag, $this->role) && count($role_flag->{$this->role}) > 0;
     $ROOM->EntryWeather($weather, $date, $flag);
   }
 }

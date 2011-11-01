@@ -15,8 +15,9 @@ class Role_crisis_priest extends Role_priest{
     return $ROOM->date > 1 ? $this->role : NULL;
   }
 
-  function Priest($role_flag, $data){
+  function Priest($role_flag){
     global $ROOM;
-    if($data->crisis != '') $ROOM->SystemMessage($data->crisis, $this->GetEvent());
+    $data = $this->GetStack('priest');
+    if(property_exists($data, 'crisis')) $ROOM->SystemMessage($data->crisis, $this->GetEvent());
   }
 }
