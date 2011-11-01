@@ -7,36 +7,42 @@ RoleManager::LoadFile('trap_mad');
 class Role_snow_trap_mad extends Role_trap_mad{
   function __construct(){ parent::__construct(); }
 
-  function IsVoteTrap(){ return true; }
+  protected function IsVoteTrap(){ return true; }
 
-  function SetTrapAction($user, $uname){ $this->AddStack($uname, 'snow_trap', $user->uname); }
+  protected function SetTrapAction($user, $uname){
+    $this->AddStack($uname, 'snow_trap', $user->uname);
+  }
 
   function TrapToTrap(){
-    global $ROLES;
-
     //雪女が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は凍傷になる
-    $stack = array_count_values($ROLES->stack->snow_trap);
-    foreach($ROLES->stack->snow_trap as $uname => $target_uname){
-      if($uname != $target_uname && $stack[$target_uname] > 1) $ROLES->stack->frostbite[] = $uname;
+    $stack = $this->GetStack('snow_trap');
+    $count = array_count_values($stack);
+    foreach($stack as $uname => $target_uname){
+      if($uname != $target_uname && $count[$target_uname] > 1){
+	$this->AddSuccess($uname, 'frostbite');
+      }
     }
 
-    foreach($ROLES->stack->trap as $uname => $target_uname){ //罠師の凍傷判定
-      if($uname != $target_uname && in_array($target_uname, $ROLES->stack->snow_trap)){
-	$ROLES->stack->frostbite[] = $uname;
+    foreach($this->GetStack('trap') as $uname => $target_uname){ //罠師の凍傷判定
+      if($uname != $target_uname && in_array($target_uname, $stack)){
+	$this->AddSuccess($uname, 'frostbite');
       }
     }
   }
 
   function TrapKill($user, $uname){
-    global $ROLES;
-    if(in_array($uname, $ROLES->stack->snow_trap)) $user->AddDoom(1, 'frostbite');
-  }
-
-  function DelayTrap($user, $uname){
-    global $ROLES;
-    if(in_array($uname, $ROLES->stack->snow_trap)) $ROLES->stack->frostbite[] = $user->uname;
+    if($this->IsTrap($uname)) $user->AddDoom(1, 'frostbite');
     return false;
   }
 
+  function DelayTrap($user, $uname){
+    if($this->IsTrap($uname)) $this->AddSuccess($user->uname, 'frostbite');
+    return false;
+  }
+
+  protected function IsTrap($uname){ return in_array($uname, $this->GetStack('snow_trap')); }
+
   function TrapStack($user, $uname){ return $this->DelayTrap($user, $uname); }
+
+  function DelayTrapKill(){ return; }
 }

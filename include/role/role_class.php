@@ -171,7 +171,7 @@ class RoleManager{
   public $guard_dream_list = array('dummy_guard');
 
   //厄払い
-  public $anti_voodoo_list = array('anti_voodoo');
+  public $guard_curse_list = array('anti_voodoo');
 
   //復活
   public $resurrect_list = array(

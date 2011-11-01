@@ -1,10 +1,7 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β13
-  + GameOptionMessage
-    - 追加：$wolf
-  + GameOptionCaptionMessage
-    - 追加：$wolf
+  変更履歴 from Ver. 1.5.0β14
+  + なし
 */
 //-- 基本システムメッセージ --//
 class Message{

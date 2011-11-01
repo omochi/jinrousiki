@@ -44,7 +44,7 @@ class Role_guard extends Role{
 
     $result  = false;
     $half    = $ROOM->IsEvent('half_guard'); //曇天
-    $limited = ! $ROOM->IsEvent('full_guard') && $user->IsGuardLimited(); //護衛制限判定
+    $limited = ! $ROOM->IsEvent('full_guard') && $this->IsGuardLimited($user); //護衛制限判定
     foreach($stack as $uname){
       $actor  = $USERS->ByUname($uname);
       if($actor->IsDead(true)) continue; //直前に死んでいたら無効
@@ -64,6 +64,16 @@ class Role_guard extends Role{
 
   //護衛者検出
   function GetGuard($uname, &$list){ $list = array_keys($this->GetStack('guard'), $uname); }
+
+  //護衛制限判定
+  private function IsGuardLimited($user){
+    return $user->IsRole(
+      'emissary_necromancer', 'detective_common', 'sacrifice_common', 'spell_common', 'reporter',
+      'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard', 'doll_master') ||
+      ($user->IsRoleGroup('priest') &&
+       ! $user->IsRole('revive_priest', 'crisis_priest', 'widow_priest')) ||
+      $user->IsRoleGroup('assassin');
+  }
 
   //護衛失敗判定
   function GuardFailed(){ return false; }

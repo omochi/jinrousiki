@@ -1,10 +1,7 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β13
-  + RoomConfig
-    - 追加：$wolf, $default_wolf
-  + IconConfig
-    - 変更：$dead
+  変更履歴 from Ver. 1.5.0β14
+  + なし
 */
 
 //-- 村メンテナンス・作成設定 --//

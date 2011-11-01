@@ -49,19 +49,9 @@ class Role_anti_voodoo extends Role{
     return true;
   }
 
-  //対呪い処理
-  function GuardCurse($user){
-    global $USERS;
-
-    if($this->IsGuard($user->uname)) return false;
-    $USERS->Kill($user->user_no, 'CURSED');
-    return true;
-  }
-
   //成功結果登録
   function SaveSuccess(){
     global $ROOM, $USERS;
-
     foreach($this->GetStack($this->role . '_success') as $target_uname => $flag){
       $str = "\t" . $USERS->GetHandleName($target_uname, true);
       foreach(array_keys($this->GetStack(), $target_uname) as $uname){ //成功者を検出

@@ -46,7 +46,7 @@ class Role_possessed_mad extends Role{
   function SetPossessed($user){
     global $ROLES, $USERS;
 
-    foreach($ROLES->LoadFilter('anti_voodoo') as $filter){ //厄神の護衛判定
+    foreach($ROLES->LoadFilter('guard_curse') as $filter){ //厄神の護衛判定
       if($filter->IsGuard($this->GetUname())) return false;
     }
 

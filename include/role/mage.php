@@ -28,14 +28,14 @@ class Role_mage extends Role{
 
   //占い失敗判定
   function IsJammer($user){
-    global $ROOM, $ROLES;
+    global $ROOM;
 
     $uname   = $this->GetUname();
-    $half    = $ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月の判定
-    $phantom = $user->IsLiveRoleGroup('phantom') && $user->IsActive(); //幻系の判定
+    $half    = $ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月
+    $phantom = $user->IsLive(true) && $user->IsRoleGroup('phantom') && $user->IsActive(); //幻系
 
     if($half || $phantom){ //厄神の護衛判定
-      foreach($ROLES->LoadFilter('anti_voodoo') as $filter){
+      foreach($this->GetGuardCurse() as $filter){
 	if($filter->IsGuard($uname)) return false;
       }
     }
@@ -51,15 +51,27 @@ class Role_mage extends Role{
 
   //呪返し判定
   function IsCursed($user){
-    global $ROOM, $ROLES, $USERS;
+    global $USERS;
 
-    if((! $ROOM->IsEvent('no_cursed') && $user->IsLiveRoleGroup('cursed')) ||
-       in_array($user->uname, $this->GetStack('voodoo'))){
-      foreach($ROLES->LoadFilter('anti_voodoo') as $filter){ //厄神の護衛判定
-	if($filter->GuardCurse($this->GetActor())) return false;
+    if($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))){
+      $actor = $this->GetActor();
+      foreach($this->GetGuardCurse() as $filter){ //厄神の護衛判定
+	if($filter->IsGuard($actor->uname)) return false;
       }
+      $USERS->Kill($actor->user_no, 'CURSED');
+      return true;
     }
     return false;
+  }
+
+  //厄払いフィルタ取得
+  protected function GetGuardCurse(){
+    global $ROLES;
+    if(! is_array($stack = $this->GetStack($data = 'guard_curse'))){
+      $stack = $ROLES->LoadFilter($data);
+      $this->SetStack($stack, $data);
+    }
+    return $stack;
   }
 
   //占い結果取得
@@ -81,15 +93,11 @@ class Role_mage extends Role{
 
   //占い判定
   function DistinguishMage($user, $reverse = false){
-    global $ROOM;
-
     //鬼火系判定
-    if($user->IsRole('sheep_wisp') && $user->GetDoomDate('sheep_wisp') == $ROOM->date){
-      return $reverse ? 'wolf' : 'human';
-    }
-    if($user->IsRole('wisp'))          return 'ogre';
-    if($user->IsRole('foughten_wisp')) return 'chiroptera';
-    if($user->IsRole('black_wisp'))    return $reverse ? 'human' : 'wolf' ;
+    if($user->IsDoomRole('sheep_wisp')) return $reverse ? 'wolf' : 'human';
+    if($user->IsRole('wisp'))           return 'ogre';
+    if($user->IsRole('foughten_wisp'))  return 'chiroptera';
+    if($user->IsRole('black_wisp'))     return $reverse ? 'human' : 'wolf' ;
 
     //特殊役職判定
     if($user->IsOgre()) return 'ogre';
@@ -98,9 +106,9 @@ class Role_mage extends Role{
     }
 
     //人狼判定
-    $result = ($user->IsWolf() && ! $user->IsRole('boss_wolf') && ! $user->IsSiriusWolf()) ||
+    $flag = ($user->IsWolf() && ! $user->IsRole('boss_wolf') && ! $user->IsSiriusWolf()) ||
       $user->IsRole('suspect', 'cute_mage', 'black_fox', 'cute_chiroptera', 'cute_avenger');
-    return ($result xor $reverse) ? 'wolf' : 'human';
+    return ($flag xor $reverse) ? 'wolf' : 'human';
   }
 
   //占い結果登録

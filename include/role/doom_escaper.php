@@ -9,7 +9,7 @@ RoleManager::LoadFile('escaper');
 class Role_doom_escaper extends Role_escaper{
   function __construct(){ parent::__construct(); }
 
-  function EscapeFailed($user){ return $user->IsRole('death_warrant'); }
+  protected function EscapeFailed($user){ return $user->IsRole('death_warrant'); }
 
-  function EscapeAction($user){ $user->AddDoom(4); }
+  protected function EscapeAction($user){ $user->AddDoom(4); }
 }

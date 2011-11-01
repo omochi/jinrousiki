@@ -8,5 +8,5 @@ RoleManager::LoadFile('escaper');
 class Role_incubus_escaper extends Role_escaper{
   function __construct(){ parent::__construct(); }
 
-  function EscapeFailed($user){ return ! $user->IsFemale(); }
+  protected function EscapeFailed($user){ return ! $user->IsFemale(); }
 }

@@ -1466,8 +1466,7 @@ function AggregateVoteNight($skip = false){
 
   if($ROOM->date > 1){
     foreach($vote_data['DEATH_NOTE_DO'] as $uname => $target_uname){ //デスノートの処理
-      $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //直前に死んでいたら無効
+      if($USERS->ByUname($uname)->IsDead(true)) continue; //直前に死んでいたら無効
       $USERS->Kill($USERS->UnameToNumber($target_uname), 'ASSASSIN_KILLED');
     }
 
@@ -1527,8 +1526,7 @@ function AggregateVoteNight($skip = false){
     $role = 'death_selected';
     foreach($USERS->rows as $user){
       if($user->IsDead(true)) continue;
-      $virtual = $USERS->ByVirtual($user->user_no);
-      if($virtual->IsRole($role) && $virtual->GetDoomDate($role) == $ROOM->date){
+      if($USERS->ByVirtual($user->user_no)->IsDoomRole($role)){
 	$USERS->Kill($user->user_no, 'PRIEST_RETURNED');
       }
     }
@@ -1539,11 +1537,13 @@ function AggregateVoteNight($skip = false){
     unset($ROLES->stack->$role);
     //PrintData($ROLES->stack->reverse, 'ReverseList');
 
-    foreach($ROLES->stack->frostbite as $uname){ //凍傷処理
+    $role = 'frostbite';
+    //PrintData($ROLES->stack->$role, "Target [{$role}]");
+    foreach($ROLES->stack->$role as $uname => $flag){ //凍傷処理
       $target = $USERS->ByUname($uname);
-      if($target->IsLive(true)) $target->AddDoom(1, 'frostbite');
+      if($target->IsLive(true)) $target->AddDoom(1, $role);
     }
-    unset($ROLES->stack->frostbite);
+    unset($ROLES->stack->$role);
 
     //-- 夢系レイヤー --//
     foreach($vote_data['DREAM_EAT'] as $uname => $target_uname){ //獏の処理
@@ -1578,10 +1578,12 @@ function AggregateVoteNight($skip = false){
 
   //呪術系能力者の処理
   $ROLES->stack->voodoo = array(); //呪術対象リスト
-  foreach($vote_data['VOODOO_MAD_DO'] + $vote_data['VOODOO_FOX_DO'] as $uname => $target_uname){
-    $user = $USERS->ByUname($uname);
-    if($user->IsDead(true)) continue; //直前に死んでいたら無効
-    $ROLES->LoadMain($user)->SetVoodoo($USERS->ByUname($target_uname));
+  foreach(array('VOODOO_MAD_DO', 'VOODOO_FOX_DO') as $action){
+    foreach($vote_data[$action] as $uname => $target_uname){
+      $user = $USERS->ByUname($uname);
+      if($user->IsDead(true)) continue; //直前に死んでいたら無効
+      $ROLES->LoadMain($user)->SetVoodoo($USERS->ByUname($target_uname));
+    }
   }
   //PrintData($ROLES->stack->voodoo, 'Target [voodoo]');
   //PrintData($ROLES->stack->voodoo_killer_success, 'Success [voodoo_killer/voodoo]');
@@ -1600,16 +1602,13 @@ function AggregateVoteNight($skip = false){
   //PrintData($ROLES->stack->jammer, 'Target [jammer]');
   //PrintData($ROLES->stack->anti_voodoo_success, 'Success [anti_voodoo/jammer]');
 
-  //占い能力者の処理を合成 (array_merge() は $uname が整数だと添え字と認識されるので使わないこと)
-  $mage_list = array();
-  foreach(array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action){
-    $mage_list += $vote_data[$action];
-  }
   $ROLES->stack->phantom = array(); //幻系の発動者リスト
-  foreach($mage_list as $uname => $target_uname){ //占い系の処理
-    $user = $USERS->ByUname($uname);
-    if($user->IsDead(true)) continue; //直前に死んでいたら無効
-    $ROLES->LoadMain($user)->Mage($USERS->ByUname($target_uname));
+  foreach(array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action){ //占い系の処理
+    foreach($vote_data[$action] as $uname => $target_uname){
+      $user = $USERS->ByUname($uname);
+      if($user->IsDead(true)) continue; //直前に死んでいたら無効
+      $ROLES->LoadMain($user)->Mage($USERS->ByUname($target_uname));
+    }
   }
   $role = 'phantom'; //幻系の能力失効処理
   //PrintData($ROLES->stack->$role, "Target [{$role}]");
@@ -1639,15 +1638,16 @@ function AggregateVoteNight($skip = false){
   }
   else{
     //-- 尾行系レイヤー --//
-    //ブン屋・猩々
-    foreach($vote_data['REPORTER_DO'] + $vote_data['MIND_SCANNER_DO'] as $uname => $target_uname){
-      $user = $USERS->ByUname($uname);
-      if($user->IsDead(true)) continue; //直前に死んでいたら無効
+    foreach(array('REPORTER_DO', 'MIND_SCANNER_DO') as $action){ //ブン屋・猩々
+      foreach($vote_data[$action] as $uname => $target_uname){
+	$user = $USERS->ByUname($uname);
+	if($user->IsDead(true)) continue; //直前に死んでいたら無効
 
-      foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
-	if($filter->TrapKill($user, $target_uname)) continue 2;
+	foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+	  if($filter->TrapKill($user, $target_uname)) continue 2;
+	}
+	$ROLES->LoadMain($user)->Report($USERS->ByUname($target_uname));
       }
-      $ROLES->LoadMain($user)->Report($USERS->ByUname($target_uname));
     }
   }
 

@@ -15,31 +15,31 @@ class Role_escaper extends Role{
 
   function IsVote(){ global $ROOM; return $ROOM->date > 1; }
 
-  //逃亡処理
+  //逃亡
   function Escape($user){
-    global $USERS, $ROLES;
+    global $USERS;
 
     $actor = $this->GetActor();
-    if(in_array($user->uname, $ROLES->stack->trap)){ //罠死判定
+    if(in_array($user->uname, $this->GetStack('trap'))){ //罠死判定
       $USERS->Kill($actor->user_no, 'TRAPPED');
     }
     elseif($this->EscapeFailed($user)){ //逃亡失敗判定
       $USERS->Kill($actor->user_no, 'ESCAPER_DEAD');
     }
     else{
-      if(in_array($user->uname, $ROLES->stack->snow_trap)){ //凍傷判定
-	$ROLES->stack->frostbite[] = $actor->uname;
+      if(in_array($user->uname, $this->GetStack('snow_trap'))){ //凍傷判定
+	$this->AddStack($actor->uname, 'frostbite');
       }
       $this->EscapeAction($user); //逃亡処理
-      $ROLES->stack->escaper[$actor->uname] = $user->uname; //逃亡先をセット
+      $this->AddStack($user->uname, 'escaper'); //逃亡先をセット
     }
   }
 
   //逃亡失敗判定
-  function EscapeFailed($user){ return $user->IsWolf(); }
+  protected function EscapeFailed($user){ return $user->IsWolf(); }
 
-  //逃亡後処理
-  function EscapeAction($user){}
+  //逃亡処理
+  protected function EscapeAction($user){}
 
   function Win($victory){
     $this->SetStack('escaper', 'class');

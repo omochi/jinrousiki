@@ -47,25 +47,27 @@ class Role_barrier_wizard extends Role_wizard{
   }
 
   function SetGuard($list){
-    global $USERS, $ROLES;
+    global $USERS;
 
-    $uname     = $this->GetActor()->uname;
+    $actor     = $this->GetActor()->uname;
+    $stack     = array();
     $trapped   = false;
     $frostbite = false;
     foreach(explode(' ', $list) as $id){
-      $target_uname = $USERS->ByID($id)->uname;
-      $ROLES->stack->{$this->role}[$uname][] = $target_uname;
-      $trapped   |= in_array($target_uname, $ROLES->stack->trap); //罠死判定
-      $frostbite |= in_array($target_uname, $ROLES->stack->snow_trap); //凍傷判定
+      $uname = $USERS->ByID($id)->uname;
+      $stack[$actor][] = $uname;
+      $trapped   |= in_array($uname, $this->GetStack('trap')); //罠死判定
+      $frostbite |= in_array($uname, $this->GetStack('snow_trap')); //凍傷判定
     }
+    $this->SetStack($stack);
     if($trapped)
-      $ROLES->stack->trapped[] = $uname;
+      $this->AddSuccess($actor, 'trapped');
     elseif($frostbite)
-      $ROLES->stack->frostbite[] = $uname;
+      $this->AddSuccess($actor, 'frostbite');
   }
 
   function GetGuard($uname, &$list){
-    $rate  = $this->GetGuardRate();
+    $rate = $this->GetGuardRate();
     foreach($this->GetStack() as $target_uname => $target_list){
       if(in_array($uname, $target_list) &&
 	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $list[] = $target_uname;

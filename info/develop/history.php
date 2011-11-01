@@ -15,6 +15,8 @@ Ver. 1.5.0<br>
 <a href="#ver150a7">α7</a>
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
+</p>
+<p>
 <a href="#ver150b1">β1</a>
 <a href="#ver150b2">β2</a>
 <a href="#ver150b3">β3</a>
@@ -29,8 +31,8 @@ Ver. 1.5.0<br>
 <a href="#ver150b12">β12</a>
 <a href="#ver150b13">β13</a>
 <a href="#ver150b14">β14</a>
+<a href="#ver150b15">β15</a>
 </p>
-<p>
 <a href="#ver141">Ver. 1.4.1</a>
 </p>
 <p>
@@ -63,7 +65,6 @@ Ver. 1.4.0<br>
 <a href="#ver140b21">β21</a>
 <a href="#ver140b22">β22</a>
 </p>
-
 <p>
 <a href="#ver140a1">α1</a>
 <a href="#ver140a2">α2</a>
@@ -87,6 +88,11 @@ Ver. 1.4.0<br>
 <a href="#ver140a23">α23</a>
 <a href="#ver140a24">α24</a>
 </p>
+
+<h2 id="ver150b15">Ver. 1.5.0 β15 (Rev. 415) : 2011/10/30 (Sun) 00:24</h2>
+<ul>
+<li>「雷公」「物真似師」実装</li>
+</ul>
 
 <h2 id="ver150b14">Ver. 1.5.0 β14 (Rev. 411) : 2011/10/23 (Sun) 21:12</h2>
 <ul>

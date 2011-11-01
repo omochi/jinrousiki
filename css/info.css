@@ -64,3 +64,4 @@ th, td{
   white-space: nowrap;
 }
 td{font-size: 90%;}
+span{color: #FF0000;} /* デバッグ情報用 */

@@ -11,21 +11,20 @@ class Role_jammer_mad extends Role{
   function OutputAction(){ OutputVoteMessage('wolf-eat', $this->submit, $this->action); }
 
   //妨害対象セット
-  function SetJammer($user){
-    if($this->IsJammer($user)) $this->AddStack($user->uname, 'jammer');
-  }
+  function SetJammer($user){ if($this->IsJammer($user)) $this->AddStack($user->uname, 'jammer'); }
 
-  //妨害対象セット成立判定
+  //妨害対象セット成立判定 (Mixin あり)
   function IsJammer($user){
-    global $ROOM, $ROLES;
+    global $ROLES, $USERS;
 
-    $filter_list = $ROLES->LoadFilter('anti_voodoo'); //厄払い
-    //呪返し判定
-    if((! $ROOM->IsEvent('no_cursed') && $user->IsLiveRoleGroup('cursed')) ||
-       in_array($user->uname, $this->GetStack('voodoo'))){
+    $filter_list = $ROLES->LoadFilter('guard_curse'); //厄払い
+    if($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))){ //呪返し判定
+      $actor = $this->GetActor();
       foreach($filter_list as $filter){ //厄神の護衛判定
-	if($filter->GuardCurse($this->GetActor())) return false;
+	if($filter->IsGuard($actor->uname)) return false;
       }
+      $USERS->Kill($actor->user_no, 'CURSED');
+      return false;
     }
 
     foreach($filter_list as $filter){ //厄神の妨害無効判定

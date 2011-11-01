@@ -43,7 +43,7 @@ class Role_weather_priest extends Role_priest{
 	$target[$id] = ceil($target[$id] * 0.8);
       }
     }
-    elseif($vote_marget < 1){ //村人陣営劣勢
+    elseif($vote_margin < 1){ //村人陣営劣勢
       foreach(array(6, 7, 8, 9, 32, 34, 42, 46) as $id){
 	$target[$id] = ceil($target[$id] * 1.2);
       }

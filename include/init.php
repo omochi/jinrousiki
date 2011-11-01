@@ -105,7 +105,6 @@ class InitializeConfig{
     'PAPARAZZI'     => 'Paparazzi'
   );
 
-  //コンストラクタ
   function __construct(){
     $this->path = new StdClass();
     $this->path->root    = JINRO_ROOT;
@@ -118,25 +117,26 @@ class InitializeConfig{
   }
 
   //依存情報設定
-  function SetDepend($type, $name, $depend){
+  protected function SetDepend($type, $name, $depend){
     if(is_null($this->$type)) return false;
     $this->{$type}[$name] = $depend;
     return true;
   }
 
   //依存クラス情報設定 ＆ ロード
-  function SetClass($name, $class){
+  protected function SetClass($name, $class){
     if(! $this->SetDepend('class_list', $name, $class)) return false;
     $this->LoadClass($name);
     return true;
   }
 
   //依存解決処理
-  function LoadDependence($name){
+  protected function LoadDependence($name){
     if(array_key_exists($name, $this->depend_file)) $this->LoadFile($this->depend_file[$name]);
     if(array_key_exists($name, $this->depend_class)) $this->LoadClass($this->depend_class[$name]);
   }
 
+  //ファイルロード
   function LoadFile($name){
     $name_list = func_get_args();
     if(is_array($name_list[0])) $name_list = $name_list[0];
@@ -197,9 +197,7 @@ class InitializeConfig{
     return true;
   }
 
-  function LoadRequest($class = NULL){
-    return $this->SetClass('RQ_ARGS', $class);
-  }
+  function LoadRequest($class = NULL){ return $this->SetClass('RQ_ARGS', $class); }
 }
 
 //-- 初期化処理 --//

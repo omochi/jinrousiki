@@ -85,13 +85,12 @@ class User{
     }
   }
 
-  //ユーザ ID を取得
+  //ユーザ ID 取得
   function GetID($role = NULL){
-    $id = $this->user_no;
-    return is_null($role) ? $id : $role . '[' . $id . ']';
+    return isset($role) ? $role . '[' . $this->user_no . ']' : $this->user_no;
   }
 
-  //HN を取得 (システムメッセージ用)
+  //HN 取得 (システムメッセージ用)
   function GetHandleName($uname, $result = NULL){
     global $USERS;
 
@@ -100,17 +99,17 @@ class User{
     return implode("\t", $stack);
   }
 
-  //役職を取得
+  //役職取得
   function GetRole(){
     return array_key_exists('role', $this->updated) ? $this->updated['role'] : $this->role;
   }
 
-  //メイン役職を取得
+  //メイン役職取得
   function GetMainRole($virtual = false){
     return $virtual && isset($this->virtual_role) ? $this->virtual_role : $this->main_role;
   }
 
-  //所属陣営を取得
+  //所属陣営取得
   function GetCamp($win = false){
     global $USERS;
 
@@ -119,18 +118,18 @@ class User{
     return $this->$type;
   }
 
-  //拡張情報を取得
+  //拡張情報取得
   function GetPartner($type, $fill = false){
     $stack = array_key_exists($type, $this->partner_list) ? $this->partner_list[$type] : NULL;
     return is_array($stack) ? $stack : ($fill ? array() : NULL);
   }
 
-  //メイン役職の拡張情報を取得
+  //メイン役職の拡張情報取得
   function GetMainRoleTarget(){
     return array_shift($this->GetPartner($this->main_role, true));
   }
 
-  //日数に応じた憑依先の ID を取得
+  //日数に応じた憑依先の ID 取得
   function GetPossessedTarget($type, $today){
     if(is_null($stack = $this->GetPartner($type))) return false;
 
@@ -142,7 +141,7 @@ class User{
     return false;
   }
 
-  //死の宣告系の宣告日を取得
+  //死の宣告系の宣告日取得
   function GetDoomDate($role){ return max($this->GetPartner($role)); }
 
   //仮想的な生死判定
@@ -297,9 +296,6 @@ class User{
   //鬼陣営判定
   function IsOgre(){ return $this->IsRoleGroup('ogre', 'yaksa'); }
 
-  //決闘者陣営判定
-  function IsDuelist(){ return $this->IsRoleGroup('duelist', 'avenger', 'patron'); }
-
   //鵺系判定
   function IsUnknownMania(){
     return $this->IsRole('unknown_mania', 'wirepuller_mania', 'fire_mania', 'sacrifice_mania',
@@ -342,16 +338,6 @@ class User{
     $flag = ! (property_exists($this, 'guard_success') && in_array($uname, $this->guard_success));
     $this->guard_success[] = $uname;
     return $flag;
-  }
-
-  //護衛制限判定
-  function IsGuardLimited(){
-    return $this->IsRole(
-      'emissary_necromancer', 'detective_common', 'sacrifice_common', 'spell_common', 'reporter',
-      'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard', 'doll_master') ||
-      ($this->IsRoleGroup('priest') &&
-       ! $this->IsRole('revive_priest', 'crisis_priest', 'widow_priest')) ||
-      $this->IsRoleGroup('assassin');
   }
 
   //毒能力の発動判定
@@ -425,6 +411,12 @@ class User{
       $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist', 'revive_brownie',
 		    'revive_doll', 'revive_wolf', 'revive_mad', 'revive_cupid', 'revive_ogre',
 		    'revive_avenger', 'resurrect_mania');
+  }
+
+  //呪返し判定
+  function IsCursed(){
+    global $ROOM;
+    return ! $ROOM->IsEvent('no_cursed') && $this->IsLive(true) && $this->IsRoleGroup('cursed');
   }
 
   //嘘つき判定
@@ -520,7 +512,9 @@ class User{
 	 $this->IsRole('dummy_chiroptera', 'mirror_fairy', 'sweet_fairy')){
 	return $this->IsVoted($vote_data, 'CUPID_DO');
       }
-      if($this->IsDuelist()) return $this->IsVoted($vote_data, 'DUELIST_DO');
+      if($this->IsRoleGroup('duelist', 'avenger', 'patron')){
+	return $this->IsVoted($vote_data, 'DUELIST_DO');
+      }
       if($this->IsRoleGroup('mania')) return $this->IsVoted($vote_data, 'MANIA_DO');
 
       if($ROOM->IsOpenCast()) return true;
