@@ -7,23 +7,12 @@
 */
 RoleManager::LoadFile('cupid');
 class Role_sweet_cupid extends Role_cupid{
+  public $mix_in = 'critical_mad';
   function __construct(){ parent::__construct(); }
 
   protected function AddCupidRole($user, $flag){
     $user->AddRole($this->GetActor()->GetID('mind_friend'));
   }
 
-  function SetVoteDay($uname){
-    $this->InitStack();
-    if($this->IsRealActor()) $this->AddStack($uname);
-  }
-
-  function VoteAction(){
-    global $USERS;
-    foreach($this->GetStack() as $uname => $target_uname){
-      if($this->IsVoted($uname)) continue;
-      $user = $USERS->ByRealUname($target_uname);
-      if($user->IsLive(true)) $user->AddRole('sweet_ringing');
-    }
-  }
+  function SetVoteAction($user){ $user->AddRole('sweet_ringing'); }
 }

@@ -1,7 +1,7 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β14
-  + 変更：$chaos_hyper_random_role_list, $boost_rate_list
+  変更履歴 from Ver. 1.5.0β15
+  + 変更：$chaos_hyper_fox_list, $chaos_hyper_random_role_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -193,12 +193,14 @@ class CastConfig extends CastConfigBase{
     'scarlet_fox'   =>  3,
     'silver_fox'    =>  3,
     'immolate_fox'  =>  2,
-    'child_fox'     =>  8,
-    'sex_fox'       =>  4,
+    'child_fox'     =>  6,
+    'sex_fox'       =>  2,
     'stargazer_fox' =>  2,
     'jammer_fox'    =>  2,
+    'monk_fox'      =>  2,
     'miasma_fox'    =>  2,
-    'howl_fox'      =>  2);
+    'howl_fox'      =>  2,
+    'critical_fox'  =>  2);
 
   //ランダム配役テーブル (役職名 => 出現比)
   //闇鍋
@@ -499,11 +501,13 @@ class CastConfig extends CastConfigBase{
     'silver_fox'           =>  2,
     'immolate_fox'         =>  3,
     'child_fox'            =>  3,
-    'sex_fox'              =>  3,
+    'sex_fox'              =>  2,
     'stargazer_fox'        =>  2,
-    'jammer_fox'           =>  2,
+    'jammer_fox'           =>  1,
+    'monk_fox'             =>  1,
     'miasma_fox'           =>  2,
-    'howl_fox'             =>  3,
+    'howl_fox'             =>  2,
+    'critical_fox'         =>  2,
     'cupid'                =>  3,
     'self_cupid'           =>  3,
     'moon_cupid'           =>  2,
@@ -879,8 +883,8 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('thunder_brownie' => 12,
-		 'mimic_wizard'    => 15),
+    'a' => array('monk_fox'      => 10,
+		 'critical_fox'  =>  7),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,
@@ -893,6 +897,7 @@ class CastConfig extends CastConfigBase{
 		 'elder_fox'         => 0,
 		 'elder_chiroptera'  => 0,
 		 'critical_mad'      => 0,
+		 'critical_fox'      => 0,
 		 'poison_ogre'       => 0,
 		 'critical_duelist'  => 0,
 		 'cowboy_duelist'    => 0,

@@ -25,17 +25,11 @@ class RequestBase{
     }
   }
 
-  function GetDefault($item, &$value){
-    return false;
-  }
+  function GetDefault($item, &$value){ return false; }
 
-  function Exists($arg){
-    return ! empty($arg);
-  }
+  function Exists($arg){ return ! empty($arg); }
 
-  function IsOn($arg){
-    return $arg == 'on';
-  }
+  function IsOn($arg){ return $arg == 'on'; }
 
   function SetPage($arg){
     if($arg == 'all') return $arg;
@@ -165,7 +159,7 @@ class RequestGameLog extends RequestBase{
     if($this->IsInvalidScene()) OutputActionResult('引数エラー', '無効な引数です');
   }
 
-  function IsInvalidScene(){
+  private function IsInvalidScene(){
     switch($this->day_night){
     case 'beforegame':
       return $this->date != 0;

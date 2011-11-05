@@ -11,15 +11,15 @@ class Room{
   public $status;
   public $system_time;
   public $sudden_death;
-  public $view_mode = false;
-  public $dead_mode = false;
-  public $heaven_mode = false;
-  public $log_mode = false;
-  public $watch_mode = false;
-  public $single_log_mode = false;
+  public $view_mode        = false;
+  public $dead_mode        = false;
+  public $heaven_mode      = false;
+  public $log_mode         = false;
+  public $watch_mode       = false;
+  public $single_log_mode  = false;
   public $single_view_mode = false;
-  public $personal_mode = false;
-  public $test_mode = false;
+  public $personal_mode    = false;
+  public $test_mode        = false;
 
   function __construct($request = NULL){
     if(is_null($request)) return;

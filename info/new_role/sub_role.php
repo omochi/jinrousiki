@@ -723,7 +723,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

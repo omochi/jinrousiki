@@ -61,7 +61,7 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (30%) / 暗殺：反射 (30%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/5</h4>
 <pre>
-鬼陣営の基本種。勝利条件は「自分自身と<a href="wolf.php#wolf_group">人狼系</a> (種類・恋人不問) の生存」。
+鬼陣営の<a href="mania.php#basic_mania">基本種</a>。勝利条件は「自分自身と<a href="wolf.php#wolf_group">人狼系</a> (種類・恋人不問) の生存」。
 人狼が一人でも生存していればいいので、人狼陣営の勝利を目指す必要はない。
 </pre>
 <h4>関連役職</h4>
@@ -102,7 +102,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#wise_ogre">夜行鬼</a>・<a href="#hariti_yaksa">鬼子母神</a>
+<a href="fox.php#critical_fox">寿羊狐</a>・<a href="#wise_ogre">夜行鬼</a>・<a href="#hariti_yaksa">鬼子母神</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -227,7 +227,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#ogre">鬼</a>・<a href="#orange_ogre">前鬼</a>・<a href="#indigo_ogre">後鬼</a>・<a href="#yaksa">夜叉</a>・<a href="#hariti_yaksa">鬼子母神</a>
+<a href="fox.php#critical_fox">寿羊狐</a>・<a href="#ogre">鬼</a>・<a href="#orange_ogre">前鬼</a>・<a href="#indigo_ogre">後鬼</a>・<a href="#yaksa">夜叉</a>・<a href="#hariti_yaksa">鬼子母神</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -324,7 +324,7 @@ OutputRolePageHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (20%) / 暗殺：反射 (20%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 (制限有り) / 成功率低下：1/5</h4>
 <pre>
-夜叉系の基本種。勝利条件は「自分自身の生存 + <a href="wolf.php#wolf_group">人狼系</a> (恋人を含む) の全滅」。
+夜叉系の<a href="mania.php#basic_mania">基本種</a>。勝利条件は「自分自身の生存 + <a href="wolf.php#wolf_group">人狼系</a> (恋人を含む) の全滅」。
 人攫いの対象が<a href="wolf.php#wolf_group">人狼系</a>以外だった場合は無条件で失敗する。
 </pre>
 <h4>関連役職</h4>

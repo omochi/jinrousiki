@@ -6,21 +6,10 @@
 */
 RoleManager::LoadFile('avenger');
 class Role_cursed_avenger extends Role_avenger{
+  public $mix_in = 'critical_mad';
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
-    $this->InitStack();
-    if($this->IsRealActor()) $this->AddStack($uname);
-  }
-
-  function VoteAction(){
-    global $USERS;
-    foreach($this->GetStack() as $uname => $target_uname){
-      if($this->IsVoted($uname)) continue;
-      $user = $USERS->ByRealUname($target_uname);
-      if($user->IsLive(true) && $user->IsRoleGroup('wolf', 'fox') && ! $user->IsAvoid()){
-	$user->AddDoom(4);
-      }
-    }
+  function SetVoteAction($user){
+    if(! $user->IsAvoid() && $user->IsRoleGroup('wolf', 'fox')) $user->AddDoom(4);
   }
 }

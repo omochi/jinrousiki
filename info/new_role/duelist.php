@@ -57,7 +57,7 @@ OutputRolePageHeader('決闘者陣営');
 
 <h3 id="duelist">決闘者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
 <pre>
-決闘者陣営の基本種。
+決闘者陣営の<a href="mania.php#basic_mania">基本種</a>。
 自分撃ち固定で、<a href="sub_role.php#rival">宿敵</a>の相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
 </pre>
 <h4>関連役職</h4>
@@ -155,7 +155,7 @@ OutputRolePageHeader('決闘者陣営');
 
 <h3 id="avenger">復讐者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β3～]</h3>
 <pre>
-復讐者系の基本種。
+復讐者系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -205,14 +205,8 @@ OutputRolePageHeader('決闘者陣営');
 <h3 id="critical_avenger">狂骨 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
 <h4>[耐性] 狩り：有効</h4>
 <pre>
-処刑投票先に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な復讐者。
+処刑投票先に<a href="sub_role.php#critical_luck">痛恨</a>を付加する特殊な復讐者 (仕様は<a href="wolf.php#critical_mad">釣瓶落とし</a>と同じ)。
 </pre>
-<ol>
-<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
-<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
-<li>自分が処刑された場合は無効。</li>
-<li><a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>には無効。</li>
-</ol>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
@@ -227,14 +221,9 @@ OutputRolePageHeader('決闘者陣営');
 <h3 id="revive_avenger">夜刀神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効 / 封印：有効</h4>
 <pre>
-人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する特殊な復讐者。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する (自己蘇生) 特殊な復讐者。
+自己蘇生能力の仕様は<a href="human.php#revive_pharmacist">仙人</a>と同じ。
 </pre>
-<ol>
-<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-<li>恋人になったら無効。</li>
-<li>人狼の襲撃以外で死亡した場合は無効 (例：暗殺)。</li>
-<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
-</ol>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
@@ -282,7 +271,7 @@ OutputRolePageHeader('決闘者陣営');
 
 <h3 id="patron">後援者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β3～]</h3>
 <pre>
-後援者系の基本種。
+後援者系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

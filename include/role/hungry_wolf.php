@@ -14,7 +14,7 @@ class Role_hungry_wolf extends Role_wolf{
 
   function WolfEatAction($user){ return ! $user->IsRoleGroup('wolf', 'fox'); }
 
-  function WolfKill($user, &$list){
+  function WolfKill($user){
     global $USERS;
     $USERS->Kill($user->user_no, 'HUNGRY_WOLF_KILLED');
   }

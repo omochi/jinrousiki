@@ -60,6 +60,9 @@ function OutputAbility(){
   if($SELF->IsDead()){ //死亡したら口寄せ以外は表示しない
     echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
     if($SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
+    if($SELF->IsDummyBoy() && ! $ROOM->IsOpenCast()){ //身代わり君のみ隠蔽情報を表示
+      echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
+    }
     return;
   }
   $ROLES->LoadMain($SELF)->OutputAbility(); //メイン役職
@@ -140,6 +143,7 @@ function OutputSelfAbilityResult($action){
   case 'DUMMY_NECROMANCER_RESULT':
   case 'MIMIC_WIZARD_RESULT':
   case 'SPIRITISM_WIZARD_RESULT':
+  case 'MONK_FOX_RESULT':
     $type = 'necromancer';
     break;
 

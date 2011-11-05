@@ -6,18 +6,10 @@
 */
 RoleManager::LoadFile('jealousy');
 class Role_miasma_jealousy extends Role_jealousy{
+  public $mix_in = 'critical_mad';
   function __construct(){ parent::__construct(); }
 
-  function VoteAction(){
-    global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
-      if($this->IsVoted($uname)) continue;
-      $target = $USERS->ByRealUname($target_uname);
-      if($target->IsLive(true) && $target->IsLovers() && mt_rand(1, 10) > 6){
-	$target->AddDoom(1, 'febris');
-      }
-    }
+  function SetVoteAction($user){
+    if($user->IsLovers() && mt_rand(0, 9) < 4) $user->AddDoom(1, 'febris');
   }
 }

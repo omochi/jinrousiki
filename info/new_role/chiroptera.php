@@ -36,7 +36,7 @@ OutputRolePageHeader('蝙蝠陣営');
 
 <h3 id="chiroptera">蝙蝠 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <pre>
-蝙蝠陣営の基本種。能力は何も持っていない。
+蝙蝠陣営の<a href="mania.php#basic_mania">基本種</a>。能力は何も持っていない。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -249,7 +249,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <h3 id="fairy">妖精 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β6～]</h3>
 <h4>[悪戯能力] タイプ：発言妨害 / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-妖精系の基本種。追加する文字列は「<a href="human.php#common_group">共有者</a>の囁き」。
+妖精系の<a href="mania.php#basic_mania">基本種</a>。追加する文字列は「<a href="human.php#common_group">共有者</a>の囁き」。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

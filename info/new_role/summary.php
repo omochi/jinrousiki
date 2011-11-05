@@ -93,6 +93,7 @@ Ver. 1.5.0
 <a href="#ver150b13">β13</a>
 <a href="#ver150b14">β14</a>
 <a href="#ver150b15">β15</a>
+<a href="#ver150b16">β16</a>
 </p>
 
 <p>
@@ -243,8 +244,7 @@ Ver. 1.5.0
   <td><a href="human.php#pharmacist_group">薬師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑投票先の毒能力が分かる。処刑者が毒能力者の場合は解毒 (毒が発動しない) する。
-  </td>
+  <td class="ability">処刑投票先の毒能力が分かり、処刑投票先が処刑されたら毒能力を無効化 (解毒) する。</td>
   <td>Ver. 1.4.0 α12</td>
 </tr>
 <tr id="ver140a13">
@@ -253,7 +253,7 @@ Ver. 1.5.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">人狼に無意識であることが分かってしまう村人 (表示は「村人」)。</td>
+  <td class="ability">人狼に無意識であることが分かってしまう村人 (本人表記は「<a href="human.php#human">村人</a>」)。</td>
   <td>Ver. 1.4.0 α13</td>
 </tr>
 <tr>
@@ -280,7 +280,7 @@ Ver. 1.5.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">「村人」と「人狼」が反転した結果が出る占い師 (表示は「占い師」)。<br>
+  <td class="ability">「村人」と「人狼」が反転した結果が出る占い師 (本人表記は「<a href="human.php#mage">占い師</a>」)。<br>
     呪殺できない代わりに呪いや占い妨害の影響を受けない。</td>
   <td>Ver. 1.4.0 α14</td>
 </tr>
@@ -299,7 +299,7 @@ Ver. 1.5.0
   <td><a href="human.php#necromancer_group">霊能者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">「村人」と「人狼」が反転した結果が出る霊能者 (表示は「霊能者」)。<br>
+  <td class="ability">「村人」と「人狼」が反転した結果が出る霊能者 (本人表記は「<a href="human.php#necromancer">霊能者</a>」)。<br>
     <a href="wolf.php#corpse_courier_mad">火車</a>の妨害の影響を受けない。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
@@ -309,7 +309,7 @@ Ver. 1.5.0
   <td><a href="human.php#guard_group">狩人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">狩人と思い込んでいる村人 (表示は「狩人」)。<br>常に護衛成功メッセージが出るが誰も護衛していない。何らかの形で<a href="wolf.php#dream_eater_mad">獏</a>に接触した場合は狩ることができる。</td>
+  <td class="ability">狩人と思い込んでいる村人 (本人表記は「<a href="human.php#guard">狩人</a>」)。<br>常に護衛成功メッセージが出るが誰も護衛していない。何らかの形で<a href="wolf.php#dream_eater_mad">獏</a>に接触した場合は狩ることができる。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -318,7 +318,7 @@ Ver. 1.5.0
   <td><a href="human.php#common_group">共有者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">「相方が身代わり君の共有者」と思い込んでいる村人。<br>
+  <td class="ability">「相方が身代わり君の<a href="human.php#common">共有者</a>」と思い込んでいる村人。<br>
     共有者の囁きが見えない。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
@@ -328,7 +328,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">埋毒者と思い込んでいる村人 (表示は「埋毒者」)。<br>処刑された場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。</td>
+  <td class="ability">埋毒者と思い込んでいる村人 (本人表記は「<a href="human.php#poison">埋毒者</a>」)。<br>処刑された場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -346,7 +346,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑された時の毒の対象が人外 (<a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>) 限定の上位埋毒者 (表示は「埋毒者」)。</td>
+  <td class="ability">処刑された時の毒の対象が人外 (<a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>) 限定の上位埋毒者 (本人表記は「<a href="human.php#poison">埋毒者</a>」)。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -702,7 +702,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">今が「人外勝利前日」が分かる特殊な司祭 (表示は「村人」)。</td>
+  <td class="ability">今が「人外勝利前日」が分かる特殊な司祭。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β2</td>
 </tr>
 <tr>
@@ -855,7 +855,7 @@ Ver. 1.5.0
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">恋人のみに中る埋毒者。本人の表記は「埋毒者」。</td>
+  <td class="ability">恋人のみに中る埋毒者。本人表記は「<a href="human.php#poison">埋毒者</a>」。</td>
   <td>Ver. 1.4.0 β6</td>
 </tr>
 <tr>
@@ -1107,7 +1107,7 @@ Ver. 1.5.0
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">30% の確率で暗殺反射が発生する劣化暗殺者。本人の表記は「暗殺者」。</td>
+  <td class="ability">30% の確率で暗殺反射が発生する劣化暗殺者。本人表記は「<a href="human.php#assassin">暗殺者</a>」。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>
@@ -1586,7 +1586,7 @@ Ver. 1.5.0
   <td><a href="human.php#poison_cat_group">猫又系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">誤爆率が高めに設定された猫又の劣化種。本人表記は<a href="human.php#revive_cat">仙狸</a>。</td>
+  <td class="ability">誤爆率が高めに設定された猫又の劣化種。本人表記は「<a href="human.php#revive_cat">仙狸</a>」。</td>
   <td>Ver. 1.4.0 β17</td>
 </tr>
 <tr>
@@ -2464,7 +2464,7 @@ Ver. 1.5.0
   <td><a href="human.php#priest_group">司祭系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">身代わり君の役職が分かる特殊な司祭。表示は「村人」。</td>
+  <td class="ability">身代わり君の役職が分かる特殊な司祭。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.5.0 β6</td>
 </tr>
 <tr>
@@ -2590,7 +2590,7 @@ Ver. 1.5.0
   <td><a href="human.php#mage_group">占い師系</a></td>
   <td>人狼</td>
   <td>村人</td>
-  <td class="ability">占い結果が「人狼」と判定される劣化占い師(表示は「占い師」)。<br>昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。</td>
+  <td class="ability">占い結果が「人狼」と判定される劣化占い師(本人表記「<a href="human.php#mage">占い師</a>」)。<br>昼の間だけ、低確率で発言が遠吠えに入れ替わってしまう。</td>
   <td>Ver. 1.5.0 β9</td>
 </tr>
 <tr>
@@ -2599,7 +2599,7 @@ Ver. 1.5.0
   <td><a href="human.php#medium_group">巫女系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票になるとショック死する劣化巫女(表示は「巫女」)。</td>
+  <td class="ability">再投票になるとショック死する劣化巫女(本人表記は「<a href="human.php#medium">巫女</a>」)。</td>
   <td>Ver. 1.5.0 β9</td>
 </tr>
 <tr>
@@ -2811,6 +2811,24 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">魔法使いの一種で、魔法の効果は<a href="human.php#mage">占い師</a>(成功率50%)と<a href="human.php#necromancer">霊能者</a>(成功率50%)。</td>
   <td>Ver. 1.5.0 β15</td>
+</tr>
+<tr id="ver150b16">
+  <td><a href="fox.php#monk_fox">蛻庵</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#child_fox_group">子狐系</a></td>
+  <td>村人<br>(呪殺無し)</td>
+  <td>子狐</td>
+  <td class="ability"><a href="human.php#necromancer">霊能者</a>相当の能力を持つ子狐。</td>
+  <td>Ver. 1.5.0 β16</td>
+</tr>
+<tr>
+  <td><a href="fox.php#critical_fox">寿羊狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#child_fox_group">子狐系</a></td>
+  <td>村人<br>(呪殺無し)</td>
+  <td>子狐</td>
+  <td class="ability">妖狐陣営勝利に加えて、<a href="fox.php#fox_group">妖狐系</a>の全滅が勝利条件の子狐。<br><a href="fox.php#partner">仲間表示</a>に<a href="fox.php#fox_group">妖狐系</a>が表示されず、処刑投票先が<a href="fox.php#fox_group">妖狐系</a>なら<a href="sub_role.php#critical_luck">痛恨</a>を付加する。</td>
+  <td>Ver. 1.5.0 β16</td>
 </tr>
 </table>
 

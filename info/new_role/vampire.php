@@ -89,7 +89,7 @@ OutputRolePageHeader('吸血鬼陣営');
 
 <h3 id="vampire">吸血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β14～]</h3>
 <pre>
-吸血鬼陣営の基本種。
+吸血鬼陣営の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

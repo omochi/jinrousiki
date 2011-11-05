@@ -6,21 +6,10 @@
 */
 RoleManager::LoadFile('common');
 class Role_spell_common extends Role_common{
+  public $mix_in = 'critical_mad';
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
-    $this->InitStack();
-    if($this->IsRealActor()) $this->AddStack($uname);
-  }
-
-  function VoteAction(){
-    global $USERS;
-    foreach($this->GetStack() as $uname => $target_uname){
-      if($this->IsVoted($uname)) continue;
-      $user = $USERS->ByRealUname($target_uname);
-      if($user->IsLive(true) && ($user->IsRoleGroup('wolf', 'fox') || $user->IsLovers())){
-	$user->AddRole('cute_camouflage');
-      }
-    }
+  function SetVoteAction($user){
+    if($user->IsRoleGroup('wolf', 'fox') || $user->IsLovers()) $user->AddRole('cute_camouflage');
   }
 }

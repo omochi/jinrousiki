@@ -60,7 +60,7 @@ OutputRolePageHeader('村人陣営');
 
 <h3 id="human">村人 (占い結果：村人 / 霊能結果：村人)</h3>
 <pre>
-村人陣営の基本種。
+村人陣営の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -77,14 +77,17 @@ OutputRolePageHeader('村人陣営');
 再投票の最多得票者になった場合に、内訳によって処刑する人を変化させる村人。
 本人表記は「<a href="#human">村人</a>」。
 </pre>
+<h4>処刑者決定法則</h4>
+<pre>
+<a href="../spec.php#vote_day">判定</a>は<a href="#executor">執行者</a>の後。
+</pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は<a href="#executor">執行者</a>の後</li>
-<li>非村人 (村人陣営以外 + <a href="sub_role.php#lovers">恋人</a>) を一人だけ含む → 非村人が吊られる</li>
+<li>非村人 (村人陣営以外 + <a href="sub_role.php#lovers">恋人</a>) を一人だけ含む → 非村人</li>
 <li>非村人が複数含まれている → 再投票</li>
-<li>全員村人 + 最多得票者の聖女は自分だけ → 自分が吊られる</li>
+<li>全員村人 + 最多得票者の聖女は自分だけ → 自分</li>
 <li>全員村人 + 最多得票者の聖女が複数いる → 再投票</li>
 <li>自分が恋人だった場合は自分も非村人扱い<br>
-  例1) 聖女・聖女[恋人]・村人 → 聖女[恋人] が吊られる<br>
+  例1) 聖女・聖女[恋人]・村人 → 聖女[恋人]<br>
   例2) 聖女[恋人]・人狼 → 再投票
 </li>
 </ol>
@@ -105,21 +108,21 @@ OutputRolePageHeader('村人陣営');
 再投票発生時に非村人 (村人陣営以外 + 恋人) に投票していた場合は吊る事ができる村人。
 本人表記は「<a href="#human">村人</a>」。
 </pre>
+<h4>処刑者決定法則</h4>
+<pre>
+<a href="../spec.php#vote_day">判定</a>は<a href="quiz.php#quiz">出題者</a>の後。
+</pre>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は<a href="quiz.php#quiz">出題者</a>の後</li>
-<li>投票先が非村人 → 非村人が吊られる</li>
+<li>投票先が非村人 → 非村人</li>
 <li>投票先が村人 → 再投票</li>
-<li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人が吊られる<br>
-  例) 執行者A → 村人A、執行者B → 村人B、執行者C → 人狼A<br>
-  　=&gt; 人狼A が吊られる
+<li>執行者が複数 + 非村人に投票していたのは一人だけ → 非村人<br>
+  例) 執行者A → 村人A / 執行者B → 村人B / 執行者C → 人狼A =&gt; 人狼A
 </li>
-<li>執行者が複数 + 複数が同じ非村人に投票 → 非村人が吊られる<br>
-  例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 人狼A<br>
-  　=&gt; 人狼A が吊られる
+<li>執行者が複数 + 複数が同じ非村人に投票 → 非村人<br>
+  例) 執行者A → 村人A / 執行者B → 人狼A / 執行者C → 人狼A =&gt; 人狼A
 </li>
 <li>執行者が複数 + 別々の非村人に投票 → 再投票<br>
-  例) 執行者A → 村人A、執行者B → 人狼A、執行者C → 妖狐A<br>
-  　=&gt; 再投票
+  例) 執行者A → 村人A / 執行者B → 人狼A / 執行者C → 妖狐A =&gt; 再投票
 </li>
 </ol>
 <h4>関連役職</h4>
@@ -203,9 +206,8 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <h4>[耐性] 精神鑑定：嘘つき / <a href="sub_role.php#mind_read">サトラレ</a>：無効</h4>
 <pre>
-他の国で言うと「自覚のない夢遊病者」。
-本人には「<a href="#human">村人</a>」と表示されているが、夜になると無意識に歩きまわるため
-人狼 (<a href="wolf.php#partner">仲間表示</a>) に無意識であることが分かってしまう。
+他の国で言うと「自覚のない夢遊病者」。本人表記は「<a href="#human">村人</a>」。
+夜になると無意識に歩きまわるため人狼 (<a href="wolf.php#partner">仲間表示</a>) に無意識であることが分かってしまう。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -245,7 +247,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="mage">占い師 (占い結果：村人 / 霊能結果：村人)</h3>
 <h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-占い師系の基本種。
+占い師系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -374,12 +376,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[役職表示] <a href="#mage">占い師</a></h4>
 <h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-占い結果が「人狼」と判定される劣化占い師。本人表記は「占い師」。
+占い結果が「人狼」と判定される劣化占い師。本人表記は「<a href="#mage">占い師</a>」。
 昼の間だけ、低確率で発言が人狼の遠吠えに入れ替わってしまう (<a href="wolf.php#cute_wolf">萌狼</a>と同じ)。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#talk_convert_cute">発言変換能力者</a>
+<a href="ability.php#mage_wolf">特殊占い判定能力者</a>・<a href="ability.php#talk_convert_cute">発言変換能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -392,7 +394,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 占い妨害：無効 / 呪い：無効</h4>
 <pre>
-「村人」と「人狼」が逆に判定される占い師。本人表記は「占い師」。
+「村人」と「人狼」が逆に判定される占い師。本人表記は「<a href="#mage">占い師</a>」。
 呪殺できない代わりに呪返しも受けない。
 「村人」「人狼」以外の判定 (<a href="chiroptera.php#boss_chiroptera">大蝙蝠</a>など) は正しい結果が表示される。
 <a href="ability.php#phantom">占い妨害能力</a>の影響を受けない。
@@ -441,7 +443,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="necromancer">霊能者 (占い結果：村人 / 霊能結果：村人)</h3>
 <h4>[霊能能力] 処刑者情報：有り / 火車：有効</h4>
 <pre>
-霊能者系の基本種。
+霊能者系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -449,7 +451,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#mimic_wizard">物真似師</a>・<a href="#spiritism_wizard">交霊術師</a>
+<a href="#mimic_wizard">物真似師</a>・<a href="#spiritism_wizard">交霊術師</a>・<a href="fox#monk_fox">蛻庵</a>
 </pre>
 
 <h3 id="soul_necromancer">雲外鏡 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -594,7 +596,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
 <h4>[霊能能力] 処刑者情報：有り / 火車：無効</h4>
 <pre>
-「村人」と「人狼」が逆に判定される霊能者。本人表記は「霊能者」。
+「村人」と「人狼」が逆に判定される霊能者。本人表記は「<a href="#necromancer">霊能者</a>」。
 「村人」と「人狼」以外の判定 (例：<a href="wolf.php#boss_wolf">白狼</a>・<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#child_fox">子狐</a>など) は正しい結果が表示される。
 <a href="wolf.php#corpse_courier_mad">火車</a>の能力の影響を受けない。
 </pre>
@@ -642,7 +644,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="medium">巫女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <pre>
-突然死した人と後追いした<a href="sub_role.php#lovers">恋人</a>の所属陣営が分かる、巫女系の基本種。
+突然死した人と後追いした<a href="sub_role.php#lovers">恋人</a>の所属陣営が分かる、巫女系の<a href="mania.php#basic_mania">基本種</a>。
 <a href="../chaos.php">闇鍋モード</a>で登場する「ショック死」する人たちの情報を取るのが主な仕事だが
 <a href="#necromancer_group">霊能者</a>とは<a href="#medium_rule">判定法則</a>が違うので注意。
 </pre>
@@ -726,7 +728,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="eclipse_medium">蝕巫女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <h4>[役職表示] <a href="#medium">巫女</a></h4>
 <pre>
-再投票になるとショック死する劣化巫女。本人の表記は「<a href="#medium">巫女</a>」。
+再投票になるとショック死する劣化巫女。本人表記は「<a href="#medium">巫女</a>」。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>はショック死処理内部で行う。</li>
@@ -786,7 +788,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="priest">司祭 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α24～]</h3>
 <h4>[耐性] 護衛制限：有り</h4>
 <pre>
-一定日数ごとに現在の生存している村人陣営の人数が分かる、司祭系の基本種。
+一定日数ごとに現在の生存している村人陣営の人数が分かる、司祭系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <ol>
 <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
@@ -884,7 +886,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="crisis_priest">預言者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
-<a href="#crisis_priest_rule">人外勝利前日</a>を判定する特殊な司祭。表示は「村人」。
+<a href="#crisis_priest_rule">人外勝利前日</a>を判定する特殊な司祭。本人表記は「<a href="#human">村人</a>」。
 条件を満たした場合のみ、どの陣営が有利なのかメッセージが表示される。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -897,7 +899,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="widow_priest">未亡人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
-身代わり君の役職が分かる特殊な司祭。表示は「村人」。
+身代わり君の役職が分かる特殊な司祭。本人表記は「<a href="#human">村人</a>」。
 </pre>
 <ol>
 <li>2 日目昼に身代わり君と<a href="sub_role.php#mind_sympathy">共感者</a>になることで、身代わり君の役職が分かる。</li>
@@ -1082,7 +1084,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="guard">狩人 (占い結果：村人 / 霊能結果：村人)</h3>
 <h4>[狩人能力] 護衛：通常 / 護衛制限：有り / 狩り：有り / 罠：有効</h4>
 <pre>
-狩人系の基本種。
+狩人系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -1264,7 +1266,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 獏襲撃：狩り / 精神鑑定：嘘つき</h4>
 <h4>[狩人能力] 護衛：対獏 / 狩り：獏 + 妖精系 / 罠：無効</h4>
 <pre>
-本人には「狩人」と表示されており、護衛行動を取ることができる。
+本人には「<a href="#guard">狩人</a>」と表示されており、護衛行動を取ることができる。
 必ず護衛成功メッセージが表示されるが、表示されるだけで誰も護衛していない。
 <a href="wolf.php#dream_eater_mad">獏</a>には圧倒的なアドバンテージを持っており、何らかの形で遭遇すると
 一方的に狩ることができる。
@@ -1307,7 +1309,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="common">共有者 (占い結果：村人 / 霊能結果：村人)</h3>
 <pre>
-共有者系の基本種。
+共有者系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -1457,7 +1459,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[役職表示] <a href="#common">共有者</a></h4>
 <h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
 <pre>
-本人には「『相方が身代わり君』の共有者」と表示されている村人。
+本人には「『相方が身代わり君』の<a href="#common">共有者</a>」と表示されている村人。
 が、夜に発言しても「囁き声」にはならないし、本物の共有者の声も聞こえない。
 </pre>
 <h4>関連役職</h4>
@@ -1486,7 +1488,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="poison">埋毒者 (占い結果：村人 / 霊能結果：村人)</h3>
 <h4>[毒能力] 処刑：有り / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
-埋毒者系の基本種。
+埋毒者系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -1501,7 +1503,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[役職表示] <a href="#poison">埋毒者</a></h4>
 <h4>[毒能力] 処刑：人狼系 + 妖狐陣営 / 襲撃：有り / 薬師判定：強い毒</h4>
 <pre>
-処刑された時の毒の対象が人外 (<a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>) 限定の上位埋毒者。本人の表記は「埋毒者」。
+処刑された時の毒の対象が人外 (<a href="wolf.php#wolf_group">人狼系</a>と<a href="fox.php">妖狐陣営</a>) 限定の上位埋毒者。本人表記は「<a href="#poison">埋毒者</a>」。
 毒の巻き込み対象設定 (<a href="../script_info.php#difference_poison_vote" target="_top">特徴と仕様</a>参照) が「投票者ランダム」だった場合、
 対象者が投票していなければ毒は不発になる。
 </pre>
@@ -1568,7 +1570,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <h4>[毒能力] 処刑：特殊 / 襲撃：無し / 薬師判定：限定的</h4>
 <pre>
-他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人の表記は「村人」。
+他の毒能力者に巻き込まれたら、さらに二人巻き込む特殊な埋毒者。本人表記は「<a href="#human">村人</a>」。
 解毒能力者 (例：<a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>) に投票されていたら解毒される (連鎖が発生しない)。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -1583,7 +1585,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
 <h4>[毒能力] 処刑：特殊 / 襲撃：無し / 薬師判定：無し</h4>
 <pre>
-本人には「埋毒者」と表示されている村人。
+本人には「<a href="#poison">埋毒者</a>」と表示されている村人。
 処刑された場合は<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>のみ巻き込む (「解毒」はできない)。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
@@ -1629,7 +1631,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </ol>
 <h5>Ver. 1.4.0 β2～</h5>
 <pre>
-<a href="sub_role.php#lovers">恋人</a>を蘇生対象外に変更 (蘇生後、即自殺から変更)。
+<a href="sub_role.php#lovers">恋人</a>を蘇生対象外に変更 (蘇生後、即後追いから変更)。
 </pre>
 <h5>Ver. 1.4.0 α19～</h5>
 <pre>
@@ -1641,7 +1643,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[蘇生能力] 成功率：25% / 誤爆：有り</h4>
 <h4>[毒能力] 処刑：有り / 襲撃：有り / 薬師判定：有り</h4>
 <pre>
-<a href="#revive_rule">蘇生能力</a>を持った<a href="#poison">埋毒者</a>。蘇生成功率は 25%。
+猫又系の<a href="mania.php#basic_mania">基本種</a>。<a href="#revive_rule">蘇生能力</a>を持った<a href="#poison">埋毒者</a>相当で、蘇生成功率は 25%。
 </pre>
 <h5>Ver. 1.4.0 α19～</h5>
 <pre>
@@ -1718,7 +1720,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[耐性] 蘇生：不可</h4>
 <h4>[蘇生能力] 成功率：40% / 誤爆：有り (特殊)</h4>
 <pre>
-<a href="#revive_rule">誤爆率</a>が高く設定されている猫又の亜種。本人の表記は「<a href="#revive_cat">仙狸</a>」。
+<a href="#revive_rule">誤爆率</a>が高く設定されている猫又の亜種。本人表記は「<a href="#revive_cat">仙狸</a>」。
 蘇生成功率は 40%、誤爆率は 20% で固定。
 </pre>
 <h5>Ver. 1.4.0 β18～</h5>
@@ -1727,7 +1729,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#poison_cat">猫又</a>の劣化種として、夢系ではなく蝕系を採用してみました。
+<a href="#poison_cat">猫又</a>の<a href="mania.php#dummy_mania">劣化種</a>として、夢系ではなく蝕系を採用してみました。
 <a href="#revive_rule">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が 2.5倍になっています。
 実質、誤爆率だけが上がった<a href="#poison_cat">猫又</a>相当になります。
 </pre>
@@ -1745,27 +1747,29 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h3 id="pharmacist">薬師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α12～]</h3>
 <h4>[薬師能力] 毒能力判定：有り / 解毒：有り / ショック死抑制：無し</h4>
 <pre>
-処刑投票先の毒能力が分かり、処刑された場合に解毒 (毒が発動しない) する。
-毒能力の判定結果は以下の 5 種類で、処刑されたら毒能力判定・解毒能力は無効。
-
-1. 毒を持っていない (<a href="#dummy_poison">夢毒者</a>や発現前の<a href="#incubate_poison">潜毒者</a>もこれ)
-2. 毒を持っている
-3. 強い毒を持っている (<a href="#strong_poison">強毒者</a>と発現後の<a href="#incubate_poison">潜毒者</a>)
-4. 限定的な毒を持っている (<a href="#poison_guard">騎士</a>・<a href="#guide_poison">誘毒者</a>・<a href="#chain_poison">連毒者</a>・<a href="#poison_jealousy">毒橋姫</a>)
-5. 解毒に成功した (この場合は詳細な毒の種類は分からない)
+処刑投票先が処刑されたら毒能力を無効化 (解毒) する、薬師系の<a href="mania.php#basic_mania">基本種</a>。
+また、処刑投票先の毒能力が分かる (処刑されたら無効)。
 </pre>
+<h4>毒能力判定法則</h4>
+<ol>
+<li>解毒成功 (この場合は詳細な毒能力は分からない)</li>
+<li>強い毒 (<a href="#strong_poison">強毒者</a>・発現後の<a href="#incubate_poison">潜毒者</a>)</li>
+<li>限定的な毒 (<a href="#poison_guard">騎士</a>・<a href="#guide_poison">誘毒者</a>・<a href="#chain_poison">連毒者</a>・<a href="#poison_jealousy">毒橋姫</a>)</li>
+<li>毒を持っていない (<a href="#dummy_poison">夢毒者</a>・発現前の<a href="#incubate_poison">潜毒者</a>)</li>
+<li>毒を持っている</li>
+</ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
 処刑されたら毒能力判定・解毒能力無効。
 </pre>
 <h5>Ver. 1.4.0 β9～</h5>
 <pre>
-<a href="#dummy_poison">夢毒者</a>が吊られると<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が巻き込まれる仕様に変更。
+<a href="#dummy_poison">夢毒者</a>が処刑されたら<a href="wolf.php#dream_eater_mad">獏</a>・<a href="chiroptera.php#fairy_group">妖精系</a>に中る仕様に変更。
 これを「解毒」する事はできない。
 </pre>
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
-解毒成功だけでなく、前日に投票した人の詳細な毒能力が分かる。
+解毒成功だけでなく、処刑投票先の詳細な毒能力が分かる。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1777,12 +1781,15 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[薬師能力] 毒能力判定：無し / 解毒：有り / ショック死抑制：有り</h4>
 <pre>
 処刑投票先の人を解毒・ショック死抑制する特殊な薬師。
-解毒能力は<a href="#pharmacist">薬師</a>と同じ。
-抑制できるのはサブ役職 (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外。
-解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。
-何の「治療」に成功した (毒やショック死の種類など) のかは表示されない。
-再投票時には発動せず、処刑されたら解毒・ショック死抑制能力無効。
-
+</pre>
+<ol>
+<li>解毒能力は<a href="#pharmacist">薬師</a>と同じ。</li>
+<li>抑制できるのは<a href="sub_role.php">サブ役職</a> (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外。</li>
+<li>解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。</li>
+<li>何の「治療」に成功したのか (毒やショック死の種類など) は表示されない。</li>
+<li>再投票時には発動せず、処刑されたら解毒・ショック死抑制能力無効。</li>
+</ol>
+<pre>
 例) A[河童] → B[村人][小心者]
 この場合、B がショック死する条件を満たすが、河童の能力でキャンセルされる。
 キャンセルするだけで<a href="sub_role.php#chicken">小心者</a>が消える訳ではないので注意。
@@ -1808,13 +1815,14 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <pre>
 昼に処刑投票した人のショック死を抑制する特殊な薬師。
 ショック死抑制能力は<a href="#cure_pharmacist">河童</a>と同じで、処刑されたら無効。
-人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する (自己蘇生)。
 </pre>
+<h4>自己蘇生能力の仕様</h4>
 <ol>
 <li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-<li>恋人になったら蘇生能力は無効。</li>
-<li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
-<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+<li>恋人になったら無効。</li>
+<li>人狼の襲撃以外で死亡した場合 (例：暗殺) は無効。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
@@ -1922,7 +1930,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h3 id="assassin">暗殺者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α18～]</h3>
 <h4>[耐性] 罠：有効 / 護衛制限：有り</h4>
 <pre>
-暗殺者系の基本種。
+暗殺者系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>同一表示役職</h4>
 <pre>
@@ -2030,7 +2038,7 @@ Bの蘇生処理はキャンセル
 <h4>[役職表示] <a href="#assassin">暗殺者</a></h4>
 <h4>[耐性] 罠：有効 / 護衛制限：有り</h4>
 <pre>
-30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する<a href="mania.php#dummy_mania">劣化</a>暗殺者。本人の表記は「<a href="#assassin">暗殺者</a>」。
+30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する<a href="mania.php#dummy_mania">劣化</a>暗殺者。本人表記は「<a href="#assassin">暗殺者</a>」。
 <a href="#psycho_mage">精神鑑定士</a>の鑑定結果は「正常」。
 </pre>
 <h4>[作成者からのコメント]</h4>
@@ -2054,7 +2062,7 @@ Bの蘇生処理はキャンセル
 
 <h3 id="mind_scanner">さとり (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
 <pre>
-初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする、さとり系の基本種。
+初日の夜に誰か一人を選んでその人を<a href="sub_role.php#mind_read">サトラレ</a>にする、さとり系の<a href="mania.php#basic_mania">基本種</a>。
 <a href="wolf.php#howl">人狼の遠吠え</a>が一切見えない。
 </pre>
 <ol>
@@ -2207,7 +2215,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="jealousy">橋姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α22～]</h3>
 <pre>
 処刑投票時に、同一<a href="lovers.php">キューピッド</a>の<a href="sub_role.php#lovers">恋人</a>が揃って自分に投票したら
-投票した<a href="sub_role.php#lovers">恋人</a>をショック死させる、橋姫系の基本種。
+投票した<a href="sub_role.php#lovers">恋人</a>をショック死させる、橋姫系の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>詳細な仕様</h4>
 <pre>
@@ -2271,7 +2279,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[役職表示] <a href="#poison">埋毒者</a></h4>
 <h4>[毒能力] 処刑：恋人 / 襲撃：恋人 / 薬師判定：限定的</h4>
 <pre>
-<a href="sub_role.php#lovers">恋人</a>のみに中る埋毒者。本人表記は「埋毒者」。
+<a href="sub_role.php#lovers">恋人</a>のみに中る埋毒者。本人表記は「<a href="#poison">埋毒者</a>」。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <h4>関連役職</h4>
@@ -2338,7 +2346,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="brownie">座敷童子 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β15～]</h3>
 <h4>[耐性] 処刑：<a href="sub_role.php#febris">熱病</a></h4>
 <pre>
-役職「<a href="#human">村人</a>」の処刑投票数を +1 する、座敷童子系の基本種。
+役職「<a href="#human">村人</a>」の処刑投票数を +1 する、座敷童子系の<a href="mania.php#basic_mania">基本種</a>。
 生きている間のみ有効で、複数生存していても効果は重複しない。
 処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
 <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、
@@ -2393,16 +2401,12 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 <a href="ability.php#revive">蘇生能力者</a>の成功率を +30% (1.3倍) する、座敷童子の亜種。
 生きている間のみ有効で、複数生存していても効果は重複しない。
-人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
+自己蘇生能力 (仕様は<a href="#revive_pharmacist">仙人</a>と同じ) を持つ。
 </pre>
 <ol>
 <li>固定されているタイプ (例：<a href="#eclipse_cat">蝕仙狸</a>) を除き、誤爆率も同時に上がる。<br>
 例：<a href="#poison_cat">猫又</a>：蘇生率 25% (誤爆率 5%) → 25 * 1.3 = 33% (誤爆率 6%)</li>
-<li>一度蘇生すると自己蘇生能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
 <li>自己蘇生能力を失っても蘇生率向上能力は失わない。</li>
-<li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、自己蘇生能力は無効。</li>
-<li><a href="sub_role.php#lovers">恋人</a>になったら自己蘇生能力は無効。</li>
-<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、自己蘇生能力は無効。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -2493,7 +2497,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="wizard">魔法使い (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
 <pre>
-魔法使い系の基本種。
+魔法使い系の<a href="mania.php#basic_mania">基本種</a>。
 魔法の効果は、<a href="#mage">占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#guard">狩人</a>・<a href="#assassin">暗殺者</a>のいずれか。
 </pre>
 <h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
@@ -2730,7 +2734,7 @@ MVP の賞品としてプレゼントしたものです。
 
 <h3 id="doll">上海人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β10～]</h3>
 <pre>
-上海人形系の基本種で、他の国で言う「奴隷」。
+上海人形系の<a href="mania.php#basic_mania">基本種</a>で、他の国で言う「奴隷」。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2803,14 +2807,9 @@ MVP の賞品としてプレゼントしたものです。
 <h3 id="revive_doll">西蔵人形 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効</h4>
 <pre>
-人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する人形。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する (自己蘇生) 人形。
+自己蘇生能力の仕様は<a href="#revive_pharmacist">仙人</a>と同じ。
 </pre>
-<ol>
-<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-<li>恋人になったら蘇生能力は無効。</li>
-<li>人狼の襲撃以外で死亡した場合 (例：暗殺)、蘇生能力は無効。</li>
-<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
-</ol>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
@@ -2923,7 +2922,7 @@ MVP の賞品としてプレゼントしたものです。
 <h3 id="escaper">逃亡者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
 <h4>[耐性] 人狼襲撃：特殊 / 罠：有効 / 暗殺：無効 / 遺言：不可</h4>
 <pre>
-逃亡者系の基本種。逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は死亡する。
+逃亡者系の<a href="mania.php#basic_mania">基本種</a>。逃亡先が<a href="wolf.php#wolf_group">人狼</a>だった場合は死亡する。
 </pre>
 <h4>関連役職</h4>
 <pre>

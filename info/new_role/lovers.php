@@ -46,7 +46,7 @@ OutputRolePageHeader('恋人陣営');
 
 <h3 id="cupid">キューピッド (占い結果：村人 / 霊能結果：村人) [Ver. 1.2.0～]</h3>
 <pre>
-恋人陣営の基本種。
+恋人陣営の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -152,14 +152,9 @@ OutputRolePageHeader('恋人陣営');
 <h4>[耐性] 人狼襲撃：死亡 + 蘇生 (1回限定) / 蘇生：不可 / 憑依：無効 / 封印：有効</h4>
 <pre>
 恋人に<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊なキューピッド。
-人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する。
+人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する (自己蘇生)。
+自己蘇生能力の仕様は<a href="human.php#revive_pharmacist">仙人</a>と同じ。
 </pre>
-<ol>
-<li>一度蘇生すると能力を失う (<a href="sub_role.php#lost_ability">能力喪失</a>)。</li>
-<li>恋人になったら無効。</li>
-<li>人狼の襲撃以外で死亡した場合は無効 (例：暗殺)。</li>
-<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。</li>
-</ol>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
@@ -203,7 +198,7 @@ OutputRolePageHeader('恋人陣営');
 
 <h3 id="angel">天使 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β8～]</h3>
 <pre>
-天使系の基本種。矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。
+天使系の<a href="mania.php#basic_mania">基本種</a>。矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

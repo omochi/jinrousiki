@@ -431,13 +431,13 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
-  <td><a href="fox.php#silver_fox">銀狐</a></td>
-  <td>Ver. 1.4.0 β22～</td>
+  <td><a href="fox.php#immolate_fox">野狐禅</a></td>
+  <td>Ver. 1.5.0 β16～</td>
 </tr>
 <tr>
   <td><a href="fox.php#child_fox_group">子狐系</a></td>
-  <td><a href="fox.php#sex_fox">雛狐</a></td>
-  <td></td>
+  <td><a href="fox.php#critical_fox">寿羊狐</a></td>
+  <td>Ver. 1.5.0 β16～</td>
 </tr>
 <tr>
   <td><a href="lovers.php#cupid_group">キューピッド系</a></td>

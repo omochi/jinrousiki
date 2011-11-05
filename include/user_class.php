@@ -289,7 +289,7 @@ class User{
   //子狐系判定
   function IsChildFox($vote = false){
     $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
-    if(! $vote) array_push($stack, 'miasma_fox', 'howl_fox');
+    if(! $vote) array_push($stack, 'monk_fox', 'miasma_fox', 'howl_fox', 'critical_fox');
     return $this->IsRole($stack);
   }
 

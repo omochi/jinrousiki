@@ -77,9 +77,7 @@ function SendQuery($query, $commit = false){
 }
 
 //コミット処理
-function SendCommit(){
-  return mysql_query('COMMIT');
-}
+function SendCommit(){ return mysql_query('COMMIT'); }
 
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
@@ -186,9 +184,7 @@ function LockTable($type = NULL){
 }
 
 //テーブルロック解除
-function UnlockTable(){
-  return SendQuery('UNLOCK TABLES');
-}
+function UnlockTable(){ return SendQuery('UNLOCK TABLES'); }
 
 //部屋削除
 function DeleteRoom($room_no){
@@ -518,7 +514,6 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
 //ゲームオプションの画像タグを作成する (最大人数用)
 function GenerateMaxUserImage($number){
   global $ROOM_CONF, $ROOM_IMG;
-
   return in_array($number, $ROOM_CONF->max_user_list) && $ROOM_IMG->Exists("max{$number}") ?
     $ROOM_IMG->Generate("max{$number}", "最大{$number}人") : "(最大{$number}人)";
 }
@@ -541,9 +536,7 @@ EOF;
 }
 
 //共通 HTML ヘッダ出力
-function OutputHTMLHeader($title, $css = 'action'){
-  echo GenerateHTMLHeader($title, $css);
-}
+function OutputHTMLHeader($title, $css = 'action'){ echo GenerateHTMLHeader($title, $css); }
 
 //結果ページ HTML ヘッダ出力
 function OutputActionResultHeader($title, $url = ''){

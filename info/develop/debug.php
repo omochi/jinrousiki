@@ -105,6 +105,31 @@ foreach($filter_list as $filter){
 $USERS->Kill($user->user_no, 'CURSED');
 </pre>
 
+<h3>include/role/dummy_chiroptera.php % 24行目付近 (2011/11/06 (Sun) 04:20)</h3>
+<h4>[before]</h4>
+<pre>
+  <span>$this->filter->OutputAction();</span>
+  //仮想恋人を表示 (憑依追跡 / 恋人・悲恋持ちなら処理委託)
+  if(! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
+  $lovers = array();
+  foreach($target as $id) $lovers[] = $USERS->GetHandleName($USERS->ById($id)->uname, true);
+  OutputPartner($lovers, 'partner_header', 'lovers_footer');
+}
+</pre>
+<h4>[after]</h4>
+<pre>
+  //仮想恋人を表示 (憑依追跡 / 恋人・悲恋持ちなら処理委託)
+  if(! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
+  $lovers = array();
+  foreach($target as $id) $lovers[] = $USERS->GetHandleName($USERS->ById($id)->uname, true);
+  OutputPartner($lovers, 'partner_header', 'lovers_footer');
+}
+<span>
+function OutputAction(){ $this->filter->OutputAction(); }
+
+function IsVote(){ global $ROOM; return $ROOM->date == 1; }</span>
+</pre>
+
 <h2 id="ver150b14">Ver. 1.5.0 β14</h2>
 <h3>include/role/resurrect_mania.php % 14行目付近 (2011/10/24 (Mon) 22:06)</h3>
 <pre>

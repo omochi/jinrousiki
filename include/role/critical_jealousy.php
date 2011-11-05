@@ -10,8 +10,6 @@ class Role_critical_jealousy extends Role_jealousy{
 
   function VoteAction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
     foreach($stack as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
       $user = $USERS->ByUname($uname);

@@ -6,6 +6,7 @@ class Talk{
   public $type;
   public $sentence;
   public $font_type;
+
   function __construct($list = NULL){
     if(is_array($list)){
       foreach($list as $key => $data) $this->$key = $data;
@@ -14,6 +15,7 @@ class Talk{
     $this->ParseSentence();
   }
 
+  //シーン解析
   function ParseLocation($location = NULL){
     if(! is_null($location)) $this->location = $location; //初期化処理
 
@@ -22,7 +24,8 @@ class Talk{
     $this->type  = $type;
   }
 
-  function ParseSentence($sentence = NULL){
+  //データ解析
+  protected function ParseSentence($sentence = NULL){
     global $GAME_CONF, $MESSAGE;
 
     is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence; //初期化処理

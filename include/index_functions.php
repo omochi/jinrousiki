@@ -37,9 +37,7 @@ class MenuLinkBuilder extends MenuLinkConfig{
   }
 
   //フッタ追加
-  private function AddFooter(){
-    $this->str .= "</ul>\n";
-  }
+  private function AddFooter(){ $this->str .= "</ul>\n"; }
 }
 
 //-- 関数定義 --//
@@ -60,7 +58,7 @@ function OutputBBSInfo(){
 
   if($BBS_CONF->disable) return;
   if(! $BBS_CONF->CheckConnection($BBS_CONF->raw_url)){
-    $str = $BBS_CONF->host . ": Connection timed out ({$BBS_CONF->time} seconds)";
+    $str = $BBS_CONF->host . ": Connection timed out ({$BBS_CONF->time} seconds)\n";
     echo $BBS_CONF->GenerateBBS($str);
     return;
   }

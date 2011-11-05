@@ -15,12 +15,12 @@ class Role_possessed_wolf extends Role_wolf{
 
   function IsMindReadPossessed($user){ return $this->GetTalkFlag('wolf'); }
 
-  function WolfKill($user, &$list){
+  function WolfKill($user){
     if($user->IsDummyBoy() || $user->IsCamp('fox') || $user->IsPossessedLimited()){ //スキップ判定
-      parent::WolfKill($user, $list);
+      parent::WolfKill($user);
       return;
     }
-    $list[$this->GetWolfVoter()->uname] = $user->uname;
+    $this->AddStack($user->uname, 'possessed', $this->GetWolfVoter()->uname);
     $user->dead_flag = true;
     //憑依リセット判定
     if($user->IsRole('anti_voodoo')) $this->GetWolfVoter()->possessed_reset = true;

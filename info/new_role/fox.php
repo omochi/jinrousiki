@@ -90,7 +90,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="fox">妖狐 (占い結果：村人(呪殺) / 霊能結果：村人)</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-妖狐陣営の基本種。
+妖狐陣営の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
 
 <h3 id="white_fox">白狐 (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
@@ -491,8 +491,10 @@ OutputRolePageHeader('妖狐陣営');
 <a href="#sex_fox">雛狐</a>
 <a href="#stargazer_fox">星狐</a>
 <a href="#jammer_fox">月狐</a>
+<a href="#monk_fox">蛻庵</a>
 <a href="#miasma_fox">蟲狐</a>
 <a href="#howl_fox">化狐</a>
+<a href="#critical_fox">寿羊狐</a>
 </p>
 
 <h3 id="child_fox_rule">基本ルール</h3>
@@ -504,7 +506,7 @@ OutputRolePageHeader('妖狐陣営');
 <h3 id="child_fox">子狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 α3-7～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 月兎：有効 / 呪い：有効</h4>
 <pre>
-子狐系の基本種。占い能力を持つ。
+子狐系の<a href="mania.php#basic_mania">基本種</a>。占い能力を持つ。
 判定法則は<a href="human.php#mage">占い師</a>と同じで、呪殺はできないが呪返しは受ける。
 </pre>
 <h5>Ver. 1.4.0 α17～</h5>
@@ -563,6 +565,19 @@ OutputRolePageHeader('妖狐陣営');
 妖狐の最大の弱点である占いを妨害できるので、子狐系に於いては<a href="mania.php#soul_mania">上位種</a>となります。
 </pre>
 
+<h3 id="monk_fox">蛻庵 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.5.0 β16～]</h3>
+<h4>[霊能能力] 処刑者情報：有り / 火車：有効</h4>
+<pre>
+<a href="human.php#necromancer">霊能者</a>相当 (成功率 70%) の能力を持つ子狐。
+霊能の発動に失敗した場合、結果表示は<a href="wolf.php#corpse_courier_mad">火車</a>の能力発動時と同じになる。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#necromancer">霊能者</a>の子狐バージョンです。
+安国寺のきつね小僧がモチーフで、「ぜいあん」と読みます。
+この役職でメイン役職の総数が既存のものと合わせてちょうど 300 になりました。
+</pre>
+
 <h3 id="miasma_fox">蟲狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 熱病 / 処刑：熱病</h4>
 <pre>
@@ -605,5 +620,20 @@ OutputRolePageHeader('妖狐陣営');
 <a href="wolf.php#howl">人狼の遠吠え</a>から推測できる情報にノイズを入れる存在です。
 <a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/740" target="_top">新役職考案スレ(740)</a> が原型です。
 人狼の人数や<a href="wolf.php#silver_wolf">銀狼</a>の存在を誤認する可能性が出てくる事に注意しましょう。
+</pre>
+
+<h3 id="critical_fox">寿羊狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.5.0 β16～]</h3>
+<pre>
+妖狐陣営勝利に加えて、<a href="#fox_group">妖狐系</a>の全滅が勝利条件の子狐。
+<a href="#partner">仲間表示</a>に<a href="#fox_group">妖狐系</a>が表示されない (他の妖狐陣営からの表示は通常通り)。
+処刑投票先が<a href="#fox_group">妖狐系</a>なら<a href="sub_role.php#critical_luck">痛恨</a>を付加する (<a href="wolf.php#critical_mad">釣瓶落とし</a>の仕様が適用される)。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+妲己の妖狐伝承がモチーフです。寿羊は「じゅよう」と読みます。
 </pre>
 </body></html>

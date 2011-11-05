@@ -1007,9 +1007,7 @@ function AggregateVoteDay(){
 
     $role_flag   = new StdClass();
     $wizard_flag = new StdClass();
-    $stack = array('', 'soul_', 'psycho_', 'embalm_', 'emissary_', 'dummy_');
-    foreach($stack as $header){ //対象役職を初期化
-      $role = $header . 'necromancer';
+    foreach($ROLES->necromancer_list as $role){ //対象役職を初期化
       $role_flag->$role   = false;
       $wizard_flag->$role = false;
     }
@@ -1034,8 +1032,7 @@ function AggregateVoteDay(){
       }
     }
 
-    foreach($stack as $header){
-      $role = $header . 'necromancer';
+    foreach($ROLES->necromancer_list as $role){
       if($role_flag->$role || $wizard_flag->$role){
 	$str = $ROLES->LoadMain(new User($role))->Necromancer($vote_target, $stolen_flag);
 	if(is_null($str)) continue;
@@ -1447,7 +1444,7 @@ function AggregateVoteNight($skip = false){
     }
 
     //-- 襲撃処理 --//
-    $wolf_filter->WolfKill($wolf_target, $ROLES->stack->possessed);
+    $wolf_filter->WolfKill($wolf_target);
     $wolf_target->wolf_eat    = true;
     $wolf_target->wolf_killed = true;
 

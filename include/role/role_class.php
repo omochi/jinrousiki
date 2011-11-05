@@ -92,7 +92,7 @@ class RoleManager{
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
     'thunder_brownie', 'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad',
-    'miasma_mad', 'critical_mad', 'follow_mad', 'sweet_cupid', 'snow_cupid', 'quiz',
+    'miasma_mad', 'critical_mad', 'follow_mad', 'critical_fox', 'sweet_cupid', 'snow_cupid', 'quiz',
     'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide',
     'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
@@ -116,7 +116,12 @@ class RoleManager{
   public $vote_action_list = array(
     'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
     'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
-    'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid');
+    'critical_fox', 'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid');
+
+  //霊能
+  public $necromancer_list = array(
+    'necromancer', 'soul_necromancer', 'psycho_necromancer', 'embalm_necromancer',
+    'emissary_necromancer', 'dummy_necromancer', 'monk_fox');
 
   //得票カウンター
   public $voted_reaction_list = array('trap_common', 'jealousy');

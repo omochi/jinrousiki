@@ -124,7 +124,7 @@ class Role_wolf extends Role{
   function WolfEatAction($user){}
 
   //人狼襲撃死亡処理
-  function WolfKill($user, $list){
+  function WolfKill($user){
     global $USERS;
     $USERS->Kill($user->user_no, 'WOLF_KILLED');
   }

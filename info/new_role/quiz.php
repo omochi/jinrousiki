@@ -31,9 +31,10 @@ OutputRolePageHeader('出題者陣営');
 毒吊りで巻き込まれる対象になりません。
 例えば、出題者・<a href="human.php#poison">埋毒者</a>・<a href="wolf.php#poison_wolf">毒狼</a>の編成で毒能力者を吊った場合は確実に出題者が生き残ります。
 </pre>
+<h4>処刑者決定法則</h4>
 <ol>
-<li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php#decide_group">決定者系</a>の後</li>
-<li>複数の出題者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する</li>
+<li><a href="../spec.php#vote_day">判定</a>は<a href="sub_role.php#decide_group">決定者系</a>の後。</li>
+<li>複数の出題者が最多得票者に投票していた場合は、投票先が一致している場合のみ発動する。</li>
 </ol>
 <h5>Ver. 1.4.0 RC2～</h5>
 <pre>
