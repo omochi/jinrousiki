@@ -1,7 +1,7 @@
 <?php
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
+  global $GAME_CONF, $ROOM, $ROLES, $USERS, $SELF;
 
   if($say == '') return false; //リロード時なら処理スキップ
   if($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
@@ -20,8 +20,7 @@ function ConvertSay(&$say){
     foreach($ROLES->Load('say_convert') as $filter){
       if($filter->ConvertSay()) break 2;
     }
-  }
-  while(false);
+  }while(false);
 
   foreach($virtual->GetPartner('bad_status', true) as $id => $date){ //妖精の処理
     if($date != $ROOM->date) continue;

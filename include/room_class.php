@@ -50,7 +50,7 @@ class Room{
 
     $option_role = $RQ_ARGS->IsVirtualRoom() ? $RQ_ARGS->TestItems->test_room['option_role'] :
       FetchResult($this->GetQueryHeader('room', 'option_role'));
-    $this->option_role = new OptionManager($option_role);
+    $this->option_role = new OptionParser($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
   }
 
@@ -191,8 +191,8 @@ class Room{
 
   //ゲームオプションの展開処理
   function ParseOption($join = false){
-    $this->game_option = new OptionManager($this->game_option);
-    $this->option_role = new OptionManager($this->option_role);
+    $this->game_option = new OptionParser($this->game_option);
+    $this->option_role = new OptionParser($this->option_role);
     $this->option_list = $join ?
       array_merge(array_keys($this->game_option->options),
 		  array_keys($this->option_role->options)) :

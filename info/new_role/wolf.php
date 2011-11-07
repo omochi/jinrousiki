@@ -850,6 +850,10 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 <pre>
 <a href="#miasma_mad">土蜘蛛</a>の能力無効
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方ウミガメ人狼のプレイヤーさんがモデルの、人狼系最終兵器です。
@@ -926,7 +930,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#howl_fox">化狐</a>・<a href="ability.php#partner_silver">仲間情報妨害能力者</a>
+<a href="fox.php#howl_fox">化狐</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#partner_silver">仲間情報妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -997,7 +1001,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#fanatic_mad">狂信者</a>
+<a href="#fanatic_mad">狂信者</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1394,11 +1398,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#immolate_fox">野狐禅</a>
+<a href="fox.php#immolate_fox">野狐禅</a>・<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 「人狼に襲撃される」ことが勝利条件の特殊役職は他国に実在します。
-それを元に狂人系の<a href="mania.php#dummy_mania">劣化種</a>としてデザインしました。
+それを元に狂人系の劣化種としてデザインしました。
 </pre>
 </body></html>

@@ -443,7 +443,7 @@ EOF;
   $result = 'win';
   $class  = NULL;
   $user   = $id > 0 ? $USERS->ByID($id) : $SELF;
-  if($user->user_no < 1) return;
+  if($user->user_no < 1) return $str;
   $camp   = $user->GetCamp(true); //所属陣営を取得
 
   switch($victory){

@@ -1062,7 +1062,7 @@ Ver. 1.5.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">再投票発生時に非村人に投票していた場合は吊る事ができる村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
+  <td class="ability">再投票発生時に非村人に投票していた場合は処刑できる村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.4.0 β9</td>
 </tr>
 <tr>

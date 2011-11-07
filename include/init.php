@@ -162,11 +162,12 @@ class InitializeConfig{
       $path = $this->path->module . '/' . $name;
       break;
 
+    case 'option_class':
+    case 'role_class':
     case 'chatengine':
     case 'feedengine':
     case 'paparazzi':
     case 'paparazzi_class':
-    case 'role_class':
       $path = $this->path->include . '/' . @array_shift(explode('_', $name));
       break;
 

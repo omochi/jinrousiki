@@ -186,7 +186,7 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -201,11 +201,11 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>の吸血鬼バージョンです。
-潜伏するのが難しいので<a href="mania.php#dummy_mania">劣化種</a>扱いとなります。
+潜伏するのが難しいので劣化種扱いとなります。
 </pre>
 </body></html>

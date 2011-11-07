@@ -210,7 +210,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#succubus_yaksa">荼枳尼天</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="#succubus_yaksa">荼枳尼天</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -300,7 +300,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#hariti_yaksa">鬼子母神</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="#hariti_yaksa">鬼子母神</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -382,7 +382,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#incubus_ogre">般若</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="#incubus_ogre">般若</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -442,7 +442,7 @@ OutputRolePageHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#dowser_priest">探知師</a>
+<a href="human.php#dowser_priest">探知師</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

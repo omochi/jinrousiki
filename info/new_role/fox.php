@@ -381,7 +381,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -474,7 +474,7 @@ OutputRolePageHeader('妖狐陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#immolate_mad">殉教者</a>
+<a href="wolf.php#immolate_mad">殉教者</a>・<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -557,7 +557,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#phantom">占い妨害能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#phantom">占い妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -630,7 +630,7 @@ OutputRolePageHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

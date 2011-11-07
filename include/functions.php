@@ -469,7 +469,7 @@ EOF;
 function GenerateGameOptionImage($game_option, $option_role = ''){
   global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;
 
-  $stack = new OptionManager($game_option . ' ' . $option_role);
+  $stack = new OptionParser($game_option . ' ' . $option_role);
   //PrintData($stack); //テスト用
   $str = '';
   $display_order_list = array(

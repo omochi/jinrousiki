@@ -456,7 +456,7 @@ class RoleMessageList{
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   public $mimic_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#物真似師#です。#魔法#で二日目以降に_占い_、三日目以降に^霊能^相当の結果を同時に得ることが出来ますが成功率は半々です。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#物真似師#です。#魔法#で二日目以降に_占い_、三日目以降に^霊能^相当の結果を同時に得ることができますが、成功率は半々です。",
     'type' => 'wizard', 'delimiter' => array('_' => 'mage', '^' => 'necromancer'));
 
   public $spiritism_wizard = array(
@@ -516,7 +516,7 @@ class RoleMessageList{
     'type' => 'doll', 'delimiter' => array('_' => 'wolf'));
 
   public $escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#逃亡者#です。臆病なあなたは夜の間、誰かの家の近くに隠れて夜をすごすことになります。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで_人狼_から逃げ切るのです！",
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#逃亡者#です。死亡したら敗北となり、夜の#逃亡#先で_人狼_に遭遇したら死んでしまいます。\n　逃亡生活で培った直感と判断力を武器として、安住の地を取り戻すまで_人狼_から逃げ切るのです！",
     'type' => 'human', 'delimiter' => array('#' => 'escaper', '_' => 'wolf'));
 
   public $psycho_escaper = array(
@@ -528,7 +528,7 @@ class RoleMessageList{
     'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
 
   public $succubus_escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#水妖姫#です。夜の#逃亡#先が^男性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　あなたは男性に愛され、結ばれることで魂を得ます。最後まで生き残り魂を得ましょう。",
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#水妖姫#です。夜の#逃亡#先が^男性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　あなたは^男性^に愛され、結ばれることで魂を得ます。最後まで生き残り魂を得ましょう。",
     'type' => 'escaper', 'delimiter' => array('^' => 'sex_male'));
 
   public $doom_escaper = array(
@@ -2142,8 +2142,8 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 #$builder->Output('holy_priest');
 #$builder->Output('thunder_brownie');
-#$builder->Output('mimic_wizard');
+$builder->Output('mimic_wizard');
 #$builder->Output('sharp_wolf');
-$builder->Output('critical_fox', array(0.5, 0, 1, 1));
+#$builder->Output('critical_fox', array(0.5, 0, 1, 1));
 #$builder->Output('hariti_yaksa'); //
-
+#$builder->Output('fire_mania');

@@ -24,6 +24,16 @@ class RoleManager{
     'critical_luck', 'enemy', 'supported', 'infected', 'psycho_infected', 'possessed_target',
     'possessed', 'bad_status', 'protected','changed_therian');
 
+  //初期配役抑制役職
+  public $disable_cast_list = array(
+    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'day_voter',
+    'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
+    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
+    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
+    'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
+    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_therian',
+    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
+
   //発言表示
   public $talk_list = array('blinder', 'earplug', 'speaker');
 
@@ -41,7 +51,7 @@ class RoleManager{
 
   //閲覧判定
   public $mind_read_list = array(
-    'leader_common', 'whisper_scanner', 'howl_scanner', 'telepath_scanner','minstrel_cupid',
+    'leader_common', 'whisper_scanner', 'howl_scanner', 'telepath_scanner', 'minstrel_cupid',
     'mind_read', 'mind_friend', 'mind_open');
 
   //閲覧判定 (能動型)

@@ -105,7 +105,7 @@ OutputRolePageHeader('村人陣営');
 <h3 id="executor">執行者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
 <h4>[役職表示] <a href="#human">村人</a></h4>
 <pre>
-再投票発生時に非村人 (村人陣営以外 + 恋人) に投票していた場合は吊る事ができる村人。
+再投票発生時に非村人 (村人陣営以外 + 恋人) に投票していた場合は処刑できる村人。
 本人表記は「<a href="#human">村人</a>」。
 </pre>
 <h4>処刑者決定法則</h4>
@@ -127,7 +127,7 @@ OutputRolePageHeader('村人陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#decide">処刑者決定能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#decide">処刑者決定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -193,7 +193,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#mage_wolf">特殊占い判定能力者</a>・<a href="ability.php#talk_convert">発言変換能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#mage_wolf">特殊占い判定能力者</a>・<a href="ability.php#talk_convert">発言変換能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -278,7 +278,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h3 id="soul_mage">魂の占い師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
 <h4>[占い能力] 呪殺：無し / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
-占った人の役職が分かる<a href="mania.php#soul_mania">上位</a>占い師。
+占った人の役職が分かる上位占い師。
 <a href="fox.php#fox_group">妖狐</a>を占っても呪殺できないが、占い妨害や呪返しは受けるので注意。
 </pre>
 <h5>Ver. 1.4.0 α15～</h5>
@@ -287,7 +287,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#pierrot_wizard">道化師</a>・<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="#soul_wizard">八卦見</a>・<a href="#awake_wizard">比丘尼</a>・<a href="#pierrot_wizard">道化師</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -411,7 +411,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -451,7 +451,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#mimic_wizard">物真似師</a>・<a href="#spiritism_wizard">交霊術師</a>・<a href="fox#monk_fox">蛻庵</a>
+<a href="#mimic_wizard">物真似師</a>・<a href="#spiritism_wizard">交霊術師</a>・<a href="fox.php#monk_fox">蛻庵</a>
 </pre>
 
 <h3 id="soul_necromancer">雲外鏡 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -461,7 +461,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#spiritism_wizard">交霊術師</a>・<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="#spiritism_wizard">交霊術師</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -524,7 +524,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
-狩人の<a href="#guard_limit">護衛制限</a>対象。
+[耐性] 「<a href="#guard_limit">護衛制限</a>：有り」追加
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -611,7 +611,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -719,6 +719,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="#poison_cat">猫又</a>相当の<a href="ability.php#revive">蘇生能力</a>を持った上位巫女。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の東風谷 早苗がモチーフで、「かぜはふり」と読みます。
@@ -736,11 +740,11 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="sub_role.php#impatience">短気</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="sub_role.php#impatience">短気</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-巫女の<a href="mania.php#dummy_mania">劣化種</a>として、夢系ではなく蝕系を採用してみました。
+巫女の劣化種として、夢系ではなく蝕系を採用してみました。
 決定能力を失った<a href="sub_role.php#impatience">短気</a>に相当し、死ぬことで自己証明にはなります。
 </pre>
 
@@ -877,6 +881,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 5 日目以降、<a href="#priest">司祭</a>・<a href="#bishop_priest">司教</a>両方の結果が分かる上位司祭。
 奇数日に<a href="#bishop_priest">司教</a>・偶数日に<a href="#priest">司祭</a>の結果が表示される。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 発動は遅いですが、情報量が多いので多数の役職を一人で兼ねることができます。
@@ -1011,7 +1019,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1162,7 +1170,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>
+<a href="#soul_wizard">八卦見</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1283,7 +1291,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1405,7 +1413,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1464,7 +1472,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1509,7 +1517,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#incubate_poison">潜毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="duelist.php#poison_avenger">山わろ</a>
+<a href="#incubate_poison">潜毒者</a>・<a href="chiroptera.php#poison_chiroptera">毒蝙蝠</a>・<a href="ogre.php#poison_ogre">榊鬼</a>・<a href="duelist.php#poison_avenger">山わろ</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1594,7 +1602,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1675,13 +1683,13 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#revive_fox">仙狐</a>
+<a href="fox.php#revive_fox">仙狐</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 仙狸 (センリ) とは、中国の猫の妖怪です (「狸」は山猫の意)。
 東方陰陽鉄人狼のプレイヤーさんのコメントを参考に同じ猫の妖怪である
-<a href="#poison_cat">猫又</a>の<a href="mania.php#soul_mania">上位種</a>として実装してみました。
+<a href="#poison_cat">猫又</a>の上位種として実装してみました。
 </pre>
 
 <h3 id="sacrifice_cat">猫神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
@@ -1725,11 +1733,15 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h5>Ver. 1.4.0 β18～</h5>
 <pre>
-誤爆率を 15% から 20% に変更
+誤爆率変更：15% → 20%
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#poison_cat">猫又</a>の<a href="mania.php#dummy_mania">劣化種</a>として、夢系ではなく蝕系を採用してみました。
+<a href="#poison_cat">猫又</a>の劣化種として、夢系ではなく蝕系を採用してみました。
 <a href="#revive_rule">ルール</a>通りなら 40% の 1/5 は 8% なので、誤爆率が 2.5倍になっています。
 実質、誤爆率だけが上がった<a href="#poison_cat">猫又</a>相当になります。
 </pre>
@@ -1857,7 +1869,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#philosophy_wizard">賢者</a>
+<a href="#philosophy_wizard">賢者</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1876,6 +1888,10 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <li><a href="#pharmacist">薬師</a>・<a href="#cure_pharmacist">河童</a>が解毒していた場合でも毒死する。</li>
 <li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、投票先が処刑されても有効。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#escaper">逃亡者</a>の薬師バージョンで、ケンタウロスがモチーフです。
@@ -2017,7 +2033,7 @@ Bの蘇生処理はキャンセル
 <h3 id="soul_assassin">辻斬り (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β13～]</h3>
 <h4>[耐性] 罠：有効 / 護衛制限：有り / 遺言：不可</h4>
 <pre>
-暗殺した人の役職を知る事ができる、<a href="mania.php#soul_mania">上位</a>暗殺者。
+暗殺した人の役職を知る事ができる、上位暗殺者。
 <a href="ability.php#last_words_limit">遺言</a>を残せない。
 
 人狼が襲撃して発動する可能性のある<a href="ability.php#poison">毒能力者</a>を暗殺した場合は、本人は毒死する。
@@ -2027,7 +2043,7 @@ Bの蘇生処理はキャンセル
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#sharp_wolf">鋭狼</a>・<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="#soul_wizard">八卦見</a>・<a href="wolf.php#sharp_wolf">鋭狼</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2038,8 +2054,12 @@ Bの蘇生処理はキャンセル
 <h4>[役職表示] <a href="#assassin">暗殺者</a></h4>
 <h4>[耐性] 罠：有効 / 護衛制限：有り</h4>
 <pre>
-30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する<a href="mania.php#dummy_mania">劣化</a>暗殺者。本人表記は「<a href="#assassin">暗殺者</a>」。
+30% の確率で<a href="#assassin_spec">暗殺反射</a>が発生する劣化暗殺者。本人表記は「<a href="#assassin">暗殺者</a>」。
 <a href="#psycho_mage">精神鑑定士</a>の鑑定結果は「正常」。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2076,6 +2096,10 @@ Bの蘇生処理はキャンセル
 <h5>Ver. 1.4.0 α23～</h5>
 <pre>
 <a href="wolf.php#howl">人狼の遠吠え</a>が一切見えない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2145,7 +2169,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#reporter">ブン屋</a>・<a href="ability.php#stargazer">投票能力鑑定能力者</a>
+<a href="#reporter">ブン屋</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#stargazer">投票能力鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2293,7 +2317,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="miasma_jealousy">蛇姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
-処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する<a href="mania.php#soul_mania">上位</a>橋姫。
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する上位橋姫。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <ol>
@@ -2303,7 +2327,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="#philosophy_wizard">賢者</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2313,7 +2337,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="critical_jealousy">人魚 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
-処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう<a href="mania.php#dummy_mania">劣化</a>橋姫。
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら自分に<a href="sub_role.php#critical_luck">痛恨</a>を付加してしまう劣化橋姫。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <ol>
@@ -2323,7 +2347,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2354,7 +2378,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2467,6 +2491,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 能力が発動した場合は、専用のメッセージが表示される。
 身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 翠星石鯖＠やる夫人狼で実施された記念村の設定を役職にしてみました。
@@ -2516,7 +2544,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="soul_wizard">八卦見 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α1～]</h3>
 <h4>[耐性] 護衛制限：有り</h4>
 <pre>
-魔法使いの<a href="mania.php#soul_mania">上位</a>種。
+魔法使いの上位種。
 魔法の効果は、<a href="#soul_mage">魂の占い師</a>・<a href="#psycho_mage">精神鑑定士</a>・<a href="#sex_mage">ひよこ鑑定士</a>・<a href="#stargazer_mage">占星術師</a>・
 <a href="#poison_guard">騎士</a>・<a href="#doom_assassin">死神</a>・<a href="#soul_assassin">辻斬り</a>・<a href="chiroptera.php#light_fairy">光妖精</a>のいずれか。
 <a href="#poison_guard">騎士</a>能力が発動しても毒を持つわけではないので注意。
@@ -2528,6 +2556,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
 <pre>
 <a href="#sex_mage">ひよこ鑑定士</a>固定。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2674,6 +2706,10 @@ MVP の賞品としてプレゼントしたものです。
 <h4>天候：<a href="../weather.php#weather_debilitate_wizard">木枯らし</a></h4>
 <pre>
 <a href="chiroptera.php#dark_fairy">闇妖精</a>固定。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2842,7 +2878,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#partner_silver">仲間情報妨害能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#partner_silver">仲間情報妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2872,7 +2908,7 @@ MVP の賞品としてプレゼントしたものです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2987,7 +3023,7 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#doom">死の宣告能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -3000,6 +3036,10 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 <pre>
 逃亡先が<a href="wolf.php#wolf_group">人狼系</a>・<a href="#assassin_group">暗殺者系</a>・<a href="ogre.php">鬼陣営</a>だった場合は死亡する、特殊な逃亡者。
 逃亡先が村人陣営 (<a href="sub_role.php#lovers">恋人</a>も含む) なら、翌日発動の<a href="sub_role.php#day_voter">一日村長</a>を付加する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

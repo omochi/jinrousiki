@@ -231,103 +231,8 @@ function GetRoleList($user_count){
     $role_list = $CAST_CONF->SetQuiz($user_count);
   }
   else{ //通常村
-    //探偵 (共有 or 村人 → 探偵)
-    if($ROOM->IsOption('detective')){
-      if($role_list['common'] > 0){
-	$role_list['common']--;
-	$role_list['detective_common']++;
-      }
-      elseif($role_list['human'] > 0){
-	$role_list['human']--;
-	$role_list['detective_common']++;
-      }
-    }
-
-    //埋毒者 (村人2 → 埋毒者1・人狼1)
-    if($ROOM->IsOption('poison') && $user_count >= $CAST_CONF->poison && $role_list['human'] > 1){
-      $role_list['human'] -= 2;
-      $role_list['poison']++;
-      $role_list['wolf']++;
-    }
-
-    //暗殺者 (村人2 → 暗殺者1・人狼1)
-    if($ROOM->IsOption('assassin') && $user_count >= $CAST_CONF->assassin &&
-       $role_list['human'] > 1){
-      $role_list['human'] -= 2;
-      $role_list['assassin']++;
-      $role_list['wolf']++;
-    }
-
-    //人狼 (村人 → 人狼)
-    if($ROOM->IsOption('wolf') && $user_count >= $CAST_CONF->wolf &&
-       $role_list['human'] > 0){
-      $role_list['human']--;
-      $role_list['wolf']++;
-    }
-
-    //白狼 (人狼 → 白狼)
-    if($ROOM->IsOption('boss_wolf') && $user_count >= $CAST_CONF->boss_wolf &&
-       $role_list['wolf'] > 0){
-      $role_list['wolf']--;
-      $role_list['boss_wolf']++;
-    }
-
-    //毒狼 (人狼 → 毒狼、村人 → 薬師)
-    if($ROOM->IsOption('poison_wolf') && $user_count >= $CAST_CONF->poison_wolf &&
-       $role_list['wolf'] > 0 && $role_list['human'] > 0){
-      $role_list['wolf']--;
-      $role_list['poison_wolf']++;
-      $role_list['human']--;
-      $role_list['pharmacist']++;
-    }
-
-    //憑狼 (人狼 → 憑狼)
-    if($ROOM->IsOption('possessed_wolf') && $user_count >= $CAST_CONF->possessed_wolf &&
-       $role_list['wolf'] > 0){
-      $role_list['wolf']--;
-      $role_list['possessed_wolf']++;
-    }
-
-    //天狼 (人狼 → 天狼)
-    if($ROOM->IsOption('sirius_wolf') && $user_count >= $CAST_CONF->sirius_wolf &&
-       $role_list['wolf'] > 0){
-      $role_list['wolf']--;
-      $role_list['sirius_wolf']++;
-    }
-
-    //妖狐 (村人 → 妖狐)
-    if($ROOM->IsOption('fox') && $user_count >= $CAST_CONF->fox && $role_list['human'] > 0){
-      $role_list['human']--;
-      $role_list['fox']++;
-    }
-
-    //子狐 (妖狐 → 子狐)
-    if($ROOM->IsOption('child_fox') && $user_count >= $CAST_CONF->child_fox &&
-       $role_list['fox'] > 0){
-      $role_list['fox']--;
-      $role_list['child_fox']++;
-    }
-
-    //キューピッド (村人 → キューピッド)
-    if($ROOM->IsOption('cupid') && ! $ROOM->IsOption('full_cupid') &&
-       $user_count >= $CAST_CONF->cupid && $role_list['human'] > 0){
-      $role_list['human']--;
-      $role_list['cupid']++;
-    }
-
-    //巫女 (村人2 → 巫女1・女神1)
-    if($ROOM->IsOption('medium') && $user_count >= $CAST_CONF->medium && $role_list['human'] > 1){
-      $role_list['human'] -= 2;
-      $role_list['medium']++;
-      $role_list['mind_cupid']++;
-    }
-
-    //神話マニア (村人 → 神話マニア)
-    if($ROOM->IsOption('mania') && ! $ROOM->IsOption('full_mania') &&
-       $user_count >= $CAST_CONF->mania && $role_list['human'] > 0){
-      $role_list['human']--;
-      $role_list['mania']++;
-    }
+    $filter = new OptionManager();
+    $filter->SetRole($role_list, $user_count);
   }
   $CAST_CONF->ReplaceRole($role_list); //村人置換村
 
@@ -448,7 +353,7 @@ function GenerateRoleNameList($role_count_list, $css = false){
 
 //ゲーム開始投票集計処理
 function AggregateVoteGameStart($force_start = false){
-  global $CAST_CONF, $MESSAGE, $ROLE_DATA, $ROOM, $USERS;
+  global $CAST_CONF, $MESSAGE, $ROLE_DATA, $ROOM, $ROLES, $USERS;
 
   $user_count = $USERS->GetUserCount(); //ユーザ総数を取得
   if($ROOM->test_mode){
@@ -613,91 +518,32 @@ function AggregateVoteGameStart($force_start = false){
   //兼任となる役割の設定
   $rand_keys = array_keys($fix_role_list); //人数分の ID リストを取得
   shuffle($rand_keys); //シャッフルしてランダムキーに変換
-  $rand_keys_index = 0;
-  $sub_role_count_list = array();
-  $roled_list = array(); //配役済み番号
-  //割り振り対象外役職のリスト
-  $delete_role_list = array(
-    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'day_voter',
-    'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
-    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
-    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
-    'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
-    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_therian',
-    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
+  //PrintData($rand_keys);
+  //オプションでつけるサブ役職
+  $ROLES->stack->user_count = $user_count;
+  $ROLES->stack->uname_list = $fix_uname_list;
+  $filter = new OptionManager();
+  $filter->stack->delete = $ROLES->disable_cast_list; //割り振り対象外役職のリスト
 
   //サブ役職テスト用
   /*
   $stack = array('wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp');
-  $delete_role_list = array_merge($delete_role_list, $stack);
-  for($i = 0; $i < $user_count; $i++){
-    if(($role = array_shift($stack)) == '') break;
-    if($fix_uname_list[$i] == 'dummy_boy'){
-      $stack[] = $role;
-      continue;
+  foreach($stack as $role){
+    while(count($rand_keys) > 0){
+      $id = array_shift($rand_keys);
+      if($fix_uname_list[$id] == 'dummy_boy'){
+	$rand_keys[] = $id;
+	if(count($rand_keys) == 1) break;
+	continue;
+      }
+      $filter->stack->delete[] = $role;
+      $fix_role_list[$id] .= ' ' . $role;
+      break;
     }
-    $fix_role_list[$i] .= ' ' . $role;
-    $roled_list[] = $i;
   }
   */
 
-  foreach(array('decide', 'authority') as $role){ //オプションでつけるサブ役職
-    if(! $ROOM->IsOption($role)) continue;
-    $delete_role_list[] = $role;
-    if($user_count >= $CAST_CONF->$role){
-      $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' ' . $role;
-    }
-  }
-
-  if($ROOM->IsOption('liar')){ //狼少年村
-    $role = 'liar';
-    $delete_role_list[] = $role;
-    for($i = 0; $i < $user_count; $i++){ //全員に一定確率で狼少年をつける
-      if(mt_rand(1, 100) <= 70) $fix_role_list[$i] .= ' ' . $role;
-    }
-  }
-
-  if($ROOM->IsOption('gentleman')){ //紳士・淑女村
-    $stack = array('male' => 'gentleman', 'female' => 'lady');
-    $delete_role_list = array_merge($delete_role_list, $stack);
-    for($i = 0; $i < $user_count; $i++){ //全員に性別に応じた紳士か淑女をつける
-      $fix_role_list[$i] .= ' ' . $stack[$USERS->ByUname($fix_uname_list[$i])->sex];
-    }
-  }
-
-  foreach(array('deep_sleep', 'blinder', 'mind_open') as $role){ //静寂村・宵闇村・白夜村
-    if($ROOM->IsOption($role)){
-      $delete_role_list[] = $role;
-      for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
-    }
-  }
-
-  if($ROOM->IsOption('critical')){ //急所村
-    array_push($delete_role_list, 'critical_voter', 'critical_luck');
-    $role = ' critical_voter critical_luck';
-    for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= $role;
-  }
-
-  if($ROOM->IsOption('sudden_death')){ //虚弱体質村
-    $stack = array_diff($ROLE_DATA->sub_role_group_list['sudden-death'],
-			array('febris', 'frostbite', 'death_warrant', 'panelist'));
-    //PrintData($stack, 'SuddenDeath');
-    $delete_role_list = array_merge($delete_role_list, $stack);
-    for($i = 0; $i < $user_count; $i++){ //全員に小心者系を何かつける
-      $role = GetRandom($stack);
-      $fix_role_list[$i] .= ' ' . $role;
-      if($role == 'impatience') $stack = array_diff($stack, array('impatience')); //短気は一人だけ
-    }
-  }
-  elseif($ROOM->IsOption('perverseness')){ //天邪鬼村
-    $role = 'perverseness';
-    $delete_role_list[] = $role;
-    for($i = 0; $i < $user_count; $i++) $fix_role_list[$i] .= ' ' . $role;
-  }
-
-  //ババ抜き村
-  if($ROOM->IsOption('joker')) $fix_role_list[$rand_keys[$rand_keys_index++]] .= ' joker[2]';
-
+  $filter->Cast($fix_role_list, $rand_keys);
   if($is_chaos && ! $ROOM->IsOption('no_sub_role')){
     //ランダムなサブ役職のコードリストを作成
     if($ROOM->IsOption('sub_role_limit_easy'))
@@ -708,24 +554,14 @@ function AggregateVoteGameStart($force_start = false){
        $sub_role_keys = $CAST_CONF->chaos_sub_role_limit_hard_list;
     else
       $sub_role_keys = array_keys($ROLE_DATA->sub_role_list);
-    //PrintData($delete_role_list, 'DeleteRoleList');
+    //PrintData($filter->stack->delete, 'DeleteRoleList');
 
-    $sub_role_keys = array_diff($sub_role_keys, $delete_role_list);
+    $sub_role_keys = array_diff($sub_role_keys, $filter->stack->delete);
     //PrintData($sub_role_keys, 'SubRoleList');
     shuffle($sub_role_keys);
-    foreach($sub_role_keys as $key){
-      if($rand_keys_index > $user_count - 1) break; //$rand_keys_index は 0 から
-      $i = $rand_keys[$rand_keys_index++];
-      if(! in_array($i, $roled_list)) $fix_role_list[$i] .= ' ' . $key;
-    }
+    foreach($rand_keys as $id) $fix_role_list[$id] .= ' ' . array_pop($sub_role_keys);
   }
 
-  if($is_quiz){ //クイズ村
-    $role = 'panelist';
-    for($i = 0; $i < $user_count; $i++){ //出題者以外に解答者をつける
-      if($fix_uname_list[$i] != 'dummy_boy') $fix_role_list[$i] .= ' ' . $role;
-    }
-  }
   /*
   if($ROOM->IsOption('festival')){ //お祭り村 (内容は管理人が自由にカスタムする)
     $role = 'nervy';

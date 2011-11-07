@@ -128,6 +128,10 @@ OutputRolePageHeader('恋人陣営');
 2日目夜以降、全ての<a href="sub_role.php#lovers">恋人</a>に一方的に声が届く上位キューピッド。
 相手には誰の声が聞こえているのか分かるが、仲間表示などには何も出ない。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#soul_mania">覚醒者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#whisper_scanner">囁騒霊</a>のキューピッドバージョンで<a href="#mind_cupid">女神</a>の逆アプローチです。
@@ -175,12 +179,12 @@ OutputRolePageHeader('恋人陣営');
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-寒戸の婆(さむとのばば) 伝承がモチーフです。
-恋人を死なせてしまう可能性がある<a href="mania.php#dummy_mania">劣化種</a>としてデザインしました。
+寒戸の婆(さむとのばば)伝承がモチーフです。
+恋人を死なせてしまう可能性がある劣化種としてデザインしました。
 </pre>
 
 
@@ -270,7 +274,7 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -311,10 +315,10 @@ OutputRolePageHeader('恋人陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-天使系の<a href="mania.php#dummy_mania">劣化種</a>として<a href="sub_role.php#celibacy">独身貴族</a>相当の能力を持たせてみました。
+天使系の劣化種として<a href="sub_role.php#celibacy">独身貴族</a>相当の能力を持たせてみました。
 </pre>
 </body></html>

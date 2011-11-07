@@ -106,7 +106,7 @@ OutputRolePageHeader('蝙蝠陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#mage_chiroptera">特殊占い判定能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#mage_chiroptera">特殊占い判定能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -174,7 +174,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -448,6 +448,10 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <li>昼の投票画面を見る事で能力発動を確認できる。</li>
 <li>対象に選んだ二人が両方生存している時のみ有効で、<br>対象が何らかの理由で昼に死亡した場合は即座に解除される。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 蒼星石テスト鯖＠やる夫人狼と裏世界鯖＠東方陰陽鉄人狼のとある村がモデルです。
@@ -473,7 +477,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#pierrot_wizard">道化師</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="human.php#pierrot_wizard">道化師</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

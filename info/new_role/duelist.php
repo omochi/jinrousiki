@@ -86,7 +86,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#authority">投票数変化能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -126,12 +126,12 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#authority">投票数変化能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 流石兄弟鯖＠やる夫人狼のオリジナル役職「ニート」を元にアレンジしました。
-自力で<a href="sub_role.php#rival">宿敵</a>を倒すのが非常に難しいという点において<a href="mania.php#dummy_mania">劣化種</a>ではありますが、
+自力で<a href="sub_role.php#rival">宿敵</a>を倒すのが非常に難しいという点において劣化種ではありますが、
 村も狼も積極的に排除する理由があまり無いため、案外生き残れるかもしれません。
 </pre>
 
@@ -226,7 +226,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -242,7 +242,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#talk_convert">発言変換能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#talk_convert">発言変換能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -304,7 +304,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#sacrifice">身代わり能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -330,7 +330,7 @@ OutputRolePageHeader('決闘者陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
