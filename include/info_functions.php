@@ -85,7 +85,9 @@ function OutputCastTable($min = 0, $max = NULL){
   foreach($CAST_CONF->role_list as $key => $value){
     if($key < $min) continue;
     $tag = "<td><strong>{$key}</strong></td>";
-    foreach($role_list as $role) $tag .= '<td>' . (int)$value[$role] . '</td>';
+    foreach($role_list as $role){
+      $tag .= '<td>' . (array_key_exists($role, $value) ? $value[$role] : 0) . '</td>';
+    }
     echo '<tr>' . $tag . '</tr>'."\n";
     if($key == $max) break;
     if($key % 20 == 0) echo $str;

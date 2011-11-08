@@ -44,6 +44,7 @@ if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0){ //自動更新
 //シーンに合わせた文字色と背景色 CSS をロード
 echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
 
+$on_load = '';
 if($ROOM->IsPlaying()){ //経過時間を取得
   if($ROOM->IsRealTime()){ //リアルタイム制
     list($start_time, $end_time) = GetRealPassTime($left_time, true);

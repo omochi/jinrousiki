@@ -6,7 +6,7 @@ $INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG');
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
 EncodePostData();
-if($_POST['command'] == 'CREATE_ROOM'){
+if(array_key_exists('command', $_POST) && $_POST['command'] == 'CREATE_ROOM'){
   $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
   CreateRoom();
 }
@@ -19,7 +19,7 @@ $DB_CONF->Disconnect(); //DB 接続解除
 //-- 関数 --//
 //村のメンテナンス処理
 function MaintenanceRoom(){
-  global $ROOM_CONF;
+  global $SERVER_CONF, $ROOM_CONF;
 
   if($SERVER_CONF->disable_maintenance) return; //スキップ判定
 
@@ -487,9 +487,9 @@ EOF;
 function GenerateRoomOption($option, $label = ''){
   global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  if($ROOM_CONF->$option === false) return NULL;
+  if(property_exists($ROOM_CONF, $option) && $ROOM_CONF->$option === false) return NULL;
 
-  $caption = $GAME_OPT_CAPT->$option;
+  $caption = property_exists($GAME_OPT_CAPT, $option) ? $GAME_OPT_CAPT->$option : NULL;
   switch($option){
   case 'room_name':
   case 'room_comment':
@@ -517,7 +517,9 @@ EOF;
   if($label != '') $label .= '_';
   $label .= $option;
   $str = $GAME_OPT_MESS->$option;
-  if(is_int($limit = $CAST_CONF->$option)) $str .= ' ('  . $limit . '人～)';
+  if(property_exists($CAST_CONF, $option) && is_int($limit = $CAST_CONF->$option)){
+    $str .= ' ('  . $limit . '人～)';
+  }
   $checked = $ROOM_CONF->{'default_'.$option} ? ' checked' : '';
 
   return <<<EOF
@@ -536,9 +538,9 @@ EOF;
 function GenerateTextForm($option){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  $type = 'text';
-  $size = $ROOM_CONF->{$option.'_input'};
-
+  $type   = 'text';
+  $size   = $ROOM_CONF->{$option.'_input'};
+  $footer = '';
   switch($option){
   case 'room_name':
     $footer = ' 村';
@@ -629,12 +631,15 @@ function OutputRoomOptionDummyBoy(){
 
   if(! $ROOM_CONF->dummy_boy) return NULL;
 
+  $checked_dummy_boy = '';
+  $checked_gm_login  = '';
+  $checked_nothing   = '';
   if($ROOM_CONF->default_dummy_boy)
     $checked_dummy_boy = ' id="dummy_boy" checked';
   elseif($ROOM_CONF->default_gm_login)
-    $checked_gm = ' id="dummy_boy" checked';
+    $checked_gm_login  = ' id="dummy_boy" checked';
   else
-    $checked_nothing = ' id="dummy_boy" checked';
+    $checked_nothing   = ' id="dummy_boy" checked';
 
   echo <<<EOF
 <tr><td colspan="2"><hr></td></tr>
@@ -661,6 +666,9 @@ function OutputRoomOptionOpenCast(){
 
   if(! $ROOM_CONF->not_open_cast) return NULL;
 
+  $checked_close = '';
+  $checked_auto  = '';
+  $checked_open  = '';
   switch($ROOM_CONF->default_not_open_cast){
   case 'full':
     $checked_close = ' id="not_open_cast" checked';
@@ -685,7 +693,7 @@ function OutputRoomOptionOpenCast(){
 <input type="radio" name="not_open_cast" value=""{$checked_open}>
 {$GAME_OPT_CAPT->no_close_cast}<br>
 
-<input type="radio" name="not_open_cast" value="not"{$checked_full}>
+<input type="radio" name="not_open_cast" value="not"{$checked_close}>
 {$GAME_OPT_CAPT->not_open_cast}<br>
 
 EOF;
@@ -709,6 +717,10 @@ function OutputRoomOptionChaos(){
 
   OutputRoomOption(array('topping', 'boost_rate'));
   if($ROOM_CONF->chaos_open_cast){
+    $checked_chaos_open_cast_full = '';
+    $checked_chaos_open_cast_camp = '';
+    $checked_chaos_open_cast_role = '';
+    $checked_chaos_open_cast_none = '';
     switch($ROOM_CONF->default_chaos_open_cast){
     case 'full':
       $checked_chaos_open_cast_full = ' id="chaos_open_cast" checked';
@@ -767,6 +779,11 @@ EOF;
   }
 
   if($ROOM_CONF->sub_role_limit){
+    $checked_no_sub_role           = '';
+    $checked_sub_role_limit_none   = '';
+    $checked_sub_role_limit_easy   = '';
+    $checked_sub_role_limit_normal = '';
+    $checked_sub_role_limit_hard   = '';
     switch($ROOM_CONF->default_sub_role_limit){
     case 'no':
       if($ROOM_CONF->no_sub_role)

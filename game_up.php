@@ -8,11 +8,11 @@ OutputHTMLHeader($SERVER_CONF->title . '[発言]', 'game_up');
 <body onLoad="set_focus(); reload_game();">
 <a id="game_top"></a>
 <?php
-$url_argv = '?room_no=' . (int)$_GET['room_no'] . '&auto_reload=' . (int)$_GET['auto_reload'];
-if($_GET['play_sound']  == 'on') $url_argv .= '&play_sound=on';
-if($_GET['dead_mode']   == 'on') $url_argv .= '&dead_mode=on';
-if($_GET['heaven_mode'] == 'on') $url_argv .= '&heaven_mode=on';
-if($_GET['list_down']   == 'on') $url_argv .= '&list_down=on';
+$url_argv = '?room_no=' . @(int)$_GET['room_no'] . '&auto_reload=' . @(int)$_GET['auto_reload'];
+if(@$_GET['play_sound']  == 'on') $url_argv .= '&play_sound=on';
+if(@$_GET['dead_mode']   == 'on') $url_argv .= '&dead_mode=on';
+if(@$_GET['heaven_mode'] == 'on') $url_argv .= '&heaven_mode=on';
+if(@$_GET['list_down']   == 'on') $url_argv .= '&list_down=on';
 $header = '<form method="POST" action="game_play.php' . $url_argv . '" target="bottom" ';
 
 //ページ読み込み時に自動でリロードするダミー送信フォーム
@@ -21,7 +21,7 @@ echo $header . 'name="reload_game"></form>'."\n";
 //送信用フォーム
 $submit = 'set_focus();';
 //霊話モードの時は発言用フレームでリロード、書き込みしたときに真ん中のフレームもリロードする
-if($_GET['heaven_mode'] == 'on') $submit .= 'reload_middle_frame();';
+if(@$_GET['heaven_mode'] == 'on') $submit .= 'reload_middle_frame();';
 echo $header . 'class="input-say" name="send" onSubmit="' . $submit . '">'."\n";
 ?>
 <table><tr>

@@ -1,4 +1,5 @@
 <?php
+//error_reporting(E_ALL);
 //-- 定数を定義 --//
 /*
   ServerConfig->site_root を使って CSS や画像等をロードする仕様にすると
@@ -176,6 +177,7 @@ class InitializeConfig{
       break;
     }
 
+    #echo $path . '/' . $name . '.php';
     require_once($path . '/' . $name . '.php');
     $this->loaded->file[] = $name;
     return true;

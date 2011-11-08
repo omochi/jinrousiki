@@ -75,6 +75,12 @@ if($RQ_ARGS->day_night == 'heaven'){
   OutputHeavenTalkLog(); //霊界会話ログ
 }
 else{
+  if($RQ_ARGS->user_no > 0 && $SELF->IsDummyBoy() && $SELF->handle_name == '身代わり君'){
+    $INIT_CONF->LoadFile('game_play_functions');
+    $SELF = $USERS->ByID($RQ_ARGS->user_no);
+    $SELF->live = 'live';
+    OutputAbility();
+  }
   OutputTalkLog(); //会話ログ
   if($ROOM->IsPlaying()){ //プレイ中は投票結果・遺言・死者を表示
     OutputAbilityAction();

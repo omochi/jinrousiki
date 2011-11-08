@@ -1,7 +1,15 @@
 <?php
 //-- 引数解析の基底クラス --//
 class RequestBase{
-  function GetItems($items){
+  //データ展開
+  function ToArray(){
+    $stack = array();
+    foreach($this as $key => $value) $stack[$key] = $value;
+    return $stack;
+  }
+
+  //引数解析
+  protected function GetItems($items){
     $spec_list = func_get_args();
     $processor = array_shift($spec_list);
     $src_list  = @array('get' => $_GET, 'post' => $_POST, 'file' => $_FILES['file']);
@@ -25,42 +33,43 @@ class RequestBase{
     }
   }
 
-  function GetDefault($item, &$value){ return false; }
+  //初期値設定
+  protected function GetDefault($item, &$value){ return false; }
 
-  function Exists($arg){ return ! empty($arg); }
+  //存在判定
+  protected function Exists($arg){ return ! empty($arg); }
 
-  function IsOn($arg){ return $arg == 'on'; }
+  //有効判定
+  protected function IsOn($arg){ return $arg == 'on'; }
 
-  function SetPage($arg){
+  //村番号判定
+  protected function IsRoomNo($arg){
+    $room_no = intval($arg);
+    if($room_no < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
+    return $room_no;
+  }
+
+  //仮想村判定
+  function IsVirtualRoom(){
+    return isset($this->TestItems) && $this->TestItems->is_virtual_room;
+  }
+
+  //ページセット
+  protected function SetPage($arg){
     if($arg == 'all') return $arg;
     $int = intval($arg);
     return $int > 0 ? $int : 1;
   }
 
-  function ToArray(){
-    $stack = array();
-    foreach($this as $key => $value) $stack[$key] = $value;
-    return $stack;
-  }
-
-  function AttachTestParameters(){
+  //テスト用パラメータセット
+  protected function AttachTestParameters(){
     global $SERVER_CONF;
-    if($SERVER_CONF->debug_mode) $this->TestItems = new TestParams();
-  }
-
-  function IsVirtualRoom(){
-    return isset($this->TestItems) && $this->TestItems->is_virtual_room;
-  }
-
-  function IsRoomNo($arg){
-    $room_no = intval($arg);
-    if($room_no < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
-    return $room_no;
+    if($SERVER_CONF->debug_mode) $this->TestItems = new RequestTestParams();
   }
 }
 
 //-- テスト用パラメータ設定クラス --//
-class TestParams extends RequestBase{
+class RequestTestParams extends RequestBase{
   function __construct(){
     $this->GetItems(NULL, 'post.test_users', 'post.test_room', 'post.test_mode');
     $this->is_virtual_room = isset($this->test_users);
@@ -75,6 +84,7 @@ class RequestBaseGame extends RequestBase{
     $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
     $min = min($GAME_CONF->auto_reload_list);
     if($this->auto_reload != 0 && $this->auto_reload < $min) $this->auto_reload = $min;
+    $this->add_role = NULL;
   }
 }
 
@@ -83,7 +93,6 @@ class RequestBaseGamePlay extends RequestBaseGame{
   function __construct(){
     parent::__construct();
     $this->GetItems('IsOn', 'get.list_down', 'get.play_sound');
-    $this->add_role = NULL;
   }
 }
 
@@ -94,14 +103,15 @@ class RequestBaseIcon extends RequestBase{
     $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance',
 		    'post.category', 'post.author', 'post.color');
     $this->GetItems('intval', 'post.icon_no');
-    $this->GetItems('Exists', 'search');
+    $this->GetItems('Exists', 'post.search');
   }
 
-  function GetIconData(){
-    $this->GetItems('SetPage', 'page');
-    $this->GetItems('EscapeStrings', 'appearance', 'category', 'author', 'keyword');
-    $this->GetItems('intval', 'sort_by_name');
-    $this->GetItems('Exists', 'search');
+  protected function GetIconData(){
+    $this->GetItems('SetPage', 'get.page');
+    $this->GetItems('EscapeStrings', 'post.appearance', 'post.category', 'post.author',
+		    'post.keyword');
+    $this->GetItems('IsOn', 'post.sort_by_name');
+    $this->GetItems('Exists', 'post.search');
   }
 }
 
@@ -112,7 +122,7 @@ class RequestLogin extends RequestBase{
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('IsOn', 'post.login_manually');
     $this->GetItems('ConvertTrip', 'post.uname');
-    $this->GetItems('EscapeStrings', 'post.password');
+    $this->GetItems('EscapeStrings', 'password');
   }
 }
 
@@ -154,7 +164,7 @@ class RequestGamePlay extends RequestBaseGamePlay{
 class RequestGameLog extends RequestBase{
   function __construct(){
     $this->GetItems('IsRoomNo', 'get.room_no');
-    $this->GetItems('intval', 'get.date');
+    $this->GetItems('intval', 'get.date', 'get.user_no');
     $this->GetItems(NULL, 'get.day_night');
     if($this->IsInvalidScene()) OutputActionResult('引数エラー', '無効な引数です');
   }
@@ -227,6 +237,7 @@ class RequestIconView extends RequestBaseIcon{
     $this->GetIconData();
     $this->GetItems('intval', 'get.icon_no');
     $this->GetItems(NULL, 'get.category', 'get.appearance', 'get.author');
+    $this->room_no = NULL;
   }
 }
 

@@ -194,6 +194,8 @@ class IconConfigBase{
   public $wolf   = 'wolf.gif';  //狼
   public $width  = 45; //表示サイズ(幅)
   public $height = 45; //表示サイズ(高さ)
+  public $title;
+  public $page_type;
 
   function __construct(){
     $this->path = JINRO_ROOT . '/' . $this->path;

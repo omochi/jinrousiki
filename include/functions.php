@@ -490,7 +490,9 @@ function GenerateGameOptionImage($game_option, $option_role = ''){
     if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;
     $footer = '';
     $sentence = $GAME_OPT_MESS->$option;
-    if(is_int($CAST_CONF->$option)) $sentence .= '(' . $CAST_CONF->$option . '人～)';
+    if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
+      $sentence .= '(' . $CAST_CONF->$option . '人～)';
+    }
     switch($option){
     case 'real_time':
       $day   = $stack->options[$option][0];
