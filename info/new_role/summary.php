@@ -1683,7 +1683,7 @@ Ver. 1.5.0
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">自分に処刑投票してきた恋人に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+  <td class="ability">自分に処刑投票してきた恋人に一定確率 (40%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
   </td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
@@ -2828,6 +2828,36 @@ Ver. 1.5.0
   <td>村人<br>(呪殺無し)</td>
   <td>子狐</td>
   <td class="ability">妖狐陣営勝利に加えて、<a href="fox.php#fox_group">妖狐系</a>の全滅が勝利条件の子狐。<br><a href="fox.php#partner">仲間表示</a>に<a href="fox.php#fox_group">妖狐系</a>が表示されず、処刑投票先が<a href="fox.php#fox_group">妖狐系</a>なら<a href="sub_role.php#critical_luck">痛恨</a>を付加する。</td>
+  <td>Ver. 1.5.0 β16</td>
+</tr>
+<tr>
+  <td><a href="human.php#harvest_brownie">豊穣神</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_voter">会心</a>を付加し、
+処刑された場合は投票者全員に一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。
+</td>
+  <td>Ver. 1.5.0 β16</td>
+</tr>
+<tr>
+  <td><a href="human.php#maple_brownie">紅葉神</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#brownie_group">座敷童子系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_luck">痛恨</a>を付加し、
+処刑された場合は投票者全員にさらに一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。</td>
+  <td>Ver. 1.5.0 β16</td>
+</tr>
+<tr>
+  <td><a href="human.php#dummy_scanner">幻視者</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#mind_scanner_group">さとり系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#mind_scanner">さとり</a>に心を読まれていると思い込んでいる村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.5.0 β16</td>
 </tr>
 </table>

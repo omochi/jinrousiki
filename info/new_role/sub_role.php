@@ -194,7 +194,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>
+<a href="human.php#harvest_brownie">豊穣神</a>・<a href="human.php#maple_brownie">紅葉神</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -565,7 +565,7 @@ OutputRolePageHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="#critical_luck">痛恨</a>
+<a href="human.php#harvest_brownie">豊穣神</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="#critical_luck">痛恨</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -723,7 +723,7 @@ RPG でよくある「クリティカルヒット」を再現してみました�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="human.php#critical_jealousy">人魚</a>・<a href="human.php#maple_brownie">紅葉神</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1056,7 +1056,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#mind_scanner">さとり</a>
+<a href="human.php#mind_scanner">さとり</a>・<a href="human.php#dummy_scanner">幻視者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

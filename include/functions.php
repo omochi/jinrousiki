@@ -544,12 +544,10 @@ function OutputHTMLHeader($title, $css = 'action'){ echo GenerateHTMLHeader($tit
 function OutputActionResultHeader($title, $url = ''){
   global $ROOM;
 
-  OutputHTMLHeader($title);
-  if($url != '') echo '<meta http-equiv="Refresh" content="1;URL=' . $url . '">'."\n";
-  if($ROOM->day_night != ''){
-    echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
-  }
-  echo '</head><body>'."\n";
+  $str = GenerateHTMLHeader($title);
+  if($url != '') $str .= '<meta http-equiv="Refresh" content="1;URL='.$url.'">'."\n";
+  if(is_object($ROOM)) $str .= $ROOM->GenerateCSS();
+  echo $str . '</head><body>'."\n";
 }
 
 //結果ページ出力

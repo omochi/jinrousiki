@@ -391,8 +391,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
-  <td><a href="human.php#mind_scanner">さとり</a></td>
-  <td></td>
+  <td><a href="human.php#dummy_scanner">幻視者</a></td>
+  <td>Ver. 1.5.0 β16～</td>
 </tr>
 <tr>
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
@@ -401,8 +401,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
-  <td><a href="human.php#brownie">座敷童子</a></td>
-  <td>Ver. 1.4.0 β16～</td>
+  <td><a href="human.php#maple_brownie">紅葉神</a></td>
+  <td>Ver. 1.5.0 β16～</td>
 </tr>
 <tr>
   <td><a href="human.php#wizard_group">魔法使い系</a></td>
@@ -612,6 +612,10 @@ CO するべきかどうかは、コピーした役職次第です。
 <h3 id="wirepuller_mania">黒衣 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
 <pre>
 コピー先に<a href="sub_role.php#wirepuller_luck">入道</a>を付加する特殊な鵺。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

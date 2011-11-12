@@ -196,12 +196,24 @@ OutputRolePageHeader('吸血鬼陣営');
 </pre>
 
 <h3 id="scarlet_vampire">屍鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.5.0 β6～]</h3>
+<h4>[耐性] 人狼襲撃：死亡 + 蘇生 (40%) / 蘇生：不可 / 憑依：無効</h4>
 <pre>
 <a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な吸血鬼。
+人狼に襲撃されて死亡した場合、一定確率 (40%) で蘇生する。
+</pre>
+<ol>
+<li>何度蘇生しても蘇生率は一定。</li>
+<li><a href="sub_role.php#lovers">恋人</a>になったら蘇生能力は無効。</li>
+<li>人狼の襲撃以外で死亡した場合 (例：<a href="ability.php#assassin">暗殺</a>)、蘇生能力は無効。</li>
+<li>身代わり君か、襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合、蘇生能力は無効。</li>
+</ol>
+<h5>Ver. 1.5.0 β16～</h5>
+<pre>
+自己蘇生能力取得
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -64,7 +64,7 @@ OutputRolePageHeader('村人陣営');
 </pre>
 <h4>同一表示役職</h4>
 <pre>
-<a href="#saint">聖女</a>・<a href="#executor">執行者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#chain_poison">連毒者</a>
+<a href="#saint">聖女</a>・<a href="#executor">執行者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>・<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#chain_poison">連毒者</a>・<a href="#dummy_scanner">幻視者</a>
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2078,6 +2078,7 @@ Bの蘇生処理はキャンセル
 <a href="#whisper_scanner">囁騒霊</a>
 <a href="#howl_scanner">吠騒霊</a>
 <a href="#telepath_scanner">念騒霊</a>
+<a href="#dummy_scanner">幻視者</a>
 </p>
 
 <h3 id="mind_scanner">さとり (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>
@@ -2225,6 +2226,21 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="wolf.php#wise_wolf">賢狼</a>は感知できません。
 </pre>
 
+<h3 id="dummy_scanner">幻視者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β16～]</h3>
+<h4>[役職表示] <a href="#human">村人</a></h4>
+<h4>[耐性] 獏襲撃：死亡 / 精神鑑定：嘘つき</h4>
+<pre>
+<a href="#mind_scanner">さとり</a>に心を読まれていると思い込んでいる村人。本人表記は「<a href="#human">村人</a>」。
+2 日目以降、<a href="sub_role.php#mind_read">サトラレ</a>が表示されるが誰にもさとられていない。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#dummy">夢能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「夢<a href="sub_role.php#mind_read">サトラレ</a>」がテーマの劣化種です。
+</pre>
 
 <h2 id="jealousy_group">橋姫系</h2>
 <p>
@@ -2271,9 +2287,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="divorce_jealousy">縁切地蔵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19～]</h3>
 <pre>
-自分に処刑投票してきた<a href="sub_role.php#lovers">恋人</a>に一定確率 (30%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+自分に処刑投票してきた<a href="sub_role.php#lovers">恋人</a>に一定確率 (40%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
 <a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が処刑された場合は無効。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
+</pre>
+<h5>Ver. 1.5.0 β16～</h5>
+<pre>
+発動率変更：30% → 40%
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -2359,11 +2379,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h2 id="brownie_group">座敷童子系</h2>
 <p>
 <a href="#brownie">座敷童子</a>
-<a href="#echo_brownie">山彦</a>
-<a href="#sun_brownie">八咫烏</a>
-<a href="#revive_brownie">蛇神</a>
 <a href="#thunder_brownie">雷公</a>
+<a href="#echo_brownie">山彦</a>
+<a href="#revive_brownie">蛇神</a>
+<a href="#harvest_brownie">豊穣神</a>
+<a href="#maple_brownie">紅葉神</a>
 <a href="#cursed_brownie">祟神</a>
+<a href="#sun_brownie">八咫烏</a>
 <a href="#history_brownie">白澤</a>
 </p>
 
@@ -2372,18 +2394,36 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 役職「<a href="#human">村人</a>」の処刑投票数を +1 する、座敷童子系の<a href="mania.php#basic_mania">基本種</a>。
 生きている間のみ有効で、複数生存していても効果は重複しない。
-処刑されたら投票した人からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
+処刑されたら投票者からランダムで一人に<a href="sub_role.php#febris">熱病</a>を付加する。
 <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外となり、
 対象者が誰もいなかった場合は不発となる。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 「居る間は恩恵をもたらすが去ると災厄が訪れる」と言われる伝説がモチーフです。
 村人表示役職の正体を絞り込むことができます。
+</pre>
+
+<h3 id="thunder_brownie">雷公 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β15～]</h3>
+<pre>
+再投票の最多得票者になったら、誰か一人をショック死させる座敷童子の亜種。
+</pre>
+<ol>
+<li>ショック死の内容は<a href="../weather.php#weather_thunderbolt">青天の霹靂</a>相当。</li>
+<li>条件を満たした雷公が複数いても効果の発動は一度だけ。</li>
+<li><a href="../weather.php#weather_thunderbolt">青天の霹靂</a>と同時に条件を満たした場合は<a href="../weather.php#weather_thunderbolt">青天の霹靂</a>のみ発動する。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の蘇我 屠自古がモチーフです。
 </pre>
 
 <h3 id="echo_brownie">山彦 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β13～]</h3>
@@ -2401,23 +2441,6 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 東方 Project の幽谷 響子がモチーフです。
 「反響」をどう表現するか考えていくつか試作した末にこの実装となりました。
-</pre>
-
-<h3 id="sun_brownie">八咫烏 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
-<h4>[耐性] 処刑：特殊 / 人狼襲撃：特殊</h4>
-<pre>
-座敷童子の亜種で、人狼に襲撃されたら次の日を全員<a href="sub_role.php#mind_open">公開者</a> (白夜) に、
-処刑されたら次の日の昼を全員<a href="sub_role.php#blinder">目隠し</a> (宵闇) にする。
-身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="chiroptera.php#light_fairy">光妖精</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-太陽の化身と言われる伝承がモチーフで、「やたがらす」と読みます。
-一部の例外を除いて死亡することで自己証明が可能になります。
 </pre>
 
 <h3 id="revive_brownie">蛇神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
@@ -2442,29 +2465,57 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <a href="ability.php#revive">蘇生能力者</a>が出現しなかったケースを考慮して<a href="#revive_pharmacist">仙人</a>相当の能力も持たせてあります。
 </pre>
 
-<h3 id="thunder_brownie">雷公 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β15～]</h3>
+<h3 id="harvest_brownie">豊穣神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β16～]</h3>
+<h4>[耐性] 処刑：<a href="sub_role.php#frostbite">凍傷</a> (30%)</h4>
 <pre>
-再投票の最多得票者になったら、誰か一人をショック死させる座敷童子の亜種。
+座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_voter">会心</a>を付加し、
+処刑された場合は投票者全員に一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。
 </pre>
 <ol>
-<li>ショック死の内容は<a href="../weather.php#weather_thunderbolt">青天の霹靂</a>相当。</li>
-<li>条件を満たした雷公が複数いても効果の発動は一度だけ。</li>
-<li><a href="../weather.php#weather_thunderbolt">青天の霹靂</a>と同時に条件を満たした場合は<a href="../weather.php#weather_thunderbolt">青天の霹靂</a>のみ発動する。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後。</li>
+<li><a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定する。</li>
+<li>自分が処刑されたら<a href="sub_role.php#critical_voter">会心</a>付加は無効。</li>
+<li><a href="sub_role.php#frostbite">凍傷</a>付加判定は個々で行う (例：5人投票してきたら5回、個々で判定)。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-東方 Project の蘇我 屠自古がモチーフです。
+東方 Project の秋 穣子がモチーフです。
+処刑されない程度に共有者などを中心に票を集めることで村人陣営の
+処刑投票能力を底上げすることができますが、騙りだった場合は
+一定の投票数が敵対勢力に封印されていることになります。
+</pre>
+
+<h3 id="maple_brownie">紅葉神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β16～]</h3>
+<h4>[耐性] 処刑：<a href="sub_role.php#frostbite">凍傷</a> (30%)</h4>
+<pre>
+座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_luck">痛恨</a>を付加し、
+処刑された場合は投票者全員にさらに一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後。</li>
+<li><a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定する。</li>
+<li>自分が処刑対象になった場合でも<a href="sub_role.php#critical_luck">痛恨</a>付加は有効。</li>
+<li><a href="sub_role.php#frostbite">凍傷</a>付加判定は<a href="sub_role.php#critical_luck">痛恨</a>付加判定とは別に行う。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+東方 Project の秋 静葉がモチーフです。
+騙り易い上に、処刑すると村人陣営に大きなリスクを与えるので扱いに困る存在です。
 </pre>
 
 <h3 id="cursed_brownie">祟神 (占い結果：村人(呪返し) / 霊能結果：村人) [Ver. 1.4.0 β20～]</h3>
 <h4>[耐性] 人狼襲撃：死亡 + 死の宣告 (2日後) / 暗殺：反射 (30%) / 占い：呪返し / 陰陽師：死亡</h4>
 <pre>
 呪いと<a href="#assassin_spec">暗殺反射</a> (30%) を持った座敷童子の亜種。
-処刑投票してきた人 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
+処刑投票者 (30%) と、自分を襲撃した人狼に<a href="sub_role.php#death_warrant">死の宣告</a> (2日後) を付加する。
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑対象が決定された後で、付加率は 30%。</li>
@@ -2482,6 +2533,23 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 「うかつに触れると災厄が訪れる」と言われる伝承がモチーフです。
 対抗役職なしに触れる (占う・投票する) と酷い目に遭うことになります。
+</pre>
+
+<h3 id="sun_brownie">八咫烏 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>
+<h4>[耐性] 処刑：特殊 / 人狼襲撃：特殊</h4>
+<pre>
+座敷童子の亜種で、人狼に襲撃されたら次の日を全員<a href="sub_role.php#mind_open">公開者</a> (白夜) に、
+処刑されたら次の日の昼を全員<a href="sub_role.php#blinder">目隠し</a> (宵闇) にする。
+身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="chiroptera.php#light_fairy">光妖精</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+太陽の化身と言われる伝承がモチーフで、「やたがらす」と読みます。
+一部の例外を除いて死亡することで自己証明が可能になります。
 </pre>
 
 <h3 id="history_brownie">白澤 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β16～]</h3>

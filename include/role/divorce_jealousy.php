@@ -10,16 +10,11 @@ class Role_divorce_jealousy extends Role_jealousy{
 
   function VoteKillReaction(){
     global $USERS;
-
-    if(! is_array($stack = $this->GetStack())) return;
-    foreach($stack as $uname => $target_uname){
+    foreach(array_keys($this->GetStack()) as $uname){
       if($this->IsVoted($uname)) continue;
-
       foreach($this->GetVotedUname($uname) as $voted_uname){
 	$user = $USERS->ByRealUname($voted_uname);
-	if($user->IsLive(true) && $user->IsLovers() && mt_rand(1, 10) > 7){
-	  $user->AddRole('passion');
-	}
+	if($user->IsLive(true) && $user->IsLovers() && mt_rand(0, 9) < 4) $user->AddRole('passion');
       }
     }
   }

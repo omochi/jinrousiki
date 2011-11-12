@@ -151,7 +151,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
 <pre>
-<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#miasma_jealousy">蛇姫</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)
+<a href="human.php#ghost_common">亡霊嬢</a>(<a href="sub_role.php#chicken">小心者</a>)・<a href="human.php#miasma_jealousy">蛇姫</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#brownie">座敷童子</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="human.php#harvest_brownie">豊穣神</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="human.php#maple_brownie">紅葉神</a>(<a href="sub_role.php#frostbite">凍傷</a>)
 <a href="wolf.php#miasma_mad">土蜘蛛</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="wolf.php#snow_trap_mad">雪女</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="fox.php#miasma_fox">蟲狐</a>(<a href="sub_role.php#febris">熱病</a>)・<a href="lovers.php#moon_cupid">かぐや姫</a>(<a href="sub_role.php#challenge_lovers">難題</a>)・<a href="lovers.php#snow_cupid">寒戸婆</a>(<a href="sub_role.php#frostbite">凍傷</a>)
 <a href="chiroptera.php#ice_fairy">氷妖精</a>(<a href="sub_role.php#frostbite">凍傷</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="#doom">死の宣告能力者</a>(<a href="sub_role.php#death_warrant">死の宣告</a>)
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>)・<a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)・<a href="human.php#pierrot_wizard">道化師</a>(<a href="chiroptera.php#ice_fairy">氷妖精</a>)
@@ -205,7 +205,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="revive_self">自己蘇生型</h3>
 <pre>
-<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="ogre.php#revive_ogre">茨木童子</a>・<a href="duelist.php#revive_avenger">夜刀神</a>・<a href="mania.php#resurrect_mania">僵尸</a>
+<a href="human.php#revive_priest">天人</a>・<a href="human.php#revive_pharmacist">仙人</a>・<a href="human.php#revive_brownie">蛇神</a>・<a href="human.php#revive_doll">西蔵人形</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="ogre.php#revive_ogre">茨木童子</a>・<a href="duelist.php#revive_avenger">夜刀神</a>・<a href="mania.php#resurrect_mania">僵尸</a>
 </pre>
 
 <h2 id="revive_limit">蘇生制限対象者</h2>
@@ -227,7 +227,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="authority_indirect">間接型</h3>
 <pre>
-<a href="human.php#brownie">座敷童子</a>(<a href="human.php#human">村人</a>)・<a href="human.php#divine_escaper">麒麟</a>(<a href="sub_role.php#day_voter">一日村長</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="mania.php#wirepuller_mania">黒衣</a>(<a href="sub_role.php#wirepuller_luck">入道</a>)
+<a href="human.php#brownie">座敷童子</a>(<a href="human.php#human">村人</a>)・<a href="human.php#harvest_brownie">豊穣神</a>(<a href="sub_role.php#critical_voter">会心</a>)・<a href="human.php#divine_escaper">麒麟</a>(<a href="sub_role.php#day_voter">一日村長</a>)・<a href="ogre.php#poison_ogre">榊鬼</a>(<a href="sub_role.php#panelist">解答者</a>)・<a href="mania.php#wirepuller_mania">黒衣</a>(<a href="sub_role.php#wirepuller_luck">入道</a>)
 </pre>
 
 <h2 id="stargazer">投票能力鑑定能力者</h2>
@@ -243,7 +243,8 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="luck_indirect">間接型</h3>
 <pre>
-<a href="human.php#critical_jealousy">人魚</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="wolf.php#critical_mad">釣瓶落とし</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="fox.php#critical_fox">寿羊狐</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="duelist.php#critical_avenger">狂骨</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="duelist.php#critical_patron">ひんな神</a>(<a href="sub_role.php#occupied_luck">ひんな持ち</a>)
+<a href="human.php#critical_jealousy">人魚</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="human.php#maple_brownie">紅葉神</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="wolf.php#critical_mad">釣瓶落とし</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="fox.php#critical_fox">寿羊狐</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="duelist.php#critical_avenger">狂骨</a>(<a href="sub_role.php#critical_luck">痛恨</a>)
+<a href="duelist.php#critical_patron">ひんな神</a>(<a href="sub_role.php#occupied_luck">ひんな持ち</a>)・<a href="mania.php#wirepuller_mania">黒衣</a>(<a href="sub_role.php#wirepuller_luck">入道</a>)
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="wolf.php#critical_mad">釣瓶落とし</a>)
 </pre>
 
@@ -331,7 +332,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="dummy">夢能力者</h2>
 <pre>
-<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_guard">夢守人</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
+<a href="human.php#dummy_mage">夢見人</a>・<a href="human.php#dummy_necromancer">夢枕人</a>・<a href="human.php#dummy_priest">夢司祭</a>・<a href="human.php#dummy_guard">夢守人</a>・<a href="human.php#dummy_common">夢共有者</a>・<a href="human.php#dummy_poison">夢毒者</a>・<a href="human.php#dummy_scanner">幻視者</a>・<a href="chiroptera.php#dummy_chiroptera">夢求愛者</a>・<a href="mania.php#dummy_mania">夢語部</a>
 </pre>
 
 <h2 id="necromancer">霊能 (特殊判定)</h2>

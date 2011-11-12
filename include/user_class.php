@@ -362,7 +362,7 @@ class User{
   //蘇生制限判定
   function IsReviveLimited(){
     return $this->IsRoleGroup('cat', 'revive') || $this->IsLovers() || $this->IsDrop() ||
-      $this->IsRole('detective_common', 'resurrect_mania') ||
+      $this->IsRole('detective_common', 'scarlet_vampire', 'resurrect_mania') ||
       (property_exists($this, 'possessed_reset') && $this->possessed_reset);
   }
 
@@ -408,9 +408,10 @@ class User{
   //憑依制限判定
   function IsPossessedLimited(){
     return $this->IsPossessedGroup() ||
-      $this->IsRole('detective_common', 'revive_priest', 'revive_pharmacist', 'revive_brownie',
-		    'revive_doll', 'revive_wolf', 'revive_mad', 'revive_cupid', 'revive_ogre',
-		    'revive_avenger', 'resurrect_mania');
+      $this->IsRole(
+        'detective_common', 'revive_priest', 'revive_pharmacist', 'revive_brownie', 'revive_doll',
+	'revive_wolf', 'revive_mad', 'revive_cupid', 'scarlet_vampire', 'revive_ogre',
+	'revive_avenger', 'resurrect_mania');
   }
 
   //呪返し判定

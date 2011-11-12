@@ -456,6 +456,12 @@ class Room{
     }
   }
 
+  //背景設定 CSS タグを生成
+  function GenerateCSS(){
+    if(empty($this->day_night)) return '';
+    return '<link rel="stylesheet" href="'.JINRO_CSS.'/game_'.$this->day_night.'.css">'."\n";
+  }
+
   //村のタイトルタグを生成
   function GenerateTitleTag(){
     return '<td class="room"><span>' . $this->name . '村</span>　[' . $this->id .

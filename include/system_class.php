@@ -32,7 +32,7 @@ class DatabaseConfigBase{
 
   //データベース名変更
   function ChangeName($id){
-    if(is_null($name = $this->name_list[$id - 1])) return;
+    if(is_null($name = @$this->name_list[$id - 1])) return;
     $this->name = $name;
   }
 
@@ -138,10 +138,10 @@ class CookieDataSet{
   public $user_count; //参加人数
 
   function __construct(){
-    $this->day_night  = $_COOKIE['day_night'];
-    $this->objection  = $_COOKIE['objection'];
-    $this->vote_times = (int)$_COOKIE['vote_times'];
-    $this->user_count = (int)$_COOKIE['user_count'];
+    $this->day_night  = @$_COOKIE['day_night'];
+    $this->objection  = @$_COOKIE['objection'];
+    $this->vote_times = @(int)$_COOKIE['vote_times'];
+    $this->user_count = @(int)$_COOKIE['user_count'];
   }
 }
 
@@ -455,6 +455,7 @@ class RoleData{
     'whisper_scanner'      => '囁騒霊',
     'howl_scanner'         => '吠騒霊',
     'telepath_scanner'     => '念騒霊',
+    'dummy_scanner'        => '幻視者',
     'jealousy'             => '橋姫',
     'divorce_jealousy'     => '縁切地蔵',
     'priest_jealousy'      => '恋司祭',
@@ -462,11 +463,13 @@ class RoleData{
     'miasma_jealousy'      => '蛇姫',
     'critical_jealousy'    => '人魚',
     'brownie'              => '座敷童子',
-    'echo_brownie'         => '山彦',
-    'sun_brownie'          => '八咫烏',
-    'revive_brownie'       => '蛇神',
     'thunder_brownie'      => '雷公',
+    'echo_brownie'         => '山彦',
+    'revive_brownie'       => '蛇神',
+    'harvest_brownie'      => '豊穣神',
+    'maple_brownie'        => '紅葉神',
     'cursed_brownie'       => '祟神',
+    'sun_brownie'          => '八咫烏',
     'history_brownie'      => '白澤',
     'wizard'               => '魔法使い',
     'soul_wizard'          => '八卦見',
@@ -868,6 +871,7 @@ class RoleData{
     'whisper_scanner'      => '囁騒',
     'howl_scanner'         => '吠騒',
     'telepath_scanner'     => '念騒',
+    'dummy_scanner'        => '幻視',
     'jealousy'             => '橋',
     'divorce_jealousy'     => '縁',
     'priest_jealousy'      => '恋司',
@@ -875,11 +879,13 @@ class RoleData{
     'miasma_jealousy'      => '蛇姫',
     'critical_jealousy'    => '魚',
     'brownie'              => '童',
-    'echo_brownie'         => '彦',
-    'sun_brownie'          => '烏',
-    'revive_brownie'       => '蛇',
     'thunder_brownie'      => '雷',
+    'echo_brownie'         => '彦',
+    'revive_brownie'       => '蛇',
+    'harvest_brownie'      => '穣',
+    'maple_brownie'        => '葉',
     'cursed_brownie'       => '祟',
+    'sun_brownie'          => '烏',
     'history_brownie'      => '澤',
     'wizard'               => '魔',
     'soul_wizard'          => '八',

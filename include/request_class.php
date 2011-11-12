@@ -107,7 +107,7 @@ class RequestBaseIcon extends RequestBase{
   }
 
   protected function GetIconData(){
-    $this->GetItems('SetPage', 'get.page');
+    $this->GetItems('SetPage', 'page'); //get・post に限定しないこと
     $this->GetItems('EscapeStrings', 'post.appearance', 'post.category', 'post.author',
 		    'post.keyword');
     $this->GetItems('IsOn', 'post.sort_by_name');
@@ -144,6 +144,34 @@ class RequestUserManager extends RequestBaseIcon{
     else{
       $this->GetItems('EscapeStrings', 'post.uname', 'post.trip', 'post.handle_name');
     }
+  }
+}
+
+//-- game_frame.php --//
+class RequestGameFrame extends RequestBaseGamePlay{
+  function __construct(){
+    parent::__construct();
+    $this->GetItems('IsOn', 'get.dead_mode');
+
+    $url = '?room_no=' . $this->room_no . '&auto_reload=' . $this->auto_reload;
+    if($this->play_sound) $url .= '&play_sound=on';
+    if($this->list_down)  $url .= '&list_down=on';
+    $this->url = $url;
+  }
+}
+
+//-- game_up.php --//
+class RequestGameUp extends RequestBaseGamePlay{
+  function __construct(){
+    parent::__construct();
+    $this->GetItems('IsOn', 'get.dead_mode', 'get.heaven_mode');
+
+    $url = '?room_no=' . $this->room_no . '&auto_reload=' . $this->auto_reload;
+    if($this->play_sound)  $url .= '&play_sound=on';
+    if($this->list_down)   $url .= '&list_down=on';
+    if($this->dead_mode)   $url .= '&dead_mode=on';
+    if($this->heaven_mode) $url .= '&heaven_mode=on';
+    $this->url = $url;
   }
 }
 

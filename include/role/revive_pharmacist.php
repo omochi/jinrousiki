@@ -19,7 +19,7 @@ class Role_revive_pharmacist extends Role_pharmacist{
   }
 
   //復活判定
-  protected function IsResurrect($user){
+  function IsResurrect($user){
     return $user->wolf_killed && $user->IsDead(true) && ! $user->IsDummyBoy() &&
       ! $user->IsLovers() && ! $this->GetWolfVoter()->IsSiriusWolf();
   }

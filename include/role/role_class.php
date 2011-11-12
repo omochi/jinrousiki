@@ -101,10 +101,10 @@ class RoleManager{
     'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'spell_common',
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
-    'thunder_brownie', 'cursed_brownie', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad',
-    'miasma_mad', 'critical_mad', 'follow_mad', 'critical_fox', 'sweet_cupid', 'snow_cupid', 'quiz',
-    'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide',
-    'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie', 'corpse_courier_mad',
+    'amaze_mad', 'agitate_mad', 'miasma_mad', 'critical_mad', 'follow_mad', 'critical_fox',
+    'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience',
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   public $rebel_list = array('rebel');
@@ -151,7 +151,8 @@ class RoleManager{
   public $cure_list = array('cure_pharmacist', 'revive_pharmacist');
 
   //処刑得票カウンター
-  public $vote_kill_reaction_list = array('divorce_jealousy', 'cursed_brownie');
+  public $vote_kill_reaction_list = array('divorce_jealousy', 'harvest_brownie', 'maple_brownie',
+					  'cursed_brownie');
 
   //道連れ
   public $followed_list = array('follow_mad');
@@ -191,7 +192,7 @@ class RoleManager{
   //復活
   public $resurrect_list = array(
     'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_mad', 'revive_cupid',
-    'revive_ogre', 'revive_avenger', 'resurrect_mania');
+    'scarlet_vampire', 'revive_ogre', 'revive_avenger', 'resurrect_mania');
 
   //特殊イベント (昼)
   public $event_day_list = array('sun_brownie', 'mirror_fairy');

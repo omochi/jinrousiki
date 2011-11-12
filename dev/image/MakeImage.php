@@ -419,25 +419,33 @@ class RoleMessageList{
     'type' => 'human',
     'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'authority', ':' => 'chicken'));
 
+  public $thunder_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#雷公#です。_再投票_時に最多得票者だった場合は誰か一人を:ショック死:させてしまいます。",
+    'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
+
   public $echo_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#山彦#です。時々、昼の発言時に直前の誰かの発言を#反響#してしまいます。細かいことはおいて叫びましょう！やっほー！っほー…！",
     'type' => 'brownie');
-
-  public $sun_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#八咫烏#です。=人狼=に襲撃されたら次の日を全員*公開者*に、_処刑_されたら次の日を全員~目隠し~にしてしまいます。\n　太陽神の御使いとして、村の天上に光り輝く太陽をもたらし昼も夜も全て一緒にまとめてフュージョンし尽くすのです！",
-    'type' => 'history_brownie', 'delimiter' => array('*' => 'mind', '~' => 'no_last_words'));
 
   public $revive_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#蛇神#です。一度だけ=人狼=に襲撃されても*蘇生*できます。また、*蘇生*能力者の成功率を高めることができます。\n　――奇跡を願うものよ、我を崇めよ、我を讃えよ。我は#蛇神#、命と再生を司るもの。我が神威もて、汝に力を与えん。",
     'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
 
-  public $thunder_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#雷公#です。_再投票_時に最多得票者だった場合は誰か一人を:ショック死:させてしまいます。",
-    'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
+  public $harvest_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#豊穣神#です。あなたに_処刑_投票した人が|村人陣営|なら一定確率で^会心^を与えますが、_処刑_されてしまうと:凍傷:にしてしまいます。",
+    'type' => 'brownie');
+
+  public $maple_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#紅葉神#です。あなたに_処刑_投票した人が|村人陣営|なら一定確率で*痛恨*を与え、_処刑_されてしまうとさらに:凍傷:にしてしまいます。",
+    'type' => 'brownie', 'delimiter' => array('*' => 'luck'));
 
   public $cursed_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#祟神#、=呪い=を持っています。また、あなたを襲撃した=人狼=や_処刑_投票してきた人に:死の宣告:を行います。\n　呪われた身を呪うことなく、触れた者に不幸をもたらすその力で、村を襲う悪しき災厄を祟り返してやるのです。",
     'type' => 'history_brownie');
+
+  public $sun_brownie = array(
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#八咫烏#です。=人狼=に襲撃されたら次の日を全員*公開者*に、_処刑_されたら次の日を全員~目隠し~にしてしまいます。\n　太陽神の御使いとして、村の天上に光り輝く太陽をもたらし昼も夜も全て一緒にまとめてフュージョンし尽くすのです！",
+    'type' => 'history_brownie', 'delimiter' => array('*' => 'mind', '~' => 'no_last_words'));
 
   public $history_brownie = array(
     'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#白澤#です。=人狼=に襲撃されたら次の日の夜を飛ばしてしまいます。どんな悲惨な夜も歴史に残さなければ消えてしまうのです。",
@@ -608,7 +616,7 @@ class RoleMessageList{
     'type' => 'wolf');
 
   public $sharp_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|鋭狼|です。襲撃した人が|狂人|か#毒#を持っていた場合は襲撃を回避することができます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|鋭狼|です。襲撃した人が|狂人|か#毒#を持っていた場合は襲撃を回避することができます。研ぎ澄まされた牙が狙うはただ獲物のみ…",
     'type' => 'wolf', 'delimiter' => array('#' => 'poison'));
 
   public $hungry_wolf = array(
@@ -1106,7 +1114,7 @@ class RoleMessageList{
     'type' => 'yaksa', 'delimiter' => array('_' => 'sex_male'));
 
   public $hariti_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。\n　自分の愛すべき子が居ない今、彼等の存在はただ目障りなだけ。守り神ではなく鬼へと戻り村にすら悪意をふりまくのです。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|鬼子母神|です。あなた自身の生存と_子狐系_・^キューピッド系^・^天使系^の全滅、#村人陣営以外#の勝利が勝利条件になります。\n　自分の愛すべき子が居ない今彼等の存在はただ目障りなだけなのです。子を守る神ではなく|鬼|へと戻り村に悪意をふりまくのです。",
     'type' => 'yaksa', 'delimiter' => array('_' => 'fox', '^' => 'lovers'));
 
   public $power_yaksa = array(
@@ -1743,6 +1751,7 @@ class RoleMessageList{
   public $result_whisper_scanner = array('message' => "さんは|囁騒霊|でした", 'type' => 'result_mind_scanner');
   public $result_howl_scanner = array('message' => "さんは|吠騒霊|でした", 'type' => 'result_mind_scanner');
   public $result_telepath_scanner = array('message' => "さんは|念騒霊|でした", 'type' => 'result_mind_scanner');
+  public $result_dummy_scanner = array('message' => "さんは|幻視者|でした", 'type' => 'result_mind_scanner');
   public $result_jealousy = array('message' => "さんは|橋姫|でした", 'delimiter' => array('|' => 'jealousy'));
   public $result_divorce_jealousy = array('message' => "さんは|縁切地蔵|でした", 'type' => 'result_jealousy');
   public $result_priest_jealousy = array('message' => "さんは|恋司祭|でした", 'type' => 'result_jealousy');
@@ -1750,11 +1759,13 @@ class RoleMessageList{
   public $result_miasma_jealousy = array('message' => "さんは|蛇姫|でした", 'type' => 'result_jealousy');
   public $result_critical_jealousy = array('message' => "さんは|人魚|でした", 'type' => 'result_jealousy');
   public $result_brownie = array('message' => "さんは|座敷童子|でした", 'delimiter' => array('|' => 'brownie'));
-  public $result_echo_brownie = array('message' => "さんは|山彦|でした", 'type' => 'result_brownie');
-  public $result_sun_brownie = array('message' => "さんは|八咫烏|でした", 'type' => 'result_brownie');
-  public $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
   public $result_thunder_brownie = array('message' => "さんは|雷公|でした", 'type' => 'result_brownie');
+  public $result_echo_brownie = array('message' => "さんは|山彦|でした", 'type' => 'result_brownie');
+  public $result_revive_brownie = array('message' => "さんは|蛇神|でした", 'type' => 'result_brownie');
+  public $result_harvest_brownie = array('message' => "さんは|豊穣神|でした", 'type' => 'result_brownie');
+  public $result_maple_brownie = array('message' => "さんは|紅葉神|でした", 'type' => 'result_brownie');
   public $result_cursed_brownie = array('message' => "さんは|祟神|でした", 'type' => 'result_brownie');
+  public $result_sun_brownie = array('message' => "さんは|八咫烏|でした", 'type' => 'result_brownie');
   public $result_history_brownie = array('message' => "さんは|白澤|でした", 'type' => 'result_brownie');
   public $result_wizard = array('message' => "さんは|魔法使い|でした", 'delimiter' => array('|' => 'wizard'));
   public $result_soul_wizard = array('message' => "さんは|八卦見|でした", 'type' => 'result_wizard');
@@ -2140,10 +2151,10 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('holy_priest');
+$builder->Output('holy_priest'); //
 #$builder->Output('thunder_brownie');
-$builder->Output('mimic_wizard');
-#$builder->Output('sharp_wolf');
+#$builder->Output('harvest_brownie');
+#$builder->Output('maple_brownie');
+#$builder->Output('mimic_wizard');
 #$builder->Output('critical_fox', array(0.5, 0, 1, 1));
-#$builder->Output('hariti_yaksa'); //
 #$builder->Output('fire_mania');

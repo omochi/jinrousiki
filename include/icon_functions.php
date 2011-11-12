@@ -47,8 +47,8 @@ HTML;
 function OutputIconEditForm($icon_no){
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
-  $size = $USER_ICON->name;
-  foreach(FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected) {
+  $size = ' size="' . $USER_ICON->name . '" maxlength="' . $USER_ICON->name . '"';
+  foreach(FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected){
     extract($selected, EXTR_PREFIX_ALL, 'selected');
     $location = $ICON_CONF->path . '/' . $selected_icon_filename;
     $checked  = $selected_disable > 0 ? ' checked' : '';
@@ -58,19 +58,19 @@ function OutputIconEditForm($icon_no){
 <table cellpadding="3">
 <tr><td rowspan="7"><img src="{$location}" style="border:3px solid {$selected_color};"></td>
 <td><label for="name">アイコンの名前</label></td>
-<td><input type="text" id="name" name="icon_name" maxlength="{$size}" size="{$size}" value="{$selected_icon_name}"></td></tr>
+<td><input type="text" id="name" name="icon_name" value="{$selected_icon_name}"{$size}></td></tr>
 
 <tr><td><label for="appearance">出典</label></td>
-<td><input type="text" id="appearance" name="appearance" maxlength="{$size}" size="{$size}" value="{$selected_appearance}"></td></tr>
+<td><input type="text" id="appearance" name="appearance" value="{$selected_appearance}"{$size}></td></tr>
 
 <tr><td><label for="category">カテゴリ</label></td>
-<td><input type="text" id="category" name="category" maxlength="{$size}" size="{$size}" value="{$selected_category}"></td></tr>
+<td><input type="text" id="category" name="category" value="{$selected_category}"{$size}></td></tr>
 
 <tr><td><label for="author">アイコンの作者</label></td>
-<td><input type="text" id="author" name="author" maxlength="{$size}" size="{$size}" value="{$selected_author}"></td></tr>
+<td><input type="text" id="author" name="author" value="{$selected_author}"{$size}></td></tr>
 
 <tr><td><label for="color">アイコン枠の色</label></td>
-<td><input type="text" id="color" name="color" size="10px" maxlength="7" value="{$selected_color}"> (例：#6699CC)</td></tr>
+<td><input type="text" id="color" name="color" value="{$selected_color}" size="10px" maxlength="7"> (例：#6699CC)</td></tr>
 
 <tr><td><label for="disable">非表示</label></td>
 <td><input type="checkbox" id="disable" name="disable" value="on"{$checked}></td></tr>

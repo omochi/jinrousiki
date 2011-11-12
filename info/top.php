@@ -22,5 +22,6 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>豊穣神：処刑投票者が村人陣営なら会心を付加する座敷童子</li>
+  <li>紅葉神：処刑投票者が村人陣営なら痛恨を付加する座敷童子</li>
 </ul>

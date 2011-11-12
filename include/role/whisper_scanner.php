@@ -8,7 +8,7 @@
 */
 RoleManager::LoadFile('mind_scanner');
 class Role_whisper_scanner extends Role_mind_scanner{
-  public $action = NULL;
+  public $action    = NULL;
   public $mind_role = NULL;
   public $mind_read_target = 'common';
   function __construct(){ parent::__construct(); }

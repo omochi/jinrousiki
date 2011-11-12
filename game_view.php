@@ -40,9 +40,7 @@ OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0){ //自動更新
   echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
 }
-
-//シーンに合わせた文字色と背景色 CSS をロード
-echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
+echo $ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
 
 $on_load = '';
 if($ROOM->IsPlaying()){ //経過時間を取得

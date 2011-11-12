@@ -181,13 +181,6 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		      'footer' => '',
 		      'disable' => false),
 
-    'bara' => array('name' => '薔薇姉妹鯖',
-		    'url' => 'http://www13.atpages.jp/yaranai/',
-		    'encode' => 'UTF-8',
-		    'separator' => '<!-- atpages banner tag -->',
-		    'footer' => '</a><br>',
-		    'disable' => false),
-
     'bourbonhouse' => array('name' => 'バーボンハウス鯖',
 			    'url' => 'http://bourbonhouse.xsrv.jp/jinro/',
 			    'encode' => 'EUC-JP',
@@ -215,13 +208,6 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		     'separator' => '',
 		     'footer' => '',
 		     'disable' => false),
-
-    'acjinrou' => array('name' => 'AC人狼鯖',
-			'url' => 'http://acjinrou.blue-sky-server.com/',
-			'encode' => 'EUC-JP',
-			'separator' => '',
-			'footer' => '',
-			'disable' => true),
 
     'prg_i' => array('name' => 'Twitter鯖',
 		     'url' => 'http://www28.atpages.jp/pururiru/jinrou/',
@@ -285,7 +271,7 @@ class MenuLinkConfig{
 			'Wiki' => 'http://www37.atwiki.jp/yaruomura/',
 			'掲示板' => 'http://jbbs.livedoor.jp/game/48159/',
 			'流石鯖用ツール' => 'http://www.petitnoir.net/zinro/sasuga.html',
-			'流石戦績検索' => 'http://www.petitnoir.net/zinro/sasuga/yaruomura.php'),
+			'流石戦績検索' => 'http://www.petitnoir.net/zinro/jinrousiki/'),
     'やる夫系予備' => array('流石兄弟鯖' => 'http://www12.atpages.jp/yaruo/jinro/',
 			    '流石弟者鯖' => 'http://www16.atpages.jp/sasugabros/',
 			    '薔薇姉妹鯖' => 'http://www13.atpages.jp/yaranai/',
@@ -304,8 +290,10 @@ class MenuLinkConfig{
 		      'ちぇぇんテスト鯖' => 'http://www30.atpages.jp/cheen/jinro/',
 		      'Wiki' => 'http://wikiwiki.jp/jinro/',
 		      '掲示板' => 'http://jbbs.livedoor.jp/netgame/4598/'),
+    /*
     'AC 人狼系' => array('AC 人狼鯖' => 'http://acjinrou.blue-sky-server.com/',
 			 '掲示板' => 'http://acjinrou.bbs.fc2.com/'),
+    */
     'Twitter人狼系' => array('Twitter鯖' => 'http://www28.atpages.jp/pururiru/jinrou/')
 			);
 }
