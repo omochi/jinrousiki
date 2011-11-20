@@ -108,10 +108,10 @@ class RequestBaseIcon extends RequestBase{
 
   protected function GetIconData(){
     $this->GetItems('SetPage', 'page'); //get・post に限定しないこと
-    $this->GetItems('EscapeStrings', 'post.appearance', 'post.category', 'post.author',
-		    'post.keyword');
-    $this->GetItems('IsOn', 'post.sort_by_name');
-    $this->GetItems('Exists', 'post.search');
+    $this->GetItems('EscapeStrings', 'appearance', 'category', 'author',
+		    'keyword');
+    $this->GetItems('IsOn', 'sort_by_name');
+    $this->GetItems('Exists', 'search');
   }
 }
 

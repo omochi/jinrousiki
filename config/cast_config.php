@@ -1,7 +1,7 @@
 <?php
 /*
   変更履歴 from Ver. 1.5.0β15
-  + 変更：$chaos_hyper_fox_list, $chaos_hyper_random_role_list, $boost_rate_list
+  + 変更：$chaos_hyper_fox_list, $chaos_hyper_random_role_list, $topping_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{

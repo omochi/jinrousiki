@@ -166,7 +166,7 @@ function LockTable($type = NULL){
   $stack = array('room', 'user_entry', 'talk', 'vote');
   switch($type){
   case 'game':
-    $stack[] = 'system_message';
+    array_push($stack, 'system_message', 'user_icon');
     break;
 
   case 'icon':

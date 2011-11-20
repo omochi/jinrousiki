@@ -28,7 +28,7 @@ class Role_dummy_mania extends Role_soul_mania{
     'wizard'       => 'astray_wizard',
     'doll'         => 'silver_doll',
     'escaper'      => 'doom_escaper',
-    'wolf'         => 'silver_wolf',
+    'wolf'         => 'emperor_wolf',
     'mad'          => 'immolate_mad',
     'fox'          => 'immolate_fox',
     'child_fox'    => 'critical_fox',

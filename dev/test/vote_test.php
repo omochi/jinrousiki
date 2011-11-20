@@ -42,7 +42,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'trap_wolf';
+$RQ_ARGS->TestItems->test_users[2]->role = 'emperor_wolf';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -316,7 +316,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 
 //-- 仮想システムメッセージをセット --//
 $RQ_ARGS->TestItems->system_message = array();
-$RQ_ARGS->TestItems->victory = 'fox2';
+$RQ_ARGS->TestItems->victory = 'wolf';
 
 //-- 仮想イベントをセット --//
 $RQ_ARGS->TestItems->event = array(
@@ -341,13 +341,13 @@ $ROOM->date = 1;
 #$ROOM->day_night = 'beforegame';
 #$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';
-#$ROOM->day_night = 'aftergame';
+$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live'; //初日用
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
-$SELF = $USERS->ByID(1);
+$SELF = $USERS->ByID(2);
 #$SELF = $USERS->ByID(13);
 #$SELF = $USERS->TraceExchange(14);
 

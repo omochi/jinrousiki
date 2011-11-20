@@ -421,8 +421,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
-  <td><a href="wolf.php#silver_wolf">銀狼</a></td>
-  <td>Ver. 1.4.0 β22～</td>
+  <td><a href="wolf.php#emperor_wolf">帝狼</a></td>
+  <td>Ver. 1.5.0 β17～</td>
 </tr>
 <tr>
   <td><a href="wolf.php#mad_group">狂人系</a></td>

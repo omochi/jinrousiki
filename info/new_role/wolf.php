@@ -103,6 +103,7 @@ OutputRolePageHeader('人狼陣営');
 <a href="#cute_wolf">萌狼</a>
 <a href="#scarlet_wolf">紅狼</a>
 <a href="#silver_wolf">銀狼</a>
+<a href="#emperor_wolf">帝狼</a>
 </p>
 
 <h3 id="wolf">人狼 (占い結果：人狼 / 霊能結果：人狼)</h3>
@@ -938,6 +939,20 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 仲間と連携が取れないので動き方が難しくなると思います。
 仲間に襲撃されて狐扱いされて吊られる可能性も……
 </pre>
+
+<h3 id="emperor_wolf">帝狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 β17～]</h3>
+<pre>
+人狼陣営勝利に加えて、<a href="#mad_group">狂人系</a>の全滅が勝利条件の人狼。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#critical_fox">寿羊狐</a>・<a href="ogre.php#orange_ogre">前鬼</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="fox.php#critical_fox">寿羊狐</a>の人狼バージョンです。
+</pre>
+
 
 <h2 id="mad_group">狂人系</h2>
 <p>

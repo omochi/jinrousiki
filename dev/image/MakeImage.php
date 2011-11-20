@@ -211,7 +211,7 @@ class RoleMessageList{
     'type' => 'bishop_priest');
 
   public $holy_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#聖徳道士#です。一定日数後に身代わり君とあなたを含めた周囲の人の所属陣営の総数を知ることができます。",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#聖徳道士#です。一定日数後に身代わり君とあなたを含めた周囲の人の所属陣営の総数を知ることができます。\n　あなたの役目は周囲を見極め告げること。生き延びなさい。その力で人外達を暴き出し、その最期を見届けるのです。",
     'type' => 'bishop_priest');
 
   public $revive_priest = array(
@@ -432,11 +432,11 @@ class RoleMessageList{
     'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
 
   public $harvest_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#豊穣神#です。あなたに_処刑_投票した人が|村人陣営|なら一定確率で^会心^を与えますが、_処刑_されてしまうと:凍傷:にしてしまいます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#豊穣神#です。あなたに_処刑_投票した人が|村人陣営|なら一定確率で^会心^を与えますが、_処刑_されてしまうと:凍傷:にしてしまいます。\n　実りの秋。瞳に映る黄金の草原。秋の贈り物は、あなたの心にも実りを与えてくれる安らぎの小夜曲。この実りは、厳しき冬のために…。",
     'type' => 'brownie');
 
   public $maple_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#紅葉神#です。あなたに_処刑_投票した人が|村人陣営|なら一定確率で*痛恨*を与え、_処刑_されてしまうとさらに:凍傷:にしてしまいます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#紅葉神#です。あなたに_処刑_投票した人が|村人陣営|なら一定確率で*痛恨*を与え、_処刑_されてしまうとさらに:凍傷:にしてしまいます。\n　散りゆく秋。吹く風は木枯らし。木の葉の吹雪は、時に大切な物すら見失わせてしまう哀愁の輪舞曲。紅葉との別れの先に待つのは…冬。",
     'type' => 'brownie', 'delimiter' => array('*' => 'luck'));
 
   public $cursed_brownie = array(
@@ -464,7 +464,7 @@ class RoleMessageList{
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   public $mimic_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#物真似師#です。#魔法#で二日目以降に_占い_、三日目以降に^霊能^相当の結果を同時に得ることができますが、成功率は半々です。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#物真似師#です。#魔法#で二日目以降に_占い_、三日目以降に^霊能^相当の結果を同時に得ることができますが、成功率は半々です。\n　たかが真似事と侮るなかれ。人々の信頼さえ得られれば、その芸は万雷の拍手にて招き入れられることでしょう。さあ皆様お立会い！",
     'type' => 'wizard', 'delimiter' => array('_' => 'mage', '^' => 'necromancer'));
 
   public $spiritism_wizard = array(
@@ -650,6 +650,10 @@ class RoleMessageList{
 
   public $silver_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|銀狼|です。仲間が誰か分かりませんが、遠吠えで仲間に存在を知らせることはできます。\n　天を灼く満月の下、銀色の毛並みを輝かせて、仲間の群れと共にこの村を|狼|のものにするのです。",
+    'type' => 'wolf');
+
+  public $emperor_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|帝狼|です。|人狼陣営|の勝利と|狂人系|の全滅が勝利条件になります。",
     'type' => 'wolf');
 
   public $mad = array(
@@ -1817,6 +1821,7 @@ class RoleMessageList{
   public $result_cute_wolf   = array('message' => "さんは|萌狼|でした", 'type' => 'result_wolf');
   public $result_scarlet_wolf = array('message' => "さんは|紅狼|でした", 'type' => 'result_wolf');
   public $result_silver_wolf = array('message' => "さんは|銀狼|でした", 'type' => 'result_wolf');
+  public $result_emperor_wolf = array('message' => "さんは|帝狼|でした", 'type' => 'result_wolf');
   public $result_mad = array('message' => "さんは|狂人|でした", 'type' => 'result_wolf');
   public $result_fanatic_mad = array('message' => "さんは|狂信者|でした", 'type' => 'result_mad');
   public $result_whisper_mad = array('message' => "さんは|囁き狂人|でした", 'type' => 'result_mad');
@@ -2151,10 +2156,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('holy_priest'); //
 #$builder->Output('thunder_brownie');
-#$builder->Output('harvest_brownie');
-#$builder->Output('maple_brownie');
-#$builder->Output('mimic_wizard');
+$builder->Output('emperor_wolf');
 #$builder->Output('critical_fox', array(0.5, 0, 1, 1));
 #$builder->Output('fire_mania');

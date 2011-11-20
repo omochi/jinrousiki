@@ -94,6 +94,7 @@ Ver. 1.5.0
 <a href="#ver150b14">β14</a>
 <a href="#ver150b15">β15</a>
 <a href="#ver150b16">β16</a>
+<a href="#ver150b17">β17</a>
 </p>
 
 <p>
@@ -2859,6 +2860,15 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability"><a href="human.php#mind_scanner">さとり</a>に心を読まれていると思い込んでいる村人。本人表記は「<a href="human.php#human">村人</a>」。</td>
   <td>Ver. 1.5.0 β16</td>
+</tr>
+<tr id="ver150b17">
+  <td><a href="wolf.php#emperor_wolf">帝狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">人狼陣営勝利に加えて、<a href="wolf.php#mad_group">狂人系</a>の全滅が勝利条件の人狼。</td>
+  <td>Ver. 1.5.0 β17</td>
 </tr>
 </table>
 

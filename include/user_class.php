@@ -843,23 +843,23 @@ class UserDataSet{
   //特定の村のユーザ情報を取得する
   function RetriveByRoom($room_no){
     $query = "SELECT
-	users.room_no,
-	users.user_no,
-	users.uname,
-	users.handle_name,
-	users.sex,
-	users.profile,
-	users.role,
-	users.live,
-	users.last_load_day_night,
-	users.ip_address = '' AS is_system,
-	icons.icon_filename,
-	icons.color,
-	icons.icon_width,
-	icons.icon_height
-      FROM user_entry users LEFT JOIN user_icon icons ON users.icon_no = icons.icon_no
-      WHERE users.room_no = {$room_no}
-      ORDER BY users.user_no";
+	room_no,
+	user_no,
+	uname,
+	handle_name,
+	sex,
+	profile,
+	role,
+	live,
+	last_load_day_night,
+	ip_address = '' AS is_system,
+	icon_filename,
+	color,
+	icon_width,
+	icon_height
+      FROM user_entry LEFT JOIN user_icon ON user_entry.icon_no = user_icon.icon_no
+      WHERE room_no = {$room_no}
+      ORDER BY user_no";
     return FetchObject($query, 'User');
   }
 

@@ -357,14 +357,14 @@ function GenerateDateTalkLog($set_date, $set_location){
   foreach($talk_list as $talk){
     switch($talk->scene){
     case 'day':
-      if($ROOM->IsDay()) break;
+      if($ROOM->IsDay() || $talk->type == 'dummy_boy') break;
       $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
       $ROOM->day_night = $talk->scene;
       $builder->BeginTalk('talk ' . $talk->scene);
       break;
 
     case 'night':
-      if($ROOM->IsNight()) break;
+      if($ROOM->IsNight() || $talk->type == 'dummy_boy') break;
       $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
       $ROOM->day_night = $talk->scene;
       $builder->BeginTalk('talk ' . $talk->scene);
