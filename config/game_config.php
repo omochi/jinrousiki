@@ -1,7 +1,9 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β15
-  + なし
+  変更履歴 from Ver. 1.5.0β16
+  + RoomConfig
+    - 追加：$change_cupid, $change_mind_cupid, $change_triangle_cupid, $change_angel,
+            $change_cupid_list
 */
 
 //-- 村メンテナンス・作成設定 --//
@@ -188,6 +190,14 @@ class RoomConfig{
   //狂人置換モードの内訳
   public $change_mad_list = array('change_mad', 'change_fanatic_mad', 'change_whisper_mad',
 				  'change_immolate_mad');
+
+  public $change_cupid          = true; //キューピッド置換村 (管理人カスタムモード)
+  public $change_mind_cupid     = true; //女神村
+  public $change_triangle_cupid = true; //小悪魔村
+  public $change_angel          = true; //天使村
+  //キューピッド置換モードの内訳
+  public $change_cupid_list = array('change_cupid', 'change_mind_cupid', 'change_triangle_cupid',
+				    'change_angel');
 
   //-- 特殊配役モード --//
   public $chaos       = true; //闇鍋モード

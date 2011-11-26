@@ -1,7 +1,12 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β15
-  + なし
+  変更履歴 from Ver. 1.5.0β16
+  + GameOptionMessage
+    - 追加：$change_cupid, $change_mind_cupid, $change_triangle_cupid, $change_angel
+  + GameOptionCaptionMessage
+    - 追加：$change_cupid
+    - 変更：$poison, $assassin, $wolf, $boss_wolf, $poison_wolf, $possessed_wolf,
+            $sirius_wolf, $fox, $child_fox, $cupid, $medium, $mania, $decide, $authority
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -338,6 +343,10 @@ class GameOptionMessage{
   public $change_fanatic_mad    = '狂信者村';
   public $change_whisper_mad    = '囁き狂人村';
   public $change_immolate_mad   = '殉教者村';
+  public $change_cupid          = 'キューピッド置換村';
+  public $change_mind_cupid     = '女神村';
+  public $change_triangle_cupid = '小悪魔村';
+  public $change_angel          = '天使村';
   public $special_role          = '特殊配役モード';
   public $chaos                 = '闇鍋モード';
   public $chaosfull             = '真・闇鍋モード';
@@ -394,20 +403,20 @@ class GameOptionCaptionMessage{
   public $no_close_cast         = '常時公開 (蘇生能力は無効です)';
   public $not_open_cast         = '常時非公開 (誰がどの役職なのか公開されません。蘇生能力は有効です)';
   public $auto_open_cast        = '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)';
-  public $poison                = '処刑されたり狼に食べられた場合、道連れにします。[村人2→埋毒1、人狼1]';
-  public $assassin              = '夜に村人一人を殺すことができます。[村人2→暗殺者1、人狼1]';
-  public $wolf                  = '人狼をもう一人追加します。[村人1→人狼1]';
-  public $boss_wolf             = '占い結果が「村人」、霊能結果が「白狼」と表示される狼です。[人狼1→白狼1]';
-  public $poison_wolf           = '吊られた時にランダムで村人一人を巻き添えにする狼です。<br>　　　[人狼1→毒狼1、村人1→薬師1]';
-  public $possessed_wolf        = '噛んだ人に憑依して乗っ取ってしまう狼です。[人狼1→憑狼1]';
-  public $sirius_wolf           = '仲間が減ると特殊能力が発現する狼です。[人狼1→天狼1]';
-  public $fox                   = '妖狐をもう一人追加します。[村人1→妖狐1]';
-  public $child_fox             = '限定的な占い能力を持ち、占い結果が「村人」、霊能結果が「子狐」となる妖狐です。<br>　　　[妖狐1→子狐1]';
+  public $poison                = '処刑されたり狼に食べられた場合、道連れにします [村人2→埋毒1・人狼1]';
+  public $assassin              = '夜に村人一人を暗殺することができます [村人2→暗殺者1・人狼1]';
+  public $wolf                  = '人狼をもう一人追加します [村人1→人狼1]';
+  public $boss_wolf             = '占い結果が「村人」・霊能結果が「白狼」と表示される狼です [人狼1→白狼1]';
+  public $poison_wolf           = '処刑時にランダムで村人一人を巻き添えにする狼です<br>　　　[人狼1→毒狼1 / 村人1→薬師1]';
+  public $possessed_wolf        = '襲撃した人に憑依して乗っ取ってしまう狼です [人狼1→憑狼1]';
+  public $sirius_wolf           = '仲間が減ると特殊能力が発現する狼です [人狼1→天狼1]';
+  public $fox                   = '妖狐をもう一人追加します [村人1→妖狐1]';
+  public $child_fox             = '限定的な占い能力を持ち、占い結果が「村人」・霊能結果が「子狐」となる妖狐です <br>　　　[妖狐1→子狐1]';
   public $cupid                 = '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]';
-  public $medium                = '突然死した人の所属陣営が分かる特殊な霊能者です。[村人2→巫女1、女神1]';
-  public $mania                 = '初日夜に他の村人の役職をコピーする特殊な役職です。[村人1→神話マニア1]';
-  public $decide                = '投票が同数の時、決定者の投票先が優先されます。[兼任]';
-  public $authority             = '投票の票数が二票になります。[兼任]';
+  public $medium                = '突然死した人の所属陣営が分かります [村人2→巫女1・女神1]';
+  public $mania                 = '初日夜に他の村人の役職をコピーします [村人1→神話マニア1]';
+  public $decide                = '投票が同数の時、決定者の投票先が優先されます [兼任]';
+  public $authority             = '投票の票数が二票になります [兼任]';
   public $liar                  = 'ランダムで「狼少年」がつきます';
   public $gentleman             = '全員に性別に応じた「紳士」「淑女」がつきます';
   public $sudden_death          = '全員に投票でショック死するサブ役職のどれかがつきます';
@@ -424,6 +433,7 @@ class GameOptionCaptionMessage{
   public $replace_human         = '「村人」が全員特定の役職に入れ替わります';
   public $change_common         = '「共有者」が全員特定の役職に入れ替わります';
   public $change_mad            = '「狂人」が全員特定の役職に入れ替わります';
+  public $change_cupid          = '「キューピッド」が全員特定の役職に入れ替わります';
   public $special_role          = '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   public $topping               = '固定配役に追加する役職セットです';
   public $boost_rate            = '役職の出現率に補正がかかります';

@@ -104,7 +104,7 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li><?php echo $GAME_OPT_CAPT->open_day ?></li>
 <li>自分の役職は分かりますが1日目昼は投票できません</li>
-<li>制限時間を過ぎたら自動で夜に切り替わります (通常時のスタート相当)</li>
+<li>制限時間を過ぎたら自動で夜に切り替わります (通常のゲーム開始相当)</li>
 </ul>
 
 
@@ -134,7 +134,7 @@ OutputInfoPageHeader('ゲームオプション');
 <li><?php echo $GAME_OPT_CAPT->gerd ?></li>
 <li><a href="#chaos"><?php echo $GAME_OPT_MESS->chaos ?></a>の固定配役に村人を一人追加します</li>
 <li><a href="#replace_human"><?php echo $GAME_OPT_MESS->replace_human ?></a>オプションが付いていても村人を一人確保します</li>
-<li><a href="#duel"><?php echo $GAME_OPT_MESS->duel ?></a>・<a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>の配役は入れ替えません (最初から存在する場合のみ有効です)</li>
+<li><a href="#duel"><?php echo $GAME_OPT_MESS->duel ?></a>・<a href="#festival"><?php echo $GAME_OPT_MESS->festival ?></a>の配役は入れ替えません (最初から存在する場合のみ有効)</li>
 </ul>
 
 
@@ -149,7 +149,7 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li>常に霊界で配役が公開されます</li>
 <li>蘇生能力は無効になります</li>
-<li>システム的にはこれが初期状態です (アイコン表示はありません)</li>
+<li>システム的にはこれが初期設定です (アイコン表示はありません)</li>
 </ul>
 
 <h3 id="not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></h3>
@@ -177,7 +177,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h2 id="add_role_option">追加役職設定</h2>
 <ul>
 <li>置換元の役職が足りない場合は出現しないことがあります。<br>
-(例：村人1の場合、<?php echo $GAME_OPT_MESS->poison ?>は適用されない)</li>
+(例：村人1の場合、<a href="#poison"><?php echo $GAME_OPT_MESS->poison ?></a>は適用されない)</li>
 </ul>
 <p>
 <a href="#poison"><?php echo $GAME_OPT_MESS->poison ?></a>
@@ -259,7 +259,7 @@ OutputInfoPageHeader('ゲームオプション');
 </ul>
 <h4>Ver. 1.4.0 β17～</h4>
 <ul>
-<li>「14人」の固定出現を外しました</li>
+<li>「14人」の固定出現を廃止</li>
 </ul>
 
 <h3 id="medium"><?php echo $GAME_OPT_MESS->medium ?> [Ver. 1.4.0 α14～]</h3>
@@ -323,6 +323,12 @@ OutputInfoPageHeader('ゲームオプション');
 <a href="#change_fanatic_mad"><?php echo $GAME_OPT_MESS->change_fanatic_mad ?></a>
 <a href="#change_whisper_mad"><?php echo $GAME_OPT_MESS->change_whisper_mad ?></a>
 <a href="#change_immolate_mad"><?php echo $GAME_OPT_MESS->change_immolate_mad ?></a>
+</p>
+<p>
+<a href="#change_cupid"><?php echo $GAME_OPT_MESS->change_cupid ?></a>
+<a href="#change_mind_cupid"><?php echo $GAME_OPT_MESS->change_mind_cupid ?></a>
+<a href="#change_triangle_cupid"><?php echo $GAME_OPT_MESS->change_triangle_cupid ?></a>
+<a href="#change_angel"><?php echo $GAME_OPT_MESS->change_angel ?></a>
 </p>
 
 <h3 id="detective"><?php echo $GAME_OPT_MESS->detective ?> [Ver. 1.4.0 β10～]</h3>
@@ -396,7 +402,7 @@ OutputInfoPageHeader('ゲームオプション');
 <ul>
 <li><?php echo $GAME_OPT_CAPT->death_note ?></li>
 <li>毎日、夜→昼の処理終了時の生存者からランダムで一人に<a href="new_role/sub_role.php#death_note">デスノート</a>が配布されます</li>
-<li>配布状況は配役公開状態の霊界からのみ見ることができます。</li>
+<li>配布状況は配役公開状態の霊界からのみ見ることができます</li>
 </ul>
 
 <h3 id="weather"><?php echo $GAME_OPT_MESS->weather ?> [Ver. 1.5.0 α2～]</h3>
@@ -445,6 +451,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h4 id="full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?> [Ver. 1.4.0 β14～]</h4>
 <ul>
 <li>村人が全員<a href="new_role/lovers.php#cupid">キューピッド</a>になります</li>
+<li><a href="#change_cupid"><?php echo $GAME_OPT_MESS->change_cupid ?></a>より先に処理されます</li>
 </ul>
 
 <h4 id="full_quiz"><?php echo $GAME_OPT_MESS->full_quiz ?> [Ver. 1.5.0 β10～]</h4>
@@ -503,6 +510,28 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="change_immolate_mad"><?php echo $GAME_OPT_MESS->change_immolate_mad ?> [Ver. 1.5.0 β10～]</h3>
 <ul>
 <li>狂人が全員<a href="new_role/wolf.php#immolate_mad">殉教者</a>になります</li>
+</ul>
+
+<h3 id="change_cupid"><?php echo $GAME_OPT_MESS->change_cupid ?> [Ver. 1.5.0 β17～]</h3>
+<ul>
+<li><?php echo $GAME_OPT_CAPT->change_cupid ?></li>
+<li>「<?php echo $GAME_OPT_MESS->change_cupid ?>」<?php OutputReplaceRole('change_cupid') ?></li>
+<li><a href="#full_cupid"><?php echo $GAME_OPT_MESS->full_cupid ?></a>の処理が先に適用されます</li>
+</ul>
+
+<h3 id="change_mind_cupid"><?php echo $GAME_OPT_MESS->change_mind_cupid ?> [Ver. 1.5.0 β17～]</h3>
+<ul>
+<li>キューピッドが全員<a href="new_role/lovers.php#mind_cupid">女神</a>になります</li>
+</ul>
+
+<h3 id="change_triangle_cupid"><?php echo $GAME_OPT_MESS->change_triangle_cupid ?> [Ver. 1.5.0 β17～]</h3>
+<ul>
+<li>キューピッドが全員<a href="new_role/lovers.php#triangle_cupid">小悪魔</a>になります</li>
+</ul>
+
+<h3 id="change_angel"><?php echo $GAME_OPT_MESS->change_angel ?> [Ver. 1.5.0 β17～]</h3>
+<ul>
+<li>キューピッドが全員<a href="new_role/lovers.php#angel">天使</a>になります</li>
 </ul>
 
 <h2 id="special_role_option">特殊配役設定</h2>

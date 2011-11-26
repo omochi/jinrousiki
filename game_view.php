@@ -10,7 +10,7 @@ $url = '<a href="game_view.php?room_no=' . $RQ_ARGS->room_no;
 $DB_CONF->Connect(); // DB 接続
 
 $ROOM = new Room($RQ_ARGS); //村情報をロード
-$ROOM->view_mode = true;
+$ROOM->view_mode   = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch($ROOM->day_night){
 case 'day': //昼
@@ -35,6 +35,7 @@ $SELF  = new User();
 if($ROOM->IsBeforeGame()) $ROOM->LoadVote();
 
 //-- データ出力 --//
+ob_start();
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
 if($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0){ //自動更新
@@ -124,3 +125,4 @@ OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者
 OutputVoteList();   //投票結果
 OutputHTMLFooter(); //HTMLフッタ
+ob_end_flush();

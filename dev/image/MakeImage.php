@@ -420,7 +420,7 @@ class RoleMessageList{
     'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'authority', ':' => 'chicken'));
 
   public $thunder_brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#雷公#です。_再投票_時に最多得票者だった場合は誰か一人を:ショック死:させてしまいます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#雷公#です。_再投票_時に最多得票者だった場合は誰か一人を:ショック死:させてしまいます。\n　無差別に天から降り注ぐ雷神の怒りが村に幸せをもたらせるのか、全ては、あなた次第でしょう。",
     'type' => 'history_brownie', 'delimiter' => array('*' => 'revive'));
 
   public $echo_brownie = array(
@@ -653,7 +653,7 @@ class RoleMessageList{
     'type' => 'wolf');
 
   public $emperor_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|帝狼|です。|人狼陣営|の勝利と|狂人系|の全滅が勝利条件になります。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|帝狼|です。|人狼陣営|の勝利と|狂人系|の全滅が勝利条件になります。|狼|に人間の仲間が必要ないことを全ての村人に見せつけましょう。",
     'type' => 'wolf');
 
   public $mad = array(
@@ -849,7 +849,7 @@ class RoleMessageList{
     'type' => 'child_fox');
 
   public $critical_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|寿羊狐|です。|妖狐陣営|の勝利と|妖狐系|の全滅が勝利条件になります。|妖狐系|が誰か分かりませんが、^処刑^投票で:痛恨:を付加できます。",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|寿羊狐|です。|妖狐陣営|の勝利と|妖狐系|の全滅が勝利条件になります。|妖狐系|が誰か分かりませんが、^処刑^投票で:痛恨:を付加できます。\n　例え相手が親であれ、天下はあなたのためにある。思うまま我がままに国を傾けて、敵も味方も処刑しよう。敗北はあなたの美貌が許さない。",
     'type' => 'child_fox', 'delimiter' => array('^' => 'vote', ':' => 'luck'));
 
   public $cupid = array(
@@ -1222,7 +1222,7 @@ class RoleMessageList{
     'type' => 'mania', 'delimiter' => array('#' => 'vote'));
 
   public $fire_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|青行灯|です。初日の夜に指定した人と同じ陣営になり、その人に#鬼火#を与えます。",
+    'message' => "[役割] [|神話マニア|陣営] [|鵺|系]\n　あなたは|青行灯|です。初日の夜に指定した人と同じ陣営になり、その人に#鬼火#を与えます。\n　百鬼を談ずる語り部を、あなたの夜に引き込んで。青い闇の中、そっと菜種の灯を消そう。",
     'type' => 'mania', 'delimiter' => array('#' => 'wisp'));
 
   public $sacrifice_mania = array(
@@ -2156,7 +2156,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('thunder_brownie');
-$builder->Output('emperor_wolf');
-#$builder->Output('critical_fox', array(0.5, 0, 1, 1));
-#$builder->Output('fire_mania');
+$builder->Output('fire_mania');

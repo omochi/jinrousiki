@@ -1624,9 +1624,9 @@ class CastConfigBase extends LotteryBuilder{
 	  $target = array_pop(explode('_', $option, 2));
 	  $role   = 'human';
 	}
-	else{ //共有者・狂人置換
+	else{ //共有者・狂人・キューピッド置換
 	  $target = array_pop(explode('_', $option, 2));
-	  $role   = array_pop(explode('_', $target));
+	  $role   = $target == 'angel' ? 'cupid' : array_pop(explode('_', $target));
 	}
 
 	$count = $role_list[$role];

@@ -44,7 +44,7 @@ if(array_key_exists('command', $_POST) && $_POST['command'] == 'role_test'){
     }
   }
 
-  foreach(array('replace_human', 'change_common', 'change_mad') as $option){
+  foreach(array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option){
     if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
       $stack->option_role[] = $_POST[$option];
     }
@@ -115,7 +115,7 @@ EOF;
     echo "<br>\n";
   }
 
-  foreach(array('replace_human', 'change_common', 'change_mad') as $option){
+  foreach(array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option){
     echo <<<EOF
 <input type="radio" name="{$option}" value="" checked>標準
 

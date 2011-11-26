@@ -16,10 +16,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>帝狼：人狼陣営勝利に加えて、狂人系の全滅が勝利条件の人狼</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>「キューピッド置換村」「女神村」「小悪魔村」「天使村」オプション実装</li>
 </ul>

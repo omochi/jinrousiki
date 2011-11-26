@@ -1,7 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β15
-  + 変更：$chaos_hyper_fox_list, $chaos_hyper_random_role_list, $topping_list, $boost_rate_list
+  変更履歴 from Ver. 1.5.0β16
+  + 変更：$replace_role_list, $chaos_hyper_wolf_list, $chaos_hyper_random_role_list,
+          $topping_list, $boost_rate_list
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{
@@ -87,7 +88,8 @@ class CastConfig extends CastConfigBase{
   public $replace_role_list = array(
     'replace_human' => 'escaper',
     'change_common' => 'leader_common',
-    'change_mad'    => 'jammer_mad');
+    'change_mad'    => 'jammer_mad',
+    'change_cupid'  => 'exchange_angel');
 
   //-- 闇鍋モード --//
   //-- 固定枠 --//
@@ -126,7 +128,7 @@ class CastConfig extends CastConfigBase{
 
   //超・闇鍋
   public $chaos_hyper_wolf_list = array(
-    'wolf'           => 25,
+    'wolf'           => 20,
     'boss_wolf'      =>  2,
     'mist_wolf'      =>  2,
     'gold_wolf'      =>  3,
@@ -151,7 +153,8 @@ class CastConfig extends CastConfigBase{
     'elder_wolf'     =>  3,
     'cute_wolf'      => 10,
     'scarlet_wolf'   =>  3,
-    'silver_wolf'    => 10);
+    'silver_wolf'    => 10,
+    'emperor_wolf'   =>  5);
 
   //妖狐の最小出現枠 (役職名 => 出現比)
   //闇鍋
@@ -436,7 +439,7 @@ class CastConfig extends CastConfigBase{
     'succubus_escaper'     =>  2,
     'doom_escaper'         =>  1,
     'divine_escaper'       =>  1,
-    'wolf'                 => 10,
+    'wolf'                 => 15,
     'boss_wolf'            =>  5,
     'mist_wolf'            =>  5,
     'gold_wolf'            =>  5,
@@ -448,8 +451,8 @@ class CastConfig extends CastConfigBase{
     'resist_wolf'          => 10,
     'revive_wolf'          =>  5,
     'trap_wolf'            =>  5,
-    'blue_wolf'            => 10,
-    'emerald_wolf'         => 10,
+    'blue_wolf'            =>  5,
+    'emerald_wolf'         =>  5,
     'doom_wolf'            =>  5,
     'fire_wolf'            =>  5,
     'sex_wolf'             =>  5,
@@ -462,6 +465,7 @@ class CastConfig extends CastConfigBase{
     'cute_wolf'            => 10,
     'scarlet_wolf'         => 10,
     'silver_wolf'          => 10,
+    'emperor_wolf'         =>  5,
     'mad'                  => 10,
     'fanatic_mad'          =>  5,
     'whisper_mad'          =>  3,
@@ -887,11 +891,7 @@ class CastConfig extends CastConfigBase{
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   public $boost_rate_list = array(
-    'a' => array('dummy_scanner'   =>  7,
-		 'harvest_brownie' => 10,
-		 'maple_brownie'   => 10,
-		 'monk_fox'        => 10,
-		 'critical_fox'    =>  7),
+    'a' => array('emperor_wolf'   =>  7),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'elder_guard'       => 0,

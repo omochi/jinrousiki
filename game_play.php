@@ -51,6 +51,7 @@ elseif($ROOM->dead_mode && $ROOM->IsPlaying() && $SELF->IsDummyBoy()){
 }
 
 //-- データ出力 --//
+ob_start();
 OutputGamePageHeader(); //HTMLヘッダ
 OutputGameHeader(); //部屋のタイトルなど
 if(! $ROOM->heaven_mode){
@@ -72,6 +73,7 @@ if(! $ROOM->heaven_mode){
   if($RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
 }
 OutputHTMLFooter();
+ob_end_flush();
 
 //-- 関数 --//
 //必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)

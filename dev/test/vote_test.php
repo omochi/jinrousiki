@@ -341,13 +341,13 @@ $ROOM->date = 1;
 #$ROOM->day_night = 'beforegame';
 #$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';
-$ROOM->day_night = 'aftergame';
+#$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live'; //初日用
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
-$SELF = $USERS->ByID(2);
+$SELF = $USERS->ByID(1);
 #$SELF = $USERS->ByID(13);
 #$SELF = $USERS->TraceExchange(14);
 
