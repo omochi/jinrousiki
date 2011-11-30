@@ -140,7 +140,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="vote_reaction">処刑得票能力者</h2>
 <pre>
-<a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="human.php#cursed_brownie">祟神</a>
+<a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="human.php#harvest_brownie">豊穣神</a>・<a href="human.php#maple_brownie">紅葉神</a>・<a href="human.php#cursed_brownie">祟神</a>
 </pre>
 
 <h2 id="sudden_death">ショック死発動能力者</h2>

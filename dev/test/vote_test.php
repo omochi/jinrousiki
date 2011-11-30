@@ -162,7 +162,7 @@ $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[22]->role = 'bishop_priest reduce_voter';
+$RQ_ARGS->TestItems->test_users[22]->role = 'pierrot_wizard reduce_voter';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
@@ -234,6 +234,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
 );
 
 //初日用
+/*
 $RQ_ARGS->TestItems->vote->night = array(
   array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'dummy_boy'),
   array('uname' => 'yellow', 'situation' => 'MAGE_DO', 'target_uname' => 'gold'),
@@ -249,8 +250,8 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'cloud', 'situation' => 'CHILD_FOX_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'moon', 'situation' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'),
 );
+*/
 
-/*
 $RQ_ARGS->TestItems->vote->night = array(
   array('uname' => 'light_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'rose'),
   #array('uname' => 'dark_gray', 'situation' => 'WOLF_EAT', 'target_uname' => 'green'),
@@ -265,8 +266,8 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
   #array('uname' => 'purple', 'situation' => 'DEATH_NOTE_DO', 'target_uname' => 'white'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'sea'),
-  array('uname' => 'cherry', 'situation' => 'VOODOO_FOX_DO', 'target_uname' => 'yellow'),
-  #array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
+  #array('uname' => 'cherry', 'situation' => 'VOODOO_FOX_DO', 'target_uname' => 'yellow'),
+  array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'light_blue'),
   array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'sea'),
   #array('uname' => 'white', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => NULL),
@@ -297,7 +298,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'gust', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
   #array('uname' => 'gust', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
   #array('uname' => 'gust', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
-  #array('uname' => 'gust', 'situation' => 'WIZARD_DO', 'target_uname' => 'sea'),
+  array('uname' => 'gust', 'situation' => 'WIZARD_DO', 'target_uname' => 'land'),
   array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'sea'),
   #array('uname' => 'cloud', 'situation' => 'ESCAPE_DO', 'target_uname' => 'cherry'),
   #array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'gold'),
@@ -312,7 +313,6 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'white'),
   #array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
 );
-*/
 
 //-- 仮想システムメッセージをセット --//
 $RQ_ARGS->TestItems->system_message = array();
@@ -337,7 +337,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 1;
+$ROOM->date = 6;
 #$ROOM->day_night = 'beforegame';
 #$ROOM->day_night = 'day';
 $ROOM->day_night = 'night';

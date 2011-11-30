@@ -2424,6 +2424,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 東方 Project の蘇我 屠自古がモチーフです。
+条件を満たしたまま再投票が続くと大量のショック死が発生するので要注意です。
 </pre>
 
 <h3 id="echo_brownie">山彦 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β13～]</h3>
@@ -2479,7 +2480,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
+<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2503,7 +2504,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2665,7 +2666,7 @@ MVP の賞品としてプレゼントしたものです。
 
 <h3 id="mimic_wizard">物真似師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β15～]</h3>
 <pre>
-魔法使いの一種で、魔法の効果は<a href="#mage">占い師</a>(成功率50%)と<a href="#necromancer">霊能者</a>(成功率50%)。
+魔法使いの一種で、魔法の効果は<a href="#mage">占い師</a> (成功率 50%) と<a href="#necromancer">霊能者</a> (成功率 50%)。
 </pre>
 <ol>
 <li>霊能の発動は三日目以降 (従って、結果が表示されるのは四日目以降)。</li>

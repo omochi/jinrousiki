@@ -18,6 +18,25 @@ class Role_pierrot_wizard extends Role_wizard{
   public $bad_status = 'grassy';
   function __construct(){ parent::__construct(); }
 
+  function SetAssassin($user){
+    global $ROLES;
+
+    $actor = $this->GetActor();
+    foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
+      if($filter->TrapStack($actor, $user->uname)) return;
+    }
+    foreach($ROLES->LoadFilter('guard_assassin') as $filter){ //対暗殺護衛判定
+      if($filter->GuardAssassin($user->uname)) return;
+    }
+    if($user->IsRoleGroup('escaper')) return; //逃亡者は無効
+    if($user->IsRefrectAssassin()){ //反射判定
+      $this->AddSuccess($actor->user_no, 'assassin');
+      return;
+    }
+    $class = $this->GetClass($method = 'Assassin');
+    $class->$method($user);
+  }
+
   function Assassin($user){
     if($user->IsLive(true)) $user->AddDoom(mt_rand(2, 10), 'death_warrant');
   }

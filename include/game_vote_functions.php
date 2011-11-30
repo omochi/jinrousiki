@@ -1119,7 +1119,7 @@ function AggregateVoteNight($skip = false){
   if(! $skip){
     foreach($USERS->rows as $user){ //未投票チェック
       if($user->CheckVote($vote_data) === false){
-	//PrintData($user->uname, $user->main_role); //テスト用
+	if($ROOM->test_mode) PrintData($user->uname, $user->main_role);
 	return false;
       }
     }
