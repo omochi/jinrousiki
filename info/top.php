@@ -1,7 +1,8 @@
 <h1>このサーバについて</h1>
 <font color="#FF0000">
 ここは「<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式 ～汝は人狼なりや？ 式神研究同好会版</a>」最新コード公開テスト専用サーバです。<br>
-Ver. 1.4 系保守用サーバはこちら。 -&gt; <a href="http://www23.atpages.jp/youmu/">妖夢鯖＠式神研</a><br>
+Ver. 1.5 系保守用サーバはこちら。 -&gt; <a href="http://www23.atpages.jp/youmu/">妖夢鯖＠式神研</a><br>
+旧バージョン保守情報はこちら。 -&gt; <a href="http://www36.atpages.jp/jinrousikiengi/">人狼式縁起鯖＠式神研</a><br>
 ログの保全を一切保証しません。<br>
 This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinrousiki/">SourceForge</a>
 </font>

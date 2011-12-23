@@ -2,9 +2,13 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
-OutputInfoPageHeader('デバッグ情報 / 1.4', 1);
+OutputInfoPageHeader('デバッグ情報 / ～ 1.4', 1);
 ?>
 <p><a href="debug.php">最新情報</a></p>
+<p>
+Ver. 1.4.x</a><br>
+<a href="#ver146">6</a>
+</p>
 <p>
 Ver. 1.4.0</a><br>
 <a href="#ver140a24">α24</a>
@@ -23,6 +27,43 @@ Ver. 1.4.0</a><br>
 <a href="#ver140b22">β22</a>
 <a href="#ver140">Release</a>
 </p>
+<p>
+Ver. 1.3.x</a><br>
+<a href="#ver133">3</a>
+</p>
+
+<h2><a id="ver146">Ver. 1.4.6</a></h2>
+<h3>include/game_vote_functions.php % 2488行目付近 (2011/02/24 (Thu) 08:24)</h3>
+
+<h4>[before]</h4>
+<pre>
+$target->ReturnPossessed('possessed_target', $ROOM->date + 1);
+</pre>
+<h4>[after]</h4>
+<pre>
+$target->ReturnPossessed('possessed_target', $ROOM->date + 1);
+<span>$stack = $virtual_target->GetPartner('possessed');
+if($target->user_no == $stack[max(array_keys($stack))]){
+  $virtual_target->ReturnPossessed('possessed', $ROOM->date + 1);
+}</span>
+</pre>
+<h3>include/game_vote_functions.php % 1970行目付近 (2011/02/25 (Fri) 02:54)</h3>
+<h4>[before]</h4>
+<pre>
+else{
+  continue;
+}
+</pre>
+
+<h4>[after]</h4>
+<pre>
+<span>elseif($voted_wolf->IsRole('possessed_wolf') && $voted_wolf->IsSame($target->uname)){
+  $voted_wolf->possessed_cancel = true;
+}</span>
+else{
+  continue;
+}
+</pre>
 
 <h2 id="ver140">Ver. 1.4.0</h2>
 <h3>room_manager.php % 312行目付近 (2010/12/28 (Tue) 19:10)</h3>
@@ -216,15 +257,15 @@ function Ignored(){
 <h4>[before]</h4>
 <pre>
 if($target->IsSame($vote_kill_uname)) continue;
-if($target->IsActive($stack)) $target->LostAbility();
-elseif($target->IsRole('lost_ability')){
+<span>if(</span>$target->IsActive(<span>$stack</span>)<span>)</span> $target->LostAbility()<span>;</span>
+<span>elseif($target->IsRole('lost_ability')){</span>
 	$USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
-}
+<span>}</span>
 </pre>
 <h4>[after]</h4>
 <pre>
-if($target->IsSame($vote_kill_uname) || ! $target->IsRole($stack)) continue;
-$target->IsActive() ? $target->LostAbility() :
+if($target->IsSame($vote_kill_uname)<span> || ! $target->IsRole($stack)</span>) continue;
+$target->IsActive() <span>?</span> $target->LostAbility() <span>:</span>
   $USERS->SuddenDeath($target->user_no, 'SUDDEN_DEATH_SEALED');
 </pre>
 <h3>include/user_class.php % 409行目付近 (2010/08/31 (Tue) 03:59)</h3>
@@ -496,10 +537,10 @@ $said_user = $USERS->ByVirtualUname($talk->uname);
 </pre>
 <h4>[after]</h4>
 <pre>
-if(strpos($talk->location, 'heaven') === false)
+<span>if(strpos($talk->location, 'heaven') === false)</span>
   $said_user = $USERS->ByVirtualUname($talk->uname);
-else
-  $said_user = $USERS->ByUname($talk->uname);
+<span>else
+  $said_user = $USERS->ByUname($talk->uname);</span>
 </pre>
 
 <h3>include/game_vote_functions % 1865 行目付近</h3>
@@ -516,5 +557,12 @@ if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
   $USERS->Kill($target->user_no, 'WOLF_KILLED');
   if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
 <span>}</span>
+</pre>
+
+<h2><a id="ver133">Ver. 1.3.3</a></h2>
+<h3>game_vote.php % 240 行目 (2011/02/22 (Tue) 01:52)</h3>
+<pre>
+× $rand_keys = array_rand($role_array, $user_count); //ランダムキーを取得
+○ <span>shuffle(</span>$rand_keys = array_rand($role_array, $user_count)<span>)</span>; //ランダムキーを取得)
 </pre>
 </body></html>

@@ -26,8 +26,8 @@ class RoomConfig{
   /* IP アドレスは strpos() による先頭一致、ホスト名は正規表現 */
   public $white_list_ip = array(); //IP アドレス (ホワイトリスト)
   public $black_list_ip = array(); //IP アドレス (ブラックリスト)
-  public $white_list_host = NULL; //ホスト名 (ホワイトリスト)
-  public $black_list_host = NULL; //ホスト名 (ブラックリスト)
+  public $white_list_host = null; //ホスト名 (ホワイトリスト)
+  public $black_list_host = null; //ホスト名 (ブラックリスト)
   //public $black_list_host = '/localhost.localdomain/'; //入力例
 
   //-- 村作成設定 --//
@@ -78,7 +78,7 @@ class RoomConfig{
   public $not_open_cast  = true; //霊界で配役を公開しない
   public $auto_open_cast = true; //霊界で配役を自動で公開する
 
-  //霊界オフモードのデフォルト [NULL:無し / 'auto':自動オフ / 'full': 完全オフ ]
+  //霊界オフモードのデフォルト [null:無し / 'auto':自動オフ / 'full': 完全オフ ]
   public $default_not_open_cast = 'auto';
 
   //-- 追加役職設定 --//
@@ -224,7 +224,7 @@ class RoomConfig{
   public $chaos_open_cast      = true; //配役内訳を表示する
   public $chaos_open_cast_camp = true; //陣営通知
   public $chaos_open_cast_role = true; //役職通知
-  //通知モードのデフォルト [NULL:無し / 'camp':陣営 / 'role':役職 / 'full':完全]
+  //通知モードのデフォルト [null:無し / 'camp':陣営 / 'role':役職 / 'full':完全]
   public $default_chaos_open_cast = 'camp'; //陣営通知
 
   //サブ役職制限
@@ -234,7 +234,7 @@ class RoomConfig{
   public $sub_role_limit_hard   = true; //サブ役職制限：HARDモード
   public $no_sub_role           = true; //サブ役職をつけない
   //サブ役職制限のデフォルト
-  //[NULL:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード / hard:HARDモード]
+  //[null:制限無し / no:つけない / easy:EASYモード / normal:NORMALモード / hard:HARDモード]
   public $default_sub_role_limit = 'no'; //つけない (no_sub_role)
 
   //その他
@@ -322,6 +322,12 @@ class TimeConfig{
   //超過時間をリセットします
   public $server_disconnect = 90;
 
+  //警告音開始 (秒) (超過の残り時間がこの時間を切っても未投票の人がいたら警告音が鳴ります)
+  public $alert = 90;
+
+  //警告音感覚 (秒) (警告音の鳴る間隔)
+  public $alert_distance = 6;
+
   //-- リアルタイム制 --//
   public $default_day   = 5; //昼の制限時間の初期値 (分)
   public $default_night = 3; //夜の制限時間の初期値 (分)
@@ -385,8 +391,12 @@ class Sound extends SoundBase{
   public $path      = 'swf'; //音源のパス
   public $extension = 'swf'; //拡張子
 
+  public $entry            = 'sound_entry';            //入村
+  public $full             = 'sound_full';             //定員
   public $morning          = 'sound_morning';          //夜明け
   public $revote           = 'sound_revote';           //再投票
+  public $novote           = 'sound_novote';           //未投票告知
+  public $alert            = 'sound_alert';            //未投票警告
   public $objection_male   = 'sound_objection_male';   //異議あり(男)
   public $objection_female = 'sound_objection_female'; //異議あり(女)
 }

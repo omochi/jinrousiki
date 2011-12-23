@@ -20,7 +20,7 @@ Ver. 1.5.0<br>
 <a href="#ver150b14">β14</a>
 <a href="#ver150b15">β15</a>
 </p>
-<p><a href="debug_1.4.php">1.4</a></p>
+<p><a href="debug_1.4.php">～ 1.4</a></p>
 
 <h2 id="ver150b15">Ver. 1.5.0 β15</h2>
 <h3>include/role/mage.php % 61行目付近 (2011/10/30 (Sun) 01:46)</h3>

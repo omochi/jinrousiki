@@ -7,7 +7,7 @@ $INIT_CONF->LoadFile('game_vote_functions', 'game_play_functions');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame');
-$RQ_ARGS->reverse_log = NULL;
+$RQ_ARGS->reverse_log = null;
 $RQ_ARGS->room_no = 94;
 $RQ_ARGS->TestItems = new StdClass();
 $RQ_ARGS->TestItems->test_room = array(
@@ -202,7 +202,7 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
 //-- 仮想投票データをセット --//
 $RQ_ARGS->TestItems->vote = new StdClass();
 $RQ_ARGS->TestItems->vote->day = array();
-$RQ_ARGS->TestItems->vote_target_day = array(
+$RQ_ARGS->TestItems->vote_target_day_old = array(
   array('id' =>  2, 'target_no' => 11),
   array('id' =>  3, 'target_no' =>  7),
   //array('id' =>  3, 'target_no' => 10),
@@ -228,6 +228,36 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' => 21, 'target_no' => 18),
   array('id' => 22, 'target_no' => 25),
   array('id' => 23, 'target_no' => 14),
+  array('id' => 24, 'target_no' => 25),
+  #array('id' => 25, 'target_no' =>  3),
+  array('id' => 25, 'target_no' => 12),
+);
+$RQ_ARGS->TestItems->vote_target_day = array(
+  array('id' =>  2, 'target_no' => 11),
+  //array('id' =>  3, 'target_no' => 10),
+  array('id' =>  4, 'target_no' => 11),
+  array('id' =>  5, 'target_no' => 25),
+  //array('id' =>  6, 'target_no' =>  3),
+  //array('id' =>  7, 'target_no' =>  3),
+  array('id' =>  7, 'target_no' => 25),
+  array('id' =>  9, 'target_no' =>  3),
+  array('id' => 22, 'target_no' => 25),
+  array('id' => 10, 'target_no' =>  3),
+  array('id' => 11, 'target_no' =>  3),
+  array('id' => 12, 'target_no' => 11),
+  array('id' => 13, 'target_no' => 11),
+  array('id' =>  8, 'target_no' =>  9),
+  array('id' => 14, 'target_no' => 12),
+  array('id' => 15, 'target_no' =>  7),
+  array('id' => 16, 'target_no' => 23),
+  //array('id' => 17, 'target_no' => 22),
+  array('id' => 18, 'target_no' => 25),
+  //array('id' => 18, 'target_no' => 3),
+  array('id' =>  3, 'target_no' =>  7),
+  array('id' => 20, 'target_no' => 22),
+  array('id' => 21, 'target_no' => 18),
+  array('id' => 23, 'target_no' => 14),
+  array('id' => 19, 'target_no' => 22),
   array('id' => 24, 'target_no' => 25),
   #array('id' => 25, 'target_no' =>  3),
   array('id' => 25, 'target_no' => 12),
@@ -261,28 +291,28 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'blue', 'situation' => 'GUARD_DO', 'target_uname' => 'peach'),
   array('uname' => 'blue', 'situation' => 'ANTI_VOODOO_DO', 'target_uname' => 'yellow'),
   array('uname' => 'green', 'situation' => 'POISON_CAT_DO', 'target_uname' => 'frame'),
-  #array('uname' => 'green', 'situation' => 'POISON_CAT_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'green', 'situation' => 'POISON_CAT_NOT_DO', 'target_uname' => null),
   array('uname' => 'purple', 'situation' => 'ASSASSIN_DO', 'target_uname' => 'rose'),
-  #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'purple', 'situation' => 'ASSASSIN_NOT_DO', 'target_uname' => null),
   #array('uname' => 'purple', 'situation' => 'DEATH_NOTE_DO', 'target_uname' => 'white'),
   #array('uname' => 'cherry', 'situation' => 'JAMMER_MAD_DO', 'target_uname' => 'sea'),
   #array('uname' => 'cherry', 'situation' => 'VOODOO_FOX_DO', 'target_uname' => 'yellow'),
   array('uname' => 'cherry', 'situation' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
   #array('uname' => 'cherry', 'situation' => 'DREAM_EAT', 'target_uname' => 'light_blue'),
   array('uname' => 'white', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'sea'),
-  #array('uname' => 'white', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => NULL),
+  #array('uname' => 'white', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => null),
   #array('uname' => 'white', 'situation' => 'POSSESSED_DO',	'target_uname' => 'cloud'),
-  #array('uname' => 'white', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => NULL),
+  #array('uname' => 'white', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => null),
   #array('uname' => 'white', 'situation' => 'ANTI_VOODOO_DO',	'target_uname' => 'yellow'),
   #array('uname' => 'black', 'situation' => 'MAGE_DO', 'target_uname' => 'sea'),
   #array('uname' => 'black', 'situation' => 'WOLF_EAT', 'target_uname' => 'light_gray'),
   #array('uname' => 'black', 'situation' => 'VOODOO_FOX_DO',	'target_uname' => 'peach'),
   #array('uname' => 'gold', 'situation' => 'POSSESSED_DO',	'target_uname' => 'cloud'),
-  #array('uname' => 'gold', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => NULL),
+  #array('uname' => 'gold', 'situation' => 'POSSESSED_NOT_DO',	'target_uname' => null),
   #array('uname' => 'gold', 'situation' => 'POISON_CAT_DO',	'target_uname' => 'red'),
-  #array('uname' => 'gold', 'situation' => 'POISON_CAT_NOT_DO',	'target_uname' => NULL),
+  #array('uname' => 'gold', 'situation' => 'POISON_CAT_NOT_DO',	'target_uname' => null),
   #array('uname' => 'gold', 'situation' => 'TRAP_MAD_DO',	'target_uname' => 'gold'),
-  #array('uname' => 'gold', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => NULL),
+  #array('uname' => 'gold', 'situation' => 'TRAP_MAD_NOT_DO',	'target_uname' => null),
   #array('uname' => 'gold', 'situation' => 'VOODOO_KILLER_DO',	'target_uname' => 'light_gray'),
   #array('uname' => 'frame', 'situation' => 'CHILD_FOX_DO',	'target_uname' => 'peach'),
   #array('uname' => 'frame', 'situation' => 'VOODOO_KILLER_DO',	'target_uname' => 'purple'),
@@ -297,7 +327,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'gust', 'situation' => 'FAIRY_DO', 'target_uname' => 'cloud'),
   #array('uname' => 'gust', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
   #array('uname' => 'gust', 'situation' => 'OGRE_DO', 'target_uname' => 'moon'),
-  #array('uname' => 'gust', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'gust', 'situation' => 'OGRE_NOT_DO', 'target_uname' => null),
   array('uname' => 'gust', 'situation' => 'WIZARD_DO', 'target_uname' => 'land'),
   array('uname' => 'cloud', 'situation' => 'REPORTER_DO', 'target_uname' => 'sea'),
   #array('uname' => 'cloud', 'situation' => 'ESCAPE_DO', 'target_uname' => 'cherry'),
@@ -311,7 +341,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('uname' => 'moon', 'situation' => 'SPREAD_WIZARD_DO', 'target_uname' => '12'),
   #array('uname' => 'sun', 'situation' => 'TRAP_MAD_DO', 'target_uname' => 'gust'),
   array('uname' => 'sun', 'situation' => 'OGRE_DO', 'target_uname' => 'white'),
-  #array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => NULL),
+  #array('uname' => 'sun', 'situation' => 'OGRE_NOT_DO', 'target_uname' => null),
 );
 
 //-- 仮想システムメッセージをセット --//
@@ -323,7 +353,7 @@ $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'VOTE_KILLED', 'message' => 'sky'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 19)
+  array('type' => 'WEATHER', 'message' => 0)
   #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
@@ -337,10 +367,10 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 6;
+$ROOM->date = 4;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -412,13 +442,13 @@ if($talk_view_mode){ //発言表示モード
   $RQ_ARGS->TestItems->talk_data->day = array(
     array('uname' => 'moon', 'location' => 'day', 'font_type' => 'normal', 'sentence' => '●かー'),
     array('uname' => 'light_blue', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'えっ'),
-    array('uname' => 'green', 'location' => 'day system', 'font_type' => NULL,
+    array('uname' => 'green', 'location' => 'day system', 'font_type' => null,
 	  'sentence' => 'OBJECTION	緑'),
     array('uname' => 'dark_gray', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'ﾁﾗｯ'),
     array('uname' => 'yellow', 'location' => 'day', 'font_type' => 'strong',
 	  'sentence' => "占いCO\n黒は●"),
     array('uname' => 'light_gray', 'location' => 'day', 'font_type' => 'normal', 'sentence' => 'おはよう'),
-    array('uname' => 'system', 'location' => 'day system', 'font_type' => NULL,
+    array('uname' => 'system', 'location' => 'day system', 'font_type' => null,
 	  'sentence' => 'MORNING	' . $ROOM->date),
   );
   $RQ_ARGS->TestItems->talk_data->night = array(
@@ -445,7 +475,7 @@ if($talk_view_mode){ //発言表示モード
 	  'sentence' => "占いCO\n黒は●"),
     array('uname' => 'light_gray', 'location' => 'night wolf', 'font_type' => 'normal',
 	  'sentence' => '生き延びたか'),
-    array('uname' => 'system', 'location' => 'night system', 'font_type' => NULL, 'sentence' => 'NIGHT')
+    array('uname' => 'system', 'location' => 'night system', 'font_type' => null, 'sentence' => 'NIGHT')
   );
   $RQ_ARGS->TestItems->talk = array();
   foreach($RQ_ARGS->TestItems->talk_data->{$ROOM->day_night} as $stack){

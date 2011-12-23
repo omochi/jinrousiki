@@ -191,7 +191,7 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //-- 出力関連 --//
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $SERVER_CONF, $GAME_CONF, $RQ_ARGS, $ROOM, $SELF;
+  global $SERVER_CONF, $GAME_CONF, $TIME_CONF, $RQ_ARGS, $ROOM, $SELF;
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . $ROOM->id;
@@ -202,8 +202,8 @@ function OutputGamePageHeader(){
   $title = $SERVER_CONF->title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
   /*
-    Mac で JavaScript でエラーを吐くブラウザがあった当時のコード
-    現在の Safari、Firefox では不要なので false でスキップしておく
+    Mac に JavaScript でエラーを吐くブラウザがあった当時のコード
+    現在の Safari・Firefox では不要なので false でスキップしておく
     //if(preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){
   */
   if(false){
@@ -219,13 +219,13 @@ function OutputGamePageHeader(){
     $anchor_footer = '" target="_top">ここ</a>';
   }
 
-  //ゲーム中、死んで霊話モードに行くとき
+  //ゲーム画面→天国モード (ゲーム中に死亡)
   if($ROOM->IsPlaying() && $SELF->IsDead() &&
      ! ($ROOM->log_mode || $ROOM->dead_mode || $ROOM->heaven_mode)){
     $jump_url = $url_header . '&dead_mode=on';
     $sentence .= '天国モードに切り替えます。';
   }
-  elseif($ROOM->IsAfterGame() && $ROOM->dead_mode){ //ゲームが終了して霊話から戻るとき
+  elseif($ROOM->IsAfterGame() && $ROOM->dead_mode){ //天国モード→ゲーム終了画面
     $jump_url = $url_header;
     $sentence .= 'ゲーム終了後のお部屋に飛びます。';
   }
@@ -252,29 +252,58 @@ function OutputGamePageHeader(){
   }
 
   //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
+  $game_top = '<a id="game_top"></a>';
   if($ROOM->IsPlaying() && $ROOM->IsRealTime() && ! ($ROOM->log_mode || $ROOM->heaven_mode)){
     list($start_time, $end_time) = GetRealPassTime($left_time);
+    $sound_type = null;
+    $alert_flag = false;
     $on_load .= 'output_realtime();';
-    OutputRealTimer($start_time, $end_time);
+    if($left_time < 1 && $SELF->IsLive()){ //超過判定
+      $ROOM->LoadVote(); //投票情報を取得
+      if($ROOM->IsDay()){ //未投票判定
+	$novote_flag = ! in_array($SELF->uname, array_keys($ROOM->vote));
+      }
+      elseif($ROOM->IsNight()){
+	$novote_flag = $SELF->CheckVote($ROOM->ParseVote()) === false;
+      }
+
+      if($novote_flag){
+	$query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
+	if($TIME_CONF->alert > $TIME_CONF->sudden_death - FetchResult($query)){ //警告判定
+	  $alert_flag = true;
+	  $sound_type = 'alert';
+	}
+	else{
+	  $sound_type = 'novote';
+	}
+      }
+    }
+    OutputRealTimer($start_time, $end_time, $sound_type, $alert_flag);
+    $game_top .= "\n".'<span id="vote_alert"></span>';
   }
   $body = isset($on_load) ? '<body onLoad="' . $on_load . '">' : '<body>';
-  echo '</head>'."\n".$body."\n".'<a id="game_top"></a>'."\n";
+  echo '</head>'."\n".$body."\n".$game_top."\n";
 }
 
 //リアルタイム表示に使う JavaScript の変数を出力
-function OutputRealTimer($start_time, $end_time){
-  global $ROOM;
+function OutputRealTimer($start_time, $end_time, $type = null, $flag = false){
+  global $TIME_CONF, $ROOM, $SOUND;
 
+  $js_path     = JINRO_ROOT . '/javascript/';
+  $sound_path  = is_null($type) || ! is_object($SOUND) ? '' : $SOUND->GenerateJS($type);
   $sentence    = '　' . ($ROOM->IsDay() ? '日没' : '夜明け') . 'まで ';
   $start_date  = GenerateJavaScriptDate($start_time);
   $end_date    = GenerateJavaScriptDate($end_time);
   $server_date = GenerateJavaScriptDate($ROOM->system_time);
-
-  echo '<script type="text/javascript" src="javascript/output_realtime.js"></script>'."\n";
+  echo '<script type="text/javascript" src="' . $js_path . 'output_realtime.js"></script>'."\n";
   echo '<script language="JavaScript"><!--'."\n";
   echo 'var sentence = "' . $sentence . '";'."\n";
   echo "var end_date = {$end_date} * 1 + (new Date() - {$server_date});\n";
   echo "var diff_seconds = Math.floor(({$end_date} - {$start_date}) / 1000);\n";
+  echo 'var sound_flag = ' . (is_null($type) ? 'false' : 'true') . ';'."\n";
+  echo 'var countdown_flag = ' . ($flag ? 'true' : 'false') . ';'."\n";
+  echo 'var sound_file = "' . $sound_path . '";'."\n";
+  echo 'var alert_distance = "' . $TIME_CONF->alert_distance . '";'."\n";
   echo '// --></script>'."\n";
 }
 
@@ -421,7 +450,7 @@ function GenerateVictory($id = 0){
     break;
 
   //廃村
-  case NULL:
+  case null:
     $class  = 'none';
     $winner = $ROOM->date > 0 ? 'unfinished' : 'none';
     break;
@@ -441,7 +470,7 @@ EOF;
   }
 
   $result = 'win';
-  $class  = NULL;
+  $class  = null;
   $user   = $id > 0 ? $USERS->ByID($id) : $SELF;
   if($user->user_no < 1) return $str;
   $camp   = $user->GetCamp(true); //所属陣営を取得
@@ -459,7 +488,7 @@ EOF;
     break;
 
   default:
-    $ROLES->stack->class = NULL;
+    $ROLES->stack->class = null;
     switch($camp){
     case 'human':
     case 'wolf':
@@ -532,8 +561,8 @@ function OutputVictory(){ echo GenerateVictory(); }
 function GenerateVoteResult(){
   global $MESSAGE, $ROOM;
 
-  if(! $ROOM->IsPlaying()) return NULL; //ゲーム中以外は出力しない
-  if($ROOM->IsEvent('blind_vote') && ! $ROOM->IsOpenData()) return NULL; //傘化けの判定
+  if(! $ROOM->IsPlaying()) return null; //ゲーム中以外は出力しない
+  if($ROOM->IsEvent('blind_vote') && ! $ROOM->IsOpenData()) return null; //傘化けの判定
 
   //昼なら前日、夜ならの今日の集計を表示
   return GetVoteList(($ROOM->IsDay() && ! $ROOM->log_mode) ? $ROOM->date - 1 : $ROOM->date);
@@ -572,7 +601,7 @@ function OutputRevoteList(){
 function GetVoteList($date){
   global $ROOM;
 
-  if($ROOM->personal_mode) return NULL; //スキップ判定
+  if($ROOM->personal_mode) return null; //スキップ判定
   //指定された日付の投票結果を取得
   $query = $ROOM->GetQueryHeader('system_message', 'message') .
     " AND date = {$date} and type = 'VOTE_KILL'";
@@ -583,7 +612,7 @@ function GetVoteList($date){
 function GenerateVoteList($raw_data, $date){
   global $RQ_ARGS, $ROOM, $SELF;
 
-  if(count($raw_data) < 1) return NULL; //投票総数
+  if(count($raw_data) < 1) return null; //投票総数
 
   $open_vote = $ROOM->IsOpenData() || $ROOM->IsOption('open_vote'); //投票数開示判定
   $table_stack = array();
@@ -628,7 +657,7 @@ function OutputTalk($talk, &$builder){
   //発言ユーザを取得
   /*
     $uname は必ず $talk から取得すること。
-    $USERS にはシステムユーザー 'system' が存在しないため、$actor は常に NULL になっている。
+    $USERS にはシステムユーザー 'system' が存在しないため、$actor は常に null になっている。
   */
   $actor = $talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
     $USERS->ByVirtualUname($talk->uname);
@@ -996,7 +1025,7 @@ function OutputAbilityAction(){
 function GenerateLastWords($shift = false){
   global $MESSAGE, $ROOM;
 
-  if(! ($ROOM->IsPlaying() || $ROOM->log_mode) || $ROOM->personal_mode) return NULL; //スキップ判定
+  if(! ($ROOM->IsPlaying() || $ROOM->log_mode) || $ROOM->personal_mode) return null; //スキップ判定
 
   //前日の死亡者遺言を出力
   $set_date = $ROOM->date - 1;
@@ -1004,7 +1033,7 @@ function GenerateLastWords($shift = false){
   $query = $ROOM->GetQueryHeader('system_message', 'message') .
     " AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
   $array = FetchArray($query);
-  if(count($array) < 1) return NULL;
+  if(count($array) < 1) return null;
 
   $str = <<<EOF
 <table class="system-lastwords"><tr>
@@ -1040,7 +1069,7 @@ function GenerateDeadMan(){
   global $ROOM;
 
   //ゲーム中以外は出力しない
-  if(! $ROOM->IsPlaying()) return NULL;
+  if(! $ROOM->IsPlaying()) return null;
 
   $yesterday = $ROOM->date - 1;
 
@@ -1103,7 +1132,7 @@ function GenerateDeadMan(){
 function GenerateWeatherReport(){
   global $ROLE_DATA, $RQ_ARGS, $ROOM;
 
-  if(! property_exists($ROOM->event, 'weather') || ! $ROOM->event->weather ||
+  if(! property_exists($ROOM->event, 'weather') || is_null($ROOM->event->weather) ||
      ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight())) return '';
 
   $weather = $ROLE_DATA->weather_list[$ROOM->event->weather];
@@ -1146,8 +1175,8 @@ function GenerateDeadManType($name, $type){
 
   $name .= ' ';
   $base   = true;
-  $class  = NULL;
-  $reason = NULL;
+  $class  = null;
+  $reason = null;
   $action = strtolower($base_type);
   $open_reason = $ROOM->IsOpenData();
   $show_reason = $open_reason || $SELF->IsLiveRole('yama_necromancer');

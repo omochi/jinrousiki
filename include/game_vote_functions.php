@@ -746,6 +746,7 @@ function AggregateVoteDay(){
   }
   $ROLES->stack->target = $vote_target_list;
   //PrintData($ROLES->stack, 'RoleStack');
+  //PrintData($vote_message_list, 'VoteMessage');
   ksort($vote_message_list); //投票順をソート (憑依対応)
   $stack = array();
   foreach($vote_message_list as $id => $list) $stack[$USERS->ByID($id)->uname] = $list;
@@ -762,8 +763,8 @@ function AggregateVoteDay(){
 
   //-- 投票結果登録 --//
   $max_voted_number = 0; //最多得票数
-  foreach($live_uname_list as $uname){ //タブ区切りのデータをシステムメッセージに登録
-    extract($vote_message_list[$uname]); //配列を展開
+  foreach($vote_message_list as $uname => $stack){ //タブ区切りのデータをシステムメッセージに登録
+    extract($stack); //配列を展開
     if($voted_number > $max_voted_number) $max_voted_number = $voted_number; //最大得票数を更新
 
     //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)

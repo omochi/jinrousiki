@@ -236,7 +236,7 @@ class ImageManager{
   function Exists($name){ return file_exists($this->GetPath($name)); }
 
   //画像タグ生成
-  function Generate($name, $alt = NULL, $table = false){
+  function Generate($name, $alt = null, $table = false){
     $str = '<img';
     if($this->class != '') $str .= ' class="' . $this->class . '"';
     $str .= ' src="' . $this->GetPath($name) . '"';
@@ -255,7 +255,7 @@ class ImageManager{
 
 //-- 勝利陣営の画像処理の基底クラス --//
 class VictoryImageBase extends ImageManager{
-  function Generate($name, $alt = NULL, $table = NULL){
+  function Generate($name, $alt = null, $table = null){
     switch($name){
     case 'human':
       $alt = '村人勝利';
@@ -299,10 +299,16 @@ class VictoryImageBase extends ImageManager{
 
 //-- 音源処理の基底クラス --//
 class SoundBase{
-  //音を鳴らす
-  function Output($type){
-    $path = JINRO_ROOT . '/' . $this->path . '/' . $this->$type . '.' . $this->extension;
-    echo <<< EOF
+  //ファイルパス生成
+  function GetPath($type, $file = null){
+    $path = JINRO_ROOT . '/' . $this->path;
+    return $path . '/' . (is_null($file) ? $this->$type : $file) . '.' . $this->extension;
+  }
+
+  //HTML 生成
+  function Generate($type, $file = null){
+    $path = $this->GetPath($type, $file);
+    return <<<EOF
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0" width="0" height="0">
 <param name="movie" value="{$path}">
 <param name="quality" value="high">
@@ -312,6 +318,18 @@ class SoundBase{
 
 EOF;
   }
+
+  //HTML 生成 (JavaScript 用)
+  function GenerateJS($type){
+    $path = $this->GetPath($type);
+    return "<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0' width='0' height='0'>" .
+"<param name='movie' value='" . $path . "'><param name='quality' value='high'>" .
+"<embed src='" . $path . "' type='application/x-shockwave-flash' quality='high' width='0' height='0' loop='false' pluginspage='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" .
+"</embed></object>";
+  }
+
+  //出力
+  function Output($type){ echo $this->Generate($type); }
 }
 
 //-- Twitter 投稿用の基底クラス --//
@@ -1508,7 +1526,7 @@ class RoleData{
   }
 
   //役職名のタグ生成
-  function GenerateRoleTag($role, $css = NULL, $sub_role = false){
+  function GenerateRoleTag($role, $css = null, $sub_role = false){
     $str = '';
     if(is_null($css)) $css = $this->DistinguishRoleClass($role);
     if($sub_role) $str .= '<br>';

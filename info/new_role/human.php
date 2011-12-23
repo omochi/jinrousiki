@@ -2469,7 +2469,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="harvest_brownie">豊穣神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β16～]</h3>
 <h4>[耐性] 処刑：<a href="sub_role.php#frostbite">凍傷</a> (30%)</h4>
 <pre>
-座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_voter">会心</a>を付加し、
+座敷童子の亜種で、自分に処刑投票してきた人が村人陣営だった場合は一定確率 (30%) で<a href="sub_role.php#critical_voter">会心</a>を付加し、
 処刑された場合は投票者全員に一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。
 </pre>
 <ol>
@@ -2493,7 +2493,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <h3 id="maple_brownie">紅葉神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β16～]</h3>
 <h4>[耐性] 処刑：<a href="sub_role.php#frostbite">凍傷</a> (30%)</h4>
 <pre>
-座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_luck">痛恨</a>を付加し、
+座敷童子の亜種で、自分に処刑投票してきた人が村人陣営だった場合は一定確率 (30%) で<a href="sub_role.php#critical_luck">痛恨</a>を付加し、
 処刑された場合は投票者全員にさらに一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。
 </pre>
 <ol>

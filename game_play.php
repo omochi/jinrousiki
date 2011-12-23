@@ -125,7 +125,7 @@ function EntryLastWords($say){
 
   if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
 
-  if($say == ' ') $say = NULL; //スペースだけなら「消去」
+  if($say == ' ') $say = null; //スペースだけなら「消去」
   if($SELF->IsLive()){ //登録しない役職をチェック
     if(! $SELF->IsLastWordsLimited()) $SELF->Update('last_words', $say);
   }
@@ -202,7 +202,7 @@ function CheckSilence(){
   if(! $ROOM->IsRealTime() && $left_time > 0){ //仮想時間制の沈黙判定
     if($last_updated_pass_time > $TIME_CONF->silence){
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      $ROOM->Talk($str, '', '', NULL, $TIME_CONF->silence_pass);
+      $ROOM->Talk($str, '', '', null, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
     }
   }
@@ -380,10 +380,10 @@ EOF;
       $user_count = $USERS->GetUserCount();
       $max_user   = FetchResult($ROOM->GetQueryHeader('room', 'max_user'));
       if($user_count == $max_user && $COOKIE->user_count != $max_user){
-	$SOUND->Output('revote');
+	$SOUND->Output('full');
       }
       elseif($COOKIE->user_count != $user_count){
-	$SOUND->Output('morning');
+	$SOUND->Output('entry');
       }
     }
     elseif($COOKIE->day_night != $ROOM->day_night){ //夜明け

@@ -2836,7 +2836,7 @@ Ver. 1.5.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_voter">会心</a>を付加し、
+  <td class="ability">座敷童子の亜種で、自分に処刑投票してきた人が村人陣営だった場合は一定確率 (30%) で<a href="sub_role.php#critical_voter">会心</a>を付加し、
 処刑された場合は投票者全員に一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。
 </td>
   <td>Ver. 1.5.0 β16</td>
@@ -2847,7 +2847,7 @@ Ver. 1.5.0
   <td><a href="human.php#brownie_group">座敷童子系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">座敷童子の亜種で、処刑投票者が村人陣営だった場合に一定確率 (30%) で<a href="sub_role.php#critical_luck">痛恨</a>を付加し、
+  <td class="ability">座敷童子の亜種で、自分に処刑投票してきた人が村人陣営だった場合は一定確率 (30%) で<a href="sub_role.php#critical_luck">痛恨</a>を付加し、
 処刑された場合は投票者全員にさらに一定確率 (30%) で<a href="sub_role.php#frostbite">凍傷</a>を付加する。</td>
   <td>Ver. 1.5.0 β16</td>
 </tr>

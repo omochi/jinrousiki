@@ -8,6 +8,8 @@ class TimeCalculation{
   public $silence_night;  //非リアルタイム制の沈黙で経過する時間 (夜)
   public $silence;        //非リアルタイム制の沈黙になるまでの時間
   public $sudden_death;   //制限時間を消費後に突然死するまでの時間
+  public $alert;          //警告音開始
+  public $alert_distance; //警告音の間隔
   public $die_room;       //自動廃村になるまでの時間
   public $establish_wait; //次の村を立てられるまでの待ち時間
 
@@ -23,6 +25,8 @@ class TimeCalculation{
     $this->silence_night  = ConvertTime($TIME_CONF->silence_pass * $night_seconds);
     $this->silence        = ConvertTime($TIME_CONF->silence);
     $this->sudden_death   = ConvertTime($TIME_CONF->sudden_death);
+    $this->alert          = ConvertTime($TIME_CONF->alert);
+    $this->alert_distance = ConvertTime($TIME_CONF->alert_distance);
     $this->die_room       = ConvertTime($ROOM_CONF->die_room);
     $this->establish_wait = ConvertTime($ROOM_CONF->establish_wait);
   }
