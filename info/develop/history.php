@@ -6,6 +6,9 @@ OutputInfoPageHeader('開発履歴', 1);
 ?>
 <p>
 Ver. 1.5.0<br>
+<a href="#ver150">Release</a>
+</p>
+<p>
 <a href="#ver150b1">β1</a>
 <a href="#ver150b2">β2</a>
 <a href="#ver150b3">β3</a>
@@ -39,6 +42,11 @@ Ver. 1.5.0<br>
 <a href="history_1.3.php">～ 1.3</a>
 <a href="history_1.4.php">1.4</a>
 </p>
+
+<h2 id="ver150">Ver. 1.5.0 (Rev. 442) : 2011/12/24 (Sat) 00:00</h2>
+<ul>
+<li>超過警告音を実装</li>
+</ul>
 
 <h2 id="ver150b17">Ver. 1.5.0 β17 (Rev. 436) : 2011/11/26 (Sat) 17:43</h2>
 <ul>

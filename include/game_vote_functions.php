@@ -680,7 +680,7 @@ function VoteDay(){
 
   //システムメッセージ
   if($ROOM->test_mode) return true;
-  $ROOM->Talk("VOTE_DO\t" . $USERS->GetHandleName($target->uname, true), $SELF->uname);
+  $ROOM->Talk($USERS->GetHandleName($target->uname, true), 'VOTE_DO', $SELF->uname);
 
   AggregateVoteDay(); //集計処理
   OutputVoteResult('投票完了');
@@ -1090,7 +1090,7 @@ function VoteNight(){
   if($not_action){ //投票キャンセルタイプは何もしない
     if(! $SELF->Vote($RQ_ARGS->situation)) OutputVoteResult('データベースエラー'); //投票処理
     $ROOM->SystemMessage($SELF->handle_name, $RQ_ARGS->situation);
-    $ROOM->Talk($RQ_ARGS->situation, $SELF->uname);
+    $ROOM->Talk('', $RQ_ARGS->situation, $SELF->uname);
   }
   else{
     $filter->CheckVoteNight();
@@ -1100,7 +1100,7 @@ function VoteNight(){
     }
     $str = $SELF->handle_name . "\t" . $ROLES->stack->target_handle;
     $ROOM->SystemMessage($str, $ROLES->stack->message);
-    $ROOM->Talk($ROLES->stack->message . "\t" . $ROLES->stack->target_handle, $SELF->uname);
+    $ROOM->Talk($ROLES->stack->target_handle, $ROLES->stack->message, $SELF->uname);
   }
   if($ROOM->test_mode) return;
   AggregateVoteNight(); //集計処理

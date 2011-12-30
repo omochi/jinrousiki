@@ -74,8 +74,8 @@ class ServerConfig{
   #public $debug_mode = false;
   public $debug_mode = true;
 
-  //村作成パスワード (NULL 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
-  public $room_password = NULL;
+  //村作成パスワード (null 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
+  public $room_password = null;
 
   //村作成テストモード (村作成時の DB アクセス処理をスキップします。開発者テスト用スイッチです)
   public $dry_run_mode = false;
@@ -256,6 +256,7 @@ class MenuLinkConfig{
   public $add_list = array(
     '式神研系' => array('チルノ鯖' => 'http://www12.atpages.jp/cirno/',
 			'妖夢鯖' => 'http://www23.atpages.jp/youmu/',
+			'人狼式縁起鯖' => 'http://www36.atpages.jp/jinrousikiengi/',
 			//'Eva 鯖' => 'http://jinrou.kuroienogu.net/',
 			'SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 			'開発・バグ報告スレ' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',

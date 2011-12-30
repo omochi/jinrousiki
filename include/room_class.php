@@ -59,15 +59,27 @@ class Room{
     global $SERVER_CONF, $GAME_CONF, $RQ_ARGS;
 
     if($RQ_ARGS->IsVirtualRoom()) return $RQ_ARGS->TestItems->talk;
+
+    $select = 'scene, location, uname, action, sentence, font_type';
+    switch($this->day_night){
+    case 'beforegame':
+    case 'aftergame':
+      $table = 'talk_' . $this->day_night;
+      break;
+
+    default:
+      $table = 'talk';
+      break;
+    }
+
     if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
-      $query = 'SELECT talk_id, uname, sentence, font_type, location FROM talk' .
-	$this->GetQuery(! $heaven) . ' AND location LIKE ' .
-	($heaven ? "'heaven'" : "'{$this->day_night}%'");
+      $query = "SELECT talk_id, {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
+	' AND scene = ' . ($heaven ? "'heaven'" : "'{$this->day_night}'");
       return FetchTalk($query, 'Talk', false);
     }
-    $query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
-      ' AND location LIKE ' . ($heaven ? "'heaven'" : "'{$this->day_night}%'") .
-      ' ORDER BY talk_id DESC';
+
+    $query = "SELECT {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
+      ' AND scene = ' . ($heaven ? "'heaven'" : "'{$this->day_night}'") . ' ORDER BY talk_id DESC';
     if(! $this->IsPlaying()) $query .= ' LIMIT 0, ' . $GAME_CONF->display_talk_limit;
     return FetchObject($query, 'Talk');
   }
@@ -353,22 +365,45 @@ class Room{
   }
 
   //発言登録
-  function Talk($sentence, $uname = '', $location = '', $font_type = NULL, $spend_time = 0){
+  function Talk($sentence, $action = null, $uname = '', $scene = '', $location = null,
+		$font_type = null, $spend_time = 0){
     if($uname == '') $uname = 'system';
-    if($location == '') $location = $this->day_night . ' system';
+    if($scene == ''){
+      $scene = $this->day_night;
+      if(is_null($location)) $location = 'system';
+    }
     if($this->test_mode){
-      PrintData(LineToBR($sentence), "Talk: {$uname}: {$location}: {$font_type}");
+      $str = "Talk: {$uname}: {$scene}: {$location}: {$action}: {$font_type}";
+      PrintData(LineToBR($sentence), $str);
       return true;
     }
 
-    $items  = 'room_no, date, location, uname, sentence, spend_time, time';
-    $values = "{$this->id}, {$this->date}, '{$location}', '{$uname}', '{$sentence}', " .
-      "{$spend_time}, UNIX_TIMESTAMP()";
+    switch($scene){
+    case 'beforegame':
+    case 'aftergame':
+      $table = 'talk_' . $scene;
+      break;
+
+    default:
+      $table = 'talk';
+      break;
+    }
+    $items  = 'room_no, date, scene, uname, sentence, spend_time, time';
+    $values = "{$this->id}, {$this->date}, '{$scene}', '{$uname}', '{$sentence}', {$spend_time}, " .
+      "UNIX_TIMESTAMP()";
+    if(isset($action)){
+      $items .= ', action';
+      $values .= ", '{$action}'";
+    }
+    if(isset($location)){
+      $items .= ', location';
+      $values .= ", '{$location}'";
+    }
     if(isset($font_type)){
       $items .= ', font_type';
       $values .= ", '{$font_type}'";
     }
-    return InsertDatabase('talk', $items, $values);
+    return InsertDatabase($table, $items, $values);
   }
 
   //超過警告メッセージ登録
@@ -425,7 +460,7 @@ class Room{
   function ChangeNight(){
     $this->day_night = 'night';
     SendQuery("UPDATE room SET day_night = '{$this->day_night}'" . $this->GetQuery(false));
-    $this->Talk('NIGHT'); //夜がきた通知
+    $this->Talk('', 'NIGHT'); //夜がきた通知
   }
 
   //次の日にする
@@ -436,7 +471,7 @@ class Room{
     SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day'" . $this->GetQuery(false));
 
     //夜が明けた通知
-    $this->Talk("MORNING\t" . $this->date);
+    $this->Talk($this->date, 'MORNING');
     $this->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
     $this->UpdateTime(); //最終書き込みを更新
     //$this->DeleteVote(); //今までの投票を全部削除

@@ -1,7 +1,7 @@
 <?php
 //-- セキュリティ関連 --//
 //リファラチェック
-function CheckReferer($page, $white_list = NULL){
+function CheckReferer($page, $white_list = null){
   global $SERVER_CONF;
 
   if(is_array($white_list)){ //ホワイトリストチェック
@@ -97,30 +97,30 @@ function FetchCount($query){
 
 //DB から一次元の配列を取得する処理のラッパー関数
 function FetchArray($query){
-  $array = array();
-  if(($sql = SendQuery($query)) === false) return $array;
+  $stack = array();
+  if(($sql = SendQuery($query)) === false) return $stack;
   $count = mysql_num_rows($sql);
-  for($i = 0; $i < $count; $i++) $array[] = mysql_result($sql, $i, 0);
+  for($i = 0; $i < $count; $i++) $stack[] = mysql_result($sql, $i, 0);
   mysql_free_result($sql);
-  return $array;
+  return $stack;
 }
 
 //DB から連想配列を取得する処理のラッパー関数
 function FetchAssoc($query, $shift = false){
-  $array = array();
-  if(($sql = SendQuery($query)) === false) return $array;
-  while(($stack = mysql_fetch_assoc($sql)) !== false) $array[] = $stack;
+  $stack = array();
+  if(($sql = SendQuery($query)) === false) return $stack;
+  while(($array = mysql_fetch_assoc($sql)) !== false) $stack[] = $array;
   mysql_free_result($sql);
-  return $shift ? array_shift($array) : $array;
+  return $shift ? array_shift($stack) : $stack;
 }
 
 //DB からオブジェクト形式の配列を取得する処理のラッパー関数
 function FetchObject($query, $class, $shift = false){
-  $array = array();
-  if(($sql = SendQuery($query)) === false) return $array;
-  while(($stack = mysql_fetch_object($sql, $class)) !== false) $array[] = $stack;
+  $stack = array();
+  if(($sql = SendQuery($query)) === false) return $stack;
+  while(($object = mysql_fetch_object($sql, $class)) !== false) $stack[] = $object;
   mysql_free_result($sql);
-  return $shift ? array_shift($array) : $array;
+  return $shift ? array_shift($stack) : $stack;
 }
 
 //talk 専用 DB 取得関数 (負荷実験テスト用)
@@ -128,7 +128,9 @@ function FetchTalk($query, $class, $reverse){
   global $GAME_CONF, $ROOM;
 
   $stack = array();
-  foreach(FetchObject($query, $class) as $object) $stack[$object->talk_id] = $object;
+  if(($sql = SendQuery($query)) === false) return $stack;
+  while(($object = mysql_fetch_object($sql, $class)) !== false) $stack[$object->talk_id] = $object;
+  mysql_free_result($sql);
   if(! $reverse) krsort($stack);
   if(! $ROOM->IsPlaying() && $GAME_CONF->display_talk_limit > 0){
     $stack = array_slice($stack, 0, $GAME_CONF->display_talk_limit);
@@ -143,7 +145,7 @@ function InsertDatabase($table, $items, $values){
 
 //ユーザ登録処理
 function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $icon_no = 0,
-		    $profile = NULL, $sex = 'male', $role = NULL, $session_id = NULL){
+		    $profile = null, $sex = 'male', $role = null, $session_id = null){
   global $MESSAGE;
 
   $crypt_password = CryptPassword($password);
@@ -162,8 +164,8 @@ function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $ic
 }
 
 //テーブルを排他的ロック
-function LockTable($type = NULL){
-  $stack = array('room', 'user_entry', 'talk', 'vote');
+function LockTable($type = null){
+  $stack = array('room', 'user_entry', 'talk', 'talk_beforegame', 'talk_aftergame', 'vote');
   switch($type){
   case 'game':
     array_push($stack, 'system_message', 'user_icon');
@@ -196,7 +198,7 @@ function DeleteRoom($room_no){
 }
 
 //DB 最適化
-function OptimizeTable($name = NULL){
+function OptimizeTable($name = null){
   $query = is_null($name) ? 'room, user_entry, talk, system_message, vote' : $name;
   SendQuery('OPTIMIZE TABLE ' . $query, true);
 }
@@ -360,7 +362,7 @@ function CryptPassword($raw_password){
 
 //-- 出力関連 --//
 //変数表示関数 (デバッグ用)
-function PrintData($data, $name = NULL){
+function PrintData($data, $name = null){
   $str = is_null($name) ? '' : $name . ': ';
   $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
   echo $str . '<br>';
@@ -427,7 +429,7 @@ function OutputPageLink($CONFIG){
 }
 
 //ページ送り用のリンクタグを作成する
-function GeneratePageLink($CONFIG, $page, $title = NULL){
+function GeneratePageLink($CONFIG, $page, $title = null){
   if($page == $CONFIG->current) return '[' . $page . ']';
   $option = (is_null($CONFIG->page_type) ? 'page' : $CONFIG->page_type) . '=' . $page;
   $list = $CONFIG->option;

@@ -146,7 +146,7 @@ function VoteKick(){
   }
 
   if($SELF->Vote('KICK_DO', $target->uname)){ //投票処理
-    $ROOM->Talk("KICK_DO\t" . $target->handle_name, $SELF->uname); //投票しました通知
+    $ROOM->Talk($target->handle_name, 'KICK_DO', $SELF->uname); //投票しました通知
     $vote_count = AggregateVoteKick($target); //集計処理
     OutputVoteResult("投票完了：{$target->handle_name} さん：{$vote_count} 人目 " .
 		     "(Kick するには {$GAME_CONF->kick} 人以上の投票が必要です)");
@@ -197,7 +197,7 @@ function VoteDeadUser(){
 
   //システムメッセージ
   $str = 'システム：' . $SELF->handle_name . 'さんは蘇生を辞退しました。';
-  $ROOM->Talk($str, $SELF->uname, 'heaven', 'normal');
+  $ROOM->Talk($str, null, $SELF->uname, 'heaven', null, 'normal');
 
   OutputVoteResult('投票完了');
 }

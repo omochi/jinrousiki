@@ -1,9 +1,10 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β16
-  + RoomConfig
-    - 追加：$change_cupid, $change_mind_cupid, $change_triangle_cupid, $change_angel,
-            $change_cupid_list
+  変更履歴 from Ver. 1.5.0β17
+  + TimeConfig
+    - 追加：$alert, $alert_distance
+  + Sound
+    - 追加：$entry, $full, $novote, $alert
 */
 
 //-- 村メンテナンス・作成設定 --//

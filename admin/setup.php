@@ -71,6 +71,7 @@ function CheckTable(){
   $str     = 'を作成しました' . $footer;
   $success = ') を追加しました';
   $failed  = ') を追加できませんでした';
+  $engine  = 'Type = InnoDB';
 
   $table = 'room';
   $title = $header . ' (' . $table . ') ';
@@ -80,22 +81,8 @@ room_no INT NOT NULL PRIMARY KEY, room_name TEXT, room_comment TEXT, max_user IN
 option_role TEXT, status TEXT, date INT, day_night TEXT, last_updated TEXT, victory_role TEXT,
 establisher_ip TEXT, establish_time DATETIME, start_time DATETIME, finish_time DATETIME
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query})");
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
     echo $title . $str;
-  }
-  elseif($revision > 0){
-    //追加フィールド処理
-    $column = FetchArray('SHOW COLUMNS FROM ' . $table);
-    $stack  = array(
-      'establisher_ip' => 'TEXT',
-      'establish_time' => 'DATETIME',
-      'start_time'     => 'DATETIME',
-      'finish_time'    => 'DATETIME');
-    foreach($stack as $name => $type){
-      if(in_array($name, $column)) continue;
-      $status = SendQuery("ALTER TABLE {$table} ADD {$name} {$type}") ? $success : $failed;
-      echo $title . 'にフィールド (' . $name . $status . $footer;
-    }
   }
 
   $table = 'user_entry';
@@ -106,7 +93,7 @@ room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT, icon_no INT, pr
 sex TEXT, password TEXT, role TEXT, live TEXT, session_id CHAR(32) UNIQUE, last_words TEXT,
 ip_address TEXT, last_load_day_night TEXT, INDEX user_entry_index(room_no, user_no)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query})");
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
     echo $title . $str;
 
     //管理者を登録
@@ -115,49 +102,44 @@ EOF;
 		VALUES(0, 0, 'system', 'システム', 1, 'ゲームマスター',
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
-  elseif(0 < $revision && $revision < 152){
-    SendQuery("ALTER TABLE {$table} MODIFY room_no INT NOT NULL"); //room_no の型を変更
-    echo $header . ' (' . $table . ') の room_no の型を "INT NOT NULL" に変更しました' . $footer;
-
-    if($revision < 140){ //INDEX を設定
-      SendQuery("ALTER TABLE {$table} ADD INDEX user_entry_index(room_no, user_no)");
-      echo $title . 'に INDEX (room_no, user_no) を設定しました' . $footer;
-    }
-  }
 
   $table = 'talk';
   $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, location TEXT,
-uname TEXT, time INT NOT NULL, sentence TEXT, font_type TEXT, spend_time INT,
-INDEX talk_index(room_no, date, time)
+talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
+time INT NOT NULL,
+INDEX talk_index(room_no, date, scene, time)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query})");
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
     echo $title . $str;
   }
-  elseif($revision > 0){
-    //追加フィールド処理
-    $column = FetchArray('SHOW COLUMNS FROM ' . $table);
-    $stack  = array('talk_id' => 'INT NOT NULL AUTO_INCREMENT PRIMARY KEY');
-    foreach($stack as $name => $type){
-      if(in_array($name, $column)) continue;
-      $status = SendQuery("ALTER TABLE room ADD $name $type") ? $success : $failed;
-      echo $title . 'にフィールド (' . $name . $status . $footer;
-    }
 
-    if($revision < 152){
-      SendQuery("ALTER TABLE {$table} MODIFY room_no INT NOT NULL"); //room_no の型を変更
-      echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
+  $table = 'talk_beforegame';
+  $title = $header . ' (' . $table . ') ';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
+time INT NOT NULL,
+INDEX talk_index(room_no, date, scene, time)
+EOF;
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
+    echo $title . $str;
+  }
 
-      if($revision < 140){ //time の型を変更、INDEX を設定
-	SendQuery("ALTER TABLE {$table} MODIFY time INT NOT NULL");
-	echo $title . 'の time の型を "INT NOT NULL" に変更しました' . $footer;
-
-	SendQuery("ALTER TABLE {$table} ADD INDEX talk_index(room_no, date, time)");
-	echo $title . 'に INDEX (room_no, date, time) を設定しました' . $footer;
-      }
-    }
+  $table = 'talk_aftergame';
+  $title = $header . ' (' . $table . ') ';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
+time INT NOT NULL,
+INDEX talk_index(room_no, date, scene, time)
+EOF;
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
+    echo $title . $str;
   }
 
   $table = 'vote';
@@ -167,17 +149,8 @@ EOF;
 room_no INT NOT NULL, date INT, uname TEXT, target_uname TEXT, vote_number INT, vote_times INT,
 situation TEXT, INDEX vote_index(room_no, date)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query})");
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
     echo $title . $str;
-  }
-  elseif(0 < $revision && $revision < 152){
-    SendQuery("ALTER TABLE {$table} MODIFY room_no INT NOT NULL"); //room_no の型を変更
-    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
-
-    if($revision < 140){ //INDEX を設定
-      SendQuery("ALTER TABLE {$table} ADD INDEX vote_index(room_no, date)");
-      echo $title . 'に INDEX (room_no, date) を設定しました' . $footer;
-    }
   }
 
   $table = 'system_message';
@@ -186,17 +159,8 @@ EOF;
     $query = <<<EOF
 room_no INT NOT NULL, message TEXT, type TEXT, date INT, INDEX system_message_index(room_no, date)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query})");
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
     echo $title . $str;
-  }
-  elseif(0 < $revision && $revision < 152){
-    SendQuery("ALTER TABLE {$table} MODIFY room_no INT NOT NULL"); //room_no の型を変更
-    echo $title . 'の room_no の型を "INT NOT NULL" に変更しました' . $footer;
-
-    if($revision < 140){ //INDEX を設定
-      SendQuery("ALTER TABLE {$table} ADD INDEX system_message_index(room_no, date)");
-      echo $title . 'に INDEX (room_no, date) を設定しました' . $footer;
-    }
   }
 
   $table = 'user_icon';
@@ -204,10 +168,10 @@ EOF;
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 icon_no INT PRIMARY KEY, icon_name TEXT, icon_filename TEXT, icon_width INT, icon_height INT,
-color TEXT, session_id TEXT, appearance TEXT, category TEXT, author TEXT, regist_date DATETIME,
+color TEXT, session_id TEXT, category TEXT, appearance TEXT, author TEXT, regist_date DATETIME,
 disable BOOL
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query})");
+    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
     echo $title . $str;
 
     //身代わり君のアイコンを登録 (No. 0)
@@ -228,27 +192,6 @@ EOF;
       SendQuery("{$query}($id, '$name', '$file', $width, $height, '$color')");
       echo "ユーザアイコン ($id $file $name $width × $height $color) を登録しました" . $footer;
     }
-  }
-  elseif($revision > 0){ //追加フィールド処理
-    $column = FetchArray('SHOW COLUMNS FROM ' . $table);
-    $stack  = array(
-      'appearance'  => 'TEXT',
-      'category'    => 'TEXT',
-      'author'      => 'TEXT',
-      'regist_date' => 'DATETIME',
-      'disable'     => 'BOOL',);
-    foreach($stack as $name => $type){
-      if(in_array($name, $column)) continue;
-      $status = SendQuery("ALTER TABLE {$table} ADD {$name} {$type}") ? $success : $failed;
-      echo $title . 'にフィールド (' . $name . $status . $footer;
-    }
-  }
-
-  $title = $header . '(admin_manage)';
-  if(! in_array('admin_manage', $table_list)){
-    SendQuery("CREATE TABLE admin_manage(session_id TEXT)");
-    SendQuery("INSERT INTO admin_manage VALUES('')");
-    echo $title . $str;
   }
 
   mysql_query("GRANT ALL ON {$DB_CONF->name}.* TO {$DB_CONF->user}");

@@ -84,7 +84,7 @@ $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'missfire_cat joker[3]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'missfire_cat';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
@@ -96,13 +96,13 @@ $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'voodoo_mad';
+$RQ_ARGS->TestItems->test_users[11]->role = 'voodoo_mad joker[2]';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'trap_mad';
+$RQ_ARGS->TestItems->test_users[12]->role = 'trap_mad decide';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
@@ -138,7 +138,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'corpse_courier_mad joker[4]';
+$RQ_ARGS->TestItems->test_users[18]->role = 'corpse_courier_mad';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -174,7 +174,7 @@ $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
 $RQ_ARGS->TestItems->test_users[24]->handle_name = '月';
 $RQ_ARGS->TestItems->test_users[24]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard infected[20]';
+$RQ_ARGS->TestItems->test_users[24]->role = 'barrier_wizard infected[20] watcher';
 $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
@@ -367,7 +367,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 4;
+$ROOM->date = 2;
 #$ROOM->day_night = 'beforegame';
 $ROOM->day_night = 'day';
 #$ROOM->day_night = 'night';

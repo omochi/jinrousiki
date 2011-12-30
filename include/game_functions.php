@@ -9,8 +9,7 @@ function GetRealPassTime(&$left_time){
   global $TIME_CONF, $ROOM;
 
   //シーンの最初の時刻を取得
-  $query = 'SELECT MIN(time) FROM talk' . $ROOM->GetQuery() .
-    " AND location LIKE '{$ROOM->day_night}%'";
+  $query = 'SELECT MIN(time) FROM talk' . $ROOM->GetQuery() . " AND scene = '{$ROOM->day_night}'";
   if(($start_time = FetchResult($query)) === false) $start_time = $ROOM->system_time;
 
   $base_time = $ROOM->real_time->{$ROOM->day_night} * 60; //設定された制限時間
@@ -28,7 +27,7 @@ function GetTalkPassTime(&$left_time, $silence = false){
   global $TIME_CONF, $ROOM;
 
   $query = 'SELECT SUM(spend_time) FROM talk' . $ROOM->GetQuery() .
-    " AND location LIKE '{$ROOM->day_night}%'";
+    " AND scene = '{$ROOM->day_night}'";
   $spend_time = (int)FetchResult($query);
 
   if($ROOM->IsDay()){ //昼は12時間
@@ -682,7 +681,7 @@ function OutputTalk($talk, &$builder){
     $real_user = $USERS->ByRealUname($talk->uname);
   }
 
-  if($talk->type == 'system' && isset($talk->action)){ //投票情報
+  if($talk->location == 'system' && isset($talk->action)){ //投票情報
     switch($talk->action){
     case 'GAMESTART_DO': //現在は不使用
       return true;
@@ -690,15 +689,20 @@ function OutputTalk($talk, &$builder){
     case 'OBJECTION': //「異議」ありは常時表示
       return $builder->AddSystemMessage('objection-' . $actor->sex, $name . $talk->sentence);
 
+    case 'MORNING':
+    case 'NIGHT':
+      return $builder->AddSystemTalk($talk->sentence);
+
     default: //ゲーム開始前の投票 (例：KICK) は常時表示
       return $builder->flag->open_talk || $ROOM->IsBeforeGame() ?
 	$builder->AddSystemMessage($talk->class, $name . $talk->sentence) : false;
     }
   }
-  if($talk->uname == 'system') return $builder->AddSystemTalk($talk->sentence); //システムメッセージ
+  //システムメッセージ
+  if($talk->location == 'system') return $builder->AddSystemTalk($talk->sentence);
 
   //身代わり君専用システムメッセージ
-  if($talk->type == 'dummy_boy') return $builder->AddSystemTalk($talk->sentence, 'dummy-boy');
+  if($talk->location == 'dummy_boy') return $builder->AddSystemTalk($talk->sentence, 'dummy-boy');
 
   switch($talk->scene){
   case 'day':
@@ -721,7 +725,7 @@ function OutputTalk($talk, &$builder){
     if($builder->flag->open_talk){
       $class = '';
       $voice = $talk->font_type;
-      switch($talk->type){
+      switch($talk->location){
       case 'common':
 	$name .= '<span>(共有者)</span>';
 	$class = 'night-common';
@@ -769,7 +773,7 @@ function OutputTalk($talk, &$builder){
       }
 
       $ROLES->actor = $actor;
-      switch($talk->type){
+      switch($talk->location){
       case 'common': //共有者
 	if($builder->flag->common || $mind_read) return $builder->AddTalk($actor, $talk);
 	if($ROLES->LoadMain($actor)->Whisper($builder, $talk->font_type)) return;
@@ -872,9 +876,10 @@ function OutputTimeStamp($builder){
   else return false;
 
   if(is_null($time = FetchResult($ROOM->GetQueryHeader('room', $type)))) return false;
-  $talk->uname = 'system';
+  $talk->uname    = 'system';
+  $talk->scene    = $ROOM->day_night;
+  $talk->location = 'system';
   $talk->sentence .= '：' . ConvertTimeStamp($time);
-  $talk->ParseLocation($ROOM->day_night . ' system');
   OutputTalk($talk, $builder);
 }
 

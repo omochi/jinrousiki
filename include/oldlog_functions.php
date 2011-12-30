@@ -207,11 +207,13 @@ function GenerateLogIndex(){
   $RQ_ARGS->reverse = 'off';
   $LOG_CONF = new OldLogConfig(); //設定をロード
   if($RQ_ARGS->max_room_no < 1) return false;
+  $header = "../log/{$RQ_ARGS->prefix}index";
+  $footer = '</body></html>'."\n";
   $end_page = ceil(($RQ_ARGS->max_room_no - $RQ_ARGS->min_room_no + 1) / $LOG_CONF->view);
   for($i = 1; $i <= $end_page; $i++){
     $RQ_ARGS->page = $i;
     $index = $RQ_ARGS->index_no - $i + 1;
-    file_put_contents("../log/{$RQ_ARGS->prefix}index{$index}.html",  GenerateFinishedRooms($i));
+    file_put_contents("{$header}{$index}.html",  GenerateFinishedRooms($i) . $footer);
   }
 }
 
@@ -281,23 +283,22 @@ function LayoutHeaven(){
 }
 
 //指定の日付の会話ログを生成
-function GenerateDateTalkLog($set_date, $set_location){
+function GenerateDateTalkLog($set_date, $set_scene){
   global $SERVER_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS;
 
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
-  if($SERVER_CONF->sort_talk_by_php){
-    $query = "SELECT talk_id, uname, sentence, font_type, location " .
-      "FROM talk WHERE room_no = {$ROOM->id} AND ";
-  }
-  else{
-    $query = "SELECT uname, sentence, font_type, location FROM talk WHERE room_no = {$ROOM->id} AND ";
-  }
-  switch($set_location){
+  $query_select = 'scene, location, uname, action, sentence, font_type';
+  $query_table  = 'talk';
+  $query_where  = "room_no = {$ROOM->id} AND ";
+  if($SERVER_CONF->sort_talk_by_php) $query_select .= ', talk_id';
+
+  switch($set_scene){
   case 'beforegame':
   case 'aftergame':
-    $table_class = $set_location;
-    $query .= "location LIKE '{$set_location}%'";
+    $table_class = $set_scene;
+    $query_table .= '_' . $set_scene;
+    $query_where .= "scene = '{$set_scene}'";
     if($ROOM->watch_mode || $ROOM->single_view_mode){
       $USERS->ResetRoleList();
       unset($ROOM->event);
@@ -306,27 +307,30 @@ function GenerateDateTalkLog($set_date, $set_location){
 
   case 'heaven_only':
     $table_class = $RQ_ARGS->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
-    $query .= "date = {$set_date} AND (location = 'heaven' OR uname = 'system')";
+    $query_where .= "date = {$set_date} AND (location = 'heaven' OR uname = 'system')";
     break;
 
   default:
     $flag_border_game = true;
     $table_class = $RQ_ARGS->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
-    $query .= "date = {$set_date} AND location <> 'beforegame' AND location <> 'aftergame'";
-    if(! $RQ_ARGS->heaven_talk) $query .= " AND location <> 'heaven'";
+    $scene_list = array("'day'", "'night'");
+    if($RQ_ARGS->heaven_talk) $scene_list[] = "'heaven'";
+    $query_where .= "date = {$set_date} AND scene IN (" . implode(',', $scene_list) . ')';
     if($ROOM->watch_mode || $ROOM->single_view_mode){
       $USERS->ResetRoleList();
       $USERS->SetEvent(true);
     }
     break;
   }
-  if($ROOM->personal_mode) $query .= " AND uname = 'system'"; //個人結果表示モード
+  if($ROOM->personal_mode) $query_where .= " AND uname = 'system'"; //個人結果表示モード
+  $query = "SELECT {$query_select} FROM {$query_table} WHERE {$query_where}";
   if($SERVER_CONF->sort_talk_by_php){
+    //PrintData($query, $set_scene);
     $talk_list = FetchTalk($query, 'Talk', $RQ_ARGS->reverse_log);
   }
   else{
     $query .= ' ORDER BY talk_id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
-    //PrintData($query, $set_location);
+    //PrintData($query, $set_scene);
     $talk_list = FetchObject($query, 'Talk');
   }
   //-- 仮想稼動モードテスト用 --//
@@ -346,7 +350,7 @@ function GenerateDateTalkLog($set_date, $set_location){
   }
   $ROOM->date = $set_date;
   $ROOM->day_night = $table_class;
-  if($set_location != 'heaven_only') $ROOM->SetWeather();
+  if($set_scene != 'heaven_only') $ROOM->SetWeather();
 
   $builder = new DocumentBuilder();
   $id = $ROOM->IsPlaying() ? 'date' . $ROOM->date : $ROOM->day_night;
@@ -388,8 +392,8 @@ function GenerateDateTalkLog($set_date, $set_location){
 }
 
 //指定の日付の会話ログを出力
-function OutputDateTalkLog($set_date, $set_location){
-  echo GenerateDateTalkLog($set_date, $set_location);
+function OutputDateTalkLog($set_date, $set_scene){
+  echo GenerateDateTalkLog($set_date, $set_scene);
 }
 
 //シーン切り替え時のログ出力

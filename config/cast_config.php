@@ -1,8 +1,7 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β16
-  + 変更：$replace_role_list, $chaos_hyper_wolf_list, $chaos_hyper_random_role_list,
-          $topping_list, $boost_rate_list
+  変更履歴 from Ver. 1.5.0β17
+  + 変更：なし
 */
 //-- 配役設定 --//
 class CastConfig extends CastConfigBase{

@@ -12,7 +12,7 @@ class User{
   public $revive_flag  = false;
   public $lost_flag    = false;
 
-  function __construct($role = NULL){
+  function __construct($role = null){
     if(is_null($role)) return;
     $this->role = $role;
     $this->ParseCompoundParameters();
@@ -21,7 +21,7 @@ class User{
   function ParseCompoundParameters(){ $this->ParseRoles(); }
 
   //役職情報の展開処理
-  function ParseRoles($role = NULL){
+  function ParseRoles($role = null){
     //初期化処理
     if(isset($role)) $this->role = $role;
     $this->partner_list = array();
@@ -56,7 +56,7 @@ class User{
   //指定したユーザーデータのセットを名前つき配列にして返します。
   //このメソッドは extract 関数を使用してオブジェクトのプロパティを
   //迅速にローカルに展開するために使用できます。 (現在は未使用)
-  function ToArray($type = NULL){
+  function ToArray($type = null){
     switch($type){
     case 'profiles':
       return array('profile'     => $this->profile,
@@ -86,12 +86,12 @@ class User{
   }
 
   //ユーザ ID 取得
-  function GetID($role = NULL){
+  function GetID($role = null){
     return isset($role) ? $role . '[' . $this->user_no . ']' : $this->user_no;
   }
 
   //HN 取得 (システムメッセージ用)
-  function GetHandleName($uname, $result = NULL){
+  function GetHandleName($uname, $result = null){
     global $USERS;
 
     $stack = array($this->handle_name, $USERS->GetHandleName($uname, true));
@@ -120,8 +120,8 @@ class User{
 
   //拡張情報取得
   function GetPartner($type, $fill = false){
-    $stack = array_key_exists($type, $this->partner_list) ? $this->partner_list[$type] : NULL;
-    return is_array($stack) ? $stack : ($fill ? array() : NULL);
+    $stack = array_key_exists($type, $this->partner_list) ? $this->partner_list[$type] : null;
+    return is_array($stack) ? $stack : ($fill ? array() : null);
   }
 
   //メイン役職の拡張情報取得
@@ -146,11 +146,11 @@ class User{
 
   //仮想的な生死判定
   function IsDeadFlag($strict = false){
-    if(! $strict) return NULL;
+    if(! $strict) return null;
     if($this->suicide_flag) return true;
     if($this->revive_flag)  return false;
     if($this->dead_flag)    return true;
-    return NULL;
+    return null;
   }
 
   //生存フラグ判定
@@ -243,7 +243,7 @@ class User{
   }
 
   //能力喪失判定
-  function IsActive($role = NULL){
+  function IsActive($role = null){
     return (is_null($role) || $this->IsRole($role)) &&
       ! $this->lost_flag && ! $this->IsRole('lost_ability');
   }
@@ -322,7 +322,7 @@ class User{
     }
     elseif($this->IsDead()) return false;
 
-    $date = $ROOM->date - ($shift ? 0 : 1);
+    $date = $ROOM->date - ($shift ? 1 : 0);
     if($date == 1 || $ROOM->IsNight()) $date++;
     return $this->GetDoomDate('joker') == $date;
   }
@@ -438,7 +438,7 @@ class User{
   }
 
   //投票済み判定
-  function IsVoted($vote_data, $action, $not_action = NULL){
+  function IsVoted($vote_data, $action, $not_action = null){
     return (isset($not_action) && array_key_exists($not_action, $vote_data) &&
 	    is_array($vote_data[$not_action]) &&
 	    array_key_exists($this->uname, $vote_data[$not_action])) ||
@@ -528,7 +528,7 @@ class User{
     if($this->IsRole('reporter')) return $this->IsVoted($vote_data, 'REPORTER_DO');
     if($this->IsRole('anti_voodoo')) return $this->IsVoted($vote_data, 'ANTI_VOODOO_DO');
     if($this->IsRoleGroup('assassin') || $this->IsRole('doom_fox')){
-      $event = $ROOM->IsEvent('force_assassin_do') ? NULL : 'ASSASSIN_NOT_DO';
+      $event = $ROOM->IsEvent('force_assassin_do') ? null : 'ASSASSIN_NOT_DO';
       return $this->IsVoted($vote_data, 'ASSASSIN_DO', $event);
     }
     if($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
@@ -549,7 +549,7 @@ class User{
     }
     if($this->IsRoleGroup('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
     if($this->IsOgre()){
-      $event = $ROOM->IsEvent('force_assassin_do') ? NULL : 'OGRE_NOT_DO';
+      $event = $ROOM->IsEvent('force_assassin_do') ? null : 'OGRE_NOT_DO';
       return $this->IsVoted($vote_data, 'OGRE_DO', $event);
     }
     if($ROOM->IsOpenCast()) return true;
@@ -767,7 +767,7 @@ EOF;
   }
 
   //遺言を取得して保存する
-  function SaveLastWords($handle_name = NULL){
+  function SaveLastWords($handle_name = null){
     global $ROOM;
 
     if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return; //スキップ判定
@@ -785,7 +785,7 @@ EOF;
   }
 
   //投票処理
-  function Vote($action, $target = NULL, $vote_number = NULL){
+  function Vote($action, $target = null, $vote_number = null){
     global $RQ_ARGS, $ROOM;
 
     if($ROOM->test_mode){
@@ -929,7 +929,7 @@ class UserDataSet{
 
   //ユーザ名 -> ユーザ ID 変換
   function UnameToNumber($uname){
-    return array_key_exists($uname, $this->names) ? $this->names[$uname] : NULL;
+    return array_key_exists($uname, $this->names) ? $this->names[$uname] : null;
   }
 
   //HN -> ユーザ名変換
@@ -937,7 +937,7 @@ class UserDataSet{
     foreach($this->rows as $user){
       if($user->IsSameName($handle_name)) return $user->uname;
     }
-    return NULL;
+    return null;
   }
 
   //ユーザ情報取得 (ユーザ ID 経由)
@@ -1118,7 +1118,7 @@ class UserDataSet{
 
   //ジョーカーの最終所持者判定
   function SetJoker(){
-    $id = NULL;
+    $id = null;
     $max_date = 1;
     foreach($this->rows as $user){
       if(! $user->IsRole('joker')) continue;

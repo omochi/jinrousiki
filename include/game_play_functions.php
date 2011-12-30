@@ -35,7 +35,7 @@ function ConvertSay(&$say){
 }
 
 //発言を DB に登録する
-function Write($say, $location, $spend_time, $update = false){
+function Write($say, $scene, $location, $spend_time, $update = false){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //声の大きさを決定
@@ -45,7 +45,7 @@ function Write($say, $location, $spend_time, $update = false){
     foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
   }
 
-  $ROOM->Talk($say, $SELF->uname, $location, $voice, $spend_time);
+  $ROOM->Talk($say, null, $SELF->uname, $scene, $location, $voice, $spend_time);
   if($update) $ROOM->UpdateTime();
   SendCommit();
 }
@@ -88,15 +88,15 @@ function OutputAbility(){
 }
 
 //仲間を表示する
-function OutputPartner($list, $header, $footer = NULL){
+function OutputPartner($list, $header, $footer = null){
   global $ROLE_IMG;
 
   if(count($list) < 1) return false; //仲間がいなければ表示しない
   $list[] = '</td>';
   $str = '<table class="ability-partner"><tr>'."\n" .
-    $ROLE_IMG->Generate($header, NULL, true) ."\n" .
+    $ROLE_IMG->Generate($header, null, true) ."\n" .
     '<td>　' . implode('さん　', $list) ."\n";
-  if($footer) $str .= $ROLE_IMG->Generate($footer, NULL, true) ."\n";
+  if($footer) $str .= $ROLE_IMG->Generate($footer, null, true) ."\n";
   echo $str . '</tr></table>'."\n";
 }
 
@@ -121,7 +121,7 @@ function OutputPossessedTarget(){
 function OutputSelfAbilityResult($action){
   global $RQ_ARGS, $ROOM, $SELF;
 
-  $header = NULL;
+  $header = null;
   $footer = 'result_';
   switch($action){
   case 'MAGE_RESULT':
@@ -287,8 +287,8 @@ function OutputSelfAbilityResult($action){
   $target_date = $ROOM->date - 1;
   if($ROOM->test_mode){
     $stack = $RQ_ARGS->TestItems->system_message;
-    $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : NULL;
-    $stack = is_array($stack) && array_key_exists($action, $stack) ? $stack[$action] : NULL;
+    $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : null;
+    $stack = is_array($stack) && array_key_exists($action, $stack) ? $stack[$action] : null;
     $result_list = is_array($stack) ? $stack : array();
   }
   else{
@@ -319,11 +319,11 @@ function OutputSelfAbilityResult($action){
     break;
 
   case 'weather_priest':
-    foreach($result_list as $result) OutputAbilityResult($header, NULL, $result);
+    foreach($result_list as $result) OutputAbilityResult($header, null, $result);
     break;
 
   case 'crisis_priest':
-    foreach($result_list as $result) OutputAbilityResult($header . $result, NULL, $footer);
+    foreach($result_list as $result) OutputAbilityResult($header . $result, null, $footer);
     break;
 
   case 'guard':
@@ -344,7 +344,7 @@ function OutputSelfAbilityResult($action){
 
   case 'fox':
     foreach($result_list as $result){
-      if($SELF->IsSameName($result)) OutputAbilityResult($header, NULL);
+      if($SELF->IsSameName($result)) OutputAbilityResult($header, null);
     }
     break;
 
@@ -360,13 +360,13 @@ function OutputSelfAbilityResult($action){
 }
 
 //能力発動結果を表示する
-function OutputAbilityResult($header, $target, $footer = NULL){
+function OutputAbilityResult($header, $target, $footer = null){
   global $ROLE_IMG;
 
   $str = '<table class="ability-result"><tr>'."\n";
-  if(isset($header)) $str .= $ROLE_IMG->Generate($header, NULL, true) ."\n";
+  if(isset($header)) $str .= $ROLE_IMG->Generate($header, null, true) ."\n";
   if(isset($target)) $str .= '<td>' . $target . '</td>'."\n";
-  if(isset($footer)) $str .= $ROLE_IMG->Generate($footer, NULL, true) ."\n";
+  if(isset($footer)) $str .= $ROLE_IMG->Generate($footer, null, true) ."\n";
   echo $str . '</tr></table>'."\n";
 }
 

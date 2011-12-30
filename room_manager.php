@@ -482,9 +482,9 @@ EOF;
 function GenerateRoomOption($option, $label = ''){
   global $ROOM_CONF, $TIME_CONF, $CAST_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  if(property_exists($ROOM_CONF, $option) && $ROOM_CONF->$option === false) return NULL;
+  if(property_exists($ROOM_CONF, $option) && $ROOM_CONF->$option === false) return null;
 
-  $caption = property_exists($GAME_OPT_CAPT, $option) ? $GAME_OPT_CAPT->$option : NULL;
+  $caption = property_exists($GAME_OPT_CAPT, $option) ? $GAME_OPT_CAPT->$option : null;
   switch($option){
   case 'room_name':
   case 'room_comment':
@@ -615,7 +615,7 @@ EOF;
 function OutputRoomOption($option_list, $label = '', $border = true){
   $stack = array();
   foreach($option_list as $option) $stack[] = GenerateRoomOption($option, $label);
-  if(count($stack) < 1) return NULL;
+  if(count($stack) < 1) return null;
   if($border) array_unshift($stack, '<tr><td colspan="2"><hr></td></tr>');
   echo implode('', $stack);
 }
@@ -624,7 +624,7 @@ function OutputRoomOption($option_list, $label = '', $border = true){
 function OutputRoomOptionDummyBoy(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  if(! $ROOM_CONF->dummy_boy) return NULL;
+  if(! $ROOM_CONF->dummy_boy) return null;
 
   $checked_dummy_boy = '';
   $checked_gm_login  = '';
@@ -659,7 +659,7 @@ EOF;
 function OutputRoomOptionOpenCast(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  if(! $ROOM_CONF->not_open_cast) return NULL;
+  if(! $ROOM_CONF->not_open_cast) return null;
 
   $checked_close = '';
   $checked_auto  = '';
@@ -708,7 +708,7 @@ EOF;
 function OutputRoomOptionChaos(){
   global $ROOM_CONF, $GAME_OPT_MESS, $GAME_OPT_CAPT;
 
-  if(! $ROOM_CONF->chaos) return NULL;
+  if(! $ROOM_CONF->chaos) return null;
 
   OutputRoomOption(array('topping', 'boost_rate'));
   if($ROOM_CONF->chaos_open_cast){

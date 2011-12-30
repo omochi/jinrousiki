@@ -112,7 +112,7 @@ function SendCookie(&$objection_list){
   if($RQ_ARGS->set_objection && $objection_list[$SELF->user_no - 1] < $GAME_CONF->objection &&
      ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))){
     $ROOM->SystemMessage($SELF->user_no, 'OBJECTION');
-    $ROOM->Talk('OBJECTION', $SELF->uname);
+    $ROOM->Talk('', 'OBJECTION', $SELF->uname);
     $objection_list[$SELF->user_no - 1]++; //使用回数をインクリメント
   }
   setcookie('objection', implode(',', $objection_list), $ROOM->system_time + 3600); //リストを登録
@@ -141,11 +141,11 @@ function EntryLastWords($say){
 function Say($say){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
-  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->day_night, 0, true); //ゲーム開始前後
+  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->day_night, null, 0, true); //ゲーム開始前後
   if($SELF->IsDummyBoy() && $RQ_ARGS->last_words){ //身代わり君のシステムメッセージ (遺言)
-    return Write($say, "{$ROOM->day_night} dummy_boy", 0);
+    return Write($say, $ROOM->day_night, 'dummy_boy', 0);
   }
-  if($SELF->IsDead()) return Write($say, 'heaven', 0); //死者の霊話
+  if($SELF->IsDead()) return Write($say, 'heaven', null, 0); //死者の霊話
 
   if($ROOM->IsRealTime()){ //リアルタイム制
     GetRealPassTime($left_time);
@@ -162,7 +162,7 @@ function Say($say){
   if($ROOM->IsDay()){ //昼はそのまま発言
     if($ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
     if($SELF->IsRole('echo_brownie')) $ROLES->LoadMain($SELF)->EchoSay(); //山彦の処理
-    return Write($say, $ROOM->day_night, $spend_time, true);
+    return Write($say, $ROOM->day_night, null, $spend_time, true);
   }
   //if($ROOM->IsNight()){ //夜は役職毎に分ける
   $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
@@ -180,7 +180,7 @@ function Say($say){
     $location = 'self_talk';
 
   $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
-  return Write($say, 'night ' . $location, $update ? $spend_time : 0, $update);
+  return Write($say, $ROOM->day_night, $location, $update ? $spend_time : 0, $update);
 }
 
 //ゲーム停滞のチェック
@@ -202,7 +202,7 @@ function CheckSilence(){
   if(! $ROOM->IsRealTime() && $left_time > 0){ //仮想時間制の沈黙判定
     if($last_updated_pass_time > $TIME_CONF->silence){
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      $ROOM->Talk($str, '', '', null, $TIME_CONF->silence_pass);
+      $ROOM->Talk($str, null, '', '', null, null, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
     }
   }
@@ -336,7 +336,7 @@ function OutputGameHeader(){
 
     if($ROOM->IsFinished()){
       echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)' . $footer;
-      if(FetchResult($ROOM->GetQuery(true, 'talk') . " AND location LIKE 'night%'") > 0){
+      if(FetchResult($ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0){
 	echo $url_header . $ROOM->date . $url_night . $ROOM->date . '(夜)' . $footer;
       }
       echo $header . $url_scene . 'aftergame' . $url_footer . '(後)' . $footer;
