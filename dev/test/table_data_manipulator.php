@@ -51,8 +51,9 @@ OutputHTMLHeader('Test Tools');
 //ConvertTableEncode('talk');
 //ConvertTableEncode('user_entry');
 //ConvertTalkTableEncode('talk', array('uname', 'sentence'), 238);
-ConvertTableEncode('user_icon');
+//ConvertTableEncode('user_icon');
 //ConvertTableEncode('vote');
+//OutputExportIconTable();
 OutputHTMLFooter();
 //UpdateRoomInfo('room_name', 'テスト', 1);
 //OutputActionResult('処理完了', '処理完了。');
@@ -394,4 +395,21 @@ function ConvertTalkTableEncode($table, $recode_list, $start){
       }
     }
   }
+}
+
+function OutputExportIconTable(){
+  $query = 'SELECT * FROM user_icon ORDER BY icon_no';
+  $str = 'INSERT INTO `user_icon` (`icon_no`, `icon_name`, `icon_filename`, `icon_width`, ' .
+    '`icon_height`, `color`, `session_id`, `appearance`, `category`, `author`, `regist_date`, ' .
+    '`disable`) VALUES'."\n".'<br>';
+  foreach(FetchAssoc($query) as $stack){
+    extract($stack);
+    if($icon_no <= 10) continue;
+    $date = is_null($regist_date) ? 'NULL' : "'$regist_date'";
+    $bool = is_null($disable) ? 'NULL' : "'$disable'";
+    $str .= "({$icon_no}, '{$icon_name}', '{$icon_filename}', {$icon_width}, " .
+      "{$icon_height}, '{$color}', NULL, '{$appearance}', '{$category}', '{$author}', {$date}, " .
+      "$bool),\n<br>";
+  }
+  echo $str;
 }

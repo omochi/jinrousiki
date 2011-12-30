@@ -21,7 +21,7 @@ class Message{
   //-- user_manager.php --//
   //EntryUser() : ユーザ登録
   //入村メッセージ
-  //public $entry_user = 'さんが村の集会場にやってきました'
+  //public $entry_user = 'さんが村の集会場にやってきました';
   public $entry_user = 'さんが幻想入りしました';
 
   //-- game_view.php & OutputGameHTMLHeader() --//
@@ -36,7 +36,7 @@ class Message{
 
   //OutputTalkLog() : 会話、システムメッセージ出力
   public $objection = 'が「異議」を申し立てました'; //「異議」あり
-  //public $game_start = 'はゲーム開始投票をしました' //ゲーム開始投票 (現在は不使用)
+  //public $game_start = 'はゲーム開始投票をしました'; //ゲーム開始投票 (現在は不使用)
   public $kick_do           = 'に KICK 投票しました'; //KICK 投票
   public $vote_do           = 'に処刑投票しました'; //処刑投票
   public $wolf_eat          = 'に狙いをつけました'; //人狼の投票

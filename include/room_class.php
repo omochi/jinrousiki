@@ -72,14 +72,22 @@ class Room{
       break;
     }
 
+    if($heaven){
+      $table = 'talk';
+      $scene = 'heaven';
+    }
+    else{
+      $scene = $this->day_night;
+    }
+
     if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
       $query = "SELECT talk_id, {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
-	' AND scene = ' . ($heaven ? "'heaven'" : "'{$this->day_night}'");
+	' AND scene = ' . $scene;
       return FetchTalk($query, 'Talk', false);
     }
 
     $query = "SELECT {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
-      ' AND scene = ' . ($heaven ? "'heaven'" : "'{$this->day_night}'") . ' ORDER BY talk_id DESC';
+      " AND scene = '{$scene}' ORDER BY talk_id DESC";
     if(! $this->IsPlaying()) $query .= ' LIMIT 0, ' . $GAME_CONF->display_talk_limit;
     return FetchObject($query, 'Talk');
   }
