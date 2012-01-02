@@ -58,11 +58,11 @@ function CreateRoom(){
     $$str = @$_POST[$str];
     EscapeStrings($$str);
     if($$str == ''){ //未入力チェック
-      OutputRoomAction('empty', $name);
+      OutputRoomAction('empty', false, $name);
       return false;
     }
     if(strlen($$str) > $ROOM_CONF->$str || preg_match($ROOM_CONF->ng_word, $$str)){ //文字列チェック
-      OutputRoomAction('comment', $name);
+      OutputRoomAction('comment', false, $name);
       return false;
     }
   }
@@ -73,17 +73,27 @@ function CreateRoom(){
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
+  if(! StartTransaction()){ //トランザクション開始
+    OutputRoomAction('busy');
+    return false;
+  }
+  $room_limit = FetchResult('SELECT count FROM room_limit FOR UPDATE'); //稼動数カウントをロック
+
   $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
   if(! $SERVER_CONF->debug_mode){ //デバッグモード時は村作成制限をスキップ
     $str = 'room_password'; //パスワードチェック
     if(isset($SERVER_CONF->$str) && @$_POST[$str] != $SERVER_CONF->$str){
+      SendRollBack();
       OutputActionResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
     }
 
     //ブラックリストチェック
-    if(CheckBlackList()) OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
+    if(CheckBlackList()){
+      SendRollBack();
+      OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
+    }
 
-    $query = "FROM room WHERE status <> 'finished'"; //チェック用の共通クエリ
+    $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
     $time  = FetchResult("SELECT MAX(establish_time) {$query}"); //連続作成制限チェック
     if(isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait){
       OutputRoomAction('establish_wait');
@@ -275,13 +285,8 @@ function CreateRoom(){
   //PrintData($option_role_list, 'OptionRole');
   //OutputHTMLFooter(true);
 
-  //テーブルをロック
-  if(LockTable()){
-    OutputRoomAction('busy');
-    return false;
-  }
-
   //登録
+  //ALTER TABLE room_no AUTO_INCREMENT = value; //カウンタセット SQL
   $room_no     = FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
   $game_option = implode(' ', $game_option_list);
   $option_role = implode(' ', $option_role_list);
@@ -304,7 +309,8 @@ function CreateRoom(){
       }
 
       if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
-	OutputRoomAction('success', $room_name);
+	SendCommit();
+	OutputRoomAction('success', false, $room_name);
 	return true;
       }
     }
@@ -312,15 +318,17 @@ function CreateRoom(){
     $TWITTER->Send($room_no, $room_name, $room_comment); //Twitter 投稿処理
     //OutputSiteSummary(); //RSS更新 //テスト中
 
-    OutputRoomAction('success', $room_name);
+    SendCommit();
+    OutputRoomAction('success', false, $room_name);
     $status = true;
   }while(false);
+
   if(! $status) OutputRoomAction('busy');
   return true;
 }
 
 //結果出力 (CreateRoom() 用)
-function OutputRoomAction($type, $str = ''){
+function OutputRoomAction($type, $rollback = true, $str = ''){
   global $SERVER_CONF;
 
   switch($type){
@@ -384,6 +392,7 @@ function OutputRoomAction($type, $str = ''){
     echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
     break;
   }
+  if($rollback) SendRollBack();
   OutputHTMLFooter(); //フッタ出力
 }
 
@@ -414,7 +423,7 @@ function OutputRoomList(){
   $delete_header = '<a href="admin/room_delete.php?room_no=';
   $delete_footer = '">[削除 (緊急用)]</a>'."\n";
   $query = 'SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status ' .
-    "FROM room WHERE status <> 'finished' ORDER BY room_no DESC";
+    "FROM room WHERE status IN ('waiting', 'playing') ORDER BY room_no DESC";
   foreach(FetchAssoc($query) as $stack){
     extract($stack);
     $delete     = $SERVER_CONF->debug_mode ? $delete_header . $room_no . $delete_footer : '';

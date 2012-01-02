@@ -76,8 +76,14 @@ function SendQuery($query, $commit = false){
   return false;
 }
 
+//トランザクション処理
+function StartTransaction(){ return mysql_query('START TRANSACTION'); }
+
 //コミット処理
 function SendCommit(){ return mysql_query('COMMIT'); }
+
+//ロールバック処理
+function SendRollBack(){ return mysql_query('ROLLBACK'); }
 
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
@@ -140,7 +146,7 @@ function FetchTalk($query, $class, $reverse){
 
 //データベース登録のラッパー関数
 function InsertDatabase($table, $items, $values){
-  return SendQuery("INSERT INTO {$table}({$items}) VALUES({$values})", true);
+  return SendQuery("INSERT INTO {$table}({$items}) VALUES({$values})");
 }
 
 //ユーザ登録処理
@@ -149,26 +155,34 @@ function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $ic
   global $MESSAGE;
 
   $crypt_password = CryptPassword($password);
-  $items = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live, profile, last_words';
+  $items  = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live';
   $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
-    "'{$crypt_password}', 'live', ";
+    "'{$crypt_password}', 'live'";
+
   if($uname == 'dummy_boy'){
-    $values .= "'{$MESSAGE->dummy_boy_comment}', '{$MESSAGE->dummy_boy_last_words}'";
+    $profile    = $MESSAGE->dummy_boy_comment;
+    $last_words = $MESSAGE->dummy_boy_last_words;
   }
   else{
     $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-    $items .= ', role, session_id, ip_address, last_load_day_night';
-    $values .= "'{$profile}', '', '{$role}', '{$session_id}', '{$ip_address}', 'beforegame'";
+    $items  .= ', ip_address, last_load_day_night';
+    $values .= ", '{$ip_address}', 'beforegame'";
+  }
+
+  foreach(array('profile', 'role', 'session_id', 'last_words') as $var){
+    if(is_null($$var)) continue;
+    $items  .= ", {$var}";
+    $values .= ", '{$$var}'";
   }
   return InsertDatabase('user_entry', $items, $values);
 }
 
 //テーブルを排他的ロック
 function LockTable($type = null){
-  $stack = array('room', 'user_entry', 'talk', 'talk_beforegame', 'talk_aftergame', 'vote');
+  $stack = array('room', 'user_entry');
   switch($type){
   case 'game':
-    array_push($stack, 'system_message', 'user_icon');
+    array_push($stack, 'user_icon');
     break;
 
   case 'icon':
@@ -192,14 +206,16 @@ function UnlockTable(){ return SendQuery('UNLOCK TABLES'); }
 function DeleteRoom($room_no){
   $header = 'DELETE FROM ';
   $footer = ' WHERE room_no = ' . $room_no;
-  foreach(array('room', 'user_entry', 'talk', 'system_message', 'vote') as $name){
-    SendQuery($header . $name . $footer);
-  }
+  $stack  = array('room', 'user_entry', 'talk', 'talk_beforegame', 'talk_aftergame',
+		  'system_message', 'result_lastwords', 'vote');
+  foreach($stack as $name) SendQuery($header . $name . $footer);
 }
 
 //DB 最適化
 function OptimizeTable($name = null){
-  $query = is_null($name) ? 'room, user_entry, talk, system_message, vote' : $name;
+  $tables = 'room, user_entry, talk, talk_beforegame, talk_aftergame, system_message' .
+    'result_lastwords, vote';
+  $query = is_null($name) ? $tables : $name;
   SendQuery('OPTIMIZE TABLE ' . $query, true);
 }
 

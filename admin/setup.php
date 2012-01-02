@@ -66,35 +66,36 @@ function CheckTable(){
   $table_list = FetchArray('SHOW TABLES'); //テーブルのリストを取得
 
   //チェックしてテーブルが存在しなければ作成する
-  $header  = 'テーブル';
   $footer  = '<br>'."\n";
-  $str     = 'を作成しました' . $footer;
   $success = ') を追加しました';
   $failed  = ') を追加できませんでした';
-  $engine  = 'Type = InnoDB';
 
+  // status を TINYINT にして index をはるか検討する
+  // day_night → scene、victory_role → winner
   $table = 'room';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL PRIMARY KEY, room_name TEXT, room_comment TEXT, max_user INT, game_option TEXT,
 option_role TEXT, status TEXT, date INT, day_night TEXT, last_updated TEXT, victory_role TEXT,
 establisher_ip TEXT, establish_time DATETIME, start_time DATETIME, finish_time DATETIME
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
+  }
+
+  $table = 'room_limit';
+  if(! in_array($table, $table_list)){
+    CreateTable($table, 'count INT NOT NULL');
+    SendQuery("INSERT INTO {$table} (count) VALUES(0)");
   }
 
   $table = 'user_entry';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT, icon_no INT, profile TEXT,
 sex TEXT, password TEXT, role TEXT, live TEXT, session_id CHAR(32) UNIQUE, last_words TEXT,
 ip_address TEXT, last_load_day_night TEXT, INDEX user_entry_index(room_no, user_no)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
 
     //管理者を登録
     SendQuery("INSERT INTO {$table}
@@ -104,7 +105,6 @@ EOF;
   }
 
   $table = 'talk';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
@@ -112,67 +112,65 @@ location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_tim
 time INT NOT NULL,
 INDEX talk_index(room_no, date, scene, time)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
   }
 
   $table = 'talk_beforegame';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
 time INT NOT NULL,
-INDEX talk_index(room_no, date, scene, time)
+INDEX talk_beforegame_index(room_no, date, scene, time)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
   }
 
   $table = 'talk_aftergame';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
 time INT NOT NULL,
-INDEX talk_index(room_no, date, scene, time)
+INDEX talk_aftergame_index(room_no, date, scene, time)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
   }
 
   $table = 'vote';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL, date INT, uname TEXT, target_uname TEXT, vote_number INT, vote_times INT,
 situation TEXT, INDEX vote_index(room_no, date)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
   }
 
   $table = 'system_message';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL, message TEXT, type TEXT, date INT, INDEX system_message_index(room_no, date)
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
+  }
+
+  $table = 'result_lastwords';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+room_no INT NOT NULL, date INT, handle_name TEXT, message TEXT,
+INDEX result_lastwords_index(room_no, date)
+EOF;
+    CreateTable($table, $query);
   }
 
   $table = 'user_icon';
-  $title = $header . ' (' . $table . ') ';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 icon_no INT PRIMARY KEY, icon_name TEXT, icon_filename TEXT, icon_width INT, icon_height INT,
 color TEXT, session_id TEXT, category TEXT, appearance TEXT, author TEXT, regist_date DATETIME,
 disable BOOL
 EOF;
-    SendQuery("CREATE TABLE {$table}({$query}) {$engine}");
-    echo $title . $str;
+    CreateTable($table, $query);
 
     //身代わり君のアイコンを登録 (No. 0)
     $class = new DummyBoyIcon(); //身代わり君アイコンの設定をロード
@@ -197,4 +195,10 @@ EOF;
   mysql_query("GRANT ALL ON {$DB_CONF->name}.* TO {$DB_CONF->user}");
   SendCommit();
   echo '初期設定は無事完了しました' . $footer;
+}
+
+function CreateTable($table, $query){
+  if(SendQuery("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")){
+    echo 'テーブル (' . $table . ') を作成しました<br>'."\n";
+  }
 }

@@ -1032,35 +1032,33 @@ function GenerateLastWords($shift = false){
 
   if(! ($ROOM->IsPlaying() || $ROOM->log_mode) || $ROOM->personal_mode) return null; //スキップ判定
 
-  //前日の死亡者遺言を出力
-  $set_date = $ROOM->date - 1;
-  if($shift) $set_date++;
-  $query = $ROOM->GetQueryHeader('system_message', 'message') .
-    " AND date = {$set_date} AND type = 'LAST_WORDS' ORDER BY RAND()";
-  $array = FetchArray($query);
-  if(count($array) < 1) return null;
+  $query = $ROOM->GetQueryHeader('result_lastwords', 'handle_name', 'message') . ' AND date = ';
+  $date  = $ROOM->date - ($shift ? 0 : 1); //基本は前日
+  $stack = FetchAssoc($query . $date);
+  if(count($stack) < 1) return null;
+  shuffle($stack); //表示順はランダム
 
-  $str = <<<EOF
-<table class="system-lastwords"><tr>
-<td>{$MESSAGE->lastwords}</td>
-</tr></table>
-<table class="lastwords">
-
-EOF;
-
-  foreach($array as $result){
-    list($handle_name, $sentence) = explode("\t", $result, 2);
-    LineToBR($sentence);
-
+  $str = '';
+  foreach($stack as $list){
+    extract($list);
+    LineToBR($message);
     $str .= <<<EOF
 <tr>
 <td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
-<td class="lastwords-body">{$sentence}</td>
+<td class="lastwords-body">{$message}</td>
 </tr>
 
 EOF;
   }
-  return $str . '</table>'."\n";
+
+  return <<<EOF
+<table class="system-lastwords"><tr>
+<td>{$MESSAGE->lastwords}</td>
+</tr></table>
+<table class="lastwords">
+{$str}</table>
+
+EOF;
 }
 
 //死亡者の遺言を出力

@@ -770,18 +770,20 @@ EOF;
   function SaveLastWords($handle_name = null){
     global $ROOM;
 
-    if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return; //スキップ判定
+    if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return true; //スキップ判定
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
       $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
-      return;
+      return true;
     }
 
     $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
-      "AND uname = '{$this->uname}' AND user_no > 0";
-    if(($last_words = FetchResult($query)) != ''){
-      $ROOM->SystemMessage($handle_name . "\t" . $last_words, 'LAST_WORDS');
-    }
+      "AND user_no = {$this->user_no}";
+    if(is_null($message = FetchResult($query))) return true;
+
+    $items  = 'room_no, date, handle_name, message';
+    $values = "{$ROOM->id}, {$ROOM->date}, '{$handle_name}', '{$message}'";
+    return InsertDatabase('result_lastwords', $items, $values);
   }
 
   //投票処理
