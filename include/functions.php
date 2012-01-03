@@ -59,7 +59,9 @@ function FindDangerValue($value, $found = false){
 //-- DB 関連 --//
 //DB 問い合わせ処理のラッパー関数
 function SendQuery($query, $commit = false){
-  if(($sql = mysql_query($query)) !== false) return $commit ? SendCommit() : $sql;
+  global $DB_CONF;
+
+  if(($sql = mysql_query($query)) !== false) return $commit ? $DB_CONF->Commit() : $sql;
   $backtrace = debug_backtrace(); //バックトレースを取得
 
   //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
@@ -76,14 +78,13 @@ function SendQuery($query, $commit = false){
   return false;
 }
 
-//トランザクション処理
-function StartTransaction(){ return mysql_query('START TRANSACTION'); }
+//コミット処理 //将来的には DB_CONF->Commit() に移籍する
+function SendCommit(){
+  global $DB_CONF;
 
-//コミット処理
-function SendCommit(){ return mysql_query('COMMIT'); }
-
-//ロールバック処理
-function SendRollBack(){ return mysql_query('ROLLBACK'); }
+  $DB_CONF->transaction = false;
+  return mysql_query('COMMIT');
+}
 
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){

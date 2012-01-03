@@ -11,6 +11,7 @@ $room_no = intval($unsafe_room_no);
 if($room_no < 1) OutputActionResult('部屋削除[エラー]', '無効な村番号です。');
 
 $DB_CONF->Connect(); //DB 接続
+$DB_CONF->Transaction();
 DeleteRoom($room_no);
 OptimizeTable();
 OutputActionResult('部屋削除', $room_no . ' 番地を削除しました。トップページに戻ります。', '../');

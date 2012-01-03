@@ -461,7 +461,8 @@ class Room{
   function UpdateTime($commit = false){
     if($this->test_mode) return true;
     SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP()' . $this->GetQuery(false));
-    return $commit ? SendCommit() : true;
+    //return $commit ? $DB_CONF->Commit() : true; //コミットが必要か再検討する
+    return true;
   }
 
   //夜にする
@@ -485,7 +486,7 @@ class Room{
     //$this->DeleteVote(); //今までの投票を全部削除
 
     $status = CheckVictory(); //勝敗のチェック
-    SendCommit(); //一応コミット
+    //$DB_CONF->Commit(); //一応コミット (再検討)
     return $status;
   }
 

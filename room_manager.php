@@ -45,7 +45,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $TWITTER;
+  global $SERVER_CONF, $DB_CONF, $ROOM_CONF, $USER_ICON, $TWITTER;
 
   if($SERVER_CONF->disable_establish) OutputActionResult('村作成 [制限事項]', '村作成はできません');
   if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
@@ -73,25 +73,22 @@ function CreateRoom(){
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
-  if(! StartTransaction()){ //トランザクション開始
+  if(! $DB_CONF->Transaction()){ //トランザクション開始
     OutputRoomAction('busy');
     return false;
   }
-  $room_limit = FetchResult('SELECT count FROM room_limit FOR UPDATE'); //稼動数カウントをロック
+  //稼動数カウントをロック
+  $room_limit = FetchResult("SELECT count FROM count_limit WHERE type = 'room' FOR UPDATE");
 
   $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
   if(! $SERVER_CONF->debug_mode){ //デバッグモード時は村作成制限をスキップ
     $str = 'room_password'; //パスワードチェック
     if(isset($SERVER_CONF->$str) && @$_POST[$str] != $SERVER_CONF->$str){
-      SendRollBack();
       OutputActionResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
     }
 
     //ブラックリストチェック
-    if(CheckBlackList()){
-      SendRollBack();
-      OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
-    }
+    if(CheckBlackList()) OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
 
     $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
     $time  = FetchResult("SELECT MAX(establish_time) {$query}"); //連続作成制限チェック
@@ -309,7 +306,7 @@ function CreateRoom(){
       }
 
       if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
-	SendCommit();
+	$DB_CONF->Commit();
 	OutputRoomAction('success', false, $room_name);
 	return true;
       }
@@ -318,7 +315,7 @@ function CreateRoom(){
     $TWITTER->Send($room_no, $room_name, $room_comment); //Twitter 投稿処理
     //OutputSiteSummary(); //RSS更新 //テスト中
 
-    SendCommit();
+    $DB_CONF->Commit();
     OutputRoomAction('success', false, $room_name);
     $status = true;
   }while(false);
@@ -329,7 +326,7 @@ function CreateRoom(){
 
 //結果出力 (CreateRoom() 用)
 function OutputRoomAction($type, $rollback = true, $str = ''){
-  global $SERVER_CONF;
+  global $SERVER_CONF, $DB_CONF;
 
   switch($type){
   case 'empty':
@@ -392,7 +389,7 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
     echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
     break;
   }
-  if($rollback) SendRollBack();
+  if($rollback) $DB_CONF->RollBack();
   OutputHTMLFooter(); //フッタ出力
 }
 

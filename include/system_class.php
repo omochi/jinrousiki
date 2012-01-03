@@ -2,6 +2,8 @@
 //-- データベース処理の基底クラス --//
 class DatabaseConfigBase{
   public $db_handle;
+  public $transaction = false;
+
   //データベース接続
   /*
     $header : HTML ヘッダ出力情報 [true: 出力済み / false: 未出力]
@@ -21,13 +23,33 @@ class DatabaseConfigBase{
     return $this->db_handle = $db_handle; //成功したらハンドルを返して処理終了
   }
 
+  //トランザクション開始
+  function Transaction(){
+    if(mysql_query('START TRANSACTION') === false) return false;
+    $this->transaction = true;
+    return true;
+  }
+
+  //ロールバック処理
+  function RollBack(){
+    $this->transaction = false; //必要なら事前にフラグ判定を行う
+    return mysql_query('ROLLBACK');
+  }
+
+  //コミット処理
+  function Commit(){
+    $this->transaction = false;
+    return mysql_query('COMMIT');
+  }
+
   //データベースとの接続を閉じる
   function Disconnect($unlock = false){
     if(empty($this->db_handle)) return;
 
-    if($unlock) UnlockTable(); //ロック解除
+    if($this->transaction) $this->RollBack();
+    if($unlock) UnlockTable();
     mysql_close($this->db_handle);
-    unset($this->db_handle); //ハンドルをクリア
+    unset($this->db_handle);
   }
 
   //データベース名変更

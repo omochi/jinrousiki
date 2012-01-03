@@ -47,7 +47,7 @@ function Write($say, $scene, $location, $spend_time, $update = false){
 
   $ROOM->Talk($say, null, $SELF->uname, $scene, $location, $voice, $spend_time);
   if($update) $ROOM->UpdateTime();
-  SendCommit();
+  //$DB_CONF->Commit(); //必要なら global に登録すること
 }
 
 //能力の種類とその説明を出力

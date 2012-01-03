@@ -70,7 +70,7 @@ function CheckTable(){
   $success = ') を追加しました';
   $failed  = ') を追加できませんでした';
 
-  // status を TINYINT にして index をはるか検討する
+  // status を VARCHAR(16) にして index をはるか検討する
   // day_night → scene、victory_role → winner
   $table = 'room';
   if(! in_array($table, $table_list)){
@@ -80,12 +80,6 @@ option_role TEXT, status TEXT, date INT, day_night TEXT, last_updated TEXT, vict
 establisher_ip TEXT, establish_time DATETIME, start_time DATETIME, finish_time DATETIME
 EOF;
     CreateTable($table, $query);
-  }
-
-  $table = 'room_limit';
-  if(! in_array($table, $table_list)){
-    CreateTable($table, 'count INT NOT NULL');
-    SendQuery("INSERT INTO {$table} (count) VALUES(0)");
   }
 
   $table = 'user_entry';
@@ -192,8 +186,15 @@ EOF;
     }
   }
 
+  $table = 'count_limit';
+  if(! in_array($table, $table_list)){
+    CreateTable($table, 'count INT NOT NULL, type VARCHAR(16)');
+    SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'room')");
+    SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'icon')");
+  }
+
   mysql_query("GRANT ALL ON {$DB_CONF->name}.* TO {$DB_CONF->user}");
-  SendCommit();
+  //$DB_CONF->Commit();
   echo '初期設定は無事完了しました' . $footer;
 }
 
