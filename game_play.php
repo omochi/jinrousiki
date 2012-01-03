@@ -185,9 +185,15 @@ function Say($say){
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $TIME_CONF, $MESSAGE, $ROOM, $USERS;
+  global $DB_CONF, $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
-  if(! $ROOM->IsPlaying() || LockTable('game')) return false; //スキップ判定 + テーブルロック
+  if(! $ROOM->IsPlaying() || $DB_CONF->Transaction()) return false; //スキップ判定 + テーブルロック
+
+  //現在のシーンを再取得して切り替わっていたらスキップ
+  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') . ' FOR UPDATE') != $ROOM->day_night){
+    $DB_CONF->RollBack();
+    return false;
+  }
 
   //最終発言時刻からの差分を取得
   $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
@@ -209,12 +215,9 @@ function CheckSilence(){
   elseif($left_time == 0){ //制限時間超過時の処理
     //オープニングなら即座に夜に移行する
     if($ROOM->IsOption('open_day') && $ROOM->IsDay() && $ROOM->date == 1){
-      //シーンを DB から再取得して切り替わっていなければ処理
-      if(FetchResult($ROOM->GetQueryHeader('room', 'day_night')) == 'day'){
-	$ROOM->ChangeNight(); //夜に切り替え
-	$ROOM->UpdateTime(true); //最終書き込み時刻を更新
-      }
-      UnlockTable(); //テーブルロック解除
+      $ROOM->ChangeNight(); //夜に切り替え
+      $ROOM->UpdateTime(); //最終書き込み時刻を更新
+      $DB_CONF->Commit(); //テーブルロック解除
       return true;
     }
 
@@ -274,7 +277,7 @@ function CheckSilence(){
       }
     }
   }
-  UnlockTable(); //テーブルロック解除
+  $DB_CONF->Commit(); //テーブルロック解除
 }
 
 //超過時間セット

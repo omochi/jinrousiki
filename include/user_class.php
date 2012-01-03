@@ -822,13 +822,13 @@ class UserDataSet{
   public $kicked = array();
   public $names  = array();
 
-  function __construct($request){
+  function __construct($request, $lock = false){
     $this->room_no = $request->room_no;
-    $this->LoadRoom($request);
+    $this->LoadRoom($request, $lock);
   }
 
   //村情報のロード処理
-  function LoadRoom($request){
+  function LoadRoom($request, $lock = false){
     if($request->IsVirtualRoom()){ //仮想モード
       $user_list = $request->TestItems->test_users;
       if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
@@ -837,13 +837,13 @@ class UserDataSet{
       $user_list = $this->RetriveByEntryUser($request->room_no);
     }
     else{
-      $user_list = $this->RetriveByRoom($request->room_no);
+      $user_list = $this->RetriveByRoom($request->room_no, $lock);
     }
     $this->LoadUsers($user_list);
   }
 
   //特定の村のユーザ情報を取得する
-  function RetriveByRoom($room_no){
+  function RetriveByRoom($room_no, $lock = false){
     $query = "SELECT
 	room_no,
 	user_no,
@@ -862,6 +862,7 @@ class UserDataSet{
       FROM user_entry LEFT JOIN user_icon ON user_entry.icon_no = user_icon.icon_no
       WHERE room_no = {$room_no}
       ORDER BY user_no";
+    if($lock) $query .= ' FOR UPDATE';
     return FetchObject($query, 'User');
   }
 
@@ -894,7 +895,7 @@ class UserDataSet{
   //入村処理用のユーザデータを取得する
   function RetriveByEntryUser($room_no){
     $query = "SELECT room_no, user_no, uname, handle_name, live, ip_address
-      FROM user_entry WHERE room_no = {$room_no} ORDER BY user_no";
+      FROM user_entry WHERE room_no = {$room_no} ORDER BY user_no FOR UPDATE";
     return FetchObject($query, 'User');
   }
 

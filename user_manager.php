@@ -10,19 +10,19 @@ $DB_CONF->Disconnect(); //DB 接続解除
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $SERVER_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
+  global $SERVER_CONF, $DB_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
-  if($GAME_CONF->trip && $trip != '') $uname .= ConvertTrip('#'.$trip); //トリップ変換
+  if($GAME_CONF->trip && $trip != '') $uname .= ConvertTrip('#' . $trip); //トリップ変換
   $back_url = '<br><a href="user_manager.php?room_no=' . $room_no . '">戻る</a>'; //バックリンク
 
   //記入漏れチェック
   $title = '村人登録 [入力エラー]';
-  $str = 'が空です (空白と改行コードは自動で削除されます)' . $back_url;
-  if($uname == '')       OutputActionResult($title, 'ユーザ名'     . $str);
+  $str   = 'が空です (空白と改行コードは自動で削除されます)' . $back_url;
+  if($uname       == '') OutputActionResult($title, 'ユーザ名'     . $str);
   if($handle_name == '') OutputActionResult($title, '村人の名前'   . $str);
-  if($password == '')    OutputActionResult($title, 'パスワード'   . $str);
-  if($profile == '')     OutputActionResult($title, 'プロフィール' . $str);
+  if($password    == '') OutputActionResult($title, 'パスワード'   . $str);
+  if($profile     == '') OutputActionResult($title, 'プロフィール' . $str);
   if(empty($sex))        OutputActionResult($title, '性別が入力されていません' . $back_url);
   if(empty($icon_no))    OutputActionResult($title, 'アイコン番号が入力されていません' . $back_url);
 
@@ -47,32 +47,48 @@ function EntryUser(){
   }
   if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です' . $back_url);
 
-  $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE disable IS NOT TRUE AND icon_no = '.$icon_no;
-  if($icon_no < 1 || FetchResult($query) < 1){
+  $query = 'SELECT COUNT(icon_no) FROM user_icon WHERE disable IS NOT TRUE AND icon_no = ';
+  if($icon_no < 1 || FetchResult($query . $icon_no) < 1){
     OutputActionResult($title, '無効なアイコン番号です' . $back_url);
   }
 
-  if(LockTable()){ //DB をロック
-    OutputActionResult('村人登録 [サーバエラー]',
-		       'サーバが混雑しています。<br>'."\n".'再度登録してください' . $back_url);
+  if(! $DB_CONF->Transaction()){ //トランザクション開始
+    $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
+    OutputActionResult('村人登録 [サーバエラー]', $str);
+  }
+
+  $ROOM = RoomDataSet::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
+  if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){ //ゲーム開始判定
+    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています', '', true);
+  }
+
+  //DB から現在のユーザ情報を取得 (ロック付き)
+  $request = new RequestBase();
+  $request->room_no = $room_no;
+  $request->entry_user = true;
+  $USERS = new UserDataSet($request);
+  //PrintData($USERS); //テスト用
+
+  $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
+  if($user_count >= $ROOM->max_user){ //定員オーバー判定
+    OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
   }
 
   //重複チェック (比較演算子は大文字・小文字を区別しないのでクエリで直に判定する)
-  $query = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
+  $query  = "SELECT COUNT(uname) FROM user_entry WHERE room_no = {$room_no} AND ";
+  $footer = '<br>別の名前にしてください。' . $back_url;
 
   //キックされた人と同じユーザ名
   if(FetchResult($query . "uname = '{$uname}' AND live = 'kick'") > 0){
-    OutputActionResult('村人登録 [キックされたユーザ]',
-		       'キックされた人と同じユーザ名は使用できません。 (村人名は可)<br>'."\n" .
-		       '別の名前にしてください。' . $back_url, '', true);
+    $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
+    OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer, '', true);
   }
 
   //ユーザ名・村人名
   $query .= "live = 'live' AND ";
   if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
-    OutputActionResult('村人登録 [重複登録エラー]',
-		       'ユーザ名、または村人名が既に登録してあります。<br>'."\n" .
-		       '別の名前にしてください。' . $back_url, '', true);
+    $str = 'ユーザ名、または村人名が既に登録してあります。';
+    OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
   }
   //OutputActionResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
 
@@ -88,25 +104,8 @@ function EntryUser(){
     }
   }
 
-  $ROOM = RoomDataSet::LoadEntryUser($room_no); //DB から現在の村情報を取得
-  if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){ //ゲーム開始判定
-    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています', '', true);
-  }
-
-  //DB から現在のユーザ情報を取得
-  $request = new RequestBase();
-  $request->room_no = $room_no;
-  $request->entry_user = true;
-  $USERS = new UserDataSet($request);
-  //PrintData($USERS); //テスト用
-
-  $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
-  if($user_count >= $ROOM->max_user){ //定員オーバー判定
-    OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
-  }
-  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
-
   //DB にユーザデータを登録
+  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
   if(InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
 		$sex, $role, $SESSION->Get(true))){
     //クッキーの初期化
@@ -117,19 +116,18 @@ function EntryUser(){
     setcookie('objection',  '', $cookie_time);
 
     $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
+    $DB_CONF->Commit();
+
     $url = 'game_frame.php?room_no=' . $room_no;
     $user_count++;
-    OutputActionResult('村人登録',
-		       $user_count . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>'."\n" .
-		       '切り替わらないなら <a href="' . $url. '">ここ</a> 。',
-		       $url, true);
+    $str = $user_count . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>' .
+      '切り替わらないなら <a href="' . $url. '">ここ</a> 。';
+    OutputActionResult('村人登録', $str, $url, true);
   }
   else{
-    OutputActionResult('村人登録 [データベースサーバエラー]',
-		       'データベースサーバが混雑しています。<br>'."\n" .
-		       '時間を置いて再度登録してください。', '', true);
+    $str = 'データベースサーバが混雑しています。<br>時間を置いて再度登録してください。';
+    OutputActionResult('村人登録 [データベースサーバエラー]', $str, '', true);
   }
-  UnlockTable(); //ロック解除
 }
 
 //ユーザ登録画面表示

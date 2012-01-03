@@ -21,7 +21,7 @@ class Room{
   public $personal_mode    = false;
   public $test_mode        = false;
 
-  function __construct($request = NULL){
+  function __construct($request = null, $lock = false){
     if(is_null($request)) return;
     if($request->IsVirtualRoom()){
       $stack = $request->TestItems->test_room;
@@ -29,16 +29,17 @@ class Room{
       $this->event->rows = $request->TestItems->event;
     }
     else{
-      $stack = $this->LoadRoom($request->room_no);
+      $stack = $this->LoadRoom($request->room_no, $lock);
     }
     foreach($stack as $name => $value) $this->$name = $value;
     $this->ParseOption();
   }
 
   //指定した部屋番号の DB 情報を取得する
-  function LoadRoom($room_no){
+  function LoadRoom($room_no, $lock = false){
     $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
       'game_option, date, day_night, status FROM room WHERE room_no = ' . $room_no;
+    if($lock) $query .= ' FOR UPDATE';
     $stack = FetchAssoc($query, true);
     if(count($stack) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $stack;
@@ -97,7 +98,7 @@ class Room{
     global $RQ_ARGS;
 
     if($RQ_ARGS->IsVirtualRoom()){
-      if(is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->day_night})) return NULL;
+      if(is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->day_night})) return null;
     }
     else{
       switch($this->day_night){
@@ -123,7 +124,7 @@ class Room{
 	break;
 
       default:
-	return NULL;
+	return null;
       }
       $vote_list = FetchAssoc("SELECT {$data} FROM vote {$this->GetQuery()} AND {$action}");
     }
@@ -155,7 +156,7 @@ class Room{
   function LoadEvent(){
     global $RQ_ARGS;
 
-    if(! $this->IsPlaying()) return NULL;
+    if(! $this->IsPlaying()) return null;
     $date = $this->date;
     if($this->log_mode && ! $this->single_log_mode && ! $RQ_ARGS->reverse_log) $date--;
     $day   = $date;
@@ -172,14 +173,14 @@ class Room{
   function LoadWeather($shift = false){
     global $RQ_ARGS;
 
-    if(! $this->IsPlaying()) return NULL;
+    if(! $this->IsPlaying()) return null;
     $date = $this->date;
     if(($shift && $RQ_ARGS->reverse_log) || $this->IsAfterGame()) $date++;
     if($this->date == 1) $date = 2;
     $query = $this->GetQueryHeader('system_message', 'message') .
       " AND date = '{$date}' AND type = 'WEATHER'";
     $result = FetchResult($query);
-    $this->event->weather = $result === false ? NULL : $result; //天候を格納
+    $this->event->weather = $result === false ? null : $result; //天候を格納
   }
 
   //勝敗情報を DB から取得する
@@ -241,7 +242,7 @@ class Room{
   }
 
   //共通クエリを取得
-  function GetQuery($date = true, $count = NULL){
+  function GetQuery($date = true, $count = null){
     $query = (is_null($count) ? '' : 'SELECT COUNT(uname) FROM ' . $count) .
       ' WHERE room_no = ' . $this->id;
     return $date ? $query . ' AND date = ' . $this->date : $query;
@@ -356,7 +357,7 @@ class Room{
   //特殊イベント判定
   function IsEvent($type){
     if(! property_exists($this, 'event')) $this->event = new StdClass();
-    return property_exists($this->event, $type) ? $this->event->$type : NULL;
+    return property_exists($this->event, $type) ? $this->event->$type : null;
   }
 
   //天候セット
@@ -530,6 +531,7 @@ EOF;
   function LoadEntryUser($room_no){
     $query = <<<EOF
 SELECT room_no AS id, date, day_night, status, max_user FROM room WHERE room_no = {$room_no}
+FOR UPDATE
 EOF;
     return FetchObject($query, 'Room', true);
   }

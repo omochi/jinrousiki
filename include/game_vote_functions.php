@@ -631,7 +631,7 @@ function AggregateVoteGameStart($force_start = false){
 
 //昼の投票処理
 function VoteDay(){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $DB_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
   $target = $USERS->ByReal($RQ_ARGS->target_no); //投票先のユーザ情報を取得
@@ -683,6 +683,7 @@ function VoteDay(){
   $ROOM->Talk($USERS->GetHandleName($target->uname, true), 'VOTE_DO', $SELF->uname);
 
   AggregateVoteDay(); //集計処理
+  $DB_CONF->Commit();
   OutputVoteResult('投票完了');
 }
 
@@ -1071,7 +1072,7 @@ EOF;
 
 //夜の投票処理
 function VoteNight(){
-  global $RQ_ARGS, $ROOM, $ROLES, $SELF;
+  global $DB_CONF, $RQ_ARGS, $ROOM, $ROLES, $SELF;
 
   //-- イベント名と役職の整合チェック --//
   $filter = CheckVoteNight();
@@ -1104,6 +1105,7 @@ function VoteNight(){
   }
   if($ROOM->test_mode) return;
   AggregateVoteNight(); //集計処理
+  $DB_CONF->Commit();
   OutputVoteResult('投票完了');
 }
 
