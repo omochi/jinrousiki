@@ -602,9 +602,9 @@ function GetVoteList($date){
 
   if($ROOM->personal_mode) return null; //スキップ判定
   //指定された日付の投票結果を取得
-  $query = $ROOM->GetQueryHeader('system_message', 'message') .
-    " AND date = {$date} and type = 'VOTE_KILL'";
-  return GenerateVoteList(FetchArray($query), $date);
+  $query = $ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
+				 'vote', 'poll') . " AND date = {$date} ORDER BY count, id";
+  return GenerateVoteList(FetchAssoc($query), $date);
 }
 
 //投票データから結果を生成する
@@ -613,24 +613,23 @@ function GenerateVoteList($raw_data, $date){
 
   if(count($raw_data) < 1) return null; //投票総数
 
-  $open_vote = $ROOM->IsOpenData() || $ROOM->IsOption('open_vote'); //投票数開示判定
+  $open_vote   = $ROOM->IsOpenData() || $ROOM->IsOption('open_vote'); //投票数開示判定
+  $header      = '<td class="vote-name">';
   $table_stack = array();
-  $header = '<td class="vote-name">';
   foreach($raw_data as $raw){ //個別投票データのパース
-    list($handle_name, $target_name, $voted_number,
-	 $vote_number, $vote_times) = explode("\t", $raw);
-
-    $stack = array('<tr>' .  $header . $handle_name, '<td>' . $voted_number . ' 票',
-		   '<td>投票先' . ($open_vote ? ' ' . $vote_number . ' 票' : '') . ' →',
+    extract($raw);
+    $stack = array('<tr>' .  $header . $handle_name, '<td>' . $poll . ' 票',
+		   '<td>投票先' . ($open_vote ? ' ' . $vote . ' 票' : '') . ' →',
 		   $header . $target_name, '</tr>');
-    $table_stack[$vote_times][] = implode('</td>', $stack);
+    $table_stack[$count][] = implode('</td>', $stack);
   }
   if(! $RQ_ARGS->reverse_log) krsort($table_stack); //正順なら逆転させる
-  $str = '';
+
   $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
   $footer = ' 回目)</td>';
-  foreach($table_stack as $vote_times => $stack){
-    array_unshift($stack, '<table class="vote-list">', $header . $vote_times . $footer);
+  $str    = '';
+  foreach($table_stack as $count => $stack){
+    array_unshift($stack, '<table class="vote-list">', $header . $count . $footer);
     $stack[] = '</table>';
     $str .= implode("\n", $stack);
   }

@@ -157,6 +157,16 @@ EOF;
     CreateTable($table, $query);
   }
 
+  $table = 'result_vote_kill';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, count INT,
+handle_name TEXT, target_name TEXT, vote INT, poll INT,
+INDEX result_vote_kill_index(room_no, date, count)
+EOF;
+    CreateTable($table, $query);
+  }
+
   $table = 'user_icon';
   if(! in_array($table, $table_list)){
     $query = <<<EOF

@@ -78,14 +78,6 @@ function SendQuery($query, $commit = false){
   return false;
 }
 
-//コミット処理 //将来的には DB_CONF->Commit() に移籍する
-function SendCommit(){
-  global $DB_CONF;
-
-  $DB_CONF->transaction = false;
-  return mysql_query('COMMIT');
-}
-
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
   if(($sql = SendQuery($query)) === false) return false;

@@ -430,15 +430,7 @@ class Room{
     if($this->test_mode){
       PrintData($str, 'SystemMessage: ' . $type);
       if(is_array($RQ_ARGS->TestItems->system_message)){
-	switch($type){
-	case 'VOTE_KILL':
-	case 'LAST_WORDS':
-	  break;
-
-	default:
-	  $RQ_ARGS->TestItems->system_message[$date][$type][] = $str;
-	  break;
-	}
+	$RQ_ARGS->TestItems->system_message[$date][$type][] = $str;
       }
       return true;
     }

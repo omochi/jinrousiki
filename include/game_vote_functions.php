@@ -764,14 +764,20 @@ function AggregateVoteDay(){
 
   //-- 投票結果登録 --//
   $max_voted_number = 0; //最多得票数
+  $items = 'room_no, date, count, handle_name, target_name, vote, poll';
+  $values_header = "{$ROOM->id}, {$ROOM->date}, $RQ_ARGS->vote_times, ";
   foreach($vote_message_list as $uname => $stack){ //タブ区切りのデータをシステムメッセージに登録
     extract($stack); //配列を展開
     if($voted_number > $max_voted_number) $max_voted_number = $voted_number; //最大得票数を更新
-
+    if($ROOM->test_mode) continue;
     //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
+    /*
     $sentence = $USERS->GetHandleName($uname) . "\t" . $target . "\t" .
       $voted_number ."\t" . $vote_number . "\t" . $RQ_ARGS->vote_times;
-    if(! $ROOM->test_mode) $ROOM->SystemMessage($sentence, 'VOTE_KILL');
+    */
+    $handle_name = $USERS->GetHandleName($uname);
+    $values = $values_header . "'{$handle_name}', '{$target}', {$vote_number}, {$voted_number}";
+    InsertDatabase('result_vote_kill', $items, $values);
   }
 
   //-- 処刑者決定処理 --//
