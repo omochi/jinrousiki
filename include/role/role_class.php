@@ -90,11 +90,12 @@ class RoleManager{
     'day_voter', 'wirepuller_luck', 'watcher', 'panelist');
 
   //処刑得票(メイン)
-  public $voted_main_list = array('critical_common', 'critical_patron');
+  public $vote_poll_main_list = array('critical_common', 'critical_patron');
 
   //処刑得票(サブ)
-  public $voted_sub_list = array('upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck',
-				 'random_luck', 'occupied_luck', 'wirepuller_luck');
+  public $vote_poll_sub_list = array(
+    'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck', 'random_luck',
+    'occupied_luck', 'wirepuller_luck');
 
   //処刑投票能力者
   public $vote_day_list = array(

@@ -717,28 +717,24 @@ function AggregateVoteDay(){
     $list   = $ROOM->vote[$uname]; //投票データ
     $user   = $USERS->ByVirtualUname($uname); //仮想ユーザを取得
     $target = $USERS->ByVirtualUname($list['target_uname']); //投票先の仮想ユーザ
-    $vote_number  = (int)$list['vote_number']; //投票数
-    $voted_number = array_key_exists($user->uname, $vote_count_list) ?
+    $vote   = (int)$list['vote_number']; //投票数
+    $poll   = array_key_exists($user->uname, $vote_count_list) ?
       (int)$vote_count_list[$user->uname] : 0; //得票数
 
     $ROLES->actor = $user; //得票者をセット
     //得票補正 (メイン役職)
-    foreach($ROLES->Load('voted_main') as $filter) $filter->FilterVoted($voted_number);
+    foreach($ROLES->Load('vote_poll_main') as $filter) $filter->FilterVotePoll($poll);
     if(! $ROOM->IsEvent('no_authority')){ //得票補正 (サブ役職 / 蜃気楼ならスキップ)
-      foreach($ROLES->Load('voted_sub') as $filter) $filter->FilterVoted($voted_number);
+      foreach($ROLES->Load('vote_poll_sub') as $filter) $filter->FilterVotePoll($poll);
     }
-    if($voted_number < 0) $voted_number = 0; //マイナス補正
-
-    //システムメッセージ用の配列を生成
-    $message_list = array('target'       => $target->handle_name,
-			  'voted_number' => $voted_number,
-			  'vote_number'  => $vote_number);
+    if($poll < 0) $poll = 0; //マイナス補正
 
     //リストにデータを追加
     $live_uname_list[$user->user_no]   = $user->uname;
-    $vote_message_list[$user->user_no] = $message_list;
     $vote_target_list[$user->uname]    = $target->uname;
-    $vote_count_list[$user->uname]     = $voted_number;
+    $vote_count_list[$user->uname]     = $poll;
+    $vote_message_list[$user->user_no] = array('target_name' => $target->handle_name,
+					       'vote' => $vote, 'poll' => $poll);
     if($USERS->ByReal($user->user_no)->IsRole('philosophy_wizard')){ //賢者の魔法発動
       $ROLES->LoadMain($user)->SetWizard();
       //PrintData($user->virtual_role, 'Wizard: ' . $user->uname);
@@ -763,27 +759,22 @@ function AggregateVoteDay(){
   }
 
   //-- 投票結果登録 --//
-  $max_voted_number = 0; //最多得票数
+  $max_poll = 0; //最多得票数
   $items = 'room_no, date, count, handle_name, target_name, vote, poll';
   $values_header = "{$ROOM->id}, {$ROOM->date}, $RQ_ARGS->vote_times, ";
   foreach($vote_message_list as $uname => $stack){ //タブ区切りのデータをシステムメッセージに登録
     extract($stack); //配列を展開
-    if($voted_number > $max_voted_number) $max_voted_number = $voted_number; //最大得票数を更新
+    if($poll > $max_poll) $max_poll = $poll; //最大得票数を更新
     if($ROOM->test_mode) continue;
-    //(誰が [TAB] 誰に [TAB] 自分の得票数 [TAB] 自分の投票数 [TAB] 投票回数)
-    /*
-    $sentence = $USERS->GetHandleName($uname) . "\t" . $target . "\t" .
-      $voted_number ."\t" . $vote_number . "\t" . $RQ_ARGS->vote_times;
-    */
     $handle_name = $USERS->GetHandleName($uname);
-    $values = $values_header . "'{$handle_name}', '{$target}', {$vote_number}, {$voted_number}";
+    $values = $values_header . "'{$handle_name}', '{$target_name}', {$vote}, {$poll}";
     InsertDatabase('result_vote_kill', $items, $values);
   }
 
   //-- 処刑者決定処理 --//
   $ROLES->stack->vote_kill_uname = ''; //処刑者 (ユーザ名)
   //最大得票数のユーザ名 (処刑候補者) のリストを取得
-  $ROLES->stack->max_voted = array_keys($vote_count_list, $max_voted_number);
+  $ROLES->stack->max_voted = array_keys($vote_count_list, $max_poll);
   //PrintData($ROLES->stack->max_voted, 'MaxVoted');
   if(count($ROLES->stack->max_voted) == 1){ //一人だけなら決定
     $ROLES->stack->vote_kill_uname = array_shift($ROLES->stack->max_voted);

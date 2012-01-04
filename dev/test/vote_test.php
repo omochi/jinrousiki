@@ -369,8 +369,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 2;
 #$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
+$ROOM->day_night = 'day';
+#$ROOM->day_night = 'night';
 #$ROOM->day_night = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -539,9 +539,9 @@ if($ROOM->IsDay()){ //昼の投票テスト
   if(! is_array($vote_message_list)) $vote_message_list = array();
   $stack = array();
   foreach($vote_message_list as $uname => $vote_data){
-    array_unshift($vote_data, $USERS->GetHandleName($uname));
-    $vote_data[] = $RQ_ARGS->vote_times;
-    $stack[] = implode("\t", $vote_data);
+    $vote_data['handle_name'] = $USERS->GetHandleName($uname);
+    $vote_data['count'] = $RQ_ARGS->vote_times;
+    $stack[] = $vote_data;
   }
   echo GenerateVoteList($stack, $ROOM->date);
   $ROOM->date++;

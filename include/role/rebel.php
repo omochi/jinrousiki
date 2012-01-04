@@ -18,16 +18,16 @@ class Role_rebel extends Role_authority{
 
     //権力者 -2 / 反逆者 -1
     $count = 0;
-    $list =& $message_list[$target]['vote_number'];
+    $list =& $message_list[$target]['poll'];
     $list > 2 ? $count += 2 : $count += $list;
     $list > 2 ? $list  -= 2 : $list = 0;
 
-    $list =& $message_list[$self]['vote_number'];
+    $list =& $message_list[$self]['poll'];
     $list > 1 ? $count++ : $count += $list;
     $list > 1 ? $list--  : $list = 0;
 
     //投票先の得票数を補正する
-    $list =& $message_list[$uname]['voted_number'];
+    $list =& $message_list[$uname]['poll'];
     $list > $count ? $list -= $count : $list = 0;
     $count_list[$uname] = $list;
   }
