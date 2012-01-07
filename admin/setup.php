@@ -148,6 +148,15 @@ EOF;
     CreateTable($table, $query);
   }
 
+  $table = 'result_ability';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+room_no INT NOT NULL, date INT, type TEXT, user_no INT, target TEXT, result TEXT,
+INDEX result_ability_index(room_no, date, type(10))
+EOF;
+    CreateTable($table, $query);
+  }
+
   $table = 'result_lastwords';
   if(! in_array($table, $table_list)){
     $query = <<<EOF

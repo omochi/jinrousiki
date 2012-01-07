@@ -48,19 +48,19 @@ function GetTalkPassTime(&$left_time, $silence = false){
 function InsertMediumMessage(){
   global $ROOM, $USERS;
 
-  $flag = false; //巫女の出現判定
+  $flag  = false; //巫女の出現判定
   $stack = array();
   foreach($USERS->rows as $user){
     $flag |= $user->IsRoleGroup('medium');
     if($user->suicide_flag){
       $virtual_user = $USERS->ByVirtual($user->user_no);
-      $stack[$virtual_user->user_no] = $virtual_user->handle_name . "\t" . $user->GetCamp();
+      $id = $virtual_user->user_no;
+      $stack[$id] = array('target' => $virtual_user->handle_name, 'result' => $user->GetCamp());
     }
   }
-  if($flag){
-    ksort($stack);
-    foreach($stack as $str) $ROOM->SystemMessage($str, 'MEDIUM_RESULT');
-  }
+  if(! $flag) return;
+  ksort($stack);
+  foreach($stack as $list) $ROOM->ResultAbility('MEDIUM_RESULT', $list['result'], $list['target']);
 }
 
 //恋人の後追い死処理
@@ -353,7 +353,7 @@ function OutputTimeTable(){
   echo '<table class="time-table"><tr>'."\n"; //ヘッダを表示
 
   if($ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
-  $query = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0";
+  $query = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live'";
   echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
 }
 

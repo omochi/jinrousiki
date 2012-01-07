@@ -28,10 +28,9 @@ class Role_mania extends Role{
     $this->delay_copy || $this->camp_copy ? $actor->AddMainRole($user->user_no) :
       $actor->ReplaceRole($this->role, $role);
     if(! $this->delay_copy) $actor->AddRole($this->GetCopiedRole());
-
-    if($this->camp_copy) return;
-    $str = $actor->handle_name . "\t" . $user->handle_name . "\t" . $role;
-    $ROOM->SystemMessage($str, $this->result);  //コピー結果
+    if(! $this->camp_copy){
+      $ROOM->ResultAbility($this->result, $role, $user->handle_name, $actor->user_no);
+    }
   }
 
   //コピー結果役職取得

@@ -10,7 +10,7 @@ class Role_border_priest extends Role_priest{
 
   protected function GetOutputRole(){
     global $ROOM;
-    return $ROOM->date > 2 ? $this->role : NULL;
+    return $ROOM->date > 2 ? $this->role : null;
   }
 
   protected function SetPriest(){
@@ -31,7 +31,7 @@ class Role_border_priest extends Role_priest{
 	  if($user->IsSame($stack['target_uname'])) $count++;
 	}
       }
-      $ROOM->SystemMessage($user->handle_name . "\t" . $count, $event);
+      $ROOM->ResultAbility($event, $count, null, $user->user_no);
     }
   }
 }

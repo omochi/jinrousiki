@@ -107,7 +107,9 @@ class Role_wolf extends Role{
       $filter->FoxEatCounter($this->GetWolfVoter()); //妖狐襲撃カウンター処理
 
       //人狼襲撃メッセージを登録
-      if(! $ROOM->IsOption('seal_message')) $ROOM->SystemMessage($user->handle_name, 'FOX_EAT');
+      if(! $ROOM->IsOption('seal_message')){
+	$ROOM->ResultAbility('FOX_EAT', 'targeted', null, $user->user_no);
+      }
       $user->wolf_eat = true; //襲撃は成功扱い
       return true;
     }

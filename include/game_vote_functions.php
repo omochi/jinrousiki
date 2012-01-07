@@ -860,19 +860,20 @@ function AggregateVoteDay(){
 	$wizard_flag->{$filter->SetWizard()} = true;
 	$wizard_action = 'SPIRITISM_WIZARD_RESULT';
 	if(property_exists($wizard_flag, 'sex_necromancer')){
-	  $header = $USERS->GetHandleName($vote_target->uname, true) . "\t";
 	  $result = $filter->Necromancer($vote_target, $stolen_flag);
-	  $ROOM->SystemMessage($header . $result, $wizard_action);
+	  $name   = $USERS->GetHandleName($vote_target->uname, true);
+	  $ROOM->ResultAbility($wizard_action, $result, $name);
 	}
       }
     }
 
+    $name = $USERS->GetHandleName($vote_target->uname, true);
     foreach($ROLES->necromancer_list as $role){
       if($role_flag->$role || $wizard_flag->$role){
 	$str = $ROLES->LoadMain(new User($role))->Necromancer($vote_target, $stolen_flag);
 	if(is_null($str)) continue;
-	if($role_flag->$role)   $ROOM->SystemMessage($str, strtoupper($role . '_result'));
-	if($wizard_flag->$role) $ROOM->SystemMessage($str, $wizard_action);
+	if($role_flag->$role)   $ROOM->ResultAbility(strtoupper($role . '_result'), $str, $name);
+	if($wizard_flag->$role) $ROOM->ResultAbility($wizard_action, $str, $name);
       }
     }
   }

@@ -28,7 +28,8 @@ class Role_gatekeeper_guard extends Role_guard{
     foreach($stack as $guard_uname){
       $user = $USERS->ByUname($guard_uname);
       if($user->IsFirstGuardSuccess($uname)){
-	$ROOM->SystemMessage($user->GetHandleName($uname), 'GUARD_SUCCESS');
+	$target = $USERS->GetHandleName($uname, true);
+	$ROOM->ResultAbility('GUARD_SUCCESS', 'success', $target, $user->user_no);
       }
     }
     return true;

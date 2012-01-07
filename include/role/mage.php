@@ -113,7 +113,9 @@ class Role_mage extends Role{
 
   //占い結果登録
   function SaveMageResult($user, $result, $action){
-    global $ROOM;
-    $ROOM->SystemMessage($this->GetActor()->GetHandleName($user->uname, $result), $action);
+    global $ROOM, $USERS;
+
+    $target = $USERS->GetHandleName($user->uname, true);
+    $ROOM->ResultAbility($action, $result, $target, $this->GetActor()->user_no);
   }
 }

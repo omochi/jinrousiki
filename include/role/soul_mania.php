@@ -60,6 +60,6 @@ class Role_soul_mania extends Role_mania{
       $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];
     $actor->ReplaceRole($this->role, $role);
     $actor->AddRole($this->copied);
-    $ROOM->SystemMessage(str_repeat($actor->handle_name . "\t", 2) . $role, $this->result);
+    $ROOM->ResultAbility($this->result, $role, $actor->handle_name, $actor->user_no);
   }
 }

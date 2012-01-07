@@ -655,7 +655,7 @@ EOF;
       PrintData($value, 'Change [' . $item . '] (' . $this->uname . ')');
       return;
     }
-    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
+    $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
     return SendQuery("UPDATE user_entry SET {$item} = '{$value}' {$query}", true);
   }
 
@@ -666,7 +666,7 @@ EOF;
       $update_list[] = "$item = '{$this->item}'";
     }
     $update = implode(', ', $update_list);
-    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}' AND user_no > 0";
+    $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
     SendQuery("UPDATE user_entry SET {$update} {$query}", true);
   }
 
@@ -773,7 +773,7 @@ EOF;
     if(! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return true; //スキップ判定
     if(is_null($handle_name)) $handle_name = $this->handle_name;
     if($ROOM->test_mode){
-      $ROOM->SystemMessage($handle_name . ' (' . $this->uname . ')', 'LAST_WORDS');
+      PrintData($handle_name . ' (' . $this->uname . ')', 'LastWords');
       return true;
     }
 
@@ -894,8 +894,8 @@ class UserDataSet{
 
   //入村処理用のユーザデータを取得する
   function RetriveByEntryUser($room_no){
-    $query = "SELECT room_no, user_no, uname, handle_name, live, ip_address
-      FROM user_entry WHERE room_no = {$room_no} ORDER BY user_no FOR UPDATE";
+    $query = 'SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry ' .
+      "WHERE room_no = {$room_no} ORDER BY user_no FOR UPDATE";
     return FetchObject($query, 'User');
   }
 

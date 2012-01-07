@@ -14,8 +14,10 @@ class Role_guard extends Role{
   protected function OutputResult(){
     global $ROOM;
     if($ROOM->date < 1) return;
-    OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
-    if(! $ROOM->IsOption('seal_message')) OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
+    if(! $ROOM->IsOption('seal_message')){
+      OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
+      OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
+    }
   }
 
   function OutputAction(){ OutputVoteMessage('guard-do', 'guard_do', $this->action); }
@@ -54,9 +56,10 @@ class Role_guard extends Role{
       $result |= ! ($half && mt_rand(0, 1) > 0) && (! $limited || is_null($failed));
 
       $filter->GuardAction($this->GetWolfVoter(), $flag); //護衛実行処理
-      if(! $ROOM->IsOption('seal_message') &&
-	 $actor->IsFirstGuardSuccess($user->uname)){ //護衛成功メッセージを登録
-	$ROOM->SystemMessage($actor->GetHandleName($user->uname), 'GUARD_SUCCESS');
+      //護衛成功メッセージを登録
+      if(! $ROOM->IsOption('seal_message') && $actor->IsFirstGuardSuccess($user->uname)){
+	$target = $USERS->GetHandleName($user->uname, true);
+	$ROOM->ResultAbility('GUARD_SUCCESS', 'success', $target, $actor->user_no);
       }
     }
     return $result;
@@ -89,7 +92,8 @@ class Role_guard extends Role{
     if(in_array($user->uname, $this->GetStack('sacrifice')) || ! $this->IsHunt($user)) return false;
     $USERS->Kill($user->user_no, 'HUNTED');
     if(! $ROOM->IsOption('seal_message')){ //狩りメッセージを登録
-      $ROOM->SystemMessage($this->GetActor()->GetHandleName($user->uname), 'GUARD_HUNTED');
+      $target = $USERS->GetHandleName($user->uname, true);
+      $ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $target, $this->GetActor()->user_no);
     }
   }
 

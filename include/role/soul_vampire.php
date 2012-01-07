@@ -20,10 +20,10 @@ class Role_soul_vampire extends Role_vampire{
   }
 
   function Infect($user){
-    global $ROOM;
+    global $ROOM, $USERS;
 
     parent::Infect($user);
-    $str = $this->GetActor()->GetHandleName($user->uname, $user->main_role);
-    $ROOM->SystemMessage($str, $this->result);
+    $target = $USERS->GetHandleName($user->uname, true);
+    $ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetActor()->user_no);
   }
 }

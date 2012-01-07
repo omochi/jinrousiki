@@ -18,8 +18,9 @@ class Role_soul_assassin extends Role_assassin{
     global $ROOM, $USERS;
 
     if(! parent::Assassin($user)) return false;
-    $str = $this->GetActor()->GetHandleName($user->uname, $user->main_role);
-    $ROOM->SystemMessage($str, $this->result);
+    $target = $USERS->GetHandleName($user->uname, true);
+    $ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetActor()->user_no);
+
     if($user->IsPoison()) $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night'); //毒死判定
   }
 }

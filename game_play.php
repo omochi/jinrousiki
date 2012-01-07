@@ -507,7 +507,7 @@ function OutputSelfLastWords(){
   if($ROOM->IsAfterGame()) return false; //ゲーム終了後は表示しない
 
   $query = 'SELECT last_words FROM user_entry' . $ROOM->GetQuery(false) .
-    " AND uname = '{$SELF->uname}' AND user_no > 0";
+    " AND user_no = {$SELF->user_no}";
   if(($str = FetchResult($query)) == '') return false;
   LineToBR($str); //改行コードを変換
   if($str == '') return false;

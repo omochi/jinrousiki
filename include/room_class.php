@@ -439,6 +439,30 @@ class Room{
     return InsertDatabase('system_message', $items, $values);
   }
 
+  //能力発動結果登録
+  function ResultAbility($type, $result, $target = null, $user_no = null){
+    global $RQ_ARGS;
+
+    $date = $this->date;
+    if($this->test_mode){
+      PrintData("$type: $result: $target: $user_no", 'ResultAbility');
+      if(is_array($RQ_ARGS->TestItems->result_ability)){
+	$stack = array('user_no' => $user_no, 'target' => $target, 'result' => $result);
+	$RQ_ARGS->TestItems->result_ability[$date][$type][] = $stack;
+      }
+      return true;
+    }
+    $items  = 'room_no, date, type';
+    $values = "{$this->id}, {$date}, '{$type}'";
+    foreach(array('result', 'target', 'user_no') as $data){
+      if(isset($$data)){
+	$items  .= ", {$data}";
+	$values .= ", '{$$data}'";
+      }
+    }
+    return InsertDatabase('system_message', $items, $values);
+  }
+
   //天候登録
   function EntryWeather($id, $date, $priest = false){
     global $ROLE_DATA;
@@ -446,7 +470,7 @@ class Room{
     $this->SystemMessage($id, 'WEATHER', $date);
     if($priest){ //祈祷師の処理
       $result = 'prediction_weather_' . $ROLE_DATA->weather_list[$id]['event'];
-      $this->SystemMessage($result, 'WEATHER_PRIEST_RESULT');
+      $this->ResultAbility('WEATHER_PRIEST_RESULT', $result);
     }
   }
 
