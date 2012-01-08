@@ -155,7 +155,7 @@ function CheckWinner($check_draw = false){
 
   //ゲーム終了
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame', " .
-    "winner = '{$winner}', finish_time = NOW() WHERE room_no = {$ROOM->id}";
+    "winner = '{$winner}', finish_datetime = NOW() WHERE room_no = {$ROOM->id}";
   SendQuery($query, true);
   //OutputSiteSummary(); //RSS機能はテスト中
   return true;
@@ -267,7 +267,7 @@ function OutputGamePageHeader(){
       }
 
       if($novote_flag){
-	$query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
+	$query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
 	if($TIME_CONF->alert > $TIME_CONF->sudden_death - FetchResult($query)){ //警告判定
 	  $alert_flag = true;
 	  $sound_type = 'alert';
@@ -861,15 +861,15 @@ function OutputTimeStamp($builder){
 
   $talk = new Talk();
   if($ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
-    $type = 'establish_time';
+    $type = 'establish_datetime';
     $talk->sentence = '村作成';
   }
   elseif($ROOM->IsNight() && $ROOM->date == 1){ //ゲーム開始時刻を取得して表示
-    $type = 'start_time';
+    $type = 'start_datetime';
     $talk->sentence = 'ゲーム開始';
   }
   elseif($ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
-    $type = 'finish_time';
+    $type = 'finish_datetime';
     $talk->sentence = 'ゲーム終了';
   }
   else return false;

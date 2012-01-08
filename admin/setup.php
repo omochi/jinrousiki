@@ -76,8 +76,9 @@ function CheckTable(){
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL PRIMARY KEY, room_name TEXT, room_comment TEXT, max_user INT, game_option TEXT,
-option_role TEXT, status TEXT, date INT, day_night TEXT, last_updated TEXT, winner TEXT,
-establisher_ip TEXT, establish_time DATETIME, start_time DATETIME, finish_time DATETIME
+option_role TEXT, status VARCHAR(16), date INT, day_night TEXT, scene_start_time INT(20) NOT NULL,
+last_update_time INT(20) NOT NULL, winner TEXT, establisher_ip TEXT, establish_timetime DATETIME,
+start_datetime DATETIME, finish_datetime DATETIME, INDEX room_index(status)
 EOF;
     CreateTable($table, $query);
   }
@@ -103,7 +104,7 @@ EOF;
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
-time INT NOT NULL,
+time INT(20) NOT NULL,
 INDEX talk_index(room_no, date, scene, time)
 EOF;
     CreateTable($table, $query);
@@ -114,7 +115,7 @@ EOF;
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
-time INT NOT NULL,
+time INT(20) NOT NULL,
 INDEX talk_beforegame_index(room_no, date, scene, time)
 EOF;
     CreateTable($table, $query);
@@ -125,7 +126,7 @@ EOF;
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
-time INT NOT NULL,
+time(20) INT NOT NULL,
 INDEX talk_aftergame_index(room_no, date, scene, time)
 EOF;
     CreateTable($table, $query);

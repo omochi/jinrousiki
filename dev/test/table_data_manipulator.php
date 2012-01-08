@@ -121,7 +121,7 @@ function SqueezeIcon(){
   OptimizeTable('user_icon');
 }
 
-//村立て時刻再生成関数
+//村立て時刻再生成関数 (for 1.4 / 1.5)
 function ReconstructEstablishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE establish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
@@ -165,7 +165,7 @@ function ReconstructEstablishTime($test = false){
   }
 }
 
-//ゲーム開始時刻再生成関数
+//ゲーム開始時刻再生成関数 (for 1.4 / 1.5)
 function ReconstructStartTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE start_time IS NULL ORDER BY room_no");
   $keyword = 'ゲーム開始：';
@@ -206,7 +206,7 @@ function ReconstructStartTime($test = false){
   }
 }
 
-//ゲーム終了時刻再生成関数
+//ゲーム終了時刻再生成関数 (for 1.4 / 1.5)
 function ReconstructFinishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE finish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);

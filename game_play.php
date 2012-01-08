@@ -196,8 +196,8 @@ function CheckSilence(){
   }
 
   //最終発言時刻からの差分を取得
-  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
-  $last_updated_pass_time = FetchResult($query);
+  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
+  $last_update_time = FetchResult($query);
 
   //経過時間を取得
   if($ROOM->IsRealTime()) //リアルタイム制
@@ -206,7 +206,7 @@ function CheckSilence(){
     $silence_pass_time = GetTalkPassTime($left_time, true);
 
   if(! $ROOM->IsRealTime() && $left_time > 0){ //仮想時間制の沈黙判定
-    if($last_updated_pass_time > $TIME_CONF->silence){
+    if($last_update_time > $TIME_CONF->silence){
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
       $ROOM->Talk($str, null, '', '', null, null, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
@@ -226,10 +226,10 @@ function CheckSilence(){
       $MESSAGE->sudden_death_announce;
     if($ROOM->OvertimeAlert($sudden_death_announce)){ //警告出力
       $ROOM->UpdateTime(); //更新時間を更新
-      $last_updated_pass_time = 0;
+      $last_update_time = 0;
     }
     else{ //一分刻みで追加の警告を出す
-      $seconds = $TIME_CONF->sudden_death - $last_updated_pass_time;
+      $seconds = $TIME_CONF->sudden_death - $last_update_time;
       $quotient = $seconds % 60;
       $seconds -= $quotient;
       if($quotient > 0) $seconds += 60;
@@ -239,7 +239,7 @@ function CheckSilence(){
 	$ROOM->OvertimeAlert($str);
       }
     }
-    $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
+    $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_update_time;
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($ROOM->sudden_death <= 0){
@@ -285,12 +285,12 @@ function SetSuddenDeathTime(){
   global $TIME_CONF, $ROOM;
 
   //最終発言時刻からの差分を取得
-  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_updated');
-  $last_updated_pass_time = FetchResult($query);
+  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
+  $last_update_time = FetchResult($query);
 
   //経過時間を取得
   $ROOM->IsRealTime() ? GetRealPassTime($left_time) : GetTalkPassTime($left_time, true);
-  if($left_time == 0) $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
+  if($left_time == 0) $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_update_time;
 }
 
 //村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)

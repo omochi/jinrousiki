@@ -149,7 +149,7 @@ EOF;
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
     $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
-    $establish_time = $ROOM->establish_time == '' ? '' : ConvertTimeStamp($ROOM->establish_time);
+    $establish = $ROOM->establish_datetime == '' ? '' : ConvertTimeStamp($ROOM->establish_datetime);
     if($RQ_ARGS->generate_index){
       $base_url = $ROOM->id . '.html';
       $login    = '';
@@ -158,7 +158,7 @@ EOF;
     else{
       $base_url = 'old_log.php?room_no=' . $ROOM->id;
       if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0) $base_url .= '&db_no=' . $RQ_ARGS->db_no;
-      $login = $current_time - strtotime($ROOM->finish_time) > $ROOM_CONF->clear_session_id ? '' :
+      $login = $current_time - strtotime($ROOM->finish_datetime) > $ROOM_CONF->clear_session_id ? '' :
 	'<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
       $log_link = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
 	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
@@ -176,7 +176,7 @@ EOF;
 </tr>
 <tr class="list middle">
 <td class="comment side">～{$ROOM->comment}～</td>
-<td class="time comment" colspan="3">{$establish_time}</td>
+<td class="time comment" colspan="3">{$establish}</td>
 </tr>
 <tr class="lower list">
 <td class="comment">

@@ -25,7 +25,7 @@ function MaintenanceRoom(){
 
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
-    "WHERE status <> 'finished' AND last_updated < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
+    "WHERE status <> 'finished' AND last_update_time < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
   /*
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
   if(SendQuery($query)) OutputSiteSummary();
@@ -37,8 +37,8 @@ function MaintenanceRoom(){
 UPDATE room, user_entry SET user_entry.session_id = NULL
 WHERE room.room_no = user_entry.room_no
 AND room.status = 'finished' AND !(user_entry.session_id IS NULL)
-AND (room.finish_time IS NULL OR
-     room.finish_time < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
+AND (room.finish_datetime IS NULL OR
+     room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
 EOF;
   SendQuery($query, true);
 }
@@ -91,7 +91,7 @@ function CreateRoom(){
     if(CheckBlackList()) OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
 
     $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
-    $time  = FetchResult("SELECT MAX(establish_time) {$query}"); //連続作成制限チェック
+    $time  = FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
     if(isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait){
       OutputRoomAction('establish_wait');
       return false;
@@ -292,8 +292,8 @@ function CreateRoom(){
     if(! $SERVER_CONF->dry_run_mode){
       //村作成
       $time   = TZTime();
-      $items  = 'room_no, room_name, room_comment, establisher_ip, establish_time, ' .
-	'game_option, option_role, max_user, status, date, day_night, last_updated';
+      $items  = 'room_no, room_name, room_comment, establisher_ip, establish_datetime, ' .
+	'game_option, option_role, max_user, status, date, day_night, last_update_time';
       $values = "{$room_no}, '{$room_name}', '{$room_comment}', '{$ip_address}', NOW(), " .
 	"'{$game_option}', '{$option_role}', {$max_user}, 'waiting', 0, 'beforegame', '{$time}'";
       if(! InsertDatabase('room', $items, $values)) break;

@@ -477,7 +477,7 @@ class Room{
   //最終更新時刻を更新
   function UpdateTime($commit = false){
     if($this->test_mode) return true;
-    SendQuery('UPDATE room SET last_updated = UNIX_TIMESTAMP()' . $this->GetQuery(false));
+    SendQuery('UPDATE room SET last_update_time = UNIX_TIMESTAMP()' . $this->GetQuery(false));
     //return $commit ? $DB_CONF->Commit() : true; //コミットが必要か再検討する
     return true;
   }
@@ -536,7 +536,7 @@ class RoomDataSet{
   function LoadFinishedRoom($room_no){
     $query = <<<EOF
 SELECT room_no AS id, room_name AS name, room_comment AS comment, date, game_option,
-  option_role, max_user, winner, establish_time, start_time, finish_time,
+  option_role, max_user, winner, establish_datetime, start_datetime, finish_datetime,
   (SELECT COUNT(user_no) FROM user_entry WHERE user_entry.room_no = room.room_no
    AND user_entry.user_no > 0) AS user_count
 FROM room WHERE room_no = {$room_no} AND status = 'finished'
@@ -565,7 +565,7 @@ EOF;
 SELECT room.room_no AS id, room.room_name AS name, room.room_comment AS comment,
     room.date AS room_date AS date, room.game_option AS room_game_option,
     room.option_role AS room_option_role, room.max_user AS room_max_user, users.room_num_user,
-    room.winner AS room_winner, room.establish_time, room.start_time, room.finish_time
+    room.winner AS room_winner, room.establish_datetime, room.start_datetime, room.finish_datetime
 FROM room
     LEFT JOIN (SELECT room_no, COUNT(user_no) AS room_num_user FROM user_entry GROUP BY room_no) users
 	USING (room_no)

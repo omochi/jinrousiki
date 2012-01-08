@@ -608,7 +608,7 @@ function AggregateVoteGameStart($force_start = false){
   $ROOM->day_night = $ROOM->IsOption('open_day') ? 'day' : 'night';
   if(! $ROOM->test_mode){
     $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
-      "status = 'playing', start_time = NOW() WHERE room_no = {$ROOM->id}";
+      "status = 'playing', start_datetime = NOW() WHERE room_no = {$ROOM->id}";
     SendQuery($query);
     //OutputSiteSummary(); //RSS機能はテスト中
   }
