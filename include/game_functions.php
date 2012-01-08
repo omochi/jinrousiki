@@ -97,7 +97,7 @@ function LoversFollowed($sudden_death = false){
 }
 
 //勝敗をチェック
-function CheckVictory($check_draw = false){
+function CheckWinner($check_draw = false){
   global $GAME_CONF, $ROOM, $USERS;
 
   if($ROOM->test_mode) return false;
@@ -135,27 +135,27 @@ function CheckVictory($check_draw = false){
     }
   }
 
-  $victory_role = ''; //勝利陣営
+  $winner = ''; //勝利陣営
   if($human == $quiz && $wolf == 0 && $fox == 0) //全滅
-    $victory_role = $quiz > 0 ? 'quiz' : 'vanish';
+    $winner = $quiz > 0 ? 'quiz' : 'vanish';
   elseif($vampire) //吸血鬼支配
-    $victory_role = $lovers > 1 ? 'lovers' : 'vampire';
+    $winner = $lovers > 1 ? 'lovers' : 'vampire';
   elseif($wolf == 0) //狼全滅
-    $victory_role = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox1' : 'human');
+    $winner = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox1' : 'human');
   elseif($wolf >= $human) //村全滅
-    $victory_role = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox2' : 'wolf');
+    $winner = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox2' : 'wolf');
   elseif($human + $wolf + $fox == $lovers) //恋人支配
-    $victory_role = 'lovers';
+    $winner = 'lovers';
   elseif($ROOM->IsQuiz() && $quiz == 0) //クイズ村 GM 死亡
-    $victory_role = 'quiz_dead';
+    $winner = 'quiz_dead';
   elseif($check_draw && $ROOM->GetVoteTimes() > $GAME_CONF->draw) //引き分け
-    $victory_role = 'draw';
+    $winner = 'draw';
 
-  if($victory_role == '') return false;
+  if($winner == '') return false;
 
   //ゲーム終了
   $query = "UPDATE room SET status = 'finished', day_night = 'aftergame', " .
-    "victory_role = '{$victory_role}', finish_time = NOW() WHERE room_no = {$ROOM->id}";
+    "winner = '{$winner}', finish_time = NOW() WHERE room_no = {$ROOM->id}";
   SendQuery($query, true);
   //OutputSiteSummary(); //RSS機能はテスト中
   return true;
@@ -395,7 +395,7 @@ function GeneratePlayerList(){
       $str .= ' onMouseout="this.src=' . "'$path'" . '"';
     }
     if($ROOM->personal_mode){
-      $live .= "<br>\n(" . GenerateVictory($user->user_no) . ')';
+      $live .= "<br>\n(" . GenerateWinner($user->user_no) . ')';
     }
     $str .= $ICON_CONF->tag . ' src="' . $path . '"></td>'."\n";
 
@@ -425,20 +425,20 @@ function GeneratePlayerList(){
 function OutputPlayerList(){ echo GeneratePlayerList(); }
 
 //勝敗結果の生成
-function GenerateVictory($id = 0){
-  global $VICT_MESS, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+function GenerateWinner($id = 0){
+  global $WINNER_MESS, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
-  $victory = $ROOM->LoadVictory();
-  $class   = $victory;
-  $winner  = $victory;
+  $winner = $ROOM->LoadWinner();
+  $class  = $winner;
+  $text   = $winner;
 
-  switch($victory){ //特殊ケース対応
+  switch($winner){ //特殊ケース対応
   //妖狐勝利
   case 'fox1':
   case 'fox2':
-    $victory = 'fox';
-    $class   = $victory;
+    $winner = 'fox';
+    $class  = $winner;
     break;
 
   //引き分け
@@ -450,20 +450,20 @@ function GenerateVictory($id = 0){
 
   //廃村
   case null:
-    $class  = 'none';
-    $winner = $ROOM->date > 0 ? 'unfinished' : 'none';
+    $class = 'none';
+    $text  = $ROOM->date > 0 ? 'unfinished' : 'none';
     break;
   }
   $str = <<<EOF
-<table class="victory victory-{$class}"><tr>
-<td>{$VICT_MESS->$winner}</td>
+<table class="winner winner-{$class}"><tr>
+<td>{$WINNER_MESS->$text}</td>
 </tr></table>
 
 EOF;
 
   //-- 個々の勝敗結果 --//
   //スキップ判定 (勝敗未決定/観戦モード/ログ閲覧モード)
-  if(is_null($victory) || $ROOM->view_mode ||
+  if(is_null($winner) || $ROOM->view_mode ||
      ($ROOM->log_mode && ! $ROOM->single_view_mode && ! $ROOM->personal_mode)){
     return $id > 0 ? '不明' : $str;
   }
@@ -474,7 +474,7 @@ EOF;
   if($user->user_no < 1) return $str;
   $camp   = $user->GetCamp(true); //所属陣営を取得
 
-  switch($victory){
+  switch($winner){
   case 'draw':   //引き分け
   case 'vanish': //全滅
     $result = 'draw';
@@ -492,11 +492,11 @@ EOF;
     case 'human':
     case 'wolf':
     case 'fox':
-      $win_flag = $victory == $camp && $ROLES->LoadMain($user)->Win($victory);
+      $win_flag = $winner == $camp && $ROLES->LoadMain($user)->Win($winner);
       break;
 
     case 'vampire':
-      $win_flag = $victory == $camp && ($SELF->IsRoleGroup('mania') || $user->IsLive());
+      $win_flag = $winner == $camp && ($SELF->IsRoleGroup('mania') || $user->IsLive());
       break;
 
     case 'chiroptera':
@@ -506,11 +506,11 @@ EOF;
     case 'ogre':
     case 'duelist':
       $win_flag = $user->IsRoleGroup('mania') ? $user->IsLive()
-	: $ROLES->LoadMain($user)->Win($victory);
+	: $ROLES->LoadMain($user)->Win($winner);
       break;
 
     default:
-      $win_flag = $victory == $camp;
+      $win_flag = $winner == $camp;
       break;
     }
 
@@ -546,15 +546,15 @@ EOF;
   $result = 'self_' . $result;
 
   return $str . <<<EOF
-<table class="victory victory-{$class}"><tr>
-<td>{$VICT_MESS->$result}</td>
+<table class="winner winner-{$class}"><tr>
+<td>{$WINNER_MESS->$result}</td>
 </tr></table>
 
 EOF;
 }
 
 //勝敗結果の出力
-function OutputVictory(){ echo GenerateVictory(); }
+function OutputWinner(){ echo GenerateWinner(); }
 
 //投票の集計生成
 function GenerateVoteResult(){

@@ -24,7 +24,7 @@ case 'night': //夜
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsFinished()){
-  $INIT_CONF->LoadClass('VICT_MESS');
+  $INIT_CONF->LoadClass('WINNER_MESS');
 }
 else{
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
@@ -118,7 +118,7 @@ if($ROOM->IsPlaying()){
 }
 
 OutputPlayerList(); //プレイヤーリスト
-if($ROOM->IsFinished()) OutputVictory(); //勝敗結果
+if($ROOM->IsFinished()) OutputWinner(); //勝敗結果
 OutputRevoteList(); //再投票メッセージ
 OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言

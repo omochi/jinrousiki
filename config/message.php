@@ -450,7 +450,7 @@ class GameOptionCaptionMessage{
 }
 
 //-- 村・本人の勝敗結果 --//
-class VictoryMessage{
+class WinnerMessage{
   //村人勝利
   public $human = '[村人勝利] 村人たちは人狼の血を根絶することに成功しました';
 

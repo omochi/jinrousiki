@@ -136,8 +136,8 @@ function GenerateFinishedRooms($page){
 EOF;
 
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
-  $ROOM_DATA = new RoomDataSet();
-  $VICT_IMG  = new VictoryImage();
+  $ROOM_DATA  = new RoomDataSet();
+  $WINNER_IMG = new WinnerImage();
   $current_time = TZTime(); // 現在時刻の取得
 
   $query = "SELECT room_no FROM room WHERE status = 'finished' ORDER BY room_no";
@@ -165,14 +165,14 @@ EOF;
     }
     $max_user    = GenerateMaxUserImage($ROOM->max_user);
     $game_option = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
-    $victory     = $RQ_ARGS->watch ? '-' : $VICT_IMG->Generate($ROOM->victory_role);
+    $winner      = $RQ_ARGS->watch ? '-' : $WINNER_IMG->Generate($ROOM->winner);
     $str .= <<<EOF
 <tr class="list">
 <td class="number" rowspan="3">{$ROOM->id}</td>
 <td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} 村</a>
 <td class="upper">{$ROOM->user_count} {$max_user}</td>
 <td class="upper">{$ROOM->date}</td>
-<td class="side">{$victory}</td>
+<td class="side">{$winner}</td>
 </tr>
 <tr class="list middle">
 <td class="comment side">～{$ROOM->comment}～</td>
@@ -258,10 +258,10 @@ function LayoutTalkLog(){
   if($RQ_ARGS->reverse_log){
     $str = GenerateDateTalkLog(0, 'beforegame');
     for($i = 1; $i <= $ROOM->last_date; $i++) $str .= GenerateDateTalkLog($i, '');
-    $str .= GenerateVictory() . GenerateDateTalkLog($ROOM->last_date, 'aftergame');
+    $str .= GenerateWinner() . GenerateDateTalkLog($ROOM->last_date, 'aftergame');
   }
   else{
-    $str = GenerateDateTalkLog($ROOM->last_date, 'aftergame') . GenerateVictory();
+    $str = GenerateDateTalkLog($ROOM->last_date, 'aftergame') . GenerateWinner();
     for($i = $ROOM->last_date; $i > 0; $i--) $str .= GenerateDateTalkLog($i, '');
     $str .= GenerateDateTalkLog(0, 'beforegame');
   }

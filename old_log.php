@@ -7,7 +7,7 @@ $DB_CONF->Connect(); //DB 接続
 ob_start();
 if($RQ_ARGS->is_room){
   $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
-  $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
+  $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
 
   $ROOM = new Room($RQ_ARGS);
   $ROOM->LoadOption();

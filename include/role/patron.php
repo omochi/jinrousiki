@@ -39,7 +39,7 @@ class Role_patron extends Role_valkyrja_duelist{
     if(isset($this->patron_role)) $user->AddRole($this->GetActor()->GetID($this->patron_role));
   }
 
-  function Win($victory){
+  function Win($winner){
     $actor = $this->GetActor();
     $id    = $actor->user_no;
     $count = 0;

@@ -36,7 +36,7 @@ if($db_delete_mode){
 //OutputHTMLFooter(true);
 
 $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
-$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'VICT_MESS');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
 
 $room_delete = false; //DB削除設定
 $header = "../log_test/{$RQ_ARGS->prefix}";

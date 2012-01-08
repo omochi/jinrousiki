@@ -97,7 +97,7 @@ class Role_valkyrja_duelist extends Role{
   protected function AddDuelistRole($user){}
 
   //勝利判定
-  function Win($victory){
+  function Win($winner){
     $actor  = $this->GetActor();
     $id     = $actor->user_no;
     $target = 0;

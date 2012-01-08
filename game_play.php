@@ -25,7 +25,7 @@ if($ROOM->IsBeforeGame()){ //ゲームオプション表示
   $ROOM->LoadVote();
 }
 elseif($ROOM->IsFinished()){ //勝敗結果表示
-  $INIT_CONF->LoadClass('VICT_MESS');
+  $INIT_CONF->LoadClass('WINNER_MESS');
 }
 SendCookie($OBJECTION); //必要なクッキーをセットする
 
@@ -273,7 +273,7 @@ function CheckSilence(){
 	$ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
 	$ROOM->UpdateTime(); //制限時間リセット
 	$ROOM->DeleteVote(); //投票リセット
-	if(CheckVictory()) $USERS->ResetJoker(); //勝敗チェック
+	if(CheckWinner()) $USERS->ResetJoker(); //勝敗チェック
       }
     }
   }
@@ -293,7 +293,7 @@ function SetSuddenDeathTime(){
   if($left_time == 0) $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_updated_pass_time;
 }
 
-//村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
+//村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
     $COOKIE, $SOUND, $OBJECTION;
@@ -422,7 +422,7 @@ EOF;
     break;
 
   case 'aftergame': //勝敗結果を出力して処理終了
-    OutputVictory();
+    OutputWinner();
     return;
   }
 

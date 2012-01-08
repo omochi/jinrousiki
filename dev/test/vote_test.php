@@ -148,7 +148,7 @@ $RQ_ARGS->TestItems->test_users[19]->role = 'light_fairy psycho_infected';
 $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
-$RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
+$RQ_ARGS->TestItems->test_users[20]->handle_name = '';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
@@ -317,7 +317,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 //-- 仮想システムメッセージをセット --//
 $RQ_ARGS->TestItems->system_message = array();
 $RQ_ARGS->TestItems->result_ability = array();
-$RQ_ARGS->TestItems->victory = 'wolf';
+$RQ_ARGS->TestItems->winner = 'wolf';
 
 //-- 仮想イベントをセット --//
 $RQ_ARGS->TestItems->event = array(
@@ -415,7 +415,7 @@ if($talk_view_mode){ //発言表示モード
     array('uname' => 'light_blue', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'えっ'),
     array('uname' => 'green', 'location' => 'day system', 'font_type' => null,
 	  'sentence' => 'OBJECTION	緑'),
-    array('uname' => 'dark_gray', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'ﾁﾗｯ'),
+    array('uname' => 'dark_gray', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'チラッ'),
     array('uname' => 'yellow', 'location' => 'day', 'font_type' => 'strong',
 	  'sentence' => "占いCO\n黒は●"),
     array('uname' => 'light_gray', 'location' => 'day', 'font_type' => 'normal', 'sentence' => 'おはよう'),
@@ -441,7 +441,7 @@ if($talk_view_mode){ //発言表示モード
     array('uname' => 'green', 'location' => 'night self_talk', 'font_type' => 'normal',
 	  'sentence' => 'てすてす'),
     array('uname' => 'dark_gray', 'location' => 'night self_talk', 'font_type' => 'weak',
-	  'sentence' => 'ﾁﾗｯ'),
+	  'sentence' => 'チラッ'),
     array('uname' => 'yellow', 'location' => 'night self_talk', 'font_type' => 'strong',
 	  'sentence' => "占いCO\n黒は●"),
     array('uname' => 'light_gray', 'location' => 'night wolf', 'font_type' => 'normal',
@@ -526,10 +526,10 @@ elseif($ROOM->IsNight()){ // 夜の投票テスト
   AggregateVoteNight();
 }
 elseif($ROOM->IsAfterGame()){ //勝敗判定表示
-  $INIT_CONF->LoadClass('VICT_MESS');
+  $INIT_CONF->LoadClass('WINNER_MESS');
   $ROOM->log_mode = false;
   $ROOM->personal_mode = true; false;
-  OutputVictory();
+  OutputWinner();
   OutputHTMLFooter(); //HTMLフッタ
 }
 //PrintData($RQ_ARGS->TestItems->system_message);

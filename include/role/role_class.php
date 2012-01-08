@@ -575,7 +575,7 @@ class Role{
 
   //-- 勝敗判定 --//
   //勝利判定
-  function Win($victory){ return true; }
+  function Win($winner){ return true; }
 
   //生存判定
   protected function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }

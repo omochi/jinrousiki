@@ -276,7 +276,7 @@ class ImageManager{
 }
 
 //-- 勝利陣営の画像処理の基底クラス --//
-class VictoryImageBase extends ImageManager{
+class WinnerImageBase extends ImageManager{
   function Generate($name, $alt = null, $table = null){
     switch($name){
     case 'human':

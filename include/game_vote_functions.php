@@ -625,7 +625,7 @@ function AggregateVoteGameStart($force_start = false){
   $ROOM->SystemMessage(1, 'VOTE_TIMES'); //処刑投票カウントを初期化 (再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
   $ROOM->DeleteVote(); //今までの投票を全部削除
-  CheckVictory(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
+  CheckWinner(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
   return true;
 }
 
@@ -950,7 +950,7 @@ function AggregateVoteDay(){
     }
 
     $ROOM->ChangeNight();
-    if(CheckVictory()){
+    if(CheckWinner()){
       if($joker_flag) $joker_filter->FinishJoker();
     }
     else{
@@ -970,7 +970,7 @@ function AggregateVoteDay(){
     //システムメッセージ
     $ROOM->SystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
     $ROOM->Talk("再投票になりました( {$RQ_ARGS->vote_times} 回目)");
-    if(CheckVictory(true) && $ROOM->IsOption('joker')){ //勝敗判定＆ジョーカー処理
+    if(CheckWinner(true) && $ROOM->IsOption('joker')){ //勝敗判定＆ジョーカー処理
       $USERS->ByID($ROLES->stack->joker_id)->AddJoker();
     }
   }

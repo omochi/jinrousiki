@@ -368,8 +368,8 @@ class RoleImage extends ImageManager{
 }
 
 //-- 勝利陣営の画像 --//
-class VictoryImage extends VictoryImageBase{
-  public $path      = 'victory_role';
+class WinnerImage extends WinnerImageBase{
+  public $path      = 'winner';
   public $extension = 'gif';
   public $class     = 'winner';
 }

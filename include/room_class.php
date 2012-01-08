@@ -184,14 +184,14 @@ class Room{
   }
 
   //勝敗情報を DB から取得する
-  function LoadVictory(){
+  function LoadWinner(){
     global $RQ_ARGS;
 
-    if(! property_exists($this, 'victory')){
-      $this->victory = $this->test_mode ? $RQ_ARGS->TestItems->victory :
-	FetchResult($this->GetQueryHeader('room', 'victory_role'));
+    if(! property_exists($this, 'winner')){
+      $this->winner = $this->test_mode ? $RQ_ARGS->TestItems->winner :
+	FetchResult($this->GetQueryHeader('room', 'winner'));
     }
-    return $this->victory;
+    return $this->winner;
   }
 
   //投票情報をコマンド毎に分割する
@@ -502,7 +502,7 @@ class Room{
     $this->UpdateTime(); //最終書き込みを更新
     //$this->DeleteVote(); //今までの投票を全部削除
 
-    $status = CheckVictory(); //勝敗のチェック
+    $status = CheckWinner(); //勝敗のチェック
     //$DB_CONF->Commit(); //一応コミット (再検討)
     return $status;
   }
@@ -536,10 +536,10 @@ class RoomDataSet{
   function LoadFinishedRoom($room_no){
     $query = <<<EOF
 SELECT room_no AS id, room_name AS name, room_comment AS comment, date, game_option,
-  option_role, max_user, victory_role, establish_time, start_time, finish_time,
+  option_role, max_user, winner, establish_time, start_time, finish_time,
   (SELECT COUNT(user_no) FROM user_entry WHERE user_entry.room_no = room.room_no
    AND user_entry.user_no > 0) AS user_count
-FROM room WHERE status = 'finished' AND room_no = {$room_no}
+FROM room WHERE room_no = {$room_no} AND status = 'finished'
 EOF;
     return FetchObject($query, 'Room', true);
   }
@@ -565,7 +565,7 @@ EOF;
 SELECT room.room_no AS id, room.room_name AS name, room.room_comment AS comment,
     room.date AS room_date AS date, room.game_option AS room_game_option,
     room.option_role AS room_option_role, room.max_user AS room_max_user, users.room_num_user,
-    room.victory_role AS room_victory_role, room.establish_time, room.start_time, room.finish_time
+    room.winner AS room_winner, room.establish_time, room.start_time, room.finish_time
 FROM room
     LEFT JOIN (SELECT room_no, COUNT(user_no) AS room_num_user FROM user_entry GROUP BY room_no) users
 	USING (room_no)

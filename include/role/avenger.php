@@ -35,7 +35,7 @@ class Role_avenger extends Role_valkyrja_duelist{
     return NULL;
   }
 
-  function Win($victory){
+  function Win($winner){
     $actor = $this->GetActor();
     $id    = $actor->user_no;
     $count = 0;
