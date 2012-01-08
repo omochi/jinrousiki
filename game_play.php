@@ -37,13 +37,13 @@ if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは b
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
   elseif($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame()))
     EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
-  elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_day_night == $ROOM->day_night)
+  elseif($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_scene == $ROOM->scene)
     Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
   else
     CheckSilence(); //発言ができない状態ならゲーム停滞チェック
 
-  if($SELF->last_load_day_night != $ROOM->day_night){ //ゲームシーンを更新
-    $SELF->Update('last_load_day_night', $ROOM->day_night);
+  if($SELF->last_load_scene != $ROOM->scene){ //ゲームシーンを更新
+    $SELF->Update('last_load_scene', $ROOM->scene);
   }
 }
 elseif($ROOM->dead_mode && $ROOM->IsPlaying() && $SELF->IsDummyBoy()){
@@ -81,7 +81,7 @@ function SendCookie(&$objection_list){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   //-- 夜明け --//
-  setcookie('day_night', $ROOM->day_night, $ROOM->system_time + 3600); //シーンを登録
+  setcookie('scene', $ROOM->scene, $ROOM->system_time + 3600); //シーンを登録
 
   //-- 再投票 --//
   if(($last_vote_times = $ROOM->GetVoteTimes(true)) > 0){ //再投票回数を登録
@@ -141,9 +141,9 @@ function EntryLastWords($say){
 function Say($say){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
-  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->day_night, null, 0, true); //ゲーム開始前後
+  if(! $ROOM->IsPlaying()) return Write($say, $ROOM->scene, null, 0, true); //ゲーム開始前後
   if($SELF->IsDummyBoy() && $RQ_ARGS->last_words){ //身代わり君のシステムメッセージ (遺言)
-    return Write($say, $ROOM->day_night, 'dummy_boy', 0);
+    return Write($say, $ROOM->scene, 'dummy_boy', 0);
   }
   if($SELF->IsDead()) return Write($say, 'heaven', null, 0); //死者の霊話
 
@@ -162,7 +162,7 @@ function Say($say){
   if($ROOM->IsDay()){ //昼はそのまま発言
     if($ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
     if($SELF->IsRole('echo_brownie')) $ROLES->LoadMain($SELF)->EchoSay(); //山彦の処理
-    return Write($say, $ROOM->day_night, null, $spend_time, true);
+    return Write($say, $ROOM->scene, null, $spend_time, true);
   }
   //if($ROOM->IsNight()){ //夜は役職毎に分ける
   $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
@@ -180,7 +180,7 @@ function Say($say){
     $location = 'self_talk';
 
   $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
-  return Write($say, $ROOM->day_night, $location, $update ? $spend_time : 0, $update);
+  return Write($say, $ROOM->scene, $location, $update ? $spend_time : 0, $update);
 }
 
 //ゲーム停滞のチェック
@@ -190,7 +190,7 @@ function CheckSilence(){
   if(! $ROOM->IsPlaying() || $DB_CONF->Transaction()) return false; //スキップ判定 + テーブルロック
 
   //現在のシーンを再取得して切り替わっていたらスキップ
-  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night') . ' FOR UPDATE') != $ROOM->day_night){
+  if(FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene){
     $DB_CONF->RollBack();
     return false;
   }
@@ -264,7 +264,7 @@ function CheckSilence(){
 
 	//未投票者を全員突然死させる
 	foreach($novote_uname_list as $uname){
-	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED_' . $ROOM->day_night);
+	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED_' . $ROOM->scene);
 	}
 	LoversFollowed(true);
 	InsertMediumMessage();
@@ -315,7 +315,7 @@ function OutputGameHeader(){
     $header     = '<a href="game_log.php' . $url_room;
     $footer     = '</a>'."\n";
     $url_date   = '&date=';
-    $url_scene  = '&day_night=';
+    $url_scene  = '&scene=';
     $url_header = $header . $url_date;
     $url_footer = '" target="_blank">';
     $url_day    = $url_scene . 'day'   . $url_footer;
@@ -389,7 +389,7 @@ EOF;
 	$SOUND->Output('entry');
       }
     }
-    elseif($COOKIE->day_night != $ROOM->day_night){ //夜明け
+    elseif($COOKIE->scene != $ROOM->scene){ //夜明け
       $SOUND->Output('morning');
     }
 
@@ -405,7 +405,7 @@ EOF;
   }
   echo '</td></tr>'."\n".'</table>'."\n";
 
-  switch($ROOM->day_night){
+  switch($ROOM->scene){
   case 'beforegame': //開始前の注意を出力
     echo '<div class="caution">'."\n";
     echo 'ゲームを開始するには全員がゲーム開始に投票する必要があります';

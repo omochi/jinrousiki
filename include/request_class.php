@@ -193,12 +193,12 @@ class RequestGameLog extends RequestBase{
   function __construct(){
     $this->GetItems('IsRoomNo', 'get.room_no');
     $this->GetItems('intval', 'get.date', 'get.user_no');
-    $this->GetItems(NULL, 'get.day_night');
+    $this->GetItems(NULL, 'get.scene');
     if($this->IsInvalidScene()) OutputActionResult('引数エラー', '無効な引数です');
   }
 
   private function IsInvalidScene(){
-    switch($this->day_night){
+    switch($this->scene){
     case 'beforegame':
       return $this->date != 0;
 

@@ -8,18 +8,15 @@ function GetRandom($array){ return $array[array_rand($array)]; }
 function GetRealPassTime(&$left_time){
   global $TIME_CONF, $ROOM;
 
-  //シーンの最初の時刻を取得
-  $query = 'SELECT MIN(time) FROM talk' . $ROOM->GetQuery() . " AND scene = '{$ROOM->day_night}'";
-  if(($start_time = FetchResult($query)) === false) $start_time = $ROOM->system_time;
-
-  $base_time = $ROOM->real_time->{$ROOM->day_night} * 60; //設定された制限時間
-  $pass_time = $ROOM->system_time - $start_time;
+  $start_time = $ROOM->scene_start_time; //シーンの最初の時刻を取得
+  $base_time  = $ROOM->real_time->{$ROOM->scene} * 60; //設定された制限時間
+  $pass_time  = $ROOM->system_time - $start_time;
   if($ROOM->IsOption('wait_morning') && $ROOM->IsDay()){ //早朝待機制
     $base_time += $TIME_CONF->wait_morning; //制限時間を追加する
     $ROOM->event->wait_morning = $pass_time <= $TIME_CONF->wait_morning; //待機判定
   }
   if(($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
-  return array($start_time, $start_time + $base_time);
+  return $start_time + $base_time;
 }
 
 //会話で時間経過制の経過時間
@@ -27,7 +24,7 @@ function GetTalkPassTime(&$left_time, $silence = false){
   global $TIME_CONF, $ROOM;
 
   $query = 'SELECT SUM(spend_time) FROM talk' . $ROOM->GetQuery() .
-    " AND scene = '{$ROOM->day_night}'";
+    " AND scene = '{$ROOM->scene}'";
   $spend_time = (int)FetchResult($query);
 
   if($ROOM->IsDay()){ //昼は12時間
@@ -83,7 +80,7 @@ function LoversFollowed($sudden_death = false){
     $checked_list[] = $cupid_id;
     foreach($cupid_list[$cupid_id] as $lovers_id){ //キューピッドのリストから恋人の ID を取得
       $user = $USERS->ById($lovers_id); //恋人の情報を取得
-      if(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->day_night)) continue;
+      if(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->scene)) continue;
       if($sudden_death) $ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed); //突然死の処理
       $user->suicide_flag = true;
 
@@ -154,8 +151,9 @@ function CheckWinner($check_draw = false){
   if($winner == '') return false;
 
   //ゲーム終了
-  $query = "UPDATE room SET status = 'finished', day_night = 'aftergame', " .
-    "winner = '{$winner}', finish_datetime = NOW() WHERE room_no = {$ROOM->id}";
+  $query = "UPDATE room SET status = 'finished', scene = 'aftergame', " .
+    "scene_start_time = UNIX_TIMESTAMP(), winner = '{$winner}', finish_datetime = NOW() ".
+    "WHERE room_no = {$ROOM->id}";
   SendQuery($query, true);
   //OutputSiteSummary(); //RSS機能はテスト中
   return true;
@@ -240,10 +238,10 @@ function OutputGamePageHeader(){
   }
 
   OutputHTMLHeader($title, 'game');
-  echo '<link rel="stylesheet" href="css/game_' . $ROOM->day_night . '.css">'."\n";
+  echo '<link rel="stylesheet" href="css/game_' . $ROOM->scene . '.css">'."\n";
   if(! $ROOM->log_mode){ //過去ログ閲覧時は不要
     echo '<script type="text/javascript" src="javascript/change_css.js"></script>'."\n";
-    $on_load = "change_css('{$ROOM->day_night}');";
+    $on_load = "change_css('{$ROOM->scene}');";
   }
 
   if($RQ_ARGS->auto_reload != 0 && ! $ROOM->IsAfterGame()){ //自動リロードをセット
@@ -253,7 +251,7 @@ function OutputGamePageHeader(){
   //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
   $game_top = '<a id="game_top"></a>';
   if($ROOM->IsPlaying() && $ROOM->IsRealTime() && ! ($ROOM->log_mode || $ROOM->heaven_mode)){
-    list($start_time, $end_time) = GetRealPassTime($left_time);
+    $end_time   = GetRealPassTime($left_time);
     $sound_type = null;
     $alert_flag = false;
     $on_load .= 'output_realtime();';
@@ -277,7 +275,7 @@ function OutputGamePageHeader(){
 	}
       }
     }
-    OutputRealTimer($start_time, $end_time, $sound_type, $alert_flag);
+    OutputRealTimer($end_time, $sound_type, $alert_flag);
     $game_top .= "\n".'<span id="vote_alert"></span>';
   }
   $body = isset($on_load) ? '<body onLoad="' . $on_load . '">' : '<body>';
@@ -285,13 +283,13 @@ function OutputGamePageHeader(){
 }
 
 //リアルタイム表示に使う JavaScript の変数を出力
-function OutputRealTimer($start_time, $end_time, $type = null, $flag = false){
+function OutputRealTimer($end_time, $type = null, $flag = false){
   global $TIME_CONF, $ROOM, $SOUND;
 
   $js_path     = JINRO_ROOT . '/javascript/';
   $sound_path  = is_null($type) || ! is_object($SOUND) ? '' : $SOUND->GenerateJS($type);
   $sentence    = '　' . ($ROOM->IsDay() ? '日没' : '夜明け') . 'まで ';
-  $start_date  = GenerateJavaScriptDate($start_time);
+  $start_date  = GenerateJavaScriptDate($ROOM->scene_start_time);
   $end_date    = GenerateJavaScriptDate($end_time);
   $server_date = GenerateJavaScriptDate($ROOM->system_time);
   echo '<script type="text/javascript" src="' . $js_path . 'output_realtime.js"></script>'."\n";
@@ -876,7 +874,7 @@ function OutputTimeStamp($builder){
 
   if(is_null($time = FetchResult($ROOM->GetQueryHeader('room', $type)))) return false;
   $talk->uname    = 'system';
-  $talk->scene    = $ROOM->day_night;
+  $talk->scene    = $ROOM->scene;
   $talk->location = 'system';
   $talk->sentence .= '：' . ConvertTimeStamp($time);
   OutputTalk($talk, $builder);
@@ -1121,7 +1119,7 @@ function GenerateDeadMan(){
   if($ROOM->log_mode) return $str;
   $set_date = $yesterday;
   if($set_date < 2) return $str;
-  $type = $type_list->{$ROOM->day_night};
+  $type = $type_list->{$ROOM->scene};
 
   $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
   foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){

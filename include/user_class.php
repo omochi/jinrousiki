@@ -729,14 +729,14 @@ EOF;
 
     if($shift){ //一時的に前日に巻戻す
       $ROOM->date--;
-      $ROOM->day_night = 'night';
+      $ROOM->scene = 'night';
     }
     $this->AddDoom(1, 'joker');
-    $ROOM->SystemMessage($this->handle_name, 'JOKER_MOVED_' . $ROOM->day_night);
+    $ROOM->SystemMessage($this->handle_name, 'JOKER_MOVED_' . $ROOM->scene);
 
     if($shift){ //日時を元に戻す
       $ROOM->date++;
-      $ROOM->day_night = 'day';
+      $ROOM->scene = 'day';
     }
   }
 
@@ -853,7 +853,7 @@ class UserDataSet{
 	profile,
 	role,
 	live,
-	last_load_day_night,
+	last_load_scene,
 	ip_address = '' AS is_system,
 	icon_filename,
 	color,
@@ -878,7 +878,7 @@ class UserDataSet{
 	users.profile,
 	users.role,
 	users.live,
-	users.last_load_day_night,
+	users.last_load_scene,
 	users.ip_address = '' AS is_system,
 	icons.icon_filename,
 	icons.color,

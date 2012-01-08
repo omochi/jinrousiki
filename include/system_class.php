@@ -154,13 +154,13 @@ class Session{
 
 //-- クッキーデータのロード処理 --//
 class CookieDataSet{
-  public $day_night;  //夜明け
+  public $scene;      //夜明け
   public $objection;  //「異議あり」の情報
   public $vote_times; //投票回数
   public $user_count; //参加人数
 
   function __construct(){
-    $this->day_night  = @$_COOKIE['day_night'];
+    $this->scene      = @$_COOKIE['scene'];
     $this->objection  = @$_COOKIE['objection'];
     $this->vote_times = @(int)$_COOKIE['vote_times'];
     $this->user_count = @(int)$_COOKIE['user_count'];

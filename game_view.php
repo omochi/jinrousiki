@@ -12,7 +12,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報をロード
 $ROOM->view_mode   = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
-switch($ROOM->day_night){
+switch($ROOM->scene){
 case 'day': //昼
   $time_message = '日没まで ';
   break;
@@ -46,9 +46,9 @@ echo $ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS �
 $on_load = '';
 if($ROOM->IsPlaying()){ //経過時間を取得
   if($ROOM->IsRealTime()){ //リアルタイム制
-    list($start_time, $end_time) = GetRealPassTime($left_time, true);
-    $on_load = ' onLoad="output_realtime();"';
-    OutputRealTimer($start_time, $end_time);
+    $end_time = GetRealPassTime($left_time);
+    $on_load  = ' onLoad="output_realtime();"';
+    OutputRealTimer($end_time);
   }
   else{ //会話で時間経過制
     $INIT_CONF->LoadClass('TIME_CONF');

@@ -111,11 +111,12 @@ function EntryUser(){
     //クッキーの初期化
     $ROOM->system_time = TZTime(); //現在時刻を取得
     $cookie_time = $ROOM->system_time - 3600;
-    setcookie('day_night',  '', $cookie_time);
+    setcookie('scene',  '', $cookie_time);
     setcookie('vote_times', '', $cookie_time);
     setcookie('objection',  '', $cookie_time);
 
     $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
+    $ROOM->UpdateTime();
     $DB_CONF->Commit();
 
     $url = 'game_frame.php?room_no=' . $room_no;

@@ -7,7 +7,7 @@ class Room{
   public $game_option = '';
   public $option_role = '';
   public $date;
-  public $day_night;
+  public $scene;
   public $status;
   public $system_time;
   public $sudden_death;
@@ -37,8 +37,8 @@ class Room{
 
   //指定した部屋番号の DB 情報を取得する
   function LoadRoom($room_no, $lock = false){
-    $query = 'SELECT room_no AS id, room_name AS name, room_comment AS comment, ' .
-      'game_option, date, day_night, status FROM room WHERE room_no = ' . $room_no;
+    $query = 'SELECT room_no AS id, name, comment, game_option, status, date, scene, ' .
+      'scene_start_time FROM room WHERE room_no = ' . $room_no;
     if($lock) $query .= ' FOR UPDATE';
     $stack = FetchAssoc($query, true);
     if(count($stack) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
@@ -62,10 +62,10 @@ class Room{
     if($RQ_ARGS->IsVirtualRoom()) return $RQ_ARGS->TestItems->talk;
 
     $select = 'scene, location, uname, action, sentence, font_type';
-    switch($this->day_night){
+    switch($this->scene){
     case 'beforegame':
     case 'aftergame':
-      $table = 'talk_' . $this->day_night;
+      $table = 'talk_' . $this->scene;
       break;
 
     default:
@@ -78,7 +78,7 @@ class Room{
       $scene = 'heaven';
     }
     else{
-      $scene = $this->day_night;
+      $scene = $this->scene;
     }
 
     if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
@@ -98,10 +98,10 @@ class Room{
     global $RQ_ARGS;
 
     if($RQ_ARGS->IsVirtualRoom()){
-      if(is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->day_night})) return null;
+      if(is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->scene})) return null;
     }
     else{
-      switch($this->day_night){
+      switch($this->scene){
       case 'beforegame':
 	if($kick){
 	  $data = 'uname, target_uname';
@@ -337,16 +337,16 @@ class Room{
   }
 
   //ゲーム開始前判定
-  function IsBeforeGame(){ return $this->day_night == 'beforegame'; }
+  function IsBeforeGame(){ return $this->scene == 'beforegame'; }
 
   //ゲーム中 (昼) 判定
-  function IsDay(){ return $this->day_night == 'day'; }
+  function IsDay(){ return $this->scene == 'day'; }
 
   //ゲーム中 (夜) 判定
-  function IsNight(){ return $this->day_night == 'night'; }
+  function IsNight(){ return $this->scene == 'night'; }
 
   //ゲーム終了後判定
-  function IsAfterGame(){ return $this->day_night == 'aftergame'; }
+  function IsAfterGame(){ return $this->scene == 'aftergame'; }
 
   //ゲーム中判定 (仮想処理をする為、status では判定しない)
   function IsPlaying(){ return $this->IsDay() || $this->IsNight(); }
@@ -378,7 +378,7 @@ class Room{
 		$font_type = null, $spend_time = 0){
     if($uname == '') $uname = 'system';
     if($scene == ''){
-      $scene = $this->day_night;
+      $scene = $this->scene;
       if(is_null($location)) $location = 'system';
     }
     if($this->test_mode){
@@ -417,7 +417,7 @@ class Room{
 
   //超過警告メッセージ登録
   function OvertimeAlert($str){
-    $query = $this->GetQuery(true, 'talk') . " AND location = '{$this->day_night} system' " .
+    $query = $this->GetQuery(true, 'talk') . " AND location = '{$this->scene} system' " .
       "AND uname = 'system' AND sentence = '{$str}'";
     return FetchResult($query) == 0 ? $this->Talk($str) : false;
   }
@@ -482,19 +482,27 @@ class Room{
     return true;
   }
 
+  //シーンを更新
+  function UpdateScene($date = false){
+    $query = "scene = '{$this->scene}', scene_start_time = UNIX_TIMESTAMP()";
+    if($date) $query .= ", date = {$this->date}";
+    SendQuery('UPDATE room SET ' . $query . $this->GetQuery(false));
+  }
+
   //夜にする
   function ChangeNight(){
-    $this->day_night = 'night';
-    SendQuery("UPDATE room SET day_night = '{$this->day_night}'" . $this->GetQuery(false));
+    $this->scene = 'night';
+    if($this->test_mode) return true;
+    $this->UpdateScene();
     $this->Talk('', 'NIGHT'); //夜がきた通知
   }
 
   //次の日にする
   function ChangeDate(){
     $this->date++;
-    $this->day_night = 'day';
+    $this->scene = 'day';
     if($this->test_mode) return true;
-    SendQuery("UPDATE room SET date = {$this->date}, day_night = 'day'" . $this->GetQuery(false));
+    $this->UpdateScene(true);
 
     //夜が明けた通知
     $this->Talk($this->date, 'MORNING');
@@ -519,8 +527,8 @@ class Room{
 
   //背景設定 CSS タグを生成
   function GenerateCSS(){
-    if(empty($this->day_night)) return '';
-    return '<link rel="stylesheet" href="'.JINRO_CSS.'/game_'.$this->day_night.'.css">'."\n";
+    if(empty($this->scene)) return '';
+    return '<link rel="stylesheet" href="'.JINRO_CSS.'/game_'.$this->scene.'.css">'."\n";
   }
 
   //村のタイトルタグを生成
@@ -535,8 +543,8 @@ class RoomDataSet{
 
   function LoadFinishedRoom($room_no){
     $query = <<<EOF
-SELECT room_no AS id, room_name AS name, room_comment AS comment, date, game_option,
-  option_role, max_user, winner, establish_datetime, start_datetime, finish_datetime,
+SELECT room_no AS id, name, comment, date, game_option, option_role, max_user, winner,
+  establish_datetime, start_datetime, finish_datetime,
   (SELECT COUNT(user_no) FROM user_entry WHERE user_entry.room_no = room.room_no
    AND user_entry.user_no > 0) AS user_count
 FROM room WHERE room_no = {$room_no} AND status = 'finished'
@@ -546,7 +554,7 @@ EOF;
 
   function LoadEntryUser($room_no){
     $query = <<<EOF
-SELECT room_no AS id, date, day_night, status, max_user FROM room WHERE room_no = {$room_no}
+SELECT room_no AS id, date, scene, status, max_user FROM room WHERE room_no = {$room_no}
 FOR UPDATE
 EOF;
     return FetchObject($query, 'Room', true);
@@ -554,15 +562,15 @@ EOF;
 
   function LoadEntryUserPage($room_no){
     $query = <<<EOF
-SELECT room_no AS id, room_name AS name, room_comment AS comment, status,
-  game_option, option_role FROM room WHERE room_no = {$room_no}
+SELECT room_no AS id, name, comment, status, game_option, option_role
+FROM room WHERE room_no = {$room_no}
 EOF;
     return FetchObject($query, 'Room', true);
   }
 
   function LoadClosedRooms($room_order, $limit_statement) {
     $sql = <<<SQL
-SELECT room.room_no AS id, room.room_name AS name, room.room_comment AS comment,
+SELECT room.room_no AS id, room.name AS name, room.comment AS comment,
     room.date AS room_date AS date, room.game_option AS room_game_option,
     room.option_role AS room_option_role, room.max_user AS room_max_user, users.room_num_user,
     room.winner AS room_winner, room.establish_datetime, room.start_datetime, room.finish_datetime
@@ -578,10 +586,8 @@ SQL;
 
   function LoadOpeningRooms($class = 'RoomDataSet') {
     $sql = <<<SQL
-SELECT room_no AS id, room_name AS name, room_comment AS comment, game_option, option_role, max_user, status
-FROM room
-WHERE status <> 'finished'
-ORDER BY room_no DESC
+SELECT room_no AS id, name, comment, game_option, option_role, max_user, status
+FROM room WHERE status <> 'finished' ORDER BY room_no DESC
 SQL;
     return self::__load($sql);
   }

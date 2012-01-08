@@ -14,7 +14,7 @@ function CheckSituation($applay_situation){
 //シーンの一致チェック
 function CheckScene(){
   global $ROOM, $SELF;
-  if($ROOM->day_night != $SELF->last_load_day_night) OutputVoteResult('戻ってリロードしてください');
+  if($ROOM->scene != $SELF->last_load_scene) OutputVoteResult('戻ってリロードしてください');
 }
 
 //投票結果出力
@@ -34,13 +34,13 @@ function OutputVotePageHeader(){
 
   OutputHTMLHeader($SERVER_CONF->title . ' [投票]', 'game');
   $css_path = JINRO_CSS;
-  if($ROOM->day_night != ''){
-    $css = $css_path . '/game_' . $ROOM->day_night . '.css';
+  if($ROOM->scene != ''){
+    $css = $css_path . '/game_' . $ROOM->scene . '.css';
     echo '<link rel="stylesheet" href="' . $css . '">'."\n";
   }
   echo <<<EOF
 <link rel="stylesheet" href="{$css_path}/game_vote.css">
-<link rel="stylesheet" id="day_night">
+<link rel="stylesheet" id="scene">
 </head><body>
 <a id="game_top"></a>
 <form method="POST" action="{$RQ_ARGS->post_url}">
@@ -605,10 +605,11 @@ function AggregateVoteGameStart($force_start = false){
 
   //ゲーム開始
   $ROOM->date++;
-  $ROOM->day_night = $ROOM->IsOption('open_day') ? 'day' : 'night';
+  $ROOM->scene = $ROOM->IsOption('open_day') ? 'day' : 'night';
   if(! $ROOM->test_mode){
-    $query = "UPDATE room SET date = {$ROOM->date}, day_night = '{$ROOM->day_night}', " .
-      "status = 'playing', start_datetime = NOW() WHERE room_no = {$ROOM->id}";
+    $query = "UPDATE room SET status = 'playing', date = {$ROOM->date}, " .
+      "scene = '{$ROOM->scene}', scene_start_time = UNIX_TIMESTAMP(), " .
+      "start_datetime = NOW() WHERE room_no = {$ROOM->id}";
     SendQuery($query);
     //OutputSiteSummary(); //RSS機能はテスト中
   }

@@ -121,7 +121,7 @@ function SqueezeIcon(){
   OptimizeTable('user_icon');
 }
 
-//村立て時刻再生成関数 (for 1.4 / 1.5)
+//村立て時刻再生成関数 (for 1.4, 1.5)
 function ReconstructEstablishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE establish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
@@ -165,7 +165,7 @@ function ReconstructEstablishTime($test = false){
   }
 }
 
-//ゲーム開始時刻再生成関数 (for 1.4 / 1.5)
+//ゲーム開始時刻再生成関数 (for 1.4, 1.5)
 function ReconstructStartTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE start_time IS NULL ORDER BY room_no");
   $keyword = 'ゲーム開始：';
@@ -206,7 +206,7 @@ function ReconstructStartTime($test = false){
   }
 }
 
-//ゲーム終了時刻再生成関数 (for 1.4 / 1.5)
+//ゲーム終了時刻再生成関数 (for 1.4, 1.5)
 function ReconstructFinishTime($test = false){
   $room_list = FetchArray("SELECT room_no FROM room WHERE finish_time IS NULL ORDER BY room_no");
   //PrintData($room_list);
@@ -258,7 +258,7 @@ function UpdateRoomInfo($item, $value, $id){
   SendQuery("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");
 }
 
-//テーブルデータの文字コード変換
+//テーブルデータの文字コード変換 (for 1.4, 1.5)
 /* table : TABLE  */
 function ConvertTableEncode($table){
   $max = 0;

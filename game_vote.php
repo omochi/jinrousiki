@@ -58,7 +58,7 @@ else{ //シーンに合わせた投票ページを出力
     OutputVoteDeadUser();
   }
   else{
-    switch($ROOM->day_night){
+    switch($ROOM->scene){
     case 'beforegame':
       OutputVoteBeforeGame();
       break;
@@ -137,7 +137,7 @@ function VoteKick(){
   }
 
   //ゲーム開始チェック
-  if(FetchResult($ROOM->GetQueryHeader('room', 'day_night')) != 'beforegame'){
+  if(FetchResult($ROOM->GetQueryHeader('room', 'scene')) != 'beforegame'){
     OutputVoteResult('Kick：既にゲームは開始されています');
   }
 

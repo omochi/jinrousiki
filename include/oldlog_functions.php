@@ -229,7 +229,7 @@ function GenerateOldLog(){
   }
   if($ROOM->watch_mode){
     $ROOM->status    = 'playing';
-    $ROOM->day_night = 'day';
+    $ROOM->scene = 'day';
   }
   $title  = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
   $option = GenerateGameOptionImage($ROOM->game_option->row, $ROOM->option_role->row);
@@ -307,7 +307,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
 
   case 'heaven_only':
     $table_class = $RQ_ARGS->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
-    $query_where .= "date = {$set_date} AND (location = 'heaven' OR uname = 'system')";
+    $query_where .= "date = {$set_date} AND (scene = 'heaven' OR uname = 'system')";
     break;
 
   default:
@@ -345,15 +345,15 @@ function GenerateDateTalkLog($set_date, $set_scene){
   $str = '';
   if($flag_border_game && ! $RQ_ARGS->reverse_log){
     $ROOM->date = $set_date + 1;
-    $ROOM->day_night = 'day';
+    $ROOM->scene = 'day';
     $str .= GenerateLastWords() . GenerateDeadMan();//死亡者を出力
   }
   $ROOM->date = $set_date;
-  $ROOM->day_night = $table_class;
+  $ROOM->scene = $table_class;
   if($set_scene != 'heaven_only') $ROOM->SetWeather();
 
   $builder = new DocumentBuilder();
-  $id = $ROOM->IsPlaying() ? 'date' . $ROOM->date : $ROOM->day_night;
+  $id = $ROOM->IsPlaying() ? 'date' . $ROOM->date : $ROOM->scene;
   $builder->BeginTalk('talk ' . $table_class, $id);
   if($RQ_ARGS->reverse_log) OutputTimeStamp($builder);
   //if($ROOM->watch_mode) $builder->AddSystemTalk($ROOM->date . print_r($ROOM->event, true));
@@ -363,14 +363,14 @@ function GenerateDateTalkLog($set_date, $set_scene){
     case 'day':
       if($ROOM->IsDay() || $talk->type == 'dummy_boy') break;
       $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
-      $ROOM->day_night = $talk->scene;
+      $ROOM->scene = $talk->scene;
       $builder->BeginTalk('talk ' . $talk->scene);
       break;
 
     case 'night':
       if($ROOM->IsNight() || $talk->type == 'dummy_boy') break;
       $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
-      $ROOM->day_night = $talk->scene;
+      $ROOM->scene = $talk->scene;
       $builder->BeginTalk('talk ' . $talk->scene);
       break;
     }
@@ -385,7 +385,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
     if($set_date == $ROOM->last_date && $ROOM->IsDay()) $str .= GenerateVoteResult();
 
     $ROOM->date = $set_date + 1;
-    $ROOM->day_night = 'day';
+    $ROOM->scene = 'day';
     $str .= GenerateDeadMan() . GenerateLastWords(); //遺言を出力
   }
   return $str;
@@ -404,7 +404,7 @@ function GenerateSceneChange($set_date){
   if($RQ_ARGS->heaven_only) return $str;
   $ROOM->date = $set_date;
   if($RQ_ARGS->reverse_log){
-    $ROOM->day_night = 'night';
+    $ROOM->scene = 'night';
     $str .= GenerateVoteResult() . GenerateDeadMan();
   }
   else{

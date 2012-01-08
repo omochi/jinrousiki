@@ -24,7 +24,7 @@ function MaintenanceRoom(){
   if($SERVER_CONF->disable_maintenance) return; //スキップ判定
 
   //一定時間更新の無い村は廃村にする
-  $query = "UPDATE room SET status = 'finished', day_night = 'aftergame' " .
+  $query = "UPDATE room SET status = 'finished', scene = 'aftergame' " .
     "WHERE status <> 'finished' AND last_update_time < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
   /*
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
@@ -291,11 +291,12 @@ function CreateRoom(){
   do{
     if(! $SERVER_CONF->dry_run_mode){
       //村作成
-      $time   = TZTime();
-      $items  = 'room_no, room_name, room_comment, establisher_ip, establish_datetime, ' .
-	'game_option, option_role, max_user, status, date, day_night, last_update_time';
-      $values = "{$room_no}, '{$room_name}', '{$room_comment}', '{$ip_address}', NOW(), " .
-	"'{$game_option}', '{$option_role}', {$max_user}, 'waiting', 0, 'beforegame', '{$time}'";
+      $items  = 'room_no, name, comment, max_user, game_option, ' .
+	'option_role, status, date, scene, scene_start_time, last_update_time, ' .
+	'establisher_ip, establish_datetime';
+      $values = "{$room_no}, '{$room_name}', '{$room_comment}', {$max_user}, '{$game_option}', " .
+	"'{$option_role}', 'waiting', 0, 'beforegame', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), " .
+	"'{$ip_address}', NOW()";
       if(! InsertDatabase('room', $items, $values)) break;
 
       //身代わり君を入村させる
@@ -419,7 +420,7 @@ function OutputRoomList(){
   //部屋情報を取得
   $delete_header = '<a href="admin/room_delete.php?room_no=';
   $delete_footer = '">[削除 (緊急用)]</a>'."\n";
-  $query = 'SELECT room_no, room_name, room_comment, game_option, option_role, max_user, status ' .
+  $query = 'SELECT room_no, name, comment, game_option, option_role, max_user, status ' .
     "FROM room WHERE status IN ('waiting', 'playing') ORDER BY room_no DESC";
   foreach(FetchAssoc($query) as $stack){
     extract($stack);
@@ -429,8 +430,8 @@ function OutputRoomList(){
       GenerateMaxUserImage($max_user);
     echo <<<EOF
 {$delete}<a href="login.php?room_no={$room_no}">
-{$status_img}<span>[{$room_no}番地]</span>{$room_name}村<br>
-<div>～{$room_comment}～ {$option_img}</div>
+{$status_img}<span>[{$room_no}番地]</span>{$name}村<br>
+<div>～{$comment}～ {$option_img}</div>
 </a><br>
 
 EOF;

@@ -70,13 +70,11 @@ function CheckTable(){
   $success = ') を追加しました';
   $failed  = ') を追加できませんでした';
 
-  // status を VARCHAR(16) にして index をはるか検討する
-  // day_night → scene
   $table = 'room';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-room_no INT NOT NULL PRIMARY KEY, room_name TEXT, room_comment TEXT, max_user INT, game_option TEXT,
-option_role TEXT, status VARCHAR(16), date INT, day_night TEXT, scene_start_time INT(20) NOT NULL,
+room_no INT NOT NULL PRIMARY KEY, name TEXT, comment TEXT, max_user INT, game_option TEXT,
+option_role TEXT, status VARCHAR(16), date INT, scene VARCHAR(16), scene_start_time INT(20) NOT NULL,
 last_update_time INT(20) NOT NULL, winner TEXT, establisher_ip TEXT, establish_timetime DATETIME,
 start_datetime DATETIME, finish_datetime DATETIME, INDEX room_index(status)
 EOF;
@@ -88,7 +86,7 @@ EOF;
     $query = <<<EOF
 room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT, icon_no INT, profile TEXT,
 sex TEXT, password TEXT, role TEXT, live TEXT, session_id CHAR(32) UNIQUE, last_words TEXT,
-ip_address TEXT, last_load_day_night TEXT, INDEX user_entry_index(room_no, user_no)
+ip_address TEXT, last_load_scene VARCHAR(16), INDEX user_entry_index(room_no, user_no)
 EOF;
     CreateTable($table, $query);
 

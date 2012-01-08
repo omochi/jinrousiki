@@ -158,7 +158,7 @@ function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $ic
   }
   else{
     $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
-    $items  .= ', ip_address, last_load_day_night';
+    $items  .= ', ip_address, last_load_scene';
     $values .= ", '{$ip_address}', 'beforegame'";
   }
 

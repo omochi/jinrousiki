@@ -17,8 +17,8 @@ $RQ_ARGS->TestItems->test_room = array(
   //'game_option' => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 joker',
   'game_option' => 'dummy_boy chaosfull chaos_open_cast no_sub_role real_time:6:4 joker weather',
   'date' => 9,
-  'day_night' => 'night',
-  //'day_night' => 'aftergame',
+  'scene' => 'night',
+  //'scene' => 'aftergame',
   'status' => 'playing'
   //'status' => 'finished'
 );
@@ -191,7 +191,7 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
   $user->room_no = $RQ_ARGS->room_no;
   $user->user_no = $id;
   if(! property_exists($user, 'profile')) $user->profile = $id;
-  $user->last_load_day_night = 'night';
+  $user->last_load_scene = 'night';
   $user->is_system = $user->user_no == 1;
   if($id > 1){
     $user->color = $icon_color_list[($id - 2) % 10];
@@ -339,10 +339,10 @@ $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 4;
-#$ROOM->day_night = 'beforegame';
-#$ROOM->day_night = 'day';
-$ROOM->day_night = 'night';
-#$ROOM->day_night = 'aftergame';
+#$ROOM->scene = 'beforegame';
+#$ROOM->scene = 'day';
+$ROOM->scene = 'night';
+#$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 #foreach($USERS->rows as $user) $user->live = 'live'; //初日用
@@ -379,7 +379,7 @@ if($vote_view_mode){ //投票表示モード
   }
   else{
     $RQ_ARGS->post_url = 'vote_test.php';
-    switch($ROOM->day_night){
+    switch($ROOM->scene){
     case 'beforegame':
       OutputVoteBeforeGame();
       break;
@@ -449,7 +449,7 @@ if($talk_view_mode){ //発言表示モード
     array('uname' => 'system', 'location' => 'night system', 'font_type' => null, 'sentence' => 'NIGHT')
   );
   $RQ_ARGS->TestItems->talk = array();
-  foreach($RQ_ARGS->TestItems->talk_data->{$ROOM->day_night} as $stack){
+  foreach($RQ_ARGS->TestItems->talk_data->{$ROOM->scene} as $stack){
     $RQ_ARGS->TestItems->talk[] = new Talk($stack);
   }
   //PrintData($RQ_ARGS->TestItems->talk);
@@ -517,8 +517,8 @@ if($ROOM->IsDay()){ //昼の投票テスト
   echo GenerateVoteList($stack, $ROOM->date);
   $ROOM->date++;
   //$ROOM->log_mode = false; //イベント確認用
-  //$ROOM->day_night = 'day'; //イベント確認用
-  $ROOM->day_night = 'night';
+  //$ROOM->scene = 'day'; //イベント確認用
+  $ROOM->scene = 'night';
   $SELF = $USERS->ByID($self_id);
 }
 elseif($ROOM->IsNight()){ // 夜の投票テスト
