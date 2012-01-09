@@ -187,7 +187,8 @@ function Say($say){
 function CheckSilence(){
   global $DB_CONF, $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
-  if(! $ROOM->IsPlaying() || $DB_CONF->Transaction()) return false; //スキップ判定 + テーブルロック
+  //スキップ判定 + テーブルロック
+  if(! $ROOM->IsPlaying() || ! $DB_CONF->Transaction()) return false;
 
   //現在のシーンを再取得して切り替わっていたらスキップ
   if(FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene){
@@ -225,7 +226,6 @@ function CheckSilence(){
     $sudden_death_announce = 'あと' . ConvertTime($TIME_CONF->sudden_death) . 'で' .
       $MESSAGE->sudden_death_announce;
     if($ROOM->OvertimeAlert($sudden_death_announce)){ //警告出力
-      $ROOM->UpdateTime(); //更新時間を更新
       $last_update_time = 0;
     }
     else{ //一分刻みで追加の警告を出す
@@ -271,8 +271,9 @@ function CheckSilence(){
 
 	$ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
 	$ROOM->Talk($sudden_death_announce); //突然死告知メッセージ
+	$ROOM->UpdateVoteCount(true); //投票回数を更新
 	$ROOM->UpdateTime(); //制限時間リセット
-	$ROOM->DeleteVote(); //投票リセット
+	//$ROOM->DeleteVote(); //投票リセット
 	if(CheckWinner()) $USERS->ResetJoker(); //勝敗チェック
       }
     }
@@ -485,16 +486,17 @@ EOF;
 function CheckSelfVoteDay(){
   global $MESSAGE, $ROOM, $USERS, $SELF;
 
-  $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
-  $str = '<div class="self-vote">投票 ' . $vote_times . ' 回目：';
+  $revote_count = $ROOM->revote_count + 1; //投票回数を取得
+  $str = '<div class="self-vote">投票 ' . $revote_count . ' 回目：';
 
   //投票対象者を取得
-  $query = 'SELECT target_uname FROM vote' . $ROOM->GetQuery() .
-    " AND situation = 'VOTE_KILL' AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
-  $target_uname = FetchResult($query);
-  $str .= ($target_uname === false ? '<font color="#FF0000">まだ投票していません</font>' :
-	   $USERS->GetHandleName($target_uname, true) . ' さんに投票済み') . '</div>'."\n";
-  if($target_uname === false){
+  $query = 'SELECT target_no FROM vote' . $ROOM->GetQuery() .
+    " AND scene = '{$ROOM->scene}' AND type = 'VOTE_KILL' AND vote_count = {$ROOM->vote_count}" .
+    " AND revote_count = {$ROOM->revote_count} AND user_no = '{$SELF->user_no}'";
+  $target_no = FetchResult($query);
+  $str .= ($target_no === false ? '<font color="#FF0000">まだ投票していません</font>' :
+	   $USERS->ByVirtual($target_no)->handle_name . ' さんに投票済み') . '</div>'."\n";
+  if($target_no === false){
     $str .= '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>'."\n";
   }
   echo $str;

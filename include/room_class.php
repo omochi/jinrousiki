@@ -38,7 +38,7 @@ class Room{
   //指定した部屋番号の DB 情報を取得する
   function LoadRoom($room_no, $lock = false){
     $query = 'SELECT room_no AS id, name, comment, game_option, status, date, scene, ' .
-      'scene_start_time FROM room WHERE room_no = ' . $room_no;
+      'vote_count, revote_count, scene_start_time FROM room WHERE room_no = ' . $room_no;
     if($lock) $query .= ' FOR UPDATE';
     $stack = FetchAssoc($query, true);
     if(count($stack) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
@@ -101,47 +101,47 @@ class Room{
       if(is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->scene})) return null;
     }
     else{
+      $action = "scene = '{$this->scene}' AND vote_count = {$this->vote_count}";
       switch($this->scene){
       case 'beforegame':
 	if($kick){
-	  $data = 'uname, target_uname';
-	  $action = "situation = 'KICK_DO'";
+	  $data = 'uname, user_no, target_no';
+	  $action .= " AND type = 'KICK_DO'";
 	}
 	else{
-	  $data = 'uname, target_uname, situation';
-	  $action = "situation = 'GAMESTART'";
+	  $data = 'uname, user_no';
+	  $action .= " AND type = 'GAMESTART'";
 	}
 	break;
 
       case 'day':
-	$data = 'uname, target_uname, vote_number';
-	$action = "situation = 'VOTE_KILL' AND vote_times = " . $this->GetVoteTimes();
+	$data = 'user_no, target_no, vote_number';
+	$action .= " AND revote_count = {$this->revote_count}";
 	break;
 
       case 'night':
-	$data = 'uname, target_uname, situation';
-	$action = "situation <> 'VOTE_KILL'";
+	$data = 'user_no, target_no, type';
 	break;
 
       default:
 	return null;
       }
-      $vote_list = FetchAssoc("SELECT {$data} FROM vote {$this->GetQuery()} AND {$action}");
+      $query = "SELECT {$data} FROM vote {$this->GetQuery()} AND {$action}";
+      $vote_list = FetchAssoc($query);
     }
 
     $stack = array();
-    if($kick){
-      foreach($vote_list as $list) $stack[$list['uname']][] = $list['target_uname'];
+    if($this->IsBeforegame()){
+      foreach($vote_list as $list) $stack[$list['uname']][] = $list['target_no'];
     }
     else{
       foreach($vote_list as $list){
-	$uname = $list['uname'];
-	unset($list['uname']);
-	$this->IsDay() ? $stack[$uname] = $list : $stack[$uname][] = $list;
+	$id = $list['user_no'];
+	unset($list['user_no']);
+	$this->IsDay() ? $stack[$id] = $list : $stack[$id][] = $list;
       }
     }
     $this->vote = $stack;
-
     return count($this->vote);
   }
 
@@ -197,14 +197,12 @@ class Room{
   //投票情報をコマンド毎に分割する
   function ParseVote(){
     $stack = array();
-    foreach($this->vote as $uname => $vote_stack){
+    foreach($this->vote as $id => $vote_stack){
       if($this->IsDay()){
-	$stack[$vote_stack['situation']][$uname] = $vote_stack['target_uname'];
+	$stack[$vote_stack['type']][$id] = $vote_stack['target_no'];
       }
       else{
-	foreach($vote_stack as $list){
-	  $stack[$list['situation']][$uname] = $list['target_uname'];
-	}
+	foreach($vote_stack as $list) $stack[$list['type']][$id] = $list['target_no'];
       }
     }
     return $stack;
@@ -231,11 +229,17 @@ class Room{
     if(is_null($this->id)) return true;
 
     $query = 'DELETE FROM vote' . $this->GetQuery();
-    if($this->IsDay())
-      $query .= " AND situation = 'VOTE_KILL' AND vote_times = " . $this->GetVoteTimes();
-    elseif($this->IsNight())
-      $query .= ' AND situation <> ' . ($this->date == 1 ? "'CUPID_DO'" : "'VOTE_KILL'");
-
+    if($this->IsDay()){
+      $query .= " AND type = 'VOTE_KILL' AND revote_count = " . $this->GetVoteTimes();
+    }
+    elseif($this->IsNight()){
+      if($this->date == 1){
+	$query .= " AND type NOT IN ('CUPID_DO', 'DUELIST_DO')";
+      }
+      else{
+	$query .= " AND type NOT IN 'VOTE_KILL'";
+      }
+    }
     SendQuery($query);
     OptimizeTable('vote');
     return true;
@@ -417,8 +421,8 @@ class Room{
 
   //超過警告メッセージ登録
   function OvertimeAlert($str){
-    $query = $this->GetQuery(true, 'talk') . " AND location = '{$this->scene} system' " .
-      "AND uname = 'system' AND sentence = '{$str}'";
+    $query = $this->GetQuery(true, 'talk') . " AND scene = '{$this->scene}' " .
+      "AND location = 'system' AND uname = 'system' AND sentence = '{$str}'";
     return FetchResult($query) == 0 ? $this->Talk($str) : false;
   }
 
@@ -460,7 +464,7 @@ class Room{
 	$values .= ", '{$$data}'";
       }
     }
-    return InsertDatabase('system_message', $items, $values);
+    return InsertDatabase('result_ability', $items, $values);
   }
 
   //天候登録
@@ -474,6 +478,17 @@ class Room{
     }
   }
 
+  //投票回数を更新
+  function UpdateVoteCount($reset = false){
+    if($this->test_mode) return true;
+    SendQuery('UPDATE room SET vote_count = vote_count + 1' . $this->GetQuery(false));
+    if(! $reset && $this->date != 1) return true;
+    $query = 'UPDATE vote SET vote_count = vote_count + 1' . $this->GetQuery() .
+      " AND type IN ('CUPID_DO', 'DUELIST_DO')";
+    SendQuery($query);
+    return true;
+  }
+
   //最終更新時刻を更新
   function UpdateTime($commit = false){
     if($this->test_mode) return true;
@@ -484,8 +499,8 @@ class Room{
 
   //シーンを更新
   function UpdateScene($date = false){
-    $query = "scene = '{$this->scene}', scene_start_time = UNIX_TIMESTAMP()";
-    if($date) $query .= ", date = {$this->date}";
+    $query = "scene = '{$this->scene}', vote_count = 1, scene_start_time = UNIX_TIMESTAMP()";
+    if($date) $query .= ", date = {$this->date}, revote_count = 0";
     SendQuery('UPDATE room SET ' . $query . $this->GetQuery(false));
   }
 
@@ -506,7 +521,7 @@ class Room{
 
     //夜が明けた通知
     $this->Talk($this->date, 'MORNING');
-    $this->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
+    //$this->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
     $this->UpdateTime(); //最終書き込みを更新
     //$this->DeleteVote(); //今までの投票を全部削除
 

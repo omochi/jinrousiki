@@ -220,14 +220,14 @@ class RequestGameLog extends RequestBase{
 class RequestGameVote extends RequestBaseGamePlay{
   //変数の用途
   /*
-    vote : 投票ボタンを押した or 投票ページの表示の制御用
-    vote_times : 昼の投票回数
-    target_no : 投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
-    situation : 投票の分類 (Kick・処刑・占い・人狼襲撃など)
+    vote         : 投票ボタンを押した or 投票ページの表示の制御用
+    revote_count : 昼の再投票回数
+    target_no    : 投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
+    situation    : 投票の分類 (Kick・処刑・占い・人狼襲撃など)
   */
   function __construct(){
     parent::__construct();
-    $this->GetItems('intval', 'post.vote_times');
+    $this->GetItems('intval', 'post.revote_count');
     $this->GetItems('IsOn', 'post.vote');
     $this->GetItems(NULL, 'post.target_no', 'post.situation');
     $this->AttachTestParameters(); //テスト用引数のロード

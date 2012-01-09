@@ -23,27 +23,18 @@ class Role_barrier_wizard extends Role_wizard{
     if(count($stack) < 1 || 4 < count($stack)) return '指定人数は1～4人にしてください';
 
     $user_list = array();
+    sort($stack);
     foreach($stack as $id){
       $user = $USERS->ByID($id);
       //例外判定
       if($this->IsActor($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()){
 	return '自分・死者・身代わり君には投票できません';
       }
-      $user_list[$id] = $user;
+      $user_list[$id] = $user->handle_name;
     }
-
-    $uname_stack  = array();
-    $handle_stack = array();
-    foreach($user_list as $id => $user){
-      $uname_stack[] = $USERS->ByReal($id)->user_no;
-      $handle_stack[$id] = $user->handle_name;
-    }
-    sort($uname_stack);
-    ksort($handle_stack);
-
-    $this->SetStack(implode(' ', $uname_stack), 'target_uname');
-    $this->SetStack(implode(' ', $handle_stack), 'target_handle');
-    return NULL;
+    $this->SetStack(implode(' ', array_keys($user_list)), 'target_no');
+    $this->SetStack(implode(' ', $user_list), 'target_handle');
+    return null;
   }
 
   function SetGuard($list){

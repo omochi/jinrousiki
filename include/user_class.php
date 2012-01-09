@@ -441,9 +441,9 @@ class User{
   function IsVoted($vote_data, $action, $not_action = null){
     return (isset($not_action) && array_key_exists($not_action, $vote_data) &&
 	    is_array($vote_data[$not_action]) &&
-	    array_key_exists($this->uname, $vote_data[$not_action])) ||
+	    array_key_exists($this->user_no, $vote_data[$not_action])) ||
       ($action == 'WOLF_EAT' ? isset($vote_data[$action]) :
-       isset($vote_data[$action][$this->uname]));
+       isset($vote_data[$action][$this->user_no]));
   }
 
   //所属陣営判別 (ラッパー)
@@ -798,18 +798,19 @@ EOF;
 	//PrintData($stack, 'Vote');
       }
       else{
-	PrintData("{$action}: {$target}", 'Vote');
+	PrintData("{$action}: {$this->uname}: {$target}", 'Vote');
       }
       return true;
     }
-    $items = 'room_no, date, uname, situation';
-    $values = "{$ROOM->id}, $ROOM->date, '{$this->uname}', '{$action}'";
+    $items = 'room_no, date, scene, type, uname, user_no, vote_count';
+    $values = "{$ROOM->id}, $ROOM->date, '{$ROOM->scene}', '{$action}', '{$this->uname}',".
+      " {$this->user_no}, {$ROOM->vote_count}";
     if(isset($target)){
-      $items .= ', target_uname';
+      $items .= ', target_no';
       $values .= ", '{$target}'";
     }
     if(isset($vote_number)){
-      $items .= ', vote_number, vote_times';
+      $items .= ', vote_number, revote_count';
       $values .= ", '{$vote_number}', '{$RQ_ARGS->vote_times}'";
     }
     return InsertDatabase('vote', $items, $values);

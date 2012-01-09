@@ -143,11 +143,11 @@ function VoteKick(){
 
   $ROOM->LoadVote(true); //投票情報をロード
   $vote_data = $ROOM->vote[$SELF->uname];
-  if(is_array($vote_data) && in_array($target->uname, $vote_data)){
+  if(is_array($vote_data) && in_array($target->user_no, $vote_data)){
     OutputVoteResult("Kick：{$target->handle_name} さんへ Kick 投票済み");
   }
 
-  if($SELF->Vote('KICK_DO', $target->uname)){ //投票処理
+  if($SELF->Vote('KICK_DO', $target->user_no)){ //投票処理
     $ROOM->Talk($target->handle_name, 'KICK_DO', $SELF->uname); //投票しました通知
     $vote_count = AggregateVoteKick($target); //集計処理
     $DB_CONF->Commit();
@@ -182,8 +182,9 @@ function AggregateVoteKick($target){
   SendQuery($query);
   $ROOM->Talk($target->handle_name . $MESSAGE->kick_out); //出て行ったメッセージ
   $ROOM->Talk($MESSAGE->vote_reset); //投票リセット通知
+  $ROOM->UpdateVoteCount();
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
-  $ROOM->DeleteVote(); //今までの投票を全部削除
+  //$ROOM->DeleteVote(); //今までの投票を全部削除
   return $vote_count;
 }
 
@@ -250,11 +251,12 @@ function OutputVoteDay(){
 
   CheckScene(); //投票する状況があっているかチェック
   if($ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
-  $vote_times = $ROOM->GetVoteTimes(); //投票回数を取得
+  $revote_count = $ROOM->revote_count;
 
   //投票済みチェック
-  $query = $ROOM->GetQuery(true, 'vote') . " AND situation = 'VOTE_KILL' " .
-    "AND vote_times = {$vote_times} AND uname = '{$SELF->uname}'";
+  $query = $ROOM->GetQuery(true, 'vote') . " AND scene = '{$ROOM->scene}' " .
+    "AND vote_count = {$ROOM->vote_count} AND revote_count = {$revote_count} " .
+    "AND user_no = {$SELF->user_no}";
   if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
   //特殊イベントを取得
   if(property_exists($ROOM->event, 'vote_duel') && is_array($ROOM->event->vote_duel)){
@@ -269,7 +271,7 @@ function OutputVoteDay(){
   OutputVotePageHeader();
   echo <<<EOF
 <input type="hidden" name="situation" value="VOTE_KILL">
-<input type="hidden" name="vote_times" value="{$vote_times}">
+<input type="hidden" name="revote_count" value="{$revote_count}">
 <table class="vote-page"><tr>
 
 EOF;

@@ -161,20 +161,19 @@ function CheckWinner($check_draw = false){
 
 //-- 投票関連 --//
 //夜の自分の投票先取得
-function GetSelfVoteNight($situation, $not_situation = ''){
+function GetSelfVoteNight($type, $not_type = ''){
   global $ROOM, $SELF;
 
-  $query = $ROOM->GetQueryHeader('vote', 'target_uname', 'situation') .
-    ' AND date = ' . $ROOM->date . ' AND ';
-  if($situation == 'WOLF_EAT'){
-    $query .= "situation = '{$situation}'";
+  $query = $ROOM->GetQueryHeader('vote', 'type', 'target_no') .
+    " AND date = {$ROOM->date} AND vote_count = {$ROOM->vote_count} AND ";
+  if($type == 'WOLF_EAT'){
+    $query .= "type = '{$type}'";
   }
   elseif($not_situation != ''){
-    $query .= "uname = '{$SELF->uname}' " .
-      "AND(situation = '{$situation}' OR situation = '{$not_situation}')";
+    $query .= "user_no = '{$SELF->user_no}' AND type IN ('{$type}', '{$not_type}')";
   }
   else{
-    $query .= "uname = '{$SELF->uname}' AND situation = '{$situation}'";
+    $query .= "user_no = '{$SELF->user_no}' AND type ='{$type}'";
   }
 
   return FetchAssoc($query, true);

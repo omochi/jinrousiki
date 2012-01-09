@@ -292,10 +292,10 @@ function CreateRoom(){
     if(! $SERVER_CONF->dry_run_mode){
       //村作成
       $items  = 'room_no, name, comment, max_user, game_option, ' .
-	'option_role, status, date, scene, scene_start_time, last_update_time, ' .
+	'option_role, status, date, scene, vote_count, scene_start_time, last_update_time, ' .
 	'establisher_ip, establish_datetime';
       $values = "{$room_no}, '{$room_name}', '{$room_comment}', {$max_user}, '{$game_option}', " .
-	"'{$option_role}', 'waiting', 0, 'beforegame', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), " .
+	"'{$option_role}', 'waiting', 0, 'beforegame', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), " .
 	"'{$ip_address}', NOW()";
       if(! InsertDatabase('room', $items, $values)) break;
 

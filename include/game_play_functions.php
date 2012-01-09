@@ -377,7 +377,7 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   }
   elseif($situation == 'SPREAD_WIZARD_DO'){
     $str_stack = array();
-    foreach(explode(' ', $stack['target_uname']) as $id){
+    foreach(explode(' ', $stack['target_no']) as $id){
       $user = $USERS->ByVirtual($id);
       $str_stack[$user->user_no] = $user->handle_name;
     }
@@ -388,7 +388,7 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
     $str = 'キャンセル投票済み';
   }
   else{
-    $str = $USERS->GetHandleName($stack['target_uname'], true) . 'さんに投票済み';
+    $str = $USERS->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
   }
   echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
 }

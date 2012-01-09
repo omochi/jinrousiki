@@ -25,27 +25,20 @@ class Role_mirror_fairy extends Role_fairy{
     if(count($stack) != 2) return '指定人数は2人にしてください'; //人数チェック
 
     $user_list = array();
+    sort($stack);
     foreach($stack as $id){
       $user = $USERS->ByID($id);
       if(! $user->IsLive() || $user->IsDummyBoy()){ //例外判定
 	return '生存者以外と身代わり君には投票できません';
       }
-      $user_list[] = $user;
+      $user_list[$id] = $user->handle_name;
     }
 
-    $id_stack     = array();
-    $uname_stack  = array();
-    $handle_stack = array();
-    foreach($user_list as $user){
-      $id_stack[]     = strval($user->user_no);
-      $uname_stack[]  = $user->uname;
-      $handle_stack[] = $user->handle_name;
-    }
-    $this->GetActor()->AddMainRole(implode('-', $id_stack));
-    $this->SetStack(implode(' ', $uname_stack), 'target_uname');
-    $this->SetStack(implode(' ', $handle_stack), 'target_handle');
-    $this->SetStack('FAIRY_DO', 'message'); //System/Talk の action は FAIRY_DO
-    return NULL;
+    $this->GetActor()->AddMainRole(implode('-', array_keys($user_list)));
+    $this->SetStack(implode(' ', array_keys($user_list)), 'target_no');
+    $this->SetStack(implode(' ', $user_list), 'target_handle');
+    $this->SetStack('FAIRY_DO', 'message'); //Talk の action は FAIRY_DO
+    return null;
   }
 
   function SetEvent($USERS, $type){

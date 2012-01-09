@@ -74,9 +74,10 @@ function CheckTable(){
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL PRIMARY KEY, name TEXT, comment TEXT, max_user INT, game_option TEXT,
-option_role TEXT, status VARCHAR(16), date INT, scene VARCHAR(16), scene_start_time INT(20) NOT NULL,
-last_update_time INT(20) NOT NULL, winner TEXT, establisher_ip TEXT, establish_timetime DATETIME,
-start_datetime DATETIME, finish_datetime DATETIME, INDEX room_index(status)
+option_role TEXT, status VARCHAR(16), date INT, scene VARCHAR(16), vote_count INT NOT NULL,
+revote_count INT NOT NULL, scene_start_time INT(20) NOT NULL, last_update_time INT(20) NOT NULL,
+winner TEXT, establisher_ip TEXT, establish_timetime DATETIME, start_datetime DATETIME,
+finish_datetime DATETIME, INDEX room_index(status)
 EOF;
     CreateTable($table, $query);
   }
@@ -133,8 +134,9 @@ EOF;
   $table = 'vote';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-room_no INT NOT NULL, date INT, uname TEXT, target_uname TEXT, vote_number INT, vote_times INT,
-situation TEXT, INDEX vote_index(room_no, date)
+room_no INT NOT NULL, date INT, scene VARCHAR(16), type TEXT, uname TEXT, user_no INT,
+target_no TEXT, vote_number INT, vote_count INT NOT NULL, revote_count INT NOT NULL,
+INDEX vote_index(room_no, date, scene, vote_count)
 EOF;
     CreateTable($table, $query);
   }
