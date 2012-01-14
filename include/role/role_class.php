@@ -441,7 +441,7 @@ class Role{
 
   protected function SuddenDeathKill($id){
     global $USERS;
-    $USERS->SuddenDeath($id, 'SUDDEN_DEATH_' . $this->sudden_death);
+    $USERS->SuddenDeath($id, 'SUDDEN_DEATH', $this->sudden_death);
   }
 
   //-- 処刑集計処理 --//

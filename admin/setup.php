@@ -125,7 +125,7 @@ EOF;
     $query = <<<EOF
 talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
-time(20) INT NOT NULL,
+time INT(20) NOT NULL,
 INDEX talk_aftergame_index(room_no, date, scene, time)
 EOF;
     CreateTable($table, $query);
@@ -154,6 +154,15 @@ EOF;
     $query = <<<EOF
 room_no INT NOT NULL, date INT, type TEXT, user_no INT, target TEXT, result TEXT,
 INDEX result_ability_index(room_no, date, type(10))
+EOF;
+    CreateTable($table, $query);
+  }
+
+  $table = 'result_dead';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+room_no INT NOT NULL, date INT, scene VARCHAR(16), type TEXT, handle_name TEXT, result TEXT,
+INDEX result_dead_index(room_no, date, scene)
 EOF;
     CreateTable($table, $query);
   }

@@ -84,7 +84,7 @@ $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'missfire_cat joker[2]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'sacrifice_cat joker[2]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
@@ -144,11 +144,11 @@ $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
 $RQ_ARGS->TestItems->test_users[19]->handle_name = '陸';
 $RQ_ARGS->TestItems->test_users[19]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[19]->role = 'light_fairy psycho_infected';
+$RQ_ARGS->TestItems->test_users[19]->role = 'star_fairy psycho_infected';
 $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
-$RQ_ARGS->TestItems->test_users[20]->handle_name = '';
+$RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
 $RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
@@ -162,7 +162,7 @@ $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[22]->role = 'mimic_wizard reduce_voter';
+$RQ_ARGS->TestItems->test_users[22]->role = 'pierrot_wizard reduce_voter';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
@@ -253,14 +253,14 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('user_no' => 2, 	'target_no' => 13,	'type' => 'WOLF_EAT'),
+  array('user_no' => 2, 	'target_no' => 23,	'type' => 'WOLF_EAT'),
   #array('user_no' => 3, 	'target_no' => 9,	'type' => 'WOLF_EAT'),
   array('user_no' => 4, 	'target_no' => 11,	'type' => 'MAGE_DO'),
   array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
   array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
   #array('user_no' => 8, 	'target_no' => 21,	'type' => 'GUARD_DO'),
   array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
-  array('user_no' => 9, 	'target_no' => 14,	'type' => 'POISON_CAT_DO'),
+  array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
   #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
   array('user_no' => 10, 	'target_no' => 25,	'type' => 'ASSASSIN_DO'),
   #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
@@ -316,6 +316,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 //-- 仮想システムメッセージをセット --//
 $RQ_ARGS->TestItems->system_message = array();
 $RQ_ARGS->TestItems->result_ability = array();
+$RQ_ARGS->TestItems->result_dead    = array();
 $RQ_ARGS->TestItems->winner = 'wolf';
 
 //-- 仮想イベントをセット --//
@@ -323,7 +324,7 @@ $RQ_ARGS->TestItems->event = array(
   #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
   #array('type' => 'VOTE_KILLED', 'message' => 'sky'),
   #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  #array('type' => 'WEATHER', 'message' => 0)
+  array('type' => 'WEATHER', 'message' => 0)
   #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
@@ -337,7 +338,7 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
-$ROOM->date = 1;
+$ROOM->date = 7;
 #$ROOM->scene = 'beforegame';
 #$ROOM->scene = 'day';
 $ROOM->scene = 'night';
@@ -349,12 +350,12 @@ if($ROOM->date == 1){
 }
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
-$SELF = $USERS->ByID(16);
+$SELF = $USERS->ByID(1);
 #$SELF = $USERS->ByID(13);
 #$SELF = $USERS->TraceExchange(14);
 
 //-- データ出力 --//
-$vote_view_mode = true; false;
+$vote_view_mode = false;
 if($vote_view_mode){ //投票表示モード
   $INIT_CONF->LoadClass('VOTE_MESS');
   $stack = new RequestGameVote();
@@ -533,8 +534,9 @@ elseif($ROOM->IsAfterGame()){ //勝敗判定表示
   OutputWinner();
   OutputHTMLFooter(); //HTMLフッタ
 }
-//PrintData($RQ_ARGS->TestItems->system_message);
-//PrintData($RQ_ARGS->TestItems->result_ability);
+//PrintData($RQ_ARGS->TestItems->system_message, 'System');
+//PrintData($RQ_ARGS->TestItems->result_ability, 'Ability');
+//PrintData($RQ_ARGS->TestItems->result_dead, 'Dead');
 
 do{
   //break;
@@ -582,9 +584,6 @@ do{
     //PrintData($date_list, $date);
     foreach($date_list as $type => $type_list){
       switch($type){
-      case 'FOX_EAT':
-	continue 2;
-
       case 'VOTE_KILLED':
       case 'WOLF_KILLED':
 	foreach($type_list as $handle_name){
@@ -599,17 +598,12 @@ do{
 	}
 	break;
       }
-      //PrintData($type_list, $type);
-      foreach($type_list as $handle_name){
-	if(is_null($USERS->HandleNameToUname($handle_name)) || $handle_name === 0) continue;
-	echo GenerateDeadManType($handle_name, $type);
-      }
     }
   }
 
   $USERS->SetEvent();
   //PrintData($ROOM->event);
-  echo GenerateWeatherReport();
+  OutputDeadMan();
 
   //$ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト

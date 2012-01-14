@@ -145,7 +145,7 @@ function CheckWinner($check_draw = false){
     $winner = 'lovers';
   elseif($ROOM->IsQuiz() && $quiz == 0) //クイズ村 GM 死亡
     $winner = 'quiz_dead';
-  elseif($check_draw && $ROOM->GetVoteTimes() > $GAME_CONF->draw) //引き分け
+  elseif($check_draw && $ROOM->revote_count >= $GAME_CONF->draw) //引き分け
     $winner = 'draw';
 
   if($winner == '') return false;
@@ -574,17 +574,15 @@ function OutputVoteList(){
 function OutputRevoteList(){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $SELF, $COOKIE, $SOUND;
 
-  if(! $ROOM->IsDay()) return false; //昼以外は出力しない
-  if(($revote_times = $ROOM->GetVoteTimes(true)) == 0) return false; //再投票の回数を取得
+  if(! $ROOM->IsDay() || $ROOM->revote_count < 1) return false; //スキップ判定
 
-  if($RQ_ARGS->play_sound && ! $ROOM->view_mode && $revote_times > $COOKIE->vote_times){
+  if($RQ_ARGS->play_sound && ! $ROOM->view_mode && $ROOM->revote_count > $COOKIE->vote_times){
     $SOUND->Output('revote'); //音を鳴らす
   }
 
   //投票済みチェック
-  $vote_times = $revote_times + 1;
-  $query = $ROOM->GetQuery(true, 'vote') . " AND vote_times = {$vote_times} " .
-    "AND uname = '{$SELF->uname}'";
+  $query = $ROOM->GetQuery(true, 'vote') . " AND vote_count = {$ROOM->vote_count} " .
+    "AND user_no = '{$SELF->user_no}'";
   if(FetchResult($query) == 0){
     echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
       $MESSAGE->draw_announce . ')</div><br>';
@@ -1065,14 +1063,35 @@ function OutputLastWords($shift = false){
 
 //前の日の 狼が食べた、狐が占われて死亡、投票結果で死亡のメッセージ
 function GenerateDeadMan(){
-  global $ROOM;
+  global $RQ_ARGS, $ROOM;
 
   //ゲーム中以外は出力しない
   if(! $ROOM->IsPlaying()) return null;
 
   $yesterday = $ROOM->date - 1;
 
-  //共通クエリ
+  if($ROOM->test_mode){
+    $stack_list = $RQ_ARGS->TestItems->result_dead;
+  }
+  else{
+    //共通クエリ
+    $query_header = $ROOM->GetQueryHeader('result_dead', 'date', 'type', 'handle_name', 'result');
+    if($ROOM->IsDay()){
+      $query = "date = {$yesterday} AND scene = 'night'";
+    }
+    else{
+      $query = "date = {$ROOM->date} AND scene = 'day'";
+    }
+    $stack_list = FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()");
+  }
+
+  $str = GenerateWeatherReport();
+  foreach($stack_list as $stack){
+    $str .= GenerateDeadManType($stack['handle_name'], $stack['type'], $stack['result']);
+  }
+  if($ROOM->test_mode) return $str;
+  return $str;
+
   $query_header = $ROOM->GetQueryHeader('system_message', 'message', 'type') . " AND date =";
 
   //死亡タイプリスト
@@ -1111,7 +1130,7 @@ function GenerateDeadMan(){
 
   $str = GenerateWeatherReport();
   foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
-    $str .= GenerateDeadManType($stack['message'], $stack['type']);
+    $str .= GenerateDeadManTypeOld($stack['message'], $stack['type']);
   }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
@@ -1122,7 +1141,7 @@ function GenerateDeadMan(){
 
   $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
   foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
-    $str .= GenerateDeadManType($stack['message'], $stack['type']);
+    $str .= GenerateDeadManTypeOld($stack['message'], $stack['type']);
   }
   return $str;
 }
@@ -1139,14 +1158,86 @@ function GenerateWeatherReport(){
     $weather['caption'] . ')</div>';
 }
 
-//前日に死亡メッセージの出力
-function OutputDeadMan(){
-  if(is_null($str = GenerateDeadMan())) return false;
-  echo $str;
+
+//死者のタイプ別に死亡メッセージを生成
+function GenerateDeadManType($name, $type, $result){
+  global $MESSAGE, $ROOM, $SELF;
+
+  if(isset($name)) $name .= ' ';
+  $base   = true;
+  $class  = null;
+  $reason = null;
+  $action = strtolower($type);
+  $open_reason = $ROOM->IsOpenData();
+  $show_reason = $open_reason || $SELF->IsLiveRole('yama_necromancer');
+  $str = '<table class="dead-type">'."\n";
+  switch($type){
+  case 'VOTE_KILLED':
+  case 'BLIND_VOTE':
+    $base  = false;
+    $class = 'vote';
+    break;
+
+  case 'LOVERS_FOLLOWED':
+    $base  = false;
+    $class = 'lovers';
+    break;
+
+  case 'REVIVE_SUCCESS':
+    $base  = false;
+    $class = 'revive';
+    break;
+
+  case 'REVIVE_FAILED':
+    if(! $ROOM->IsFinished() && ! ($SELF->IsDead() || $SELF->IsRole('attempt_necromancer'))) return;
+    $base  = false;
+    $class = 'revive';
+    break;
+
+  case 'POSSESSED_TARGETED':
+    if(! $open_reason) return;
+    $base = false;
+    break;
+
+  case 'NOVOTED':
+    $base  = false;
+    $class = 'sudden-death';
+    break;
+
+  case 'SUDDEN_DEATH':
+    $base   = false;
+    $class  = 'sudden-death';
+    $action = 'vote_sudden_death';
+    if($show_reason) $reason = strtolower($result);
+    break;
+
+  case 'FLOWERED':
+  case 'CONSTELLATION':
+  case 'PIERROT':
+    $base   = false;
+    $class  = 'fairy';
+    $action = strtolower($type . '_' . $result);
+    break;
+
+  case 'JOKER_MOVED':
+  case 'DEATH_NOTE_MOVED':
+    if(! $open_reason) return;
+    $base  = false;
+    $class = 'fairy';
+    break;
+
+  default:
+    if($show_reason) $reason = $action;
+    break;
+  }
+  $str .= is_null($class) ? '<tr>' : '<tr class="dead-type-'.$class.'">';
+  $str .= '<td>'.$name.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
+  if(isset($reason)) $str .= "</tr>\n<tr><td>(".$name.$MESSAGE->$reason.')</td>';
+  return $str."</tr>\n</table>\n";
 }
 
 //死者のタイプ別に死亡メッセージを生成
-function GenerateDeadManType($name, $type){
+function GenerateDeadManTypeOld($name, $type){
   global $MESSAGE, $ROOM, $SELF;
 
   //タイプの解析
@@ -1248,4 +1339,10 @@ function GenerateDeadManType($name, $type){
   $str .= '<td>'.$name.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
   if(isset($reason)) $str .= "</tr>\n<tr><td>(".$name.$MESSAGE->$reason.')</td>';
   return $str."</tr>\n</table>\n";
+}
+
+//前日に死亡メッセージの出力
+function OutputDeadMan(){
+  if(is_null($str = GenerateDeadMan())) return false;
+  echo $str;
 }

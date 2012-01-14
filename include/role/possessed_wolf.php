@@ -55,12 +55,12 @@ class Role_possessed_wolf extends Role_wolf{
 	  //憑依先のリセット処理
 	  $virtual->ReturnPossessed('possessed');
 	  $virtual->SaveLastWords();
-	  $ROOM->SystemMessage($virtual->handle_name, 'POSSESSED_RESET');
+	  $ROOM->ResultDead($virtual->handle_name, 'POSSESSED_RESET');
 
 	  //見かけ上の蘇生処理
 	  $user->ReturnPossessed('possessed_target');
 	  $user->SaveLastWords($virtual->handle_name);
-	  $ROOM->SystemMessage($user->handle_name, 'REVIVE_SUCCESS');
+	  $ROOM->ResultDead($user->handle_name, 'REVIVE_SUCCESS');
 	}
 	continue;
       }
@@ -79,14 +79,14 @@ class Role_possessed_wolf extends Role_wolf{
 	  $target = $USERS->ByVirtual($target->user_no);
 	}
 	else{
-	  $ROOM->SystemMessage($target->handle_name, 'REVIVE_SUCCESS');
+	  $ROOM->ResultDead($target->handle_name, 'REVIVE_SUCCESS');
 	  $user->LostAbility();
 	}
 	$target->AddRole("possessed[{$possessed_date}-{$user->user_no}]");
 
 	//憑依処理
 	$user->AddRole("possessed_target[{$possessed_date}-{$target->user_no}]");
-	$ROOM->SystemMessage($virtual->handle_name, 'POSSESSED');
+	$ROOM->ResultDead($virtual->handle_name, 'POSSESSED');
 	$user->SaveLastWords($virtual->handle_name);
 	$user->Update('last_words', '');
       }

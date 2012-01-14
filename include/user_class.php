@@ -685,7 +685,7 @@ EOF;
     if($this->IsLive(true)) return false;
     $this->Update('live', 'live');
     $this->revive_flag = true;
-    if(! $virtual) $ROOM->SystemMessage($this->handle_name, 'REVIVE_SUCCESS');
+    if(! $virtual) $ROOM->ResultDead($this->handle_name, 'REVIVE_SUCCESS');
     return true;
   }
 
@@ -732,7 +732,7 @@ EOF;
       $ROOM->scene = 'night';
     }
     $this->AddDoom(1, 'joker');
-    $ROOM->SystemMessage($this->handle_name, 'JOKER_MOVED_' . $ROOM->scene);
+    $ROOM->ResultDead($this->handle_name, 'JOKER_MOVED');
 
     if($shift){ //日時を元に戻す
       $ROOM->date++;
@@ -1208,18 +1208,24 @@ class UserDataSet{
   }
 
   //死亡処理
-  function Kill($user_no, $reason){
+  function Kill($user_no, $reason, $type = null){
     global $ROOM;
 
     $user = $this->ByReal($user_no);
     if(! $user->ToDead()) return false;
 
     $virtual_user = $this->ByVirtual($user->user_no);
-    $ROOM->SystemMessage($virtual_user->handle_name, $reason);
+    $ROOM->ResultDead($virtual_user->handle_name, $reason, $type);
+
+    switch($reason){ //イベント判定用 (将来的には不要)
+    case 'WOLF_KILLED':
+    case 'VOTE_KILLED':
+      $ROOM->SystemMessage($virtual_user->handle_name, $reason);
+      break;
+    }
 
     switch($reason){
-    case 'NOVOTED_day':
-    case 'NOVOTED_night':
+    case 'NOVOTED':
     case 'POSSESSED_TARGETED':
       return true;
 
@@ -1231,14 +1237,14 @@ class UserDataSet{
   }
 
   //突然死処理
-  function SuddenDeath($user_no, $reason){
+  function SuddenDeath($user_no, $reason, $type = null){
     global $MESSAGE, $ROOM;
 
-    if(! $this->Kill($user_no, $reason)) return false;
+    if(! $this->Kill($user_no, $reason, $type)) return false;
     $user = $this->ByReal($user_no);
     $user->suicide_flag = true;
 
-    $str = strpos($reason, 'NOVOTED') !== false ? 'sudden_death' : 'vote_sudden_death';
+    $str = $reason == 'NOVOTED' ? 'sudden_death' : 'vote_sudden_death';
     $ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . $MESSAGE->$str);
     return true;
   }
@@ -1268,7 +1274,9 @@ class UserDataSet{
     if(count($stack) < 1) return;
     $user = GetRandom($stack);
     $user->AddDoom(0, 'death_note');
-    $ROOM->SystemMessage($user->handle_name, 'DEATH_NOTE_MOVED', -1);
+    $ROOM->date--;
+    $ROOM->ResultDead($user->handle_name, 'DEATH_NOTE_MOVED');
+    $ROOM->date++;
   }
 
   //仮想役職リストの保存 (ログ処理用)

@@ -145,13 +145,6 @@ class Room{
     return count($this->vote);
   }
 
-  //投票回数を DB から取得する
-  function LoadVoteTimes($revote = false){
-    $query = 'SELECT message FROM system_message' . $this->GetQuery() . ' AND type = ' .
-      ($revote ?  "'RE_VOTE' ORDER BY message DESC" : "'VOTE_TIMES'");
-    return (int)FetchResult($query);
-  }
-
   //特殊イベント判定用の情報を DB から取得する
   function LoadEvent(){
     global $RQ_ARGS;
@@ -230,7 +223,7 @@ class Room{
 
     $query = 'DELETE FROM vote' . $this->GetQuery();
     if($this->IsDay()){
-      $query .= " AND type = 'VOTE_KILL' AND revote_count = " . $this->GetVoteTimes();
+      $query .= " AND type = 'VOTE_KILL' AND revote_count = " . $this->revote_count;
     }
     elseif($this->IsNight()){
       if($this->date == 1){
@@ -257,13 +250,6 @@ class Room{
     $stack = func_get_args();
     $from = array_shift($stack);
     return 'SELECT ' . implode(', ', $stack) . ' FROM ' . $from . $this->GetQuery(false);
-  }
-
-  //投票回数を取得する
-  function GetVoteTimes($revote = false){
-    $value = $revote ? 'revote_times' : 'vote_times';
-    if(! property_exists($this, $value)) $this->$value = $this->LoadVoteTimes($revote);
-    return $this->$value;
   }
 
   //特殊イベント判定用の情報を取得する
@@ -467,6 +453,32 @@ class Room{
     return InsertDatabase('result_ability', $items, $values);
   }
 
+  //システムメッセージ登録
+  function ResultDead($name, $type, $result = null){
+    global $RQ_ARGS;
+
+    $date = $this->date;
+    if($this->test_mode){
+      PrintData("{$name}: {$type} ({$date}): {$result}", 'ResultDead');
+      if(is_array($RQ_ARGS->TestItems->result_dead)){
+	$stack = array('type' => $type, 'handle_name' => $name, 'result' => $result);
+	$RQ_ARGS->TestItems->result_dead[] = $stack;
+      }
+      return true;
+    }
+    $items = 'room_no, date, scene, type';
+    $values = "{$this->id}, {$date}, '{$this->scene}', '{$type}'";
+    if(isset($name)){
+      $items  .= ', handle_name';
+      $values .= ", '{$name}'";
+    }
+    if(isset($result)){
+      $items  .= ', result';
+      $values .= ", '{$result}'";
+    }
+    return InsertDatabase('result_dead', $items, $values);
+  }
+
   //天候登録
   function EntryWeather($id, $date, $priest = false){
     global $ROLE_DATA;
@@ -521,7 +533,6 @@ class Room{
 
     //夜が明けた通知
     $this->Talk($this->date, 'MORNING');
-    //$this->SystemMessage(1, 'VOTE_TIMES'); //処刑投票のカウントを 1 に初期化(再投票で増える)
     $this->UpdateTime(); //最終書き込みを更新
     //$this->DeleteVote(); //今までの投票を全部削除
 

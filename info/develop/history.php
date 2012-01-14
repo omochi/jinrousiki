@@ -5,6 +5,10 @@ $INIT_CONF->LoadFile('info_functions');
 OutputInfoPageHeader('開発履歴', 1);
 ?>
 <p>
+Ver. 1.5.x<br>
+<a href="#ver151">1</a>
+</p>
+<p>
 Ver. 1.5.0<br>
 <a href="#ver150">Release</a>
 </p>
@@ -42,6 +46,11 @@ Ver. 1.5.0<br>
 <a href="history_1.3.php">～ 1.3</a>
 <a href="history_1.4.php">1.4</a>
 </p>
+
+<h2 id="ver151">Ver. 1.5.1 (Rev. 459) : 2012/01/09 (Mon) 23:28</h2>
+<ul>
+<li>発言量制限機能を実装</li>
+</ul>
 
 <h2 id="ver150">Ver. 1.5.0 (Rev. 442) : 2011/12/24 (Sat) 00:00</h2>
 <ul>

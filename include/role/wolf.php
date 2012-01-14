@@ -141,6 +141,6 @@ class Role_wolf extends Role{
   //毒死処理
   function PoisonDead(){
     global $USERS;
-    $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night');
+    $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD');
   }
 }

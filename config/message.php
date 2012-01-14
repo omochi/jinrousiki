@@ -1,12 +1,8 @@
 <?php
 /*
-  変更履歴 from Ver. 1.5.0β16
-  + GameOptionMessage
-    - 追加：$change_cupid, $change_mind_cupid, $change_triangle_cupid, $change_angel
-  + GameOptionCaptionMessage
-    - 追加：$change_cupid
-    - 変更：$poison, $assassin, $wolf, $boss_wolf, $poison_wolf, $possessed_wolf,
-            $sirius_wolf, $fox, $child_fox, $cupid, $medium, $mania, $decide, $authority
+  変更履歴 from Ver. 1.5.0
+  + Message
+    - 追加：$say_limit
 */
 //-- 基本システムメッセージ --//
 class Message{
@@ -247,6 +243,9 @@ class Message{
   public $ability_death_note_do    = '名前を書く人を選択してください'; //デスノート
 
   //-- game_play.php --//
+  //ConvertSay()
+  public $say_limit = '文字数または行数が多すぎたので発言できませんでした';
+
   //CheckSilence()
   public $silence = 'ほどの沈黙が続いた'; //沈黙で時間経過 (会話で時間経過制)
   //突然死の警告メッセージ

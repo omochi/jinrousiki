@@ -14,7 +14,7 @@ class Role_pierrot_wizard extends Role_wizard{
     'star_fairy' => 'FAIRY_DO', 'flower_fairy' => 'FAIRY_DO', 'ice_fairy' => 'FAIRY_DO',
     'sex_mage' => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT');
-  public $result_header = 'PIERROT';
+  public $result_type = 'PIERROT';
   public $bad_status = 'grassy';
   function __construct(){ parent::__construct(); }
 
@@ -45,8 +45,8 @@ class Role_pierrot_wizard extends Role_wizard{
     global $ROOM, $USERS;
 
     if($this->IsJammer($user) || $this->IsCursed($user)) return false;
-    $result = $this->result_header . '_' . GetRandom(range('A', 'Z'));
-    $ROOM->SystemMessage($USERS->GetHandleName($user->uname), $result);
+    $handle_name = $USERS->GetHandleName($user->uname);
+    $ROOM->ResultDead($handle_name, $this->result_type, GetRandom(range('A', 'Z')));
   }
 
   function SetBadStatus($user){

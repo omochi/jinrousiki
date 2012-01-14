@@ -21,7 +21,7 @@ class Role_amaze_mad extends Role_critical_mad{
       $id   = $USERS->ByUname($uname)->user_no;
       $target->AddRole("bad_status[{$id}-{$ROOM->date}]");
     }
-    if($flag) $ROOM->SystemMessage($USERS->GetHandleName($target->uname, true), 'BLIND_VOTE');
+    if($flag) $ROOM->ResultDead($USERS->GetHandleName($target->uname, true), 'BLIND_VOTE');
   }
 
   function SetBadStatus($user){

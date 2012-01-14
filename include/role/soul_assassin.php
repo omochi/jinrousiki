@@ -21,6 +21,6 @@ class Role_soul_assassin extends Role_assassin{
     $target = $USERS->GetHandleName($user->uname, true);
     $ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetActor()->user_no);
 
-    if($user->IsPoison()) $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD_night'); //毒死判定
+    if($user->IsPoison()) $USERS->Kill($this->GetActor()->user_no, 'POISON_DEAD'); //毒死判定
   }
 }

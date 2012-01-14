@@ -37,7 +37,7 @@ class Role_poison_cat extends Role{
     if($ROOM->IsOpenCast()) return '「霊界で配役を公開しない」オプションがオフの時は投票できません';
     $self  = 'Role_' . $this->role;
     $class = $this->GetClass($method = 'IgnoreVoteAction');
-    return method_exists($self, $method) ? $class->$method() : NULL;
+    return method_exists($self, $method) ? $class->$method() : null;
   }
 
   function GetVoteIconPath($user, $live){
@@ -49,7 +49,7 @@ class Role_poison_cat extends Role{
     return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();
   }
 
-  function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : NULL; }
+  function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : null; }
 
   //蘇生
   function Revive($user){
@@ -65,7 +65,7 @@ class Role_poison_cat extends Role{
     }
     else{
       $target = $user;
-      $ROOM->SystemMessage($USERS->GetHandleName($target->uname), 'REVIVE_FAILED');
+      $ROOM->ResultDead($USERS->GetHandleName($target->uname), 'REVIVE_FAILED');
     }
     if($ROOM->IsOption('seal_message')) return; //蘇生結果を登録 (天啓封印ならスキップ)
 
@@ -78,7 +78,7 @@ class Role_poison_cat extends Role{
     global $ROOM, $USERS;
 
     //蘇生データ取得
-    $event  = $ROOM->IsEvent('full_revive') ? 100 : ($ROOM->IsEvent('no_revive') ? 0 : NULL);
+    $event  = $ROOM->IsEvent('full_revive') ? 100 : ($ROOM->IsEvent('no_revive') ? 0 : null);
     $class  = $this->GetClass($method = 'GetReviveRate');
     $revive = isset($event) ? $event : $class->$method(); //蘇生率
     if($this->IsBoostRevive()) $revive = ceil($revive * 1.3);
@@ -94,7 +94,7 @@ class Role_poison_cat extends Role{
     //PrintData("{$revive} ({$missfire})", "Info: {$this->GetUname()} => {$user->uname}");
     //PrintData($rand, 'Rate: ' . $this->GetUname());
 
-    if($rand > $revive) return NULL; //蘇生失敗
+    if($rand > $revive) return null; //蘇生失敗
     if($rand <= $missfire){ //誤爆蘇生
       $stack = array();
       //現時点の身代わり君と蘇生能力者が選んだ人以外の死者と憑依者を検出
@@ -110,7 +110,7 @@ class Role_poison_cat extends Role{
     }
     //$target = $USERS->ByID(24); //テスト用
     //PrintData($user->uname, 'ReviveUser');
-    return $user->IsReviveLimited() ? NULL : $user; //蘇生失敗判定
+    return $user->IsReviveLimited() ? null : $user; //蘇生失敗判定
   }
 
   //蘇生率取得
@@ -152,15 +152,15 @@ class Role_poison_cat extends Role{
       }
       elseif($user->IsLive(true)){ //生存者 (憑依状態確定)
 	if($virtual->IsDrop()) return false; //蘇生辞退者対応
-	
+
 	//見かけ上の蘇生処理
 	$user->ReturnPossessed('possessed_target');
-	$ROOM->SystemMessage($user->handle_name, 'REVIVE_SUCCESS');
-	
+	$ROOM->ResultDead($user->handle_name, 'REVIVE_SUCCESS');
+
 	//本当の死者の蘇生処理
 	$virtual->Revive(true);
 	$virtual->ReturnPossessed('possessed');
-	
+
 	//憑依予定者が居たらキャンセル
 	if(array_key_exists($user->uname, $this->GetStack('possessed'))){
 	  $user->possessed_reset  = false;
@@ -173,7 +173,7 @@ class Role_poison_cat extends Role{
 	  $user->ReturnPossessed('possessed_target'); //本人
 	  $virtual->ReturnPossessed('possessed'); //憑依先
 	}
-	
+
 	//憑依予定者が居たらキャンセル
 	if(array_key_exists($user->uname, $this->GetStack('possessed'))){
 	  $user->possessed_reset  = false;

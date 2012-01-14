@@ -4,20 +4,20 @@ $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestGamePlay'); //引数を取得
+$INIT_CONF->LoadRequest('RequestGamePlay');
 if($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
 $DB_CONF->Connect(); //DB 接続
 $SESSION->CertifyGamePlay(); //セッション認証
 
 $ROOM = new Room($RQ_ARGS); //村情報をロード
-$ROOM->dead_mode    = $RQ_ARGS->dead_mode; //死亡者モード
-$ROOM->heaven_mode  = $RQ_ARGS->heaven_mode; //霊話モード
-$ROOM->system_time  = TZTime(); //現在時刻を取得
+$ROOM->dead_mode    = $RQ_ARGS->dead_mode;
+$ROOM->heaven_mode  = $RQ_ARGS->heaven_mode;
+$ROOM->system_time  = TZTime();
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-$SELF = $USERS->BySession(); //自分の情報をロード
+$SELF  = $USERS->BySession(); //自分の情報をロード
 
 //シーンに応じた追加クラスをロード
 if($ROOM->IsBeforeGame()){ //ゲームオプション表示
@@ -30,8 +30,9 @@ elseif($ROOM->IsFinished()){ //勝敗結果表示
 SendCookie($OBJECTION); //必要なクッキーをセットする
 
 //-- 発言処理 --//
+$say_limit = null;
 if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは bottom フレーム
-  ConvertSay($RQ_ARGS->say); //発言置換処理
+  $say_limit = ConvertSay($RQ_ARGS->say); //発言置換処理
 
   if($RQ_ARGS->say == '')
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
@@ -42,41 +43,40 @@ if(! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは b
   else
     CheckSilence(); //発言ができない状態ならゲーム停滞チェック
 
-  if($SELF->last_load_scene != $ROOM->scene){ //ゲームシーンを更新
-    $SELF->Update('last_load_scene', $ROOM->scene);
-  }
+  //ゲームシーンを更新
+  if($SELF->last_load_scene != $ROOM->scene) $SELF->Update('last_load_scene', $ROOM->scene);
 }
 elseif($ROOM->dead_mode && $ROOM->IsPlaying() && $SELF->IsDummyBoy()){
-  SetSuddenDeathTime();
+  SetSuddenDeathTime(); //霊界の GM でも突然死タイマーを見れるようにする
 }
 
 //-- データ出力 --//
 ob_start();
-OutputGamePageHeader(); //HTMLヘッダ
-OutputGameHeader(); //部屋のタイトルなど
+OutputGamePageHeader();
+OutputGameHeader();
+if($say_limit === false) echo '<font color="#FF0000">' . $MESSAGE->say_limit . '</font><br>';
 if(! $ROOM->heaven_mode){
-  if(! $RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
-  OutputAbility(); //自分の役割の説明
-  if($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay(); //昼の投票済みチェック
-  OutputRevoteList(); //再投票の時、メッセージを表示する
+  if(! $RQ_ARGS->list_down) OutputPlayerList();
+  OutputAbility();
+  if($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay();
+  OutputRevoteList();
 }
 
-//会話ログを出力
-($SELF->IsDead() && $ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog();
+($SELF->IsDead() && $ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog(); //会話ログを出力
 
 if(! $ROOM->heaven_mode){
-  if($SELF->IsDead()) OutputAbilityAction(); //能力発揮
-  OutputLastWords(); //遺言
-  OutputDeadMan();   //死亡者
-  OutputVoteList();  //投票結果
-  if(! $ROOM->dead_mode) OutputSelfLastWords(); //自分の遺言
-  if($RQ_ARGS->list_down) OutputPlayerList(); //プレイヤーリスト
+  if($SELF->IsDead()) OutputAbilityAction(); //能力発揮結果
+  OutputLastWords();
+  OutputDeadMan();
+  OutputVoteList();
+  if(! $ROOM->dead_mode) OutputSelfLastWords();
+  if($RQ_ARGS->list_down) OutputPlayerList();
 }
 OutputHTMLFooter();
 ob_end_flush();
 
 //-- 関数 --//
-//必要なクッキーをまとめて登録(ついでに最新の異議ありの状態を取得して配列に格納)
+//必要なクッキーをまとめて登録 (ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(&$objection_list){
   global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
@@ -84,8 +84,8 @@ function SendCookie(&$objection_list){
   setcookie('scene', $ROOM->scene, $ROOM->system_time + 3600); //シーンを登録
 
   //-- 再投票 --//
-  if(($last_vote_times = $ROOM->GetVoteTimes(true)) > 0){ //再投票回数を登録
-    setcookie('vote_times', $last_vote_times, $ROOM->system_time + 3600);
+  if($ROOM->revote_count > 0){ //再投票回数を登録
+    setcookie('vote_times', $ROOM->revote_count, $ROOM->system_time + 3600);
   }
   else{ //再投票が無いなら削除
     setcookie('vote_times', '', $ROOM->system_time - 3600);
@@ -123,7 +123,7 @@ function SendCookie(&$objection_list){
 function EntryLastWords($say){
   global $ROOM, $USERS, $SELF;
 
-  if($ROOM->IsFinished()) return false; //ゲーム終了後ならスキップ
+  if($ROOM->IsFinished()) return false; //スキップ判定
 
   if($say == ' ') $say = null; //スペースだけなら「消去」
   if($SELF->IsLive()){ //登録しない役職をチェック
@@ -264,7 +264,7 @@ function CheckSilence(){
 
 	//未投票者を全員突然死させる
 	foreach($novote_uname_list as $uname){
-	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED_' . $ROOM->scene);
+	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED');
 	}
 	LoversFollowed(true);
 	InsertMediumMessage();

@@ -623,7 +623,6 @@ function AggregateVoteGameStart($force_start = false){
   }
   if($ROOM->test_mode) return true;
 
-  //$ROOM->SystemMessage(1, 'VOTE_TIMES'); //処刑投票カウントを初期化 (再投票で増える)
   $ROOM->UpdateTime(); //最終書き込み時刻を更新
   //$ROOM->DeleteVote(); //今までの投票を全部削除
   CheckWinner(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
@@ -823,7 +822,7 @@ function AggregateVoteDay(){
 	$poison_target->LostAbility();
 	break;
       }
-      $USERS->Kill($poison_target->user_no, 'POISON_DEAD_day'); //死亡処理
+      $USERS->Kill($poison_target->user_no, 'POISON_DEAD'); //死亡処理
 
       $role = 'chain_poison'; //連毒者の処理
       if($poison_target->IsRole($role)) $ROLES->LoadMain(new User($role))->Poison($poison_target);
@@ -907,7 +906,7 @@ function AggregateVoteDay(){
 
     foreach($ROLES->LoadFilter('cure') as $filter) $filter->Cure(); //薬師系の治療判定
     if(! $ROLES->actor->cured_flag){
-      $USERS->SuddenDeath($ROLES->actor->user_no, 'SUDDEN_DEATH_' . $ROLES->stack->sudden_death);
+      $USERS->SuddenDeath($ROLES->actor->user_no, 'SUDDEN_DEATH', $ROLES->stack->sudden_death);
     }
   }
 
@@ -964,14 +963,15 @@ function AggregateVoteDay(){
   }
   else{ //再投票処理
     if($ROOM->test_mode) return $vote_message_list;
-    $next_vote_times = $RQ_ARGS->vote_times + 1; //投票回数を増やす
-    $query = 'UPDATE system_message SET message = ' . $next_vote_times . $ROOM->GetQuery() .
-      " AND type = 'VOTE_TIMES'";
+
+    //投票回数を増やす
+    $ROOM->revote_count++;
+    $query = 'UPDATE room SET vote_count = vote_count + 1, revote_count = revote_count + 1' .
+      'WHERE room_no = ' . $ROOM->id;
     SendQuery($query);
 
     //システムメッセージ
-    $ROOM->SystemMessage($RQ_ARGS->vote_times, 'RE_VOTE');
-    $ROOM->Talk("再投票になりました( {$RQ_ARGS->vote_times} 回目)");
+    $ROOM->Talk("再投票になりました( {$ROOM->revote_count} 回目)");
     if(CheckWinner(true) && $ROOM->IsOption('joker')){ //勝敗判定＆ジョーカー処理
       $USERS->ByID($ROLES->stack->joker_id)->AddJoker();
     }
@@ -1090,7 +1090,6 @@ function VoteNight(){
   //-- 投票処理 --//
   if($not_action){ //投票キャンセルタイプは何もしない
     if(! $SELF->Vote($RQ_ARGS->situation)) OutputVoteResult('データベースエラー'); //投票処理
-    //$ROOM->SystemMessage($SELF->handle_name, $RQ_ARGS->situation);
     $ROOM->Talk('', $RQ_ARGS->situation, $SELF->uname);
   }
   else{
@@ -1099,8 +1098,6 @@ function VoteNight(){
     if(! $SELF->Vote($RQ_ARGS->situation, $ROLES->stack->target_no)){
       OutputVoteResult('データベースエラー'); //投票処理
     }
-    //$str = $SELF->handle_name . "\t" . $ROLES->stack->target_handle;
-    //$ROOM->SystemMessage($str, $ROLES->stack->message);
     $ROOM->Talk($ROLES->stack->target_handle, $ROLES->stack->message, $SELF->uname);
   }
   if($ROOM->test_mode) return;
