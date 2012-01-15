@@ -218,8 +218,12 @@ class TextRoomOptionItem extends RoomOptionItem {
   function  __construct($id, $name, $type, $caption, $explain) {
     parent::__construct($id, $name, $caption, $explain);
     $this->type = $type;
-    $this->value = '';
   }
+
+	function Size($size) {
+		$this->size = $size;
+		return $this;
+	}
 
   function Footer($text) {
     $this->footer = $text;
@@ -228,8 +232,9 @@ class TextRoomOptionItem extends RoomOptionItem {
 
   function GenerateControl() {
     $footer = isset($this->footer) ? $this->footer : '<span class="explain">'.$this->explain.'</span>';
+		$size = isset($this->size) ? 'size="'.$this->size.'"' : '';
     return <<<HTML
-<input type="{$this->type}" id="{$this->id}" name="{$this->name}" value="{$this->value}">
+<input type="{$this->type}" id="{$this->id}" name="{$this->name}" {$size} value="{$this->value}">
 $footer
 HTML;
   }
@@ -245,6 +250,7 @@ class TimeRoomOptionItem extends RoomOptionItem {
 
   function  __construct($id, $name, $caption, $explain) {
     parent::__construct($id, $name, $caption, $explain);
+		$this->checked = $this->value;
     $this->value = 'on';
   }
 

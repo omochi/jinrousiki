@@ -8,10 +8,12 @@ class RoomOption extends OptionParser {
 
     self::Category('BUILD');
     self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_name', '村の名前', '')
+						->Size($ROOM_CONF->room_name_input)
             ->Footer('村')
             ->CollectOverride('NotOption')
             );
     self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_comment', '村についての説明', '')
+						->Size($ROOM_CONF->room_comment_input)
             ->Footer('')
             ->CollectOverride('NotOption')
             );
@@ -44,6 +46,7 @@ class RoomOption extends OptionParser {
             ->Item(RoomOptionItem::Radio('dummy_boy', 'gm_login', '', '仮想 GM が身代わり君としてログインします')->CollectOverride('CollectValue'))
             );
     self::Add(self::GAME_OPTION, RoomOptionItem::Password('gm_password', 'GM ログインパスワード', '(仮想 GM モード・クイズ村モード時の GM のパスワードです)<br>※ ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。')
+						->Size($ROOM_CONF->gm_password_input)
             ->CollectOverride('NotOption')
             );
     self::Add(self::ROLE_OPTION, RoomOptionItem::Check('gerd', 'ゲルト君モード', '役職が村人固定になります [村人が出現している場合のみ有効]')
