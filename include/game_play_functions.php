@@ -3,7 +3,7 @@
 function ConvertSay(&$say){
   global $GAME_CONF, $ROOM, $ROLES, $USERS, $SELF;
 
-  if($say == '') return false; //リロード時なら処理スキップ
+  if($say == '') return null; //リロード時なら処理スキップ
   //文字数・行数チェック
   if(strlen($say) > $GAME_CONF->say_limit ||
      substr_count($say, "\n") >= $GAME_CONF->say_line_limit){
@@ -13,7 +13,7 @@ function ConvertSay(&$say){
   if($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
 
   //死者・ゲームプレイ中以外なら以降はスキップ
-  if($SELF->IsDead() || ! $ROOM->IsPlaying()) return false;
+  if($SELF->IsDead() || ! $ROOM->IsPlaying()) return null;
   //if($SELF->IsDead()) return false; //テスト用
 
   $ROLES->stack->say = $say;
@@ -38,6 +38,7 @@ function ConvertSay(&$say){
   foreach($ROLES->Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
   $say = $ROLES->stack->say;
   unset($ROLES->stack->say);
+  return true;
 }
 
 //発言を DB に登録する

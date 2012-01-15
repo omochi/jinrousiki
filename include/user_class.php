@@ -792,8 +792,8 @@ EOF;
 
     if($ROOM->test_mode){
       if($ROOM->IsDay()){
-	$stack = array('uname' => $this->uname, 'target_uname' => $target,
-		       'vote_number' => $vote_number);
+	$stack = array('user_no' => $this->user_no, 'uname' => $this->uname,
+		       'target_no' => $target, 'vote_number' => $vote_number);
 	$RQ_ARGS->TestItems->vote->day[$this->uname] = $stack;
 	//PrintData($stack, 'Vote');
       }

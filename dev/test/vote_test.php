@@ -204,32 +204,32 @@ $RQ_ARGS->TestItems->vote = new StdClass();
 $RQ_ARGS->TestItems->vote->day = array();
 $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' =>  2, 'target_no' => 11),
+  array('id' =>  3, 'target_no' =>  7),
   //array('id' =>  3, 'target_no' => 10),
   array('id' =>  4, 'target_no' => 11),
   array('id' =>  5, 'target_no' => 25),
   //array('id' =>  6, 'target_no' =>  3),
   //array('id' =>  7, 'target_no' =>  3),
   array('id' =>  7, 'target_no' => 25),
+  array('id' =>  8, 'target_no' =>  9),
   array('id' =>  9, 'target_no' =>  3),
-  array('id' => 22, 'target_no' => 25),
   array('id' => 10, 'target_no' =>  3),
   array('id' => 11, 'target_no' =>  3),
   array('id' => 12, 'target_no' => 11),
   array('id' => 13, 'target_no' => 11),
-  array('id' =>  8, 'target_no' =>  9),
   array('id' => 14, 'target_no' => 12),
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 23),
   //array('id' => 17, 'target_no' => 22),
   array('id' => 18, 'target_no' => 25),
   //array('id' => 18, 'target_no' => 3),
-  array('id' =>  3, 'target_no' =>  7),
+  array('id' => 19, 'target_no' => 22),
   array('id' => 20, 'target_no' => 22),
   array('id' => 21, 'target_no' => 18),
+  array('id' => 22, 'target_no' => 25),
   array('id' => 23, 'target_no' => 14),
-  array('id' => 19, 'target_no' => 22),
   array('id' => 24, 'target_no' => 25),
-  #array('id' => 25, 'target_no' =>  3),
+  //array('id' => 25, 'target_no' =>  3),
   array('id' => 25, 'target_no' => 12),
 );
 
@@ -340,8 +340,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 7;
 #$ROOM->scene = 'beforegame';
-#$ROOM->scene = 'day';
-$ROOM->scene = 'night';
+$ROOM->scene = 'day';
+#$ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -513,7 +513,7 @@ if($ROOM->IsDay()){ //昼の投票テスト
   $stack = array();
   foreach($vote_message_list as $uname => $vote_data){
     $vote_data['handle_name'] = $USERS->GetHandleName($uname);
-    $vote_data['count'] = $RQ_ARGS->vote_times;
+    $vote_data['count'] = $RQ_ARGS->revote_count + 1;
     $stack[] = $vote_data;
   }
   echo GenerateVoteList($stack, $ROOM->date);

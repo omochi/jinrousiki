@@ -80,7 +80,7 @@ function LoversFollowed($sudden_death = false){
     $checked_list[] = $cupid_id;
     foreach($cupid_list[$cupid_id] as $lovers_id){ //キューピッドのリストから恋人の ID を取得
       $user = $USERS->ById($lovers_id); //恋人の情報を取得
-      if(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED_' . $ROOM->scene)) continue;
+      if(! $USERS->Kill($user->user_no, 'LOVERS_FOLLOWED')) continue;
       if($sudden_death) $ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed); //突然死の処理
       $user->suicide_flag = true;
 
@@ -1089,59 +1089,14 @@ function GenerateDeadMan(){
   foreach($stack_list as $stack){
     $str .= GenerateDeadManType($stack['handle_name'], $stack['type'], $stack['result']);
   }
-  if($ROOM->test_mode) return $str;
-  return $str;
-
-  $query_header = $ROOM->GetQueryHeader('system_message', 'message', 'type') . " AND date =";
-
-  //死亡タイプリスト
-  $dead_type_list = array(
-    'day' => array(
-      'VOTE_KILLED' => true, 'BLIND_VOTE' => true, 'POISON_DEAD_day' => true,
-      'LOVERS_FOLLOWED_day' => true, 'SUDDEN_DEATH_%' => false, 'NOVOTED_day' => true,
-      'JOKER_MOVED_day' => true),
-
-    'night' => array(
-      'WOLF_KILLED' => true, 'HUNGRY_WOLF_KILLED' => true, 'POSSESSED' => true,
-      'POSSESSED_TARGETED' => true, 'POSSESSED_RESET' => true, 'DREAM_KILLED' => true,
-      'TRAPPED' => true, 'CURSED' => true, 'FOX_DEAD' => true, 'HUNTED' => true,
-      'REPORTER_DUTY' => true, 'VAMPIRE_KILLED' => true, 'ASSASSIN_KILLED' => true,
-      'ESCAPER_DEAD' => true, 'OGRE_KILLED' => true, 'PRIEST_RETURNED' => true,
-      'POISON_DEAD_night' => true, 'LOVERS_FOLLOWED_night' => true, 'REVIVE_%' => false,
-      'SACRIFICE' => true, 'FLOWERED_%' => false, 'CONSTELLATION_%' => false, 'PIERROT_%' => false,
-      'NOVOTED_night' => true, 'JOKER_MOVED_night' => true, 'DEATH_NOTE_MOVED' => true));
-
-  foreach($dead_type_list as $scene => $action_list){
-    $query_list = array();
-    foreach($action_list as $action => $type){
-      $query_list[] = 'type ' . ($type ? '=' : 'LIKE') . " '{$action}'";
-    }
-    $type_list->$scene = implode(' OR ', $query_list);
-  }
-
-  if($ROOM->IsDay()){
-    $set_date = $yesterday;
-    $type = $type_list->night;
-  }
-  else{
-    $set_date = $ROOM->date;
-    $type = $type_list->day;
-  }
-
-  $str = GenerateWeatherReport();
-  foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
-    $str .= GenerateDeadManTypeOld($stack['message'], $stack['type']);
-  }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
-  if($ROOM->log_mode) return $str;
-  $set_date = $yesterday;
-  if($set_date < 2) return $str;
-  $type = $type_list->{$ROOM->scene};
+  if($yesterday < 1 || $ROOM->log_mode || $ROOM->test_mode) return $str;
 
   $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
-  foreach(FetchAssoc("{$query_header} {$set_date} AND ({$type}) ORDER BY RAND()") as $stack){
-    $str .= GenerateDeadManTypeOld($stack['message'], $stack['type']);
+  $query = "date = {$yesterday} AND scene = '{$ROOM->scene}'";
+  foreach(FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack){
+    $str .= GenerateDeadManType($stack['handle_name'], $stack['type'], $stack['result']);
   }
   return $str;
 }

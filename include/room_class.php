@@ -83,7 +83,7 @@ class Room{
 
     if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
       $query = "SELECT talk_id, {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
-	' AND scene = ' . $scene;
+	" AND scene = '{$scene}'";
       return FetchTalk($query, 'Talk', false);
     }
 
@@ -135,6 +135,7 @@ class Room{
       foreach($vote_list as $list) $stack[$list['uname']][] = $list['target_no'];
     }
     else{
+      //PrintData($vote_list);
       foreach($vote_list as $list){
 	$id = $list['user_no'];
 	unset($list['user_no']);

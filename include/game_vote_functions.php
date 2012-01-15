@@ -707,17 +707,18 @@ function AggregateVoteDay(){
   if($ROOM->IsOption('joker')) $ROLES->stack->joker_id = $USERS->SetJoker();
 
   //-- 投票データ収集 --//
-  foreach($ROOM->vote as $uname => $list){ //初期得票データを収集
-    $target_uname = $USERS->ByVirtualUname($list['target_uname'])->uname;
+  //PrintData($ROOM->vote);
+  foreach($ROOM->vote as $id => $list){ //初期得票データを収集
+    $target_uname = $USERS->ByVirtual($list['target_no'])->uname;
     if(! array_key_exists($target_uname, $vote_count_list)) $vote_count_list[$target_uname] = 0;
     $vote_count_list[$target_uname] += $list['vote_number'];
   }
   //PrintData($vote_count_list, 'VoteCountBase');
 
   foreach($user_list as $uname){ //個別の投票データを収集
-    $list   = $ROOM->vote[$uname]; //投票データ
+    $list   = $ROOM->vote[$USERS->ByUname($uname)->user_no]; //投票データ
     $user   = $USERS->ByVirtualUname($uname); //仮想ユーザを取得
-    $target = $USERS->ByVirtualUname($list['target_uname']); //投票先の仮想ユーザ
+    $target = $USERS->ByVirtual($list['target_no']); //投票先の仮想ユーザ
     $vote   = (int)$list['vote_number']; //投票数
     $poll   = array_key_exists($user->uname, $vote_count_list) ?
       (int)$vote_count_list[$user->uname] : 0; //得票数
@@ -762,7 +763,7 @@ function AggregateVoteDay(){
   //-- 投票結果登録 --//
   $max_poll = 0; //最多得票数
   $items = 'room_no, date, count, handle_name, target_name, vote, poll';
-  $values_header = "{$ROOM->id}, {$ROOM->date}, $RQ_ARGS->vote_times, ";
+  $values_header = "{$ROOM->id}, {$ROOM->date}, $RQ_ARGS->revote_count, ";
   foreach($vote_message_list as $uname => $stack){ //タブ区切りのデータをシステムメッセージに登録
     extract($stack); //配列を展開
     if($poll > $max_poll) $max_poll = $poll; //最大得票数を更新
@@ -967,7 +968,7 @@ function AggregateVoteDay(){
     //投票回数を増やす
     $ROOM->revote_count++;
     $query = 'UPDATE room SET vote_count = vote_count + 1, revote_count = revote_count + 1' .
-      'WHERE room_no = ' . $ROOM->id;
+      ' WHERE room_no = ' . $ROOM->id;
     SendQuery($query);
 
     //システムメッセージ
