@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //オプションパーサ
 class OptionParser{
   public $row;
