@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
-$INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG');
+$INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'GAME_OPT');
 
 if(! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
@@ -45,7 +45,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $DB_CONF, $ROOM_CONF, $USER_ICON, $TWITTER;
+  global $SERVER_CONF, $DB_CONF, $ROOM_CONF, $USER_ICON, $TWITTER, $GAME_OPT, $GAME_OPT_CONF;
 
   if($SERVER_CONF->disable_establish) OutputActionResult('村作成 [制限事項]', '村作成はできません');
   if(CheckReferer('', array('127.0.0.1', '192.168.'))){ //リファラチェック
@@ -54,15 +54,15 @@ function CreateRoom(){
 
   //-- 入力データのエラーチェック --//
   //村の名前・説明のデータチェック
-  foreach(array('room_name' => '村の名前', 'room_comment' => '村の説明') as $str => $name){
-    $$str = @$_POST[$str];
+  foreach(array('room_name', 'room_comment') as $str){
+    $$str = $_POST[$str];
     EscapeStrings($$str);
     if($$str == ''){ //未入力チェック
-      OutputRoomAction('empty', false, $name);
+      OutputRoomAction('empty', false, $GAME_OPT->GetCaption($str));
       return false;
     }
     if(strlen($$str) > $ROOM_CONF->$str || preg_match($ROOM_CONF->ng_word, $$str)){ //文字列チェック
-      OutputRoomAction('comment', false, $name);
+      OutputRoomAction('comment', false, $GAME_OPT->GetCaption($str));
       return false;
     }
   }
@@ -111,171 +111,79 @@ function CreateRoom(){
   }
 
   //-- ゲームオプションをセット --//
-  $perverseness = $ROOM_CONF->perverseness && @$_POST['perverseness']  == 'on';
-  $full_mania   = $ROOM_CONF->full_mania   && @$_POST['replace_human'] == 'full_mania';
-  $full_cupid   = $ROOM_CONF->full_cupid   && @$_POST['replace_human'] == 'full_cupid';
-  $chaos        = $ROOM_CONF->chaos        && @$_POST['special_role']  == 'chaos';
-  $chaosfull    = $ROOM_CONF->chaosfull    && @$_POST['special_role']  == 'chaosfull';
-  $chaos_hyper  = $ROOM_CONF->chaos_hyper  && @$_POST['special_role']  == 'chaos_hyper';
-  $chaos_verso  = $ROOM_CONF->chaos_verso  && @$_POST['special_role']  == 'chaos_verso';
-  $quiz         = $ROOM_CONF->quiz         && @$_POST['special_role']  == 'quiz';
-  $special_role =
-    ($ROOM_CONF->duel         && @$_POST['special_role']  == 'duel') ||
-    ($ROOM_CONF->gray_random  && @$_POST['special_role']  == 'gray_random');
-  $game_option_list = array();
-  $option_role_list = array();
-  $check_game_option_list = array('wish_role', 'open_vote', 'seal_message', 'open_day',
-                                  'not_open_cast');
-  $check_option_role_list = array();
-  if($quiz){ //クイズ村
+  $GAME_OPT->LoadPostParams('real_time', 'dummy_boy', 'perverseness', 'replace_human', 'replace_human', 'special_role',
+          'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast');
+  if($GAME_OPT->quiz){ //クイズ村
     $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
     EscapeStrings($gm_password);
     if($gm_password == ''){
       OutputRoomAction('no_password');
       return false;
     }
-    array_push($game_option_list, 'dummy_boy', 'quiz');
+    $GAME_OPT->Set(RoomOption::GAME_OPTION, 'dummy_boy', true);
+    $GAME_OPT->Set(RoomOption::GAME_OPTION, 'gm_login', true);
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $gm_password;
   }
   else{
     //身代わり君関連のチェック
-    if($ROOM_CONF->dummy_boy && @$_POST['dummy_boy'] == 'on'){
+    if($GAME_OPT->dummy_boy){
       $game_option_list[]       = 'dummy_boy';
       $dummy_boy_handle_name    = '身代わり君';
       $dummy_boy_password       = $SERVER_CONF->system_password;
-      $check_option_role_list[] = 'gerd';
+      $GAME_OPT->LoadPostParams('gerd');
     }
-    elseif($ROOM_CONF->dummy_boy && @$_POST['dummy_boy'] == 'gm_login'){
+    elseif($GAME_OPT->gm_login){
       $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
       EscapeStrings($gm_password);
       if($gm_password == ''){
         OutputRoomAction('no_password');
         return false;
       }
-      array_push($game_option_list, 'dummy_boy', 'gm_login');
+      $GAME_OPT->Set(RoomOption::GAME_OPTION, 'dummy_boy', true);
       $dummy_boy_handle_name    = 'GM';
       $dummy_boy_password       = $gm_password;
-      $check_option_role_list[] = 'gerd';
+      $GAME_OPT->LoadPostParams('gerd');
     }
 
-    if($chaos || $chaosfull || $chaos_hyper || $chaos_verso){ //闇鍋モード
-      $game_option_list[] = @$_POST['special_role'];
-      $check_game_option_list[] = 'secret_sub_role';
-      array_push($check_option_role_list, 'topping', 'boost_rate', 'chaos_open_cast',
-                 'sub_role_limit');
+    if($GAME_OPT->chaos || $GAME_OPT->chaosfull || $GAME_OPT->chaos_hyper || $GAME_OPT->chaos_verso){ //闇鍋モード
+      $GAME_OPT->LoadPostParams('special_role', 'secret_sub_role', 'topping', 'boost_rate',
+              'chaos_open_cast', 'sub_role_limit');
     }
-    elseif($special_role){ //特殊配役モード
+    elseif($GAME_OPT->duel || $GAME_OPT->gray_random){ //特殊配役モード
       $option_role_list[] = @$_POST['special_role'];
     }
     else{ //通常村
-      array_push($check_option_role_list, 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
-                 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox');
-      if(! $full_cupid) $check_option_role_list[] = 'cupid';
+      $GAME_OPT->LoadPostParams('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
+                 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'detective');
+      if(! $GAME_OPT->full_cupid) $check_option_role_list[] = 'cupid';
       $check_option_role_list[] = 'medium';
-      if(! $full_mania) $check_option_role_list[] = 'mania';
-      if(! $perverseness) array_push($check_option_role_list, 'decide', 'authority');
+      if(! $GAME_OPT->full_mania) $check_option_role_list[] = 'mania';
+      if(! $GAME_OPT->perverseness) array_push($check_option_role_list, 'decide', 'authority');
     }
-    array_push($check_game_option_list, 'deep_sleep', 'blinder', 'mind_open', 'joker',
-               'death_note', 'weather', 'festival');
-    if(! $special_role) $check_option_role_list[] = 'detective';
-    array_push($check_option_role_list, 'liar', 'gentleman', 'critical',
-               $perverseness ? 'perverseness' : 'sudden_death', 'replace_human', 'change_common',
+    $GAME_OPT->LoadPostParams('deep_sleep', 'blinder', 'mind_open', 'joker',
+               'death_note', 'weather', 'festival', 'liar', 'gentleman', 'critical',
+               $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death', 'replace_human', 'change_common',
                'change_mad', 'change_cupid');
   }
 
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');
-  foreach($check_game_option_list as $option){
-    if(! $ROOM_CONF->$option) continue;
-
-    switch($option){
-    case 'not_open_cast':
-      switch($target = @$_POST[$option]){
-      case 'not':
-      case 'auto':
-        $option = $target . '_open_cast';
-        if($ROOM_CONF->$option) break 2;
-      }
-      continue 2;
-
-    default:
-      if(@$_POST[$option] != 'on') continue 2;
-    }
-    $game_option_list[] = $option;
-  }
   //PrintData($game_option_list);
 
 
   //PrintData($check_option_role_list, 'CheckOptionRole');
-  foreach($check_option_role_list as $option){
-    if(! $ROOM_CONF->$option) continue;
 
-    switch($option){
-    case 'replace_human':
-    case 'change_common':
-    case 'change_mad':
-    case 'change_cupid':
-      $target = @$_POST[$option];
-      if(empty($target) || ! $ROOM_CONF->$target ||
-         ! in_array($target, $ROOM_CONF->{$option.'_list'})) continue 2;
-      $option = $target;
-      break;
-
-    case 'topping':
-    case 'boost_rate':
-      $target = @$_POST[$option];
-      if(array_search($target, $ROOM_CONF->{$option.'_list'}) === false) continue 2;
-      $option .= ':' . $target;
-      break;
-
-    case 'chaos_open_cast':
-      switch($target = @$_POST[$option]){
-      case 'full':
-        break 2;
-
-      case 'camp':
-      case 'role':
-        $option .= '_' . $target;
-        if($ROOM_CONF->$option) break 2;
-      }
-      continue 2;
-
-    case 'sub_role_limit':
-      switch($target = @$_POST[$option]){
-      case 'no_sub_role':
-      case 'sub_role_limit_easy':
-      case 'sub_role_limit_normal':
-      case 'sub_role_limit_hard':
-        if($ROOM_CONF->$target){
-          $option = $target;
-          break 2;
-        }
-      }
-      continue 2;
-
-    default:
-      if(@$_POST[$option] != 'on') continue 2;
-    }
-    $option_role_list[] = $option;
-  }
-
-  if($ROOM_CONF->real_time && @$_POST['real_time'] == 'on'){
-    $day   = @$_POST['real_time_day'];
-    $night = @$_POST['real_time_night'];
+  if($GAME_OPT->real_time){
+    list($day, $night) = $GAME_OPT->real_time;
 
     //制限時間チェック
-    if($day   != '' && ! preg_match('/[^0-9]/', $day)   && $day   > 0 && $day   < 99 &&
-       $night != '' && ! preg_match('/[^0-9]/', $night) && $night > 0 && $night < 99){
-      $game_option_list[] = 'real_time:' . $day . ':' . $night;
-    }
-    else{
+    if ($day <= 0 || 99 < $day || $night <= 0 || 99 < $night) {
       OutputRoomAction('time');
       return false;
     }
 
-    $option = 'wait_morning';
-    if($ROOM_CONF->$option && @$_POST[$option] == 'on') $game_option_list[] = $option . ':';
+    $GAME_OPT->LoadPostParams('wait_morning');
   }
 
   //PrintData($game_option_list, 'GameOption');
@@ -285,8 +193,8 @@ function CreateRoom(){
   //登録
   //ALTER TABLE room_no AUTO_INCREMENT = value; //カウンタセット SQL
   $room_no     = FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
-  $game_option = implode(' ', $game_option_list);
-  $option_role = implode(' ', $option_role_list);
+  $game_option = $GAME_OPT->GetOptionString(RoomOption::GAME_OPTION);
+  $option_role = $GAME_OPT->GetOptionString(RoomOption::ROLE_OPTION);
   $status      = false;
   do{
     if(! $SERVER_CONF->dry_run_mode){
@@ -300,10 +208,10 @@ function CreateRoom(){
       if(! InsertDatabase('room', $items, $values)) break;
 
       //身代わり君を入村させる
-      if(in_array('dummy_boy', $game_option_list) &&
+      if($GAME_OPT->dummy_boy &&
          FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
         if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-                        1, in_array('gerd', $option_role_list) ? $USER_ICON->gerd : 0)) break;
+                        1, $GAME_OPT->gerd ? $USER_ICON->gerd : 0)) break;
       }
 
       if($SERVER_CONF->secret_room){ //村情報非表示モードの処理
@@ -440,8 +348,7 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
-  global $SERVER_CONF, $ROOM_CONF, $INIT_CONF;
-	$INIT_CONF->LoadClass('GAME_OPT');
+  global $SERVER_CONF, $ROOM_CONF, $GAME_OPT;
 
   if($SERVER_CONF->disable_establish){
     echo '村作成はできません';
@@ -455,7 +362,7 @@ function OutputCreateRoomPage(){
 
 EOF;
 
-  RoomOptions::OutputView('all', true);
+  $GAME_OPT->OutputView('all', true);
   $password = is_null($SERVER_CONF->room_password) ? '' :
     '<label for="room_password">村作成パスワード</label>：' .
     '<input type="password" id="room_password" name="room_password" size="20">　';

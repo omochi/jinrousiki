@@ -30,13 +30,14 @@ class InitializeConfig{
     'SERVER_CONF'         => 'server_config', //常時ロードされる
     'ROOM_CONF'           => 'game_config',
     'GAME_CONF'           => 'game_config',
+    'GAME_OPT_CONF'       => 'game_option_config',
     'TIME_CONF'           => 'game_config',
     'ICON_CONF'           => 'game_config',
     'ROOM_IMG'            => 'game_config',
     'ROLE_IMG'            => 'game_config',
     'SOUND'               => 'game_config',
     'CAST_CONF'           => 'cast_config',
-    'GAME_OPT'            => array('option_class', 'option/room_option_item_class', 'option/room_options_class', 'game_options'),
+    'GAME_OPT'            => 'option/room_option_class',
     'MESSAGE'             => 'message',
     'GAME_OPT_MESS'       => 'message',
     'WINNER_MESS'         => 'message',
@@ -63,7 +64,7 @@ class InitializeConfig{
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   public $depend_class = array(
-    'GAME_OPT'            => array('ROOM_CONF', 'TIME_CONF'),
+    'GAME_OPT'            => array('ROOM_CONF', 'TIME_CONF', 'GAME_OPT_CONF'),
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
     'TIME_CALC'           => array('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG',
 				   'CAST_CONF', 'ROLE_DATA'),
@@ -97,7 +98,8 @@ class InitializeConfig{
     'SOUND'         => 'Sound',
     'COOKIE'        => 'CookieDataSet',
     'MESSAGE'       => 'Message',
-    'GAME_OPT'      => 'RoomOptions',
+    'GAME_OPT'      => 'RoomOption',
+    'GAME_OPT_CONF'      => 'GameOption',
     'GAME_OPT_MESS' => 'GameOptionMessage',
     'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
     'WINNER_MESS'   => 'WinnerMessage',
@@ -155,7 +157,7 @@ class InitializeConfig{
     switch($name){
     case 'server_config':
     case 'game_config':
-    case 'game_options':
+    case 'game_option_config':
     case 'cast_config':
     case 'message':
     case 'version':
@@ -182,6 +184,7 @@ class InitializeConfig{
     }
 
     #echo $path . '/' . $name . '.php';
+		$INIT_CONF = $this;
     require_once($path . '/' . $name . '.php');
     $this->loaded->file[] = $name;
     return true;

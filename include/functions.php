@@ -62,11 +62,12 @@ function SendQuery($query, $commit = false){
   global $DB_CONF;
 
   if(($sql = mysql_query($query)) !== false) return $commit ? $DB_CONF->Commit() : $sql;
+	$error = sprintf('MYSQL_ERROR(%d):%s', mysql_errno(), mysql_error());
   $backtrace = debug_backtrace(); //バックトレースを取得
 
   //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
   $trace_stack = array_shift($backtrace);
-  $stack = array($trace_stack['line'], $query);
+  $stack = array($trace_stack['line'], $error, $query);
   $trace_stack = array_shift($backtrace);
   array_unshift($stack, $trace_stack['function'] . '()');
   PrintData(implode(': ', $stack), 'SQLエラー');

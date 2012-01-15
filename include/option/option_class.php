@@ -13,23 +13,53 @@ class OptionParser{
     }
   }
 
+  function  __isset($name) {
+    return isset($this->options[$name]);
+  }
+
+  function  __unset($name) {
+    unset($this->options[$name]);
+  }
+
   function __get($name){
-    $this->$name = array_key_exists($name, $this->options) ? $this->options[$name] : false;
-    return $this->$name;
+    if (isset($this->options[$name])) {
+      $value = $this->options[$name];
+      $this->$name = $value;
+      return $value;
+    }
+    $this->$name = false;
+    return null;
   }
 
   function __set($name, $value){
-    if($value === false)
-      unset($this->options[$name]);
-    else
-      $this->options[$name] = $value;
+    //Note:$value === falseの時unsetする代わりに__toStringで値がfalseの項目を省略する仕様に改めた(2011-01-14 enogu)
+    $this->options[$name] = $value;
   }
 
   function __toString(){
-    return '';
+    return $this->ToString();
+  }
+
+  function ToString($items = null) {
+    if (!isset($items)) {
+      $filter = $this->options;
+    }
+    else {
+      $filter = array_flip(is_array($items) ? $items : func_get_args());
+    }
     $result = '';
-    foreach($this->options as $name => $value){
-      $result = ' ' . is_array($value) ? "{$name}:" . implode(':', $value) : $name;
+    foreach(array_intersect_key($this->options, $filter) as $name => $value){
+      if (is_bool($value)) {
+        if ($value) {
+          $result .= " {$name}";
+        }
+      }
+      else if (is_array($value)) {
+        $result .= " {$name}:" . implode(':', $value);
+      }
+      else if (!empty($value)) {
+        $result = " {$name}:{$value}";
+      }
     }
     return $result;
   }
