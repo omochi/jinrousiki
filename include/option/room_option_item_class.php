@@ -60,7 +60,7 @@ abstract class RoomOptionItem {
     return $this;
   }
 
-  function Items($items) {
+  function ItemSource($items) {
     foreach ($items as $key => $value) {
       $this->Item($key, $value);
     }

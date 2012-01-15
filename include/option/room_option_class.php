@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/option_class.php');
 
 class RoomOption extends OptionParser {
   static function Options() {
-    global $ROOM_CONF, $TIME_CONF;
+    global $GAME_OPT_CONF, $ROOM_CONF, $TIME_CONF;
 
     self::Category('BUILD');
     self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_name', '村の名前', '')
@@ -18,7 +18,7 @@ class RoomOption extends OptionParser {
             ->CollectOverride('NotOption')
             );
     self::Add(self::NOT_OPTION, RoomOptionItem::Selector('max_user', '最大人数', '最大人数', '配役は<a href="info/rule.php">ルール</a>を確認して下さい')
-            ->Items($ROOM_CONF->max_user_list)
+            ->ItemSource($ROOM_CONF->max_user_list)
             ->Value($ROOM_CONF->default_max_user)
             ->CollectOverride('NotOption')
             );
@@ -164,28 +164,10 @@ class RoomOption extends OptionParser {
 
     self::Category('CHAOS_CASTING');
     self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('topping', 'モード名', '固定配役追加モード', '固定配役に追加する役職セットです')
-            ->Item('', 'なし')
-            ->Item('a', 'A：人形村')
-            ->Item('b', 'B：出題村')
-            ->Item('c', 'C：吸血村')
-            ->Item('d', 'D：蘇生村')
-            ->Item('e', 'E：憑依村')
-            ->Item('f', 'F：鬼村')
-            ->Item('g', 'G：嘘吐村')
-            ->Item('h', 'H：村人村')
-            ->Item('i', 'I：恋人村')
-            ->Item('j', 'J：宿敵村')
-            ->Item('k', 'K：覚醒村')
-            ->Item('l', 'L：白銀村')
+						->ItemSource($GAME_OPT_CONF->topping_items)
             );
     self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('boost_rate', 'モード名', '出現率変動モード', '役職の出現率に補正がかかります')
-            ->Item('', 'なし')
-            ->Item('a', 'A：新顔村')
-            ->Item('b', 'B：平等村')
-            ->Item('c', 'C：派生村')
-            ->Item('d', 'D：封蘇村')
-            ->Item('e', 'E：封憑村')
-            ->Item('f', 'F：合戦村')
+						->ItemSource($GAME_OPT_CONF->boost_rate_items)
             );
 
     self::Add(self::ROLE_OPTION, RoomOptionItem::Group('chaos_open_cast', '配役を通知する')

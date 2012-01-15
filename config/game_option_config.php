@@ -151,7 +151,32 @@ class GameOption {
 
   //-- 闇鍋モード専用設定 --//
   public $topping_enable = true; //固定配役追加モード
+	public $topping_items = array(
+            '' => 'なし',
+            'a' => 'A：人形村',
+            'b' => 'B：出題村',
+            'c' => 'C：吸血村',
+            'd' => 'D：蘇生村',
+            'e' => 'E：憑依村',
+            'f' => 'F：鬼村',
+            'g' => 'G：嘘吐村',
+            'h' => 'H：村人村',
+            'i' => 'I：恋人村',
+            'j' => 'J：宿敵村',
+            'k' => 'K：覚醒村',
+            'l' => 'L：白銀村',
+	);
+
   public $boost_rate_enable = true; //出現率変動モード
+	public $boost_rate_items = array(
+            '' => 'なし',
+            'a' => 'A：新顔村',
+            'b' => 'B：平等村',
+            'c' => 'C：派生村',
+            'd' => 'D：封蘇村',
+            'e' => 'E：封憑村',
+            'f' => 'F：合戦村',
+	);
 
   //配役通知設定
   public $chaos_open_cast_enable      = true; //配役内訳を表示する
