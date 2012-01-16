@@ -104,23 +104,13 @@ class Room{
       $action = "scene = '{$this->scene}' AND vote_count = {$this->vote_count}";
       switch($this->scene){
       case 'beforegame':
-	if($kick){
-	  $data = 'uname, user_no, target_no';
-	  $action .= " AND type = 'KICK_DO'";
-	}
-	else{
-	  $data = 'uname, user_no';
-	  $action .= " AND type = 'GAMESTART'";
-	}
+      case 'night':
+	$data = 'user_no, target_no, type';
 	break;
 
       case 'day':
 	$data = 'user_no, target_no, vote_number';
-	$action .= " AND revote_count = {$this->revote_count}";
-	break;
-
-      case 'night':
-	$data = 'user_no, target_no, type';
+	//$action .= " AND revote_count = {$this->revote_count}"; //vote_count だけで一意のはず
 	break;
 
       default:
@@ -130,18 +120,39 @@ class Room{
       $vote_list = FetchAssoc($query);
     }
 
+    //PrintData($vote_list);
     $stack = array();
-    if($this->IsBeforegame()){
-      foreach($vote_list as $list) $stack[$list['uname']][] = $list['target_no'];
-    }
-    else{
-      //PrintData($vote_list);
+    switch($this->scene){
+    case 'beforegame':
+      $type = $kick ? 'KICK_DO' : 'GAMESTART';
+      foreach($vote_list as $list){
+	if($list['type'] != $type) continue;
+	if($kick){
+	  $stack[$list['user_no']][] = $list['target_no'];
+	}
+	else{
+	  $stack[] = $list['user_no'];
+	}
+      }
+      break;
+
+    case 'day':
       foreach($vote_list as $list){
 	$id = $list['user_no'];
 	unset($list['user_no']);
-	$this->IsDay() ? $stack[$id] = $list : $stack[$id][] = $list;
+	$stack[$id] = $list;
       }
+      break;
+
+    case 'night':
+      foreach($vote_list as $list){
+	$id = $list['user_no'];
+	unset($list['user_no']);
+	$stack[$id][] = $list;
+      }
+      break;
     }
+
     $this->vote = $stack;
     return count($this->vote);
   }

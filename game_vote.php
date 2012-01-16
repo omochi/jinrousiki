@@ -109,15 +109,15 @@ function VoteGameStart(){
 
   //投票済みチェック
   $ROOM->LoadVote();
-  if(isset($ROOM->vote[$SELF->uname])) OutputVoteResult($str . '：投票済みです');
+  if(in_array($SELF->user_no, $ROOM->vote)) OutputVoteResult($str . '：投票済みです');
 
   if($SELF->Vote('GAMESTART')){ //投票処理
     AggregateVoteGameStart(); //集計処理
     $DB_CONF->Commit();
-    OutputVoteResult('投票完了');
+    OutputVoteResult($str . '：投票完了');
   }
   else{
-    OutputVoteResult('データベースエラー');
+    OutputVoteResult($str . '：データベースエラー');
   }
 }
 
@@ -126,36 +126,36 @@ function VoteKick(){
   global $DB_CONF, $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   CheckSituation('KICK_DO'); //コマンドチェック
-
+  $str = 'Kick 投票：';
   $target = $USERS->ByID($RQ_ARGS->target_no); //投票先のユーザ情報を取得
   if($target->uname == '' || $target->live == 'kick'){
-    OutputVoteResult('Kick：投票先が指定されていないか、すでに Kick されています');
+    OutputVoteResult($str . '投票先が指定されていないか、すでに Kick されています');
   }
-  if($target->IsDummyBoy()) OutputVoteResult('Kick：身代わり君には投票できません');
+  if($target->IsDummyBoy()) OutputVoteResult($str . '身代わり君には投票できません');
   if(! $GAME_CONF->self_kick && $target->IsSelf()){
-    OutputVoteResult('Kick：自分には投票できません');
+    OutputVoteResult($str . '自分には投票できません');
   }
 
   //ゲーム開始チェック
   if(FetchResult($ROOM->GetQueryHeader('room', 'scene')) != 'beforegame'){
-    OutputVoteResult('Kick：既にゲームは開始されています');
+    OutputVoteResult($str . '既にゲーム開始されています');
   }
 
   $ROOM->LoadVote(true); //投票情報をロード
-  $vote_data = $ROOM->vote[$SELF->uname];
-  if(is_array($vote_data) && in_array($target->user_no, $vote_data)){
-    OutputVoteResult("Kick：{$target->handle_name} さんへ Kick 投票済み");
+  $id = $SELF->user_no;
+  if(isset($ROOM->vote[$id]) && in_array($target->user_no, $ROOM->vote[$id])){
+    OutputVoteResult($str . "{$target->handle_name} さんへ Kick 投票済み");
   }
 
   if($SELF->Vote('KICK_DO', $target->user_no)){ //投票処理
     $ROOM->Talk($target->handle_name, 'KICK_DO', $SELF->uname); //投票しました通知
     $vote_count = AggregateVoteKick($target); //集計処理
     $DB_CONF->Commit();
-    OutputVoteResult("投票完了：{$target->handle_name} さん：{$vote_count} 人目 " .
-		     "(Kick するには {$GAME_CONF->kick} 人以上の投票が必要です)");
+    $str .= "投票完了：{$target->handle_name} さん：{$vote_count} 人目 ";
+    OutputVoteResult($str . "(Kick するには {$GAME_CONF->kick} 人以上の投票が必要です)");
   }
   else{
-    OutputVoteResult('データベースエラー');
+    OutputVoteResult($str . 'データベースエラー');
   }
 }
 
@@ -168,7 +168,7 @@ function AggregateVoteKick($target){
   //今回投票した相手にすでに投票している人数を取得
   $vote_count = 1;
   foreach($ROOM->vote as $stack){
-    if(in_array($target->uname, $stack)) $vote_count++;
+    if(in_array($target->user_no, $stack)) $vote_count++;
   }
 
   //規定数以上の投票があった / キッカーが身代わり君 / 自己 KICK が有効の場合に処理
@@ -176,15 +176,17 @@ function AggregateVoteKick($target){
      ! ($GAME_CONF->self_kick && $target->IsSelf())){
     return $vote_count;
   }
-
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
-    "WHERE room_no = {$ROOM->id} AND user_no = '{$target->user_no}' AND user_no > 0";
+    "WHERE room_no = {$ROOM->id} AND user_no = '{$target->user_no}'";
   SendQuery($query);
-  $ROOM->Talk($target->handle_name . $MESSAGE->kick_out); //出て行ったメッセージ
-  $ROOM->Talk($MESSAGE->vote_reset); //投票リセット通知
+
+  //通知処理
+  $ROOM->Talk($target->handle_name . $MESSAGE->kick_out);
+  $ROOM->Talk($MESSAGE->vote_reset);
+
+  //投票リセット処理
   $ROOM->UpdateVoteCount();
-  $ROOM->UpdateTime(); //最終書き込み時刻を更新
-  //$ROOM->DeleteVote(); //今までの投票を全部削除
+  $ROOM->UpdateTime();
   return $vote_count;
 }
 

@@ -358,7 +358,7 @@ function OutputTimeTable(){
 function GeneratePlayerList(){
   global $SERVER_CONF, $ICON_CONF, $ROOM, $USERS, $SELF;
 
-  //PrintData($ROOM->event); //テスト用
+  //PrintData($ROOM->event);
   $beforegame = $ROOM->IsBeforeGame();
   $open_data  = $ROOM->IsOpenData(true);
   $count = 0; //改行カウントを初期化
@@ -368,7 +368,7 @@ function GeneratePlayerList(){
     $count++;
 
     //ゲーム開始投票をしていたら背景色を変える
-    if($beforegame && ($user->IsDummyBoy(true) || isset($ROOM->vote[$user->uname])))
+    if($beforegame && ($user->IsDummyBoy(true) || in_array($user->user_no, $ROOM->vote)))
       $td_header = '<td class="already-vote">';
     else
       $td_header = '<td>';
