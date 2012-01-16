@@ -17,6 +17,7 @@ class RoomOption extends OptionParser {
             ->Footer('')
             ->CollectOverride('NotOption')
             );
+
     self::Add(self::NOT_OPTION, RoomOptionItem::Selector('max_user', '最大人数', '最大人数', '配役は<a href="info/rule.php">ルール</a>を確認して下さい')
             ->ItemSource($ROOM_CONF->max_user_list)
             ->Value($ROOM_CONF->default_max_user)
@@ -51,6 +52,8 @@ class RoomOption extends OptionParser {
             );
     self::Add(self::ROLE_OPTION, RoomOptionItem::Check('gerd', 'ゲルト君モード', '役職が村人固定になります [村人が出現している場合のみ有効]')
             );
+
+    self::Category('OPEN_CASTING');
     self::Add(self::GAME_OPTION, RoomOptionItem::Group('not_open_cast', '霊界で配役を公開しない')
             ->Item(RoomOptionItem::Radio('not_open_cast', '', '', '常時公開 (蘇生能力は無効です)')->CollectOverride('NotOption'))
             ->Item(RoomOptionItem::Radio('not_open_cast', 'not_open_cast', '', '常時非公開 (誰がどの役職なのか公開されません。蘇生能力は有効です)')->CollectOverride('CollectValue'))

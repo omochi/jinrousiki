@@ -80,7 +80,6 @@ input, select{ /* 設定項目 */
 }
 .text{border: 1px solid #C0C0C0;} /* 村の名前, 説明など */
 .explain{font-size: 80%;} /* オプションの説明 */
-.explain input{border: 0px solid #000000;} /* 昼, 夜の時間 */
 .make{text-align: right;} /* 作成ボタン */
 .make input{border: 1px solid #000000;}
 .footer{ /* フッター (バージョン情報など) */

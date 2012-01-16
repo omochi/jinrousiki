@@ -31,8 +31,8 @@ class GameOption {
   public $not_open_cast_enable  = true; //霊界で配役を公開しない
   public $auto_open_cast_enable = true; //霊界で配役を自動で公開する
 
-  //霊界オフモードのデフォルト ['':無し / 'auto':自動オフ / 'full': 完全オフ ]
-  public $default_not_open_cast = 'auto';
+  //霊界オフモードのデフォルト ['':無し / 'auto_open_cast':自動オフ / 'not_open_cast': 完全オフ ]
+  public $default_not_open_cast = 'auto_open_cast';
 
   //-- 追加役職設定 --//
   //必要人数は CastConfig の同名オプション名参照 (例： $poison_enable => CastConfig->poison)
