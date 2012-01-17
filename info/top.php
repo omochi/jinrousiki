@@ -22,5 +22,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>talk のテーブル構成を再構築</li>
+  <li>テーブル構成を再構築</li>
 </ul>

@@ -394,6 +394,9 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
   elseif($not_situation != '' && $stack['situation'] == $not_situation){
     $str = 'キャンセル投票済み';
   }
+  elseif($situation == 'POISON_CAT_DO' || $situation == 'POSSESSED_DO'){
+    $str = $USERS->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
+  }
   else{
     $str = $USERS->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
   }
