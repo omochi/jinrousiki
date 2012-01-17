@@ -128,7 +128,6 @@ function CreateRoom(){
   else{
     //身代わり君関連のチェック
     if($GAME_OPT->dummy_boy){
-      $game_option_list[]       = 'dummy_boy';
       $dummy_boy_handle_name    = '身代わり君';
       $dummy_boy_password       = $SERVER_CONF->system_password;
       $GAME_OPT->LoadPostParams('gerd');
@@ -151,15 +150,14 @@ function CreateRoom(){
               'chaos_open_cast', 'sub_role_limit');
     }
     elseif($GAME_OPT->duel || $GAME_OPT->gray_random){ //特殊配役モード
-      $option_role_list[] = @$_POST['special_role'];
+			//Note:もともとここには$_POSTの内容をロードするコードが存在した。このブロックは通常村と決闘村を識別するために残されている。(2012-01-18 enogu)
     }
     else{ //通常村
       $GAME_OPT->LoadPostParams('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
-                 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'detective');
-      if(! $GAME_OPT->full_cupid) $check_option_role_list[] = 'cupid';
-      $check_option_role_list[] = 'medium';
-      if(! $GAME_OPT->full_mania) $check_option_role_list[] = 'mania';
-      if(! $GAME_OPT->perverseness) array_push($check_option_role_list, 'decide', 'authority');
+                 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'detective', 'medium');
+      if(! $GAME_OPT->full_cupid) $GAME_OPT->LoadPostParams('cupid');
+      if(! $GAME_OPT->full_mania) $GAME_OPT->LoadPostParams('mania');
+      if(! $GAME_OPT->perverseness) $GAME_OPT->LoadPostParams('decide', 'authority');
     }
     $GAME_OPT->LoadPostParams('deep_sleep', 'blinder', 'mind_open', 'joker',
                'death_note', 'weather', 'festival', 'liar', 'gentleman', 'critical',
@@ -334,7 +332,7 @@ function OutputRoomList(){
     extract($stack);
     $delete     = $SERVER_CONF->debug_mode ? $delete_header . $room_no . $delete_footer : '';
     $status_img = $ROOM_IMG->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
-    $option_img = GenerateGameOptionImage($game_option, $option_role) .
+    $option_img = RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
       GenerateMaxUserImage($max_user);
     echo <<<EOF
 {$delete}<a href="login.php?room_no={$room_no}">

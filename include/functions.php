@@ -478,54 +478,6 @@ EOF;
   return $str;
 }
 
-//ゲームオプションの画像タグを作成する
-function GenerateGameOptionImage($game_option, $option_role = ''){
-  global $CAST_CONF, $ROOM_IMG, $GAME_OPT_MESS;
-
-  $stack = new OptionParser($game_option . ' ' . $option_role);
-  //PrintData($stack); //テスト用
-  $str = '';
-  $display_order_list = array(
-    'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'wait_morning', 'open_vote',
-    'seal_message', 'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'wolf',
-    'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid',
-    'medium', 'mania', 'decide', 'authority', 'detective', 'liar', 'gentleman', 'deep_sleep',
-    'blinder', 'mind_open', 'sudden_death', 'perverseness', 'critical', 'joker', 'death_note',
-    'weather', 'festival', 'replace_human', 'full_mad', 'full_cupid', 'full_quiz', 'full_vampire',
-    'full_chiroptera', 'full_mania', 'full_unknown_mania', 'change_common', 'change_hermit_common',
-    'change_mad', 'change_fanatic_mad', 'change_whisper_mad', 'change_immolate_mad', 'change_cupid',
-    'change_mind_cupid', 'change_triangle_cupid', 'change_angel', 'duel', 'gray_random', 'quiz',
-    'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate', 'chaos_open_cast',
-    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
-    'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
-
-  foreach($display_order_list as $option){
-    if(! $stack->Exists($option) || $GAME_OPT_MESS->$option == '') continue;
-    $footer = '';
-    $sentence = $GAME_OPT_MESS->$option;
-    if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
-      $sentence .= '(' . $CAST_CONF->$option . '人～)';
-    }
-    switch($option){
-    case 'real_time':
-      $day   = $stack->options[$option][0];
-      $night = $stack->options[$option][1];
-      $sentence .= "　昼： {$day} 分　夜： {$night} 分";
-      $footer = '['. $day . '：' . $night . ']';
-      break;
-
-    case 'topping':
-    case 'boost_rate':
-      $type = $stack->options[$option][0];
-      $sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
-      $footer = '['. strtoupper($type) . ']';
-      break;
-    }
-    $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
-  }
-  return $str;
-}
-
 //ゲームオプションの画像タグを作成する (最大人数用)
 function GenerateMaxUserImage($number){
   global $ROOM_CONF, $ROOM_IMG;

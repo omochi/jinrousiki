@@ -334,12 +334,14 @@ function OutputLogLink(){
 
 //ゲームオプション画像を出力
 function OutputGameOption(){
+  global $INIT_CONF;
+	$INIT_CONF->LoadClass('GAME_OPT');
   global $ROOM, $SELF;
 
   $query = $ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
   extract(FetchAssoc($query, true));
   echo '<div class="game-option">ゲームオプション：' .
-    GenerateGameOptionImage($game_option, $option_role) .
+    RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
     GenerateMaxUserImage($max_user) . '</div>'."\n";
 }
 

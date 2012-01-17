@@ -8,12 +8,12 @@ class RoomOption extends OptionParser {
 
     self::Category('BUILD');
     self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_name', '村の名前', '')
-						->Size($ROOM_CONF->room_name_input)
+            ->Size($ROOM_CONF->room_name_input)
             ->Footer('村')
             ->CollectOverride('NotOption')
             );
     self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_comment', '村についての説明', '')
-						->Size($ROOM_CONF->room_comment_input)
+            ->Size($ROOM_CONF->room_comment_input)
             ->Footer('')
             ->CollectOverride('NotOption')
             );
@@ -47,7 +47,7 @@ class RoomOption extends OptionParser {
             ->Item(RoomOptionItem::Radio('dummy_boy', 'gm_login', '', '仮想 GM が身代わり君としてログインします')->CollectOverride('CollectValue'))
             );
     self::Add(self::GAME_OPTION, RoomOptionItem::Password('gm_password', 'GM ログインパスワード', '(仮想 GM モード・クイズ村モード時の GM のパスワードです)<br>※ ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。')
-						->Size($ROOM_CONF->gm_password_input)
+            ->Size($ROOM_CONF->gm_password_input)
             ->CollectOverride('NotOption')
             );
     self::Add(self::ROLE_OPTION, RoomOptionItem::Check('gerd', 'ゲルト君モード', '役職が村人固定になります [村人が出現している場合のみ有効]')
@@ -167,10 +167,10 @@ class RoomOption extends OptionParser {
 
     self::Category('CHAOS_CASTING');
     self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('topping', 'モード名', '固定配役追加モード', '固定配役に追加する役職セットです')
-						->ItemSource($GAME_OPT_CONF->topping_items)
+            ->ItemSource($GAME_OPT_CONF->topping_items)
             );
     self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('boost_rate', 'モード名', '出現率変動モード', '役職の出現率に補正がかかります')
-						->ItemSource($GAME_OPT_CONF->boost_rate_items)
+            ->ItemSource($GAME_OPT_CONF->boost_rate_items)
             );
 
     self::Add(self::ROLE_OPTION, RoomOptionItem::Group('chaos_open_cast', '配役を通知する')
@@ -191,6 +191,20 @@ class RoomOption extends OptionParser {
 
     self::End();
   }
+
+  static $icon_order = array(
+    'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'wait_morning', 'open_vote',
+    'seal_message', 'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'wolf',
+    'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid',
+    'medium', 'mania', 'decide', 'authority', 'detective', 'liar', 'gentleman', 'deep_sleep',
+    'blinder', 'mind_open', 'sudden_death', 'perverseness', 'critical', 'joker', 'death_note',
+    'weather', 'festival', 'replace_human', 'full_mad', 'full_cupid', 'full_quiz', 'full_vampire',
+    'full_chiroptera', 'full_mania', 'full_unknown_mania', 'change_common', 'change_hermit_common',
+    'change_mad', 'change_fanatic_mad', 'change_whisper_mad', 'change_immolate_mad', 'change_cupid',
+    'change_mind_cupid', 'change_triangle_cupid', 'change_angel', 'duel', 'gray_random', 'quiz',
+    'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate', 'chaos_open_cast',
+    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
+    'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
 
   static $definitions = array();
   static $categories = array();
@@ -228,6 +242,19 @@ class RoomOption extends OptionParser {
       self::$definitions[$item->name] = $item;
       self::$categories[self::$currentCategory][] = $item->name;
     }
+  }
+
+  static function Wrap($option) {
+    $result = new RoomOption();
+    foreach (func_get_args() as $opt) {
+      if ($opt instanceof OptionParser) {
+        array_merge($result->options, $opt->options);
+      }
+      else if (is_string($opt)) {
+        $result->Option($opt);
+      }
+    }
+    return $result;
   }
 
   function  __construct($value = '') {
@@ -315,5 +342,37 @@ class RoomOption extends OptionParser {
     else {
       return $this->ToString();
     }
+  }
+
+  /** ゲームオプションの画像タグを作成する */
+  function GenerateImageList() {
+    global $ROOM_IMG, $CAST_CONF;
+    $str = '';
+    foreach(self::$icon_order as $option){
+      if(isset(self::$definitions[$option]) && isset($this->$option)) {
+        $def = self::$definitions[$option];
+        $footer = '';
+        $sentence = $def->description;
+        if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
+          $sentence .= '(' . $CAST_CONF->$option . '人～)';
+        }
+        switch($option){
+        case 'real_time':
+          list($day, $night) = $this->options[$option];
+          $sentence .= "　昼： {$day} 分　夜： {$night} 分";
+          $footer = '['. $day . '：' . $night . ']';
+          break;
+
+        case 'topping':
+        case 'boost_rate':
+          $type = $stack->options[$option][0];
+          $sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
+          $footer = '['. strtoupper($type) . ']';
+          break;
+        }
+        $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
+      }
+    }
+    return $str;
   }
 }

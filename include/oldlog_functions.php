@@ -90,6 +90,8 @@ class PageLinkBuilder{
 //-- 関数 --//
 //過去ログ一覧生成
 function GenerateFinishedRooms($page){
+	global $INIT_CONF;
+	$INIT_CONF->LoadClass('GAME_OPT');
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
@@ -164,7 +166,7 @@ EOF;
 	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
     }
     $max_user    = GenerateMaxUserImage($ROOM->max_user);
-    $game_option = GenerateGameOptionImage($ROOM->game_option, $ROOM->option_role);
+    $game_option = RoomOption::Wrap($ROOM->game_option, $ROOM->option_role)->GenerateImageList();
     $winner      = $RQ_ARGS->watch ? '-' : $WINNER_IMG->Generate($ROOM->winner);
     $str .= <<<EOF
 <tr class="list">
@@ -219,6 +221,8 @@ function GenerateLogIndex(){
 
 //指定の部屋番号のログを生成する
 function GenerateOldLog(){
+  global $INIT_CONF;
+	$INIT_CONF->LoadClass('GAME_OPT');
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
   $base_title = $SERVER_CONF->title . ' [過去ログ]'; //
@@ -232,7 +236,7 @@ function GenerateOldLog(){
     $ROOM->scene = 'day';
   }
   $title  = '[' . $ROOM->id . '番地] ' . $ROOM->name . ' - ' . $base_title;
-  $option = GenerateGameOptionImage($ROOM->game_option->row, $ROOM->option_role->row);
+  $option = RoomOption::Wrap($ROOM->game_option->row, $ROOM->option_role->row)->GenerateImageList();
   $log    = GeneratePlayerList() . ($RQ_ARGS->heaven_only ? LayoutHeaven() : LayoutTalkLog());
   $link = '<a href="#beforegame">前</a>'."\n";
   for($i = 1; $i <= $ROOM->last_date ; $i++) $link .= '<a href="#date'.$i.'">'.$i.'</a>'."\n";
