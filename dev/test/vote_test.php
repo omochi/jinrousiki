@@ -96,13 +96,13 @@ $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'dream_eater_mad downer_luck';
+$RQ_ARGS->TestItems->test_users[11]->role = 'mirror_fairy[8-9] downer_luck';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'trap_mad';
+$RQ_ARGS->TestItems->test_users[12]->role = 'amaze_mad';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
@@ -144,7 +144,7 @@ $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
 $RQ_ARGS->TestItems->test_users[19]->handle_name = '陸';
 $RQ_ARGS->TestItems->test_users[19]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[19]->role = 'star_fairy psycho_infected';
+$RQ_ARGS->TestItems->test_users[19]->role = 'enchant_mad psycho_infected';
 $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
@@ -168,7 +168,7 @@ $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'presage_scanner';
+$RQ_ARGS->TestItems->test_users[23]->role = 'history_brownie';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
@@ -190,7 +190,7 @@ $icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 foreach($RQ_ARGS->TestItems->test_users as $id => $user){
   $user->room_no = $RQ_ARGS->room_no;
   $user->user_no = $id;
-  if(! property_exists($user, 'profile')) $user->profile = $id;
+  if(! isset($user->profile)) $user->profile = $id;
   $user->last_load_scene = 'night';
   $user->is_system = $user->user_no == 1;
   if($id > 1){
@@ -215,9 +215,9 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' =>  9, 'target_no' =>  3),
   array('id' => 10, 'target_no' =>  3),
   array('id' => 11, 'target_no' =>  3),
-  array('id' => 12, 'target_no' => 11),
-  array('id' => 13, 'target_no' => 11),
-  array('id' => 14, 'target_no' => 12),
+  array('id' => 12, 'target_no' =>  3),
+  array('id' => 13, 'target_no' =>  3),
+  array('id' => 14, 'target_no' =>  3),
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 23),
   //array('id' => 17, 'target_no' => 22),
@@ -232,7 +232,39 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   //array('id' => 25, 'target_no' =>  3),
   array('id' => 25, 'target_no' => 12),
 );
-
+//決選投票用
+/*
+$RQ_ARGS->TestItems->vote_target_day = array(
+  array('id' =>  2, 'target_no' => 4),
+  array('id' =>  3, 'target_no' => 5),
+  //array('id' =>  3, 'target_no' => 10),
+  array('id' =>  4, 'target_no' => 5),
+  array('id' =>  5, 'target_no' => 4),
+  //array('id' =>  6, 'target_no' =>  3),
+  //array('id' =>  7, 'target_no' =>  3),
+  array('id' =>  7, 'target_no' => 5),
+  //array('id' =>  8, 'target_no' =>  9),
+  array('id' =>  9, 'target_no' => 4),
+  array('id' => 10, 'target_no' => 4),
+  array('id' => 11, 'target_no' => 4),
+  array('id' => 12, 'target_no' => 4),
+  array('id' => 13, 'target_no' => 4),
+  array('id' => 14, 'target_no' => 4),
+  array('id' => 15, 'target_no' => 4),
+  array('id' => 16, 'target_no' => 4),
+  //array('id' => 17, 'target_no' => 22),
+  array('id' => 18, 'target_no' => 5),
+  //array('id' => 18, 'target_no' => 3),
+  array('id' => 19, 'target_no' => 5),
+  array('id' => 20, 'target_no' => 5),
+  array('id' => 21, 'target_no' => 5),
+  array('id' => 22, 'target_no' => 5),
+  array('id' => 23, 'target_no' => 5),
+  array('id' => 24, 'target_no' => 5),
+  //array('id' => 25, 'target_no' =>  3),
+  array('id' => 25, 'target_no' => 4),
+);
+*/
 //初日用
 /*
 $RQ_ARGS->TestItems->vote->night = array(
@@ -253,8 +285,8 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('user_no' => 2, 	'target_no' => 23,	'type' => 'WOLF_EAT'),
-  #array('user_no' => 3, 	'target_no' => 9,	'type' => 'WOLF_EAT'),
+  #array('user_no' => 2, 	'target_no' => 23,	'type' => 'WOLF_EAT'),
+  array('user_no' => 3, 	'target_no' => 23,	'type' => 'WOLF_EAT'),
   array('user_no' => 4, 	'target_no' => 11,	'type' => 'MAGE_DO'),
   array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
   array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
@@ -262,14 +294,14 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
   array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
   #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-  array('user_no' => 10, 	'target_no' => 25,	'type' => 'ASSASSIN_DO'),
+  array('user_no' => 10, 	'target_no' => 8,	'type' => 'ASSASSIN_DO'),
   #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
   #array('user_no' => 10, 	'target_no' => 11,	'type' => 'DEATH_NOTE_DO'),
   #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
   #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
   #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
-  array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 11),
-  array('user_no' => 12, 	'type' => 'TRAP_MAD_DO',	'target_no' => 16),
+  #array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 11),
+  #array('user_no' => 12, 	'type' => 'TRAP_MAD_DO',	'target_no' => 16),
   #array('user_no' => 12, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
   #array('user_no' => 12, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
   #array('user_no' => 12, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
@@ -289,7 +321,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
   #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
   #array('user_no' => 18, 	'type' => 'VOODOO_FOX_DO', 'target_no' => 20),
-  array('user_no' => 19, 	'type' => 'FAIRY_DO', 'target_no' => 16),
+  array('user_no' => 19, 	'type' => 'FAIRY_DO', 'target_no' => 23),
   array('user_no' => 20, 	'type' => 'VAMPIRE_DO', 'target_no' => 23),
   #array('user_no' => 21, 	'type' => 'CHILD_FOX_DO',	'target_no' => 5),
   #array('user_no' => 22, 	'type' => 'ESCAPE_DO', 'target_no' => 12),
@@ -297,7 +329,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('user_no' => 22, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
   #array('user_no' => 22, 	'type' => 'OGRE_DO', 'target_no' => 24),
   #array('user_no' => 22, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
-  array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 19),
+  array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 23),
   #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 12),
   #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
   #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
@@ -314,18 +346,20 @@ $RQ_ARGS->TestItems->vote->night = array(
 );
 
 //-- 仮想システムメッセージをセット --//
-$RQ_ARGS->TestItems->system_message = array();
+$RQ_ARGS->TestItems->winner = 'wolf';
 $RQ_ARGS->TestItems->result_ability = array();
 $RQ_ARGS->TestItems->result_dead    = array();
-$RQ_ARGS->TestItems->winner = 'wolf';
+$RQ_ARGS->TestItems->system_message = array(
+  //-- 仮想イベントをセット --//
+  7 => array(#'EVENT'   => array('blinder'),
+	     #'VOTE_DUEL' => array(8),
+	     #'WEATHER' => array(53),
+	     ),
+  8 => array('WEATHER' => array(0)
+	     )
+);
 
-//-- 仮想イベントをセット --//
 $RQ_ARGS->TestItems->event = array(
-  #array('type' => 'VOTE_KILLED', 'message' => 'light_gray'),
-  #array('type' => 'VOTE_KILLED', 'message' => 'sky'),
-  #array('type' => 'WOLF_KILLED', 'message' => 'dummy_boy'),
-  array('type' => 'WEATHER', 'message' => 0)
-  #array('type' => 'WEATHER', 'message' => $GAME_CONF->GetWeather())
 );
 
 //-- 仮想発現をセット --//
@@ -340,8 +374,8 @@ $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->date = 7;
 #$ROOM->scene = 'beforegame';
-$ROOM->scene = 'day';
-#$ROOM->scene = 'night';
+#$ROOM->scene = 'day';
+$ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -518,9 +552,9 @@ if($ROOM->IsDay()){ //昼の投票テスト
   }
   echo GenerateVoteList($stack, $ROOM->date);
   $ROOM->date++;
-  //$ROOM->log_mode = false; //イベント確認用
-  //$ROOM->scene = 'day'; //イベント確認用
-  $ROOM->scene = 'night';
+  $ROOM->log_mode = false; //イベント確認用
+  $ROOM->scene = 'day'; //イベント確認用
+  //$ROOM->scene = 'night';
   $SELF = $USERS->ByID($self_id);
 }
 elseif($ROOM->IsNight()){ // 夜の投票テスト
@@ -580,27 +614,8 @@ do{
   }
   OutputAbilityAction();
 
-  foreach($RQ_ARGS->TestItems->system_message as $date => $date_list){
-    //PrintData($date_list, $date);
-    foreach($date_list as $type => $type_list){
-      switch($type){
-      case 'VOTE_KILLED':
-      case 'WOLF_KILLED':
-	foreach($type_list as $handle_name){
-	  $ROOM->event->rows[] = array('message' => $handle_name, 'type' => $type);
-	}
-	break;
-
-      case 'WEATHER':
-	if($date != $ROOM->date) continue;
-	foreach($type_list as $handle_name){
-	  $ROOM->event->rows[] = array('message' => $handle_name, 'type' => $type);
-	}
-	break;
-      }
-    }
-  }
-
+  //PrintData($RQ_ARGS->TestItems->system_message, 'SystemMessage');
+  $ROOM->LoadEvent();
   $USERS->SetEvent();
   //PrintData($ROOM->event);
   OutputDeadMan();

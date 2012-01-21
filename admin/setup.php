@@ -144,7 +144,8 @@ EOF;
   $table = 'system_message';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-room_no INT NOT NULL, message TEXT, type TEXT, date INT, INDEX system_message_index(room_no, date)
+room_no INT NOT NULL, date INT, type TEXT, message TEXT,
+INDEX system_message_index(room_no, date, type(10))
 EOF;
     CreateTable($table, $query);
   }

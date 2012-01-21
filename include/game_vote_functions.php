@@ -1138,7 +1138,7 @@ function AggregateVoteNight($skip = false){
 	       'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO', 'DEATH_NOTE_DO');
   }
   foreach($stack as $action){
-    if(! array_key_exists($action, $vote_data)) $vote_data[$action] = array();
+    if(! isset($vote_data[$action])) $vote_data[$action] = array();
   }
   //PrintData($vote_data);
 
@@ -1583,6 +1583,25 @@ function AggregateVoteNight($skip = false){
   $status = $ROOM->ChangeDate();
   if($ROOM->test_mode || ! $status) $USERS->ResetJoker(true); //ジョーカー再配置処理
   if($ROOM->IsOption('death_note')) $USERS->ResetDeathNote(); //デスノートの再配布処理
+  if(isset($ROLES->stack->event)){ //イベントの登録
+    //PrintData($ROLES->stack->event, 'Event');
+    $stack = array();
+    foreach($ROLES->stack->event as $uname => $event) $stack[$event] = true;
+    foreach($stack as $event => $flag){
+      switch($event){
+      case 'same_face':
+	$type = 'SAME_FACE';
+	$str  = $wolf_target->user_no;
+	break;
+
+      default:
+	$type = 'EVENT';
+	$str  = $event;
+	break;
+      }
+      $ROOM->SystemMessage($str, $type);
+    }
+  }
   return $status;
 }
 

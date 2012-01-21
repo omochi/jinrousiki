@@ -41,7 +41,12 @@ class Role_mirror_fairy extends Role_fairy{
     return null;
   }
 
-  function SetEvent($USERS, $type){
+  function VoteKillCounter($list){
+    global $ROOM;
+    $ROOM->SystemMessage($this->GetActor()->user_no, 'VOTE_DUEL', 1);
+  }
+
+  function SetEvent($USERS){
     global $ROOM;
 
     $stack = array(); //決選投票対象者の ID リスト
@@ -49,6 +54,6 @@ class Role_mirror_fairy extends Role_fairy{
       if($USERS->IsVirtualLive($key))   $stack[] = $key;
       if($USERS->IsVirtualLive($value)) $stack[] = $value;
     }
-    if(count($stack) > 1) $ROOM->event->{$this->{'event_' . $type}} = $stack;
+    if(count($stack) > 1) $ROOM->event->{$this->event_day} = $stack;
   }
 }

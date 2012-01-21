@@ -38,7 +38,7 @@ default:
 
   $ROOM->last_date = $ROOM->date;
   $ROOM->date      = $RQ_ARGS->date;
-  $ROOM->scene = $RQ_ARGS->scene;
+  $ROOM->scene     = $RQ_ARGS->scene;
   $USERS->SetEvent(true);
   break;
 }

@@ -1093,8 +1093,9 @@ function GenerateDeadMan(){
   }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
-  if($yesterday < 1 || $ROOM->log_mode || $ROOM->test_mode) return $str;
-
+  if($yesterday < 1 || $ROOM->log_mode || $ROOM->test_mode || ($ROOM->date == 2 && $ROOM->Isday())){
+    return $str;
+  }
   $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
   $query = "date = {$yesterday} AND scene = '{$ROOM->scene}'";
   foreach(FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack){
@@ -1107,9 +1108,7 @@ function GenerateDeadMan(){
 function GenerateWeatherReport(){
   global $ROLE_DATA, $RQ_ARGS, $ROOM;
 
-  if(! property_exists($ROOM->event, 'weather') || is_null($ROOM->event->weather) ||
-     ($ROOM->log_mode && $RQ_ARGS->reverse_log && $ROOM->IsNight())) return '';
-
+  if(! isset($ROOM->event->weather) || ($ROOM->log_mode && $ROOM->IsNight())) return '';
   $weather = $ROLE_DATA->weather_list[$ROOM->event->weather];
   return '<div class="weather">今日の天候は<span>' . $weather['name'] . '</span>です (' .
     $weather['caption'] . ')</div>';

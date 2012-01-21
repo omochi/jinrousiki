@@ -652,11 +652,13 @@ EOF;
     global $ROOM;
 
     if($ROOM->test_mode){
+      if(is_null($value)) $value = 'NULL (reset)';
       PrintData($value, 'Change [' . $item . '] (' . $this->uname . ')');
       return;
     }
+    if(! is_null($value)) $value = "'{$value}'";
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    return SendQuery("UPDATE user_entry SET {$item} = '{$value}' {$query}", true);
+    return SendQuery("UPDATE user_entry SET {$item} = {$value} {$query}", true);
   }
 
   //総合 DB 更新処理 (この関数はまだ実用されていません)
@@ -1049,48 +1051,33 @@ class UserDataSet{
     global $ROLE_DATA, $RQ_ARGS, $ROOM, $ROLES;
 
     if($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
-    $room_date = $ROOM->date; //現在の日付を確保
-    $base_date = $ROOM->date; //判定用の日付
-    if(($ROOM->watch_mode || $ROOM->single_view_mode) && ! $RQ_ARGS->reverse_log) $base_date--;
-
+    //PrintData($event_rows, 'Event[row]');
     foreach($event_rows as $event){
       switch($event['type']){
-      case 'VOTE_KILLED':
-	$ROOM->date = $base_date;
-	if((! $ROOM->log_mode || $ROOM->single_log_mode) && $ROOM->IsDay()) $ROOM->date--;
-	$user = $this->ByRealUname($this->HandleNameToUname($event['message']));
-	//PrintData($user->handle_name, "VOTE_KILLED: {$room_date} ({$ROOM->date})");
-	$ROLES->actor = $user;
-	foreach($ROLES->Load('event_day') as $filter) $filter->SetEvent($this, 'day');
-	foreach($user->GetPartner('bad_status', true) as $id => $date){ //悪戯
-	  if($date != $ROOM->date) continue;
-	  $ROLES->actor = $this->ByID($id);
-	  foreach($ROLES->Load('bad_status_day') as $filter) $filter->SetBadStatus($user);
-	}
-	break;
-
-      case 'WOLF_KILLED':
-	$ROOM->date = $base_date - 1;
-	$user = $this->ByRealUname($this->HandleNameToUname($event['message']));
-	//PrintData($user->handle_name, "WOLF_KILLED: {$room_date} ({$ROOM->date})");
-	if(! $user->IsDummyBoy()){ //座敷童子系
-	  $ROLES->actor = $user;
-	  foreach($ROLES->Load('event_night') as $filter) $filter->SetEvent($this, 'night');
-	}
-	foreach($user->GetPartner('bad_status', true) as $id => $date){ //悪戯
-	  if($date != $base_date) continue;
-	  $ROLES->actor = $this->ByID($id);
-	  foreach($ROLES->Load('bad_status_night') as $filter) $filter->SetBadStatus($user);
-	}
-	break;
-
       case 'WEATHER':
 	$ROOM->event->weather = (int)$event['message']; //天候データを格納
 	$ROOM->event->{$ROLE_DATA->weather_list[$ROOM->event->weather]['event']} = true;
 	break;
+
+      case 'EVENT':
+	$ROOM->event->$event['message'] = true;
+	break;
+
+      case 'VOTE_DUEL':
+	$ROLES->LoadMain($this->ByID($event['message']))->SetEvent($this);
+	break;
+
+      case 'SAME_FACE':
+	$ROOM->event->same_face = $event['message'];
+	break;
+
+      case 'BLIND_VOTE':
+	$target_date = $ROOM->date;
+	if($ROOM->IsDay()) $target_date--;
+	$ROOM->event->blind_vote = $target_date == $event['message'];
+	break;
       }
     }
-    $ROOM->date = $room_date; //日付を元に戻す
     if($ROOM->IsEvent('hyper_critical')){
       $ROOM->event->critical_voter = true;
       $ROOM->event->critical_luck  = true;
@@ -1099,7 +1086,7 @@ class UserDataSet{
       $ROOM->event->blinder   = true;
       $ROOM->event->mind_open = true;
     }
-    //PrintData($ROOM->event);
+    //PrintData($ROOM->event, 'Event');
 
     if($ROOM->IsDay()){ //昼限定
       foreach($ROLES->event_virtual_day_list as $role){
@@ -1115,8 +1102,10 @@ class UserDataSet{
 	  foreach($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
+      $base_date = $ROOM->date; //判定用の日付
+      if(($ROOM->watch_mode || $ROOM->single_view_mode) && ! $RQ_ARGS->reverse_log) $base_date--;
       $ROLES->LoadMain(new User('shadow_fairy'))->BadStatus($this, $base_date); //影妖精の処理
-      foreach($ROLES->LoadFilter('change_face') as $filter) $filter->BadStatus($this); //狢の処理
+      $ROLES->LoadMain(new User('enchant_mad'))->BadStatus($this); //狢の処理
     }
   }
 
@@ -1217,13 +1206,6 @@ class UserDataSet{
     $virtual_user = $this->ByVirtual($user->user_no);
     $ROOM->ResultDead($virtual_user->handle_name, $reason, $type);
 
-    switch($reason){ //イベント判定用 (将来的には不要)
-    case 'WOLF_KILLED':
-    case 'VOTE_KILLED':
-      $ROOM->SystemMessage($virtual_user->handle_name, $reason);
-      break;
-    }
-
     switch($reason){
     case 'NOVOTED':
     case 'POSSESSED_TARGETED':
@@ -1231,7 +1213,7 @@ class UserDataSet{
 
     default: //遺言処理
       $user->SaveLastWords($virtual_user->handle_name);
-      if($user != $virtual_user) $virtual_user->SaveLastWords();
+      if(! $virtual_user->IsSame($user->uname)) $virtual_user->SaveLastWords();
       return true;
     }
   }

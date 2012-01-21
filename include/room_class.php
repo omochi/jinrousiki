@@ -25,8 +25,6 @@ class Room{
     if(is_null($request)) return;
     if($request->IsVirtualRoom()){
       $stack = $request->TestItems->test_room;
-      $this->event = new StdClass();
-      $this->event->rows = $request->TestItems->event;
     }
     else{
       $stack = $this->LoadRoom($request->room_no, $lock);
@@ -162,15 +160,33 @@ class Room{
     global $RQ_ARGS;
 
     if(! $this->IsPlaying()) return null;
-    $date = $this->date;
-    if($this->log_mode && ! $this->single_log_mode && ! $RQ_ARGS->reverse_log) $date--;
-    $day   = $date;
-    $night = $date - 1;
-    if($this->IsDay() && ! ($this->watch_mode || $this->single_view_mode)) $day--;
-    $query = $this->GetQueryHeader('system_message', 'message', 'type') .
-      " AND(" . ($this->log_mode ? '' : "(date = '{$date}' AND type = 'WEATHER') OR") .
-      "     (date = '{$day}'   AND type = 'VOTE_KILLED') OR" .
-      "     (date = '{$night}' AND type = 'WOLF_KILLED'))";
+    $this->event = new StdClass();
+    if($this->test_mode){
+      $stack = array();
+      foreach($RQ_ARGS->TestItems->system_message as $date => $date_list){
+	if($date != $this->date) continue;
+	//PrintData($date_list, $date);
+	foreach($date_list as $type => $type_list){
+	  switch($type){
+	  case 'WEATHER':
+	  case 'EVENT':
+	  case 'SAME_FACE':
+	  case 'VOTE_DUEL':
+	  case 'BLIND_VOTE':
+	    foreach($type_list as $event){
+	      $stack[] = array('type' => $type, 'message' => $event);
+	    }
+	    break;
+	  }
+	}
+      }
+      $this->event->rows = $stack;
+      return;
+    }
+    $type_list = array("'WEATHER'", "'EVENT'", "'BLIND_VOTE'", "'SAME_FACE'");
+    if($this->IsDay()) $type_list[] = "'VOTE_DUEL'";
+    $query = $this->GetQueryHeader('system_message', 'type', 'message') .
+      " AND date = '{$this->date}' AND type IN (" . implode(',', $type_list) . ")";
     $this->event->rows = FetchAssoc($query);
   }
 
@@ -181,9 +197,8 @@ class Room{
     if(! $this->IsPlaying()) return null;
     $date = $this->date;
     if(($shift && $RQ_ARGS->reverse_log) || $this->IsAfterGame()) $date++;
-    if($this->date == 1) $date = 2;
     $query = $this->GetQueryHeader('system_message', 'message') .
-      " AND date = '{$date}' AND type = 'WEATHER'";
+      " AND date = {$date} AND type = 'WEATHER'";
     $result = FetchResult($query);
     $this->event->weather = $result === false ? null : $result; //天候を格納
   }
@@ -192,7 +207,7 @@ class Room{
   function LoadWinner(){
     global $RQ_ARGS;
 
-    if(! property_exists($this, 'winner')){
+    if(! isset($this->winner)){ //未設定ならキャッシュする
       $this->winner = $this->test_mode ? $RQ_ARGS->TestItems->winner :
 	FetchResult($this->GetQueryHeader('room', 'winner'));
     }
@@ -267,8 +282,7 @@ class Room{
   //特殊イベント判定用の情報を取得する
   function GetEvent($force = false){
     if(! $this->IsPlaying()) return array();
-    if($force) unset($this->event);
-    if(! property_exists($this, 'event')) $this->LoadEvent();
+    if($force || ! isset($this->event)) $this->LoadEvent();
     return $this->event->rows;
   }
 
@@ -315,7 +329,7 @@ class Room{
   function IsOpenCast(){
     global $USERS;
 
-    if(! property_exists($this, 'open_cast')){ //未設定ならキャッシュする
+    if(! isset($this->open_cast)){ //未設定ならキャッシュする
       if($this->IsOption('not_open_cast')){ //常時非公開
 	$user = $USERS->ByID(1); //身代わり君の蘇生辞退判定
 	$this->open_cast = $user->IsDummyBoy() && $user->IsDrop() && $USERS->IsOpenCast();
@@ -358,8 +372,8 @@ class Room{
 
   //特殊イベント判定
   function IsEvent($type){
-    if(! property_exists($this, 'event')) $this->event = new StdClass();
-    return property_exists($this->event, $type) ? $this->event->$type : null;
+    if(! isset($this->event)) $this->event = new StdClass();
+    return isset($this->event->$type) ? $this->event->$type : null;
   }
 
   //天候セット
@@ -430,14 +444,14 @@ class Room{
 
     $date = $this->date + $add_date;
     if($this->test_mode){
-      PrintData($str, 'SystemMessage: ' . $type);
+      PrintData("{$type} ({$date}): {$str}", 'SystemMessage');
       if(is_array($RQ_ARGS->TestItems->system_message)){
 	$RQ_ARGS->TestItems->system_message[$date][$type][] = $str;
       }
       return true;
     }
-    $items = 'room_no, date, message, type';
-    $values = "{$this->id}, {$date}, '{$str}', '{$type}'";
+    $items = 'room_no, date, type, message';
+    $values = "{$this->id}, {$date}, '{$type}', '{$str}'";
     return InsertDatabase('system_message', $items, $values);
   }
 
@@ -447,7 +461,7 @@ class Room{
 
     $date = $this->date;
     if($this->test_mode){
-      PrintData("$type: $result: $target: $user_no", 'ResultAbility');
+      PrintData("{$type}: {$result}: {$target}: {$user_no}", 'ResultAbility');
       if(is_array($RQ_ARGS->TestItems->result_ability)){
 	$stack = array('user_no' => $user_no, 'target' => $target, 'result' => $result);
 	$RQ_ARGS->TestItems->result_ability[$date][$type][] = $stack;

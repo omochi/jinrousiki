@@ -10,4 +10,9 @@ class Role_sun_brownie extends Role_history_brownie{
   public $event_day   = 'blinder';
   public $event_night = 'mind_open';
   function __construct(){ parent::__construct(); }
+
+  function VoteKillCounter($list){
+    global $ROOM;
+    $ROOM->SystemMessage($this->event_day, 'EVENT', 1);
+  }
 }

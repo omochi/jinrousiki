@@ -121,7 +121,8 @@ class RoleManager{
   public $detox_list = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
 
   //処刑者カウンター
-  public $vote_kill_counter_list = array('brownie', 'doom_doll', 'miasma_fox');
+  public $vote_kill_counter_list = array('brownie', 'sun_brownie', 'doom_doll', 'miasma_fox',
+					 'mirror_fairy');
 
   //処刑投票能力処理 (順番依存あり)
   public $vote_action_list = array(
@@ -169,8 +170,9 @@ class RoleManager{
     'sacrifice_vampire', 'boss_chiroptera', 'sacrifice_ogre');
 
   //人狼襲撃カウンター
-  public $wolf_eat_counter_list = array('ghost_common', 'presage_scanner', 'cursed_brownie',
-					'miasma_fox', 'revive_mania', 'mind_sheep');
+  public $wolf_eat_counter_list = array(
+    'ghost_common', 'presage_scanner', 'cursed_brownie', 'sun_brownie', 'history_brownie',
+    'miasma_fox', 'revive_mania', 'mind_sheep');
 
   //襲撃毒死回避
   public $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');
@@ -195,20 +197,6 @@ class RoleManager{
     'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_mad', 'revive_cupid',
     'scarlet_vampire', 'revive_ogre', 'revive_avenger', 'resurrect_mania');
 
-  //特殊イベント (昼)
-  public $event_day_list = array('sun_brownie', 'mirror_fairy');
-
-  //特殊イベント (夜)
-  public $event_night_list = array('sun_brownie', 'history_brownie');
-
-  //悪戯 (昼)
-  public $bad_status_day_list = array('amaze_mad');
-
-  //悪戯 (夜)
-  public $bad_status_night_list = array(
-    'soul_wizard', 'astray_wizard', 'pierrot_wizard', 'enchant_mad', 'light_fairy', 'dark_fairy',
-    'grass_fairy', 'sun_fairy', 'moon_fairy');
-
   //イベントセット用
   public $event_virtual_list = array('no_last_words', 'whisper_ringing', 'howl_ringing',
 				     'sweet_ringing', 'deep_sleep', 'mind_open');
@@ -217,9 +205,6 @@ class RoleManager{
   public $event_virtual_day_list = array(
     'actor', 'passion', 'rainbow', 'grassy', 'invisible', 'side_reverse', 'line_reverse',
     'critical_voter', 'critical_luck', 'blinder', 'earplug', 'silent', 'mower');
-
-  //悪戯 (迷彩/アイコン変更)
-  public $change_face_list = array('enchant_mad');
 
   //特殊勝敗判定 (ジョーカー系)
   public $joker_list = array('joker', 'rival');
@@ -333,6 +318,13 @@ class Role{
   protected function GetClass($method){
     $class = 'Role_' . $this->role;
     return method_exists($class, $method) ? new $class() : $this;
+  }
+
+  protected function GetProperty($property){
+    $class  = 'Role_' . $this->role;
+    $mix_in = new $class();
+    return isset($mix_in->$property) ? $mix_in->$property :
+      (isset($this->$property) ? $this->$property : null);
   }
 
   //function __get($name){ return null; } //メモ

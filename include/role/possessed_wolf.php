@@ -36,13 +36,15 @@ class Role_possessed_wolf extends Role_wolf{
       $target  = $USERS->ByUname($target_uname); //憑依予定先
       $virtual = $USERS->ByVirtual($user->user_no); //現在の憑依先
       //PrintData($user);
-      if(! property_exists($user, 'possessed_reset'))  $user->possessed_reset  = NULL;
-      if(! property_exists($user, 'possessed_cancel')) $user->possessed_cancel = NULL;
+      if(! isset($user->possessed_reset))  $user->possessed_reset  = null;
+      if(! isset($user->possessed_cancel)) $user->possessed_cancel = null;
 
       if($user->IsDead(true)){ //憑依者死亡
-	$target->dead_flag = false; //死亡フラグをリセット
-	$USERS->Kill($target->user_no, 'WOLF_KILLED');
-	if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
+	if(isset($target->user_no)){
+	  $target->dead_flag = false; //死亡フラグをリセット
+	  $USERS->Kill($target->user_no, 'WOLF_KILLED');
+	  if($target->revive_flag) $target->Update('live', 'live'); //蘇生対応
+	}
       }
       elseif($user->possessed_reset){ //憑依リセット
 	if(isset($target->user_no)){
@@ -88,10 +90,10 @@ class Role_possessed_wolf extends Role_wolf{
 	$user->AddRole("possessed_target[{$possessed_date}-{$target->user_no}]");
 	$ROOM->ResultDead($virtual->handle_name, 'POSSESSED');
 	$user->SaveLastWords($virtual->handle_name);
-	$user->Update('last_words', '');
+	$user->Update('last_words', null);
       }
 
-      if($user != $virtual){
+      if(! $user->IsSame($virtual->uname)){ //多段憑依対応
 	$virtual->ReturnPossessed('possessed');
 	if($user->IsLive(true)) $virtual->SaveLastWords();
       }
