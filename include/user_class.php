@@ -836,7 +836,7 @@ class UserDataSet{
       $user_list = $request->TestItems->test_users;
       if(is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
-    elseif(property_exists($request, 'entry_user') && $request->entry_user){ //入村処理用
+    elseif(isset($request->entry_user) && $request->entry_user){ //入村処理用
       $user_list = $this->RetriveByEntryUser($request->room_no);
     }
     else{

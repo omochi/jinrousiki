@@ -55,7 +55,7 @@ class Room{
 
   //発言を取得する
   function LoadTalk($heaven = false){
-    global $SERVER_CONF, $GAME_CONF, $RQ_ARGS;
+    global $GAME_CONF, $RQ_ARGS;
 
     if($RQ_ARGS->IsVirtualRoom()) return $RQ_ARGS->TestItems->talk;
 
@@ -79,14 +79,8 @@ class Room{
       $scene = $this->scene;
     }
 
-    if($SERVER_CONF->sort_talk_by_php){ //負荷実験用モード
-      $query = "SELECT talk_id, {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
-	" AND scene = '{$scene}'";
-      return FetchTalk($query, 'Talk', false);
-    }
-
     $query = "SELECT {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
-      " AND scene = '{$scene}' ORDER BY talk_id DESC";
+      " AND scene = '{$scene}' ORDER BY id DESC";
     if(! $this->IsPlaying()) $query .= ' LIMIT 0, ' . $GAME_CONF->display_talk_limit;
     return FetchObject($query, 'Talk');
   }

@@ -288,14 +288,13 @@ function LayoutHeaven(){
 
 //指定の日付の会話ログを生成
 function GenerateDateTalkLog($set_date, $set_scene){
-  global $SERVER_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS;
 
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
   $query_select = 'scene, location, uname, action, sentence, font_type';
   $query_table  = 'talk';
   $query_where  = "room_no = {$ROOM->id} AND ";
-  if($SERVER_CONF->sort_talk_by_php) $query_select .= ', talk_id';
 
   switch($set_scene){
   case 'beforegame':
@@ -328,15 +327,10 @@ function GenerateDateTalkLog($set_date, $set_scene){
   }
   if($ROOM->personal_mode) $query_where .= " AND uname = 'system'"; //個人結果表示モード
   $query = "SELECT {$query_select} FROM {$query_table} WHERE {$query_where}";
-  if($SERVER_CONF->sort_talk_by_php){
-    //PrintData($query, $set_scene);
-    $talk_list = FetchTalk($query, 'Talk', $RQ_ARGS->reverse_log);
-  }
-  else{
-    $query .= ' ORDER BY talk_id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
-    //PrintData($query, $set_scene);
-    $talk_list = FetchObject($query, 'Talk');
-  }
+  $query .= ' ORDER BY id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
+  //PrintData($query, $set_scene);
+  $talk_list = FetchObject($query, 'Talk');
+
   //-- 仮想稼動モードテスト用 --//
   //global $USERS, $SELF;
   //$SELF = $USERS->rows[3];

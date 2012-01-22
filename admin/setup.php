@@ -98,10 +98,19 @@ EOF;
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
   }
 
+  $table = 'player';
+  if(! in_array($table, $table_list)){
+    $query = <<<EOF
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+user_no INT, role TEXT, INDEX player_index(room_no)
+EOF;
+    CreateTable($table, $query);
+  }
+
   $table = 'talk';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
 time INT(20) NOT NULL,
 INDEX talk_index(room_no, date, scene, time)
@@ -112,7 +121,7 @@ EOF;
   $table = 'talk_beforegame';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
 time INT(20) NOT NULL,
 INDEX talk_beforegame_index(room_no, date, scene, time)
@@ -123,7 +132,7 @@ EOF;
   $table = 'talk_aftergame';
   if(! in_array($table, $table_list)){
     $query = <<<EOF
-talk_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
 time INT(20) NOT NULL,
 INDEX talk_aftergame_index(room_no, date, scene, time)
