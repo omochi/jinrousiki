@@ -587,7 +587,7 @@ function OutputRevoteList(){
     "AND user_no = '{$SELF->user_no}'";
   if(FetchResult($query) == 0){
     echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
-      $MESSAGE->draw_announce . ')</div><br>';
+      $MESSAGE->draw_announce . ')</div><br>'."\n";
   }
 
   echo GetVoteList($ROOM->date); //投票結果を出力
@@ -627,7 +627,7 @@ function GenerateVoteList($raw_data, $date){
   $str    = '';
   foreach($table_stack as $count => $stack){
     array_unshift($stack, '<table class="vote-list">', $header . $count . $footer);
-    $stack[] = '</table>';
+    $stack[] = '</table>'."\n";
     $str .= implode("\n", $stack);
   }
   return $str;

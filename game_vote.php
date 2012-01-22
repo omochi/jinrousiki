@@ -260,8 +260,7 @@ function OutputVoteDay(){
     "AND vote_count = {$ROOM->vote_count} AND revote_count = {$revote_count} " .
     "AND user_no = {$SELF->user_no}";
   if(FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
-  //特殊イベントを取得
-  if(property_exists($ROOM->event, 'vote_duel') && is_array($ROOM->event->vote_duel)){
+  if(isset($ROOM->event->vote_duel) && is_array($ROOM->event->vote_duel)){ //特殊イベントを取得
     $user_stack = array();
     foreach($ROOM->event->vote_duel as $id) $user_stack[$id] = $USERS->rows[$id];
   }

@@ -640,7 +640,7 @@ function VoteDay(){
   if($target->IsDead()) OutputVoteResult('処刑：死者には投票できません');
 
   //特殊イベントを取得
-  $vote_duel = property_exists($ROOM->event, 'vote_duel') ? $ROOM->event->vote_duel : NULL;
+  $vote_duel = isset($ROOM->event->vote_duel) ? $ROOM->event->vote_duel : null;
   if(is_array($vote_duel) && ! in_array($RQ_ARGS->target_no, $vote_duel)){
     OutputVoteResult('処刑：決選投票対象者以外には投票できません');
   }
@@ -762,8 +762,9 @@ function AggregateVoteDay(){
 
   //-- 投票結果登録 --//
   $max_poll = 0; //最多得票数
+  $vote_count = $ROOM->revote_count + 1;
   $items = 'room_no, date, count, handle_name, target_name, vote, poll';
-  $values_header = "{$ROOM->id}, {$ROOM->date}, $RQ_ARGS->revote_count, ";
+  $values_header = "{$ROOM->id}, {$ROOM->date}, {$vote_count}, ";
   foreach($vote_message_list as $uname => $stack){ //タブ区切りのデータをシステムメッセージに登録
     extract($stack); //配列を展開
     if($poll > $max_poll) $max_poll = $poll; //最大得票数を更新
