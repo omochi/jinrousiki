@@ -349,10 +349,15 @@ class RoomOption extends OptionParser {
     global $ROOM_IMG, $CAST_CONF;
     $str = '';
     foreach(self::$icon_order as $option){
-      if(isset(self::$definitions[$option]) && isset($this->$option)) {
-        $def = self::$definitions[$option];
+      if(isset($this->$option)) {
         $footer = '';
-        $sentence = $def->description;
+				if (isset(self::$definitions[$option])) {
+          $def = self::$definitions[$option];
+          $sentence = $def->description;
+				}
+				else {
+					$sentence = '';
+				}
         if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
           $sentence .= '(' . $CAST_CONF->$option . '人～)';
         }
