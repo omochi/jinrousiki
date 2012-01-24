@@ -336,11 +336,11 @@ class RoomOption extends OptionParser {
   }
 
   function GetOptionString($type = null) {
-    if (isset($this->groups[$type])) {
-      return $this->ToString(array_keys($this->groups[$type]));
-    }
-    else {
+		if (!isset($type)) {
       return $this->ToString();
+		}
+    elseif (isset($this->groups[$type])) {
+      return $this->ToString(array_keys($this->groups[$type]));
     }
   }
 
