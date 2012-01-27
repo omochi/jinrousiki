@@ -589,10 +589,13 @@ function AggregateVoteGameStart($force_start = false){
   //KICK の後処理
   $user_no = 1;
   foreach($USERS->rows as $user){
-    if($user->user_no != $user_no) $user->Update('user_no', $user_no);
+    if($user->user_no != $user_no){
+      $user->UpdateID($user_no);
+      $user->user_no = $user_no;
+    }
     $user_no++;
   }
-  foreach($USERS->kicked as $user) $user->Update('user_no', '-1');
+  foreach($USERS->kicked as $user) $user->UpdateID(-1);
 
   //役割リスト通知
   if($is_chaos){
@@ -606,6 +609,7 @@ function AggregateVoteGameStart($force_start = false){
   //ゲーム開始
   $ROOM->date++;
   $ROOM->scene = $ROOM->IsOption('open_day') ? 'day' : 'night';
+  foreach($USERS->rows as $user) $user->UpdatePlayer(); //player 登録
   if(! $ROOM->test_mode){
     $query = "UPDATE room SET status = 'playing', date = {$ROOM->date}, " .
       "scene = '{$ROOM->scene}', vote_count = 1, scene_start_time = UNIX_TIMESTAMP(), " .
@@ -978,6 +982,7 @@ function AggregateVoteDay(){
       $USERS->ByID($ROLES->stack->joker_id)->AddJoker();
     }
   }
+  foreach($USERS->rows as $user) $user->UpdatePlayer(); //player 更新
   $ROOM->UpdateTime(true); //最終書き込み時刻を更新
 }
 
@@ -1074,7 +1079,7 @@ EOF;
 
 //夜の投票処理
 function VoteNight(){
-  global $DB_CONF, $RQ_ARGS, $ROOM, $ROLES, $SELF;
+  global $DB_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- イベント名と役職の整合チェック --//
   $filter = CheckVoteNight();
@@ -1104,6 +1109,7 @@ function VoteNight(){
   }
   if($ROOM->test_mode) return;
   AggregateVoteNight(); //集計処理
+  foreach($USERS->rows as $user) $user->UpdatePlayer(); //player 更新
   $DB_CONF->Commit();
   OutputVoteResult('投票完了');
 }

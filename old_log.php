@@ -19,6 +19,7 @@ if($RQ_ARGS->is_room){
 
   $USERS = new UserDataSet($RQ_ARGS);
   $SELF  = $ROOM->single_view_mode ? $USERS->ByID($RQ_ARGS->user_no) : new User();
+  $USERS->player = $ROOM->LoadPlayer();
   if($ROOM->watch_mode) $SELF->live = 'live';
   if($ROOM->watch_mode || $ROOM->single_view_mode) $USERS->SaveRoleList();
   OutputOldLog();

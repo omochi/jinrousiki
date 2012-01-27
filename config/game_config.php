@@ -64,8 +64,10 @@ class GameConfig extends GameConfigBase{
   //文字数制限
   public $entry_uname_limit = 50; //ユーザ名と村人の名前
   public $entry_profile_limit = 300; //プロフィール
-  public $say_limit = 2048; //村の発言
-  public $say_line_limit = 20; //村の発言 (行数)
+  #public $say_limit = 2048; //村の発言
+  public $say_limit = 20000; //村の発言
+  #public $say_line_limit = 20; //村の発言 (行数)
+  public $say_line_limit = 50; //村の発言 (行数)
 
   //-- 表示設定 --//
   public $quote_words = false; //発言を「」で括る

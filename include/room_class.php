@@ -68,6 +68,7 @@ class Room{
 
     default:
       $table = 'talk';
+      if($this->log_mode) $select .= ', role_id';
       break;
     }
 
@@ -206,6 +207,21 @@ class Room{
 	FetchResult($this->GetQueryHeader('room', 'winner'));
     }
     return $this->winner;
+  }
+
+  //player 情報を DB から取得する
+  function LoadPlayer(){
+    $query = "SELECT id AS role_id, date, scene, user_no, role FROM player" .
+      $this->GetQuery(false);
+    $result = new StdClass();
+    foreach(FetchAssoc($query) as $stack){
+      extract($stack);
+      $result->roles[$role_id] = $role;
+      $result->users[$user_no][] = $role_id;
+      $result->timeline[$date][$scene][] = $role_id;
+    }
+    //PrintData($result);
+    return $result;
   }
 
   //投票情報をコマンド毎に分割する
@@ -385,7 +401,7 @@ class Room{
 
   //発言登録
   function Talk($sentence, $action = null, $uname = '', $scene = '', $location = null,
-		$font_type = null, $spend_time = 0){
+		$font_type = null, $role_id = null, $spend_time = 0){
     if($uname == '') $uname = 'system';
     if($scene == ''){
       $scene = $this->scene;
@@ -410,17 +426,22 @@ class Room{
     $items  = 'room_no, date, scene, uname, sentence, spend_time, time';
     $values = "{$this->id}, {$this->date}, '{$scene}', '{$uname}', '{$sentence}', {$spend_time}, " .
       "UNIX_TIMESTAMP()";
+
     if(isset($action)){
-      $items .= ', action';
+      $items  .= ', action';
       $values .= ", '{$action}'";
     }
     if(isset($location)){
-      $items .= ', location';
+      $items  .= ', location';
       $values .= ", '{$location}'";
     }
     if(isset($font_type)){
-      $items .= ', font_type';
+      $items  .= ', font_type';
       $values .= ", '{$font_type}'";
+    }
+    if(isset($role_id)){
+      $items  .= ', role_id';
+      $values .= ", {$role_id}";
     }
     return InsertDatabase($table, $items, $values);
   }

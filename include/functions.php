@@ -185,7 +185,7 @@ function UnlockTable(){ return SendQuery('UNLOCK TABLES'); }
 function DeleteRoom($room_no){
   $header = 'DELETE FROM ';
   $footer = ' WHERE room_no = ' . $room_no;
-  $stack  = array('room', 'user_entry', 'talk', 'talk_beforegame', 'talk_aftergame',
+  $stack  = array('room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame',
 		  'system_message', 'result_ability', 'result_dead', 'result_lastwords',
 		  'result_vote_kill', 'vote');
   foreach($stack as $name) SendQuery($header . $name . $footer);

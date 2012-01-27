@@ -154,6 +154,7 @@ $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode  = true;
 $ROOM->scene = 'beforegame';
+$ROOM->vote = array();
 
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
 $SELF = $USERS->ByID(1);
@@ -161,6 +162,7 @@ $SELF = $USERS->ByID(1);
 //-- データ出力 --//
 OutputHTMLHeader('配役テスト', 'game'); //HTMLヘッダ
 echo '</head><body>'."\n";
+
 OutputPlayerList(); //プレイヤーリスト
 AggregateVoteGameStart(); //配役処理
 $ROOM->date++;

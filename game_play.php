@@ -101,22 +101,21 @@ function SendCookie(&$objection_list){
   $objection_list = array_fill(0, $user_count, 0); //配列をセット (index は 0 から)
   if($ROOM->IsAfterGame()) return; //ゲーム終了ならスキップ
 
-  //「異議」ありをしたユーザ ID とその回数を取得
-  $query = 'SELECT message, COUNT(message) AS count FROM system_message' . $ROOM->GetQuery(false) .
-    " AND type = 'OBJECTION' GROUP BY message";
-  foreach(FetchAssoc($query) as $stack){
-    $objection_list[(int)$stack['message'] - 1] = (int)$stack['count'];
+  //「異議」ありセット判定
+  if($RQ_ARGS->set_objection && $SELF->objection < $GAME_CONF->objection &&
+     ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))){
+    $SELF->objection++;
+    $SELF->Update('objection', $SELF->objection);
+    $ROOM->Talk('', 'OBJECTION', $SELF->uname);
   }
 
-  //「異議」ありセット判定
-  if($RQ_ARGS->set_objection && $objection_list[$SELF->user_no - 1] < $GAME_CONF->objection &&
-     ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))){
-    $ROOM->SystemMessage($SELF->user_no, 'OBJECTION');
-    $ROOM->Talk('', 'OBJECTION', $SELF->uname);
-    $objection_list[$SELF->user_no - 1]++; //使用回数をインクリメント
+  //ユーザ全体の「異議」ありを集計
+  $count = 0;
+  foreach($USERS->names as $uname => $id){
+    $objection_list[$count++] = $USERS->ByID($id)->objection;
   }
+  //PrintData($objection_list, 'objection');
   setcookie('objection', implode(',', $objection_list), $ROOM->system_time + 3600); //リストを登録
-  $SELF->objection_count = $objection_list[$SELF->user_no - 1]; //残り回数をセット
 }
 
 //遺言登録
@@ -209,7 +208,7 @@ function CheckSilence(){
   if(! $ROOM->IsRealTime() && $left_time > 0){ //仮想時間制の沈黙判定
     if($last_update_time > $TIME_CONF->silence){
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      $ROOM->Talk($str, null, '', '', null, null, $TIME_CONF->silence_pass);
+      $ROOM->Talk($str, null, '', '', null, null, null, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
     }
   }
@@ -455,7 +454,7 @@ EOF;
   if($ROOM->IsBeforeGame() ||
      ($ROOM->IsDay() && ! $ROOM->dead_mode && ! $ROOM->heaven_mode && $left_time > 0)){
     $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list;
-    $count = $GAME_CONF->objection - $SELF->objection_count;
+    $count = $GAME_CONF->objection - $SELF->objection;
     echo <<<EOF
 <td class="objection"><form method="POST" action="{$url}">
 <input type="hidden" name="set_objection" value="on">

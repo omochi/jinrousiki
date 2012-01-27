@@ -656,6 +656,7 @@ function OutputTalk($talk, &$builder){
   */
   $actor = $talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
     $USERS->ByVirtualUname($talk->uname);
+  if($ROOM->log_mode && isset($talk->role_id)) $actor->ChangePlayer($talk->role_id);
 
   //基本パラメータを取得
   if($talk->uname == 'system'){
@@ -671,6 +672,7 @@ function OutputTalk($talk, &$builder){
   //実ユーザを取得
   if($RQ_ARGS->add_role && $actor->user_no > 0){ //役職表示モード対応
     $real_user = $talk->scene == 'heaven' ? $actor : $USERS->ByReal($actor->user_no);
+    if($ROOM->log_mode && isset($talk->role_id)) $real_user->ChangePlayer($talk->role_id);
     $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
   }
   else{

@@ -306,6 +306,13 @@ function GenerateDateTalkLog($set_date, $set_scene){
       $USERS->ResetRoleList();
       unset($ROOM->event);
     }
+
+    if($RQ_ARGS->reverse_log){ //player 復元処理
+      if($set_scene == 'aftergame') $USERS->ResetPlayer();
+    }
+    elseif($set_scene == 'beforegame'){
+      $USERS->ResetPlayer();
+    }
     break;
 
   case 'heaven_only':
@@ -316,6 +323,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
   default:
     $flag_border_game = true;
     $table_class = $RQ_ARGS->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
+    $query_select .= ', role_id';
     $scene_list = array("'day'", "'night'");
     if($RQ_ARGS->heaven_talk) $scene_list[] = "'heaven'";
     $query_where .= "date = {$set_date} AND scene IN (" . implode(',', $scene_list) . ')';

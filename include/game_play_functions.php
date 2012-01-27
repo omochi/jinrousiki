@@ -51,8 +51,8 @@ function Write($say, $scene, $location, $spend_time, $update = false){
     $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
     foreach($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
   }
-
-  $ROOM->Talk($say, null, $SELF->uname, $scene, $location, $voice, $spend_time);
+  $role_id = $ROOM->IsPlaying() ? $SELF->role_id : null;
+  $ROOM->Talk($say, null, $SELF->uname, $scene, $location, $voice, $role_id, $spend_time);
   if($update) $ROOM->UpdateTime();
   //$DB_CONF->Commit(); //必要なら global に登録すること
 }

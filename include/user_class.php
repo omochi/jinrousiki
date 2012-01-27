@@ -53,6 +53,15 @@ class User{
   //役職の再パース処理
   function ReparseRoles(){ $this->ParseRoles($this->GetRole()); }
 
+  //player 入れ替え処理
+  function ChangePlayer($id){
+    global $USERS;
+
+    if(! isset($this->role_id) || $this->role_id == $id) return;
+    $this->role_id = $id;
+    $this->ParseRoles($USERS->player->roles[$id]);
+  }
+
   //指定したユーザーデータのセットを名前つき配列にして返します。
   //このメソッドは extract 関数を使用してオブジェクトのプロパティを
   //迅速にローカルに展開するために使用できます。 (現在は未使用)
@@ -101,7 +110,7 @@ class User{
 
   //役職取得
   function GetRole(){
-    return array_key_exists('role', $this->updated) ? $this->updated['role'] : $this->role;
+    return isset($this->updated['role']) ? $this->updated['role'] : $this->role;
   }
 
   //メイン役職取得
@@ -653,12 +662,40 @@ EOF;
 
     if($ROOM->test_mode){
       if(is_null($value)) $value = 'NULL (reset)';
-      PrintData($value, 'Change [' . $item . '] (' . $this->uname . ')');
-      return;
+      PrintData($value, "Change [{$item}] ({$this->uname})");
+      return true;
     }
     if(! is_null($value)) $value = "'{$value}'";
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
     return SendQuery("UPDATE user_entry SET {$item} = {$value} {$query}", true);
+  }
+
+  //ID 更新処理 (KICK 後処理用)
+  function UpdateID($id){
+    global $ROOM;
+
+    if($ROOM->test_mode){
+      PrintData("{$this->user_no} -> {$id}: {$this->uname}", 'Change ID');
+      return;
+    }
+    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
+    return SendQuery("UPDATE user_entry SET user_no = {$id} {$query}");
+  }
+
+  //player 更新処理
+  function UpdatePlayer(){
+    global $ROOM;
+
+    if(! isset($this->updated['role'])) return true;
+    $role = $this->updated['role'];
+    if($ROOM->test_mode){
+      PrintData($role, "Player ({$this->uname})");
+      return true;
+    }
+    $items  = 'room_no, date, scene, user_no, role';
+    $values = "{$ROOM->id}, {$ROOM->date}, '{$ROOM->scene}', {$this->user_no}, '{$role}'";
+    if(! InsertDatabase('player', $items, $values)) return false;
+    return $this->Update('role_id', mysql_insert_id());
   }
 
   //総合 DB 更新処理 (この関数はまだ実用されていません)
@@ -855,6 +892,8 @@ class UserDataSet{
 	sex,
 	profile,
 	role,
+	role_id,
+	objection,
 	live,
 	last_load_scene,
 	ip_address = '' AS is_system,
@@ -880,6 +919,8 @@ class UserDataSet{
 	users.sex,
 	users.profile,
 	users.role,
+	users.role_id,
+	users.objection,
 	users.live,
 	users.last_load_scene,
 	users.ip_address = '' AS is_system,
@@ -1269,6 +1310,14 @@ class UserDataSet{
   //仮想役職リストの初期化 (ログ処理用)
   function ResetRoleList(){
     foreach($this->rows as $user) $user->role_list = $user->save_role_list;
+  }
+
+  //player の復元 (ログ処理用)
+  function ResetPlayer(){
+    if(! isset($this->player->users)) return;
+    foreach($this->player->users as $id => $stack){
+      $this->ByID($id)->ChangePlayer(max($stack));
+    }
   }
 
   //保存処理 (実用されていません)
