@@ -4,8 +4,10 @@
   ○仕様
   ・配役：村人 → キューピッド
 */
-class Option_cupid extends Option{
-  function __construct(){ parent::__construct(); }
+class Option_cupid extends CheckRoomOptionItem {
+  function __construct(){
+		parent::__construct('cupid', 'キューピッド登場', '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]');
+	}
 
   function SetRole(&$list, $count){
     global $CAST_CONF, $ROOM;

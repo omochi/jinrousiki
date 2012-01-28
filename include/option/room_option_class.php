@@ -61,58 +61,34 @@ class RoomOption extends OptionParser {
             );
 
     self::Category('CASTING');
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('poison', '埋毒者登場', '処刑されたり狼に食べられた場合、道連れにします [村人2→埋毒1・人狼1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('assassin', '暗殺者登場', '夜に村人一人を暗殺することができます [村人2→暗殺者1・人狼1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('wolf', '人狼追加', '人狼をもう一人追加します [村人1→人狼1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('boss_wolf', '白狼登場', '占い結果が「村人」・霊能結果が「白狼」と表示される狼です [人狼1→白狼1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('poison_wolf', '毒狼登場', '処刑時にランダムで村人一人を巻き添えにする狼です<br>　　　[人狼1→毒狼1 / 村人1→薬師1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('possessed_wolf', '憑狼登場', '襲撃した人に憑依して乗っ取ってしまう狼です [人狼1→憑狼1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('sirius_wolf', '天狼登場', '仲間が減ると特殊能力が発現する狼です [人狼1→天狼1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('fox', '妖狐追加', '妖狐をもう一人追加します [村人1→妖狐1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('child_fox', '子狐登場', '限定的な占い能力を持ち、占い結果が「村人」・霊能結果が「子狐」となる妖狐です <br>　　　[妖狐1→子狐1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('cupid', 'キューピッド登場', '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('medium', '巫女登場', '突然死した人の所属陣営が分かります [村人2→巫女1・女神1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('mania', '神話マニア登場', '初日夜に他の村人の役職をコピーします [村人1→神話マニア1]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('decide', '決定者登場', '投票が同数の時、決定者の投票先が優先されます [兼任]')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('authority', '権力者登場', '投票の票数が二票になります [兼任]')
-            );
+    self::Add(self::ROLE_OPTION, 'poison');
+    self::Add(self::ROLE_OPTION, 'assassin');
+    self::Add(self::ROLE_OPTION, 'wolf');
+    self::Add(self::ROLE_OPTION, 'boss_wolf');
+    self::Add(self::ROLE_OPTION, 'poison_wolf');
+    self::Add(self::ROLE_OPTION, 'possessed_wolf');
+    self::Add(self::ROLE_OPTION, 'sirius_wolf');
+    self::Add(self::ROLE_OPTION, 'fox');
+    self::Add(self::ROLE_OPTION, 'child_fox');
+    self::Add(self::ROLE_OPTION, 'cupid');
+    self::Add(self::ROLE_OPTION, 'medium');
+    self::Add(self::ROLE_OPTION, 'mania');
+    self::Add(self::ROLE_OPTION, 'decide');
+    self::Add(self::ROLE_OPTION, 'authority');
 
     self::Category('SPECIAL');
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('liar', '狼少年村', 'ランダムで「狼少年」がつきます')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('gentleman', '紳士・淑女村', '全員に性別に応じた「紳士」「淑女」がつきます')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('sudden_death', '虚弱体質村', '全員に投票でショック死するサブ役職のどれかがつきます')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('perverseness', '天邪鬼村', '全員に「天邪鬼」がつきます。一部のサブ役職系オプションが強制オフになります')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('deep_sleep', '静寂村', '全員に「爆睡者」がつきます')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('mind_open', '白夜村', '全員に「公開者」がつきます')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('blinder', '宵闇村', '全員に「目隠し」がつきます')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('critical', '急所村', '全員に「会心」「痛恨」がつきます。')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('joker', 'ババ抜き村', '誰か一人に「ジョーカー」がつきます')
-            );
+    self::Add(self::ROLE_OPTION, 'liar');
+    self::Add(self::ROLE_OPTION, 'gentleman');
+    self::Add(self::ROLE_OPTION, 'sudden_death');
+    self::Add(self::ROLE_OPTION, 'perverseness');
+    self::Add(self::GAME_OPTION, 'deep_sleep');
+    self::Add(self::GAME_OPTION, 'mind_open');
+    self::Add(self::GAME_OPTION, 'blinder');
+    self::Add(self::ROLE_OPTION, 'critical');
+    self::Add(self::GAME_OPTION, 'joker');
     self::Add(self::GAME_OPTION, RoomOptionItem::Check('death_note', 'デスノート村', '毎日、誰か一人に「デスノート」が与えられます')
             );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('detective', '探偵村', '「探偵」が登場し、初日の夜に全員に公表されます')
-            );
+    self::Add(self::GAME_OPTION, 'detective');
     self::Add(self::GAME_OPTION, RoomOptionItem::Check('weather', '天候あり', '「天候」と呼ばれる特殊イベントが発生します')
             );
     self::Add(self::GAME_OPTION, RoomOptionItem::Check('festival', 'お祭り村', '管理人がカスタムする特殊設定です')
@@ -237,6 +213,11 @@ class RoomOption extends OptionParser {
   }
 
   static function Add($group, $item) {
+		if (is_string($item)) {
+			require_once(dirname(__FILE__)."/{$item}.php");
+			$class = 'Option_'.$item;
+			$item = new $class;
+		}
     if ($item->enable && isset(self::$categories[self::$currentCategory])) {
       self::SetGroup($group, $item);
       self::$definitions[$item->name] = $item;
@@ -346,37 +327,34 @@ class RoomOption extends OptionParser {
 
   /** ゲームオプションの画像タグを作成する */
   function GenerateImageList() {
-    global $ROOM_IMG, $CAST_CONF;
+    global $ROOM_IMG, $CAST_CONF, $GAME_OPT_MESS;
+
     $str = '';
     foreach(self::$icon_order as $option){
-      if(isset($this->$option)) {
-        $footer = '';
-				if (isset(self::$definitions[$option])) {
-          $def = self::$definitions[$option];
-          $sentence = $def->description;
-				}
-				else {
-					$sentence = '';
-				}
-        if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
-          $sentence .= '(' . $CAST_CONF->$option . '人～)';
-        }
-        switch($option){
-        case 'real_time':
-          list($day, $night) = $this->options[$option];
-          $sentence .= "　昼： {$day} 分　夜： {$night} 分";
-          $footer = '['. $day . '：' . $night . ']';
-          break;
+      if(!(isset($this->$option) && $GAME_OPT_MESS->$option)) {
+	      continue;
+			}
+			$footer = '';
+			$sentence = $GAME_OPT_MESS->$option;
+			if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
+				$sentence .= '(' . $CAST_CONF->$option . '人～)';
+			}
+			switch($option){
+			case 'real_time':
+				$day   = $stack->options[$option][0];
+				$night = $stack->options[$option][1];
+				$sentence .= "　昼： {$day} 分　夜： {$night} 分";
+				$footer = '['. $day . '：' . $night . ']';
+				break;
 
-        case 'topping':
-        case 'boost_rate':
-          $type = $stack->options[$option][0];
-          $sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
-          $footer = '['. strtoupper($type) . ']';
-          break;
-        }
-        $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
-      }
+			case 'topping':
+			case 'boost_rate':
+				$type = $stack->options[$option][0];
+				$sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
+				$footer = '['. strtoupper($type) . ']';
+				break;
+			}
+			$str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
     }
     return $str;
   }

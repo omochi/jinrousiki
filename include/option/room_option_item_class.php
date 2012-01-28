@@ -1,7 +1,7 @@
 <?php
-abstract class RoomOptionItem {
+abstract class RoomOptionItem extends Option {
   var $id;
-  var $name;
+  #var $name;
   var $enabled;
   var $value;
   var $caption;
@@ -9,42 +9,56 @@ abstract class RoomOptionItem {
   var $checked;
   var $collect;
 
-  function  __construct($id, $name, $caption, $explain) {
-    global $GAME_OPT_CONF;
-    $this->id = $id;
-    $this->name = $name;
-    $enable = "{$id}_enable";
-    $this->enable = (isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true);
+  function  __construct($name, $caption, $explain) {
+    $this->ID($name);
+    $this->Name($name);
     $this->caption = $caption;
     $this->explain = $explain;
-    $default = "default_{$name}";
-    if (isset($GAME_OPT_CONF->$default)) {
-      $this->value = $GAME_OPT_CONF->$default;
-    }
   }
 
-  static function Text($name, $caption, $explain) {
-    return new TextRoomOptionItem($name, $name, 'text', $caption, $explain);
+	static function Text($name, $caption, $explain) {
+    return new TextRoomOptionItem($name, 'text', $caption, $explain);
   }
   static function Password($name, $caption, $explain) {
-    return new TextRoomOptionItem($name, $name, 'password', $caption, $explain);
+    return new TextRoomOptionItem($name, 'password', $caption, $explain);
   }
   static function Check($name, $caption, $explain) {
-    return new CheckRoomOptionItem($name, $name, 'checkbox', 'on', $caption, $explain);
+    return new CheckRoomOptionItem($name, $caption, $explain);
   }
   static function Radio($name, $value, $caption, $explain) {
-    $id = empty($value) ? $name : "{$name}_{$value}";
-    return new CheckRoomOptionItem($id, $name, 'radio', $value, $caption, $explain);
+    $def = new CheckRoomOptionItem($name, $caption, $explain, 'radio', $value);
+		if (!empty($value)) {
+			$def->ID("{$name}_{$value}");
+		}
+		return $def;
   }
   static function Selector($name, $label, $caption, $explain) {
-    return new SelectorRoomOptionItem($name, $name, $label, $caption, $explain);
+    return new SelectorRoomOptionItem($name, $label, $caption, $explain);
   }
   static function RealTime($name, $caption, $explain) {
-    return new TimeRoomOptionItem($name, $name, $caption, $explain);
+    return new TimeRoomOptionItem($name, $caption, $explain);
   }
   static function Group($name, $caption) {
     return new RoomOptionItemGroup($name, $caption);
   }
+
+	function Name($name) {
+    global $GAME_OPT_CONF;
+    $this->name = $name;
+    $default = "default_{$name}";
+    if (isset($GAME_OPT_CONF->$default)) {
+      $this->value = $GAME_OPT_CONF->$default;
+    }
+		return $this;
+	}
+
+	function ID($id) {
+    global $GAME_OPT_CONF;
+		$this->id = $id;
+    $enable = "{$id}_enable";
+    $this->enable = (isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true);
+		return $this;
+	}
 
   function Value($value) {
     $this->value = $value;
@@ -124,8 +138,8 @@ class CheckRoomOptionItem extends RoomOptionItem {
   var $type;
   var $default;
 
-  function  __construct($id, $name, $type, $value, $caption, $explain) {
-    parent::__construct($id, $name, $caption, $explain);
+  function  __construct($name, $caption, $explain, $type='checkbox', $value='on') {
+    parent::__construct($name, $caption, $explain);
     //ユーザー設定の退避
     if ($type == 'checkbox') {
       $this->checked = $this->value;
@@ -178,8 +192,8 @@ class SelectorRoomOptionItem extends RoomOptionItem {
   var $label;
   var $items = array();
 
-  function  __construct($id, $name, $label, $caption, $explain) {
-    parent::__construct($id, $name, $caption, $explain);
+  function  __construct($name, $label, $caption, $explain) {
+    parent::__construct($name, $caption, $explain);
     $this->label = $label;
   }
 
@@ -215,8 +229,8 @@ HTML;
 class TextRoomOptionItem extends RoomOptionItem {
   var $footer;
 
-  function  __construct($id, $name, $type, $caption, $explain) {
-    parent::__construct($id, $name, $caption, $explain);
+  function  __construct($name, $type, $caption, $explain) {
+    parent::__construct($name, $caption, $explain);
     $this->type = $type;
   }
 
@@ -248,8 +262,8 @@ class TimeRoomOptionItem extends RoomOptionItem {
   var $defaultDayTime = 5;
   var $defaultNightTime = 3;
 
-  function  __construct($id, $name, $caption, $explain) {
-    parent::__construct($id, $name, $caption, $explain);
+  function  __construct($name, $caption, $explain) {
+    parent::__construct($name, $caption, $explain);
 		$this->checked = $this->value;
     $this->value = 'on';
   }
@@ -302,7 +316,7 @@ class RoomOptionItemGroup extends RoomOptionItem {
   var $items = array();
 
   function  __construct($name, $caption) {
-    parent::__construct(null, $name, $caption, '');
+    parent::__construct($name, $caption, '');
   }
 
   function Item($item) {

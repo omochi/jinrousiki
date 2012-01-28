@@ -4,8 +4,10 @@
   ○仕様
   ・配役：村人 → 神話マニア
 */
-class Option_mania extends Option{
-  function __construct(){ parent::__construct(); }
+class Option_mania extends CheckRoomOptionItem {
+  function __construct(){
+		parent::__construct('mania', '神話マニア登場', '初日夜に他の村人の役職をコピーします [村人1→神話マニア1]');
+	}
 
   function SetRole(&$list, $count){
     global $CAST_CONF, $ROOM;

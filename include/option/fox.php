@@ -4,8 +4,10 @@
   ○仕様
   ・配役：村人 → 妖狐
 */
-class Option_fox extends Option{
-  function __construct(){ parent::__construct(); }
+class Option_fox extends CheckRoomOptionItem {
+  function __construct(){
+		parent::__construct('fox', '妖狐追加', '妖狐をもう一人追加します [村人1→妖狐1]');
+	}
 
   function SetRole(&$list, $count){
     global $CAST_CONF;
