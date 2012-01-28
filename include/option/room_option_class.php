@@ -341,15 +341,14 @@ class RoomOption extends OptionParser {
 			}
 			switch($option){
 			case 'real_time':
-				$day   = $stack->options[$option][0];
-				$night = $stack->options[$option][1];
-				$sentence .= "　昼： {$day} 分　夜： {$night} 分";
+        list($day, $night) = $this->options[$option];
+        $sentence .= "　昼： {$day} 分　夜： {$night} 分";
 				$footer = '['. $day . '：' . $night . ']';
 				break;
 
 			case 'topping':
 			case 'boost_rate':
-				$type = $stack->options[$option][0];
+				$type = $this->options[$option][0];
 				$sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
 				$footer = '['. strtoupper($type) . ']';
 				break;
