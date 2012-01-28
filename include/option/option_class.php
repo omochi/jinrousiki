@@ -58,7 +58,7 @@ class OptionParser{
         $result .= " {$name}:" . implode(':', $value);
       }
       else if (!empty($value)) {
-        $result = " {$name}:{$value}";
+        $result .= " {$name}:{$value}";
       }
     }
     return $result;
