@@ -62,6 +62,10 @@ class Room{
     $select = 'scene, location, uname, action, sentence, font_type';
     switch($this->scene){
     case 'beforegame':
+      $table = 'talk_' . $this->scene;
+      $select .= ', handle_name, color';
+      break;
+
     case 'aftergame':
       $table = 'talk_' . $this->scene;
       break;
@@ -444,6 +448,24 @@ class Room{
       $values .= ", {$role_id}";
     }
     return InsertDatabase($table, $items, $values);
+  }
+
+  //発言登録 (ゲーム開始前専用
+  function TalkBeforegame($sentence, $uname, $handle_name, $color, $font_type = null){
+    if($this->test_mode){
+      $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
+      PrintData(LineToBR($sentence), $str);
+      return true;
+    }
+
+    $items  = 'room_no, date, scene, uname, handle_name, color, sentence, time';
+    $values = "{$this->id}, 0, '{$this->scene}', '{$uname}', '{$handle_name}', '{$color}', " .
+      "'{$sentence}', UNIX_TIMESTAMP()";
+    if(isset($font_type)){
+      $items  .= ', font_type';
+      $values .= ", '{$font_type}'";
+    }
+    return InsertDatabase('talk_' . $this->scene, $items, $values);
   }
 
   //超過警告メッセージ登録

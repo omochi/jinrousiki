@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
-$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF');
+$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'GAME_OPT', 'GAME_OPT_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得

@@ -123,8 +123,8 @@ EOF;
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
-location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
-time INT(20) NOT NULL,
+location TEXT, uname TEXT, handle_name TEXT, color VARCHAR(7), action TEXT, sentence TEXT,
+font_type TEXT, spend_time INT, time INT(20) NOT NULL,
 INDEX talk_beforegame_index(room_no, date, scene, time)
 EOF;
     CreateTable($table, $query);

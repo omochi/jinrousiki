@@ -307,6 +307,8 @@ function GenerateDateTalkLog($set_date, $set_scene){
       unset($ROOM->event);
     }
 
+    if($set_scene == 'beforegame') $query_select .= ', handle_name, color';
+
     if($RQ_ARGS->reverse_log){ //player 復元処理
       if($set_scene == 'aftergame') $USERS->ResetPlayer();
     }

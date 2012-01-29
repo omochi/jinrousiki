@@ -374,9 +374,21 @@ EOF;
 
   //プレイヤーリストの表示位置
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
-    $url_reload . $url_sound  .
-    ($RQ_ARGS->list_down ? '">↑' : '&list_down=on">↓') . 'リスト</a>'."\n";
-  if($ROOM->IsFinished()) OutputLogLink();
+    $url_reload . $url_sound  . ($RQ_ARGS->list_down ? '">↑' : '&list_down=on">↓') . 'リスト</a>';
+
+  if($ROOM->IsFinished()){
+    echo "\n".'<a target="_blank" href="game_play.php' . $url_room . $url_list . '">' .
+      '別ページ</a>';
+    OutputLogLink();
+  }
+  else{ //ログ保存用のリンク
+    echo "\n".'<a target="_blank" href="game_play.php' . $url_room . $url_list . '">' .
+      '別ページ</a>';
+    if($ROOM->IsBeforegame()){
+      echo ' <a target="_blank" href="user_manager.php' . $url_room . '&user_no=' .
+	$SELF->user_no . '">登録情報変更</a>'."\n";
+    }
+  }
 
   if($RQ_ARGS->play_sound && ($ROOM->IsBeforeGame() || $ROOM->IsDay())){ //音でお知らせ処理
     if($ROOM->IsBeforeGame()){ //入村・満員

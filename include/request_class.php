@@ -131,7 +131,7 @@ class RequestUserManager extends RequestBaseIcon{
   function __construct(){
     EncodePostData();
     $this->GetItems('IsRoomNo', 'get.room_no');
-    $this->GetItems('intval', 'post.icon_no');
+    $this->GetItems('intval', 'post.icon_no', 'get.user_no');
     $this->GetItems('EscapeStrings', 'post.password');
     $this->GetItems('Exists', 'post.entry');
     $this->GetItems(NULL, 'post.trip', 'post.profile', 'post.sex', 'post.role');

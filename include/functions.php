@@ -261,7 +261,7 @@ function EncodePostData(){
   global $SERVER_CONF;
 
   foreach($_POST as $key => $value){
-    $encode = mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+    $encode = @mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
     if($encode != '' && $encode != $SERVER_CONF->encode){
       $_POST[$key] = mb_convert_encoding($value, $SERVER_CONF->encode, $encode);
     }

@@ -328,8 +328,8 @@ function OutputLogLink(){
   global $ROOM;
 
   $url = 'old_log.php?room_no=' . $ROOM->id;
-  echo GenerateLogLink($url, true, '<br>' . ($ROOM->view_mode ? '[ログ]' : '[全体ログ]')) .
-    GenerateLogLink($url . '&add_role=on', false, '<br>[役職表示ログ]');
+  echo GenerateLogLink($url, true, "<br>\n" . ($ROOM->view_mode ? '[ログ]' : '[全体ログ]')) .
+    GenerateLogLink($url . '&add_role=on', false, "<br>\n[役職表示ログ]");
 }
 
 //ゲームオプション画像を出力
@@ -665,8 +665,8 @@ function OutputTalk($talk, &$builder){
     $actor->user_no = 0;
   }
   else{
-    $symbol = '<font color="' . $actor->color . '">◆</font>';
-    $name   = $actor->handle_name;
+    $symbol = '<font color="'.(isset($talk->color) ? $talk->color : $actor->color).'">◆</font>';
+    $name   = isset($talk->handle_name) ? $talk->handle_name : $actor->handle_name;
   }
 
   //実ユーザを取得

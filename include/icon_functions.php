@@ -189,7 +189,6 @@ HTML;
   }
 
   //-- ヘッダ出力 --//
-  //$icon_count  = FetchResult('SELECT COUNT(icon_no) FROM user_icon WHERE icon_no > 0'); //不使用
   $colspan     = $USER_ICON->column * 2;
   $line_header = '<tr><td colspan="' . $colspan . '">';
   $line_footer = '</td></tr>'."\n";
@@ -198,9 +197,7 @@ HTML;
   $query_stack = array();
   $category_list = GetIconCategoryList('category');
   //PrintData($category_list);
-  $all_url = $url_header;
-  if($RQ_ARGS->room_no > 0) $all_url .= 'room_no=' . $RQ_ARGS->room_no;
-  echo "<table class=\"selector\">\n<tr>\n";
+  echo '<table class="selector">'."\n<tr>\n";
 
   //検索条件の表示
   $where_cond = array();
@@ -295,6 +292,7 @@ HTML;
   $PAGE_CONF->option  = $url_option;
   $PAGE_CONF->attributes  = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
   if($RQ_ARGS->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . $RQ_ARGS->room_no;
+  if($RQ_ARGS->icon_no > 0) $PAGE_CONF->option[] = 'icon_no=' . $RQ_ARGS->icon_no;
   echo '<td colspan="' . $colspan . '" class="page-link">';
   //PrintData($PAGE_CONF, 'PAGE_CONF');
   OutputPageLink($PAGE_CONF);

@@ -100,8 +100,9 @@ EOF;
     global $RQ_ARGS, $ROOM, $USERS;
 
     //表示情報を抽出
-    $symbol = '<font style="color:'.$user->color.'">◆</font>';
-    $name   = $user->handle_name;
+    $color  = isset($talk->color) ? $talk->color : $user->color;
+    $symbol = '<font style="color:' . $color . '">◆</font>';
+    $name   = isset($talk->handle_name) ? $talk->handle_name : $user->handle_name;
     if($RQ_ARGS->add_role){ //役職表示モード対応
       $real = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
       $name .= $real->GenerateShortRoleName();

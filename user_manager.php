@@ -13,15 +13,35 @@ function EntryUser(){
   global $SERVER_CONF, $DB_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
-  if($GAME_CONF->trip && $trip != '') $uname .= ConvertTrip('#' . $trip); //トリップ変換
   $back_url = '<br><a href="user_manager.php?room_no=' . $room_no . '">戻る</a>'; //バックリンク
+  if($user_no > 0){ //登録情報変更モード
+    $back_url = '<br><a href="user_manager.php?room_no=' . $room_no . '&user_no=' . $user_no .
+      '">戻る</a>'; //バックリンクを上書き
+    if(! $DB_CONF->Transaction()){ //トランザクション開始
+      $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
+      OutputActionResult('村人登録 [サーバエラー]', $str);
+    }
+    $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
+    $stack = FetchAssoc($query, true);
+    if($stack['session_id'] != $SESSION->Get()){
+      OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
+    }
+    foreach($stack as $key => $value){
+      if(array_key_exists($key, $RQ_ARGS)) $RQ_ARGS->$key = $value;
+    }
+    //PrintData($stack);
+    //PrintData($RQ_ARGS);
+  }
+  if($GAME_CONF->trip && $trip != '') $uname .= ConvertTrip('#' . $trip); //トリップ変換
 
   //記入漏れチェック
   $title = '村人登録 [入力エラー]';
   $str   = 'が空です (空白と改行コードは自動で削除されます)' . $back_url;
-  if($uname       == '') OutputActionResult($title, 'ユーザ名'     . $str);
+  if($user_no < 1){
+    if($uname       == '') OutputActionResult($title, 'ユーザ名'     . $str);
+    if($password    == '') OutputActionResult($title, 'パスワード'   . $str);
+  }
   if($handle_name == '') OutputActionResult($title, '村人の名前'   . $str);
-  if($password    == '') OutputActionResult($title, 'パスワード'   . $str);
   if($profile     == '') OutputActionResult($title, 'プロフィール' . $str);
   if(empty($sex))        OutputActionResult($title, '性別が入力されていません' . $back_url);
   if(empty($icon_no))    OutputActionResult($title, 'アイコン番号が入力されていません' . $back_url);
@@ -70,7 +90,7 @@ function EntryUser(){
   //PrintData($USERS); //テスト用
 
   $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
-  if($user_count >= $ROOM->max_user){ //定員オーバー判定
+  if($user_no < 1 && $user_count >= $ROOM->max_user){ //定員オーバー判定
     OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
   }
 
@@ -86,7 +106,42 @@ function EntryUser(){
 
   //ユーザ名・村人名
   $query .= "live = 'live' AND ";
-  if(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
+  if($user_no > 0){
+    if(FetchResult($query . "user_no <> '{$user_no}' AND handle_name = '{$handle_name}'") > 0){
+      $str = '村人名が既に登録してあります。';
+      OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
+    }
+
+    $query = 'SELECT u.uname, u.handle_name, u.sex, u.profile, u.role, u.icon_no, i.color ' .
+      'FROM user_entry AS u INNER JOIN user_icon AS i ON u.icon_no = i.icon_no ' .
+      "WHERE u.room_no = {$room_no} AND u.user_no = {$user_no}";
+    $target = FetchObject($query, 'User', true);
+    $str = "{$target->handle_name} さんが登録情報を変更しました\n";
+    if($target->handle_name != $handle_name){
+      $str .= "村人の名前：{$target->handle_name} → {$handle_name}\n";
+    }
+    if($target->icon_no != $icon_no){
+      $str .= "アイコン：No. {$target->icon_no} → {$icon_no}\n";
+    }
+    $stack = array();
+    if($target->sex     != $sex)     $stack[] = '性別';
+    if($target->profile != $profile) $stack[] = 'プロフィール';
+    if($target->role    != $role)    $stack[] .= '役割希望';
+    $str .= implode(', ', $stack);
+    $ROOM->TalkBeforegame($str, $target->uname, $target->handle_name, $target->color);
+
+    $query = "UPDATE user_entry SET handle_name = '{$handle_name}', sex = '{$sex}', ".
+      "profile = '{$profile}', role = '{$role}', icon_no = '{$icon_no}' " .
+      "WHERE room_no = {$room_no} AND user_no = {$user_no}";
+    if(FetchBool($query, true)){
+      OutputActionResult('村人登録 [登録情報変更]', '登録データを変更しました');
+    }
+    else{
+      $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
+      OutputActionResult('村人登録 [サーバエラー]', $str);
+    }
+  }
+  elseif(FetchResult($query . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     $str = 'ユーザ名、または村人名が既に登録してあります。';
     OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
   }
@@ -133,9 +188,26 @@ function EntryUser(){
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $RQ_ARGS;
+  global $SERVER_CONF, $DB_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
+  if($user_no > 0){ //登録情報変更モード
+    if(! $DB_CONF->Transaction()){ //トランザクション開始
+      $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
+      OutputActionResult('村人登録 [サーバエラー]', $str);
+    }
+    $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
+    $stack = FetchAssoc($query, true);
+    if($stack['session_id'] != $SESSION->Get()){
+      OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
+    }
+    foreach($stack as $key => $value){
+      if(array_key_exists($key, $RQ_ARGS)) $RQ_ARGS->$key = $value;
+    }
+    //PrintData($stack);
+    //PrintData($RQ_ARGS);
+  }
+
   $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
   $str = $room_no . ' 番地の村は';
   if(is_null($ROOM->id))  OutputActionResult('村人登録 [村番号エラー]', $str . '存在しません');
@@ -156,7 +228,17 @@ function OutputEntryUserPage(){
     $female_checked = ' checked';
     break;
   }
-  if($GAME_CONF->trip){
+  if($user_no > 0){
+    $uname_form = <<<EOF
+<tr>
+<td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
+<td>{$RQ_ARGS->uname}</td>
+<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです</td>
+</tr>
+
+EOF;
+  }
+  elseif($GAME_CONF->trip){
     $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
@@ -180,13 +262,27 @@ EOF;
 
 EOF;
   }
+
+
+  if($user_no < 1){
+    $password_form = <<<EOF
+<tr>
+<td class="img"><label for="password"><img src="{$path}/password.gif" alt="パスワード"></label></td>
+<td><input type="password" id="password" name="password" size="30" maxlength="30" value=""></td>
+<td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
+</tr>
+
+EOF;
+  }
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
+  $action_url = 'user_manager.php?room_no=' . $ROOM->id;
+  if($user_no > 0) $action_url .= '&user_no=' . $user_no;
   echo <<<EOF
 <script type="text/javascript" src="javascript/submit_icon_search.js"></script>
 </head>
 <body>
 <a href="./">←戻る</a><br>
-<form method="POST" action="user_manager.php?room_no={$ROOM->id}">
+<form method="POST" action="{$action_url}">
 <div align="center">
 <table class="main">
 <tr><td><img src="{$path}/title.gif" alt="申請書"></td></tr>
@@ -200,11 +296,7 @@ EOF;
 <td><input type="text" id="handle_name" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
 <td class="explain">村で表示される名前です</td>
 </tr>
-<tr>
-<td class="img"><label for="password"><img src="{$path}/password.gif" alt="パスワード"></label></td>
-<td><input type="password" id="password" name="password" size="30" maxlength="30" value=""></td>
-<td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
-</tr>
+{$password_form}
 <tr>
 <td class="img"><img src="{$path}/sex.gif" alt="性別"></td>
 <td class="img">
@@ -284,6 +376,14 @@ EOF;
     echo '<td><input type="hidden" name="role" value="none">';
   }
 
+  if(isset($RQ_ARGS->icon_no) && $RQ_ARGS->icon_no > 0){
+    $icon_checked  = ' checked';
+    $input_icon_no = $RQ_ARGS->icon_no;
+  }
+  else{
+    $icon_checked  = '';
+    $input_icon_no = '';
+  }
   echo <<<EOF
 </td>
 </tr>
@@ -301,8 +401,8 @@ EOF;
 <fieldset><legend><img src="{$path}/icon.gif" alt="アイコン"></legend>
 <table class="icon">
 <tr><td colspan="5">
-<input id="fix_number" type="radio" name="icon_no"><label for="fix_number">手入力</label>
-<input type="text" name="icon_no" size="10px">(半角英数で入力してください)
+<input id="fix_number" type="radio" name="icon_no"{$icon_checked}><label for="fix_number">手入力</label>
+<input type="text" name="icon_no" size="10px" value="{$input_icon_no}">(半角英数で入力してください)
 </td></tr>
 <tr><td colspan="5">
 
