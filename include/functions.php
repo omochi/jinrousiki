@@ -62,7 +62,7 @@ function SendQuery($query, $commit = false){
   global $DB_CONF;
 
   if(($sql = mysql_query($query)) !== false) return $commit ? $DB_CONF->Commit() : $sql;
-	$error = sprintf('MYSQL_ERROR(%d):%s', mysql_errno(), mysql_error());
+  $error = sprintf('MYSQL_ERROR(%d):%s', mysql_errno(), mysql_error());
   $backtrace = debug_backtrace(); //バックトレースを取得
 
   //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
@@ -78,6 +78,9 @@ function SendQuery($query, $commit = false){
   }
   return false;
 }
+
+//SQL 実行結果を bool で受け取るラッパー関数
+function FetchBool($query, $commit = false){ return SendQuery($query, $commit) !== false; }
 
 //DB から単体の値を取得する処理のラッパー関数
 function FetchResult($query){
@@ -125,7 +128,7 @@ function FetchObject($query, $class, $shift = false){
 
 //データベース登録のラッパー関数
 function InsertDatabase($table, $items, $values){
-  return SendQuery("INSERT INTO {$table}({$items}) VALUES({$values})");
+  return FetchBool("INSERT INTO {$table}({$items}) VALUES({$values})");
 }
 
 //ユーザ登録処理
@@ -175,11 +178,11 @@ function LockTable($type = null){
 
   $query_stack = array();
   foreach($stack as $table) $query_stack[] = $table . ' WRITE';
-  return ! SendQuery('LOCK TABLES ' . implode(', ', $query_stack));
+  return ! FetchBool('LOCK TABLES ' . implode(', ', $query_stack));
 }
 
 //テーブルロック解除
-function UnlockTable(){ return SendQuery('UNLOCK TABLES'); }
+function UnlockTable(){ return FetchBool('UNLOCK TABLES'); }
 
 //部屋削除
 function DeleteRoom($room_no){
@@ -196,7 +199,7 @@ function OptimizeTable($name = null){
   $tables = 'room, user_entry, talk, talk_beforegame, talk_aftergame, system_message' .
     'result_lastwords, vote';
   $query = is_null($name) ? $tables : $name;
-  SendQuery('OPTIMIZE TABLE ' . $query, true);
+  return FetchBool('OPTIMIZE TABLE ' . $query, true);
 }
 
 //-- 日時関連 --//

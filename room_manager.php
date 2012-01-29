@@ -28,7 +28,7 @@ function MaintenanceRoom(){
     "WHERE status <> 'finished' AND last_update_time < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
   /*
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
-  if(SendQuery($query)) OutputSiteSummary();
+  if(FetchBool($query)) OutputSiteSummary();
   */
   SendQuery($query);
 
@@ -184,9 +184,6 @@ function CreateRoom(){
     $GAME_OPT->LoadPostParams('wait_morning');
   }
 
-  //PrintData($game_option_list, 'GameOption');
-  //PrintData($option_role_list, 'OptionRole');
-  //OutputHTMLFooter(true);
 
   //登録
   //ALTER TABLE room_no AUTO_INCREMENT = value; //カウンタセット SQL
@@ -194,6 +191,9 @@ function CreateRoom(){
   $game_option = $GAME_OPT->GetOptionString(RoomOption::GAME_OPTION);
   $option_role = $GAME_OPT->GetOptionString(RoomOption::ROLE_OPTION);
   $status      = false;
+  //PrintData($game_option, 'GameOption');
+  //PrintData($option_role, 'OptionRole');
+  //OutputHTMLFooter(true);
   do{
     if(! $SERVER_CONF->dry_run_mode){
       //村作成

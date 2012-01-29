@@ -1,4 +1,53 @@
 <?php
+
+//村で使用中のアイコンチェック
+function IsUsingIcon($id){
+  $query = 'SELECT user_icon.icon_no FROM (user_icon INNER JOIN user_entry ON ' .
+    "user_icon.icon_no = {$id} AND user_icon.icon_no = user_entry.icon_no) INNER JOIN room ON " .
+    "room.status IN ('waiting', 'playing') AND user_entry.room_no = room.room_no";
+  return FetchCount($query) > 0;
+}
+
+//文字列長チェック
+function CheckIconText($title, $url){
+  global $RQ_ARGS, $USER_ICON;
+
+  $stack = array();
+  $list  = array('icon_name'  => 'アイコン名',
+		 'appearance' => '出典',
+		 'category'   => 'カテゴリ',
+		 'author'     => 'アイコンの作者');
+  foreach($list as $key => $label){
+    $value = $RQ_ARGS->$key;
+    if(strlen($value) > $USER_ICON->name){
+      OutputActionResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
+    }
+    $stack[$key] = strlen($value) > 0 ? $value : null;
+  }
+  return $stack;
+}
+
+//RGB カラーチェック
+function CheckColorString($str, $title, $url){
+  if(strlen($str) != 7 || substr($str, 0, 1) != '#' || ! ctype_xdigit(substr($str, 1, 7))){
+    $error = '色指定が正しくありません。<br>'."\n" .
+      '指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
+      '送信された色指定 → <span class="color">' . $str . '</span>';
+    OutputActionResult($title, $error . $url);
+  }
+  return strtoupper($str);
+}
+
+//アイコン削除
+function DeleteIcon($id, $file){
+  global $ICON_CONF;
+
+  if(! FetchBool('DELETE FROM user_icon WHERE icon_no = ' . $id)) return false; //削除処理
+  unlink($ICON_CONF->path . '/' . $file); //ファイル削除
+  OptimizeTable('user_icon'); //テーブル最適化 + コミット
+  return true;
+}
+
 function OutputIconList($base_url = 'icon_view'){
   global $RQ_ARGS;
 

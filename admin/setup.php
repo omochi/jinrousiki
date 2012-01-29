@@ -239,7 +239,7 @@ EOF;
 }
 
 function CreateTable($table, $query){
-  if(SendQuery("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")){
+  if(FetchBool("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")){
     echo 'テーブル (' . $table . ') を作成しました<br>'."\n";
   }
 }

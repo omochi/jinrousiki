@@ -30,23 +30,29 @@ class DatabaseConfigBase{
     return true;
   }
 
+  //カウンタロック処理
+  function LockCount($type){
+    $query = "SELECT count FROM count_limit WHERE type = '{$type}' FOR UPDATE";
+    return $this->Transaction() && FetchBool($query);
+  }
+
   //ロールバック処理
-  function RollBack(){
+  function Rollback(){
     $this->transaction = false; //必要なら事前にフラグ判定を行う
-    return mysql_query('ROLLBACK');
+    return mysql_query('ROLLBACK') !== false;
   }
 
   //コミット処理
   function Commit(){
     $this->transaction = false;
-    return mysql_query('COMMIT');
+    return mysql_query('COMMIT') !== false;
   }
 
   //データベースとの接続を閉じる
   function Disconnect($unlock = false){
     if(empty($this->db_handle)) return;
 
-    if($this->transaction) $this->RollBack();
+    if($this->transaction) $this->Rollback();
     if($unlock) UnlockTable();
     mysql_close($this->db_handle);
     unset($this->db_handle);
