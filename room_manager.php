@@ -25,7 +25,8 @@ function MaintenanceRoom(){
 
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', scene = 'aftergame' " .
-    "WHERE status <> 'finished' AND last_update_time < UNIX_TIMESTAMP() - " . $ROOM_CONF->die_room;
+    "WHERE STATUS IN ('waiting', 'playing') AND last_update_time < UNIX_TIMESTAMP() - " .
+    $ROOM_CONF->die_room;
   /*
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
   if(FetchBool($query)) OutputSiteSummary();
@@ -34,11 +35,11 @@ function MaintenanceRoom(){
 
   //終了した部屋のセッションIDのデータをクリアする
   $query = <<<EOF
-UPDATE room, user_entry SET user_entry.session_id = NULL
-WHERE room.room_no = user_entry.room_no
-AND room.status = 'finished' AND !(user_entry.session_id IS NULL)
-AND (room.finish_datetime IS NULL OR
-     room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
+UPDATE user_entry INNER JOIN room ON user_entry.session_id IS NOT NULL
+  AND user_entry.room_no = room.room_no AND room.status = 'finished'
+  AND (room.finish_datetime IS NULL OR
+       room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
+  SET user_entry.session_id = NULL
 EOF;
   SendQuery($query, true);
 }
@@ -73,12 +74,10 @@ function CreateRoom(){
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
-  if(! $DB_CONF->Transaction()){ //トランザクション開始
+  if(! $DB_CONF->LockCount('room')){ //トランザクション開始
     OutputRoomAction('busy');
     return false;
   }
-  //稼動数カウントをロック
-  $room_limit = FetchResult("SELECT count FROM count_limit WHERE type = 'room' FOR UPDATE");
 
   $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
   if(! $SERVER_CONF->debug_mode){ //デバッグモード時は村作成制限をスキップ
@@ -98,21 +97,22 @@ function CreateRoom(){
     }
 
     //最大稼働数チェック
-    if(FetchResult("SELECT COUNT(room_no) {$query}") >= $ROOM_CONF->max_active_room){
+    if(FetchCount("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room){
       OutputRoomAction('full');
       return false;
     }
 
     //同一ユーザの連続作成チェック (終了していなければエラー処理)
-    if(FetchResult("SELECT COUNT(room_no) {$query} AND establisher_ip = '{$ip_address}'") > 0){
+    if(FetchCount("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0){
       OutputRoomAction('over_establish');
       return false;
     }
   }
 
   //-- ゲームオプションをセット --//
-  $GAME_OPT->LoadPostParams('real_time', 'dummy_boy', 'perverseness', 'replace_human', 'replace_human', 'special_role',
-          'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast');
+  $GAME_OPT->LoadPostParams(
+    'real_time', 'dummy_boy', 'perverseness', 'replace_human', 'replace_human', 'special_role',
+    'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast');
   if($GAME_OPT->quiz){ //クイズ村
     $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
     EscapeStrings($gm_password);
@@ -145,31 +145,33 @@ function CreateRoom(){
       $GAME_OPT->LoadPostParams('gerd');
     }
 
-    if($GAME_OPT->chaos || $GAME_OPT->chaosfull || $GAME_OPT->chaos_hyper || $GAME_OPT->chaos_verso){ //闇鍋モード
+    if($GAME_OPT->chaos || $GAME_OPT->chaosfull || $GAME_OPT->chaos_hyper ||
+       $GAME_OPT->chaos_verso){ //闇鍋モード
       $GAME_OPT->LoadPostParams('special_role', 'secret_sub_role', 'topping', 'boost_rate',
-              'chaos_open_cast', 'sub_role_limit');
+				'chaos_open_cast', 'sub_role_limit');
     }
     elseif($GAME_OPT->duel || $GAME_OPT->gray_random){ //特殊配役モード
-			//Note:もともとここには$_POSTの内容をロードするコードが存在した。このブロックは通常村と決闘村を識別するために残されている。(2012-01-18 enogu)
+      /*
+	もともとここには$_POSTの内容をロードするコードが存在した。
+	このブロックは通常村と決闘村を識別するために残されている。(2012-01-18 enogu)
+      */
     }
     else{ //通常村
-      $GAME_OPT->LoadPostParams('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
-                 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'detective', 'medium');
+      $GAME_OPT->LoadPostParams(
+        'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf',
+	'fox', 'child_fox', 'detective', 'medium');
       if(! $GAME_OPT->full_cupid) $GAME_OPT->LoadPostParams('cupid');
       if(! $GAME_OPT->full_mania) $GAME_OPT->LoadPostParams('mania');
       if(! $GAME_OPT->perverseness) $GAME_OPT->LoadPostParams('decide', 'authority');
     }
-    $GAME_OPT->LoadPostParams('deep_sleep', 'blinder', 'mind_open', 'joker',
-               'death_note', 'weather', 'festival', 'liar', 'gentleman', 'critical',
-               $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death', 'replace_human', 'change_common',
-               'change_mad', 'change_cupid');
+    $GAME_OPT->LoadPostParams(
+      'deep_sleep', 'blinder', 'mind_open', 'joker', 'death_note', 'weather', 'festival', 'liar',
+      'gentleman', 'critical', $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death',
+      'replace_human', 'change_common', 'change_mad', 'change_cupid');
   }
-
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');
   //PrintData($game_option_list);
-
-
   //PrintData($check_option_role_list, 'CheckOptionRole');
 
   if($GAME_OPT->real_time){
@@ -183,7 +185,6 @@ function CreateRoom(){
 
     $GAME_OPT->LoadPostParams('wait_morning');
   }
-
 
   //登録
   //ALTER TABLE room_no AUTO_INCREMENT = value; //カウンタセット SQL
@@ -207,7 +208,7 @@ function CreateRoom(){
 
       //身代わり君を入村させる
       if($GAME_OPT->dummy_boy &&
-         FetchResult('SELECT COUNT(uname) FROM user_entry WHERE room_no = ' . $room_no) == 0){
+         FetchCount('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
         if(! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
                         1, $GAME_OPT->gerd ? $USER_ICON->gerd : 0)) break;
       }

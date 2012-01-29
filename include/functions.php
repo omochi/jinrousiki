@@ -191,7 +191,10 @@ function DeleteRoom($room_no){
   $stack  = array('room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame',
 		  'system_message', 'result_ability', 'result_dead', 'result_lastwords',
 		  'result_vote_kill', 'vote');
-  foreach($stack as $name) SendQuery($header . $name . $footer);
+  foreach($stack as $name){
+    if(! FetchBool($header . $name . $footer)) return false;
+  }
+  return true;
 }
 
 //DB 最適化
