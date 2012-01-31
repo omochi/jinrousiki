@@ -7,50 +7,6 @@
     - 追加：$entry, $full, $novote, $alert
 */
 
-//-- 村メンテナンス・作成設定 --//
-class RoomConfig{
-  //-- 村メンテナンス設定 --//
-  //村内の最後の発言から廃村になるまでの時間 (秒) (あまり短くすると沈黙等と競合する可能性あり)
-  public $die_room = 1200;
-
-  //最大並列プレイ可能村数
-  public $max_active_room = 4;
-
-  //次の村を立てられるまでの待ち時間 (秒)
-  public $establish_wait = 120;
-
-  //終了した村のユーザのセッション ID データをクリアするまでの時間 (秒)
-  //(この時間内であれば、過去ログページに再入村のリンクが出現します)
-  public $clear_session_id = 86400; //24時間
-
-  //村立て・入村制限
-  /* IP アドレスは strpos() による先頭一致、ホスト名は正規表現 */
-  public $white_list_ip = array(); //IP アドレス (ホワイトリスト)
-  public $black_list_ip = array(); //IP アドレス (ブラックリスト)
-  public $white_list_host = null; //ホスト名 (ホワイトリスト)
-  public $black_list_host = null; //ホスト名 (ブラックリスト)
-  //public $black_list_host = '/localhost.localdomain/'; //入力例
-
-  //-- 村作成設定 --//
-  public $room_name          = 90; //村名の最大文字数 (byte)
-  public $room_name_input    = 50; //村名の入力欄サイズ (文字数)
-  public $room_comment       = 90; //村の説明の最大文字数 (byte)
-  public $room_comment_input = 50; //村の説明の入力欄サイズ (文字数)
-  public $gm_password        = 50; //GM ログインパスワードの最大文字数 (byte)
-  public $gm_password_input  = 20; //GM ログインパスワードの入力欄サイズ
-  public $ng_word = '/http:\/\//i'; //入力禁止文字列 (正規表現)
-
-  //最大人数のリスト
-  public $max_user_list = array(8, 11, 16, 22, 32, 50);
-  public $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
-
-  //-- オプション出現設定 --//
-  /* 例：役割希望制 (wish_role)
-    オプション名 ($wish_role)    ：オプションを有効に   [true:する   / false:しない]
-    初期設定 ($default_wish_role)：初期状態でチェックを [true:つける / false:つけない]
-  */
-}
-
 //-- ゲーム設定 --//
 class GameConfig extends GameConfigBase{
   //-- 住人登録 --//
@@ -64,10 +20,8 @@ class GameConfig extends GameConfigBase{
   //文字数制限
   public $entry_uname_limit = 50; //ユーザ名と村人の名前
   public $entry_profile_limit = 300; //プロフィール
-  #public $say_limit = 2048; //村の発言
-  public $say_limit = 20000; //村の発言
-  #public $say_line_limit = 20; //村の発言 (行数)
-  public $say_line_limit = 50; //村の発言 (行数)
+  public $say_limit = 2048; //村の発言
+  public $say_line_limit = 20; //村の発言 (行数)
 
   //-- 表示設定 --//
   public $quote_words = false; //発言を「」で括る
@@ -124,43 +78,6 @@ class GameConfig extends GameConfigBase{
     50 => 20,  51 => 20,  52 => 15,  53 => 15,  54 => 10);
 }
 
-//ゲームの時間設定
-class TimeConfig{
-  //投票待ち超過時間 (秒) (この時間を過ぎても未投票の人がいたら突然死処理されます)
-  public $sudden_death = 120;
-  #public $sudden_death = 180;
-
-  //サーバダウン判定時間 (秒)
-  //超過のマイナス時間がこの閾値を越えた場合はサーバが一時的にダウンしていたと判定して、
-  //超過時間をリセットします
-  public $server_disconnect = 90;
-
-  //警告音開始 (秒) (超過の残り時間がこの時間を切っても未投票の人がいたら警告音が鳴ります)
-  public $alert = 90;
-
-  //警告音感覚 (秒) (警告音の鳴る間隔)
-  public $alert_distance = 6;
-
-  //-- リアルタイム制 --//
-  public $default_day   = 5; //昼の制限時間の初期値 (分)
-  public $default_night = 3; //夜の制限時間の初期値 (分)
-
-  //-- 会話を用いた仮想時間制 --//
-  //昼の制限時間 (昼は12時間、spend_time=1(半角100文字以内) で 12時間 ÷ $day 進みます)
-  public $day = 96;
-
-  //夜の制限時間 (夜は 6時間、spend_time=1(半角100文字以内) で  6時間 ÷ $night 進みます)
-  public $night = 24;
-
-  //非リアルタイム制でこの閾値を過ぎると沈黙となり、設定した時間が進みます(秒)
-  public $silence = 60;
-
-  //沈黙経過時間 (12時間 ÷ $day(昼) or 6時間 ÷ $night (夜) の $silence_pass 倍の時間が進みます)
-  public $silence_pass = 8;
-
-  public $wait_morning = 15; //早朝待機制の待機時間 (秒)
-}
-
 //-- 村のオプション画像 --//
 class RoomImage extends ImageManager{
   /*
@@ -184,34 +101,6 @@ class WinnerImage extends WinnerImageBase{
   public $path      = 'winner';
   public $extension = 'gif';
   public $class     = 'winner';
-}
-
-//ゲームプレイ時のアイコン表示設定
-class IconConfig extends IconConfigBase{
-  public $path   = 'user_icon'; //ユーザアイコンのパス
-  public $dead   = 'grave.jpg'; //死者
-  public $wolf   = 'wolf.gif';  //狼
-  public $width  = 45; //表示サイズ(幅)
-  public $height = 45; //表示サイズ(高さ)
-  public $view   = 100; //一画面に表示するアイコンの数
-  public $page   = 10; //一画面に表示するページ数の数
-
-  function __construct(){ parent::__construct(); }
-}
-
-//-- 音源設定 --//
-class Sound extends SoundBase{
-  public $path      = 'swf'; //音源のパス
-  public $extension = 'swf'; //拡張子
-
-  public $entry            = 'sound_entry';            //入村
-  public $full             = 'sound_full';             //定員
-  public $morning          = 'sound_morning';          //夜明け
-  public $revote           = 'sound_revote';           //再投票
-  public $novote           = 'sound_novote';           //未投票告知
-  public $alert            = 'sound_alert';            //未投票警告
-  public $objection_male   = 'sound_objection_male';   //異議あり(男)
-  public $objection_female = 'sound_objection_female'; //異議あり(女)
 }
 
 //過去ログ表示設定

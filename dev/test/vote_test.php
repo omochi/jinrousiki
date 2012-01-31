@@ -27,7 +27,6 @@ $RQ_ARGS->TestItems->test_room['game_option'] .= ' open_vote death_note';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' seal_message';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' quiz';
 $RQ_ARGS->TestItems->is_virtual_room = true;
-$RQ_ARGS->revote_count = 0;
 $RQ_ARGS->TestItems->test_users = array();
 for($id = 1; $id <= 25; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
 
@@ -372,10 +371,11 @@ $DB_CONF->Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
+$ROOM->revote_count = 0;
 $ROOM->date = 7;
 #$ROOM->scene = 'beforegame';
-#$ROOM->scene = 'day';
-$ROOM->scene = 'night';
+$ROOM->scene = 'day';
+#$ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
@@ -547,7 +547,7 @@ if($ROOM->IsDay()){ //昼の投票テスト
   $stack = array();
   foreach($vote_message_list as $uname => $vote_data){
     $vote_data['handle_name'] = $USERS->GetHandleName($uname);
-    $vote_data['count'] = $RQ_ARGS->revote_count + 1;
+    $vote_data['count'] = $ROOM->revote_count + 1;
     $stack[] = $vote_data;
   }
   echo GenerateVoteList($stack, $ROOM->date);

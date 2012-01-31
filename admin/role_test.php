@@ -2,7 +2,8 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'CAST_CONF', 'GAME_OPT_MESS', 'ROLE_DATA');
+$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'GAME_OPT_CONF', 'CAST_CONF', 'GAME_OPT_MESS',
+		      'ROLE_DATA');
 $INIT_CONF->LoadFile('game_vote_functions', 'request_class');
 OutputHTMLHeader('配役テストツール', 'role_table');
 OutputRoleTestForm();
@@ -45,12 +46,13 @@ if(array_key_exists('command', $_POST) && $_POST['command'] == 'role_test'){
   }
 
   foreach(array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option){
+    break;
     if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
       $stack->option_role[] = $_POST[$option];
     }
   }
   foreach(array('topping', 'boost_rate') as $option){
-    if(array_search($_POST[$option], $ROOM_CONF->{$option.'_list'}) !== false){
+    if(array_search($_POST[$option], $GAME_OPT_CONF->{$option.'_items'}) !== false){
       $stack->option_role[] = $option . ':' . $_POST[$option];
     }
   }
@@ -74,7 +76,7 @@ if(array_key_exists('command', $_POST) && $_POST['command'] == 'role_test'){
 OutputHTMLFooter(true);
 
 function OutputRoleTestForm(){
-  global $ROOM_CONF, $GAME_OPT_MESS;
+  global $ROOM_CONF, $GAME_OPT_CONF, $GAME_OPT_MESS;
 
   echo <<<EOF
 </head>
@@ -104,11 +106,11 @@ EOF;
 EOF;
 
     $count = 0;
-    foreach($ROOM_CONF->{$option.'_list'} as $mode){
+    foreach($GAME_OPT_CONF->{$option.'_items'} as $key => $mode){
       $count++;
       if($count > 0 && $count % 9 == 0) echo "<br>\n";
       echo <<<EOF
-<input type="radio" name="{$option}" value="{$mode}">{$GAME_OPT_MESS->{$option.'_'.$mode}}
+<input type="radio" name="{$option}" value="{$mode}">{$mode}
 
 EOF;
     }
@@ -116,6 +118,7 @@ EOF;
   }
 
   foreach(array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option){
+    break;
     echo <<<EOF
 <input type="radio" name="{$option}" value="" checked>標準
 

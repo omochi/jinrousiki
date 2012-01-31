@@ -26,35 +26,38 @@ class InitializeConfig{
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'DB_CONF'             => 'server_config', //常時ロードされる
+    'DB_CONF'             => 'database_config', //常時ロードされる
     'SERVER_CONF'         => 'server_config', //常時ロードされる
-    'ROOM_CONF'           => 'game_config',
+    'ROOM_CONF'           => 'room_config',
     'GAME_CONF'           => 'game_config',
     'GAME_OPT_CONF'       => 'game_option_config',
-    'TIME_CONF'           => 'game_config',
-    'ICON_CONF'           => 'game_config',
+    'TIME_CONF'           => 'time_config',
+    'ICON_CONF'           => 'icon_config',
     'ROOM_IMG'            => 'game_config',
     'ROLE_IMG'            => 'game_config',
-    'SOUND'               => 'game_config',
+    'SOUND'               => 'sound_config',
     'CAST_CONF'           => 'cast_config',
     'GAME_OPT'            => array('option/room_option_class', 'option/room_option_item_class'),
     'MESSAGE'             => 'message',
     'GAME_OPT_MESS'       => 'message',
     'WINNER_MESS'         => 'message',
     'VOTE_MESS'           => 'message',
+    'TWITTER'             => 'twitter_config',
     'SCRIPT_INFO'         => 'version',
     'RQ_ARGS'             => 'request_class',
     'ROLES'               => 'role_class',
     'TIME_CALC'           => 'info_functions',
-    'SHARED_CONF'         => 'info_functions',
-    'COPYRIGHT'           => 'info_functions',
-    'MENU_LINK'           => 'index_functions',
-    'TWITTER'             => 'twitter',
+    'SHARED_CONF'         => array('shared_config', 'info_functions'),
+    'COPYRIGHT'           => array('copyright_config', 'info_functions'),
+    'MENU_LINK'           => array('menu_config', 'index_functions'),
+    'BBS_CONF'            => 'bbs_config',
+    'TWITTER'             => 'twitter_config',
     'PAPARAZZI'           => 'paparazzi_class',
     'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
     'user_class'          => 'game_functions',
+    'database_config'     => 'system_class',
     'server_config'       => 'system_class', //常時ロードされる
     'system_class'        => array('functions', 'room_class'), //常時ロードされる
     'room_class'          => 'option_class',
@@ -155,10 +158,20 @@ class InitializeConfig{
     $this->LoadDependence($name);
 
     switch($name){
+    case 'database_config':
     case 'server_config':
+    case 'room_config':
     case 'game_config':
     case 'game_option_config':
+    case 'time_config':
+    case 'sound_config':
     case 'cast_config':
+    case 'icon_config':
+    case 'menu_config':
+    case 'bbs_config':
+    case 'shared_config':
+    case 'copyright_config':
+    case 'twitter_config':
     case 'message':
     case 'version':
       $path = $this->path->config;
