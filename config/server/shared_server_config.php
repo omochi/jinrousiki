@@ -11,5 +11,12 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		     'separator' => '<!-- atpages banner tag -->',
 		     'footer' => '</a><br>',
 		     'disable' => false),
+
+    'youmu' => array('name' => '妖夢鯖',
+		     'url' => 'http://www23.atpages.jp/youmu/',
+		     'encode' => 'UTF-8',
+		     'separator' => '<!-- atpages banner tag -->',
+		     'footer' => '</a><br>',
+		     'disable' => false),
 			   );
 }

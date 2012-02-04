@@ -325,8 +325,33 @@ class WinnerImageBase extends ImageManager{
   }
 }
 
+//-- 村のオプション画像 --//
+class RoomImage extends ImageManager{
+  /*
+    max[NN].gif という画像が該当パス内にあった場合は村の最大参加人数の表示に使用される。
+    例) max8.gif (8人村用)
+  */
+  public $path      = 'room_option';
+  public $extension = 'gif';
+  public $class     = 'option';
+}
+
+//-- 役職の画像 --//
+class RoleImage extends ImageManager{
+  public $path      = 'role';
+  public $extension = 'gif';
+  public $class     = '';
+}
+
+//-- 勝利陣営の画像 --//
+class WinnerImage extends WinnerImageBase{
+  public $path      = 'winner';
+  public $extension = 'gif';
+  public $class     = 'winner';
+}
+
 //-- 音源処理の基底クラス --//
-class SoundBase{
+class SoundConfigBase{
   //ファイルパス生成
   function GetPath($type, $file = null){
     $path = JINRO_ROOT . '/' . $this->path;

@@ -9,9 +9,11 @@ class MenuLinkConfig{
 		       'レアケ脳向け人狼wiki' =>
 		       'http://www44.atwiki.jp/rarecasejinro/'
 		       );
+
   public $add_list = array(
     '式神研系' => array('チルノ鯖' => 'http://www12.atpages.jp/cirno/',
 			'妖夢鯖' => 'http://www23.atpages.jp/youmu/',
+			//'Eva 鯖' => 'http://jinrou.kuroienogu.net/',
 			'人狼式縁起鯖' => 'http://www36.atpages.jp/jinrousikiengi/',
 			'SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 			'開発・バグ報告スレ' => 'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',

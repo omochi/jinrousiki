@@ -612,8 +612,8 @@ function AggregateVoteGameStart($force_start = false){
   foreach($USERS->rows as $user) $user->UpdatePlayer(); //player 登録
   if(! $ROOM->test_mode){
     $query = "UPDATE room SET status = 'playing', date = {$ROOM->date}, " .
-      "scene = '{$ROOM->scene}', vote_count = 1, scene_start_time = UNIX_TIMESTAMP(), " .
-      "start_datetime = NOW() WHERE room_no = {$ROOM->id}";
+      "scene = '{$ROOM->scene}', vote_count = 1, overtime_alert = FALSE, " .
+      "scene_start_time = UNIX_TIMESTAMP(), start_datetime = NOW() WHERE room_no = {$ROOM->id}";
     SendQuery($query);
     //OutputSiteSummary(); //RSS機能はテスト中
   }
@@ -976,14 +976,14 @@ function AggregateVoteDay(){
       ' WHERE room_no = ' . $ROOM->id;
     SendQuery($query);
 
-    //システムメッセージ
-    $ROOM->Talk("再投票になりました( {$ROOM->revote_count} 回目)");
+    $ROOM->Talk("再投票になりました( {$ROOM->revote_count} 回目)"); //システムメッセージ
+    $ROOM->UpdateOvertimeAlert(); //超過警告判定リセット
     if(CheckWinner(true) && $ROOM->IsOption('joker')){ //勝敗判定＆ジョーカー処理
       $USERS->ByID($ROLES->stack->joker_id)->AddJoker();
     }
   }
   foreach($USERS->rows as $user) $user->UpdatePlayer(); //player 更新
-  $ROOM->UpdateTime(true); //最終書き込み時刻を更新
+  $ROOM->UpdateTime(); //最終書き込み時刻を更新
 }
 
 //夜の投票の基礎チェック

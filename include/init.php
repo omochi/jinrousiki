@@ -33,10 +33,11 @@ class InitializeConfig{
     'GAME_OPT_CONF'       => 'game_option_config',
     'TIME_CONF'           => 'time_config',
     'ICON_CONF'           => 'icon_config',
-    'ROOM_IMG'            => 'game_config',
-    'ROLE_IMG'            => 'game_config',
+    'ROOM_IMG'            => 'system_class',
+    'ROLE_IMG'            => 'system_class',
     'SOUND'               => 'sound_config',
     'CAST_CONF'           => 'cast_config',
+    'USER_ICON'           => 'user_icon_config',
     'GAME_OPT'            => array('option/room_option_class', 'option/room_option_item_class'),
     'MESSAGE'             => 'message',
     'GAME_OPT_MESS'       => 'message',
@@ -47,15 +48,17 @@ class InitializeConfig{
     'RQ_ARGS'             => 'request_class',
     'ROLES'               => 'role_class',
     'TIME_CALC'           => 'info_functions',
-    'SHARED_CONF'         => array('shared_config', 'info_functions'),
+    'SHARED_CONF'         => array('shared_server_config', 'info_functions'),
     'COPYRIGHT'           => array('copyright_config', 'info_functions'),
     'MENU_LINK'           => array('menu_config', 'index_functions'),
+    'SHARED_CONF'         => array('shared_server_config', 'info_functions'),
     'BBS_CONF'            => 'bbs_config',
     'TWITTER'             => 'twitter_config',
     'PAPARAZZI'           => 'paparazzi_class',
     'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
+    'oldlog_functions'    => 'oldlog_config',
     'user_class'          => 'game_functions',
     'database_config'     => 'system_class',
     'server_config'       => 'system_class', //常時ロードされる
@@ -84,7 +87,7 @@ class InitializeConfig{
     'DB_CONF'       => 'DatabaseConfig',
     'SERVER_CONF'   => 'ServerConfig',
     'SHARED_CONF'   => 'SharedServerConfig',
-    'USER_ICON'     => 'UserIcon',
+    'USER_ICON'     => 'UserIconConfig',
     'MENU_LINK'     => 'MenuLinkBuilder',
     'BBS_CONF'      => 'BBSConfig',
     'COPYRIGHT'     => 'CopyrightConfig',
@@ -98,7 +101,7 @@ class InitializeConfig{
     'ICON_CONF'     => 'IconConfig',
     'ROOM_IMG'      => 'RoomImage',
     'ROLE_IMG'      => 'RoleImage',
-    'SOUND'         => 'Sound',
+    'SOUND'         => 'SoundConfig',
     'COOKIE'        => 'CookieDataSet',
     'MESSAGE'       => 'Message',
     'GAME_OPT'      => 'RoomOption',
@@ -158,23 +161,31 @@ class InitializeConfig{
     $this->LoadDependence($name);
 
     switch($name){
+    case 'copyright_config':
+    case 'version':
+      $path = $this->path->config . '/system';
+      break;
+
+    case 'game_config':
+    case 'cast_config':
+    case 'message':
+    case 'time_config':
+    case 'icon_config':
+    case 'sound_config':
+      $path = $this->path->config . '/game';
+      break;
+
     case 'database_config':
     case 'server_config':
     case 'room_config':
-    case 'game_config':
     case 'game_option_config':
-    case 'time_config':
-    case 'sound_config':
-    case 'cast_config':
-    case 'icon_config':
+    case 'user_icon_config':
     case 'menu_config':
     case 'bbs_config':
-    case 'shared_config':
-    case 'copyright_config':
     case 'twitter_config':
-    case 'message':
-    case 'version':
-      $path = $this->path->config;
+    case 'shared_server_config':
+    case 'oldlog_config':
+      $path = $this->path->config . '/server';
       break;
 
     case 'mb-emulator':

@@ -75,34 +75,3 @@ class ServerConfig{
   */
   public $last_updated_revision = 365;
 }
-
-//アイコン登録設定
-class UserIcon extends UserIconBase{
-  public $disable_upload = false; //アイコンのアップロードの停止設定 (true:停止する / false:しない)
-  public $name   = 30;    //アイコン名につけられる文字数(半角)
-  public $size   = 15360; //アップロードできるアイコンファイルの最大容量(単位：バイト)
-  public $width  = 45;    //アップロードできるアイコンの最大幅
-  public $height = 45;    //アップロードできるアイコンの最大高さ
-  public $number = 1000;  //登録できるアイコンの最大数
-  public $column = 4;     //一行に表示する個数
-  public $gerd   = 0;     //ゲルト君モード用のアイコン番号
-  public $password = 'xxxx'; //アイコン編集パスワード
-  public $cation = ''; //注意事項 (空なら何も表示しない)
-}
-
-//-- 開発用ソースアップロード設定 --//
-class SourceUploadConfig{
-  public $disable = true; //無効設定 <アップロードを [true:無効 / false:有効] にする>
-
-  //ソースアップロードフォームのパスワード
-  public $password = 'upload';
-
-  //フォームの最大文字数と表示名
-  public $form_list = array('name'     => array('size' => 20, 'label' => 'ファイル名'),
-			    'caption'  => array('size' => 80, 'label' => 'ファイルの説明'),
-			    'user'     => array('size' => 20, 'label' => '作成者名'),
-			    'password' => array('size' => 20, 'label' => 'パスワード'));
-
-  //最大ファイルサイズ (バイト)
-  public $max_size = 10485760; //10 Mbyte
-}

@@ -470,10 +470,12 @@ class Room{
 
   //超過警告メッセージ登録
   function OvertimeAlert($str){
-    $query = $this->GetQuery(true, 'talk') . " AND scene = '{$this->scene}' " .
-      "AND location = 'system' AND uname = 'system' AND sentence = '{$str}'";
-    return FetchResult($query) == 0 ? $this->Talk($str) : false;
+    $query = $this->GetQueryHeader('room', 'overtime_alert') . ' AND overtime_alert IS FALSE';
+    if(FetchCount($query) < 1) return false;
+    $this->Talk($str);
+    return $this->UpdateOvertimeAlert(true);
   }
+
 
   //システムメッセージ登録
   function SystemMessage($str, $type, $add_date = 0){
@@ -557,26 +559,33 @@ class Room{
   function UpdateVoteCount($reset = false){
     if($this->test_mode) return true;
     SendQuery('UPDATE room SET vote_count = vote_count + 1' . $this->GetQuery(false));
+    $this->UpdateOvertimeAlert();
     if(! $reset && $this->date != 1) return true;
     $query = 'UPDATE vote SET vote_count = vote_count + 1' . $this->GetQuery() .
       " AND type IN ('CUPID_DO', 'DUELIST_DO')";
-    SendQuery($query);
-    return true;
+    return FetchBool($query);
+  }
+
+  //超過警告メッセージ判定フラグ変更
+  function UpdateOvertimeAlert($bool = false){
+    if($this->test_mode) return true;
+    $flag = $bool ? 'TRUE' : 'FALSE';
+    return FetchBool('UPDATE room SET overtime_alert = ' . $flag . $this->GetQuery(false));
   }
 
   //最終更新時刻を更新
-  function UpdateTime($commit = false){
+  function UpdateTime(){
     if($this->test_mode) return true;
-    SendQuery('UPDATE room SET last_update_time = UNIX_TIMESTAMP()' . $this->GetQuery(false));
-    //return $commit ? $DB_CONF->Commit() : true; //コミットが必要か再検討する
-    return true;
+    $query = 'UPDATE room SET last_update_time = UNIX_TIMESTAMP()' . $this->GetQuery(false);
+    return FetchBool($query);
   }
 
   //シーンを更新
   function UpdateScene($date = false){
-    $query = "scene = '{$this->scene}', vote_count = 1, scene_start_time = UNIX_TIMESTAMP()";
+    $query = "scene = '{$this->scene}', vote_count = 1, overtime_alert = FALSE, ".
+      "scene_start_time = UNIX_TIMESTAMP()";
     if($date) $query .= ", date = {$this->date}, revote_count = 0";
-    SendQuery('UPDATE room SET ' . $query . $this->GetQuery(false));
+    return FetchBool('UPDATE room SET ' . $query . $this->GetQuery(false));
   }
 
   //夜にする
@@ -584,7 +593,7 @@ class Room{
     $this->scene = 'night';
     if($this->test_mode) return true;
     $this->UpdateScene();
-    $this->Talk('', 'NIGHT'); //夜がきた通知
+    return $this->Talk('', 'NIGHT'); //夜がきた通知
   }
 
   //次の日にする

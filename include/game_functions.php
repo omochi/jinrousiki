@@ -685,22 +685,36 @@ function OutputTalk($talk, &$builder){
       return true;
 
     case 'OBJECTION': //「異議」ありは常時表示
-      return $builder->AddSystemMessage('objection-' . $actor->sex, $name . $talk->sentence);
+      $str = $name . $talk->sentence;
+      if(isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+      return $builder->AddSystemMessage('objection-' . $actor->sex, $str);
 
     case 'MORNING':
     case 'NIGHT':
-      return $builder->AddSystemTalk($talk->sentence);
+      $str = $talk->sentence;
+      if(isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+      return $builder->AddSystemTalk($str);
 
     default: //ゲーム開始前の投票 (例：KICK) は常時表示
+      $str = $talk->sentence;
+      if(isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
       return $builder->flag->open_talk || $ROOM->IsBeforeGame() ?
-	$builder->AddSystemMessage($talk->class, $name . $talk->sentence) : false;
+	$builder->AddSystemMessage($talk->class, $name . $str) : false;
     }
   }
   //システムメッセージ
-  if($talk->location == 'system') return $builder->AddSystemTalk($talk->sentence);
+  if($talk->location == 'system'){
+    $str = $talk->sentence;
+    if(isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+    return $builder->AddSystemTalk($str);
+  }
 
   //身代わり君専用システムメッセージ
-  if($talk->location == 'dummy_boy') return $builder->AddSystemTalk($talk->sentence, 'dummy-boy');
+  if($talk->location == 'dummy_boy'){
+    $str = $talk->sentence;
+    if(isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+    return $builder->AddSystemTalk($str, 'dummy-boy');
+  }
 
   switch($talk->scene){
   case 'day':
@@ -753,7 +767,9 @@ function OutputTalk($talk, &$builder){
 	$class = 'night-self-talk';
 	break;
       }
-      return $builder->RawAddTalk($symbol, $name, $talk->sentence, $voice, '', $class);
+      $str = $talk->sentence;
+      if(isset($talk->time)) $name .= "\n<span>{$talk->date_time}</span>";
+      return $builder->RawAddTalk($symbol, $name, $str, $voice, '', $class);
     }
     else{
       $mind_read = false; //特殊発言透過判定
@@ -824,8 +840,10 @@ function OutputTalk($talk, &$builder){
     return false;
 
   case 'heaven':
-    return ! $builder->flag->open_talk ? false :
-      $builder->RawAddTalk($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
+    if($builder->flag->open_talk) return false;
+    $str = $talk->sentence;
+    if(isset($talk->time)) $name .= "\n<span>{$talk->date_time}</span>";
+    return $builder->RawAddTalk($symbol, $name, $str, $talk->font_type, $talk->scene);
 
   default:
     return $builder->AddTalk($actor, $talk);

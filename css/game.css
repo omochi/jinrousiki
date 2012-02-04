@@ -202,6 +202,7 @@ body{ /* AA 用 */
 .duelist-do{      background-color: #D04060;} /* 決闘者 */
 .mania-do{        background-color: #C0A060;} /* 神話マニア */
 .death-note-do{   background-color: #904040;} /* デスノート */
+.date-time{ font-size: 80%; }
 .system-user{ /* システムユーザーの発言 */
   width: 1000px;
   padding-left: 6em;

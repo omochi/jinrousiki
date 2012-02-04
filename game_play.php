@@ -224,26 +224,14 @@ function CheckSilence(){
     //突然死発動までの時間を取得
     $sudden_death_announce = 'あと' . ConvertTime($TIME_CONF->sudden_death) . 'で' .
       $MESSAGE->sudden_death_announce;
-    if($ROOM->OvertimeAlert($sudden_death_announce)){ //警告出力
-      $last_update_time = 0;
-    }
-    else{ //一分刻みで追加の警告を出す
-      $seconds = $TIME_CONF->sudden_death - $last_update_time;
-      $quotient = $seconds % 60;
-      $seconds -= $quotient;
-      if($quotient > 0) $seconds += 60;
-      if($seconds > $TIME_CONF->sudden_death) $seconds = $TIME_CONF->sudden_death;
-      if($seconds > 0){
-	$str = 'あと' . ConvertTime($seconds) . 'で' . $MESSAGE->sudden_death_announce;
-	$ROOM->OvertimeAlert($str);
-      }
-    }
+    if($ROOM->OvertimeAlert($sudden_death_announce)) $last_update_time = 0; //警告出力
     $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_update_time;
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if($ROOM->sudden_death <= 0){
       if(abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect){ //サーバダウン検出
 	$ROOM->UpdateTime(); //突然死タイマーをリセット
+	$ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
       }
       else{
 	$ROOM->LoadVote(); //投票情報を取得

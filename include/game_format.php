@@ -116,7 +116,8 @@ EOF;
     $voice = $talk->font_type;
     //フィルタリング処理
     foreach($this->filter as $filter) $filter->FilterTalk($user, $name, $voice, $str);
-    return $this->RawAddTalk($symbol, $name, $str, $voice);
+    if(isset($talk->date_time)) $name .= "<br><span>{$talk->date_time}</span>";
+    return $this->RawAddTalk($symbol, $name, $str, $voice, $time);
   }
 
   function AddSystemTalk($str, $class = 'system-user'){

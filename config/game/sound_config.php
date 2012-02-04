@@ -1,6 +1,6 @@
 <?php
 //-- 音源設定 --//
-class Sound extends SoundBase{
+class SoundConfig extends SoundConfigBase{
   public $path      = 'swf'; //音源のパス
   public $extension = 'swf'; //拡張子
 

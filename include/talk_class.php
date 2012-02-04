@@ -6,11 +6,14 @@ class Talk{
   public $action;
   public $sentence;
   public $font_type;
+  public $time;
+  public $date_time;
 
   function __construct($list = null){
     if(is_array($list)){
       foreach($list as $key => $data) $this->$key = $data;
     }
+    if(isset($this->time)) $this->date_time = TZDate('(Y/m/d (D) H:i:s)', $this->time);
     $this->ParseSentence();
   }
 

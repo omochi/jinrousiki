@@ -292,7 +292,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
 
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
-  $query_select = 'scene, location, uname, action, sentence, font_type';
+  $query_select = 'scene, location, uname, action, sentence, font_type, time';
   $query_table  = 'talk';
   $query_where  = "room_no = {$ROOM->id} AND ";
 

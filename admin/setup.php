@@ -76,8 +76,9 @@ function CheckTable(){
 room_no INT NOT NULL PRIMARY KEY, name TEXT, comment TEXT, max_user INT, game_option TEXT,
 option_role TEXT, status VARCHAR(16), date INT, scene VARCHAR(16), vote_count INT NOT NULL,
 revote_count INT NOT NULL, scene_start_time INT(20) NOT NULL, last_update_time INT(20) NOT NULL,
-winner TEXT, establisher_ip TEXT, establish_datetime DATETIME, start_datetime DATETIME,
-finish_datetime DATETIME, INDEX room_index(status)
+overtime_alert BOOLEAN NOT NULL DEFAULT 0, winner TEXT, establisher_ip TEXT,
+establish_datetime DATETIME, start_datetime DATETIME, finish_datetime DATETIME,
+INDEX room_index(status)
 EOF;
     CreateTable($table, $query);
   }

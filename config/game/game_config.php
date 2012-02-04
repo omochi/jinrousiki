@@ -1,12 +1,4 @@
 <?php
-/*
-  変更履歴 from Ver. 1.5.0β17
-  + TimeConfig
-    - 追加：$alert, $alert_distance
-  + Sound
-    - 追加：$entry, $full, $novote, $alert
-*/
-
 //-- ゲーム設定 --//
 class GameConfig extends GameConfigBase{
   //-- 住人登録 --//
@@ -20,8 +12,8 @@ class GameConfig extends GameConfigBase{
   //文字数制限
   public $entry_uname_limit = 50; //ユーザ名と村人の名前
   public $entry_profile_limit = 300; //プロフィール
-  public $say_limit = 2048; //村の発言
-  public $say_line_limit = 20; //村の発言 (行数)
+  public $say_limit = 20000; //村の発言
+  public $say_line_limit = 50; //村の発言 (行数)
 
   //-- 表示設定 --//
   public $quote_words = false; //発言を「」で括る
@@ -76,36 +68,4 @@ class GameConfig extends GameConfigBase{
     40 => 20,  41 => 10,  42 => 20,  43 => 20,  44 => 10,
     45 => 20,  46 => 20,  47 => 20,  48 => 15,  49 => 15,
     50 => 20,  51 => 20,  52 => 15,  53 => 15,  54 => 10);
-}
-
-//-- 村のオプション画像 --//
-class RoomImage extends ImageManager{
-  /*
-    max[NN].gif という画像が該当パス内にあった場合は村の最大参加人数の表示に使用される。
-    例) max8.gif (8人村用)
-  */
-  public $path      = 'room_option';
-  public $extension = 'gif';
-  public $class     = 'option';
-}
-
-//-- 役職の画像 --//
-class RoleImage extends ImageManager{
-  public $path      = 'role';
-  public $extension = 'gif';
-  public $class     = '';
-}
-
-//-- 勝利陣営の画像 --//
-class WinnerImage extends WinnerImageBase{
-  public $path      = 'winner';
-  public $extension = 'gif';
-  public $class     = 'winner';
-}
-
-//過去ログ表示設定
-class OldLogConfig{
-  public $view = 20; //一画面に表示する村の数
-  public $page =  5; //一画面に表示するページ数の数
-  public $reverse = true; //デフォルトの村番号の表示順 (true:逆にする / false:しない)
 }

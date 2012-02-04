@@ -14,6 +14,7 @@ function EntryUser(){
 
   extract($RQ_ARGS->ToArray()); //引数を取得
   $back_url = '<br><a href="user_manager.php?room_no=' . $room_no . '">戻る</a>'; //バックリンク
+  $is_dummy = false;
   if($user_no > 0){ //登録情報変更モード
     $back_url = '<br><a href="user_manager.php?room_no=' . $room_no . '&user_no=' . $user_no .
       '">戻る</a>'; //バックリンクを上書き
@@ -29,6 +30,12 @@ function EntryUser(){
     foreach($stack as $key => $value){
       if(array_key_exists($key, $RQ_ARGS)) $RQ_ARGS->$key = $value;
     }
+    $query = 'SELECT u.uname, u.handle_name, u.sex, u.profile, u.role, u.icon_no, ' .
+      'i.color, i.icon_name ' .
+      'FROM user_entry AS u INNER JOIN user_icon AS i ON u.icon_no = i.icon_no ' .
+      "WHERE u.room_no = {$room_no} AND u.user_no = {$user_no}";
+    $target = FetchObject($query, 'User', true);
+    $is_dummy = $target->IsDummyBoy();
     //PrintData($stack);
     //PrintData($RQ_ARGS);
   }
@@ -62,7 +69,7 @@ function EntryUser(){
   if($uname == 'dummy_boy' || $uname == 'system'){
     OutputActionResult($title, 'ユーザ名「' . $uname . '」は使用できません' . $back_url);
   }
-  if($handle_name == '身代わり君' || $handle_name == 'システム'){
+  if(! $is_dummy && ($handle_name == '身代わり君' || $handle_name == 'システム')){
     OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません' . $back_url);
   }
   if($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です' . $back_url);
@@ -111,17 +118,14 @@ function EntryUser(){
       $str = '村人名が既に登録してあります。';
       OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
     }
-
-    $query = 'SELECT u.uname, u.handle_name, u.sex, u.profile, u.role, u.icon_no, i.color ' .
-      'FROM user_entry AS u INNER JOIN user_icon AS i ON u.icon_no = i.icon_no ' .
-      "WHERE u.room_no = {$room_no} AND u.user_no = {$user_no}";
-    $target = FetchObject($query, 'User', true);
     $str = "{$target->handle_name} さんが登録情報を変更しました\n";
     if($target->handle_name != $handle_name){
       $str .= "村人の名前：{$target->handle_name} → {$handle_name}\n";
     }
     if($target->icon_no != $icon_no){
-      $str .= "アイコン：No. {$target->icon_no} → {$icon_no}\n";
+      $icon_name = FetchResult('SELECT icon_name FROM user_icon WHERE icon_no = ' . $icon_no);
+      $str .= "アイコン：No. {$target->icon_no} ({$target->icon_name}) → " .
+	"{$icon_no} ({$icon_name})\n";
     }
     $stack = array();
     if($target->sex     != $sex)     $stack[] = '性別';
@@ -134,7 +138,14 @@ function EntryUser(){
       "profile = '{$profile}', role = '{$role}', icon_no = '{$icon_no}' " .
       "WHERE room_no = {$room_no} AND user_no = {$user_no}";
     if(FetchBool($query, true)){
-      OutputActionResult('村人登録 [登録情報変更]', '登録データを変更しました');
+      $str = <<<EOF
+登録データを変更しました。<br>
+<form action="#" method="post">
+<input type="button" value="ウィンドウを閉じる" onClick="window.close()">
+</form>
+
+EOF;
+      OutputActionResult('村人登録 [登録情報変更]', $str);
     }
     else{
       $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
