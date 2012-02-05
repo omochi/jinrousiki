@@ -448,9 +448,7 @@ class User{
 
   //投票済み判定
   function IsVoted($vote_data, $action, $not_action = null){
-    return (isset($not_action) && array_key_exists($not_action, $vote_data) &&
-	    is_array($vote_data[$not_action]) &&
-	    array_key_exists($this->user_no, $vote_data[$not_action])) ||
+    return (isset($not_action) && isset($vote_data[$not_action][$this->user_no])) ||
       ($action == 'WOLF_EAT' ? isset($vote_data[$action]) :
        isset($vote_data[$action][$this->user_no]));
   }

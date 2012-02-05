@@ -378,17 +378,17 @@ function OutputAbilityResult($header, $target, $footer = null){
 }
 
 //夜の未投票メッセージ出力
-function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
+function OutputVoteMessage($class, $sentence, $type, $not_type = ''){
   global $MESSAGE, $ROOM, $USERS;
 
-  $stack = $ROOM->test_mode ? array() : GetSelfVoteNight($situation, $not_situation);
+  $stack = $ROOM->test_mode ? array() : GetSelfVoteNight($type, $not_type);
   if(count($stack) < 1){
     $str = $MESSAGE->{'ability_' . $sentence};
   }
-  elseif($situation == 'WOLF_EAT' || $situation == 'CUPID_DO' || $situation == 'DUELIST_DO'){
+  elseif($type == 'WOLF_EAT' || $type == 'CUPID_DO' || $type == 'DUELIST_DO'){
     $str = '投票済み';
   }
-  elseif($situation == 'SPREAD_WIZARD_DO'){
+  elseif($type == 'SPREAD_WIZARD_DO'){
     $str_stack = array();
     foreach(explode(' ', $stack['target_no']) as $id){
       $user = $USERS->ByVirtual($id);
@@ -397,10 +397,10 @@ function OutputVoteMessage($class, $sentence, $situation, $not_situation = ''){
     ksort($str_stack);
     $str = implode('さん ', $str_stack) . 'さんに投票済み';
   }
-  elseif($not_situation != '' && $stack['situation'] == $not_situation){
+  elseif($not_type != '' && $stack['type'] == $not_type){
     $str = 'キャンセル投票済み';
   }
-  elseif($situation == 'POISON_CAT_DO' || $situation == 'POSSESSED_DO'){
+  elseif($type == 'POISON_CAT_DO' || $type == 'POSSESSED_DO'){
     $str = $USERS->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
   }
   else{

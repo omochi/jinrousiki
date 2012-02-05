@@ -473,9 +473,9 @@ class Room{
     $query = $this->GetQueryHeader('room', 'overtime_alert') . ' AND overtime_alert IS FALSE';
     if(FetchCount($query) < 1) return false;
     $this->Talk($str);
+    $this->UpdateTime();
     return $this->UpdateOvertimeAlert(true);
   }
-
 
   //システムメッセージ登録
   function SystemMessage($str, $type, $add_date = 0){

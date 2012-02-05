@@ -338,6 +338,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
   if($ROOM->personal_mode) $query_where .= " AND uname = 'system'"; //個人結果表示モード
   $query = "SELECT {$query_select} FROM {$query_table} WHERE {$query_where}";
   $query .= ' ORDER BY id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
+
   //PrintData($query, $set_scene);
   $talk_list = FetchObject($query, 'Talk');
 

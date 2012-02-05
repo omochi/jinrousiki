@@ -169,13 +169,12 @@ function GetSelfVoteNight($type, $not_type = ''){
   if($type == 'WOLF_EAT'){
     $query .= "type = '{$type}'";
   }
-  elseif($not_situation != ''){
+  elseif($not_type != ''){
     $query .= "user_no = '{$SELF->user_no}' AND type IN ('{$type}', '{$not_type}')";
   }
   else{
     $query .= "user_no = '{$SELF->user_no}' AND type ='{$type}'";
   }
-
   return FetchAssoc($query, true);
 }
 
@@ -257,7 +256,7 @@ function OutputGamePageHeader(){
     if($left_time < 1 && $SELF->IsLive()){ //超過判定
       $ROOM->LoadVote(); //投票情報を取得
       if($ROOM->IsDay()){ //未投票判定
-	$novote_flag = ! in_array($SELF->uname, array_keys($ROOM->vote));
+	$novote_flag = ! array_key_exists($SELF->user_no, $ROOM->vote);
       }
       elseif($ROOM->IsNight()){
 	$novote_flag = $SELF->CheckVote($ROOM->ParseVote()) === false;
@@ -840,10 +839,9 @@ function OutputTalk($talk, &$builder){
     return false;
 
   case 'heaven':
-    if($builder->flag->open_talk) return false;
-    $str = $talk->sentence;
-    if(isset($talk->time)) $name .= "\n<span>{$talk->date_time}</span>";
-    return $builder->RawAddTalk($symbol, $name, $str, $talk->font_type, $talk->scene);
+    if(! $builder->flag->open_talk) return false;
+    if(isset($talk->time)) $name .= "<br><span>{$talk->date_time}</span>";
+    return $builder->RawAddTalk($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
 
   default:
     return $builder->AddTalk($actor, $talk);
