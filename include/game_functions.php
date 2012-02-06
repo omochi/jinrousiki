@@ -767,7 +767,7 @@ function OutputTalk($talk, &$builder){
 	break;
       }
       $str = $talk->sentence;
-      if(isset($talk->time)) $name .= "\n<span>{$talk->date_time}</span>";
+      if(isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
       return $builder->RawAddTalk($symbol, $name, $str, $voice, '', $class);
     }
     else{
@@ -840,7 +840,7 @@ function OutputTalk($talk, &$builder){
 
   case 'heaven':
     if(! $builder->flag->open_talk) return false;
-    if(isset($talk->time)) $name .= "<br><span>{$talk->date_time}</span>";
+    if(isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
     return $builder->RawAddTalk($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
 
   default:

@@ -87,8 +87,8 @@ EOF;
   if(! in_array($table, $table_list)){
     $query = <<<EOF
 room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT, icon_no INT, profile TEXT,
-sex TEXT, password TEXT, role TEXT, role_id INT, live TEXT, session_id CHAR(32) UNIQUE,
-last_words TEXT, ip_address TEXT, last_load_scene VARCHAR(16),
+sex TEXT, password TEXT, role TEXT, role_id INT, objection INT NOT NULL, live TEXT,
+session_id CHAR(32) UNIQUE, last_words TEXT, ip_address TEXT, last_load_scene VARCHAR(16),
 INDEX user_entry_index(room_no, user_no)
 EOF;
     CreateTable($table, $query);

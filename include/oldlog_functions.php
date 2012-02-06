@@ -298,6 +298,17 @@ function GenerateDateTalkLog($set_date, $set_scene){
 
   switch($set_scene){
   case 'beforegame':
+    $table_class = $set_scene;
+    $query_table  .= '_' . $set_scene;
+    $query_select .= ', handle_name, color';
+    $query_where  .= "scene = '{$set_scene}'";
+    if($ROOM->watch_mode || $ROOM->single_view_mode){
+      $USERS->ResetRoleList();
+      unset($ROOM->event);
+    }
+    if(! $RQ_ARGS->reverse_log) $USERS->ResetPlayer(); //player 復元処理
+    break;
+
   case 'aftergame':
     $table_class = $set_scene;
     $query_table .= '_' . $set_scene;
@@ -306,15 +317,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
       $USERS->ResetRoleList();
       unset($ROOM->event);
     }
-
-    if($set_scene == 'beforegame') $query_select .= ', handle_name, color';
-
-    if($RQ_ARGS->reverse_log){ //player 復元処理
-      if($set_scene == 'aftergame') $USERS->ResetPlayer();
-    }
-    elseif($set_scene == 'beforegame'){
-      $USERS->ResetPlayer();
-    }
+    if($RQ_ARGS->reverse_log) $USERS->ResetPlayer(); //player 復元処理
     break;
 
   case 'heaven_only':
