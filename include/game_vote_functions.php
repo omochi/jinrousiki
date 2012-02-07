@@ -1122,13 +1122,12 @@ function AggregateVoteNight($skip = false){
   //PrintData($ROOM->vote, 'VoteRow');
 
   $vote_data = $ROOM->ParseVote(); //コマンド毎に分割
-  PrintData($vote_data, 'VoteData');
+  //PrintData($vote_data, 'VoteData');
 
   if(! $skip){
     foreach($USERS->rows as $user){ //未投票チェック
       if($user->CheckVote($vote_data) === false){
-	//if($ROOM->test_mode) PrintData($user->uname, $user->main_role);
-	PrintData($user->uname, $user->main_role);
+	if($ROOM->test_mode) PrintData($user->uname, $user->main_role);
 	return false;
       }
     }

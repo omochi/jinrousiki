@@ -90,9 +90,7 @@ function EntryUser(){
     OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer, '', true);
   }
 
-  //ユーザ名・村人名
-  $query .= "live = 'live' AND ";
-  if($user_no > 0){
+  if($user_no > 0){ //登録情報変更モード
     $query = 'SELECT u.uname, u.handle_name, u.sex, u.profile, u.role, u.icon_no, ' .
       'u.session_id, i.color, i.icon_name ' .
       'FROM user_entry AS u INNER JOIN user_icon AS i ON u.icon_no = i.icon_no ' .
@@ -150,7 +148,10 @@ EOF;
       OutputActionResult('村人登録 [サーバエラー]', $str);
     }
   }
-  elseif(FetchCount($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
+
+  //ユーザ名・村人名
+  $query_count .= "live = 'live' AND ";
+  if(FetchCount($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     $str = 'ユーザ名、または村人名が既に登録してあります。';
     OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
   }

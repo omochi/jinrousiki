@@ -234,25 +234,25 @@ function CheckSilence(){
 	$ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
       }
       else{
+	$novote_list = array(); //未投票者リスト
 	$ROOM->LoadVote(); //投票情報を取得
 	if($ROOM->IsDay()){
-	  //生存者と投票済みの人の差分を取る
-	  $novote_uname_list = array_diff($USERS->GetLivingUsers(), array_keys($ROOM->vote));
+	  foreach($USERS->rows as $user){ //生存中の未投票者を取得
+	    if($user->IsLive() && ! isset($ROOM->vote[$user->user_no])){
+	      $novote_list[] = $user->user_no;
+	    }
+	  }
 	}
 	elseif($ROOM->IsNight()){
 	  $vote_data = $ROOM->ParseVote(); //投票情報をパース
 	  //PrintData($vote_data, 'Vote Data');
-
-	  $novote_uname_list = array();
 	  foreach($USERS->rows as $user){ //未投票チェック
-	    if($user->CheckVote($vote_data) === false) $novote_uname_list[] = $user->uname;
+	    if($user->CheckVote($vote_data) === false) $novote_list[] = $user->user_no;
 	  }
 	}
 
-	//未投票者を全員突然死させる
-	foreach($novote_uname_list as $uname){
-	  $USERS->SuddenDeath($USERS->ByUname($uname)->user_no, 'NOVOTED');
-	}
+	//ショック死処理
+	foreach($novote_list as $id) $USERS->SuddenDeath($id, 'NOVOTED');
 	LoversFollowed(true);
 	InsertMediumMessage();
 

@@ -309,7 +309,7 @@ function OutputVoteDeadUser(){
   global $VOTE_MESS, $RQ_ARGS, $ROOM, $SELF;
 
   //投票済みチェック
-  if($SELF->IsDrop())  OutputVoteResult('蘇生辞退：投票済み');
+  if($SELF->IsDrop()) OutputVoteResult('蘇生辞退：投票済み');
   if($SELF->IsDummyBoy() && ! $ROOM->IsOption('not_open_cast')){
     OutputVoteResult('蘇生辞退：身代わり君の投票は無効です');
   }

@@ -664,7 +664,7 @@ EOF;
       PrintData($value, "Change [{$item}] ({$this->uname})");
       return true;
     }
-    if(! is_null($value)) $value = "'{$value}'";
+    $value = is_null($value) ? 'NULL' : "'{$value}'";
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
     return SendQuery("UPDATE user_entry SET {$item} = {$value} {$query}", true);
   }
@@ -849,7 +849,7 @@ EOF;
     }
     if(isset($vote_number)){
       $items .= ', vote_number, revote_count';
-      $values .= ", '{$vote_number}', '{$RQ_ARGS->vote_times}'";
+      $values .= ", '{$vote_number}', '{$RQ_ARGS->revote_count}'";
     }
     return InsertDatabase('vote', $items, $values);
   }
