@@ -8,7 +8,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.0.0 α3 アップロード (2012/02/06 (Mon) 23:21) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/54808">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.0.0 α4 アップロード (2012/02/06 (Mon) 23:21) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/54808">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
   <li>未投票判定のバグ修正</li>

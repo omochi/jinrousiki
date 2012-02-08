@@ -107,11 +107,11 @@ function EntryUser(){
       $str = '村人名が既に登録してあります。';
       OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
     }
-    $str = "{$target->handle_name} さんが登録情報を変更しました。\n";
+    $str = "{$target->handle_name} さんが登録情報を変更しました。";
     $stack = array();
     if($target->handle_name != $handle_name){
       $stack[] = "handle_name = '{$handle_name}'";
-      $str .= "村人の名前：{$target->handle_name} → {$handle_name}\n";
+      $str .= "\n村人の名前：{$target->handle_name} → {$handle_name}";
     }
     if($target->icon_no != $icon_no){
       if(! $target->IsDummyBoy() && $icon_no == 0){
@@ -119,8 +119,8 @@ function EntryUser(){
       }
       $icon_name = FetchResult('SELECT icon_name FROM user_icon WHERE icon_no = ' . $icon_no);
       $stack[] = "icon_no = '{$icon_no}'";
-      $str .= "アイコン：No. {$target->icon_no} ({$target->icon_name}) → " .
-	"{$icon_no} ({$icon_name})\n";
+      $str .= "\nアイコン：No. {$target->icon_no} ({$target->icon_name}) → " .
+	"{$icon_no} ({$icon_name})";
     }
     if($target->sex     != $sex)     $stack[] = "sex = '{$sex}'";
     if($target->profile != $profile) $stack[] = "profile = '{$profile}'";
