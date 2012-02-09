@@ -6,7 +6,12 @@
 */
 class Option_cupid extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('cupid', 'キューピッド登場', '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = 'キューピッド登場';
+		$this->explain = '初日夜に選んだ相手を恋人にします。恋人となった二人は勝利条件が変化します<br>　　　[村人1→キューピッド1]';
 	}
 
   function SetRole(&$list, $count){

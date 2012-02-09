@@ -6,7 +6,12 @@
 */
 class Option_poison_wolf extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('poison_wolf', '毒狼登場', '処刑時にランダムで村人一人を巻き添えにする狼です<br>　　　[人狼1→毒狼1 / 村人1→薬師1]');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '毒狼登場';
+		$this->explain = '処刑時にランダムで村人一人を巻き添えにする狼です<br>　　　[人狼1→毒狼1 / 村人1→薬師1]';
 	}
 
   function SetRole(&$list, $count){

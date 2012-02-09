@@ -6,7 +6,12 @@
 */
 class Option_mania extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('mania', '神話マニア登場', '初日夜に他の村人の役職をコピーします [村人1→神話マニア1]');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '神話マニア登場';
+		$this->explain = '初日夜に他の村人の役職をコピーします [村人1→神話マニア1]';
 	}
 
   function SetRole(&$list, $count){

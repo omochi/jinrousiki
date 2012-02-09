@@ -6,7 +6,12 @@
 */
 class Option_quiz extends CheckRoomOptionItem{
   function __construct(){
-		parent::__construct('quiz', 'クイズ村', 'GMが出題者になり、プレイヤー全員に回答者がつきます。');
+		parent::__construct(RoomOption::GAME_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = 'クイズ村';
+		$this->explain = 'GMが出題者になり、プレイヤー全員に回答者がつきます。';
 	}
 
   function Cast(&$list, &$rand){

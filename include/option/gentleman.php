@@ -6,7 +6,12 @@
 */
 class Option_gentleman extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('gentleman', '紳士・淑女村', '全員に性別に応じた「紳士」「淑女」がつきます');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '紳士・淑女村';
+		$this->explain = '全員に性別に応じた「紳士」「淑女」がつきます';
 	}
 
   function Cast(&$list, &$rand){

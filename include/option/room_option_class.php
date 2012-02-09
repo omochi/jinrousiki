@@ -3,166 +3,88 @@ require_once(dirname(__FILE__).'/room_option_item_class.php');
 require_once(dirname(__FILE__).'/option_class.php');
 
 class RoomOption extends OptionParser {
-  static function Options() {
+  static function ShowBuildRoomForm() {
     global $GAME_OPT_CONF, $ROOM_CONF, $TIME_CONF;
+		require_once(dirname(__FILE__).'/option_form_class.php');
 
-    self::Category('BUILD');
-    self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_name', '村の名前', '')
-            ->Size($ROOM_CONF->room_name_input)
-            ->Footer('村')
-            ->CollectOverride('NotOption')
-            );
-    self::Add(self::NOT_OPTION, RoomOptionItem::Text('room_comment', '村についての説明', '')
-            ->Size($ROOM_CONF->room_comment_input)
-            ->Footer('')
-            ->CollectOverride('NotOption')
-            );
+		$builder = new OptionForm();
 
-    self::Add(self::NOT_OPTION, RoomOptionItem::Selector('max_user', '最大人数', '最大人数', '配役は<a href="info/rule.php">ルール</a>を確認して下さい')
-            ->ItemSource($ROOM_CONF->max_user_list)
-            ->Value($ROOM_CONF->default_max_user)
-            ->CollectOverride('NotOption')
-            );
+		$builder->GenerateRow(self::Get('room_name'));
+		$builder->GenerateRow(self::Get('room_comment'));
+		$builder->GenerateRow(self::Get('max_user'));
 
-    self::Category('GENERAL');
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('wish_role', '役割希望制', '希望の役割を指定できますが、なれるかは運です')
+		$builder->HorizontalRule();
+
+    $builder->GenerateRow(self::Get('wish_role'));
+    $builder->GenerateRow(self::Get('real_time'));
+    $builder->GenerateRow(self::Get('wait_morning', '早朝待機制', '夜が明けてから一定時間の間発言ができません')
             );
-    self::Add(self::GAME_OPTION, RoomOptionItem::RealTime('real_time', 'リアルタイム制', '制限時間が実時間で消費されます')
-            ->Day($TIME_CONF->default_day)
-            ->Night($TIME_CONF->default_night)
+    $builder->GenerateRow(self::Get('open_vote', '投票した票数を公表する', '「権力者」などのサブ役職が分かりやすくなります')
             );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('wait_morning', '早朝待機制', '夜が明けてから一定時間の間発言ができません')
+    $builder->GenerateRow(self::Get('seal_message', '天啓封印', '一部の個人通知メッセージが表示されなくなります')
             );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('open_vote', '投票した票数を公表する', '「権力者」などのサブ役職が分かりやすくなります')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('seal_message', '天啓封印', '一部の個人通知メッセージが表示されなくなります')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('open_day', 'オープニングあり', 'ゲームが1日目「昼」からスタートします')
+    $builder->GenerateRow(self::Get('open_day', 'オープニングあり', 'ゲームが1日目「昼」からスタートします')
             );
 
-    self::Category('DUMMY');
-    self::Add(self::GAME_OPTION, RoomOptionItem::Group('dummy_boy', '初日の夜は身代わり君')
-            ->Item(RoomOptionItem::Radio('dummy_boy', '', '', '身代わり君なし'))
-            ->Item(RoomOptionItem::Radio('dummy_boy', 'on', '', '身代わり君あり (初日の夜、身代わり君が狼に食べられます)'))
-            ->Item(RoomOptionItem::Radio('dummy_boy', 'gm_login', '', '仮想 GM が身代わり君としてログインします')->CollectOverride('CollectValue'))
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Password('gm_password', 'GM ログインパスワード', '(仮想 GM モード・クイズ村モード時の GM のパスワードです)<br>※ ログインユーザ名は「dummy_boy」です。GM は入村直後に必ず名乗ってください。')
-            ->Size($ROOM_CONF->gm_password_input)
-            ->CollectOverride('NotOption')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Check('gerd', 'ゲルト君モード', '役職が村人固定になります [村人が出現している場合のみ有効]')
-            );
+		$builder->HorizontalRule();
 
-    self::Category('OPEN_CASTING');
-    self::Add(self::GAME_OPTION, RoomOptionItem::Group('not_open_cast', '霊界で配役を公開しない')
-            ->Item(RoomOptionItem::Radio('not_open_cast', '', '', '常時公開 (蘇生能力は無効です)')->CollectOverride('NotOption'))
-            ->Item(RoomOptionItem::Radio('not_open_cast', 'not_open_cast', '', '常時非公開 (誰がどの役職なのか公開されません。蘇生能力は有効です)')->CollectOverride('CollectValue'))
-            ->Item(RoomOptionItem::Radio('not_open_cast', 'auto_open_cast', '', '自動公開 (蘇生能力者などが能力を持っている間だけ霊界が非公開になります)')->CollectOverride('CollectValue'))
-            );
+    $builder->GenerateRow(self::Get('dummy_boy_selector'));
+    $builder->GenerateRow(self::Get('gm_password'));
+    $builder->GenerateRow(self::Get('gerd'));
 
-    self::Category('CASTING');
-    self::Add(self::ROLE_OPTION, 'poison');
-    self::Add(self::ROLE_OPTION, 'assassin');
-    self::Add(self::ROLE_OPTION, 'wolf');
-    self::Add(self::ROLE_OPTION, 'boss_wolf');
-    self::Add(self::ROLE_OPTION, 'poison_wolf');
-    self::Add(self::ROLE_OPTION, 'possessed_wolf');
-    self::Add(self::ROLE_OPTION, 'sirius_wolf');
-    self::Add(self::ROLE_OPTION, 'fox');
-    self::Add(self::ROLE_OPTION, 'child_fox');
-    self::Add(self::ROLE_OPTION, 'cupid');
-    self::Add(self::ROLE_OPTION, 'medium');
-    self::Add(self::ROLE_OPTION, 'mania');
-    self::Add(self::ROLE_OPTION, 'decide');
-    self::Add(self::ROLE_OPTION, 'authority');
+		$builder->HorizontalRule();
 
-    self::Category('SPECIAL');
-    self::Add(self::ROLE_OPTION, 'liar');
-    self::Add(self::ROLE_OPTION, 'gentleman');
-    self::Add(self::ROLE_OPTION, 'sudden_death');
-    self::Add(self::ROLE_OPTION, 'perverseness');
-    self::Add(self::GAME_OPTION, 'deep_sleep');
-    self::Add(self::GAME_OPTION, 'mind_open');
-    self::Add(self::GAME_OPTION, 'blinder');
-    self::Add(self::ROLE_OPTION, 'critical');
-    self::Add(self::GAME_OPTION, 'joker');
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('death_note', 'デスノート村', '毎日、誰か一人に「デスノート」が与えられます')
-            );
-    self::Add(self::GAME_OPTION, 'detective');
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('weather', '天候あり', '「天候」と呼ばれる特殊イベントが発生します')
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('festival', 'お祭り村', '管理人がカスタムする特殊設定です')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('replace_human', 'モード名', '村人置換村', '「村人」が全員特定の役職に入れ替わります')
-            ->Item('', 'なし')
-            ->Item('replace_human', '村人置換村')
-            ->Item('full_mad', '狂人村')
-            ->Item('full_cupid', 'キューピッド村')
-            ->Item('full_quiz', '出題者村')
-            ->Item('full_vampire', '吸血鬼村')
-            ->Item('full_chiropetra', '蝙蝠村')
-            ->Item('full_mania', '神話マニア村')
-            ->Item('full_unknown_mania', '鵺村')
-            ->CollectOverride('CollectValue')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('change_common', 'モード名', '共有者置換村', '「共有者」が全員特定の役職に入れ替わります')
-            ->Item('', 'なし')
-            ->Item('change_common', '共有者置換村')
-            ->Item('change_hermit_common', '隠者村')
-            ->CollectOverride('CollectValue')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('change_mad', 'モード名', '狂人置換村', '「狂人」が全員特定の役職に入れ替わります')
-            ->Item('', 'なし')
-            ->Item('change_mad', '狂人置換村')
-            ->Item('change_fanatic_mad', '狂信者村')
-            ->Item('change_whisper_mad', '囁き狂人村')
-            ->Item('change_immolate_mad', '殉教者村')
-            ->CollectOverride('CollectValue')
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('change_cupid', 'モード名', 'キューピッド置換村', '「キューピッド」が全員特定の役職に入れ替わります')
-            ->Item('', 'なし')
-            ->Item('change_cupid', 'キューピッド置換村')
-            ->Item('change_mind_cupid', '女神村')
-            ->Item('change_triangle_cupid', '小悪魔村')
-            ->Item('change_angel', '天使村')
-            ->CollectOverride('CollectValue')
-            );
+    $builder->GenerateRow(self::Get('not_open_cast_selector'));
 
-    self::Category('CHAOS');
-    self::Add(self::GAME_OPTION, RoomOptionItem::Selector('special_role', 'モード名', '特殊配役モード', '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください')
-            ->Item('', 'なし')
-            ->Item('chaos', '闇鍋モード')
-            ->Item('chaosfull', '真・闇鍋モード')
-            ->Item('chaos_hyper', '超・闇鍋モード')
-            ->Item('chaos_verso', '裏・闇鍋モード')
-            ->Item('duel', '決闘村')
-            ->Item('gray_random', 'グレラン村')
-            ->Item('quiz', 'クイズ村')
-            ->CollectOverride('CollectValue')
-            );
+		$builder->HorizontalRule();
 
-    self::Category('CHAOS_CASTING');
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('topping', 'モード名', '固定配役追加モード', '固定配役に追加する役職セットです')
-            ->ItemSource($GAME_OPT_CONF->topping_items)
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Selector('boost_rate', 'モード名', '出現率変動モード', '役職の出現率に補正がかかります')
-            ->ItemSource($GAME_OPT_CONF->boost_rate_items)
-            );
+    $builder->GenerateRow(self::Get('poison'));
+    $builder->GenerateRow(self::Get('assassin'));
+    $builder->GenerateRow(self::Get('wolf'));
+    $builder->GenerateRow(self::Get('boss_wolf'));
+    $builder->GenerateRow(self::Get('poison_wolf'));
+    $builder->GenerateRow(self::Get('possessed_wolf'));
+    $builder->GenerateRow(self::Get('sirius_wolf'));
+    $builder->GenerateRow(self::Get('fox'));
+    $builder->GenerateRow(self::Get('child_fox'));
+    $builder->GenerateRow(self::Get('cupid'));
+    $builder->GenerateRow(self::Get('medium'));
+    $builder->GenerateRow(self::Get('mania'));
+    $builder->GenerateRow(self::Get('decide'));
+    $builder->GenerateRow(self::Get('authority'));
 
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Group('chaos_open_cast', '配役を通知する')
-            ->Item(RoomOptionItem::Radio('chaos_open_cast', '', '', '通知無し')->CollectOverride('NotOption'))
-            ->Item(RoomOptionItem::Radio('chaos_open_cast', 'camp', '', '陣営通知 (陣営毎の合計を通知)')->CollectOverride('CollectId'))
-            ->Item(RoomOptionItem::Radio('chaos_open_cast', 'role', '', '役職通知 (役職の種類別に合計を通知)')->CollectOverride('CollectId'))
-            ->Item(RoomOptionItem::Radio('chaos_open_cast', 'full', '', '完全通知 (通常村相当)'))
-            );
-    self::Add(self::ROLE_OPTION, RoomOptionItem::Group('sub_role_limit', 'サブ役職制限')
-            ->Item(RoomOptionItem::Radio('sub_role_limit', 'no_sub_role', '', 'サブ役職をつけない')->CollectOverride('CollectValue'))
-            ->Item(RoomOptionItem::Radio('sub_role_limit', 'easy', '', 'サブ役職制限：EASYモード')->CollectOverride('CollectId'))
-            ->Item(RoomOptionItem::Radio('sub_role_limit', 'normal', '', 'サブ役職制限：NORMALモード')->CollectOverride('CollectId'))
-            ->Item(RoomOptionItem::Radio('sub_role_limit', 'hard', '', 'サブ役職制限：HARDモード')->CollectOverride('CollectId'))
-            ->Item(RoomOptionItem::Radio('sub_role_limit', '', '', 'サブ役職制限なし')->CollectOverride('NotOption'))
-            );
-    self::Add(self::GAME_OPTION, RoomOptionItem::Check('secret_sub_role', 'サブ役職を表示しない', 'サブ役職が分からなくなります：闇鍋モード専用オプション')
+		$builder->HorizontalRule();
+
+    $builder->GenerateRow(self::Get('liar'));
+    $builder->GenerateRow(self::Get('gentleman'));
+    $builder->GenerateRow(self::Get('sudden_death'));
+    $builder->GenerateRow(self::Get('perverseness'));
+    $builder->GenerateRow(self::Get('deep_sleep'));
+    $builder->GenerateRow(self::Get('mind_open'));
+    $builder->GenerateRow(self::Get('blinder'));
+    $builder->GenerateRow(self::Get('critical'));
+    $builder->GenerateRow(self::Get('joker'));
+    $builder->GenerateRow(self::Get('death_note'));
+    $builder->GenerateRow(self::Get('detective'));
+    $builder->GenerateRow(self::Get('weather'));
+    $builder->GenerateRow(self::Get('festival'));
+    $builder->GenerateRow(self::Get('replace_human_selector'));
+    $builder->GenerateRow(self::Get('change_common_selector'));
+    $builder->GenerateRow(self::Get('change_mad_selector'));
+    $builder->GenerateRow(self::Get('change_cupid_selector'));
+
+		$builder->HorizontalRule();
+
+    $builder->GenerateRow(self::Get('special_role'));
+
+		$builder->HorizontalRule();
+
+    $builder->GenerateRow(self::Get('topping'));
+    $builder->GenerateRow(self::Get('boost_rate'));
+
+    $builder->GenerateRow(self::Get('chaos_open_cast'));
+    $builder->GenerateRow(self::Get('sub_role_limit'));
+    $builder->GenerateRow(self::Get('secret_sub_role', 'サブ役職を表示しない', 'サブ役職が分からなくなります：闇鍋モード専用オプション')
             );
 
     self::End();
@@ -203,7 +125,7 @@ class RoomOption extends OptionParser {
     self::$currentCategory = null;
   }
 
-  private static function SetGroup($group, $item) {
+  static function SetGroup($group, $item) {
     $item->group = $group;
     if ($item instanceof RoomOptionItemGroup) {
       foreach ($item->items as $child) {
@@ -212,18 +134,20 @@ class RoomOption extends OptionParser {
     }
   }
 
-  static function Add($group, $item) {
-		if (is_string($item)) {
-			require_once(dirname(__FILE__)."/{$item}.php");
-			$class = 'Option_'.$item;
-			$item = new $class;
+  static function Get($item) {
+		if (!isset(self::$definitions[$item])) {
+			$file = dirname(__FILE__)."/{$item}.php";
+			if (file_exists($file)) {
+				require_once($file);
+				$class = 'Option_'.$item;
+				self::$definitions[$item] = new $class();
+			}
+			else {
+				self::$definitions[$item] = null;
+			}
 		}
-    if ($item->enable && isset(self::$categories[self::$currentCategory])) {
-      self::SetGroup($group, $item);
-      self::$definitions[$item->name] = $item;
-      self::$categories[self::$currentCategory][] = $item->name;
-    }
-  }
+		return self::$definitions[$item];
+	}
 
   static function Wrap($option) {
     $result = new RoomOption();
@@ -239,9 +163,6 @@ class RoomOption extends OptionParser {
   }
 
   function  __construct($value = '') {
-    if (count(self::$definitions) == 0) {
-      self::Options();
-    }
     parent::__construct($value);
   }
 
@@ -269,27 +190,14 @@ class RoomOption extends OptionParser {
   }
 
   function LoadPostParams($target = null) {
-    $row = '';
-    //$targetがNULLの場合、func_get_argsは要素数1の配列を返してしまうため、そのまま通過させる。
-    if (isset($target) && !is_array($target)) {
-      $target = func_get_args();
-    }
-    $this->_LoadPostParams(array_intersect_key(self::$definitions, $_POST), $target);
-    $this->row = $row;
-  }
-
-  private function _LoadPostParams($items, $target) {
-    $collectAll = empty($target);
-    foreach ($items as $def) {
-      if ($def instanceof RoomOptionItemGroup) {
-        $this->_LoadPostParams($def->items, $target);
-      }
-      else if ($collectAll || in_array($def->name, $target)) {
-        $this->currentGroup = $def->group;
+		$items = is_array($target) ? $target : func_get_args();
+		$all = empty($items);
+    foreach ($_POST as $key => $value) {
+			$def = self::Get($key);
+      if (isset($def) && ($all || in_array($def->name, $items))) {
         $def->CollectPostParam($this);
       }
     }
-    $this->currentGroup = self::NOT_OPTION;
   }
 
   function Set($item, $name, $value) {
@@ -327,15 +235,17 @@ class RoomOption extends OptionParser {
 
   /** ゲームオプションの画像タグを作成する */
   function GenerateImageList() {
-    global $ROOM_IMG, $CAST_CONF, $GAME_OPT_MESS;
+    global $ROOM_IMG, $CAST_CONF;
 
     $str = '';
     foreach(self::$icon_order as $option){
-      if(!(isset($this->$option) && $GAME_OPT_MESS->$option)) {
+			$define = self::Get($option);
+      if(!isset($define, $this->$option)) {
 	      continue;
 			}
+			$define->LoadMessages();
 			$footer = '';
-			$sentence = $GAME_OPT_MESS->$option;
+			$sentence = $define->explain;
 			if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
 				$sentence .= '(' . $CAST_CONF->$option . '人～)';
 			}
@@ -349,7 +259,8 @@ class RoomOption extends OptionParser {
 			case 'topping':
 			case 'boost_rate':
 				$type = $this->options[$option][0];
-				$sentence .= '(Type' . $GAME_OPT_MESS->{$option . '_' . $type} . ')';
+				$items = $define->GetItems();
+				$sentence .= '(Type' . $items[$type] . ')';
 				$footer = '['. strtoupper($type) . ']';
 				break;
 			}

@@ -1,337 +1,163 @@
 <?php
-abstract class RoomOptionItem extends Option {
-  var $id;
-  #var $name;
+abstract class RoomOptionItem {
+  var $name;
   var $enabled;
+
+  var $collect = 'SetOption';
+
+	/*
+  var $formtype;
+  var $formname;
+  var $formvalue;
   var $value;
   var $caption;
   var $explain;
-  var $checked;
-  var $collect;
+	 */
 
-  function  __construct($name, $caption, $explain) {
-    $this->ID($name);
-    $this->Name($name);
-    $this->caption = $caption;
-    $this->explain = $explain;
-  }
-
-	static function Text($name, $caption, $explain) {
-    return new TextRoomOptionItem($name, 'text', $caption, $explain);
-  }
-  static function Password($name, $caption, $explain) {
-    return new TextRoomOptionItem($name, 'password', $caption, $explain);
-  }
-  static function Check($name, $caption, $explain) {
-    return new CheckRoomOptionItem($name, $caption, $explain);
-  }
-  static function Radio($name, $value, $caption, $explain) {
-    $def = new CheckRoomOptionItem($name, $caption, $explain, 'radio', $value);
-		if (!empty($value)) {
-			$def->ID("{$name}_{$value}");
-		}
-		return $def;
-  }
-  static function Selector($name, $label, $caption, $explain) {
-    return new SelectorRoomOptionItem($name, $label, $caption, $explain);
-  }
-  static function RealTime($name, $caption, $explain) {
-    return new TimeRoomOptionItem($name, $caption, $explain);
-  }
-  static function Group($name, $caption) {
-    return new RoomOptionItemGroup($name, $caption);
-  }
-
-	function Name($name) {
+  function  __construct($group) {
     global $GAME_OPT_CONF;
-    $this->name = $name;
-    $default = "default_{$name}";
+    $this->name = array_pop(explode('Option_', get_class($this)));
+		RoomOption::SetGroup($group, $this);
+    $enable = "{$this->name}_enable";
+    $this->enabled = isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true;
+    $default = "default_{$this->name}";
     if (isset($GAME_OPT_CONF->$default)) {
       $this->value = $GAME_OPT_CONF->$default;
     }
-		return $this;
+   	$this->formname = $this->name;
+   	$this->formvalue = $this->value;
+  }
+
+	function SetOption(RoomOption $option, $value) {
+    $option->Set($this, $this->name, $value);
 	}
-
-	function ID($id) {
-    global $GAME_OPT_CONF;
-		$this->id = $id;
-    $enable = "{$id}_enable";
-    $this->enable = (isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true);
-		return $this;
-	}
-
-  function Value($value) {
-    $this->value = $value;
-    return $this;
-  }
-
-  function ON() {
-    $this->checked = true;
-    return $this;
-  }
-  function OFF() {
-    $this->checked = false;
-    return $this;
-  }
-
-  function ItemSource($items) {
-    foreach ($items as $key => $value) {
-      $this->Item($key, $value);
-    }
-    return $this;
-  }
-
-  function Item($name, $item = null) {
-    if (isset($this->items) && $this->ItemIsAvailable($name)) {
-      $this->items[$name] = $item;
-    }
-    return $this;
-  }
-
-  function CollectOverride($method) {
-    $this->collect = $method;
-    return $this;
-  }
-
-  protected function CallCollectOverride(RoomOption $option) {
-    if (isset($this->collect)) {
-      call_user_func_array(array($this, $this->collect), array($option));
-      return true;
-    }
-    return false;
-  }
 
   function CollectPostParam(RoomOption $option) {
-    if (isset($_POST[$this->name]) && !$this->CallCollectOverride($option)) {
-      $value = $_POST[$this->name];
-      $option->Set($this, $this->name, $value);
+    if (isset($_POST[$this->name]) && isset($this->collect)) {
+      call_user_func_array(array($this, $this->collect), array($option, $_POST[$this->name]));
     }
   }
 
-  function NotOption(RoomOption $option) {
+  abstract function LoadMessages();
+
+  function CastOnce(&$list, &$rand, $str = ''){
+    $list[array_pop($rand)] .= ' ' . $this->name . $str;
+    return array($this->name);
   }
 
-  function ItemIsAvailable($name) {
-    global $GAME_OPT_CONF;
-    $enable = "{$name}_enable";
-    return isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true;
-  }
-
-  abstract function GenerateControl();
-
-  function GenerateView() {
-    return <<<HTML
-<tr>
-<td><label for="{$this->name}">{$this->caption}：</label></td>
-<td class="explain">
-{$this->GenerateControl()}
-</td>
-</tr>
-HTML;
+  function CastAll(&$list){
+    foreach(array_keys($list) as $id) $list[$id] .= ' ' . $this->name;
+    return array($this->name);
   }
 }
 
 /**
  * チェックボックス型の標準的な村立てオプション項目を提供します。
  */
-class CheckRoomOptionItem extends RoomOptionItem {
-  var $type;
-  var $default;
-
-  function  __construct($name, $caption, $explain, $type='checkbox', $value='on') {
-    parent::__construct($name, $caption, $explain);
-    //ユーザー設定の退避
-    if ($type == 'checkbox') {
-      $this->checked = $this->value;
-    }
-    else if ($type == 'radio') {
-      /* チェックされているかどうかの識別に使用する */
-      $this->default = $this->value;
-    }
-    $this->type = $type;
-    $this->value = $value;
+abstract class CheckRoomOptionItem extends RoomOptionItem {
+  function  __construct($group) {
+    parent::__construct($group);
+		$this->formtype = 'checkbox';
+		$this->formvalue = 'on';
   }
 
-  function CollectPostParam(RoomOption $option) {
-    if (isset($_POST[$this->name]) && !$this->CallCollectOverride($option)) {
-      $checked = $_POST[$this->name] == $this->value && !empty($this->value);
-      $option->Set($this, $this->name, $checked);
-    }
-  }
+	function SetOption(RoomOption $option, $value) {
+    $checked = $value == $this->formvalue && !empty($this->formvalue);
+    $option->Set($this, $this->name, $checked);
+	}
 
-  function CollectId(RoomOption $option) {
-    $checked = $_POST[$this->name] == $this->value && !empty($this->value);
-    $option->Set($this, $this->id, $checked);
-  }
-
-  function CollectValue(RoomOption $option) {
-    $checked = $_POST[$this->name] == $this->value && !empty($this->value);
-    $option->Set($this, $this->value, $checked);
-  }
-
-  function CollectKeyValue(RoomOption $option) {
-    $checked = $_POST[$this->name] == $this->value && !empty($this->value);
+	function SetOptionAsKeyValue(RoomOption $option, $value) {
+    $checked = $value == $this->formvalue && !empty($this->formvalue);
     if ($checked) {
-      $option->Set($this, $this->name, $this->value);
+      $option->Set($this, $this->name, $this->formvalue);
     }
-  }
+	}
 
-  function GenerateControl() {
-    $checked = $this->checked || (isset($this->default) && ($this->default == $this->value)) ? ' checked' : '';
-    return <<<HTML
-<input type="{$this->type}" id="{$this->id}" name="{$this->name}" value="{$this->value}"{$checked}>
-({$this->explain})
-HTML;
+  function SetOptionAsValue(RoomOption $option, $value) {
+    $checked = $value == $this->formvalue && !empty($this->formvalue);
+    $option->Set($this, $this->formvalue, $checked);
   }
 }
 
 /**
  * セレクタ型の村立てオプション項目を提供します。
  */
-class SelectorRoomOptionItem extends RoomOptionItem {
+abstract class SelectorRoomOptionItem extends RoomOptionItem {
   var $label;
-  var $items = array();
+  var $items;
+	var $items_source;
+	var $conf_name = 'GAME_OPT_CONF';
 
-  function  __construct($name, $label, $caption, $explain) {
-    parent::__construct($name, $caption, $explain);
-    $this->label = $label;
+  function  __construct($group) {
+    parent::__construct($group);
+		$this->formtype = 'select';
+		$this->items_source = "{$this->name}_items";
   }
 
-  function CollectValue(RoomOption $option) {
-    $value = $_POST[$this->name];
-    if (isset($this->items[$value]) && !empty($value)) {
-      $option->Set($this, $value, true);
+  function CollectValue(RoomOption $option, $value) {
+		$items = $this->GetItems();
+    if (isset($items[$value]) && !empty($value)) {
+			$child = $items[$value];
+			if ($child instanceof RoomOptionItem) {
+      	$option->Set($this, $child->name, true);
+			}
+			else {
+      	$option->Set($this, $value, true);
+			}
     }
   }
 
-  function GenerateControl() {
-    $items = '';
-    foreach ($this->items as $value => $label) {
-      if (!is_string($value)) {
-        $value = $label;
-      }
-      $selected = $value == $this->value ? ' selected' : '';
-      $items .= "<option value=\"{$value}\" {$selected}>{$label}</option>\n";
-    }
-    return <<<HTML
-<select id="{$this->id}" name="{$this->name}">
-<optgroup label="{$this->label}">
-{$items}</optgroup>
-</select>
-<span class="explain">({$this->explain})</span>
-HTML;
+	function GetItems() {
+		if (!isset($this->items)) {
+			$this->items = array();
+			$CONF = &$GLOBALS[$this->conf_name];
+			$list = $this->items_source;
+			if (isset($CONF->$list)) {
+				foreach ($CONF->$list as $key => $value) {
+					if (is_string($key)) {
+						if ($this->ItemIsAvailable($key)) {
+							$this->items[$key] = $value;
+						}
+					}
+					else if (is_string($value)) {
+						$item = RoomOption::Get($value);
+						if (isset($item) && $item->enabled) {
+							$this->items[$item->name] = $item;
+						}
+					}
+					else {
+						$this->items[] = $value;
+					}
+				}
+			}
+		}
+		return $this->items;
+	}
+
+	function ItemIsAvailable($name) {
+    global $GAME_OPT_CONF;
+    $enable = "{$name}_enable";
+    return isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true;
   }
 }
 
 /**
  * テキスト型の村立てオプション項目を提供します。
  */
-class TextRoomOptionItem extends RoomOptionItem {
+abstract class TextRoomOptionItem extends RoomOptionItem {
+  var $size;
   var $footer;
 
-  function  __construct($name, $type, $caption, $explain) {
-    parent::__construct($name, $caption, $explain);
-    $this->type = $type;
+  function  __construct($group) {
+    parent::__construct($group);
+		$this->formtype = 'textbox';
   }
 
-	function Size($size) {
-		$this->size = $size;
-		return $this;
+	function  LoadMessages() {
+		global $ROOM_CONF;
+		$size = "{$this->name}_input";
+		if (isset($ROOM_CONF->$size)) {
+			$this->size = $ROOM_CONF->$size;
+		}
 	}
-
-  function Footer($text) {
-    $this->footer = $text;
-    return $this;
-  }
-
-  function GenerateControl() {
-    $footer = isset($this->footer) ? $this->footer : '<span class="explain">'.$this->explain.'</span>';
-		$size = isset($this->size) ? 'size="'.$this->size.'"' : '';
-    return <<<HTML
-<input type="{$this->type}" id="{$this->id}" name="{$this->name}" {$size} value="{$this->value}">
-$footer
-HTML;
-  }
-}
-
-
-/**
- * 村の時間進行を設定するオプション項目を提供します。
- */
-class TimeRoomOptionItem extends RoomOptionItem {
-  var $defaultDayTime = 5;
-  var $defaultNightTime = 3;
-
-  function  __construct($name, $caption, $explain) {
-    parent::__construct($name, $caption, $explain);
-		$this->checked = $this->value;
-    $this->value = 'on';
-  }
-
-  function Day($minutes) {
-    $this->defaultDayTime = $minutes;
-    return $this;
-  }
-
-  function Night($minutes) {
-    $this->defaultNightTime = $minutes;
-    return $this;
-  }
-
-  function Format($format) {
-    $this->explain = $format;
-    return $this;
-  }
-
-  function CollectPostParam(RoomOption $option) {
-    if (isset($_POST[$this->name]) && !$this->CallCollectOverride($option)) {
-      $value = $_POST[$this->name];
-      if ($value == 'on') {
-        global $TIME_CONF;
-        $day = isset($_POST["{$this->name}_day"]) ? $_POST["{$this->name}_day"] : $TIME_CONF->default_day;
-        $night = isset($_POST["{$this->name}_night"]) ? $_POST["{$this->name}_night"] : $TIME_CONF->default_night;
-        $option->Set($this, $this->name, array(is_numeric($day) ? (int)$day : 0, is_numeric($night) ? (int)$night : 0));
-      }
-      else {
-        $option->Set($this, $this->name, false);
-      }
-    }
-  }
-
-  function GenerateControl() {
-    $checked = $this->checked ? ' checked' : '';
-    return <<<HTML
-<input type="checkbox" id="{$this->id}" name="{$this->name}" value="{$this->value}"{$checked}>
-({$this->explain}　昼：<input type="text" name="{$this->name}_day" value="{$this->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$this->name}_night" value="{$this->defaultNightTime}" size="2" maxlength="2">分)
-</td>
-
-HTML;
-  }
-}
-
-/**
- * 複数のオプションを一行で表示するためのインフラを提供します。
- */
-class RoomOptionItemGroup extends RoomOptionItem {
-  var $items = array();
-
-  function  __construct($name, $caption) {
-    parent::__construct($name, $caption, '');
-  }
-
-  function Item($item) {
-    if ($item->enable) {
-      $this->items[] = $item;
-    }
-    return $this;
-  }
-
-  function GenerateControl() {
-    $result = '';
-    foreach ($this->items as $item) {
-      $result .= $item->GenerateControl();
-      $result .= "<br>\n";
-    }
-    return $result;
-  }
 }

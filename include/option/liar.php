@@ -5,7 +5,12 @@
 */
 class Option_liar extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('liar', '狼少年村', 'ランダムで「狼少年」がつきます');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '狼少年村';
+		$this->explain = 'ランダムで「狼少年」がつきます';
 	}
 
   function Cast(&$list, &$rand){

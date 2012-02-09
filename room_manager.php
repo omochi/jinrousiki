@@ -111,8 +111,8 @@ function CreateRoom(){
 
   //-- ゲームオプションをセット --//
   $GAME_OPT->LoadPostParams(
-    'real_time', 'dummy_boy', 'perverseness', 'replace_human', 'replace_human', 'special_role',
-    'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast');
+    'real_time', 'dummy_boy_selector', 'perverseness', 'replace_human_selector', 'special_role',
+    'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast_selector');
   if($GAME_OPT->quiz){ //クイズ村
     $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
     EscapeStrings($gm_password);
@@ -167,7 +167,7 @@ function CreateRoom(){
     $GAME_OPT->LoadPostParams(
       'deep_sleep', 'blinder', 'mind_open', 'joker', 'death_note', 'weather', 'festival', 'liar',
       'gentleman', 'critical', $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death',
-      'replace_human', 'change_common', 'change_mad', 'change_cupid');
+      'replace_human_selector', 'change_common_selector', 'change_mad_selector', 'change_cupid_selector');
   }
   //PrintData($_POST, 'Post');
   //PrintData($check_game_option_list, 'CheckGameOption');
@@ -361,7 +361,7 @@ function OutputCreateRoomPage(){
 
 EOF;
 
-  $GAME_OPT->OutputView('all', true);
+	RoomOption::ShowBuildRoomForm();
   $password = is_null($SERVER_CONF->room_password) ? '' :
     '<label for="room_password">村作成パスワード</label>：' .
     '<input type="password" id="room_password" name="room_password" size="20">　';

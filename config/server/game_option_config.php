@@ -126,19 +126,27 @@ class GameOption {
   public $full_chiroptera_enable    = true; //蝙蝠村
   public $full_mania_enable         = true; //神話マニア村
   public $full_unknown_mania_enable = true; //鵺村
+  //村人置換モードの内訳
+  public $replace_human_items = array('' => 'なし', 'replace_human', 'full_mad', 'full_cupid', 'full_quiz', 'full_vampire', 'full_chiroptera', 'full_mania', 'full_unknown_mania');
 
   public $change_common_enable        = true; //共有者置換村 (管理人カスタムモード)
   public $change_hermit_common_enable = true; //隠者村
+  //共有者置換モードの内訳
+  public $change_common_items = array('' => 'なし', 'change_common', 'change_hermit_common');
 
   public $change_mad_enable          = true; //狂人置換村 (管理人カスタムモード)
   public $change_fanatic_mad_enable  = true; //狂信者村
   public $change_whisper_mad_enable  = true; //囁き狂人村
   public $change_immolate_mad_enable = true; //殉教者村
+  //狂人置換モードの内訳
+  public $change_mad_items = array('' => 'なし', 'change_mad', 'change_fanatic_mad', 'change_whisper_mad', 'change_immolate_mad');
 
   public $change_cupid_enable          = true; //キューピッド置換村 (管理人カスタムモード)
   public $change_mind_cupid_enable     = true; //女神村
   public $change_triangle_cupid_enable = true; //小悪魔村
   public $change_angel_enable          = true; //天使村
+  //キューピッド置換モードの内訳
+  public $change_cupid_items = array('' => 'なし', 'change_cupid', 'change_mind_cupid', 'change_triangle_cupid', 'change_angel');
 
   //-- 特殊配役モード --//
   public $chaos_enable       = true; //闇鍋モード
@@ -148,6 +156,8 @@ class GameOption {
   public $duel        = true; //決闘村
   public $gray_random_enable = true; //グレラン村
   public $quiz_enable        = true; //クイズ村
+  //特殊配役モードの内訳
+  public $special_role_items = array('' => 'なし', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'duel', 'gray_random', 'quiz');
 
   //-- 闇鍋モード専用設定 --//
   public $topping_enable = true; //固定配役追加モード

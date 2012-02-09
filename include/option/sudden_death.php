@@ -7,7 +7,12 @@ class Option_sudden_death extends CheckRoomOptionItem {
   public $disable_list = array('febris', 'frostbite', 'death_warrant', 'panelist');
 
   function __construct(){
-		parent::__construct('sudden_death', '虚弱体質村', '全員に投票でショック死するサブ役職のどれかがつきます');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '虚弱体質村';
+		$this->explain = '全員に投票でショック死するサブ役職のどれかがつきます';
 	}
 
   function Cast(&$list, &$rand){

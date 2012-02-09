@@ -5,7 +5,12 @@
 */
 class Option_critical extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('critical', '急所村', '全員に「会心」「痛恨」がつきます。');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '急所村';
+		$this->explain = '全員に「会心」「痛恨」がつきます。';
 	}
 
   function Cast(&$list, &$rand){

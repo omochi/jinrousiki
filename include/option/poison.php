@@ -6,7 +6,12 @@
 */
 class Option_poison extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('poison', '埋毒者登場', '処刑されたり狼に食べられた場合、道連れにします [村人2→埋毒1・人狼1]');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '埋毒者登場';
+		$this->explain = '処刑されたり狼に食べられた場合、道連れにします [村人2→埋毒1・人狼1]';
 	}
 
   function SetRole(&$list, $count){

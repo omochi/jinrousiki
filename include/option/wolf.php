@@ -6,7 +6,12 @@
 */
 class Option_wolf extends CheckRoomOptionItem {
   function __construct(){
-		parent::__construct('wolf', '人狼追加', '人狼をもう一人追加します [村人1→人狼1]');
+		parent::__construct(RoomOption::ROLE_OPTION);
+	}
+
+	function  LoadMessages() {
+		$this->caption = '人狼追加';
+		$this->explain = '人狼をもう一人追加します [村人1→人狼1]';
 	}
 
   function SetRole(&$list, $count){

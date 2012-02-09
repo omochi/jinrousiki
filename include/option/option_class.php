@@ -127,20 +127,3 @@ class OptionManager{
     $this->stack->delete = $delete;
   }
 }
-
-//オプション基底クラス
-class Option{
-  public $name;
-
-  function __construct(){ $this->name = array_pop(explode('Option_', get_class($this))); }
-
-  function CastOnce(&$list, &$rand, $str = ''){
-    $list[array_pop($rand)] .= ' ' . $this->name . $str;
-    return array($this->name);
-  }
-
-  function CastAll(&$list){
-    foreach(array_keys($list) as $id) $list[$id] .= ' ' . $this->name;
-    return array($this->name);
-  }
-}
