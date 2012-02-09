@@ -3,6 +3,7 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
 	function  __construct() {
 		parent::__construct(RoomOption::ROLE_OPTION);
 		$this->formtype = 'group';
+		$this->collect = 'CollectValue';
 	}
 
 	function  GetItems() {

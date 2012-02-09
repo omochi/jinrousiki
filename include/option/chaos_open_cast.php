@@ -3,6 +3,7 @@ class Option_chaos_open_cast extends SelectorRoomOptionItem {
 	function  __construct() {
 		parent::__construct(RoomOption::ROLE_OPTION);
 		$this->formtype = 'group';
+		$this->collect = 'CollectValue';
 	}
 
 	function  GetItems() {
