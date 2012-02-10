@@ -27,6 +27,6 @@ class Option_not_close_cast extends CheckRoomOptionItem {
 	}
 
 	function LoadMessages() {
-		$this->explain = '常時非公開 (誰がどの役職なのか公開されません。蘇生能力は有効です)';
+		$this->explain = '常時公開 (蘇生能力は無効です)';
 	}
 }
