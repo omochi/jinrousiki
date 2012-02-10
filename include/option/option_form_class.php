@@ -12,7 +12,7 @@ class OptionForm {
         echo <<<HTML
   <tr>
   <td><label for="{$item->name}">{$item->caption}：</label></td>
-  <td class="explain">
+  <td>
 HTML;
         $this->$type($item);
         echo <<<HTML
@@ -37,11 +37,11 @@ HTML;
   }
 
   function textbox(RoomOptionItem $item, $type = 'textbox') {
-    $footer = isset($item->footer) ? $item->footer : '<span class="explain">'.$item->explain.'</span>';
+    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
     $size = isset($item->size) ? 'size="'.$item->size.'"' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" {$size} value="{$item->value}">
-$footer
+<span class="explain">$footer</span>
 HTML;
   }
   function password(RoomOptionItem $item) {
@@ -49,11 +49,11 @@ HTML;
   }
 
   function checkbox(RoomOptionItem $item, $type = 'checkbox') {
-    $footer = isset($item->footer) ? $item->footer : '<span class="explain">'.$item->explain.'</span>';
+    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
     $checked = $item->value ? ' checked' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
-({$footer})
+<span class="explain">{$footer}</span>
 
 HTML;
   }
@@ -90,7 +90,7 @@ HTML;
     $checked = $item->value ? ' checked' : '';
     echo <<<HTML
 <input type="checkbox" id="{$item->name}" name="{$item->formname}" value="on"{$checked}>
-({$item->explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)
+<span class='explain'>({$item->explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)</span>
 </td>
 
 HTML;
