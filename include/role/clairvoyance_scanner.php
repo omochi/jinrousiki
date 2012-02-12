@@ -29,10 +29,10 @@ class Role_clairvoyance_scanner extends Role_mind_scanner{
 
     foreach($this->GetStack('vote_data') as $action => $vote_stack){
       if(strpos($action, '_NOT_DO') !== false ||
-	 ! array_key_exists($user->uname, $vote_stack)) continue;
+	 ! array_key_exists($user->user_no, $vote_stack)) continue;
       $actor_id     = $this->GetActor()->user_no;
-      $target_name  = $USERS->GetHandleName($user->uname, true);
-      $target_stack = $vote_stack[$user->uname];
+      $target_name  = $USERS->ByVirtual($user->user_no)->handle_name;
+      $target_stack = $vote_stack[$user->user_no];
 
       if($user->IsRole('barrier_wizard')){
 	$result_stack = array();
@@ -46,7 +46,7 @@ class Role_clairvoyance_scanner extends Role_mind_scanner{
 	}
       }
       else{
-	$result = $USERS->GetHandleName($target_stack, true);
+	$result = $USERS->ByVirtual($target_stack)->handle_name;
 	$ROOM->ResultAbility($this->result, $result, $target_name, $actor_id);
       }
     }

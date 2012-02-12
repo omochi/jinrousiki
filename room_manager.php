@@ -18,6 +18,7 @@ $DB_CONF->Disconnect(); //DB 接続解除
 
 //-- 関数 --//
 //村のメンテナンス処理
+/* call する位置を調整して、他のサーバから起動されないようにする */
 function MaintenanceRoom(){
   global $SERVER_CONF, $ROOM_CONF;
 
@@ -41,7 +42,7 @@ UPDATE user_entry INNER JOIN room ON user_entry.session_id IS NOT NULL
        room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
   SET user_entry.session_id = NULL
 EOF;
-  SendQuery($query, true);
+  SendQuery($query);
 }
 
 //村(room)の作成

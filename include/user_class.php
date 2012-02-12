@@ -606,7 +606,7 @@ class User{
     //メイン役職を取得
     $camp = $this->GetCamp();
     $name = $ROLE_DATA->short_role_list[$this->main_role];
-    $str = '<span class="add-role"> [';
+    $str  = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
     if($main_only) return $this->handle_name . $str . ']</span>';
 
@@ -666,7 +666,7 @@ EOF;
     }
     $value = is_null($value) ? 'NULL' : "'{$value}'";
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    return SendQuery("UPDATE user_entry SET {$item} = {$value} {$query}", true);
+    return FetchBool("UPDATE user_entry SET {$item} = {$value} {$query}");
   }
 
   //ID 更新処理 (KICK 後処理用)
@@ -678,7 +678,7 @@ EOF;
       return;
     }
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
-    return SendQuery("UPDATE user_entry SET user_no = {$id} {$query}");
+    return FetchBool("UPDATE user_entry SET user_no = {$id} {$query}");
   }
 
   //player 更新処理
@@ -705,7 +705,7 @@ EOF;
     }
     $update = implode(', ', $update_list);
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    SendQuery("UPDATE user_entry SET {$update} {$query}", true);
+    FetchBool("UPDATE user_entry SET {$update} {$query}");
   }
 
   //基幹死亡処理

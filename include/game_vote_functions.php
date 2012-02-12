@@ -25,7 +25,7 @@ function OutputVoteResult($sentence, $reset_vote = false){
   $title  = $SERVER_CONF->title . ' [投票結果]';
   $header = '<div id="game_top" align="center">';
   $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
-  OutputActionResult($title, $header . $sentence . $footer, '', true);
+  OutputActionResult($title, $header . $sentence . $footer);
 }
 
 //投票ページ HTML ヘッダ出力
@@ -41,7 +41,8 @@ function OutputVotePageHeader(){
   echo <<<EOF
 <link rel="stylesheet" href="{$css_path}/game_vote.css">
 <link rel="stylesheet" id="scene">
-</head><body>
+</head>
+<body>
 <a id="game_top"></a>
 <form method="POST" action="{$RQ_ARGS->post_url}">
 <input type="hidden" name="vote" value="on">

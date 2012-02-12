@@ -2,9 +2,9 @@
 
 //村で使用中のアイコンチェック
 function IsUsingIcon($id){
-  $query = 'SELECT user_icon.icon_no FROM (user_icon INNER JOIN user_entry ON ' .
-    "user_icon.icon_no = {$id} AND user_icon.icon_no = user_entry.icon_no) INNER JOIN room ON " .
-    "room.status IN ('waiting', 'playing') AND user_entry.room_no = room.room_no";
+  $query = 'SELECT icon_no FROM user_icon INNER JOIN ' .
+    '(user_entry INNER JOIN room USING (room_no)) USING (icon_no) ' .
+    "WHERE icon_no = {$id} AND room.status IN ('waiting', 'playing')";
   return FetchCount($query) > 0;
 }
 

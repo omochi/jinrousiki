@@ -527,7 +527,7 @@ class Role{
     $user = $USERS->ByID($this->GetVoteNightTarget());
     $live = $USERS->IsVirtualLive($user->user_no); //仮想的な生死を判定
     if(! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
-    $this->SetStack($user->user_no, 'target_no');
+    $this->SetStack($USERS->ByReal($user->user_no)->user_no, 'target_no');
     $this->SetStack($user->handle_name, 'target_handle');
     return null;
   }

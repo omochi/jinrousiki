@@ -77,6 +77,7 @@ function OpenFile($file){
 }
 
 //使用されているアイコンを削除する (from: 対象番号 / to: 代替番号)
+/* ロック処理を再設計しているので 2.0 では使用できない */
 function DeleteUsedIcon($from, $to){
   global $ICON_CONF;
 

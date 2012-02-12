@@ -159,32 +159,7 @@ function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $ic
   return InsertDatabase('user_entry', $items, $values);
 }
 
-//テーブルを排他的ロック
-function LockTable($type = null){
-  $stack = array('room', 'user_entry');
-  switch($type){
-  case 'game':
-    array_push($stack, 'user_icon');
-    break;
-
-  case 'icon':
-    $stack = array('user_icon');
-    break;
-
-  case 'icon_delete':
-    $stack = array('user_icon', 'user_entry');
-    break;
-  }
-
-  $query_stack = array();
-  foreach($stack as $table) $query_stack[] = $table . ' WRITE';
-  return ! FetchBool('LOCK TABLES ' . implode(', ', $query_stack));
-}
-
-//テーブルロック解除
-function UnlockTable(){ return FetchBool('UNLOCK TABLES'); }
-
-//部屋削除
+//村削除
 function DeleteRoom($room_no){
   $header = 'DELETE FROM ';
   $footer = ' WHERE room_no = ' . $room_no;
@@ -507,10 +482,10 @@ function OutputActionResultHeader($title, $url = ''){
 }
 
 //結果ページ出力
-function OutputActionResult($title, $body, $url = '', $unlock = false){
+function OutputActionResult($title, $body, $url = ''){
   global $DB_CONF;
 
-  $DB_CONF->Disconnect($unlock); //DB 接続解除
+  $DB_CONF->Disconnect(); //DB 接続解除
 
   OutputActionResultHeader($title, $url);
   echo $body . "\n";

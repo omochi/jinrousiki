@@ -78,7 +78,7 @@ class InitializeConfig{
     'user_class'          => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
     'index_functions'     => array('SCRIPT_INFO', 'BBS_CONF'),
-    'oldlog_functions'    => array('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS')
+    'oldlog_functions'    => array('CAST_CONF', 'ROOM_IMG', 'GAME_OPT', 'GAME_OPT_MESS'),
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)

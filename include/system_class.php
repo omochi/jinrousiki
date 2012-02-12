@@ -49,11 +49,10 @@ class DatabaseConfigBase{
   }
 
   //データベースとの接続を閉じる
-  function Disconnect($unlock = false){
+  function Disconnect(){
     if(empty($this->db_handle)) return;
 
     if($this->transaction) $this->Rollback();
-    if($unlock) UnlockTable();
     mysql_close($this->db_handle);
     unset($this->db_handle);
   }

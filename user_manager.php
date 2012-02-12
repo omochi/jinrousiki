@@ -65,7 +65,7 @@ function EntryUser(){
 
   $ROOM = RoomDataSet::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
   if(! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting'){ //ゲーム開始判定
-    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています。', '', true);
+    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています。');
   }
 
   //DB から現在のユーザ情報を取得 (ロック付き)
@@ -77,7 +77,7 @@ function EntryUser(){
 
   $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
   if($user_no < 1 && $user_count >= $ROOM->max_user){ //定員オーバー判定
-    OutputActionResult('村人登録 [入村不可]', '村が満員です。', '', true);
+    OutputActionResult('村人登録 [入村不可]', '村が満員です。');
   }
 
   //重複チェック (比較演算子は大文字・小文字を区別しないのでクエリで直に判定する)
@@ -87,14 +87,13 @@ function EntryUser(){
   //キックされた人と同じユーザ名
   if(FetchCount($query_count . "uname = '{$uname}' AND live = 'kick'") > 0){
     $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
-    OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer, '', true);
+    OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer);
   }
 
   if($user_no > 0){ //登録情報変更モード
-    $query = 'SELECT u.uname, u.handle_name, u.sex, u.profile, u.role, u.icon_no, ' .
-      'u.session_id, i.color, i.icon_name ' .
-      'FROM user_entry AS u INNER JOIN user_icon AS i ON u.icon_no = i.icon_no ' .
-      "WHERE u.room_no = {$room_no} AND u.user_no = {$user_no}";
+    $query = 'SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, ' .
+      'color, icon_name FROM user_entry AS u INNER JOIN user_icon USING (icon_no) ' .
+      "WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $target = FetchObject($query, 'User', true);
     if($target->session_id != $SESSION->Get()){
       OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
@@ -105,7 +104,7 @@ function EntryUser(){
     }
     if(FetchCount($query_count . "user_no <> '{$user_no}' AND handle_name = '{$handle_name}'") > 0){
       $str = '村人名が既に登録してあります。';
-      OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
+      OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
     }
     $str = "{$target->handle_name} さんが登録情報を変更しました。";
     $stack = array();
@@ -120,7 +119,7 @@ function EntryUser(){
       $icon_name = FetchResult('SELECT icon_name FROM user_icon WHERE icon_no = ' . $icon_no);
       $stack[] = "icon_no = '{$icon_no}'";
       $str .= "\nアイコン：No. {$target->icon_no} ({$target->icon_name}) → " .
-	"{$icon_no} ({$icon_name})";
+	"No. {$icon_no} ({$icon_name})";
     }
     if($target->sex     != $sex)     $stack[] = "sex = '{$sex}'";
     if($target->profile != $profile) $stack[] = "profile = '{$profile}'";
@@ -131,10 +130,11 @@ function EntryUser(){
       OutputActionResult('村人登録 [登録情報変更]', $str);
     }
     $ROOM->TalkBeforegame($str, $target->uname, $target->handle_name, $target->color);
+
     $query_set = implode(', ', $stack);
     $query = "UPDATE user_entry SET {$query_set} WHERE room_no = {$room_no} " .
       "AND user_no = {$user_no}";
-    if(FetchBool($query, true)){
+    if(FetchBool($query, true)){ //コミット付き
       $str = <<<EOF
 登録データを変更しました。<br>
 <form action="#" method="post">
@@ -153,7 +153,7 @@ EOF;
   $query_count .= "live = 'live' AND ";
   if(FetchCount($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0){
     $str = 'ユーザ名、または村人名が既に登録してあります。';
-    OutputActionResult('村人登録 [重複登録エラー]', $str . $footer, '', true);
+    OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
   }
   //OutputActionResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
 
@@ -162,10 +162,10 @@ EOF;
   if(! $SERVER_CONF->debug_mode){
     if($GAME_CONF->entry_one_ip_address &&
        FetchCount($query_count . "ip_address = '{$ip_address}'") > 0){
-      OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。', '', true);
+      OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
     }
     elseif(CheckBlackList()){
-      OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。', '', true);
+      OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。');
     }
   }
 
@@ -188,24 +188,20 @@ EOF;
     $user_count++;
     $str = $user_count . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>' .
       '切り替わらないなら <a href="' . $url. '">ここ</a> 。';
-    OutputActionResult('村人登録', $str, $url, true);
+    OutputActionResult('村人登録', $str, $url);
   }
   else{
     $str = 'データベースサーバが混雑しています。<br>時間を置いて再度登録してください。';
-    OutputActionResult('村人登録 [データベースサーバエラー]', $str, '', true);
+    OutputActionResult('村人登録 [データベースサーバエラー]', $str);
   }
 }
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $SERVER_CONF, $DB_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $SESSION;
+  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $SESSION;
 
   extract($RQ_ARGS->ToArray()); //引数を取得
   if($user_no > 0){ //登録情報変更モード
-    if(! $DB_CONF->Transaction()){ //トランザクション開始
-      $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
-      OutputActionResult('村人登録 [サーバエラー]', $str);
-    }
     $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $stack = FetchAssoc($query, true);
     if($stack['session_id'] != $SESSION->Get()){
@@ -214,8 +210,6 @@ function OutputEntryUserPage(){
     foreach($stack as $key => $value){
       if(array_key_exists($key, $RQ_ARGS)) $RQ_ARGS->$key = $value;
     }
-    //PrintData($stack);
-    //PrintData($RQ_ARGS);
   }
 
   $ROOM = RoomDataSet::LoadEntryUserPage($room_no);

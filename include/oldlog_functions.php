@@ -90,13 +90,12 @@ class PageLinkBuilder{
 //-- 関数 --//
 //過去ログ一覧生成
 function GenerateFinishedRooms($page){
-	global $INIT_CONF;
-	$INIT_CONF->LoadClass('GAME_OPT');
   global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG, $RQ_ARGS;
 
   //村数の確認
   $title = $SERVER_CONF->title . ' [過去ログ]';
-  $room_count = FetchResult("SELECT COUNT(status) FROM room WHERE status = 'finished'");
+  $query = "SELECT room_no FROM room WHERE status = 'finished'";
+  $room_count = FetchCount($query);
   if($room_count < 1){
     OutputActionResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }
@@ -114,16 +113,34 @@ function GenerateFinishedRooms($page){
   else{
     $builder = new PageLinkBuilder('old_log', $RQ_ARGS->page, $room_count, $LOG_CONF);
     $builder->set_reverse = $is_reverse;
-    $builder->AddOption('reverse', $is_reverse ? 'on' : 'off');
-    $builder->AddOption('watch', $RQ_ARGS->watch ? 'on' : 'off');
+    $builder->AddOption('reverse', $is_reverse     ? 'on' : 'off');
+    $builder->AddOption('watch',   $RQ_ARGS->watch ? 'on' : 'off');
     $db_no = $RQ_ARGS->db_no;
     if(is_int($db_no) && $db_no > 0) $builder->AddOption('db_no', $db_no);
   }
 
   $back_url = $RQ_ARGS->generate_index ? '../' : './';
   $img_url  = $RQ_ARGS->generate_index ? '../' : '';
+
+  $bg_css = '';
+  if(isset($_GET['bg']) && intval($_GET['bg']) > 0){
+    $bg = intval($_GET['bg']);
+    $color = $bg == 5 ? '#F0F8FF' : ($bg == 3 ? '#FFF5EE' : '#FFFAF0');
+    $bg_css = <<<EOF
+<style type="text/css">
+<!--
+#room_list{
+ background-color: {$color};
+ background-image: url("img/old_log_bg{$bg}.png");
+}
+-->
+</style>
+
+EOF;
+  }
+
   $str = GenerateHTMLHeader($title, 'old_log_list') . <<<EOF
-</head>
+{$bg_css}</head>
 <body id="room_list">
 <p><a href="{$back_url}">←戻る</a></p>
 <img src="{$img_url}img/old_log_title.jpg"><br>
@@ -141,9 +158,7 @@ EOF;
   $ROOM_DATA  = new RoomDataSet();
   $WINNER_IMG = new WinnerImage();
   $current_time = TZTime(); // 現在時刻の取得
-
-  $query = "SELECT room_no FROM room WHERE status = 'finished' ORDER BY room_no";
-  if($is_reverse) $query .= ' DESC';
+  $query .= ' ORDER BY room_no ' . ($is_reverse ? 'DESC' : 'ASC');
   if($RQ_ARGS->page != 'all'){
     $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->view * ($RQ_ARGS->page - 1), $LOG_CONF->view);
   }
@@ -221,8 +236,6 @@ function GenerateLogIndex(){
 
 //指定の部屋番号のログを生成する
 function GenerateOldLog(){
-  global $INIT_CONF;
-	$INIT_CONF->LoadClass('GAME_OPT');
   global $SERVER_CONF, $RQ_ARGS, $ROOM;
 
   $base_title = $SERVER_CONF->title . ' [過去ログ]'; //

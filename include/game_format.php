@@ -96,15 +96,16 @@ EOF;
   }
 
   //標準的な発言処理
-  function AddTalk($user, $talk){
+  function AddTalk($user, $talk, $real = null){
     global $RQ_ARGS, $ROOM, $USERS;
 
     //表示情報を抽出
     $color  = isset($talk->color) ? $talk->color : $user->color;
     $symbol = '<font style="color:' . $color . '">◆</font>';
     $name   = isset($talk->handle_name) ? $talk->handle_name : $user->handle_name;
-    if($RQ_ARGS->add_role){ //役職表示モード対応
-      $real = $talk->scene == 'heaven' ? $user : $USERS->ByReal($user->user_no);
+    if($RQ_ARGS->add_role && $user->user_no > 0){ //役職表示モード対応
+      $real = $talk->scene == 'heaven' ? $user :
+	(isset($real) ? $real : $USERS->ByReal($user->user_no));
       $name .= $real->GenerateShortRoleName();
     }
     if($ROOM->IsNight() &&

@@ -151,12 +151,11 @@ function CheckWinner($check_draw = false){
   if($winner == '') return false;
 
   //ゲーム終了
+  //OutputSiteSummary(); //RSS機能はテスト中
   $query = "UPDATE room SET status = 'finished', scene = 'aftergame', " .
     "scene_start_time = UNIX_TIMESTAMP(), winner = '{$winner}', finish_datetime = NOW() ".
     "WHERE room_no = {$ROOM->id}";
-  SendQuery($query, true);
-  //OutputSiteSummary(); //RSS機能はテスト中
-  return true;
+  return FetchBool($query);
 }
 
 //-- 投票関連 --//
@@ -653,9 +652,16 @@ function OutputTalk($talk, &$builder){
     $uname は必ず $talk から取得すること。
     $USERS にはシステムユーザー 'system' が存在しないため、$actor は常に null になっている。
   */
-  $actor = $talk->scene == 'heaven' ? $USERS->ByUname($talk->uname) :
-    $USERS->ByVirtualUname($talk->uname);
+  $actor = $USERS->ByUname($talk->uname);
+  $real  = $actor;
   if($ROOM->log_mode && isset($talk->role_id)) $actor->ChangePlayer($talk->role_id);
+  switch($talk->scene){
+  case 'day':
+  case 'night':
+    $virtual = $USERS->ByVirtual($actor->user_no);
+    if($actor->user_no != $virtual->user_no) $actor = $virtual;
+    break;
+  }
 
   //基本パラメータを取得
   if($talk->uname == 'system'){
@@ -670,8 +676,7 @@ function OutputTalk($talk, &$builder){
 
   //実ユーザを取得
   if($RQ_ARGS->add_role && $actor->user_no > 0){ //役職表示モード対応
-    $real_user = $talk->scene == 'heaven' ? $actor : $USERS->ByReal($actor->user_no);
-    if($ROOM->log_mode && isset($talk->role_id)) $real_user->ChangePlayer($talk->role_id);
+    $real_user = isset($real) ? $real : $actor;
     $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
   }
   else{
@@ -730,7 +735,7 @@ function OutputTalk($talk, &$builder){
 	$talk->sentence = $MESSAGE->common_talk;
       }
     }
-    return $builder->AddTalk($actor, $talk);
+    return $builder->AddTalk($actor, $talk, $real);
 
   case 'night':
     if($builder->flag->open_talk){
@@ -788,7 +793,7 @@ function OutputTalk($talk, &$builder){
       $ROLES->actor = $actor;
       switch($talk->location){
       case 'common': //共有者
-	if($builder->flag->common || $mind_read) return $builder->AddTalk($actor, $talk);
+	if($builder->flag->common || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	if($ROLES->LoadMain($actor)->Whisper($builder, $talk->font_type)) return;
 	foreach($ROLES->Load('talk_whisper') as $filter){
 	  if($filter->Whisper($builder, $talk->font_type)) return;
@@ -796,7 +801,7 @@ function OutputTalk($talk, &$builder){
 	return false;
 
       case 'wolf': //人狼
-	if($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk);
+	if($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	if($ROLES->LoadMain($actor)->Howl($builder, $talk->font_type)) return;
 	foreach($ROLES->Load('talk_whisper') as $filter){
 	  if($filter->Whisper($builder, $talk->font_type)) return;
@@ -804,14 +809,14 @@ function OutputTalk($talk, &$builder){
 	return false;
 
       case 'mad': //囁き狂人
-	if($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk);
+	if($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	foreach($ROLES->Load('talk_whisper') as $filter){
 	  if($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	return false;
 
       case 'fox': //妖狐
-	if($builder->flag->fox || $mind_read) return $builder->AddTalk($actor, $talk);
+	if($builder->flag->fox || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	$ROLES->actor = $SELF;
 	foreach($ROLES->Load('talk_fox') as $filter){
 	  if($filter->Whisper($builder, $talk->font_type)) return;
@@ -824,7 +829,7 @@ function OutputTalk($talk, &$builder){
 
       case 'self_talk': //独り言
 	if($builder->flag->dummy_boy || $mind_read || $builder->actor->IsSame($talk->uname)){
-	  return $builder->AddTalk($actor, $talk);
+	  return $builder->AddTalk($actor, $talk, $real);
 	}
 	foreach($ROLES->Load('talk_self') as $filter){
 	  if($filter->Whisper($builder, $talk->font_type)) return;
@@ -844,7 +849,7 @@ function OutputTalk($talk, &$builder){
     return $builder->RawAddTalk($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
 
   default:
-    return $builder->AddTalk($actor, $talk);
+    return $builder->AddTalk($actor, $talk, $real);
   }
 }
 
