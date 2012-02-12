@@ -532,4 +532,5 @@ class VoteMessage{
   public $death_note_do     = '対象の名前を書く'; //デスノート
   public $death_note_not_do = '誰の名前も書かない'; //デスノート(キャンセル)
   public $revive_refuse     = '蘇生を辞退する'; //蘇生辞退
+  public $reset_time        = '超過時間リセット'; //超過時間リセット(管理者用)
 }

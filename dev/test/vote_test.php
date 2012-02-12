@@ -28,7 +28,7 @@ $RQ_ARGS->TestItems->test_room['game_option'] .= ' open_vote death_note';
 #$RQ_ARGS->TestItems->test_room['game_option'] .= ' quiz';
 $RQ_ARGS->TestItems->is_virtual_room = true;
 $RQ_ARGS->TestItems->test_users = array();
-for($id = 1; $id <= 25; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
+for ($id = 1; $id <= 25; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
 
 $RQ_ARGS->TestItems->test_users[1]->uname = 'dummy_boy';
 $RQ_ARGS->TestItems->test_users[1]->handle_name = '身代わり君';
@@ -186,13 +186,13 @@ $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 //$RQ_ARGS->TestItems->test_users = 30;
 $icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-foreach($RQ_ARGS->TestItems->test_users as $id => $user){
+foreach ($RQ_ARGS->TestItems->test_users as $id => $user) {
   $user->room_no = $RQ_ARGS->room_no;
   $user->user_no = $id;
-  if(! isset($user->profile)) $user->profile = $id;
+  if (! isset($user->profile)) $user->profile = $id;
   $user->last_load_scene = 'night';
   $user->is_system = $user->user_no == 1;
-  if($id > 1){
+  if ($id > 1) {
     $user->color = $icon_color_list[($id - 2) % 10];
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
   }
@@ -379,8 +379,8 @@ $ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
-if($ROOM->date == 1){
-  foreach($USERS->rows as $user) $user->live = 'live'; //初日用
+if ($ROOM->date == 1) {
+  foreach ($USERS->rows as $user) $user->live = 'live'; //初日用
 }
 $USERS->ByID(9)->live = 'live';
 #$SELF = new User();
@@ -390,32 +390,32 @@ $SELF = $USERS->ByID(1);
 
 //-- データ出力 --//
 $vote_view_mode = false;
-if($vote_view_mode){ //投票表示モード
+if ($vote_view_mode) { //投票表示モード
   $INIT_CONF->LoadClass('VOTE_MESS');
   $stack = new RequestGameVote();
   $RQ_ARGS->vote = $stack->vote;
   $RQ_ARGS->target_no = $stack->target_no;
   $RQ_ARGS->situation = $stack->situation;
   $RQ_ARGS->back_url  = '';
-  if($RQ_ARGS->vote){ //投票処理
+  if ($RQ_ARGS->vote) { //投票処理
     OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
     echo '</head><body>'."\n";
-    if($RQ_ARGS->target_no == 0){ //空投票検出
+    if ($RQ_ARGS->target_no == 0) { //空投票検出
       OutputActionResult('空投票', '投票先を指定してください');
     }
-    elseif($ROOM->IsDay()){ //昼の処刑投票処理
+    elseif ($ROOM->IsDay()) { //昼の処刑投票処理
       #VoteDay();
     }
-    elseif($ROOM->IsNight()){ //夜の投票処理
+    elseif ($ROOM->IsNight()) { //夜の投票処理
       VoteNight();
     }
-    else{ //ここに来たらロジックエラー
+    else { //ここに来たらロジックエラー
       OutputVoteError('投票コマンドエラー', '投票先を指定してください');
     }
   }
-  else{
+  else {
     $RQ_ARGS->post_url = 'vote_test.php';
-    switch($ROOM->scene){
+    switch($ROOM->scene) {
     case 'beforegame':
       OutputVoteBeforeGame();
       break;
@@ -439,7 +439,7 @@ if($vote_view_mode){ //投票表示モード
 }
 OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
 $talk_view_mode = false;
-if($talk_view_mode){ //発言表示モード
+if ($talk_view_mode) { //発言表示モード
   echo $ROOM->GenerateCSS();
   echo '</head><body>'."\n";
   $INIT_CONF->LoadFile('talk_class');
@@ -485,41 +485,41 @@ if($talk_view_mode){ //発言表示モード
     array('uname' => 'system', 'location' => 'night system', 'font_type' => null, 'sentence' => 'NIGHT')
   );
   $RQ_ARGS->TestItems->talk = array();
-  foreach($RQ_ARGS->TestItems->talk_data->{$ROOM->scene} as $stack){
+  foreach ($RQ_ARGS->TestItems->talk_data->{$ROOM->scene} as $stack) {
     $RQ_ARGS->TestItems->talk[] = new Talk($stack);
   }
   //PrintData($RQ_ARGS->TestItems->talk);
   OutputPlayerList();
-  if($SELF->user_no > 0) OutputAbility();
+  if ($SELF->user_no > 0) OutputAbility();
   OutputTalkLog();
   OutputHTMLFooter(true);
 }
 echo '</head><body>'."\n";
 $role_view_mode = false;
-if($role_view_mode){ //画像表示モード
-  foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
-  #foreach(array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
-  #foreach(array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
+if ($role_view_mode) { //画像表示モード
+  foreach (array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
+  #foreach (array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
+  #foreach (array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
   $header = 'prediction_weather_';
-  #foreach($ROLE_DATA->weather_list as $stack) $ROLE_IMG->Output($header.$stack['event']);
+  #foreach ($ROLE_DATA->weather_list as $stack) $ROLE_IMG->Output($header.$stack['event']);
   OutputHTMLFooter(true);
 }
 $cast_view_mode = false;
-if($cast_view_mode){ //配役情報表示モード
+if ($cast_view_mode) { //配役情報表示モード
   $INIT_CONF->LoadClass('CAST_CONF');
   //PrintData($CAST_CONF->RateToProbability($CAST_CONF->chaos_hyper_random_role_list));
   //PrintData(array_sum($CAST_CONF->chaos_hyper_random_role_list));
   //PrintData($CAST_CONF->chaos_role_group_rate_list);
   echo '<table border="1" cellspacing="0">'."\n".'<tr><th>人口</th>';
-  foreach($CAST_CONF->chaos_role_group_rate_list as $group => $rate){
+  foreach ($CAST_CONF->chaos_role_group_rate_list as $group => $rate) {
     $role  = $ROLE_DATA->DistinguishRoleGroup($group);
     $class = $ROLE_DATA->DistinguishRoleClass($role);
     echo '<th class="' . $class . '">' . $ROLE_DATA->short_role_list[$role] . '</th>';
   }
   echo '</tr>'."\n";
-  for($i = 8; $i <= 32; $i++){
+  for($i = 8; $i <= 32; $i++) {
     echo '<tr align="right"><td><strong>' . $i . '</strong></td>';
-    foreach($CAST_CONF->chaos_role_group_rate_list as $rate){
+    foreach ($CAST_CONF->chaos_role_group_rate_list as $rate) {
       echo '<td>' . round($i / $rate) . '</td>';
     }
     echo '</tr>'."\n";
@@ -529,23 +529,23 @@ if($cast_view_mode){ //配役情報表示モード
 }
 OutputPlayerList(); //プレイヤーリスト
 OutputAbility();
-if($RQ_ARGS->say != ''){ //発言変換テスト
+if ($RQ_ARGS->say != '') { //発言変換テスト
   ConvertSay($RQ_ARGS->say);
   Write($RQ_ARGS->say, 'day', 0);
 }
-if($ROOM->IsDay()){ //昼の投票テスト
+if ($ROOM->IsDay()) { //昼の投票テスト
   $self_id = $SELF->user_no;
   $RQ_ARGS->situation = 'VOTE_KILL';
   $RQ_ARGS->back_url = '';
-  foreach($RQ_ARGS->TestItems->vote_target_day as $stack){
+  foreach ($RQ_ARGS->TestItems->vote_target_day as $stack) {
     $SELF = $USERS->ByID($stack['id']);
     $RQ_ARGS->target_no = $stack['target_no'];
     VoteDay();
   }
   $vote_message_list = AggregateVoteDay();
-  if(! is_array($vote_message_list)) $vote_message_list = array();
+  if (! is_array($vote_message_list)) $vote_message_list = array();
   $stack = array();
-  foreach($vote_message_list as $uname => $vote_data){
+  foreach ($vote_message_list as $uname => $vote_data) {
     $vote_data['handle_name'] = $USERS->GetHandleName($uname);
     $vote_data['count'] = $ROOM->revote_count + 1;
     $stack[] = $vote_data;
@@ -557,11 +557,11 @@ if($ROOM->IsDay()){ //昼の投票テスト
   //$ROOM->scene = 'night';
   $SELF = $USERS->ByID($self_id);
 }
-elseif($ROOM->IsNight()){ // 夜の投票テスト
+elseif ($ROOM->IsNight()) { // 夜の投票テスト
   //PrintData($RQ_ARGS->TestItems->vote->night);
   AggregateVoteNight();
 }
-elseif($ROOM->IsAfterGame()){ //勝敗判定表示
+elseif ($ROOM->IsAfterGame()) { //勝敗判定表示
   $INIT_CONF->LoadClass('WINNER_MESS');
   $ROOM->log_mode = false;
   $ROOM->personal_mode = true; false;
@@ -574,19 +574,19 @@ elseif($ROOM->IsAfterGame()){ //勝敗判定表示
 
 do{
   //break;
-  foreach($USERS->rows as $user){
+  foreach ($USERS->rows as $user) {
     unset($user->virtual_role);
     $user->live = $user->IsLive(true) ? 'live' : 'dead';
     $user->ReparseRoles();
   }
 
-  foreach($RQ_ARGS->TestItems->vote->night as $stack){
+  foreach ($RQ_ARGS->TestItems->vote->night as $stack) {
     //$uname = $USERS->GetHandleName($stack['uname'], true);
     $uname = $USERS->ByVirtual($stack['user_no'])->handle_name;
-    switch($stack['type']){
+    switch($stack['type']) {
     case 'CUPID_DO':
       $target_stack = array();
-      foreach(explode(' ', $stack['target_no']) as $id){
+      foreach (explode(' ', $stack['target_no']) as $id) {
 	$user = $USERS->ByVirtual($id);
 	$target_stack[$user->user_no] = $user->handle_name;
       }
@@ -595,7 +595,7 @@ do{
 
     case 'SPREAD_WIZARD_DO':
       $target_stack = array();
-      foreach(explode(' ', $stack['target_no']) as $id){
+      foreach (explode(' ', $stack['target_no']) as $id) {
 	$user = $USERS->ByVirtual($id);
 	$target_stack[$user->user_no] = $user->handle_name;
       }
@@ -623,8 +623,8 @@ do{
   //$ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
-  //foreach(array(5, 18, 2, 9, 13, 14, 23) as $id){
-  foreach(range(1, 25) as $id){
+  //foreach (array(5, 18, 2, 9, 13, 14, 23) as $id) {
+  foreach (range(1, 25) as $id) {
     $SELF = $USERS->ByID($id); OutputAbility();
   }
   //var_dump($USERS->IsOpenCast());
