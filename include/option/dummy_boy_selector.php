@@ -1,9 +1,11 @@
 <?php
 class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 	function  __construct() {
+		global $GAME_OPT_CONF;
 		parent::__construct(RoomOption::GAME_OPTION);
 		$this->formtype = 'group';
 		$this->collect = 'CollectValue';
+		$this->value = $GAME_OPT_CONF->default_dummy_boy;
 	}
 
 	function LoadMessages() {
@@ -11,11 +13,15 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 	}
 
 	function  GetItems() {
-		return array(
+		$items = array(
 			'' => new Option_no_dummy_boy(),
 			'on' => RoomOption::Get('dummy_boy'),
 			'gm_login' => RoomOption::Get('gm_login'),
 		);
+		if (isset($items[$this->value])) {
+			$items[$this->value]->value = true;
+		}
+		return $items;
 	}
 }
 
