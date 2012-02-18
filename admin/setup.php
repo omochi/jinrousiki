@@ -115,9 +115,13 @@ EOF;
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, role_id INT, objection INT NOT NULL, action TEXT, sentence TEXT,
 font_type TEXT, spend_time INT, time INT(20) NOT NULL,
-INDEX talk_index(room_no, date, scene, time)
+INDEX talk_index (room_no, date, scene)
 EOF;
     CreateTable($table, $query);
+  }
+  if(true){
+    $query = 'ALTER TABLE talk DROP INDEX talk_index, ADD INDEX talk_index (room_no, date, scene)';
+    SendQuery($query);
   }
 
   $table = 'talk_beforegame';
@@ -126,9 +130,14 @@ EOF;
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, handle_name TEXT, color VARCHAR(7), action TEXT, sentence TEXT,
 font_type TEXT, spend_time INT, time INT(20) NOT NULL,
-INDEX talk_beforegame_index(room_no, date, scene, time)
+INDEX talk_beforegame_index(room_no)
 EOF;
     CreateTable($table, $query);
+  }
+  if(true){
+    $query = 'ALTER TABLE talk_beforegame DROP INDEX talk_beforegame_index, ' .
+      'ADD INDEX talk_beforegame_index (room_no)';
+    SendQuery($query);
   }
 
   $table = 'talk_aftergame';
@@ -137,9 +146,14 @@ EOF;
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
 time INT(20) NOT NULL,
-INDEX talk_aftergame_index(room_no, date, scene, time)
+INDEX talk_aftergame_index(room_no)
 EOF;
     CreateTable($table, $query);
+  }
+  if(true){
+    $query = 'ALTER TABLE talk_aftergame DROP INDEX talk_aftergame_index, ' .
+      'ADD INDEX talk_aftergame_index (room_no)';
+    SendQuery($query);
   }
 
   $table = 'vote';

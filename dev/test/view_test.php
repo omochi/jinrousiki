@@ -77,7 +77,6 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
   $user->profile = '';
   $user->live = 'live';
   $user->last_load_scene = 'beforegame';
-  $user->is_system = $user->user_no == 1;
   if($id > 1){
     $user->color = $icon_color_list[($id - 2) % 10];
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);

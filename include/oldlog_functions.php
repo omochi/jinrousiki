@@ -122,35 +122,18 @@ function GenerateFinishedRooms($page){
   $back_url = $RQ_ARGS->generate_index ? '../' : './';
   $img_url  = $RQ_ARGS->generate_index ? '../' : '';
 
-  $bg_css = '';
-  if(isset($_GET['bg']) && intval($_GET['bg']) > 0){
-    $bg = intval($_GET['bg']);
-    $color = $bg == 5 ? '#F0F8FF' : ($bg == 3 ? '#FFF5EE' : '#FFFAF0');
-    $bg_css = <<<EOF
-<style type="text/css">
-<!--
-#room_list{
- background-color: {$color};
- background-image: url("img/old_log_bg{$bg}.png");
-}
--->
-</style>
-
-EOF;
-  }
-
   $str = GenerateHTMLHeader($title, 'old_log_list') . <<<EOF
-{$bg_css}</head>
-<body id="room_list">
+</head>
+<body>
 <p><a href="{$back_url}">←戻る</a></p>
 <img src="{$img_url}img/old_log_title.jpg"><br>
-<div align="center">
-<table><tr><td class="list">
-{$builder->Generate()}
-</td></tr>
-<tr><td>
-<table class="main">
+<div>
+<table>
+<caption>{$builder->Generate()}</caption>
+<thead>
 <tr><th>村No</th><th>村名</th><th>人数</th><th>日数</th><th>勝</th></tr>
+</thead>
+<tbody>
 
 EOF;
 
@@ -165,7 +148,7 @@ EOF;
   foreach(FetchArray($query) as $room_no){
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
-    $dead_room = $ROOM->date == 0 ? ' style="color:silver"' : ''; //廃村の場合、色を灰色にする
+    $dead_room = $ROOM->date == 0 ? ' vanish' : ''; //廃村の場合、色を灰色にする
     $establish = $ROOM->establish_datetime == '' ? '' : ConvertTimeStamp($ROOM->establish_datetime);
     if($RQ_ARGS->generate_index){
       $base_url = $ROOM->id . '.html';
@@ -177,16 +160,16 @@ EOF;
       if(is_int($RQ_ARGS->db_no) && $RQ_ARGS->db_no > 0) $base_url .= '&db_no=' . $RQ_ARGS->db_no;
       $login = $current_time - strtotime($ROOM->finish_datetime) > $ROOM_CONF->clear_session_id ? '' :
 	'<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
-      $log_link = GenerateLogLink($base_url, true, '(', $dead_room) . ' )' .
+      $log_link = GenerateLogLink($base_url, true, '(') . ' )' .
 	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
     }
     $max_user    = GenerateMaxUserImage($ROOM->max_user);
     $game_option = RoomOption::Wrap($ROOM->game_option, $ROOM->option_role)->GenerateImageList();
     $winner      = $RQ_ARGS->watch ? '-' : $WINNER_IMG->Generate($ROOM->winner);
     $str .= <<<EOF
-<tr class="list">
+<tr>
 <td class="number" rowspan="3">{$ROOM->id}</td>
-<td class="title"><a href="{$base_url}"{$dead_room}>{$ROOM->name} 村</a>
+<td class="title{$dead_room}"><a href="{$base_url}">{$ROOM->name} 村</a></td>
 <td class="upper">{$ROOM->user_count} {$max_user}</td>
 <td class="upper">{$ROOM->date}</td>
 <td class="side">{$winner}</td>
@@ -196,7 +179,7 @@ EOF;
 <td class="time comment" colspan="3">{$establish}</td>
 </tr>
 <tr class="lower list">
-<td class="comment">
+<td class="comment{$dead_room}">
 {$login}{$log_link}
 </td>
 <td colspan="3">{$game_option}</td>
@@ -206,8 +189,7 @@ EOF;
   }
 
   return $str . <<<EOF
-</table>
-</td></tr>
+</tbody>
 </table>
 </div>
 

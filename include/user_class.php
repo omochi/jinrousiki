@@ -71,9 +71,7 @@ class User{
     switch($type){
     case 'profiles':
       return array('profile'     => $this->profile,
-		   'color'       => $this->color,
-		   'icon_width'  => $this->icon_width,
-		   'icon_height' => $this->icon_height);
+		   'color'       => $this->color);
 
     case 'flags':
       return array('dead_flag'    => $this->dead_flag,
@@ -885,12 +883,20 @@ class UserDataSet{
 
   //村情報のロード処理
   function LoadRoom($request, $lock = false){
-    if ($request->IsVirtualRoom()){ //仮想モード
+    if ($request->IsVirtualRoom()) { //仮想モード
       $user_list = $request->TestItems->test_users;
       if (is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
-    elseif (isset($request->entry_user) && $request->entry_user){ //入村処理用
-      $user_list = $this->RetriveByEntryUser($request->room_no);
+    elseif (isset($request->retrive_type)) { //特殊モード
+      switch ($request->retrive_type) {
+      case 'entry_user': //入村処理用
+	$user_list = $this->RetriveForEntryUser($request->room_no);
+	break;
+
+      case 'beforegame': //入村処理用
+	$user_list = $this->RetriveForBeforegame($request->room_no);
+	break;
+      }
     }
     else {
       $user_list = $this->RetriveByRoom($request->room_no, $lock);
@@ -900,62 +906,51 @@ class UserDataSet{
 
   //特定の村のユーザ情報を取得する
   function RetriveByRoom($room_no, $lock = false){
-    $query = "SELECT
-	room_no,
-	user_no,
-	uname,
-	handle_name,
-	sex,
-	profile,
-	role,
-	role_id,
-	objection,
-	live,
-	last_load_scene,
-	ip_address = '' AS is_system,
-	icon_filename,
-	color,
-	icon_width,
-	icon_height
-      FROM user_entry LEFT JOIN user_icon ON user_entry.icon_no = user_icon.icon_no
-      WHERE room_no = {$room_no}
-      ORDER BY user_no";
+    $query = <<<EOF
+SELECT room_no, user_no, uname, handle_name, profile, sex, role, role_id, objection, live,
+  last_load_scene, icon_filename, color
+FROM user_entry LEFT JOIN user_icon USING (icon_no)
+WHERE room_no = {$room_no} ORDER BY user_no ASC
+EOF;
     if ($lock) $query .= ' FOR UPDATE';
     return FetchObject($query, 'User');
   }
 
-  //指定した人数分のユーザ情報を全村からランダムに取得する
+  //指定した人数分のユーザ情報を全村からランダムに取得する (テスト用)
   function RetriveByUserCount($user_count){
     mysql_query('SET @new_user_no := 0');
-    $query = "SELECT
-	users.room_no,
-	(@new_user_no := @new_user_no + 1) AS user_no,
-	users.uname,
-	users.handle_name,
-	users.sex,
-	users.profile,
-	users.role,
-	users.role_id,
-	users.objection,
-	users.live,
-	users.last_load_scene,
-	users.ip_address = '' AS is_system,
-	icons.icon_filename,
-	icons.color,
-	icons.icon_width,
-	icons.icon_height
-      FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) finder
-	LEFT JOIN user_entry users USING(room_no, uname)
-	LEFT JOIN user_icon icons USING(icon_no)
-      ORDER BY RAND()
-      LIMIT {$user_count}";
+    $query = <<<EOF
+SELECT room_no, (@new_user_no := @new_user_no + 1) AS user_no, uname, handle_name, profile,
+  sex, role, role_id, objection, live, last_load_scene, icon_filename, color
+FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) AS finder
+  LEFT JOIN user_entry USING (room_no, uname) LEFT JOIN user_icon USING (icon_no)
+ORDER BY RAND() LIMIT {$user_count}
+EOF;
     return FetchObject($query, 'User');
   }
 
   //入村処理用のユーザデータを取得する
-  function RetriveByEntryUser($room_no){
-    $query = 'SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry ' .
-      "WHERE room_no = {$room_no} ORDER BY user_no FOR UPDATE";
+  function RetriveForEntryUser($room_no){
+    $query = <<<EOF
+SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry
+WHERE room_no = {$room_no} ORDER BY user_no ASC FOR UPDATE
+EOF;
+    return FetchObject($query, 'User');
+  }
+
+  //ゲーム開始前のユーザデータを取得する
+  function RetriveForBeforegame($room_no){
+    global $ROOM;
+
+    if ($room_no != $ROOM->id) return null;
+    $query = <<<EOF
+SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
+  last_load_scene, icon_filename, color, v.type AS vote_type
+FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
+  u.room_no = v.room_no AND u.user_no = v.user_no  AND v.type = 'GAMESTART' AND
+  v.vote_count = $ROOM->vote_count
+WHERE u.room_no = {$ROOM->id} ORDER BY user_no ASC
+EOF;
     return FetchObject($query, 'User');
   }
 
@@ -1339,34 +1334,5 @@ class UserDataSet{
   //保存処理 (実用されていません)
   function Save(){
     foreach ($this->rows as $user) $user->Save();
-  }
-
-  //現在のリクエスト情報に基づいて新しいユーザーをデータベースに登録します。
-  //この関数は実用されていません
-  function RegisterByRequest(){
-    extract($_REQUEST, EXTR_PREFIX_ALL, 'unsafe');
-    session_regenerate_id();
-    UserDataSet::Register(
-      mysql_real_escape_string($unsafe_uname),
-      mysql_real_escape_string($unsafe_password),
-      mysql_real_escape_string($unsafe_handle_name),
-      mysql_real_escape_string($unsafe_sex),
-      mysql_real_escape_string($unsafe_profile),
-      intval($unsafe_icon_no),
-      mysql_real_escape_string($unsafe_role),
-      $_SERVER['REMOTE_ADDR'],
-      session_id()
-    );
-  }
-
-  //ユーザー情報を指定して新しいユーザーをデータベースに登録します。(ドラフト：この機能はテストされていません)
-  function Register($uname, $password, $handle_name, $sex, $profile, $icon_no, $role,
-		    $ip_address = '', $session_id = ''){
-    $items = 'room_no, user_no, uname, password, handle_name, sex, profile, icon_no, role';
-    $values = "$this->room_no, " .
-      "(SELECT MAX(user_no) + 1 FROM user_entry WHERE room_no = {$this->room_no}), " .
-      "'$uname', '$password', '$handle_name', '$sex', '$profile', $icon_no, '$role'";
-    InsertDatabase('user_entry', $items, $value);
-    $USERS->Load();
   }
 }

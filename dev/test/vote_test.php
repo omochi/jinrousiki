@@ -191,7 +191,6 @@ foreach ($RQ_ARGS->TestItems->test_users as $id => $user) {
   $user->user_no = $id;
   if (! isset($user->profile)) $user->profile = $id;
   $user->last_load_scene = 'night';
-  $user->is_system = $user->user_no == 1;
   if ($id > 1) {
     $user->color = $icon_color_list[($id - 2) % 10];
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
