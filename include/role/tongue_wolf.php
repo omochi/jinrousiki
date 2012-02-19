@@ -11,7 +11,7 @@ class Role_tongue_wolf extends Role_wolf{
 
   protected function OutputResult(){
     global $ROOM;
-    if($ROOM->date > 1) OutputSelfAbilityResult($this->result);
+    if ($ROOM->date > 1) OutputSelfAbilityResult($this->result);
   }
 
   function WolfKill($user){
@@ -19,7 +19,8 @@ class Role_tongue_wolf extends Role_wolf{
 
     parent::WolfKill($user);
     $actor = $this->GetWolfVoter();
-    if($user->IsRole('human')) $actor->LostAbility(); //村人なら能力失効
+    if (! $actor->IsActive()) return; //能力失効判定
+    if ($user->IsRole('human')) $actor->LostAbility(); //村人なら能力失効
     $target = $USERS->GetHandleName($user->uname, true);
     $ROOM->ResultAbility($this->result, $user->main_role, $target, $actor->user_no);
   }

@@ -27,7 +27,7 @@ function GetTalkPassTime(&$left_time, $silence = false){
     " AND scene = '{$ROOM->scene}'";
   $spend_time = (int)FetchResult($query);
 
-  if ($ROOM->IsDay()){ //昼は12時間
+  if ($ROOM->IsDay()) { //昼は12時間
     $base_time = $TIME_CONF->day;
     $full_time = 12;
   }

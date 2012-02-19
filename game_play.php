@@ -32,22 +32,26 @@ SendCookie($OBJECTION); //必要なクッキーをセットする
 
 //-- 発言処理 --//
 $say_limit = null;
-if (! $ROOM->dead_mode || $ROOM->heaven_mode){ //発言が送信されるのは bottom フレーム
+if (! $ROOM->dead_mode || $ROOM->heaven_mode) { //発言が送信されるのは bottom フレーム
   $say_limit = ConvertSay($RQ_ARGS->say); //発言置換処理
 
-  if ($RQ_ARGS->say == '')
+  if ($RQ_ARGS->say == '') {
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
-  elseif ($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame()))
+  }
+  elseif ($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame())) {
     EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
-  elseif ($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_scene == $ROOM->scene)
+  }
+  elseif ($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_scene == $ROOM->scene) {
     Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
-  else
+  }
+  else {
     CheckSilence(); //発言ができない状態ならゲーム停滞チェック
+  }
 
   //ゲームシーンを更新
   if ($SELF->last_load_scene != $ROOM->scene) $SELF->Update('last_load_scene', $ROOM->scene);
 }
-elseif ($ROOM->dead_mode && $ROOM->IsPlaying() && $SELF->IsDummyBoy()){
+elseif ($ROOM->dead_mode && $ROOM->IsPlaying() && $SELF->IsDummyBoy()) {
   SetSuddenDeathTime(); //霊界の GM でも突然死タイマーを見れるようにする
 }
 
@@ -56,7 +60,7 @@ ob_start();
 OutputGamePageHeader();
 OutputGameHeader();
 if ($say_limit === false) echo '<font color="#FF0000">' . $MESSAGE->say_limit . '</font><br>';
-if (! $ROOM->heaven_mode){
+if (! $ROOM->heaven_mode) {
   if (! $RQ_ARGS->list_down) OutputPlayerList();
   OutputAbility();
   if ($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay();
@@ -65,7 +69,7 @@ if (! $ROOM->heaven_mode){
 
 ($SELF->IsDead() && $ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog(); //会話ログを出力
 
-if (! $ROOM->heaven_mode){
+if (! $ROOM->heaven_mode) {
   if ($SELF->IsDead()) OutputAbilityAction(); //能力発揮結果
   OutputLastWords();
   OutputDeadMan();
@@ -126,11 +130,11 @@ function EntryLastWords($say){
   if ($ROOM->IsFinished()) return false; //スキップ判定
 
   if ($say == ' ') $say = null; //スペースだけなら「消去」
-  if ($SELF->IsLive()){ //登録しない役職をチェック
+  if ($SELF->IsLive()) { //登録しない役職をチェック
     if (! $SELF->IsLastWordsLimited()) $SELF->Update('last_words', $say);
   }
-  elseif ($SELF->IsDead() && $SELF->IsRole('mind_evoke')){ //口寄せの処理
-    foreach ($SELF->GetPartner('mind_evoke') as $id){ //口寄せしているイタコすべての遺言を更新する
+  elseif ($SELF->IsDead() && $SELF->IsRole('mind_evoke')) { //口寄せの処理
+    foreach ($SELF->GetPartner('mind_evoke') as $id) { //口寄せしているイタコすべての遺言を更新する
       $target = $USERS->ByID($id);
       if ($target->IsLive()) $target->Update('last_words', $say);
     }
@@ -187,85 +191,126 @@ function Say($say){
 function CheckSilence(){
   global $DB_CONF, $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
-  //スキップ判定 + テーブルロック
-  if (! $ROOM->IsPlaying() || ! $DB_CONF->Transaction()) return false;
-
-  //現在のシーンを再取得して切り替わっていたらスキップ
-  if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene){
-    $DB_CONF->RollBack();
-    return false;
-  }
-
-  //最終発言時刻からの差分を取得
-  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-  $last_update_time = FetchResult($query);
+  if (! $ROOM->IsPlaying()) return true; //スキップ判定
 
   //経過時間を取得
-  if ($ROOM->IsRealTime()) //リアルタイム制
+  if ($ROOM->IsRealTime()) { //リアルタイム制
     GetRealPassTime($left_time);
-  else //仮想時間制
+    if ($left_time > 0) return true; //制限時間超過判定
+  }
+  else { //仮想時間制
+    if (! $DB_CONF->Transaction()) return false; //判定条件が全て DB なので即ロック
+
+    //現在のシーンを再取得して切り替わっていたらスキップ
+    if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+      return $DB_CONF->RollBack();
+    }
     $silence_pass_time = GetTalkPassTime($left_time, true);
 
-  if (! $ROOM->IsRealTime() && $left_time > 0){ //仮想時間制の沈黙判定
-    if ($last_update_time > $TIME_CONF->silence){
+    if ($left_time > 0) { //制限時間超過判定
+      //最終発言時刻からの差分を取得
+      $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
+      if (FetchResult($query) <= $TIME_CONF->silence) return $DB_CONF->RollBack(); //沈黙判定
+
+      //沈黙メッセージを発行してリセット
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
       $ROOM->Talk($str, null, '', '', null, null, null, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
+      return $DB_CONF->Commit();
     }
   }
-  elseif ($left_time == 0){ //制限時間超過時の処理
-    //オープニングなら即座に夜に移行する
-    if ($ROOM->IsOption('open_day') && $ROOM->IsDay() && $ROOM->date == 1){
-      $ROOM->ChangeNight(); //夜に切り替え
-      $ROOM->UpdateTime(); //最終書き込み時刻を更新
-      $DB_CONF->Commit(); //テーブルロック解除
-      return true;
+
+  //オープニングなら即座に夜に移行する
+  if ($ROOM->date == 1 && $ROOM->IsOption('open_day') && $ROOM->IsDay()) {
+    if ($ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
+      if (! $DB_CONF->Transaction()) return false;
+
+      //現在のシーンを再取得して切り替わっていたらスキップ
+      if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+	return $DB_CONF->RollBack();
+      }
+    }
+    $ROOM->ChangeNight(); //夜に切り替え
+    $ROOM->UpdateTime(); //最終書き込み時刻を更新
+    return $DB_CONF->Commit(); //ロック解除
+  }
+
+  if (! $ROOM->IsOvertimeAlert()) { //警告メッセージ出力判定
+    if ($ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
+      if (! $DB_CONF->Transaction()) return false;
+
+      //現在のシーンを再取得して切り替わっていたらスキップ
+      if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+	return $DB_CONF->RollBack();
+      }
     }
 
-    //突然死発動までの時間を取得
-    $sudden_death_announce = 'あと' . ConvertTime($TIME_CONF->sudden_death) . 'で' .
-      $MESSAGE->sudden_death_announce;
-    if ($ROOM->OvertimeAlert($sudden_death_announce)) $last_update_time = 0; //警告出力
-    $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_update_time;
+    //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
+    $str = 'あと' . ConvertTime($TIME_CONF->sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
+    if ($ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
+      $ROOM->sudden_death = $TIME_CONF->sudden_death;
+      return $DB_CONF->Commit(); //ロック解除
+    }
+  }
 
-    //制限時間を過ぎていたら未投票の人を突然死させる
-    if ($ROOM->sudden_death <= 0){
-      if (abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect){ //サーバダウン検出
-	$ROOM->UpdateTime(); //突然死タイマーをリセット
-	$ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
-      }
-      else {
-	$novote_list = array(); //未投票者リスト
-	$ROOM->LoadVote(); //投票情報を取得
-	if ($ROOM->IsDay()){
-	  foreach ($USERS->rows as $user){ //生存中の未投票者を取得
-	    if ($user->IsLive() && ! isset($ROOM->vote[$user->user_no])){
-	      $novote_list[] = $user->user_no;
-	    }
-	  }
-	}
-	elseif ($ROOM->IsNight()){
-	  $vote_data = $ROOM->ParseVote(); //投票情報をパース
-	  //PrintData($vote_data, 'Vote Data');
-	  foreach ($USERS->rows as $user){ //未投票チェック
-	    if ($user->CheckVote($vote_data) === false) $novote_list[] = $user->user_no;
-	  }
-	}
+  //最終発言時刻からの差分を取得
+  /*  $ROOM から推定値を計算する場合 (リアルタイム制限定 + 再投票などがあると大幅にずれる) */
+  //$ROOM->sudden_death = $TIME_CONF->sudden_death - ($ROOM->system_time - $end_time);
+  $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
+  $ROOM->sudden_death = $TIME_CONF->sudden_death - FetchResult($query);
 
-	//ショック死処理
-	foreach ($novote_list as $id) $USERS->SuddenDeath($id, 'NOVOTED');
-	LoversFollowed(true);
-	InsertMediumMessage();
+  //制限時間前ならスキップ (この段階でロックしているのは非リアルタイム制のみ)
+  if ($ROOM->sudden_death > 0) return $ROOM->IsRealTime() ? true : $DB_CONF->RollBack();
 
-	$ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
-	$ROOM->UpdateVoteCount(true); //投票回数を更新
-	$ROOM->UpdateTime(); //制限時間リセット
-	//$ROOM->DeleteVote(); //投票リセット
-	if (CheckWinner()) $USERS->ResetJoker(); //勝敗チェック
+  //制限時間を過ぎていたら未投票の人を突然死させる
+  if ($ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
+    if (! $DB_CONF->Transaction()) return false;
+
+    //現在のシーンを再取得して切り替わっていたらスキップ
+    if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+      return $DB_CONF->RollBack();
+    }
+
+    //制限時間を再計算
+    $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
+    $ROOM->sudden_death = $TIME_CONF->sudden_death - FetchResult($query);
+    if ($ROOM->sudden_death > 0) return $DB_CONF->RollBack();
+  }
+
+  if (abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect) { //サーバダウン検出
+    $ROOM->UpdateTime(); //突然死タイマーをリセット
+    $ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
+    return $DB_CONF->Commit(); //ロック解除
+  }
+
+  $novote_list = array(); //未投票者リスト
+  $ROOM->LoadVote(); //投票情報を取得
+  if ($ROOM->IsDay()) {
+    foreach ($USERS->rows as $user) { //生存中の未投票者を取得
+      if ($user->IsLive() && ! isset($ROOM->vote[$user->user_no])) {
+	$novote_list[] = $user->user_no;
       }
     }
   }
-  $DB_CONF->Commit(); //テーブルロック解除
+  elseif ($ROOM->IsNight()) {
+    $vote_data = $ROOM->ParseVote(); //投票情報をパース
+    //PrintData($vote_data, 'Vote Data');
+    foreach ($USERS->rows as $user) { //未投票チェック
+      if ($user->CheckVote($vote_data) === false) $novote_list[] = $user->user_no;
+    }
+  }
+
+  //未投票突然死処理
+  foreach ($novote_list as $id) $USERS->SuddenDeath($id, 'NOVOTED');
+  LoversFollowed(true);
+  InsertMediumMessage();
+
+  $ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
+  $ROOM->UpdateVoteCount(true); //投票回数を更新
+  $ROOM->UpdateTime(); //制限時間リセット
+  //$ROOM->DeleteVote(); //投票リセット
+  if (CheckWinner()) $USERS->ResetJoker(); //勝敗チェック
+  return $DB_CONF->Commit(); //ロック解除
 }
 
 //超過時間セット

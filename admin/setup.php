@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('SCRIPT_INFO');
 
 OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment . ' [初期設定]'); //HTMLヘッダ
 
-if(! $DB_CONF->Connect(true, false)){ //DB 接続
+if (! $DB_CONF->Connect(true, false)) { //DB 接続
   mysql_query("CREATE DATABASE {$DB_CONF->name} DEFAULT CHARSET utf8");
   echo "データベース {$DB_CONF->name} を作成しました。<br>";
   $DB_CONF->Connect(true); //改めて DB 接続
@@ -59,7 +59,7 @@ function CheckTable(){
 
   //前回のパッケージのリビジョン番号を取得
   $revision = $SERVER_CONF->last_updated_revision;
-  if($revision >= $SCRIPT_INFO->revision){
+  if ($revision >= $SCRIPT_INFO->revision) {
     echo '初期設定はすでに完了しています。';
     return;
   }
@@ -71,7 +71,7 @@ function CheckTable(){
   $failed  = ') を追加できませんでした';
 
   $table = 'room';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL PRIMARY KEY, name TEXT, comment TEXT, max_user INT, game_option TEXT,
 option_role TEXT, status VARCHAR(16), date INT, scene VARCHAR(16), vote_count INT NOT NULL,
@@ -84,7 +84,7 @@ EOF;
   }
 
   $table = 'user_entry';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL, user_no INT, uname TEXT, handle_name TEXT, icon_no INT, profile TEXT,
 sex TEXT, password TEXT, role TEXT, role_id INT, objection INT NOT NULL, live TEXT,
@@ -101,7 +101,7 @@ EOF;
   }
 
   $table = 'player';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 user_no INT, role TEXT, INDEX player_index(room_no)
@@ -110,7 +110,7 @@ EOF;
   }
 
   $table = 'talk';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, role_id INT, objection INT NOT NULL, action TEXT, sentence TEXT,
@@ -119,13 +119,14 @@ INDEX talk_index (room_no, date, scene)
 EOF;
     CreateTable($table, $query);
   }
-  if(true){
+  if (0 < $revision && $revision < 494) {
     $query = 'ALTER TABLE talk DROP INDEX talk_index, ADD INDEX talk_index (room_no, date, scene)';
     SendQuery($query);
+    echo 'テーブル (' . $table . ') のインデックスを再生成しました<br>'."\n";
   }
 
   $table = 'talk_beforegame';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, handle_name TEXT, color VARCHAR(7), action TEXT, sentence TEXT,
@@ -134,14 +135,15 @@ INDEX talk_beforegame_index(room_no)
 EOF;
     CreateTable($table, $query);
   }
-  if(true){
+  if (0 < $revision && $revision < 494) {
     $query = 'ALTER TABLE talk_beforegame DROP INDEX talk_beforegame_index, ' .
       'ADD INDEX talk_beforegame_index (room_no)';
     SendQuery($query);
+    echo 'テーブル (' . $table . ') のインデックスを再生成しました<br>'."\n";
   }
 
   $table = 'talk_aftergame';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, scene VARCHAR(16),
 location TEXT, uname TEXT, action TEXT, sentence TEXT, font_type TEXT, spend_time INT,
@@ -150,14 +152,15 @@ INDEX talk_aftergame_index(room_no)
 EOF;
     CreateTable($table, $query);
   }
-  if(true){
+  if (0 < $revision && $revision < 494) {
     $query = 'ALTER TABLE talk_aftergame DROP INDEX talk_aftergame_index, ' .
       'ADD INDEX talk_aftergame_index (room_no)';
     SendQuery($query);
+    echo 'テーブル (' . $table . ') のインデックスを再生成しました<br>'."\n";
   }
 
   $table = 'vote';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL, date INT, scene VARCHAR(16), type TEXT, uname TEXT, user_no INT,
 target_no TEXT, vote_number INT, vote_count INT NOT NULL, revote_count INT NOT NULL,
@@ -167,7 +170,7 @@ EOF;
   }
 
   $table = 'system_message';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL, date INT, type TEXT, message TEXT,
 INDEX system_message_index(room_no, date, type(10))
@@ -176,7 +179,7 @@ EOF;
   }
 
   $table = 'result_ability';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL, date INT, type TEXT, user_no INT, target TEXT, result TEXT,
 INDEX result_ability_index(room_no, date, type(10))
@@ -185,7 +188,7 @@ EOF;
   }
 
   $table = 'result_dead';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL, date INT, scene VARCHAR(16), type TEXT, handle_name TEXT, result TEXT,
 INDEX result_dead_index(room_no, date, scene)
@@ -194,7 +197,7 @@ EOF;
   }
 
   $table = 'result_lastwords';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 room_no INT NOT NULL, date INT, handle_name TEXT, message TEXT,
 INDEX result_lastwords_index(room_no, date)
@@ -203,7 +206,7 @@ EOF;
   }
 
   $table = 'result_vote_kill';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, room_no INT NOT NULL, date INT, count INT,
 handle_name TEXT, target_name TEXT, vote INT, poll INT,
@@ -213,7 +216,7 @@ EOF;
   }
 
   $table = 'user_icon';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     $query = <<<EOF
 icon_no INT PRIMARY KEY, icon_name TEXT, icon_filename TEXT, icon_width INT, icon_height INT,
 color TEXT, session_id TEXT, category TEXT, appearance TEXT, author TEXT, regist_date DATETIME,
@@ -234,7 +237,7 @@ EOF;
 INSERT INTO {$table}(icon_no, icon_name, icon_filename, icon_width, icon_height, color)
 VALUES
 EOF;
-    foreach($class->data as $id => $list){
+    foreach ($class->data as $id => $list) {
       extract($list);
       SendQuery("{$query}($id, '$name', '$file', $width, $height, '$color')");
       echo "ユーザアイコン ($id $file $name $width × $height $color) を登録しました" . $footer;
@@ -242,7 +245,7 @@ EOF;
   }
 
   $table = 'count_limit';
-  if(! in_array($table, $table_list)){
+  if (! in_array($table, $table_list)) {
     CreateTable($table, 'count INT NOT NULL, type VARCHAR(16)');
     SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'room')");
     SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'icon')");
@@ -253,8 +256,8 @@ EOF;
   echo '初期設定は無事完了しました' . $footer;
 }
 
-function CreateTable($table, $query){
-  if(FetchBool("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")){
+function CreateTable($table, $query) {
+  if (FetchBool("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")) {
     echo 'テーブル (' . $table . ') を作成しました<br>'."\n";
   }
 }
