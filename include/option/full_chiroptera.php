@@ -5,7 +5,7 @@ class Option_full_chiroptera extends CheckRoomOptionItem {
 	}
 
 	function LoadMessages() {
-		$this->caption = '闇鍋モード';
-		$this->explain = '闇鍋モード';
+		$this->caption = '蝙蝠村';
+		$this->explain = '蝙蝠村';
 	}
 }
