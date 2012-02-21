@@ -37,7 +37,8 @@ HTML;
   }
 
   function textbox(RoomOptionItem $item, $type = 'textbox') {
-    $footer = isset($item->footer) ? $item->footer : '('.LineToBR($item->explain).')';
+    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
+		$footer = LineToBR($footer);
     $size = isset($item->size) ? 'size="'.$item->size.'"' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" {$size} value="{$item->value}">
@@ -49,7 +50,8 @@ HTML;
   }
 
   function checkbox(RoomOptionItem $item, $type = 'checkbox') {
-    $footer = isset($item->footer) ? $item->footer : '('.LineToBR($item->explain).')';
+    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
+		$footer = LineToBR($footer);
     $checked = $item->value ? ' checked' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
