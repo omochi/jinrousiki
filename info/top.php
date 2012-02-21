@@ -8,10 +8,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.0.0 α5 アップロード (2012/02/12 (Sun) 20:45) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/54884">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.0.0 α6 アップロード (2012/02/20 (Mon) 01:37) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/54953">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>投票時間リセット(管理者用)実装</li>
+  <li>未投票判定処理を最適化</li>
 </ul>
 
 <h1>開発状況</h1>

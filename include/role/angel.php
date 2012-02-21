@@ -11,9 +11,9 @@ class Role_angel extends Role_cupid{
   function VoteNightAction($list, $flag){
     parent::VoteNightAction($list, $flag);
     //共感者判定
-    $a = $list[0];
-    $b = $list[1];
-    if($this->IsSympathy($a, $b)) $this->SetSympathy($a, $b);
+    $a = array_shift($list);
+    $b = array_shift($list);
+    if ($this->IsSympathy($a, $b)) $this->SetSympathy($a, $b);
   }
 
   protected function IsSympathy($a, $b){ return $a->sex != $b->sex; }
