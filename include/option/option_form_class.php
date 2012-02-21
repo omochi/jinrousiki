@@ -37,7 +37,7 @@ HTML;
   }
 
   function textbox(RoomOptionItem $item, $type = 'textbox') {
-    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
+    $footer = isset($item->footer) ? $item->footer : '('.LineToBR($item->explain).')';
     $size = isset($item->size) ? 'size="'.$item->size.'"' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" {$size} value="{$item->value}">
@@ -49,7 +49,7 @@ HTML;
   }
 
   function checkbox(RoomOptionItem $item, $type = 'checkbox') {
-    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
+    $footer = isset($item->footer) ? $item->footer : '('.LineToBR($item->explain).')';
     $checked = $item->value ? ' checked' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
@@ -77,20 +77,22 @@ HTML;
       $selected = $code == $item->value ? ' selected' : '';
       $options .= "<option value=\"{$code}\" {$selected}>{$label}</option>\n";
     }
+		$explain = LineToBR($item->explain);
     echo <<<HTML
 <select id="{$item->name}" name="{$item->formname}">
 <optgroup label="{$item->label}">
 {$options}</optgroup>
 </select>
-<span class="explain">({$item->explain})</span>
+<span class="explain">({$explain})</span>
 HTML;
   }
 
   function realtime(Option_real_time $item) {
     $checked = $item->value ? ' checked' : '';
+		$explain = LineToBR($item->explain);
     echo <<<HTML
 <input type="checkbox" id="{$item->name}" name="{$item->formname}" value="on"{$checked}>
-<span class='explain'>({$item->explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)</span>
+<span class='explain'>({$explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)</span>
 </td>
 
 HTML;
