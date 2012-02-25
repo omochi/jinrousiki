@@ -11,12 +11,12 @@ class DatabaseConfigBase{
   */
   function Connect($header = false, $exit = true){
     //データベースサーバにアクセス
-    if (! ($db_handle = mysql_connect($this->host, $this->user, $this->password))){
+    if (! ($db_handle = mysql_connect($this->host, $this->user, $this->password))) {
       return $this->OutputError($header, $exit, 'MySQL サーバ接続失敗', $this->host);
     }
 
     mysql_set_charset($this->encode); //文字コード設定
-    if (! mysql_select_db($this->name, $db_handle)){ //データベース接続
+    if (! mysql_select_db($this->name, $db_handle)) { //データベース接続
       return $this->OutputError($header, $exit, 'データベース接続失敗', $this->name);
     }
     if ($this->encode == 'utf8') mysql_query('SET NAMES utf8');
@@ -25,6 +25,7 @@ class DatabaseConfigBase{
 
   //トランザクション開始
   function Transaction(){
+    if ($this->transaction) return true; //トランザクション中ならスキップ
     if (mysql_query('START TRANSACTION') === false) return false;
     $this->transaction = true;
     return true;
@@ -66,7 +67,7 @@ class DatabaseConfigBase{
   //エラー出力 ($header, $exit は Connect() 参照)
   private function OutputError($header, $exit, $title, $type){
     $str = $title . ': ' . $type; //エラーメッセージ作成
-    if ($header){
+    if ($header) {
       echo '<font color="#FF0000">' . $str . '</font><br>';
       if ($exit) OutputHTMLFooter($exit);
       return false;
@@ -99,10 +100,13 @@ class Session{
 
   //DB に登録されているセッション ID と被らないようにする (private)
   function GetUniq(){
+    global $DB_CONF;
+
+    if (! $DB_CONF->LockCount('session')) return null; //ロック処理
     $query = 'SELECT COUNT(room_no) FROM user_entry WHERE session_id = ';
-    do{
+    do {
       $this->Reset();
-    }while(FetchResult($query ."'{$this->id}'") > 0);
+    } while(FetchResult($query ."'{$this->id}'") > 0);
     return $this->id;
   }
 
@@ -118,7 +122,7 @@ class Session{
     $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no}" .
       " AND session_id = '{$this->id}' AND user_no > 0";
     $stack = FetchArray($query);
-    if (count($stack) == 1){
+    if (count($stack) == 1) {
       $this->user_no = $stack[0];
       return true;
     }
@@ -134,7 +138,7 @@ class Session{
     if ($this->Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
-    if (FetchResult('SELECT COUNT(room_no) FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0){
+    if (FetchCount('SELECT room_no FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0) {
       $url   = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .

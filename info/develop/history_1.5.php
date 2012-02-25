@@ -8,6 +8,7 @@ OutputInfoPageHeader('開発履歴 / 1.5', 1);
 <p>
 Ver. 1.5.x<br>
 <a href="#ver151">1</a>
+<a href="#ver152">2</a>
 </p>
 <p>
 Ver. 1.5.0<br>
@@ -43,6 +44,11 @@ Ver. 1.5.0<br>
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
 </p>
+
+<h2 id="ver152">Ver. 1.5.2 (Rev. 516) : 2012/02/26 (Sun) 00:00</h2>
+<ul>
+<li>「因幡兎」実装</li>
+</ul>
 
 <h2 id="ver151">Ver. 1.5.1 (Rev. 459) : 2012/01/09 (Mon) 23:28</h2>
 <ul>

@@ -174,8 +174,13 @@ EOF;
 
   //DB にユーザデータを登録
   $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
+  if (is_null($session_id = $SESSION->Get(true))) { //セッション ID 取得
+    $str = 'セッション ID の取得に失敗しました。<br>再度登録してください。' . $back_url;
+    OutputActionResult('村人登録 [セッションエラー]', $str);
+  }
+
   if (InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
-		$sex, $role, $SESSION->Get(true))) {
+		 $sex, $role, $session_id)) {
     //クッキーの初期化
     $ROOM->system_time = TZTime(); //現在時刻を取得
     $cookie_time = $ROOM->system_time - 3600;

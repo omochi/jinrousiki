@@ -5,7 +5,7 @@ $INIT_CONF->LoadFile('info_functions');
 $INIT_CONF->LoadClass('TIME_CALC', 'ROLE_IMG');
 OutputInfoPageHeader('ルール', 0, 'rule');
 ?>
-<img src="../img/rule_title.jpg" title="ルールの説明">
+<img src="../img/rule_title.jpg" alt="ルール" title="ルールの説明">
 <ul>
   <li><a href="#worning">ゲームに参加する上で重要なこと</a></li>
   <li><a href="#rule">「汝は人狼なりや？」の基本ルールについて</a></li>

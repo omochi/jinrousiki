@@ -271,7 +271,7 @@ class Room{
 	$query .= " AND type NOT IN ('CUPID_DO', 'DUELIST_DO')";
       }
       else {
-	$query .= " AND type NOT IN 'VOTE_KILL'";
+	$query .= " AND type NOT IN ('VOTE_KILL')";
       }
     }
     SendQuery($query);
