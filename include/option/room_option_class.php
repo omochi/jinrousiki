@@ -245,7 +245,7 @@ class RoomOption extends OptionParser {
 			}
 			$define->LoadMessages();
 			$footer = '';
-			$sentence = $define->explain;
+			$sentence = $define->caption;
 			if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
 				$sentence .= '(' . $CAST_CONF->$option . '人～)';
 			}

@@ -6,6 +6,7 @@ class Option_chaos_open_cast_camp extends CheckRoomOptionItem {
 	}
 
 	function LoadMessages() {
+		$this->caption = '配役を通知する:陣営通知';
 		$this->explain = '陣営通知 (陣営ごとの合計を通知)';
 	}
 }

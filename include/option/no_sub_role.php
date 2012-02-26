@@ -6,6 +6,7 @@ class Option_no_sub_role extends CheckRoomOptionItem {
 	}
 
 	function LoadMessages() {
+		$this->caption = 'サブ役職をつけない';
 		$this->explain = 'サブ役職をつけない';
 	}
 }

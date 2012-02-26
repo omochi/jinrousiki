@@ -6,13 +6,13 @@ class DatabaseConfig extends DatabaseConfigBase{
   public $host = 'localhost';
 
   //データベースのユーザ名
-  public $user = 'xxxx';
+  public $user = 'grayran';
 
   //データベースサーバのパスワード
-  public $password = 'xxxxxxxx';
+  public $password = 'satorituri';
 
   //データベース名
-  public $name = 'jinrou';
+  public $name = 'jinrou2';
 
   //サブデータベースのリスト (サーバによってはサブのデータベースを作れないので注意)
   /*

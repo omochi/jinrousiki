@@ -6,6 +6,7 @@ class Option_sub_role_limit_easy extends CheckRoomOptionItem {
 	}
 
 	function LoadMessages() {
+		$this->caption = 'サブ役職制限：EASYモード';
 		$this->explain = 'サブ役職制限：EASYモード';
 	}
 }
