@@ -160,14 +160,14 @@ function CreateRoom(){
     else{ //通常村
       $GAME_OPT->LoadPostParams(
         'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf',
-	'fox', 'child_fox', 'detective', 'medium');
+	'fox', 'child_fox', 'medium');
       if(! $GAME_OPT->full_cupid) $GAME_OPT->LoadPostParams('cupid');
       if(! $GAME_OPT->full_mania) $GAME_OPT->LoadPostParams('mania');
       if(! $GAME_OPT->perverseness) $GAME_OPT->LoadPostParams('decide', 'authority');
     }
     $GAME_OPT->LoadPostParams(
-      'deep_sleep', 'blinder', 'mind_open', 'joker', 'death_note', 'weather', 'festival', 'liar',
-      'gentleman', 'critical', $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death',
+      'liar', 'gentleman', $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death', 'deep_sleep',
+			'mind_open', 'blinder', 'critical', 'joker', 'death_note', 'detective', 'weather', 'festival',
       'replace_human_selector', 'change_common_selector', 'change_mad_selector', 'change_cupid_selector');
   }
   //PrintData($_POST, 'Post');
