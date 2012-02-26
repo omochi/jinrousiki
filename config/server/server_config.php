@@ -2,7 +2,7 @@
 //-- サーバ設定 --//
 class ServerConfig{
   //サーバのURL
-  public $site_root = 'http://localhost:8080/jinrousiki/';
+  public $site_root = 'http://localhost/jinrou/';
 
   //タイトル
   public $title = '汝は人狼なりや？';
@@ -33,7 +33,7 @@ class ServerConfig{
   public $salt = 'xxxx';
 
   //デバッグモードのオン/オフ
-  public $debug_mode = true;
+  public $debug_mode = false;
 
   //村作成パスワード (null 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
   public $room_password = null;
