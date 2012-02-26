@@ -100,13 +100,9 @@ class Session{
 
   //DB に登録されているセッション ID と被らないようにする (private)
   function GetUniq(){
-    global $DB_CONF;
-
-    if (! $DB_CONF->LockCount('session')) return null; //ロック処理
-    $query = 'SELECT COUNT(room_no) FROM user_entry WHERE session_id = ';
     do {
       $this->Reset();
-    } while(FetchResult($query ."'{$this->id}'") > 0);
+    } while (FetchCount("SELECT room_no FROM user_entry WHERE session_id = '{$this->id}'") > 0);
     return $this->id;
   }
 
@@ -116,8 +112,8 @@ class Session{
   //認証
   function Certify($exit = true){
     global $RQ_ARGS;
-    //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
 
+    //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no}" .
       " AND session_id = '{$this->id}' AND user_no > 0";

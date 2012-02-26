@@ -249,11 +249,6 @@ EOF;
     CreateTable($table, 'count INT NOT NULL, type VARCHAR(16)');
     SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'room')");
     SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'icon')");
-    SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'session')");
-  }
-  if (0 < $revision && $revision < 517) {
-    SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'session')");
-    echo 'テーブル (' . $table . ') にレコード session を追加しました<br>'."\n";
   }
 
   mysql_query("GRANT ALL ON {$DB_CONF->name}.* TO {$DB_CONF->user}");

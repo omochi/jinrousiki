@@ -60,9 +60,6 @@ function LoginManually(){
   if (FetchCount($query) != 1) return false;
 
   //DB のセッション ID を再登録
-  if (is_null($session_id = $SESSION->Get(true))) { //新しいセッション ID を取得
-    $title = 'ログイン失敗';
-    OutputActionResult($title, $title . ': セッション ID の取得に失敗しました');
-  }
-  return SendQuery("UPDATE user_entry SET session_id = '{$session_id}' {$where}", true);
+  $session_id = $SESSION->Get(true); //新しいセッション ID を取得
+  return FetchBool("UPDATE user_entry SET session_id = '{$session_id}' {$where}");
 }

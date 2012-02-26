@@ -146,42 +146,47 @@ function Say($say){
   global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   if (! $ROOM->IsPlaying()) return Write($say, $ROOM->scene, null, 0, true); //ゲーム開始前後
-  if ($SELF->IsDummyBoy() && $RQ_ARGS->last_words){ //身代わり君のシステムメッセージ (遺言)
-    return Write($say, $ROOM->scene, 'dummy_boy', 0);
+  if ($RQ_ARGS->last_words && $SELF->IsDummyBoy()) { //身代わり君のシステムメッセージ (遺言)
+    return Write($say, $ROOM->scene, 'dummy_boy');
   }
-  if ($SELF->IsDead()) return Write($say, 'heaven', null, 0); //死者の霊話
+  if ($SELF->IsDead()) return Write($say, 'heaven'); //死者の霊話
 
-  if ($ROOM->IsRealTime()){ //リアルタイム制
+  if ($ROOM->IsRealTime()) { //リアルタイム制
     GetRealPassTime($left_time);
     $spend_time = 0; //会話で時間経過制の方は無効にする
   }
   else { //会話で時間経過制
     GetTalkPassTime($left_time); //経過時間の和
-    $spend_time = floor(strlen($say) / 100); //経過時間
-    if ($spend_time < 1) $spend_time = 1; //最小は 1
-    elseif ($spend_time > 4) $spend_time = 4; //最大は 4
+    $spend_time = min(4, max(1, floor(strlen($say) / 100))); //経過時間 (範囲は 1 - 4)
   }
   if ($left_time < 1) return; //制限時間外ならスキップ (ここに来るのは生存者のみのはず)
 
-  if ($ROOM->IsDay()){ //昼はそのまま発言
+  if ($ROOM->IsDay()) { //昼はそのまま発言
     if ($ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
     if ($SELF->IsRole('echo_brownie')) $ROLES->LoadMain($SELF)->EchoSay(); //山彦の処理
     return Write($say, $ROOM->scene, null, $spend_time, true);
   }
-  //if ($ROOM->IsNight()){ //夜は役職毎に分ける
+
+  //if ($ROOM->IsNight()) { //夜は役職毎に分ける
   $user = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
-  if ($ROOM->IsEvent('blind_talk_night')) //天候：風雨
+  if ($ROOM->IsEvent('blind_talk_night')) { //天候：風雨
     $location = 'self_talk';
-  elseif ($user->IsWolf(true)) //人狼
+  }
+  elseif ($user->IsWolf(true)) { //人狼
     $location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'wolf'; //犬神判定
-  elseif ($user->IsRole('whisper_mad')) //囁き狂人
+  }
+  elseif ($user->IsRole('whisper_mad')) { //囁き狂人
     $location = $SELF->IsRole('possessed_mad') ? 'self_talk' : 'mad'; //犬神判定
-  elseif ($user->IsCommon(true)) //共有者
+  }
+  elseif ($user->IsCommon(true)) { //共有者
     $location = 'common';
-  elseif ($user->IsFox(true)) //妖狐
+  }
+  elseif ($user->IsFox(true)) { //妖狐
     $location = 'fox';
-  else //独り言
+  }
+  else { //独り言
     $location = 'self_talk';
+  }
 
   $update = $SELF->IsWolf(); //時間経過するのは人狼の発言のみ (本人判定)
   return Write($say, $ROOM->scene, $location, $update ? $spend_time : 0, $update);
@@ -326,7 +331,7 @@ function SetSuddenDeathTime(){
   if ($left_time == 0) $ROOM->sudden_death = $TIME_CONF->sudden_death - $last_update_time;
 }
 
-//村名前、番地、何日目、日没まで〜時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
+//村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
   global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
     $COOKIE, $SOUND, $OBJECTION;
