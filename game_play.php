@@ -64,7 +64,7 @@ if (! $ROOM->heaven_mode) {
   if (! $RQ_ARGS->list_down) OutputPlayerList();
   OutputAbility();
   if ($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay();
-  OutputRevoteList();
+  if ($ROOM->IsPlaying()) OutputRevoteList();
 }
 
 ($SELF->IsDead() && $ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog(); //会話ログを出力
@@ -89,15 +89,15 @@ function SendCookie(&$objection_list){
   setcookie('scene', $ROOM->scene, $ROOM->system_time + 3600); //シーンを登録
 
   //-- 再投票 --//
-  if ($ROOM->revote_count > 0){ //再投票回数を登録
-    setcookie('vote_times', $ROOM->revote_count, $ROOM->system_time + 3600);
+  if ($ROOM->vote_count > 1) { //再投票回数を登録
+    setcookie('vote_times', $ROOM->vote_count, $ROOM->system_time + 3600);
   }
   else { //再投票が無いなら削除
     setcookie('vote_times', '', $ROOM->system_time - 3600);
   }
 
   //-- 入村情報 --//
-  if ($ROOM->IsBeforeGame()){ //現在のユーザ人数を登録
+  if ($ROOM->IsBeforeGame()) { //現在のユーザ人数を登録
     setcookie('user_count', $USERS->GetUserCount(), $ROOM->system_time + 3600);
   }
 
@@ -108,7 +108,7 @@ function SendCookie(&$objection_list){
 
   //「異議」ありセット判定
   if ($RQ_ARGS->set_objection && $SELF->objection < $GAME_CONF->objection &&
-     ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))){
+      ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))) {
     $SELF->objection++;
     $SELF->Update('objection', $SELF->objection);
     $ROOM->Talk('', 'OBJECTION', $SELF->uname);
@@ -116,7 +116,7 @@ function SendCookie(&$objection_list){
 
   //ユーザ全体の「異議」ありを集計
   $count = 0;
-  foreach ($USERS->names as $uname => $id){
+  foreach ($USERS->names as $uname => $id) {
     $objection_list[$count++] = $USERS->ByID($id)->objection;
   }
   //PrintData($objection_list, 'objection');

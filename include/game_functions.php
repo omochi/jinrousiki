@@ -578,16 +578,15 @@ function OutputVoteList(){
 function OutputRevoteList(){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $SELF, $COOKIE, $SOUND;
 
-  if (! $ROOM->IsDay() || $ROOM->revote_count < 1) return false; //スキップ判定
-
-  if ($RQ_ARGS->play_sound && ! $ROOM->view_mode && $ROOM->revote_count > $COOKIE->vote_times){
-    $SOUND->Output('revote'); //音を鳴らす
+  if ($RQ_ARGS->play_sound && ! $ROOM->view_mode && $ROOM->vote_count > $COOKIE->vote_times) {
+    $SOUND->Output('revote'); //音を鳴らす (未投票突然死対応)
   }
+  if (! $ROOM->IsDay() || $ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ
 
   //投票済みチェック
   $query = $ROOM->GetQuery(true, 'vote') . " AND vote_count = {$ROOM->vote_count} " .
     "AND user_no = '{$SELF->user_no}'";
-  if (FetchResult($query) == 0){
+  if (FetchResult($query) == 0) {
     echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
       $MESSAGE->draw_announce . ')</div><br>'."\n";
   }

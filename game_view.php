@@ -122,7 +122,7 @@ if ($ROOM->IsPlaying()) {
 
 OutputPlayerList(); //プレイヤーリスト
 if ($ROOM->IsFinished()) OutputWinner(); //勝敗結果
-OutputRevoteList(); //再投票メッセージ
+if ($ROOM->IsPlaying())  OutputRevoteList(); //再投票メッセージ
 OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者

@@ -23,7 +23,7 @@ class Room{
 
   function __construct($request = null, $lock = false){
     if (is_null($request)) return;
-    if ($request->IsVirtualRoom()){
+    if ($request->IsVirtualRoom()) {
       $stack = $request->TestItems->test_room;
     }
     else {
@@ -60,7 +60,7 @@ class Room{
     if ($RQ_ARGS->IsVirtualRoom()) return $RQ_ARGS->TestItems->talk;
 
     $select = 'scene, location, uname, action, sentence, font_type';
-    switch($this->scene){
+    switch ($this->scene) {
     case 'beforegame':
       $table = 'talk_' . $this->scene;
       $select .= ', handle_name, color';
@@ -76,7 +76,7 @@ class Room{
       break;
     }
 
-    if ($heaven){
+    if ($heaven) {
       $table = 'talk';
       $scene = 'heaven';
     }
@@ -94,12 +94,12 @@ class Room{
   function LoadVote($kick = false){
     global $RQ_ARGS;
 
-    if ($RQ_ARGS->IsVirtualRoom()){
+    if ($RQ_ARGS->IsVirtualRoom()) {
       if (is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->scene})) return null;
     }
     else {
       $action = "scene = '{$this->scene}' AND vote_count = {$this->vote_count}";
-      switch($this->scene){
+      switch ($this->scene) {
       case 'beforegame':
       case 'night':
 	$data = 'user_no, target_no, type';
@@ -119,12 +119,12 @@ class Room{
 
     //PrintData($vote_list);
     $stack = array();
-    switch($this->scene){
+    switch ($this->scene) {
     case 'beforegame':
       $type = $kick ? 'KICK_DO' : 'GAMESTART';
-      foreach ($vote_list as $list){
+      foreach ($vote_list as $list) {
 	if ($list['type'] != $type) continue;
-	if ($kick){
+	if ($kick) {
 	  $stack[$list['user_no']][] = $list['target_no'];
 	}
 	else {
@@ -134,7 +134,7 @@ class Room{
       break;
 
     case 'day':
-      foreach ($vote_list as $list){
+      foreach ($vote_list as $list) {
 	$id = $list['user_no'];
 	unset($list['user_no']);
 	$stack[$id] = $list;
@@ -142,7 +142,7 @@ class Room{
       break;
 
     case 'night':
-      foreach ($vote_list as $list){
+      foreach ($vote_list as $list) {
 	$id = $list['user_no'];
 	unset($list['user_no']);
 	$stack[$id][] = $list;
@@ -160,19 +160,19 @@ class Room{
 
     if (! $this->IsPlaying()) return null;
     $this->event = new StdClass();
-    if ($this->test_mode){
+    if ($this->test_mode) {
       $stack = array();
-      foreach ($RQ_ARGS->TestItems->system_message as $date => $date_list){
+      foreach ($RQ_ARGS->TestItems->system_message as $date => $date_list) {
 	if ($date != $this->date) continue;
 	//PrintData($date_list, $date);
-	foreach ($date_list as $type => $type_list){
-	  switch($type){
+	foreach ($date_list as $type => $type_list) {
+	  switch ($type){
 	  case 'WEATHER':
 	  case 'EVENT':
 	  case 'SAME_FACE':
 	  case 'VOTE_DUEL':
 	  case 'BLIND_VOTE':
-	    foreach ($type_list as $event){
+	    foreach ($type_list as $event) {
 	      $stack[] = array('type' => $type, 'message' => $event);
 	    }
 	    break;
@@ -206,7 +206,7 @@ class Room{
   function LoadWinner(){
     global $RQ_ARGS;
 
-    if (! isset($this->winner)){ //未設定ならキャッシュする
+    if (! isset($this->winner)) { //未設定ならキャッシュする
       $this->winner = $this->test_mode ? $RQ_ARGS->TestItems->winner :
 	FetchResult($this->GetQueryHeader('room', 'winner'));
     }
@@ -215,10 +215,10 @@ class Room{
 
   //player 情報を DB から取得する
   function LoadPlayer(){
-    $query = "SELECT id AS role_id, date, scene, user_no, role FROM player" .
+    $query = 'SELECT id AS role_id, date, scene, user_no, role FROM player' .
       $this->GetQuery(false);
     $result = new StdClass();
-    foreach (FetchAssoc($query) as $stack){
+    foreach (FetchAssoc($query) as $stack) {
       extract($stack);
       $result->roles[$role_id] = $role;
       $result->users[$user_no][] = $role_id;
@@ -263,11 +263,11 @@ class Room{
     if (is_null($this->id)) return true;
 
     $query = 'DELETE FROM vote' . $this->GetQuery();
-    if ($this->IsDay()){
+    if ($this->IsDay()) {
       $query .= " AND type = 'VOTE_KILL' AND revote_count = " . $this->revote_count;
     }
-    elseif ($this->IsNight()){
-      if ($this->date == 1){
+    elseif ($this->IsNight()) {
+      if ($this->date == 1) {
 	$query .= " AND type NOT IN ('CUPID_DO', 'DUELIST_DO')";
       }
       else {
@@ -312,7 +312,7 @@ class Room{
 
   //オプショングループ判定
   function IsOptionGroup($option){
-    foreach ($this->option_list as $this_option){
+    foreach ($this->option_list as $this_option) {
       if (strpos($this_option, $option) !== false) return true;
     }
     return false;
@@ -343,12 +343,12 @@ class Room{
   function IsOpenCast(){
     global $USERS;
 
-    if (! isset($this->open_cast)){ //未設定ならキャッシュする
-      if ($this->IsOption('not_open_cast')){ //常時非公開
+    if (! isset($this->open_cast)) { //未設定ならキャッシュする
+      if ($this->IsOption('not_open_cast')) { //常時非公開
 	$user = $USERS->ByID(1); //身代わり君の蘇生辞退判定
 	$this->open_cast = $user->IsDummyBoy() && $user->IsDrop() && $USERS->IsOpenCast();
       }
-      elseif ($this->IsOption('auto_open_cast')){ //自動公開
+      elseif ($this->IsOption('auto_open_cast')) { //自動公開
 	$this->open_cast = $USERS->IsOpenCast();
       }
       else { //常時公開
@@ -423,7 +423,7 @@ class Room{
       return true;
     }
 
-    switch($scene){
+    switch ($scene){
     case 'beforegame':
     case 'aftergame':
       $table = 'talk_' . $scene;
@@ -458,7 +458,7 @@ class Room{
 
   //発言登録 (ゲーム開始前専用
   function TalkBeforegame($sentence, $uname, $handle_name, $color, $font_type = null){
-    if ($this->test_mode){
+    if ($this->test_mode) {
       $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
       PrintData(LineToBR($sentence), $str);
       return true;
@@ -467,7 +467,7 @@ class Room{
     $items  = 'room_no, date, scene, uname, handle_name, color, sentence, time';
     $values = "{$this->id}, 0, '{$this->scene}', '{$uname}', '{$handle_name}', '{$color}', " .
       "'{$sentence}', UNIX_TIMESTAMP()";
-    if (isset($font_type)){
+    if (isset($font_type)) {
       $items  .= ', font_type';
       $values .= ", '{$font_type}'";
     }
