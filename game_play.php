@@ -21,6 +21,9 @@ if ($ROOM->IsBeforeGame()) { //ゲームオプション表示
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'GAME_OPT', 'GAME_OPT_MESS', 'ROOM_IMG');
   $RQ_ARGS->retrive_type = $ROOM->scene;
 }
+elseif (! $ROOM->heaven_mode && $ROOM->IsDay()) {
+  $RQ_ARGS->retrive_type = $ROOM->scene;
+}
 elseif ($ROOM->IsFinished()) { //勝敗結果表示
   $INIT_CONF->LoadClass('WINNER_MESS');
 }
@@ -535,20 +538,15 @@ EOF;
 function CheckSelfVoteDay(){
   global $MESSAGE, $ROOM, $USERS, $SELF;
 
-  $revote_count = $ROOM->revote_count + 1; //投票回数を取得
-  $str = '<div class="self-vote">投票 ' . $revote_count . ' 回目：';
-
-  //投票対象者を取得
-  $query = 'SELECT target_no FROM vote' . $ROOM->GetQuery() .
-    " AND scene = '{$ROOM->scene}' AND type = 'VOTE_KILL' AND vote_count = {$ROOM->vote_count}" .
-    " AND revote_count = {$ROOM->revote_count} AND user_no = '{$SELF->user_no}'";
-  $target_no = FetchResult($query);
-  $str .= ($target_no === false ? '<font color="#FF0000">まだ投票していません</font>' :
-	   $USERS->ByVirtual($target_no)->handle_name . ' さんに投票済み') . '</div>'."\n";
-  if ($target_no === false){
-    $str .= '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>'."\n";
+  $str = '<div class="self-vote">投票 ' . ($ROOM->revote_count + 1) . ' 回目：';
+  if (is_null($SELF->target_no)) {
+    $str .= '<font color="#FF0000">まだ投票していません</font></div>'."\n" .
+      '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>';
   }
-  echo $str;
+  else {
+    $str .= $USERS->ByVirtual($SELF->target_no)->handle_name . ' さんに投票済み</div>';
+  }
+  echo $str."\n";
 }
 
 //自分の遺言を出力

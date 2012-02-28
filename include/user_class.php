@@ -896,6 +896,10 @@ class UserDataSet{
       case 'beforegame': //入村処理用
 	$user_list = $this->RetriveForBeforegame($request->room_no);
 	break;
+
+      case 'day': //昼 + 下界専用
+	$user_list = $this->RetriveForPlayingDay($request->room_no);
+	break;
       }
     }
     else {
@@ -947,7 +951,23 @@ EOF;
 SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
   last_load_scene, icon_filename, color, v.type AS vote_type
 FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
-  u.room_no = v.room_no AND u.user_no = v.user_no  AND v.type = 'GAMESTART' AND
+  u.room_no = v.room_no AND u.user_no = v.user_no AND v.type = 'GAMESTART' AND
+  v.vote_count = $ROOM->vote_count
+WHERE u.room_no = {$ROOM->id} ORDER BY user_no ASC
+EOF;
+    return FetchObject($query, 'User');
+  }
+
+  //昼 + 下界用のユーザデータを取得する
+  function RetriveForPlayingDay($room_no){
+    global $ROOM;
+
+    if ($room_no != $ROOM->id) return null;
+    $query = <<<EOF
+SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
+  last_load_scene, icon_filename, color, v.target_no AS target_no
+FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
+  u.room_no = v.room_no AND u.user_no = v.user_no AND v.type = 'VOTE_KILL' AND
   v.vote_count = $ROOM->vote_count
 WHERE u.room_no = {$ROOM->id} ORDER BY user_no ASC
 EOF;

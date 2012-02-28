@@ -2,7 +2,7 @@
 @import url(info.css);
 @import url(role_table.css);
 body{
-  background-color: #EFEFEF;
+  background-color: #EFEFEF; /* #FCFCF5; */
   background-image: url("../img/bg/rule.png");
   background-repeat: no-repeat;
   background-position: 100% 100%;

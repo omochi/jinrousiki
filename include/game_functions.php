@@ -578,7 +578,8 @@ function OutputVoteList(){
 function OutputRevoteList(){
   global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $SELF, $COOKIE, $SOUND;
 
-  if ($RQ_ARGS->play_sound && ! $ROOM->view_mode && $ROOM->vote_count > $COOKIE->vote_times) {
+  if ($RQ_ARGS->play_sound && ! $ROOM->view_mode && $ROOM->vote_count > 1 &&
+      $ROOM->vote_count > $COOKIE->vote_times) {
     $SOUND->Output('revote'); //音を鳴らす (未投票突然死対応)
   }
   if (! $ROOM->IsDay() || $ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ

@@ -178,7 +178,7 @@ class ExternalLinkBuilder{
 
   //サーバ通信状態チェック (private)
   function CheckConnection($url){
-    $url_stack = explode('/', $url);
+    $url_stack  = explode('/', $url);
     $this->host = $url_stack[2];
     if (! ($io = @fsockopen($this->host, 80, $status, $str, $this->time))) return false;
 
@@ -267,7 +267,7 @@ class ImageManager{
     $str = '<img';
     if ($this->class != '') $str .= ' class="' . $this->class . '"';
     $str .= ' src="' . $this->GetPath($name) . '"';
-    if (isset($alt)){
+    if (isset($alt)) {
       EscapeStrings($alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
     }
@@ -396,28 +396,28 @@ class TwitterConfigBase{
     if ($this->disable) return;
 
     $message = $this->GenerateMessage($id, $name, $comment);
-    if ($SERVER_CONF->encode != 'UTF-8'){ //Twitter は UTF-8
+    if ($SERVER_CONF->encode != 'UTF-8') { //Twitter は UTF-8
       $message = mb_convert_encoding($message, 'UTF-8', $SERVER_CONF->encode);
     }
     if (mb_strlen($message) > 140) $message = mb_substr($message, 0, 139);
 
-    if ($this->add_url){
+    if ($this->add_url) {
       $url = $SERVER_CONF->site_root;
       if ($this->direct_url) $url .= 'login.php?room_no=' . $id;
-      if ($this->short_url){
+      if ($this->short_url) {
 	$short_url = @file_get_contents('http://tinyurl.com/api-create.php?url=' . $url);
 	if ($short_url != '') $url = $short_url;
       }
       if (mb_strlen($message . $url) + 1 < 140) $message .= ' ' . $url;
     }
-    if (strlen($this->hash) > 0 && mb_strlen($message . $this->hash) + 2 < 140){
+    if (strlen($this->hash) > 0 && mb_strlen($message . $this->hash) + 2 < 140) {
       $message .= " #{$this->hash}";
     }
 
     //投稿
-    $to = new TwitterOAuth($this->key_ck, $this->key_cs, $this->key_at, $this->key_as);
-    $response = $to->OAuthRequest('https://twitter.com/statuses/update.json', 'POST',
-				  array('status' => $message));
+    $to  = new TwitterOAuth($this->key_ck, $this->key_cs, $this->key_at, $this->key_as);
+    $url = 'https://twitter.com/statuses/update.json';
+    $response = $to->OAuthRequest($url, 'POST', array('status' => $message));
 
     if (! ($response === false || (strrpos($response, 'error')))) return true;
     //エラー処理
@@ -1508,7 +1508,7 @@ class RoleData{
   //-- 関数 --//
   //役職グループ判定
   function DistinguishRoleGroup($role){
-    foreach ($this->main_role_group_list as $key => $value){
+    foreach ($this->main_role_group_list as $key => $value) {
       if (strpos($role, $key) !== false) return $value;
     }
     return 'human';
@@ -1516,7 +1516,7 @@ class RoleData{
 
   //所属陣営判別
   function DistinguishCamp($role, $start = false){
-    switch($camp = $this->DistinguishRoleGroup($role)){
+    switch ($camp = $this->DistinguishRoleGroup($role)) {
     case 'wolf':
     case 'mad':
       return 'wolf';
@@ -1557,7 +1557,7 @@ class RoleData{
 
   //役職クラス (CSS) 判定
   function DistinguishRoleClass($role){
-    switch($class = $this->DistinguishRoleGroup($role)){
+    switch ($class = $this->DistinguishRoleGroup($role)) {
     case 'poison_cat':
       $class = 'cat';
       break;
@@ -1595,11 +1595,11 @@ class RoleData{
 
   //役職の説明ページへのリンク生成
   function GenerateRoleLink($role){
-    if (array_key_exists($role, $this->sub_role_list)){
+    if (array_key_exists($role, $this->sub_role_list)) {
       $url  = 'sub_role';
       $name = $this->sub_role_list[$role];
     }
-    elseif ($this->DistinguishCamp($role, true) == 'mania'){
+    elseif ($this->DistinguishCamp($role, true) == 'mania') {
       $url  = 'mania';
       $name = $this->main_role_list[$role];
     }
@@ -1619,14 +1619,14 @@ class LotteryBuilder{
   //「福引き」を一定回数行ってリストに追加する
   function AddRandom(&$list, $random_list, $count){
     $total = count($random_list) - 1;
-    for(; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
+    for (; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
   }
 
   //「比」の配列から「福引き」を作成する
   function GenerateRandomList($list){
     $stack = array();
-    foreach ($list as $role => $rate){
-      for(; $rate > 0; $rate--) $stack[] = $role;
+    foreach ($list as $role => $rate) {
+      for (; $rate > 0; $rate--) $stack[] = $role;
     }
     return $stack;
   }
@@ -1635,7 +1635,7 @@ class LotteryBuilder{
   function RateToProbability($list){
     $stack = array();
     $total_rate = array_sum($list);
-    foreach ($list as $role => $rate){
+    foreach ($list as $role => $rate) {
       $stack[$role] = sprintf('%01.2f', $rate / $total_rate * 100);
     }
     PrintData($stack);
@@ -1651,9 +1651,9 @@ class GameConfigBase extends LotteryBuilder{
 //-- 配役設定の基底クラス --//
 class CastConfigBase extends LotteryBuilder{
   //闇鍋モードの配役リスト取得
-  function GetChaosRateList($name, $filter){
+  function GetChaosRateList($name, $filter) {
     $list = $this->$name;
-    foreach ($filter as $role => $rate){ //出現率補正
+    foreach ($filter as $role => $rate) { //出現率補正
       if (array_key_exists($role, $list)) $list[$role] = round($list[$role] * $rate);
     }
     return $list;
@@ -1665,7 +1665,7 @@ class CastConfigBase extends LotteryBuilder{
 
     $stack = $this->disable_dummy_boy_role_list; //サーバ個別設定を取得
     array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
-    if ($ROOM->IsOption('detective') && ! in_array('detective_common', $stack)){ //探偵村対応
+    if ($ROOM->IsOption('detective') && ! in_array('detective_common', $stack)) { //探偵村対応
       $stack[] = 'detective_common';
     }
     return $stack;
@@ -1676,21 +1676,23 @@ class CastConfigBase extends LotteryBuilder{
     global $ROOM;
 
     $stack = array();
-    foreach (array_keys($ROOM->option_role->options) as $option){ //処理順にオプションを登録
-      if ($option == 'replace_human' || strpos($option, 'full_') === 0)
+    foreach (array_keys($ROOM->option_role->options) as $option) { //処理順にオプションを登録
+      if ($option == 'replace_human' || strpos($option, 'full_') === 0) {
 	$stack[0][] = $option;
-      elseif (strpos($option, 'change_') === 0)
+      }
+      elseif (strpos($option, 'change_') === 0) {
 	$stack[1][] = $option;
+      }
     }
     //PrintData($stack);
 
     foreach ($stack as $order => $option_list){
       foreach ($option_list as $option){
-	if (array_key_exists($option, $this->replace_role_list)){ //管理者設定
+	if (array_key_exists($option, $this->replace_role_list)) { //管理者設定
 	  $target = $this->replace_role_list[$option];
 	  $role   = array_pop(explode('_', $option));
 	}
-	elseif ($order == 0){ //村人置換
+	elseif ($order == 0) { //村人置換
 	  $target = array_pop(explode('_', $option, 2));
 	  $role   = 'human';
 	}
@@ -1701,7 +1703,7 @@ class CastConfigBase extends LotteryBuilder{
 
 	$count = $role_list[$role];
 	if ($role == 'human' && $ROOM->IsOption('gerd')) $count--; //ゲルト君モード
-	if ($count > 0){ //置換処理
+	if ($count > 0) { //置換処理
 	  $role_list[$target] += $count;
 	  $role_list[$role]   -= $count;
 	}
@@ -1720,14 +1722,14 @@ class CastConfigBase extends LotteryBuilder{
     $role_list = array(); //初期化処理
     $this->InitializeDuel($user_count);
 
-    if (array_sum($this->duel_fix_list) <= $user_count){
+    if (array_sum($this->duel_fix_list) <= $user_count) {
       foreach ($this->duel_fix_list as $role => $count) $role_list[$role] = $count;
     }
     $rest_user_count = $user_count - array_sum($role_list);
     asort($this->duel_rate_list);
     $total_rate = array_sum($this->duel_rate_list);
     $max_rate_role = array_pop(array_keys($this->duel_rate_list));
-    foreach ($this->duel_rate_list as $role => $rate){
+    foreach ($this->duel_rate_list as $role => $rate) {
       if ($role == $max_rate_role) continue;
       $role_list[$role] = round($rest_user_count / $total_rate * $rate);
     }
@@ -1740,10 +1742,10 @@ class CastConfigBase extends LotteryBuilder{
   //配役フィルタリング処理
   function FilterRoles($user_count, $filter){
     $stack = array();
-    foreach ($this->role_list[$user_count] as $key => $value){
+    foreach ($this->role_list[$user_count] as $key => $value) {
       $role = 'human';
-      foreach ($filter as $set_role){
-	if (strpos($key, $set_role) !== false){
+      foreach ($filter as $set_role) {
+	if (strpos($key, $set_role) !== false) {
 	  $role = $set_role;
 	  break;
 	}
