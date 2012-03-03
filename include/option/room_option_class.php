@@ -1,42 +1,42 @@
 <?php
-require_once(dirname(__FILE__).'/room_option_item_class.php');
-require_once(dirname(__FILE__).'/option_class.php');
-
 class RoomOption extends OptionParser {
   static function ShowBuildRoomForm() {
     global $GAME_OPT_CONF, $ROOM_CONF, $TIME_CONF;
-		require_once(dirname(__FILE__).'/option_form_class.php');
+    require_once(dirname(__FILE__).'/option_form_class.php');
 
-		$builder = new OptionForm();
+    $builder = new OptionForm();
 
-		$builder->GenerateRow(self::Get('room_name'));
-		$builder->GenerateRow(self::Get('room_comment'));
-		$builder->GenerateRow(self::Get('max_user'));
+    $builder->GenerateRow(self::Get('room_name'));
+    $builder->GenerateRow(self::Get('room_comment'));
+    $builder->GenerateRow(self::Get('max_user'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('wish_role'));
     $builder->GenerateRow(self::Get('real_time'));
-    $builder->GenerateRow(self::Get('wait_morning', '早朝待機制', '夜が明けてから一定時間の間発言ができません')
-            );
-    $builder->GenerateRow(self::Get('open_vote', '投票した票数を公表する', '「権力者」などのサブ役職が分かりやすくなります')
-            );
-    $builder->GenerateRow(self::Get('seal_message', '天啓封印', '一部の個人通知メッセージが表示されなくなります')
-            );
-    $builder->GenerateRow(self::Get('open_day', 'オープニングあり', 'ゲームが1日目「昼」からスタートします')
-            );
+    $builder->GenerateRow(self::Get('wait_morning',
+				    '早朝待機制',
+				    '夜が明けてから一定時間の間発言ができません'));
+    $builder->GenerateRow(self::Get('open_vote', 
+				    '投票した票数を公表する',
+				    '「権力者」などのサブ役職が分かりやすくなります'));
+    $builder->GenerateRow(self::Get('seal_message',
+				    '天啓封印',
+				    '一部の個人通知メッセージが表示されなくなります'));
+    $builder->GenerateRow(self::Get('open_day',
+				    'オープニングあり', 'ゲームが1日目「昼」からスタートします'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('dummy_boy_selector'));
     $builder->GenerateRow(self::Get('gm_password'));
     $builder->GenerateRow(self::Get('gerd'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('not_open_cast_selector'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('poison'));
     $builder->GenerateRow(self::Get('assassin'));
@@ -53,7 +53,7 @@ class RoomOption extends OptionParser {
     $builder->GenerateRow(self::Get('decide'));
     $builder->GenerateRow(self::Get('authority'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('liar'));
     $builder->GenerateRow(self::Get('gentleman'));
@@ -73,19 +73,20 @@ class RoomOption extends OptionParser {
     $builder->GenerateRow(self::Get('change_mad_selector'));
     $builder->GenerateRow(self::Get('change_cupid_selector'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('special_role'));
 
-		$builder->HorizontalRule();
+    $builder->HorizontalRule();
 
     $builder->GenerateRow(self::Get('topping'));
     $builder->GenerateRow(self::Get('boost_rate'));
 
     $builder->GenerateRow(self::Get('chaos_open_cast'));
     $builder->GenerateRow(self::Get('sub_role_limit'));
-    $builder->GenerateRow(self::Get('secret_sub_role', 'サブ役職を表示しない', 'サブ役職が分からなくなります：闇鍋モード専用オプション')
-            );
+    $builder->GenerateRow(self::Get('secret_sub_role',
+				    'サブ役職を表示しない',
+				    'サブ役職が分からなくなります：闇鍋モード専用オプション'));
 
     self::End();
   }
@@ -114,7 +115,7 @@ class RoomOption extends OptionParser {
   const NOT_OPTION = '';
   const GAME_OPTION = 'game_option';
   const ROLE_OPTION = 'role_option';
-  var $groups = array();
+  public $groups = array();
 
   static function Category($category) {
     self::$categories[$category] = array();
@@ -135,19 +136,19 @@ class RoomOption extends OptionParser {
   }
 
   static function Get($item) {
-		if (!isset(self::$definitions[$item])) {
-			$file = dirname(__FILE__)."/{$item}.php";
-			if (file_exists($file)) {
-				require_once($file);
-				$class = 'Option_'.$item;
-				self::$definitions[$item] = new $class();
-			}
-			else {
-				self::$definitions[$item] = null;
-			}
-		}
-		return self::$definitions[$item];
-	}
+    if (!isset(self::$definitions[$item])) {
+      $file = dirname(__FILE__)."/{$item}.php";
+      if (file_exists($file)) {
+	require_once($file);
+	$class = 'Option_'.$item;
+	self::$definitions[$item] = new $class();
+      }
+      else {
+	self::$definitions[$item] = null;
+      }
+    }
+    return self::$definitions[$item];
+  }
 
   static function Wrap($option) {
     $result = new RoomOption();
@@ -155,7 +156,7 @@ class RoomOption extends OptionParser {
       if ($opt instanceof OptionParser) {
         array_merge($result->options, $opt->options);
       }
-      else if (is_string($opt)) {
+      elseif (is_string($opt)) {
         $result->Option($opt);
       }
     }
@@ -169,6 +170,7 @@ class RoomOption extends OptionParser {
   function OutputCategory($category, $border = false) {
     OutputView(self::$categories[$category], $border);
   }
+
   function OutputView($items = 'all', $border = false) {
     if ($items == 'all') {
       $items = array_keys(self::$definitions);
@@ -190,10 +192,10 @@ class RoomOption extends OptionParser {
   }
 
   function LoadPostParams($target = null) {
-		$items = is_array($target) ? $target : func_get_args();
-		$all = empty($items);
+    $items = is_array($target) ? $target : func_get_args();
+    $all = empty($items);
     foreach ($_POST as $key => $value) {
-			$def = self::Get($key);
+      $def = self::Get($key);
       if (isset($def) && ($all || in_array($def->name, $items))) {
         $def->CollectPostParam($this);
       }
@@ -211,8 +213,8 @@ class RoomOption extends OptionParser {
   }
 
   function GetCaption($name) {
-    if (isset(self::$definitions[$name])) {
-      return self::$definitions[$name]->caption;
+    if (is_object($object = self::Get($name))) {
+      return $object->caption;
     }
     return false;
   }
@@ -225,9 +227,9 @@ class RoomOption extends OptionParser {
   }
 
   function GetOptionString($type = null) {
-		if (!isset($type)) {
+    if (!isset($type)) {
       return $this->ToString();
-		}
+    }
     elseif (isset($this->groups[$type])) {
       return $this->ToString(array_keys($this->groups[$type]));
     }
@@ -239,32 +241,32 @@ class RoomOption extends OptionParser {
 
     $str = '';
     foreach(self::$icon_order as $option){
-			$define = self::Get($option);
+      $define = self::Get($option);
       if(!isset($define, $this->$option)) {
-	      continue;
-			}
-			$define->LoadMessages();
-			$footer = '';
-			$sentence = $define->caption;
-			if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
-				$sentence .= '(' . $CAST_CONF->$option . '人～)';
-			}
-			switch($option){
-			case 'real_time':
+	continue;
+      }
+      $define->LoadMessages();
+      $footer = '';
+      $sentence = $define->caption;
+      if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
+	$sentence .= '(' . $CAST_CONF->$option . '人～)';
+      }
+      switch($option){
+      case 'real_time':
         list($day, $night) = $this->options[$option];
         $sentence .= "　昼： {$day} 分　夜： {$night} 分";
-				$footer = '['. $day . '：' . $night . ']';
-				break;
-
-			case 'topping':
-			case 'boost_rate':
-				$type = $this->options[$option][0];
-				$items = $define->GetItems();
-				$sentence .= '(Type' . $items[$type] . ')';
-				$footer = '['. strtoupper($type) . ']';
-				break;
-			}
-			$str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
+	$footer = '['. $day . '：' . $night . ']';
+	break;
+	
+      case 'topping':
+      case 'boost_rate':
+	$type = $this->options[$option][0];
+	$items = $define->GetItems();
+	$sentence .= '(Type' . $items[$type] . ')';
+	$footer = '['. strtoupper($type) . ']';
+	break;
+      }
+      $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
     }
     return $str;
   }

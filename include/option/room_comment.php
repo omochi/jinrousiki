@@ -1,13 +1,10 @@
 <?php
 class Option_room_comment extends TextRoomOptionItem {
-	function  __construct() {
-		parent::__construct(RoomOption::NOT_OPTION);
-		$this->collect = null;
-	}
+  public $collect = null;
+  public $caption = '村についての説明';
+  public $footer  = '';
 
-	function LoadMessages() {
-		parent::LoadMessages();
-		$this->caption = '村についての説明';
-		$this->footer = '';
-	}
+  function  __construct() {
+    parent::__construct(RoomOption::NOT_OPTION);
+  }
 }

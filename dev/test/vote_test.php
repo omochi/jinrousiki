@@ -41,7 +41,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'tongue_wolf lost_ability';
+$RQ_ARGS->TestItems->test_users[2]->role = 'sex_wolf lost_ability';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -83,7 +83,7 @@ $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
 $RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
 $RQ_ARGS->TestItems->test_users[9]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[9]->role = 'sacrifice_cat joker[2]';
+$RQ_ARGS->TestItems->test_users[9]->role = 'missfire_cat joker[2]';
 $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
@@ -107,7 +107,7 @@ $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'medium mind_presage[23]';
+$RQ_ARGS->TestItems->test_users[13]->role = 'detective_common mind_presage[23]';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
@@ -137,7 +137,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'human';
+$RQ_ARGS->TestItems->test_users[18]->role = 'attempt_necromancer';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -179,7 +179,7 @@ $RQ_ARGS->TestItems->test_users[24]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->uname = 'sun';
 $RQ_ARGS->TestItems->test_users[25]->handle_name = '太陽';
 $RQ_ARGS->TestItems->test_users[25]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[25]->role = 'poison_ogre disfavor';
+$RQ_ARGS->TestItems->test_users[25]->role = 'poison_ogre[1] disfavor';
 $RQ_ARGS->TestItems->test_users[25]->live = 'live';
 $RQ_ARGS->TestItems->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -283,7 +283,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
+  array('user_no' => 2, 	'target_no' => 9,	'type' => 'WOLF_EAT'),
   #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
   array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
   array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
@@ -292,7 +292,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
   array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
   #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-  array('user_no' => 10, 	'target_no' => 8,	'type' => 'ASSASSIN_DO'),
+  array('user_no' => 10, 	'target_no' => 13,	'type' => 'ASSASSIN_DO'),
   #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
   #array('user_no' => 10, 	'target_no' => 11,	'type' => 'DEATH_NOTE_DO'),
   #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
@@ -339,7 +339,7 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13 18'),
   #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
   #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-  array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 11),
+  array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 20),
   #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
 );
 
