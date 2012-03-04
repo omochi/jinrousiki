@@ -1,13 +1,13 @@
 <?php
 //オプションパーサ
-class OptionParser{
+class OptionParser {
   public $row;
   public $options = array();
 
   function __construct($value){
     $this->row = $value;
-    foreach(explode(' ', $this->row) as $option){
-      if(empty($option)) continue;
+    foreach (explode(' ', $this->row) as $option){
+      if (empty($option)) continue;
       $items = explode(':', $option);
       $this->options[$items[0]] = count($items) > 1 ? array_slice($items, 1) : true;
     }
@@ -41,32 +41,30 @@ class OptionParser{
   }
 
   function ToString($items = null) {
-    if (!isset($items)) {
-      $filter = $this->options;
-    }
-    else {
+    if (isset($items)) {
       $filter = array_flip(is_array($items) ? $items : func_get_args());
     }
-    $result = '';
-    foreach(array_intersect_key($this->options, $filter) as $name => $value){
+    else {
+      $filter = $this->options;
+    }
+    $result = array();
+    foreach (array_intersect_key($this->options, $filter) as $name => $value) {
       if (is_bool($value)) {
-        if ($value) {
-          $result .= " {$name}";
-        }
+        if ($value) $result[] = $name;
       }
-      else if (is_array($value)) {
-        $result .= " {$name}:" . implode(':', $value);
+      elseif (is_array($value)) {
+        $result[] = "{$name}:" . implode(':', $value);
       }
-      else if (!empty($value)) {
-        $result .= " {$name}:{$value}";
+      elseif (! empty($value)) {
+        $result[] = "{$name}:{$value}";
       }
     }
-    return $result;
+    return implode(' ', $result);
   }
 
   function Option($value){
     $this->__construct($value);
-    foreach($this->options as $name => $value) $this->__get($name);
+    foreach ($this->options as $name => $value) $this->__get($name);
   }
 
   function Exists($name){ return array_key_exists($name, $this->options); }
@@ -95,8 +93,8 @@ class OptionManager{
   }
 
   protected function Load($name){
-    if(is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
-    if(in_array($name, $this->loaded)) return true;
+    if (is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
+    if (in_array($name, $this->loaded)) return true;
     require_once($file);
     $this->loaded[] = $name;
     return true;
@@ -105,8 +103,8 @@ class OptionManager{
   function SetRole(&$list, $count){
     global $ROOM;
 
-    foreach($this->role_list as $option){
-      if(! $ROOM->IsOption($option) || ! $this->Load($option)) continue;
+    foreach ($this->role_list as $option) {
+      if (! $ROOM->IsOption($option) || ! $this->Load($option)) continue;
       $class  = 'Option_' . $option;
       $filter = new $class();
       $filter->SetRole($list, $count);
@@ -117,12 +115,12 @@ class OptionManager{
     global $ROOM;
 
     $delete = $this->stack->delete;
-    foreach($this->cast_list as $option){
-      if(! $ROOM->IsOption($option) || ! $this->Load($option)) continue;
+    foreach ($this->cast_list as $option) {
+      if (! $ROOM->IsOption($option) || ! $this->Load($option)) continue;
       $class  = 'Option_' . $option;
       $filter = new $class();
       $stack  = $filter->Cast($list, $rand);
-      if(is_array($stack)) $delete = array_merge($delete, $stack);
+      if (is_array($stack)) $delete = array_merge($delete, $stack);
     }
     $this->stack->delete = $delete;
   }

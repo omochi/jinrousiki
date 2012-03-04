@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
-$INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'GAME_OPT');
+$INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'ROOM_OPT');
 
 if (! $DB_CONF->Connect(true, false)) return false; //DB 接続
 MaintenanceRoom();
@@ -47,7 +47,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $DB_CONF, $ROOM_CONF, $USER_ICON, $TWITTER, $GAME_OPT, $GAME_OPT_CONF;
+  global $SERVER_CONF, $DB_CONF, $ROOM_CONF, $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
 
   if ($SERVER_CONF->disable_establish) {
     OutputActionResult('村作成 [制限事項]', '村作成はできません');
@@ -55,7 +55,7 @@ function CreateRoom(){
   if (CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
     OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
-  //PrintData($GAME_OPT);
+  //PrintData($ROOM_OPT);
 
   //-- 入力データのエラーチェック --//
   //村の名前・説明のデータチェック
@@ -63,31 +63,31 @@ function CreateRoom(){
     $$str = $_POST[$str];
     EscapeStrings($$str);
     if ($$str == '') { //未入力チェック
-      OutputRoomAction('empty', false, $GAME_OPT->GetCaption($str));
+      OutputRoomAction('empty', false, $ROOM_OPT->GetCaption($str));
       return false;
     }
     //文字列チェック
     if (strlen($$str) > $ROOM_CONF->$str || preg_match($ROOM_CONF->ng_word, $$str)) {
-      OutputRoomAction('comment', false, $GAME_OPT->GetCaption($str));
+      OutputRoomAction('comment', false, $ROOM_OPT->GetCaption($str));
       return false;
     }
   }
 
   //最大人数チェック
   $max_user = @(int)$_POST['max_user'];
-  if (! in_array($max_user, $ROOM_CONF->max_user_list)){
+  if (! in_array($max_user, $ROOM_CONF->max_user_list)) {
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
-  if (! $DB_CONF->LockCount('room')){ //トランザクション開始
+  if (! $DB_CONF->LockCount('room')) { //トランザクション開始
     OutputRoomAction('busy');
     return false;
   }
 
   $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
-  if (! $SERVER_CONF->debug_mode){ //デバッグモード時は村作成制限をスキップ
+  if (! $SERVER_CONF->debug_mode) { //デバッグモード時は村作成制限をスキップ
     $str = 'room_password'; //パスワードチェック
-    if (isset($SERVER_CONF->$str) && @$_POST[$str] != $SERVER_CONF->$str){
+    if (isset($SERVER_CONF->$str) && @$_POST[$str] != $SERVER_CONF->$str) {
       OutputActionResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
     }
 
@@ -96,112 +96,111 @@ function CreateRoom(){
 
     $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
     $time  = FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
-    if (isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait){
+    if (isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait) {
       OutputRoomAction('establish_wait');
       return false;
     }
 
     //最大稼働数チェック
-    if (FetchCount("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room){
+    if (FetchCount("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room) {
       OutputRoomAction('full');
       return false;
     }
 
-    //同一ユーザの連続作成チェック (終了していなければエラー処理)
-    if (FetchCount("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0){
+    //同一ユーザの連続作成チェック
+    if (FetchCount("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0) {
       OutputRoomAction('over_establish');
       return false;
     }
   }
 
   //-- ゲームオプションをセット --//
-  $GAME_OPT->LoadPostParams(
+  $ROOM_OPT->LoadPostParams(
     'real_time', 'dummy_boy_selector', 'perverseness', 'replace_human_selector', 'special_role',
     'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast_selector');
-  if ($GAME_OPT->quiz){ //クイズ村
+  if ($ROOM_OPT->quiz) { //クイズ村
     $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
     EscapeStrings($gm_password);
-    if ($gm_password == ''){
+    if ($gm_password == '') {
       OutputRoomAction('no_password');
       return false;
     }
-    $GAME_OPT->Set(RoomOption::GAME_OPTION, 'dummy_boy', true);
-    $GAME_OPT->Set(RoomOption::GAME_OPTION, 'gm_login', true);
+    $ROOM_OPT->Set(RoomOption::GAME_OPTION, 'dummy_boy', true);
+    $ROOM_OPT->Set(RoomOption::GAME_OPTION, 'gm_login',  true);
     $dummy_boy_handle_name = 'GM';
     $dummy_boy_password    = $gm_password;
   }
-  else{
+  else {
     //身代わり君関連のチェック
-    if ($GAME_OPT->dummy_boy){
-      $dummy_boy_handle_name    = '身代わり君';
-      $dummy_boy_password       = $SERVER_CONF->system_password;
-      $GAME_OPT->LoadPostParams('gerd');
+    if ($ROOM_OPT->dummy_boy) {
+      $dummy_boy_handle_name = '身代わり君';
+      $dummy_boy_password    = $SERVER_CONF->system_password;
+      $ROOM_OPT->LoadPostParams('gerd');
     }
-    elseif ($GAME_OPT->gm_login){
+    elseif ($ROOM_OPT->gm_login) {
       $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
       EscapeStrings($gm_password);
-      if ($gm_password == ''){
+      if ($gm_password == '') {
         OutputRoomAction('no_password');
         return false;
       }
-      $GAME_OPT->Set(RoomOption::GAME_OPTION, 'dummy_boy', true);
-      $dummy_boy_handle_name    = 'GM';
-      $dummy_boy_password       = $gm_password;
-      $GAME_OPT->LoadPostParams('gerd');
+      $ROOM_OPT->Set(RoomOption::GAME_OPTION, 'dummy_boy', true);
+      $dummy_boy_handle_name = 'GM';
+      $dummy_boy_password    = $gm_password;
+      $ROOM_OPT->LoadPostParams('gerd');
     }
 
-    if ($GAME_OPT->chaos || $GAME_OPT->chaosfull || $GAME_OPT->chaos_hyper ||
-       $GAME_OPT->chaos_verso){ //闇鍋モード
-      $GAME_OPT->LoadPostParams('special_role', 'secret_sub_role', 'topping', 'boost_rate',
+    if ($ROOM_OPT->chaos || $ROOM_OPT->chaosfull || $ROOM_OPT->chaos_hyper ||
+	$ROOM_OPT->chaos_verso) { //闇鍋モード
+      $ROOM_OPT->LoadPostParams('special_role', 'secret_sub_role', 'topping', 'boost_rate',
 				'chaos_open_cast', 'sub_role_limit');
     }
-    elseif ($GAME_OPT->duel || $GAME_OPT->gray_random){ //特殊配役モード
+    elseif ($ROOM_OPT->duel || $ROOM_OPT->gray_random) { //特殊配役モード
       /*
 	もともとここには$_POSTの内容をロードするコードが存在した。
 	このブロックは通常村と決闘村を識別するために残されている。(2012-01-18 enogu)
       */
     }
-    else{ //通常村
-      $GAME_OPT->LoadPostParams(
+    else { //通常村
+      $ROOM_OPT->LoadPostParams(
         'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf',
 	'fox', 'child_fox', 'medium');
-      if (! $GAME_OPT->full_cupid) $GAME_OPT->LoadPostParams('cupid');
-      if (! $GAME_OPT->full_mania) $GAME_OPT->LoadPostParams('mania');
-      if (! $GAME_OPT->perverseness) $GAME_OPT->LoadPostParams('decide', 'authority');
+      if (! $ROOM_OPT->full_cupid)   $ROOM_OPT->LoadPostParams('cupid');
+      if (! $ROOM_OPT->full_mania)   $ROOM_OPT->LoadPostParams('mania');
+      if (! $ROOM_OPT->perverseness) $ROOM_OPT->LoadPostParams('decide', 'authority');
     }
-    $GAME_OPT->LoadPostParams(
-      'liar', 'gentleman', $GAME_OPT->perverseness ? 'perverseness' : 'sudden_death', 'deep_sleep',
-			'mind_open', 'blinder', 'critical', 'joker', 'death_note', 'detective', 'weather', 'festival',
-      'replace_human_selector', 'change_common_selector', 'change_mad_selector', 'change_cupid_selector');
+    $ROOM_OPT->LoadPostParams(
+      'liar', 'gentleman', $ROOM_OPT->perverseness ? 'perverseness' : 'sudden_death', 'deep_sleep',
+      'mind_open', 'blinder', 'critical', 'joker', 'death_note', 'detective', 'weather', 'festival',
+      'replace_human_selector', 'change_common_selector', 'change_mad_selector',
+      'change_cupid_selector');
   }
-  //PrintData($_POST, 'Post');
-  //PrintData($check_game_option_list, 'CheckGameOption');
-  //PrintData($game_option_list);
-  //PrintData($check_option_role_list, 'CheckOptionRole');
 
-  if ($GAME_OPT->real_time){
-    list($day, $night) = $GAME_OPT->real_time;
-
+  if ($ROOM_OPT->real_time) {
     //制限時間チェック
+    list($day, $night) = $ROOM_OPT->real_time;
     if ($day <= 0 || 99 < $day || $night <= 0 || 99 < $night) {
       OutputRoomAction('time');
       return false;
     }
 
-    $GAME_OPT->LoadPostParams('wait_morning');
+    $ROOM_OPT->LoadPostParams('wait_morning');
   }
 
   //登録
   //ALTER TABLE room_no AUTO_INCREMENT = value; //カウンタセット SQL
   $room_no     = FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
-  $game_option = $GAME_OPT->GetOptionString(RoomOption::GAME_OPTION);
-  $option_role = $GAME_OPT->GetOptionString(RoomOption::ROLE_OPTION);
+  $game_option = $ROOM_OPT->GetOptionString(RoomOption::GAME_OPTION);
+  $option_role = $ROOM_OPT->GetOptionString(RoomOption::ROLE_OPTION);
   $status      = false;
+  //PrintData($_POST, 'Post');
+  //PrintData($ROOM_OPT);
   //PrintData($game_option, 'GameOption');
   //PrintData($option_role, 'OptionRole');
-  //OutputHTMLFooter(true);
-  do{
-    if (! $SERVER_CONF->dry_run_mode){
+  //OutputHTMLFooter(true); //テスト用
+
+  do {
+    if (! $SERVER_CONF->dry_run_mode) {
       //村作成
       $items  = 'room_no, name, comment, max_user, game_option, ' .
         'option_role, status, date, scene, vote_count, scene_start_time, last_update_time, ' .
@@ -212,13 +211,13 @@ function CreateRoom(){
       if (! InsertDatabase('room', $items, $values)) break;
 
       //身代わり君を入村させる
-      if ($GAME_OPT->dummy_boy &&
-         FetchCount('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
+      if ($ROOM_OPT->dummy_boy &&
+	  FetchCount('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
         if (! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-                        1, $GAME_OPT->gerd ? $USER_ICON->gerd : 0)) break;
+			 1, $ROOM_OPT->gerd ? $USER_ICON->gerd : 0)) break;
       }
 
-      if ($SERVER_CONF->secret_room){ //村情報非表示モードの処理
+      if ($SERVER_CONF->secret_room) { //村情報非表示モードの処理
         $DB_CONF->Commit();
         OutputRoomAction('success', false, $room_name);
         return true;
@@ -231,7 +230,7 @@ function CreateRoom(){
     $DB_CONF->Commit();
     OutputRoomAction('success', false, $room_name);
     $status = true;
-  }while(false);
+  } while (false);
 
   if (! $status) OutputRoomAction('busy');
   return true;
@@ -241,7 +240,7 @@ function CreateRoom(){
 function OutputRoomAction($type, $rollback = true, $str = ''){
   global $SERVER_CONF, $DB_CONF;
 
-  switch($type){
+  switch ($type) {
   case 'empty':
     OutputActionResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
@@ -319,7 +318,7 @@ function OutputRoomList(){
       $rss = FeedEngine::Initialize('site_summary.php');
       $rss->Import($filename);
     }
-    else{
+    else {
       $rss = OutputSiteSummary();
     }
     foreach ($rss->items as $item){
@@ -352,7 +351,7 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
-  global $SERVER_CONF, $ROOM_CONF, $GAME_OPT;
+  global $SERVER_CONF, $ROOM_CONF, $ROOM_OPT;
 
   if ($SERVER_CONF->disable_establish){
     echo '村作成はできません';
@@ -366,7 +365,7 @@ function OutputCreateRoomPage(){
 
 EOF;
 
-	RoomOption::ShowBuildRoomForm();
+  RoomOption::ShowBuildRoomForm();
   $password = is_null($SERVER_CONF->room_password) ? '' :
     '<label for="room_password">村作成パスワード</label>：' .
     '<input type="password" id="room_password" name="room_password" size="20">　';

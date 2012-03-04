@@ -1,12 +1,10 @@
 <?php
-$INIT_CONF->LoadClass('ROOM_IMG');
+$INIT_CONF->LoadClass('ROOM_IMG', 'ROOM_OPT');
 
 class SiteSummary extends FeedEngine {
   var $room_info = array();
 
   function Build() {
-    global $INIT_CONF;
-		$INIT_CONF->LoadClass('GAME_OPT');
     global $SERVER_CONF, $ROOM_IMG;
     $this->SetChannel($SERVER_CONF->title, $SERVER_CONF->site_root, $SERVER_CONF->comment);
     $rooms = RoomDataSet::LoadOpeningRooms();
@@ -19,7 +17,7 @@ class SiteSummary extends FeedEngine {
 <div>
 <a href="{$url}">
 {$status}<span class='room_no'>[{$room->id}番地]</span><h2>{$title}</h2>
-〜 {$room->comment} 〜 {$options}(最大{$room->max_user}人)
+～ {$room->comment} 〜 {$options}(最大{$room->max_user}人)
 </a>
 </div>
 

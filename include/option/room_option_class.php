@@ -227,7 +227,7 @@ class RoomOption extends OptionParser {
   }
 
   function GetOptionString($type = null) {
-    if (!isset($type)) {
+    if (! isset($type)) {
       return $this->ToString();
     }
     elseif (isset($this->groups[$type])) {
