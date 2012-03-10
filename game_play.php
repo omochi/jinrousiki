@@ -128,9 +128,10 @@ function SendCookie(&$objection_list){
 
 //遺言登録
 function EntryLastWords($say){
-  global $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $ROOM, $USERS, $SELF;
 
-  if ($ROOM->IsFinished()) return false; //スキップ判定
+  //スキップ判定
+  if (($GAME_CONF->limit_last_words && $ROOM->IsPlaying()) || $ROOM->IsFinished()) return false;
 
   if ($say == ' ') $say = null; //スペースだけなら「消去」
   if ($SELF->IsLive()) { //登録しない役職をチェック

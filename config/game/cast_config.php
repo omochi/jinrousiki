@@ -4,7 +4,7 @@
   + 変更：なし
 */
 //-- 配役設定 --//
-class CastConfig extends CastConfigBase{
+class CastConfig extends CastConfigBase {
   //-- 配役テーブル --//
   /* 設定の見方
     [ゲーム参加人数] => array([配役名1] => [配役名1の人数], [配役名2] => [配役名2の人数], ...),
@@ -1073,31 +1073,31 @@ class CastConfig extends CastConfigBase{
     global $ROOM;
 
     //-- 霊界自動公開オプションによる配役設定分岐 --//
-    if($ROOM->IsOption('not_open_cast')){ //非公開
+    if ($ROOM->IsOption('not_open_cast')) { //非公開
       //-- 埋毒決闘 --//
       $duel_fix_list = array();
-      if($user_count >= 20){
+      if ($user_count >= 20){
 	$duel_fix_list['poison_jealousy'] = 1;
 	$duel_fix_list['moon_cupid'] = 1;
       }
-      if($user_count >= 25) $duel_fix_list['quiz'] = 1;
+      if ($user_count >= 25) $duel_fix_list['quiz'] = 1;
       $duel_rate_list = array('poison' => 5, 'chain_poison' => 10,
 			      'poison_wolf' => 5, 'triangle_cupid' => 2);
     }
-    elseif($ROOM->IsOption('auto_open_cast')){ //自動公開
+    elseif ($ROOM->IsOption('auto_open_cast')) { //自動公開
       //-- 恋色決闘 --//
       $duel_fix_list = array();
-      if($user_count >= 15) $duel_fix_list['sweet_fairy'] = 1;
-      if($user_count >= 20) $duel_fix_list['enchant_mad'] = 1;
-      if($user_count >= 25){
+      if ($user_count >= 15) $duel_fix_list['sweet_fairy'] = 1;
+      if ($user_count >= 20) $duel_fix_list['enchant_mad'] = 1;
+      if ($user_count >= 25) {
 	$duel_fix_list['sirius_wolf'] = 1;
 	$duel_fix_list['moon_cupid'] = 1;
       }
-      if($user_count >= 30) $duel_fix_list['quiz'] = 1;
+      if ($user_count >= 30) $duel_fix_list['quiz'] = 1;
       $duel_rate_list = array('select_assassin' => 5, 'wolf' => 3, 'self_cupid' => 1,
 			      'mind_cupid' => 4, 'triangle_cupid' => 1);
     }
-    else{ //常時公開
+    else { //常時公開
       //-- 暗殺決闘 --//
       $duel_fix_list = array();
       $duel_rate_list = array('assassin' => 11, 'wolf' => 4, 'trap_mad' => 5);
@@ -1112,27 +1112,27 @@ class CastConfig extends CastConfigBase{
   function FinalizeDuel($user_count, &$role_list){
     global $ROOM;
 
-    if($ROOM->IsOption('not_open_cast')){ //非公開
+    if ($ROOM->IsOption('not_open_cast')) { //非公開
     }
-    elseif($ROOM->IsOption('auto_open_cast')){ //自動公開
-      if($role_list['self_cupid'] > 1){
+    elseif ($ROOM->IsOption('auto_open_cast')) { //自動公開
+      if ($role_list['self_cupid'] > 1) {
 	$role_list['self_cupid']--;
-	$role_list['dummy_chiroptera']++;
+	@$role_list['dummy_chiroptera']++;
       }
-      if($role_list['mind_cupid'] > 3){
+      if ($role_list['mind_cupid'] > 3) {
 	$role_list['mind_cupid']--;
-	$role_list['exchange_angel']++;
+	@$role_list['exchange_angel']++;
       }
-      if($role_list['mind_cupid'] > 3){
+      if ($role_list['mind_cupid'] > 3) {
 	$role_list['mind_cupid']--;
-	$role_list['sweet_cupid']++;
+	@$role_list['sweet_cupid']++;
       }
-      if($role_list['wolf'] > 2){
+      if ($role_list['wolf'] > 2) {
 	$role_list['wolf']--;
-	$role_list['silver_wolf']++;
+	@$role_list['silver_wolf']++;
       }
     }
-    else{ //常時公開
+    else { //常時公開
     }
   }
 }

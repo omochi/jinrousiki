@@ -1619,7 +1619,10 @@ class LotteryBuilder{
   //「福引き」を一定回数行ってリストに追加する
   function AddRandom(&$list, $random_list, $count){
     $total = count($random_list) - 1;
-    for (; $count > 0; $count--) $list[$random_list[mt_rand(0, $total)]]++;
+    for (; $count > 0; $count--) {
+      $role = $random_list[mt_rand(0, $total)];
+      isset($list[$role]) ? $list[$role]++ : $list[$role] = 1;
+    }
   }
 
   //「比」の配列から「福引き」を作成する
@@ -1643,13 +1646,13 @@ class LotteryBuilder{
 }
 
 //-- 配役設定の基底クラス --//
-class GameConfigBase extends LotteryBuilder{
+class GameConfigBase extends LotteryBuilder {
   //天候決定
   function GetWeather(){ return GetRandom($this->GenerateRandomList($this->weather_list)); }
 }
 
 //-- 配役設定の基底クラス --//
-class CastConfigBase extends LotteryBuilder{
+class CastConfigBase extends LotteryBuilder {
   //闇鍋モードの配役リスト取得
   function GetChaosRateList($name, $filter) {
     $list = $this->$name;
@@ -1687,7 +1690,7 @@ class CastConfigBase extends LotteryBuilder{
     //PrintData($stack);
 
     foreach ($stack as $order => $option_list){
-      foreach ($option_list as $option){
+      foreach ($option_list as $option) {
 	if (array_key_exists($option, $this->replace_role_list)) { //管理者設定
 	  $target = $this->replace_role_list[$option];
 	  $role   = array_pop(explode('_', $option));
@@ -1701,11 +1704,11 @@ class CastConfigBase extends LotteryBuilder{
 	  $role   = $target == 'angel' ? 'cupid' : array_pop(explode('_', $target));
 	}
 
-	$count = $role_list[$role];
+	$count = isset($role_list[$role]) ? $role_list[$role] : 0;
 	if ($role == 'human' && $ROOM->IsOption('gerd')) $count--; //ゲルト君モード
 	if ($count > 0) { //置換処理
-	  $role_list[$target] += $count;
-	  $role_list[$role]   -= $count;
+	  @$role_list[$target] += $count;
+	  $role_list[$role]    -= $count;
 	}
       }
     }
@@ -1750,7 +1753,7 @@ class CastConfigBase extends LotteryBuilder{
 	  break;
 	}
       }
-      $stack[$role] += (int)$value;
+      @$stack[$role] += (int)$value;
     }
     return $stack;
   }

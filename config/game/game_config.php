@@ -27,6 +27,9 @@ class GameConfig extends GameConfigBase{
   public $kick = 3; //KICK 処理を実施するのに必要な投票数
   public $draw = 4; //引き分け処理を実施する再投票回数 (「再投票」なので実際の投票回数は +1 される)
 
+  //-- 遺言 --//
+  public $limit_last_words = false; //遺言変更制限 (true：有効 / false：無効)
+
   //-- 役職の能力設定 --//
   //毒能力者を処刑した際に巻き込まれる対象 (true:投票者ランダム / false:完全ランダム)
   public $poison_only_voter = false;
