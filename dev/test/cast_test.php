@@ -35,7 +35,7 @@ $RQ_ARGS->TestItems->test_room['option_role'] .= ' chaos_open_cast';
 $RQ_ARGS->TestItems->is_virtual_room = true;
 $RQ_ARGS->vote_times = 1;
 $RQ_ARGS->TestItems->test_users = array();
-for($id = 1; $id <= 22; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
+for ($id = 1; $id <= 22; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
 
 $RQ_ARGS->TestItems->test_users[1]->uname = 'dummy_boy';
 $RQ_ARGS->TestItems->test_users[1]->handle_name = '身代わり君';
@@ -129,14 +129,14 @@ $RQ_ARGS->TestItems->test_users[22]->role = '';
 
 $icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-foreach($RQ_ARGS->TestItems->test_users as $id => $user){
+foreach ($RQ_ARGS->TestItems->test_users as $id => $user) {
   $user->room_no = $RQ_ARGS->room_no;
   $user->user_no = $id;
   $user->sex = $id % 2 == 0 ? 'female' : 'male';
   $user->profile = '';
   $user->live = 'live';
   $user->last_load_scene = 'beforegame';
-  if($id > 1){
+  if ($id > 1) {
     $user->color = $icon_color_list[($id - 2) % 10];
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
   }
@@ -166,6 +166,6 @@ OutputPlayerList(); //プレイヤーリスト
 AggregateVoteGameStart(); //配役処理
 $ROOM->date++;
 $ROOM->scene = 'night';
-foreach($USERS->rows as $user) $user->ReparseRoles();
+foreach ($USERS->rows as $user) $user->ReparseRoles();
 OutputPlayerList(); //プレイヤーリスト
 OutputHTMLFooter(); //HTMLフッタ

@@ -289,14 +289,14 @@ function GenerateRoleNameList($role_count_list, $css = false){
   global $ROLE_DATA, $ROOM;
 
   $chaos = $ROOM->IsOption('chaos_open_cast_camp') ? 'camp' :
-    ($ROOM->IsOption('chaos_open_cast_role') ? 'role' : NULL);
-  switch ($chaos){
+    ($ROOM->IsOption('chaos_open_cast_role') ? 'role' : null);
+  switch ($chaos) {
   case 'camp':
     $header = '出現陣営：';
     $main_type = '陣営';
     $main_role_list = array();
-    foreach ($role_count_list as $key => $value){
-      if (array_key_exists($key, $ROLE_DATA->main_role_list)){
+    foreach ($role_count_list as $key => $value) {
+      if (array_key_exists($key, $ROLE_DATA->main_role_list)) {
 	$main_role_list[$ROLE_DATA->DistinguishCamp($key, true)] += $value;
       }
     }
@@ -306,8 +306,8 @@ function GenerateRoleNameList($role_count_list, $css = false){
     $header = '出現役職種：';
     $main_type = '系';
     $main_role_list = array();
-    foreach ($role_count_list as $key => $value){
-      if (array_key_exists($key, $ROLE_DATA->main_role_list)){
+    foreach ($role_count_list as $key => $value) {
+      if (array_key_exists($key, $ROLE_DATA->main_role_list)) {
 	$main_role_list[$ROLE_DATA->DistinguishRoleGroup($key)] += $value;
       }
     }
@@ -320,14 +320,14 @@ function GenerateRoleNameList($role_count_list, $css = false){
     break;
   }
 
-  switch ($chaos){
+  switch ($chaos) {
   case 'camp':
   case 'role':
     $sub_type = '系';
     $sub_role_list = array();
-    foreach ($role_count_list as $key => $value){
+    foreach ($role_count_list as $key => $value) {
       if (! array_key_exists($key, $ROLE_DATA->sub_role_list)) continue;
-      foreach ($ROLE_DATA->sub_role_group_list as $list){
+      foreach ($ROLE_DATA->sub_role_group_list as $list) {
 	if (in_array($key, $list)) $sub_role_list[$list[0]] += $value;
       }
     }
@@ -339,15 +339,15 @@ function GenerateRoleNameList($role_count_list, $css = false){
   }
 
   $stack = array();
-  foreach ($ROLE_DATA->main_role_list as $key => $value){
+  foreach ($ROLE_DATA->main_role_list as $key => $value) {
     $count = isset($main_role_list[$key]) ? $main_role_list[$key] : 0;
-    if ($count > 0){
-      $value = $css ? $ROLE_DATA->GenerateMainRoleTag($key) : '';
+    if ($count > 0) {
+      if ($css) $value = $ROLE_DATA->GenerateMainRoleTag($key);
       $stack[] = $value . $main_type . $count;
     }
   }
 
-  foreach ($ROLE_DATA->sub_role_list as $key => $value){
+  foreach ($ROLE_DATA->sub_role_list as $key => $value) {
     $count = isset($sub_role_list[$key]) ? $sub_role_list[$key] : 0;
     if ($count > 0) $stack[] = '(' . $value . $sub_type . $count . ')';
   }

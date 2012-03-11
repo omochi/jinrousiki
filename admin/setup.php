@@ -18,7 +18,7 @@ OutputHTMLFooter(); //HTMLフッタ
 //-- クラス定義 --//
 //ユーザアイコンの初期設定
 //アイコンイメージをPHP設置時に追加する場合はここの設定も追加してください
-class DefaultIcon{
+class DefaultIcon {
   //アイコンデータ
   public $data = array(
      1 => array('name' => '明灰',     'file' => '001.gif', 'width' => 32, 'height' => 32,
@@ -44,7 +44,7 @@ class DefaultIcon{
 }
 
 //身代わり君アイコン
-class DummyBoyIcon{
+class DummyBoyIcon {
   public $path   = '../img/dummy_boy_user_icon.jpg'; //IconConfig->path からの相対パス
   public $name   = '身代わり君用'; //名前
   public $color  = '#000000'; //色
