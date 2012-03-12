@@ -95,7 +95,7 @@ $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
 $RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
 $RQ_ARGS->TestItems->test_users[11]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[11]->role = 'mirror_fairy[8-9] downer_luck';
+$RQ_ARGS->TestItems->test_users[11]->role = 'chiroptera downer_luck';
 $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
@@ -155,7 +155,7 @@ $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
 $RQ_ARGS->TestItems->test_users[21]->handle_name = '桃';
 $RQ_ARGS->TestItems->test_users[21]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[21]->role = 'soul_mania[20] panelist';
+$RQ_ARGS->TestItems->test_users[21]->role = 'trick_mania[20] panelist';
 $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
@@ -266,19 +266,20 @@ $RQ_ARGS->TestItems->vote_target_day = array(
 //初日用
 /*
 $RQ_ARGS->TestItems->vote->night = array(
-  array('uname' => 'light_gray', 'type' => 'WOLF_EAT', 'target_uname' => 'dummy_boy'),
-  array('uname' => 'yellow', 'type' => 'MAGE_DO', 'target_uname' => 'gold'),
-  array('uname' => 'orange', 'type' => 'MAGE_DO', 'target_uname' => 'gold'),
-  array('uname' => 'cherry', 'type' => 'VOODOO_MAD_DO', 'target_uname' => 'yellow'),
-  #array('uname' => 'black', 'type' => 'MAGE_DO', 'target_uname' => 'sea'),
-  array('uname' => 'scarlet', 'type' => 'CUPID_DO', 'target_uname' => 'scarlet sea'),
-  array('uname' => 'land', 'type' => 'FAIRY_DO', 'target_uname' => 'rose'),
-  #array('uname' => 'peach', 'type' => 'CUPID_DO', 'target_uname' => 'sea peach'),
-  array('uname' => 'peach', 'type' => 'MANIA_DO', 'target_uname' => 'sea'),
-  #array('uname' => 'gust', 'type' => 'DUELIST_DO', 'target_uname' => 'moon'),
-  #array('uname' => 'cloud', 'type' => 'MANIA_DO', 'target_uname' => 'yellow'),
-  #array('uname' => 'cloud', 'type' => 'CHILD_FOX_DO', 'target_uname' => 'yellow'),
-  #array('uname' => 'moon', 'type' => 'MIND_SCANNER_DO', 'target_uname' => 'light_gray'),
+  array('user_no' =>  2,	'target_no' =>  1,	'type' => 'WOLF_EAT'),
+  array('user_no' =>  4,	'target_no' => 14,	'type' => 'MAGE_DO'),
+  array('user_no' =>  5,	'target_no' => 14,	'type' => 'MAGE_DO'),
+  #array('user_no' => 11,	'target_no' =>  4,	'type' => 'VOODOO_MAD_DO'),
+  #array('user_no' => 13,	'target_no' => 18,	'type' => 'MAGE_DO'),
+  array('user_no' => 14,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
+  array('user_no' => 16,	'target_no' => '16 18',	'type' => 'CUPID_DO'),
+  array('user_no' => 19,	'target_no' => 20,	'type' => 'FAIRY_DO'),
+  #array('user_no' => 21,	'target_no' => '18 21',	'type' => 'CUPID_DO'),
+  array('user_no' => 21,	'target_no' =>  5,	'type' => 'MANIA_DO'),
+  #array('user_no' => 22,	'target_no' => 24,	'type' => 'DUELIST_DO'),
+  #array('user_no' => 23,	'target_no' =>  4,	'type' => 'MANIA_DO'),
+  #array('user_no' => 23,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
+  #array('user_no' => 24,	'target_no' =>  2,	'type' => 'MIND_SCANNER_DO'),
 );
 */
 
