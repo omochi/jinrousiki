@@ -41,7 +41,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'sex_wolf lost_ability';
+$RQ_ARGS->TestItems->test_users[2]->role = 'cowboy_duelist lost_ability authority';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -53,7 +53,7 @@ $RQ_ARGS->TestItems->test_users[3]->live = 'live';
 $RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
 $RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
 $RQ_ARGS->TestItems->test_users[4]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers';
+$RQ_ARGS->TestItems->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel';
 $RQ_ARGS->TestItems->test_users[4]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[5]->uname = 'orange';
@@ -137,7 +137,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'attempt_necromancer';
+$RQ_ARGS->TestItems->test_users[18]->role = 'spiritism_wizard';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -219,7 +219,7 @@ $RQ_ARGS->TestItems->vote_target_day = array(
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 23),
   //array('id' => 17, 'target_no' => 22),
-  array('id' => 18, 'target_no' => 25),
+  array('id' => 18, 'target_no' => 16),
   //array('id' => 18, 'target_no' => 3),
   array('id' => 19, 'target_no' => 22),
   array('id' => 20, 'target_no' => 22),
@@ -374,8 +374,8 @@ $ROOM->log_mode = true;
 $ROOM->revote_count = 0;
 $ROOM->date = 7;
 #$ROOM->scene = 'beforegame';
-#$ROOM->scene = 'day';
-$ROOM->scene = 'night';
+$ROOM->scene = 'day';
+#$ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
