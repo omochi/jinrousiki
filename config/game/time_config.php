@@ -1,6 +1,6 @@
 <?php
 //ゲームの時間設定
-class TimeConfig{
+class TimeConfig {
   //投票待ち超過時間 (秒) (この時間を過ぎても未投票の人がいたら突然死処理されます)
   public $sudden_death = 180;
 

@@ -1,6 +1,6 @@
 <?php
 //-- データベース設定 --//
-class DatabaseConfig extends DatabaseConfigBase{
+class DatabaseConfig extends DatabaseConfigBase {
   //データベースサーバのホスト名 hostname:port
   //ポート番号を省略するとデフォルトポートがセットされます。(MySQL:3306)
   public $host = 'localhost';

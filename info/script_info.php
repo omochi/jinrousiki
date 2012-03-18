@@ -21,7 +21,7 @@ function OutputDisableDummyBoyRole(){
   global $ROLE_DATA, $CAST_CONF;
 
   $stack = array('人狼', '妖狐');
-  foreach($CAST_CONF->disable_dummy_boy_role_list as $role){
+  foreach ($CAST_CONF->disable_dummy_boy_role_list as $role) {
     $stack[] = $ROLE_DATA->main_role_list[$role];
   }
   echo implode($stack, '・');
@@ -88,6 +88,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
   <li><a href="#difference_silence">強制沈黙</a></li>
   <li><a href="#difference_wait_morning">早朝待機制オプション</a></li>
   <li><a href="#difference_trip">トリップ</a></li>
+  <li><a href="#difference_kick">キック投票</a></li>
   <li><a href="#difference_escape_talk">半角 \ マークは発言できません</a></li>
   <li><a href="#difference_escape_room">半角 \ マークやシングルクオーテーション ’ は村名やユーザ名には使用できません</a></li>
   <li><a href="#difference_user_name">他の人と同じ名前のユーザ名やハンドルネームは登録できません</a></li>
@@ -206,7 +207,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 設定方法は発言の文字の大きさ(強く発言する・通常どおり発言する・弱く発言する)の欄の一番下に「遺言を残す」という項目があります。<br>
 この項目を選択して文章を送信すれば遺言がセットされます。<br>
 「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。<br>
-死亡後は遺言のセットはできません。
+死亡後は遺言のセットはできません。<br>
+サーバ管理者が設定することで遺言の設定をゲーム開始前の限定できます。<br>
+現在の設定は [ 遺言制限<?php echo ($GAME_CONF->limit_last_words ? 'あり' : 'なし') ?> ] です。
+</div>
+<h4>Ver. 2.0.0 RC1～</h4>
+<div class="info">
+遺言制限機能実装
 </div>
 <h4>Ver. 1.4.9 / Ver. 1.5.0 β1～</h4>
 <div class="info">
@@ -233,7 +240,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_ip">同じ村には同じ IP アドレスで複数登録することはできません</h3>
 <div class="info">
 多重登録を防ぐために同じ村に同じ IP アドレスで複数登録することはできません。<br>
-この機能はスクリプトの設定で有効、無効を設定することができます<br>
+この機能はスクリプトの設定で有効、無効を設定することができます。<br>
 一つのグローバル IP アドレスでルータを用いて複数の人が参加したい場合は管理人さんに相談してください。<br>
 現在の設定は [ 登録<?php echo ($GAME_CONF->entry_one_ip_address ? "不可" : "可能") ?> ] になっています。
 </div>
@@ -298,6 +305,16 @@ PC の時計をサーバと合わせる必要がなくなりました。
 <h4>Ver. 1.5.0 β6～</h4>
 <div class="info">
 トリップ入力専用欄の実装。
+</div>
+
+<h3 id="difference_kick">キック投票</h3>
+<div class="info">
+村人登録後に急な用事が入って抜けなければならなくなったり、応答がなくなってしまったなどの理由で開始前に村から去ってもらうためには、KICK 投票をする必要があります。<br>
+現在の設定は [ <?php echo $GAME_CONF->kick ?>票 ] 必要で、[ 自己投票<?php echo ($GAME_CONF->self_kick ? '可' : '不可') ?> ] になっています。
+</div>
+<h4>Ver. 1.4.0 α21～</h4>
+<div class="info">
+自己投票機能の実装
 </div>
 
 <h3 id="difference_escape_talk">半角 &yen; マークは発言できません</h3>

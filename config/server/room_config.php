@@ -1,6 +1,6 @@
 <?php
 //-- 村メンテナンス・作成設定 --//
-class RoomConfig{
+class RoomConfig {
   //-- 村メンテナンス設定 --//
   //村内の最後の発言から廃村になるまでの時間 (秒) (あまり短くすると沈黙等と競合する可能性あり)
   public $die_room = 1200;
@@ -35,10 +35,4 @@ class RoomConfig{
   //最大人数のリスト
   public $max_user_list = array(8, 11, 16, 22, 32, 50);
   public $default_max_user = 22; //デフォルトの最大人数 ($max_user_list にある値を入れること)
-
-  //-- オプション出現設定 --//
-  /* 例：役割希望制 (wish_role)
-    オプション名 ($wish_role)    ：オプションを有効に   [true:する   / false:しない]
-    初期設定 ($default_wish_role)：初期状態でチェックを [true:つける / false:つけない]
-  */
 }

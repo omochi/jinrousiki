@@ -1,6 +1,6 @@
 <?php
 //-- 村情報共有サーバの設定 --//
-class SharedServerConfig extends ExternalLinkBuilder{
+class SharedServerConfig extends ExternalLinkBuilder {
   public $disable = false; //無効設定 <表示を [true:無効 / false:有効] にする>
 
   //表示する他のサーバのリスト
@@ -18,5 +18,5 @@ class SharedServerConfig extends ExternalLinkBuilder{
 		     'separator' => '<!-- atpages banner tag -->',
 		     'footer' => '</a><br>',
 		     'disable' => false),
-			   );
+			      );
 }

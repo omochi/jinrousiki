@@ -104,7 +104,7 @@ class InitializeConfig{
     'COOKIE'        => 'CookieDataSet',
     'MESSAGE'       => 'Message',
     'ROOM_OPT'      => 'RoomOption',
-    'GAME_OPT_CONF' => 'GameOption',
+    'GAME_OPT_CONF' => 'GameOptionConfig',
     'GAME_OPT_MESS' => 'GameOptionMessage',
     'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
     'WINNER_MESS'   => 'WinnerMessage',

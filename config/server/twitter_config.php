@@ -1,6 +1,6 @@
 <?php
 //-- Twitter 投稿設定 --//
-class TwitterConfig extends TwitterConfigBase{
+class TwitterConfig extends TwitterConfigBase {
   public $disable = true; //Twitter 投稿停止設定 (true:停止する / false:しない)
   public $server = 'localhost'; //サーバ名
   public $hash = ''; //ハッシュタグ (任意、「#」は不要)

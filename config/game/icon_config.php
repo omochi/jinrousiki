@@ -1,6 +1,6 @@
 <?php
 //ゲームプレイ時のアイコン表示設定
-class IconConfig extends IconConfigBase{
+class IconConfig extends IconConfigBase {
   public $path   = 'user_icon'; //ユーザアイコンのパス
   public $dead   = 'grave.jpg'; //死者
   public $wolf   = 'wolf.gif';  //狼

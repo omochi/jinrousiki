@@ -1,5 +1,5 @@
 <?php
-class ScriptInfo{
+class ScriptInfo {
   //パッケージのバージョン
   public $version = 'Ver. 2.0.0 beta1 (Patch 1)';
 

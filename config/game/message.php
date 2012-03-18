@@ -1,11 +1,6 @@
 <?php
-/*
-  変更履歴 from Ver. 1.5.0
-  + Message
-    - 追加：$say_limit
-*/
 //-- 基本システムメッセージ --//
-class Message{
+class Message {
   //-- room_manger.php --//
   //CreateRoom() : 村作成
   //身代わり君のコメント
@@ -285,7 +280,7 @@ class Message{
 }
 
 //-- ゲームオプション名 --//
-class GameOptionMessage{
+class GameOptionMessage {
   public $room_name             = '村の名前';
   public $room_comment          = '村についての説明';
   public $max_user              = '最大人数';
@@ -386,7 +381,7 @@ class GameOptionMessage{
 }
 
 //-- ゲームオプション名の説明 --//
-class GameOptionCaptionMessage{
+class GameOptionCaptionMessage {
   public $max_user              = '配役は<a href="info/rule.php">ルール</a>を確認して下さい';
   public $wish_role             = '希望の役割を指定できますが、なれるかは運です';
   public $real_time             = '制限時間が実時間で消費されます';
@@ -449,7 +444,7 @@ class GameOptionCaptionMessage{
 }
 
 //-- 村・本人の勝敗結果 --//
-class WinnerMessage{
+class WinnerMessage {
   //村人勝利
   public $human = '[村人勝利] 村人たちは人狼の血を根絶することに成功しました';
 
@@ -492,7 +487,7 @@ class WinnerMessage{
 }
 
 //-- 投票画面専用メッセージ --//
-class VoteMessage{
+class VoteMessage {
   //OutputVoteBeforeGame()
   public $kick_do    = '対象をキックするに一票'; //Kick 投票ボタン
   public $game_start = 'ゲームを開始するに一票'; //ゲーム開始ボタン

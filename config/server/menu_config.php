@@ -1,6 +1,6 @@
 <?php
 //メニューリンク表示設定
-class MenuLinkConfig{
+class MenuLinkConfig {
   public $list = array('SourceForge' => 'http://sourceforge.jp/projects/jinrousiki/',
 		       '開発・バグ報告スレ' =>
 		       'http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/l50',

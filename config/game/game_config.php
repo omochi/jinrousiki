@@ -1,6 +1,6 @@
 <?php
 //-- ゲーム設定 --//
-class GameConfig extends GameConfigBase{
+class GameConfig extends GameConfigBase {
   //-- 住人登録 --//
   //入村制限 (同じ村に同じ IP で複数登録) (true：許可しない / false：許可する)
   public $entry_one_ip_address = true;

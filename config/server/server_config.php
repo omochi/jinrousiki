@@ -1,6 +1,6 @@
 <?php
 //-- サーバ設定 --//
-class ServerConfig{
+class ServerConfig {
   //サーバのURL
   public $site_root = 'http://localhost/jinrou/';
 

@@ -1,6 +1,6 @@
 <?php
 //-- 開発用ソースアップロード設定 --//
-class SourceUploadConfig{
+class SourceUploadConfig {
   public $disable = true; //無効設定 <アップロードを [true:無効 / false:有効] にする>
 
   //ソースアップロードフォームのパスワード

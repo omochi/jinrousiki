@@ -1,6 +1,6 @@
 <?php
 //素材情報設定
-class CopyrightConfig{
+class CopyrightConfig {
   //システム標準情報
   public $list = array(
     'システム' => array('PHP4 + MYSQLスクリプト' => 'http://f45.aaa.livedoor.jp/~netfilms/',
