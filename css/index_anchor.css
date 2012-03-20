@@ -1,0 +1,8 @@
+@import url(anchor.css);
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  color: #999999;
+}

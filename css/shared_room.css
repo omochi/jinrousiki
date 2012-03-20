@@ -1,2 +1,4 @@
-@import url(index.css);
+@charset "utf-8";
 @import url(info.css);
+@import url(index_anchor.css);
+@import url(game_list.css);
