@@ -8,7 +8,9 @@ body {
   background-color: #FFFFFF;
   background-image: url("../img/bg/top.png");
 }
-img {border: 0;}
+img {
+  border: 0;
+}
 .comment { /* サーバ名 */
   text-align: right;
   font-weight: bold;
@@ -23,7 +25,9 @@ table.main { /* 全体の table */
   width: 100%;
   padding: 5px;
 }
-table.main td {vertical-align: top;}
+table.main td {
+  vertical-align: top;
+}
 .menu  {
   width: 140px;
 }
@@ -38,7 +42,9 @@ table.main td {vertical-align: top;}
 .information h2 { font-size: 100%; }
 .information h3 { font-size: 100%; }
 .information h4 { font-size: 100%; }
-form {margin-top: 10px;} /* 村の作成フォーム */
+form { /* 村の作成フォーム */
+  margin-top: 10px;
+}
 label { /* 村作成のオプション名 */
   margin-left: 1em;
   font-weight: bold;
@@ -47,18 +53,24 @@ input, select { /* 設定項目 */
   background-color: #F0F8FF;
   border: 1px solid #C0C0C0;
 }
-.text {border: 1px solid #C0C0C0;} /* 村の名前, 説明など */
-.explain {
+.text { /* 村の名前, 説明など */
+  border: 1px solid #C0C0C0;
+}
+.explain { /* オプションの説明 */
   filter: alpha(opacity=70, enabled=70);
   -moz-opacity: 0.7;
   opacity: 0.7;
   background-color: #FFFFFF;
   font-size: 80%;
-} /* オプションの説明 */
-.make {text-align: right;} /* 作成ボタン */
-.make input {border: 1px solid #000000;}
+}
+.make { /* 作成ボタン */
+  text-align: right;
+}
+.make input {
+  border: 1px solid #000000;
+}
 .footer { /* フッター (バージョン情報など) */
   margin-bottom: 5px;
-  text-align:right;
+  text-align: right;
   font-size: 80%;
 }

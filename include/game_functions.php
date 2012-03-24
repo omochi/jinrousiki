@@ -313,8 +313,8 @@ function OutputAutoReloadLink($url){
   global $GAME_CONF, $RQ_ARGS;
 
   $str = '[自動更新](' . $url . '">' . ($RQ_ARGS->auto_reload > 0 ? '手動' : '【手動】') . '</a>';
-  foreach ($GAME_CONF->auto_reload_list as $time){
-    $name = $time . '秒';
+  foreach ($GAME_CONF->auto_reload_list as $time) {
+    $name  = $time . '秒';
     $value = $RQ_ARGS->auto_reload == $time ? '【' . $name . '】' : $name;
     $str .= ' ' . $url . '&auto_reload=' . $time . '">' . $value . '</a>';
   }
@@ -659,7 +659,7 @@ function OutputTalk($talk, &$builder){
   $actor = $USERS->ByUname($talk->uname);
   $real  = $actor;
   if ($ROOM->log_mode && isset($talk->role_id)) $actor->ChangePlayer($talk->role_id);
-  switch ($talk->scene){
+  switch ($talk->scene) {
   case 'day':
   case 'night':
     $virtual = $USERS->ByVirtual($actor->user_no);
@@ -668,7 +668,7 @@ function OutputTalk($talk, &$builder){
   }
 
   //基本パラメータを取得
-  if ($talk->uname == 'system'){
+  if ($talk->uname == 'system') {
     $symbol = '';
     $name   = '';
     $actor->user_no = 0;
@@ -679,7 +679,7 @@ function OutputTalk($talk, &$builder){
   }
 
   //実ユーザを取得
-  if ($RQ_ARGS->add_role && $actor->user_no > 0){ //役職表示モード対応
+  if ($RQ_ARGS->add_role && $actor->user_no > 0) { //役職表示モード対応
     $real_user = isset($real) ? $real : $actor;
     $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
   }
@@ -687,65 +687,57 @@ function OutputTalk($talk, &$builder){
     $real_user = $USERS->ByRealUname($talk->uname);
   }
 
-  if ($talk->location == 'system' && isset($talk->action)){ //投票情報
-    switch ($talk->action){
+  switch ($talk->location) {
+  case 'system': //システムメッセージ
+    $str = $talk->sentence;
+    if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+
+    if (! isset($talk->action)) return $builder->AddSystemTalk($str); //標準
+    switch ($talk->action) { //投票情報
     case 'GAMESTART_DO': //現在は不使用
       return true;
 
     case 'OBJECTION': //「異議」ありは常時表示
-      $str = $name . $talk->sentence;
-      if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
-      return $builder->AddSystemMessage('objection-' . $actor->sex, $str);
+      return $builder->AddSystemMessage('objection-' . $actor->sex, $name . $str);
 
     case 'MORNING':
     case 'NIGHT':
-      $str = $talk->sentence;
-      if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
       return $builder->AddSystemTalk($str);
 
     default: //ゲーム開始前の投票 (例：KICK) は常時表示
-      $str = $talk->sentence;
-      if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
       return $builder->flag->open_talk || $ROOM->IsBeforeGame() ?
 	$builder->AddSystemMessage($talk->class, $name . $str) : false;
     }
-  }
-  //システムメッセージ
-  if ($talk->location == 'system'){
-    $str = $talk->sentence;
-    if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
-    return $builder->AddSystemTalk($str);
-  }
+    return false;
 
-  //身代わり君専用システムメッセージ
-  if ($talk->location == 'dummy_boy'){
+  case 'dummy_boy': //身代わり君専用システムメッセージ
     $str = $talk->sentence;
     if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
     return $builder->AddSystemTalk($str, 'dummy-boy');
   }
 
-  switch ($talk->scene){
+  switch ($talk->scene) {
   case 'day':
     //強風判定 (身代わり君と本人は対象外)
     if ($ROOM->IsEvent('blind_talk_day') &&
-       ! $builder->flag->dummy_boy && ! $builder->actor->IsSame($talk->uname)){
+	! $builder->flag->dummy_boy && ! $builder->actor->IsSame($talk->uname)) {
       //位置判定 (観戦者以外の上下左右)
       $viewer = $builder->actor->user_no;
       $target = $actor->user_no;
       if (is_null($viewer) ||
-	 ! (abs($target - $viewer) == 5 ||
-	    ($target == $viewer - 1 && ($target % 5) != 0) ||
-	    ($target == $viewer + 1 && ($viewer % 5) != 0))){
+	  ! (abs($target - $viewer) == 5 ||
+	     ($target == $viewer - 1 && ($target % 5) != 0) ||
+	     ($target == $viewer + 1 && ($viewer % 5) != 0))) {
 	$talk->sentence = $MESSAGE->common_talk;
       }
     }
     return $builder->AddTalk($actor, $talk, $real);
 
   case 'night':
-    if ($builder->flag->open_talk){
+    if ($builder->flag->open_talk) {
       $class = '';
       $voice = $talk->font_type;
-      switch ($talk->location){
+      switch ($talk->location) {
       case 'common':
 	$name .= '<span>(共有者)</span>';
 	$class = 'night-common';
@@ -775,7 +767,7 @@ function OutputTalk($talk, &$builder){
 	$class = 'night-self-talk';
 	break;
       }
-      $str = $talk->sentence;
+      $str = $talk->sentence; //改行を入れるため再セット
       if (isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
       return $builder->RawAddTalk($symbol, $name, $str, $voice, '', $class);
     }
@@ -785,21 +777,21 @@ function OutputTalk($talk, &$builder){
       foreach ($ROLES->Load('mind_read') as $filter) $mind_read |= $filter->IsMindRead();
 
       $ROLES->actor = $builder->actor;
-      foreach ($ROLES->Load('mind_read_active') as $filter){
+      foreach ($ROLES->Load('mind_read_active') as $filter) {
 	$mind_read |= $filter->IsMindReadActive($actor);
       }
 
       $ROLES->actor = $real_user;
-      foreach ($ROLES->Load('mind_read_possessed') as $filter){
+      foreach ($ROLES->Load('mind_read_possessed') as $filter) {
 	$mind_read |= $filter->IsMindReadPossessed($actor);
       }
 
       $ROLES->actor = $actor;
-      switch ($talk->location){
+      switch ($talk->location) {
       case 'common': //共有者
 	if ($builder->flag->common || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	if ($ROLES->LoadMain($actor)->Whisper($builder, $talk->font_type)) return;
-	foreach ($ROLES->Load('talk_whisper') as $filter){
+	foreach ($ROLES->Load('talk_whisper') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	return false;
@@ -807,14 +799,14 @@ function OutputTalk($talk, &$builder){
       case 'wolf': //人狼
 	if ($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	if ($ROLES->LoadMain($actor)->Howl($builder, $talk->font_type)) return;
-	foreach ($ROLES->Load('talk_whisper') as $filter){
+	foreach ($ROLES->Load('talk_whisper') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	return false;
 
       case 'mad': //囁き狂人
 	if ($builder->flag->wolf || $mind_read) return $builder->AddTalk($actor, $talk, $real);
-	foreach ($ROLES->Load('talk_whisper') as $filter){
+	foreach ($ROLES->Load('talk_whisper') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	return false;
@@ -822,24 +814,24 @@ function OutputTalk($talk, &$builder){
       case 'fox': //妖狐
 	if ($builder->flag->fox || $mind_read) return $builder->AddTalk($actor, $talk, $real);
 	$ROLES->actor = $SELF;
-	foreach ($ROLES->Load('talk_fox') as $filter){
+	foreach ($ROLES->Load('talk_fox') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	$ROLES->actor = $actor;
-	foreach ($ROLES->Load('talk_whisper') as $filter){
+	foreach ($ROLES->Load('talk_whisper') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	return false;
 
       case 'self_talk': //独り言
-	if ($builder->flag->dummy_boy || $mind_read || $builder->actor->IsSame($talk->uname)){
+	if ($builder->flag->dummy_boy || $mind_read || $builder->actor->IsSame($talk->uname)) {
 	  return $builder->AddTalk($actor, $talk, $real);
 	}
-	foreach ($ROLES->Load('talk_self') as $filter){
+	foreach ($ROLES->Load('talk_self') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	$ROLES->actor = $builder->actor;
-	foreach ($ROLES->Load('talk_ringing') as $filter){
+	foreach ($ROLES->Load('talk_ringing') as $filter) {
 	  if ($filter->Whisper($builder, $talk->font_type)) return;
 	}
 	return false;

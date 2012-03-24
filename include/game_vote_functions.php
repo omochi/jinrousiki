@@ -995,25 +995,27 @@ function CheckVoteNight(){
   global $ROOM, $ROLES, $SELF;
 
   if ($SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
-  foreach (array('', 'not_') as $header){   //データを初期化
-    foreach (array('action', 'submit') as $data) $ROLES->stack->{$header . $data} = NULL;
+  foreach (array('', 'not_') as $header) {   //データを初期化
+    foreach (array('action', 'submit') as $data) $ROLES->stack->{$header . $data} = null;
   }
-  if ($death_note = $SELF->IsDoomRole('death_note')){ //デスノート
+  if ($death_note = $SELF->IsDoomRole('death_note')) { //デスノート
     /*
       配役設定上、初日に配布されることはなく、バグで配布された場合でも
       集計処理は実施されないので、ここではそのまま投票させておく。
       逆にスキップ判定を実施した場合、初日投票能力者が詰む。
     */
     //if ($ROOM->date == 1) OutputVoteResult('夜：初日は暗殺できません');
-    if ($ROOM->test_mode || ! CheckSelfVoteNight('DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')){
+    if ($ROOM->test_mode || ! CheckSelfVoteNight('DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')) {
       $filter = $ROLES->LoadMain(new User('mage')); //上記のバグ対策用 (本来は assassin 相当)
       $ROLES->actor->uname = $SELF->uname; //同一ユーザ判定用
       $ROLES->stack->action     = 'DEATH_NOTE_DO';
       $ROLES->stack->not_action = 'DEATH_NOTE_NOT_DO';
     }
-    else $death_note = false;
+    else {
+      $death_note = false;
+    }
   }
-  if (! $death_note){
+  if (! $death_note) {
     $filter = $ROLES->LoadMain($SELF);
     $filter->SetVoteNight();
   }
@@ -1034,7 +1036,7 @@ function OutputVoteNight(){
   //PrintData($ROLES->stack);
   echo '<table class="vote-page"><tr>'."\n";
   $count = 0;
-  foreach ($filter->GetVoteTargetUser() as $id => $user){
+  foreach ($filter->GetVoteTargetUser() as $id => $user) {
     if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
     $live = $USERS->IsVirtualLive($id);
@@ -1058,8 +1060,8 @@ function OutputVoteNight(){
 
 EOF;
 
-  if (isset($ROLES->stack->not_action)){
-    if (is_null($ROLES->stack->not_submit)){
+  if (isset($ROLES->stack->not_action)) {
+    if (is_null($ROLES->stack->not_submit)) {
       $ROLES->stack->not_submit = strtolower($ROLES->stack->not_action);
     }
     echo <<<EOF
@@ -1087,29 +1089,34 @@ function VoteNight(){
 
   //-- イベント名と役職の整合チェック --//
   $filter = CheckVoteNight();
-  if (empty($RQ_ARGS->situation))
+  if (empty($RQ_ARGS->situation)) {
     OutputVoteResult('夜：投票イベントが空です');
-  elseif ($RQ_ARGS->situation == $ROLES->stack->not_action)
+  }
+  elseif ($RQ_ARGS->situation == $ROLES->stack->not_action) {
     $not_action = true;
-  elseif ($RQ_ARGS->situation != $ROLES->stack->action)
+  }
+  elseif ($RQ_ARGS->situation != $ROLES->stack->action) {
     OutputVoteResult('夜：投票イベントが一致しません');
-  else
+  }
+  else {
     $not_action = false;
+  }
   //PrintData($filter);
   if (! $ROOM->test_mode) CheckAlreadyVote($RQ_ARGS->situation); //投票済みチェック
 
   //-- 投票処理 --//
-  if ($not_action){ //投票キャンセルタイプは何もしない
+  if ($not_action) { //投票キャンセルタイプは何もしない
     if (! $SELF->Vote($RQ_ARGS->situation)) OutputVoteResult('データベースエラー'); //投票処理
-    $ROOM->Talk('', $RQ_ARGS->situation, $SELF->uname);
+    $ROOM->Talk('', $RQ_ARGS->situation, $SELF->uname, '', null, null, $SELF->role_id);
   }
   else {
     $filter->CheckVoteNight();
     //PrintData($ROLES->stack);
-    if (! $SELF->Vote($RQ_ARGS->situation, $ROLES->stack->target_no)){
+    if (! $SELF->Vote($RQ_ARGS->situation, $ROLES->stack->target_no)) {
       OutputVoteResult('データベースエラー'); //投票処理
     }
-    $ROOM->Talk($ROLES->stack->target_handle, $ROLES->stack->message, $SELF->uname);
+    $str = $ROLES->stack->target_handle;
+    $ROOM->Talk($str, $ROLES->stack->message, $SELF->uname, '', null, null, $SELF->role_id);
   }
   if ($ROOM->test_mode) return;
   AggregateVoteNight(); //集計処理
@@ -1331,7 +1338,7 @@ function AggregateVoteNight($skip = false){
     $name = $role . '_kill';
     $ROLES->stack->$role = array(); //吸血対象者リスト
     $ROLES->stack->$name = array(); //吸血死対象者リスト
-    foreach ($vote_data['VAMPIRE_DO'] as $id => $target_id){ //吸血鬼の処理
+    foreach ($vote_data['VAMPIRE_DO'] as $id => $target_id) { //吸血鬼の処理
       $user = $USERS->ByID($id);
       if ($user->IsDead(true)) continue; //直前に死んでいたら無効
       $ROLES->LoadMain($user)->SetInfect($USERS->ByID($target_id));
@@ -1339,7 +1346,7 @@ function AggregateVoteNight($skip = false){
     foreach ($ROLES->LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
     //PrintData($ROLES->stack->$role, "Target [{$role}]");
     //PrintData($ROLES->stack->$name, "Target [{$name}]");
-    if (count($ROLES->stack->$role) > 0 || count($ROLES->stack->$name) > 0){
+    if (count($ROLES->stack->$role) > 0 || count($ROLES->stack->$name) > 0) {
       $ROLES->LoadMain(new User($role))->VampireKill();
     }
     unset($ROLES->stack->$role, $ROLES->stack->$name);

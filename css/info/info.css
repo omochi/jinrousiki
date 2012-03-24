@@ -1,7 +1,8 @@
-@import url(body_bg.css);
+@charset "utf-8";
+@import url(../body_bg.css);
 @import url(info_common.css);
 body {
-  background-image: url("../img/top_bg.jpg");
+  background-image: url("../../img/top_bg.jpg");
 }
 img {
   margin-bottom: 1em;
@@ -11,7 +12,4 @@ div {
 }
 div img {
   margin: 0;
-}
-span { /* デバッグ情報用 */
-  color: #FF0000;
 }

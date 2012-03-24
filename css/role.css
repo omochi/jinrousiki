@@ -1,3 +1,4 @@
+@charset "utf-8";
 .human        { color: #606060; } /* 村人 */
 .mage         { color: #9933FF; } /* 占い師 */
 .necromancer  { color: #006699; } /* 霊能者 */

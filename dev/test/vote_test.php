@@ -41,7 +41,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'cowboy_duelist lost_ability authority';
+$RQ_ARGS->TestItems->test_users[2]->role = 'sharp_wolf lost_ability authority';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -149,7 +149,7 @@ $RQ_ARGS->TestItems->test_users[19]->live = 'live';
 $RQ_ARGS->TestItems->test_users[20]->uname = 'rose';
 $RQ_ARGS->TestItems->test_users[20]->handle_name = '薔薇';
 $RQ_ARGS->TestItems->test_users[20]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[20]->role = 'soul_vampire';
+$RQ_ARGS->TestItems->test_users[20]->role = 'vampire';
 $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
@@ -167,7 +167,7 @@ $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
 $RQ_ARGS->TestItems->test_users[23]->handle_name = '雲';
 $RQ_ARGS->TestItems->test_users[23]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[23]->role = 'clairvoyance_scanner';
+$RQ_ARGS->TestItems->test_users[23]->role = 'soul_vampire';
 $RQ_ARGS->TestItems->test_users[23]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[24]->uname = 'moon';
@@ -333,8 +333,8 @@ $RQ_ARGS->TestItems->vote->night = array(
   #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
   #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
   #array('user_no' => 23, 	'type' => 'ASSASSIN_DO', 'target_no' => 3),
-  array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
-  #array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
+  #array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
+  array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
   #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
   #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
   array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13 18'),
@@ -374,8 +374,8 @@ $ROOM->log_mode = true;
 $ROOM->revote_count = 0;
 $ROOM->date = 7;
 #$ROOM->scene = 'beforegame';
-$ROOM->scene = 'day';
-#$ROOM->scene = 'night';
+#$ROOM->scene = 'day';
+$ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード

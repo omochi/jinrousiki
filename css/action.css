@@ -1,9 +1,10 @@
-body{
-  color: #FF0000;
-  background-color: #F0F8FF;
+@charset "utf-8";
+body {
   margin: 2em;
+  background-color: #F0F8FF;
+  color: #FF0000;
 }
-li{
+li {
   color: #000000;
   font-weight: bold;
 }

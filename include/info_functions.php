@@ -37,7 +37,7 @@ class TimeCalculation{
 function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
   $top  = str_repeat('../', $level + 1);
   $info = $level == 0 ? './' : str_repeat('../', $level);
-  OutputHTMLHeader('[' . $title . ']', $css);
+  OutputHTMLHeader('[' . $title . ']', 'info/' . $css);
   echo <<<EOF
 </head>
 <body>
@@ -72,29 +72,29 @@ function OutputCastTable($min = 0, $max = NULL){
 
   //設定されている役職名を取得
   $stack = array();
-  foreach($CAST_CONF->role_list as $key => $value){
-    if($key < $min) continue;
+  foreach ($CAST_CONF->role_list as $key => $value) {
+    if ($key < $min) continue;
     $stack = array_merge($stack, array_keys($value));
-    if($key == $max) break;
+    if ($key == $max) break;
   }
   $role_list = $ROLE_DATA->SortRole(array_unique($stack)); //表示順を決定
 
   $header = '<table class="member">';
   $str = '<tr><th>人口</th>';
-  foreach($role_list as $role) $str .= $ROLE_DATA->GenerateMainRoleTag($role, 'th');
+  foreach ($role_list as $role) $str .= $ROLE_DATA->GenerateMainRoleTag($role, 'th');
   $str .= '</tr>'."\n";
   echo $header . $str;
 
   //人数毎の配役を表示
-  foreach($CAST_CONF->role_list as $key => $value){
-    if($key < $min) continue;
+  foreach ($CAST_CONF->role_list as $key => $value) {
+    if ($key < $min) continue;
     $tag = "<td><strong>{$key}</strong></td>";
-    foreach($role_list as $role){
-      $tag .= '<td>' . (array_key_exists($role, $value) ? $value[$role] : 0) . '</td>';
+    foreach ($role_list as $role) {
+      $tag .= '<td>' . (isset($value[$role]) ? $value[$role] : 0) . '</td>';
     }
     echo '<tr>' . $tag . '</tr>'."\n";
-    if($key == $max) break;
-    if($key % 20 == 0) echo $str;
+    if ($key == $max) break;
+    if ($key % 20 == 0) echo $str;
   }
   echo '</table>';
 }

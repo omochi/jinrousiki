@@ -413,17 +413,17 @@ class Room{
   function Talk($sentence, $action = null, $uname = '', $scene = '', $location = null,
 		$font_type = null, $role_id = null, $spend_time = 0){
     if ($uname == '') $uname = 'system';
-    if ($scene == ''){
+    if ($scene == '') {
       $scene = $this->scene;
       if (is_null($location)) $location = 'system';
     }
-    if ($this->test_mode){
+    if ($this->test_mode) {
       $str = "Talk: {$uname}: {$scene}: {$location}: {$action}: {$font_type}";
       PrintData(LineToBR($sentence), $str);
       return true;
     }
 
-    switch ($scene){
+    switch ($scene) {
     case 'beforegame':
     case 'aftergame':
       $table = 'talk_' . $scene;
@@ -437,19 +437,19 @@ class Room{
     $values = "{$this->id}, {$this->date}, '{$scene}', '{$uname}', '{$sentence}', {$spend_time}, " .
       "UNIX_TIMESTAMP()";
 
-    if (isset($action)){
+    if (isset($action)) {
       $items  .= ', action';
       $values .= ", '{$action}'";
     }
-    if (isset($location)){
+    if (isset($location)) {
       $items  .= ', location';
       $values .= ", '{$location}'";
     }
-    if (isset($font_type)){
+    if (isset($font_type)) {
       $items  .= ', font_type';
       $values .= ", '{$font_type}'";
     }
-    if (isset($role_id)){
+    if (isset($role_id)) {
       $items  .= ', role_id';
       $values .= ", {$role_id}";
     }
