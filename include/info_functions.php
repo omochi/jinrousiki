@@ -1,7 +1,7 @@
 <?php
 //-- クラス定義 --//
 //時間設定表示用クラス
-class TimeCalculation{
+class TimeCalculation {
   public $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
   public $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
   public $silence_day;    //非リアルタイム制の沈黙で経過する時間 (昼)
@@ -43,8 +43,8 @@ function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
 <body>
 <h1>{$title}</h1>
 <p>
-<a href="{$top}" target="_top">&lt;= TOP</a>
-<a href="{$info}" target="_top">←情報一覧</a>
+<a target="_top" href="{$top}">&lt;= TOP</a>
+<a target="_top" href="{$info}">← 情報一覧</a>
 </p>
 
 EOF;
@@ -58,16 +58,16 @@ function OutputRolePageHeader($title){
 <body>
 <h1>{$title}</h1>
 <p>
-<a href="../" target="_top">&lt;=情報一覧</a>
-<a href="./" target="_top">&lt;-メニュー</a>
-<a href="summary.php">←一覧表</a>
+<a target="_top" href="../">&lt;= 情報一覧</a>
+<a target="_top" href="./">&lt;- メニュー</a>
+<a href="summary.php">← 一覧表</a>
 </p>
 
 EOF;
 }
 
 //配役テーブル出力
-function OutputCastTable($min = 0, $max = NULL){
+function OutputCastTable($min = 0, $max = null){
   global $ROLE_DATA, $CAST_CONF;
 
   //設定されている役職名を取得

@@ -797,7 +797,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <ol>
 <li>判定が出るのは 4 日目以降の偶数日 (4 → 6 → 8 →...)。</li>
 <li>村人陣営の判定法則は<a href="#medium_rule">巫女</a>と同じ。</li>
-<li><a href="#revive_priest">天人</a>の蘇生判定は司祭判定の後に実施される。<br>
+<li><a href="#revive_priest">天人</a>の蘇生判定は<a href="../spec.php#vote_night">司祭判定</a>の後に実施される。<br>
   従って、「司祭の判定 + <a href="#revive_priest">天人</a>が蘇生した人数」 が司祭視点の正しい値となる。
 </li>
 </ol>

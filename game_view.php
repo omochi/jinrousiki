@@ -41,7 +41,7 @@ $SELF  = new User();
 ob_start();
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
-if ($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0){ //自動更新
+if ($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0) { //自動更新
   echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
 }
 echo $ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
@@ -76,7 +76,7 @@ else {
   echo $url . '">[更新]</a>'."\n";
 }
 
-echo '<a href="./">[戻る]</a>';
+echo $url . '" target="_blank">別ページ</a>' . "\n" . '<a href="./">[戻る]</a>';
 if ($ROOM->IsFinished()) OutputLogLink();
 
 echo <<<EOF

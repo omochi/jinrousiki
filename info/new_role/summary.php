@@ -9,8 +9,8 @@ OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
 <h1>新役職情報</h1>
 <ul><li>バージョンアップするたびに仕様が変わる可能性があります</li></ul>
 <p>
-<a href="../" target="_top">&lt;=情報一覧</a>
-<a href="./" target="_top">←メニュー</a>
+<a target="_top" href="../">&lt;= 情報一覧</a>
+<a target="_top" href="./">← メニュー</a>
 <a href="#table">早見表</a>
 <a href="ability.php">能力者逆引き</a>
 <a href="#reference">参考リンク</a>

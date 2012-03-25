@@ -57,11 +57,16 @@ OutputInfoPageHeader('詳細な仕様');
 <li>ゲーム中は「遺言」発言をすると専用システムメッセージになります</li>
 <li>ゲーム開始前のみ遺言を変更できます</li>
 <li>投票能力がある役職であっても投票することはできません</li>
-<li><a href="#revive_refuse">蘇生辞退</a>を実行することで一部の<a href="game_option.php#open_cast_option">霊界公開設定</a>を変更することができます</li>
+<li>「<a href="#revive_refuse">蘇生辞退</a>」を実行することで一部の<a href="game_option.php#open_cast_option">霊界公開設定</a>を変更することができます</li>
+<li>「超過時間リセット」を実行することで投票超過時間をリセットすることができます</li>
 </ol>
+<h3>Ver. 2.0.0 α5～</h3>
+<pre>
+超過時間リセット機能実装
+</pre>
 <h3>Ver. 1.5.0 β14～</h3>
 <pre>
-<a href="#revive_refuse">蘇生辞退</a>を実行することで一部の<a href="game_option.php#open_cast_option">霊界公開設定</a>を変更することができます
+蘇生辞退機能実装
 </pre>
 <h3>Ver. 1.5.0 β2～</h3>
 <pre>

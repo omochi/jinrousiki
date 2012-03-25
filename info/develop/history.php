@@ -6,7 +6,7 @@ OutputInfoPageHeader('開発履歴', 1);
 ?>
 <p>
 Ver. 2.0.0<br>
-<a href="#ver200b1">β1</a>
+<a href="#ver200rc1">RC1</a>
 </p>
 <p>
 <a href="#ver200a1">α1</a>
@@ -15,12 +15,18 @@ Ver. 2.0.0<br>
 <a href="#ver200a4">α4</a>
 <a href="#ver200a5">α5</a>
 <a href="#ver200a6">α6</a>
+<a href="#ver200b1">β1</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
 <a href="history_1.4.php">1.4</a>
 <a href="history_1.5.php">1.5</a>
 </p>
+
+<h2 id="ver200rc1">Ver. 2.0.0 RC1 (Rev. 533) : 2012/03/25 (Sun) 03:04</h2>
+<ul>
+<li>遺言制限機能を実装</li>
+</ul>
 
 <h2 id="ver200b1">Ver. 2.0.0 β1 (Rev. 523) : 2012/02/29 (Wed) 00:38</h2>
 <ul>
