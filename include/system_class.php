@@ -174,7 +174,7 @@ class CookieDataSet{
 
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder{
-  public $time = 2; //タイムアウト時間 (秒)
+  public $time = 5; //タイムアウト時間 (秒)
 
   //サーバ通信状態チェック (private)
   function CheckConnection($url){

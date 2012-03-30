@@ -89,7 +89,7 @@ $RQ_ARGS->TestItems->test_users[9]->live = 'live';
 $RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
 $RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
 $RQ_ARGS->TestItems->test_users[10]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[10]->role = 'soul_assassin death_note[5]';
+$RQ_ARGS->TestItems->test_users[10]->role = 'reverse_assassin death_note[5]';
 $RQ_ARGS->TestItems->test_users[10]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
@@ -101,7 +101,7 @@ $RQ_ARGS->TestItems->test_users[11]->live = 'live';
 $RQ_ARGS->TestItems->test_users[12]->uname = 'white';
 $RQ_ARGS->TestItems->test_users[12]->handle_name = '白';
 $RQ_ARGS->TestItems->test_users[12]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[12]->role = 'amaze_mad';
+$RQ_ARGS->TestItems->test_users[12]->role = 'amaze_mad death_selected[5]';
 $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
@@ -155,7 +155,7 @@ $RQ_ARGS->TestItems->test_users[20]->live = 'live';
 $RQ_ARGS->TestItems->test_users[21]->uname = 'peach';
 $RQ_ARGS->TestItems->test_users[21]->handle_name = '桃';
 $RQ_ARGS->TestItems->test_users[21]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[21]->role = 'trick_mania[20] panelist';
+$RQ_ARGS->TestItems->test_users[21]->role = 'basic_mania panelist';
 $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
@@ -293,9 +293,9 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
   array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
   #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-  array('user_no' => 10, 	'target_no' => 13,	'type' => 'ASSASSIN_DO'),
+  array('user_no' => 10, 	'target_no' => 12,	'type' => 'ASSASSIN_DO'),
   #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
-  #array('user_no' => 10, 	'target_no' => 11,	'type' => 'DEATH_NOTE_DO'),
+  array('user_no' => 10, 	'target_no' => 12,	'type' => 'DEATH_NOTE_DO'),
   #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
   #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
   #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
@@ -372,7 +372,7 @@ $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->revote_count = 0;
-$ROOM->date = 7;
+$ROOM->date = 1;
 #$ROOM->scene = 'beforegame';
 #$ROOM->scene = 'day';
 $ROOM->scene = 'night';

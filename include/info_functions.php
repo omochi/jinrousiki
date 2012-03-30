@@ -98,3 +98,69 @@ function OutputCastTable($min = 0, $max = null){
   }
   echo '</table>';
 }
+
+//他のサーバの部屋画面ロード用データを出力
+function OutputSharedRoomList(){
+  global $SHARED_CONF;
+
+  if ($SHARED_CONF->disable) return false;
+
+  $str = '<script type="text/javascript" src="../javascript/shared_room.js"></script>'."\n";
+  $count = 0;
+  foreach ($SHARED_CONF->server_list as $server => $array) {
+    $count++;
+    extract($array);
+    if ($disable) continue;
+
+    $str .= <<<EOF
+<div id="server{$count}"></div>
+<script language="javascript"><!--
+output_shared_room({$count}, "server{$count}");
+--></script>
+
+EOF;
+  }
+  echo $str;
+}
+
+//他のサーバの部屋画面を出力
+function OutputSharedRoom($id){
+  global $SHARED_CONF;
+
+  if ($SHARED_CONF->disable) return false;
+
+  $count = 0;
+  foreach ($SHARED_CONF->server_list as $server => $array) {
+    if ($count++ == $id) break;
+  }
+  extract($array);
+  if ($disable) return false;
+
+  if (! $SHARED_CONF->CheckConnection($url)) { //サーバ通信状態チェック
+    $data = $SHARED_CONF->host . ": Connection timed out ({$SHARED_CONF->time} seconds)";
+    echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
+    return false;
+  }
+
+  //部屋情報を取得
+  if (($data = @file_get_contents($url.'room_manager.php')) == '') return false;
+  if ($encode != '' && $encode != $SHARED_CONF->encode) {
+    $data = mb_convert_encoding($data, $SHARED_CONF->encode, $encode);
+  }
+  if (ord($data{0}) == '0xef' && ord($data{1}) == '0xbb' && ord($data{2}) == '0xbf') { //BOM 消去
+    $data = substr($data, 3);
+  }
+  if ($separator != '') {
+    $split_list = mb_split($separator, $data);
+    $data = array_pop($split_list);
+  }
+  if ($footer != '') {
+    if (($position = mb_strrpos($data, $footer)) === false) return false;
+    $data = mb_substr($data, 0, $position + mb_strlen($footer));
+  }
+  if ($data == '') return false;
+
+  $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
+  $data = strtr($data, $replace_list);
+  echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
+}

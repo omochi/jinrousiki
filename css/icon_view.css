@@ -3,7 +3,7 @@
 @import url(icon.css);
 body {
   background-color: #FFFFFF;
-  background-image: url("../img/icon_view_bg.jpg");
+  background-image: url("../img/bg/icon_view.png");
 }
 .title {
   border: 0;
