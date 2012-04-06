@@ -188,7 +188,8 @@ class GameOptionConfig {
     'c' => 'C：派生村',
     'd' => 'D：封蘇村',
     'e' => 'E：封憑村',
-    'f' => 'F：合戦村');
+    'f' => 'F：合戦村',
+    'g' => 'G：独身村');
 
   //配役通知設定
   public $chaos_open_cast_enable      = true; //配役内訳を表示する

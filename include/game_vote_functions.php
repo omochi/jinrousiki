@@ -127,7 +127,7 @@ function GetRoleList($user_count){
     $list  = $CAST_CONF->GenerateRandomList($rate);
     $count = $user_count - (array_sum($random_role_list) + array_sum($fix_role_list));
     //PrintData($list, $count);
-    //PrintData(array_sum($base_list));
+    //PrintData(array_sum($rate));
     //$CAST_CONF->RateToProbability($rate); //テスト用
     $CAST_CONF->AddRandom($random_role_list, $list, $count);
 
@@ -136,11 +136,11 @@ function GetRoleList($user_count){
     foreach ($fix_role_list as $key => $value) @$role_list[$key] += (int)$value;
     //PrintData($role_list, '1st('.array_sum($role_list).')');
 
-    if (! $chaos_verso){ //-- 上限補正 --//
+    if (! $chaos_verso) { //-- 上限補正 --//
       //役職グループ毎に集計
       $total_stack  = array(); //グループ別リスト (全配役)
       $random_stack = array(); //グループ別リスト (ランダム)
-      foreach ($role_list as $role => $count){
+      foreach ($role_list as $role => $count) {
 	$total_stack[$ROLE_DATA->DistinguishRoleGroup($role)][$role] = $count;
       }
       foreach ($random_role_list as $role => $count) {
@@ -172,13 +172,13 @@ function GetRoleList($user_count){
       //PrintData($role_list, '2nd('.array_sum($role_list).')');
     }
 
-    if ($ROOM->IsDummyBoy()){ //-- 身代わり君モード補正 --//
+    if ($ROOM->IsDummyBoy()) { //-- 身代わり君モード補正 --//
       $dummy_count   = $user_count; //身代わり君対象役職数
       $target_stack  = array(); //補正対象リスト
       $disable_stack = $CAST_CONF->GetDummyBoyRoleList(); //身代わり君の対象外役職リスト
-      foreach ($role_list as $role => $count){ //対象役職の情報を収集
-	foreach ($disable_stack as $disable_role){
-	  if (strpos($role, $disable_role) !== false){
+      foreach ($role_list as $role => $count) { //対象役職の情報を収集
+	foreach ($disable_stack as $disable_role) {
+	  if (strpos($role, $disable_role) !== false) {
 	    $target_stack[$disable_role][$role] = $count;
 	    $dummy_count -= $count;
 	    break; //多重カウント防止 (例：poison_wolf)
@@ -186,9 +186,9 @@ function GetRoleList($user_count){
 	}
       }
 
-      if ($dummy_count < 1){
+      if ($dummy_count < 1) {
 	//PrintData($target_stack, "for dummy");
-	foreach ($target_stack as $role => $stack){ //対象役職からランダムに村人へ置換
+	foreach ($target_stack as $role => $stack) { //対象役職からランダムに村人へ置換
 	  //PrintData($stack, "　　$role");
 	  //人狼・探偵村の探偵はゼロにしない
 	  if (($role == 'wolf' || ($ROOM->IsOption('detective') && $role == 'detective')) &&
@@ -207,11 +207,11 @@ function GetRoleList($user_count){
       }
     }
 
-    if (! $chaos_verso && ! $ROOM->IsReplaceHumanGroup()){ //-- 村人上限補正 --//
+    if (! $chaos_verso && ! $ROOM->IsReplaceHumanGroup()) { //-- 村人上限補正 --//
       $role  = 'human';
       $count = @(int)$role_list[$role] - round($user_count / $CAST_CONF->chaos_max_human_rate);
       if ($ROOM->IsOption('gerd')) $count--;
-      if ($count > 0){
+      if ($count > 0) {
 	$rate = $CAST_CONF->GetChaosRateList($base_name.'_replace_human_role_list', $boost_list);
 	$list = $CAST_CONF->GenerateRandomList($rate);
 	//PrintData($list, $count);
@@ -223,13 +223,13 @@ function GetRoleList($user_count){
       }
     }
   }
-  elseif ($ROOM->IsOption('duel')){ //決闘村
+  elseif ($ROOM->IsOption('duel')) { //決闘村
     $role_list = $CAST_CONF->SetDuel($user_count);
   }
-  elseif ($ROOM->IsOption('gray_random')){ //グレラン村
+  elseif ($ROOM->IsOption('gray_random')) { //グレラン村
     $role_list = $CAST_CONF->SetGrayRandom($user_count);
   }
-  elseif ($ROOM->IsQuiz()){ //クイズ村
+  elseif ($ROOM->IsQuiz()) { //クイズ村
     $role_list = $CAST_CONF->SetQuiz($user_count);
   }
   else { //通常村
@@ -240,7 +240,7 @@ function GetRoleList($user_count){
 
   //$is_single_role = true;
   $is_single_role = false;
-  if ($is_single_role){ //一人一職村対応
+  if ($is_single_role) { //一人一職村対応
     $role_list = array(); //配役をリセット
     $base_role_list = array('wolf', 'mage', 'human', 'jammer_mad', 'necromancer',
 			    'common', 'crisis_priest', 'boss_wolf', 'guard', 'dark_fairy',
@@ -249,12 +249,12 @@ function GetRoleList($user_count){
 			    'tongue_wolf', 'assassin', 'fend_guard', 'cute_fox', 'ghost_common',
 			    'cute_wolf', 'black_fox', 'light_fairy', 'poison_jealousy', 'self_cupid',
 			    'silver_wolf','scarlet_wolf','wise_wolf', 'mind_cupid', 'dummy_chiroptera',);
-    for($i = $user_count; $i > 0; $i--) $role_list[array_shift($base_role_list)]++;
+    for ($i = $user_count; $i > 0; $i--) $role_list[array_shift($base_role_list)]++;
   }
 
   //お祭り村
   if ($ROOM->IsOption('festival') &&
-     is_array($target =& $CAST_CONF->festival_role_list[$user_count])) $role_list = $target;
+      is_array($target =& $CAST_CONF->festival_role_list[$user_count])) $role_list = $target;
 
   if (@$role_list['human'] < 0) { //村人の人数をチェック
     $str = '「村人」の人数がマイナスになってます';
@@ -272,8 +272,8 @@ function GetRoleList($user_count){
   }
   $role_count = count($now_role_list);
 
-  if ($role_count != $user_count){ //配列長をチェック
-    if ($ROOM->test_mode){
+  if ($role_count != $user_count) { //配列長をチェック
+    if ($ROOM->test_mode) {
       PrintData($role_count, 'エラー：配役数');
       return $now_role_list;
     }

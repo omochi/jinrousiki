@@ -1,6 +1,6 @@
 <?php
 //-- データベース処理の基底クラス --//
-class DatabaseConfigBase{
+class DatabaseConfigBase {
   public $db_handle;
   public $transaction = false;
 
@@ -77,7 +77,7 @@ class DatabaseConfigBase{
 }
 
 //-- セッション管理クラス --//
-class Session{
+class Session {
   public $id;
   public $user_no;
 
@@ -158,7 +158,7 @@ class Session{
 }
 
 //-- クッキーデータのロード処理 --//
-class CookieDataSet{
+class CookieDataSet {
   public $scene;      //夜明け
   public $objection;  //「異議あり」の情報
   public $vote_times; //投票回数
@@ -173,7 +173,7 @@ class CookieDataSet{
 }
 
 //-- 外部リンク生成の基底クラス --//
-class ExternalLinkBuilder{
+class ExternalLinkBuilder {
   public $time = 5; //タイムアウト時間 (秒)
 
   //サーバ通信状態チェック (private)
@@ -214,7 +214,7 @@ EOF;
 }
 
 //ゲームプレイ時のアイコン表示設定の基底クラス --//
-class IconConfigBase{
+class IconConfigBase {
   //初期設定
   public $path   = 'user_icon'; //ユーザアイコンのパス
   public $dead   = 'grave.gif'; //死者
@@ -235,7 +235,7 @@ class IconConfigBase{
 }
 
 //-- ユーザアイコン管理の基底クラス --//
-class UserIconBase{
+class UserIconBase {
   // アイコンの文字数
   function MaxNameLength(){
     return '半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
@@ -253,7 +253,7 @@ class UserIconBase{
 }
 
 //-- 画像管理の基底クラス --//
-class ImageManager{
+class ImageManager {
   //画像のファイルパス取得 (private)
   function GetPath($name){
     return JINRO_IMG . '/' . $this->path . '/' . $name . '.' . $this->extension;
@@ -281,9 +281,9 @@ class ImageManager{
 }
 
 //-- 勝利陣営の画像処理の基底クラス --//
-class WinnerImageBase extends ImageManager{
+class WinnerImageBase extends ImageManager {
   function Generate($name, $alt = null, $table = null){
-    switch($name){
+    switch ($name){
     case 'human':
       $alt = '村人勝利';
       break;
@@ -325,7 +325,7 @@ class WinnerImageBase extends ImageManager{
 }
 
 //-- 村のオプション画像 --//
-class RoomImage extends ImageManager{
+class RoomImage extends ImageManager {
   /*
     max[NN].gif という画像が該当パス内にあった場合は村の最大参加人数の表示に使用される。
     例) max8.gif (8人村用)
@@ -336,21 +336,21 @@ class RoomImage extends ImageManager{
 }
 
 //-- 役職の画像 --//
-class RoleImage extends ImageManager{
+class RoleImage extends ImageManager {
   public $path      = 'role';
   public $extension = 'gif';
   public $class     = '';
 }
 
 //-- 勝利陣営の画像 --//
-class WinnerImage extends WinnerImageBase{
+class WinnerImage extends WinnerImageBase {
   public $path      = 'winner';
   public $extension = 'gif';
   public $class     = 'winner';
 }
 
 //-- 音源処理の基底クラス --//
-class SoundConfigBase{
+class SoundConfigBase {
   //ファイルパス生成
   function GetPath($type, $file = null){
     $path = JINRO_ROOT . '/' . $this->path;
@@ -385,7 +385,7 @@ EOF;
 }
 
 //-- Twitter 投稿用の基底クラス --//
-class TwitterConfigBase{
+class TwitterConfigBase {
   //メッセージのセット
   function GenerateMessage($id, $name, $comment){ return true; }
 
@@ -429,7 +429,7 @@ class TwitterConfigBase{
 }
 
 //-- 役職データベース --//
-class RoleData{
+class RoleData {
   //-- 役職名の翻訳 --//
   //メイン役職のリスト (コード名 => 表示名)
   //初日の役職通知リストはこの順番で表示される
@@ -1615,7 +1615,7 @@ class RoleData{
 }
 
 //-- 「福引」生成の基底クラス --//
-class LotteryBuilder{
+class LotteryBuilder {
   //「福引き」を一定回数行ってリストに追加する
   function AddRandom(&$list, $random_list, $count){
     $total = count($random_list) - 1;
@@ -1689,7 +1689,7 @@ class CastConfigBase extends LotteryBuilder {
     }
     //PrintData($stack);
 
-    foreach ($stack as $order => $option_list){
+    foreach ($stack as $order => $option_list) {
       foreach ($option_list as $option) {
 	if (array_key_exists($option, $this->replace_role_list)) { //管理者設定
 	  $target = $this->replace_role_list[$option];
@@ -1743,7 +1743,7 @@ class CastConfigBase extends LotteryBuilder {
   }
 
   //配役フィルタリング処理
-  function FilterRoles($user_count, $filter){
+  function FilterRoles($user_count, $filter) {
     $stack = array();
     foreach ($this->role_list[$user_count] as $key => $value) {
       $role = 'human';
