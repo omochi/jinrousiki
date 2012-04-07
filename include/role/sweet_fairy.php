@@ -2,9 +2,10 @@
 /*
   ◆恋妖精 (sweet_fairy)
   ○仕様
+  ・悪戯：悲恋 (sweet_status)
 */
 RoleManager::LoadFile('fairy');
-class Role_sweet_fairy extends Role_fairy{
+class Role_sweet_fairy extends Role_fairy {
   public $action = 'CUPID_DO';
   public $submit = 'fairy_do';
   public $ignore_message = '初日以外は投票できません';
@@ -20,20 +21,20 @@ class Role_sweet_fairy extends Role_fairy{
     global $USERS;
 
     $stack = $this->GetVoteNightTarget();
-    if(count($stack) != 2) return '指定人数は2人にしてください'; //人数チェック
+    if (count($stack) != 2) return '指定人数は2人にしてください'; //人数チェック
 
     $user_list = array();
     sort($stack);
-    foreach($stack as $id){
+    foreach ($stack as $id) {
       $user = $USERS->ByID($id);
-      if(! $user->IsLive() || $user->IsDummyBoy()){ //例外判定
+      if (! $user->IsLive() || $user->IsDummyBoy()) { //例外判定
 	return '生存者以外と身代わり君には投票できません';
       }
       $user_list[$id] = $user;
     }
 
     $stack = array();
-    foreach($user_list as $user){
+    foreach ($user_list as $user) {
       $stack[] = $user->handle_name;
       $user->AddRole($this->GetActor()->GetID('sweet_status'));
     }

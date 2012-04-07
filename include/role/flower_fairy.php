@@ -5,7 +5,7 @@
   ・悪戯：死亡欄妨害 (花)
 */
 RoleManager::LoadFile('fairy');
-class Role_flower_fairy extends Role_fairy{
+class Role_flower_fairy extends Role_fairy {
   public $result = 'FLOWERED';
   function __construct(){ parent::__construct(); }
 

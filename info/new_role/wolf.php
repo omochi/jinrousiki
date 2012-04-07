@@ -1235,11 +1235,15 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 処刑投票先が処刑されたら投票結果を隠蔽できる特殊な狂人。
 </pre>
 <ol>
-  <li>処刑投票先が処刑された時点で能力が発動し、処刑者に<a href="sub_role.php#bad_status">悪戯</a>が付く。</li>
+  <li>処刑投票先が処刑された時点で能力が発動する。</li>
   <li>能力が発動すると死亡者メッセージ欄に「傘化けの能力で隠蔽された」と表示される。</li>
   <li>観戦画面・配役公開されていない霊界でも能力は有効。</li>
   <li>対象が<a href="sub_role.php#possessed_target">憑依</a>中でも能力は有効。</li>
 </ol>
+<h5>Ver. 2.0.0 α3～</h5>
+<pre>
+<a href="sub_role.php#bad_status">悪戯</a>はつかない仕様に変更。
+</pre>
 <h5>Ver. 1.4.8 / Ver. 1.5.0 α6～</h5>
 <pre>
 対象が<a href="sub_role.php#possessed_target">憑依</a>中でも能力が適用される。

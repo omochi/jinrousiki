@@ -1124,8 +1124,8 @@ EOF;
 
     if ($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
     //PrintData($event_rows, 'Event[row]');
-    foreach ($event_rows as $event){
-      switch($event['type']){
+    foreach ($event_rows as $event) {
+      switch ($event['type']) {
       case 'WEATHER':
 	$ROOM->event->weather = (int)$event['message']; //天候データを格納
 	$ROOM->event->{$ROLE_DATA->weather_list[$ROOM->event->weather]['event']} = true;
@@ -1150,27 +1150,27 @@ EOF;
 	break;
       }
     }
-    if ($ROOM->IsEvent('hyper_critical')){
+    if ($ROOM->IsEvent('hyper_critical')) {
       $ROOM->event->critical_voter = true;
       $ROOM->event->critical_luck  = true;
     }
-    elseif ($ROOM->IsEvent('aurora')){
+    elseif ($ROOM->IsEvent('aurora')) {
       $ROOM->event->blinder   = true;
       $ROOM->event->mind_open = true;
     }
     //PrintData($ROOM->event, 'Event');
 
-    if ($ROOM->IsDay()){ //昼限定
-      foreach ($ROLES->event_virtual_day_list as $role){
-	if ($ROOM->IsEvent($role)){
+    if ($ROOM->IsDay()) { //昼限定
+      foreach ($ROLES->event_virtual_day_list as $role) {
+	if ($ROOM->IsEvent($role)) {
 	  foreach ($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }
     }
 
-    if ($ROOM->IsPlaying()){ //昼夜両方
-      foreach ($ROLES->event_virtual_list as $role){
-	if ($ROOM->IsEvent($role)){
+    if ($ROOM->IsPlaying()) { //昼夜両方
+      foreach ($ROLES->event_virtual_list as $role) {
+	if ($ROOM->IsEvent($role)) {
 	  foreach ($this->rows as $user) $user->AddVirtualRole($role);
 	}
       }

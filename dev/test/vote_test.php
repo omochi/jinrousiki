@@ -41,7 +41,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'sex_wolf lost_ability authority';
+$RQ_ARGS->TestItems->test_users[2]->role = 'hungry_wolf lost_ability authority';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -107,7 +107,7 @@ $RQ_ARGS->TestItems->test_users[12]->live = 'live';
 $RQ_ARGS->TestItems->test_users[13]->uname = 'black';
 $RQ_ARGS->TestItems->test_users[13]->handle_name = '黒';
 $RQ_ARGS->TestItems->test_users[13]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[13]->role = 'detective_common mind_presage[23]';
+$RQ_ARGS->TestItems->test_users[13]->role = 'wolf mind_presage[23]';
 $RQ_ARGS->TestItems->test_users[13]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[14]->uname = 'gold';
@@ -161,7 +161,7 @@ $RQ_ARGS->TestItems->test_users[21]->live = 'live';
 $RQ_ARGS->TestItems->test_users[22]->uname = 'gust';
 $RQ_ARGS->TestItems->test_users[22]->handle_name = '霧';
 $RQ_ARGS->TestItems->test_users[22]->sex = 'female';
-$RQ_ARGS->TestItems->test_users[22]->role = 'pierrot_wizard reduce_voter';
+$RQ_ARGS->TestItems->test_users[22]->role = 'dark_fairy reduce_voter';
 $RQ_ARGS->TestItems->test_users[22]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[23]->uname = 'cloud';
@@ -284,7 +284,7 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('user_no' => 2, 	'target_no' => 5,	'type' => 'WOLF_EAT'),
+  array('user_no' => 2, 	'target_no' => 13,	'type' => 'WOLF_EAT'),
   #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
   array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
   array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
@@ -324,11 +324,11 @@ $RQ_ARGS->TestItems->vote->night = array(
   array('user_no' => 20, 	'type' => 'VAMPIRE_DO', 'target_no' => 23),
   #array('user_no' => 21, 	'type' => 'CHILD_FOX_DO',	'target_no' => 5),
   #array('user_no' => 22, 	'type' => 'ESCAPE_DO', 'target_no' => 12),
-  #array('user_no' => 22, 	'type' => 'FAIRY_DO', 'target_no' => 23),
+  array('user_no' => 22, 	'type' => 'FAIRY_DO', 'target_no' => 13),
   #array('user_no' => 22, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
   #array('user_no' => 22, 	'type' => 'OGRE_DO', 'target_no' => 24),
   #array('user_no' => 22, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
-  array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 23),
+  #array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 23),
   #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 12),
   #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
   #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),

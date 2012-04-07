@@ -166,7 +166,7 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="resist_wolf">人狼襲撃耐性能力者</h2>
 <h3 id="resist_wolf_full">常時無効</h3>
 <pre>
-<a href="fox.php#fox_group">妖狐系</a>(<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#poison_fox">管狐</a>を除く)・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="duelist.php#sacrifice_patron">身代わり地蔵</a>・<a href="mania.php#sacrifice_mania">影武者</a>
+<a href="fox.php#fox_group">妖狐系</a>(<a href="fox.php#white_fox">白狐</a>・<a href="fox.php#poison_fox">管狐</a>・<a href="fox.php#sacrifice_fox">白蔵主</a>を除く)・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="lovers.php#sacrifice_angel">守護天使</a>・<a href="duelist.php#sacrifice_patron">身代わり地蔵</a>・<a href="mania.php#sacrifice_mania">影武者</a>
 </pre>
 <h3 id="resist_wolf_limited">限定無効</h3>
 <pre>
