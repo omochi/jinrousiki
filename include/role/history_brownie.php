@@ -5,7 +5,7 @@
   ・人狼襲撃：特殊イベント
   ・特殊イベント (夜)：夜スキップ
 */
-class Role_history_brownie extends Role{
+class Role_history_brownie extends Role {
   public $event_night = 'skip_night';
   function __construct(){ parent::__construct(); }
 
