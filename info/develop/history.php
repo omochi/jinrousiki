@@ -7,6 +7,7 @@ OutputInfoPageHeader('開発履歴', 1, 'develop_history');
 <p>
 Ver. 2.0.0<br>
 <a href="#ver200rc1">RC1</a>
+<a href="#ver200">Release</a>
 </p>
 <p>
 <a href="#ver200a1">α1</a>
@@ -22,6 +23,11 @@ Ver. 2.0.0<br>
 <a href="history_1.4.php">1.4</a>
 <a href="history_1.5.php">1.5</a>
 </p>
+
+<h2 id="ver200">Ver. 2.0.0 (Rev. 539) : 2012/04/14 (Sat) 23:32</h2>
+<ul>
+<li>出現率変動モード：G (独身村) 追加</li>
+</ul>
 
 <h2 id="ver200rc1">Ver. 2.0.0 RC1 (Rev. 533) : 2012/03/25 (Sun) 03:04</h2>
 <ul>

@@ -53,6 +53,7 @@ class InitializeConfig{
     'MENU_LINK'           => array('menu_config', 'index_functions'),
     'SHARED_CONF'         => array('shared_server_config', 'info_functions'),
     'BBS_CONF'            => 'bbs_config',
+    'SRC_UP_CONF'         => 'src_upload_config',
     'PAPARAZZI'           => 'paparazzi_class',
     'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',
@@ -112,6 +113,7 @@ class InitializeConfig{
     'RQ_ARGS'       => 'RequestBase',
     'ROLES'         => 'RoleManager',
     'TIME_CALC'     => 'TimeCalculation',
+    'SRC_UP_CONF'   => 'SourceUploadConfig',
     'TWITTER'       => 'TwitterConfig',
     'PAPARAZZI'     => 'Paparazzi'
   );
@@ -181,9 +183,10 @@ class InitializeConfig{
     case 'user_icon_config':
     case 'menu_config':
     case 'bbs_config':
-    case 'twitter_config':
-    case 'shared_server_config':
     case 'oldlog_config':
+    case 'shared_server_config':
+    case 'src_upload_config':
+    case 'twitter_config':
       $path = $this->path->config . '/server';
       break;
 
