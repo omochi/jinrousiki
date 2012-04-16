@@ -73,7 +73,7 @@ OutputRolePageHeader('能力者逆引き');
 </pre>
 <h3 id="mage_wolf">人狼</h3>
 <pre>
-<a href="human.php#suspect">不審者</a>・<a href="human.php#cute_mage">萌占い師</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>・<a href="sub_role.php#black_wisp">天火</a>
+<a href="human.php#suspect">不審者</a>・<a href="human.php#cute_mage">萌占い師</a>・<a href="wolf.php#swindle_mad">因幡兎</a>・<a href="fox.php#black_fox">黒狐</a>・<a href="chiroptera.php#cute_chiroptera">萌蝙蝠</a>・<a href="duelist.php#cute_avenger">草履大将</a>・<a href="sub_role.php#black_wisp">天火</a>
 </pre>
 <h3 id="mage_chiroptera">蝙蝠</h3>
 <pre>

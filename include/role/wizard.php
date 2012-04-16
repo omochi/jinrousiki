@@ -4,7 +4,7 @@
   ○仕様
   ・魔法：占い師・精神鑑定士・ひよこ鑑定士・狩人・暗殺者
 */
-class Role_wizard extends Role{
+class Role_wizard extends Role {
   public $action = 'WIZARD_DO';
   public $ignore_message = '初日は魔法を使えません';
   public $wizard_list = array(
@@ -15,7 +15,7 @@ class Role_wizard extends Role{
 
   protected function OutputResult(){
     global $ROOM;
-    if($ROOM->date > 2) foreach($this->result_list as $result) OutputSelfAbilityResult($result);
+    if ($ROOM->date > 2) foreach ($this->result_list as $result) OutputSelfAbilityResult($result);
   }
 
   function OutputAction(){ OutputVoteMessage('wizard-do', 'wizard_do', $this->action); }

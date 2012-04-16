@@ -469,8 +469,8 @@ class User{
   //精神鑑定
   function DistinguishLiar(){
     return $this->IsOgre() ? 'ogre' :
-      ($this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious') ?
-       'psycho_mage_liar' : 'psycho_mage_normal');
+      ((($this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious')) &&
+	! $this->IsRole('swindle_mad')) ? 'psycho_mage_liar' : 'psycho_mage_normal');
   }
 
   //霊能鑑定

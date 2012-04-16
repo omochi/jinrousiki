@@ -1178,31 +1178,31 @@ function AggregateVoteNight($skip = false){
 
   //-- 天候の処理 --//
   $stack = array();
-  if ($ROOM->IsEvent('full_moon')){ //満月
+  if ($ROOM->IsEvent('full_moon')) { //満月
     array_push($stack, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'JAMMER_MAD_DO',
 	       'VOODOO_MAD_DO', 'VOODOO_FOX_DO');
   }
-  elseif ($ROOM->IsEvent('new_moon')){ //新月
+  elseif ($ROOM->IsEvent('new_moon')) { //新月
     $skip = true; //影響範囲に注意
     array_push($stack, 'MAGE_DO', 'VOODOO_KILLER_DO', 'WIZARD_DO', 'SPREAD_WIZARD_DO',
 	       'CHILD_FOX_DO', 'VAMPIRE_DO', 'FAIRY_DO');
   }
-  elseif ($ROOM->IsEvent('no_contact')){ //花曇 (さとり系に注意)
+  elseif ($ROOM->IsEvent('no_contact')) { //花曇 (さとり系に注意)
     $skip = true; //影響範囲に注意
     array_push($stack, 'REPORTER_DO', 'ASSASSIN_DO', 'MIND_SCANNER_DO', 'ESCAPE_DO',
 	       'TRAP_MAD_DO', 'VAMPIRE_DO', 'OGRE_DO');
   }
-  elseif ($ROOM->IsEvent('no_trap')){ //雪明り
+  elseif ($ROOM->IsEvent('no_trap')) { //雪明り
     $stack[] = 'TRAP_MAD_DO';
   }
-  elseif ($ROOM->IsEvent('no_dream')){ //熱帯夜
+  elseif ($ROOM->IsEvent('no_dream')) { //熱帯夜
     $stack[] = 'DREAM_EAT';
   }
   foreach ($stack as $action) $vote_data[$action] = array();
 
   //-- 魔法使い系の振り替え処理 --//
-  if ($ROOM->date > 1){
-    foreach ($vote_data['WIZARD_DO'] as $id => $target_no){
+  if ($ROOM->date > 1) {
+    foreach ($vote_data['WIZARD_DO'] as $id => $target_no) {
       $action = $ROLES->LoadMain($USERS->ByID($id))->SetWizard();
       //PrintData($ROLES->actor->virtual_role, "Wizard: {$id}: {$action}");
       $vote_data[$action][$id] = $target_no;

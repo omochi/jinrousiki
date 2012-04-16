@@ -7,7 +7,7 @@
   ・悪戯：死亡欄妨害 (特殊)
 */
 RoleManager::LoadFile('wizard');
-class Role_pierrot_wizard extends Role_wizard{
+class Role_pierrot_wizard extends Role_wizard {
   public $mix_in = 'mage';
   public $wizard_list = array(
     'soul_mage' => 'MAGE_DO', 1 => 'ASSASSIN_DO', 2 => 'FAIRY_DO', 'grass_fairy' => 'FAIRY_DO',
@@ -21,14 +21,14 @@ class Role_pierrot_wizard extends Role_wizard{
     global $ROLES;
 
     $actor = $this->GetActor();
-    foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
-      if($filter->TrapStack($actor, $user->uname)) return;
+    foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
+      if ($filter->TrapStack($actor, $user->uname)) return;
     }
-    foreach($ROLES->LoadFilter('guard_assassin') as $filter){ //対暗殺護衛判定
-      if($filter->GuardAssassin($user->uname)) return;
+    foreach ($ROLES->LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
+      if ($filter->GuardAssassin($user->uname)) return;
     }
-    if($user->IsRoleGroup('escaper')) return; //逃亡者は無効
-    if($user->IsRefrectAssassin()){ //反射判定
+    if ($user->IsRoleGroup('escaper')) return; //逃亡者は無効
+    if ($user->IsRefrectAssassin()) { //反射判定
       $this->AddSuccess($actor->user_no, 'assassin');
       return;
     }
@@ -37,13 +37,13 @@ class Role_pierrot_wizard extends Role_wizard{
   }
 
   function Assassin($user){
-    if($user->IsLive(true)) $user->AddDoom(mt_rand(2, 10), 'death_warrant');
+    if ($user->IsLive(true)) $user->AddDoom(mt_rand(2, 10), 'death_warrant');
   }
 
   function Mage($user){
     global $ROOM, $USERS;
 
-    if($this->IsJammer($user) || $this->IsCursed($user)) return false;
+    if ($this->IsJammer($user) || $this->IsCursed($user)) return false;
     $handle_name = $USERS->GetHandleName($user->uname);
     $ROOM->ResultDead($handle_name, $this->result_type, GetRandom(range('A', 'Z')));
   }

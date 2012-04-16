@@ -94,7 +94,8 @@ Ver. 1.5.0
 <a href="#ver150b14">β14</a>
 <a href="#ver150b15">β15</a>
 <a href="#ver150b16">β16</a>
-<a href="#ver150b17">β17</a>
+<a href="#ver150b17">β17</a><br>
+<a href="#ver152">Ver. 1.5.2</a>
 </p>
 
 <p>
@@ -2868,6 +2869,15 @@ Ver. 1.5.0
   <td>人狼</td>
   <td class="ability">人狼陣営勝利に加えて、<a href="wolf.php#mad_group">狂人系</a>の全滅が勝利条件の人狼。</td>
   <td>Ver. 1.5.0 β17</td>
+</tr>
+<tr id="ver152">
+  <td><a href="wolf.php#swindle_mad">因幡兎</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>人狼</td>
+  <td>村人</td>
+  <td class="ability">占い結果が人狼、精神鑑定結果が正常と判定される特殊な狂人。</td>
+  <td>Ver. 1.5.2<br>(Ver. 2.1.0 α1)</td>
 </tr>
 </table>
 

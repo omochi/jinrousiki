@@ -6,8 +6,8 @@
   ・霊能：性別
 */
 RoleManager::LoadFile('wizard');
-class Role_spiritism_wizard extends Role_wizard{
-  public $action = NULL;
+class Role_spiritism_wizard extends Role_wizard {
+  public $action = null;
   public $wizard_list = array(
     'soul_necromancer', 'necromancer', 'psycho_necromancer', 'embalm_necromancer',
     'sex_necromancer');

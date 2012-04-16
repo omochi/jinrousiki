@@ -7,7 +7,7 @@
   ・霊能：通常 (50%)
 */
 RoleManager::LoadFile('wizard');
-class Role_mimic_wizard extends Role_wizard{
+class Role_mimic_wizard extends Role_wizard {
   public $mix_in = 'mage';
   public $wizard_list = array('mage' => 'MAGE_DO', 1 => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT', 'MIMIC_WIZARD_RESULT');
@@ -21,7 +21,7 @@ class Role_mimic_wizard extends Role_wizard{
   function Necromancer($user, $flag){
     global $ROOM, $USERS;
 
-    if($ROOM->date < 3) return;
+    if ($ROOM->date < 3) return;
     $failed = ! $ROOM->IsEvent('full_wizard') &&
       ($ROOM->IsEvent('debilitate_wizard') || mt_rand(0, 1) > 0);
     $result = $flag || $failed ? 'stolen' : $user->DistinguishNecromancer();

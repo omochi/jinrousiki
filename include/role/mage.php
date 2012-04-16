@@ -107,7 +107,8 @@ class Role_mage extends Role{
 
     //人狼判定
     $flag = ($user->IsWolf() && ! $user->IsRole('boss_wolf') && ! $user->IsSiriusWolf()) ||
-      $user->IsRole('suspect', 'cute_mage', 'black_fox', 'cute_chiroptera', 'cute_avenger');
+      $user->IsRole('suspect', 'cute_mage', 'swindle_mad', 'black_fox', 'cute_chiroptera',
+		    'cute_avenger');
     return ($flag xor $reverse) ? 'wolf' : 'human';
   }
 

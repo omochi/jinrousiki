@@ -6,7 +6,7 @@
   ・護衛処理：なし
 */
 RoleManager::LoadFile('wizard');
-class Role_barrier_wizard extends Role_wizard{
+class Role_barrier_wizard extends Role_wizard {
   public $action = 'SPREAD_WIZARD_DO';
   public $submit = 'wizard_do';
   public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
@@ -24,10 +24,10 @@ class Role_barrier_wizard extends Role_wizard{
 
     $target_stack = array();
     $handle_stack = array();
-    foreach($stack as $id){
+    foreach($stack as $id) {
       $user = $USERS->ByID($id);
       //例外判定
-      if($this->IsActor($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()){
+      if ($this->IsActor($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()) {
 	return '自分・死者・身代わり君には投票できません';
       }
       $target_stack[$id] = $USERS->ByReal($id)->user_no;
@@ -48,24 +48,26 @@ class Role_barrier_wizard extends Role_wizard{
     $stack     = array();
     $trapped   = false;
     $frostbite = false;
-    foreach(explode(' ', $list) as $id){
+    foreach (explode(' ', $list) as $id) {
       $uname = $USERS->ByID($id)->uname;
       $stack[$actor][] = $uname;
       $trapped   |= in_array($uname, $this->GetStack('trap')); //罠死判定
       $frostbite |= in_array($uname, $this->GetStack('snow_trap')); //凍傷判定
     }
     $this->SetStack($stack);
-    if($trapped)
+    if ($trapped) {
       $this->AddSuccess($actor, 'trapped');
-    elseif($frostbite)
+    }
+    elseif ($frostbite) {
       $this->AddSuccess($actor, 'frostbite');
+    }
   }
 
   function GetGuard($uname, &$list){
     $rate = $this->GetGuardRate();
-    foreach($this->GetStack() as $target_uname => $target_list){
-      if(in_array($uname, $target_list) &&
-	 mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $list[] = $target_uname;
+    foreach ($this->GetStack() as $target_uname => $target_list) {
+      if (in_array($uname, $target_list) &&
+	  mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $list[] = $target_uname;
     }
   }
 
