@@ -5,7 +5,7 @@ function IsUsingIcon($id){
   $query = 'SELECT icon_no FROM user_icon INNER JOIN ' .
     '(user_entry INNER JOIN room USING (room_no)) USING (icon_no) ' .
     "WHERE icon_no = {$id} AND room.status IN ('waiting', 'playing')";
-  return FetchCount($query) > 0;
+  return DB::FetchCount($query) > 0;
 }
 
 //文字列長チェック
@@ -42,9 +42,9 @@ function CheckColorString($str, $title, $url){
 function DeleteIcon($id, $file){
   global $ICON_CONF;
 
-  if(! FetchBool('DELETE FROM user_icon WHERE icon_no = ' . $id)) return false; //削除処理
+  if(! DB::FetchBool('DELETE FROM user_icon WHERE icon_no = ' . $id)) return false; //削除処理
   unlink($ICON_CONF->path . '/' . $file); //ファイル削除
-  OptimizeTable('user_icon'); //テーブル最適化 + コミット
+  DB::Optimize('user_icon'); //テーブル最適化 + コミット
   return true;
 }
 
@@ -97,7 +97,7 @@ function OutputIconEditForm($icon_no){
   global $ICON_CONF, $USER_ICON, $RQ_ARGS;
 
   $size = ' size="' . $USER_ICON->name . '" maxlength="' . $USER_ICON->name . '"';
-  foreach(FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected){
+  foreach(DB::FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected){
     extract($selected, EXTR_PREFIX_ALL, 'selected');
     $location = $ICON_CONF->path . '/' . $selected_icon_filename;
     $checked  = $selected_disable > 0 ? ' checked' : '';
@@ -154,7 +154,7 @@ function ConcreteOutputIconList($base_url = 'icon_view'){
     //選択肢の生成
     $query = "SELECT DISTINCT {$type} FROM user_icon WHERE {$type} IS NOT NULL";
     if(count($filter) > 0) $query .= ' AND ' . implode(' AND ', $filter);
-    $list = FetchArray($query);
+    $list = DB::FetchArray($query);
 
     //表示
     echo <<<HTML
@@ -280,11 +280,11 @@ HTML;
   }
   //PrintData($query);
 
-  $records = FetchAssoc($query);
+  $records = DB::FetchAssoc($query);
   $query = 'SELECT COUNT(icon_no) AS total_count FROM user_icon WHERE ';
   $where_cond[] = 'icon_no > 0';
   $query .= implode(' AND ', $where_cond);
-  $total_count = FetchResult($query);
+  $total_count = DB::FetchResult($query);
   $PAGE_CONF = $ICON_CONF;
   $PAGE_CONF->count = $total_count;
   $PAGE_CONF->url     = $base_url;
@@ -393,5 +393,5 @@ function GetIconCategoryList($type, $limit = '', $query_stack = array()){
     $list[] = '';
     $stack[1] .= ' ' . implode(' AND ', $list);
   }
-  return FetchArray(implode(" {$type} ", $stack) . $limit);
+  return DB::FetchArray(implode(" {$type} ", $stack) . $limit);
 }

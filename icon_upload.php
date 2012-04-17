@@ -31,7 +31,7 @@ function UploadIcon(){
     $url = 'icon_view.php';
     $str = '登録完了：アイコン一覧のページに飛びます。<br>'."\n" .
       '切り替わらないなら <a href="' . $url . '">ここ</a> 。';
-    if(! FetchBool('UPDATE user_icon SET session_id = NULL' . $query_no)){
+    if(! DB::FetchBool('UPDATE user_icon SET session_id = NULL' . $query_no)){
       $str .= "\nセッションの削除に失敗しました。";
     }
     OutputActionResult('アイコン登録完了', $str, $url);
@@ -46,7 +46,7 @@ function UploadIcon(){
     if(! $DB_CONF->LockCount('icon')) OutputActionResult($title, $str . $back_url);
 
     //アイコンのファイル名と登録時のセッション ID を取得
-    $stack = FetchAssoc('SELECT icon_filename, session_id FROM user_icon' . $query_no, true);
+    $stack = DB::FetchAssoc('SELECT icon_filename, session_id FROM user_icon' . $query_no, true);
     if(count($stack) < 1) OutputActionResult($title, $str . $back_url);
     extract($stack);
 
@@ -125,17 +125,17 @@ function UploadIcon(){
   if(! $DB_CONF->LockCount('icon')) OutputActionResult($title, $str); //トランザクション開始
 
   //登録数上限チェック
-  if(FetchResult('SELECT COUNT(icon_no) FROM user_icon') >= $USER_ICON->number){
+  if(DB::FetchResult('SELECT COUNT(icon_no) FROM user_icon') >= $USER_ICON->number){
     OutputActionResult($title, 'これ以上登録できません');
   }
 
   //アイコン名チェック
-  if(FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
+  if(DB::FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_name = '{$icon_name}'") > 0){
     $str = 'アイコン名 "' . $icon_name . '" は既に登録されています';
     OutputActionResult($title, $str . $back_url);
   }
 
-  $icon_no = FetchResult('SELECT MAX(icon_no) + 1 FROM user_icon'); //次のアイコン No を取得
+  $icon_no = DB::FetchResult('SELECT MAX(icon_no) + 1 FROM user_icon'); //次のアイコン No を取得
   if($icon_no === false) OutputActionResult($title, $str); //負荷エラー対策
 
   //ファイルをテンポラリからコピー
@@ -169,7 +169,7 @@ function UploadIcon(){
     $values .= ", '{$author}'";
   }
 
-  if(InsertDatabase('user_icon', $items, $values)){
+  if(DB::Insert('user_icon', $items, $values)){
     $DB_CONF->Commit();
     $DB_CONF->Disconnect(); //DB 接続解除
   }

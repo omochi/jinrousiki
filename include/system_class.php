@@ -34,7 +34,7 @@ class DatabaseConfigBase {
   //カウンタロック処理
   function LockCount($type){
     $query = "SELECT count FROM count_limit WHERE type = '{$type}' FOR UPDATE";
-    return $this->Transaction() && FetchBool($query);
+    return $this->Transaction() && DB::FetchBool($query);
   }
 
   //ロールバック処理
@@ -102,7 +102,7 @@ class Session {
   function GetUniq(){
     do {
       $this->Reset();
-    } while (FetchCount("SELECT room_no FROM user_entry WHERE session_id = '{$this->id}'") > 0);
+    } while (DB::FetchCount("SELECT room_no FROM user_entry WHERE session_id = '{$this->id}'") > 0);
     return $this->id;
   }
 
@@ -117,7 +117,7 @@ class Session {
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no}" .
       " AND session_id = '{$this->id}' AND user_no > 0";
-    $stack = FetchArray($query);
+    $stack = DB::FetchArray($query);
     if (count($stack) == 1) {
       $this->user_no = $stack[0];
       return true;
@@ -134,7 +134,7 @@ class Session {
     if ($this->Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
-    if (FetchCount('SELECT room_no FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0) {
+    if (DB::FetchCount('SELECT room_no FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0) {
       $url   = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .

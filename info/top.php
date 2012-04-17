@@ -7,10 +7,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.0.0 アップロード (2012/04/14 (Sat) 23:52) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/55586">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0 α1アップロード (2012/04/17 (Tue) 01:10) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/55621">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>出現率変動モード：G (独身村) 追加</li>
+  <li>Ver. 1.5.2 から「因幡兎」を移植</li>
 </ul>
 
 <h1>開発状況</h1>

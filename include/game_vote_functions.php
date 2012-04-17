@@ -617,7 +617,7 @@ function AggregateVoteGameStart($force_start = false){
     $query = "UPDATE room SET status = 'playing', date = {$ROOM->date}, " .
       "scene = '{$ROOM->scene}', vote_count = 1, overtime_alert = FALSE, " .
       "scene_start_time = UNIX_TIMESTAMP(), start_datetime = NOW() WHERE room_no = {$ROOM->id}";
-    SendQuery($query);
+    DB::SendQuery($query);
     //OutputSiteSummary(); //RSS機能はテスト中
   }
   $ROOM->Talk($sentence);
@@ -663,7 +663,7 @@ function VoteDay(){
     $query = $ROOM->GetQuery(true, 'vote') . " AND scene = '{$ROOM->scene}' " .
       "AND vote_count = {$ROOM->vote_count} AND revote_count = {$RQ_ARGS->revote_count} " .
       "AND user_no = {$SELF->user_no}";
-    if (FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
+    if (DB::FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
   }
 
   //-- 投票処理 --//
@@ -777,7 +777,7 @@ function AggregateVoteDay(){
     if ($ROOM->test_mode) continue;
     $handle_name = $USERS->GetHandleName($uname);
     $values = $values_header . "'{$handle_name}', '{$target_name}', {$vote}, {$poll}";
-    InsertDatabase('result_vote_kill', $items, $values);
+    DB::Insert('result_vote_kill', $items, $values);
   }
 
   //-- 処刑者決定処理 --//
@@ -978,7 +978,7 @@ function AggregateVoteDay(){
     $ROOM->revote_count++;
     $query = 'UPDATE room SET vote_count = vote_count + 1, revote_count = revote_count + 1' .
       ' WHERE room_no = ' . $ROOM->id;
-    SendQuery($query);
+    DB::SendQuery($query);
 
     $ROOM->Talk("再投票になりました( {$ROOM->revote_count} 回目)"); //システムメッセージ
     $ROOM->UpdateOvertimeAlert(); //超過警告判定リセット

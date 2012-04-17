@@ -63,7 +63,7 @@ function CheckTable(){
     echo '初期設定はすでに完了しています。';
     return;
   }
-  $table_list = FetchArray('SHOW TABLES'); //テーブルのリストを取得
+  $table_list = DB::FetchArray('SHOW TABLES'); //テーブルのリストを取得
 
   //チェックしてテーブルが存在しなければ作成する
   $footer  = '<br>'."\n";
@@ -94,7 +94,7 @@ EOF;
     CreateTable($table, $query);
 
     //管理者を登録
-    SendQuery("INSERT INTO {$table}
+    DB::SendQuery("INSERT INTO {$table}
 		(room_no, user_no, uname, handle_name, icon_no, profile, password, role, live)
 		VALUES(0, 0, 'system', 'システム', 1, 'ゲームマスター',
 		'{$SERVER_CONF->system_password}', 'GM', 'live')");
@@ -121,7 +121,7 @@ EOF;
   }
   if (0 < $revision && $revision < 494) {
     $query = 'ALTER TABLE talk DROP INDEX talk_index, ADD INDEX talk_index (room_no, date, scene)';
-    SendQuery($query);
+    DB::SendQuery($query);
     echo 'テーブル (' . $table . ') のインデックスを再生成しました<br>'."\n";
   }
 
@@ -138,7 +138,7 @@ EOF;
   if (0 < $revision && $revision < 494) {
     $query = 'ALTER TABLE talk_beforegame DROP INDEX talk_beforegame_index, ' .
       'ADD INDEX talk_beforegame_index (room_no)';
-    SendQuery($query);
+    DB::SendQuery($query);
     echo 'テーブル (' . $table . ') のインデックスを再生成しました<br>'."\n";
   }
 
@@ -155,7 +155,7 @@ EOF;
   if (0 < $revision && $revision < 494) {
     $query = 'ALTER TABLE talk_aftergame DROP INDEX talk_aftergame_index, ' .
       'ADD INDEX talk_aftergame_index (room_no)';
-    SendQuery($query);
+    DB::SendQuery($query);
     echo 'テーブル (' . $table . ') のインデックスを再生成しました<br>'."\n";
   }
 
@@ -226,7 +226,7 @@ EOF;
 
     //身代わり君のアイコンを登録 (No. 0)
     $class = new DummyBoyIcon(); //身代わり君アイコンの設定をロード
-    SendQuery("INSERT INTO ${table}(icon_no, icon_name, icon_filename, icon_width,
+    DB::SendQuery("INSERT INTO ${table}(icon_no, icon_name, icon_filename, icon_width,
 		icon_height,color)
 		VALUES(0, '{$class->name}', '{$class->path}', {$class->width},
 		{$class->height}, '{$class->color}')");
@@ -239,7 +239,7 @@ VALUES
 EOF;
     foreach ($class->data as $id => $list) {
       extract($list);
-      SendQuery("{$query}($id, '$name', '$file', $width, $height, '$color')");
+      DB::SendQuery("{$query}($id, '$name', '$file', $width, $height, '$color')");
       echo "ユーザアイコン ($id $file $name $width × $height $color) を登録しました" . $footer;
     }
   }
@@ -247,8 +247,8 @@ EOF;
   $table = 'count_limit';
   if (! in_array($table, $table_list)) {
     CreateTable($table, 'count INT NOT NULL, type VARCHAR(16)');
-    SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'room')");
-    SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'icon')");
+    DB::SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'room')");
+    DB::SendQuery("INSERT INTO {$table} (count, type) VALUES(0, 'icon')");
   }
 
   mysql_query("GRANT ALL ON {$DB_CONF->name}.* TO {$DB_CONF->user}");
@@ -257,7 +257,7 @@ EOF;
 }
 
 function CreateTable($table, $query) {
-  if (FetchBool("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")) {
+  if (DB::FetchBool("CREATE TABLE {$table}({$query}) ENGINE = InnoDB")) {
     echo 'テーブル (' . $table . ') を作成しました<br>'."\n";
   }
 }

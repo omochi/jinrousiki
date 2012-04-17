@@ -25,7 +25,7 @@ function GetTalkPassTime(&$left_time, $silence = false){
 
   $query = 'SELECT SUM(spend_time) FROM talk' . $ROOM->GetQuery() .
     " AND scene = '{$ROOM->scene}'";
-  $spend_time = (int)FetchResult($query);
+  $spend_time = (int)DB::FetchResult($query);
 
   if ($ROOM->IsDay()) { //昼は12時間
     $base_time = $TIME_CONF->day;
@@ -101,11 +101,11 @@ function CheckWinner($check_draw = false){
 
   //コピー能力者がいるのでキャッシュを更新するかクエリから引くこと
   $query_count = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live' AND user_no > 0 AND ";
-  $human  = FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
-  $wolf   = FetchResult($query_count . "role LIKE '%wolf%'"); //人狼
-  $fox    = FetchResult($query_count . "role LIKE '%fox%'"); //妖狐
-  $lovers = FetchResult($query_count . "role LIKE '%lovers%'"); //恋人
-  $quiz   = FetchResult($query_count . "role LIKE 'quiz%'"); //出題者
+  $human  = DB::FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
+  $wolf   = DB::FetchResult($query_count . "role LIKE '%wolf%'"); //人狼
+  $fox    = DB::FetchResult($query_count . "role LIKE '%fox%'"); //妖狐
+  $lovers = DB::FetchResult($query_count . "role LIKE '%lovers%'"); //恋人
+  $quiz   = DB::FetchResult($query_count . "role LIKE 'quiz%'"); //出題者
 
   //-- 吸血鬼の勝利判定 --//
   $vampire = false;
@@ -155,7 +155,7 @@ function CheckWinner($check_draw = false){
   $query = "UPDATE room SET status = 'finished', scene = 'aftergame', " .
     "scene_start_time = UNIX_TIMESTAMP(), winner = '{$winner}', finish_datetime = NOW() ".
     "WHERE room_no = {$ROOM->id}";
-  return FetchBool($query);
+  return DB::FetchBool($query);
 }
 
 //-- 投票関連 --//
@@ -174,7 +174,7 @@ function GetSelfVoteNight($type, $not_type = ''){
   else {
     $query .= "user_no = '{$SELF->user_no}' AND type ='{$type}'";
   }
-  return FetchAssoc($query, true);
+  return DB::FetchAssoc($query, true);
 }
 
 //夜の自分の投票済みチェック
@@ -263,7 +263,7 @@ function OutputGamePageHeader(){
 
       if ($novote_flag){
 	$query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-	if ($TIME_CONF->alert > $TIME_CONF->sudden_death - FetchResult($query)){ //警告判定
+	if ($TIME_CONF->alert > $TIME_CONF->sudden_death - DB::FetchResult($query)){ //警告判定
 	  $alert_flag = true;
 	  $sound_type = 'alert';
 	}
@@ -335,7 +335,7 @@ function OutputGameOption(){
   global $ROOM;
 
   $query = $ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
-  extract(FetchAssoc($query, true));
+  extract(DB::FetchAssoc($query, true));
   echo '<div class="game-option">ゲームオプション：' .
     RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
     GenerateMaxUserImage($max_user) . '</div>'."\n";
@@ -349,7 +349,7 @@ function OutputTimeTable(){
 
   if ($ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
   $query = $ROOM->GetQuery(false, 'user_entry') . " AND live = 'live'";
-  echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . FetchResult($query) . '人)</span></td>'."\n";
+  echo '<td>' . $ROOM->date . ' 日目<span>(生存者' . DB::FetchResult($query) . '人)</span></td>'."\n";
 }
 
 //プレイヤー一覧生成
@@ -587,7 +587,7 @@ function OutputRevoteList(){
   //投票済みチェック
   $query = $ROOM->GetQuery(true, 'vote') . " AND vote_count = {$ROOM->vote_count} " .
     "AND user_no = '{$SELF->user_no}'";
-  if (FetchResult($query) == 0) {
+  if (DB::FetchResult($query) == 0) {
     echo '<div class="revote">' . $MESSAGE->revote . ' (' . $GAME_CONF->draw . '回' .
       $MESSAGE->draw_announce . ')</div><br>'."\n";
   }
@@ -603,7 +603,7 @@ function GetVoteList($date){
   //指定された日付の投票結果を取得
   $query = $ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
 				 'vote', 'poll') . " AND date = {$date} ORDER BY count, id";
-  return GenerateVoteList(FetchAssoc($query), $date);
+  return GenerateVoteList(DB::FetchAssoc($query), $date);
 }
 
 //投票データから結果を生成する
@@ -890,7 +890,7 @@ function OutputTimeStamp($builder){
   }
   else return false;
 
-  if (is_null($time = FetchResult($ROOM->GetQueryHeader('room', $type)))) return false;
+  if (is_null($time = DB::FetchResult($ROOM->GetQueryHeader('room', $type)))) return false;
   $talk->uname    = 'system';
   $talk->scene    = $ROOM->scene;
   $talk->location = 'system';
@@ -932,7 +932,7 @@ function OutputAbilityAction(){
     }
     $query = $ROOM->GetQueryHeader('system_message', 'message', 'type') .
       " AND date = {$yesterday} AND ({$action})";
-    $stack_list = FetchAssoc($query);
+    $stack_list = DB::FetchAssoc($query);
   }
 
   foreach ($stack_list as $stack){
@@ -1049,7 +1049,7 @@ function GenerateLastWords($shift = false){
 
   $query = $ROOM->GetQueryHeader('result_lastwords', 'handle_name', 'message') . ' AND date = ';
   $date  = $ROOM->date - ($shift ? 0 : 1); //基本は前日
-  $stack = FetchAssoc($query . $date);
+  $stack = DB::FetchAssoc($query . $date);
   if (count($stack) < 1) return null;
   shuffle($stack); //表示順はランダム
 
@@ -1103,7 +1103,7 @@ function GenerateDeadMan(){
     else {
       $query = "date = {$ROOM->date} AND scene = 'day'";
     }
-    $stack_list = FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()");
+    $stack_list = DB::FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()");
   }
 
   $str = GenerateWeatherReport();
@@ -1117,7 +1117,7 @@ function GenerateDeadMan(){
   }
   $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
   $query = "date = {$yesterday} AND scene = '{$ROOM->scene}'";
-  foreach (FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack){
+  foreach (DB::FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack){
     $str .= GenerateDeadManType($stack['handle_name'], $stack['type'], $stack['result']);
   }
   return $str;

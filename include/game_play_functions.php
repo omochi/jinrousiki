@@ -321,7 +321,7 @@ function OutputSelfAbilityResult($action){
     $query = 'SELECT DISTINCT target, result FROM result_ability WHERE room_no = ' .
       "{$ROOM->id} AND date = {$target_date} AND type = '{$action}'";
     if ($limit) $query .= " AND user_no = {$SELF->user_no}";
-    $result_list = FetchAssoc($query);
+    $result_list = DB::FetchAssoc($query);
   }
   //PrintData($result_list);
 

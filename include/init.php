@@ -26,7 +26,7 @@ class InitializeConfig{
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'DB_CONF'             => 'database_config', //常時ロードされる
+    'DB_CONF'             => array('database_config', 'database_class'),
     'SERVER_CONF'         => 'server_config', //常時ロードされる
     'ROOM_CONF'           => 'room_config',
     'GAME_CONF'           => 'game_config',

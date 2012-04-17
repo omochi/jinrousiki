@@ -681,7 +681,7 @@ EOF;
     }
     $value = is_null($value) ? 'NULL' : "'{$value}'";
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    return FetchBool("UPDATE user_entry SET {$item} = {$value} {$query}");
+    return DB::FetchBool("UPDATE user_entry SET {$item} = {$value} {$query}");
   }
 
   //ID 更新処理 (KICK 後処理用)
@@ -693,7 +693,7 @@ EOF;
       return;
     }
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
-    return FetchBool("UPDATE user_entry SET user_no = {$id} {$query}");
+    return DB::FetchBool("UPDATE user_entry SET user_no = {$id} {$query}");
   }
 
   //player 更新処理
@@ -708,7 +708,7 @@ EOF;
     }
     $items  = 'room_no, date, scene, user_no, role';
     $values = "{$ROOM->id}, {$ROOM->date}, '{$ROOM->scene}', {$this->user_no}, '{$role}'";
-    if (! InsertDatabase('player', $items, $values)) return false;
+    if (! DB::Insert('player', $items, $values)) return false;
     return $this->Update('role_id', mysql_insert_id());
   }
 
@@ -720,7 +720,7 @@ EOF;
     }
     $update = implode(', ', $update_list);
     $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    FetchBool("UPDATE user_entry SET {$update} {$query}");
+    DB::FetchBool("UPDATE user_entry SET {$update} {$query}");
   }
 
   //基幹死亡処理
@@ -832,11 +832,11 @@ EOF;
 
     $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
       "AND user_no = {$this->user_no}";
-    if (is_null($message = FetchResult($query))) return true;
+    if (is_null($message = DB::FetchResult($query))) return true;
 
     $items  = 'room_no, date, handle_name, message';
     $values = "{$ROOM->id}, {$ROOM->date}, '{$handle_name}', '{$message}'";
-    return InsertDatabase('result_lastwords', $items, $values);
+    return DB::Insert('result_lastwords', $items, $values);
   }
 
   //投票処理
@@ -866,7 +866,7 @@ EOF;
       $items .= ', vote_number, revote_count';
       $values .= ", '{$vote_number}', '{$RQ_ARGS->revote_count}'";
     }
-    return InsertDatabase('vote', $items, $values);
+    return DB::Insert('vote', $items, $values);
   }
 }
 
@@ -917,7 +917,7 @@ FROM user_entry LEFT JOIN user_icon USING (icon_no)
 WHERE room_no = {$room_no} ORDER BY user_no ASC
 EOF;
     if ($lock) $query .= ' FOR UPDATE';
-    return FetchObject($query, 'User');
+    return DB::FetchObject($query, 'User');
   }
 
   //指定した人数分のユーザ情報を全村からランダムに取得する (テスト用)
@@ -930,7 +930,7 @@ FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) AS
   LEFT JOIN user_entry USING (room_no, uname) LEFT JOIN user_icon USING (icon_no)
 ORDER BY RAND() LIMIT {$user_count}
 EOF;
-    return FetchObject($query, 'User');
+    return DB::FetchObject($query, 'User');
   }
 
   //入村処理用のユーザデータを取得する
@@ -939,7 +939,7 @@ EOF;
 SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry
 WHERE room_no = {$room_no} ORDER BY user_no ASC FOR UPDATE
 EOF;
-    return FetchObject($query, 'User');
+    return DB::FetchObject($query, 'User');
   }
 
   //ゲーム開始前のユーザデータを取得する
@@ -955,7 +955,7 @@ FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
   u.user_no = v.user_no AND v.type = 'GAMESTART'
 WHERE u.room_no = {$ROOM->id} ORDER BY user_no ASC
 EOF;
-    return FetchObject($query, 'User');
+    return DB::FetchObject($query, 'User');
   }
 
   //昼 + 下界用のユーザデータを取得する
@@ -971,7 +971,7 @@ FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
   u.user_no = v.user_no AND v.type = 'VOTE_KILL'
 WHERE u.room_no = {$ROOM->id} ORDER BY user_no ASC
 EOF;
-    return FetchObject($query, 'User');
+    return DB::FetchObject($query, 'User');
   }
 
   //取得したユーザ情報を User クラスでパースして登録する

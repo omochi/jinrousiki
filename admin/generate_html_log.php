@@ -25,10 +25,10 @@ $db_delete_mode = false; //部屋削除のみ
 if ($db_delete_mode) {
   OutputHTMLHeader('DB削除モード');
   for ($i = $RQ_ARGS->min_room_no; $i <= $RQ_ARGS->max_room_no; $i++) {
-    DeleteRoom($i);
+    DB::DeleteRoom($i);
     echo "{$i} 番地を削除しました<br>";
   }
-  OptimizeTable();
+  DB::Optimize();
   OutputHTMLFooter(true);
 }
 
@@ -61,9 +61,9 @@ for ($i = $RQ_ARGS->min_room_no; $i <= $RQ_ARGS->max_room_no; $i++) {
   $USERS = new UserDataSet($RQ_ARGS);
   $SELF  = new User();
   file_put_contents("{$header}{$i}r.html", GenerateOldLog() . $footer);
-  if ($room_delete) DeleteRoom($i);
+  if ($room_delete) DB::DeleteRoom($i);
 }
-if ($room_delete) OptimizeTable();
+if ($room_delete) DB::Optimize();
 
 OutputActionResult('ログ生成',
 		   $RQ_ARGS->min_room_no . ' 番地から ' .

@@ -30,9 +30,9 @@ function MaintenanceRoom(){
     $ROOM_CONF->die_room;
   /*
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
-  if (FetchBool($query)) OutputSiteSummary();
+  if (DB::FetchBool($query)) OutputSiteSummary();
   */
-  SendQuery($query);
+  DB::SendQuery($query);
 
   //終了した部屋のセッションIDのデータをクリアする
   $query = <<<EOF
@@ -42,7 +42,7 @@ UPDATE user_entry INNER JOIN room ON user_entry.session_id IS NOT NULL AND
    room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
   SET user_entry.session_id = NULL
 EOF;
-  SendQuery($query);
+  DB::SendQuery($query);
 }
 
 //村(room)の作成
@@ -95,20 +95,20 @@ function CreateRoom(){
     if (CheckBlackList()) OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
 
     $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
-    $time  = FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
+    $time  = DB::FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
     if (isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait) {
       OutputRoomAction('establish_wait');
       return false;
     }
 
     //最大稼働数チェック
-    if (FetchCount("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room) {
+    if (DB::FetchCount("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room) {
       OutputRoomAction('full');
       return false;
     }
 
     //同一ユーザの連続作成チェック
-    if (FetchCount("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0) {
+    if (DB::FetchCount("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0) {
       OutputRoomAction('over_establish');
       return false;
     }
@@ -189,7 +189,7 @@ function CreateRoom(){
 
   //登録
   //ALTER TABLE room_no AUTO_INCREMENT = value; //カウンタセット SQL
-  $room_no     = FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
+  $room_no     = DB::FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
   $game_option = $ROOM_OPT->GetOptionString(RoomOption::GAME_OPTION);
   $option_role = $ROOM_OPT->GetOptionString(RoomOption::ROLE_OPTION);
   $status      = false;
@@ -208,13 +208,13 @@ function CreateRoom(){
       $values = "{$room_no}, '{$room_name}', '{$room_comment}', {$max_user}, '{$game_option}', " .
         "'{$option_role}', 'waiting', 0, 'beforegame', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), " .
         "'{$ip_address}', NOW()";
-      if (! InsertDatabase('room', $items, $values)) break;
+      if (! DB::Insert('room', $items, $values)) break;
 
       //身代わり君を入村させる
       if ($ROOM_OPT->dummy_boy &&
-	  FetchCount('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
-        if (! InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-			 1, $ROOM_OPT->gerd ? $USER_ICON->gerd : 0)) break;
+	  DB::FetchCount('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
+        if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
+			     1, $ROOM_OPT->gerd ? $USER_ICON->gerd : 0)) break;
       }
 
       if ($SERVER_CONF->secret_room) { //村情報非表示モードの処理
@@ -333,7 +333,7 @@ function OutputRoomList(){
   $delete_footer = '">[削除 (緊急用)]</a>'."\n";
   $query = 'SELECT room_no, name, comment, game_option, option_role, max_user, status ' .
     "FROM room WHERE status IN ('waiting', 'playing') ORDER BY room_no DESC";
-  foreach (FetchAssoc($query) as $stack){
+  foreach (DB::FetchAssoc($query) as $stack){
     extract($stack);
     $delete     = $SERVER_CONF->debug_mode ? $delete_header . $room_no . $delete_footer : '';
     $status_img = $ROOM_IMG->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');

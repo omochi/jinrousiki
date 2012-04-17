@@ -142,7 +142,7 @@ function VoteKick(){
   }
 
   //ゲーム開始チェック
-  if (FetchResult($ROOM->GetQueryHeader('room', 'scene')) != 'beforegame') {
+  if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene')) != 'beforegame') {
     OutputVoteResult($str . '既にゲーム開始されています');
   }
 
@@ -183,7 +183,7 @@ function AggregateVoteKick($target){
   }
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
     "WHERE room_no = {$ROOM->id} AND user_no = '{$target->user_no}'";
-  SendQuery($query);
+  DB::SendQuery($query);
 
   //通知処理
   $ROOM->Talk($target->handle_name . $MESSAGE->kick_out);
@@ -281,7 +281,7 @@ function OutputVoteDay(){
   $query = $ROOM->GetQuery(true, 'vote') . " AND scene = '{$ROOM->scene}' " .
     "AND vote_count = {$ROOM->vote_count} AND revote_count = {$revote_count} " .
     "AND user_no = {$SELF->user_no}";
-  if (FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
+  if (DB::FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
   if (isset($ROOM->event->vote_duel) && is_array($ROOM->event->vote_duel)) { //特殊イベントを取得
     $user_stack = array();
     foreach ($ROOM->event->vote_duel as $id) $user_stack[$id] = $USERS->rows[$id];

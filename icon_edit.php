@@ -40,12 +40,12 @@ function EditIcon(){
   if(! $DB_CONF->LockCount('icon')) OutputActionResult($title, $str); //トランザクション開始
 
   $query_header = 'SELECT icon_no FROM user_icon WHERE ';
-  if(FetchCount($query_header . 'icon_no = ' . $icon_no) < 1){ //存在チェック
+  if(DB::FetchCount($query_header . 'icon_no = ' . $icon_no) < 1){ //存在チェック
     OutputActionResult($title, '無効なアイコン番号です：' . $icon_no . $back_url);
   }
 
   //アイコンの名前が既に登録されていないかチェック
-  if(FetchCount("{$query_header}  icon_no <> {$icon_no} AND icon_name = '{$icon_name}'") > 0){
+  if(DB::FetchCount("{$query_header}  icon_no <> {$icon_no} AND icon_name = '{$icon_name}'") > 0){
     $str = 'アイコン名 "' . $icon_name . '" は既に登録されています。';
     OutputActionResult($title, $str . $back_url);
   }
@@ -57,7 +57,7 @@ function EditIcon(){
   }
 
   //非表示フラグチェック
-  if(FetchCount("{$query_header} icon_no = {$icon_no} AND disable = TRUE") > 0 !== $disable){
+  if(DB::FetchCount("{$query_header} icon_no = {$icon_no} AND disable = TRUE") > 0 !== $disable){
     $query_stack[] = 'disable = ' . ($disable ? 'TRUE' : 'FALSE');
   }
 
@@ -68,7 +68,7 @@ function EditIcon(){
   $query = 'UPDATE user_icon SET ' . implode(', ', $query_stack) . ' WHERE icon_no = ' . $icon_no;
   //OutputActionResult($title, $query . $back_url); //テスト用
 
-  if(FetchBool($query, true)){
+  if(DB::FetchBool($query, true)){
     OutputActionResult($title, '編集完了', 'icon_view.php?icon_no=' . $icon_no);
   }
   else{

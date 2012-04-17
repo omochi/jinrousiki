@@ -95,7 +95,7 @@ function GenerateFinishedRooms($page){
   //村数の確認
   $title = $SERVER_CONF->title . ' [過去ログ]';
   $query = "SELECT room_no FROM room WHERE status = 'finished'";
-  $room_count = FetchCount($query);
+  $room_count = DB::FetchCount($query);
   if($room_count < 1){
     OutputActionResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }
@@ -145,7 +145,7 @@ EOF;
   if($RQ_ARGS->page != 'all'){
     $query .= sprintf(' LIMIT %d, %d', $LOG_CONF->view * ($RQ_ARGS->page - 1), $LOG_CONF->view);
   }
-  foreach(FetchArray($query) as $room_no){
+  foreach(DB::FetchArray($query) as $room_no){
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
     $dead_room = $ROOM->date == 0 ? ' vanish' : ''; //廃村の場合、色を灰色にする
@@ -339,7 +339,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
   $query .= ' ORDER BY id' . ($RQ_ARGS->reverse_log ? '' : ' DESC'); //ログの表示順
 
   //PrintData($query, $set_scene);
-  $talk_list = FetchObject($query, 'Talk');
+  $talk_list = DB::FetchObject($query, 'Talk');
 
   //-- 仮想稼動モードテスト用 --//
   //global $USERS, $SELF;

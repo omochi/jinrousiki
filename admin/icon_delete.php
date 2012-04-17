@@ -19,7 +19,7 @@ if (! $DB_CONF->LockCount('icon')) OutputActionResult($title, $error); //トラ�
 if (IsUsingIcon($icon_no)) { //使用中判定
   OutputActionResult($title, '募集中・プレイ中の村で使用されているアイコンは削除できません。');
 }
-$file = FetchResult('SELECT icon_filename FROM user_icon WHERE icon_no = ' . $icon_no);
+$file = DB::FetchResult('SELECT icon_filename FROM user_icon WHERE icon_no = ' . $icon_no);
 if ($file === false || is_null($file)) OutputActionResult($title, 'ファイルが存在しません');
 if (DeleteIcon($icon_no, $file)) {
   //DB 接続解除は OutputActionResult() 経由

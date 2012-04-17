@@ -13,7 +13,7 @@ class Table{
       return isset($this->exists) ? $this->exists : ($this->exists = $this->Exists(false));
     }
 
-    $list = FetchArray("SHOW TABLES LIKE {$this->name}");
+    $list = DB::FetchArray("SHOW TABLES LIKE {$this->name}");
     foreach($list as $field){
       if($field == $this->name) return true;
     }

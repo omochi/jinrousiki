@@ -211,7 +211,7 @@ function CheckSilence(){
     if (! $DB_CONF->Transaction()) return false; //判定条件が全て DB なので即ロック
 
     //現在のシーンを再取得して切り替わっていたらスキップ
-    if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+    if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
       return $DB_CONF->RollBack();
     }
     $silence_pass_time = GetTalkPassTime($left_time, true);
@@ -219,7 +219,7 @@ function CheckSilence(){
     if ($left_time > 0) { //制限時間超過判定
       //最終発言時刻からの差分を取得
       $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-      if (FetchResult($query) <= $TIME_CONF->silence) return $DB_CONF->RollBack(); //沈黙判定
+      if (DB::FetchResult($query) <= $TIME_CONF->silence) return $DB_CONF->RollBack(); //沈黙判定
 
       //沈黙メッセージを発行してリセット
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
@@ -235,7 +235,7 @@ function CheckSilence(){
       if (! $DB_CONF->Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
-      if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+      if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
 	return $DB_CONF->RollBack();
       }
     }
@@ -249,7 +249,7 @@ function CheckSilence(){
       if (! $DB_CONF->Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
-      if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+      if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
 	return $DB_CONF->RollBack();
       }
     }
@@ -266,7 +266,7 @@ function CheckSilence(){
   /*  $ROOM から推定値を計算する場合 (リアルタイム制限定 + 再投票などがあると大幅にずれる) */
   //$ROOM->sudden_death = $TIME_CONF->sudden_death - ($ROOM->system_time - $end_time);
   $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-  $ROOM->sudden_death = $TIME_CONF->sudden_death - FetchResult($query);
+  $ROOM->sudden_death = $TIME_CONF->sudden_death - DB::FetchResult($query);
 
   //制限時間前ならスキップ (この段階でロックしているのは非リアルタイム制のみ)
   if ($ROOM->sudden_death > 0) return $ROOM->IsRealTime() ? true : $DB_CONF->RollBack();
@@ -276,13 +276,13 @@ function CheckSilence(){
     if (! $DB_CONF->Transaction()) return false;
 
     //現在のシーンを再取得して切り替わっていたらスキップ
-    if (FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
+    if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
       return $DB_CONF->RollBack();
     }
 
     //制限時間を再計算
     $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-    $ROOM->sudden_death = $TIME_CONF->sudden_death - FetchResult($query);
+    $ROOM->sudden_death = $TIME_CONF->sudden_death - DB::FetchResult($query);
     if ($ROOM->sudden_death > 0) return $DB_CONF->RollBack();
   }
 
@@ -328,7 +328,7 @@ function SetSuddenDeathTime(){
 
   //最終発言時刻からの差分を取得
   $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-  $last_update_time = FetchResult($query);
+  $last_update_time = DB::FetchResult($query);
 
   //経過時間を取得
   $ROOM->IsRealTime() ? GetRealPassTime($left_time) : GetTalkPassTime($left_time, true);
@@ -381,7 +381,7 @@ function OutputGameHeader(){
 
     if ($ROOM->IsFinished()){
       echo $url_header . $ROOM->date . $url_day . $ROOM->date . '(昼)' . $footer;
-      if (FetchResult($ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0){
+      if (DB::FetchResult($ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0){
 	echo $url_header . $ROOM->date . $url_night . $ROOM->date . '(夜)' . $footer;
       }
       echo $header . $url_scene . 'aftergame' . $url_footer . '(後)' . $footer;
@@ -435,7 +435,7 @@ EOF;
   if ($RQ_ARGS->play_sound && ($ROOM->IsBeforeGame() || $ROOM->IsDay())){ //音でお知らせ処理
     if ($ROOM->IsBeforeGame()){ //入村・満員
       $user_count = $USERS->GetUserCount();
-      $max_user   = FetchResult($ROOM->GetQueryHeader('room', 'max_user'));
+      $max_user   = DB::FetchResult($ROOM->GetQueryHeader('room', 'max_user'));
       if ($user_count == $max_user && $COOKIE->user_count != $max_user){
 	$SOUND->Output('full');
       }
@@ -558,7 +558,7 @@ function OutputSelfLastWords(){
 
   $query = 'SELECT last_words FROM user_entry' . $ROOM->GetQuery(false) .
     " AND user_no = {$SELF->user_no}";
-  if (($str = FetchResult($query)) == '') return false;
+  if (($str = DB::FetchResult($query)) == '') return false;
   LineToBR($str); //改行コードを変換
   if ($str == '') return false;
 

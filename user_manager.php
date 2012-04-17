@@ -54,7 +54,7 @@ function EntryUser(){
   if ($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です。' . $back_url);
 
   $query = 'SELECT icon_no FROM user_icon WHERE disable IS NOT TRUE AND icon_no = ' . $icon_no;
-  if ($icon_no < ($user_no > 0 ? 0 : 1) || FetchCount($query) < 1) {
+  if ($icon_no < ($user_no > 0 ? 0 : 1) || DB::FetchCount($query) < 1) {
     OutputActionResult($title, '無効なアイコン番号です' . $back_url);
   }
 
@@ -85,7 +85,7 @@ function EntryUser(){
   $footer = '<br>別の名前にしてください。' . $back_url;
 
   //キックされた人と同じユーザ名
-  if (FetchCount($query_count . "uname = '{$uname}' AND live = 'kick'") > 0) {
+  if (DB::FetchCount($query_count . "uname = '{$uname}' AND live = 'kick'") > 0) {
     $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
     OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer);
   }
@@ -94,7 +94,7 @@ function EntryUser(){
     $query = 'SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, ' .
       'color, icon_name FROM user_entry AS u INNER JOIN user_icon USING (icon_no) ' .
       "WHERE room_no = {$room_no} AND user_no = {$user_no}";
-    $target = FetchObject($query, 'User', true);
+    $target = DB::FetchObject($query, 'User', true);
     if ($target->session_id != $SESSION->Get()) {
       OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
     }
@@ -104,7 +104,7 @@ function EntryUser(){
     }
 
     $query_footer = "user_no <> '{$user_no}' AND handle_name = '{$handle_name}'";
-    if (FetchCount($query_count . $query_footer) > 0) {
+    if (DB::FetchCount($query_count . $query_footer) > 0) {
       $str = '村人名が既に登録してあります。';
       OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
     }
@@ -119,7 +119,7 @@ function EntryUser(){
       if (! $target->IsDummyBoy() && $icon_no == 0) {
 	OutputActionResult($title, '無効なアイコン番号です' . $back_url);
       }
-      $icon_name = FetchResult('SELECT icon_name FROM user_icon WHERE icon_no = ' . $icon_no);
+      $icon_name = DB::FetchResult('SELECT icon_name FROM user_icon WHERE icon_no = ' . $icon_no);
       $stack[] = "icon_no = '{$icon_no}'";
       $str .= "\nアイコン：No. {$target->icon_no} ({$target->icon_name}) → " .
 	"No. {$icon_no} ({$icon_name})";
@@ -137,7 +137,7 @@ function EntryUser(){
     $query_set = implode(', ', $stack);
     $query = "UPDATE user_entry SET {$query_set} WHERE room_no = {$room_no} " .
       "AND user_no = {$user_no}";
-    if (FetchBool($query, true)) { //コミット付き
+    if (DB::FetchBool($query, true)) { //コミット付き
       $str = <<<EOF
 登録データを変更しました。<br>
 <form action="#" method="post">
@@ -154,7 +154,7 @@ EOF;
 
   //ユーザ名・村人名
   $query_count .= "live = 'live' AND ";
-  if (FetchCount($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0) {
+  if (DB::FetchCount($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0) {
     $str = 'ユーザ名、または村人名が既に登録してあります。';
     OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
   }
@@ -164,7 +164,7 @@ EOF;
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
   if (! $SERVER_CONF->debug_mode) {
     if ($GAME_CONF->entry_one_ip_address &&
-       FetchCount($query_count . "ip_address = '{$ip_address}'") > 0) {
+	DB::FetchCount($query_count . "ip_address = '{$ip_address}'") > 0) {
       OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
     }
     elseif (CheckBlackList()) {
@@ -174,8 +174,8 @@ EOF;
 
   //DB にユーザデータを登録
   $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
-  if (InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
-		 $sex, $role, $SESSION->Get(true))) {
+  if (DB::InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
+		     $sex, $role, $SESSION->Get(true))) {
     //クッキーの初期化
     $ROOM->system_time = TZTime(); //現在時刻を取得
     $cookie_time = $ROOM->system_time - 3600;
@@ -206,7 +206,7 @@ function OutputEntryUserPage(){
   extract($RQ_ARGS->ToArray()); //引数を取得
   if ($user_no > 0) { //登録情報変更モード
     $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
-    $stack = FetchAssoc($query, true);
+    $stack = DB::FetchAssoc($query, true);
     if ($stack['session_id'] != $SESSION->Get()) {
       OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
     }
