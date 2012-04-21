@@ -5,7 +5,7 @@ function IsUsingIcon($id){
   $query = 'SELECT icon_no FROM user_icon INNER JOIN ' .
     '(user_entry INNER JOIN room USING (room_no)) USING (icon_no) ' .
     "WHERE icon_no = {$id} AND room.status IN ('waiting', 'playing')";
-  return DB::FetchCount($query) > 0;
+  return DB::Count($query) > 0;
 }
 
 //文字列長チェック

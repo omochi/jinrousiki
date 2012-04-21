@@ -274,7 +274,7 @@ class Room{
 	$query .= " AND type NOT IN ('VOTE_KILL')";
       }
     }
-    DB::SendQuery($query);
+    DB::Execute($query);
     DB::Optimize('vote');
     return true;
   }
@@ -393,7 +393,7 @@ class Room{
   //超過警告メッセージ出力済み判定
   function IsOvertimeAlert(){
     $query = $this->GetQueryHeader('room', 'overtime_alert') . ' AND overtime_alert IS FALSE';
-    return DB::FetchCount($query) < 1;
+    return DB::Count($query) < 1;
   }
 
   //天候セット
@@ -563,7 +563,7 @@ class Room{
   //投票回数を更新
   function UpdateVoteCount($reset = false){
     if ($this->test_mode) return true;
-    DB::SendQuery('UPDATE room SET vote_count = vote_count + 1' . $this->GetQuery(false));
+    DB::Execute('UPDATE room SET vote_count = vote_count + 1' . $this->GetQuery(false));
     $this->UpdateOvertimeAlert();
     if (! $reset && $this->date != 1) return true;
     $query = 'UPDATE vote SET vote_count = vote_count + 1' . $this->GetQuery() .
@@ -614,7 +614,6 @@ class Room{
     //$this->DeleteVote(); //今までの投票を全部削除
 
     $status = CheckWinner(); //勝敗のチェック
-    //$DB_CONF->Commit(); //一応コミット (再検討)
     return $status;
   }
 

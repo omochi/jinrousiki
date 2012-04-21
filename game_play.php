@@ -7,7 +7,7 @@ $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF');
 $INIT_CONF->LoadRequest('RequestGamePlay');
 if ($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
-$DB_CONF->Connect(); //DB 接続
+DB::Connect();
 $SESSION->CertifyGamePlay(); //セッション認証
 
 $ROOM = new Room($RQ_ARGS); //村情報をロード
@@ -198,7 +198,7 @@ function Say($say){
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $DB_CONF, $TIME_CONF, $MESSAGE, $ROOM, $USERS;
+  global $TIME_CONF, $MESSAGE, $ROOM, $USERS;
 
   if (! $ROOM->IsPlaying()) return true; //スキップ判定
 
@@ -208,49 +208,49 @@ function CheckSilence(){
     if ($left_time > 0) return true; //制限時間超過判定
   }
   else { //仮想時間制
-    if (! $DB_CONF->Transaction()) return false; //判定条件が全て DB なので即ロック
+    if (! DB::Transaction()) return false; //判定条件が全て DB なので即ロック
 
     //現在のシーンを再取得して切り替わっていたらスキップ
     if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
-      return $DB_CONF->RollBack();
+      return DB::Rollback();
     }
     $silence_pass_time = GetTalkPassTime($left_time, true);
 
     if ($left_time > 0) { //制限時間超過判定
       //最終発言時刻からの差分を取得
       $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-      if (DB::FetchResult($query) <= $TIME_CONF->silence) return $DB_CONF->RollBack(); //沈黙判定
+      if (DB::FetchResult($query) <= $TIME_CONF->silence) return DB::Rollback(); //沈黙判定
 
       //沈黙メッセージを発行してリセット
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
       $ROOM->Talk($str, null, '', '', null, null, null, $TIME_CONF->silence_pass);
       $ROOM->UpdateTime();
-      return $DB_CONF->Commit();
+      return DB::Commit();
     }
   }
 
   //オープニングなら即座に夜に移行する
   if ($ROOM->date == 1 && $ROOM->IsOption('open_day') && $ROOM->IsDay()) {
     if ($ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
-      if (! $DB_CONF->Transaction()) return false;
+      if (! DB::Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
       if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
-	return $DB_CONF->RollBack();
+	return DB::Rollback();
       }
     }
     $ROOM->ChangeNight(); //夜に切り替え
     $ROOM->UpdateTime(); //最終書き込み時刻を更新
-    return $DB_CONF->Commit(); //ロック解除
+    return DB::Commit(); //ロック解除
   }
 
   if (! $ROOM->IsOvertimeAlert()) { //警告メッセージ出力判定
     if ($ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
-      if (! $DB_CONF->Transaction()) return false;
+      if (! DB::Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
       if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
-	return $DB_CONF->RollBack();
+	return DB::Rollback();
       }
     }
 
@@ -258,7 +258,7 @@ function CheckSilence(){
     $str = 'あと' . ConvertTime($TIME_CONF->sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
     if ($ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
       $ROOM->sudden_death = $TIME_CONF->sudden_death;
-      return $DB_CONF->Commit(); //ロック解除
+      return DB::Commit(); //ロック解除
     }
   }
 
@@ -269,27 +269,27 @@ function CheckSilence(){
   $ROOM->sudden_death = $TIME_CONF->sudden_death - DB::FetchResult($query);
 
   //制限時間前ならスキップ (この段階でロックしているのは非リアルタイム制のみ)
-  if ($ROOM->sudden_death > 0) return $ROOM->IsRealTime() ? true : $DB_CONF->RollBack();
+  if ($ROOM->sudden_death > 0) return $ROOM->IsRealTime() ? true : DB::Rollback();
 
   //制限時間を過ぎていたら未投票の人を突然死させる
   if ($ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
-    if (! $DB_CONF->Transaction()) return false;
+    if (! DB::Transaction()) return false;
 
     //現在のシーンを再取得して切り替わっていたらスキップ
     if (DB::FetchResult($ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != $ROOM->scene) {
-      return $DB_CONF->RollBack();
+      return DB::Rollback();
     }
 
     //制限時間を再計算
     $query = $ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
     $ROOM->sudden_death = $TIME_CONF->sudden_death - DB::FetchResult($query);
-    if ($ROOM->sudden_death > 0) return $DB_CONF->RollBack();
+    if ($ROOM->sudden_death > 0) return DB::Rollback();
   }
 
   if (abs($ROOM->sudden_death) > $TIME_CONF->server_disconnect) { //サーバダウン検出
     $ROOM->UpdateTime(); //突然死タイマーをリセット
     $ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
-    return $DB_CONF->Commit(); //ロック解除
+    return DB::Commit(); //ロック解除
   }
 
   $novote_list = array(); //未投票者リスト
@@ -319,7 +319,7 @@ function CheckSilence(){
   $ROOM->UpdateTime(); //制限時間リセット
   //$ROOM->DeleteVote(); //投票リセット
   if (CheckWinner()) $USERS->ResetJoker(); //勝敗チェック
-  return $DB_CONF->Commit(); //ロック解除
+  return DB::Commit(); //ロック解除
 }
 
 //超過時間セット

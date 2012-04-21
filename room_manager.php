@@ -3,7 +3,7 @@ require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
 $INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'ROOM_OPT');
 
-if (! $DB_CONF->Connect(true, false)) return false; //DB 接続
+if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
 EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
@@ -14,7 +14,7 @@ else {
   $INIT_CONF->LoadClass('CAST_CONF', 'TIME_CONF', 'GAME_OPT_CAPT');
   OutputRoomList();
 }
-$DB_CONF->Disconnect(); //DB 接続解除
+DB::Disconnect();
 
 //-- 関数 --//
 //村のメンテナンス処理
@@ -32,7 +32,7 @@ function MaintenanceRoom(){
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
   if (DB::FetchBool($query)) OutputSiteSummary();
   */
-  DB::SendQuery($query);
+  DB::Execute($query);
 
   //終了した部屋のセッションIDのデータをクリアする
   $query = <<<EOF
@@ -42,12 +42,12 @@ UPDATE user_entry INNER JOIN room ON user_entry.session_id IS NOT NULL AND
    room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
   SET user_entry.session_id = NULL
 EOF;
-  DB::SendQuery($query);
+  DB::Execute($query);
 }
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $DB_CONF, $ROOM_CONF, $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
+  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
 
   if ($SERVER_CONF->disable_establish) {
     OutputActionResult('村作成 [制限事項]', '村作成はできません');
@@ -79,7 +79,7 @@ function CreateRoom(){
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
-  if (! $DB_CONF->LockCount('room')) { //トランザクション開始
+  if (! DB::Lock('room')) { //トランザクション開始
     OutputRoomAction('busy');
     return false;
   }
@@ -102,13 +102,13 @@ function CreateRoom(){
     }
 
     //最大稼働数チェック
-    if (DB::FetchCount("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room) {
+    if (DB::Count("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room) {
       OutputRoomAction('full');
       return false;
     }
 
     //同一ユーザの連続作成チェック
-    if (DB::FetchCount("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0) {
+    if (DB::Count("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0) {
       OutputRoomAction('over_establish');
       return false;
     }
@@ -212,13 +212,13 @@ function CreateRoom(){
 
       //身代わり君を入村させる
       if ($ROOM_OPT->dummy_boy &&
-	  DB::FetchCount('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
+	  DB::Count('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
         if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
 			     1, $ROOM_OPT->gerd ? $USER_ICON->gerd : 0)) break;
       }
 
       if ($SERVER_CONF->secret_room) { //村情報非表示モードの処理
-        $DB_CONF->Commit();
+        DB::Commit();
         OutputRoomAction('success', false, $room_name);
         return true;
       }
@@ -227,7 +227,7 @@ function CreateRoom(){
     $TWITTER->Send($room_no, $room_name, $room_comment); //Twitter 投稿処理
     //OutputSiteSummary(); //RSS更新 //テスト中
 
-    $DB_CONF->Commit();
+    DB::Commit();
     OutputRoomAction('success', false, $room_name);
     $status = true;
   } while (false);
@@ -238,7 +238,7 @@ function CreateRoom(){
 
 //結果出力 (CreateRoom() 用)
 function OutputRoomAction($type, $rollback = true, $str = ''){
-  global $SERVER_CONF, $DB_CONF;
+  global $SERVER_CONF;
 
   switch ($type) {
   case 'empty':
@@ -301,7 +301,7 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
     echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
     break;
   }
-  if ($rollback) $DB_CONF->RollBack();
+  if ($rollback) DB::Rollback();
   OutputHTMLFooter(); //フッタ出力
 }
 

@@ -7,8 +7,7 @@ $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 $INIT_CONF->LoadRequest('RequestBaseGame'); //引数を取得
 $url = '<a href="game_view.php?room_no=' . $RQ_ARGS->room_no;
 
-$DB_CONF->Connect(); // DB 接続
-
+DB::Connect();
 $ROOM = new Room($RQ_ARGS); //村情報をロード
 $ROOM->view_mode   = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得

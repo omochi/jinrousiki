@@ -5,11 +5,11 @@ $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'ROOM_OPT', 'GAME_OPT_CON
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得
-$DB_CONF->Connect(); //DB 接続
+DB::Connect();
 $SESSION->Certify(); //セッション認証
 
 //ロック処理
-if (! $DB_CONF->Transaction()) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');
+if (! DB::Transaction()) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');
 
 $ROOM = new Room($RQ_ARGS, true); //村情報をロード
 if ($ROOM->IsFinished()) OutputVoteError('ゲーム終了', 'ゲームは終了しました');
@@ -82,7 +82,7 @@ else { //シーンに合わせた投票ページを出力
     }
   }
 }
-$DB_CONF->Disconnect(); //DB 接続解除
+DB::Disconnect();
 
 //-- 関数 --//
 //エラーページ出力
@@ -97,14 +97,14 @@ function OutputVoteError($title, $str = null){
 
 //ゲーム開始投票の処理
 function VoteGameStart(){
-  global $DB_CONF, $GAME_CONF, $ROOM, $SELF;
+  global $GAME_CONF, $ROOM, $SELF;
 
   CheckSituation('GAMESTART');
   $str = 'ゲーム開始';
   if ($SELF->IsDummyBoy(true)) { //出題者以外の身代わり君
     if ($GAME_CONF->power_gm) { //強権モードによる強制開始処理
       if (! AggregateVoteGameStart(true)) $str .= '：開始人数に達していません。';
-      $DB_CONF->Commit();
+      DB::Commit();
       OutputVoteResult($str);
     }
     else {
@@ -118,7 +118,7 @@ function VoteGameStart(){
 
   if ($SELF->Vote('GAMESTART')) { //投票処理
     AggregateVoteGameStart(); //集計処理
-    $DB_CONF->Commit();
+    DB::Commit();
     OutputVoteResult($str . '：投票完了');
   }
   else {
@@ -128,7 +128,7 @@ function VoteGameStart(){
 
 //開始前の Kick 投票の処理
 function VoteKick(){
-  global $DB_CONF, $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
 
   CheckSituation('KICK_DO'); //コマンドチェック
   $str = 'Kick 投票：';
@@ -155,7 +155,7 @@ function VoteKick(){
   if ($SELF->Vote('KICK_DO', $target->user_no)) { //投票処理
     $ROOM->Talk($target->handle_name, 'KICK_DO', $SELF->uname); //投票しました通知
     $vote_count = AggregateVoteKick($target); //集計処理
-    $DB_CONF->Commit();
+    DB::Commit();
     $str .= "投票完了：{$target->handle_name} さん：{$vote_count} 人目 ";
     OutputVoteResult($str . "(Kick するには {$GAME_CONF->kick} 人以上の投票が必要です)");
   }
@@ -183,7 +183,7 @@ function AggregateVoteKick($target){
   }
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
     "WHERE room_no = {$ROOM->id} AND user_no = '{$target->user_no}'";
-  DB::SendQuery($query);
+  DB::Execute($query);
 
   //通知処理
   $ROOM->Talk($target->handle_name . $MESSAGE->kick_out);
@@ -197,7 +197,7 @@ function AggregateVoteKick($target){
 
 //死者の投票処理
 function VoteDeadUser(){
-  global $DB_CONF, $ROOM, $SELF;
+  global $ROOM, $SELF;
 
   CheckSituation('REVIVE_REFUSE'); //コマンドチェック
   if ($SELF->IsDrop())     OutputVoteResult('蘇生辞退：投票済み'); //投票済みチェック
@@ -210,13 +210,13 @@ function VoteDeadUser(){
   $str = 'システム：' . $SELF->handle_name . 'さんは蘇生を辞退しました。';
   $ROOM->Talk($str, null, $SELF->uname, 'heaven', null, 'normal');
 
-  $DB_CONF->Commit();
+  DB::Commit();
   OutputVoteResult('投票完了');
 }
 
 //最終更新時刻リセット投票処理 (身代わり君専用)
 function VoteResetTime(){
-  global $DB_CONF, $ROOM, $SELF;
+  global $ROOM, $SELF;
 
   CheckSituation('RESET_TIME'); //コマンドチェック
 
@@ -226,7 +226,7 @@ function VoteResetTime(){
   //システムメッセージ
   $str = 'システム：投票制限時間をリセットしました。';
   $ROOM->Talk($str, null, $SELF->uname, $ROOM->scene, 'dummy_boy');
-  $DB_CONF->Commit();
+  DB::Commit();
   OutputVoteResult('投票完了');
 }
 

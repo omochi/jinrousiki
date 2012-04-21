@@ -359,10 +359,7 @@ function OutputActionResultHeader($title, $url = ''){
 
 //結果ページ出力
 function OutputActionResult($title, $body, $url = ''){
-  global $DB_CONF;
-
-  $DB_CONF->Disconnect(); //DB 接続解除
-
+  DB::Disconnect();
   OutputActionResultHeader($title, $url);
   echo $body . "\n";
   OutputHTMLFooter(true);
@@ -370,9 +367,7 @@ function OutputActionResult($title, $body, $url = ''){
 
 //HTML フッタ出力
 function OutputHTMLFooter($exit = false){
-  global $DB_CONF;
-
-  $DB_CONF->Disconnect(); //DB 接続解除
+  DB::Disconnect();
   echo '</body></html>'."\n";
   if($exit) exit;
 }

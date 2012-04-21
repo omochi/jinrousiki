@@ -13,10 +13,11 @@ $DISABLE_TABLE_DATA_MANIPULATOR = true; //false にすると使用可能にな�
 if($DISABLE_TABLE_DATA_MANIPULATOR){
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
-$INIT_CONF->LoadClass('ICON_CONF');
 
-$DB_CONF->Connect(); //DB 接続
+$INIT_CONF->LoadClass('ICON_CONF');
+DB::Connect();
 OutputHTMLHeader('Test Tools');
+
 //UpdateIconInfo('category', '初期設定', 1, 10);
 //UpdateIconInfo('appearance', '初期設定', 1, 10);
 //UpdateIconInfo('category', '東方Project', 11, 78);
@@ -53,7 +54,7 @@ OutputHTMLHeader('Test Tools');
 //ConvertTableEncode('user_icon');
 //ConvertTableEncode('vote');
 //OutputExportIconTable();
-//$DB_CONF->Commit();
+//DB::Commit();
 OutputHTMLFooter();
 //UpdateRoomInfo('room_name', 'テスト', 1);
 //OutputActionResult('処理完了', '処理完了。');
@@ -67,7 +68,7 @@ OutputHTMLFooter();
 */
 function UpdateIconInfo($type, $value, $from, $to = NULL){
   $query = isset($to) ? "{$from} <= icon_no AND icon_no <= {$to}" : "icon_no = {$from}";
-  DB::SendQuery("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
+  DB::Execute("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
 }
 
 //ファイルの IO テスト
@@ -89,10 +90,10 @@ function DeleteUsedIcon($from, $to){
     PrintData('Lock Failed', 'icon_delete');
     return false;
   }
-  if(DB::SendQuery("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")){
+  if(DB::Execute("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")){
     $file = DB::FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = {$from}");
     unlink(JINRO_ROOT . '/user_icon/' . $file); //ファイルの存在をチェックしていないので要注意
-    DB::SendQuery("DELETE FROM user_icon WHERE icon_no = {$from}");
+    DB::Execute("DELETE FROM user_icon WHERE icon_no = {$from}");
     PrintData($to, "Icon Change From {$from}");
     UnlockTable();
   }
@@ -113,8 +114,8 @@ function SqueezeIcon(){
     $ext = array_pop(explode('.', $icon['icon_filename']));
     $file_name = sprintf("%03s.%s", $i, $ext);
     $footer = ' WHERE icon_no = ' . $icon['icon_no'];
-    DB::SendQuery($query_user . $i . $footer);
-    DB::SendQuery($query_icon . "'{$file_name}', icon_no = " . $i . $footer);
+    DB::Execute($query_user . $i . $footer);
+    DB::Execute($query_icon . "'{$file_name}', icon_no = " . $i . $footer);
     rename($path . $icon['icon_filename'], $path . $file_name);
     PrintData($icon, $file_name);
     //break;
@@ -141,8 +142,8 @@ function ReconstructEstablishTime($test = false){
       else{
 	$query = "UPDATE room SET establish_time = STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s') " .
 	  "WHERE room_no = {$room_no}";
-	DB::SendQuery($query);
-	DB::SendQuery("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
+	DB::Execute($query);
+	DB::Execute("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
       }
     }
     else{
@@ -160,7 +161,7 @@ function ReconstructEstablishTime($test = false){
       else{
 	$query = "UPDATE room SET establish_time = FROM_UNIXTIME('{$talk}' - 32400) " .
 	  "WHERE room_no = {$room_no}";
-	DB::SendQuery($query);
+	DB::Execute($query);
       }
     }
   }
@@ -185,8 +186,8 @@ function ReconstructStartTime($test = false){
       else{
 	$query = "UPDATE room SET start_time = STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s') " .
 	  "WHERE room_no = {$room_no}";
-	DB::SendQuery($query);
-	DB::SendQuery("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
+	DB::Execute($query);
+	DB::Execute("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
       }
     }
     else{
@@ -201,7 +202,7 @@ function ReconstructStartTime($test = false){
       else{
 	$query = "UPDATE room SET start_time = FROM_UNIXTIME('{$talk}' - 32400) " .
 	  "WHERE room_no = {$room_no}";
-	DB::SendQuery($query);
+	DB::Execute($query);
       }
     }
   }
@@ -226,8 +227,8 @@ function ReconstructFinishTime($test = false){
       else{
 	$query = "UPDATE room SET finish_time = STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s') " .
 	  "WHERE room_no = {$room_no}";
-	DB::SendQuery($query);
-	DB::SendQuery("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
+	DB::Execute($query);
+	DB::Execute("DELETE FROM talk WHERE talk_id = " . $talk['talk_id']);
       }
     }
     else{
@@ -243,7 +244,7 @@ function ReconstructFinishTime($test = false){
       else{
 	$query = "UPDATE room SET finish_time = FROM_UNIXTIME('{$talk}' - 32400) " .
 	  "WHERE room_no = {$room_no}";
-	DB::SendQuery($query);
+	DB::Execute($query);
       }
     }
   }
@@ -256,7 +257,7 @@ function ReconstructFinishTime($test = false){
   id    : 村番号
 */
 function UpdateRoomInfo($item, $value, $id){
-  DB::SendQuery("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");
+  DB::Execute("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");
 }
 
 //テーブルデータの文字コード変換 (for 1.4, 1.5)
@@ -305,9 +306,9 @@ function ConvertTableEncode($table){
     return false;
   }
   $new_table = $table . '_utf';
-  DB::SendQuery("CREATE TABLE {$new_table} AS SELECT * FROM {$table}");
-  if(is_array($alter)) foreach($alter as $add_query) DB::SendQuery($alter);
-  elseif(isset($alter)) DB::SendQuery($alter);
+  DB::Execute("CREATE TABLE {$new_table} AS SELECT * FROM {$table}");
+  if(is_array($alter)) foreach($alter as $add_query) DB::Execute($alter);
+  elseif(isset($alter)) DB::Execute($alter);
   $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
   if($table == 'talk'){
     ConvertTalkTableEncode($new_table, $recode_list, 0);
@@ -322,7 +323,7 @@ function ConvertTableEncode($table){
 	$encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
 	if($encode != '' && $encode != 'UTF-8'){
 	  $to = mb_convert_encoding($from, 'UTF-8', $encode);
-	  DB::SendQuery("UPDATE {$new_table} SET {$recode} = '{$to}' WHERE {$recode} = '{$from}'");
+	  DB::Execute("UPDATE {$new_table} SET {$recode} = '{$to}' WHERE {$recode} = '{$from}'");
 	}
       }
     }
@@ -369,7 +370,7 @@ function ConvertCurrentTableEncode($table, $start){
 	$encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
 	if($encode != '' && $encode != 'UTF-8'){
 	  $to = mb_convert_encoding($from, 'UTF-8', $encode);
-	  DB::SendQuery("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
+	  DB::Execute("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
 			"AND {$recode} = '{$from}'");
 	}
       }
@@ -389,7 +390,7 @@ function ConvertTalkTableEncode($table, $recode_list, $start){
 	  $encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
 	  if($encode != '' && $encode != 'UTF-8'){
 	    $to = mb_convert_encoding($from, 'UTF-8', $encode);
-	    DB::SendQuery("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
+	    DB::Execute("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
 			  "AND talk_id = {$talk_id} AND {$recode} = '{$from}'");
 	  }
 	}

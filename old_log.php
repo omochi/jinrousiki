@@ -2,8 +2,7 @@
 require_once('include/init.php');
 $INIT_CONF->LoadFile('oldlog_functions');
 $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
-$DB_CONF->ChangeName($RQ_ARGS->db_no); //DB 名をセット
-$DB_CONF->Connect(); //DB 接続
+DB::Connect($RQ_ARGS->db_no);
 ob_start();
 if($RQ_ARGS->is_room){
   $INIT_CONF->LoadFile('game_play_functions', 'talk_class');

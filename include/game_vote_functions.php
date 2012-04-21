@@ -617,7 +617,7 @@ function AggregateVoteGameStart($force_start = false){
     $query = "UPDATE room SET status = 'playing', date = {$ROOM->date}, " .
       "scene = '{$ROOM->scene}', vote_count = 1, overtime_alert = FALSE, " .
       "scene_start_time = UNIX_TIMESTAMP(), start_datetime = NOW() WHERE room_no = {$ROOM->id}";
-    DB::SendQuery($query);
+    DB::Execute($query);
     //OutputSiteSummary(); //RSS機能はテスト中
   }
   $ROOM->Talk($sentence);
@@ -638,7 +638,7 @@ function AggregateVoteGameStart($force_start = false){
 
 //昼の投票処理
 function VoteDay(){
-  global $DB_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
   $target = $USERS->ByReal($RQ_ARGS->target_no); //投票先のユーザ情報を取得
@@ -691,7 +691,7 @@ function VoteDay(){
   $ROOM->Talk($USERS->GetHandleName($target->uname, true), 'VOTE_DO', $SELF->uname);
 
   AggregateVoteDay(); //集計処理
-  $DB_CONF->Commit();
+  DB::Commit();
   OutputVoteResult('投票完了');
 }
 
@@ -978,7 +978,7 @@ function AggregateVoteDay(){
     $ROOM->revote_count++;
     $query = 'UPDATE room SET vote_count = vote_count + 1, revote_count = revote_count + 1' .
       ' WHERE room_no = ' . $ROOM->id;
-    DB::SendQuery($query);
+    DB::Execute($query);
 
     $ROOM->Talk("再投票になりました( {$ROOM->revote_count} 回目)"); //システムメッセージ
     $ROOM->UpdateOvertimeAlert(); //超過警告判定リセット
@@ -1085,7 +1085,7 @@ EOF;
 
 //夜の投票処理
 function VoteNight(){
-  global $DB_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- イベント名と役職の整合チェック --//
   $filter = CheckVoteNight();
@@ -1121,7 +1121,7 @@ function VoteNight(){
   if ($ROOM->test_mode) return;
   AggregateVoteNight(); //集計処理
   foreach ($USERS->rows as $user) $user->UpdatePlayer(); //player 更新
-  $DB_CONF->Commit();
+  DB::Commit();
   OutputVoteResult('投票完了');
 }
 

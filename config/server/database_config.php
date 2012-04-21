@@ -1,20 +1,20 @@
 <?php
 //-- データベース設定 --//
-class DatabaseConfig extends DatabaseConfigBase {
+class DatabaseConfig {
   //データベースサーバのホスト名 hostname:port
   //ポート番号を省略するとデフォルトポートがセットされます。(MySQL:3306)
-  public $host = 'localhost';
+  static $host = 'localhost';
 
   //データベースのユーザ名
-  #public $user = 'xxxx';
-  public $user = 'grayran';
+  #static $user = 'xxxx';
+  static $user = 'grayran';
 
   //データベースサーバのパスワード
-  #public $password = 'xxxxxxxx';
-  public $password = 'satorituri';
+  #static $password = 'xxxxxxxx';
+  static $password = 'satorituri';
 
   //データベース名
-  public $name = 'jinrou';
+  static $name = 'jinrou';
 
   //サブデータベースのリスト (サーバによってはサブのデータベースを作れないので注意)
   /*
@@ -23,8 +23,8 @@ class DatabaseConfig extends DatabaseConfigBase {
     例) $name_list = array('log_a', 'log_b');
         old_log.php?db_no=2 => log_b のデータベースのログを表示
   */
-  public $name_list = array();
+  static $name_list = array();
 
   //文字コード
-  public $encode = 'utf8';
+  static $encode = 'utf8';
 }

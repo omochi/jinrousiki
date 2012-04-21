@@ -1,36 +1,132 @@
 <?php
 //-- データベース基底クラス --//
-class DB {
-  //問い合わせ処理
-  static function SendQuery($query, $commit = false){
-    global $DB_CONF;
+class DB extends DatabaseConfig {
+  private static $instance    = null;
+  private static $transaction = false;
 
-    if (($sql = mysql_query($query)) !== false) return $commit ? $DB_CONF->Commit() : $sql;
+  //データベース接続クラス生成
+  /*
+    $id     : DatabaseConfig->name_list から選択
+    $header : HTML ヘッダ出力情報 [true: 出力済み / false: 未出力]
+    $exit   : エラー処理 [true: exit を返す / false で終了]
+  */
+  private function __construct($id = null, $header = false, $exit = true){
+    //error_reporting(E_ALL);
+    //データベースサーバにアクセス
+    if (! ($db_handle = mysql_connect(self::$host, self::$user, self::$password))) {
+      return self::OutputConnectError($header, $exit, 'MySQL サーバ', self::$host);
+    }
+
+    //データベース名設定
+    $name = isset($id) ? @self::$name_list[is_int($id) ? $id - 1 : $id] : null;
+    if (is_null($name)) $name = self::$name;
+    if (! mysql_select_db($name, $db_handle)) { //データベース接続
+      return self::OutputConnectError($header, $exit, 'データベース', $name);
+    }
+
+    mysql_set_charset(self::$encode); //文字コード設定
+    if (self::$encode == 'utf8') self::Execute('SET NAMES utf8');
+
+    return self::$instance = $db_handle;
+  }
+
+  //データベース接続エラー出力 ($header, $exit は Connect() 参照)
+  private function OutputConnectError($header, $exit, $title, $type){
+    $title .= '接続失敗';
+    $str = $title . ': ' . $type; //エラーメッセージ作成
+    if ($header) {
+      printf('<font color="#FF0000">%s</font><br>', $str);
+      if ($exit) OutputHTMLFooter($exit);
+      return false;
+    }
+    OutputActionResult($title, $str);
+  }
+
+  //データベース接続 (ヘッダ出力あり)
+  static function Connect($id = null){
+    if (is_null(self::$instance)) new self($id);
+    return isset(self::$instance);
+  }
+
+  //データベース接続 (ヘッダ出力あり)
+  static function ConnectInHeader(){
+    if (is_null(self::$instance)) new self(null, true, false);
+    return isset(self::$instance);
+  }
+
+  //データベース再接続
+  static function ConnectSecond(){
+    new self(null, true);
+    return isset(self::$instance);
+  }
+
+  //データベース切断
+  static function Disconnect(){
+    if (empty(self::$instance)) return;
+    if (self::$transaction) self::Rollback();
+    mysql_close(self::$instance);
+    self::$instance = null;
+  }
+
+  //トランザクション開始
+  static function Transaction(){
+    if (self::$transaction) return true; //トランザクション中ならスキップ
+    return self::$transaction = self::FetchBool('START TRANSACTION', true);
+  }
+
+  //カウンタロック処理
+  static function Lock($type){
+    $query = sprintf("SELECT count FROM count_limit WHERE type = '%s' FOR UPDATE", $type);
+    return self::Transaction() && self::FetchBool($query);
+  }
+
+  //ロールバック処理
+  static function Rollback(){
+    self::$transaction = false; //必要なら事前にフラグ判定を行う
+    return self::FetchBool('ROLLBACK', true);
+  }
+
+  //コミット処理
+  function Commit(){
+    self::$transaction = false;
+    return self::FetchBool('COMMIT', true);
+  }
+
+  //SQL 実行
+  static function Execute($query, $quiet = false){
+    if (($sql = mysql_query($query)) !== false) return $sql;
+    if ($quiet) return false;
+
     $error = sprintf('MYSQL_ERROR(%d):%s', mysql_errno(), mysql_error());
     $backtrace = debug_backtrace(); //バックトレースを取得
 
-    //SendQuery() を call した関数と位置を取得して「SQLエラー」として返す
+    //Execute() を call した関数と位置を取得して「SQLエラー」として返す
     $trace_stack = array_shift($backtrace);
     $stack = array($trace_stack['line'], $error, $query);
     $trace_stack = array_shift($backtrace);
     array_unshift($stack, $trace_stack['function'] . '()');
     PrintData(implode(': ', $stack), 'SQLエラー');
 
-    foreach ($backtrace as $trace_stack){ //呼び出し元があるなら追加で出力
+    foreach ($backtrace as $trace_stack) { //呼び出し元があるなら追加で出力
       $stack = array($trace_stack['function'] . '()', $trace_stack['line']);
       PrintData(implode(': ', $stack), 'Caller');
     }
     return false;
   }
 
+  //コミット付き実行
+  static function ExecuteCommit($query){
+    return self::FetchBool($query) && self::Commit();
+  }
+
   //実行結果を bool で受け取る
-  static function FetchBool($query, $commit = false){
-    return self::SendQuery($query, $commit) !== false;
+  static function FetchBool($query, $quiet = false){
+    return self::Execute($query, $quiet) !== false;
   }
 
   //単体の値を取得
   static function FetchResult($query){
-    if (($sql = self::SendQuery($query)) === false) return false;
+    if (($sql = self::Execute($query)) === false) return false;
 
     $data = mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false;
     mysql_free_result($sql);
@@ -39,8 +135,8 @@ class DB {
   }
 
   //該当するデータの行数を取得
-  static function FetchCount($query){
-    if (($sql = self::SendQuery($query)) === false) return 0;
+  static function Count($query){
+    if (($sql = self::Execute($query)) === false) return 0;
 
     $data = mysql_num_rows($sql);
     mysql_free_result($sql);
@@ -51,7 +147,7 @@ class DB {
   //一次元の配列を取得
   static function FetchArray($query){
     $stack = array();
-    if (($sql = self::SendQuery($query)) === false) return $stack;
+    if (($sql = self::Execute($query)) === false) return $stack;
 
     $count = mysql_num_rows($sql);
     for ($i = 0; $i < $count; $i++) $stack[] = mysql_result($sql, $i, 0);
@@ -63,7 +159,7 @@ class DB {
   //連想配列を取得
   static function FetchAssoc($query, $shift = false){
     $stack = array();
-    if (($sql = self::SendQuery($query)) === false) return $stack;
+    if (($sql = self::Execute($query)) === false) return $stack;
 
     while(($array = mysql_fetch_assoc($sql)) !== false) $stack[] = $array;
     mysql_free_result($sql);
@@ -74,7 +170,7 @@ class DB {
   //オブジェクト形式の配列を取得
   static function FetchObject($query, $class, $shift = false){
     $stack = array();
-    if (($sql = self::SendQuery($query)) === false) return $stack;
+    if (($sql = self::Execute($query)) === false) return $stack;
 
     while (($object = mysql_fetch_object($sql, $class)) !== false) $stack[] = $object;
     mysql_free_result($sql);
@@ -133,6 +229,6 @@ class DB {
     $tables = 'room, user_entry, talk, talk_beforegame, talk_aftergame, system_message' .
       'result_lastwords, vote';
     $query = is_null($name) ? $tables : $name;
-    return self::FetchBool('OPTIMIZE TABLE ' . $query, true);
+    return self::ExecuteCommit('OPTIMIZE TABLE ' . $query);
   }
 }

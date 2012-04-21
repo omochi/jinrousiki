@@ -95,7 +95,7 @@ function GenerateFinishedRooms($page){
   //村数の確認
   $title = $SERVER_CONF->title . ' [過去ログ]';
   $query = "SELECT room_no FROM room WHERE status = 'finished'";
-  $room_count = DB::FetchCount($query);
+  $room_count = DB::Count($query);
   if($room_count < 1){
     OutputActionResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }

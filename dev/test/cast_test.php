@@ -148,7 +148,7 @@ foreach ($RQ_ARGS->TestItems->test_users as $id => $user) {
 #$RQ_ARGS->TestItems->test_users[3]->live = 'kick';
 
 //-- データ収集 --//
-//$DB_CONF->Connect(); // DB 接続
+//DB::Connect(); //DB接続 (必要なときだけ設定する)
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode  = true;

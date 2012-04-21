@@ -10,8 +10,7 @@ if ($disable) {
 $INIT_CONF->LoadFile('oldlog_functions');
 $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
 $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
-$DB_CONF->ChangeName($RQ_ARGS->db_no); //DB 名をセット
-$DB_CONF->Connect(); //DB 接続
+DB::Connect($RQ_ARGS->db_no);
 
 $RQ_ARGS->generate_index = true;
 $RQ_ARGS->index_no = 8; //インデックスページの開始番号

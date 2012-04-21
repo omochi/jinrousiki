@@ -60,7 +60,6 @@ function Write($say, $scene, $location = null, $spend_time = 0, $update = false)
     $ROOM->Talk($say, null, $SELF->uname, $scene, $location, $voice, $role_id, $spend_time);
   }
   if ($update) $ROOM->UpdateTime();
-  //$DB_CONF->Commit(); //必要なら global に登録すること
 }
 
 //能力の種類とその説明を出力

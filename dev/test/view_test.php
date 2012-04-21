@@ -1,6 +1,12 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
+
+$disable = true; //使用時には false に変更する
+if ($disable) {
+  OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
+}
+
 $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ICON_CONF');
 $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 
@@ -89,7 +95,7 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
 #$RQ_ARGS->TestItems->test_users[3]->live = 'kick';
 
 //-- データ収集 --//
-//$DB_CONF->Connect(); // DB 接続
+//DB::Connect(); // DB 接続
 $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode  = true;

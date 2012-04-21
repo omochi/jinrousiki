@@ -12,17 +12,16 @@ $title   = 'アイコン削除[エラー]';
 if ($icon_no < 1) OutputActionResult($title, '無効なアイコン番号です。');
 
 $INIT_CONF->LoadFile('icon_functions');
-$DB_CONF->Connect(); //DB 接続
+DB::Connect();
 
 $error = "サーバが混雑しています。<br>\n時間を置いてから再度アクセスしてください。";
-if (! $DB_CONF->LockCount('icon')) OutputActionResult($title, $error); //トランザクション開始
+if (! DB::Lock('icon')) OutputActionResult($title, $error); //トランザクション開始
 if (IsUsingIcon($icon_no)) { //使用中判定
   OutputActionResult($title, '募集中・プレイ中の村で使用されているアイコンは削除できません。');
 }
 $file = DB::FetchResult('SELECT icon_filename FROM user_icon WHERE icon_no = ' . $icon_no);
 if ($file === false || is_null($file)) OutputActionResult($title, 'ファイルが存在しません');
 if (DeleteIcon($icon_no, $file)) {
-  //DB 接続解除は OutputActionResult() 経由
   $url = '../icon_upload.php';
   $str = '削除完了：登録ページに飛びます。<br>'."\n" .
     '切り替わらないなら <a href="' . $url . '">ここ</a> 。';

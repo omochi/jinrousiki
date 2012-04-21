@@ -1,81 +1,4 @@
 <?php
-//-- データベース処理の基底クラス --//
-class DatabaseConfigBase {
-  public $db_handle;
-  public $transaction = false;
-
-  //データベース接続
-  /*
-    $header : HTML ヘッダ出力情報 [true: 出力済み / false: 未出力]
-    $exit   : エラー処理 [true: exit を返す / false で終了]
-  */
-  function Connect($header = false, $exit = true){
-    //データベースサーバにアクセス
-    if (! ($db_handle = mysql_connect($this->host, $this->user, $this->password))) {
-      return $this->OutputError($header, $exit, 'MySQL サーバ接続失敗', $this->host);
-    }
-
-    mysql_set_charset($this->encode); //文字コード設定
-    if (! mysql_select_db($this->name, $db_handle)) { //データベース接続
-      return $this->OutputError($header, $exit, 'データベース接続失敗', $this->name);
-    }
-    if ($this->encode == 'utf8') mysql_query('SET NAMES utf8');
-    return $this->db_handle = $db_handle; //成功したらハンドルを返して処理終了
-  }
-
-  //トランザクション開始
-  function Transaction(){
-    if ($this->transaction) return true; //トランザクション中ならスキップ
-    if (mysql_query('START TRANSACTION') === false) return false;
-    $this->transaction = true;
-    return true;
-  }
-
-  //カウンタロック処理
-  function LockCount($type){
-    $query = "SELECT count FROM count_limit WHERE type = '{$type}' FOR UPDATE";
-    return $this->Transaction() && DB::FetchBool($query);
-  }
-
-  //ロールバック処理
-  function Rollback(){
-    $this->transaction = false; //必要なら事前にフラグ判定を行う
-    return mysql_query('ROLLBACK') !== false;
-  }
-
-  //コミット処理
-  function Commit(){
-    $this->transaction = false;
-    return mysql_query('COMMIT') !== false;
-  }
-
-  //データベースとの接続を閉じる
-  function Disconnect(){
-    if (empty($this->db_handle)) return;
-
-    if ($this->transaction) $this->Rollback();
-    mysql_close($this->db_handle);
-    unset($this->db_handle);
-  }
-
-  //データベース名変更
-  function ChangeName($id){
-    if (is_null($name = @$this->name_list[$id - 1])) return;
-    $this->name = $name;
-  }
-
-  //エラー出力 ($header, $exit は Connect() 参照)
-  private function OutputError($header, $exit, $title, $type){
-    $str = $title . ': ' . $type; //エラーメッセージ作成
-    if ($header) {
-      echo '<font color="#FF0000">' . $str . '</font><br>';
-      if ($exit) OutputHTMLFooter($exit);
-      return false;
-    }
-    OutputActionResult($title, $str);
-  }
-}
-
 //-- セッション管理クラス --//
 class Session {
   public $id;
@@ -102,7 +25,7 @@ class Session {
   function GetUniq(){
     do {
       $this->Reset();
-    } while (DB::FetchCount("SELECT room_no FROM user_entry WHERE session_id = '{$this->id}'") > 0);
+    } while (DB::Count("SELECT room_no FROM user_entry WHERE session_id = '{$this->id}'") > 0);
     return $this->id;
   }
 
@@ -134,7 +57,7 @@ class Session {
     if ($this->Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
-    if (DB::FetchCount('SELECT room_no FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0) {
+    if (DB::Count('SELECT room_no FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0) {
       $url   = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .

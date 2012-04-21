@@ -2,7 +2,7 @@
 require_once('include/init.php');
 $INIT_CONF->LoadClass('SESSION', 'GAME_CONF'); //セッションスタート
 $INIT_CONF->LoadRequest('RequestLogin'); //引数を取得
-$DB_CONF->Connect(); //DB 接続
+DB::Connect();
 
 //-- ログイン処理 --//
 //DB 接続解除は結果出力関数が行う
@@ -57,7 +57,7 @@ function LoginManually(){
   //該当するユーザ名とパスワードがあるか確認
   $where = "WHERE room_no = {$room_no} AND uname = '{$uname}' AND user_no > 0"; //共通クエリ
   $query = "SELECT uname FROM user_entry {$where} AND password = '{$crypt_password}'";
-  if (DB::FetchCount($query) != 1) return false;
+  if (DB::Count($query) != 1) return false;
 
   //DB のセッション ID を再登録
   $session_id = $SESSION->Get(true); //新しいセッション ID を取得

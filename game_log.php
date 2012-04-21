@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('SESSION', 'ROLES');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameLog'); //引数を取得
-$DB_CONF->Connect(); //DB 接続
+DB::Connect();
 $SESSION->Certify(); //セッション認証
 
 $ROOM = new Room($RQ_ARGS); //村情報を取得

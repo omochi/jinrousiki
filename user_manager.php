@@ -3,14 +3,14 @@ require_once('include/init.php');
 $INIT_CONF->LoadFile('room_class', 'user_class', 'icon_functions');
 $INIT_CONF->LoadClass('SESSION', 'ROOM_CONF', 'GAME_CONF', 'MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
-$DB_CONF->Connect(); //DB 接続
+DB::Connect();
 $RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
-$DB_CONF->Disconnect(); //DB 接続解除
+DB::Disconnect();
 
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $SERVER_CONF, $DB_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
+  global $SERVER_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
 
   //PrintData($RQ_ARGS);
   extract($RQ_ARGS->ToArray()); //引数を取得
@@ -54,11 +54,11 @@ function EntryUser(){
   if ($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です。' . $back_url);
 
   $query = 'SELECT icon_no FROM user_icon WHERE disable IS NOT TRUE AND icon_no = ' . $icon_no;
-  if ($icon_no < ($user_no > 0 ? 0 : 1) || DB::FetchCount($query) < 1) {
+  if ($icon_no < ($user_no > 0 ? 0 : 1) || DB::Count($query) < 1) {
     OutputActionResult($title, '無効なアイコン番号です' . $back_url);
   }
 
-  if (! $DB_CONF->Transaction()) { //トランザクション開始
+  if (! DB::Transaction()) { //トランザクション開始
     $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
     OutputActionResult('村人登録 [サーバエラー]', $str);
   }
@@ -85,7 +85,7 @@ function EntryUser(){
   $footer = '<br>別の名前にしてください。' . $back_url;
 
   //キックされた人と同じユーザ名
-  if (DB::FetchCount($query_count . "uname = '{$uname}' AND live = 'kick'") > 0) {
+  if (DB::Count($query_count . "uname = '{$uname}' AND live = 'kick'") > 0) {
     $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
     OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer);
   }
@@ -104,7 +104,7 @@ function EntryUser(){
     }
 
     $query_footer = "user_no <> '{$user_no}' AND handle_name = '{$handle_name}'";
-    if (DB::FetchCount($query_count . $query_footer) > 0) {
+    if (DB::Count($query_count . $query_footer) > 0) {
       $str = '村人名が既に登録してあります。';
       OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
     }
@@ -137,7 +137,7 @@ function EntryUser(){
     $query_set = implode(', ', $stack);
     $query = "UPDATE user_entry SET {$query_set} WHERE room_no = {$room_no} " .
       "AND user_no = {$user_no}";
-    if (DB::FetchBool($query, true)) { //コミット付き
+    if (DB::ExecuteCommit($query)) {
       $str = <<<EOF
 登録データを変更しました。<br>
 <form action="#" method="post">
@@ -154,7 +154,7 @@ EOF;
 
   //ユーザ名・村人名
   $query_count .= "live = 'live' AND ";
-  if (DB::FetchCount($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0) {
+  if (DB::Count($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0) {
     $str = 'ユーザ名、または村人名が既に登録してあります。';
     OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
   }
@@ -164,7 +164,7 @@ EOF;
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
   if (! $SERVER_CONF->debug_mode) {
     if ($GAME_CONF->entry_one_ip_address &&
-	DB::FetchCount($query_count . "ip_address = '{$ip_address}'") > 0) {
+	DB::Count($query_count . "ip_address = '{$ip_address}'") > 0) {
       OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
     }
     elseif (CheckBlackList()) {
@@ -185,7 +185,7 @@ EOF;
 
     $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
     $ROOM->UpdateTime();
-    $DB_CONF->Commit();
+    DB::Commit();
 
     $url = 'game_frame.php?room_no=' . $room_no;
     $user_count++;

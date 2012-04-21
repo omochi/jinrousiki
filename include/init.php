@@ -26,8 +26,7 @@ class InitializeConfig{
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'DB_CONF'             => array('database_config', 'database_class'),
-    'SERVER_CONF'         => 'server_config', //常時ロードされる
+    'SERVER_CONF'         => 'server_config',
     'ROOM_CONF'           => 'room_config',
     'GAME_CONF'           => 'game_config',
     'GAME_OPT_CONF'       => 'game_option_config',
@@ -55,16 +54,17 @@ class InitializeConfig{
     'BBS_CONF'            => 'bbs_config',
     'SRC_UP_CONF'         => 'src_upload_config',
     'PAPARAZZI'           => 'paparazzi_class',
+    'server_config'       => array('functions', 'system_class'), //常時ロードされる
     'talk_class'          => 'user_class',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
     'oldlog_functions'    => 'oldlog_config',
     'user_class'          => 'game_functions',
-    'database_config'     => 'system_class',
-    'server_config'       => 'system_class', //常時ロードされる
-    'system_class'        => array('functions', 'room_class'), //常時ロードされる
+    'database_class'      => 'database_config',
+    'system_class'        => 'room_class', //常時ロードされる
     'room_class'          => 'option_class',
     'role_class'          => 'game_format',
+    'setup_class'         => array('setup_config', 'database_class'),
     'paparazzi_class'     => 'paparazzi'
   );
 
@@ -80,11 +80,11 @@ class InitializeConfig{
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
     'index_functions'     => array('SCRIPT_INFO', 'BBS_CONF'),
     'oldlog_functions'    => array('CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
+    'setup_class'         => 'SCRIPT_INFO'
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'DB_CONF'       => 'DatabaseConfig',
     'SERVER_CONF'   => 'ServerConfig',
     'SHARED_CONF'   => 'SharedServerConfig',
     'USER_ICON'     => 'UserIconConfig',
@@ -127,6 +127,9 @@ class InitializeConfig{
     $this->loaded = new StdClass();
     $this->loaded->file  = array();
     $this->loaded->class = array();
+
+    $this->LoadFile('database_class');
+    $this->LoadClass('SERVER_CONF');
   }
 
   //依存情報設定
@@ -187,6 +190,7 @@ class InitializeConfig{
     case 'shared_server_config':
     case 'src_upload_config':
     case 'twitter_config':
+    case 'setup_config':
       $path = $this->path->config . '/server';
       break;
 
@@ -240,7 +244,6 @@ $INIT_CONF = new InitializeConfig();
 //mbstring 非対応の場合、エミュレータを使用する
 if (! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
-$INIT_CONF->LoadClass('DB_CONF', 'SERVER_CONF');
 if (FindDangerValue($_REQUEST) || FindDangerValue($_SERVER)) die;
 
 //デバッグ用ツールをロード
