@@ -648,7 +648,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $MESSAGE, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
 
   //PrintData($talk);
   //発言ユーザを取得
@@ -674,7 +674,8 @@ function OutputTalk($talk, &$builder){
     $actor->user_no = 0;
   }
   else {
-    $symbol = '<font color="'.(isset($talk->color) ? $talk->color : $actor->color).'">◆</font>';
+    $color  = isset($talk->color) ? $talk->color : $actor->color;
+    $symbol = sprintf('<font color="%s">◆</font>', $color);
     $name   = isset($talk->handle_name) ? $talk->handle_name : $actor->handle_name;
   }
 
@@ -690,7 +691,7 @@ function OutputTalk($talk, &$builder){
   switch ($talk->location) {
   case 'system': //システムメッセージ
     $str = $talk->sentence;
-    if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+    if (isset($talk->time)) $str .= sprintf(' <span class="date-time">%s</span>', $talk->date_time);
 
     if (! isset($talk->action)) return $builder->AddSystemTalk($str); //標準
     switch ($talk->action) { //投票情報
@@ -711,8 +712,9 @@ function OutputTalk($talk, &$builder){
     return false;
 
   case 'dummy_boy': //身代わり君専用システムメッセージ
-    $str = $talk->sentence;
-    if (isset($talk->time)) $str .= ' <span class="date-time">' . $talk->date_time . '</span>';
+    $str = sprintf('◆%s　%s', $real_user->handle_name, $talk->sentence);
+    if ($GAME_CONF->quote_words) $str = sprintf('「%s」', $str);
+    if (isset($talk->time)) $str .= sprintf(' <span class="date-time">%s</span>', $talk->date_time);
     return $builder->AddSystemTalk($str, 'dummy-boy');
   }
 
@@ -768,7 +770,7 @@ function OutputTalk($talk, &$builder){
 	break;
       }
       $str = $talk->sentence; //改行を入れるため再セット
-      if (isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
+      if (isset($talk->time)) $name .= sprintf('<br><span>%s</span>', $talk->date_time);
       return $builder->RawAddTalk($symbol, $name, $str, $voice, '', $class);
     }
     else {
@@ -841,7 +843,7 @@ function OutputTalk($talk, &$builder){
 
   case 'heaven':
     if (! $builder->flag->open_talk) return false;
-    if (isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
+    if (isset($talk->time)) $name .= sprintf('<br><span>%s</span>', $talk->date_time);
     return $builder->RawAddTalk($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
 
   default:

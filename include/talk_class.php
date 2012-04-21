@@ -1,5 +1,5 @@
 <?php
-class Talk{
+class Talk {
   public $scene;
   public $location;
   public $uname;
@@ -10,10 +10,10 @@ class Talk{
   public $date_time;
 
   function __construct($list = null){
-    if(is_array($list)){
-      foreach($list as $key => $data) $this->$key = $data;
+    if (is_array($list)) {
+      foreach ($list as $key => $data) $this->$key = $data;
     }
-    if(isset($this->time)) $this->date_time = TZDate('(Y/m/d (D) H:i:s)', $this->time);
+    if (isset($this->time)) $this->date_time = TZDate('(Y/m/d (D) H:i:s)', $this->time);
     $this->ParseSentence();
   }
 
@@ -23,9 +23,9 @@ class Talk{
 
     is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence; //初期化処理
 
-    switch($this->uname){ //システムユーザ系の処理
+    switch ($this->uname) { //システムユーザ系の処理
     case 'system':
-      switch($this->action){
+      switch ($this->action) {
       case 'MORNING':
 	$this->sentence = "{$MESSAGE->morning_header} {$sentence} {$MESSAGE->morning_footer}";
 	return;
@@ -37,17 +37,13 @@ class Talk{
       return;
 
     case 'dummy_boy':
-      if($this->location == 'system') break;
-      if($this->location == $this->uname){
-	if($GAME_CONF->quote_words) $sentence = '「' . $sentence . '」';
-	$this->sentence = $MESSAGE->dummy_boy . $sentence;
-      }
+      if ($this->location == 'system') break;
       return;
     }
 
-    if($this->location == 'system'){ //投票データ系
+    if ($this->location == 'system') { //投票データ系
       $action = strtolower($this->action);
-      switch($this->action){ //大文字小文字をきちんと区別してマッチングする
+      switch ($this->action) { //大文字小文字をきちんと区別してマッチングする
       case 'OBJECTION':
 	$this->sentence = ' ' . $MESSAGE->objection;
 	return;
