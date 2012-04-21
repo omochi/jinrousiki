@@ -118,6 +118,10 @@ class RoleMessageList{
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|執筆者|です。一定日数後に、あなたの#処刑#_投票数_が +1 されます。村の全てを記録して名を上げるのです。",
     'type' => 'elder');
 
+  public $eccentricer = array(
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|傾奇者|です。一定日数まで、あなたの#処刑#_投票数は +1 されます。",
+    'type' => 'elder');
+
   public $mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占い師#、夜の間に村人一人を占うことで翌朝その人が「|人|」か「_狼_」か知ることができます。あなたが村人の勝利を握っています。",
     'type' => 'human', 'delimiter' => array('#' => 'mage', '_' => 'wolf'));
@@ -1566,6 +1570,10 @@ class RoleMessageList{
     'message' => "　あなたは有名になったので、|処刑|_投票数_が +1 されます。",
     'delimiter' => array('|' => 'vote', '_' => 'authority'));
 
+  public $ability_eccentricer = array(
+    'message' => "　あなたは傾奇納めしたので、|処刑|_投票数_は増えません。",
+    'delimiter' => array('|' => 'vote', '_' => 'authority'));
+
   public $ability_poison = array(
     'message' => "　あなたは|毒|を持っています。#処刑#されたり、_人狼_に襲撃された時に誰か一人を道連れにします。",
     'delimiter' => array('|' => 'poison', '#' => 'vote', '_' => 'wolf'));
@@ -1673,6 +1681,7 @@ class RoleMessageList{
   public $result_executor = array('message' => "さんは|執行者|でした", 'type' => 'result_human');
   public $result_elder = array('message' => "さんは|長老|でした", 'type' => 'result_human');
   public $result_scripter = array('message' => "さんは|執筆者|でした", 'type' => 'result_human');
+  public $result_eccentricer = array('message' => "さんは|傾奇者|でした", 'type' => 'result_human');
   public $result_suspect = array('message' => "さんは|不審者|でした", 'type' => 'result_human');
   public $result_unconscious = array('message' => "さんは|無意識|でした", 'type' => 'result_human');
   public $result_mage = array('message' => "さんは|占い師|でした", 'delimiter' => array('|' => 'mage'));
@@ -2161,4 +2170,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('fire_mania');
+#$builder->Output('fire_mania');
+$builder->Output('eccentricer');

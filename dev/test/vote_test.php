@@ -41,7 +41,7 @@ $RQ_ARGS->TestItems->test_users[1]->color = '#000000';
 $RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
 $RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
 $RQ_ARGS->TestItems->test_users[2]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[2]->role = 'hungry_wolf lost_ability authority';
+$RQ_ARGS->TestItems->test_users[2]->role = 'wolf lost_ability authority';
 $RQ_ARGS->TestItems->test_users[2]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
@@ -77,7 +77,7 @@ $RQ_ARGS->TestItems->test_users[7]->live = 'live';
 $RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
 $RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
 $RQ_ARGS->TestItems->test_users[8]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[8]->role = 'anti_voodoo';
+$RQ_ARGS->TestItems->test_users[8]->role = 'eccentricer';
 $RQ_ARGS->TestItems->test_users[8]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[9]->uname = 'green';
@@ -137,7 +137,7 @@ $RQ_ARGS->TestItems->test_users[17]->live = 'dead';
 $RQ_ARGS->TestItems->test_users[18]->uname = 'sea';
 $RQ_ARGS->TestItems->test_users[18]->handle_name = '海';
 $RQ_ARGS->TestItems->test_users[18]->sex = 'male';
-$RQ_ARGS->TestItems->test_users[18]->role = 'swindle_mad';
+$RQ_ARGS->TestItems->test_users[18]->role = 'detective_common';
 $RQ_ARGS->TestItems->test_users[18]->live = 'live';
 
 $RQ_ARGS->TestItems->test_users[19]->uname = 'land';
@@ -284,12 +284,12 @@ $RQ_ARGS->TestItems->vote->night = array(
 */
 
 $RQ_ARGS->TestItems->vote->night = array(
-  array('user_no' => 2, 	'target_no' => 13,	'type' => 'WOLF_EAT'),
+  array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
   #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
   array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
   array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
   array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
-  #array('user_no' => 8, 	'target_no' => 21,	'type' => 'GUARD_DO'),
+  array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
   array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
   array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
   #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
@@ -372,10 +372,10 @@ $ROOM = new Room($RQ_ARGS); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode = true;
 $ROOM->revote_count = 0;
-$ROOM->date = 5;
+$ROOM->date = 3;
 #$ROOM->scene = 'beforegame';
-#$ROOM->scene = 'day';
-$ROOM->scene = 'night';
+$ROOM->scene = 'day';
+#$ROOM->scene = 'night';
 #$ROOM->scene = 'aftergame';
 //$ROOM->system_time = TZTime(); //現在時刻を取得
 $USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード

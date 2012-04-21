@@ -94,8 +94,10 @@ Ver. 1.5.0
 <a href="#ver150b14">β14</a>
 <a href="#ver150b15">β15</a>
 <a href="#ver150b16">β16</a>
-<a href="#ver150b17">β17</a><br>
-<a href="#ver152">Ver. 1.5.2</a>
+<a href="#ver150b17">β17</a>
+<a href="#ver152">Ver. 1.5.2</a><br>
+Ver. 2.1.0
+<a href="#ver210a2">α2</a>
 </p>
 
 <p>
@@ -749,7 +751,7 @@ Ver. 1.5.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">処刑投票数が +1 される村人。</td>
+  <td class="ability">処刑投票数が 3% の確率で +100、それ以外は +1 される村人。</td>
   <td>Ver. 1.4.0 β5</td>
 </tr>
 <tr>
@@ -2878,6 +2880,15 @@ Ver. 1.5.0
   <td>村人</td>
   <td class="ability">占い結果が人狼、精神鑑定結果が正常と判定される特殊な狂人。</td>
   <td>Ver. 1.5.2<br>(Ver. 2.1.0 α1)</td>
+</tr>
+<tr id="ver210a2">
+  <td><a href="human.php#eccentricer">傾奇者</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#human_group">村人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">一定期間 (5 日目以降) になるまで処刑投票数が +1 される村人。</td>
+  <td>Ver. 2.1.0 α2</td>
 </tr>
 </table>
 

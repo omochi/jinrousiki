@@ -7,10 +7,10 @@
   ・狩り：なし
 */
 RoleManager::LoadFile('guard');
-class Role_blind_guard extends Role_guard{
+class Role_blind_guard extends Role_guard {
   function __construct(){ parent::__construct(); }
 
-  function GuardFailed(){ return NULL; }
+  function GuardFailed(){ return null; }
 
   function GuardAction($user, $flag){ $user->AddRole('blinder'); }
 

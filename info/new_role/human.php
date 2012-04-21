@@ -54,6 +54,7 @@ OutputRolePageHeader('村人陣営');
 <a href="#executor">執行者</a>
 <a href="#elder">長老</a>
 <a href="#scripter">執筆者</a>
+<a href="#eccentricer">傾奇者</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
@@ -137,7 +138,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 
 <h3 id="elder">長老 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β5～]</h3>
 <pre>
-処刑投票数が +1 される村人。
+処刑投票数が 3% (<a href="../weather.php#weather_critical">烈日</a>の影響は受けない) の確率で +100、それ以外は +1 される村人。
 </pre>
 <ol>
 <li><a href="sub_role.php#authority_group">権力者系</a>とセットになった場合は追加で補正される。<br>
@@ -145,6 +146,10 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </li>
 <li><a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#watcher">傍観者</a>とセットになった場合は 0 で固定。</li>
 </ol>
+<h5>Ver. 2.1.0 α2～</h5>
+<pre>
+3% の確率で +100 される仕様に変更。
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#authority">投票数変化能力者</a>
@@ -170,6 +175,21 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="#incubate_poison">潜毒者</a>の<a href="#elder">長老</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/902" target="_top">新役職考案スレ(902)</a> が原型です。
 東方 Project の稗田 阿求がモチーフです。
+</pre>
+
+<h3 id="eccentricer">傾奇者 (占い結果：村人 / 霊能結果：村人) [Ver. 2.1.0 α2～]</h3>
+<pre>
+一定期間に (5 日目以降) なるまで処刑投票数が +1 される村人。
+能力を失ったら本人に追加のシステムメッセージが表示される。
+<a href="sub_role.php#authority_group">権力者系</a>との関係は<a href="#elder">長老</a>と同じ。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#scripter">執筆者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/195" target="_top">新役職考案スレ 2(195)</a> が原型です。
 </pre>
 
 <h3 id="suspect">不審者 (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9～]</h3>
@@ -1053,8 +1073,12 @@ PP ラインの計算を難しくさせるために作成してみました。
 <li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a>・<a href="#spell_common">葛の葉</a><br>
   <a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
 <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出るが、護衛先は死亡する。</li>
-<li>影響を受けるのは<a href="ability.php#guard">護衛能力者</a>のみで、<a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>には適用されない。</li>
+<li>影響を受けるのは<a href="ability.php#guard">護衛能力者</a>のみで、<a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>・<a href="#elder_guard">老兵</a>には適用されない。</li>
 </ol>
+<h5>Ver. 2.1.0 α2～</h5>
+<pre>
+<a href="#elder_guard">老兵</a>の仕様変更を追加。
+</pre>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
 <a href="#emissary_necromancer">密偵</a>を対象に追加。
@@ -1253,11 +1277,15 @@ PP ラインの計算を難しくさせるために作成してみました。
 </pre>
 
 <h3 id="elder_guard">老兵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β8～]</h3>
-<h4>[狩人能力] 護衛：通常 (70%) / 護衛制限：有り / 狩り：無し / 罠：有効</h4>
+<h4>[狩人能力] 護衛：通常 (70%) / 護衛制限：無し / 狩り：無し / 罠：有効</h4>
 <pre>
 処刑投票数が +1 される特殊な狩人。処刑投票能力の詳細は<a href="#elder">長老</a>参照。
 <a href="#guard_hunt">狩り能力</a>を持たず、護衛成功率は 70%。
 護衛に失敗した場合は襲撃先を選択していた場合でも何も表示されない。
+</pre>
+<h5>Ver. 2.1.0 α2～</h5>
+<pre>
+護衛制限：有り → 無し
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1267,6 +1295,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <pre>
 <a href="#elder">長老</a>の狩人バージョンで、いわゆる古系人外の騙り先要員です。
 護衛能力は一箇所護衛で成功率が下がった<a href="#barrier_wizard">結界師</a>相当になります。
+護衛制限が外されたので<a href="#spell_common">葛の葉</a>あたりとコンビを組むと非常に強力です。
 </pre>
 
 <h3 id="dummy_guard">夢守人 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
