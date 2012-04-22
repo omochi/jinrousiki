@@ -185,13 +185,13 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //-- 出力関連 --//
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $SERVER_CONF, $GAME_CONF, $TIME_CONF, $RQ_ARGS, $ROOM, $SELF;
+  global $SERVER_CONF, $GAME_CONF, $TIME_CONF, $ROOM, $SELF;
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . $ROOM->id;
-  if ($RQ_ARGS->auto_reload > 0) $url_header .= '&auto_reload=' . $RQ_ARGS->auto_reload;
-  if ($RQ_ARGS->play_sound)      $url_header .= '&play_sound=on';
-  if ($RQ_ARGS->list_down)       $url_header .= '&list_down=on';
+  if (RQ::$get->auto_reload > 0) $url_header .= '&auto_reload=' . RQ::$get->auto_reload;
+  if (RQ::$get->play_sound)      $url_header .= '&play_sound=on';
+  if (RQ::$get->list_down)       $url_header .= '&list_down=on';
 
   $title = $SERVER_CONF->title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
@@ -241,8 +241,8 @@ function OutputGamePageHeader(){
     $on_load = "change_css('{$ROOM->scene}');";
   }
 
-  if ($RQ_ARGS->auto_reload != 0 && ! $ROOM->IsAfterGame()){ //自動リロードをセット
-    echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
+  if (RQ::$get->auto_reload != 0 && ! $ROOM->IsAfterGame()){ //自動リロードをセット
+    printf('<meta http-equiv="Refresh" content="%s">'."\n", RQ::$get->auto_reload);
   }
 
   //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
@@ -310,13 +310,13 @@ function GenerateJavaScriptDate($time){
 
 //自動更新のリンクを出力
 function OutputAutoReloadLink($url){
-  global $GAME_CONF, $RQ_ARGS;
+  global $GAME_CONF;
 
-  $str = '[自動更新](' . $url . '">' . ($RQ_ARGS->auto_reload > 0 ? '手動' : '【手動】') . '</a>';
+  $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::$get->auto_reload > 0 ? '手動' : '【手動】');
   foreach ($GAME_CONF->auto_reload_list as $time) {
     $name  = $time . '秒';
-    $value = $RQ_ARGS->auto_reload == $time ? '【' . $name . '】' : $name;
-    $str .= ' ' . $url . '&auto_reload=' . $time . '">' . $value . '</a>';
+    $value = RQ::$get->auto_reload == $time ? sprintf('【%s】', $name) : $name;
+    $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
   }
   echo $str . ')'."\n";
 }
@@ -427,7 +427,7 @@ function OutputPlayerList(){ echo GeneratePlayerList(); }
 
 //勝敗結果の生成
 function GenerateWinner($id = 0){
-  global $WINNER_MESS, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $WINNER_MESS, $ROOM, $ROLES, $USERS, $SELF;
 
   //-- 村の勝敗結果 --//
   $winner = $ROOM->LoadWinner();
@@ -576,9 +576,9 @@ function OutputVoteList(){
 
 //再投票の時、メッセージを表示
 function OutputRevoteList(){
-  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $SELF, $COOKIE, $SOUND;
+  global $GAME_CONF, $MESSAGE, $ROOM, $SELF, $COOKIE, $SOUND;
 
-  if ($RQ_ARGS->play_sound && ! $ROOM->view_mode && $ROOM->vote_count > 1 &&
+  if (RQ::$get->play_sound && ! $ROOM->view_mode && $ROOM->vote_count > 1 &&
       $ROOM->vote_count > $COOKIE->vote_times) {
     $SOUND->Output('revote'); //音を鳴らす (未投票突然死対応)
   }
@@ -608,7 +608,7 @@ function GetVoteList($date){
 
 //投票データから結果を生成する
 function GenerateVoteList($raw_data, $date){
-  global $RQ_ARGS, $ROOM, $SELF;
+  global $ROOM, $SELF;
 
   if (count($raw_data) < 1) return null; //投票総数
 
@@ -622,7 +622,7 @@ function GenerateVoteList($raw_data, $date){
 		   $header . $target_name, '</tr>');
     $table_stack[$count][] = implode('</td>', $stack);
   }
-  if (! $RQ_ARGS->reverse_log) krsort($table_stack); //正順なら逆転させる
+  if (! RQ::$get->reverse_log) krsort($table_stack); //正順なら逆転させる
 
   $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
   $footer = ' 回目)</td>';
@@ -648,7 +648,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $GAME_CONF, $MESSAGE, $ROOM, $ROLES, $USERS, $SELF;
 
   //PrintData($talk);
   //発言ユーザを取得
@@ -680,7 +680,7 @@ function OutputTalk($talk, &$builder){
   }
 
   //実ユーザを取得
-  if ($RQ_ARGS->add_role && $actor->user_no > 0) { //役職表示モード対応
+  if (RQ::$get->add_role && $actor->user_no > 0) { //役職表示モード対応
     $real_user = isset($real) ? $real : $actor;
     $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
   }
@@ -902,15 +902,15 @@ function OutputTimeStamp($builder){
 
 //前日の能力発動結果を出力
 function OutputAbilityAction(){
-  global $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $MESSAGE, $ROOM, $USERS, $SELF;
 
   //昼間で役職公開が許可されているときのみ表示
   if (! $ROOM->IsDay() || ! ($SELF->IsDummyBoy() || $ROOM->IsOpenCast())) return false;
 
   $header = '<b>前日の夜、';
   $footer = '</b><br>'."\n";
-  if ($ROOM->test_mode){
-    $stack_list = $RQ_ARGS->TestItems->ability_action_list;
+  if ($ROOM->test_mode) {
+    $stack_list = RQ::GetTest()->ability_action_list;
   }
   else {
     $yesterday = $ROOM->date - 1;
@@ -1086,7 +1086,7 @@ function OutputLastWords($shift = false){
 
 //前の日の 狼が食べた、狐が占われて死亡、投票結果で死亡のメッセージ
 function GenerateDeadMan(){
-  global $RQ_ARGS, $ROOM;
+  global $ROOM;
 
   //ゲーム中以外は出力しない
   if (! $ROOM->IsPlaying()) return null;
@@ -1094,7 +1094,7 @@ function GenerateDeadMan(){
   $yesterday = $ROOM->date - 1;
 
   if ($ROOM->test_mode){
-    $stack_list = $RQ_ARGS->TestItems->result_dead;
+    $stack_list = RQ::GetTest()->result_dead;
   }
   else {
     //共通クエリ
@@ -1127,7 +1127,7 @@ function GenerateDeadMan(){
 
 //天候メッセージの生成
 function GenerateWeatherReport(){
-  global $ROLE_DATA, $RQ_ARGS, $ROOM;
+  global $ROLE_DATA, $ROOM;
 
   if (! isset($ROOM->event->weather) || ($ROOM->log_mode && $ROOM->IsNight())) return '';
   $weather = $ROLE_DATA->weather_list[$ROOM->event->weather];

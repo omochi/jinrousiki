@@ -6,7 +6,7 @@ DB::Connect();
 
 //-- ログイン処理 --//
 //DB 接続解除は結果出力関数が行う
-if ($RQ_ARGS->login_manually) { //ユーザ名とパスワードで手動ログイン
+if (RQ::$get->login_manually) { //ユーザ名とパスワードで手動ログイン
   if (LoginManually()) {
     OutputLoginResult('ログインしました', 'game_frame');
   }
@@ -26,14 +26,12 @@ else { //単に呼ばれただけなら観戦ページに移動させる
 //-- 関数 --//
 //結果出力関数
 function OutputLoginResult($title, $jump, $body = null){
-  global $RQ_ARGS;
-
   if (is_null($body)) $body = $title;
   if (is_null($jump)) {
     $url = '';
   }
   else {
-    $url = $jump . '.php?room_no=' . $RQ_ARGS->room_no;
+    $url = $jump . '.php?room_no=' . RQ::$get->room_no;
     $body .= '。<br>' . "\n" . '切り替わらないなら <a href="' . $url . '" target="_top">ここ</a> 。';
   }
   OutputActionResult($title, $body, $url);
@@ -45,9 +43,9 @@ function OutputLoginResult($title, $jump, $body = null){
   ログイン成功/失敗を true/false で返す
 */
 function LoginManually(){
-  global $SESSION, $RQ_ARGS;
+  global $SESSION;
 
-  extract($RQ_ARGS->ToArray());
+  extract(RQ::ToArray());
   if ($uname == '' || $password == '') return false;
 
   //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス取得 //現在は IP アドレス認証は行っていない

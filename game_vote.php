@@ -4,24 +4,24 @@ $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'ROOM_OPT', 'GAME_OPT_CONF');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestGameVote'); //引数を取得
+$INIT_CONF->LoadRequest('RequestGameVote');
 DB::Connect();
 $SESSION->Certify(); //セッション認証
 
 //ロック処理
 if (! DB::Transaction()) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');
 
-$ROOM = new Room($RQ_ARGS, true); //村情報をロード
+$ROOM = new Room(RQ::$get, true); //村情報をロード
 if ($ROOM->IsFinished()) OutputVoteError('ゲーム終了', 'ゲームは終了しました');
 $ROOM->system_time = TZTime(); //現在時刻を取得
 
-$USERS = new UserDataSet($RQ_ARGS, true); //ユーザ情報をロード
+$USERS = new UserDataSet(RQ::$get, true); //ユーザ情報をロード
 $SELF = $USERS->BySession(); //自分の情報をロード
 
 //-- メインルーチン --//
-if ($RQ_ARGS->vote) { //投票処理
+if (RQ::$get->vote) { //投票処理
   if ($ROOM->IsBeforeGame()) { //ゲーム開始 or Kick 投票処理
-    switch ($RQ_ARGS->situation) {
+    switch (RQ::$get->situation) {
     case 'GAMESTART':
       $INIT_CONF->LoadClass('CAST_CONF'); //配役情報をロード
       VoteGameStart();
@@ -37,14 +37,14 @@ if ($RQ_ARGS->vote) { //投票処理
     }
   }
   elseif ($SELF->IsDead()) { //死者の霊界投票処理
-    if ($SELF->IsDummyBoy() && $RQ_ARGS->situation == 'RESET_TIME') {
+    if ($SELF->IsDummyBoy() && RQ::$get->situation == 'RESET_TIME') {
       VoteResetTime();
     }
     else {
       VoteDeadUser();
     }
   }
-  elseif ($RQ_ARGS->target_no == 0) { //空投票検出
+  elseif (RQ::$get->target_no == 0) { //空投票検出
     OutputVoteError('空投票', '投票先を指定してください');
   }
   elseif ($ROOM->IsDay()) { //昼の処刑投票処理
@@ -87,10 +87,8 @@ DB::Disconnect();
 //-- 関数 --//
 //エラーページ出力
 function OutputVoteError($title, $str = null){
-  global $RQ_ARGS;
-
   $header = '<div align="center"><a id="game_top"></a>';
-  $footer = "<br>\n" . $RQ_ARGS->back_url . '</div>';
+  $footer = "<br>\n" . RQ::$get->back_url . '</div>';
   if (is_null($str)) $str = 'プログラムエラーです。管理者に問い合わせてください。';
   OutputActionResult('投票エラー [' . $title . ']', $header . $str . $footer);
 }
@@ -128,11 +126,11 @@ function VoteGameStart(){
 
 //開始前の Kick 投票の処理
 function VoteKick(){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $ROOM, $USERS, $SELF;
 
   CheckSituation('KICK_DO'); //コマンドチェック
   $str = 'Kick 投票：';
-  $target = $USERS->ByID($RQ_ARGS->target_no); //投票先のユーザ情報を取得
+  $target = $USERS->ByID(RQ::$get->target_no); //投票先のユーザ情報を取得
   if ($target->uname == '' || $target->live == 'kick') {
     OutputVoteResult($str . '投票先が指定されていないか、すでに Kick されています');
   }
@@ -166,7 +164,7 @@ function VoteKick(){
 
 //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
 function AggregateVoteKick($target){
-  global $GAME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $MESSAGE, $ROOM, $USERS, $SELF;
 
   CheckSituation('KICK_DO'); //コマンドチェック
 
@@ -232,7 +230,7 @@ function VoteResetTime(){
 
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
-  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF;
 
   CheckScene(); //投票する状況があっているかチェック
   OutputVotePageHeader();
@@ -250,14 +248,16 @@ function OutputVoteBeforeGame(){
     echo $user->GenerateVoteTag($ICON_CONF->path . '/' . $user->icon_filename, $checkbox);
   }
 
+  $back_url = RQ::$get->back_url;
+  $post_url = RQ::$get->post_url;
   echo <<<EOF
 </tr></table>
 <span class="vote-message">* Kick するには {$GAME_CONF->kick} 人の投票が必要です</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$RQ_ARGS->back_url}</td>
+<td>{$back_url}</td>
 <td><input type="submit" value="{$VOTE_MESS->kick_do}"></form></td>
 <td>
-<form method="POST" action="{$RQ_ARGS->post_url}">
+<form method="POST" action="{$post_url}">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">
 <input type="submit" value="{$VOTE_MESS->game_start}">
@@ -271,7 +271,7 @@ EOF;
 
 //昼の投票ページを出力する
 function OutputVoteDay(){
-  global $ICON_CONF, $VOTE_MESS, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $ICON_CONF, $VOTE_MESS, $ROOM, $USERS, $SELF;
 
   CheckScene(); //投票する状況があっているかチェック
   if ($ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
@@ -313,11 +313,12 @@ EOF;
     echo $user->GenerateVoteTag($path, $checkbox);
   }
 
+  $url = RQ::$get->back_url;
   echo <<<EOF
 </tr></table>
 <span class="vote-message">* 投票先の変更はできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$RQ_ARGS->back_url}</td>
+<td>{$url}</td>
 <td><input type="submit" value="{$VOTE_MESS->vote_do}"></td>
 </tr></table></div>
 </form></body></html>
@@ -327,18 +328,19 @@ EOF;
 
 //死者の投票ページ出力
 function OutputVoteDeadUser(){
-  global $VOTE_MESS, $RQ_ARGS, $ROOM, $SELF;
+  global $VOTE_MESS, $ROOM, $SELF;
 
   //投票済みチェック
   if ($SELF->IsDrop())     OutputVoteResult('蘇生辞退：投票済み');
   if ($ROOM->IsOpenCast()) OutputVoteResult('蘇生辞退：投票不要です');
 
   OutputVotePageHeader();
+  $url = RQ::$get->back_url;
   echo <<<EOF
 <input type="hidden" name="situation" value="REVIVE_REFUSE">
 <span class="vote-message">* 投票の取り消しはできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$RQ_ARGS->back_url}</td>
+<td>{$url}</td>
 <td><input type="submit" value="{$VOTE_MESS->revive_refuse}"></form></td>
 </tr></table></div>
 </body></html>
@@ -348,13 +350,14 @@ EOF;
 
 //身代わり君 (霊界) の投票ページ出力
 function OutputVoteDummyBoy(){
-  global $VOTE_MESS, $RQ_ARGS, $ROOM, $SELF;
+  global $VOTE_MESS, $ROOM, $SELF;
 
   OutputVotePageHeader();
+  $url = RQ::$get->back_url;
   echo <<<EOF
 <span class="vote-message">* 投票の取り消しはできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$RQ_ARGS->back_url}</td>
+<td>{$url}</td>
 <td>
 <input type="hidden" name="situation" value="RESET_TIME">
 <input type="submit" value="{$VOTE_MESS->reset_time}"></form>
@@ -364,9 +367,10 @@ EOF;
 
   //蘇生辞退ボタン表示判定
   if (! $SELF->IsDrop() && $ROOM->IsOption('not_open_cast') && ! $ROOM->IsOpenCast()) {
+    $url = RQ::$get->post_url;
     echo <<<EOF
 <td>
-<form method="POST" action="{$RQ_ARGS->post_url}">
+<form method="POST" action="{$url}">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="REVIVE_REFUSE">
 <input type="submit" value="{$VOTE_MESS->revive_refuse}">

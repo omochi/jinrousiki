@@ -841,13 +841,13 @@ EOF;
 
   //投票処理
   function Vote($action, $target = null, $vote_number = null){
-    global $RQ_ARGS, $ROOM;
+    global $ROOM;
 
-    if ($ROOM->test_mode){
-      if ($ROOM->IsDay()){
+    if ($ROOM->test_mode) {
+      if ($ROOM->IsDay()) {
 	$stack = array('user_no' => $this->user_no, 'uname' => $this->uname,
 		       'target_no' => $target, 'vote_number' => $vote_number);
-	$RQ_ARGS->TestItems->vote->day[$this->uname] = $stack;
+	RQ::GetTest()->vote->day[$this->uname] = $stack;
 	//PrintData($stack, 'Vote');
       }
       else {
@@ -864,7 +864,7 @@ EOF;
     }
     if (isset($vote_number)){
       $items .= ', vote_number, revote_count';
-      $values .= ", '{$vote_number}', '{$RQ_ARGS->revote_count}'";
+      $values .= sprintf(", %d, %d", $vote_number, RQ::$get->revote_count);
     }
     return DB::Insert('vote', $items, $values);
   }
@@ -884,7 +884,7 @@ class UserDataSet{
   //村情報のロード処理
   function LoadRoom($request, $lock = false){
     if ($request->IsVirtualRoom()) { //仮想モード
-      $user_list = $request->TestItems->test_users;
+      $user_list = $request->GetTest()->test_users;
       if (is_int($user_list)) $user_list = $this->RetriveByUserCount($user_list);
     }
     elseif (isset($request->retrive_type)) { //特殊モード
@@ -1120,7 +1120,7 @@ EOF;
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $ROLE_DATA, $RQ_ARGS, $ROOM, $ROLES;
+    global $ROLE_DATA, $ROOM, $ROLES;
 
     if ($ROOM->id < 1 || ! is_array($event_rows = $ROOM->GetEvent($force))) return;
     //PrintData($event_rows, 'Event[row]');
@@ -1175,7 +1175,7 @@ EOF;
 	}
       }
       $base_date = $ROOM->date; //判定用の日付
-      if (($ROOM->watch_mode || $ROOM->single_view_mode) && ! $RQ_ARGS->reverse_log) $base_date--;
+      if (($ROOM->watch_mode || $ROOM->single_view_mode) && ! RQ::$get->reverse_log) $base_date--;
       $ROLES->LoadMain(new User('shadow_fairy'))->BadStatus($this, $base_date); //影妖精の処理
       $ROLES->LoadMain(new User('enchant_mad'))->BadStatus($this); //狢の処理
     }

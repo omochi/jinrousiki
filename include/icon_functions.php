@@ -10,7 +10,7 @@ function IsUsingIcon($id){
 
 //文字列長チェック
 function CheckIconText($title, $url){
-  global $RQ_ARGS, $USER_ICON;
+  global $USER_ICON;
 
   $stack = array();
   $list  = array('icon_name'  => 'アイコン名',
@@ -18,7 +18,7 @@ function CheckIconText($title, $url){
 		 'category'   => 'カテゴリ',
 		 'author'     => 'アイコンの作者');
   foreach($list as $key => $label){
-    $value = $RQ_ARGS->$key;
+    $value = RQ::$get->$key;
     if(strlen($value) > $USER_ICON->name){
       OutputActionResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
     }
@@ -49,15 +49,13 @@ function DeleteIcon($id, $file){
 }
 
 function OutputIconList($base_url = 'icon_view'){
-  global $RQ_ARGS;
-
   /*
     初回表示前に検索条件をリセットする
     TODO:リファラーをチェックすることでGETリクエストによる取得にも対処できる
     現時点ではGETで直接検索を試みたユーザーのセッション情報まで配慮していないが、
     いずれ必要になるかも知れない (enogu)
   */
-  if(is_null($RQ_ARGS->page)) unset($_SESSION['icon_view']);
+  if(is_null(RQ::$get->page)) unset($_SESSION['icon_view']);
 
   //編集フォームの表示
   if($base_url == 'icon_view'){
@@ -66,8 +64,8 @@ function OutputIconList($base_url = 'icon_view'){
 </form>
 
 HTML;
-    if($RQ_ARGS->icon_no > 0){
-      $params = $RQ_ARGS->ToArray();
+    if(RQ::$get->icon_no > 0){
+      $params = RQ::ToArray();
       unset($params['icon_no']);
       echo <<<HTML
 <div class="link"><a href="icon_view.php">→アイコン一覧に戻る</a></div>
@@ -75,7 +73,7 @@ HTML;
 <fieldset><legend>アイコン設定の変更</legend>
 
 HTML;
-      OutputIconEditForm($RQ_ARGS->icon_no);
+      OutputIconEditForm(RQ::$get->icon_no);
       echo $footer;
     }
     else{
@@ -94,7 +92,7 @@ HTML;
 }
 
 function OutputIconEditForm($icon_no){
-  global $ICON_CONF, $USER_ICON, $RQ_ARGS;
+  global $ICON_CONF, $USER_ICON;
 
   $size = ' size="' . $USER_ICON->name . '" maxlength="' . $USER_ICON->name . '"';
   foreach(DB::FetchAssoc("SELECT * FROM user_icon WHERE icon_no = {$icon_no}") as $selected){
@@ -136,15 +134,13 @@ EOF;
 }
 
 function ConcreteOutputIconList($base_url = 'icon_view'){
-  global $ICON_CONF, $USER_ICON, $RQ_ARGS;
+  global $ICON_CONF, $USER_ICON;
 
   //-- 内部関数の定義 --//
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
   function _outputSelectionByType($type, $caption, $filter = array()){
-    global $RQ_ARGS;
-
     //選択状態の抽出
-    $selection_source = $RQ_ARGS->search ? $RQ_ARGS->$type : $_SESSION['icon_view'][$type];
+    $selection_source = RQ::$get->search ? RQ::$get->$type : $_SESSION['icon_view'][$type];
     $selected = empty($selection_source) ? array()
       : (is_array($selection_source) ? $selection_source : array($selection_source));
     $_SESSION['icon_view'][$type] = $selected;
@@ -230,7 +226,7 @@ HTML;
   }
   //PrintData($where_cond);
 
-  $sort_by_name_checked = $RQ_ARGS->sort_by_name ? ' checked' : '';
+  $sort_by_name_checked = RQ::$get->sort_by_name ? ' checked' : '';
   echo <<<EOF
 </tr>
 <tr>
@@ -244,7 +240,7 @@ HTML;
 EOF;
 
   //検索結果の表示
-  if($is_icon_view = empty($RQ_ARGS->room_no)){
+  if($is_icon_view = empty(RQ::$get->room_no)){
     echo <<<HTML
 <table>
 <caption>
@@ -256,7 +252,7 @@ EOF;
 
 HTML;
   }
-  if($is_user_entry = isset($RQ_ARGS->room_no)){
+  if($is_user_entry = isset(RQ::$get->room_no)){
     echo <<<HTML
 <table>
 <caption>
@@ -272,9 +268,9 @@ HTML;
   $query = 'SELECT * FROM user_icon WHERE ';
   $where_cond[] = 'icon_no > 0';
   $query .= implode(' AND ', $where_cond) . ' ORDER BY ' .
-    ($RQ_ARGS->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name');
-  if($RQ_ARGS->page != 'all'){
-    $limit_min = $ICON_CONF->view * ($RQ_ARGS->page - 1);
+    (RQ::$get->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name');
+  if(RQ::$get->page != 'all'){
+    $limit_min = $ICON_CONF->view * (RQ::$get->page - 1);
     if($limit_min < 1) $limit_min = 0;
     $query .= sprintf(' LIMIT %d, %d', $limit_min, $ICON_CONF->view);
   }
@@ -288,11 +284,11 @@ HTML;
   $PAGE_CONF = $ICON_CONF;
   $PAGE_CONF->count = $total_count;
   $PAGE_CONF->url     = $base_url;
-  $PAGE_CONF->current = $RQ_ARGS->page;
+  $PAGE_CONF->current = RQ::$get->page;
   $PAGE_CONF->option  = $url_option;
   $PAGE_CONF->attributes  = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
-  if($RQ_ARGS->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . $RQ_ARGS->room_no;
-  if($RQ_ARGS->icon_no > 0) $PAGE_CONF->option[] = 'icon_no=' . $RQ_ARGS->icon_no;
+  if(RQ::$get->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . RQ::$get->room_no;
+  if(RQ::$get->icon_no > 0) $PAGE_CONF->option[] = 'icon_no=' . RQ::$get->icon_no;
   echo '<td colspan="' . $colspan . '" class="page-link">';
   //PrintData($PAGE_CONF, 'PAGE_CONF');
   OutputPageLink($PAGE_CONF);

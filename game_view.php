@@ -5,15 +5,15 @@ $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestBaseGame'); //引数を取得
-$url = '<a href="game_view.php?room_no=' . $RQ_ARGS->room_no;
+$url = '<a href="game_view.php?room_no=' . RQ::$get->room_no;
 
 DB::Connect();
-$ROOM = new Room($RQ_ARGS); //村情報をロード
+$ROOM = new Room(RQ::$get); //村情報をロード
 $ROOM->view_mode   = true;
 $ROOM->system_time = TZTime(); //現在時刻を取得
 switch ($ROOM->scene) {
 case 'beforegame':
-  $RQ_ARGS->retrive_type = $ROOM->scene;
+  RQ::$get->retrive_type = $ROOM->scene;
   break;
 
 case 'day': //昼
@@ -33,15 +33,15 @@ else {
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS');
 }
 
-$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
 $SELF  = new User();
 
 //-- データ出力 --//
 ob_start();
 OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 
-if ($GAME_CONF->auto_reload && $RQ_ARGS->auto_reload > 0) { //自動更新
-  echo '<meta http-equiv="Refresh" content="' . $RQ_ARGS->auto_reload . '">'."\n";
+if ($GAME_CONF->auto_reload && RQ::$get->auto_reload > 0) { //自動更新
+  printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
 }
 echo $ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
 
@@ -67,7 +67,7 @@ echo <<<EOF
 EOF;
 
 if ($GAME_CONF->auto_reload) { //自動更新設定が有効ならリンクを表示
-  echo $url . ($RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '') .
+  echo $url . (RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '') .
     '">[更新]</a>'."\n";
   OutputAutoReloadLink($url);
 }

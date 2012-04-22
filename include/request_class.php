@@ -1,8 +1,62 @@
 <?php
+//-- 引数管理クラス --//
+class RQ {
+  static $get = null; //Request クラス
+
+  //Request クラスの初期化
+  private function __construct($class){
+    return self::$get = new $class();
+  }
+
+  //Request クラスのロード
+  static function Load($class = 'RequestBase'){
+    if (is_null(self::$get)) new self($class);
+  }
+
+  //インスタンス取得
+  static function Get(){ return self::$get; }
+
+  //テストデータ取得
+  static function GetTest(){ return self::$get->GetTest(); }
+
+  //テスト村データ取得
+  static function GetTestRoom(){ return self::$get->GetTestRoom(); }
+
+  //インスタンス代入
+  static function Set($key, $value){
+    self::$get->$key = $value;
+  }
+
+  //テスト村データセット
+  static function SetTestRoom($key, $value){
+    self::$get->GetTest()->test_room[$key] = $value;
+  }
+
+  //テスト村データ追加
+  static function AddTestRoom($key, $value){
+    self::$get->GetTest()->test_room[$key] .= ' ' . $value;
+  }
+
+  //データ展開
+  static function ToArray(){ return self::$get->ToArray(); }
+}
+
 //-- 引数解析の基底クラス --//
 class RequestBase {
+  //テストデータ取得
+  public function GetTest(){ return $this->TestItems; }
+
+  //テスト村データ取得
+  public function GetTestRoom(){ return $this->TestItems->test_room; }
+
+  //仮想村判定
+  public function IsVirtualRoom(){
+    $data = $this->GetTest();
+    return isset($data) && $data->is_virtual_room;
+  }
+
   //データ展開
-  function ToArray(){
+  public function ToArray(){
     $stack = array();
     foreach ($this as $key => $value) $stack[$key] = $value;
     return $stack;
@@ -49,11 +103,6 @@ class RequestBase {
     $room_no = intval($arg);
     if ($room_no < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $room_no;
-  }
-
-  //仮想村判定
-  function IsVirtualRoom(){
-    return isset($this->TestItems) && $this->TestItems->is_virtual_room;
   }
 
   //ページセット

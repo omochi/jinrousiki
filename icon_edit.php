@@ -6,14 +6,14 @@ EditIcon();
 
 //-- 関数 --//
 function EditIcon(){
-  global $USER_ICON, $ICON_CONF, $RQ_ARGS;
+  global $USER_ICON, $ICON_CONF;
 
   $title = 'ユーザアイコン編集';
   //リファラチェック
   if (CheckReferer('icon_view.php')) OutputActionResult($title, '無効なアクセスです');
 
   //入力データチェック
-  extract($RQ_ARGS->ToArray()); //引数を展開
+  extract(RQ::ToArray()); //引数を展開
   $back_url = "<br>\n".'<a href="icon_view.php?icon_no=' . $icon_no . '">戻る</a>';
   if ($password != $USER_ICON->password) {
     OutputActionResult($title, 'パスワードが違います。' . $back_url);

@@ -512,9 +512,7 @@ class Role{
   //-- 投票処理 (夜) --//
   //投票結果チェック (夜)
   function CheckVoteNight(){
-    global $RQ_ARGS;
-
-    $this->SetStack($RQ_ARGS->situation, 'message');
+    $this->SetStack(RQ::$get->situation, 'message');
     if(! is_null($str = $this->VoteNight())){
       OutputVoteResult('夜：投票先が正しくありません<br>'."\n" . $str);
     }
@@ -533,7 +531,7 @@ class Role{
   }
 
   //投票対象者取得 (夜)
-  function GetVoteNightTarget(){ global $RQ_ARGS; return $RQ_ARGS->target_no; }
+  function GetVoteNightTarget(){ return RQ::$get->target_no; }
 
   //投票スキップ判定 (夜)
   function IgnoreVoteNight($user, $live){

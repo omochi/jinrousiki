@@ -8,16 +8,15 @@ OutputHTMLFooter();
 
 //-- 関数 --//
 function OutputGameUp(){
-  global $RQ_ARGS;
-
-  $header = '<form method="POST" action="game_play.php' . $RQ_ARGS->url . '" target="bottom" ';
+  $header = '<form method="POST" action="game_play.php' . RQ::$get->url . '" target="bottom" ';
   $reload = $header . 'name="reload_game"></form>'; //自動リロード用ダミー送信フォーム
 
   //送信用フォーム
   //霊話モードの時は発言用フレームでリロード・書き込みしたときに真ん中のフレームもリロードする
   $submit = $header . 'class="input-say" name="send" onSubmit="';
-  if($RQ_ARGS->heaven_mode) $submit .= 'reload_middle_frame();';
+  if(RQ::$get->heaven_mode) $submit .= 'reload_middle_frame();';
   $submit .= 'set_focus();">';
+  $url = RQ::$get->url;
   echo <<<EOF
 <link rel="stylesheet" id="scene">
 <script type="text/javascript" src="javascript/game_up.js"></script>
@@ -36,7 +35,7 @@ function OutputGameUp(){
 <option value="weak">弱く発言する</option>
 <option value="last_words">遺言を残す</option>
 </select><br>
-[<a class="vote" href="game_vote.php{$RQ_ARGS->url}">投票/占う/護衛</a>]
+[<a class="vote" href="game_vote.php{$url}">投票/占う/護衛</a>]
 <a class="top-link" href="./" target="_top">TOP</a>
 </td>
 </tr></table>

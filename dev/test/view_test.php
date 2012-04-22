@@ -12,9 +12,9 @@ $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame');
-$RQ_ARGS->room_no = 1;
-$RQ_ARGS->TestItems->test_room = array(
-  'id' => $RQ_ARGS->room_no,
+RQ::$get->room_no = 1;
+RQ::GetTest()->test_room = array(
+  'id' => RQ::$get->room_no,
   'name' => '配役テスト村',
   'comment' => '',
   'game_option'  => 'dummy_boy real_time:6:4',
@@ -23,61 +23,61 @@ $RQ_ARGS->TestItems->test_room = array(
   'scene' => 'day',
   'status' => 'waiting'
 );
-$RQ_ARGS->TestItems->is_virtual_room = true;
-$RQ_ARGS->vote_times = 1;
-$RQ_ARGS->TestItems->test_users = array();
-for($id = 1; $id <= 11; $id++) $RQ_ARGS->TestItems->test_users[$id] = new User();
+RQ::GetTest()->is_virtual_room = true;
+RQ::$get->vote_times = 1;
+RQ::GetTest()->test_users = array();
+for($id = 1; $id <= 11; $id++) RQ::GetTest()->test_users[$id] = new User();
 
-$RQ_ARGS->TestItems->test_users[1]->uname = 'dummy_boy';
-$RQ_ARGS->TestItems->test_users[1]->handle_name = '身代わり君';
-$RQ_ARGS->TestItems->test_users[1]->role = 'mage';
-$RQ_ARGS->TestItems->test_users[1]->icon_filename = '../img/dummy_boy_user_icon.jpg';
-$RQ_ARGS->TestItems->test_users[1]->color = '#000000';
+RQ::GetTest()->test_users[1]->uname = 'dummy_boy';
+RQ::GetTest()->test_users[1]->handle_name = '身代わり君';
+RQ::GetTest()->test_users[1]->role = 'mage';
+RQ::GetTest()->test_users[1]->icon_filename = '../img/dummy_boy_user_icon.jpg';
+RQ::GetTest()->test_users[1]->color = '#000000';
 
-$RQ_ARGS->TestItems->test_users[2]->uname = 'light_gray';
-$RQ_ARGS->TestItems->test_users[2]->handle_name = '明灰';
-$RQ_ARGS->TestItems->test_users[2]->role = 'human';
+RQ::GetTest()->test_users[2]->uname = 'light_gray';
+RQ::GetTest()->test_users[2]->handle_name = '明灰';
+RQ::GetTest()->test_users[2]->role = 'human';
 
-$RQ_ARGS->TestItems->test_users[3]->uname = 'dark_gray';
-$RQ_ARGS->TestItems->test_users[3]->handle_name = '暗灰';
-$RQ_ARGS->TestItems->test_users[3]->role = 'human';
+RQ::GetTest()->test_users[3]->uname = 'dark_gray';
+RQ::GetTest()->test_users[3]->handle_name = '暗灰';
+RQ::GetTest()->test_users[3]->role = 'human';
 
-$RQ_ARGS->TestItems->test_users[4]->uname = 'yellow';
-$RQ_ARGS->TestItems->test_users[4]->handle_name = '黄色';
-$RQ_ARGS->TestItems->test_users[4]->role = 'human';
+RQ::GetTest()->test_users[4]->uname = 'yellow';
+RQ::GetTest()->test_users[4]->handle_name = '黄色';
+RQ::GetTest()->test_users[4]->role = 'human';
 
-$RQ_ARGS->TestItems->test_users[5]->uname = 'orange';
-$RQ_ARGS->TestItems->test_users[5]->handle_name = 'オレンジ';
-$RQ_ARGS->TestItems->test_users[5]->role = 'human';
+RQ::GetTest()->test_users[5]->uname = 'orange';
+RQ::GetTest()->test_users[5]->handle_name = 'オレンジ';
+RQ::GetTest()->test_users[5]->role = 'human';
 
-$RQ_ARGS->TestItems->test_users[6]->uname = 'red';
-$RQ_ARGS->TestItems->test_users[6]->handle_name = '赤';
-$RQ_ARGS->TestItems->test_users[6]->role = 'human';
+RQ::GetTest()->test_users[6]->uname = 'red';
+RQ::GetTest()->test_users[6]->handle_name = '赤';
+RQ::GetTest()->test_users[6]->role = 'human';
 
-$RQ_ARGS->TestItems->test_users[7]->uname = 'light_blue';
-$RQ_ARGS->TestItems->test_users[7]->handle_name = '水色';
-$RQ_ARGS->TestItems->test_users[7]->role = 'necromancer';
+RQ::GetTest()->test_users[7]->uname = 'light_blue';
+RQ::GetTest()->test_users[7]->handle_name = '水色';
+RQ::GetTest()->test_users[7]->role = 'necromancer';
 
-$RQ_ARGS->TestItems->test_users[8]->uname = 'blue';
-$RQ_ARGS->TestItems->test_users[8]->handle_name = '青';
-$RQ_ARGS->TestItems->test_users[8]->role = 'guard';
+RQ::GetTest()->test_users[8]->uname = 'blue';
+RQ::GetTest()->test_users[8]->handle_name = '青';
+RQ::GetTest()->test_users[8]->role = 'guard';
 
-$RQ_ARGS->TestItems->test_users[9]->uname = 'green';
-$RQ_ARGS->TestItems->test_users[9]->handle_name = '緑';
-$RQ_ARGS->TestItems->test_users[9]->role = 'wolf';
+RQ::GetTest()->test_users[9]->uname = 'green';
+RQ::GetTest()->test_users[9]->handle_name = '緑';
+RQ::GetTest()->test_users[9]->role = 'wolf';
 
-$RQ_ARGS->TestItems->test_users[10]->uname = 'purple';
-$RQ_ARGS->TestItems->test_users[10]->handle_name = '紫';
-$RQ_ARGS->TestItems->test_users[10]->role = 'wolf';
+RQ::GetTest()->test_users[10]->uname = 'purple';
+RQ::GetTest()->test_users[10]->handle_name = '紫';
+RQ::GetTest()->test_users[10]->role = 'wolf';
 
-$RQ_ARGS->TestItems->test_users[11]->uname = 'cherry';
-$RQ_ARGS->TestItems->test_users[11]->handle_name = 'さくら';
-$RQ_ARGS->TestItems->test_users[11]->role = 'mad';
+RQ::GetTest()->test_users[11]->uname = 'cherry';
+RQ::GetTest()->test_users[11]->handle_name = 'さくら';
+RQ::GetTest()->test_users[11]->role = 'mad';
 
 $icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-foreach($RQ_ARGS->TestItems->test_users as $id => $user){
-  $user->room_no = $RQ_ARGS->room_no;
+foreach(RQ::GetTest()->test_users as $id => $user){
+  $user->room_no = RQ::$get->room_no;
   $user->user_no = $id;
   $user->sex = $id % 1 == 0 ? 'female' : 'male';
   $user->profile = '';
@@ -88,15 +88,15 @@ foreach($RQ_ARGS->TestItems->test_users as $id => $user){
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
   }
 }
-//PrintData($RQ_ARGS->TestItems->test_users[22]);
+//PrintData(RQ::GetTest()->test_users[22]);
 
 //-- 設定調整 --//
 #$CAST_CONF->decide = 11;
-#$RQ_ARGS->TestItems->test_users[3]->live = 'kick';
+#RQ::GetTest()->test_users[3]->live = 'kick';
 
 //-- データ収集 --//
 //DB::Connect(); // DB 接続
-$ROOM = new Room($RQ_ARGS); //村情報を取得
+$ROOM = new Room(RQ::$get); //村情報を取得
 $ROOM->test_mode = true;
 $ROOM->log_mode  = true;
 switch($_GET['scene']){
@@ -106,7 +106,7 @@ case 'night':
   $ROOM->scene = $_GET['scene'];
   break;
 }
-$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
 $SELF = $USERS->ByID(1);
 
 //テストデータ設定

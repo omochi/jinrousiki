@@ -44,7 +44,6 @@ class InitializeConfig{
     'VOTE_MESS'           => 'message',
     'TWITTER'             => array('twitter_config', 'twitter'),
     'SCRIPT_INFO'         => 'version',
-    'RQ_ARGS'             => 'request_class',
     'ROLES'               => 'role_class',
     'TIME_CALC'           => 'info_functions',
     'SHARED_CONF'         => array('shared_server_config', 'info_functions'),
@@ -110,7 +109,6 @@ class InitializeConfig{
     'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
     'WINNER_MESS'   => 'WinnerMessage',
     'VOTE_MESS'     => 'VoteMessage',
-    'RQ_ARGS'       => 'RequestBase',
     'ROLES'         => 'RoleManager',
     'TIME_CALC'     => 'TimeCalculation',
     'SRC_UP_CONF'   => 'SourceUploadConfig',
@@ -222,7 +220,7 @@ class InitializeConfig{
     $name_list = func_get_args();
     if (is_array($name_list[0])) $name_list = $name_list[0];
     if (count($name_list) > 1) {
-      foreach($name_list as $name) $this->LoadClass($name);
+      foreach ($name_list as $name) $this->LoadClass($name);
       return;
     }
 
@@ -235,7 +233,10 @@ class InitializeConfig{
     return true;
   }
 
-  function LoadRequest($class = null){ return $this->SetClass('RQ_ARGS', $class); }
+  function LoadRequest($class = null){
+    $this->LoadFile('request_class');
+    return RQ::Load($class);
+  }
 }
 
 //-- 初期化処理 --//

@@ -7,21 +7,21 @@ if ($USER_ICON->disable_upload){
 }
 $INIT_CONF->LoadClass('SESSION');
 $INIT_CONF->LoadRequest('RequestIconUpload'); //引数を取得
-isset($RQ_ARGS->command) ? UploadIcon() : OutputUploadIconPage();
+isset(RQ::$get->command) ? UploadIcon() : OutputUploadIconPage();
 
 //-- 関数 --//
 //投稿データチェック
 function UploadIcon(){
-  global $ICON_CONF, $USER_ICON, $RQ_ARGS, $SESSION;
+  global $ICON_CONF, $USER_ICON, $SESSION;
 
   if (CheckReferer('icon_upload.php')){ //リファラチェック
     OutputActionResult('ユーザアイコンアップロード', '無効なアクセスです');
   }
   $title    = 'アイコン登録エラー'; // エラーページ用タイトル
   $back_url = '<br>'. "\n" . '<a href="icon_upload.php">戻る</a>';
-  $query_no = ' WHERE icon_no = ' . $RQ_ARGS->icon_no;
+  $query_no = ' WHERE icon_no = ' . RQ::$get->icon_no;
 
-  switch ($RQ_ARGS->command){
+  switch (RQ::$get->command) {
   case 'upload':
     break;
 
@@ -55,7 +55,7 @@ function UploadIcon(){
       OutputActionResult('アイコン削除失敗', $str . $back_url);
     }
 
-    if (! DeleteIcon($RQ_ARGS->icon_no, $icon_filename)){ //削除処理
+    if (! DeleteIcon(RQ::$get->icon_no, $icon_filename)){ //削除処理
       OutputActionResult($title, $str . $back_url);
     }
     DB::Disconnect();
@@ -76,7 +76,7 @@ function UploadIcon(){
     $str = "ファイルのアップロードエラーが発生しました。<br>\n再度実行してください。";
     OutputActionResult($title, $str . $back_url);
   }
-  extract($RQ_ARGS->ToArray()); //引数を展開
+  extract(RQ::ToArray()); //引数を展開
 
   //空白チェック
   if ($icon_name == '') OutputActionResult($title, 'アイコン名を入力してください' . $back_url);

@@ -24,7 +24,7 @@ class Room{
   function __construct($request = null, $lock = false){
     if (is_null($request)) return;
     if ($request->IsVirtualRoom()) {
-      $stack = $request->TestItems->test_room;
+      $stack = $request->GetTestRoom();
     }
     else {
       $stack = $this->LoadRoom($request->room_no, $lock);
@@ -45,9 +45,7 @@ class Room{
 
   //option_role を追加ロードする
   function LoadOption(){
-    global $RQ_ARGS;
-
-    $option_role = $RQ_ARGS->IsVirtualRoom() ? $RQ_ARGS->TestItems->test_room['option_role'] :
+    $option_role = RQ::$get->IsVirtualRoom() ? RQ::GetTest()->test_room['option_role'] :
       DB::FetchResult($this->GetQueryHeader('room', 'option_role'));
     $this->option_role = new OptionParser($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
@@ -55,9 +53,9 @@ class Room{
 
   //発言を取得する
   function LoadTalk($heaven = false){
-    global $GAME_CONF, $RQ_ARGS;
+    global $GAME_CONF;
 
-    if ($RQ_ARGS->IsVirtualRoom()) return $RQ_ARGS->TestItems->talk;
+    if (RQ::$get->IsVirtualRoom()) return RQ::GetTest()->talk;
 
     $select = 'scene, location, uname, action, sentence, font_type';
     switch ($this->scene) {
@@ -92,10 +90,8 @@ class Room{
 
   //シーンに合わせた投票情報を取得する
   function LoadVote($kick = false){
-    global $RQ_ARGS;
-
-    if ($RQ_ARGS->IsVirtualRoom()) {
-      if (is_null($vote_list = $RQ_ARGS->TestItems->vote->{$this->scene})) return null;
+    if (RQ::$get->IsVirtualRoom()) {
+      if (is_null($vote_list = RQ::GetTest()->vote->{$this->scene})) return null;
     }
     else {
       $action = "scene = '{$this->scene}' AND vote_count = {$this->vote_count}";
@@ -156,13 +152,11 @@ class Room{
 
   //特殊イベント判定用の情報を DB から取得する
   function LoadEvent(){
-    global $RQ_ARGS;
-
     if (! $this->IsPlaying()) return null;
     $this->event = new StdClass();
     if ($this->test_mode) {
       $stack = array();
-      foreach ($RQ_ARGS->TestItems->system_message as $date => $date_list) {
+      foreach (RQ::GetTest()->system_message as $date => $date_list) {
 	if ($date != $this->date) continue;
 	//PrintData($date_list, $date);
 	foreach ($date_list as $type => $type_list) {
@@ -191,11 +185,9 @@ class Room{
 
   //天候判定用の情報を DB から取得する
   function LoadWeather($shift = false){
-    global $RQ_ARGS;
-
     if (! $this->IsPlaying()) return null;
     $date = $this->date;
-    if (($shift && $RQ_ARGS->reverse_log) || $this->IsAfterGame()) $date++;
+    if (($shift && RQ::$get->reverse_log) || $this->IsAfterGame()) $date++;
     $query = $this->GetQueryHeader('system_message', 'message') .
       " AND date = {$date} AND type = 'WEATHER'";
     $result = DB::FetchResult($query);
@@ -204,10 +196,8 @@ class Room{
 
   //勝敗情報を DB から取得する
   function LoadWinner(){
-    global $RQ_ARGS;
-
     if (! isset($this->winner)) { //未設定ならキャッシュする
-      $this->winner = $this->test_mode ? $RQ_ARGS->TestItems->winner :
+      $this->winner = $this->test_mode ? RQ::GetTest()->winner :
 	DB::FetchResult($this->GetQueryHeader('room', 'winner'));
     }
     return $this->winner;
@@ -484,13 +474,11 @@ class Room{
 
   //システムメッセージ登録
   function SystemMessage($str, $type, $add_date = 0){
-    global $RQ_ARGS;
-
     $date = $this->date + $add_date;
     if ($this->test_mode){
       PrintData("{$type} ({$date}): {$str}", 'SystemMessage');
-      if (is_array($RQ_ARGS->TestItems->system_message)){
-	$RQ_ARGS->TestItems->system_message[$date][$type][] = $str;
+      if (is_array(RQ::GetTest()->system_message)){
+	RQ::GetTest()->system_message[$date][$type][] = $str;
       }
       return true;
     }
@@ -501,14 +489,12 @@ class Room{
 
   //能力発動結果登録
   function ResultAbility($type, $result, $target = null, $user_no = null){
-    global $RQ_ARGS;
-
     $date = $this->date;
     if ($this->test_mode){
       PrintData("{$type}: {$result}: {$target}: {$user_no}", 'ResultAbility');
-      if (is_array($RQ_ARGS->TestItems->result_ability)){
+      if (is_array(RQ::GetTest()->result_ability)){
 	$stack = array('user_no' => $user_no, 'target' => $target, 'result' => $result);
-	$RQ_ARGS->TestItems->result_ability[$date][$type][] = $stack;
+	RQ::GetTest()->result_ability[$date][$type][] = $stack;
       }
       return true;
     }
@@ -525,14 +511,12 @@ class Room{
 
   //システムメッセージ登録
   function ResultDead($name, $type, $result = null){
-    global $RQ_ARGS;
-
     $date = $this->date;
     if ($this->test_mode){
       PrintData("{$name}: {$type} ({$date}): {$result}", 'ResultDead');
-      if (is_array($RQ_ARGS->TestItems->result_dead)){
+      if (is_array(RQ::GetTest()->result_dead)){
 	$stack = array('type' => $type, 'handle_name' => $name, 'result' => $result);
-	$RQ_ARGS->TestItems->result_dead[] = $stack;
+	RQ::GetTest()->result_dead[] = $stack;
       }
       return true;
     }

@@ -1,23 +1,23 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadFile('oldlog_functions');
-$INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
-DB::Connect($RQ_ARGS->db_no);
+$INIT_CONF->LoadRequest('RequestOldLog');
+DB::Connect(RQ::$get->db_no);
 ob_start();
-if ($RQ_ARGS->is_room) {
+if (RQ::$get->is_room) {
   $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
   $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
 
-  $ROOM = new Room($RQ_ARGS);
+  $ROOM = new Room(RQ::$get);
   $ROOM->LoadOption();
   $ROOM->log_mode         = true;
-  $ROOM->watch_mode       = $RQ_ARGS->watch;
-  $ROOM->single_view_mode = $RQ_ARGS->user_no > 0;
-  $ROOM->personal_mode    = $RQ_ARGS->personal_result;
+  $ROOM->watch_mode       = RQ::$get->watch;
+  $ROOM->single_view_mode = RQ::$get->user_no > 0;
+  $ROOM->personal_mode    = RQ::$get->personal_result;
   $ROOM->last_date        = $ROOM->date;
 
-  $USERS = new UserDataSet($RQ_ARGS);
-  $SELF  = $ROOM->single_view_mode ? $USERS->ByID($RQ_ARGS->user_no) : new User();
+  $USERS = new UserDataSet(RQ::$get);
+  $SELF  = $ROOM->single_view_mode ? $USERS->ByID(RQ::$get->user_no) : new User();
   $USERS->player = $ROOM->LoadPlayer();
   if ($ROOM->watch_mode) $SELF->live = 'live';
   if ($ROOM->watch_mode || $ROOM->single_view_mode) $USERS->SaveRoleList();
@@ -25,7 +25,7 @@ if ($RQ_ARGS->is_room) {
 }
 else {
   $INIT_CONF->LoadClass('ROOM_CONF');
-  OutputFinishedRooms($RQ_ARGS->page);
+  OutputFinishedRooms(RQ::$get->page);
 }
 OutputHTMLFooter();
 ob_end_flush();

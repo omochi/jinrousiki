@@ -43,10 +43,10 @@ function ConvertSay(&$say){
 
 //発言を DB に登録する
 function Write($say, $scene, $location = null, $spend_time = 0, $update = false){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $ROOM, $ROLES, $USERS, $SELF;
 
   //声の大きさを決定
-  $voice = $RQ_ARGS->font_type;
+  $voice = RQ::$get->font_type;
   if ($ROOM->IsPlaying() && $SELF->IsLive()) {
     $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
     foreach ($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
@@ -125,7 +125,7 @@ function OutputPossessedTarget(){
 
 //個々の能力発動結果を表示する
 function OutputSelfAbilityResult($action){
-  global $RQ_ARGS, $ROOM, $SELF;
+  global $ROOM, $SELF;
 
   $header = null;
   $footer = 'result_';
@@ -302,7 +302,7 @@ function OutputSelfAbilityResult($action){
 
   $target_date = $ROOM->date - 1;
   if ($ROOM->test_mode){
-    $stack = $RQ_ARGS->TestItems->result_ability;
+    $stack = RQ::GetTest()->result_ability;
     $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : array();
     $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
     //PrintData($stack, $user_no);

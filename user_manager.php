@@ -2,18 +2,17 @@
 require_once('include/init.php');
 $INIT_CONF->LoadFile('room_class', 'user_class', 'icon_functions');
 $INIT_CONF->LoadClass('SESSION', 'ROOM_CONF', 'GAME_CONF', 'MESSAGE');
-$INIT_CONF->LoadRequest('RequestUserManager'); //引数を取得
+$INIT_CONF->LoadRequest('RequestUserManager');
 DB::Connect();
-$RQ_ARGS->entry ? EntryUser() : OutputEntryUserPage();
+RQ::$get->entry ? EntryUser() : OutputEntryUserPage();
 DB::Disconnect();
 
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $SERVER_CONF, $GAME_CONF, $MESSAGE, $RQ_ARGS, $SESSION;
+  global $SERVER_CONF, $GAME_CONF, $MESSAGE, $SESSION;
 
-  //PrintData($RQ_ARGS);
-  extract($RQ_ARGS->ToArray()); //引数を取得
+  extract(RQ::ToArray()); //引数を展開
   $back_url = 'user_manager.php?room_no=' . $room_no; //ベースバックリンク
   if ($user_no > 0) $back_url .= '&user_no=' . $user_no; //登録情報変更モード
   $back_url = '<br><a href="' . $back_url . '">戻る</a>'; //バックリンク
@@ -201,9 +200,9 @@ EOF;
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $RQ_ARGS, $SESSION;
+  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $SESSION;
 
-  extract($RQ_ARGS->ToArray()); //引数を取得
+  extract(RQ::ToArray()); //引数を展開
   if ($user_no > 0) { //登録情報変更モード
     $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $stack = DB::FetchAssoc($query, true);
@@ -211,8 +210,9 @@ function OutputEntryUserPage(){
       OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
     }
     foreach ($stack as $key => $value) {
-      if (array_key_exists($key, $RQ_ARGS)) $RQ_ARGS->$key = $value;
+      if (array_key_exists($key, RQ::$get)) RQ::Set($key, $value);
     }
+    extract(RQ::ToArray()); //引数を再展開
   }
 
   $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
@@ -226,7 +226,7 @@ function OutputEntryUserPage(){
   $path = 'img/entry_user';
   $male_checked   = '';
   $female_checked = '';
-  switch ($RQ_ARGS->sex) {
+  switch (RQ::$get->sex) {
   case 'male':
     $male_checked   = ' checked';
     break;
@@ -239,7 +239,7 @@ function OutputEntryUserPage(){
     $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
-<td>{$RQ_ARGS->uname}</td>
+<td>{$uname}</td>
 <td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです</td>
 </tr>
 
@@ -249,8 +249,8 @@ EOF;
     $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
-<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
-<td><label for="trip">＃</lable> <input type="text" id="trip" name="trip" size="15" maxlength="15" value="{$RQ_ARGS->trip}"></td>
+<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$uname}"></td>
+<td><label for="trip">＃</lable> <input type="text" id="trip" name="trip" size="15" maxlength="15" value="{$trip}"></td>
 </tr>
 <tr>
 <td></td>
@@ -263,7 +263,7 @@ EOF;
     $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
-<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$RQ_ARGS->uname}"></td>
+<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$uname}"></td>
 <td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです(トリップ使用不可)</td>
 </tr>
 
@@ -300,7 +300,7 @@ EOF;
 {$uname_form}
 <tr>
 <td class="img"><label for="handle_name"><img src="{$path}/handle_name.gif" alt="村人の名前"></label></td>
-<td><input type="text" id="handle_name" name="handle_name" size="30" maxlength="30" value="{$RQ_ARGS->handle_name}"></td>
+<td><input type="text" id="handle_name" name="handle_name" size="30" maxlength="30" value="{$handle_name}"></td>
 <td class="explain">村で表示される名前です</td>
 </tr>
 {$password_form}
@@ -315,7 +315,7 @@ EOF;
 <tr>
 <td class="img"><label for="profile"><img src="{$path}/profile.gif" alt="プロフィール"></label></td>
 <td colspan="2">
-<textarea id="profile" name="profile" cols="30" rows="2">{$RQ_ARGS->profile}</textarea>
+<textarea id="profile" name="profile" cols="30" rows="2">{$profile}</textarea>
 </td>
 </tr>
 <tr>
@@ -372,7 +372,7 @@ EOF;
       if ($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
       $count++;
       $alt = '←' . ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]);
-      $checked = $RQ_ARGS->role == $role ? ' checked' : '';
+      $checked = RQ::$get->role == $role ? ' checked' : '';
       echo <<<EOF
 <td><label for="{$role}"><input type="radio" id="{$role}" name="role" value="{$role}"{$checked}><img src="{$path}/role_{$role}.gif" alt="{$alt}"></label></td>
 EOF;
@@ -383,9 +383,9 @@ EOF;
     echo '<td><input type="hidden" name="role" value="none">';
   }
 
-  if (isset($RQ_ARGS->icon_no) && $RQ_ARGS->icon_no > ($user_no > 0 ? -1 : 0)){
+  if (isset(RQ::$get->icon_no) && RQ::$get->icon_no > ($user_no > 0 ? -1 : 0)){
     $icon_checked  = ' checked';
-    $input_icon_no = $RQ_ARGS->icon_no;
+    $input_icon_no = RQ::$get->icon_no;
   }
   else{
     $icon_checked  = '';

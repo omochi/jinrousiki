@@ -11,7 +11,7 @@ if ($SRC_UP_CONF->disable){
 }
 
 //引数のエラーチェック
-foreach ($RQ_ARGS as $key => $value) {
+foreach (RQ::$get as $key => $value) {
   $label = $SRC_UP_CONF->form_list[$key]['label'];
   $size  = $SRC_UP_CONF->form_list[$key]['size'];
 
@@ -26,7 +26,7 @@ foreach ($RQ_ARGS as $key => $value) {
 }
 
 //パスワードのチェック
-if ($RQ_ARGS->password != $SRC_UP_CONF->password) OutputUploadResult('パスワード認証エラー。');
+if (RQ::$get->password != $SRC_UP_CONF->password) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
 //PrintData($_FILES['file']);
@@ -76,11 +76,11 @@ else
   $file_size = sprintf('%.2f', $file_size) . ' byte';
 
 $html = <<<EOF
-<td class="link"><a href="file/{$number}.{$ext}">{$RQ_ARGS->name}</a></td>
+<td class="link"><a href="file/{$number}.{$ext}">{RQ::$get->name}</a></td>
 <td class="type">$ext</td>
 <td class="size">$file_size</td>
-<td class="explain">{$RQ_ARGS->caption}</td>
-<td class="name">{$RQ_ARGS->user}</td>
+<td class="explain">{RQ::$get->caption}</td>
+<td class="name">{RQ::$get->user}</td>
 <td class="date">$time</td>
 
 EOF;

@@ -34,11 +34,9 @@ class Session {
 
   //認証
   function Certify($exit = true){
-    global $RQ_ARGS;
-
     //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
     //セッション ID による認証
-    $query = "SELECT user_no FROM user_entry WHERE room_no = {$RQ_ARGS->room_no}" .
+    $query = "SELECT user_no FROM user_entry WHERE room_no = " . RQ::$get->room_no .
       " AND session_id = '{$this->id}' AND user_no > 0";
     $stack = DB::FetchArray($query);
     if (count($stack) == 1) {
@@ -52,13 +50,11 @@ class Session {
 
   //認証 (game_play 専用)
   function CertifyGamePlay(){
-    global $RQ_ARGS;
-
     if ($this->Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
-    if (DB::Count('SELECT room_no FROM room WHERE room_no = ' . $RQ_ARGS->room_no) > 0) {
-      $url   = 'game_view.php?room_no=' . $RQ_ARGS->room_no;
+    if (DB::Count('SELECT room_no FROM room WHERE room_no = ' . RQ::$get->room_no) > 0) {
+      $url   = 'game_view.php?room_no=' . RQ::$get->room_no;
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .
 	'切り替わらないなら <a href="' . $url . '" target="_top">ここ</a> 。'."\n" .

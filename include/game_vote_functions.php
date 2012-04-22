@@ -1,13 +1,12 @@
 <?php
 //投票コマンドがあっているかチェック
 function CheckSituation($applay_situation){
-  global $RQ_ARGS;
-
-  if (is_array($applay_situation)){
-    if (in_array($RQ_ARGS->situation, $applay_situation)) return true;
+  if (is_array($applay_situation)) {
+    if (in_array(RQ::$get->situation, $applay_situation)) return true;
   }
-  elseif ($RQ_ARGS->situation == $applay_situation) return true;
-
+  elseif (RQ::$get->situation == $applay_situation) {
+    return true;
+  }
   OutputVoteResult('無効な投票です');
 }
 
@@ -19,32 +18,32 @@ function CheckScene(){
 
 //投票結果出力
 function OutputVoteResult($sentence, $reset_vote = false){
-  global $SERVER_CONF, $RQ_ARGS, $ROOM;
+  global $SERVER_CONF, $ROOM;
 
   if ($reset_vote) $ROOM->DeleteVote(); //今までの投票を全部削除
   $title  = $SERVER_CONF->title . ' [投票結果]';
   $header = '<div id="game_top" align="center">';
-  $footer = '<br>'."\n" . $RQ_ARGS->back_url . '</div>';
+  $footer = sprintf("<br>\n%s</div>", RQ::$get->back_url);
   OutputActionResult($title, $header . $sentence . $footer);
 }
 
 //投票ページ HTML ヘッダ出力
 function OutputVotePageHeader(){
-  global $SERVER_CONF, $RQ_ARGS, $ROOM;
+  global $SERVER_CONF, $ROOM;
 
   OutputHTMLHeader($SERVER_CONF->title . ' [投票]', 'game');
   $css_path = JINRO_CSS;
   if ($ROOM->scene != '') {
-    $css = $css_path . '/game_' . $ROOM->scene . '.css';
-    echo '<link rel="stylesheet" href="' . $css . '">'."\n";
+    printf('<link rel="stylesheet" href="%s/game_%s.css">'."\n", $css_path, $ROOM->scene);
   }
+  $url = RQ::$get->post_url;
   echo <<<EOF
 <link rel="stylesheet" href="{$css_path}/game_vote.css">
 <link rel="stylesheet" id="scene">
 </head>
 <body>
 <a id="game_top"></a>
-<form method="POST" action="{$RQ_ARGS->post_url}">
+<form method="POST" action="{$url}">
 <input type="hidden" name="vote" value="on">
 
 EOF;
@@ -638,31 +637,31 @@ function AggregateVoteGameStart($force_start = false){
 
 //昼の投票処理
 function VoteDay(){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $ROOM, $ROLES, $USERS, $SELF;
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
-  $target = $USERS->ByReal($RQ_ARGS->target_no); //投票先のユーザ情報を取得
+  $target = $USERS->ByReal(RQ::$get->target_no); //投票先のユーザ情報を取得
   if (is_null($target->user_no)) OutputVoteResult('処刑：無効な投票先です');
   if ($target->IsSelf()) OutputVoteResult('処刑：自分には投票できません');
   if ($target->IsDead()) OutputVoteResult('処刑：死者には投票できません');
 
   //特殊イベントを取得
   $vote_duel = isset($ROOM->event->vote_duel) ? $ROOM->event->vote_duel : null;
-  if (is_array($vote_duel) && ! in_array($RQ_ARGS->target_no, $vote_duel)){
+  if (is_array($vote_duel) && ! in_array(RQ::$get->target_no, $vote_duel)){
     OutputVoteResult('処刑：決選投票対象者以外には投票できません');
   }
 
   //投票済みチェック
   if ($ROOM->test_mode){
-    if (array_key_exists($SELF->uname, $RQ_ARGS->TestItems->vote->day)){
+    if (array_key_exists($SELF->uname, RQ::GetTest()->vote->day)) {
       PrintData($SELF->uname, 'AlreadyVoted');
       return false;
     }
   }
   else {
-    $query = $ROOM->GetQuery(true, 'vote') . " AND scene = '{$ROOM->scene}' " .
-      "AND vote_count = {$ROOM->vote_count} AND revote_count = {$RQ_ARGS->revote_count} " .
-      "AND user_no = {$SELF->user_no}";
+    $query = $ROOM->GetQuery(true, 'vote') . " AND scene = '{$ROOM->scene}'" .
+      " AND vote_count = {$ROOM->vote_count} AND revote_count = " . RQ::$get->revote_count .
+      " AND user_no = {$SELF->user_no}";
     if (DB::FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
   }
 
@@ -697,7 +696,7 @@ function VoteDay(){
 
 //昼の投票集計処理
 function AggregateVoteDay(){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS;
+  global $GAME_CONF, $ROOM, $ROLES, $USERS;
 
   //-- 投票処理実行判定 --//
   if (! $ROOM->test_mode) CheckSituation('VOTE_KILL'); //コマンドチェック
@@ -1024,7 +1023,7 @@ function CheckVoteNight(){
 
 //夜の投票ページを出力する
 function OutputVoteNight(){
-  global $VOTE_MESS, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $VOTE_MESS, $ROOM, $ROLES, $USERS, $SELF;
 
   CheckScene(); //投票シーンチェック
  //-- 投票済みチェック --//
@@ -1050,11 +1049,13 @@ function OutputVoteNight(){
   }
 
   if (is_null($ROLES->stack->submit)) $ROLES->stack->submit = strtolower($ROLES->stack->action);
+  $back_url = RQ::$get->back_url;
+  $post_url = RQ::$get->post_url;
   echo <<<EOF
 </tr></table>
 <span class="vote-message">* 投票先の変更はできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$RQ_ARGS->back_url}</td>
+<td>{$back_url}</td>
 <input type="hidden" name="situation" value="{$ROLES->stack->action}">
 <td><input type="submit" value="{$VOTE_MESS->{$ROLES->stack->submit}}"></td></form>
 
@@ -1066,7 +1067,7 @@ EOF;
     }
     echo <<<EOF
 <td>
-<form method="POST" action="{$RQ_ARGS->post_url}">
+<form method="POST" action="{$post_url}">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="{$ROLES->stack->not_action}">
 <input type="hidden" name="target_no" value="{$SELF->user_no}">
@@ -1085,34 +1086,34 @@ EOF;
 
 //夜の投票処理
 function VoteNight(){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $ROOM, $ROLES, $USERS, $SELF;
 
   //-- イベント名と役職の整合チェック --//
   $filter = CheckVoteNight();
-  if (empty($RQ_ARGS->situation)) {
+  if (empty(RQ::$get->situation)) {
     OutputVoteResult('夜：投票イベントが空です');
   }
-  elseif ($RQ_ARGS->situation == $ROLES->stack->not_action) {
+  elseif (RQ::$get->situation == $ROLES->stack->not_action) {
     $not_action = true;
   }
-  elseif ($RQ_ARGS->situation != $ROLES->stack->action) {
+  elseif (RQ::$get->situation != $ROLES->stack->action) {
     OutputVoteResult('夜：投票イベントが一致しません');
   }
   else {
     $not_action = false;
   }
   //PrintData($filter);
-  if (! $ROOM->test_mode) CheckAlreadyVote($RQ_ARGS->situation); //投票済みチェック
+  if (! $ROOM->test_mode) CheckAlreadyVote(RQ::$get->situation); //投票済みチェック
 
   //-- 投票処理 --//
   if ($not_action) { //投票キャンセルタイプは何もしない
-    if (! $SELF->Vote($RQ_ARGS->situation)) OutputVoteResult('データベースエラー'); //投票処理
-    $ROOM->Talk('', $RQ_ARGS->situation, $SELF->uname, '', null, null, $SELF->role_id);
+    if (! $SELF->Vote(RQ::$get->situation)) OutputVoteResult('データベースエラー'); //投票処理
+    $ROOM->Talk('', RQ::$get->situation, $SELF->uname, '', null, null, $SELF->role_id);
   }
   else {
     $filter->CheckVoteNight();
     //PrintData($ROLES->stack);
-    if (! $SELF->Vote($RQ_ARGS->situation, $ROLES->stack->target_no)) {
+    if (! $SELF->Vote(RQ::$get->situation, $ROLES->stack->target_no)) {
       OutputVoteResult('データベースエラー'); //投票処理
     }
     $str = $ROLES->stack->target_handle;
@@ -1127,7 +1128,7 @@ function VoteNight(){
 
 //夜の集計処理
 function AggregateVoteNight($skip = false){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $GAME_CONF, $ROOM, $ROLES, $USERS, $SELF;
 
   $ROOM->LoadVote(); //投票情報を取得
   //PrintData($ROOM->vote, 'VoteRow');

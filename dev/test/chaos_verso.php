@@ -9,16 +9,17 @@ OutputHTMLHeader('裏・闇鍋モード配役テストツール', 'role_table');
 OutputRoleTestForm();
 
 if (@$_POST['command'] == 'role_test') {
-  $RQ_ARGS = new RequestBase();
-  $RQ_ARGS->TestItems->is_virtual_room = true;
+  $INIT_CONF->LoadRequest('RequestBase');
+  RQ::$get->TestItems = new StdClass();
+  RQ::GetTest()->is_virtual_room = true;
 
   $stack = new StdClass();
   $stack->game_option = array('chaos_verso');
   $stack->option_role = array();
 
-  $RQ_ARGS->TestItems->test_room['game_option'] = implode(' ', $stack->game_option);
-  $RQ_ARGS->TestItems->test_room['option_role'] = implode(' ', $stack->option_role);
-  $ROOM = new Room($RQ_ARGS);
+  RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
+  RQ::SetTestRoom('option_role', implode(' ', $stack->option_role));
+  $ROOM = new Room(RQ::$get);
   $ROOM->LoadOption();
 
   $user_count = @(int)$_POST['user_count'];

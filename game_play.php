@@ -5,30 +5,30 @@ $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay');
-if ($RQ_ARGS->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
+if (RQ::$get->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
 DB::Connect();
 $SESSION->CertifyGamePlay(); //セッション認証
 
-$ROOM = new Room($RQ_ARGS); //村情報をロード
-$ROOM->dead_mode    = $RQ_ARGS->dead_mode;
-$ROOM->heaven_mode  = $RQ_ARGS->heaven_mode;
+$ROOM = new Room(RQ::$get); //村情報をロード
+$ROOM->dead_mode    = RQ::$get->dead_mode;
+$ROOM->heaven_mode  = RQ::$get->heaven_mode;
 $ROOM->system_time  = TZTime();
 $ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 //シーンに応じた追加クラスをロード
 if ($ROOM->IsBeforeGame()) { //ゲームオプション表示
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_OPT', 'GAME_OPT_MESS', 'ROOM_IMG');
-  $RQ_ARGS->retrive_type = $ROOM->scene;
+  RQ::$get->retrive_type = $ROOM->scene;
 }
 elseif (! $ROOM->heaven_mode && $ROOM->IsDay()) {
-  $RQ_ARGS->retrive_type = $ROOM->scene;
+  RQ::$get->retrive_type = $ROOM->scene;
 }
 elseif ($ROOM->IsFinished()) { //勝敗結果表示
   $INIT_CONF->LoadClass('WINNER_MESS');
 }
 
-$USERS = new UserDataSet($RQ_ARGS); //ユーザ情報をロード
+$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
 $SELF  = $USERS->BySession(); //自分の情報をロード
 
 SendCookie($OBJECTION); //必要なクッキーをセットする
@@ -36,16 +36,16 @@ SendCookie($OBJECTION); //必要なクッキーをセットする
 //-- 発言処理 --//
 $say_limit = null;
 if (! $ROOM->dead_mode || $ROOM->heaven_mode) { //発言が送信されるのは bottom フレーム
-  $say_limit = ConvertSay($RQ_ARGS->say); //発言置換処理
+  $say_limit = ConvertSay(RQ::$get->say); //発言置換処理
 
-  if ($RQ_ARGS->say == '') {
+  if (RQ::$get->say == '') {
     CheckSilence(); //発言が空ならゲーム停滞のチェック(沈黙、突然死)
   }
-  elseif ($RQ_ARGS->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame())) {
-    EntryLastWords($RQ_ARGS->say); //遺言登録 (細かい判定条件は関数内で行う)
+  elseif (RQ::$get->last_words && (! $SELF->IsDummyBoy() || $ROOM->IsBeforeGame())) {
+    EntryLastWords(RQ::$get->say); //遺言登録 (細かい判定条件は関数内で行う)
   }
   elseif ($SELF->IsDead() || $SELF->IsDummyBoy() || $SELF->last_load_scene == $ROOM->scene) {
-    Say($RQ_ARGS->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
+    Say(RQ::$get->say); //死んでいる or 身代わり君 or ゲームシーンが一致しているなら書き込む
   }
   else {
     CheckSilence(); //発言ができない状態ならゲーム停滞チェック
@@ -64,7 +64,7 @@ OutputGamePageHeader();
 OutputGameHeader();
 if ($say_limit === false) echo '<font color="#FF0000">' . $MESSAGE->say_limit . '</font><br>';
 if (! $ROOM->heaven_mode) {
-  if (! $RQ_ARGS->list_down) OutputPlayerList();
+  if (! RQ::$get->list_down) OutputPlayerList();
   OutputAbility();
   if ($ROOM->IsDay() && $SELF->IsLive() && $ROOM->date != 1) CheckSelfVoteDay();
   if ($ROOM->IsPlaying()) OutputRevoteList();
@@ -78,7 +78,7 @@ if (! $ROOM->heaven_mode) {
   OutputDeadMan();
   OutputVoteList();
   if (! $ROOM->dead_mode) OutputSelfLastWords();
-  if ($RQ_ARGS->list_down) OutputPlayerList();
+  if (RQ::$get->list_down) OutputPlayerList();
 }
 OutputHTMLFooter();
 ob_end_flush();
@@ -86,7 +86,7 @@ ob_end_flush();
 //-- 関数 --//
 //必要なクッキーをまとめて登録 (ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(&$objection_list){
-  global $GAME_CONF, $RQ_ARGS, $ROOM, $USERS, $SELF;
+  global $GAME_CONF, $ROOM, $USERS, $SELF;
 
   //-- 夜明け --//
   setcookie('scene', $ROOM->scene, $ROOM->system_time + 3600); //シーンを登録
@@ -110,7 +110,7 @@ function SendCookie(&$objection_list){
   if ($ROOM->IsAfterGame()) return; //ゲーム終了ならスキップ
 
   //「異議」ありセット判定
-  if ($RQ_ARGS->set_objection && $SELF->objection < $GAME_CONF->objection &&
+  if (RQ::$get->set_objection && $SELF->objection < $GAME_CONF->objection &&
       ($ROOM->IsBeforeGame() || ($SELF->IsLive() && $ROOM->IsDay()))) {
     $SELF->objection++;
     $SELF->Update('objection', $SELF->objection);
@@ -147,10 +147,10 @@ function EntryLastWords($say){
 
 //発言
 function Say($say){
-  global $RQ_ARGS, $ROOM, $ROLES, $USERS, $SELF;
+  global $ROOM, $ROLES, $USERS, $SELF;
 
   if (! $ROOM->IsPlaying()) return Write($say, $ROOM->scene, null, 0, true); //ゲーム開始前後
-  if ($RQ_ARGS->last_words && $SELF->IsDummyBoy()) { //身代わり君のシステムメッセージ (遺言)
+  if (RQ::$get->last_words && $SELF->IsDummyBoy()) { //身代わり君のシステムメッセージ (遺言)
     return Write($say, $ROOM->scene, 'dummy_boy');
   }
   if ($SELF->IsDead()) return Write($say, 'heaven'); //死者の霊話
@@ -337,13 +337,12 @@ function SetSuddenDeathTime(){
 
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $TIME_CONF, $MESSAGE, $RQ_ARGS, $ROOM, $USERS, $SELF,
-    $COOKIE, $SOUND, $OBJECTION;
+  global $GAME_CONF, $TIME_CONF, $MESSAGE, $ROOM, $USERS, $SELF, $COOKIE, $SOUND, $OBJECTION;
 
   $url_room   = '?room_no=' . $ROOM->id;
-  $url_reload = $RQ_ARGS->auto_reload > 0 ? '&auto_reload=' . $RQ_ARGS->auto_reload : '';
-  $url_sound  = $RQ_ARGS->play_sound      ? '&play_sound=on'  : '';
-  $url_list   = $RQ_ARGS->list_down       ? '&list_down=on'   : '';
+  $url_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
+  $url_sound  = RQ::$get->play_sound      ? '&play_sound=on'  : '';
+  $url_list   = RQ::$get->list_down       ? '&list_down=on'   : '';
   $url_dead   = $ROOM->dead_mode          ? '&dead_mode=on'   : '';
   $url_heaven = $ROOM->heaven_mode        ? '&heaven_mode=on' : '';
 
@@ -410,13 +409,13 @@ EOF;
 
     $url = $url_header . $url_reload;
     echo ' [音でお知らせ](' .
-      ($RQ_ARGS->play_sound ? 'on ' . $url . '">off</a>' :
+      (RQ::$get->play_sound ? 'on ' . $url . '">off</a>' :
        $url . '&play_sound=on">on</a> off') . ')'."\n";
   }
 
   //プレイヤーリストの表示位置
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
-    $url_reload . $url_sound  . ($RQ_ARGS->list_down ? '">↑' : '&list_down=on">↓') . 'リスト</a>';
+    $url_reload . $url_sound  . (RQ::$get->list_down ? '">↑' : '&list_down=on">↓') . 'リスト</a>';
 
   if ($ROOM->IsFinished()){
     echo "\n".'<a target="_blank" href="game_play.php' . $url_room . $url_list . '">' .
@@ -432,7 +431,7 @@ EOF;
     }
   }
 
-  if ($RQ_ARGS->play_sound && ($ROOM->IsBeforeGame() || $ROOM->IsDay())){ //音でお知らせ処理
+  if (RQ::$get->play_sound && ($ROOM->IsBeforeGame() || $ROOM->IsDay())){ //音でお知らせ処理
     if ($ROOM->IsBeforeGame()){ //入村・満員
       $user_count = $USERS->GetUserCount();
       $max_user   = DB::FetchResult($ROOM->GetQueryHeader('room', 'max_user'));
