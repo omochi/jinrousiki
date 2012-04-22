@@ -15,12 +15,10 @@ class Role_mania extends Role {
 
   function OutputAction(){ OutputVoteMessage('mania-do', 'mania_do', $this->action); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
+  function IsVote(){ return DB::$ROOM->date == 1; }
 
   //コピー処理
   function Copy($user){
-    global $ROOM;
-
     $actor = $this->GetActor();
     $role  = $this->GetRole($user);
     $this->CopyAction($user, $role);
@@ -29,7 +27,7 @@ class Role_mania extends Role {
       $actor->ReplaceRole($this->role, $role);
     if (! $this->delay_copy) $actor->AddRole($this->GetCopiedRole());
     if (! $this->camp_copy) {
-      $ROOM->ResultAbility($this->result, $role, $user->handle_name, $actor->user_no);
+      DB::$ROOM->ResultAbility($this->result, $role, $user->handle_name, $actor->user_no);
     }
   }
 

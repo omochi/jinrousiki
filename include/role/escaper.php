@@ -13,18 +13,16 @@ class Role_escaper extends Role{
 
   function OutputAction(){ OutputVoteMessage('escape-do', 'escape_do', $this->action); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   //逃亡
   function Escape($user){
-    global $USERS;
-
     $actor = $this->GetActor();
     if(in_array($user->uname, $this->GetStack('trap'))){ //罠死判定
-      $USERS->Kill($actor->user_no, 'TRAPPED');
+      DB::$USER->Kill($actor->user_no, 'TRAPPED');
     }
     elseif($this->EscapeFailed($user)){ //逃亡失敗判定
-      $USERS->Kill($actor->user_no, 'ESCAPER_DEAD');
+      DB::$USER->Kill($actor->user_no, 'ESCAPER_DEAD');
     }
     else{
       if(in_array($user->uname, $this->GetStack('snow_trap'))){ //凍傷判定

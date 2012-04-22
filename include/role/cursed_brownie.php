@@ -14,10 +14,9 @@ class Role_cursed_brownie extends Role {
   }
 
   function VoteKillReaction(){
-    global $USERS;
     foreach (array_keys($this->GetStack()) as $uname) {
       foreach ($this->GetVotedUname($uname) as $voted_uname) {
-	$user = $USERS->ByRealUname($voted_uname);
+	$user = DB::$USER->ByRealUname($voted_uname);
 	if ($user->IsLive(true) && ! $user->IsAvoid() && mt_rand(0, 9) < 3) $user->AddDoom(2);
       }
     }

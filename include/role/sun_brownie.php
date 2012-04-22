@@ -12,7 +12,6 @@ class Role_sun_brownie extends Role_history_brownie {
   function __construct(){ parent::__construct(); }
 
   function VoteKillCounter($list){
-    global $ROOM;
-    $ROOM->SystemMessage($this->event_day, 'EVENT', 1);
+    DB::$ROOM->SystemMessage($this->event_day, 'EVENT', 1);
   }
 }

@@ -8,9 +8,7 @@ class Role_sirius_wolf extends Role_wolf{
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $USERS;
-
-    switch(strval(count($USERS->GetLivingWolves()))){ //覚醒状態
+    switch(strval(count(DB::$USER->GetLivingWolves()))){ //覚醒状態
     case '2':
       OutputAbilityResult('ability_sirius_wolf', NULL);
       break;

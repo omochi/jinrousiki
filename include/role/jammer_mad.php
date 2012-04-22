@@ -15,7 +15,7 @@ class Role_jammer_mad extends Role{
 
   //妨害対象セット成立判定 (Mixin あり)
   function IsJammer($user){
-    global $ROLES, $USERS;
+    global $ROLES;
 
     $filter_list = $ROLES->LoadFilter('guard_curse'); //厄払い
     if($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))){ //呪返し判定
@@ -23,7 +23,7 @@ class Role_jammer_mad extends Role{
       foreach($filter_list as $filter){ //厄神の護衛判定
 	if($filter->IsGuard($actor->uname)) return false;
       }
-      $USERS->Kill($actor->user_no, 'CURSED');
+      DB::$USER->Kill($actor->user_no, 'CURSED');
       return false;
     }
 

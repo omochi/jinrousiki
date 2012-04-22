@@ -4,7 +4,7 @@
   ○仕様
   ・暗殺：標準
 */
-class Role_assassin extends Role{
+class Role_assassin extends Role {
   public $action     = 'ASSASSIN_DO';
   public $not_action = 'ASSASSIN_NOT_DO';
   public $ignore_message = '初日は暗殺できません';
@@ -14,12 +14,11 @@ class Role_assassin extends Role{
     OutputVoteMessage('assassin-do', 'assassin_do', $this->action, $this->not_action);
   }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   function SetVoteNight(){
-    global $ROOM;
     parent::SetVoteNight();
-    if($ROOM->IsEvent('force_assassin_do')) $this->SetStack(NULL, 'not_action');
+    if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(NULL, 'not_action');
   }
 
   //暗殺先セット
@@ -50,7 +49,6 @@ class Role_assassin extends Role{
 
   //暗殺死処理
   function AssassinKill(){
-    global $USERS;
-    foreach($this->GetStack() as $id => $flag) $USERS->Kill($id, 'ASSASSIN_KILLED');
+    foreach ($this->GetStack() as $id => $flag) DB::$USER->Kill($id, 'ASSASSIN_KILLED');
   }
 }

@@ -4,11 +4,10 @@
   ○仕様
   ・得票数：-4 (2日目) / +2 (3日目以降)
 */
-class Role_downer_luck extends Role{
+class Role_downer_luck extends Role {
   function __construct(){ parent::__construct(); }
 
   function FilterVotePoll(&$number){
-    global $ROOM;
-    $number += $ROOM->date == 2 ? -4 : 2;
+    $number += DB::$ROOM->date == 2 ? -4 : 2;
   }
 }

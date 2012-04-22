@@ -11,14 +11,12 @@ class Role_follow_mad extends Role{
   function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
 
   function Followed($user_list){
-    global $USERS;
-
     if(! is_array($stack = $this->GetStack())) return;
     $count = 0; //能力発動カウント
     $follow_stack = array(); //有効投票先リスト
     foreach($stack as $uname => $target_uname){
       if($this->IsVoted($uname)) continue;
-      $target = $USERS->ByRealUname($target_uname);
+      $target = DB::$USER->ByRealUname($target_uname);
       if($this->IsVoted($target->uname)) continue;
       $target->suicide_flag ? $count++ : $follow_stack[$uname] = $target->user_no;
     }
@@ -27,7 +25,7 @@ class Role_follow_mad extends Role{
 
     $target_stack = array(); //対象者リスト
     foreach($user_list as $uname){ //情報収集
-      $user = $USERS->ByRealUname($uname);
+      $user = DB::$USER->ByRealUname($uname);
       if($user->IsLive(true) && ! $user->IsAvoid(true)) $target_stack[] = $user->user_no;
     }
     //PrintData($target_stack, "BaseTarget [{$this->role}]" );

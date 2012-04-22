@@ -11,11 +11,9 @@ class Role_human extends Role {
 
   //投票数増加判定
   private function IsBrownie(){
-    global $ROOM;
-
     if (is_null($flag = $this->GetStack())) {
       $role = 'brownie';
-      $flag = $ROOM->IsEvent($role); //天候判定
+      $flag = DB::$ROOM->IsEvent($role); //天候判定
       foreach ($this->GetUser() as $user) { //座敷童子の生存判定
 	if ($flag) break;
 	$flag = $user->IsLiveRole($role);

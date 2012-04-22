@@ -15,11 +15,11 @@ class Option_gentleman extends CheckRoomOptionItem {
 	}
 
   function Cast(&$list, &$rand){
-    global $ROLES, $USERS;
+    global $ROLES;
 
     $stack = array('male' => 'gentleman', 'female' => 'lady');
     foreach(array_keys($list) as $id){
-      $list[$id] .= ' ' . $stack[$USERS->ByUname($ROLES->stack->uname_list[$id])->sex];
+      $list[$id] .= ' ' . $stack[DB::$USER->ByUname($ROLES->stack->uname_list[$id])->sex];
     }
     return array('gentleman', 'lady');
   }

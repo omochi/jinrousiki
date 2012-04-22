@@ -10,15 +10,15 @@ class Role_blinder extends Role{
 
   //スキップ判定
   function IgnoreTalk(){
-    global $USERS;
     return  ! $this->GetViewer()->virtual_live &&
-      ! $USERS->IsVirtualLive($this->GetViewer()->user_no);
+      ! DB::$USER->IsVirtualLive($this->GetViewer()->user_no);
   }
 
   //発言フィルタ
   function FilterTalk($user, &$name, &$voice, &$str){
-    global $ROOM;
-    if($this->IgnoreTalk() || ! $ROOM->IsDay() || $this->GetViewer()->IsSame($user->uname)) return;
+    if ($this->IgnoreTalk() || ! DB::$ROOM->IsDay() || $this->GetViewer()->IsSame($user->uname)) {
+      return;
+    }
     $name = '';
   }
 

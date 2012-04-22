@@ -11,13 +11,11 @@ class Role_saint extends Role {
   function __construct(){ parent::__construct(); }
 
   function DecideVoteKill(){
-    global $USERS;
-
     if ($this->IsVoteKill()) return;
     $stack = array();
     $target_stack = array();
     foreach ($this->GetVotePossible() as $target_uname) { //最多得票者の情報を収集
-      $user = $USERS->ByRealUname($target_uname); //$target_uname は仮想ユーザ
+      $user = DB::$USER->ByRealUname($target_uname); //$target_uname は仮想ユーザ
       if ($user->IsRole('saint')) $stack[] = $target_uname;
       if (! $user->IsCamp('human', true)) $target_stack[] = $target_uname;
     }

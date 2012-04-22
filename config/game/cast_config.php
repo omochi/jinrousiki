@@ -1098,10 +1098,8 @@ class CastConfig extends CastConfigBase {
   //-- 関数 --//
   //決闘村の配役初期化処理
   function InitializeDuel($user_count){
-    global $ROOM;
-
     //-- 霊界自動公開オプションによる配役設定分岐 --//
-    if ($ROOM->IsOption('not_open_cast')) { //非公開
+    if (DB::$ROOM->IsOption('not_open_cast')) { //非公開
       //-- 埋毒決闘 --//
       $duel_fix_list = array();
       if ($user_count >= 20){
@@ -1112,7 +1110,7 @@ class CastConfig extends CastConfigBase {
       $duel_rate_list = array('poison' => 5, 'chain_poison' => 10,
 			      'poison_wolf' => 5, 'triangle_cupid' => 2);
     }
-    elseif ($ROOM->IsOption('auto_open_cast')) { //自動公開
+    elseif (DB::$ROOM->IsOption('auto_open_cast')) { //自動公開
       //-- 恋色決闘 --//
       $duel_fix_list = array();
       if ($user_count >= 15) $duel_fix_list['sweet_fairy'] = 1;
@@ -1138,11 +1136,9 @@ class CastConfig extends CastConfigBase {
 
   //決闘村の配役最終処理
   function FinalizeDuel($user_count, &$role_list){
-    global $ROOM;
-
-    if ($ROOM->IsOption('not_open_cast')) { //非公開
+    if (DB::$ROOM->IsOption('not_open_cast')) { //非公開
     }
-    elseif ($ROOM->IsOption('auto_open_cast')) { //自動公開
+    elseif (DB::$ROOM->IsOption('auto_open_cast')) { //自動公開
       if ($role_list['self_cupid'] > 1) {
 	$role_list['self_cupid']--;
 	@$role_list['dummy_chiroptera']++;

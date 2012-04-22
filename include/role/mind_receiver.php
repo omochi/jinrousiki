@@ -5,17 +5,15 @@
   ・仲間表示：受信先
   ・発言透過：受信先
 */
-class Role_mind_receiver extends Role{
+class Role_mind_receiver extends Role {
   function __construct(){ parent::__construct(); }
 
-  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
+  protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
 
   protected function OutputPartner(){
-    global $USERS;
-
     $stack = array();
     foreach($this->GetActor()->GetPartner($this->role, true) as $id){
-      $stack[$id] = $USERS->ById($id)->handle_name;
+      $stack[$id] = DB::$USER->ById($id)->handle_name;
     }
     ksort($stack);
     OutputPartner($stack, 'mind_scanner_target');

@@ -3,14 +3,12 @@
   ◆夢求愛者 (dummy_chiroptera)
   ○仕様
 */
-class Role_dummy_chiroptera extends Role{
+class Role_dummy_chiroptera extends Role {
   public $mix_in = 'self_cupid';
   public $display_role = 'self_cupid';
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
-    global $USERS;
-
     $user   = $this->GetActor();
     $target = $user->GetPartner($this->role);
     $stack  = $target;
@@ -18,19 +16,21 @@ class Role_dummy_chiroptera extends Role{
       $stack[] = $user->user_no;
       asort($stack);
       $pair = array();
-      foreach($stack as $id) $pair[] = $USERS->ById($id)->handle_name;
+      foreach($stack as $id) $pair[] = DB::$USER->ById($id)->handle_name;
       OutputPartner($pair, 'cupid_pair');
     }
     //仮想恋人を表示 (憑依追跡 / 恋人・悲恋持ちなら処理委託)
     if(! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
     $lovers = array();
-    foreach($target as $id) $lovers[] = $USERS->GetHandleName($USERS->ById($id)->uname, true);
+    foreach ($target as $id) {
+      $lovers[] = DB::$USER->GetHandleName(DB::$USER->ById($id)->uname, true);
+    }
     OutputPartner($lovers, 'partner_header', 'lovers_footer');
   }
 
   function OutputAction(){ $this->filter->OutputAction(); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
+  function IsVote(){ return DB::$ROOM->date == 1; }
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 

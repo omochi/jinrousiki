@@ -18,15 +18,13 @@ class Role_thunder_brownie extends Role {
 
   //落雷対象者選出
   function SetThunderboltTarget($list){
-    global $USERS;
-
     $stack = array();
     foreach ($list as $uname) {
-      $user = $USERS->ByRealUname($uname);
+      $user = DB::$USER->ByRealUname($uname);
       if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
     }
     //PrintData($stack, 'ThunderboltBase');
     /* actor は直前に別フィルタで設定されたユーザが入るケースがあるので注意 */
-    $this->AddStack($USERS->ByVirtual(GetRandom($stack))->uname, 'thunderbolt');
+    $this->AddStack(DB::$USER->ByVirtual(GetRandom($stack))->uname, 'thunderbolt');
   }
 }

@@ -3,7 +3,7 @@
   ◆罠師 (trap_mad)
   ○仕様
 */
-class Role_trap_mad extends Role{
+class Role_trap_mad extends Role {
   public $action     = 'TRAP_MAD_DO';
   public $not_action = 'TRAP_MAD_NOT_DO';
   public $submit     = 'trap_do';
@@ -17,7 +17,7 @@ class Role_trap_mad extends Role{
     }
   }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   //罠能力判定
   protected function IsVoteTrap(){ return $this->GetActor()->IsActive(); }
@@ -62,8 +62,7 @@ class Role_trap_mad extends Role{
 
   //罠死判定
   function TrapKill($user, $uname){
-    global $USERS;
-    if($flag = $this->IsTrap($uname)) $USERS->Kill($user->user_no, 'TRAPPED');
+    if($flag = $this->IsTrap($uname)) DB::$USER->Kill($user->user_no, 'TRAPPED');
     return $flag;
   }
 
@@ -81,9 +80,8 @@ class Role_trap_mad extends Role{
 
   //罠死リストの死亡処理
   function DelayTrapKill(){
-    global $USERS;
     foreach($this->GetStack('trapped') as $uname => $flag){
-      $USERS->Kill($USERS->UnameToNumber($uname), 'TRAPPED');
+      DB::$USER->Kill(DB::$USER->UnameToNumber($uname), 'TRAPPED');
     }
     $this->SetStack(array(), 'trapped'); //リストをリセット
   }

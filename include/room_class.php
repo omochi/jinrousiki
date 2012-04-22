@@ -1,6 +1,6 @@
 <?php
 //-- 個別の村情報の基底クラス --//
-class Room{
+class Room {
   public $id;
   public $name;
   public $comment;
@@ -331,15 +331,13 @@ class Room{
 
   //霊界公開判定
   function IsOpenCast(){
-    global $USERS;
-
     if (! isset($this->open_cast)) { //未設定ならキャッシュする
       if ($this->IsOption('not_open_cast')) { //常時非公開
-	$user = $USERS->ByID(1); //身代わり君の蘇生辞退判定
-	$this->open_cast = $user->IsDummyBoy() && $user->IsDrop() && $USERS->IsOpenCast();
+	$user = DB::$USER->ByID(1); //身代わり君の蘇生辞退判定
+	$this->open_cast = $user->IsDummyBoy() && $user->IsDrop() && DB::$USER->IsOpenCast();
       }
       elseif ($this->IsOption('auto_open_cast')) { //自動公開
-	$this->open_cast = $USERS->IsOpenCast();
+	$this->open_cast = DB::$USER->IsOpenCast();
       }
       else { //常時公開
 	$this->open_cast = true;
@@ -350,9 +348,8 @@ class Room{
 
   //情報公開判定
   function IsOpenData($virtual = false){
-    global $SELF;
-    return $SELF->IsDummyBoy() ||
-      ($SELF->IsDead() && ! $this->single_view_mode && $this->IsOpenCast()) ||
+    return DB::$SELF->IsDummyBoy() ||
+      (DB::$SELF->IsDead() && ! $this->single_view_mode && $this->IsOpenCast()) ||
       ($virtual ? $this->IsAfterGame() : ($this->IsFinished() && ! $this->single_view_mode));
   }
 

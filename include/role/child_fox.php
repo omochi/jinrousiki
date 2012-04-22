@@ -6,7 +6,7 @@
   ・占い：通常
 */
 RoleManager::LoadFile('fox');
-class Role_child_fox extends Role_fox{
+class Role_child_fox extends Role_fox {
   public $mix_in = 'mage';
   public $resist_wolf = false;
   public $action = 'CHILD_FOX_DO';
@@ -16,8 +16,7 @@ class Role_child_fox extends Role_fox{
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROOM;
-    if(isset($this->result) && $ROOM->date > 1) OutputSelfAbilityResult($this->result);
+    if (isset($this->result) && DB::$ROOM->date > 1) OutputSelfAbilityResult($this->result);
   }
 
   function OutputAction(){ OutputVoteMessage('mage-do', $this->submit, $this->action); }

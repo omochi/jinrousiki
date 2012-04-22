@@ -10,8 +10,7 @@ class Role_power_ogre extends Role_ogre{
   function __construct(){ parent::__construct(); }
 
   function Win($winner){
-    global $USERS;
-    return $this->IsLive() && count($USERS->GetLivingUsers()) <= ceil(count($USERS->rows) / 3);
+    return $this->IsLive() && count(DB::$USER->GetLivingUsers()) <= ceil(count(DB::$USER->rows) / 3);
   }
 
   protected function GetReduceRate(){ return 7 / 10; }

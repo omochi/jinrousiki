@@ -1587,11 +1587,9 @@ class CastConfigBase extends LotteryBuilder {
 
   //身代わり君の配役対象外役職リスト取得
   function GetDummyBoyRoleList(){
-    global $ROOM;
-
     $stack = $this->disable_dummy_boy_role_list; //サーバ個別設定を取得
     array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
-    if ($ROOM->IsOption('detective') && ! in_array('detective_common', $stack)) { //探偵村対応
+    if (DB::$ROOM->IsOption('detective') && ! in_array('detective_common', $stack)) { //探偵村対応
       $stack[] = 'detective_common';
     }
     return $stack;
@@ -1599,10 +1597,8 @@ class CastConfigBase extends LotteryBuilder {
 
   //村人置換村の処理
   function ReplaceRole(&$role_list){
-    global $ROOM;
-
     $stack = array();
-    foreach (array_keys($ROOM->option_role->options) as $option) { //処理順にオプションを登録
+    foreach (array_keys(DB::$ROOM->option_role->options) as $option) { //処理順にオプションを登録
       if ($option == 'replace_human' || strpos($option, 'full_') === 0) {
 	$stack[0][] = $option;
       }
@@ -1628,7 +1624,7 @@ class CastConfigBase extends LotteryBuilder {
 	}
 
 	$count = isset($role_list[$role]) ? $role_list[$role] : 0;
-	if ($role == 'human' && $ROOM->IsOption('gerd')) $count--; //ゲルト君モード
+	if ($role == 'human' && DB::$ROOM->IsOption('gerd')) $count--; //ゲルト君モード
 	if ($count > 0) { //置換処理
 	  @$role_list[$target] += $count;
 	  $role_list[$role]    -= $count;

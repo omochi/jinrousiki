@@ -9,10 +9,9 @@ class Role_corpse_courier_mad extends Role_critical_mad{
   function __construct(){ parent::__construct(); }
 
   function VoteAction(){
-    global $USERS;
     foreach($this->GetStack() as $uname => $target_uname){
       if($this->IsVoted($target_uname)){
-	$USERS->ByRealUname($target_uname)->stolen_flag = true;
+	DB::$USER->ByRealUname($target_uname)->stolen_flag = true;
 	return;
       }
     }

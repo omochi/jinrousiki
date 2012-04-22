@@ -101,10 +101,8 @@ class OptionManager{
   }
 
   function SetRole(&$list, $count){
-    global $ROOM;
-
     foreach ($this->role_list as $option) {
-      if (! $ROOM->IsOption($option) || ! $this->Load($option)) continue;
+      if (! DB::$ROOM->IsOption($option) || ! $this->Load($option)) continue;
       $class  = 'Option_' . $option;
       $filter = new $class();
       $filter->SetRole($list, $count);
@@ -112,11 +110,9 @@ class OptionManager{
   }
 
   function Cast(&$list, &$rand){
-    global $ROOM;
-
     $delete = $this->stack->delete;
     foreach ($this->cast_list as $option) {
-      if (! $ROOM->IsOption($option) || ! $this->Load($option)) continue;
+      if (! DB::$ROOM->IsOption($option) || ! $this->Load($option)) continue;
       $class  = 'Option_' . $option;
       $filter = new $class();
       $stack  = $filter->Cast($list, $rand);

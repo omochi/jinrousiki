@@ -9,13 +9,11 @@ class Role_doom_doll extends Role_doll{
   function __construct(){ parent::__construct(); }
 
   function VoteKillCounter($list){
-    global $USERS;
-
     $stack = array();
     foreach($list as $uname){
-      $user = $USERS->ByRealUname($uname);
+      $user = DB::$USER->ByRealUname($uname);
       if(! $user->IsAvoid() && ! $this->IsDoll($user)) $stack[] = $user->user_no;
     }
-    if(count($stack) > 0) $USERS->ByID(GetRandom($stack))->AddDoom(2);
+    if(count($stack) > 0) DB::$USER->ByID(GetRandom($stack))->AddDoom(2);
   }
 }

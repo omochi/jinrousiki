@@ -12,8 +12,9 @@ class Role_possessed_mad extends Role{
 
   //Mixin あり
   function OutputResult(){
-    global $ROOM;
-    if($ROOM->date > 2 && ! $this->GetActor()->IsActive()) OutputPossessedTarget(); //現在の憑依先
+    if (DB::$ROOM->date > 2 && ! $this->GetActor()->IsActive()) {
+      OutputPossessedTarget(); //現在の憑依先
+    }
   }
 
   function OutputAction(){
@@ -22,7 +23,7 @@ class Role_possessed_mad extends Role{
     }
   }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   function IsMindReadPossessed($user){ return $user->IsSame($this->GetViewer()->uname); }
 
@@ -44,7 +45,7 @@ class Role_possessed_mad extends Role{
 
   //憑依情報セット
   function SetPossessed($user){
-    global $ROLES, $USERS;
+    global $ROLES;
 
     foreach($ROLES->LoadFilter('guard_curse') as $filter){ //厄神の護衛判定
       if($filter->IsGuard($this->GetUname())) return false;
@@ -53,7 +54,7 @@ class Role_possessed_mad extends Role{
     //無効判定 (蘇生/憑依制限/無効陣営/憑依済み)
     $class = $this->GetClass($method = 'IgnorePossessed');
     if($user->revive_flag || $user->IsPossessedLimited() || $class->$method($user->GetCamp(true)) ||
-       ! $USERS->ByRealUname($user->uname)->IsSame($user->uname)) return false;
+       ! DB::$USER->ByRealUname($user->uname)->IsSame($user->uname)) return false;
     $this->AddStack($user->uname, 'possessed_dead');
   }
 

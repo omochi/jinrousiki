@@ -9,12 +9,10 @@ class Role_revive_mania extends Role_unknown_mania {
   function __construct(){ parent::__construct(); }
 
   function WolfEatCounter($user){
-    global $ROOM, $USERS;
-
-    if ($ROOM->IsEvent('no_revive') || is_null($id = $this->GetActor()->GetMainRoleTarget())) {
+    if (DB::$ROOM->IsEvent('no_revive') || is_null($id = $this->GetActor()->GetMainRoleTarget())) {
       return;
     }
-    $target = $USERS->ByID($id);
+    $target = DB::$USER->ByID($id);
     if ($target->IsDead(true) && ! $target->IsReviveLimited()) $target->Revive();
   }
 }

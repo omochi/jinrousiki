@@ -14,22 +14,21 @@ class Role_wizard extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROOM;
-    if ($ROOM->date > 2) foreach ($this->result_list as $result) OutputSelfAbilityResult($result);
+    if (DB::$ROOM->date > 2) {
+      foreach ($this->result_list as $result) OutputSelfAbilityResult($result);
+    }
   }
 
   function OutputAction(){ OutputVoteMessage('wizard-do', 'wizard_do', $this->action); }
 
-  function IsVote(){ global $ROOM; return parent::IsVote() && $ROOM->date > 1; }
+  function IsVote(){ return parent::IsVote() && DB::$ROOM->date > 1; }
 
   //魔法セット (返り値：昼：魔法 / 夜：投票タイプ)
   function SetWizard(){
-    global $ROOM;
-
     $list  = $this->GetWizard();
     $stack = is_null($this->action) ? $list : array_keys($list);
-    $role  = $ROOM->IsEvent('full_wizard') ? array_shift($stack) :
-      ($ROOM->IsEvent('debilitate_wizard') ? array_pop($stack) : GetRandom($stack));
+    $role  = DB::$ROOM->IsEvent('full_wizard') ? array_shift($stack) :
+      (DB::$ROOM->IsEvent('debilitate_wizard') ? array_pop($stack) : GetRandom($stack));
     $this->GetActor()->virtual_role = is_int($role) ? $this->role : $role; //仮想役職を登録
     return is_null($this->action) ? $role : $list[$role];
   }

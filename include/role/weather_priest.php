@@ -8,18 +8,15 @@ RoleManager::LoadFile('priest');
 class Role_weather_priest extends Role_priest{
   function __construct(){ parent::__construct(); }
 
-  protected function GetOutputRole(){
-    global $ROOM;
-    return $ROOM->date > 1 ? $this->role : null;
-  }
+  protected function GetOutputRole(){ return DB::$ROOM->date > 1 ? $this->role : null; }
 
   function Priest($role_flag){
-    global $GAME_CONF, $ROOM;
+    global $GAME_CONF;
 
     $data = $this->GetStack('priest');
     //スキップ判定
     if(! (property_exists($data, $this->role) ||
-	  ($ROOM->date > 2 && ($ROOM->date % 3) == 0 &&
+	  (DB::$ROOM->date > 2 && (DB::$ROOM->date % 3) == 0 &&
 	   $data->count['total'] - $data->count['human_side'] > $data->count['wolf'] * 2))){
       return false;
     }
@@ -83,6 +80,6 @@ class Role_weather_priest extends Role_priest{
     //$weather = 44; //テスト用
     $date = 2;
     $flag = property_exists($role_flag, $this->role) && count($role_flag->{$this->role}) > 0;
-    $ROOM->EntryWeather($weather, $date, $flag);
+    DB::$ROOM->EntryWeather($weather, $date, $flag);
   }
 }

@@ -9,16 +9,14 @@ class Role_lovers extends Role{
   protected function OutputImage(){ return; }
 
   protected function OutputPartner(){
-    global $ROOM, $USERS;
-
     $target = $this->GetActor()->partner_list;
     $stack  = array();
     foreach($this->GetUser() as $user){
       if($this->IsActor($user->uname)) continue;
       if($user->IsPartner($this->role, $target) ||
 	 $this->GetActor()->IsPartner('dummy_chiroptera', $user->user_no) ||
-	 ($ROOM->date == 1 && $user->IsPartner('sweet_status', $target))){ //夢求愛者・悲恋対応
-	$stack[] = $USERS->GetHandleName($user->uname, true); //憑依追跡
+	 (DB::$ROOM->date == 1 && $user->IsPartner('sweet_status', $target))){ //夢求愛者・悲恋対応
+	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
       }
     }
     OutputPartner($stack, 'partner_header', 'lovers_footer');

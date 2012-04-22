@@ -62,8 +62,8 @@ function EntryUser(){
     OutputActionResult('村人登録 [サーバエラー]', $str);
   }
 
-  $ROOM = RoomDataSet::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
-  if (! $ROOM->IsBeforeGame() || $ROOM->status != 'waiting') { //ゲーム開始判定
+  DB::$ROOM = RoomDataSet::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
+  if (! DB::$ROOM->IsBeforeGame() || DB::$ROOM->status != 'waiting') { //ゲーム開始判定
     OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています。');
   }
 
@@ -71,11 +71,11 @@ function EntryUser(){
   $request = new RequestBase();
   $request->room_no = $room_no;
   $request->retrive_type = 'entry_user';
-  $USERS = new UserDataSet($request);
-  //PrintData($USERS); //テスト用
+  DB::$USER = new UserDataSet($request);
+  //PrintData(DB::$USER); //テスト用
 
-  $user_count = $USERS->GetUserCount(); //現在の KICK されていない住人の数を取得
-  if ($user_no < 1 && $user_count >= $ROOM->max_user) { //定員オーバー判定
+  $user_count = DB::$USER->GetUserCount(); //現在の KICK されていない住人の数を取得
+  if ($user_no < 1 && $user_count >= DB::$ROOM->max_user) { //定員オーバー判定
     OutputActionResult('村人登録 [入村不可]', '村が満員です。');
   }
 
@@ -131,7 +131,7 @@ function EntryUser(){
       $str = '変更点はありません。' . $back_url;
       OutputActionResult('村人登録 [登録情報変更]', $str);
     }
-    $ROOM->TalkBeforegame($str, $target->uname, $target->handle_name, $target->color);
+    DB::$ROOM->TalkBeforegame($str, $target->uname, $target->handle_name, $target->color);
 
     $query_set = implode(', ', $stack);
     $query = "UPDATE user_entry SET {$query_set} WHERE room_no = {$room_no} " .
@@ -172,18 +172,18 @@ EOF;
   }
 
   //DB にユーザデータを登録
-  $user_no = count($USERS->names) + 1; //KICK された住人も含めた新しい番号を振る
+  $user_no = count(DB::$USER->names) + 1; //KICK された住人も含めた新しい番号を振る
   if (DB::InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
 		     $sex, $role, $SESSION->Get(true))) {
     //クッキーの初期化
-    $ROOM->system_time = TZTime(); //現在時刻を取得
-    $cookie_time = $ROOM->system_time - 3600;
+    DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+    $cookie_time = DB::$ROOM->system_time - 3600;
     setcookie('scene',  '', $cookie_time);
     setcookie('vote_times', '', $cookie_time);
     setcookie('objection',  '', $cookie_time);
 
-    $ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
-    $ROOM->UpdateTime();
+    DB::$ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
+    DB::$ROOM->UpdateTime();
     DB::Commit();
 
     $url = 'game_frame.php?room_no=' . $room_no;
@@ -215,14 +215,14 @@ function OutputEntryUserPage(){
     extract(RQ::ToArray()); //引数を再展開
   }
 
-  $ROOM = RoomDataSet::LoadEntryUserPage($room_no);
+  DB::$ROOM = RoomDataSet::LoadEntryUserPage($room_no);
   $str = $room_no . ' 番地の村は';
-  if (is_null($ROOM->id))  OutputActionResult('村人登録 [村番号エラー]', $str . '存在しません');
-  if ($ROOM->IsFinished()) OutputActionResult('村人登録 [入村不可]',     $str . '終了しました');
-  if ($ROOM->status != 'waiting') {
+  if (is_null(DB::$ROOM->id))  OutputActionResult('村人登録 [村番号エラー]', $str . '存在しません');
+  if (DB::$ROOM->IsFinished()) OutputActionResult('村人登録 [入村不可]',     $str . '終了しました');
+  if (DB::$ROOM->status != 'waiting') {
     OutputActionResult('村人登録 [入村不可]', $str . 'すでにゲームが開始されています。');
   }
-  $ROOM->ParseOption(true);
+  DB::$ROOM->ParseOption(true);
   $path = 'img/entry_user';
   $male_checked   = '';
   $female_checked = '';
@@ -282,8 +282,11 @@ EOF;
 EOF;
   }
   OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
-  $action_url = 'user_manager.php?room_no=' . $ROOM->id;
+  $action_url = 'user_manager.php?room_no=' . DB::$ROOM->id;
   if ($user_no > 0) $action_url .= '&user_no=' . $user_no;
+  $room_name    = DB::$ROOM->name;
+  $room_comment = DB::$ROOM->comment;
+  $room_no      = DB::$ROOM->id;
   echo <<<EOF
 <script type="text/javascript" src="javascript/submit_icon_search.js"></script>
 </head>
@@ -293,8 +296,8 @@ EOF;
 <div align="center">
 <table class="main">
 <tr><td><img src="{$path}/title.gif" alt="申請書"></td></tr>
-<tr><td class="title">{$ROOM->name} 村<img src="{$path}/top.gif" alt="への住民登録を申請します"></td></tr>
-<tr><td class="number">～{$ROOM->comment}～ [{$ROOM->id} 番地]</td></tr>
+<tr><td class="title">{$room_name} 村<img src="{$path}/top.gif" alt="への住民登録を申請します"></td></tr>
+<tr><td class="number">～{$room_comment}～ [{$room_no} 番地]</td></tr>
 <tr><td>
 <table class="input">
 {$uname_form}
@@ -322,7 +325,7 @@ EOF;
 
 EOF;
 
-  if ($ROOM->IsOption('wish_role')){
+  if (DB::$ROOM->IsOption('wish_role')){
     echo <<<EOF
 <td class="role"><img src="{$path}/role.gif" alt="役割希望"></td>
 <td colspan="2">
@@ -330,38 +333,38 @@ EOF;
 EOF;
 
     $wish_role_list = array('none');
-    if ($ROOM->IsChaosWish()){
+    if (DB::$ROOM->IsChaosWish()){
       array_push($wish_role_list, 'human', 'mage', 'necromancer', 'medium', 'priest', 'guard',
 		 'common', 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner',
 		 'jealousy', 'brownie', 'wizard', 'doll', 'escaper', 'wolf', 'mad', 'fox',
 		 'child_fox', 'cupid', 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'ogre',
 		 'yaksa', 'duelist', 'avenger', 'patron', 'mania', 'unknown_mania');
     }
-    elseif ($ROOM->IsOption('gray_random')){
+    elseif (DB::$ROOM->IsOption('gray_random')){
       array_push($wish_role_list, 'human', 'wolf', 'mad', 'fox');
     }
     else{
       array_push($wish_role_list,  'human', 'wolf');
-      if ($ROOM->IsQuiz()){
+      if (DB::$ROOM->IsQuiz()){
 	array_push($wish_role_list, 'mad', 'common', 'fox');
       }
       else{
 	array_push($wish_role_list, 'mage', 'necromancer', 'mad', 'guard', 'common');
-	if ($ROOM->IsOption('detective')) $wish_role_list[] = 'detective_common';
+	if (DB::$ROOM->IsOption('detective')) $wish_role_list[] = 'detective_common';
 	$wish_role_list[] = 'fox';
       }
-      if ($ROOM->IsOption('poison')) $wish_role_list[] = 'poison';
-      if ($ROOM->IsOption('assassin')) $wish_role_list[] = 'assassin';
-      if ($ROOM->IsOption('boss_wolf')) $wish_role_list[] = 'boss_wolf';
-      if ($ROOM->IsOption('poison_wolf')){
+      if (DB::$ROOM->IsOption('poison')) $wish_role_list[] = 'poison';
+      if (DB::$ROOM->IsOption('assassin')) $wish_role_list[] = 'assassin';
+      if (DB::$ROOM->IsOption('boss_wolf')) $wish_role_list[] = 'boss_wolf';
+      if (DB::$ROOM->IsOption('poison_wolf')){
 	array_push($wish_role_list, 'poison_wolf', 'pharmacist');
       }
-      if ($ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
-      if ($ROOM->IsOption('sirius_wolf')) $wish_role_list[] = 'sirius_wolf';
-      if ($ROOM->IsOption('child_fox')) $wish_role_list[] = 'child_fox';
-      if ($ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
-      if ($ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
-      if ($ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
+      if (DB::$ROOM->IsOption('possessed_wolf')) $wish_role_list[] = 'possessed_wolf';
+      if (DB::$ROOM->IsOption('sirius_wolf')) $wish_role_list[] = 'sirius_wolf';
+      if (DB::$ROOM->IsOption('child_fox')) $wish_role_list[] = 'child_fox';
+      if (DB::$ROOM->IsOption('cupid')) $wish_role_list[] = 'cupid';
+      if (DB::$ROOM->IsOption('medium')) array_push($wish_role_list, 'medium', 'mind_cupid');
+      if (DB::$ROOM->IsOptionGroup('mania') && ! in_array('mania', $wish_role_list)){
 	$wish_role_list[] = 'mania';
       }
     }

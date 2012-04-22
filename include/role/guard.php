@@ -12,22 +12,20 @@ class Role_guard extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROOM;
-
-    if ($ROOM->date < 1 || $ROOM->IsOption('seal_message')) return;
+    if (DB::$ROOM->date < 1 || DB::$ROOM->IsOption('seal_message')) return;
     OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
     OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
   }
 
   function OutputAction(){ OutputVoteMessage('guard-do', 'guard_do', $this->action); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   //護衛先セット
   function SetGuard($uname){
-    global $ROOM, $ROLES;
+    global $ROLES;
 
-    if ($ROOM->IsEvent('no_contact')) return false; //スキップ判定 (花曇)
+    if (DB::$ROOM->IsEvent('no_contact')) return false; //スキップ判定 (花曇)
     $this->AddStack($uname, 'guard');
     foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
       if ($filter->DelayTrap($this->GetActor(), $uname)) break;
@@ -37,17 +35,17 @@ class Role_guard extends Role {
 
   //護衛
   function Guard($user, $flag = false){
-    global $ROOM, $ROLES, $USERS;
+    global $ROLES;
 
     $stack = array(); //護衛者検出
     foreach ($ROLES->LoadFilter('guard') as $filter) $filter->GetGuard($user->uname, $stack);
     //PrintData($stack, 'List [gurad/' . $this->GetVoter()->uname . ']');
 
     $result  = false;
-    $half    = $ROOM->IsEvent('half_guard'); //曇天
-    $limited = ! $ROOM->IsEvent('full_guard') && $this->IsGuardLimited($user); //護衛制限判定
+    $half    = DB::$ROOM->IsEvent('half_guard'); //曇天
+    $limited = ! DB::$ROOM->IsEvent('full_guard') && $this->IsGuardLimited($user); //護衛制限判定
     foreach ($stack as $uname) {
-      $actor  = $USERS->ByUname($uname);
+      $actor  = DB::$USER->ByUname($uname);
       if ($actor->IsDead(true)) continue; //直前に死んでいたら無効
 
       $filter = $ROLES->LoadMain($actor);
@@ -56,9 +54,9 @@ class Role_guard extends Role {
 
       $filter->GuardAction($this->GetWolfVoter(), $flag); //護衛実行処理
       //護衛成功メッセージを登録
-      if (! $ROOM->IsOption('seal_message') && $actor->IsFirstGuardSuccess($user->uname)) {
-	$target = $USERS->GetHandleName($user->uname, true);
-	$ROOM->ResultAbility('GUARD_SUCCESS', 'success', $target, $actor->user_no);
+      if (! DB::$ROOM->IsOption('seal_message') && $actor->IsFirstGuardSuccess($user->uname)) {
+	$target = DB::$USER->GetHandleName($user->uname, true);
+	DB::$ROOM->ResultAbility('GUARD_SUCCESS', 'success', $target, $actor->user_no);
       }
     }
     return $result;
@@ -85,16 +83,14 @@ class Role_guard extends Role {
 
   //狩り
   function Hunt($user){
-    global $ROOM, $USERS;
-
     //対象が身代わり死していた場合はスキップ
     if (in_array($user->uname, $this->GetStack('sacrifice')) || ! $this->IsHunt($user)) {
       return false;
     }
-    $USERS->Kill($user->user_no, 'HUNTED');
-    if (! $ROOM->IsOption('seal_message')) { //狩りメッセージを登録
-      $target = $USERS->GetHandleName($user->uname, true);
-      $ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $target, $this->GetActor()->user_no);
+    DB::$USER->Kill($user->user_no, 'HUNTED');
+    if (! DB::$ROOM->IsOption('seal_message')) { //狩りメッセージを登録
+      $target = DB::$USER->GetHandleName($user->uname, true);
+      DB::$ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $target, $this->GetActor()->user_no);
     }
   }
 

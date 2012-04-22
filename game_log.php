@@ -8,14 +8,14 @@ $INIT_CONF->LoadRequest('RequestGameLog');
 DB::Connect();
 $SESSION->Certify(); //セッション認証
 
-$ROOM = new Room(RQ::$get); //村情報を取得
-$ROOM->log_mode = true;
-$ROOM->single_log_mode = true;
+DB::$ROOM = new Room(RQ::$get); //村情報を取得
+DB::$ROOM->log_mode = true;
+DB::$ROOM->single_log_mode = true;
 
-$USERS = new UserDataSet(RQ::$get); //ユーザ情報を取得
-$SELF = $USERS->BySession(); //自分の情報をロード
+DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報を取得
+DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
-if(! ($SELF->IsDead() || $ROOM->IsFinished())){ //死者かゲーム終了後だけ
+if(! (DB::$SELF->IsDead() || DB::$ROOM->IsFinished())){ //死者かゲーム終了後だけ
   OutputActionResult('ログ閲覧認証エラー',
 		     'ログ閲覧認証エラー：<a href="./" target="_top">トップページ</a>' .
 		     'からログインしなおしてください');
@@ -24,22 +24,22 @@ if(! ($SELF->IsDead() || $ROOM->IsFinished())){ //死者かゲーム終了後だ
 switch (RQ::$get->scene) {
 case 'aftergame':
 case 'heaven':
-  if(! $ROOM->IsFinished()){ //霊界・ゲーム終了後はゲーム終了後のみ
+  if(! DB::$ROOM->IsFinished()){ //霊界・ゲーム終了後はゲーム終了後のみ
     OutputActionResult('入力データエラー', '入力データエラー：まだゲームが終了していません');
   }
   break;
 
 default:
-  if ($ROOM->date < RQ::$get->date ||
-      ($ROOM->date == RQ::$get->date &&
-       ($ROOM->IsDay() || $ROOM->scene == RQ::$get->scene))) { //「未来」判定
+  if (DB::$ROOM->date < RQ::$get->date ||
+      (DB::$ROOM->date == RQ::$get->date &&
+       (DB::$ROOM->IsDay() || DB::$ROOM->scene == RQ::$get->scene))) { //「未来」判定
     OutputActionResult('入力データエラー', '入力データエラー：無効な日時です');
   }
 
-  $ROOM->last_date = $ROOM->date;
-  $ROOM->date      = RQ::$get->date;
-  $ROOM->scene     = RQ::$get->scene;
-  $USERS->SetEvent(true);
+  DB::$ROOM->last_date = DB::$ROOM->date;
+  DB::$ROOM->date      = RQ::$get->date;
+  DB::$ROOM->scene     = RQ::$get->scene;
+  DB::$USER->SetEvent(true);
   break;
 }
 
@@ -53,15 +53,15 @@ case 'beforegame':
   break;
 
 case 'day':
-  $str .= $ROOM->date . ' 日目 (昼)';
+  $str .= DB::$ROOM->date . ' 日目 (昼)';
   break;
 
 case 'night':
-  $str .= $ROOM->date . ' 日目 (夜)';
+  $str .= DB::$ROOM->date . ' 日目 (夜)';
   break;
 
 case 'aftergame':
-  $str .= $ROOM->date . ' 日目 (終了後)';
+  $str .= DB::$ROOM->date . ' 日目 (終了後)';
   break;
 
 case 'heaven':
@@ -71,25 +71,25 @@ case 'heaven':
 echo $str . '</h1>'."\n";
 
 if (RQ::$get->scene == 'heaven') {
-  $ROOM->heaven_mode = true; //念のためセット
+  DB::$ROOM->heaven_mode = true; //念のためセット
   OutputHeavenTalkLog(); //霊界会話ログ
 }
 else {
-  if (RQ::$get->user_no > 0 && $SELF->IsDummyBoy() && $SELF->handle_name == '身代わり君') {
+  if (RQ::$get->user_no > 0 && DB::$SELF->IsDummyBoy() && DB::$SELF->handle_name == '身代わり君') {
     $INIT_CONF->LoadFile('game_play_functions');
-    $SELF = $USERS->ByID(RQ::$get->user_no);
-    $SELF->live = 'live';
+    DB::$SELF = DB::$USER->ByID(RQ::$get->user_no);
+    DB::$SELF->live = 'live';
     OutputAbility();
   }
   OutputTalkLog(); //会話ログ
-  if ($ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示
+  if (DB::$ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示
     OutputAbilityAction();
     OutputLastWords();
     OutputDeadMan();
   }
-  elseif ($ROOM->IsAfterGame()) {
+  elseif (DB::$ROOM->IsAfterGame()) {
     OutputLastWords(true); //遺言(昼終了時限定)
   }
-  if ($ROOM->IsNight()) OutputVoteList(); //投票結果
+  if (DB::$ROOM->IsNight()) OutputVoteList(); //投票結果
 }
 OutputHTMLFooter(); //HTMLフッタ

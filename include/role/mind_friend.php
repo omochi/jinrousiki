@@ -5,10 +5,10 @@
   ・仲間表示：共鳴先
   ・発言透過：共鳴先
 */
-class Role_mind_friend extends Role{
+class Role_mind_friend extends Role {
   function __construct(){ parent::__construct(); }
 
-  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
+  protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
 
   protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;

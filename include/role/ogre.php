@@ -5,7 +5,7 @@
   ・勝利：生存 + 人狼系の生存
   ・人狼襲撃：確率無効
 */
-class Role_ogre extends Role{
+class Role_ogre extends Role {
   public $action     = 'OGRE_DO';
   public $not_action = 'OGRE_NOT_DO';
   public $resist_rate = 30;
@@ -17,7 +17,7 @@ class Role_ogre extends Role{
     OutputVoteMessage('ogre-do', 'ogre_do', $this->action, $this->not_action);
   }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   function Win($winner){
     if($this->IsDead()) return false;
@@ -29,14 +29,13 @@ class Role_ogre extends Role{
   }
 
   function SetVoteNight(){
-    global $ROOM;
     parent::SetVoteNight();
-    if($ROOM->IsEvent('force_assassin_do')) $this->SetStack(NULL, 'not_action');
+    if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');
   }
 
   //人攫い情報セット
   function SetAssassin($user){
-    global $ROOM, $ROLES;
+    global $ROLES;
 
     foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
       if($filter->DelayTrap($this->GetActor(), $user->uname)) return;
@@ -61,7 +60,7 @@ class Role_ogre extends Role{
     if($rand > $rate) return; //成功判定
     $this->Assassin($user);
 
-    if($ROOM->IsEvent('full_ogre')) return; //成功回数更新処理 (朧月ならスキップ)
+    if(DB::$ROOM->IsEvent('full_ogre')) return; //成功回数更新処理 (朧月ならスキップ)
     $role = $this->role;
     if($times > 0) $role .= '[' . $times . ']';
     $this->GetActor()->ReplaceRole($role, $this->role . '[' . ($times + 1) . ']');
@@ -72,8 +71,7 @@ class Role_ogre extends Role{
 
   //天候情報取得
   protected function GetEvent(){
-    global $ROOM;
-    return $ROOM->IsEvent('full_ogre') ? 100 : ($ROOM->IsEvent('seal_ogre') ? 0 : NULL);
+    return DB::$ROOM->IsEvent('full_ogre') ? 100 : (DB::$ROOM->IsEvent('seal_ogre') ? 0 : null);
   }
 
   //人攫い成功減衰率取得
@@ -84,8 +82,7 @@ class Role_ogre extends Role{
 
   //人攫い死
   function AssassinKill(){
-    global $USERS;
-    foreach($this->GetStack() as $id => $flag) $USERS->Kill($id, 'OGRE_KILLED');
+    foreach ($this->GetStack() as $id => $flag) DB::$USER->Kill($id, 'OGRE_KILLED');
   }
 
   //人狼襲撃耐性判定

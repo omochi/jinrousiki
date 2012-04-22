@@ -8,12 +8,12 @@ class Role_gentleman extends Role{
   function __construct(){ parent::__construct(); }
 
   function ConvertSay(){
-    global $GAME_CONF, $MESSAGE, $USERS;
+    global $GAME_CONF, $MESSAGE;
 
     if(mt_rand(1, 100) > $GAME_CONF->gentleman_rate) return false; //スキップ判定
-    $stack = $USERS->GetLivingUsers(); //生存者のユーザ名を取得
+    $stack = DB::$USER->GetLivingUsers(); //生存者のユーザ名を取得
     unset($stack[array_search($this->GetUname(), $stack)]); //自分を削除
-    $target = $USERS->GetHandleName(GetRandom($stack), true);
+    $target = DB::$USER->GetHandleName(GetRandom($stack), true);
     //PrintData($stack);
     $say = $MESSAGE->{$this->role . '_header'} . $target . $MESSAGE->{$this->role . '_footer'};
     $this->SetStack($say, 'say');

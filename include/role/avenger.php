@@ -5,7 +5,7 @@
   ・追加役職：なし
 */
 RoleManager::LoadFile('valkyrja_duelist');
-class Role_avenger extends Role_valkyrja_duelist{
+class Role_avenger extends Role_valkyrja_duelist {
   public $partner_role   = 'enemy';
   public $partner_header = 'avenger_target';
   public $check_self_shoot = false;
@@ -16,17 +16,15 @@ class Role_avenger extends Role_valkyrja_duelist{
   }
 
   function VoteNight(){
-    global $USERS;
-
     $stack = $this->GetVoteNightTarget();
     //人数チェック
-    $count = floor($USERS->GetUserCount() / 4);
+    $count = floor(DB::$USER->GetUserCount() / 4);
     if(count($stack) != $count) return '指定人数は' . $count . '人にしてください';
 
     $user_list  = array();
     sort($stack);
     foreach($stack as $id){
-      $user = $USERS->ByID($id);
+      $user = DB::$USER->ByID($id);
       if($this->IsActor($user->uname) || $user->IsDead() || $user->IsDummyBoy()){ //例外判定
 	return '自分・死者・身代わり君には投票できません';
       }

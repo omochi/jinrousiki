@@ -11,10 +11,8 @@ class Role_vampire extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
-    global $ROOM;
-
     /* 2日目の時点で感染者・洗脳者が発生する特殊イベントを実装したら対応すること */
-    if ($ROOM->date < 2) return;
+    if (DB::$ROOM->date < 2) return;
     $id = $this->GetActor()->user_no;
     $partner = 'infected';
     $role    = 'psycho_infected';
@@ -30,11 +28,11 @@ class Role_vampire extends Role {
 
   function OutputAction(){ OutputVoteMessage('vampire-do', 'vampire_do', $this->action); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date > 1; }
+  function IsVote(){ return DB::$ROOM->date > 1; }
 
   //吸血対象セット
   function SetInfect($user){
-    global $ROOM, $ROLES, $USERS;
+    global $ROLES;
 
     $actor = $this->GetActor();
     $this->SetStack($actor, 'voter');
@@ -76,15 +74,15 @@ class Role_vampire extends Role {
 
   //吸血死＆吸血処理
   function VampireKill(){
-    global $ROLES, $USERS;
+    global $ROLES;
 
     foreach ($this->GetStack('vampire_kill') as $id => $flag) { //吸血死処理
-      $USERS->Kill($id, 'VAMPIRE_KILLED');
+      DB::$USER->Kill($id, 'VAMPIRE_KILLED');
     }
 
     foreach ($this->GetStack('vampire') as $uname => $stack) {
-      $filter = $ROLES->LoadMain($USERS->ByUname($uname));
-      foreach ($stack as $target_uname) $filter->Infect($USERS->ByUname($target_uname));
+      $filter = $ROLES->LoadMain(DB::$USER->ByUname($uname));
+      foreach ($stack as $target_uname) $filter->Infect(DB::$USER->ByUname($target_uname));
     }
   }
 

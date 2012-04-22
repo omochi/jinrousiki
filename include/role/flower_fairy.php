@@ -10,9 +10,7 @@ class Role_flower_fairy extends Role_fairy {
   function __construct(){ parent::__construct(); }
 
   function FairyAction($user){
-    global $ROOM, $USERS;
-
-    $handle_name = $USERS->GetHandleName($user->uname);
-    $ROOM->ResultDead($handle_name, $this->result, GetRandom(range('A', 'Z')));
+    $handle_name = DB::$USER->GetHandleName($user->uname);
+    DB::$ROOM->ResultDead($handle_name, $this->result, GetRandom(range('A', 'Z')));
   }
 }

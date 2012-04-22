@@ -368,25 +368,25 @@ RQ::$get->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
 //DB::Connect(); //DB接続 (必要なときだけ設定する)
-$ROOM = new Room(RQ::$get); //村情報を取得
-$ROOM->test_mode = true;
-$ROOM->log_mode = true;
-$ROOM->revote_count = 0;
-$ROOM->date = 3;
-#$ROOM->scene = 'beforegame';
-$ROOM->scene = 'day';
-#$ROOM->scene = 'night';
-#$ROOM->scene = 'aftergame';
-//$ROOM->system_time = TZTime(); //現在時刻を取得
-$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
-if ($ROOM->date == 1) {
-  foreach ($USERS->rows as $user) $user->live = 'live'; //初日用
+DB::$ROOM = new Room(RQ::$get); //村情報を取得
+DB::$ROOM->test_mode = true;
+DB::$ROOM->log_mode = true;
+DB::$ROOM->revote_count = 0;
+DB::$ROOM->date = 3;
+#DB::$ROOM->scene = 'beforegame';
+DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'aftergame';
+//DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+if (DB::$ROOM->date == 1) {
+  foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
-$USERS->ByID(9)->live = 'live';
-#$SELF = new User();
-$SELF = $USERS->ByID(1);
-#$SELF = $USERS->ByID(13);
-#$SELF = $USERS->TraceExchange(14);
+DB::$USER->ByID(9)->live = 'live';
+#DB::$SELF = new User();
+DB::$SELF = DB::$USER->ByID(1);
+#DB::$SELF = DB::$USER->ByID(13);
+#DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
 $vote_view_mode = false;
@@ -403,10 +403,10 @@ if ($vote_view_mode) { //投票表示モード
     if (RQ::$get->target_no == 0) { //空投票検出
       OutputActionResult('空投票', '投票先を指定してください');
     }
-    elseif ($ROOM->IsDay()) { //昼の処刑投票処理
+    elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
       #VoteDay();
     }
-    elseif ($ROOM->IsNight()) { //夜の投票処理
+    elseif (DB::$ROOM->IsNight()) { //夜の投票処理
       VoteNight();
     }
     else { //ここに来たらロジックエラー
@@ -415,7 +415,7 @@ if ($vote_view_mode) { //投票表示モード
   }
   else {
     RQ::$get->post_url = 'vote_test.php';
-    switch($ROOM->scene) {
+    switch(DB::$ROOM->scene) {
     case 'beforegame':
       OutputVoteBeforeGame();
       break;
@@ -433,14 +433,14 @@ if ($vote_view_mode) { //投票表示モード
       break;
     }
   }
-  $SELF = $USERS->ByID(1);
+  DB::$SELF = DB::$USER->ByID(1);
   OutputPlayerList();
   OutputHTMLFooter(true);
 }
 OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
 $talk_view_mode = false;
 if ($talk_view_mode) { //発言表示モード
-  echo $ROOM->GenerateCSS();
+  echo DB::$ROOM->GenerateCSS();
   echo '</head><body>'."\n";
   $INIT_CONF->LoadFile('talk_class');
   //$query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
@@ -456,7 +456,7 @@ if ($talk_view_mode) { //発言表示モード
 	  'sentence' => "占いCO\n黒は●"),
     array('uname' => 'light_gray', 'location' => 'day', 'font_type' => 'normal', 'sentence' => 'おはよう'),
     array('uname' => 'system', 'location' => 'day system', 'font_type' => null,
-	  'sentence' => 'MORNING	' . $ROOM->date),
+	  'sentence' => 'MORNING	' . DB::$ROOM->date),
   );
   RQ::GetTest()->talk_data->night = array(
     array('uname' => 'cloud', 'location' => 'night self_talk', 'font_type' => 'normal',
@@ -485,12 +485,12 @@ if ($talk_view_mode) { //発言表示モード
     array('uname' => 'system', 'location' => 'night system', 'font_type' => null, 'sentence' => 'NIGHT')
   );
   RQ::GetTest()->talk = array();
-  foreach (RQ::GetTest()->talk_data->{$ROOM->scene} as $stack) {
+  foreach (RQ::GetTest()->talk_data->{DB::$ROOM->scene} as $stack) {
     RQ::GetTest()->talk[] = new Talk($stack);
   }
   //PrintData(RQ::GetTest()->talk);
   OutputPlayerList();
-  if ($SELF->user_no > 0) OutputAbility();
+  if (DB::$SELF->user_no > 0) OutputAbility();
   OutputTalkLog();
   OutputHTMLFooter(true);
 }
@@ -533,12 +533,12 @@ if (RQ::$get->say != '') { //発言変換テスト
   ConvertSay(RQ::$get->say);
   Write(RQ::$get->say, 'day', 0);
 }
-if ($ROOM->IsDay()) { //昼の投票テスト
-  $self_id = $SELF->user_no;
+if (DB::$ROOM->IsDay()) { //昼の投票テスト
+  $self_id = DB::$SELF->user_no;
   RQ::$get->situation = 'VOTE_KILL';
   RQ::$get->back_url = '';
   foreach (RQ::GetTest()->vote_target_day as $stack) {
-    $SELF = $USERS->ByID($stack['id']);
+    DB::$SELF = DB::$USER->ByID($stack['id']);
     RQ::$get->target_no = $stack['target_no'];
     VoteDay();
   }
@@ -546,25 +546,25 @@ if ($ROOM->IsDay()) { //昼の投票テスト
   if (! is_array($vote_message_list)) $vote_message_list = array();
   $stack = array();
   foreach ($vote_message_list as $uname => $vote_data) {
-    $vote_data['handle_name'] = $USERS->GetHandleName($uname);
-    $vote_data['count'] = $ROOM->revote_count + 1;
+    $vote_data['handle_name'] = DB::$USER->GetHandleName($uname);
+    $vote_data['count'] = DB::$ROOM->revote_count + 1;
     $stack[] = $vote_data;
   }
-  echo GenerateVoteList($stack, $ROOM->date);
-  $ROOM->date++;
-  $ROOM->log_mode = false; //イベント確認用
-  $ROOM->scene = 'day'; //イベント確認用
-  //$ROOM->scene = 'night';
-  $SELF = $USERS->ByID($self_id);
+  echo GenerateVoteList($stack, DB::$ROOM->date);
+  DB::$ROOM->date++;
+  DB::$ROOM->log_mode = false; //イベント確認用
+  DB::$ROOM->scene = 'day'; //イベント確認用
+  //DB::$ROOM->scene = 'night';
+  DB::$SELF = DB::$USER->ByID($self_id);
 }
-elseif ($ROOM->IsNight()) { // 夜の投票テスト
+elseif (DB::$ROOM->IsNight()) { // 夜の投票テスト
   //PrintData(RQ::GetTest()->vote->night);
   AggregateVoteNight();
 }
-elseif ($ROOM->IsAfterGame()) { //勝敗判定表示
+elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
   $INIT_CONF->LoadClass('WINNER_MESS');
-  $ROOM->log_mode = false;
-  $ROOM->personal_mode = true; false;
+  DB::$ROOM->log_mode = false;
+  DB::$ROOM->personal_mode = true; false;
   OutputWinner();
   OutputHTMLFooter(); //HTMLフッタ
 }
@@ -574,20 +574,20 @@ elseif ($ROOM->IsAfterGame()) { //勝敗判定表示
 
 do{
   //break;
-  foreach ($USERS->rows as $user) {
+  foreach (DB::$USER->rows as $user) {
     unset($user->virtual_role);
     $user->live = $user->IsLive(true) ? 'live' : 'dead';
     $user->ReparseRoles();
   }
 
   foreach (RQ::GetTest()->vote->night as $stack) {
-    //$uname = $USERS->GetHandleName($stack['uname'], true);
-    $uname = $USERS->ByVirtual($stack['user_no'])->handle_name;
+    //$uname = DB::$USER->GetHandleName($stack['uname'], true);
+    $uname = DB::$USER->ByVirtual($stack['user_no'])->handle_name;
     switch($stack['type']) {
     case 'CUPID_DO':
       $target_stack = array();
       foreach (explode(' ', $stack['target_no']) as $id) {
-	$user = $USERS->ByVirtual($id);
+	$user = DB::$USER->ByVirtual($id);
 	$target_stack[$user->user_no] = $user->handle_name;
       }
       $target_uname = implode(' ', $target_stack);
@@ -596,7 +596,7 @@ do{
     case 'SPREAD_WIZARD_DO':
       $target_stack = array();
       foreach (explode(' ', $stack['target_no']) as $id) {
-	$user = $USERS->ByVirtual($id);
+	$user = DB::$USER->ByVirtual($id);
 	$target_stack[$user->user_no] = $user->handle_name;
       }
       ksort($target_stack);
@@ -604,8 +604,8 @@ do{
       break;
 
     default:
-      //$target_uname = $USERS->GetHandleName($stack['target_uname'], true);
-      $target_uname = $USERS->ByVirtual($stack['target_no'])->handle_name;
+      //$target_uname = DB::$USER->GetHandleName($stack['target_uname'], true);
+      $target_uname = DB::$USER->ByVirtual($stack['target_no'])->handle_name;
       break;
     }
     $stack_list[] = array('type' => $stack['type'],
@@ -615,19 +615,19 @@ do{
   OutputAbilityAction();
 
   //PrintData(RQ::GetTest()->system_message, 'SystemMessage');
-  $ROOM->LoadEvent();
-  $USERS->SetEvent();
-  //PrintData($ROOM->event);
+  DB::$ROOM->LoadEvent();
+  DB::$USER->SetEvent();
+  //PrintData(DB::$ROOM->event);
   OutputDeadMan();
 
-  //$ROOM->status = 'finished';
+  //DB::$ROOM->status = 'finished';
   OutputPlayerList(); //プレイヤーリスト
   OutputAbility();
   //foreach (array(5, 18, 2, 9, 13, 14, 23) as $id) {
   foreach (range(1, 25) as $id) {
-    $SELF = $USERS->ByID($id); OutputAbility();
+    DB::$SELF = DB::$USER->ByID($id); OutputAbility();
   }
-  //var_dump($USERS->IsOpenCast());
+  //var_dump(DB::$USER->IsOpenCast());
 }while(false);
 //PrintData($GAME_CONF->RateToProbability($GAME_CONF->weather_list));
 //InsertLog();

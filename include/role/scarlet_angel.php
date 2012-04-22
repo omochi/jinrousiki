@@ -6,14 +6,12 @@
   ・共感者判定：常時有効
 */
 RoleManager::LoadFile('angel');
-class Role_scarlet_angel extends Role_angel{
+class Role_scarlet_angel extends Role_angel {
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
-    global $ROOM;
-
     parent::OutputPartner();
-    if(! $ROOM->IsNight()) return;
+    if (! DB::$ROOM->IsNight()) return;
     $stack = array();
     foreach($this->GetUser() as $user){
       if($this->IsActor($user->uname) || $user->IsWolf()) continue;

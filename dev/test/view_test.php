@@ -96,23 +96,23 @@ foreach(RQ::GetTest()->test_users as $id => $user){
 
 //-- データ収集 --//
 //DB::Connect(); // DB 接続
-$ROOM = new Room(RQ::$get); //村情報を取得
-$ROOM->test_mode = true;
-$ROOM->log_mode  = true;
+DB::$ROOM = new Room(RQ::$get); //村情報を取得
+DB::$ROOM->test_mode = true;
+DB::$ROOM->log_mode  = true;
 switch($_GET['scene']){
 case 'beforegame':
 case 'day':
 case 'night':
-  $ROOM->scene = $_GET['scene'];
+  DB::$ROOM->scene = $_GET['scene'];
   break;
 }
-$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
-$SELF = $USERS->ByID(1);
+DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+DB::$SELF = DB::$USER->ByID(1);
 
 //テストデータ設定
-$USERS->rows[3]->live = 'dead';
-$USERS->rows[7]->live = 'dead';
-$USERS->rows[8]->live = 'dead';
+DB::$USER->rows[3]->live = 'dead';
+DB::$USER->rows[7]->live = 'dead';
+DB::$USER->rows[8]->live = 'dead';
 
 if(false){
   switch(intval($_GET['dummy_boy'])){
@@ -170,13 +170,13 @@ if(false){
 
 //-- データ出力 --//
 OutputHTMLHeader('表示テスト', 'game'); //HTMLヘッダ
-echo '<link rel="stylesheet" href="' . JINRO_CSS . '/game_' . $ROOM->scene . '.css">'."\n";
+echo '<link rel="stylesheet" href="' . JINRO_CSS . '/game_' . DB::$ROOM->scene . '.css">'."\n";
 echo '</head><body>'."\n";
-//PrintData($ROOM->scene, $_GET['scene']);
+//PrintData(DB::$ROOM->scene, $_GET['scene']);
 OutputPlayerList(); //プレイヤーリスト
 OutputHTMLFooter(true); //HTMLフッタ
 
-//PrintData($USERS->rows[1]);
+//PrintData(DB::$USER->rows[1]);
 //PrintData($dead_list);
 echo <<<EOF
 [昼]：<br>

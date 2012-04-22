@@ -9,15 +9,13 @@
   ・身代わり対象者：洗脳者
 */
 RoleManager::LoadFile('ogre');
-class Role_sacrifice_ogre extends Role_ogre{
+class Role_sacrifice_ogre extends Role_ogre {
   public $mix_in = 'protected';
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
-    global $ROOM;
-
     /* 2日目の時点で洗脳者が発生する特殊イベントを実装したら対応すること */
-    if($ROOM->date < 2) return;
+    if (DB::$ROOM->date < 2) return;
     $stack = array();
     foreach($this->GetUser() as $user){
       if($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;

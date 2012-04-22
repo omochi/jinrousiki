@@ -9,8 +9,7 @@ class Role_outside_voice extends Role_strong_voice{
   function __construct(){ parent::__construct(); }
 
   function FilterVoice(&$voice, &$str){
-    global $ROOM;
     $stack = $this->voice_list;
-    $voice = $ROOM->IsDay() ? array_pop($stack) : array_shift($stack);
+    $voice = DB::$ROOM->IsDay() ? array_pop($stack) : array_shift($stack);
   }
 }

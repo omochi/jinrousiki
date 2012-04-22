@@ -10,9 +10,8 @@ class Role_resurrect_mania extends Role_unknown_mania {
   function __construct(){ parent::__construct(); }
 
   function Resurrect(){
-    global $ROOM;
     if ($this->IsResurrect($this->GetActor()) && $this->IsLivePartner() &&
-	mt_rand(1, 100) <= ($ROOM->IsEvent('full_revive') ? 100 : 40)) {
+	mt_rand(1, 100) <= (DB::$ROOM->IsEvent('full_revive') ? 100 : 40)) {
       $this->GetActor()->Revive();
     }
   }

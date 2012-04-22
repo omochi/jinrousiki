@@ -15,8 +15,8 @@ class Option_mania extends CheckRoomOptionItem {
 	}
 
   function SetRole(&$list, $count){
-    global $CAST_CONF, $ROOM;
-    if($count >= $CAST_CONF->{$this->name} && ! $ROOM->IsOption('full_' . $this->name) &&
+    global $CAST_CONF;
+    if($count >= $CAST_CONF->{$this->name} && ! DB::$ROOM->IsOption('full_' . $this->name) &&
        $list['human'] > 0){
       $list['human']--;
       $list[$this->name]++;

@@ -8,12 +8,12 @@ $INIT_CONF->LoadRequest('RequestBaseGame'); //引数を取得
 $url = '<a href="game_view.php?room_no=' . RQ::$get->room_no;
 
 DB::Connect();
-$ROOM = new Room(RQ::$get); //村情報をロード
-$ROOM->view_mode   = true;
-$ROOM->system_time = TZTime(); //現在時刻を取得
-switch ($ROOM->scene) {
+DB::$ROOM = new Room(RQ::$get); //村情報をロード
+DB::$ROOM->view_mode   = true;
+DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+switch (DB::$ROOM->scene) {
 case 'beforegame':
-  RQ::$get->retrive_type = $ROOM->scene;
+  RQ::$get->retrive_type = DB::$ROOM->scene;
   break;
 
 case 'day': //昼
@@ -26,15 +26,15 @@ case 'night': //夜
 }
 
 //シーンに応じた追加クラスをロード
-if ($ROOM->IsFinished()) {
+if (DB::$ROOM->IsFinished()) {
   $INIT_CONF->LoadClass('WINNER_MESS');
 }
 else {
   $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS');
 }
 
-$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
-$SELF  = new User();
+DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+DB::$SELF = new User();
 
 //-- データ出力 --//
 ob_start();
@@ -43,11 +43,11 @@ OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
 if ($GAME_CONF->auto_reload && RQ::$get->auto_reload > 0) { //自動更新
   printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
 }
-echo $ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
+echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
 
 $on_load = '';
-if ($ROOM->IsPlaying()) { //経過時間を取得
-  if ($ROOM->IsRealTime()) { //リアルタイム制
+if (DB::$ROOM->IsPlaying()) { //経過時間を取得
+  if (DB::$ROOM->IsRealTime()) { //リアルタイム制
     $end_time = GetRealPassTime($left_time);
     $on_load  = ' onLoad="output_realtime();"';
     OutputRealTimer($end_time);
@@ -62,7 +62,7 @@ echo <<<EOF
 </head>
 <body{$on_load}>
 <table id="game_top" class="login"><tr>
-{$ROOM->GenerateTitleTag()}<td class="login-link">
+{DB::$ROOM->GenerateTitleTag()}<td class="login-link">
 
 EOF;
 
@@ -76,12 +76,12 @@ else {
 }
 
 echo $url . '" target="_blank">別ページ</a>' . "\n" . '<a href="./">[戻る]</a>';
-if ($ROOM->IsFinished()) OutputLogLink();
-
+if (DB::$ROOM->IsFinished()) OutputLogLink();
+$room_no = DB::$ROOM->id;
 echo <<<EOF
 </td></tr></table>
 <table class="login"><tr>
-<td><form method="POST" action="login.php?room_no={$ROOM->id}">
+<td><form method="POST" action="login.php?room_no={$room_no}">
 <label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">
 <label for="login_password">パスワード</label><input type="password" class="login-password" id="login_password" name="password" size="20" value="">
 <input type="hidden" name="login_manually" value="on">
@@ -90,17 +90,17 @@ echo <<<EOF
 
 EOF;
 
-if ($ROOM->IsBeforeGame()) { //ゲーム開始前なら登録画面のリンクを表示
+if (DB::$ROOM->IsBeforeGame()) { //ゲーム開始前なら登録画面のリンクを表示
   echo '<td class="login-link">';
-  echo '<a href="user_manager.php?room_no=' . $ROOM->id . '"><span>[住民登録]</span></a>';
+  echo '<a href="user_manager.php?room_no=' . DB::$ROOM->id . '"><span>[住民登録]</span></a>';
   echo '</td>'."\n";
 }
 echo '</tr></table>'."\n";
-if (! $ROOM->IsFinished()) OutputGameOption(); //ゲームオプションを表示
+if (! DB::$ROOM->IsFinished()) OutputGameOption(); //ゲームオプションを表示
 
 OutputTimeTable(); //経過日数と生存人数
-if ($ROOM->IsPlaying()) {
-  if ($ROOM->IsRealTime()) { //リアルタイム制
+if (DB::$ROOM->IsPlaying()) {
+  if (DB::$ROOM->IsRealTime()) { //リアルタイム制
     echo '<td class="real-time"><form name="realtime_form">'."\n";
     echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
     echo '</form></td>'."\n";
@@ -110,18 +110,18 @@ if ($ROOM->IsPlaying()) {
   }
 }
 echo '</tr></table>'."\n";
-if ($ROOM->IsPlaying()) {
+if (DB::$ROOM->IsPlaying()) {
   if ($left_time == 0) {
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
   }
-  elseif ($ROOM->IsEvent('wait_morning')) {
+  elseif (DB::$ROOM->IsEvent('wait_morning')) {
     echo '<div class="system-vote">' . $MESSAGE->wait_morning . '</div>'."\n";
   }
 }
 
 OutputPlayerList(); //プレイヤーリスト
-if ($ROOM->IsFinished()) OutputWinner(); //勝敗結果
-if ($ROOM->IsPlaying())  OutputRevoteList(); //再投票メッセージ
+if (DB::$ROOM->IsFinished()) OutputWinner(); //勝敗結果
+if (DB::$ROOM->IsPlaying())  OutputRevoteList(); //再投票メッセージ
 OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者

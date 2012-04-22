@@ -8,19 +8,19 @@ if (RQ::$get->is_room) {
   $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
   $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
 
-  $ROOM = new Room(RQ::$get);
-  $ROOM->LoadOption();
-  $ROOM->log_mode         = true;
-  $ROOM->watch_mode       = RQ::$get->watch;
-  $ROOM->single_view_mode = RQ::$get->user_no > 0;
-  $ROOM->personal_mode    = RQ::$get->personal_result;
-  $ROOM->last_date        = $ROOM->date;
+  DB::$ROOM = new Room(RQ::$get);
+  DB::$ROOM->LoadOption();
+  DB::$ROOM->log_mode         = true;
+  DB::$ROOM->watch_mode       = RQ::$get->watch;
+  DB::$ROOM->single_view_mode = RQ::$get->user_no > 0;
+  DB::$ROOM->personal_mode    = RQ::$get->personal_result;
+  DB::$ROOM->last_date        = DB::$ROOM->date;
 
-  $USERS = new UserDataSet(RQ::$get);
-  $SELF  = $ROOM->single_view_mode ? $USERS->ByID(RQ::$get->user_no) : new User();
-  $USERS->player = $ROOM->LoadPlayer();
-  if ($ROOM->watch_mode) $SELF->live = 'live';
-  if ($ROOM->watch_mode || $ROOM->single_view_mode) $USERS->SaveRoleList();
+  DB::$USER = new UserDataSet(RQ::$get);
+  DB::$SELF = DB::$ROOM->single_view_mode ? DB::$USER->ByID(RQ::$get->user_no) : new User();
+  DB::$USER->player = DB::$ROOM->LoadPlayer();
+  if (DB::$ROOM->watch_mode) DB::$SELF->live = 'live';
+  if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) DB::$USER->SaveRoleList();
   OutputOldLog();
 }
 else {

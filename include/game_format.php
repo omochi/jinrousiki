@@ -6,16 +6,14 @@ class DocumentBuilder{
   public $filter = array();
 
   function __construct(){
-    global $ROOM, $USERS, $SELF;
-
-    $this->actor = $USERS->ByVirtual($SELF->user_no); //仮想ユーザを取得
+    $this->actor = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想ユーザを取得
     //観戦モード判定
-    if ((is_null($this->actor->live) || ! $ROOM->IsOpenCast()) && ! $ROOM->IsFinished()) {
+    if ((is_null($this->actor->live) || ! DB::$ROOM->IsOpenCast()) && ! DB::$ROOM->IsFinished()) {
       //本人視点が変化するタイプ
-      $stack = array('blinder' => $ROOM->IsDay(), 'earplug' => $ROOM->IsDay(),
+      $stack = array('blinder' => DB::$ROOM->IsDay(), 'earplug' => DB::$ROOM->IsDay(),
 		     'deep_sleep' => true);
       foreach ($stack as $role => $flag) {
-	if (($flag && $ROOM->IsEvent($role)) || $ROOM->IsOption($role)) {
+	if (($flag && DB::$ROOM->IsEvent($role)) || DB::$ROOM->IsOption($role)) {
 	  $this->actor->virtual_live = true;
 	  $this->actor->role_list[]  = $role;
 	}
@@ -38,22 +36,20 @@ class DocumentBuilder{
 
   //フィルタ用フラグをセット
   function SetFlag(){
-    global $ROOM, $SELF;
-
     //フラグをセット
-    $this->flag->dummy_boy  = $SELF->IsDummyBoy();
+    $this->flag->dummy_boy  = DB::$SELF->IsDummyBoy();
     $this->flag->common     = $this->actor->IsCommon(true);
-    $this->flag->wolf       = $SELF->IsWolf(true) || $this->actor->IsRole('whisper_mad');
-    $this->flag->fox        = $SELF->IsFox(true);
-    $this->flag->lovers     = $SELF->IsLovers();
-    $this->flag->mind_read  = $ROOM->date > 1 && ($ROOM->single_view_mode || $SELF->IsLive());
+    $this->flag->wolf       = DB::$SELF->IsWolf(true) || $this->actor->IsRole('whisper_mad');
+    $this->flag->fox        = DB::$SELF->IsFox(true);
+    $this->flag->lovers     = DB::$SELF->IsLovers();
+    $this->flag->mind_read  = DB::$ROOM->date > 1 && (DB::$ROOM->single_view_mode || DB::$SELF->IsLive());
     $this->flag->deep_sleep = $this->actor->IsRole('deep_sleep');
     foreach (array('whisper_ringing', 'howl_ringing', 'sweet_ringing') as $role) { //耳鳴
       $this->flag->$role = $this->actor->IsRole($role) && ! $this->flag->deep_sleep;
     }
-    $this->flag->sweet_ringing  = $this->flag->sweet_ringing && $ROOM->date > 1;
-    $this->flag->common_whisper = ! $SELF->IsRole('dummy_common') && ! $this->flag->deep_sleep;
-    $this->flag->wolf_howl      = ! $SELF->IsRole('mind_scanner') && ! $this->flag->deep_sleep;
+    $this->flag->sweet_ringing  = $this->flag->sweet_ringing && DB::$ROOM->date > 1;
+    $this->flag->common_whisper = ! DB::$SELF->IsRole('dummy_common') && ! $this->flag->deep_sleep;
+    $this->flag->wolf_howl      = ! DB::$SELF->IsRole('mind_scanner') && ! $this->flag->deep_sleep;
 
     //発言完全公開フラグ
     /*
@@ -61,7 +57,7 @@ class DocumentBuilder{
       + 霊界表示オン状態の死者には全て表示
       + 霊界表示オフ状態は観戦者と同じ (投票情報は表示しない)
     */
-    $this->flag->open_talk = $ROOM->IsOpenData();
+    $this->flag->open_talk = DB::$ROOM->IsOpenData();
 
     foreach (array('common', 'wolf', 'fox') as $type) { //身代わり君の上書き判定
       $this->flag->$type |= $this->flag->dummy_boy;
@@ -97,18 +93,16 @@ EOF;
 
   //標準的な発言処理
   function AddTalk($user, $talk, $real = null){
-    global $ROOM, $USERS;
-
     //表示情報を抽出
     $color  = isset($talk->color) ? $talk->color : $user->color;
     $symbol = '<font style="color:' . $color . '">◆</font>';
     $name   = isset($talk->handle_name) ? $talk->handle_name : $user->handle_name;
     if (RQ::$get->add_role && $user->user_no != 0) { //役職表示モード対応
       $real = $talk->scene == 'heaven' ? $user :
-	(isset($real) ? $real : $USERS->ByReal($user->user_no));
+	(isset($real) ? $real : DB::$USER->ByReal($user->user_no));
       $name .= $real->GenerateShortRoleName();
     }
-    if ($ROOM->IsNight() &&
+    if (DB::$ROOM->IsNight() &&
 	(($talk->type == 'self_talk' && ! $user->IsRole('dummy_common')) ||
 	 $user->IsRole('leader_common', 'mind_read', 'mind_open'))) {
       $name .= '<span>の独り言</span>';

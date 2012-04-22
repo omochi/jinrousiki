@@ -13,12 +13,10 @@ class Role_executor extends Role{
   function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
 
   function DecideVoteKill(){
-    global $USERS;
-
     if($this->IsVoteKill() || ! is_array($this->GetStack())) return;
     $stack = array();
     foreach($this->GetMaxVotedUname() as $uname){
-      if(! $USERS->ByRealUname($uname)->IsCamp('human', true)) $stack[$uname] = true;
+      if(! DB::$USER->ByRealUname($uname)->IsCamp('human', true)) $stack[$uname] = true;
     }
     if(count($stack) == 1) $this->SetVoteKill(array_shift(array_keys($stack)));
   }

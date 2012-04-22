@@ -13,12 +13,10 @@ class Role_critical_mad extends Role {
   }
 
   function VoteAction(){
-    global $USERS;
-
     $class = $this->GetClass($method = 'SetVoteAction');
     foreach ($this->GetStack() as $uname => $target_uname) {
       if ($this->IsVoted($uname)) continue;
-      $user = $USERS->ByRealUname($target_uname);
+      $user = DB::$USER->ByRealUname($target_uname);
       if ($user->IsLive(true)) $class->$method($user);
     }
   }

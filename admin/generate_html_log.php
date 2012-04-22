@@ -42,23 +42,23 @@ $header = "../log_test/{RQ::$get->prefix}";
 $footer = '</body></html>'."\n";
 for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
   RQ::$get->room_no = $i;
-  $ROOM = new Room(RQ::$get);
-  $ROOM->log_mode = true;
-  $ROOM->last_date = $ROOM->date;
+  DB::$ROOM = new Room(RQ::$get);
+  DB::$ROOM->log_mode = true;
+  DB::$ROOM->last_date = DB::$ROOM->date;
 
-  $USERS = new UserDataSet(RQ::$get);
-  $SELF  = new User();
+  DB::$USER = new UserDataSet(RQ::$get);
+  DB::$SELF = new User();
 
   RQ::$get->reverse_log = false;
   file_put_contents("{$header}{$i}.html", GenerateOldLog() . $footer);
 
   RQ::$get->reverse_log = true;
-  $ROOM = new Room(RQ::$get);
-  $ROOM->log_mode = true;
-  $ROOM->last_date = $ROOM->date;
+  DB::$ROOM = new Room(RQ::$get);
+  DB::$ROOM->log_mode = true;
+  DB::$ROOM->last_date = DB::$ROOM->date;
 
-  $USERS = new UserDataSet(RQ::$get);
-  $SELF  = new User();
+  DB::$USER = new UserDataSet(RQ::$get);
+  DB::$SELF = new User();
   file_put_contents("{$header}{$i}r.html", GenerateOldLog() . $footer);
   if ($room_delete) DB::DeleteRoom($i);
 }

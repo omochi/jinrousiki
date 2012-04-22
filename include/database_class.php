@@ -3,6 +3,9 @@
 class DB extends DatabaseConfig {
   private static $instance    = null;
   private static $transaction = false;
+  public static $ROOM = null;
+  public static $USER = null;
+  public static $SELF = null;
 
   //データベース接続クラス生成
   /*

@@ -349,11 +349,9 @@ function OutputHTMLHeader($title, $css = 'action'){ echo GenerateHTMLHeader($tit
 
 //結果ページ HTML ヘッダ出力
 function OutputActionResultHeader($title, $url = ''){
-  global $ROOM;
-
   $str = GenerateHTMLHeader($title);
   if($url != '') $str .= '<meta http-equiv="Refresh" content="1;URL='.$url.'">'."\n";
-  if(is_object($ROOM)) $str .= $ROOM->GenerateCSS();
+  if(is_object(DB::$ROOM)) $str .= DB::$ROOM->GenerateCSS();
   echo $str . '</head><body>'."\n";
 }
 

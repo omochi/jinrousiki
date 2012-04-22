@@ -150,14 +150,14 @@ foreach (RQ::GetTest()->test_users as $id => $user) {
 
 //-- データ収集 --//
 //DB::Connect(); //DB接続 (必要なときだけ設定する)
-$ROOM = new Room(RQ::$get); //村情報を取得
-$ROOM->test_mode = true;
-$ROOM->log_mode  = true;
-$ROOM->scene = 'beforegame';
-$ROOM->vote = array();
+DB::$ROOM = new Room(RQ::$get); //村情報を取得
+DB::$ROOM->test_mode = true;
+DB::$ROOM->log_mode  = true;
+DB::$ROOM->scene = 'beforegame';
+DB::$ROOM->vote = array();
 
-$USERS = new UserDataSet(RQ::$get); //ユーザ情報をロード
-$SELF = $USERS->ByID(1);
+DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+DB::$SELF = DB::$USER->ByID(1);
 
 //-- データ出力 --//
 OutputHTMLHeader('配役テスト', 'game'); //HTMLヘッダ
@@ -165,8 +165,8 @@ echo '</head><body>'."\n";
 
 OutputPlayerList(); //プレイヤーリスト
 AggregateVoteGameStart(); //配役処理
-$ROOM->date++;
-$ROOM->scene = 'night';
-foreach ($USERS->rows as $user) $user->ReparseRoles();
+DB::$ROOM->date++;
+DB::$ROOM->scene = 'night';
+foreach (DB::$USER->rows as $user) $user->ReparseRoles();
 OutputPlayerList(); //プレイヤーリスト
 OutputHTMLFooter(); //HTMLフッタ

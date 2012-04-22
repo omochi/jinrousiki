@@ -5,7 +5,7 @@
   ・共感者判定：男女
 */
 RoleManager::LoadFile('cupid');
-class Role_angel extends Role_cupid{
+class Role_angel extends Role_cupid {
   function __construct(){ parent::__construct(); }
 
   function VoteNightAction($list, $flag){
@@ -20,12 +20,10 @@ class Role_angel extends Role_cupid{
 
   //共感者処理
   protected function SetSympathy($a, $b){
-    global $ROOM;
-
     $action = 'SYMPATHY_RESULT';
     $a->AddRole('mind_sympathy');
     $b->AddRole('mind_sympathy');
-    $ROOM->ResultAbility($action, $b->main_role, $b->handle_name, $a->user_no);
-    $ROOM->ResultAbility($action, $a->main_role, $a->handle_name, $b->user_no);
+    DB::$ROOM->ResultAbility($action, $b->main_role, $b->handle_name, $a->user_no);
+    DB::$ROOM->ResultAbility($action, $a->main_role, $a->handle_name, $b->user_no);
   }
 }

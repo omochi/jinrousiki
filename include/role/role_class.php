@@ -283,13 +283,14 @@ class RoleManager{
 }
 
 //-- 役職の基底クラス --//
-class Role{
+class Role {
   public $role;
   public $action;
   public $not_action;
   public $submit;
   public $not_submit;
   public $ignore_message;
+
   function __construct(){
     global $ROLES;
 
@@ -339,7 +340,7 @@ class Role{
   }
 
   //ユーザ情報取得
-  protected function GetUser(){ global $USERS; return $USERS->rows; }
+  protected function GetUser(){ return DB::$USER->rows; }
 
   //データ初期化
   protected function InitStack($name = null){
@@ -372,8 +373,7 @@ class Role{
 
   //発動日判定
   protected function IsDoom(){
-    global $ROOM;
-    return $this->GetActor()->GetDoomDate($this->role) == $ROOM->date;
+    return $this->GetActor()->GetDoomDate($this->role) == DB::$ROOM->date;
   }
 
   //投票能力判定
@@ -382,12 +382,11 @@ class Role{
   //-- 役職情報表示 --//
   //役職情報表示
   function OutputAbility(){
-    global $ROOM;
-    if($this->IgnoreAbility()) return;
+    if ($this->IgnoreAbility()) return;
     $this->OutputImage();
     $this->OutputPartner();
     $this->OutputResult();
-    if($this->IsVote() && $ROOM->IsNight()) $this->OutputAction();
+    if ($this->IsVote() && DB::$ROOM->IsNight()) $this->OutputAction();
   }
 
   //役職情報表示判定
@@ -418,22 +417,19 @@ class Role{
   //-- 処刑投票処理 --//
   //実ユーザ判定
   protected function IsRealActor(){
-    global $USERS;
-    return $USERS->ByRealUname($this->GetUname())->IsRole(true, $this->role);
+    return DB::$USER->ByRealUname($this->GetUname())->IsRole(true, $this->role);
   }
 
   //生存仲間判定
   protected function IsLivePartner(){
-    global $USERS;
     foreach($this->GetActor()->GetPartner($this->role) as $id){
-      if($USERS->ByID($id)->IsLive(true)) return true;
+      if(DB::$USER->ByID($id)->IsLive(true)) return true;
     }
     return false;
   }
 
   protected function SuddenDeathKill($id){
-    global $USERS;
-    $USERS->SuddenDeath($id, 'SUDDEN_DEATH', $this->sudden_death);
+    DB::$USER->SuddenDeath($id, 'SUDDEN_DEATH', $this->sudden_death);
   }
 
   //-- 処刑集計処理 --//
@@ -461,8 +457,7 @@ class Role{
 
   //投票者ユーザ取得
   protected function GetVoteUser($uname = null){
-    global $USERS;
-    return $USERS->ByRealUname($this->GetVoteTargetUname($uname));
+    return DB::$USER->ByRealUname($this->GetVoteTargetUname($uname));
   }
 
   //-- 投票データ表示 (夜) --//
@@ -486,10 +481,7 @@ class Role{
 
   //-- 投票画面表示 (夜) --//
   //投票対象ユーザ取得
-  function GetVoteTargetUser(){
-    global $USERS;
-    return $USERS->rows;
-  }
+  function GetVoteTargetUser(){ return DB::$USER->rows; }
 
   //投票のアイコンパス取得
   function GetVoteIconPath($user, $live){
@@ -520,12 +512,10 @@ class Role{
 
   //投票処理 (夜)
   function VoteNight(){
-    global $USERS;
-
-    $user = $USERS->ByID($this->GetVoteNightTarget());
-    $live = $USERS->IsVirtualLive($user->user_no); //仮想的な生死を判定
+    $user = DB::$USER->ByID($this->GetVoteNightTarget());
+    $live = DB::$USER->IsVirtualLive($user->user_no); //仮想的な生死を判定
     if(! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
-    $this->SetStack($USERS->ByReal($user->user_no)->user_no, 'target_no');
+    $this->SetStack(DB::$USER->ByReal($user->user_no)->user_no, 'target_no');
     $this->SetStack($user->handle_name, 'target_handle');
     return null;
   }

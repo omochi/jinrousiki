@@ -4,7 +4,7 @@
   ○仕様
   ・司祭：村人陣営 (偶数日 / 4日目以降)
 */
-class Role_priest extends Role{
+class Role_priest extends Role {
   public $priest_type = 'human_side';
   function __construct(){ parent::__construct(); }
 
@@ -16,29 +16,25 @@ class Role_priest extends Role{
 
   //司祭結果表示役職取得
   protected function GetOutputRole(){
-    global $ROOM;
-    return $ROOM->date > 3 && ($ROOM->date % 2) == 0 ? $this->role : NULL;
+    return DB::$ROOM->date > 3 && (DB::$ROOM->date % 2) == 0 ? $this->role : null;
   }
 
   //イベント名取得
-  protected function GetEvent($role = NULL){
+  protected function GetEvent($role = null){
     return strtoupper(isset($role) ? $role : $this->role) . '_RESULT';
   }
 
   //司祭能力
   function Priest($role_flag){
-    global $ROOM;
-
     $data = $this->GetStack('priest');
     if(is_null($role = $this->GetPriestRole($data->list))) return;
     $class = $this->GetClass($method = 'GetPriestType');
-    $ROOM->ResultAbility($this->GetEvent($role), $data->count[$class->$method()]);
+    DB::$ROOM->ResultAbility($this->GetEvent($role), $data->count[$class->$method()]);
   }
 
   //司祭能力発動判定
   protected function GetPriestRole($list){
-    global $ROOM;
-    return $ROOM->date > 2 && ($ROOM->date % 2) == 1 ? $this->role : NULL;
+    return DB::$ROOM->date > 2 && (DB::$ROOM->date % 2) == 1 ? $this->role : null;
   }
 
   //司祭能力対象取得
@@ -46,7 +42,7 @@ class Role_priest extends Role{
 
   //情報収集
   function AggregatePriest($role_flag){
-    global $ROOM, $ROLES;
+    global $ROLES;
 
     $flag = false;
     $data = new StdClass();
@@ -59,7 +55,7 @@ class Role_priest extends Role{
       if($user->IsRoleGroup('priest')) $flag |= $ROLES->LoadMain($user)->SetPriest();
     }
     $data = $this->GetStack();
-    if($ROOM->IsOption('weather') && ($ROOM->date % 3) == 1){ //天候判定
+    if(DB::$ROOM->IsOption('weather') && (DB::$ROOM->date % 3) == 1){ //天候判定
       $role = 'weather_priest';
       $flag = true;
       $data->$role = true;

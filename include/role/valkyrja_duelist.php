@@ -26,13 +26,13 @@ class Role_valkyrja_duelist extends Role{
 
   function OutputAction(){ OutputVoteMessage('duelist-do', 'duelist_do', $this->action); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
+  function IsVote(){ return DB::$ROOM->date == 1; }
 
   function SetVoteNight(){
-    global $GAME_CONF, $USERS;
+    global $GAME_CONF;
 
     parent::SetVoteNight();
-    $self_shoot = $this->check_self_shoot && $USERS->GetUserCount() < $GAME_CONF->cupid_self_shoot;
+    $self_shoot = $this->check_self_shoot && DB::$USER->GetUserCount() < $GAME_CONF->cupid_self_shoot;
     $this->SetStack($self_shoot, 'self_shoot');
   }
 
@@ -49,8 +49,6 @@ class Role_valkyrja_duelist extends Role{
   function IsSelfShoot(){ return $this->GetStack('self_shoot') || $this->self_shoot; }
 
   function VoteNight(){
-    global $USERS;
-
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = $this->GetVoteNightTargetCount();
@@ -60,7 +58,7 @@ class Role_valkyrja_duelist extends Role{
     $user_list  = array();
     sort($stack);
     foreach($stack as $id){
-      $user = $USERS->ByID($id); //投票先のユーザ情報を取得
+      $user = DB::$USER->ByID($id); //投票先のユーザ情報を取得
       //例外処理
       if($user->IsDead() || $user->IsDummyBoy()) return '死者と身代わり君には投票できません';
       $user_list[$id] = $user;

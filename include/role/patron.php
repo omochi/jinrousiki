@@ -16,8 +16,6 @@ class Role_patron extends Role_valkyrja_duelist{
   }
 
   function VoteNight(){
-    global $USERS;
-
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = $this->GetVoteNightTargetCount();
@@ -26,7 +24,7 @@ class Role_patron extends Role_valkyrja_duelist{
     $user_list  = array();
     sort($stack);
     foreach($stack as $id){
-      $user = $USERS->ByID($id);
+      $user = DB::$USER->ByID($id);
       if($this->IsActor($user->uname) || $user->IsDead() || $user->IsDummyBoy()){ //例外判定
 	return '自分・死者・身代わり君には投票できません';
       }

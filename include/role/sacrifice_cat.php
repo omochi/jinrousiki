@@ -12,7 +12,6 @@ class Role_sacrifice_cat extends Role_poison_cat{
   function __construct(){ parent::__construct(); }
 
   function ReviveAction(){
-    global $USERS;
-    $USERS->Kill($this->GetActor()->user_no, 'SACRIFICE');
+    DB::$USER->Kill($this->GetActor()->user_no, 'SACRIFICE');
   }
 }

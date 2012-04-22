@@ -5,7 +5,7 @@
   ・毒：獏・妖精系
 */
 RoleManager::LoadFile('poison');
-class Role_dummy_poison extends Role_poison{
+class Role_dummy_poison extends Role_poison {
   public $display_role = 'poison';
   function __construct(){ parent::__construct(); }
 

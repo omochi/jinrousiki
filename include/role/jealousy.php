@@ -14,13 +14,12 @@ class Role_jealousy extends Role{
   }
 
   function VotedReaction(){
-    global $USERS;
     foreach(array_keys($this->GetStack()) as $uname){
       if($this->IsVoted($uname)) continue;
 
       $cupid_list = array(); //橋姫に投票したユーザのキューピッドの ID => 恋人の ID
       foreach($this->GetVotedUname($uname) as $voted_uname){
-	$user = $USERS->ByRealUname($voted_uname);
+	$user = DB::$USER->ByRealUname($voted_uname);
 	foreach($user->GetPartner('lovers', true) as $id) $cupid_list[$id][] = $user->user_no;
       }
 

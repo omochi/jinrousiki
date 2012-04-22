@@ -19,8 +19,8 @@ if (@$_POST['command'] == 'role_test') {
 
   RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
   RQ::SetTestRoom('option_role', implode(' ', $stack->option_role));
-  $ROOM = new Room(RQ::$get);
-  $ROOM->LoadOption();
+  DB::$ROOM = new Room(RQ::$get);
+  DB::$ROOM->LoadOption();
 
   $user_count = @(int)$_POST['user_count'];
   $try_count  = @(int)$_POST['try_count'];

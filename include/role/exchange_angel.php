@@ -12,8 +12,6 @@ class Role_exchange_angel extends Role_angel{
 
   //交換憑依処理
   function Exchange(){
-    global $USERS;
-
     //変数を初期化
     $angel_list    = array();
     $lovers_list   = array();
@@ -22,7 +20,7 @@ class Role_exchange_angel extends Role_angel{
     foreach($this->GetUser() as $user){ //魂移使が打った恋人の情報を収集
       if($user->IsDummyBoy() || ! $user->IsLovers()) continue;
       foreach($user->GetPartner('lovers') as $cupid_id){
-	if($USERS->ById($cupid_id)->IsRole('exchange_angel')){
+	if(DB::$USER->ById($cupid_id)->IsRole('exchange_angel')){
 	  $angel_list[$cupid_id][] = $user->user_no;
 	  $lovers_list[$user->user_no][] = $cupid_id;
 	  if($user->IsPossessedGroup()) $fix_list[$cupid_id] = true; //憑依能力者なら対象外
@@ -56,8 +54,8 @@ class Role_exchange_angel extends Role_angel{
 
     foreach($exchange_list as $id){
       $target_list = $angel_list[$id];
-      $lovers_a = $USERS->ByID($target_list[0]);
-      $lovers_b = $USERS->ByID($target_list[1]);
+      $lovers_a = DB::$USER->ByID($target_list[0]);
+      $lovers_b = DB::$USER->ByID($target_list[1]);
       $lovers_a->AddRole('possessed_exchange[' . $target_list[1] . ']');
       $lovers_b->AddRole('possessed_exchange[' . $target_list[0] . ']');
       $this->SetSympathy($lovers_a, $lovers_b);

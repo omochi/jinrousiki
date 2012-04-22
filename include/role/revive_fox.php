@@ -6,7 +6,7 @@
   ・蘇生後：能力喪失
 */
 RoleManager::LoadFile('fox');
-class Role_revive_fox extends Role_fox{
+class Role_revive_fox extends Role_fox {
   public $mix_in = 'poison_cat';
   public $action     = 'POISON_CAT_DO';
   public $not_action = 'POISON_CAT_NOT_DO';
@@ -16,16 +16,14 @@ class Role_revive_fox extends Role_fox{
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROOM;
-    if($ROOM->date > 2 && ! $ROOM->IsOption('seal_message')){
+    if (DB::$ROOM->date > 2 && ! DB::$ROOM->IsOption('seal_message')) {
       OutputSelfAbilityResult('POISON_CAT_RESULT');
     }
     parent::OutputResult();
   }
 
   function OutputAction(){
-    global $ROOM;
-    if($this->GetActor()->IsActive() && ! $ROOM->IsOpenCast()){
+    if ($this->GetActor()->IsActive() && ! DB::$ROOM->IsOpenCast()) {
       OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
     }
   }

@@ -13,11 +13,10 @@ class Role_harvest_brownie extends Role {
   }
 
   function VoteKillReaction(){
-    global $USERS;
     foreach (array_keys($this->GetStack()) as $uname) {
       $flag = $this->IsVoted($uname);
       foreach ($this->GetVotedUname($uname) as $voted_uname) {
-	$user = $USERS->ByRealUname($voted_uname);
+	$user = DB::$USER->ByRealUname($voted_uname);
 	if ($user->IsDead(true) || mt_rand(0, 9) > 2) continue;
 	if ($flag) {
 	  $user->AddDoom(1, 'frostbite');

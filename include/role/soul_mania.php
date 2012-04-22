@@ -45,21 +45,18 @@ class Role_soul_mania extends Role_mania {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROOM;
-    if ($ROOM->date == 2) OutputSelfAbilityResult($this->result);
+    if (DB::$ROOM->date == 2) OutputSelfAbilityResult($this->result);
   }
 
   protected function GetManiaRole($user){ return $user->DistinguishRoleGroup(); }
 
   //覚醒コピー
   function DelayCopy($user){
-    global $ROOM;
-
     $actor = $this->GetActor();
     $role  = $user->IsRoleGroup('mania', 'copied') ? 'human' :
       $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];
     $actor->ReplaceRole($this->role, $role);
     $actor->AddRole($this->copied);
-    $ROOM->ResultAbility($this->result, $role, $actor->handle_name, $actor->user_no);
+    DB::$ROOM->ResultAbility($this->result, $role, $actor->handle_name, $actor->user_no);
   }
 }

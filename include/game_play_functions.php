@@ -1,7 +1,7 @@
 <?php
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $ROOM, $ROLES, $USERS, $SELF;
+  global $GAME_CONF, $ROLES;
 
   if ($say == '') return null; //リロード時なら処理スキップ
   //文字数・行数チェック
@@ -13,24 +13,24 @@ function ConvertSay(&$say){
   if ($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
 
   //死者・ゲームプレイ中以外なら以降はスキップ
-  if ($SELF->IsDead() || ! $ROOM->IsPlaying()) return null;
-  //if ($SELF->IsDead()) return false; //テスト用
+  if (DB::$SELF->IsDead() || ! DB::$ROOM->IsPlaying()) return null;
+  //if (DB::$SELF->IsDead()) return false; //テスト用
 
   $ROLES->stack->say = $say;
-  $ROLES->actor = ($virtual = $USERS->ByVirtual($SELF->user_no)); //仮想ユーザを取得
+  $ROLES->actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->user_no)); //仮想ユーザを取得
   do { //発言置換処理
     foreach ($ROLES->Load('say_convert_virtual') as $filter){
       if ($filter->ConvertSay()) break 2;
     }
-    $ROLES->actor = $SELF;
+    $ROLES->actor = DB::$SELF;
     foreach ($ROLES->Load('say_convert') as $filter){
       if ($filter->ConvertSay()) break 2;
     }
   } while(false);
 
   foreach ($virtual->GetPartner('bad_status', true) as $id => $date){ //妖精の処理
-    if ($date != $ROOM->date) continue;
-    $ROLES->actor = $USERS->ByID($id);
+    if ($date != DB::$ROOM->date) continue;
+    $ROLES->actor = DB::$USER->ByID($id);
     foreach ($ROLES->Load('say_bad_status') as $filter) $filter->ConvertSay();
   }
 
@@ -43,50 +43,50 @@ function ConvertSay(&$say){
 
 //発言を DB に登録する
 function Write($say, $scene, $location = null, $spend_time = 0, $update = false){
-  global $ROOM, $ROLES, $USERS, $SELF;
+  global $ROLES;
 
   //声の大きさを決定
   $voice = RQ::$get->font_type;
-  if ($ROOM->IsPlaying() && $SELF->IsLive()) {
-    $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
+  if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
+    $ROLES->actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
     foreach ($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
   }
 
-  if ($ROOM->IsBeforegame()) {
-    $ROOM->TalkBeforegame($say, $SELF->uname, $SELF->handle_name, $SELF->color, $voice);
+  if (DB::$ROOM->IsBeforegame()) {
+    DB::$ROOM->TalkBeforegame($say, DB::$SELF->uname, DB::$SELF->handle_name, DB::$SELF->color, $voice);
   }
   else {
-    $role_id = $ROOM->IsPlaying() ? $SELF->role_id : null;
-    $ROOM->Talk($say, null, $SELF->uname, $scene, $location, $voice, $role_id, $spend_time);
+    $role_id = DB::$ROOM->IsPlaying() ? DB::$SELF->role_id : null;
+    DB::$ROOM->Talk($say, null, DB::$SELF->uname, $scene, $location, $voice, $role_id, $spend_time);
   }
-  if ($update) $ROOM->UpdateTime();
+  if ($update) DB::$ROOM->UpdateTime();
 }
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROOM, $ROLES, $USERS, $SELF;
+  global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROLES;
 
-  if (! $ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
+  if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
-  if ($SELF->IsDead()){ //死亡したら口寄せ以外は表示しない
+  if (DB::$SELF->IsDead()){ //死亡したら口寄せ以外は表示しない
     echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
-    if ($SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
-    if ($SELF->IsDummyBoy() && ! $ROOM->IsOpenCast()){ //身代わり君のみ隠蔽情報を表示
+    if (DB::$SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
+    if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()){ //身代わり君のみ隠蔽情報を表示
       echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
     }
     return;
   }
-  $ROLES->LoadMain($SELF)->OutputAbility(); //メイン役職
+  $ROLES->LoadMain(DB::$SELF)->OutputAbility(); //メイン役職
 
   //-- ここからサブ役職 --//
   foreach ($ROLES->Load('display_real') as $filter) $filter->OutputAbility();
 
   //-- ここからは憑依先の役職を表示 --//
-  $ROLES->actor = $USERS->ByVirtual($SELF->user_no);
+  $ROLES->actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
   foreach ($ROLES->Load('display_virtual') as $filter) $filter->OutputAbility();
 
   //-- これ以降はサブ役職非公開オプションの影響を受ける --//
-  if ($ROOM->IsOption('secret_sub_role')) return;
+  if (DB::$ROOM->IsOption('secret_sub_role')) return;
 
   $stack = array();
   foreach (array('real', 'virtual', 'none') as $name){
@@ -114,19 +114,15 @@ function OutputPartner($list, $header, $footer = null){
 
 //現在の憑依先を表示する
 function OutputPossessedTarget(){
-  global $USERS, $SELF;
-
   $type = 'possessed_target';
-  if (is_null($stack = $SELF->GetPartner($type))) return;
+  if (is_null($stack = DB::$SELF->GetPartner($type))) return;
 
-  $target = $USERS->ByID($stack[max(array_keys($stack))])->handle_name;
+  $target = DB::$USER->ByID($stack[max(array_keys($stack))])->handle_name;
   if ($target != '') OutputAbilityResult('partner_header', $target, $type);
 }
 
 //個々の能力発動結果を表示する
 function OutputSelfAbilityResult($action){
-  global $ROOM, $SELF;
-
   $header = null;
   $footer = 'result_';
   $limit  = false;
@@ -286,7 +282,7 @@ function OutputSelfAbilityResult($action){
   case 'SYMPATHY_RESULT':
     $type   = 'mage';
     $header = 'sympathy_result';
-    $limit  = ! $SELF->IsRole('ark_angel');
+    $limit  = ! DB::$SELF->IsRole('ark_angel');
     break;
 
   case 'PRESAGE_RESULT':
@@ -300,8 +296,8 @@ function OutputSelfAbilityResult($action){
     return false;
   }
 
-  $target_date = $ROOM->date - 1;
-  if ($ROOM->test_mode){
+  $target_date = DB::$ROOM->date - 1;
+  if (DB::$ROOM->test_mode) {
     $stack = RQ::GetTest()->result_ability;
     $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : array();
     $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
@@ -309,7 +305,7 @@ function OutputSelfAbilityResult($action){
     if ($limit){
       $limit_stack = array();
       foreach ($stack as $list){
-	if ($list['user_no'] == $SELF->user_no) $limit_stack[] = $list;
+	if ($list['user_no'] == DB::$SELF->user_no) $limit_stack[] = $list;
       }
       $stack = $limit_stack;
       //PrintData($stack, $user_no);
@@ -317,9 +313,10 @@ function OutputSelfAbilityResult($action){
     $result_list = $stack;
   }
   else {
-    $query = 'SELECT DISTINCT target, result FROM result_ability WHERE room_no = ' .
-      "{$ROOM->id} AND date = {$target_date} AND type = '{$action}'";
-    if ($limit) $query .= " AND user_no = {$SELF->user_no}";
+    $str = 'SELECT DISTINCT target, result FROM result_ability WHERE room_no = %d ' .
+      "AND date = %d AND type = '%s'";
+    $query = sprintf($str, DB::$ROOM->id, $target_date, $action);
+    if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->user_no);
     $result_list = DB::FetchAssoc($query);
   }
   //PrintData($result_list);
@@ -378,9 +375,9 @@ function OutputAbilityResult($header, $target, $footer = null){
 
 //夜の未投票メッセージ出力
 function OutputVoteMessage($class, $sentence, $type, $not_type = ''){
-  global $MESSAGE, $ROOM, $USERS;
+  global $MESSAGE;
 
-  $stack = $ROOM->test_mode ? array() : GetSelfVoteNight($type, $not_type);
+  $stack = DB::$ROOM->test_mode ? array() : GetSelfVoteNight($type, $not_type);
   if (count($stack) < 1){
     $str = $MESSAGE->{'ability_' . $sentence};
   }
@@ -390,7 +387,7 @@ function OutputVoteMessage($class, $sentence, $type, $not_type = ''){
   elseif ($type == 'SPREAD_WIZARD_DO'){
     $str_stack = array();
     foreach (explode(' ', $stack['target_no']) as $id){
-      $user = $USERS->ByVirtual($id);
+      $user = DB::$USER->ByVirtual($id);
       $str_stack[$user->user_no] = $user->handle_name;
     }
     ksort($str_stack);
@@ -400,10 +397,10 @@ function OutputVoteMessage($class, $sentence, $type, $not_type = ''){
     $str = 'キャンセル投票済み';
   }
   elseif ($type == 'POISON_CAT_DO' || $type == 'POSSESSED_DO'){
-    $str = $USERS->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
+    $str = DB::$USER->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
   }
   else {
-    $str = $USERS->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
+    $str = DB::$USER->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
   }
   echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
 }

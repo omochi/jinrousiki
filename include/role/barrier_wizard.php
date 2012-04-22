@@ -16,8 +16,6 @@ class Role_barrier_wizard extends Role_wizard {
   function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
 
   function VoteNight(){
-    global $USERS;
-
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     if(count($stack) < 1 || 4 < count($stack)) return '指定人数は1～4人にしてください';
@@ -25,12 +23,12 @@ class Role_barrier_wizard extends Role_wizard {
     $target_stack = array();
     $handle_stack = array();
     foreach($stack as $id) {
-      $user = $USERS->ByID($id);
+      $user = DB::$USER->ByID($id);
       //例外判定
-      if ($this->IsActor($user->uname) || ! $USERS->IsVirtualLive($id) || $user->IsDummyBoy()) {
+      if ($this->IsActor($user->uname) || ! DB::$USER->IsVirtualLive($id) || $user->IsDummyBoy()) {
 	return '自分・死者・身代わり君には投票できません';
       }
-      $target_stack[$id] = $USERS->ByReal($id)->user_no;
+      $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
       $handle_stack[$id] = $user->handle_name;
     }
     sort($target_stack);
@@ -42,14 +40,12 @@ class Role_barrier_wizard extends Role_wizard {
   }
 
   function SetGuard($list){
-    global $USERS;
-
     $actor     = $this->GetActor()->uname;
     $stack     = array();
     $trapped   = false;
     $frostbite = false;
     foreach (explode(' ', $list) as $id) {
-      $uname = $USERS->ByID($id)->uname;
+      $uname = DB::$USER->ByID($id)->uname;
       $stack[$actor][] = $uname;
       $trapped   |= in_array($uname, $this->GetStack('trap')); //罠死判定
       $frostbite |= in_array($uname, $this->GetStack('snow_trap')); //凍傷判定
@@ -73,8 +69,8 @@ class Role_barrier_wizard extends Role_wizard {
 
   //護衛成功係数取得
   private function GetGuardRate(){
-    global $ROOM;
-    return $ROOM->IsEvent('full_wizard') ? 1.25 : ($ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
+    return DB::$ROOM->IsEvent('full_wizard') ? 1.25 :
+      (DB::$ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
   }
 
   function GuardFailed(){ return false; }

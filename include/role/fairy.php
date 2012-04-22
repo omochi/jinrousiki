@@ -21,8 +21,7 @@ class Role_fairy extends Role {
 
   //悪戯
   function FairyAction($user){
-    global $ROOM;
-    $date = $ROOM->date + 1;
+    $date = DB::$ROOM->date + 1;
     $user->AddRole('bad_status[' . $this->GetActor()->user_no . '-' . $date . ']');
   }
 

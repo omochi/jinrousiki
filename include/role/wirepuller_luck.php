@@ -8,7 +8,7 @@
 class Role_wirepuller_luck extends Role{
   function __construct(){ parent::__construct(); }
 
-  protected function IgnoreAbility(){ global $ROOM; return $ROOM->date < 2; }
+  protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
 
   function FilterVoteDo(&$number){ if($this->IsLivePartner()) $number += 2; }
 

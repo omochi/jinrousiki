@@ -9,12 +9,10 @@ class Role_poison extends Role{
 
   //毒対象者選出 (処刑)
   function GetPoisonVoteTarget($list){
-    global $USERS;
-
     $stack = array();
     $class = $this->GetClass($method = 'IsPoisonTarget');
     foreach($list as $uname){
-      $user = $USERS->ByRealUname($uname);
+      $user = DB::$USER->ByRealUname($uname);
       if($user->IsLive(true) && ! $user->IsAvoid(true) && $class->$method($user)){
 	$stack[] = $user->user_no;
       }

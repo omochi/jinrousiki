@@ -9,12 +9,10 @@ class Role_emissary_necromancer extends Role_necromancer{
   function __construct(){ parent::__construct(); }
 
   function Necromancer($user, $flag){
-    global $USERS;
-
     $count = 0;
     $camp  = $user->GetCamp(true);
     foreach($this->GetVotedUname($user->uname) as $uname){
-      if($USERS->ByRealUname($uname)->IsCamp($camp, true)) $count++;
+      if(DB::$USER->ByRealUname($uname)->IsCamp($camp, true)) $count++;
     }
     return $count;
   }

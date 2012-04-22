@@ -13,22 +13,20 @@ class Role_mirror_fairy extends Role_fairy {
   public $ignore_message = '初日以外は投票できません';
   function __construct(){ parent::__construct(); }
 
-  function IsVote(){ global $ROOM; return $ROOM->date == 1; }
+  function IsVote(){ return DB::$ROOM->date == 1; }
 
   function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
 
   function IsVoteCheckbox($user, $live){ return $live && ! $user->IsDummyBoy(); }
 
   function VoteNight(){
-    global $USERS;
-
     $stack = $this->GetVoteNightTarget();
     if (count($stack) != 2) return '指定人数は2人にしてください'; //人数チェック
 
     $user_list = array();
     sort($stack);
     foreach ($stack as $id) {
-      $user = $USERS->ByID($id);
+      $user = DB::$USER->ByID($id);
       if (! $user->IsLive() || $user->IsDummyBoy()) { //例外判定
 	return '生存者以外と身代わり君には投票できません';
       }
@@ -43,18 +41,15 @@ class Role_mirror_fairy extends Role_fairy {
   }
 
   function VoteKillCounter($list){
-    global $ROOM;
-    $ROOM->SystemMessage($this->GetActor()->user_no, 'VOTE_DUEL', 1);
+    DB::$ROOM->SystemMessage($this->GetActor()->user_no, 'VOTE_DUEL', 1);
   }
 
   function SetEvent($USERS){
-    global $ROOM;
-
     $stack = array(); //決選投票対象者の ID リスト
     foreach ($this->GetActor()->GetPartner($this->role, true) as $key => $value) { //生存確認
-      if($USERS->IsVirtualLive($key))   $stack[] = $key;
-      if($USERS->IsVirtualLive($value)) $stack[] = $value;
+      if ($USERS->IsVirtualLive($key))   $stack[] = $key;
+      if ($USERS->IsVirtualLive($value)) $stack[] = $value;
     }
-    if (count($stack) > 1) $ROOM->event->{$this->event_day} = $stack;
+    if (count($stack) > 1) DB::$ROOM->event->{$this->event_day} = $stack;
   }
 }

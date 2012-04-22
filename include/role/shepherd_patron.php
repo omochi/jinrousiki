@@ -11,9 +11,7 @@ class Role_shepherd_patron extends Role_patron{
   function __construct(){ parent::__construct(); }
 
   function GetVoteNightTargetCount(){
-    global $USERS;
-
-    $count = floor($USERS->GetUserCount() / 6);
+    $count = floor(DB::$USER->GetUserCount() / 6);
     if($count < 1) $count++;
     return $count;
   }
