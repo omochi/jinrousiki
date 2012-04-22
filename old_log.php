@@ -4,7 +4,7 @@ $INIT_CONF->LoadFile('oldlog_functions');
 $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
 DB::Connect($RQ_ARGS->db_no);
 ob_start();
-if($RQ_ARGS->is_room){
+if ($RQ_ARGS->is_room) {
   $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
   $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
 
@@ -19,11 +19,11 @@ if($RQ_ARGS->is_room){
   $USERS = new UserDataSet($RQ_ARGS);
   $SELF  = $ROOM->single_view_mode ? $USERS->ByID($RQ_ARGS->user_no) : new User();
   $USERS->player = $ROOM->LoadPlayer();
-  if($ROOM->watch_mode) $SELF->live = 'live';
-  if($ROOM->watch_mode || $ROOM->single_view_mode) $USERS->SaveRoleList();
+  if ($ROOM->watch_mode) $SELF->live = 'live';
+  if ($ROOM->watch_mode || $ROOM->single_view_mode) $USERS->SaveRoleList();
   OutputOldLog();
 }
-else{
+else {
   $INIT_CONF->LoadClass('ROOM_CONF');
   OutputFinishedRooms($RQ_ARGS->page);
 }
