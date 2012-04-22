@@ -20,7 +20,7 @@ define('JINRO_MOD',  JINRO_ROOT . '/module');
   確実に読み込まれているデータを入れる必要はない。
   逆にコード上必須ではないが常にセットで使われるデータを入れると良い。
 */
-class InitializeConfig{
+class InitializeConfig {
   public $path; //パス情報格納変数
   public $loaded; //ロード情報格納変数
 
@@ -74,10 +74,11 @@ class InitializeConfig{
     'TIME_CALC'           => array('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG',
 				   'CAST_CONF', 'ROLE_DATA'),
     'COPYRIGHT'           => 'SCRIPT_INFO',
+    'index_functions'     => array('SCRIPT_INFO', 'BBS_CONF'),
+    'login_class'         => 'SESSION',
     'game_play_functions' => 'ROLE_IMG',
     'user_class'          => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
-    'index_functions'     => array('SCRIPT_INFO', 'BBS_CONF'),
     'oldlog_functions'    => array('CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
     'setup_class'         => 'SCRIPT_INFO'
   );

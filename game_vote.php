@@ -181,7 +181,6 @@ function AggregateVoteKick($target){
   }
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
     sprintf('WHERE room_no = %d AND user_no = %d', DB::$ROOM->id, $target->user_no);
-
   DB::Execute($query);
 
   //通知処理

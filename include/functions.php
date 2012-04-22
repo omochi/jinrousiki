@@ -136,6 +136,12 @@ function EscapeStrings(&$str, $trim = true){
   return $str;
 }
 
+//パスワード暗号化
+function CryptPassword($str){
+  global $SERVER_CONF;
+  return sha1($SERVER_CONF->salt . $str);
+}
+
 //トリップ変換
 /*
   変換テスト結果＠2ch (2009/07/26)
@@ -205,12 +211,6 @@ function ConvertTrip($str){
 function LineToBR(&$str){
   $str = str_replace("\n", '<br>', $str);
   return $str;
-}
-
-//パスワード暗号化
-function CryptPassword($raw_password){
-  global $SERVER_CONF;
-  return sha1($SERVER_CONF->salt . $raw_password);
 }
 
 //-- 出力関連 --//

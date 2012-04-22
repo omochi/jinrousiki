@@ -58,11 +58,12 @@ if (DB::$ROOM->IsPlaying()) { //経過時間を取得
   }
 }
 
+$title = DB::$ROOM->GenerateTitleTag();
 echo <<<EOF
 </head>
 <body{$on_load}>
 <table id="game_top" class="login"><tr>
-{DB::$ROOM->GenerateTitleTag()}<td class="login-link">
+{$title}<td class="login-link">
 
 EOF;
 
