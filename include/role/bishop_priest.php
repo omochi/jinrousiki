@@ -5,7 +5,7 @@
   ・司祭：村人陣営以外の死者 (奇数日 / 3日目以降)
 */
 RoleManager::LoadFile('priest');
-class Role_bishop_priest extends Role_priest{
+class Role_bishop_priest extends Role_priest {
   public $priest_type = 'dead';
   function __construct(){ parent::__construct(); }
 

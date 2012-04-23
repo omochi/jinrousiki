@@ -14,7 +14,7 @@ class Role_power_yaksa extends Role_yaksa{
     if($this->IsDead()) return false;
     $camp_list = array();
     $live_list = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       $camp = $user->GetCamp(true);
       $camp_list[$camp] = true;
       if($user->IsLive()) $live_list[$camp] = true;

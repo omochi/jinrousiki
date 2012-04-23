@@ -1,6 +1,6 @@
 <?php
 //-- 役職コントローラークラス --//
-class RoleManager{
+class RoleManager {
   public $path;
   public $loaded;
   public $actor;
@@ -220,26 +220,26 @@ class RoleManager{
   function Load($type, $shift = false, $virtual = false){
     $stack = array();
     $virtual |= $type == 'main_role';
-    foreach($this->GetList($type) as $role){
-      if(! ($virtual ? $this->actor->IsRole(true, $role) : $this->actor->IsRole($role))) continue;
+    foreach ($this->GetList($type) as $role) {
+      if (! ($virtual ? $this->actor->IsRole(true, $role) : $this->actor->IsRole($role))) continue;
       $stack[] = $role;
-      if($this->LoadFile($role)) $this->LoadClass($role, 'Role_' . $role);
+      if ($this->LoadFile($role)) $this->LoadClass($role, 'Role_' . $role);
     }
     $filter = $this->GetFilter($stack);
     return $shift ? array_shift($filter) : $filter;
   }
 
   function LoadFile($name){
-    if(is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
-    if(in_array($name, $this->loaded->file)) return true;
+    if (is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
+    if (in_array($name, $this->loaded->file)) return true;
     require_once($file);
     $this->loaded->file[] = $name;
     return true;
   }
 
   function LoadClass($name, $class){
-    if(is_null($name) ||
-       (array_key_exists($name, $this->loaded->class) && is_object($this->loaded->class[$name]))){
+    if (is_null($name) ||
+	(array_key_exists($name, $this->loaded->class) && is_object($this->loaded->class[$name]))) {
       return false;
     }
     $this->loaded->class[$name] = new $class();
@@ -247,7 +247,7 @@ class RoleManager{
   }
 
   function LoadMix($name){
-    if(! $this->LoadFile($name)) return null;
+    if (! $this->LoadFile($name)) return null;
     $class = 'Role_' . $name;
     return new $class();
   }
@@ -274,9 +274,9 @@ class RoleManager{
 
   function GetFilter($list){
     $stack = array();
-    foreach($list as $key){ //順番依存があるので配列関数を使わないで処理する
-      if(! array_key_exists($key, $this->loaded->class)) continue;
-      if(is_object(($class = $this->loaded->class[$key]))) $stack[] = $class;
+    foreach ($list as $key) { //順番依存があるので配列関数を使わないで処理する
+      if (! array_key_exists($key, $this->loaded->class)) continue;
+      if (is_object(($class = $this->loaded->class[$key]))) $stack[] = $class;
     }
     return $stack;
   }
@@ -295,21 +295,21 @@ class Role {
     global $ROLES;
 
     $this->role = array_pop(explode('Role_', get_class($this)));
-    if(isset($this->mix_in)){
+    if (isset($this->mix_in)){
       $this->filter = $ROLES->LoadMix($this->mix_in);
       $this->filter->role = $this->role;
       //PrintData(get_class_vars(get_class($this)));
-      if(isset($this->display_role)) $this->filter->display_role = $this->display_role;
+      if (isset($this->display_role)) $this->filter->display_role = $this->display_role;
     }
   }
 
   //Mixin 呼び出し用
   function __call($name, $args){
-    if(! is_object($this->filter)){
+    if (! is_object($this->filter)) {
       PrintData('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
       return false;
     }
-    if(! method_exists($this->filter, $name)){
+    if (! method_exists($this->filter, $name)) {
       PrintData('Error: Method not found: ' . get_class($this) . ": {$name}()");
       return false;
     }
@@ -339,14 +339,11 @@ class Role {
     return is_null($uname) ? $this->GetActor()->uname : $uname;
   }
 
-  //ユーザ情報取得
-  protected function GetUser(){ return DB::$USER->rows; }
-
   //データ初期化
   protected function InitStack($name = null){
     global $ROLES;
     $data = is_null($name) ? $this->role : $name;
-    if(! property_exists($ROLES->stack, $data)) $ROLES->stack->$data = array();
+    if (! property_exists($ROLES->stack, $data)) $ROLES->stack->$data = array();
   }
 
   //データ取得
@@ -422,8 +419,8 @@ class Role {
 
   //生存仲間判定
   protected function IsLivePartner(){
-    foreach($this->GetActor()->GetPartner($this->role) as $id){
-      if(DB::$USER->ByID($id)->IsLive(true)) return true;
+    foreach ($this->GetActor()->GetPartner($this->role) as $id) {
+      if (DB::$USER->ByID($id)->IsLive(true)) return true;
     }
     return false;
   }
@@ -463,13 +460,13 @@ class Role {
   //-- 投票データ表示 (夜) --//
   //投票データセット (夜)
   function SetVoteNight(){
-    if(is_null($this->action)){
+    if (is_null($this->action)) {
       OutputVoteResult('夜：あなたは投票できません');
     }
-    else{
-      if(! is_null($str = $this->IgnoreVote())) OutputVoteResult('夜：' . $str);
-      foreach(array('', 'not_') as $header){
-	foreach(array('action', 'submit') as $data){
+    else {
+      if (! is_null($str = $this->IgnoreVote())) OutputVoteResult('夜：' . $str);
+      foreach (array('', 'not_') as $header) {
+	foreach (array('action', 'submit') as $data) {
 	  $this->SetStack($this->{$header . $data}, $header . $data);
 	}
       }
@@ -505,7 +502,7 @@ class Role {
   //投票結果チェック (夜)
   function CheckVoteNight(){
     $this->SetStack(RQ::$get->situation, 'message');
-    if(! is_null($str = $this->VoteNight())){
+    if (! is_null($str = $this->VoteNight())) {
       OutputVoteResult('夜：投票先が正しくありません<br>'."\n" . $str);
     }
   }
@@ -514,7 +511,7 @@ class Role {
   function VoteNight(){
     $user = DB::$USER->ByID($this->GetVoteNightTarget());
     $live = DB::$USER->IsVirtualLive($user->user_no); //仮想的な生死を判定
-    if(! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
+    if (! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
     $this->SetStack(DB::$USER->ByReal($user->user_no)->user_no, 'target_no');
     $this->SetStack($user->handle_name, 'target_handle');
     return null;

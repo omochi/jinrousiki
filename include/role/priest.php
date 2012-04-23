@@ -10,7 +10,7 @@ class Role_priest extends Role {
 
   //Mixin あり
   function OutputResult(){
-    if(is_null($role = $this->GetOutputRole())) return;
+    if (is_null($role = $this->GetOutputRole())) return;
     OutputSelfAbilityResult($this->GetEvent($role));
   }
 
@@ -27,7 +27,7 @@ class Role_priest extends Role {
   //司祭能力
   function Priest($role_flag){
     $data = $this->GetStack('priest');
-    if(is_null($role = $this->GetPriestRole($data->list))) return;
+    if (is_null($role = $this->GetPriestRole($data->list))) return;
     $class = $this->GetClass($method = 'GetPriestType');
     DB::$ROOM->ResultAbility($this->GetEvent($role), $data->count[$class->$method()]);
   }
@@ -50,64 +50,67 @@ class Role_priest extends Role {
     $data->count = array('total' => 0, 'human' => 0, 'wolf' => 0, 'fox' => 0, 'lovers' => 0,
 			 'human_side' => 0, 'dead' => 0, 'dream' => 0, 'sub_role' => 0);
     $this->SetStack($data);
-    foreach($role_flag as $role => $stack){ //司祭系の出現判定
+    foreach ($role_flag as $role => $stack) { //司祭系の出現判定
       $user = new User($role);
-      if($user->IsRoleGroup('priest')) $flag |= $ROLES->LoadMain($user)->SetPriest();
+      if ($user->IsRoleGroup('priest')) $flag |= $ROLES->LoadMain($user)->SetPriest();
     }
     $data = $this->GetStack();
-    if(DB::$ROOM->IsOption('weather') && (DB::$ROOM->date % 3) == 1){ //天候判定
+    if (DB::$ROOM->IsOption('weather') && (DB::$ROOM->date % 3) == 1) { //天候判定
       $role = 'weather_priest';
       $flag = true;
       $data->$role = true;
-      if(! in_array($role, $data->list)) $data->list[] = $role;
+      if (! in_array($role, $data->list)) $data->list[] = $role;
     }
-    if(! $flag){
+    if (! $flag) {
       $this->SetStack($data);
       return;
     }
 
-    foreach($this->GetUser() as $user){ //陣営情報収集
-      if($user->IsDead(true)){
-	if(! $user->IsCamp('human', true)) $data->count['dead']++;
+    foreach (DB::$USER->rows as $user) { //陣営情報収集
+      if ($user->IsDead(true)) {
+	if (! $user->IsCamp('human', true)) $data->count['dead']++;
 	continue;
       }
       $data->count['total']++;
 
-      if($user->IsWolf()){
+      if ($user->IsWolf()) {
 	$data->count['wolf']++;
       }
-      elseif($user->IsFox()){
+      elseif ($user->IsFox()) {
 	$data->count['fox']++;
       }
-      else{
+      else {
 	$data->count['human']++;
-	if($user->IsCamp('human')) $data->count['human_side']++;
+	if ($user->IsCamp('human')) $data->count['human_side']++;
       }
 
-      if($user->IsLovers()) $data->count['lovers']++;
+      if ($user->IsLovers()) $data->count['lovers']++;
 
-      if(in_array('dowser_priest', $data->list)){
+      if (in_array('dowser_priest', $data->list)) {
 	$dummy_user = new User();
 	$dummy_user->ParseRoles($user->GetRole());
 	$data->count['sub_role'] += count($dummy_user->role_list) - 1;
       }
 
-      if(in_array('dummy_priest', $data->list) && $user->IsRoleGroup('dummy', 'fairy')){
+      if (in_array('dummy_priest', $data->list) && $user->IsRoleGroup('dummy', 'fairy')) {
 	$data->count['dream']++;
       }
     }
 
-    if(in_array('crisis_priest', $data->list) || in_array('revive_priest', $data->list)){
-      if($data->count['total'] - $data->count['lovers'] <= 2){
+    if (in_array('crisis_priest', $data->list) || in_array('revive_priest', $data->list)) {
+      if ($data->count['total'] - $data->count['lovers'] <= 2) {
 	$data->crisis = 'lovers';
       }
-      elseif($data->count['human'] - $data->count['wolf'] <= 2 || $data->count['wolf'] == 1){
-	if($data->count['lovers'] > 1)
+      elseif ($data->count['human'] - $data->count['wolf'] <= 2 || $data->count['wolf'] == 1) {
+	if ($data->count['lovers'] > 1) {
 	  $data->crisis = 'lovers';
-	elseif($data->count['fox'] > 0)
+	}
+	elseif ($data->count['fox'] > 0) {
 	  $data->crisis = 'fox';
-	elseif($data->count['human'] - $data->count['wolf'] <= 2)
+	}
+	elseif ($data->count['human'] - $data->count['wolf'] <= 2) {
 	  $data->crisis = 'wolf';
+	}
       }
     }
     $this->SetStack($data);

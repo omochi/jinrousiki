@@ -2,59 +2,59 @@
 //-- サーバ設定 --//
 class ServerConfig {
   //サーバのURL
-  public $site_root = 'http://localhost/jinrou/';
+  static $site_root = 'http://localhost/jinrou/';
 
   //タイトル
-  public $title = '汝は人狼なりや？';
+  static $title = '汝は人狼なりや？';
 
   //サーバのコメント
-  public $comment = '';
+  static $comment = '';
 
   //管理者 (任意)
-  public $admin = '';
+  static $admin = '';
 
   //サーバの文字コード
   /*
     変更する場合は全てのファイル自体の文字コードを自前で変更してください
     include/init.php も参照してください
   */
-  public $encode = 'UTF-8';
+  static $encode = 'UTF-8';
 
   //ヘッダ強制指定 (海外サーバ等で文字化けする場合に使用します)
-  public $set_header_encode = false;
+  static $set_header_encode = false;
 
   //戻り先のページ
-  public $back_page = '';
+  static $back_page = '';
 
   //管理者用パスワード
-  public $system_password = 'xxxxxxxx';
+  static $system_password = 'xxxxxxxx';
 
   //パスワード暗号化用 salt
-  public $salt = 'xxxx';
+  static $salt = 'xxxx';
 
   //デバッグモードのオン/オフ
-  public $debug_mode = false;
+  static $debug_mode = false;
 
   //村作成パスワード (null 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
-  public $room_password = null;
+  static $room_password = null;
 
   //村作成テストモード (村作成時の DB アクセス処理をスキップします。開発者テスト用スイッチです)
-  public $dry_run_mode = false;
+  static $dry_run_mode = false;
 
   //村作成禁止 (true にすると村の作成画面が表示されず、村を作成できなくなります)
-  public $disable_establish = false;
+  static $disable_establish = false;
 
   //村メンテナンス停止 (true にすると村の自動廃村処理などが実行されなくなります)
-  public $disable_maintenance = false;
+  static $disable_maintenance = false;
 
   //村情報非表示モード (村作成テストなどの開発者テスト用スイッチです)
-  public $secret_room = false;
+  static $secret_room = false;
 
   //タイムゾーンが設定できない場合に時差を秒単位で設定するか否か
-  public $adjust_time_difference = false;
+  static $adjust_time_difference = false;
 
   //$adjust_time_difference が有効な時の時差 (秒数)
-  public $offset_seconds = 32400; //9時間
+  static $offset_seconds = 32400; //9時間
 
   //更新前のスクリプトのリビジョン番号
   /*
@@ -73,5 +73,5 @@ class ServerConfig {
     更新後のリビジョン番号と同じか、それより大きな値を設定すると
     admin/setup.php の処理は常時スキップされます。
   */
-  public $last_updated_revision = 365;
+  static $last_updated_revision = 365;
 }

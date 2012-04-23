@@ -21,9 +21,9 @@ class Role_widow_priest extends Role_priest {
     $dummy_boy = DB::$USER->ByID(1);
     $result = $dummy_boy->main_role;
     $target = $dummy_boy->handle_name;
-    foreach($role_flag->{$this->role} as $uname){
+    foreach ($role_flag->{$this->role} as $uname) {
       $user = DB::$USER->ByUname($uname);
-      if($user->IsDummyBoy()) continue;
+      if ($user->IsDummyBoy()) continue;
       $user->AddRole('mind_sympathy');
       DB::$ROOM->ResultAbility('SYMPATHY_RESULT', $result, $target, $user->user_no);
     }

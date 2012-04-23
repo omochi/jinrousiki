@@ -4,14 +4,14 @@
   ○仕様
   ・仲間表示：共有者系
 */
-class Role_common extends Role{
+class Role_common extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
     $stack = array();
-    foreach($this->GetUser() as $user){
-      if($this->IsActor($user->uname)) continue;
-      if($this->IsCommonPartner($user)) $stack[] = $user->handle_name;
+    foreach (DB::$USER->rows as $user) {
+      if ($this->IsActor($user->uname)) continue;
+      if ($this->IsCommonPartner($user)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'common_partner');
   }
@@ -23,7 +23,7 @@ class Role_common extends Role{
   function Whisper($builder, $voice){
     global $MESSAGE;
 
-    if(! $builder->flag->common_whisper) return false; //スキップ判定
+    if (! $builder->flag->common_whisper) return false; //スキップ判定
     $str = $MESSAGE->common_talk;
     $builder->RawAddTalk('', '共有者の小声', $str, $voice, '', 'talk-common', 'say-common');
     return true;

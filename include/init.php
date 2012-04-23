@@ -26,7 +26,6 @@ class InitializeConfig {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'SERVER_CONF'         => 'server_config',
     'ROOM_CONF'           => 'room_config',
     'GAME_CONF'           => 'game_config',
     'GAME_OPT_CONF'       => 'game_option_config',
@@ -85,7 +84,6 @@ class InitializeConfig {
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'SERVER_CONF'   => 'ServerConfig',
     'SHARED_CONF'   => 'SharedServerConfig',
     'USER_ICON'     => 'UserIconConfig',
     'MENU_LINK'     => 'MenuLinkBuilder',
@@ -127,8 +125,7 @@ class InitializeConfig {
     $this->loaded->file  = array();
     $this->loaded->class = array();
 
-    $this->LoadFile('database_class');
-    $this->LoadClass('SERVER_CONF');
+    $this->LoadFile('database_class', 'server_config');
   }
 
   //依存情報設定
@@ -249,7 +246,7 @@ if (! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 if (FindDangerValue($_REQUEST) || FindDangerValue($_SERVER)) die;
 
 //デバッグ用ツールをロード
-$SERVER_CONF->debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');
+ServerConfig::$debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');
 
 //PrintData($INIT_CONF); //テスト用
 
@@ -263,13 +260,13 @@ $SERVER_CONF->debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->Load
 //-- マルチバイト入出力指定 --//
 if (extension_loaded('mbstring')) {
   mb_language('ja');
-  mb_internal_encoding($SERVER_CONF->encode);
+  mb_internal_encoding(ServerConfig::$encode);
   mb_http_input('auto');
-  mb_http_output($SERVER_CONF->encode);
+  mb_http_output(ServerConfig::$encode);
 }
 
 //-- ヘッダ強制指定 --//
-if ($SERVER_CONF->set_header_encode && ! headers_sent()) { //ヘッダ未送信時にセットする
-  header("Content-type: text/html; charset={$SERVER_CONF->encode}");
+if (ServerConfig::$set_header_encode && ! headers_sent()) { //ヘッダ未送信時にセットする
+  header(sprintf('Content-type: text/html; charset=%s', ServerConfig::$encode));
   header('Content-Language: ja');
 }

@@ -10,7 +10,7 @@ DB::Disconnect();
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $SERVER_CONF, $GAME_CONF, $MESSAGE, $SESSION;
+  global $GAME_CONF, $MESSAGE, $SESSION;
 
   extract(RQ::ToArray()); //引数を展開
   $back_url = 'user_manager.php?room_no=' . $room_no; //ベースバックリンク
@@ -161,7 +161,7 @@ EOF;
 
   //IP アドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
-  if (! $SERVER_CONF->debug_mode) {
+  if (! ServerConfig::$debug_mode) {
     if ($GAME_CONF->entry_one_ip_address &&
 	DB::Count($query_count . "ip_address = '{$ip_address}'") > 0) {
       OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
@@ -200,7 +200,7 @@ EOF;
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $SERVER_CONF, $GAME_CONF, $ICON_CONF, $ROLE_DATA, $SESSION;
+  global $GAME_CONF, $ICON_CONF, $ROLE_DATA, $SESSION;
 
   extract(RQ::ToArray()); //引数を展開
   if ($user_no > 0) { //登録情報変更モード
@@ -281,7 +281,7 @@ EOF;
 
 EOF;
   }
-  OutputHTMLHeader($SERVER_CONF->title .'[村人登録]', 'entry_user');
+  OutputHTMLHeader(ServerConfig::$title .'[村人登録]', 'entry_user');
   $action_url = 'user_manager.php?room_no=' . DB::$ROOM->id;
   if ($user_no > 0) $action_url .= '&user_no=' . $user_no;
   $room_name    = DB::$ROOM->name;

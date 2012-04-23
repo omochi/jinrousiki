@@ -11,7 +11,7 @@ class Role_lovers extends Role{
   protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;
     $stack  = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname)) continue;
       if($user->IsPartner($this->role, $target) ||
 	 $this->GetActor()->IsPartner('dummy_chiroptera', $user->user_no) ||

@@ -678,7 +678,8 @@ EOF;
       return true;
     }
     $items  = 'room_no, date, scene, user_no, role';
-    $values = "{DB::$ROOM->id}, {DB::$ROOM->date}, '{DB::$ROOM->scene}', {$this->user_no}, '{$role}'";
+    $values = sprintf("%d, %d, '%s', %d, '%s'",
+		      DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, $this->user_no, $role);
     if (! DB::Insert('player', $items, $values)) return false;
     return $this->Update('role_id', mysql_insert_id());
   }

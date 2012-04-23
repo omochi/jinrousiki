@@ -9,7 +9,7 @@ class Role_whisper_mad extends Role{
   protected function OutputPartner(){
     $wolf = array();
     $mad  = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname)) continue;
       if($user->IsRole('possessed_wolf')){
 	$wolf[] = DB::$USER->GetHandleName($user->uname, true); //憑依先を追跡する

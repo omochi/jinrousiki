@@ -24,7 +24,7 @@ function GetTalkPassTime(&$left_time, $silence = false){
   global $TIME_CONF;
 
   $query = 'SELECT SUM(spend_time) FROM talk' . DB::$ROOM->GetQuery() .
-    " AND scene = '{DB::$ROOM->scene}'";
+    sprintf(" AND scene = '%s'", DB::$ROOM->scene);
   $spend_time = (int)DB::FetchResult($query);
 
   if (DB::$ROOM->IsDay()) { //昼は12時間
@@ -81,7 +81,8 @@ function LoversFollowed($sudden_death = false){
     foreach ($cupid_list[$cupid_id] as $lovers_id) { //キューピッドのリストから恋人の ID を取得
       $user = DB::$USER->ById($lovers_id); //恋人の情報を取得
       if (! DB::$USER->Kill($user->user_no, 'LOVERS_FOLLOWED')) continue;
-      if ($sudden_death) DB::$ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed); //突然死の処理
+      //突然死の処理
+      if ($sudden_death) DB::$ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed);
       $user->suicide_flag = true;
 
       foreach ($user->GetPartner('lovers') as $id){ //後追いした恋人のキューピッドのIDを取得
@@ -133,20 +134,27 @@ function CheckWinner($check_draw = false){
   }
 
   $winner = ''; //勝利陣営
-  if ($human == $quiz && $wolf == 0 && $fox == 0) //全滅
+  if ($human == $quiz && $wolf == 0 && $fox == 0) { //全滅
     $winner = $quiz > 0 ? 'quiz' : 'vanish';
-  elseif ($vampire) //吸血鬼支配
+  }
+  elseif ($vampire) {//吸血鬼支配
     $winner = $lovers > 1 ? 'lovers' : 'vampire';
-  elseif ($wolf == 0) //狼全滅
+  }
+  elseif ($wolf == 0) { //狼全滅
     $winner = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox1' : 'human');
-  elseif ($wolf >= $human) //村全滅
+  }
+  elseif ($wolf >= $human) { //村全滅
     $winner = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox2' : 'wolf');
-  elseif ($human + $wolf + $fox == $lovers) //恋人支配
+  }
+  elseif ($human + $wolf + $fox == $lovers) { //恋人支配
     $winner = 'lovers';
-  elseif (DB::$ROOM->IsQuiz() && $quiz == 0) //クイズ村 GM 死亡
+  }
+  elseif (DB::$ROOM->IsQuiz() && $quiz == 0) { //クイズ村 GM 死亡
     $winner = 'quiz_dead';
-  elseif ($check_draw && DB::$ROOM->revote_count >= $GAME_CONF->draw) //引き分け
+  }
+  elseif ($check_draw && DB::$ROOM->revote_count >= $GAME_CONF->draw) { //引き分け
     $winner = 'draw';
+  }
 
   if ($winner == '') return false;
 
@@ -154,7 +162,7 @@ function CheckWinner($check_draw = false){
   //OutputSiteSummary(); //RSS機能はテスト中
   $query = "UPDATE room SET status = 'finished', scene = 'aftergame', " .
     "scene_start_time = UNIX_TIMESTAMP(), winner = '{$winner}', finish_datetime = NOW() ".
-    "WHERE room_no = {DB::$ROOM->id}";
+    sprintf('WHERE room_no = %d', DB::$ROOM->id);
   return DB::FetchBool($query);
 }
 
@@ -164,10 +172,11 @@ function GetSelfVoteNight($type, $not_type = ''){
   $query = DB::$ROOM->GetQueryHeader('vote', 'type', 'target_no') .
     sprintf(" AND date = %d AND vote_count = %d AND ", DB::$ROOM->date, DB::$ROOM->vote_count);
   if ($type == 'WOLF_EAT'){
-    $query .= "type = '{$type}'";
+    $query .= sprintf("type = '%s'", $type);
   }
   elseif ($not_type != ''){
-    $query .= sprintf("user_no = %d AND type IN ('%s', '%s')", DB::$SELF->user_no, $type, $not_type);
+    $str = "user_no = %d AND type IN ('%s', '%s')";
+    $query .= sprintf($str, DB::$SELF->user_no, $type, $not_type);
   }
   else {
     $query .= sprintf("user_no = %d AND type = '%s'", DB::$SELF->user_no, $type);
@@ -183,7 +192,7 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //-- 出力関連 --//
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $SERVER_CONF, $GAME_CONF, $TIME_CONF;
+  global $GAME_CONF, $TIME_CONF;
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . DB::$ROOM->id;
@@ -191,7 +200,7 @@ function OutputGamePageHeader(){
   if (RQ::$get->play_sound)      $url_header .= '&play_sound=on';
   if (RQ::$get->list_down)       $url_header .= '&list_down=on';
 
-  $title = $SERVER_CONF->title . ' [プレイ]';
+  $title = ServerConfig::$title . ' [プレイ]';
   $anchor_header = '<br>'."\n";
   /*
     Mac に JavaScript でエラーを吐くブラウザがあった当時のコード
@@ -235,13 +244,13 @@ function OutputGamePageHeader(){
   }
 
   OutputHTMLHeader($title, 'game');
-  echo '<link rel="stylesheet" href="css/game_' . DB::$ROOM->scene . '.css">'."\n";
-  if (! DB::$ROOM->log_mode){ //過去ログ閲覧時は不要
+  printf('<link rel="stylesheet" href="css/game_%s.css">'."\n", DB::$ROOM->scene);
+  if (! DB::$ROOM->log_mode) { //過去ログ閲覧時は不要
     echo '<script type="text/javascript" src="javascript/change_css.js"></script>'."\n";
     $on_load = sprintf("change_css('%s');", DB::$ROOM->scene);
   }
 
-  if (RQ::$get->auto_reload != 0 && ! DB::$ROOM->IsAfterGame()){ //自動リロードをセット
+  if (RQ::$get->auto_reload != 0 && ! DB::$ROOM->IsAfterGame()) { //自動リロードをセット
     printf('<meta http-equiv="Refresh" content="%s">'."\n", RQ::$get->auto_reload);
   }
 
@@ -276,7 +285,7 @@ function OutputGamePageHeader(){
     OutputRealTimer($end_time, $sound_type, $alert_flag);
     $game_top .= "\n".'<span id="vote_alert"></span>';
   }
-  $body = isset($on_load) ? '<body onLoad="' . $on_load . '">' : '<body>';
+  $body = isset($on_load) ? sprintf('<body onLoad="%s">', $on_load) : '<body>';
   echo '</head>'."\n".$body."\n".$game_top."\n";
 }
 
@@ -286,7 +295,7 @@ function OutputRealTimer($end_time, $type = null, $flag = false){
 
   $js_path     = JINRO_ROOT . '/javascript/';
   $sound_path  = is_null($type) || ! is_object($SOUND) ? '' : $SOUND->GenerateJS($type);
-  $sentence    = '　' . (DB::$ROOM->IsDay() ? '日没' : '夜明け') . 'まで ';
+  $sentence    = sprintf('　%sまで ', DB::$ROOM->IsDay() ? '日没' : '夜明け');
   $start_date  = GenerateJavaScriptDate(DB::$ROOM->scene_start_time);
   $end_date    = GenerateJavaScriptDate($end_time);
   $server_date = GenerateJavaScriptDate(DB::$ROOM->system_time);
@@ -344,19 +353,20 @@ function OutputTimeTable(){
 
   if (DB::$ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
   $query = DB::$ROOM->GetQuery(false, 'user_entry') . " AND live = 'live'";
-  echo '<td>' . DB::$ROOM->date . ' 日目<span>(生存者' . DB::FetchResult($query) . '人)</span></td>'."\n";
+  $str = '<td> %d 日目<span>(生存者 %d 人)</span></td>'."\n";
+  printf($str, DB::$ROOM->date, DB::FetchResult($query));
 }
 
 //プレイヤー一覧生成
 function GeneratePlayerList(){
-  global $SERVER_CONF, $ICON_CONF;
+  global $ICON_CONF;
 
   //PrintData(DB::$ROOM->event);
   //キャッシュデータをセット
   $beforegame = DB::$ROOM->IsBeforeGame();
   $open_data  = DB::$ROOM->IsOpenData(true);
   $base_path  = $ICON_CONF->path . '/';
-  $img_header = '<img'. $ICON_CONF->tag . ' alt="icon" title="';
+  $img_header = sprintf('<img%s alt="icon" title="', $ICON_CONF->tag);
   if ($open_data) {
     $trip_from = array('◆', '◇');
     $trip_to   = array('◆<br>', '◇<br>');
@@ -379,7 +389,7 @@ function GeneratePlayerList(){
     //ユーザプロフィールと枠線の色を追加
     //Title 内の改行はブラウザ依存あり (Firefox 系は無効)
     $str .= $td_header . $img_header . str_replace("\n", '&#13;&#10', $user->profile) .
-      '" style="border-color: ' . $user->color . ';"';
+      sprintf('" style="border-color: %s;"', $user->color);
 
     //生死情報に応じたアイコンを設定
     $path = $base_path . $user->icon_filename;
@@ -394,12 +404,12 @@ function GeneratePlayerList(){
       $str .= ' onMouseout="this.src=' . "'$path'" . '"';
     }
 
-    if (DB::$ROOM->personal_mode) $live .= '<br>(' . GenerateWinner($user->user_no) . ')';
-    $str .= ' src="' . $path . '"></td>'."\n";
+    if (DB::$ROOM->personal_mode) $live .= sprintf('<br>(%s)', GenerateWinner($user->user_no));
+    $str .= sprintf(' src="%s"></td>'."\n", $path);
 
     //HN を追加
-    $str .= $td_header . '<font color="' . $user->color . '">◆</font>' . $user->handle_name;
-    if ($SERVER_CONF->debug_mode) $str .= ' (' . $id . ')';
+    $str .= sprintf('%s<font color="%s">◆</font>%s', $td_header, $user->color, $user->handle_name);
+    if (ServerConfig::$debug_mode) $str .= sprintf(' (%d)', $id);
 
     if ($open_data) { //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
       $str .= '<br>　(' . str_replace($trip_from, $trip_to, $user->uname); //トリップ対応
@@ -408,11 +418,11 @@ function GeneratePlayerList(){
       $real_user = DB::$USER->ByReal($id);
       if ($real_user->IsSame($user->uname)) $real_user = DB::$USER->TraceExchange($id); //交換憑依判定
       if (! $real_user->IsSame($user->uname) && $real_user->IsLive()) {
-	$str .= '<br>[' . $real_user->uname . ']';
+	$str .= sprintf('<br>[%s]', $real_user->uname);
       }
       $str .= ')<br>' . $user->GenerateRoleName(); //役職情報を追加
     }
-    $str .= '<br>' . $live . '</td>'."\n";
+    $str .= sprintf('<br>%s</td>'."\n", $live);
   }
   return $str . '</tr></table></div>'."\n";
 }
@@ -560,7 +570,8 @@ function GenerateVoteResult(){
   if (DB::$ROOM->IsEvent('blind_vote') && ! DB::$ROOM->IsOpenData()) return null; //傘化けの判定
 
   //昼なら前日、夜ならの今日の集計を表示
-  return GetVoteList((DB::$ROOM->IsDay() && ! DB::$ROOM->log_mode) ? DB::$ROOM->date - 1 : DB::$ROOM->date);
+  $date = (DB::$ROOM->IsDay() && ! DB::$ROOM->log_mode) ? DB::$ROOM->date - 1 : DB::$ROOM->date;
+  return GetVoteList($date);
 }
 
 //投票の集計出力
@@ -848,12 +859,12 @@ function OutputHeavenTalkLog(){
   $is_open = DB::$ROOM->IsOpenCast(); //霊界公開判定
   $builder = new DocumentBuilder();
   $builder->BeginTalk('talk');
-  foreach (DB::$ROOM->LoadTalk(true) as $talk){
+  foreach (DB::$ROOM->LoadTalk(true) as $talk) {
     $user = DB::$USER->ByUname($talk->uname); //ユーザを取得
 
-    $symbol = '<font color="' . $user->color . '">◆</font>';
+    $symbol = sprintf('<font color="%s">◆</font>', $user->color);
     $handle_name = $user->handle_name;
-    if ($is_open) $handle_name .= '<span>(' . $talk->uname . ')</span>'; //HN 追加処理
+    if ($is_open) $handle_name .= sprintf('<span>(%s)</span>', $talk->uname); //HN 追加処理
 
     $builder->RawAddTalk($symbol, $handle_name, $talk->sentence, $talk->font_type);
   }
@@ -863,15 +874,15 @@ function OutputHeavenTalkLog(){
 //[村立て / ゲーム開始 / ゲーム終了] 時刻を出力
 function OutputTimeStamp($builder){
   $talk = new Talk();
-  if (DB::$ROOM->IsBeforeGame()){ //村立て時刻を取得して表示
+  if (DB::$ROOM->IsBeforeGame()) { //村立て時刻を取得して表示
     $type = 'establish_datetime';
     $talk->sentence = '村作成';
   }
-  elseif (DB::$ROOM->IsNight() && DB::$ROOM->date == 1){ //ゲーム開始時刻を取得して表示
+  elseif (DB::$ROOM->IsNight() && DB::$ROOM->date == 1) { //ゲーム開始時刻を取得して表示
     $type = 'start_datetime';
     $talk->sentence = 'ゲーム開始';
   }
-  elseif (DB::$ROOM->IsAfterGame()){ //ゲーム終了時刻を取得して表示
+  elseif (DB::$ROOM->IsAfterGame()) { //ゲーム終了時刻を取得して表示
     $type = 'finish_datetime';
     $talk->sentence = 'ゲーム終了';
   }
@@ -913,12 +924,12 @@ function OutputAbilityAction(){
 		 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
     }
     $action = '';
-    foreach ($action_list as $this_action){
+    foreach ($action_list as $this_action) {
       if ($action != '') $action .= ' OR ';
-      $action .= "type = '$this_action'";
+      $action .= sprintf("type = '%s'", $this_action);
     }
     $query = DB::$ROOM->GetQueryHeader('system_message', 'message', 'type') .
-      " AND date = {$yesterday} AND ({$action})";
+      sprintf(' AND date = %d AND (%s)', $yesterday, $action);
     $stack_list = DB::FetchAssoc($query);
   }
 
@@ -1115,8 +1126,8 @@ function GenerateWeatherReport(){
 
   if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) return '';
   $weather = $ROLE_DATA->weather_list[DB::$ROOM->event->weather];
-  return '<div class="weather">今日の天候は<span>' . $weather['name'] . '</span>です (' .
-    $weather['caption'] . ')</div>';
+  $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
+  return sprintf($str, $weather['name'], $weather['caption']);
 }
 
 
@@ -1194,9 +1205,9 @@ function GenerateDeadManType($name, $type, $result){
     if ($show_reason) $reason = $action;
     break;
   }
-  $str .= is_null($class) ? '<tr>' : '<tr class="dead-type-'.$class.'">';
-  $str .= '<td>'.$name.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
-  if (isset($reason)) $str .= "</tr>\n<tr><td>(".$name.$MESSAGE->$reason.')</td>';
+  $str .= is_null($class) ? '<tr>' : sprintf('<tr class="dead-type-%s">', $class);
+  $str .= sprintf('<td>%s%s</td>', $name, $MESSAGE->{$base ? 'deadman' : $action});
+  if (isset($reason)) $str .= sprintf("</tr>\n<tr><td>(%s%s)</td>", $name, $MESSAGE->$reason);
   return $str."</tr>\n</table>\n";
 }
 

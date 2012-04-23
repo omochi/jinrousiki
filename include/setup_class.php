@@ -23,10 +23,10 @@ class SetupDB {
 
   //必要なテーブルがあるか確認する
   static function CheckTable(){
-    global $SERVER_CONF, $SCRIPT_INFO;
+    global $SCRIPT_INFO;
 
     //前回のパッケージのリビジョン番号を取得
-    $revision = $SERVER_CONF->last_updated_revision;
+    $revision = ServerConfig::$last_updated_revision;
     if (!$revision >= $SCRIPT_INFO->revision) {
       echo '初期設定はすでに完了しています';
       return;
@@ -61,8 +61,8 @@ EOF;
 
       //管理者を登録
       $items  = 'room_no, user_no, uname, handle_name, icon_no, profile, password, role, live';
-      $values = "0, 0, 'system', 'システム', 1, 'ゲームマスター', " .
-	"'{$SERVER_CONF->system_password}', 'GM', 'live'";
+      $str    = "0, 0, 'system', 'システム', 1, 'ゲームマスター', '%s', 'GM', 'live'";
+      $values = sprintf($str, ServerConfig::$system_password);
       DB::Insert($table, $items, $values);
     }
 

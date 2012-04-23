@@ -14,13 +14,13 @@ class Role_pharmacist extends Role {
 
   function SetVoteDay($uname){
     $this->InitStack();
-    if($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStack($uname);
   }
 
   //毒能力情報セット
   function SetDetox(){
-    foreach($this->GetStack() as $uname => $target_uname){
-      if($this->IsVoted($uname)) continue;
+    foreach ($this->GetStack() as $uname => $target_uname) {
+      if ($this->IsVoted($uname)) continue;
       $str = $this->DistinguishPoison(DB::$USER->ByRealUname($target_uname));
       $this->AddStack($str, 'pharmacist_result', $uname);
     }
@@ -42,9 +42,9 @@ class Role_pharmacist extends Role {
 
   //解毒
   function Detox(){
-    foreach($this->GetStack() as $uname => $target_uname){
-      if($this->IsVoted($uname)) continue;
-      if($this->IsActor($target_uname)) $this->SetDetoxFlag($uname);
+    foreach ($this->GetStack() as $uname => $target_uname) {
+      if ($this->IsVoted($uname)) continue;
+      if ($this->IsActor($target_uname)) $this->SetDetoxFlag($uname);
     }
   }
 
@@ -56,8 +56,8 @@ class Role_pharmacist extends Role {
 
   //ショック死抑制
   function Cure(){
-    foreach($this->GetStack() as $uname => $target_uname){
-      if($this->IsVoted($uname) || ! $this->IsActor($target_uname)) continue;
+    foreach ($this->GetStack() as $uname => $target_uname) {
+      if ($this->IsVoted($uname) || ! $this->IsActor($target_uname)) continue;
       $this->GetActor()->cured_flag = true;
       $this->AddStack('cured', 'pharmacist_result', $uname);
     }
@@ -65,7 +65,7 @@ class Role_pharmacist extends Role {
 
   //鑑定結果登録
   function SaveResult(){
-    foreach($this->GetStack($this->role . '_result') as $uname => $result){
+    foreach ($this->GetStack($this->role . '_result') as $uname => $result) {
       $user   = DB::$USER->ByUname($uname);
       $list   = $this->GetStack($user->GetMainRole(true));
       $target = DB::$USER->GetHandleName($list[$user->uname], true);

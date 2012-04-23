@@ -43,18 +43,16 @@ class MenuLinkBuilder extends MenuLinkConfig{
 //-- 関数定義 --//
 //ヘッダー出力
 function OutputIndexHeader(){
-  global $SERVER_CONF;
-
-  OutputHTMLHeader($SERVER_CONF->title . $SERVER_CONF->comment, 'index');
+  OutputHTMLHeader(ServerConfig::$title . ServerConfig::$comment, 'index');
   echo "</head>\n<body>\n";
-  if($SERVER_CONF->back_page != ''){
-    echo '<a href="' . $SERVER_CONF->back_page . '">←戻る</a><br>'."\n";
+  if (ServerConfig::$back_page != '') {
+    echo '<a href="' . ServerConfig::$back_page . '">←戻る</a><br>'."\n";
   }
 }
 
 //掲示板情報出力
 function OutputBBSInfo(){
-  global $SERVER_CONF, $BBS_CONF;
+  global $BBS_CONF;
 
   if($BBS_CONF->disable) return;
   if(! $BBS_CONF->CheckConnection($BBS_CONF->raw_url)){
@@ -66,8 +64,8 @@ function OutputBBSInfo(){
   //スレッド情報を取得
   $url = $BBS_CONF->raw_url . $BBS_CONF->thread . 'l' . $BBS_CONF->size . 'n';
   if(($data = @file_get_contents($url)) == '') return;
-  if($BBS_CONF->encode != $SERVER_CONF->encode){
-    $data = mb_convert_encoding($data, $SERVER_CONF->encode, $BBS_CONF->encode);
+  if($BBS_CONF->encode != ServerConfig::$encode){
+    $data = mb_convert_encoding($data, ServerConfig::$encode, $BBS_CONF->encode);
   }
   $str = '';
   $str_stack = explode("\n", $data);
@@ -83,8 +81,8 @@ function OutputBBSInfo(){
 
 //バージョン情報出力
 function OutputScriptInfo(){
-  global $SERVER_CONF, $SCRIPT_INFO;
+  global $SCRIPT_INFO;
 
   echo "Powered by {$SCRIPT_INFO->package} {$SCRIPT_INFO->version} from {$SCRIPT_INFO->developer}";
-  if($SERVER_CONF->admin) echo '<br>Founded by: ' . $SERVER_CONF->admin;
+  if(ServerConfig::$admin) echo '<br>Founded by: ' . ServerConfig::$admin;
 }

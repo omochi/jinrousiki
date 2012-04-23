@@ -24,25 +24,25 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
     対象が NULL でも有効になるタイプ (キャンセル投票はスキップ) は想定していない
   */
   function Report($user){
-    foreach($this->GetStack('vote_data') as $action => $vote_stack){
-      if(strpos($action, '_NOT_DO') !== false ||
-	 ! array_key_exists($user->user_no, $vote_stack)) continue;
+    foreach ($this->GetStack('vote_data') as $action => $vote_stack) {
+      if (strpos($action, '_NOT_DO') !== false ||
+	  ! array_key_exists($user->user_no, $vote_stack)) continue;
       $actor_id     = $this->GetActor()->user_no;
       $target_name  = DB::$USER->ByVirtual($user->user_no)->handle_name;
       $target_stack = $vote_stack[$user->user_no];
 
-      if($user->IsRole('barrier_wizard')){
+      if ($user->IsRole('barrier_wizard')) {
 	$result_stack = array();
-	foreach(explode(' ', $target_stack) as $id){
+	foreach (explode(' ', $target_stack) as $id) {
 	  $voted_user = DB::$USER->ByVirtual($id);
 	  $result_stack[$voted_user->user_no] = $voted_user->handle_name;
 	}
 	ksort($result_stack);
-	foreach($result_stack as $result){
+	foreach ($result_stack as $result) {
 	  DB::$ROOM->ResultAbility($this->result, $result, $target_name, $actor_id);
 	}
       }
-      else{
+      else {
 	$result = DB::$USER->ByVirtual($target_stack)->handle_name;
 	DB::$ROOM->ResultAbility($this->result, $result, $target_name, $actor_id);
       }

@@ -8,7 +8,7 @@ class Role_fanatic_mad extends Role{
 
   protected function OutputPartner(){
     $stack = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsRole('possessed_wolf')){
 	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依先を追跡する
       }

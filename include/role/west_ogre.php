@@ -13,7 +13,7 @@ class Role_west_ogre extends Role_ogre{
   function Win($winner){
     if($winner != 'human' || $this->IsDead()) return false;
     $id = $this->GetActor()->user_no;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->user_no >= $id) return true;
       if($user->user_no > (ceil($id / 5) - 1) * 5 && $user->IsLive()) return false;
     }

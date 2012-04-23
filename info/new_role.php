@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader($SERVER_CONF->title . ' [新役職情報]', 'index');
+OutputHTMLHeader(ServerConfig::$title . ' [新役職情報]', 'index');
 ?>
 </head>
 <body>

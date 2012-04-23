@@ -4,7 +4,7 @@
   ○仕様
   ・尾行：襲撃情報取得
 */
-class Role_reporter extends Role{
+class Role_reporter extends Role {
   public $action = 'REPORTER_DO';
   public $result = 'REPORTER_SUCCESS';
   public $ignore_message = '初日の尾行はできません';
@@ -21,13 +21,13 @@ class Role_reporter extends Role{
   //尾行
   function Report($user){
     $target = $this->GetWolfTarget();
-    if($user->IsSame($target->uname)){ //尾行成功
-      if(! $user->wolf_eat) return; //人狼襲撃が失敗していたらスキップ
+    if ($user->IsSame($target->uname)) { //尾行成功
+      if (! $user->wolf_eat) return; //人狼襲撃が失敗していたらスキップ
       $result = DB::$USER->GetHandleName($this->GetWolfVoter()->uname, true);
       $name   = DB::$USER->GetHandleName($target->uname, true);
       DB::$ROOM->ResultAbility($this->result, $result, $name, $this->GetActor()->user_no);
     }
-    elseif($user->IsLiveRoleGroup('wolf', 'fox')){ //尾行対象が人狼か妖狐なら殺される
+    elseif ($user->IsLiveRoleGroup('wolf', 'fox')) { //尾行対象が人狼か妖狐なら殺される
       DB::$USER->Kill($this->GetActor()->user_no, 'REPORTER_DUTY');
     }
   }

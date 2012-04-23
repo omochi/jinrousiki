@@ -9,13 +9,15 @@ class Role_agitate_mad extends Role {
   public $sudden_death = 'AGITATED';
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){ if($this->IsRealActor()) $this->AddStack($uname); }
+  function SetVoteDay($uname){
+    if ($this->IsRealActor()) $this->AddStack($uname);
+  }
 
   function DecideVoteKill(){
-    if($this->DecideVoteKillSame()) return;
+    if ($this->DecideVoteKillSame()) return;
     $uname = $this->GetVoteKill();
-    foreach($this->GetStack('max_voted') as $target_uname) { //$target_uname は仮想ユーザ
-      if($target_uname != $uname){
+    foreach ($this->GetStack('max_voted') as $target_uname) { //$target_uname は仮想ユーザ
+      if ($target_uname != $uname) {
 	$this->SuddenDeathKill(DB::$USER->ByRealUname($target_uname)->user_no);
       }
     }

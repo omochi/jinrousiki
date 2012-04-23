@@ -93,7 +93,7 @@ class Role_poison_cat extends Role {
     if ($rand <= $missfire) { //誤爆蘇生
       $stack = array();
       //現時点の身代わり君と蘇生能力者が選んだ人以外の死者と憑依者を検出
-      foreach ($this->GetUser() as $target) {
+      foreach (DB::$USER->rows as $target) {
 	if ($target->IsDummyBoy() || $target->revive_flag || $user == $target ||
 	   $target->IsReviveLimited()) continue;
 	if ($target->dead_flag || ! DB::$USER->IsVirtualLive($target->user_no, true)) {
@@ -116,7 +116,7 @@ class Role_poison_cat extends Role {
     $data = 'boost_revive';
     if (! is_null($flag = $this->GetStack($data))) return $flag;
     $flag = false;
-    foreach ($this->GetUser() as $user) {
+    foreach (DB::$USER->rows as $user) {
       if ($user->IsLiveRole('revive_brownie', true)) {
 	$flag = true;
 	break;
@@ -128,7 +128,7 @@ class Role_poison_cat extends Role {
 
   //蘇生実行
   function ReviveUser($user){
-    if ($user->IsPossessedGroup()){ //憑依能力者対応
+    if ($user->IsPossessedGroup()) { //憑依能力者対応
       if ($user->revive_flag) return true; //蘇生済みならスキップ
 
       $virtual = DB::$USER->ByVirtual($user->user_no);

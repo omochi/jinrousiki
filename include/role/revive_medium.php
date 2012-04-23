@@ -5,7 +5,7 @@
   ・蘇生率：25% / 誤爆有り
 */
 RoleManager::LoadFile('medium');
-class Role_revive_medium extends Role_medium{
+class Role_revive_medium extends Role_medium {
   public $mix_in = 'poison_cat';
   function __construct(){ parent::__construct(); }
 

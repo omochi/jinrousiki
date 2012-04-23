@@ -2,14 +2,12 @@
 //-- セキュリティ関連 --//
 //リファラチェック
 function CheckReferer($page, $white_list = null){
-  global $SERVER_CONF;
-
-  if(is_array($white_list)){ //ホワイトリストチェック
-    foreach($white_list as $host){
-      if(strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
+  if (is_array($white_list)) { //ホワイトリストチェック
+    foreach ($white_list as $host) {
+      if (strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
     }
   }
-  $url = $SERVER_CONF->site_root . $page;
+  $url = ServerConfig::$site_root . $page;
   return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
 }
 
@@ -59,29 +57,24 @@ function FindDangerValue($value, $found = false){
 //-- 日時関連 --//
 //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
 function TZTime(){
-  global $SERVER_CONF;
-
   $time = time();
-  if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
+  if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
   return $time;
   /* // ミリ秒対応のコード(案) 2009-08-08 enogu
-     return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + $SERVER_CONF->offset_seconds; // ミリ秒
+     return preg_replace('/([0-9]+)( [0-9]+)?/i', '$$2.$$1', microtime()) + ServerConfig::$offset_seconds; // ミリ秒
      対応のコード(案) 2009-08-08 enogu
   */
 }
 
 //TZ 補正をかけた日時を返す
 function TZDate($format, $time){
-  global $SERVER_CONF;
-  return $SERVER_CONF->adjust_time_difference ? gmdate($format, $time) : date($format, $time);
+  return ServerConfig::$adjust_time_difference ? gmdate($format, $time) : date($format, $time);
 }
 
 //TIMESTAMP 形式の時刻を変換する
 function ConvertTimeStamp($time_stamp, $convert_date = true){
-  global $SERVER_CONF;
-
   $time = strtotime($time_stamp);
-  if($SERVER_CONF->adjust_time_difference) $time += $SERVER_CONF->offset_seconds;
+  if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
   return $convert_date ? TZDate('Y/m/d (D) H:i:s', $time) : $time;
 }
 
@@ -109,12 +102,10 @@ function ConvertTime($seconds){
 //-- 文字処理関連 --//
 //POSTされたデータの文字コードを統一する
 function EncodePostData(){
-  global $SERVER_CONF;
-
-  foreach($_POST as $key => $value){
+  foreach ($_POST as $key => $value) {
     $encode = @mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-    if($encode != '' && $encode != $SERVER_CONF->encode){
-      $_POST[$key] = mb_convert_encoding($value, $SERVER_CONF->encode, $encode);
+    if ($encode != '' && $encode != ServerConfig::$encode) {
+      $_POST[$key] = mb_convert_encoding($value, ServerConfig::$encode, $encode);
     }
   }
 }
@@ -137,10 +128,7 @@ function EscapeStrings(&$str, $trim = true){
 }
 
 //パスワード暗号化
-function CryptPassword($str){
-  global $SERVER_CONF;
-  return sha1($SERVER_CONF->salt . $str);
-}
+function CryptPassword($str){ return sha1(ServerConfig::$salt . $str); }
 
 //トリップ変換
 /*
@@ -155,7 +143,7 @@ function CryptPassword($str){
   テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
 */
 function ConvertTrip($str){
-  global $SERVER_CONF, $GAME_CONF;
+  global $GAME_CONF;
 
   if($GAME_CONF->trip){
     if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
@@ -165,7 +153,7 @@ function ConvertTrip($str){
       $name = mb_substr($str, 0, $trip_start);
       $key  = mb_substr($str, $trip_start + 1);
       //PrintData("{$trip_start}, name: {$name}, key: {$key}", 'Trip Start'); //テスト用
-      $key = mb_convert_encoding($key, 'SJIS', $SERVER_CONF->encode); //文字コードを変換
+      $key = mb_convert_encoding($key, 'SJIS', ServerConfig::$encode); //文字コードを変換
 
       if($GAME_CONF->trip_2ch && strlen($key) >= 12){
 	$trip_mark = substr($key, 0, 1);
@@ -329,19 +317,17 @@ function GenerateMaxUserImage($number){
 
 //共通 HTML ヘッダ生成
 function GenerateHTMLHeader($title, $css = 'action'){
-  global $SERVER_CONF;
-
-  $css_path = JINRO_CSS . '/' . $css . '.css';
-  return <<<EOF
+  $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
+<meta http-equiv="Content-Type" content="text/html; charset=%s">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>{$title}</title>
-<link rel="stylesheet" href="{$css_path}">
+<title>%s</title>
+<link rel="stylesheet" href="%s/%s.css">
 
 EOF;
+  return sprintf($str, ServerConfig::$encode, $title, JINRO_CSS, $css);
 }
 
 //共通 HTML ヘッダ出力
@@ -350,8 +336,8 @@ function OutputHTMLHeader($title, $css = 'action'){ echo GenerateHTMLHeader($tit
 //結果ページ HTML ヘッダ出力
 function OutputActionResultHeader($title, $url = ''){
   $str = GenerateHTMLHeader($title);
-  if($url != '') $str .= '<meta http-equiv="Refresh" content="1;URL='.$url.'">'."\n";
-  if(is_object(DB::$ROOM)) $str .= DB::$ROOM->GenerateCSS();
+  if ($url != '') $str .= sprintf('<meta http-equiv="Refresh" content="1;URL=%s">'."\n", $url);
+  if (is_object(DB::$ROOM)) $str .= DB::$ROOM->GenerateCSS();
   echo $str . '</head><body>'."\n";
 }
 
@@ -367,21 +353,20 @@ function OutputActionResult($title, $body, $url = ''){
 function OutputHTMLFooter($exit = false){
   DB::Disconnect();
   echo '</body></html>'."\n";
-  if($exit) exit;
+  if ($exit) exit;
 }
 
 //共有フレーム HTML ヘッダ出力
 function OutputFrameHTMLHeader($title){
-  global $SERVER_CONF;
-
-  echo <<<EOF
+  $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html lang="ja"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={$SERVER_CONF->encode}">
-<title>{$title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=%s">
+<title>%s</title>
 </head>
 
 EOF;
+  printf($str, ServerConfig::$encode, $title);
 }
 
 //フレーム HTML フッタ出力

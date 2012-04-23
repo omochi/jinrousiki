@@ -10,7 +10,7 @@ class Role_orange_ogre extends Role_ogre{
 
   function Win($winner){
     if($winner == 'wolf' || $this->IsDead()) return false;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLive() && $user->IsCamp('wolf', true)) return false;
     }
     return true;

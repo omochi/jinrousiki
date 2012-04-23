@@ -16,6 +16,6 @@ class Role_crisis_priest extends Role_priest {
 
   function Priest($role_flag){
     $data = $this->GetStack('priest');
-    if (property_exists($data, 'crisis')) DB::$ROOM->ResultAbility($this->GetEvent(), $data->crisis);
+    if (isset($data->crisis)) DB::$ROOM->ResultAbility($this->GetEvent(), $data->crisis);
   }
 }

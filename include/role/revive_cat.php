@@ -6,7 +6,7 @@
   ・蘇生後：蘇生回数更新
 */
 RoleManager::LoadFile('poison_cat');
-class Role_revive_cat extends Role_poison_cat{
+class Role_revive_cat extends Role_poison_cat {
   public $revive_rate = 80;
   function __construct(){ parent::__construct(); }
 

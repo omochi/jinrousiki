@@ -4,7 +4,7 @@ $INIT_CONF->LoadClass('MENU_LINK');
 OutputIndexHeader();
 ?>
 <a href="./"><img src="img/top_title.jpg" title="汝は人狼なりや？" alt="汝は人狼なりや？"></a>
-<div class="comment"><?php echo $SERVER_CONF->comment ?></div>
+<div class="comment"><?php echo ServerConfig::$comment ?></div>
 <noscript>&lt;&lt; JavaScriptを有効にしてください &gt;&gt;</noscript>
 <table class="main"><tr>
 <td>

@@ -5,7 +5,7 @@
   ・処刑投票：封印 (限定能力所持者 / 人外限定)
 */
 RoleManager::LoadFile('medium');
-class Role_seal_medium extends Role_medium{
+class Role_seal_medium extends Role_medium {
   public $mix_in = 'critical_mad';
   public $sudden_death = 'SEALED';
   public $seal_list = array(
@@ -15,7 +15,7 @@ class Role_seal_medium extends Role_medium{
   function __construct(){ parent::__construct(); }
 
   function SetVoteAction($user){
-    if(! $user->IsRole($this->seal_list)) return;
+    if (! $user->IsRole($this->seal_list)) return;
     $user->IsActive() ? $user->LostAbility() : $this->SuddenDeathKill($user->user_no);
   }
 }

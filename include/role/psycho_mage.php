@@ -6,7 +6,7 @@
   ・呪い：無効
 */
 RoleManager::LoadFile('mage');
-class Role_psycho_mage extends Role_mage{
+class Role_psycho_mage extends Role_mage {
   public $mage_failed = 'mage_failed';
   function __construct(){ parent::__construct(); }
 

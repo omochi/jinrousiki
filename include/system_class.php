@@ -310,18 +310,16 @@ class TwitterConfigBase {
 
   //投稿処理
   function Send($id, $name, $comment){
-    global $SERVER_CONF;
-
     if ($this->disable) return;
 
     $message = $this->GenerateMessage($id, $name, $comment);
-    if ($SERVER_CONF->encode != 'UTF-8') { //Twitter は UTF-8
-      $message = mb_convert_encoding($message, 'UTF-8', $SERVER_CONF->encode);
+    if (ServerConfig::$encode != 'UTF-8') { //Twitter は UTF-8
+      $message = mb_convert_encoding($message, 'UTF-8', ServerConfig::$encode);
     }
     if (mb_strlen($message) > 140) $message = mb_substr($message, 0, 139);
 
     if ($this->add_url) {
-      $url = $SERVER_CONF->site_root;
+      $url = ServerConfig::$site_root;
       if ($this->direct_url) $url .= 'login.php?room_no=' . $id;
       if ($this->short_url) {
 	$short_url = @file_get_contents('http://tinyurl.com/api-create.php?url=' . $url);

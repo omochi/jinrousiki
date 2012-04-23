@@ -22,7 +22,7 @@ class Role_ogre extends Role {
   function Win($winner){
     if($this->IsDead()) return false;
     if($winner == 'wolf') return true;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLiveRoleGroup('wolf')) return true;
     }
     return false;

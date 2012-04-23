@@ -5,7 +5,7 @@
   ・占い：投票能力鑑定
 */
 RoleManager::LoadFile('psycho_mage');
-class Role_stargazer_mage extends Role_psycho_mage{
+class Role_stargazer_mage extends Role_psycho_mage {
   function __construct(){ parent::__construct(); }
 
   function GetMageResult($user){ return $this->Stargazer($user); }

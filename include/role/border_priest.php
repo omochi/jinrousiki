@@ -24,7 +24,7 @@ class Role_border_priest extends Role_priest {
       $count = 0;
       foreach (DB::$ROOM->vote as $vote_stack) {
 	foreach ($vote_stack as $stack) {
-	  if($stack['target_no'] == $user->user_no) $count++;
+	  if ($stack['target_no'] == $user->user_no) $count++;
 	}
       }
       DB::$ROOM->ResultAbility($event, $count, null, $user->user_no);

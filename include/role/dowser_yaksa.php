@@ -14,7 +14,7 @@ class Role_dowser_yaksa extends Role_yaksa{
   function Win($winner){
     if($this->IsDead()) return false;
     $count = count($this->GetActor()->role_list);
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLive() && count($user->role_list) > $count) return false;
     }
     return true;

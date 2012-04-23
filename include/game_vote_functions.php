@@ -19,10 +19,8 @@ function CheckScene(){
 
 //投票結果出力
 function OutputVoteResult($sentence, $reset_vote = false){
-  global $SERVER_CONF;
-
   if ($reset_vote) DB::$ROOM->DeleteVote(); //今までの投票を全部削除
-  $title  = $SERVER_CONF->title . ' [投票結果]';
+  $title  = ServerConfig::$title . ' [投票結果]';
   $header = '<div id="game_top" align="center">';
   $footer = sprintf("<br>\n%s</div>", RQ::$get->back_url);
   OutputActionResult($title, $header . $sentence . $footer);
@@ -30,9 +28,7 @@ function OutputVoteResult($sentence, $reset_vote = false){
 
 //投票ページ HTML ヘッダ出力
 function OutputVotePageHeader(){
-  global $SERVER_CONF;
-
-  OutputHTMLHeader($SERVER_CONF->title . ' [投票]', 'game');
+  OutputHTMLHeader(ServerConfig::$title . ' [投票]', 'game');
   $css_path = JINRO_CSS;
   if (DB::$ROOM->scene != '') {
     printf('<link rel="stylesheet" href="%s/game_%s.css">'."\n", $css_path, DB::$ROOM->scene);

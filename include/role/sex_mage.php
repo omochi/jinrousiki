@@ -5,7 +5,7 @@
   ・占い：性別鑑定
 */
 RoleManager::LoadFile('psycho_mage');
-class Role_sex_mage extends Role_psycho_mage{
+class Role_sex_mage extends Role_psycho_mage {
   function __construct(){ parent::__construct(); }
 
   function GetMageResult($user){ return $this->DistinguishSex($user); }

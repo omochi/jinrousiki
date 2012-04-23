@@ -16,7 +16,7 @@ class Role_mind_scanner extends Role {
     if (DB::$ROOM->date < 2 || is_null($this->mind_role)) return;
     $id = $this->GetActor()->user_no;
     $stack = array();
-    foreach ($this->GetUser() as $user) {
+    foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($this->mind_role, $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'mind_scanner_target');
@@ -31,7 +31,7 @@ class Role_mind_scanner extends Role {
   }
 
   function IgnoreVoteNight($user, $live){
-    if(! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
+    if (! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
     return $user->IsDummyBoy() ? '身代わり君には投票できません' : null;
   }
 

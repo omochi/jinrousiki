@@ -11,7 +11,7 @@ class Role_wolf extends Role {
     $wolf_list        = array();
     $mad_list         = array();
     $unconscious_list = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname)) continue;
       if($user->IsRole('possessed_wolf')){
 	$wolf_list[] = DB::$USER->GetHandleName($user->uname, true); //憑依先を追跡する

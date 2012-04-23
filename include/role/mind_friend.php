@@ -13,7 +13,7 @@ class Role_mind_friend extends Role {
   protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;
     $stack  = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname)) continue;
       if($user->IsPartner($this->role, $target)) $stack[$user->user_no] = $user->handle_name;
     }

@@ -18,12 +18,12 @@ class Role_dummy_guard extends Role_guard {
     if (! in_array($uname, $this->GetStack())) return false;
     $flag = false;
     foreach (array_keys($this->GetStack(), $uname) as $guard_uname) { //護衛者を検出
-      $guard_user = DB::$USER->ByUname($guard_uname);
-      if ($guard_user->IsDead(true)) continue; //直前に死んでいたら無効
+      $guarder = DB::$USER->ByUname($guard_uname);
+      if ($guarder->IsDead(true)) continue; //直前に死んでいたら無効
 
       $flag = true;
       if (! DB::$ROOM->IsOption('seal_message')) { //狩りメッセージを登録
-	DB::$ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $user->handle_name, $guard_user->user_no);
+	DB::$ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $user->handle_name, $guarder->user_no);
       }
     }
     if ($flag) DB::$USER->Kill($user->user_no, 'HUNTED');

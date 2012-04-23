@@ -13,7 +13,7 @@ class Role_revive_ogre extends Role_ogre{
 
   function Win($winner){
     if($this->IsDead()) return false;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLive() && $user->IsLiar()) return false;
     }
     return true;

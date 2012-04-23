@@ -12,7 +12,7 @@ class Role_rival extends Role{
   protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;
     $stack  = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname)) continue;
       if($user->IsPartner($this->role, $target)) $stack[] = $user->handle_name; //憑依は追跡しない
     }
@@ -26,7 +26,7 @@ class Role_rival extends Role{
       return;
     }
     $stack = $this->GetActor()->partner_list;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if(! $this->IsActor($user->uname) && $user->IsPartner($this->role, $stack) &&
 	 $user->IsLive()){
 	$flag = false;

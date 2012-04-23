@@ -7,9 +7,13 @@
 class Role_eccentricer extends Role {
   function __construct(){ parent::__construct(); }
 
-  function OutputResult(){ if ($this->IsLost()) OutputAbilityResult('ability_eccentricer', null); }
+  function OutputResult(){
+    if ($this->IsLost()) OutputAbilityResult('ability_eccentricer', null);
+  }
 
-  function FilterVoteDo(&$number){ if (! $this->IsLost()) $number++; }
+  function FilterVoteDo(&$number){
+    if (! $this->IsLost()) $number++;
+  }
 
   private function IsLost(){ return DB::$ROOM->date > 4; }
 }

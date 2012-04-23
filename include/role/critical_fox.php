@@ -15,7 +15,7 @@ class Role_critical_fox extends Role_child_fox{
 
   protected function OutputPartner(){
     $stack = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname) || $user->IsFox(true)) continue;
       if($user->IsChildFox() || $user->IsRoleGroup('scarlet')) $stack[] = $user->handle_name;
     }
@@ -27,7 +27,7 @@ class Role_critical_fox extends Role_child_fox{
   }
 
   function Win($winner){
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLive() && $user->IsFox() && ! $user->IsChildFox()) return false;
     }
     return true;

@@ -32,7 +32,7 @@ class Role_protected extends Role{
     if($this->IgnoreSacrifice()) return false;
     $stack = array();
     $class = $this->GetClass($method = 'IsSacrifice');
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLive(true) && $class->$method($user)) $stack[] = $user->user_no;
     }
     return $this->Sacrifice($stack);

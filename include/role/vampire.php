@@ -18,7 +18,7 @@ class Role_vampire extends Role {
     $role    = 'psycho_infected';
     $partner_list = array();
     $role_list    = array();
-    foreach ($this->GetUser() as $user) {
+    foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($partner, $id)) $partner_list[] = $user->handle_name;
       if ($user->IsRole($role)) $role_list[] = $user->handle_name;
     }

@@ -20,9 +20,9 @@ DB::Disconnect();
 //村のメンテナンス処理
 /* call する位置を調整して、他のサーバから起動されないようにする */
 function MaintenanceRoom(){
-  global $SERVER_CONF, $ROOM_CONF;
+  global $ROOM_CONF;
 
-  if ($SERVER_CONF->disable_maintenance) return; //スキップ判定
+  if (ServerConfig::$disable_maintenance) return; //スキップ判定
 
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', scene = 'aftergame' " .
@@ -47,9 +47,9 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $SERVER_CONF, $ROOM_CONF, $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
+  global $ROOM_CONF, $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
 
-  if ($SERVER_CONF->disable_establish) {
+  if (ServerConfig::$disable_establish) {
     OutputActionResult('村作成 [制限事項]', '村作成はできません');
   }
   if (CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
@@ -85,9 +85,9 @@ function CreateRoom(){
   }
 
   $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
-  if (! $SERVER_CONF->debug_mode) { //デバッグモード時は村作成制限をスキップ
+  if (! ServerConfig::$debug_mode) { //デバッグモード時は村作成制限をスキップ
     $str = 'room_password'; //パスワードチェック
-    if (isset($SERVER_CONF->$str) && @$_POST[$str] != $SERVER_CONF->$str) {
+    if (isset(ServerConfig::$$str) && @$_POST[$str] != ServerConfig::$$str) {
       OutputActionResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
     }
 
@@ -134,7 +134,7 @@ function CreateRoom(){
     //身代わり君関連のチェック
     if ($ROOM_OPT->dummy_boy) {
       $dummy_boy_handle_name = '身代わり君';
-      $dummy_boy_password    = $SERVER_CONF->system_password;
+      $dummy_boy_password    = ServerConfig::$system_password;
       $ROOM_OPT->LoadPostParams('gerd');
     }
     elseif ($ROOM_OPT->gm_login) {
@@ -200,7 +200,7 @@ function CreateRoom(){
   //OutputHTMLFooter(true); //テスト用
 
   do {
-    if (! $SERVER_CONF->dry_run_mode) {
+    if (! ServerConfig::$dry_run_mode) {
       //村作成
       $items  = 'room_no, name, comment, max_user, game_option, ' .
         'option_role, status, date, scene, vote_count, scene_start_time, last_update_time, ' .
@@ -217,7 +217,7 @@ function CreateRoom(){
 			     1, $ROOM_OPT->gerd ? $USER_ICON->gerd : 0)) break;
       }
 
-      if ($SERVER_CONF->secret_room) { //村情報非表示モードの処理
+      if (ServerConfig::$secret_room) { //村情報非表示モードの処理
         DB::Commit();
         OutputRoomAction('success', false, $room_name);
         return true;
@@ -238,8 +238,6 @@ function CreateRoom(){
 
 //結果出力 (CreateRoom() 用)
 function OutputRoomAction($type, $rollback = true, $str = ''){
-  global $SERVER_CONF;
-
   switch ($type) {
   case 'empty':
     OutputActionResultHeader('村作成 [入力エラー]');
@@ -296,9 +294,9 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
     break;
 
   case 'success':
-    OutputActionResultHeader('村作成', $SERVER_CONF->site_root);
+    OutputActionResultHeader('村作成', ServerConfig::$site_root);
     echo $str . ' 村を作成しました。トップページに飛びます。';
-    echo '切り替わらないなら <a href="' . $SERVER_CONF->site_root . '">ここ</a> 。';
+    echo '切り替わらないなら <a href="' . ServerConfig::$site_root . '">ここ</a> 。';
     break;
   }
   if ($rollback) DB::Rollback();
@@ -307,12 +305,12 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
 
 //村(room)のwaitingとplayingのリストを出力する
 function OutputRoomList(){
-  global $SERVER_CONF, $ROOM_IMG;
+  global $ROOM_IMG;
 
-  if ($SERVER_CONF->secret_room) return; //シークレットテストモード
+  if (ServerConfig::$secret_room) return; //シークレットテストモード
 
   /* RSS機能はテスト中
-  if (! $SERVER_CONF->debug_mode){
+  if (! ServerConfig::$debug_mode){
     $filename = JINRO_ROOT.'/rss/rooms.rss';
     if (file_exists($filename)){
       $rss = FeedEngine::Initialize('site_summary.php');
@@ -335,7 +333,7 @@ function OutputRoomList(){
     "FROM room WHERE status IN ('waiting', 'playing') ORDER BY room_no DESC";
   foreach (DB::FetchAssoc($query) as $stack){
     extract($stack);
-    $delete     = $SERVER_CONF->debug_mode ? $delete_header . $room_no . $delete_footer : '';
+    $delete     = ServerConfig::$debug_mode ? $delete_header . $room_no . $delete_footer : '';
     $status_img = $ROOM_IMG->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
     $option_img = RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
       GenerateMaxUserImage($max_user);
@@ -351,9 +349,9 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
-  global $SERVER_CONF, $ROOM_CONF, $ROOM_OPT;
+  global $ROOM_CONF, $ROOM_OPT;
 
-  if ($SERVER_CONF->disable_establish){
+  if (ServerConfig::$disable_establish){
     echo '村作成はできません';
     return;
   }
@@ -366,7 +364,7 @@ function OutputCreateRoomPage(){
 EOF;
 
   RoomOption::ShowBuildRoomForm();
-  $password = is_null($SERVER_CONF->room_password) ? '' :
+  $password = is_null(ServerConfig::$room_password) ? '' :
     '<label for="room_password">村作成パスワード</label>：' .
     '<input type="password" id="room_password" name="room_password" size="20">　';
   echo <<<EOF

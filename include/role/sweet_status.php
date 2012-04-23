@@ -14,7 +14,7 @@ class Role_sweet_status extends Role {
     $stack = array();
     $actor = $this->GetActor();
     if($actor->IsRole('lovers')) return; //恋人持ちなら処理委託
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($this->IsActor($user->uname)) continue;
       if($actor->IsPartner('dummy_chiroptera', $user->user_no) ||
 	 (DB::$ROOM->date == 1 && $user->IsPartner($this->role, $actor->partner_list))){ //夢求愛者対応

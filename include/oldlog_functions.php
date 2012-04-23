@@ -90,10 +90,10 @@ class PageLinkBuilder {
 //-- 関数 --//
 //過去ログ一覧生成
 function GenerateFinishedRooms($page){
-  global $SERVER_CONF, $ROOM_CONF, $MESSAGE, $ROOM_IMG;
+  global $ROOM_CONF, $MESSAGE, $ROOM_IMG;
 
   //村数の確認
-  $title = $SERVER_CONF->title . ' [過去ログ]';
+  $title = ServerConfig::$title . ' [過去ログ]';
   $query = "SELECT room_no FROM room WHERE status = 'finished'";
   $room_count = DB::Count($query);
   if ($room_count < 1){
@@ -215,9 +215,7 @@ function GenerateLogIndex(){
 
 //指定の部屋番号のログを生成する
 function GenerateOldLog(){
-  global $SERVER_CONF;
-
-  $base_title = $SERVER_CONF->title . ' [過去ログ]'; //
+  $base_title = ServerConfig::$title . ' [過去ログ]'; //
   if (! DB::$ROOM->IsFinished() || ! DB::$ROOM->IsAfterGame()){ //閲覧判定
     $url = RQ::$get->generate_index ? 'index.html' : 'old_log.php';
     $str = 'まだこの部屋のログは閲覧できません。<br>'."\n".'<a href="'.$url.'">←戻る</a>'."\n";
@@ -283,7 +281,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
   $flag_border_game = false;
   $query_select = 'scene, location, uname, action, sentence, font_type';
   $query_table  = 'talk';
-  $query_where  = "room_no = {DB::$ROOM->id} AND ";
+  $query_where  = sprintf('room_no = %d AND ', DB::$ROOM->id);
   if (RQ::$get->time) $query_select .= ', time';
 
   switch ($set_scene){

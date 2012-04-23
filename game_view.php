@@ -38,7 +38,7 @@ DB::$SELF = new User();
 
 //-- データ出力 --//
 ob_start();
-OutputHTMLHeader($SERVER_CONF->title . '[観戦]', 'game_view'); //HTMLヘッダ
+OutputHTMLHeader(ServerConfig::$title . '[観戦]', 'game_view'); //HTMLヘッダ
 
 if ($GAME_CONF->auto_reload && RQ::$get->auto_reload > 0) { //自動更新
   printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);

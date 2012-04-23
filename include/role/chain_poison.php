@@ -4,7 +4,7 @@
   ○仕様
   ・役職表示：村人
 */
-class Role_chain_poison extends Role{
+class Role_chain_poison extends Role {
   public $display_role = 'human';
   function __construct(){ parent::__construct(); }
 
@@ -14,38 +14,38 @@ class Role_chain_poison extends Role{
 
     $ROLES->actor = DB::$USER->ByVirtual($user->user_no); //解毒判定
     $ROLES->actor->detox = false;
-    foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
-    if($ROLES->actor->detox) return;
+    foreach ($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
+    if ($ROLES->actor->detox) return;
 
     $stack = array();
-    foreach(DB::$USER->GetLivingUsers(true) as $uname){ //生存者から常時対象外の役職を除く
+    foreach (DB::$USER->GetLivingUsers(true) as $uname) { //生存者から常時対象外の役職を除く
       $user = DB::$USER->ByRealUname($uname);
-      if(! $user->IsAvoid(true)) $stack[] = $user->user_no;
+      if (! $user->IsAvoid(true)) $stack[] = $user->user_no;
     }
     //PrintData($stack, "Target [{$this->role}]");
 
     $count = 1; //連鎖カウントを初期化
-    while($count > 0){
+    while ($count > 0) {
       $count--;
       shuffle($stack); //配列をシャッフル
       //PrintData($stack, $count);
-      for($i = 0; $i < 2; $i++){
-	if(count($stack) < 1) return;
+      for ($i = 0; $i < 2; $i++) {
+	if (count($stack) < 1) return;
 	$id = array_shift($stack);
 	$target = DB::$USER->ByReal($id);
 
-	if($target->IsActive('resist_wolf')){ //抗毒判定
+	if ($target->IsActive('resist_wolf')) { //抗毒判定
 	  $target->LostAbility();
 	  $stack[] = $id;
 	  continue;
 	}
 	DB::$USER->Kill($id, 'POISON_DEAD'); //死亡処理
 
-	if(! $target->IsRole($this->role)) continue; //連鎖判定
+	if (! $target->IsRole($this->role)) continue; //連鎖判定
 	$ROLES->actor = DB::$USER->ByVirtual($target->user_no); //解毒判定
 	$ROLES->actor->detox = false;
-	foreach($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
-	if(! $ROLES->actor->detox) $count++;
+	foreach ($ROLES->LoadFilter('detox') as $filter) $filter->Detox();
+	if (! $ROLES->actor->detox) $count++;
       }
     }
   }

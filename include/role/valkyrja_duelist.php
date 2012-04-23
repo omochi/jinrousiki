@@ -18,7 +18,7 @@ class Role_valkyrja_duelist extends Role{
   protected function OutputPartner(){
     $id = $this->GetActor()->user_no;
     $stack = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsPartner($this->partner_role, $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, $this->partner_header);
@@ -99,7 +99,7 @@ class Role_valkyrja_duelist extends Role{
     $id     = $actor->user_no;
     $target = 0;
     $count  = 0;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsPartner($this->partner_role, $id)){
 	$target++;
 	if($user->IsLive()) $count++;

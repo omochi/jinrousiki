@@ -18,10 +18,10 @@ class Role_mage extends Role {
 
   //占い
   function Mage($user){
-    if($this->IsJammer($user)){
+    if ($this->IsJammer($user)) {
       return $this->SaveMageResult($user, $this->mage_failed, $this->result);
     }
-    if($this->IsCursed($user)) return false;
+    if ($this->IsCursed($user)) return false;
     $this->SaveMageResult($user, $this->GetMageResult($user), $this->result);
   }
 
@@ -31,15 +31,14 @@ class Role_mage extends Role {
     $half    = DB::$ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月
     $phantom = $user->IsLive(true) && $user->IsRoleGroup('phantom') && $user->IsActive(); //幻系
 
-    if($half || $phantom){ //厄神の護衛判定
-      foreach($this->GetGuardCurse() as $filter){
-	if($filter->IsGuard($uname)) return false;
+    if ($half || $phantom) {
+      foreach ($this->GetGuardCurse() as $filter) { //厄神の護衛判定
+	if ($filter->IsGuard($uname)) return false;
       }
     }
 
-    //占い妨害判定
-    if($half || in_array($uname, $this->GetStack('jammer'))) return true;
-    if($phantom){
+    if ($half || in_array($uname, $this->GetStack('jammer'))) return true; //占い妨害判定
+    if ($phantom) { //幻系判定
       $this->AddSuccess($user->user_no, 'phantom');
       return true;
     }
@@ -48,10 +47,10 @@ class Role_mage extends Role {
 
   //呪返し判定
   function IsCursed($user){
-    if($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))){
+    if ($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))) {
       $actor = $this->GetActor();
-      foreach($this->GetGuardCurse() as $filter){ //厄神の護衛判定
-	if($filter->IsGuard($actor->uname)) return false;
+      foreach ($this->GetGuardCurse() as $filter) { //厄神の護衛判定
+	if ($filter->IsGuard($actor->uname)) return false;
       }
       DB::$USER->Kill($actor->user_no, 'CURSED');
       return true;
@@ -62,7 +61,7 @@ class Role_mage extends Role {
   //厄払いフィルタ取得
   protected function GetGuardCurse(){
     global $ROLES;
-    if(! is_array($stack = $this->GetStack($data = 'guard_curse'))){
+    if (! is_array($stack = $this->GetStack($data = 'guard_curse'))) {
       $stack = $ROLES->LoadFilter($data);
       $this->SetStack($stack, $data);
     }
@@ -71,14 +70,15 @@ class Role_mage extends Role {
 
   //占い結果取得
   function GetMageResult($user){
-    //憑依キャンセル判定
-    if(array_key_exists($user->uname, $this->GetStack('possessed'))) $user->possessed_cancel = true;
+    if (array_key_exists($user->uname, $this->GetStack('possessed'))) { //憑依キャンセル判定
+      $user->possessed_cancel = true;
+    }
 
     //呪殺判定
-    if($user->IsLive(true) && ! DB::$ROOM->IsEvent('no_fox_dead') &&
-       (($user->IsFox() && ! $user->IsChildFox() &&
-	 ! $user->IsRole('white_fox', 'black_fox', 'mist_fox', 'sacrifice_fox')) ||
-	$user->IsRoleGroup('spell'))){
+    if ($user->IsLive(true) && ! DB::$ROOM->IsEvent('no_fox_dead') &&
+	(($user->IsFox() && ! $user->IsChildFox() &&
+	  ! $user->IsRole('white_fox', 'black_fox', 'mist_fox', 'sacrifice_fox')) ||
+	 $user->IsRoleGroup('spell'))) {
       DB::$USER->Kill($user->user_no, 'FOX_DEAD');
     }
     return $this->DistinguishMage($user); //占い判定
@@ -87,14 +87,14 @@ class Role_mage extends Role {
   //占い判定
   function DistinguishMage($user, $reverse = false){
     //鬼火系判定
-    if($user->IsDoomRole('sheep_wisp')) return $reverse ? 'wolf' : 'human';
-    if($user->IsRole('wisp'))           return 'ogre';
-    if($user->IsRole('foughten_wisp'))  return 'chiroptera';
-    if($user->IsRole('black_wisp'))     return $reverse ? 'human' : 'wolf' ;
+    if ($user->IsDoomRole('sheep_wisp')) return $reverse ? 'wolf' : 'human';
+    if ($user->IsRole('wisp'))           return 'ogre';
+    if ($user->IsRole('foughten_wisp'))  return 'chiroptera';
+    if ($user->IsRole('black_wisp'))     return $reverse ? 'human' : 'wolf' ;
 
     //特殊役職判定
-    if($user->IsOgre()) return 'ogre';
-    if($user->IsRoleGroup('vampire', 'mist') || $user->IsRole('boss_chiroptera')){
+    if ($user->IsOgre()) return 'ogre';
+    if ($user->IsRoleGroup('vampire', 'mist') || $user->IsRole('boss_chiroptera')) {
       return 'chiroptera';
     }
 

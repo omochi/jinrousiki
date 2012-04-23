@@ -6,7 +6,7 @@
   ・蘇生後：死亡
 */
 RoleManager::LoadFile('poison_cat');
-class Role_sacrifice_cat extends Role_poison_cat{
+class Role_sacrifice_cat extends Role_poison_cat {
   public $revive_rate   = 100;
   public $missfire_rate =   0;
   function __construct(){ parent::__construct(); }

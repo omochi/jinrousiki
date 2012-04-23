@@ -114,8 +114,7 @@ class RequestBase {
 
   //テスト用パラメータセット
   protected function AttachTestParameters(){
-    global $SERVER_CONF;
-    if ($SERVER_CONF->debug_mode) $this->TestItems = new RequestTestParams();
+    if (ServerConfig::$debug_mode) $this->TestItems = new RequestTestParams();
   }
 }
 

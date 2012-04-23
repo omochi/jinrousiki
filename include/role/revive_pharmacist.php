@@ -6,13 +6,13 @@
   ・人狼襲撃：蘇生
 */
 RoleManager::LoadFile('pharmacist');
-class Role_revive_pharmacist extends Role_pharmacist{
+class Role_revive_pharmacist extends Role_pharmacist {
   function __construct(){ parent::__construct(); }
 
   //復活処理
   function Resurrect(){
     $user = $this->GetActor();
-    if($this->IsResurrect($user) && $user->IsActive()){
+    if ($this->IsResurrect($user) && $user->IsActive()) {
       $user->Revive();
       $user->LostAbility();
     }

@@ -17,7 +17,7 @@ class Role_exchange_angel extends Role_angel{
     $lovers_list   = array();
     $fix_list      = array();
     $exchange_list = array();
-    foreach($this->GetUser() as $user){ //魂移使が打った恋人の情報を収集
+    foreach(DB::$USER->rows as $user){ //魂移使が打った恋人の情報を収集
       if($user->IsDummyBoy() || ! $user->IsLovers()) continue;
       foreach($user->GetPartner('lovers') as $cupid_id){
 	if(DB::$USER->ById($cupid_id)->IsRole('exchange_angel')){

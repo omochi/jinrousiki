@@ -15,7 +15,7 @@ class Role_cupid extends Role {
   protected function OutputPartner(){
     $id = $this->GetActor()->user_no;
     $stack = array();
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'cupid_pair');

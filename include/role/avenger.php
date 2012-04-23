@@ -38,7 +38,7 @@ class Role_avenger extends Role_valkyrja_duelist {
     $actor = $this->GetActor();
     $id    = $actor->user_no;
     $count = 0;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsPartner($this->partner_role, $id)){
 	if($user->IsLive()) return false;
 	$count++;

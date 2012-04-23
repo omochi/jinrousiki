@@ -20,12 +20,12 @@ class Role_voodoo_killer extends Role {
   //占い
   function Mage($user){
     //呪殺判定 (呪い所持者・憑依能力者)
-    if($user->IsLive(true) && ($user->IsRoleGroup('cursed') || $user->IsPossessedGroup())){
+    if ($user->IsLive(true) && ($user->IsRoleGroup('cursed') || $user->IsPossessedGroup())) {
       DB::$USER->Kill($user->user_no, 'CURSED');
       $this->AddSuccess($user->uname, $this->role . '_success');
     }
-    if(count($stack = array_keys($this->GetStack('possessed'), $user->uname)) > 0){ //憑依妨害判定
-      foreach($stack as $uname) DB::$USER->ByUname($uname)->possessed_cancel = true;
+    if (count($stack = array_keys($this->GetStack('possessed'), $user->uname)) > 0) { //憑依妨害判定
+      foreach ($stack as $uname) DB::$USER->ByUname($uname)->possessed_cancel = true;
       $this->AddSuccess($user->uname, $this->role . '_success');
     }
     $this->AddStack($user->uname); //解呪対象リストに追加
@@ -33,10 +33,11 @@ class Role_voodoo_killer extends Role {
 
   //成功結果登録
   function SaveSuccess(){
-    foreach($this->GetStack($this->role . '_success') as $target_uname => $flag){
+    foreach ($this->GetStack($this->role . '_success') as $target_uname => $flag) {
       $target = DB::$USER->GetHandleName($target_uname, true);
-      foreach(array_keys($this->GetStack(), $target_uname) as $uname){ //成功者を検出
-	DB::$ROOM->ResultAbility($this->result, 'success', $target, DB::$USER->ByUname($uname)->user_no);
+      foreach (array_keys($this->GetStack(), $target_uname) as $uname) { //成功者を検出
+	$id = DB::$USER->ByUname($uname)->user_no;
+	DB::$ROOM->ResultAbility($this->result, 'success', $target, $id);
       }
     }
   }

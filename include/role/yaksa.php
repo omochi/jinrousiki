@@ -12,7 +12,7 @@ class Role_yaksa extends Role_ogre{
 
   function Win($winner){
     if($this->IsDead() || $this->IgnoreWin($winner)) return false;
-    foreach($this->GetUser() as $user){
+    foreach(DB::$USER->rows as $user){
       if($user->IsLive() && ! $this->IgnoreAssassin($user)) return false;
     }
     return true;
