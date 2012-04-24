@@ -23,11 +23,8 @@ class SetupDB {
 
   //必要なテーブルがあるか確認する
   static function CheckTable(){
-    global $SCRIPT_INFO;
-
-    //前回のパッケージのリビジョン番号を取得
-    $revision = ServerConfig::$last_updated_revision;
-    if (!$revision >= $SCRIPT_INFO->revision) {
+    $revision = ServerConfig::$last_updated_revision; //前回のパッケージのリビジョン番号を取得
+    if ($revision >= ScriptInfo::$revision) {
       echo '初期設定はすでに完了しています';
       return;
     }

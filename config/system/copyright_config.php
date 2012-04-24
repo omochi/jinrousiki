@@ -2,7 +2,7 @@
 //素材情報設定
 class CopyrightConfig {
   //システム標準情報
-  public $list = array(
+  static $list = array(
     'システム' => array('PHP4 + MYSQLスクリプト' => 'http://f45.aaa.livedoor.jp/~netfilms/',
 			'mbstringエミュレータ' => 'http://sourceforge.jp/projects/mbemulator/',
 			'Twitter投稿モジュール' => 'https://github.com/abraham/twitteroauth'
@@ -12,7 +12,7 @@ class CopyrightConfig {
 		       );
 
   //追加情報
-  public $add_list = array(
+  static $add_list = array(
     '写真素材' => array('Le moineau - すずめのおやど -' => 'http://moineau.fc2web.com/'),
 			   );
 }
