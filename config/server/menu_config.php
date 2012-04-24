@@ -29,6 +29,7 @@ class MenuLinkConfig {
     'やる夫系' => array(
       '流石妹者鯖'		=> 'http://www21.atpages.jp/sasugasister/',
       '真紅鯖'			=> 'http://alicegame.dip.jp/shinku/',
+      '雛苺テスト鯖'		=> 'http://alicegame.dip.jp/hina/',
       'Wiki'			=> 'http://www37.atwiki.jp/yaruomura/',
       '掲示板'			=> 'http://jbbs.livedoor.jp/game/48159/',
       '流石鯖用ツール(旧)'	=> 'http://www.petitnoir.net/zinro/sasuga.html',

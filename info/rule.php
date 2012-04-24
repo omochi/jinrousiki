@@ -256,8 +256,8 @@ OutputInfoPageHeader('ルール', 0, 'rule');
 村作成のオプションで「リアルタイム制」をチェック入れていると、実時間で経過していきます。<br>
 時間は部屋を作成した人が設定でき、トップページのゲーム一覧の「リアルタイム制」画像のAltテキストに表示されます。<br>
 (ゲーム一覧のオプションの部分にあるリアルタイム制の画像 <?php echo
-$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
-		    '分　夜： ' . $TIME_CONF->default_night . '分')
+$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::$default_day .
+		    '分　夜： ' . TimeConfig::$default_night . '分')
 ?> にマウスポインタを乗せると表示されます)<br>
 ゲーム中は仮想時間と実時間の両方が表示され、仮想時間は12時間、もしくは6時間から徐々に減っていき、<br>
 実時間が0になると同時に仮想時間も0になるように計算されています。<br>

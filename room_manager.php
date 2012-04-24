@@ -1,7 +1,8 @@
 <?php
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
-$INIT_CONF->LoadClass('ROOM_CONF', 'ROOM_IMG', 'ROOM_OPT');
+$INIT_CONF->LoadFile('room_config');
+$INIT_CONF->LoadClass('ROOM_IMG', 'ROOM_OPT');
 
 if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
@@ -11,7 +12,8 @@ if (@$_POST['command'] == 'CREATE_ROOM') {
   CreateRoom();
 }
 else {
-  $INIT_CONF->LoadClass('CAST_CONF', 'TIME_CONF', 'GAME_OPT_CAPT');
+  $INIT_CONF->LoadFile('time_config');
+  $INIT_CONF->LoadClass('CAST_CONF', 'GAME_OPT_CAPT');
   OutputRoomList();
 }
 DB::Disconnect();
@@ -20,14 +22,12 @@ DB::Disconnect();
 //村のメンテナンス処理
 /* call する位置を調整して、他のサーバから起動されないようにする */
 function MaintenanceRoom(){
-  global $ROOM_CONF;
-
   if (ServerConfig::$disable_maintenance) return; //スキップ判定
 
   //一定時間更新の無い村は廃村にする
   $query = "UPDATE room SET status = 'finished', scene = 'aftergame' " .
     "WHERE STATUS IN ('waiting', 'playing') AND last_update_time < UNIX_TIMESTAMP() - " .
-    $ROOM_CONF->die_room;
+    RoomConfig::$die_room;
   /*
   //RSS更新(廃村が0の時も必要ない処理なのでfalseに限定していない)
   if (DB::FetchBool($query)) OutputSiteSummary();
@@ -35,11 +35,12 @@ function MaintenanceRoom(){
   DB::Execute($query);
 
   //終了した部屋のセッションIDのデータをクリアする
+  $second = RoomConfig::$clear_session_id;
   $query = <<<EOF
 UPDATE user_entry INNER JOIN room ON user_entry.session_id IS NOT NULL AND
   user_entry.room_no = room.room_no AND room.status = 'finished' AND
   (room.finish_datetime IS NULL OR
-   room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$ROOM_CONF->clear_session_id} SECOND))
+   room.finish_datetime < DATE_SUB(NOW(), INTERVAL {$second} SECOND))
   SET user_entry.session_id = NULL
 EOF;
   DB::Execute($query);
@@ -47,7 +48,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $ROOM_CONF, $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
+  global $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
 
   if (ServerConfig::$disable_establish) {
     OutputActionResult('村作成 [制限事項]', '村作成はできません');
@@ -67,7 +68,7 @@ function CreateRoom(){
       return false;
     }
     //文字列チェック
-    if (strlen($$str) > $ROOM_CONF->$str || preg_match($ROOM_CONF->ng_word, $$str)) {
+    if (strlen($$str) > RoomConfig::$$str || preg_match(RoomConfig::$ng_word, $$str)) {
       OutputRoomAction('comment', false, $ROOM_OPT->GetCaption($str));
       return false;
     }
@@ -75,7 +76,7 @@ function CreateRoom(){
 
   //最大人数チェック
   $max_user = @(int)$_POST['max_user'];
-  if (! in_array($max_user, $ROOM_CONF->max_user_list)) {
+  if (! in_array($max_user, RoomConfig::$max_user_list)) {
     OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
@@ -96,13 +97,13 @@ function CreateRoom(){
 
     $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
     $time  = DB::FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
-    if (isset($time) && TZTime() - ConvertTimeStamp($time, false) <= $ROOM_CONF->establish_wait) {
+    if (isset($time) && TZTime() - ConvertTimeStamp($time, false) <= RoomConfig::$establish_wait) {
       OutputRoomAction('establish_wait');
       return false;
     }
 
     //最大稼働数チェック
-    if (DB::Count("SELECT room_no {$query}") >= $ROOM_CONF->max_active_room) {
+    if (DB::Count("SELECT room_no {$query}") >= RoomConfig::$max_active_room) {
       OutputRoomAction('full');
       return false;
     }
@@ -349,9 +350,9 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
-  global $ROOM_CONF, $ROOM_OPT;
+  global $ROOM_OPT;
 
-  if (ServerConfig::$disable_establish){
+  if (ServerConfig::$disable_establish) {
     echo '村作成はできません';
     return;
   }

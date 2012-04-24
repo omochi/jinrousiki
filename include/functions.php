@@ -13,16 +13,14 @@ function CheckReferer($page, $white_list = null){
 
 //ブラックリストチェック
 function CheckBlackList(){
-  global $ROOM_CONF;
-
   $addr = $_SERVER['REMOTE_ADDR'];
   $host = gethostbyaddr($addr);
-  foreach(array('white' => false, 'black' => true) as $type => $flag){
-    foreach($ROOM_CONF->{$type . '_list_ip'} as $ip){
-      if(strpos($addr, $ip) === 0) return $flag;
+  foreach (array('white' => false, 'black' => true) as $type => $flag) {
+    foreach (RoomConfig::${$type . '_list_ip'} as $ip) {
+      if (strpos($addr, $ip) === 0) return $flag;
     }
-    $list = $ROOM_CONF->{$type . '_list_host'};
-    if(isset($list) && preg_match($list, $host)) return $flag;
+    $list = RoomConfig::${$type . '_list_host'};
+    if (isset($list) && preg_match($list, $host)) return $flag;
   }
   return false;
 }
@@ -310,8 +308,8 @@ EOF;
 
 //ゲームオプションの画像タグを作成する (最大人数用)
 function GenerateMaxUserImage($number){
-  global $ROOM_CONF, $ROOM_IMG;
-  return in_array($number, $ROOM_CONF->max_user_list) && $ROOM_IMG->Exists("max{$number}") ?
+  global $ROOM_IMG;
+  return in_array($number, RoomConfig::$max_user_list) && $ROOM_IMG->Exists("max{$number}") ?
     $ROOM_IMG->Generate("max{$number}", "最大{$number}人") : "(最大{$number}人)";
 }
 

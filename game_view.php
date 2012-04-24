@@ -30,7 +30,8 @@ if (DB::$ROOM->IsFinished()) {
   $INIT_CONF->LoadClass('WINNER_MESS');
 }
 else {
-  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS');
+  $INIT_CONF->LoadFile('room_config');
+  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS');
 }
 
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
@@ -53,7 +54,7 @@ if (DB::$ROOM->IsPlaying()) { //経過時間を取得
     OutputRealTimer($end_time);
   }
   else { //会話で時間経過制
-    $INIT_CONF->LoadClass('TIME_CONF');
+    $INIT_CONF->LoadFile('time_config');
     $left_talk_time = GetTalkPassTime($left_time);
   }
 }

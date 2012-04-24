@@ -54,7 +54,7 @@ function OutputIndexHeader(){
 function OutputBBSInfo(){
   global $BBS_CONF;
 
-  if (!$BBS_CONF->disable) return;
+  if ($BBS_CONF->disable) return;
   if (! $BBS_CONF->CheckConnection($BBS_CONF->raw_url)) {
     $str = sprintf("%s: Connection timed out (%d seconds)\n", $BBS_CONF->host, $BBS_CONF->time);
     echo $BBS_CONF->GenerateBBS($str);

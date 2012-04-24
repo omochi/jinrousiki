@@ -1,7 +1,7 @@
 <?php
 class RoomOption extends OptionParser {
   static function ShowBuildRoomForm() {
-    global $GAME_OPT_CONF, $ROOM_CONF, $TIME_CONF;
+    global $GAME_OPT_CONF;
     require_once(dirname(__FILE__).'/option_form_class.php');
 
     $builder = new OptionForm();

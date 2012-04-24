@@ -24,7 +24,7 @@ if (RQ::$get->is_room) {
   OutputOldLog();
 }
 else {
-  $INIT_CONF->LoadClass('ROOM_CONF');
+  $INIT_CONF->LoadFile('room_config');
   OutputFinishedRooms(RQ::$get->page);
 }
 OutputHTMLFooter();

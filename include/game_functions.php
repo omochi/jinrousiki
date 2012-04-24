@@ -6,14 +6,12 @@ function GetRandom($array){ return $array[array_rand($array)]; }
 //-- 時間関連 --//
 //リアルタイムの経過時間
 function GetRealPassTime(&$left_time){
-  global $TIME_CONF;
-
   $start_time = DB::$ROOM->scene_start_time; //シーンの最初の時刻を取得
   $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間
   $pass_time  = DB::$ROOM->system_time - $start_time;
-  if (DB::$ROOM->IsOption('wait_morning') && DB::$ROOM->IsDay()){ //早朝待機制
-    $base_time += $TIME_CONF->wait_morning; //制限時間を追加する
-    DB::$ROOM->event->wait_morning = $pass_time <= $TIME_CONF->wait_morning; //待機判定
+  if (DB::$ROOM->IsOption('wait_morning') && DB::$ROOM->IsDay()) { //早朝待機制
+    $base_time += TimeConfig::$wait_morning; //制限時間を追加する
+    DB::$ROOM->event->wait_morning = $pass_time <= TimeConfig::$wait_morning; //待機判定
   }
   if (($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
   return $start_time + $base_time;
@@ -21,22 +19,20 @@ function GetRealPassTime(&$left_time){
 
 //会話で時間経過制の経過時間
 function GetTalkPassTime(&$left_time, $silence = false){
-  global $TIME_CONF;
-
   $query = 'SELECT SUM(spend_time) FROM talk' . DB::$ROOM->GetQuery() .
     sprintf(" AND scene = '%s'", DB::$ROOM->scene);
   $spend_time = (int)DB::FetchResult($query);
 
   if (DB::$ROOM->IsDay()) { //昼は12時間
-    $base_time = $TIME_CONF->day;
+    $base_time = TimeConfig::$day;
     $full_time = 12;
   }
   else { //夜は6時間
-    $base_time = $TIME_CONF->night;
+    $base_time = TimeConfig::$night;
     $full_time = 6;
   }
   if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
-  $base_left_time = $silence ? $TIME_CONF->silence_pass : $left_time; //仮想時間の計算
+  $base_left_time = $silence ? TimeConfig::$silence_pass : $left_time; //仮想時間の計算
   return ConvertTime($full_time * $base_left_time * 60 * 60 / $base_time);
 }
 
@@ -192,7 +188,7 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //-- 出力関連 --//
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $GAME_CONF, $TIME_CONF;
+  global $GAME_CONF;
 
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . DB::$ROOM->id;
@@ -207,7 +203,7 @@ function OutputGamePageHeader(){
     現在の Safari・Firefox では不要なので false でスキップしておく
     //if (preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){
   */
-  if (false){
+  if (false) {
     $sentence = '';
     $anchor_header .= '<a href="';
     $anchor_footer = '" target="_top">ここをクリックしてください</a>';
@@ -273,7 +269,7 @@ function OutputGamePageHeader(){
 
       if ($novote_flag) {
 	$query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-	if ($TIME_CONF->alert > $TIME_CONF->sudden_death - DB::FetchResult($query)) { //警告判定
+	if (TimeConfig::$alert > TimeConfig::$sudden_death - DB::FetchResult($query)) { //警告判定
 	  $alert_flag = true;
 	  $sound_type = 'alert';
 	}
@@ -291,7 +287,7 @@ function OutputGamePageHeader(){
 
 //リアルタイム表示に使う JavaScript の変数を出力
 function OutputRealTimer($end_time, $type = null, $flag = false){
-  global $TIME_CONF, $SOUND;
+  global $SOUND;
 
   $js_path     = JINRO_ROOT . '/javascript/';
   $sound_path  = is_null($type) || ! is_object($SOUND) ? '' : $SOUND->GenerateJS($type);
@@ -307,7 +303,7 @@ function OutputRealTimer($end_time, $type = null, $flag = false){
   echo 'var sound_flag = ' . (is_null($type) ? 'false' : 'true') . ';'."\n";
   echo 'var countdown_flag = ' . ($flag ? 'true' : 'false') . ';'."\n";
   echo 'var sound_file = "' . $sound_path . '";'."\n";
-  echo 'var alert_distance = "' . $TIME_CONF->alert_distance . '";'."\n";
+  echo 'var alert_distance = "' . TimeConfig::$alert_distance . '";'."\n";
   echo '// --></script>'."\n";
 }
 

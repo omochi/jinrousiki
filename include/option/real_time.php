@@ -11,9 +11,8 @@ class Option_real_time extends RoomOptionItem {
   }
 
   function LoadMessages() {
-    global $TIME_CONF;
-    $this->defaultDayTime = $TIME_CONF->default_day;
-    $this->defaultNightTime = $TIME_CONF->default_night;
+    $this->defaultDayTime   = TimeConfig::$default_day;
+    $this->defaultNightTime = TimeConfig::$default_night;
     $this->caption = 'リアルタイム制';
     $this->explain = '制限時間が実時間で消費されます';
   }
@@ -22,10 +21,12 @@ class Option_real_time extends RoomOptionItem {
     if (isset($_POST[$this->name])) {
       $value = $_POST[$this->name];
       if ($value == 'on') {
-        global $TIME_CONF;
-        $day = isset($_POST["{$this->name}_day"]) ? $_POST["{$this->name}_day"] : $TIME_CONF->default_day;
-        $night = isset($_POST["{$this->name}_night"]) ? $_POST["{$this->name}_night"] : $TIME_CONF->default_night;
-        $option->Set($this, $this->name, array(is_numeric($day) ? (int)$day : 0, is_numeric($night) ? (int)$night : 0));
+        $day   = isset($_POST["{$this->name}_day"])   ? $_POST["{$this->name}_day"] :
+	  TimeConfig::$default_day;
+        $night = isset($_POST["{$this->name}_night"]) ? $_POST["{$this->name}_night"] :
+	  TimeConfig::$default_night;
+        $option->Set($this, $this->name,
+		     array(is_numeric($day) ? (int)$day : 0, is_numeric($night) ? (int)$night : 0));
       }
       else {
         $option->Set($this, $this->name, false);
@@ -33,4 +34,3 @@ class Option_real_time extends RoomOptionItem {
     }
   }
 }
-?>

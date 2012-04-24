@@ -154,10 +154,7 @@ abstract class TextRoomOptionItem extends RoomOptionItem {
   }
 
   function  LoadMessages() {
-    global $ROOM_CONF;
     $size = "{$this->name}_input";
-    if (isset($ROOM_CONF->$size)) {
-      $this->size = $ROOM_CONF->$size;
-    }
+    if (isset(RoomConfig::$$size)) $this->size = RoomConfig::$$size;
   }
 }

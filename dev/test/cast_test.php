@@ -1,8 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ICON_CONF', 'ROLES', 'ROOM_OPT');
-$INIT_CONF->LoadFile('game_vote_functions', 'user_class');
+$INIT_CONF->LoadClass('CAST_CONF', 'ICON_CONF', 'ROLES', 'ROOM_OPT');
+$INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'user_class');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame');

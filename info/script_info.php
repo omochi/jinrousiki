@@ -7,9 +7,9 @@ $INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'MESSAGE', 'GAME_OPT_MESS');
 //-- 関数定義 --//
 //村の最大人数設定出力
 function OutputMaxUser(){
-  global $ROOM_CONF, $CAST_CONF;
+  global $CAST_CONF;
 
-  $str = '[ ' . implode('人・', $ROOM_CONF->max_user_list);
+  $str = '[ ' . implode('人・', RoomConfig::$max_user_list);
   $min_user = min(array_keys($CAST_CONF->role_list));
   $str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
   $str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
@@ -228,7 +228,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_active_room">同時稼働できる村の数 [Ver. 1.4.0 α19～]</h3>
 <div>
 サーバ負荷の調整のため、同時稼働できる村の数をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo $ROOM_CONF->max_active_room ?>村 ] までです。
+現在の設定は [ <?php echo RoomConfig::$max_active_room ?>村 ] までです。
 </div>
 
 <h3 id="difference_establish_wait">次の村を立てられるまでの待ち時間 [Ver. 1.4.0 β1～]</h3>
@@ -268,10 +268,10 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 村を作成するときに「<a href="game_option.php#real_time">リアルタイム制</a>」にチェックを入れると、ゲーム中の仮想時間 (昼12時間、夜6時間) が発言により消費されるのではなく固定された実時間で消費されていきます。<br>
 設定される時間は村を作成する人が決定することができます
-(デフォルト 昼： [ <?php echo $TIME_CONF->default_day ?>分 ]　夜： [ <?php echo $TIME_CONF->default_night ?>分 ])。<br>
+(デフォルト 昼： [ <?php echo TimeConfig::$default_day ?>分 ]　夜： [ <?php echo TimeConfig::$default_night ?>分 ])。<br>
 その村に設定された制限時間を知るには、ゲーム一覧のゲームオプションアイコン、リアルタイム制用 <?php echo
-$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . $TIME_CONF->default_day .
-		    '分　夜： ' . $TIME_CONF->default_night . '分') ?> にマウスポインタを合わせることで表示されます。
+$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::$default_day .
+		    '分　夜： ' . TimeConfig::$default_night . '分') ?> にマウスポインタを合わせることで表示されます。
 </div>
 <h4>Ver. 1.4.0 β4～</h4>
 <div>
@@ -292,7 +292,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
 
 <h3 id="difference_wait_morning">早朝待機制オプション [Ver. 1.4.0 β17～]</h3>
 <div>
-村を作成するときに「<a href="game_option.php#wait_morning">早朝待機制</a>」にチェックを入れると、夜明け後 [ <?php echo $TIME_CONF->wait_morning ?>秒 ] の間は発言ができません。<br>
+村を作成するときに「<a href="game_option.php#wait_morning">早朝待機制</a>」にチェックを入れると、夜明け後 [ <?php echo TimeConfig::$wait_morning ?>秒 ] の間は発言ができません。<br>
 これにより、昼の発言開始のタイミングを揃えることができます。
 </div>
 

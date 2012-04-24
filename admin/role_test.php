@@ -2,9 +2,9 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'GAME_OPT_CONF', 'CAST_CONF', 'ROOM_OPT',
+$INIT_CONF->LoadClass('GAME_CONF', 'GAME_OPT_CONF', 'CAST_CONF', 'ROOM_OPT',
 		      'GAME_OPT_MESS',  'ROLE_DATA');
-$INIT_CONF->LoadFile('game_vote_functions', 'request_class');
+$INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'request_class');
 
 OutputHTMLHeader('配役テストツール', 'role_table');
 OutputRoleTestForm();
@@ -87,7 +87,7 @@ if (@$_POST['command'] == 'role_test') {
 OutputHTMLFooter(true);
 
 function OutputRoleTestForm(){
-  global $ROOM_CONF, $GAME_OPT_CONF, $GAME_OPT_MESS;
+  global $GAME_OPT_CONF, $GAME_OPT_MESS;
 
   foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
     $$key = isset($_POST[$key]) && $_POST[$key] > 0 ? $_POST[$key] : $value;

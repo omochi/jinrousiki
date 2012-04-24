@@ -1,8 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_CONF', 'GAME_CONF', 'TIME_CONF', 'ROOM_IMG', 'MESSAGE');
-$INIT_CONF->LoadFile('feedengine');
+$INIT_CONF->LoadClass('GAME_CONF', 'ROOM_IMG', 'MESSAGE');
+$INIT_CONF->LoadFile('room_config', 'time_config', 'feedengine');
 
 DB::Connect(); // DB 接続
 $site_summary = FeedEngine::Initialize('site_summary.php');

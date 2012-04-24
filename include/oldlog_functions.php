@@ -90,7 +90,7 @@ class PageLinkBuilder {
 //-- 関数 --//
 //過去ログ一覧生成
 function GenerateFinishedRooms($page){
-  global $ROOM_CONF, $MESSAGE, $ROOM_IMG;
+  global $MESSAGE, $ROOM_IMG;
 
   //村数の確認
   $title = ServerConfig::$title . ' [過去ログ]';
@@ -158,8 +158,8 @@ EOF;
     else {
       $base_url = 'old_log.php?room_no=' . $ROOM->id;
       if (is_int(RQ::$get->db_no) && RQ::$get->db_no > 0) $base_url .= '&db_no=' . RQ::$get->db_no;
-      $login = $current_time - strtotime($ROOM->finish_datetime) > $ROOM_CONF->clear_session_id ? '' :
-	'<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
+      $login = $current_time - strtotime($ROOM->finish_datetime) > RoomConfig::$clear_session_id ?
+	'' : '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
       $log_link = GenerateLogLink($base_url, true, '(') . ' )' .
 	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
     }

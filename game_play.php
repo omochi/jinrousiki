@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('game_play_functions', 'talk_class');
-$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'TIME_CONF');
+$INIT_CONF->LoadFile('time_config', 'talk_class', 'game_play_functions');
+$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay');
@@ -18,7 +18,8 @@ DB::$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 //シーンに応じた追加クラスをロード
 if (DB::$ROOM->IsBeforeGame()) { //ゲームオプション表示
-  $INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_OPT', 'GAME_OPT_MESS', 'ROOM_IMG');
+  $INIT_CONF->LoadFile('room_config');
+  $INIT_CONF->LoadClass('CAST_CONF', 'ROOM_OPT', 'GAME_OPT_MESS', 'ROOM_IMG');
   RQ::$get->retrive_type = DB::$ROOM->scene;
 }
 elseif (! DB::$ROOM->heaven_mode && DB::$ROOM->IsDay()) {
@@ -202,7 +203,7 @@ function Say($say){
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $TIME_CONF, $MESSAGE;
+  global $MESSAGE;
 
   if (! DB::$ROOM->IsPlaying()) return true; //スキップ判定
 
@@ -215,19 +216,18 @@ function CheckSilence(){
     if (! DB::Transaction()) return false; //判定条件が全て DB なので即ロック
 
     //現在のシーンを再取得して切り替わっていたらスキップ
-    if (DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != DB::$ROOM->scene) {
-      return DB::Rollback();
-    }
+    $query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
+    if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
     $silence_pass_time = GetTalkPassTime($left_time, true);
 
     if ($left_time > 0) { //制限時間超過判定
       //最終発言時刻からの差分を取得
       $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-      if (DB::FetchResult($query) <= $TIME_CONF->silence) return DB::Rollback(); //沈黙判定
+      if (DB::FetchResult($query) <= TimeConfig::$silence) return DB::Rollback(); //沈黙判定
 
       //沈黙メッセージを発行してリセット
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
-      DB::$ROOM->Talk($str, null, '', '', null, null, null, $TIME_CONF->silence_pass);
+      DB::$ROOM->Talk($str, null, '', '', null, null, null, TimeConfig::$silence_pass);
       DB::$ROOM->UpdateTime();
       return DB::Commit();
     }
@@ -239,9 +239,8 @@ function CheckSilence(){
       if (! DB::Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
-      if (DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != DB::$ROOM->scene) {
-	return DB::Rollback();
-      }
+      $query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
+      if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
     }
     DB::$ROOM->ChangeNight(); //夜に切り替え
     DB::$ROOM->UpdateTime(); //最終書き込み時刻を更新
@@ -253,24 +252,23 @@ function CheckSilence(){
       if (! DB::Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
-      if (DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != DB::$ROOM->scene) {
-	return DB::Rollback();
-      }
+      $query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
+      if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
     }
 
     //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
-    $str = 'あと' . ConvertTime($TIME_CONF->sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
+    $str = 'あと' . ConvertTime(TimeConfig::$sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
     if (DB::$ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
-      DB::$ROOM->sudden_death = $TIME_CONF->sudden_death;
+      DB::$ROOM->sudden_death = TimeConfig::$sudden_death;
       return DB::Commit(); //ロック解除
     }
   }
 
   //最終発言時刻からの差分を取得
   /*  DB::$ROOM から推定値を計算する場合 (リアルタイム制限定 + 再投票などがあると大幅にずれる) */
-  //DB::$ROOM->sudden_death = $TIME_CONF->sudden_death - (DB::$ROOM->system_time - $end_time);
+  //DB::$ROOM->sudden_death = TimeConfig::$sudden_death - (DB::$ROOM->system_time - $end_time);
   $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-  DB::$ROOM->sudden_death = $TIME_CONF->sudden_death - DB::FetchResult($query);
+  DB::$ROOM->sudden_death = TimeConfig::$sudden_death - DB::FetchResult($query);
 
   //制限時間前ならスキップ (この段階でロックしているのは非リアルタイム制のみ)
   if (DB::$ROOM->sudden_death > 0) return DB::$ROOM->IsRealTime() ? true : DB::Rollback();
@@ -280,17 +278,16 @@ function CheckSilence(){
     if (! DB::Transaction()) return false;
 
     //現在のシーンを再取得して切り替わっていたらスキップ
-    if (DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE') != DB::$ROOM->scene) {
-      return DB::Rollback();
-    }
+    $query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
+    if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
 
     //制限時間を再計算
     $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-    DB::$ROOM->sudden_death = $TIME_CONF->sudden_death - DB::FetchResult($query);
+    DB::$ROOM->sudden_death = TimeConfig::$sudden_death - DB::FetchResult($query);
     if (DB::$ROOM->sudden_death > 0) return DB::Rollback();
   }
 
-  if (abs(DB::$ROOM->sudden_death) > $TIME_CONF->server_disconnect) { //サーバダウン検出
+  if (abs(DB::$ROOM->sudden_death) > TimeConfig::$server_disconnect) { //サーバダウン検出
     DB::$ROOM->UpdateTime(); //突然死タイマーをリセット
     DB::$ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
     return DB::Commit(); //ロック解除
@@ -328,20 +325,18 @@ function CheckSilence(){
 
 //超過時間セット
 function SetSuddenDeathTime(){
-  global $TIME_CONF;
-
   //最終発言時刻からの差分を取得
   $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
   $last_update_time = DB::FetchResult($query);
 
   //経過時間を取得
   DB::$ROOM->IsRealTime() ? GetRealPassTime($left_time) : GetTalkPassTime($left_time, true);
-  if ($left_time == 0) DB::$ROOM->sudden_death = $TIME_CONF->sudden_death - $last_update_time;
+  if ($left_time == 0) DB::$ROOM->sudden_death = TimeConfig::$sudden_death - $last_update_time;
 }
 
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $TIME_CONF, $MESSAGE, $COOKIE, $SOUND, $OBJECTION;
+  global $GAME_CONF, $MESSAGE, $COOKIE, $SOUND, $OBJECTION;
 
   $url_room   = '?room_no=' . DB::$ROOM->id;
   $url_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
@@ -369,22 +364,22 @@ function OutputGameHeader(){
     echo $url_header . '0' . $url_scene . 'beforegame' . $url_footer . '0(前)' . $footer;
     if (DB::$ROOM->IsOption('open_day')) echo $url_header . '1' . $url_day . '1(昼)' . $footer;
     echo $url_header . '1' . $url_night . '1(夜)' . $footer;
-    for($i = 2; $i < DB::$ROOM->date; $i++){
+    for ($i = 2; $i < DB::$ROOM->date; $i++) {
       echo $url_header . $i . $url_day   . $i . '(昼)' . $footer;
       echo $url_header . $i . $url_night . $i . '(夜)' . $footer;
     }
 
-    if (DB::$ROOM->heaven_mode){
-      if (DB::$ROOM->IsNight()){
+    if (DB::$ROOM->heaven_mode) {
+      if (DB::$ROOM->IsNight()) {
 	echo $url_header . DB::$ROOM->date . $url_day . DB::$ROOM->date . '(昼)' . $footer;
       }
       echo '</td>'."\n" . '</tr></table>'."\n";
       return;
     }
 
-    if (DB::$ROOM->IsFinished()){
+    if (DB::$ROOM->IsFinished()) {
       echo $url_header . DB::$ROOM->date . $url_day . DB::$ROOM->date . '(昼)' . $footer;
-      if (DB::FetchResult(DB::$ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0){
+      if (DB::FetchResult(DB::$ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0) {
 	echo $url_header . DB::$ROOM->date . $url_night . DB::$ROOM->date . '(夜)' . $footer;
       }
       echo $header . $url_scene . 'aftergame' . $url_footer . '(後)' . $footer;
@@ -393,7 +388,7 @@ function OutputGameHeader(){
   }
   else {
     echo DB::$ROOM->GenerateTitleTag() . '<td class="view-option">'."\n";
-    if (DB::$SELF->IsDead() && DB::$ROOM->dead_mode){ //死亡者の場合の、真ん中の全表示地上モード
+    if (DB::$SELF->IsDead() && DB::$ROOM->dead_mode) { //死亡者の場合の、真ん中の全表示地上モード
       $url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload .
 	$url_sound . $url_list;
 
@@ -406,7 +401,7 @@ EOF;
     }
   }
 
-  if (! DB::$ROOM->IsFinished()){ //ゲーム終了後は自動更新しない
+  if (! DB::$ROOM->IsFinished()) { //ゲーム終了後は自動更新しない
     $url_header = '<a target="_top" href="game_frame.php' . $url_room .
       $url_dead . $url_heaven . $url_list;
     OutputAutoReloadLink($url_header . $url_sound);
@@ -421,7 +416,7 @@ EOF;
   echo '<a target="_top" href="game_frame.php' . $url_room . $url_dead . $url_heaven .
     $url_reload . $url_sound  . (RQ::$get->list_down ? '">↑' : '&list_down=on">↓') . 'リスト</a>';
 
-  if (DB::$ROOM->IsFinished()){
+  if (DB::$ROOM->IsFinished()) {
     echo "\n".'<a target="_blank" href="game_play.php' . $url_room . $url_list . '">' .
       '別ページ</a>';
     OutputLogLink();
@@ -429,33 +424,33 @@ EOF;
   else { //ログ保存用のリンク
     echo "\n".'<a target="_blank" href="game_play.php' . $url_room . $url_list . '">' .
       '別ページ</a>';
-    if (DB::$ROOM->IsBeforegame()){
+    if (DB::$ROOM->IsBeforegame()) {
       echo ' <a target="_blank" href="user_manager.php' . $url_room . '&user_no=' .
 	DB::$SELF->user_no . '">登録情報変更</a>'."\n";
     }
   }
 
-  if (RQ::$get->play_sound && (DB::$ROOM->IsBeforeGame() || DB::$ROOM->IsDay())){ //音でお知らせ処理
-    if (DB::$ROOM->IsBeforeGame()){ //入村・満員
+  if (RQ::$get->play_sound && (DB::$ROOM->IsBeforeGame() || DB::$ROOM->IsDay())) { //音でお知らせ処理
+    if (DB::$ROOM->IsBeforeGame()) { //入村・満員
       $user_count = DB::$USER->GetUserCount();
       $max_user   = DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'max_user'));
-      if ($user_count == $max_user && $COOKIE->user_count != $max_user){
+      if ($user_count == $max_user && $COOKIE->user_count != $max_user) {
 	$SOUND->Output('full');
       }
-      elseif ($COOKIE->user_count != $user_count){
+      elseif ($COOKIE->user_count != $user_count) {
 	$SOUND->Output('entry');
       }
     }
-    elseif ($COOKIE->scene != DB::$ROOM->scene){ //夜明け
+    elseif ($COOKIE->scene != DB::$ROOM->scene) { //夜明け
       $SOUND->Output('morning');
     }
 
     //「異議」あり
     $cookie_objection_list = explode(',', $COOKIE->objection); //クッキーの値を配列に格納する
     $count = count($OBJECTION);
-    for($i = 0; $i < $count; $i++){ //差分を計算 (index は 0 から)
+    for ($i = 0; $i < $count; $i++) { //差分を計算 (index は 0 から)
       //差分があれば性別を確認して音を鳴らす
-      if ((int)$OBJECTION[$i] > (int)$cookie_objection_list[$i]){
+      if ((int)$OBJECTION[$i] > (int)$cookie_objection_list[$i]) {
 	$SOUND->Output('objection_' . DB::$USER->ByID($i + 1)->sex);
       }
     }
@@ -487,16 +482,16 @@ EOF;
 
   OutputTimeTable(); //経過日数と生存人数を出力
   $left_time = 0;
-  if (DB::$ROOM->IsBeforeGame()){
+  if (DB::$ROOM->IsBeforeGame()) {
     echo '<td class="real-time">';
-    if (DB::$ROOM->IsRealTime()){ //実時間の制限時間を取得
+    if (DB::$ROOM->IsRealTime()) { //実時間の制限時間を取得
       $str = '設定時間： 昼 <span>%d分</span> / 夜 <span>%d分</span>';
       printf($str, DB::$ROOM->real_time->day, DB::$ROOM->real_time->night);
     }
-    echo '　突然死：<span>' . ConvertTime($TIME_CONF->sudden_death) . '</span></td>';
+    echo '　突然死：<span>' . ConvertTime(TimeConfig::$sudden_death) . '</span></td>';
   }
-  if (DB::$ROOM->IsPlaying()){
-    if (DB::$ROOM->IsRealTime()){ //リアルタイム制
+  if (DB::$ROOM->IsPlaying()) {
+    if (DB::$ROOM->IsRealTime()) { //リアルタイム制
       GetRealPassTime($left_time);
       echo '<td class="real-time"><form name="realtime_form">'."\n";
       echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
@@ -509,7 +504,7 @@ EOF;
 
   //異議あり、のボタン(夜と死者モード以外)
   if (DB::$ROOM->IsBeforeGame() ||
-     (DB::$ROOM->IsDay() && ! DB::$ROOM->dead_mode && ! DB::$ROOM->heaven_mode && $left_time > 0)){
+      (DB::$ROOM->IsDay() && ! DB::$ROOM->dead_mode && ! DB::$ROOM->heaven_mode && $left_time > 0)) {
     $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list;
     $count = $GAME_CONF->objection - DB::$SELF->objection;
     echo <<<EOF
@@ -523,17 +518,17 @@ EOF;
   echo '</tr></table>'."\n";
 
   if (! DB::$ROOM->IsPlaying()) return;
-  if ($left_time == 0){
+  if ($left_time == 0) {
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
-    if (DB::$ROOM->sudden_death > 0){
+    if (DB::$ROOM->sudden_death > 0) {
       echo $MESSAGE->sudden_death_time . ConvertTime(DB::$ROOM->sudden_death) . '<br>'."\n";
     }
   }
-  elseif (DB::$ROOM->IsEvent('wait_morning')){
+  elseif (DB::$ROOM->IsEvent('wait_morning')) {
     echo '<div class="system-vote">' . $MESSAGE->wait_morning . '</div>'."\n";
   }
 
-  if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()){
+  if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()) {
     echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
   }
 }

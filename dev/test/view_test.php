@@ -7,8 +7,8 @@ if ($disable) {
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
-$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ICON_CONF');
-$INIT_CONF->LoadFile('game_vote_functions', 'user_class');
+$INIT_CONF->LoadClass('CAST_CONF', 'ICON_CONF');
+$INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'user_class');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame');

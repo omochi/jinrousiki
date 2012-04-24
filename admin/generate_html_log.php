@@ -7,8 +7,8 @@ if ($disable) {
   OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
-$INIT_CONF->LoadFile('oldlog_functions');
-$INIT_CONF->LoadClass('ROOM_CONF', 'CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
+$INIT_CONF->LoadFile('room_config', 'oldlog_functions');
+$INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
 $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
 DB::Connect(RQ::$get->db_no);
 

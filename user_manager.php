@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('room_class', 'user_class', 'icon_functions');
-$INIT_CONF->LoadClass('SESSION', 'ROOM_CONF', 'GAME_CONF', 'MESSAGE');
+$INIT_CONF->LoadFile('room_config', 'room_class', 'user_class', 'icon_functions');
+$INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager');
 DB::Connect();
 RQ::$get->entry ? EntryUser() : OutputEntryUserPage();
