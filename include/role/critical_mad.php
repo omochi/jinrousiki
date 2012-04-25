@@ -21,5 +21,7 @@ class Role_critical_mad extends Role {
     }
   }
 
-  function SetVoteAction($user){ if (! $user->IsAvoid()) $user->AddRole('critical_luck'); }
+  function SetVoteAction($user){
+    if (! $user->IsAvoid()) $user->AddRole('critical_luck');
+  }
 }

@@ -110,10 +110,16 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   function GetItems() {
     if (!isset($this->items)) {
       $this->items = array();
-      $CONF = &$GLOBALS[$this->conf_name];
-      $list = $this->items_source;
-      if (isset($CONF->$list)) {
-	foreach ($CONF->$list as $key => $value) {
+      if (is_array($this->conf_name)) {
+	$stack = $this->conf_name;
+      }
+      else {
+	$CONF = &$GLOBALS[$this->conf_name];
+	$list = $this->items_source;
+	$stack = $CONF->$list;
+      }
+      if (isset($stack)) {
+	foreach ($stack as $key => $value) {
 	  if (is_string($key)) {
 	    if ($this->ItemIsAvailable($key)) {
 	      $this->items[$key] = $value;

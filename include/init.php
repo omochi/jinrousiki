@@ -45,10 +45,10 @@ class InitializeConfig {
     'WINNER_MESS'         => 'message',
     'VOTE_MESS'           => 'message',
     'ROLES'               => 'role_class',
-    'TIME_CALC'           => array('room_config', 'time_config', 'info_functions'),
+    'TIME_CALC'           => array('time_config', 'room_config', 'info_functions'),
     'TWITTER'             => array('twitter_config', 'twitter'),
     'PAPARAZZI'           => 'paparazzi_class',
-    'server_config'       => array('functions', 'system_class'), //常時ロードされる
+    'server_config'       => array('system_class', 'functions'), //常時ロードされる
     'copyright_config'    => array('version', 'info_functions'),
     'index_functions'     => 'version',
     'game_play_functions' => 'user_class',
@@ -68,13 +68,13 @@ class InitializeConfig {
   public $depend_class = array(
     'ROOM_OPT'            => 'GAME_OPT_CONF',
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
-    'TIME_CALC'           => array('GAME_CONF', 'ROOM_IMG', 'CAST_CONF', 'ROLE_DATA'),
+    'TIME_CALC'           => array('GAME_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROLE_DATA'),
     'index_functions'     => 'BBS_CONF',
     'game_play_functions' => 'ROLE_IMG',
+    'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
     'oldlog_functions'    => array('CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
     'user_class'          => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
     'login_class'         => 'SESSION',
-    'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)

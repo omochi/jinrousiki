@@ -7,7 +7,7 @@
   ・身代わり対象者：人形
 */
 RoleManager::LoadFile('doll');
-class Role_doll_master extends Role_doll{
+class Role_doll_master extends Role_doll {
   public $mix_in = 'protected';
   function __construct(){ parent::__construct(); }
 

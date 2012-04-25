@@ -5,7 +5,7 @@
   ・人狼襲撃得票カウンター：能力発現
   ・勝利：能力発現所持
 */
-class Role_immolate_mad extends Role{
+class Role_immolate_mad extends Role {
   function __construct(){ parent::__construct(); }
 
   function WolfEatReaction(){

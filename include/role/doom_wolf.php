@@ -6,7 +6,7 @@
   ・襲撃：死の宣告
 */
 RoleManager::LoadFile('wolf');
-class Role_doom_wolf extends Role_wolf{
+class Role_doom_wolf extends Role_wolf {
   function __construct(){ parent::__construct(); }
 
   function FoxEatAction($user){ $user->AddDoom(2); }

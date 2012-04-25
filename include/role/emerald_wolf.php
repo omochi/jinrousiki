@@ -5,7 +5,7 @@
   ・人狼襲撃失敗：共鳴者 (人狼限定)
 */
 RoleManager::LoadFile('wolf');
-class Role_emerald_wolf extends Role_wolf{
+class Role_emerald_wolf extends Role_wolf {
   function __construct(){ parent::__construct(); }
 
   function WolfEatSkipAction($user){

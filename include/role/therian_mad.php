@@ -4,7 +4,7 @@
   ○仕様
   ・人狼襲撃得票カウンター：人狼変化
 */
-class Role_therian_mad extends Role{
+class Role_therian_mad extends Role {
   function __construct(){ parent::__construct(); }
 
   function WolfEatReaction(){

@@ -6,7 +6,9 @@
 class Role_thunder_brownie extends Role {
   function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){ if ($this->IsRealActor()) $this->AddStack($uname); }
+  function SetVoteDay($uname){
+    if ($this->IsRealActor()) $this->AddStack($uname);
+  }
 
   //落雷判定
   function SetThunderbolt($list){

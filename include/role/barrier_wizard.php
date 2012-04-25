@@ -18,11 +18,11 @@ class Role_barrier_wizard extends Role_wizard {
   function VoteNight(){
     $stack = $this->GetVoteNightTarget();
     //人数チェック
-    if(count($stack) < 1 || 4 < count($stack)) return '指定人数は1～4人にしてください';
+    if (count($stack) < 1 || 4 < count($stack)) return '指定人数は1～4人にしてください';
 
     $target_stack = array();
     $handle_stack = array();
-    foreach($stack as $id) {
+    foreach ($stack as $id) {
       $user = DB::$USER->ByID($id);
       //例外判定
       if ($this->IsActor($user->uname) || ! DB::$USER->IsVirtualLive($id) || $user->IsDummyBoy()) {
@@ -63,7 +63,9 @@ class Role_barrier_wizard extends Role_wizard {
     $rate = $this->GetGuardRate();
     foreach ($this->GetStack() as $target_uname => $target_list) {
       if (in_array($uname, $target_list) &&
-	  mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) $list[] = $target_uname;
+	  mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) {
+	$list[] = $target_uname;
+      }
     }
   }
 

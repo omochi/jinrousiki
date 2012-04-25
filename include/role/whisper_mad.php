@@ -3,21 +3,21 @@
   ◆囁き狂人 (whisper_mad)
   ○仕様
 */
-class Role_whisper_mad extends Role{
+class Role_whisper_mad extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
     $wolf = array();
     $mad  = array();
-    foreach(DB::$USER->rows as $user){
-      if($this->IsActor($user->uname)) continue;
-      if($user->IsRole('possessed_wolf')){
+    foreach (DB::$USER->rows as $user) {
+      if ($this->IsActor($user->uname)) continue;
+      if ($user->IsRole('possessed_wolf')) {
 	$wolf[] = DB::$USER->GetHandleName($user->uname, true); //憑依先を追跡する
       }
-      elseif($user->IsWolf(true)){
+      elseif ($user->IsWolf(true)) {
 	$wolf[] = $user->handle_name;
       }
-      elseif($user->IsRole($this->role)){
+      elseif ($user->IsRole($this->role)) {
 	$mad[] = $user->handle_name;
       }
     }

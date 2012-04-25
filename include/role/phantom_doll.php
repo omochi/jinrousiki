@@ -4,6 +4,6 @@
   ○仕様
 */
 RoleManager::LoadFile('doll');
-class Role_phantom_doll extends Role_doll{
+class Role_phantom_doll extends Role_doll {
   function __construct(){ parent::__construct(); }
 }
