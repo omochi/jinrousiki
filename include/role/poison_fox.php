@@ -6,7 +6,7 @@
   ・毒：妖狐陣営以外
 */
 RoleManager::LoadFile('fox');
-class Role_poison_fox extends Role_fox{
+class Role_poison_fox extends Role_fox {
   public $mix_in = 'poison';
   public $resist_wolf = false;
   function __construct(){ parent::__construct(); }

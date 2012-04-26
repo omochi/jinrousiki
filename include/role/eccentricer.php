@@ -5,10 +5,11 @@
   ・投票数：+1 (4日目まで)
 */
 class Role_eccentricer extends Role {
+  public $ability = 'muster_ability';
   function __construct(){ parent::__construct(); }
 
   function OutputResult(){
-    if ($this->IsLost()) OutputAbilityResult('ability_eccentricer', null);
+    if ($this->IsLost()) OutputAbilityResult($this->ability, null);
   }
 
   function FilterVoteDo(&$number){

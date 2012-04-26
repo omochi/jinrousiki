@@ -4,9 +4,9 @@
   ○仕様
 */
 RoleManager::LoadFile('child_fox');
-class Role_howl_fox extends Role_child_fox{
+class Role_howl_fox extends Role_child_fox {
   public $mix_in = 'silver_wolf';
-  public $action = NULL;
-  public $result = NULL;
+  public $action = null;
+  public $result = null;
   function __construct(){ parent::__construct(); }
 }

@@ -5,7 +5,7 @@
   ・憑依無効陣営：人狼/恋人
 */
 RoleManager::LoadFile('fox');
-class Role_possessed_fox extends Role_fox{
+class Role_possessed_fox extends Role_fox {
   public $mix_in = 'possessed_mad';
   function __construct(){ parent::__construct(); }
 

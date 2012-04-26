@@ -6,7 +6,7 @@
   ・呪い：無効
 */
 RoleManager::LoadFile('child_fox');
-class Role_sex_fox extends Role_child_fox{
+class Role_sex_fox extends Role_child_fox {
   public $mix_in = 'sex_mage';
   public $mage_failed = 'mage_failed';
   function __construct(){ parent::__construct(); }

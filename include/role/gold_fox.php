@@ -4,6 +4,6 @@
   ○仕様
 */
 RoleManager::LoadFile('fox');
-class Role_gold_fox extends Role_fox{
+class Role_gold_fox extends Role_fox {
   function __construct(){ parent::__construct(); }
 }

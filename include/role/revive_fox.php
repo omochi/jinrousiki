@@ -32,7 +32,7 @@ class Role_revive_fox extends Role_fox {
 
   function SetVoteNight(){ $this->filter->SetVoteNight(); }
 
-  function IgnoreVoteAction(){ return $this->GetActor()->IsActive() ? NULL : '能力喪失しています'; }
+  function IgnoreVoteAction(){ return $this->GetActor()->IsActive() ? null : '能力喪失しています'; }
 
   function GetVoteIconPath($user, $live){ return $this->filter->GetVoteIconPath($user, $live); }
 

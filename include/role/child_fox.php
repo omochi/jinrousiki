@@ -22,10 +22,10 @@ class Role_child_fox extends Role_fox {
   function OutputAction(){ OutputVoteMessage('mage-do', $this->submit, $this->action); }
 
   function Mage($user){
-    if($this->IsJammer($user)){
+    if ($this->IsJammer($user)) {
       return $this->SaveMageResult($user, $this->mage_failed, $this->result);
     }
-    if($this->IsCursed($user)) return false;
+    if ($this->IsCursed($user)) return false;
     $result = mt_rand(0, 9) < 7 ? $this->GetMageResult($user) : $this->mage_failed;
     $this->SaveMageResult($user, $result, $this->result);
   }

@@ -6,7 +6,7 @@
   ・呪い：無効
 */
 RoleManager::LoadFile('child_fox');
-class Role_stargazer_fox extends Role_child_fox{
+class Role_stargazer_fox extends Role_child_fox {
   public $mix_in = 'stargazer_mage';
   function __construct(){ parent::__construct(); }
 

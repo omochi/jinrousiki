@@ -4,7 +4,7 @@
   ○仕様
 */
 RoleManager::LoadFile('child_fox');
-class Role_monk_fox extends Role_child_fox{
+class Role_monk_fox extends Role_child_fox {
   public $action = null;
   public $result = 'MONK_FOX_RESULT';
   function __construct(){ parent::__construct(); }

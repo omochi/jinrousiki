@@ -5,10 +5,11 @@
   ・投票数：+1 (5日目以降)
 */
 class Role_scripter extends Role {
+  public $ability = 'ability_scripter';
   function __construct(){ parent::__construct(); }
 
   function OutputResult(){
-    if ($this->IsActive()) OutputAbilityResult('ability_scripter', null);
+    if ($this->IsActive()) OutputAbilityResult($this->ability, null);
   }
 
   function FilterVoteDo(&$number){

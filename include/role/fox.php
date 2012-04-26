@@ -10,18 +10,18 @@ class Role_fox extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputPartner(){
-    if($this->GetActor()->IsLonely()) return;
+    if ($this->GetActor()->IsLonely()) return;
     $fox_list       = array();
     $child_fox_list = array();
-    foreach(DB::$USER->rows as $user){
-      if($this->IsActor($user->uname)) continue;
-      if($user->IsRole('possessed_fox')){
+    foreach (DB::$USER->rows as $user) {
+      if ($this->IsActor($user->uname)) continue;
+      if ($user->IsRole('possessed_fox')) {
 	$fox_list[] = DB::$USER->GetHandleName($user->uname, true); //憑依先を追跡する
       }
-      elseif($user->IsFox(true)){
+      elseif ($user->IsFox(true)) {
 	$fox_list[] = $user->handle_name;
       }
-      elseif($user->IsChildFox() || $user->IsRoleGroup('scarlet')){
+      elseif ($user->IsChildFox() || $user->IsRoleGroup('scarlet')) {
 	$child_fox_list[] = $user->handle_name;
       }
     }

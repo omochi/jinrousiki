@@ -13,11 +13,11 @@ class Role_miasma_fox extends Role_child_fox {
 
   function VoteKillCounter($list){
     $stack = array();
-    foreach($list as $uname){
+    foreach ($list as $uname) {
       $user = DB::$USER->ByRealUname($uname);
-      if(! $user->IsAvoid() && ! $user->IsFox()) $stack[] = $user->user_no;
+      if (! $user->IsAvoid() && ! $user->IsFox()) $stack[] = $user->user_no;
     }
-    if(count($stack) > 0) DB::$USER->ByID(GetRandom($stack))->AddDoom(1, 'febris');
+    if (count($stack) > 0) DB::$USER->ByID(GetRandom($stack))->AddDoom(1, 'febris');
   }
 
   function WolfEatCounter($user){ $user->AddDoom(1, 'febris'); }
