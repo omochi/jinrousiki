@@ -1,10 +1,8 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('開発版ソースダウンロード', 'src');
+HTML::OutputHeader('開発版ソースダウンロード', 'src', true);
 ?>
-</head>
-<body>
 <a href="../">←戻る</a><br>
 <?php include_once('download.php'); ?>
 
@@ -36,4 +34,5 @@ OutputHTMLHeader('開発版ソースダウンロード', 'src');
 </tr>
 </table>
 </form>
-</body></html>
+</body>
+</html>

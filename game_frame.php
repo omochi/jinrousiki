@@ -1,9 +1,9 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadRequest('RequestGameFrame', true); //引数を取得
-OutputFrameHTMLHeader(ServerConfig::$title . '[プレイ]');
+HTML::OutputFrameHeader(ServerConfig::$title . '[プレイ]');
 OutputGameFrame();
-OutputFrameHTMLFooter();
+HTML::OutputFrameFooter();
 
 //-- 関数 --//
 function OutputGameFrame(){

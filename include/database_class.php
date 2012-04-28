@@ -39,10 +39,10 @@ class DB extends DatabaseConfig {
     $str = $title . ': ' . $type; //エラーメッセージ作成
     if ($header) {
       printf('<font color="#FF0000">%s</font><br>', $str);
-      if ($exit) OutputHTMLFooter($exit);
+      if ($exit) HTML::OutputFooter($exit);
       return false;
     }
-    OutputActionResult($title, $str);
+    HTML::OutputResult($title, $str);
   }
 
   //データベース接続 (ヘッダ出力あり)
@@ -191,7 +191,7 @@ class DB extends DatabaseConfig {
 			     $profile = null, $sex = 'male', $role = null, $session_id = null){
     global $MESSAGE;
 
-    $crypt_password = CryptPassword($password);
+    $crypt_password = Text::CryptPassword($password);
     $items  = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live';
     $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
       "'{$crypt_password}', 'live'";

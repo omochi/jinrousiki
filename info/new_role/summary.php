@@ -1,11 +1,9 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-OutputHTMLHeader('新役職情報 - [一覧]', 'new_role');
+HTML::OutputHeader('新役職情報 - [一覧]', 'new_role');
+HTML::OutputBodyHeader();
 ?>
-</head>
-<body>
-
 <h1>新役職情報</h1>
 <ul><li>バージョンアップするたびに仕様が変わる可能性があります</li></ul>
 <p>

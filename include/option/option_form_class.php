@@ -7,15 +7,15 @@ class OptionForm {
   function GenerateRow(RoomOptionItem $item) {
     if ($item->enabled) {
       $type = $this->GetType($item);
-      if (!empty($type)) {
-        $item->LoadMessages();
-        echo <<<HTML
+      if (! empty($type)) {
+	$item->LoadMessages();
+	echo <<<HTML
   <tr>
   <td><label for="{$item->name}">{$item->caption}：</label></td>
   <td>
 HTML;
-        $this->$type($item);
-        echo <<<HTML
+	$this->$type($item);
+	echo <<<HTML
   </td>
   </tr>
 HTML;
@@ -27,9 +27,9 @@ HTML;
     if ($item instanceof Option_real_time) {
       return 'realtime';
     }
-		else {
-			return $item->formtype;
-		}
+    else {
+      return $item->formtype;
+    }
   }
 
   function HorizontalRule() {
@@ -38,7 +38,7 @@ HTML;
 
   function textbox(RoomOptionItem $item, $type = 'textbox') {
     $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
-		$footer = LineToBR($footer);
+    $footer = Text::LineToBR($footer);
     $size = isset($item->size) ? 'size="'.$item->size.'"' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" {$size} value="{$item->value}">
@@ -51,7 +51,7 @@ HTML;
 
   function checkbox(RoomOptionItem $item, $type = 'checkbox') {
     $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
-		$footer = LineToBR($footer);
+    $footer = Text::LineToBR($footer);
     $checked = $item->value ? ' checked' : '';
     echo <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
@@ -67,19 +67,19 @@ HTML;
     $options = '';
     foreach ($item->GetItems() as $code => $child) {
       if ($child instanceof RoomOptionItem) {
-				$child->LoadMessages();
-        $label = $child->caption;
+	$child->LoadMessages();
+	$label = $child->caption;
       }
       else {
-        $label = $child;
+	$label = $child;
       }
       if (!is_string($code)) {
-        $code = $label;
+	$code = $label;
       }
       $selected = $code == $item->value ? ' selected' : '';
       $options .= "<option value=\"{$code}\" {$selected}>{$label}</option>\n";
     }
-		$explain = LineToBR($item->explain);
+    $explain = Text::LineToBR($item->explain);
     echo <<<HTML
 <select id="{$item->name}" name="{$item->formname}">
 <optgroup label="{$item->label}">
@@ -91,7 +91,7 @@ HTML;
 
   function realtime(Option_real_time $item) {
     $checked = $item->value ? ' checked' : '';
-		$explain = LineToBR($item->explain);
+    $explain = Text::LineToBR($item->explain);
     echo <<<HTML
 <input type="checkbox" id="{$item->name}" name="{$item->formname}" value="on"{$checked}>
 <span class='explain'>({$explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)</span>
@@ -103,14 +103,14 @@ HTML;
   function group(RoomOptionItem $item) {
     foreach ($item->GetItems() as $key => $child) {
       $type = $child->formtype;
-      if (!empty($type)) {
-        $child->LoadMessages();
-				if ($type == 'radio') {
-					$child->formname = $item->formname;
-					$child->formvalue = $key;
-				}
-        $this->$type($child);
-        echo "<br>\n";
+      if (! empty($type)) {
+	$child->LoadMessages();
+	if ($type == 'radio') {
+	  $child->formname = $item->formname;
+	  $child->formvalue = $key;
+	}
+	$this->$type($child);
+	echo "<br>\n";
       }
     }
   }

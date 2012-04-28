@@ -43,7 +43,7 @@ class MenuLinkBuilder extends MenuLinkConfig {
 //-- 関数定義 --//
 //ヘッダー出力
 function OutputIndexHeader(){
-  OutputHTMLHeader(ServerConfig::$title . ServerConfig::$comment, 'index');
+  HTML::OutputHeader(ServerConfig::$title . ServerConfig::$comment, 'index');
   echo "</head>\n<body>\n";
   if (ServerConfig::$back_page != '') {
     printf('<a href="%s">←戻る</a><br>'."\n", ServerConfig::$back_page);

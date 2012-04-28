@@ -6,7 +6,7 @@ $INIT_CONF->LoadClass('ROOM_IMG', 'ROOM_OPT');
 
 if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
-EncodePostData();
+Text::EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
   $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
   CreateRoom();
@@ -51,10 +51,10 @@ function CreateRoom(){
   global $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
 
   if (ServerConfig::$disable_establish) {
-    OutputActionResult('村作成 [制限事項]', '村作成はできません');
+    HTML::OutputResult('村作成 [制限事項]', '村作成はできません');
   }
-  if (CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
-    OutputActionResult('村作成 [入力エラー]', '無効なアクセスです。');
+  if (Security::CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
+    HTML::OutputResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
   //PrintData($ROOM_OPT);
 
@@ -62,7 +62,7 @@ function CreateRoom(){
   //村の名前・説明のデータチェック
   foreach (array('room_name', 'room_comment') as $str) {
     $$str = $_POST[$str];
-    EscapeStrings($$str);
+    Text::Escape($$str);
     if ($$str == '') { //未入力チェック
       OutputRoomAction('empty', false, $ROOM_OPT->GetCaption($str));
       return false;
@@ -77,7 +77,7 @@ function CreateRoom(){
   //最大人数チェック
   $max_user = @(int)$_POST['max_user'];
   if (! in_array($max_user, RoomConfig::$max_user_list)) {
-    OutputActionResult('村作成 [入力エラー]', '無効な最大人数です。');
+    HTML::OutputResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
   if (! DB::Lock('room')) { //トランザクション開始
@@ -89,15 +89,17 @@ function CreateRoom(){
   if (! ServerConfig::$debug_mode) { //デバッグモード時は村作成制限をスキップ
     $str = 'room_password'; //パスワードチェック
     if (isset(ServerConfig::$$str) && @$_POST[$str] != ServerConfig::$$str) {
-      OutputActionResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
+      HTML::OutputResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
     }
 
-    //ブラックリストチェック
-    if (CheckBlackList()) OutputActionResult('村作成 [制限事項]', '村立て制限ホストです。');
+    if (Security::CheckBlackList()) { //ブラックリストチェック
+      HTML::OutputResult('村作成 [制限事項]', '村立て制限ホストです。');
+    }
 
     $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
     $time  = DB::FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
-    if (isset($time) && TZTime() - ConvertTimeStamp($time, false) <= RoomConfig::$establish_wait) {
+    if (isset($time) &&
+	Time::Get() - Time::ConvertTimeStamp($time, false) <= RoomConfig::$establish_wait) {
       OutputRoomAction('establish_wait');
       return false;
     }
@@ -121,7 +123,7 @@ function CreateRoom(){
     'wish_role', 'open_vote', 'seal_message', 'open_day', 'not_open_cast_selector');
   if ($ROOM_OPT->quiz) { //クイズ村
     $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
-    EscapeStrings($gm_password);
+    Text::Escape($gm_password);
     if ($gm_password == '') {
       OutputRoomAction('no_password');
       return false;
@@ -140,7 +142,7 @@ function CreateRoom(){
     }
     elseif ($ROOM_OPT->gm_login) {
       $gm_password = @$_POST['gm_password']; //GM ログインパスワードをチェック
-      EscapeStrings($gm_password);
+      Text::Escape($gm_password);
       if ($gm_password == '') {
         OutputRoomAction('no_password');
         return false;
@@ -198,7 +200,7 @@ function CreateRoom(){
   //PrintData($ROOM_OPT);
   //PrintData($game_option, 'GameOption');
   //PrintData($option_role, 'OptionRole');
-  //OutputHTMLFooter(true); //テスト用
+  //HTML::OutputFooter(true); //テスト用
 
   do {
     if (! ServerConfig::$dry_run_mode) {
@@ -241,14 +243,14 @@ function CreateRoom(){
 function OutputRoomAction($type, $rollback = true, $str = ''){
   switch ($type) {
   case 'empty':
-    OutputActionResultHeader('村作成 [入力エラー]');
+    HTML::OutputResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
     echo '以下の項目を再度ご確認ください。<br>';
     echo "<ul><li>{$str}が記入されていない。</li>";
     break;
 
   case 'comment':
-    OutputActionResultHeader('村作成 [入力エラー]');
+    HTML::OutputResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
     echo '以下の項目を再度ご確認ください。<br>';
     echo "<ul><li>{$str}の文字数が長すぎる。</li>";
@@ -256,30 +258,30 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
     break;
 
   case 'establish_wait':
-    OutputActionResultHeader('村作成 [制限事項]');
+    HTML::OutputResultHeader('村作成 [制限事項]');
     echo 'サーバで設定されている村立て許可時間間隔を経過していません。<br>'."\n";
     echo 'しばらく時間を開けてから再度登録してください。';
     break;
 
   case 'full':
-    OutputActionResultHeader('村作成 [制限事項]');
+    HTML::OutputResultHeader('村作成 [制限事項]');
     echo '現在プレイ中の村の数がこのサーバで設定されている最大値を超えています。<br>'."\n";
     echo 'どこかの村で決着がつくのを待ってから再度登録してください。';
     break;
 
   case 'over_establish':
-    OutputActionResultHeader('村作成 [制限事項]');
+    HTML::OutputResultHeader('村作成 [制限事項]');
     echo 'あなたが立てた村が現在稼働中です。<br>'."\n";
     echo '立てた村の決着がつくのを待ってから再度登録してください。';
     break;
 
   case 'no_password':
-    OutputActionResultHeader('村作成 [入力エラー]');
+    HTML::OutputResultHeader('村作成 [入力エラー]');
     echo '有効な GM ログインパスワードが設定されていません。';
     break;
 
   case 'time':
-    OutputActionResultHeader('村作成 [入力エラー]');
+    HTML::OutputResultHeader('村作成 [入力エラー]');
     echo 'エラーが発生しました。<br>';
     echo '以下の項目を再度ご確認ください。<br>';
     echo '<ul><li>リアルタイム制の昼・夜の時間を記入していない。</li>';
@@ -289,19 +291,19 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
     break;
 
   case 'busy':
-    OutputActionResultHeader('村作成 [データベースエラー]');
+    HTML::OutputResultHeader('村作成 [データベースエラー]');
     echo 'データベースサーバが混雑しています。<br>'."\n";
     echo '時間を置いて再度登録してください。';
     break;
 
   case 'success':
-    OutputActionResultHeader('村作成', ServerConfig::$site_root);
+    HTML::OutputResultHeader('村作成', ServerConfig::$site_root);
     echo $str . ' 村を作成しました。トップページに飛びます。';
     echo '切り替わらないなら <a href="' . ServerConfig::$site_root . '">ここ</a> 。';
     break;
   }
   if ($rollback) DB::Rollback();
-  OutputHTMLFooter(); //フッタ出力
+  HTML::OutputFooter();
 }
 
 //村(room)のwaitingとplayingのリストを出力する

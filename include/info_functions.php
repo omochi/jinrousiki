@@ -17,16 +17,16 @@ class TimeCalculation {
     $day_seconds   = floor(12 * 60 * 60 / TimeConfig::$day);
     $night_seconds = floor( 6 * 60 * 60 / TimeConfig::$night);
 
-    $this->spend_day      = ConvertTime($day_seconds);
-    $this->spend_night    = ConvertTime($night_seconds);
-    $this->silence_day    = ConvertTime(TimeConfig::$silence_pass * $day_seconds);
-    $this->silence_night  = ConvertTime(TimeConfig::$silence_pass * $night_seconds);
-    $this->silence        = ConvertTime(TimeConfig::$silence);
-    $this->sudden_death   = ConvertTime(TimeConfig::$sudden_death);
-    $this->alert          = ConvertTime(TimeConfig::$alert);
-    $this->alert_distance = ConvertTime(TimeConfig::$alert_distance);
-    $this->die_room       = ConvertTime(RoomConfig::$die_room);
-    $this->establish_wait = ConvertTime(RoomConfig::$establish_wait);
+    $this->spend_day      = Time::Convert($day_seconds);
+    $this->spend_night    = Time::Convert($night_seconds);
+    $this->silence_day    = Time::Convert(TimeConfig::$silence_pass * $day_seconds);
+    $this->silence_night  = Time::Convert(TimeConfig::$silence_pass * $night_seconds);
+    $this->silence        = Time::Convert(TimeConfig::$silence);
+    $this->sudden_death   = Time::Convert(TimeConfig::$sudden_death);
+    $this->alert          = Time::Convert(TimeConfig::$alert);
+    $this->alert_distance = Time::Convert(TimeConfig::$alert_distance);
+    $this->die_room       = Time::Convert(RoomConfig::$die_room);
+    $this->establish_wait = Time::Convert(RoomConfig::$establish_wait);
   }
 }
 
@@ -35,10 +35,9 @@ class TimeCalculation {
 function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
   $top  = str_repeat('../', $level + 1);
   $info = $level == 0 ? './' : str_repeat('../', $level);
-  OutputHTMLHeader('[' . $title . ']', 'info/' . $css);
+  HTML::OutputHeader(sprintf('[%s]', $title), 'info/' . $css);
+  HTML::OutputBodyHeader();
   echo <<<EOF
-</head>
-<body>
 <h1>{$title}</h1>
 <p>
 <a target="_top" href="{$top}">&lt;= TOP</a>
@@ -50,10 +49,9 @@ EOF;
 
 //役職情報ページ HTML ヘッダ出力
 function OutputRolePageHeader($title){
-  OutputHTMLHeader('新役職情報 - ' . '[' . $title . ']', 'new_role');
+  HTML::OutputHeader(sprintf('新役職情報 - [%s]', $title), 'new_role');
+  HTML::OutputBodyHeader();
   echo <<<EOF
-</head>
-<body>
 <h1>{$title}</h1>
 <p>
 <a target="_top" href="../">&lt;= 情報一覧</a>
@@ -103,7 +101,7 @@ function OutputSharedRoomList(){
 
   if ($SHARED_CONF->disable) return false;
 
-  $str = '<script type="text/javascript" src="../javascript/shared_room.js"></script>'."\n";
+  $str = HTML::LoadJavaScript('shared_room');
   $count = 0;
   foreach ($SHARED_CONF->server_list as $server => $array) {
     $count++;

@@ -4,17 +4,15 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('ROLE_DATA');
 
 //-- 表示 --//
-OutputHTMLHeader('役職名表示ツール', 'game');
+HTML::OutputHeader('役職名表示ツール', 'game', true);
 OutputNameTest();
-OutputHTMLFooter();
+HTML::OutputFooter();
 
 //-- 関数 --//
 function OutputNameTest(){
   global $ROLE_DATA;
 
   echo <<<EOF
-</head>
-<body>
 <form method="POST" action="name_test.php">
 <input type="hidden" name="command" value="name_test">
 <input type="submit" value=" 実 行 "><br>

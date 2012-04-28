@@ -10,7 +10,7 @@ $url = '<a href="game_view.php?room_no=' . RQ::$get->room_no;
 DB::Connect();
 DB::$ROOM = new Room(RQ::$get); //村情報をロード
 DB::$ROOM->view_mode   = true;
-DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 switch (DB::$ROOM->scene) {
 case 'beforegame':
   RQ::$get->retrive_type = DB::$ROOM->scene;
@@ -39,7 +39,7 @@ DB::$SELF = new User();
 
 //-- データ出力 --//
 ob_start();
-OutputHTMLHeader(ServerConfig::$title . '[観戦]', 'game_view'); //HTMLヘッダ
+HTML::OutputHeader(ServerConfig::$title . '[観戦]', 'game_view'); //HTMLヘッダ
 
 if (GameConfig::$auto_reload && RQ::$get->auto_reload > 0) { //自動更新
   printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
@@ -128,5 +128,5 @@ OutputTalkLog();    //会話ログ
 OutputLastWords();  //遺言
 OutputDeadMan();    //死亡者
 OutputVoteList();   //投票結果
-OutputHTMLFooter(); //HTMLフッタ
+HTML::OutputFooter();
 ob_end_flush();

@@ -29,8 +29,8 @@ function OutputDisableDummyBoyRole(){
 
 //-- 表示 --//
 OutputInfoPageHeader('仕様', 0, 'script_info');
+HTML::OutputJavaScript('output_diff_time');
 ?>
-<script type="text/javascript" src="../javascript/output_diff_time.js"></script>
 <img src="../img/script_info_title.jpg" title="スクリプトの仕様" alt="スクリプトの仕様">
 <ul>
   <li><a href="#environment">ゲームに参加するために必要な環境</a></li>

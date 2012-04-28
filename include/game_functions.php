@@ -33,7 +33,7 @@ function GetTalkPassTime(&$left_time, $silence = false){
   }
   if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
   $base_left_time = $silence ? TimeConfig::$silence_pass : $left_time; //仮想時間の計算
-  return ConvertTime($full_time * $base_left_time * 60 * 60 / $base_time);
+  return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
 }
 
 //-- 役職関連 --//
@@ -232,13 +232,13 @@ function OutputGamePageHeader(){
 
   if ($jump_url != '') { //移動先が設定されていたら画面切り替え
     $sentence .= $anchor_header . $jump_url . $anchor_footer;
-    OutputActionResult($title, $sentence, $jump_url);
+    HTML::OutputResult($title, $sentence, $jump_url);
   }
 
-  OutputHTMLHeader($title, 'game');
-  printf('<link rel="stylesheet" href="css/game_%s.css">'."\n", DB::$ROOM->scene);
+  HTML::OutputHeader($title, 'game');
+  HTML::OutputCSS(sprintf('css/game_%s', DB::$ROOM->scene));
   if (! DB::$ROOM->log_mode) { //過去ログ閲覧時は不要
-    echo '<script type="text/javascript" src="javascript/change_css.js"></script>'."\n";
+    HTML::OutputJavaScript('change_css');
     $on_load = sprintf("change_css('%s');", DB::$ROOM->scene);
   }
 
@@ -285,13 +285,12 @@ function OutputGamePageHeader(){
 function OutputRealTimer($end_time, $type = null, $flag = false){
   global $SOUND;
 
-  $js_path     = JINRO_ROOT . '/javascript/';
   $sound_path  = is_null($type) || ! is_object($SOUND) ? '' : $SOUND->GenerateJS($type);
   $sentence    = sprintf('　%sまで ', DB::$ROOM->IsDay() ? '日没' : '夜明け');
   $start_date  = GenerateJavaScriptDate(DB::$ROOM->scene_start_time);
   $end_date    = GenerateJavaScriptDate($end_time);
   $server_date = GenerateJavaScriptDate(DB::$ROOM->system_time);
-  echo '<script type="text/javascript" src="' . $js_path . 'output_realtime.js"></script>'."\n";
+  HTML::OutputJavaScript('output_realtime');
   echo '<script language="JavaScript"><!--'."\n";
   echo 'var sentence = "' . $sentence . '";'."\n";
   echo "var end_date = {$end_date} * 1 + (new Date() - {$server_date});\n";
@@ -305,7 +304,7 @@ function OutputRealTimer($end_time, $type = null, $flag = false){
 
 //JavaScript の Date() オブジェクト作成コードを生成する
 function GenerateJavaScriptDate($time){
-  $time_list = explode(',', TZDate('Y,m,j,G,i,s', $time));
+  $time_list = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
   $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
   return 'new Date(' . implode(',', $time_list) . ')';
 }
@@ -876,13 +875,15 @@ function OutputTimeStamp($builder){
     $type = 'finish_datetime';
     $talk->sentence = 'ゲーム終了';
   }
-  else return false;
+  else {
+    return false;
+  }
 
   if (is_null($time = DB::FetchResult(DB::$ROOM->GetQueryHeader('room', $type)))) return false;
   $talk->uname    = 'system';
   $talk->scene    = DB::$ROOM->scene;
   $talk->location = 'system';
-  $talk->sentence .= '：' . ConvertTimeStamp($time);
+  $talk->sentence .= '：' . Time::ConvertTimeStamp($time);
   OutputTalk($talk, $builder);
 }
 
@@ -1043,9 +1044,9 @@ function GenerateLastWords($shift = false){
   shuffle($stack); //表示順はランダム
 
   $str = '';
-  foreach ($stack as $list){
+  foreach ($stack as $list) {
     extract($list);
-    LineToBR($message);
+    Text::LineToBR($message);
     $str .= <<<EOF
 <tr>
 <td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>

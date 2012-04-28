@@ -377,7 +377,7 @@ DB::$ROOM->date = 7;
 #DB::$ROOM->scene = 'day';
 DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
-//DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+//DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
@@ -398,10 +398,10 @@ if ($vote_view_mode) { //投票表示モード
   RQ::$get->situation = $stack->situation;
   RQ::$get->back_url  = '';
   if (RQ::$get->vote) { //投票処理
-    OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
+    HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
     echo '</head><body>'."\n";
     if (RQ::$get->target_no == 0) { //空投票検出
-      OutputActionResult('空投票', '投票先を指定してください');
+      HTML::OutputResult('空投票', '投票先を指定してください');
     }
     elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
       #VoteDay();
@@ -435,13 +435,13 @@ if ($vote_view_mode) { //投票表示モード
   }
   DB::$SELF = DB::$USER->ByID(1);
   OutputPlayerList();
-  OutputHTMLFooter(true);
+  HTML::OutputFooter(true);
 }
-OutputHTMLHeader('投票テスト', 'game'); //HTMLヘッダ
+HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
 $talk_view_mode = false;
 if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
-  echo '</head><body>'."\n";
+  HTML::OutputBodyHeader();
   $INIT_CONF->LoadFile('talk_class');
   //$query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
   RQ::$get->add_role = false;
@@ -492,9 +492,9 @@ if ($talk_view_mode) { //発言表示モード
   OutputPlayerList();
   if (DB::$SELF->user_no > 0) OutputAbility();
   OutputTalkLog();
-  OutputHTMLFooter(true);
+  HTML::OutputFooter(true);
 }
-echo '</head><body>'."\n";
+HTML::OutputBodyHeader();
 $role_view_mode = false;
 if ($role_view_mode) { //画像表示モード
   foreach (array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
@@ -502,7 +502,7 @@ if ($role_view_mode) { //画像表示モード
   #foreach (array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
   $header = 'prediction_weather_';
   #foreach ($ROLE_DATA->weather_list as $stack) $ROLE_IMG->Output($header.$stack['event']);
-  OutputHTMLFooter(true);
+  HTML::OutputFooter(true);
 }
 $cast_view_mode = false;
 if ($cast_view_mode) { //配役情報表示モード
@@ -525,7 +525,7 @@ if ($cast_view_mode) { //配役情報表示モード
     echo '</tr>'."\n";
   }
   echo '</table>';
-  OutputHTMLFooter(true);
+  HTML::OutputFooter(true);
 }
 OutputPlayerList(); //プレイヤーリスト
 OutputAbility();
@@ -566,13 +566,13 @@ elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
   DB::$ROOM->log_mode = false;
   DB::$ROOM->personal_mode = true; false;
   OutputWinner();
-  OutputHTMLFooter(); //HTMLフッタ
+  HTML::OutputFooter(); //HTMLフッタ
 }
 //PrintData(RQ::GetTest()->system_message, 'System');
 //PrintData(RQ::GetTest()->result_ability, 'Ability');
 //PrintData(RQ::GetTest()->result_dead, 'Dead');
 
-do{
+do {
   //break;
   foreach (DB::$USER->rows as $user) {
     unset($user->virtual_role);
@@ -630,10 +630,12 @@ do{
     DB::$SELF = DB::$USER->ByID($id); OutputAbility();
   }
   //var_dump(DB::$USER->IsOpenCast());
-}while(false);
+} while(false);
 //PrintData(Lottery::RateToProbability(GameConfig::$weather_list));
 //InsertLog();
 //PrintData($ROLES->loaded->file);
 //PrintData(array_keys($ROLES->loaded->class));
 //PrintData($INIT_CONF->loaded->class);
-OutputHTMLFooter(); //HTMLフッタ
+DB::$ROOM->scene_start_time = 20120429;
+OutputRealTimer(20120430);
+HTML::OutputFooter();

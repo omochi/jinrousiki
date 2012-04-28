@@ -3,30 +3,30 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 
 if (! ServerConfig::$debug_mode) {
-  OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
+  HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
 extract($_GET, EXTR_PREFIX_ALL, 'unsafe');
 $icon_no = intval($unsafe_icon_no);
 $title   = 'アイコン削除[エラー]';
-if ($icon_no < 1) OutputActionResult($title, '無効なアイコン番号です。');
+if ($icon_no < 1) HTML::OutputResult($title, '無効なアイコン番号です。');
 
 $INIT_CONF->LoadFile('icon_functions');
 DB::Connect();
 
 $error = "サーバが混雑しています。<br>\n時間を置いてから再度アクセスしてください。";
-if (! DB::Lock('icon')) OutputActionResult($title, $error); //トランザクション開始
+if (! DB::Lock('icon')) HTML::OutputResult($title, $error); //トランザクション開始
 if (IsUsingIcon($icon_no)) { //使用中判定
-  OutputActionResult($title, '募集中・プレイ中の村で使用されているアイコンは削除できません。');
+  HTML::OutputResult($title, '募集中・プレイ中の村で使用されているアイコンは削除できません。');
 }
 $file = DB::FetchResult('SELECT icon_filename FROM user_icon WHERE icon_no = ' . $icon_no);
-if ($file === false || is_null($file)) OutputActionResult($title, 'ファイルが存在しません');
+if ($file === false || is_null($file)) HTML::OutputResult($title, 'ファイルが存在しません');
 if (DeleteIcon($icon_no, $file)) {
   $url = '../icon_upload.php';
   $str = '削除完了：登録ページに飛びます。<br>'."\n" .
     '切り替わらないなら <a href="' . $url . '">ここ</a> 。';
-  OutputActionResult('アイコン削除完了', $str, $url);
+  HTML::OutputResult('アイコン削除完了', $str, $url);
 }
 else {
-  OutputActionResult($title, $error);
+  HTML::OutputResult($title, $error);
 }

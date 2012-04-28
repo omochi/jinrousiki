@@ -11,12 +11,12 @@ require_once(JINRO_ROOT . '/include/init.php');
 
 $DISABLE_TABLE_DATA_MANIPULATOR = true; //false にすると使用可能になる
 if($DISABLE_TABLE_DATA_MANIPULATOR){
-  OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
+  HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
 $INIT_CONF->LoadClass('ICON_CONF');
 DB::Connect();
-OutputHTMLHeader('Test Tools');
+HTML::OutputHeader('Test Tools', null, true);
 
 //UpdateIconInfo('category', '初期設定', 1, 10);
 //UpdateIconInfo('appearance', '初期設定', 1, 10);
@@ -55,9 +55,9 @@ OutputHTMLHeader('Test Tools');
 //ConvertTableEncode('vote');
 //OutputExportIconTable();
 //DB::Commit();
-OutputHTMLFooter();
+HTML::OutputFooter();
 //UpdateRoomInfo('room_name', 'テスト', 1);
-//OutputActionResult('処理完了', '処理完了。');
+//HTML::OutputResult('処理完了', '処理完了。');
 
 //-- 関数 --//
 /*

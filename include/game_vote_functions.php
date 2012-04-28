@@ -23,22 +23,18 @@ function OutputVoteResult($sentence, $reset_vote = false){
   $title  = ServerConfig::$title . ' [投票結果]';
   $header = '<div id="game_top" align="center">';
   $footer = sprintf("<br>\n%s</div>", RQ::$get->back_url);
-  OutputActionResult($title, $header . $sentence . $footer);
+  HTML::OutputResult($title, $header . $sentence . $footer);
 }
 
 //投票ページ HTML ヘッダ出力
 function OutputVotePageHeader(){
-  OutputHTMLHeader(ServerConfig::$title . ' [投票]', 'game');
-  $css_path = JINRO_CSS;
-  if (DB::$ROOM->scene != '') {
-    printf('<link rel="stylesheet" href="%s/game_%s.css">'."\n", $css_path, DB::$ROOM->scene);
-  }
+  HTML::OutputHeader(ServerConfig::$title . ' [投票]', 'game');
+  HTML::OutputCSS(sprintf('%s/game_vote', JINRO_CSS));
+  echo '<link rel="stylesheet" id="scene">'."\n";
+  $css = DB::$ROOM->scene != '' ? sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene) : null;
+  HTML::OutputBodyHeader($css);
   $url = RQ::$get->post_url;
   echo <<<EOF
-<link rel="stylesheet" href="{$css_path}/game_vote.css">
-<link rel="stylesheet" id="scene">
-</head>
-<body>
 <a id="game_top"></a>
 <form method="POST" action="{$url}">
 <input type="hidden" name="vote" value="on">

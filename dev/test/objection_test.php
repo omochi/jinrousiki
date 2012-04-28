@@ -3,9 +3,10 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('SOUND');
 $INIT_CONF->LoadFile('game_config');
-OutputHTMLHeader('異議ありテストツール');
+
+HTML::OutputHeader('異議ありテストツール', null, true);
 OutputObjectionTestPage();
-OutputHTMLFooter();
+HTML::OutputFooter();
 
 //-- 関数 --//
 function OutputObjectionTestPage(){
@@ -13,8 +14,6 @@ function OutputObjectionTestPage(){
 
   $image = JINRO_ROOT . '/' . GameConfig::$objection_image;
   echo <<<EOF
-</head>
-<body>
 <a href="./objection_test.php">リセット</a>
 <table>
 

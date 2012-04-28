@@ -13,7 +13,7 @@ $SESSION->CertifyGamePlay(); //セッション認証
 DB::$ROOM = new Room(RQ::$get); //村情報をロード
 DB::$ROOM->dead_mode    = RQ::$get->dead_mode;
 DB::$ROOM->heaven_mode  = RQ::$get->heaven_mode;
-DB::$ROOM->system_time  = TZTime();
+DB::$ROOM->system_time  = Time::Get();
 DB::$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 //シーンに応じた追加クラスをロード
@@ -84,7 +84,7 @@ if (! DB::$ROOM->heaven_mode) {
   if (! DB::$ROOM->dead_mode) OutputSelfLastWords();
   if (RQ::$get->list_down) OutputPlayerList();
 }
-OutputHTMLFooter();
+HTML::OutputFooter();
 ob_end_flush();
 
 //-- 関数 --//
@@ -255,7 +255,7 @@ function CheckSilence(){
     }
 
     //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
-    $str = 'あと' . ConvertTime(TimeConfig::$sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
+    $str = 'あと' . Time::Convert(TimeConfig::$sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
     if (DB::$ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
       DB::$ROOM->sudden_death = TimeConfig::$sudden_death;
       return DB::Commit(); //ロック解除
@@ -486,7 +486,7 @@ EOF;
       $str = '設定時間： 昼 <span>%d分</span> / 夜 <span>%d分</span>';
       printf($str, DB::$ROOM->real_time->day, DB::$ROOM->real_time->night);
     }
-    echo '　突然死：<span>' . ConvertTime(TimeConfig::$sudden_death) . '</span></td>';
+    printf('　突然死：<span>%s</span></td>', Time::Convert(TimeConfig::$sudden_death));
   }
   if (DB::$ROOM->IsPlaying()) {
     if (DB::$ROOM->IsRealTime()) { //リアルタイム制
@@ -520,7 +520,7 @@ EOF;
   if ($left_time == 0) {
     echo '<div class="system-vote">' . $time_message . $MESSAGE->vote_announce . '</div>'."\n";
     if (DB::$ROOM->sudden_death > 0) {
-      echo $MESSAGE->sudden_death_time . ConvertTime(DB::$ROOM->sudden_death) . '<br>'."\n";
+      echo $MESSAGE->sudden_death_time . Time::Convert(DB::$ROOM->sudden_death) . '<br>'."\n";
     }
   }
   elseif (DB::$ROOM->IsEvent('wait_morning')) {

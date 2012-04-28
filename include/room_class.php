@@ -39,7 +39,7 @@ class Room {
       'vote_count, revote_count, scene_start_time FROM room WHERE room_no = ' . $room_no;
     if ($lock) $query .= ' FOR UPDATE';
     $stack = DB::FetchAssoc($query, true);
-    if (count($stack) < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
+    if (count($stack) < 1) HTML::OutputResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $stack;
   }
 
@@ -403,7 +403,7 @@ class Room {
     }
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$scene}: {$location}: {$action}: {$font_type}";
-      PrintData(LineToBR($sentence), $str);
+      PrintData(Text::LineToBR($sentence), $str);
       return true;
     }
 
@@ -444,7 +444,7 @@ class Room {
   function TalkBeforegame($sentence, $uname, $handle_name, $color, $font_type = null){
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
-      PrintData(LineToBR($sentence), $str);
+      PrintData(Text::LineToBR($sentence), $str);
       return true;
     }
 
@@ -607,8 +607,7 @@ class Room {
 
   //背景設定 CSS タグを生成
   function GenerateCSS(){
-    if (empty($this->scene)) return '';
-    return '<link rel="stylesheet" href="'.JINRO_CSS.'/game_'.$this->scene.'.css">'."\n";
+    if (isset($this->scene)) return HTML::LoadCSS(sprintf('%s/game_%s', JINRO_CSS, $this->scene));
   }
 
   //村のタイトルタグを生成

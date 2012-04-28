@@ -235,7 +235,7 @@ $INIT_CONF = new InitializeConfig();
 //mbstring 非対応の場合、エミュレータを使用する
 if (! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 
-if (FindDangerValue($_REQUEST) || FindDangerValue($_SERVER)) die;
+if (Security::CheckValue($_REQUEST) || Security::CheckValue($_SERVER)) die;
 
 //デバッグ用ツールをロード
 ServerConfig::$debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');

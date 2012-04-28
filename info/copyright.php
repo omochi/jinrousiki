@@ -4,7 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('copyright_config');
 OutputInfoPageHeader('謝辞・素材', 0, 'info');
 OutputCopyright();
-OutputHTMLFooter();
+HTML::OutputFooter();
 
 //-- 関数 --//
 //謝辞・素材情報出力

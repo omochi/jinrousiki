@@ -10,18 +10,18 @@ function EditIcon(){
 
   $title = 'ユーザアイコン編集';
   //リファラチェック
-  if (CheckReferer('icon_view.php')) OutputActionResult($title, '無効なアクセスです');
+  if (Security::CheckReferer('icon_view.php')) HTML::OutputResult($title, '無効なアクセスです');
 
   //入力データチェック
   extract(RQ::ToArray()); //引数を展開
   $back_url = "<br>\n".'<a href="icon_view.php?icon_no=' . $icon_no . '">戻る</a>';
   if ($password != $USER_ICON->password) {
-    OutputActionResult($title, 'パスワードが違います。' . $back_url);
+    HTML::OutputResult($title, 'パスワードが違います。' . $back_url);
   }
 
   //アイコン名の文字列長のチェック
   if (strlen($icon_name) < 1) {
-    OutputActionResult($title, 'アイコン名が空欄になっています。' . $back_url);
+    HTML::OutputResult($title, 'アイコン名が空欄になっています。' . $back_url);
   }
   $query_stack = array();
   foreach (CheckIconText($title, $back_url) as $key => $value) {
@@ -37,23 +37,23 @@ function EditIcon(){
   $str = "サーバが混雑しています。<br>\n時間を置いてから再登録をお願いします。" . $back_url;
 
   DB::Connect();
-  if (! DB::Lock('icon')) OutputActionResult($title, $str); //トランザクション開始
+  if (! DB::Lock('icon')) HTML::OutputResult($title, $str); //トランザクション開始
 
   $query_header = 'SELECT icon_no FROM user_icon WHERE ';
   if (DB::Count($query_header . 'icon_no = ' . $icon_no) < 1) { //存在チェック
-    OutputActionResult($title, '無効なアイコン番号です：' . $icon_no . $back_url);
+    HTML::OutputResult($title, '無効なアイコン番号です：' . $icon_no . $back_url);
   }
 
   //アイコンの名前が既に登録されていないかチェック
   if (DB::Count("{$query_header}  icon_no <> {$icon_no} AND icon_name = '{$icon_name}'") > 0) {
     $str = 'アイコン名 "' . $icon_name . '" は既に登録されています。';
-    OutputActionResult($title, $str . $back_url);
+    HTML::OutputResult($title, $str . $back_url);
   }
 
   //編集制限チェック
   if (IsUsingIcon($icon_no)) {
     $str = '募集中・プレイ中の村で使用されているアイコンは編集できません。';
-    OutputActionResult($title, $str . $back_url);
+    HTML::OutputResult($title, $str . $back_url);
   }
 
   //非表示フラグチェック
@@ -63,15 +63,15 @@ function EditIcon(){
 
   //PrintData($query_stack);
   if (count($query_stack) < 1) {
-    OutputActionResult($title, '変更内容はありません' . $back_url);
+    HTML::OutputResult($title, '変更内容はありません' . $back_url);
   }
   $query = 'UPDATE user_icon SET ' . implode(', ', $query_stack) . ' WHERE icon_no = ' . $icon_no;
-  //OutputActionResult($title, $query . $back_url); //テスト用
+  //HTML::OutputResult($title, $query . $back_url); //テスト用
 
   if (DB::ExecuteCommit($query)) {
-    OutputActionResult($title, '編集完了', 'icon_view.php?icon_no=' . $icon_no);
+    HTML::OutputResult($title, '編集完了', 'icon_view.php?icon_no=' . $icon_no);
   }
   else {
-    OutputActionResult($title, $str);
+    HTML::OutputResult($title, $str);
   }
 }

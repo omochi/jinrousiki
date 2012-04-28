@@ -5,7 +5,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('CAST_CONF', 'GAME_OPT_MESS', 'ROLE_DATA');
 $INIT_CONF->LoadFile('room_config', 'game_vote_functions');
 
-OutputHTMLHeader('裏・闇鍋モード配役テストツール', 'role_table');
+HTML::OutputHeader('裏・闇鍋モード配役テストツール', 'role_table', true);
 OutputRoleTestForm();
 
 if (@$_POST['command'] == 'role_test') {
@@ -32,7 +32,7 @@ if (@$_POST['command'] == 'role_test') {
     PrintData(GenerateRoleNameList(array_count_values($role_list), true));
   }
 }
-OutputHTMLFooter(true);
+HTML::OutputFooter(true);
 
 function OutputRoleTestForm(){
   global $GAME_OPT_MESS;
@@ -44,8 +44,6 @@ function OutputRoleTestForm(){
   $id_t = 'try_count';
 
   echo <<<EOF
-</head>
-<body>
 <form method="POST" action="chaos_verso.php">
 <input type="hidden" name="command" value="role_test">
 <label for="{$id_u}">人数</label><input type="text" id="{$id_u}" name="{$id_u}" size="2" value="{$$id_u}">

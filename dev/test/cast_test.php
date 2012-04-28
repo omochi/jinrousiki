@@ -160,13 +160,11 @@ DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 DB::$SELF = DB::$USER->ByID(1);
 
 //-- データ出力 --//
-OutputHTMLHeader('配役テスト', 'game'); //HTMLヘッダ
-echo '</head><body>'."\n";
-
+HTML::OutputHeader('配役テスト', 'game', true);
 OutputPlayerList(); //プレイヤーリスト
 AggregateVoteGameStart(); //配役処理
 DB::$ROOM->date++;
 DB::$ROOM->scene = 'night';
 foreach (DB::$USER->rows as $user) $user->ReparseRoles();
 OutputPlayerList(); //プレイヤーリスト
-OutputHTMLFooter(); //HTMLフッタ
+HTML::OutputFooter(); //HTMLフッタ

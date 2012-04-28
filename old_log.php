@@ -27,5 +27,5 @@ else {
   $INIT_CONF->LoadFile('room_config');
   OutputFinishedRooms(RQ::$get->page);
 }
-OutputHTMLFooter();
+HTML::OutputFooter();
 ob_end_flush();

@@ -1,9 +1,9 @@
 <?php
 require_once('include/init.php');
 $INIT_CONF->LoadRequest('RequestGameUp', true); //引数を取得
-OutputHTMLHeader(ServerConfig::$title . '[発言]', 'game_up');
+HTML::OutputHeader(ServerConfig::$title . '[発言]', 'game_up');
 OutputGameUp();
-OutputHTMLFooter();
+HTML::OutputFooter();
 
 //-- 関数 --//
 function OutputGameUp(){
@@ -13,12 +13,12 @@ function OutputGameUp(){
   //送信用フォーム
   //霊話モードの時は発言用フレームでリロード・書き込みしたときに真ん中のフレームもリロードする
   $submit = $header . 'class="input-say" name="send" onSubmit="';
-  if(RQ::$get->heaven_mode) $submit .= 'reload_middle_frame();';
+  if (RQ::$get->heaven_mode) $submit .= 'reload_middle_frame();';
   $submit .= 'set_focus();">';
   $url = RQ::$get->url;
+  HTML::OutputJavaScript('game_up');
   echo <<<EOF
 <link rel="stylesheet" id="scene">
-<script type="text/javascript" src="javascript/game_up.js"></script>
 </head>
 <body onLoad="set_focus(); reload_game();">
 <a id="game_top"></a>

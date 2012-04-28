@@ -20,7 +20,7 @@ function CheckIconText($title, $url){
   foreach($list as $key => $label){
     $value = RQ::$get->$key;
     if(strlen($value) > $USER_ICON->name){
-      OutputActionResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
+      HTML::OutputResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
     }
     $stack[$key] = strlen($value) > 0 ? $value : null;
   }
@@ -33,7 +33,7 @@ function CheckColorString($str, $title, $url){
     $error = '色指定が正しくありません。<br>'."\n" .
       '指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
       '送信された色指定 → <span class="color">' . $str . '</span>';
-    OutputActionResult($title, $error . $url);
+    HTML::OutputResult($title, $error . $url);
   }
   return strtoupper($str);
 }
@@ -175,13 +175,13 @@ HTML;
 
   //検索項目と検索値のセットから抽出条件を生成します。
   function _generateInClause($type, $values){
-    if(in_array('__null__', $values)) return $type.' IS NULL';
+    if (in_array('__null__', $values)) return $type . ' IS NULL';
 
     $safe_values = array();
-    foreach($values as $value){
-      $safe_values[] = sprintf("'%s'", EscapeStrings($value));
+    foreach ($values as $value) {
+      $safe_values[] = sprintf("'%s'", Text::Escape($value));
     }
-    return $type.' IN ('.implode(',', $safe_values).')';
+    return $type . sprintf(' IN (%s)', implode(',', $safe_values));
   }
 
   //-- ヘッダ出力 --//

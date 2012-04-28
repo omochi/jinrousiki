@@ -4,7 +4,7 @@ require_once(JINRO_ROOT . '/include/init.php');
 
 $disable = true; //使用時には false に変更する
 if ($disable) {
-  OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
+  HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
 $INIT_CONF->LoadFile('room_config', 'oldlog_functions');
@@ -22,17 +22,18 @@ RQ::$get->heaven_talk = true;
 
 $db_delete_mode = false; //部屋削除のみ
 if ($db_delete_mode) {
-  OutputHTMLHeader('DB削除モード');
+  HTML::OutputHeader('DB削除モード');
+  HTML::OutputBodyHeader();
   for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
     DB::DeleteRoom($i);
     echo "{$i} 番地を削除しました<br>";
   }
   DB::Optimize();
-  OutputHTMLFooter(true);
+  HTML::OutputFooter(true);
 }
 
 //GenerateLogIndex(); //インデックスページ生成
-//OutputHTMLFooter(true);
+//HTML::OutputFooter(true);
 
 $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
@@ -64,6 +65,6 @@ for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
 }
 if ($room_delete) DB::Optimize();
 
-OutputActionResult('ログ生成',
+HTML::OutputResult('ログ生成',
 		   RQ::$get->min_room_no . ' 番地から ' .
 		   RQ::$get->max_room_no . ' 番地までを HTML 化しました');

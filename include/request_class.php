@@ -84,8 +84,18 @@ class RequestBase {
 	$value = null;
       }
 
-      $this->$item = empty($processor) ? $value :
-	(method_exists($this, $processor) ? $this->$processor($value) : $processor($value));
+      if (empty($processor)) {
+	$this->$item = $value;
+      }
+      elseif (method_exists($this, $processor)) {
+	$this->$item = $this->$processor($value);
+      }
+      elseif (method_exists('Text', $processor)) {
+	$this->$item = Text::$processor($value);
+      }
+      else {
+	$this->$item = $processor($value);
+      }
     }
   }
 
@@ -101,7 +111,7 @@ class RequestBase {
   //村番号判定
   protected function IsRoomNo($arg){
     $room_no = intval($arg);
-    if ($room_no < 1) OutputActionResult('村番号エラー', '無効な村番号です: ' . $room_no);
+    if ($room_no < 1) HTML::OutputResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $room_no;
   }
 
@@ -147,8 +157,8 @@ class RequestBaseGamePlay extends RequestBaseGame {
 //-- icon 用共通クラス --//
 class RequestBaseIcon extends RequestBase {
   function __construct(){
-    EncodePostData();
-    $this->GetItems('EscapeStrings', 'post.icon_name', 'post.appearance',
+    Text::EncodePostData();
+    $this->GetItems('Escape', 'post.icon_name', 'post.appearance',
 		    'post.category', 'post.author', 'post.color');
     $this->GetItems('intval', 'post.icon_no');
     $this->GetItems('Exists', 'post.search');
@@ -156,7 +166,7 @@ class RequestBaseIcon extends RequestBase {
 
   protected function GetIconData(){
     $this->GetItems('SetPage', 'page'); //get・post に限定しないこと
-    $this->GetItems('EscapeStrings', 'appearance', 'category', 'author', 'keyword');
+    $this->GetItems('Escape', 'appearance', 'category', 'author', 'keyword');
     $this->GetItems('IsOn', 'sort_by_name');
     $this->GetItems('Exists', 'search');
   }
@@ -165,31 +175,31 @@ class RequestBaseIcon extends RequestBase {
 //-- login.php --//
 class RequestLogin extends RequestBase {
   function __construct(){
-    EncodePostData();
+    Text::EncodePostData();
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('IsOn', 'post.login_manually');
     $this->GetItems('ConvertTrip', 'post.uname');
-    $this->GetItems('EscapeStrings', 'password');
+    $this->GetItems('Escape', 'password');
   }
 }
 
 //-- user_manager.php --//
 class RequestUserManager extends RequestBaseIcon {
   function __construct(){
-    EncodePostData();
+    Text::EncodePostData();
     $this->GetItems('IsRoomNo', 'get.room_no');
     $this->GetItems('intval', 'post.icon_no', 'get.user_no');
-    $this->GetItems('EscapeStrings', 'post.password');
+    $this->GetItems('Escape', 'post.password');
     $this->GetItems('Exists', 'post.entry');
     $this->GetItems(null, 'post.trip', 'post.profile', 'post.sex', 'post.role');
     $this->GetItems('IsOn', 'post.login_manually');
     $this->GetIconData();
-    EscapeStrings($this->profile, false);
+    Text::Escape($this->profile, false);
     if ($this->entry) {
       $this->GetItems('ConvertTrip', 'post.uname', 'post.handle_name');
     }
     else {
-      $this->GetItems('EscapeStrings', 'post.uname', 'post.trip', 'post.handle_name');
+      $this->GetItems('Escape', 'post.uname', 'post.trip', 'post.handle_name');
     }
   }
 }
@@ -225,12 +235,12 @@ class RequestGameUp extends RequestBaseGamePlay {
 //-- game_play.php --//
 class RequestGamePlay extends RequestBaseGamePlay {
   function __construct(){
-    EncodePostData();
+    Text::EncodePostData();
     parent::__construct();
     $this->GetItems('IsOn', 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
-    $this->GetItems('EscapeStrings', 'post.font_type');
+    $this->GetItems('Escape', 'post.font_type');
     $this->GetItems(null, 'post.say');
-    EscapeStrings($this->say, false);
+    Text::Escape($this->say, false);
     $this->last_words = $this->font_type == 'last_words';
   }
 }
@@ -241,7 +251,7 @@ class RequestGameLog extends RequestBase {
     $this->GetItems('IsRoomNo', 'get.room_no');
     $this->GetItems('intval', 'get.date', 'get.user_no');
     $this->GetItems(null, 'get.scene');
-    if ($this->IsInvalidScene()) OutputActionResult('引数エラー', '無効な引数です');
+    if ($this->IsInvalidScene()) HTML::OutputResult('引数エラー', '無効な引数です');
   }
 
   private function IsInvalidScene(){
@@ -320,7 +330,7 @@ class RequestIconView extends RequestBaseIcon {
 class RequestIconEdit extends RequestBaseIcon {
   function __construct(){
     parent::__construct();
-    $this->GetItems('EscapeStrings', 'post.password');
+    $this->GetItems('Escape', 'post.password');
     $this->GetItems('IsOn', 'post.disable');
   }
 }
@@ -344,7 +354,7 @@ class RequestSharedRoom extends RequestBase {
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase {
   function __construct(){
-    EncodePostData();
-    $this->GetItems('EscapeStrings', 'post.name', 'post.caption', 'post.user', 'post.password');
+    Text::EncodePostData();
+    $this->GetItems('Escape', 'post.name', 'post.caption', 'post.user', 'post.password');
   }
 }

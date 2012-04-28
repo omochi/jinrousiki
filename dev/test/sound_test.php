@@ -5,9 +5,9 @@ require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadClass('SOUND');
 
 //-- データ出力 --//
-OutputHTMLHeader('SoundTest', 'game'); //HTMLヘッダ
+HTML::OutputHeader('SoundTest', 'game', true);
 OutputSoundTest();
-OutputHTMLFooter(true);
+HTML::OutputFooter(true);
 
 //-- 関数定義 --//
 function OutputSoundTest(){
@@ -19,7 +19,6 @@ function OutputSoundTest(){
     'sound_full',
     'sound_novote',
     'sound_alert');
-
 
   $str = '<form method="POST" action="sound_test.php"><table>';
   foreach($sound_list as $key => $value){

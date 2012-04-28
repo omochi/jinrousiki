@@ -10,5 +10,5 @@ if (0 < RQ::$get->id && RQ::$get->id <= count($SHARED_CONF->server_list)) {
 else {
   OutputInfoPageHeader('関連サーバ村情報', 0, 'shared_room');
   OutputSharedRoomList();
-  OutputHTMLFooter();
+  HTML::OutputFooter();
 }

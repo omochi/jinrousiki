@@ -13,7 +13,7 @@ if (! DB::Transaction()) OutputVoteResult('サーバが混雑しています。�
 
 DB::$ROOM = new Room(RQ::$get, true); //村情報をロード
 if (DB::$ROOM->IsFinished()) OutputVoteError('ゲーム終了', 'ゲームは終了しました');
-DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 
 DB::$USER = new UserDataSet(RQ::$get, true); //ユーザ情報をロード
 DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
@@ -88,9 +88,9 @@ DB::Disconnect();
 //エラーページ出力
 function OutputVoteError($title, $str = null){
   $header = '<div align="center"><a id="game_top"></a>';
-  $footer = "<br>\n" . RQ::$get->back_url . '</div>';
+  $footer = sprintf("<br>\n%s</div>", RQ::$get->back_url);
   if (is_null($str)) $str = 'プログラムエラーです。管理者に問い合わせてください。';
-  OutputActionResult('投票エラー [' . $title . ']', $header . $str . $footer);
+  HTML::OutputResult(sprintf('投票エラー [%s]', $title), $header . $str . $footer);
 }
 
 //ゲーム開始投票の処理

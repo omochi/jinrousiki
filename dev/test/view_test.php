@@ -2,9 +2,9 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
-$disable = true; //使用時には false に変更する
+$disable = false; true; //使用時には false に変更する
 if ($disable) {
-  OutputActionResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
+  HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
 $INIT_CONF->LoadClass('CAST_CONF', 'ICON_CONF');
@@ -13,6 +13,8 @@ $INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'user_class');
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 1;
+RQ::$get->reverse_log = null;
+RQ::$get->TestItems = new StdClass();
 RQ::GetTest()->test_room = array(
   'id' => RQ::$get->room_no,
   'name' => '配役テスト村',
@@ -76,19 +78,23 @@ RQ::GetTest()->test_users[11]->role = 'mad';
 
 $icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-foreach(RQ::GetTest()->test_users as $id => $user){
+foreach (RQ::GetTest()->test_users as $id => $user) {
   $user->room_no = RQ::$get->room_no;
   $user->user_no = $id;
   $user->sex = $id % 1 == 0 ? 'female' : 'male';
   $user->profile = '';
   $user->live = 'live';
   $user->last_load_scene = 'beforegame';
-  if($id > 1){
+  if ($id > 1) {
     $user->color = $icon_color_list[($id - 2) % 10];
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
   }
 }
 //PrintData(RQ::GetTest()->test_users[22]);
+RQ::GetTest()->system_message = array();
+RQ::GetTest()->result_ability = array();
+RQ::GetTest()->result_dead    = array();
+RQ::GetTest()->event = array();
 
 //-- 設定調整 --//
 #$CAST_CONF->decide = 11;
@@ -99,7 +105,12 @@ foreach(RQ::GetTest()->test_users as $id => $user){
 DB::$ROOM = new Room(RQ::$get); //村情報を取得
 DB::$ROOM->test_mode = true;
 DB::$ROOM->log_mode  = true;
-switch($_GET['scene']){
+DB::$ROOM->date = 1;
+DB::$ROOM->scene = 'beforegame';
+#DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'aftergame';
+switch ($_GET['scene']) {
 case 'beforegame':
 case 'day':
 case 'night':
@@ -169,12 +180,11 @@ if(false){
 }
 
 //-- データ出力 --//
-OutputHTMLHeader('表示テスト', 'game'); //HTMLヘッダ
-echo '<link rel="stylesheet" href="' . JINRO_CSS . '/game_' . DB::$ROOM->scene . '.css">'."\n";
-echo '</head><body>'."\n";
+HTML::OutputHeader('表示テスト', 'game');
+HTML::OutputBodyHeader(sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene));
 //PrintData(DB::$ROOM->scene, $_GET['scene']);
 OutputPlayerList(); //プレイヤーリスト
-OutputHTMLFooter(true); //HTMLフッタ
+HTML::OutputFooter(true); //HTMLフッタ
 
 //PrintData(DB::$USER->rows[1]);
 //PrintData($dead_list);
@@ -265,4 +275,4 @@ foreach(array_keys($t_dead_list) as $id){
   echo '<a href="view_test.php?scene=night&t_dead=' . $id . '">' . $id . '</a> /'."\n";
 }
 
-OutputHTMLFooter(); //HTMLフッタ
+HTML::OutputFooter(); //HTMLフッタ

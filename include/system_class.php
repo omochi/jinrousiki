@@ -61,7 +61,7 @@ class Session {
 	'<script type="text/javascript"><!--'."\n" .
 	'if (top != self){ top.location.href = self.location.href; }'."\n" .
 	'--></script>'."\n";
-      OutputActionResult($title, $body, $url);
+      HTML::OutputResult($title, $body, $url);
     }
     else {
       $this->OutputError();
@@ -72,7 +72,7 @@ class Session {
   private function OutputError(){
     $title = 'セッション認証エラー';
     $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
-    OutputActionResult($title, $body);
+    HTML::OutputResult($title, $body);
   }
 }
 
@@ -187,7 +187,7 @@ class ImageManager {
     if ($this->class != '') $str .= ' class="' . $this->class . '"';
     $str .= ' src="' . $this->GetPath($name) . '"';
     if (isset($alt)) {
-      EscapeStrings($alt);
+      Text::Escape($alt);
       $str .= ' alt="' . $alt . '" title="' . $alt . '"';
     }
     $str .= '>';

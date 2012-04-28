@@ -16,55 +16,55 @@ function EntryUser(){
   $back_url = 'user_manager.php?room_no=' . $room_no; //ベースバックリンク
   if ($user_no > 0) $back_url .= '&user_no=' . $user_no; //登録情報変更モード
   $back_url = '<br><a href="' . $back_url . '">戻る</a>'; //バックリンク
-  if (GameConfig::$trip && $trip != '') $uname .= ConvertTrip('#' . $trip); //トリップ変換
+  if (GameConfig::$trip && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
 
   //記入漏れチェック
   $title = '村人登録 [入力エラー]';
   $str   = 'が空です (空白と改行コードは自動で削除されます)。' . $back_url;
   $empty = 'が入力されていません。' . $back_url;
   if ($user_no < 1) {
-    if ($uname     == '') OutputActionResult($title, 'ユーザ名'     . $str);
-    if ($password  == '') OutputActionResult($title, 'パスワード'   . $str);
+    if ($uname     == '') HTML::OutputResult($title, 'ユーザ名'     . $str);
+    if ($password  == '') HTML::OutputResult($title, 'パスワード'   . $str);
   }
-  if ($handle_name == '') OutputActionResult($title, '村人の名前'   . $str);
-  if ($profile     == '') OutputActionResult($title, 'プロフィール' . $str);
-  if (! is_int($icon_no)) OutputActionResult($title, 'アイコン番号' . $empty);
-  if (empty($sex))        OutputActionResult($title, '性別'         . $empty);
+  if ($handle_name == '') HTML::OutputResult($title, '村人の名前'   . $str);
+  if ($profile     == '') HTML::OutputResult($title, 'プロフィール' . $str);
+  if (! is_int($icon_no)) HTML::OutputResult($title, 'アイコン番号' . $empty);
+  if (empty($sex))        HTML::OutputResult($title, '性別'         . $empty);
 
   //文字数制限チェック
   $str = '文字まで' . $back_url;
   if (strlen($uname) > GameConfig::$entry_uname_limit) {
-    OutputActionResult($title, 'ユーザ名は' . GameConfig::$entry_uname_limit . $str);
+    HTML::OutputResult($title, 'ユーザ名は' . GameConfig::$entry_uname_limit . $str);
   }
   if (strlen($handle_name) > GameConfig::$entry_uname_limit) {
-    OutputActionResult($title, '村人の名前は' . GameConfig::$entry_uname_limit . $str);
+    HTML::OutputResult($title, '村人の名前は' . GameConfig::$entry_uname_limit . $str);
   }
   if (strlen($profile) > GameConfig::$entry_profile_limit) {
-    OutputActionResult($title, 'プロフィールは' . GameConfig::$entry_profile_limit . $str);
+    HTML::OutputResult($title, 'プロフィールは' . GameConfig::$entry_profile_limit . $str);
   }
 
   //例外チェック
   if ($uname == 'dummy_boy' || $uname == 'system') {
-    OutputActionResult($title, 'ユーザ名「' . $uname . '」は使用できません。' . $back_url);
+    HTML::OutputResult($title, 'ユーザ名「' . $uname . '」は使用できません。' . $back_url);
   }
   if ($user_no < 1 && ($handle_name == '身代わり君' || $handle_name == 'システム')) {
-    OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません。' . $back_url);
+    HTML::OutputResult($title, '村人名「' . $handle_name . '」は使用できません。' . $back_url);
   }
-  if ($sex != 'male' && $sex != 'female') OutputActionResult($title, '無効な性別です。' . $back_url);
+  if ($sex != 'male' && $sex != 'female') HTML::OutputResult($title, '無効な性別です。' . $back_url);
 
   $query = 'SELECT icon_no FROM user_icon WHERE disable IS NOT TRUE AND icon_no = ' . $icon_no;
   if ($icon_no < ($user_no > 0 ? 0 : 1) || DB::Count($query) < 1) {
-    OutputActionResult($title, '無効なアイコン番号です' . $back_url);
+    HTML::OutputResult($title, '無効なアイコン番号です' . $back_url);
   }
 
   if (! DB::Transaction()) { //トランザクション開始
     $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
-    OutputActionResult('村人登録 [サーバエラー]', $str);
+    HTML::OutputResult('村人登録 [サーバエラー]', $str);
   }
 
   DB::$ROOM = RoomDataSet::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
   if (! DB::$ROOM->IsBeforeGame() || DB::$ROOM->status != 'waiting') { //ゲーム開始判定
-    OutputActionResult('村人登録 [入村不可]', 'すでにゲームが開始されています。');
+    HTML::OutputResult('村人登録 [入村不可]', 'すでにゲームが開始されています。');
   }
 
   //DB から現在のユーザ情報を取得 (ロック付き)
@@ -76,7 +76,7 @@ function EntryUser(){
 
   $user_count = DB::$USER->GetUserCount(); //現在の KICK されていない住人の数を取得
   if ($user_no < 1 && $user_count >= DB::$ROOM->max_user) { //定員オーバー判定
-    OutputActionResult('村人登録 [入村不可]', '村が満員です。');
+    HTML::OutputResult('村人登録 [入村不可]', '村が満員です。');
   }
 
   //重複チェック (比較演算子は大文字・小文字を区別しないのでクエリで直に判定する)
@@ -86,7 +86,7 @@ function EntryUser(){
   //キックされた人と同じユーザ名
   if (DB::Count($query_count . "uname = '{$uname}' AND live = 'kick'") > 0) {
     $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
-    OutputActionResult('村人登録 [キックされたユーザ]', $str . $footer);
+    HTML::OutputResult('村人登録 [キックされたユーザ]', $str . $footer);
   }
 
   if ($user_no > 0) { //登録情報変更モード
@@ -95,17 +95,17 @@ function EntryUser(){
       "WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $target = DB::FetchObject($query, 'User', true);
     if ($target->session_id != $SESSION->Get()) {
-      OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
+      HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
     }
 
     if (! $target->IsDummyBoy() && ($handle_name == '身代わり君' || $handle_name == 'システム')) {
-      OutputActionResult($title, '村人名「' . $handle_name . '」は使用できません' . $back_url);
+      HTML::OutputResult($title, '村人名「' . $handle_name . '」は使用できません' . $back_url);
     }
 
     $query_footer = "user_no <> '{$user_no}' AND handle_name = '{$handle_name}'";
     if (DB::Count($query_count . $query_footer) > 0) {
       $str = '村人名が既に登録してあります。';
-      OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
+      HTML::OutputResult('村人登録 [重複登録エラー]', $str . $footer);
     }
 
     $str = "{$target->handle_name} さんが登録情報を変更しました。";
@@ -116,7 +116,7 @@ function EntryUser(){
     }
     if ($target->icon_no != $icon_no) {
       if (! $target->IsDummyBoy() && $icon_no == 0) {
-	OutputActionResult($title, '無効なアイコン番号です' . $back_url);
+	HTML::OutputResult($title, '無効なアイコン番号です' . $back_url);
       }
       $icon_name = DB::FetchResult('SELECT icon_name FROM user_icon WHERE icon_no = ' . $icon_no);
       $stack[] = "icon_no = '{$icon_no}'";
@@ -129,7 +129,7 @@ function EntryUser(){
     //PrintData($stack);
     if (count($stack) < 1) {
       $str = '変更点はありません。' . $back_url;
-      OutputActionResult('村人登録 [登録情報変更]', $str);
+      HTML::OutputResult('村人登録 [登録情報変更]', $str);
     }
     DB::$ROOM->TalkBeforegame($str, $target->uname, $target->handle_name, $target->color);
 
@@ -143,11 +143,11 @@ function EntryUser(){
 <input type="button" value="ウィンドウを閉じる" onClick="window.close()">
 </form>
 EOF;
-      OutputActionResult('村人登録 [登録情報変更]', $str);
+      HTML::OutputResult('村人登録 [登録情報変更]', $str);
     }
     else {
       $str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
-      OutputActionResult('村人登録 [サーバエラー]', $str);
+      HTML::OutputResult('村人登録 [サーバエラー]', $str);
     }
   }
 
@@ -155,19 +155,19 @@ EOF;
   $query_count .= "live = 'live' AND ";
   if (DB::Count($query_count . "(uname = '{$uname}' OR handle_name = '{$handle_name}')") > 0) {
     $str = 'ユーザ名、または村人名が既に登録してあります。';
-    OutputActionResult('村人登録 [重複登録エラー]', $str . $footer);
+    HTML::OutputResult('村人登録 [重複登録エラー]', $str . $footer);
   }
-  //OutputActionResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
+  //HTML::OutputResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
 
   //IP アドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
   if (! ServerConfig::$debug_mode) {
     if (GameConfig::$entry_one_ip_address &&
 	DB::Count($query_count . "ip_address = '{$ip_address}'") > 0) {
-      OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
+      HTML::OutputResult('村人登録 [多重登録エラー]', '多重登録はできません。');
     }
-    elseif (CheckBlackList()) {
-      OutputActionResult('村人登録 [入村制限]', '入村制限ホストです。');
+    elseif (Security::CheckBlackList()) {
+      HTML::OutputResult('村人登録 [入村制限]', '入村制限ホストです。');
     }
   }
 
@@ -176,7 +176,7 @@ EOF;
   if (DB::InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
 		     $sex, $role, $SESSION->Get(true))) {
     //クッキーの初期化
-    DB::$ROOM->system_time = TZTime(); //現在時刻を取得
+    DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
     $cookie_time = DB::$ROOM->system_time - 3600;
     setcookie('scene',  '', $cookie_time);
     setcookie('vote_times', '', $cookie_time);
@@ -190,11 +190,11 @@ EOF;
     $user_count++;
     $str = $user_count . ' 番目の村人登録完了、村の寄り合いページに飛びます。<br>' .
       '切り替わらないなら <a href="' . $url. '">ここ</a> 。';
-    OutputActionResult('村人登録', $str, $url);
+    HTML::OutputResult('村人登録', $str, $url);
   }
   else {
     $str = 'データベースサーバが混雑しています。<br>時間を置いて再度登録してください。';
-    OutputActionResult('村人登録 [データベースサーバエラー]', $str);
+    HTML::OutputResult('村人登録 [データベースサーバエラー]', $str);
   }
 }
 
@@ -207,7 +207,7 @@ function OutputEntryUserPage(){
     $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $stack = DB::FetchAssoc($query, true);
     if ($stack['session_id'] != $SESSION->Get()) {
-      OutputActionResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
+      HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
     }
     foreach ($stack as $key => $value) {
       if (array_key_exists($key, RQ::$get)) RQ::Set($key, $value);
@@ -217,10 +217,10 @@ function OutputEntryUserPage(){
 
   DB::$ROOM = RoomDataSet::LoadEntryUserPage($room_no);
   $str = $room_no . ' 番地の村は';
-  if (is_null(DB::$ROOM->id))  OutputActionResult('村人登録 [村番号エラー]', $str . '存在しません');
-  if (DB::$ROOM->IsFinished()) OutputActionResult('村人登録 [入村不可]',     $str . '終了しました');
+  if (is_null(DB::$ROOM->id))  HTML::OutputResult('村人登録 [村番号エラー]', $str . '存在しません');
+  if (DB::$ROOM->IsFinished()) HTML::OutputResult('村人登録 [入村不可]',     $str . '終了しました');
   if (DB::$ROOM->status != 'waiting') {
-    OutputActionResult('村人登録 [入村不可]', $str . 'すでにゲームが開始されています。');
+    HTML::OutputResult('村人登録 [入村不可]', $str . 'すでにゲームが開始されています。');
   }
   DB::$ROOM->ParseOption(true);
   $path = 'img/entry_user';
@@ -281,16 +281,15 @@ EOF;
 
 EOF;
   }
-  OutputHTMLHeader(ServerConfig::$title .'[村人登録]', 'entry_user');
+  HTML::OutputHeader(ServerConfig::$title .'[村人登録]', 'entry_user');
+  HTML::OutputJavaScript('submit_icon_search');
+  HTML::OutputBodyHeader();
   $action_url = 'user_manager.php?room_no=' . DB::$ROOM->id;
   if ($user_no > 0) $action_url .= '&user_no=' . $user_no;
   $room_name    = DB::$ROOM->name;
   $room_comment = DB::$ROOM->comment;
   $room_no      = DB::$ROOM->id;
   echo <<<EOF
-<script type="text/javascript" src="javascript/submit_icon_search.js"></script>
-</head>
-<body>
 <a href="./">←戻る</a><br>
 <form method="POST" action="{$action_url}">
 <div align="center">

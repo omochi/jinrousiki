@@ -16,7 +16,7 @@ DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報を取得
 DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
 if(! (DB::$SELF->IsDead() || DB::$ROOM->IsFinished())){ //死者かゲーム終了後だけ
-  OutputActionResult('ログ閲覧認証エラー',
+  HTML::OutputResult('ログ閲覧認証エラー',
 		     'ログ閲覧認証エラー：<a href="./" target="_top">トップページ</a>' .
 		     'からログインしなおしてください');
 }
@@ -25,7 +25,7 @@ switch (RQ::$get->scene) {
 case 'aftergame':
 case 'heaven':
   if(! DB::$ROOM->IsFinished()){ //霊界・ゲーム終了後はゲーム終了後のみ
-    OutputActionResult('入力データエラー', '入力データエラー：まだゲームが終了していません');
+    HTML::OutputResult('入力データエラー', '入力データエラー：まだゲームが終了していません');
   }
   break;
 
@@ -33,7 +33,7 @@ default:
   if (DB::$ROOM->date < RQ::$get->date ||
       (DB::$ROOM->date == RQ::$get->date &&
        (DB::$ROOM->IsDay() || DB::$ROOM->scene == RQ::$get->scene))) { //「未来」判定
-    OutputActionResult('入力データエラー', '入力データエラー：無効な日時です');
+    HTML::OutputResult('入力データエラー', '入力データエラー：無効な日時です');
   }
 
   DB::$ROOM->last_date = DB::$ROOM->date;
@@ -92,4 +92,4 @@ else {
   }
   if (DB::$ROOM->IsNight()) OutputVoteList(); //投票結果
 }
-OutputHTMLFooter(); //HTMLフッタ
+HTML::OutputFooter();

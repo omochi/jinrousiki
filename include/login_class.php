@@ -37,7 +37,7 @@ class Login {
     if ($uname == '' || $password == '') return false;
 
     //$ip = $_SERVER['REMOTE_ADDR']; //IPアドレス取得 //現在は IP アドレス認証は行っていない
-    $crypt = CryptPassword($password);
+    $crypt = Text::CryptPassword($password);
     //$crypt = $password; //デバッグ用
 
     //該当するユーザ名とパスワードがあるか確認
@@ -62,6 +62,6 @@ class Login {
       $str = "。<br>\n".'切り替わらないなら <a href="%s" target="_top">ここ</a> 。';
       $body .= sprintf($str, $url);
     }
-    OutputActionResult($title, $body, $url);
+    HTML::OutputResult($title, $body, $url);
   }
 }

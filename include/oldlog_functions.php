@@ -97,7 +97,7 @@ function GenerateFinishedRooms($page){
   $query = "SELECT room_no FROM room WHERE status = 'finished'";
   $room_count = DB::Count($query);
   if ($room_count < 1){
-    OutputActionResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
+    HTML::OutputResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }
 
   //ページリンクデータの生成
@@ -121,7 +121,7 @@ function GenerateFinishedRooms($page){
   $back_url = RQ::$get->generate_index ? '../' : './';
   $img_url  = RQ::$get->generate_index ? '../' : '';
 
-  $str = GenerateHTMLHeader($title, 'old_log_list') . <<<EOF
+  $str = HTML::GenerateHeader($title, 'old_log_list') . <<<EOF
 </head>
 <body>
 <p><a href="{$back_url}">←戻る</a></p>
@@ -139,7 +139,7 @@ EOF;
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
   $ROOM_DATA  = new RoomDataSet();
   $WINNER_IMG = new WinnerImage();
-  $current_time = TZTime(); // 現在時刻の取得
+  $current_time = Time::Get(); // 現在時刻の取得
   $query .= ' ORDER BY room_no ' . ($is_reverse ? 'DESC' : 'ASC');
   if (RQ::$get->page != 'all'){
     $view = OldLogConfig::$view;
@@ -149,7 +149,8 @@ EOF;
     $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
 
     $dead_room = $ROOM->date == 0 ? ' vanish' : ''; //廃村の場合、色を灰色にする
-    $establish = $ROOM->establish_datetime == '' ? '' : ConvertTimeStamp($ROOM->establish_datetime);
+    $establish = $ROOM->establish_datetime == '' ? '' :
+      Time::ConvertTimeStamp($ROOM->establish_datetime);
     if (RQ::$get->generate_index) {
       $base_url = $ROOM->id . '.html';
       $login    = '';
@@ -219,7 +220,7 @@ function GenerateOldLog(){
   if (! DB::$ROOM->IsFinished() || ! DB::$ROOM->IsAfterGame()){ //閲覧判定
     $url = RQ::$get->generate_index ? 'index.html' : 'old_log.php';
     $str = 'まだこの部屋のログは閲覧できません。<br>'."\n".'<a href="'.$url.'">←戻る</a>'."\n";
-    OutputActionResult($base_title, $str);
+    HTML::OutputResult($base_title, $str);
   }
   if (DB::$ROOM->watch_mode) {
     DB::$ROOM->status    = 'playing';
@@ -232,9 +233,7 @@ function GenerateOldLog(){
   for($i = 1; $i <= DB::$ROOM->last_date ; $i++) $link .= '<a href="#date'.$i.'">'.$i.'</a>'."\n";
   $link .= '<a href="#aftergame">後</a>'."\n";
   $str = DB::$ROOM->GenerateTitleTag();
-  return GenerateHTMLHeader($title, 'old_log') . <<<EOF
-</head>
-<body>
+  return HTML::GenerateHeader($title, 'old_log', true) . <<<EOF
 <a href="old_log.php">←戻る</a><br>
 {$str}<br>
 {$option}<br>

@@ -13,7 +13,7 @@ class Talk {
     if (is_array($list)) {
       foreach ($list as $key => $data) $this->$key = $data;
     }
-    if (isset($this->time)) $this->date_time = TZDate('(Y/m/d (D) H:i:s)', $this->time);
+    if (isset($this->time)) $this->date_time = Time::GetDate('(Y/m/d (D) H:i:s)', $this->time);
     $this->ParseSentence();
   }
 

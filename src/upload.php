@@ -1,13 +1,13 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT  . '/include/init.php');
-if (FindDangerValue($_FILES)) die;
+if (Security::CheckValue($_FILES)) die;
 
 $INIT_CONF->LoadClass('SRC_UP_CONF');
 $INIT_CONF->LoadRequest('RequestSrcUpload'); //引数をセット
 
 if ($SRC_UP_CONF->disable){
-  OutputActionResult('ファイルアップロード', '現在アップロードは停止しています');
+  HTML::OutputResult('ファイルアップロード', '現在アップロードは停止しています');
 }
 
 //引数のエラーチェック
@@ -67,7 +67,7 @@ fclose($io); //ファイルのクローズ
 //HTMLソースを出力
 $number = sprintf("%04d", $number); //桁揃え
 $ext    = substr($file_name, -3); //拡張子
-$time   = TZDate('Y/m/d (D) H:i:s', TZTime()); //日時
+$time   = Time::GetDate('Y/m/d (D) H:i:s', Time::Get()); //日時
 if ($file_size > 1024 * 1024) // Mbyte
   $file_size = sprintf('%.2f', $file_size / (1024 * 1024)) . ' Mbyte';
 elseif ($file_size > 1024) // Kbyte
@@ -114,8 +114,7 @@ else {
 // 関数 //
 //結果出力
 function OutputUploadResult($body){
-  OutputHTMLHeader('ファイルアップロード処理', 'src');
-  echo '</head><body>'."\n" . $body . '<br><br>'."\n" .
-    '<a href="./">←戻る</a>'."\n";
-  OutputHTMLFooter(true);
+  HTML::OutputHeader('ファイルアップロード処理', 'src', true);
+  echo $body . '<br><br>' . "\n" . '<a href="./">←戻る</a>'."\n";
+  HTML::OutputFooter(true);
 }
