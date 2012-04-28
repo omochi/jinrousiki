@@ -48,6 +48,7 @@ class InitializeConfig {
     'TWITTER'             => array('twitter_config', 'twitter'),
     'PAPARAZZI'           => 'paparazzi_class',
     'server_config'       => array('system_class', 'functions'), //常時ロードされる
+    'cast_config'         => 'chaos_config', //分割後の暫定処理
     'copyright_config'    => array('version', 'info_functions'),
     'index_functions'     => 'version',
     'game_play_functions' => 'user_class',
@@ -157,6 +158,7 @@ class InitializeConfig {
 
     case 'game_config':
     case 'cast_config':
+    case 'chaos_config':
     case 'message':
     case 'time_config':
     case 'icon_config':

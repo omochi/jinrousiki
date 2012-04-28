@@ -1569,6 +1569,14 @@ class Lottery {
     }
     PrintData($stack);
   }
+
+  //闇鍋モードの配役リスト取得
+  static function GetChaosRateList($list, $filter) {
+    foreach ($filter as $role => $rate) { //出現率補正
+      if (isset($list[$role])) $list[$role] = round($list[$role] * $rate);
+    }
+    return $list;
+  }
 }
 
 //-- 「福引」生成の基底クラス --//
@@ -1603,16 +1611,7 @@ class LotteryBuilder {
 }
 
 //-- 配役設定の基底クラス --//
-class CastConfigBase extends LotteryBuilder {
-  //闇鍋モードの配役リスト取得
-  function GetChaosRateList($name, $filter) {
-    $list = $this->$name;
-    foreach ($filter as $role => $rate) { //出現率補正
-      if (array_key_exists($role, $list)) $list[$role] = round($list[$role] * $rate);
-    }
-    return $list;
-  }
-
+class CastConfigBase {
   //身代わり君の配役対象外役職リスト取得
   function GetDummyBoyRoleList(){
     $stack = $this->disable_dummy_boy_role_list; //サーバ個別設定を取得

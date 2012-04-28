@@ -290,9 +290,8 @@ class Room {
 
   //特殊オプションの配役データ取得
   function GetOptionList($option){
-    global $CAST_CONF;
     return $this->IsOption($option) ?
-      $CAST_CONF->{$option.'_list'}[$this->option_role->options[$option][0]] : array();
+      ChaosConfig::${$option . '_list'}[$this->option_role->options[$option][0]] : array();
   }
 
   //オプション判定
