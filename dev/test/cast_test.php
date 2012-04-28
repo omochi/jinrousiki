@@ -5,7 +5,7 @@ $INIT_CONF->LoadClass('CAST_CONF', 'ICON_CONF', 'ROLES', 'ROOM_OPT');
 $INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'user_class');
 
 //-- 仮想村データをセット --//
-$INIT_CONF->LoadRequest('RequestBaseGame');
+$INIT_CONF->LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 1;
 RQ::$get->TestItems = new StdClass();
 RQ::GetTest()->test_room = array(

@@ -1535,6 +1535,42 @@ class RoleData {
   function SortRole($list){ return array_intersect(array_keys($this->main_role_list), $list); }
 }
 
+//-- 「福引」クラス --//
+class Lottery {
+  //「福引き」を一定回数行ってリストに追加する
+  static function AddRandom(&$list, $random_list, $count){
+    $total = count($random_list) - 1;
+    for (; $count > 0; $count--) {
+      $role = $random_list[mt_rand(0, $total)];
+      isset($list[$role]) ? $list[$role]++ : $list[$role] = 1;
+    }
+  }
+
+  //「比」の配列から一つ引く
+  static function Get($list){
+    return GetRandom(self::GenerateRandomList($list));
+  }
+
+  //「比」の配列から「福引き」を作成する
+  static function GenerateRandomList($list){
+    $stack = array();
+    foreach ($list as $role => $rate) {
+      for (; $rate > 0; $rate--) $stack[] = $role;
+    }
+    return $stack;
+  }
+
+  //「比」から「確率」に変換する (テスト用)
+  static function RateToProbability($list){
+    $stack = array();
+    $total_rate = array_sum($list);
+    foreach ($list as $role => $rate) {
+      $stack[$role] = sprintf('%01.2f', $rate / $total_rate * 100);
+    }
+    PrintData($stack);
+  }
+}
+
 //-- 「福引」生成の基底クラス --//
 class LotteryBuilder {
   //「福引き」を一定回数行ってリストに追加する
@@ -1564,12 +1600,6 @@ class LotteryBuilder {
     }
     PrintData($stack);
   }
-}
-
-//-- 配役設定の基底クラス --//
-class GameConfigBase extends LotteryBuilder {
-  //天候決定
-  function GetWeather(){ return GetRandom($this->GenerateRandomList($this->weather_list)); }
 }
 
 //-- 配役設定の基底クラス --//

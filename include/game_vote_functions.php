@@ -48,7 +48,7 @@ EOF;
 
 //人数とゲームオプションに応じた役職テーブルを返す
 function GetRoleList($user_count){
-  global $GAME_CONF, $CAST_CONF, $ROLE_DATA;
+  global $CAST_CONF, $ROLE_DATA;
 
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
@@ -696,7 +696,7 @@ function VoteDay(){
 
 //昼の投票集計処理
 function AggregateVoteDay(){
-  global $GAME_CONF, $ROLES;
+  global $ROLES;
 
   //-- 投票処理実行判定 --//
   if (! DB::$ROOM->test_mode) CheckSituation('VOTE_KILL'); //コマンドチェック
@@ -818,7 +818,7 @@ function AggregateVoteDay(){
       }
 
       //毒の対象オプションをチェックして初期候補者リストを作成後に対象者を取得
-      $stack = $GAME_CONF->poison_only_voter ? $voter_list : $live_uname_list;
+      $stack = GameConfig::$poison_only_voter ? $voter_list : $live_uname_list;
       $user  = $ROLES->actor->$role || DB::$ROOM->IsEvent($role) ? new User($role) : $vote_target;
       $poison_target_list = $ROLES->LoadMain($user)->GetPoisonVoteTarget($stack);
       //PrintData($poison_target_list, 'Target [poison]');
@@ -1130,7 +1130,7 @@ function VoteNight(){
 
 //夜の集計処理
 function AggregateVoteNight($skip = false){
-  global $GAME_CONF, $ROLES;
+  global $ROLES;
 
   DB::$ROOM->LoadVote(); //投票情報を取得
   //PrintData(DB::$ROOM->vote, 'VoteRow');
@@ -1628,6 +1628,6 @@ function AggregateVoteNight($skip = false){
 
 //ランダムメッセージを挿入する
 function InsertRandomMessage(){
-  global $GAME_CONF, $MESSAGE;
-  if ($GAME_CONF->random_message) DB::$ROOM->Talk(GetRandom($MESSAGE->random_message_list));
+  global $MESSAGE;
+  if (GameConfig::$random_message) DB::$ROOM->Talk(GetRandom($MESSAGE->random_message_list));
 }

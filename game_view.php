@@ -4,7 +4,7 @@ $INIT_CONF->LoadFile('talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestBaseGame'); //引数を取得
+$INIT_CONF->LoadRequest('RequestBaseGame', true); //引数を取得
 $url = '<a href="game_view.php?room_no=' . RQ::$get->room_no;
 
 DB::Connect();
@@ -41,7 +41,7 @@ DB::$SELF = new User();
 ob_start();
 OutputHTMLHeader(ServerConfig::$title . '[観戦]', 'game_view'); //HTMLヘッダ
 
-if ($GAME_CONF->auto_reload && RQ::$get->auto_reload > 0) { //自動更新
+if (GameConfig::$auto_reload && RQ::$get->auto_reload > 0) { //自動更新
   printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
 }
 echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
@@ -68,7 +68,7 @@ echo <<<EOF
 
 EOF;
 
-if ($GAME_CONF->auto_reload) { //自動更新設定が有効ならリンクを表示
+if (GameConfig::$auto_reload) { //自動更新設定が有効ならリンクを表示
   echo $url . (RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '') .
     '">[更新]</a>'."\n";
   OutputAutoReloadLink($url);

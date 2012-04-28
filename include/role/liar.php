@@ -5,7 +5,7 @@
   ・変換リスト：テンプレートキーワード判定 (発動率は GameConfig->liar_rate で定義する)
 */
 RoleManager::LoadFile('passion');
-class Role_liar extends Role_passion{
+class Role_liar extends Role_passion {
   public $convert_say_list = array(
     '村人' => '人狼', '人狼' => '村人',
     'むらびと' => 'おおかみ', 'おおかみ' => 'むらびと',
@@ -24,7 +24,6 @@ class Role_liar extends Role_passion{
   function __construct(){ parent::__construct(); }
 
   protected function GetConvertSayList(){
-    global $GAME_CONF;
-    return mt_rand(1, 100) > $GAME_CONF->liar_rate ? NULL : parent::GetConvertSayList();
+    return mt_rand(1, 100) > GameConfig::$liar_rate ? null : parent::GetConvertSayList();
   }
 }

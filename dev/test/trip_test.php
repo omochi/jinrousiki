@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_CONF');
+$INIT_CONF->LoadFile('game_config');
 
 OutputHTMLHeader('トリップテストツール');
   echo <<<EOF
@@ -13,5 +13,5 @@ OutputHTMLHeader('トリップテストツール');
 </form>
 
 EOF;
-if($_POST['command'] == 'on') PrintData(ConvertTrip($_POST['key']), '変換結果');
+if ($_POST['command'] == 'on') PrintData(ConvertTrip($_POST['key']), '変換結果');
 OutputHTMLFooter();

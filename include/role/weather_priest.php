@@ -11,11 +11,9 @@ class Role_weather_priest extends Role_priest {
   protected function GetOutputRole(){ return DB::$ROOM->date > 1 ? $this->role : null; }
 
   function Priest($role_flag){
-    global $GAME_CONF;
-
     $data = $this->GetStack('priest');
     //スキップ判定
-    if (! (property_exists($data, $this->role) ||
+    if (! (isset($data->{$this->role}) ||
 	   (DB::$ROOM->date > 2 && (DB::$ROOM->date % 3) == 0 &&
 	    $data->count['total'] - $data->count['human_side'] > $data->count['wolf'] * 2))) {
       return false;
@@ -26,7 +24,7 @@ class Role_weather_priest extends Role_priest {
       $data->count['wolf'] - $data->count['fox'];
     //PrintData($vote_margin, 'VoteMargin');
 
-    $target =& $GAME_CONF->weather_list;
+    $target = GameConfig::$weather_list;
     if ($data->count['fox'] > $data->count['wolf']) { //妖狐陣営優勢
       foreach (array(3, 8, 31, 36) as $id) {
 	$target[$id] = ceil($target[$id] * 0.8);
@@ -75,16 +73,13 @@ class Role_weather_priest extends Role_priest {
       //PrintData($role, $id);
       if (isset($id)) $target[$id] = ceil($target[$id] * (1 + count($list) * 0.1));
     }
-    /*
-    PrintData($GAME_CONF->weather_list);
-    $stack = array();
-    for ($i = 0; $i < 20; $i++) $stack[$GAME_CONF->GetWeather()]++;
-    PrintData($stack);
-    */
-    $weather = $GAME_CONF->GetWeather();
+    //PrintData($target);
+    //$stack = array(); for ($i = 0; $i < 20; $i++) @$stack[Lottery::Get($target)]++;
+    //ksort($stack); PrintData($stack);
+    $weather = Lottery::Get($target);
     //$weather = 44; //テスト用
     $date = 2;
-    $flag = property_exists($role_flag, $this->role) && count($role_flag->{$this->role}) > 0;
+    $flag = isset($role_flag->{$this->role}) && count($role_flag->{$this->role}) > 0;
     DB::$ROOM->EntryWeather($weather, $date, $flag);
   }
 }

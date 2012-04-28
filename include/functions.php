@@ -33,19 +33,19 @@ function CheckBlackList(){
  * @return : boolean : 危険な値が発見された場合true、それ以外の場合false
  */
 function FindDangerValue($value, $found = false){
-  if($found || (strpos(str_replace('.', '', serialize($value)), '22250738585072011') !== false)){
+  if ($found || (strpos(str_replace('.', '', serialize($value)), '22250738585072011') !== false)){
     //文字列の中に問題の数字が埋め込まれているケースを排除する
-    if(is_array($value)){
+    if (is_array($value)){
       foreach($value as $item){
-        if(FindDangerValue($item, true)) return true;
+        if (FindDangerValue($item, true)) return true;
       }
     }
     else{
       $item = strval($value);
       $matches = '';
-      if(preg_match('/^([0.]*2[0125738.]{15,16}1[0.]*)e(-[0-9]+)$/i', $item, $matches)){
+      if (preg_match('/^([0.]*2[0125738.]{15,16}1[0.]*)e(-[0-9]+)$/i', $item, $matches)){
         $exp = intval($matches[2]) + 1;
-        if(2.2250738585072011e-307 === floatval("{$matches[1]}e{$exp}")) return true;
+        if (2.2250738585072011e-307 === floatval("{$matches[1]}e{$exp}")) return true;
       }
     }
   }
@@ -82,18 +82,18 @@ function ConvertTime($seconds){
   $hours    = 0;
   $minutes  = 0;
 
-  if($seconds >= 60){
+  if ($seconds >= 60){
     $minutes = floor($seconds / 60);
     $seconds %= 60;
   }
-  if($minutes >= 60){
+  if ($minutes >= 60){
     $hours = floor($minutes / 60);
     $minutes %= 60;
   }
 
-  if($hours   > 0) $sentence .= $hours   . '時間';
-  if($minutes > 0) $sentence .= $minutes . '分';
-  if($seconds > 0) $sentence .= $seconds . '秒';
+  if ($hours   > 0) $sentence .= $hours   . '時間';
+  if ($minutes > 0) $sentence .= $minutes . '分';
+  if ($seconds > 0) $sentence .= $seconds . '秒';
   return $sentence;
 }
 
@@ -111,12 +111,12 @@ function EncodePostData(){
 //特殊文字のエスケープ処理
 //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
 function EscapeStrings(&$str, $trim = true){
-  if(is_array($str)){
+  if (is_array($str)){
     $result = array();
     foreach($str as $item) $result[] = EscapeStrings($item);
     return $result;
   }
-  if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
+  if (get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
   // $str = htmlentities($str, ENT_QUOTES); //UTF に移行したら機能する？
   $replace_list = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;',
 			'\\' => '&yen;', '"' => '&quot;', "'" => '&#039;');
@@ -141,22 +141,20 @@ function CryptPassword($str){ return sha1(ServerConfig::$salt . $str); }
   テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
 */
 function ConvertTrip($str){
-  global $GAME_CONF;
-
-  if($GAME_CONF->trip){
-    if(get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
+  if (GameConfig::$trip){
+    if (get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
     //トリップ関連のキーワードを置換
     $str = str_replace(array('◆', '＃'), array('◇', '#'), $str);
-    if(($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
+    if (($trip_start = mb_strpos($str, '#')) !== false){ //トリップキーの位置を検索
       $name = mb_substr($str, 0, $trip_start);
       $key  = mb_substr($str, $trip_start + 1);
       //PrintData("{$trip_start}, name: {$name}, key: {$key}", 'Trip Start'); //テスト用
       $key = mb_convert_encoding($key, 'SJIS', ServerConfig::$encode); //文字コードを変換
 
-      if($GAME_CONF->trip_2ch && strlen($key) >= 12){
+      if (GameConfig::$trip_2ch && strlen($key) >= 12){
 	$trip_mark = substr($key, 0, 1);
-	if($trip_mark == '#' || $trip_mark == '$'){
-	  if(preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})$|', $key, $stack)){
+	if ($trip_mark == '#' || $trip_mark == '$'){
+	  if (preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})$|', $key, $stack)){
 	    $trip = substr(crypt(pack('H*', $stack[1]), "{$stack[2]}.."), -12);
 	  }
 	  else{
@@ -185,7 +183,7 @@ function ConvertTrip($str){
     }
     //PrintData($str, 'Result'); //テスト用
   }
-  elseif(strpos($str, '#') !== false || strpos($str, '＃') !== false){
+  elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false){
     $sentence = 'トリップは使用不可です。<br>' . "\n" . '"#" 又は "＃" の文字も使用不可です。';
     OutputActionResult('村人登録 [入力エラー]', $sentence);
   }
@@ -228,17 +226,17 @@ function OutputSiteSummary(){
 function OutputPageLink($CONFIG){
   $page_count = ceil($CONFIG->count / $CONFIG->view);
   $start_page = $CONFIG->current== 'all' ? 1 : $CONFIG->current;
-  if($page_count - $CONFIG->current < $CONFIG->page){
+  if ($page_count - $CONFIG->current < $CONFIG->page){
     $start_page = $page_count - $CONFIG->page + 1;
-    if($start_page < 1) $start_page = 1;
+    if ($start_page < 1) $start_page = 1;
   }
   $end_page = $CONFIG->current + $CONFIG->page - 1;
-  if($end_page > $page_count) $end_page = $page_count;
+  if ($end_page > $page_count) $end_page = $page_count;
 
   $url_stack = array('[' . (is_null($CONFIG->title) ? 'Page' : $CONFIG->title) . ']');
   $url_header = '<a href="' . $CONFIG->url . '.php?';
 
-  if($page_count > $CONFIG->page && $CONFIG->current> 1){
+  if ($page_count > $CONFIG->page && $CONFIG->current> 1){
     $url_stack[] = GeneratePageLink($CONFIG, 1, '[1]...');
     $url_stack[] = GeneratePageLink($CONFIG, $start_page - 1, '&lt;&lt;');
   }
@@ -247,13 +245,13 @@ function OutputPageLink($CONFIG){
     $url_stack[] = GeneratePageLink($CONFIG, $page_number);
   }
 
-  if($page_number <= $page_count){
+  if ($page_number <= $page_count){
     $url_stack[] = GeneratePageLink($CONFIG, $page_number, '&gt;&gt;');
     $url_stack[] = GeneratePageLink($CONFIG, $page_count, '...[' . $page_count . ']');
   }
   $url_stack[] = GeneratePageLink($CONFIG, 'all');
 
-  if($CONFIG->url == 'old_log'){
+  if ($CONFIG->url == 'old_log'){
     $list = $CONFIG->option;
     $list['page'] = 'page=' . $CONFIG->current;
     $list['reverse'] = 'reverse=' . ($CONFIG->is_reverse ? 'off' : 'on');
@@ -269,19 +267,19 @@ function OutputPageLink($CONFIG){
 
 //ページ送り用のリンクタグを作成する
 function GeneratePageLink($CONFIG, $page, $title = null){
-  if($page == $CONFIG->current) return '[' . $page . ']';
+  if ($page == $CONFIG->current) return '[' . $page . ']';
   $option = (is_null($CONFIG->page_type) ? 'page' : $CONFIG->page_type) . '=' . $page;
   $list = $CONFIG->option;
   array_unshift($list, $option);
   $url = $CONFIG->url . '.php?' . implode('&', $list);
   $attributes = array();
-  if(isset($CONFIG->attributes)){
+  if (isset($CONFIG->attributes)){
     foreach($CONFIG->attributes as $attr => $value){
       $attributes[] = $attr . '="'. eval($value) . '"';
     }
   }
   $attrs = implode(' ', $attributes);
-  if(is_null($title)) $title = '[' . $page . ']';
+  if (is_null($title)) $title = '[' . $page . ']';
   return '<a href="' . $url . '" ' . $attrs . '>' . $title . '</a>';
 }
 
@@ -296,7 +294,7 @@ function GenerateLogLink($url, $watch = false, $header = '', $footer = ''){
 <a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
 EOF;
 
-  if($watch){
+  if ($watch){
     $str .= <<<EOF
 
 <a target="_top" href="{$url}&watch=on"{$footer}>観</a>

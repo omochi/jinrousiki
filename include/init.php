@@ -26,7 +26,6 @@ class InitializeConfig {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'GAME_CONF'           => 'game_config',
     'GAME_OPT_CONF'       => 'game_option_config',
     'CAST_CONF'           => 'cast_config',
     'ICON_CONF'           => 'icon_config',
@@ -45,7 +44,7 @@ class InitializeConfig {
     'WINNER_MESS'         => 'message',
     'VOTE_MESS'           => 'message',
     'ROLES'               => 'role_class',
-    'TIME_CALC'           => array('time_config', 'room_config', 'info_functions'),
+    'TIME_CALC'           => array('time_config', 'room_config', 'game_config', 'info_functions'),
     'TWITTER'             => array('twitter_config', 'twitter'),
     'PAPARAZZI'           => 'paparazzi_class',
     'server_config'       => array('system_class', 'functions'), //常時ロードされる
@@ -57,7 +56,7 @@ class InitializeConfig {
     'database_class'      => 'database_config',
     'system_class'        => 'room_class', //常時ロードされる
     'room_class'          => 'option_class',
-    'user_class'          => 'game_functions',
+    'user_class'          => array('game_config', 'game_functions'),
     'talk_class'          => 'user_class',
     'role_class'          => 'game_format',
     'setup_class'         => array('setup_config', 'version', 'database_class'),
@@ -68,18 +67,17 @@ class InitializeConfig {
   public $depend_class = array(
     'ROOM_OPT'            => 'GAME_OPT_CONF',
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
-    'TIME_CALC'           => array('GAME_CONF', 'CAST_CONF', 'ROOM_IMG', 'ROLE_DATA'),
+    'TIME_CALC'           => array('CAST_CONF', 'ROOM_IMG', 'ROLE_DATA'),
     'index_functions'     => 'BBS_CONF',
     'game_play_functions' => 'ROLE_IMG',
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
     'oldlog_functions'    => array('CAST_CONF', 'ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
-    'user_class'          => array('GAME_CONF', 'ROLE_DATA', 'MESSAGE'),
+    'user_class'          => array('ROLE_DATA', 'MESSAGE'),
     'login_class'         => 'SESSION',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'GAME_CONF'     => 'GameConfig',
     'GAME_OPT_CONF' => 'GameOptionConfig',
     'CAST_CONF'     => 'CastConfig',
     'ICON_CONF'     => 'IconConfig',
@@ -222,7 +220,8 @@ class InitializeConfig {
     return true;
   }
 
-  function LoadRequest($class = null){
+  function LoadRequest($class = null, $load = false){
+    if ($load) $this->LoadFile('game_config');
     $this->LoadFile('request_class');
     return RQ::Load($class);
   }

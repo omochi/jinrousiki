@@ -5,7 +5,7 @@
   ・仲間表示：自分の勝利条件対象者
   ・追加役職：なし
 */
-class Role_valkyrja_duelist extends Role{
+class Role_valkyrja_duelist extends Role {
   public $action = 'DUELIST_DO';
   public $ignore_message = '初日以外は投票できません';
   public $partner_role   = 'rival';
@@ -29,11 +29,9 @@ class Role_valkyrja_duelist extends Role{
   function IsVote(){ return DB::$ROOM->date == 1; }
 
   function SetVoteNight(){
-    global $GAME_CONF;
-
     parent::SetVoteNight();
-    $self_shoot = $this->check_self_shoot && DB::$USER->GetUserCount() < $GAME_CONF->cupid_self_shoot;
-    $this->SetStack($self_shoot, 'self_shoot');
+    $flag = $this->check_self_shoot && DB::$USER->GetUserCount() < GameConfig::$cupid_self_shoot;
+    $this->SetStack($flag, 'self_shoot');
   }
 
   function GetVoteCheckbox($user, $id, $live){

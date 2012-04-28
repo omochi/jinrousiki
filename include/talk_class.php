@@ -19,7 +19,7 @@ class Talk {
 
   //データ解析
   protected function ParseSentence($sentence = null){
-    global $GAME_CONF, $MESSAGE;
+    global $MESSAGE;
 
     is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence; //初期化処理
 

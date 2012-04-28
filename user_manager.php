@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('room_config', 'room_class', 'user_class', 'icon_functions');
-$INIT_CONF->LoadClass('SESSION', 'GAME_CONF', 'MESSAGE');
+$INIT_CONF->LoadFile('room_config', 'game_config', 'room_class', 'user_class', 'icon_functions');
+$INIT_CONF->LoadClass('SESSION', 'MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager');
 DB::Connect();
 RQ::$get->entry ? EntryUser() : OutputEntryUserPage();
@@ -10,13 +10,13 @@ DB::Disconnect();
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $GAME_CONF, $MESSAGE, $SESSION;
+  global $MESSAGE, $SESSION;
 
   extract(RQ::ToArray()); //引数を展開
   $back_url = 'user_manager.php?room_no=' . $room_no; //ベースバックリンク
   if ($user_no > 0) $back_url .= '&user_no=' . $user_no; //登録情報変更モード
   $back_url = '<br><a href="' . $back_url . '">戻る</a>'; //バックリンク
-  if ($GAME_CONF->trip && $trip != '') $uname .= ConvertTrip('#' . $trip); //トリップ変換
+  if (GameConfig::$trip && $trip != '') $uname .= ConvertTrip('#' . $trip); //トリップ変換
 
   //記入漏れチェック
   $title = '村人登録 [入力エラー]';
@@ -33,14 +33,14 @@ function EntryUser(){
 
   //文字数制限チェック
   $str = '文字まで' . $back_url;
-  if (strlen($uname) > $GAME_CONF->entry_uname_limit) {
-    OutputActionResult($title, 'ユーザ名は' . $GAME_CONF->entry_uname_limit . $str);
+  if (strlen($uname) > GameConfig::$entry_uname_limit) {
+    OutputActionResult($title, 'ユーザ名は' . GameConfig::$entry_uname_limit . $str);
   }
-  if (strlen($handle_name) > $GAME_CONF->entry_uname_limit) {
-    OutputActionResult($title, '村人の名前は' . $GAME_CONF->entry_uname_limit . $str);
+  if (strlen($handle_name) > GameConfig::$entry_uname_limit) {
+    OutputActionResult($title, '村人の名前は' . GameConfig::$entry_uname_limit . $str);
   }
-  if (strlen($profile) > $GAME_CONF->entry_profile_limit) {
-    OutputActionResult($title, 'プロフィールは' . $GAME_CONF->entry_profile_limit . $str);
+  if (strlen($profile) > GameConfig::$entry_profile_limit) {
+    OutputActionResult($title, 'プロフィールは' . GameConfig::$entry_profile_limit . $str);
   }
 
   //例外チェック
@@ -162,7 +162,7 @@ EOF;
   //IP アドレスチェック
   $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
   if (! ServerConfig::$debug_mode) {
-    if ($GAME_CONF->entry_one_ip_address &&
+    if (GameConfig::$entry_one_ip_address &&
 	DB::Count($query_count . "ip_address = '{$ip_address}'") > 0) {
       OutputActionResult('村人登録 [多重登録エラー]', '多重登録はできません。');
     }
@@ -200,7 +200,7 @@ EOF;
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $GAME_CONF, $ICON_CONF, $ROLE_DATA, $SESSION;
+  global $ICON_CONF, $ROLE_DATA, $SESSION;
 
   extract(RQ::ToArray()); //引数を展開
   if ($user_no > 0) { //登録情報変更モード
@@ -245,7 +245,7 @@ function OutputEntryUserPage(){
 
 EOF;
   }
-  elseif ($GAME_CONF->trip) {
+  elseif (GameConfig::$trip) {
     $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>

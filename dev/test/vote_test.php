@@ -6,7 +6,7 @@ $INIT_CONF->LoadClass('ICON_CONF', 'ROLES');
 $INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'game_play_functions');
 
 //-- 仮想村データをセット --//
-$INIT_CONF->LoadRequest('RequestBaseGame');
+$INIT_CONF->LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 94;
 RQ::$get->reverse_log = null;
 RQ::$get->TestItems = new StdClass();
@@ -77,7 +77,7 @@ RQ::GetTest()->test_users[7]->live = 'live';
 RQ::GetTest()->test_users[8]->uname = 'blue';
 RQ::GetTest()->test_users[8]->handle_name = '青';
 RQ::GetTest()->test_users[8]->sex = 'male';
-RQ::GetTest()->test_users[8]->role = 'eccentricer';
+RQ::GetTest()->test_users[8]->role = 'priest';
 RQ::GetTest()->test_users[8]->live = 'live';
 
 RQ::GetTest()->test_users[9]->uname = 'green';
@@ -289,13 +289,13 @@ RQ::GetTest()->vote->night = array(
   array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
   array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
   array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
-  array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
-  array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
+  #array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
+  #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
   array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
   #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
   array('user_no' => 10, 	'target_no' => 12,	'type' => 'ASSASSIN_DO'),
-  #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
-  array('user_no' => 10, 	'target_no' => 12,	'type' => 'DEATH_NOTE_DO'),
+  array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
+  #array('user_no' => 10, 	'target_no' => 12,	'type' => 'DEATH_NOTE_DO'),
   #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
   #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
   #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
@@ -372,10 +372,10 @@ DB::$ROOM = new Room(RQ::$get); //村情報を取得
 DB::$ROOM->test_mode = true;
 DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
-DB::$ROOM->date = 3;
+DB::$ROOM->date = 7;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = TZTime(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
@@ -605,7 +605,9 @@ do{
 
     default:
       //$target_uname = DB::$USER->GetHandleName($stack['target_uname'], true);
-      $target_uname = DB::$USER->ByVirtual($stack['target_no'])->handle_name;
+      if (isset($stack['target_no'])) {
+	$target_uname = DB::$USER->ByVirtual($stack['target_no'])->handle_name;
+      }
       break;
     }
     $stack_list[] = array('type' => $stack['type'],
@@ -629,7 +631,7 @@ do{
   }
   //var_dump(DB::$USER->IsOpenCast());
 }while(false);
-//PrintData($GAME_CONF->RateToProbability($GAME_CONF->weather_list));
+//PrintData(Lottery::RateToProbability(GameConfig::$weather_list));
 //InsertLog();
 //PrintData($ROLES->loaded->file);
 //PrintData(array_keys($ROLES->loaded->class));

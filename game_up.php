@@ -1,7 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadClass('GAME_CONF');
-$INIT_CONF->LoadRequest('RequestGameUp'); //引数を取得
+$INIT_CONF->LoadRequest('RequestGameUp', true); //引数を取得
 OutputHTMLHeader(ServerConfig::$title . '[発言]', 'game_up');
 OutputGameUp();
 OutputHTMLFooter();

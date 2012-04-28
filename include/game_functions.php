@@ -92,8 +92,6 @@ function LoversFollowed($sudden_death = false){
 
 //勝敗をチェック
 function CheckWinner($check_draw = false){
-  global $GAME_CONF;
-
   if (DB::$ROOM->test_mode) return false;
 
   //コピー能力者がいるのでキャッシュを更新するかクエリから引くこと
@@ -148,7 +146,7 @@ function CheckWinner($check_draw = false){
   elseif (DB::$ROOM->IsQuiz() && $quiz == 0) { //クイズ村 GM 死亡
     $winner = 'quiz_dead';
   }
-  elseif ($check_draw && DB::$ROOM->revote_count >= $GAME_CONF->draw) { //引き分け
+  elseif ($check_draw && DB::$ROOM->revote_count >= GameConfig::$draw) { //引き分け
     $winner = 'draw';
   }
 
@@ -188,8 +186,6 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //-- 出力関連 --//
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
-  global $GAME_CONF;
-
   //引数を格納
   $url_header = 'game_frame.php?room_no=' . DB::$ROOM->id;
   if (RQ::$get->auto_reload > 0) $url_header .= '&auto_reload=' . RQ::$get->auto_reload;
@@ -316,10 +312,8 @@ function GenerateJavaScriptDate($time){
 
 //自動更新のリンクを出力
 function OutputAutoReloadLink($url){
-  global $GAME_CONF;
-
   $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::$get->auto_reload > 0 ? '手動' : '【手動】');
-  foreach ($GAME_CONF->auto_reload_list as $time) {
+  foreach (GameConfig::$auto_reload_list as $time) {
     $name  = $time . '秒';
     $value = RQ::$get->auto_reload == $time ? sprintf('【%s】', $name) : $name;
     $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
@@ -578,7 +572,7 @@ function OutputVoteList(){
 
 //再投票の時、メッセージを表示
 function OutputRevoteList(){
-  global $GAME_CONF, $MESSAGE, $COOKIE, $SOUND;
+  global $MESSAGE, $COOKIE, $SOUND;
 
   if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
       DB::$ROOM->vote_count > $COOKIE->vote_times) {
@@ -591,7 +585,7 @@ function OutputRevoteList(){
     sprintf(' AND vote_count = %d AND user_no = %d', DB::$ROOM->vote_count, DB::$SELF->user_no);
   if (DB::FetchResult($query) == 0) {
     $str = '<div class="revote">%s (%d回%s)</div><br>'."\n";
-    printf($str, $MESSAGE->revote, $GAME_CONF->draw, $MESSAGE->draw_announce);
+    printf($str, $MESSAGE->revote, GameConfig::$draw, $MESSAGE->draw_announce);
   }
 
   echo GetVoteList(DB::$ROOM->date); //投票結果を出力
@@ -644,7 +638,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $GAME_CONF, $MESSAGE, $ROLES;
+  global $MESSAGE, $ROLES;
 
   //PrintData($talk);
   //発言ユーザを取得
@@ -709,7 +703,7 @@ function OutputTalk($talk, &$builder){
 
   case 'dummy_boy': //身代わり君専用システムメッセージ
     $str = sprintf('◆%s　%s', $real_user->handle_name, $talk->sentence);
-    if ($GAME_CONF->quote_words) $str = sprintf('「%s」', $str);
+    if (GameConfig::$quote_words) $str = sprintf('「%s」', $str);
     if (isset($talk->time)) $str .= sprintf(' <span class="date-time">%s</span>', $talk->date_time);
     return $builder->AddSystemTalk($str, 'dummy-boy');
   }

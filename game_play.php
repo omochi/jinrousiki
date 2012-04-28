@@ -4,7 +4,7 @@ $INIT_CONF->LoadFile('time_config', 'talk_class', 'game_play_functions');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestGamePlay');
+$INIT_CONF->LoadRequest('RequestGamePlay', true);
 if (RQ::$get->play_sound) $INIT_CONF->LoadClass('SOUND', 'COOKIE'); //音でお知らせ
 
 DB::Connect();
@@ -90,8 +90,6 @@ ob_end_flush();
 //-- 関数 --//
 //必要なクッキーをまとめて登録 (ついでに最新の異議ありの状態を取得して配列に格納)
 function SendCookie(&$objection_list){
-  global $GAME_CONF;
-
   //-- 夜明け --//
   setcookie('scene', DB::$ROOM->scene, DB::$ROOM->system_time + 3600); //シーンを登録
 
@@ -114,7 +112,7 @@ function SendCookie(&$objection_list){
   if (DB::$ROOM->IsAfterGame()) return; //ゲーム終了ならスキップ
 
   //「異議」ありセット判定
-  if (RQ::$get->set_objection && DB::$SELF->objection < $GAME_CONF->objection &&
+  if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::$objection &&
       (DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
     DB::$SELF->objection++;
     DB::$SELF->Update('objection', DB::$SELF->objection);
@@ -132,10 +130,10 @@ function SendCookie(&$objection_list){
 
 //遺言登録
 function EntryLastWords($say){
-  global $GAME_CONF;
-
   //スキップ判定
-  if (($GAME_CONF->limit_last_words && DB::$ROOM->IsPlaying()) || DB::$ROOM->IsFinished()) return false;
+  if ((GameConfig::$limit_last_words && DB::$ROOM->IsPlaying()) || DB::$ROOM->IsFinished()) {
+    return false;
+  }
 
   if ($say == ' ') $say = null; //スペースだけなら「消去」
   if (DB::$SELF->IsLive()) { //登録しない役職をチェック
@@ -336,7 +334,7 @@ function SetSuddenDeathTime(){
 
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $GAME_CONF, $MESSAGE, $COOKIE, $SOUND, $OBJECTION;
+  global $MESSAGE, $COOKIE, $SOUND, $OBJECTION;
 
   $url_room   = '?room_no=' . DB::$ROOM->id;
   $url_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
@@ -506,11 +504,12 @@ EOF;
   if (DB::$ROOM->IsBeforeGame() ||
       (DB::$ROOM->IsDay() && ! DB::$ROOM->dead_mode && ! DB::$ROOM->heaven_mode && $left_time > 0)) {
     $url = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list;
-    $count = $GAME_CONF->objection - DB::$SELF->objection;
+    $count = GameConfig::$objection - DB::$SELF->objection;
+    $image = GameConfig::$objection_image;
     echo <<<EOF
 <td class="objection"><form method="POST" action="{$url}">
 <input type="hidden" name="set_objection" value="on">
-<input type="image" name="objimage" src="{$GAME_CONF->objection_image}">
+<input type="image" name="objimage" src="{$image}">
 ({$count})</form></td>
 
 EOF;

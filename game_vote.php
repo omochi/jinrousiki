@@ -4,7 +4,7 @@ $INIT_CONF->LoadFile('game_vote_functions', 'user_class');
 $INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'ROOM_OPT', 'GAME_OPT_CONF');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestGameVote');
+$INIT_CONF->LoadRequest('RequestGameVote', true);
 DB::Connect();
 $SESSION->Certify(); //セッション認証
 
@@ -95,12 +95,10 @@ function OutputVoteError($title, $str = null){
 
 //ゲーム開始投票の処理
 function VoteGameStart(){
-  global $GAME_CONF;
-
   CheckSituation('GAMESTART');
   $str = 'ゲーム開始';
   if (DB::$SELF->IsDummyBoy(true)) { //出題者以外の身代わり君
-    if ($GAME_CONF->power_gm) { //強権モードによる強制開始処理
+    if (GameConfig::$power_gm) { //強権モードによる強制開始処理
       if (! AggregateVoteGameStart(true)) $str .= '：開始人数に達していません。';
       DB::Commit();
       OutputVoteResult($str);
@@ -126,8 +124,6 @@ function VoteGameStart(){
 
 //開始前の Kick 投票の処理
 function VoteKick(){
-  global $GAME_CONF;
-
   CheckSituation('KICK_DO'); //コマンドチェック
   $str = 'Kick 投票：';
   $target = DB::$USER->ByID(RQ::$get->target_no); //投票先のユーザ情報を取得
@@ -135,7 +131,7 @@ function VoteKick(){
     OutputVoteResult($str . '投票先が指定されていないか、すでに Kick されています');
   }
   if ($target->IsDummyBoy()) OutputVoteResult($str . '身代わり君には投票できません');
-  if (! $GAME_CONF->self_kick && $target->IsSelf()) {
+  if (! GameConfig::$self_kick && $target->IsSelf()) {
     OutputVoteResult($str . '自分には投票できません');
   }
 
@@ -154,8 +150,9 @@ function VoteKick(){
     DB::$ROOM->Talk($target->handle_name, 'KICK_DO', DB::$SELF->uname); //投票しました通知
     $vote_count = AggregateVoteKick($target); //集計処理
     DB::Commit();
-    $str .= "投票完了：{$target->handle_name} さん：{$vote_count} 人目 ";
-    OutputVoteResult($str . "(Kick するには {$GAME_CONF->kick} 人以上の投票が必要です)");
+    $add_str = '投票完了：%s さん：%d 人目 (Kick するには %d 人以上の投票が必要です)';
+    $str .= sprintf($add_str, $target->handle_name, $vote_count, GameConfig::$kick);
+    OutputVoteResult($str);
   }
   else {
     OutputVoteResult($str . 'データベースエラー');
@@ -164,7 +161,7 @@ function VoteKick(){
 
 //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
 function AggregateVoteKick($target){
-  global $GAME_CONF, $MESSAGE;
+  global $MESSAGE;
 
   CheckSituation('KICK_DO'); //コマンドチェック
 
@@ -175,8 +172,8 @@ function AggregateVoteKick($target){
   }
 
   //規定数以上の投票があった / キッカーが身代わり君 / 自己 KICK が有効の場合に処理
-  if ($vote_count < $GAME_CONF->kick && ! DB::$SELF->IsDummyBoy() &&
-      ! ($GAME_CONF->self_kick && $target->IsSelf())) {
+  if ($vote_count < GameConfig::$kick && ! DB::$SELF->IsDummyBoy() &&
+      ! (GameConfig::$self_kick && $target->IsSelf())) {
     return $vote_count;
   }
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
@@ -226,7 +223,7 @@ function VoteResetTime(){
 
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
-  global $GAME_CONF, $ICON_CONF, $VOTE_MESS;
+  global $ICON_CONF, $VOTE_MESS;
 
   CheckScene(); //投票する状況があっているかチェック
   OutputVotePageHeader();
@@ -239,30 +236,31 @@ function OutputVoteBeforeGame(){
     if ($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
 
-    $checkbox = ! $user->IsDummyBoy() && ($GAME_CONF->self_kick || ! $user->IsSelf()) ?
+    $checkbox = ! $user->IsDummyBoy() && (GameConfig::$self_kick || ! $user->IsSelf()) ?
       $header . $id . '" value="' . $id . '">'."\n" : '';
     echo $user->GenerateVoteTag($ICON_CONF->path . '/' . $user->icon_filename, $checkbox);
   }
 
-  $back_url = RQ::$get->back_url;
-  $post_url = RQ::$get->post_url;
-  echo <<<EOF
+  $str = <<<EOF
 </tr></table>
-<span class="vote-message">* Kick するには {$GAME_CONF->kick} 人の投票が必要です</span>
+<span class="vote-message">* Kick するには %d 人の投票が必要です</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$back_url}</td>
-<td><input type="submit" value="{$VOTE_MESS->kick_do}"></form></td>
+<td>%s</td>
+<td><input type="submit" value="%s"></form></td>
 <td>
-<form method="POST" action="{$post_url}">
+<form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">
-<input type="submit" value="{$VOTE_MESS->game_start}">
+<input type="submit" value="%s">
 </form>
 </td>
 </tr></table></div>
 </body></html>
 
 EOF;
+
+  printf($str, GameConfig::$kick, RQ::$get->back_url, $VOTE_MESS->kick_do, RQ::$get->post_url,
+	 $VOTE_MESS->game_start);
 }
 
 //昼の投票ページを出力する

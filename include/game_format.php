@@ -1,6 +1,6 @@
 <?php
 //-- 発言処理の基底クラス --//
-class DocumentBuilder{
+class DocumentBuilder {
   public $actor;
   public $flag;
   public $filter = array();
@@ -73,13 +73,11 @@ class DocumentBuilder{
   //基礎発言処理
   function RawAddTalk($symbol, $user_info, $str, $voice, $row_class = '',
 		      $user_class = '', $say_class = ''){
-    global $GAME_CONF;
-
     if ($row_class  != '') $row_class  = ' ' . $row_class;
     if ($user_class != '') $user_class = ' ' . $user_class;
     if ($say_class  != '') $say_class  = ' ' . $say_class;
     LineToBR($str);
-    if ($GAME_CONF->quote_words) $str = '「' . $str . '」';
+    if (GameConfig::$quote_words) $str = '「' . $str . '」';
 
     $this->cache .= <<<EOF
 <tr class="user-talk{$row_class}">

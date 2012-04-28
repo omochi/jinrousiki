@@ -1,16 +1,18 @@
 <?php
 //発言置換処理
 function ConvertSay(&$say){
-  global $GAME_CONF, $ROLES;
+  global $ROLES;
 
   if ($say == '') return null; //リロード時なら処理スキップ
   //文字数・行数チェック
-  if (strlen($say) > $GAME_CONF->say_limit ||
-     substr_count($say, "\n") >= $GAME_CONF->say_line_limit){
+  if (strlen($say) > GameConfig::$say_limit ||
+      substr_count($say, "\n") >= GameConfig::$say_line_limit) {
     $say = '';
     return false;
   }
-  if ($GAME_CONF->replace_talk) $say = strtr($say, $GAME_CONF->replace_talk_list); //発言置換モード
+  if (GameConfig::$replace_talk) { //発言置換モード
+    $say = strtr($say, GameConfig::$replace_talk_list);
+  }
 
   //死者・ゲームプレイ中以外なら以降はスキップ
   if (DB::$SELF->IsDead() || ! DB::$ROOM->IsPlaying()) return null;

@@ -2,15 +2,14 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_CONF', 'GAME_OPT_CONF', 'CAST_CONF', 'ROOM_OPT',
-		      'GAME_OPT_MESS',  'ROLE_DATA');
-$INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'request_class');
+$INIT_CONF->LoadClass('GAME_OPT_CONF', 'CAST_CONF', 'ROOM_OPT', 'GAME_OPT_MESS',  'ROLE_DATA');
+$INIT_CONF->LoadFile('room_config', 'game_vote_functions');
 
 OutputHTMLHeader('配役テストツール', 'role_table');
 OutputRoleTestForm();
 
 if (@$_POST['command'] == 'role_test') {
-  $INIT_CONF->LoadRequest('RequestBase');
+  $INIT_CONF->LoadRequest('RequestBase'); //専用 Request を作るべき
   RQ::$get->TestItems = new StdClass();
   RQ::GetTest()->is_virtual_room = true;
 

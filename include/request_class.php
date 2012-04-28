@@ -129,10 +129,8 @@ class RequestTestParams extends RequestBase {
 //-- game 用共通クラス --//
 class RequestBaseGame extends RequestBase {
   function __construct(){
-    global $GAME_CONF;
-
     $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
-    $min = min($GAME_CONF->auto_reload_list);
+    $min = min(GameConfig::$auto_reload_list);
     if ($this->auto_reload != 0 && $this->auto_reload < $min) $this->auto_reload = $min;
     $this->add_role = null;
   }
