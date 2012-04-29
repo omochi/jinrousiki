@@ -8,6 +8,6 @@ class Role_critical_voter extends Role {
   function __construct(){ parent::__construct(); }
 
   function FilterVoteDo(&$number){
-    if (DB::$ROOM->IsEvent('critical') || mt_rand(1, 100) <= 5) $number += 100;
+    if (DB::$ROOM->IsEvent('critical') || mt_rand(0, 99) < 5) $number += 100;
   }
 }

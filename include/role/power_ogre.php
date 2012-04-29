@@ -5,7 +5,7 @@
   ・勝利：生存 + 人口を三分の一以下にする
 */
 RoleManager::LoadFile('ogre');
-class Role_power_ogre extends Role_ogre{
+class Role_power_ogre extends Role_ogre {
   public $resist_rate = 40;
   function __construct(){ parent::__construct(); }
 

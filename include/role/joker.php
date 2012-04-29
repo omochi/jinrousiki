@@ -24,26 +24,26 @@ class Role_joker extends Role {
 
     $target = array(); //移動可能者リスト
     $stack  = $this->GetVotedUname($virtual); //ジョーカー投票者
-    foreach($stack as $voter_uname){ //死者と前日所持者を除外
+    foreach ($stack as $voter_uname) { //死者と前日所持者を除外
       $voter = DB::$USER->ByRealUname($voter_uname);
-      if($voter->IsLive(true) && ! $voter->IsJoker(true)) $target[] = $voter_uname;
+      if ($voter->IsLive(true) && ! $voter->IsJoker(true)) $target[] = $voter_uname;
     }
     $this->SetStack($target, 'joker_target');
     //PrintData($stack, 'Target [Voted]');
     //PrintData($target, 'Target [joker]');
 
     //対象者か現在のジョーカー所持者が処刑者なら無効
-    if($this->IsVoted($uname) || $this->IsVoted($user->uname)) return true;
+    if ($this->IsVoted($uname) || $this->IsVoted($user->uname)) return true;
 
-    if(in_array($uname, $stack)){ //相互投票なら無効 (複数から投票されていた場合は残りからランダム)
+    if (in_array($uname, $stack)) { //相互投票なら無効 (複数から投票されていた場合は残りからランダム)
       unset($target[array_search($uname, $target)]);
       $this->SetStack($target, 'joker_target');
       //PrintData($target, 'ReduceTarget');
-      if(count($target) == 0) return true;
+      if (count($target) == 0) return true;
       $uname = GetRandom($target);
     }
-    elseif(DB::$USER->ByRealUname($uname)->IsDead(true)){ //対象者が死亡していた場合
-      if(count($target) == 0) return true;
+    elseif (DB::$USER->ByRealUname($uname)->IsDead(true)) { //対象者が死亡していた場合
+      if (count($target) == 0) return true;
       $uname = GetRandom($target); //ジョーカー投票者から選出
     }
     DB::$USER->ByRealUname($uname)->AddJoker();
@@ -63,7 +63,7 @@ class Role_joker extends Role {
   /* 生きていたら本人継承 / 処刑者なら前日所持者以外の投票者ランダム / 死亡なら完全ランダム */
   function ResetJoker(){
     $user = $this->GetJoker();
-    if($user->IsLive(true)){
+    if ($user->IsLive(true)) {
       $user->AddJoker();
       return;
     }
@@ -74,7 +74,5 @@ class Role_joker extends Role {
   }
 
   //現在の所持ユーザ取得
-  private function GetJoker(){
-    return DB::$USER->ByID($this->GetStack('joker_id'));
-  }
+  private function GetJoker(){ return DB::$USER->ByID($this->GetStack('joker_id')); }
 }

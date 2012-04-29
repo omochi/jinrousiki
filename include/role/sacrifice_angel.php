@@ -7,11 +7,11 @@
   ・人狼襲撃耐性：常時無効
 */
 RoleManager::LoadFile('angel');
-class Role_sacrifice_angel extends Role_angel{
+class Role_sacrifice_angel extends Role_angel {
   function __construct(){ parent::__construct(); }
 
   protected function AddCupidRole($user, $flag){
-    if(! $this->IsActor($user->uname)) $user->AddRole($this->GetActor()->GetID('protected'));
+    if (! $this->IsActor($user->uname)) $user->AddRole($this->GetActor()->GetID('protected'));
   }
 
   protected function IsSympathy($lovers_a, $lovers_b){ return true; }

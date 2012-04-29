@@ -295,7 +295,7 @@ class Role {
     global $ROLES;
 
     $this->role = array_pop(explode('Role_', get_class($this)));
-    if (isset($this->mix_in)){
+    if (isset($this->mix_in)) {
       $this->filter = $ROLES->LoadMix($this->mix_in);
       $this->filter->role = $this->role;
       //PrintData(get_class_vars(get_class($this)));

@@ -5,7 +5,7 @@
   ・毒：人狼系 + 妖狐陣営 + 自分の仇敵
 */
 RoleManager::LoadFile('avenger');
-class Role_poison_avenger extends Role_avenger{
+class Role_poison_avenger extends Role_avenger {
   public $mix_in = 'poison';
   function __construct(){ parent::__construct(); }
 

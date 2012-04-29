@@ -17,8 +17,8 @@ class Role_sacrifice_ogre extends Role_ogre {
     /* 2日目の時点で洗脳者が発生する特殊イベントを実装したら対応すること */
     if (DB::$ROOM->date < 2) return;
     $stack = array();
-    foreach(DB::$USER->rows as $user){
-      if($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;
+    foreach (DB::$USER->rows as $user) {
+      if ($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'psycho_infected_list');
   }

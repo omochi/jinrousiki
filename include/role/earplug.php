@@ -19,10 +19,10 @@ class Role_earplug extends Role_strong_voice {
   }
 
   function FilterTalk($user, &$name, &$voice, &$str){
-    if(! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str, false);
+    if (! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str, false);
   }
 
   function FilterWhisper(&$voice, &$str){
-    if(! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str, false);
+    if (! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str, false);
   }
 }

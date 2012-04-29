@@ -70,10 +70,10 @@ function OutputAbility(){
 
   if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
-  if (DB::$SELF->IsDead()){ //死亡したら口寄せ以外は表示しない
+  if (DB::$SELF->IsDead()) { //死亡したら口寄せ以外は表示しない
     echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
     if (DB::$SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
-    if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()){ //身代わり君のみ隠蔽情報を表示
+    if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()) { //身代わり君のみ隠蔽情報を表示
       echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
     }
     return;

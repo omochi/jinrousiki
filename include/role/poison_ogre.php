@@ -8,7 +8,7 @@
   ・毒：人狼系 + 妖狐陣営 + 鬼陣営
 */
 RoleManager::LoadFile('ogre');
-class Role_poison_ogre extends Role_ogre{
+class Role_poison_ogre extends Role_ogre {
   public $mix_in = 'poison';
   public $reduce_rate = 3;
   function __construct(){ parent::__construct(); }

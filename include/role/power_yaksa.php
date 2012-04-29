@@ -6,18 +6,18 @@
   ・人攫い無効：村人陣営
 */
 RoleManager::LoadFile('yaksa');
-class Role_power_yaksa extends Role_yaksa{
+class Role_power_yaksa extends Role_yaksa {
   public $resist_rate = 30;
   function __construct(){ parent::__construct(); }
 
   function Win($winner){
-    if($this->IsDead()) return false;
+    if ($this->IsDead()) return false;
     $camp_list = array();
     $live_list = array();
-    foreach(DB::$USER->rows as $user){
+    foreach (DB::$USER->rows as $user) {
       $camp = $user->GetCamp(true);
       $camp_list[$camp] = true;
-      if($user->IsLive()) $live_list[$camp] = true;
+      if ($user->IsLive()) $live_list[$camp] = true;
     }
     return count($live_list) <= ceil(count($camp_list) / 2);
   }

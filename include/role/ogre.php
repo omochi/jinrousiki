@@ -20,10 +20,10 @@ class Role_ogre extends Role {
   function IsVote(){ return DB::$ROOM->date > 1; }
 
   function Win($winner){
-    if($this->IsDead()) return false;
-    if($winner == 'wolf') return true;
-    foreach(DB::$USER->rows as $user){
-      if($user->IsLiveRoleGroup('wolf')) return true;
+    if ($this->IsDead()) return false;
+    if ($winner == 'wolf') return true;
+    foreach (DB::$USER->rows as $user) {
+      if ($user->IsLiveRoleGroup('wolf')) return true;
     }
     return false;
   }
@@ -37,18 +37,18 @@ class Role_ogre extends Role {
   function SetAssassin($user){
     global $ROLES;
 
-    foreach($ROLES->LoadFilter('trap') as $filter){ //罠判定
-      if($filter->DelayTrap($this->GetActor(), $user->uname)) return;
+    foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
+      if ($filter->DelayTrap($this->GetActor(), $user->uname)) return;
     }
-    foreach($ROLES->LoadFilter('guard_assassin') as $filter){ //門番の護衛判定
-      if($filter->GuardAssassin($user->uname)) return;
+    foreach ($ROLES->LoadFilter('guard_assassin') as $filter) { //門番の護衛判定
+      if ($filter->GuardAssassin($user->uname)) return;
     }
-    if($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //無効判定
-    if($user->IsRefrectAssassin()){ //反射判定
+    if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //無効判定
+    if ($user->IsRefrectAssassin()) { //反射判定
       $this->AddSuccess($this->GetActor()->user_no, 'ogre');
       return;
     }
-    if($this->IgnoreAssassin($user)) return; //個別無効判定
+    if ($this->IgnoreAssassin($user)) return; //個別無効判定
 
     //人攫い成功判定
     $times = (int)$this->GetActor()->GetMainRoleTarget();
@@ -56,14 +56,14 @@ class Role_ogre extends Role {
     $rate  = is_null($event) ? ceil(100 * pow($this->GetReduceRate(), $times)) : $event;
     $rand  = mt_rand(1, 100); //人攫い成功判定乱数
     //$rand = 5; //テスト用
-    //PrintData($rand, 'Rate [OGRE_DO]: ' . $rate);
-    if($rand > $rate) return; //成功判定
+    //PrintData($rand, sprintf('Rate [OGRE_DO]: %d', $rate));
+    if ($rand > $rate) return; //成功判定
     $this->Assassin($user);
 
-    if(DB::$ROOM->IsEvent('full_ogre')) return; //成功回数更新処理 (朧月ならスキップ)
+    if (DB::$ROOM->IsEvent('full_ogre')) return; //成功回数更新処理 (朧月ならスキップ)
     $role = $this->role;
-    if($times > 0) $role .= '[' . $times . ']';
-    $this->GetActor()->ReplaceRole($role, $this->role . '[' . ($times + 1) . ']');
+    if ($times > 0) $role .= sprintf('[%d]', $times);
+    $this->GetActor()->ReplaceRole($role, sprintf('%s[%d]', $this->role, $times + 1));
   }
 
   //人攫い失敗判定
@@ -90,7 +90,7 @@ class Role_ogre extends Role {
     $rand = mt_rand(1, 100);
     //$rand = 5; //テスト用
     $rate = $this->GetResistRate();
-    //PrintData("{$rand} ({$rate})", 'Rate [ogre resist]');
+    //PrintData(sprintf('%d (%d)', $rand, $rate), 'Rate [ogre resist]');
     return $rand <= $rate;
   }
 

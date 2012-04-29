@@ -15,8 +15,8 @@ class Role_cupid extends Role {
   protected function OutputPartner(){
     $id = $this->GetActor()->user_no;
     $stack = array();
-    foreach(DB::$USER->rows as $user){
-      if($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;
+    foreach (DB::$USER->rows as $user) {
+      if ($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;
     }
     OutputPartner($stack, 'cupid_pair');
   }
@@ -44,23 +44,23 @@ class Role_cupid extends Role {
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = $this->GetVoteNightTargetCount();
-    if(count($stack) != $count) return '指定人数は' . $count . '人にしてください';
+    if (count($stack) != $count) return sprintf('指定人数は %d 人にしてください', $count);
 
     $self_shoot = false; //自分撃ちフラグ
     $user_list  = array();
     sort($stack);
-    foreach($stack as $id){
+    foreach ($stack as $id) {
       $user = DB::$USER->ByID($id);
       //例外判定
-      if($user->IsDead() || $user->IsDummyBoy()) return '死者と身代わり君には投票できません';
+      if ($user->IsDead() || $user->IsDummyBoy()) return '死者と身代わり君には投票できません';
       $user_list[$id] = $user;
       $self_shoot |= $this->IsActor($user->uname); //自分撃ち判定
     }
 
-    if(! $self_shoot){ //自分撃ちエラー判定
+    if (! $self_shoot) { //自分撃ちエラー判定
       $str = '必ず自分を対象に含めてください';
-      if($this->self_shoot)    return $str; //自分撃ち固定役職
-      if($this->IsSelfShoot()) return '少人数村の場合は、' . $str; //参加人数
+      if ($this->self_shoot)    return $str; //自分撃ち固定役職
+      if ($this->IsSelfShoot()) return '少人数村の場合は、' . $str; //参加人数
     }
     $class = $this->GetClass($method = 'VoteNightAction');
     $class->$method($user_list, $self_shoot);
@@ -74,7 +74,7 @@ class Role_cupid extends Role {
   function VoteNightAction($list, $flag){
     $role  = $this->GetActor()->GetID('lovers');
     $stack = array();
-    foreach($list as $user){
+    foreach ($list as $user) {
       $stack[] = $user->handle_name;
       $user->AddRole($role); //恋人セット
       $this->AddCupidRole($user, $flag); //役職追加

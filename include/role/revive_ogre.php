@@ -6,15 +6,15 @@
   ・人狼襲撃：確率蘇生
 */
 RoleManager::LoadFile('ogre');
-class Role_revive_ogre extends Role_ogre{
+class Role_revive_ogre extends Role_ogre {
   public $mix_in = 'revive_pharmacist';
   public $reduce_rate = 2;
   function __construct(){ parent::__construct(); }
 
   function Win($winner){
-    if($this->IsDead()) return false;
-    foreach(DB::$USER->rows as $user){
-      if($user->IsLive() && $user->IsLiar()) return false;
+    if ($this->IsDead()) return false;
+    foreach (DB::$USER->rows as $user) {
+      if ($user->IsLive() && $user->IsLiar()) return false;
     }
     return true;
   }
@@ -24,6 +24,6 @@ class Role_revive_ogre extends Role_ogre{
   function Resurrect(){
     $user = $this->GetActor();
     $rate = is_null($event = $this->GetEvent()) ? 40 : $event;
-    if($this->IsResurrect($user) && mt_rand(1, 100) <= $rate) $user->Revive();
+    if ($this->IsResurrect($user) && mt_rand(1, 100) <= $rate) $user->Revive();
   }
 }

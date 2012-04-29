@@ -3,7 +3,7 @@
   ◆吠耳鳴 (howl_ringing)
   ○仕様
 */
-class Role_howl_ringing extends Role{
+class Role_howl_ringing extends Role {
   public $mix_in = 'wolf';
   function __construct(){ parent::__construct(); }
 

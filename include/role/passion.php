@@ -5,7 +5,7 @@
   ・発言変換：部分置換
   ・変換リスト：恋色
 */
-class Role_passion extends Role{
+class Role_passion extends Role {
   public $convert_say_list = array(
     '村人' => '好き', '好き' => '村人',
     '人狼' => '嫌い', '嫌い' => '人狼',
@@ -22,7 +22,7 @@ class Role_passion extends Role{
   function __construct(){ parent::__construct(); }
 
   function ConvertSay(){
-    if(! is_array($stack = $this->GetConvertSayList())) return;
+    if (! is_array($stack = $this->GetConvertSayList())) return;
     $this->SetStack(strtr($this->GetStack('say'), $stack), 'say');
   }
 

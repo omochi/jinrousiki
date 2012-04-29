@@ -10,9 +10,9 @@ class Role_celibacy extends Role_chicken {
   function __construct(){ parent::__construct(); }
 
   function SuddenDeath(){
-    if($this->IgnoreSuddenDeath()) return;
-    foreach($this->GetVotedUname() as $uname){
-      if(DB::$USER->ByRealUname($uname)->IsLovers()){
+    if ($this->IgnoreSuddenDeath()) return;
+    foreach ($this->GetVotedUname() as $uname) {
+      if (DB::$USER->ByRealUname($uname)->IsLovers()) {
 	$this->SetSuddenDeath($this->sudden_death);
 	break;
       }

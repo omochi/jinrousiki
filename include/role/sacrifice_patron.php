@@ -6,7 +6,7 @@
   ・人狼襲撃耐性：常時無効
 */
 RoleManager::LoadFile('patron');
-class Role_sacrifice_patron extends Role_patron{
+class Role_sacrifice_patron extends Role_patron {
   public $patron_role = 'protected';
   function __construct(){ parent::__construct(); }
 

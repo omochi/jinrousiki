@@ -5,7 +5,7 @@
   ・共感者判定：特殊 (集計後)
 */
 RoleManager::LoadFile('angel');
-class Role_exchange_angel extends Role_angel{
+class Role_exchange_angel extends Role_angel {
   function __construct(){ parent::__construct(); }
 
   protected function IsSympathy($lovers_a, $lovers_b){ return false; }
@@ -17,47 +17,47 @@ class Role_exchange_angel extends Role_angel{
     $lovers_list   = array();
     $fix_list      = array();
     $exchange_list = array();
-    foreach(DB::$USER->rows as $user){ //魂移使が打った恋人の情報を収集
-      if($user->IsDummyBoy() || ! $user->IsLovers()) continue;
-      foreach($user->GetPartner('lovers') as $cupid_id){
-	if(DB::$USER->ById($cupid_id)->IsRole('exchange_angel')){
+    foreach (DB::$USER->rows as $user) { //魂移使が打った恋人の情報を収集
+      if ($user->IsDummyBoy() || ! $user->IsLovers()) continue;
+      foreach ($user->GetPartner('lovers') as $cupid_id) {
+	if (DB::$USER->ById($cupid_id)->IsRole('exchange_angel')) {
 	  $angel_list[$cupid_id][] = $user->user_no;
 	  $lovers_list[$user->user_no][] = $cupid_id;
-	  if($user->IsPossessedGroup()) $fix_list[$cupid_id] = true; //憑依能力者なら対象外
+	  if ($user->IsPossessedGroup()) $fix_list[$cupid_id] = true; //憑依能力者なら対象外
 	}
       }
     }
     //PrintData($angel_list, 'angel: 1st');
     //PrintData($lovers_list, 'lovers: 1st');
 
-    foreach($angel_list as $id => $lovers_stack){ //抽選処理
-      if(array_key_exists($id, $fix_list)) continue;
+    foreach ($angel_list as $id => $lovers_stack) { //抽選処理
+      if (array_key_exists($id, $fix_list)) continue;
       $duplicate_stack = array();
       //PrintData($fix_list, 'fix_angel:'. $id);
-      foreach($lovers_stack as $lovers_id){
-	foreach($lovers_list[$lovers_id] as $cupid_id){
-	  if(! array_key_exists($cupid_id, $fix_list)) $duplicate_stack[$cupid_id] = true;
+      foreach ($lovers_stack as $lovers_id) {
+	foreach ($lovers_list[$lovers_id] as $cupid_id) {
+	  if (! array_key_exists($cupid_id, $fix_list)) $duplicate_stack[$cupid_id] = true;
 	}
       }
       //PrintData($duplicate_stack, 'duplicate:' . $id);
       $duplicate_list = array_keys($duplicate_stack);
-      if(count($duplicate_list) > 1){
+      if (count($duplicate_list) > 1) {
 	$exchange_list[] = GetRandom($duplicate_list);
-	foreach($duplicate_list as $duplicate_id) $fix_list[$duplicate_id] = true;
+	foreach ($duplicate_list as $duplicate_id) $fix_list[$duplicate_id] = true;
       }
-      else{
+      else {
 	$exchange_list[] = $id;
       }
       $fix_list[$id] = true;
     }
     //PrintData($exchange_list, 'exchange');
 
-    foreach($exchange_list as $id){
+    foreach ($exchange_list as $id) {
       $target_list = $angel_list[$id];
       $lovers_a = DB::$USER->ByID($target_list[0]);
       $lovers_b = DB::$USER->ByID($target_list[1]);
-      $lovers_a->AddRole('possessed_exchange[' . $target_list[1] . ']');
-      $lovers_b->AddRole('possessed_exchange[' . $target_list[0] . ']');
+      $lovers_a->AddRole(sprintf('possessed_exchange[%s]', $target_list[1]));
+      $lovers_b->AddRole(sprintf('possessed_exchange[%s]', $target_list[0]));
       $this->SetSympathy($lovers_a, $lovers_b);
     }
   }

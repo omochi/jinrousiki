@@ -5,7 +5,7 @@
   ・ショック死：無得票
 */
 RoleManager::LoadFile('chicken');
-class Role_rabbit extends Role_chicken{
+class Role_rabbit extends Role_chicken {
   public $sudden_death = 'RABBIT';
   function __construct(){ parent::__construct(); }
 

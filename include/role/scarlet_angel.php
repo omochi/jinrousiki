@@ -13,9 +13,9 @@ class Role_scarlet_angel extends Role_angel {
     parent::OutputPartner();
     if (! DB::$ROOM->IsNight()) return;
     $stack = array();
-    foreach(DB::$USER->rows as $user){
-      if($this->IsActor($user->uname) || $user->IsWolf()) continue;
-      if($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')){
+    foreach (DB::$USER->rows as $user) {
+      if ($this->IsActor($user->uname) || $user->IsWolf()) continue;
+      if ($user->IsRole('unconscious') || $user->IsRoleGroup('scarlet')) {
 	$stack[] = $user->handle_name;
       }
     }

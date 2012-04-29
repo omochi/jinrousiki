@@ -6,7 +6,7 @@
   ・処刑投票：恋耳鳴付加
 */
 RoleManager::LoadFile('cupid');
-class Role_sweet_cupid extends Role_cupid{
+class Role_sweet_cupid extends Role_cupid {
   public $mix_in = 'critical_mad';
   function __construct(){ parent::__construct(); }
 

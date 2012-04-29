@@ -554,7 +554,7 @@ function OutputSelfLastWords(){
   $query = 'SELECT last_words FROM user_entry' . DB::$ROOM->GetQuery(false) .
     " AND user_no = " . DB::$SELF->user_no;
   if (($str = DB::FetchResult($query)) == '') return false;
-  LineToBR($str); //改行コードを変換
+  Text::LineToBR($str); //改行コードを変換
   if ($str == '') return false;
 
   echo <<<EOF

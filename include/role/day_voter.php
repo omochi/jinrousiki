@@ -9,5 +9,7 @@ class Role_day_voter extends Role {
 
   protected function IgnoreAbility(){ return ! $this->IsDoom(); }
 
-  function FilterVoteDo(&$number){ if ($this->IsDoom()) $number++; }
+  function FilterVoteDo(&$number){
+    if ($this->IsDoom()) $number++;
+  }
 }

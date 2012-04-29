@@ -5,7 +5,7 @@
   ・ショック死：女性に投票
 */
 RoleManager::LoadFile('chicken');
-class Role_gynophobia extends Role_chicken{
+class Role_gynophobia extends Role_chicken {
   public $sudden_death = 'GYNOPHOBIA';
   function __construct(){ parent::__construct(); }
 

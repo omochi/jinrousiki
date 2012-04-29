@@ -161,13 +161,13 @@ RQ::GetTest()->test_users[21]->live = 'live';
 RQ::GetTest()->test_users[22]->uname = 'gust';
 RQ::GetTest()->test_users[22]->handle_name = '霧';
 RQ::GetTest()->test_users[22]->sex = 'female';
-RQ::GetTest()->test_users[22]->role = 'dark_fairy reduce_voter';
+RQ::GetTest()->test_users[22]->role = 'fairy reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
 RQ::GetTest()->test_users[23]->uname = 'cloud';
 RQ::GetTest()->test_users[23]->handle_name = '雲';
 RQ::GetTest()->test_users[23]->sex = 'male';
-RQ::GetTest()->test_users[23]->role = 'soul_vampire';
+RQ::GetTest()->test_users[23]->role = 'soul_vampire deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->uname = 'moon';
@@ -340,7 +340,7 @@ RQ::GetTest()->vote->night = array(
   array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13 18'),
   #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
   #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-  array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 20),
+  array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 8),
   #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
 );
 
@@ -354,12 +354,10 @@ RQ::GetTest()->system_message = array(
 	     #'VOTE_DUEL' => array(8),
 	     #'WEATHER' => array(53),
 	     ),
-  8 => array('WEATHER' => array(0)
+  8 => array('WEATHER' => array(33)
 	     )
 );
-
-RQ::GetTest()->event = array(
-);
+RQ::GetTest()->event = array();
 
 //-- 仮想発現をセット --//
 RQ::$get->say = '';
@@ -398,8 +396,7 @@ if ($vote_view_mode) { //投票表示モード
   RQ::$get->situation = $stack->situation;
   RQ::$get->back_url  = '';
   if (RQ::$get->vote) { //投票処理
-    HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
-    echo '</head><body>'."\n";
+    HTML::OutputHeader('投票テスト', 'game', true); //HTMLヘッダ
     if (RQ::$get->target_no == 0) { //空投票検出
       HTML::OutputResult('空投票', '投票先を指定してください');
     }
@@ -506,12 +503,12 @@ if ($role_view_mode) { //画像表示モード
 }
 $cast_view_mode = false;
 if ($cast_view_mode) { //配役情報表示モード
-  $INIT_CONF->LoadClass('CAST_CONF');
-  //PrintData($CAST_CONF->RateToProbability($CAST_CONF->chaos_hyper_random_role_list));
-  //PrintData(array_sum($CAST_CONF->chaos_hyper_random_role_list));
-  //PrintData($CAST_CONF->chaos_role_group_rate_list);
+  $INIT_CONF->LoadFile('chaos_config');
+  //PrintData(Lottery::RateToProbability(ChaosConfig::$chaos_hyper_random_role_list));
+  //PrintData(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
+  //PrintData(ChaosConfig::$role_group_rate_list);
   echo '<table border="1" cellspacing="0">'."\n".'<tr><th>人口</th>';
-  foreach ($CAST_CONF->chaos_role_group_rate_list as $group => $rate) {
+  foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
     $role  = $ROLE_DATA->DistinguishRoleGroup($group);
     $class = $ROLE_DATA->DistinguishRoleClass($role);
     echo '<th class="' . $class . '">' . $ROLE_DATA->short_role_list[$role] . '</th>';
@@ -519,7 +516,7 @@ if ($cast_view_mode) { //配役情報表示モード
   echo '</tr>'."\n";
   for($i = 8; $i <= 32; $i++) {
     echo '<tr align="right"><td><strong>' . $i . '</strong></td>';
-    foreach ($CAST_CONF->chaos_role_group_rate_list as $rate) {
+    foreach (ChaosConfig::$role_group_rate_list as $rate) {
       echo '<td>' . round($i / $rate) . '</td>';
     }
     echo '</tr>'."\n";
@@ -636,6 +633,7 @@ do {
 //PrintData($ROLES->loaded->file);
 //PrintData(array_keys($ROLES->loaded->class));
 //PrintData($INIT_CONF->loaded->class);
-DB::$ROOM->scene_start_time = 20120429;
-OutputRealTimer(20120430);
+$INIT_CONF->LoadFile('time_config');
+DB::$ROOM->scene_start_time = 201204291100;
+OutputRealTimer(201204301105);
 HTML::OutputFooter();

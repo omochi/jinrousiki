@@ -5,7 +5,7 @@
   ・発言フィルタ：自分以外の名前が見えなくなる (共有者の囁き・人狼の遠吠えには影響しない)
     - 問題点：観戦モードにすると普通に見えてしまう
 */
-class Role_blinder extends Role{
+class Role_blinder extends Role {
   function __construct(){ parent::__construct(); }
 
   //スキップ判定

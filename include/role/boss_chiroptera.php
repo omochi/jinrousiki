@@ -4,7 +4,7 @@
   ○仕様
   ・身代わり対象者：蝙蝠陣営
 */
-class Role_boss_chiroptera extends Role{
+class Role_boss_chiroptera extends Role {
   public $mix_in = 'protected';
   function __construct(){ parent::__construct(); }
 

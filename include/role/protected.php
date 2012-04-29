@@ -4,14 +4,14 @@
   ○仕様
   ・人狼襲撃耐性：身代わり (庇護者付加者)
 */
-class Role_protected extends Role{
+class Role_protected extends Role {
   function __construct(){ parent::__construct(); }
 
   function WolfEatResist(){
-    if($this->IgnoreSacrifice()) return false;
+    if ($this->IgnoreSacrifice()) return false;
     $stack = array();
-    foreach($this->GetActor()->GetPartner($this->role) as $id){
-      if(DB::$USER->ByID($id)->IsLive(true)) $stack[] = $id;
+    foreach ($this->GetActor()->GetPartner($this->role) as $id) {
+      if (DB::$USER->ByID($id)->IsLive(true)) $stack[] = $id;
     }
     return $this->Sacrifice($stack);
   }
@@ -21,19 +21,19 @@ class Role_protected extends Role{
 
   //身代わり処理
   function Sacrifice($stack){
-    //PrintData($stack, "Sacrifice [{$this->role}]");
-    if(count($stack) < 1) return false;
+    //PrintData($stack, sprintf('Sacrifice [%s]', $this->role));
+    if (count($stack) < 1) return false;
     DB::$USER->Kill(GetRandom($stack), 'SACRIFICE');
     return true;
   }
 
   //人狼襲撃得票カウンター (Mixin 用)
   function WolfEatReaction(){
-    if($this->IgnoreSacrifice()) return false;
+    if ($this->IgnoreSacrifice()) return false;
     $stack = array();
     $class = $this->GetClass($method = 'IsSacrifice');
-    foreach(DB::$USER->rows as $user){
-      if($user->IsLive(true) && $class->$method($user)) $stack[] = $user->user_no;
+    foreach (DB::$USER->rows as $user) {
+      if ($user->IsLive(true) && $class->$method($user)) $stack[] = $user->user_no;
     }
     return $this->Sacrifice($stack);
   }

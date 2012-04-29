@@ -15,13 +15,13 @@ class Role_challenge_lovers extends Role {
   protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
 
   function SuddenDeath(){
-    if($this->IgnoreSuddenDeath() || DB::$ROOM->date < 5) return;
-    if(! is_array($cupid_list = $this->GetStack())){ //QP のデータをセット
+    if ($this->IgnoreSuddenDeath() || DB::$ROOM->date < 5) return;
+    if (! is_array($cupid_list = $this->GetStack())){ //QP のデータをセット
       $cupid_list = array();
-      foreach(array_keys($this->GetStack('target')) as $uname){
+      foreach (array_keys($this->GetStack('target')) as $uname) {
 	$user = DB::$USER->ByRealUname($uname);
-	if($user->IsLovers()){
-	  foreach($user->GetPartner('lovers') as $id) $cupid_list[$id][] = $user->user_no;
+	if ($user->IsLovers()) {
+	  foreach ($user->GetPartner('lovers') as $id) $cupid_list[$id][] = $user->user_no;
 	}
       }
       //PrintData($cupid_list, 'QP');
@@ -32,10 +32,10 @@ class Role_challenge_lovers extends Role {
     //PrintData($stack, $this->GetUname());
 
     $id = $this->GetActor()->user_no;
-    foreach($this->GetActor()->GetPartner('lovers') as $cupid_id){
-      if(! array_key_exists($cupid_id, $cupid_list)) return;
-      foreach($cupid_list[$cupid_id] as $lovers_id){
-	if($lovers_id != $id && in_array(DB::$USER->ByID($lovers_id)->uname, $stack)) return;
+    foreach ($this->GetActor()->GetPartner('lovers') as $cupid_id) {
+      if (! array_key_exists($cupid_id, $cupid_list)) return;
+      foreach ($cupid_list[$cupid_id] as $lovers_id) {
+	if ($lovers_id != $id && in_array(DB::$USER->ByID($lovers_id)->uname, $stack)) return;
       }
     }
     $this->SetSuddenDeath($this->sudden_death);

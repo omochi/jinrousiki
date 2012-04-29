@@ -7,7 +7,7 @@
   ○問題点
   ・最後が改行だった場合はカットされる (explode + implode の仕様)
 */
-class Role_line_reverse extends Role{
+class Role_line_reverse extends Role {
   function __construct(){ parent::__construct(); }
 
   function ConvertSay(){

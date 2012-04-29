@@ -546,13 +546,13 @@ function AggregateVoteGameStart($force_start = false){
   if ($is_chaos && ! DB::$ROOM->IsOption('no_sub_role')){
     //ランダムなサブ役職のコードリストを作成
     if (DB::$ROOM->IsOption('sub_role_limit_easy')) {
-       $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_easy_list;
+      $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_easy_list;
     }
     elseif (DB::$ROOM->IsOption('sub_role_limit_normal')) {
-       $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_normal_list;
+      $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_normal_list;
     }
     elseif (DB::$ROOM->IsOption('sub_role_limit_hard')) {
-       $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_hard_list;
+      $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_hard_list;
     }
     else {
       $sub_role_keys = array_keys($ROLE_DATA->sub_role_list);

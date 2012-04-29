@@ -6,7 +6,7 @@
   ・ショック死：恋人からの得票
 */
 RoleManager::LoadFile('angel');
-class Role_cursed_angel extends Role_angel{
+class Role_cursed_angel extends Role_angel {
   public $mix_in = 'chicken';
   public $sudden_death = 'SEALED';
   function __construct(){ parent::__construct(); }
@@ -16,9 +16,9 @@ class Role_cursed_angel extends Role_angel{
   }
 
   function SuddenDeath(){
-    if($this->IgnoreSuddenDeath()) return;
-    foreach($this->GetVotedUname() as $uname){
-      if(DB::$USER->ByRealUname($uname)->IsLovers()){
+    if ($this->IgnoreSuddenDeath()) return;
+    foreach ($this->GetVotedUname() as $uname) {
+      if (DB::$USER->ByRealUname($uname)->IsLovers()) {
 	$this->SetSuddenDeath($this->sudden_death);
 	break;
       }

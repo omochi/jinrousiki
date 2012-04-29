@@ -108,7 +108,7 @@ class Text {
 //-- セキュリティ関連クラス --//
 class Security {
   //リファラチェック
-  function CheckReferer($page, $white_list = null){
+  static function CheckReferer($page, $white_list = null){
     if (is_array($white_list)) { //ホワイトリストチェック
       foreach ($white_list as $host) {
 	if (strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
@@ -119,7 +119,7 @@ class Security {
   }
 
   //ブラックリストチェック
-  function CheckBlackList(){
+  static function CheckBlackList(){
     $addr = $_SERVER['REMOTE_ADDR'];
     $host = gethostbyaddr($addr);
     foreach (array('white' => false, 'black' => true) as $type => $flag) {
@@ -139,7 +139,7 @@ class Security {
    この値がtrueの場合、強制的に詳細なスキャンが実行されます。
    * @return : boolean : 危険な値が発見された場合 true、それ以外の場合 false
    */
-  function CheckValue($value, $found = false){
+  static function CheckValue($value, $found = false){
     $num = '22250738585072011';
     if ($found || (strpos(str_replace('.', '', serialize($value)), $num) !== false)) {
       //文字列の中に問題の数字が埋め込まれているケースを排除する
@@ -165,7 +165,7 @@ class Security {
 //-- 日時関連 --//
 class Time {
   //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
-  function Get(){
+  static function Get(){
     $time = time();
     if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
     return $time;
@@ -177,12 +177,12 @@ class Time {
   }
 
   //TZ 補正をかけた日時を返す
-  function GetDate($format, $time){
+  static function GetDate($format, $time){
     return ServerConfig::$adjust_time_difference ? gmdate($format, $time) : date($format, $time);
   }
 
   //時間 (秒) を変換する
-  function Convert($seconds){
+  static function Convert($seconds){
     $sentence = '';
     $hours    = 0;
     $minutes  = 0;
@@ -203,7 +203,7 @@ class Time {
   }
 
   //TIMESTAMP 形式の時刻を変換する
-  function ConvertTimeStamp($time_stamp, $date = true){
+  static function ConvertTimeStamp($time_stamp, $date = true){
     $time = strtotime($time_stamp);
     if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
     return $date ? self::GetDate('Y/m/d (D) H:i:s', $time) : $time;
@@ -216,7 +216,8 @@ class HTML {
   static function GenerateHeader($title, $css = 'action', $close = false){
     $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html lang="ja"><head>
+<html lang="ja">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=%s">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
@@ -276,17 +277,17 @@ EOF;
 
   //結果ページ HTML ヘッダ出力
   static function OutputResultHeader($title, $url = ''){
-    $str = self::GenerateHeader($title);
-    if ($url != '') $str .= sprintf('<meta http-equiv="Refresh" content="1;URL=%s">'."\n", $url);
-    if (is_object(DB::$ROOM)) $str .= DB::$ROOM->GenerateCSS();
-    echo $str . self::GenerateBodyHeader();
+    self::OutputHeader($title);
+    if ($url != '') printf('<meta http-equiv="Refresh" content="1;URL=%s">'."\n", $url);
+    if (is_object(DB::$ROOM)) echo DB::$ROOM->GenerateCSS();
+    self::OutputBodyHeader();
   }
 
   //結果ページ出力
   static function OutputResult($title, $body, $url = ''){
     DB::Disconnect();
     self::OutputResultHeader($title, $url);
-    echo $body . "\n";
+    echo $body . "<br>\n";
     self::OutputFooter(true);
   }
 
@@ -294,7 +295,8 @@ EOF;
   static function OutputFrameHeader($title){
     $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html lang="ja"><head>
+<html lang="ja">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=%s">
 <title>%s</title>
 </head>
@@ -306,11 +308,13 @@ EOF;
   //フレーム HTML フッタ出力
   static function OutputFrameFooter(){
     echo <<<EOF
-<noframes><body>
+<noframes>
+<body>
 フレーム非対応のブラウザの方は利用できません。
-</body></noframes>
-</frameset></html>
-
+</body>
+</noframes>
+</frameset>
+</html>
 EOF;
   }
 }

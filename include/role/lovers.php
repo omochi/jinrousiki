@@ -3,7 +3,7 @@
   ◆恋人 (lovers)
   ○仕様
 */
-class Role_lovers extends Role{
+class Role_lovers extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputImage(){ return; }
@@ -11,11 +11,12 @@ class Role_lovers extends Role{
   protected function OutputPartner(){
     $target = $this->GetActor()->partner_list;
     $stack  = array();
-    foreach(DB::$USER->rows as $user){
-      if($this->IsActor($user->uname)) continue;
-      if($user->IsPartner($this->role, $target) ||
-	 $this->GetActor()->IsPartner('dummy_chiroptera', $user->user_no) ||
-	 (DB::$ROOM->date == 1 && $user->IsPartner('sweet_status', $target))){ //夢求愛者・悲恋対応
+    foreach (DB::$USER->rows as $user) {
+      if ($this->IsActor($user->uname)) continue;
+      //夢求愛者・悲恋対応
+      if ($user->IsPartner($this->role, $target) ||
+	  $this->GetActor()->IsPartner('dummy_chiroptera', $user->user_no) ||
+	  (DB::$ROOM->date == 1 && $user->IsPartner('sweet_status', $target))) {
 	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
       }
     }
@@ -26,9 +27,9 @@ class Role_lovers extends Role{
   function Whisper($builder, $voice){
     global $MESSAGE;
 
-    if(! $builder->flag->sweet_ringing) return false; //スキップ判定
+    if (! $builder->flag->sweet_ringing) return false; //スキップ判定
     $str = $MESSAGE->lovers_talk;
-    foreach($builder->filter as $filter) $filter->FilterWhisper($voice, $str); //フィルタリング処理
+    foreach ($builder->filter as $filter) $filter->FilterWhisper($voice, $str); //フィルタリング処理
     $builder->RawAddTalk('', '恋人の囁き', $str, $voice);
     return true;
   }

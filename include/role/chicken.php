@@ -4,12 +4,14 @@
   ○仕様
   ・ショック死：得票
 */
-class Role_chicken extends Role{
+class Role_chicken extends Role {
   public $sudden_death = 'CHICKEN';
   function __construct(){ parent::__construct(); }
 
   //ショック死判定
-  function SuddenDeath(){ if($this->IsSuddenDeath()) $this->SetSuddenDeath($this->sudden_death); }
+  function SuddenDeath(){
+    if ($this->IsSuddenDeath()) $this->SetSuddenDeath($this->sudden_death);
+  }
 
   //ショック死データ登録
   function SetSuddenDeath($type){ $this->SetStack($type, 'sudden_death'); }
