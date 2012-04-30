@@ -29,7 +29,6 @@ class InitializeConfig {
     'GAME_OPT_CONF'       => 'game_option_config',
     'CAST_CONF'           => 'cast_config',
     'ICON_CONF'           => 'icon_config',
-    'SOUND'               => 'sound_config',
     'USER_ICON'           => 'user_icon_config',
     'MENU_LINK'           => array('menu_config', 'index_functions'),
     'BBS_CONF'            => 'bbs_config',
@@ -60,8 +59,10 @@ class InitializeConfig {
     'user_class'          => array('game_config', 'game_functions'),
     'talk_class'          => 'user_class',
     'role_class'          => 'game_format',
+    'sound_class'         => 'sound_config',
     'setup_class'         => array('setup_config', 'version', 'database_class'),
-    'paparazzi_class'     => 'paparazzi'
+    'paparazzi_class'     => 'paparazzi',
+    'test/objection'      => array('game_config', 'sound_class')
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
@@ -82,7 +83,6 @@ class InitializeConfig {
     'GAME_OPT_CONF' => 'GameOptionConfig',
     'CAST_CONF'     => 'CastConfig',
     'ICON_CONF'     => 'IconConfig',
-    'SOUND'         => 'SoundConfig',
     'USER_ICON'     => 'UserIconConfig',
     'MENU_LINK'     => 'MenuLinkBuilder',
     'BBS_CONF'      => 'BBSConfig',

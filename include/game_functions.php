@@ -1,40 +1,68 @@
 <?php
+//-- 日時関連 (Game 拡張) --//
+class GameTime extends Time {
+  //リアルタイムの経過時間
+  static function GetRealPass(&$left_time){
+    $start_time = DB::$ROOM->scene_start_time; //シーンの最初の時刻を取得
+    $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間
+    $pass_time  = DB::$ROOM->system_time - $start_time;
+    if (DB::$ROOM->IsOption('wait_morning') && DB::$ROOM->IsDay()) { //早朝待機制
+      $base_time += TimeConfig::$wait_morning; //制限時間を追加する
+      DB::$ROOM->event->wait_morning = $pass_time <= TimeConfig::$wait_morning; //待機判定
+    }
+    if (($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
+    return $start_time + $base_time;
+  }
+
+  //会話で時間経過制の経過時間
+  static function GetTalkPass(&$left_time, $silence = false){
+    $query = 'SELECT SUM(spend_time) FROM talk' . DB::$ROOM->GetQuery() .
+      sprintf(" AND scene = '%s'", DB::$ROOM->scene);
+    $spend_time = (int)DB::FetchResult($query);
+
+    if (DB::$ROOM->IsDay()) { //昼は12時間
+      $base_time = TimeConfig::$day;
+      $full_time = 12;
+    }
+    else { //夜は6時間
+      $base_time = TimeConfig::$night;
+      $full_time = 6;
+    }
+    if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
+    $base_left_time = $silence ? TimeConfig::$silence_pass : $left_time; //仮想時間の計算
+    return self::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
+  }
+
+  //リアルタイム表示に使う JavaScript の変数を出力
+  static function OutputTimer($end_time, $type = null, $flag = false){
+    $sentence    = sprintf('　%sまで ', DB::$ROOM->IsDay() ? '日没' : '夜明け');
+    $start_date  = self::GetJavaScriptDate(DB::$ROOM->scene_start_time);
+    $end_date    = self::GetJavaScriptDate($end_time);
+    $server_date = self::GetJavaScriptDate(DB::$ROOM->system_time);
+    $sound_path  = isset($type) && class_exists(Sound) ? Sound::GenerateJavaScript($type) : '';
+    HTML::OutputJavaScript('output_realtime');
+    echo '<script language="JavaScript"><!--'."\n";
+    echo 'var sentence = "' . $sentence . '";'."\n";
+    echo "var end_date = {$end_date} * 1 + (new Date() - {$server_date});\n";
+    echo "var diff_seconds = Math.floor(({$end_date} - {$start_date}) / 1000);\n";
+    echo 'var sound_flag = ' . (is_null($type) ? 'false' : 'true') . ';'."\n";
+    echo 'var countdown_flag = ' . ($flag ? 'true' : 'false') . ';'."\n";
+    echo 'var sound_file = "' . $sound_path . '";'."\n";
+    echo 'var alert_distance = "' . TimeConfig::$alert_distance . '";'."\n";
+    echo '// --></script>'."\n";
+  }
+
+  //JavaScript の Date() オブジェクト作成コードを生成する
+  static function GetJavaScriptDate($time){
+    $time_list = explode(',', self::GetDate('Y,m,j,G,i,s', $time));
+    $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
+    return sprintf('new Date(%s)', implode(',', $time_list));
+  }
+}
+
 //-- 基礎関数 --//
 //配列からランダムに一つ取り出す
 function GetRandom($array){ return $array[array_rand($array)]; }
-
-//-- 時間関連 --//
-//リアルタイムの経過時間
-function GetRealPassTime(&$left_time){
-  $start_time = DB::$ROOM->scene_start_time; //シーンの最初の時刻を取得
-  $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間
-  $pass_time  = DB::$ROOM->system_time - $start_time;
-  if (DB::$ROOM->IsOption('wait_morning') && DB::$ROOM->IsDay()) { //早朝待機制
-    $base_time += TimeConfig::$wait_morning; //制限時間を追加する
-    DB::$ROOM->event->wait_morning = $pass_time <= TimeConfig::$wait_morning; //待機判定
-  }
-  if (($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
-  return $start_time + $base_time;
-}
-
-//会話で時間経過制の経過時間
-function GetTalkPassTime(&$left_time, $silence = false){
-  $query = 'SELECT SUM(spend_time) FROM talk' . DB::$ROOM->GetQuery() .
-    sprintf(" AND scene = '%s'", DB::$ROOM->scene);
-  $spend_time = (int)DB::FetchResult($query);
-
-  if (DB::$ROOM->IsDay()) { //昼は12時間
-    $base_time = TimeConfig::$day;
-    $full_time = 12;
-  }
-  else { //夜は6時間
-    $base_time = TimeConfig::$night;
-    $full_time = 6;
-  }
-  if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
-  $base_left_time = $silence ? TimeConfig::$silence_pass : $left_time; //仮想時間の計算
-  return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
-}
 
 //-- 役職関連 --//
 //巫女の判定結果 (システムメッセージ)
@@ -250,7 +278,7 @@ function OutputGamePageHeader(){
   $game_top = '<a id="game_top"></a>';
   if (DB::$ROOM->IsPlaying() && DB::$ROOM->IsRealTime() &&
       ! (DB::$ROOM->log_mode || DB::$ROOM->heaven_mode)) {
-    $end_time   = GetRealPassTime($left_time);
+    $end_time   = GameTime::GetRealPass($left_time);
     $sound_type = null;
     $alert_flag = false;
     $on_load .= 'output_realtime();';
@@ -274,39 +302,11 @@ function OutputGamePageHeader(){
 	}
       }
     }
-    OutputRealTimer($end_time, $sound_type, $alert_flag);
+    GameTime::OutputTimer($end_time, $sound_type, $alert_flag);
     $game_top .= "\n".'<span id="vote_alert"></span>';
   }
   $body = isset($on_load) ? sprintf('<body onLoad="%s">', $on_load) : '<body>';
   echo '</head>'."\n".$body."\n".$game_top."\n";
-}
-
-//リアルタイム表示に使う JavaScript の変数を出力
-function OutputRealTimer($end_time, $type = null, $flag = false){
-  global $SOUND;
-
-  $sound_path  = is_null($type) || ! is_object($SOUND) ? '' : $SOUND->GenerateJS($type);
-  $sentence    = sprintf('　%sまで ', DB::$ROOM->IsDay() ? '日没' : '夜明け');
-  $start_date  = GenerateJavaScriptDate(DB::$ROOM->scene_start_time);
-  $end_date    = GenerateJavaScriptDate($end_time);
-  $server_date = GenerateJavaScriptDate(DB::$ROOM->system_time);
-  HTML::OutputJavaScript('output_realtime');
-  echo '<script language="JavaScript"><!--'."\n";
-  echo 'var sentence = "' . $sentence . '";'."\n";
-  echo "var end_date = {$end_date} * 1 + (new Date() - {$server_date});\n";
-  echo "var diff_seconds = Math.floor(({$end_date} - {$start_date}) / 1000);\n";
-  echo 'var sound_flag = ' . (is_null($type) ? 'false' : 'true') . ';'."\n";
-  echo 'var countdown_flag = ' . ($flag ? 'true' : 'false') . ';'."\n";
-  echo 'var sound_file = "' . $sound_path . '";'."\n";
-  echo 'var alert_distance = "' . TimeConfig::$alert_distance . '";'."\n";
-  echo '// --></script>'."\n";
-}
-
-//JavaScript の Date() オブジェクト作成コードを生成する
-function GenerateJavaScriptDate($time){
-  $time_list = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
-  $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
-  return 'new Date(' . implode(',', $time_list) . ')';
 }
 
 //自動更新のリンクを出力
@@ -571,11 +571,11 @@ function OutputVoteList(){
 
 //再投票の時、メッセージを表示
 function OutputRevoteList(){
-  global $MESSAGE, $COOKIE, $SOUND;
+  global $MESSAGE, $COOKIE;
 
   if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
       DB::$ROOM->vote_count > $COOKIE->vote_times) {
-    $SOUND->Output('revote'); //音を鳴らす (未投票突然死対応)
+    Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
   }
   if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ
 

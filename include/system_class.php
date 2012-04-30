@@ -268,41 +268,6 @@ class WinnerImage extends WinnerImageBase {
   public $class     = 'winner';
 }
 
-//-- 音源処理の基底クラス --//
-class SoundConfigBase {
-  //ファイルパス生成
-  function GetPath($type, $file = null){
-    $path = JINRO_ROOT . '/' . $this->path;
-    return $path . '/' . (is_null($file) ? $this->$type : $file) . '.' . $this->extension;
-  }
-
-  //HTML 生成
-  function Generate($type, $file = null){
-    $path = $this->GetPath($type, $file);
-    return <<<EOF
-<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0" width="0" height="0">
-<param name="movie" value="{$path}">
-<param name="quality" value="high">
-<embed src="{$path}" type="application/x-shockwave-flash" quality="high" width="0" height="0" loop="false" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
-</embed>
-</object>
-
-EOF;
-  }
-
-  //HTML 生成 (JavaScript 用)
-  function GenerateJS($type){
-    $path = $this->GetPath($type);
-    return "<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,0,0' width='0' height='0'>" .
-"<param name='movie' value='" . $path . "'><param name='quality' value='high'>" .
-"<embed src='" . $path . "' type='application/x-shockwave-flash' quality='high' width='0' height='0' loop='false' pluginspage='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" .
-"</embed></object>";
-  }
-
-  //出力
-  function Output($type){ echo $this->Generate($type); }
-}
-
 //-- Twitter 投稿用の基底クラス --//
 class TwitterConfigBase {
   //メッセージのセット

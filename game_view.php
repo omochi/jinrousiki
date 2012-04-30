@@ -49,13 +49,12 @@ echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 C
 $on_load = '';
 if (DB::$ROOM->IsPlaying()) { //経過時間を取得
   if (DB::$ROOM->IsRealTime()) { //リアルタイム制
-    $end_time = GetRealPassTime($left_time);
     $on_load  = ' onLoad="output_realtime();"';
-    OutputRealTimer($end_time);
+    GameTime::OutputTimer(GameTime::GetRealPass($left_time));
   }
   else { //会話で時間経過制
     $INIT_CONF->LoadFile('time_config');
-    $left_talk_time = GetTalkPassTime($left_time);
+    $left_talk_time = GameTime::GetTalkPass($left_time);
   }
 }
 
