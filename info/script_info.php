@@ -7,10 +7,8 @@ $INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'MESSAGE', 'GAME_OPT_MESS');
 //-- 関数定義 --//
 //村の最大人数設定出力
 function OutputMaxUser(){
-  global $CAST_CONF;
-
   $str = '[ ' . implode('人・', RoomConfig::$max_user_list);
-  $min_user = min(array_keys($CAST_CONF->role_list));
+  $min_user = min(array_keys(CastConfig::$role_list));
   $str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
   $str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
   echo $str;
@@ -18,10 +16,10 @@ function OutputMaxUser(){
 
 //身代わり君がなれない役職のリスト出力
 function OutputDisableDummyBoyRole(){
-  global $ROLE_DATA, $CAST_CONF;
+  global $ROLE_DATA;
 
   $stack = array('人狼', '妖狐');
-  foreach ($CAST_CONF->disable_dummy_boy_role_list as $role) {
+  foreach (CastConfig::$disable_dummy_boy_role_list as $role) {
     $stack[] = $ROLE_DATA->main_role_list[$role];
   }
   echo implode($stack, '・');

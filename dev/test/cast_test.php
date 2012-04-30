@@ -1,8 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('CAST_CONF', 'ICON_CONF', 'ROLES', 'ROOM_OPT');
-$INIT_CONF->LoadFile('room_config', 'game_vote_functions', 'user_class');
+$INIT_CONF->LoadClass('ICON_CONF', 'ROLES', 'ROOM_OPT');
+$INIT_CONF->LoadFile('room_config', 'cast_config', 'game_vote_functions', 'user_class');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame', true);
@@ -145,7 +145,7 @@ foreach (RQ::GetTest()->test_users as $id => $user) {
 //PrintData(RQ::GetTest()->test_users[22]);
 
 //-- 設定調整 --//
-#$CAST_CONF->decide = 11;
+#CastConfig::$decide = 11;
 #RQ::GetTest()->test_users[3]->live = 'kick';
 
 //-- データ収集 --//

@@ -2,21 +2,21 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 $INIT_CONF->LoadFile('info_functions');
-$INIT_CONF->LoadClass('ROLE_DATA', 'CAST_CONF', 'GAME_OPT_CAPT');
+$INIT_CONF->LoadClass('ROLE_DATA', 'GAME_OPT_CAPT');
 
 //-- 関数定義 --//
 //追加役職の人数と説明ページリンク出力
 function OutputAddRole($role, $add = false){
-  global $ROLE_DATA, $CAST_CONF;
-  echo '村の人口が' . $CAST_CONF->$role . '人以上になったら' .
+  global $ROLE_DATA;
+  echo '村の人口が' . CastConfig::$$role . '人以上になったら' .
     $ROLE_DATA->GenerateRoleLink($role) . ($add ? 'を追加' : 'が登場') . 'します';
 }
 
 //お祭り村の配役リスト出力
 function OutputFestivalList(){
-  global $ROLE_DATA, $CAST_CONF;
+  global $ROLE_DATA;
 
-  $stack  = $CAST_CONF->festival_role_list;
+  $stack  = CastConfig::$festival_role_list;
   $format = '%' . strlen(max(array_keys($stack))) . 's人：';
   $str    = '<pre>'."\n";
   ksort($stack); //人数順に並び替え
@@ -32,9 +32,9 @@ function OutputFestivalList(){
 
 //村人置換系オプションのサーバ設定出力
 function OutputReplaceRole($option){
-  global $ROLE_DATA, $CAST_CONF;
+  global $ROLE_DATA;
   echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
-    $ROLE_DATA->GenerateRoleLink($CAST_CONF->replace_role_list[$option]) . 'になります';
+    $ROLE_DATA->GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
 }
 
 //-- 表示 --//

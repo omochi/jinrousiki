@@ -7,8 +7,8 @@ if ($disable) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
-$INIT_CONF->LoadFile('room_config', 'oldlog_functions');
-$INIT_CONF->LoadClass('CAST_CONF', 'ROOM_IMG', 'GAME_OPT_MESS');
+$INIT_CONF->LoadFile('room_config', 'cast_config', 'oldlog_functions');
+$INIT_CONF->LoadClass('ROOM_IMG', 'GAME_OPT_MESS');
 $INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
 DB::Connect(RQ::$get->db_no);
 
@@ -22,11 +22,10 @@ RQ::$get->heaven_talk = true;
 
 $db_delete_mode = false; //部屋削除のみ
 if ($db_delete_mode) {
-  HTML::OutputHeader('DB削除モード');
-  HTML::OutputBodyHeader();
+  HTML::OutputHeader('DB削除モード', null, true);
   for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
     DB::DeleteRoom($i);
-    echo "{$i} 番地を削除しました<br>";
+    printf('%d 番地を削除しました<br>', $i);
   }
   DB::Optimize();
   HTML::OutputFooter(true);
@@ -39,7 +38,7 @@ $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
 $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
 
 $room_delete = false; //DB削除設定
-$header = "../log_test/{RQ::$get->prefix}";
+$header = sprintf('../log_test/%s', RQ::$get->prefix);
 $footer = '</body></html>'."\n";
 for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
   RQ::$get->room_no = $i;

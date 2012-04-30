@@ -237,21 +237,19 @@ class RoomOption extends OptionParser {
 
   /** ゲームオプションの画像タグを作成する */
   function GenerateImageList() {
-    global $ROOM_IMG, $CAST_CONF;
+    global $ROOM_IMG;
 
     $str = '';
-    foreach(self::$icon_order as $option){
+    foreach (self::$icon_order as $option) {
       $define = self::Get($option);
-      if(!isset($define, $this->$option)) {
-	continue;
-      }
+      if (! isset($define, $this->$option)) continue;
       $define->LoadMessages();
       $footer = '';
       $sentence = $define->caption;
-      if(property_exists($CAST_CONF, $option) && is_int($CAST_CONF->$option)){
-	$sentence .= '(' . $CAST_CONF->$option . '人～)';
+      if (isset(CastConfig::$option) && is_int(CastConfig::$$option)) {
+	$sentence .= sprintf('(%d人～)', CastConfig::$$option);
       }
-      switch($option){
+      switch ($option) {
       case 'real_time':
         list($day, $night) = $this->options[$option];
         $sentence .= "　昼： {$day} 分　夜： {$night} 分";

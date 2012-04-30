@@ -44,12 +44,12 @@ EOF;
 
 //人数とゲームオプションに応じた役職テーブルを返す
 function GetRoleList($user_count){
-  global $CAST_CONF, $ROLE_DATA;
+  global $ROLE_DATA;
 
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
 
-  $role_list = $CAST_CONF->role_list[$user_count]; //人数に応じた配役リストを取得
+  $role_list = CastConfig::$role_list[$user_count]; //人数に応じた配役リストを取得
   if (is_null($role_list)) { //リストの有無をチェック
     $str = $user_count . '人は設定されていません';
     OutputVoteResult($error_header . $str . $error_footer, true);
@@ -170,7 +170,7 @@ function GetRoleList($user_count){
     if (DB::$ROOM->IsDummyBoy()) { //-- 身代わり君モード補正 --//
       $dummy_count   = $user_count; //身代わり君対象役職数
       $target_stack  = array(); //補正対象リスト
-      $disable_stack = $CAST_CONF->GetDummyBoyRoleList(); //身代わり君の対象外役職リスト
+      $disable_stack = Cast::GetDummyBoyRoleList(); //身代わり君の対象外役職リスト
       foreach ($role_list as $role => $count) { //対象役職の情報を収集
 	foreach ($disable_stack as $disable_role) {
 	  if (strpos($role, $disable_role) !== false) {
@@ -220,37 +220,25 @@ function GetRoleList($user_count){
     }
   }
   elseif (DB::$ROOM->IsOption('duel')) { //決闘村
-    $role_list = $CAST_CONF->SetDuel($user_count);
+    $role_list = Cast::SetDuel($user_count);
   }
   elseif (DB::$ROOM->IsOption('gray_random')) { //グレラン村
-    $role_list = $CAST_CONF->SetGrayRandom($user_count);
+    $role_list = Cast::SetGrayRandom($user_count);
   }
   elseif (DB::$ROOM->IsQuiz()) { //クイズ村
-    $role_list = $CAST_CONF->SetQuiz($user_count);
+    $role_list = Cast::SetQuiz($user_count);
   }
   else { //通常村
     $filter = new OptionManager();
     $filter->SetRole($role_list, $user_count);
   }
-  $CAST_CONF->ReplaceRole($role_list); //村人置換村
-
-  //$is_single_role = true;
-  $is_single_role = false;
-  if ($is_single_role) { //一人一職村対応
-    $role_list = array(); //配役をリセット
-    $base_role_list = array('wolf', 'mage', 'human', 'jammer_mad', 'necromancer',
-			    'common', 'crisis_priest', 'boss_wolf', 'guard', 'dark_fairy',
-			    'poison', 'agitate_mad', 'fox', 'cupid', 'soul_mage',
-			    'resist_wolf', 'trap_common', 'yama_necromancer', 'child_fox', 'mania',
-			    'tongue_wolf', 'assassin', 'fend_guard', 'cute_fox', 'ghost_common',
-			    'cute_wolf', 'black_fox', 'light_fairy', 'poison_jealousy', 'self_cupid',
-			    'silver_wolf','scarlet_wolf','wise_wolf', 'mind_cupid', 'dummy_chiroptera',);
-    for ($i = $user_count; $i > 0; $i--) $role_list[array_shift($base_role_list)]++;
-  }
+  Cast::ReplaceRole($role_list); //村人置換村
 
   //お祭り村
   if (DB::$ROOM->IsOption('festival') &&
-      is_array($target =& $CAST_CONF->festival_role_list[$user_count])) $role_list = $target;
+      is_array($target =& CastConfig::$festival_role_list[$user_count])) {
+    $role_list = $target;
+  }
 
   if (@$role_list['human'] < 0) { //村人の人数をチェック
     $str = '「村人」の人数がマイナスになってます';
@@ -352,7 +340,7 @@ function GenerateRoleNameList($role_count_list, $css = false){
 
 //ゲーム開始投票集計処理
 function AggregateVoteGameStart($force_start = false){
-  global $CAST_CONF, $MESSAGE, $ROLE_DATA, $ROLES;
+  global $MESSAGE, $ROLE_DATA, $ROLES;
 
   $user_count = DB::$USER->GetUserCount(); //ユーザ総数を取得
   if (DB::$ROOM->test_mode) {
@@ -373,7 +361,7 @@ function AggregateVoteGameStart($force_start = false){
   }
 
   //規定人数に足りないか、全員投票していなければ処理終了
-  if ($vote_count != $user_count || $vote_count < min(array_keys($CAST_CONF->role_list))) {
+  if ($vote_count != $user_count || $vote_count < min(array_keys(CastConfig::$role_list))) {
     return false;
   }
 
@@ -411,7 +399,7 @@ function AggregateVoteGameStart($force_start = false){
     }
     else {
       shuffle($role_list); //配列をシャッフル
-      $stack = $CAST_CONF->GetDummyBoyRoleList(); //身代わり君の対象外役職リスト
+      $stack = Cast::GetDummyBoyRoleList(); //身代わり君の対象外役職リスト
 
       for($i = count($role_list); $i > 0; $i--){
 	$role = array_shift($role_list); //配役リストから先頭を抜き出す
@@ -444,7 +432,7 @@ function AggregateVoteGameStart($force_start = false){
     foreach ($uname_list as $uname){
       do{
 	$role = DB::$USER->GetRole($uname); //希望役職を取得
-	if ($role == '' || mt_rand(1, 100) > $CAST_CONF->wish_role_rate) break;
+	if ($role == '' || mt_rand(1, 100) > CastConfig::$wish_role_rate) break;
 	$fit_role = $role;
 
 	if ($wish_group){ //特殊村はグループ単位で希望処理を行なう

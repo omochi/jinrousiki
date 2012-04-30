@@ -7,6 +7,7 @@ OutputInfoPageHeader('開発履歴', 1, 'develop_history');
 <p>
 Ver. 2.1.0
 <a href="#ver210a1">α1</a>
+<a href="#ver210a2">α2</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -14,6 +15,13 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210a2">Ver. 2.1.0 α2 (Rev. 560) : 2012/04/30 (Mon) 16:16</h2>
+<ul>
+<li>「傾奇者」実装</li>
+<li>「長老」「老兵」仕様変更</li>
+<li>システムクラスを再設計</li>
+</ul>
 
 <h2 id="ver210a1">Ver. 2.1.0 α1 (Rev. 542) : 2012/04/17 (Tue) 01:10</h2>
 <ul>

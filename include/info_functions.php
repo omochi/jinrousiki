@@ -35,8 +35,7 @@ class TimeCalculation {
 function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
   $top  = str_repeat('../', $level + 1);
   $info = $level == 0 ? './' : str_repeat('../', $level);
-  HTML::OutputHeader(sprintf('[%s]', $title), 'info/' . $css);
-  HTML::OutputBodyHeader();
+  HTML::OutputHeader(sprintf('[%s]', $title), 'info/' . $css, true);
   echo <<<EOF
 <h1>{$title}</h1>
 <p>
@@ -49,8 +48,7 @@ EOF;
 
 //役職情報ページ HTML ヘッダ出力
 function OutputRolePageHeader($title){
-  HTML::OutputHeader(sprintf('新役職情報 - [%s]', $title), 'new_role');
-  HTML::OutputBodyHeader();
+  HTML::OutputHeader(sprintf('新役職情報 - [%s]', $title), 'new_role', true);
   echo <<<EOF
 <h1>{$title}</h1>
 <p>
@@ -64,11 +62,11 @@ EOF;
 
 //配役テーブル出力
 function OutputCastTable($min = 0, $max = null){
-  global $ROLE_DATA, $CAST_CONF;
+  global $ROLE_DATA;
 
   //設定されている役職名を取得
   $stack = array();
-  foreach ($CAST_CONF->role_list as $key => $value) {
+  foreach (CastConfig::$role_list as $key => $value) {
     if ($key < $min) continue;
     $stack = array_merge($stack, array_keys($value));
     if ($key == $max) break;
@@ -82,7 +80,7 @@ function OutputCastTable($min = 0, $max = null){
   echo $header . $str;
 
   //人数毎の配役を表示
-  foreach ($CAST_CONF->role_list as $key => $value) {
+  foreach (CastConfig::$role_list as $key => $value) {
     if ($key < $min) continue;
     $tag = "<td><strong>{$key}</strong></td>";
     foreach ($role_list as $role) {

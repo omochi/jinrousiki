@@ -2,8 +2,8 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_OPT_CONF', 'CAST_CONF', 'ROOM_OPT', 'GAME_OPT_MESS',  'ROLE_DATA');
-$INIT_CONF->LoadFile('room_config', 'game_vote_functions');
+$INIT_CONF->LoadClass('GAME_OPT_CONF', 'ROOM_OPT', 'GAME_OPT_MESS',  'ROLE_DATA');
+$INIT_CONF->LoadFile('room_config', 'chaos_config', 'game_vote_functions');
 
 HTML::OutputHeader('配役テストツール', 'role_table', true);
 OutputRoleTestForm();
@@ -64,7 +64,7 @@ if (@$_POST['command'] == 'role_test') {
   foreach (array('festival') as $option) { //特殊村
     if (@$_POST[$option] == 'on') $stack->game_option[] = $option;
   }
-  if (@$_POST['limit_off'] == 'on') $CAST_CONF->chaos_role_group_rate_list = array();
+  if (@$_POST['limit_off'] == 'on') ChaosConfig::$role_group_rate_list = array();
 
   RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
   RQ::SetTestRoom('option_role', implode(' ', $stack->option_role));

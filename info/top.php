@@ -7,19 +7,21 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0 α1アップロード (2012/04/17 (Tue) 01:10) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/55621">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0 α2アップロード (2012/04/30 (Mon) 1:16) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/55729/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>Ver. 1.5.2 から「因幡兎」を移植</li>
+  <li>「傾奇者」実装</li>
+  <li>「長老」「老兵」仕様変更</li>
+  <li>システムクラスを再設計</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>長老・老兵の仕様変更</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>傾奇者：一定期間まで投票数が +1 される村人</li>
+  <li>なし</li>
 </ul>

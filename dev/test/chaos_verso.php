@@ -2,8 +2,8 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('CAST_CONF', 'GAME_OPT_MESS', 'ROLE_DATA');
-$INIT_CONF->LoadFile('room_config', 'game_vote_functions');
+$INIT_CONF->LoadClass('GAME_OPT_MESS', 'ROLE_DATA');
+$INIT_CONF->LoadFile('room_config', 'cast_config', 'game_vote_functions');
 
 HTML::OutputHeader('裏・闇鍋モード配役テストツール', 'role_table', true);
 OutputRoleTestForm();

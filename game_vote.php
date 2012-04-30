@@ -23,7 +23,7 @@ if (RQ::$get->vote) { //投票処理
   if (DB::$ROOM->IsBeforeGame()) { //ゲーム開始 or Kick 投票処理
     switch (RQ::$get->situation) {
     case 'GAMESTART':
-      $INIT_CONF->LoadClass('CAST_CONF'); //配役情報をロード
+      $INIT_CONF->LoadFile('chaos_config'); //配役情報をロード
       VoteGameStart();
       break;
 

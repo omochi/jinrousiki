@@ -1544,51 +1544,21 @@ class Lottery {
   }
 }
 
-//-- 「福引」生成の基底クラス --//
-class LotteryBuilder {
-  //「福引き」を一定回数行ってリストに追加する
-  function AddRandom(&$list, $random_list, $count){
-    $total = count($random_list) - 1;
-    for (; $count > 0; $count--) {
-      $role = $random_list[mt_rand(0, $total)];
-      isset($list[$role]) ? $list[$role]++ : $list[$role] = 1;
-    }
-  }
-
-  //「比」の配列から「福引き」を作成する
-  function GenerateRandomList($list){
-    $stack = array();
-    foreach ($list as $role => $rate) {
-      for (; $rate > 0; $rate--) $stack[] = $role;
-    }
-    return $stack;
-  }
-
-  //「比」から「確率」に変換する (テスト用)
-  function RateToProbability($list){
-    $stack = array();
-    $total_rate = array_sum($list);
-    foreach ($list as $role => $rate) {
-      $stack[$role] = sprintf('%01.2f', $rate / $total_rate * 100);
-    }
-    PrintData($stack);
-  }
-}
-
-//-- 配役設定の基底クラス --//
-class CastConfigBase {
+//-- 配役基礎クラス --//
+class Cast {
   //身代わり君の配役対象外役職リスト取得
-  function GetDummyBoyRoleList(){
-    $stack = $this->disable_dummy_boy_role_list; //サーバ個別設定を取得
+  static function GetDummyBoyRoleList(){
+    $stack = CastConfig::$disable_dummy_boy_role_list; //サーバ個別設定を取得
     array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
-    if (DB::$ROOM->IsOption('detective') && ! in_array('detective_common', $stack)) { //探偵村対応
-      $stack[] = 'detective_common';
-    }
+
+    //探偵村対応
+    $role = 'detective_common';
+    if (DB::$ROOM->IsOption('detective') && ! in_array($role, $stack)) $stack[] = $role;
     return $stack;
   }
 
   //村人置換村の処理
-  function ReplaceRole(&$role_list){
+  static function ReplaceRole(&$role_list){
     $stack = array();
     foreach (array_keys(DB::$ROOM->option_role->options) as $option) { //処理順にオプションを登録
       if ($option == 'replace_human' || strpos($option, 'full_') === 0) {
@@ -1602,8 +1572,8 @@ class CastConfigBase {
 
     foreach ($stack as $order => $option_list) {
       foreach ($option_list as $option) {
-	if (array_key_exists($option, $this->replace_role_list)) { //管理者設定
-	  $target = $this->replace_role_list[$option];
+	if (array_key_exists($option, CastConfig::$replace_role_list)) { //管理者設定
+	  $target = CastConfig::$replace_role_list[$option];
 	  $role   = array_pop(explode('_', $option));
 	}
 	elseif ($order == 0) { //村人置換
@@ -1625,38 +1595,32 @@ class CastConfigBase {
     }
   }
 
-  //決闘村の配役初期化処理
-  function InitializeDuel($user_count){ return true; }
-
-  //決闘村の配役最終処理
-  function FinalizeDuel($user_count, &$role_list){ return true; }
-
   //決闘村の配役処理
-  function SetDuel($user_count){
+  static function SetDuel($user_count){
     $role_list = array(); //初期化処理
-    $this->InitializeDuel($user_count);
 
-    if (array_sum($this->duel_fix_list) <= $user_count) {
-      foreach ($this->duel_fix_list as $role => $count) $role_list[$role] = $count;
+    CastConfig::InitializeDuel($user_count);
+    if (array_sum(CastConfig::$duel_fix_list) <= $user_count) {
+      foreach (CastConfig::$duel_fix_list as $role => $count) $role_list[$role] = $count;
     }
     $rest_user_count = $user_count - array_sum($role_list);
-    asort($this->duel_rate_list);
-    $total_rate = array_sum($this->duel_rate_list);
-    $max_rate_role = array_pop(array_keys($this->duel_rate_list));
-    foreach ($this->duel_rate_list as $role => $rate) {
+    asort(CastConfig::$duel_rate_list);
+    $total_rate = array_sum(CastConfig::$duel_rate_list);
+    $max_rate_role = array_pop(array_keys(CastConfig::$duel_rate_list));
+    foreach (CastConfig::$duel_rate_list as $role => $rate) {
       if ($role == $max_rate_role) continue;
       $role_list[$role] = round($rest_user_count / $total_rate * $rate);
     }
     $role_list[$max_rate_role] = $user_count - array_sum($role_list);
 
-    $this->FinalizeDuel($user_count, $role_list);
+    CastConfig::FinalizeDuel($user_count, $role_list);
     return $role_list;
   }
 
   //配役フィルタリング処理
-  function FilterRoles($user_count, $filter) {
+  static function FilterRoles($user_count, $filter) {
     $stack = array();
-    foreach ($this->role_list[$user_count] as $key => $value) {
+    foreach (CastConfig::$role_list[$user_count] as $key => $value) {
       $role = 'human';
       foreach ($filter as $set_role) {
 	if (strpos($key, $set_role) !== false) {
@@ -1670,15 +1634,15 @@ class CastConfigBase {
   }
 
   //クイズ村の配役処理
-  function SetQuiz($user_count){
-    $stack = $this->FilterRoles($user_count, array('common', 'wolf', 'mad', 'fox'));
+  static function SetQuiz($user_count){
+    $stack = self::FilterRoles($user_count, array('common', 'wolf', 'mad', 'fox'));
     $stack['human']--;
     $stack['quiz'] = 1;
     return $stack;
   }
 
   //グレラン村の配役処理
-  function SetGrayRandom($user_count){
-    return $this->FilterRoles($user_count, array('wolf', 'mad', 'fox'));
+  static function SetGrayRandom($user_count){
+    return self::FilterRoles($user_count, array('wolf', 'mad', 'fox'));
   }
 }

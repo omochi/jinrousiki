@@ -12,8 +12,8 @@ if (@$_POST['command'] == 'CREATE_ROOM') {
   CreateRoom();
 }
 else {
-  $INIT_CONF->LoadFile('time_config');
-  $INIT_CONF->LoadClass('CAST_CONF', 'GAME_OPT_CAPT');
+  $INIT_CONF->LoadFile('time_config', 'chaos_config');
+  $INIT_CONF->LoadClass('GAME_OPT_CAPT');
   OutputRoomList();
 }
 DB::Disconnect();
