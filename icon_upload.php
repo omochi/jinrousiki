@@ -54,7 +54,7 @@ function UploadIcon(){
       HTML::OutputResult('アイコン削除失敗', $str . $back_url);
     }
 
-    if (! DeleteIcon(RQ::$get->icon_no, $icon_filename)){ //削除処理
+    if (! IconDB::Delete(RQ::$get->icon_no, $icon_filename)){ //削除処理
       HTML::OutputResult($title, $str . $back_url);
     }
     DB::Disconnect();
@@ -79,8 +79,8 @@ function UploadIcon(){
 
   //空白チェック
   if ($icon_name == '') HTML::OutputResult($title, 'アイコン名を入力してください' . $back_url);
-  CheckIconText($title, $back_url); //アイコン名の文字列長のチェック
-  $color = CheckColorString($color, $title, $back_url); //色指定のチェック
+  IconInfo::CheckText($title, $back_url); //アイコン名の文字列長のチェック
+  $color = IconInfo::CheckColor($color, $title, $back_url); //色指定のチェック
 
   //ファイルサイズのチェック
   if ($size == 0) HTML::OutputResult($title, 'ファイルが空です' . $back_url);

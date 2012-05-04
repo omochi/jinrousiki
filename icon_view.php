@@ -15,5 +15,5 @@ echo <<<EOF
 </div>
 
 EOF;
-OutputIconList();
+IconHTML::Output();
 HTML::OutputFooter();

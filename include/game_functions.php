@@ -1,6 +1,6 @@
 <?php
 //-- 日時関連 (Game 拡張) --//
-class GameTime extends Time {
+class GameTime {
   //リアルタイムの経過時間
   static function GetRealPass(&$left_time){
     $start_time = DB::$ROOM->scene_start_time; //シーンの最初の時刻を取得
@@ -30,7 +30,7 @@ class GameTime extends Time {
     }
     if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
     $base_left_time = $silence ? TimeConfig::$silence_pass : $left_time; //仮想時間の計算
-    return self::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
+    return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
   }
 
   //リアルタイム表示に使う JavaScript の変数を出力
@@ -60,8 +60,8 @@ EOF;
   }
 
   //JavaScript の Date() オブジェクト作成コードを生成する
-  static function GetJavaScriptDate($time){
-    $time_list = explode(',', self::GetDate('Y,m,j,G,i,s', $time));
+  private function GetJavaScriptDate($time){
+    $time_list = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
     $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
     return sprintf('new Date(%s)', implode(',', $time_list));
   }

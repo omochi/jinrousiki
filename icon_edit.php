@@ -24,12 +24,12 @@ function EditIcon(){
     HTML::OutputResult($title, 'アイコン名が空欄になっています。' . $back_url);
   }
   $query_stack = array();
-  foreach (CheckIconText($title, $back_url) as $key => $value) {
+  foreach (IconInfo::CheckText($title, $back_url) as $key => $value) {
     $query_stack[] = "{$key} = " . (is_null($value) ? 'NULL' : "'{$value}'");
   }
 
   if (strlen($color) > 0) { //色指定のチェック
-    $color = CheckColorString($color, $title, $back_url);
+    $color = IconInfo::CheckColor($color, $title, $back_url);
     $query_stack[] = "color = '{$color}'";
   }
 
@@ -51,7 +51,7 @@ function EditIcon(){
   }
 
   //編集制限チェック
-  if (IsUsingIcon($icon_no)) {
+  if (IconDB::IsUsing($icon_no)) {
     $str = '募集中・プレイ中の村で使用されているアイコンは編集できません。';
     HTML::OutputResult($title, $str . $back_url);
   }

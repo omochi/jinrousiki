@@ -417,7 +417,7 @@ EOF;
 <tr><td colspan="5">
 
 EOF;
-  OutputIconList('user_manager');
+  IconHTML::Output('user_manager');
   echo <<<EOF
 </tr></table>
 </fieldset>
