@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('time_config', 'talk_class', 'game_play_functions');
-$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF');
+$INIT_CONF->LoadFile('time_config', 'talk_class', 'session_class', 'game_play_functions');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay', true);
@@ -11,7 +11,7 @@ if (RQ::$get->play_sound) { //音でお知らせ
 }
 
 DB::Connect();
-$SESSION->CertifyGamePlay(); //セッション認証
+Session::CertifyGamePlay(); //セッション認証
 
 DB::$ROOM = new Room(RQ::$get); //村情報をロード
 DB::$ROOM->dead_mode    = RQ::$get->dead_mode;
@@ -342,52 +342,52 @@ function OutputGameHeader(){
   global $MESSAGE, $COOKIE, $OBJECTION;
 
   $url_frame  = '<a target="_top" href="game_frame.php';
-  $url_room   = '?room_no=' . DB::$ROOM->id;
-  $url_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
+  $url_room   = sprintf('?room_no=%d', DB::$ROOM->id);
+  $url_reload = RQ::$get->auto_reload > 0 ? sprintf('&auto_reload=%d', RQ::$get->auto_reload) : '';
   $url_sound  = RQ::$get->play_sound      ? '&play_sound=on'  : '';
   $url_list   = RQ::$get->list_down       ? '&list_down=on'   : '';
   $url_dead   = DB::$ROOM->dead_mode      ? '&dead_mode=on'   : '';
   $url_heaven = DB::$ROOM->heaven_mode    ? '&heaven_mode=on' : '';
 
   echo '<table class="game-header"><tr>'."\n";
-  if ((DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) || DB::$ROOM->IsFinished()){ //霊界・ゲーム終了後
+  //ゲーム終了後・霊界
+  if (DB::$ROOM->IsFinished() || (DB::$ROOM->heaven_mode && DB::$SELF->IsDead())) {
     echo DB::$ROOM->IsFinished() ? DB::$ROOM->GenerateTitleTag() :
       '<td>&lt;&lt;&lt;幽霊の間&gt;&gt;&gt;</td>'."\n";
 
     //過去シーンのログへのリンク生成
     echo '<td class="view-option">ログ ';
-    $header     = '<a href="game_log.php' . $url_room;
-    $footer     = '</a>'."\n";
-    $url_date   = '&date=';
-    $url_scene  = '&scene=';
-    $url_header = $header . $url_date;
-    $url_footer = '" target="_blank">';
-    $url_day    = $url_scene . 'day'   . $url_footer;
-    $url_night  = $url_scene . 'night' . $url_footer;
+    $header = sprintf('<a href="game_log.php%s', $url_room);
+    $footer = '" target="_blank">';
+    $format = $header . '&date=%d&scene=%s' . $footer . '%d(%s)</a>'."\n";
 
-    echo $url_header . '0' . $url_scene . 'beforegame' . $url_footer . '0(前)' . $footer;
-    if (DB::$ROOM->IsOption('open_day')) echo $url_header . '1' . $url_day . '1(昼)' . $footer;
-    echo $url_header . '1' . $url_night . '1(夜)' . $footer;
-    for ($i = 2; $i < DB::$ROOM->date; $i++) {
-      echo $url_header . $i . $url_day   . $i . '(昼)' . $footer;
-      echo $url_header . $i . $url_night . $i . '(夜)' . $footer;
-    }
-
-    if (DB::$ROOM->heaven_mode) {
-      if (DB::$ROOM->IsNight()) {
-	echo $url_header . DB::$ROOM->date . $url_day . DB::$ROOM->date . '(昼)' . $footer;
+    printf($format, 0, 'beforegame', 0, '前');
+    if (DB::$ROOM->date > 1) {
+      if (DB::$ROOM->IsOption('open_day')) printf($format, 1, 'day', 1, '昼');
+      printf($format, 1, 'night', 1, '夜');
+      for ($i = 2; $i < DB::$ROOM->date; $i++) {
+	printf($format, $i, 'ddy',   $i, '昼');
+	printf($format, $i, 'night', $i, '夜');
       }
-      echo "</td>\n</tr></table>\n";
-      return;
+
+      if (DB::$ROOM->heaven_mode) {
+	if (DB::$ROOM->IsNight()) printf($format, $i, 'day',  $i, '昼');
+	echo "</td>\n</tr></table>\n";
+	return;
+      }
     }
 
     if (DB::$ROOM->IsFinished()) {
-      echo $url_header . DB::$ROOM->date . $url_day . DB::$ROOM->date . '(昼)' . $footer;
-      if (DB::FetchResult(DB::$ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0) {
-	echo $url_header . DB::$ROOM->date . $url_night . DB::$ROOM->date . '(夜)' . $footer;
+      if (DB::$ROOM->date > 0) {
+	printf($format, DB::$ROOM->date, 'day', DB::$ROOM->date, '昼');
       }
-      echo $header . $url_scene . 'aftergame' . $url_footer . '(後)' . $footer;
-      echo $header . $url_scene . 'heaven'    . $url_footer . '(霊)' . $footer;
+      if (DB::FetchResult(DB::$ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0) {
+	printf($format, DB::$ROOM->date, 'night', DB::$ROOM->date, '夜');
+      }
+
+      $format = $header . '&scene=%s' . $footer . '(%s)</a>'."\n";
+      printf($format, 'aftergame', '後');
+      printf($format, 'heaven',    '霊');
     }
   }
   else {

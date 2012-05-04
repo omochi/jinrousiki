@@ -26,7 +26,7 @@ class Text {
       if (($trip_start = mb_strpos($str, '#')) !== false) { //トリップキーの位置を検索
 	$name = mb_substr($str, 0, $trip_start);
 	$key  = mb_substr($str, $trip_start + 1);
-	//PrintData("{$trip_start}, name: {$name}, key: {$key}", 'Trip Start'); //テスト用
+	//PrintData(sprintf('%s, name: %s, key: %s', $trip_start, $name, $key), 'Trip Start');
 	$key = mb_convert_encoding($key, 'SJIS', ServerConfig::$encode); //文字コードを変換
 
 	if (GameConfig::$trip_2ch && strlen($key) >= 12) {
@@ -59,10 +59,10 @@ class Text {
 	}
 	$str = $name . '◆' . $trip;
       }
-      //PrintData($str, 'Result'); //テスト用
+      //PrintData($str, 'Result');
     }
     elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false) {
-      $sentence = 'トリップは使用不可です。<br>' . "\n" . '"#" 又は "＃" の文字も使用不可です。';
+      $sentence = "トリップは使用不可です。<br>\n" . '"#" 又は "＃" の文字も使用不可です。';
       HTML::OutputResult('村人登録 [入力エラー]', $sentence);
     }
 
@@ -90,8 +90,7 @@ class Text {
 
   //改行コードを <br> に変換する (PHP5.3 以下の nl2br() だと <br /> 固定なので HTML 4.01 だと不向き)
   static function LineToBR(&$str){
-    $str = str_replace("\n", '<br>', $str);
-    return $str;
+    return $str = str_replace("\n", '<br>', $str);
   }
 
   //POST されたデータの文字コードを統一する
@@ -213,7 +212,7 @@ class Time {
 //-- HTML 生成クラス --//
 class HTML {
   //共通 HTML ヘッダ生成
-  static function GenerateHeader($title, $css = 'action', $close = false){
+  static function GenerateHeader($title, $css = null, $close = false){
     $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
@@ -221,10 +220,9 @@ class HTML {
 <meta http-equiv="Content-Type" content="text/html; charset=%s">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>%s</title>
-
+<title>%s</title>%s
 EOF;
-    $data = sprintf($str, ServerConfig::$encode, $title);
+    $data = sprintf($str, ServerConfig::$encode, $title, "\n");
     if (is_null($css)) $css = 'action';
     $data .= self::LoadCSS(sprintf('%s/%s', JINRO_CSS, $css));
     if ($close) $data .= self::GenerateBodyHeader();
@@ -255,6 +253,16 @@ EOF;
   //JavaScript 出力
   static function OutputJavaScript($file, $path = null){
     echo self::LoadJavaScript($file, $path);
+  }
+
+  //ページジャンプ用 JavaScript 出力
+  static function GenerateSetLocation(){
+    $str = <<<EOF
+<script type="text/javascript"><!--
+if (top != self) { top.location.href = self.location.href; }
+%s
+EOF;
+    return sprintf($str, '//--></script>'."\n");
   }
 
   //HTML ヘッダクローズ
@@ -299,10 +307,9 @@ EOF;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=%s">
 <title>%s</title>
-</head>
-
+</head>%s
 EOF;
-    printf($str, ServerConfig::$encode, $title);
+    printf($str, ServerConfig::$encode, $title, "\n");
   }
 
   //フレーム HTML フッタ出力

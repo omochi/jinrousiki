@@ -1,18 +1,17 @@
 <?php
 require_once('include/init.php');
 if (Security::CheckValue($_FILES)) die;
-$INIT_CONF->LoadFile('icon_functions');
+$INIT_CONF->LoadFile('session_class', 'icon_functions');
 if ($USER_ICON->disable_upload) {
   HTML::OutputResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
 }
-$INIT_CONF->LoadClass('SESSION');
 $INIT_CONF->LoadRequest('RequestIconUpload'); //引数を取得
 isset(RQ::$get->command) ? UploadIcon() : OutputUploadIconPage();
 
 //-- 関数 --//
 //投稿データチェック
 function UploadIcon(){
-  global $ICON_CONF, $USER_ICON, $SESSION;
+  global $ICON_CONF, $USER_ICON;
 
   if (Security::CheckReferer('icon_upload.php')){ //リファラチェック
     HTML::OutputResult('ユーザアイコンアップロード', '無効なアクセスです');
@@ -50,7 +49,7 @@ function UploadIcon(){
     if (count($stack) < 1) HTML::OutputResult($title, $str . $back_url);
     extract($stack);
 
-    if ($session_id != $SESSION->Get()){ //セッション ID 確認
+    if ($session_id != Session::Get()){ //セッション ID 確認
       $str = '削除失敗：アップロードセッションが一致しません';
       HTML::OutputResult('アイコン削除失敗', $str . $back_url);
     }
@@ -148,25 +147,25 @@ function UploadIcon(){
 
   //データベースに登録
   $data = '';
-  $session_id = $SESSION->Reset(); //セッション ID を取得
-  $items = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
+  $session_id = Session::Reset(); //セッション ID を取得
+  $items  = 'icon_no, icon_name, icon_filename, icon_width, icon_height, color, ' .
     'session_id, regist_date';
   $values = "{$icon_no}, '{$icon_name}', '{$file_name}', {$width}, {$height}, '{$color}', " .
     "'{$session_id}', NOW()";
 
   if ($appearance != ''){
-    $data .= '<br>[S]' . $appearance;
-    $items .= ', appearance';
+    $data   .= '<br>[S]' . $appearance;
+    $items  .= ', appearance';
     $values .= ", '{$appearance}'";
   }
   if ($category != ''){
-    $data .= '<br>[C]' . $category;
-    $items .= ', category';
+    $data   .= '<br>[C]' . $category;
+    $items  .= ', category';
     $values .= ", '{$category}'";
   }
   if ($author != ''){
-    $data .= '<br>[A]' . $author;
-    $items .= ', author';
+    $data   .= '<br>[A]' . $author;
+    $items  .= ', author';
     $values .= ", '{$author}'";
   }
 
@@ -256,9 +255,9 @@ EOF;
   for($i = 0; $i < 256; $i += 51) $color_base[] = sprintf('%02X', $i);
 
   $color_list = array();
-  foreach ($color_base as $i => $r){
-    foreach ($color_base as $j => $g){
-      foreach ($color_base as $k => $b){
+  foreach ($color_base as $i => $r) {
+    foreach ($color_base as $j => $g) {
+      foreach ($color_base as $k => $b) {
 	$color_list["#{$r}{$g}{$b}"] = ($i + $j + $k) < 8  && ($i + $j) < 5;
       }
     }
@@ -282,7 +281,7 @@ EOF;
 
 </td></tr></table></form></fieldset>
 </td></tr></table>
-</body></html>
-
+</body>
+</html>
 EOF;
 }

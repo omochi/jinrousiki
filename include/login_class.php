@@ -3,8 +3,6 @@
 class Login {
   //基幹処理
   static function Execute(){
-    global $SESSION;
-
     DB::Connect();
     if (RQ::$get->login_manually) { //ユーザ名とパスワードで手動ログイン
       if (self::LoginManually()) {
@@ -17,7 +15,7 @@ class Login {
       }
     }
 
-    if ($SESSION->Certify(false)) { //セッション ID から自動ログイン
+    if (Session::Certify(false)) { //セッション ID から自動ログイン
       self::Output('ログインしています', 'game_frame');
     }
     else { //単に呼ばれただけなら観戦ページに移動させる
@@ -30,9 +28,7 @@ class Login {
     セッションを失った場合、ユーザ名とパスワードでログインする
     ログイン成功/失敗を true/false で返す
   */
-  static function LoginManually(){
-    global $SESSION;
-
+  private function LoginManually(){
     extract(RQ::ToArray()); //引数を展開
     if ($uname == '' || $password == '') return false;
 
@@ -46,13 +42,12 @@ class Login {
     if (DB::Count($query) != 1) return false;
 
     //DB のセッション ID を再登録
-    $session_id = $SESSION->Get(true); //新しいセッション ID を取得
-    $query = sprintf("UPDATE user_entry SET session_id = '%s' %s", $session_id, $where);
+    $query = sprintf("UPDATE user_entry SET session_id = '%s' %s", Session::Get(true), $where);
     return DB::FetchBool($query);
   }
 
   //結果出力関数
-  static function Output($title, $jump, $body = null){
+  private function Output($title, $jump, $body = null){
     if (is_null($body)) $body = $title;
     if (is_null($jump)) {
       $url = '';

@@ -633,7 +633,4 @@ do {
 //PrintData($ROLES->loaded->file);
 //PrintData(array_keys($ROLES->loaded->class));
 //PrintData($INIT_CONF->loaded->class);
-$INIT_CONF->LoadFile('time_config');
-DB::$ROOM->scene_start_time = 201204291100;
-GameTime::OutputTimer(201204301105);
 HTML::OutputFooter();

@@ -788,7 +788,7 @@ EOF;
   function SaveLastWords($handle_name = null){
     if (! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return true; //スキップ判定
     if (is_null($handle_name)) $handle_name = $this->handle_name;
-    if (DB::$ROOM->test_mode){
+    if (DB::$ROOM->test_mode) {
       PrintData(sprintf('%s (%s)', $handle_name, $this->uname), 'LastWords');
       return true;
     }
@@ -806,8 +806,8 @@ EOF;
   function Vote($action, $target = null, $vote_number = null){
     if (DB::$ROOM->test_mode) {
       if (DB::$ROOM->IsDay()) {
-	$stack = array('user_no' => $this->user_no, 'uname' => $this->uname,
-		       'target_no' => $target, 'vote_number' => $vote_number);
+	$stack = array('user_no'   => $this->user_no, 'uname' => $this->uname,
+		       'target_no' => $target, 'vote_number'  => $vote_number);
 	RQ::GetTest()->vote->day[$this->uname] = $stack;
 	//PrintData($stack, 'Vote');
       }
@@ -818,13 +818,13 @@ EOF;
     }
     $items = 'room_no, date, scene, type, uname, user_no, vote_count';
     $values = sprintf("%d, %d, '%s', '%s', '%s', %d, %d",
-		      DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, $action, $this->uname,
-		      $this->user_no, DB::$ROOM->vote_count);
-    if (isset($target)){
+		      DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, $action,
+		      $this->uname, $this->user_no, DB::$ROOM->vote_count);
+    if (isset($target)) {
       $items .= ', target_no';
       $values .= ", '{$target}'";
     }
-    if (isset($vote_number)){
+    if (isset($vote_number)) {
       $items .= ', vote_number, revote_count';
       $values .= sprintf(", %d, %d", $vote_number, RQ::$get->revote_count);
     }
@@ -997,19 +997,16 @@ EOF;
   }
 
   //ユーザ情報取得 (クッキー経由)
-  function BySession(){
-    global $SESSION;
-    return $this->TraceExchange($SESSION->GetUser());
-  }
+  function BySession(){ return $this->TraceExchange(Session::GetUser()); }
 
   //憑依情報追跡
   function TraceVirtual($user_no, $type){
     $user = $this->ByID($user_no);
     if (! DB::$ROOM->IsPlaying()) return $user;
-    if ($type == 'possessed'){
+    if ($type == 'possessed') {
       if (! $user->IsRole($type)) return $user;
     }
-    elseif (! $user->IsPossessedGroup()){
+    elseif (! $user->IsPossessedGroup()) {
       return $user;
     }
 
@@ -1022,7 +1019,9 @@ EOF;
     $user = $this->ByID($id);
     $role = 'possessed_exchange';
     if (! $user->IsRole($role) || ! DB::$ROOM->IsPlaying() ||
-       (! DB::$ROOM->log_mode && $user->IsDead())) return $user;
+	(! DB::$ROOM->log_mode && $user->IsDead())) {
+      return $user;
+    }
 
     $stack = $user->GetPartner($role);
     return is_array($stack) && DB::$ROOM->date > 2 ? $this->ByID(array_shift($stack)) : $user;
@@ -1061,7 +1060,7 @@ EOF;
 
     $target = $user;
     $stack  = array();
-    while($target->IsUnknownMania()){ //鵺系ならコピー先を辿る
+    while ($target->IsUnknownMania()) { //鵺系ならコピー先を辿る
       $id = $target->GetMainRoleTarget();
       if (is_null($id) || in_array($id, $stack)) break;
       $stack[] = $id;
@@ -1070,7 +1069,7 @@ EOF;
 
     //覚醒者・夢語部ならコピー先を辿る
     if ($target->IsRole('soul_mania', 'dummy_mania') &&
-       ! is_null($id = $target->GetMainRoleTarget())){
+	! is_null($id = $target->GetMainRoleTarget())) {
       $target = $this->ByID($id);
       if ($target->IsRoleGroup('mania')) $target = $user; //神話マニア系なら元に戻す
     }
@@ -1146,10 +1145,10 @@ EOF;
   function SetJoker(){
     $id = null;
     $max_date = 1;
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if (! $user->IsRole('joker')) continue;
       $date = $user->GetDoomDate('joker');
-      if ($date > $max_date || ($date == $max_date && $user->IsLive())){
+      if ($date > $max_date || ($date == $max_date && $user->IsLive())) {
 	$id = $user->user_no;
 	$max_date = $date;
       }
@@ -1162,7 +1161,7 @@ EOF;
   //役職の出現判定関数 (現在は不使用)
   function IsAppear($role){
     $role_list = func_get_args();
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if ($user->IsRole($role_list)) return true;
     }
     return false;
@@ -1172,24 +1171,24 @@ EOF;
   function IsOpenCast(){
     $evoke_scanner = array();
     $mind_evoke    = array();
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if ($user->IsDummyBoy()) continue;
-      if ($user->IsRole('mind_evoke')){
+      if ($user->IsRole('mind_evoke')) {
 	$mind_evoke = array_merge($mind_evoke, $user->GetPartner('mind_evoke'));
       }
-      if ($user->IsReviveGroup(true) || $user->IsRole('revive_mania')){
+      if ($user->IsReviveGroup(true) || $user->IsRole('revive_mania')) {
 	if ($user->IsLive()) return false;
       }
-      elseif ($user->IsRole('revive_priest')){
+      elseif ($user->IsRole('revive_priest')) {
 	if ($user->IsActive()) return false;
       }
-      elseif ($user->IsRole('evoke_scanner')){
-	if ($user->IsLive()){
+      elseif ($user->IsRole('evoke_scanner')) {
+	if ($user->IsLive()) {
 	  if (DB::$ROOM->date == 1) return false;
 	  $evoke_scanner[] = $user->user_no;
 	}
       }
-      elseif ($user->IsRole('soul_mania', 'dummy_mania')){
+      elseif ($user->IsRole('soul_mania', 'dummy_mania')) {
 	if (DB::$ROOM->date == 1 || ! is_null($user->GetMainRoleTarget())) return false;
       }
     }
@@ -1212,7 +1211,7 @@ EOF;
   //生存者を取得する
   function GetLivingUsers($strict = false){
     $stack = array();
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if ($user->IsLive($strict)) $stack[] = $user->uname;
     }
     return $stack;
@@ -1221,7 +1220,7 @@ EOF;
   //生存している人狼を取得する
   function GetLivingWolves(){
     $stack = array();
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if ($user->IsLive() && $user->IsWolf()) $stack[] = $user->uname;
     }
     return $stack;
@@ -1235,7 +1234,7 @@ EOF;
     $virtual_user = $this->ByVirtual($user->user_no);
     DB::$ROOM->ResultDead($virtual_user->handle_name, $reason, $type);
 
-    switch($reason){
+    switch ($reason) {
     case 'NOVOTED':
     case 'POSSESSED_TARGETED':
       return true;
@@ -1264,7 +1263,7 @@ EOF;
   function ResetJoker($shift = false){
     if (! DB::$ROOM->IsOption('joker')) return false;
     $stack = array();
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if ($user->IsDead(true)) continue;
       if ($user->IsJoker()) return; //現在の所持者が生存していた場合はスキップ
       $stack[] = $user;
@@ -1275,7 +1274,7 @@ EOF;
   //デスノートの再配布処理 (オプションチェック判定は不要？)
   function ResetDeathNote(){
     $stack = array();
-    foreach ($this->rows as $user){
+    foreach ($this->rows as $user) {
       if ($user->IsLive(true)) $stack[] = $user;
     }
     if (count($stack) < 1) return;
@@ -1299,7 +1298,7 @@ EOF;
   //player の復元 (ログ処理用)
   function ResetPlayer(){
     if (! isset($this->player->users)) return;
-    foreach ($this->player->users as $id => $stack){
+    foreach ($this->player->users as $id => $stack) {
       $this->ByID($id)->ChangePlayer(max($stack));
     }
   }

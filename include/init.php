@@ -49,19 +49,20 @@ class InitializeConfig {
     'server_config'       => array('system_class', 'functions'), //常時ロードされる
     'chaos_config'        => 'cast_config',
     'copyright_config'    => array('version', 'info_functions'),
-    'index_functions'     => 'version',
-    'game_play_functions' => 'user_class',
-    'game_vote_functions' => 'game_functions',
-    'oldlog_functions'    => array('cast_config', 'oldlog_config'),
     'database_class'      => 'database_config',
     'system_class'        => 'room_class', //常時ロードされる
     'room_class'          => 'option_class',
     'user_class'          => array('game_config', 'game_functions'),
     'talk_class'          => 'user_class',
     'role_class'          => 'game_format',
+    'login_class'         => 'session_class',
     'sound_class'         => 'sound_config',
     'setup_class'         => array('setup_config', 'version', 'database_class'),
     'paparazzi_class'     => 'paparazzi',
+    'index_functions'     => 'version',
+    'game_play_functions' => 'user_class',
+    'game_vote_functions' => 'game_functions',
+    'oldlog_functions'    => array('cast_config', 'oldlog_config'),
     'test/objection'      => array('game_config', 'sound_class')
   );
 
@@ -75,7 +76,6 @@ class InitializeConfig {
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
     'oldlog_functions'    => array('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
     'user_class'          => array('ROLE_DATA', 'MESSAGE'),
-    'login_class'         => 'SESSION',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
@@ -96,7 +96,6 @@ class InitializeConfig {
     'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
     'WINNER_MESS'   => 'WinnerMessage',
     'VOTE_MESS'     => 'VoteMessage',
-    'SESSION'       => 'Session',
     'COOKIE'        => 'CookieDataSet',
     'ROLE_DATA'     => 'RoleData',
     'ROLES'         => 'RoleManager',
@@ -133,7 +132,7 @@ class InitializeConfig {
 
   //依存解決処理
   protected function LoadDependence($name){
-    if (array_key_exists($name, $this->depend_file)) $this->LoadFile($this->depend_file[$name]);
+    if (array_key_exists($name, $this->depend_file))  $this->LoadFile($this->depend_file[$name]);
     if (array_key_exists($name, $this->depend_class)) $this->LoadClass($this->depend_class[$name]);
   }
 

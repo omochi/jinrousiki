@@ -1,12 +1,12 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('talk_class');
-$INIT_CONF->LoadClass('SESSION', 'ROLES');
+$INIT_CONF->LoadFile('session_class', 'talk_class');
+$INIT_CONF->LoadClass('ROLES');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameLog');
 DB::Connect();
-$SESSION->Certify(); //セッション認証
+Session::Certify(); //セッション認証
 
 DB::$ROOM = new Room(RQ::$get); //村情報を取得
 DB::$ROOM->log_mode = true;

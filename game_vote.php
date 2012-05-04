@@ -1,12 +1,12 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('game_vote_functions', 'user_class');
-$INIT_CONF->LoadClass('SESSION', 'ROLES', 'ICON_CONF', 'ROOM_OPT', 'GAME_OPT_CONF');
+$INIT_CONF->LoadFile('session_class', 'user_class', 'game_vote_functions');
+$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'ROOM_OPT', 'GAME_OPT_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote', true);
 DB::Connect();
-$SESSION->Certify(); //セッション認証
+Session::Certify(); //セッション認証
 
 //ロック処理
 if (! DB::Transaction()) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');

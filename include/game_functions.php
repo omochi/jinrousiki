@@ -35,21 +35,28 @@ class GameTime extends Time {
 
   //リアルタイム表示に使う JavaScript の変数を出力
   static function OutputTimer($end_time, $type = null, $flag = false){
-    $sentence    = sprintf('　%sまで ', DB::$ROOM->IsDay() ? '日没' : '夜明け');
-    $start_date  = self::GetJavaScriptDate(DB::$ROOM->scene_start_time);
-    $end_date    = self::GetJavaScriptDate($end_time);
-    $server_date = self::GetJavaScriptDate(DB::$ROOM->system_time);
-    $sound_path  = isset($type) && class_exists(Sound) ? Sound::GenerateJavaScript($type) : '';
+    $end_date = self::GetJavaScriptDate($end_time);
+    $format = <<<EOF
+<script language="JavaScript"><!--
+var sentence       = '　%sまで ';
+var end_date       = %s * 1 + (new Date() - %s);
+var diff_seconds   = Math.floor((%s - %s) / 1000);
+var sound_flag     = '%s';
+var sound_file     = '%s';
+var countdown_flag = '%s';
+var alert_distance = %d;
+%s
+EOF;
     HTML::OutputJavaScript('output_realtime');
-    echo '<script language="JavaScript"><!--'."\n";
-    echo 'var sentence = "' . $sentence . '";'."\n";
-    echo "var end_date = {$end_date} * 1 + (new Date() - {$server_date});\n";
-    echo "var diff_seconds = Math.floor(({$end_date} - {$start_date}) / 1000);\n";
-    echo 'var sound_flag = ' . (is_null($type) ? 'false' : 'true') . ';'."\n";
-    echo 'var countdown_flag = ' . ($flag ? 'true' : 'false') . ';'."\n";
-    echo 'var sound_file = "' . $sound_path . '";'."\n";
-    echo 'var alert_distance = "' . TimeConfig::$alert_distance . '";'."\n";
-    echo '// --></script>'."\n";
+    printf($format,
+	   DB::$ROOM->IsDay() ? '日没' : '夜明け',
+	   $end_date, self::GetJavaScriptDate(DB::$ROOM->system_time),
+	   $end_date, self::GetJavaScriptDate(DB::$ROOM->scene_start_time),
+	   isset($type) ? 'true' : 'false',
+	   isset($type) && class_exists(Sound) ? Sound::GenerateJavaScript($type) : '',
+	   $flag ? 'true' : 'false',
+	   TimeConfig::$alert_distance,
+	   '// --></script>'."\n");
   }
 
   //JavaScript の Date() オブジェクト作成コードを生成する
@@ -215,8 +222,8 @@ function CheckSelfVoteNight($situation, $not_situation = ''){
 //HTMLヘッダー出力
 function OutputGamePageHeader(){
   //引数を格納
-  $url_header = 'game_frame.php?room_no=' . DB::$ROOM->id;
-  if (RQ::$get->auto_reload > 0) $url_header .= '&auto_reload=' . RQ::$get->auto_reload;
+  $url_header = sprintf('game_frame.php?room_no=%d', DB::$ROOM->id);
+  if (RQ::$get->auto_reload > 0) $url_header .= sprintf('&auto_reload=%d', RQ::$get->auto_reload);
   if (RQ::$get->play_sound)      $url_header .= '&play_sound=on';
   if (RQ::$get->list_down)       $url_header .= '&list_down=on';
 
@@ -233,9 +240,7 @@ function OutputGamePageHeader(){
     $anchor_footer = '" target="_top">ここをクリックしてください</a>';
   }
   else {
-    $sentence = '<script type="text/javascript"><!--'."\n" .
-      'if (top != self){ top.location.href = self.location.href; }'."\n" .
-      '--></script>'."\n";
+    $sentence = HTML::GenerateSetLocation();
     $anchor_header .= '切り替わらないなら <a href="';
     $anchor_footer = '" target="_top">ここ</a>';
   }
@@ -306,7 +311,7 @@ function OutputGamePageHeader(){
     $game_top .= "\n".'<span id="vote_alert"></span>';
   }
   $body = isset($on_load) ? sprintf('<body onLoad="%s">', $on_load) : '<body>';
-  echo '</head>'."\n".$body."\n".$game_top."\n";
+  printf("</head>\n%s\n%s\n", $body, $game_top);
 }
 
 //自動更新のリンクを出力

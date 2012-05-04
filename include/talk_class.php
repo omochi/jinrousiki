@@ -27,7 +27,8 @@ class Talk {
     case 'system':
       switch ($this->action) {
       case 'MORNING':
-	$this->sentence = "{$MESSAGE->morning_header} {$sentence} {$MESSAGE->morning_footer}";
+	$this->sentence = sprintf('%s %s %s',
+				  $MESSAGE->morning_header, $sentence, $MESSAGE->morning_footer);
 	return;
 
       case 'NIGHT':
@@ -122,7 +123,7 @@ class Talk {
 	$this->class = strtr($action, '_', '-');
 	break;
       }
-      $this->sentence = ' は ' . $this->sentence . ' ' . $MESSAGE->$action;
+      $this->sentence = sprintf(' は %s %s', $this->sentence, $MESSAGE->$action);
       return;
     }
   }

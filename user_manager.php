@@ -1,7 +1,8 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('room_config', 'game_config', 'room_class', 'user_class', 'icon_functions');
-$INIT_CONF->LoadClass('SESSION', 'MESSAGE');
+$INIT_CONF->LoadFile('room_config', 'game_config', 'room_class', 'user_class', 'session_class',
+		     'icon_functions');
+$INIT_CONF->LoadClass('MESSAGE');
 $INIT_CONF->LoadRequest('RequestUserManager');
 DB::Connect();
 RQ::$get->entry ? EntryUser() : OutputEntryUserPage();
@@ -10,7 +11,7 @@ DB::Disconnect();
 //-- 関数 --//
 //ユーザを登録する
 function EntryUser(){
-  global $MESSAGE, $SESSION;
+  global $MESSAGE;
 
   extract(RQ::ToArray()); //引数を展開
   $back_url = 'user_manager.php?room_no=' . $room_no; //ベースバックリンク
@@ -94,7 +95,7 @@ function EntryUser(){
       'color, icon_name FROM user_entry AS u INNER JOIN user_icon USING (icon_no) ' .
       "WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $target = DB::FetchObject($query, 'User', true);
-    if ($target->session_id != $SESSION->Get()) {
+    if ($target->session_id != Session::Get()) {
       HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
     }
 
@@ -174,7 +175,7 @@ EOF;
   //DB にユーザデータを登録
   $user_no = count(DB::$USER->names) + 1; //KICK された住人も含めた新しい番号を振る
   if (DB::InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
-		     $sex, $role, $SESSION->Get(true))) {
+		     $sex, $role, Session::Get(true))) {
     //クッキーの初期化
     DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
     $cookie_time = DB::$ROOM->system_time - 3600;
@@ -200,13 +201,13 @@ EOF;
 
 //ユーザ登録画面表示
 function OutputEntryUserPage(){
-  global $ICON_CONF, $ROLE_DATA, $SESSION;
+  global $ICON_CONF, $ROLE_DATA;
 
   extract(RQ::ToArray()); //引数を展開
   if ($user_no > 0) { //登録情報変更モード
     $query = "SELECT * FROM user_entry WHERE room_no = {$room_no} AND user_no = {$user_no}";
     $stack = DB::FetchAssoc($query, true);
-    if ($stack['session_id'] != $SESSION->Get()) {
+    if ($stack['session_id'] != Session::Get()) {
       HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
     }
     foreach ($stack as $key => $value) {
