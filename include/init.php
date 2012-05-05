@@ -55,8 +55,9 @@ class InitializeConfig {
     'user_class'          => array('game_config', 'game_functions'),
     'talk_class'          => 'user_class',
     'role_class'          => 'game_format',
-    'login_class'         => 'session_class',
     'sound_class'         => 'sound_config',
+    'login_class'         => 'session_class',
+    'game_view_class'     => 'talk_class',
     'setup_class'         => array('setup_config', 'version', 'database_class'),
     'paparazzi_class'     => 'paparazzi',
     'index_functions'     => 'version',
@@ -71,11 +72,12 @@ class InitializeConfig {
     'ROOM_OPT'            => 'GAME_OPT_CONF',
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
     'TIME_CALC'           => array('ROOM_IMG', 'ROLE_DATA'),
-    'index_functions'     => 'BBS_CONF',
+    'user_class'          => array('ROLE_DATA', 'MESSAGE'),
+    'game_view_class'     => array('ROLES', 'ICON_CONF'),
     'game_play_functions' => 'ROLE_IMG',
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
+    'index_functions'     => 'BBS_CONF',
     'oldlog_functions'    => array('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
-    'user_class'          => array('ROLE_DATA', 'MESSAGE'),
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
