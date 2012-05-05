@@ -9,6 +9,7 @@ OutputInfoPageHeader('開発履歴 / 1.5', 1, 'develop_history');
 Ver. 1.5.x<br>
 <a href="#ver151">1</a>
 <a href="#ver152">2</a>
+<a href="#ver153">3</a>
 </p>
 <p>
 Ver. 1.5.0<br>
@@ -44,6 +45,11 @@ Ver. 1.5.0<br>
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
 </p>
+
+<h2 id="ver153">Ver. 1.5.3 (Rev. 576) : 2012/05/06 (Sun) 02:41</h2>
+<ul>
+<li>KICK 処理のバグ修正</li>
+</ul>
 
 <h2 id="ver152">Ver. 1.5.2 (Rev. 516) : 2012/02/26 (Sun) 00:00</h2>
 <ul>

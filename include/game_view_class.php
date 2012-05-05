@@ -1,36 +1,11 @@
 <?php
+//-- GameView 出力クラス --//
 class GameView {
-  //セットアップ
-  static function SetUp(){
-    global $INIT_CONF;
-
-    DB::Connect();
-    DB::$ROOM = new Room(RQ::$get); //村情報をロード
-    DB::$ROOM->view_mode   = true;
-    DB::$ROOM->system_time = Time::Get();
-
-    //シーンに応じた追加クラスをロード
-    if (DB::$ROOM->IsFinished()) {
-      $INIT_CONF->LoadClass('WINNER_MESS');
-    }
-    else {
-      if (DB::$ROOM->IsPlaying() && ! DB::$ROOM->IsRealTime()) { //会話で時間経過制
-	$INIT_CONF->LoadFile('time_config');
-      }
-      $INIT_CONF->LoadFile('room_config', 'cast_config');
-      $INIT_CONF->LoadClass('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS');
-    }
-
-    //ユーザ情報をロード
-    if (DB::$ROOM->IsBeforeGame()) RQ::$get->retrive_type = DB::$ROOM->scene;
-    DB::$USER = new UserDataSet(RQ::$get);
-    DB::$SELF = new User();
-  }
-
   //出力
   static function Output(){
     global $MESSAGE;
 
+    self::Load();
     HTML::OutputHeader(ServerConfig::$title . '[観戦]', 'game_view');
     if (GameConfig::$auto_reload && RQ::$get->auto_reload > 0) { //自動更新
       printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
@@ -124,5 +99,32 @@ EOF;
     OutputDeadMan();
     OutputVoteList();
     HTML::OutputFooter();
+  }
+
+  //データ収集
+  private function Load(){
+    global $INIT_CONF;
+
+    DB::Connect();
+    DB::$ROOM = new Room(RQ::$get); //村情報を取得
+    DB::$ROOM->view_mode   = true;
+    DB::$ROOM->system_time = Time::Get();
+
+    //シーンに応じた追加クラスをロード
+    if (DB::$ROOM->IsFinished()) {
+      $INIT_CONF->LoadClass('WINNER_MESS');
+    }
+    else {
+      if (DB::$ROOM->IsPlaying() && ! DB::$ROOM->IsRealTime()) { //会話で時間経過制
+	$INIT_CONF->LoadFile('time_config');
+      }
+      $INIT_CONF->LoadFile('room_config', 'cast_config');
+      $INIT_CONF->LoadClass('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS');
+    }
+
+    //ユーザ情報を取得
+    if (DB::$ROOM->IsBeforeGame()) RQ::$get->retrive_type = DB::$ROOM->scene;
+    DB::$USER = new UserDataSet(RQ::$get);
+    DB::$SELF = new User();
   }
 }

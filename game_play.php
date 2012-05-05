@@ -366,7 +366,7 @@ function OutputGameHeader(){
       if (DB::$ROOM->IsOption('open_day')) printf($format, 1, 'day', 1, '昼');
       printf($format, 1, 'night', 1, '夜');
       for ($i = 2; $i < DB::$ROOM->date; $i++) {
-	printf($format, $i, 'ddy',   $i, '昼');
+	printf($format, $i, 'day',   $i, '昼');
 	printf($format, $i, 'night', $i, '夜');
       }
 

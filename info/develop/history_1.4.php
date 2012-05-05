@@ -22,6 +22,7 @@ Ver. 1.4.x<br>
 <a href="#ver1413">13</a>
 <a href="#ver1414">14</a>
 <a href="#ver1415">15</a>
+<a href="#ver1416">16</a>
 </p>
 <p>
 Ver. 1.4.0<br>
@@ -76,6 +77,11 @@ Ver. 1.4.0<br>
 <a href="#ver140a23">α23</a>
 <a href="#ver140a24">α24</a>
 </p>
+
+<h2 id="ver1416">Ver. 1.4.16 (Rev. 574) : 2012/05/06 (Sun) 02:02</h2>
+<ul>
+<li>KICK 処理のバグ修正</li>
+</ul>
 
 <h2 id="ver1415">Ver. 1.4.15 (Rev. 460) : 2012/01/10 (Tue) 00:27</h2>
 <ul>
