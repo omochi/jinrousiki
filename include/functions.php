@@ -230,7 +230,7 @@ EOF;
   }
 
   //共通 HTML ヘッダ出力
-  static function OutputHeader($title, $css = 'action', $close = false){
+  static function OutputHeader($title, $css = null, $close = false){
     echo self::GenerateHeader($title, $css, $close);
   }
 

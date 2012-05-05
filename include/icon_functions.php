@@ -2,43 +2,17 @@
 //-- DB アクセス (アイコン拡張) --//
 class IconDB {
   //村で使用中のアイコンチェック
-  static function IsUsing($id){
-    $query = 'SELECT icon_no FROM user_icon INNER JOIN ' .
+  static function IsUsing($icon_no){
+    $format = 'SELECT icon_no FROM user_icon INNER JOIN ' .
       '(user_entry INNER JOIN room USING (room_no)) USING (icon_no) ' .
       "WHERE icon_no = %d AND room.status IN ('waiting', 'playing')";
-    return DB::Count(sprintf($query, $id)) > 0;
-  }
-
-  //カテゴリ取得
-  static function GetCategoryList($type){
-    $stack = array('SELECT', 'FROM user_icon WHERE', 'IS NOT NULL GROUP BY', 'ORDER BY icon_no');
-    return DB::FetchArray(implode(" {$type} ", $stack));
-  }
-
-  //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
-  static function GetSelectionByType($type){
-    //選択状態の抽出
-    $data   = RQ::$get->search ? RQ::$get->$type : $_SESSION['icon_view'][$type];
-    $target = empty($data) ? array() : (is_array($data) ? $data : array($data));
-    $_SESSION['icon_view'][$type] = $target;
-    //PrintData($data, $type);
-    if ($type == 'keyword') return $target;
-
-    $query = sprintf('SELECT DISTINCT %s FROM user_icon WHERE %s IS NOT NULL', $type, $type);
-    return DB::FetchArray($query);
-  }
-
-  //検索項目と検索値のセットから抽出条件を生成する
-  static function GetInClause($type, $list){
-    if (in_array('__null__', $list)) return $type . ' IS NULL';
-    $stack = array();
-    foreach ($list as $value) $stack[] = sprintf("'%s'", Text::Escape($value));
-    return $type . sprintf(' IN (%s)', implode(',', $stack));
+    return DB::Count(sprintf($format, $icon_no)) > 0;
   }
 
   //アイコン情報取得
   static function GetInfo($icon_no){
-    return DB::FetchAssoc(sprintf('SELECT * FROM user_icon WHERE icon_no = %d', $icon_no));
+    $format = 'SELECT * FROM user_icon WHERE icon_no = %d';
+    return DB::FetchAssoc(sprintf($format, $icon_no));;
   }
 
   //アイコンリスト取得
@@ -58,16 +32,44 @@ class IconDB {
 
   //アイコン数取得
   static function GetCount($where){
-    $query   = 'SELECT icon_no FROM user_icon WHERE %s';
+    $format  = 'SELECT icon_no FROM user_icon WHERE %s';
     $where[] = 'icon_no > 0';
-    return DB::Count(sprintf($query, implode(' AND ', $where)));
+    return DB::Count(sprintf($format, implode(' AND ', $where)));
+  }
+
+  //カテゴリ取得
+  static function GetCategoryList($type){
+    $stack = array('SELECT', 'FROM user_icon WHERE', 'IS NOT NULL GROUP BY', 'ORDER BY icon_no');
+    return DB::FetchArray(implode(" {$type} ", $stack));
+  }
+
+  //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
+  static function GetSelectionByType($type){
+    //選択状態の抽出
+    $data   = RQ::$get->search ? RQ::$get->$type : $_SESSION['icon_view'][$type];
+    $target = empty($data) ? array() : (is_array($data) ? $data : array($data));
+    $_SESSION['icon_view'][$type] = $target;
+    //PrintData($data, $type);
+    if ($type == 'keyword') return $target;
+
+    $format = 'SELECT DISTINCT %s FROM user_icon WHERE %s IS NOT NULL';
+    return DB::FetchArray(sprintf($format, $type, $type));
+  }
+
+  //検索項目と検索値のセットから抽出条件を生成する
+  static function GetInClause($type, $list){
+    if (in_array('__null__', $list)) return $type . ' IS NULL';
+    $stack = array();
+    foreach ($list as $value) $stack[] = sprintf("'%s'", Text::Escape($value));
+    return $type . sprintf(' IN (%s)', implode(',', $stack));
   }
 
   //アイコン削除
-  static function Delete($id, $file){
+  static function Delete($icon_no, $file){
     global $ICON_CONF;
 
-    if (! DB::FetchBool('DELETE FROM user_icon WHERE icon_no = ' . $id)) return false; //削除処理
+    $query = sprintf('DELETE FROM user_icon WHERE icon_no = %d', $icon_no);
+    if (! DB::FetchBool($query)) return false; //削除処理
     unlink($ICON_CONF->path . '/' . $file); //ファイル削除
     DB::Optimize('user_icon'); //テーブル最適化 + コミット
     return true;
@@ -229,7 +231,8 @@ EOF;
 EOF;
 
     //検索結果の表示
-    if ($is_icon_view = empty(RQ::$get->room_no)) {
+    if (empty(RQ::$get->room_no)) {
+      $method = 'OutputDetailForIconView';
       echo <<<HTML
 <table>
 <caption>
@@ -241,7 +244,8 @@ EOF;
 
 HTML;
     }
-    elseif ($is_user_entry = isset(RQ::$get->room_no)) {
+    elseif (isset(RQ::$get->room_no)) {
+      $method = 'OutputDetailForUserEntry';
       echo <<<HTML
 <table>
 <caption>
@@ -251,6 +255,9 @@ HTML;
 <tr>
 
 HTML;
+    }
+    else {
+      $method = null;
     }
 
     //ユーザアイコンのテーブルから一覧を取得
@@ -275,20 +282,10 @@ HTML;
 HTML;
 
     //アイコン情報の表示
-    if ($is_icon_view) {
-      $method = 'OutputDetailForIconView';
-    }
-    elseif ($is_user_entry) {
-      $method = 'OutputDetailForUserEntry';
-    }
-    else {
-      $method = false;
-    }
-
-    if ($method !== false) {
+    if (isset($method)) {
       $column = 0;
       foreach (IconDB::GetList($where) as $icon_info) {
-	self::$method($icon_info, array('cellwidth' => 162));
+	self::$method($icon_info, 162);
 	if ($USER_ICON->column <= ++$column) {
 	  $column = 0;
 	  echo '</tr><tr>';
@@ -328,14 +325,13 @@ EOF;
   }
 
   //アイコン詳細画面 (IconView 用)
-  private function OutputDetailForIconView($icon_list, $format_list){
+  private function OutputDetailForIconView($icon_list, $cellwidth){
     global $ICON_CONF;
 
     extract($icon_list);
-    extract($format_list, EXTR_PREFIX_ALL, 'format');
     $location      = $ICON_CONF->path . '/' . $icon_filename;
     $wrapper_width = $icon_width + 6;
-    $info_width    = $format_cellwidth - $icon_width;
+    $info_width    = $cellwidth - $icon_width;
     $edit_url      = "icon_view.php?icon_no={$icon_no}";
     if ($disable > 0) $icon_name = '<s>'.$icon_name.'</s>';
     echo <<<HTML
@@ -365,14 +361,13 @@ HTML;
   }
 
   //アイコン詳細画面 (UserEntry 用)
-  private function OutputDetailForUserEntry($icon_list, $format_list){
+  private function OutputDetailForUserEntry($icon_list, $cellwidth){
     global $ICON_CONF;
 
     extract($icon_list);
-    extract($format_list, EXTR_PREFIX_ALL, 'format');
     $location      = $ICON_CONF->path . '/' . $icon_filename;
     $wrapper_width = $icon_width + 6;
-    $info_width    = $format_cellwidth - $wrapper_width;
+    $info_width    = $cellwidth - $wrapper_width;
     echo <<<HTML
 <td class="icon_details"><label for="icon_{$icon_no}"><img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};"><br clear="all">
 <input type="radio" id="icon_{$icon_no}" name="icon_no" value="{$icon_no}"> No. {$icon_no}<br>

@@ -1451,9 +1451,9 @@ class Lottery {
   //「比」から「確率」に変換する (テスト用)
   static function RateToProbability($list){
     $stack = array();
-    $total_rate = array_sum($list);
+    $total = array_sum($list);
     foreach ($list as $role => $rate) {
-      $stack[$role] = sprintf('%01.2f', $rate / $total_rate * 100);
+      $stack[$role] = sprintf('%01.2f', $rate / $total * 100);
     }
     PrintData($stack);
   }
@@ -1511,8 +1511,8 @@ class Cast {
 	$count = isset($role_list[$role]) ? $role_list[$role] : 0;
 	if ($role == 'human' && DB::$ROOM->IsOption('gerd')) $count--; //ゲルト君モード
 	if ($count > 0) { //置換処理
-	  @$role_list[$target] += $count;
-	  $role_list[$role]    -= $count;
+	  isset($role_list[$target]) ? $role_list[$target] += $count : $role_list[$target] = $count;
+	  $role_list[$role] -= $count;
 	}
       }
     }
@@ -1540,8 +1540,21 @@ class Cast {
     return $role_list;
   }
 
+  //クイズ村の配役処理
+  static function SetQuiz($user_count){
+    $stack = self::FilterRole($user_count, array('common', 'wolf', 'mad', 'fox'));
+    $stack['human']--;
+    $stack['quiz'] = 1;
+    return $stack;
+  }
+
+  //グレラン村の配役処理
+  static function SetGrayRandom($user_count){
+    return self::FilterRole($user_count, array('wolf', 'mad', 'fox'));
+  }
+
   //配役フィルタリング処理
-  static function FilterRoles($user_count, $filter) {
+  private function FilterRole($user_count, $filter) {
     $stack = array();
     foreach (CastConfig::$role_list[$user_count] as $key => $value) {
       $role = 'human';
@@ -1551,21 +1564,8 @@ class Cast {
 	  break;
 	}
       }
-      @$stack[$role] += (int)$value;
+      isset($stack[$role]) ? $stack[$role] += $value : $stack[$role] = $value;
     }
     return $stack;
-  }
-
-  //クイズ村の配役処理
-  static function SetQuiz($user_count){
-    $stack = self::FilterRoles($user_count, array('common', 'wolf', 'mad', 'fox'));
-    $stack['human']--;
-    $stack['quiz'] = 1;
-    return $stack;
-  }
-
-  //グレラン村の配役処理
-  static function SetGrayRandom($user_count){
-    return self::FilterRoles($user_count, array('wolf', 'mad', 'fox'));
   }
 }
