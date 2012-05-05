@@ -441,7 +441,7 @@ class Room {
   }
 
   //発言登録 (ゲーム開始前専用
-  function TalkBeforegame($sentence, $uname, $handle_name, $color, $font_type = null){
+  function TalkBeforeGame($sentence, $uname, $handle_name, $color, $font_type = null){
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
       PrintData(Text::LineToBR($sentence), $str);

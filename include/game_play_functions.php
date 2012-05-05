@@ -54,8 +54,8 @@ function Write($say, $scene, $location = null, $spend_time = 0, $update = false)
     foreach ($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
   }
 
-  if (DB::$ROOM->IsBeforegame()) {
-    DB::$ROOM->TalkBeforegame($say, DB::$SELF->uname, DB::$SELF->handle_name, DB::$SELF->color, $voice);
+  if (DB::$ROOM->IsBeforeGame()) {
+    DB::$ROOM->TalkBeforeGame($say, DB::$SELF->uname, DB::$SELF->handle_name, DB::$SELF->color, $voice);
   }
   else {
     $role_id = DB::$ROOM->IsPlaying() ? DB::$SELF->role_id : null;

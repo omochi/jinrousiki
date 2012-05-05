@@ -9,8 +9,8 @@ class RQ {
   }
 
   //Request クラスのロード
-  static function Load($class = 'RequestBase'){
-    if (is_null(self::$get)) new self($class);
+  static function Load($class = 'RequestBase', $force = true){
+    if ($force || is_null(self::$get)) new self($class);
   }
 
   //インスタンス取得

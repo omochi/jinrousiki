@@ -310,17 +310,18 @@ HTML;
 EOF;
     printf($format, $type, $caption, $type, "\n");
 
-    $list = IconDB::GetSelectionByType($type);
+    $list   = IconDB::GetSelectionByType($type);
     array_unshift($list, '__null__');
+
+    $target = $_SESSION['icon_view'][$type];
     $format = '<option value="%s"%s>%s</option>';
     foreach ($list as $name) {
       printf($format,
-	     $name, in_array($name, $selected) ? ' selected' : '',
+	     $name, in_array($name, $target) ? ' selected' : '',
 	     $name == '__null__' ? 'データ無し' : (strlen($name) > 0 ? $name : '空欄'));
     }
     echo "</select>\n</td>\n";
 
-    $target = $_SESSION['icon_view'][$type];
     return in_array('__all__', $target) ? array() : $target;
   }
 
@@ -333,7 +334,7 @@ EOF;
     $wrapper_width = $icon_width + 6;
     $info_width    = $cellwidth - $icon_width;
     $edit_url      = "icon_view.php?icon_no={$icon_no}";
-    if ($disable > 0) $icon_name = '<s>'.$icon_name.'</s>';
+    if ($disable > 0) $icon_name = sprintf('<s>%s</s>', $icon_name);
     echo <<<HTML
 <td class="icon-details">
 <label for="icon_{$icon_no}">

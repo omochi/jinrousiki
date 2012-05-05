@@ -1,11 +1,11 @@
 <?php
 //-- データベース基底クラス --//
 class DB extends DatabaseConfig {
+  public  static $ROOM = null;
+  public  static $USER = null;
+  public  static $SELF = null;
   private static $instance    = null;
   private static $transaction = false;
-  public static $ROOM = null;
-  public static $USER = null;
-  public static $SELF = null;
 
   //データベース接続クラス生成
   /*
@@ -31,18 +31,6 @@ class DB extends DatabaseConfig {
     if (self::$encode == 'utf8') self::Execute('SET NAMES utf8');
 
     return self::$instance = $db_handle;
-  }
-
-  //データベース接続エラー出力 ($header, $exit は Connect() 参照)
-  private function OutputConnectError($header, $exit, $title, $type){
-    $title .= '接続失敗';
-    $str = $title . ': ' . $type; //エラーメッセージ作成
-    if ($header) {
-      printf('<font color="#FF0000">%s</font><br>', $str);
-      if ($exit) HTML::OutputFooter($exit);
-      return false;
-    }
-    HTML::OutputResult($title, $str);
   }
 
   //データベース接続 (ヘッダ出力あり)
@@ -90,7 +78,7 @@ class DB extends DatabaseConfig {
   }
 
   //コミット処理
-  function Commit(){
+  static function Commit(){
     self::$transaction = false;
     return self::FetchBool('COMMIT', true);
   }
@@ -233,5 +221,17 @@ class DB extends DatabaseConfig {
       'result_lastwords, vote';
     $query = is_null($name) ? $tables : $name;
     return self::ExecuteCommit('OPTIMIZE TABLE ' . $query);
+  }
+
+  //データベース接続エラー出力 ($header, $exit は Connect() 参照)
+  private function OutputConnectError($header, $exit, $title, $type){
+    $title .= '接続失敗';
+    $str = $title . ': ' . $type; //エラーメッセージ作成
+    if ($header) {
+      printf('<font color="#FF0000">%s</font><br>', $str);
+      if ($exit) HTML::OutputFooter($exit);
+      return false;
+    }
+    HTML::OutputResult($title, $str);
   }
 }

@@ -58,12 +58,14 @@ class InitializeConfig {
     'sound_class'         => 'sound_config',
     'login_class'         => 'session_class',
     'game_view_class'     => 'talk_class',
-    'setup_class'         => array('setup_config', 'version', 'database_class'),
+    'user_manager_class'  => array('room_config', 'game_config', 'room_class', 'user_class',
+				   'session_class', 'icon_functions'),
     'paparazzi_class'     => 'paparazzi',
     'index_functions'     => 'version',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
     'oldlog_functions'    => array('cast_config', 'oldlog_config'),
+    'setup_class'         => array('setup_config', 'version', 'database_class'),
     'test/objection'      => array('game_config', 'sound_class')
   );
 
@@ -74,6 +76,7 @@ class InitializeConfig {
     'TIME_CALC'           => array('ROOM_IMG', 'ROLE_DATA'),
     'user_class'          => array('ROLE_DATA', 'MESSAGE'),
     'game_view_class'     => array('ROLES', 'ICON_CONF'),
+    'user_manager_class'  => 'MESSAGE',
     'game_play_functions' => 'ROLE_IMG',
     'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
     'index_functions'     => 'BBS_CONF',
