@@ -1,4 +1,37 @@
 <?php
+//-- アイコン基底クラス --//
+class Icon {
+  //文字列長チェック
+  static function CheckText($title, $url){
+    global $USER_ICON;
+
+    $stack = array();
+    $list  = array('icon_name'  => 'アイコン名',
+		   'appearance' => '出典',
+		   'category'   => 'カテゴリ',
+		   'author'     => 'アイコンの作者');
+    foreach ($list as $key => $label) {
+      $value = RQ::$get->$key;
+      if (strlen($value) > $USER_ICON->name) {
+	HTML::OutputResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
+      }
+      $stack[$key] = strlen($value) > 0 ? $value : null;
+    }
+    return $stack;
+  }
+
+  //RGB カラーチェック
+  static function CheckColor($str, $title, $url){
+    if (strlen($str) != 7 || substr($str, 0, 1) != '#' || ! ctype_xdigit(substr($str, 1, 7))) {
+      $error = '色指定が正しくありません。<br>'."\n" .
+	'指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
+	'送信された色指定 → <span class="color">' . $str . '</span>';
+      HTML::OutputResult($title, $error . $url);
+    }
+    return strtoupper($str);
+  }
+}
+
 //-- DB アクセス (アイコン拡張) --//
 class IconDB {
   //村で使用中のアイコンチェック
@@ -76,7 +109,7 @@ class IconDB {
   }
 }
 
-//-- HTML 生成クラス (icon 拡張) --//
+//-- HTML 生成クラス (アイコン拡張) --//
 class IconHTML {
   //アイコン情報出力
   static function Output($base_url = 'icon_view'){
@@ -375,38 +408,5 @@ HTML;
 <font color="{$color}">◆</font>{$icon_name}</label></td>
 
 HTML;
-  }
-}
-
-//-- アイコン情報チェッカー --//
-class IconInfo {
-  //文字列長チェック
-  static function CheckText($title, $url){
-    global $USER_ICON;
-
-    $stack = array();
-    $list  = array('icon_name'  => 'アイコン名',
-		   'appearance' => '出典',
-		   'category'   => 'カテゴリ',
-		   'author'     => 'アイコンの作者');
-    foreach ($list as $key => $label) {
-      $value = RQ::$get->$key;
-      if (strlen($value) > $USER_ICON->name) {
-	HTML::OutputResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
-      }
-      $stack[$key] = strlen($value) > 0 ? $value : null;
-    }
-    return $stack;
-  }
-
-  //RGB カラーチェック
-  static function CheckColor($str, $title, $url){
-    if (strlen($str) != 7 || substr($str, 0, 1) != '#' || ! ctype_xdigit(substr($str, 1, 7))) {
-      $error = '色指定が正しくありません。<br>'."\n" .
-	'指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
-	'送信された色指定 → <span class="color">' . $str . '</span>';
-      HTML::OutputResult($title, $error . $url);
-    }
-    return strtoupper($str);
   }
 }

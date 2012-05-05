@@ -61,11 +61,14 @@ class InitializeConfig {
     'game_log_class'      => array('session_class', 'talk_class'),
     'user_manager_class'  => array('room_config', 'game_config', 'room_class', 'user_class',
 				   'session_class', 'icon_functions'),
+    'icon_view_class'     => 'icon_functions',
+    'icon_edit_class'     => 'icon_functions',
+    'icon_upload_class'   => array('session_class', 'icon_functions'),
     'paparazzi_class'     => 'paparazzi',
     'index_functions'     => 'version',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
-    'oldlog_functions'    => array('cast_config', 'oldlog_config'),
+    'oldlog_functions'    => array('oldlog_config', 'cast_config'),
     'setup_class'         => array('setup_config', 'version', 'database_class'),
     'test/objection'      => array('game_config', 'sound_class')
   );

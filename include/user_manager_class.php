@@ -1,4 +1,5 @@
 <?php
+//-- ユーザ登録処理クラス --//
 class UserManager {
   //ユーザ登録
   static function Entry(){
