@@ -38,12 +38,12 @@ class GameTime {
     $end_date = self::GetJavaScriptDate($end_time);
     $format = <<<EOF
 <script language="JavaScript"><!--
-var sentence       = '　%sまで ';
+var sentence       = "　%sまで ";
 var end_date       = %s * 1 + (new Date() - %s);
 var diff_seconds   = Math.floor((%s - %s) / 1000);
-var sound_flag     = '%s';
-var sound_file     = '%s';
-var countdown_flag = '%s';
+var sound_flag     = %s;
+var sound_file     = "%s";
+var countdown_flag = %s;
 var alert_distance = %d;
 %s
 EOF;
@@ -56,7 +56,7 @@ EOF;
 	   isset($type) && class_exists(Sound) ? Sound::GenerateJavaScript($type) : '',
 	   $flag ? 'true' : 'false',
 	   TimeConfig::$alert_distance,
-	   '// --></script>'."\n");
+	   '//--></script>'."\n");
   }
 
   //JavaScript の Date() オブジェクト作成コードを生成する
@@ -307,6 +307,7 @@ function OutputGamePageHeader(){
 	}
       }
     }
+
     GameTime::OutputTimer($end_time, $sound_type, $alert_flag);
     $game_top .= "\n".'<span id="vote_alert"></span>';
   }

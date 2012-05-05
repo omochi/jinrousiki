@@ -7,35 +7,41 @@ class Sound extends SoundConfig {
   private static $embed_url  = 'http://www.macromedia.com/shockwave/download/';
   private static $embed_file = 'index.cgi?P1_Prod_Version=ShockwaveFlash';
 
-  //ファイルパス生成
-  static function GetPath($type, $file = null){
-    $path = JINRO_ROOT . '/' . self::$path;
-    return $path . '/' . (is_null($file) ? self::$$type : $file) . '.' . self::$extension;
-  }
-
   //HTML 生成
-  static function Generate($type, $file = null){
+  static function Generate($type, $file = null, $javascript = false){
     $path = self::GetPath($type, $file);
-    $str = <<<EOF
+    $format = <<<EOF
 <object classid="%s" codebase="%s%s" width="0" height="0">
 <param name="movie" value="%s">
 <param name="quality" value="high">
 <embed src="%s" type="%s" quality="high" width="0" height="0" loop="false" pluginspage="%s%s">
-</embed>
-</object>%s
+</embed></object>%s
 EOF;
-    return sprintf($str,
-      self::$class_id, self::$codebase_url, self::$codebase_file,
-      $path, $path,
-      'application/x-shockwave-flash', self::$embed_url, self::$embed_file,
-      "\n");
+    return sprintf($format,
+		   self::$class_id, self::$codebase_url, self::$codebase_file,
+		   $path, $path, 'application/x-shockwave-flash',
+		   self::$embed_url, self::$embed_file, "\n");
   }
 
   //HTML 生成 (JavaScript 用)
   static function GenerateJavaScript($type){
-    return str_replace('"', "'", self::Generate($type));
+    $path = self::GetPath($type);
+    $format = "<object classid='%s' codebase='%s%s' width='0' height='0'>" .
+      "<param name='movie' value='%s'><param name='quality' value='high'>" .
+      "<embed src='%s' type='%s' quality='high' width='0' height='0' loop='false'" .
+      " pluginspage='%s%s'></embed></object>";
+    return sprintf($format,
+		   self::$class_id, self::$codebase_url, self::$codebase_file,
+		   $path, $path, 'application/x-shockwave-flash',
+		   self::$embed_url, self::$embed_file);
   }
 
   //出力
   static function Output($type){ echo self::Generate($type); }
+
+  //ファイルパス生成
+  private function GetPath($type, $file = null){
+    $path = JINRO_ROOT . '/' . self::$path;
+    return $path . '/' . (is_null($file) ? self::$$type : $file) . '.' . self::$extension;
+  }
 }

@@ -82,12 +82,6 @@ EOF;
     if (! DB::$ROOM->IsFinished()) OutputGameOption(); //ゲームオプション
     OutputTimeTable(); //経過日数と生存人数
 
-    if (DB::$ROOM->IsRealTime()) { //リアルタイム制
-      GameTime::OutputTimer(GameTime::GetRealPass($left_time));
-    }
-    else { //会話で時間経過制
-      $left_talk_time = GameTime::GetTalkPass($left_time);
-    }
     switch (DB::$ROOM->scene) {
     case 'day': //昼
       $time_message = '日没まで ';
@@ -100,12 +94,14 @@ EOF;
 
     if (DB::$ROOM->IsPlaying()) {
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制
+	GameTime::OutputTimer(GameTime::GetRealPass($left_time));
 	echo '<td class="real-time"><form name="realtime_form">'."\n";
 	echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
 	echo '</form></td>'."\n";
       }
-      elseif ($left_talk_time) { //会話で時間経過制
-	printf('<td>%s%s</td>'."\n", $time_message, $left_talk_time);
+      else { //会話で時間経過制
+	$left_talk_time = GameTime::GetTalkPass($left_time);
+	if ($left_talk_time) printf('<td>%s%s</td>'."\n", $time_message, $left_talk_time);
       }
     }
     echo '</tr></table>'."\n";
