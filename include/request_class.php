@@ -158,17 +158,17 @@ class RequestBaseGamePlay extends RequestBaseGame {
 class RequestBaseIcon extends RequestBase {
   function __construct(){
     Text::EncodePostData();
+    $this->GetItems('intval', 'post.icon_no');
     $this->GetItems('Escape', 'post.icon_name', 'post.appearance',
 		    'post.category', 'post.author', 'post.color');
-    $this->GetItems('intval', 'post.icon_no');
     $this->GetItems('Exists', 'post.search');
   }
 
   protected function GetIconData(){
-    $this->GetItems('SetPage', 'page'); //get・post に限定しないこと
-    $this->GetItems('Escape', 'appearance', 'category', 'author', 'keyword');
     $this->GetItems('IsOn', 'sort_by_name');
+    $this->GetItems('Escape', 'appearance', 'category', 'author', 'keyword');
     $this->GetItems('Exists', 'search');
+    $this->GetItems('SetPage', 'page'); //get・post に限定しないこと
   }
 }
 
@@ -178,8 +178,8 @@ class RequestLogin extends RequestBase {
     Text::EncodePostData();
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('IsOn', 'post.login_manually');
-    $this->GetItems('ConvertTrip', 'post.uname');
     $this->GetItems('Escape', 'password');
+    $this->GetItems('ConvertTrip', 'post.uname');
   }
 }
 
@@ -189,10 +189,10 @@ class RequestUserManager extends RequestBaseIcon {
     Text::EncodePostData();
     $this->GetItems('IsRoomNo', 'get.room_no');
     $this->GetItems('intval', 'post.icon_no', 'get.user_no');
-    $this->GetItems('Escape', 'post.password');
-    $this->GetItems('Exists', 'post.entry');
-    $this->GetItems(null, 'post.trip', 'post.profile', 'post.sex', 'post.role');
     $this->GetItems('IsOn', 'post.login_manually');
+    $this->GetItems('Exists', 'post.entry');
+    $this->GetItems('Escape', 'post.password');
+    $this->GetItems(null, 'post.trip', 'post.profile', 'post.sex', 'post.role');
     $this->GetIconData();
     Text::Escape($this->profile, false);
     if ($this->entry) {
@@ -330,8 +330,8 @@ class RequestIconView extends RequestBaseIcon {
 class RequestIconEdit extends RequestBaseIcon {
   function __construct(){
     parent::__construct();
-    $this->GetItems('Escape', 'post.password');
     $this->GetItems('IsOn', 'post.disable');
+    $this->GetItems('Escape', 'post.password');
   }
 }
 
