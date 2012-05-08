@@ -1,8 +1,8 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('info_functions');
-$INIT_CONF->LoadClass('TIME_CALC', 'USER_ICON', 'MESSAGE', 'GAME_OPT_MESS');
+$INIT_CONF->LoadFile('info_functions', 'icon_functions');
+$INIT_CONF->LoadClass('TIME_CALC', 'MESSAGE', 'GAME_OPT_MESS');
 
 //-- 関数定義 --//
 //村の最大人数設定出力
@@ -102,8 +102,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_icon">ユーザの似顔絵などを表すユーザアイコンを自由にアップロードできます</h3>
 <div>
-<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php echo $USER_ICON->MaxIconSize() . '、容量 ' . $USER_ICON->MaxFileSize() ?> ] のファイルをアップロードできます。<br>
-登録数の上限は [ <?php echo $USER_ICON->number ?>個 ] です。
+<a href="../icon_upload.php" target="_top">専用のページ</a>から [ <?php printf('%s、容量 %s', Icon::GetSize(), Icon::GetFile()); ?> ] のファイルをアップロードできます。<br>
+登録数の上限は [ <?php printf('%d個', UserIconConfig::NUMBER); ?> ] です。
 </div>
 
 <h3 id="difference_message">システムメッセージを画像に</h3>

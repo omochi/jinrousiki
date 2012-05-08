@@ -28,7 +28,6 @@ class InitializeConfig {
   public $depend_file = array(
     'GAME_OPT_CONF'       => 'game_option_config',
     'ICON_CONF'           => 'icon_config',
-    'USER_ICON'           => 'user_icon_config',
     'MENU_LINK'           => array('menu_config', 'index_functions'),
     'BBS_CONF'            => 'bbs_config',
     'SHARED_CONF'         => array('shared_server_config', 'info_functions'),
@@ -68,6 +67,7 @@ class InitializeConfig {
     'index_functions'     => 'version',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
+    'icon_functions'      => 'user_icon_config',
     'oldlog_functions'    => array('oldlog_config', 'cast_config'),
     'setup_class'         => array('setup_config', 'version', 'database_class'),
     'test/objection'      => array('game_config', 'sound_class')
@@ -83,7 +83,7 @@ class InitializeConfig {
     'game_log_class'      => 'ROLES',
     'user_manager_class'  => 'MESSAGE',
     'game_play_functions' => 'ROLE_IMG',
-    'icon_functions'      => array('ICON_CONF', 'USER_ICON'),
+    'icon_functions'      => 'ICON_CONF',
     'index_functions'     => 'BBS_CONF',
     'oldlog_functions'    => array('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
   );
@@ -92,7 +92,6 @@ class InitializeConfig {
   public $class_list = array(
     'GAME_OPT_CONF' => 'GameOptionConfig',
     'ICON_CONF'     => 'IconConfig',
-    'USER_ICON'     => 'UserIconConfig',
     'MENU_LINK'     => 'MenuLinkBuilder',
     'BBS_CONF'      => 'BBSConfig',
     'SHARED_CONF'   => 'SharedServerConfig',

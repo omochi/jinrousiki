@@ -5,7 +5,7 @@ class SetupDB {
   static function CreateDatabase(){
     $result = DB::FetchBool(sprintf('CREATE DATABASE %s DEFAULT CHARSET utf8', DB::$name));
     printf("データベース作成: %s: %s<br>\n", DB::$name, $result ? '成功' : '失敗');
-    DB::ConnectSecond();
+    DB::Reconnect();
   }
 
   //テーブル作成

@@ -10,8 +10,8 @@ class DB extends DatabaseConfig {
   //データベース接続クラス生成
   /*
     $id     : DatabaseConfig->name_list から選択
-    $header : HTML ヘッダ出力情報 [true: 出力済み / false: 未出力]
-    $exit   : エラー処理 [true: exit を返す / false で終了]
+    $header : HTML ヘッダ出力情報 [true: 出力済み    / false: 未出力]
+    $exit   : エラー処理          [true: exit を返す / false で終了]
   */
   private function __construct($id = null, $header = false, $exit = true){
     //error_reporting(E_ALL);
@@ -33,7 +33,7 @@ class DB extends DatabaseConfig {
     return self::$instance = $db_handle;
   }
 
-  //データベース接続 (ヘッダ出力あり)
+  //データベース接続
   static function Connect($id = null){
     if (is_null(self::$instance)) new self($id);
     return isset(self::$instance);
@@ -46,7 +46,7 @@ class DB extends DatabaseConfig {
   }
 
   //データベース再接続
-  static function ConnectSecond(){
+  static function Reconnect(){
     new self(null, true);
     return isset(self::$instance);
   }
@@ -152,7 +152,7 @@ class DB extends DatabaseConfig {
     $stack = array();
     if (($sql = self::Execute($query)) === false) return $stack;
 
-    while(($array = mysql_fetch_assoc($sql)) !== false) $stack[] = $array;
+    while (($array = mysql_fetch_assoc($sql)) !== false) $stack[] = $array;
     mysql_free_result($sql);
 
     return $shift ? array_shift($stack) : $stack;
@@ -184,33 +184,32 @@ class DB extends DatabaseConfig {
     $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
       "'{$crypt_password}', 'live'";
 
-    if ($uname == 'dummy_boy'){
+    if ($uname == 'dummy_boy') {
       $profile    = $MESSAGE->dummy_boy_comment;
       $last_words = $MESSAGE->dummy_boy_last_words;
     }
-    else{
+    else {
       $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
       $items  .= ', ip_address, last_load_scene';
       $values .= ", '{$ip_address}', 'beforegame'";
     }
 
-    foreach (array('profile', 'role', 'session_id', 'last_words') as $var){
-      if (is_null($$var)) continue;
-      $items  .= ", {$var}";
-      $values .= ", '{$$var}'";
+    foreach (array('profile', 'role', 'session_id', 'last_words') as $value) {
+      if (is_null($$value)) continue;
+      $items  .= ", {$value}";
+      $values .= ", '{$$value}'";
     }
     return self::Insert('user_entry', $items, $values);
   }
 
   //村削除
   static function DeleteRoom($room_no){
-    $header = 'DELETE FROM ';
-    $footer = ' WHERE room_no = ' . $room_no;
+    $query = 'DELETE FROM %s WHERE room_no = %d';
     $stack  = array('room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame',
 		    'system_message', 'result_ability', 'result_dead', 'result_lastwords',
 		    'result_vote_kill', 'vote');
-    foreach ($stack as $name){
-      if (! self::FetchBool($header . $name . $footer)) return false;
+    foreach ($stack as $name) {
+      if (! self::FetchBool(sprintf($query, $name, $room_no))) return false;
     }
     return true;
   }
@@ -226,7 +225,7 @@ class DB extends DatabaseConfig {
   //データベース接続エラー出力 ($header, $exit は Connect() 参照)
   private function OutputConnectError($header, $exit, $title, $type){
     $title .= '接続失敗';
-    $str = $title . ': ' . $type; //エラーメッセージ作成
+    $str = $title . ': ' . $type;
     if ($header) {
       printf('<font color="#FF0000">%s</font><br>', $str);
       if ($exit) HTML::OutputFooter($exit);

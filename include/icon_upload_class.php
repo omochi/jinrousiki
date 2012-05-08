@@ -1,9 +1,9 @@
 <?php
 //-- アイコンアップロード処理クラス --//
-class IconUpload {
+class IconUpload extends Icon {
   //投稿処理
   static function Execute(){
-    global $ICON_CONF, $USER_ICON;
+    global $ICON_CONF;
 
     if (Security::CheckReferer('icon_upload.php')) { //リファラチェック
       HTML::OutputResult('ユーザアイコンアップロード', '無効なアクセスです');
@@ -70,13 +70,13 @@ class IconUpload {
 
     //空白チェック
     if ($icon_name == '') HTML::OutputResult($title, 'アイコン名を入力してください' . $back_url);
-    Icon::CheckText($title, $back_url); //アイコン名の文字列長のチェック
-    $color = Icon::CheckColor($color, $title, $back_url); //色指定のチェック
+    self::CheckText($title, $back_url); //アイコン名の文字列長のチェック
+    $color = self::CheckColor($color, $title, $back_url); //色指定のチェック
 
     //ファイルサイズのチェック
     if ($size == 0) HTML::OutputResult($title, 'ファイルが空です' . $back_url);
-    if ($size > $USER_ICON->size) {
-      HTML::OutputResult($title, 'ファイルサイズは ' . $USER_ICON->MaxFileSize() . $back_url);
+    if ($size > UserIconConfig::FILE) {
+      HTML::OutputResult($title, 'ファイルサイズは ' . self::GetFile() . $back_url);
     }
 
     //ファイルの種類のチェック
@@ -103,8 +103,8 @@ class IconUpload {
 
     //アイコンの高さと幅をチェック
     list($width, $height) = getimagesize($tmp_name);
-    if ($width > $USER_ICON->width || $height > $USER_ICON->height) {
-      $str = 'アイコンは ' . $USER_ICON->MaxIconSize() . ' しか登録できません。<br>'."\n" .
+    if ($width > UserIconConfig::WIDTH || $height > UserIconConfig::HEIGHT) {
+      $str = 'アイコンは ' . self::GetSize() . ' しか登録できません。<br>'."\n" .
 	'送信されたファイル → <span class="color">幅 ' . $width . '、高さ ' . $height . '</span>';
       HTML::OutputResult($title, $str . $back_url);
     }
@@ -116,7 +116,7 @@ class IconUpload {
     if (! DB::Lock('icon')) HTML::OutputResult($title, $str); //トランザクション開始
 
     //登録数上限チェック
-    if (DB::Count('SELECT icon_no FROM user_icon') >= $USER_ICON->number) {
+    if (DB::Count('SELECT icon_no FROM user_icon') >= UserIconConfig::NUMBER) {
       HTML::OutputResult($title, 'これ以上登録できません');
     }
 
@@ -195,36 +195,37 @@ EOF;
 
   //アップロードフォーム出力
   static function Output(){
-    global $USER_ICON;
-
     HTML::OutputHeader('ユーザアイコンアップロード', 'icon_upload', true);
-    $name_length = $USER_ICON->MaxNameLength();
-    $cation = isset($USER_ICON->cation) ? '<br>' . $USER_ICON->cation : '';
+    $file      = self::GetFile();
+    $length    = self::GetMaxLength();
+    $size      = self::GetSize();
+    $caution   = self::GetCaution();
+    $file_size = UserIconConfig::FILE;
     echo <<<EOF
 <a href="./">←戻る</a><br>
 <img class="title" src="img/icon_upload_title.jpg" title="アイコン登録" alt="アイコン登録"><br>
 <table align="center">
 <tr><td class="link"><a href="icon_view.php">→アイコン一覧</a></td><tr>
-<tr><td class="caution">＊あらかじめ指定する大きさ ({$USER_ICON->MaxIconSize()}) にリサイズしてからアップロードしてください。{$cation}</td></tr>
+<tr><td class="caution">＊あらかじめ指定する大きさ ({$size}) にリサイズしてからアップロードしてください。{$caution}</td></tr>
 <tr><td>
-<fieldset><legend>アイコン指定 (jpg / gif / png 形式で登録して下さい。{$USER_ICON->MaxFileSize()})</legend>
+<fieldset><legend>アイコン指定 (jpg / gif / png 形式で登録して下さい。{$file})</legend>
 <form method="POST" action="icon_upload.php" enctype="multipart/form-data">
 <table>
 <tr><td><label>ファイル選択</label></td>
 <td>
 <input type="file" name="file" size="80">
-<input type="hidden" name="max_file_size" value="{$USER_ICON->size}">
+<input type="hidden" name="max_file_size" value="{$file_size}">
 <input type="hidden" name="command" value="upload">
 <input type="submit" value="登録">
 </td></tr>
 <tr><td><label>アイコンの名前</label></td>
-<td><input type="text" name="icon_name" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
+<td><input type="text" name="icon_name" {$length}</td></tr>
 <tr><td><label>出典</label></td>
-<td><input type="text" name="appearance" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
+<td><input type="text" name="appearance" {$length}</td></tr>
 <tr><td><label>カテゴリ</label></td>
-<td><input type="text" name="category" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
+<td><input type="text" name="category" {$length}</td></tr>
 <tr><td><label>アイコンの作者</label></td>
-<td><input type="text" name="author" maxlength="{$USER_ICON->name}" size="{$USER_ICON->name}">{$name_length}</td></tr>
+<td><input type="text" name="author" {$length}</td></tr>
 <tr><td><label>アイコン枠の色</label></td>
 <td>
 <input id="fix_color" type="radio" name="color"><label for="fix_color">手入力</label>

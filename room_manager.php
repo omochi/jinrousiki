@@ -8,7 +8,8 @@ if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
 Text::EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
-  $INIT_CONF->LoadClass('USER_ICON', 'MESSAGE', 'TWITTER');
+  $INIT_CONF->LoadFile('user_icon_config');
+  $INIT_CONF->LoadClass('MESSAGE', 'TWITTER');
   CreateRoom();
 }
 else {
@@ -48,7 +49,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $USER_ICON, $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
+  global $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
 
   if (ServerConfig::$disable_establish) {
     HTML::OutputResult('村作成 [制限事項]', '村作成はできません');
@@ -217,7 +218,7 @@ function CreateRoom(){
       if ($ROOM_OPT->dummy_boy &&
 	  DB::Count('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
         if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-			     1, $ROOM_OPT->gerd ? $USER_ICON->gerd : 0)) break;
+			     1, $ROOM_OPT->gerd ? UserIconConfig::GERD : 0)) break;
       }
 
       if (ServerConfig::$secret_room) { //村情報非表示モードの処理

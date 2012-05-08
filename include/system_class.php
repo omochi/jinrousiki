@@ -76,24 +76,6 @@ class IconConfigBase {
   function GenerateTag(){ return ' width="' . $this->width . '" height="' . $this->height . '"'; }
 }
 
-//-- ユーザアイコン管理の基底クラス --//
-class UserIconBase {
-  // アイコンの文字数
-  function MaxNameLength(){
-    return '半角で' . $this->name . '文字、全角で' . floor($this->name / 2) . '文字まで';
-  }
-
-  // アイコンのファイルサイズ
-  function MaxFileSize(){
-    return ($this->size > 1024 ? floor($this->size / 1024) . 'k' : $this->size) . 'Byte まで';
-  }
-
-  // アイコンの縦横のサイズ
-  function MaxIconSize(){
-    return '幅' . $this->width . 'ピクセル × 高さ' . $this->height . 'ピクセルまで';
-  }
-}
-
 //-- 画像管理の基底クラス --//
 class ImageManager {
   //画像のファイルパス取得 (private)
@@ -1435,9 +1417,7 @@ class Lottery {
   }
 
   //「比」の配列から一つ引く
-  static function Get($list){
-    return GetRandom(self::GenerateRandomList($list));
-  }
+  static function Get($list){ return GetRandom(self::GenerateRandomList($list)); }
 
   //「比」の配列から「福引き」を作成する
   static function GenerateRandomList($list){

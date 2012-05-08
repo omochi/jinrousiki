@@ -1,10 +1,42 @@
 <?php
 //-- アイコン基底クラス --//
 class Icon {
-  //文字列長チェック
-  static function CheckText($title, $url){
-    global $USER_ICON;
+  const LENGTH     = '半角で%d文字、全角で%d文字まで';
+  const MAX_LENGTH = 'maxlength="%d" size="%d">%s';
+  const FILE       = '%sByte まで';
+  const SIZE       = '幅%dピクセル × 高さ%dピクセルまで';
 
+  //文字数制限
+  static function GetLength(){
+    $name = UserIconConfig::LENGTH;
+    return sprintf(self::LENGTH, $name, floor($name / 2));
+  }
+
+  //文字数制限 (フォーム用)
+  static function GetMaxLength(){
+    $length = UserIconConfig::LENGTH;
+    return sprintf(self::MAX_LENGTH, $length, $length, self::GetLength());
+  }
+
+  //ファイルサイズ制限
+  static function GetFile(){
+    $size = UserIconConfig::FILE;
+    return sprintf(self::FILE, ($size > 1024 ? sprintf('%dk', floor($size / 1024)) : $size));
+  }
+
+  //アイコンのサイズ制限
+  static function GetSize(){
+    return sprintf(self::SIZE, UserIconConfig::WIDTH, UserIconConfig::HEIGHT);
+  }
+
+  //アイコンアップロード時の注意事項
+  static function GetCaution(){
+    $caution = UserIconConfig::CAUTION;
+    return isset($caution) ? '<br>' . $caution : '';
+  }
+
+  //文字列長チェック
+  static protected function CheckText($title, $url){
     $stack = array();
     $list  = array('icon_name'  => 'アイコン名',
 		   'appearance' => '出典',
@@ -12,8 +44,8 @@ class Icon {
 		   'author'     => 'アイコンの作者');
     foreach ($list as $key => $label) {
       $value = RQ::$get->$key;
-      if (strlen($value) > $USER_ICON->name) {
-	HTML::OutputResult($title, $label . ': ' . $USER_ICON->MaxNameLength() . $url);
+      if (strlen($value) > UserIconConfig::LENGTH) {
+	HTML::OutputResult($title, $label . ': ' . self::GetLength() . $url);
       }
       $stack[$key] = strlen($value) > 0 ? $value : null;
     }
@@ -21,7 +53,7 @@ class Icon {
   }
 
   //RGB カラーチェック
-  static function CheckColor($str, $title, $url){
+  static protected function CheckColor($str, $title, $url){
     if (strlen($str) != 7 || substr($str, 0, 1) != '#' || ! ctype_xdigit(substr($str, 1, 7))) {
       $error = '色指定が正しくありません。<br>'."\n" .
 	'指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
@@ -153,9 +185,9 @@ HTML;
 
   //アイコン編集フォーム出力
   private function OutputEdit($icon_no){
-    global $ICON_CONF, $USER_ICON;
+    global $ICON_CONF;
 
-    $size  = sprintf(' size="%d" maxlength="%d"', $USER_ICON->name, $USER_ICON->name);
+    $size  = sprintf(' size="%d" maxlength="%d"', UserIconConfig::LENGTH, UserIconConfig::LENGTH);
     foreach (IconDB::GetInfo($icon_no) as $stack) {
       extract($stack);
       $location = $ICON_CONF->path . '/' . $icon_filename;
@@ -205,10 +237,10 @@ EOF;
 
   //アイコン情報を収集して表示する
   private function OutputConcrete($base_url = 'icon_view'){
-    global $ICON_CONF, $USER_ICON;
+    global $ICON_CONF;
 
     //-- ヘッダ出力 --//
-    $colspan       = $USER_ICON->column * 2;
+    $colspan       = UserIconConfig::COLUMN * 2;
     $line_header   = sprintf('<tr><td colspan="%d">', $colspan);
     $line_footer   = '</td></tr>'."\n";
     $url_header    = sprintf('<a href="%sphp?', $base_url);
@@ -319,7 +351,7 @@ HTML;
       $column = 0;
       foreach (IconDB::GetList($where) as $icon_info) {
 	self::$method($icon_info, 162);
-	if ($USER_ICON->column <= ++$column) {
+	if (UserIconConfig::COLUMN <= ++$column) {
 	  $column = 0;
 	  echo '</tr><tr>';
 	}
