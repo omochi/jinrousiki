@@ -31,10 +31,7 @@ class Role_possessed_mad extends Role {
     return $this->GetActor()->IsActive() ? null : '能力喪失しています';
   }
 
-  function GetVoteIconPath($user, $live){
-    global $ICON_CONF;
-    return $ICON_CONF->path . '/' . $user->icon_filename;
-  }
+  function GetVoteIconPath($user, $live){ return Icon::GetFile($user->icon_filename); }
 
   function IsVoteCheckbox($user, $live){
     return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();

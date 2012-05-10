@@ -56,10 +56,9 @@ class Role_wolf extends Role {
   }
 
   function GetVoteIconPath($user, $live){
-    global $ICON_CONF;
-    return ! $live ? $ICON_CONF->dead :
-      ($this->IsWolfPartner($user->user_no) ? $ICON_CONF->wolf :
-       $ICON_CONF->path . '/' . $user->icon_filename);
+    return ! $live ? Icon::GetDead() :
+      ($this->IsWolfPartner($user->user_no) ?
+       Icon::GetWolf() : Icon::GetFile($user->icon_filename));
   }
 
   //仲間狼判定

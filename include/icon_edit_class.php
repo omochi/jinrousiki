@@ -1,6 +1,6 @@
 <?php
 //-- アイコン変更処理クラス --//
-class IconEdit extends Icon {
+class IconEdit {
   static function Execute(){
     $title = 'ユーザアイコン編集';
     //リファラチェック
@@ -9,7 +9,7 @@ class IconEdit extends Icon {
     //入力データチェック
     extract(RQ::ToArray()); //引数を展開
     $back_url = sprintf("<br>\n".'<a href="icon_view.php?icon_no=%d">戻る</a>', $icon_no);
-    if ($password != UserIconConfig::PASSWORD) {
+    if ($password != UserIcon::PASSWORD) {
       HTML::OutputResult($title, 'パスワードが違います。' . $back_url);
     }
 
@@ -18,12 +18,12 @@ class IconEdit extends Icon {
       HTML::OutputResult($title, 'アイコン名が空欄になっています。' . $back_url);
     }
     $query_stack = array();
-    foreach (self::CheckText($title, $back_url) as $key => $value) {
+    foreach (UserIcon::CheckText($title, $back_url) as $key => $value) {
       $query_stack[] = sprintf("%s = %s", $key, is_null($value) ? 'NULL' : "'{$value}'");
     }
 
     if (strlen($color) > 0) { //色指定のチェック
-      $color = self::CheckColor($color, $title, $back_url);
+      $color = UserIcon::CheckColor($color, $title, $back_url);
       $query_stack[] = sprintf("color = '%s'", $color);
     }
 

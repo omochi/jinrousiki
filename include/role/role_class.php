@@ -482,8 +482,7 @@ class Role {
 
   //投票のアイコンパス取得
   function GetVoteIconPath($user, $live){
-    global $ICON_CONF;
-    return $live ? $ICON_CONF->path . '/' . $user->icon_filename : $ICON_CONF->dead;
+    return $live ? Icon::GetFile($user->icon_filename) : Icon::GetDead();
   }
 
   //投票のチェックボックス取得

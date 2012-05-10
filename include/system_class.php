@@ -55,27 +55,6 @@ EOF;
   }
 }
 
-//ゲームプレイ時のアイコン表示設定の基底クラス --//
-class IconConfigBase {
-  //初期設定
-  public $path   = 'user_icon'; //ユーザアイコンのパス
-  public $dead   = 'grave.gif'; //死者
-  public $wolf   = 'wolf.gif';  //狼
-  public $width  = 45; //表示サイズ(幅)
-  public $height = 45; //表示サイズ(高さ)
-  public $title;
-  public $page_type;
-
-  function __construct(){
-    $this->path = JINRO_ROOT . '/' . $this->path;
-    $this->dead = JINRO_IMG  . '/' . $this->dead;
-    $this->wolf = JINRO_IMG  . '/' . $this->wolf;
-    $this->tag  = $this->GenerateTag();
-  }
-
-  function GenerateTag(){ return ' width="' . $this->width . '" height="' . $this->height . '"'; }
-}
-
 //-- 画像管理の基底クラス --//
 class ImageManager {
   //画像のファイルパス取得 (private)

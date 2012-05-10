@@ -354,14 +354,13 @@ function OutputTimeTable(){
 
 //プレイヤー一覧生成
 function GeneratePlayerList(){
-  global $ICON_CONF;
-
   //PrintData(DB::$ROOM->event);
   //キャッシュデータをセット
   $beforegame = DB::$ROOM->IsBeforeGame();
   $open_data  = DB::$ROOM->IsOpenData(true);
-  $base_path  = $ICON_CONF->path . '/';
-  $img_header = sprintf('<img%s alt="icon" title="', $ICON_CONF->tag);
+  $base_path  = Icon::GetPath();
+  $img_format = '<img src="%s" style="border-color: %s;" alt="icon" title="%s" ' .
+    Icon::GetTag() . '%s>';
   if ($open_data) {
     $trip_from = array('◆', '◇');
     $trip_to   = array('◆<br>', '◇<br>');
@@ -380,27 +379,28 @@ function GeneratePlayerList(){
     else {
       $td_header = '<td>';
     }
-
-    //ユーザプロフィールと枠線の色を追加
-    //Title 内の改行はブラウザ依存あり (Firefox 系は無効)
-    $str .= $td_header . $img_header . str_replace("\n", '&#13;&#10', $user->profile) .
-      sprintf('" style="border-color: %s;"', $user->color);
+    $str .= $td_header;
 
     //生死情報に応じたアイコンを設定
     $path = $base_path . $user->icon_filename;
     if ($beforegame || DB::$ROOM->watch_mode || DB::$USER->IsVirtualLive($id)) {
-      $live = '(生存中)';
+      $live  = '(生存中)';
+      $mouse = '';
     }
     else {
-      $live = '(死亡)';
-      $str .= ' onMouseover="this.src=' . "'$path'" . '"'; //元のアイコン
+      $live  = '(死亡)';
+      $mouse = ' onMouseover="this.src=' . "'$path'" . '"'; //元のアイコン
 
-      $path = $ICON_CONF->dead; //アイコンを死亡アイコンに入れ替え
-      $str .= ' onMouseout="this.src=' . "'$path'" . '"';
+      $path = Icon::GetDead(); //アイコンを死亡アイコンに入れ替え
+      $mouse .= ' onMouseout="this.src=' . "'$path'" . '"';
     }
 
     if (DB::$ROOM->personal_mode) $live .= sprintf('<br>(%s)', GenerateWinner($user->user_no));
-    $str .= sprintf(' src="%s"></td>'."\n", $path);
+
+    //ユーザプロフィールと枠線の色を追加
+    //Title 内の改行はブラウザ依存あり (Firefox 系は無効)
+    $profile = str_replace("\n", '&#13;&#10', $user->profile);
+    $str .= sprintf($img_format, $path, $user->color, $profile, $mouse) . '</td>'."\n";
 
     //HN を追加
     $str .= sprintf('%s<font color="%s">◆</font>%s', $td_header, $user->color, $user->handle_name);

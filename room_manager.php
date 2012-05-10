@@ -8,7 +8,7 @@ if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
 Text::EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
-  $INIT_CONF->LoadFile('user_icon_config');
+  $INIT_CONF->LoadFile('user_icon_class');
   $INIT_CONF->LoadClass('MESSAGE', 'TWITTER');
   CreateRoom();
 }
@@ -218,7 +218,7 @@ function CreateRoom(){
       if ($ROOM_OPT->dummy_boy &&
 	  DB::Count('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
         if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-			     1, $ROOM_OPT->gerd ? UserIconConfig::GERD : 0)) break;
+			     1, $ROOM_OPT->gerd ? UserIcon::GERD : 0)) break;
       }
 
       if (ServerConfig::$secret_room) { //村情報非表示モードの処理

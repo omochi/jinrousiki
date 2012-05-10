@@ -199,7 +199,7 @@ EOF;
 
   //ユーザ登録画面表示
   static function Output(){
-    global $ICON_CONF, $ROLE_DATA;
+    global $ROLE_DATA;
 
     extract(RQ::ToArray()); //引数を展開
     if ($user_no > 0) { //登録情報変更モード
@@ -216,8 +216,12 @@ EOF;
 
     DB::$ROOM = RoomDataSet::LoadEntryUserPage($room_no);
     $str = sprintf('%d 番地の村は', $room_no);
-    if (is_null(DB::$ROOM->id))  HTML::OutputResult('村人登録 [村番号エラー]', $str . '存在しません');
-    if (DB::$ROOM->IsFinished()) HTML::OutputResult('村人登録 [入村不可]',     $str . '終了しました');
+    if (is_null(DB::$ROOM->id)) {
+      HTML::OutputResult('村人登録 [村番号エラー]', $str . '存在しません');
+    }
+    if (DB::$ROOM->IsFinished()) {
+      HTML::OutputResult('村人登録 [入村不可]', $str . '終了しました');
+    }
     if (DB::$ROOM->status != 'waiting') {
       HTML::OutputResult('村人登録 [入村不可]', $str . 'すでにゲームが開始されています。');
     }

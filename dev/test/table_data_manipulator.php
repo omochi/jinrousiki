@@ -14,7 +14,6 @@ if($DISABLE_TABLE_DATA_MANIPULATOR){
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
-$INIT_CONF->LoadClass('ICON_CONF');
 DB::Connect();
 HTML::OutputHeader('Test Tools', null, true);
 
@@ -80,8 +79,6 @@ function OpenFile($file){
 //使用されているアイコンを削除する (from: 対象番号 / to: 代替番号)
 /* ロック処理を再設計しているので 2.0 では使用できない */
 function DeleteUsedIcon($from, $to){
-  global $ICON_CONF;
-
   if(DB::FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = {$to}") < 1){
     PrintData($to, 'Invalid Icon No');
     return false;

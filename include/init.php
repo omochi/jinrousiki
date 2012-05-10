@@ -27,7 +27,6 @@ class InitializeConfig {
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
     'GAME_OPT_CONF'       => 'game_option_config',
-    'ICON_CONF'           => 'icon_config',
     'MENU_LINK'           => array('menu_config', 'index_functions'),
     'BBS_CONF'            => 'bbs_config',
     'SHARED_CONF'         => array('shared_server_config', 'info_functions'),
@@ -54,9 +53,11 @@ class InitializeConfig {
     'user_class'          => array('game_config', 'game_functions'),
     'talk_class'          => 'user_class',
     'role_class'          => 'game_format',
+    'icon_class'          => 'icon_config',
+    'user_icon_class'     => 'user_icon_config',
     'sound_class'         => 'sound_config',
     'login_class'         => 'session_class',
-    'game_view_class'     => 'talk_class',
+    'game_view_class'     => array('icon_class', 'talk_class'),
     'game_log_class'      => array('session_class', 'talk_class'),
     'user_manager_class'  => array('room_config', 'game_config', 'room_class', 'user_class',
 				   'session_class', 'icon_functions'),
@@ -67,7 +68,7 @@ class InitializeConfig {
     'index_functions'     => 'version',
     'game_play_functions' => 'user_class',
     'game_vote_functions' => 'game_functions',
-    'icon_functions'      => 'user_icon_config',
+    'icon_functions'      => array('icon_class', 'user_icon_class'),
     'oldlog_functions'    => array('oldlog_config', 'cast_config'),
     'setup_class'         => array('setup_config', 'version', 'database_class'),
     'test/objection'      => array('game_config', 'sound_class')
@@ -79,11 +80,10 @@ class InitializeConfig {
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
     'TIME_CALC'           => array('ROOM_IMG', 'ROLE_DATA'),
     'user_class'          => array('ROLE_DATA', 'MESSAGE'),
-    'game_view_class'     => array('ROLES', 'ICON_CONF'),
+    'game_view_class'     => array('ROLES'),
     'game_log_class'      => 'ROLES',
     'user_manager_class'  => 'MESSAGE',
     'game_play_functions' => 'ROLE_IMG',
-    'icon_functions'      => 'ICON_CONF',
     'index_functions'     => 'BBS_CONF',
     'oldlog_functions'    => array('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
   );
@@ -91,7 +91,6 @@ class InitializeConfig {
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
     'GAME_OPT_CONF' => 'GameOptionConfig',
-    'ICON_CONF'     => 'IconConfig',
     'MENU_LINK'     => 'MenuLinkBuilder',
     'BBS_CONF'      => 'BBSConfig',
     'SHARED_CONF'   => 'SharedServerConfig',

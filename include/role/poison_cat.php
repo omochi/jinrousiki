@@ -39,10 +39,7 @@ class Role_poison_cat extends Role {
     return method_exists($self, $method) ? $class->$method() : null;
   }
 
-  function GetVoteIconPath($user, $live){
-    global $ICON_CONF;
-    return $ICON_CONF->path . '/' . $user->icon_filename;
-  }
+  function GetVoteIconPath($user, $live){ return Icon::GetFile($user->icon_filename); }
 
   function IsVoteCheckbox($user, $live){
     return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();

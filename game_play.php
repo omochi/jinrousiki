@@ -1,7 +1,8 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('time_config', 'talk_class', 'session_class', 'game_play_functions');
-$INIT_CONF->LoadClass('ROLES', 'ICON_CONF');
+$INIT_CONF->LoadFile('time_config', 'icon_class', 'talk_class', 'session_class',
+		     'game_play_functions');
+$INIT_CONF->LoadClass('ROLES');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay', true);

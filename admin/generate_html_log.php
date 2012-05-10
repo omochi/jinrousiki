@@ -34,8 +34,8 @@ if ($db_delete_mode) {
 //GenerateLogIndex(); //インデックスページ生成
 //HTML::OutputFooter(true);
 
-$INIT_CONF->LoadFile('game_play_functions', 'talk_class');
-$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
+$INIT_CONF->LoadFile('icon_class', 'talk_class', 'game_play_functions');
+$INIT_CONF->LoadClass('WINNER_MESS', 'ROLES');
 
 $room_delete = false; //DB削除設定
 $header = sprintf('../log_test/%s', RQ::$get->prefix);

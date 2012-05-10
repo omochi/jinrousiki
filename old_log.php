@@ -5,8 +5,8 @@ $INIT_CONF->LoadRequest('RequestOldLog');
 DB::Connect(RQ::$get->db_no);
 ob_start();
 if (RQ::$get->is_room) {
-  $INIT_CONF->LoadFile('game_play_functions', 'talk_class');
-  $INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'WINNER_MESS');
+  $INIT_CONF->LoadFile('icon_class', 'talk_class', 'game_play_functions');
+  $INIT_CONF->LoadClass('ROLES', 'WINNER_MESS');
 
   DB::$ROOM = new Room(RQ::$get);
   DB::$ROOM->LoadOption();

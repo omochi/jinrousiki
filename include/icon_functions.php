@@ -1,69 +1,4 @@
 <?php
-//-- アイコン基底クラス --//
-class Icon {
-  const LENGTH     = '半角で%d文字、全角で%d文字まで';
-  const MAX_LENGTH = 'maxlength="%d" size="%d">%s';
-  const FILE       = '%sByte まで';
-  const SIZE       = '幅%dピクセル × 高さ%dピクセルまで';
-
-  //文字数制限
-  static function GetLength(){
-    $name = UserIconConfig::LENGTH;
-    return sprintf(self::LENGTH, $name, floor($name / 2));
-  }
-
-  //文字数制限 (フォーム用)
-  static function GetMaxLength(){
-    $length = UserIconConfig::LENGTH;
-    return sprintf(self::MAX_LENGTH, $length, $length, self::GetLength());
-  }
-
-  //ファイルサイズ制限
-  static function GetFile(){
-    $size = UserIconConfig::FILE;
-    return sprintf(self::FILE, ($size > 1024 ? sprintf('%dk', floor($size / 1024)) : $size));
-  }
-
-  //アイコンのサイズ制限
-  static function GetSize(){
-    return sprintf(self::SIZE, UserIconConfig::WIDTH, UserIconConfig::HEIGHT);
-  }
-
-  //アイコンアップロード時の注意事項
-  static function GetCaution(){
-    $caution = UserIconConfig::CAUTION;
-    return isset($caution) ? '<br>' . $caution : '';
-  }
-
-  //文字列長チェック
-  static protected function CheckText($title, $url){
-    $stack = array();
-    $list  = array('icon_name'  => 'アイコン名',
-		   'appearance' => '出典',
-		   'category'   => 'カテゴリ',
-		   'author'     => 'アイコンの作者');
-    foreach ($list as $key => $label) {
-      $value = RQ::$get->$key;
-      if (strlen($value) > UserIconConfig::LENGTH) {
-	HTML::OutputResult($title, $label . ': ' . self::GetLength() . $url);
-      }
-      $stack[$key] = strlen($value) > 0 ? $value : null;
-    }
-    return $stack;
-  }
-
-  //RGB カラーチェック
-  static protected function CheckColor($str, $title, $url){
-    if (strlen($str) != 7 || substr($str, 0, 1) != '#' || ! ctype_xdigit(substr($str, 1, 7))) {
-      $error = '色指定が正しくありません。<br>'."\n" .
-	'指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .
-	'送信された色指定 → <span class="color">' . $str . '</span>';
-      HTML::OutputResult($title, $error . $url);
-    }
-    return strtoupper($str);
-  }
-}
-
 //-- DB アクセス (アイコン拡張) --//
 class IconDB {
   //村で使用中のアイコンチェック
@@ -82,15 +17,13 @@ class IconDB {
 
   //アイコンリスト取得
   static function GetList($where){
-    global $ICON_CONF;
-
     $format  = 'SELECT * FROM user_icon WHERE %s ORDER BY %s';
     $where[] = 'icon_no > 0';
     $sort    = RQ::$get->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name';
     $query   = sprintf($format, implode(' AND ', $where), $sort);
     if (RQ::$get->page != 'all') {
-      $limit = max(0, $ICON_CONF->view * (RQ::$get->page - 1));
-      $query .= sprintf(' LIMIT %d, %d', $limit, $ICON_CONF->view);
+      $limit = max(0, Icon::VIEW * (RQ::$get->page - 1));
+      $query .= sprintf(' LIMIT %d, %d', $limit, Icon::VIEW);
     }
     return DB::FetchAssoc($query);
   }
@@ -131,11 +64,9 @@ class IconDB {
 
   //アイコン削除
   static function Delete($icon_no, $file){
-    global $ICON_CONF;
-
     $query = sprintf('DELETE FROM user_icon WHERE icon_no = %d', $icon_no);
     if (! DB::FetchBool($query)) return false; //削除処理
-    unlink($ICON_CONF->path . '/' . $file); //ファイル削除
+    unlink(Icon::GetFile($file)); //ファイル削除
     DB::Optimize('user_icon'); //テーブル最適化 + コミット
     return true;
   }
@@ -155,13 +86,12 @@ class IconHTML {
 
     //編集フォームの表示
     if ($base_url == 'icon_view') {
-      $footer = "</fieldset>\n</form>\n";
+      $footer = "</fieldset>\n";
       if (RQ::$get->icon_no > 0) {
 	$params = RQ::ToArray();
 	unset($params['icon_no']);
 	echo <<<HTML
 <div class="link"><a href="icon_view.php">→アイコン一覧に戻る</a></div>
-<form action="icon_edit.php" method="POST">
 <fieldset><legend>アイコン設定の変更</legend>
 
 HTML;
@@ -169,11 +99,7 @@ HTML;
 	echo $footer;
       }
       else {
-	echo <<<HTML
-<form id="icon_search" method="GET">
-<fieldset><legend>ユーザアイコン一覧</legend>
-
-HTML;
+	echo "<fieldset><legend>ユーザアイコン一覧</legend>\n";
 	self::OutputConcrete($base_url);
 	echo $footer;
       }
@@ -185,33 +111,31 @@ HTML;
 
   //アイコン編集フォーム出力
   private function OutputEdit($icon_no){
-    global $ICON_CONF;
-
-    $size  = sprintf(' size="%d" maxlength="%d"', UserIconConfig::LENGTH, UserIconConfig::LENGTH);
+    $size = UserIcon::GetMaxLength();
     foreach (IconDB::GetInfo($icon_no) as $stack) {
       extract($stack);
-      $location = $ICON_CONF->path . '/' . $icon_filename;
+      $location = Icon::GetFile($icon_filename);
       $checked  = $disable > 0 ? ' checked' : '';
       echo <<<EOF
-<form method="POST" action="icon_edit.php">
+<form action="icon_edit.php" method="POST">
 <input type="hidden" name="icon_no" value="{$icon_no}">
 <table cellpadding="3">
 <tr>
   <td rowspan="7"><img src="{$location}" style="border:3px solid {$color};"></td>
   <td><label for="name">アイコンの名前</label></td>
-  <td><input type="text" id="name" name="icon_name" value="{$icon_name}"{$size}></td>
+  <td><input type="text" id="name" name="icon_name" value="{$icon_name}" {$size}></td>
 </tr>
 <tr>
   <td><label for="appearance">出典</label></td>
-  <td><input type="text" id="appearance" name="appearance" value="{$appearance}"{$size}></td>
+  <td><input type="text" id="appearance" name="appearance" value="{$appearance}" {$size}></td>
 </tr>
 <tr>
   <td><label for="category">カテゴリ</label></td>
-  <td><input type="text" id="category" name="category" value="{$category}"{$size}></td>
+  <td><input type="text" id="category" name="category" value="{$category}" {$size}></td>
 </tr>
 <tr>
   <td><label for="author">アイコンの作者</label></td>
-  <td><input type="text" id="author" name="author" value="{$author}"{$size}></td>
+  <td><input type="text" id="author" name="author" value="{$author}" {$size}></td>
 </tr>
 <tr>
   <td><label for="color">アイコン枠の色</label></td>
@@ -237,10 +161,8 @@ EOF;
 
   //アイコン情報を収集して表示する
   private function OutputConcrete($base_url = 'icon_view'){
-    global $ICON_CONF;
-
     //-- ヘッダ出力 --//
-    $colspan       = UserIconConfig::COLUMN * 2;
+    $colspan       = UserIcon::COLUMN * 2;
     $line_header   = sprintf('<tr><td colspan="%d">', $colspan);
     $line_footer   = '</td></tr>'."\n";
     $url_header    = sprintf('<a href="%sphp?', $base_url);
@@ -248,8 +170,12 @@ EOF;
     $query_stack   = array();
     $category_list = IconDB::GetCategoryList('category');
     //PrintData($category_list);
-    echo '<table class="selector">'."\n<tr>\n";
+    echo <<<EOF
+<form id="icon_search" method="GET">
+<table class="selector">
+<tr>
 
+EOF;
     //検索条件の表示
     $where = array();
     if ($base_url == 'user_manager') $where[] = "disable IS NOT TRUE";
@@ -326,17 +252,19 @@ HTML;
     }
 
     //ユーザアイコンのテーブルから一覧を取得
-    $PAGE_CONF = $ICON_CONF;
-    $PAGE_CONF->url        = $base_url;
-    $PAGE_CONF->count      = IconDB::GetCount($where);
-    $PAGE_CONF->current    = RQ::$get->page;
-    $PAGE_CONF->option     = $url_option;
-    $PAGE_CONF->attributes = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
-    if (RQ::$get->room_no > 0) $PAGE_CONF->option[] = 'room_no=' . RQ::$get->room_no;
-    if (RQ::$get->icon_no > 0) $PAGE_CONF->option[] = 'icon_no=' . RQ::$get->icon_no;
+    $CONF = new StdClass();
+    $CONF->view       = Icon::VIEW;
+    $CONF->page       = Icon::PAGE;
+    $CONF->url        = $base_url;
+    $CONF->count      = IconDB::GetCount($where);
+    $CONF->current    = RQ::$get->page;
+    $CONF->option     = $url_option;
+    $CONF->attributes = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
+    if (RQ::$get->room_no > 0) $CONF->option[] = 'room_no=' . RQ::$get->room_no;
+    if (RQ::$get->icon_no > 0) $CONF->option[] = 'icon_no=' . RQ::$get->icon_no;
     printf('<td colspan="%d" class="page-link">', $colspan);
-    //PrintData($PAGE_CONF, 'PAGE_CONF');
-    OutputPageLink($PAGE_CONF);
+    //PrintData($CONF, 'PAGE_CONF');
+    OutputPageLink($CONF);
     echo <<<HTML
 </td>
 </tr>
@@ -351,7 +279,7 @@ HTML;
       $column = 0;
       foreach (IconDB::GetList($where) as $icon_info) {
 	self::$method($icon_info, 162);
-	if (UserIconConfig::COLUMN <= ++$column) {
+	if (UserIcon::COLUMN <= ++$column) {
 	  $column = 0;
 	  echo '</tr><tr>';
 	}
@@ -361,6 +289,7 @@ HTML;
 </tr>
 </tbody>
 </table>
+</form>
 
 HTML;
   }
@@ -392,10 +321,8 @@ EOF;
 
   //アイコン詳細画面 (IconView 用)
   private function OutputDetailForIconView($icon_list, $cellwidth){
-    global $ICON_CONF;
-
     extract($icon_list);
-    $location      = $ICON_CONF->path . '/' . $icon_filename;
+    $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
     $info_width    = $cellwidth - $icon_width;
     $edit_url      = "icon_view.php?icon_no={$icon_no}";
@@ -428,10 +355,8 @@ HTML;
 
   //アイコン詳細画面 (UserEntry 用)
   private function OutputDetailForUserEntry($icon_list, $cellwidth){
-    global $ICON_CONF;
-
     extract($icon_list);
-    $location      = $ICON_CONF->path . '/' . $icon_filename;
+    $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
     $info_width    = $cellwidth - $wrapper_width;
     echo <<<HTML

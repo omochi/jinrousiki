@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('session_class', 'user_class', 'game_vote_functions');
-$INIT_CONF->LoadClass('ROLES', 'ICON_CONF', 'ROOM_OPT', 'GAME_OPT_CONF');
+$INIT_CONF->LoadFile('icon_class', 'session_class', 'user_class', 'game_vote_functions');
+$INIT_CONF->LoadClass('ROLES', 'ROOM_OPT', 'GAME_OPT_CONF');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote', true);
@@ -223,7 +223,7 @@ function VoteResetTime(){
 
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
-  global $ICON_CONF, $VOTE_MESS;
+  global $VOTE_MESS;
 
   CheckScene(); //投票する状況があっているかチェック
   OutputVotePageHeader();
@@ -232,13 +232,14 @@ function OutputVoteBeforeGame(){
 
   $count  = 0;
   $header = '<input type="radio" name="target_no" id="';
+  $path   = Icon::GetPath();
   foreach (DB::$USER->rows as $id => $user) {
     if ($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
 
     $checkbox = ! $user->IsDummyBoy() && (GameConfig::$self_kick || ! $user->IsSelf()) ?
       $header . $id . '" value="' . $id . '">'."\n" : '';
-    echo $user->GenerateVoteTag($ICON_CONF->path . '/' . $user->icon_filename, $checkbox);
+    echo $user->GenerateVoteTag($path . $user->icon_filename, $checkbox);
   }
 
   $str = <<<EOF
@@ -265,7 +266,7 @@ EOF;
 
 //昼の投票ページを出力する
 function OutputVoteDay(){
-  global $ICON_CONF, $VOTE_MESS;
+  global $VOTE_MESS;
 
   CheckScene(); //投票する状況があっているかチェック
   if (DB::$ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
@@ -296,13 +297,15 @@ EOF;
 
   $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
   $count = 0;
+  $base_path = Icon::GetPath();
+  $dead_icon = Icon::GetDead();
   foreach ($user_stack as $id => $user) {
     if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
     $count++;
     $is_live = DB::$USER->IsVirtualLive($id);
 
     //生きていればユーザアイコン、死んでれば死亡アイコン
-    $path = $is_live ? $ICON_CONF->path . '/' . $user->icon_filename : $ICON_CONF->dead;
+    $path = $is_live ? $base_path . $user->icon_filename : $dead_icon;
     $checkbox = ($is_live && ! $user->IsSame($virtual_self->uname)) ?
       $checkbox_header . $id . '" value="' . $id . '">' : '';
     echo $user->GenerateVoteTag($path, $checkbox);

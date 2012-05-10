@@ -636,11 +636,10 @@ class User{
 
   //投票画面用アイコンタグ生成
   function GenerateVoteTag($icon_path, $checkbox){
-    global  $ICON_CONF;
-
+    $tag = Icon::GetTag();
     return <<<EOF
 <td><label for="{$this->user_no}">
-<img src="{$icon_path}" style="border-color: {$this->color};"{$ICON_CONF->tag}>
+<img src="{$icon_path}" style="border-color: {$this->color};" {$tag}>
 <font color="{$this->color}">◆</font>{$this->handle_name}<br>
 {$checkbox}</label></td>
 

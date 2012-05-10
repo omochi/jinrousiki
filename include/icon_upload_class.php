@@ -1,10 +1,8 @@
 <?php
 //-- アイコンアップロード処理クラス --//
-class IconUpload extends Icon {
+class IconUpload {
   //投稿処理
   static function Execute(){
-    global $ICON_CONF;
-
     if (Security::CheckReferer('icon_upload.php')) { //リファラチェック
       HTML::OutputResult('ユーザアイコンアップロード', '無効なアクセスです');
     }
@@ -70,13 +68,13 @@ class IconUpload extends Icon {
 
     //空白チェック
     if ($icon_name == '') HTML::OutputResult($title, 'アイコン名を入力してください' . $back_url);
-    self::CheckText($title, $back_url); //アイコン名の文字列長のチェック
-    $color = self::CheckColor($color, $title, $back_url); //色指定のチェック
+    UserIcon::CheckText($title, $back_url); //アイコン名の文字列長のチェック
+    $color = UserIcon::CheckColor($color, $title, $back_url); //色指定のチェック
 
     //ファイルサイズのチェック
     if ($size == 0) HTML::OutputResult($title, 'ファイルが空です' . $back_url);
-    if ($size > UserIconConfig::FILE) {
-      HTML::OutputResult($title, 'ファイルサイズは ' . self::GetFile() . $back_url);
+    if ($size > UserIcon::FILE) {
+      HTML::OutputResult($title, 'ファイルサイズは ' . UserIcon::GetFileLimit() . $back_url);
     }
 
     //ファイルの種類のチェック
@@ -103,8 +101,8 @@ class IconUpload extends Icon {
 
     //アイコンの高さと幅をチェック
     list($width, $height) = getimagesize($tmp_name);
-    if ($width > UserIconConfig::WIDTH || $height > UserIconConfig::HEIGHT) {
-      $str = 'アイコンは ' . self::GetSize() . ' しか登録できません。<br>'."\n" .
+    if ($width > UserIcon::WIDTH || $height > UserIcon::HEIGHT) {
+      $str = 'アイコンは ' . UserIcon::GetSizeLimit() . ' しか登録できません。<br>'."\n" .
 	'送信されたファイル → <span class="color">幅 ' . $width . '、高さ ' . $height . '</span>';
       HTML::OutputResult($title, $str . $back_url);
     }
@@ -116,7 +114,7 @@ class IconUpload extends Icon {
     if (! DB::Lock('icon')) HTML::OutputResult($title, $str); //トランザクション開始
 
     //登録数上限チェック
-    if (DB::Count('SELECT icon_no FROM user_icon') >= UserIconConfig::NUMBER) {
+    if (DB::Count('SELECT icon_no FROM user_icon') >= UserIcon::NUMBER) {
       HTML::OutputResult($title, 'これ以上登録できません');
     }
 
@@ -131,7 +129,7 @@ class IconUpload extends Icon {
 
     //ファイルをテンポラリからコピー
     $file_name = sprintf('%03s.%s', $icon_no, $ext); //ファイル名の桁を揃える
-    if (! move_uploaded_file($tmp_name, $ICON_CONF->path . '/' . $file_name)){
+    if (! move_uploaded_file($tmp_name, Icon::GetFile($file_name))) {
       $str = "ファイルのコピーに失敗しました。<br>\n再度実行してください。";
       HTML::OutputResult($title, $str . $back_url);
     }
@@ -170,11 +168,12 @@ class IconUpload extends Icon {
 
     //確認ページを出力
     HTML::OutputHeader('ユーザアイコンアップロード処理[確認]', 'icon_upload_check', true);
+    $path = Icon::GetFile($file_name);
     echo <<<EOF
 <p>ファイルをアップロードしました。<br>今だけやりなおしできます</p>
 <p>[S] 出典 / [C] カテゴリ / [A] アイコンの作者</p>
 <table><tr>
-<td><img src="{$ICON_CONF->path}/{$file_name}" width="{$width}" height="{$height}"></td>
+<td><img src="{$path}" width="{$width}" height="{$height}"></td>
 <td class="name">No. {$icon_no} {$icon_name}<br><font color="{$color}">◆</font>{$color}{$data}</td>
 </tr>
 <tr><td colspan="2">よろしいですか？</td></tr>
@@ -196,11 +195,11 @@ EOF;
   //アップロードフォーム出力
   static function Output(){
     HTML::OutputHeader('ユーザアイコンアップロード', 'icon_upload', true);
-    $file      = self::GetFile();
-    $length    = self::GetMaxLength();
-    $size      = self::GetSize();
-    $caution   = self::GetCaution();
-    $file_size = UserIconConfig::FILE;
+    $file      = UserIcon::GetFileLimit();
+    $length    = UserIcon::GetMaxLength(true);
+    $size      = UserIcon::GetSizeLimit();
+    $caution   = UserIcon::GetCaution();
+    $file_size = UserIcon::FILE;
     echo <<<EOF
 <a href="./">←戻る</a><br>
 <img class="title" src="img/icon_upload_title.jpg" title="アイコン登録" alt="アイコン登録"><br>
