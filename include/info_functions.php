@@ -95,13 +95,11 @@ function OutputCastTable($min = 0, $max = null){
 
 //他のサーバの部屋画面ロード用データを出力
 function OutputSharedRoomList(){
-  global $SHARED_CONF;
-
-  if ($SHARED_CONF->disable) return false;
+  if (SharedServerConfig::DISABLE) return false;
 
   $str = HTML::LoadJavaScript('shared_room');
   $count = 0;
-  foreach ($SHARED_CONF->server_list as $server => $array) {
+  foreach (SharedServerConfig::$server_list as $server => $array) {
     $count++;
     extract($array);
     if ($disable) continue;
@@ -119,27 +117,25 @@ EOF;
 
 //他のサーバの部屋画面を出力
 function OutputSharedRoom($id){
-  global $SHARED_CONF;
-
-  if ($SHARED_CONF->disable) return false;
+  if (SharedServerConfig::DISABLE) return false;
 
   $count = 0;
-  foreach ($SHARED_CONF->server_list as $server => $array) {
+  foreach (SharedServerConfig::$server_list as $server => $array) {
     if ($count++ == $id) break;
   }
   extract($array);
   if ($disable) return false;
 
-  if (! $SHARED_CONF->CheckConnection($url)) { //サーバ通信状態チェック
-    $data = $SHARED_CONF->host . ": Connection timed out ({$SHARED_CONF->time} seconds)";
-    echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
+  if (! ExternalLinkBuilder::CheckConnection($url)) { //サーバ通信状態チェック
+    $data = ExternalLinkBuilder::GenerateTimeOut($url);
+    echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
     return false;
   }
 
   //部屋情報を取得
   if (($data = @file_get_contents($url.'room_manager.php')) == '') return false;
-  if ($encode != '' && $encode != $SHARED_CONF->encode) {
-    $data = mb_convert_encoding($data, $SHARED_CONF->encode, $encode);
+  if ($encode != '' && $encode != ServerConfig::$encode) {
+    $data = mb_convert_encoding($data, ServerConfig::$encode, $encode);
   }
   if (ord($data{0}) == '0xef' && ord($data{1}) == '0xbb' && ord($data{2}) == '0xbf') { //BOM 消去
     $data = substr($data, 3);
@@ -156,5 +152,5 @@ function OutputSharedRoom($id){
 
   $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
   $data = strtr($data, $replace_list);
-  echo $SHARED_CONF->GenerateSharedServerRoom($name, $url, $data);
+  echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
 }

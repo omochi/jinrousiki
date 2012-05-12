@@ -1,86 +1,74 @@
 <?php
-//-- クラス定義 --//
-//-- メニューリンク表示用クラス --//
-class MenuLinkBuilder extends MenuLinkConfig {
-  //交流用サイト表示
-  function Output(){
-    //初期化処理
-    $this->str = '';
-    $this->header = '<li>';
-    $this->footer = "</li>\n";
+//-- HTML 生成クラス (index 拡張) --//
+class IndexHTML {
+  const BACK_PAGE   = "<a href=\"%s\">←戻る</a><br>\n";
+  const MENU_HEADER = "<div class=\"menu\">%s</div>\n<ul>\n";
+  const MENU_GROUP  = "  <li>%s</li>\n";
+  const MENU_LINK   = "  <li><a href=\"%s\">%s</a></li>\n";
+  const MENU_FOOTER = "</ul>\n";
+  const BBS_TITLE   = '<a href="%s%sl50">告知スレッド情報</a>';
+  const BBS_URL     = '%s%sl%dn';
+  const BBS_RES     = "<dt>%s : <span>%s</span> : %s ID : %s</dt>\n<dd>%s</dd>";
+  const VERSION     = 'Powered by %s %s from %s';
+  const ADMIN       = "<br>\nFounded by: %s";
+  const FOOTER      = "<div class=\"footer\">\n%s\n</div>\n";
 
-    $this->AddHeader('交流用サイト');
-    $this->AddLink($this->list);
-    $this->AddFooter();
+  //ヘッダー出力
+  static function OutputHeader(){
+    HTML::OutputHeader(ServerConfig::$title . ServerConfig::$comment, 'index', true);
+    if (ServerConfig::$back_page != '') printf(self::BACK_PAGE, ServerConfig::$back_page);
+  }
 
-    if (count($this->add_list) > 0) {
-      $this->AddHeader('外部リンク');
-      foreach ($this->add_list as $group => $list) {
-	$this->str .= $this->header . $group . $this->footer;
-	$this->AddLink($list);
+  //メニュー出力
+  static function OutputMenu(){
+    $str = sprintf(self::MENU_HEADER, '交流用サイト');
+    foreach (MenuConfig::$list as $name => $url) $str .= sprintf(self::MENU_LINK, $url, $name);
+    $str .= self::MENU_FOOTER;
+
+    if (count(MenuConfig::$add_list) > 0) {
+      $str .= sprintf(self::MENU_HEADER, '外部リンク');
+      foreach (MenuConfig::$add_list as $group => $list) {
+	$str .= sprintf(self::MENU_GROUP, $group);
+	foreach ($list as $name => $url) $str .= sprintf(self::MENU_LINK, $url, $name);
       }
-      $this->AddFooter();
+      $str .= self::MENU_FOOTER;
     }
-    echo $this->str;
+    echo $str;
   }
 
-  //ヘッダ追加
-  private function AddHeader($title){
-    $this->str .= sprintf('<div class="menu">%s</div>', $title) . "\n<ul>\n";
+  //掲示板情報出力
+  static function OutputBBS(){
+    if (BBSConfig::DISABLE) return;
+    if (! ExternalLinkBuilder::CheckConnection(BBSConfig::RAW_URL)) {
+      $title = sprintf(self::BBS_TITLE, BBSConfig::VIEW_URL, BBSConfig::THREAD);
+      $str   = ExternalLinkBuilder::GenerateTimeOut(BBSConfig::RAW_URL);
+      echo ExternalLinkBuilder::Generate($title, $str);
+      return;
+    }
+
+    //スレッド情報を取得
+    $url = sprintf(self::BBS_URL, BBSConfig::RAW_URL, BBSConfig::THREAD, BBSConfig::SIZE);
+    if (($data = @file_get_contents($url)) == '') return;
+    if (BBSConfig::ENCODE != ServerConfig::$encode) {
+      $data = mb_convert_encoding($data, ServerConfig::$encode, BBSConfig::ENCODE);
+    }
+
+    $str = '';
+    $str_stack = explode("\n", $data);
+    array_pop($str_stack);
+    foreach ($str_stack as $res_stack) {
+      $res = explode('<>', $res_stack);
+      $str .= sprintf(self::BBS_RES, $res[0], $res[1], $res[3], $res[6], $res[4]);
+    }
+    $title = sprintf(self::BBS_TITLE, BBSConfig::VIEW_URL, BBSConfig::THREAD);
+    echo ExternalLinkBuilder::Generate($title, $str);
   }
 
-  //リンク生成
-  private function AddLink($list){
-    $header = $this->header . '<a href="';
-    $footer = '</a>' . $this->footer;
-    foreach ($list as $name => $url) $this->str .= $header . $url . '">' . $name . $footer;
+  //フッター出力
+  function OutputFooter(){
+    $str = sprintf(self::VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::DEVELOPER);
+    if (ServerConfig::$admin) $str .= sprintf(self::ADMIN, ServerConfig::$admin);
+    printf(self::FOOTER, $str);
+    HTML::OutputFooter();
   }
-
-  //フッタ追加
-  private function AddFooter(){ $this->str .= "</ul>\n"; }
-}
-
-//-- 関数定義 --//
-//ヘッダー出力
-function OutputIndexHeader(){
-  HTML::OutputHeader(ServerConfig::$title . ServerConfig::$comment, 'index');
-  echo "</head>\n<body>\n";
-  if (ServerConfig::$back_page != '') {
-    printf('<a href="%s">←戻る</a><br>'."\n", ServerConfig::$back_page);
-  }
-}
-
-//掲示板情報出力
-function OutputBBSInfo(){
-  global $BBS_CONF;
-
-  if ($BBS_CONF->disable) return;
-  if (! $BBS_CONF->CheckConnection($BBS_CONF->raw_url)) {
-    $str = sprintf("%s: Connection timed out (%d seconds)\n", $BBS_CONF->host, $BBS_CONF->time);
-    echo $BBS_CONF->GenerateBBS($str);
-    return;
-  }
-
-  //スレッド情報を取得
-  $url = $BBS_CONF->raw_url . $BBS_CONF->thread . 'l' . $BBS_CONF->size . 'n';
-  if (($data = @file_get_contents($url)) == '') return;
-  if ($BBS_CONF->encode != ServerConfig::$encode) {
-    $data = mb_convert_encoding($data, ServerConfig::$encode, $BBS_CONF->encode);
-  }
-  $format = '<dt>%s : <font color="#008800"><b>%s</b></font> : %s ID : %s</dt>'."\n".'<dd>%s</dd>';
-  $str = '';
-  $str_stack = explode("\n", $data);
-  array_pop($str_stack);
-  foreach ($str_stack as $res_stack) {
-    $res = explode('<>', $res_stack);
-    $str .= sprintf($format, $res[0], $res[1], $res[3], $res[6], $res[4]);
-  }
-  echo $BBS_CONF->GenerateBBS($str);
-}
-
-//バージョン情報出力
-function OutputScriptInfo(){
-  $str = 'Powered by %s %s from %s';
-  printf($str, ScriptInfo::$package, ScriptInfo::$version, ScriptInfo::$developer);
-  if (ServerConfig::$admin) printf('<br>Founded by: %s', ServerConfig::$admin);
 }

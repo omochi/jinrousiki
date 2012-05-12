@@ -16,16 +16,18 @@ class CookieDataSet {
 
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder {
-  public $time = 5; //タイムアウト時間 (秒)
+  const TIME    = 5; //タイムアウト時間 (秒)
+  const TIMEOUT = "%s: Connection timed out (%d seconds)\n";
+  const GET     = "GET / HTTP/1.1\r\nHost: %s\r\nConnection: Close\r\n\r\n";
 
-  //サーバ通信状態チェック (private)
-  function CheckConnection($url){
+  //サーバ通信状態チェック
+  static function CheckConnection($url){
     $url_stack  = explode('/', $url);
-    $this->host = $url_stack[2];
-    if (! ($io = @fsockopen($this->host, 80, $status, $str, $this->time))) return false;
+    $host = $url_stack[2];
+    if (! ($io = @fsockopen($host, 80, $status, $str, self::TIME))) return false;
 
-    stream_set_timeout($io, $this->time);
-    fwrite($io, "GET / HTTP/1.1\r\nHost: {$host}\r\nConnection: Close\r\n\r\n");
+    stream_set_timeout($io, self::TIME);
+    fwrite($io, sprintf(self::GET, $host));
     $data = fgets($io, 128);
     $stream_stack = stream_get_meta_data($io);
     fclose($io);
@@ -33,7 +35,7 @@ class ExternalLinkBuilder {
   }
 
   //HTML タグ生成
-  function Generate($title, $data){
+  static function Generate($title, $data){
     return <<<EOF
 <fieldset>
 <legend>{$title}</legend>
@@ -43,15 +45,16 @@ class ExternalLinkBuilder {
 EOF;
   }
 
-  //BBS リンク生成
-  function GenerateBBS($data){
-    $title = '<a href="' . $this->view_url . $this->thread . 'l50' . '">告知スレッド情報</a>';
-    return $this->Generate($title, $data);
+  //タイムアウトメッセージ生成
+  static function GenerateTimeOut($url){
+    $stack  = explode('/', $url);
+    return sprintf(self::TIMEOUT, $stack[2], self::TIME);
   }
 
   //外部村リンク生成
   function GenerateSharedServerRoom($name, $url, $data){
-    return $this->Generate('ゲーム一覧 (<a href="' . $url . '">' . $name . '</a>)', $data);
+    $format = 'ゲーム一覧 (<a href="%s">%s</a>)';
+    return $this->Generate(sprintf($format, $url, $name), $data);
   }
 }
 

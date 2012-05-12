@@ -28,7 +28,7 @@ table.main { /* 全体の table */
 table.main td {
   vertical-align: top;
 }
-.menu  {
+.menu {
   width: 140px;
 }
 .information { /* Information (中身は info/top.php) */

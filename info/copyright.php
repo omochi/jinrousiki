@@ -33,6 +33,6 @@ function OutputCopyright(){
 
 EOF;
 
-  printf($str, PHP_VERSION, ScriptInfo::$package, ScriptInfo::$version, ScriptInfo::$revision,
-	 ScriptInfo::$last_update);
+  printf($str, PHP_VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::REVISION,
+	 ScriptInfo::LAST_UPDATE);
 }
