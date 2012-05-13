@@ -373,8 +373,8 @@ DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = 7;
 #DB::$ROOM->scene = 'beforegame';
 #DB::$ROOM->scene = 'day';
-DB::$ROOM->scene = 'night';
-#DB::$ROOM->scene = 'aftergame';
+#DB::$ROOM->scene = 'night';
+DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 if (DB::$ROOM->date == 1) {
@@ -382,14 +382,14 @@ if (DB::$ROOM->date == 1) {
 }
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
-DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(13);
+#DB::$SELF = DB::$USER->ByID(1);
+DB::$SELF = DB::$USER->ByID(25);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
 $vote_view_mode = false;
 if ($vote_view_mode) { //投票表示モード
-  $INIT_CONF->LoadClass('VOTE_MESS');
+  $INIT_CONF->LoadFile('vote_message');
   $stack = new RequestGameVote();
   RQ::$get->vote = $stack->vote;
   RQ::$get->target_no = $stack->target_no;
@@ -401,7 +401,7 @@ if ($vote_view_mode) { //投票表示モード
       HTML::OutputResult('空投票', '投票先を指定してください');
     }
     elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
-      #VoteDay();
+      //VoteDay();
     }
     elseif (DB::$ROOM->IsNight()) { //夜の投票処理
       VoteNight();
@@ -414,11 +414,11 @@ if ($vote_view_mode) { //投票表示モード
     RQ::$get->post_url = 'vote_test.php';
     switch(DB::$ROOM->scene) {
     case 'beforegame':
-      OutputVoteBeforeGame();
+      //OutputVoteBeforeGame();
       break;
 
     case 'day':
-      OutputVoteDay();
+      //OutputVoteDay();
       break;
 
     case 'night':
@@ -559,7 +559,7 @@ elseif (DB::$ROOM->IsNight()) { // 夜の投票テスト
   AggregateVoteNight();
 }
 elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
-  $INIT_CONF->LoadClass('WINNER_MESS');
+  $INIT_CONF->LoadFile('winner_message');
   DB::$ROOM->log_mode = false;
   DB::$ROOM->personal_mode = true; false;
   OutputWinner();

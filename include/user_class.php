@@ -1247,14 +1247,13 @@ EOF;
 
   //突然死処理
   function SuddenDeath($user_no, $reason, $type = null){
-    global $MESSAGE;
-
     if (! $this->Kill($user_no, $reason, $type)) return false;
+
     $user = $this->ByReal($user_no);
     $user->suicide_flag = true;
 
     $str = $reason == 'NOVOTED' ? 'sudden_death' : 'vote_sudden_death';
-    DB::$ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . $MESSAGE->$str);
+    DB::$ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . Message::$$str);
     return true;
   }
 

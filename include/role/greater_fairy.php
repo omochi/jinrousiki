@@ -9,8 +9,7 @@ class Role_greater_fairy extends Role_fairy {
   function __construct(){ parent::__construct(); }
 
   protected function GetBadStatus(){
-    global $MESSAGE;
-    $stack = array($MESSAGE->common_talk, '春ですよー', '夏ですよー', '秋ですよー', '冬ですよー');
+    $stack = array(Message::$common_talk, '春ですよー', '夏ですよー', '秋ですよー', '冬ですよー');
     return GetRandom($stack);
   }
 }

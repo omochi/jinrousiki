@@ -66,15 +66,15 @@ function Write($say, $scene, $location = null, $spend_time = 0, $update = false)
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $MESSAGE, $ROLE_DATA, $ROLES;
+  global $ROLE_DATA, $ROLES;
 
   if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
   if (DB::$SELF->IsDead()) { //死亡したら口寄せ以外は表示しない
-    echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
+    echo '<span class="ability ability-dead">' . Message::$ability_dead . '</span><br>';
     if (DB::$SELF->IsRole('mind_evoke')) Image::Role()->Output('mind_evoke');
     if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()) { //身代わり君のみ隠蔽情報を表示
-      echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
+      echo '<div class="system-vote">' . Message::$close_cast . '</div>'."\n";
     }
     return;
   }
@@ -373,11 +373,9 @@ function OutputAbilityResult($header, $target, $footer = null){
 
 //夜の未投票メッセージ出力
 function OutputVoteMessage($class, $sentence, $type, $not_type = ''){
-  global $MESSAGE;
-
   $stack = DB::$ROOM->test_mode ? array() : GetSelfVoteNight($type, $not_type);
   if (count($stack) < 1){
-    $str = $MESSAGE->{'ability_' . $sentence};
+    $str = Message::${'ability_' . $sentence};
   }
   elseif ($type == 'WOLF_EAT' || $type == 'CUPID_DO' || $type == 'DUELIST_DO'){
     $str = '投票済み';

@@ -29,7 +29,6 @@ class Role_fairy extends Role {
 
   //悪戯内容取得
   protected function GetBadStatus(){
-    global $MESSAGE;
-    return is_null($this->bad_status) ? $MESSAGE->common_talk : $this->bad_status;
+    return is_null($this->bad_status) ? Message::$common_talk : $this->bad_status;
   }
 }

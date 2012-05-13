@@ -19,8 +19,6 @@ class Talk {
 
   //データ解析
   protected function ParseSentence($sentence = null){
-    global $MESSAGE;
-
     is_null($sentence) ? $sentence = $this->sentence : $this->sentence = $sentence; //初期化処理
 
     switch ($this->uname) { //システムユーザ系の処理
@@ -28,11 +26,11 @@ class Talk {
       switch ($this->action) {
       case 'MORNING':
 	$this->sentence = sprintf('%s %s %s',
-				  $MESSAGE->morning_header, $sentence, $MESSAGE->morning_footer);
+				  Message::$morning_header, $sentence, Message::$morning_footer);
 	return;
 
       case 'NIGHT':
-	$this->sentence = $MESSAGE->night;
+	$this->sentence = Message::$night;
 	return;
       }
       return;
@@ -46,7 +44,7 @@ class Talk {
       $action = strtolower($this->action);
       switch ($this->action) { //大文字小文字をきちんと区別してマッチングする
       case 'OBJECTION':
-	$this->sentence = ' ' . $MESSAGE->objection;
+	$this->sentence = ' ' . Message::$objection;
 	return;
 
       case 'GAMESTART_DO':
@@ -91,39 +89,39 @@ class Talk {
 
       case 'POISON_CAT_NOT_DO':
 	$this->class = 'revive-do';
-	$this->sentence = ' ' . $MESSAGE->revive_not_do;
+	$this->sentence = ' ' . Message::$revive_not_do;
 	return;
 
       case 'ASSASSIN_NOT_DO':
 	$this->class = 'assassin-do';
-	$this->sentence = ' ' . $MESSAGE->assassin_not_do;
+	$this->sentence = ' ' . Message::$assassin_not_do;
 	return;
 
       case 'TRAP_MAD_NOT_DO':
 	$this->class = 'wolf-eat';
-	$this->sentence = ' ' . $MESSAGE->trap_not_do;
+	$this->sentence = ' ' . Message::$trap_not_do;
 	return;
 
       case 'POSSESSED_NOT_DO':
 	$this->class = 'wolf-eat';
-	$this->sentence = ' ' . $MESSAGE->possessed_not_do;
+	$this->sentence = ' ' . Message::$possessed_not_do;
 	return;
 
       case 'OGRE_NOT_DO':
 	$this->class = 'ogre-do';
-	$this->sentence = ' ' . $MESSAGE->ogre_not_do;
+	$this->sentence = ' ' . Message::$ogre_not_do;
 	return;
 
       case 'DEATH_NOTE_NOT_DO':
 	$this->class = 'death-note-do';
-	$this->sentence = ' ' . $MESSAGE->death_note_not_do;
+	$this->sentence = ' ' . Message::$death_note_not_do;
 	return;
 
       default:
 	$this->class = strtr($action, '_', '-');
 	break;
       }
-      $this->sentence = sprintf(' は %s %s', $this->sentence, $MESSAGE->$action);
+      $this->sentence = sprintf(' は %s %s', $this->sentence, Message::$$action);
       return;
     }
   }

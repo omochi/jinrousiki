@@ -30,10 +30,6 @@ class InitializeConfig {
     'SRC_UP_CONF'          => 'src_upload_config',
     'ROOM_OPT'             => array('room_config', 'time_config', 'option/room_option_class',
 				    'option/room_option_item_class'),
-    'MESSAGE'              => 'message',
-    'GAME_OPT_MESS'        => 'message',
-    'WINNER_MESS'          => 'message',
-    'VOTE_MESS'            => 'message',
     'ROLES'                => 'role_class',
     'TIME_CALC'            => array('time_config', 'room_config', 'game_config', 'cast_config',
 				    'image_class', 'info_functions'),
@@ -46,7 +42,7 @@ class InitializeConfig {
     'database_class'       => 'database_config',
     'system_class'         => 'room_class', //常時ロードされる
     'room_class'           => 'option_class',
-    'user_class'           => array('game_config', 'game_functions'),
+    'user_class'           => array('game_config', 'message', 'game_functions'),
     'talk_class'           => 'user_class',
     'role_class'           => 'game_format',
     'icon_class'           => 'icon_config',
@@ -55,8 +51,8 @@ class InitializeConfig {
     'login_class'          => 'session_class',
     'game_view_class'      => array('icon_class', 'talk_class'),
     'game_log_class'       => array('session_class', 'talk_class'),
-    'user_manager_class'   => array('room_config', 'game_config', 'room_class', 'user_class',
-				    'session_class', 'icon_functions'),
+    'user_manager_class'   => array('room_config', 'room_class', 'user_class', 'session_class',
+				    'icon_functions'),
     'icon_view_class'      => 'icon_functions',
     'icon_edit_class'      => 'icon_functions',
     'icon_upload_class'    => array('session_class', 'icon_functions'),
@@ -65,7 +61,8 @@ class InitializeConfig {
     'game_play_functions'  => array('user_class', 'image_class'),
     'game_vote_functions'  => 'game_functions',
     'icon_functions'       => array('icon_class', 'user_icon_class'),
-    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'image_class'),
+    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'game_option_message',
+				    'image_class'),
     'setup_class'          => array('setup_config', 'version', 'database_class'),
     'test/objection'       => array('game_config', 'sound_class')
   );
@@ -73,13 +70,11 @@ class InitializeConfig {
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   public $depend_class = array(
     'ROOM_OPT'            => 'GAME_OPT_CONF',
-    'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
     'TIME_CALC'           => 'ROLE_DATA',
-    'user_class'          => array('ROLE_DATA', 'MESSAGE'),
-    'game_view_class'     => array('ROLES'),
+    'user_class'          => 'ROLE_DATA',
+    'game_view_class'     => 'ROLES',
     'game_log_class'      => 'ROLES',
-    'user_manager_class'  => 'MESSAGE',
-    'oldlog_functions'    => array('ROOM_OPT', 'GAME_OPT_MESS'),
+    'oldlog_functions'    => 'ROOM_OPT',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
@@ -88,11 +83,6 @@ class InitializeConfig {
     'SRC_UP_CONF'   => 'SourceUploadConfig',
     'TWITTER'       => 'TwitterConfig',
     'ROOM_OPT'      => 'RoomOption',
-    'MESSAGE'       => 'Message',
-    'GAME_OPT_MESS' => 'GameOptionMessage',
-    'GAME_OPT_CAPT' => 'GameOptionCaptionMessage',
-    'WINNER_MESS'   => 'WinnerMessage',
-    'VOTE_MESS'     => 'VoteMessage',
     'COOKIE'        => 'CookieDataSet',
     'ROLE_DATA'     => 'RoleData',
     'ROLES'         => 'RoleManager',
@@ -155,6 +145,9 @@ class InitializeConfig {
     case 'cast_config':
     case 'chaos_config':
     case 'message':
+    case 'game_option_message':
+    case 'vote_message':
+    case 'winner_message':
     case 'time_config':
     case 'icon_config':
     case 'sound_config':

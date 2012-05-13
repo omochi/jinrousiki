@@ -22,15 +22,15 @@ DB::$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 //シーンに応じた追加クラスをロード
 if (DB::$ROOM->IsBeforeGame()) { //ゲームオプション表示
-  $INIT_CONF->LoadFile('room_config', 'cast_config');
-  $INIT_CONF->LoadClass('ROOM_OPT', 'GAME_OPT_MESS', 'ROOM_IMG');
+  $INIT_CONF->LoadFile('room_config', 'cast_config', 'game_option_message', 'image_class');
+  $INIT_CONF->LoadClass('ROOM_OPT');
   RQ::$get->retrive_type = DB::$ROOM->scene;
 }
 elseif (! DB::$ROOM->heaven_mode && DB::$ROOM->IsDay()) {
   RQ::$get->retrive_type = DB::$ROOM->scene;
 }
 elseif (DB::$ROOM->IsFinished()) { //勝敗結果表示
-  $INIT_CONF->LoadClass('WINNER_MESS');
+  $INIT_CONF->LoadFile('winner_message');
 }
 
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
@@ -70,7 +70,7 @@ elseif (DB::$ROOM->dead_mode && DB::$ROOM->IsPlaying() && DB::$SELF->IsDummyBoy(
 ob_start();
 OutputGamePageHeader();
 OutputGameHeader();
-if ($say_limit === false) echo '<font color="#FF0000">' . $MESSAGE->say_limit . '</font><br>';
+if ($say_limit === false) echo '<font color="#FF0000">' . Message::$say_limit . '</font><br>';
 if (! DB::$ROOM->heaven_mode) {
   if (! RQ::$get->list_down) OutputPlayerList();
   OutputAbility();
@@ -205,8 +205,6 @@ function Say($say){
 
 //ゲーム停滞のチェック
 function CheckSilence(){
-  global $MESSAGE;
-
   if (! DB::$ROOM->IsPlaying()) return true; //スキップ判定
 
   //経過時間を取得
@@ -228,7 +226,7 @@ function CheckSilence(){
       if (DB::FetchResult($query) <= TimeConfig::$silence) return DB::Rollback(); //沈黙判定
 
       //沈黙メッセージを発行してリセット
-      $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . $MESSAGE->silence;
+      $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . Message::$silence;
       DB::$ROOM->Talk($str, null, '', '', null, null, null, TimeConfig::$silence_pass);
       DB::$ROOM->UpdateTime();
       return DB::Commit();
@@ -259,7 +257,8 @@ function CheckSilence(){
     }
 
     //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
-    $str = 'あと' . Time::Convert(TimeConfig::$sudden_death) . 'で' . $MESSAGE->sudden_death_announce;
+    $str = 'あと' . Time::Convert(TimeConfig::$sudden_death) . 'で' .
+      Message::$sudden_death_announce;
     if (DB::$ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
       DB::$ROOM->sudden_death = TimeConfig::$sudden_death;
       return DB::Commit(); //ロック解除
@@ -317,7 +316,7 @@ function CheckSilence(){
   LoversFollowed(true);
   InsertMediumMessage();
 
-  DB::$ROOM->Talk($MESSAGE->vote_reset); //投票リセットメッセージ
+  DB::$ROOM->Talk(Message::$vote_reset); //投票リセットメッセージ
   DB::$ROOM->UpdateVoteCount(true); //投票回数を更新
   DB::$ROOM->UpdateTime(); //制限時間リセット
   //DB::$ROOM->DeleteVote(); //投票リセット
@@ -340,7 +339,7 @@ function SetSuddenDeathTime(){
 
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
 function OutputGameHeader(){
-  global $MESSAGE, $COOKIE, $OBJECTION;
+  global $COOKIE, $OBJECTION;
 
   $url_frame  = '<a target="_top" href="game_frame.php';
   $url_room   = sprintf('?room_no=%d', DB::$ROOM->id);
@@ -524,28 +523,26 @@ EOF;
 
   $str = '<div class="system-vote">%s</div>'."\n";
   if ($left_time == 0) {
-    printf($str, $time_message . $MESSAGE->vote_announce);
+    printf($str, $time_message . Message::$vote_announce);
     if (DB::$ROOM->sudden_death > 0) {
-      echo $MESSAGE->sudden_death_time . Time::Convert(DB::$ROOM->sudden_death) . '<br>'."\n";
+      echo Message::$sudden_death_time . Time::Convert(DB::$ROOM->sudden_death) . '<br>'."\n";
     }
   }
   elseif (DB::$ROOM->IsEvent('wait_morning')) {
-    printf($str, $MESSAGE->wait_morning);
+    printf($str, Message::$wait_morning);
   }
 
   if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()) {
-    printf($str, $MESSAGE->close_cast);
+    printf($str, Message::$close_cast);
   }
 }
 
 //昼の自分の未投票チェック
 function CheckSelfVoteDay(){
-  global $MESSAGE;
-
   $str = '<div class="self-vote">投票 ' . (DB::$ROOM->revote_count + 1) . ' 回目：';
   if (is_null(DB::$SELF->target_no)) {
     $str .= '<font color="#FF0000">まだ投票していません</font></div>'."\n" .
-      '<span class="ability vote-do">' . $MESSAGE->ability_vote . '</span><br>';
+      '<span class="ability vote-do">' . Message::$ability_vote . '</span><br>';
   }
   else {
     $str .= DB::$USER->ByVirtual(DB::$SELF->target_no)->handle_name . ' さんに投票済み</div>';

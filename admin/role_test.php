@@ -2,8 +2,8 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_OPT_CONF', 'ROOM_OPT', 'GAME_OPT_MESS',  'ROLE_DATA');
-$INIT_CONF->LoadFile('room_config', 'chaos_config', 'game_vote_functions');
+$INIT_CONF->LoadClass('GAME_OPT_CONF', 'ROOM_OPT', 'ROLE_DATA');
+$INIT_CONF->LoadFile('room_config', 'chaos_config', 'game_option_message', 'game_vote_functions');
 
 HTML::OutputHeader('配役テストツール', 'role_table', true);
 OutputRoleTestForm();
@@ -87,7 +87,7 @@ if (@$_POST['command'] == 'role_test') {
 HTML::OutputFooter(true);
 
 function OutputRoleTestForm(){
-  global $GAME_OPT_CONF, $GAME_OPT_MESS;
+  global $GAME_OPT_CONF;
 
   foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
     $$key = isset($_POST[$key]) && $_POST[$key] > 0 ? $_POST[$key] : $value;
@@ -127,7 +127,7 @@ EOF;
       if (++$count % 10 == 0) echo "<br>\n";
       if (is_int($key)) {
 	$checked = '';
-	$name    = $GAME_OPT_MESS->$mode;
+	$name    = GameOptionMessage::$$mode;
 	$value   = $mode;
       }
       else {

@@ -340,7 +340,7 @@ function GenerateRoleNameList($role_count_list, $css = false){
 
 //ゲーム開始投票集計処理
 function AggregateVoteGameStart($force_start = false){
-  global $MESSAGE, $ROLE_DATA, $ROLES;
+  global $ROLE_DATA, $ROLES;
 
   $user_count = DB::$USER->GetUserCount(); //ユーザ総数を取得
   if (DB::$ROOM->test_mode) {
@@ -591,7 +591,7 @@ function AggregateVoteGameStart($force_start = false){
   //役割リスト通知
   if ($is_chaos) {
     $sentence = DB::$ROOM->IsOptionGroup('chaos_open_cast') ?
-      GenerateRoleNameList($role_count_list) : $MESSAGE->chaos;
+      GenerateRoleNameList($role_count_list) : Message::$chaos;
   }
   else {
     $sentence = GenerateRoleNameList($role_count_list);
@@ -1016,7 +1016,7 @@ function CheckVoteNight(){
 
 //夜の投票ページを出力する
 function OutputVoteNight(){
-  global $VOTE_MESS, $ROLES;
+  global $ROLES;
 
   CheckScene(); //投票シーンチェック
  //-- 投票済みチェック --//
@@ -1041,41 +1041,38 @@ function OutputVoteNight(){
     echo $user->GenerateVoteTag($path, $checkbox);
   }
 
-  if (is_null($ROLES->stack->submit)) $ROLES->stack->submit = strtolower($ROLES->stack->action);
-  $back_url = RQ::$get->back_url;
-  $post_url = RQ::$get->post_url;
-  echo <<<EOF
+
+  if (is_null($ROLES->stack->submit)) $ROLES->stack->submit = $ROLES->stack->action;
+  $str = <<<EOF
 </tr></table>
-<span class="vote-message">* 投票先の変更はできません。慎重に！</span>
+<span class="vote-message">%s</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$back_url}</td>
-<input type="hidden" name="situation" value="{$ROLES->stack->action}">
-<td><input type="submit" value="{$VOTE_MESS->{$ROLES->stack->submit}}"></td></form>
-
+<td>%s</td>
+<input type="hidden" name="situation" value="%s">
+<td><input type="submit" value="%s"></td></form>%s
 EOF;
-
+  $submit = is_null($ROLES->stack->submit) ? $ROLES->stack->action : $ROLES->stack->submit;
+  printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, $ROLES->stack->action,
+	 VoteMessage::$$submit, "\n");
   if (isset($ROLES->stack->not_action)) {
     if (is_null($ROLES->stack->not_submit)) {
-      $ROLES->stack->not_submit = strtolower($ROLES->stack->not_action);
+      $ROLES->stack->not_submit = $ROLES->stack->not_action;
     }
-    $target_no = DB::$SELF->user_no;
-    echo <<<EOF
+    $str = <<<EOF
 <td>
-<form method="POST" action="{$post_url}">
+<form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
-<input type="hidden" name="situation" value="{$ROLES->stack->not_action}">
-<input type="hidden" name="target_no" value="{$target_no}">
-<input type="submit" value="{$VOTE_MESS->{$ROLES->stack->not_submit}}"></form>
-</td>
-
+<input type="hidden" name="situation" value="%s">
+<input type="hidden" name="target_no" value="%d">
+<input type="submit" value="%s"></form>
+</td>%s
 EOF;
+  printf($str, RQ::$get->post_url, $ROLES->stack->not_action, DB::$SELF->user_no,
+	 VoteMessage::${$ROLES->stack->not_submit}, "\n");
   }
 
-  echo <<<EOF
-</tr></table></div>
-</body></html>
-
-EOF;
+  echo "</tr></table></div>\n";
+  if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
 }
 
 //夜の投票処理
@@ -1620,6 +1617,5 @@ function AggregateVoteNight($skip = false){
 
 //ランダムメッセージを挿入する
 function InsertRandomMessage(){
-  global $MESSAGE;
-  if (GameConfig::$random_message) DB::$ROOM->Talk(GetRandom($MESSAGE->random_message_list));
+  if (GameConfig::$random_message) DB::$ROOM->Talk(GetRandom(Message::$random_message_list));
 }

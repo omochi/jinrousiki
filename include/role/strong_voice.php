@@ -13,18 +13,16 @@ class Role_strong_voice extends Role {
 
   //声量シフト
   function ShiftVoice(&$voice, &$str, $up = true){
-    global $MESSAGE;
-
     if (($key = array_search($voice, $this->voice_list)) === false) return;
     if ($up) {
       if (++$key >= count($this->voice_list)) {
-	$str = $MESSAGE->howling;
+	$str = Message::$howling;
 	return;
       }
     }
     else {
       if (--$key < 0) {
-	$str = $MESSAGE->common_talk;
+	$str = Message::$common_talk;
 	return;
       }
     }

@@ -177,16 +177,14 @@ class DB extends DatabaseConfig {
   //ユーザ登録処理
   static function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $icon_no = 0,
 			     $profile = null, $sex = 'male', $role = null, $session_id = null){
-    global $MESSAGE;
-
     $crypt_password = Text::CryptPassword($password);
     $items  = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live';
     $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
       "'{$crypt_password}', 'live'";
 
     if ($uname == 'dummy_boy') {
-      $profile    = $MESSAGE->dummy_boy_comment;
-      $last_words = $MESSAGE->dummy_boy_last_words;
+      $profile    = Message::$dummy_boy_comment;
+      $last_words = Message::$dummy_boy_last_words;
     }
     else {
       $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得

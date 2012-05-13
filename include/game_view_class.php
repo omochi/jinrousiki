@@ -3,8 +3,6 @@
 class GameView {
   //出力
   static function Output(){
-    global $MESSAGE;
-
     self::Load();
     HTML::OutputHeader(ServerConfig::$title . '[観戦]', 'game_view');
     if (GameConfig::$auto_reload && RQ::$get->auto_reload > 0) { //自動更新
@@ -73,7 +71,8 @@ EOF;
 	echo '<td class="real-time"><form name="realtime_form">'."\n";
 	echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
 	echo '</form></td>'."\n";
-      } else { //会話で時間経過制
+      }
+      else { //会話で時間経過制
 	$left_talk_time = GameTime::GetTalkPass($left_time);
 	if ($left_talk_time) printf('<td>%s%s</td>'."\n", $time_message, $left_talk_time);
       }
@@ -83,9 +82,10 @@ EOF;
     if (DB::$ROOM->IsPlaying()) {
       $format = '<div class="system-vote">%s</div>'."\n";
       if ($left_time == 0) {
-	printf($format, $time_message . $MESSAGE->vote_announce);
-      } elseif (DB::$ROOM->IsEvent('wait_morning')) {
-	printf($format, $MESSAGE->wait_morning);
+	printf($format, $time_message . Message::$vote_announce);
+      }
+      elseif (DB::$ROOM->IsEvent('wait_morning')) {
+	printf($format, Message::$wait_morning);
       }
     }
 
@@ -110,13 +110,14 @@ EOF;
 
     //シーンに応じた追加クラスをロード
     if (DB::$ROOM->IsFinished()) {
-      $INIT_CONF->LoadClass('WINNER_MESS');
-    } else {
+      $INIT_CONF->LoadFile('winner_message');
+    }
+    else {
       if (DB::$ROOM->IsPlaying() && ! DB::$ROOM->IsRealTime()) { //会話で時間経過制
 	$INIT_CONF->LoadFile('time_config');
       }
-      $INIT_CONF->LoadFile('room_config', 'cast_config', 'image_class');
-      $INIT_CONF->LoadClass('ROOM_OPT', 'GAME_OPT_MESS');
+      $INIT_CONF->LoadFile('room_config', 'cast_config', 'game_option_message', 'image_class');
+      $INIT_CONF->LoadClass('ROOM_OPT');
     }
 
     //ユーザ情報を取得

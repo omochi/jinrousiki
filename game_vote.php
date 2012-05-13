@@ -58,7 +58,7 @@ if (RQ::$get->vote) { //投票処理
   }
 }
 else { //シーンに合わせた投票ページを出力
-  $INIT_CONF->LoadClass('VOTE_MESS');
+  $INIT_CONF->LoadFile('vote_message');
   if (DB::$SELF->IsDead()) {
     DB::$SELF->IsDummyBoy() ? OutputVoteDummyBoy() : OutputVoteDeadUser();
   }
@@ -161,8 +161,6 @@ function VoteKick(){
 
 //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
 function AggregateVoteKick($target){
-  global $MESSAGE;
-
   CheckSituation('KICK_DO'); //コマンドチェック
 
   //今回投票した相手にすでに投票している人数を取得
@@ -181,8 +179,8 @@ function AggregateVoteKick($target){
   DB::Execute($query);
 
   //通知処理
-  DB::$ROOM->Talk($target->handle_name . $MESSAGE->kick_out);
-  DB::$ROOM->Talk($MESSAGE->vote_reset);
+  DB::$ROOM->Talk($target->handle_name . Message::$kick_out);
+  DB::$ROOM->Talk(Message::$vote_reset);
 
   //投票リセット処理
   DB::$ROOM->UpdateVoteCount();
@@ -223,8 +221,6 @@ function VoteResetTime(){
 
 //開始前の投票ページ出力
 function OutputVoteBeforeGame(){
-  global $VOTE_MESS;
-
   CheckScene(); //投票する状況があっているかチェック
   OutputVotePageHeader();
   echo '<input type="hidden" name="situation" value="KICK_DO">'."\n";
@@ -255,19 +251,15 @@ function OutputVoteBeforeGame(){
 <input type="submit" value="%s">
 </form>
 </td>
-</tr></table></div>
-</body></html>
-
+</tr></table></div>%s
 EOF;
-
-  printf($str, GameConfig::$kick, RQ::$get->back_url, $VOTE_MESS->kick_do, RQ::$get->post_url,
-	 $VOTE_MESS->game_start);
+  printf($str, GameConfig::$kick, RQ::$get->back_url, VoteMessage::$KICK_DO, RQ::$get->post_url,
+	 VoteMessage::$GAME_START, "\n");
+  HTML::OutputFooter(true);
 }
 
 //昼の投票ページを出力する
 function OutputVoteDay(){
-  global $VOTE_MESS;
-
   CheckScene(); //投票する状況があっているかチェック
   if (DB::$ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
   $revote_count = DB::$ROOM->revote_count;
@@ -312,77 +304,69 @@ EOF;
   }
 
   $url = RQ::$get->back_url;
-  echo <<<EOF
+  $str = <<<EOF
 </tr></table>
 <span class="vote-message">* 投票先の変更はできません。慎重に！</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$url}</td>
-<td><input type="submit" value="{$VOTE_MESS->vote_do}"></td>
+<td>%s</td>
+<td><input type="submit" value="%s"></td>
 </tr></table></div>
-</form></body></html>
-
+</form>%s
 EOF;
+  printf($str, $url, VoteMessage::$VOTE_DO, "\n");
+  HTML::OutputFooter(true);
 }
 
 //死者の投票ページ出力
 function OutputVoteDeadUser(){
-  global $VOTE_MESS;
-
   //投票済みチェック
   if (DB::$SELF->IsDrop())     OutputVoteResult('蘇生辞退：投票済み');
   if (DB::$ROOM->IsOpenCast()) OutputVoteResult('蘇生辞退：投票不要です');
 
   OutputVotePageHeader();
   $url = RQ::$get->back_url;
-  echo <<<EOF
+  $str = <<<EOF
 <input type="hidden" name="situation" value="REVIVE_REFUSE">
-<span class="vote-message">* 投票の取り消しはできません。慎重に！</span>
+<span class="vote-message">%s</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$url}</td>
-<td><input type="submit" value="{$VOTE_MESS->revive_refuse}"></form></td>
-</tr></table></div>
-</body></html>
-
+<td>%s</td>
+<td><input type="submit" value="%s"></form></td>
+</tr></table></div>%s
 EOF;
+  printf($str, VoteMessage::$CAUTION, $url, VoteMessage::$REVIVE_REFUSE, "\n");
+  HTML::OutputFooter(true);
 }
 
 //身代わり君 (霊界) の投票ページ出力
 function OutputVoteDummyBoy(){
-  global $VOTE_MESS;
-
   OutputVotePageHeader();
-  $url = RQ::$get->back_url;
-  echo <<<EOF
-<span class="vote-message">* 投票の取り消しはできません。慎重に！</span>
+  $str = <<<EOF
+<span class="vote-message">%s</span>
 <div class="vote-page-link" align="right"><table><tr>
-<td>{$url}</td>
+<td>%s</td>
 <td>
 <input type="hidden" name="situation" value="RESET_TIME">
-<input type="submit" value="{$VOTE_MESS->reset_time}"></form>
-</td>
-
+<input type="submit" value="%s"></form>
+</td>%s
 EOF;
+  printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, VoteMessage::$RESET_TIME, "\n");
 
   //蘇生辞退ボタン表示判定
   if (! DB::$SELF->IsDrop() && DB::$ROOM->IsOption('not_open_cast') && ! DB::$ROOM->IsOpenCast()) {
-    $url = RQ::$get->post_url;
-    echo <<<EOF
+    $url = ;
+    $str = <<<EOF
 <td>
-<form method="POST" action="{$url}">
+<form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="REVIVE_REFUSE">
-<input type="submit" value="{$VOTE_MESS->revive_refuse}">
+<input type="submit" value="%s">
 </form>
-</td>
-
+</td>%s
 EOF;
+    printf($str, RQ::$get->post_url, VoteMessage::$REVIVE_REFUSE, "\n");
   }
-
-  echo <<<EOF
-</tr></table></div>
-</body></html>
-
-EOF;
+  echo "</tr></table></div>\n";
+  HTML::OutputFooter(true);
 }
 
 //投票済みチェック

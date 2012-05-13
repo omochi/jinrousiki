@@ -25,10 +25,8 @@ class Role_lovers extends Role {
 
   //囁き (恋耳鳴)
   function Whisper($builder, $voice){
-    global $MESSAGE;
-
     if (! $builder->flag->sweet_ringing) return false; //スキップ判定
-    $str = $MESSAGE->lovers_talk;
+    $str = Message::$lovers_talk;
     foreach ($builder->filter as $filter) $filter->FilterWhisper($voice, $str); //フィルタリング処理
     $builder->RawAddTalk('', '恋人の囁き', $str, $voice);
     return true;

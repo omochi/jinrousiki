@@ -90,8 +90,6 @@ class PageLinkBuilder {
 //-- 関数 --//
 //過去ログ一覧生成
 function GenerateFinishedRooms($page){
-  global $MESSAGE;
-
   //村数の確認
   $title = ServerConfig::$title . ' [過去ログ]';
   $query = "SELECT room_no FROM room WHERE status = 'finished'";

@@ -8,10 +8,8 @@ class Role_cute_camouflage extends Role {
   function __construct(){ parent::__construct(); }
 
   function ConvertSay(){
-    global $MESSAGE;
-
     if (! DB::$ROOM->IsDay() || mt_rand(0, 9) > 0) return false; //スキップ判定
-    $this->SetStack($MESSAGE->cute_wolf != '' ? $MESSAGE->cute_wolf : $MESSAGE->wolf_howl, 'say');
+    $this->SetStack(Message::$cute_wolf != '' ? Message::$cute_wolf : Message::$wolf_howl, 'say');
     return true;
   }
 }

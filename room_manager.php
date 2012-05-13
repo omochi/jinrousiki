@@ -1,20 +1,19 @@
 <?php
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
-$INIT_CONF->LoadFile('room_config');
-$INIT_CONF->LoadClass('ROOM_IMG', 'ROOM_OPT');
+$INIT_CONF->LoadFile('room_config', 'image_class');
+$INIT_CONF->LoadClass('ROOM_OPT');
 
 if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
 Text::EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
-  $INIT_CONF->LoadFile('user_icon_class');
-  $INIT_CONF->LoadClass('MESSAGE', 'TWITTER');
+  $INIT_CONF->LoadFile('message', 'user_icon_class');
+  $INIT_CONF->LoadClass('TWITTER');
   CreateRoom();
 }
 else {
-  $INIT_CONF->LoadFile('time_config', 'chaos_config');
-  $INIT_CONF->LoadClass('GAME_OPT_CAPT');
+  $INIT_CONF->LoadFile('time_config', 'chaos_config', 'game_option_message');
   OutputRoomList();
 }
 DB::Disconnect();
@@ -309,8 +308,6 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
 
 //村(room)のwaitingとplayingのリストを出力する
 function OutputRoomList(){
-  global $ROOM_IMG;
-
   if (ServerConfig::$secret_room) return; //シークレットテストモード
 
   /* RSS機能はテスト中
@@ -335,12 +332,12 @@ function OutputRoomList(){
   $delete_footer = '">[削除 (緊急用)]</a>'."\n";
   $query = 'SELECT room_no, name, comment, game_option, option_role, max_user, status ' .
     "FROM room WHERE status IN ('waiting', 'playing') ORDER BY room_no DESC";
-  foreach (DB::FetchAssoc($query) as $stack){
+  foreach (DB::FetchAssoc($query) as $stack) {
     extract($stack);
     $delete     = ServerConfig::$debug_mode ? $delete_header . $room_no . $delete_footer : '';
-    $status_img = $ROOM_IMG->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
+    $status_img = Image::Room()->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
     $option_img = RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
-      GenerateMaxUserImage($max_user);
+      Image::GenerateMaxUser($max_user);
     echo <<<EOF
 {$delete}<a href="login.php?room_no={$room_no}">
 {$status_img}<span>[{$room_no}番地]</span>{$name}村<br>

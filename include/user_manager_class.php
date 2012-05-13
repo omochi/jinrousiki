@@ -3,8 +3,6 @@
 class UserManager {
   //ユーザ登録
   static function Entry(){
-    global $MESSAGE;
-
     extract(RQ::ToArray()); //引数を展開
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
     if ($user_no > 0) $back_url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
@@ -182,7 +180,7 @@ EOF;
       setcookie('vote_times', '', $cookie_time);
       setcookie('objection',  '', $cookie_time);
 
-      DB::$ROOM->Talk($handle_name . ' ' . $MESSAGE->entry_user); //入村メッセージ
+      DB::$ROOM->Talk($handle_name . ' ' . Message::$entry_user); //入村メッセージ
       DB::$ROOM->UpdateTime();
       DB::Commit();
 

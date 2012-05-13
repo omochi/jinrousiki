@@ -1,8 +1,9 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('user_icon_class', 'info_functions');
-$INIT_CONF->LoadClass('TIME_CALC', 'MESSAGE', 'GAME_OPT_MESS');
+$INIT_CONF->LoadFile('message', 'game_option_message', 'image_class', 'user_icon_class',
+		     'info_functions');
+$INIT_CONF->LoadClass('TIME_CALC');
 
 //-- 関数定義 --//
 //村の最大人数設定出力
@@ -121,8 +122,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_deadman">死亡者の順序がランダム表示</h3>
 <div>
-人狼に襲われて死亡した場合、妖狐が占われて死亡した場合、埋毒者に道連れにされた場合、表示されるメッセージは「～<?php echo $MESSAGE->deadman ?>」となります。<br>
-また、恋人が後追いした場合、表示されるメッセージは「～<?php echo $MESSAGE->lovers_followed ?>」となります。<br>
+人狼に襲われて死亡した場合、妖狐が占われて死亡した場合、埋毒者に道連れにされた場合、表示されるメッセージは「～<?php echo Message::$deadman ?>」となります。<br>
+また、恋人が後追いした場合、表示されるメッセージは「～<?php echo Message::$lovers_followed ?>」となります。<br>
 表示される順番ですが、どの死に方をした人が上に表示されるということはなく順序がランダムに表示されます。<br>
 注意しなければいけないことはリロードするたびにランダムに順序が変更されるということです。
 </div>
@@ -166,7 +167,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_night_talk">夜の独り言</h3>
 <div>
 人狼、共有者以外は夜中会話することは出来ませんが、発言すると独り言となり、本人と死亡者(天国モード)からは見ることができます。<br>
-ただし、「<a href="game_option.php#not_open_cast"><?php echo $GAME_OPT_MESS->not_open_cast ?></a>」オプションが設定されている場合は見えません。<br>
+ただし、「<a href="game_option.php#not_open_cast"><?php echo GameOptionMessage::$not_open_cast ?></a>」オプションが設定されている場合は見えません。<br>
 暇つぶしにでも使ってください。
 </div>
 
@@ -268,8 +269,8 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 設定される時間は村を作成する人が決定することができます
 (デフォルト 昼： [ <?php echo TimeConfig::$default_day ?>分 ]　夜： [ <?php echo TimeConfig::$default_night ?>分 ])。<br>
 その村に設定された制限時間を知るには、ゲーム一覧のゲームオプションアイコン、リアルタイム制用 <?php echo
-$ROOM_IMG->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::$default_day .
-		    '分　夜： ' . TimeConfig::$default_night . '分') ?> にマウスポインタを合わせることで表示されます。
+Image::Room()->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::$default_day .
+			'分　夜： ' . TimeConfig::$default_night . '分') ?> にマウスポインタを合わせることで表示されます。
 </div>
 <h4>Ver. 1.4.0 β4～</h4>
 <div>

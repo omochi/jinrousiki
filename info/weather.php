@@ -1,8 +1,8 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('info_functions');
-$INIT_CONF->LoadClass('GAME_OPT_MESS', 'ROLE_DATA');
+$INIT_CONF->LoadFile('game_option_message', 'info_functions');
+$INIT_CONF->LoadClass('ROLE_DATA');
 OutputInfoPageHeader('天候システム');
 ?>
 <p>
@@ -18,7 +18,7 @@ OutputInfoPageHeader('天候システム');
 
 <h2 id="game_option">関連オプション</h2>
 <ul>
-  <li><a href="game_option.php#weather"><?php echo $GAME_OPT_MESS->weather ?></a></li>
+  <li><a href="game_option.php#weather"><?php echo GameOptionMessage::$weather ?></a></li>
 </ul>
 
 <h2 id="summary">一覧</h2>

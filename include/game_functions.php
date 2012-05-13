@@ -92,8 +92,6 @@ function InsertMediumMessage(){
 
 //恋人の後追い死処理
 function LoversFollowed($sudden_death = false){
-  global $MESSAGE;
-
   $cupid_list      = array(); //キューピッドのID => 恋人のID
   $lost_cupid_list = array(); //恋人が死亡したキューピッドのリスト
   $checked_list    = array(); //処理済キューピッドのID
@@ -112,7 +110,7 @@ function LoversFollowed($sudden_death = false){
       $user = DB::$USER->ById($lovers_id); //恋人の情報を取得
       if (! DB::$USER->Kill($user->user_no, 'LOVERS_FOLLOWED')) continue;
       //突然死の処理
-      if ($sudden_death) DB::$ROOM->Talk($user->handle_name . $MESSAGE->lovers_followed);
+      if ($sudden_death) DB::$ROOM->Talk($user->handle_name . Message::$lovers_followed);
       $user->suicide_flag = true;
 
       foreach ($user->GetPartner('lovers') as $id){ //後追いした恋人のキューピッドのIDを取得
@@ -426,14 +424,14 @@ function OutputPlayerList(){ echo GeneratePlayerList(); }
 
 //勝敗結果の生成
 function GenerateWinner($id = 0){
-  global $WINNER_MESS, $ROLES;
+  global $ROLES;
 
   //-- 村の勝敗結果 --//
   $winner = DB::$ROOM->LoadWinner();
   $class  = $winner;
   $text   = $winner;
 
-  switch ($winner){ //特殊ケース対応
+  switch ($winner) { //特殊ケース対応
   //妖狐勝利
   case 'fox1':
   case 'fox2':
@@ -454,12 +452,12 @@ function GenerateWinner($id = 0){
     $text  = DB::$ROOM->date > 0 ? 'unfinished' : 'none';
     break;
   }
-  $str = <<<EOF
-<table class="winner winner-{$class}"><tr>
-<td>{$WINNER_MESS->$text}</td>
-</tr></table>
-
+  $format = <<<EOF
+<table class="winner winner-%s"><tr>
+<td>%s</td>
+</tr></table>%s
 EOF;
+  $str = sprintf($format, $class, WinnerMessage::$$text, "\n");
 
   //-- 個々の勝敗結果 --//
   //スキップ判定 (勝敗未決定/観戦モード/ログ閲覧モード)
@@ -474,7 +472,7 @@ EOF;
   if ($user->user_no < 1) return $str;
   $camp   = $user->GetCamp(true); //所属陣営を取得
 
-  switch ($winner){
+  switch ($winner) {
   case 'draw':   //引き分け
   case 'vanish': //全滅
     $result = 'draw';
@@ -488,7 +486,7 @@ EOF;
 
   default:
     $ROLES->stack->class = null;
-    switch ($camp){
+    switch ($camp) {
     case 'human':
     case 'wolf':
     case 'fox':
@@ -514,12 +512,12 @@ EOF;
       break;
     }
 
-    if ($win_flag){ //ジョーカー系判定
+    if ($win_flag) { //ジョーカー系判定
       $ROLES->actor = $user;
       foreach ($ROLES->Load('joker') as $filter) $filter->FilterWin($win_flag);
     }
 
-    if ($win_flag){
+    if ($win_flag) {
       $class = is_null($ROLES->stack->class) ? $camp : $ROLES->stack->class;
     }
     else {
@@ -528,7 +526,7 @@ EOF;
     }
     break;
   }
-  if ($id > 0){
+  if ($id > 0) {
     switch ($result){
     case 'win':
       return '勝利';
@@ -543,14 +541,8 @@ EOF;
       return '不明';
     }
   }
-  $result = 'self_' . $result;
 
-  return $str . <<<EOF
-<table class="winner winner-{$class}"><tr>
-<td>{$WINNER_MESS->$result}</td>
-</tr></table>
-
-EOF;
+  return $str . sprintf($format, $class, WinnerMessage::${'self_' . $result}, "\n");
 }
 
 //勝敗結果の出力
@@ -558,8 +550,6 @@ function OutputWinner(){ echo GenerateWinner(); }
 
 //投票の集計生成
 function GenerateVoteResult(){
-  global $MESSAGE;
-
   if (! DB::$ROOM->IsPlaying()) return null; //ゲーム中以外は出力しない
   if (DB::$ROOM->IsEvent('blind_vote') && ! DB::$ROOM->IsOpenData()) return null; //傘化けの判定
 
@@ -576,7 +566,7 @@ function OutputVoteList(){
 
 //再投票の時、メッセージを表示
 function OutputRevoteList(){
-  global $MESSAGE, $COOKIE;
+  global $COOKIE;
 
   if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
       DB::$ROOM->vote_count > $COOKIE->vote_times) {
@@ -589,7 +579,7 @@ function OutputRevoteList(){
     sprintf(' AND vote_count = %d AND user_no = %d', DB::$ROOM->vote_count, DB::$SELF->user_no);
   if (DB::FetchResult($query) == 0) {
     $str = '<div class="revote">%s (%d回%s)</div><br>'."\n";
-    printf($str, $MESSAGE->revote, GameConfig::$draw, $MESSAGE->draw_announce);
+    printf($str, Message::$revote, GameConfig::$draw, Message::$draw_announce);
   }
 
   echo GetVoteList(DB::$ROOM->date); //投票結果を出力
@@ -642,7 +632,7 @@ function OutputTalkLog(){
 
 //会話出力
 function OutputTalk($talk, &$builder){
-  global $MESSAGE, $ROLES;
+  global $ROLES;
 
   //PrintData($talk);
   //発言ユーザを取得
@@ -724,7 +714,7 @@ function OutputTalk($talk, &$builder){
 	  ! (abs($target - $viewer) == 5 ||
 	     ($target == $viewer - 1 && ($target % 5) != 0) ||
 	     ($target == $viewer + 1 && ($viewer % 5) != 0))) {
-	$talk->sentence = $MESSAGE->common_talk;
+	$talk->sentence = Message::$common_talk;
       }
     }
     return $builder->AddTalk($actor, $talk, $real);
@@ -894,8 +884,6 @@ function OutputTimeStamp($builder){
 
 //前日の能力発動結果を出力
 function OutputAbilityAction(){
-  global $MESSAGE;
-
   //昼間で役職公開が許可されているときのみ表示
   if (! DB::$ROOM->IsDay() || ! (DB::$SELF->IsDummyBoy() || DB::$ROOM->IsOpenCast())) return false;
 
@@ -909,7 +897,7 @@ function OutputAbilityAction(){
     $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
 			 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO',
 			 'FAIRY_DO');
-    if ($yesterday == 1){
+    if ($yesterday == 1) {
       array_push($action_list, 'CUPID_DO', 'DUELIST_DO', 'MANIA_DO');
     }
     else {
@@ -929,7 +917,7 @@ function OutputAbilityAction(){
     $stack_list = DB::FetchAssoc($query);
   }
 
-  foreach ($stack_list as $stack){
+  foreach ($stack_list as $stack) {
     list($actor, $target) = explode("\t", $stack['message']);
     echo $header.DB::$USER->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
     switch ($stack['type']){
@@ -967,34 +955,34 @@ function OutputAbilityAction(){
     case 'OGRE_DO':
     case 'DUELIST_DO':
     case 'DEATH_NOTE_DO':
-      echo $target.$MESSAGE->{strtolower($stack['type'])};
+      echo $target.Message::${strtolower($stack['type'])};
       break;
 
     case 'ASSASSIN_NOT_DO':
     case 'POSSESSED_NOT_DO':
     case 'OGRE_NOT_DO':
     case 'DEATH_NOTE_NOT_DO':
-      echo $MESSAGE->{strtolower($stack['type'])};
+      echo Message::${strtolower($stack['type'])};
       break;
 
     case 'POISON_CAT_DO':
-      echo $target.$MESSAGE->revive_do;
+      echo $target.Message::$revive_do;
       break;
 
     case 'POISON_CAT_NOT_DO':
-      echo $MESSAGE->revive_not_do;
+      echo Message::$revive_not_do;
       break;
 
     case 'SPREAD_WIZARD_DO':
-      echo $target.$MESSAGE->wizard_do;
+      echo $target.Message::$wizard_do;
       break;
 
     case 'TRAP_MAD_DO':
-      echo $target.$MESSAGE->trap_do;
+      echo $target.Message::$trap_do;
       break;
 
     case 'TRAP_MAD_NOT_DO':
-      echo $MESSAGE->trap_not_do;
+      echo Message::$trap_not_do;
       break;
 
     case 'MAGE_DO':
@@ -1037,8 +1025,6 @@ function OutputAbilityAction(){
 
 //死亡者の遺言を生成
 function GenerateLastWords($shift = false){
-  global $MESSAGE;
-
   //スキップ判定
   if (! (DB::$ROOM->IsPlaying() || DB::$ROOM->log_mode) || DB::$ROOM->personal_mode) return null;
 
@@ -1061,14 +1047,14 @@ function GenerateLastWords($shift = false){
 EOF;
   }
 
-  return <<<EOF
+  $format = <<<EOF
 <table class="system-lastwords"><tr>
-<td>{$MESSAGE->lastwords}</td>
+<td>%s</td>
 </tr></table>
 <table class="lastwords">
-{$str}</table>
-
+%s</table>%s
 EOF;
+  return sprintf($format, Message::$lastwords, $str, "\n");
 }
 
 //死亡者の遺言を出力
@@ -1129,8 +1115,6 @@ function GenerateWeatherReport(){
 
 //死者のタイプ別に死亡メッセージを生成
 function GenerateDeadManType($name, $type, $result){
-  global $MESSAGE;
-
   if (isset($name)) $name .= ' ';
   $base   = true;
   $class  = null;
@@ -1202,15 +1186,13 @@ function GenerateDeadManType($name, $type, $result){
     break;
   }
   $str .= is_null($class) ? '<tr>' : sprintf('<tr class="dead-type-%s">', $class);
-  $str .= sprintf('<td>%s%s</td>', $name, $MESSAGE->{$base ? 'deadman' : $action});
-  if (isset($reason)) $str .= sprintf("</tr>\n<tr><td>(%s%s)</td>", $name, $MESSAGE->$reason);
+  $str .= sprintf('<td>%s%s</td>', $name, Message::${$base ? 'deadman' : $action});
+  if (isset($reason)) $str .= sprintf("</tr>\n<tr><td>(%s%s)</td>", $name, Message::$$reason);
   return $str."</tr>\n</table>\n";
 }
 
 //死者のタイプ別に死亡メッセージを生成
 function GenerateDeadManTypeOld($name, $type){
-  global $MESSAGE;
-
   //タイプの解析
   $base_type    = $type;
   $parsed_type  = explode('_', $type);
@@ -1310,8 +1292,8 @@ function GenerateDeadManTypeOld($name, $type){
     break;
   }
   $str .= is_null($class) ? '<tr>' : '<tr class="dead-type-'.$class.'">';
-  $str .= '<td>'.$name.$MESSAGE->{$base ? 'deadman' : $action}.'</td>';
-  if (isset($reason)) $str .= "</tr>\n<tr><td>(".$name.$MESSAGE->$reason.')</td>';
+  $str .= '<td>'.$name.Message::${$base ? 'deadman' : $action}.'</td>';
+  if (isset($reason)) $str .= "</tr>\n<tr><td>(".$name.Message::$$reason.')</td>';
   return $str."</tr>\n</table>\n";
 }
 

@@ -23,7 +23,7 @@ class Icon extends IconConfig {
 
   //人狼アイコン取得
   static function GetWolf(){
-    if (is_null(self::$wolf_path)) self::$wolf_path = sprintf('%s/%s/', JINRO_IMG, self::$wolf);
+    if (is_null(self::$wolf_path)) self::$wolf_path = sprintf('%s/%s', JINRO_IMG, self::$wolf);
     return self::$wolf_path;
   }
 

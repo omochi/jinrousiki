@@ -21,10 +21,8 @@ class Role_common extends Role {
 
   //囁き
   function Whisper($builder, $voice){
-    global $MESSAGE;
-
     if (! $builder->flag->common_whisper) return false; //スキップ判定
-    $str = $MESSAGE->common_talk;
+    $str = Message::$common_talk;
     $builder->RawAddTalk('', '共有者の小声', $str, $voice, '', 'talk-common', 'say-common');
     return true;
   }

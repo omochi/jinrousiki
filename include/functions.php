@@ -35,10 +35,12 @@ class Text {
 	    } else {
 	      $trip = '???';
 	    }
-	  } else {
+	  }
+	  else {
 	    $trip = str_replace('+', '.', substr(base64_encode(sha1($key, true)), 0, 12));
 	  }
-	} else {
+	}
+	else {
 	  $salt = substr($key . 'H.', 1, 2);
 
 	  //$salt =~ s/[^\.-z]/\./go; にあたる箇所
@@ -55,7 +57,8 @@ class Text {
 	$str = $name . '◆' . $trip;
       }
       //PrintData($str, 'Result');
-    } elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false) {
+    }
+    elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false) {
       $sentence = "トリップは使用不可です。<br>\n" . '"#" 又は "＃" の文字も使用不可です。';
       HTML::OutputResult('村人登録 [入力エラー]', $sentence);
     }
@@ -140,7 +143,8 @@ class Security {
 	foreach ($value as $item) {
 	  if (self::CheckValue($item, true)) return true;
 	}
-      } else {
+      }
+      else {
 	$preg = '/^([0.]*2[0125738.]{15,16}1[0.]*)e(-[0-9]+)$/i';
 	$item = strval($value);
 	$matches = '';

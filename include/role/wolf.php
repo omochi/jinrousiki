@@ -37,10 +37,9 @@ class Role_wolf extends Role {
 
   //遠吠え
   function Howl($builder, $voice){
-    global $MESSAGE;
-
     if (! $builder->flag->wolf_howl) return false; //スキップ判定
-    $str = $MESSAGE->wolf_howl;
+
+    $str = Message::$wolf_howl;
     foreach ($builder->filter as $filter) $filter->FilterWhisper($voice, $str); //フィルタリング処理
     $builder->RawAddTalk('', '狼の遠吠え', $str, $voice);
     return true;

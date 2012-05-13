@@ -597,11 +597,9 @@ class Room {
 
   //夜を飛ばす
   function SkipNight(){
-    global $MESSAGE;
-
-    if ($this->IsEvent('skip_night')){
+    if ($this->IsEvent('skip_night')) {
       AggregateVoteNight(true);
-      $this->talk($MESSAGE->skip_night);
+      $this->talk(Message::$skip_night);
     }
   }
 
