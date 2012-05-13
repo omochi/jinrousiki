@@ -23,8 +23,7 @@ class GameTime {
     if (DB::$ROOM->IsDay()) { //昼は12時間
       $base_time = TimeConfig::$day;
       $full_time = 12;
-    }
-    else { //夜は6時間
+    } else { //夜は6時間
       $base_time = TimeConfig::$night;
       $full_time = 6;
     }
@@ -339,7 +338,7 @@ function OutputGameOption(){
   extract(DB::FetchAssoc($query, true));
   echo '<div class="game-option">ゲームオプション：' .
     RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
-    GenerateMaxUserImage($max_user) . '</div>'."\n";
+    Image::GenerateMaxUser($max_user) . '</div>'."\n";
 }
 
 //日付と生存者の人数を出力

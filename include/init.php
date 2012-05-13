@@ -28,8 +28,6 @@ class InitializeConfig {
   public $depend_file = array(
     'GAME_OPT_CONF'        => 'game_option_config',
     'SRC_UP_CONF'          => 'src_upload_config',
-    'ROOM_IMG'             => 'system_class',
-    'ROLE_IMG'             => 'system_class',
     'ROOM_OPT'             => array('room_config', 'time_config', 'option/room_option_class',
 				    'option/room_option_item_class'),
     'MESSAGE'              => 'message',
@@ -38,7 +36,7 @@ class InitializeConfig {
     'VOTE_MESS'            => 'message',
     'ROLES'                => 'role_class',
     'TIME_CALC'            => array('time_config', 'room_config', 'game_config', 'cast_config',
-				    'info_functions'),
+				    'image_class', 'info_functions'),
     'TWITTER'              => array('twitter_config', 'twitter'),
     'PAPARAZZI'            => 'paparazzi_class',
     'server_config'        => array('system_class', 'functions'), //常時ロードされる
@@ -64,10 +62,10 @@ class InitializeConfig {
     'icon_upload_class'    => array('session_class', 'icon_functions'),
     'paparazzi_class'      => 'paparazzi',
     'index_functions'      => array('menu_config', 'bbs_config', 'version'),
-    'game_play_functions'  => 'user_class',
+    'game_play_functions'  => array('user_class', 'image_class'),
     'game_vote_functions'  => 'game_functions',
     'icon_functions'       => array('icon_class', 'user_icon_class'),
-    'oldlog_functions'     => array('oldlog_config', 'cast_config'),
+    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'image_class'),
     'setup_class'          => array('setup_config', 'version', 'database_class'),
     'test/objection'       => array('game_config', 'sound_class')
   );
@@ -76,13 +74,12 @@ class InitializeConfig {
   public $depend_class = array(
     'ROOM_OPT'            => 'GAME_OPT_CONF',
     'GAME_OPT_CAPT'       => 'GAME_OPT_MESS',
-    'TIME_CALC'           => array('ROOM_IMG', 'ROLE_DATA'),
+    'TIME_CALC'           => 'ROLE_DATA',
     'user_class'          => array('ROLE_DATA', 'MESSAGE'),
     'game_view_class'     => array('ROLES'),
     'game_log_class'      => 'ROLES',
     'user_manager_class'  => 'MESSAGE',
-    'game_play_functions' => 'ROLE_IMG',
-    'oldlog_functions'    => array('ROOM_IMG', 'ROOM_OPT', 'GAME_OPT_MESS'),
+    'oldlog_functions'    => array('ROOM_OPT', 'GAME_OPT_MESS'),
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
@@ -90,8 +87,6 @@ class InitializeConfig {
     'GAME_OPT_CONF' => 'GameOptionConfig',
     'SRC_UP_CONF'   => 'SourceUploadConfig',
     'TWITTER'       => 'TwitterConfig',
-    'ROOM_IMG'      => 'RoomImage',
-    'ROLE_IMG'      => 'RoleImage',
     'ROOM_OPT'      => 'RoomOption',
     'MESSAGE'       => 'Message',
     'GAME_OPT_MESS' => 'GameOptionMessage',

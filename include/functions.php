@@ -2,9 +2,7 @@
 //-- テキスト処理クラス --//
 class Text {
   //パスワード暗号化
-  static function CryptPassword($str){
-    return sha1(ServerConfig::$salt . $str);
-  }
+  static function CryptPassword($str){ return sha1(ServerConfig::$salt . $str); }
 
   //トリップ変換
   /*
@@ -34,16 +32,13 @@ class Text {
 	  if ($trip_mark == '#' || $trip_mark == '$') {
 	    if (preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})$|', $key, $stack)) {
 	      $trip = substr(crypt(pack('H*', $stack[1]), "{$stack[2]}.."), -12);
-	    }
-	    else {
+	    } else {
 	      $trip = '???';
 	    }
-	  }
-	  else {
+	  } else {
 	    $trip = str_replace('+', '.', substr(base64_encode(sha1($key, true)), 0, 12));
 	  }
-	}
-	else {
+	} else {
 	  $salt = substr($key . 'H.', 1, 2);
 
 	  //$salt =~ s/[^\.-z]/\./go; にあたる箇所
@@ -60,8 +55,7 @@ class Text {
 	$str = $name . '◆' . $trip;
       }
       //PrintData($str, 'Result');
-    }
-    elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false) {
+    } elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false) {
       $sentence = "トリップは使用不可です。<br>\n" . '"#" 又は "＃" の文字も使用不可です。';
       HTML::OutputResult('村人登録 [入力エラー]', $sentence);
     }
@@ -74,7 +68,7 @@ class Text {
   //特殊文字のエスケープ処理
   //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
   static function Escape(&$str, $trim = true){
-    if (is_array($str)){
+    if (is_array($str)) {
       $result = array();
       foreach ($str as $item) $result[] = self::Escape($item);
       return $result;
@@ -146,8 +140,7 @@ class Security {
 	foreach ($value as $item) {
 	  if (self::CheckValue($item, true)) return true;
 	}
-      }
-      else {
+      } else {
 	$preg = '/^([0.]*2[0125738.]{15,16}1[0.]*)e(-[0-9]+)$/i';
 	$item = strval($value);
 	$matches = '';
@@ -211,6 +204,12 @@ class Time {
 
 //-- HTML 生成クラス --//
 class HTML {
+  const HEADER = "</head>\n<body>\n";
+  const FOOTER = "</body>\n</html>";
+  const JUMP   = "<meta http-equiv=\"Refresh\" content=\"1;URL=%s\">\n";
+  const CSS    = "<link rel=\"stylesheet\" href=\"%s.css\">\n";
+  const JS     = "<script type=\"text/javascript\" src=\"%s/%s.js\"></script>\n";
+
   //共通 HTML ヘッダ生成
   static function GenerateHeader($title, $css = null, $close = false){
     $str = <<<EOF
@@ -236,7 +235,7 @@ EOF;
 
   //CSS 読み込み
   static function LoadCSS($path){
-    return sprintf('<link rel="stylesheet" href="%s.css">'."\n", $path);
+    return sprintf(self::CSS, $path);
   }
 
   //CSS 出力
@@ -247,7 +246,7 @@ EOF;
   //JavaScript 読み込み
   static function LoadJavaScript($file, $path = null){
     if (is_null($path)) $path = JINRO_ROOT . '/javascript';
-    return sprintf('<script type="text/javascript" src="%s/%s.js"></script>'."\n", $path, $file);
+    return sprintf(self::JS, $path, $file);
   }
 
   //JavaScript 出力
@@ -268,7 +267,7 @@ EOF;
   //HTML ヘッダクローズ
   static function GenerateBodyHeader($css = null){
     $str = isset($css) ? self::LoadCSS($css) : '';
-    return $str . "</head>\n<body>\n";
+    return $str . self::HEADER;
   }
 
   //HTML ヘッダクローズ出力
@@ -279,14 +278,14 @@ EOF;
   //HTML フッタ出力
   static function OutputFooter($exit = false){
     DB::Disconnect();
-    echo "</body>\n</html>";
+    echo self::FOOTER;
     if ($exit) exit;
   }
 
   //結果ページ HTML ヘッダ出力
   static function OutputResultHeader($title, $url = ''){
     self::OutputHeader($title);
-    if ($url != '') printf('<meta http-equiv="Refresh" content="1;URL=%s">'."\n", $url);
+    if ($url != '') printf(self::JUMP, $url);
     if (is_object(DB::$ROOM)) echo DB::$ROOM->GenerateCSS();
     self::OutputBodyHeader();
   }
@@ -431,11 +430,4 @@ EOF;
 EOF;
   }
   return $str;
-}
-
-//ゲームオプションの画像タグを作成する (最大人数用)
-function GenerateMaxUserImage($number){
-  global $ROOM_IMG;
-  return in_array($number, RoomConfig::$max_user_list) && $ROOM_IMG->Exists("max{$number}") ?
-    $ROOM_IMG->Generate("max{$number}", "最大{$number}人") : "(最大{$number}人)";
 }

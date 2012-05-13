@@ -90,7 +90,7 @@ class PageLinkBuilder {
 //-- 関数 --//
 //過去ログ一覧生成
 function GenerateFinishedRooms($page){
-  global $MESSAGE, $ROOM_IMG;
+  global $MESSAGE;
 
   //村数の確認
   $title = ServerConfig::$title . ' [過去ログ]';
@@ -137,8 +137,6 @@ function GenerateFinishedRooms($page){
 EOF;
 
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
-  $ROOM_DATA  = new RoomDataSet();
-  $WINNER_IMG = new WinnerImage();
   $current_time = Time::Get(); // 現在時刻の取得
   $query .= ' ORDER BY room_no ' . ($is_reverse ? 'DESC' : 'ASC');
   if (RQ::$get->page != 'all'){
@@ -146,7 +144,7 @@ EOF;
     $query .= sprintf(' LIMIT %d, %d', $view * (RQ::$get->page - 1), $view);
   }
   foreach (DB::FetchArray($query) as $room_no) {
-    $ROOM = $ROOM_DATA->LoadFinishedRoom($room_no);
+    $ROOM = RoomDataSet::LoadFinishedRoom($room_no);
 
     $dead_room = $ROOM->date == 0 ? ' vanish' : ''; //廃村の場合、色を灰色にする
     $establish = $ROOM->establish_datetime == '' ? '' :
@@ -164,9 +162,9 @@ EOF;
       $log_link = GenerateLogLink($base_url, true, '(') . ' )' .
 	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
     }
-    $max_user    = GenerateMaxUserImage($ROOM->max_user);
+    $max_user    = Image::GenerateMaxUser($ROOM->max_user);
     $game_option = RoomOption::Wrap($ROOM->game_option, $ROOM->option_role)->GenerateImageList();
-    $winner      = RQ::$get->watch ? '-' : $WINNER_IMG->Generate($ROOM->winner);
+    $winner      = RQ::$get->watch ? '-' : Image::Winner()->Generate($ROOM->winner);
     $str .= <<<EOF
 <tr>
 <td class="number" rowspan="3">{$ROOM->id}</td>

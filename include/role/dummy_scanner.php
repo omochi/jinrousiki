@@ -13,8 +13,7 @@ class Role_dummy_scanner extends Role_mind_scanner {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROLE_IMG;
     $role = 'mind_read';
-    if (DB::$ROOM->date > 1 && ! $this->GetActor()->IsRole($role)) $ROLE_IMG->Output($role);
+    if (DB::$ROOM->date > 1 && ! $this->GetActor()->IsRole($role)) Image::Role()->Output($role);
   }
 }

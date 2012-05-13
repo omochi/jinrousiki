@@ -9,8 +9,7 @@ class Role_quiz extends Role {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    global $ROLE_IMG;
-    if (DB::$ROOM->IsOptionGroup('chaos')) $ROLE_IMG->Output('quiz_chaos');
+    if (DB::$ROOM->IsOptionGroup('chaos')) Image::Role()->Output('quiz_chaos');
   }
 
   function SetVoteDay($uname){ if ($this->IsRealActor()) $this->AddStack($uname); }

@@ -391,8 +391,7 @@ class Role {
 
   //役職画像表示
   protected function OutputImage(){
-    global $ROLE_IMG;
-    $ROLE_IMG->Output(isset($this->display_role) ? $this->display_role : $this->role);
+    Image::Role()->Output(isset($this->display_role) ? $this->display_role : $this->role);
   }
 
   //仲間情報表示

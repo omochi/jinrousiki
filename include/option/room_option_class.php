@@ -237,8 +237,6 @@ class RoomOption extends OptionParser {
 
   /** ゲームオプションの画像タグを作成する */
   function GenerateImageList() {
-    global $ROOM_IMG;
-
     $str = '';
     foreach (self::$icon_order as $option) {
       $define = self::Get($option);
@@ -264,7 +262,7 @@ class RoomOption extends OptionParser {
 	$footer = '['. strtoupper($type) . ']';
 	break;
       }
-      $str .= $ROOM_IMG->Generate($option, $sentence) . $footer;
+      $str .= Image::Room()->Generate($option, $sentence) . $footer;
     }
     return $str;
   }

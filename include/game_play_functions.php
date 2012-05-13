@@ -66,13 +66,13 @@ function Write($say, $scene, $location = null, $spend_time = 0, $update = false)
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $MESSAGE, $ROLE_DATA, $ROLE_IMG, $ROLES;
+  global $MESSAGE, $ROLE_DATA, $ROLES;
 
   if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
   if (DB::$SELF->IsDead()) { //死亡したら口寄せ以外は表示しない
     echo '<span class="ability ability-dead">' . $MESSAGE->ability_dead . '</span><br>';
-    if (DB::$SELF->IsRole('mind_evoke')) $ROLE_IMG->Output('mind_evoke');
+    if (DB::$SELF->IsRole('mind_evoke')) Image::Role()->Output('mind_evoke');
     if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()) { //身代わり君のみ隠蔽情報を表示
       echo '<div class="system-vote">' . $MESSAGE->close_cast . '</div>'."\n";
     }
@@ -98,19 +98,17 @@ function OutputAbility(){
   $display_list = array_diff(array_keys($ROLE_DATA->sub_role_list), $stack);
   $target_list  = array_intersect($display_list, array_slice($ROLES->actor->role_list, 1));
   //PrintData($target_list);
-  foreach ($target_list as $role) $ROLE_IMG->Output($role);
+  foreach ($target_list as $role) Image::Role()->Output($role);
 }
 
 //仲間を表示する
 function OutputPartner($list, $header, $footer = null){
-  global $ROLE_IMG;
-
   if (count($list) < 1) return false; //仲間がいなければ表示しない
   $list[] = '</td>';
   $str = '<table class="ability-partner"><tr>'."\n" .
-    $ROLE_IMG->Generate($header, null, true) ."\n" .
+    Image::Role()->Generate($header, null, true) ."\n" .
     '<td>　' . implode('さん　', $list) ."\n";
-  if ($footer) $str .= $ROLE_IMG->Generate($footer, null, true) ."\n";
+  if ($footer) $str .= Image::Role()->Generate($footer, null, true) ."\n";
   echo $str . '</tr></table>'."\n";
 }
 
@@ -366,12 +364,10 @@ function OutputSelfAbilityResult($action){
 
 //能力発動結果を表示する
 function OutputAbilityResult($header, $target, $footer = null){
-  global $ROLE_IMG;
-
   $str = '<table class="ability-result"><tr>'."\n";
-  if (isset($header)) $str .= $ROLE_IMG->Generate($header, null, true) ."\n";
+  if (isset($header)) $str .= Image::Role()->Generate($header, null, true) ."\n";
   if (isset($target)) $str .= '<td>' . $target . '</td>'."\n";
-  if (isset($footer)) $str .= $ROLE_IMG->Generate($footer, null, true) ."\n";
+  if (isset($footer)) $str .= Image::Role()->Generate($footer, null, true) ."\n";
   echo $str . '</tr></table>'."\n";
 }
 
