@@ -27,13 +27,16 @@ class ServerConfig {
   static $back_page = '';
 
   //管理者用パスワード
-  static $system_password = 'xxxxxxxx';
+  #static $system_password = 'xxxxxxxx';
+  static $system_password = 'pass';
 
   //パスワード暗号化用 salt
-  static $salt = 'xxxx';
+  #static $salt = 'xxxx';
+  static $salt = 'testtest';
 
   //デバッグモードのオン/オフ
-  static $debug_mode = false;
+  #static $debug_mode = false;
+  static $debug_mode = true;
 
   //村作成パスワード (null 以外を設定しておくと村作成画面にパスワード入力欄が表示されます)
   static $room_password = null;
@@ -73,5 +76,5 @@ class ServerConfig {
     更新後のリビジョン番号と同じか、それより大きな値を設定すると
     admin/setup.php の処理は常時スキップされます。
   */
-  static $last_updated_revision = 365;
+  static $last_updated_revision = 542;
 }

@@ -62,8 +62,6 @@ EOF;
 
 //配役テーブル出力
 function OutputCastTable($min = 0, $max = null){
-  global $ROLE_DATA;
-
   //設定されている役職名を取得
   $stack = array();
   foreach (CastConfig::$role_list as $key => $value) {
@@ -71,11 +69,11 @@ function OutputCastTable($min = 0, $max = null){
     $stack = array_merge($stack, array_keys($value));
     if ($key == $max) break;
   }
-  $role_list = $ROLE_DATA->SortRole(array_unique($stack)); //表示順を決定
+  $role_list = RoleData::SortRole(array_unique($stack)); //表示順を決定
 
   $header = '<table class="member">';
   $str = '<tr><th>人口</th>';
-  foreach ($role_list as $role) $str .= $ROLE_DATA->GenerateMainRoleTag($role, 'th');
+  foreach ($role_list as $role) $str .= RoleData::GenerateMainRoleTag($role, 'th');
   $str .= '</tr>'."\n";
   echo $header . $str;
 

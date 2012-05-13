@@ -1,29 +1,25 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('cast_config', 'game_option_message', 'info_functions');
-$INIT_CONF->LoadClass('ROLE_DATA');
+$INIT_CONF->LoadFile('cast_config', 'game_option_message', 'role_data_class', 'info_functions');
 
 //-- 関数定義 --//
 //追加役職の人数と説明ページリンク出力
 function OutputAddRole($role, $add = false){
-  global $ROLE_DATA;
   echo '村の人口が' . CastConfig::$$role . '人以上になったら' .
-    $ROLE_DATA->GenerateRoleLink($role) . ($add ? 'を追加' : 'が登場') . 'します';
+    RoleData::GenerateRoleLink($role) . ($add ? 'を追加' : 'が登場') . 'します';
 }
 
 //お祭り村の配役リスト出力
 function OutputFestivalList(){
-  global $ROLE_DATA;
-
   $stack  = CastConfig::$festival_role_list;
   $format = '%' . strlen(max(array_keys($stack))) . 's人：';
   $str    = '<pre>'."\n";
   ksort($stack); //人数順に並び替え
   foreach($stack as $count => $list){
     $order_stack = array();
-    foreach($ROLE_DATA->SortRole(array_keys($list)) as $role){ //役職順に並び替え
-      $order_stack[] = $ROLE_DATA->main_role_list[$role] . $list[$role];
+    foreach(RoleData::SortRole(array_keys($list)) as $role){ //役職順に並び替え
+      $order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
     }
     $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
   }
@@ -32,9 +28,8 @@ function OutputFestivalList(){
 
 //村人置換系オプションのサーバ設定出力
 function OutputReplaceRole($option){
-  global $ROLE_DATA;
   echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
-    $ROLE_DATA->GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
+    RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
 }
 
 //-- 表示 --//

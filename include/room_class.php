@@ -382,12 +382,10 @@ class Room {
 
   //天候セット
   function SetWeather(){
-    global $ROLE_DATA;
-
-    if ($this->watch_mode || $this->single_view_mode){
+    if ($this->watch_mode || $this->single_view_mode) {
       $this->LoadWeather();
-      if (isset($ROLE_DATA->weather_list[$this->event->weather])){
-	$this->event->{$ROLE_DATA->weather_list[$this->event->weather]['event']} = true;
+      if (isset(RoleData::$weather_list[$this->event->weather])) {
+	$this->event->{RoleData::$weather_list[$this->event->weather]['event']} = true;
       }
     }
     $this->LoadWeather(true);
@@ -529,11 +527,9 @@ class Room {
 
   //天候登録
   function EntryWeather($id, $date, $priest = false){
-    global $ROLE_DATA;
-
     $this->SystemMessage($id, 'WEATHER', $date);
-    if ($priest){ //祈祷師の処理
-      $result = 'prediction_weather_' . $ROLE_DATA->weather_list[$id]['event'];
+    if ($priest) { //祈祷師の処理
+      $result = 'prediction_weather_' . RoleData::$weather_list[$id]['event'];
       $this->ResultAbility('WEATHER_PRIEST_RESULT', $result);
     }
   }

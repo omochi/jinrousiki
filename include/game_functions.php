@@ -1104,14 +1104,13 @@ function GenerateDeadMan(){
 
 //天候メッセージの生成
 function GenerateWeatherReport(){
-  global $ROLE_DATA;
-
-  if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) return '';
-  $weather = $ROLE_DATA->weather_list[DB::$ROOM->event->weather];
+  if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
+    return '';
+  }
+  $weather = RoleData::$weather_list[DB::$ROOM->event->weather];
   $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
   return sprintf($str, $weather['name'], $weather['caption']);
 }
-
 
 //死者のタイプ別に死亡メッセージを生成
 function GenerateDeadManType($name, $type, $result){

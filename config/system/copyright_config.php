@@ -14,5 +14,9 @@ class CopyrightConfig {
   //追加情報
   static $add_list = array(
     '写真素材' => array('Le moineau - すずめのおやど -' => 'http://moineau.fc2web.com/'),
+    /*
+    'アイコン素材' => array('夏蛍' => 'http://natuhotaru.yukihotaru.com/',
+                            'ジギザギのさいはて' => 'http://jigizagi.s57.xrea.com/')
+    */
 			   );
 }

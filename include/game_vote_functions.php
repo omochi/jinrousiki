@@ -44,8 +44,6 @@ EOF;
 
 //人数とゲームオプションに応じた役職テーブルを返す
 function GetRoleList($user_count){
-  global $ROLE_DATA;
-
   $error_header = 'ゲームスタート[配役設定エラー]：';
   $error_footer = '。<br>管理者に問い合わせて下さい。';
 
@@ -97,7 +95,7 @@ function GetRoleList($user_count){
     if (! $chaos_verso) { //-- 最小出現補正 --//
       $stack = array(); //役職系統別配役数
       foreach ($fix_role_list as $key => $value) { //固定枠内の該当グループをカウント
-	$stack[$ROLE_DATA->DistinguishRoleGroup($key)] = $value;
+	$stack[RoleData::DistinguishRoleGroup($key)] = $value;
       }
       //PrintData($stack, 'FixRole');
 
@@ -136,10 +134,10 @@ function GetRoleList($user_count){
       $total_stack  = array(); //グループ別リスト (全配役)
       $random_stack = array(); //グループ別リスト (ランダム)
       foreach ($role_list as $role => $count) {
-	$total_stack[$ROLE_DATA->DistinguishRoleGroup($role)][$role] = $count;
+	$total_stack[RoleData::DistinguishRoleGroup($role)][$role] = $count;
       }
       foreach ($random_role_list as $role => $count) {
-	$random_stack[$ROLE_DATA->DistinguishRoleGroup($role)][$role] = $count;
+	$random_stack[RoleData::DistinguishRoleGroup($role)][$role] = $count;
       }
 
       foreach (ChaosConfig::$role_group_rate_list as $name => $rate) {
@@ -270,8 +268,6 @@ function GetRoleList($user_count){
 
 //役職の人数通知リストを作成する
 function GenerateRoleNameList($role_count_list, $css = false){
-  global $ROLE_DATA;
-
   $chaos = DB::$ROOM->IsOption('chaos_open_cast_camp') ? 'camp' :
     (DB::$ROOM->IsOption('chaos_open_cast_role') ? 'role' : null);
   switch ($chaos) {
@@ -280,8 +276,8 @@ function GenerateRoleNameList($role_count_list, $css = false){
     $main_type = '陣営';
     $main_role_list = array();
     foreach ($role_count_list as $key => $value) {
-      if (array_key_exists($key, $ROLE_DATA->main_role_list)) {
-	$main_role_list[$ROLE_DATA->DistinguishCamp($key, true)] += $value;
+      if (array_key_exists($key, RoleData::$main_role_list)) {
+	$main_role_list[RoleData::DistinguishCamp($key, true)] += $value;
       }
     }
     break;
@@ -291,8 +287,8 @@ function GenerateRoleNameList($role_count_list, $css = false){
     $main_type = '系';
     $main_role_list = array();
     foreach ($role_count_list as $key => $value) {
-      if (array_key_exists($key, $ROLE_DATA->main_role_list)) {
-	$main_role_list[$ROLE_DATA->DistinguishRoleGroup($key)] += $value;
+      if (array_key_exists($key, RoleData::$main_role_list)) {
+	$main_role_list[RoleData::DistinguishRoleGroup($key)] += $value;
       }
     }
     break;
@@ -310,8 +306,8 @@ function GenerateRoleNameList($role_count_list, $css = false){
     $sub_type = '系';
     $sub_role_list = array();
     foreach ($role_count_list as $key => $value) {
-      if (! array_key_exists($key, $ROLE_DATA->sub_role_list)) continue;
-      foreach ($ROLE_DATA->sub_role_group_list as $list) {
+      if (! array_key_exists($key, RoleData::$sub_role_list)) continue;
+      foreach (RoleData::$sub_role_group_list as $list) {
 	if (in_array($key, $list)) $sub_role_list[$list[0]] += $value;
       }
     }
@@ -323,15 +319,15 @@ function GenerateRoleNameList($role_count_list, $css = false){
   }
 
   $stack = array();
-  foreach ($ROLE_DATA->main_role_list as $key => $value) {
+  foreach (RoleData::$main_role_list as $key => $value) {
     $count = isset($main_role_list[$key]) ? $main_role_list[$key] : 0;
     if ($count > 0) {
-      if ($css) $value = $ROLE_DATA->GenerateMainRoleTag($key);
+      if ($css) $value = RoleData::GenerateMainRoleTag($key);
       $stack[] = $value . $main_type . $count;
     }
   }
 
-  foreach ($ROLE_DATA->sub_role_list as $key => $value) {
+  foreach (RoleData::$sub_role_list as $key => $value) {
     $count = isset($sub_role_list[$key]) ? $sub_role_list[$key] : 0;
     if ($count > 0) $stack[] = '(' . $value . $sub_type . $count . ')';
   }
@@ -340,7 +336,7 @@ function GenerateRoleNameList($role_count_list, $css = false){
 
 //ゲーム開始投票集計処理
 function AggregateVoteGameStart($force_start = false){
-  global $ROLE_DATA, $ROLES;
+  global $ROLES;
 
   $user_count = DB::$USER->GetUserCount(); //ユーザ総数を取得
   if (DB::$ROOM->test_mode) {
@@ -438,7 +434,7 @@ function AggregateVoteGameStart($force_start = false){
 	if ($wish_group){ //特殊村はグループ単位で希望処理を行なう
 	  $stack = array();
 	  foreach ($role_list as $stack_role){
-	    if ($role == $ROLE_DATA->DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
+	    if ($role == RoleData::DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
 	  }
 	  $fit_role = GetRandom($stack);
 	}
@@ -543,7 +539,7 @@ function AggregateVoteGameStart($force_start = false){
       $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_hard_list;
     }
     else {
-      $sub_role_keys = array_keys($ROLE_DATA->sub_role_list);
+      $sub_role_keys = array_keys(RoleData::$sub_role_list);
     }
     //PrintData($filter->stack->delete, 'DeleteRoleList');
 

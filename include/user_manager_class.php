@@ -197,8 +197,6 @@ EOF;
 
   //ユーザ登録画面表示
   static function Output(){
-    global $ROLE_DATA;
-
     extract(RQ::ToArray()); //引数を展開
     if ($user_no > 0) { //登録情報変更モード
       $query = 'SELECT * FROM user_entry WHERE room_no = %d AND user_no = %d';
@@ -375,7 +373,7 @@ EOF;
       foreach ($wish_role_list as $role) {
 	if ($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
 	$count++;
-	$alt = '←' . ($role == 'none' ? '無し' : $ROLE_DATA->main_role_list[$role]);
+	$alt = '←' . ($role == 'none' ? '無し' : RoleData::$main_role_list[$role]);
 	$checked = RQ::$get->role == $role ? ' checked' : '';
 	echo <<<EOF
 <td><label for="{$role}"><input type="radio" id="{$role}" name="role" value="{$role}"{$checked}><img src="{$path}/role_{$role}.gif" alt="{$alt}"></label></td>

@@ -434,16 +434,10 @@ class User{
   }
 
   //所属陣営判別 (ラッパー)
-  function DistinguishCamp(){
-    global $ROLE_DATA;
-    return $ROLE_DATA->DistinguishCamp($this->main_role);
-  }
+  function DistinguishCamp(){ return RoleData::DistinguishCamp($this->main_role); }
 
   //所属役職グループ陣営判別 (ラッパー)
-  function DistinguishRoleGroup(){
-    global $ROLE_DATA;
-    return $ROLE_DATA->DistinguishRoleGroup($this->main_role);
-  }
+  function DistinguishRoleGroup(){ return RoleData::DistinguishRoleGroup($this->main_role); }
 
   //精神鑑定
   function DistinguishLiar(){
@@ -546,16 +540,15 @@ class User{
 
   //役職情報から表示情報を作成する
   function GenerateRoleName($main_only = false){
-    global $ROLE_DATA;
-
-    $str = $ROLE_DATA->GenerateRoleTag($this->main_role); //メイン役職
+    $str = RoleData::GenerateRoleTag($this->main_role); //メイン役職
     if ($main_only) return $str;
+
     if (($role_count = count($this->role_list)) < 2) return $str; //サブ役職
     $count = 1;
-    foreach ($ROLE_DATA->sub_role_group_list as $class => $role_list){
-      foreach ($role_list as $sub_role){
+    foreach (RoleData::$sub_role_group_list as $class => $role_list){
+      foreach ($role_list as $sub_role) {
 	if (! $this->IsRole($sub_role)) continue;
-	switch($sub_role){
+	switch ($sub_role) {
 	case 'joker':
 	  $css = $this->IsJoker() ? $class : 'chiroptera';
 	  break;
@@ -568,7 +561,7 @@ class User{
 	  $css = $class;
 	  break;
 	}
-	$str .= $ROLE_DATA->GenerateRoleTag($sub_role, $css, true);
+	$str .= RoleData::GenerateRoleTag($sub_role, $css, true);
 	if (++$count >= $role_count) break 2;
       }
     }
@@ -577,9 +570,8 @@ class User{
 
   //役職をパースして省略名を返す
   function GenerateShortRoleName($heaven = false, $main_only = false){
-    global $ROLE_DATA;
-
     if (empty($this->main_role)) return;
+
     if (isset($this->role_id)) { //キャッシュ判定
       if ($main_only && isset(DB::$USER->short_role_main[$this->role_id])) {
 	return DB::$USER->short_role_main[$this->role_id];
@@ -591,7 +583,7 @@ class User{
 
     //メイン役職を取得
     $camp = $this->GetCamp();
-    $name = $ROLE_DATA->short_role_list[$this->main_role];
+    $name = RoleData::$short_role_list[$this->main_role];
     $str  = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
     if ($main_only) {
@@ -602,9 +594,9 @@ class User{
 
     //サブ役職を追加
     $sub_role_list = array_slice($this->role_list, 1);
-    $stack = array_intersect(array_keys($ROLE_DATA->short_role_list), $sub_role_list);
+    $stack = array_intersect(array_keys(RoleData::$short_role_list), $sub_role_list);
     foreach ($stack as $role) {
-      $name = $ROLE_DATA->short_role_list[$role];
+      $name = RoleData::$short_role_list[$role];
       switch ($role) {
       case 'lovers':
       case 'possessed_exchange':
@@ -1077,7 +1069,7 @@ EOF;
 
   //特殊イベント情報を設定する
   function SetEvent($force = false){
-    global $ROLE_DATA, $ROLES;
+    global $ROLES;
 
     if (DB::$ROOM->id < 1 || ! is_array($event_rows = DB::$ROOM->GetEvent($force))) return;
     //PrintData($event_rows, 'Event[row]');
@@ -1085,7 +1077,7 @@ EOF;
       switch ($event['type']) {
       case 'WEATHER':
 	DB::$ROOM->event->weather = (int)$event['message']; //天候データを格納
-	DB::$ROOM->event->{$ROLE_DATA->weather_list[DB::$ROOM->event->weather]['event']} = true;
+	DB::$ROOM->event->{RoleData::$weather_list[DB::$ROOM->event->weather]['event']} = true;
 	break;
 
       case 'EVENT':

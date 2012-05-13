@@ -3,17 +3,17 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT  . '/include/init.php');
 if (Security::CheckValue($_FILES)) die;
 
-$INIT_CONF->LoadClass('SRC_UP_CONF');
+$INIT_CONF->LoadFile('src_upload_config');
 $INIT_CONF->LoadRequest('RequestSrcUpload'); //引数をセット
 
-if ($SRC_UP_CONF->disable){
+if (SrcUploadConfig::DISABLE){
   HTML::OutputResult('ファイルアップロード', '現在アップロードは停止しています');
 }
 
 //引数のエラーチェック
 foreach (RQ::$get as $key => $value) {
-  $label = $SRC_UP_CONF->form_list[$key]['label'];
-  $size  = $SRC_UP_CONF->form_list[$key]['size'];
+  $label = SrcUploadConfig::$form_list[$key]['label'];
+  $size  = SrcUploadConfig::$form_list[$key]['size'];
 
   //未入力チェック
   if ($value == '') OutputUploadResult('<span>' . $label . '</span> が未入力です。');
@@ -26,7 +26,7 @@ foreach (RQ::$get as $key => $value) {
 }
 
 //パスワードのチェック
-if (RQ::$get->password != $SRC_UP_CONF->password) OutputUploadResult('パスワード認証エラー。');
+if (RQ::$get->password != SrcUploadConfig::PASSWORD) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
 //PrintData($_FILES['file']);
@@ -41,8 +41,8 @@ if (! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i',
 
 //ファイルサイズのチェック
 $file_size = $_FILES['file']['size'];
-if ($file_size == 0 || $file_size > $SRC_UP_CONF->max_size){
-  OutputUploadResult('ファイルサイズは <span>' . $SRC_UP_CONF->max_size . 'byte</span> まで。');
+if ($file_size == 0 || $file_size > SrcUploadConfig::MAX_SIZE){
+  OutputUploadResult('ファイルサイズは <span>' . SrcUploadConfig::MAX_SIZE . 'byte</span> まで。');
 }
 
 //ファイル番号の取得

@@ -17,11 +17,9 @@ function OutputMaxUser(){
 
 //身代わり君がなれない役職のリスト出力
 function OutputDisableDummyBoyRole(){
-  global $ROLE_DATA;
-
   $stack = array('人狼', '妖狐');
   foreach (CastConfig::$disable_dummy_boy_role_list as $role) {
-    $stack[] = $ROLE_DATA->main_role_list[$role];
+    $stack[] = RoleData::$main_role_list[$role];
   }
   echo implode($stack, '・');
 }

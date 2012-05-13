@@ -1,8 +1,6 @@
 <?php
 //発言置換処理
 function ConvertSay(&$say){
-  global $ROLES;
-
   if ($say == '') return null; //リロード時なら処理スキップ
   //文字数・行数チェック
   if (strlen($say) > GameConfig::$say_limit ||
@@ -66,7 +64,7 @@ function Write($say, $scene, $location = null, $spend_time = 0, $update = false)
 
 //能力の種類とその説明を出力
 function OutputAbility(){
-  global $ROLE_DATA, $ROLES;
+  global $ROLES;
 
   if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
@@ -95,7 +93,7 @@ function OutputAbility(){
     $stack = array_merge($stack, $ROLES->{'display_' . $name . '_list'});
   }
   //PrintData($stack);
-  $display_list = array_diff(array_keys($ROLE_DATA->sub_role_list), $stack);
+  $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);
   $target_list  = array_intersect($display_list, array_slice($ROLES->actor->role_list, 1));
   //PrintData($target_list);
   foreach ($target_list as $role) Image::Role()->Output($role);

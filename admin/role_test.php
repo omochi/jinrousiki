@@ -2,8 +2,9 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_OPT_CONF', 'ROOM_OPT', 'ROLE_DATA');
-$INIT_CONF->LoadFile('room_config', 'chaos_config', 'game_option_message', 'game_vote_functions');
+$INIT_CONF->LoadClass('GAME_OPT_CONF', 'ROOM_OPT');
+$INIT_CONF->LoadFile('room_config', 'chaos_config', 'game_option_message', 'role_data_class',
+		     'game_vote_functions');
 
 HTML::OutputHeader('配役テストツール', 'role_table', true);
 OutputRoleTestForm();

@@ -27,12 +27,11 @@ class InitializeConfig {
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
     'GAME_OPT_CONF'        => 'game_option_config',
-    'SRC_UP_CONF'          => 'src_upload_config',
     'ROOM_OPT'             => array('room_config', 'time_config', 'option/room_option_class',
 				    'option/room_option_item_class'),
     'ROLES'                => 'role_class',
     'TIME_CALC'            => array('time_config', 'room_config', 'game_config', 'cast_config',
-				    'image_class', 'info_functions'),
+				    'role_data_class', 'image_class', 'info_functions'),
     'TWITTER'              => array('twitter_config', 'twitter'),
     'PAPARAZZI'            => 'paparazzi_class',
     'server_config'        => array('system_class', 'functions'), //常時ロードされる
@@ -42,7 +41,7 @@ class InitializeConfig {
     'database_class'       => 'database_config',
     'system_class'         => 'room_class', //常時ロードされる
     'room_class'           => 'option_class',
-    'user_class'           => array('game_config', 'message', 'game_functions'),
+    'user_class'           => array('game_config', 'message', 'role_data_class', 'game_functions'),
     'talk_class'           => 'user_class',
     'role_class'           => 'game_format',
     'icon_class'           => 'icon_config',
@@ -70,8 +69,6 @@ class InitializeConfig {
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   public $depend_class = array(
     'ROOM_OPT'            => 'GAME_OPT_CONF',
-    'TIME_CALC'           => 'ROLE_DATA',
-    'user_class'          => 'ROLE_DATA',
     'game_view_class'     => 'ROLES',
     'game_log_class'      => 'ROLES',
     'oldlog_functions'    => 'ROOM_OPT',
@@ -80,11 +77,9 @@ class InitializeConfig {
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
     'GAME_OPT_CONF' => 'GameOptionConfig',
-    'SRC_UP_CONF'   => 'SourceUploadConfig',
     'TWITTER'       => 'TwitterConfig',
     'ROOM_OPT'      => 'RoomOption',
     'COOKIE'        => 'CookieDataSet',
-    'ROLE_DATA'     => 'RoleData',
     'ROLES'         => 'RoleManager',
     'TIME_CALC'     => 'TimeCalculation',
     'PAPARAZZI'     => 'Paparazzi'
@@ -176,6 +171,7 @@ class InitializeConfig {
 
     case 'option_class':
     case 'role_class':
+    case 'role_data_class':
     case 'chatengine':
     case 'feedengine':
     case 'paparazzi':

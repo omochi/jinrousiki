@@ -494,11 +494,11 @@ if ($talk_view_mode) { //発言表示モード
 HTML::OutputBodyHeader();
 $role_view_mode = false;
 if ($role_view_mode) { //画像表示モード
-  foreach (array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output($role);
-  #foreach (array_keys($ROLE_DATA->sub_role_list)  as $role) $ROLE_IMG->Output($role);
-  #foreach (array_keys($ROLE_DATA->main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
+  foreach (array_keys(RoleData::$main_role_list) as $role) $ROLE_IMG->Output($role);
+  #foreach (array_keys(RoleData::$sub_role_list)  as $role) $ROLE_IMG->Output($role);
+  #foreach (array_keys(RoleData::$main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
   $header = 'prediction_weather_';
-  #foreach ($ROLE_DATA->weather_list as $stack) $ROLE_IMG->Output($header.$stack['event']);
+  #foreach (RoleData::$weather_list as $stack) $ROLE_IMG->Output($header.$stack['event']);
   HTML::OutputFooter(true);
 }
 $cast_view_mode = false;
@@ -509,9 +509,9 @@ if ($cast_view_mode) { //配役情報表示モード
   //PrintData(ChaosConfig::$role_group_rate_list);
   echo '<table border="1" cellspacing="0">'."\n".'<tr><th>人口</th>';
   foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
-    $role  = $ROLE_DATA->DistinguishRoleGroup($group);
-    $class = $ROLE_DATA->DistinguishRoleClass($role);
-    echo '<th class="' . $class . '">' . $ROLE_DATA->short_role_list[$role] . '</th>';
+    $role  = RoleData::DistinguishRoleGroup($group);
+    $class = RoleData::DistinguishRoleClass($role);
+    echo '<th class="' . $class . '">' . RoleData::$short_role_list[$role] . '</th>';
   }
   echo '</tr>'."\n";
   for($i = 8; $i <= 32; $i++) {
