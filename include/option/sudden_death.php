@@ -8,12 +8,11 @@ class Option_sudden_death extends CheckRoomOptionItem {
 
   function __construct(){ parent::__construct(RoomOption::ROLE_OPTION); }
 
-  function  LoadMessages() {
-    $this->caption = '虚弱体質村';
-    $this->explain = '全員に投票でショック死するサブ役職のどれかがつきます';
-  }
+  function GetCaption() { return '虚弱体質村'; }
 
-  function Cast(&$list, &$rand){
+  function GetExplain() { return '全員に投票でショック死するサブ役職のどれかがつきます'; }
+
+  function Cast(&$list, &$rand) {
     $stack = array_diff(RoleData::$sub_role_group_list['sudden-death'], $this->disable_list);
     $role_list = $stack;
     //PrintData($stack, 'SuddenDeath');

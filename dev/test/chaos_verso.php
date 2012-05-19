@@ -2,7 +2,8 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('room_config', 'chaos_config', 'role_data_class', 'game_vote_functions');
+$INIT_CONF->LoadFile('room_config', 'chaos_config', 'role_data_class', 'cast_class',
+		     'game_vote_functions');
 
 HTML::OutputHeader('裏・闇鍋モード配役テストツール', 'role_table', true);
 OutputRoleTestForm();
@@ -26,7 +27,7 @@ if (@$_POST['command'] == 'role_test') {
   $str = '%0' . strlen($try_count) . 'd回目: ';
   for ($i = 1; $i <= $try_count; $i++) {
     printf($str, $i);
-    $role_list = GetRoleList($user_count);
+    $role_list = Cast::GetRoleList($user_count);
     if ($role_list == '') break;
     PrintData(GenerateRoleNameList(array_count_values($role_list), true));
   }

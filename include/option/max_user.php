@@ -8,8 +8,7 @@ class Option_max_user extends SelectorRoomOptionItem {
     $this->value = RoomConfig::$default_max_user;
   }
 
-  function LoadMessages() {
-    $this->caption = '最大人数';
-    $this->explain = '配役は<a href="info/rule.php">ルール</a>を確認して下さい';
-  }
+  function GetCaption() { return '最大人数'; }
+
+  function GetExplain() { return '配役は<a href="info/rule.php">ルール</a>を確認して下さい'; }
 }

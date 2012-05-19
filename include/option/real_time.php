@@ -6,15 +6,16 @@
  * @author enogu
  */
 class Option_real_time extends RoomOptionItem {
-  function __construct() {
-    parent::__construct(RoomOption::GAME_OPTION);
-  }
+  function __construct() { parent::__construct(RoomOption::GAME_OPTION); }
 
-  function LoadMessages() {
+  function GetCaption(){ return 'リアルタイム制'; }
+
+  function GetExplain(){ return '制限時間が実時間で消費されます'; }
+
+  function LoadMessages(){
+    parent::LoadMessages();
     $this->defaultDayTime   = TimeConfig::$default_day;
     $this->defaultNightTime = TimeConfig::$default_night;
-    $this->caption = 'リアルタイム制';
-    $this->explain = '制限時間が実時間で消費されます';
   }
 
   function CollectPostParam(RoomOption $option) {

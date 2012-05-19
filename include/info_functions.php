@@ -91,6 +91,13 @@ function OutputCastTable($min = 0, $max = null){
   echo '</table>';
 }
 
+//カテゴリ別ページ内リンク出力
+function OutputCategoryLink($list) {
+  foreach ($list as $name) {
+    printf("<a href=\"#%s\">%s</a>\n", $name, OptionManager::GenerateCaption($name));
+  }
+}
+
 //他のサーバの部屋画面ロード用データを出力
 function OutputSharedRoomList(){
   if (SharedServerConfig::DISABLE) return false;

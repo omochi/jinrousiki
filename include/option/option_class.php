@@ -70,54 +70,74 @@ class OptionParser {
   function Exists($name){ return array_key_exists($name, $this->options); }
 }
 
-//オプションマネージャ
-class OptionManager{
-  public $path;
-  public $stack;
-  public $loaded;
+//-- オプションマネージャ --//
+class OptionManager {
+  public  static $stack;
+  private static $file  = array();
+  private static $class = array();
 
   //特殊普通村編成リスト
-  public $role_list = array(
+  private static $role_list = array(
     'detective', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
     'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania');
 
   //特殊サブ配役リスト
-  public $cast_list = array(
+  private static $cast_list = array(
     'decide', 'authority', 'joker', 'deep_sleep', 'blinder', 'mind_open',
     'perverseness', 'liar', 'gentleman', 'critical', 'sudden_death', 'quiz');
 
-  function __construct(){
-    $this->path = JINRO_INC . '/option';
-    $this->stack  = new StdClass();
-    $this->loaded = array();
-  }
-
-  protected function Load($name){
-    if (is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
-    if (in_array($name, $this->loaded)) return true;
+  //個別クラスファイルロード
+  static function Load($name) {
+    if (is_null($name) || ! file_exists($file = self::GetPath($name))) return false;
+    if (in_array($name, self::$file)) return true;
     require_once($file);
-    $this->loaded[] = $name;
+    self::$file[] = $name;
     return true;
   }
 
-  function SetRole(&$list, $count){
-    foreach ($this->role_list as $option) {
-      if (! DB::$ROOM->IsOption($option) || ! $this->Load($option)) continue;
-      $class  = 'Option_' . $option;
-      $filter = new $class();
-      $filter->SetRole($list, $count);
+  //特殊普通村の配役処理
+  static function SetRole(&$list, $count) {
+    foreach (self::$role_list as $option) {
+      if (DB::$ROOM->IsOption($option) && self::Load($option)) {
+	self::LoadClass($option)->SetRole($list, $count);
+      }
     }
   }
 
-  function Cast(&$list, &$rand){
-    $delete = $this->stack->delete;
-    foreach ($this->cast_list as $option) {
-      if (! DB::$ROOM->IsOption($option) || ! $this->Load($option)) continue;
-      $class  = 'Option_' . $option;
-      $filter = new $class();
-      $stack  = $filter->Cast($list, $rand);
-      if (is_array($stack)) $delete = array_merge($delete, $stack);
+  //ユーザ配役処理
+  function Cast(&$list, &$rand) {
+    $delete = self::$stack;
+    foreach (self::$cast_list as $option) {
+      if (DB::$ROOM->IsOption($option) && self::Load($option)) {
+	$stack = self::LoadClass($option)->Cast($list, $rand);
+	if (is_array($stack)) $delete = array_merge($delete, $stack);
+      }
     }
-    $this->stack->delete = $delete;
+    self::$stack = $delete;
+  }
+
+  //オプション名生成
+  static function GenerateCaption($name) {
+    return self::Load($name) ? self::LoadClass($name)->GetName() : '';
+  }
+
+  //オプション名出力
+  static function OutputCaption($name) { echo self::GenerateCaption($name); }
+
+  //オプション説明出力
+  static function OutputExplain($name) {
+    echo self::Load($name) ? self::LoadClass($name)->GetExplain() : '';
+  }
+
+  //個別クラスファイルパス取得
+  private function GetPath($name) { return sprintf('%s/option/%s.php', JINRO_INC, $name); }
+
+  //個別クラスロード
+  private function LoadClass($name) {
+    if (! isset(self::$class[$name])) {
+      $class = 'Option_' . $name;
+      self::$class[$name] = new $class();
+    }
+    return self::$class[$name];
   }
 }

@@ -1,7 +1,6 @@
 <?php
 class RoomOption extends OptionParser {
   static function ShowBuildRoomForm() {
-    global $GAME_OPT_CONF;
     require_once(dirname(__FILE__).'/option_form_class.php');
 
     $builder = new OptionForm();
@@ -112,7 +111,7 @@ class RoomOption extends OptionParser {
   //これらのプロパティは設定されたオプションのゲーム用/役職用の分割に使用されている。詳しくはGetOptionStringメソッドを見よ。
   //異なるパラメータで同じクラスのグローバル変数を複数生成できるようになった場合、またはroomテーブルのオプション属性が統合された場合、
   //これらのプロパティを使用する必要はなくなると思われる。(2012-01-15 enogu)
-  const NOT_OPTION = '';
+  const NOT_OPTION  = '';
   const GAME_OPTION = 'game_option';
   const ROLE_OPTION = 'role_option';
   public $groups = array();
@@ -136,6 +135,7 @@ class RoomOption extends OptionParser {
   }
 
   static function Get($item) {
+
     if (!isset(self::$definitions[$item])) {
       $file = dirname(__FILE__)."/{$item}.php";
       if (file_exists($file)) {
@@ -213,10 +213,7 @@ class RoomOption extends OptionParser {
   }
 
   function GetCaption($name) {
-    if (is_object($object = self::Get($name))) {
-      return $object->caption;
-    }
-    return false;
+    return is_object($object = self::Get($name)) ? $object->GetCaption() : false;
   }
 
   function GetMessage($name) {

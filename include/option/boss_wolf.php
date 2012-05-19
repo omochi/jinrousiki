@@ -5,14 +5,15 @@
   ・配役：人狼 → 白狼
 */
 class Option_boss_wolf extends CheckRoomOptionItem {
-  function __construct(){ parent::__construct(RoomOption::ROLE_OPTION); }
+  function __construct() { parent::__construct(RoomOption::ROLE_OPTION); }
 
-  function  LoadMessages() {
-    $this->caption = '白狼登場';
-    $this->explain = '占い結果が「村人」・霊能結果が「白狼」と表示される狼です [人狼1→白狼1]';
+  function GetCaption() { return '白狼登場'; }
+
+  function GetExplain() {
+    return '占い結果が「村人」・霊能結果が「白狼」と表示される狼です [人狼1→白狼1]';
   }
 
-  function SetRole(&$list, $count){
+  function SetRole(&$list, $count) {
     if ($count >= CastConfig::${$this->name} && $list['wolf'] > 0) {
       $list['wolf']--;
       $list[$this->name]++;

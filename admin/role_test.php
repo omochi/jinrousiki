@@ -2,9 +2,9 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('GAME_OPT_CONF', 'ROOM_OPT');
-$INIT_CONF->LoadFile('room_config', 'chaos_config', 'game_option_message', 'role_data_class',
-		     'game_vote_functions');
+$INIT_CONF->LoadClass('ROOM_OPT');
+$INIT_CONF->LoadFile('room_config', 'game_option_config', 'chaos_config', 'role_data_class',
+		     'cast_class', 'game_vote_functions');
 
 HTML::OutputHeader('配役テストツール', 'role_table', true);
 OutputRoleTestForm();
@@ -43,7 +43,7 @@ if (@$_POST['command'] == 'role_test') {
   //置換系
   foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
     if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
-    if (array_search(@$_POST[$option], $GAME_OPT_CONF->{$option.'_items'}) !== false) {
+    if (array_search(@$_POST[$option], GameOptionConfig::${$option.'_items'}) !== false) {
       $stack->option_role[] = $_POST[$option];
     }
   }
@@ -51,7 +51,7 @@ if (@$_POST['command'] == 'role_test') {
   //闇鍋用オプション
   foreach (array('topping', 'boost_rate') as $option) {
     if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
-    if (array_key_exists($_POST[$option], $GAME_OPT_CONF->{$option.'_items'})) {
+    if (array_key_exists($_POST[$option], GameOptionConfig::${$option.'_items'})) {
       $stack->option_role[] = $option . ':' . $_POST[$option];
     }
   }
@@ -79,7 +79,7 @@ if (@$_POST['command'] == 'role_test') {
   $str = '%0' . strlen($try_count) . 'd回目: ';
   for ($i = 1; $i <= $try_count; $i++) {
     printf($str, $i);
-    $role_list = GetRoleList($user_count);
+    $role_list = Cast::GetRoleList($user_count);
     if ($role_list == '') break;
     PrintData(GenerateRoleNameList(array_count_values($role_list), true));
   }
@@ -88,8 +88,6 @@ if (@$_POST['command'] == 'role_test') {
 HTML::OutputFooter(true);
 
 function OutputRoleTestForm(){
-  global $GAME_OPT_CONF;
-
   foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
     $$key = isset($_POST[$key]) && $_POST[$key] > 0 ? $_POST[$key] : $value;
   }
@@ -124,11 +122,11 @@ EOF;
 
   foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
     $count = 0;
-    foreach ($GAME_OPT_CONF->{$option.'_items'} as $key => $mode) {
+    foreach (GameOptionConfig::${$option.'_items'} as $key => $mode) {
       if (++$count % 10 == 0) echo "<br>\n";
       if (is_int($key)) {
 	$checked = '';
-	$name    = GameOptionMessage::$$mode;
+	$name    = OptionManager::GenerateCaption($mode);
 	$value   = $mode;
       }
       else {
@@ -147,7 +145,7 @@ EOF;
 
   foreach (array('topping', 'boost_rate') as $option) {
     $count = 0;
-    foreach ($GAME_OPT_CONF->{$option.'_items'} as $key => $mode) {
+    foreach (GameOptionConfig::${$option.'_items'} as $key => $mode) {
       if (++$count % 10 == 0) echo "<br>\n";
       $checked = $key == '' ? ' checked' : '';
       $label = $option . '_' . $key;

@@ -54,7 +54,7 @@ EOF;
   //外部村リンク生成
   function GenerateSharedServerRoom($name, $url, $data){
     $format = 'ゲーム一覧 (<a href="%s">%s</a>)';
-    return $this->Generate(sprintf($format, $url, $name), $data);
+    return self::Generate(sprintf($format, $url, $name), $data);
   }
 }
 
@@ -139,108 +139,5 @@ class Lottery {
       if (isset($list[$role])) $list[$role] = round($list[$role] * $rate);
     }
     return $list;
-  }
-}
-
-//-- 配役基礎クラス --//
-class Cast {
-  //身代わり君の配役対象外役職リスト取得
-  static function GetDummyBoyRoleList(){
-    $stack = CastConfig::$disable_dummy_boy_role_list; //サーバ個別設定を取得
-    array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
-
-    //探偵村対応
-    $role = 'detective_common';
-    if (DB::$ROOM->IsOption('detective') && ! in_array($role, $stack)) $stack[] = $role;
-    return $stack;
-  }
-
-  //村人置換村の処理
-  static function ReplaceRole(&$role_list){
-    $stack = array();
-    foreach (array_keys(DB::$ROOM->option_role->options) as $option) { //処理順にオプションを登録
-      if ($option == 'replace_human' || strpos($option, 'full_') === 0) {
-	$stack[0][] = $option;
-      }
-      elseif (strpos($option, 'change_') === 0) {
-	$stack[1][] = $option;
-      }
-    }
-    //PrintData($stack);
-
-    foreach ($stack as $order => $option_list) {
-      foreach ($option_list as $option) {
-	if (array_key_exists($option, CastConfig::$replace_role_list)) { //管理者設定
-	  $target = CastConfig::$replace_role_list[$option];
-	  $role   = array_pop(explode('_', $option));
-	}
-	elseif ($order == 0) { //村人置換
-	  $target = array_pop(explode('_', $option, 2));
-	  $role   = 'human';
-	}
-	else { //共有者・狂人・キューピッド置換
-	  $target = array_pop(explode('_', $option, 2));
-	  $role   = $target == 'angel' ? 'cupid' : array_pop(explode('_', $target));
-	}
-
-	$count = isset($role_list[$role]) ? $role_list[$role] : 0;
-	if ($role == 'human' && DB::$ROOM->IsOption('gerd')) $count--; //ゲルト君モード
-	if ($count > 0) { //置換処理
-	  isset($role_list[$target]) ? $role_list[$target] += $count : $role_list[$target] = $count;
-	  $role_list[$role] -= $count;
-	}
-      }
-    }
-  }
-
-  //決闘村の配役処理
-  static function SetDuel($user_count){
-    $role_list = array(); //初期化処理
-
-    CastConfig::InitializeDuel($user_count);
-    if (array_sum(CastConfig::$duel_fix_list) <= $user_count) {
-      foreach (CastConfig::$duel_fix_list as $role => $count) $role_list[$role] = $count;
-    }
-    $rest_user_count = $user_count - array_sum($role_list);
-    asort(CastConfig::$duel_rate_list);
-    $total_rate = array_sum(CastConfig::$duel_rate_list);
-    $max_rate_role = array_pop(array_keys(CastConfig::$duel_rate_list));
-    foreach (CastConfig::$duel_rate_list as $role => $rate) {
-      if ($role == $max_rate_role) continue;
-      $role_list[$role] = round($rest_user_count / $total_rate * $rate);
-    }
-    $role_list[$max_rate_role] = $user_count - array_sum($role_list);
-
-    CastConfig::FinalizeDuel($user_count, $role_list);
-    return $role_list;
-  }
-
-  //クイズ村の配役処理
-  static function SetQuiz($user_count){
-    $stack = self::FilterRole($user_count, array('common', 'wolf', 'mad', 'fox'));
-    $stack['human']--;
-    $stack['quiz'] = 1;
-    return $stack;
-  }
-
-  //グレラン村の配役処理
-  static function SetGrayRandom($user_count){
-    return self::FilterRole($user_count, array('wolf', 'mad', 'fox'));
-  }
-
-  //配役フィルタリング処理
-  private function FilterRole($user_count, $filter) {
-    $stack = array();
-    foreach (CastConfig::$role_list[$user_count] as $key => $value) {
-      $role = 'human';
-      foreach ($filter as $set_role) {
-	if (strpos($key, $set_role) !== false) {
-	  $role = $set_role;
-	  break;
-	}
-      }
-      isset($stack[$role]) ? $stack[$role] += $value : $stack[$role] = $value;
-    }
-    return $stack;
   }
 }

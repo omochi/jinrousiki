@@ -1,7 +1,8 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('icon_class', 'session_class', 'user_class', 'game_vote_functions');
-$INIT_CONF->LoadClass('ROLES', 'ROOM_OPT', 'GAME_OPT_CONF');
+$INIT_CONF->LoadFile('game_option_config', 'icon_class', 'session_class', 'user_class',
+		     'game_vote_functions');
+$INIT_CONF->LoadClass('ROLES', 'ROOM_OPT');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote', true);
@@ -23,7 +24,7 @@ if (RQ::$get->vote) { //投票処理
   if (DB::$ROOM->IsBeforeGame()) { //ゲーム開始 or Kick 投票処理
     switch (RQ::$get->situation) {
     case 'GAMESTART':
-      $INIT_CONF->LoadFile('chaos_config'); //配役情報をロード
+      $INIT_CONF->LoadFile('chaos_config', 'cast_class'); //配役情報をロード
       VoteGameStart();
       break;
 

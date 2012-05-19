@@ -13,7 +13,7 @@ if (@$_POST['command'] == 'CREATE_ROOM') {
   CreateRoom();
 }
 else {
-  $INIT_CONF->LoadFile('time_config', 'chaos_config', 'game_option_message');
+  $INIT_CONF->LoadFile('time_config', 'chaos_config');
   OutputRoomList();
 }
 DB::Disconnect();
@@ -48,7 +48,7 @@ EOF;
 
 //村(room)の作成
 function CreateRoom(){
-  global $TWITTER, $ROOM_OPT, $GAME_OPT_CONF;
+  global $TWITTER, $ROOM_OPT;
 
   if (ServerConfig::$disable_establish) {
     HTML::OutputResult('村作成 [制限事項]', '村作成はできません');

@@ -116,7 +116,7 @@ EOF;
       if (DB::$ROOM->IsPlaying() && ! DB::$ROOM->IsRealTime()) { //会話で時間経過制
 	$INIT_CONF->LoadFile('time_config');
       }
-      $INIT_CONF->LoadFile('room_config', 'cast_config', 'game_option_message', 'image_class');
+      $INIT_CONF->LoadFile('room_config', 'cast_config', 'image_class');
       $INIT_CONF->LoadClass('ROOM_OPT');
     }
 

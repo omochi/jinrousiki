@@ -1,7 +1,8 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('message', 'game_option_message', 'image_class', 'user_icon_class',
+$INIT_CONF->LoadFile('message', 'game_option_config', 'image_class', 'user_icon_class',
+		     'option/room_option_class', 'option/room_option_item_class', 'option_class',
 		     'info_functions');
 $INIT_CONF->LoadClass('TIME_CALC');
 
@@ -165,7 +166,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_night_talk">夜の独り言</h3>
 <div>
 人狼、共有者以外は夜中会話することは出来ませんが、発言すると独り言となり、本人と死亡者(天国モード)からは見ることができます。<br>
-ただし、「<a href="game_option.php#not_open_cast"><?php echo GameOptionMessage::$not_open_cast ?></a>」オプションが設定されている場合は見えません。<br>
+ただし、「<a href="game_option.php#not_open_cast"><?php OptionManager::OutputCaption('not_open_cast'); ?></a>」オプションが設定されている場合は見えません。<br>
 暇つぶしにでも使ってください。
 </div>
 

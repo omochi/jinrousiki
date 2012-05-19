@@ -15,14 +15,13 @@ abstract class RoomOptionItem {
   */
 
   function  __construct($group) {
-    global $GAME_OPT_CONF;
     $this->name = array_pop(explode('Option_', get_class($this)));
     RoomOption::SetGroup($group, $this);
-    $enable = "{$this->name}_enable";
-    $this->enabled = isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true;
-    $default = "default_{$this->name}";
-    if (isset($GAME_OPT_CONF->$default)) {
-      $this->value = $GAME_OPT_CONF->$default;
+    $enable = sprintf('%s_enable', $this->name);
+    $this->enabled = isset(GameOptionConfig::$$enable) ? GameOptionConfig::$$enable : true;
+    $default = sprintf('default_%s', $this->name);
+    if (isset(GameOptionConfig::$$default)) {
+      $this->value = GameOptionConfig::$$default;
     }
     $this->formname = $this->name;
     $this->formvalue = $this->value;
@@ -38,15 +37,24 @@ abstract class RoomOptionItem {
     }
   }
 
-  abstract function LoadMessages();
+  function GetName() { return $this->GetCaption(); }
 
-  function CastOnce(&$list, &$rand, $str = ''){
+  abstract function GetCaption();
+
+  function GetExplain() { return $this->GetCaption(); }
+
+  function LoadMessages() {
+    $this->caption = $this->GetCaption();
+    $this->explain = $this->GetExplain();
+  }
+
+  function CastOnce(&$list, &$rand, $str = '') {
     $list[array_pop($rand)] .= ' ' . $this->name . $str;
     return array($this->name);
   }
 
-  function CastAll(&$list){
-    foreach(array_keys($list) as $id) $list[$id] .= ' ' . $this->name;
+  function CastAll(&$list) {
+    foreach (array_keys($list) as $id) $list[$id] .= ' ' . $this->name;
     return array($this->name);
   }
 }
@@ -86,7 +94,7 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   public $label;
   public $items;
   public $items_source;
-  public $conf_name = 'GAME_OPT_CONF';
+  public $conf_name;
 
   function  __construct($group) {
     parent::__construct($group);
@@ -110,14 +118,8 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   function GetItems() {
     if (!isset($this->items)) {
       $this->items = array();
-      if (is_array($this->conf_name)) {
-	$stack = $this->conf_name;
-      }
-      else {
-	$CONF = &$GLOBALS[$this->conf_name];
-	$list = $this->items_source;
-	$stack = $CONF->$list;
-      }
+      $stack = is_array($this->conf_name) ? $this->conf_name :
+	GameOptionConfig::${$this->items_source};
       if (isset($stack)) {
 	foreach ($stack as $key => $value) {
 	  if (is_string($key)) {
@@ -141,9 +143,8 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   }
 
   function ItemIsAvailable($name) {
-    global $GAME_OPT_CONF;
-    $enable = "{$name}_enable";
-    return isset($GAME_OPT_CONF->$enable) ? $GAME_OPT_CONF->$enable : true;
+    $enable = sprintf('%s_enable', $name);
+    return isset(GameOptionConfig::$$enable) ? GameOptionConfig::$$enable : true;
   }
 }
 
@@ -158,6 +159,8 @@ abstract class TextRoomOptionItem extends RoomOptionItem {
     parent::__construct($group);
     $this->formtype = 'textbox';
   }
+
+  function GetCaption() { return $this->caption; }
 
   function  LoadMessages() {
     $size = "{$this->name}_input";

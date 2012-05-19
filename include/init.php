@@ -26,9 +26,8 @@ class InitializeConfig {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'GAME_OPT_CONF'        => 'game_option_config',
-    'ROOM_OPT'             => array('room_config', 'time_config', 'option/room_option_class',
-				    'option/room_option_item_class'),
+    'ROOM_OPT'             => array('room_config', 'time_config', 'game_option_config',
+				    'option/room_option_class', 'option/room_option_item_class'),
     'ROLES'                => 'role_class',
     'TIME_CALC'            => array('time_config', 'room_config', 'game_config', 'cast_config',
 				    'role_data_class', 'image_class', 'info_functions'),
@@ -60,15 +59,13 @@ class InitializeConfig {
     'game_play_functions'  => array('user_class', 'image_class'),
     'game_vote_functions'  => 'game_functions',
     'icon_functions'       => array('icon_class', 'user_icon_class'),
-    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'game_option_message',
-				    'image_class'),
+    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'image_class'),
     'setup_class'          => array('setup_config', 'version', 'database_class'),
     'test/objection'       => array('game_config', 'sound_class')
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   public $depend_class = array(
-    'ROOM_OPT'            => 'GAME_OPT_CONF',
     'game_view_class'     => 'ROLES',
     'game_log_class'      => 'ROLES',
     'oldlog_functions'    => 'ROOM_OPT',
@@ -76,7 +73,6 @@ class InitializeConfig {
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'GAME_OPT_CONF' => 'GameOptionConfig',
     'TWITTER'       => 'TwitterConfig',
     'ROOM_OPT'      => 'RoomOption',
     'COOKIE'        => 'CookieDataSet',
@@ -140,7 +136,6 @@ class InitializeConfig {
     case 'cast_config':
     case 'chaos_config':
     case 'message':
-    case 'game_option_message':
     case 'vote_message':
     case 'winner_message':
     case 'time_config':
